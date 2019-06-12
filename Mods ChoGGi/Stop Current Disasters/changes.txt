@@ -1,3 +1,6 @@
+v0.7
+Added mod option to stop the mod from stopping disasters.
+
 v0.6
 Added a comment to get around the bug of a one liner script...
 

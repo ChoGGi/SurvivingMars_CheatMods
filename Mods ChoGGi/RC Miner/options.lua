@@ -4,6 +4,20 @@ DefineClass("ModOptions_ChoGGi_PortableMiner", {
 	},
 	properties = {
 		{
+			default = true,
+			editor = "bool",
+			id = "visual_cues",
+			name = "Paint ground around mine",
+			desc = "mspaint 4eva",
+		},
+		{
+			default = true,
+			editor = "bool",
+			id = "ShowRocket",
+			name = "Show Rocket",
+			desc = "up 'n down 'n up 'n down",
+		},
+		{
 			default = 1,
 			editor = "number",
 			id = "mine_amount",
@@ -83,13 +97,6 @@ DefineClass("ModOptions_ChoGGi_PortableMiner", {
 			min = 1,
 			name = "Time to mine precious metal idle",
 			desc = "XXXXXXXXXXXXXX",
-		},
-		{
-			default = true,
-			editor = "bool",
-			id = "visual_cues",
-			name = "Paint ground around mine",
-			desc = "mspaint 4eva",
 		},
 	},
 })

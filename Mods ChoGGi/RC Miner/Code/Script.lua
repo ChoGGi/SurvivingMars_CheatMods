@@ -26,45 +26,53 @@ local pms = {
 	},
 }
 
-local mod_id = "ChoGGi_PortableMiner"
-local mod = Mods[mod_id]
+local options
+local mod_ShowRocket
 
-local function UpdateOptions()
-	pms.mine_amount = mod.options.mine_amount * r
-	pms.max_res_amount_man = mod.options.max_res_amount_man * r
-	pms.max_z_stack_man = mod.options.max_res_amount_man / 10
-	pms.max_res_amount_auto = mod.options.max_res_amount_auto * r
-	pms.max_z_stack_auto = mod.options.max_res_amount_auto / 10
+-- fired when settings are changed
+local function ModOptions()
+	pms.mine_amount = options.mine_amount * r
+	pms.max_res_amount_man = options.max_res_amount_man * r
+	pms.max_z_stack_man = options.max_res_amount_man / 10
+	pms.max_res_amount_auto = options.max_res_amount_auto * r
+	pms.max_z_stack_auto = options.max_res_amount_auto / 10
 
-	pms.mine_time_anim.Concrete = mod.options.mine_time_animConcrete
-	pms.mine_time_idle.Concrete = mod.options.mine_time_idleConcrete
-	pms.mine_time_anim.Metals = mod.options.mine_time_animMetals
-	pms.mine_time_idle.Metals = mod.options.mine_time_idleMetals
-	pms.mine_time_anim.PreciousMetals = mod.options.mine_time_animPreciousMetals
-	pms.mine_time_idle.PreciousMetals = mod.options.mine_time_idlePreciousMetals
-	pms.visual_cues = mod.options.visual_cues
+	pms.mine_time_anim.Concrete = options.mine_time_animConcrete
+	pms.mine_time_idle.Concrete = options.mine_time_idleConcrete
+	pms.mine_time_anim.Metals = options.mine_time_animMetals
+	pms.mine_time_idle.Metals = options.mine_time_idleMetals
+	pms.mine_time_anim.PreciousMetals = options.mine_time_animPreciousMetals
+	pms.mine_time_idle.PreciousMetals = options.mine_time_idlePreciousMetals
+	pms.visual_cues = options.visual_cues
+	mod_ShowRocket = options.ShowRocket
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
 end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_PortableMiner" then
 		return
 	end
-	UpdateOptions()
+
+	ModOptions()
 end
 
--- for some reason mod options aren't retrieved before this script is loaded...
 local function StartupCode()
-	UpdateOptions()
-
+	local IsValid = IsValid
 	-- reset the prod count (for overview or something)
 	local miners = UICity.labels.PortableMiner or ""
 	for i = 1, #miners do
 		local miner = miners[i]
-		if miner.city then
+		miner.city = UICity
+		miner:SpawnThumper()
+		if miner.lifetime_table then
 			break
 		end
-		miner.city = UICity
 		miner.lifetime_table = {
 			All = 0,
 			Concrete = 0,
@@ -81,30 +89,9 @@ end
 OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode
 
--- local some globals
-local IsValid = IsValid
-local MovePointAway = MovePointAway
-local MapFindNearest = MapFindNearest
-local PlaceObj = PlaceObj
-local Sleep = Sleep
-local Halt = Halt
-local GetPassablePointNearby = GetPassablePointNearby
-local point = point
-local ObjModified = ObjModified
-local table_iclear = table.iclear
-local table_insert_unique = table.insert_unique
-local table_remove_entry = table.remove_entry
-local table_concat = table.concat
-local GetUIRollover = ResourceProducer.GetUISectionResourceProducerRollover
-local TerrainDepositExtractor_ExtractResource = TerrainDepositExtractor.ExtractResource
-local BuildingDepositExploiterComponent_ExtractResource = BuildingDepositExploiterComponent.ExtractResource
-local BaseRover_ToggleAutoMode = BaseRover.ToggleAutoMode
-
-local Random = ChoGGi.ComFuncs.Random
 -- for painting the ground
 local concrete_paint = table.find(TerrainTextures, "name", "Dig")
 local metal_paint = table.find(TerrainTextures, "name", "SandFrozen")
-local terrain_SetTypeCircle = terrain.SetTypeCircle
 
 local name = [[RC Miner]]
 local name_pl = [[RC Miners]]
@@ -177,6 +164,9 @@ DefineClass.PortableMiner = {
 
 	-- show the pin info
 	pin_rollover = T(51, "<ui_command>"),
+
+	-- add a missile to "grows" while mining
+	thumper = false,
 }
 
 DefineClass.PortableMinerBuilding = {
@@ -217,6 +207,8 @@ function PortableMiner:GameInit()
 
 	-- show the pin info
 	self.producers = {self}
+
+	self:SpawnThumper()
 end
 
 -- retrieves prod info
@@ -235,9 +227,9 @@ function PortableMiner:Getui_command()
 	self:BuildProdInfo(info, "Concrete")
 	-- change lifetime to lifetime of that res
 	self.lifetime_production = self.lifetime_table[self.resource]
-	info[#info+1] = GetUIRollover(self)
+	info[#info+1] = ResourceProducer.GetUISectionResourceProducerRollover(self)
 	self.lifetime_production = self.lifetime_table.All
-	return table_concat(info, "<newline><left>")
+	return table.concat(info, "<newline><left>")
 end
 -- fake it till you make it (needed by GetUISectionResourceProducerRollover)
 function PortableMiner:GetAmountStored()
@@ -253,6 +245,36 @@ end
 
 -- needs this for the auto button to show up
 PortableMiner.ToggleAutoMode_Update = RCTransport.ToggleAutoMode_Update
+
+function PortableMiner:Done()
+	if IsValid(self.thumper) then
+		DoneObject(self.thumper)
+	end
+end
+
+function PortableMiner:SpawnThumper()
+	if IsValid(self.thumper) then
+		return
+	end
+
+	local thumper = MeteorInterceptParabolicRocket:new()
+--~ 	local spot = self:GetSpotBeginIndex("Rocket")
+--~ 	self:Attach(thumper, spot)
+
+--~ 	local pos = self:GetSpotLoc(spot)
+--~ 	thumper:SetPos(pos)
+	thumper:SetScale(150)
+	thumper:SetVisible(false)
+
+	thumper:SetColorModifier(-16777216)
+
+	self.thumper = thumper
+end
+
+function PortableMiner:Goto(...)
+	self.thumper:SetVisible(false)
+	return Unit.Goto(self, ...)
+end
 
 -- for auto mode
 function PortableMiner:ProcAutomation()
@@ -293,7 +315,7 @@ function PortableMiner:ToggleAutoMode(broadcast)
 	if IsValid(self.stockpile) then
 		self.stockpile.max_z = self.auto_mode_on and pms.max_z_stack_man or pms.max_z_stack_auto
 	end
-	return BaseRover_ToggleAutoMode(self, broadcast)
+	return BaseRover.ToggleAutoMode(self, broadcast)
 end
 
 function PortableMiner:Idle()
@@ -341,7 +363,7 @@ function PortableMiner:DepositNearby()
 	end
 
 	-- nadda
-	table_iclear(self.nearby_deposits)
+	table.iclear(self.nearby_deposits)
 	return false
 end
 
@@ -368,6 +390,14 @@ end
 
 -- called it Load so it uses the load resource icon in pins
 function PortableMiner:Load()
+	local rocket_pos
+	if mod_ShowRocket then
+		-- get pos of where the "rocket" moves
+		local spot = self:GetSpotBeginIndex("Rocket")
+		rocket_pos = self:GetSpotLoc(spot)
+		self.thumper:SetPos(rocket_pos)
+	end
+
 	local skip_end
 	if #self.nearby_deposits > 0 then
 		-- remove removed stockpile
@@ -402,7 +432,14 @@ function PortableMiner:Load()
 			self:ShowNotWorkingSign(false)
 			-- up n down n up n down
 			self:SetStateText(self.default_anim)
-			Sleep(pms.mine_time_anim[self.resource] or self:TimeToAnimEnd())
+
+			local time = pms.mine_time_anim[self.resource] or self:TimeToAnimEnd()
+			-- feel that missile move
+			if mod_ShowRocket then
+				self.thumper:SetVisible(true)
+				self.thumper:SetPos(rocket_pos+point(0,0,300), time)
+			end
+			Sleep(time)
 
 			-- mine some loot
 			local mined = self:DigErUp()
@@ -439,11 +476,16 @@ function PortableMiner:Load()
 	end
 
 	if not skip_end then
+		local time = pms.mine_time_idle[self.resource] or self:TimeToAnimEnd()
 		-- if not idle state then make idle state (the raise up motion of the mining)
 		if self:GetState() ~= 0 then
 			self:SetStateText(self.default_anim_idle)
+			if mod_ShowRocket then
+				self.thumper:SetPos(rocket_pos+point(0,0,-300), time)
+			end
 		end
-		Sleep(pms.mine_time_idle[self.resource] or self:TimeToAnimEnd())
+		Sleep(time)
+		self.thumper:SetVisible(false)
 	end
 end
 
@@ -458,7 +500,7 @@ end
 -- called when the mine is gone/empty (returns nil to skip the add res amount stuff)
 function PortableMiner:MineIsEmpty()
 	-- it's done so remove our ref to it
-	table_iclear(miner.nearby_deposits)
+	table.iclear(miner.nearby_deposits)
 	-- needed to mine other concrete
 	miner.found_deposit = false
 	-- if there's a mine nearby then off we go
@@ -467,7 +509,7 @@ function PortableMiner:MineIsEmpty()
 		return
 	end
 	-- omg it's isn't doing anythings @!@!#!?
-	table_insert_unique(g_IdleExtractors, miner)
+	table.insert_unique(g_IdleExtractors, miner)
 	-- hey look at me!
 	miner:ShowNotWorkingSign(true)
 end
@@ -511,11 +553,11 @@ function PortableMiner:DigErUp()
 
 	local extracted, paint
 	if self.resource == "Concrete" then
-		extracted = TerrainDepositExtractor_ExtractResource(self, amount)
+		extracted = TerrainDepositExtractor.ExtractResource(self, amount)
 		paint = concrete_paint
 --~ 	elseif self.resource == "Metals" or self.resource == "PreciousMetals" then
 	else
-		extracted = BuildingDepositExploiterComponent_ExtractResource(self, amount)
+		extracted = BuildingDepositExploiterComponent.ExtractResource(self, amount)
 		paint = metal_paint
 	end
 
@@ -526,9 +568,7 @@ function PortableMiner:DigErUp()
 
 	-- visual cues
 	if pms.visual_cues then
-		local pt = self:GetLogicalPos()
-		pt = point(pt:x()+Random(-5000, 5000), pt:y()+Random(-5000, 5000))
-		terrain_SetTypeCircle(pt, 250, paint)
+		terrain.SetTypeCircle(GetRandomPassableAround(self, 5000), guim, paint)
 	end
 
 	return extracted
@@ -541,7 +581,7 @@ end
 
 function PortableMiner:OnSelected()
 	self:AttachSign(false, "SignNotWorking")
-	table_remove_entry(g_IdleExtractors, self)
+	table.remove_entry(g_IdleExtractors, self)
 end
 
 -- needed for Concrete
@@ -578,28 +618,3 @@ function OnMsg.ClassesPostprocess()
 		})
 	end
 end
-
---~ -- add some prod info to selection panel
---~ function OnMsg.ClassesBuilt()
---~ 	local rover = XTemplates.ipRover[1]
-
---~ 	-- check for and remove existing template
---~ 	ChoGGi.ComFuncs.RemoveXTemplateSections(rover, "ChoGGi_Template_PortableMiner_Prod", true)
-
---~ 	table.insert(
---~ 		rover,
---~ 		#rover,
---~ 		PlaceObj('XTemplateTemplate', {
---~ 			"ChoGGi_Template_PortableMiner_Prod", true,
---~ 			"__context_of_kind", "PortableMiner",
---~ 			"__template", "InfopanelSection",
---~ 			"Title", T(80, "Production"),
---~ 			"Icon", "UI/Icons/Sections/storage.tga",
---~ 		}, {
---~ 			PlaceObj("XTemplateTemplate", {
---~ 				"__template", "InfopanelText",
---~ 				"Text",	T(0, "<CargoManifest>"),
---~ 			}),
---~ 		})
---~ 	)
---~ end

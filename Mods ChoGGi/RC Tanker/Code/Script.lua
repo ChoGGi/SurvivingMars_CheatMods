@@ -499,10 +499,10 @@ function OnMsg.ClassesPostprocess()
 			"entity", entity_rc_building,
 		})
 	end
-end
+--~ end
 
--- add some prod info to selection panel
-function OnMsg.ClassesBuilt()
+--~ -- add some prod info to selection panel
+--~ function OnMsg.ClassesBuilt()
 	local rover = XTemplates.ipRover[1]
 
 	-- check for and remove existing template

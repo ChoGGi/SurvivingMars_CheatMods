@@ -1,3 +1,7 @@
+v2.0
+Fix for bugged pin description.
+Added another visual indicator of mining in progress.
+
 v1.9
 Added support for LukeH's Resources (not Hydrocarbons).
 Cleaned up the code a bit.

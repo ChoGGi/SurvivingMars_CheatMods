@@ -23,7 +23,7 @@ function RequiresMaintenance:UIRequestMaintenance()
 	return self:RequestMaintenance(true)
 end
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	-- restore the button
 	local xt = XTemplates.ipBuilding[1][1]
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xt, "ChoGGi_RestoreMaintenance")

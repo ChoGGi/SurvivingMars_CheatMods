@@ -31,7 +31,7 @@ function Colonist:SetWorkplace(building, shift, ...)
 	return orig_Colonist_SetWorkplace(self, building, shift, ...)
 end
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	local IsValid = IsValid
 	local ObjModified = ObjModified
 	local RetName = ChoGGi.ComFuncs.RetName

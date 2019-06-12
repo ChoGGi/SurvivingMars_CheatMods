@@ -32,7 +32,7 @@ do -- custom msgs
 	AddMsgToFunc("SingleResourceProducer", "Init", "ChoGGi_SpawnedProducer", "production_per_day")
 end -- do
 
---~ -- use this message to mess with the classdefs (before classes are built)
+-- use this message to mess with the classdefs (before classes are built)
 --~ function OnMsg.ClassesGenerate()
 --~ end
 
@@ -73,224 +73,212 @@ end
 
 -- where we can add new BuildingTemplates, and other PlaceObjs
 -- use this message to make modifications to the built classes (before they are declared final)
---~ function OnMsg.ClassesPostprocess()
---~ end
+function OnMsg.ClassesPostprocess()
+	local XTemplates = XTemplates
+	local ChoGGi = ChoGGi
+	local UserSettings = ChoGGi.UserSettings
 
-do -- OnMsg ClassesBuilt/XTemplatesLoaded
-	local PlaceObj = PlaceObj
-
---~ 	function OnMsg.XTemplatesLoaded()
-	local function OnMsg_XTemplatesLoaded()
-		local XTemplates = XTemplates
-		local ChoGGi = ChoGGi
-		local UserSettings = ChoGGi.UserSettings
-
-		for key, template in pairs(XTemplates) do
-			local xt = template[1]
-			-- add some ids to make it easier to fiddle with selection panel (making sure to skip the repeatable ones)
-			if key:sub(1, 7) == "section" and key:sub(-3) ~= "Row" then
-				if xt and not xt.Id then
-					xt.Id = "id" .. template.id .. "_ChoGGi"
-				end
-			-- add cheats section to stuff without it
-			elseif key:sub(1, 2) == "ip" and not table_find(xt, "__template", "sectionCheats") then
-				xt[#xt+1] = PlaceObj("XTemplateTemplate", {
-					"__template", "sectionCheats",
-				})
+	for key, template in pairs(XTemplates) do
+		local xt = template[1]
+		-- add some ids to make it easier to fiddle with selection panel (making sure to skip the repeatable ones)
+		if key:sub(1, 7) == "section" and key:sub(-3) ~= "Row" then
+			if xt and not xt.Id then
+				xt.Id = "id" .. template.id .. "_ChoGGi"
 			end
+		-- add cheats section to stuff without it
+		elseif key:sub(1, 2) == "ip" and not table_find(xt, "__template", "sectionCheats") then
+			xt[#xt+1] = PlaceObj("XTemplateTemplate", {
+				"__template", "sectionCheats",
+			})
 		end
+	end
 
-		-- no sense in firing the func without cheats pane enabled
-		XTemplates.sectionCheats[1].__condition = function(parent, context)
-			return config.BuildingInfopanelCheats and context:CreateCheatActions(parent)
-		end
+	-- no sense in firing the func without cheats pane enabled
+	XTemplates.sectionCheats[1].__condition = function(parent, context)
+		return config.BuildingInfopanelCheats and context:CreateCheatActions(parent)
+	end
 
-		-- remove all that spacing between buttons
-		XTemplates.sectionCheats[1][1].LayoutHSpacing = 10
+	-- remove all that spacing between buttons
+	XTemplates.sectionCheats[1][1].LayoutHSpacing = 10
 
-		-- add rollovers to cheats toolbar
-		XTemplates.EditorToolbarButton[1].RolloverTemplate = "Rollover"
+	-- add rollovers to cheats toolbar
+	XTemplates.EditorToolbarButton[1].RolloverTemplate = "Rollover"
 
-		-- left? right? who cares? I do... *&^%$#@$ designers
-		if UserSettings.GUIDockSide then
-			XTemplates.NewOverlayDlg[1].Dock = "right"
-			XTemplates.SaveLoadContentWindow[1].Dock = "right"
-			ChoGGi.ComFuncs.SetTableValue(XTemplates.SaveLoadContentWindow[1], "Dock", "left", "Dock", "right")
-			XTemplates.PhotoMode[1].Dock = "right"
-		end
+	-- left? right? who cares? I do... *&^%$#@$ designers
+	if UserSettings.GUIDockSide then
+		XTemplates.NewOverlayDlg[1].Dock = "right"
+		XTemplates.SaveLoadContentWindow[1].Dock = "right"
+		ChoGGi.ComFuncs.SetTableValue(XTemplates.SaveLoadContentWindow[1], "Dock", "left", "Dock", "right")
+		XTemplates.PhotoMode[1].Dock = "right"
+	end
 
-		-- change rollover max width
-		if UserSettings.WiderRollovers then
-			local roll = XTemplates.Rollover[1]
-			local idx = table_find(roll, "Id", "idContent")
+	-- change rollover max width
+	if UserSettings.WiderRollovers then
+		local roll = XTemplates.Rollover[1]
+		local idx = table_find(roll, "Id", "idContent")
+		if idx then
+			roll = roll[idx]
+			idx = table_find(roll, "Id", "idText")
 			if idx then
-				roll = roll[idx]
-				idx = table_find(roll, "Id", "idText")
-				if idx then
-					roll[idx].MaxWidth = UserSettings.WiderRollovers
-				end
+				roll[idx].MaxWidth = UserSettings.WiderRollovers
 			end
 		end
+	end
 
-		-- added to stuff spawned with object spawner
-		if XTemplates.ipChoGGi_Entity then
-			XTemplates.ipChoGGi_Entity:delete()
-		end
+	-- added to stuff spawned with object spawner
+	if XTemplates.ipChoGGi_Entity then
+		XTemplates.ipChoGGi_Entity:delete()
+	end
 
-		PlaceObj("XTemplate", {
-			group = "Infopanel Sections",
-			id = "ipChoGGi_Entity",
+	PlaceObj("XTemplate", {
+		group = "Infopanel Sections",
+		id = "ipChoGGi_Entity",
+		PlaceObj("XTemplateTemplate", {
+			"__context_of_kind", "ChoGGi_OBuildingEntityClass",
+			"__template", "Infopanel",
+		}, {
+
 			PlaceObj("XTemplateTemplate", {
-				"__context_of_kind", "ChoGGi_OBuildingEntityClass",
-				"__template", "Infopanel",
-			}, {
-
-				PlaceObj("XTemplateTemplate", {
-					"__template", "InfopanelButton",
-					"RolloverTitle", Strings[302535920000682--[[Change Entity]]],
-					"RolloverHint", T(608042494285--[[<left_click> Activate]]),
-					"ContextUpdateOnOpen", true,
-					"OnContextUpdate", function(self)
-						self:SetRolloverText(Strings[302535920001151--[[Set Entity For %s]]]:format(RetName(self.context)))
-					end,
-					"OnPress", function(self)
-						ChoGGi.ComFuncs.EntitySpawner(self.context, {
-							skip_msg = true,
-							list_type = 7,
-							planning = self.context.planning and true,
-							title_postfix = RetName(self.context),
-						})
-					end,
-					"Icon", "UI/Icons/IPButtons/shuttle.tga",
-				}),
-
-				PlaceObj("XTemplateTemplate", {
-					"__template", "InfopanelButton",
-					"Icon", "UI/Icons/IPButtons/automated_mode_on.tga",
-					"RolloverTitle", T(1000077--[[Rotate]]),
-					"RolloverText", T(7519--[[<left_click>]]) .. " "
-						.. T(312752058553--[[Rotate Building Left]]).. "\n"
-						.. T(7366--[[<right_click>]]) .. " "
-						.. T(306325555448--[[Rotate Building Right]]),
-					"RolloverHint", "",
-					"RolloverHintGamepad", T(7518--[[ButtonA]]) .. " "
-						.. T(312752058553--[[Rotate Building Left]]) .. " "
-						.. T(7618--[[ButtonX]]) .. " " .. T(306325555448--[[Rotate Building Right]]),
-					"OnPress", function (self, gamepad)
-						self.context:Rotate(not gamepad and IsMassUIModifierPressed())
-						ObjModified(self.context)
-					end,
-					"AltPress", true,
-					"OnAltPress", function (self, gamepad)
-						if gamepad then
-							self.context:Rotate(gamepad)
-						else
-							self.context:Rotate(not IsMassUIModifierPressed())
-						end
-						ObjModified(self.context)
-					end,
-				}),
-
-				PlaceObj("XTemplateTemplate", {
-					"__template", "InfopanelButton",
-					"RolloverTitle", Strings[302535920000457--[[Anim State Set]]],
-					"RolloverHint", T(608042494285--[[<left_click> Activate]]),
-					"RolloverText", Strings[302535920000458--[[Make object dance on command.]]],
-					"OnPress", function(self)
-						ChoGGi.ComFuncs.SetAnimState(self.context)
-					end,
-					"Icon", "UI/Icons/IPButtons/expedition.tga",
-				}),
-
-				PlaceObj("XTemplateTemplate", {
-					"__template", "InfopanelButton",
-					"RolloverTitle", Strings[302535920000129--[[Set]]] .. " " .. Strings[302535920001184--[[Particles]]],
-					"RolloverHint", T(608042494285--[[<left_click> Activate]]),
-					"RolloverText", Strings[302535920001421--[[Shows a list of particles you can use on the selected obj.]]],
-					"OnPress", function(self)
-						ChoGGi.ComFuncs.SetParticles(self.context)
-					end,
-					"Icon", "UI/Icons/IPButtons/status_effects.tga",
-				}),
-
-------------------- Salvage
-			PlaceObj('XTemplateTemplate', {
-				'comment', "salvage",
-				'__context_of_kind', "Demolishable",
-				'__condition', function (_, context) return context:ShouldShowDemolishButton() end,
-				'__template', "InfopanelButton",
-				'RolloverTitle', T(3973, --[[XTemplate ipBuilding RolloverTitle]] "Salvage"),
-				'RolloverHintGamepad', T(7657, --[[XTemplate ipBuilding RolloverHintGamepad]] "<ButtonY> Activate"),
-				'Id', "idSalvage",
-				'OnContextUpdate', function (self, context, ...)
-					local refund = context:GetRefundResources() or empty_table
-					local rollover = T(7822, "Destroy this building.")
-					if IsKindOf(context, "LandscapeConstructionSiteBase") then
-						self:SetRolloverTitle(T(12171, "Cancel Landscaping"))
-						rollover = T(12172, "Cancel this landscaping project. The terrain will remain in its current state")
-					end
-					if #refund > 0 then
-						rollover = rollover .. "<newline><newline>" .. T(7823, "<UIRefundRes> will be refunded upon salvage.")
-					end
-					self:SetRolloverText(rollover)
-					context:ToggleDemolish_Update(self)
+				"__template", "InfopanelButton",
+				"RolloverTitle", Strings[302535920000682--[[Change Entity]]],
+				"RolloverHint", T(608042494285--[[<left_click> Activate]]),
+				"ContextUpdateOnOpen", true,
+				"OnContextUpdate", function(self)
+					self:SetRolloverText(Strings[302535920001151--[[Set Entity For %s]]]:format(RetName(self.context)))
 				end,
-				'OnPressParam', "ToggleDemolish",
-				'Icon', "UI/Icons/IPButtons/salvage_1.tga",
-			}, {
-				PlaceObj('XTemplateFunc', {
-					'name', "OnXButtonDown(self, button)",
-					'func', function (self, button)
-						if button == "ButtonY" then
-							return self:OnButtonDown(false)
-						elseif button == "ButtonX" then
-							return self:OnButtonDown(true)
-						end
-						return (button == "ButtonA") and "break"
-					end,
-				}),
-				PlaceObj('XTemplateFunc', {
-					'name', "OnXButtonUp(self, button)",
-					'func', function (self, button)
-						if button == "ButtonY" then
-							return self:OnButtonUp(false)
-						elseif button == "ButtonX" then
-							return self:OnButtonUp(true)
-						end
-						return (button == "ButtonA") and "break"
-					end,
-				}),
-				}),
+				"OnPress", function(self)
+					ChoGGi.ComFuncs.EntitySpawner(self.context, {
+						skip_msg = true,
+						list_type = 7,
+						planning = self.context.planning and true,
+						title_postfix = RetName(self.context),
+					})
+				end,
+				"Icon", "UI/Icons/IPButtons/shuttle.tga",
+			}),
+
+			PlaceObj("XTemplateTemplate", {
+				"__template", "InfopanelButton",
+				"Icon", "UI/Icons/IPButtons/automated_mode_on.tga",
+				"RolloverTitle", T(1000077--[[Rotate]]),
+				"RolloverText", T(7519--[[<left_click>]]) .. " "
+					.. T(312752058553--[[Rotate Building Left]]).. "\n"
+					.. T(7366--[[<right_click>]]) .. " "
+					.. T(306325555448--[[Rotate Building Right]]),
+				"RolloverHint", "",
+				"RolloverHintGamepad", T(7518--[[ButtonA]]) .. " "
+					.. T(312752058553--[[Rotate Building Left]]) .. " "
+					.. T(7618--[[ButtonX]]) .. " " .. T(306325555448--[[Rotate Building Right]]),
+				"OnPress", function (self, gamepad)
+					self.context:Rotate(not gamepad and IsMassUIModifierPressed())
+					ObjModified(self.context)
+				end,
+				"AltPress", true,
+				"OnAltPress", function (self, gamepad)
+					if gamepad then
+						self.context:Rotate(gamepad)
+					else
+						self.context:Rotate(not IsMassUIModifierPressed())
+					end
+					ObjModified(self.context)
+				end,
+			}),
+
+			PlaceObj("XTemplateTemplate", {
+				"__template", "InfopanelButton",
+				"RolloverTitle", Strings[302535920000457--[[Anim State Set]]],
+				"RolloverHint", T(608042494285--[[<left_click> Activate]]),
+				"RolloverText", Strings[302535920000458--[[Make object dance on command.]]],
+				"OnPress", function(self)
+					ChoGGi.ComFuncs.SetAnimState(self.context)
+				end,
+				"Icon", "UI/Icons/IPButtons/expedition.tga",
+			}),
+
+			PlaceObj("XTemplateTemplate", {
+				"__template", "InfopanelButton",
+				"RolloverTitle", Strings[302535920000129--[[Set]]] .. " " .. Strings[302535920001184--[[Particles]]],
+				"RolloverHint", T(608042494285--[[<left_click> Activate]]),
+				"RolloverText", Strings[302535920001421--[[Shows a list of particles you can use on the selected obj.]]],
+				"OnPress", function(self)
+					ChoGGi.ComFuncs.SetParticles(self.context)
+				end,
+				"Icon", "UI/Icons/IPButtons/status_effects.tga",
+			}),
+
+------------------- Salvage
+		PlaceObj('XTemplateTemplate', {
+			'comment', "salvage",
+			'__context_of_kind', "Demolishable",
+			'__condition', function (_, context) return context:ShouldShowDemolishButton() end,
+			'__template', "InfopanelButton",
+			'RolloverTitle', T(3973, --[[XTemplate ipBuilding RolloverTitle]] "Salvage"),
+			'RolloverHintGamepad', T(7657, --[[XTemplate ipBuilding RolloverHintGamepad]] "<ButtonY> Activate"),
+			'Id', "idSalvage",
+			'OnContextUpdate', function (self, context, ...)
+				local refund = context:GetRefundResources() or empty_table
+				local rollover = T(7822, "Destroy this building.")
+				if IsKindOf(context, "LandscapeConstructionSiteBase") then
+					self:SetRolloverTitle(T(12171, "Cancel Landscaping"))
+					rollover = T(12172, "Cancel this landscaping project. The terrain will remain in its current state")
+				end
+				if #refund > 0 then
+					rollover = rollover .. "<newline><newline>" .. T(7823, "<UIRefundRes> will be refunded upon salvage.")
+				end
+				self:SetRolloverText(rollover)
+				context:ToggleDemolish_Update(self)
+			end,
+			'OnPressParam', "ToggleDemolish",
+			'Icon', "UI/Icons/IPButtons/salvage_1.tga",
+		}, {
+			PlaceObj('XTemplateFunc', {
+				'name', "OnXButtonDown(self, button)",
+				'func', function (self, button)
+					if button == "ButtonY" then
+						return self:OnButtonDown(false)
+					elseif button == "ButtonX" then
+						return self:OnButtonDown(true)
+					end
+					return (button == "ButtonA") and "break"
+				end,
+			}),
+			PlaceObj('XTemplateFunc', {
+				'name', "OnXButtonUp(self, button)",
+				'func', function (self, button)
+					if button == "ButtonY" then
+						return self:OnButtonUp(false)
+					elseif button == "ButtonX" then
+						return self:OnButtonUp(true)
+					end
+					return (button == "ButtonA") and "break"
+				end,
+			}),
+			}),
 ------------------- Salvage
 
 
-				PlaceObj("XTemplateTemplate", {
-					"__template", "sectionCheats",
-				}),
+			PlaceObj("XTemplateTemplate", {
+				"__template", "sectionCheats",
 			}),
-		})
+		}),
+	})
+
+	-- add HiddenX cat for Hidden items
+	local bc = BuildCategories
+	if ChoGGi.UserSettings.Building_hide_from_build_menu and not table_find(bc, "id", "HiddenX") then
+		bc[#bc+1] = {
+			id = "HiddenX",
+			name = T(1000155--[[Hidden]]),
+			image = "UI/Icons/bmc_placeholder.tga",
+			highlight = "UI/Icons/bmc_placeholder_shine.tga",
+		}
 	end
 
-	-- called when new DLC is added (or a new game)
-	OnMsg.XTemplatesLoaded = OnMsg_XTemplatesLoaded
+end
 
-	-- use this message to perform post-built actions on the final classes
-	function OnMsg.ClassesBuilt()
-		-- add HiddenX cat for Hidden items
-		local bc = BuildCategories
-		if ChoGGi.UserSettings.Building_hide_from_build_menu and not table_find(bc, "id", "HiddenX") then
-			bc[#bc+1] = {
-				id = "HiddenX",
-				name = T(1000155--[[Hidden]]),
-				image = "UI/Icons/bmc_placeholder.tga",
-				highlight = "UI/Icons/bmc_placeholder_shine.tga",
-			}
-		end
-
-		OnMsg_XTemplatesLoaded()
-	end
-
-end -- do
+-- use this message to perform post-built actions on the final classes
+--~ function OnMsg.ClassesBuilt()
+--~ end
 
 function OnMsg.ModsReloaded()
 	local ChoGGi = ChoGGi
@@ -1312,11 +1300,11 @@ do -- LoadGame/CityStart
 			end
 		end
 
-		-- fucking drones, pick yer shit up
 		if UserSettings.DroneResourceCarryAmount then
 			if UserSettings.DroneResourceCarryAmount == 1 then
 				UserSettings.DroneResourceCarryAmountFix = nil
 			else
+				-- fucking drones, pick yer shit up
 				UserSettings.DroneResourceCarryAmountFix = true
 			end
 		end

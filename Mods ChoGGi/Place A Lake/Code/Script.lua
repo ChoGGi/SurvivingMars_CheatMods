@@ -85,9 +85,9 @@ function OnMsg.ClassesPostprocess()
 			"auto_clear", true,
 		})
 	end
-end
+--~ end
 
-function OnMsg.ClassesBuilt()
+--~ function OnMsg.ClassesBuilt()
 	local building = XTemplates.ipBuilding[1]
 
 	-- check for and remove existing template

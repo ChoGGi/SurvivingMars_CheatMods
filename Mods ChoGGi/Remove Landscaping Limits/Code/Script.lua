@@ -1,10 +1,5 @@
 -- See LICENSE for terms
 
-local max_int = max_int
-local guim = guim
-
-local SetLandScapingLimits = ChoGGi.ComFuncs.SetLandScapingLimits
-
 local options
 local mod_RemoveLandScapingLimits
 local mod_StepSize
@@ -14,7 +9,7 @@ local function ModOptions()
 	mod_RemoveLandScapingLimits = options.RemoveLandScapingLimits
 	mod_StepSize = options.StepSize * guim
 
-	SetLandScapingLimits(mod_RemoveLandScapingLimits)
+	ChoGGi.ComFuncs.SetLandScapingLimits(mod_RemoveLandScapingLimits)
 end
 
 -- load default/saved settings

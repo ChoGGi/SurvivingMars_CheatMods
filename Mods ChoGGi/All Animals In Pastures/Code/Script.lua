@@ -496,7 +496,39 @@ local roam_rand3 = {"breakDownIdle", "chargingStationIdle", "cleanBuildingIdle",
  "repairDroneIdle", "rogueIdle",
 	}
 
-function OnMsg.ClassesBuilt()
+-- add new non-pasture animal objects
+function OnMsg.ClassesPostprocess()
+	if Animals.ChoGGi_PastureAnimal_Cat then
+		return
+	end
+
+	for id, item in pairs(animals) do
+		-- skip default animals (we just need them for the spots)
+		if item.display_name then
+			PlaceObj("Animal", {
+				AnimalClass = "ChoGGi_PastureAnimal",
+				PastureClass = "InsidePasture",
+				group = "Pasture",
+				id = "ChoGGi_PastureAnimal_" .. id,
+				save_in = "shepard",
+
+				infopanel_pos = item.infopanel_pos,
+				description = item.description,
+				display_icon = item.display_icon,
+				display_name = item.display_name,
+				entities = item.entities,
+				food = item.food,
+				health = item.health,
+				herd_size = item.herd_size,
+				air_consumption = item.air_consumption,
+				lifetime = item.lifetime,
+				water_consumption = item.water_consumption,
+			})
+		end
+	end
+--~ end
+
+--~ function OnMsg.ClassesBuilt()
 	-- set idle anim
 	local orig_PastureAnimal_SetState = PastureAnimal.SetState
 	function PastureAnimal:SetState(state, skip, ...)
@@ -530,39 +562,6 @@ function OnMsg.ClassesBuilt()
 		return orig_PastureAnimal_SetState(self, state, skip, ...)
 	end
 end
-
--- add new non-pasture animal objects
-function OnMsg.ClassesPostprocess()
-	if Animals.ChoGGi_PastureAnimal_Cat then
-		return
-	end
-
-	for id, item in pairs(animals) do
-		-- skip default animals (we just need them for the spots)
-		if item.display_name then
-			PlaceObj("Animal", {
-				AnimalClass = "ChoGGi_PastureAnimal",
-				PastureClass = "InsidePasture",
-				group = "Pasture",
-				id = "ChoGGi_PastureAnimal_" .. id,
-				save_in = "shepard",
-
-				infopanel_pos = item.infopanel_pos,
-				description = item.description,
-				display_icon = item.display_icon,
-				display_name = item.display_name,
-				entities = item.entities,
-				food = item.food,
-				health = item.health,
-				herd_size = item.herd_size,
-				air_consumption = item.air_consumption,
-				lifetime = item.lifetime,
-				water_consumption = item.water_consumption,
-			})
-		end
-	end
-end
-
 
 -- change to opened when selected
 local orig_OpenPasture_OnSelected = OpenPasture.OnSelected

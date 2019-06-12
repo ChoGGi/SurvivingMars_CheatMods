@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	},
 	"description", [[Flags, Coats of Arms, Emblems, etc...
 43 different logos in all.
-If you're on the other side of the fence, see my sister mod Commie Mars Logos.
+If you're on the other side of the fence, see my sister mod [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1502077662]Commie Mars Logos[/url].
 
 From Me with love.
 

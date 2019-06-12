@@ -18,7 +18,7 @@ end
 TestSound("Object MOXIE Loop")
 ]]
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	-- if you have ecm use OpenExamine(SoundPreset), to see the object properties
 	-- or grab the decompiled lua files from my discord channel and open CommonLua\Classes\Sounds\Sounds.lua
 	-- Data\SoundPreset.lua, and Lua\Config\__SoundTypes.lua

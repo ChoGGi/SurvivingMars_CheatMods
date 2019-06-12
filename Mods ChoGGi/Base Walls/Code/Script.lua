@@ -709,9 +709,9 @@ function OnMsg.ClassesPostprocess()
 
 		end
 	end
-end
+--~ end
 
-function OnMsg.ClassesBuilt()
+--~ function OnMsg.ClassesBuilt()
 
 	OBaseWallClass = ChoGGi_BaseWallClass
 

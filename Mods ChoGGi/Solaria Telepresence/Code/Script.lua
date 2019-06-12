@@ -355,9 +355,9 @@ Telepresence control may take up to a shift to propagate to controlled building.
 		}),
 	})
 
-end -- ClassesPostprocess
+--~ end -- ClassesPostprocess
 
-function OnMsg.ClassesBuilt()
+--~ function OnMsg.ClassesBuilt()
 	local XTemplates = XTemplates
 	local AddXTemplate = ChoGGi.ComFuncs.AddXTemplate
 	AddXTemplate(XTemplates.sectionWorkplace, "SolariaTelepresence_sectionWorkplace1", nil, {
@@ -474,7 +474,7 @@ Right click in list to view (closes menu).]])
 		return ret
 	end -- ConstructionController:UpdateConstructionStatuses
 
-end -- ClassesBuilt
+end
 
 local function StartupCode()
 	-- store amount of controlled buildings for toggling visiblity of "All Attached Buildings" button

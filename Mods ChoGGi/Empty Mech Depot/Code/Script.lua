@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	local Strings = ChoGGi.Strings
 
 	-- list controlled buildings

@@ -38,17 +38,6 @@ local function NameSort(a, b)
 	return CmpLower(a.name, b.name)
 end
 
-function OnMsg.ClassesBuilt()
-	local bc = BuildCategories
-	if not table.find(bc, "id", "LandscapeTextures_ChoGGi") then
-		bc[#bc+1] = {
-			id = "LandscapeTextures_ChoGGi",
-			name = T(12400, "Change Surface"),
-			image = "UI/Icons/Buildings/terrain.tga",
-		}
-	end
-end
-
 function OnMsg.ClassesPostprocess()
 	local TerrainTextures = TerrainTextures
 
@@ -202,4 +191,15 @@ You can build this if you want it won't hurt anything.]],
 		})
 	end
 
+--~ end
+
+--~ function OnMsg.ClassesBuilt()
+	local bc = BuildCategories
+	if not table.find(bc, "id", "LandscapeTextures_ChoGGi") then
+		bc[#bc+1] = {
+			id = "LandscapeTextures_ChoGGi",
+			name = T(12400, "Change Surface"),
+			image = "UI/Icons/Buildings/terrain.tga",
+		}
+	end
 end

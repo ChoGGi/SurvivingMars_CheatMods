@@ -22,7 +22,7 @@ function OnMsg.SelectionRemoved()
 	apply_to_all = false
 end
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	local dome = XTemplates.sectionDome[1]
 	-- check for and remove existing template
 	ChoGGi.ComFuncs.RemoveXTemplateSections(dome, "ChoGGi_Template_DomeLimitBirths")

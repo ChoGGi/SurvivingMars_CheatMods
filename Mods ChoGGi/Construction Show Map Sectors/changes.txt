@@ -1,3 +1,7 @@
+v0.5
+Fix for saves where it wasn't showing up.
+Lowered opacity of green squares.
+
 v0.4
 Hopefully fixes the SetEnumFlags error in the log.
 

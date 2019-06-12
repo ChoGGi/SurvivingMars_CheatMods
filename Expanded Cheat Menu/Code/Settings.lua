@@ -367,23 +367,3 @@ end
 if not blacklist and UserSettings.WriteLogs then
 	ChoGGi.ComFuncs.WriteLogs_Toggle(UserSettings.WriteLogs)
 end
-
--- CLEAN UP
-
--- remove it once n fer all (brain fart from ShowScanAndMapOptions)
-UserSettings.DeepScanAvailable = nil
-
--- i never used it...
-if UserSettings._VERSION then
-	UserSettings._VERSION = nil
-end
-
--- removed
-if UserSettings.LightmodelCustom then
-	UserSettings.LightmodelCustom = nil
-end
-
--- could've been from when i used encyclopedia_id for this?
-if UserSettings.BuildingSettings[""] then
-	UserSettings.BuildingSettings[""] = nil
-end

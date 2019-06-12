@@ -9,9 +9,9 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"title", "Stop Current Disasters v0.4",
 	"title", "Stop Current Disasters",
-	"version", 6,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 7,
 	"saved", 0,
 	"id", "ChoGGi_StopCurrentDisasters",
 	"author", "ChoGGi",
@@ -22,8 +22,9 @@ return PlaceObj("ModDef", {
 	},
 	"image", "Preview.png",
 	"lua_revision", 245618,
-	"description", [[Stops any running disasters (duststorms, coldwaves, and current meteors/dustdevil) when you load a save (you don't need to leave it enabled afterwards).
-
+	"has_options", true,
+	"description", [[Stops any running disasters when you load a save.
+Includes mod option to disable mod.
 
 
 Included in Expanded Cheat Menu.]],

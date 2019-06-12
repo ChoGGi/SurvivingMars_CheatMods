@@ -21,7 +21,7 @@ local function SwapEntity(template)
 	template.palette5_color3 ="inside_accent_housing"
 end
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	SwapEntity(BuildingTemplates.Apartments)
 	SwapEntity(ClassTemplates.Building.Apartments)
 end

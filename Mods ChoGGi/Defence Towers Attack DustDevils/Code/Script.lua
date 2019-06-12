@@ -1,28 +1,26 @@
 -- See LICENSE for terms
 
 -- unlock the tech at start
-function OnMsg.CityStart()
+local function Startup()
 	UnlockBuilding("DefenceTower")
 end
 
-function OnMsg.LoadGame()
-	UnlockBuilding("DefenceTower")
-end
+OnMsg.CityStart = Startup
+OnMsg.LoadGame = Startup
 
-local next, pairs = next, pairs
-local IsValid = IsValid
-local IsValidThread = IsValidThread
-local CreateRealTimeThread = CreateRealTimeThread
-local PlayFX = PlayFX
-local PlaySound = PlaySound
-local GetSoundDuration = GetSoundDuration
-local Sleep = Sleep
+--~ local next, pairs = next, pairs
+--~ local IsValid = IsValid
+--~ local IsValidThread = IsValidThread
+--~ local CreateRealTimeThread = CreateRealTimeThread
+--~ local PlayFX = PlayFX
+--~ local PlaySound = PlaySound
+--~ local GetSoundDuration = GetSoundDuration
+--~ local Sleep = Sleep
+
+-- list of devil handles we're attacking
+local devils = {}
 
 function OnMsg.ClassesBuilt()
-
-	-- list of devil handles we're attacking
-	local devils = {}
-
 	-- replace orig func with mine
 	local orig_DefenceTower_DefenceTick = DefenceTower.DefenceTick
 	function DefenceTower:DefenceTick(...)

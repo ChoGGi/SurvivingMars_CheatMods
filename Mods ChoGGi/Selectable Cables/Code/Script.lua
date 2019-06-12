@@ -17,7 +17,7 @@ function ElectricityGridElement:OnSelected()
 	end
 end
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 
 	local XTemplates, PlaceObj = XTemplates, PlaceObj
 

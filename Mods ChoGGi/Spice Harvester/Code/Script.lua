@@ -195,9 +195,9 @@ function OnMsg.ClassesPostprocess()
 		"prio_button", false,
 		"entity", "PumpStationDemo",
 	})
-end --ClassesPostprocess
+--~ end --ClassesPostprocess
 
-function OnMsg.ClassesBuilt()
+--~ function OnMsg.ClassesBuilt()
 	local orig_Attach = Melanger.Attach
 	function Melanger:Attach(obj, ...)
 		local ret = orig_Attach(self, obj, ...)
@@ -222,14 +222,11 @@ function OnMsg.ClassesBuilt()
 
 	ChoGGi.ComFuncs.AddXTemplate(XTemplates.ipAttackRover[1], "Melanger_Destroy", nil, {
 
---~ 	ChoGGi.ComFuncs.AddXTemplate("Melanger_Destroy", "ipAttackRover", {
 		__context_of_kind = "Melanger",
 		Icon = "UI/Icons/Sections/resource_no_accept.tga",
 		Title = [[Destroy]],
 		RolloverTitle = [[Destroy]],
 		RolloverText = [[Remove this harvester.]],
---~ 		OnContextUpdate = function(self, context)
---~ 		end,
 		func = function(self, context)
 			---
 			local function CallBackFunc(answer)
@@ -264,4 +261,4 @@ function OnMsg.ClassesBuilt()
 		end,
 	})
 
-end -- ClassesBuilt
+end

@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	ChoGGi.ComFuncs.AddXTemplate("ShowAmountPerRareOnRockets", "customSupplyRocket", {
 		Icon = "UI/Icons/res_precious_metals.tga",
 		RolloverText = [[Amount received per rare/precious exported.]],

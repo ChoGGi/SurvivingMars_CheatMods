@@ -6,7 +6,7 @@ local DroneLoadMediumThreshold = const.DroneLoadMediumThreshold
 
 local white, purple, green, orange, red = white, purple, green, orange, red
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	local orig_UpdateHeavyLoadNotification = DroneHub.UpdateHeavyLoadNotification
 	function DroneHub:UpdateHeavyLoadNotification(...)
 

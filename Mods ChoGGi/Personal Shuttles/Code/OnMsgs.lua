@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local IsKindOf = IsKindOf
+local IsValid = IsValid
 
 local function StartupCode()
 	local UICity = UICity
@@ -32,7 +33,6 @@ OnMsg.LoadGame = StartupCode
 
 function OnMsg.NewDay() -- NewSol
 	-- clean up old handles
-	local IsValid = IsValid
 	local HandleToObject = HandleToObject
 	local threads = UICity.PersonalShuttles.shuttle_threads
 	if next(threads) then
@@ -105,7 +105,7 @@ local icon_str = CurrentModPath .. "UI/shuttle_"
 local carried_str = "Carried: %s"
 
 -- add all our buttons to the selection panel
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 
 	local AddXTemplate = ChoGGi.ComFuncs.AddXTemplate
 	local RetName = ChoGGi.ComFuncs.RetName

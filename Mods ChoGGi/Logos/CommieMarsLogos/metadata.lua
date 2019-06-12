@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	},
 	"description", [[Flags, Coats of Arms, Emblems, etc...
 94 different logos in all (and you thought one Space Communism logo was enough).
-If you're on the other side of the fence, see my sister mod Hakenkreuz Logos.
+If you're on the other side of the fence, see my sister mod [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1756589972]Hakenkreuz Logos[/url].
 
 From Marx with love.
 

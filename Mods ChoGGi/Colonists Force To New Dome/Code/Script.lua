@@ -79,7 +79,7 @@ Living Spaces: %s]]
 
 end
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	local XTemplates = XTemplates
 
 	-- old version cleanup

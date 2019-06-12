@@ -10,13 +10,13 @@ DefineClass("ModOptions_ChoGGi_ConstructionShowDustGrid", {
 			name = "Show Grids",
 		},
 		{
-			default = false,
+			default = true,
 			editor = "bool",
 			id = "ShowConSites",
 			name = "Show Construction Site Grids",
 		},
 		{
-			default = 0,
+			default = 25,
 			editor = "number",
 			id = "DistFromCursor",
 			max = 100,

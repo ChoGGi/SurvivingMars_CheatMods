@@ -58,7 +58,7 @@ function Drone:ChangeSkin(skin, palette)
 end
 
 -- add button to selection panels
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	local Translate = ChoGGi.ComFuncs.Translate
 	local Strings = ChoGGi.Strings
 

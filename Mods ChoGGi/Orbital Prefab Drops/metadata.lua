@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Orbital Prefab Drops v0.5",
 	"title", "Orbital Prefab Drops",
-	"version", 5,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 7,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_OrbitalPrefabDrops",
@@ -23,11 +23,7 @@ Mod Options:
 Inside/Outside Buildings: If you don't want them being dropped off inside (or outside).
 Prefab Only: Only rocket drop prefabs (or all buildings depending on above options).
 Dome Crack: If the drop is in a dome, it'll crack the glass.
-Model Type: 1 = supply pod, 2 = old black hex, 3 = arc pod (Space Race DLC).
+Model Type: 1 = supply pod, 2 = old black hex, 3 = arc pod, 4 = drop pod (3/4 Space Race DLC).
 
-Defaults are PrefabOnly = true, Outside = true, Inside = false, DomeCrack = true, ModelType = 1
-
-
-Known Issues:
-Landing doesn't actually cause any dust, it probably should...]],
+Defaults are PrefabOnly = true, Outside = true, Inside = false, DomeCrack = true, ModelType = 1]],
 })

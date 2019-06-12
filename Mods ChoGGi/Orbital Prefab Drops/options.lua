@@ -7,10 +7,10 @@ DefineClass("ModOptions_ChoGGi_OrbitalPrefabDrops", {
 			default = 1,
 			editor = "number",
 			id = "ModelType",
-			max = 3,
+			max = 4,
 			min = 1,
 			name = "Model Type",
-			desc = "1 = supply pod, 2 = old black hex, 3 = arc pod (Space Race DLC).",
+			desc = "1 = supply pod, 2 = old black hex, 3 = arc pod, 4 = drop pod (3/4 Space Race DLC).",
 		},
 		{
 			default = true,

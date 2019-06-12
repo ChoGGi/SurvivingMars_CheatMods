@@ -1,4 +1,4 @@
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	local bt = BuildingTemplates
 	bt.FungalFarm.production_per_day1 = 15000
 	bt.FungalFarm.construction_cost_Concrete = 1500

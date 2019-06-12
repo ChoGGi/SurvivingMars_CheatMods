@@ -3,7 +3,7 @@
 
 -- thanks to a "modder" removing objects I get to wrap all of these in ifs...
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	local bt = BuildingTemplates
 
 	if bt.ArtWorkshop then

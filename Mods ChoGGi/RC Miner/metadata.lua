@@ -9,9 +9,9 @@ return PlaceObj("ModDef", {
 	},
 --~ 	 "title", "RC Miner v1.8",
 	"title", "RC Miner",
-	"version", 19,
-	"version_major", 1,
-	"version_minor", 9,
+	"version", 20,
+	"version_major", 2,
+	"version_minor", 0,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_PortableMiner",
@@ -26,8 +26,6 @@ return PlaceObj("ModDef", {
 	"description", [[It's a rover that mines, tell it where to go and if there's a resource (Metals/Concrete) close by it'll start mining it.
 Supports the Auto-mode added in Sagan (boosts the amount stored per stockpile when enabled).
 Use mod options to tweak the settings.
-
-Uses the Attack Rover model (check script.lua to change it to something else).
 
 
 

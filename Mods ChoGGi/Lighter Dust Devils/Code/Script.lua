@@ -5,9 +5,13 @@ function OnMsg.ClassesBuilt()
 	local g_Classes = g_Classes
 
 	local function PaintItBlack(name)
-		local orig_func = g_Classes[name].StartFX
+		local cls = g_Classes[name]
+		if not cls then
+			return
+		end
+		local orig_func = cls.StartFX
 
-		g_Classes[name].StartFX = function(self)
+		cls.StartFX = function(self)
 			orig_func(self)
 			self:GetAttaches()[1]:SetColorModifier(-1)
 
@@ -21,7 +25,6 @@ function OnMsg.ClassesBuilt()
 				end
 			end
 		end
-
 	end
 
 	PaintItBlack("DustDevil1")

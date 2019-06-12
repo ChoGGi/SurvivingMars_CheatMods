@@ -71,7 +71,7 @@ function School:GetTrainedRollover()
 end
 
 -- add a rollover to the lifetime area
-local function OnMsgXTemplates()
+function OnMsg.ClassesPostprocess()
 	local xt = XTemplates.sectionTraits[1]
 	local idx = table.find(xt, "class", "XTemplateWindow")
 	if not idx then
@@ -91,5 +91,3 @@ local function OnMsgXTemplates()
 		end
 	end
 end
-OnMsg.XTemplatesLoaded = OnMsgXTemplates
-OnMsg.ClassesBuilt = OnMsgXTemplates

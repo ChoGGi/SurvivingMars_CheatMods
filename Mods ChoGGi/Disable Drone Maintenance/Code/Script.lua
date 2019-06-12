@@ -32,7 +32,7 @@ local function ToggleMain(obj)
 	end
 end
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	local XTemplates = XTemplates
 
 	-- old version cleanup

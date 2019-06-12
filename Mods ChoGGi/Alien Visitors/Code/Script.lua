@@ -283,7 +283,7 @@ function OnMsg.SaveGame()
 	end
 end
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	-- added to stuff spawned with object spawner
 	if XTemplates.ipChoGGi_Alien then
 		XTemplates.ipChoGGi_Alien:delete()

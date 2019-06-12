@@ -4,7 +4,7 @@ local FuckingDrones = ChoGGi.ComFuncs.FuckingDrones
 local SetConstsG = ChoGGi.ComFuncs.SetConstsG
 local UpdateDroneResourceUnits = UpdateDroneResourceUnits
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 
 	local orig_SingleResourceProducer_Produce = SingleResourceProducer.Produce
 	function SingleResourceProducer:Produce(...)

@@ -1,67 +1,43 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_OrbitalPrefabDrops"
-local mod = Mods[mod_id]
-local mod_PrefabOnly = mod.options and mod.options.PrefabOnly or true
-local mod_Outside = mod.options and mod.options.Outside or true
-local mod_Inside = mod.options and mod.options.Inside or false
-local mod_DomeCrack = mod.options and mod.options.DomeCrack or true
-local mod_ModelType = mod.options and mod.options.ModelType or 1
+local options
+local mod_PrefabOnly
+local mod_Outside
+local mod_Inside
+local mod_DomeCrack
+local mod_ModelType
+
+-- fired when settings are changed and new/load
+local function ModOptions()
+	mod_PrefabOnly = options.PrefabOnly
+	mod_Outside = options.Outside
+	mod_Inside = options.Inside
+	mod_DomeCrack = options.DomeCrack
+	mod_ModelType = options.ModelType
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_OrbitalPrefabDrops" then
 		return
 	end
-
-	mod_PrefabOnly = mod.options.PrefabOnly
-	mod_Outside = mod.options.Outside
-	mod_Inside = mod.options.Inside
-	mod_DomeCrack = mod.options.DomeCrack
-	mod_ModelType = mod.options.ModelType
-	-- not sure if you can pass min/max onto mod options
-	if not g_AvailableDlc.gagarin and mod_ModelType == 3 then
-		mod.options.ModelType = 2
-		mod_ModelType = 2
-	end
+	ModOptions()
 end
 
--- for some reason mod options aren't retrieved before this script is loaded...
-local function StartupCode()
-	mod_PrefabOnly = mod.options.PrefabOnly
-	mod_Outside = mod.options.Outside
-	mod_Inside = mod.options.Inside
-	mod_DomeCrack = mod.options.DomeCrack
-	mod_ModelType = mod.options.ModelType
-	-- not sure if you can pass min/max onto mod options
-	if not g_AvailableDlc.gagarin and mod_ModelType == 3 then
-		mod.options.ModelType = 2
-		mod_ModelType = 2
-	end
+local models
+if g_AvailableDlc.gagarin then
+	models = {"SupplyPod", "Hex1_Placeholder", "ArcPod", "DropPod"}
+else
+	models = {"SupplyPod", "Hex1_Placeholder", "SupplyPod", "SupplyPod"}
 end
-
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
-
-local models = {"SupplyPod", "Hex1_Placeholder", "ArcPod"}
 
 local Sleep = Sleep
-local PlayFX = PlayFX
-local IsValid = IsValid
-local CreateGameTimeThread = CreateGameTimeThread
-local SetRollPitchYaw = SetRollPitchYaw
-local AsyncRand = AsyncRand
-local atan = atan
-local point = point
-local GetDomeAtHex = GetDomeAtHex
-local WorldToHex = WorldToHex
-
-local BaseMeteor = BaseMeteor
-local pt1500 = point(0, 0, 1500)
-local times36061 = (360*60)+1
-local times18060 = 180*60
--- from AttackRover
-local final_speed = 10*guim
 
 local function DecalRemoval(land_decal)
 	local delta = const.DayDuration / 20
@@ -83,7 +59,7 @@ local function YamatoHasshin(site)
 	-- stick the site underground by it's height then make it rise from the dead
 	local site_height = point(0, 0, site:GetObjectBBox():sizez())
 	if not site_height:z() then
-		site_height = pt1500
+		site_height = point(0, 0, 1500)
 	end
 
 	-- hide the actual site for now
@@ -94,7 +70,6 @@ local function YamatoHasshin(site)
 	-- let people know something is happening
 	local blinky = PlaceParticles("Rocket_Pos")
 	blinky:SetColorModifier(green)
---~ 	blinky:SetScale(100)
 	blinky:SetPos(spawn_pos)
 
 	local ar = AttackRover
@@ -116,6 +91,19 @@ local function YamatoHasshin(site)
 	-- pretty much a copy n paste of AttackRover:Spawn()... okay not anymore, but I swear it was
 	CreateGameTimeThread(function()
 
+--~ local PlayFX = PlayFX
+--~ local IsValid = IsValid
+--~ local SetRollPitchYaw = SetRollPitchYaw
+--~ local AsyncRand = AsyncRand
+--~ local Max = Max
+--~ local atan = atan
+--~ local point = point
+--~ local GetDomeAtHex = GetDomeAtHex
+--~ local WorldToHex = WorldToHex
+--~ local MulDivRound = MulDivRound
+--~ local terrain_GetIntersection = terrain.GetIntersection
+
+
 		-- get dir and angle of container
 		local dir = point(city:Random(-4096, 4096), city:Random(-4096, 4096))
 		local angle = city:Random(ar.spawn_min_angle/2, ar.spawn_max_angle/2)
@@ -127,13 +115,12 @@ local function YamatoHasshin(site)
 			dir = SetLen(dir:SetZ(MulDivRound(dir:Len2D(), s, c)), flight_dist)
 		end
 
-		local pos = spawn_pos + dir
-		spawn_pos = terrain.GetIntersection(pos, spawn_pos)
+		local starting_pos = spawn_pos + dir
+		spawn_pos = terrain.GetIntersection(starting_pos, spawn_pos)
 		local hover_pos = spawn_pos + site_height
 
---~ 		local pod = PlaceObject("Hex1_Placeholder")
-		local pod = PlaceObject("InvisibleObject")
-		pod.landing_particle = blinky
+		local pod = InvisibleObject:new()
+--~ 		ex(pod)
 
 		pod:ChangeEntity(models[mod_ModelType])
 		pod:SetColorizationMaterial(1, -12845056, 0, 128)
@@ -142,24 +129,31 @@ local function YamatoHasshin(site)
 
 		pod.fx_actor_base_class = "FXRocket"
 		pod.fx_actor_class = "SupplyRocket"
-		pod:SetPos(pos)
+		pod:SetPos(starting_pos)
 
-		flight_dist = spawn_pos:Dist(pos)
+		flight_dist = spawn_pos:Dist(starting_pos)
 		local flight_speed = ar.spawn_flight_speed - city:Random(2500, 10000)
 		local total_time = MulDivRound(1000, flight_dist, flight_speed)
 		local land_time = MulDivRound(1000, ar.spawn_land_dist, flight_speed)
 		local pitch = -atan(dir:Len2D(), dir:z())
-		local yaw = times18060 + atan(dir:y(), dir:x())
+		local yaw = 180*60 + atan(dir:y(), dir:x())
 		SetRollPitchYaw(pod, 0, pitch, yaw, 0)
 
 		pod:SetPos(hover_pos, total_time)
 		PlayFX("RocketLand", "start", pod)
 		Sleep(total_time - land_time)
 
+		-- StartDustThread needs these
+		pod.dust_radius = sr.dust_radius / 2
+		pod.dust_tick = sr.dust_tick
+		pod.total_dust_time = sr.total_dust_time
+		pod.total_land_dust_amount = sr.total_land_dust_amount
+		sr.StartDustThread(pod, pod.total_land_dust_amount, Max(0, total_time - pod.total_dust_time))
+
 		-- mid-way
 		PlayFX("RocketLand", "pre-hit-ground2", pod, false, spawn_pos)
 		local accel
-		accel, land_time = pod:GetAccelerationAndTime(spawn_pos, final_speed, flight_speed)
+		accel, land_time = pod:GetAccelerationAndTime(spawn_pos, 10*guim, flight_speed)
 		pod:SetAcceleration(accel)
 		pod:SetPos(hover_pos, land_time)
 		SetRollPitchYaw(pod, 0, 0, yaw, land_time)
@@ -173,15 +167,16 @@ local function YamatoHasshin(site)
 		if mod_DomeCrack then
 			local dome = GetDomeAtHex(WorldToHex(spawn_pos))
 			if dome then
-				local _, dome_pt, dome_normal = BaseMeteor.HitsDome(dome, spawn_pos)
-				BaseMeteor.CrackDome(dome, dome, dome_pt, dome_normal)
+				local bm = BaseMeteor
+				local _, dome_pt, dome_normal = bm.HitsDome(dome, spawn_pos)
+				bm.CrackDome(dome, dome, dome_pt, dome_normal)
 			end
 		end
 		Sleep(quarter)
 
 		local land_decal = PlaceObject(ar.land_decal_name)
 		land_decal:SetPos(spawn_pos)
-		land_decal:SetAngle(AsyncRand(times36061))
+		land_decal:SetAngle(AsyncRand((360*60)+1))
 		land_decal:SetScale(40 + AsyncRand(50))
 		CreateGameTimeThread(DecalRemoval, land_decal)
 
@@ -217,12 +212,12 @@ local function YamatoHasshin(site)
 		PlayFX("RocketEngine", "end", pod)
 
 		PlayFX("RocketLaunch", "start", pod)
-		local a, t = pod:GetAccelerationAndTime(pos, flight_speed, 0)
-		SetRollPitchYaw(pod, 0, pitch, yaw, t/4)
-		pod:SetAcceleration(a)
-		pod:SetPos(pos, t)
+		local accel, time = pod:GetAccelerationAndTime(starting_pos, flight_speed, 1)
+		SetRollPitchYaw(pod, 0, pitch, yaw, time/4)
+		pod:SetAcceleration(accel)
+		pod:SetPos(starting_pos, time)
+		Sleep(time)
 
-		Sleep(t)
 		PlayFX("RocketLaunch", "end", pod)
 		-- bye bye pod
 		DoneObject(pod)

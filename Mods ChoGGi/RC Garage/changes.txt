@@ -1,3 +1,6 @@
+v0.5
+Possible fix for missing selection panel items.
+
 v0.4
 Missing Rovers story fix.
 

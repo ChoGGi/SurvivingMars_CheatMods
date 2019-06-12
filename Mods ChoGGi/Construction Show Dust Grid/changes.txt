@@ -1,3 +1,6 @@
+v0.7
+Turned on dist/con site options by default.
+
 v0.6
 Removed bandaid, if you have stuck grids: Select something from the build menu then cancel placing it.
 

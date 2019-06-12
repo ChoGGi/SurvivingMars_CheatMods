@@ -1,4 +1,4 @@
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	PlaceObj('AmbientLife', {
 		group = "Work",
 		id = "WorkSolaria",

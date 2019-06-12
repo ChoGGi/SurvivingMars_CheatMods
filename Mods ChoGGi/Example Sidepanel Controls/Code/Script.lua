@@ -12,7 +12,7 @@ local function RemoveXTemplateSections(list, name)
 	end
 end
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 
 	RemoveXTemplateSections(XTemplates.sectionWorkplace, "SOMETHINGUNIQUE1")
 	-- this adds a button to all workplaces that changes depending on Object.working (a building that works...)

@@ -39,43 +39,43 @@ function OnMsg.ClassesPostprocess()
 		})
 	end
 
-end --ClassesPostprocess
+--~ end --ClassesPostprocess
 
-function OnMsg.ClassesBuilt()
+--~ function OnMsg.ClassesBuilt()
 
---needed someplace to override it, and roam only happens after it's done what it needs to do
-function AttackRover2:Roam()
-	local city = self.city or UICity
-	city:RemoveFromLabel("HostileAttackRovers", self)
-	city:AddToLabel("Rover", self)
-	self.reclaimed = true
-	self.affected_by_no_battery_tech = true
-	self.palettes = {
-		"AttackRoverRed",
-		--"AttackRoverBlue",
-	}
-	SetPaletteFromClassMember(self)
-	CommandObject.SetCommand(self, "Idle")
-end
+	-- needed someplace to override it, and roam only happens after it's done what it needs to do
+	function AttackRover2:Roam()
+		local city = self.city or UICity
+		city:RemoveFromLabel("HostileAttackRovers", self)
+		city:AddToLabel("Rover", self)
+		self.reclaimed = true
+		self.affected_by_no_battery_tech = true
+		self.palettes = {
+			"AttackRoverRed",
+			--"AttackRoverBlue",
+		}
+		SetPaletteFromClassMember(self)
+		CommandObject.SetCommand(self, "Idle")
+	end
 
-function AttackRover2:Repair()
-	self.battery_current = self.battery_max
-	local city = self.city or UICity
-	--self:DisconnectFromCommandCenters()
-	self.current_health = self.max_health
-	self.malfunction_idle_state = nil
-	self:SetState("idle")
-	self.is_repair_request_initialized = false
+	function AttackRover2:Repair()
+		self.battery_current = self.battery_max
+		local city = self.city or UICity
+		--self:DisconnectFromCommandCenters()
+		self.current_health = self.max_health
+		self.malfunction_idle_state = nil
+		self:SetState("idle")
+		self.is_repair_request_initialized = false
 
-	self.reclaimed = true
-	self.affected_by_no_battery_tech = true
-	self.palettes = {"AttackRoverRed"}
-	SetPaletteFromClassMember(self)
-	city:AddToLabel("Rover", self)
-	CommandObject.SetCommand(self, "Idle")
+		self.reclaimed = true
+		self.affected_by_no_battery_tech = true
+		self.palettes = {"AttackRoverRed"}
+		SetPaletteFromClassMember(self)
+		city:AddToLabel("Rover", self)
+		CommandObject.SetCommand(self, "Idle")
 
-	Msg("AttackRoverRepaired", self)
-	ObjModified(self)
-end
+		Msg("AttackRoverRepaired", self)
+		ObjModified(self)
+	end
 
 end

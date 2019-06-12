@@ -7,7 +7,7 @@ local maintenance_resource_amount = 5 * r
 local electricity_consumption = 10 * r
 local capacity = 125
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	local a = BuildingTemplates.Apartments
 	-- update values
 	a.construction_cost_Concrete = construction_cost_Concrete

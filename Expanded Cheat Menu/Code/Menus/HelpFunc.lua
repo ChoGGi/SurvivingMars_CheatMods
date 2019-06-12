@@ -547,6 +547,77 @@ This will always apply if uploading to Paradox."]]] .. "\n\n" .. Strings[3025359
 	end
 end -- do
 
+function ChoGGi.MenuFuncs.RetHardwareInfo()
+	local mem = {}
+	local cm = 0
+
+	local memory_info = GetMemoryInfo()
+	for key, value in pairs(memory_info) do
+		cm = cm + 1
+		mem[cm] = key .. ": " .. value .. "\n"
+	end
+
+	local hw = {}
+	local chw = 0
+	local hardware_info = GetHardwareInfo(0)
+	for key, value in pairs(hardware_info) do
+		if key == "gpu" then
+			chw = chw + 1
+			hw[chw] = key .. ": " .. GetGpuDescription() .. "\n"
+		else
+			chw = chw + 1
+			hw[chw] = key .. ": " .. value .. "\n"
+		end
+	end
+	table_sort(hw)
+	chw = chw + 1
+	hw[chw] = "\n"
+
+	return string.format([[%s:
+GetHardwareInfo(0): %s
+
+GetMemoryInfo(): %s
+AdapterMode(0): %s
+GetMachineID(): %s
+GetSupportedMSAAModes(): %s
+GetSupportedShaderModel(): %s
+GetMaxStrIDMemoryStats(): %s
+
+GameObjectStats(): %s
+
+GetCWD(): %s
+GetExecDirectory(): %s
+GetExecName(): %s
+GetDate(): %s
+GetOSName(): %s
+GetOSVersion(): %s
+GetUsername(): %s
+GetSystemDPI(): %s
+GetComputerName(): %s
+
+
+]],
+		Translate(5568--[[Stats]]),
+		TableConcat(hw),
+		TableConcat(mem),
+		TableConcat({GetAdapterMode(0)}, " "),
+		GetMachineID(),
+		TableConcat(GetSupportedMSAAModes(), " "):gsub("HR::", ""),
+		GetSupportedShaderModel(),
+		GetMaxStrIDMemoryStats(),
+		GameObjectStats(),
+		GetCWD(),
+		GetExecDirectory(),
+		GetExecName(),
+		GetDate(),
+		GetOSName(),
+		GetOSVersion(),
+		GetUsername(),
+		GetSystemDPI(),
+		GetComputerName()
+	)
+end
+
 function ChoGGi.MenuFuncs.OpenUrl(action)
 	OpenUrl(action.setting_url)
 end

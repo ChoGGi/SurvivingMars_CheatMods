@@ -64,7 +64,7 @@ function OnMsg.RocketLanded(obj)
 	end
 end
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	-- add button to colonists
 	ChoGGi.ComFuncs.AddXTemplate(XTemplates.customSupplyRocket[1], "ChangeRocketPosition", nil, {
 		RolloverText = T(0, [[<left_click> Land this rocket somewhere else.]]),

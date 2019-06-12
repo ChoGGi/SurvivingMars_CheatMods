@@ -1,6 +1,10 @@
 -- See LICENSE for terms
 
-function OnMsg.ClassesBuilt()
-	local bt = BuildingTemplates.ScienceInstitute
-	bt.max_workers = bt.max_workers * 2
+local value
+function OnMsg.ClassesPostprocess()
+	if not value then
+		local bt = BuildingTemplates.ScienceInstitute
+		value = bt.max_workers * 2
+		bt.max_workers = value
+	end
 end

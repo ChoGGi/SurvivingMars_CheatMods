@@ -31,7 +31,7 @@ function Colonist:SetResidence(home, ...)
 	return orig_Colonist_SetResidence(self, home, ...)
 end
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	local IsValid = IsValid
 	local ObjModified = ObjModified
 

@@ -79,122 +79,6 @@ DefineClass.ChoGGi_LevelPrefabBuilding = {
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local PlaceObj = PlaceObj
-local function OnMsgXTemplates()
-	-- added to stuff spawned with object spawner
-	if XTemplates.ipChoGGi_LevelPrefabBuilding then
-		XTemplates.ipChoGGi_LevelPrefabBuilding:delete()
-	end
-
-	PlaceObj("XTemplate", {
-		group = "Infopanel Sections",
-		id = "ipChoGGi_LevelPrefabBuilding",
-		PlaceObj("XTemplateTemplate", {
-			"__context_of_kind", "ChoGGi_LevelPrefabBuilding",
-			"__template", "Infopanel",
-		}, {
-
-			PlaceObj("XTemplateTemplate", {
-				"__template", "InfopanelButton",
-				"RolloverTitle", T(1000081, "Scale"),
-				"RolloverText", "Scale +",
-				"RolloverHint", T(608042494285, "<left_click> Activate"),
-				"OnPress", function(self)
-					-- speeds it up if it's a large scale
-					SuspendPassEdits("ChoGGi_LevelPrefabBuilding.Scale")
-					local c = self.context
-					c:SetScale(c:GetScale()+25)
-					ResumePassEdits("ChoGGi_LevelPrefabBuilding.Scale")
-				end,
-				"Icon", "UI/Icons/IPButtons/drone_assemble.tga",
-			}),
-			PlaceObj("XTemplateTemplate", {
-				"__template", "InfopanelButton",
-				"RolloverTitle", T(1000081, "Scale"),
-				"RolloverText", "Scale -",
-				"RolloverHint", T(608042494285, "<left_click> Activate"),
-				"OnPress", function(self)
-					SuspendPassEdits("ChoGGi_LevelPrefabBuilding.Scale")
-					local c = self.context
-					c:SetScale(c:GetScale()-25)
-					ResumePassEdits("ChoGGi_LevelPrefabBuilding.Scale")
-				end,
-				"Icon", "UI/Icons/IPButtons/drone_dismantle.tga",
-			}),
-
-			PlaceObj("XTemplateTemplate", {
-				"__template", "InfopanelButton",
-				"RolloverTitle", T(1000077, "Rotate"),
-				"RolloverText", T(312752058553, "Rotate Building Left"),
-				"RolloverHint", T(608042494285, "<left_click> Activate"),
-				"OnPress", function(self)
-					SuspendPassEdits("ChoGGi_LevelPrefabBuilding.Rotate")
-					local c = self.context
-					c:SetAngle((c:GetAngle() or 0) + -3600)
-					ObjModified(c)
-					ResumePassEdits("ChoGGi_LevelPrefabBuilding.Rotate")
-				end,
-				"Icon", "UI/Icons/IPButtons/automated_mode_on.tga",
-			}),
-
-			PlaceObj("XTemplateTemplate", {
-				"__template", "sectionCheats",
-			}),
-
-------------------- Salvage
-			PlaceObj('XTemplateTemplate', {
-				'comment', "salvage",
-				'__context_of_kind', "Demolishable",
-				'__condition', function (parent, context) return context:ShouldShowDemolishButton() end,
-				'__template', "InfopanelButton",
-				'RolloverTitle', T(3973, --[[XTemplate ipBuilding RolloverTitle]] "Salvage"),
-				'RolloverHintGamepad', T(7657, --[[XTemplate ipBuilding RolloverHintGamepad]] "<ButtonY> Activate"),
-				'Id', "idSalvage",
-				'OnContextUpdate', function (self, context, ...)
-					local refund = context:GetRefundResources() or empty_table
-					local rollover = T(7822, "Destroy this building.")
-					if IsKindOf(context, "LandscapeConstructionSiteBase") then
-						self:SetRolloverTitle(T(12171, "Cancel Landscaping"))
-						rollover = T(12172, "Cancel this landscaping project. The terrain will remain in its current state")
-					end
-					if #refund > 0 then
-						rollover = rollover .. "<newline><newline>" .. T(7823, "<UIRefundRes> will be refunded upon salvage.")
-					end
-					self:SetRolloverText(rollover)
-					context:ToggleDemolish_Update(self)
-				end,
-				'OnPressParam', "ToggleDemolish",
-				'Icon', "UI/Icons/IPButtons/salvage_1.tga",
-			}, {
-				PlaceObj('XTemplateFunc', {
-					'name', "OnXButtonDown(self, button)",
-					'func', function (self, button)
-						if button == "ButtonY" then
-							return self:OnButtonDown(false)
-						elseif button == "ButtonX" then
-							return self:OnButtonDown(true)
-						end
-						return (button == "ButtonA") and "break"
-					end,
-				}),
-				PlaceObj('XTemplateFunc', {
-					'name', "OnXButtonUp(self, button)",
-					'func', function (self, button)
-						if button == "ButtonY" then
-							return self:OnButtonUp(false)
-						elseif button == "ButtonX" then
-							return self:OnButtonUp(true)
-						end
-						return (button == "ButtonA") and "break"
-					end,
-				}),
-				}),
-------------------- Salvage
-	}),
--------------
-	})
-end
-
-OnMsg.XTemplatesLoaded = OnMsgXTemplates
 
 local GetMaterialProperties = GetMaterialProperties
 local GetStateMaterial = GetStateMaterial
@@ -247,18 +131,6 @@ function AttachPartToObject(to, part, spot_type, ...)
 	)
 end
 
-function OnMsg.ClassesBuilt()
-	OnMsgXTemplates()
-
-	local bc = BuildCategories
-	if not table.find(bc, "id", "RockFormations_ChoGGi") then
-		bc[#bc+1] = {
-			id = "RockFormations_ChoGGi",
-			name = T(255661810896, "Rock Formations"),
-			image = "UI/Icons/Buildings/rock_formation.tga",
-		}
-	end
-end
 
 function OnMsg.ClassesPostprocess()
 	-- if entities aren't loaded then wait it out
@@ -378,6 +250,131 @@ You can build this if you want it won't hurt anything.]],
 	end
 
 
+--~ end
+
+--~ function OnMsg.ClassesBuilt()
+	-- added to stuff spawned with object spawner
+	if XTemplates.ipChoGGi_LevelPrefabBuilding then
+		XTemplates.ipChoGGi_LevelPrefabBuilding:delete()
+	end
+
+	PlaceObj("XTemplate", {
+		group = "Infopanel Sections",
+		id = "ipChoGGi_LevelPrefabBuilding",
+		PlaceObj("XTemplateTemplate", {
+			"__context_of_kind", "ChoGGi_LevelPrefabBuilding",
+			"__template", "Infopanel",
+		}, {
+
+			PlaceObj("XTemplateTemplate", {
+				"__template", "InfopanelButton",
+				"RolloverTitle", T(1000081, "Scale"),
+				"RolloverText", "Scale +",
+				"RolloverHint", T(608042494285, "<left_click> Activate"),
+				"OnPress", function(self)
+					-- speeds it up if it's a large scale
+					SuspendPassEdits("ChoGGi_LevelPrefabBuilding.Scale")
+					local c = self.context
+					c:SetScale(c:GetScale()+25)
+					ResumePassEdits("ChoGGi_LevelPrefabBuilding.Scale")
+				end,
+				"Icon", "UI/Icons/IPButtons/drone_assemble.tga",
+			}),
+			PlaceObj("XTemplateTemplate", {
+				"__template", "InfopanelButton",
+				"RolloverTitle", T(1000081, "Scale"),
+				"RolloverText", "Scale -",
+				"RolloverHint", T(608042494285, "<left_click> Activate"),
+				"OnPress", function(self)
+					SuspendPassEdits("ChoGGi_LevelPrefabBuilding.Scale")
+					local c = self.context
+					c:SetScale(c:GetScale()-25)
+					ResumePassEdits("ChoGGi_LevelPrefabBuilding.Scale")
+				end,
+				"Icon", "UI/Icons/IPButtons/drone_dismantle.tga",
+			}),
+
+			PlaceObj("XTemplateTemplate", {
+				"__template", "InfopanelButton",
+				"RolloverTitle", T(1000077, "Rotate"),
+				"RolloverText", T(312752058553, "Rotate Building Left"),
+				"RolloverHint", T(608042494285, "<left_click> Activate"),
+				"OnPress", function(self)
+					SuspendPassEdits("ChoGGi_LevelPrefabBuilding.Rotate")
+					local c = self.context
+					c:SetAngle((c:GetAngle() or 0) + -3600)
+					ObjModified(c)
+					ResumePassEdits("ChoGGi_LevelPrefabBuilding.Rotate")
+				end,
+				"Icon", "UI/Icons/IPButtons/automated_mode_on.tga",
+			}),
+
+			PlaceObj("XTemplateTemplate", {
+				"__template", "sectionCheats",
+			}),
+
+------------------- Salvage
+			PlaceObj('XTemplateTemplate', {
+				'comment', "salvage",
+				'__context_of_kind', "Demolishable",
+				'__condition', function (parent, context) return context:ShouldShowDemolishButton() end,
+				'__template', "InfopanelButton",
+				'RolloverTitle', T(3973, --[[XTemplate ipBuilding RolloverTitle]] "Salvage"),
+				'RolloverHintGamepad', T(7657, --[[XTemplate ipBuilding RolloverHintGamepad]] "<ButtonY> Activate"),
+				'Id', "idSalvage",
+				'OnContextUpdate', function (self, context, ...)
+					local refund = context:GetRefundResources() or empty_table
+					local rollover = T(7822, "Destroy this building.")
+					if IsKindOf(context, "LandscapeConstructionSiteBase") then
+						self:SetRolloverTitle(T(12171, "Cancel Landscaping"))
+						rollover = T(12172, "Cancel this landscaping project. The terrain will remain in its current state")
+					end
+					if #refund > 0 then
+						rollover = rollover .. "<newline><newline>" .. T(7823, "<UIRefundRes> will be refunded upon salvage.")
+					end
+					self:SetRolloverText(rollover)
+					context:ToggleDemolish_Update(self)
+				end,
+				'OnPressParam', "ToggleDemolish",
+				'Icon', "UI/Icons/IPButtons/salvage_1.tga",
+			}, {
+				PlaceObj('XTemplateFunc', {
+					'name', "OnXButtonDown(self, button)",
+					'func', function (self, button)
+						if button == "ButtonY" then
+							return self:OnButtonDown(false)
+						elseif button == "ButtonX" then
+							return self:OnButtonDown(true)
+						end
+						return (button == "ButtonA") and "break"
+					end,
+				}),
+				PlaceObj('XTemplateFunc', {
+					'name', "OnXButtonUp(self, button)",
+					'func', function (self, button)
+						if button == "ButtonY" then
+							return self:OnButtonUp(false)
+						elseif button == "ButtonX" then
+							return self:OnButtonUp(true)
+						end
+						return (button == "ButtonA") and "break"
+					end,
+				}),
+				}),
+------------------- Salvage
+	}),
+-------------
+	})
+
+
+	local bc = BuildCategories
+	if not table.find(bc, "id", "RockFormations_ChoGGi") then
+		bc[#bc+1] = {
+			id = "RockFormations_ChoGGi",
+			name = T(255661810896, "Rock Formations"),
+			image = "UI/Icons/Buildings/rock_formation.tga",
+		}
+	end
 end
 
 function OnMsg.ConstructionSitePlaced(site)

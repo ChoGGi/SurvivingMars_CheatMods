@@ -22,8 +22,7 @@ local function BumpAmount(self)
 	end
 end
 
-function OnMsg.ClassesBuilt()
-
+function OnMsg.ClassesPostprocess()
 	local template = PlaceObj("XTemplateTemplate", {
 		"ChoGGi_MultipleAmount", true,
 		"Id", "ChoGGi_MultipleAmount",

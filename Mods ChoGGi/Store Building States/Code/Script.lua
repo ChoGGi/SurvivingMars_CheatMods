@@ -438,7 +438,7 @@ local function BuildAddToList(dlg,obj)
 end
 
 local cls_skip = {"SupplyRocket","ExplorableObject","UniversalStorageDepot"}
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	-- hud button
 	local xt = ChoGGi.ComFuncs.RetHudButton("idRight")
 	if xt then

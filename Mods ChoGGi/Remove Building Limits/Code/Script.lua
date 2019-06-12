@@ -1,11 +1,20 @@
 -- See LICENSE for terms
 
+local options
+local function ModOptions()
+	ChoGGi.ComFuncs.SetBuildingLimits(options.RemoveBuildingLimits)
+end
+
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
+
 function OnMsg.ApplyModOptions(id)
 	if id ~= "ChoGGi_RemoveBuildingLimits" then
 		return
 	end
-
-	ChoGGi.ComFuncs.SetBuildingLimits(CurrentModOptions.RemoveBuildingLimits)
+	ModOptions()
 end
 
 

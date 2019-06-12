@@ -32,7 +32,7 @@ local function LaunchPod(victim)
 	end
 end
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	local xt = XTemplates
 	local template = xt.ipColonist[1]
 

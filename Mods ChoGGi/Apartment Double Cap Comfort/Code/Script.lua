@@ -5,7 +5,7 @@ ChoGGi_ApartmentDoubleCapComfort = false
 local capacity
 local service_comfort
 
-function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 	local a = BuildingTemplates.Apartments
 
 	-- it's called more than once

@@ -1,18 +1,6 @@
 -- See LICENSE for terms
 
-local IsValid = IsValid
 local Sleep = Sleep
-local GetPassablePointNearby = GetPassablePointNearby
-
-local table_clear = table.clear
-local table_find = table.find
-local table_remove = table.remove
-
-local TableConcat = ChoGGi.ComFuncs.TableConcat
-local PopupToggle = ChoGGi.ComFuncs.PopupToggle
-local RetName = ChoGGi.ComFuncs.RetName
-local Random = ChoGGi.ComFuncs.Random
-local InvalidPos = ChoGGi.Consts.InvalidPos
 
 local text_disabled = "Main Garage: " .. ChoGGi.ComFuncs.Translate(847439380056--[[Disabled]])
 local text_idle = "Main Garage: " .. ChoGGi.ComFuncs.Translate(6939--[[Idle]])
@@ -51,10 +39,6 @@ DefineClass.RCGarage = {
 }
 
 function RCGarage:GameInit(...)
---~ 	Building.GameInit(self, ...)
---~ 	-- from Holder class
---~ 	WaypointsObj.GameInit(self, ...)
-
 	-- add a ref to global var for easy access
 	self.stored_rovers = g_ChoGGi_RCGarageRovers
 	self.garages = g_ChoGGi_RCGarages
@@ -97,15 +81,15 @@ function RCGarage:Getui_command()
 		self.status_text = text_disabled
 	end
 
-	return TableConcat({self.status_text}, "<newline><left>")
+	return ChoGGi.ComFuncs.TableConcat({self.status_text}, "<newline><left>")
 end
 function RCGarage:GetStatusText()
-	return TableConcat({self.status_text}, "<newline><left>")
+	return ChoGGi.ComFuncs.TableConcat({self.status_text}, "<newline><left>")
 end
 
 local DustMaterialExterior = const.DustMaterialExterior
 function RCGarage:StickInGarage(unit)
-	local unit_idx = table_find(self.stored_rovers, "handle", unit.handle)
+	local unit_idx = table.find(self.stored_rovers, "handle", unit.handle)
 
 	if not IsValid(self) or unit_idx then
 		return
@@ -145,7 +129,7 @@ function RCGarage:StickInGarage(unit)
 	unit.accumulate_dust = false
 
 	-- stop holder from removing units when a garage is removed
-	table_clear(self.units)
+	table.clear(self.units)
 	unit.ChoGGi_RemHolderPos = unit.holder:GetVisualPos()
 	unit.holder = false
 end
@@ -162,9 +146,9 @@ function RCGarage:RemoveFromGarage(unit)
 	unit.ChoGGi_InGarage = nil
 	unit.accumulate_dust = true
 	-- update list
-	local unit_idx = table_find(self.stored_rovers, "handle", unit.handle)
+	local unit_idx = table.find(self.stored_rovers, "handle", unit.handle)
 	if unit_idx then
-		table_remove(self.stored_rovers, unit_idx)
+		table.remove(self.stored_rovers, unit_idx)
 	end
 
 	CreateGameTimeThread(function()
@@ -184,6 +168,7 @@ function RCGarage:RemoveFromGarage(unit)
 		end
 		-- try for rolled out pos, then saved pos from orig holder
 		local pt = unit:GetPos()
+		local InvalidPos = InvalidPos()
 		local rem = unit.ChoGGi_RemHolderPos ~= InvalidPos and unit.ChoGGi_RemHolderPos
 		-- get nearby pass area
 		unit:SetCommand("Goto", GetPassablePointNearby(pt ~= InvalidPos and pt or rem))
@@ -249,7 +234,7 @@ function RCGarage:CheckMainGarage(skip)
 			if obj ~= skip and IsValid(obj) and not obj.destroyed then
 				-- add as main and remove it's regular ref
 				main = obj
-				table_remove(self.garages, i)
+				table.remove(self.garages, i)
 				break
 			end
 		end
@@ -272,7 +257,7 @@ local function CountPower(power, list, amount)
 			end
 		else
 			-- good as any place to clean out missing objs
-			table_remove(list, i)
+			table.remove(list, i)
 		end
 	end
 	return power
@@ -350,21 +335,21 @@ function OnMsg.ClassesPostprocess()
 			"maintenance_resource_amount", 1000,
 		})
 	end
-end
+--~ end
 
-function OnMsg.ClassesBuilt()
+--~ function OnMsg.ClassesBuilt()
 	-- add some prod info to selection panel
 	local building = XTemplates.ipBuilding[1][1]
 
 	-- check for and remove existing template
-	local idx = table_find(building, "ChoGGi_Template_RCGarage", true)
+	local idx = table.find(building, "ChoGGi_Template_RCGarage", true)
 	if idx then
 		building[idx]:delete()
 		-- we need to remove for insert
-		table_remove(building, idx)
+		table.remove(building, idx)
 	else
 		-- insert above consumption
-		idx = table_find(building, "__template", "sectionConsumption")
+		idx = table.find(building, "__template", "sectionConsumption")
 	end
 
 	-- hopefully this fixes the issue for people that don't have the buttons...
@@ -453,6 +438,7 @@ function OnMsg.ClassesBuilt()
 					"func", function(self, context)
 						---
 
+						local Random = ChoGGi.ComFuncs.Random
 						local function CallBackFunc(answer)
 							if answer then
 								local rovers = g_ChoGGi_RCGarageRovers
@@ -463,7 +449,7 @@ function OnMsg.ClassesBuilt()
 									unit:SetPos(context:GetPos())
 									unit:SetCommand("Goto", GetPassablePointNearby(unit:GetPos()+point(Random(-5000, 5000), Random(-5000, 5000))))
 								end
-								table_clear(g_ChoGGi_RCGarageRovers)
+								table.clear(g_ChoGGi_RCGarageRovers)
 								context:UpdateGaragePower()
 							end
 						end
@@ -503,6 +489,7 @@ function OnMsg.ClassesBuilt()
 							return
 						end
 
+						local RetName = ChoGGi.ComFuncs.RetName
 						-- build a list of all rovers inside
 						local item_list = {}
 						local c = 0
@@ -522,7 +509,7 @@ function OnMsg.ClassesBuilt()
 						end
 
 						-- and show it
-						PopupToggle(self, "idRCGarageMenu", item_list, "left")
+						ChoGGi.ComFuncs.PopupToggle(self, "idRCGarageMenu", item_list, "left")
 
 						ObjModified(context)
 						---

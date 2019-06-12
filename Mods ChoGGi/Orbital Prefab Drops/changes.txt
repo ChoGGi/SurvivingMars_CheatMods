@@ -1,3 +1,10 @@
+v0.7
+Issues when saving/loading a game during a drop off.
+
+v0.6
+Added other pod entity from gagarin.
+Added dust to like with rockets (half the radius).
+
 v0.5
 Uses supply pod model now.
 It now takes back off after prefab is setup.
