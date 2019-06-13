@@ -3,17 +3,17 @@
 -- setting params are saved here
 g_SaveMissionProfiles = {}
 
--- local some globals
-local TableToLuaCode = TableToLuaCode
-local AsyncCompress = AsyncCompress
-local AsyncDecompress = AsyncDecompress
-local LuaCodeToTuple = LuaCodeToTuple
-local WriteModPersistentData = WriteModPersistentData
-local ReadModPersistentData = ReadModPersistentData
-local MaxModDataSize = const.MaxModDataSize
-
 local Strings = ChoGGi.Strings
-local Translate = ChoGGi.ComFuncs.Translate
+
+local function CleanGameRules(profile)
+	local GameRulesMap = GameRulesMap
+	local idGameRules = profile.idGameRules or empty_table
+	for id in pairs(idGameRules) do
+		if GameRulesMap[id].mod then
+			idGameRules[id] = nil
+		end
+	end
+end
 
 local function WriteModSettings(settings)
 	settings = settings or g_SaveMissionProfiles
@@ -27,7 +27,7 @@ local function WriteModSettings(settings)
 	end
 
 	-- too large
-	if #data > MaxModDataSize then
+	if #data > const.MaxModDataSize then
 		-- see if it'll fit now
 		err, data = AsyncCompress(lua_code, false, "zstd")
 		if err then
@@ -35,7 +35,7 @@ local function WriteModSettings(settings)
 			return
 		end
 
-		if #data > MaxModDataSize then
+		if #data > const.MaxModDataSize then
 			ChoGGi.ComFuncs.MsgWait("SaveMissionProfiles: too much data, delete some saved settings")
 			return
 		end
@@ -85,6 +85,9 @@ end
 local function SaveProfile(params)
 	local choice_str = WaitInputText("Save Profile", "Type a profile name to use.")
 	if choice_str and choice_str ~= "" then
+		-- remove modded stuff
+		CleanGameRules(g_CurrentMissionParams)
+
 		g_SaveMissionProfiles[choice_str] = {
 			map = g_CurrentMapParams,
 			mission = g_CurrentMissionParams,
@@ -102,14 +105,15 @@ local function LoadProfile(name, settings, pgmission)
 			pgmission.context.params = settings.game
 			g_CurrentMapParams = settings.map
 			g_RocketCargo = settings.cargo
+
+			CleanGameRules(settings.mission)
 			g_CurrentMissionParams = settings.mission
---~ 			-- update mission setup screen
---~ 			pgmission:SetMode("Empty")
 		end
 	end
 
 	ChoGGi.ComFuncs.QuestionBox(
-		"Load profile: " .. name .. "\nYou'll have to change the \"page\" to visually update settings.",
+		"Load profile: " .. name .. [[
+You'll have to change the "page" to visually update settings.]],
 		CallBackFunc
 	)
 end
@@ -124,7 +128,7 @@ local function DeleteProfile(name, settings_list)
 	ChoGGi.ComFuncs.QuestionBox(
 		"Delete profile: " .. name,
 		CallBackFunc,
-		Translate(6779--[[Warning]]) .. ": " .. Strings[302535920000855--[[Last chance before deletion!]]]
+		T(6779--[[Warning]]) .. ": " .. Strings[302535920000855--[[Last chance before deletion!]]]
 	)
 end
 
@@ -134,7 +138,7 @@ local function ProfileButtonPressed(pgmission, toolbar)
 	-- always show save
 	local menu = {
 		{
-			name = Translate(161964752558--[[Save]]) .. " Profile",
+			name = T(161964752558--[[Save]]) .. " Profile",
 			hint = "Save current profile.",
 			clicked = function()
 				CreateRealTimeThread(SaveProfile, pgmission.context.params)
@@ -145,13 +149,13 @@ local function ProfileButtonPressed(pgmission, toolbar)
 	if next(settings_list) then
 
 		menu[#menu+1] = {
-			name = Translate(885629433849--[[Load]]) .. " Profile >",
+			name = T(885629433849--[[Load]]) .. " Profile >",
 			hint = "Load saved profile.",
 			submenu = {},
 		}
 		local loadm = menu[#menu]
 		menu[#menu+1] = {
-			name = Translate(502364928914--[[Delete]]) .. " Profile >",
+			name = T(502364928914--[[Delete]]) .. " Profile >",
 			hint = "Delete saved profile.",
 			submenu = {},
 		}
@@ -199,7 +203,7 @@ local function AddProfilesButton(pgmission, toolbar)
 		TextStyle = "Action",
 		MouseCursor = "UI/Cursors/Rollover.tga",
 		RolloverTemplate = "Rollover",
-		RolloverTitle = Translate(126095410863--[[Info]]),
+		RolloverTitle = T(126095410863--[[Info]]),
 		RolloverText = [[Save/Load save profiles.]],
 		OnPress = function()
 			ProfileButtonPressed(pgmission, toolbar)

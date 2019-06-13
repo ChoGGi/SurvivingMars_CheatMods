@@ -1,3 +1,6 @@
+v2.1
+Fixed bug with concrete (thanks DemWafflez).
+
 v2.0
 Fix for bugged pin description.
 Added another visual indicator of mining in progress.

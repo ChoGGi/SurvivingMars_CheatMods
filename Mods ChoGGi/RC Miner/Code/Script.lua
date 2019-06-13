@@ -500,18 +500,18 @@ end
 -- called when the mine is gone/empty (returns nil to skip the add res amount stuff)
 function PortableMiner:MineIsEmpty()
 	-- it's done so remove our ref to it
-	table.iclear(miner.nearby_deposits)
+	table.iclear(self.nearby_deposits)
 	-- needed to mine other concrete
-	miner.found_deposit = false
+	self.found_deposit = false
 	-- if there's a mine nearby then off we go
-	if miner:DepositNearby() then
-		miner:SetCommand("Load")
+	if self:DepositNearby() then
+		self:SetCommand("Load")
 		return
 	end
 	-- omg it's isn't doing anythings @!@!#!?
-	table.insert_unique(g_IdleExtractors, miner)
+	table.insert_unique(g_IdleExtractors, self)
 	-- hey look at me!
-	miner:ShowNotWorkingSign(true)
+	self:ShowNotWorkingSign(true)
 end
 
 function PortableMiner:DigErUp()

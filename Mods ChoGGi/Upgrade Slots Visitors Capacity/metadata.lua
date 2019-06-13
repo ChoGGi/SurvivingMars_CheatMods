@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Upgrade Slots: Visitors/Capacity",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_UpgradeSlotsVisitorsCapacity",
@@ -12,9 +12,7 @@ return PlaceObj("ModDef", {
 	"lua_revision", 245618,
 	"code", {
 		"Code/Script.lua",
---~ 		"Code/ModOptions.lua",
 	},
---~ 	"has_options", true,
 	"TagInterface", true,
 	"description", [[Adds upgrades to increase the slot capacity (also increases electricity consumption).
 Existing upgrades for the building == skip these upgrades (it will boost cap of upgrade 2).

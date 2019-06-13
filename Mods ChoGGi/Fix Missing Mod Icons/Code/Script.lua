@@ -2,9 +2,11 @@
 
 -- local some globals
 local type = type
+local ConvertToOSPath = ConvertToOSPath
 local Measure = UIL.MeasureImage
+
 -- updated below
-local mod_path
+local mod_path1, mod_path2
 
 local function FixPath(image)
 	-- not everything sent from below is an image str (in-game paths all use tga)
@@ -15,16 +17,39 @@ local function FixPath(image)
 
 	-- if w and h are over 0 then it's an image
 	local w, h = Measure(image)
---~ 	print(w, h, image:gsub(mod_path, ""), image, mod_path)
 	if w > 0 and h > 0 then
 		return image
 	end
 
-	-- strip away packed path if the image is missing
-	return image:gsub(mod_path, "")
+	-- ClassTemplates doesn't have the .mod added, so there's no path to use
+	if mod_path1 then
+		-- strip away packed path if the image is missing
+		return image:gsub(mod_path1, ""):gsub(mod_path2, "")
+	else
+		-- need to reverse string so it finds the last one, since find looks ltr
+		local last = image:reverse():find("/IU/", 1, true)
+		if last then
+			-- we need a neg number for sub + 1 to remove the slash
+			return "UI/" .. image:sub((last * -1) + 1)
+		end
+	end
+
+	-- make sure we don't blank out the icon... If there's some weird issue (Sir McKaby, Destroyer of Mods)
+	return image
 end
 
 function OnMsg.ModsReloaded()
+	-- of course ClassTemplates...
+	local ct = ClassTemplates.Building
+	for _, item in pairs(ct) do
+		item.icon = FixPath(item.icon)
+		item.display_icon = FixPath(item.display_icon)
+		item.encyclopedia_image = FixPath(item.encyclopedia_image)
+		item.upgrade1_icon = FixPath(item.upgrade1_icon)
+		item.upgrade2_icon = FixPath(item.upgrade2_icon)
+		item.upgrade3_icon = FixPath(item.upgrade3_icon)
+	end
+
 	-- loop through all the mods and test all the icon paths
 	local Mods = Mods
 	for _, mod_def in pairs(Mods) do
@@ -32,7 +57,8 @@ function OnMsg.ModsReloaded()
 		local items = mod_def.items
 		if items then
 			-- update path var (used in FixPath)
-			mod_path = mod_def.env.CurrentModPath
+			mod_path1 = mod_def.env.CurrentModPath
+			mod_path2 = ConvertToOSPath(mod_path1):gsub("\\","/")
 			for i = 1, #items do
 				local item = items[i]
 				-- start fixing paths

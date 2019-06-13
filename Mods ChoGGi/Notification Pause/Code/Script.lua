@@ -1,27 +1,45 @@
 -- See LICENSE for terms
 
-local lookup_skips = {
-	TransportationDroneOverload = true,
-	StarvingColonists = true,
-}
+local options
+local lookup_skips = {}
 
-local function PauseGame(id)
-	if lookup_skips[id] or not GameState.gameplay then
+-- fired when settings are changed and new/load
+local function ModOptions()
+	local OnScreenNotificationPresets = OnScreenNotificationPresets
+	for id, item in pairs(OnScreenNotificationPresets) do
+		lookup_skips[id] = options[id]
+	end
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= "ChoGGi_NotificationPause" then
 		return
 	end
 
-	SetGameSpeedState("pause")
+	ModOptions()
+end
+
+local function PauseGame(id, func, ...)
+	if lookup_skips[id] then
+		SetGameSpeedState("pause")
+	end
+	return func(id, ...)
 end
 
 -- pause when new notif happens
 local orig_AddOnScreenNotification = AddOnScreenNotification
 function AddOnScreenNotification(id, ...)
-	PauseGame(id)
-	return orig_AddOnScreenNotification(id, ...)
+	return PauseGame(id, orig_AddOnScreenNotification, ...)
 end
 
 local orig_AddCustomOnScreenNotification = AddCustomOnScreenNotification
 function AddCustomOnScreenNotification(id, ...)
-	PauseGame(id)
-	return orig_AddCustomOnScreenNotification(id, ...)
+	return PauseGame(id, orig_AddCustomOnScreenNotification, ...)
 end

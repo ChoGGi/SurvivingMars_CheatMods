@@ -1,3 +1,7 @@
+v0.8
+Added mod options for all notifications.
+Defaults to only pausing for Critical/Important notifications.
+
 v0.7
 Added the Starving Colonists one to the skip list.
 

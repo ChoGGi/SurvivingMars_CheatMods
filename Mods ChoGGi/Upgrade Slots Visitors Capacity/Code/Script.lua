@@ -1,6 +1,10 @@
 -- See LICENSE for terms
 
 local function AddUpgrades(obj, id, prop, value)
+	if value > 1000 then
+		value = value / const.ResourceScale
+	end
+
 	local elec2 = 1500
 	-- I'm sure there's a way to make this display as 1.5, but I'm too lazy to find out
 	local elec2_description = "+<upgrade2_add_value_1> Capacity, +1.5 <icon_Power> Consumption"
@@ -79,34 +83,37 @@ function OnMsg.ClassesPostprocess()
 	local g_Classes = g_Classes
 	local BuildingTemplates = BuildingTemplates
 	for id, obj in pairs(BuildingTemplates) do
-		-- first try to get number from building template (for services like parks)
-		if obj.capacity and obj.capacity > 0 then
-			AddUpgrades(obj, id, "capacity", obj.capacity)
-			upgrade_list_c = upgrade_list_c + 1
-			upgrade_list[upgrade_list_c] = id
-		elseif obj.max_visitors and obj.max_visitors > 0 then
-			AddUpgrades(obj, id, "max_visitors", obj.max_visitors)
-			upgrade_list_c = upgrade_list_c + 1
-			upgrade_list[upgrade_list_c] = id
-		else
-			-- get class name and class obj (needed for the cap numbers)
-			id = obj.template_class
-			if id == "" then
-				id = obj.template_name
-			end
-			local cls = g_Classes[id]
-			if cls then
-				local value = cls:GetDefaultPropertyValue("capacity")
-				if value and value > 0 then
-					AddUpgrades(obj, id, "capacity", value)
-					upgrade_list_c = upgrade_list_c + 1
-					upgrade_list[upgrade_list_c] = id
-				else
-					value = cls:GetDefaultPropertyValue("max_visitors")
+		if obj.group == "Dome Services" or obj.group == "Decorations"
+				or obj.group == "Habitats" then
+			-- first try to get number from building template (for services like parks)
+			if obj.capacity and obj.capacity > 0 then
+				AddUpgrades(obj, id, "capacity", obj.capacity)
+				upgrade_list_c = upgrade_list_c + 1
+				upgrade_list[upgrade_list_c] = id
+			elseif obj.max_visitors and obj.max_visitors > 0 then
+				AddUpgrades(obj, id, "max_visitors", obj.max_visitors)
+				upgrade_list_c = upgrade_list_c + 1
+				upgrade_list[upgrade_list_c] = id
+			else
+				-- get class name and class obj (needed for the cap numbers)
+				id = obj.template_class
+				if id == "" then
+					id = obj.template_name
+				end
+				local cls = g_Classes[id]
+				if cls then
+					local value = cls.capacity or cls:GetDefaultPropertyValue("capacity")
 					if value and value > 0 then
-						AddUpgrades(obj, id, "max_visitors", value)
+						AddUpgrades(obj, id, "capacity", value)
 						upgrade_list_c = upgrade_list_c + 1
 						upgrade_list[upgrade_list_c] = id
+					else
+						value = cls.max_visitors or cls:GetDefaultPropertyValue("max_visitors")
+						if value and value > 0 then
+							AddUpgrades(obj, id, "max_visitors", value)
+							upgrade_list_c = upgrade_list_c + 1
+							upgrade_list[upgrade_list_c] = id
+						end
 					end
 				end
 			end

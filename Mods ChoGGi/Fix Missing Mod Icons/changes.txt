@@ -1,3 +1,7 @@
+v0.5
+Forgot to fix ClassTemplates.Building (pinned/upgrade icons).
+Also works with unpacked mods as well.
+
 v0.4
 Cleaner and faster way of fixing paths (no more checking presets, I just check mod items).
 
