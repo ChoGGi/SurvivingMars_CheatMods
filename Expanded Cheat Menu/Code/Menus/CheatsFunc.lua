@@ -1854,6 +1854,7 @@ do -- ResearchRemove
 end -- do
 
 do -- ResearchTech
+	local research_checked
 	local ValidateImage = ChoGGi.ComFuncs.ValidateImage
 	local IsTechResearched = IsTechResearched
 
@@ -2050,6 +2051,10 @@ do -- ResearchTech
 				{
 					title = Translate(311--[[Research]]),
 					hint = Strings[302535920000320--[[Unlocks and researchs.]]],
+					checked = research_checked,
+					func = function(_, check)
+						research_checked = check
+					end,
 				},
 			},
 		}

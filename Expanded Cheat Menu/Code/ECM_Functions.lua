@@ -3956,3 +3956,20 @@ do -- RetLangTable
 		return translate, translate_gen
 	end
 end -- do
+
+function ChoGGi.ComFuncs.AttachSpireFrame(obj)
+	local frame = SpireFrame:new()
+	obj:Attach(frame)
+	frame:ChangeEntity("TempleSpireFrame")
+	-- copy from regular frame
+	frame:SetAttachOffset(point(0, 0, 4280))
+	return frame
+end
+
+function ChoGGi.ComFuncs.AttachSpireFrameOffset(obj)
+	if obj[1] then
+		obj = obj[1]
+	end
+	local offset = obj:GetAttachOffset()
+	obj:SetAttachOffset(point(0, 0, offset:z()))
+end

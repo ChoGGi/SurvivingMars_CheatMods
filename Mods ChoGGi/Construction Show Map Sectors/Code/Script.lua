@@ -32,13 +32,10 @@ local DoneObject = DoneObject
 local size = 100 * guim
 local green = green
 
-local SectorUnexplored_l
-local g_MapSectors_l
-
 local function AddSectors()
-	SectorUnexplored_l = SectorUnexplored_l or SectorUnexplored
-	g_MapSectors_l = g_MapSectors_l or g_MapSectors
-	for sector in pairs(g_MapSectors_l) do
+	local SectorUnexplored = SectorUnexplored
+	local g_MapSectors = g_MapSectors
+	for sector in pairs(g_MapSectors) do
 		-- skip the 1-10 sector tables
 		if type(sector) == "table" then
 			-- unexplored sector
@@ -51,7 +48,7 @@ local function AddSectors()
 
 			-- add decal to explored sector
 			if not sector.decal then
-				local decal = SectorUnexplored_l:new()
+				local decal = SectorUnexplored:new()
 				decal:SetColorModifier(green)
 				decal:SetPos(sector:GetPos())
 				decal:SetScale(MulDivRound(sector.area:sizex(), 100, size)+1)
@@ -63,8 +60,8 @@ local function AddSectors()
 end
 
 local function RemoveSectors()
-	g_MapSectors_l = g_MapSectors_l or g_MapSectors
-	for sector in pairs(g_MapSectors_l) do
+	local g_MapSectors = g_MapSectors
+	for sector in pairs(g_MapSectors) do
 		if type(sector) == "table" then
 			-- I'm lazy and deleting them now instead of checking for scanned sectors and removing them then
 			if IsValid(sector.ChoGGi_decal) then

@@ -301,21 +301,6 @@ Actions[c] = {ActionName = Strings[302535920000188--[[Set Charge & Discharge Rat
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000178--[[Protection Radius]]],
-	ActionMenubar = "ECM.ECM.Buildings.Buildings",
-	ActionId = ".Protection Radius",
-	ActionIcon = icon,
-	RolloverText = function()
-		local obj = SelectedObj
-		return obj and SettingState(
-			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".protect_range",
-			Strings[302535920000179--[[Change threat protection coverage distance.]]]
-		) or Strings[302535920000179]
-	end,
-	OnAction = ChoGGi.MenuFuncs.SetProtectionRadius,
-}
-
-c = c + 1
 Actions[c] = {ActionName = Strings[302535920000196--[[Fully Automated Building]]],
 	ActionMenubar = "ECM.ECM.Buildings.Buildings",
 	ActionId = ".Fully Automated Building",
@@ -748,4 +733,19 @@ Actions[c] = {ActionName = Translate(11933--[[Core Heat Convector]]),
 	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
 	bld_id = "CoreHeatConvector",
 	bld_msg = Strings[302535920000788--[[New building radius.]]],
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000178--[[Protection Radius]]],
+	ActionMenubar = "ECM.ECM.Buildings.Radius",
+	ActionId = ".Protection Radius",
+	ActionIcon = icon,
+	RolloverText = function()
+		local obj = SelectedObj
+		return obj and SettingState(
+			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".protect_range",
+			Strings[302535920000179--[[Change threat protection coverage distance (MDSLaser/DefenceTower).]]]
+		) or Strings[302535920000179]
+	end,
+	OnAction = ChoGGi.MenuFuncs.SetProtectionRadius,
 }

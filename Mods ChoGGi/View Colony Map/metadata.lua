@@ -29,9 +29,12 @@ return PlaceObj("ModDef", {
 	},
 	"lua_revision", 245618,
 	"description", [[Shows the map before you load it in the select colony screen.
-Optionally show anomaly breakthroughs for each location, omega breakthroughs are at best 1/3.
+
+Includes a checkbox to show anomaly breakthroughs for each location, omega breakthroughs are at best 1/3.
+If you use a rule that changes the breakthrough list, then ignore the breakthrough list shown as it isn't accurate anymore.
 
 Colour levels: Purple = mountainous, other colours = buildable.
 
-View all maps: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Map%20Images%20Pack/Maps]],
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=1748327771]View all maps[/url]
+]],
 })

@@ -4,6 +4,12 @@
 ### Changed:
 - Added Update Text func/button to MultiLineText (only shows up for some stuff like view console text, or view text in examine).
 
+### Fixed:
+- Protection Radius wasn't opening (praise Black Jesus).
+
+### Changed:
+- Moved Protection Radius from Buildings to Radius.
+
 ### Removed:
 - Gravity options (you can use Bouncy Drones if you want it).
 

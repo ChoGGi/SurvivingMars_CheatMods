@@ -566,33 +566,34 @@ function OnMsg.BuildingPlaced(obj)
 	end
 end --OnMsg
 
-do -- ConstructionSitePlaced
-	local function QuickBuild(sites)
-		for i = 1, #sites do
-			local site = sites[i]
-			if not site.construction_group or site.construction_group[1] == site then
+do -- ConstructionSitePlaced/ConstructionPrefabPlaced
+	local function SitePlaced(site)
+		if site:IsKindOf("Building") then
+			ChoGGi.Temp.LastPlacedObject = site
+		end
+
+		-- use a delay, so domes don't screw up
+		CreateRealTimeThread(function()
+			WaitMsg("OnRender")
+			-- some issue bypass?
+			if ChoGGi.UserSettings.Building_instant_build and (not site.construction_group
+					or site.construction_group and site.construction_group[1] == site) then
 				site:Complete("quick_build")
 			end
-		end
-	end
-
-	-- regular build
-	function OnMsg.ConstructionSitePlaced(obj)
-		if obj:IsKindOf("Building") then
-			ChoGGi.Temp.LastPlacedObject = obj
-		end
-
-		if ChoGGi.UserSettings.Building_instant_build then
-			-- i do it this way instead of using .instant_build so domes don't screw up
-			CreateRealTimeThread(function()
-				Sleep(100)
-				local labels = UICity.labels
-				QuickBuild(labels.ConstructionSite or "")
-				QuickBuild(labels.ConstructionSiteWithHeightSurfaces or "")
-			end)
-		end
+			-- spire needs a pointy end
+			if site.building_class_proto:IsKindOf("Temple") then
+				local frame = site:GetAttaches("SpireFrame")
+				if not frame then
+					frame = ChoGGi.ComFuncs.AttachSpireFrame(site)
+					frame:SetGameFlags(const.gofUnderConstruction)
+				end
+				ChoGGi.ComFuncs.AttachSpireFrameOffset(frame)
+			end
+		end)
 	end --OnMsg
 
+	OnMsg.ConstructionSitePlaced = SitePlaced
+	OnMsg.ConstructionPrefabPlaced = SitePlaced
 end -- do
 
 -- make sure they use with our new values
@@ -675,7 +676,6 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 			-- I override the func so no need to send a value here
 			obj:SetWorkRadius()
 		end
-
 		-- applied to all rovers
 		if UserSettings.SpeedRC then
 			obj:SetBase("move_speed", UserSettings.SpeedRC)
@@ -703,24 +703,35 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 			obj:CheatFill()
 		end
 
-	elseif UserSettings.ShuttleHubFuelStorage and obj.class:find("ShuttleHub") then
+	elseif UserSettings.ShuttleHubFuelStorage and obj:IsKindOf("ShuttleHub") then
 		obj.consumption_max_storage = UserSettings.ShuttleHubFuelStorage
 
-	elseif UserSettings.SchoolTrainAll and obj.class:find("School") then
+	elseif UserSettings.SchoolTrainAll and obj:IsKindOf("School") then
 		local list = ChoGGi.Tables.PositiveTraits
 		for i = 1, #list do
 			obj:SetTrait(i, list[i])
 		end
 
-	elseif UserSettings.SanatoriumCureAll and obj.class:find("Sanatorium") then
+	elseif UserSettings.SanatoriumCureAll and obj:IsKindOf("Sanatorium") then
 		local list = ChoGGi.Tables.NegativeTraits
 		for i = 1, #list do
 			obj:SetTrait(i, list[i])
 		end
 
-	end -- end of elseif
+	elseif obj:IsKindOf("Temple") then
+		CreateRealTimeThread(function()
+			local frame = obj:GetAttaches("SpireFrame")
+			if not frame then
+				-- spire needs a pointy end
+				frame = ChoGGi.ComFuncs.AttachSpireFrame(obj)
+				for i = 1, 4 do
+					frame:SetColorizationMaterial(i, obj:GetColorizationMaterial(i))
+				end
+			end
+			ChoGGi.ComFuncs.AttachSpireFrameOffset(frame)
+		end)
 
-	if UserSettings.StorageMechanizedDepotsTemp
+	elseif UserSettings.StorageMechanizedDepotsTemp
 			and obj:IsKindOf("ResourceStockpileLR")
 			and obj.parent:IsKindOf("MechanizedDepot") then
 		-- attached temporary resource depots

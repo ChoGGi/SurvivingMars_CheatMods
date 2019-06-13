@@ -1,7 +1,5 @@
 -- See LICENSE for terms
 
-local table_insert = table.insert
-
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Translate = ChoGGi.ComFuncs.Translate
 local ValidateImage = ChoGGi.ComFuncs.ValidateImage
@@ -44,12 +42,15 @@ function FillRandomMapProps(gen, params, ...)
 end
 
 -- kill off image dialogs
-local cls_kill = {"ChoGGi_VCM_MapImageDlg","ChoGGi_VCM_ExtraInfoDlg"}
 function OnMsg.ChangeMapDone()
+-- keep dialog opened after
+--~ 	do return end
 	local term = terminal.desktop
 	for i = #term, 1, -1 do
-		if term[i]:IsKindOfClasses(cls_kill) then
-			term[i]:Close()
+		local dlg = term[i]
+		if dlg:IsKindOf("ChoGGi_VCM_MapImageDlg")
+				or dlg:IsKindOf("ChoGGi_VCM_ExtraInfoDlg") then
+			dlg:Close()
 		end
 	end
 end
@@ -104,11 +105,14 @@ function ChoGGi_VCM_MapImageDlg:Init(parent, context)
 	}, self.idBottomArea)
 	-- add hint if random rule active
 	local tech_variety = IsGameRuleActive("TechVariety")
-		and " <color green>" .. Translate(607602869305--[[Tech Variety]]) .. "</color>" or ""
+		and " <color green>" .. Translate(607602869305--[[Tech Variety]]) .. "</color>"
+		or ""
 	local chaos_theory = IsGameRuleActive("ChaosTheory")
-		and " <color green>" .. Translate(621834127153--[[Chaos Theory]]) .. "</color>" or ""
+		and " <color green>" .. Translate(621834127153--[[Chaos Theory]]) .. "</color>"
+		or ""
 	if tech_variety ~= "" or chaos_theory ~= "" then
-		self.idShowExtra.RolloverText = Translate(self.idShowExtra.RolloverText .. [[
+		self.idShowExtra.RolloverText = Translate(self.idShowExtra.RolloverText
+			.. [[
 
 
 Random tech game rule(s) <color red>active!</color>
@@ -222,7 +226,8 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 	end
 
 	self.omega_msg_count = const.BreakThroughTechsPerGame + 1
-	self.omega_msg = "\n\n" .. Translate(5182--[[Omega Telescope]]) .. " " .. Translate(437247068170--[[LIST]]) .. " (maybe):"
+	self.omega_msg = "\n\n" .. Translate(5182--[[Omega Telescope]]) .. " "
+		.. Translate(437247068170--[[LIST]]) .. " (maybe):"
 	self.planet_msg = "\n\n" .. Translate(11234--[[Planetary Anomaly]]) .. ":"
 
 	self.idText:SetText("Select location to update text")
@@ -289,8 +294,8 @@ function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(map, gen)
 		display_list[i] = self.translated_tech[display_list[i]]
 	end
 	-- last four are PAs
-	table_insert(display_list,9,self.planet_msg)
+	table.insert(display_list,9,self.planet_msg)
 
-	table_insert(display_list,self.omega_msg_count,self.omega_msg)
+	table.insert(display_list,self.omega_msg_count,self.omega_msg)
 	self.idText:SetText(TableConcat(display_list,"\n"))
 end

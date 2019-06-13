@@ -635,7 +635,8 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
 		return
 	end
 	local id = RetTemplateOrClass(obj)
-	local default_setting = g_Classes[id]:GetClassValue("protect_range")
+	local cls_obj = g_Classes[id]
+	local default_setting = cls_obj.protect_range or cls_obj:GetClassValue("protect_range")
 	local item_list = {
 		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 40, value = 40},
@@ -1575,8 +1576,7 @@ function ChoGGi.MenuFuncs.Building_dome_spot_Toggle()
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
-		Strings[302535920000160--[[%s: Freedom for spires!
-(restart to set disabled)]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.Building_dome_spot)),
+		Strings[302535920000160--[[%s: Freedom for spires!]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.Building_dome_spot)),
 		Strings[302535920000226--[[Remove Spire Point Limit]]]
 	)
 end
