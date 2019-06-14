@@ -5,17 +5,10 @@ local load_mods = true
 
 function OnMsg.DesktopCreated()
 
-	-- stops "Attempt to create a new global", see CommonLua\Core\autorun.lua for more info
-	local orig_Loading = Loading
-	Loading = true
-
 	-- stop intro videos
 	PlayInitialMovies = empty_func
-
 	-- get rid of mod manager warnings (not the reboot one though)
 	ParadoxBuildsModManagerWarning = true
-
-	Loading = orig_Loading
 
 	-- bonus:
 	CreateRealTimeThread(function()
@@ -47,7 +40,7 @@ function OnMsg.DesktopCreated()
 		-- remove the update news
 		UIShowParadoxFeeds = empty_func
 		WaitMsg("OnRender")
-		if Dialogs.PGMainMenu.idContent.idParadoxNews then
+		if Dialogs.PGMainMenu and Dialogs.PGMainMenu.idContent.idParadoxNews then
 			Dialogs.PGMainMenu.idContent.idParadoxNews:delete()
 		end
 	end)
