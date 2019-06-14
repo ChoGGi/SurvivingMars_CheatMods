@@ -10,6 +10,7 @@ function OnMsg.DesktopCreated()
 	-- get rid of mod manager warnings (not the reboot one though)
 	ParadoxBuildsModManagerWarning = true
 
+	--[[
 	-- bonus:
 	CreateRealTimeThread(function()
 		-- wait for it (otherwise stuff below won't work right)
@@ -44,5 +45,6 @@ function OnMsg.DesktopCreated()
 			Dialogs.PGMainMenu.idContent.idParadoxNews:delete()
 		end
 	end)
+	]]
 
 end
