@@ -132,6 +132,7 @@ if testing then
 	}
 	-- probably not useful for anyone who isn't loading up borked saves to test
 	Defaults.SkipMissingMods = true
+	Defaults.SkipIncompatibleModsMsg = true
 	Defaults.SkipMissingDLC = true
 	--
 	Defaults.MapEdgeLimit = true

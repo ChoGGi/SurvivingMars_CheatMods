@@ -56,14 +56,12 @@ do -- non-class obj funcs
 	end
 
 	-- get rid of "This savegame was loaded in the past without required mods or with an incompatible game version."
-	if testing then -- WaitMarsMessage
-		SaveOrigFunc("WaitMarsMessage")
-		function WaitMarsMessage(parent, title, msg, ...)
-			if IsT(msg) == 10888 then
-				return
-			end
-			return ChoGGi_OrigFuncs.WaitMarsMessage(parent, title, msg, ...)
+	SaveOrigFunc("WaitMarsMessage")
+	function WaitMarsMessage(parent, title, msg, ...)
+		if (testing or UserSettings.SkipIncompatibleModsMsg) and IsT(msg) == 10888 then
+			return
 		end
+		return ChoGGi_OrigFuncs.WaitMarsMessage(parent, title, msg, ...)
 	end
 
 	function ReportPersistErrors(...)
