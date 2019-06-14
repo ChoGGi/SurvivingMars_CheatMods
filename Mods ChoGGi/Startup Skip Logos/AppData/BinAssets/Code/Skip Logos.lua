@@ -1,4 +1,8 @@
 
+-- load mods in mainmenu
+local load_mods = true
+--~ local load_mods = false
+
 function OnMsg.DesktopCreated()
 
 	-- stops "Attempt to create a new global", see CommonLua\Core\autorun.lua for more info
@@ -14,7 +18,6 @@ function OnMsg.DesktopCreated()
 	Loading = orig_Loading
 
 	-- bonus:
-	--[[
 	CreateRealTimeThread(function()
 		-- wait for it (otherwise stuff below won't work right)
 		local WaitMsg = WaitMsg
@@ -25,18 +28,11 @@ function OnMsg.DesktopCreated()
 			WaitMsg("OnRender")
 		end
 
-		-- starts in load game menu
-		CreateRealTimeThread(function()
-			Sleep(1000)
-			-- make sure load menu doesn't steal focus away from console/examine if opened
-			if not (dlgConsole:GetVisible() or ChoGGi_dlgs_examine and next(ChoGGi_dlgs_examine)) then
-				Dialogs.PGMainMenu:SetMode("Load")
-			end
-		end)
-
-		-- load mods in main menu
-		ModsReloadItems()
-		WaitMsg("OnRender")
+		if load_mods then
+			-- load mods (figure out how to skip loading mod entity in main menu)
+			ModsReloadItems()
+			WaitMsg("OnRender")
+		end
 
 		-- update cheat menu toolbar
 		XShortcutsTarget:UpdateToolbar()
@@ -55,6 +51,5 @@ function OnMsg.DesktopCreated()
 			Dialogs.PGMainMenu.idContent.idParadoxNews:delete()
 		end
 	end)
-	]]
 
 end
