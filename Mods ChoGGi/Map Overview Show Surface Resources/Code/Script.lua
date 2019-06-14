@@ -32,7 +32,6 @@ DefineClass.ChoGGi_OText_SurResMod = {
 	text_style = "Action",
 }
 
-local lookup = {}
 local text_table = {}
 
 local function AddIcons()
@@ -40,8 +39,8 @@ local function AddIcons()
 	local point = point
 	local table_iclear = table.iclear
 	local table_concat = table.concat
-	lookup.Metals = _InternalTranslate(T(3514,"Metals"))
-	lookup.Polymers = _InternalTranslate(T(3515,"Polymers"))
+	local str_Metals = _InternalTranslate(T(3514,"Metals"))
+	local str_Polymers = _InternalTranslate(T(3515,"Polymers"))
 
 	local r = const.ResourceScale
 
@@ -49,20 +48,33 @@ local function AddIcons()
 	for sector in pairs(g_MapSectors) do
 		-- skip 1-10
 		if type(sector) == "table" then
-			local surf_res = sector.deposits.surface
+
+			local metals_c = 0
+			local polymers_c = 0
+			local markers = sector.markers.surface
+			for i = 1, #markers do
+				local obj = markers[i].placed_obj
+				-- placed_obj is removed from marker once it's empty
+				if IsValid(obj) then
+					if mod_ShowMetals and obj.resource == "Metals" then
+						metals_c = metals_c + obj:GetAmount()
+					elseif mod_ShowPolymers and obj.resource == "Polymers" then
+						polymers_c = polymers_c + obj:GetAmount()
+					end
+				end
+			end
+			-- add text for found res
 			table_iclear(text_table)
 			local c = 0
-			for id, amount in pairs(surf_res) do
-
-				if id == "Metals" and mod_ShowMetals then
-					c = c + 1
-					text_table[c] = lookup[id] .. ": " .. amount / r
-				elseif id == "Polymers" and mod_ShowPolymers then
-					c = c + 1
-					text_table[c] = lookup[id] .. ": " .. amount / r
-				end
-
+			if metals_c > 0 then
+				c = c + 1
+				text_table[c] = str_Metals .. " " .. metals_c / r
 			end
+			if polymers_c > 0 then
+				c = c + 1
+				text_table[c] = str_Polymers .. " " .. polymers_c / r
+			end
+
 			if c > 0 then
 				local text = ChoGGi_OText_SurResMod:new()
 				text:SetText(table_concat(text_table, "\n"))

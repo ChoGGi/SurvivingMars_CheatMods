@@ -469,7 +469,7 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	if type(idx) ~= "number" then
-		idx = #(xt or "1")
+		idx = #(xt or "")
 	end
 
 	table.insert(

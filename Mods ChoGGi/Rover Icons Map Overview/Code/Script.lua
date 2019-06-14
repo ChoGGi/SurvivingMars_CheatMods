@@ -3,8 +3,6 @@
 local MulDivRound = MulDivRound
 local IsValid = IsValid
 local Sleep = Sleep
-local SuspendPassEdits = SuspendPassEdits
-local ResumePassEdits = ResumePassEdits
 
 local function UpdateIcons(time, direction, signs)
 	SuspendPassEdits("ChoGGi_UpdateOverviewIcons")

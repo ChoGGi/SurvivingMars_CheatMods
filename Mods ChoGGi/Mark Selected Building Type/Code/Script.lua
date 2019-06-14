@@ -50,7 +50,7 @@ end
 --~ local skips = {"Shuttle", "Drone", "Colonist", "LifeSupportGridElement", "ElectricityGridElement"}
 
 local function MarkObjects(obj)
-	if not mod_Mark then
+	if not (mod_Mark or obj) then
 		return
 	end
 
