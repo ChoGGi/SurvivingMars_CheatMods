@@ -1,4 +1,3 @@
--- See LICENSE for terms
 
 -- newly revealed deposits get this entity
 function SubsurfaceDepositMetals:GameInit()

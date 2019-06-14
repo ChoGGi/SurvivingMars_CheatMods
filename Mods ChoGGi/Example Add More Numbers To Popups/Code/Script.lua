@@ -1,4 +1,3 @@
--- See LICENSE for terms
 
 -- local some globals
 local table_insert = table.insert

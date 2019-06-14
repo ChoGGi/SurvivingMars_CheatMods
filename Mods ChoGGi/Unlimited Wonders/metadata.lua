@@ -14,6 +14,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"description", [[Build as many as you want.
+This will block off the Construct a Wonder milestone.
 
 Requested by Griffdy04/BlueNightfury.
 

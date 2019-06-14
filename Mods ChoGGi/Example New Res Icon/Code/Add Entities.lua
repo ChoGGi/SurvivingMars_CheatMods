@@ -1,4 +1,3 @@
--- See LICENSE for terms
 
 -- list of entities we're going to be adding
 local entity_list = {
