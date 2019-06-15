@@ -212,7 +212,8 @@ local function YamatoHasshin(site)
 		PlayFX("RocketEngine", "end", pod)
 
 		PlayFX("RocketLaunch", "start", pod)
-		local accel, time = pod:GetAccelerationAndTime(starting_pos, flight_speed, 1)
+    local time
+		accel, time = pod:GetAccelerationAndTime(starting_pos, flight_speed, 1)
 		SetRollPitchYaw(pod, 0, pitch, yaw, time/4)
 		pod:SetAcceleration(accel)
 		pod:SetPos(starting_pos, time)

@@ -84,9 +84,9 @@ function OnMsg.ClassesPostprocess()
 			"template_class", "GoldenStorage",
 			"instant_build", true,
 			"dome_forbidden", true,
-			"display_name", [[Golden Storage]],
-			"display_name_pl", [[Golden Storage]],
-			"description", [[Converts Metals to PreciousMetals.]],
+			"display_name", T(302535920011084, [[Golden Storage]]),
+			"display_name_pl", T(302535920011085, [[Golden Storages]]),
+			"description", T(302535920011086, [[Converts Metals to PreciousMetals.]])
 			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
 			"display_icon", CurrentModPath .. "UI/golden_storage.png",

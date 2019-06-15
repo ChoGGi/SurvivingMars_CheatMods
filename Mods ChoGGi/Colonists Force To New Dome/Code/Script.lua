@@ -28,29 +28,28 @@ local function ListBuildings(parent, dome)
 	local item_list = {}
 	local c = 0
 
-	local hint_str = [[Position: %s
-
-Colonists: %s
-
-Living Spaces: %s]]
-
 	-- make it pretty
 	for i = 1, #domes do
+		local dome = domes[i]
 		-- skip ruined domes, and self
-		if domes[i].air and domes[i].handle ~= dome.handle then
-			local pos = domes[i]:GetVisualPos()
+		if dome.air and dome.handle ~= dome.handle then
+			local pos = dome:GetPos()
 			c = c + 1
 			item_list[c] = {
 				pos = pos,
-				name = RetName(domes[i]),
+				name = RetName(dome),
 				 -- provide a slight reference
-				hint = hint_str:format(
-					pos,
-					#(domes[i].labels.Colonist or ""),
-					domes[i]:GetLivingSpace() or 0
-				),
+				hint = T{302535920011059, [[Position: <position>
+
+Colonists: <colonist>
+
+Living Spaces: <spaces>]],
+					position = pos,
+					colonist = #(dome.labels.Colonist or ""),
+					spaces = dome:GetLivingSpace() or 0,
+				},
 				mouseup = function(_, _, _, button)
-					ClickObj(dome, domes[i], button)
+					ClickObj(dome, dome, button)
 				end,
 			}
 		end
@@ -62,9 +61,9 @@ Living Spaces: %s]]
 
 	-- add controller for ease of movement
 	item_list[#item_list+1] = {
-		name = [[ Current Dome]],
+		name = T(302535920011060, [[Current Dome]]),
 		pos = dome:GetVisualPos(),
-		hint = [[Currently selected dome]],
+		hint = T(302535920011061, [[Currently selected dome]]),
 		mouseup = function(_, _, _, button)
 			ClickObj(false, dome, button)
 		end,
@@ -94,8 +93,8 @@ function OnMsg.ClassesPostprocess()
 			return context.working
 		end,
 		Icon = "UI/Icons/bmc_domes_shine.tga",
-		Title = [[Force New Dome]],
-		RolloverText = [[Use this to force colonists to migrate.]],
+		Title = T(302535920011062, [[Force New Dome]]),
+		RolloverText = T(302535920011063, [[Use this to force colonists to migrate.]]),
 		func = function(self, context)
 			ListBuildings(self, context)
 		end,

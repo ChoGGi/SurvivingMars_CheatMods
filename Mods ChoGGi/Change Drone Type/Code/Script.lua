@@ -69,9 +69,9 @@ function OnMsg.ClassesPostprocess()
 	}
 
 	local template_table = {
-		RolloverTitle = [[Change Spawn Type]],
-		RolloverText = [[Spawn wasp drones or regular drones.]],
-		Title = [[Drone Type]],
+		RolloverTitle = T(302535920011053, [[Change Spawn Type]]),
+		RolloverText = T(302535920011054, [[Spawn wasp drones or regular drones.]]),
+		Title = T(302535920011055, [[Drone Type]]),
 		Icon = "UI/Icons/Sections/drone.tga",
 
 		__condition = function()

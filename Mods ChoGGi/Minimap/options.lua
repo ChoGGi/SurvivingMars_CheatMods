@@ -7,7 +7,7 @@ DefineClass("ModOptions_ChoGGi_Minimap", {
 			default = true,
 			editor = "bool",
 			id = "UseScreenshots",
-			name = "Screenshots or topography images (needs topo mod).",
+			name = T(302535920011108, "Screenshots or topography images."),
 			desc = "it's a bool!",
 		},
 	},

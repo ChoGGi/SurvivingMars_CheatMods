@@ -131,8 +131,8 @@ if testing then
 		XShortcutsHost = 100,
 	}
 	-- probably not useful for anyone who isn't loading up borked saves to test
-	Defaults.SkipMissingMods = true
 	Defaults.SkipIncompatibleModsMsg = true
+	Defaults.SkipMissingMods = true
 	Defaults.SkipMissingDLC = true
 	--
 	Defaults.MapEdgeLimit = true
@@ -344,8 +344,8 @@ ChoGGi.SettingFuncs.ReadSettings()
 
 local UserSettings = ChoGGi.UserSettings
 
+-- from here till the end of OnMsg.ChoGGi_Loaded()
 if testing or UserSettings.ShowStartupTicks then
-	-- from here till the end of OnMsg.ChoGGi_Loaded()
 	ChoGGi.Temp.StartupTicks = GetPreciseTicks()
 end
 

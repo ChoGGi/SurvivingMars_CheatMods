@@ -1,6 +1,6 @@
 
 -- load mods in mainmenu
-local load_mods = true
+--~ local load_mods = true
 --~ local load_mods = false
 
 function OnMsg.DesktopCreated()

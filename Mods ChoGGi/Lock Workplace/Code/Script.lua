@@ -61,12 +61,12 @@ function OnMsg.ClassesPostprocess()
 			end
 
 			if context.ChoGGi_Lockworkplace then
-				self:SetRolloverText([[Remove the lock on this colonist.]])
-				self:SetTitle([[Unlock Workplace]])
+				self:SetRolloverText(T(302535920011097, [[Remove the lock on this colonist.]]))
+				self:SetTitle(T(302535920011098, [[Unlock Workplace]]))
 				self:SetIcon("UI/Icons/traits_approve.tga")
 			else
-				self:SetRolloverText([[Lock this colonist to always work at ]] .. RetName(context.workplace))
-				self:SetTitle([[Lock Workplace]])
+				self:SetRolloverText(T{302535920011099, [[Lock this colonist to always work at <name>.]], name = RetName(context.workplace)})
+				self:SetTitle(T(302535920011100, [[Lock Workplace]]))
 				self:SetIcon("UI/Icons/traits_disapprove.tga")
 			end
 			---
@@ -88,12 +88,12 @@ function OnMsg.ClassesPostprocess()
 		OnContextUpdate = function(self, context)
 			---
 			if context.ChoGGi_Lockworkplace then
-				self:SetRolloverText([[Remove the lock on this workplace.]])
-				self:SetTitle([[Unlock Workers]])
+				self:SetRolloverText(T(302535920011101, [[Remove the lock on this workplace.]]))
+				self:SetTitle(T(302535920011102, [[Unlock Workers]]))
 				self:SetIcon("UI/Icons/traits_approve.tga")
 			else
-				self:SetRolloverText([[Lock all workers to this workplace (if more workers are added you'll need to toggle this or lock each of them).]])
-				self:SetTitle([[Lock Workers]])
+				self:SetRolloverText(T(302535920011103, [[Lock all workers to this workplace (if more workers are added you'll need to toggle this or lock each of them).]]))
+				self:SetTitle(T(302535920011104, [[Lock Workers]]))
 				self:SetIcon("UI/Icons/traits_disapprove.tga")
 			end
 			---

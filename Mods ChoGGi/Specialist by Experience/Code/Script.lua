@@ -99,7 +99,7 @@ function OnMsg.NewDay(sol) -- NewSol...
 						c_table.obj:ChangeWorkplacePerformance()
 					end
 				else
-					-- if not valid then remove
+					-- if not valid then might as well remove it
 					work.ChoGGi_SpecByExp[handle] = nil
 				end
 

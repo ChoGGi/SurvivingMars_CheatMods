@@ -14,6 +14,42 @@ local options
 local mod_EnableLakes
 local mod_EnableGridView
 
+local function UpdateLakeObj(water, lake)
+	water:SetOpacity(50)
+  if WaterFrozen or lake:IsFrozen() then
+		water:ChangeEntity("water_icy_texture_replacement")
+	else
+		water:ChangeEntity("water_texture_replacement")
+	end
+	local seven = lake.entity:sub(1, 7)
+	if seven == "LakeHug" then
+		water:SetScale(1000)
+	elseif seven == "LakeBig" or seven == "LakeMid" then
+		water:SetScale(750)
+	else
+		water:SetScale(500)
+	end
+end
+
+-- update texture on thaw
+function OnMsg.WaterPhysicalStateChange(frozen)
+	if mod_EnableLakes then
+		return
+	end
+
+	local lakes = UICity.labels.LandscapeLake or ""
+	for i = 1, #lakes do
+		local lake = lakes[i]
+		if IsValid(lake.water_obj_fake) then
+			if frozen or lake:IsFrozen() then
+				lake.water_obj_fake:ChangeEntity("water_icy_texture_replacement")
+			else
+				lake.water_obj_fake:ChangeEntity("water_texture_replacement")
+			end
+		end
+	end
+end
+
 -- fired when settings are changed and new/load
 local function ModOptions()
 	mod_EnableLakes = options.EnableLakes
@@ -57,8 +93,7 @@ local function ModOptions()
 				DoneObject(water)
 				water = BuildingEntityClass:new()
 				water:SetPos(pos)
-				water:ChangeEntity("GridTileWater")
-				water:SetScale(500)
+				UpdateLakeObj(water, lake)
 				lake.water_obj_fake = water
 			end
 		end
@@ -94,11 +129,17 @@ function LandscapeLake:PlacePrefab(...)
 		DoneObject(water)
 		water = BuildingEntityClass:new()
 		water:SetPos(pos)
-		water:ChangeEntity("GridTileWater")
-		water:SetScale(500)
+		UpdateLakeObj(water, self)
 		self.water_obj_fake = water
 	end
 end
+
+local offsets = {
+	LakeHug = 360,
+	LakeBig = 200,
+	LakeMid = 120,
+	LakeSma = 150,
+}
 
 local orig_UpdateVisuals = LandscapeLake.UpdateVisuals
 function LandscapeLake:UpdateVisuals(...)
@@ -110,9 +151,14 @@ function LandscapeLake:UpdateVisuals(...)
     return
   end
   if IsValid(self.water_obj_fake) then
-    local x, y, z0 = self.water_obj_fake:GetVisualPosXYZ()
-    local dl = self.level_max - self.level_min
+    -- local x, y, z0 = self.water_obj_fake:GetVisualPosXYZ()
+    local x, y = self.water_obj_fake:GetVisualPosXYZ()
+    -- local dl = self.level_max - self.level_min
     local z = self.level_min + sqrt(MulDivRound(self.dl2, self.volume, self.volume_max))
+
+		-- make sure our fake texture stays below the ground
+		z = z - offsets[self.entity:sub(1, 7)] or 100
+
     self.water_obj_fake:SetPos(x, y, z)
 --~     if z0 <= z then
 --~       terrain.UpdateWaterGridFromObject(self.water_obj_fake)

@@ -24,7 +24,7 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local type, pairs = type, pairs
-local table_clear = table.iclear
+local table_clear = table.clear
 local MulDivRound = MulDivRound
 local IsValid = IsValid
 local DoneObject = DoneObject
@@ -47,19 +47,29 @@ local function AddSectors()
 			end
 
 			-- add decal to explored sector
-			if not sector.decal then
-				local decal = SectorUnexplored:new()
+			if not (sector.decal and IsValid(sector.ChoGGi_decal)) then
+				sector.ChoGGi_decal = SectorUnexplored:new()
+				local decal = sector.ChoGGi_decal
 				decal:SetColorModifier(green)
 				decal:SetPos(sector:GetPos())
 				decal:SetScale(MulDivRound(sector.area:sizex(), 100, size)+1)
 				decal:SetOpacity(25)
-				sector.ChoGGi_decal = decal
 			end
 		end
 	end
 end
 
+local sectors = {}
+local function RemoveStuckSectors(obj)
+	-- remove any that shouldn't be there
+	if not sectors[obj] then
+		DoneObject(obj)
+	end
+end
+
 local function RemoveSectors()
+	table_clear(sectors)
+
 	local g_MapSectors = g_MapSectors
 	for sector in pairs(g_MapSectors) do
 		if type(sector) == "table" then
@@ -68,25 +78,31 @@ local function RemoveSectors()
 				DoneObject(sector.ChoGGi_decal)
 				sector.ChoGGi_decal = nil
 			end
-			sector:UpdateDecal()
+			-- hide any white sectors
+			if IsValid(sector.decal) then
+				sectors[sector.decal] = true
+				sector.decal:SetVisible(false)
+			end
 		end
 	end
+
+	MapForEach("map", "SectorUnexplored", RemoveStuckSectors)
 end
+
+-- can't hurt
+OnMsg.SaveGame = RemoveSectors
 
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding.GameInit(...)
 	if mod_Option1 then
 		AddSectors()
 	end
-
 	return orig_CursorBuilding_GameInit(...)
 end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding.Done(...)
-	if mod_Option1 then
-		RemoveSectors()
-	end
-
+	RemoveSectors()
 	return orig_CursorBuilding_Done(...)
 end
+

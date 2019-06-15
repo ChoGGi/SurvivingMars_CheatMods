@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 --~ 	 "title", "Construction: Show Map Sectors v0.2",
 	"title", "Construction: Show Map Sectors",
-	"version", 5,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 7,
 	"saved", 0,
 	"id", "ChoGGi_ConstructionShowMapSectors",
 	"author", "ChoGGi",

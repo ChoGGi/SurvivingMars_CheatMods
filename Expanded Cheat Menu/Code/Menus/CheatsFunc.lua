@@ -923,7 +923,6 @@ function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
 end
 
 function ChoGGi.MenuFuncs.MapExploration()
-	local Consts = Consts
 	local UICity = UICity
 	local title = Strings[302535920001355--[[Map]]] .. " " .. Translate(5422--[[Exploration]])
 	local hint_core = Strings[302535920000253--[[Core: Repeatable, exploit core resources.]]]

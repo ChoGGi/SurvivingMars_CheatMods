@@ -1,3 +1,9 @@
+v0.7
+Fixed stuck green squares (thanks Seventy9).
+
+v0.6
+Hopefully fixed stuck green squares.
+
 v0.5
 Fix for saves where it wasn't showing up.
 Lowered opacity of green squares.

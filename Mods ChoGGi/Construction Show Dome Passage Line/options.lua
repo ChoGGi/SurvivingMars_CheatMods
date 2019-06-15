@@ -7,7 +7,7 @@ DefineClass("ModOptions_ChoGGi_ConstructionShowDomePassageLine", {
 			default = true,
 			editor = "bool",
 			id = "Option1",
-			name = "Show during construction",
+			name = T(302535920011067, "Show during construction"),
 			desc = "Show during construction.",
 		},
 	},

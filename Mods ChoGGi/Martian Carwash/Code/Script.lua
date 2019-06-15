@@ -2,10 +2,10 @@
 
 --~ s:SetDust(1000, const.DustMaterialExterior)
 
-local description_text = [[Working at the car wash
+local description_text = T(302535920011105, [[Working at the car wash
 Working at the car wash, yeah
 Come on and sing it with me, car wash
-Sing it with the feeling now, car wash, yeah]]
+Sing it with the feeling now, car wash, yeah]])
 
 local CreateGameTimeThread = CreateGameTimeThread
 local DeleteThread = DeleteThread
@@ -326,8 +326,8 @@ function OnMsg.ClassesPostprocess()
 			"Id", "Carwash",
 			"template_class", "Carwash",
 			"dome_forbidden", true,
-			"display_name", [[Martian Carwash]],
-			"display_name_pl", [[Martian Carwashes]],
+			"display_name", T(302535920011106, [[Martian Carwash]]),
+			"display_name_pl", T(302535920011107, [[Martian Carwashes]]),
 			"description", description_text,
 			"build_category", "ChoGGi",
 			"Group", "ChoGGi",

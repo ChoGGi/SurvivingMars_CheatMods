@@ -50,12 +50,12 @@ function OnMsg.ClassesPostprocess()
 		OnContextUpdate = function(self, context)
 			local name = RetName(context)
 			if context.ChoGGi_DisableMaintenance then
-				self:SetRolloverText("This " .. name .. " will not be maintained (press for menu).")
-				self:SetTitle("Maintenance Disabled")
+				self:SetRolloverText(T{302535920011071, "This <name> will not be maintained (press for menu).", name = name})
+				self:SetTitle(T(302535920011072, "Maintenance Disabled"))
 				self:SetIcon("UI/Icons/traits_disapprove.tga")
 			else
-				self:SetRolloverText("This " .. name .. " will be maintained (press for menu).")
-				self:SetTitle("Maintenance Enabled")
+				self:SetRolloverText(T{302535920011073, "This <name> will be maintained (press for menu).", name = name})
+				self:SetTitle(T(302535920011074, "Maintenance Enabled"))
 				self:SetIcon("UI/Icons/traits_approve.tga")
 			end
 		end,
@@ -68,15 +68,15 @@ function OnMsg.ClassesPostprocess()
 				local name = RetName(context)
 				PopupToggle(self, "idDisableDroneMaintenanceMenu", {
 					{
-						name = "Toggle maintenance on this " .. name .. " only.",
-						hint = "Toggles maintenance on only this " .. name .. ".",
+						name = T{302535920011075, "Toggle maintenance on this <name> only.", name = name},
+						hint = T{302535920011076, "Toggles maintenance on only this <name>.", name = name},
 						clicked = function()
 							ToggleMain(context)
 						end,
 					},
 					{
-						name = "Toggle maintenance on all " .. name .. ".",
-						hint = "Toggles maintenance on all " .. name .. " (all will be set the same as this one).",
+						name = T{302535920011077, "Toggle maintenance on all <name>.", name = name},
+						hint = T{302535920011078, "Toggles maintenance on all <name> (all will be set the same as this one).", name = name},
 						clicked = function()
 							local objs = RetAllOfClass(context.class)
 							for i = 1, #objs do

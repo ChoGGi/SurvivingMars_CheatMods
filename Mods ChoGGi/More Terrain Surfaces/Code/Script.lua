@@ -46,7 +46,7 @@ function OnMsg.ClassesPostprocess()
 		return
 	end
 
-	local cs = _InternalTranslate(T(12400, "Change Surface"))
+	local cs = T(12400, "Change Surface")
 	local desc = T(12445, "Mark the top layer of a surface to be rearranged by Drones. The marked ground will gradually change towards the desired texture.<if(has_dlc('armstrong'))><newline><newline><em>Degrades local Soil Quality.</em></if>")
 
 	PlaceObj("BuildMenuSubcategory", {
@@ -167,7 +167,7 @@ function OnMsg.ClassesPostprocess()
 	sort(lists.Rock, NameSort)
 	sort(lists.Misc, NameSort)
 
-	desc = _InternalTranslate(T(527078695208, "Marks a surface for Drones to change into the Sands type.<if(has_dlc('armstrong'))><newline><newline><em>Degrades local Soil Quality.</em></if>"))
+	desc = T(527078695208, "Marks a surface for Drones to change into the Sands type.<if(has_dlc('armstrong'))><newline><newline><em>Degrades local Soil Quality.</em></if>")
 	local bt = BuildingTemplates
 
 	for _, list in pairs(lists) do

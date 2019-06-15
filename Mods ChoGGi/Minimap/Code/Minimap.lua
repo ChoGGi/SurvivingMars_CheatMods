@@ -27,8 +27,6 @@ local cameraRTS = cameraRTS
 local terrain = terrain
 local transition_time = 0
 
-local Translate = ChoGGi.ComFuncs.Translate
-
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
 	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_MinimapDlg")
@@ -70,9 +68,9 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		Id = "idCaptionToggle",
 		Dock = "left",
 		ZOrder = 0,
-		RolloverTitle = [[Toggle Controls]],
-		RolloverText = [[Toggle showing controls at bottom.]],
-		RolloverHint = Translate(608042494285--[[<left_click> Activate]]),
+		RolloverTitle = T(302535920011003, [[Toggle Controls]]),
+		RolloverText = T(302535920011109, [[Toggle showing controls at bottom.]]),
+		RolloverHint = T(608042494285, "<left_click> Activate"),
 		OnMouseButtonDown = self.idCaptionToggleOnMouseButtonDown,
 		MouseCursor = "UI/Cursors/Rollover.tga",
 		HandleMouse = true,
@@ -108,30 +106,30 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 	self.idToggleDblSize = g_Classes.ChoGGi_XButton:new({
 		Id = "idToggleDblSize",
 		Dock = "left",
-		Text = [[Dbl Size]],
-		RolloverTitle = [[Double Size]],
-		RolloverText = [[Toggle between original size and double.]],
-		RolloverHint = Translate(608042494285--[[<left_click> Activate]]),
+		Text = T(302535920011110, [[Dbl Size]]),
+		RolloverTitle = T(302535920011111, [[Double Size]]),
+		RolloverText = T(302535920011112, [[Toggle between original size and double.]]),
+		RolloverHint = T(608042494285, "<left_click> Activate"),
 		OnPress = self.idToggleDblSizeOnPress,
 	}, self.idToggleArea)
 
 	self.idResetDialog = g_Classes.ChoGGi_XButton:new({
 		Id = "idResetDialog",
 		Dock = "left",
-		Text = [[Reset]],
-		RolloverTitle = [[Reset Dialog]],
-		RolloverText = [[Moves map back to original position and size.]],
-		RolloverHint = Translate(608042494285--[[<left_click> Activate]]),
+		Text = T(302535920011113, [[Reset]]),
+		RolloverTitle = T(302535920011114, [[Reset Dialog]]),
+		RolloverText = T(302535920011115, [[Moves map back to original position and size.]]),
+		RolloverHint = T(608042494285, "<left_click> Activate"),
 		OnPress = self.idResetDialogOnPress,
 	}, self.idToggleArea)
 
 	self.idUseScreenShots = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idUseScreenShots",
 		Dock = "left",
-		Text = [[Image]],
-		RolloverTitle = [[Use ScreenShots]],
-		RolloverText = [[Screenshots or topography images (needs my map images pack mod)..]],
-		RolloverHint = Translate(608042494285--[[<left_click> Activate]]),
+		Text = T(302535920011116, [[Image]]),
+		RolloverTitle = T(302535920011117, [[Use ScreenShots]]),
+		RolloverText = T(302535920011118, [[Screenshots or topography images (needs my map images pack mod).]]),
+		RolloverHint = T(608042494285, "<left_click> Activate"),
 		OnChange = self.idUseScreenShotsOnChange,
 	}, self.idToggleArea)
 
@@ -140,10 +138,10 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 	self.idUpdateMap = g_Classes.ChoGGi_XButton:new({
 		Id = "idUpdateMap",
 		Dock = "left",
-		Text = [[Update]],
-		RolloverTitle = [[Update Image]],
-		RolloverText = [[This will update the map image (resets camera orientation).]],
-		RolloverHint = Translate(608042494285--[[<left_click> Activate]]),
+		Text = T(302535920011119, [[Update]]),
+		RolloverTitle = T(302535920011120, [[Update Image]]),
+		RolloverText = T(302535920011121, [[This will update the map image (resets camera orientation).]]),
+		RolloverHint = T(608042494285, "<left_click> Activate"),
 		OnPress = self.idUpdateMapOnPress,
 	}, self.idToggleArea)
 	if not mod_UseScreenshots then
@@ -154,7 +152,7 @@ function ChoGGi_MinimapDlg:Init(parent, context)
 		Id = "idOpacity",
 		Dock = "right",
 		MinWidth = 50,
-		RolloverText = [[Set opacity of map dialog (0 to 240).]],
+		RolloverText = T(302535920011122, [[Set opacity of map dialog (0 to 240).]]),
 		OnTextChanged = self.idOpacityOnTextChanged,
 	}, self.idToggleArea)
 	self.idOpacity:SetText(tostring(self.opacity))
@@ -388,6 +386,7 @@ function ChoGGi_XMapControl:OnMouseButtonDown(pt, button)
 		return "break"
 	end
 end
+
 function ChoGGi_XMapControl:OnMouseButtonUp(_, button)
 	if button == "L" then
 		if IsValid(self.sphere) then

@@ -63,7 +63,6 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local function StartupCode()
-	local IsValid = IsValid
 	-- reset the prod count (for overview or something)
 	local miners = UICity.labels.PortableMiner or ""
 	for i = 1, #miners do

@@ -28,10 +28,10 @@ function OnMsg.ClassesPostprocess()
 		"Id", "ChoGGi_MultipleAmount",
 		"__template", "InfopanelButton",
 		"Icon", "UI/Icons/Sections/Metals_2.tga",
-		"Title", [[5* The Amount]],
-		"RolloverText", [[Clicking this once will add 5 times the amount of stored resources to all deposits of the same type (and make the grade very high).]],
+		"Title", T(302535920011001, "5* The Amount"),
+		"RolloverText", T(302535920011002, "Clicking this once will add 5 times the amount of stored resources to all deposits of the same type (and make the grade very high)."),
 		"RolloverTitle", T(126095410863,"Info"),
-		"RolloverHint", 	T(0, "Activate <left_click>"),
+		"RolloverHint", T(608042494285, "<left_click> Activate"),
 		"OnPress", BumpAmount,
 	})
 

@@ -13,8 +13,9 @@ local table_find = table.find
 local function RemoveTableItem(list, name, value)
 	local idx = table_find(list, name, value)
 	if idx then
-		if not type(list[idx]) == "function" then
-			list[idx]:delete()
+		local obj = list[idx]
+		if not type(obj) == "function" then
+			obj:delete()
 		end
 		table_remove(list, idx)
 	end
@@ -37,8 +38,8 @@ function OnMsg.ClassesPostprocess()
 			"electricity_consumption", 500,
 
 			"dome_required", true,
-			"display_name", [[Dome Teleporter]],
-			"description", [[It's a teleporter for your domes that acts like a passage.]],
+			"display_name", T(302535920011080, [[Dome Teleporter]]),
+			"description", T(302535920011081, [[It's a teleporter for your domes that acts like a passage.]]),
 			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
 			"display_icon", CurrentModPath .. "UI/orbital_drop.png",

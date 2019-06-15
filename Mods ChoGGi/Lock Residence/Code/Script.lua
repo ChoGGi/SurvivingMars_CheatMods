@@ -59,12 +59,12 @@ function OnMsg.ClassesPostprocess()
 			end
 
 			if context.ChoGGi_LockResidence then
-				self:SetRolloverText([[Remove the lock on this colonist.]])
-				self:SetTitle([[Unlock Residence]])
+				self:SetRolloverText(T(302535920011088, [[Remove the lock on this colonist.]]))
+				self:SetTitle(T(302535920011089, [[Unlock Residence]]))
 				self:SetIcon("UI/Icons/traits_approve.tga")
 			else
-				self:SetRolloverText([[Lock this colonist to always live at]] .. RetName(context.residence))
-				self:SetTitle([[Lock Residence]])
+				self:SetRolloverText(T{302535920011090, [[Lock this colonist to always live at <name>.]], name = RetName(context.residence)})
+				self:SetTitle(T(30253592001191, [[Lock Residence]]))
 				self:SetIcon("UI/Icons/traits_disapprove.tga")
 			end
 			---
@@ -86,12 +86,12 @@ function OnMsg.ClassesPostprocess()
 		OnContextUpdate = function(self, context)
 			---
 			if context.ChoGGi_LockResidence then
-				self:SetRolloverText([[Remove the lock on this residence.]])
-				self:SetTitle([[Unlock Residents]])
+				self:SetRolloverText(T(302535920011092, [[Remove the lock on this residence.]]))
+				self:SetTitle(T(302535920011093, [[Unlock Residents]]))
 				self:SetIcon("UI/Icons/traits_approve.tga")
 			else
-				self:SetRolloverText([[Lock all residents to this residence (if more residents are added you'll need to toggle this or lock each of them).]])
-				self:SetTitle([[Lock Residents]])
+				self:SetRolloverText(T(302535920011094, [[Lock all residents to this residence (if more residents are added you'll need to toggle this or lock each of them).]]))
+				self:SetTitle(T(302535920011095, [[Lock Residents]]))
 				self:SetIcon("UI/Icons/traits_disapprove.tga")
 			end
 			---

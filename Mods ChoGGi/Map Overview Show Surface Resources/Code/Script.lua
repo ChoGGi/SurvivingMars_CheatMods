@@ -36,7 +36,6 @@ local text_table = {}
 
 local function AddIcons()
 	local pairs, type = pairs, type
-	local point = point
 	local table_iclear = table.iclear
 	local table_concat = table.concat
 	local str_Metals = _InternalTranslate(T(3514,"Metals"))

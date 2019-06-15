@@ -1274,6 +1274,10 @@ do -- LoadGame/CityStart
 
 
 
+		if UserSettings.MapEdgeLimit then
+			hr.CameraRTSBorderAtMinZoom = 1000
+			hr.CameraRTSBorderAtMaxZoom = 1000
+		end
 
 		-- update existing speeds
 		if UserSettings.SpeedColonist then
@@ -1556,11 +1560,6 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 		-- how long startup takes
 		if testing or UserSettings.ShowStartupTicks then
 			print("<color 200 200 200>", Strings[302535920000887--[[ECM]]], "</color>:", Strings[302535920000247--[[Startup ticks]]], ":", GetPreciseTicks() - ChoGGi.Temp.StartupTicks)
-		end
-
-		if not testing and UserSettings.ConsoleToggleHistory then
-			-- getting tired of people asking how to disable console log (really tired, guess even this is too much...)
-			print("<color 200 200 200>", Strings[302535920000887--[[ECM]]], "</color>:", Strings[302535920001309--[["Stop showing console log: Press Tilde or Enter and click the ""<color green>%s</color>"" button then make sure ""<color green>%s</color>"" is unchecked."]]]:format(Strings[302535920001308--[[Settings]]], Strings[302535920001112--[[Console Log]]]))
 		end
 
 		-- used to check when game has started and it's safe to print() etc

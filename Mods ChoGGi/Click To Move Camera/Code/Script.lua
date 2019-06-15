@@ -18,7 +18,7 @@ forbid.MouseM = nil
 --~ local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 
-Actions[#Actions+1] = {ActionName = [[Click To Move]],
+Actions[#Actions+1] = {ActionName = T(302535920011058, [[Click To Move]]),
 	ActionId = "ChoGGi_ClickToMove",
 	ActionShortcut = "Shift-MouseL",
 	ActionBindable = true,

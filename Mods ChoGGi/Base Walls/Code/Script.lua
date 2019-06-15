@@ -6,7 +6,6 @@ if not g_AvailableDlc.contentpack1 then
 end
 
 local point = point
-local table_remove = table.remove
 local table_find = table.find
 local table_iclear = table.iclear
 local table_rand = table.rand
@@ -17,49 +16,49 @@ local GetConstructionController = GetConstructionController
 local Translate = ChoGGi.ComFuncs.Translate
 
 local icon_path = CurrentModPath .. "UI/"
-local description = "It's a wall (use button to rotate after placing).\n\n"
+local description = T(302535920011004, "It's a wall (use button to rotate after placing).") .. "\n\n"
 local wall_types = {
 	ChoGGi_BaseWall = {
 		build_pos = 2,
-		display_name = "Adjustable Length Wall",
-		display_name_pl = "Adjustable Length Walls",
+		display_name = T(302535920011005, "Adjustable Length Wall"),
+		display_name_pl = T(302535920011006, "Adjustable Length Walls"),
 		display_icon = icon_path .. "wall_adjust.png",
 		description = description,
 	},
 	ChoGGi_BaseWallCap = {
 		build_pos = 3,
-		display_name = "Wall Cap",
-		display_name_pl = "Walls Cap",
+		display_name = T(302535920011007, "Wall Cap"),
+		display_name_pl = T(302535920011008, "Walls Cap"),
 		display_icon = icon_path .. "wall_cap.png",
-		description = description .. "Cap off a wall.",
+		description = description .. T(302535920011009, "Cap off a wall."),
 	},
 	ChoGGi_BaseWallCapSmall = {
 		build_pos = 4,
-		display_name = "Wall Cap Small",
-		display_name_pl = "Walls Cap Small",
+		display_name = T(302535920011010, "Wall Cap Small"),
+		display_name_pl = T(302535920011011, "Walls Cap Small"),
 		display_icon = icon_path .. "wall_capsmall.png",
-		description = description .. "Cap off a wall chibi.",
+		description = description .. T(302535920011012, "Cap off a wall chibi."),
 	},
 	ChoGGi_BaseTurnWallSmall = {
 		build_pos = 5,
-		display_name = "Turn Wall Small",
-		display_name_pl = "Turn Walls Small",
+		display_name = T(302535920011013, "Turn Wall Small"),
+		display_name_pl = T(302535920011014, "Turn Walls Small"),
 		display_icon = icon_path .. "wall_turn.png",
-		description = description .. "Small turn gate.",
+		description = description .. T(302535920011015, "Small turn gate."),
 	},
 	ChoGGi_BaseTurnWallLarge = {
 		build_pos = 6,
-		display_name = "Turn Wall Large",
-		display_name_pl = "Turn Walls Large",
+		display_name = T(302535920011016, "Turn Wall Large"),
+		display_name_pl = T(302535920011017, "Turn Walls Large"),
 		display_icon = icon_path .. "wall_turnlarge.png",
-		description = description .. "Large turn gate.",
+		description = description .. T(302535920011018, "Large turn gate."),
 	},
 	ChoGGi_BaseWallRamp = {
 		build_pos = 7,
-		display_name = "Drone Ramp",
-		display_name_pl = "Drone Ramps",
+		display_name = T(302535920011019, "Drone Ramp"),
+		display_name_pl = T(302535920011020, "Drone Ramps"),
 		display_icon = "UI/Icons/Buildings/passage_ramp.tga",
-		description = description .. "Help the wee ones over the walls.",
+		description = description .. T(302535920011021, "Help the wee ones over the walls."),
 	},
 }
 
@@ -70,51 +69,51 @@ local corner_objects = {
 	"PlanetMars",
 	"Mystery_MirrorSphere",
 }
-local description_corner = "Something to use instead of the turns.\n\n"
+local description_corner = T(302535920011022, "Something to use instead of the turns.") .. "\n\n"
 -- add some corners joiners if people don't like the crappy curves
 local corner_types = {
 	ChoGGi_CornerJoiner_Eye = {
 		build_pos = 1,
 		entity = "DefenceTurretPlatform",
-		display_name = "Eye",
-		display_name_pl = "Eyes",
+		display_name = T(302535920011023, "Eye"),
+		display_name_pl = T(302535920011024, "Eyes"),
 		display_icon = icon_path .. "corner_eye.png",
-		description = description_corner .. "Eyes always watching you.",
+		description = description_corner .. T(302535920011025, "Eyes always watching you."),
 	},
 	ChoGGi_CornerJoiner_Stumpy = {
 		build_pos = 2,
 		entity = "ReprocessingPlantBarrel",
-		display_name = "Stumpy",
-		display_name_pl = "Stumpies",
+		display_name = T(302535920011026, "Stumpy"),
+		display_name_pl = T(302535920011027, "Stumpies"),
 		display_icon = icon_path .. "corner_stumpy.png",
-		description = description_corner .. "Hunk 'o stump.",
+		description = description_corner .. T(302535920011028, "Hunk 'o stump."),
 	},
 	ChoGGi_CornerJoiner_Holder = {
 		build_pos = 3,
 		entity = "DefenceTurret",
-		display_name = "Holder Sphere",
-		display_name_pl = "Holder Spheres",
+		display_name = T(302535920011029, "Holder Sphere"),
+		display_name_pl = T(302535920011030, "Holder Spheres"),
 		display_icon = icon_path .. "corner_holder.png",
-		description = description_corner .. "Glory be to the light (or planet or mirror).",
+		description = description_corner .. T(302535920011031, "Glory be to the light (or planet or mirror)."),
 		objects = corner_objects,
 	},
 	-- add a switch corner button?
 	ChoGGi_CornerJoiner_Star = {
 		build_pos = 4,
 		entity = "RoverChinaSolarPanel",
-		display_name = "Mars Star",
-		display_name_pl = "Mars Stars",
+		display_name = T(302535920011032, "Mars Star"),
+		display_name_pl = T(302535920011033, "Mars Stars"),
 		display_icon = icon_path .. "corner_marsstar.png",
-		description = description_corner .. "Bask in the glory of Mother Mars.",
+		description = description_corner .. T(302535920011034, "Bask in the glory of Mother Mars."),
 		objects = corner_objects,
 	},
 	ChoGGi_CornerJoiner_Umbrella = {
 		build_pos = 5,
 		entity = "StirlingGeneratorCP3",
-		display_name = "Umbrella",
-		display_name_pl = "Umbrellas",
+		display_name = T(302535920011035, "Umbrella"),
+		display_name_pl = T(302535920011036, "Umbrellas"),
 		display_icon = icon_path .. "corner_umbrella.png",
-		description = description_corner .. "Protect the poor walls from the deadly sun.",
+		description = description_corner .. T(302535920011037, "Protect the poor walls from the deadly sun."),
 	},
 }
 
@@ -323,7 +322,7 @@ function ChoGGi_BaseWalls:SpawnWallAttaches(cursor_obj, count)
 		obj = self:SpawnPassages(nil,point(1170, 620, 1), 7200)
 
 		-- somethings to cover up my shame
-		local obj = self:SpawnBaseObj("InvisibleObject")
+		obj = self:SpawnBaseObj("InvisibleObject")
 		obj:SetScale(125)
 		obj:SetAttachOffset(point(-243, -332, -70))
 		obj:SetAxisAngle(point(2032, 2393, 2630), 21498)
@@ -670,7 +669,7 @@ function OnMsg.ClassesPostprocess()
 		build_pos = 1,
 		category = "ChoGGi_BaseWalls",
 		description = description_corner,
-		display_name = "Corner Joiners",
+		display_name = T(302535920011038, "Corner Joiners"),
 		group = "Default",
 		icon = icon_path .. "corner_subcat.png",
 		category_name = "ChoGGi_BaseWalls_Joiners",
@@ -719,7 +718,7 @@ function OnMsg.ClassesPostprocess()
 	if not table.find(bc, "id", "ChoGGi_BaseWalls") then
 		bc[#bc+1] = {
 			id = "ChoGGi_BaseWalls",
-			name = "Base Walls",
+			name = T(302535920011039, "Base Walls"),
 			image = icon_path .. "bmc_basewalls.png",
 --~ 			highlight = "UI/Icons/bmc_placeholder_shine.tga",
 		}
@@ -777,9 +776,9 @@ function OnMsg.ClassesPostprocess()
 					return context.current_holder_object
 				end,
 				"Icon", "UI/Icons/IPButtons/pin.tga",
-				"RolloverTitle", "Holdee Swap",
-				"RolloverText", "Different strokes for different folks.",
-				"OnPress", function (self, gamepad)
+				"RolloverTitle", T(302535920011040, "Holdee Swap"),
+				"RolloverText", T(302535920011041, "Different strokes for different folks."),
+				"OnPress", function (self)
 					self.context:SwapHolder()
 					ObjModified(self.context)
 				end,
@@ -793,8 +792,8 @@ function OnMsg.ClassesPostprocess()
 					return context.item_type == "wall_adjust"
 				end,
 				"Icon", "UI/Icons/IPButtons/drill.tga",
-				"RolloverTitle", "Adjust Length",
-				"RolloverText", T(0, [[Adjust length of placed wall.
+				"RolloverTitle", T(302535920011042, "Adjust Length"),
+				"RolloverText", T(302535920011043, [[Adjust length of placed wall.
 
 
 <em>Would you care for another schnitzengruben?</em>]]),
@@ -882,7 +881,7 @@ end
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 c = c + 1
-Actions[c] = {ActionName = "BaseWalls: Adjust Longer",
+Actions[c] = {ActionName = T(302535920011046, "BaseWalls") .. ": " .. T(302535920011044, "Adjust Longer"),
 	ActionId = "ChoGGi.AdjustWalls.Longer",
 	OnAction = function(self)
 		local ctrl = GetConstructionController()
@@ -898,7 +897,7 @@ Actions[c] = {ActionName = "BaseWalls: Adjust Longer",
 }
 
 c = c + 1
-Actions[c] = {ActionName = "BaseWalls: Adjust Shorter",
+Actions[c] = {ActionName = T(302535920011046, "BaseWalls") .. ": " .. T(302535920011045, "Adjust Shorter"),
 	ActionId = "ChoGGi.AdjustWalls.Shorter",
 	OnAction = function(self)
 		local ctrl = GetConstructionController()
@@ -915,7 +914,7 @@ Actions[c] = {ActionName = "BaseWalls: Adjust Shorter",
 
 -- since we change the mode these don't work
 c = c + 1
-Actions[c] = {ActionName = "BaseWalls: " .. Translate(312752058553, "Rotate Building Left"),
+Actions[c] = {ActionName = T(302535920011046, "BaseWalls") .. ": " .. Translate(312752058553, "Rotate Building Left"),
 	ActionId = "ChoGGi.AdjustWalls.actionRotBuildingLeft",
 	ActionShortcut = "R",
 	ActionShortcut2 = "Shift-R",

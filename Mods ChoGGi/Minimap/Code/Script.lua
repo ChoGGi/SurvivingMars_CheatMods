@@ -68,8 +68,8 @@ function OnMsg.ModsReloaded()
 		PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_Minimap", true,
 			"__template", "HUDButtonTemplate",
-			"RolloverText", [[Click to go places (updates minimap first click).]],
-			"RolloverTitle", [[Minimap]],
+			"RolloverText", T(302535920011123, [[Click to go places (updates minimap first click).]]),
+			"RolloverTitle", T(302535920011124, [[Minimap]]),
 			"Id", "idMinimap",
 			"Image", CurrentModPath .. "UI/minimap.png",
 			"FXPress", "MainMenuButtonClick",
@@ -160,8 +160,9 @@ end
 function OnMsg.ChangeMapDone()
 	local term = terminal.desktop
 	for i = #term, 1, -1 do
-		if term[i]:IsKindOf("ChoGGi_MinimapDlg") then
-			term[i]:Close()
+		local dlg = term[i]
+		if dlg:IsKindOf("ChoGGi_MinimapDlg") then
+			dlg:Close()
 		end
 	end
 end

@@ -11,7 +11,7 @@ DefineClass("ModOptions_ChoGGi_ConstructionShowHexBuildableGrid", {
 			default = true,
 			editor = "bool",
 			id = "Option1",
-			name = "Show during construction",
+			name = T(302535920011068, "Show during construction"),
 			desc = "Show during construction.",
 		},
 		{
@@ -20,7 +20,7 @@ DefineClass("ModOptions_ChoGGi_ConstructionShowHexBuildableGrid", {
 			id = "DebugGridSize",
 			max = 100,
 			min = 1,
-			name = "Grid Size",
+			name = T(302535920011069, "Grid Size"),
 		},
 		{
 			default = grid_opacity,
@@ -28,7 +28,7 @@ DefineClass("ModOptions_ChoGGi_ConstructionShowHexBuildableGrid", {
 			id = "DebugGridOpacity",
 			max = 100,
 			min = 0,
-			name = "Grid Opacity",
+			name = T(302535920011070, "Grid Opacity"),
 		},
 	},
 })

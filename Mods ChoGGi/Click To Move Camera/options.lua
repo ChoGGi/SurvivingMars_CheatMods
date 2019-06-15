@@ -5,7 +5,7 @@ DefineClass("ModOptions_ChoGGi_ShiftClickToMove", {
 			default = false,
 			editor = "bool",
 			id = "EdgeScrolling",
-			name = "Edge Scrolling",
+			name = T(302535920011066, "Edge Scrolling"),
 			desc = "Disable scrolling when mouse near edge.",
 		},
 	},

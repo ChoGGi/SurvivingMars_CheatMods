@@ -9,8 +9,8 @@ DefineClass("ModOptions_ChoGGi_DomeTeleporters", {
 			id = "BuildDist",
 			max = 1000,
 			min = 1,
+			name = T(302535920011079, "Build Distance"),
 			desc = "How many hexes you can build.",
-			name = "Build Distance",
 		},
 	},
 })

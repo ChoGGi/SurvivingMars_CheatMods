@@ -22,7 +22,7 @@ local function GetPoints(self, text, skip)
 			local units_points = unit.training_points[self.training_type] or 0
 
 			c = c + 1
-			text[c] = _InternalTranslate(T{unit:GetDisplayName()})
+			text[c] = _InternalTranslate(T(unit:GetDisplayName()))
 				.. _InternalTranslate("<right>")
 				.. MulDivRound(units_points, 100, self.evaluation_points) .. "%"
 		end
@@ -56,7 +56,7 @@ function School:GetTrainedRollover()
 			local units_points = unit.training_points[self.training_type] or 0
 
 			c = c + 1
-			text[c] = _InternalTranslate(T{unit:GetDisplayName()})
+			text[c] = _InternalTranslate(T(unit:GetDisplayName()))
 				.. _InternalTranslate("<right>")
 				.. MulDivRound(
 					unit.age or 0,
