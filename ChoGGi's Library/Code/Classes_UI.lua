@@ -386,7 +386,7 @@ function ChoGGi_XList:CreateTextItem(text, props, context)
 	local text_control = g_Classes.ChoGGi_XTextList:new(props, item, context)
 	item.idText = text_control
 	text_control:SetText(text)
-	return item
+	return item, text_control
 end
 DefineClass.ChoGGi_XTextList = {
 	__parents = {

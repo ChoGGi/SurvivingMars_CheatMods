@@ -1,2 +1,5 @@
+v0.3
+Added mod options for Always Dusty/Clean.
+
 v0.2
 Da Vinci

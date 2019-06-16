@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Buildings Always Dusty",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"saved", 0,
 	"id", "ChoGGi_BuildingsAlwaysDusty",
 	"author", "ChoGGi",
@@ -15,9 +15,11 @@ return PlaceObj("ModDef", {
 	"lua_revision", 245618,
 	"description", [[Buildings will never lose their dust. This is a visual mod, it doesn't affect maintenance.
 
+Mod Options:
+Always Dusty: On by default.
+Always Clean: Off by default (dusty takes precedent if both are enabled).
+
 Requested by: LegendGamer
-
-
 
 Included in Expanded Cheat Menu.]],
 })

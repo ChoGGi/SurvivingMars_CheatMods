@@ -60,7 +60,7 @@ end
 local upgrade_list = {}
 local upgrade_list_c = 0
 
--- start with first upgrade unlocked
+-- start with upgrades unlocked (you can hide them behind tech if you want)
 local function StartupCode()
 --~ 	ex(upgrade_list)
 

@@ -188,27 +188,17 @@ local function AddProfilesButton(pgmission, toolbar)
 		return
 	end
 
-	toolbar.idChoGGi_ProfileButton = XTextButton:new({
-		Id = "idChoGGi_ProfileButton",
-		Text = "PROFILES",
-		FXMouseIn = "ActionButtonHover",
-		FXPress = "ActionButtonClick",
-		FXPressDisabled = "UIDisabledButtonPressed",
-		HAlign = "center",
-		Background = 0,
-		FocusedBackground = 0,
-		RolloverBackground = 0,
-		PressedBackground = 0,
-		RolloverZoom = 1100,
-		TextStyle = "Action",
-		MouseCursor = "UI/Cursors/Rollover.tga",
-		RolloverTemplate = "Rollover",
-		RolloverTitle = T(126095410863--[[Info]]),
-		RolloverText = [[Save/Load save profiles.]],
-		OnPress = function()
+	toolbar.idChoGGi_ProfileButton = ChoGGi.ComFuncs.RetToolbarButton{
+		parent = toolbar,
+		id = "idChoGGi_ProfileButton",
+		text = T(0, "PROFILES"),
+
+		roll_title = T(126095410863, "Info"),
+		roll_text = T(0, [[Save/Load save profiles.]]),
+		onpress = function()
 			ProfileButtonPressed(pgmission, toolbar)
 		end,
-	}, toolbar)
+	}
 
 end
 

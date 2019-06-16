@@ -24,13 +24,15 @@ function ChoGGi.MenuFuncs.SpawnPOIs()
 		}
 	end
 
-	local function CallBackFunc(choice)
-		if choice.nothing_selected then
+	local function CallBackFunc(choices)
+		if choices.nothing_selected then
 			return
 		end
-		local value = choice[1].value
-		if POIPresets[value] then
-			CheatSpawnSpecialProjects(value)
+		for i = 1, #choices do
+			local value = choices[i].value
+			if POIPresets[value] then
+				CheatSpawnSpecialProjects(value)
+			end
 		end
 	end
 
@@ -38,6 +40,7 @@ function ChoGGi.MenuFuncs.SpawnPOIs()
 		callback = CallBackFunc,
 		items = item_list,
 		title = Strings[302535920000931--[[Spawn POIs]]],
+		multisel = true,
 	}
 end
 

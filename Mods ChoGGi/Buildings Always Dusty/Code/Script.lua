@@ -1,22 +1,45 @@
-function OnMsg.ClassesGenerate()
-	function BuildingVisualDustComponent:SetDustVisuals(dust, in_dome)
+-- See LICENSE for terms
 
+local options
+local mod_AlwaysDusty
+local mod_AlwaysClean
+
+-- fired when settings are changed and new/load
+local function ModOptions()
+	mod_AlwaysDusty = options.AlwaysDusty
+	mod_AlwaysClean = options.AlwaysClean
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= "ChoGGi_BuildingsAlwaysDusty" then
+		return
+	end
+
+	ModOptions()
+end
+
+local orig_SetDustVisuals = BuildingVisualDustComponent.SetDustVisuals
+function BuildingVisualDustComponent:SetDustVisuals(dust, ...)
+
+	-- always dusty gets first dibs
+	if mod_AlwaysDusty then
 		if not self.ChoGGi_AlwaysDust or self.ChoGGi_AlwaysDust < dust then
 			self.ChoGGi_AlwaysDust = dust
 		end
 		dust = self.ChoGGi_AlwaysDust
-
-		local normalized_dust = MulDivRound(dust, 255, self.visual_max_dust)
-		ApplyToObjAndAttaches(self, SetObjDust, normalized_dust, in_dome)
+	-- if dusty is disabled and clean is enabled
+	elseif mod_AlwaysClean then
+		self.ChoGGi_AlwaysDust = nil
+		dust = 0
 	end
-end
 
---[[
-function OnMsg.LoadGame()
-	--dust removal, uncomment and restart the game (or maybe just reload it).
-	local objs = local objs = UICity.labels.Building or ""
-	for i = 1, #objs do
-		objs[i].ChoGGi_AlwaysDust = nil
-	end
+	-- orig func do your thing
+	return orig_SetDustVisuals(self, dust, ...)
 end
-]]

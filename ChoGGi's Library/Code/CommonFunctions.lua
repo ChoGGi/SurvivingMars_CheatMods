@@ -734,8 +734,8 @@ local ShowObj = ChoGGi.ComFuncs.ShowObj
 local ColourObj = ChoGGi.ComFuncs.ColourObj
 local ClearShowObj = ChoGGi.ComFuncs.ClearShowObj
 
-function ChoGGi.ComFuncs.PopupSubMenu(self, name, item)
-	local popup = self.popup
+function ChoGGi.ComFuncs.PopupSubMenu(menu, name, item)
+	local popup = menu.popup
 
 	-- build the new one/open it
 	local submenu = g_Classes.ChoGGi_XPopupList:new({
@@ -743,7 +743,7 @@ function ChoGGi.ComFuncs.PopupSubMenu(self, name, item)
 		Id = "ChoGGi_submenu_popup",
 		popup_parent = popup,
 		AnchorType = "smart",
-		Anchor = self.box,
+		Anchor = menu.box,
 	}, terminal.desktop)
 	-- item == opened from PopupBuildMenu
 	if item then
@@ -824,9 +824,9 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items, popup)
 
 		if item.mouseup then
 			function button:OnMouseButtonUp(pt, button, ...)
+				cls.OnMouseButtonUp(self, pt, button, ...)
 				-- make sure cursor was in button area when mouse released
 				if pt:InBox2D(self.box) then
-					cls.OnMouseButtonUp(self, pt, button, ...)
 					item.mouseup(item, self, pt, button, ...)
 					popup:Close()
 				end
@@ -1026,13 +1026,13 @@ function ChoGGi.ComFuncs.QuestionBox(text, func, title, ok_text, cancel_text, im
 			context, template
 		) == "ok" then
 			if func then
-				func(true)
+				func(true, context)
 			end
 			return "ok"
 		else
 			-- user canceled / closed it
 			if func then
-				func()
+				func(false, context)
 			end
 			return "cancel"
 		end
@@ -3935,7 +3935,11 @@ function ChoGGi.ComFuncs.RetAllOfClass(cls)
 		local g_cls = g_Classes[cls]
 		-- if it isn't in g_Classes and isn't a CObject then MapGet will return *everything*
 		if g_cls and g_cls:IsKindOf("CObject") then
-			return MapGet(true, cls)
+			local objs = MapGet(true, cls)
+			-- just to be sure
+			if objs[1]:IsKindOf(cls) then
+				return objs
+			end
 		end
 	end
 	return objects
@@ -4750,4 +4754,27 @@ function ChoGGi.ComFuncs.SetBuildingLimits(force)
 			end
 		end
 	end
+end
+
+-- bottom toolbar button in menus (new game, planetary, etc)
+function ChoGGi.ComFuncs.RetToolbarButton(params)
+	return XTextButton:new({
+		Id = params.id,
+		Text = params.text or T(126095410863, "Info"),
+		FXMouseIn = "ActionButtonHover",
+		FXPress = "ActionButtonClick",
+		FXPressDisabled = "UIDisabledButtonPressed",
+		HAlign = "center",
+		Background = 0,
+		FocusedBackground = 0,
+		RolloverBackground = 0,
+		PressedBackground = 0,
+		RolloverZoom = 1100,
+		TextStyle = params.text_style or "Action",
+		MouseCursor = "UI/Cursors/Rollover.tga",
+		RolloverTemplate = "Rollover",
+		RolloverTitle = params.roll_title,
+		RolloverText = params.roll_text,
+		OnPress = params.onpress,
+	}, params.parent)
 end
