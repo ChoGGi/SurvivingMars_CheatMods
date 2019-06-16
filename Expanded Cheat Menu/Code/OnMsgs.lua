@@ -991,10 +991,10 @@ end
 
 -- const.Scale.hours is 30 000 ticks (GameTime)
 function OnMsg.NewHour()
-	local ChoGGi = ChoGGi
+	local UserSettings = ChoGGi.UserSettings
 
 	-- make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
-	if ChoGGi.UserSettings.DroneResourceCarryAmountFix then
+	if UserSettings.DroneResourceCarryAmountFix then
 		local labels = UICity.labels
 		local FuckingDrones = ChoGGi.ComFuncs.FuckingDrones
 
@@ -1026,12 +1026,12 @@ function OnMsg.NewHour()
 
 	-- pathing? pathing in domes works great... watch out for that invisible wall!
 	-- update: seems like this is an issue from one of those smarter work ai mods
-	if ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings then
+	if UserSettings.ColonistsStuckOutsideServiceBuildings then
 		ChoGGi.ComFuncs.ResetHumanCentipedes()
 	end
 
 	-- some types of crashing won't allow SM to gracefully close and leave a log/minidump as the devs envisioned... No surprise to anyone who's ever done any sort of debugging before.
-	if ChoGGi.UserSettings.FlushLogConstantly then
+	if UserSettings.FlushLogConstantly then
 		FlushLogFile()
 	end
 end

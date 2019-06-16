@@ -11,6 +11,7 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"lua_revision", 245618,
 	"code", {
+		"Code/Add Entities.lua",
 		"Code/Script.lua",
 	},
 	"description", [[Picks a random flag when you place a banner.

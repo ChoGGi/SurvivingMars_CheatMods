@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[If your standing with a rival colony is excellent (59+), you will be able to build any buildings locked to that sponsor.
+	"description", [[If your standing with a rival colony is excellent (min 60), you will be able to build any buildings locked to that sponsor.
 This is a slightly less cheaty version of All Sponsor Buildings.
 
 

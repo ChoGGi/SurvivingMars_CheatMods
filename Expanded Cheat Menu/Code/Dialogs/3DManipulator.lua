@@ -484,6 +484,28 @@ function ChoGGi_Dlg3DManipulator:idPosSave_OnPress()
 
 end
 
+--~ GedPropEditors.lua
+--~ ModItemAttachment.lua
+function ChoGGi_Dlg3DManipulator:SliderInit(id, parent, target, min, max)
+	XEdit:new({
+		Id = "idEdit_" .. id,
+		Dock = "left",
+		MinWidth = 50,
+	}, parent)
+	local max_rot = 180*60
+	XSleekScroll:new({
+		Id = "idScroll_" .. id,
+		Dock = "box",
+		Margins = box(2, 2, 2, 2),
+		Min = min or -max_rot,
+		Max = max + 1 or max_rot + 1,
+		Horizontal = true,
+		Target = target or "node",
+	}, parent)
+--~ 	self.idScroll:SetEnabled(not prop_meta.read_only)
+--~   self.idEdit:SetEnabled(not prop_meta.read_only)
+end
+
 -- remove original pos key
 function ChoGGi_Dlg3DManipulator:Done()
 	obj.ChoGGi_3DManipulator_SavedData = nil
