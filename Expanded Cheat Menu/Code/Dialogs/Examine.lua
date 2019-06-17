@@ -2715,7 +2715,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 	-- dupe list for the "All" checkbox
 	local skip_dupes = self.info_list_skip_dupes
 
-	table_clear(list_obj_str)
+	table_iclear(list_obj_str)
 	table_clear(list_sort_obj)
 	table_clear(list_sort_num)
 	table_clear(skip_dupes)
@@ -2764,7 +2764,13 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 			while meta_temp do
 				c = self:AddItemsToInfoList(obj, c, meta_temp, skip_dupes, list_obj_str)
 				if type(meta_temp.__index) == "table" then
+					-- add the index
 					c = self:AddItemsToInfoList(obj, c, meta_temp.__index, skip_dupes, list_obj_str)
+					-- and the index metatable
+					local meta = getmetatable(meta_temp.__index)
+					if meta then
+						c = self:AddItemsToInfoList(obj, c, meta, skip_dupes, list_obj_str)
+					end
 				end
 
 				meta_temp = getmetatable(meta_temp)
@@ -2788,25 +2794,19 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 		c = c + 1
 		list_obj_str[c] = self:ConvertValueToInfo(tostring(obj))
 
-		local name = self.ChoGGi.ComFuncs.DebugGetInfo(obj)
-		if name == "[C](-1)" then
-			name = RetName(obj)
-		end
 		c = c + 1
 		list_obj_str[c] = self:HyperLink(obj, function()
 			self.ChoGGi.ComFuncs.OpenInExamineDlg(obj, {
 				ex_params = true,
 				parent = self,
 			})
-		end) .. name .. self.hyperlink_end
+		end) .. RetName(obj) .. self.hyperlink_end
 	end
 
 	self:SortInfoList(list_obj_str, list_sort_num)
 
-	-- cobjects, not property objs? (IsKindOf)
---~ 	local is_valid_obj = IsValid(obj)
-	local is_valid_obj = self.is_valid_obj
-	if is_valid_obj and obj:IsKindOf("CObject") then
+	-- cobjects, not property objs
+	if self.is_valid_obj and obj:IsKindOf("CObject") then
 		local entity = self.ChoGGi.ComFuncs.RetObjectEntity(obj)
 
 		table_insert(list_obj_str, 1, "\t--"
@@ -3218,8 +3218,8 @@ Decompiled code won't scroll correctly as the line numbers are different."]]]:fo
 	end
 
 	-- do we add a metatable to it?
-	if not (obj == "nil" or is_valid_obj or obj_type == "userdata") and obj_metatable
-			or is_valid_obj and obj:IsKindOf("BaseSocket") then
+	if not (obj == "nil" or self.is_valid_obj or obj_type == "userdata") and obj_metatable
+			or self.is_valid_obj and obj:IsKindOf("BaseSocket") then
 		table_insert(list_obj_str, 1, "\t-- metatable: " .. self:ConvertValueToInfo(obj_metatable) .. " --")
 
 		if self.enum_vars and next(self.enum_vars) then
