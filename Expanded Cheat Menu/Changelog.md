@@ -1,8 +1,11 @@
 ## ECM Changelog
 
-## v14.0 (Unreleased)
+## v14.1 (Unreleased)
+
+## v14.0 (June 18 2019)
 ### Changed:
 - Added Update Text func/button to MultiLineText (only shows up for some stuff like view console text, or view text in examine).
+- Added Batch func to Examine>Exec Code.
 
 ### Fixed:
 - Protection Radius wasn't opening (praise Black Jesus).

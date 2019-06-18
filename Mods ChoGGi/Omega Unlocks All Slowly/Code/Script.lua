@@ -1,26 +1,27 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_OmegaUnlocksAllSlowly"
-local mod = Mods[mod_id]
+local options
+local mod_SolsBetweenUnlock
 
-local mod_SolsBetweenUnlock = mod.options and mod.options.SolsBetweenUnlock or 1
-
+-- fired when settings are changed and new/load
 local function ModOptions()
-	mod_SolsBetweenUnlock = mod.options.SolsBetweenUnlock
+	mod_SolsBetweenUnlock = options.SolsBetweenUnlock
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
 end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_OmegaUnlocksAllSlowly" then
 		return
 	end
 
 	ModOptions()
 end
-
--- for some reason mod options aren't retrieved before this script is loaded...
-OnMsg.CityStart = ModOptions
-OnMsg.LoadGame = ModOptions
 
 GlobalVar("ChoGGi_OmegaUnlocksAllSlowly_Sols", 0)
 
@@ -45,7 +46,7 @@ function OnMsg.NewDay()
 
 	local UICity = UICity
 
-	-- if there's none left to discover
+	-- if there's none left to discover return
 	local breakthroughs = UICity:GetUnregisteredBreakthroughs()
 	if not breakthroughs[1] then
 		return
@@ -61,10 +62,12 @@ function OnMsg.NewDay()
 		end
 	end
 
+	-- nothing working return
 	if not can_unlock then
 		return
 	end
 
+	-- pick a rand bt from the list
 	local def = TechDef[table.rand(breakthroughs)]
 
 	-- we already checked for breakthroughs[1], but why not check again :)

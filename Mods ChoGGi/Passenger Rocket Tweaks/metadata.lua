@@ -3,8 +3,8 @@ return PlaceObj("ModDef", {
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
-			"version_major", 6,
-			"version_minor", 9,
+			"version_major", 7,
+			"version_minor", 0,
 		}),
 	},
 --~ 	"title", "Passenger Rocket Tweaks v0.2",

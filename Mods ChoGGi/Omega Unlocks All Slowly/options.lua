@@ -6,10 +6,10 @@ DefineClass("ModOptions_ChoGGi_OmegaUnlocksAllSlowly", {
 	properties = {
 		{
 			default = 1,
-			editor = "number",
-			id = "SolsBetweenUnlock",
 			max = 100,
 			min = 1,
+			editor = "number",
+			id = "SolsBetweenUnlock",
 			name = "Sols Between Unlock",
 		},
 	},

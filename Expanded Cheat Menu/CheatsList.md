@@ -261,7 +261,7 @@ Debug.Framerate Counter>Toggle: Disabled: Switch between FPS, ms, and off.
 This is temporary, use Options>Video>Framerate Counter to permanently save it.
 Debug.Framerate Counter>Up Left
 Debug.Framerate Counter>Up Right: Default
-Debug.Grids>Follow Mouse Grid Size: 35: Sets the size of the Building/Flight grid.
+Debug.Grids>Follow Mouse Grid Size: 25: Sets the size of the Building/Flight grid.
 Debug.Grids>Follow Mouse Grid Trans: 15: How transparent the Building/Flight grid is.
 Debug.Grids>Show Grid 45 Square: Square 45 (use Disable to hide).
 Debug.Grids>Show Grid Disable: Hide the white ground grids.
@@ -310,7 +310,6 @@ ECM.Buildings.Buildings>Points To Train: How many points are needed to finish tr
 ECM.Buildings.Buildings>Power-free Building: Toggle electricity use for selected building type.
 ECM.Buildings.Buildings>Production Amount Set: Set production of buildings of selected type, also applies to newly placed ones.
 Works on any building that produces.
-ECM.Buildings.Buildings>Protection Radius: Change threat protection coverage distance.
 ECM.Buildings.Buildings>Service Building Stats: Tweak settings for parks and such.
 Health change, Sanity change, Service Comfort, Comfort increase.
 ECM.Buildings.Buildings>Set Charge & Discharge Rates: Change how fast Air/Water/Battery storage capacity changes.
@@ -322,6 +321,7 @@ ECM.Buildings.Farms>Farm Shifts All On: Turns on all the farm shifts.
 ECM.Buildings.Farms>Unlock Crops: Shows list of locked crops.
 ECM.Buildings.Radius>Core Heat Convector: Change the range of the Core Heat Convector.
 ECM.Buildings.Radius>Forestation Plant: Change the range of the Forestation Plant.
+ECM.Buildings.Radius>Protection Radius: Change threat protection coverage distance (MDSLaser/DefenceTower).
 ECM.Buildings.Radius>Subsurface Heater: Change the range of the Subsurface Heater.
 ECM.Buildings.Radius>Triboelectric Scrubber: Change the range of the Triboelectric Scrubber.
 ECM.Buildings.Sanatoriums & Schools>Sanatoriums & Schools: Show All Traits: Shows all appropriate traits in Sanatoriums/Schools side panel popup menu.
@@ -352,16 +352,16 @@ ECM.Buildings.Toggles>Show Hidden Buildings: Show hidden buildings in build menu
 ECM.Buildings.Toggles>Unlimited Connection Length: No more length limits to pipes, cables, and passages.
 ECM.Buildings.Toggles>Unlimited Wonders: Unlimited wonder build limit (blocks the build a wonder achievement).
 ECM.Buildings>Empty Mech Depot: Empties out selected/moused over mech depot into a small depot in front of it.
-ECM.Buildings>Moisture Vaporator Penalty: 40: Disable penalty when Moisture Vaporators are close to each other.
+ECM.Buildings>Moisture Vaporator Penalty: Disable penalty when Moisture Vaporators are close to each other.
 ECM.Buildings>Storage Amount Of Diner & Grocery: Change how much food is stored in them (less chance of starving colonists when busy).
 ECM.Buildings>Unlock Locked Buildings: Shows a list of buildings you can unlock.
 This doesn't apply to sponsor limited ones; see Toggles>Remove Sponsor Limits.
 ECM.Capacity>Building Capacity: Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).
 ECM.Capacity>Building Visitor Capacity: Set visitors capacity of all buildings of selected type, also applies to newly placed ones.
 ECM.Capacity>Storage Mechanized Depots Temp: Allow the temporary storage to hold 100 instead of 50 cubes.
-ECM.Capacity>Storage Mechanized Depots: 10000000: Change mechanized depot storage capacity.
+ECM.Capacity>Storage Mechanized Depots: Change mechanized depot storage capacity.
 ECM.Capacity>Storage Other Depot: Change other storage depot capacity.
-ECM.Capacity>Storage Universal Depot: 500000: Change universal storage depot capacity.
+ECM.Capacity>Storage Universal Depot: Change universal storage depot capacity.
 ECM.Capacity>Storage Waste Depot: Change waste storage depot capacity.
 ECM.Capacity>Worker Capacity: Set worker capacity of buildings of selected type, also applies to newly placed ones.
 ECM.Colonists.Stats>Chance Of Sanity Damage: Disable colonists taking sanity damage from certain events.
@@ -401,7 +401,6 @@ ECM.Colonists.Workplaces>Toggle All Shifts: Toggle all workshifts on or off (far
 ECM.Colonists.Workplaces>Update All Workplaces: Updates all colonist's workplaces.
 ECM.Colonists>Add Or Remove Applicants: 0: Add random applicants to the passenger pool (has option to remove all).
 ECM.Colonists>Colonist Death Age: Change the age at which colonists die (applies to newly arrived and born colonists as well).
-ECM.Colonists>Colonists Gravity: Change gravity of Colonists.
 ECM.Colonists>Colonists Move Speed: How fast colonists will move.
 ECM.Colonists>Colonists Starve: Time before starting to starve
 Works after colonist idle.
@@ -427,7 +426,6 @@ ECM.Drones>Change Amount of Drones in Hub: Select a DroneHub then change the amo
 ECM.Drones>Command center max Drones: Maximum number of Drones a Drone Hub can control
 ECM.Drones>Drone Battery Infinite: Drone Battery Infinite
 ECM.Drones>Drone Build Speed: Instant build/repair when resources are ready.
-ECM.Drones>Drone Gravity: Change gravity of Drones.
 ECM.Drones>Drone Move Speed: How fast drones will move.
 ECM.Drones>Drone Repair Supply Leak Speed: The amount of time in seconds it takes a Drone to fix a supply leak
 ECM.Drones>Drone Rock To Concrete Speed: How long it takes drones to convert rock to concrete.
@@ -436,7 +434,7 @@ ECM.Drones>Drone Wasp Move Speed: How fast drones will move.
 ECM.Drones>Drone recharge time: The time it takes for a Drone to be fully recharged
 ECM.Drones>Drone resource carry amount: Change amount drones can carry.
 ECM.Drones>DroneFactory Build Speed: Change how fast drone factories build drones.
-ECM.Drones>RC Commander max Drones: 25: Maximum Drones an RC Commander can control
+ECM.Drones>RC Commander max Drones: Maximum Drones an RC Commander can control
 ECM.Drones>Work Radius DroneHub: Change DroneHub drone radius (this ignores slider).
 ECM.Drones>Work Radius RC Rover: Change RC Rover drone radius (this ignores slider).
 ECM.Mission.Disasters>Cold Waves: Set the occurrence level of Cold Wave disasters.
@@ -474,7 +472,6 @@ ECM.Rockets>Max Export Amount: Change how many rares per rocket you can export.
 ECM.Rockets>Payload Capacity: Maximum payload (in kg) of a resupply Rocket
 ECM.Rockets>Rockets Ignore Fuel: Rockets don't need fuel to launch.
 ECM.Rockets>Travel Time: 1000: Time it takes for a Rocket to travel from Mars to Earth
-ECM.Rovers>RC Gravity: Change gravity of RCs.
 ECM.Rovers>RC Instant Resource Transfer: Make it instantly gather/transfer resources.
 ECM.Rovers>RC Move Speed: How fast RCs will move.
 ECM.Rovers>RC Set Charging Distance: Distance from power lines that rovers can charge.
@@ -520,7 +517,7 @@ Game.Export CSV>Map Data: Export map location data to C:\Users\ChoGGi\AppData\Ro
 See survivingmaps.com for a filtered list.
 Don't use in start new game screens (rating/topo will be messed up).
 Difficulty Challenge/Named Location may not work on some saves (best to start a new game, or run from main menu).
-Game.Game Speed>Game Speed: 3: Change the game speed (only for medium/fast, normal is normal).
+Game.Game Speed>Game Speed: Change the game speed (only for medium/fast, normal is normal).
 Game.Game Speed>Time Factor: 1000: Change the time factor (not permanently); for ease of screenshots or something.
 Game.Interface>GUI Dock Side: Left: Change which side (most) GUI menus are on.
 Game.Interface>Never Show Hints: No more hints ever.

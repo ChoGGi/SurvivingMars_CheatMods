@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local table_insert = table.insert
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Translate = ChoGGi.ComFuncs.Translate
 local ValidateImage = ChoGGi.ComFuncs.ValidateImage
@@ -25,14 +26,14 @@ function FillRandomMapProps(gen, params, ...)
 
 		-- check if we already created image viewer, and make one if not
 		if not show_image_dlg then
-			show_image_dlg = ChoGGi_VCM_MapImageDlg:new({}, terminal.desktop,{})
+			show_image_dlg = ChoGGi_VCM_MapImageDlg:new({}, terminal.desktop, {})
 		end
 		-- pretty little image
 		show_image_dlg.idImage:SetImage(image_str .. map .. ".png")
 		show_image_dlg.idCaption:SetText(map)
 		-- update text info
 		if extra_info_dlg then
-			extra_info_dlg:UpdateInfo(map, gen)
+			extra_info_dlg:UpdateInfo(gen)
 		end
 
 		return map
@@ -78,6 +79,10 @@ DefineClass.ChoGGi_VCM_MapImageDlg = {
 	__parents = {"ChoGGi_XWindow"},
 	dialog_width = 525.0,
 	dialog_height = 525.0,
+
+	-- if random tech rule active
+	random_warning = false,
+	warning_str = false,
 }
 
 function ChoGGi_VCM_MapImageDlg:Init(parent, context)
@@ -98,41 +103,49 @@ function ChoGGi_VCM_MapImageDlg:Init(parent, context)
 
 	self.idShowExtra = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idShowExtra",
-		Text = Translate(11451--[[Breakthrough]]),
+		Text = T(11451, "Breakthrough"),
 		RolloverText = T(302535920011333, "Show breakthroughs for this location."),
-		OnChange = self.idShowExtraOnChange,
-		Margins = box(20,4,2,0),
+		OnChange = self.idShowExtra_OnChange,
+		Margins = box(20, 4, 2, 0),
+		Dock = "left",
 	}, self.idBottomArea)
 	-- add hint if random rule active
 	local tech_variety = IsGameRuleActive("TechVariety")
-		and " <color green>" .. Translate(607602869305--[[Tech Variety]]) .. "</color>"
+		and " <color yellow>" .. T(607602869305, "Tech Variety") .. "</color>"
 		or ""
 	local chaos_theory = IsGameRuleActive("ChaosTheory")
-		and " <color green>" .. Translate(621834127153--[[Chaos Theory]]) .. "</color>"
+		and " <color yellow>" .. T(621834127153, "Chaos Theory") .. "</color>"
 		or ""
+
 	if tech_variety ~= "" or chaos_theory ~= "" then
-		self.idShowExtra.RolloverText = Translate(self.idShowExtra.RolloverText
-			.. T(302535920011334, [[
-
-
-Random tech game rule(s) <color red>active!</color>
+		self.warning_str = T(302535920011334, [[Random tech game rule(s) <color red>active!</color>
 Breakthroughs will be random as well.
-]]) .. tech_variety .. chaos_theory)
+]]) .. tech_variety .. chaos_theory
+		self.idShowExtra.RolloverText = self.idShowExtra.RolloverText
+			.. "\n\n\n" .. self.warning_str
+		self.random_warning = true
 	end
 
 	-- we need to wait a sec for the map info to load or y will be 0
 	CreateRealTimeThread(function()
 		WaitMsg("OnRender")
 
-		local x,y = self:SetDefaultPos()
-		self:PostInit(nil,point(x,y))
+		local x, y = self:SetDefaultPos()
+		self:PostInit(nil, point(x, y))
+
+		-- stupid gamepad focus
+		if GetUIStyleGamepad() then
+			WaitMsg("OnRender")
+			local toolbar = Dialogs.PGMainMenu.idContent[1][1][1].idToolBar
+			toolbar:SetFocus()
+		end
 	end)
 end
 
-function ChoGGi_VCM_MapImageDlg:idShowExtraOnChange(check)
+function ChoGGi_VCM_MapImageDlg:idShowExtra_OnChange(check)
 	if check then
 		if not extra_info_dlg then
-			extra_info_dlg = ChoGGi_VCM_ExtraInfoDlg:new({}, terminal.desktop,{})
+			extra_info_dlg = ChoGGi_VCM_ExtraInfoDlg:new({}, terminal.desktop, {})
 		end
 	else
 		if extra_info_dlg then
@@ -143,7 +156,7 @@ end
 
 function ChoGGi_VCM_MapImageDlg:SetDefaultPos()
 	-- default dialog position if we can't find the ui stuff (new version or whatnot)
-	local x,y = 75,150
+	local x, y = 100, 100
 
 	local PGMainMenu = Dialogs.PGMainMenu
 	if PGMainMenu then
@@ -151,10 +164,10 @@ function ChoGGi_VCM_MapImageDlg:SetDefaultPos()
 		pcall(function()
 			local dlg = PGMainMenu.idContent.PGMission[1][1].idContent.box
 			x = dlg:sizex()
-			y = dlg:sizey() / 2
+			y = dlg:sizey() / 4
 		end)
 	end
-	return x,y
+	return x, y
 end
 
 function ChoGGi_VCM_MapImageDlg:Done()
@@ -167,7 +180,7 @@ end
 
 -- needed?
 local function GetRootDialog_Extra(dlg)
-	return GetParentOfKind(dlg,"ChoGGi_VCM_ExtraInfoDlg")
+	return GetParentOfKind(dlg, "ChoGGi_VCM_ExtraInfoDlg")
 end
 
 DefineClass.ChoGGi_VCM_ExtraInfoDlg = {
@@ -175,7 +188,7 @@ DefineClass.ChoGGi_VCM_ExtraInfoDlg = {
 	dialog_width = 400.0,
 	dialog_height = 525.0,
 
-	missing_desc = T(302535920011335, [[You need to be in-game to display this hint.
+	missing_desc = Translate(302535920011335, [[You need to be in-game to display this hint.
 Click to open Paradox Breakthroughs Wiki page.]]),
 
 	translated_tech = false,
@@ -186,19 +199,24 @@ Click to open Paradox Breakthroughs Wiki page.]]),
 	onclick_count = false,
 	onclick_desc = false,
 	onclick_names = false,
-
-	title_text = false,
 }
 
 function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
-
-	self.title_text = Translate(11451--[[Breakthrough]])
-	self.idCaption:SetText(self.title_text)
-
 	-- text box with obj info in it
 	self:AddScrollText()
+
+	-- make it clearer when randoms are go
+	local title_text = T(11451, "Breakthrough")
+	if show_image_dlg.random_warning then
+		title_text = title_text .. " (" .. T(6779, "Warning") .. "!)"
+		self.idText:SetText(show_image_dlg.warning_str)
+	else
+		self.idText:SetText(T(302535920011337, "Select location to update text"))
+	end
+
+	self.idCaption:SetText(title_text)
 
 	-- rollover hints
 	self.idText.OnHyperLink = self.idTextOnHyperLink
@@ -210,29 +228,38 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 	-- build a table of translated tech names
 	self.translated_tech = {}
 	local TechDef = TechDef
-	for _,tech in pairs(TechDef) do
+	for _, tech in pairs(TechDef) do
 		local icon = ""
 		if ValidateImage(tech.icon) and not tech.icon:find(" ") then
 			icon = "\n\n<image " .. tech.icon .. " 1500>"
 		end
 		local name = Translate(tech.display_name)
-		local desc = Translate(T{tech.description,tech})
+		local desc = Translate(T{tech.description, tech})
 		if #desc > 16 and desc:sub(-16) == " *bad string id?" then
 			desc = self.missing_desc
 		end
 
-		self.translated_tech[name] = self:HyperLink(desc .. "\n\n" .. icon,name)
+		self.translated_tech[name] = self:HyperLink(desc .. "\n\n" .. icon, name)
 			.. name .. "</h></color>"
 	end
 
-	self.omega_msg_count = const.BreakThroughTechsPerGame + 1
-	self.omega_msg = "\n\n" .. Translate(5182--[[Omega Telescope]]) .. " "
-		.. Translate(437247068170--[[LIST]]) .. " (" .. T(302535920011336, "maybe") .. "):"
-	self.planet_msg = "\n\n" .. Translate(11234--[[Planetary Anomaly]]) .. ":"
+	self.omega_msg_count = const.BreakThroughTechsPerGame + 2
+	self.omega_msg = "\n\n<color 200 200 256>" .. Translate(5182--[[Omega Telescope]]) .. " "
+		.. Translate(437247068170--[[LIST]]) .. " (" .. Translate(302535920011336, "maybe") .. "):</color>"
+	self.planet_msg = "\n\n<color 200 200 256>" .. Translate(11234--[[Planetary Anomaly]]) .. ":</color>"
 
-	self.idText:SetText(T(302535920011337, "Select location to update text"))
+	CreateRealTimeThread(function()
+		-- place right of map
+		local pos = show_image_dlg:GetPos() + point(show_image_dlg:GetWidth() + 10, 0)
+		self:PostInit(nil, pos)
 
-	self:PostInit()
+		-- stupid gamepad focus
+		if GetUIStyleGamepad() then
+			WaitMsg("OnRender")
+			local toolbar = Dialogs.PGMainMenu.idContent[1][1][1].idToolBar
+			toolbar:SetFocus()
+		end
+	end)
 end
 
 function ChoGGi_VCM_ExtraInfoDlg:Done()
@@ -248,7 +275,7 @@ function ChoGGi_VCM_ExtraInfoDlg:idTextOnHyperLink(link)
 	self = GetRootDialog_Extra(self)
 
 	local desc = self.onclick_desc[tonumber(link)]
-	if desc:find(self.missing_desc,1,true) then
+	if desc:find(self.missing_desc, 1, true) then
 		OpenUrl("https://survivingmars.paradoxwikis.com/Breakthrough")
 	end
 
@@ -275,27 +302,32 @@ function ChoGGi_VCM_ExtraInfoDlg:idTextOnHyperLinkRollover(link)
 end
 
 -- create
-function ChoGGi_VCM_ExtraInfoDlg:HyperLink(desc,name)
+function ChoGGi_VCM_ExtraInfoDlg:HyperLink(desc, name)
 	local c = self.onclick_count
 	c = c + 1
 	self.onclick_count = c
 	self.onclick_desc[c] = desc
 	self.onclick_names[c] = name
 
-	return "<color 255 255 255><h " .. c .. " 230 195 50>",c
+	return "<color 255 255 255><h " .. c .. " 230 195 50>", c
 end
 
-function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(map, gen)
-	self.idCaption:SetText(self.title_text .. ": " .. map)
+function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(gen)
+	if show_image_dlg.random_warning then
+		self.idText:SetText(show_image_dlg.warning_str)
+		return
+	end
 
 	local display_list = RetMapBreakthroughs(gen, true)
---~ 	ex(display_list)
+--~ 	ex{display_list, gen}
+
 	for i = 1, #display_list do
 		display_list[i] = self.translated_tech[display_list[i]]
 	end
-	-- last four are PAs
-	table.insert(display_list,9,self.planet_msg)
 
-	table.insert(display_list,self.omega_msg_count,self.omega_msg)
-	self.idText:SetText(TableConcat(display_list,"\n"))
+	-- last four are PAs (g_Consts.PlanetaryBreakthroughCount)
+	table_insert(display_list, 10, self.planet_msg)
+
+	table_insert(display_list, self.omega_msg_count, self.omega_msg)
+	self.idText:SetText(TableConcat(display_list, "\n"))
 end

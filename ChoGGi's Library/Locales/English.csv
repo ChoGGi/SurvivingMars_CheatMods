@@ -375,6 +375,9 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook",
 302535920000071,Show Mods Log,
 302535920000692,Log is blank (well not anymore).,
 302535920000477,Clear out the windowed console log.,
+302535920000590,Batch,
+302535920000841,"If examining a table then exec this code for each entry.
+If it's an associative table then <color yellow>o = value</color>.",
 302535920000589,<left_click> Examine <right_click> Clipboard,
 302535920000904,<right_click> to copy <color yellow>%s</color> to clipboard.,
 302535920000422,Hex Shape,
@@ -2228,10 +2231,7 @@ Right click in list to view (closes menu).",
 302535920011331,Remove from Profile,
 302535920011332,<left_click> Remove this building from a profile.,
 302535920011333,Show breakthroughs for this location.,
-302535920011334,"
-
-
-Random tech game rule(s) <color red>active!</color>
+302535920011334,"Random tech game rule(s) <color red>active!</color>
 Breakthroughs will be random as well.
 ",
 302535920011335,"You need to be in-game to display this hint.

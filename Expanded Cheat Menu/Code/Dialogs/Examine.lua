@@ -479,6 +479,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		}, self.idMenuArea)
 		--
 	end -- tools area
+
 	do -- exec code area
 		self.idExecCodeArea = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idExecCodeArea",
@@ -497,9 +498,17 @@ Use <color green>%s</color>/<color green>%s</color> to browse console history."]
 			Hint = Strings[302535920001516--[[o = examined object]]],
 			OnKbdKeyDown = self.idExecCode_OnKbdKeyDown,
 		}, self.idExecCodeArea)
-		-- could change the bg for this...
-		-- self.idExecCode:SetPlugins({"ChoGGi_XCodeEditorPlugin"})
 		--
+		self.idToggleExecCodeGroup = g_Classes.ChoGGi_XCheckButton:new({
+			Id = "idToggleExecCodeGroup",
+			Dock = "right",
+			Margins = box(4, 0, 0, 0),
+			Text = Strings[302535920000590--[[Batch]]],
+			RolloverText = Strings[302535920000841--[["If examining a table then exec this code for each entry.
+If it's an associative table then o = value."]]],
+			OnChange = self.idToggleExecCodeGroup_OnChange,
+		}, self.idExecCodeArea)
+
 	end -- exec code area
 
 	do -- everything else
@@ -765,15 +774,44 @@ function ChoGGi_DlgExamine:HyperLink(obj, func, name)
 	return "<color 150 170 250><h " .. c .. " 230 195 50>", c
 end
 
+function ChoGGi_DlgExamine:BatchExecCode(text)
+	-- proper table?
+	if self.obj_type ~= "table"
+			or self.obj_type == "table" and not next(self.obj_ref)
+	then
+		return
+	end
+	local dlgConsole = dlgConsole
+
+	local count = #self.obj_ref
+	if count > 0 then
+		for i = 1, count do
+			o = self.obj_ref[i]
+			dlgConsole:Exec(text)
+		end
+	else
+		for _, value in pairs(self.obj_ref) do
+			o = value
+			dlgConsole:Exec(text)
+		end
+	end
+end
+
 function ChoGGi_DlgExamine:idExecCode_OnKbdKeyDown(vk, ...)
 	-- console exec code
 	if vk == const.vkEnter then
 		local text = self:GetText()
 		if text ~= "" then
-			-- update global obj
-			o = GetRootDialog(self).obj_ref
-			-- fire!
-			dlgConsole:Exec(text)
+			self = GetRootDialog(self)
+			if self.idToggleExecCodeGroup:GetCheck() then
+				-- fire on each entry
+				self:BatchExecCode(text)
+			else
+				-- update global obj
+				o = self.obj_ref
+				-- fire!
+				dlgConsole:Exec(text)
+			end
 		end
 		return "break"
 
@@ -813,6 +851,16 @@ function ChoGGi_DlgExamine:idToggleExecCode_OnChange(visible)
 	if vis ~= visible then
 		self.idExecCodeArea:SetVisible(not vis)
 		self.idToggleExecCode:SetCheck(not vis)
+	end
+end
+function ChoGGi_DlgExamine:idToggleExecCodeGroup_OnChange(visible)
+	local check = self
+	self = GetRootDialog(self)
+	-- block check from true if not indexed table
+	if visible and self.obj_type ~= "table"
+			or self.obj_type == "table" and not next(self.obj_ref)
+	then
+		check:SetCheck(false)
 	end
 end
 

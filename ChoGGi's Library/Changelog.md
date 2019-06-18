@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v7.0 (Unreleased)
+## v7.1 (Unreleased)
+
+## v7.0 (June 18 2019)
 - Added Update Text func/button to MultiLineText.
 
 ## v6.9 (June 07 2019)
