@@ -1,9 +1,11 @@
 -- See LICENSE for terms
 
+local ObjectColourRandom = ChoGGi.ComFuncs.ObjectColourRandom
+
 local function ChangeColour(self)
 	-- we need to wait a sec before we can edit attaches
 	WaitMsg("OnRender")
-	ChoGGi.ComFuncs.ObjectColourRandom(self)
+	ObjectColourRandom(self)
 end
 
 local orig_BaseBuilding_GameInit = BaseBuilding.GameInit

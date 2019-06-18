@@ -284,11 +284,12 @@ function PinsDlg:InitPinButton(button, ...)
 				objs = labels.Colonist
 			else
 				-- get all in dome or all without a dome
-				objs = object.dome and object.dome.labels.Colonist or MapGet("map", "Colonist", function(o)
-					if not o.dome then
-						return true
-					end
-				end)
+				objs = object.dome and object.dome.labels.Colonist
+					or MapGet("map", "Colonist", function(o)
+						if not o.dome then
+							return true
+						end
+					end)
 			end
 		else
 			objs = labels[object.class]
@@ -319,12 +320,13 @@ function PinsDlg:InitPinButton(button, ...)
 				hint = pinbutton.RolloverText
 				hint_title = pinbutton.RolloverTitle
 			else
-				hint_title = T{8108, "<Title>", Title = RetName(obj)}
+				hint_title = RetName(obj)
 				local rollover = obj.pin_rollover
 				if rollover == "" then
-					hint = (obj.description ~= "" and T(obj.description, obj)) or obj:GetProperty("description") or ""
+					hint = (obj.description ~= "" and T{obj.description, obj})
+						or obj:GetProperty("description") or ""
 				elseif IsT(rollover) or type(rollover) == "string" then
-					hint = T(rollover, obj)
+					hint = T{rollover, obj}
 				end
 			end
 
@@ -337,7 +339,8 @@ function PinsDlg:InitPinButton(button, ...)
 			if obj.class == "Colonist" or obj.class == "Drone" then
 				state_text = obj:GetStateText()
 				image = state_table[state_text]
-			elseif build_category == "Domes" or obj:IsKindOf("BaseBuilding") and not obj:IsKindOf("BaseRover") then
+			elseif build_category == "Domes" or obj:IsKindOf("BaseBuilding")
+					and not obj:IsKindOf("BaseRover") then
 				if obj.overpopulated then
 					state_text = str_Overpopulated
 					image = image or "UI/Icons/pin_overpopulated.tga"
@@ -345,9 +348,10 @@ function PinsDlg:InitPinButton(button, ...)
 					state_text = str_NotWorking
 					image = image or "UI/Icons/pin_not_working.tga"
 				elseif obj.fractures and #obj.fractures > 0 then
-					state_text = Translate(5626--[[Fractures: <count>]]):gsub("<count>", #obj.fractures)
+					state_text = T{5626, "Fractures: <count>", count = #obj.fractures}
 					image = image or "UI/Icons/pin_attack.tga"
-				elseif obj.electricity and obj:IsKindOf("ElectricityConsumer") and obj.electricity.consumption > obj.electricity.current_consumption then
+				elseif obj.electricity and obj:IsKindOf("ElectricityConsumer")
+						and obj.electricity.consumption > obj.electricity.current_consumption then
 					state_text = str_Power
 					image = image or "UI/Icons/pin_power.tga"
 				elseif (obj.air or obj.water) and obj:IsKindOf("LifeSupportConsumer") then
@@ -372,23 +376,30 @@ function PinsDlg:InitPinButton(button, ...)
 
 			-- add dome text if any
 			if obj.dome or obj.parent_dome then
-				hint = "<color 203 120 30>" .. str_dome .. ":</color> <color 255 200 200>" .. RetName(obj.dome or obj.parent_dome) .. "</color>\n\n" .. hint
+				hint = "<color 203 120 30>" .. str_dome
+					.. ":</color> <color 255 200 200>"
+					.. RetName(obj.dome or obj.parent_dome)
+					.. "</color>\n\n" .. hint
 			elseif obj.command_center then
-				hint = "<color 203 120 30>" .. str_drones .. ":</color> <color 255 200 200>" .. RetName(obj.command_center) .. "</color>\n\n" .. hint
+				hint = "<color 203 120 30>" .. str_drones
+					.. ":</color> <color 255 200 200>"
+					.. RetName(obj.command_center) .. "</color>\n\n" .. hint
 			else
 				hint = "\n" .. hint
 			end
 			-- then state text with two \n
-			hint = "<color 203 120 30>" .. str_state .. ":</color> <color 255 200 200>" .. state_text .. "</color>\n" .. hint
+			hint = "<color 203 120 30>" .. str_state
+				.. ":</color> <color 255 200 200>" .. state_text .. "</color>\n" .. hint
 
-			if obj.class ~= "SupplyRocket" or obj.class == "SupplyRocket" and obj.name ~= "" then
+			if obj.class ~= "SupplyRocket"
+					or obj.class == "SupplyRocket" and obj.name ~= "" then
 				items[i] = {
 					name = RetName(obj),
 					showobj = obj,
 					image = image,
 					hint = hint,
 					hint_title = hint_title,
-					hint_bottom = T(0, "<left_click> Select <right_click> View"),
+					hint_bottom = T(302535920011154, "<left_click> Select <right_click> View"),
 					mouseup = function(_, _, _, button)
 						if obj.class == "SupplyRocket" then
 							orig_button_OnPress(button_obj, gamepad)

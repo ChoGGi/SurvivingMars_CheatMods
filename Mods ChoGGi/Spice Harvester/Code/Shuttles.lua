@@ -16,7 +16,6 @@ local Sleep = Sleep
 local IsValid = IsValid
 local PlaySound = PlaySound
 local GetSoundDuration = GetSoundDuration
-local GetHeight = terrain.GetHeight
 
 local Random = ChoGGi.ComFuncs.Random
 
@@ -105,6 +104,7 @@ function SpiceHarvester_CargoShuttle:SpiceHarvester_FollowHarvester()
 	-- dust thread
 	self.dust_thread = CreateGameTimeThread(function()
 		-- we're done if the host harvester is gone
+		local GetHeight = terrain.GetHeight
 		while self.dust_thread do
 			-- check if our height is low enough for some dust kickup
 			local pos = self:GetVisualPos()
@@ -202,7 +202,6 @@ function SpiceHarvester_CargoShuttle:GoodByeCruelWorld()
 		Sleep(50)
 		self:SetVisible(false)
 		Sleep(GetSoundDuration(snd))
---~ 		Sleep(5000)
 		self:PlayFX("GroundExplosion", "end")
 		DoneObject(self)
 	end

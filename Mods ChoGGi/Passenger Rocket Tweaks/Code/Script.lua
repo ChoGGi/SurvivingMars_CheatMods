@@ -1,44 +1,45 @@
 -- See LICENSE for terms
 
-local table_clear = table.clear
+local options
+local mod_MoreSpecInfo
+local mod_PosPassList
+local mod_HideRocket
+local mod_PosX
+local mod_PosY
 
-local mod_id = "ChoGGi_PassengerRocketTweaks"
-local mod = Mods[mod_id]
-
-local mod_MoreSpecInfo = mod.options and mod.options.MoreSpecInfo or false
-local mod_PosPassList = mod.options and mod.options.PosPassList or false
-local mod_HideRocket = mod.options and mod.options.HideRocket or false
-local mod_PosX = mod.options and mod.options.PosX or 700
-local mod_PosY = mod.options and mod.options.PosY or 500
-
+-- fired when settings are changed and new/load
 local ToggleSpecInfo
 local function ModOptions()
-	mod_MoreSpecInfo = mod.options.MoreSpecInfo
+	mod_MoreSpecInfo = options.MoreSpecInfo
 	ToggleSpecInfo()
-	mod_PosPassList = mod.options.PosPassList
-	mod_HideRocket = mod.options.HideRocket
-	mod_PosX = mod.options.PosX
-	mod_PosY = mod.options.PosY
+	mod_PosPassList = options.PosPassList
+	mod_HideRocket = options.HideRocket
+	mod_PosX = options.PosX
+	mod_PosY = options.PosY
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
 end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_PassengerRocketTweaks" then
 		return
 	end
 
 	ModOptions()
 end
 
--- for some reason mod options aren't retrieved before this script is loaded...
-OnMsg.CityStart = ModOptions
-OnMsg.LoadGame = ModOptions
-
 --~ local Strings = ChoGGi.Strings
 local Translate = ChoGGi.ComFuncs.Translate
 
+local table_clear = table.clear
 local needed_specialist = {}
 local all_specialist = {}
+
 local function BuildSpecialistLists()
 	local labels = UICity.labels
 
@@ -114,6 +115,9 @@ ToggleSpecInfo = function()
 			return
 		end
 
+		local oooo = box(0, 0, 0, 0)
+		local T = T
+
 		table.insert(template, 3, PlaceObj("XTemplateWindow", {
 			"Id", "idPassInfo_ChoGGi",
 			"HAlign", "left",
@@ -121,7 +125,7 @@ ToggleSpecInfo = function()
 			"Margins", box(55, 0, 0, 0),
 			"RolloverTemplate", "Rollover",
 			"RolloverTitle", T(11531, "Specialists"),
-			"RolloverText", [[Selected Applicants / Needed Specialists / Colony Amount]],
+			"RolloverText", T(302535920011132, [[Selected Applicants / Needed Specialists / Colony Amount]]),
 		}, {
 			PlaceObj("XTemplateWindow", {
 				"__class", "XText",
@@ -158,7 +162,7 @@ ToggleSpecInfo = function()
 								return not UICity or UICity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
-							"Padding", box(0, 0, 0, 0),
+							"Padding", oooo,
 							"TextStyle", "PGLandingPosDetails",
 							"Translate", true,
 							"Text", T(3848, "No specialization"),
@@ -168,7 +172,7 @@ ToggleSpecInfo = function()
 								return not UICity or UICity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
-							"Padding", box(0, 0, 0, 0),
+							"Padding", oooo,
 							"TextStyle", "PGLandingPosDetails",
 							"Translate", true,
 							"Text", T(3865, "Botanist"),
@@ -178,7 +182,7 @@ ToggleSpecInfo = function()
 								return not UICity or UICity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
-							"Padding", box(0, 0, 0, 0),
+							"Padding", oooo,
 							"TextStyle", "PGLandingPosDetails",
 							"Translate", true,
 							"Text", T(3853, "Engineer"),
@@ -188,7 +192,7 @@ ToggleSpecInfo = function()
 								return not UICity or UICity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
-							"Padding", box(0, 0, 0, 0),
+							"Padding", oooo,
 							"TextStyle", "PGLandingPosDetails",
 							"Translate", true,
 							"Text", T(3859, "Geologist"),
@@ -202,28 +206,28 @@ ToggleSpecInfo = function()
 						PlaceObj("XTemplateWindow", {
 							"__class", "XText",
 							"Id", "idChoGGiPassInfo_none",
-							"Padding", box(0, 0, 0, 0),
+							"Padding", oooo,
 							"TextStyle", "PGChallengeDescription",
 							"Translate", true,
 						}),
 						PlaceObj("XTemplateWindow", {
 							"__class", "XText",
 							"Id", "idChoGGiPassInfo_botanist",
-							"Padding", box(0, 0, 0, 0),
+							"Padding", oooo,
 							"TextStyle", "PGChallengeDescription",
 							"Translate", true,
 						}),
 						PlaceObj("XTemplateWindow", {
 							"__class", "XText",
 							"Id", "idChoGGiPassInfo_engineer",
-							"Padding", box(0, 0, 0, 0),
+							"Padding", oooo,
 							"TextStyle", "PGChallengeDescription",
 							"Translate", true,
 						}),
 						PlaceObj("XTemplateWindow", {
 							"__class", "XText",
 							"Id", "idChoGGiPassInfo_geologist",
-							"Padding", box(0, 0, 0, 0),
+							"Padding", oooo,
 							"TextStyle", "PGChallengeDescription",
 							"Translate", true,
 						}),
@@ -245,7 +249,7 @@ ToggleSpecInfo = function()
 								return not UICity or UICity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
-							"Padding", box(0, 0, 0, 0),
+							"Padding", oooo,
 							"TextStyle", "PGLandingPosDetails",
 							"Translate", true,
 							"Text", T(3862, "Medic"),
@@ -255,7 +259,7 @@ ToggleSpecInfo = function()
 								return not UICity or UICity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
-							"Padding", box(0, 0, 0, 0),
+							"Padding", oooo,
 							"TextStyle", "PGLandingPosDetails",
 							"Translate", true,
 							"Text", T(3850, "Scientist"),
@@ -265,7 +269,7 @@ ToggleSpecInfo = function()
 								return not UICity or UICity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
-							"Padding", box(0, 0, 0, 0),
+							"Padding", oooo,
 							"TextStyle", "PGLandingPosDetails",
 							"Translate", true,
 							"Text", T(6682, "Officer"),
@@ -279,21 +283,21 @@ ToggleSpecInfo = function()
 						PlaceObj("XTemplateWindow", {
 							"__class", "XText",
 							"Id", "idChoGGiPassInfo_medic",
-							"Padding", box(0, 0, 0, 0),
+							"Padding", oooo,
 							"TextStyle", "PGChallengeDescription",
 							"Translate", true,
 						}),
 						PlaceObj("XTemplateWindow", {
 							"__class", "XText",
 							"Id", "idChoGGiPassInfo_scientist",
-							"Padding", box(0, 0, 0, 0),
+							"Padding", oooo,
 							"TextStyle", "PGChallengeDescription",
 							"Translate", true,
 						}),
 						PlaceObj("XTemplateWindow", {
 							"__class", "XText",
 							"Id", "idChoGGiPassInfo_security",
-							"Padding", box(0, 0, 0, 0),
+							"Padding", oooo,
 							"TextStyle", "PGChallengeDescription",
 							"Translate", true,
 						}),

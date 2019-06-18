@@ -10,8 +10,8 @@ local FindNearestObject = FindNearestObject
 
 -- status updates
 local rcc = RoverCommands
-rcc.ChoGGi_UseGarage = [[Storing in garage]]
-rcc.ChoGGi_InGarage = [[Stored in garage]]
+rcc.ChoGGi_UseGarage = T(302535920011181, [[Storing in garage]])
+rcc.ChoGGi_InGarage = T(302535920011182, [[Stored in garage]])
 
 local BaseRover = BaseRover
 
@@ -20,9 +20,10 @@ local BaseRover = BaseRover
 local function CanInteractWithObject_local(interact, obj)
 	local garage = g_ChoGGi_RCGarages
 	if (interact == false or interact == "default" or interact == "move")
-		and garage.main and garage.main.working
-		and IsKindOf(obj, "RCGarage") and obj:CheckMainGarage() then
-		return true, T(0, [[<UnitMoveControl('ButtonA', interaction_mode)>: Use Garage]])
+			and garage.main and garage.main.working
+			and IsKindOf(obj, "RCGarage") and obj:CheckMainGarage()
+	then
+		return true, T(302535920011183, [[<UnitMoveControl('ButtonA', interaction_mode)>: Use Garage]])
 	end
 end
 
@@ -40,9 +41,9 @@ local orig_BaseRover_InteractWithObject = BaseRover.InteractWithObject
 function BaseRover:InteractWithObject(obj, interaction_mode, ...)
 	local garage = g_ChoGGi_RCGarages
 	if (self.interaction_mode == false or self.interaction_mode == "default" or self.interaction_mode == "move")
-		and garage.main and garage.main.working
-		and IsKindOf(obj, "RCGarage") and obj:CheckMainGarage() then
-
+			and garage.main and garage.main.working
+			and IsKindOf(obj, "RCGarage") and obj:CheckMainGarage()
+	then
 		self:SetCommand("ChoGGi_UseGarage", obj)
 		SetUnitControlInteractionMode(self, false) --toggle button
 	end
@@ -52,9 +53,9 @@ end
 
 -- block rover from goto when in garage
 local orig_BaseRover_GotoFromUser = BaseRover.GotoFromUser or Unit.GotoFromUser
-function BaseRover:GotoFromUser(...)
+function BaseRover.GotoFromUser(...)
 	if not self.ChoGGi_InGarage then
-		return orig_BaseRover_GotoFromUser(self, ...)
+		return orig_BaseRover_GotoFromUser(...)
 	end
 end
 -- maybe add SetCommand

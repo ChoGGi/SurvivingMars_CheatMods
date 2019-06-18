@@ -20,11 +20,12 @@ local function UpdateExistingRockets()
 
 	local value = GetModValue()
 
+	local SetTaskReqAmount = ChoGGi.ComFuncs.SetTaskReqAmount
 	local rockets = UICity.labels.AllRockets or ""
 	for i = 1, #rockets do
 		local rocket = rockets[i]
 		if rocket.export_requests then
-			ChoGGi.ComFuncs.SetTaskReqAmount(rocket, value, "export_requests", "max_export_storage")
+			SetTaskReqAmount(rocket, value, "export_requests", "max_export_storage")
 		else
 			rocket.max_export_storage = value
 		end

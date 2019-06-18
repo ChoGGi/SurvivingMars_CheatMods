@@ -83,7 +83,7 @@ function HUD.idBuildingStatesOnPress(dlg)
 	table_iclear(popup)
 	local c = 0
 
-	local hint_str = Translate([[<left_click> Activate this profile.
+	local hint_str = T(302535920011304, [[<left_click> Activate this profile.
 <right_click> Delete this profile.]])
 
 	local BuildingStates = g_ChoGGi_BuildingStates
@@ -96,15 +96,21 @@ function HUD.idBuildingStatesOnPress(dlg)
 			c = c + 1
 			popup[c] = {
 				name = profile.name,
-				hint_title = "Profile: " .. profile.name,
+				hint_title = T{302535920011305, "Profile: <name>", name = profile.name},
 				hint = hint_str,
 				mouseup = function(_, _, _, button)
 					if button == "R" then
 						table_remove(BuildingStates,i)
-						ChoGGi.ComFuncs.MsgPopup("Deleted Profile: " .. profile.name,"Building States")
+						ChoGGi.ComFuncs.MsgPopup(
+							T{302535920011306, "Deleted Profile: <name>", name = profile.name},
+							T(302535920011307, "Building States")
+						)
 					else
 						ActivateProfile(profile)
-						ChoGGi.ComFuncs.MsgPopup("Activated Profile: " .. profile.name,"Building States")
+						ChoGGi.ComFuncs.MsgPopup(
+							T{302535920011308, "Activated Profile: <name>", name = profile.name},
+							T(302535920011307, "Building States")
+						)
 					end
 				end,
 			}
@@ -137,9 +143,6 @@ local function BuildRemoveFromList(dlg,obj)
 	table_iclear(popup)
 	local c = 0
 
-	local hint_str = Translate("<left_click> Remove " .. RetName(obj) .. [[ from this profile.
-<right_click> Remove all %s from this profile.]])
-
 	-- build list of profiles
 	local BuildingStates = g_ChoGGi_BuildingStates
 	for i = #BuildingStates, 1, -1 do
@@ -154,8 +157,9 @@ local function BuildRemoveFromList(dlg,obj)
 				c = c + 1
 				popup[c] = {
 					name = profile.name,
-					hint_title = "Remove From: " .. profile.name,
-					hint = hint_str:format(class),
+					hint_title = T{302535920011310, "Remove From: <name>", name = profile.name},
+					hint = T{302535920011309, [[<left_click> Remove <name> from this profile.
+<right_click> Remove all <class> from this profile.]], name = RetName(obj), class = class},
 					mouseup = function(_, _, _, button)
 						if button == "R" then
 							RemoveAllOfClass(profile,class)
@@ -205,16 +209,16 @@ local function ShowList_AddTo(obj,profile)
 
 	local obj_name = RetName(obj)
 
-	local profilename_str = "Profile Name"
+	local profilename_str = T(302535920011311, "Profile Name")
 	local item_list = {
 		{
 			text = profilename_str,
-			hint = "Type in a profile name to store this building state in.",
-			value = profile or obj_name .. " Profile",
+			hint = T(302535920011312, "Type in a profile name to store this building state in."),
+			value = T{302535920011305, "Profile: <name>", name = profile or obj_name},
 		},
 		{
 			text = working_str,
-			hint = "Enter <color green>true</color> or <color green>false</color> to have it turned on or off.",
+			hint = T(302535920011313, "Enter <color green>true</color> or <color green>false</color> to have it turned on or off."),
 			value = obj.ui_working,
 		},
 	}
@@ -225,12 +229,12 @@ local function ShowList_AddTo(obj,profile)
 		c = c + 1
 		item_list[c] = {
 			text = priority_str,
-			hint = Translate("Enter <color green>1</color>, <color green>2</color>, or <color green>3</color> for different priority levels."),
+			hint = T(302535920011314, "Enter <color green>1</color>, <color green>2</color>, or <color green>3</color> for different priority levels."),
 			value = obj.priority,
 		}
 	end
 
-	local boolean_hint_str = Translate("Enter <color green>true</color> or <color green>false</color> to have it turned on or off.")
+	local boolean_hint_str = T(302535920011315, "Enter <color green>true</color> or <color green>false</color> to have it turned on or off.")
 
 	local is_workplace_obj = obj:IsKindOf("Workplace")
 	if is_workplace_obj then
@@ -271,8 +275,8 @@ local function ShowList_AddTo(obj,profile)
 		-- don't even think about it
 		if choices[1].value == "" then
 			ChoGGi.ComFuncs.MsgPopup(
-				Translate(6774--[[Error]]) .. ": Blank profile name!",
-				"Building States"
+				T(302535920011316, "Error: Blank profile name!"),
+				T(302535920011307, "Building States")
 			)
 			return
 		end
@@ -287,7 +291,7 @@ local function ShowList_AddTo(obj,profile)
 		local profile_name = choices[1]
 		-- add the profile and a blank building state (or find existing)
 		if profile_name.text == profilename_str then
-			local idx = table_find(BuildingStates,"name",profile_name.value)
+			local idx = table_find(BuildingStates, "name", profile_name.value)
 			-- existing profile
 			if idx then
 				profile = BuildingStates[idx]
@@ -298,9 +302,9 @@ local function ShowList_AddTo(obj,profile)
 
 			building_state = AddNewState(profile,obj)
 		else
-			local msg = Translate(6774--[[Error]]) .. ": list choice 1 should be the profile name!"
+			local msg = T(302535920011317, "Error: list choice 1 should be the profile name!")
 			print(msg,obj_name,obj.handle)
-			ChoGGi.ComFuncs.MsgPopup(msg,"Building States")
+			ChoGGi.ComFuncs.MsgPopup(msg,T(302535920011307, "Building States"))
 			return
 		end
 
@@ -354,38 +358,41 @@ local function ShowList_AddTo(obj,profile)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = "Add " .. obj_name .. " to building profile",
-		hint = "If this object already exists in the profile then the profile values will be reset before adding new values.",
+		title = T{302535920011318, "Add <name> to building profile", name = obj_name},
+		hint = T(302535920011319, "If this object already exists in the profile then the profile values will be reset before adding new values."),
 		custom_type = 4,
 		skip_sort = true,
 		width = 600,
 		checkboxes = {
 			{
 				title = Translate(11230--[[Working]]),
-				hint = "Uncheck to exclude this setting from profile.",
+				hint = T(302535920011320, "Uncheck to exclude this setting from profile."),
 				checked = true,
 			},
 			{
 				title = Translate(172--[[Priority]]),
-				hint = "Uncheck to exclude this setting from profile.",
+				hint = T(302535920011320, "Uncheck to exclude this setting from profile."),
 				checked = is_task_obj,
 				visible = is_task_obj,
 			},
 			{
 				title = Translate(217--[[Work Shifts]]),
-				hint = "Uncheck to exclude this setting from profile.",
+				hint = T(302535920011320, "Uncheck to exclude this setting from profile."),
 				checked = is_shift_obj,
 				visible = is_shift_obj,
 			},
 			{
-				title = [[Enforce Spec]],
-				hint = "Uncheck to exclude this setting from profile.",
+				title = T(302535920011321, [[Enforce Spec]]),
+				hint = T(302535920011320, "Uncheck to exclude this setting from profile."),
 				checked = is_workplace_obj,
 				visible = is_workplace_obj,
 			},
 			{
-				title = "Add All",
-				hint = "Add all buildings of the same type (" .. obj.class .. ") to this profile using these settings.",
+				title = T(302535920011322, "Add All"),
+				hint = T{302535920011323,
+					"Add all buildings of the same type (<class>) to this profile using these settings.",
+					class = obj.class
+				},
 				level = 2,
 			},
 		},
@@ -398,21 +405,19 @@ local function BuildAddToList(dlg,obj)
 		XDestroyRolloverWindow()
 	end
 
-	local name = "Add " .. RetName(obj)
+	local obj_name = RetName(obj)
 
 	-- build list of profiles
 	table_iclear(popup)
 	popup[1] = {
-		name = "New Profile",
-		hint_title = "New Profile",
-		hint = name .. " to a new profile.",
+		name = T(302535920011325, "New Profile"),
+		hint_title = T(302535920011325, "New Profile"),
+		hint = T{302535920011324, "Add <name> to a new profile.", name = obj_name},
 		clicked = function()
 			ShowList_AddTo(obj)
 		end,
 	}
 	local c = #popup
-
-	local hint_str = name .. " state to %s profile."
 
 	-- build list of profiles
 	local BuildingStates = g_ChoGGi_BuildingStates
@@ -425,8 +430,11 @@ local function BuildAddToList(dlg,obj)
 			c = c + 1
 			popup[c] = {
 				name = profile.name,
-				hint_title = "Add To Profile: " .. profile.name,
-				hint = hint_str:format(profile.name),
+				hint_title = T{302535920011327, "Add To Profile: <name>", name = profile.name},
+				hint = T{302535920011326,
+					"Add <name> state to <profile> profile.",
+					name = obj_name, profile = profile.name
+				},
 				clicked = function()
 					ShowList_AddTo(obj,profile.name)
 				end,
@@ -446,8 +454,8 @@ function OnMsg.ClassesPostprocess()
 		table.insert(xt,#xt,PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_BuildingStates", true,
 			"__template", "HUDButtonTemplate",
-			"RolloverText", [[Show list of building state profiles.]],
-			"RolloverTitle", [[Building States]],
+			"RolloverText", T(302535920011328, [[Show list of building state profiles.]]),
+			"RolloverTitle", T(302535920011307, "Building States"),
 			"Id", "idMinimap",
 			"Image", CurrentModPath .. "UI/buildingstates.png",
 			"FXPress", "MainMenuButtonClick",
@@ -490,8 +498,8 @@ function OnMsg.ClassesPostprocess()
 			PlaceObj('XTemplateTemplate', {
 				"__template", "InfopanelActiveSection",
 				"Icon", "UI/Icons/Sections/resource_accept.tga",
-				"Title", [[Add to Profile]],
-				"RolloverText", T(0,[[<left_click> Add this building state to a profile.]]),
+				"Title", T(302535920011329, [[Add to Profile]]),
+				"RolloverText", T(302535920011330, [[<left_click> Add this building state to a profile.]]),
 			}, {
 				PlaceObj("XTemplateFunc", {
 					"name", "OnActivate(self, context)",
@@ -506,8 +514,8 @@ function OnMsg.ClassesPostprocess()
 			PlaceObj('XTemplateTemplate', {
 				"__template", "InfopanelActiveSection",
 				"Icon", "UI/Icons/Sections/resource_no_accept.tga",
-				"Title", [[Remove from Profile]],
-				"RolloverText", T(0,[[<left_click> Remove this building from a profile.]]),
+				"Title", T(302535920011331, [[Remove from Profile]]),
+				"RolloverText", T(302535920011332, [[<left_click> Remove this building from a profile.]]),
 			}, {
 				PlaceObj("XTemplateFunc", {
 					"name", "OnActivate(self, context)",

@@ -68,9 +68,9 @@ function OnMsg.ClassesPostprocess()
 			"palette_color1", "outside_base",
 
 			"dome_forbidden", true,
-			"display_name", [[Place-a-lake]],
-			"display_name_pl", [[Place-a-lakes]],
-			"description", [[lake thingy... ?]],
+			"display_name", T(302535920011155, [[Place-a-lake]]),
+			"display_name_pl", T(302535920011156, [[Place-a-lakes]]),
+			"description", T(302535920011157, [[lake thingy... ?]]),
 			"display_icon", "UI/Icons/Buildings/terraforming_big_lake.tga",
 			"entity", entity,
 			"build_category", "ChoGGi",
@@ -98,15 +98,14 @@ function OnMsg.ClassesPostprocess()
 		#building+1,
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_InstantLake_Adjust", true,
-			"comment", "fill/drain toggle",
 			"__context_of_kind", "InstantLake",
 			"__template", "InfopanelButton",
 			"Icon", "UI/Icons/IPButtons/drill.tga",
-			"RolloverText", T(0, [[Adjust lake level
+			"RolloverText", T(302535920011158, [[Adjust lake level
 <left_click> Raise <right_click> Lower]]),
-			"RolloverTitle", [[Adjust Level]],
-			"RolloverHint", T(0, [[Ctrl + <left_click> Halve level adjust]]),
-			"RolloverHintGamepad", T(7518--[[ButtonA]]) .. " " .. T(7618--[[ButtonX]]),
+			"RolloverTitle", T(302535920011159, [[Adjust Level]]),
+			"RolloverHint", T(302535920011160, [[Ctrl + <left_click> Halve level adjust]]),
+			"RolloverHintGamepad", T(7518, "ButtonA") .. " " .. T(7618, "ButtonX"),
 			"OnPress", function (self, gamepad)
 				self.context:AdjustLevel("up", not gamepad and IsMassUIModifierPressed())
 				ObjModified(self.context)
@@ -126,12 +125,13 @@ function OnMsg.ClassesPostprocess()
 end
 
 -- remove UnevenTerrain error
-local cs_UnevenTerrain = ConstructionStatus.UnevenTerrain
 local orig_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
 function ConstructionController:UpdateConstructionStatuses(...)
 	local ret = orig_UpdateConstructionStatuses(self, ...)
+
 	if self.template_obj:IsKindOf("InstantLake") then
 		local statuses = self.construction_statuses or ""
+		local cs_UnevenTerrain = ConstructionStatus.UnevenTerrain
 		for i = 1, #statuses do
 			local status = statuses[i]
 			if status == cs_UnevenTerrain then
@@ -141,5 +141,6 @@ function ConstructionController:UpdateConstructionStatuses(...)
 			end
 		end
 	end
+
 	return ret
 end -- ConstructionController:UpdateConstructionStatuses

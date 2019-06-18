@@ -8,7 +8,7 @@ DefineClass("ModOptions_ChoGGi_StopCurrentDisasters", {
 			default = true,
 			editor = "bool",
 			id = "EnableMod",
-			name = "Enable Mod",
+			name = T(302535920011303, "Enable Mod"),
 		},
 	},
 })

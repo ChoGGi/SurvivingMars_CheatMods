@@ -80,9 +80,9 @@ function Solaria:ListBuildings(which, parent)
 
 	-- show list to add controller
 	if which == "activate" then
-		hint = [[Click to remotely control building.
+		hint = T(302535920011267, [[Click to remotely control building.
 
-Right click to view selected list item building.]]
+Right click to view selected list item building.]])
 		-- remove any we already control
 		list = MapFilter(list, function(o)
 			if not o.SolariaTelepresence_Remote_Controlled then
@@ -99,9 +99,9 @@ Right click to view selected list item building.]]
 		)
 	-- show controlled for remove list
 	elseif which == "remove" then
-		hint = [[Click to remove control of building.%s
+		hint = T(302535920011268, [[Click to remove control of building.
 
-Right click to view selected list item building.]]
+Right click to view selected list item building.]])
 		list = MapFilter(list, function(o)
 			if o.SolariaTelepresence_Remote_Controlled then
 				return true
@@ -109,9 +109,9 @@ Right click to view selected list item building.]]
 		end)
 
 	else
-		hint = [[
+		hint = T(302535920011269, [[
 
-Right click to view selected list item building.]]
+Right click to view selected list item building.]])
 	end
 
 	-- make it pretty
@@ -120,7 +120,7 @@ Right click to view selected list item building.]]
 		item_list[i] = {
 			name = RetName(obj),
 			-- provide a slight reference
-			hint = hint .. " at pos: " .. tostring(obj:GetPos()),
+			hint = hint,
 			mouseup = function(_, _, _, button)
 				ClickObj(self, obj, button, which)
 			end,
@@ -130,8 +130,8 @@ Right click to view selected list item building.]]
 	-- if list is empty that means no controlled/able buildings so return
 	if #item_list == 0 then
 		MsgPopup(
-			[[Nothing to control.]],
-			[[Solaria]],
+			T(302535920011270, [[Nothing to control.]]),
+			T(302535920011271, [[Solaria]]),
 			"UI/Icons/Upgrades/holographic_scanner_04.tga"
 		)
 		return
@@ -139,9 +139,9 @@ Right click to view selected list item building.]]
 
 	-- add controller for ease of movement
 	table_insert(item_list, 1, {
-		name = [[Solaria Controller]],
-		hint = [[Solaria control building.
-You can't remove... Only view (or maybe See would be a better term).]],
+		name = T(302535920011272, [[Solaria Controller]]),
+		hint = T(302535920011273, [[Solaria control building.
+You can't remove... Only view (or maybe See would be a better term).]]),
 		mouseup = function(_, _, _, button)
 			ClickObj(self, obj, button, which)
 		end,
@@ -187,8 +187,11 @@ function Solaria:AttachBuilding(obj)
 	obj:SetUIWorking(true)
 
 	MsgPopup(
-		"Viewing: " .. RetName(obj) .. " Pos: " .. tostring(obj:GetPos()),
-		[[Solaria]],
+		T{302535920011274, "Viewing: <name> Pos: <pos>",
+			name = RetName(obj),
+			pos = tostring(obj:GetPos()),
+		},
+		T(302535920011271, [[Solaria]]),
 		"UI/Icons/Upgrades/holographic_scanner_04.tga"
 	)
 end
@@ -236,8 +239,11 @@ function Solaria:RemoveBuilding(obj)
 		UICity.SolariaTelepresence_RemoteControlledBuildings = UICity.SolariaTelepresence_RemoteControlledBuildings - 1
 
 		MsgPopup(
-			"Removed: " .. RetName(obj) .. " Pos: " .. tostring(obj:GetPos()),
-			[[Solaria]],
+			T{302535920011275, "Removed: <name> Pos: <pos>",
+				name = RetName(obj),
+				pos = tostring(obj:GetPos()),
+			},
+			T(302535920011271, [[Solaria]]),
 			"UI/Icons/Upgrades/holographic_scanner_03.tga"
 		)
 	end
@@ -314,12 +320,12 @@ function OnMsg.ClassesPostprocess()
 			"consumption_max_storage", 6000,
 			"consumption_amount", 1500,
 			"consumption_type", 4,
-			"display_name", [[Solaria Telepresence]],
-			"display_name_pl", [[Solaria Telepresences]],
-			"description", [[A telepresence VR building, remote control factories and mines (with reduced production).
+			"display_name", T(302535920011276, [[Solaria Telepresence]]),
+			"display_name_pl", T(302535920011277, [[Solaria Telepresences]]),
+			"description", T(302535920011278, [[A telepresence VR building, remote control factories and mines (with reduced production).
 Worker amount is dependent on controlled building.
 
-Telepresence control may take up to a shift to propagate to controlled building.]],
+Telepresence control may take up to a shift to propagate to controlled building.]]),
 			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
 			"display_icon", CurrentModPath .. "UI/TheIncal.png",
@@ -341,11 +347,11 @@ Telepresence control may take up to a shift to propagate to controlled building.
 
 	PlaceObj("TechPreset", {
 		SortKey = 11,
-		description = T(0, [[New Building: <em>Solaria</em> (<buildinginfo('Solaria')>) - a building that allows colonists to remote control production buildings. Consumes Electronics.
+		description = T(302535920011279, [[New Building: <em>Solaria</em> (<buildinginfo('Solaria')>) - a building that allows colonists to remote control production buildings. Consumes Electronics.
 
 <grey>"How do you know it's Sci-Fi? VR is commercially viable."
 <right>Shams Jorjani</grey><left>]]),
-		display_name = [[Creative Realities Solaria]],
+		display_name = T(302535920011280, [[Creative Realities Solaria]]),
 		group = "Physics",
 		icon = "UI/Icons/Research/creative_realities.tga",
 		id = "CreativeRealitiesSolaria",
@@ -362,20 +368,20 @@ Telepresence control may take up to a shift to propagate to controlled building.
 	local AddXTemplate = ChoGGi.ComFuncs.AddXTemplate
 	AddXTemplate(XTemplates.sectionWorkplace, "SolariaTelepresence_sectionWorkplace1", nil, {
 		__context_of_kind = "Solaria",
-		RolloverTitle = [[Telepresence]],
-		RolloverHint = [[Change to Pickup and select resource pile you've previously marked for pickup.
-Toggle it back to "Drop Item" and select an object: it'll drop it (somewhat) next to it.]],
+		RolloverTitle = T(302535920011281, [[Telepresence]]),
+		RolloverHint = T(302535920011282, [[Change to Pickup and select resource pile you've previously marked for pickup.
+Toggle it back to "Drop Item" and select an object: it'll drop it (somewhat) next to it.]]),
 		OnContextUpdate = function(self, context)
 			---
 			if context.SolariaTelepresence_Remote_Controller then
-				self:SetRolloverText([[Remove the control of outside building from this building.]])
-				self:SetTitle([[Remove Remote Control]])
+				self:SetRolloverText(T(302535920011283, [[Remove the control of outside building from this building.]]))
+				self:SetTitle(T(302535920011284, [[Remove Remote Control]]))
 				self:SetIcon("UI/Icons/Upgrades/factory_ai_03.tga")
 			else
-				self:SetRolloverText([[Shows list of buildings for telepresence control.
+				self:SetRolloverText(T(302535920011285, [[Shows list of buildings for telepresence control.
 
-Right click in list to view (closes menu).]])
-				self:SetTitle([[Remote Control Building]])
+Right click in list to view (closes menu).]]))
+				self:SetTitle(T(302535920011286, [[Remote Control Building]]))
 				self:SetIcon("UI/Icons/Upgrades/factory_ai_01.tga")
 			end
 			---
@@ -392,9 +398,12 @@ Right click in list to view (closes menu).]])
 					end
 				end
 				ChoGGi.ComFuncs.QuestionBox(
-					"Are you sure you want to remove telepresence viewing from " .. RetName(building) .. " located at " .. tostring(building:GetPos()),
+					T{302535920011287, "Are you sure you want to remove telepresence viewing from <name> located at <pos>?",
+						name = RetName(building),
+						pos = tostring(building:GetPos()),
+					},
 					CallBackFunc,
-					[[Solaria Telepresence]]
+					T(302535920011276, [[Solaria Telepresence]])
 				)
 			end
 			---
@@ -406,10 +415,10 @@ Right click in list to view (closes menu).]])
 	AddXTemplate(XTemplates.sectionWorkplace, "SolariaTelepresence_sectionWorkplace2", nil, {
 		__context_of_kind = "Solaria",
 		Icon = "UI/Icons/Upgrades/build_2.tga",
-		Title = [[All Attached Buildings]],
-		RolloverTitle = [[Telepresence]],
-		RolloverHint = T(0, [[<left_click> Remove Telepresence <right_click> View Building]]),
-		RolloverText = [[Shows list of all controlled buildings (for removal of telepresence control).]],
+		Title = T(302535920011288, [[All Attached Buildings]]),
+		RolloverTitle = T(302535920011281, [[Telepresence]]),
+		RolloverHint = T(302535920011289, [[<left_click> Remove Telepresence <right_click> View Building]]),
+		RolloverText = T(302535920011290, [[Shows list of all controlled buildings (for removal of telepresence control).]]),
 		OnContextUpdate = function(self)
 			if UICity.SolariaTelepresence_RemoteControlledBuildings > 0 then
 				self:SetVisible(true)
@@ -429,17 +438,17 @@ Right click in list to view (closes menu).]])
 	AddXTemplate(XTemplates.sectionWorkplace, "SolariaTelepresence_sectionWorkplace3", nil, {
 		__context_of_kind = "Workplace",
 		Icon = "UI/Icons/Anomaly_Event.tga",
-		RolloverTitle = [[Telepresence]],
-		RolloverHint = T(0, [[<left_click> Viewing]]),
+		RolloverTitle = T(302535920011281, [[Telepresence]]),
+		RolloverHint = T(302535920011291, [[<left_click> Viewing]]),
 		OnContextUpdate = function(self, context)
 			-- only show if on correct building and remote control is enabled
 			if context.SolariaTelepresence_Remote_Controller or context.SolariaTelepresence_Remote_Controlled then
 				if context.SolariaTelepresence_Remote_Controller then
 					self:SetTitle(RetName(context.SolariaTelepresence_Remote_Controller.building))
-					self:SetRolloverText([[Select and view controlled building.]])
+					self:SetRolloverText(T(302535920011292, [[Select and view controlled building.]]))
 				elseif context.SolariaTelepresence_Remote_Controlled then
-					self:SetTitle([[Solaria Telepresence]])
-					self:SetRolloverText([[Select and view Solaria controller.]])
+					self:SetTitle(T(302535920011276, [[Solaria Telepresence]]))
+					self:SetRolloverText(T(302535920011293, [[Select and view Solaria controller.]]))
 				end
 				self:SetVisible(true)
 				self:SetMaxHeight()
@@ -478,7 +487,6 @@ end
 
 local function StartupCode()
 	-- store amount of controlled buildings for toggling visiblity of "All Attached Buildings" button
-	local UICity = UICity
 	if not UICity.SolariaTelepresence_RemoteControlledBuildings then
 		UICity.SolariaTelepresence_RemoteControlledBuildings = 0
 	end

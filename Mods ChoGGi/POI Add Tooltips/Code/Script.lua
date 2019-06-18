@@ -33,8 +33,8 @@ local function UpdateList(dlg)
 			if next(resources) then
 				local inventory = {}
 				local c = 0
-				for i = 1, #resources do
-					local text = resources[i]:GetText()
+				for j = 1, #resources do
+					local text = resources[j]:GetText()
 					if text ~= "" then
 						c = c + 1
 						inventory[c] = text
@@ -74,8 +74,8 @@ local function UpdateList(dlg)
 
 				if requirements.required_resources then
 					local resources = requirements.required_resources or ""
-					for i = 1, #resources do
-						local text = resources[i]:GetText()
+					for j = 1, #resources do
+						local text = resources[j]:GetText()
 						if text ~= "" then
 							c = c + 1
 							inventory[c] = text

@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
-local TableConcat = ChoGGi.ComFuncs.TableConcat
-local Translate = ChoGGi.ComFuncs.Translate
+local T = T
 
 -- add action to GameShortcuts
 function OnMsg.ClassesPostprocess()
@@ -93,53 +92,53 @@ end
 
 -- removed from Sagan
 function ResourceOverview:GetBasicResourcesRollover()
-	local nl = Translate(316, "<newline>")
+	local nl = T(316, "<newline>")
 	local header = self:GetBasicResourcesHeading()
 	ResourceOverview.GetBasicResourcesHeading = BlankText
 	ResourceOverview.GetOtherResourcesHeading = BlankText
 
 	local text = {
-		Translate(header),
+		T(header),
 		nl,
-		Translate(self:GetMetalsRollover()),
+		T(self:GetMetalsRollover()),
 		nl,
-		Translate(self:GetConcreteRollover()),
+		T(self:GetConcreteRollover()),
 		nl,
-		Translate(self:GetFoodRollover()),
+		T(self:GetFoodRollover()),
 		nl,
-		Translate(self:GetRareMetalsRollover()),
+		T(self:GetRareMetalsRollover()),
 		nl,
-		Translate(self:GetWasteRockRollover()),
+		T(self:GetWasteRockRollover()),
 	}
 
 	ResourceOverview.GetBasicResourcesHeading = orig_GetBasicResourcesHeading
 	ResourceOverview.GetOtherResourcesHeading = orig_GetOtherResourcesHeading
-	return TableConcat(text, "<newline><left>")
+	return table.concat(text, "<newline><left>")
 end
 
 function ResourceOverview:GetAdvancedResourcesRollover()
-	local nl = Translate(316, "<newline>")
+	local nl = T(316, "<newline>")
 	local header = self:GetAdvancedResourcesHeading()
 	ResourceOverview.GetAdvancedResourcesHeading = BlankText
 	ResourceOverview.GetOtherResourcesHeading = BlankText
 
 	local text = {
-		Translate(header),
+		T(header),
 		nl,
-		Translate(self:GetPolymersRollover()),
+		T(self:GetPolymersRollover()),
 		nl,
-		Translate(self:GetElectronicsRollover()),
+		T(self:GetElectronicsRollover()),
 		nl,
-		Translate(self:GetMachinePartsRollover()),
+		T(self:GetMachinePartsRollover()),
 		nl,
-		Translate(self:GetFuelRollover()),
+		T(self:GetFuelRollover()),
 	}
 	if not g_NoTerraforming then
 		text[#text+1] = nl
-		text[#text+1] = Translate(self:GetSeedsRollover())
+		text[#text+1] = T(self:GetSeedsRollover())
 	end
 
 	ResourceOverview.GetAdvancedResourcesHeading = orig_GetAdvancedResourcesHeading
 	ResourceOverview.GetOtherResourcesHeading = orig_GetOtherResourcesHeading
-	return TableConcat(text, "<newline><left>")
+	return table.concat(text, "<newline><left>")
 end

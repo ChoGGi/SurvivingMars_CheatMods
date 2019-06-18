@@ -25,8 +25,8 @@ local Translate = ChoGGi.ComFuncs.Translate
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 
 
-local name = [[RC Bulldozer]]
-local description = [[Crush, Kill, Destroy]] -- Sarcófago not lost in space...
+local name = T(302535920011162, [[RC Bulldozer]])
+local description = T(302535920011163, [[Crush, Kill, Destroy]]) -- Sarcófago not lost in space...
 local display_icon = CurrentModPath .. "UI/rover_combat.png"
 
 local entity1 = "CombatRover"
@@ -49,9 +49,9 @@ if BuildingTemplates.RCHarvesterBuilding then
 	fx_actor_class = "RCHarvester"
 end
 
-local idle_text = "Radius: %s, " .. Translate(49--[[Status]]) .. ": " .. Translate(6722--[[Idle]])
-local travel_text = "Radius: %s, " .. Translate(49--[[Status]]) .. ": " .. Translate(63--[[Travelling]])
-local flatten_text = "Radius: %s, " .. Translate(49--[[Status]]) .. ": " .. Translate(76--[[Performing maintenance]])
+local idle_text = Translate(302535920011164, "Radius: %s") .. ", " .. Translate(49--[[Status]]) .. ": " .. Translate(6722--[[Idle]])
+local travel_text = Translate(302535920011164, "Radius: %s") .. ", " .. Translate(49--[[Status]]) .. ": " .. Translate(63--[[Travelling]])
+local flatten_text = Translate(302535920011164, "Radius: %s") .. ", " .. Translate(49--[[Status]]) .. ": " .. Translate(76--[[Performing maintenance]])
 
 DefineClass.RCBulldozer = {
 	__parents = {
@@ -194,6 +194,7 @@ end
 
 local efCollision = const.efCollision + const.efApplyToGrids
 local efSelectable = const.efSelectable
+
 -- a very ugly hack to update driveable area
 function RCBulldozer:AddDriveable()
 	SuspendPassEdits("RCBulldozer:AddDriveable")
@@ -325,20 +326,20 @@ function OnMsg.InGameInterfaceCreated()
 	local smallest = point(1, 1)
 	texture_list = {}
 	local TerrainTextures = TerrainTextures
-	local image = "<image %s>"
 
 	for i = 0, #TerrainTextures do
+		local texture = TerrainTextures[i]
 		local hint
-		if TerrainTextures[i].name == "Dig" then
-			hint = "Texture from original version\n" .. TerrainTextures[i].texture
+		if texture.name == "Dig" then
+			hint = T(302535920011165, "Texture from original version") .. "\n" .. texture.texture
 		else
-			hint = image:format(TerrainTextures[i].texture)
+			hint = "<image " .. texture.texture .. ">"
 		end
 		texture_list[i] = {
-			name = TerrainTextures[i].name,
+			name = texture.name,
 			hint = hint,
 			-- this is just so the image loads (otherwise the tooltip image will be borked)
-			image = TerrainTextures[i].texture,
+			image = texture.texture,
 			-- which is why I make it invisible
 			image_scale = smallest,
 			clicked = function()
@@ -357,8 +358,8 @@ function OnMsg.InGameInterfaceCreated()
 	end)
 	-- and add the no change one
 	table.insert(texture_list, 1, {
-		name = [[No Change]],
-		hint = [[Don't change ground texture when dozing.]],
+		name = T(302535920011166, [[No Change]]),
+		hint = T(302535920011167, [[Don't change ground texture when dozing.]]),
 		clicked = function()
 			local info = Dialogs.Infopanel
 			if info then
@@ -454,16 +455,16 @@ function OnMsg.ClassesPostprocess()
 			"ChoGGi_Template_RCBulldozer_Texture", true,
 			"__context_of_kind", "RCBulldozer",
 			"__template", "InfopanelActiveSection",
-			"RolloverTitle", [[Ground Texture]],
+			"RolloverTitle", T(302535920011168, [[Ground Texture]]),
 			"OnContextUpdate", function(self, context)
 				-- context is the object selected
 				if context.texture_terrain then
-					self:SetRolloverText([[Change texture of dozed ground.]])
-					self:SetTitle([[Texture]])
+					self:SetRolloverText(T(302535920011169, [[Change texture of dozed ground.]]))
+					self:SetTitle(T(302535920011170, [[Texture]]))
 					self:SetIcon("UI/Icons/Upgrades/hygroscopic_coating_04.tga")
 				else
-					self:SetRolloverText([[Keep same ground texture.]])
-					self:SetTitle([[Texture Skip]])
+					self:SetRolloverText(T(302535920011171, [[Keep same ground texture.]]))
+					self:SetTitle(T(302535920011172, [[Texture Skip]]))
 					self:SetIcon("UI/Icons/Upgrades/hygroscopic_coating_01.tga")
 				end
 				---
@@ -492,16 +493,16 @@ function OnMsg.ClassesPostprocess()
 			"ChoGGi_Template_RCBulldozer_Circle", true,
 			"__context_of_kind", "RCBulldozer",
 			"__template", "InfopanelActiveSection",
-			"RolloverTitle", [[Visual Circle]],
+			"RolloverTitle", T(302535920011173, [[Visual Circle]]),
 			"OnContextUpdate", function(self, context)
 				-- context is the object selected
 				if context.visual_circle_toggle then
-					self:SetRolloverText([[Shows white circle while dozing.]])
-					self:SetTitle([[Circle]])
+					self:SetRolloverText(T(302535920011174, [[Shows white circle while dozing.]]))
+					self:SetTitle(T(302535920011175, [[Circle]]))
 					self:SetIcon("UI/Icons/Upgrades/holographic_scanner_04.tga")
 				else
-					self:SetRolloverText([[Hide circle while dozing.]])
-					self:SetTitle([[Circle Skip]])
+					self:SetRolloverText(T(302535920011176, [[Hide circle while dozing.]]))
+					self:SetTitle(T(302535920011177, [[Circle Skip]]))
 					self:SetIcon("UI/Icons/Upgrades/holographic_scanner_01.tga")
 				end
 				---
@@ -543,14 +544,14 @@ function OnMsg.ClassesPostprocess()
 				---
 			end,
 
-			"RolloverTitle", [[Dozer Toggle]],
+			"RolloverTitle", T(302535920011178, [[Dozer Toggle]]),
 			"OnContextUpdate", function(self, context)
 				---
 				if context.bulldozing then
-					self:SetRolloverText([[Flatten ground in front of bulldozer.]])
+					self:SetRolloverText(T(302535920011179, [[Flatten ground in front of bulldozer.]]))
 					self:SetIcon("UI/Icons/Sections/Concrete_4.tga")
 				else
-					self:SetRolloverText([[Move without flattening ground.]])
+					self:SetRolloverText(T(302535920011180, [[Move without flattening ground.]]))
 					self:SetIcon("UI/Icons/Sections/accept_colonists_on.tga")
 				end
 				---

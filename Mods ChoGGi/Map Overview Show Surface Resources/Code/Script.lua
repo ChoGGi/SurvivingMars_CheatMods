@@ -42,8 +42,10 @@ local function AddIcons()
 	local str_Polymers = _InternalTranslate(T(3515,"Polymers"))
 
 	local r = const.ResourceScale
-
 	local g_MapSectors = g_MapSectors
+
+	SuspendPassEdits("ChoGGi_MapOverviewShowSurfaceResources:AddIcons")
+
 	for sector in pairs(g_MapSectors) do
 		-- skip 1-10
 		if type(sector) == "table" then
@@ -82,6 +84,8 @@ local function AddIcons()
 			end
 		end
 	end
+
+	ResumePassEdits("ChoGGi_MapOverviewShowSurfaceResources:AddIcons")
 end
 
 local orig_OverviewModeDialog_Init = OverviewModeDialog.Init
@@ -90,15 +94,17 @@ function OverviewModeDialog.Init(...)
 	return orig_OverviewModeDialog_Init(...)
 end
 
+local function ClearIcons()
+	SuspendPassEdits("ChoGGi_MapOverviewShowSurfaceResources:ClearIcons")
+	MapDelete("map", "ChoGGi_OText_SurResMod")
+	ResumePassEdits("ChoGGi_MapOverviewShowSurfaceResources:ClearIcons")
+end
+
 local orig_OverviewModeDialog_Close = OverviewModeDialog.Close
 function OverviewModeDialog.Close(...)
-	MapDelete("map", "ChoGGi_OText_SurResMod")
+	ClearIcons()
 	return orig_OverviewModeDialog_Close(...)
 end
 
 -- we don't want them around for saves
-function OnMsg.SaveGame()
-	SuspendPassEdits("Map Overview Show Loose Resources.SaveGame")
-	MapDelete("map", "ChoGGi_OText_SurResMod")
-	ResumePassEdits("Map Overview Show Loose Resources.SaveGame")
-end
+OnMsg.SaveGame = ClearIcons

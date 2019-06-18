@@ -1,25 +1,26 @@
 -- See LICENSE for terms
+local options
+local mod_LimitStorage
 
-local mod_id = "ChoGGi_RCTanker"
-local mod = Mods[mod_id]
-local mod_LimitStorage = mod.options and mod.options.LimitStorage or 0
+-- fired when settings are changed and new/load
+local function ModOptions()
+	mod_LimitStorage = options.LimitStorage
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_RCTanker" then
 		return
 	end
 
-	mod_LimitStorage = mod.options.LimitStorage
+	ModOptions()
 end
-
--- for some reason mod options aren't retrieved before this script is loaded...
-local function StartupCode()
-	mod_LimitStorage = mod.options.LimitStorage
-end
-
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
 
 --~ local Strings = ChoGGi.Strings
 local TableConcat = ChoGGi.ComFuncs.TableConcat
@@ -33,9 +34,9 @@ local MulDivRound = MulDivRound
 local T = T
 local ResourceScale = const.ResourceScale
 
-local name = [[RC Tanker]]
-local description = [[Used to transport oxygen and water between tanks.
-Tank will always refer to the storage on the ground, not the tank on the RC.]]
+local name = T(302535920011220, [[RC Tanker]])
+local description = T(302535920011221, [[Used to transport oxygen and water between tanks.
+Tank will always refer to the storage on the ground, not the tank on the RC.]])
 local display_icon = CurrentModPath .. "UI/rover_tanker.png"
 
 local entity_tank = "AirTank"
@@ -76,7 +77,7 @@ function RCTankerTank:Init()
 	for i = id_start, id_end do
 		local spot_annotation = self:GetSpotAnnotation(i)
 		if spot_annotation and spot_annotation:find("AirTankArrow") then
-			self:Attach(PlaceObject("AirTankArrow"), i)
+			self:Attach(AirTankArrow:new(), i)
 			-- attaching the tank to the rc makes all the tanks attach spots get mushed into origin (or somewhere)
 			break
 		end
@@ -305,25 +306,37 @@ end
 function RCTanker:CanInteractWithObject(obj, ...)
 	local status = self:RetInteractInfo(obj)
 	if status then
+		local icon_stat = "<image UI/Common/mission_no.tga 1600>: "
+
 		if status == 0 then
-			return true, T(0, "<UnitMoveControl('ButtonA', interaction_mode)>:		"
-				.. (self.tank_direction and "<image UI/Icons/IPButtons/unload.tga> Drain" or "<image UI/Icons/IPButtons/load.tga> Fill")
-				.. " " .. self:RetResIconText() .. " Tank.")
+			return true, T{302535920011222,
+				"<UnitMoveControl('ButtonA', interaction_mode)>:<right><which> <icon> Tank.",
+				which = self.tank_direction
+				and "<image UI/Icons/IPButtons/unload.tga> " .. T(302535920011223, "Drain")
+				or "<image UI/Icons/IPButtons/load.tga> " .. T(302535920011224, "Fill"),
+				icon = self:RetResIconText(),
+			}
 		elseif status == 1 then
 			return BaseRover.CanInteractWithObject(self, obj, ...)
 		elseif status == 2 then
-			return false, T(0, "<image UI/Common/mission_no.tga 1600>: Not "
-				.. self:RetResIconText() .. " Tank.")
+			return false, icon_stat .. T{302535920011225,
+				"Not <icon> Tank.",
+				icon = self:RetResIconText(),
+			}
 		elseif status == 3 then
-			return false, T(0, "<image UI/Common/mission_no.tga 1600>: RC tank is full!")
+			return false, T(302535920011226, "RC tank is full!")
 		elseif status == 4 then
-			return false, T(0, "<image UI/Common/mission_no.tga 1600>: "
-				.. self:RetResIconText() .. " Tank is empty!")
+			return false, icon_stat .. T{302535920011227,
+				"<icon> Tank is empty!",
+				icon = self:RetResIconText(),
+			}
 		elseif status == 5 then
-			return false, T(0, "<image UI/Common/mission_no.tga 1600>: RC tank is empty!")
+			return false, icon_stat .. T(302535920011228, "RC tank is empty!")
 		elseif status == 6 then
-			return false, T(0, "<image UI/Common/mission_no.tga 1600>: "
-				.. self:RetResIconText() .. " Tank is full!")
+			return false, icon_stat .. T{302535920011229,
+				"<icon> Tank is full!",
+				icon = self:RetResIconText(),
+			}
 		end
 	end
 
@@ -517,17 +530,17 @@ function OnMsg.ClassesPostprocess()
 
 		if self.tank_direction then
 			self.tank_direction = false
-			button:SetRolloverText([[Fill tank resource from RC.
+			button:SetRolloverText(T(302535920011230, [[Fill tank resource from RC.
 
-Press to toggle.]])
-			button:SetRolloverTitle([[Fill Tank]])
+Press to toggle.]]))
+			button:SetRolloverTitle(T(302535920011231, [[Fill Tank]]))
 			button:SetIcon("UI/Icons/IPButtons/load.tga")
 		else
 			self.tank_direction = true
-			button:SetRolloverText([[Drain resource from tank to RC.
+			button:SetRolloverText(T(302535920011232, [[Drain resource from tank to RC.
 
-Press to toggle.]])
-			button:SetRolloverTitle([[Drain Tank]])
+Press to toggle.]]))
+			button:SetRolloverTitle(T(302535920011133, [[Drain Tank]]))
 			button:SetIcon("UI/Icons/IPButtons/unload.tga")
 		end
 
@@ -541,10 +554,10 @@ Press to toggle.]])
 			"comment", "fill/drain toggle",
 			"__context_of_kind", "RCTanker",
 			"__template", "InfopanelButton",
-			"RolloverText", [[Drain resource from tank to RC.
+			"RolloverText", T(302535920011232, [[Drain resource from tank to RC.
 
-Press to toggle.]],
-			"RolloverTitle", [[Drain Tank]],
+Press to toggle.]]),
+			"RolloverTitle", T(302535920011133, [[Drain Tank]]),
 			"Icon", "UI/Icons/IPButtons/unload.tga",
 			"OnPress", function (self)
 				UpdateToggleDir(self.context, self)
@@ -565,12 +578,12 @@ Press to toggle.]],
 		end
 		if self.tank_type == "AirStorage" then
 			self.tank_type = "WaterStorage"
-			button:SetRolloverTitle(Translate(681--[[Water]]) .. "\n\nPress to toggle.")
+			button:SetRolloverTitle(T(681--[[Water]]) .. "\n\n" .. T(302535920011234, "Press to toggle."))
 			button:SetIcon("UI/Icons/Sections/Water_1.tga")
 			self.tank_obj:SetColorizationMaterial(1, -12211457, -24, 0)
 		else
 			self.tank_type = "AirStorage"
-			button:SetRolloverTitle(Translate(682--[[Oxygen]]) .. "\n\nPress to toggle.")
+			button:SetRolloverTitle(T(682--[[Oxygen]]) .. "\n\n" .. T(302535920011234, "Press to toggle."))
 			button:SetIcon("UI/Icons/Sections/Oxygen_1.tga")
 			self.tank_obj:SetColorizationMaterial(1, -4450778, -24, 0)
 		end
@@ -578,6 +591,7 @@ Press to toggle.]],
 		self.storage_amount = 0
 	end
 
+	local str_image = "<image UI/Common/mission_no.tga 1600>"
 	table.insert(
 		rover,
 		#rover+1,
@@ -587,10 +601,10 @@ Press to toggle.]],
 			"__context_of_kind", "RCTanker",
 			"__template", "InfopanelButton",
 			"Icon", "UI/Icons/Sections/Oxygen_1.tga",
-			"RolloverTitle", Translate(682--[[Oxygen]]) .. "\n\nPress to toggle.",
-			"RolloverText", T(0, [[Type of resource you can transfer with this RC.
+			"RolloverTitle", T(682--[[Oxygen]]) .. "\n\n" .. T(302535920011234, "Press to toggle."),
+			"RolloverText", T{302535920011235, [[Type of resource you can transfer with this RC.
 
-<image UI/Common/mission_no.tga 1600> Warning: Changing will empty RC tank!]]),
+<icon> Warning: Changing will empty RC tank!]], icon = str_image},
 			"OnPress", function (self)
 				UpdateToggleRes(self.context, self)
 			end,

@@ -7,14 +7,14 @@ DefineClass("ModOptions_ChoGGi_PortableMiner", {
 			default = true,
 			editor = "bool",
 			id = "visual_cues",
-			name = "Paint ground around mine",
+			name = T(302535920011196, "Paint ground around mine"),
 			desc = "mspaint 4eva",
 		},
 		{
 			default = true,
 			editor = "bool",
 			id = "ShowRocket",
-			name = "Show Rocket",
+			name = T(302535920011197, "Show Rocket"),
 			desc = "up 'n down 'n up 'n down",
 		},
 		{
@@ -23,7 +23,7 @@ DefineClass("ModOptions_ChoGGi_PortableMiner", {
 			id = "mine_amount",
 			max = 500,
 			min = 1,
-			name = "Amount per mine anim",
+			name = T(302535920011198, "Amount per mine anim"),
 			desc = "How much is mined each time.",
 		},
 		{
@@ -32,7 +32,7 @@ DefineClass("ModOptions_ChoGGi_PortableMiner", {
 			id = "max_res_amount_man",
 			max = 1000,
 			min = 1,
-			name = "Amount stored in stockpile manual",
+			name = T(302535920011199, "Amount stored in stockpile manual"),
 			desc = "XXXXXXXXXXXXXX",
 		},
 		{
@@ -41,7 +41,7 @@ DefineClass("ModOptions_ChoGGi_PortableMiner", {
 			id = "max_res_amount_auto",
 			max = 1000,
 			min = 1,
-			name = "Amount stored in stockpile auto",
+			name = T(302535920011200, "Amount stored in stockpile auto"),
 			desc = "XXXXXXXXXXXXXX",
 		},
 		{
@@ -50,7 +50,7 @@ DefineClass("ModOptions_ChoGGi_PortableMiner", {
 			id = "mine_time_animConcrete",
 			max = 100000,
 			min = 1,
-			name = "Time to mine concrete anim",
+			name = T(302535920011201, "Time to mine concrete anim"),
 			desc = "XXXXXXXXXXXXXX",
 		},
 		{
@@ -59,7 +59,7 @@ DefineClass("ModOptions_ChoGGi_PortableMiner", {
 			id = "mine_time_idleConcrete",
 			max = 100000,
 			min = 1,
-			name = "Time to mine concrete idle",
+			name = T(302535920011202, "Time to mine concrete idle"),
 			desc = "XXXXXXXXXXXXXX",
 		},
 		{
@@ -68,7 +68,7 @@ DefineClass("ModOptions_ChoGGi_PortableMiner", {
 			id = "mine_time_animMetals",
 			max = 100000,
 			min = 1,
-			name = "Time to mine metal anim",
+			name = T(302535920011203, "Time to mine metal anim"),
 			desc = "XXXXXXXXXXXXXX",
 		},
 		{
@@ -77,7 +77,7 @@ DefineClass("ModOptions_ChoGGi_PortableMiner", {
 			id = "mine_time_idleMetals",
 			max = 100000,
 			min = 1,
-			name = "Time to mine metal idle",
+			name = T(302535920011204, "Time to mine metal idle"),
 			desc = "XXXXXXXXXXXXXX",
 		},
 		{
@@ -86,7 +86,7 @@ DefineClass("ModOptions_ChoGGi_PortableMiner", {
 			id = "mine_time_animPreciousMetals",
 			max = 100000,
 			min = 1,
-			name = "Time to mine precious metal anim",
+			name = T(302535920011205, "Time to mine precious metal anim"),
 			desc = "XXXXXXXXXXXXXX",
 		},
 		{
@@ -95,7 +95,7 @@ DefineClass("ModOptions_ChoGGi_PortableMiner", {
 			id = "mine_time_idlePreciousMetals",
 			max = 100000,
 			min = 1,
-			name = "Time to mine precious metal idle",
+			name = T(302535920011206, "Time to mine precious metal idle"),
 			desc = "XXXXXXXXXXXXXX",
 		},
 	},

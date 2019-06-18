@@ -54,8 +54,8 @@ local function SpawnShuttle(hub, attacker)
 		if s_i:CanLaunch() and s_i.hub.has_free_landing_slots then
 			if #(UICity.labels.PersonalShuttle or "") >= (PersonalShuttles.max_shuttles or 50) then
 				ChoGGi.ComFuncs.MsgPopup(
-					[[Max of 50 (somewhere above 50 and below 100 it crashes).]],
-					ChoGGi.ComFuncs.Translate(745--[[Shuttles]])
+					T(302535920011133, [[Max of 50 (somewhere above 50 and below 100 it crashes).]]),
+					T(745--[[Shuttles]])
 				)
 				return
 			end
@@ -102,7 +102,7 @@ local function SpawnShuttle(hub, attacker)
 end
 
 local icon_str = CurrentModPath .. "UI/shuttle_"
-local carried_str = "Carried: %s"
+local carried_str = T(302535920011134, "Carried")
 
 -- add all our buttons to the selection panel
 function OnMsg.ClassesPostprocess()
@@ -114,15 +114,15 @@ function OnMsg.ClassesPostprocess()
 	-- pick/drop button for shuttle
 	AddXTemplate("PersonalShuttles_PickDrop", "ipShuttle", {
 		__context_of_kind = "PersonalShuttle",
-		RolloverTitle = [[Pickup/Drop Item]],
-		RolloverText = [[Pickup: Item with "Pickup" enabled will be picked up.
-Drop: select something on the ground, and carried item will be dropped nearby.]],
+		RolloverTitle = T(302535920011135, [[Pickup/Drop Item]]),
+		RolloverText = T(302535920011136, [[Pickup: Item with "Pickup" enabled will be picked up.
+Drop: select something on the ground, and carried item will be dropped nearby.]]),
 		OnContextUpdate = function(self, context)
 			if context.pickup_toggle then
-				self:SetTitle([[Pickup Item]])
+				self:SetTitle(T(302535920011137, [[Pickup Item]]))
 				self:SetIcon(icon_str .. 2 .. ".png")
 			else
-				self:SetTitle([[Drop Item]])
+				self:SetTitle(T(302535920011138, [[Drop Item]]))
 				self:SetIcon(icon_str .. 3 .. ".png")
 			end
 		end,
@@ -135,15 +135,15 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 	-- info showing carried item
 	AddXTemplate("PersonalShuttles_CarriedItem", "ipShuttle", {
 		__context_of_kind = "PersonalShuttle",
-		RolloverTitle = [[Carried Object]],
-		RolloverText = [[Shows name of carried object.]],
+		RolloverTitle = T(302535920011139, [[Carried Object]]),
+		RolloverText = T(302535920011140, [[Shows name of carried object.]]),
 		Icon = icon_str .. 4 .. ".png",
 		OnContextUpdate = function(self, context)
 			local obj = context.carried_obj
 			if obj then
 				self:SetVisible(true)
 				self:SetMaxHeight()
-				self:SetTitle(carried_str:format(RetName(obj)))
+				self:SetTitle(carried_str .. ": " .. RetName(obj))
 			else
 				self:SetVisible(false)
 				self:SetMaxHeight(0)
@@ -152,9 +152,9 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 	})
 	AddXTemplate("PersonalShuttles_Recall", "ipShuttle", {
 		__context_of_kind = "PersonalShuttle",
-		Title = [[Recall Shuttle]],
-		RolloverTitle = [[Recall Shuttle]],
-		RolloverText = [[Send shuttle back to hub.]],
+		Title = T(302535920011141, [[Recall Shuttle]]),
+		RolloverTitle = T(302535920011141, [[Recall Shuttle]]),
+		RolloverText = T(302535920011142, [[Send shuttle back to hub.]]),
 		Icon = icon_str .. 3 .. ".png",
 		func = function(_, context)
 			if type(UICity.PersonalShuttles.shuttle_threads[context.handle]) == "boolean" then
@@ -176,9 +176,9 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 	AddXTemplate("PersonalShuttles_SpawnButtonA", "customShuttleHub", {
 		__context_of_kind = "ShuttleHub",
 		Icon = icon_str .. 3 .. ".png",
-		Title = [[Spawn Attacker]],
-		RolloverTitle = [[Spawn Attacker]],
-		RolloverText = [[Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, attack nearby dustdevils, and pick up items (drones, rovers, res piles, and waste rock) you've selected and marked for pickup.]],
+		Title = T(302535920011143, [[Spawn Attacker]]),
+		RolloverTitle = T(302535920011143, [[Spawn Attacker]]),
+		RolloverText = T(302535920011144, [[Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, attack nearby dustdevils, and pick up items (drones, rovers, res piles, and waste rock) you've selected and marked for pickup.]]),
 		func = function(self, context)
 			SpawnShuttle(context, true)
 		end,
@@ -187,9 +187,9 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 	AddXTemplate("PersonalShuttles_SpawnButtonF", "customShuttleHub", {
 		__context_of_kind = "ShuttleHub",
 		Icon = icon_str .. 2 .. ".png",
-		Title = [[Spawn Friend]],
-		RolloverTitle = [[Spawn Friend]],
-		RolloverText = [[Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, and pick up items (drones, rovers, res piles, and waste rock) you've selected and marked for pickup.]],
+		Title = T(302535920011145, [[Spawn Friend]]),
+		RolloverTitle = T(302535920011145, [[Spawn Friend]]),
+		RolloverText = T(302535920011146, [[Spawns a Shuttle that will follow your cursor, scan nearby selected anomalies for you, and pick up items (drones, rovers, res piles, and waste rock) you've selected and marked for pickup.]]),
 		func = function(self, context)
 			SpawnShuttle(context)
 		end,
@@ -206,9 +206,9 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 			end
 		end,
 		Icon = icon_str .. 4 .. ".png",
-		Title = [[Recall Shuttles]],
-		RolloverTitle = [[Recall Shuttles]],
-		RolloverText = [[Recalls all personal shuttles you've spawned at this Shuttle Hub.]],
+		Title = T(302535920011147, [[Recall Shuttles]]),
+		RolloverTitle = T(302535920011147, [[Recall Shuttles]]),
+		RolloverText = T(302535920011148, [[Recalls all personal shuttles you've spawned at this Shuttle Hub.]]),
 		func = function(_, context)
 			local UICity = UICity
 			for i = 1, #context.shuttle_infos do
@@ -238,16 +238,16 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 				return true
 			end
 		end,
-		RolloverTitle = [[Mark For Pickup]],
-		RolloverText = [[Change this to Pickup, keep mouse pointer nearby, and wait for shuttle.]],
+		RolloverTitle = T(302535920011149, [[Mark For Pickup]]),
+		RolloverText = T(302535920011150, [[Change this to Pickup, keep mouse pointer nearby, and wait for shuttle.]]),
 		OnContextUpdate = function(self, context)
 			if context.PersonalShuttles_PickUpItem then
-				self:SetTitle([[Pickup Item]])
-				self:SetRolloverTitle([[Marked For Pickup]])
+				self:SetTitle(T(302535920011137, [[Pickup Item]]))
+				self:SetRolloverTitle(T(302535920011151, [[Marked For Pickup]]))
 				self:SetIcon(icon_str .. 2 .. ".png")
 			else
-				self:SetTitle([[Ignore Item]])
-				self:SetRolloverTitle([[Mark For Pickup]])
+				self:SetTitle(T(302535920011152, [[Ignore Item]]))
+				self:SetRolloverTitle(T(302535920011153, [[Mark For Pickup]]))
 				self:SetIcon(icon_str .. 1 .. ".png")
 			end
 		end,

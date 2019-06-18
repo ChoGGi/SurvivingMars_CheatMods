@@ -36,7 +36,7 @@ local function WriteModSettings(settings)
 		end
 
 		if #data > const.MaxModDataSize then
-			ChoGGi.ComFuncs.MsgWait("SaveMissionProfiles: too much data, delete some saved settings")
+			ChoGGi.ComFuncs.MsgWait(T(302535920011252, "SaveMissionProfiles: too much data, delete some saved settings"))
 			return
 		end
 	end
@@ -83,7 +83,10 @@ local function ReadModSettings()
 end
 
 local function SaveProfile(params)
-	local choice_str = WaitInputText("Save Profile", "Type a profile name to use.")
+	local choice_str = WaitInputText(
+		T(302535920011253, "Save Profile"),
+		T(302535920011254, "Type a profile name to use.")
+	)
 	if choice_str and choice_str ~= "" then
 		-- remove modded stuff
 		CleanGameRules(g_CurrentMissionParams)
@@ -112,11 +115,14 @@ local function LoadProfile(name, settings, pgmission)
 	end
 
 	ChoGGi.ComFuncs.QuestionBox(
-		"Load profile: " .. name .. [[
+		T{302535920011255, [[Load profile: <name>
 You'll have to change the "page" to visually update settings.]],
+		name = name,
+		},
 		CallBackFunc
 	)
 end
+
 local function DeleteProfile(name, settings_list)
 	local function CallBackFunc(answer)
 		if answer then
@@ -126,7 +132,10 @@ local function DeleteProfile(name, settings_list)
 	end
 
 	ChoGGi.ComFuncs.QuestionBox(
-		"Delete profile: " .. name,
+		T{302535920011256,
+			"Delete profile: <name>",
+			name = name,
+		},
 		CallBackFunc,
 		T(6779--[[Warning]]) .. ": " .. Strings[302535920000855--[[Last chance before deletion!]]]
 	)
@@ -138,8 +147,8 @@ local function ProfileButtonPressed(pgmission, toolbar)
 	-- always show save
 	local menu = {
 		{
-			name = T(161964752558--[[Save]]) .. " Profile",
-			hint = "Save current profile.",
+			name = T(302535920011257, "Save Profile"),
+			hint = T(302535920011258, "Save current profile."),
 			clicked = function()
 				CreateRealTimeThread(SaveProfile, pgmission.context.params)
 			end,
@@ -149,14 +158,14 @@ local function ProfileButtonPressed(pgmission, toolbar)
 	if next(settings_list) then
 
 		menu[#menu+1] = {
-			name = T(885629433849--[[Load]]) .. " Profile >",
-			hint = "Load saved profile.",
+			name = T(302535920011262, "Load Profile ..."),
+			hint = T(302535920011260, "Load saved profile."),
 			submenu = {},
 		}
 		local loadm = menu[#menu]
 		menu[#menu+1] = {
-			name = T(502364928914--[[Delete]]) .. " Profile >",
-			hint = "Delete saved profile.",
+			name = T(302535920011261, "Delete Profile ..."),
+			hint = T(302535920011262, "Delete saved profile."),
 			submenu = {},
 		}
 		local delm = menu[#menu]
@@ -191,10 +200,10 @@ local function AddProfilesButton(pgmission, toolbar)
 	toolbar.idChoGGi_ProfileButton = ChoGGi.ComFuncs.RetToolbarButton{
 		parent = toolbar,
 		id = "idChoGGi_ProfileButton",
-		text = T(0, "PROFILES"),
+		text = T(302535920011263, [[PROFILES]]),
 
 		roll_title = T(126095410863, "Info"),
-		roll_text = T(0, [[Save/Load save profiles.]]),
+		roll_text = T(302535920011264, [[Save/Load save profiles.]]),
 		onpress = function()
 			ProfileButtonPressed(pgmission, toolbar)
 		end,

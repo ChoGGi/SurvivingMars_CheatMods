@@ -13,7 +13,6 @@ function ChoGGi_DlgViewTextStyles:Init(parent, context)
 
 	self:AddScrollList()
 
-	local g_Classes = g_Classes
 	local TextStyles = TextStyles
 
 	local list = {}
@@ -27,7 +26,7 @@ function ChoGGi_DlgViewTextStyles:Init(parent, context)
 	table.sort(list)
 	for i = 1, #list do
 		local id = list[i]
-		local listitem, text_ctrl = self.idList:CreateTextItem(id)
+		local _, text_ctrl = self.idList:CreateTextItem(id)
 		text_ctrl:SetTextStyle(id)
 	end
 

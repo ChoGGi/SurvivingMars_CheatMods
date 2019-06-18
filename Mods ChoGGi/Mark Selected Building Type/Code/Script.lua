@@ -11,7 +11,7 @@ local ResumePassEdits = ResumePassEdits
 local table_remove = table.remove
 local table_iclear = table.iclear
 
-local beams = objlist:new()
+local beams = {}
 local green = green
 local InvalidPos = InvalidPos()
 

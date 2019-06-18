@@ -1,3 +1,1 @@
-rc flying drone 
-space to jump, rightclick? to shoot
-q/e up/down buttons
+function RCRemote:RemoteMove(dir) is checking with wasd

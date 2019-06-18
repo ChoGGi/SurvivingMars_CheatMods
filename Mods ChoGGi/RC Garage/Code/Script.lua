@@ -2,8 +2,8 @@
 
 local Sleep = Sleep
 
-local text_disabled = "Main Garage: " .. ChoGGi.ComFuncs.Translate(847439380056--[[Disabled]])
-local text_idle = "Main Garage: " .. ChoGGi.ComFuncs.Translate(6939--[[Idle]])
+local text_disabled = T(302535920011184, "Main Garage") .. ": " .. ChoGGi.ComFuncs.Translate(847439380056--[[Disabled]])
+local text_idle = T(302535920011184, "Main Garage") .. ": " .. ChoGGi.ComFuncs.Translate(6939--[[Idle]])
 local text_rovers = ChoGGi.ComFuncs.Translate(5438--[[Rovers]]) .. ": "
 
 -- stores rovers
@@ -16,8 +16,8 @@ GlobalVar("g_ChoGGi_RCGarages", {
 	last_pass = map_center,
 })
 
-local name = [[RC Garage]]
-local description = [[Stores rovers in a massive underground parking garage (where all the cool kids hang out).]]
+local name = T(302535920011185, [[RC Garage]])
+local description = T(302535920011186, [[Stores rovers in a massive underground parking garage (where all the cool kids hang out).]])
 local display_icon = CurrentModPath .. "UI/garage.png"
 
 DefineClass.RCGarage = {
@@ -251,8 +251,9 @@ end
 
 local function CountPower(power, list, amount)
 	for i = #list, 1, -1 do
-		if IsValid(list[i]) then
-			if list[i].working then
+		local item = list[i]
+		if IsValid(item) then
+			if item.working then
 				power = power + amount
 			end
 		else
@@ -262,6 +263,7 @@ local function CountPower(power, list, amount)
 	end
 	return power
 end
+
 function RCGarage:UpdateGaragePower(skip_check)
 	if skip_check or self:CheckMainGarage() then
 		-- main always uses 5
@@ -284,8 +286,8 @@ function RCGarage:UpdateGaragePower(skip_check)
 end
 
 -- we just update power use here (if main is down rovers are blocked), need to add some status text when main isn't working
-function RCGarage:OnSetWorking(working, ...)
-	Building.OnSetWorking(self, working, ...)
+function RCGarage:OnSetWorking(...)
+	Building.OnSetWorking(self, ...)
 	self:UpdateGaragePower()
 end
 
@@ -372,7 +374,7 @@ function OnMsg.ClassesPostprocess()
 			PlaceObj('XTemplateTemplate', {
 				"__template", "InfopanelActiveSection",
 				"Icon", "UI/Icons/ColonyControlCenter/outside_buildings_on.tga",
-				"RolloverText", [[View main garage]],
+				"RolloverText", T(302535920011187, [[View main garage]]),
 				"OnContextUpdate", function(self, context)
 					---
 
@@ -388,7 +390,7 @@ function OnMsg.ClassesPostprocess()
 					end
 
 					if text_rovers .. #context.stored_rovers == context.status_text then
-						self:SetTitle([[Main Garage]])
+						self:SetTitle(T(302535920011184, [[Main Garage]]))
 					else
 						self:SetTitle(context.pin_rollover)
 					end
@@ -415,8 +417,8 @@ function OnMsg.ClassesPostprocess()
 			PlaceObj('XTemplateTemplate', {
 				"__template", "InfopanelActiveSection",
 				"Icon", "UI/Icons/ColonyControlCenter/homeless_off.tga",
-				"Title", [[Eject All]],
-				"RolloverText", [[Forces out all rovers to main garage area]],
+				"Title", T(302535920011188, [[Eject All]]),
+				"RolloverText", T(302535920011189, [[Forces out all rovers to main garage area.]]),
 				"OnContextUpdate", function(self, context)
 					-- hide if this isn't main garage
 					if context:CheckMainGarage() then
@@ -454,9 +456,9 @@ function OnMsg.ClassesPostprocess()
 							end
 						end
 						ChoGGi.ComFuncs.QuestionBox(
-							[[Are you sure you want to eject all rovers?]],
+							T(302535920011190, [[Are you sure you want to eject all rovers?]]),
 							CallBackFunc,
-							[[Eject]]
+							T(302535920011188, [[Eject All]])
 						)
 						---
 					end,
@@ -467,7 +469,7 @@ function OnMsg.ClassesPostprocess()
 			PlaceObj('XTemplateTemplate', {
 				"__template", "InfopanelActiveSection",
 				"Icon", "UI/Icons/Sections/accept_colonists_on.tga",
-				"RolloverText", [[Show list of stored rovers]],
+				"RolloverText", T(302535920011191, [[Show list of stored rovers]]),
 				"OnContextUpdate", function(self, context)
 					---
 					if context:CheckMainGarage() then
@@ -500,7 +502,7 @@ function OnMsg.ClassesPostprocess()
 								c = c + 1
 								item_list[c] = {
 									name = name,
-									hint = "Eject " .. name .. " from garage",
+									hint = T{302535920011192, "Eject <name> from garage", name = name},
 									clicked = function()
 										context:RemoveFromGarage(obj)
 									end,

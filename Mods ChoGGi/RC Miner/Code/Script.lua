@@ -92,9 +92,9 @@ OnMsg.LoadGame = StartupCode
 local concrete_paint = table.find(TerrainTextures, "name", "Dig")
 local metal_paint = table.find(TerrainTextures, "name", "SandFrozen")
 
-local name = [[RC Miner]]
-local name_pl = [[RC Miners]]
-local description = [[Will slowly (okay maybe a little quickly) mine Metal or Concrete into a resource pile.]]
+local name = T(302535920011207, [[RC Miner]])
+local name_pl = T(302535920011208, [[RC Miners]])
+local description = T(302535920011209, [[Will slowly (okay maybe a little quickly) mine Metal or Concrete into a resource pile.]])
 local display_icon = CurrentModPath .. "UI/rover_combat.png"
 local entity = "CombatRover"
 
@@ -433,10 +433,11 @@ function PortableMiner:Load()
 			self:SetStateText(self.default_anim)
 
 			local time = pms.mine_time_anim[self.resource] or self:TimeToAnimEnd()
-			-- feel that missile move
+			-- feel that rocket slide
 			if mod_ShowRocket then
 				self.thumper:SetVisible(true)
-				self.thumper:SetPos(rocket_pos+point(0,0,300), time)
+--~ 				self.thumper:SetPos(rocket_pos+point(0,0,300), time)
+				self.thumper:SetPos(rocket_pos:AddZ(300), time)
 			end
 			Sleep(time)
 
@@ -480,7 +481,8 @@ function PortableMiner:Load()
 		if self:GetState() ~= 0 then
 			self:SetStateText(self.default_anim_idle)
 			if mod_ShowRocket then
-				self.thumper:SetPos(rocket_pos+point(0,0,-300), time)
+--~ 				self.thumper:SetPos(rocket_pos+point(0,0,-300), time)
+				self.thumper:SetPos(rocket_pos:AddZ(-300), time)
 			end
 		end
 		Sleep(time)
@@ -554,7 +556,6 @@ function PortableMiner:DigErUp()
 	if self.resource == "Concrete" then
 		extracted = TerrainDepositExtractor.ExtractResource(self, amount)
 		paint = concrete_paint
---~ 	elseif self.resource == "Metals" or self.resource == "PreciousMetals" then
 	else
 		extracted = BuildingDepositExploiterComponent.ExtractResource(self, amount)
 		paint = metal_paint

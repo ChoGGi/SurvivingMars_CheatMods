@@ -99,7 +99,7 @@ function ChoGGi_VCM_MapImageDlg:Init(parent, context)
 	self.idShowExtra = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idShowExtra",
 		Text = Translate(11451--[[Breakthrough]]),
-		RolloverText = "Show breakthroughs for this location.",
+		RolloverText = T(302535920011333, "Show breakthroughs for this location."),
 		OnChange = self.idShowExtraOnChange,
 		Margins = box(20,4,2,0),
 	}, self.idBottomArea)
@@ -112,12 +112,12 @@ function ChoGGi_VCM_MapImageDlg:Init(parent, context)
 		or ""
 	if tech_variety ~= "" or chaos_theory ~= "" then
 		self.idShowExtra.RolloverText = Translate(self.idShowExtra.RolloverText
-			.. [[
+			.. T(302535920011334, [[
 
 
 Random tech game rule(s) <color red>active!</color>
 Breakthroughs will be random as well.
-]] .. tech_variety .. chaos_theory)
+]]) .. tech_variety .. chaos_theory)
 	end
 
 	-- we need to wait a sec for the map info to load or y will be 0
@@ -175,8 +175,8 @@ DefineClass.ChoGGi_VCM_ExtraInfoDlg = {
 	dialog_width = 400.0,
 	dialog_height = 525.0,
 
-	missing_desc = [[You need to be in-game to display this hint.
-Click to open Paradox Breakthroughs Wikipage.]],
+	missing_desc = T(302535920011335, [[You need to be in-game to display this hint.
+Click to open Paradox Breakthroughs Wiki page.]]),
 
 	translated_tech = false,
 	omega_msg = false,
@@ -227,10 +227,10 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 
 	self.omega_msg_count = const.BreakThroughTechsPerGame + 1
 	self.omega_msg = "\n\n" .. Translate(5182--[[Omega Telescope]]) .. " "
-		.. Translate(437247068170--[[LIST]]) .. " (maybe):"
+		.. Translate(437247068170--[[LIST]]) .. " (" .. T(302535920011336, "maybe") .. "):"
 	self.planet_msg = "\n\n" .. Translate(11234--[[Planetary Anomaly]]) .. ":"
 
-	self.idText:SetText("Select location to update text")
+	self.idText:SetText(T(302535920011337, "Select location to update text"))
 
 	self:PostInit()
 end

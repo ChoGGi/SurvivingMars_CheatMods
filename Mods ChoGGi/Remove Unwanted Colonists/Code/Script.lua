@@ -69,10 +69,10 @@ function OnMsg.ClassesPostprocess()
 			"ChoGGi_Template_ColonistSucker", true,
 			"__template", "InfopanelActiveSection",
 			"Icon", "UI/Icons/traits_disapprove.tga",
-			"Title", [[Remove Colonist]],
-			"RolloverTitle", [[Remove Colonist]],
-			"RolloverText", [[Thumbs down means colonist will get sucked up and deported to Earth.]],
-			"RolloverHint", T(0, [[<left_click> Toggle]]),
+			"Title", T(302535920011244, [[Remove Colonist]]),
+			"RolloverTitle", T(302535920011244, [[Remove Colonist]]),
+			"RolloverText", T(302535920011245, [[Thumbs down means colonist will get sucked up and deported to Earth.]]),
+			"RolloverHint", T(302535920011246, [[<left_click> Toggle]]),
 			"OnContextUpdate", function(self, context)
 				---
 				if context.ChoGGi_MurderPod then
@@ -128,10 +128,10 @@ function OnMsg.ClassesPostprocess()
 				return IsValid(context.target)
 			end,
 			"Icon", "UI/Icons/Sections/colonist.tga",
-			"Title", [[Select Colonist]],
-			"RolloverTitle", [[Select Colonist]],
-			"RolloverText", [[Selects the colonist.]],
-			"RolloverHint", T(0, [[<left_click> Select]]),
+			"Title", T(302535920011247, [[Select Colonist]]),
+			"RolloverTitle", T(302535920011247, [[Select Colonist]]),
+			"RolloverText", T(302535920011248, [[Selects the colonist.]]),
+			"RolloverHint", T(302535920011249, [[<left_click> Select]]),
 		}, {
 			PlaceObj("XTemplateFunc", {
 				"name", "OnActivate(self, context)",

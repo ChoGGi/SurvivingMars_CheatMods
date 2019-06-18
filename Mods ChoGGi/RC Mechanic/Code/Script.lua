@@ -1,9 +1,10 @@
 -- See LICENSE for terms
 
-local name = [[RC Mechanic]]
-local description = [[Give me your tired, your poor,
+local name = T(302535920011193, [[RC Mechanic]])
+local description = T(302535920011194, [[Give me your tired, your poor,
 Your huddled masses yearning to breathe free,
-The wretched refuse of your teeming shore.]]
+The wretched refuse of your teeming shore.]])
+
 local display_icon = CurrentModPath .. "UI/rover_combat.png"
 local idle_text = ChoGGi.ComFuncs.Translate(6722--[[Idle]])
 local travel_text = ChoGGi.ComFuncs.Translate(63--[[Travelling]])
@@ -47,13 +48,13 @@ function RCMechanic:GameInit()
 	self:Attach(self.blinky)
 
 	-- move blinky above bar thingy
-	local offset = self:GetVisualPos() - MovePointAway(
+	local offsetx, offsety = self:GetVisualPos() - MovePointAway(
 		self:GetSpotLoc(self:GetSpotBeginIndex("Origin")),
 		self:GetSpotLoc(self:GetSpotBeginIndex("Particle1")),
 		200
-	)
+	):xy()
 	self.blinky:SetAttachOffset(
-		point(offset:x(), offset:y(), self:GetObjectBBox():sizez())
+		point(offsetx, offsety, self:GetObjectBBox():sizez())
 	)
 
 	-- select sounds
@@ -106,9 +107,10 @@ function RCMechanic:ProcAutomation()
 				local cc_count = #cc
 				local not_working_count = 0
 				for i = 1, cc_count do
-					local drones_count = cc[i]:GetDronesCount()
+					local centre = cc[i]
+					local drones_count = centre:GetDronesCount()
 					-- check for cc with no drones or all drones are malf'd
-					if drones_count == 0 or drones_count == cc[i]:GetBrokenDronesCount()then
+					if drones_count == 0 or drones_count == centre:GetBrokenDronesCount()then
 						not_working_count = not_working_count + 1
 					end
 				end
@@ -137,14 +139,14 @@ function RCMechanic:ProcAutomation()
 
 		local pos = GetPassablePointNearby(visual_pos)
 		if self:HasPath(pos, "Workrover") then
-			self.status_text = [[Was the dark of the moon on the sixth of June
-In a <color 199 124 45>]] .. (rover.name ~= "" and rover.name or rover.class) .. [[</color> pullin' logs
+			self.status_text = T{302535920011195, [[Was the dark of the moon on the sixth of June
+In a <color 199 124 45><name></color> pullin' logs
 Cab-over Pete with a reefer on
 And a Jimmy haulin' hogs
 We is headin' for bear on I-one-oh
 'Bout a mile outta Shaky Town
 I says, "Pig Pen, this here's the Rubber Duck.
-"And I'm about to put the hammer down."]]
+And I'm about to put the hammer down."]], name = rover.name ~= "" and rover.name or rover.class}
 
 			-- add a pretty light
 			self.blinky:SetVisible(true)

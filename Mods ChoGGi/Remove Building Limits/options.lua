@@ -7,7 +7,7 @@ DefineClass("ModOptions_ChoGGi_RemoveBuildingLimits", {
 			default = true,
 			editor = "bool",
 			id = "RemoveBuildingLimits",
-			name = "Remove Building Limits",
+			name = T(302535920011236, "Remove Building Limits"),
 		},
 	},
 })

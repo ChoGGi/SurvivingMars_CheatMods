@@ -3,10 +3,13 @@
 function OnMsg.ClassesPostprocess()
 	ChoGGi.ComFuncs.AddXTemplate("ShowAmountPerRareOnRockets", "customSupplyRocket", {
 		Icon = "UI/Icons/res_precious_metals.tga",
-		RolloverText = [[Amount received per rare/precious exported.]],
+		RolloverText = T(302535920011265, [[Amount received per rare/precious exported.]]),
 		OnContextUpdate = function(self, context)
 			---
-			self:SetTitle("Per Rare: " .. context.city:CalcBaseExportFunding(1000))
+			self:SetTitle(T{302535920011266,
+				"Per Rare: <amount>",
+				amount = context.city:CalcBaseExportFunding(1000),
+			})
 			---
 		end,
 	})

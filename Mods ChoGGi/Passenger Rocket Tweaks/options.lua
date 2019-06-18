@@ -7,19 +7,19 @@ DefineClass("ModOptions_ChoGGi_PassengerRocketTweaks", {
 			default = false,
 			editor = "bool",
 			id = "HideRocket",
-			name = "Hide Background",
+			name = T(302535920011127, "Hide Background"),
 		},
 		{
 			default = false,
 			editor = "bool",
 			id = "MoreSpecInfo",
-			name = "More Spec Info",
+			name = T(302535920011128, "More Spec Info"),
 		},
 		{
 			default = false,
 			editor = "bool",
 			id = "PosPassList",
-			name = "Position Pass List",
+			name = T(302535920011129, "Position Pass List"),
 		},
 		{
 			default = 700,
@@ -27,7 +27,7 @@ DefineClass("ModOptions_ChoGGi_PassengerRocketTweaks", {
 			id = "PosX",
 			max = 1000,
 			min = 1,
-			name = "X Margin",
+			name = T(302535920011130, "X Margin"),
 		},
 		{
 			default = 500,
@@ -35,7 +35,7 @@ DefineClass("ModOptions_ChoGGi_PassengerRocketTweaks", {
 			id = "PosY",
 			max = 1000,
 			min = 1,
-			name = "Y Margin",
+			name = T(302535920011131, "Y Margin"),
 		},
 	},
 })

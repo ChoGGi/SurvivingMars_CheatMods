@@ -29,7 +29,7 @@ do -- add shortcut actions
 	local c = #Actions
 
 	c = c + 1
-	Actions[c] = {ActionName = "Remote: Fire Missile",
+	Actions[c] = {ActionName = T(302535920011210, "Remote: Fire Missile"),
 		ActionId = "RCRemote.FireMissile",
 		OnAction = function()
 			local self = SelectedObj
@@ -44,7 +44,7 @@ do -- add shortcut actions
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = "Remote: Jump Forward",
+	Actions[c] = {ActionName = T(302535920011211, "Remote: Jump Forward"),
 		ActionId = "RCRemote.JumpForward",
 		OnAction = function()
 			local self = SelectedObj
@@ -59,7 +59,7 @@ do -- add shortcut actions
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = "Remote: Toggle Speed",
+	Actions[c] = {ActionName = T(302535920011212, "Remote: Toggle Speed"),
 		ActionId = "RCRemote.ToggleSpeed",
 		OnAction = function()
 			local self = SelectedObj
@@ -74,7 +74,7 @@ do -- add shortcut actions
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = "Remote: Move Forward",
+	Actions[c] = {ActionName = T(302535920011213, "Remote: Move Forward"),
 		ActionId = "RCRemote.Forward",
 		OnAction = function()
 			local self = SelectedObj
@@ -90,7 +90,7 @@ do -- add shortcut actions
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = "Remote: Move Backward",
+	Actions[c] = {ActionName = T(302535920011214, "Remote: Move Backward"),
 		ActionId = "RCRemote.Backward",
 		OnAction = function()
 			local self = SelectedObj
@@ -104,7 +104,7 @@ do -- add shortcut actions
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = "Remote: Move Left",
+	Actions[c] = {ActionName = T(302535920011215, "Remote: Move Left"),
 		ActionId = "RCRemote.Left",
 		OnAction = function()
 			local self = SelectedObj
@@ -118,7 +118,7 @@ do -- add shortcut actions
 	}
 
 	c = c + 1
-	Actions[c] = {ActionName = "Remote: Move Right",
+	Actions[c] = {ActionName = T(302535920011216, "Remote: Move Right"),
 		ActionId = "RCRemote.Right",
 		OnAction = function()
 			local self = SelectedObj
@@ -132,13 +132,14 @@ do -- add shortcut actions
 	}
 end -- do
 
-local name = [[RC Remote]]
-local description = [[Remote controlled RC
+local name = T(302535920011217, [[RC Remote]])
+local description = T(302535920011218, [[Remote controlled RC
 
 WASD to move.
 Q to fire rocket.
 E to jump forward.
-Shift to toggle high speed.]]
+Shift to toggle high speed.]])
+
 local display_icon = CurrentModPath .. "UI/rover_rc.png"
 
 DefineClass.RCRemote = {

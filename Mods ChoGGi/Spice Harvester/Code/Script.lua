@@ -37,10 +37,6 @@ DefineClass.MelangerBuilding = {
 	rover_class = "Melanger",
 }
 
--- for painting the terrain
-local terrain_type_idx = table.find(TerrainTextures, "name", "Sand_01")
-local SetTypeCircle = terrain.SetTypeCircle
-
 function Melanger:GameInit()
 	local city = self.city or UICity
 	city:RemoveFromLabel("HostileAttackRovers", self)
@@ -54,7 +50,7 @@ function Melanger:GameInit()
 	self:SetColorModifier(SpiceHarvester.Color or -11328253)
 
 	-- needed for sidepanel
-	self.name = "Spice Harvester"
+	self.name = T(302535920011294, "Spice Harvester")
 
 	-- still pretty slow, faster?
 	self:SetMoveSpeed(750000)
@@ -110,6 +106,8 @@ function Melanger:GameInit()
 
 	-- a slimy trail of sand
 	self.slime_thread = CreateGameTimeThread(function()
+		local terrain_type_idx = table.find(TerrainTextures, "name", "Sand_01")
+		local SetTypeCircle = terrain.SetTypeCircle
 		while self.slime_thread do
 			SetTypeCircle(self:GetVisualPos(), 900, terrain_type_idx)
 			Sleep(Random(2000, 4000))
@@ -185,8 +183,9 @@ function OnMsg.ClassesPostprocess()
 		-- pricey bit 'o kit
 		"construction_cost_Metals", 1000,
 		"dome_forbidden", true,
-		"display_name", [[Spice Harvester]],
-		"description", [[Doesn't do jack (unless you count roaming around and thumping).]],
+		"display_name", T(302535920011294, [[Spice Harvester]]),
+		"display_name_pl", T(302535920011295, [[Spice Harvesters]]),
+		"description", T(302535920011296, [[Doesn't do jack (unless you count roaming around and thumping).]]),
 		"build_category", "ChoGGi",
 		"Group", "ChoGGi",
 		"display_icon", "UI/Icons/Buildings/boomerang_garden.tga",
@@ -224,9 +223,9 @@ function OnMsg.ClassesPostprocess()
 
 		__context_of_kind = "Melanger",
 		Icon = "UI/Icons/Sections/resource_no_accept.tga",
-		Title = [[Destroy]],
-		RolloverTitle = [[Destroy]],
-		RolloverText = [[Remove this harvester.]],
+		Title = T(302535920011297, [[Destroy]]),
+		RolloverTitle = T(302535920011297, [[Destroy]]),
+		RolloverText = T(302535920011298, [[Remove this harvester from the map.]]),
 		func = function(self, context)
 			---
 			local function CallBackFunc(answer)
@@ -250,11 +249,11 @@ function OnMsg.ClassesPostprocess()
 				end
 			end
 			ChoGGi.ComFuncs.QuestionBox(
-				[[There is no escape-we pay for the violence of our ancestors.]],
+				T(302535920011299, [[There is no escape-we pay for the violence of our ancestors.]]),
 				CallBackFunc,
-				[[Little-death]],
-				[[Destroy the poor defenseless harvester]],
-				[[Spareth ye sprynge]],
+				T(302535920011300, [[Little-death]]),
+				T(302535920011301, [[Destroy the poor defenseless harvester]]),
+				T(302535920011302, [[Spareth ye sprynge]]),
 				CurrentModPath .. "UI/Wormy.png"
 			)
 			---

@@ -39,7 +39,7 @@ DefineClass.MurderPod = {
 	display_icon = "UI/Icons/Buildings/supply_pod.tga",
 
 	panel_icon = "",
-	panel_text = [[Waiting for victim]],
+	panel_text = T(302535920011242, [[Waiting for victim]]),
 	ip_template = "ipShuttle",
 
 	thrust_max = 3000,
@@ -223,7 +223,7 @@ function MurderPod:Abduct()
 	-- no need to keep colonist around now
 	victim:Erase()
 	-- change selection panel icon
-	self.panel_text = [[Victim going to "Earth"]]
+	self.panel_text = T(302535920011243, [[Victim going to "Earth"]])
 
 	-- human shaped meteors (bonus meteors, since murder is bad)
 	for _ = 1, Random(1, 3) do
