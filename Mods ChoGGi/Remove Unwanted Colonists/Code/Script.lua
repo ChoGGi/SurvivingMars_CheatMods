@@ -1,34 +1,48 @@
 -- See LICENSE for terms
 
-local function RemovePod(victim)
-	victim.ChoGGi_MurderPod:SetCommand("Leave")
-	victim.ChoGGi_MurderPod = nil
+local IsValid = IsValid
+
+function Colonist:ChoGGi_MP_RemovePod()
+	if IsValid(self.ChoGGi_MurderPod) then
+		self.ChoGGi_MurderPod:SetCommand("Leave")
+		self.ChoGGi_MurderPod = nil
+	end
 end
 
-local function WaitForIt(victim)
-	while victim.command == "Goto" do
+function Colonist:ChoGGi_MP_WaitForIt()
+	while self.command == "Goto" do
 		Sleep(500)
 	end
 	Sleep(10000)
-	if IsValid(victim) and IsValid(victim.ChoGGi_MurderPod) then
-		victim:SetCommand("Goto", g_IdiotMonument:GetPos())
-		WaitForIt(victim)
+	if IsValid(self) and IsValid(self.ChoGGi_MurderPod) then
+		self:SetCommand("Goto", g_IdiotMonument:GetPos())
+		self:ChoGGi_MP_WaitForIt()
 	end
 end
 
-local function LaunchPod(victim)
+function Colonist:ChoGGi_MP_LaunchPod()
 	-- launch a pod and set to stalk hunt colonist
-	local pod = PlaceObject("MurderPod")
-	pod.target = victim
-	pod.panel_icon = "<image " .. victim.infopanel_icon .. " 2500>"
+	local pod = MurderPod:new()
+	pod.target = self
+	pod.panel_icon = "<image " .. self.infopanel_icon .. " 2500>"
 	pod:SetCommand("Spawn")
 	-- used to update selection panel and to remove pod if needed
-	victim.ChoGGi_MurderPod = pod
+	self.ChoGGi_MurderPod = pod
 
 	-- get the fuck outta here
 	if IsValid(g_IdiotMonument) then
-		victim:SetCommand("Goto", g_IdiotMonument:GetPos())
-		CreateGameTimeThread(WaitForIt, victim)
+		self:SetCommand("Goto", g_IdiotMonument:GetPos())
+		CreateGameTimeThread(Colonist.ChoGGi_MP_WaitForIt, self)
+	else
+		CreateGameTimeThread(function()
+			while IsValid(self) and IsValid(self.ChoGGi_MurderPod) do
+				Sleep(1000)
+				if IsValid(g_IdiotMonument) then
+					self:ChoGGi_MP_WaitForIt()
+				end
+			end
+		end)
+
 	end
 end
 
@@ -78,10 +92,10 @@ function OnMsg.ClassesPostprocess()
 					---
 					if context.ChoGGi_MurderPod then
 						-- tell pod to piss off
-						RemovePod(context)
+						context:ChoGGi_MP_RemovePod()
 					else
 						-- send down a pod
-						LaunchPod(context)
+						context:ChoGGi_MP_LaunchPod()
 					end
 					ObjModified(context)
 					---

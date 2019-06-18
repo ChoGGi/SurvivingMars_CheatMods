@@ -19,6 +19,7 @@ local options
 local mod_Option1
 local mod_DistFromCursor
 local mod_ShowConSites
+local mod_GridOpacity
 
 local function CleanList(list)
 	local ranges = list or ""
@@ -32,6 +33,7 @@ local function ModOptions()
 	mod_Option1 = options.Option1
 	mod_DistFromCursor = options.DistFromCursor * 1000
 	mod_ShowConSites = options.ShowConSites
+	mod_GridOpacity = options.GridOpacity
 
 	local idx = table_find(dust_gens, "ConstructionSite")
 	if mod_ShowConSites and not idx then
@@ -88,6 +90,7 @@ local function ShowBuildingHexesSite(bld)
 		local g_HexRanges = g_HexRanges
 		CleanupHexRanges(bld)
 		local obj = RangeHexMultiSelectRadius_cls:new()
+		obj:SetOpacity(mod_GridOpacity)
 
 		-- the site is the res pile, we want the rocket pos
 		local bld_pos
@@ -162,6 +165,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 				if range_limit and cursor_pos:Dist2D(obj_pos) > range_limit then
 					range:SetVisible(false)
 				else
+					range:SetOpacity(mod_GridOpacity)
 					range:SetVisible(true)
 					for k = 1, #range.decals do
 						-- make sure they don't look like other grids

@@ -1,3 +1,7 @@
+v0.4
+Now checks for the monument if it has yet to be built.
+Adds selection arrow to victim when you select the pod.
+
 v0.3
 Added a buildable outside monument for "selected" victims
 Once a victim is "selected" they'll head straight for it.

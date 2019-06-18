@@ -16,6 +16,14 @@ DefineClass("ModOptions_ChoGGi_ConstructionShowDustGrid", {
 			name = "Show Construction Site Grids",
 		},
 		{
+			default = 30,
+			max = 100,
+			min = 0,
+			editor = "number",
+			id = "GridOpacity",
+			name = "Grid Opacity",
+		},
+		{
 			default = 25,
 			editor = "number",
 			id = "DistFromCursor",

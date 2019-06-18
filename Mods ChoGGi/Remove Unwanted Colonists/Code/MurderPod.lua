@@ -277,11 +277,16 @@ function MurderPod:Idle()
 	end
 end
 
+function MurderPod:OnSelected()
+	SelectionArrowAdd(self.target)
+end
+
 -- add switch skins if dlc
 if g_AvailableDlc.gagarin then
-	local rockets = {"SupplyPod", "ArcPod"}
-	local palettes = {SupplyPod.rocket_palette, ArkPod.rocket_palette}
+	local pods = {"SupplyPod", "DropPod", "ArcPod"}
+	local palettes = {SupplyPod.rocket_palette, DropPod.rocket_palette, ArkPod.rocket_palette}
+
 	function MurderPod:GetSkins()
-		return rockets, palettes
+		return pods, palettes
 	end
 end

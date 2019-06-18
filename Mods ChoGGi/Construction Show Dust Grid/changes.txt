@@ -1,3 +1,6 @@
+v0.8
+Added Opacity setting for the grid markers.
+
 v0.7
 Turned on dist/con site options by default.
 
