@@ -1,5 +1,37 @@
 -- See LICENSE for terms
 
+local custom_ids = {
+	-- Silva's Mods:
+	-- Medium Apartments - Steam Mod ID: 1565367065
+	sMediumApartments = true,
+	-- Hall Of Fame - Steam Mod ID: 1700393642
+	RDM_HallOfFame = true,
+	-- Retro Cinema - Steam Mod ID: 1442463010
+	sCinema = true,
+	-- Halloween Nightclub - Steam Mod ID: 1546766601
+	sHalloweenNightclub = true,
+	-- Toys Store - Steam Mod ID: 1588102866
+	sToysStore = true,
+	-- Panoramic Restaurant - Steam Mod ID: 1470492725
+	sPanoramicRestaurant = true,
+	-- Mega Apartment - Steam Mod ID: 1755128182
+	RDM_MegaApartment = true,
+
+	-- Skirich Mods:
+	-- NASA Tai Chi Garden - Steam Mod ID: 1354299580
+	NASATaiChiGarden = true,
+	-- Corporate Office - Steam Mod ID: 1354299580
+	NASACorporateOffice = true,
+
+	-- Other:
+	-- Space Fast Food - Steam Mod ID: 1664705963
+	fastfood = true,
+	-- Brothel - Steam Mod ID: 1568066596
+	LH_Brothel = true,
+	-- Glass House - Steam Mod ID: 1661517253
+	TubularHouse = true,
+}
+
 local function AddUpgrades(obj, id, prop, value)
 	if value > 1000 then
 		value = value / const.ResourceScale
@@ -75,6 +107,51 @@ end
 OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode
 
+local function BumpCount(id)
+	upgrade_list_c = upgrade_list_c + 1
+	upgrade_list[upgrade_list_c] = id
+end
+
+local function AddBuilding(id, obj)
+	-- first try to get number from building template (for services like parks)
+	if obj.capacity and obj.capacity > 0 then
+		AddUpgrades(obj, id, "capacity", obj.capacity)
+		BumpCount(id)
+	elseif obj.max_visitors and obj.max_visitors > 0 then
+		AddUpgrades(obj, id, "max_visitors", obj.max_visitors)
+		BumpCount(id)
+	elseif obj.max_workers and obj.max_workers > 0 then
+		AddUpgrades(obj, id, "max_workers", obj.max_workers)
+		BumpCount(id)
+	else
+		-- get class name and class obj (needed for the cap numbers)
+		id = obj.template_class
+		if id == "" then
+			id = obj.template_name
+		end
+		local cls = g_Classes[id]
+		if cls then
+			local value = cls.capacity or cls:GetDefaultPropertyValue("capacity")
+			if value and value > 0 then
+				AddUpgrades(obj, id, "capacity", value)
+				BumpCount(id)
+			else
+				value = cls.max_visitors or cls:GetDefaultPropertyValue("max_visitors")
+				if value and value > 0 then
+					AddUpgrades(obj, id, "max_visitors", value)
+					BumpCount(id)
+				else
+					value = cls.max_workers or cls:GetDefaultPropertyValue("max_workers")
+					if value and value > 0 then
+						AddUpgrades(obj, id, "max_workers", value)
+						BumpCount(id)
+					end
+				end
+			end
+		end
+	end
+end
+
 function OnMsg.ClassesPostprocess()
 	-- this'll fire more than once
 	table.iclear(upgrade_list)
@@ -83,41 +160,11 @@ function OnMsg.ClassesPostprocess()
 	local g_Classes = g_Classes
 	local BuildingTemplates = BuildingTemplates
 	for id, obj in pairs(BuildingTemplates) do
-		if obj.group == "Dome Services" or obj.group == "Decorations"
-				or obj.group == "Habitats" then
-			-- first try to get number from building template (for services like parks)
-			if obj.capacity and obj.capacity > 0 then
-				AddUpgrades(obj, id, "capacity", obj.capacity)
-				upgrade_list_c = upgrade_list_c + 1
-				upgrade_list[upgrade_list_c] = id
-			elseif obj.max_visitors and obj.max_visitors > 0 then
-				AddUpgrades(obj, id, "max_visitors", obj.max_visitors)
-				upgrade_list_c = upgrade_list_c + 1
-				upgrade_list[upgrade_list_c] = id
-			else
-				-- get class name and class obj (needed for the cap numbers)
-				id = obj.template_class
-				if id == "" then
-					id = obj.template_name
-				end
-				local cls = g_Classes[id]
-				if cls then
-					local value = cls.capacity or cls:GetDefaultPropertyValue("capacity")
-					if value and value > 0 then
-						AddUpgrades(obj, id, "capacity", value)
-						upgrade_list_c = upgrade_list_c + 1
-						upgrade_list[upgrade_list_c] = id
-					else
-						value = cls.max_visitors or cls:GetDefaultPropertyValue("max_visitors")
-						if value and value > 0 then
-							AddUpgrades(obj, id, "max_visitors", value)
-							upgrade_list_c = upgrade_list_c + 1
-							upgrade_list[upgrade_list_c] = id
-						end
-					end
-				end
-			end
+		if custom_ids[id] then
+			AddBuilding(id, obj)
+		elseif obj.group == "Dome Services" or obj.group == "Decorations"
+				or obj.group == "Habitats" or obj.group == "Dome Spires" then
+			AddBuilding(id, obj)
 		end
-
 	end
 end

@@ -1,0 +1,10 @@
+v0.3
+Added:
+Some modded buildings (Silva, SkiRich)
+Buildings not in the three cats below
+Dome Spires
+Workshops
+
+v0.2
+Didn't think it'd add capacity to certain buildings.
+Limited it to Domes, Dome Services, and Decorations.

@@ -45,20 +45,10 @@ do -- ModUpload
 	local pack_path = "AppData/ModUpload/Pack/"
 	local dest_path = "AppData/ModUpload/"
 
-	local copy_files
-	local blank_mod
-	local clipboard
-	local pack_mod
-	local test
-	local steam_upload
-	local para_platform
-	local mod, mod_path, upload_image, diff_author
-	local result
-	local choices_len
-	local result_msg = {}
-	local result_title = {}
-	local upload_msg = {}
-	local uploading
+	-- it's fine...
+	local copy_files, blank_mod, clipboard, pack_mod, test, steam_upload, para_platform
+	local mod, mod_path, upload_image, diff_author, result, choices_len, uploading
+	local result_msg, result_title, upload_msg = {}, {}, {}
 
 	local function UploadMod(answer,batch)
 		if not answer then
@@ -513,7 +503,7 @@ This will always apply if uploading to Paradox."]]] .. "\n\n" .. Strings[3025359
 					level = 2,
 					hint = Strings[302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).]]],
 				},
-				{title = Strings[302535920001506--[[Steam]]],
+				{title = upload_to_who and Strings[302535920001506--[[Steam]]] or T(5482, "Paradox"),
 					level = 2,
 					hint = Strings[302535920001507--[[Uncheck to upload to Paradox mods (instead of Steam).]]],
 					checked = upload_to_who,

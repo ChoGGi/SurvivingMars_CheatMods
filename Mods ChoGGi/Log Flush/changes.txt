@@ -1,5 +1,9 @@
+v0.4
+Added mod options to flush more often (don't leave them on normally).
+
 v0.3
 Da Vinci
+
 v0.2
 Flushes at a couple new places.
 Added commented out options for NewHour/NewMinute.

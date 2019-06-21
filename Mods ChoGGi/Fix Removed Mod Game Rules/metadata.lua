@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix Removed Mod Game Rules",
+	"title", "Fix Blank Mission Profile",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
@@ -13,7 +13,8 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[If you removed modded rules then the Mission Profile dialog will be blank.
+	"description", [[If you removed modded rules from your current save then the Mission Profile dialog will be blank.
+
 You don't need to leave this enabled afterwards.
 
 Thanks to LukeH for finding it.]],
