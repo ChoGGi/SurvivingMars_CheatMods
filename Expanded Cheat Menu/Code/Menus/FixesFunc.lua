@@ -273,7 +273,7 @@ function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
 
 	MsgPopup(
 		T(4493, "All"),
-		Strings[302535920000593--[[Remove Particles With Null Polylines]]],
+		Strings[302535920000593--[[Remove Particles With Null Polylines]]]
 	)
 end
 
