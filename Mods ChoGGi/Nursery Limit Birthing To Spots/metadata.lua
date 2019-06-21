@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Nursery: Limit Birthing To Spots",
+	"title", "Nursery Limit Birthing To Spots",
 	"version", 5,
 	"version_major", 0,
 	"version_minor", 5,

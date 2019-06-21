@@ -193,7 +193,7 @@ function OnMsg.ClassesPostprocess()
 			"construction_cost_MachineParts", 40000,
 			"construction_cost_Electronics", 20000,
 			-- add a bit of pallor to the skeleton
-			"palette_color1", "rover_base",
+			"palettes", AttackRover.palette,
 
 			"dome_forbidden", true,
 			"display_name", name,
@@ -205,7 +205,6 @@ function OnMsg.ClassesPostprocess()
 			"encyclopedia_exclude", true,
 			"on_off_button", false,
 			"entity", "CombatRover",
-			"palettes", "AttackRoverBlue",
 		})
 	end
 end

@@ -437,7 +437,7 @@ function OnMsg.ClassesPostprocess()
 			"construction_cost_MachineParts", 1000,
 			"construction_cost_Electronics", 1000,
 			-- add a bit of pallor to the skeleton
-			"palette_color1", "rover_base",
+			"palettes", AttackRover.palette,
 
 			"dome_forbidden", true,
 			"display_name", name,

@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Locked Wind Turbine",
+	"title", "Fix Locked Wind Turbine",
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Rocket Stuck",
+	"title", "Fix Rocket Stuck",
 	"version", 13,
 	"version_major", 1,
 	"version_minor", 3,

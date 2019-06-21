@@ -158,22 +158,26 @@ function CursorBuilding:UpdateShapeHexes(...)
 					ShowBuildingHexes(obj, "RangeHexMultiSelectRadius", "GetDustRadius")
 				end
 			end
+
 			-- change vis for any outside the range
-			local range = g_HexRanges[obj]
-			if range and range[1] and range[1].decals then
-				range = range[1]
-				if range_limit and cursor_pos:Dist2D(obj_pos) > range_limit then
-					range:SetVisible(false)
-				else
-					range:SetOpacity(mod_GridOpacity)
-					range:SetVisible(true)
-					for k = 1, #range.decals do
-						-- make sure they don't look like other grids
-						if obj:IsKindOf("ConstructionSite") then
-							range.decals[k]:SetColorModifier(-5576)
-						else
-							-- light yellow
-							range.decals[k]:SetColorModifier(-2143)
+			local is_site = obj:IsKindOf("ConstructionSite")
+			if not is_site or is_site and obj.building_class_proto.GetDustRadius then
+				local range = g_HexRanges[obj]
+				if range and range[1] and range[1].decals then
+					range = range[1]
+					if range_limit and cursor_pos:Dist2D(obj_pos) > range_limit then
+						range:SetVisible(false)
+					else
+						range:SetOpacity(mod_GridOpacity)
+						range:SetVisible(true)
+						for k = 1, #range.decals do
+							-- make sure they don't look like other grids
+							if is_site then
+								range.decals[k]:SetColorModifier(-5576)
+							else
+								-- light yellow
+								range.decals[k]:SetColorModifier(-2143)
+							end
 						end
 					end
 				end

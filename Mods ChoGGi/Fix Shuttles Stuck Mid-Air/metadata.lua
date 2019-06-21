@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Shuttles Stuck Mid-Air",
+	"title", "Fix Shuttles Stuck Mid-Air",
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

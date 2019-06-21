@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 			"version_minor", 0,
 		}),
 	},
-	"title", "Construction: Show Hex Buildable Grid",
+	"title", "Construction Show Hex Buildable Grid",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

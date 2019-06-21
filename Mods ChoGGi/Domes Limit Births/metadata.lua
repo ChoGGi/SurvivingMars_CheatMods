@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Domes: Limit Births",
+	"title", "Domes Limit Births",
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

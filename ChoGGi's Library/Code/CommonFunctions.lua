@@ -370,7 +370,11 @@ do -- RetName
 
 			-- display
 			elseif PropObjGetProperty(obj, "display_name") and obj.display_name ~= "" then
-				name = Translate(obj.display_name)
+				if IsT(obj.display_name) == 9--[[Anomaly]] then
+					name = obj.class
+				else
+					name = Translate(obj.display_name)
+				end
 			-- entity
 			elseif PropObjGetProperty(obj, "entity") and obj.entity ~= "" then
 				name = obj.entity
@@ -2010,8 +2014,8 @@ do -- AttachToNearestDome
 	end
 
 	-- if building requires a dome and that dome is borked then assign it to nearest dome
-	function ChoGGi.ComFuncs.AttachToNearestDome(obj)
-		if not obj:GetDefaultPropertyValue("dome_required") then
+	function ChoGGi.ComFuncs.AttachToNearestDome(obj, force)
+		if force ~= "force" and not obj:GetDefaultPropertyValue("dome_required") then
 			return
 		end
 
@@ -2138,8 +2142,9 @@ function ChoGGi.ComFuncs.ColonistUpdateAge(c, age)
 	end
 	-- remove all age traits
 	for i = 1, #ages do
-		if c.traits[ages[i]] then
-			c:RemoveTrait(ages[i])
+		local ageT = ages[i]
+		if c.traits[ageT] then
+			c:RemoveTrait(ageT)
 		end
 	end
 	-- add new age trait
@@ -3918,6 +3923,7 @@ do -- IsControlPressed/IsShiftPressed/IsAltPressed
 	local vkAlt = const.vkAlt
 	local vkLwin = const.vkLwin
 	local osx = Platform.osx
+
 	function ChoGGi.ComFuncs.IsControlPressed()
 		return IsKeyPressed(vkControl) or osx and IsKeyPressed(vkLwin)
 	end
@@ -3935,11 +3941,7 @@ function ChoGGi.ComFuncs.RetAllOfClass(cls)
 		local g_cls = g_Classes[cls]
 		-- if it isn't in g_Classes and isn't a CObject then MapGet will return *everything*
 		if g_cls and g_cls:IsKindOf("CObject") then
-			local objs = MapGet(true, cls)
-			-- just to be sure
-			if objs[1]:IsKindOf(cls) then
-				return objs
-			end
+			return MapGet(true, cls)
 		end
 	end
 	return objects
@@ -4033,6 +4035,7 @@ do -- LoadEntity
 	end
 end -- do
 
+-- this only adds a parent, no ___BuildingUpdate or anything
 function ChoGGi.ComFuncs.AddParentToClass(class_obj, parent_name)
 	if not table_find(class_obj, parent_name) then
 		class_obj.__parents[#class_obj.__parents+1] = parent_name

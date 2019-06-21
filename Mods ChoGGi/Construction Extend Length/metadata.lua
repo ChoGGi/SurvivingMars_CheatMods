@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Construction: Extend Length",
+	"title", "Construction Extend Length",
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

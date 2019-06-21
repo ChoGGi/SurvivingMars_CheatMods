@@ -1028,6 +1028,8 @@ Deep items will unlock the ability to exploit those resources."]]],
 end
 
 function ChoGGi.MenuFuncs.SpawnColonists()
+	local orig_GenerateColonistData = GenerateColonistData
+
 	local title = Strings[302535920000266--[[Spawn]]] .. " " .. Translate(547--[[Colonists]])
 	local item_list = {
 		{text = 1, value = 1},
@@ -1050,13 +1052,41 @@ function ChoGGi.MenuFuncs.SpawnColonists()
 		end
 		choice = choice[1]
 
+		local age_check
+		if choice.check1 then
+			age_check = "Child"
+		elseif choice.check2 then
+			age_check = "Youth"
+		elseif choice.check3 then
+			age_check = "Adult"
+		elseif choice.check4 then
+			age_check = "Middle Aged"
+		elseif choice.check5 then
+			age_check = "Senior"
+		end
+
+		print(age_check)
+
 		local value = choice.value
 		if type(value) == "number" then
+
+			-- override func CheatSpawnNColonists uses
+			if age_check then
+				function GenerateColonistData(city, age_trait, ...)
+					return orig_GenerateColonistData(city, age_check, ...)
+				end
+			end
+
 			CheatSpawnNColonists(value)
+
+			-- always restore func
+			GenerateColonistData = orig_GenerateColonistData
+
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.text, Strings[302535920000014--[[Spawned]]]),
 				title
 			)
+
 		end
 	end
 
@@ -1066,6 +1096,26 @@ function ChoGGi.MenuFuncs.SpawnColonists()
 		title = title,
 		hint = Strings[302535920000267--[[Colonist placing priority: Selected dome, Evenly between domes, or centre of map if no domes.]]],
 		skip_sort = true,
+		height = 650.0,
+		checkboxes = {
+			{title = TraitPresets.Child.display_name,
+				hint = Strings[302535920000840--[[All colonists spawn as this age.]]],
+			},
+			{title = TraitPresets.Youth.display_name,
+				hint = Strings[302535920000840--[[All colonists spawn as this age.]]],
+			},
+			{title = TraitPresets.Adult.display_name,
+				hint = Strings[302535920000840--[[All colonists spawn as this age.]]],
+			},
+			{title = TraitPresets["Middle Aged"].display_name,
+				hint = Strings[302535920000840--[[All colonists spawn as this age.]]],
+				level = 2,
+			},
+			{title = TraitPresets.Senior.display_name,
+				hint = Strings[302535920000840--[[All colonists spawn as this age.]]],
+				level = 2,
+			},
+		},
 	}
 end
 

@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Transports Don't Move After Route Set",
+	"title", "Fix Transports Dont Move After Route Set",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

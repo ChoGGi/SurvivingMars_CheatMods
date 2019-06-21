@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: RC Commander Drone Freeze",
+	"title", "Fix RC Commander Drone Freeze",
 	"version_major", 0,
 	"version_minor", 1,
 	"saved", 0,

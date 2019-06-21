@@ -5,10 +5,10 @@ DefineClass("ModOptions_ChoGGi_AlienVisitors", {
 	properties = {
 		{
 			default = 5,
-			editor = "number",
-			id = "MaxSpawn",
 			max = 500,
 			min = 4,
+			editor = "number",
+			id = "MaxSpawn",
 			name = "Max Spawn",
 			desc = "Max amount on new games.",
 		},

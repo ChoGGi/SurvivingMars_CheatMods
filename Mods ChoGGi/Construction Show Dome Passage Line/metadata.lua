@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 		}),
 	},
 --~ 	"title", "Construction: Show Dome Passage Line v0.9",
-	"title", "Construction: Show Dome Passage Line",
+	"title", "Construction Show Dome Passage Line",
 	"version", 9,
 	"version_major", 0,
 	"version_minor", 9,

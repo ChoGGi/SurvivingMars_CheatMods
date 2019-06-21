@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Game Rules: Breakthroughs",
+	"title", "Game Rules Breakthroughs",
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,

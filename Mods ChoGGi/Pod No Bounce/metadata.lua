@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Pod: No Bounce",
+	"title", "Pod No Bounce",
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

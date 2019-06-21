@@ -5,18 +5,18 @@ DefineClass("ModOptions_ChoGGi_ConstructionExtendLength", {
 	properties = {
 		{
 			default = 500,
-			editor = "number",
-			id = "BuildDist",
 			max = 1000,
 			min = 0,
+			editor = "number",
+			id = "BuildDist",
 			name = "How many hexes you can build",
 		},
 		{
 			default = 500,
-			editor = "number",
-			id = "PassChunks",
 			max = 1000,
 			min = 0,
+			editor = "number",
+			id = "PassChunks",
 			name = "Passage length if bent",
 		},
 	},

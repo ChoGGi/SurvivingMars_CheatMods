@@ -509,7 +509,7 @@ Move archive to ""Mod folder/Pack/ModContent.hpk"""]]],
 This will always apply if uploading to Paradox."]]] .. "\n\n" .. Strings[302535920001572--[["Warning: Will instantly crash SM when calling it a second time, pack the mod manually."]]],
 					checked = true,
 				},
-				{title = Translate(186760604064--[[Test]]),
+				{title = Translate(186760604064, "Test"),
 					level = 2,
 					hint = Strings[302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).]]],
 				},
@@ -522,8 +522,10 @@ This will always apply if uploading to Paradox."]]] .. "\n\n" .. Strings[3025359
 						-- steam
 						if check then
 							dlg.idCheckBox7:SetVisible()
+							dlg.idCheckBox6:SetText(Strings[302535920001506--[[Steam]]])
 						-- paradox
 						else
+							dlg.idCheckBox6:SetText(T(5482, "Paradox"))
 							dlg.idCheckBox7:SetVisible(true)
 							-- mark Pack for users
 							dlg.idCheckBox4:SetCheck(true)

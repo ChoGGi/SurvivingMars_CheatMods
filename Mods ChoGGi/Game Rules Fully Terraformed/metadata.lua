@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Game Rules: Fully Terraformed",
+	"title", "Game Rules Fully Terraformed",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

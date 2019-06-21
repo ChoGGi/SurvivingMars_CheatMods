@@ -5,10 +5,10 @@ DefineClass("ModOptions_ChoGGi_AddWaterEachSol", {
 	properties = {
 		{
 			default = 50,
-			editor = "number",
-			id = "AmountOfWater",
 			max = 1000,
 			min = 0,
+			editor = "number",
+			id = "AmountOfWater",
 			name = "How much water each deposit receives each Sol.",
 		},
 	},

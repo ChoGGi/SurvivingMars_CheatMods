@@ -1,3 +1,7 @@
+v0.6
+Added Dist From Cursor mod option (0 == ignore).
+Added grid opacity option.
+
 v0.5
 Fix for devs blocking rovers from ShowBuildingHexes.
 

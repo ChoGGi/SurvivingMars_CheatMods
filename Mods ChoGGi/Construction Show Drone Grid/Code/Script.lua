@@ -1,25 +1,31 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_ConstructionShowDroneGrid"
-local mod = Mods[mod_id]
-local mod_Option1 = mod.options and mod.options.Option1 or true
+local options
+local mod_Option1
+local mod_DistFromCursor
+local mod_GridOpacity
 
+-- fired when settings are changed and new/load
 local function ModOptions()
-	mod_Option1 = mod.options.Option1
+	mod_Option1 = options.Option1
+	mod_DistFromCursor = options.DistFromCursor * 1000
+	mod_GridOpacity = options.GridOpacity
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
 end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_ConstructionShowDroneGrid" then
 		return
 	end
 
 	ModOptions()
 end
-
--- for some reason mod options aren't retrieved before this script is loaded...
-OnMsg.CityStart = ModOptions
-OnMsg.LoadGame = ModOptions
 
 -- local whatever globals we call
 local ShowHexRanges = ShowHexRanges
@@ -29,17 +35,17 @@ local pairs = pairs
 local green = green
 local yellow = yellow
 local CleanupHexRanges = CleanupHexRanges
-local table_insert = table.insert
 
 local orig_ShowBuildingHexes = ShowBuildingHexes
 function ShowBuildingHexes(bld, hex_range_class, bind_func, ...)
-  if IsKindOf(bld, "RCRover") and bld:IsValidPos() and not bld.destroyed then
+  if bld and bld:IsKindOf("RCRover") and bld:IsValidPos() and not bld.destroyed then
 		CleanupHexRanges(bld, bind_func)
 		local obj = g_Classes[hex_range_class]:new()
 		obj:SetPos(bld:GetPos():SetStepZ())
 		local g_HexRanges = g_HexRanges
 		g_HexRanges[bld] = g_HexRanges[bld] or {}
-		table_insert(g_HexRanges[bld], obj)
+		local range = g_HexRanges[bld]
+		range[#range+1] = obj
 		g_HexRanges[obj] = bld
 		obj.bind_to = bind_func
 		obj:SetScale(bld[bind_func](bld))
@@ -67,6 +73,10 @@ function CursorBuilding:GameInit()
 	-- change colours
 	local g_HexRanges = g_HexRanges
 	for range, obj in pairs(g_HexRanges) do
+		if range:IsKindOf("RangeHexMultiSelectRadius") then
+			range:SetOpacity(mod_GridOpacity)
+		end
+
 		if IsKindOf(obj, "SupplyRocket") then
 			for i = 1, #range.decals do
 				range.decals[i]:SetColorModifier(green)
@@ -79,6 +89,29 @@ function CursorBuilding:GameInit()
 	end
 
 	return orig_CursorBuilding_GameInit(self)
+end
+
+local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
+function CursorBuilding:UpdateShapeHexes(...)
+	-- skip if disabled or not a RequiresMaintenance building
+	if not mod_Option1 then
+		return orig_CursorBuilding_UpdateShapeHexes(self, ...)
+	end
+
+	local range_limit = mod_DistFromCursor > 0 and mod_DistFromCursor
+	local cursor_pos = GetTerrainCursor()
+
+	local g_HexRanges = g_HexRanges
+	for range, obj in pairs(g_HexRanges) do
+		if range:IsKindOf("RangeHexMultiSelectRadius") then
+			if range_limit and cursor_pos:Dist2D(obj:GetPos()) > range_limit then
+				range:SetVisible(false)
+			else
+				range:SetVisible(true)
+			end
+		end
+	end
+
 end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done

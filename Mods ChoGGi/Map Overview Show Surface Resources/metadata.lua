@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Map Overview: Show Surface Resources",
+	"title", "Map Overview Show Surface Resources",
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

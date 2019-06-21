@@ -12,10 +12,10 @@ DefineClass("ModOptions_ChoGGi_SpecialistByExperience", {
 		},
 		{
 			default = 25,
-			editor = "number",
-			id = "SolsToTrain",
 			max = 500,
 			min = 1,
+			editor = "number",
+			id = "SolsToTrain",
 			name = "Sols to work before getting new spec",
 			desc = "XXXXXXXXXXXXXX",
 		},

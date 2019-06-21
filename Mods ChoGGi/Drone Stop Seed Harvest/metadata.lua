@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Drone: Stop Seed Harvest",
+	"title", "Drone Stop Seed Harvest",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

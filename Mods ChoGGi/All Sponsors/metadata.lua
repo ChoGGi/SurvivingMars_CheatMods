@@ -15,6 +15,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"description", [[If you have three sponsors; this will add all the other sponsors.
+This adds the rival A.I. sponsors, they aren't the same as regular sponsors.
 
 
 

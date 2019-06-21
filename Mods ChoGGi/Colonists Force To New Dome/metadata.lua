@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 			"version_minor", 0,
 		}),
 	},
-	"title", "Colonists: Force To New Dome",
+	"title", "Colonists Force To New Dome",
 	"version", 4,
 	"version_major", 0,
 	"version_minor", 4,

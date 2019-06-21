@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Example: Delay Mystery",
+	"title", "Example Delay Mystery",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

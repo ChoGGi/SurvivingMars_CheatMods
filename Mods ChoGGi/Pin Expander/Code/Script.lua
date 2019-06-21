@@ -4,15 +4,7 @@ local Translate = ChoGGi.ComFuncs.Translate
 local RetName = ChoGGi.ComFuncs.RetName
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
-
-local str_dome = Translate(1234--[[Dome]])
-local str_drones = Translate(71--[[Commanding Drones]])
-local str_state = Translate(3722--[[State]])
-local str_Overpopulated = Translate(10460--[[<em>Overpopulated Dome</em>]])
-local str_NotWorking = Translate(7326--[[Not Working]])
-local str_Power = Translate(79--[[Power]])
-local str_Water = Translate(681--[[Water]])
-local str_Oxygen = Translate(682--[[Oxygen]])
+local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 
 local T = T
 local IsT = IsT
@@ -20,8 +12,6 @@ local CmpLower = CmpLower
 local getmetatable = getmetatable
 local type = type
 local table_find = table.find
-
-local IsKeyPressed = terminal.IsKeyPressed
 
 local pin_state_table = {
 	["UI/Icons/pin_attack.tga"] = "pin_attack",
@@ -250,6 +240,202 @@ local state_table = {
 	moveFreezing = "UI/Icons/pin_overpopulated.tga",
 }
 
+local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
+	local varargs = ...
+
+	local objs
+	local object = button_obj.context
+
+	local meta = getmetatable(object)
+	local build_category = meta.build_category
+	local wonder = meta.wonder
+
+	local labels = UICity.labels
+
+	if build_category == "Domes" then
+		objs = labels.Dome
+	elseif wonder then
+		objs = labels.Wonders
+	elseif object:IsKindOf("BaseRover") then
+		objs = labels.Rover
+	elseif object.class == "Colonist" then
+		if IsShiftPressed() or #labels.Colonist < 5001 then
+			objs = labels.Colonist
+		else
+			-- get all in dome or all without a dome
+			objs = object.dome and object.dome.labels.Colonist
+				or MapGet("map", "Colonist", function(o)
+					if not o.dome then
+						return true
+					end
+				end)
+		end
+	else
+		objs = labels[object.class]
+	end
+
+	if (not objs or #objs < 50) and build_category then
+		if build_category then
+			objs = labels[build_category]
+		end
+		if not objs then
+			objs = MapGet("map", meta.class)
+		end
+	end
+
+	if not objs then
+		objs = MapGet("map", object.class)
+	end
+
+	local str_dome = T(1234, "Dome")
+	local str_drones = T(71, "Commanding Drones")
+	local str_state = T(3722, "State")
+	local str_Overpopulated = T(10460, "<em>Overpopulated Dome</em>")
+	local str_NotWorking = T(7326, "Not Working")
+	local str_Power = T(79, "Power")
+	local str_Water = T(681, "Water")
+	local str_Oxygen = T(682, "Oxygen")
+
+--~ 	local items = {clear_objs = true}
+	local items = {}
+	for i = 1, #objs do
+		local obj = objs[i]
+
+		-- add rollover text
+		local pinbutton = pins_obj[table_find(pins_obj, "context", obj)]
+		local hint
+		local hint_title = ""
+
+		-- hinty
+		if pinbutton then
+			hint = pinbutton.RolloverText
+			hint_title = pinbutton.RolloverTitle
+		else
+			hint_title = RetName(obj)
+			local rollover = obj.pin_rollover
+			if rollover == "" then
+				hint = (obj.description ~= "" and T{obj.description, obj})
+					or obj:GetProperty("description") or ""
+			elseif IsT(rollover) or type(rollover) == "string" then
+				hint = T{rollover, obj}
+			end
+		end
+
+		hint = Translate(hint)
+
+		-- add status image
+		local image = pins_obj:GetPinConditionImage(obj)
+		local state_text
+
+		if obj.class == "Colonist" or obj.class == "Drone" then
+			state_text = obj:GetStateText()
+			image = state_table[state_text]
+		elseif build_category == "Domes" or obj:IsKindOf("BaseBuilding")
+				and not obj:IsKindOf("BaseRover") then
+			if obj.overpopulated then
+				state_text = str_Overpopulated
+				image = image or "UI/Icons/pin_overpopulated.tga"
+			elseif not obj.ui_working and not obj.working and not obj.fx_working then
+				state_text = str_NotWorking
+				image = image or "UI/Icons/pin_not_working.tga"
+			elseif obj.fractures and #obj.fractures > 0 then
+				state_text = T{5626, "Fractures: <count>", count = #obj.fractures}
+				image = image or "UI/Icons/pin_attack.tga"
+			elseif obj.electricity and obj:IsKindOf("ElectricityConsumer")
+					and obj.electricity.consumption > obj.electricity.current_consumption then
+				state_text = str_Power
+				image = image or "UI/Icons/pin_power.tga"
+			elseif (obj.air or obj.water) and obj:IsKindOf("LifeSupportConsumer") then
+				if obj.air and obj.air.consumption > obj.air.current_consumption then
+					state_text = str_Oxygen
+					image = image or "UI/Icons/pin_oxygen.tga"
+				elseif obj.water and obj.water.consumption > obj.water.current_consumption then
+					state_text = str_Water
+					image = image or "UI/Icons/pin_water.tga"
+				end
+			end
+		end
+
+		if not image then
+			image = "UI/Icons/pin_idle.tga"
+		end
+
+		-- generic string it is
+		if not state_text then
+			state_text = pin_state_table[image]
+		end
+
+		-- add dome text if any
+		if obj.dome or obj.parent_dome then
+			hint = "<color 203 120 30>" .. str_dome
+				.. ":</color> <color 255 200 200>"
+				.. RetName(obj.dome or obj.parent_dome)
+				.. "</color>\n\n" .. hint
+		elseif obj.command_center then
+			hint = "<color 203 120 30>" .. str_drones
+				.. ":</color> <color 255 200 200>"
+				.. RetName(obj.command_center) .. "</color>\n\n" .. hint
+		else
+			hint = "\n" .. hint
+		end
+		-- then state text with two \n
+		hint = "<color 203 120 30>" .. str_state
+			.. ":</color> <color 255 200 200>" .. state_text .. "</color>\n" .. hint
+
+		if obj.class ~= "SupplyRocket"
+				or obj.class == "SupplyRocket" and obj.name ~= "" then
+			items[i] = {
+				name = RetName(obj),
+				showobj = obj,
+				image = image,
+				hint = hint,
+				hint_title = hint_title,
+				hint_bottom = T(302535920011154, "<left_click> Select <right_click> View"),
+				mouseup = function(_, _, _, button)
+					if obj.class == "SupplyRocket" then
+						button_func(button_obj, gamepad, varargs)
+					else
+						ViewObjectMars(obj)
+						if button == "L" then
+							SelectObj(obj)
+						end
+					end
+					ChoGGi.ComFuncs.ClearShowObj(true)
+					-- only reopen if shift is held down
+					if IsShiftPressed() then
+						PopupToggle(button_obj.idCondition, "idPinPopup", items, "top", true)
+					end
+				end,
+			}
+		end
+	end
+
+	-- sort by image then name
+	table.sort(items, function(a, b)
+		return CmpLower(a.image .. a.name, b.image .. b.name)
+	end)
+	local items_c = #items
+
+	-- personal touch
+	local count = T(298035641454, "Object") .. " " .. T(3732, "Count") .. ": "
+		.. items_c
+
+	if items_c > 1 then
+		table.insert(items, 1, {
+			name = count,
+			image = "UI/Icons/res_theoretical_research.tga",
+			hint = count .. "\n\n" .. T(4239, "Close / Cancel"),
+			hint_title = T(126095410863, "Info"),
+			clicked = function()
+				ChoGGi.ComFuncs.ClearShowObj(true)
+			end,
+		})
+	end
+
+--~ ex(items)
+	PopupToggle(button_obj.idCondition, "idPinPopup", items, "top", true)
+end
+
 local orig_PinsDlg_InitPinButton = PinsDlg.InitPinButton
 function PinsDlg:InitPinButton(button, ...)
 	-- fire off the orig func so we have a button to work with
@@ -262,177 +448,7 @@ function PinsDlg:InitPinButton(button, ...)
 		if IsControlPressed() then
 			return orig_button_OnPress(button_obj, gamepad, ...)
 		end
---~		local varargs = ...
-
-		local objs
-		local object = button_obj.context
-
-		local meta = getmetatable(object)
-		local build_category = meta.build_category
-		local wonder = meta.wonder
-
-		local labels = UICity.labels
-
-		if build_category == "Domes" then
-			objs = labels.Dome
-		elseif wonder then
-			objs = labels.Wonders
-		elseif object:IsKindOf("BaseRover") then
-			objs = labels.Rover
-		elseif object.class == "Colonist" then
-			if IsKeyPressed(const.vkShift) or #labels.Colonist < 5001 then
-				objs = labels.Colonist
-			else
-				-- get all in dome or all without a dome
-				objs = object.dome and object.dome.labels.Colonist
-					or MapGet("map", "Colonist", function(o)
-						if not o.dome then
-							return true
-						end
-					end)
-			end
-		else
-			objs = labels[object.class]
-		end
-
-		if (not objs or #objs < 50) and build_category then
-			if build_category then
-				objs = labels[build_category]
-			else
-				objs = MapGet("map", meta.class)
-			end
-		end
-
-		-- just in case
-		objs = objs or ""
-
-		local items = {clear_objs = true}
-		for i = 1, #objs do
-			local obj = objs[i]
-
-			-- add rollover text
-			local pinbutton = self[table_find(self, "context", obj)]
-			local hint
-			local hint_title = ""
-
-			-- hinty
-			if pinbutton then
-				hint = pinbutton.RolloverText
-				hint_title = pinbutton.RolloverTitle
-			else
-				hint_title = RetName(obj)
-				local rollover = obj.pin_rollover
-				if rollover == "" then
-					hint = (obj.description ~= "" and T{obj.description, obj})
-						or obj:GetProperty("description") or ""
-				elseif IsT(rollover) or type(rollover) == "string" then
-					hint = T{rollover, obj}
-				end
-			end
-
-			hint = Translate(hint)
-
-			-- add status image
-			local image = self:GetPinConditionImage(obj)
-			local state_text
-
-			if obj.class == "Colonist" or obj.class == "Drone" then
-				state_text = obj:GetStateText()
-				image = state_table[state_text]
-			elseif build_category == "Domes" or obj:IsKindOf("BaseBuilding")
-					and not obj:IsKindOf("BaseRover") then
-				if obj.overpopulated then
-					state_text = str_Overpopulated
-					image = image or "UI/Icons/pin_overpopulated.tga"
-				elseif not obj.ui_working and not obj.working and not obj.fx_working then
-					state_text = str_NotWorking
-					image = image or "UI/Icons/pin_not_working.tga"
-				elseif obj.fractures and #obj.fractures > 0 then
-					state_text = T{5626, "Fractures: <count>", count = #obj.fractures}
-					image = image or "UI/Icons/pin_attack.tga"
-				elseif obj.electricity and obj:IsKindOf("ElectricityConsumer")
-						and obj.electricity.consumption > obj.electricity.current_consumption then
-					state_text = str_Power
-					image = image or "UI/Icons/pin_power.tga"
-				elseif (obj.air or obj.water) and obj:IsKindOf("LifeSupportConsumer") then
-					if obj.air and obj.air.consumption > obj.air.current_consumption then
-						state_text = str_Oxygen
-						image = image or "UI/Icons/pin_oxygen.tga"
-					elseif obj.water and obj.water.consumption > obj.water.current_consumption then
-						state_text = str_Water
-						image = image or "UI/Icons/pin_water.tga"
-					end
-				end
-			end
-
-			if not image then
-				image = "UI/Icons/pin_idle.tga"
-			end
-
-			-- generic string it is
-			if not state_text then
-				state_text = pin_state_table[image]
-			end
-
-			-- add dome text if any
-			if obj.dome or obj.parent_dome then
-				hint = "<color 203 120 30>" .. str_dome
-					.. ":</color> <color 255 200 200>"
-					.. RetName(obj.dome or obj.parent_dome)
-					.. "</color>\n\n" .. hint
-			elseif obj.command_center then
-				hint = "<color 203 120 30>" .. str_drones
-					.. ":</color> <color 255 200 200>"
-					.. RetName(obj.command_center) .. "</color>\n\n" .. hint
-			else
-				hint = "\n" .. hint
-			end
-			-- then state text with two \n
-			hint = "<color 203 120 30>" .. str_state
-				.. ":</color> <color 255 200 200>" .. state_text .. "</color>\n" .. hint
-
-			if obj.class ~= "SupplyRocket"
-					or obj.class == "SupplyRocket" and obj.name ~= "" then
-				items[i] = {
-					name = RetName(obj),
-					showobj = obj,
-					image = image,
-					hint = hint,
-					hint_title = hint_title,
-					hint_bottom = T(302535920011154, "<left_click> Select <right_click> View"),
-					mouseup = function(_, _, _, button)
-						if obj.class == "SupplyRocket" then
-							orig_button_OnPress(button_obj, gamepad)
-						else
-							ViewObjectMars(obj)
-							if button == "L" then
-								SelectObj(obj)
-							end
-						end
-						PopupToggle(button_obj.idCondition, "idPinPopup", items, nil, true)
-					end,
-				}
-			end
-		end
-
-		-- sort by image then name
-		table.sort(items, function(a, b)
-			return CmpLower(a.image .. a.name, b.image .. b.name)
-		end)
-
-		-- personal touch
-		local count = Translate(298035641454--[[Object]]) .. " #: " .. #items
-		if #items > 1 then
-			table.insert(items, 1, {
-				name = count,
-				image = "UI/Icons/res_theoretical_research.tga",
-				hint = count,
-				hint_title = Translate(126095410863--[[Info]]),
-			})
-		end
-
---~ ex(items)
-		PopupToggle(button_obj.idCondition, "idPinPopup", items, "top", true)
+		return OnPress(self, orig_button_OnPress, button_obj, gamepad, ...)
 	end
 
 end

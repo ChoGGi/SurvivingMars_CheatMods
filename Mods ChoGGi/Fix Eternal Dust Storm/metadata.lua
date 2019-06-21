@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Eternal Dust Storm",
+	"title", "Fix Eternal Dust Storm",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

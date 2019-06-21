@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Apartment: Custom Specs",
+	"title", "Apartment Custom Specs",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

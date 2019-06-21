@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Pipes & Cables: No Maintenence, not cheating!",
+	"title", "Pipes Cables No Maintenence Not Cheating",
 	"version", 4,
 	"version_major", 0,
 	"version_minor", 4,

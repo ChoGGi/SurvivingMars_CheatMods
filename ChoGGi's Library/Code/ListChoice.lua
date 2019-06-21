@@ -87,6 +87,9 @@ DefineClass.ChoGGi_DlgListChoice = {
 
 	sel = false,
 	obj = false,
+
+	dialog_width = 500.0,
+	dialog_height = 625.0,
 }
 
 --~ box(left, top, right, bottom) :minx() :miny() :sizex() :sizey()
@@ -105,8 +108,8 @@ function ChoGGi_DlgListChoice:Init(parent, context)
 	self.select_flash = self.list.select_flash
 	self.skip_icons = self.list.skip_icons
 
-	self.dialog_width = self.list.width or 500.0
-	self.dialog_height = self.list.height or 625.0
+	self.dialog_width = self.list.width or self.dialog_width
+	self.dialog_height = self.list.height or self.dialog_height
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)

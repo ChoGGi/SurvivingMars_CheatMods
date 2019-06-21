@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Missing Mod Buildings",
+	"title", "Fix Missing Mod Buildings",
 	"version", 4,
 	"version_major", 0,
 	"version_minor", 4,

@@ -6,10 +6,10 @@ DefineClass("ModOptions_ChoGGi_MoreTerrainRocks", {
 	properties = {
 		{
 			default = 10,
-			editor = "number",
-			id = "LargeRocksCost",
 			max = 250,
 			min = 1,
+			editor = "number",
+			id = "LargeRocksCost",
 			name = "Cost of large rocks.",
 		},
 	},

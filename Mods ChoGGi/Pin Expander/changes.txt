@@ -1,3 +1,8 @@
+v0.7
+Menu opened offset when clicked once.
+Everything should have a menu now.
+Colouring should (almost) always disappear now.
+
 v0.6
 It seems I stopped this from working when I changed some stuff in my Library mod for auto-hiding popups.
 Made sure green sphere will disappear after popup closes.

@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Example: Replace Colonist Sign",
+	"title", "Example Replace Colonist Sign",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

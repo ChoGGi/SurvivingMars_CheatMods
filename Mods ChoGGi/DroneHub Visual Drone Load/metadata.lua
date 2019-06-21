@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "DroneHub: Visual Drone Load",
+	"title", "DroneHub Visual Drone Load",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

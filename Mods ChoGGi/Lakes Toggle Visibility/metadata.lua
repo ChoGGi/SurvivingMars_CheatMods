@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Lakes: Toggle Visibility",
+	"title", "Lakes Toggle Visibility",
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

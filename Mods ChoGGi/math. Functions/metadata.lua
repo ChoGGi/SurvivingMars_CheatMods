@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", [["math." Functions]],
+	"title", "math. Functions",
 	"version", 5,
 	"version_major", 0,
 	"version_minor", 5,

@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Research: Small CheckMarks",
+	"title", "Research Small CheckMarks",
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,

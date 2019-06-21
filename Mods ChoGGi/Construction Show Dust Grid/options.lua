@@ -25,10 +25,10 @@ DefineClass("ModOptions_ChoGGi_ConstructionShowDustGrid", {
 		},
 		{
 			default = 25,
-			editor = "number",
-			id = "DistFromCursor",
 			max = 100,
 			min = 0,
+			editor = "number",
+			id = "DistFromCursor",
 			name = "Dist From Cursor",
 		},
 	},

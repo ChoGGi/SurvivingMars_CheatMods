@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Dredger Mark Left On Ground",
+	"title", "Fix Dredger Mark Left On Ground",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

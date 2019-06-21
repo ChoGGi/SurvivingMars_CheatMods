@@ -11,10 +11,10 @@ DefineClass("ModOptions_ChoGGi_DronesCarryAmountFix", {
 		},
 		{
 			default = 5,
-			editor = "number",
-			id = "CarryAmount",
 			max = 250,
 			min = 1,
+			editor = "number",
+			id = "CarryAmount",
 			name = T(302535920011083, "Carry Amount"),
 		},
 	},

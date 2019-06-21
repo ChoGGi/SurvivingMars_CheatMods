@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "DroneHub: Heavy Load Strobe",
+	"title", "DroneHub Heavy Load Strobe",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

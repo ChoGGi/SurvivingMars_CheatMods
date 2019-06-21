@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Rocket: Pin Enable",
+	"title", "Rocket Pin Enable",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
@@ -13,7 +13,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Adds the pin button back to rockets.
+	"description", [[Adds the pin button back to rockets (if you want to unpin them).
 
 
 Requested by naresh963.]],

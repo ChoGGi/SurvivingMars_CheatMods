@@ -13,7 +13,7 @@ return PlaceObj("ModDef", {
 --~ 			"version_minor", 0,
 --~ 		}),
 	},
-	"title", "Example: View TextStyles",
+	"title", "Example View TextStyles",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

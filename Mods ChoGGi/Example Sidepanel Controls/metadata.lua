@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Example: Sidepanel Controls",
+	"title", "Example Sidepanel Controls",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

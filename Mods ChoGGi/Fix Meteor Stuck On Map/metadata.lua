@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix: Meteor Stuck On Map",
+	"title", "Fix Meteor Stuck On Map",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

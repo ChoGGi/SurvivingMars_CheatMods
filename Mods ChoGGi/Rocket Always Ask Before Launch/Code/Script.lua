@@ -14,7 +14,7 @@ function SupplyRocket:UILaunch()
 		CreateRealTimeThread(function()
 			local result = WaitPopupNotification("LaunchIssue_Cargo", {
 					choice1 = T(9072, "Launch the Rocket")
-						.. " (worry not; resources were removed).",
+						.. " " .. T(302535920011341, "(worry not; resources were removed)."),
 					choice2 = T(8014, "Abort the launch sequence."),
 				}, false, GetInGameInterface())
 

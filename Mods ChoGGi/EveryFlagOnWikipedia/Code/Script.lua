@@ -1,29 +1,31 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_EveryFlagOnWikipedia"
-local mod = Mods[mod_id]
-local mod_RandomBirthplace = mod.options and mod.options.RandomBirthplace or true
-local mod_DefaultNationNames = mod.options and mod.options.DefaultNationNames or true
+local options
+local mod_RandomBirthplace
+local mod_DefaultNationNames
+
+-- fired when settings are changed and new/load
+local function ModOptions()
+	mod_RandomBirthplace = options.RandomBirthplace
+	mod_DefaultNationNames = options.DefaultNationNames
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_EveryFlagOnWikipedia" then
 		return
 	end
 
-	mod_RandomBirthplace = mod.options.RandomBirthplace
-	mod_DefaultNationNames = mod.options.DefaultNationNames
+	ModOptions()
 end
 
--- for some reason mod options aren't retrieved before this script is loaded...
-local function StartupCode()
-	mod_RandomBirthplace = mod.options.RandomBirthplace
-	mod_DefaultNationNames = mod.options.DefaultNationNames
-end
-
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
-
+-- override naming func
 local table_rand = table.rand
 local function GetNationName()
 	return table_rand(Nations).value

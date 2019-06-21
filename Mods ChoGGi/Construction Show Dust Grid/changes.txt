@@ -1,3 +1,6 @@
+v0.9
+Fixed showing grids for non-dust gen construction site buildings.
+
 v0.8
 Added Opacity setting for the grid markers.
 
