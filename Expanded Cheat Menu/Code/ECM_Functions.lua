@@ -203,9 +203,7 @@ function ChoGGi.ComFuncs.Dump(obj, overwrite, file, ext, skip_msg, gen_name)
 		MsgPopup(
 			msg,
 			filename,
-			"UI/Icons/Upgrades/magnetic_filtering_04.tga",
-			nil,
-			obj
+			{objects = obj}
 		)
 	end
 end
@@ -334,9 +332,7 @@ do -- DumpTableFunc
 			MsgPopup(
 				msg,
 				filename,
-				nil,
-				nil,
-				obj
+				{objects = obj}
 			)
 			return
 		end
@@ -1030,10 +1026,7 @@ function ChoGGi.ComFuncs.SetParticles(obj)
 			PlayFX(action, moment, obj)
 		end
 
-		MsgPopup(
-			action,
-			name
-		)
+		MsgPopup(action,name)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
@@ -3036,10 +3029,7 @@ end
 
 function ChoGGi.ComFuncs.BlacklistMsg(msg)
 	msg = Strings[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.]]]:format(msg)
-	MsgPopup(
-		msg,
-		Strings[302535920000000--[[Expanded Cheat Menu]]]
-	)
+	MsgPopup(msg,Strings[302535920000000--[[Expanded Cheat Menu]]])
 	print(msg)
 end
 
@@ -3061,7 +3051,7 @@ do -- ToggleFuncHook
 			local str_len = #path
 
 			print(Strings[302535920000497--[[Hook Started]]], path, line, mask, count)
-			MsgPopup(Strings[302535920000497--[[Hook Started]]], Translate(1000113--[[Debug]]))
+			MsgPopup(Strings[302535920000497--[[Hook Started]]], T(1000113, "Debug"))
 
 			collectgarbage()
 			local function hook_func(event)
@@ -3090,7 +3080,7 @@ do -- ToggleFuncHook
 			debug.sethook(hook_func, mask or "c", count)
 		else
 			print(Strings[302535920000498--[[Hook Stopped]]], path, line, mask, count)
-			MsgPopup(Strings[302535920000498--[[Hook Stopped]]], Translate(1000113--[[Debug]]))
+			MsgPopup(Strings[302535920000498--[[Hook Stopped]]], T(1000113, "Debug"))
 			ChoGGi.Temp.FunctionsHooked = false
 
 			-- stop capture
@@ -3751,9 +3741,7 @@ function ChoGGi.ComFuncs.CheckForBorkedTransportPath(obj)
 			MsgPopup(
 				Strings[302535920001267--[[%s at position: %s was stopped.]]]:format(RetName(obj), obj:GetVisualPos()),
 				Strings[302535920001266--[[Borked Transport Pathing]]],
-				"UI/Icons/IPButtons/transport_route.tga",
-				nil,
-				obj
+				{objects = obj, image = "UI/Icons/IPButtons/transport_route.tga"}
 			)
 		end
 	end)

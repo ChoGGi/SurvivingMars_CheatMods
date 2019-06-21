@@ -10,7 +10,7 @@ local function DeleteAnom(self)
 				self.selected_spot:delete()
 				-- watch out for fors
 				self.marker_id_to_spot_id[self.snapped_id] = nil
-				for id, marker_id in pairs(self.spot_id_to_marker_id) do
+				for _, marker_id in pairs(self.spot_id_to_marker_id) do
 					if marker_id == self.snapped_id then
 						if type(marker_id) == "number" then
 							table.remove(self.spot_id_to_marker_id, marker_id)

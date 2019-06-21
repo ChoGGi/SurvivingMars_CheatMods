@@ -167,7 +167,7 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.text),
-				Translate(4598--[[Payload Capacity]])
+				T(4598, "Payload Capacity")
 			)
 		end
 	end
@@ -262,7 +262,7 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920000952--[[%s: Long pig sardines]]]:format(choice[1].text),
-				Translate(4594--[[Colonists Per Rocket]])
+				T(4594, "Colonists Per Rocket")
 			)
 		end
 	end

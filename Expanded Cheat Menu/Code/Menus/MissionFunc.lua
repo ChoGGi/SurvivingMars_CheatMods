@@ -126,8 +126,8 @@ function ChoGGi.MenuFuncs.ChangeRivalColonies()
 		end
 
 		MsgPopup(
-			tostring(#choices),
-			Translate(11034--[[Rival Colonies]])
+			ChoGGi.ComFuncs.SettingState(#choices),
+			T(11034, "Rival Colonies")
 		)
 
 	end
@@ -288,13 +288,13 @@ function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
 	ChoGGi.ComFuncs.SetSavedConstSetting("MeteorHealthDamage")
 
 	ChoGGi.SettingFuncs.WriteSettings()
-	MsgPopup(Strings[302535920001160--[["%s
+	MsgPopup(
+		Strings[302535920001160--[["%s
 Damage? Total, sir.
 It's what we call a global killer.
 The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria."]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.MeteorHealthDamage)),
 		Strings[302535920000708--[[Meteor Damage]]],
-		nil,
-		true
+		{size = true}
 	)
 end
 
@@ -714,7 +714,7 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(action)
 
 		MsgPopup(
 			Strings[302535920001179--[[%s occurrence is now: %s]]]:format(setting_id, value),
-			Translate(3983--[[Disasters]])
+			T(3983, "Disasters")
 		)
 	end
 
@@ -784,7 +784,7 @@ function ChoGGi.MenuFuncs.ChangeRules()
 
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(#choice, Strings[302535920000129--[[Set]]]),
-			Translate(8800--[[Game Rules]])
+			T(8800, "Game Rules")
 		)
 	end
 

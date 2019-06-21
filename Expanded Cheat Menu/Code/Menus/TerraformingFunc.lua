@@ -56,7 +56,7 @@ function ChoGGi.MenuFuncs.SetAllTerraformingParams(action)
 	if g_NoTerraforming then
 		MsgPopup(
 			Strings[302535920000562--[[Terraforming not enabled!]]],
-			Translate(11719--[[Terraforming]])
+			T(11719, "Terraforming")
 		)
 		return
 	end
@@ -198,7 +198,7 @@ function ChoGGi.MenuFuncs.SetSoilQuality()
 	if g_NoTerraforming then
 		MsgPopup(
 			Strings[302535920000562--[[Terraforming not enabled!]]],
-			Translate(776100024488--[[Soil Quality]])
+			T(776100024488, "Soil Quality")
 		)
 		return
 	end
@@ -231,7 +231,7 @@ function ChoGGi.MenuFuncs.SetSoilQuality()
 
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.value),
-				Translate(776100024488--[[Soil Quality]])
+				T(776100024488, "Soil Quality")
 			)
 		end
 	end
@@ -275,7 +275,7 @@ function ChoGGi.MenuFuncs.SetTerraformingParams(action)
 
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.value),
-				Translate(11719--[[Terraforming]])
+				T(11719, "Terraforming")
 			)
 		end
 	end

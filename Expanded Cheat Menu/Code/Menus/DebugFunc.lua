@@ -198,9 +198,7 @@ do -- SetEntityScale
 				MsgPopup(
 					choice[1].text .. ": " .. RetName(obj),
 					Strings[302535920000684--[[Change Entity Scale]]],
-					nil,
-					nil,
-					obj
+					{objects = obj}
 				)
 			end
 		end
@@ -1238,9 +1236,7 @@ do -- path markers
 			MsgPopup(
 				Strings[302535920000871--[[Doesn't seem to be an object that moves.]]],
 				Strings[302535920000872--[[Pathing]]],
-				nil,
-				nil,
-				obj
+				{objects = obj}
 			)
 		end
 	end

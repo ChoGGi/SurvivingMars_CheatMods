@@ -233,8 +233,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 
 I think somebody has been playing too much Fallout...]]],
 					Strings[302535920000743--[[Childkiller]]],
-					"UI/Icons/Logos/logo_09.tga",
-					true
+					{image = "UI/Icons/Logos/logo_09.tga", size = true}
 				)
 				if not UICity.ChoGGi.Childkiller then
 					Msg("ChoGGi_Childkiller")
@@ -385,7 +384,7 @@ function ChoGGi.MenuFuncs.SetAllWorkShifts()
 
 		MsgPopup(
 			Strings[302535920000765--[[Early night? Vamos al bar un trago!]]],
-			Translate(217--[[Work Shifts]])
+			T(217, "Work Shifts")
 		)
 	end
 
@@ -429,9 +428,8 @@ function ChoGGi.MenuFuncs.SetMinComfortBirth()
 			MsgPopup(
 				Strings[302535920000769--[[Selected]]] .. ": " .. choice[1].text .. Strings[302535920000770--[[
 Look at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed.]]],
-				Translate(7425--[[Minimum Colonist Comfort for Birth]]),
-				nil,
-				true
+				T(7425, "Minimum Colonist Comfort for Birth"),
+				{size = true}
 			)
 		end
 	end
@@ -454,8 +452,7 @@ function ChoGGi.MenuFuncs.VisitFailPenalty_Toggle()
 		Strings[302535920000772--[["%s:
 The mill's closed. There's no more work. We're destitute. I'm afraid I have no choice but to sell you all for scientific experiments."]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.VisitFailPenalty)),
 		Strings[302535920000397--[[Visit Fail Penalty]]],
-		nil,
-		true
+		{size = true}
 	)
 end
 
@@ -486,11 +483,11 @@ function ChoGGi.MenuFuncs.SetRenegadeStatus()
 		if IsKindOf(obj, "Colonist") and obj.dome and choice[1].check1 then
 			dome = obj.dome
 		end
-		local Type
+		local func
 		if value == "Make" then
-			Type = "AddTrait"
+			func = "AddTrait"
 		elseif value == "Remove" then
-			Type = "RemoveTrait"
+			func = "RemoveTrait"
 		end
 
 		local objs = UICity.labels.Colonist or ""
@@ -498,20 +495,20 @@ function ChoGGi.MenuFuncs.SetRenegadeStatus()
 			local o = objs[i]
 			if dome then
 				if o.dome and o.dome.handle == dome.handle then
-					o[Type](o, "Renegade")
+					o[func](o, "Renegade")
 				end
 			else
-				o[Type](o, "Renegade")
+				o[func](o, "Renegade")
 			end
 		end
+
 		MsgPopup(
 			Strings[302535920000776--[["OK, a limousine that can fly. Now I have seen everything.
 Really? Have you seen a man eat his own head?
 No.
 So then, you haven't seen everything."]]],
 			Strings[302535920000401--[[Set Renegade Status]]],
-			nil,
-			true
+			{size = true}
 		)
 	end
 
@@ -568,7 +565,7 @@ function ChoGGi.MenuFuncs.SeeDeadSanityDamage_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		Strings[302535920000779--[[%s: I love me some corpses.]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SeeDeadSanity)),
-		Translate(4561--[[Seeing Death]])
+		T(4561, "Seeing Death")
 	)
 end
 
@@ -582,9 +579,8 @@ function ChoGGi.MenuFuncs.NoHomeComfortDamage_Toggle()
 Oh, give me a home where the Buffalo roam.
 Where the Deer and the Antelope play;
 Where seldom is heard a discouraging word."]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.NoHomeComfort)),
-		Translate(4559--[[Homeless Comfort Penalty]]),
-		nil,
-		true
+		T(4559, "Homeless Comfort Penalty"),
+		{size = true}
 	)
 end
 
@@ -606,7 +602,7 @@ function ChoGGi.MenuFuncs.ColonistsChanceOfSuicide_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		Strings[302535920000782--[[%s: Getting away ain't that easy]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.LowSanitySuicideChance)),
-		Translate(4576--[[Chance Of Suicide]])
+		T(4576, "Chance Of Suicide")
 	)
 end
 
@@ -617,7 +613,7 @@ function ChoGGi.MenuFuncs.ColonistsSuffocate_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		Strings[302535920000783--[[%s: Free Air]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.OxygenMaxOutsideTime)),
-		Translate(4565--[[Oxygen max outside time]])
+		T(4565, "Oxygen max outside time")
 	)
 end
 
@@ -631,8 +627,7 @@ function ChoGGi.MenuFuncs.ColonistsStarve_Toggle()
 And nothing is better than a big juicey steak.
 Therefore a stale piece of bread is better than a big juicy steak.]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.TimeBeforeStarving)),
 		Strings[302535920000418--[[Colonists Starve]]],
-		nil,
-		true
+		{size = true}
 	)
 end
 
@@ -643,7 +638,7 @@ function ChoGGi.MenuFuncs.AvoidWorkplace_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		Strings[302535920000785--[[%s: No Shame]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.AvoidWorkplaceSols)),
-		Translate(4689--[[Avoid Workplace Sols]])
+		T(4689, "Avoid Workplace Sols")
 	)
 end
 
@@ -665,7 +660,7 @@ function ChoGGi.MenuFuncs.ProjectMorpheusPositiveTrait_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		Strings[302535920000787--[["%s: Say, ""Small umbrella, small umbrella."""]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ProjectMorphiousPositiveTraitChance)),
-		Translate(580388115170--[[ProjectMorpheusPositiveTraitChance]])
+		T(580388115170, "ProjectMorpheusPositiveTraitChance")
 	)
 end
 
@@ -713,9 +708,8 @@ function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
 Down the road is where I'll always be
 Maybe tomorrow, I'll find what I call home
 Until tomorrow, you know I'm free to roam]]]:format(choice[1].text),
-				Translate(4691--[[Default outside Workplaces radius]]),
-				nil,
-				true
+				T(4691, "Default outside Workplaces radius"),
+				{size = true}
 			)
 		end
 	end
@@ -1835,8 +1829,9 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(action)
 		ChoGGi.SettingFuncs.WriteSettings()
 
 		MsgPopup(
-			Strings[302535920000843--[[Toggled traits]]] .. ": " .. #choice .. (check1 and " " .. Strings[302535920000844--[[Fired workers]]] or ""),
-			Translate(4801--[[Workplace]])
+			Strings[302535920000843--[[Toggled traits]]] .. ": " .. #choice
+				.. (check1 and " " .. Strings[302535920000844--[[Fired workers]]] or ""),
+			T(4801, "Workplace")
 		)
 	end
 

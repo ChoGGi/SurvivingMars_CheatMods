@@ -134,7 +134,7 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920001188--[[%s: om nom nom nom nom]]]:format(choice[1].text),
-				Translate(4616--[[Food Per Rocket Passenger]])
+				T(4616, "Food Per Rocket Passenger")
 			)
 		end
 	end
@@ -214,7 +214,7 @@ do -- AddPrefabs
 			end
 			MsgPopup(
 				Strings[302535920001191--[[Added prefabs to %s buildings.]]]:format(#choice),
-				Translate(1110--[[Prefab Buildings]])
+				T(1110, "Prefab Buildings")
 			)
 			-- if the build menu is opened and they add some prefabs it won't use them till it's toggled, so we do this instead
 			ChoGGi.ComFuncs.UpdateBuildMenu()
@@ -261,7 +261,7 @@ Fix with: %s]]]:format(default_setting)
 
 			MsgPopup(
 				choice[1].text,
-				Translate(3613--[[Funding]])
+				T(3613, "Funding")
 			)
 		end
 	end

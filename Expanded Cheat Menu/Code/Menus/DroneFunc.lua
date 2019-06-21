@@ -315,7 +315,7 @@ function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
 			end
 
 			MsgPopup(
-				choice[1].text .. ": " .. Translate(517--[[Drones]]) .. " " .. change,
+				choice[1].text .. ": " .. T(517, "Drones") .. " " .. change,
 				Strings[302535920000513--[[Change Amount Of Drones In Hub]]]
 			)
 		end
@@ -452,9 +452,8 @@ function ChoGGi.MenuFuncs.DroneRechargeTime_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		Strings[302535920000907--[[%s: Well, if jacking on'll make strangers think I'm cool, I'll do it!]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneRechargeTime)),
-		Translate(4645--[[Drone Recharge Time]]),
-		nil,
-		true
+		T(4645, "Drone Recharge Time"),
+		{size = true}
 	)
 end
 
@@ -514,7 +513,7 @@ function ChoGGi.MenuFuncs.SetDroneCarryAmount()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920000911--[[Drones can carry %s items.]]]:format(choice[1].text),
-				Translate(6980--[[Drone resource carry amount]])
+				T(6980, "Drone resource carry amount")
 			)
 		end
 	end
@@ -562,7 +561,7 @@ function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920000916--[[DroneHubs can control %s drones.]]]:format(choice[1].text),
-				Translate(4707--[[Command center max Drones]])
+				T(4707, "Command center max Drones")
 			)
 		end
 	end
@@ -608,7 +607,7 @@ function ChoGGi.MenuFuncs.SetDronesPerRCRover()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920000921--[[RC Rovers can control %s drones.]]]:format(choice[1].text),
-				Translate(4633--[[RC Commander max Drones]])
+				T(4633, "RC Commander max Drones")
 			)
 		end
 	end

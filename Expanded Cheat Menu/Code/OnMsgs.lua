@@ -1068,7 +1068,7 @@ function OnMsg.MysteryBegin()
 		MsgPopup(
 			ChoGGi.Tables.Mystery[UICity.mystery_id].name .. ": "
 				.. Strings[302535920000729--[[You've started a mystery!]]],
-			Translate(3486--[[Mystery]])
+			T(3486, "Mystery")
 		)
 	end
 end
@@ -1077,7 +1077,7 @@ function OnMsg.MysteryChosen()
 		MsgPopup(
 			ChoGGi.Tables.Mystery[UICity.mystery_id].name .. ": "
 				.. Strings[302535920000730--[[You've chosen a mystery!]]],
-			Translate(3486--[[Mystery]])
+			T(3486, "Mystery")
 		)
 	end
 end
@@ -1086,7 +1086,7 @@ function OnMsg.MysteryEnd(outcome)
 		MsgPopup(
 			ChoGGi.Tables.Mystery[UICity.mystery_id].name .. ": "
 				.. tostring(outcome),
-			Translate(3486--[[Mystery]])
+			T(3486, "Mystery")
 		)
 	end
 end

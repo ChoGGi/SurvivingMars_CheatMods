@@ -131,8 +131,7 @@ Right click to view selected list item building.]])
 	if #item_list == 0 then
 		MsgPopup(
 			T(302535920011270, [[Nothing to control.]]),
-			T(302535920011271, [[Solaria]]),
-			"UI/Icons/Upgrades/holographic_scanner_04.tga"
+			T(302535920011271, [[Solaria]])
 		)
 		return
 	end
@@ -191,8 +190,7 @@ function Solaria:AttachBuilding(obj)
 			name = RetName(obj),
 			pos = tostring(obj:GetPos()),
 		},
-		T(302535920011271, [[Solaria]]),
-		"UI/Icons/Upgrades/holographic_scanner_04.tga"
+		T(302535920011271, [[Solaria]])
 	)
 end
 
@@ -243,8 +241,7 @@ function Solaria:RemoveBuilding(obj)
 				name = RetName(obj),
 				pos = tostring(obj:GetPos()),
 			},
-			T(302535920011271, [[Solaria]]),
-			"UI/Icons/Upgrades/holographic_scanner_03.tga"
+			T(302535920011271, [[Solaria]])
 		)
 	end
 end

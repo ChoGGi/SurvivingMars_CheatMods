@@ -484,8 +484,8 @@ do -- MsgPopup
 	local OpenDialog = OpenDialog
 
 	-- shows a popup msg with the rest of the notifications
-	-- objects can be a single obj, or {obj1, obj2, etc}
-	function ChoGGi.ComFuncs.MsgPopup(text, title, image, size, objects)
+	-- params.objects can be a single obj, or {obj1, obj2, ...}
+	function ChoGGi.ComFuncs.MsgPopup(text, title, params)
 		-- notifications only show up in-game
 		if not GameState.gameplay then
 			return
@@ -496,16 +496,19 @@ do -- MsgPopup
 			ChoGGi.Temp.MsgPopups = {}
 		end
 
+		params = params or {}
+
 		-- how many ms it stays open for
-		local timeout = 10000
-		if size then
-			timeout = 25000
+		if not params.expiration then
+			params.expiration = 10
+			if params.size then
+				params.expiration = 25
+			end
 		end
-		local params = {
-			expiration = timeout,
---~ 			expiration = -1,
---~ 			dismissable = false,
-		}
+--~ 		params.expiration = -1,
+--~ 		params.dismissable = false,
+		params.expiration = params.expiration * 1000
+
 		-- if there's no interface then we probably shouldn't open the popup
 		local dlg = Dialogs.OnScreenNotificationsDlg
 		if not dlg then
@@ -519,17 +522,20 @@ do -- MsgPopup
 		local data = {
 			id = AsyncRand(),
 			title = title or "",
-			text = text or Translate(3718--[[NONE]]),
-			image = image and ValidateImage(image) or ChoGGi.library_path .. "UI/TheIncal.png",
+			text = text or T(3718, "NONE"),
+			image = params.image and ValidateImage(params.image) or ChoGGi.library_path .. "UI/TheIncal.png",
 		}
 
 		TableSet_defaults(data, params)
 		TableSet_defaults(data, OnScreenNotificationPreset)
-		if objects then
-			if type(objects) ~= "table" then
-				objects = {objects}
+
+		-- click icon to view obj
+		if params.objects then
+			-- if it's a single obj
+			if IsValid(params.objects) then
+				params.objects = {params.objects}
 			end
-			params.cycle_objs = objects
+			params.cycle_objs = params.objects
 		end
 
 		-- needed in Sagan update
@@ -546,7 +552,7 @@ do -- MsgPopup
 			ChoGGi.Temp.MsgPopups[#ChoGGi.Temp.MsgPopups+1] = popup
 
 			-- large amount of text option (four long lines o' text)
-			if size then
+			if params.size then
 				local frame = GetParentOfKind(popup.idText, "XFrame")
 				if frame then
 					frame:SetMaxWidth(1000)
@@ -2676,7 +2682,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 		if not obj or obj and not obj:IsKindOf("ColorizableObject") then
 			MsgPopup(
 				Strings[302535920000015--[[Can't colour %s.]]]:format(RetName(obj)),
-				Translate(3595--[[Color]])
+				T(3595, "Color")
 			)
 			return
 		end
@@ -2774,10 +2780,8 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 
 				MsgPopup(
 					Strings[302535920000020--[[Colour is set on %s]]]:format(RetName(obj)),
-					Translate(3595--[[Color]]),
-					nil,
-					nil,
-					obj
+					T(3595, "Color"),
+					{objects = obj}
 				)
 			end
 		end
@@ -3126,7 +3130,7 @@ function ChoGGi.ComFuncs.FindNearestResource(obj)
 			else
 				MsgPopup(
 					Strings[302535920000029--[[Error: Cannot find any %s.]]]:format(choice[1].text),
-					Translate(15--[[Resource]])
+					T(15, "Resource")
 				)
 			end
 		end
@@ -3271,9 +3275,7 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj, skip_msg)
 		MsgPopup(
 			Strings[302535920000969--[[Collisions %s on %s]]]:format(which, RetName(obj)),
 			Strings[302535920000968--[[Collisions]]],
-			nil,
-			nil,
-			obj
+			{objects = obj}
 		)
 	end
 end
@@ -3700,7 +3702,7 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 	if not obj or obj and not obj:IsKindOf("ColorizableObject") then
 		MsgPopup(
 			Strings[302535920001105--[[Select/mouse over an object (buildings, vehicles, signs, rocky outcrops).]]],
-			Translate(3595--[[Color]])
+			T(3595, "Color")
 		)
 		return
 	end

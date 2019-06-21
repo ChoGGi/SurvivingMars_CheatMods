@@ -204,9 +204,8 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920001135--[[%s: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.]]]:format(choice[1].text),
-				Translate(5505--[[Game Speed]]),
-				nil,
-				true
+				T(5505, "Game Speed"),
+				{size = true}
 			)
 		end
 	end
@@ -322,7 +321,7 @@ function ChoGGi.MenuFuncs.GUIDockSide_Toggle()
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
-		ChoGGi.UserSettings.GUIDockSide and Translate(1000459--[[Right]]) or Translate(1000457--[[Left]]),
+		ChoGGi.UserSettings.GUIDockSide and T(1000459, "Right") or T(1000457, "Left"),
 		Strings[302535920001412--[[GUI Dock Side]]]
 	)
 end
@@ -360,7 +359,7 @@ function ChoGGi.MenuFuncs.OnScreenHints_Toggle()
 	mapdata.DisableHints = not HintsEnabled
 	UpdateOnScreenHintDlg()
 	MsgPopup(
-		tostring(HintsEnabled),
+		ChoGGi.ComFuncs.SettingState(HintsEnabled),
 		Strings[302535920000666--[[Toggle on-screen hints]]]
 	)
 end
@@ -1346,7 +1345,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.text),
-				Translate(911432559058--[[Light model]])
+				T(911432559058, "Light model")
 			)
 		end
 	end

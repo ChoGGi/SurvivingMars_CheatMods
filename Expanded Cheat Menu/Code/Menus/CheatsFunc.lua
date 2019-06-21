@@ -196,7 +196,7 @@ function ChoGGi.MenuFuncs.UnlockAchievements()
 			end
 
 			MsgPopup(
-				#choice, Strings[302535920000318--[[Unlock]]] .. ": " .. Translate(697482021580--[[Achievements]]),
+				#choice, Strings[302535920000318--[[Unlock]]] .. ": " .. T(697482021580, "Achievements"),
 				title
 			)
 		end)
@@ -326,7 +326,7 @@ function ChoGGi.MenuFuncs.SetOutsourceMaxOrderCount()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.OutsourceMaxOrderCount),
-				Translate(970197122036--[[Maximum Outsource Orders]])
+				T(970197122036, "Maximum Outsource Orders")
 			)
 		end
 	end
@@ -819,7 +819,7 @@ do -- DisastersTrigger
 
 				MsgPopup(
 					choice[i].text,
-					Translate(3983--[[Disasters]])
+					T(3983, "Disasters")
 				)
 			end
 		end
@@ -1011,8 +1011,7 @@ Perhaps.
 But I nearly forgot! You must close your eyes.
 Otherwise you won't see anything."]]],
 			title,
-			"UI/Achievements/TheRabbitHole.tga",
-			true
+			{image = "UI/Achievements/TheRabbitHole.tga", size = true}
 		)
 	end
 
@@ -1072,7 +1071,7 @@ function ChoGGi.MenuFuncs.SpawnColonists()
 
 			-- override func CheatSpawnNColonists uses
 			if age_check then
-				function GenerateColonistData(city, age_trait, ...)
+				function GenerateColonistData(city, _, ...)
 					return orig_GenerateColonistData(city, age_check, ...)
 				end
 			end
@@ -1265,7 +1264,7 @@ function ChoGGi.MenuFuncs.MysteryLog()
 	if #s_SeqListPlayers == 1 then
 		MsgPopup(
 			"0",
-			Translate(5661--[[Mystery Log]])
+			T(5661, "Mystery Log")
 		)
 		return
 	end
@@ -1322,7 +1321,7 @@ function ChoGGi.MenuFuncs.MysteryLog()
 			end
 			MsgPopup(
 				Strings[302535920000277--[[Removed all!]]],
-				Translate(5661--[[Mystery Log]])
+				T(5661, "Mystery Log")
 			)
 		elseif choice.check1 then
 			-- remove mystery
@@ -1340,7 +1339,7 @@ function ChoGGi.MenuFuncs.MysteryLog()
 			end
 			MsgPopup(
 				choice.text .. ": " .. Translate(3486--[[Mystery]]) .. " " .. Strings[302535920000278--[[Removed]]] .. "!",
-				Translate(5661--[[Mystery Log]])
+				T(5661, "Mystery Log")
 			)
 		elseif value then
 			-- next step
@@ -1603,8 +1602,7 @@ function ChoGGi.MenuFuncs.OutsourcingFree_Toggle()
 		Strings[302535920000297--[["%s
 Best hope you picked India as your Mars sponsor..."]]]:format(ChoGGi.UserSettings.OutsourceResearchCost),
 		Strings[302535920000355--[[Outsourcing For Free]]],
-		nil,
-		true
+		{size = true}
 	)
 end
 

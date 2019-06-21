@@ -66,7 +66,7 @@ do -- ModUpload
 		end
 
 		MsgPopup(
-			Translate(5452--[[START]]),
+			T(5452, "START"),
 			Strings[302535920000367--[[Mod Upload]]]
 		)
 
@@ -820,7 +820,7 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 
 	else
 		MsgPopup(
-			Translate(1000760--[[Not Steam]]) .. "/" .. Translate(1000759--[[Not Paradox]]),
+			T(1000760, "Not Steam") .. T(1000543, "/") .. T(1000759, "Not Paradox"),
 			Strings[302535920001362--[[Extract HPKs]]]
 		)
 		return

@@ -149,7 +149,7 @@ function ChoGGi.MenuFuncs.SetTrainingPoints()
 	if not obj or not IsKindOf(obj, "TrainingBuilding") then
 		MsgPopup(
 			Strings[302535920001116--[[Select a %s.]]]:format(Translate(5443--[[Training Buildings]])),
-			Translate(5443--[[Training Buildings]])
+			T(5443, "Training Buildings")
 		)
 		return
 	end
@@ -226,7 +226,7 @@ function ChoGGi.MenuFuncs.SetServiceBuildingStats()
 	if not obj or not IsKindOf(obj, "StatsChange") then
 		MsgPopup(
 			Strings[302535920001116--[[Select a %s.]]]:format(Translate(5439--[[Service Buildings]])),
-			Translate(4810--[[Service]])
+			T(4810, "Service")
 		)
 		return
 	end
@@ -598,8 +598,7 @@ I will face my fear. I will permit it to pass over me and through me,
 and when it has gone past I will turn the inner eye to see its path.
 Where the fear has gone there will be nothing. Only I will remain.]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.AlwaysDustyBuildings)),
 		Strings[302535920000174--[[Always Dusty]]],
-		nil,
-		true
+		{size = true}
 	)
 end
 
@@ -751,7 +750,7 @@ function ChoGGi.MenuFuncs.PipesPillarsSpacing_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		Strings[302535920000119--[[%s: Is that a rocket in your pocket?]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.PipesPillarSpacing)),
-		Translate(4713--[[Pipes pillar spacing]])
+		T(4713, "Pipes pillar spacing")
 	)
 end
 
@@ -778,7 +777,7 @@ local function BuildingConsumption_Toggle(type1, str1, type2, func1, func2, str2
 	if not obj or not obj[type1] then
 		MsgPopup(
 			str1,
-			Translate(3980--[[Buildings]])
+			T(3980, "Buildings")
 		)
 		return
 	end
@@ -1027,8 +1026,7 @@ Going down, down
 Working in a coal mine
 Whew, about to slip down]]],
 		Strings[302535920000192--[[Farm Shifts All On]]],
-		nil,
-		true
+		{size = true}
 	)
 end
 
@@ -1240,8 +1238,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 			Strings[302535920000143--[["%s
 I presume the PM's in favour of the scheme because it'll reduce unemployment."]]]:format(choice[1].text),
 			Strings[302535920000196--[[Fully Automated Building]]],
-			nil,
-			true
+			{size = true}
 		)
 	end
 
@@ -1303,8 +1300,7 @@ do -- SchoolTrainAll_Toggle/SanatoriumCureAll_Toggle
 You keep your work station so clean, Jerome.
 It's next to godliness. Isn't that what they say?"]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SchoolTrainAll)),
 			Strings[302535920000200--[[Train All]]],
-			nil,
-			true
+			{size = true}
 		)
 	end
 
@@ -1322,8 +1318,7 @@ It's next to godliness. Isn't that what they say?"]]]:format(ChoGGi.ComFuncs.Set
 			Strings[302535920000149--[[%s:
 There's more vodka in this piss than there is piss.]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SanatoriumCureAll)),
 			Strings[302535920000198--[[Cure All]]],
-			nil,
-			true
+			{size = true}
 		)
 	end
 end -- do
@@ -1423,12 +1418,11 @@ function ChoGGi.MenuFuncs.MoistureVaporatorPenalty_Toggle()
 	MsgPopup(
 		Strings[302535920000152--[["%s: Pussy, pussy, pussy! Come on in Pussy lovers! Here at the Titty Twister we’re slashing pussy in half! Give us an offer on our vast selection of pussy! This is a pussy blow out!
 Alright, we got white pussy, black pussy, spanish pussy, yellow pussy. We got hot pussy, cold pussy. We got wet pussy. We got smelly pussy. We got hairy pussy, bloody pussy. We got snapping pussy. We got silk pussy, velvet pussy, naugahyde pussy. We even got horse pussy, dog pussy, chicken pussy.
-C'mon, you want pussy, come on in Pussy Lovers! If we don’t got it, you don't want it! Come on in Pussy lovers!Attention pussy shoppers!
+C'mon, you want pussy, come on in Pussy Lovers! If we don’t got it, you don't want it! Come on in Pussy lovers! Attention pussy shoppers!
 Take advantage of our penny pussy sale! If you buy one piece of pussy at the regular price, you get another piece of pussy of equal or lesser value for only a penny!
 Try and beat pussy for a penny! If you can find cheaper pussy anywhere, fuck it!"]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.MoistureVaporatorRange)),
 		Strings[302535920000210--[[Moisture Vaporator Penalty]]],
-		nil,
-		true
+		{expiration = 60}
 	)
 end
 
@@ -1441,9 +1435,8 @@ function ChoGGi.MenuFuncs.CropFailThreshold_Toggle()
 		Strings[302535920000153--[["%s:
 So, er, we the crew of the Eagle 5, if we do encounter, make first contact with alien beings,
 it is a friendship greeting from the children of our small but great planet of Potatoho."]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CropFailThreshold)),
-		Translate(4711--[[Crop Fail Threshold]]),
-		nil,
-		true
+		T(4711, "Crop Fail Threshold"),
+		{size = true}
 	)
 end
 
@@ -1496,16 +1489,12 @@ We were all feeling a bit shagged and fagged and fashed,
 it having been an evening of some small energy expenditure, O my brothers.
 So we got rid of the auto and stopped off at the Korova for a nightcap.]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CrimeEventSabotageBuildingsCount)),
 		Strings[302535920000216--[[Building Damage Crime]]],
-		nil,
-		true
+		{size = true}
 	)
 end
 
 function ChoGGi.MenuFuncs.CablesAndPipesNoBreak_Toggle()
 	ChoGGi.UserSettings.CablesAndPipesNoBreak = not ChoGGi.UserSettings.CablesAndPipesNoBreak
-
---~ 	const.BreakChanceCable = ChoGGi.ComFuncs.ValueRetOpp(const.BreakChanceCable, 600, 10000000)
---~ 	const.BreakChancePipe = ChoGGi.ComFuncs.ValueRetOpp(const.BreakChancePipe, 600, 10000000)
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
@@ -1523,7 +1512,7 @@ function ChoGGi.MenuFuncs.CablesAndPipesInstant_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		Strings[302535920000156--[[%s: Aliens? We gotta deal with aliens too?]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.InstantCables)),
-		Translate(134--[[Instant Build]])
+		T(134, "Instant Build")
 	)
 end
 
@@ -1701,8 +1690,7 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(action)
 			MsgPopup(
 				choice[1].text .. ":\n" .. msgpopup,
 				id,
-				nil,
-				true
+				{size = true}
 			)
 		end
 	end
