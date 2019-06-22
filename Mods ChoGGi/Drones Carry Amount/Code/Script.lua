@@ -47,12 +47,11 @@ end
 
 -- update carry amount
 local options
-local default_drone_amount
+local default_drone_amount = 1
 
 -- load default/saved settings
 function OnMsg.ModsReloaded()
 	options = CurrentModOptions
---~ 	ModOptions()
 end
 
 local function UpdateAmount(amount)
@@ -67,21 +66,25 @@ function OnMsg.ApplyModOptions(id)
 	end
 
 	-- if enabled then apply option
-	if options.UseCarryAmount then
-		if g_Consts.DroneResourceCarryAmount ~= options.CarryAmount then
-			UpdateAmount(options.CarryAmount)
+	if g_Consts then
+		if options.UseCarryAmount then
+			if g_Consts.DroneResourceCarryAmount ~= options.CarryAmount then
+				UpdateAmount(options.CarryAmount)
+			end
+		elseif g_Consts.DroneResourceCarryAmount ~= default_drone_amount then
+			UpdateAmount(default_drone_amount)
 		end
-	elseif default_drone_amount and g_Consts.DroneResourceCarryAmount ~= default_drone_amount then
-		UpdateAmount(default_drone_amount)
 	end
 end
 
 local function StartupCode()
-	-- get default
-	default_drone_amount = ChoGGi.ComFuncs.GetResearchedTechValue("DroneResourceCarryAmount")
+	if g_Consts then
+		-- get default
+		default_drone_amount = g_Consts.DroneResourceCarryAmount or 1
 
-	if options.UseCarryAmount then
-		UpdateAmount(options.CarryAmount)
+		if options.UseCarryAmount then
+			UpdateAmount(options.CarryAmount)
+		end
 	end
 end
 

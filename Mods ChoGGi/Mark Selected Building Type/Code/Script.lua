@@ -1,8 +1,24 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_MarkSelectedBuildingType"
-local mod = Mods[mod_id]
-local mod_Mark = mod.options and mod.options.Mark or true
+local options
+local mod_Mark
+
+local ModOptions
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= "ChoGGi_MarkSelectedBuildingType" then
+		return
+	end
+
+	ModOptions()
+end
+
 
 local IsValid = IsValid
 local DoneObject = DoneObject
@@ -47,15 +63,13 @@ local function ClearBeams()
 	table_iclear(beams)
 end
 
---~ local skips = {"Shuttle", "Drone", "Colonist", "LifeSupportGridElement", "ElectricityGridElement"}
-
 local function MarkObjects(obj)
+	-- remove previous beams
+	ClearBeams()
+
 	if not (mod_Mark or IsValid(obj)) then
 		return
 	end
-
-	-- remove previous beams
-	ClearBeams()
 
 	-- added in building_class so it doesn't mark all construction sites
 	local name = obj.template_name ~= "" and obj.template_name or obj.building_class or obj.class
@@ -83,36 +97,19 @@ local function MarkObjects(obj)
 	ResumePassEdits("ChoGGi_MarkSelectedBuildingType:MarkObjects")
 end
 
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
-		return
-	end
-
-	mod_Mark = mod.options.Mark
-	if mod_Mark then
-		MarkObjects(SelectedObj)
-	else
-		ClearBeams()
-	end
-end
-
--- for some reason mod options aren't retrieved before this script is loaded...
-local function StartupCode()
-	mod_Mark = mod.options.Mark
-	if mod_Mark then
-		MarkObjects(SelectedObj)
-	else
-		ClearBeams()
-	end
-end
-
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
-
 -- add beams (also fires when changing selection)
 OnMsg.SelectionAdded = MarkObjects
 -- remove beams when no selection
 OnMsg.SelectionRemoved = ClearBeams
 -- make sure to remove beams on save
 OnMsg.SaveGame = ClearBeams
+
+-- fired when settings are changed and new/load
+ModOptions = function()
+	mod_Mark = options.Mark
+	if mod_Mark and SelectedObj then
+		MarkObjects(SelectedObj)
+	else
+		ClearBeams()
+	end
+end

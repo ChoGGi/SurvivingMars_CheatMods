@@ -16,14 +16,20 @@ local SetLightmodelOverride = SetLightmodelOverride
 
 local function OverrideIt()
 	CreateRealTimeThread(function()
-		Sleep(100)
+		WaitMsg("AfterLightmodelChange", 10000)
 		SetLightmodelOverride(1, lightmodel)
 	end)
 end
 
 OnMsg.CityStart = OverrideIt
 OnMsg.LoadGame = OverrideIt
-OnMsg.AfterLightmodelChange = OverrideIt
+
+function OnMsg.AfterLightmodelChange()
+	CreateRealTimeThread(function()
+		Sleep(100)
+		SetLightmodelOverride(1, lightmodel)
+	end)
+end
 
 local orig_ClosePlanetCamera = ClosePlanetCamera
 function ClosePlanetCamera(...)
