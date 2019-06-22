@@ -25,9 +25,7 @@ return PlaceObj("ModDef", {
 	"TagBuildings", true,
 	"description", [[Stores some colonists outside.
 The building feeds off the nearest dome and has low comfort, but it only needs concrete for maintenance.
-
-30 concrete, 5 polymers to build
-maintenance 5 concrete, elec consump 16, capacity 18
+30 Concrete, 5 Polymers to build.
 
 @Xboxers Until the Paradox fixes it; I can't change the titles of mods... [url=https://mods.paradoxplaza.com/mods/955/Any]MARSHA[/url]
 

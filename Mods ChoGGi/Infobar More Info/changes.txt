@@ -1,0 +1,6 @@
+v0.3
+Resource tooltips show time of resources remaining.
+Research tooltip shows total per Sol.
+
+v0.2
+Added total production values to Air/Water/Elec.

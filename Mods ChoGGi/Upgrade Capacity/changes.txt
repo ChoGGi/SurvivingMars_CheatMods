@@ -1,3 +1,6 @@
+v0.4
+Added Batteries, and Tanks.
+
 v0.3
 Added:
 Some modded buildings (Silva, SkiRich)
