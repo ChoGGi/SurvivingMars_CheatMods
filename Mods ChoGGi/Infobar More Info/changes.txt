@@ -1,3 +1,6 @@
+v0.4
+Water, and other deposits remaining amounts.
+
 v0.3
 Resource tooltips show time of resources remaining.
 Research tooltip shows total per Sol.

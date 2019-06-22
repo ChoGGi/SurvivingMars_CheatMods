@@ -545,7 +545,33 @@ do -- OpenInExamineDlg
 			params.title = nil
 		end
 
-		return ChoGGi_DlgExamine:new({}, terminal.desktop, params)
+		-- are we using child lock?
+		local new_child_lock_dlg
+		if not params.skip_child then
+			parent = params.parent
+			if parent and IsKindOf(parent, "ChoGGi_DlgExamine") and parent.child_lock then
+				local child = parent.child_lock_dlg
+				if child and child.window_state ~= "destroying" then
+					-- it's valid so update with new obj
+					child.obj = params.obj
+					child:SetObj()
+					-- no need for a new window
+					return
+				end
+
+				-- child_lock_dlg is invalid or not opened yet
+				new_child_lock_dlg = true
+			end
+		end
+
+		local dlg = ChoGGi_DlgExamine:new({}, terminal.desktop, params)
+
+		-- update parent examine with new child
+		if new_child_lock_dlg then
+			parent.child_lock_dlg = dlg
+		end
+
+		return dlg
 	end
 end -- do
 

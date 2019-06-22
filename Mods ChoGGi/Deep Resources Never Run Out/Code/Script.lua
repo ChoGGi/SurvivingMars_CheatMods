@@ -6,8 +6,6 @@ local MapGet = MapGet
 local apply_to_core_only = true
 
 local function LargerDeposits(objs)
-	objs = objs or MapGet("map", "SubsurfaceDepositWater", "SubsurfaceDepositMetals", "SubsurfaceDepositPreciousMetals")
-
 	local max = 500000 * const.ResourceScale
 
 	for i = 1, #objs do
@@ -25,8 +23,6 @@ local function LargerDeposits(objs)
 end
 
 local function RefillAllDeposits(objs)
-	objs = objs or MapGet("map", "SubsurfaceDepositWater", "SubsurfaceDepositMetals", "SubsurfaceDepositPreciousMetals")
-
 	for i = 1, #objs do
 		local o = objs[i]
 		if apply_to_core_only then
@@ -44,4 +40,6 @@ function OnMsg.LoadGame()
 	LargerDeposits(objs)
 	RefillAllDeposits(objs)
 end
-OnMsg.NewDay = RefillAllDeposits
+function OnMsg.NewDay()
+	RefillAllDeposits(MapGet("map", "SubsurfaceDepositWater", "SubsurfaceDepositMetals", "SubsurfaceDepositPreciousMetals"))
+end

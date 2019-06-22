@@ -1,3 +1,4 @@
+local mod = Mods.ChoGGi_Logos_WinnipegJets
 
 -- copy n paste from ChoGGi.ComFuncs.LoadEntity
 do -- LoadEntity
@@ -37,8 +38,7 @@ do -- LoadEntity
 	end
 
 	-- Mars Marx, eh close enough
-	local mod = Mods.ChoGGi_Logos_WinnipegJets
-	local ent_path = mod.env.CurrentModPath .. "Entities/"
+	local ent_path = CurrentModPath .. "Entities/"
 
 	local function LoadDecal(name)
 		LoadEntity(
@@ -52,7 +52,7 @@ do -- LoadEntity
 	LoadDecal("WinnipegJets2018")
 end -- LoadEntity
 
-local logo_path = mod.env.CurrentModPath .. "UI/"
+local logo_path = CurrentModPath .. "UI/"
 local function LoadLogo(name, display)
 	PlaceObj("MissionLogoPreset", {
 		display_name = display,

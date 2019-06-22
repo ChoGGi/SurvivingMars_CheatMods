@@ -1,3 +1,6 @@
+v0.4
+Bug fix (thanks Wizu).
+
 v0.3
 Fix log spam (thanks XxUnkn0wnxX).
 

@@ -4039,8 +4039,9 @@ end -- do
 
 -- this only adds a parent, no ___BuildingUpdate or anything
 function ChoGGi.ComFuncs.AddParentToClass(class_obj, parent_name)
-	if not table_find(class_obj, parent_name) then
-		class_obj.__parents[#class_obj.__parents+1] = parent_name
+	local p = class_obj.__parents
+	if not table_find(p, parent_name) then
+		p[#p+1] = parent_name
 	end
 end
 

@@ -1,1 +1,2 @@
 add max passages as vertices for lines, and use those for angles?
+count the hex dist and use that?

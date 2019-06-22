@@ -24,7 +24,8 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagInterface", true,
 	"TagOther", true,
-	"description", [[Use number keys (0-9) to switch between saved groups.
+	"description", [[You can use this to press a number to snap to a rover (or whatever you want).
+
 
 Ctrl-Num to add selected obj(s), and Shift-Num to remove.
 Press the corresponding number to activate selection.

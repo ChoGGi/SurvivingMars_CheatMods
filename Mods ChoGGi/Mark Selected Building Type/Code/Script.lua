@@ -20,10 +20,11 @@ local orig_OverviewModeDialog_ScaleSmallObjects = OverviewModeDialog.ScaleSmallO
 function OverviewModeDialog:ScaleSmallObjects(time, direction, ...)
 	orig_OverviewModeDialog_ScaleSmallObjects(self, time, direction, ...)
 
-	if #beams > 0 then
+	local c = #beams
+	if c > 0 then
 		SuspendPassEdits("ChoGGi_MarkSelectedBuildingType:ScaleSmallObjects")
 		local scale = direction == "up" and 250 or 50
-		for i = #beams, 1, -1 do
+		for i = c, 1, -1 do
 			local beam = beams[i]
 			if IsValid(beam) then
 				beam:SetScale(scale)
@@ -39,7 +40,6 @@ end
 local function ClearBeams()
 	for i = #beams, 1, -1 do
 		local beam = beams[i]
-		beams[i] = nil
 		if IsValid(beam) then
 			DoneObject(beam)
 		end
@@ -50,7 +50,7 @@ end
 --~ local skips = {"Shuttle", "Drone", "Colonist", "LifeSupportGridElement", "ElectricityGridElement"}
 
 local function MarkObjects(obj)
-	if not (mod_Mark or obj) then
+	if not (mod_Mark or IsValid(obj)) then
 		return
 	end
 
@@ -62,7 +62,6 @@ local function MarkObjects(obj)
 	local labels = UICity.labels[name] or ""
 
 	-- skip if there's too many
---~ 	if obj:IsKindOfClasses(skips) and #labels > 500 then
 	if #labels > 1000 then
 		return
 	end

@@ -503,7 +503,7 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 				SetUpgradeInfo(action, obj, 3)
 			elseif aid == "WorkAuto" then
 				local bs = ChoGGi.UserSettings.BuildingSettings
-				SetHint(action, Strings[302535920001209--[[Make this %s not need workers (performance: %s).]]]:format(name, bs and bs[id] and bs[id].performance or 150))
+				SetHint(action, Strings[302535920001209--[[Make this %s not need workers (performance: %s).]]]:format(name, bs and bs[id] and bs[id].performance or 100))
 
 			elseif aid == "CapDbl" then
 				if obj:IsKindOf("SupplyRocket") then
@@ -667,7 +667,7 @@ function Workplace:CheatWorkAuto()
 		-- changed saving as performance to auto_performance, get rid of this in a few months
 		self.auto_performance = bs.auto_performance or bs.performance
 	else
-		self.auto_performance = 150
+		self.auto_performance = 100
 	end
 	ChoGGi.ComFuncs.ToggleWorking(self)
 end

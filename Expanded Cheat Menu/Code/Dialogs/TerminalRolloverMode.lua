@@ -17,10 +17,16 @@ function ChoGGi_DlgRolloverModeTerminalTarget:MouseEvent(event, pt, button)
 		if button == "L" then
 			local term = terminal.desktop
 			local target = term:GetMouseTarget(pt) or term
-			ChoGGi.ComFuncs.OpenInExamineDlg(target, terminal_dialog)
+
+			terminal_dialog.ChoGGi.ComFuncs.OpenInExamineDlg(target, {
+				ex_params = true,
+				parent = terminal_dialog,
+				-- ignore the Child checkbox in examine
+				skip_child = true,
+			})
 		end
 		-- right or middle so goodbye
-		ChoGGi.ComFuncs.TerminalRolloverMode(false)
+		terminal_dialog.ChoGGi.ComFuncs.TerminalRolloverMode(false)
 		return "break"
 	end
 end

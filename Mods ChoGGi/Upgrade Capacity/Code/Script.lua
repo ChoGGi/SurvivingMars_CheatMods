@@ -88,7 +88,6 @@ local function AddUpgrades(obj, id, prop, value)
 	if obj.upgrade2_id == "" then
 		obj.upgrade2_id = id .. "_Capacity2"
 		obj.upgrade2_display_name = T(109035890389, "Capacity")
-		obj.upgrade2_description = T{0, elec2_description, display_cap = display_cap}
 		obj.upgrade2_icon = "UI/Icons/Upgrades/home_collective_01.tga"
 		obj.upgrade2_mod_prop_id_1 = prop
 		obj.upgrade2_add_value_1 = value

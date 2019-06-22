@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Infobar Add Discharge Rates",
 	"title", "Infobar More Info",
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_InfobarAddDischargeRates",
@@ -24,6 +24,9 @@ N/A means you have more production than consumption.
 Grid (air/water/elec) tooltips:
 The max discharge from storage buildings.
 Max production values (some producers will throttle on demand).
+
+Resource/Grid tooltips:
+For stuff getting mined (water, metals, concrete) the remaining amounts in currently mined deposits are shown.
 
 Research tooltip:
 Total per Sol.]],

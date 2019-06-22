@@ -1,15 +1,20 @@
 -- See LICENSE for terms
 
+--~ function ChoGGi.ComFuncs.AddParentToClass(class_obj, parent_name)
 local function AddParentToClass(class_obj, parent_name)
-	if not table.find(class_obj, parent_name) then
-		class_obj.__parents[#class_obj.__parents+1] = parent_name
+	local p = class_obj.__parents
+	if not table.find(p, parent_name) then
+		p[#p+1] = parent_name
 	end
 end
-function OnMsg.ClassesPreprocess()
+
+--~ function OnMsg.ClassesPreprocess()
 	-- stops crashing with certain missing pinned objects
-	AddParentToClass(UnpersistedMissingClass, "AutoAttachObject")
-	AddParentToClass(UnpersistedMissingClass, "PinnableObject")
-end
+	local umc = UnpersistedMissingClass
+	AddParentToClass(umc, "AutoAttachObject")
+	AddParentToClass(umc, "PinnableObject")
+	umc.entity = "ErrorAnimatedMesh"
+--~ end
 
 function OnMsg.PersistPostLoad()
 	-- [LUA ERROR] Mars/Lua/Construction.lua:860: attempt to index a boolean value (global 'ControllerMarkers')

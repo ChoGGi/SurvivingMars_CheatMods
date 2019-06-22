@@ -32,6 +32,14 @@ do -- custom msgs
 	AddMsgToFunc("SingleResourceProducer", "Init", "ChoGGi_SpawnedProducer", "production_per_day")
 end -- do
 
+-- stops crashing with certain missing pinned objects
+if ChoGGi.UserSettings.FixMissingModBuildings then
+	local umc = UnpersistedMissingClass
+	ChoGGi.ComFuncs.AddParentToClass(umc, "AutoAttachObject")
+	ChoGGi.ComFuncs.AddParentToClass(umc, "PinnableObject")
+	umc.entity = "ErrorAnimatedMesh"
+end
+
 -- use this message to mess with the classdefs (before classes are built)
 --~ function OnMsg.ClassesGenerate()
 --~ end
@@ -60,14 +68,6 @@ function OnMsg.ClassesPreprocess()
 			cConsts[name] = const[name]
 		end
 		cConsts.InvalidPos = InvalidPos()
-	end
-
-	-- stops crashing with certain missing pinned objects
-	if ChoGGi.UserSettings.FixMissingModBuildings then
-		local umc = UnpersistedMissingClass
-		ChoGGi.ComFuncs.AddParentToClass(umc, "AutoAttachObject")
-		ChoGGi.ComFuncs.AddParentToClass(umc, "PinnableObject")
-		umc.entity = "ErrorAnimatedMesh"
 	end
 end
 

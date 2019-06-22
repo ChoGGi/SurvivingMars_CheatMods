@@ -23,9 +23,9 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Adds a button to hubs and rovers that lets you switch between wasp (flying) and regular drones (global setting, not per building).
+	"description", [[Adds a button to hubs and rovers that lets you switch between wasp (flying) and regular drones (global setting, not per building). You will need to repack/unpack to change them on current hubs.
 
-mod options:
+Mod Options:
 Option to only show button when Martian Aerodynamics is researched.
 Always Wasp Drones: Forces drones to always be wasp drones.]],
 })

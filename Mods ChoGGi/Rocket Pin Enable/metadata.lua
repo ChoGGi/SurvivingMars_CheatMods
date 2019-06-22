@@ -1,8 +1,9 @@
 return PlaceObj("ModDef", {
+--~ 	"title", "Rocket: Pin Enable",
 	"title", "Rocket Pin Enable",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_RocketPinEnable",

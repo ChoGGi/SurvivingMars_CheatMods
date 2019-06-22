@@ -19,7 +19,7 @@ DefineClass("ModOptions_ChoGGi_ConstructionShowDroneGrid", {
 			name = "Grid Opacity",
 		},
 		{
-			default = 25,
+			default = 50,
 			max = 100,
 			min = 0,
 			editor = "number",

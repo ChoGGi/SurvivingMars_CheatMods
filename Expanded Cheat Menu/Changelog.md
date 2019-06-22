@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v14.1 (Unreleased)
+### Changed:
+- Examine>Child checkbox: Examine all objs in a single child dlg.
 
 ## v14.0 (June 18 2019)
 ### Changed:

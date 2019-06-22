@@ -19,7 +19,7 @@ function TerrainDepositConcrete:GetSkins()
 end
 
 -- they normally can't change skins so we need to make them able to (skip this for buildings)
-function OnMsg.ClassesPreprocess()
+--~ function OnMsg.ClassesPreprocess()
 	SubsurfaceDepositMetals.__parents[#SubsurfaceDepositMetals.__parents+1] = "SkinChangeable"
 	TerrainDepositConcrete.__parents[#TerrainDepositConcrete.__parents+1] = "SkinChangeable"
-end
+--~ end

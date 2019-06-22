@@ -46,6 +46,7 @@ local GetStateName = GetStateName
 local IsKindOf = IsKindOf
 local IsPoint = IsPoint
 local IsT = IsT
+local T = T
 local IsValid = IsValid
 local IsValidEntity = IsValidEntity
 local IsValidThread = IsValidThread
@@ -125,6 +126,9 @@ DefineClass.ChoGGi_DlgExamine = {
 	history_queue_idx = false,
 	-- IsValid()
 	is_valid_obj = false,
+	-- examine children in same dialog
+	child_lock = false,
+	child_lock_dlg = false,
 
 	-- strings called repeatedly
 	string_Loadingresources = false,
@@ -260,7 +264,7 @@ function ChoGGi_DlgExamine:Init(parent, context)
 		self.idButRefresh = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButRefresh",
 			Image = "CommonAssets/UI/Menu/reload.tga",
-			RolloverTitle = Translate(1000220--[[Refresh]]),
+			RolloverTitle = T(1000220, "Refresh"),
 			RolloverText = Strings[302535920000092--[[Updates list with any changed values.]]],
 			OnPress = self.idButRefresh_OnPress,
 		}, self.idToolbarButtons)
@@ -276,7 +280,7 @@ function ChoGGi_DlgExamine:Init(parent, context)
 		self.idButClear = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButClear",
 			Image = "CommonAssets/UI/Menu/NoblePreview.tga",
-			RolloverTitle = Translate(594--[[Clear]]),
+			RolloverTitle = T(594, "Clear"),
 			RolloverText = Strings[302535920000016--[["Remove any green spheres/reset green coloured objects
 Press once to clear this examine, again to clear all."]]],
 			OnPress = self.idButClear_OnPress,
@@ -293,7 +297,7 @@ Press once to clear this examine, again to clear all."]]],
 		self.idButDeleteObj = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButDeleteObj",
 			Image = "CommonAssets/UI/Menu/delete_objects.tga",
-			RolloverTitle = Translate(502364928914--[[Delete]]),
+			RolloverTitle = T(502364928914, "Delete"),
 			RolloverText = Strings[302535920000414--[[Are you sure you wish to delete <color red>%s</color>?]]]:format(self.name),
 			OnPress = self.idButDeleteObj_OnPress,
 		}, self.idToolbarButtons)
@@ -325,7 +329,7 @@ Press once to clear this examine, again to clear all."]]],
 		self.idButDeleteAll = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButDeleteAll",
 			Image = "CommonAssets/UI/Menu/UnlockCollection.tga",
-			RolloverTitle = Translate(3768--[[Destroy all?]]),
+			RolloverTitle = T(3768, "Destroy all?"),
 			RolloverText = Strings[302535920000059--[[Destroy all objects in objlist!]]],
 			OnPress = self.idButDeleteAll_OnPress,
 		}, self.idToolbarButtons)
@@ -384,18 +388,27 @@ Press once to clear this examine, again to clear all."]]],
 		self.idShowAllValues = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idShowAllValues",
 			MinWidth = 0,
-			Text = Translate(4493--[[All]]),
+			Text = T(4493, "All"),
 			RolloverText = Strings[302535920001391--[[Show all values: getmetatable(obj).]]],
 			OnChange = self.idShowAllValues_OnChange,
 		}, self.idToolbarButtonsRight)
 		--
 		self.idSortDir = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idSortDir",
-			Text = Translate(10124--[[Sort]]),
+			Text = T(10124, "Sort"),
 			RolloverText = Strings[302535920001248--[[Sort normally or backwards.]]],
 			OnChange = self.idSortDir_OnChange,
 		}, self.idToolbarButtonsRight)
 		--
+		self.idChildLock = g_Classes.ChoGGi_XCheckButton:new({
+			Id = "idChildLock",
+			Text = T(4775, "Child"),
+			RolloverTitle = T(4775, "Child") .. " " .. T(254324150154, "Lock"),
+			RolloverText = Strings[302535920000920--[[Examining objs from this dlg will <color red>%s</color>examine them all in a single dlg.]]]:format(Translate(3695, "NOT") .. " "),
+			OnChange = self.idChildLock_OnChange,
+		}, self.idToolbarButtonsRight)
+		--
+
 	end -- toolbar area
 
 	do -- search area
@@ -413,7 +426,7 @@ Press once to clear this examine, again to clear all."]]],
 		--
 		self.idSearch = g_Classes.ChoGGi_XButton:new({
 			Id = "idSearch",
-			Text = Translate(10123--[[Search]]),
+			Text = T(10123, "Search"),
 			Dock = "right",
 			RolloverAnchor = "right",
 			RolloverHint = Strings[302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"]]],
@@ -707,7 +720,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 	end
 
 	if self.onclick_funcs[link] == self.OpenListMenu then
-		title = obj_name .. " " .. Translate(1000162--[[Menu]]) .. " (" .. obj_type .. ")"
+		title = obj_name .. " " .. T(1000162, "Menu") .. " (" .. obj_type .. ")"
 
 		-- stick info at the top of list
 		table_insert(roll_text, 1, Strings[302535920001540--[[Show context menu for <color green>%s</color>.]]]:format(obj_name)
@@ -871,6 +884,19 @@ function ChoGGi_DlgExamine:idButRefresh_OnPress()
 		self:FlashWindow()
 	end
 end
+function ChoGGi_DlgExamine:idChildLock_OnChange(visible)
+	self = GetRootDialog(self)
+
+	self.child_lock = visible
+
+	if visible then
+		visible = ""
+	else
+		visible = Translate(3695, "NOT") .. " "
+	end
+
+	self.idChildLock:SetRolloverText(Strings[302535920000920--[[Examining objs from this dlg will <color red>%s</color>examine them all in a single dlg.]]]:format(visible))
+end
 -- stable name for external use
 function ChoGGi_DlgExamine:RefreshExamine()
 	self:idButRefresh_OnPress()
@@ -952,7 +978,7 @@ function ChoGGi_DlgExamine:idButDeleteAll_OnPress()
 				self:SetObj()
 			end
 		end,
-		Translate(697--[[Destroy]])
+		T(697, "Destroy")
 	)
 end
 function ChoGGi_DlgExamine:idViewEnum_OnChange()
@@ -1210,7 +1236,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 			class = "ChoGGi_XCheckButtonMenu",
 		},
 
-		{name = self.ChoGGi.UserSettings.ExamineTextType and Translate(1000145--[[Text]]) or self.string_Object,
+		{name = self.ChoGGi.UserSettings.ExamineTextType and T(1000145, "Text") or self.string_Object,
 			hint = Strings[302535920001620--[["Click to toggle between Viewing/Dumping the Text or Object.
 <color green>Text</color> is what you see, <color green>Object</color> is the text created from ValueToLuaCode(obj)."]]],
 			clicked = function(item)
@@ -1219,7 +1245,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 
 				-- change this item name
 				if self.ChoGGi.UserSettings.ExamineTextType then
-					item.name = Translate(1000145--[[Text]])
+					item.name = T(1000145, "Text")
 				else
 					item.name = self.string_Object
 				end
@@ -1255,7 +1281,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 				if self.ChoGGi.UserSettings.ExamineTextType then
 					str, scrolled_text = self:GetCleanText(true)
 					name = "DumpedExamineText"
-					title = Strings[302535920000048--[[View]]] .. "/" .. Strings[302535920000004--[[Dump]]] .. " " .. Translate(1000145--[[Text]])
+					title = Strings[302535920000048--[[View]]] .. "/" .. Strings[302535920000004--[[Dump]]] .. " " .. T(1000145, "Text")
 				else
 					str = ValueToLuaCode(self.obj_ref)
 					name = "DumpedExamineObject"
@@ -1308,23 +1334,24 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 
 					self.ChoGGi.ComFuncs.OpenInExamineDlg(self.menu_list_items, {
 						ex_params = true,
-						parent = parent,
+						parent = self,
 						title = Strings[302535920001239--[[Functions]]] .. ": " .. self.name,
 					})
 				else
-					-- make me a MsgPopup
-					print(Translate(9763--[[No objects matching current filters.]]))
+					local msg = Translate(9763--[[No objects matching current filters.]])
+					self.ChoGGi.ComFuncs.MsgPopup(msg, T(6774, "Error"))
+					print(msg)
 				end
 			end,
 		},
-		{name = Translate(327465361219--[[Edit]]) .. " " .. self.string_Object,
+		{name = T(327465361219, "Edit") .. " " .. self.string_Object,
 			hint = Strings[302535920000050--[[Opens object in Object Manipulator.]]],
 			image = "CommonAssets/UI/Menu/AreaProperties.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.OpenInObjectEditorDlg(self.obj_ref, self)
 			end,
 		},
-		{name = Translate(174--[[Color Modifier]]),
+		{name = T(174, "Color Modifier"),
 			hint = Strings[302535920000693--[[Select/mouse over an object to change the colours
 Use Shift- or Ctrl- for random colours/reset colours.]]],
 			image = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
@@ -1373,15 +1400,16 @@ Which you can then mess around with some more in the console."]]],
 			end,
 		},
 		{is_spacer = true},
-		{name = Translate(931--[[Modified property]]),
+		{name = T(931, "Modified property"),
 			hint = Strings[302535920001384--[[Get properties different from base/parent object?]]],
 			image = "CommonAssets/UI/Menu/SelectByClass.tga",
 			clicked = function()
 				if self.obj_ref.IsKindOf and self.obj_ref:IsKindOf("PropertyObject") then
 					self.ChoGGi.ComFuncs.OpenInExamineDlg(GetModifiedProperties(self.obj_ref), {
 						ex_params = true,
-						parent = parent,
-						title = Translate(931--[[Modified property]]) .. ": " .. self.name,
+						parent = self,
+						title = Translate(931, "Modified property") .. ": " .. self.name,
+						override_title = true,
 					})
 				else
 					self:InvalidMsgPopup()
@@ -1455,7 +1483,7 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 	if testing then
 
 		-- maybe i'll finish this one day :)
-		table.insert(list, 8, {name = Translate(327465361219--[[Edit]]) .. " "
+		table.insert(list, 8, {name = T(327465361219, "Edit") .. " "
 				.. self.string_Object .. " " .. Strings[302535920001432--[[3D]]],
 			hint = Strings[302535920001433--[[Fiddle with object angle/axis/pos and so forth.]]],
 			image = "CommonAssets/UI/Menu/Axis.tga",
@@ -1480,7 +1508,7 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 					end,
 					title = Strings[302535920000048--[[View]]] .. "/"
 							.. Strings[302535920000004--[[Dump]]] .. " "
-							.. Translate(1000145--[[Text]]),
+							.. T(1000145, "Text"),
 					custom_func = function(answer, overwrite)
 						if answer then
 							self:DumpExamineText(str, "DumpedExamine", overwrite and "w")
@@ -1788,7 +1816,7 @@ function ChoGGi_DlgExamine:ShowHexShapeList()
 
 	local item_list = {
 		{
-			text = " " .. Translate(594--[[Clear]]),
+			text = " " .. T(594, "Clear"),
 			value = "Clear",
 		},
 		{
@@ -1935,7 +1963,7 @@ function ChoGGi_DlgExamine:ShowBBoxList()
 	self.ChoGGi.ComFuncs.BBoxLines_Clear(obj)
 
 	local item_list = {
-		{text = " " .. Translate(594--[[Clear]]), value = "Clear"},
+		{text = " " .. T(594, "Clear"), value = "Clear"},
 		-- relative
 --~ 		{text = "GetEntityBBox", bbox = s:GetEntityBBox()},
 --~ 		{text = "GetEntitySurfacesBBox", bbox = HexStoreToWorld(obj:GetEntitySurfacesBBox())},
@@ -1953,7 +1981,7 @@ function ChoGGi_DlgExamine:ShowBBoxList()
 	local landscape = Landscapes[obj.mark]
 	if landscape and IsBox(landscape.bbox) then
 		item_list[#item_list+1] = {
-			text = Translate(12019--[[Landscape]]) .. " bbox",
+			text = T(12019, "Landscape") .. " bbox",
 			bbox = HexStoreToWorld(landscape.bbox),
 		}
 	end
@@ -2003,8 +2031,8 @@ function ChoGGi_DlgExamine:ShowEntitySpotsList()
 	end
 
 	local item_list = {
-		{text = " " .. Translate(4493--[[All]]), value = "All"},
-		{text = " " .. Translate(594--[[Clear]]), value = "Clear"},
+		{text = " " .. T(4493, "All"), value = "All"},
+		{text = " " .. T(594, "Clear"), value = "Clear"},
 	}
 	local c = #item_list
 
@@ -2099,7 +2127,7 @@ function ChoGGi_DlgExamine:ShowSurfacesList()
 	end
 
 	local item_list = {
-		{text = " " .. Translate(594--[[Clear]]), value = "Clear"},
+		{text = " " .. T(594, "Clear"), value = "Clear"},
 		{
 			text = "0: " .. Strings[302535920000968--[[Collisions]]],
 			value = 0,
@@ -2241,7 +2269,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 			end,
 		},
 		{is_spacer = true},
-		{name = Translate(833734167742--[[Delete Item]]),
+		{name = T(833734167742, "Delete Item"),
 			hint = Strings[302535920001536--[["Remove the ""%s"" key from %s."]]]:format(obj_name, self.name),
 			image = "CommonAssets/UI/Menu/DeleteArea.tga",
 			clicked = function()
@@ -3377,6 +3405,7 @@ end -- do
 function ChoGGi_DlgExamine:SetToolbarVis(obj, obj_metatable)
 	-- always hide all (if we're monitoring a "str" that switches from one type to another)
 	if self.str_object then
+		SetWinObjectVis(self.idChildLock)
 		SetWinObjectVis(self.idButMarkObject)
 		SetWinObjectVis(self.idButMarkAll)
 		SetWinObjectVis(self.idButSetObjlist)
@@ -3392,47 +3421,51 @@ function ChoGGi_DlgExamine:SetToolbarVis(obj, obj_metatable)
 
 	SetWinObjectVis(self.idShowAllValues, obj_metatable and self.obj_type ~= "userdata")
 
-	-- none of it works on _G, and i'll take any bit of speed for _G
-	if self.obj_type == "table" and self.name ~= "_G" then
+	if self.obj_type == "table" then
+		SetWinObjectVis(self.idChildLock, true)
 
-		-- pretty much any class object
-		SetWinObjectVis(self.idButDeleteObj, PropObjGetProperty(obj, "delete"))
+		-- none of this works on _G, and i'll take any bit of speed for _G
+		if self.name ~= "_G" then
 
-		self.is_valid_obj = IsValid(obj)
+			-- pretty much any class object
+			SetWinObjectVis(self.idButDeleteObj, PropObjGetProperty(obj, "delete"))
 
-		-- can't mark if it isn't an object, and no sense in marking something off the map
-		if obj.GetPos then
-			SetWinObjectVis(self.idButMarkObject, self.is_valid_obj and obj:GetPos() ~= InvalidPos)
-		end
+			self.is_valid_obj = IsValid(obj)
 
-		if not self.obj_entity and PropObjGetProperty(obj, "GetEntity") then
-			local entity = obj:GetEntity()
-			if IsValidEntity(entity) then
-				self.obj_entity = entity
+			-- can't mark if it isn't an object, and no sense in marking something off the map
+			if obj.GetPos then
+				SetWinObjectVis(self.idButMarkObject, self.is_valid_obj and obj:GetPos() ~= InvalidPos)
 			end
-		end
-		-- not a toolbar button, but since we're already calling IsValid then good enough
-		SetWinObjectVis(self.idObjects, self.obj_entity or self.is_valid_obj)
 
-		-- objlist objects let us do some easy for each
-		if IsObjlist(obj) then
-			SetWinObjectVis(self.idButMarkAll, true)
-			SetWinObjectVis(self.idButMarkAllLine, true)
-			SetWinObjectVis(self.idButDeleteAll, true)
-			-- we only want to show it for objlist or non-metatables, because I don't want to save/restore them
-			SetWinObjectVis(self.idButSetObjlist, true)
-		elseif not obj_metatable then
-			SetWinObjectVis(self.idButSetObjlist, true)
-		else
-			SetWinObjectVis(self.idButMarkAll)
-			SetWinObjectVis(self.idButMarkAllLine)
-			SetWinObjectVis(self.idButDeleteAll)
-			SetWinObjectVis(self.idButSetObjlist)
-		end
+			if not self.obj_entity and PropObjGetProperty(obj, "GetEntity") then
+				local entity = obj:GetEntity()
+				if IsValidEntity(entity) then
+					self.obj_entity = entity
+				end
+			end
+			-- not a toolbar button, but since we're already calling IsValid then good enough
+			SetWinObjectVis(self.idObjects, self.obj_entity or self.is_valid_obj)
 
-		-- pretty rare occurrence
-		self.enum_vars = EnumVars(self.name)
-		SetWinObjectVis(self.idViewEnum, self.enum_vars and next(self.enum_vars))
+			-- objlist objects let us do some easy for each
+			if IsObjlist(obj) then
+				SetWinObjectVis(self.idButMarkAll, true)
+				SetWinObjectVis(self.idButMarkAllLine, true)
+				SetWinObjectVis(self.idButDeleteAll, true)
+				-- we only want to show it for objlist or non-metatables, because I don't want to save/restore them
+				SetWinObjectVis(self.idButSetObjlist, true)
+			elseif not obj_metatable then
+				SetWinObjectVis(self.idButSetObjlist, true)
+			else
+				SetWinObjectVis(self.idButMarkAll)
+				SetWinObjectVis(self.idButMarkAllLine)
+				SetWinObjectVis(self.idButDeleteAll)
+				SetWinObjectVis(self.idButSetObjlist)
+			end
+
+			-- pretty rare occurrence
+			self.enum_vars = EnumVars(self.name)
+			SetWinObjectVis(self.idViewEnum, self.enum_vars and next(self.enum_vars))
+		end
 
 	elseif self.obj_type == "thread" then
 		SetWinObjectVis(self.idButDeleteObj, true)

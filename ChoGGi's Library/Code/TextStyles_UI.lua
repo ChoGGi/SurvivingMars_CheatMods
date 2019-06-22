@@ -52,16 +52,8 @@ DefineClass.ChoGGi_XTextStyle = {
 
 function OnMsg.ClassesPostprocess()
 	PlaceObj("TextStyle", {
-		TextColor = RGB(100, 255, 100),
-		id = "green",
-	})
-	PlaceObj("TextStyle", {
 		TextColor = RGB(255, 150, 150),
 		id = "red",
-	})
-	PlaceObj("TextStyle", {
-		TextColor = RGB(255, 255, 100),
-		id = "yellow",
 	})
 
 	-- Text

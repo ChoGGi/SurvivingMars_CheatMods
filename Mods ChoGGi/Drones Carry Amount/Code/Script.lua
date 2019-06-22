@@ -1,8 +1,6 @@
 -- See LICENSE for terms
 
 local FuckingDrones = ChoGGi.ComFuncs.FuckingDrones
-local SetConstsG = ChoGGi.ComFuncs.SetConstsG
-local UpdateDroneResourceUnits = UpdateDroneResourceUnits
 
 function OnMsg.ClassesPostprocess()
 
@@ -46,26 +44,32 @@ function OnMsg.NewHour()
 	end
 end
 
--- update carry amount
-local mod_id = "ChoGGi_DronesCarryAmountFix"
-local mod = Mods[mod_id]
 
+-- update carry amount
+local options
 local default_drone_amount
 
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+--~ 	ModOptions()
+end
+
 local function UpdateAmount(amount)
-	SetConstsG("DroneResourceCarryAmount", amount)
+	ChoGGi.ComFuncs.SetConstsG("DroneResourceCarryAmount", amount)
 	UpdateDroneResourceUnits()
 end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_DronesCarryAmountFix" then
 		return
 	end
+
 	-- if enabled then apply option
-	if mod.options.UseCarryAmount then
-		if g_Consts.DroneResourceCarryAmount ~= mod.options.CarryAmount then
-			UpdateAmount(mod.options.CarryAmount)
+	if options.UseCarryAmount then
+		if g_Consts.DroneResourceCarryAmount ~= options.CarryAmount then
+			UpdateAmount(options.CarryAmount)
 		end
 	elseif default_drone_amount and g_Consts.DroneResourceCarryAmount ~= default_drone_amount then
 		UpdateAmount(default_drone_amount)
@@ -76,8 +80,8 @@ local function StartupCode()
 	-- get default
 	default_drone_amount = ChoGGi.ComFuncs.GetResearchedTechValue("DroneResourceCarryAmount")
 
-	if mod.options.UseCarryAmount then
-		UpdateAmount(mod.options.CarryAmount)
+	if options.UseCarryAmount then
+		UpdateAmount(options.CarryAmount)
 	end
 end
 
