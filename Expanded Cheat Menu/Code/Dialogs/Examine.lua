@@ -924,9 +924,7 @@ function ChoGGi_DlgExamine:idButClear_OnPress()
 	end
 	self.marked_objects:Clear()
 
-	if IsObjlist(self.obj_ref) then
-		self.ChoGGi.ComFuncs.ObjListLines_Clear(self.obj_ref)
-	end
+	self:CleanupCustomObjs(self.obj_ref, true)
 end
 
 function ChoGGi_DlgExamine:idButMarkObject_OnPress()
@@ -2372,7 +2370,6 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 			end,
 		}
 
-	-- add print for funcs
 	elseif obj_value_type == "function" then
 		c = c + 1
 		list[c] = {is_spacer = true}
@@ -3403,18 +3400,17 @@ Use %s to hide green markers."]]]:format(self.name, attach_amount, "<image Commo
 end -- do
 
 function ChoGGi_DlgExamine:SetToolbarVis(obj, obj_metatable)
-	-- always hide all (if we're monitoring a "str" that switches from one type to another)
-	if self.str_object then
-		SetWinObjectVis(self.idChildLock)
-		SetWinObjectVis(self.idButMarkObject)
-		SetWinObjectVis(self.idButMarkAll)
-		SetWinObjectVis(self.idButSetObjlist)
-		SetWinObjectVis(self.idButMarkAllLine)
-		SetWinObjectVis(self.idViewEnum)
-		SetWinObjectVis(self.idButDeleteObj)
-		-- not a toolbar button, but since we're already calling IsValid then good enough
-		SetWinObjectVis(self.idObjects)
-	end
+	-- always hide all by default
+	SetWinObjectVis(self.idChildLock)
+	SetWinObjectVis(self.idButMarkObject)
+	SetWinObjectVis(self.idButMarkAll)
+	SetWinObjectVis(self.idButMarkAllLine)
+	SetWinObjectVis(self.idButSetObjlist)
+	SetWinObjectVis(self.idViewEnum)
+	SetWinObjectVis(self.idButDeleteObj)
+	SetWinObjectVis(self.idButDeleteAll)
+	-- not a toolbar button, but since we're already calling IsValid then good enough
+	SetWinObjectVis(self.idObjects)
 
 	-- no sense in showing it in mainmenu/new game screens
 	SetWinObjectVis(self.idButClear, GameState.gameplay)
@@ -3469,8 +3465,8 @@ function ChoGGi_DlgExamine:SetToolbarVis(obj, obj_metatable)
 
 	elseif self.obj_type == "thread" then
 		SetWinObjectVis(self.idButDeleteObj, true)
-	else
-		SetWinObjectVis(self.idButDeleteObj)
+--~ 	else
+--~ 		SetWinObjectVis(self.idButDeleteObj)
 	end
 
 end
@@ -3637,6 +3633,21 @@ local function PopupClose(name)
 	end
 end
 
+function ChoGGi_DlgExamine:CleanupCustomObjs(obj, force)
+	obj = obj or self.obj_ref
+	if self.obj_entity or IsValid(obj) then
+		self.ChoGGi.ComFuncs.BBoxLines_Clear(obj)
+		self.ChoGGi.ComFuncs.ObjHexShape_Clear(obj)
+		self.ChoGGi.ComFuncs.EntitySpots_Clear(obj)
+		self.ChoGGi.ComFuncs.SurfaceLines_Clear(obj)
+	elseif IsObjlist(obj) or force then
+		self.ChoGGi.ComFuncs.ObjListLines_Clear(obj)
+	end
+	if self.spawned_bbox then
+		self.ChoGGi.ComFuncs.BBoxLines_Clear(self.spawned_bbox)
+	end
+end
+
 function ChoGGi_DlgExamine:Done()
 	-- revert funcs
 	self:SafeExamine()
@@ -3652,17 +3663,7 @@ function ChoGGi_DlgExamine:Done()
 	PopupClose(self.idToolsMenu)
 	-- if it isn't valid then none of these will exist
 	if self.obj_type == "table" and self.name ~= "_G" then
-		if self.obj_entity or IsValid(obj) then
-			self.ChoGGi.ComFuncs.BBoxLines_Clear(obj)
-			self.ChoGGi.ComFuncs.ObjHexShape_Clear(obj)
-			self.ChoGGi.ComFuncs.EntitySpots_Clear(obj)
-			self.ChoGGi.ComFuncs.SurfaceLines_Clear(obj)
-		elseif IsObjlist(obj) then
-			self.ChoGGi.ComFuncs.ObjListLines_Clear(obj)
-		end
-		if self.spawned_bbox then
-			self.ChoGGi.ComFuncs.BBoxLines_Clear(self.spawned_bbox)
-		end
+		self:CleanupCustomObjs(obj)
 	end
 	-- clear any spheres/colour marked objs
 	if #self.marked_objects > 0 then

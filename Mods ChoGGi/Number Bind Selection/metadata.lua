@@ -8,9 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Number Bind Selection",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_NumberBindSelection",
@@ -32,5 +32,7 @@ Press the corresponding number to activate selection.
 
 You can have more than one type of obj in a group, but beware that multi-select will base actions on the first obj added to the list.
 
-Defaults to just selection, has mod option to select & view.]],
+Mod Options:
+Select & View: Instead of just selecting.
+Show a marker when View option enabled.]],
 })

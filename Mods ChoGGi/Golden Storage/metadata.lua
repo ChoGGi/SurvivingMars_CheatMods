@@ -8,9 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Golden Storage",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_GoldenStorage",
@@ -20,6 +20,8 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"has_options", true,
+	"TagGameplay", true,
 	"lua_revision", 245618,
 	"description", [[Converts Metals to Precious Metals (10 to 1 ratio).]],
 })

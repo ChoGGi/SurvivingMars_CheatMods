@@ -200,9 +200,9 @@ do -- RetName
 		end
 	end
 	local func_tables = {
-		"g_CObjectFuncs", "camera", "camera3p", "cameraMax", "cameraRTS",
-		"coroutine", "DTM", "lpeg", "objlist", "pf", "srp", "string", "table",
-		"terrain", "terminal", "UIL", "TFormat", "XInput",
+		"g_CObjectFuncs", "camera", "camera3p", "cameraMax", "cameraRTS", "objlist",
+		"coroutine", "DTM", "lpeg", "pf", "srp", "string", "table", "UIL", "editor",
+		"terrain", "terminal", "TFormat", "XInput",
 	}
 	for i = 1, #func_tables do
 		AddFuncs(func_tables[i])
@@ -533,7 +533,7 @@ do -- MsgPopup
 		if params.objects then
 			-- if it's a single obj
 			if IsValid(params.objects) then
-				params.objects = {params.objects}
+				params.cycle_objs = {params.objects}
 			end
 			params.cycle_objs = params.objects
 		end
@@ -992,7 +992,7 @@ function ChoGGi.ComFuncs.Circle(pos, radius, colour, time)
 	local circle = ChoGGi_OCircle:new()
 	circle:SetPos(pos and pos:SetTerrainZ(10 * guic) or GetTerrainCursor())
 	circle:SetRadius(radius or 1000)
-	circle:SetColor(colour or white)
+	circle:SetColor(colour or ChoGGi.ComFuncs.RandomColourLimited())
 
 	CreateRealTimeThread(function()
 		Sleep(time or 50000)
@@ -1003,50 +1003,57 @@ function ChoGGi.ComFuncs.Circle(pos, radius, colour, time)
 end
 
 -- this is a question box without a question (WaitPopupNotification only works in-game, not main menu)
-function ChoGGi.ComFuncs.MsgWait(text, caption, image, ok_text, context, parent, template)
+function ChoGGi.ComFuncs.MsgWait(text, caption, image, ok_text, context, parent, template, thread)
 	-- thread needed for WaitMarsQuestion
-	CreateRealTimeThread(function()
-		local dlg = CreateMarsQuestionBox(
-			caption or Translate(1000016--[[Title]]),
-			text or Translate(3718--[[NONE]]),
-			ok_text or nil,
-			nil,
-			parent,
-			image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
-			context, template
-		)
-		-- hide cancel button since we don't care about it, and we ignore them anyways...
-		dlg.idList[2]:delete()
-	end)
+	if not CurrentThread() and thread ~= "skip" then
+		return CreateRealTimeThread(ChoGGi.ComFuncs.MsgWait, text, caption, image, ok_text, context, parent, template, "skip")
+	end
+
+	local dlg = CreateMarsQuestionBox(
+		caption or Translate(1000016--[[Title]]),
+		text or Translate(3718--[[NONE]]),
+		ok_text or nil,
+		nil,
+		parent,
+		image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
+		context, template
+	)
+	-- hide cancel button since we don't care about it, and we ignore them anyways...
+	dlg.idList[2]:delete()
 end
 
 -- well that's the question isn't it?
-function ChoGGi.ComFuncs.QuestionBox(text, func, title, ok_text, cancel_text, image, context, parent, template)
+function ChoGGi.ComFuncs.QuestionBox(text, func, title, ok_text, cancel_text, image, context, parent, template, thread)
+	-- thread needed for WaitMarsQuestion
+	if not CurrentThread() and thread ~= "skip" then
+		return CreateRealTimeThread(ChoGGi.ComFuncs.QuestionBox, text, func, title, ok_text, cancel_text, image, context, parent, template, "skip")
+	end
+
 	if not image then
 		image = ChoGGi.library_path .. "UI/message_picture_01.png"
 	end
-	CreateRealTimeThread(function()
-		if WaitMarsQuestion(
-			parent,
-			title or Translate(1000016--[[Title]]),
-			text or Translate(3718--[[NONE]]),
-			ok_text or nil,
-			cancel_text or nil,
-			image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
-			context, template
-		) == "ok" then
-			if func then
-				func(true, context)
-			end
-			return "ok"
-		else
-			-- user canceled / closed it
-			if func then
-				func(false, context)
-			end
-			return "cancel"
+
+	if WaitMarsQuestion(
+		parent,
+		title or Translate(1000016--[[Title]]),
+		text or Translate(3718--[[NONE]]),
+		ok_text or nil,
+		cancel_text or nil,
+		image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
+		context, template
+	) == "ok" then
+		if func then
+			func(true, context)
 		end
-	end)
+		return "ok"
+	else
+		-- user canceled / closed it
+		if func then
+			func(false, context)
+		end
+		return "cancel"
+	end
+
 end
 
 -- positive or 1 return TrueVar || negative or 0 return FalseVar

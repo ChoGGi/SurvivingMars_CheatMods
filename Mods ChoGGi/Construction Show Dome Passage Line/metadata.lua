@@ -9,9 +9,9 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"title", "Construction: Show Dome Passage Line v0.9",
 	"title", "Construction Show Dome Passage Line",
-	"version", 9,
-	"version_major", 0,
-	"version_minor", 9,
+	"version", 10,
+	"version_major", 1,
+	"version_minor", 0,
 	"saved", 0,
 	"id", "ChoGGi_ConstructionShowDomePassageLine",
 	"author", "ChoGGi",
@@ -26,10 +26,11 @@ return PlaceObj("ModDef", {
 	"description", [[Shows lines between domes when they're close enough for passages to connect.
 
 I use straight lines, instead of the angled passages, so it isn't perfect.
-There is a chance that you'll be able to connect a dome that's another 1-3 hexes further away (dependant on the angle).
-I chose to use a safe distance that'll always be close enough to connect.
+There is a chance that you'll be able to connect a dome that's another 1-5 hexes further away (dependant on the angle).
 
-Toggle in-game with mod options.
+Mod Options:
+Show during construction: Disable it.
+Adjust Line Length: I use a safe distance, you can increase it if you want (under 5 and corners may trip you up).
 
 This doesn't take into account entrances, corners, or buildings.]],
 })

@@ -3,6 +3,12 @@ DefineClass("ModOptions_ChoGGi_PortableMiner", {
 		"ModOptionsObject",
 	},
 	properties = {
+--~ 		{
+--~ 			default = true,
+--~ 			editor = "bool",
+--~ 			id = "SpawnWasteRock",
+--~ 			name = T(4518, "Waste Rock"),
+--~ 		},
 		{
 			default = true,
 			editor = "bool",

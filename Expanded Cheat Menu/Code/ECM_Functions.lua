@@ -3157,8 +3157,7 @@ do -- PrintToFunc_Add/PrintToFunc_Remove
 		end
 
 		local text_table = {}
-		-- probably a better way to test if it's a class obj, but this works...
-		local cls_obj = type(parent.IsKindOf) == "function"
+		local cls_obj = g_Classes[parent.class]
 
 		-- and replace the func reference
 		parent[name] = function(...)
@@ -3168,6 +3167,7 @@ do -- PrintToFunc_Add/PrintToFunc_Remove
 
 				local varargs = {...}
 				for i = 1, #varargs do
+					local arg = varargs[i]
 					c = c + 1
 					text_table[c] = "arg "
 					c = c + 1
@@ -3175,22 +3175,23 @@ do -- PrintToFunc_Add/PrintToFunc_Remove
 					c = c + 1
 					text_table[c] = ": "
 
-					if cls_obj and i == 1 then
+					-- if it's a cls obj the first arg is always the cls obj
+					if i == 1 and cls_obj then
 						c = c + 1
-						text_table[c] = tostring(varargs[i])
+						text_table[c] = tostring(arg)
 						c = c + 1
 						text_table[c] = " ("
 						c = c + 1
-						text_table[c] = RetName(varargs[i])
+						text_table[c] = RetName(arg)
 						c = c + 1
 						text_table[c] = ")"
 					else
 						c = c + 1
-						text_table[c] = ValueToLuaCode(varargs[i])
+						text_table[c] = ValueToLuaCode(arg)
 					end
 
 					c = c + 1
-					text_table[c] = "\n"
+					text_table[c] = "\n "
 				end
 				print(func_name, "\n", TableConcat(text_table))
 			else

@@ -1,3 +1,8 @@
+v0.5
+Shows individual grids (with some mod options).
+Remaining time for grid storage.
+Mod option to adjust tooltip width.
+
 v0.4
 Water, and other deposits remaining amounts.
 

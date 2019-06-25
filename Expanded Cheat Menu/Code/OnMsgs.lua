@@ -1573,3 +1573,6 @@ end -- do
 --~ end
 -- you can also do a thread and a WaitMsg for DepositsSpawned or Resume
 -- or MessageBoxOpened/MessageBoxClosed (the welcome msg)
+-- even later
+--~ function OnMsg.DepositsSpawned()
+--~ end

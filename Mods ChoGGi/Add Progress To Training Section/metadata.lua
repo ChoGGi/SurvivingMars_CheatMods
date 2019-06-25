@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Add Progress To Training Section",
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_AddProgressToTrainingSection",
@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"description", [[Edits tooltip to show list of students and their training progress.
 Works for University, Sanatorium, and School.
 
-Schools show the graduation age and the percent needed to get traits?.
+Schools show the graduation age / the percent needed to get traits.
 
 Requested by Tassyr.]],
 })

@@ -862,8 +862,8 @@ function OnMsg.ClassesBuilt()
 
 		SaveOrigFunc("ConstructionController", "UpdateCursor")
 		function ConstructionController:UpdateCursor(pos, force, ...)
-			if UserSettings.Building_dome_spot then
 
+			if self.template_obj.dome_spot == "Spire" and UserSettings.Building_dome_spot then
 				if IsValid(self.cursor_obj) then
 					self.spireless_dome = false
 					local hex_world_pos = HexGetNearestCenter(pos)

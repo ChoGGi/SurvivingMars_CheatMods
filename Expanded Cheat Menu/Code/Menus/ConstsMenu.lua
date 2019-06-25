@@ -58,8 +58,10 @@ for i = 1, #ConstDef do
 
 	for j = 1, #def do
 		local const = def[j]
-		local name = const.name and const.name ~= "" and Translate(const.name) or const.id
-		local desc = const.help and const.help ~= "" and Translate(const.help) or name
+		local name = const.name
+		name = name and name ~= "" and (const.id .. " " .. Translate(name)) or const.id
+		local desc = const.help
+		desc = help and help ~= "" and Translate(help) or name
 
 		c = c + 1
 		Actions[c] = {ActionName = name,

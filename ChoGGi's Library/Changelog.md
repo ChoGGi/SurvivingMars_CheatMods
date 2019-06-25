@@ -1,7 +1,9 @@
 ## Library Changelog
 
 ## v7.1 (Unreleased)
-- RetName uses class names instead of "Anomaly".
+- RetName:
+- > Uses class names instead of "Anomaly".
+- > Added some more tables.
 
 ## v7.0 (June 18 2019)
 - Added Update Text func/button to MultiLineText.

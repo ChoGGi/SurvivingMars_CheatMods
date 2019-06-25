@@ -1,45 +1,121 @@
-local MapGet = MapGet
+-- See LICENSE for terms
 
---~ depth_layer: 2 = core, 1 = underground
+local options
+local mod_UndergroundDeposits
+local mod_MaxGrade
 
--- change to false to have it work on all SubsurfaceDeposits
-local apply_to_core_only = true
+local MaxFillAll
 
-local function LargerDeposits(objs)
-	local max = 500000 * const.ResourceScale
+-- fired when settings are changed and new/load
+local function ModOptions()
+	mod_UndergroundDeposits = options.UndergroundDeposits
+	mod_MaxGrade = options.MaxGrade
 
+	if GameState.gameplay then
+		MaxFillAll()
+	end
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= "ChoGGi_DeepResourcesNeverRunOut" then
+		return
+	end
+
+	ModOptions()
+end
+
+
+-- depth_layer: 2 = core, 1 = underground
+
+local max = 500000 * const.ResourceScale
+
+local function MaxDeposits(objs)
 	for i = 1, #objs do
-		local o = objs[i]
-		if apply_to_core_only then
-			if o.depth_layer == 2 then
-				o.max_amount = max
-				o.grade = "Very High"
+		local obj = objs[i]
+		if obj.depth_layer == 1 and mod_UndergroundDeposits then
+			obj.max_amount = max
+			if mod_MaxGrade then
+				obj.grade = "Very High"
 			end
-		else
-			o.max_amount = max
-			o.grade = "Very High"
+
+		elseif obj.depth_layer == 2 then
+			obj.max_amount = max
+			if mod_MaxGrade then
+				obj.grade = "Very High"
+			end
 		end
 	end
 end
 
 local function RefillAllDeposits(objs)
 	for i = 1, #objs do
-		local o = objs[i]
-		if apply_to_core_only then
-			if o.depth_layer == 1 then
-				o:CheatRefill()
-			end
-		else
-			o:CheatRefill()
+		local obj = objs[i]
+
+		if obj.depth_layer == 1 and mod_UndergroundDeposits then
+			obj:CheatRefill()
+
+		elseif obj.depth_layer == 2 then
+			obj:CheatRefill()
 		end
+
 	end
 end
 
-function OnMsg.LoadGame()
-	local objs = MapGet("map", "SubsurfaceDepositWater", "SubsurfaceDepositMetals", "SubsurfaceDepositPreciousMetals")
-	LargerDeposits(objs)
-	RefillAllDeposits(objs)
+-- needed
+if not TerrainDeposit.CheatRefill then
+	function TerrainDeposit:CheatRefill()
+		self.amount = self.max_amount
+	end
 end
+
+MaxFillAll = function()
+	local UICity = UICity
+	MaxDeposits(UICity.labels.SubsurfaceDeposit or "")
+	RefillAllDeposits(UICity.labels.SubsurfaceDeposit or "")
+	MaxDeposits(UICity.labels.TerrainDeposit or "")
+	RefillAllDeposits(UICity.labels.TerrainDeposit or "")
+end
+
+-- saved games
+OnMsg.LoadGame = MaxFillAll
+-- new sol
 function OnMsg.NewDay()
-	RefillAllDeposits(MapGet("map", "SubsurfaceDepositWater", "SubsurfaceDepositMetals", "SubsurfaceDepositPreciousMetals"))
+	RefillAllDeposits(UICity.labels.SubsurfaceDeposit or "")
+	RefillAllDeposits(UICity.labels.TerrainDeposit or "")
+end
+
+--
+local function DepositRevealed(obj)
+	if obj.depth_layer == 1 and mod_UndergroundDeposits then
+		obj.max_amount = max
+		if mod_MaxGrade then
+			obj.grade = "Very High"
+		end
+		obj:CheatRefill()
+
+	elseif obj.depth_layer == 2 then
+		obj.max_amount = max
+		if mod_MaxGrade then
+			obj.grade = "Very High"
+		end
+		obj:CheatRefill()
+	end
+end
+
+OnMsg.WaterDepositRevealed = DepositRevealed
+OnMsg.SubsurfaceDepositRevealed = DepositRevealed
+
+-- needed till they add a Msg like above
+local orig_SpawnDeposit = TerrainDepositMarker.SpawnDeposit
+function TerrainDepositMarker.SpawnDeposit(...)
+	local deposit = orig_SpawnDeposit(...)
+	DepositRevealed(deposit)
+	return deposit
 end

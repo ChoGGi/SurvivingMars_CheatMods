@@ -5,12 +5,20 @@ local MulDivRound = MulDivRound
 local _InternalTranslate = _InternalTranslate
 local T = T
 
-local function GetPoints(self, text, skip)
+local function UnitPoints(unit, self)
+	unit.training_points = unit.training_points or {}
+	return unit.training_points[self.training_type] or 0
+end
+
+local function GetPoints(self, text, skip, school)
+	local MinAge_Adult = Colonist.MinAge_Adult
+
 	local c = #text
 	if not skip then
 		c = c + 1
 		text[c] = "<newline><left>"
 	end
+
 	for i = 1, #self.visitors do
 		local shift = self.visitors[i]
 		c = c + 1
@@ -18,13 +26,29 @@ local function GetPoints(self, text, skip)
 
 		for j = 1, #shift do
 			local unit = shift[j]
-			unit.training_points = unit.training_points or {}
-			local units_points = unit.training_points[self.training_type] or 0
+			local unit_points = UnitPoints(unit, self)
 
-			c = c + 1
-			text[c] = _InternalTranslate(T(unit:GetDisplayName()))
-				.. _InternalTranslate("<right>")
-				.. MulDivRound(units_points, 100, self.evaluation_points) .. "%"
+			if school then
+				c = c + 1
+				text[c] = _InternalTranslate(T(unit:GetDisplayName()) .. "<right>"
+					.. T{0, "<str1> <percent(number1)>, <str2> <percent(number2)>",
+						str1 = T(4779, "Adult"),
+						number1 = MulDivRound(
+							unit.age or 0,
+							100,
+							unit.MinAge_Adult or MinAge_Adult
+						),
+						-- 150 is from function School:OnTrainingCompleted(unit)
+						str2 = T(9828, "Required"),
+						number2 = MulDivRound(unit_points, 100, 150),
+				})
+			else
+				c = c + 1
+				text[c] = _InternalTranslate(T(unit:GetDisplayName()) .. "<right>"
+					.. T{0, "<percent(number)>",
+						number = MulDivRound(unit_points, 100, self.evaluation_points),
+				})
+			end
 		end
 	end
 	return table_concat(text, "<newline><left>")
@@ -36,38 +60,23 @@ function MartianUniversity:GetTrainedRollover(...)
 	return GetPoints(self, text)
 end
 
-function Sanatorium:GetTrainedRollover()
+local orig_Sanatorium_GetTrainedRollover = Sanatorium.GetTrainedRollover
+function Sanatorium:GetTrainedRollover(...)
+	-- just in case the devs add rollovers to them
+	if orig_Sanatorium_GetTrainedRollover then
+		local text = {orig_Sanatorium_GetTrainedRollover(self, ...)}
+		return GetPoints(self, text)
+	end
 	return GetPoints(self, {}, true)
 end
 
-function School:GetTrainedRollover()
-	local text = {}
-	local c = 0
-
-	for i = 1, #self.visitors do
-		local shift = self.visitors[i]
-		c = c + 1
-		text[c] = "<newline><left><color 119 212 255>Shift " .. i .. "</color>"
-
-		for j = 1, #shift do
-			local unit = shift[j]
-
-			unit.training_points = unit.training_points or {}
-			local units_points = unit.training_points[self.training_type] or 0
-
-			c = c + 1
-			text[c] = _InternalTranslate(T(unit:GetDisplayName()))
-				.. _InternalTranslate("<right>")
-				.. MulDivRound(
-					unit.age or 0,
-					100,
-					unit.MinAge_Adult or Colonist.MinAge_Adult
-				)
-				-- 150 is from function School:OnTrainingCompleted(unit)
-				.. "% (" .. MulDivRound(units_points, 100, 150) .. "%)"
-		end
+local orig_School_GetTrainedRollover = School.GetTrainedRollover
+function School:GetTrainedRollover(...)
+	if orig_School_GetTrainedRollover then
+		local text = {orig_School_GetTrainedRollover(self, ...)}
+		return GetPoints(self, text)
 	end
-	return table_concat(text, "<newline><left>")
+	return GetPoints(self, {}, true, true)
 end
 
 -- add a rollover to the lifetime area
@@ -91,3 +100,4 @@ function OnMsg.ClassesPostprocess()
 		end
 	end
 end
+

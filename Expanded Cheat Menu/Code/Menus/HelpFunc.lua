@@ -50,7 +50,7 @@ do -- ModUpload
 	local mod, mod_path, upload_image, diff_author, result, choices_len, uploading
 	local result_msg, result_title, upload_msg = {}, {}, {}
 
-	local function UploadMod(answer,batch)
+	local function UploadMod(answer, batch)
 		if not answer then
 			return
 		end
@@ -297,6 +297,8 @@ do -- ModUpload
 
 			choices_len = #choices
 
+			local ask_batch
+
 			uploading = true
 			for i = 1, choices_len do
 				choice = choices[i]
@@ -393,12 +395,48 @@ do -- ModUpload
 							nil,
 							upload_image
 						)
+					elseif ask_batch then
+						-- no more need to ask
+						UploadMod(true, "batch")
 					else
-						UploadMod(true,"batch")
+						-- always ask for first mod when batching
+						local function CallBackFunc_BQ(answer)
+							if answer then
+								UploadMod(true, "batch")
+							else
+								DeleteThread(CurrentThread())
+							end
+						end
+						-- build list of titles for msg
+						local titles = {}
+						local titles_c = 0
+						for i = 1, choices_len do
+							choice = choices[i]
+							mod = choice.mod
+							if mod then
+								titles_c = titles_c + 1
+								titles[titles_c] = mod.title
+									-- remove blacklist warning from title (added in helpermod)
+									:gsub(" %(Warning%)$", "")
+							end
+						end
+						-- and show msg
+						ChoGGi.ComFuncs.QuestionBox(
+							Strings[302535920000221--[[Batch Upload mods?]]] .. "\n\n"
+								.. TableConcat(titles, ", "),
+							CallBackFunc_BQ,
+							Strings[302535920000221--[[Batch Upload!]]],
+							nil,
+							nil,
+							upload_image,
+							nil, nil, nil,
+							CurrentThread()
+						)
+						ask_batch = true
 					end
-				end
 
-			end
+				end -- if mod
+			end -- for
 
 			-- QuestionBox creates a thread, so we set this to false in UploadMod for it
 			if choices_len > 1 then

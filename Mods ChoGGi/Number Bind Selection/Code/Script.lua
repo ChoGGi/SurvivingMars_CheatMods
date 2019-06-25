@@ -2,10 +2,12 @@
 
 local options
 local mod_SelectView
+local mod_ShowCentre
 
 -- fired when settings are changed and new/load
 local function ModOptions()
 	mod_SelectView = options.SelectView
+	mod_ShowCentre = options.ShowCentre
 end
 
 -- load default/saved settings
@@ -113,6 +115,10 @@ local function ActivateSelection(action)
 		CreateRealTimeThread(function()
 			WaitMsg("OnRender")
 			ViewAndSelectObject(Selection[1])
+			WaitMsg("OnRender")
+			if mod_ShowCentre then
+				ChoGGi.ComFuncs.Circle(Selection[1]:GetPos(), 250, nil, 1000)
+			end
 		end)
 	end
 end

@@ -1,3 +1,6 @@
+v0.4
+Cleaned up code a bit, and added some text to school.
+
 v0.3
 School now shows the percent needed to get traits from the school.
 

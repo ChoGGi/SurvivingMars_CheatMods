@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Deep Resources Never Run Out",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"saved", 0,
 	"id", "ChoGGi_DeepResourcesNeverRunOut",
 	"author", "ChoGGi",
@@ -13,9 +13,15 @@ return PlaceObj("ModDef", {
 	},
 	"image", "Preview.png",
 	"lua_revision", 245618,
-	"description", [[Deep resources amounts are all set to 500k and get refilled every new Sol.
+	"has_options", true,
+	"TagGameplay", true,
+	"description", [[Deep resources amounts are all set to 500k and get refilled every new Sol (also kicks in when a deposit is revealed).
 
-Change depth_layer to 1 for underground deposits (or just remove the if for both)
+Mod Options:
+Do the same for regular underground deposits.
+Set grade to very high.
+
+Deposits will be refreshed when you apply mod options (if needed).
 
 Requested by Mephane
 https://steamcommunity.com/workshop/discussions/18446744073709551615/3211505894135785138/]],

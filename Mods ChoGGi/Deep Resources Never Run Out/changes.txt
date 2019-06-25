@@ -1,2 +1,5 @@
+v0.3
+Works for new games, and as soon as a deposit is revealed.
+
 v0.2
 Bug fix (thanks Wizu).
