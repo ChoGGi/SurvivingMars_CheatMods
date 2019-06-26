@@ -164,13 +164,12 @@ local storage_list = {
 }
 local storage_list_c = #storage_list
 
-local function AddBuilding(id, obj)
+local function AddBuilding(id, obj, obj_ct, cls)
 	-- if the template doesn't have the prop, check the class obj
 	local template_id = obj.template_class
 	if template_id == "" then
 		template_id = obj.template_name
 	end
-	local cls = g_Classes[template_id]
 
 	-- first try to get number from building template (for services like parks)
 	local found
@@ -179,6 +178,7 @@ local function AddBuilding(id, obj)
 		local value = obj[prop]
 		if value and value > 0 then
 			AddUpgrades(obj, id, prop, value)
+			AddUpgrades(obj_ct, id, prop, value)
 			BumpCount(id)
 			break
 		-- check the cls obj
@@ -186,6 +186,7 @@ local function AddBuilding(id, obj)
 			value = cls[prop] or cls:GetDefaultPropertyValue(prop)
 			if value and value > 0 then
 				AddUpgrades(obj, id, prop, value)
+				AddUpgrades(obj_ct, id, prop, value)
 				BumpCount(id)
 				break
 			end
@@ -194,21 +195,22 @@ local function AddBuilding(id, obj)
 
 end
 
-function OnMsg.ClassesPostprocess()
-	-- this'll fire more than once
+function OnMsg.ModsReloaded()
 	table.iclear(upgrade_list)
 	upgrade_list_c = 0
 
 	local g_Classes = g_Classes
+	local ct = ClassTemplates.Building
+
 	local BuildingTemplates = BuildingTemplates
 	for id, obj in pairs(BuildingTemplates) do
 		if custom_ids[id] then
-			AddBuilding(id, obj)
+			AddBuilding(id, obj, ct[id], g_Classes[id])
 		elseif obj.group == "Dome Services" or obj.group == "Decorations"
 			or obj.group == "Habitats" or obj.group == "Dome Spires"
 --~ 			or obj.group == "MechanizedDepots" or obj.group == "Depots" or obj.group == "Storages"
 		then
-			AddBuilding(id, obj)
+			AddBuilding(id, obj, ct[id], g_Classes[id])
 		end
 	end
 end

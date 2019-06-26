@@ -5,6 +5,8 @@
 - Examine>Child checkbox: Examine all objs in a single child dlg.
 - Added Const ids to Cheats>Consts.
 - Mod Upload now asks when doing batch upload.
+- Moved Capacity to Buildings.
+- Moved School/Uni/San to Training Buildings.
 - Examine:
 - > Clear Button works with lines and other stuff added.
 - > Some toolbar buttons showed up at the wrong time.

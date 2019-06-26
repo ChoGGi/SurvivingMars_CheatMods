@@ -1,38 +1,63 @@
 -- See LICENSE for terms
 
-local orig_GetSpecialistEntity = GetSpecialistEntity
 local ColonistClasses = ColonistClasses
+local function GetSpec(specialist)
+	local spec = ColonistClasses[specialist or "none"]
+	if not spec or spec == "" then
+		return "Colonist"
+	end
+	return spec
+end
 
+local orig_GetSpecialistEntity = GetSpecialistEntity
 function GetSpecialistEntity(specialist, gender, race, age_trait, traits, ...)
 	if not (specialist ~= "none" and traits and traits.Android) then
 		return orig_GetSpecialistEntity(specialist, gender, race, age_trait, traits, ...)
 	end
-	local spec = ColonistClasses[specialist or "none"]
-	if not spec or spec == "" then
-		spec = "Colonist"
-	end
 
-	-- there's just the gender icons
+	local spec = GetSpec(specialist)
+	-- "gender" icons
 	local infopanel_icon = "UI/Icons/Colonists/IP/IP_Unit_" .. gender .. "_An_Adult_01.tga"
 	local pin_icon = "UI/Icons/Colonists/Pin/Unit_" .. gender .. "_An_Adult_01.tga"
-	-- but they did add entities
+	-- and models
 	local entity = "Unit_" .. spec .. "_" .. gender .. "_An_Adult_01"
 
 	return entity, infopanel_icon, pin_icon
 end
 
+
+local orig_GetSpecializationIcons = Colonist.GetSpecializationIcons
+function Colonist:GetSpecializationIcons(...)
+	if not (self.specialist ~= "none" and self.traits and self.traits.Android) then
+		return orig_GetSpecializationIcons(self, ...)
+	end
+
+	local spec = GetSpec(self.specialist)
+	-- pinned and workplace icons
+	return "UI/Icons/Colonists/IP/IP_" .. spec .. "_" .. self.entity_gender .. ".tga",
+		"UI/Icons/Colonists/Pin/" .. spec .. "_" .. self.entity_gender .. ".tga"
+end
+
+
 -- do we update on load?
 function OnMsg.LoadGame()
-	if UICity.ChoGGi_AndroidSpecUniforms or not IsTechResearched("ThePositronicBrain") then
+	if not IsTechResearched("ThePositronicBrain") then
 		return
 	end
 
-	local objs = UICity.labels.Colonist or ""
-	for i = 1, #objs do
-		local obj = objs[i]
-		if obj.specialist ~= "none" and obj.traits and obj.traits.Android and obj.entity:find("Colonist") then
-			obj:ChooseEntity()
+	-- _2 so we change pin/ip icons on existing saves with v0.1 of mod
+	if not UICity.ChoGGi_AndroidSpecUniforms_2 then
+		local objs = UICity.labels.Colonist or ""
+		for i = 1, #objs do
+			local obj = objs[i]
+			if obj.specialist ~= "none" and obj.traits and obj.traits.Android
+				and (obj.entity:find("Colonist") or not obj.pin_specialization_icon
+					or obj.ip_specialization_icon == ""
+				)
+			then
+				obj:ChooseEntity()
+			end
 		end
+		UICity.ChoGGi_AndroidSpecUniforms_2 = true
 	end
-	UICity.ChoGGi_AndroidSpecUniforms = true
 end

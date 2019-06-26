@@ -66,19 +66,18 @@ This doesn't apply to sponsor limited ones; see Toggles\%s."]]]:format(Strings[3
 }
 
 -- menu
-local SandS = Translate(5245--[[Sanatoriums]]) .. " & " .. Translate(5248--[[Schools]])
 c = c + 1
-Actions[c] = {ActionName = SandS,
+Actions[c] = {ActionName = Translate(5443--[[Training Buildings]]),
 	ActionMenubar = "ECM.ECM.Buildings",
-	ActionId = ".Sanatoriums & Schools",
+	ActionId = ".Training Buildings",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
-	ActionSortKey = "1Sanatoriums & Schools",
+	ActionSortKey = "1Training Buildings",
 }
 
 c = c + 1
 Actions[c] = {ActionName = Translate(5245--[[Sanatoriums]]) .. " " .. Strings[302535920000198--[[Cure All]]],
-	ActionMenubar = "ECM.ECM.Buildings.Sanatoriums & Schools",
+	ActionMenubar = "ECM.ECM.Buildings.Training Buildings",
 	ActionId = ".Sanatoriums Cure All",
 	ActionIcon = icon,
 	RolloverText = function()
@@ -92,7 +91,7 @@ Actions[c] = {ActionName = Translate(5245--[[Sanatoriums]]) .. " " .. Strings[30
 
 c = c + 1
 Actions[c] = {ActionName = Translate(5248--[[Schools]]) .. " " .. Strings[302535920000200--[[Train All]]],
-	ActionMenubar = "ECM.ECM.Buildings.Sanatoriums & Schools",
+	ActionMenubar = "ECM.ECM.Buildings.Training Buildings",
 	ActionId = ".Schools Train All",
 	ActionIcon = icon,
 	RolloverText = function()
@@ -104,9 +103,11 @@ Actions[c] = {ActionName = Translate(5248--[[Schools]]) .. " " .. Strings[302535
 	OnAction = ChoGGi.MenuFuncs.SchoolTrainAll_Toggle,
 }
 
+local SandS = Translate(5245--[[Sanatoriums]]) .. " & " .. Translate(5248--[[Schools]])
+
 c = c + 1
 Actions[c] = {ActionName = SandS .. ": " .. Strings[302535920000202--[[Show All Traits]]],
-	ActionMenubar = "ECM.ECM.Buildings.Sanatoriums & Schools",
+	ActionMenubar = "ECM.ECM.Buildings.Training Buildings",
 	ActionId = ".Sanatoriums & Schools: Show All Traits",
 	ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 	RolloverText = function()
@@ -120,7 +121,7 @@ Actions[c] = {ActionName = SandS .. ": " .. Strings[302535920000202--[[Show All 
 
 c = c + 1
 Actions[c] = {ActionName = SandS .. ": " .. Strings[302535920000204--[[Show Full List]]],
-	ActionMenubar = "ECM.ECM.Buildings.Sanatoriums & Schools",
+	ActionMenubar = "ECM.ECM.Buildings.Training Buildings",
 	ActionId = ".Sanatoriums & Schools: Show Full List",
 	ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 	RolloverText = function()
@@ -130,6 +131,21 @@ Actions[c] = {ActionName = SandS .. ": " .. Strings[302535920000204--[[Show Full
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SanatoriumSchoolShowAll,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920001344--[[Points To Train]]],
+	ActionMenubar = "ECM.ECM.Buildings.Training Buildings",
+	ActionId = ".Points To Train",
+	ActionIcon = "CommonAssets/UI/Menu/ramp.tga",
+	RolloverText = function()
+		local obj = SelectedObj
+		return obj and SettingState(
+			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".evaluation_points",
+			Strings[302535920001345--[[How many points are needed to finish training.]]]
+		) or Strings[302535920001345]
+	end,
+	OnAction = ChoGGi.MenuFuncs.SetTrainingPoints,
 }
 
 -- menu
@@ -329,21 +345,6 @@ Health change, Sanity change, Service Comfort, Comfort increase."]]]
 		) or Strings[302535920001115]
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetServiceBuildingStats,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920001344--[[Points To Train]]],
-	ActionMenubar = "ECM.ECM.Buildings.Buildings",
-	ActionId = ".Points To Train",
-	ActionIcon = "CommonAssets/UI/Menu/ramp.tga",
-	RolloverText = function()
-		local obj = SelectedObj
-		return obj and SettingState(
-			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".evaluation_points",
-			Strings[302535920001345--[[How many points are needed to finish training.]]]
-		) or Strings[302535920001345]
-	end,
-	OnAction = ChoGGi.MenuFuncs.SetTrainingPoints,
 }
 
 -- menu

@@ -5,146 +5,146 @@ Cheats.Anomalies>Anomaly Scanning: Scan all or certain types of anomalies.
 Cheats.Anomalies>Spawn POIs: Adds POI locations to Planetary View.
 Cheats.Anomalies>Spawn Planetary Anomalies: Adds Anomaly locations to Planetary View.
 Cheats.Anomalies>Unlock Anomaly BreakThroughs: Unlock any breakthroughs in anomalies (not planetary ones).
-Cheats.Consts.Buildings>Building dust accumulation per Sol: Dust accumulation per Sol
-Cheats.Consts.Buildings>Building dust max percentage per Sol: Maximum dust accumulated per Sol
-Cheats.Consts.Buildings>Building dust min per Sol: Minimum dust accumulated per Sol
-Cheats.Consts.Buildings>Building dust modifier: Modifier applied to dust accumulated by buildings
-Cheats.Consts.Buildings>Building maintenance points modifier: Modifier applied to maintenance points accumulated by buildings
-Cheats.Consts.Buildings>Command center max Drones: Maximum number of Drones a Drone Hub can control
-Cheats.Consts.Buildings>Construction Nanites Time Delta: How often the construction nanite tech picks up resources from nearby storages.
-Cheats.Consts.Buildings>Crop fail threshold: Average performance of Farms required for Crops to succeed
-Cheats.Consts.Buildings>Large building hexes: Buildings with this many or more hexes are considered 'large' (affects Dust Devils' paths and dust accumulation during them)
-Cheats.Consts.Buildings>Pipes pillar spacing: When building pipes, every 'PipesPillarSpacing'-th pipe will have a support pillar underneath it
-Cheats.Consts.Buildings>Recharge station time mod: Time multiplier only when recharging from a station
+Cheats.Consts.Buildings>BuildingDailyDustAccumulation Building dust accumulation per Sol: Dust accumulation per Sol
+Cheats.Consts.Buildings>BuildingDailyDustMaxPercents Building dust max percentage per Sol: Maximum dust accumulated per Sol
+Cheats.Consts.Buildings>BuildingDailyDustMin Building dust min per Sol: Minimum dust accumulated per Sol
+Cheats.Consts.Buildings>BuildingDustModifier Building dust modifier: Modifier applied to dust accumulated by buildings
+Cheats.Consts.Buildings>BuildingMaintenancePointsModifier Building maintenance points modifier: Modifier applied to maintenance points accumulated by buildings
+Cheats.Consts.Buildings>CommandCenterMaxDrones Command center max Drones: Maximum number of Drones a Drone Hub can control
+Cheats.Consts.Buildings>ConstructionNanitesTimeDelta Construction Nanites Time Delta: How often the construction nanite tech picks up resources from nearby storages.
+Cheats.Consts.Buildings>CropFailThreshold Crop fail threshold: Average performance of Farms required for Crops to succeed
+Cheats.Consts.Buildings>LargeBuildingHexes Large building hexes: Buildings with this many or more hexes are considered 'large' (affects Dust Devils' paths and dust accumulation during them)
+Cheats.Consts.Buildings>PipesPillarSpacing Pipes pillar spacing: When building pipes, every 'PipesPillarSpacing'-th pipe will have a support pillar underneath it
+Cheats.Consts.Buildings>RechargeStationTimeMod Recharge station time mod: Time multiplier only when recharging from a station
 Cheats.Consts.Camera>DefaultFovX_16_9: DefaultFovX_16_9
 Cheats.Consts.Camera>OverviewFovX_16_9: OverviewFovX_16_9
 Cheats.Consts.Camera>OverviewFovX_4_3: OverviewFovX_4_3
-Cheats.Consts.Colonist>'Other' sex chance: The chance to generate a Colonist with 'Other' sex
-Cheats.Consts.Colonist>Applicants pool starting size: Applicants pool starting size
-Cheats.Consts.Colonist>Arrival chance (Botanist): Arrival chance (Botanist)
-Cheats.Consts.Colonist>Arrival chance (Engineer): Arrival chance (Engineer)
-Cheats.Consts.Colonist>Arrival chance (Geologist): Arrival chance (Geologist)
-Cheats.Consts.Colonist>Arrival chance (Medic): Arrival chance (Medic)
-Cheats.Consts.Colonist>Arrival chance (Officer): Arrival chance (Officer)
-Cheats.Consts.Colonist>Arrival chance (Scientist): Arrival chance (Scientist)
-Cheats.Consts.Colonist>Chance to get a Perk: Colonist's chance to get a Perk when grown if they’ve visited a playground as a child
-Cheats.Consts.Colonist>Cloning points: Cloning points at full performance per hour
-Cheats.Consts.Colonist>Comfort penalty when failing to satisfy a need via a visit: Comfort penalty when failing to satisfy a need via a visit
-Cheats.Consts.Colonist>Connected dome performance penalty: Performance penalty for colonists working in another connected dome
-Cheats.Consts.Colonist>Food used per visit: Food eaten per visit to building, Farm or stockpile
-Cheats.Consts.Colonist>ForcedByUserLockTimeout: Lock time to Workplace, Residence, Dome selected by user
-Cheats.Consts.Colonist>FundingFromTourist: Funding received from each tourist when landing on Mars (in M)
-Cheats.Consts.Colonist>Non-specialist performance penalty: Performance penalty for non-Specialists assigned to a specialized work position
-Cheats.Consts.Colonist>ProjectMorpheusPositiveTraitChance: Chance to get positive trait when Resting and ProjectMorpheus is active
-Cheats.Consts.Colonist>Specialist chance multiplier: Multiplier for arrival chances of all Specialist types
-Cheats.Consts.Colonist>Threshold of accumulated stat points to trigger birth of a new Colonist: Threshold of accumulated stat points to trigger birth of a new Colonist
-Cheats.Consts.Colonist>Time before starting to starve: Time before starting to starve
-Cheats.Consts.Colonist>TouristSolsOnMars: The number of sols that tourists stay on Mars.
-Cheats.Consts.Cost>Cost modifier (Concrete): All building construction costs in Concrete will be modified by this percent
-Cheats.Consts.Cost>Cost modifier (Electronics): All building construction costs in Electronics will be modified by this percent
-Cheats.Consts.Cost>Cost modifier (Machine Parts): All building construction costs in Machine Parts will be modified by this percent
-Cheats.Consts.Cost>Cost modifier (Metals): All building construction costs in Metals will be modified by this percent
-Cheats.Consts.Cost>Cost modifier (Polymers): All building construction costs in Polymers will be modified by this percent
-Cheats.Consts.Cost>Cost modifier (Rare Metals): All building construction costs in Rare Metals will be modified by this percent
-Cheats.Consts.Cost>Dome cost modifier (Concrete): All Dome construction costs in in Concrete will be modified by this percent
-Cheats.Consts.Cost>Dome cost modifier (Electronics): All Dome construction costs in in Electronics will be modified by this percent
-Cheats.Consts.Cost>Dome cost modifier (Machine Parts): All Dome construction costs in in Machine Parts will be modified by this percent
-Cheats.Consts.Cost>Dome cost modifier (Metals): All Dome construction costs in in Metals will be modified by this percent
-Cheats.Consts.Cost>Dome cost modifier (Polymers): All Dome construction costs in in Polymers will be modified by this percent
-Cheats.Consts.Cost>Dome cost modifier (Rare Metals): All Dome construction costs in in Rare Metals will be modified by this percent
-Cheats.Consts.Cost>Fracture Repair Cost: The number of polymers required to fix a single dome/passage fracture
-Cheats.Consts.Cost>Rebuild cost modifier: All building rebuild construction costs will be modified by this percent
-Cheats.Consts.Cost>Rocket Price: Rocket Price
+Cheats.Consts.Colonist>ApplicantsPoolStartingSize Applicants pool starting size: Applicants pool starting size
+Cheats.Consts.Colonist>BirthThreshold Threshold of accumulated stat points to trigger birth of a new Colonist: BirthThreshold Threshold of accumulated stat points to trigger birth of a new Colonist
+Cheats.Consts.Colonist>ForcedByUserLockTimeout ForcedByUserLockTimeout: Lock time to Workplace, Residence, Dome selected by user
+Cheats.Consts.Colonist>FundingFromTourist FundingFromTourist: Funding received from each tourist when landing on Mars (in M)
+Cheats.Consts.Colonist>NonHomeDomePerformancePenalty Connected dome performance penalty: Performance penalty for colonists working in another connected dome
+Cheats.Consts.Colonist>NonSpecialistPerformancePenalty Non-specialist performance penalty: Performance penalty for non-Specialists assigned to a specialized work position
+Cheats.Consts.Colonist>Other_gender_chance 'Other' sex chance: The chance to generate a Colonist with 'Other' sex
+Cheats.Consts.Colonist>ProjectMorphiousPositiveTraitChance ProjectMorpheusPositiveTraitChance: Chance to get positive trait when Resting and ProjectMorpheus is active
+Cheats.Consts.Colonist>TimeBeforeStarving Time before starting to starve: TimeBeforeStarving Time before starting to starve
+Cheats.Consts.Colonist>TouristSolsOnMars TouristSolsOnMars: The number of sols that tourists stay on Mars.
+Cheats.Consts.Colonist>VisitFailPenalty Comfort penalty when failing to satisfy a need via a visit: VisitFailPenalty Comfort penalty when failing to satisfy a need via a visit
+Cheats.Consts.Colonist>botanist_arrival_chance Arrival chance (Botanist): botanist_arrival_chance Arrival chance (Botanist)
+Cheats.Consts.Colonist>cloning_points Cloning points: Cloning points at full performance per hour
+Cheats.Consts.Colonist>eat_food_per_visit Food used per visit: Food eaten per visit to building, Farm or stockpile
+Cheats.Consts.Colonist>engineer_arrival_chance Arrival chance (Engineer): engineer_arrival_chance Arrival chance (Engineer)
+Cheats.Consts.Colonist>geologist_arrival_chance Arrival chance (Geologist): geologist_arrival_chance Arrival chance (Geologist)
+Cheats.Consts.Colonist>medic_arrival_chance Arrival chance (Medic): medic_arrival_chance Arrival chance (Medic)
+Cheats.Consts.Colonist>positive_playground_chance Chance to get a Perk: Colonist's chance to get a Perk when grown if they’ve visited a playground as a child
+Cheats.Consts.Colonist>scientist_arrival_chance Arrival chance (Scientist): scientist_arrival_chance Arrival chance (Scientist)
+Cheats.Consts.Colonist>security_arrival_chance Arrival chance (Officer): security_arrival_chance Arrival chance (Officer)
+Cheats.Consts.Colonist>specialist_chance_mul Specialist chance multiplier: Multiplier for arrival chances of all Specialist types
+Cheats.Consts.Cost>Concrete_cost_modifier Cost modifier (Concrete): All building construction costs in Concrete will be modified by this percent
+Cheats.Consts.Cost>Concrete_dome_cost_modifier Dome cost modifier (Concrete): All Dome construction costs in in Concrete will be modified by this percent
+Cheats.Consts.Cost>Electronics_cost_modifier Cost modifier (Electronics): All building construction costs in Electronics will be modified by this percent
+Cheats.Consts.Cost>Electronics_dome_cost_modifier Dome cost modifier (Electronics): All Dome construction costs in in Electronics will be modified by this percent
+Cheats.Consts.Cost>MachineParts_cost_modifier Cost modifier (Machine Parts): All building construction costs in Machine Parts will be modified by this percent
+Cheats.Consts.Cost>MachineParts_dome_cost_modifier Dome cost modifier (Machine Parts): All Dome construction costs in in Machine Parts will be modified by this percent
+Cheats.Consts.Cost>Metals_cost_modifier Cost modifier (Metals): All building construction costs in Metals will be modified by this percent
+Cheats.Consts.Cost>Metals_dome_cost_modifier Dome cost modifier (Metals): All Dome construction costs in in Metals will be modified by this percent
+Cheats.Consts.Cost>PolymersPerFracture Fracture Repair Cost: The number of polymers required to fix a single dome/passage fracture
+Cheats.Consts.Cost>Polymers_cost_modifier Cost modifier (Polymers): All building construction costs in Polymers will be modified by this percent
+Cheats.Consts.Cost>Polymers_dome_cost_modifier Dome cost modifier (Polymers): All Dome construction costs in in Polymers will be modified by this percent
+Cheats.Consts.Cost>PreciousMetals_cost_modifier Cost modifier (Rare Metals): All building construction costs in Rare Metals will be modified by this percent
+Cheats.Consts.Cost>PreciousMetals_dome_cost_modifier Dome cost modifier (Rare Metals): All Dome construction costs in in Rare Metals will be modified by this percent
+Cheats.Consts.Cost>RocketPrice Rocket Price: RocketPrice Rocket Price
+Cheats.Consts.Cost>rebuild_cost_modifier Rebuild cost modifier: All building rebuild construction costs will be modified by this percent
 Cheats.Consts.Default>ShockGraceMax: ShockGraceMax
 Cheats.Consts.Default>ShockGraceMin: ShockGraceMin
-Cheats.Consts.Drone>Biorobot Electronics cost: Price for constructing a Biorobot in a Drone Factory
-Cheats.Consts.Drone>Biorobot construction time: Biorobot construction time
-Cheats.Consts.Drone>Drone Clean amount: When cleaning a building Drones generate this many Clean points (per second)
-Cheats.Consts.Drone>Drone Construct amount: Drones generate this many Construct points (per second) when constructing a building
-Cheats.Consts.Drone>Drone Destroy amount: Drones generate this many Destroy points (per second) when destroying a Black Cube
-Cheats.Consts.Drone>Drone Destroy battery usage: Battery usage when Drone is destroying a Black Cube (per second)
-Cheats.Consts.Drone>Drone Electronics cost: Price for constructing a Drone using the Drone Hub
-Cheats.Consts.Drone>Drone Hub order drone range: How far away from the drone hub it would look for factories when ordering drone construction.
-Cheats.Consts.Drone>Drone building Repair amount: Drones generate this many Repair points (per second) when repairing a building
-Cheats.Consts.Drone>Drone building Repair battery usage: Battery usage when Drone is repairing a building (per second)
-Cheats.Consts.Drone>Drone carry battery usage: Battery usage when Drone is moving and carrying a resource (per second)
-Cheats.Consts.Drone>Drone construct battery usage: Battery usage when Drone is constructing a building (per second)
-Cheats.Consts.Drone>Drone construction time: Drone construction time using the Drone Hub
-Cheats.Consts.Drone>Drone emergency power: Drones will go to recharge when looking for work at twice this limit; They will drop what they're doing and go to recharge at this limit
-Cheats.Consts.Drone>Drone gather resource work time: Drones will load resources for this amount of time
-Cheats.Consts.Drone>Drone max dust bonus: Additional dust limit increase (in %) beyond which a dirty Drone will Malfunction
-Cheats.Consts.Drone>Drone move battery usage: Battery usage when Drone is moving (without carrying resources) (per second)
-Cheats.Consts.Drone>Drone recharge time: The time it takes for a Drone to be fully recharged
-Cheats.Consts.Drone>Drone repair anim repetitions: Drone repair time is dictated by the number of repetitions of the Repair animation
-Cheats.Consts.Drone>Drone resource carry amount: Drone resource carry amount
-Cheats.Consts.Drone>Drone supply leak repair time: The amount of time in seconds it takes a Drone to fix a supply leak
-Cheats.Consts.Drone>Drone transform Waste Rock obstruction to stockpile amount: Drones generate 'transform_to_waste_rock' points (per second) when removing Waste Rock obstructions
-Cheats.Consts.Drone>Drone transform Waste Rock obstruction to stockpile battery use: Battery usage when Drone is removing Waste Rock obstructions (per second)
-Cheats.Consts.Drone>Recharging cleans Drones: Drones will be cleaned of dust when being recharged if this value is bigger than 0
-Cheats.Consts.Drone>Time To Work On Landscape Multiplier: The time drones take to work on landscaping is modified by this value.
-Cheats.Consts.Gameplay>Additional Funding (M): Amount of additional Funding (in millions) received periodically from mission sponsor
-Cheats.Consts.Gameplay>Applicant Generation Period: How long it takes to generate a new Applicant in the Applicant Pool
-Cheats.Consts.Gameplay>Applicant Generation Suspended: Determines whether the applicant pool gains new entries.
-Cheats.Consts.Gameplay>Can exploit deep Rare Metals: Deep Rare Metals deposits are exploitable when this is not 0
-Cheats.Consts.Gameplay>Can perform deep scan: Deep scanning is available when this is not 0
-Cheats.Consts.Gameplay>Colonists per Pod: Maximum number of Colonists that can arrive on Mars in a single Pod
-Cheats.Consts.Gameplay>Colonists per Rocket: Maximum number of Colonists that can arrive on Mars in a single Rocket
-Cheats.Consts.Gameplay>CrimeEventDestroyedBuildingsCount: CrimeEvent -  the number of destroyed buildings from single crime event
-Cheats.Consts.Gameplay>CrimeEventSabotageBuildingsCount: CrimeEvent -  the number of sabotaged buildings from single crime event
-Cheats.Consts.Gameplay>Distress call funding threshold amount in millions: Distress call funding threshold amount in millions
-Cheats.Consts.Gameplay>Distress call resource threshold amount: Distress call resource threshold amount
-Cheats.Consts.Gameplay>Exploitable Deep Metals: Deep Metals deposits are exploitable when this is not 0
-Cheats.Consts.Gameplay>Exploitable Deep Water: Deep Water deposits are exploitable when this is not 0
-Cheats.Consts.Gameplay>Food per Rocket Passenger: The amount of Food (unscaled) supplied with each Colonist arrival
-Cheats.Consts.Gameplay>Funding Interval (Sols): Period (in Sols) of additional periodical Funding from mission sponsors
-Cheats.Consts.Gameplay>GameRuleRebelYellProgress: GameRule - RebelYell -  points to add to renegade generation.
-Cheats.Consts.Gameplay>Global Funding gains multiplier: All Funding is multiplied by this percent
-Cheats.Consts.Gameplay>Instant Cables: Cables are built instantly when this is not 0
-Cheats.Consts.Gameplay>Instant Passages: Passages are built instantly and cost nothing when this is not 0
-Cheats.Consts.Gameplay>Instant Pipes: Pipes are built instantly when this is not 0
-Cheats.Consts.Gameplay>Max Game Development Collaboration Loss (%): Max Game Development Collaboration Loss (%)
-Cheats.Consts.Gameplay>Max Research Collaboration Loss (%): Max Research Collaboration Loss (%)
-Cheats.Consts.Gameplay>Maximum Outsource Orders: Maximum Outsource Orders
-Cheats.Consts.Gameplay>Maximum amount of a resource given as aid by a rival AI: Maximum amount of a resource given as aid by a rival AI
-Cheats.Consts.Gameplay>Maximum amount of funding given as aid by a rival AI: Maximum amount of funding given as aid by a rival AI
-Cheats.Consts.Gameplay>Minimum Rival AI resource amount: Rival will not help if resource amount is lower than this number
-Cheats.Consts.Gameplay>Minimum amount of a resource given as aid by a rival AI: Minimum amount of a resource given as aid by a rival AI
-Cheats.Consts.Gameplay>Minimum amount of funding given as aid by a rival AI: Minimum amount of funding given as aid by a rival AI
-Cheats.Consts.Gameplay>Number of sponsor goals: Number of sponsor goals
-Cheats.Consts.Gameplay>Outsource Disabled: Determines whether the player can buy research points via outsourcing.
-Cheats.Consts.Gameplay>Outsource Research Cost (in millions): Outsource Research Cost (in millions)
-Cheats.Consts.Gameplay>Outsource Research Duration: Outsource Research Duration
-Cheats.Consts.Gameplay>Outsource Research Points: Outsource Research Points
-Cheats.Consts.Gameplay>OverpopulatedDome: The number of Homless colonists that Overpopulated the dome.
-Cheats.Consts.Gameplay>Payload Capacity: Maximum payload (in kg) of a resupply Rocket
-Cheats.Consts.Gameplay>Progress Points Per Game: Progress points needed for Game Developer buildings to publish a new game
-Cheats.Consts.Gameplay>Rare Metals Price (M): Amount of Funding (in millions) received by exporting one unit of Rare Metals
-Cheats.Consts.Gameplay>Rival's chance of sending aid when in neutral standing: Rival's chance of sending aid when in neutral standing
-Cheats.Consts.Gameplay>Rival's chance of sending aid when standing is positive: Rival's chance of sending aid when standing is positive
-Cheats.Consts.Gameplay>Rival's standing reduction when not sending aid: Rival's standing reduction when not sending aid
-Cheats.Consts.Gameplay>Rival's standing reduction when sending aid: Rival's standing reduction when sending aid
-Cheats.Consts.Gameplay>Rocket Travel Time (Earth to Mars): Time it takes for a Rocket to travel from Earth to Mars
-Cheats.Consts.Gameplay>Rocket Travel Time (Mars to Earth): Time it takes for a Rocket to travel from Mars to Earth
-Cheats.Consts.Gameplay>Supply Missions Enabled: Determines where supply missions are enabled
-Cheats.Consts.Gameplay>Threshold for RIval AI bad standing: Threshold for RIval AI bad standing
-Cheats.Consts.Gameplay>Threshold for RIval AI good standing: Threshold for RIval AI good standing
-Cheats.Consts.Gameplay>Threshold for RIval AI hostile standing: Threshold for RIval AI hostile standing
-Cheats.Consts.Gameplay>Threshold for RIval AI neutral standing: Threshold for RIval AI neutral standing
-Cheats.Consts.Gameplay>Vegetation Growth Multiplier: Vegetation growth times are modified by this number.
-Cheats.Consts.Gameplay>WasteRock To Concrete Ratio: WasteRock To Concrete Ratio
-Cheats.Consts.Research>Breakthrough Research Speed Mod: Research point multiplier for Breakthrough Research (in %)
-Cheats.Consts.Research>Breakthrough tech cost modifier: Breakthrough tech cost modifier
-Cheats.Consts.Research>Electricity for Research: Excess electrical Power will be converted to research at the rate defined by this value.
-Cheats.Consts.Research>Experimental Research Speed Mod: Research point multiplier for Experimental Research (in %)
-Cheats.Consts.Research>Number of Breakthroughs reserved for Planetary Anomalies: Number of Breakthroughs reserved for Planetary Anomalies
-Cheats.Consts.Research>Research points generated per RC Commander: Research points generated per RC Commander
-Cheats.Consts.Research>Sponsor Research per Sol: Sponsor Funding gained per Sol
-Cheats.Consts.Rover>RC Commander Anomaly scan time: RC Commander Anomaly scanning time (for each layer of depth)
-Cheats.Consts.Rover>RC Commander Drone battery recharge cost: The amount of battery drained from RC Commander when recharging a Drone.
-Cheats.Consts.Rover>RC Commander distance to provoke automatic unsiege: Go To command will automatically cause unsiege if target is further than this distance
-Cheats.Consts.Rover>RC Commander max Drones: Maximum Drones an RC Commander can control
-Cheats.Consts.Rover>RC Commander resource gather time: The time it takes for an RC Commander to transfer 1 resource to a Depot.
-Cheats.Consts.Rover>RC Transport resource gather time: The time it takes the RC Transport to gather 1 resource from a deposit
+Cheats.Consts.Drone>AndroidConstructionTime Biorobot construction time: Biorobot construction time
+Cheats.Consts.Drone>AndroidElectronicsCost Biorobot Electronics cost: Price for constructing a Biorobot in a Drone Factory
+Cheats.Consts.Drone>DroneBuildingRepairAmount Drone building Repair amount: Drones generate this many Repair points (per second) when repairing a building
+Cheats.Consts.Drone>DroneBuildingRepairBatteryUse Drone building Repair battery usage: Battery usage when Drone is repairing a building (per second)
+Cheats.Consts.Drone>DroneCarryBatteryUse Drone carry battery usage: Battery usage when Drone is moving and carrying a resource (per second)
+Cheats.Consts.Drone>DroneCleanAmount Drone Clean amount: When cleaning a building Drones generate this many Clean points (per second)
+Cheats.Consts.Drone>DroneConstructAmount Drone Construct amount: Drones generate this many Construct points (per second) when constructing a building
+Cheats.Consts.Drone>DroneConstructBatteryUse Drone construct battery usage: Battery usage when Drone is constructing a building (per second)
+Cheats.Consts.Drone>DroneConstructionTime Drone construction time: Drone construction time using the Drone Hub
+Cheats.Consts.Drone>DroneDeconstructAmount Drone Destroy amount: Drones generate this many Destroy points (per second) when destroying a Black Cube
+Cheats.Consts.Drone>DroneDeconstructBatteryUse Drone Destroy battery usage: Battery usage when Drone is destroying a Black Cube (per second)
+Cheats.Consts.Drone>DroneElectronicsCost Drone Electronics cost: Price for constructing a Drone using the Drone Hub
+Cheats.Consts.Drone>DroneEmergencyPower Drone emergency power: Drones will go to recharge when looking for work at twice this limit; They will drop what they're doing and go to recharge at this limit
+Cheats.Consts.Drone>DroneGatherResourceWorkTime Drone gather resource work time: Drones will load resources for this amount of time
+Cheats.Consts.Drone>DroneHubOrderDroneRange Drone Hub order drone range: How far away from the drone hub it would look for factories when ordering drone construction.
+Cheats.Consts.Drone>DroneMaxDustBonus Drone max dust bonus: Additional dust limit increase (in %) beyond which a dirty Drone will Malfunction
+Cheats.Consts.Drone>DroneMoveBatteryUse Drone move battery usage: Battery usage when Drone is moving (without carrying resources) (per second)
+Cheats.Consts.Drone>DroneRechargeTime Drone recharge time: The time it takes for a Drone to be fully recharged
+Cheats.Consts.Drone>DroneRepairAnimReps Drone repair anim repetitions: Drone repair time is dictated by the number of repetitions of the Repair animation
+Cheats.Consts.Drone>DroneRepairSupplyLeak Drone supply leak repair time: The amount of time in seconds it takes a Drone to fix a supply leak
+Cheats.Consts.Drone>DroneResourceCarryAmount Drone resource carry amount: DroneResourceCarryAmount Drone resource carry amount
+Cheats.Consts.Drone>DroneTimeToWorkOnLandscapeMultiplier Time To Work On Landscape Multiplier: The time drones take to work on landscaping is modified by this value.
+Cheats.Consts.Drone>DroneTransformWasteRockObstructorToStockpileAmount Drone transform Waste Rock obstruction to stockpile amount: Drones generate 'transform_to_waste_rock' points (per second) when removing Waste Rock obstructions
+Cheats.Consts.Drone>DroneTransformWasteRockObstructorToStockpileBatteryUse Drone transform Waste Rock obstruction to stockpile battery use: Battery usage when Drone is removing Waste Rock obstructions (per second)
+Cheats.Consts.Drone>RechargeCleansDrones Recharging cleans Drones: Drones will be cleaned of dust when being recharged if this value is bigger than 0
+Cheats.Consts.Gameplay>ApplicantGenerationInterval Applicant Generation Period: How long it takes to generate a new Applicant in the Applicant Pool
+Cheats.Consts.Gameplay>ApplicantSuspendGenerate Applicant Generation Suspended: Determines whether the applicant pool gains new entries.
+Cheats.Consts.Gameplay>CargoCapacity Payload Capacity: Maximum payload (in kg) of a resupply Rocket
+Cheats.Consts.Gameplay>CrimeEventDestroyedBuildingsCount CrimeEventDestroyedBuildingsCount: CrimeEvent -  the number of destroyed buildings from single crime event
+Cheats.Consts.Gameplay>CrimeEventSabotageBuildingsCount CrimeEventSabotageBuildingsCount: CrimeEvent -  the number of sabotaged buildings from single crime event
+Cheats.Consts.Gameplay>DeepScanAvailable Can perform deep scan: Deep scanning is available when this is not 0
+Cheats.Consts.Gameplay>DistressCallFundingThreshold Distress call funding threshold amount in millions: DistressCallFundingThreshold Distress call funding threshold amount in millions
+Cheats.Consts.Gameplay>DistressCallMaxFundingAmount Maximum amount of funding given as aid by a rival AI: DistressCallMaxFundingAmount Maximum amount of funding given as aid by a rival AI
+Cheats.Consts.Gameplay>DistressCallMaxResourceAmount Maximum amount of a resource given as aid by a rival AI: DistressCallMaxResourceAmount Maximum amount of a resource given as aid by a rival AI
+Cheats.Consts.Gameplay>DistressCallMinFundingAmount Minimum amount of funding given as aid by a rival AI: DistressCallMinFundingAmount Minimum amount of funding given as aid by a rival AI
+Cheats.Consts.Gameplay>DistressCallMinResourceAmount Minimum amount of a resource given as aid by a rival AI: DistressCallMinResourceAmount Minimum amount of a resource given as aid by a rival AI
+Cheats.Consts.Gameplay>DistressCallResourceThreshold Distress call resource threshold amount: DistressCallResourceThreshold Distress call resource threshold amount
+Cheats.Consts.Gameplay>ExportPricePreciousMetals Rare Metals Price (M): Amount of Funding (in millions) received by exporting one unit of Rare Metals
+Cheats.Consts.Gameplay>FoodPerRocketPassenger Food per Rocket Passenger: The amount of Food (unscaled) supplied with each Colonist arrival
+Cheats.Consts.Gameplay>FundingGainsModifier Global Funding gains multiplier: All Funding is multiplied by this percent
+Cheats.Consts.Gameplay>GameRuleRebelYellProgress GameRuleRebelYellProgress: GameRule - RebelYell -  points to add to renegade generation.
+Cheats.Consts.Gameplay>InstantCables Instant Cables: Cables are built instantly when this is not 0
+Cheats.Consts.Gameplay>InstantPassages Instant Passages: Passages are built instantly and cost nothing when this is not 0
+Cheats.Consts.Gameplay>InstantPipes Instant Pipes: Pipes are built instantly when this is not 0
+Cheats.Consts.Gameplay>IsDeepMetalsExploitable Exploitable Deep Metals: Deep Metals deposits are exploitable when this is not 0
+Cheats.Consts.Gameplay>IsDeepPreciousMetalsExploitable Can exploit deep Rare Metals: Deep Rare Metals deposits are exploitable when this is not 0
+Cheats.Consts.Gameplay>IsDeepWaterExploitable Exploitable Deep Water: Deep Water deposits are exploitable when this is not 0
+Cheats.Consts.Gameplay>MaxColonistsPerPod Colonists per Pod: Maximum number of Colonists that can arrive on Mars in a single Pod
+Cheats.Consts.Gameplay>MaxColonistsPerRocket Colonists per Rocket: Maximum number of Colonists that can arrive on Mars in a single Rocket
+Cheats.Consts.Gameplay>MaxGameDevelopmentCollaborationLoss Max Game Development Collaboration Loss (%): MaxGameDevelopmentCollaborationLoss Max Game Development Collaboration Loss (%)
+Cheats.Consts.Gameplay>MaxResearchCollaborationLoss Max Research Collaboration Loss (%): MaxResearchCollaborationLoss Max Research Collaboration Loss (%)
+Cheats.Consts.Gameplay>OutsourceDisabled Outsource Disabled: Determines whether the player can buy research points via outsourcing.
+Cheats.Consts.Gameplay>OutsourceMaxOrderCount Maximum Outsource Orders: OutsourceMaxOrderCount Maximum Outsource Orders
+Cheats.Consts.Gameplay>OutsourceResearch Outsource Research Points: OutsourceResearch Outsource Research Points
+Cheats.Consts.Gameplay>OutsourceResearchCost Outsource Research Cost (in millions): OutsourceResearchCost Outsource Research Cost (in millions)
+Cheats.Consts.Gameplay>OutsourceResearchTime Outsource Research Duration: OutsourceResearchTime Outsource Research Duration
+Cheats.Consts.Gameplay>OverpopulatedDome OverpopulatedDome: The number of Homless colonists that Overpopulated the dome.
+Cheats.Consts.Gameplay>ProgressPointsPerGame Progress Points Per Game: Progress points needed for Game Developer buildings to publish a new game
+Cheats.Consts.Gameplay>RivalAIMinResourceAmount Minimum Rival AI resource amount: Rival will not help if resource amount is lower than this number
+Cheats.Consts.Gameplay>RivalNeutralStandingHelpChance Rival's chance of sending aid when in neutral standing: RivalNeutralStandingHelpChance Rival's chance of sending aid when in neutral standing
+Cheats.Consts.Gameplay>RivalPositiveStandingHelpChance Rival's chance of sending aid when standing is positive: RivalPositiveStandingHelpChance Rival's chance of sending aid when standing is positive
+Cheats.Consts.Gameplay>RivalStandingBad Threshold for RIval AI bad standing: RivalStandingBad Threshold for RIval AI bad standing
+Cheats.Consts.Gameplay>RivalStandingGood Threshold for RIval AI good standing: RivalStandingGood Threshold for RIval AI good standing
+Cheats.Consts.Gameplay>RivalStandingHelpReduction Rival's standing reduction when sending aid: RivalStandingHelpReduction Rival's standing reduction when sending aid
+Cheats.Consts.Gameplay>RivalStandingHostile Threshold for RIval AI hostile standing: RivalStandingHostile Threshold for RIval AI hostile standing
+Cheats.Consts.Gameplay>RivalStandingNeutral Threshold for RIval AI neutral standing: RivalStandingNeutral Threshold for RIval AI neutral standing
+Cheats.Consts.Gameplay>RivalStandingNoHelpReduction Rival's standing reduction when not sending aid: RivalStandingNoHelpReduction Rival's standing reduction when not sending aid
+Cheats.Consts.Gameplay>SponsorFundingInterval Funding Interval (Sols): Period (in Sols) of additional periodical Funding from mission sponsors
+Cheats.Consts.Gameplay>SponsorFundingPerInterval Additional Funding (M): Amount of additional Funding (in millions) received periodically from mission sponsor
+Cheats.Consts.Gameplay>SponsorGoalsCount Number of sponsor goals: Number of sponsor goals
+Cheats.Consts.Gameplay>SupplyMissionsEnabled Supply Missions Enabled: Determines where supply missions are enabled
+Cheats.Consts.Gameplay>TravelTimeEarthMars Rocket Travel Time (Earth to Mars): Time it takes for a Rocket to travel from Earth to Mars
+Cheats.Consts.Gameplay>TravelTimeMarsEarth Rocket Travel Time (Mars to Earth): Time it takes for a Rocket to travel from Mars to Earth
+Cheats.Consts.Gameplay>VegetationGrowthMultiplier Vegetation Growth Multiplier: Vegetation growth times are modified by this number.
+Cheats.Consts.Gameplay>WasteRockToConcreteRatio WasteRock To Concrete Ratio: WasteRockToConcreteRatio WasteRock To Concrete Ratio
+Cheats.Consts.Research>BreakThroughTechCostMod Breakthrough tech cost modifier: Breakthrough tech cost modifier
+Cheats.Consts.Research>BreakthroughResearchSpeedMod Breakthrough Research Speed Mod: Research point multiplier for Breakthrough Research (in %)
+Cheats.Consts.Research>ElectricityForResearchPoint Electricity for Research: Excess electrical Power will be converted to research at the rate defined by this value.
+Cheats.Consts.Research>ExperimentalResearchSpeedMod Experimental Research Speed Mod: Research point multiplier for Experimental Research (in %)
+Cheats.Consts.Research>ExplorerRoverResearchPoints Research points generated per RC Commander: ExplorerRoverResearchPoints Research points generated per RC Commander
+Cheats.Consts.Research>PlanetaryBreakthroughCount Number of Breakthroughs reserved for Planetary Anomalies: PlanetaryBreakthroughCount Number of Breakthroughs reserved for Planetary Anomalies
+Cheats.Consts.Research>SponsorResearch Sponsor Research per Sol: Sponsor Funding gained per Sol
+Cheats.Consts.Rover>RCRoverDistanceToProvokeAutomaticUnsiege RC Commander distance to provoke automatic unsiege: Go To command will automatically cause unsiege if target is further than this distance
+Cheats.Consts.Rover>RCRoverDroneRechargeCost RC Commander Drone battery recharge cost: The amount of battery drained from RC Commander when recharging a Drone.
+Cheats.Consts.Rover>RCRoverMaxDrones RC Commander max Drones: Maximum Drones an RC Commander can control
+Cheats.Consts.Rover>RCRoverScanAnomalyTime RC Commander Anomaly scan time: RC Commander Anomaly scanning time (for each layer of depth)
+Cheats.Consts.Rover>RCRoverTransferResourceWorkTime RC Commander resource gather time: The time it takes for an RC Commander to transfer 1 resource to a Depot.
+Cheats.Consts.Rover>RCTransportGatherResourceWorkTime RC Transport resource gather time: The time it takes the RC Transport to gather 1 resource from a deposit
 Cheats.Consts.Scale>Resources: Resources
 Cheats.Consts.Scale>SoilQuality: SoilQuality
 Cheats.Consts.Scale>Stat: Stat
@@ -155,59 +155,59 @@ Cheats.Consts.Scale>hours: hours
 Cheats.Consts.Scale>meters: meters
 Cheats.Consts.Scale>mil: mil
 Cheats.Consts.Scale>sols: sols
-Cheats.Consts.Stat>Chance for getting a flaw when experiencing a Sanity breakdown: Chance of getting a negative trait when Sanity reaches zero, in %
-Cheats.Consts.Stat>Chance of Suicide: Chance of suicide when Sanity reaches zero, in %
-Cheats.Consts.Stat>Comfort damage from eating raw food from piles: Comfort damage from eating raw food from piles
-Cheats.Consts.Stat>Connected dome service threshold penalty: Service threshold penalty for colonists being serviced in another connected dome
-Cheats.Consts.Stat>Dark hours work Sanity decrease: When working during dark hours Colonists will lose this much Sanity (per work shift)
-Cheats.Consts.Stat>Health damage from small meteor (one-time on impact): Health damage from small meteor (one-time on impact)
-Cheats.Consts.Stat>Heavy Workload Health Penalty: Decreased Health from heavy workloads
-Cheats.Consts.Stat>Heavy Workload Sanity Penalty: Decreased Sanity from heavy workloads
-Cheats.Consts.Stat>High Stat Morale Effect: High Health, Sanity and Comfort increase the Colonist's morale by this much
-Cheats.Consts.Stat>High Stat Threshold: Stats above this level are considered high
-Cheats.Consts.Stat>Homeless Comfort Penalty: Colonist Comfort decreases when homeless
-Cheats.Consts.Stat>Initial Morale Range: Morale of new Colonists starts randomly in this range, centered around half of maximum Morale
-Cheats.Consts.Stat>Low Stat Morale Effect: Low Health, Sanity and Comfort decreases a Colonist's morale by this amount
-Cheats.Consts.Stat>Low Stat Threshold: Stats below this level are considered low
-Cheats.Consts.Stat>Malfunctioned Dome Sanity Penalty: Colonist Sanity decreased when rest in malfunctioned Dome
-Cheats.Consts.Stat>Max effect of worker performance on Service Quality: Max effect of worker performance on Service Quality
-Cheats.Consts.Stat>Minimum Colonist Comfort for Birth: Minimum Colonist Comfort for Birth
-Cheats.Consts.Stat>Outside Workplace Sanity Penalty: Outside Workplace Sanity Penalty
-Cheats.Consts.Stat>Oxygen max outside time: This is the time it takes for Colonists outside of Domes to start losing health
-Cheats.Consts.Stat>Penalty to Colonist Comfort for Birth from Medical Buildings: Decreases minimum Colonist Comfort for giving birth in a Dome Medical Building
-Cheats.Consts.Stat>Renegade creation point when game rule Rebel Yell is activated: Renegade creation point when game rule Rebel Yell is activated
-Cheats.Consts.Stat>Renegade creation point: Renegade creation point
-Cheats.Consts.Stat>Sanity damage for Dreamers from Mirages (per hour): Sanity damage for Dreamers from Mirages (per hour)
-Cheats.Consts.Stat>Sanity damage from Dust Storms (per hour): Sanity damage from Dust Storms (per hour)
-Cheats.Consts.Stat>Sanity damage from a Cold Wave (per hour): Sanity damage from a Cold Wave (per hour)
-Cheats.Consts.Stat>Sanity damage from meteor (one-time on impact): Sanity damage from meteor (one-time on impact)
-Cheats.Consts.Stat>Seeing Death: Colonist Sanity decreases when a Colonist from the same Residence dies from non-natural causes
-Cheats.Consts.Stat>Water max outside time: This is the time it takes for Colonists outside of Domes to become dehydrated
-Cheats.Consts.Stat>Workers in Corporate Offices receive Comfort penalty: Workers in Corporate Offices receive Comfort penalty
-Cheats.Consts.Stat>Workers in Workshop receive Comfort boost: Workers in Workshop receive Comfort boost
-Cheats.Consts.Stat>Workers in Workshop receive Morale boost: Workers in Workshop receive Morale boost
-Cheats.Consts.StoryBits>Category Extra Cooldown: Cooldown added to a category whenever a StoryBit from THAT category is activated
-Cheats.Consts.StoryBits>Max Cooldown: Each StoryBit category is assigned a random cooldown between MinCooldown and MaxCooldown when a StoryBit triggers
-Cheats.Consts.StoryBits>Min Cooldown: Each StoryBit category is assigned a random cooldown between MinCooldown and MaxCooldown when a StoryBit triggers
-Cheats.Consts.StoryBits>Notification Timeout: Time to wait for the player to click the StoryBit notification before the pop up is forced
-Cheats.Consts.StoryBits>Tick Duration: Time duration between Tick triggers
-Cheats.Consts.Terraforming>Landscape Soil Damage Amount: A constant soil fixed damage
-Cheats.Consts.Terraforming>Landscape Soil Damage Percent: A constant soil damage expressed in percents of the current target soil quality
-Cheats.Consts.Terraforming>Magnetic shield Decay Reduct (%): Magnetic shield Decay Reduct (%)
-Cheats.Consts.Terraforming>Max Atmosphere Decay Per Sol (%): Max Atmosphere Decay Per Sol (%)
-Cheats.Consts.Terraforming>Max Landscape Boundary: Maximum Size of a Landscape Construction Site Bounding Box (hexes)
-Cheats.Consts.Terraforming>Max Landscape Hexes: Maximum Count of Hexes In a Single Landscape Construction Site
-Cheats.Consts.Terraforming>Min Atmosphere Decay Per Sol (%): Min Atmosphere Decay Per Sol (%)
-Cheats.Consts.Terraforming>Open Dome Cost Reduction (%): Open Dome Cost Reduction (%)
-Cheats.Consts.Terraforming>Open Dome Electricity Reduction (%): Open Dome Electricity Reduction (%)
-Cheats.Consts.Terraforming>Open Dome Inside Buildings Maintenance Increase (%): Open Dome Inside Buildings Maintenance Increase (%)
-Cheats.Consts.Terraforming>WasteRock per Cubic Hex: WasteRock needed per cubic hex (10 m height)
-Cheats.Consts.Traits>ExtrovertIncreaseComfortThreshold: Increases Comfort Threshold for Social Buildings when used by extroverts
-Cheats.Consts.Traits>MaxColonistTraitsToGenerate: Max base traits generated per Colonist
-Cheats.Consts.Workplace>Avoid Workplace Sols: After being fired, Colonists will avoid that Workplace for this many days when searching for a Workplace
-Cheats.Consts.Workplace>Default outside Workplaces radius: Colonists search this far (in hexes) outisde their Dome when looking for a Workplace
-Cheats.Consts.Workplace>Heavy workload Shift Performance: Heavy workload Shift Performance change
-Cheats.Consts.Workplace>Working hours: Normal shift duration
+Cheats.Consts.Stat>ColdWaveSanityDamage Sanity damage from a Cold Wave (per hour): ColdWaveSanityDamage Sanity damage from a Cold Wave (per hour)
+Cheats.Consts.Stat>DustStormSanityDamage Sanity damage from Dust Storms (per hour): DustStormSanityDamage Sanity damage from Dust Storms (per hour)
+Cheats.Consts.Stat>GameRuleRebelYellRenegadeCreation Renegade creation point when game rule Rebel Yell is activated: GameRuleRebelYellRenegadeCreation Renegade creation point when game rule Rebel Yell is activated
+Cheats.Consts.Stat>HighStatLevel High Stat Threshold: Stats above this level are considered high
+Cheats.Consts.Stat>HighStatMoraleEffect High Stat Morale Effect: High Health, Sanity and Comfort increase the Colonist's morale by this much
+Cheats.Consts.Stat>LowSanityNegativeTraitChance Chance for getting a flaw when experiencing a Sanity breakdown: Chance of getting a negative trait when Sanity reaches zero, in %
+Cheats.Consts.Stat>LowSanitySuicideChance Chance of Suicide: Chance of suicide when Sanity reaches zero, in %
+Cheats.Consts.Stat>LowStatLevel Low Stat Threshold: Stats below this level are considered low
+Cheats.Consts.Stat>LowStatMoraleEffect Low Stat Morale Effect: Low Health, Sanity and Comfort decreases a Colonist's morale by this amount
+Cheats.Consts.Stat>MalfunctionedDome Malfunctioned Dome Sanity Penalty: Colonist Sanity decreased when rest in malfunctioned Dome
+Cheats.Consts.Stat>MedicalBuildingMinComfortBirthDecrease Penalty to Colonist Comfort for Birth from Medical Buildings: Decreases minimum Colonist Comfort for giving birth in a Dome Medical Building
+Cheats.Consts.Stat>MeteorHealthDamage Health damage from small meteor (one-time on impact): MeteorHealthDamage Health damage from small meteor (one-time on impact)
+Cheats.Consts.Stat>MeteorSanityDamage Sanity damage from meteor (one-time on impact): MeteorSanityDamage Sanity damage from meteor (one-time on impact)
+Cheats.Consts.Stat>MinComfortBirth Minimum Colonist Comfort for Birth: Minimum Colonist Comfort for Birth
+Cheats.Consts.Stat>MoraleInitRange Initial Morale Range: Morale of new Colonists starts randomly in this range, centered around half of maximum Morale
+Cheats.Consts.Stat>MysteryDreamSanityDamage Sanity damage for Dreamers from Mirages (per hour): MysteryDreamSanityDamage Sanity damage for Dreamers from Mirages (per hour)
+Cheats.Consts.Stat>NoHomeComfort Homeless Comfort Penalty: Colonist Comfort decreases when homeless
+Cheats.Consts.Stat>NonHomeDomeServiceThresholdDecrement Connected dome service threshold penalty: Service threshold penalty for colonists being serviced in another connected dome
+Cheats.Consts.Stat>OutsideFoodConsumptionComfort Comfort damage from eating raw food from piles: OutsideFoodConsumptionComfort Comfort damage from eating raw food from piles
+Cheats.Consts.Stat>OutsideWorkplaceSanityDecrease Outside Workplace Sanity Penalty: OutsideWorkplaceSanityDecrease Outside Workplace Sanity Penalty
+Cheats.Consts.Stat>OxygenMaxOutsideTime Oxygen max outside time: This is the time it takes for Colonists outside of Domes to start losing health
+Cheats.Consts.Stat>PerformanceEffectOnServiceComfort Max effect of worker performance on Service Quality: PerformanceEffectOnServiceComfort Max effect of worker performance on Service Quality
+Cheats.Consts.Stat>RenegadeCreation Renegade creation point: RenegadeCreation Renegade creation point
+Cheats.Consts.Stat>SeeDeadSanity Seeing Death: Colonist Sanity decreases when a Colonist from the same Residence dies from non-natural causes
+Cheats.Consts.Stat>WaterMaxOutsideTime Water max outside time: This is the time it takes for Colonists outside of Domes to become dehydrated
+Cheats.Consts.Stat>WorkDarkHoursSanityDecrease Dark hours work Sanity decrease: When working during dark hours Colonists will lose this much Sanity (per work shift)
+Cheats.Consts.Stat>WorkInCorporateOfficeComfortDecrease Workers in Corporate Offices receive Comfort penalty: Workers in Corporate Offices receive Comfort penalty
+Cheats.Consts.Stat>WorkInWorkshopComfortBoost Workers in Workshop receive Comfort boost: Workers in Workshop receive Comfort boost
+Cheats.Consts.Stat>WorkInWorkshopMoraleBoost Workers in Workshop receive Morale boost: Workers in Workshop receive Morale boost
+Cheats.Consts.Stat>WorkOvertimeHealth Heavy Workload Health Penalty: Decreased Health from heavy workloads
+Cheats.Consts.Stat>WorkOvertimeSanityDecrease Heavy Workload Sanity Penalty: Decreased Sanity from heavy workloads
+Cheats.Consts.StoryBits>ExtraCooldown Category Extra Cooldown: Cooldown added to a category whenever a StoryBit from THAT category is activated
+Cheats.Consts.StoryBits>MaxCooldown Max Cooldown: Each StoryBit category is assigned a random cooldown between MinCooldown and MaxCooldown when a StoryBit triggers
+Cheats.Consts.StoryBits>MinCooldown Min Cooldown: Each StoryBit category is assigned a random cooldown between MinCooldown and MaxCooldown when a StoryBit triggers
+Cheats.Consts.StoryBits>NotificationTimeout Notification Timeout: Time to wait for the player to click the StoryBit notification before the pop up is forced
+Cheats.Consts.StoryBits>TickDuration Tick Duration: Time duration between Tick triggers
+Cheats.Consts.Terraforming>Decay_AtmosphereSP_MagneticShield Magnetic shield Decay Reduct (%): Decay_AtmosphereSP_MagneticShield Magnetic shield Decay Reduct (%)
+Cheats.Consts.Terraforming>Decay_AtmosphereTP_Max Max Atmosphere Decay Per Sol (%): Decay_AtmosphereTP_Max Max Atmosphere Decay Per Sol (%)
+Cheats.Consts.Terraforming>Decay_AtmosphereTP_Min Min Atmosphere Decay Per Sol (%): Decay_AtmosphereTP_Min Min Atmosphere Decay Per Sol (%)
+Cheats.Consts.Terraforming>LandscapeMaxBoundary Max Landscape Boundary: Maximum Size of a Landscape Construction Site Bounding Box (hexes)
+Cheats.Consts.Terraforming>LandscapeMaxHexes Max Landscape Hexes: Maximum Count of Hexes In a Single Landscape Construction Site
+Cheats.Consts.Terraforming>LandscapeSoilDamageAmount Landscape Soil Damage Amount: A constant soil fixed damage
+Cheats.Consts.Terraforming>LandscapeSoilDamagePct Landscape Soil Damage Percent: A constant soil damage expressed in percents of the current target soil quality
+Cheats.Consts.Terraforming>OpenDome_CostReduction Open Dome Cost Reduction (%): OpenDome_CostReduction Open Dome Cost Reduction (%)
+Cheats.Consts.Terraforming>OpenDome_ElectricityReduction Open Dome Electricity Reduction (%): OpenDome_ElectricityReduction Open Dome Electricity Reduction (%)
+Cheats.Consts.Terraforming>OpenDome_InsideBuildingsMaintenanceIncrease Open Dome Inside Buildings Maintenance Increase (%): OpenDome_InsideBuildingsMaintenanceIncrease Open Dome Inside Buildings Maintenance Increase (%)
+Cheats.Consts.Terraforming>WasteRockPerHexCube WasteRock per Cubic Hex: WasteRock needed per cubic hex (10 m height)
+Cheats.Consts.Traits>ExtrovertIncreaseComfortThreshold ExtrovertIncreaseComfortThreshold: Increases Comfort Threshold for Social Buildings when used by extroverts
+Cheats.Consts.Traits>MaxColonistTraitsToGenerate MaxColonistTraitsToGenerate: Max base traits generated per Colonist
+Cheats.Consts.Workplace>AvoidWorkplaceSols Avoid Workplace Sols: After being fired, Colonists will avoid that Workplace for this many days when searching for a Workplace
+Cheats.Consts.Workplace>DefaultOutsideWorkplacesRadius Default outside Workplaces radius: Colonists search this far (in hexes) outisde their Dome when looking for a Workplace
+Cheats.Consts.Workplace>OvertimedShiftPerformance Heavy workload Shift Performance: Heavy workload Shift Performance change
+Cheats.Consts.Workplace>WorkingHours Working hours: Normal shift duration
 Cheats.Menu>Draggable Cheats Menu: Cheats menu can be moved.
 Cheats.Menu>Hide Cheats Menu: This will hide the Cheats menu; Use F2 to see it again.
 Cheats.Menu>Infopanel Cheats Cleanup: Remove some entries from the cheat pane (restart to re-enable).
@@ -306,7 +306,6 @@ Debug>Test Story Bits: Test activate a story bit.
 Debug>Used Terrain Textures: Show a list of terrain textures used in current map.
 ECM.Buildings.Buildings>Fully Automated Building: Work without workers (select a building and this will apply to all of type or selected).
 ECM.Buildings.Buildings>Oxygen-free Building: Toggle oxygen use for selected building type.
-ECM.Buildings.Buildings>Points To Train: How many points are needed to finish training.
 ECM.Buildings.Buildings>Power-free Building: Toggle electricity use for selected building type.
 ECM.Buildings.Buildings>Production Amount Set: Set production of buildings of selected type, also applies to newly placed ones.
 Works on any building that produces.
@@ -316,6 +315,14 @@ ECM.Buildings.Buildings>Set Charge & Discharge Rates: Change how fast Air/Water/
 ECM.Buildings.Buildings>Water-free Building: Toggle water use for selected building type.
 ECM.Buildings.Cables & Pipes>Instant Build: Cables & Pipes Instant Build
 ECM.Buildings.Cables & Pipes>No Break: Cables & Pipes No Break
+ECM.Buildings.Capacity>Building Capacity: Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).
+ECM.Buildings.Capacity>Building Visitor Capacity: Set visitors capacity of all buildings of selected type, also applies to newly placed ones.
+ECM.Buildings.Capacity>Storage Mechanized Depots Temp: Allow the temporary storage to hold 100 instead of 50 cubes.
+ECM.Buildings.Capacity>Storage Mechanized Depots: Change mechanized depot storage capacity.
+ECM.Buildings.Capacity>Storage Other Depot: Change other storage depot capacity.
+ECM.Buildings.Capacity>Storage Universal Depot: 500000: Change universal storage depot capacity.
+ECM.Buildings.Capacity>Storage Waste Depot: Change waste storage depot capacity.
+ECM.Buildings.Capacity>Worker Capacity: Set worker capacity of buildings of selected type, also applies to newly placed ones.
 ECM.Buildings.Farms>Crop fail threshold: Average performance of Farms required for Crops to succeed
 ECM.Buildings.Farms>Farm Shifts All On: Turns on all the farm shifts.
 ECM.Buildings.Farms>Unlock Crops: Shows list of locked crops.
@@ -324,10 +331,6 @@ ECM.Buildings.Radius>Forestation Plant: Change the range of the Forestation Plan
 ECM.Buildings.Radius>Protection Radius: Change threat protection coverage distance (MDSLaser/DefenceTower).
 ECM.Buildings.Radius>Subsurface Heater: Change the range of the Subsurface Heater.
 ECM.Buildings.Radius>Triboelectric Scrubber: Change the range of the Triboelectric Scrubber.
-ECM.Buildings.Sanatoriums & Schools>Sanatoriums & Schools: Show All Traits: Shows all appropriate traits in Sanatoriums/Schools side panel popup menu.
-ECM.Buildings.Sanatoriums & Schools>Sanatoriums & Schools: Show Full List: Toggle showing full list of trait selectors in side pane.
-ECM.Buildings.Sanatoriums & Schools>Sanatoriums Cure All: Toggle curing all traits (use "Show All Traits" & "Show Full List" to manually set).
-ECM.Buildings.Sanatoriums & Schools>Schools Train All: Toggle curing all traits (use "Show All Traits" & "Show Full List" to manually set).
 ECM.Buildings.Space Elevator>Export Amount Per Trip: How many rare metals you can export per trip.
 ECM.Buildings.Space Elevator>Export When This Amount: When you have this many rares in storage launch right away.
 ECM.Buildings.Space Elevator>Import Amount Per Trip: How much storage for import you can use.
@@ -351,19 +354,16 @@ ECM.Buildings.Toggles>Rotate During Placement: Allow you to rotate all buildings
 ECM.Buildings.Toggles>Show Hidden Buildings: Show hidden buildings in build menu.
 ECM.Buildings.Toggles>Unlimited Connection Length: No more length limits to pipes, cables, and passages.
 ECM.Buildings.Toggles>Unlimited Wonders: Unlimited wonder build limit (blocks the build a wonder achievement).
+ECM.Buildings.Training Buildings>Points To Train: How many points are needed to finish training.
+ECM.Buildings.Training Buildings>Sanatoriums & Schools: Show All Traits: Shows all appropriate traits in Sanatoriums/Schools side panel popup menu.
+ECM.Buildings.Training Buildings>Sanatoriums & Schools: Show Full List: Toggle showing full list of trait selectors in side pane.
+ECM.Buildings.Training Buildings>Sanatoriums Cure All: Toggle curing all traits (use "Show All Traits" & "Show Full List" to manually set).
+ECM.Buildings.Training Buildings>Schools Train All: Toggle curing all traits (use "Show All Traits" & "Show Full List" to manually set).
 ECM.Buildings>Empty Mech Depot: Empties out selected/moused over mech depot into a small depot in front of it.
 ECM.Buildings>Moisture Vaporator Penalty: Disable penalty when Moisture Vaporators are close to each other.
 ECM.Buildings>Storage Amount Of Diner & Grocery: Change how much food is stored in them (less chance of starving colonists when busy).
 ECM.Buildings>Unlock Locked Buildings: Shows a list of buildings you can unlock.
 This doesn't apply to sponsor limited ones; see Toggles>Remove Sponsor Limits.
-ECM.Capacity>Building Capacity: Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).
-ECM.Capacity>Building Visitor Capacity: Set visitors capacity of all buildings of selected type, also applies to newly placed ones.
-ECM.Capacity>Storage Mechanized Depots Temp: Allow the temporary storage to hold 100 instead of 50 cubes.
-ECM.Capacity>Storage Mechanized Depots: Change mechanized depot storage capacity.
-ECM.Capacity>Storage Other Depot: Change other storage depot capacity.
-ECM.Capacity>Storage Universal Depot: Change universal storage depot capacity.
-ECM.Capacity>Storage Waste Depot: Change waste storage depot capacity.
-ECM.Capacity>Worker Capacity: Set worker capacity of buildings of selected type, also applies to newly placed ones.
 ECM.Colonists.Stats>Chance Of Sanity Damage: Disable colonists taking sanity damage from certain events.
 Works after in-game hour.
 ECM.Colonists.Stats>Chance of Suicide: Chance of suicide when Sanity reaches zero, in %

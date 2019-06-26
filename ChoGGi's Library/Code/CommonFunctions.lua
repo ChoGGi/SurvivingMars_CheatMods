@@ -208,6 +208,22 @@ do -- RetName
 		AddFuncs(func_tables[i])
 	end
 
+	local values_lookup = {
+		"encyclopedia_id",
+		"id",
+		"Id",
+		"ActionName",
+		"ActionId",
+		"template_name",
+		"template_class",
+		"class",
+		"__class",
+		"__template",
+		"__mtl",
+		"text",
+		"value",
+	}
+
 	do -- stuff we need to be in-game for
 		local function AddFuncsChoGGi(name, skip)
 			local list = g.ChoGGi[name]
@@ -222,7 +238,7 @@ do -- RetName
 			end
 		end
 
-		local function BuildNameList()
+		local function BuildNameList(update_trans)
 			lookup_table = ChoGGi_lookup_names or {}
 			-- if env._G was updated from ECM HelperMod
 			g = _G
@@ -285,8 +301,16 @@ do -- RetName
 				end
 			end
 
+			local blacklist = g.ChoGGi.blacklist
+
 			-- and any g_Classes funcs
-			for _, class in pairs(g.g_Classes) do
+			for id, class in pairs(g.g_Classes) do
+				if blacklist then
+					local g_value = g[id]
+					if g_value then
+						lookup_table[g_value] = id
+					end
+				end
 				for key, value in pairs(class) do
 					-- why it has a false is beyond me (something to do with that object[true] = userdata?)
 					if key ~= false and not lookup_table[value] then
@@ -309,6 +333,42 @@ do -- RetName
 					end
 				end
 			end
+
+			g.ClassDescendantsList("Preset", function(_, cls)
+				if cls.GlobalMap and cls.GlobalMap ~= "" then
+					local g_value = g[cls.GlobalMap]
+					if g_value then
+						-- only needed for blacklist, but whatever it's quick
+						lookup_table[g_value] = cls.GlobalMap
+
+						for k, v in pairs(g_value) do
+							if update_trans or not lookup_table[v] then
+								if v.name and v.name ~= "" then
+									lookup_table[v] = Translate(v.name)
+								elseif v.display_name and v.display_name ~= "" then
+									lookup_table[v] = Translate(v.display_name)
+								else
+									lookup_table[v] = k
+								end
+							end
+						end
+					end
+
+				end
+			end)
+
+			-- grab what we can from gimped _G
+			if blacklist then
+				lookup_table[g.g_Classes] = "g_Classes"
+				for i = 1, #g.GlobalVars do
+					local var = g.GlobalVars[i]
+					local obj = g[var]
+					if not lookup_table[obj] then
+						lookup_table[obj] = var
+					end
+				end
+			end
+
 		end
 
 		-- so they work in the main menu
@@ -317,22 +377,6 @@ do -- RetName
 		-- called from onmsgs for citystart/loadgame
 		ChoGGi.ComFuncs.RetName_Update = BuildNameList
 	end -- do
-
-	local values_lookup = {
-		"encyclopedia_id",
-		"id",
-		"Id",
-		"ActionName",
-		"ActionId",
-		"template_name",
-		"template_class",
-		"class",
-		"__class",
-		"__template",
-		"__mtl",
-		"text",
-		"value",
-	}
 
 	-- try to return a decent name for the obj, failing that return a string
 	function ChoGGi.ComFuncs.RetName(obj)

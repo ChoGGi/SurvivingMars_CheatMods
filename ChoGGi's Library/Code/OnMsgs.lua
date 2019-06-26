@@ -35,13 +35,19 @@ end
 OnMsg.CityStart = Startup
 
 -- update my cached strings
-OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateStringsList
-OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateDataTablesCargo
-OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateDataTables
-OnMsg.TranslationChanged = ChoGGi.ComFuncs.UpdateOtherTables
+function OnMsg.TranslationChanged()
+	ChoGGi.ComFuncs.UpdateStringsList()
+	ChoGGi.ComFuncs.UpdateDataTablesCargo()
+	ChoGGi.ComFuncs.UpdateDataTables()
+	ChoGGi.ComFuncs.UpdateOtherTables()
+	-- true to update translated names
+	ChoGGi.ComFuncs.RetName_Update(true)
+end
 
-OnMsg.ModsReloaded = ChoGGi.ComFuncs.UpdateDataTables
-OnMsg.ModsReloaded = ChoGGi.ComFuncs.UpdateTablesSponComm
+function OnMsg.ModsReloaded()
+	ChoGGi.ComFuncs.UpdateDataTables()
+	ChoGGi.ComFuncs.UpdateTablesSponComm()
+end
 
 ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100
 

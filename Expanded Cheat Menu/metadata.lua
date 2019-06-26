@@ -109,7 +109,7 @@ return PlaceObj("ModDef", {
 	"description", [[and Modding Tools. Enables cheat menu, cheat info pane, console, examine object, adds a few hundred menu items.
 Requests are welcome.
 
-If you forget where a menu item is: Menu>Help>List All Menu Items (use "Filter Items" at the bottom).
+If you don't know where a menu item is: Menu>Help>List All Menu Items (use "Filter Items" at the bottom).
 
 
 [url=https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/README.md]README[/url]

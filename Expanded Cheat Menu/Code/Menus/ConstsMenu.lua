@@ -61,7 +61,7 @@ for i = 1, #ConstDef do
 		local name = const.name
 		name = name and name ~= "" and (const.id .. " " .. Translate(name)) or const.id
 		local desc = const.help
-		desc = help and help ~= "" and Translate(help) or name
+		desc = desc and desc ~= "" and Translate(desc) or name
 
 		c = c + 1
 		Actions[c] = {ActionName = name,

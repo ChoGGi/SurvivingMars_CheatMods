@@ -4,6 +4,7 @@
 - RetName:
 - > Uses class names instead of "Anomaly".
 - > Added some more tables.
+- > Just noticed that the gimped "_G" doesn't work well with pairs(), so I manually added some stuff.
 
 ## v7.0 (June 18 2019)
 - Added Update Text func/button to MultiLineText.

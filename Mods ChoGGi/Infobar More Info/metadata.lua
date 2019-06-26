@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	},
 	"TagInterface", true,
 	"has_options", true,
-	"description", [[Add more info to the infobar
+	"description", [[Add more info to the infobar.
 
 Resource tooltips:
 Time of stored resources remaining: stored / (production - (consumption + maintenance)).

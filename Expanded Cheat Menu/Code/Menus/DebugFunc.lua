@@ -61,7 +61,7 @@ do -- SetEntity
 			item_list[c] = {
 				text = key,
 				value = key,
-				hint = hint_noanim
+				hint = hint_noanim,
 			}
 		end
 

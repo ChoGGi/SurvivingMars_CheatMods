@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Upgrade Slots: Visitors/Capacity",
 	"title", "Upgrade Capacity",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_UpgradeSlotsVisitorsCapacity",
@@ -16,6 +16,5 @@ return PlaceObj("ModDef", {
 	},
 	"TagInterface", true,
 	"description", [[Adds upgrades to increase the capacity (also increases electricity consumption) of residences, services, etc.
-Existing upgrade for the building == skip these upgrades (it will boost cap of upgrade 2).
-]],
+Existing upgrade for the building == skip these upgrades (it will boost cap of upgrade 2).]],
 })

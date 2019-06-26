@@ -8,9 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Pin Expander",
-	"version", 7,
+	"version", 8,
 	"version_major", 0,
-	"version_minor", 7,
+	"version_minor", 8,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_PinExpander",
@@ -24,7 +24,7 @@ return PlaceObj("ModDef", {
 	"description", [[Clicking a pinned object will show a list of all objects of the same type.
 
 Left-click: View and select.
-Right-click Just view.
+Right-click: Just view.
 Hold down Shift to keep the menu open post-click.
 
 Mouse over an item to highlight it (green).

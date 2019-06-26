@@ -244,9 +244,9 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 	local varargs = ...
 
 	local objs
-	local object = button_obj.context
+	local obj = button_obj.context
 
-	local meta = getmetatable(object)
+	local meta = getmetatable(obj)
 	local build_category = meta.build_category
 	local wonder = meta.wonder
 
@@ -256,14 +256,14 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 		objs = labels.Dome
 	elseif wonder then
 		objs = labels.Wonders
-	elseif object:IsKindOf("BaseRover") then
+	elseif obj:IsKindOf("BaseRover") then
 		objs = labels.Rover
-	elseif object.class == "Colonist" then
+	elseif obj:IsKindOf("Colonist") then
 		if IsShiftPressed() or #labels.Colonist < 5001 then
 			objs = labels.Colonist
 		else
 			-- get all in dome or all without a dome
-			objs = object.dome and object.dome.labels.Colonist
+			objs = obj.dome and obj.dome.labels.Colonist
 				or MapGet("map", "Colonist", function(o)
 					if not o.dome then
 						return true
@@ -271,20 +271,15 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 				end)
 		end
 	else
-		objs = labels[object.class]
-	end
-
-	if (not objs or #objs < 50) and build_category then
-		if build_category then
-			objs = labels[build_category]
-		end
-		if not objs then
-			objs = MapGet("map", meta.class)
-		end
+		objs = labels[obj.class]
 	end
 
 	if not objs then
-		objs = MapGet("map", object.class)
+		objs = MapGet("map", obj.class)
+	end
+
+	if #objs == 0 then
+		objs = MapGet("map", meta.class)
 	end
 
 	local str_dome = T(1234, "Dome")
@@ -296,10 +291,10 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 	local str_Water = T(681, "Water")
 	local str_Oxygen = T(682, "Oxygen")
 
---~ 	local items = {clear_objs = true}
 	local items = {}
+	local c = 0
 	for i = 1, #objs do
-		local obj = objs[i]
+		obj = objs[i]
 
 		-- add rollover text
 		local pinbutton = pins_obj[table_find(pins_obj, "context", obj)]
@@ -327,7 +322,7 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 		local image = pins_obj:GetPinConditionImage(obj)
 		local state_text
 
-		if obj.class == "Colonist" or obj.class == "Drone" then
+		if obj:IsKindOf("Colonist") or obj:IsKindOf("Drone") then
 			state_text = obj:GetStateText()
 			image = state_table[state_text]
 		elseif build_category == "Domes" or obj:IsKindOf("BaseBuilding")
@@ -382,9 +377,10 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 		hint = "<color 203 120 30>" .. str_state
 			.. ":</color> <color 255 200 200>" .. state_text .. "</color>\n" .. hint
 
-		if obj.class ~= "SupplyRocket"
-				or obj.class == "SupplyRocket" and obj.name ~= "" then
-			items[i] = {
+		local is_rocket = obj:IsKindOf("SupplyRocket")
+		if not is_rocket or is_rocket and obj.name ~= "" then
+			c = c + 1
+			items[c] = {
 				name = RetName(obj),
 				showobj = obj,
 				image = image,
@@ -392,7 +388,7 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 				hint_title = hint_title,
 				hint_bottom = T(302535920011154, "<left_click> Select <right_click> View"),
 				mouseup = function(_, _, _, button)
-					if obj.class == "SupplyRocket" then
+					if is_rocket then
 						button_func(button_obj, gamepad, varargs)
 					else
 						ViewObjectMars(obj)
@@ -414,13 +410,12 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 	table.sort(items, function(a, b)
 		return CmpLower(a.image .. a.name, b.image .. b.name)
 	end)
-	local items_c = #items
 
 	-- personal touch
 	local count = T(298035641454, "Object") .. " " .. T(3732, "Count") .. ": "
-		.. items_c
+		.. c
 
-	if items_c > 1 then
+	if c > 1 then
 		table.insert(items, 1, {
 			name = count,
 			image = "UI/Icons/res_theoretical_research.tga",

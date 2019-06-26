@@ -5,13 +5,16 @@ local Sleep = Sleep
 local function AddInfobar()
 	local Dialogs = Dialogs
 	Dialogs.Infobar:SetVisible(true)
-	Dialogs.Infobar.idTerraformingBar:SetVisible(false)
+
 	local TerraParams = Dialogs.TerraformingParamsBarDlg
-	TerraParams[1]:SetMargins(box(0,Dialogs.Infobar.idPad.box:sizey(),0,0))
-	while TerraParams.window_state ~= "destroying" do
-		Sleep(1000)
+	if TerraParams then
+		Dialogs.Infobar.idTerraformingBar:SetVisible(false)
+		TerraParams[1]:SetMargins(box(0,Dialogs.Infobar.idPad.box:sizey(),0,0))
+		while TerraParams.window_state ~= "destroying" do
+			Sleep(1000)
+		end
+		Dialogs.Infobar.idTerraformingBar:SetVisible(true)
 	end
-	Dialogs.Infobar.idTerraformingBar:SetVisible(true)
 end
 
 local orig_OpenDialog = OpenDialog

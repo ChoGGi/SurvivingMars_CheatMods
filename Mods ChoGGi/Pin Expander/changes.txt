@@ -1,3 +1,6 @@
+v0.8
+Too much shown for the wrong objs (thanks Magic Cuboid).
+
 v0.7
 Menu opened offset when clicked once.
 Everything should have a menu now.

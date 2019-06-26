@@ -1,3 +1,6 @@
+v0.6
+Properly added upgrades to modded buildings (thanks XxUnkn0wnxX).
+
 v0.5
 Bug fix (thanks Wizu).
 

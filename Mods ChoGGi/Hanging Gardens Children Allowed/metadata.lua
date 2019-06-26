@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Hanging Gardens Children Allowed",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_HangingGardensChildrenAllowed",
@@ -14,5 +14,8 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"TagGameplay", true,
-	"description", [[Children can play in hanging gardens (remember to keep your little hellspawn under control).]],
+	"has_options", true,
+	"description", [[Children can play in hanging gardens (remember to keep your little hellspawn under control).
+
+Includes mod option to allow garden + other services to also apply the playground_visit perk.]],
 })
