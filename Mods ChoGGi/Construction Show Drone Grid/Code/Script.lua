@@ -60,9 +60,9 @@ function RCRover:GetSelectionRadiusScale_OverrideChoGGi()
 end
 
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
-function CursorBuilding:GameInit()
+function CursorBuilding.GameInit(...)
 	if not mod_Option1 then
-		return orig_CursorBuilding_GameInit(self)
+		return orig_CursorBuilding_GameInit(...)
 	end
 	local UICity = UICity
 	ShowHexRanges(UICity, "SupplyRocket")
@@ -88,7 +88,7 @@ function CursorBuilding:GameInit()
 		end
 	end
 
-	return orig_CursorBuilding_GameInit(self)
+	return orig_CursorBuilding_GameInit(...)
 end
 
 local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
@@ -99,7 +99,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 	end
 
 	local range_limit = mod_DistFromCursor > 0 and mod_DistFromCursor
-	local cursor_pos = GetTerrainCursor()
+	local cursor_pos = self:GetPos()
 
 	local g_HexRanges = g_HexRanges
 	for range, obj in pairs(g_HexRanges) do
@@ -112,14 +112,15 @@ function CursorBuilding:UpdateShapeHexes(...)
 		end
 	end
 
+	return orig_CursorBuilding_UpdateShapeHexes(self, ...)
 end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done
-function CursorBuilding:Done()
+function CursorBuilding.Done(...)
 	local UICity = UICity
 	HideHexRanges(UICity, "SupplyRocket")
 	HideHexRanges(UICity, "DroneHub")
 	HideHexRanges(UICity, "RCRover")
 
-	return orig_CursorBuilding_Done(self)
+	return orig_CursorBuilding_Done(...)
 end

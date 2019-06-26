@@ -306,7 +306,7 @@ do -- RetName
 			-- and any g_Classes funcs
 			for id, class in pairs(g.g_Classes) do
 				if blacklist then
-					local g_value = g[id]
+					local g_value = rawget(g, id)
 					if g_value then
 						lookup_table[g_value] = id
 					end
@@ -336,7 +336,7 @@ do -- RetName
 
 			g.ClassDescendantsList("Preset", function(_, cls)
 				if cls.GlobalMap and cls.GlobalMap ~= "" then
-					local g_value = g[cls.GlobalMap]
+					local g_value = rawget(g, cls.GlobalMap)
 					if g_value then
 						-- only needed for blacklist, but whatever it's quick
 						lookup_table[g_value] = cls.GlobalMap

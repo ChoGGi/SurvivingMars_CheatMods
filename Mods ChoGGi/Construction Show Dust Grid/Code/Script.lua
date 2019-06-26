@@ -135,7 +135,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 	end
 
 	local range_limit = mod_DistFromCursor > 0 and mod_DistFromCursor
-	local cursor_pos = GetTerrainCursor()
+	local cursor_pos = self:GetPos()
 	local g_HexRanges = g_HexRanges
 
 --~ ex(self)
@@ -190,7 +190,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done
-function CursorBuilding:Done(...)
+function CursorBuilding.Done(...)
 	local UICity = UICity
 	for i = 1, dust_gens_c do
 		HideHexRanges(UICity, dust_gens[i])
@@ -205,5 +205,5 @@ function CursorBuilding:Done(...)
 		end
 	end
 
-	return orig_CursorBuilding_Done(self, ...)
+	return orig_CursorBuilding_Done(...)
 end

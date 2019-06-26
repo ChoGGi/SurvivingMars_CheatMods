@@ -1,3 +1,6 @@
+v0.7
+Code cleanup.
+
 v0.6
 Added Dist From Cursor mod option (0 == ignore).
 Added grid opacity option.

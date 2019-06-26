@@ -67,7 +67,7 @@ local function MarkObjects(obj)
 	-- remove previous beams
 	ClearBeams()
 
-	if not (mod_Mark or IsValid(obj)) then
+	if not (mod_Mark or obj) then
 		return
 	end
 
