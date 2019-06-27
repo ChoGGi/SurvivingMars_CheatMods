@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Shows grid radius around Domes when when you're in construction mode with a dome.
+	"description", [[Shows grid radius around Domes when you're in construction mode with a dome.
 
 Mod Options:
 Show Grids: Use to disable temporarily.

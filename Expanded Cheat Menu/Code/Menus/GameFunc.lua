@@ -1871,8 +1871,9 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
 	local default_setting = 5
 	local hint_down = Strings[302535920001062--[[Down scrolling may not work (dependant on aspect ratio?).]]]
 	local item_list = {
-		{text = Translate(1000121--[[Default]]), value = default_setting},
-		{text = 0, value = 0, hint = Strings[302535920001063--[[disable mouse border scrolling, WASD still works fine.]]]},
+		{text = Translate(1000121--[[Default]]), value = default_setting, hint = Translate(1000121--[[Default]]) .. ": " .. default_setting},
+		{text = -1, value = -1, hint = Strings[302535920001063--[[disable mouse border scrolling, WASD still works fine.]]]},
+		{text = 0, value = 0, hint = hint_down},
 		{text = 1, value = 1, hint = hint_down},
 		{text = 2, value = 2, hint = hint_down},
 		{text = 3, value = 3},
