@@ -56,7 +56,7 @@ function OnMsg.ClassesPostprocess()
 					})
 				end
 				ResumePassEdits("FullyTerraformed.spawning some trees")
-			end
+			end,
 		}),
 	})
 
@@ -74,7 +74,7 @@ Y'all motherfuckers lying, and getting me pissed."
 		PlaceObj("Effect_Code", {
 			OnApplyEffect = function()
 				g_ChoGGi_GM_TerraformingLocked = true
-			end
+			end,
 		}),
 	})
 end

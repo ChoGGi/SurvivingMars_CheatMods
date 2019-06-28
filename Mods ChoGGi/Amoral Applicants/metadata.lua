@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"description", [[Technially this should be called Cannibalistic Colonists, but they're not colonists yet.
 
 Once the food runs out on an orbiting rocket, rather than just killing everyone off: Applicants start getting hungry, and applicants start disappearing.
-Adds a new trait to the leftovers which will result in a daily sanity loss.
+Adds a new trait to the leftovers which will result in a daily sanity loss (small but still there).
 
 
 The image of course has nothing to do with the mod. You should go watch the movie, maybe have a nice juicy steak while doing so?]],

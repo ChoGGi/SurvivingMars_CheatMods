@@ -1,30 +1,58 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_EnableConsole"
-local mod = Mods[mod_id]
+local options
+local mod_EnableLog
+local mod_EnableConsole
 
-local mod_EnableLog = mod.options and mod.options.EnableLog or true
-
+-- fired when settings are changed and new/load
 local function ModOptions()
-	ConsoleEnabled = true
-	mod_EnableLog = mod.options.EnableLog
+	mod_EnableLog = options.EnableLog
+	mod_EnableConsole = options.EnableConsole
 
-	if mod_EnableLog then
-		ShowConsoleLog(true)
-	else
-		ShowConsoleLog(false)
-	end
+	ConsoleEnabled = mod_EnableConsole
+	ShowConsoleLog(mod_EnableLog)
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
 end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_EnableConsole" then
 		return
 	end
 
 	ModOptions()
 end
 
--- for some reason mod options aren't retrieved before this script is loaded...
-OnMsg.CityStart = ModOptions
-OnMsg.LoadGame = ModOptions
+local function ShowConsole()
+	if not mod_EnableConsole then
+		return
+	end
+
+	if not rawget(_G, "dlgConsole") then
+		CreateConsole()
+	end
+	ShowConsoleLog(mod_EnableLog)
+	if rawget(_G, "dlgConsole") then
+		dlgConsole:Show(true)
+	end
+end
+
+function OnMsg.ClassesPostprocess()
+	local CommonShortcuts = XTemplates.CommonShortcuts
+
+	if not table.find(CommonShortcuts, "ActionId", "ChoGGi_EnableConsole") then
+		CommonShortcuts[#CommonShortcuts+1] = PlaceObj("XTemplateAction", {
+			"ActionId", "ChoGGi_EnableConsole",
+			"ActionTranslate", false,
+			"ActionShortcut", "Enter",
+			"ActionShortcut2", "~",
+			"OnAction", ShowConsole,
+			"replace_matching_id", true,
+		})
+	end
+end

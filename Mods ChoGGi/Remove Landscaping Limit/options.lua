@@ -17,5 +17,11 @@ DefineClass("ModOptions_ChoGGi_AdjustLandscapingSize", {
 			id = "RemoveLandScapingLimits",
 			name = T(302535920011238, "Remove Landscaping Limits"),
 		},
+		{
+			default = false,
+			editor = "bool",
+			id = "BlockObjects",
+			name = T(302535920011238, "Skip Blocking Objects"),
+		},
 	},
 })

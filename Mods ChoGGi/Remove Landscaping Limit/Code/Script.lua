@@ -3,13 +3,15 @@
 local options
 local mod_RemoveLandScapingLimits
 local mod_StepSize
+local mod_BlockObjects
 
 -- fired when settings are changed and new/load
 local function ModOptions()
 	mod_RemoveLandScapingLimits = options.RemoveLandScapingLimits
 	mod_StepSize = options.StepSize * guim
+	mod_BlockObjects = options.BlockObjects
 
-	ChoGGi.ComFuncs.SetLandScapingLimits(mod_RemoveLandScapingLimits)
+	ChoGGi.ComFuncs.SetLandScapingLimits(mod_RemoveLandScapingLimits, mod_BlockObjects)
 end
 
 -- load default/saved settings

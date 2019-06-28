@@ -150,7 +150,8 @@ The steps you take to recreate the issue would also be useful, and maybe a save 
 
 ##### Access to missing functionality
 ```
-Da Vinci update added a blacklist of functions, you can use The HelperMod included to bypass them (only really useful for modders).
+Da Vinci update added a blacklist of functions, you can use my HelperMod to bypass them (only really useful for modders).
+HelperMod: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Startup%20HelperMod
 ```
 
 ##### Thank You

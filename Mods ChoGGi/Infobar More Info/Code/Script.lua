@@ -59,8 +59,8 @@ local HexBoundingCircle = HexBoundingCircle
 local point = point
 local FormatResource = FormatResource
 
-local scale_hours = const.Scale.hours
-local scale_sols = const.Scale.sols
+local scale_hours = const.HourDuration
+local scale_sols = const.DayDuration
 
 -- research per sol
 function OnMsg.AddResearchRolloverTexts(ret)

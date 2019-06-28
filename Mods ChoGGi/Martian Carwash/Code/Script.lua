@@ -277,6 +277,7 @@ local GetPipeConnections = {
 	{point(1, 1), 3, 6, "SignWater"},
 	{point(1, 1), 4, 6, "SignWater"},
 	{point(1, 1), 5, 6, "SignWater"},
+--~ 	TubeBuildingConnection
 }
 
 function Carwash.GetPipeConnections()

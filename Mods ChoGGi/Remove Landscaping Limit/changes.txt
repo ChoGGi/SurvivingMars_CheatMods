@@ -1,3 +1,6 @@
+v0.4
+Added mod option to not ignore the blocking objects error.
+
 v0.3
 Reduced the min size, and re-added step size option.
 

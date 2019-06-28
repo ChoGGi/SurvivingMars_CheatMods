@@ -1968,21 +1968,13 @@ do -- Rebuildshortcuts
 			end
 		end
 
-		-- goddamn annoying key
 		if testing then
+			-- goddamn annoying key
 			local idx = table.find(XShortcutsTarget.actions, "ActionId", "actionToggleFullscreen")
 			if idx then
 				XShortcutsTarget.actions[idx]:delete()
 				table_remove(XShortcutsTarget.actions, idx)
 			end
-
---~ 			-- f1
---~ 			idx = table.find(XShortcutsTarget.actions, "ActionId", "ShowHints")
---~ 			if idx then
---~ 				XShortcutsTarget.actions[idx]:delete()
---~ 				table_remove(XShortcutsTarget.actions, idx)
---~ 			end
-
 		end
 
 		-- and add mine
@@ -4771,14 +4763,17 @@ function ChoGGi.ComFuncs.CloseDialogsECM(skip)
 	end
 end
 
-function ChoGGi.ComFuncs.SetLandScapingLimits(force)
+function ChoGGi.ComFuncs.SetLandScapingLimits(force, skip_objs)
 	local cs = ConstructionStatus
 	if force or ChoGGi.UserSettings.RemoveLandScapingLimits then
 		cs.LandscapeTooLarge.type = "warning"
 		cs.LandscapeUnavailable.type = "warning"
 		cs.LandscapeLowTerrain.type = "warning"
-		cs.BlockingObjects.type = "warning"
 		cs.LandscapeRampUnlinked.type = "warning"
+		-- some people don't want it I suppose
+		if not skip_objs then
+			cs.BlockingObjects.type = "warning"
+		end
 		-- can cause crashing
 		if testing then
 			cs.LandscapeOutOfBounds.type = "warning"

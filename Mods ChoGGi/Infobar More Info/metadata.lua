@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	},
 	"TagInterface", true,
 	"has_options", true,
-	"description", [[Want to know if your battery storage will last the night? See how many resources are remaining in active deposits. Curious why you keep getting a "not enough power" msg even though capacity is almost full?
+	"description", [[Want to know if your battery storage will last the night? See how many resources are remaining in active deposits. Curious why you keep getting a "not enough power" warning even though capacity is full?
 
 
 Resource tooltips:

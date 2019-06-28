@@ -3,16 +3,13 @@
 -- I didn't get a harumph outta that guy!
 ModEnvBlacklist = {--[[Harumph!]]}
 
--- defaults to 20 items
-const.nConsoleHistoryMaxSize = 100
-
 local ChoGGi = ChoGGi
-local mod = Mods[ChoGGi.id]
+local mod = Mods.ChoGGi_CheatMenu
 
 -- is ECM shanghaied by the blacklist?
 if mod.no_blacklist then
 	ChoGGi.blacklist = false
-	Msg("ChoGGi_UpdateBlacklistFuncs",mod.env)
+	Msg("ChoGGi_UpdateBlacklistFuncs", mod.env)
 	-- makes some stuff easier
 	local lib_env = Mods.ChoGGi_Library.env
 	lib_env._G = mod.env._G

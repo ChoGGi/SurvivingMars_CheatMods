@@ -20,8 +20,8 @@ Mod Options:
 Show Grids: Use to disable temporarily.
 Dist From Cursor: Only show grids around buildings this close to the cursor (0 = disabled, 1 = 1000 and so on, 100 == over 2 map squares).
 Grid Opacity: Set opacity of grid icons.
-Selection Dome: Show dome grids when selecting a dome.
-Selection Outside: Show dome grids when selecting an outside dome building.
+Selection Dome: Show all dome grids when selecting a dome.
+Selection Outside: Show all dome grids when selecting an outside dome building.
 
 
 Requested by DARK_MASTER.]],

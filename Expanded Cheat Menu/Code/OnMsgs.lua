@@ -933,7 +933,7 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 	end
 end
 
--- const.Scale.sols is 720 000 ticks (GameTime)
+-- const.DayDuration is 720 000 ticks (GameTime)
 function OnMsg.NewDay() -- NewSol...
 --~ 	Msg("NewSol")
 	local ChoGGi = ChoGGi
@@ -989,7 +989,7 @@ function OnMsg.NewDay() -- NewSol...
 
 end
 
--- const.Scale.hours is 30 000 ticks (GameTime)
+-- const.HourDuration is 30 000 ticks (GameTime)
 function OnMsg.NewHour()
 	local UserSettings = ChoGGi.UserSettings
 

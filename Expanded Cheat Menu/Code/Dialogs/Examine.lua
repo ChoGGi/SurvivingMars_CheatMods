@@ -33,6 +33,9 @@ if not rawget(_G, "ChoGGi_dlgs_examine_funcs") then
 	ChoGGi_dlgs_examine_funcs = {}
 end
 
+-- maybe make them stored settings...
+local width, height
+
 -- local some globals
 local table_clear = table.clear
 local table_iclear = table.iclear
@@ -232,12 +235,31 @@ function ChoGGi_DlgExamine:Init(parent, context)
 		end
 	end
 
+	-- w/h are updated when a dialog is closed
+	width = width or self.dialog_width
+	height = height or self.dialog_height
+	self.dialog_width = width
+	self.dialog_height = height
+
 	-- examining list
 	ChoGGi_dlgs_examine[self.obj] = self
 	-- obj name
 	self.name = RetName(self.str_object and self.ChoGGi.ComFuncs.DotNameToObject(self.obj) or self.obj)
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
+
+	-- ignoring scaling, this will bump the size of the next examine opened
+	self.idSizeControl.OnMouseButtonUp = function(size_obj, pt, button, ...)
+		if button == "L" then
+			local x,y = self:GetSize():xy()
+			local UIScale = self.ChoGGi.Temp.UIScale
+			width = x + (x * UIScale)
+			height = y + (y * UIScale)
+			self.dialog_width = width
+			self.dialog_height = height
+		end
+		return XSizeControl.OnMouseButtonUp(size_obj, pt, button, ...)
+	end
 
 	do -- toolbar area
 		-- everything grouped gets a window to go in

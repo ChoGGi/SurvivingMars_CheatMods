@@ -8,9 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Remove Landscaping Limit",
-	"version", 3 + 10, -- stupid mod msg
+	"version", 4 + 10, -- stupid mod msg
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_AdjustLandscapingSize",
@@ -25,7 +25,7 @@ return PlaceObj("ModDef", {
 	"description", [[Ignores most of the "errors" (NOT out of bounds as that can crash the game).
 
 The landscaping needs to override the BlockingObjects status otherwise you can't flatten next to/under buildings.
-This will allow you to build regular buildings on top of others, turn off the mod option if it bothers you?
+This will allow you to build regular buildings on top of others, turn off the blocking objects option if it bothers you.
 
 
 

@@ -53,9 +53,10 @@ local function AddUpgrades(obj, id, prop, value)
 	local elec2 = 1500
 	local display_elec = 1.5
 
+	local id_cap1 = id .. "_Capacity1"
 	-- don't override built-in upgrades
 	if obj.upgrade1_id == "" then
-		obj.upgrade1_id = id .. "_Capacity1"
+		obj.upgrade1_id = id_cap1
 		obj.upgrade1_display_name = T(109035890389, "Capacity")
 		obj.upgrade1_icon = "UI/Icons/Upgrades/home_collective_01.tga"
 		obj.upgrade1_mod_prop_id_1 = prop
@@ -75,14 +76,14 @@ local function AddUpgrades(obj, id, prop, value)
 		end
 		obj.upgrade1_upgrade_cost_Concrete = 5000
 		obj.upgrade1_upgrade_cost_Metals = 1000
-	else
-		if obj.upgrade1_id ~= id .. "_Capacity1" then
-			-- add more cap if upgrade1 is taken (floatfloor for 15 instead of 15.0)
-			value = floatfloor(value * 1.5)
-			display_cap = floatfloor(display_cap * 1.5)
-			elec2 = 2500
-			display_elec = 2.5
-		end
+	end
+	-- boost the next ones
+	if obj.upgrade1_id ~= id_cap1 then
+		-- add more cap if upgrade1 is taken (floatfloor for 15 instead of 15.0)
+		value = floatfloor(value * 1.5)
+		display_cap = floatfloor(display_cap * 1.5)
+		elec2 = 2500
+		display_elec = 2.5
 	end
 
 	if obj.upgrade2_id == "" then

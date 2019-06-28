@@ -51,12 +51,12 @@ function SupplyRocket:WaitInOrbit(arrive_time, ...)
 			-- wait the usual orbit time
 			Sleep(Max(0, self.passenger_orbit_life + GameTime() - self.orbit_arrive_time))
 --~ 			-- testing
---~ 			Sleep(const.Scale.hours)
+--~ 			Sleep(const.HourDuration)
 
 			-- instead of killing them all off, we remove the food and kill off one per sol
 			table_remove(cargo, table_find(cargo, "class", "Food"))
 			-- feeding schedule
-			local hour = const.Scale.hours
+			local hour = const.HourDuration
 			local max = hour * 6
 			local min = hour * 2
 			local min1 = min + 1
@@ -140,7 +140,8 @@ function OnMsg.ClassesPostprocess()
 		daily_update_func = function (colonist, trait)
 			colonist:ChangeSanity(-trait.param*const.Scale.Stat, trait.id)
 		end,
-		description = T(101452796812,"<DisplayName> loses Sanity"),
+		description = T(101452796812,"<DisplayName> loses Sanity")
+			.. T(302535920011355, " from having eaten uncooked flesh (BBQ party next time)."),
 		display_name = T(302535920011000, "Cannibal"),
 		group = "Negative",
 		id = "ChoGGi_cannibal",

@@ -12,7 +12,7 @@ local IsValid = IsValid
 local Random = ChoGGi.ComFuncs.Random
 
 PersonalShuttles = {
-	time_limit = const.Scale.sols * 4,
+	time_limit = const.DayDuration * 4,
 	attacker_color1 = -2031616,
 	attacker_color2 = -16777216,
 	attacker_color3 = -9043968,

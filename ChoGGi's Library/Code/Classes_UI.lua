@@ -151,7 +151,7 @@ function ChoGGi_XMoveControl:ToggleRollup(win, bool)
 	end
 end
 
-function ChoGGi_XMoveControl:OnMouseButtonDoubleClick(pt, button, ...)
+function ChoGGi_XMoveControl:OnMouseButtonDoubleClick(...)
 	-- window object
 	local win = self.parent_dialog
 	if win.idDialog then
@@ -167,8 +167,15 @@ function ChoGGi_XMoveControl:OnMouseButtonDoubleClick(pt, button, ...)
 			win:SetHeight(win.header_scaled)
 		end
 	end
-	return XMoveControl.OnMouseButtonDoubleClick(self, pt, button, ...)
+	return XMoveControl.OnMouseButtonDoubleClick(self, ...)
 end
+
+DefineClass.ChoGGi_XSizeControl = {
+	__parents = {
+		"ChoGGi_XDefaults",
+		"XSizeControl",
+	},
+}
 
 DefineClass.ChoGGi_XButtons = {
 	__parents = {
@@ -542,7 +549,7 @@ function ChoGGi_XWindow:AddElements()
 	-- x, y, w, h (start off with all dialogs at 100, 100, default size, and we move later)
 	self.idDialog:SetBox(100, 100, self.dialog_width_scaled, self.dialog_height_scaled)
 
-	self.idSizeControl = g_Classes.XSizeControl:new({
+	self.idSizeControl = g_Classes.ChoGGi_XSizeControl:new({
 		Id = "idSizeControl",
 	}, self.idDialog)
 

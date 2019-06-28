@@ -30,8 +30,8 @@ DefineClass.MurderPod = {
 	min_pos_radius = 250 * guim,
 	max_pos_radius = 1500 * guim,
 	pre_leave_offset = 1000,
-	min_meteor_time = const.Scale.sols,
-	max_meteor_time = const.Scale.sols * 4,
+	min_meteor_time = const.DayDuration,
+	max_meteor_time = const.DayDuration * 4,
 
 	fx_actor_base_class = "FXRocket",
 	fx_actor_class = "SupplyPod",
