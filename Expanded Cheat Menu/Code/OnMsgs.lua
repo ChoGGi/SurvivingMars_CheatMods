@@ -1195,15 +1195,15 @@ function OnMsg.ChangeMap()
 end
 
 do -- LoadGame/CityStart
-	local function SetMissionBonuses(UserSettings, Presets, preset, which, Func)
-		local list = Presets[preset].Default or ""
-		for i = 1, #list do
-			local id = list[i].id
-			if UserSettings[which .. id] then
-				Func(id)
-			end
-		end
-	end
+--~ 	local function SetMissionBonuses(UserSettings, Presets, preset, which, Func)
+--~ 		local list = Presets[preset].Default or ""
+--~ 		for i = 1, #list do
+--~ 			local id = list[i].id
+--~ 			if UserSettings[which .. id] then
+--~ 				Func(id)
+--~ 			end
+--~ 		end
+--~ 	end
 	local function UpdateLabelSpeed(labels, speed, cls)
 		local objs = labels[cls] or ""
 		for i = 1, #objs do
@@ -1263,8 +1263,8 @@ do -- LoadGame/CityStart
 		-- re-binding is now an in-game thing, so keys are just defaults
 		UserSettings.KeyBindings = nil
 
-		SetMissionBonuses(UserSettings, Presets, "MissionSponsorPreset", "Sponsor", ChoGGi.ComFuncs.SetSponsorBonuses)
-		SetMissionBonuses(UserSettings, Presets, "CommanderProfilePreset", "Commander", ChoGGi.ComFuncs.SetCommanderBonuses)
+--~ 		SetMissionBonuses(UserSettings, Presets, "MissionSponsorPreset", "Sponsor", ChoGGi.ComFuncs.SetSponsorBonuses)
+--~ 		SetMissionBonuses(UserSettings, Presets, "CommanderProfilePreset", "Commander", ChoGGi.ComFuncs.SetCommanderBonuses)
 
 
 
