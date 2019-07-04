@@ -205,7 +205,8 @@ do -- ModUpload
 			-- set last_changes to last_changes or version num
 			if not mod.last_changes or mod.last_changes == "" then
 				if testing then
-					mod.last_changes = "https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods ChoGGi/" .. mod.title .. "/changes.txt"
+					local title = mod.title:gsub(" ","%%20")
+					mod.last_changes = "https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/" .. title .. "/changes.txt"
 				else
 					mod.last_changes = mod.version_major .. "." .. mod.version_minor
 				end

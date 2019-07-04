@@ -4,7 +4,7 @@ local options
 local mod_SelectView
 local mod_ShowCentre
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local function ModOptions()
 	mod_SelectView = options.SelectView
 	mod_ShowCentre = options.ShowCentre

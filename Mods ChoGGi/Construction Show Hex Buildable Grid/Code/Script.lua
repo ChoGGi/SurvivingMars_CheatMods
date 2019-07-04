@@ -3,7 +3,7 @@
 local options
 local mod_Option1
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local function ModOptions()
 	mod_Option1 = options.Option1
 	local u = ChoGGi.UserSettings

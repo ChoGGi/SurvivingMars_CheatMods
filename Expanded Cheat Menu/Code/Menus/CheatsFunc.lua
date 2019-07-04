@@ -380,78 +380,6 @@ function ChoGGi.MenuFuncs.KeepCheatsMenuPosition_Toggle()
 	)
 end
 
-function ChoGGi.MenuFuncs.OpenModEditor()
-	local function CallBackFunc(answer)
-		if answer then
-			ModEditorOpen()
-		end
-	end
-	ChoGGi.ComFuncs.QuestionBox(
-		Translate(6779--[[Warning]]) .. "!\n" .. Strings[302535920001508--[[Save your game.
-This will switch to a new map.]]],
-		CallBackFunc,
-		Translate(6779--[[Warning]]) .. ": " .. Strings[302535920000236--[[Mod Editor]]]
-		)
-end
-
---~ 	function ChoGGi.MenuFuncs.OpenModEditor()
---~ 		local ModsList = ModsList
-
---~ 		local item_list = {
---~ 			{
---~ 				text = " " .. Strings[302535920000236--[[Mod Editor]]],
---~ 				value = "ModEditor",
---~ 				hint = Strings[302535920001478--[[Open the Mod Editor and load the Mod map.]]],
---~ 			},
---~ 		}
---~ 		local c = #item_list
-
---~ 		for i = 1, #ModsList do
---~ 			local mod = ModsList[i]
---~ 			local hint
---~ 			if mod.image:find(" ") or mod.path:find(" ") then
---~ 				hint = mod.description
---~ 			elseif mod.image ~= "" then
---~ 				hint = "<image " .. mod.image .. ">\n\n" .. mod.description
---~ 			end
-
---~ 			c = c + 1
---~ 			item_list[c] = {
---~ 				text = mod.title .. ", " .. mod.id .. ", " .. mod.version,
---~ 				mod = {mod},
---~ 				value = mod.id,
---~ 				hint = hint,
---~ 			}
---~ 		end
-
---~ 		local function CallBackFunc(choice)
---~ 			if #choice < 1 then
---~ 				return
---~ 			end
---~ 			choice = choice[1]
-
---~ 			if choice.value == "ModEditor" then
---~ 				ModEditorOpen()
---~ 			else
---~ 				local context = {
---~ 					mod_items = GedItemsMenu("ModItem"),
---~ 					steam_login = true,
---~ 				}
---~ 				local editor = OpenGedApp("ModEditor", Container:new(choice.mod), context)
---~ 				if editor then
---~ 					editor:Rpc("rpcApp", "SetSelection", "root", {1})
---~ 				end
---~ 			end
---~ 		end
-
---~ 		ChoGGi.ComFuncs.OpenInListChoice{
---~ 			callback = CallBackFunc,
---~ 			items = item_list,
---~ 			title = Strings[302535920000236--[[Mod Editor]]],
---~ 		}
-
---~ 	end
-
 function ChoGGi.MenuFuncs.ResetAllResearch()
 	local function CallBackFunc(answer)
 		if answer then
@@ -2111,3 +2039,75 @@ do -- ResearchTech
 	end
 
 end -- do
+
+function ChoGGi.MenuFuncs.OpenModEditor()
+	local function CallBackFunc(answer)
+		if answer then
+			ModEditorOpen()
+		end
+	end
+	ChoGGi.ComFuncs.QuestionBox(
+		Translate(6779--[[Warning]]) .. "!\n" .. Strings[302535920001508--[[Save your game.
+This will switch to a new map.]]],
+		CallBackFunc,
+		Translate(6779--[[Warning]]) .. ": " .. Strings[302535920000236--[[Mod Editor]]]
+		)
+end
+
+--~ 	function ChoGGi.MenuFuncs.OpenModEditor()
+--~ 		local ModsList = ModsList
+
+--~ 		local item_list = {
+--~ 			{
+--~ 				text = " " .. Strings[302535920000236--[[Mod Editor]]],
+--~ 				value = "ModEditor",
+--~ 				hint = Strings[302535920001478--[[Open the Mod Editor and load the Mod map.]]],
+--~ 			},
+--~ 		}
+--~ 		local c = #item_list
+
+--~ 		for i = 1, #ModsList do
+--~ 			local mod = ModsList[i]
+--~ 			local hint
+--~ 			if mod.image:find(" ") or mod.path:find(" ") then
+--~ 				hint = mod.description
+--~ 			elseif mod.image ~= "" then
+--~ 				hint = "<image " .. mod.image .. ">\n\n" .. mod.description
+--~ 			end
+
+--~ 			c = c + 1
+--~ 			item_list[c] = {
+--~ 				text = mod.title .. ", " .. mod.id .. ", " .. mod.version,
+--~ 				mod = {mod},
+--~ 				value = mod.id,
+--~ 				hint = hint,
+--~ 			}
+--~ 		end
+
+--~ 		local function CallBackFunc(choice)
+--~ 			if #choice < 1 then
+--~ 				return
+--~ 			end
+--~ 			choice = choice[1]
+
+--~ 			if choice.value == "ModEditor" then
+--~ 				ModEditorOpen()
+--~ 			else
+--~ 				local context = {
+--~ 					mod_items = GedItemsMenu("ModItem"),
+--~ 					steam_login = true,
+--~ 				}
+--~ 				local editor = OpenGedApp("ModEditor", Container:new(choice.mod), context)
+--~ 				if editor then
+--~ 					editor:Rpc("rpcApp", "SetSelection", "root", {1})
+--~ 				end
+--~ 			end
+--~ 		end
+
+--~ 		ChoGGi.ComFuncs.OpenInListChoice{
+--~ 			callback = CallBackFunc,
+--~ 			items = item_list,
+--~ 			title = Strings[302535920000236--[[Mod Editor]]],
+--~ 		}
+
+--~ 	end

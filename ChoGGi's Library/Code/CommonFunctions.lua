@@ -3002,7 +3002,7 @@ end -- do
 local DeleteObject = ChoGGi.ComFuncs.DeleteObject
 
 -- sticks small depot in front of mech depot and moves all resources to it (max of 20 000)
-function ChoGGi.ComFuncs.EmptyMechDepot(obj)
+function ChoGGi.ComFuncs.EmptyMechDepot(obj, skip_delete)
 	-- if fired from action menu
 	if IsKindOf(obj, "XAction") then
 		obj = SelObject()
@@ -3078,8 +3078,10 @@ function ChoGGi.ComFuncs.EmptyMechDepot(obj)
 		-- clean out old depot
 		obj:CheatEmpty()
 
-		Sleep(250)
-		DeleteObject(obj)
+		if not skip_delete then
+			Sleep(250)
+			DeleteObject(obj)
+		end
 	end)
 
 end

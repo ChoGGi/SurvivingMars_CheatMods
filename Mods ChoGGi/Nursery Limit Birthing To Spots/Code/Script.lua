@@ -6,7 +6,7 @@ local mod_RespectIncubator
 local mod_BypassNoNurseries
 local mod_UltimateNursery
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local function ModOptions()
 	mod_GlobalDomeCount = options.GlobalDomeCount
 	mod_RespectIncubator = options.RespectIncubator

@@ -1,3 +1,6 @@
+v0.8
+Works better with Construction Show Dust Grid.
+
 v0.7
 Code cleanup.
 

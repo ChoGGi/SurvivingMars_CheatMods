@@ -4,13 +4,13 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 7,
-			"version_minor", 0,
+			"version_minor", 1,
 		}),
 	},
 	"title", "Empty Mech Depot",
-	"version", 7,
+	"version", 8,
 	"version_major", 0,
-	"version_minor", 7,
+	"version_minor", 8,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_EmptyMechDepot",
@@ -20,6 +20,9 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"has_options", true,
 	"lua_revision", 245618,
-	"description", [[Adds a button to mech depots to empty them out into a small depot in front of them.]],
+	"description", [[Adds a button to mech depots to empty them out into a small depot in front of them.
+
+Includes mod option to stop it from deleting mech depot afterwards.]],
 })

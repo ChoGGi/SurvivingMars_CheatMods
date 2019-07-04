@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Deep Resources Never Run Out",
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"saved", 0,
 	"id", "ChoGGi_DeepResourcesNeverRunOut",
 	"author", "ChoGGi",

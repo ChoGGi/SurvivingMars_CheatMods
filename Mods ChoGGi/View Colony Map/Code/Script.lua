@@ -69,6 +69,18 @@ end
 OnMsg.CityStart = ResetFunc
 OnMsg.LoadGame = ResetFunc
 
+local function GamepadFocus()
+	-- stupid gamepad focus
+	if GetUIStyleGamepad() then
+		WaitMsg("OnRender")
+		if Dialogs.PGMainMenu then
+			pcall(function()
+				Dialogs.PGMainMenu.idContent[1][1][1].idToolBar:SetFocus()
+			end)
+		end
+	end
+end
+
 -- a dialog that shows an image
 --~ local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 --~ local function GetRootDialog(dlg)
@@ -129,16 +141,9 @@ Breakthroughs will be random as well.
 	-- we need to wait a sec for the map info to load or y will be 0
 	CreateRealTimeThread(function()
 		WaitMsg("OnRender")
+		self:PostInit(nil, self:SetDefaultPos())
 
-		local x, y = self:SetDefaultPos()
-		self:PostInit(nil, point(x, y))
-
-		-- stupid gamepad focus
-		if GetUIStyleGamepad() then
-			WaitMsg("OnRender")
-			local toolbar = Dialogs.PGMainMenu.idContent[1][1][1].idToolBar
-			toolbar:SetFocus()
-		end
+		GamepadFocus()
 	end)
 end
 
@@ -155,19 +160,18 @@ function ChoGGi_VCM_MapImageDlg:idShowExtra_OnChange(check)
 end
 
 function ChoGGi_VCM_MapImageDlg:SetDefaultPos()
-	-- default dialog position if we can't find the ui stuff (new version or whatnot)
-	local x, y = 100, 100
-
-	local PGMainMenu = Dialogs.PGMainMenu
-	if PGMainMenu then
-		-- wrapped in a pcall, so if we fail then it'll just use my default
+	local size
+	if Dialogs.PGMainMenu then
+		-- wrapped in a pcall, so if we fail (new version) then it'll just use my default
 		pcall(function()
-			local dlg = PGMainMenu.idContent.PGMission[1][1].idContent.box
-			x = dlg:sizex()
-			y = dlg:sizey() / 4
+			size = Dialogs.PGMainMenu.idContent.PGMission[1][1].idContent.box
+				:size()
+			size = size:SetY(size:y()/4)
 		end)
 	end
-	return x, y
+
+	-- default dialog position if the above fails
+	return size or point(100, 100)
 end
 
 function ChoGGi_VCM_MapImageDlg:Done()
@@ -253,12 +257,7 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 		local pos = show_image_dlg:GetPos() + point(show_image_dlg:GetWidth() + 10, 0)
 		self:PostInit(nil, pos)
 
-		-- stupid gamepad focus
-		if GetUIStyleGamepad() then
-			WaitMsg("OnRender")
-			local toolbar = Dialogs.PGMainMenu.idContent[1][1][1].idToolBar
-			toolbar:SetFocus()
-		end
+		GamepadFocus()
 	end)
 end
 

@@ -1,3 +1,6 @@
+v0.4
+Fixed possible blank screen in mission profile.
+
 v0.3
 Fixed blackscreen (the translate func couldn't find UICity and barfed).
 Bug the devs if you want the missing descriptions (or install my library mod).

@@ -1,3 +1,6 @@
+v0.4
+Made sure lines are removed from saved games.
+
 v0.3
 Removed some log spam (thanks XxUnkn0wnxX).
 

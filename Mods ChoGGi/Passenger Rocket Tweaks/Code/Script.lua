@@ -7,7 +7,7 @@ local mod_HideRocket
 local mod_PosX
 local mod_PosY
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local ToggleSpecInfo
 local function ModOptions()
 	mod_MoreSpecInfo = options.MoreSpecInfo

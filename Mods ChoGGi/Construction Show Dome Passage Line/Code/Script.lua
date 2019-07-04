@@ -5,7 +5,7 @@ local mod_Option1
 local mod_AdjustLineLength
 local max_line_len
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local function ModOptions()
 	mod_Option1 = options.Option1
 	mod_AdjustLineLength = options.AdjustLineLength

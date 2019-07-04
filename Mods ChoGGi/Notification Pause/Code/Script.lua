@@ -3,7 +3,7 @@
 local options
 local lookup_skips = {}
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local function ModOptions()
 	local OnScreenNotificationPresets = OnScreenNotificationPresets
 	for id in pairs(OnScreenNotificationPresets) do

@@ -218,14 +218,16 @@ function SetPlanetCamera(planet, state, ...)
 	if not state then
 		CreateRealTimeThread(function()
 			WaitMsg("OnRender")
-			local pgmission = Dialogs.PGMainMenu.idContent.PGMission
-			local toolbar = pgmission[1][1].idToolBar
-			AddProfilesButton(pgmission, toolbar)
-			-- hook into toolbar button area so we can keep adding the button
-			local orig_RebuildActions = toolbar.RebuildActions
-			toolbar.RebuildActions = function(self, context, ...)
-				orig_RebuildActions(self, context, ...)
+			if Dialogs.PGMainMenu then
+				local pgmission = Dialogs.PGMainMenu.idContent.PGMission
+				local toolbar = pgmission[1][1].idToolBar
 				AddProfilesButton(pgmission, toolbar)
+				-- hook into toolbar button area so we can keep adding the button
+				local orig_RebuildActions = toolbar.RebuildActions
+				toolbar.RebuildActions = function(self, context, ...)
+					orig_RebuildActions(self, context, ...)
+					AddProfilesButton(pgmission, toolbar)
+				end
 			end
 		end)
 	end

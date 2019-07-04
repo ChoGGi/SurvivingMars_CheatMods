@@ -1,7 +1,31 @@
 -- See LICENSE for terms
 
+local options
+local mod_SkipDelete
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_SkipDelete = options.SkipDelete
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= "ChoGGi_EmptyMechDepot" then
+		return
+	end
+
+	ModOptions()
+end
+
+local Strings = ChoGGi.Strings
+
 function OnMsg.ClassesPostprocess()
-	local Strings = ChoGGi.Strings
 
 	-- list controlled buildings
 	ChoGGi.ComFuncs.AddXTemplate("EmptyMechDepot", "sectionStorage", {
@@ -20,7 +44,7 @@ function OnMsg.ClassesPostprocess()
 			end
 		end,
 		func = function(_, context)
-			ChoGGi.ComFuncs.EmptyMechDepot(context)
+			ChoGGi.ComFuncs.EmptyMechDepot(context, mod_SkipDelete)
 		end,
 	}, true)
 

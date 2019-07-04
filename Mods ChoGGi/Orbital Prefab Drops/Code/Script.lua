@@ -7,7 +7,7 @@ local mod_Inside
 local mod_DomeCrack
 local mod_ModelType
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local function ModOptions()
 	mod_PrefabOnly = options.PrefabOnly
 	mod_Outside = options.Outside

@@ -3,7 +3,7 @@
 local options
 local mod_ColdCapacity
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local function ModOptions()
 	-- updated during building update
 	mod_ColdCapacity = options.ColdCapacity

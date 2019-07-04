@@ -5,7 +5,7 @@ local mod_NewDay
 local mod_NewHour
 local mod_NewMinute
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local function ModOptions()
 	mod_NewDay = options.NewDay
 	mod_NewHour = options.NewHour

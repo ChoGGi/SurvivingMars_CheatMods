@@ -2986,7 +2986,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 		if entity then
 			local ver_tris = ""
 			-- calling GetNumTris/GetNumVertices on InvisibleObject == CTD
-			if entity ~= "InvisibleObject" then
+			if entity ~= "InvisibleObject" and entity ~= "PointLight" then
 				ver_tris = "\nGetNumTris(): " .. self:ConvertValueToInfo(obj:GetNumTris())
 				.. ", GetNumVertices(): " .. self:ConvertValueToInfo(obj:GetNumVertices())
 			end

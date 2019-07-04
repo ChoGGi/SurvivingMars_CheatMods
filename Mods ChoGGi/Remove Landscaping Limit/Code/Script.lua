@@ -5,7 +5,7 @@ local mod_RemoveLandScapingLimits
 local mod_StepSize
 local mod_BlockObjects
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local function ModOptions()
 	mod_RemoveLandScapingLimits = options.RemoveLandScapingLimits
 	mod_StepSize = options.StepSize * guim

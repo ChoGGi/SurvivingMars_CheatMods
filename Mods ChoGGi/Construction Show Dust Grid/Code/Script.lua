@@ -126,6 +126,37 @@ local function ShowBuildingHexesSite(bld)
 	end
 end
 
+-- add grid hexes
+local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
+function CursorBuilding.GameInit(...)
+	if not mod_Option1 then
+		return orig_CursorBuilding_GameInit(...)
+	end
+
+	local labels = UICity.labels
+	for i = 1, dust_gens_c do
+		local objs = labels[dust_gens[i]] or ""
+		-- loop through them all and add the grid
+		for j = 1, #objs do
+			local obj = objs[j]
+			local obj_pos = obj:GetPos()
+			-- add hex to all buildings
+			if obj_pos ~= InvalidPos and not g_HexRanges[obj] then
+				if obj:IsKindOf("ConstructionSite") then
+					if table_find(dust_gens, obj.building_class) then
+						ShowBuildingHexesSite(obj)
+					end
+				else
+					ShowBuildingHexes(obj, "RangeHexMultiSelectRadius", "GetDustRadius")
+				end
+			end
+		end
+	end
+
+	return orig_CursorBuilding_GameInit(...)
+end
+
+-- update visibility
 local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
 function CursorBuilding:UpdateShapeHexes(...)
 	-- skip if disabled or not a RequiresMaintenance building
@@ -146,25 +177,13 @@ function CursorBuilding:UpdateShapeHexes(...)
 		-- loop through them all and add the grid
 		for j = 1, #objs do
 			local obj = objs[j]
-			local obj_pos = obj:GetPos()
-			-- add hex to all buildings
-			if obj_pos ~= InvalidPos and not g_HexRanges[obj] then
-				if obj:IsKindOf("ConstructionSite") then
-					if table_find(dust_gens, obj.building_class) then
-						ShowBuildingHexesSite(obj)
-					end
-				else
-					ShowBuildingHexes(obj, "RangeHexMultiSelectRadius", "GetDustRadius")
-				end
-			end
-
 			-- change vis for any outside the range
 			local is_site = obj:IsKindOf("ConstructionSite")
 			if not is_site or is_site and obj.building_class_proto.GetDustRadius then
 				local range = g_HexRanges[obj]
 				if range and range[1] and range[1].decals then
 					range = range[1]
-					if range_limit and cursor_pos:Dist2D(obj_pos) > range_limit then
+					if range_limit and cursor_pos:Dist2D(obj:GetPos()) > range_limit then
 						range:SetVisible(false)
 					else
 						range:SetOpacity(mod_GridOpacity)

@@ -7,7 +7,7 @@ local mod_GridOpacity
 local mod_SelectDome
 local mod_SelectOutside
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local function ModOptions()
 	mod_Option1 = options.Option1
 	mod_DistFromCursor = options.DistFromCursor * 1000
@@ -38,29 +38,10 @@ local IsKindOf = IsKindOf
 local pairs = pairs
 local yellow = yellow
 
-local function UpdateRanges()
-	local g_HexRanges = g_HexRanges
-	for range, obj in pairs(g_HexRanges) do
-		if range:IsKindOf("RangeHexMultiSelectRadius") then
-			range:SetOpacity(mod_GridOpacity)
-			if not IsKindOf(obj, "Dome") then
-				for i = 1, #range.decals do
-					range.decals[i]:SetColorModifier(yellow)
-				end
-			end
-		end
-	end
-end
-
-local function ShowDomeRanges()
-	ShowHexRanges(nil, "Dome")
-	UpdateRanges()
-end
-
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit(...)
 	if mod_Option1 and self.template:IsKindOf("Dome") then
-		ShowDomeRanges()
+		ShowHexRanges(nil, "Dome")
 	end
 	return orig_CursorBuilding_GameInit(self, ...)
 end
@@ -73,7 +54,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 
 		local g_HexRanges = g_HexRanges
 		for range, obj in pairs(g_HexRanges) do
-			if range:IsKindOf("RangeHexMultiSelectRadius") then
+			if IsKindOf(obj, "Dome") and range:IsKindOf("RangeHexMultiSelectRadius") then
 				if range_limit and cursor_pos:Dist2D(obj:GetPos()) > range_limit then
 					range:SetVisible(false)
 				else
@@ -98,10 +79,10 @@ function OnMsg.SelectionAdded(obj)
 	end
 
 	if mod_SelectDome and obj:IsKindOf("Dome")
-		or mod_SelectOutside and obj:IsKindOf("DomeOutskirtBld")
+		or mod_SelectOutside and obj:IsKindOf("DomeOutskirtBld") and not obj:IsKindOf("StorageDepot")
 	then
 		-- needs a slight delay, or last selected dome will lose it's selection radius
-		CreateRealTimeThread(ShowDomeRanges)
+		CreateRealTimeThread(ShowHexRanges, nil, "Dome")
 	end
 end
 

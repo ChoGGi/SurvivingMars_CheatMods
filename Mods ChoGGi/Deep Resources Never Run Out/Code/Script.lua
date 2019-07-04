@@ -6,14 +6,12 @@ local mod_MaxGrade
 
 local MaxFillAll
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local function ModOptions()
 	mod_UndergroundDeposits = options.UndergroundDeposits
 	mod_MaxGrade = options.MaxGrade
 
-	if GameState.gameplay then
-		MaxFillAll()
-	end
+	MaxFillAll()
 end
 
 -- load default/saved settings
@@ -77,10 +75,12 @@ end
 
 MaxFillAll = function()
 	local UICity = UICity
-	MaxDeposits(UICity.labels.SubsurfaceDeposit or "")
-	RefillAllDeposits(UICity.labels.SubsurfaceDeposit or "")
-	MaxDeposits(UICity.labels.TerrainDeposit or "")
-	RefillAllDeposits(UICity.labels.TerrainDeposit or "")
+	if UICity then
+		MaxDeposits(UICity.labels.SubsurfaceDeposit or "")
+		RefillAllDeposits(UICity.labels.SubsurfaceDeposit or "")
+		MaxDeposits(UICity.labels.TerrainDeposit or "")
+		RefillAllDeposits(UICity.labels.TerrainDeposit or "")
+	end
 end
 
 -- saved games

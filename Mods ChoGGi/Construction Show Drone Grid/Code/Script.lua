@@ -5,7 +5,7 @@ local mod_Option1
 local mod_DistFromCursor
 local mod_GridOpacity
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local function ModOptions()
 	mod_Option1 = options.Option1
 	mod_DistFromCursor = options.DistFromCursor * 1000
@@ -31,10 +31,14 @@ end
 local ShowHexRanges = ShowHexRanges
 local HideHexRanges = HideHexRanges
 local IsKindOf = IsKindOf
+local IsKindOfClasses = IsKindOfClasses
 local pairs = pairs
 local green = green
 local yellow = yellow
+local white = white
 local CleanupHexRanges = CleanupHexRanges
+
+local classes = {"SupplyRocket", "DroneHub", "RCRover"}
 
 local orig_ShowBuildingHexes = ShowBuildingHexes
 function ShowBuildingHexes(bld, hex_range_class, bind_func, ...)
@@ -73,17 +77,23 @@ function CursorBuilding.GameInit(...)
 	-- change colours
 	local g_HexRanges = g_HexRanges
 	for range, obj in pairs(g_HexRanges) do
-		if range:IsKindOf("RangeHexMultiSelectRadius") then
-			range:SetOpacity(mod_GridOpacity)
-		end
-
-		if IsKindOf(obj, "SupplyRocket") then
-			for i = 1, #range.decals do
-				range.decals[i]:SetColorModifier(green)
+		if IsKindOfClasses(obj, classes) then
+			if range:IsKindOf("RangeHexMultiSelectRadius") then
+				range:SetOpacity(mod_GridOpacity)
 			end
-		elseif IsKindOf(obj, "RCRover") then
-			for i = 1, #range.decals do
-				range.decals[i]:SetColorModifier(yellow)
+
+			if IsKindOf(obj, "SupplyRocket") then
+				for i = 1, #range.decals do
+					range.decals[i]:SetColorModifier(green)
+				end
+			elseif IsKindOf(obj, "RCRover") then
+				for i = 1, #range.decals do
+					range.decals[i]:SetColorModifier(yellow)
+				end
+			elseif IsKindOf(obj, "DroneHub") then
+				for i = 1, #range.decals do
+					range.decals[i]:SetColorModifier(white)
+				end
 			end
 		end
 	end
@@ -103,7 +113,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 
 	local g_HexRanges = g_HexRanges
 	for range, obj in pairs(g_HexRanges) do
-		if range:IsKindOf("RangeHexMultiSelectRadius") then
+		if IsKindOfClasses(obj, classes) and range:IsKindOf("RangeHexMultiSelectRadius") then
 			if range_limit and cursor_pos:Dist2D(obj:GetPos()) > range_limit then
 				range:SetVisible(false)
 			else

@@ -527,15 +527,23 @@ do -- OpenInExamineDlg
 			params.obj = "nil"
 		end
 
-		-- already examining, so focus and return ( :new() doesn't return the opened dialog).
+		-- already examining? if so focus and return ( :new() doesn't return the opened dialog).
 		local opened = ChoGGi_dlgs_examine[params.obj]
 
 		if opened then
-			-- hit refresh, cause i'm that kinda guy
-			opened:RefreshExamine()
-			-- and flash the titlebar
-			CreateRealTimeThread(FlashTitlebar, opened.idMoveControl)
-			return opened
+			-- dialog was closed, but ref remains
+			if opened.window_state == "destroying" then
+				ChoGGi_dlgs_examine[params.obj] = nil
+			-- examine gets confused with children (first examined one that is)
+			elseif not params.parent
+				or params.parent and not (params.parent.child_lock and params.parent.child_lock_dlg)
+			then
+				-- hit refresh, cause i'm that kinda guy
+				opened:RefreshExamine()
+				-- and flash the titlebar
+				CreateRealTimeThread(FlashTitlebar, opened.idMoveControl)
+				return opened
+			end
 		end
 
 		if params.parent ~= "str" and not (IsKindOf(params.parent, "XWindow") or IsPoint(params.parent)) then
@@ -551,12 +559,16 @@ do -- OpenInExamineDlg
 			parent = params.parent
 			if parent and IsKindOf(parent, "ChoGGi_DlgExamine") and parent.child_lock then
 				local child = parent.child_lock_dlg
-				if child and child.window_state ~= "destroying" then
-					-- it's valid so update with new obj
-					child.obj = params.obj
-					child:SetObj()
-					-- no need for a new window
-					return
+				if child then
+					if child.window_state == "destroying" then
+						parent.child_lock_dlg = false
+					else
+						-- it's valid so update with new obj
+						child.obj = params.obj
+						child:SetObj()
+						-- no need for a new window
+						return
+					end
 				end
 
 				-- child_lock_dlg is invalid or not opened yet

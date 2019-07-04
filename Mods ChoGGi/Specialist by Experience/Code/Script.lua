@@ -4,7 +4,7 @@ local options
 local mod_IgnoreSpec
 local mod_SolsToTrain
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local function ModOptions()
 	mod_IgnoreSpec = options.IgnoreSpec
 	mod_SolsToTrain = options.SolsToTrain

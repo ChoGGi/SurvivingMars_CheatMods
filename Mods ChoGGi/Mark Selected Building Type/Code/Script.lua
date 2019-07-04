@@ -104,7 +104,7 @@ OnMsg.SelectionRemoved = ClearBeams
 -- make sure to remove beams on save
 OnMsg.SaveGame = ClearBeams
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 ModOptions = function()
 	mod_Mark = options.Mark
 	if mod_Mark and SelectedObj then

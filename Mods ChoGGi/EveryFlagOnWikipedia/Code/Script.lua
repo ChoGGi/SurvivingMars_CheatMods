@@ -4,7 +4,7 @@ local options
 local mod_RandomBirthplace
 local mod_DefaultNationNames
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local function ModOptions()
 	mod_RandomBirthplace = options.RandomBirthplace
 	mod_DefaultNationNames = options.DefaultNationNames

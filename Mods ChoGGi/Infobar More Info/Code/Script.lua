@@ -8,7 +8,7 @@ local mod_SkipGrid1
 local mod_MergedGrids
 local mod_RolloverWidth
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local function ModOptions()
 	mod_SkipGrid0 = options.SkipGrid0
 	mod_SkipGrid1 = options.SkipGrid1

@@ -10,7 +10,7 @@ local GameState = GameState
 local options
 local mod_StopHarvest
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local function ModOptions()
 	mod_StopHarvest = options.StopHarvest
 end

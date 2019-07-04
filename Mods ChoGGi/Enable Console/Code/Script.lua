@@ -4,7 +4,7 @@ local options
 local mod_EnableLog
 local mod_EnableConsole
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local function ModOptions()
 	mod_EnableLog = options.EnableLog
 	mod_EnableConsole = options.EnableConsole

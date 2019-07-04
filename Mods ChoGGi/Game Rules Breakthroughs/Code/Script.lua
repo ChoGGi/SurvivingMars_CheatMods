@@ -3,7 +3,7 @@
 local options
 local mod_BreakthroughsResearched
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local function ModOptions()
 	mod_BreakthroughsResearched = options.BreakthroughsResearched
 end
@@ -23,15 +23,13 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local _InternalTranslate = _InternalTranslate
 local T = T
-local PlaceObj = PlaceObj
 
 local function SafeTrans(...)
 	local varargs = ...
 	local str
 	pcall(function()
-		str = _InternalTranslate(T(varargs))
+		str = T(varargs)
 	end)
 	return str or "Missing string... Nope just needs UICity which isn't around till the game starts (ask the devs)."
 end
@@ -47,11 +45,12 @@ function OnMsg.ClassesPostprocess()
 		return a.id < b.id
 	end)
 
+	local PlaceObj = PlaceObj
 	for i = 1, #breaks do
 		local def = breaks[i]
 		PlaceObj("GameRules", {
 			description = SafeTrans{def.description, def},
-			display_name = SafeTrans(11451--[[Breakthrough]]) .. ": " .. SafeTrans(def.display_name),
+			display_name = T(11451, "Breakthrough") .. ": " .. T(def.display_name),
 			group = "Default",
 			id = "ChoGGi_" .. def.id,
 			PlaceObj("Effect_Code", {
@@ -66,4 +65,16 @@ function OnMsg.ClassesPostprocess()
 		})
 	end
 
+end
+
+-- prevent blank mission profile screen
+function OnMsg.LoadGame()
+	local rules = g_CurrentMissionParams.idGameRules or empty_table
+	local GameRulesMap = GameRulesMap
+	for rule_id in pairs(rules) do
+		-- if it isn't in the map then it isn't a valid rule
+		if not GameRulesMap[rule_id] then
+			rules[rule_id] = nil
+		end
+	end
 end

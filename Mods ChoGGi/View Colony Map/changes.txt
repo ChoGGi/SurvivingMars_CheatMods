@@ -1,3 +1,6 @@
+v1.4
+Log spam.
+
 v1.3
 Added warning if random tech rule active.
 Hopefully focus works better on XBox.

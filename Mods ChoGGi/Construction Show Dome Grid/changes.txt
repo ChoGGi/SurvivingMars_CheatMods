@@ -1,0 +1,3 @@
+v0.2
+Works better with my other Construction Show * Grid mods.
+Stopped dome grids showing up for resource depots (not sure why they count as outskirt buildings).

@@ -2,7 +2,7 @@
 local options
 local mod_LimitStorage
 
--- fired when settings are changed and new/load
+-- fired when settings are changed/init
 local function ModOptions()
 	mod_LimitStorage = options.LimitStorage
 end

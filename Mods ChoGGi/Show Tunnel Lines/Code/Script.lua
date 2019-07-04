@@ -8,15 +8,14 @@ local table_clear = table.clear
 
 local tunnel_lines = {}
 local two_pointer = {}
-local cls = "Tunnel"
 
 function OnMsg.SelectionAdded(obj)
-	if not obj:IsKindOf(cls) then
+	if not obj:IsKindOf("Tunnel") then
 		return
 	end
 
 	-- if type tunnel then build/update list and show lines
-	local tunnels = UICity.labels[cls] or ""
+	local tunnels = UICity.labels.Tunnel or ""
 	for i = 1, #tunnels do
 		-- get tunnel n linked one so we only have one of each in table
 		local t1, t2 = tunnels[i], tunnels[i].linked_obj
@@ -37,12 +36,20 @@ function OnMsg.SelectionAdded(obj)
 
 end
 
--- when selection is removed (or changed) hide all the lines
-function OnMsg.SelectionRemoved()
+local function CleanUp()
 	for _, table_item in pairs(tunnel_lines) do
 		if IsValid(table_item.line) then
 			table_item.line:delete()
 		end
 	end
 	table_clear(tunnel_lines)
+end
+
+OnMsg.SaveGame = CleanUp
+-- when selection is removed (or changed) hide all the lines
+OnMsg.SelectionRemoved = CleanUp
+
+-- remove me
+function OnMsg.LoadGame()
+	MapDelete("map","Polyline")
 end
