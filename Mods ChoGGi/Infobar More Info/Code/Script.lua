@@ -1,7 +1,5 @@
 -- See LICENSE for terms
 
--- See LICENSE for terms
-
 local options
 local mod_SkipGrid0
 local mod_SkipGrid1
@@ -477,4 +475,34 @@ for func, res_name in pairs(resources) do
 		end
 		return ret
 	end
+end
+
+-- add biorobots count
+local orig_ResourceOverview_GetColonistsRollover = ResourceOverview.GetColonistsRollover
+function ResourceOverview.GetColonistsRollover(...)
+	local UICity = UICity
+	-- no biorobots so return orig
+	if not UICity:IsTechResearched("ThePositronicBrain") then
+		return orig_ResourceOverview_GetColonistsRollover(...)
+	end
+
+	local ret = orig_ResourceOverview_GetColonistsRollover(...)
+
+	-- get android count in each dome (maybe faster than counting each colonist?)
+	local ac = 0
+	local objs = UICity.labels.Dome or ""
+	for i = 1, #objs do
+		ac = ac + #(objs[i].labels.Android or "")
+	end
+
+	local c = ret[1].j
+	c = c + 1
+	ret[1].table[c] = T("<left>") .. T(7303, "Biorobot") .. T{
+		"<right><colonist(number)>", number = ac,
+	}
+
+	-- add count of all new strings
+	ret[1].j = c
+
+	return table_concat(ret)
 end

@@ -78,7 +78,7 @@ function CursorBuilding.GameInit(...)
 	local g_HexRanges = g_HexRanges
 	for range, obj in pairs(g_HexRanges) do
 		if IsKindOfClasses(obj, classes) then
-			if range:IsKindOf("RangeHexMultiSelectRadius") then
+			if IsKindOf(range, "RangeHexMultiSelectRadius") then
 				range:SetOpacity(mod_GridOpacity)
 			end
 
@@ -113,7 +113,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 
 	local g_HexRanges = g_HexRanges
 	for range, obj in pairs(g_HexRanges) do
-		if IsKindOfClasses(obj, classes) and range:IsKindOf("RangeHexMultiSelectRadius") then
+		if IsKindOfClasses(obj, classes) and IsKindOf(range, "RangeHexMultiSelectRadius") then
 			if range_limit and cursor_pos:Dist2D(obj:GetPos()) > range_limit then
 				range:SetVisible(false)
 			else

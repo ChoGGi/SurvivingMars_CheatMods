@@ -2,12 +2,13 @@
 
 ## v14.1 (Unreleased)
 ### Changed:
-- Examine>Child checkbox: Examine all objs in a single child dlg.
+- No more updating mission commander/sponsor on loadgame.
 - Added Const ids to Cheats>Consts.
 - Mod Upload now asks when doing batch upload.
 - Moved Capacity to Buildings.
 - Moved School/Uni/San to Training Buildings.
 - Examine:
+- > Added Child checkbox: Examine all objs in a single child dlg.
 - > Clear Button works with lines and other stuff added.
 - > Some toolbar buttons showed up at the wrong time.
 

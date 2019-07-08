@@ -1,3 +1,6 @@
+v0.6
+If Positronic Brain is researched then shows the count of biorobots in the colony.
+
 v0.5
 Shows individual grids (with some mod options).
 Remaining time for grid storage.

@@ -1,2 +1,5 @@
+v0.3
+Log showed back up even when turned off (when you open the console).
+
 v0.2
 Compatible with my lib mod.

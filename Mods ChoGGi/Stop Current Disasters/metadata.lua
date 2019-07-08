@@ -24,7 +24,7 @@ return PlaceObj("ModDef", {
 	"lua_revision", 245618,
 	"has_options", true,
 	"description", [[Stops any running disasters when you load a save.
-Includes mod option to disable mod.
+Includes mod option to disable mod (to leave it installed without that missing mod msg each load).
 
 
 Included in Expanded Cheat Menu.]],

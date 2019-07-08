@@ -1568,7 +1568,7 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
 
 		local max = 100000 * r
 		local fill = 100 * r
-		local function SetStat(Stat, v)
+		local function SetStat(stat, v)
 			if v == 1 or v == 3 or v == 6 or v == 8 then
 				v = max
 			else
@@ -1579,10 +1579,10 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
 				if dome then
 					local o = objs[i]
 					if o.dome and o.dome.handle == dome.handle then
-						o[Stat] = v
+						o[stat] = v
 					end
 				else
-					objs[i][Stat] = v
+					objs[i][stat] = v
 				end
 			end
 		end

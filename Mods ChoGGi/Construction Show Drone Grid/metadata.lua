@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Construction: Show Drone Grid v0.4",
 	"title", "Construction Show Drone Grid",
-	"version", 8,
+	"version", 9,
 	"version_major", 0,
-	"version_minor", 8,
+	"version_minor", 9,
 	"saved", 0,
 	"id", "ChoGGi_ConstructionShowDroneGrid",
 	"author", "ChoGGi",

@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Infobar Add Discharge Rates",
 	"title", "Infobar More Info",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_InfobarAddDischargeRates",

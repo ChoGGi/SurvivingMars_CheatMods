@@ -36,10 +36,11 @@ local function ShowConsole()
 	if not rawget(_G, "dlgConsole") then
 		CreateConsole()
 	end
-	ShowConsoleLog(mod_EnableLog)
 	if rawget(_G, "dlgConsole") then
 		dlgConsole:Show(true)
 	end
+
+	ShowConsoleLog(mod_EnableLog)
 end
 
 function OnMsg.ClassesPostprocess()
