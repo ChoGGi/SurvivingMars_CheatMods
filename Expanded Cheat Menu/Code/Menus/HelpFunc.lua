@@ -411,8 +411,8 @@ do -- ModUpload
 						-- build list of titles for msg
 						local titles = {}
 						local titles_c = 0
-						for i = 1, choices_len do
-							choice = choices[i]
+						for j = 1, choices_len do
+							choice = choices[j]
 							mod = choice.mod
 							if mod then
 								titles_c = titles_c + 1

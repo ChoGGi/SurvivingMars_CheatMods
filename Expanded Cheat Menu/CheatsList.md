@@ -499,7 +499,7 @@ ECM>Fix All Objects: Fixes all malfunctioned objects.
 ECM>Grid Info: List objects in grids (air, electricity, and water).
 ECM>Scanner Queue Larger: Queue up to 100 squares.
 Game.Camera>Bird's Eye: 20: How far up the camera can move.
-Game.Camera>Border Scrolling: 2: Set size of activation for mouse border scrolling.
+Game.Camera>Border Scrolling: -1: Set size of activation for mouse border scrolling.
 Game.Camera>Reset: If something makes the camera view wonky you can use this to fix it.
 Game.Camera>Toggle Cursor: Toggle between moving camera and selecting objects.
 Game.Camera>Toggle Follow Camera: Select (or mouse over) an object to follow.

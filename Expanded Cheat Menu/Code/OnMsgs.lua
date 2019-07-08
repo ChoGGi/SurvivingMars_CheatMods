@@ -1235,7 +1235,6 @@ do -- LoadGame/CityStart
 		local g_Classes = g_Classes
 		local const = const
 		local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides
-		local Presets = Presets
 		local hr = hr
 		local labels = UICity.labels
 

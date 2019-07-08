@@ -156,7 +156,7 @@ do -- MapData
 		export_count = 0
 		table.clear(export_data_dupes)
 
-ChoGGi.ComFuncs.TickStart("ExportMapDataToCSV")
+--~ ChoGGi.ComFuncs.TickStart("ExportMapDataToCSV")
 
 		-- needed for RecalcThreatResourceLevels func
 		local orig_GameState = GameState.gameplay
@@ -181,7 +181,7 @@ ChoGGi.ComFuncs.TickStart("ExportMapDataToCSV")
 		GameState.gameplay = orig_GameState
 		g_SelectedSpotChallengeMods = orig_spotchall
 
-ChoGGi.ComFuncs.TickEnd("ExportMapDataToCSV")
+--~ ChoGGi.ComFuncs.TickEnd("ExportMapDataToCSV")
 
 		-- remove landing spot obj (not needed anymore)
 		landing:delete()

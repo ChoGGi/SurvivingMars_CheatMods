@@ -22,7 +22,7 @@ local function UpdateMax(self)
 end
 
 local orig_GetWaterProductionText = WaterProducer.GetWaterProductionText
-function WaterProducer:GetWaterProductionText(short, ...)
+function WaterProducer:GetWaterProductionText(...)
 	local ret = orig_GetWaterProductionText(self, ...)
 
 	if not self:IsKindOf("MoistureVaporator") then

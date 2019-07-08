@@ -35,7 +35,7 @@ end
 local function ModOptions()
 	mod_MrBumble = options.MrBumble
 
-	local ct = ClassTemplates.Building
+--~	local ct = ClassTemplates.Building
 	local g_Classes = g_Classes
 
 	local BuildingTemplates = BuildingTemplates
@@ -78,8 +78,9 @@ local function ModOptions()
 				end
 			end
 		end
+
 		-- update res/workplaces
-		local objs = labels.Colonist or ""
+		objs = labels.Colonist or ""
 		for i = 1, #objs do
 			local obj = objs[i]
 			if obj.age_trait == "Child" then

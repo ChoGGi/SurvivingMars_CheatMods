@@ -1,32 +1,34 @@
 ## Library Changelog
 
-## v7.1 (Unreleased)
+## v7.2 (Unreleased)
+
+## v7.1 (08 July 2019)
 - RetName:
 - > Uses class names instead of "Anomaly".
 - > Added some more tables.
 - > Just noticed that the gimped "_G" doesn't work well with pairs(), so I manually added some stuff.
 
-## v7.0 (June 18 2019)
+## v7.0 (18 June 2019)
 - Added Update Text func/button to MultiLineText.
 
-## v6.9 (June 07 2019)
+## v6.9 (07 June 2019)
 - Fixed bug in Settings.lua (thanks JajajTec).
 - Sped up CSV mapdata export / removed dupes (thanks ve2dmn/Gem).
 
-## v6.8 (June 01 2019)
+## v6.8 (01 June 2019)
 - Export Map Data NESW strings were missing.
 - Colour Modifier checkmarks were broked.
 
-## v6.7 (May 30 2019)
+## v6.7 (30 May 2019)
 - Cernan.
 
-## v6.6 (May 22 2019)
+## v6.6 (22 May 2019)
 - Bump.
 
-## v6.5 (May 17 2019)
+## v6.5 (17 May 2019)
 - Code cleanup.
 
-## v6.4 (May 15 2019)
+## v6.4 (15 May 2019)
 - ValidateImage didn't work with non-Library images.
 - DeleteObject works with multi-selection.
 - Made DotNameToObject compatible with keys that don't support dotnames (spaces and so on).
@@ -38,18 +40,18 @@
 - > DeleteObject
 - > List Choice dialog.
 
-## v6.3 (Mar 30 2019)
+## v6.3 (30 Mar 2019)
 - Added some more func names to RetName.
 - Restored RetName for objlists.
 - Code cleanup.
 
-## v6.2 (Mar 17 2019)
+## v6.2 (17 Mar 2019)
 - Xbox.
 
-## v6.1 (Mar 15 2019)
+## v6.1 (15 Mar 2019)
 - Code cleanup.
 
-## v6.0 (Mar 14 2019)
+## v6.0 (14 Mar 2019)
 - Added the func names from g_Classes to the RetName func.
 - Broke the Colour Modifier last update.
 

@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v14.1 (Unreleased)
+## v14.2 (Unreleased)
+
+## v14.1 (08 July 2019)
 ### Changed:
 - No more updating mission commander/sponsor on loadgame.
 - Added Const ids to Cheats>Consts.
@@ -12,7 +14,7 @@
 - > Clear Button works with lines and other stuff added.
 - > Some toolbar buttons showed up at the wrong time.
 
-## v14.0 (June 18 2019)
+## v14.0 (18 June 2019)
 ### Changed:
 - Added Update Text func/button to MultiLineText (only shows up for some stuff like view console text, or view text in examine).
 - Added Batch func to Examine>Exec Code.
@@ -26,7 +28,7 @@
 ### Removed:
 - Gravity options (you can use Bouncy Drones if you want it).
 
-## v13.9 (June 07 2019)
+## v13.9 (07 June 2019)
 ### Changed:
 - Remove Building/LandScaping Limits don't require a restart to disable anymore.
 
@@ -34,7 +36,7 @@
 - Some log spam (thanks RustyDios).
 - Disaster>Meteor cheats weren't consistent (thanks eddy.dyer).
 
-## v13.8 (June 01 2019)
+## v13.8 (01 June 2019)
 ### Added:
 - Debug>Override Condition Prereqs: All storybit/negotiation/etc options are enabled.
 - Drones>Drone Wasp Move Speed: Same as Drone Move Speed.
@@ -51,7 +53,7 @@
 - Dust Devils overrode * Move Speed (thanks dukedom).
 - Console history won't disappear anymore.
 
-## v13.7 (May 30 2019)
+## v13.7 (30 May 2019)
 ### Added:
 - A Framerate Counter toggle to those too lazy to use the Options one.
 
@@ -65,7 +67,7 @@
 ### Fixed:
 - Research Queue Size (thanks McKaby).
 
-## v13.6 (May 22 2019)
+## v13.6 (22 May 2019)
 ### Changed:
 - Added an Export func to the image viewer (needs HelperMod).
 
@@ -76,14 +78,14 @@
 - Color Modifier> All Of Type/Default Colour checkboxes didn't work (thanks Kami-sama).
 - Updated Cables & Pipes: No Break for GP.
 
-## v13.5 (May 17 2019)
+## v13.5 (17 May 2019)
 ### Fixed:
 - Some problems with Cheats pane>CleanAndFix (thanks bholfeltz).
 - Examine>Object>Ent Spots Toggle wasn't working on chains (GetSpotAnnotation changed ", " to "," for _reasons_).
 - Cloning wasn't updating the new deposit (thanks McKaby).
 - Remove Sponsor Limits didn't work until restart.
 
-## v13.4 (May 15 2019)
+## v13.4 (15 May 2019)
 ### Added:
 - Menu>Cheats>Consts:
 - > Lists all the Consts settings (for any I haven't added to a menu).
@@ -175,7 +177,7 @@
 - HelperMod: You can get it from [Github](https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Startup%20HelperMod)
 - > I'm also going to be uploading ECM/Lib as packed mods for steam.
 
-## v13.3 (Mar 30 2019)
+## v13.3 (30 Mar 2019)
 ### Added:
 - Console>Settings>Show Log When Console Active: Show console log text when console is active.
 - Menu>Cheats>Story Bits.
@@ -197,13 +199,13 @@
 - > Context menu: Switched from using periods to brackets for stuff with . and such in the key.
 - > Crash when examining objects using the "InvisibleObject" entity.
 
-## v13.2 (Mar 17 2019)
+## v13.2 (17 Mar 2019)
 ### Added:
 - Preliminary Xbox Support (thanks to Gnith for testing).
 - > Certain stuff had to be disabled (the editor crashes the game, so no terrain editing).
 - > Examine and console buttons don't work, and reading the file log probably is a no-go.
 
-## v13.1 (Mar 15 2019)
+## v13.1 (15 Mar 2019)
 ### Changed:
 - I cleaned up the console output too much last update.
 - Examine:
@@ -212,7 +214,7 @@
 ### Fixed:
 - Examine>Objects>Hex Spots Toggle broke.
 
-## v13.0 (Mar 14 2019)
+## v13.0 (14 Mar 2019)
 ### Changed:
 - Debug>Force Story Bits shows full list instead of just "actively waiting" ones.
 - Renamed Attach Spots List/Attach Spots Toggle to Entity Spots/Entity Spots Toggle.

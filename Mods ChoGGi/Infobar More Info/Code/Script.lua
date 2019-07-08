@@ -44,7 +44,6 @@ function OnMsg.ApplyModOptions(id)
 end
 
 -- local some globals
-local type = type
 local table_insert = table.insert
 local table_clear = table.clear
 local table_iclear = table.iclear

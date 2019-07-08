@@ -21,7 +21,7 @@ Mod Options:
 12/24 time format.
 Show Clock.
 Text Styles.
-Background.
+Toggle Background.
 
 Requested by Khyinn.]],
 })

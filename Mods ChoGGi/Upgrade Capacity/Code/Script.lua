@@ -173,7 +173,6 @@ local function AddBuilding(id, obj, obj_ct, cls)
 	end
 
 	-- first try to get number from building template (for services like parks)
-	local found
 	for i = 1, storage_list_c do
 		local prop = storage_list[i]
 		local value = obj[prop]

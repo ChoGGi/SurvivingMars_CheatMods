@@ -5,7 +5,7 @@ local mod_ShowClock
 local mod_TimeFormat
 local mod_TextStyle
 local mod_Background
-local mod_PosChoices = "Infobar"
+--~ local mod_PosChoices = "Infobar"
 
 local AddTime
 local RemoveTime
@@ -76,7 +76,7 @@ AddTime = function(dlg)
 		Dock = "right",
 	}, dlg)
 
-	local clock = XText:new({
+	XText:new({
 		Id = "idRealTimeClock",
 		RolloverTemplate = "Rollover",
 		RolloverTitle = T(3452, "Time of day"),
