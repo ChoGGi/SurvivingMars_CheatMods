@@ -11,6 +11,8 @@ local CleanupHexRanges = CleanupHexRanges
 local HideHexRanges = HideHexRanges
 local ShowBuildingHexes = ShowBuildingHexes
 local DoneObject = DoneObject
+local IsKindOfClasses = IsKindOfClasses
+local IsKindOf = IsKindOf
 local InvalidPos = InvalidPos()
 
 -- mod options
@@ -89,7 +91,7 @@ local function ShowBuildingHexesSite(bld)
 		local g_HexRanges = g_HexRanges
 		CleanupHexRanges(bld)
 		local obj = RangeHexMultiSelectRadius_cls:new()
-		obj:SetOpacity(mod_GridOpacity)
+--~ 		obj:SetOpacity(mod_GridOpacity)
 
 		-- the site is the res pile, we want the rocket pos
 		local bld_pos
@@ -153,6 +155,28 @@ function CursorBuilding.GameInit(...)
 		end
 	end
 
+	-- change colour
+	local g_HexRanges = g_HexRanges
+	for range, obj in pairs(g_HexRanges) do
+		if IsKindOfClasses(obj, dust_gens) then
+			if IsKindOf(range, "RangeHexMultiSelectRadius") then
+				range:SetOpacity(mod_GridOpacity)
+			end
+
+			if obj:IsKindOf("ConstructionSite") then
+				for i = 1, #range.decals do
+					range.decals[i]:SetColorModifier(-2143)
+				end
+			else
+				for i = 1, #range.decals do
+					range.decals[i]:SetColorModifier(-5576)
+				end
+			end
+
+		end
+	end
+
+
 	return orig_CursorBuilding_GameInit(...)
 end
 
@@ -172,6 +196,13 @@ function CursorBuilding:UpdateShapeHexes(...)
 --~ ex(dust_gens)
 	local labels = UICity.labels
 
+--~ 	local g_HexRanges = g_HexRanges
+--~ 	for range, obj in pairs(g_HexRanges) do
+--~ 		if IsKindOfClasses(obj, dust_gens) then
+--~ 		end
+--~ 	end
+	-- replace with above ranges stuff
+
 	for i = 1, dust_gens_c do
 		local objs = labels[dust_gens[i]] or ""
 		-- loop through them all and add the grid
@@ -182,21 +213,10 @@ function CursorBuilding:UpdateShapeHexes(...)
 			if not is_site or is_site and obj.building_class_proto.GetDustRadius then
 				local range = g_HexRanges[obj]
 				if range and range[1] and range[1].decals then
-					range = range[1]
 					if range_limit and cursor_pos:Dist2D(obj:GetPos()) > range_limit then
-						range:SetVisible(false)
+						range[1]:SetVisible(false)
 					else
-						range:SetOpacity(mod_GridOpacity)
-						range:SetVisible(true)
-						for k = 1, #range.decals do
-							-- make sure they don't look like other grids
-							if is_site then
-								range.decals[k]:SetColorModifier(-5576)
-							else
-								-- light yellow
-								range.decals[k]:SetColorModifier(-2143)
-							end
-						end
+						range[1]:SetVisible(true)
 					end
 				end
 			end

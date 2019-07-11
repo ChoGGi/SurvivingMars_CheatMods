@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"TagResearch", true,
 	"TagInterface", true,
 	"description", [[Adds a progress bar to the HUD, showing the progress of the active research.
-As Waywocket mentioned he's (pretty much) abandoned this mod, so I figured I'd update it.
+As Waywocket mentioned he's abandoned this mod, so I figured I'd update it.
 
 Mod Options:
 Show Number in Queue: Show a count of the number of technologies currently in the research queue.

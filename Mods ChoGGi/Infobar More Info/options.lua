@@ -5,7 +5,7 @@ DefineClass("ModOptions_ChoGGi_InfobarAddDischargeRates", {
 	},
 	properties = {
 		{
-			default = false,
+			default = true,
 			editor = "bool",
 			id = "SkipGrid0",
 			name = T(9428, "Skip") .. " " .. T{11629,"GRID <i>",i=0},
@@ -17,7 +17,15 @@ DefineClass("ModOptions_ChoGGi_InfobarAddDischargeRates", {
 			name = T(9428, "Skip") .. " " .. T{11629,"GRID <i>",i=1},
 		},
 		{
-			default = false,
+			default = 0,
+			max = 50,
+			min = 0,
+			editor = "number",
+			id = "SkipGridX",
+			name = T(9428, "Skip") .. " " .. T{11629,"GRID <i>",i="X"},
+		},
+		{
+			default = true,
 			editor = "bool",
 			id = "MergedGrids",
 			name = T(7850, "Aggregated information for your Colony."),

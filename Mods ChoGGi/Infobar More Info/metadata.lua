@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Infobar Add Discharge Rates",
 	"title", "Infobar More Info",
-	"version", 6,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 7,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_InfobarAddDischargeRates",
@@ -39,9 +39,9 @@ Total per Sol.
 
 
 Mod Options:
-Both skip options are default enabled.
+Aggregated info: Show sum totals instead of individual grids (skip grid options ignored).
 Skip Grid 0: Grids with production+consumption = 0 (doesn't skip grids that aren't producing due to throttle).
 Skip Grid 1: Grids that only have a single bld (sensor towers).
-Aggregated info: Show sum totals instead of individual grids (skip options ignored).
+Skip Grid X: Grids that only have X amount of buildings (for smaller clusters, like a concrete "hub", 0 to disable).
 Rollover Size: Game default is 45, if you want the tooltips wider use this (I use small UI scale).]],
 })

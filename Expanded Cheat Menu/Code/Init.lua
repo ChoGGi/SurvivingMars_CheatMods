@@ -9,13 +9,14 @@ local mod = Mods.ChoGGi_CheatMenu
 -- is ECM shanghaied by the blacklist?
 if mod.no_blacklist then
 	ChoGGi.blacklist = false
-	Msg("ChoGGi_UpdateBlacklistFuncs", mod.env)
+	local env = mod.env
+	Msg("ChoGGi_UpdateBlacklistFuncs", env)
 	-- makes some stuff easier
 	local lib_env = Mods.ChoGGi_Library.env
-	lib_env._G = mod.env._G
-	lib_env.rawget = mod.env.rawget
-	lib_env.getmetatable = mod.env.getmetatable
-	lib_env.os = mod.env.os
+	lib_env._G = env._G
+	lib_env.rawget = env.rawget
+	lib_env.getmetatable = env.getmetatable
+	lib_env.os = env.os
 end
 
 -- I should really split ChoGGi into funcs and settings... one of these days

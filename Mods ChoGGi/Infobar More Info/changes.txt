@@ -1,3 +1,8 @@
+v0.7
+Added mod option to skip grids with X amount of buildings, like a concrete "hub".
+If remaining time is under an hour add some red.
+Aggregated info is enabled by default.
+
 v0.6
 If Positronic Brain is researched then shows the count of biorobots in the colony.
 

@@ -39,8 +39,6 @@ local function ShowConsole()
 	if rawget(_G, "dlgConsole") then
 		dlgConsole:Show(true)
 	end
-
-	ShowConsoleLog(mod_EnableLog)
 end
 
 function OnMsg.ClassesPostprocess()

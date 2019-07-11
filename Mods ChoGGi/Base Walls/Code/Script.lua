@@ -673,7 +673,7 @@ function OnMsg.ClassesPostprocess()
 		group = "Default",
 		icon = icon_path .. "corner_subcat.png",
 		category_name = "ChoGGi_BaseWalls_Joiners",
-		id = "ChoGGi_BaseWalls_Joiners"
+		id = "ChoGGi_BaseWalls_Joiners",
 	})
 
 	for id, item in pairs(corner_types) do

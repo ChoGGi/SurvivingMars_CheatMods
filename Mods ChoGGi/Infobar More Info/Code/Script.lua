@@ -3,6 +3,7 @@
 local options
 local mod_SkipGrid0
 local mod_SkipGrid1
+local mod_SkipGridX
 local mod_MergedGrids
 local mod_RolloverWidth
 
@@ -10,6 +11,7 @@ local mod_RolloverWidth
 local function ModOptions()
 	mod_SkipGrid0 = options.SkipGrid0
 	mod_SkipGrid1 = options.SkipGrid1
+	mod_SkipGridX = options.SkipGridX
 	mod_MergedGrids = options.MergedGrids
 	mod_RolloverWidth = options.RolloverWidth * 10
 
@@ -44,6 +46,7 @@ function OnMsg.ApplyModOptions(id)
 end
 
 -- local some globals
+local type = type
 local table_insert = table.insert
 local table_clear = table.clear
 local table_iclear = table.iclear
@@ -72,6 +75,7 @@ local function SkipGrid(g)
 	if mod_MergedGrids then
 		return true
 	end
+
 	-- use max_production instead of production as that can be throttled and hide grids that "do stuff"
 	-- and maybe think of something better to use, as this won't work for anal-retentive grids
 	if mod_SkipGrid0 and (g.max_production + g.consumption) == 0 then
@@ -82,18 +86,29 @@ local function SkipGrid(g)
 		return
 	end
 
+	if mod_SkipGridX > 0 and g.bld_count <= mod_SkipGridX then
+		return
+	end
+
 	return true
 end
 
 -- return time left or N/A
+local under_an_hour = {"<red><text></red>"}
 local function RemainingTime(g, scale)
-	local timeleft = g.production - g.consumption
-	if timeleft < 0 then
-		-- losing resources
-		return T{12265,
-			"Remaining Time<right><time(time)>",
-			time = (g.stored / (timeleft * -1)) * (scale or scale_hours)
-		}
+	local time_left = g.production - g.consumption
+	-- losing resources
+	if time_left < 0 then
+		time_left = (g.stored / (time_left * -1)) * (scale or scale_hours)
+		local text = T{12265, "Remaining Time<right><time(time)>", time = time_left}
+
+		-- less than an hour
+		if time_left == 0 then
+			under_an_hour.text = text
+			return T(under_an_hour)
+		end
+
+		return text
 	else
 		-- more prod than consump
 		return T(12014, "Remaining Time") .. "<right>" .. T(130, "N/A")
