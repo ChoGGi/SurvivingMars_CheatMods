@@ -1,0 +1,4 @@
+v0.2
+Added mod option to make them go for the nearest working laser/missile tower (default on).
+Now ignores rovers that aren't in auto mode.
+Added the rest of the auto-rovers.

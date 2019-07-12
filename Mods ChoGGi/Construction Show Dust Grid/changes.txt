@@ -1,3 +1,7 @@
+v1.3
+Added mod option to set the scale of grid objs.
+Made grid red to stand out better on busy maps (or ones with my other grid mods).
+
 v1.2
 Code cleanup.
 

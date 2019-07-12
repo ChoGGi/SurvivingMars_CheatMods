@@ -1,0 +1,3 @@
+v0.2
+Used grey icons for new resources (no seeds icons though).
+Log spam.

@@ -9,7 +9,9 @@ local function ModOptions()
 	local u = ChoGGi.UserSettings
 	u.DebugGridOpacity = options.DebugGridOpacity
 	u.DebugGridSize = options.DebugGridSize
-	ChoGGi.SettingFuncs.WriteSettings()
+	if ChoGGi.SettingFuncs.WriteSettings then
+		ChoGGi.SettingFuncs.WriteSettings()
+	end
 end
 
 -- load default/saved settings

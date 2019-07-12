@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Construction: Show Drone Grid v0.4",
 	"title", "Construction Show Drone Grid",
-	"version", 9,
-	"version_major", 0,
-	"version_minor", 9,
+	"version", 10,
+	"version_major", 1,
+	"version_minor", 0,
 	"saved", 0,
 	"id", "ChoGGi_ConstructionShowDroneGrid",
 	"author", "ChoGGi",
@@ -21,6 +21,7 @@ Mod Options:
 Show Grids: Use to disable temporarily.
 Dist From Cursor: Only show grids around buildings this close to the cursor (0 = disabled, 1 = 1000 and so on, 100 == over 2 map squares).
 Grid Opacity: Set opacity of grid icons.
+Grid Scale: Set scale of grid icons.
 
 Requested by mysticlife.]],
 })

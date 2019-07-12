@@ -1,3 +1,7 @@
+v1.0
+Added mod option to set the scale of grid objs.
+Made DroneHub grid cyan to stand out better on busy maps (or ones with my other grid mods).
+
 v0.9
 Log spam.
 

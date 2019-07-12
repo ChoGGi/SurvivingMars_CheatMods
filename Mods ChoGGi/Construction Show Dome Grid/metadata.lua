@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Construction Show Dome Grid",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"saved", 0,
 	"id", "ChoGGi_ConstructionShowDomeGrid",
 	"author", "ChoGGi",
@@ -20,6 +20,7 @@ Mod Options:
 Show Grids: Use to disable temporarily.
 Dist From Cursor: Only show grids around buildings this close to the cursor (0 = disabled, 1 = 1000 and so on, 100 == over 2 map squares).
 Grid Opacity: Set opacity of grid icons.
+Grid Scale: Set scale of grid icons.
 Selection Dome: Show all dome grids when selecting a dome.
 Selection Outside: Show all dome grids when selecting an outside dome building.
 

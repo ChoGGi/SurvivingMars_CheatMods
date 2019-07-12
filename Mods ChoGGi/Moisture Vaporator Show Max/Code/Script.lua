@@ -2,7 +2,7 @@
 
 local r = const.ResourceScale
 local function UpdateMax(self)
-	local prod = self.modifications.water_production
+	local prod = self.modifications and self.modifications.water_production
 	if prod then
 		local percent = 100.0
 		-- if something uses amounts (mod maybe?)

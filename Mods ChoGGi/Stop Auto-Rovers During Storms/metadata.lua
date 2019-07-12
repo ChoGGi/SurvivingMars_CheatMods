@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Stop Auto-Rovers During Storms",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_StopAutoRoversDuringStorms",
@@ -13,8 +13,10 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
---~ 	"has_options", true,
+	"has_options", true,
 	"TagGameplay", true,
 	"description", [[Rovers will not do automated tasks when a meteor storm is active.
-They'll finish up whatever task they're on then stop moving till it's over, so you may need to move them out of the way.]],
+They'll finish up whatever task they're on then stop moving till it's over, so you may need to move them out of the way.
+
+Includes mod option to make them go for the nearest working laser/missile tower if they're idle (default on).]],
 })

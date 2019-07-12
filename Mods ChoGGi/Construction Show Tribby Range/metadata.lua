@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Construction Show Tribby Range",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"saved", 0,
 	"id", "ChoGGi_ConstructionShowTribbyRange",
 	"author", "ChoGGi",
@@ -19,5 +19,7 @@ return PlaceObj("ModDef", {
 Mod Options:
 Show Grids: Use to disable temporarily.
 Dist From Cursor: Only show grids around buildings this close to the cursor (0 = disabled, 1 = 1000 and so on, 100 == over 2 map squares).
-Grid Opacity: Set opacity of grid icons.]],
+Grid Opacity: Set opacity of grid icons.
+Grid Scale: Set scale of grid icons.
+]],
 })

@@ -1,3 +1,6 @@
+v0.4
+More log spam.
+
 v0.3
 Log spam.
 

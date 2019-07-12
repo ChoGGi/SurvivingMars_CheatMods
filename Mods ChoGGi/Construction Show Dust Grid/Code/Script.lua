@@ -13,14 +13,18 @@ local ShowBuildingHexes = ShowBuildingHexes
 local DoneObject = DoneObject
 local IsKindOfClasses = IsKindOfClasses
 local IsKindOf = IsKindOf
+local SuspendPassEdits = SuspendPassEdits
+local ResumePassEdits = ResumePassEdits
+local red = red
 local InvalidPos = InvalidPos()
 
 -- mod options
 local options
-local mod_Option1
+local mod_EnableGrid
 local mod_DistFromCursor
 local mod_ShowConSites
 local mod_GridOpacity
+local mod_GridScale
 
 local function CleanList(list)
 	local ranges = list or ""
@@ -31,10 +35,11 @@ local function CleanList(list)
 end
 
 local function ModOptions()
-	mod_Option1 = options.Option1
+	mod_EnableGrid = options.Option1
 	mod_DistFromCursor = options.DistFromCursor * 1000
 	mod_ShowConSites = options.ShowConSites
 	mod_GridOpacity = options.GridOpacity
+	mod_GridScale = options.GridScale
 
 	local idx = table_find(dust_gens, "ConstructionSite")
 	if mod_ShowConSites and not idx then
@@ -131,9 +136,12 @@ end
 -- add grid hexes
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding.GameInit(...)
-	if not mod_Option1 then
-		return orig_CursorBuilding_GameInit(...)
+	orig_CursorBuilding_GameInit(...)
+	if not mod_EnableGrid then
+		return
 	end
+
+	SuspendPassEdits("CursorBuilding.GameInit.Construction Show Dust Grid")
 
 	local labels = UICity.labels
 	for i = 1, dust_gens_c do
@@ -155,7 +163,7 @@ function CursorBuilding.GameInit(...)
 		end
 	end
 
-	-- change colour
+	-- edit grids
 	local g_HexRanges = g_HexRanges
 	for range, obj in pairs(g_HexRanges) do
 		if IsKindOfClasses(obj, dust_gens) then
@@ -163,28 +171,24 @@ function CursorBuilding.GameInit(...)
 				range:SetOpacity(mod_GridOpacity)
 			end
 
-			if obj:IsKindOf("ConstructionSite") then
-				for i = 1, #range.decals do
-					range.decals[i]:SetColorModifier(-2143)
-				end
-			else
-				for i = 1, #range.decals do
-					range.decals[i]:SetColorModifier(-5576)
-				end
+			for i = 1, #range.decals do
+				local decal = range.decals[i]
+				decal:SetColorModifier(red)
+				decal:SetScale(mod_GridScale)
 			end
 
 		end
 	end
 
+	ResumePassEdits("CursorBuilding.GameInit.Construction Show Dust Grid")
 
-	return orig_CursorBuilding_GameInit(...)
 end
 
 -- update visibility
 local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
 function CursorBuilding:UpdateShapeHexes(...)
 	-- skip if disabled or not a RequiresMaintenance building
-	if not (mod_Option1 or self.template:IsKindOf("RequiresMaintenance")) then
+	if not (mod_EnableGrid or self.template:IsKindOf("RequiresMaintenance")) then
 		return orig_CursorBuilding_UpdateShapeHexes(self, ...)
 	end
 
@@ -194,41 +198,28 @@ function CursorBuilding:UpdateShapeHexes(...)
 
 --~ ex(self)
 --~ ex(dust_gens)
-	local labels = UICity.labels
 
---~ 	local g_HexRanges = g_HexRanges
---~ 	for range, obj in pairs(g_HexRanges) do
---~ 		if IsKindOfClasses(obj, dust_gens) then
---~ 		end
---~ 	end
-	-- replace with above ranges stuff
-
-	for i = 1, dust_gens_c do
-		local objs = labels[dust_gens[i]] or ""
-		-- loop through them all and add the grid
-		for j = 1, #objs do
-			local obj = objs[j]
-			-- change vis for any outside the range
-			local is_site = obj:IsKindOf("ConstructionSite")
-			if not is_site or is_site and obj.building_class_proto.GetDustRadius then
-				local range = g_HexRanges[obj]
-				if range and range[1] and range[1].decals then
-					if range_limit and cursor_pos:Dist2D(obj:GetPos()) > range_limit then
-						range[1]:SetVisible(false)
-					else
-						range[1]:SetVisible(true)
-					end
-				end
+	SuspendPassEdits("CursorBuilding.UpdateShapeHexes.Construction Show Dust Grid")
+	local g_HexRanges = g_HexRanges
+	for range, obj in pairs(g_HexRanges) do
+		if range.SetVisible and IsKindOfClasses(obj, dust_gens) then
+			if range_limit and cursor_pos:Dist2D(obj:GetPos()) > range_limit then
+				range:SetVisible(false)
+			else
+				range:SetVisible(true)
 			end
-
 		end
 	end
+
+	ResumePassEdits("CursorBuilding.UpdateShapeHexes.Construction Show Dust Grid")
 
 	return orig_CursorBuilding_UpdateShapeHexes(self, ...)
 end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding.Done(...)
+	SuspendPassEdits("CursorBuilding.Done.Construction Show Dust Grid")
+
 	local UICity = UICity
 	for i = 1, dust_gens_c do
 		HideHexRanges(UICity, dust_gens[i])
@@ -242,6 +233,8 @@ function CursorBuilding.Done(...)
 			g_HexRanges[obj1] = nil
 		end
 	end
+
+	ResumePassEdits("CursorBuilding.Done.Construction Show Dust Grid")
 
 	return orig_CursorBuilding_Done(...)
 end

@@ -1,3 +1,7 @@
+v0.3
+Added mod option to set the scale of grid objs.
+Made grid reddish to stand out better on busy maps (or ones with my other grid mods).
+
 v0.2
 Works better with my other Construction Show * Grid mods.
 Stopped dome grids showing up for resource depots (not sure why they count as outskirt buildings).

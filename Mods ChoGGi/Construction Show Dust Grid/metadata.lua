@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Construction: Show Dust Grid v0.2",
 	"title", "Construction Show Dust Grid",
-	"version", 12,
+	"version", 13,
 	"version_major", 1,
-	"version_minor", 2,
+	"version_minor", 3,
 	"saved", 0,
 	"id", "ChoGGi_ConstructionShowDustGrid",
 	"author", "ChoGGi",
@@ -19,9 +19,10 @@ return PlaceObj("ModDef", {
 
 Mod Options:
 Show Grids: Use to disable temporarily.
+Show Construction Site Grids: Show grid around sites.
 Dist From Cursor: Only show grids around buildings this close to the cursor (0 = disabled, 1 = 1000 and so on, 100 == over 2 map squares).
 Grid Opacity: Set opacity of grid icons.
-Show Construction Site Grids: Show grid around sites.
+Grid Scale: Set scale of grid icons.
 
 
 Requested by still__alive.]],

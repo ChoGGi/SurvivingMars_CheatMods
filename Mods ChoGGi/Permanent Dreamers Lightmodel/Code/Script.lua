@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local lightmodel = "Dreamers_Morning"
 --[[
 use ECM and in the console type ~DataInstances.Lightmodel to see all of them
@@ -12,8 +14,6 @@ Dreamers_Night Green
 Dreamers_Noon
 ]]
 
-local SetLightmodelOverride = SetLightmodelOverride
-
 local function OverrideIt()
 	CreateRealTimeThread(function()
 		WaitMsg("AfterLightmodelChange", 10000)
@@ -26,7 +26,8 @@ OnMsg.LoadGame = OverrideIt
 
 function OnMsg.AfterLightmodelChange()
 	CreateRealTimeThread(function()
-		Sleep(100)
+--~ 		Sleep(100)
+		WaitMsg("OnRender")
 		SetLightmodelOverride(1, lightmodel)
 	end)
 end
