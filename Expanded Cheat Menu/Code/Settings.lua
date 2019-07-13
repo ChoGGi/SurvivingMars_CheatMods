@@ -360,7 +360,9 @@ end
 
 -- bloody hint popups
 if UserSettings.DisableHints then
-	mapdata.DisableHints = true
+	if mapdata.DisableHints == false then
+		mapdata.DisableHints = true
+	end
 	HintsEnabled = false
 end
 

@@ -1372,7 +1372,9 @@ do -- LoadGame/CityStart
 
 		-- bloody hint popups
 		if ChoGGi.UserSettings.DisableHints then
-			mapdata.DisableHints = true
+			if mapdata.DisableHints == false then
+				mapdata.DisableHints = true
+			end
 			HintsEnabled = false
 		end
 
@@ -1523,22 +1525,31 @@ do -- LoadGame/CityStart
 			UserSettings.FirstRun = false
 			DestroyConsoleLog()
 			ChoGGi.Temp.WriteSettings = true
-
 			ChoGGi.ComFuncs.MsgWait(
 				Strings[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
 If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."]]]
 					.. "\n\n" .. Strings[302535920000030--[["To show the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked."]]]:format(Strings[302535920001308--[[Settings]]], Strings[302535920001112--[[Console Log]]]),
-			Translate(10126--[[Installed Mods]]) .. ": " .. Strings[302535920000000--[[Expanded Cheat Menu]]],
+				T(10126, "Installed Mods") .. ": " .. Strings[302535920000000--[[Expanded Cheat Menu]]],
 				ChoGGi.mod_path .. "Preview.png",
 				Strings[302535920001465--[[Stop talking and start cheating!]]]
 			)
 		end
 
+		-- added ifs and pcall for xbox (for some reason settings aren't being saved)
+
 		-- set zoom/border scrolling
-		SetMouseDeltaMode(false)
-		cameraRTS.Activate(1)
-		engineShowMouseCursor()
-		ChoGGi.ComFuncs.SetCameraSettings()
+		if SetMouseDeltaMode then
+			SetMouseDeltaMode(false)
+		end
+		if cameraRTS and cameraRTS.Activate then
+			cameraRTS.Activate(1)
+		end
+		if engineShowMouseCursor then
+			engineShowMouseCursor()
+		end
+		pcall(function()
+			ChoGGi.ComFuncs.SetCameraSettings()
+		end)
 
 
 
@@ -1552,18 +1563,17 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 			ChoGGi.Temp.WriteSettings = nil
 		end
 
-		if UserSettings.FlushLog then
-			FlushLogFile()
-		end
-
 		-- how long startup takes
 		if testing or UserSettings.ShowStartupTicks then
 			print("<color 200 200 200>", Strings[302535920000887--[[ECM]]], "</color>:", Strings[302535920000247--[[Startup ticks]]], ":", GetPreciseTicks() - ChoGGi.Temp.StartupTicks)
 		end
 
+		if UserSettings.FlushLog then
+			FlushLogFile()
+		end
+
 		-- used to check when game has started and it's safe to print() etc
 		ChoGGi.Temp.GameLoaded = true
-
 	end --OnMsg
 end -- do
 

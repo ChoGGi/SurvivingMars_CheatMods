@@ -16,10 +16,10 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagGameplay", true,
 	"TagBuildings", true,
-	"description", [[Battery Charge/Discharge rates are lowered by 25% during cold waves.
+	"description", [[Battery charge/discharge rates are lowered by 25% in cold areas.
 You can use heaters to keep them warm.
 
 Includes masochistic option to apply 25% to capacity as well.
 
-Anyone want percent slider options?]],
+Anyone want percent slider options instead of 25?]],
 })

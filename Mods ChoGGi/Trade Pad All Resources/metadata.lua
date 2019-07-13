@@ -17,8 +17,8 @@ return PlaceObj("ModDef", {
 	"TagBuildings", true,
 	"TagCrops", true,
 	"description", [[Can trade almost all resources (skipped blackcubes/mystery) on the trade pads.
-
 Any res not shown on the planetary view isn't included in the colony so I calculate it from existing resources.
+
 Prices:
 PreciousMetals: Electronics * 2
 WasteRock: Concrete / 16

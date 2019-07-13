@@ -1,15 +1,17 @@
 -- See LICENSE for terms
 
+local IsGameRuleActive = IsGameRuleActive
+
+-- make sure there's one (broad) cold area
 local orig_FillRandomMapProps = FillRandomMapProps
 function FillRandomMapProps(gen, ...)
 	local map = orig_FillRandomMapProps(gen, ...)
 
 	if gen and IsGameRuleActive("ChoGGi_WinterWonderland") then
-		gen.ColdAreaMargin = 0
 		gen.ColdAreaChance = 100
-		-- double max map size
-		gen.ColdAreaSize = range(1214400, 1214400)
-		gen.ColdAreaCount = 10
+		gen.ColdAreaCount = 1
+		-- max map size * 4 (make sure everything is covered no matter where the area is)
+		gen.ColdAreaSize = range(4857600, 4857600)
 	end
 
 	return map
@@ -40,3 +42,16 @@ end
 
 OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode
+
+-- trand func from City.lua>function CreateRand(stable, ...) doesn't like < 2
+function OnMsg.ClassesPostprocess()
+	local orig_MapSector_new = MapSector.new
+	function MapSector:new(...)
+		local sector = orig_MapSector_new(self, ...)
+		-- good thing avg_heat is added when the sector is created
+		if sector.avg_heat == 0 and IsGameRuleActive("ChoGGi_WinterWonderland") then
+			sector.avg_heat = 2
+		end
+		return sector
+	end
+end

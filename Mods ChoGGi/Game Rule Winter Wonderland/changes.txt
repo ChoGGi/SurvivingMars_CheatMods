@@ -1,0 +1,2 @@
+v0.2
+Fixed odd bug resulting in having no initial sector.

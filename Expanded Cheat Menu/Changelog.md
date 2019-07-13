@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v14.2 (Unreleased)
+### Fixed:
+- Hopefully fixed Xbox not saving options at firstrun.
 
 ## v14.1 (08 July 2019)
 ### Changed:

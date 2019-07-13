@@ -2294,7 +2294,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 			image = "CommonAssets/UI/Menu/DeleteArea.tga",
 			clicked = function()
 				if obj_type == "string" then
-					self:ShowExecCodeWithCode([[o["]] .. obj_name .. [["] = nil]])
+					self:ShowExecCodeWithCode("o[\"" .. obj_name .. "\"] = nil")
 				else
 					self:ShowExecCodeWithCode("table.remove(o" .. ", " .. obj_name .. ")")
 				end
@@ -2306,12 +2306,12 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 			clicked = function()
 				-- numbers don't need ""
 				if obj_type == "number" then
-					obj_name = [[o[]] .. obj_name .. [[] = ]]
+					obj_name = "o[" .. obj_name .. "] = "
 				else
-					obj_name = [[o["]] .. obj_name .. [["] = ]]
+					obj_name = "o[\"" .. obj_name .. "\"] = "
 				end
 				if obj_value_type == "string" then
-					obj_value_str = [["]] .. obj_value_str .. [["]]
+					obj_value_str = "\"" .. obj_value_str .. "\""
 				end
 
 				self:ShowExecCodeWithCode(obj_name .. obj_value_str)
@@ -2402,7 +2402,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 			image = "CommonAssets/UI/Menu/SelectByClassName.tga",
 			clicked = function()
 				-- no "" for numbers
-				local quote = type(obj_name) == "number" and "" or [["]]
+				local quote = obj_type == "number" and "" or "\""
 				-- can we ref it with .name (i'm ignoring _123 since i'm lazy)
 				local is_dot = tostring(obj_name):find("[%a_]")
 				-- if it's a cls obj then make sure to use the obj
