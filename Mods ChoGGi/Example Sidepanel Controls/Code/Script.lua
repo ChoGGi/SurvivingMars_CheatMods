@@ -205,6 +205,16 @@ function OnMsg.ClassesPostprocess()
 			end
 			---
 		end,
+		-- add a right-click or button x action
+		"AltPress", true,
+		"OnAltPress", function (self, gamepad)
+			if gamepad then
+				self.context:Rotate(gamepad)
+			else
+				self.context:Rotate(not IsMassUIModifierPressed())
+			end
+			ObjModified(self.context)
+		end,
 	})
 
 end
