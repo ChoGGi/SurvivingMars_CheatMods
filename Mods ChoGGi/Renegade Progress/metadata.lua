@@ -14,6 +14,6 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"TagInterface", true,
-	"description", [[Add renegade progress (and count) to the morale section of each dome.
+	"description", [[Add renegade progress (and count) to the morale section tooltip of each dome.
 Right-clicking the Infobar>Jobs button will cycle between domes brewing renegades.]],
 })

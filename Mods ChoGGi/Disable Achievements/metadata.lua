@@ -14,8 +14,8 @@ return PlaceObj("ModDef", {
 	"pops_any_uuid", "28dfa6d1-4f1f-460d-b2db-676a56bafb13",
 	"lua_revision", 245618,
 	"description", [[Stops you from being able to unlock any Steam achievements.
-
 This isn't permanent, you can disable this anytime to have them working again.
+
 
 Requested by: I know someone did, but I forgot who...]],
 })

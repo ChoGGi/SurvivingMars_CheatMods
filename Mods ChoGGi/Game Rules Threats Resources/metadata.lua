@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Game Rules Threats Resources",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_GameRulesThreatsResources",
@@ -20,8 +20,6 @@ Low Resources:
 Resources will always be the lowest level.
 Max Threats:
 Disasters will always be the highest level (excluding Dust Devils).
-Max Threats Dust Devils:
-Dust Devils will always be the highest level.
 
 These don't change the challenge rating.
 

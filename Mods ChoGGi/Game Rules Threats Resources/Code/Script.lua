@@ -22,9 +22,6 @@ function FillRandomMapProps(gen, params, ...)
 			mapdata.MapSettings_DustStorm = "DustStorm_VeryHigh"
 			mapdata.MapSettings_Meteor = "Meteor_VeryHigh"
 		end
-		if rules.ChoGGi_MaxThreatsDustDevils then
-			mapdata.MapSettings_DustDevils = "DustDevils_VeryHigh"
-		end
 	end
 
 	return orig_FillRandomMapProps(gen, params, ...)
@@ -36,26 +33,18 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	PlaceObj("GameRules", {
-		description = T(692, "Resources") .. " "
-			.. T(0, " will always be the lowest level."),
-		display_name = T(0, "Low Resources"),
+		description = T{302535920011369, "<str> will always be the lowest level.",
+			str = T(692, "Resources")},
+		display_name = T(302535920011370, "Low Resources"),
 		group = "Default",
 		id = "ChoGGi_LowResources",
 	})
 
 	PlaceObj("GameRules", {
-		description = T(3983, "Disasters") .. " "
-			.. T(0, " will always be the highest level."),
-		display_name = T(0, "Max Threats"),
+		description = T(302535920011371, "<str> will always be the highest level.",
+			str = T(3983, "Disasters")},
+		display_name = T(302535920011372, "Max Threats"),
 		group = "Default",
 		id = "ChoGGi_MaxThreats",
-	})
-
-	PlaceObj("GameRules", {
-		description = T(4142, "Dust Devils") .. " "
-			.. T(0, " will always be the highest level."),
-		display_name = T(0, "Max Threats") .. " " .. T(4142, "Dust Devils"),
-		group = "Default",
-		id = "ChoGGi_MaxThreatsDustDevils",
 	})
 end

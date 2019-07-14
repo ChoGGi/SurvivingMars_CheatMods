@@ -1,3 +1,9 @@
+v0.4
+Removed dupes.
+
+v0.3
+Code cleanup.
+
 v0.2
 Used grey icons for new resources (no seeds icons though).
 Log spam.
