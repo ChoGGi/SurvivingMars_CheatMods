@@ -1,10 +1,11 @@
-local table_rand = table.rand
+-- See LICENSE for terms
+
 local genders = {"Male", "Female"}
 
 local function ChangeGender(c)
 	if c.gender == "OtherGender" then
 		c:RemoveTrait("OtherGender")
-		local gender = table_rand(genders)
+		local gender = table.rand(genders)
 
 		c:AddTrait(gender)
 		c.gender = gender

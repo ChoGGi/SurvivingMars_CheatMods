@@ -25,6 +25,7 @@ local function UpdateList(dlg)
 		local str_resources = ""
 		local str_time = ""
 		local str_outcome = ""
+		local str_rocket = ""
 
 		local spot = context.spot_type
 		-- show res needed
@@ -93,6 +94,13 @@ local function UpdateList(dlg)
 		-- time it'll take
 		if spot == "project" or spot == "anomaly" then
 
+			-- change colour of stuff with a rocket "on the way"
+			if IsValid(context.rocket) then
+				button.idText:SetTextStyle("Action")
+				str_rocket = newline .. "<left>" .. T(1685, "Rocket") .. "<right>"
+					.. T{"<DisplayName>", context.rocket}
+			end
+
 			if not context.rocket and context.expedition_time then
 				str_time = context.expedition_time
 			elseif not context.rocket or not context.rocket.expedition_return_time then
@@ -111,16 +119,14 @@ local function UpdateList(dlg)
 				.. context:GetOutcomeText()
 		end
 
-		button:SetRolloverText(desc .. str_resources .. str_time .. str_outcome)
+		button:SetRolloverText(desc .. str_resources .. str_time .. str_outcome .. str_rocket)
 	end
 end
 
 local orig_GetSortedMarsPointsOfInterest = GetSortedMarsPointsOfInterest
 function GetSortedMarsPointsOfInterest(...)
-
 	if Dialogs.PlanetaryView then
 		CreateRealTimeThread(UpdateList, Dialogs.PlanetaryView)
 	end
-
 	return orig_GetSortedMarsPointsOfInterest(...)
 end

@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Game Rules: Breakthroughs",
 	"title", "Game Rules Breakthroughs",
 	"version", 4,
 	"version_major", 0,
@@ -8,7 +7,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_GameRulesBreakthroughs",
 	"steam_id", "1753933193",
-	"pops_any_uuid", "6729224c-c34e-46fb-9355-400a0cdc5402",
+	"pops_any_uuid", "36cf3b33-5f6c-47d8-8a17-2ca2bd9290be",
 	"author", "ChoGGi",
 	"lua_revision", 245618,
 	"code", {

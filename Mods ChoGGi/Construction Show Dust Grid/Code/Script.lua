@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
-local dust_gens = {}
-local dust_gens_c = 0
+local classes = {}
+local classes_c = 0
 
 -- local some globals
 local pairs = pairs
@@ -13,8 +13,11 @@ local ShowBuildingHexes = ShowBuildingHexes
 local DoneObject = DoneObject
 local IsKindOfClasses = IsKindOfClasses
 local IsKindOf = IsKindOf
+local IsValid = IsValid
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
+local HexGridGetObjects = HexGridGetObjects
+local WorldToHex = WorldToHex
 local red = red
 local InvalidPos = InvalidPos()
 
@@ -41,13 +44,13 @@ local function ModOptions()
 	mod_GridOpacity = options.GridOpacity
 	mod_GridScale = options.GridScale
 
-	local idx = table_find(dust_gens, "ConstructionSite")
+	local idx = table_find(classes, "ConstructionSite")
 	if mod_ShowConSites and not idx then
-		dust_gens_c = dust_gens_c + 1
-		dust_gens[dust_gens_c] = "ConstructionSite"
+		classes_c = classes_c + 1
+		classes[classes_c] = "ConstructionSite"
 	elseif not mod_ShowConSites and idx then
-		dust_gens_c = dust_gens_c - 1
-		table_remove(dust_gens, idx)
+		classes_c = classes_c - 1
+		table_remove(classes, idx)
 	end
 end
 
@@ -60,7 +63,7 @@ function OnMsg.ModsReloaded()
 
 	-- build dust list in ModsReloaded for modded buildings
 	-- modoptions fires first and may add ConstructionSite
-	if dust_gens_c < 2 then
+	if classes_c < 2 then
 		RangeHexMultiSelectRadius_cls = RangeHexMultiSelectRadius
 
 		local g_Classes = g_Classes
@@ -70,15 +73,15 @@ function OnMsg.ModsReloaded()
 			local o = g_Classes[id]
 			-- dust gens and rockets, but not supply pods
 			if o and o.GetDustRadius and not o:IsKindOf("SupplyRocket") then
-				dust_gens_c = dust_gens_c + 1
-				dust_gens[dust_gens_c] = id
+				classes_c = classes_c + 1
+				classes[classes_c] = id
 			end
 		end
 		-- no need to add all the diff rockets, just the base class'll do
-		dust_gens_c = dust_gens_c + 1
-		dust_gens[dust_gens_c] = "SupplyRocket"
-		dust_gens_c = dust_gens_c + 1
-		dust_gens[dust_gens_c] = "SupplyRocketBuilding"
+		classes_c = classes_c + 1
+		classes[classes_c] = "SupplyRocket"
+		classes_c = classes_c + 1
+		classes[classes_c] = "SupplyRocketBuilding"
 	end
 end
 
@@ -91,26 +94,21 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local function ShowBuildingHexesSite(bld)
+local function ShowBuildingHexesSite(bld, is_rocket)
 	if not bld.destroyed then
 		local g_HexRanges = g_HexRanges
 		CleanupHexRanges(bld)
 		local obj = RangeHexMultiSelectRadius_cls:new()
---~ 		obj:SetOpacity(mod_GridOpacity)
 
 		-- the site is the res pile, we want the rocket pos
 		local bld_pos
-		local rock_site = bld.building_class_proto:IsKindOf("SupplyRocketBuilding")
-		if rock_site then
+		if is_rocket then
 			local a = bld:GetAttaches("Shapeshifter")
 			if a and a[1] then
 				bld_pos = a[1]:GetPos()
-			else
-				bld_pos = bld:GetPos()
 			end
-		else
-			bld_pos = bld:GetPos()
 		end
+		bld_pos = bld_pos or bld:GetPos()
 
 		obj:SetPos(bld_pos:SetStepZ()) -- avoid attaching it in air in case of landing rockets
 		g_HexRanges[bld] = g_HexRanges[bld] or {}
@@ -143,21 +141,45 @@ function CursorBuilding.GameInit(...)
 
 	SuspendPassEdits("CursorBuilding.GameInit.Construction Show Dust Grid")
 
+	local ObjectGrid = ObjectGrid
 	local labels = UICity.labels
-	for i = 1, dust_gens_c do
-		local objs = labels[dust_gens[i]] or ""
+	for i = 1, classes_c do
+		local objs = labels[classes[i]] or ""
 		-- loop through them all and add the grid
 		for j = 1, #objs do
 			local obj = objs[j]
-			local obj_pos = obj:GetPos()
 			-- add hex to all buildings
-			if obj_pos ~= InvalidPos and not g_HexRanges[obj] then
+			local range = g_HexRanges[obj]
+			if obj:GetPos() ~= InvalidPos and
+				(not range or range and range.bind_to ~= "GetDustRadius")
+			then
+
 				if obj:IsKindOf("ConstructionSite") then
-					if table_find(dust_gens, obj.building_class) then
-						ShowBuildingHexesSite(obj)
+					-- skip showing dust for rockets on pads
+					local is_rocket = obj.building_class_proto:IsKindOf("SupplyRocketBuilding")
+					local landing_site
+					if is_rocket then
+						local q, r = WorldToHex(obj:GetPos())
+						local objs = HexGridGetObjects(ObjectGrid, q, r)
+						-- only actual rockets have a .landing_site so we need to check the obj grid
+						for k = 1, #objs do
+							if objs[k]:IsKindOf("LandingPad") then
+								landing_site = IsValid(objs[k])
+								break
+							end
+						end
+					end
+
+					if table_find(classes, obj.building_class) and
+						(not is_rocket or is_rocket and not landing_site)
+					then
+						ShowBuildingHexesSite(obj, is_rocket)
 					end
 				else
-					ShowBuildingHexes(obj, "RangeHexMultiSelectRadius", "GetDustRadius")
+					local is_rocket = obj:IsKindOf("SupplyRocket")
+					if not is_rocket or is_rocket and not IsValid(obj.landing_site) then
+						ShowBuildingHexes(obj, "RangeHexMultiSelectRadius", "GetDustRadius")
+					end
 				end
 			end
 		end
@@ -166,17 +188,22 @@ function CursorBuilding.GameInit(...)
 	-- edit grids
 	local g_HexRanges = g_HexRanges
 	for range, obj in pairs(g_HexRanges) do
-		if IsKindOfClasses(obj, dust_gens) then
-			if IsKindOf(range, "RangeHexMultiSelectRadius") then
-				range:SetOpacity(mod_GridOpacity)
+		if IsKindOfClasses(obj, classes) then
+			local is_site = obj:IsKindOf("ConstructionSite")
+			if not is_site or (is_site and table_find(classes, obj.building_class)) then
+				if IsKindOf(range, "RangeHexMultiSelectRadius") then
+					range:SetOpacity(is_site and 100 or mod_GridOpacity)
+					range.ChoGGi_visible = true
+				end
+				-- if other range mods are installed we don't want them red as well
+				if range.bind_to == "GetDustRadius" then
+					for i = 1, #range.decals do
+						local decal = range.decals[i]
+						decal:SetColorModifier(red)
+						decal:SetScale(mod_GridScale)
+					end
+				end
 			end
-
-			for i = 1, #range.decals do
-				local decal = range.decals[i]
-				decal:SetColorModifier(red)
-				decal:SetScale(mod_GridScale)
-			end
-
 		end
 	end
 
@@ -187,30 +214,40 @@ end
 -- update visibility
 local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
 function CursorBuilding:UpdateShapeHexes(...)
-	-- skip if disabled or not a RequiresMaintenance building
 	if not (mod_EnableGrid or self.template:IsKindOf("RequiresMaintenance")) then
 		return orig_CursorBuilding_UpdateShapeHexes(self, ...)
 	end
 
 	local range_limit = mod_DistFromCursor > 0 and mod_DistFromCursor
 	local cursor_pos = self:GetPos()
-	local g_HexRanges = g_HexRanges
 
 --~ ex(self)
---~ ex(dust_gens)
+--~ ex(classes)
 
 	SuspendPassEdits("CursorBuilding.UpdateShapeHexes.Construction Show Dust Grid")
 	local g_HexRanges = g_HexRanges
 	for range, obj in pairs(g_HexRanges) do
-		if range.SetVisible and IsKindOfClasses(obj, dust_gens) then
-			if range_limit and cursor_pos:Dist2D(obj:GetPos()) > range_limit then
-				range:SetVisible(false)
-			else
-				range:SetVisible(true)
+		if range.SetVisible and range.bind_to == "GetDustRadius"
+			and IsKindOfClasses(obj, classes)
+		then
+			local is_site = obj:IsKindOf("ConstructionSite")
+			if not is_site or (is_site and table_find(classes, obj.building_class)) then
+				if range_limit and cursor_pos:Dist2D(obj:GetPos()) > range_limit then
+					-- GetVisible() always returns true (for ranges?)
+					if range.ChoGGi_visible then
+						range:SetVisible(false)
+						range.ChoGGi_visible = false
+					end
+				else
+					if not range.ChoGGi_visible then
+						range:SetVisible(true)
+						range.ChoGGi_visible = true
+					end
+				end
 			end
+
 		end
 	end
-
 	ResumePassEdits("CursorBuilding.UpdateShapeHexes.Construction Show Dust Grid")
 
 	return orig_CursorBuilding_UpdateShapeHexes(self, ...)
@@ -221,8 +258,8 @@ function CursorBuilding.Done(...)
 	SuspendPassEdits("CursorBuilding.Done.Construction Show Dust Grid")
 
 	local UICity = UICity
-	for i = 1, dust_gens_c do
-		HideHexRanges(UICity, dust_gens[i])
+	for i = 1, classes_c do
+		HideHexRanges(UICity, classes[i])
 	end
 
 	-- any ConstructionSite finished while grids up

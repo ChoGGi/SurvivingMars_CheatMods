@@ -223,8 +223,8 @@ It's a tradeoff between erroneous errors and the game locking up."
 Attachment bspheres are off (x and y are; z and rotate aren't).
 Some of the file names are guesses. <anim> is a guess, try removing it."
 302535920001411,"ECM has been disabled.
-Use <green>%s</green> to enable it.
-See the bottom of Gameplay>Controls if you've changed the shortcut."
+Use <green>%s</green> to enable it, or change <yellow>DisableECM</yellow> to false in <green>%s</green>.
+See the bottom of Gameplay>Controls if you've changed the key binding."
 302535920001383,"AddXTemplate borked template name: %s template: %s list: %s"
 302535920000013,"This shouldn't happen... Well dang something's bork bork bork."
 302535920000002,"Dumped"

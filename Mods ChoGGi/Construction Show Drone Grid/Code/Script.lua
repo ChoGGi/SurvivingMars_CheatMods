@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 -- local whatever globals we call
+local table_find = table.find
 local ShowHexRanges = ShowHexRanges
 local HideHexRanges = HideHexRanges
 local IsKindOf = IsKindOf
@@ -42,7 +43,7 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local classes = {"SupplyRocket", "DroneHub", "RCRover"}
+local classes = {"SupplyRocket", "DroneHub", "RCRover", "ConstructionSite"}
 
 local orig_ShowBuildingHexes = ShowBuildingHexes
 function ShowBuildingHexes(bld, hex_range_class, bind_func, ...)
@@ -86,28 +87,32 @@ function CursorBuilding.GameInit(...)
 	local g_HexRanges = g_HexRanges
 	for range, obj in pairs(g_HexRanges) do
 		if IsKindOfClasses(obj, classes) then
-			if IsKindOf(range, "RangeHexMultiSelectRadius") then
-				range:SetOpacity(mod_GridOpacity)
-			end
+			local is_site = obj:IsKindOf("ConstructionSite")
+			if not is_site or (is_site and table_find(classes, obj.building_class)) then
+				if IsKindOf(range, "RangeHexMultiSelectRadius") then
+					range:SetOpacity(is_site and 100 or mod_GridOpacity)
+					range.ChoGGi_visible = true
+				end
 
-			if obj:IsKindOf("DroneHub") then
-				for i = 1, #range.decals do
-					local decal = range.decals[i]
-					decal:SetColorModifier(cyan)
-					decal:SetScale(mod_GridScale)
-				end
-			elseif obj:IsKindOf("RCRover") then
-				for i = 1, #range.decals do
-					local decal = range.decals[i]
-					decal:SetColorModifier(yellow)
-					decal:SetScale(mod_GridScale)
-				end
---~ 			elseif obj:IsKindOf("SupplyRocket") then
-			else
-				for i = 1, #range.decals do
-					local decal = range.decals[i]
-					decal:SetColorModifier(green)
-					decal:SetScale(mod_GridScale)
+				if obj:IsKindOf("DroneHub") or is_site and obj.building_class == "DroneHub" then
+					for i = 1, #range.decals do
+						local decal = range.decals[i]
+						decal:SetColorModifier(cyan)
+						decal:SetScale(mod_GridScale)
+					end
+				elseif obj:IsKindOf("RCRover") or is_site and obj.building_class == "RCRover" then
+					for i = 1, #range.decals do
+						local decal = range.decals[i]
+						decal:SetColorModifier(yellow)
+						decal:SetScale(mod_GridScale)
+					end
+				elseif obj:IsKindOf("SupplyRocket") or is_site and obj.building_class == "SupplyRocketBuilding" then
+--~ 				else
+					for i = 1, #range.decals do
+						local decal = range.decals[i]
+						decal:SetColorModifier(green)
+						decal:SetScale(mod_GridScale)
+					end
 				end
 			end
 		end
@@ -119,7 +124,6 @@ end
 
 local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
 function CursorBuilding:UpdateShapeHexes(...)
-	-- skip if disabled or not a RequiresMaintenance building
 	if not mod_EnableGrid then
 		return orig_CursorBuilding_UpdateShapeHexes(self, ...)
 	end
@@ -131,10 +135,20 @@ function CursorBuilding:UpdateShapeHexes(...)
 	local g_HexRanges = g_HexRanges
 	for range, obj in pairs(g_HexRanges) do
 		if range.SetVisible and IsKindOfClasses(obj, classes) then
-			if range_limit and cursor_pos:Dist2D(obj:GetPos()) > range_limit then
-				range:SetVisible(false)
-			else
-				range:SetVisible(true)
+			local is_site = obj:IsKindOf("ConstructionSite")
+			if not is_site or (is_site and table_find(classes, obj.building_class)) then
+				if range_limit and cursor_pos:Dist2D(obj:GetPos()) > range_limit then
+					-- GetVisible() always returns true (for ranges?)
+					if range.ChoGGi_visible then
+						range:SetVisible(false)
+						range.ChoGGi_visible = false
+					end
+				else
+					if not range.ChoGGi_visible then
+						range:SetVisible(true)
+						range.ChoGGi_visible = true
+					end
+				end
 			end
 		end
 	end

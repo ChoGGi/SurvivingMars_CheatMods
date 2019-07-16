@@ -3656,6 +3656,11 @@ local function PopupClose(name)
 end
 
 function ChoGGi_DlgExamine:CleanupCustomObjs(obj, force)
+	-- can't have game objs in main menu (and log spam)
+	if not GameState.gameplay then
+		return
+	end
+
 	obj = obj or self.obj_ref
 	if self.obj_entity or IsValid(obj) then
 		self.ChoGGi.ComFuncs.BBoxLines_Clear(obj)

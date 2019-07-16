@@ -63,7 +63,8 @@ function OnMsg.SelectionAdded(obj)
 		return
 	end
 
-	local name,res_item = "",res_list[res]
+	local name = ""
+	local res_item = res_list[res]
 	if res_item then
 		name = _InternalTranslate(res_item.display_name)
 	else

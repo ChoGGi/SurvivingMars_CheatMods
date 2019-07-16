@@ -1,0 +1,2 @@
+v0.2
+Changed colour of POIs that already have a rocket.

@@ -1,2 +1,5 @@
+v0.3
+Removed flicker when near the grid dist limit.
+
 v0.2
 Added mod option to set the scale of grid objs.

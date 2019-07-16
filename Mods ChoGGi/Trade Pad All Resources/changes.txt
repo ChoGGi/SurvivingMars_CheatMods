@@ -1,3 +1,6 @@
+v0.5
+May help with any wasterock issues.
+
 v0.4
 Removed dupes.
 

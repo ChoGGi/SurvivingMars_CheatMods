@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "RC Constructor Routes v0.1",
-	"title", "RC Constructor Routes",
-	"version", 1,
+	"title", "RC Constructor Terraformer Routes",
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_RCConstructorRoutes",
@@ -14,7 +14,8 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[For some reason it intentionally isn't supposed to be able to create routes...
+	"description", [[For some reason they intentionally aren't supposed to be able to create routes...
+
 
 Requested by veryinky.]],
 })

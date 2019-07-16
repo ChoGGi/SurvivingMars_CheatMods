@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Renegade Progress",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_RenegadeProgress",
@@ -14,6 +14,12 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"TagInterface", true,
+	"has_options", true,
 	"description", [[Add renegade progress (and count) to the morale section tooltip of each dome.
-Right-clicking the Infobar>Jobs button will cycle between domes brewing renegades.]],
+Right-clicking the Infobar>Jobs button will cycle between domes brewing renegades.
+
+
+Mod Options:
+Disable Renegades (default disabled):
+Anyone that gets the renegade trait will have it removed (does nothing for existing ones).]],
 })

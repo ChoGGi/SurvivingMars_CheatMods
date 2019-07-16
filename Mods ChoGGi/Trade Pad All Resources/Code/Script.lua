@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local CreateRealTimeThread = CreateRealTimeThread
+
 local res_list = {}
 local res_list_c = 0
 
@@ -30,10 +32,10 @@ BuildList(StockpileResourceList)
 table.sort(res_list)
 TradePad.trade_resources = res_list
 
-
 local options
 local mod_EnableWasteRock
 
+local WaitForRocket
 local UpdateRivalRes
 -- fired when settings are changed/init
 local function ModOptions()
@@ -61,10 +63,10 @@ local function ModOptions()
 			obj.trade_resources = res_list
 			if not mod_EnableWasteRock then
 				if obj.export_resource == "WasteRock" then
-					obj.export_resource = false
+					CreateRealTimeThread(WaitForRocket, obj, "export_resource")
 				end
 				if obj.import_resource == "WasteRock" then
-					obj.import_resource = false
+					CreateRealTimeThread(WaitForRocket, obj, "import_resource")
 				end
 			end
 		end
@@ -149,9 +151,21 @@ end
 OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode
 
+-- don't reset till rocket is gone
+WaitForRocket = function(obj, name)
+	if obj.trade_rocket then
+		while obj.trade_rocket do
+			Sleep(1000)
+		end
+		obj[name] = false
+	else
+		obj[name] = false
+	end
+end
+
 UpdateRivalRes = function()
 	local RivalAIs = RivalAIs or empty_table
-	for id, rival in pairs(RivalAIs) do
+	for _, rival in pairs(RivalAIs) do
 		local res = rival.resources
 		if mod_EnableWasteRock then
 			res.wasterock = (res.concrete_production * 4) + (res.concrete * 2)

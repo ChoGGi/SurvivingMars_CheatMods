@@ -41,7 +41,7 @@ function OnMsg.ClassesPostprocess()
 	})
 
 	PlaceObj("GameRules", {
-		description = T(302535920011371, "<str> will always be the highest level.",
+		description = T{302535920011371, "<str> will always be the highest level.",
 			str = T(3983, "Disasters")},
 		display_name = T(302535920011372, "Max Threats"),
 		group = "Default",

@@ -1,5 +1,34 @@
 -- See LICENSE for terms
 
+local options
+local mod_DisableRenegades
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_DisableRenegades = options.DisableRenegades
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= "ChoGGi_RenegadeProgress" then
+		return
+	end
+
+	ModOptions()
+end
+
+function OnMsg.ColonistAddTrait(colonist, trait)
+	if trait == "Renegade" and mod_DisableRenegades then
+		colonist:RemoveTrait(trait)
+	end
+end
+
 local constRenegadeCreation
 local function CalcProgress(dome)
 	if not constRenegadeCreation then
@@ -28,12 +57,12 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	-- sure be nice if xtemplates weren't so ugly to navigate
-	local xtemplate = XTemplates.Infobar[1][3][1]
-	local idx = table.find(xtemplate, "Id", "idColonists")
+	xtemplate = XTemplates.Infobar[1][3][1]
+	idx = table.find(xtemplate, "Id", "idColonists")
 	if not idx then
 		return
 	end
-	xtemplate = xtemplate[idx][2][4]
+	xtemplate = xtemplate[idx][2][4] -- idJobs
 
 	local rene_str = T(4368, "Renegade") .. " " .. T(83, "Domes")
 	xtemplate.RolloverHint = T(11708, "<left_click> Cycle unemployed citizens")
@@ -43,11 +72,11 @@ function OnMsg.ClassesPostprocess()
 
 	xtemplate.AltPress = true
 	xtemplate.OnAltPress = function(self)
-		self.context:CycleRenegadeDomes()
+		self.context:ChoGGi_CycleRenegadeDomes()
 	end
 end
 
-function InfobarObj:CycleRenegadeDomes()
+function InfobarObj:ChoGGi_CycleRenegadeDomes()
 	local list = {}
 	local c = 0
 
@@ -68,7 +97,7 @@ function InfobarObj:CycleRenegadeDomes()
 	if #list > 0 then
 		-- dunno why they localed it, instead of making it InfobarObj:CycleObjects()...
 		local idx = SelectedObj and table.find(list, SelectedObj) or 0
-		local idx = (idx % #list) + 1
+		idx = (idx % #list) + 1
 		local next_obj = list[idx]
 
 		ViewAndSelectObject(next_obj)

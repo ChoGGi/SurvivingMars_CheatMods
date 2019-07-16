@@ -2037,8 +2037,10 @@ do -- Rebuildshortcuts
 				ActionBindable = true,
 			})
 			print(Strings[302535920001411--[["ECM has been disabled.
-Use %s to enable it.
-See the bottom of Gameplay>Controls if you've changed the shortcut."]]]:format("Ctrl-Shift-0"))
+Use %s to enable it, or change DisableECM to false in %s.
+See the bottom of Gameplay>Controls if you've changed the key binding."]]]
+				:format("Ctrl-Shift-0", ConvertToOSPath("AppData/LocalStorage.lua"))
+			)
 		end
 
 		-- add rightclick action to menuitems

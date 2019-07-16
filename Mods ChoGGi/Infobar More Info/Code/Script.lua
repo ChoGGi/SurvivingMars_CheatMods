@@ -46,7 +46,6 @@ function OnMsg.ApplyModOptions(id)
 end
 
 -- local some globals
-local type = type
 local table_insert = table.insert
 local table_clear = table.clear
 local table_iclear = table.iclear
@@ -442,11 +441,8 @@ local function DepositRemaining(self, res_name, ret)
 		res_str = {"<metals(number)>", number = CountSubDeposit("SubsurfaceDeposit" .. res_name)}
 	end
 
-
-	local list = ret[1].table
-
 	-- just above Remaining Time
-	table_insert(list, 3,
+	table_insert(ret[1].table, 3,
 		T{"<resource(res)>", res = res_name} .. " " .. T(3982, "Deposits")
 			.. "<right>" .. T(res_str)
 	)
@@ -514,6 +510,109 @@ function ResourceOverview.GetColonistsRollover(...)
 	ret[1].table[c] = T("<left>") .. T(7303, "Biorobot") .. T{
 		"<right><colonist(number)>", number = ac,
 	}
+
+	-- add count of all new strings
+	ret[1].j = c
+
+	return table_concat(ret)
+end
+
+-- add action + borked drone count
+function OnMsg.ClassesPostprocess()
+	-- sure be nice if xtemplates weren't so ugly to navigate
+	local xtemplate = XTemplates.Infobar[1][3][1]
+	local idx = table.find(xtemplate, "Id", "idColonists")
+	if not idx then
+		return
+	end
+	xtemplate = xtemplate[idx][2][1] -- idTotalDrones
+
+	local borked_str = T(65, "Malfunctioned") ..  " " .. T(517, "Drones")
+	xtemplate.RolloverHint = T(11704, "<left_click> Cycle drone controllers")
+		.. T("\n<right_click>") .. borked_str
+	xtemplate.RolloverHintGamepad = T(11715, "<ButtonA> Cycle drone controllers<newline><DPad> Navigate <DPadDown> Close")
+		.. T("\n<ButtonX>") .. borked_str
+
+	xtemplate.AltPress = true
+	xtemplate.OnAltPress = function(self)
+		self.context:ChoGGi_CycleBorkedDrones()
+	end
+end
+
+-- see DroneCommands table
+local borked_lookup = {
+	NoBattery = true,
+	Malfunction = true,
+	Freeze = true,
+	Dead = true,
+	WaitingCommand = true,
+}
+function InfobarObj:ChoGGi_GetBrokenDrones()
+	local list = {}
+	local c = 0
+	-- gotta use mapget instead of labels since dead drones aren't included
+	local objs = MapGet("map", "Drone")
+	for i = 1, #objs do
+		local obj = objs[i]
+		if borked_lookup[obj.command] then
+			c = c + 1
+			list[c] = obj
+		end
+	end
+	return list, c
+end
+
+local orig_GetDronesRollover = InfobarObj.GetDronesRollover
+function InfobarObj:GetDronesRollover(...)
+	local ret = orig_GetDronesRollover(self, ...)
+
+	local _, count = self:ChoGGi_GetBrokenDrones()
+	local c = ret[1].j
+	c = c + 1
+	ret[1].table[c] = T("<left>") .. T(65, "Malfunctioned") ..  " "
+		.. T(517, "Drones") .. T{"<right><drone(number)>",
+			number = count,
+		}
+
+	-- add count of all new strings
+	ret[1].j = c
+
+	return table_concat(ret)
+end
+
+-- cycle borked drones on rightclick
+function InfobarObj:ChoGGi_CycleBorkedDrones()
+	local list, count = self:ChoGGi_GetBrokenDrones()
+	if count > 0 then
+		-- dunno why they localed it, instead of making it InfobarObj:CycleObjects()...
+		local idx = SelectedObj and table.find(list, SelectedObj) or 0
+		idx = (idx % count) + 1
+		local next_obj = list[idx]
+
+		ViewAndSelectObject(next_obj)
+		XDestroyRolloverWindow()
+	end
+end
+
+-- max food consumption
+local foodcon_str = {3644, "Food consumption<right><food(FoodConsumedByConsumptionYesterday)>"}
+local orig_GetFoodRollover = InfobarObj.GetFoodRollover
+function InfobarObj.GetFoodRollover(...)
+	local ret = orig_GetFoodRollover(...)
+
+	local eat_food_per_visit = g_Consts.eat_food_per_visit
+	local fc = 0
+	local objs = UICity.labels.Dome or ""
+	for i = 1, #objs do
+		local dome = objs[i]
+		fc = fc + (#(dome.labels.Colonist or "") + #(dome.labels.Glutton or "")) * eat_food_per_visit
+	end
+
+	foodcon_str.FoodConsumedByConsumptionYesterday = fc
+	local c = ret[1].j
+	c = c + 1
+	-- just below Food Consumption
+	table_insert(ret[1].table, 6,	T(8780, "MAX") .. " " .. T(foodcon_str))
 
 	-- add count of all new strings
 	ret[1].j = c

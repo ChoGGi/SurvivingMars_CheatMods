@@ -11,7 +11,7 @@ DefineClass("ModOptions_ChoGGi_ConstructionShowTribbyRange", {
 			desc = "Show during construction.",
 		},
 		{
-			default = 50,
+			default = 75,
 			max = 100,
 			min = 0,
 			editor = "number",
@@ -27,7 +27,7 @@ DefineClass("ModOptions_ChoGGi_ConstructionShowTribbyRange", {
 			name = T(302535920011366, "Grid Scale"),
 		},
 		{
-			default = 50,
+			default = 25,
 			max = 250,
 			min = 0,
 			editor = "number",

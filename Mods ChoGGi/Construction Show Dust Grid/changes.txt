@@ -1,3 +1,9 @@
+v1.4
+Removed flicker when near the grid dist limit.
+Make sure drone range of rockets aren't red (if my drone range mod is enabled).
+It wasn't showing the dust range for rocket.
+Skipped rockets on pad, since they don't add dust.
+
 v1.3
 Added mod option to set the scale of grid objs.
 Made grid red to stand out better on busy maps (or ones with my other grid mods).

@@ -37,6 +37,11 @@ local function LuaModEnv(env)
 	return env
 end
 
+local warning_msg = [[Warning: The blacklist function has been removed for this mod!
+This means it has no limitations and can access your Steam name, Friends list, run any files on your computer, and so on.
+
+]]
+
 -- thread needed for WaitMsg
 CreateRealTimeThread(function()
 	-- needs an inf loop, so it fires whenever mod defs are loaded
@@ -58,6 +63,7 @@ CreateRealTimeThread(function()
 		end
 
 		-- remove blacklist for any mods in "Mod Ids"
+		local Mods = Mods
 		for id,mod in pairs(Mods) do
 			if mod_ids[mod.steam_id] then
 				-- mods can see if funcs are blacklisted or not
@@ -77,11 +83,11 @@ CreateRealTimeThread(function()
 				mod.env = LuaModEnv(env)
 				-- add a warning to any mods without a blacklist, so user knows something is up
 				mod.title = mod.title .. " (Warning)"
-				if id ~= "ChoGGi_CheatMenu" then
-					mod.description = [[Warning: The blacklist function has been removed for this mod!
-This means it has no limitations and can access your Steam name, Friends list, run any files on your computer, and so on.
-
---~ ]] .. mod.description
+				if id == "ChoGGi_CheatMenu" and Mods.ChoGGi_testing then
+					-- I toggle it a fair bit, so make sure it's at the top
+					mod.title = " " .. mod.title
+				else
+					mod.description = warning_msg .. mod.description
 				end
 			end
 		end

@@ -1,3 +1,8 @@
+v0.8
+Added max food consumption: 0.2 for each colonist (0.4 for gluttons).
+Right-click Drones icon to cycle through all borked drones (also adds count):
+NoBattery, Malfunction, Freeze, Dead, WaitingCommand (orphaned).
+
 v0.7
 Added mod option to skip grids with X amount of buildings, like a concrete "hub".
 If remaining time is under an hour add some red.

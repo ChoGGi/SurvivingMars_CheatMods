@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Infobar Add Discharge Rates",
 	"title", "Infobar More Info",
-	"version", 7,
+	"version", 8,
 	"version_major", 0,
-	"version_minor", 7,
+	"version_minor", 8,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_InfobarAddDischargeRates",
@@ -36,6 +36,12 @@ For stuff getting mined (water, metals, concrete) the remaining amounts in curre
 Research tooltip:
 Total per Sol.
 
+Food:
+Current max food consumption (daily): 0.2 for each colonist (0.4 for gluttons).
+
+Drones:
+Right-click Drones icon to cycle through all borked drones (also adds count):
+NoBattery, Malfunction, Freeze, Dead, WaitingCommand (orphaned).
 
 
 Mod Options:

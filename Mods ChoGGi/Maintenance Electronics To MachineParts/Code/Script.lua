@@ -21,7 +21,7 @@ function OnMsg.LoadGame()
 	for i = 1, c do
 		local label = labels[list[i]] or ""
 		for j = 1, #label do
-			label[i].maintenance_resource_type = "MachineParts"
+			label[j].maintenance_resource_type = "MachineParts"
 		end
 	end
 end

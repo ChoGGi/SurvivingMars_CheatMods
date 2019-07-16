@@ -9,7 +9,8 @@ DefineClass.ChoGGi_ExamplePowerGen = {
 	},
 }
 
-function ChoGGi_ExamplePowerGen:BuildingUpdate(delta, day, hour)
+--~ function ChoGGi_ExamplePowerGen:BuildingUpdate(delta, day, hour)
+function ChoGGi_ExamplePowerGen:BuildingUpdate()
 	self:Consume_Internal(self.consumption_amount)
 end
 

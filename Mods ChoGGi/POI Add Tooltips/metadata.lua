@@ -1,8 +1,9 @@
 return PlaceObj("ModDef", {
-	"title", "POI Add Tooltips",
-	"version", 1,
+	"title", "POI: Add Tooltips",
+--~ 	"title", "POI Add Tooltips",
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_POIAddTooltips",

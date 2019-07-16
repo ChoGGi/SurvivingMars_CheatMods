@@ -3,6 +3,7 @@
 ## v14.2 (Unreleased)
 ### Fixed:
 - Hopefully fixed Xbox not saving options at firstrun.
+- Image Viewer export works better (tries for .dds if no .tga).
 
 ## v14.1 (08 July 2019)
 ### Changed:

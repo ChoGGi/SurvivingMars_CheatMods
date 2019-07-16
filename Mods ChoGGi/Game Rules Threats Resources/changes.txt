@@ -1,2 +1,5 @@
+v0.3
+Bugfix.
+
 v0.2
 Removed Max Threats Dust Devils.

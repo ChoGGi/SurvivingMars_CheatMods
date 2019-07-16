@@ -1,3 +1,6 @@
+v0.4
+Removed flicker when near the grid dist limit.
+
 v0.3
 Added mod option to set the scale of grid objs.
 Made grid reddish to stand out better on busy maps (or ones with my other grid mods).

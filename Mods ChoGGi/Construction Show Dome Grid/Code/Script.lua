@@ -58,6 +58,7 @@ function CursorBuilding:GameInit(...)
 		if IsKindOf(obj, "Dome") then
 			if IsKindOf(range, "RangeHexMultiSelectRadius") then
 				range:SetOpacity(mod_GridOpacity)
+				range.ChoGGi_visible = true
 			end
 
 			for i = 1, #range.decals do
@@ -74,23 +75,32 @@ end
 
 local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
 function CursorBuilding:UpdateShapeHexes(...)
-	if mod_EnableGrid and self.template:IsKindOf("Dome") then
-		local range_limit = mod_DistFromCursor > 0 and mod_DistFromCursor
-		local cursor_pos = self:GetPos()
+	if not (mod_EnableGrid or self.template:IsKindOf("Dome")) then
+		return orig_CursorBuilding_UpdateShapeHexes(self, ...)
+	end
 
-		SuspendPassEdits("CursorBuilding.UpdateShapeHexes.Construction Show Dome Grid")
-		local g_HexRanges = g_HexRanges
-		for range, obj in pairs(g_HexRanges) do
-			if range.SetVisible and IsKindOf(obj, "Dome") then
-				if range_limit and cursor_pos:Dist2D(obj:GetPos()) > range_limit then
+	local range_limit = mod_DistFromCursor > 0 and mod_DistFromCursor
+	local cursor_pos = self:GetPos()
+
+	SuspendPassEdits("CursorBuilding.UpdateShapeHexes.Construction Show Dome Grid")
+	local g_HexRanges = g_HexRanges
+	for range, obj in pairs(g_HexRanges) do
+		if range.SetVisible and IsKindOf(obj, "Dome") then
+			if range_limit and cursor_pos:Dist2D(obj:GetPos()) > range_limit then
+				-- GetVisible() always returns true (for ranges?)
+				if range.ChoGGi_visible then
 					range:SetVisible(false)
-				else
+					range.ChoGGi_visible = false
+				end
+			else
+				if not range.ChoGGi_visible then
 					range:SetVisible(true)
+					range.ChoGGi_visible = true
 				end
 			end
 		end
-		ResumePassEdits("CursorBuilding.UpdateShapeHexes.Construction Show Dome Grid")
 	end
+	ResumePassEdits("CursorBuilding.UpdateShapeHexes.Construction Show Dome Grid")
 
 	return orig_CursorBuilding_UpdateShapeHexes(self, ...)
 end
