@@ -2,17 +2,20 @@
 
 -- local whatever globals we call
 local table_find = table.find
+local table_remove = table.remove
 local ShowHexRanges = ShowHexRanges
 local HideHexRanges = HideHexRanges
 local IsKindOf = IsKindOf
 local IsKindOfClasses = IsKindOfClasses
 local pairs = pairs
-local green = green
-local yellow = yellow
-local cyan = cyan
 local CleanupHexRanges = CleanupHexRanges
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
+local DoneObject = DoneObject
+local green = green
+local yellow = yellow
+local cyan = cyan
+local InvalidPos = InvalidPos()
 
 local options
 local mod_EnableGrid
@@ -94,19 +97,19 @@ function CursorBuilding.GameInit(...)
 					range.ChoGGi_visible = true
 				end
 
-				if obj:IsKindOf("DroneHub") or is_site and obj.building_class == "DroneHub" then
+				if obj:IsKindOf("DroneHub") then
 					for i = 1, #range.decals do
 						local decal = range.decals[i]
 						decal:SetColorModifier(cyan)
 						decal:SetScale(mod_GridScale)
 					end
-				elseif obj:IsKindOf("RCRover") or is_site and obj.building_class == "RCRover" then
+				elseif obj:IsKindOf("RCRover") then
 					for i = 1, #range.decals do
 						local decal = range.decals[i]
 						decal:SetColorModifier(yellow)
 						decal:SetScale(mod_GridScale)
 					end
-				elseif obj:IsKindOf("SupplyRocket") or is_site and obj.building_class == "SupplyRocketBuilding" then
+				elseif obj:IsKindOf("SupplyRocket") then
 --~ 				else
 					for i = 1, #range.decals do
 						local decal = range.decals[i]
@@ -134,7 +137,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 	SuspendPassEdits("CursorBuilding.UpdateShapeHexes.Construction Show Drone Grid")
 	local g_HexRanges = g_HexRanges
 	for range, obj in pairs(g_HexRanges) do
-		if range.SetVisible and IsKindOfClasses(obj, classes) then
+		if range.SetVisible and IsValid(obj) and IsKindOfClasses(obj, classes) then
 			local is_site = obj:IsKindOf("ConstructionSite")
 			if not is_site or (is_site and table_find(classes, obj.building_class)) then
 				if range_limit and cursor_pos:Dist2D(obj:GetPos()) > range_limit then
@@ -167,4 +170,22 @@ function CursorBuilding.Done(...)
 	ResumePassEdits("CursorBuilding.Done.Construction Show Drone Grid")
 
 	return orig_CursorBuilding_Done(...)
+end
+
+local function CleanList(list)
+	for i = #(list or ""), 1, -1 do
+		DoneObject(list[i])
+		table_remove(list, i)
+	end
+end
+
+-- just in case
+function OnMsg.SaveGame()
+	local g_HexRanges = g_HexRanges
+	for obj, list in pairs(g_HexRanges) do
+		if obj.GetPos and obj:GetPos() == InvalidPos then
+			CleanList(list)
+			g_HexRanges[obj] = nil
+		end
+	end
 end

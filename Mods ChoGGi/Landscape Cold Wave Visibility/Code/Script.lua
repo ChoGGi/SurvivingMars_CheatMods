@@ -96,6 +96,12 @@ function LandscapeConstructionSite:BuildingUpdate(...)
 	return orig_BuildingUpdate(self, ...)
 end
 
+local orig_Done = LandscapeConstructionSite.Done
+function LandscapeConstructionSite:Done(...)
+	DisableMarker(self)
+	return orig_Done(self, ...)
+end
+
 -- make sure there's no markers left around
 function OnMsg.SaveGame()
 	if g_ColdWave then

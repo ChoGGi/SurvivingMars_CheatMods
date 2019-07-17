@@ -1,3 +1,6 @@
+v0.9
+Added time left for current research (based on current points).
+
 v0.8
 Added max food consumption: 0.2 for each colonist (0.4 for gluttons).
 Right-click Drones icon to cycle through all borked drones (also adds count):

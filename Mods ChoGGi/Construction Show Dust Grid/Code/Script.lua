@@ -30,10 +30,9 @@ local mod_GridOpacity
 local mod_GridScale
 
 local function CleanList(list)
-	local ranges = list or ""
-	for i = #ranges, 1, -1 do
-		DoneObject(ranges[i])
-		table_remove(ranges, i)
+	for i = #(list or ""), 1, -1 do
+		DoneObject(list[i])
+		table_remove(list, i)
 	end
 end
 
@@ -228,7 +227,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 	local g_HexRanges = g_HexRanges
 	for range, obj in pairs(g_HexRanges) do
 		if range.SetVisible and range.bind_to == "GetDustRadius"
-			and IsKindOfClasses(obj, classes)
+			and IsValid(obj) and IsKindOfClasses(obj, classes)
 		then
 			local is_site = obj:IsKindOf("ConstructionSite")
 			if not is_site or (is_site and table_find(classes, obj.building_class)) then

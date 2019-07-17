@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Construction: Show Dust Grid v0.2",
 	"title", "Construction Show Dust Grid",
-	"version", 14,
+	"version", 15,
 	"version_major", 1,
-	"version_minor", 4,
+	"version_minor", 5,
 	"saved", 0,
 	"id", "ChoGGi_ConstructionShowDustGrid",
 	"author", "ChoGGi",

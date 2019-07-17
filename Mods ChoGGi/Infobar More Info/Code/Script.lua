@@ -57,15 +57,28 @@ local MapGet = MapGet
 local HexBoundingCircle = HexBoundingCircle
 local point = point
 local FormatResource = FormatResource
+local floatfloor = floatfloor
 
 local scale_hours = const.HourDuration
 local scale_sols = const.DayDuration
 
--- research per sol
-function OnMsg.AddResearchRolloverTexts(ret)
-	ret[#ret+1] = "<newline><left>" .. T{445070088246,
+function OnMsg.AddResearchRolloverTexts(ret, city)
+	local res_points = ResourceOverviewObj:GetEstimatedRP() + 0.0
+
+	-- research per sol
+	ret[#ret+1] = "<newline>" .. T{445070088246,
 		"Research per Sol<right><research(EstimatedDailyProduction)>",
-		EstimatedDailyProduction = ResourceOverviewObj:GetEstimatedRP(),
+		EstimatedDailyProduction = res_points,
+	}
+	-- time left of current res
+	local id, points, max_points = city:GetResearchInfo()
+	if not id then
+		return
+	end
+	local points_left = max_points - points
+	local time_left = (points_left / res_points) * scale_sols
+	ret[#ret+1] = T(311, "Research") .. " " .. T{12265, "Remaining Time<right><time(time)>",
+		time = floatfloor(time_left),
 	}
 end
 
@@ -95,11 +108,11 @@ end
 -- return time left or N/A
 local under_an_hour = {"<red><text></red>"}
 local function RemainingTime(g, scale)
-	local time_left = g.production - g.consumption
+	local time_left = g.production - g.consumption + 0.0
 	-- losing resources
 	if time_left < 0 then
 		time_left = (g.stored / (time_left * -1)) * (scale or scale_hours)
-		local text = T{12265, "Remaining Time<right><time(time)>", time = time_left}
+		local text = T{12265, "Remaining Time<right><time(time)>", time = floatfloor(time_left)}
 
 		-- less than an hour
 		if time_left == 0 then

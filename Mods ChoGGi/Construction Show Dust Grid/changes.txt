@@ -1,3 +1,6 @@
+v1.5
+Log spam.
+
 v1.4
 Removed flicker when near the grid dist limit.
 Make sure drone range of rockets aren't red (if my drone range mod is enabled).
