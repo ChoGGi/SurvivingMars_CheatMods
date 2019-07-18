@@ -92,7 +92,7 @@ ChoGGi.Defaults = {
 	-- stops panel from shrinking
 	StopSelectionPanelResize = false,
 	-- remove any objects above the height limit (or game will delete save and crash)
-	RemoveHeightLimitObjs = true
+	RemoveHeightLimitObjs = true,
 	-- change rollovers from 450 to 600
 	WiderRollovers = 600,
 

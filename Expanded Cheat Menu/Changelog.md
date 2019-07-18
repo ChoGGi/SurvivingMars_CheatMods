@@ -2,7 +2,7 @@
 
 ## v14.2 (Unreleased)
 ### Changed:
-- Removed limit on storage depots.
+- Removed cheat capacity limit on storage depots.
 
 ### Fixed:
 - Hopefully fixed Xbox not saving options at firstrun.
