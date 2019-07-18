@@ -1,8 +1,5 @@
 -- See LICENSE for terms
 
-local CreateRealTimeThread = CreateRealTimeThread
-local WaitMsg = WaitMsg
-
 local temp_route_obj
 local temp_route_from
 local temp_route_res

@@ -1,3 +1,7 @@
+v0.3
+Forgot to add mod req for my lib mod.
+Log spam when no lasers.
+
 v0.2
 Added mod option to make them go for the nearest working laser/missile tower (default on).
 Now ignores rovers that aren't in auto mode.

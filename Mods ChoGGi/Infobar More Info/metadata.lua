@@ -34,7 +34,8 @@ Resource/Grid tooltips:
 For stuff getting mined (water, metals, concrete) the remaining amounts in currently mined deposits are shown.
 
 Research tooltip:
-Total per Sol.
+Total points per Sol.
+Time left for current research.
 
 Food:
 Current max food consumption (daily): 0.2 for each colonist (0.4 for gluttons).
@@ -42,6 +43,7 @@ Current max food consumption (daily): 0.2 for each colonist (0.4 for gluttons).
 Drones:
 Right-click Drones icon to cycle through all borked drones (also adds count):
 NoBattery, Malfunction, Freeze, Dead, WaitingCommand (orphaned).
+
 
 
 Mod Options:

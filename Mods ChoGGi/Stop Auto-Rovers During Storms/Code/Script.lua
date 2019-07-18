@@ -37,11 +37,11 @@ local function WaitItOut(idle_func, self, ...)
 	if self.auto_mode_on and g_MeteorStorm then
 		if mod_NearestLaser and not self.ChoGGi_AutoRoversDuringStorms then
 			-- try lasers first since towers are from mystery (usually)
-			local working_objs = MapFilter(UICity.labels.MDSLaser, IsWorking)
+			local working_objs = MapFilter(UICity.labels.MDSLaser or empty_table, IsWorking)
 			local valid_obj = FindNearestObject(working_objs, self)
 
 			if not IsValid(valid_obj) then
-				working_objs = MapFilter(UICity.labels.DefenceTower, IsWorking)
+				working_objs = MapFilter(UICity.labels.DefenceTower or empty_table, IsWorking)
 				valid_obj = FindNearestObject(working_objs, self)
 			end
 

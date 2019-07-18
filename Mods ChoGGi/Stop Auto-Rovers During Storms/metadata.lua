@@ -1,8 +1,16 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library",
+			"version_major", 7,
+			"version_minor", 1,
+		}),
+	},
 	"title", "Stop Auto-Rovers During Storms",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_StopAutoRoversDuringStorms",
