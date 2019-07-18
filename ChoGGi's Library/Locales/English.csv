@@ -3,6 +3,7 @@
 302535920000923,
 302535920000941,
 302535920000945,
+302535920000962,
 302535920000975,
 302535920000976,
 302535920000977,
@@ -1384,11 +1385,6 @@ Blue = pass/no build, Red = no pass/no build."
 302535920000959,"You need to select something that has space for visitors (services/trainingbuildings)."
 302535920000960,"<green>%s</green> visitor capacity is now <yellow>%s</yellow>."
 302535920000961,"Visitor Capacity"
-302535920000962,"Max capacity limited to:
-Universal: 2,500,
-Other: 20,000,
-Waste: 1,000,000,
-Mechanized: 1,000,000"
 302535920000963,"Size"
 302535920001094,"Shows a list of all cargo and allows you to change the price, weight taken up, if it's locked from view, and how many per click."
 302535920000554,"Select an object and click this to display a list of resources (Shows nearest resource to object)."
@@ -1647,7 +1643,8 @@ Not noticeable unless using higher zoom."
 302535920000656,"Toggle between moving camera and selecting objects."
 302535920000221,"See log for any batch errors."
 302535920001586,"All Done!"
-302535920001572,"<color red>Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually instead."
+302535920001572,"<color red>Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually instead.
+You can also stick the executable in the profile folder to use it instead (<green>no crashing</green>): <yellow>%s</yellow>."
 302535920000323,"Modding"
 302535920001511,"AsyncPack will crash SM after calling it once, you can use hpk to pack mods ahead of time.
 

@@ -42,8 +42,18 @@ do -- ModUpload
 		ChoGGi_XDefaultMod = true,
 		ChoGGi_testing = true,
 	}
+	local mods_path = "AppData/Mods/"
 	local pack_path = "AppData/ModUpload/Pack/"
 	local dest_path = "AppData/ModUpload/"
+	local hpk_path = "AppData/hpk.exe"
+	if not Platform.pc then
+		hpk_path = "AppData/hpk"
+	end
+	if ChoGGi.ComFuncs.FileExists(hpk_path) then
+		hpk_path = ConvertToOSPath(hpk_path)
+	else
+		hpk_path = nil
+	end
 
 	-- it's fine...
 	local copy_files, blank_mod, clipboard, pack_mod, test, steam_upload, para_platform
@@ -142,23 +152,24 @@ do -- ModUpload
 
 		end
 
-		-- screenshots
-		local shots_path = "AppData/ModUpload/Screenshots/"
-		AsyncCreatePath(shots_path)
-		mod_params.screenshots = {}
-		for i = 1, 5 do
-			local screenshot = mod["screenshot" .. i]
-			if io.exists(screenshot) then
-				local _, name, ext = SplitPath(screenshot)
-				local new_name = ModsScreenshotPrefix .. name .. ext
-				local new_path = shots_path .. new_name
-				local err = AsyncCopyFile(screenshot, new_path)
-				if not err then
-					local os_path = ConvertToOSPath(new_path)
-					table.insert(mod_params.screenshots, os_path)
+		do -- screenshots
+			local shots_path = "AppData/ModUpload/Screenshots/"
+			AsyncCreatePath(shots_path)
+			mod_params.screenshots = {}
+			for i = 1, 5 do
+				local screenshot = mod["screenshot" .. i]
+				if io.exists(screenshot) then
+					local _, name, ext = SplitPath(screenshot)
+					local new_name = ModsScreenshotPrefix .. name .. ext
+					local new_path = shots_path .. new_name
+					local err = AsyncCopyFile(screenshot, new_path)
+					if not err then
+						local os_path = ConvertToOSPath(new_path)
+						table.insert(mod_params.screenshots, os_path)
+					end
 				end
 			end
-		end
+		end -- do
 
 		if pack_mod then
 			local files_to_pack = {}
@@ -186,7 +197,23 @@ do -- ModUpload
 						})
 					end
 				end
-				err = AsyncPack(pack_path .. ModsPackFileName, dest_path, files_to_pack)
+
+				-- try to use hpk exe instead of buggy ass AsyncPack
+				if hpk_path then
+					-- not sure if it matters, but delete ModContent.hpk first
+					local output = mods_path .. ModsPackFileName
+					AsyncFileDelete(output)
+					local exec = hpk_path .. " create --cripple-lua-files \""
+						.. mod.env.CurrentModPath:gsub(mods_path, ""):gsub("/", "") .. "\" " .. ModsPackFileName
+					-- AsyncExec(cmd, working_dir, hidden, capture_output, priority)
+					if not AsyncExec(exec, ConvertToOSPath(mods_path), true, false) then
+						-- hpk.exe is a little limited in where it places the output, so we need to move it over
+						AsyncCopyFile(output, pack_path .. ModsPackFileName, "raw")
+						AsyncFileDelete(output)
+					end
+				else
+					err = AsyncPack(pack_path .. ModsPackFileName, dest_path, files_to_pack)
+				end
 			end
 		end
 
@@ -351,13 +378,19 @@ do -- ModUpload
 							upload_msg[m_c] = Translate(1000012--[[Mod <ModLabel> will be uploaded to Steam]]):gsub("<ModLabel>", mod.title)
 						else
 							upload_msg[m_c] = Translate(1000771--[[Mod <ModLabel> will be uploaded to Paradox]]):gsub("<ModLabel>", mod.title)
+						end
+
+						if pack_mod then
 							m_c = m_c + 1
 							upload_msg[m_c] = "\n\n"
 							m_c = m_c + 1
-							upload_msg[m_c] = Strings[302535920001572--[["Warning: Will instantly crash SM when calling it a second time, pack the mod manually instead."]]]
-						end
-
-						if not pack_mod then
+							upload_msg[m_c] = Strings[302535920001427--[[Pack]]]
+							m_c = m_c + 1
+							upload_msg[m_c] = ": "
+							m_c = m_c + 1
+							upload_msg[m_c] = Strings[302535920001572--[["<color red>Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually instead.
+You can also stick the executable in the profile folder to use it instead (<green>no crashing</green>): <yellow>%s</yellow>."]]]:format(hpk_path)
+						else
 							m_c = m_c + 1
 							upload_msg[m_c] = "\n\n"
 							m_c = m_c + 1
@@ -535,7 +568,8 @@ Move archive to ""Mod folder/Pack/ModContent.hpk"""]]],
 				},
 				{title = Strings[302535920001427--[[Pack]]],
 					hint = Strings[302535920001428--[["Uploads as a packed mod (default for mod editor upload).
-This will always apply if uploading to Paradox."]]] .. "\n\n" .. Strings[302535920001572--[["Warning: Will instantly crash SM when calling it a second time, pack the mod manually."]]],
+This will always apply if uploading to Paradox."]]] .. "\n\n" .. Strings[302535920001572--[["<color red>Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually instead.
+You can also stick the executable in the profile folder to use it instead (<green>no crashing</green>): <yellow>%s</yellow>."]]]:format(hpk_path),
 					checked = true,
 				},
 				{title = Translate(186760604064, "Test"),
@@ -870,7 +904,7 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 		end
 		for i = 1, #choices do
 			local choice = choices[i]
-			local path = "AppData/Mods/" .. choice.id
+			local path = mods_path .. choice.id
 			printC(choice.value, path)
 			AsyncUnpack(choice.value, path)
 			-- add a note telling people not to be assholes

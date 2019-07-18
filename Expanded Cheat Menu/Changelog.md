@@ -8,6 +8,8 @@
 - Hopefully fixed Xbox not saving options at firstrun.
 - Image Viewer export works better (tries for .dds if no .tga).
 - Deletes any objs above the map limit (the game will crash and delete your save).
+- If Profile folder\hpk.exe exists then Mod Upload func will use it instead of AsyncPack
+- > AsyncPack() == Crash if called more than once per session.
 
 ## v14.1 (08 July 2019)
 ### Changed:

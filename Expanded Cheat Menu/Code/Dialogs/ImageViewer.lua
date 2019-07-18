@@ -105,12 +105,12 @@ function ChoGGi_DlgImageViewer:ExportImage()
 	local slash = self.image_path:reverse():find("/")
 	if slash then
 		local name = self.image_path:sub((slash * -1) + 1)
-		local path = "AppData/" .. name
+		local dest_path = "AppData/" .. name
 		-- if error (devs swapped all? the images from .tga to .dds, but ref them as .tga)
-		if AsyncCopyFile(self.image_path, path) then
-			AsyncCopyFile(self.image_path:gsub(".tga", ".dds"), path)
+		if AsyncCopyFile(self.image_path, dest_path) then
+			AsyncCopyFile(self.image_path:gsub(".tga", ".dds"), dest_path)
 		end
-		local msg = ConvertToOSPath(path)
+		local msg = ConvertToOSPath(dest_path)
 		print(msg)
 		ChoGGi.ComFuncs.MsgPopup(
 			msg,
