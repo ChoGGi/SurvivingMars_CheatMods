@@ -442,7 +442,7 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 		callback = CallBackFunc,
 		items = item_list,
 		title = Strings[302535920000129--[[Set]]] .. ": " .. bld_type .. " " .. Strings[302535920000963--[[Size]]],
-		hint = Strings[302535920000914--[[Current capacity]]] .. ": " .. hint .. "\n\n" .. hint_max,
+		hint = Strings[302535920000914--[[Current capacity]]] .. ": " .. hint,
 		skip_sort = true,
 	}
 end
