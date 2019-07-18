@@ -8,6 +8,7 @@ local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 local RetObjectCapAndGrid = ChoGGi.ComFuncs.RetObjectCapAndGrid
 local Strings = ChoGGi.Strings
 local Translate = ChoGGi.ComFuncs.Translate
+local testing = ChoGGi.testing
 
 function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
 	ChoGGi.UserSettings.StorageMechanizedDepotsTemp = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.StorageMechanizedDepotsTemp)
@@ -339,11 +340,6 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts[bld_type] / r
-	local hint_max = Strings[302535920000962--[[Max capacity limited to:
-Universal: 2, 500
-Other: 20, 000
-Waste: 1, 000, 000
-Mechanized: 1, 000, 000]]]
 	local item_list = {
 		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 50, value = 50},
@@ -351,12 +347,12 @@ Mechanized: 1, 000, 000]]]
 		{text = 250, value = 250},
 		{text = 500, value = 500},
 		{text = 1000, value = 1000},
-		{text = 2500, value = 2500, hint = hint_max},
-		{text = 5000, value = 5000, hint = hint_max},
-		{text = 10000, value = 10000, hint = hint_max},
-		{text = 20000, value = 20000, hint = hint_max},
-		{text = 100000, value = 100000, hint = hint_max},
-		{text = 1000000, value = 1000000, hint = hint_max},
+		{text = 2500, value = 2500},
+		{text = 5000, value = 5000},
+		{text = 10000, value = 10000},
+		{text = 20000, value = 20000},
+		{text = 100000, value = 100000},
+		{text = 1000000, value = 1000000},
 	}
 
 	local hint = default_setting
@@ -373,10 +369,10 @@ Mechanized: 1, 000, 000]]]
 
 			local value = value * r
 			if bld_type == "StorageWasteDepot" then
-				-- limit amounts so saving with a full load doesn't delete your game
-				if value > 1000000000 then
-					value = 1000000000 -- might be safe above a million, but I figured I'd stop somewhere
-				end
+--~ 				-- limit amounts so saving with a full load doesn't delete your game
+--~ 				if value > 1000000000 and not testing then
+--~ 					value = 1000000000 -- might be safe above a million, but I figured I'd stop somewhere
+--~ 				end
 				-- loop through and change all existing
 
 				local objs = UICity.labels.WasteRockDumpSite or ""
@@ -390,14 +386,13 @@ Mechanized: 1, 000, 000]]]
 				end
 
 			elseif bld_type == "StorageOtherDepot" then
-				if value > 20000000 then
-					value = 20000000
-				end
+--~ 				if value > 20000000 and not testing then
+--~ 					value = 20000000
+--~ 				end
 				local objs = UICity.labels.UniversalStorageDepot or ""
 				for i = 1, #objs do
 					local o = objs[i]
---~ 						if o:GetEntity() ~= "StorageDepot" then
-					if o.encyclopedia_id ~= "UniversalStorageDepot" then
+					if o.template_name ~= "UniversalStorageDepot" then
 						o.max_storage_per_resource = value
 					end
 				end
@@ -411,22 +406,21 @@ Mechanized: 1, 000, 000]]]
 				OtherDepot("BlackCubeDumpSite", "max_amount_BlackCube")
 
 			elseif bld_type == "StorageUniversalDepot" then
-				if value > 2500000 then
-					value = 2500000 -- can go to 2900, but I got a crash; which may have been something else, but it's only 400
-				end
+--~ 				if value > 2500000 and not testing then
+--~ 					value = 2500000 -- can go to 2900, but I got a crash; which may have been something else, but it's only 400
+--~ 				end
 				local objs = UICity.labels.UniversalStorageDepot or ""
 				for i = 1, #objs do
 					local o = objs[i]
---~ 						if o:GetEntity() == "StorageDepot" then
-					if o.encyclopedia_id == "UniversalStorageDepot" then
+					if o.template_name == "UniversalStorageDepot" then
 						o.max_storage_per_resource = value
 					end
 				end
 
 			elseif bld_type == "StorageMechanizedDepot" then
-				if value > 1000000000 then
-					value = 1000000000 -- might be safe above a million, but I figured I'd stop somewhere
-				end
+--~ 				if value > 1000000000 and not testing then
+--~ 					value = 1000000000 -- might be safe above a million, but I figured I'd stop somewhere
+--~ 				end
 				local objs = UICity.labels.MechanizedDepots or ""
 				for i = 1, #objs do
 					objs[i].max_storage_per_resource = value

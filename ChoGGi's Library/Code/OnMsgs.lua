@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local OnMsg = OnMsg
+local IsAboveHeightLimit = ChoGGi.ComFuncs.IsAboveHeightLimit
 
 -- we don't add shortcuts and ain't supposed to drink no booze
 OnMsg.ShortcutsReloaded = ChoGGi.ComFuncs.Rebuildshortcuts
@@ -60,6 +61,13 @@ local function RemoveChoGGiObjects()
 		end
 	end)
 	ChoGGi.ComFuncs.RemoveObjs("ChoGGi_ODeleteObjs")
+	-- remove anything above 65536 (or bad things happen)
+	if ChoGGi.UserSettings.RemoveHeightLimitObjs then
+		local objs = MapGet("map", IsAboveHeightLimit)
+		for i = #objs, 1, -1 do
+			objs[i]:delete()
+		end
+	end
 	ResumePassEdits("ChoGGiLibrary.OnMsgs.RemoveChoGGiObjects")
 end
 OnMsg.SaveGame = RemoveChoGGiObjects

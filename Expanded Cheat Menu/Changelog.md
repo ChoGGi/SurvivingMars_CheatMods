@@ -1,9 +1,13 @@
 ## ECM Changelog
 
 ## v14.2 (Unreleased)
+### Changed:
+- Removed limit on storage depots.
+
 ### Fixed:
 - Hopefully fixed Xbox not saving options at firstrun.
 - Image Viewer export works better (tries for .dds if no .tga).
+- Deletes any objs above the map limit (the game will crash and delete your save).
 
 ## v14.1 (08 July 2019)
 ### Changed:

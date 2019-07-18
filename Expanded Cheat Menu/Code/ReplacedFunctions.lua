@@ -278,6 +278,25 @@ function OnMsg.ClassesGenerate()
 		end
 	end -- do
 
+	do -- speedup large cheat fills
+		local function SuspendAndFire(func, ...)
+			SuspendPassEdits("SuspendAndFire:CheatFill")
+			local ret = ChoGGi_OrigFuncs[func](...)
+			ResumePassEdits("SuspendAndFire:CheatFill")
+			return ret
+		end
+
+		SaveOrigFunc("MechanizedDepot", "CheatFill")
+		function MechanizedDepot.CheatFill(...)
+			return SuspendAndFire("MechanizedDepot_CheatFill", ...)
+		end
+
+		SaveOrigFunc("UniversalStorageDepot", "CheatFill")
+		function UniversalStorageDepot.CheatFill(...)
+			return SuspendAndFire("UniversalStorageDepot_CheatFill", ...)
+		end
+	end -- do
+
 	-- that's what we call a small font
 	do -- XSizeConstrainedWindow.UpdateMeasure
 		local XWindow_UpdateMeasure = XWindow.UpdateMeasure

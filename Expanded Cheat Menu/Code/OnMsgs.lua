@@ -1136,11 +1136,6 @@ function OnMsg.ApplicationQuit()
 		ChoGGi.UserSettings.KeepCheatsMenuPosition = XShortcutsTarget:GetPos()
 	end
 
-	-- blacklist something resets this log
-	if blacklist then
-		ChoGGi.UserSettings.history_log = LocalStorage.history_log
-	end
-
 	-- save any unsaved settings on exit
 	ChoGGi.SettingFuncs.WriteSettings()
 end
