@@ -69,11 +69,11 @@ local function AddIcons()
 			local c = 0
 			if metals_c > 0 then
 				c = c + 1
-				text_table[c] = str_Metals .. " " .. metals_c / r
+				text_table[c] = str_Metals .. " " .. (metals_c / r)
 			end
 			if polymers_c > 0 then
 				c = c + 1
-				text_table[c] = str_Polymers .. " " .. polymers_c / r
+				text_table[c] = str_Polymers .. " " .. (polymers_c / r)
 			end
 
 			if c > 0 then

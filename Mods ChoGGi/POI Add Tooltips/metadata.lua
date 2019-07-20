@@ -1,6 +1,6 @@
 return PlaceObj("ModDef", {
-	"title", "POI: Add Tooltips",
---~ 	"title", "POI Add Tooltips",
+--~ 	"title", "POI: Add Tooltips",
+	"title", "POI Add Tooltips",
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

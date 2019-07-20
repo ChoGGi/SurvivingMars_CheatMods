@@ -9,9 +9,9 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"title", "Show Transport Route Info v0.1",
 	"title", "Show Transport Route Info",
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_ShowTransportRouteInfo",
@@ -22,7 +22,10 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"has_options", true,
+	"TagInterface", true,
 	"description", [[Shows a line connecting the transport route when you select a transporter (also shows res type).
+Mod options to show text, icon, or both.
 
 Requested by VladamirBegemot.]],
 })

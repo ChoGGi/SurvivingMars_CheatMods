@@ -1,3 +1,6 @@
+v0.4
+Added mod options to show icon/text/both.
+
 v0.3
 Code cleanup/Armstrong.
 

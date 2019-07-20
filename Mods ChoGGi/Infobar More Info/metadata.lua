@@ -52,5 +52,8 @@ Aggregated info: Show sum totals instead of individual grids (skip grid options 
 Skip Grid 0: Grids with production+consumption = 0 (doesn't skip grids that aren't producing due to throttle).
 Skip Grid 1: Grids that only have a single bld (sensor towers).
 Skip Grid X: Grids that only have X amount of buildings (for smaller clusters, like a concrete "hub", 0 to disable).
-Rollover Size: Game default is 45, if you want the tooltips wider use this (I use small UI scale).]],
+Rollover Size: Game default is 45, if you want the tooltips wider use this (I use small UI scale).
+
+
+Suggestions of info you'd like to see?]],
 })

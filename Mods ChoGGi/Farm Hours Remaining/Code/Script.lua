@@ -17,7 +17,6 @@ function Farm:GetChoGGi_HarvestTimeRemaining()
 end
 
 function OnMsg.ClassesPostprocess()
-
 	local xtemplate = XTemplates.sectionCrop[1]
 	if not xtemplate.ChoGGi_FarmTimeRemaining then
 		xtemplate.ChoGGi_FarmTimeRemaining = true

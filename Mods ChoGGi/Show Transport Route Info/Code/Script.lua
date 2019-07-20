@@ -1,12 +1,38 @@
 -- See LICENSE for terms
 
+local options
+local mod_EnableText
+local mod_EnableIcon
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_EnableText = options.EnableText
+	mod_EnableIcon = options.EnableIcon
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= "ChoGGi_ShowTransportRouteInfo" then
+		return
+	end
+
+	ModOptions()
+end
+
+
 -- local some funcs for faster access
 local type = type
 local AveragePoint2D = AveragePoint2D
 local IsValid = IsValid
 local IsPoint = IsPoint
 local FixConstructPos = FixConstructPos
-local _InternalTranslate = _InternalTranslate
+local T = T
 
 local PolylineSetParabola = ChoGGi.ComFuncs.PolylineSetParabola
 
@@ -27,11 +53,10 @@ OnMsg.SelectionRemoved = RemoveLine
 -- make sure line isn't saved in the save file
 OnMsg.SaveGame = RemoveLine
 
-local OPolyline,OText
+local OPolyline
 local res_list
 function OnMsg.ClassesBuilt()
 	OPolyline = ChoGGi_OPolyline
-	OText = ChoGGi_OText
 	res_list = Resources
 end
 
@@ -54,7 +79,8 @@ function OnMsg.SelectionAdded(obj)
 	line = OPolyline:new()
 	-- FixConstructPos sets z to ground height
 	PolylineSetParabola(line, FixConstructPos(route.from), FixConstructPos(route.to))
-	line:SetPos(AveragePoint2D(line.vertices))
+	local avg = AveragePoint2D(line.vertices)
+	line:SetPos(avg)
 
 	-- add floating text
 	local res = obj.transport_resource or obj.can_pickup_from_resources
@@ -63,20 +89,40 @@ function OnMsg.SelectionAdded(obj)
 		return
 	end
 
-	local name = ""
+	local name, icon
 	local res_item = res_list[res]
 	if res_item then
-		name = _InternalTranslate(res_item.display_name)
+		name = T(res_item.display_name)
+		icon = res
 	else
-		name = _InternalTranslate(T(4493, "All"))
+		name = T(4493, "All")
+		icon = "Work"
 	end
 
-	text = OText:new()
-	text:SetText(name)
-	-- use centre(ish) point, AveragePoint2D doesn't work since it skips Z
-	text:SetPos(line.vertices[#line.vertices / 2] + pt_1500)
+	name = (mod_EnableIcon
+			and T(const.TagLookupTable["icon_" .. icon]:gsub("1300", "3500")) or ""
+		) .. " " .. (mod_EnableText and name or "")
 
-	-- nice n big
-	text:SetTextStyle("Autosave")
+	if name then
+		local ctrl = Dialogs.HUD.idtxtConstructionStatus
+		ctrl:SetVisible(true)
+		ctrl:SetText(name)
+
+		ctrl:AddDynamicPosModifier{id = "transport_info",
+			target = FixConstructPos(avg) + pt_1500,
+		}
+	end
+
 end
 
+-- make sure the text stays on the screen
+local orig_UpdateCursorText = UnitDirectionModeDialog.UpdateCursorText
+function UnitDirectionModeDialog:UpdateCursorText(...)
+	if self.unit and self.unit:IsKindOf("RCTransport") then
+		local route = self.unit.transport_route
+		if (IsPoint(route.from) and IsPoint(route.to)) then
+			return
+		end
+	end
+	return orig_UpdateCursorText(self, ...)
+end
