@@ -34,7 +34,8 @@ function OnMsg.ClassesPostprocess()
 
 	PlaceObj("GameRules", {
 		description = T{302535920011369, "<str> will always be the lowest level.",
-			str = T(692, "Resources")},
+			str = T(692, "Resources"),
+		},
 		display_name = T(302535920011370, "Low Resources"),
 		group = "Default",
 		id = "ChoGGi_LowResources",
@@ -42,7 +43,8 @@ function OnMsg.ClassesPostprocess()
 
 	PlaceObj("GameRules", {
 		description = T{302535920011371, "<str> will always be the highest level.",
-			str = T(3983, "Disasters")},
+			str = T(3983, "Disasters"),
+		},
 		display_name = T(302535920011372, "Max Threats"),
 		group = "Default",
 		id = "ChoGGi_MaxThreats",

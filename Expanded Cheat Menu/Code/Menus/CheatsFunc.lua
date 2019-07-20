@@ -1896,7 +1896,7 @@ do -- ResearchTech
 	end
 
 	function ChoGGi.MenuFuncs.ResearchTech()
-		local title = Translate(311--[[Research]]) .. " / " .. Strings[302535920000318--[[Unlock]]] .. " " .. Translate(3734--[[Tech]])
+		local title = T(311, "Research") .. " / " .. Strings[302535920000318--[[Unlock]]] .. " " .. T(373, "Tech")
 		local item_list = {
 			{
 				text = "	" .. Strings[302535920000306--[[Everything]]],
@@ -1916,9 +1916,9 @@ do -- ResearchTech
 		for key, value in pairs(TechFields) do
 			c = c + 1
 			item_list[c] = {
-				text = " " .. Translate(value.display_name),
+				text = " " .. T(value.display_name),
 				value = key,
-				hint = Translate(value.description),
+				hint = T(value.description),
 			}
 		end
 
@@ -1941,7 +1941,7 @@ do -- ResearchTech
 					text = text,
 					value = tech_id,
 					icon = icon1,
-					hint = Translate(T{tech.description, tech}) .. "\n\n" .. Translate(1000097--[[Category]]) .. ": " .. tech.group .. icon2,
+					hint = T{tech.description, tech} .. "\n\n" .. T(1000097, "Category") .. ": " .. tech.group .. icon2,
 				}
 			end
 		end
@@ -1969,36 +1969,40 @@ do -- ResearchTech
 				func = "GrantTech"
 				text = Translate(3--[[Grant Research]])
 			end
+			local count = 0
 
 			local g = _G
 			local UICity = g.UICity
 			local TechDef = g.TechDef
 			for i = 1, #choice do
-				local value = choice[i].value
-				if value == "Everything" then
-					for key in pairs(special_techs) do
-						ResearchTechGroup(func, key)
-					end
-					AllRegularTechs(func)
-				elseif value == "AllTech" then
-					AllRegularTechs(func)
-				elseif value == "AllBreakthroughs" then
-					ResearchTechGroup(func, "Breakthroughs")
-				elseif value == "AllMysteries" then
-					ResearchTechGroup(func, "Mysteries")
-				else
-					-- make sure it's an actual field
-					local field = TechFields[value]
-					if field then
-						ResearchTechGroup(func, value)
+				if choice[i].list_selected then
+					count = count + 1
+					local value = choice[i].value
+					if value == "Everything" then
+						for key in pairs(special_techs) do
+							ResearchTechGroup(func, key)
+						end
+						AllRegularTechs(func)
+					elseif value == "AllTech" then
+						AllRegularTechs(func)
+					elseif value == "AllBreakthroughs" then
+						ResearchTechGroup(func, "Breakthroughs")
+					elseif value == "AllMysteries" then
+						ResearchTechGroup(func, "Mysteries")
 					else
-						-- or tech
-						local tech = TechDef[value]
-						if tech then
-							if tech.group == "Mysteries" then
-								AllowMysteryTech(value, UICity)
+						-- make sure it's an actual field
+						local field = TechFields[value]
+						if field then
+							ResearchTechGroup(func, value)
+						else
+							-- or tech
+							local tech = TechDef[value]
+							if tech then
+								if tech.group == "Mysteries" then
+									AllowMysteryTech(value, UICity)
+								end
+								g[func](value)
 							end
-							g[func](value)
 						end
 					end
 				end
@@ -2008,7 +2012,7 @@ do -- ResearchTech
 			ChoGGi.ComFuncs.UpdateBuildMenu()
 
 			MsgPopup(
-				Strings[302535920000315--[[%s %s tech(s): Unleash your inner Black Monolith Mystery.]]]:format(text, #choice),
+				Strings[302535920000315--[[%s %s tech(s): Unleash your inner Black Monolith Mystery.]]]:format(text, count),
 				title
 			)
 		end
@@ -2019,15 +2023,16 @@ do -- ResearchTech
 			title = title,
 			hint = Strings[302535920000317--[[Select Unlock or Research then select the tech you want. Most mystery tech is locked to that mystery.]]],
 			multisel = true,
+			custom_type = 8,
 			height = 800,
 			checkboxes = {
 				{
-					title = Translate(2--[[Unlock Tech]]),
+					title = T(2, "Unlock Tech"),
 					hint = Strings[302535920000319--[[Just unlocks in the research tree.]]],
 					checked = true,
 				},
 				{
-					title = Translate(311--[[Research]]),
+					title = T(311, "Research"),
 					hint = Strings[302535920000320--[[Unlocks and researchs.]]],
 					checked = research_checked,
 					func = function(_, check)

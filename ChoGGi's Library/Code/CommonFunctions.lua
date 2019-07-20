@@ -471,6 +471,14 @@ do -- RetName
 end -- do
 local RetName = ChoGGi.ComFuncs.RetName
 
+local function IsValidXWin(win)
+	if win and win.window_state == "destroying" then
+		return false
+	end
+	return true
+end
+ChoGGi.ComFuncs.IsValidXWin = IsValidXWin
+
 function ChoGGi.ComFuncs.RetIcon(obj)
 	-- most icons
 	if obj.display_icon and obj.display_icon ~= "" then
@@ -751,7 +759,7 @@ do -- ShowObj
 	end
 
 	-- marks pt of obj and optionally colours/moves camera
-	function ChoGGi.ComFuncs.ShowObj(obj, colour, skip_view, skip_colour)
+	local function ShowObj(obj, colour, skip_view, skip_colour)
 		if markers[obj] then
 			return markers[obj]
 		end
@@ -783,6 +791,15 @@ do -- ShowObj
 
 		return sphere_obj
 	end
+	ChoGGi.ComFuncs.ShowObj = ShowObj
+	-- I could add it to ShowObj, but too much fiddling
+	function ChoGGi.ComFuncs.ShowQR(q, r, ...)
+		if not (q or r) then
+			return
+		end
+		return ShowObj(point(HexToWorld(q, r)), ...)
+	end
+
 end -- do
 local ShowObj = ChoGGi.ComFuncs.ShowObj
 local ColourObj = ChoGGi.ComFuncs.ColourObj
@@ -1017,7 +1034,7 @@ function ChoGGi.ComFuncs.PopupToggle(parent, popup_id, items, anchor, reopen, su
 
 		-- hide popup when parent closes
 		CreateRealTimeThread(function()
-			while popup.window_state ~= "destroying" and parent.window_state ~= "destroying" do
+			while IsValidXWin(popup) and IsValidXWin(parent) do
 				Sleep(500)
 			end
 			popup:Close()

@@ -677,15 +677,17 @@ end
 
 function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
 	local default_setting = ChoGGi.Consts.DefaultOutsideWorkplacesRadius
+	local warn_str = Strings[302535920000883--[[If you make this too large then you may get dehydration with open domes.]]]
+
 	local item_list = {
 		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
-		{text = 15, value = 15},
-		{text = 20, value = 20},
-		{text = 25, value = 25},
-		{text = 50, value = 50},
-		{text = 75, value = 75},
-		{text = 100, value = 100},
-		{text = 250, value = 250},
+		{text = 15, value = 15, hint = warn_str},
+		{text = 20, value = 20, hint = warn_str},
+		{text = 25, value = 25, hint = warn_str},
+		{text = 50, value = 50, hint = warn_str},
+		{text = 75, value = 75, hint = warn_str},
+		{text = 100, value = 100, hint = warn_str},
+		{text = 250, value = 250, hint = warn_str},
 	}
 
 	local hint = default_setting

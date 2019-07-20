@@ -1,5 +1,4 @@
 "ID"," Text"
-302535920000883,
 302535920000923,
 302535920000941,
 302535920000945,
@@ -957,6 +956,7 @@ Best hope you picked India as your Mars sponsor..."
 302535920000317,"Select Unlock or Research then select the tech you want. Most mystery tech is locked to that mystery."
 302535920000319,"Just unlocks in the research tree."
 302535920000320,"Unlocks and researchs."
+302535920000883,"If you make this too large then you may get dehydration with open domes."
 302535920001589,"Disable creation of renegades."
 302535920001590,"Remove the ""Worked outside the Dome"" penalty."
 302535920000375,"The Soylent Option"
@@ -2319,7 +2319,7 @@ Click to open Paradox Breakthroughs Wiki page."
 302535920011370,"Low Resources"
 302535920011371,"<str> will always be the highest level."
 302535920011372,"Max Threats"
-302535920011373,
+302535920011373,"<left>Shuttles Max/Total/Current<right><max>/<total>/<current>"
 302535920011374,
 302535920011375,
 302535920011376,

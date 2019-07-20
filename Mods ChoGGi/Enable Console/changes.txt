@@ -1,3 +1,6 @@
+v0.4
+Added "restart" func.
+
 v0.3
 Log showed back up even when turned off (when you open the console).
 

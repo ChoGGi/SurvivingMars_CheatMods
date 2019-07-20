@@ -1,2 +1,0 @@
-dronehub name load/count
-total residence/work slots

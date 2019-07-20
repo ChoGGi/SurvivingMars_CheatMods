@@ -87,6 +87,8 @@ ChoGGi.Defaults = {
 	InfopanelCheats = true,
 	-- maybe you don't want to see the interface in screenshots
 	ShowInterfaceInScreenshots = true,
+	-- This savegame was loaded in the past without required mods or with an incompatible game version.
+	SkipIncompatibleModsMsg = true,
 	-- Mod Editor shows the help page every single time you open it.
 	SkipModHelpPage = true,
 	-- stops panel from shrinking
@@ -133,7 +135,6 @@ if testing then
 		XShortcutsHost = 100,
 	}
 	-- probably not useful for anyone who isn't loading up borked saves to test
-	Defaults.SkipIncompatibleModsMsg = true
 	Defaults.SkipMissingMods = true
 	Defaults.SkipMissingDLC = true
 	--

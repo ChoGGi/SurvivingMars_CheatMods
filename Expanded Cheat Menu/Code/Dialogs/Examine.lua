@@ -1796,7 +1796,7 @@ function ChoGGi_DlgExamine:FlashWindow()
 
 		local vis
 		for _ = 1, 5 do
-			if self.obj_ref.window_state == "destroying" then
+			if not self.ChoGGi.ComFuncs.IsValidXWin(self.obj_ref) then
 				break
 			end
 			self.obj_ref:SetVisible(vis)
@@ -1804,7 +1804,7 @@ function ChoGGi_DlgExamine:FlashWindow()
 			vis = not vis
 		end
 
-		if self.obj_ref.window_state ~= "destroying" then
+		if self.ChoGGi.ComFuncs.IsValidXWin(self.obj_ref) then
 			self.obj_ref:SetVisible(self.orig_vis_flash)
 		end
 

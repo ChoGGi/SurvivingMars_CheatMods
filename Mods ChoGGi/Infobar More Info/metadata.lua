@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Infobar Add Discharge Rates",
 	"title", "Infobar More Info",
-	"version", 9,
-	"version_major", 0,
-	"version_minor", 9,
+	"version", 10,
+	"version_major", 1,
+	"version_minor", 0,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_InfobarAddDischargeRates",
@@ -43,6 +43,7 @@ Current max food consumption (daily): 0.2 for each colonist (0.4 for gluttons).
 Drones:
 Right-click Drones icon to cycle through all borked drones (also adds count):
 NoBattery, Malfunction, Freeze, Dead, WaitingCommand (orphaned).
+Shuttle count (max, total, current): Current = shuttles flying, Total =  flying+resting in hubs, Max = shuttles that can be built.
 
 
 

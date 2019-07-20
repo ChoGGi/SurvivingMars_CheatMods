@@ -2,6 +2,13 @@
 
 local Sleep = Sleep
 
+local function IsValidXWin(win)
+	if win and win.window_state == "destroying" then
+		return false
+	end
+	return true
+end
+
 local function AddInfobar()
 	local Dialogs = Dialogs
 	Dialogs.Infobar:SetVisible(true)
@@ -10,7 +17,7 @@ local function AddInfobar()
 	if TerraParams then
 		Dialogs.Infobar.idTerraformingBar:SetVisible(false)
 		TerraParams[1]:SetMargins(box(0,Dialogs.Infobar.idPad.box:sizey(),0,0))
-		while TerraParams.window_state ~= "destroying" do
+		while IsValidXWin(TerraParams) do
 			Sleep(1000)
 		end
 		Dialogs.Infobar.idTerraformingBar:SetVisible(true)

@@ -21,6 +21,7 @@ local Translate = ChoGGi.ComFuncs.Translate
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
 local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
+local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
@@ -202,8 +203,7 @@ function ChoGGi.ComFuncs.Dump(obj, overwrite, file, ext, skip_msg, gen_name)
 		print(filename,"\n",msg:sub(1,msg:find("\n")))
 		MsgPopup(
 			msg,
-			filename,
-			{objects = obj}
+			filename
 		)
 	end
 end
@@ -532,7 +532,7 @@ do -- OpenInExamineDlg
 
 		if opened then
 			-- dialog was closed, but ref remains
-			if opened.window_state == "destroying" then
+			if not IsValidXWin(opened) then
 				ChoGGi_dlgs_examine[params.obj] = nil
 			-- examine gets confused with children (first examined one that is)
 			elseif not params.parent
@@ -560,7 +560,7 @@ do -- OpenInExamineDlg
 			if parent and IsKindOf(parent, "ChoGGi_DlgExamine") and parent.child_lock then
 				local child = parent.child_lock_dlg
 				if child then
-					if child.window_state == "destroying" then
+					if not IsValidXWin(child) then
 						parent.child_lock_dlg = false
 					else
 						-- it's valid so update with new obj
@@ -898,7 +898,7 @@ function ChoGGi.ComFuncs.MonitorThreads()
 	CreateRealTimeThread(function()
 		-- stop when dialog is closed
 		local ThreadsRegister = ThreadsRegister
-		while dlg and dlg.window_state ~= "destroying" do
+		while IsValidXWin(dlg) do
 			-- only update when it's our dlg sending the msg
 			local _,msg_dlg = WaitMsg("ChoGGi_dlgs_examine_autorefresh")
 			if msg_dlg == dlg then
@@ -941,7 +941,7 @@ function ChoGGi.ComFuncs.MonitorTableLength(obj, skip_under, sortby, title)
 
 	CreateRealTimeThread(function()
 		-- stop when dialog is closed
-		while dlg and dlg.window_state ~= "destroying" do
+		while IsValidXWin(dlg) do
 			-- only update when it's our dlg sending the msg
 			local _,msg_dlg = WaitMsg("ChoGGi_dlgs_examine_autorefresh")
 			if msg_dlg == dlg then
@@ -3734,7 +3734,7 @@ function ChoGGi.ComFuncs.MonitorFunctionResults(func, ...)
 
 	CreateRealTimeThread(function()
 		-- stop when dialog is closed
-		while dlg and dlg.window_state ~= "destroying" do
+		while IsValidXWin(dlg) do
 			-- only update when it's our dlg sending the msg
 			local _,msg_dlg = WaitMsg("ChoGGi_dlgs_examine_autorefresh")
 			if msg_dlg == dlg then

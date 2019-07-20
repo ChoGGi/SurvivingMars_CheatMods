@@ -55,3 +55,7 @@ function OnMsg.ClassesPostprocess()
 		})
 	end
 end
+
+function restart()
+	quit("restart")
+end

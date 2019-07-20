@@ -21,7 +21,7 @@ Resources will always be the lowest level.
 Max Threats:
 Disasters will always be the highest level (excluding Dust Devils).
 
-These don't change the challenge rating.
+These don't change the challenge rating/resource display.
 
 
 NEW GAMES ONLY.]],

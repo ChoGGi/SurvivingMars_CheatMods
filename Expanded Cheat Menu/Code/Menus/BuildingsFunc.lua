@@ -1194,7 +1194,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 		if value == "Disable" then
 			value = nil
 			if choice[1].check then
-				obj.max_workers = obj:GetClassValue("max_workers")
+--~ 				obj.max_workers = obj:GetClassValue("max_workers")
 				obj.automation = obj:GetClassValue("automation")
 				obj.auto_performance = obj:GetClassValue("auto_performance")
 				ChoGGi.ComFuncs.ToggleWorking(obj)
@@ -1202,12 +1202,12 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 				local blds = ChoGGi.ComFuncs.RetAllOfClass(obj.class)
 				if #blds > 0 then
 					-- GetClassValue gets the metatable for the obj, so just grab the first one and use those values
-					local max_workers = blds[1]:GetClassValue("max_workers")
+--~ 					local max_workers = blds[1]:GetClassValue("max_workers")
 					local automation = blds[1]:GetClassValue("automation")
 					local auto_performance = blds[1]:GetClassValue("auto_performance")
 					for i = 1, #blds do
 						local bld = blds[i]
-						bld.max_workers = max_workers
+--~ 						bld.max_workers = max_workers
 						bld.automation = automation
 						bld.auto_performance = auto_performance
 						ChoGGi.ComFuncs.ToggleWorking(bld)
@@ -1216,7 +1216,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 			end
 		elseif type(value) == "number" then
 			if choice[1].check then
-				obj.max_workers = 0
+--~ 				obj.max_workers = 0
 				obj.automation = 1
 				obj.auto_performance = value
 				ChoGGi.ComFuncs.ToggleWorking(obj)
@@ -1224,7 +1224,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 				local blds = ChoGGi.ComFuncs.RetAllOfClass(obj.class)
 				for i = 1, #blds do
 					local bld = blds[i]
-					bld.max_workers = 0
+--~ 					bld.max_workers = 0
 					bld.automation = 1
 					bld.auto_performance = value
 					ChoGGi.ComFuncs.ToggleWorking(bld)

@@ -91,7 +91,7 @@ function GedSocket:rpcClose()
 end
 function GedSocket:rpcApp(func, ...)
 	local app = self.app
-	if not app or app.window_state == "destroying" then
+	if not ChoGGi.ComFuncs.IsValidXWin(app) then
 		return "app"
 	end
 	if not app:HasMember(func) then

@@ -659,7 +659,7 @@ function Workplace:CheatWorkersDef()
 	self.max_workers = self:GetClassValue("max_workers")
 end
 function Workplace:CheatWorkAuto()
-	self.max_workers = 0
+--~ 	self.max_workers = 0
 	self.automation = 1
 	local bs = ChoGGi.UserSettings.BuildingSettings
 	bs = bs and bs[self.template_name]
@@ -672,7 +672,7 @@ function Workplace:CheatWorkAuto()
 	ChoGGi.ComFuncs.ToggleWorking(self)
 end
 function Workplace:CheatWorkManual()
-	self.max_workers = nil
+--~ 	self.max_workers = nil
 	self.automation = nil
 	self.auto_performance = nil
 	ChoGGi.ComFuncs.ToggleWorking(self)

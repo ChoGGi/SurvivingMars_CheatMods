@@ -62,6 +62,8 @@ local floatfloor = floatfloor
 local scale_hours = const.HourDuration
 local scale_sols = const.DayDuration
 
+local remaining_time_str = {12265, "Remaining Time<right><time(time)>"}
+
 function OnMsg.AddResearchRolloverTexts(ret, city)
 	local res_points = ResourceOverviewObj:GetEstimatedRP() + 0.0
 
@@ -75,11 +77,8 @@ function OnMsg.AddResearchRolloverTexts(ret, city)
 	if not id then
 		return
 	end
-	local points_left = max_points - points
-	local time_left = (points_left / res_points) * scale_sols
-	ret[#ret+1] = T(311, "Research") .. " " .. T{12265, "Remaining Time<right><time(time)>",
-		time = floatfloor(time_left),
-	}
+	remaining_time_str.time = floatfloor(((max_points - points) / res_points) * scale_sols)
+	ret[#ret+1] = T(311, "Research") .. " " .. T(remaining_time_str)
 end
 
 -- should the grid be displayed
@@ -111,8 +110,8 @@ local function RemainingTime(g, scale)
 	local time_left = g.production - g.consumption + 0.0
 	-- losing resources
 	if time_left < 0 then
-		time_left = (g.stored / (time_left * -1)) * (scale or scale_hours)
-		local text = T{12265, "Remaining Time<right><time(time)>", time = floatfloor(time_left)}
+		remaining_time_str.time = floatfloor((g.stored / (time_left * -1)) * (scale or scale_hours))
+		local text = T(remaining_time_str)
 
 		-- less than an hour
 		if time_left == 0 then
@@ -379,11 +378,14 @@ function ResourceOverview.GetLifesupportGridRollover(...)
 
 		-- add water deposit remaining (to the top)
 		if ret then
-			table_insert(ret, 1, T(681, "Water") .. " " .. T(3982, "Deposits")
-				.. "<right>" .. T{"<water(number)>",
-				number = CountSubDeposit("SubsurfaceDepositWater")}
-			)
-			table_insert(ret, 2, "<newline><newline><left>")
+			local deposit = CountSubDeposit("SubsurfaceDepositWater")
+			if deposit > 0 then
+				table_insert(ret, 1, T(681, "Water") .. " " .. T(3982, "Deposits")
+					.. "<right>" .. T{"<water(number)>",
+					number = deposit}
+				)
+				table_insert(ret, 2, "<newline><newline><left>")
+			end
 		end
 	else
 		ret = BuildRollover(ret, air_grid_info, UICity.air or "")
@@ -575,6 +577,7 @@ function InfobarObj:ChoGGi_GetBrokenDrones()
 	return list, c
 end
 
+local shuttlehubcount_str = {302535920011373, "<left>Shuttles Max/Total/Current<right><max>/<total>/<current>"}
 local orig_GetDronesRollover = InfobarObj.GetDronesRollover
 function InfobarObj:GetDronesRollover(...)
 	local ret = orig_GetDronesRollover(self, ...)
@@ -586,6 +589,26 @@ function InfobarObj:GetDronesRollover(...)
 		.. T(517, "Drones") .. T{"<right><drone(number)>",
 			number = count,
 		}
+
+	-- shuttle count
+	local max, total, current = 0, 0, 0
+	local labels = UICity.labels
+	local hubs = labels.ShuttleHub
+	if hubs then
+		for i = 1, #hubs do
+			local obj = hubs[i]
+			max = max + obj.max_shuttles or 0
+			total = total + #(obj.shuttle_infos or "")
+		end
+		-- currently flying around
+		current = #(labels.CargoShuttle)
+
+		c = c + 1
+		shuttlehubcount_str.max = max
+		shuttlehubcount_str.total = total
+		shuttlehubcount_str.current = current
+		ret[1].table[c] = T(shuttlehubcount_str)
+	end
 
 	-- add count of all new strings
 	ret[1].j = c

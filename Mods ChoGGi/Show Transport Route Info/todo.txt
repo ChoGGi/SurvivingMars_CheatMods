@@ -1,0 +1,2 @@
+GetHUD().idtxtConstructionStatus
+use to add text with icons?

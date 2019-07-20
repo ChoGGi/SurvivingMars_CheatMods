@@ -12,6 +12,7 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local SetDlgTrans = ChoGGi.ComFuncs.SetDlgTrans
 local RetName = ChoGGi.ComFuncs.RetName
 local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
+local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 
 local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 local UserSettings = ChoGGi.UserSettings
@@ -493,7 +494,7 @@ function OnMsg.ClassesGenerate()
 							self:ClosePopupMenus()
 						end
 						host:OnAction(action, this)
-						if action.ActionToggle and self.window_state ~= "destroying" then
+						if action.ActionToggle and IsValidXWin(self) then
 							self:RebuildActions(host)
 						end
 					end

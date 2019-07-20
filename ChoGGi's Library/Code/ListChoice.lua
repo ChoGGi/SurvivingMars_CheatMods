@@ -11,12 +11,12 @@ get around to merging some of these types into funcs?
 > 1 = updates selected item with custom value type
 custom_type = 1 : hides ok/cancel buttons, dblclick fires custom_func with {self.sel}
 custom_type = 2 : colour selector
-custom_type = 3 : sends back selected item.
+custom_type = 3 : sends back selected item(s).
 custom_type = 4 : sends back all items. (shows ok/cancel)
 custom_type = 5 :
-custom_type = 6 : same as 3, but dbl rightclick executes CustomFunc(selecteditem.func)
+custom_type = 6 : same as 3, but dbl rightclick executes custom_func(selecteditem.func)
 custom_type = 7 : dblclick fires custom_func with {self.sel} (wrapped in a table, so we can use CallBackFunc for either)
-custom_type = 8 : same as 7, but dbl rightclick fires custom_func, and dbl click fires ok as normally
+custom_type = 8 : same as 4/7, but dbl rightclick fires custom_func, and dbl click fires ok as normally
 custom_type = 9 : same as 4, but hides filter and doesn't close
 
 ChoGGi.ComFuncs.OpenInListChoice{
@@ -973,14 +973,18 @@ function ChoGGi_DlgListChoice:GetListItems(which)
 			items[i] = self.idList[i].item
 		end
 	else
-		local sel = self.idList.selection and self.idList.selection[1]
+		local sel = self.idList.selection or ""
+		local sel_c = #sel
 		-- get all (visible) items
 		for i = 1, #self.idList do
 			items[i] = self.idList[i].item
-			if sel and i == sel then
-				items[i].list_selected = true
-			else
-				items[i].list_selected = nil
+			for j = 1, sel_c do
+				if sel[j] == i then
+					items[i].list_selected = true
+					break
+				else
+					items[i].list_selected = nil
+				end
 			end
 		end
 	end

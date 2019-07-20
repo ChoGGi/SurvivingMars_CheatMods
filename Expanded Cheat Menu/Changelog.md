@@ -3,6 +3,7 @@
 ## v14.2 (Unreleased)
 ### Changed:
 - Removed cheat capacity limit on storage depots.
+- WorkAuto cheats don't remove the workers anymore.
 
 ### Fixed:
 - Hopefully fixed Xbox not saving options at firstrun.

@@ -16,6 +16,7 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local Translate = ChoGGi.ComFuncs.Translate
 local AttachToNearestDome = ChoGGi.ComFuncs.AttachToNearestDome
+local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
@@ -811,13 +812,14 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 			end
 			-- fully auto building
 			if bs.auto_performance then
-				obj.max_workers = 0
+--~ 				obj.max_workers = 0
 				obj.automation = 1
 				obj.auto_performance = bs.auto_performance
 			end
 			-- legacy setting
+			-- changed saving as performance to auto_performance, get rid of this in a few months
 			if bs.performance then
-				obj.max_workers = 0
+--~ 				obj.max_workers = 0
 				obj.automation = 1
 				obj.auto_performance = bs.performance
 			end
@@ -941,7 +943,7 @@ function OnMsg.NewDay() -- NewSol...
 	-- remove any closed examine dialogs from the list
 	local ChoGGi_dlgs_examine = ChoGGi_dlgs_examine or empty_table
 	for obj, dlg in pairs(ChoGGi_dlgs_examine) do
-		if dlg.window_state == "destroying" then
+		if not IsValidXWin(dlg) then
 			ChoGGi_dlgs_examine[obj] = nil
 		end
 	end

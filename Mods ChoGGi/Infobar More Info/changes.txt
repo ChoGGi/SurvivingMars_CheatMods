@@ -1,3 +1,6 @@
+v1.0
+Added shuttle count to Drones info.
+
 v0.9
 Added time left for current research (based on current points).
 
