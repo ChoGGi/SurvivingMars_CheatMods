@@ -55,6 +55,9 @@ function GoldenStorage:GameInit()
 		end
 	end
 
+	-- turn off shuttles
+	StorageDepot.SetLRTService(self, false)
+
 	-- proper placement for cubes
 	self:ReInitBoxSpots()
 
@@ -66,33 +69,33 @@ function GoldenStorage:GameInit()
 	self:SetColorModifier(-6262526)
 
 	self.metals_thread = CreateGameTimeThread(function()
-		while IsValid(self) and not self.destroyed do
+		while IsValid(self)  and not self.destroyed do
+			if self.working then
+				local storedM = self:GetStored_Metals()
+				local maxM = self:GetMaxAmount_Metals()
+				local storedP = self:GetStored_PreciousMetals()
+				local maxP = self:GetMaxAmount_PreciousMetals()
+				-- we need at least 10
+				if storedM >= 10000 and maxP - storedP > 1000 then
+					local new_amount = (storedM - 10000)
 
-			local storedM = self:GetStored_Metals()
-			local maxM = self:GetMaxAmount_Metals()
-			local storedP = self:GetStored_PreciousMetals()
-			local maxP = self:GetMaxAmount_PreciousMetals()
-			-- we need at least 10
-			if storedM >= 10000 and maxP - storedP > 1000 then
-				local new_amount = (storedM - 10000)
+					self.supply.Metals:SetAmount(new_amount)
+					self.demand.Metals:SetAmount(maxM - new_amount)
+					self.stockpiled_amount.Metals = new_amount
+					self:SetCount(new_amount, "Metals")
 
-				self.supply.Metals:SetAmount(new_amount)
-				self.demand.Metals:SetAmount(maxM - new_amount)
-				self.stockpiled_amount.Metals = new_amount
-				self:SetCount(new_amount, "Metals")
+					self:AddResource(1000, "PreciousMetals")
 
-				self:AddResource(1000, "PreciousMetals")
-
-				RebuildInfopanel(self)
-			else
-				self.supply.Metals:SetAmount(storedM)
-				self.demand.Metals:SetAmount(maxM - storedM)
-				self.stockpiled_amount.Metals = storedM
-				self:SetCount(storedM, "Metals")
-				self.stockpiled_amount.PreciousMetals = storedP
-				self:SetCount(storedP, "PreciousMetals")
-			end
-
+					RebuildInfopanel(self)
+				else
+					self.supply.Metals:SetAmount(storedM)
+					self.demand.Metals:SetAmount(maxM - storedM)
+					self.stockpiled_amount.Metals = storedM
+					self:SetCount(storedM, "Metals")
+					self.stockpiled_amount.PreciousMetals = storedP
+					self:SetCount(storedP, "PreciousMetals")
+				end
+			end -- working
 			Sleep(5000)
 		end
 	end)
@@ -136,7 +139,7 @@ function OnMsg.ClassesPostprocess()
 			"Group", "ChoGGi",
 			"display_icon", CurrentModPath .. "UI/golden_storage.png",
 			"entity", "ResourcePlatform",
-			"on_off_button", false,
+			"on_off_button", true,
 			"prio_button", false,
 			"count_as_building", false,
 		})

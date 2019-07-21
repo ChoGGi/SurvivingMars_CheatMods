@@ -1,3 +1,7 @@
+v1.4
+Added option to disable mod.
+Trade rocket with 0 res sitting on pad.
+
 v1.3
 The drones_exiting table has a drone that's off the map.
 

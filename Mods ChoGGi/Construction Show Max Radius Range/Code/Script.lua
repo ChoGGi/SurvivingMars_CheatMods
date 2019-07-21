@@ -24,7 +24,7 @@ function CursorBuilding:GameInit()
 		return orig_CursorBuilding_GameInit(self)
 	end
 
-	if self.template:IsKindOfClasses(cls_saved_settings) then
+	if self.template and self.template:IsKindOfClasses(cls_saved_settings) then
 		-- if ecm is active we check for custom range, otherwise use default
 		local uirange
 		local idx = table.find(ModsLoaded, "id", "ChoGGi_Library")

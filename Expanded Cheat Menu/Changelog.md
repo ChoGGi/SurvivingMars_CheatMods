@@ -4,6 +4,8 @@
 ### Changed:
 - Removed cheat capacity limit on storage depots.
 - WorkAuto cheats don't remove the workers anymore.
+- Examining a "str" obj that turns out to be a func will show the results instead of the func.
+- > You can also pass args along with the ex(obj, "str", title, varargs)
 
 ### Fixed:
 - Hopefully fixed Xbox not saving options at firstrun.

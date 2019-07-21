@@ -92,6 +92,8 @@ DefineClass.ChoGGi_DlgExamine = {
 
 	-- what we're examining
 	obj = false,
+	-- sent by examine func
+	varargs = false,
 	-- all examine dlgs open by another dlg will have the same id (batch close)
 	parent_id = false,
 	-- whatever RetName is
@@ -212,6 +214,7 @@ function ChoGGi_DlgExamine:Init(parent, context)
 	self.marked_objects = objlist:new()
 	self.title = context.title
 	self.override_title = context.override_title
+	self.varargs = context.varargs
 	self.prefix = Strings[302535920000069--[[Examine]]]
 
 	-- these are used during SetObj, so we trans once to speed up autorefresh
@@ -3554,7 +3557,11 @@ function ChoGGi_DlgExamine:SetObj(startup)
 		local obj_ref = self.ChoGGi.ComFuncs.DotNameToObject(obj)
 		-- if it is then we use that as the obj to examine
 		if obj_ref then
-			obj = obj_ref
+			if type(obj_ref) == "function" then
+				obj = obj_ref(self.varargs)
+			else
+				obj = obj_ref
+			end
 		end
 	end
 	-- so we can access the obj elsewhere

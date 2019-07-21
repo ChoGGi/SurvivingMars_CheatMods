@@ -1,5 +1,28 @@
 -- See LICENSE for terms
 
+local options
+local mod_EnableMod
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_EnableMod = options.EnableMod
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= "ChoGGi_FixExpeditionRocketStuckUnloading" then
+		return
+	end
+
+	ModOptions()
+end
+
 local table_find = table.find
 local table_remove = table.remove
 local type = type
@@ -26,8 +49,11 @@ local function SpawnColonist(old_c, building, pos, city)
 
 	local colonist
 	if old_c then
-		colonist = GenerateColonistData(city, old_c.age_trait, false, {gender=old_c.gender, entity_gender=old_c.entity_gender, no_traits = "no_traits", no_specialization=true})
-		--we set all the set gen doesn't (it's more for random gen after all
+		colonist = GenerateColonistData(city, old_c.age_trait, false, {
+			gender = old_c.gender, entity_gender = old_c.entity_gender,
+			no_traits = "no_traits", no_specialization = true,
+		})
+		-- we set all the set gen doesn't (it's more for random gen after all)
 		colonist.birthplace = old_c.birthplace
 		colonist.death_age = old_c.death_age
 		colonist.name = old_c.name
@@ -45,21 +71,14 @@ local function SpawnColonist(old_c, building, pos, city)
 	Colonist:new(colonist)
 	Msg("ColonistBorn", colonist)
 
-	colonist:SetPos(pos or building and GetPassablePointNearby(building:GetPos()) or GetRandomPassablePoint())
+	colonist:SetPos(pos or building and GetPassablePointNearby(building:GetPos())
+		or GetRandomPassablePoint())
 
 	--if spec is different then updates to new entity
 	colonist:ChooseEntity()
 	return colonist
 end
 
---~ local function RemoveOldMainTasks(s)
---~ 	for i = #r.task_requests, 1, -1 do
---~ 		local task = r.task_requests[i]
---~ 		if task:GetResource() == r.maintenance_requirements.resource and task:GetFillIndex() == 1000000 and task:GetFlags() == 1028 then
---~ 			table_remove(r.task_requests, i)
---~ 		end
---~ 	end
---~ end
 local function AddStockPile(res, amount, pos)
 	local stockpile = PlaceObj("ResourceStockpile", {
 		"Pos", pos,
@@ -67,16 +86,20 @@ local function AddStockPile(res, amount, pos)
 		"destroy_when_empty", true,
 	})
 	stockpile:AddResourceAmount(amount)
---~ 	return stockpile
 end
 
 function OnMsg.LoadGame()
+	if not mod_EnableMod then
+		return
+	end
+
 	-- if my lib mod is installed use my copy of this function
 	local SpawnColonist_lib
 	if ModsLoaded.ChoGGi_Library then
 		SpawnColonist_lib = ChoGGi.ComFuncs.SpawnColonist
 	end
-	SpawnColonist_lib = type(SpawnColonist_lib) == "function" and SpawnColonist_lib or SpawnColonist
+	SpawnColonist_lib = type(SpawnColonist_lib) == "function"
+		and SpawnColonist_lib or SpawnColonist
 
 	local UICity = UICity
 	local rockets = UICity.labels.AllRockets or ""
@@ -91,7 +114,9 @@ function OnMsg.LoadGame()
 				if type(r.cargo) == "table" then
 					local pass = table_find(r.cargo, "class", "Passengers")
 					pass = r.cargo[pass]
-					if type(pass) == "table" and pass.amount > 0 and #pass.applicants_data == 0 then
+					if type(pass) == "table" and pass.amount > 0
+						and #pass.applicants_data == 0
+					then
 						r:SetCommand("Unload")
 					end
 				end
@@ -152,14 +177,6 @@ function OnMsg.LoadGame()
 				invalid = RemoveInvalid(invalid, r.drones or "")
 				UICity.drone_prefabs = UICity.drone_prefabs + invalid
 
---~ 				if r.maintenance_request then
---~ 					local cmd = r.command
---~ 					RemoveOldMainTasks(r)
---~ 					table_clear(r.maintenance_requirements)
---~ 					r.maintenance_request = false
---~ 					r:SetCommand(cmd)
---~ 				end
-
 				-- fix for my screwup with the main reqs
 				if not r.expedition and #r.task_requests ~= 8 then
 					local count = 0
@@ -178,7 +195,10 @@ function OnMsg.LoadGame()
 							r:ToggleAllowExport()
 						end
 						local unit_count = r:GetRequestUnitCount(r.max_export_storage)
-						r.export_requests = { r:AddDemandRequest("PreciousMetals", r.max_export_storage, 0, unit_count) }
+						r.export_requests = {
+							r:AddDemandRequest("PreciousMetals", r.max_export_storage, 0,
+							unit_count),
+						}
 						r:ToggleAllowExport()
 						r:ToggleAllowExport()
 					end
@@ -214,9 +234,14 @@ function OnMsg.LoadGame()
 							AddStockPile("PreciousMetals", amount, r:GetSpotPos(j))
 						end
 						spawned = spawned + 1
-					elseif j % 2 ~= 0 and spawned ~= 2 and r:GetSpotName(j) == "Workrover" then
-						local extra = r.unload_fuel_request and r.unload_fuel_request:GetActualAmount() or 0
-						local amount = r.launch_fuel - r.refuel_request:GetActualAmount() + extra
+					elseif j % 2 ~= 0 and spawned ~= 2
+						and r:GetSpotName(j) == "Workrover"
+					then
+						local ruf_amount = r.unload_fuel_request
+							and r.unload_fuel_request:GetActualAmount() or 0
+						local rf_amount = r.refuel_request
+							and r.refuel_request:GetActualAmount() or 0
+						local amount = r.launch_fuel - rf_amount + ruf_amount
 						if amount > 500 then
 							AddStockPile("Fuel", amount, r:GetSpotPos(j))
 						end
@@ -225,16 +250,13 @@ function OnMsg.LoadGame()
 				end
 				r:SetCommand("Unload")
 
---~ 				RemoveOldMainTasks(r)
---~ 				r:SetCommand("WaitMaintenance", r.maintenance_requirements.resource, r.maintenance_request:GetTargetAmount())
-
---~ 			-- any of the above WaitMaintenance rockets
---~ 			elseif r.command == "Refuel" and r.maintenance_request then
---~ 				local cmd = r.command
---~ 				RemoveOldMainTasks(r)
---~ 				table_clear(r.maintenance_requirements)
---~ 				r.maintenance_request = false
---~ 				r:SetCommand(cmd)
+			-- foreign trade rocket stuck on pad with 0 res unloading
+			elseif r.command == "ExchangeResources"
+				and r:GetStateText() == "disembarkIdle"
+				and r:IsKindOf("ForeignTradeRocket")
+				and r:GetStoredAmount() == 0
+			then
+				r:SetCommand("ExchangeResources")
 			end
 
 		end

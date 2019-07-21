@@ -1,3 +1,7 @@
+v0.6
+Made shuttles default to off.
+Added On/Off button.
+
 v0.5
 Added seeds, you'll probably need to replace any existing ones.
 

@@ -414,7 +414,7 @@ do -- RetName
 
 			-- display
 			elseif PropObjGetProperty(obj, "display_name") and obj.display_name ~= "" then
-				if IsT(obj.display_name) == 9--[[Anomaly]] then
+				if IsT(obj.display_name) == 9 --[[Anomaly]] then
 					name = obj.class
 				else
 					name = Translate(obj.display_name)
@@ -2002,7 +2002,8 @@ do -- Rebuildshortcuts
 		if not is_list_sorted then
 			local CmpLower = CmpLower
 			table.sort(Actions, function(a, b)
-				return CmpLower(a.ActionName, b.ActionName)
+--~ 				return CmpLower(a.ActionName, b.ActionName)
+				return CmpLower(a.ActionId, b.ActionId)
 			end)
 			is_list_sorted = true
 		end
@@ -2931,7 +2932,7 @@ do -- DeleteObject
 			procall(ExecFunc, obj, "SetWorking")
 		end
 
-		procall(ExecFunc, obj, "RecursiveCall", true, "Done")
+--~ 		procall(ExecFunc, obj, "RecursiveCall", true, "Done")
 
 		-- remove leftover water
 		if is_water then
@@ -4201,11 +4202,11 @@ function ChoGGi.ComFuncs.DeleteObjectQuestion(obj)
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		Translate(6779--[[Warning]]) .. "!\n" .. Strings[302535920000414--[[Are you sure you wish to delete %s?]]]:format(name) .. "?",
+		T(6779, "Warning") .. "!\n" .. Strings[302535920000414--[[Are you sure you wish to delete %s?]]]:format(name) .. "?",
 		CallBackFunc,
-		Translate(6779--[[Warning]]) .. ": " .. Strings[302535920000855--[[Last chance before deletion!]]],
-		Translate(5451--[[DELETE]]) .. ": " .. name,
-		Translate(6879--[[Cancel]]) .. " " .. Translate(502364928914--[[Delete]])
+		T(6779, "Warning") .. ": " .. Strings[302535920000855--[[Last chance before deletion!]]],
+		T(5451, "DELETE") .. ": " .. name,
+		T(6879, "Cancel") .. " " .. T(502364928914, "Delete")
 	)
 end
 
@@ -4213,11 +4214,11 @@ function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
 	local name = RetName(obj)
 	local obj_type
 	if obj:IsKindOf("BaseRover") then
-		obj_type = Translate(7825--[[Destroy this Rover.]])
+		obj_type = T(7825, "Destroy this Rover.")
 	elseif obj:IsKindOf("Drone") then
-		obj_type = Translate(7824--[[Destroy this Drone.]])
+		obj_type = T(7824, "Destroy this Drone.")
 	else
-		obj_type = Translate(7822--[[Destroy this building.]])
+		obj_type = T(7822, "Destroy this building.")
 	end
 
 	local function CallBackFunc(answer)
@@ -4241,11 +4242,11 @@ function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		Translate(6779--[[Warning]]) .. "!\n" .. obj_type .. "\n" .. name,
+		T(6779, "Warning") .. "!\n" .. obj_type .. "\n" .. name,
 		CallBackFunc,
-		Translate(6779--[[Warning]]) .. ": " .. obj_type,
+		T(6779, "Warning") .. ": " .. obj_type,
 		obj_type .. " " .. name,
-		Translate(1176--[[Cancel Destroy]])
+		T(1176, "Cancel Destroy")
 	)
 end
 

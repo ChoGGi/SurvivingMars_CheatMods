@@ -1,3 +1,7 @@
+v0.7
+Made shuttles default to off.
+Added On/Off button.
+
 v0.6
 Fixed issue with multiple depots (thanks RandyChampagne).
 Added mod option to default desired to 10.

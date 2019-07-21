@@ -493,7 +493,7 @@ do -- OpenInExamineDlg
 		title:SetBackground(g_Classes.ChoGGi_XMoveControl.Background)
 	end
 
-	function ChoGGi.ComFuncs.OpenInExamineDlg(obj, parent, title)
+	function ChoGGi.ComFuncs.OpenInExamineDlg(obj, parent, title, ...)
 		local params, p_type
 		-- check if parent is an opened examine dialog, or other
 		if parent then
@@ -507,6 +507,7 @@ do -- OpenInExamineDlg
 			end
 		end
 		params = params or {}
+		params.varargs = params.varargs or ...
 
 		-- preserve the orig params
 		params.obj = obj

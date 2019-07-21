@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Rocket Stuck",
-	"version", 13,
+	"version", 14,
 	"version_major", 1,
-	"version_minor", 3,
+	"version_minor", 4,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixExpeditionRocketStuckUnloading",
@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"has_options", true,
 	"description", [[This will check on load game for certain rockets stuck on the ground unable to do jack.
 So far:
 Unloading colonists.
@@ -21,6 +22,10 @@ Maintenance */5.
 Drones stuck inside.
 Planetary anomaly drones stuck inside.
 Drones the rocket thinks are stuck inside (+2).
+Trade rocket with 0 res.
 
-If this doesn't fix it for you, then I'll need a copy of your saved game.]],
+If this doesn't fix it for you, then I'll need a copy of your saved game.
+
+
+Has mod option to disable mod (once you've applied the fix).]],
 })

@@ -2,7 +2,7 @@
 
 DefineClass.BottomlessStorage = {
 	__parents = {
-		"UniversalStorageDepot"
+		"UniversalStorageDepot",
 	},
 }
 
@@ -12,6 +12,9 @@ function BottomlessStorage:GameInit()
 		self:ToggleAcceptResource(self.resource[i])
 	end
 
+	-- turn off shuttles
+	StorageDepot.SetLRTService(self, false)
+
 	-- make sure it isn't mistaken for a regular depot
 	self:SetColorModifier(0)
 end
@@ -20,8 +23,10 @@ end
 --~ function BottomlessStorage:DroneUnloadResource(drone, request, resource, amount, ...)
 function BottomlessStorage:DroneUnloadResource(...)
 	UniversalStorageDepot.DroneUnloadResource(self, ...)
-	self:ClearAllResources()
-	RebuildInfopanel(self)
+	if self.working then
+		self:ClearAllResources()
+		RebuildInfopanel(self)
+	end
 end
 
 -- prevent log spam
@@ -52,11 +57,9 @@ function OnMsg.ClassesPostprocess()
 		"Group", "ChoGGi",
 		"display_icon", CurrentModPath .. "UI/bottomless_storage.png",
 		"entity", "ResourcePlatform",
-		"on_off_button", false,
+		"on_off_button", true,
 		"prio_button", false,
 		"count_as_building", false,
-		"switch_fill_order", false,
-		"fill_group_idx", 9,
 		"storable_resources", storable_resources,
 		"resource", storable_resources,
 	})

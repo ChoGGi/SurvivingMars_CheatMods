@@ -1,2 +1,6 @@
+v0.3
+Made shuttles default to off.
+Added On/Off button.
+
 v0.2
 Da Vinci

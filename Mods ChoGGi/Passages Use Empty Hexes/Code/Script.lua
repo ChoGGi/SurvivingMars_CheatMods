@@ -68,16 +68,16 @@ local function TestEndPoint(self, end_point)
 end
 
 function Passage:GetChoGGi_ValidDomes()
-	-- build domes that don't connect won't have a parent_dome
+	-- passages that don't connect won't have a parent_dome
 	if #self.elements > 0 then
-		return IsValid(self.parent_dome) and T(8019, "Connected to building")
-			or T(8773, "No dome")
+		return IsValid(self.parent_dome)
+			and T("<green>") .. T(8019, "Connected to building") .. T("</green>")
+			or T("<red>") .. T(8773, "No dome") .. T("</red>")
 	else
 		if TestEndPoint(self, "start_el") and TestEndPoint(self, "end_el") then
-			return T(8019, "Connected to building")
+			return T("<green>") .. T(8019, "Connected to building") .. T("</green>")
 		end
-
-		return T(8773, "No dome")
+		return T("<red>") .. T(8773, "No dome") .. T("</red>")
 	end
 end
 
