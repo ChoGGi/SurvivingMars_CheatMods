@@ -8,7 +8,7 @@ function OnMsg.ClassesPostprocess()
 	PlaceObj("BuildingTemplate", {
 		-- keep it unique folks
 		"Id", "LayoutConstruction_ExampleChoGGi",
-		-- corresponds to the LayoutConstruction below
+		-- name corresponds to the LayoutConstruction below
 		"LayoutList", "LayoutConstruction_ExampleChoGGi",
 		-- what group to add it to
 		"Group", "Infrastructure",
@@ -46,7 +46,6 @@ function OnMsg.ClassesPostprocess()
 		PlaceObj("LayoutConstructionEntry", {
 			"template", "OxygenTank",
 			"pos", point(1, -9),
-			-- I dunno, let me know if you figure it out
 			"dir", 5,
 			"entity", "AirTank",
 		}),
