@@ -1,0 +1,19 @@
+return PlaceObj("ModDef", {
+	"title", "Fix Colonists Long Walks",
+	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
+	"saved", 0,
+	"image", "Preview.png",
+	"id", "ChoGGi_FixColonistsLongWalks",
+	"steam_id", "1811507300",
+	"pops_any_uuid", "000d3384-12ac-42a4-9808-191b1038060f",
+	"author", "ChoGGi",
+	"lua_revision", 245618,
+	"code", {
+		"Code/Script.lua",
+	},
+--~ 	"has_options", true,
+	"TagOther", true,
+	"description", [[Changes the dome walking distance func to check the walking distance instead of assuming passages == walkable.]],
+})

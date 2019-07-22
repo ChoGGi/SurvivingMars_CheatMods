@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v7.2 (Unreleased)
+- Broke Filter list items last update.
 
 ## v7.1 (08 July 2019)
 - RetName:

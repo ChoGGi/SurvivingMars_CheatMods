@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"TagGameplay", true,
-	"description", [[Zooming to the map overview will no longer cancel your transport route (like it should've been in the first place).
+	"description", [[Zooming to the map overview will no longer cancel your transport route.
 If you haven't set a from location, then it'll just reset like usual because I don't care.
 
 

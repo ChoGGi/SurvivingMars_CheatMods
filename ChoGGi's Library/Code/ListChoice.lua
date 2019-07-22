@@ -765,7 +765,7 @@ function ChoGGi_DlgListChoice:FilterText(txt)
 		-- stick all the strings into one for quicker searching? (i use a \t (tab char) so the strings are separate)
 		local str = (li.idText.text or "") .. "\t" .. (li.RolloverText or "") .. "\t" .. (li.RolloverTitle or "")
 		-- never filter out the "custom value"
-		if not (str:find_lower(txt) or custom_type and i == count) then
+		if not (Translate(str):find_lower(txt) or custom_type and i == count) then
 			self.idList[i]:delete()
 		end
 	end

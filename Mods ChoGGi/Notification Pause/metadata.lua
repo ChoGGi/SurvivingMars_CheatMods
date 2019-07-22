@@ -17,5 +17,5 @@ return PlaceObj("ModDef", {
 	"description", [[Pauses the game on new notifications (defaults to only Critical/Important).
 
 Includes all notifications in Mod Options if you want to pick 'n choose.
-We can't add tooltips to options and some titles are the same, so I had to use the id instead (which doesn't always match up to the title/text).]],
+Red for Critical, and Blue for Important.]],
 })

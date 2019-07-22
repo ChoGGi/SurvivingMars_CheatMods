@@ -29,7 +29,7 @@ for id, item in pairs(OnScreenNotificationPresets) do
 
 	c = c + 1
 	properties[c] = {
-		default = priority and true or false,
+		default = false,
 		editor = "bool",
 		id = id,
 		-- max 40 chars
@@ -42,7 +42,7 @@ table.sort(properties, function(a, b)
 	return CmpLower(a.id, b.id)
 end)
 
-DefineClass("ModOptions_ChoGGi_NotificationPause", {
+DefineClass("ModOptions_ChoGGi_NotificationDisable", {
 	__parents = {
 		"ModOptionsObject",
 	},

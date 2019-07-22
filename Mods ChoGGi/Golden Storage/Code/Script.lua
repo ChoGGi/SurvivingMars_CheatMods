@@ -69,7 +69,7 @@ function GoldenStorage:GameInit()
 	self:SetColorModifier(-6262526)
 
 	self.metals_thread = CreateGameTimeThread(function()
-		while IsValid(self)  and not self.destroyed do
+		while IsValid(self) and not self.destroyed do
 			if self.working then
 				local storedM = self:GetStored_Metals()
 				local maxM = self:GetMaxAmount_Metals()

@@ -204,6 +204,7 @@ do -- ModUpload
 					local output = mods_path .. ModsPackFileName
 					AsyncFileDelete(output)
 					local exec = hpk_path .. " create --cripple-lua-files \""
+--~ 					local exec = hpk_path .. " create \""
 						.. mod.env.CurrentModPath:gsub(mods_path, ""):gsub("/", "") .. "\" " .. ModsPackFileName
 					-- AsyncExec(cmd, working_dir, hidden, capture_output, priority)
 					if not AsyncExec(exec, ConvertToOSPath(mods_path), true, false) then
@@ -904,7 +905,7 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 		end
 		for i = 1, #choices do
 			local choice = choices[i]
-			local path = mods_path .. choice.id
+			local path = "AppData/Mods/" .. choice.id
 			printC(choice.value, path)
 			AsyncUnpack(choice.value, path)
 			-- add a note telling people not to be assholes
