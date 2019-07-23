@@ -11,5 +11,7 @@ return PlaceObj("ModDef", {
 	},
 	"image", "Preview.png",
 	"lua_revision", 245618,
-	"description", [[Enable Trailblazer Skins.]],
+	"description", [[Enable Trailblazer Skins.
+
+(no other way to get them)]],
 })

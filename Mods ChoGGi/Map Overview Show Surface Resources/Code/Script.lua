@@ -4,12 +4,16 @@ local options
 local mod_ShowPolymers
 local mod_ShowMetals
 local mod_TextOpacity
+local mod_TextBackground
+local mod_TextStyle
 
 -- fired when settings are changed/init
 local function ModOptions()
 	mod_ShowPolymers = options.ShowPolymers
 	mod_ShowMetals = options.ShowMetals
 	mod_TextOpacity = options.TextOpacity
+	mod_TextBackground = options.TextBackground
+	mod_TextStyle = options.TextStyle
 end
 
 -- load default/saved settings
@@ -27,25 +31,55 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-DefineClass.ChoGGi_OText_SurResMod = {
-	__parents = {"Text"},
-	text_style = "Action",
-}
+local pairs, type = pairs, type
+local table_iclear = table.iclear
+local table_concat = table.concat
+local IsValid = IsValid
+local T = T
+local black = black
+
+-- try to centre the text a bit more
+local padding_box = box(0, -3, -4, -5)
+local margin_box = box(-25, -15, 0, 0)
+-- dbl res
+local margin_box_dbl = box(-25, -30, 0, 0)
 
 local text_table = {}
 
+
+local style_lookup = {
+	"EncyclopediaArticleTitle",
+	"BugReportScreenshot",
+	"CategoryTitle",
+	"ConsoleLog",
+	"DomeName",
+	"GizmoText",
+	"InfopanelResourceNoAccept",
+	"ListItem1",
+	"ModsUIItemStatusWarningBrawseConsole",
+	"LandingPosNameAlt",
+}
+
 local function AddIcons()
-	local pairs, type = pairs, type
-	local table_iclear = table.iclear
-	local table_concat = table.concat
-	local str_Metals = _InternalTranslate(T(3514,"Metals"))
-	local str_Polymers = _InternalTranslate(T(3515,"Polymers"))
+	local str_Metals = _InternalTranslate(T("<icon_Metals>")):gsub("1300", "2200")
+	local str_Polymers = _InternalTranslate(T("<icon_Polymers>")):gsub("1300", "2200")
 
 	local r = const.ResourceScale
+
+	-- parent dialog storage
+	local parent = Dialogs.HUD
+	if not parent.ChoGGi_TempResInfo then
+		parent.ChoGGi_TempResInfo = XWindow:new({
+			Id = "ChoGGi_TempResInfo",
+		}, parent)
+	end
+	parent = parent.ChoGGi_TempResInfo
+	parent:SetTransparency(mod_TextOpacity)
+
+	local text_style = style_lookup[mod_TextStyle]
+	local background = mod_TextBackground and black or XText.Background
+
 	local g_MapSectors = g_MapSectors
-
-	SuspendPassEdits("ChoGGi_MapOverviewShowSurfaceResources:AddIcons")
-
 	for sector in pairs(g_MapSectors) do
 		-- skip 1-10
 		if type(sector) == "table" then
@@ -69,23 +103,37 @@ local function AddIcons()
 			local c = 0
 			if metals_c > 0 then
 				c = c + 1
-				text_table[c] = str_Metals .. " " .. (metals_c / r)
+				text_table[c] = str_Metals .. (metals_c/r)
 			end
 			if polymers_c > 0 then
 				c = c + 1
-				text_table[c] = str_Polymers .. " " .. (polymers_c / r)
+				text_table[c] = str_Polymers .. (polymers_c/r)
 			end
 
 			if c > 0 then
-				local text = ChoGGi_OText_SurResMod:new()
-				text:SetText(table_concat(text_table, "\n"))
-				text:SetPos(sector:GetPos())
-				text:SetOpacityInterpolation(mod_TextOpacity)
+				local text_dlg = XText:new({
+					TextStyle = text_style,
+					Padding = padding_box,
+					Margins = c == 2 and margin_box_dbl or margin_box,
+					Background = background,
+					Dock = "box",
+					HAlign = "left",
+					VAlign = "top",
+					Clip = false,
+					HandleMouse = false,
+				}, parent)
+
+				text_dlg:SetText(table_concat(text_table, "\n"))
+
+				text_dlg:AddDynamicPosModifier{
+					id = "sector_info",
+					target = sector,
+				}
+				text_dlg:SetVisible(true)
 			end
 		end
 	end
 
-	ResumePassEdits("ChoGGi_MapOverviewShowSurfaceResources:AddIcons")
 end
 
 local orig_OverviewModeDialog_Init = OverviewModeDialog.Init
@@ -95,9 +143,14 @@ function OverviewModeDialog.Init(...)
 end
 
 local function ClearIcons()
-	SuspendPassEdits("ChoGGi_MapOverviewShowSurfaceResources:ClearIcons")
-	MapDelete("map", "ChoGGi_OText_SurResMod")
-	ResumePassEdits("ChoGGi_MapOverviewShowSurfaceResources:ClearIcons")
+	local parent = Dialogs.HUD.ChoGGi_TempResInfo
+	if not parent then
+		return
+	end
+
+	for i = #parent, 1, -1 do
+		parent[i]:Close()
+	end
 end
 
 local orig_OverviewModeDialog_Close = OverviewModeDialog.Close

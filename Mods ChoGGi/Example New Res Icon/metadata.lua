@@ -11,8 +11,8 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi & Rusty",
 	"lua_revision", 245618,
 	"code", {
-		"Code/Add Entities.lua",
-		"Code/Replace Object Entities.lua",
+		"Code/AddEntities.lua",
+		"Code/ReplaceObjectEntities.lua",
 		"Code/Paintbrush.lua",
 	},
 	"description", [[Replaces the Concrete and Metal resource icons.

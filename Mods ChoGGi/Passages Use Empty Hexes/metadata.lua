@@ -15,13 +15,12 @@ return PlaceObj("ModDef", {
 	},
 	"TagGameplay", true,
 	"description", [[Passage restrictions are relaxed.
-
 For now this is ONLY useful for the Medium, Mega, and Geoscape domes.
-I haven't figured out the grid connection funcs to be able to use the dome edges.
-Check the selection panel after placing one, if it says Connected to building then it'll work.
-See the screenshots above to know which hexes work.
+
+You can only use certain hexes to connect domes. Look at the screenshots above to see which hexes work.
+Check the selection panel after placing a passage site, if it says "Connected to building" then it'll work, if it says "No dome" then remove the site and try again.
 
 
 Known Issues:
-I was more concerned with removing limitations than setting new ones, so you can build them in stupid places.]],
+I was more concerned with removing limitations than setting new ones, so you can build them in stupid places (if it doesn't place a complete passage then remove it).]],
 })

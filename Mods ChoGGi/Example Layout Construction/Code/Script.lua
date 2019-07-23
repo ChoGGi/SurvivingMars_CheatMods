@@ -64,7 +64,8 @@ function OnMsg.ClassesPostprocess()
 		PlaceObj("LayoutConstructionEntry", {
 			"template", "life_support_grid",
 			"pos", point(0, -7),
-			-- I dunno, let me know if you figure it out
+			-- end points for cables, pipes, or (I assume) dome connectors.
+			-- https://steamcommunity.com/workshop/discussions/18446744073709551615/1642043267245064779/?appid=464920&tscn=1563856870
 			"cur_pos1", point(0, -8),
 		}),
 		PlaceObj("LayoutConstructionEntry", {

@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local skins = {
 	Drone = "Drone_Trailblazer",
 	RCRover = "Rover_Trailblazer",

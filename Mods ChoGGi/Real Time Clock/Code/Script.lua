@@ -9,7 +9,19 @@ local mod_Background
 
 local AddTime
 local RemoveTime
-local RetTextStyle
+
+local style_lookup = {
+	"LandingPosNameAlt",
+	"BugReportScreenshot",
+	"CategoryTitle",
+	"ConsoleLog",
+	"DomeName",
+	"GizmoText",
+	"InfopanelResourceNoAccept",
+	"ListItem1",
+	"ModsUIItemStatusWarningBrawseConsole",
+	"LandingPosNameAlt",
+}
 
 -- fired when settings are changed/init
 local function ModOptions()
@@ -24,7 +36,7 @@ local function ModOptions()
 		-- add clock
 		AddTime(info)
 		-- text colour
-		info.idRealTimeClock:SetTextStyle(RetTextStyle())
+		info.idRealTimeClock:SetTextStyle(style_lookup[mod_TextStyle])
 		-- blue
 		info.idRealTimeClock:SetBackground(mod_Background and -1825019475 or 0)
 	else
@@ -45,18 +57,6 @@ function OnMsg.ApplyModOptions(id)
 	end
 
 	ModOptions()
-end
-
-RetTextStyle = function()
-	return mod_TextStyle == 1 and "LandingPosNameAlt"
-	or mod_TextStyle == 2 and "BugReportScreenshot"
-	or mod_TextStyle == 3 and "CategoryTitle"
-	or mod_TextStyle == 4 and "ConsoleLog"
-	or mod_TextStyle == 5 and "DomeName"
-	or mod_TextStyle == 6 and "GizmoText"
-	or mod_TextStyle == 7 and "InfopanelResourceNoAccept"
-	or mod_TextStyle == 8 and "ListItem1"
-	or mod_TextStyle == 9 and "ModsUIItemStatusWarningBrawseConsole"
 end
 
 AddTime = function(dlg)
@@ -81,7 +81,7 @@ AddTime = function(dlg)
 		RolloverTemplate = "Rollover",
 		RolloverTitle = T(3452, "Time of day"),
 		RolloverText = T(302535920011358, "Real Time Clock"),
-		TextStyle = RetTextStyle(),
+		TextStyle = style_lookup[mod_TextStyle],
 		Background = mod_Background and -1825019475 or 0,
 	}, area)
 

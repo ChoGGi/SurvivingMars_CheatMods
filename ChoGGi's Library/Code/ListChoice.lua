@@ -141,7 +141,7 @@ function ChoGGi_DlgListChoice:Init(parent, context)
 			self[name] = g_Classes.ChoGGi_XCheckButton:new({
 				Id = name,
 				Dock = "left",
-				Text = Translate(588--[[Empty]]),
+				Text = T(588, "Empty"),
 			}, self[area_id])
 			local check = self[name]
 
@@ -260,7 +260,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		Id = "idOK",
 		Dock = "left",
 		MinWidth = 50,
-		Text = Translate(6878--[[OK]]),
+		Text = T(6878, "OK"),
 		Background = g_Classes.ChoGGi_XButton.bg_green,
 		RolloverText = Strings[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, and probably double left-clicking <left_click>).
 This will always send back all items (not selection)."]]],
@@ -271,7 +271,7 @@ This will always send back all items (not selection)."]]],
 		Id = "idCancel",
 		Dock = "right",
 		MinWidth = 70,
-		Text = Translate(6879--[[Cancel]]),
+		Text = T(6879, "Cancel"),
 		Background = g_Classes.ChoGGi_XButton.bg_red,
 		RolloverText = Strings[302535920000074--[[Cancel without changing anything.]]],
 		OnPress = self.idCloseX.OnPress,
@@ -292,7 +292,7 @@ This will always send back all items (not selection)."]]],
 		else
 			-- default to display text
 			table_sort(self.list.items, function(a, b)
-				return CmpLower(a.text, b.text)
+				return CmpLower(Translate(a.text), Translate(b.text))
 			end)
 		end
 	end

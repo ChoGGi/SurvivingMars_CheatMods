@@ -1,2 +1,7 @@
+v0.3
+Changed to icon instead of text (less space used).
+Opacity now uses 255-0 (0 == completely visible).
+Added mod options for a black background, and different text styles.
+
 v0.2
 Fix for count never going down (thanks McKaby).

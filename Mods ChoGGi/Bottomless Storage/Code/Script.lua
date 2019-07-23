@@ -32,7 +32,7 @@ end
 -- prevent log spam
 function BottomlessStorage:GetSpotBeginIndex(spot_name, ...)
 	return UniversalStorageDepot.GetSpotBeginIndex(
-		self, spot_name == "Box9" and "Box8" or spot_name,	...
+		self, spot_name == "Box9" and "Box8" or spot_name, ...
 	)
 end
 
@@ -43,7 +43,9 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	local storable_resources = table.icopy(UniversalStorageDepot.storable_resources)
-	table.insert(storable_resources, "Seeds")
+	if not table.find(storable_resources, "Seeds") then
+		storable_resources[#storable_resources+1] = "Seeds"
+	end
 
 	PlaceObj("BuildingTemplate", {
 		"Id", "BottomlessStorage",
