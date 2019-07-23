@@ -2,7 +2,35 @@
 
 local dome_walk_dist = const.ColonistMaxDomeWalkDist
 
+local IsPoint = IsPoint
+local IsValid = IsValid
+local IsUnitInDome = IsUnitInDome
+local GetPassablePointNearby = GetPassablePointNearby
+local AreDomesConnectedWithPassage = AreDomesConnectedWithPassage
+local PathLenCached = PathLenCached
+
 -- local func copy pasta
+local function ResolvePos(bld1, bld2)
+	local pos
+	if IsPoint(bld1) then
+		pos = bld1
+	else
+		if IsKindOf(bld1, "Unit") then
+			bld1 = IsUnitInDome(bld1) or bld1.holder or bld1
+		end
+		if IsValid(bld1) then
+			if IsKindOf(bld1, "Building") then
+				bld1 = bld1.parent_dome or bld1
+				local entrance
+				entrance, pos = bld1:GetEntrance(bld2)
+				pos = pos or bld2 and bld1:GetSpotPos(bld1:GetNearestSpot("idle", "Workdrone", bld2))
+			end
+			pos = pos or bld1:GetPos()
+		end
+	end
+	return pos and invalid_pos ~= pos and GetPassablePointNearby(pos)
+end
+
 local function CheckDist(bld1, bld2)
 	local p1, p2 = ResolvePos(bld1, bld2), ResolvePos(bld2, bld1)
 	if not p1 or not p2 then

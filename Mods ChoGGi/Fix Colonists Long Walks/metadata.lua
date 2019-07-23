@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Colonists Long Walks",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixColonistsLongWalks",
@@ -15,5 +15,7 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"has_options", true,
 	"TagOther", true,
-	"description", [[Changes the dome walking distance func to check the walking distance instead of assuming passages == walkable.]],
+	"description", [[Changes the dome walking distance func to check the walking distance instead of assuming passages == walkable.
+
+This should stop the random colonist has died from dehydration events we know and love.]],
 })

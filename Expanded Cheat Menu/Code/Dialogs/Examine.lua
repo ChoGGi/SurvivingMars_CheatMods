@@ -771,7 +771,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 
 	XCreateRolloverWindow(self.idDialog, RolloverGamepad, true, {
 		RolloverTitle = title,
-		RolloverText = (self.onclick_name[link] or TableConcat(roll_text)),
+		RolloverText = self.onclick_name[link] or TableConcat(roll_text),
 		RolloverHint = Strings[302535920001079--[[<left_click> Default Action <right_click> Examine]]],
 	})
 end

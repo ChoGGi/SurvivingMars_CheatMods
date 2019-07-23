@@ -5,6 +5,7 @@
 local IsValid = IsValid
 local IsPoint = IsPoint
 local GetDomeAtPoint = GetDomeAtPoint
+local table_unpack = table.unpack
 
 -- the only thing I care about is that a dome is at the current pos, the rest is up to the user
 local function IsDomePoint(obj)
@@ -19,7 +20,7 @@ local function IsDomePoint(obj)
 	end
 end
 
--- like I said, if it"s a dome then I"m happy
+-- like I said, if it's a dome then I'm happy
 GridConstructionController.CanCompletePassage = IsDomePoint
 
 -- Domes? DOMES!@!!!!
@@ -32,12 +33,29 @@ function GridConstructionController:Activate(pt,...)
 	return orig_Activate(self, pt,...)
 end
 
+local skip_reasons = {
+	block_entrance = true,
+	block_life_support = true,
+	dome = true,
+	roads = true,
+}
+-- this combined with the skip block reasons allows us to use the life-support pipe area
+local orig_block = SupplyGridElementHexStatus.blocked
+local orig_PlacePassageLine = PlacePassageLine
+function PlacePassageLine(...)
+	-- 1 == clear
+	SupplyGridElementHexStatus.blocked = 1
+	local ret = {orig_PlacePassageLine(...)}
+	SupplyGridElementHexStatus.blocked = orig_block
+	return table_unpack(ret)
+end
+
 -- extend your massive passage from a DOME (or road)?
 local orig_CanExtendFrom = GridConstructionController.CanExtendFrom
 function GridConstructionController:CanExtendFrom(...)
 	local res, reason, obj = orig_CanExtendFrom(self, ...)
 
-	if self.mode == "passage_grid" and not res and (reason == "dome" or reason == "roads") then
+	if self.mode == "passage_grid" and not res and skip_reasons[reason] then
 		return true
 	end
 
@@ -140,8 +158,7 @@ function SupplyGridObject:SupplyGridConnectElement(element, ...)
 --~ 		ChoGGi.ComFuncs.ShowQR(q, r)
 		local result, reason, obj = TestDomeBuildabilityForPassage(q, r, "check_edge", "check_road")
 		-- in other words check for what we ignored above
-		if not res and (reason == "dome" or reason == "roads") then
-			print(res, reason)
+		if not res and skip_reasons[reason] then
 			IsObjInDome = fake_IsObjInDome
 		end
 

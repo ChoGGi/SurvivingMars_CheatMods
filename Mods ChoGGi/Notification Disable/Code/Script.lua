@@ -40,5 +40,5 @@ end
 
 local orig_AddCustomOnScreenNotification = AddCustomOnScreenNotification
 function AddCustomOnScreenNotification(id, ...)
-	return SkipNot(orig_AddOnScreenNotification, id, ...)
+	return SkipNot(orig_AddCustomOnScreenNotification, id, ...)
 end

@@ -1,0 +1,3 @@
+v0.2
+You can now place passages at the life-support/entrance areas, so you can use pretty much any dome.
+Manual kinks don't work when you use them though...
