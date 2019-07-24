@@ -16,7 +16,7 @@ do -- ModUpload
 	-- this keeps the check saved per session (true = steam, false = paradox)
 	local upload_to_who = true
 	-- true = desktop, false = desktop/console
-	local upload_to_whichplatform = true
+	local upload_to_whichplatform = false
 
 	local ConvertToOSPath = ConvertToOSPath
 	local MatchWildcard = MatchWildcard
@@ -65,7 +65,7 @@ do -- ModUpload
 	local image_paradox = "UI/ParadoxLogo.tga"
 
 	local function UploadMod(answer, batch)
-		if not answer then
+		if not (answer or mod and mod.steam_id) then
 			return
 		end
 
@@ -331,12 +331,13 @@ do -- ModUpload
 			choices_len = #choices
 
 			local ask_batch
-
+--~ ex(choices)
 			uploading = true
 			for i = 1, choices_len do
 				choice = choices[i]
-				mod = choice.mod
-				if mod then
+				-- select all means the fake item is also selected
+				if choice.value then
+					mod = choice.mod
 					mod_path = choice.path
 					-- pick logo for upload msg boxes
 					if steam_upload then
@@ -610,7 +611,8 @@ You can also stick the executable in the profile folder to use it instead (<gree
 				},
 				{title = Strings[302535920001509--[[Platform]]],
 					level = 2,
-					hint = Strings[302535920001510--[[Paradox mods platform: Leave checked to upload to Desktop only or uncheck to upload to Desktop and Console.]]],
+					hint = Strings[302535920001510--[["Paradox mods platform: Leave checked to upload to Desktop only or uncheck to upload to Desktop and Console.
+If you have a uuid in your metadata.lua this checkbox is ignored and it'll try the any uuid then the desktop uuid."]]],
 					checked = upload_to_whichplatform,
 					func = function(_, check)
 						upload_to_whichplatform = check

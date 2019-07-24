@@ -923,7 +923,7 @@ function ChoGGi_XWindow:AddScrollList(background_image)
 			-- steam/paradox
 			ScaleModifier = point(500, 500),
 		}, self.idScrollSection)
-		self.idBackgroundFrame:SetTransparency(100)
+		self.idBackgroundFrame:SetTransparency(150)
 	end
 
 	self.idScrollV = g_Classes.ChoGGi_XSleekScroll:new({

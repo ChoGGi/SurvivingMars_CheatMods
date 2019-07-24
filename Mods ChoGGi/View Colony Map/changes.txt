@@ -1,3 +1,8 @@
+v1.5
+Removed Omega guesses because they're pretty useless.
+Since there's a total of 20 breakthroughs per map the list shows 17.
+Shows map in Challenges (and mod option to disable).
+
 v1.4
 Log spam.
 

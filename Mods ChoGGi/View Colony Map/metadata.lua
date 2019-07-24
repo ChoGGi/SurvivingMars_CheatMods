@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 7,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_MapImagesPack",
@@ -15,9 +15,9 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"title", "View Colony Map v0.9",
 	"title", "View Colony Map",
-	"version", 14,
+	"version", 15,
 	"version_major", 1,
-	"version_minor", 4,
+	"version_minor", 5,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_ViewColonyMap",
@@ -28,10 +28,12 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"lua_revision", 245618,
+	"has_options", true,
 	"description", [[Shows the map before you load it in the select colony screen.
 
-Includes a checkbox to show anomaly breakthroughs for each location, omega breakthroughs are at best 1/3.
+Includes a checkbox to show anomaly breakthroughs for each location.
 If you use a rule that changes the breakthrough list, then ignore the breakthrough list shown as it isn't accurate anymore.
+Shows map for challenges (mod option to turn it off).
 
 Colour levels: Purple = mountainous, other colours = buildable.
 

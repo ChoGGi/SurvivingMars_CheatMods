@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local dome_walk_dist = const.ColonistMaxDomeWalkDist
+local invalid_pos = InvalidPos()
 
 local IsPoint = IsPoint
 local IsValid = IsValid

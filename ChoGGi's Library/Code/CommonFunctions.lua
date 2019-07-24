@@ -4329,21 +4329,42 @@ do -- RetMapSettings
 	local FillRandomMapProps = FillRandomMapProps
 
 	function ChoGGi.ComFuncs.RetMapSettings(gen, params, ...)
-		params = params or g_CurrentMapParams
+		if not params then
+			params = g_CurrentMapParams
+		end
 		if gen == true then
 			gen = GetRandomMapGenerator() or {}
 		end
 
-		return FillRandomMapProps(gen, params, ...), gen, params
+		return FillRandomMapProps(gen, params, ...), params, gen
 	end
 end -- do
 
 do -- RetMapBreakthroughs
+
+--~ 	local function CountAnom()
+--~ 		local objs = UICity.labels.Anomaly or ""
+--~ 		local c = 0
+--~ 		for i = 1, #objs do
+--~ 			local obj = objs[i]
+--~ 			if obj:IsKindOf("SubsurfaceAnomaly_breakthrough") then
+--~ 				print(obj.breakthrough_tech)
+--~ 				c = c + 1
+--~ 			end
+--~ 		end
+--~ 		print("Anomaly Count", c)
+--~ 		-- 9 on ground
+--~ 		-- 3 omega
+--~ 		-- 4 planetary
+--~ 		-- other 4 from meteors?
+--~ 	end
+
 	local StableShuffle = StableShuffle
 	local CreateRand = CreateRand
-	local breakthrough_count = const.BreakThroughTechsPerGame
+	-- breakthroughs per map are 20 in total (4 planetary, 3 omega, 13 on the ground or around?)
+	local breakthrough_count = const.BreakThroughTechsPerGame + 4
 	local orig_break_list = table.imap(Presets.TechPreset.Breakthroughs, "id")
-	local omega_order_maybe = {}
+--~ 	local omega_order_maybe = {}
 	local translated_tech
 
 	function ChoGGi.ComFuncs.RetMapBreakthroughs(gen, omega)
@@ -4358,13 +4379,13 @@ do -- RetMapBreakthroughs
 
 		-- start with a clean copy of breaks
 		local break_order = table_copy(orig_break_list)
-
-		local omega_order
-		if omega then
-			omega_order = table_copy(orig_break_list)
-			StableShuffle(omega_order, CreateRand(true, gen.Seed, "OmegaTelescope"), 100)
-		end
 		StableShuffle(break_order, CreateRand(true, gen.Seed, "ShuffleBreakThroughTech"), 100)
+
+--~ 		local omega_order
+--~ 		if omega then
+--~ 			omega_order = table_copy(orig_break_list)
+--~ 			StableShuffle(omega_order, CreateRand(true, gen.Seed, "OmegaTelescope"), 100)
+--~ 		end
 
 		while #break_order > breakthrough_count do
 			table_remove(break_order)
@@ -4372,33 +4393,33 @@ do -- RetMapBreakthroughs
 
 		local tech_list = {}
 
-		if omega_order then
-			-- remove existing breaks from omega
-			for i = 1, #break_order do
-				local id = break_order[i]
-				local idx = table_find(omega_order, id)
-				if idx then
-					table_remove(omega_order, idx)
-				end
-				-- translate tech
-				tech_list[i] = translated_tech[id]
-			end
-			omega_order_maybe[3] = table_remove(omega_order)
-			omega_order_maybe[2] = table_remove(omega_order)
-			omega_order_maybe[1] = table_remove(omega_order)
+--~ 		if omega_order then
+--~ 			-- remove existing breaks from omega
+--~ 			for i = 1, #break_order do
+--~ 				local id = break_order[i]
+--~ 				local idx = table_find(omega_order, id)
+--~ 				if idx then
+--~ 					table_remove(omega_order, idx)
+--~ 				end
+--~ 				-- translate tech
+--~ 				tech_list[i] = translated_tech[id]
+--~ 			end
+--~ 			omega_order_maybe[3] = table_remove(omega_order)
+--~ 			omega_order_maybe[2] = table_remove(omega_order)
+--~ 			omega_order_maybe[1] = table_remove(omega_order)
 
-			-- and translation names for omega
-			local c = #tech_list
-			for i = 1, 3 do
-				c = c + 1
-				tech_list[c] = translated_tech[omega_order_maybe[i]]
-			end
-		else
+--~ 			-- and translation names for omega
+--~ 			local c = #tech_list
+--~ 			for i = 1, 3 do
+--~ 				c = c + 1
+--~ 				tech_list[c] = translated_tech[omega_order_maybe[i]]
+--~ 			end
+--~ 		else
 			for i = 1, #break_order do
 				-- translate tech
 				tech_list[i] = translated_tech[break_order[i]]
 			end
-		end
+--~ 		end
 
 		return tech_list
 	end

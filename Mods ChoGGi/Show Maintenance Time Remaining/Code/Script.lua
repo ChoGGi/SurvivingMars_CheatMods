@@ -10,5 +10,5 @@ function RequiresMaintenance:GetMaintenanceRolloverText(...)
 	) / self.maintenance_build_up_per_hr
 
 	time_str.time = hours * HourDuration
-	return orig_GetMaintenanceRolloverText(self, ...) .. T("<left>") .. T(time_str)
+	return orig_GetMaintenanceRolloverText(self, ...) .. T("\n<left>") .. T(time_str)
 end

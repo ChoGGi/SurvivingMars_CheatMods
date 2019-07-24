@@ -2,10 +2,12 @@
 
 local options
 local mod_NearestLaser
+local mod_NearestHub
 
 -- fired when settings are changed/init
 local function ModOptions()
 	mod_NearestLaser = options.NearestLaser
+	mod_NearestHub = options.NearestHub
 end
 
 -- load default/saved settings
@@ -23,25 +25,34 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local function IsWorking(obj)
-	return obj.working
-end
-
 local function IdleTime(self)
 	self:SetState("idle")
 	Sleep(5000)
 	self:SetCommand("Idle")
 end
 
+local function IsWorking(obj)
+	return obj.working
+end
+
 local function WaitItOut(idle_func, self, ...)
 	if self.auto_mode_on and g_MeteorStorm then
-		if mod_NearestLaser and not self.ChoGGi_AutoRoversDuringStorms then
-			-- try lasers first since towers are from mystery (usually)
-			local working_objs = MapFilter(UICity.labels.MDSLaser or empty_table, IsWorking)
-			local valid_obj = FindNearestObject(working_objs, self)
+		if (mod_NearestLaser or mod_NearestHub) and not self.ChoGGi_AutoRoversDuringStorms then
+			local valid_obj, working_objs
 
-			if not IsValid(valid_obj) then
-				working_objs = MapFilter(UICity.labels.DefenceTower or empty_table, IsWorking)
+			if mod_NearestLaser then
+				-- try lasers first since towers are from mystery (usually)
+				working_objs = MapFilter(UICity.labels.MDSLaser or empty_table, IsWorking)
+				valid_obj = FindNearestObject(working_objs, self)
+
+				if not IsValid(valid_obj) then
+					working_objs = MapFilter(UICity.labels.DefenceTower or empty_table, IsWorking)
+					valid_obj = FindNearestObject(working_objs, self)
+				end
+			end
+
+			if mod_NearestHub and not IsValid(valid_obj) then
+				working_objs = MapFilter(UICity.labels.DroneHub or empty_table, IsWorking)
 				valid_obj = FindNearestObject(working_objs, self)
 			end
 

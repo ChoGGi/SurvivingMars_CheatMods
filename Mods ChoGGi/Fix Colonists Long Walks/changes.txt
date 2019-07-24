@@ -1,2 +1,5 @@
+v0.3
+Guess I missed another local.
+
 v0.2
 Copy pasta for the missing local funcs.

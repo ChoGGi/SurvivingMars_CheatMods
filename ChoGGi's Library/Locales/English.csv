@@ -1652,8 +1652,8 @@ https://github.com/nickelc/hpk
 <green>hpk create ""Mod folder"" ModContent.hpk</green>
 Move archive to ""Mod folder/Pack/ModContent.hpk"""
 302535920001509,"Platform"
-302535920001510,"Paradox mods platform: Leave <green>checked</green> to upload to Desktop only or <green>uncheck</green> to upload to Desktop and Console.
-If you have only defined all/desktop in your metadata.lua then it'll ignore this and pick based on that."
+302535920001510,"Paradox mods platform: Leave checked to upload to Desktop only or uncheck to upload to Desktop and Console.
+If you have a uuid in your metadata.lua this checkbox is ignored and it'll try the any uuid then the desktop uuid."
 302535920001506,"Steam"
 302535920001507,"Uncheck to upload to Paradox mods (instead of Steam)."
 302535920001485,"Does everything other than uploading mod to workshop (see AppData/ModUpload)."
@@ -2320,11 +2320,11 @@ Click to open Paradox Breakthroughs Wiki page."
 302535920011371,"<str> will always be the highest level."
 302535920011372,"Max Threats"
 302535920011373,"<left>Shuttles Max/Total/Current<right><max>/<total>/<current>"
-302535920011374,
-302535920011375,
-302535920011376,
-302535920011377,
-302535920011378,
+302535920011374,"Show Metals"
+302535920011375,"Show Polymers"
+302535920011376,"Text Background"
+302535920011377,"Text Opacity"
+302535920011378,"Text Style"
 302535920011379,
 302535920011380,
 302535920011381,

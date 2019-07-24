@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v14.2 (Unreleased)
+## v14.3 (Unreleased)
+
+## v14.2 (24 July 2019)
 ### Changed:
 - Removed cheat capacity limit on storage depots.
 - WorkAuto cheats don't remove the workers anymore.

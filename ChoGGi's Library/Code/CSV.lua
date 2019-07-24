@@ -78,7 +78,7 @@ do -- MapData
 
 		local map_name, gen, params
 		if breakthroughs then
-			map_name, gen, params = RetMapSettings(true, landing.map_params)
+			map_name, params, gen = RetMapSettings(true, landing.map_params)
 		else
 			map_name = FillRandomMapProps(nil, params)
 			params = landing.map_params
@@ -221,7 +221,8 @@ do -- MapData
 		if breakthroughs then
 			local b_str = Translate(11451--[[Breakthrough]])
 			local c = #csv_columns
-			for i = 1, const.BreakThroughTechsPerGame do
+--~ 			for i = 1, const.BreakThroughTechsPerGame do
+			for i = 1, 17 do
 				c = c + 1
 				csv_columns[c] = {"break" .. i, b_str .. " " .. i}
 			end

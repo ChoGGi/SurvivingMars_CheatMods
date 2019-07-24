@@ -320,7 +320,7 @@ ECM.Buildings.Capacity>Building Visitor Capacity: Set visitors capacity of all b
 ECM.Buildings.Capacity>Storage Mechanized Depots Temp: Allow the temporary storage to hold 100 instead of 50 cubes.
 ECM.Buildings.Capacity>Storage Mechanized Depots: Change mechanized depot storage capacity.
 ECM.Buildings.Capacity>Storage Other Depot: Change other storage depot capacity.
-ECM.Buildings.Capacity>Storage Universal Depot: 10000000: Change universal storage depot capacity.
+ECM.Buildings.Capacity>Storage Universal Depot: Change universal storage depot capacity.
 ECM.Buildings.Capacity>Storage Waste Depot: Change waste storage depot capacity.
 ECM.Buildings.Capacity>Worker Capacity: Set worker capacity of buildings of selected type, also applies to newly placed ones.
 ECM.Buildings.Farms>Crop fail threshold: Average performance of Farms required for Crops to succeed
@@ -499,7 +499,7 @@ ECM>Fix All Objects: Fixes all malfunctioned objects.
 ECM>Grid Info: List objects in grids (air, electricity, and water).
 ECM>Scanner Queue Larger: Queue up to 100 squares.
 Game.Camera>Bird's Eye: 20: How far up the camera can move.
-Game.Camera>Border Scrolling: 2: Set size of activation for mouse border scrolling.
+Game.Camera>Border Scrolling: 1: Set size of activation for mouse border scrolling.
 Game.Camera>Reset: If something makes the camera view wonky you can use this to fix it.
 Game.Camera>Toggle Cursor: Toggle between moving camera and selecting objects.
 Game.Camera>Toggle Follow Camera: Select (or mouse over) an object to follow.

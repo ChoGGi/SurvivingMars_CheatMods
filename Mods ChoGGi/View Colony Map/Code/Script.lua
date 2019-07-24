@@ -1,5 +1,28 @@
 -- See LICENSE for terms
 
+local options
+local mod_EnableChallenges
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_EnableChallenges = options.EnableChallenges
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= "ChoGGi_ViewColonyMap" then
+		return
+	end
+
+	ModOptions()
+end
+
 local table_insert = table.insert
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Translate = ChoGGi.ComFuncs.Translate
@@ -15,26 +38,29 @@ local skip_showing_image
 local show_image_dlg
 local extra_info_dlg
 
+local function ShowDialogs(map, gen)
+	-- check if we already created image viewer, and make one if not
+	if not show_image_dlg then
+		show_image_dlg = ChoGGi_VCM_MapImageDlg:new({}, terminal.desktop, {})
+	end
+	-- pretty little image
+	show_image_dlg.idImage:SetImage(image_str .. map .. ".png")
+	show_image_dlg.idCaption:SetText(map)
+	-- update text info
+	if gen and extra_info_dlg then
+		extra_info_dlg:UpdateInfo(gen)
+	end
+end
+
 -- override this func to create/update image when site changes
 local orig_FillRandomMapProps = FillRandomMapProps
 function FillRandomMapProps(gen, params, ...)
-
 	-- gen is a table when the map is loading, so we can skip it
 	if not gen and not skip_showing_image then
 		local map
-		map, gen, params = RetMapSettings(true, params, ...)
+		map, params, gen = RetMapSettings(true, params, ...)
 
-		-- check if we already created image viewer, and make one if not
-		if not show_image_dlg then
-			show_image_dlg = ChoGGi_VCM_MapImageDlg:new({}, terminal.desktop, {})
-		end
-		-- pretty little image
-		show_image_dlg.idImage:SetImage(image_str .. map .. ".png")
-		show_image_dlg.idCaption:SetText(map)
-		-- update text info
-		if extra_info_dlg then
-			extra_info_dlg:UpdateInfo(gen)
-		end
+		ShowDialogs(map, gen)
 
 		return map
 	end
@@ -42,15 +68,27 @@ function FillRandomMapProps(gen, params, ...)
 	return orig_FillRandomMapProps(gen, params, ...)
 end
 
+local orig_GetOverlayValues = GetOverlayValues
+function GetOverlayValues(lat, long, overlay_grids, params, ...)
+	orig_GetOverlayValues(lat, long, overlay_grids, params, ...)
+
+	if mod_EnableChallenges and not skip_showing_image then
+		local map, gen
+		map, params, gen = RetMapSettings(true, params)
+		ShowDialogs(map, gen)
+	end
+end
+
 -- kill off image dialogs
 function OnMsg.ChangeMapDone()
 -- keep dialog opened after
 --~ 	do return end
-	local term = terminal.desktop
-	for i = #term, 1, -1 do
-		local dlg = term[i]
+	local dlgs = terminal.desktop
+	for i = #dlgs, 1, -1 do
+		local dlg = dlgs[i]
 		if dlg:IsKindOf("ChoGGi_VCM_MapImageDlg")
-				or dlg:IsKindOf("ChoGGi_VCM_ExtraInfoDlg") then
+			or dlg:IsKindOf("ChoGGi_VCM_ExtraInfoDlg")
+		then
 			dlg:Close()
 		end
 	end
@@ -190,15 +228,18 @@ end
 DefineClass.ChoGGi_VCM_ExtraInfoDlg = {
 	__parents = {"ChoGGi_XWindow"},
 	dialog_width = 400.0,
+--~ 	dialog_height = 650.0,
 	dialog_height = 525.0,
 
 	missing_desc = Translate(302535920011335, [[You need to be in-game to display this hint.
 Click to open Paradox Breakthroughs Wiki page.]]),
 
 	translated_tech = false,
-	omega_msg = false,
-	omega_msg_count = false,
+--~ 	omega_msg = false,
+--~ 	omega_msg_count = 0,
+	planet_msg_count = 0,
 	planet_msg = false,
+	breakthrough_msg = false,
 
 	onclick_count = false,
 	onclick_desc = false,
@@ -247,10 +288,16 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 			.. name .. "</h></color>"
 	end
 
-	self.omega_msg_count = const.BreakThroughTechsPerGame + 2
-	self.omega_msg = "\n\n<color 200 200 256>" .. Translate(5182--[[Omega Telescope]]) .. " "
-		.. Translate(437247068170--[[LIST]]) .. " (" .. Translate(302535920011336, "maybe") .. "):</color>"
-	self.planet_msg = "\n\n<color 200 200 256>" .. Translate(11234--[[Planetary Anomaly]]) .. ":</color>"
+	self.planet_msg_count = Consts.PlanetaryBreakthroughCount + 1
+
+	self.breakthrough_msg = "\n\n<color 200 200 256>" .. Translate(title_text)
+		.. ":</color>"
+--~ 	self.omega_msg = "\n\n<color 200 200 256>"
+--~ 		.. Translate(5182, "Omega Telescope") .. " "
+--~ 		.. Translate(437247068170, "LIST") .. " "
+--~ 		.. Translate(302535920011336--[[maybe--]]) .. ":</color>"
+	self.planet_msg = "<color 200 200 256>"
+		.. Translate(11234, "Planetary Anomaly") .. ":</color>"
 
 	CreateRealTimeThread(function()
 		-- place right of map
@@ -317,16 +364,22 @@ function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(gen)
 		return
 	end
 
-	local display_list = RetMapBreakthroughs(gen, true)
+--~ 	local display_list = RetMapBreakthroughs(gen, true)
+	local display_list = RetMapBreakthroughs(gen)
 --~ 	ex{display_list, gen}
 
 	for i = 1, #display_list do
 		display_list[i] = self.translated_tech[display_list[i]]
 	end
 
-	-- last four are PAs (g_Consts.PlanetaryBreakthroughCount)
-	table_insert(display_list, 10, self.planet_msg)
+	--
+	table_insert(display_list, self.planet_msg_count, self.breakthrough_msg)
 
-	table_insert(display_list, self.omega_msg_count, self.omega_msg)
+	-- first four are PAs
+	table_insert(display_list, 1, self.planet_msg)
+
+--~ 	-- 3 from the end
+--~ 	table_insert(display_list, #display_list - 2, self.omega_msg)
+
 	self.idText:SetText(TableConcat(display_list, "\n"))
 end

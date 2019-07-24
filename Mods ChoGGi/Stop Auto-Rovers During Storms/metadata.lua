@@ -4,13 +4,13 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 7,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "Stop Auto-Rovers During Storms",
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_StopAutoRoversDuringStorms",
@@ -26,5 +26,7 @@ return PlaceObj("ModDef", {
 	"description", [[Rovers will not do automated tasks when a meteor storm is active.
 They'll finish up whatever task they're on then stop moving till it's over, so you may need to move them out of the way.
 
-Includes mod option to make them go for the nearest working laser/missile tower if they're idle (default on).]],
+Mod Options:
+Go to the nearest working laser/missile tower if rover is idle (default on).
+Or drone hub (laser option takes precedence).]],
 })

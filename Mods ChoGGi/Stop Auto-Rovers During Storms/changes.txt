@@ -1,3 +1,6 @@
+v0.4
+Added option to scurry away to nearest drone hub.
+
 v0.3
 Forgot to add mod req for my lib mod.
 Log spam when no lasers.

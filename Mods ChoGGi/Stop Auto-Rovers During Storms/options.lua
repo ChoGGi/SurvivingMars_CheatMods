@@ -12,5 +12,11 @@ DefineClass("ModOptions_ChoGGi_StopAutoRoversDuringStorms", {
 			id = "NearestLaser",
 			name = T(4813, "MDS Laser"),
 		},
+		{
+			default = true,
+			editor = "bool",
+			id = "NearestHub",
+			name = T(3518, "Drone Hub"),
+		},
 	},
 })
