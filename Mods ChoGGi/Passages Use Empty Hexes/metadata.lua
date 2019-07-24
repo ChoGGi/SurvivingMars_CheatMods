@@ -14,10 +14,10 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"TagGameplay", true,
-	"description", [[Passage restrictions are relaxed.
-You can put passages anywhere, but only certain hexes will "connect" domes.
+	"description", [[You can put passages anywhere, but only certain hexes will "connect" domes.
+
 Any marked hexes in the screenshots are usable by passages.
-You can put passages through entrances, but they may block use of them (let me know), so no images of them.
+You can put passages through entrances, but they may block use of them (let me know).
 
 Check the selection panel after placing a passage site, if it says "Connected to building" then it'll work, if it says "No dome" then remove the site and try again.
 

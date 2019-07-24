@@ -377,8 +377,10 @@ DefineClass.ChoGGi_XList = {
 	TextStyle = "ChoGGi_List",
 	RolloverTemplate = "Rollover",
 --~ 	LayoutMethod = "VWrap",
+
 	Background = dark_gray,
 	FocusedBackground = darker_gray,
+
 	loaded = false,
 }
 function ChoGGi_XList:CreateTextItem(text, props, context)
@@ -890,7 +892,7 @@ function ChoGGi_XWindow:AddScrollText()
 	}, self.idScrollArea)
 end
 
-function ChoGGi_XWindow:AddScrollList()
+function ChoGGi_XWindow:AddScrollList(background_image)
 	local g_Classes = g_Classes
 
 	self.idScrollSection = g_Classes.ChoGGi_XDialogSection:new({
@@ -898,11 +900,31 @@ function ChoGGi_XWindow:AddScrollList()
 		Margins = box(4, 4, 4, 4),
 	}, self.idDialog)
 
+
 	self.idList = g_Classes.ChoGGi_XList:new({
 		Id = "idList",
 		VScroll = "idScrollV",
 		HScroll = "idScrollH",
+		DrawOnTop = true,
+		Background = 0,
 	}, self.idScrollSection)
+
+	if background_image then
+		self.idList:SetBackground(0)
+		self.idList:SetFocusedBackground(0)
+		local _, y = MeasureImage(background_image)
+
+		self.idBackgroundFrame = g_Classes.XFrame:new({
+			Id = "idBackgroundFrame",
+			TileFrame = true,
+			Image = background_image,
+			VAlign = "bottom",
+			MinHeight = y,
+			-- steam/paradox
+			ScaleModifier = point(500, 500),
+		}, self.idScrollSection)
+		self.idBackgroundFrame:SetTransparency(100)
+	end
 
 	self.idScrollV = g_Classes.ChoGGi_XSleekScroll:new({
 		Id = "idScrollV",

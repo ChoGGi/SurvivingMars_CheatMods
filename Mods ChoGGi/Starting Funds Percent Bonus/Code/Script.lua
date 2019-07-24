@@ -1,0 +1,34 @@
+-- See LICENSE for terms
+
+local options
+local mod_FundingPercent
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_FundingPercent = options.FundingPercent + 0.0
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= "ChoGGi_StartingFundsPercentBonus" then
+		return
+	end
+
+	ModOptions()
+end
+
+function OnMsg.CityStart()
+	-- no point in adding 0
+	if mod_FundingPercent == 0.0 then
+		return
+	end
+
+	local c = UICity
+	c.funding = c.funding + (c.funding * (mod_FundingPercent / 100))
+end

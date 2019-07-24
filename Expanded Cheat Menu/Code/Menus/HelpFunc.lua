@@ -24,6 +24,8 @@ do -- ModUpload
 	local AsyncCreatePath = AsyncCreatePath
 	local AsyncCopyFile = AsyncCopyFile
 	local Sleep = Sleep
+	local MeasureImage = UIL.MeasureImage
+
 	local mod_params = {}
 
 	-- check the copy box for these
@@ -59,6 +61,8 @@ do -- ModUpload
 	local copy_files, blank_mod, clipboard, pack_mod, test, steam_upload, para_platform
 	local mod, mod_path, upload_image, diff_author, result, choices_len, uploading
 	local result_msg, result_title, upload_msg = {}, {}, {}
+	local image_steam = "UI/Common/mod_steam_workshop.tga"
+	local image_paradox = "UI/ParadoxLogo.tga"
 
 	local function UploadMod(answer, batch)
 		if not answer then
@@ -336,9 +340,9 @@ do -- ModUpload
 					mod_path = choice.path
 					-- pick logo for upload msg boxes
 					if steam_upload then
-						upload_image = "UI/Common/mod_steam_workshop.tga"
+						upload_image = image_steam
 					else
-						upload_image = "UI/ParadoxLogo.tga"
+						upload_image = image_paradox
 						-- mods have to be packed for paradox
 						pack_mod = true
 					end
@@ -544,7 +548,11 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			end
 		end
 
+		local _, image_steam_y = MeasureImage(image_steam)
+		local _, image_paradox_y = MeasureImage(image_paradox)
+
 		ChoGGi.ComFuncs.OpenInListChoice{
+			background_image = upload_to_who and image_steam or image_paradox,
 			callback = CallBackFunc,
 			items = item_list,
 			title = Strings[302535920000367--[[Mod Upload]]],
@@ -583,16 +591,18 @@ You can also stick the executable in the profile folder to use it instead (<gree
 					checked = upload_to_who,
 					func = function(dlg, check)
 						upload_to_who = check
-						-- steam
 						if check then
 							dlg.idCheckBox7:SetVisible()
 							dlg.idCheckBox6:SetText(Strings[302535920001506--[[Steam]]])
-						-- paradox
+							dlg.idBackgroundFrame:SetImage(image_steam)
+							dlg.idBackgroundFrame:SetMinHeight(image_steam_y)
 						else
 							dlg.idCheckBox6:SetText(T(5482, "Paradox"))
 							dlg.idCheckBox7:SetVisible(true)
 							-- mark Pack for users
 							dlg.idCheckBox4:SetCheck(true)
+							dlg.idBackgroundFrame:SetImage(image_paradox)
+							dlg.idBackgroundFrame:SetMinHeight(image_paradox_y)
 						end
 					end,
 					-- no pops means no sense in showing this

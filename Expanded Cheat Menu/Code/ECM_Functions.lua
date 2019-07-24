@@ -2595,7 +2595,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		if name == "SpeedRC" then
 			if UICity:IsTechResearched("LowGDrive") then
 				local p = ReturnTechAmount("LowGDrive", "move_speed")
-				return ChoGGi.Consts.SpeedRC + ChoGGi.Consts.SpeedRC * p
+				return ChoGGi.Consts.SpeedRC + (ChoGGi.Consts.SpeedRC * p)
 			end
 			return ChoGGi.Consts.SpeedRC
 		end
@@ -2632,7 +2632,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 				SupportiveCommunity = -70%
 				]]
 				local LowSan = ChoGGi.Consts.LowSanityNegativeTraitChance + 0.0 --SM has no math.funcs so + 0.0
-				return p*LowSan/100*100
+				return (p * LowSan) / (100 * 100)
 			end
 			return ChoGGi.Consts.LowSanityNegativeTraitChance
 		end

@@ -187,7 +187,7 @@ function ChoGGi_DlgListChoice:Init(parent, context)
 		end
 	end
 
-	self:AddScrollList()
+	self:AddScrollList(self.list.background_image)
 
 	self.idList.OnMouseButtonDown = self.idList_OnMouseButtonDown
 	self.idList.OnKbdKeyUp = self.idList_OnKbdKeyUp
