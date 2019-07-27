@@ -10,7 +10,7 @@ local storable_resources = {"Concrete", "Electronics", "Food", "Fuel", "MachineP
 local c = #storable_resources
 
 local Resources = Resources
-for id, item in pairs(Resources) do
+for id in pairs(Resources) do
 	if table_find(storable_resources, id) then
 		mod_options[id] = nil
 	end

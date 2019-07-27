@@ -1,2 +1,5 @@
+v0.3
+,
+
 v0.2
 Added time to expedition/trade rockets.

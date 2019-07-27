@@ -23,7 +23,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Show Hex Buildable Grid during construction.
+	"description", [[Show Hex Buildable Grid during construction (follows the mouse).
 
 Green = pass/build
 Yellow = no pass/build

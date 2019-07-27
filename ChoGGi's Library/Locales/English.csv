@@ -1,4 +1,7 @@
 "ID"," Text"
+302535920000220,
+302535920000680,
+302535920000681,
 302535920000923,
 302535920000941,
 302535920000945,
@@ -13,6 +16,9 @@
 302535920000985,
 302535920000986,
 302535920000990,
+302535920001085,
+302535920001086,
+302535920001087,
 302535920001095,
 302535920001096,
 302535920001309,
@@ -1741,20 +1747,15 @@ For any issues; please report them to my Github/Steam/NexusMods page, or email <
 302535920000387,"Change the time factor (not permanently); for ease of screenshots or something."
 302535920000523,"How many to multiple the default speed by: <green>%s</green>."
 302535920000694,"Set Opacity"
-302535920000680,"Annoying Sounds"
 302535920001126,"Double"
 302535920000647,"Border Scrolling"
 302535920001255,"Will only apply to objects in the same dome as selected object."
 302535920001256,"Will only apply to selected object."
 302535920000347,"Star Dome"
 302535920000351,"Hexa Dome"
-302535920000220,"RC Rover Emergency Power"
 302535920001081,"Changes signs to materials."
 302535920001082,"Changes materials to signs."
 302535920001083,"Change Surface Signs"
-302535920001085,"Sensor Tower Beeping"
-302535920001086,"RC Rover Drones Deployed"
-302535920001087,"Mirror Sphere Crackling"
 302535920001088,"%s: Stop that bloody bouzouki!"
 302535920001090,"You can only reset all sounds at once."
 302535920001093,"Toggled: <green>%s</green> pinnable objects."
@@ -1800,7 +1801,6 @@ Not permanent for colonists after they exit buildings (for now)."
 302535920001157,"If you don't pick a checkbox it will change all of selected type."
 302535920000678,"Change Surface Signs To Materials"
 302535920000679,"Changes all the ugly immersion breaking signs to materials (reversible)."
-302535920000681,"Toggle annoying sounds (Sensor Tower, Mirror Sphere, Rover deployed drones, Drone incessant beeping)."
 302535920000682,"Change Entity"
 302535920000683,"Changes the entity of selected object, all of same type or all of same type in selected object's dome."
 302535920000684,"Change Entity Scale"
@@ -2325,9 +2325,9 @@ Click to open Paradox Breakthroughs Wiki page."
 302535920011376,"Text Background"
 302535920011377,"Text Opacity"
 302535920011378,"Text Style"
-302535920011379,
-302535920011380,
-302535920011381,
+302535920011379,"Sensor Tower Beeping"
+302535920011380,"RC Commander Drones Deployed"
+302535920011381,"Mirror Sphere Crackling"
 302535920011382,
 302535920011383,
 302535920011384,

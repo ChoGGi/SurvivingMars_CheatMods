@@ -18,7 +18,7 @@ function SupplyRocket:GetArrivalTimePercent()
 		left = 0
 	end
 
-	return left .. " " .. T(3778, "Hours") .. " "
+	return left .. " " .. T(3778, "Hours") .. ", "
 		.. Min(100, MulDivRound(start, 100, self.flight_time))
 end
 
@@ -38,7 +38,7 @@ function RocketExpedition:GetArrivalTimePercent()
 		left = 0
 	end
 
-	return left .. " " .. T(3778, "Hours") .. " "
+	return left .. " " .. T(3778, "Hours") .. ", "
 		.. Clamp(MulDivRound(t, 100, duration), 0, 100)
 end
 

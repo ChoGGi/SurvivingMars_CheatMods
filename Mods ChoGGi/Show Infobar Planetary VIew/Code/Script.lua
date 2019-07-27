@@ -3,10 +3,9 @@
 local Sleep = Sleep
 
 local function IsValidXWin(win)
-	if win and win.window_state == "destroying" then
-		return false
+	if win and win.window_state ~= "destroying" then
+		return true
 	end
-	return true
 end
 
 local function AddInfobar()

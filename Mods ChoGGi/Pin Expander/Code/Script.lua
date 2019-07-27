@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local Translate = ChoGGi.ComFuncs.Translate
 local RetName = ChoGGi.ComFuncs.RetName
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
@@ -316,7 +315,7 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 			end
 		end
 
-		hint = Translate(hint)
+		hint = T(hint)
 
 		-- add status image
 		local image = pins_obj:GetPinConditionImage(obj)
@@ -431,6 +430,10 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 	PopupToggle(button_obj.idCondition, "idPinPopup", items, "top", true)
 end
 
+local skip_menu_classes = {
+	"OrbitalProbe",
+}
+
 local orig_PinsDlg_InitPinButton = PinsDlg.InitPinButton
 function PinsDlg:InitPinButton(button, ...)
 	-- fire off the orig func so we have a button to work with
@@ -440,7 +443,7 @@ function PinsDlg:InitPinButton(button, ...)
 	local orig_button_OnPress = button.OnPress
 	function button.OnPress(button_obj, gamepad, ...)
 		-- if pressing ctrl then abort
-		if IsControlPressed() then
+		if IsControlPressed() or button_obj:IsKindOfClasses(skip_menu_classes) then
 			return orig_button_OnPress(button_obj, gamepad, ...)
 		end
 		return OnPress(self, orig_button_OnPress, button_obj, gamepad, ...)

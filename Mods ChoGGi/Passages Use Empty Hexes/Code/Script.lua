@@ -146,7 +146,7 @@ do return end
 -- improperly placed passage == no parent_dome == not valid connection
 local orig_IsObjInDome = IsObjInDome
 local function fake_IsObjInDome(obj)
-	print("FAKE IsObjInDome")
+print("FAKE IsObjInDome")
 	return obj.start_el.parent_dome or GetDomeAtPoint(obj.start_el:GetPos())
 end
 

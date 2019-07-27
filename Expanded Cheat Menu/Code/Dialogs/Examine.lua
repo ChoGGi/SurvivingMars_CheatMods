@@ -3529,7 +3529,7 @@ do -- BuildParentsMenu
 					c = c + 1
 					self.parents_menu_popup[c] = {
 						name = item,
-						hint = Strings[302535920000069--[[Examine]]] .. " "
+						hint = T("<left_click> ") .. Strings[302535920000069--[[Examine]]] .. " "
 							.. self.string_Class .. " " .. self.string_Object
 							.. ": <color 100 255 100>" .. item .. "</color>\n"
 							.. Strings[302535920000904--[[<right_click> to copy <color yellow>%s</color> to clipboard.]]]:format(self.string_Classname),

@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v14.3 (Unreleased)
+Removed:
+- Game>Annoying Sounds.
 
 ## v14.2 (24 July 2019)
 ### Changed:

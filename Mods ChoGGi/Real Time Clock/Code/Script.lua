@@ -1,5 +1,12 @@
 -- See LICENSE for terms
 
+local function IsValidXWin(win)
+	if win and win.window_state ~= "destroying" then
+		return true
+	end
+end
+local Infobar
+
 local options
 local mod_ShowClock
 local mod_TimeFormat
@@ -30,15 +37,19 @@ local function ModOptions()
 	mod_TextStyle = options.TextStyle
 	mod_Background = options.Background
 --~ 	mod_PosChoices = options.PosChoices
-
-	local info = Dialogs.Infobar
 	if mod_ShowClock then
-		-- add clock
-		AddTime(info)
-		-- text colour
-		info.idRealTimeClock:SetTextStyle(style_lookup[mod_TextStyle])
-		-- blue
-		info.idRealTimeClock:SetBackground(mod_Background and -1825019475 or 0)
+		if not IsValidXWin(Infobar) then
+			Infobar = Dialogs.Infobar
+		end
+
+		if Infobar then
+			-- add clock
+			AddTime(Infobar)
+			-- text colour
+			Infobar.idRealTimeClock:SetTextStyle(style_lookup[mod_TextStyle])
+			-- blue
+			Infobar.idRealTimeClock:SetBackground(mod_Background and -1825019475 or 0)
+		end
 	else
 		RemoveTime()
 	end
@@ -59,13 +70,43 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-AddTime = function(dlg)
-	if CurrentThread() then
-		WaitMsg("OnRender")
+local floatfloor = floatfloor
+local GetDate = GetDate
+local clock = {302535920011360, "<hour>:<min>"}
+
+function OnMsg.NewHour()
+	if not mod_ShowClock then
+		return
 	end
 
+	local strproc = GetDate():gmatch("%d+")
+
+--~ 	local day = strproc()
+	-- to the ether with you
+	strproc()
+
+	clock.hour = strproc()
+	clock.min = strproc()
+
+	if not mod_TimeFormat then
+		-- why 13-12 somehow equals 1.0 I haven't a clue...
+		clock.hour = floatfloor(clock.hour - 12)
+	end
+
+	if not IsValidXWin(Infobar) then
+		Infobar = Dialogs.Infobar
+	end
+
+	if Infobar and Infobar.idRealTimeClockArea then
+		Infobar.idRealTimeClock:SetText(T(clock))
+	end
+end
+
+AddTime = function(dlg)
+	WaitMsg("OnRender")
+
 	-- skip if already added
-	if dlg.idRealTimeClockArea then
+	if not dlg or dlg.idRealTimeClockArea then
 		return
 	end
 
@@ -89,54 +130,21 @@ AddTime = function(dlg)
 	area:SetParent(dlg)
 end
 
-local floatfloor = floatfloor
-local GetDate = GetDate
-local dlgs
-local clock = {302535920011360, "<hour>:<min>"}
-function OnMsg.NewHour()
-	if not mod_ShowClock then
-		return
-	end
-
-	if not dlgs then
-		dlgs = Dialogs
-	end
-
-	local strproc = GetDate():gmatch("%d+")
-
---~ 	local day = strproc()
-	strproc()
-
-	clock.hour = strproc()
-	clock.min = strproc()
-
-	if not mod_TimeFormat then
-		-- why 13-12 somehow equals 1.0 I haven't a clue...
-		clock.hour = floatfloor(clock.hour - 12)
-	end
-
-	dlgs.Infobar.idRealTimeClock:SetText(T(clock))
-end
-
 RemoveTime = function()
-	if not dlgs then
-		dlgs = Dialogs
+	if not IsValidXWin(Infobar) then
+		Infobar = Dialogs.Infobar
 	end
 
-	if dlgs.Infobar.idRealTimeClockArea then
-		dlgs.Infobar.idRealTimeClockArea:Close()
+	if Infobar and Infobar.idRealTimeClockArea then
+		Infobar.idRealTimeClockArea:Close()
 	end
 end
 
 local orig_OpenDialog = OpenDialog
 function OpenDialog(dlg_str, ...)
 	local dlg = orig_OpenDialog(dlg_str, ...)
-	if mod_ShowClock then
---~ 		if dlg_str == "OnScreenNotificationsDlg" and mod_PosChoices == "Notifications"
---~ 			or dlg_str == "Infobar" and mod_PosChoices == "Infobar"
-		if dlg_str == "Infobar" then
-			CreateRealTimeThread(AddTime, dlg)
-		end
+	if mod_ShowClock and dlg_str == "Infobar" then
+		CreateRealTimeThread(AddTime, dlg)
 	end
 	return dlg
 end

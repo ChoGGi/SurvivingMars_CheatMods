@@ -40,7 +40,6 @@ local function CheckDist(bld1, bld2)
 	if p1 == p2 then
 		return true, 0
 	end
-	local has_path
 	local len_sl = p1:Dist2D(p2)
 	if len_sl > dome_walk_dist then
 		return false, len_sl, true

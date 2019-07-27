@@ -1,5 +1,5 @@
 ### Order of msgs happening during a "New Game"
-##### last updated Armstrong (244677), for current use [OnMsg Print](https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/OnMsg%20Print)
+##### last updated Cernan (245618), for current use [OnMsg Print](https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/OnMsg%20Print)
 
 ##### Tabs denote repetition of Msg. They could also be repeated later on in the game, but this list is during loading.
 ##### () on the end means the msg has arguments (this list is for the order), to see args use OnMsg Print

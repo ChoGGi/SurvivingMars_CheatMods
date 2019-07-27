@@ -472,10 +472,9 @@ end -- do
 local RetName = ChoGGi.ComFuncs.RetName
 
 local function IsValidXWin(win)
-	if win and win.window_state == "destroying" then
-		return false
+	if win and win.window_state ~= "destroying" then
+		return true
 	end
-	return true
 end
 ChoGGi.ComFuncs.IsValidXWin = IsValidXWin
 
@@ -2002,7 +2001,6 @@ do -- Rebuildshortcuts
 		if not is_list_sorted then
 			local CmpLower = CmpLower
 			table.sort(Actions, function(a, b)
---~ 				return CmpLower(a.ActionName, b.ActionName)
 				return CmpLower(a.ActionId, b.ActionId)
 			end)
 			is_list_sorted = true
@@ -2460,9 +2458,12 @@ do -- GetAllAttaches
 --~ 	local skip = {"GridTile", "GridTileWater", "BuildingSign", "ExplorableObject", "TerrainDeposit", "DroneBase", "Dome"}
 	local skip = {"ExplorableObject", "TerrainDeposit", "DroneBase", "Dome"}
 
-	local function AddAttaches(obj)
+	local function AddAttaches(obj, only_include)
 		for _, a in pairs(obj) do
-			if not attach_dupes[a] and IsValid(a) and a ~= parent_obj and not a:IsKindOfClasses(skip) then
+			if not attach_dupes[a] and IsValid(a) and a ~= parent_obj
+				and (not only_include or only_include and a:IsKindOf(only_include))
+				and not a:IsKindOfClasses(skip)
+			then
 				attach_dupes[a] = true
 				attaches_count = attaches_count + 1
 				attaches_list[attaches_count] = a
@@ -2471,8 +2472,11 @@ do -- GetAllAttaches
 	end
 
 	local mark
-	local function ForEach(a, parent_cls)
-		if not attach_dupes[a] and a ~= parent_obj and not a:IsKindOfClasses(skip) then
+	local function ForEach(a, parent_cls, only_include)
+		if not attach_dupes[a] and a ~= parent_obj
+			and (not only_include or only_include and a:IsKindOf(only_include))
+			and not a:IsKindOfClasses(skip)
+		then
 			attach_dupes[a] = true
 			attaches_count = attaches_count + 1
 			attaches_list[attaches_count] = a
@@ -2486,7 +2490,7 @@ do -- GetAllAttaches
 		end
 	end
 
-	function ChoGGi.ComFuncs.GetAllAttaches(obj, mark_attaches)
+	function ChoGGi.ComFuncs.GetAllAttaches(obj, mark_attaches, only_include)
 		mark = mark_attaches
 
 		table_clear(attach_dupes)
@@ -2504,26 +2508,24 @@ do -- GetAllAttaches
 
 		-- add regular attachments
 		if obj.ForEachAttach then
-			obj:ForEachAttach(ForEach, obj.class)
+			obj:ForEachAttach(ForEach, obj.class, only_include)
 		end
 
 		-- add any non-attached attaches (stuff that's kinda attached, like the concrete arm thing)
-		AddAttaches(obj)
+		AddAttaches(obj, only_include)
 		-- and the anim_obj added in gagarin
 		if IsValid(obj.anim_obj) then
-			AddAttaches(obj.anim_obj)
+			AddAttaches(obj.anim_obj, only_include)
 		end
 		-- pastures
 		if obj.current_herd then
-			AddAttaches(obj.current_herd)
+			AddAttaches(obj.current_herd, only_include)
 		end
 
 		-- remove original obj if it's in the list
-		if obj.handle then
-			local idx = table_find(attaches_list, "handle", obj.handle)
-			if idx then
-				table_remove(attaches_list, idx)
-			end
+		local idx = table_find(attaches_list, obj)
+		if idx then
+			table_remove(attaches_list, idx)
 		end
 
 		return attaches_list
@@ -4367,7 +4369,8 @@ do -- RetMapBreakthroughs
 --~ 	local omega_order_maybe = {}
 	local translated_tech
 
-	function ChoGGi.ComFuncs.RetMapBreakthroughs(gen, omega)
+--~ 	function ChoGGi.ComFuncs.RetMapBreakthroughs(gen, omega)
+	function ChoGGi.ComFuncs.RetMapBreakthroughs(gen)
 		-- build list of names once
 		if not translated_tech then
 			translated_tech = {}

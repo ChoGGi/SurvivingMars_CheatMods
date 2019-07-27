@@ -631,15 +631,6 @@ Actions[c] = {ActionName = Strings[302535920000686--[[Auto Unpin Objects]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000680--[[Annoying Sounds]]],
-	ActionMenubar = "ECM.Game.Object",
-	ActionId = ".Annoying Sounds",
-	ActionIcon = "CommonAssets/UI/Menu/ToggleCutSmoothTrans.tga",
-	RolloverText = Strings[302535920000681--[[Toggle annoying sounds (Sensor Tower, Mirror Sphere, Rover deployed drones, Drone incessant beeping).]]],
-	OnAction = ChoGGi.MenuFuncs.AnnoyingSounds_Toggle,
-}
-
-c = c + 1
 Actions[c] = {ActionName = Strings[302535920001292--[[List All Objects]]],
 	ActionMenubar = "ECM.Game.Object",
 	ActionId = ".List All Objects",

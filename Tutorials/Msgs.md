@@ -20,7 +20,7 @@ OnMsg.LoadGame = somefunc
 
 ##### Fire your own custom Msg
 ```lua
-Msg("CustomMsgBlahBlah")
+Msg("CustomMsgBlahBlah", arg1, arg2, etc)
 ```
 
 ##### Waiting for a msg

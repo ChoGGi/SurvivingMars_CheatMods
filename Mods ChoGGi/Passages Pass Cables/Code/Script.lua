@@ -1,7 +1,9 @@
 -- See LICENSE for terms
 
 local p = PassageGridElement.__parents
-p[#p+1] = "ElectricityGridObject"
+if not table.find(p, "ElectricityGridObject") then
+	p[#p+1] = "ElectricityGridObject"
+end
 
 PassageGridElement.CreateElectricityElement = ElectricityGridElement.CreateElectricityElement
 

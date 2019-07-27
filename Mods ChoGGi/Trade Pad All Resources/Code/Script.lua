@@ -34,7 +34,7 @@ TradePad.trade_resources = res_list
 
 local options
 local mod_EnableWasteRock
-local mod_ShowResupply
+--~ local mod_ShowResupply
 
 local WaitForRocket
 local UpdateRivalRes

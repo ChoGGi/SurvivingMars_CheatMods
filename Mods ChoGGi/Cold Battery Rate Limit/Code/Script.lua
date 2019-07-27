@@ -66,15 +66,17 @@ end
 -- add ColdSensitive stuff to batteries
 function OnMsg.ClassesPreprocess()
 	local es = ElectricityStorage
-	if not table.find(es, "ColdSensitive") then
-		es.__parents[#es.__parents+1] = "ColdSensitive"
-
-		es.___BuildingUpdate[#es.___BuildingUpdate+1] = ElectricityStorage.UpdateFrozen
-		es.freeze_progress = 0
-		-- dbl water tanks
-		es.freeze_time = 999 * 2
-		es.defrost_time = 999
+	if table.find(es.__parents, "ColdSensitive") then
+		return
 	end
+
+	es.__parents[#es.__parents+1] = "ColdSensitive"
+
+	es.___BuildingUpdate[#es.___BuildingUpdate+1] = ElectricityStorage.UpdateFrozen
+	es.freeze_progress = 0
+	-- dbl water tanks
+	es.freeze_time = 999 * 2
+	es.defrost_time = 999
 end
 
 function ElectricityStorage:UpdateFrozen()

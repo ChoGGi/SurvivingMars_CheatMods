@@ -602,6 +602,18 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
 	local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
 	local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
 
+	local function ChangeLogo(label, entity_name)
+		label = RetAllOfClass(label)
+		for i = 1, #label do
+			local attaches = GetAllAttaches(label[i], nil, "Logo")
+--~ ex(attaches)
+--~ break
+			for j = 1, #attaches do
+				attaches[j]:ChangeEntity(entity_name)
+			end
+		end
+	end
+
 	local item_list = {}
 	local c = 0
 	for id, def in pairs(MissionLogoPresetMap) do
@@ -624,27 +636,18 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
 		if logo then
 			local entity_name = logo.entity_name
 
-			local function ChangeLogo(label)
-				label = RetAllOfClass(label)
-				for i = 1, #label do
-					local a_list = GetAllAttaches(label[i])
---~ ex(a_list)
---~ break
-					for j = 1, #a_list do
-						local attach = a_list[j]
-						if attach:IsKindOf("Logo") then
-							attach:ChangeEntity(entity_name)
-						end
-					end
-				end
-			end
-
 			-- for any new objects
 			g_CurrentMissionParams.idMissionLogo = value
+
+			-- might help for large amounts of buildings
+			SuspendPassEdits("ChoGGi.MenuFuncs.ChangeGameLogo")
+
 			-- loop through rockets and change logo
-			ChangeLogo("SupplyRocket")
+			ChangeLogo("SupplyRocket", entity_name)
 			-- same for any buildings that use the logo
-			ChangeLogo("Building")
+			ChangeLogo("Building", entity_name)
+
+			ResumePassEdits("ChoGGi.MenuFuncs.ChangeGameLogo")
 
 			MsgPopup(
 				choice[1].text,
