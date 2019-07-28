@@ -2,10 +2,7 @@
 
 local GetBuildingTechsStatus = GetBuildingTechsStatus
 
-local orig_Activate = LayoutConstructionController.Activate
-function LayoutConstructionController:Activate(...)
-	orig_Activate(self, ...)
-
+local function CleanUp()
 	local UICity = UICity
 	local BuildingTemplates = BuildingTemplates
 
@@ -24,4 +21,12 @@ function LayoutConstructionController:Activate(...)
 
 		end
 	end
+end
+
+local orig_Activate = LayoutConstructionController.Activate
+function LayoutConstructionController:Activate(...)
+	-- fire first so it builds the tables/etc
+	orig_Activate(self, ...)
+	-- now remove what shouldn't be there
+	CleanUp(self)
 end

@@ -14,5 +14,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"TagOther", true,
-	"description", [[Layout construction allows building buildings that should be locked by tech (Triboelectric Scrubber).]],
+	"description", [[Layout construction allows building buildings that should be locked by tech (Triboelectric Scrubber).
+
+If you don't use any layout mods then you don't need this.]],
 })
