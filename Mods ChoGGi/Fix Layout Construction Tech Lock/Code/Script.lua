@@ -2,7 +2,7 @@
 
 local GetBuildingTechsStatus = GetBuildingTechsStatus
 
-local function CleanUp()
+local function CleanUp(self)
 	local UICity = UICity
 	local BuildingTemplates = BuildingTemplates
 
