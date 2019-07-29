@@ -512,7 +512,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 			Dock = "right",
 			Text = Strings[302535920000040--[[Exec Code]]],
 			RolloverText = Strings[302535920001514--[[Toggle visibility of an input box for executing code.]]]
-				.. "\n" .. Strings[302535920001517--[[Use <color green>o</color> as a reference to the examined object: <color yellow>IsValid(</color><color green>o</color><color yellow>)</color>.]]],
+				.. "\n" .. Strings[302535920001517--[[Use <green>o</green> as a reference to the examined object: <yellow>IsValid(</yellow><green>o</green><yellow>)</yellow>.]]],
 			OnChange = self.idToggleExecCode_OnChange,
 		}, self.idMenuArea)
 		--
@@ -527,12 +527,12 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		--
 		self.idExecCode = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idExecCode",
-			RolloverText = Strings[302535920001515--[["Press <color green>%s</color> to execute code.
-Use <color green>%s</color>/<color green>%s</color> to browse console history."]]]:format(
+			RolloverText = Strings[302535920001515--[["Press <green>%s</green> to execute code.
+Use <green>%s</green>/<green>%s</green> to browse console history."]]]:format(
 				Translate(1000447--[[Enter]]), Translate(1000458--[[Up]]),
 				Translate(1000460--[[Down]])
 			)
-				.. "\n" .. Strings[302535920001517--[[Use <color green>o</color> as a reference to the examined object: <color yellow>IsValid(</color><color green>o</color><color yellow>)</color>.]]],
+				.. "\n" .. Strings[302535920001517--[[Use <green>o</green> as a reference to the examined object: <yellow>IsValid(</yellow><green>o</green><yellow>)</yellow>.]]],
 			Hint = Strings[302535920001516--[[o = examined object]]],
 			OnKbdKeyDown = self.idExecCode_OnKbdKeyDown,
 		}, self.idExecCodeArea)
@@ -670,7 +670,7 @@ function ChoGGi_DlgExamine:ViewSourceCode()
 		code = true,
 		scrollto = info.linedefined,
 		title = Strings[302535920001519--[[View Source]]] .. ": " .. info.source,
-		hint_ok = Strings[302535920000047--[["View Text/Object, and optionally dumps text to <color green>%slogs\DumpedExamine.lua</color> (may take awhile for large text)."]]]:format(ConvertToOSPath("AppData/")),
+		hint_ok = Strings[302535920000047--[["View Text/Object, and optionally dumps text to <green>%slogs\DumpedExamine.lua</green> (may take awhile for large text)."]]]:format(ConvertToOSPath("AppData/")),
 		custom_func = function(answer, overwrite)
 			if answer then
 				self.ChoGGi.ComFuncs.Dump("\n" .. str, overwrite, "DumpedSource", "lua")
@@ -748,7 +748,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 		title = obj_name .. " " .. T(1000162, "Menu") .. " (" .. obj_type .. ")"
 
 		-- stick info at the top of list
-		table_insert(roll_text, 1, Strings[302535920001540--[[Show context menu for <color green>%s</color>.]]]:format(obj_name)
+		table_insert(roll_text, 1, Strings[302535920001540--[[Show context menu for <green>%s</green>.]]]:format(obj_name)
 			.. "\n"
 		)
 		-- add the value to the key tooltip
@@ -1261,7 +1261,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 
 		{name = self.ChoGGi.UserSettings.ExamineTextType and T(1000145, "Text") or self.string_Object,
 			hint = Strings[302535920001620--[["Click to toggle between Viewing/Dumping the Text or Object.
-<color green>Text</color> is what you see, <color green>Object</color> is the text created from ValueToLuaCode(obj)."]]],
+<green>Text</green> is what you see, <green>Object</green> is the text created from ValueToLuaCode(obj)."]]],
 			clicked = function(item)
 				self.ChoGGi.UserSettings.ExamineTextType = not self.ChoGGi.UserSettings.ExamineTextType
 				self.ChoGGi.SettingFuncs.WriteSettings()
@@ -1278,7 +1278,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 		},
 
 		{name = Strings[302535920000004--[[Dump]]],
-			hint = Strings[302535920000046--[[Dumps Text/Object to <color green>%slogs\DumpedExamine.lua</color>.]]]:format(ConvertToOSPath("AppData/"))
+			hint = Strings[302535920000046--[[Dumps Text/Object to <green>%slogs\DumpedExamine.lua</green>.]]]:format(ConvertToOSPath("AppData/"))
 				.. "\n\n" .. Strings[302535920001027--[[Object can take time on something like the ""Building"" class object.]]],
 			image = "CommonAssets/UI/Menu/change_height_down.tga",
 			clicked = function()
@@ -1294,7 +1294,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 			end,
 		},
 		{name = Strings[302535920000048--[[View]]],
-			hint = Strings[302535920000047--[["View Text/Object, and optionally dumps text to <color green>%slogs\DumpedExamine.lua</color> (may take awhile for large text)."]]]:format(ConvertToOSPath("AppData/"))
+			hint = Strings[302535920000047--[["View Text/Object, and optionally dumps text to <green>%slogs\DumpedExamine.lua</green> (may take awhile for large text)."]]]:format(ConvertToOSPath("AppData/"))
 				.. "\n\n" .. Strings[302535920001027--[[Object can take time on something like the ""Building"" class object.]]],
 			image = "CommonAssets/UI/Menu/change_height_up.tga",
 			clicked = function()
@@ -3372,7 +3372,7 @@ do -- BuildAttachesPopup
 			local c = 1
 			self.attaches_menu_popup_hint[c] = self.string_Classname .. ": " .. a.class
 			c = c + 1
-			self.attaches_menu_popup_hint[c] = Strings[302535920000904--[[<right_click> to copy <color yellow>%s</color> to clipboard.]]]:format(self.string_Classname)
+			self.attaches_menu_popup_hint[c] = Strings[302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]]:format(self.string_Classname)
 
 			-- attached to name
 			if a.ChoGGi_Marked_Attach then
@@ -3532,7 +3532,7 @@ do -- BuildParentsMenu
 						hint = T("<left_click> ") .. Strings[302535920000069--[[Examine]]] .. " "
 							.. self.string_Class .. " " .. self.string_Object
 							.. ": <color 100 255 100>" .. item .. "</color>\n"
-							.. Strings[302535920000904--[[<right_click> to copy <color yellow>%s</color> to clipboard.]]]:format(self.string_Classname),
+							.. Strings[302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]]:format(self.string_Classname),
 						hint_bottom = Strings[302535920000589--[[<left_click> Examine <right_click> Clipboard]]],
 						mouseup = ParentClicked,
 						dlg = self,

@@ -161,10 +161,10 @@ function ChoGGi_VCM_MapImageDlg:Init(parent, context)
 	}, self.idBottomArea)
 	-- add hint if random rule active
 	local tech_variety = IsGameRuleActive("TechVariety")
-		and " <color yellow>" .. T(607602869305, "Tech Variety") .. "</color>"
+		and " <yellow>" .. T(607602869305, "Tech Variety") .. "</yellow>"
 		or ""
 	local chaos_theory = IsGameRuleActive("ChaosTheory")
-		and " <color yellow>" .. T(621834127153, "Chaos Theory") .. "</color>"
+		and " <yellow>" .. T(621834127153, "Chaos Theory") .. "</yellow>"
 		or ""
 
 	if tech_variety ~= "" or chaos_theory ~= "" then

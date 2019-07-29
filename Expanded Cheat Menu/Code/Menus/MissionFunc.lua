@@ -742,7 +742,7 @@ function ChoGGi.MenuFuncs.ChangeRules()
 		item_list[c] = {
 			text = Translate(def.display_name) .. (enabled and " *" or ""),
 			value = id,
-			hint = (enabled and "<color green>" .. Translate(12227--[[Enabled]]) .. "</color>\n" or "")
+			hint = (enabled and "<green>" .. Translate(12227--[[Enabled]]) .. "</green>\n" or "")
 				.. Translate(def.description) .. "\n"
 				.. Translate(3491--[[Challenge Mod (%)]]) .. ": " .. def.challenge_mod .. "\n\n"
 				.. (def.exclusionlist and Strings[302535920001357--[[Exclusion List]]] .. ": " .. def.exclusionlist or "")

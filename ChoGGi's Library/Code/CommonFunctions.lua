@@ -4876,9 +4876,10 @@ function ChoGGi.ComFuncs.RetToolbarButton(params)
 		OnPress = params.onpress,
 	}, params.parent)
 end
+
 function ChoGGi.ComFuncs.IsAboveHeightLimit(obj)
 	local z = obj:GetZ() or 0
-	if obj:GetZ() > 65535 or obj.GetAttachOffset
+	if z > 65535 or obj.GetAttachOffset
 		and (z + obj:GetAttachOffset():z() > 65535)
 	then
 		return true

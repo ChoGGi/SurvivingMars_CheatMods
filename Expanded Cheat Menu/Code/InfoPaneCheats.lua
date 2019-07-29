@@ -168,31 +168,31 @@ local cheats_lookup = {
 		des = Strings[302535920001541--[[Start a Crime Event]]],
 	},
 	FillComfort = {
-		des = Strings[302535920001606--[[Max the <color green>%s</color> value for this colonist.]]]:format(Translate(4295--[[Comfort]]))
+		des = Strings[302535920001606--[[Max the <green>%s</green> value for this colonist.]]]:format(Translate(4295--[[Comfort]]))
 			.. "\n\n" .. Translate(4296--[[Residences and visited buildings improve Comfort up to their Service Comfort value, but Colonists will try to visit only buildings that correspond to their interests. Colonists are more inclined to have children at higher Comfort. Earthborn Colonists whose Comfort is depleted will quit their job and leave the Colony at first opportunity.]]),
 	},
 	FillHealth = {
-		des = Strings[302535920001606--[[Max the <color green>%s</color> value for this colonist.]]]:format(Translate(4291--[[Health]]))
+		des = Strings[302535920001606--[[Max the <green>%s</green> value for this colonist.]]]:format(Translate(4291--[[Health]]))
 			.. "\n\n" .. Translate(4292--[[Represents physical injury, illness and exhaustion. Lowered by working on a heavy workload, having no functional home, shock when deprived from vital resources or when the Colonist is injured. Colonists can be healed in Medical Buildings in a powered Dome, but only if they are provided with Food, Water and Oxygen. Colonists can't work at low health unless they're Fit.]]),
 	},
 	FillMorale = {
-		des = Strings[302535920001606--[[Max the <color green>%s</color> value for this colonist.]]]:format(Translate(4297--[[Morale]]))
+		des = Strings[302535920001606--[[Max the <green>%s</green> value for this colonist.]]]:format(Translate(4297--[[Morale]]))
 			.. "\n\n" .. Translate(4298--[[Represents overall happiness, optimism and loyalty. All other stats affect Morale. Influences the Colonist’s job performance. Colonists with low Morale may become Renegades.]]),
 	},
 	FillSanity = {
-		des = Strings[302535920001606--[[Max the <color green>%s</color> value for this colonist.]]]:format(Translate(4293--[[Sanity]]))
+		des = Strings[302535920001606--[[Max the <green>%s</green> value for this colonist.]]]:format(Translate(4293--[[Sanity]]))
 			.. "\n\n" .. Translate(4294--[[Represents mental condition. Lowered by working on a heavy workload, in outside buildings and during dark hours, witnessing the death of a Colonist living in the same Residence or various Martian disasters. Recovered when resting at home and by visiting certain Service Buildings.]]),
 	},
 	RandomAge = {
-		des = Strings[302535920001607--[[Set a random <color green>%s</color> for this colonist.]]]:format(Translate(11607--[[Age Group]]))
+		des = Strings[302535920001607--[[Set a random <green>%s</green> for this colonist.]]]:format(Translate(11607--[[Age Group]]))
 			.. "\n\n" .. Translate(3930--[[Colonists are divided into five Age Groups. Children and seniors cannot work.]]),
 	},
 	RandomGender = {
-		des = Strings[302535920001607--[[Set a random <color green>%s</color> for this colonist.]]]:format(Translate(3932--[[Sex]]))
+		des = Strings[302535920001607--[[Set a random <green>%s</green> for this colonist.]]]:format(Translate(3932--[[Sex]]))
 			.. "\n\n" .. Translate(3933--[[The sex of the Colonist. The birth rate in any Dome is determined by the number of Male/Female couples at high Comfort.]]),
 	},
 	RandomRace = {
-		des = Strings[302535920001607--[[Set a random <color green>%s</color> for this colonist.]]]:format(Strings[302535920000741--[[Race]]])
+		des = Strings[302535920001607--[[Set a random <green>%s</green> for this colonist.]]]:format(Strings[302535920000741--[[Race]]])
 			.. "\n\n" .. Strings[302535920001608--[["I said if you're thinkin' of being my baby
 It don't matter if you're black or white
 
@@ -200,7 +200,7 @@ I said if you're thinkin' of being my brother
 It don't matter if you're black or white"]]],
 	},
 	RandomSpec = {
-		des = Strings[302535920001607--[[Set a random <color green>%s</color> for this colonist.]]]:format(Translate(11609--[[Specialization]]))
+		des = Strings[302535920001607--[[Set a random <green>%s</green> for this colonist.]]]:format(Translate(11609--[[Specialization]]))
 			.. "\n\n" .. Translate(3931--[[Specialized Colonists perform better at certain workplaces.]]),
 	},
 	Renegade = {

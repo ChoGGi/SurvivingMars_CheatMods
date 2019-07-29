@@ -645,7 +645,7 @@ function ChoGGi.MenuFuncs.TestStoryBits()
 		end
 		local voiced
 		if story_def.VoicedText then
-			voiced = "<color yellow>" .. Translate(6855--[[Voiced Text]]) .. "</color>: " .. Translate(story_def.VoicedText)
+			voiced = "<yellow>" .. Translate(6855--[[Voiced Text]]) .. "</yellow>: " .. Translate(story_def.VoicedText)
 		end
 
 		c = c + 1

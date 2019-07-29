@@ -1,2 +1,5 @@
+v0.3
+Added grade of deposit to the production tooltip.
+
 v0.2
 and Consumption.

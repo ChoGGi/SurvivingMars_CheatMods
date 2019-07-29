@@ -72,7 +72,7 @@ local function AddObjs(action)
 	end
 
 	ShowMsg(T{302535920011344,
-		"Added <color yellow><amount></color> objs to <color green><bindnum></color>",
+		"Added <yellow><amount></yellow> objs to <green><bindnum></green>",
 		amount = sel_c > 1 and sel_c-1 or 1,
 		bindnum = num,
 	}, Selection)
@@ -92,7 +92,7 @@ local function RemoveObjs(action)
 	end
 
 	ShowMsg(T{302535920011345,
-		"Removed <color yellow><amount></color> objs from <color green><bindnum></color>",
+		"Removed <yellow><amount></yellow> objs from <green><bindnum></green>",
 		amount = sel_c > 1 and sel_c-1 or 1,
 		bindnum = num,
 	}, Selection)

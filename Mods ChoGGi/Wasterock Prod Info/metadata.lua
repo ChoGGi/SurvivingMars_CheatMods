@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "WasteRock Prod Info",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_WasterockProdInfo",
