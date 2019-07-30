@@ -1,7 +1,10 @@
 ## ECM Changelog
 
 ## v14.3 (Unreleased)
-Removed:
+### Added:
+- Debug>Grids>Toggle Building Grid Position: Like Toggle Building Grid, but this shows hex positioning (offset or map, change in settings).
+
+### Removed:
 - Game>Annoying Sounds.
 
 ## v14.2 (24 July 2019)

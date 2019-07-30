@@ -12,5 +12,9 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"TagBuildings", true,
-	"description", [[Add a layout building (Self-Sufficient Dome) to Infrastructure.]],
+	"description", [[Add a layout building (Self-Sufficient Dome) to Infrastructure.
+
+Some buildings (I think those that were added as rocket cargo) will be locked by tech, some won't.
+This mod will lock them (till the devs update and fix it).
+https://steamcommunity.com/workshop/filedetails/?id=1817485290]],
 })

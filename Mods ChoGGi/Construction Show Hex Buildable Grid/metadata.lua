@@ -24,10 +24,11 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"description", [[Show Hex Buildable Grid during construction (follows the mouse).
+Passable (drones/rovers can drive here), Buildable (buildings can be placed here)
 
 Green = pass/build
 Yellow = no pass/build
-Blue = pass/no build
+Blue = pass/no build (shows blue for pipes, but you can build some stuff under them)
 Red = no pass/no build
 The colours use the centre of the hex, so they aren't exact.
 

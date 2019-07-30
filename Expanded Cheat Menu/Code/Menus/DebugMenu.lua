@@ -108,6 +108,18 @@ Actions[c] = {ActionName = Strings[302535920000499--[[Toggle Building Grid]]],
 }
 
 c = c + 1
+Actions[c] = {ActionName = Strings[302535920000499--[[Toggle Building Grid]]] .. " " .. Strings[302535920000461--[[Position]]],
+	ActionMenubar = "ECM.Debug.Grids",
+	ActionId = ".Toggle Building Grid Position",
+	ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
+	RolloverText = Strings[302535920000220--[["Like %s, but this shows hex positioning (offset or map, change in settings)."]]]:format(Strings[302535920000499--[[Toggle Building Grid]]]),
+	OnAction = ChoGGi.ComFuncs.BuildableHexGrid,
+	ActionShortcut = "Shift-F3",
+	ActionBindable = true,
+	setting_mask = "position",
+}
+
+c = c + 1
 Actions[c] = {ActionName = Strings[302535920001297--[[Toggle Flight Grid]]],
 	ActionMenubar = "ECM.Debug.Grids",
 	ActionId = ".Toggle Flight Grid",
@@ -148,6 +160,22 @@ Actions[c] = {ActionName = Strings[302535920001419--[[Follow Mouse Grid Trans]]]
 	OnAction = ChoGGi.MenuFuncs.BuildableHexGridSettings,
 	setting_mask = "DebugGridOpacity",
 	ActionSortKey = "9Follow Mouse Grid Trans",
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000680--[[Follow Mouse Grid Position]]],
+	ActionMenubar = "ECM.Debug.Grids",
+	ActionId = ".Follow Mouse Grid Position",
+	ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
+	RolloverText = function()
+		return SettingState(
+			"ChoGGi.UserSettings.DebugGridPosition",
+			Strings[302535920000681--[[Type of positioning to show.]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.BuildableHexGridSettings,
+	setting_mask = "DebugGridPosition",
+	ActionSortKey = "9Follow Mouse Grid Position",
 }
 
 -- menu

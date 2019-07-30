@@ -8,7 +8,7 @@ function OnMsg.ClassesPostprocess()
 	PlaceObj("BuildingTemplate", {
 		-- keep it unique folks
 		"Id", "LayoutConstruction_ExampleChoGGi",
-		-- name corresponds to the LayoutConstruction below
+		-- LayoutList id corresponds to the LayoutConstruction below
 		"LayoutList", "LayoutConstruction_ExampleChoGGi",
 		-- what group to add it to
 		"Group", "Infrastructure",
@@ -46,6 +46,7 @@ function OnMsg.ClassesPostprocess()
 		PlaceObj("LayoutConstructionEntry", {
 			"template", "OxygenTank",
 			"pos", point(1, -9),
+			-- 0-5 (six hex angles), test with an existing obj with SelectedObj:SetAngle(5*3600) (3600 == 60*60)
 			"dir", 5,
 			"entity", "AirTank",
 		}),

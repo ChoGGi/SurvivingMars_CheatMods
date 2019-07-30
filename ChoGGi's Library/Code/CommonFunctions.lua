@@ -4529,7 +4529,7 @@ do -- BuildableHexGrid
 	local IsValid = IsValid
 	local grid_objs = {}
 	local Temp = ChoGGi.Temp
-	local OHexSpot
+	local OHexSpot, OText
 
 	local function CleanUp()
 		-- kill off thread
@@ -4561,8 +4561,15 @@ do -- BuildableHexGrid
 	function ChoGGi.ComFuncs.BuildableHexGrid(action)
 		local is_valid_thread = IsValidThread(Temp.grid_thread)
 
+		local u = ChoGGi.UserSettings
+		local grid_pos
+
 		-- if not fired from action
-		if not IsKindOf(action, "XAction") then
+		if IsKindOf(action, "XAction") then
+			if action.setting_mask == "position" then
+				grid_pos = type(u.DebugGridPosition) == "number" and u.DebugGridPosition or 0
+			end
+		else
 			-- always start clean
 			if is_valid_thread then
 				CleanUp()
@@ -4574,8 +4581,13 @@ do -- BuildableHexGrid
 			end
 		end
 
-		OHexSpot = OHexSpot or ChoGGi_OHexSpot
-		local u = ChoGGi.UserSettings
+		if not OHexSpot then
+			OHexSpot = ChoGGi_OHexSpot
+		end
+		if not OText then
+			OText = ChoGGi_OText
+		end
+
 		local grid_opacity = type(u.DebugGridOpacity) == "number" and u.DebugGridOpacity or 15
 		local grid_size = type(u.DebugGridSize) == "number" and u.DebugGridSize or 25
 
@@ -4594,6 +4606,7 @@ do -- BuildableHexGrid
 			local q, r = 1, 1
 			local z = -q - r
 			SuspendPassEdits("ChoGGi.ComFuncs.BuildableHexGrid")
+			local colour = ChoGGi.ComFuncs.RandomColourLimited()
 			for q_i = q - grid_size, q + grid_size do
 				for r_i = r - grid_size, r + grid_size do
 					for z_i = z - grid_size, z + grid_size do
@@ -4602,6 +4615,13 @@ do -- BuildableHexGrid
 							hex:SetOpacity(grid_opacity)
 							grid_count = grid_count + 1
 							grid_objs[grid_count] = hex
+							-- add text_obj
+							if grid_pos then
+								local text_obj = OText:new()
+								text_obj:SetColor1(colour)
+								hex:Attach(text_obj)
+								hex.text_obj = text_obj
+							end
 						end
 					end
 				end
@@ -4665,30 +4685,38 @@ do -- BuildableHexGrid
 											if obj and obj.GetEntity and obj:GetEntity() == "InvisibleObject" then
 												obj = nil
 											end
-
-											-- geysers
-											if obj == g_DontBuildHere then
-												hex:SetColorModifier(blue)
-											else
-												-- returns UnbuildableZ if it isn't buildable
-												local build_z = g_BuildableZ:get(q_i + r_i / 2, r_i)
-
-												-- slopes over 1024? aren't passable (let alone buildable)
-												if build_z == UnbuildableZ or HexSlope(q_i, r_i) > 1024 then
-													hex:SetColorModifier(red)
-												-- stuff that can be pathed? (or dump sites which IsPassable returns false for)
---~ 												obj:IsKindOf("WasteRockStockpileUngridedNoBlockPass") then
-												elseif terrain_IsPassable(pt) or obj and obj.class == "WasteRockDumpSite" then
-													if build_z ~= UnbuildableZ and not obj then
-														hex:SetColorModifier(green)
-													else
-														hex:SetColorModifier(blue)
-													end
-												-- any objs left aren't passable
-												elseif obj then
-													hex:SetColorModifier(red)
+											-- showing position grid instead of buildable grid
+											if grid_pos then
+												if grid_pos == 0 then
+													hex.text_obj:SetText((q_i-q) .. ", " .. (r_i-r))
 												else
-													hex:SetColorModifier(yellow)
+													hex.text_obj:SetText(q_i .. ", " .. r_i)
+												end
+											else
+												-- geysers
+												if obj == g_DontBuildHere then
+													hex:SetColorModifier(blue)
+												else
+													-- returns UnbuildableZ if it isn't buildable
+													local build_z = g_BuildableZ:get(q_i + r_i / 2, r_i)
+
+													-- slopes over 1024? aren't passable (let alone buildable)
+													if build_z == UnbuildableZ or HexSlope(q_i, r_i) > 1024 then
+														hex:SetColorModifier(red)
+													-- stuff that can be pathed? (or dump sites which IsPassable returns false for)
+--~ 													obj:IsKindOf("WasteRockStockpileUngridedNoBlockPass") then
+													elseif terrain_IsPassable(pt) or obj and obj.class == "WasteRockDumpSite" then
+														if build_z ~= UnbuildableZ and not obj then
+															hex:SetColorModifier(green)
+														else
+															hex:SetColorModifier(blue)
+														end
+													-- any objs left aren't passable
+													elseif obj then
+														hex:SetColorModifier(red)
+													else
+														hex:SetColorModifier(yellow)
+													end
 												end
 											end
 

@@ -966,6 +966,13 @@ function ChoGGi.MenuFuncs.BuildableHexGridSettings(action)
 		table.insert(item_list, 1, {text = 0, value = 0})
 
 		name = Strings[302535920001419--[[Follow Mouse Grid Translate]]]
+	elseif setting == "DebugGridPosition" then
+		item_list = {
+			{text = T(1000073, "Offset"), value = 0},
+			{text = Strings[302535920001355--[[Map]]], value = 1},
+		}
+
+		name = Strings[302535920000680--[[Follow Mouse Grid Position]]]
 	end
 
 	local function CallBackFunc(choice)
@@ -979,7 +986,7 @@ function ChoGGi.MenuFuncs.BuildableHexGridSettings(action)
 			ChoGGi.UserSettings[setting] = value
 
 			-- update grid
-			if IsValidThread(ChoGGi.Temp.grid_thread) then
+			if IsValidThread(ChoGGi.Temp.grid_thread) and setting ~= "DebugGridPosition" then
 				-- twice to toggle
 				ChoGGi.ComFuncs.BuildableHexGrid(false)
 				ChoGGi.ComFuncs.BuildableHexGrid(true)

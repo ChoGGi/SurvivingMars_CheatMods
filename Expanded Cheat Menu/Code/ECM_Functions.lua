@@ -2460,8 +2460,12 @@ do -- ObjHexShape_Toggle
 		params.colour = params.colour or RandomColourLimited()
 		params.offset = params.offset or 1
 
-		OHexSpot = OHexSpot or ChoGGi_OHexSpot
-		OText = OText or ChoGGi_OText
+		if not OHexSpot then
+			OHexSpot = ChoGGi_OHexSpot
+		end
+		if not OText then
+			OText = ChoGGi_OText
+		end
 		SuspendPassEdits("ChoGGi.ComFuncs.ObjHexShape_Toggle")
 		BuildShape(
 			obj,
@@ -2852,8 +2856,12 @@ do -- EntitySpots_Toggle
 
 		params.colour = params.colour or RandomColourLimited()
 
-		OText = OText or ChoGGi_OText
-		OPolyline = OPolyline or ChoGGi_OPolyline
+		if not OPolyline then
+			OPolyline = ChoGGi_OPolyline
+		end
+		if not OText then
+			OText = ChoGGi_OText
+		end
 		SuspendPassEdits("ChoGGi.ComFuncs.EntitySpots_Add")
 		EntitySpots_Add(obj,
 			params.spot_type,
@@ -2935,7 +2943,9 @@ do -- ShowAnimDebug_Toggle
 		else
 			obj = obj or ChoGGi.ComFuncs.SelObject()
 		end
-		OText = OText or ChoGGi_OText
+		if not OText then
+			OText = ChoGGi_OText
+		end
 		params = params or {}
 		params.colour = params.colour or RandomColourLimited()
 

@@ -51,6 +51,8 @@ ChoGGi.Defaults = {
 	-- the build/passibility grid in debug menu
 	DebugGridOpacity = 15,
 	DebugGridSize = 25,
+	-- show offset grid numbers (0 == offset, 1 == actual hex grid)
+	DebugGridPosition = 0,
 	-- disabling this will still leave them for the cheats menu and cheats section
 	EnableToolTips = true,
 	-- append text or create a new file each dump
