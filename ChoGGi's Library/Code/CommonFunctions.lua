@@ -4914,3 +4914,17 @@ function ChoGGi.ComFuncs.IsAboveHeightLimit(obj)
 		return true
 	end
 end
+
+function ChoGGi.ComFuncs.GetShortcut(id)
+	if not id then
+		return ""
+	end
+	-- just in case I change it or something
+	id = "ECM" .. id
+
+	local keys = GetShortcuts(id)
+	if keys then
+		return keys[1]
+	end
+	return ""
+end

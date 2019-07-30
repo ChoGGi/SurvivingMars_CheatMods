@@ -551,7 +551,7 @@ Actions[c] = {ActionName = Strings[302535920000064--[[Build On Geysers]]],
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.BuildOnGeysers,
-			Strings[302535920000065--[[Allows you to build on geysers. Use Shift-F4 around the area to delete the geyser objects (about 10-20 depending on size).]]]
+			Strings[302535920000065--[[Allows you to build on geysers. Use %s around the area to delete the geyser objects (about 10-20 depending on size).]]]:format(ChoGGi.ComFuncs.GetShortcut(".Keys.Examine Objects Shift"))
 		)
 	end,
 }
