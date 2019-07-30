@@ -132,7 +132,7 @@ local function CountDepositRemaining(remaining, deposits)
 	for i = 1, #deposits do
 		local deposit = deposits[i]
 		if not count_deposit[deposit] and IsValid(deposit) then
-			remaining = remaining + deposit.amount
+			remaining = remaining + (deposit.amount or 0)
 			-- skip counted deposits
 			count_deposit[deposit] = true
 		end

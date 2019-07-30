@@ -21,9 +21,8 @@ Now if SM crashes a certain way (that doesn't create the log), you still have a 
 
 Also included are mod options to flush more often (probably shouldn't leave them on normally).
 
-Logs can be found in:
-%AppData%\Surviving Mars\logs
-C:\Users\USERNAME\AppData\Roaming\Surviving Mars\logs (AppData is a hidden folder)
+Logs can be found in the logs folder in your game profile:
+https://steamcommunity.com/sharedfiles/filedetails/?id=1777493789
 
 
 

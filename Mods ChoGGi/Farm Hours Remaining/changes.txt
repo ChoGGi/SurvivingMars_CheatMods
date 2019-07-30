@@ -1,3 +1,6 @@
+v0.3
+Code cleanup.
+
 v0.2
 Stopped using the func I was using since it caused errors elsewhere.
 Now displayed in the status instead of the tooltip.

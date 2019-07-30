@@ -1,3 +1,6 @@
+v1.2
+Fix for nil amounts in deposits (thanks MasterODZaster).
+
 v1.1
 Version bump?
 

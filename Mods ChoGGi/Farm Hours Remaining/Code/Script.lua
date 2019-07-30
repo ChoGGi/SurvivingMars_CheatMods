@@ -16,35 +16,28 @@ function Farm:GetChoGGi_HarvestTimeRemaining()
 	return T(time_str)
 end
 
+local function AddTimeRemaining(xtemplate)
+	if xtemplate.ChoGGi_AddedFarmTimeRemaining then
+		return
+	end
+	xtemplate.ChoGGi_AddedFarmTimeRemaining = true
+
+	local idx = table.find(xtemplate, "Image", "UI/CommonNew/ip_header.tga")
+	if not idx then
+		return
+	end
+
+	xtemplate = xtemplate[idx]
+	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
+		"__template", "InfopanelText",
+		"Margins", box(52, 0, 20, 0),
+		"Text", T("<ChoGGi_HarvestTimeRemaining>"),
+	})
+end
+
 function OnMsg.ClassesPostprocess()
-	local xtemplate = XTemplates.sectionCrop[1]
-	if not xtemplate.ChoGGi_FarmTimeRemaining then
-		xtemplate.ChoGGi_FarmTimeRemaining = true
-		local idx = table.find(xtemplate, "Image", "UI/CommonNew/ip_header.tga")
-		if idx then
-			xtemplate = xtemplate[idx]
-			xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
-				"__template", "InfopanelText",
-				"Margins", box(52, 0, 20, 0),
-				"Text", T("<ChoGGi_HarvestTimeRemaining>"),
-			})
-		end
-	end
-
+	AddTimeRemaining(XTemplates.sectionCrop[1])
 	if shep then
-		xtemplate = XTemplates.sectionPasture[1]
-		if not xtemplate.ChoGGi_AddedRemaining then
-			xtemplate.ChoGGi_AddedRemaining = true
-			local idx = table.find(xtemplate, "Image", "UI/CommonNew/ip_header.tga")
-			if idx then
-				xtemplate = xtemplate[idx]
-				xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
-					"__template", "InfopanelText",
-					"Margins", box(52, 0, 20, 0),
-					"Text", T("<ChoGGi_HarvestTimeRemaining>"),
-				})
-			end
-		end
+		AddTimeRemaining(XTemplates.sectionPasture[1])
 	end
-
 end
