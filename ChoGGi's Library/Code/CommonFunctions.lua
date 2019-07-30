@@ -1779,7 +1779,7 @@ do -- SelObject/SelObjects
 
 	-- returns whatever is selected > moused over > nearest object to cursor
 	-- single selection
-	function ChoGGi.ComFuncs.SelObject(radius)
+	function ChoGGi.ComFuncs.SelObject(radius, pt)
 		if not GameState.gameplay then
 			return
 		end
@@ -1793,7 +1793,7 @@ do -- SelObject/SelObjects
 			end
 		else
 			-- radius selection
-			local pt = GetTerrainCursor()
+			pt = pt or GetTerrainCursor()
 			obj = MapFindNearest(pt, pt, radius or radius4h)
 		end
 
@@ -1801,7 +1801,7 @@ do -- SelObject/SelObjects
 	end
 
 	-- returns an indexed table of objects, add a radius to get objs close to cursor
-	function ChoGGi.ComFuncs.SelObjects(radius)
+	function ChoGGi.ComFuncs.SelObjects(radius, pt)
 		if not GameState.gameplay then
 			return empty_table
 		end
@@ -1815,7 +1815,8 @@ do -- SelObject/SelObjects
 			end
 		end
 
-		return MapGet(GetTerrainCursor(), radius or radius4h, "attached", false)
+		pt = pt or GetTerrainCursor()
+		return MapGet(pt, radius or radius4h, "attached", false)
 	end
 end
 local SelObject = ChoGGi.ComFuncs.SelObject

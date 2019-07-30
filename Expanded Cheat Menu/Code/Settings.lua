@@ -71,6 +71,7 @@ ChoGGi.Defaults = {
 	ExternalEditorPath = "AppData/EditorPlugin/",
 	-- examine errors (useful when it contains a thread).
 	ExamineErrors = false,
+	ExamineObjectRadius = 2500,
 	-- welcome msg
 	FirstRun = true,
 	-- just for you ski (prints a msg for each building removed)

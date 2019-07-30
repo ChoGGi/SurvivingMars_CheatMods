@@ -14,6 +14,42 @@ local Translate = ChoGGi.ComFuncs.Translate
 local RandomColour = ChoGGi.ComFuncs.RandomColour
 local Strings = ChoGGi.Strings
 
+function ChoGGi.MenuFuncs.ExamineObjectRadius_Set()
+	local item_list = {
+		{text = 100, value = 100},
+		{text = 500, value = 500},
+		{text = 1000, value = 1000},
+		{text = "2500 *", value = 2500, hint = T(1000121, "Default")},
+		{text = 5000, value = 5000},
+		{text = 10000, value = 10000},
+		{text = 25000, value = 25000},
+		{text = 50000, value = 50000},
+		{text = 100000, value = 100000},
+		{text = 1000000, value = 1000000},
+	}
+
+	local title = Strings[302535920000491--[[Examine Object]]] .. " " .. Strings[302535920000163--[[Radius]]]
+
+	local function CallBackFunc(choice)
+		if choice.nothing_selected then
+			return
+		end
+		local value = choice[1].value
+		if type(value) == "number" then
+			ChoGGi.UserSettings.ExamineObjectRadius = value
+			MsgPopup(value, title)
+		end
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = item_list,
+		title = title,
+		skip_sort = true,
+		hint = Strings[302535920000923--[[Set the radius used for Shift-F4 examining.]]],
+	}
+end
+
 do -- SetEntity
 	local function SetEntity(obj, entity)
 		--backup orig

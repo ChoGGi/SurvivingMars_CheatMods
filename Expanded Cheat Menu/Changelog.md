@@ -3,9 +3,11 @@
 ## v14.3 (Unreleased)
 ### Added:
 - Debug>Grids>Toggle Building Grid Position: Like Toggle Building Grid, but this shows hex positioning (offset or map, change in settings).
+- Debug>Objects>Examine Object Radius: Set the radius used for Shift-F4 examining.
 
 ### Removed:
 - Game>Annoying Sounds.
+- Ctrl-F4 Examine radius.
 
 ## v14.2 (24 July 2019)
 ### Changed:

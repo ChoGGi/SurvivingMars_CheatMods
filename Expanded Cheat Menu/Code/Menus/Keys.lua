@@ -60,16 +60,6 @@ c = c + 1
 Actions[c] = {ActionName = Strings[302535920000069--[[Examine]]] .. " " .. Strings[302535920001103--[[Objects]]] .. " " .. Translate(1000448--[[Shift]]),
 	ActionId = ".Keys.Examine Objects Shift",
 	OnAction = ChoGGi.MenuFuncs.ExamineObjectRadius,
-	radius_amount = 2500,
 	ActionShortcut = "Shift-F4",
-	ActionBindable = true,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000069--[[Examine]]] .. " " .. Strings[302535920001103--[[Objects]]] .. " " .. Translate(1000449--[[Ctrl]]),
-	ActionId = ".Keys.Examine Objects Ctrl",
-	OnAction = ChoGGi.MenuFuncs.ExamineObjectRadius,
-	radius_amount = 10000,
-	ActionShortcut = "Ctrl-F4",
 	ActionBindable = true,
 }
