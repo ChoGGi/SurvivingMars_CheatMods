@@ -69,6 +69,12 @@ function OnMsg.ClassesPostprocess()
 		TextFont = Editor14Bold,
 		id = "ChoGGi_Text14",
 	})
+	PlaceObj("ChoGGi_XTextStyle", {
+		TextColor = white,
+		RolloverTextColor = white,
+		TextFont = Editor16Bold,
+		id = "ChoGGi_Text16",
+	})
 	-- TextList
 	PlaceObj("ChoGGi_XTextStyle", {
 		TextColor = white,

@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "POI Spawn Rate",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_POISpawnRate",
@@ -16,5 +16,6 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagGameplay", true,
 	"TagOther", true,
-	"description", [[Change how fast/slow each planetary anomaly spawns.]],
+	"description", [[Change the time planetary anomalies spawn (in Sols).
+Make sure min isn't above max or it won't work correctly.]],
 })

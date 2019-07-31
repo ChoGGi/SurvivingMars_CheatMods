@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 --~ 	"title", "Infobar Add Discharge Rates",
 	"title", "Infobar More Info",
-	"version", 12,
+	"version", 13,
 	"version_major", 1,
-	"version_minor", 2,
+	"version_minor", 3,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_InfobarAddDischargeRates",
@@ -44,6 +44,9 @@ Drones:
 Right-click Drones icon to cycle through all borked drones (also adds count):
 NoBattery, Malfunction, Freeze, Dead, WaitingCommand (orphaned).
 Shuttle count (max, total, current): Current = shuttles flying, Total =  flying+resting in hubs, Max = shuttles that can be built.
+
+Jobs:
+On the end of the spec counts is the count of vacant workplace slots.
 
 
 

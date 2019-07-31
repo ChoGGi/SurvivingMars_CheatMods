@@ -1952,7 +1952,7 @@ do -- CleanInfoAttachDupes
 			local mark = list[i]
 			if not cls or cls and mark:IsKindOf(cls) then
 
-				local pos = tostring(mark.GetVisualPos and mark:GetVisualPos() or mark:GetPos())
+				local pos = tostring(mark:GetPos())
 				local dupe = dupe_list[pos]
 				if dupe then
 					DoneObject(dupe)
@@ -1966,6 +1966,27 @@ do -- CleanInfoAttachDupes
 		-- remove removed items
 		list:Validate()
 		ResumePassEdits("ChoGGi.ComFuncs.CleanInfoAttachDupes")
+	end
+	function ChoGGi.ComFuncs.CleanInfoXwinDupes(list, cls)
+		table_clear(dupe_list)
+
+		-- clean up dupes in order of older
+		for i = #list, 1, -1 do
+			local mark = list[i]
+			if not cls or cls and mark:IsKindOf(cls) then
+
+				local pos = tostring(mark.FindModifier and mark:FindModifier("follow_obj").target:GetPos())
+				if pos then
+					local dupe = dupe_list[pos]
+					if dupe then
+						dupe:Close()
+					else
+						dupe_list[pos] = mark
+					end
+				end
+
+			end
+		end
 	end
 end -- do
 
@@ -2389,11 +2410,12 @@ do -- ObjHexShape_Toggle
 	local HexToWorld = HexToWorld
 	local point = point
 
-	local OHexSpot, OText
+	local OHexSpot, XText
+	local parent
 	local FallbackOutline = FallbackOutline
 
 	-- function Dome:GenerateWalkablePoints() (mostly)
-	local function BuildShape(obj, shape, depth_test, hex_pos, colour, offset)
+	local function BuildShape(obj, shape, depth_test, hex_pos, colour1, colour2, offset)
 		local dir = HexAngleToDirection(obj:GetAngle())
 		local cq, cr = WorldToHex(obj)
 
@@ -2407,8 +2429,8 @@ do -- ObjHexShape_Toggle
 			hex:SetOpacity(25)
 			hex:SetPos(pt)
 
-			if colour then
-				hex:SetColorModifier(colour)
+			if colour1 then
+				hex:SetColorModifier(colour1)
 			end
 
 			-- wall hax off
@@ -2418,16 +2440,15 @@ do -- ObjHexShape_Toggle
 
 			-- pos text
 			if hex_pos then
-				local text_obj = OText:new()
-				if depth_test then
-					text_obj:SetDepthTest(true)
+				local text_obj = XText:new(nil, parent)
+				if colour2 then
+					text_obj:SetTextColor(colour2)
 				end
-				text_obj:SetText(sq .. ", " .. sr)
-				text_obj:SetColor1(colour)
-				-- slightly larger
-				text_obj:SetScaleInterpolation(110)
+				text_obj:FollowObj(hex)
 
-				hex:Attach(text_obj)
+				-- easy access
+				hex.text_obj = text_obj
+				text_obj:SetText(sq .. "," .. sr)
 			end
 
 			c = c + 1
@@ -2439,6 +2460,10 @@ do -- ObjHexShape_Toggle
 		if obj.ChoGGi_shape_obj then
 			obj.ChoGGi_shape_obj:Destroy()
 			obj.ChoGGi_shape_obj = nil
+			if IsValidXWin(obj.ChoGGi_shape_obj_xwin) then
+				obj.ChoGGi_shape_obj_xwin:Close()
+				obj.ChoGGi_shape_obj_xwin = nil
+			end
 			return true
 		end
 		ResumePassEdits("ChoGGi.ComFuncs.ObjHexShape_Clear")
@@ -2457,27 +2482,38 @@ do -- ObjHexShape_Toggle
 		end
 
 		obj.ChoGGi_shape_obj = obj.ChoGGi_shape_obj or objlist:new()
-		params.colour = params.colour or RandomColourLimited()
+		params.colour1 = params.colour1 or RandomColourLimited()
+		params.colour2 = params.colour2 or RandomColourLimited()
 		params.offset = params.offset or 1
 
 		if not OHexSpot then
 			OHexSpot = ChoGGi_OHexSpot
 		end
-		if not OText then
-			OText = ChoGGi_OText
+		if not XText then
+			XText = ChoGGi_XText_Follow
 		end
+
+		if not IsValidXWin(obj.ChoGGi_shape_obj_xwin) then
+			local parent = terminal.desktop
+			local id = "ChoGGi_ObjHexShape_Toggle" .. obj.handle
+			parent[id] = XWindow:new({Id = id}, parent)
+			obj.ChoGGi_shape_obj_xwin = parent[id]
+		end
+		parent = obj.ChoGGi_shape_obj_xwin
+
 		SuspendPassEdits("ChoGGi.ComFuncs.ObjHexShape_Toggle")
 		BuildShape(
 			obj,
 			params.shape,
 			params.depth_test,
 			params.hex_pos,
-			params.colour,
+			params.colour1,
+			params.colour2,
 			params.offset
 		)
 		ResumePassEdits("ChoGGi.ComFuncs.ObjHexShape_Toggle")
 		if not params.skip_clear then
-			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_shape_obj, "ChoGGi_OText")
+			ChoGGi.ComFuncs.CleanInfoXwinDupes(obj.ChoGGi_shape_obj_xwin)
 			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_shape_obj, "ChoGGi_OHexSpot")
 		end
 

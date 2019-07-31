@@ -57,6 +57,7 @@ local text_style2 = "ChoGGi_TextList12"
 if ChoGGi.testing then
 	text_style1 = "ChoGGi_Text14"
 	text_style2 = "ChoGGi_TextList14"
+	text_style3 = "ChoGGi_Text16"
 end
 DefineClass.ChoGGi_XText = {
 	__parents = {
@@ -75,6 +76,24 @@ DefineClass.ChoGGi_XText = {
 	RolloverTemplate = "Rollover",
 	RolloverTitle = T(126095410863--[[Info]]),
 }
+DefineClass.ChoGGi_XText_Follow = {
+	__parents = {
+		"ChoGGi_XText",
+	},
+	TextStyle = text_style3,
+	-- try to centre text on pos
+	Padding = box(0, -3, -4, -5),
+	Margins = box(-10, -10, 0, 0),
+	Background = 0,
+	HandleMouse = false,
+	HandleKeyboard = false,
+}
+function ChoGGi_XText_Follow:FollowObj(obj)
+	self:AddDynamicPosModifier{
+		id = "follow_obj",
+		target = obj,
+	}
+end
 
 DefineClass.ChoGGi_XLabel = {
 	__parents = {

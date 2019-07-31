@@ -12,7 +12,7 @@ for id, poi in pairs(POIPresets) do
 		min = 1,
 		editor = "number",
 		id = id .. "_Min",
-		name = T(poi.display_name),
+		name = T(poi.display_name) .. " " .. T(302535920011382, "Min"),
 	}
 	c = c + 1
 	properties[c] = {

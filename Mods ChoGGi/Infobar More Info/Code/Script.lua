@@ -51,6 +51,9 @@ local table_clear = table.clear
 local table_iclear = table.iclear
 local table_concat = table.concat
 local table_copy = table.copy
+local pairs = pairs
+local type = type
+local IsT = IsT
 local T = T
 local IsValid = IsValid
 local MapGet = MapGet
@@ -400,20 +403,19 @@ end
 local fake_grid = table_copy(default_grid)
 local function ResRemaining(self, res_name, ret)
 --~ ex(ret)
+	local list = ret[1]
 
 	fake_grid.stored = self["GetAvailable" .. res_name](self)
 	fake_grid.production = self["Get" .. res_name .. "ProducedYesterday"](self)
 	fake_grid.consumption = self["Get" .. res_name .. "ConsumedByConsumptionYesterday"](self)
 		+ self["Get" .. res_name .. "ConsumedByMaintenanceYesterday"](self)
 
-	local list = ret[1].table
-
 	-- 3 is "production"
-	table_insert(list, 3, T(359672804540, "Stored Resources") .. " "
+	table_insert(list.table, 3, T(359672804540, "Stored Resources") .. " "
 		.. RemainingTime(fake_grid, scale_sols))
 
 	-- add count of all new strings
-	ret[1].j = ret[1].j + 1
+	list.j = list.j + 1
 
 	return ret
 end
@@ -421,6 +423,7 @@ end
 local function DepositRemaining(self, res_name, ret)
 --~ 	ex(ret)
 	table_clear(count_deposit)
+	local list = ret[1]
 
 	local res_str
 	if res_name == "Concrete" then
@@ -457,13 +460,13 @@ local function DepositRemaining(self, res_name, ret)
 	end
 
 	-- just above Remaining Time
-	table_insert(ret[1].table, 3,
+	table_insert(list.table, 3,
 		T{"<resource(res)>", res = res_name} .. " " .. T(3982, "Deposits")
 			.. "<right>" .. T(res_str)
 	)
 
 	-- add count of all new strings
-	ret[1].j = ret[1].j + 1
+	list.j = list.j + 1
 
 	return ret
 end
@@ -512,6 +515,7 @@ function ResourceOverview.GetColonistsRollover(...)
 	end
 
 	local ret = orig_ResourceOverview_GetColonistsRollover(...)
+	local list = ret[1]
 
 	-- get android count in each dome (maybe faster than counting each colonist?)
 	local ac = 0
@@ -520,16 +524,16 @@ function ResourceOverview.GetColonistsRollover(...)
 		ac = ac + #(objs[i].labels.Android or "")
 	end
 
-	local c = ret[1].j
+	local c = list.j
 	c = c + 1
-	ret[1].table[c] = T("<left>") .. T(7303, "Biorobot") .. T{
+	list.table[c] = T("<left>") .. T(7303, "Biorobot") .. T{
 		"<right><colonist(number)>", number = ac,
 	}
 
 	-- add count of all new strings
-	ret[1].j = c
+	list.j = c
 
-	return table_concat(ret)
+	return ret
 end
 
 -- add action + borked drone count
@@ -581,11 +585,12 @@ local shuttlehubcount_str = {302535920011373, "<left>Shuttles Max/Total/Current<
 local orig_GetDronesRollover = InfobarObj.GetDronesRollover
 function InfobarObj:GetDronesRollover(...)
 	local ret = orig_GetDronesRollover(self, ...)
+	local list = ret[1]
 
 	local _, count = self:ChoGGi_GetBrokenDrones()
-	local c = ret[1].j
+	local c = list.j
 	c = c + 1
-	ret[1].table[c] = T("<left>") .. T(65, "Malfunctioned") ..  " "
+	list.table[c] = T("<left>") .. T(65, "Malfunctioned") ..  " "
 		.. T(517, "Drones") .. T{"<right><drone(number)>",
 			number = count,
 		}
@@ -607,13 +612,13 @@ function InfobarObj:GetDronesRollover(...)
 		shuttlehubcount_str.max = max
 		shuttlehubcount_str.total = total
 		shuttlehubcount_str.current = current
-		ret[1].table[c] = T(shuttlehubcount_str)
+		list.table[c] = T(shuttlehubcount_str)
 	end
 
 	-- add count of all new strings
-	ret[1].j = c
+	list.j = c
 
-	return table_concat(ret)
+	return ret
 end
 
 -- cycle borked drones on rightclick
@@ -635,6 +640,7 @@ local foodcon_str = {3644, "Food consumption<right><food(FoodConsumedByConsumpti
 local orig_GetFoodRollover = InfobarObj.GetFoodRollover
 function InfobarObj.GetFoodRollover(...)
 	local ret = orig_GetFoodRollover(...)
+	local list = ret[1]
 
 	local eat_food_per_visit = g_Consts.eat_food_per_visit
 	local fc = 0
@@ -645,13 +651,67 @@ function InfobarObj.GetFoodRollover(...)
 	end
 
 	foodcon_str.FoodConsumedByConsumptionYesterday = fc
-	local c = ret[1].j
+	local c = list.j
 	c = c + 1
 	-- just below Food Consumption
-	table_insert(ret[1].table, 6,	T(8780, "MAX") .. " " .. T(foodcon_str))
+	table_insert(list.table, 6,	T(8780, "MAX") .. " " .. T(foodcon_str))
 
 	-- add count of all new strings
-	ret[1].j = c
+	list.j = c
 
-	return table_concat(ret)
+	return ret
+end
+
+local needed_specs
+local str_id_to_spec = {
+	[3866] = "botanist",
+	[3854] = "engineer",
+	[3860] = "geologist",
+	[3863] = "medic",
+	[3848] = "none",
+	[3851] = "scientist",
+	[3857] = "security",
+}
+
+local orig_GetJobsRollover = InfobarObj.GetJobsRollover
+function InfobarObj.GetJobsRollover(...)
+	local ret = orig_GetJobsRollover(...)
+	local list = ret[1]
+--~ 	ex(ret)
+
+	-- reset or add counts
+	if needed_specs then
+		for id in pairs(needed_specs) do
+			needed_specs[id] = 0
+		end
+	else
+		needed_specs = {none = 0}
+		local ColonistSpecializationList = ColonistSpecializationList
+		for i = 1, #ColonistSpecializationList do
+			needed_specs[ColonistSpecializationList[i]] = 0
+		end
+	end
+
+	-- add needed counts
+	local workplaces = UICity.labels.Workplace or ""
+	for i = 1, #workplaces do
+		local bld = workplaces[i]
+		local spec = bld.specialist
+		if not bld.destroyed and not bld.demolishing and not bld.bulldozed then
+			needed_specs[spec] = needed_specs[spec] + bld:GetFreeWorkSlots()
+		end
+	end
+
+	-- append to existing
+	for i = 1, list.j do
+		local item = list.table[i]
+		if type(item) == "table" then
+			local spec = str_id_to_spec[IsT(item.specialization)]
+			if spec then
+				list.table[i] = item .. (needed_specs[spec] or 0)
+			end
+		end
+	end
+
+	return ret
 end

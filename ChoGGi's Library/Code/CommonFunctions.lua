@@ -216,12 +216,14 @@ do -- RetName
 		"ActionId",
 		"template_name",
 		"template_class",
-		"class",
 		"__class",
 		"__template",
+		"template",
 		"__mtl",
 		"text",
 		"value",
+		-- most stuff has a class
+		"class",
 	}
 
 	do -- stuff we need to be in-game for
@@ -667,7 +669,7 @@ do -- ShowObj
 				ClearMarker(k, v)
 			end
 			table_clear(markers)
-			ResumePassEdits("ClearShowObj")
+			ResumePassEdits("ChoGGi.ComFuncs.ClearShowObj")
 			return
 		end
 
@@ -4529,8 +4531,9 @@ do -- BuildableHexGrid
 	-- sped up to work with being attached to the mouse pos
 	local IsValid = IsValid
 	local grid_objs = {}
+	local grid_objs_c = 0
 	local Temp = ChoGGi.Temp
-	local OHexSpot, OText
+	local OHexSpot, XText
 
 	local function CleanUp()
 		-- kill off thread
@@ -4543,13 +4546,18 @@ do -- BuildableHexGrid
 		-- SuspendPassEdits errors out if there's no map
 		if GameState.gameplay then
 			SuspendPassEdits("ChoGGi.ComFuncs.BuildableHexGrid_CleanUp")
-			for i = 1, #grid_objs do
+			for i = 1, grid_objs_c do
 				local o = grid_objs[i]
 				if IsValid(o) then
 					o:delete()
 				end
 			end
 			ResumePassEdits("ChoGGi.ComFuncs.BuildableHexGrid_CleanUp")
+			-- clear out xwin text
+			local parent = terminal.desktop.ChoGGi_BuildableHexGrid
+			if IsValidXWin(parent) then
+				parent:Close()
+			end
 		end
 --~ 		table_iclear(grid_objs)
 	end
@@ -4585,8 +4593,8 @@ do -- BuildableHexGrid
 		if not OHexSpot then
 			OHexSpot = ChoGGi_OHexSpot
 		end
-		if not OText then
-			OText = ChoGGi_OText
+		if not XText then
+			XText = ChoGGi_XText_Follow
 		end
 
 		local grid_opacity = type(u.DebugGridOpacity) == "number" and u.DebugGridOpacity or 15
@@ -4603,7 +4611,16 @@ do -- BuildableHexGrid
 		else
 			-- this loop section is just a way of building the table and applying the settings once instead of over n over in the while loop
 
-			local grid_count = 0
+			grid_objs_c = 0
+
+			local parent = terminal.desktop
+			if not IsValidXWin(parent.ChoGGi_BuildableHexGrid) then
+				parent.ChoGGi_BuildableHexGrid = XWindow:new({
+					Id = "ChoGGi_BuildableHexGrid",
+				}, parent)
+			end
+			parent = parent.ChoGGi_BuildableHexGrid
+
 			local q, r = 1, 1
 			local z = -q - r
 			SuspendPassEdits("ChoGGi.ComFuncs.BuildableHexGrid")
@@ -4614,13 +4631,16 @@ do -- BuildableHexGrid
 						if q_i + r_i + z_i == 0 then
 							local hex = OHexSpot:new()
 							hex:SetOpacity(grid_opacity)
-							grid_count = grid_count + 1
-							grid_objs[grid_count] = hex
+--~ 							hex:SetNoDepthTest(true)
+
+							grid_objs_c = grid_objs_c + 1
+							grid_objs[grid_objs_c] = hex
 							-- add text_obj
 							if grid_pos then
-								local text_obj = OText:new()
-								text_obj:SetColor1(colour)
-								hex:Attach(text_obj)
+								local text_obj = XText:new(nil, parent)
+								text_obj:SetTextColor(colour)
+								text_obj:FollowObj(hex)
+								-- easy access
 								hex.text_obj = text_obj
 							end
 						end
@@ -4689,9 +4709,9 @@ do -- BuildableHexGrid
 											-- showing position grid instead of buildable grid
 											if grid_pos then
 												if grid_pos == 0 then
-													hex.text_obj:SetText((q_i-q) .. ", " .. (r_i-r))
+													hex.text_obj:SetText((q_i-q) .. "," .. (r_i-r))
 												else
-													hex.text_obj:SetText(q_i .. ", " .. r_i)
+													hex.text_obj:SetText(q_i .. "," .. r_i)
 												end
 											else
 												-- geysers

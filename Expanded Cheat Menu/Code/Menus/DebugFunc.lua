@@ -421,30 +421,32 @@ do -- BuildingPathMarkers_Toggle
 	local DoneObject = DoneObject
 	local AveragePoint2D = AveragePoint2D
 	local OText, OPolyline
+--~ 	local XText, OPolyline
+	local parent
 
 	local objlist = objlist
-	local points, colors = objlist:new(), objlist:new()
+	local points, colours = objlist:new(), objlist:new()
 	local function ShowWaypoints(waypoints, open)
 		points:Clear()
-		colors:Clear()
+		colours:Clear()
 
-		local color_line = RandomColour()
-		local color_door = RandomColour()
+		local colour_line = RandomColour()
+		local colour_door = RandomColour()
 		local lines = objlist:new()
 		for i = 1, #waypoints do
-			local w = waypoints[i]
-			local c = i == open and color_door or color_line
-			points[i] = w
-			colors[i] = c
+			local waypoint = waypoints[i]
+			local colour = i == open and colour_door or colour_line
+			points[i] = waypoint
+			colours[i] = colour
 			local t = OText:new()
-			t:SetPos(w:SetZ(w:z() or w:SetTerrainZ(10 * guic)))
-			t:SetColor1(c)
+			t:SetPos(waypoint:SetZ(waypoint:z() or waypoint:SetTerrainZ(10 * guic)))
+			t:SetColor1(colour)
 			t:SetText(i .. "")
 			lines[i] = t
 		end
 		local line = OPolyline:new()
 		line:SetPos(AveragePoint2D(points))
-		line:SetMesh(points, colors)
+		line:SetMesh(points, colours)
 		lines.line = line
 		return lines
 	end
@@ -462,8 +464,12 @@ do -- BuildingPathMarkers_Toggle
 	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
 	function ChoGGi.MenuFuncs.BuildingPathMarkers_Toggle()
-		OText = OText or ChoGGi_OText
-		OPolyline = OPolyline or ChoGGi_OPolyline
+		if not OPolyline then
+			OPolyline = ChoGGi_OPolyline
+		end
+		if not OText then
+			OText = ChoGGi_OText
+		end
 		if ChoGGi.Temp.BuildingPathMarkers_Toggle then
 			ChoGGi.Temp.BuildingPathMarkers_Toggle = nil
 			FollowWaypointPath = ChoGGi_OrigFuncs.FollowWaypointPath
@@ -1569,7 +1575,7 @@ do -- FlightGrid_Toggle
 	local white = white
 	local green = green
 	local flight_lines = {}
-	local points, colors = {}, {}
+	local points, colours = {}, {}
 	local OPolyline
 
 	local function RasterLine(pos1, pos0, zoffset, line_num)
@@ -1582,7 +1588,7 @@ do -- FlightGrid_Toggle
 			local height = Flight_Height_temp:GetBilinear(pos, work_step, 0, 1) + zoffset
 
 			points[i] = pos:SetZ(height)
-			colors[i] = InterpolateRGB(
+			colours[i] = InterpolateRGB(
 				white,
 				green,
 				Clamp(height - zoffset - terrain_GetHeight(pos), 0, max_diff),
@@ -1595,7 +1601,7 @@ do -- FlightGrid_Toggle
 			line = OPolyline:new()
 			flight_lines[line_num] = line
 		end
-		line:SetMesh(points, colors)
+		line:SetMesh(points, colours)
 		line:SetPos(AveragePoint2D(points))
 	end
 
@@ -1691,7 +1697,7 @@ do -- FlightGrid_Toggle
 
 		OPolyline = OPolyline or ChoGGi_OPolyline
 		table_iclear(points)
-		table_iclear(colors)
+		table_iclear(colours)
 		grid_thread = CreateRealTimeThread(GridFunc, size, zoffset)
 	end
 end -- do

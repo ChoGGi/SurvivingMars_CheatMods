@@ -8,13 +8,13 @@ DefineClass("ModOptions_ChoGGi_InfobarAddDischargeRates", {
 			default = true,
 			editor = "bool",
 			id = "SkipGrid0",
-			name = T(9428, "Skip") .. " " .. T{11629,"GRID <i>",i=0},
+			name = T(9428, "Skip") .. " " .. T{11629, "GRID <i>", i = 0},
 		},
 		{
 			default = true,
 			editor = "bool",
 			id = "SkipGrid1",
-			name = T(9428, "Skip") .. " " .. T{11629,"GRID <i>",i=1},
+			name = T(9428, "Skip") .. " " .. T{11629, "GRID <i>", i = 1},
 		},
 		{
 			default = 0,
@@ -22,7 +22,7 @@ DefineClass("ModOptions_ChoGGi_InfobarAddDischargeRates", {
 			min = 0,
 			editor = "number",
 			id = "SkipGridX",
-			name = T(9428, "Skip") .. " " .. T{11629,"GRID <i>",i="X"},
+			name = T(9428, "Skip") .. " " .. T{11629, "GRID <i>", i = "X"},
 		},
 		{
 			default = true,

@@ -43,8 +43,8 @@ local all_specialist = {}
 local function BuildSpecialistLists()
 	local labels = UICity.labels
 
-	table_clear(needed_specialist)
-	table_clear(all_specialist)
+--~ 	table_clear(needed_specialist)
+--~ 	table_clear(all_specialist)
 
 	needed_specialist.none = 0
 	all_specialist.none = #(labels.none or "")
