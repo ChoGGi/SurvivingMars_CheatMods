@@ -52,27 +52,16 @@ local function ShowDialogs(map, gen)
 	end
 end
 
--- override this func to create/update image when site changes
-local orig_FillRandomMapProps = FillRandomMapProps
-function FillRandomMapProps(gen, params, ...)
-	-- gen is a table when the map is loading, so we can skip it
-	if not gen and not skip_showing_image then
-		local map
-		map, params, gen = RetMapSettings(true, params, ...)
-
-		ShowDialogs(map, gen)
-
-		return map
-	end
-
-	return orig_FillRandomMapProps(gen, params, ...)
-end
-
+-- create/update image when landing spot changes
 local orig_GetOverlayValues = GetOverlayValues
 function GetOverlayValues(lat, long, overlay_grids, params, ...)
 	orig_GetOverlayValues(lat, long, overlay_grids, params, ...)
 
-	if mod_EnableChallenges and not skip_showing_image then
+	local chall = Dialogs.PGMainMenu.idContent.PGChallenge
+	-- check if we're in chall menu or regular to show
+	if not skip_showing_image
+		and (not chall or chall and mod_EnableChallenges)
+	then
 		local map, gen
 		map, params, gen = RetMapSettings(true, params)
 		ShowDialogs(map, gen)
@@ -199,11 +188,14 @@ end
 
 function ChoGGi_VCM_MapImageDlg:SetDefaultPos()
 	local size
-	if Dialogs.PGMainMenu then
+
+	local PGMainMenu = Dialogs.PGMainMenu
+	if PGMainMenu then
 		-- wrapped in a pcall, so if we fail (new version) then it'll just use my default
 		pcall(function()
-			size = Dialogs.PGMainMenu.idContent.PGMission[1][1].idContent.box
-				:size()
+			local c = PGMainMenu.idContent
+			size = c[c.PGMission and "PGMission" or "PGChallenge"][1][1]
+				.idContent.box:size()
 			size = size:SetY(size:y()/4)
 		end)
 	end
@@ -228,15 +220,11 @@ end
 DefineClass.ChoGGi_VCM_ExtraInfoDlg = {
 	__parents = {"ChoGGi_XWindow"},
 	dialog_width = 400.0,
---~ 	dialog_height = 650.0,
 	dialog_height = 525.0,
 
-	missing_desc = Translate(302535920011335, [[You need to be in-game to display this hint.
-Click to open Paradox Breakthroughs Wiki page.]]),
-
 	translated_tech = false,
---~ 	omega_msg = false,
---~ 	omega_msg_count = 0,
+	omega_msg = false,
+	show_omegas = false,
 	planet_msg_count = 0,
 	planet_msg = false,
 	breakthrough_msg = false,
@@ -247,6 +235,16 @@ Click to open Paradox Breakthroughs Wiki page.]]),
 }
 
 function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
+
+	-- remove once we get them sorted
+	self.show_omegas = false
+
+	if self.show_omegas then
+		self.dialog_height = 650.0
+		self.omega_msg = "\n\n<color 200 200 256>"
+			.. Translate(5182, "Omega Telescope") .. ":</color>"
+	end
+
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
 	-- text box with obj info in it
@@ -264,7 +262,6 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 	self.idCaption:SetText(title_text)
 
 	-- rollover hints
-	self.idText.OnHyperLink = self.idTextOnHyperLink
 	self.idText.OnHyperLinkRollover = self.idTextOnHyperLinkRollover
 	self.onclick_count = 0
 	self.onclick_desc = {}
@@ -274,28 +271,23 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 	self.translated_tech = {}
 	local TechDef = TechDef
 	for _, tech in pairs(TechDef) do
-		local icon = ""
-		if ValidateImage(tech.icon) and not tech.icon:find(" ") then
-			icon = "\n\n<image " .. tech.icon .. " 1500>"
-		end
-		local name = Translate(tech.display_name)
-		local desc = Translate(T{tech.description, tech})
-		if #desc > 16 and desc:sub(-16) == " *bad string id?" then
-			desc = self.missing_desc
-		end
+		if tech.group == "Breakthroughs" then
+			local icon = ""
+			if ValidateImage(tech.icon) and not tech.icon:find(" ") then
+				icon = "\n\n<image " .. tech.icon .. " 1500>"
+			end
+			local name = Translate(tech.display_name)
+			local desc = Translate(T{tech.description, tech})
 
-		self.translated_tech[name] = self:HyperLink(desc .. "\n\n" .. icon, name)
-			.. name .. "</h></color>"
+			self.translated_tech[name] = self:HyperLink(desc .. "\n\n" .. icon, name)
+				.. name .. "</h></color>"
+		end
 	end
 
 	self.planet_msg_count = Consts.PlanetaryBreakthroughCount + 1
 
 	self.breakthrough_msg = "\n\n<color 200 200 256>" .. Translate(title_text)
 		.. ":</color>"
---~ 	self.omega_msg = "\n\n<color 200 200 256>"
---~ 		.. Translate(5182, "Omega Telescope") .. " "
---~ 		.. Translate(437247068170, "LIST") .. " "
---~ 		.. Translate(302535920011336--[[maybe--]]) .. ":</color>"
 	self.planet_msg = "<color 200 200 256>"
 		.. Translate(11234, "Planetary Anomaly") .. ":</color>"
 
@@ -315,19 +307,6 @@ function ChoGGi_VCM_ExtraInfoDlg:Done()
 	end
 end
 
--- clicked
---~ (link, argument, hyperlink_box, pos, button)
-function ChoGGi_VCM_ExtraInfoDlg:idTextOnHyperLink(link)
-	self = GetRootDialog_Extra(self)
-
-	local desc = self.onclick_desc[tonumber(link)]
-	if desc:find(self.missing_desc, 1, true) then
-		OpenUrl("https://survivingmars.paradoxwikis.com/Breakthrough")
-	end
-
-end
-
--- (link, hyperlink_box, pos)
 function ChoGGi_VCM_ExtraInfoDlg:idTextOnHyperLinkRollover(link)
 	self = GetRootDialog_Extra(self)
 
@@ -347,7 +326,7 @@ function ChoGGi_VCM_ExtraInfoDlg:idTextOnHyperLinkRollover(link)
 	})
 end
 
--- create
+-- create link
 function ChoGGi_VCM_ExtraInfoDlg:HyperLink(desc, name)
 	local c = self.onclick_count
 	c = c + 1
@@ -364,22 +343,29 @@ function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(gen)
 		return
 	end
 
---~ 	local display_list = RetMapBreakthroughs(gen, true)
-	local display_list = RetMapBreakthroughs(gen)
+	local display_list
+	if self.show_omegas then
+		display_list = RetMapBreakthroughs(gen, true)
+	else
+		display_list = RetMapBreakthroughs(gen)
+	end
+
 --~ 	ex{display_list, gen}
 
+	-- tech descriptions
 	for i = 1, #display_list do
 		display_list[i] = self.translated_tech[display_list[i]]
 	end
 
-	--
+	-- add bt text after the first four (POIs)
 	table_insert(display_list, self.planet_msg_count, self.breakthrough_msg)
-
-	-- first four are PAs
+	-- first four are POI breaks
 	table_insert(display_list, 1, self.planet_msg)
 
---~ 	-- 3 from the end
---~ 	table_insert(display_list, #display_list - 2, self.omega_msg)
+	if self.show_omegas then
+		-- 3 from the end
+		table_insert(display_list, #display_list - 2, self.omega_msg)
+	end
 
 	self.idText:SetText(TableConcat(display_list, "\n"))
 end

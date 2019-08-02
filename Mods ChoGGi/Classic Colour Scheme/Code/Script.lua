@@ -1,6 +1,89 @@
+-- this is a copy n paste of one of the in-game schemes
+-- convert the numbers with ColorizationMaterialDecode(2209066747), this will return three numbers:
+-- a value you can use with GetRGB(value), roughness value, metallic value
+-- to convert back into the proper number use ColorizationMaterialEncode(RGB(22, 36, 50), rough, met)
+
+-- not my speeling
+
+local ColorizationMaterialEncode = ColorizationMaterialEncode
+function OnMsg.ClassesPostprocess()
+	-- check for the id of the scheme so we don't add dupes
+	if Presets.ColonyColorScheme.Default.ChoGGi_Classic_Colour_Scheme then
+		return
+	end
+
+	PlaceObj('ColonyColorScheme', {
+		display_name = T(0, "Classic Colours"),
+		id = "ChoGGi_Classic_Colour_Scheme",
+		group = "Default",
+
+		cables_base = ColorizationMaterialEncode(1518913, -16, 24),
+		-- yellowish
+		dome_base = 2209066747,
+		-- reddish
+		electro_accent_1 = 2196030942,
+		-- blueish
+--~ 		electro_accent_2 = 1792320026,
+		electro_accent_2 = ColorizationMaterialEncode(10507294, 0, 0),
+		-- whiteish
+
+		electro_base = 2197732730,
+--~ 		electro_base = ColorizationMaterialEncode(2124452, 0, 0),
+		incide_accent_green = 2214666249,
+		incide_accent_red = 2214691666,
+		incide_accent_wood = 2214925623,
+		incide_dark = 2215021850,
+--~ 		inside_accent_1 = 2204419550,
+		inside_accent_1 = ColorizationMaterialEncode(10765370, 64, -32),
+--~ 		inside_accent_2 = 2191420342,
+		inside_accent_2 = 2191420342,
+		inside_accent_factory = 2614983144,
+		inside_accent_food = 2208523310,
+		inside_accent_housing = 2204734246,
+--~ 		inside_accent_medical = 2206435183,
+		inside_accent_medical = ColorizationMaterialEncode(9461848, 0, 0),
+--~ 		inside_accent_research = 2207440038,
+		inside_accent_research = ColorizationMaterialEncode(9980454, 0, 0),
+--~ 		inside_accent_service = 2209377272,
+		inside_accent_service = ColorizationMaterialEncode(13618378, 0, 0),
+		inside_base = 2199912447,
+		inside_metal = 3132729656,
+		inside_wood = 2204669242,
+--~ 		life_accent_1 = 2214905310,
+		life_accent_1 = ColorizationMaterialEncode(-5592406, 0, 0),
+		life_base = 2199681265,
+--~ 		mining_accent_1 = 2200233326,
+		mining_accent_1 = ColorizationMaterialEncode(16745472, 0, 0),
+		mining_base = 2203991160,
+--~ 		mining_base = ColorizationMaterialEncode(2124452, 0, 0),
+		-- dark gray
+		none = 3130007616,
+--~ 		outside_accent_1 = 2206516702,
+		outside_accent_1 = ColorizationMaterialEncode(3032666, 0, 0),
+		outside_accent_2 = 2205442228,
+--~ 		outside_accent_factory = 2206516702,
+		outside_accent_factory = 2206516702,
+		outside_base = 2208069873,
+		outside_dark = ColorizationMaterialEncode(5789784, 0, 0),
+--~ 		outside_dark = 2207161658,
+--~ 		outside_metal = 2207706587,
+		outside_metal = ColorizationMaterialEncode(9193472, 0, 0),
+		pipes_base = 2199664752,
+		pipes_metal = 2173937486,
+
+		rocket_accent = nil,
+		rocket_base = nil,
+		rover_accent = 2200225246,
+		rover_base = 2204024186,
+		rover_dark = 2215220006,
+		wonder_base = 2214592512,
+	})
+end
+
 --[[
-	g_CurrentCCS = ColonyColorSchemes.ChoGGi_Classic_Colour_Scheme
-	ReapplyPalettes()
+-- test scheme ingame
+g_CurrentCCS = ColonyColorSchemes.ChoGGi_Classic_Colour_Scheme
+ReapplyPalettes()
 
 GetRGBA(argb)
 RGBA(r, g, b, a)
@@ -24,8 +107,7 @@ CloningVats
 'palette_color1', "inside_base",
 'palette_color2', "inside_accent_medical",
 'palette_color3', "inside_metal",
-]]
---[[
+
 telescope
 1 9980454
 2 8553090
@@ -126,83 +208,3 @@ fusion
 subheat
 2 5510160
 ]]
-
--- this is just a copy n paste of one of the in-game schemes
--- convert the numbers with ColorizationMaterialDecode(2209066747), this will return three numbers:
--- a value you can use with GetRGB(value), roughness value, metallic value
--- to convert back into the proper number use ColorizationMaterialEncode(RGB(22, 36, 50), rough, met)
-
--- not my speeling
-
-local ColorizationMaterialEncode = ColorizationMaterialEncode
-function OnMsg.ClassesPostprocess()
-	-- check for the id of the scheme so we don't add dupes
-	if not Presets.ColonyColorScheme.Default.ChoGGi_Classic_Colour_Scheme then
-		PlaceObj('ColonyColorScheme', {
-			display_name = "Classic Colours",
-			id = "ChoGGi_Classic_Colour_Scheme",
-			group = "Default",
-
-			cables_base = ColorizationMaterialEncode(1518913, -16, 24),
-			-- yellowish
-			dome_base = 2209066747,
-			-- reddish
-			electro_accent_1 = 2196030942,
-			-- blueish
---~ 			electro_accent_2 = 1792320026,
-			electro_accent_2 = ColorizationMaterialEncode(10507294, 0, 0),
-			-- whiteish
-
-			electro_base = 2197732730,
---~ 			electro_base = ColorizationMaterialEncode(2124452, 0, 0),
-			incide_accent_green = 2214666249,
-			incide_accent_red = 2214691666,
-			incide_accent_wood = 2214925623,
-			incide_dark = 2215021850,
---~ 			inside_accent_1 = 2204419550,
-			inside_accent_1 = ColorizationMaterialEncode(10765370, 64, -32),
---~ 			inside_accent_2 = 2191420342,
-			inside_accent_2 = 2191420342,
-			inside_accent_factory = 2614983144,
-			inside_accent_food = 2208523310,
-			inside_accent_housing = 2204734246,
---~ 			inside_accent_medical = 2206435183,
-			inside_accent_medical = ColorizationMaterialEncode(9461848, 0, 0),
---~ 			inside_accent_research = 2207440038,
-			inside_accent_research = ColorizationMaterialEncode(9980454, 0, 0),
---~ 			inside_accent_service = 2209377272,
-			inside_accent_service = ColorizationMaterialEncode(13618378, 0, 0),
-			inside_base = 2199912447,
-			inside_metal = 3132729656,
-			inside_wood = 2204669242,
---~ 			life_accent_1 = 2214905310,
-			life_accent_1 = ColorizationMaterialEncode(-5592406, 0, 0),
-			life_base = 2199681265,
---~ 			mining_accent_1 = 2200233326,
-			mining_accent_1 = ColorizationMaterialEncode(16745472, 0, 0),
-			mining_base = 2203991160,
---~ 			mining_base = ColorizationMaterialEncode(2124452, 0, 0),
-			-- dark gray
-			none = 3130007616,
---~ 			outside_accent_1 = 2206516702,
-			outside_accent_1 = ColorizationMaterialEncode(3032666, 0, 0),
-			outside_accent_2 = 2205442228,
---~ 			outside_accent_factory = 2206516702,
-			outside_accent_factory = 2206516702,
-			outside_base = 2208069873,
-			outside_dark = ColorizationMaterialEncode(5789784, 0, 0),
---~ 			outside_dark = 2207161658,
---~ 			outside_metal = 2207706587,
-			outside_metal = ColorizationMaterialEncode(9193472, 0, 0),
-			pipes_base = 2199664752,
-			pipes_metal = 2173937486,
-
-			rocket_accent = nil,
-			rocket_base = nil,
-			rover_accent = 2200225246,
-			rover_base = 2204024186,
-			rover_dark = 2215220006,
-			wonder_base = 2214592512,
-	})
-	end
-end

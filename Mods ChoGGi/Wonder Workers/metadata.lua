@@ -1,8 +1,16 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library",
+			"version_major", 7,
+			"version_minor", 2,
+		}),
+	},
 	"title", "Wonder Workers",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_WonderWorkers",
@@ -18,7 +26,6 @@ return PlaceObj("ModDef", {
 	"TagBuildings", true,
 	"description", [[Wonders require workers.
 Mod options to set amount (or 0) of workers required (default 10 per shift).
-It doesn't work on existing buildings, so demo or start a new game.
 
 Didn't set any specs for ArtificialSun/SpaceElevator, suggestions?
 

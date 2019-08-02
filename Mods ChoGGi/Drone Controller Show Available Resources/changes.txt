@@ -1,3 +1,6 @@
+v0.4
+Maybe removed log spam.
+
 v0.3
 Added resource count to rocket landing mode.
 

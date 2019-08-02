@@ -40,6 +40,7 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local table_find = table.find
+local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
 
 -- add workplace as parent cls obj
 for i = 1, #wonders do
@@ -61,23 +62,15 @@ local wonder_specs = {
 	TheExcavator = "geologist",
 }
 
---~ function ChoGGi.ComFuncs.ToggleWorking(obj)
-local function ToggleWorking(obj)
-	if IsValid(obj) then
-		CreateRealTimeThread(function()
-			obj:ToggleWorking()
-			Sleep(5)
-			obj:ToggleWorking()
-		end)
-	end
-end
-
 function OnMsg.LoadGame()
 	if g_ChoGGi_WonderWorkersAdded then
 		return
 	end
 	g_ChoGGi_WonderWorkersAdded = true
 
+	local ShiftsBuilding_Init = ShiftsBuilding.Init
+	local ShiftsBuilding_GameInit = ShiftsBuilding.GameInit
+	local DomeOutskirtBld_GameInit = DomeOutskirtBld.GameInit
 	local Workplace_Init = Workplace.Init
 	local Workplace_GameInit = Workplace.GameInit
 
@@ -86,9 +79,11 @@ function OnMsg.LoadGame()
 		local obj = objs[i]
 		-- we skip the geodome n capital city
 		if options[obj.class] and not obj.workers then
+			ShiftsBuilding_Init(obj)
 			Workplace_Init(obj)
+			ShiftsBuilding_GameInit(obj)
+			DomeOutskirtBld_GameInit(obj)
 			Workplace_GameInit(obj)
-			UpdateWorkers(obj)
 			ToggleWorking(obj)
 		end
 		local spec = wonder_specs[obj.class]

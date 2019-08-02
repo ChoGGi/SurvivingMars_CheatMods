@@ -1,0 +1,38 @@
+return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library",
+			"version_major", 7,
+			"version_minor", 2,
+		}),
+	},
+	"title", "Most Buildings Workers",
+	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
+	"saved", 0,
+	"image", "Preview.png",
+	"id", "ChoGGi_MostBuildingsWorkers",
+	"steam_id", "1823230886",
+	"pops_any_uuid", "a02a0bc7-cafb-4f27-baf3-67fa87b0ee5f",
+	"author", "ChoGGi",
+	"lua_revision", 245618,
+	"code", {
+		"Code/Script.lua",
+	},
+	"has_options", true,
+	"TagGameplay", true,
+	"TagBuildings", true,
+	"description", [[Adds mod options to add workers to all buildings without workers.
+
+This defaults to not requiring workers for any buildings (that's up to you).
+This won't work on mod buildings (even if they show up in the options).
+If anyone is up for making a list of specs for each building?
+
+Default Performance is the performance of buildings without workers (default 100).
+
+This doesn't include wonders, see [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1816298791]Wonder Workers[/url] for that.
+This also skips some of the goofier ones like Depots and Decorations (I can add them if they're wanted).
+]],
+})

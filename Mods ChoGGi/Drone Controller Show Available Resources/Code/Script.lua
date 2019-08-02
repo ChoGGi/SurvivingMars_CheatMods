@@ -110,6 +110,8 @@ function OnMsg.ClassesPostprocess()
 end
 
 local rockets = {"RocketLandingSite", "SupplyRocketBuilding"}
+local txt_ctrl
+
 -- add text info to building placement
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit(...)
@@ -120,7 +122,8 @@ function CursorBuilding:GameInit(...)
 	if sel_radius or self.template:IsKindOfClasses(rockets) then
 		self.ChoGGi_UpdateAvailableResources = sel_radius and sel_radius(self)
 			or SupplyRocket.work_radius
-		self.ChoGGi_txt_ctrl = XText:new({
+
+		txt_ctrl = XText:new({
 			Id = "ChoGGi_UpdateAvailableResources",
 			TextStyle = "PhotoModeWarning",
 			-- offset from the status text
@@ -128,7 +131,7 @@ function CursorBuilding:GameInit(...)
 			ScaleModifier = mod_TextScale,
 		}, Dialogs.HUD)
 
-		self.ChoGGi_txt_ctrl:AddDynamicPosModifier{
+		txt_ctrl:AddDynamicPosModifier{
 			id = "ChoGGi_UpdateAvailableResources_follow_obj",
 			target = self,
 		}
@@ -138,19 +141,20 @@ end
 local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
 function CursorBuilding:UpdateShapeHexes(...)
 	orig_CursorBuilding_UpdateShapeHexes(self, ...)
-	if self.ChoGGi_UpdateAvailableResources then
+	if txt_ctrl and self.ChoGGi_UpdateAvailableResources then
 		-- not sure why SurfaceDepositGroup don't work?
 		local objs = MapGet(self, "hex", self.ChoGGi_UpdateAvailableResources, "StorageDepot", "ResourceStockpile", "SurfaceDeposit")
 		if #objs > 0 then
-			self.ChoGGi_txt_ctrl:SetText(GetAvailableResources(self, objs))
+			txt_ctrl:SetText(GetAvailableResources(self, objs))
 		end
 	end
 end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding:Done(...)
-	if self.ChoGGi_txt_ctrl then
-		self.ChoGGi_txt_ctrl:Close()
+	if txt_ctrl then
+		txt_ctrl:Close()
+		txt_ctrl = nil
 	end
 	return orig_CursorBuilding_Done(self, ...)
 end
