@@ -16,7 +16,6 @@ return PlaceObj("ModDef", {
 --~ 	"has_options", true,
 	"TagOther", true,
 	"description", [[Changes the AreDomesConnectedWithPassage func to also check the walking distance instead of assuming passages == walkable.
-Don't worry this doesn't mess with checking workplaces/services.
 
 This should stop the random colonist has died from dehydration events we know and love.]],
 })
