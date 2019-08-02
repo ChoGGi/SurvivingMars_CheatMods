@@ -2141,6 +2141,9 @@ do -- SurfaceLines_Toggle
 	end
 
 	local function SurfaceLines_Clear(obj)
+		if type(obj) ~= "table" then
+			return
+		end
 		SuspendPassEdits("ChoGGi.ComFuncs.SurfaceLines_Clear")
 		if obj.ChoGGi_surfacelinesobj then
 			obj.ChoGGi_surfacelinesobj:Destroy()
@@ -2456,6 +2459,9 @@ do -- ObjHexShape_Toggle
 		end
 	end
 	local function ObjHexShape_Clear(obj)
+		if type(obj) ~= "table" then
+			return
+		end
 		SuspendPassEdits("ChoGGi.ComFuncs.ObjHexShape_Clear")
 		if obj.ChoGGi_shape_obj then
 			obj.ChoGGi_shape_obj:Destroy()
@@ -2765,6 +2771,9 @@ do -- EntitySpots_Toggle
 	local OText, OPolyline
 
 	local function EntitySpots_Clear(obj)
+		if type(obj) ~= "table" then
+			return
+		end
 		SuspendPassEdits("ChoGGi.ComFuncs.EntitySpots_Clear")
 		-- just in case (old way of doing it)
 		if obj.ChoGGi_ShowAttachSpots == true then
@@ -3585,12 +3594,15 @@ do -- ToggleObjLines
 	local InvalidPos = ChoGGi.Consts.InvalidPos
 
 	local function ObjListLines_Clear(obj)
-		SuspendPassEdits("ChoGGi.ComFuncs.ObjListLines_Clear")
+		if type(obj) ~= "table" then
+			return
+		end
+--~ 		SuspendPassEdits("ChoGGi.ComFuncs.ObjListLines_Clear")
 		if IsValid(obj.ChoGGi_ObjListLine) then
 			DoneObject(obj.ChoGGi_ObjListLine)
 		end
 		obj.ChoGGi_ObjListLine = nil
-		ResumePassEdits("ChoGGi.ComFuncs.ObjListLines_Clear")
+--~ 		ResumePassEdits("ChoGGi.ComFuncs.ObjListLines_Clear")
 	end
 	ChoGGi.ComFuncs.ObjListLines_Clear = ObjListLines_Clear
 

@@ -66,7 +66,7 @@ ChoGGi.Defaults = {
 	ExamineColourStr = "255 255 255",
 	ExamineColourNil = "175 175 175",
 	-- what cmd/editor to use with os.execute(cmd) when doing external editing
-	ExternalEditorCmd = "notepad \"%s\"",
+	ExternalEditorCmd = [[notepad "%s"]],
 	-- where to store temp file
 	ExternalEditorPath = "AppData/EditorPlugin/",
 	-- examine errors (useful when it contains a thread).
@@ -123,6 +123,13 @@ ChoGGi.Defaults = {
 		"ThreadsRegister",
 		"UICity",
 	},
+	-- default off, but add entries to the settings file
+	SkipMissingMods = false,
+	SkipMissingDLC = false,
+	MapEdgeLimit = false,
+	StopSelectionPanelResize = false,
+	ShowStartupTicks = false,
+	FixMissingModBuildings = false,
 }
 -- my defaults
 if testing then
@@ -131,6 +138,7 @@ if testing then
 	Defaults.ShowStartupTicks = true
 	Defaults.WriteLogs = true
 	Defaults.FixMissingModBuildings = true
+	Defaults.ExamineErrors = true
 	-- and maybe a bit of class
 	Defaults.Transparency = {
 		HUD = 50,
@@ -140,11 +148,12 @@ if testing then
 	-- probably not useful for anyone who isn't loading up borked saves to test
 	Defaults.SkipMissingMods = true
 	Defaults.SkipMissingDLC = true
-	--
+	-- camera lets you get closer to the edge
 	Defaults.MapEdgeLimit = true
+	-- sizing off please n thanks
 	Defaults.StopSelectionPanelResize = true
-	Defaults.ExternalEditorCmd = "scite \"%s\""
-	Defaults.ExamineErrors = true
+	-- the only good text editor
+	Defaults.ExternalEditorCmd = [[scite "%s"]]
 end
 
 -- set game values to saved values

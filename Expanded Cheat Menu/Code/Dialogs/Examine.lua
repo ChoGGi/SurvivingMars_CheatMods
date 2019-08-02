@@ -888,6 +888,9 @@ function ChoGGi_DlgExamine:idToggleExecCode_OnChange(visible)
 	local vis = self.idExecCodeArea:GetVisible()
 	if vis ~= visible then
 		self.idExecCodeArea:SetVisible(not vis)
+		if self.idExecCode:GetVisible() then
+			self.idExecCode:SetFocus()
+		end
 		self.idToggleExecCode:SetCheck(not vis)
 	end
 end
@@ -3677,6 +3680,7 @@ function ChoGGi_DlgExamine:CleanupCustomObjs(obj, force)
 	elseif IsObjlist(obj) or force then
 		self.ChoGGi.ComFuncs.ObjListLines_Clear(obj)
 	end
+
 	if self.spawned_bbox then
 		self.ChoGGi.ComFuncs.BBoxLines_Clear(self.spawned_bbox)
 	end
@@ -3695,7 +3699,7 @@ function ChoGGi_DlgExamine:Done()
 	PopupClose(self.idAttachesMenu)
 	PopupClose(self.idParentsMenu)
 	PopupClose(self.idToolsMenu)
-	-- if it isn't valid then none of these will exist
+	-- any circles/lines added
 	if self.obj_type == "table" and self.name ~= "_G" then
 		self:CleanupCustomObjs(obj)
 	end
