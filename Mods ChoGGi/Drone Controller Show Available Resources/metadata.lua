@@ -18,7 +18,7 @@ return PlaceObj("ModDef", {
 	"description", [[Wondering why the little buggers aren't repairing a building?
 The Service Area tooltip now shows a list of resources available to the selected Drone Hub, Rocket, or Rover.
 
-Construction placement mode will display (rounded) resources onscreen.
+Construction placement mode will display (rounded) resources on-screen.
 See mod options to change the text scale.
 ]],
 })
