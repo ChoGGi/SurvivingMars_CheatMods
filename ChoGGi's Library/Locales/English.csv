@@ -2282,9 +2282,6 @@ Right click in list to view (closes menu)."
 302535920011334,"Random tech game rule(s) <color red>active!</color>
 Breakthroughs will be random as well.
 "
-302535920011335,"You need to be in-game to display this hint.
-Click to open Paradox Breakthroughs Wiki page."
-302535920011336,"maybe"
 302535920011337,"Select location to update text"
 302535920011338,"MARSHA"
 302535920011339,"MARSHAs"
@@ -2328,7 +2325,9 @@ Click to open Paradox Breakthroughs Wiki page."
 302535920011380,"RC Commander Drones Deployed"
 302535920011381,"Mirror Sphere Crackling"
 302535920011382,"Min"
-302535920011383,
+302535920011383,"Performance"
+302535920011335,
+302535920011336,
 302535920011384,
 302535920011385,
 302535920011386,
