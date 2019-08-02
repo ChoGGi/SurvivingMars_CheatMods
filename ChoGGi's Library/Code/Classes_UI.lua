@@ -80,6 +80,7 @@ DefineClass.ChoGGi_XText_Follow = {
 	__parents = {
 		"ChoGGi_XText",
 	},
+	ZOrder = -1,
 	TextStyle = text_style3,
 	-- try to centre text on pos
 	Padding = box(0, -3, -4, -5),

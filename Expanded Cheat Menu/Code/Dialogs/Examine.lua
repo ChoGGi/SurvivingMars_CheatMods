@@ -1260,7 +1260,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 		},
 
 		{name = self.ChoGGi.UserSettings.ExamineTextType and T(1000145, "Text") or self.string_Object,
-			hint = Strings[302535920001620--[["Click to toggle between Viewing/Dumping the Text or Object.
+			hint = Strings[302535920001620--[["Click to toggle between Text or Object (View/Dump).
 <green>Text</green> is what you see, <green>Object</green> is the text created from ValueToLuaCode(obj)."]]],
 			clicked = function(item)
 				self.ChoGGi.UserSettings.ExamineTextType = not self.ChoGGi.UserSettings.ExamineTextType
@@ -1342,14 +1342,14 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 					table_clear(self.menu_added)
 					table_clear(self.menu_list_items)
 
+					-- add examiner object with some spaces so it's at the top
+					self:BuildFuncList(self.obj_ref.class, "  ")
 					if #self.parents > 0 then
 						self:ProcessList(self.parents, " " .. Strings[302535920000520--[[Parents]]] .. ": ")
 					end
 					if #self.ancestors > 0 then
-						self:ProcessList(self.ancestors, " " .. Strings[302535920000525--[[Ancestors]]] .. ": ")
+						self:ProcessList(self.ancestors, Strings[302535920000525--[[Ancestors]]] .. ": ")
 					end
-					-- add examiner object with some spaces so it's at the top
-					self:BuildFuncList(self.obj_ref.class, "	")
 					-- if Object hasn't been added, then add CObject (O has a few more funcs than CO)
 					if not self.menu_added.Object and self.menu_added.CObject then
 						self:BuildFuncList("CObject", self.menu_added.CObject)
@@ -1361,7 +1361,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 						title = Strings[302535920001239--[[Functions]]] .. ": " .. self.name,
 					})
 				else
-					local msg = Translate(9763--[[No objects matching current filters.]])
+					local msg = T(9763--[[No objects matching current filters.]])
 					self.ChoGGi.ComFuncs.MsgPopup(msg, T(6774, "Error"))
 					print(msg)
 				end

@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 In any mods you want to use prints; add this at the top of the first Script.lua:
 ```lua
 if Mods.ChoGGi_TestingMods then
+	local print = print
 	function printT(...)
 		print(...)
 	end

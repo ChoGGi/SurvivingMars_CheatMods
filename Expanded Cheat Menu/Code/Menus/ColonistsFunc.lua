@@ -88,7 +88,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 			res = "Food"
 		end
 		PlaceResourcePile(meat_bag:GetVisualPos(), res, Random(1, 5) * const.ResourceScale)
-		meat_bag:Erase()
+		meat_bag:SetCommand("Erase")
 	end
 
 	-- one meatbag at a time
@@ -244,7 +244,7 @@ I think somebody has been playing too much Fallout...]]],
 
 		if show_popup then
 			MsgPopup(
-				Strings[302535920000744--[[%s: Wholesale slaughter]]]:format(#choice),
+				Strings[302535920000744--[["It is every citizen's final duty to go into the tanks and become one with all the people."]]],
 				Strings[302535920000375--[[The Soylent Option]]]
 			)
 		end

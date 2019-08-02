@@ -24,13 +24,14 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local T = T
+local _InternalTranslate = _InternalTranslate
 local procall = procall
 
 local function SafeTrans(...)
 	local varargs = ...
 	local str
 	procall(function()
-		str = T(varargs)
+		str = _InternalTranslate(T(varargs))
 	end)
 	return str or "Missing string... Nope just needs UICity which isn't around till the game starts (ask the devs)."
 end

@@ -439,10 +439,10 @@ Hold <green>Ctrl</green> to close <color red>all</color> ECM dialogs."
 302535920000627,"Show func name in exec code line."
 302535920000168,"Continually call this function while showing results in an examine dialog."
 302535920001622,"Particle"
-302535920001620,"Click to toggle between Viewing/Dumping the Text or Object.
-<green>Text</green> is what you see, <green>Object</green> is the text created from ValueToLuaCode(obj)."
-302535920000046,"Dumps Text/Object to <green>%slogs\DumpedExamine.lua</green>."
-302535920000047,"View Text/Object, and optionally dumps text to <green>%slogs\DumpedExamine.lua</green> (may take awhile for large text)."
+302535920001620,"Click to toggle between Text or Object (View/Dump).
+<yellow>Text</yellow> is what you see, <yellow>Object</yellow> is the text created from ValueToLuaCode(obj)."
+302535920000046,"Dumps Text/Object to <yellow>%slogs\DumpedExamine.lua</yellow>."
+302535920000047,"View Text/Object, and optionally dumps text to <yellow>%slogs\DumpedExamine.lua</yellow>."
 302535920000048,"View"
 302535920001027,"Object can take time on something like the ""Building"" class object."
 302535920001573,"Spot Id"
@@ -975,11 +975,10 @@ Best hope you picked India as your Mars sponsor..."
 
 I think somebody has been playing too much Fallout..."
 302535920000743,"Childkiller"
-302535920000744,"%s: Wholesale slaughter"
+302535920000744,"It is every citizen's final duty to go into the tanks and become one with all the people."
 302535920000747,"Convert useless meatbags into productive protein.
 
 Certain colonists may take some time (traveling in shuttles).
-
 This will not effect your applicants/game failure (genocide without reprisal ftw)."
 302535920000748,"Random resource"
 302535920000749,"Drops random resource instead of food."

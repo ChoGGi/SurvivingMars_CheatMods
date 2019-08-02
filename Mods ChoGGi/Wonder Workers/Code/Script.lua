@@ -20,8 +20,7 @@ local function ModOptions()
 
 	local objs = UICity.labels.Wonders or ""
 	for i = 1, #objs do
-		local obj = objs[i]
-		UpdateWorkers(obj)
+		UpdateWorkers(objs[i])
 	end
 end
 
@@ -62,6 +61,17 @@ local wonder_specs = {
 	TheExcavator = "geologist",
 }
 
+--~ function ChoGGi.ComFuncs.ToggleWorking(obj)
+local function ToggleWorking(obj)
+	if IsValid(obj) then
+		CreateRealTimeThread(function()
+			obj:ToggleWorking()
+			Sleep(5)
+			obj:ToggleWorking()
+		end)
+	end
+end
+
 function OnMsg.LoadGame()
 	if g_ChoGGi_WonderWorkersAdded then
 		return
@@ -79,6 +89,7 @@ function OnMsg.LoadGame()
 			Workplace_Init(obj)
 			Workplace_GameInit(obj)
 			UpdateWorkers(obj)
+			ToggleWorking(obj)
 		end
 		local spec = wonder_specs[obj.class]
 		if spec then

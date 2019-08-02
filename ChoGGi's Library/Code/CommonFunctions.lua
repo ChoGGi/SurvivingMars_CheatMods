@@ -209,6 +209,7 @@ do -- RetName
 	end
 
 	local values_lookup = {
+		"title",
 		"encyclopedia_id",
 		"id",
 		"Id",
@@ -474,7 +475,8 @@ end -- do
 local RetName = ChoGGi.ComFuncs.RetName
 
 local function IsValidXWin(win)
-	if win and win.window_state ~= "destroying" then
+	win = win and win.window_state
+	if win and win ~= "destroying" then
 		return true
 	end
 end
@@ -4152,7 +4154,6 @@ end -- do
 function ChoGGi.ComFuncs.RetTemplateOrClass(obj)
 	return obj.template_name ~= "" and obj.template_name or obj.class
 end
-
 
 do -- ToggleBldFlags
 	local function ToggleBldFlags(obj, flag)

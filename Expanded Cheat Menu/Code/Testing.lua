@@ -468,6 +468,28 @@ end)
 
 -- benchmarking stuff
 
+function ChoGGi.testing.StringVsDot()
+
+	local lookup_table = {a = true,b = true,c = true,d = true,e = true,f = true}
+
+	local nothing
+	ChoGGi.ComFuncs.TickStart("StringVsDot.Tick.1")
+	for _ = 1, 100000000 do
+		if lookup_table["d"] then
+		end
+	end
+	ChoGGi.ComFuncs.TickEnd("StringVsDot.Tick.1")
+
+	ChoGGi.ComFuncs.TickStart("StringVsDot.Tick.2")
+	for _ = 1, 100000000 do
+		if lookup_table.d then
+		end
+	end
+	ChoGGi.ComFuncs.TickEnd("StringVsDot.Tick.2")
+
+end
+
+
 function ChoGGi.testing.LocalVsTableLookup()
 
 	local lookup_table = {}

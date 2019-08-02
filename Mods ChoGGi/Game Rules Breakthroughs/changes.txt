@@ -1,3 +1,6 @@
+v0.5
+Properly fixed descriptions for people without my lib mod.
+
 v0.4
 Fixed possible blank screen in mission profile.
 

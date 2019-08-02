@@ -141,6 +141,7 @@ end -- do
 -- fake mod used to tell if it's my comp, if you want some extra msgs and .testing funcs have at it
 if Mods.ChoGGi_testing then
 	ChoGGi.testing = {}
+	local print = print
 	function printC(...)
 		print(...)
 	end

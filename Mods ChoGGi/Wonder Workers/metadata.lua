@@ -18,6 +18,7 @@ return PlaceObj("ModDef", {
 	"TagBuildings", true,
 	"description", [[Wonders require workers.
 Mod options to set amount (or 0) of workers required (default 10 per shift).
+It doesn't work on existing buildings, so demo or start a new game.
 
 Didn't set any specs for ArtificialSun/SpaceElevator, suggestions?
 

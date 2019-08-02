@@ -1,7 +1,8 @@
 -- See LICENSE for terms
 
 local function IsValidXWin(win)
-	if win and win.window_state ~= "destroying" then
+	win = win and win.window_state
+	if win and win ~= "destroying" then
 		return true
 	end
 end

@@ -18,6 +18,7 @@ function OnMsg.ClassesPostprocess()
 		"display_name_pl", T(0, "Layout Construction Example ChoGGis"),
 		"description", T(0, "Some buildings"),
 		"display_icon", "UI/Icons/Buildings/self-sufficient_dome.tga",
+		"build_pos", 1,
 		-- hands off
 		"template_class", "LayoutConstructionBuilding",
 		"entity", "InvisibleObject",
