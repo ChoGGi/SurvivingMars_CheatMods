@@ -1,2 +1,5 @@
+v0.3
+Added resource count to rocket landing mode.
+
 v0.2
 Added resource count to construction mode.

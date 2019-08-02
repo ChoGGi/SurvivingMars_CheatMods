@@ -64,6 +64,8 @@ local function GetAvailableResources(self, cursor_obj)
 					res_count[obj.resource] = res_count[obj.resource] + obj.total_stockpiled
 				end
 			end
+		elseif obj:IsKindOf("SurfaceDeposit") then
+			res_count[obj.resource] = res_count[obj.resource] + obj:GetAmount()
 		end
 	end
 
@@ -107,6 +109,7 @@ function OnMsg.ClassesPostprocess()
 	xtemplate.RolloverText = xtemplate.RolloverText .. T("<newline><ChoGGi_GetAvailableResources>")
 end
 
+local rockets = {"RocketLandingSite", "SupplyRocketBuilding"}
 -- add text info to building placement
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit(...)
@@ -114,7 +117,7 @@ function CursorBuilding:GameInit(...)
 
 	-- DroneHubs or Rockets, not much point in rovers
 	local sel_radius = self.template.GetSelectionRadiusScale
-	if sel_radius or self.template:IsKindOf("SupplyRocketBuilding") then
+	if sel_radius or self.template:IsKindOfClasses(rockets) then
 		self.ChoGGi_UpdateAvailableResources = sel_radius and sel_radius(self)
 			or SupplyRocket.work_radius
 		self.ChoGGi_txt_ctrl = XText:new({
@@ -136,7 +139,8 @@ local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
 function CursorBuilding:UpdateShapeHexes(...)
 	orig_CursorBuilding_UpdateShapeHexes(self, ...)
 	if self.ChoGGi_UpdateAvailableResources then
-		local objs = MapGet(self, "hex", self.ChoGGi_UpdateAvailableResources, "StorageDepot", "ResourceStockpile")
+		-- not sure why SurfaceDepositGroup don't work?
+		local objs = MapGet(self, "hex", self.ChoGGi_UpdateAvailableResources, "StorageDepot", "ResourceStockpile", "SurfaceDeposit")
 		if #objs > 0 then
 			self.ChoGGi_txt_ctrl:SetText(GetAvailableResources(self, objs))
 		end
