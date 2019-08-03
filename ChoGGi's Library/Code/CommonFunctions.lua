@@ -2907,6 +2907,18 @@ do -- DeleteObject
 
 	local DeleteObject
 
+	local function DeleteLabelObjs(obj, label)
+		SuspendPassEdits("ChoGGi.ComFuncs.DeleteLabelObjs")
+		local objs = obj.labels[label] or ""
+		for i = #objs, 1, -1 do
+			local obj = objs[i]
+			if not obj.passage_obj then
+				DeleteObject(obj, true)
+			end
+		end
+		ResumePassEdits("ChoGGi.ComFuncs.DeleteLabelObjs")
+	end
+
 	local function ExecFunc(obj, funcname, ...)
 		if type(obj[funcname]) == "function" then
 			obj[funcname](obj, ...)
@@ -2914,19 +2926,30 @@ do -- DeleteObject
 	end
 
 	local function DeleteFunc(obj, skip_demo)
-		-- deleting domes will freeze game if they have anything in them.
-		if obj:IsKindOf("Dome") and not obj:CanDemolish() then
-			MsgPopup(
-				Strings[302535920001354--[[%s is a Dome with buildings (likely crash if deleted).]]]:format(RetName(obj)),
-				Strings[302535920000489--[[Delete Object(s)]]]
-			)
+		if not IsValid(obj) then
 			return
+		end
+
+		-- buildings, colonists, and passages need to be removed first
+		if obj:IsKindOf("Dome") and not obj:CanDemolish() then
+			DeleteLabelObjs(obj, "Building")
+			DeleteLabelObjs(obj, "Colonist")
+			if not obj:CanDemolish() then
+				MsgPopup(
+					Strings[302535920001354--[["<green>%s</green> is a Dome with stuff still in it (crash if deleted)."]]]:format(RetName(obj)),
+					Strings[302535920000489--[[Delete Object(s)]]]
+				)
+				return
+			end
 		end
 
 		-- actually delete the whole passage
 		if obj:IsKindOf("Passage") then
+			for i = #obj.elements, 1, -1 do
+				DeleteObject(obj.elements[i], true)
+			end
 			for i = #obj.elements_under_construction, 1, -1 do
-				DeleteObject(obj.elements_under_construction[i])
+				DeleteObject(obj.elements_under_construction[i], true)
 			end
 		end
 
@@ -2998,7 +3021,9 @@ do -- DeleteObject
 	end
 
 	function ChoGGi.ComFuncs.DeleteObject(objs, skip_demo)
-		DeleteObject = DeleteObject or ChoGGi.ComFuncs.DeleteObject
+		if not DeleteObject then
+			DeleteObject = ChoGGi.ComFuncs.DeleteObject
+		end
 
 		if IsKindOf(objs, "XAction") then
 			objs = SelObjects()
@@ -4231,7 +4256,7 @@ function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
 		if answer then
 			if obj:IsKindOf("Dome") and not obj:CanDemolish() then
 				MsgPopup(
-					Strings[302535920001354--[[%s is a Dome with buildings (likely crash if deleted).]]]:format(name),
+					Strings[302535920001354--[["<green>%s</green> is a Dome with stuff still in it (crash if deleted)."]]]:format(name),
 					Strings[302535920000489--[[Delete Object(s)]]]
 				)
 				return
