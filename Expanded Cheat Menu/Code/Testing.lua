@@ -24,11 +24,28 @@ if not ChoGGi.testing then
 	return
 end
 
+-- hopefully they'll report "LUA ERROR"s one of these days
 function OnMsg.OnLuaError(err, stack)
 	print("OnLuaError", err, stack)
 end
 function OnMsg.OnModLuaError(err, stack)
 	print("OnModLuaError", err, stack)
+end
+
+-- for some annoying reason my account settings are sometimes reset, so (probably something to do with some pop funcs I block)
+if not ChoGGi.blacklist then
+	local as = AccountStorage
+	as.Options.AutoPinDomes = false
+	as.Options.AutoPinDroneHubs = false
+	as.Options.AutoPinFounders = false
+	as.Options.AutoPinRareColonists = false
+	as.Options.AutoPinRovers = false
+	as.Options.Autosave = false
+	as.Options.HintsEnabled = false
+	as.Options.TerraformingHintsEnabled = false
+	as.CompletedTutorials = as.CompletedTutorials or {}
+	as.CompletedTutorials.Tutorial1 = true
+	as.Shortcuts["ECM.Debug.Object.Delete Object(s)"] = {"Ctrl-Shift-D"}
 end
 
 local function StartUp()
@@ -293,22 +310,6 @@ end -- do
 --~ 			return orig_XImage_DrawContent(self, ...)
 --~ 		end
 
--- for some annoying reason my account settings are sometimes reset, so (probably something to do with some pop funcs I block)
-if not ChoGGi.blacklist then
-	local as = AccountStorage
-	as.Options.AutoPinDomes = false
-	as.Options.AutoPinDroneHubs = false
-	as.Options.AutoPinFounders = false
-	as.Options.AutoPinRareColonists = false
-	as.Options.AutoPinRovers = false
-	as.Options.Autosave = false
-	as.Options.HintsEnabled = false
-	as.Options.TerraformingHintsEnabled = false
-	as.CompletedTutorials = as.CompletedTutorials or {}
-	as.CompletedTutorials.Tutorial1 = true
-	as.Shortcuts["ECM.Debug.Object.Delete Object(s)"] = {"Ctrl-Shift-D"}
-end
-
 --~ 		-- stop welcome to mars msg for LoadMapForScreenShot
 --~ 		ShowStartGamePopup = empty_func
 -- this is just for Map Images Pack. it loads the map, positions camera to fixed pos, and takes named screenshot
@@ -468,11 +469,31 @@ end)
 
 -- benchmarking stuff
 
+function ChoGGi.testing.LocalLoops()
+
+	local AsyncRand = AsyncRand
+	ChoGGi.ComFuncs.TickStart("LocalLoops.Tick.1")
+	for _ = 1, 100000000 do
+		local x = AsyncRand()
+		if x then
+		end
+	end
+	ChoGGi.ComFuncs.TickEnd("LocalLoops.Tick.1")
+
+	ChoGGi.ComFuncs.TickStart("LocalLoops.Tick.2")
+	local x
+	for _ = 1, 100000000 do
+		x = AsyncRand()
+		if x then
+		end
+	end
+	ChoGGi.ComFuncs.TickEnd("LocalLoops.Tick.2")
+end
+
 function ChoGGi.testing.StringVsDot()
 
 	local lookup_table = {a = true,b = true,c = true,d = true,e = true,f = true}
 
-	local nothing
 	ChoGGi.ComFuncs.TickStart("StringVsDot.Tick.1")
 	for _ = 1, 100000000 do
 		if lookup_table["d"] then

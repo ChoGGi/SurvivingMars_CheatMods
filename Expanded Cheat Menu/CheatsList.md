@@ -261,13 +261,15 @@ Debug.Framerate Counter>Toggle: Disabled: Switch between FPS, ms, and off.
 This is temporary, use Options>Video>Framerate Counter to permanently save it.
 Debug.Framerate Counter>Up Left
 Debug.Framerate Counter>Up Right: Default
-Debug.Grids>Follow Mouse Grid Size: 25: Sets the size of the Building/Flight grid.
+Debug.Grids>Follow Mouse Grid Position: 0: Type of positioning to show.
+Debug.Grids>Follow Mouse Grid Size: 12: Sets the size of the Building/Flight grid.
 Debug.Grids>Follow Mouse Grid Trans: 15: How transparent the Building/Flight grid is.
 Debug.Grids>Show Grid 45 Square: Square 45 (use Disable to hide).
 Debug.Grids>Show Grid Disable: Hide the white ground grids.
 Debug.Grids>Show Grid Hex: Hex (use Disable to hide).
 Debug.Grids>Show Grid Small: Small (use Disable to hide).
 Debug.Grids>Show Grid Square: Square (use Disable to hide.
+Debug.Grids>Toggle Building Grid Position: Like Toggle Building Grid, but this shows hex positioning (offset or map, change in settings).
 Debug.Grids>Toggle Building Grid: Show a hex grid around mouse:
 Green = pass/build, Yellow = no pass/build,
 Blue = pass/no build, Red = no pass/no build.
@@ -276,8 +278,9 @@ Debug.Object>Anim State Set: Make selected object dance on command.
 Debug.Object>Delete All Of Selected Object: Will ask for confirmation beforehand (will not delete domes).
 Debug.Object>Delete Object(s): Deletes selected object or object under mouse cursor (most objs, not all).
 Debug.Object>Edit Object: Manipulate objects (selected or under mouse cursor)
+Debug.Object>Examine Object Radius: Set the radius used for Shift-F4 examining.
 Debug.Object>Examine Object: Opens the object examiner for the selected or moused-over obj.
-Use Shift-F4 or Ctrl-F4 to show a list of all objects in a radius around cursor.
+Use Shift-F4 to show a list of all objects in a radius around cursor.
 Debug.Object>Object Cloner: Clones selected/moused over object to current mouse position (should probably use the shortcut key rather than this menu item).
 Debug.Object>Object Edit Flags: Shows list of flags set for selected object.
 Debug.Object>Open In Ged Object Editor: Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset).
@@ -531,7 +534,6 @@ Game.Lightmodel>List Normal: Changes the list of lightmodels to use (night/day/e
 Game.Map>Change Map: Change map (options to pick commander, sponsor, etc...
 Attention: If you get yellow ground areas; just load it again or try Reload Map.
 Game.Map>Reload Map: Reloads map as new game.
-Game.Object>Annoying Sounds: Toggle annoying sounds (Sensor Tower, Mirror Sphere, Rover deployed drones, Drone incessant beeping).
 Game.Object>Auto Unpin Objects: Will automagically stop any of these objects from being added to the pinned list.
 Game.Object>Change Surface Signs To Materials: Changes all the ugly immersion breaking signs to materials (reversible).
 Game.Object>Color Modifier: Select/mouse over an object to change the colours
@@ -569,7 +571,6 @@ Game.UI>UI Transparency: Change the transparency of UI items (info panel, menu, 
 Shortcut Keys>Clear Log
 Shortcut Keys>Color Modifier Default Colour
 Shortcut Keys>Color Modifier Random Colour
-Shortcut Keys>Examine Objects Ctrl
 Shortcut Keys>Examine Objects Shift
 Shortcut Keys>Place Last Selected/Constructed Building
 Shortcut Keys>Restart

@@ -1,9 +1,9 @@
 ### Add locale support to your mod (wtf is up with all this StringBase + 1 I see...)
 ```lua
 If you're translating for XWindows, and you need to use a table value use:
-T{123,"string",context_value = some_obj}
+T{123, "string", context_value = some_obj}
 Otherwise you can skip the table creation and just use:
-T(123,"string")
+T(123, "string")
 ```
 
 ```lua
@@ -40,7 +40,7 @@ Msg("TranslationChanged")
 function OnMsg.TranslationChanged(skip)
 	if skip ~= "skip_inf_loop" then
 		LoadTranslationTableFile(locale_path)
-		Msg("TranslationChanged","skip_inf_loop")
+		Msg("TranslationChanged", "skip_inf_loop")
 	end
 end
 
@@ -55,38 +55,27 @@ start changing strings, and then send you the file.
 I like to use this function for ease of use (and to make sure I always get a string back):
 
 do -- Translate
+	-- the string _InternalTranslate returns on failure
+	local missing_text = "Missing text"
+
 	-- local some globals
-	local T,_InternalTranslate,IsT,TGetID = T,_InternalTranslate,IsT,TGetID
-	local type,select,pcall,tostring = type,select,pcall,tostring
+	local _InternalTranslate = _InternalTranslate
+	local type, select, tostring = type, select, tostring
+	local T, IsT, count_params = T, IsT, count_params
 
-	-- translate func that always returns a string
+	-- translate func that always returns a string (string id, {id,value}, nil)
 	function Translate(...)
-		local str,result
-		local stype = type(select(1,...))
-		if stype == "userdata" or stype == "number" then
-			str = T{...}
-		else
-			str = ...
-		end
-
-		-- certain stuff will fail without this obj, so just pass it off to pcall and let it error out
-		if UICity then
-			result,str = true,_InternalTranslate(str)
-		else
-			result,str = pcall(_InternalTranslate,str)
-		end
+		local str = _InternalTranslate(T(...) or "")
 
 		-- Missing text means the string id wasn't found (generally)
-		if str == "Missing text" then
-			return (IsT(...) and TGetID(...) or tostring(...)) .. " *bad string id?"
-		-- just in case
-		elseif not result or type(str) ~= "string" then
-			str = select(2,...)
+		if str == "" or str == missing_text or type(str) ~= "string" then
+			-- if count over 1 then use the second arg (which might be a string)
+			str = count_params(...) > 1 and select(2, ...)
 			if type(str) == "string" then
 				return str
 			end
-			-- i'd rather know if something failed by having a bad string rather than a failed func
-			return (IsT(...) and TGetID(...) or tostring(...)) .. " *bad string id?"
+			-- i'd rather know if something failed by having a missing string rather than a failed func
+			return (IsT(...) or tostring(...)) .. " *bad string id?"
 		end
 
 		-- and done

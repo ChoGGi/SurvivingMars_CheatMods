@@ -12,34 +12,22 @@ local missing_text = ChoGGi.Temp.missing_text
 
 -- local some globals
 local _InternalTranslate = _InternalTranslate
-local type, select, tostring, next = type, select, tostring, next
-local T, IsT, TGetID, count_params = T, IsT, TGetID, count_params
+local type, select, tostring = type, select, tostring
+local T, IsT, count_params = T, IsT, count_params
 
--- translate func that always returns a string
+-- translate func that always returns a string (string id, {id,value}, nil)
 local function Translate(...)
-	local count = count_params(...) > 1
-	local str = count and T(...) or T{...}
-
-	-- not a translatable obj
-	if not IsT(str) then
-		return missing_text
-	end
-
-	local result
-	result, str = true, _InternalTranslate(str)
+	local str = _InternalTranslate(T(...) or "")
 
 	-- Missing text means the string id wasn't found (generally)
-	if str == missing_text then
-		return (IsT(str) and TGetID(str) or tostring(...)) .. " *bad string id?"
-	-- just in case
-	elseif not result or type(str) ~= "string" then
+	if str == "" or str == missing_text or type(str) ~= "string" then
 		-- if count over 1 then use the second arg (which might be a string)
-		str = not count and select(2, ...)
+		str = count_params(...) > 1 and select(2, ...)
 		if type(str) == "string" then
 			return str
 		end
-		-- i'd rather know if something failed by having a bad string rather than a failed func
-		return (IsT(str) and TGetID(str) or tostring(...)) .. " *bad string id?"
+		-- i'd rather know if something failed by having a missing string rather than a failed func
+		return (IsT(...) or tostring(...)) .. " *bad string id?"
 	end
 
 	-- and done
@@ -54,14 +42,7 @@ do -- fix missing tech defs description in main menu/new game
 	}
 
 	local orig_BuildingInfoLine = BuildingInfoLine
-	local pcall = pcall
-
-	local function ResetFunc()
-		BuildingInfoLine = orig_BuildingInfoLine
-	end
-	-- we don't need to check once UICity exists
-	OnMsg.CityStart = ResetFunc
-	OnMsg.LoadGame = ResetFunc
+	local procall = procall
 
 	function BuildingInfoLine(...)
 		-- add fake city so BuildingInfoLine doesn't fail
@@ -69,8 +50,8 @@ do -- fix missing tech defs description in main menu/new game
 			UICity = fake_city
 		end
 
-		-- just to on the safe side (don't want to leave UICity as fake_city)
-		local _, ret = pcall(orig_BuildingInfoLine, ...)
+		-- just to on the safe side (procall)
+		local _, ret = procall(orig_BuildingInfoLine, ...)
 
 		if UICity == fake_city then
 			UICity = false
@@ -78,6 +59,13 @@ do -- fix missing tech defs description in main menu/new game
 
 		return ret
 	end
+
+	-- we don't need to fake it once UICity exists
+	local function ResetFunc()
+		BuildingInfoLine = orig_BuildingInfoLine
+	end
+	OnMsg.CityStart = ResetFunc
+	OnMsg.LoadGame = ResetFunc
 end -- do
 
 -- we need to pad some zeros
@@ -85,7 +73,7 @@ local locId_sig = shift(255, 56)
 local LightUserData = LightUserData
 local bor = bor
 local GetLanguage = GetLanguage
-local setmetatable = setmetatable
+local setmetatable, next = setmetatable, next
 function ChoGGi.ComFuncs.UpdateStringsList()
 	local lang = GetLanguage()
 	ChoGGi.lang = lang
@@ -94,13 +82,12 @@ function ChoGGi.ComFuncs.UpdateStringsList()
 
 	-- if there's a missing id print/return a warning
 	if not next(strings) then
+		local print = print
 		setmetatable(strings, {
 			__index = function(_, id)
-				if type(id) == "number" then
-					id = "ECM Sez: bad string id? " .. id
-					print(id)
-					return id
-				end
+				id = "ECM Sez: *bad string id? " .. id
+				print(id)
+				return id
 			end,
 		})
 	end
@@ -121,10 +108,11 @@ function ChoGGi.ComFuncs.UpdateStringsList()
 
 	-- devs didn't bother changing droid font to one that supports unicode, so we do this when it isn't eng
 	if lang ~= "English" then
-			-- first get the unicode font name
+		-- first get the unicode font name
 		local f = Translate(997--[[*font*, 15, aa]])
 		-- index of first , then crop out the rest
 		f = f:sub(1, f:find(", ")-1)
+		-- might use it?
 		ChoGGi.font = f
 
 		-- these four don't get to use non-eng fonts, cause screw you is why

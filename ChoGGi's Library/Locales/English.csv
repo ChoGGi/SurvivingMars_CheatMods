@@ -12,6 +12,7 @@
 302535920000985,
 302535920000986,
 302535920000990,
+302535920001066,
 302535920001085,
 302535920001086,
 302535920001087,
@@ -95,7 +96,7 @@
 302535920000864,"Delete Large Rocks"
 302535920001356,"New"
 302535920001355,"Map"
-302535920001354,"<green>%s</green> is a Dome with buildings (likely crash if deleted)."
+302535920001354,"<green>%s</green> is a Dome with stuff still in it (crash if deleted)."
 302535920000723,"Lua"
 302535920001257,"Auto-refresh list every second."
 302535920001288,"Wrap Lines"
@@ -1614,7 +1615,6 @@ And yes Medium is using a higher setting than High..."
 302535920001062,"Down scrolling may not work (dependant on aspect ratio?)."
 302535920001063,"Disable mouse border scrolling, WASD still works fine."
 302535920001064,"Mouse"
-302535920001066,"What used to be the default for this ECM setting"
 302535920001065,"Menu Option"
 302535920001206,"Change how many Sols between autosaving."
 302535920000845,"Render"
@@ -2326,7 +2326,7 @@ Breakthroughs will be random as well.
 302535920011381,"Mirror Sphere Crackling"
 302535920011382,"Min"
 302535920011383,"Performance"
-302535920011335,
+302535920011335,"<name>'s <workplace>, est. <sol>"
 302535920011336,
 302535920011384,
 302535920011385,

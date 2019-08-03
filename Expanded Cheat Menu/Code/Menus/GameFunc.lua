@@ -1564,7 +1564,7 @@ function ChoGGi.MenuFuncs.HigherShadowDist_Toggle()
 end
 
 function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
-	local default_setting = ChoGGi.Consts.HigherRenderDist
+	local default_setting = ChoGGi.Consts.HigherRenderDist or ChoGGi.UserSettings.HigherRenderDist or 120
 	local hint_min = Strings[302535920001054--[[Minimal FPS hit on large base]]]
 	local hint_small = Strings[302535920001055--[[Small FPS hit on large base]]]
 	local hint_fps = Strings[302535920001056--[[FPS hit]]]
@@ -1793,7 +1793,7 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
 end
 
 function ChoGGi.MenuFuncs.SetCameraLookatDist()
-	local default_setting = ChoGGi.Consts.CameraLookatDist
+	local default_setting = ChoGGi.Consts.CameraLookatDist or ChoGGi.UserSettings.CameraLookatDist or 0
 	local item_list = {
 		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 10, value = 10},
@@ -1840,12 +1840,12 @@ function ChoGGi.MenuFuncs.SetCameraLookatDist()
 end
 
 function ChoGGi.MenuFuncs.SetCameraZoom()
-	local default_setting = ChoGGi.Consts.CameraZoomToggle
+	local default_setting = ChoGGi.Consts.CameraZoomToggle or ChoGGi.UserSettings.CameraZoomToggle or 24000
 	local item_list = {
 		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 16000, value = 16000},
 		{text = 20000, value = 20000},
-		{text = 24000, value = 24000, hint = Strings[302535920001066--[[What used to be the default for this ECM setting]]]},
+		{text = 24000, value = 24000, hint = Translate(1000121--[[Default]])},
 		{text = 32000, value = 32000},
 		{text = 64000, value = 64000},
 		{text = 128000, value = 128000},
