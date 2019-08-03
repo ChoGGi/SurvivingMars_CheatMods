@@ -1,2 +1,5 @@
+v0.3
+Removed Artificial Sun (it nevers produces power).
+
 v0.2
 Works on existing buildings.

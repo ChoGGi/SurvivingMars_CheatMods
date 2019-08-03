@@ -558,14 +558,7 @@ function OnMsg.ClassesPostprocess()
 	end
 end
 
--- see DroneCommands table
-local borked_lookup = {
-	NoBattery = true,
-	Malfunction = true,
-	Freeze = true,
-	Dead = true,
-	WaitingCommand = true,
-}
+-- see Drone:IsDisabled()
 function InfobarObj:ChoGGi_GetBrokenDrones()
 	local list = {}
 	local c = 0
@@ -573,7 +566,7 @@ function InfobarObj:ChoGGi_GetBrokenDrones()
 	local objs = MapGet("map", "Drone")
 	for i = 1, #objs do
 		local obj = objs[i]
-		if borked_lookup[obj.command] then
+		if obj:IsDisabled() then
 			c = c + 1
 			list[c] = obj
 		end

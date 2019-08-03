@@ -3,7 +3,7 @@
 local properties = {}
 
 local wonders = {
-	"ArtificialSun",
+--~ 	"ArtificialSun",
 	"MoholeMine",
 	"OmegaTelescope",
 	"ProjectMorpheus",

@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 local wonders = {
-	"ArtificialSun",
+--~ 	"ArtificialSun",
 	"MoholeMine",
 	"OmegaTelescope",
 	"ProjectMorpheus",

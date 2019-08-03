@@ -28,7 +28,7 @@ return PlaceObj("ModDef", {
 
 This defaults to not requiring workers for any buildings (that's up to you).
 This won't work on mod buildings (even if they show up in the options).
-If anyone is up for making a list of specs for each building?
+If anyone is up for making a list of specs for each building? [url=https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Mods%20ChoGGi/Most%20Buildings%20Workers/specs]specs[/url]
 
 Default Performance is the performance of buildings without workers (default 100).
 
