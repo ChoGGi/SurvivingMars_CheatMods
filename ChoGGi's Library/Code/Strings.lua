@@ -16,15 +16,22 @@ local _InternalTranslate, T, IsT = _InternalTranslate, T, IsT
 
 -- translate func that always returns a string (string id, {id,value}, nil)
 local function Translate(t, context, ...)
+	if not t then
+		return missing_text
+	end
+	if t == "" then
+		return t
+	end
+
 	local str = _InternalTranslate(
-		(context and T(t, context, ...) or T{t, context, ...}) or ""
+		(context and T(t, context, ...) or T{t, context, ...})
 	)
 
 	-- Missing text means the string id wasn't found (generally)
-	if str == missing_text or str == "" or type(str) ~= "string" then
+	if str == missing_text or type(str) ~= "string" then
 		-- try to return the string id, if we can
 		print("Translate Failed:", t, context, ...)
-		return tostring(IsT(t) or t) .. " *bad string id?"
+		return tostring(IsT(t) or missing_text)
 	end
 
 	-- and done
@@ -81,9 +88,8 @@ function ChoGGi.ComFuncs.UpdateStringsList()
 	if not next(strings) then
 		setmetatable(strings, {
 			__index = function(_, id)
-				id = "ECM Sez: *bad string id? " .. tostring(id)
-				print(id)
-				return id
+				print("ECM Sez: *bad string id?", id)
+				return missing_text
 			end,
 		})
 	end

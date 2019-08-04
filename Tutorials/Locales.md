@@ -54,39 +54,39 @@ start changing strings, and then send you the file.
 
 I like to use this function for ease of use (and to make sure I always get a string back):
 
-do -- Translate
-	-- the string _InternalTranslate returns on failure
-	local missing_text = "Missing text"
+-- the string _InternalTranslate returns on failure
+local missing_text = "Missing text"
 
-	-- local some globals
-	local type, tostring, print = type, tostring, print
-	local _InternalTranslate, T, IsT = _InternalTranslate, T, IsT
+-- local some globals
+local type, tostring, print = type, tostring, print
+local _InternalTranslate, T, IsT = _InternalTranslate, T, IsT
 
-	-- translate func that always returns a string (string id, {id,value}, nil)
-	function Translate(t, context, ...)
-		local str = _InternalTranslate(
-			(context and T(t, context, ...) or T{t, context, ...}) or ""
-		)
-
-		-- Missing text means the string id wasn't found (generally)
-		if str == missing_text or str == "" or type(str) ~= "string" then
-			-- try to return the string id, if we can
-			print("Translate Failed:", t, context, ...)
-			return tostring(IsT(t) or t) .. " *bad string id?"
-		end
-
-		-- and done
-		return str
+-- translate func that always returns a string (string id, {id,value}, nil)
+function Translate(t, context, ...)
+	if not t then
+		return missing_text
 	end
-end -- do
+	if t == "" then
+		return t
+	end
+
+	local str = _InternalTranslate(
+		(context and T(t, context, ...) or T{t, context, ...})
+	)
+
+	-- Missing text means the string id wasn't found (generally)
+	if str == missing_text or type(str) ~= "string" then
+		-- try to return the string id, if we can
+		print("Translate Failed:", t, context, ...)
+		return tostring(IsT(t) or missing_text)
+	end
+
+	-- and done
+	return str
+end
 
 
-Translate(11111111110001029--[[The text from the csv in a comment, so I know what it means--]])
-
-
-or use:
-local T = Translate
-At the top of any new lua files. It'll work for both T() and T({})
+Translate(11111111110001029, "The text from the csv in a comment, so I know what it means")
 ```
 
 

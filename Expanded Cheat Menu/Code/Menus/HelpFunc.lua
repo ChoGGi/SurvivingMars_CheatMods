@@ -142,13 +142,6 @@ do -- ModUpload
 		-- always start with fresh table
 		table.clear(mod_params)
 
-		-- workaround for paradox blocking renaming of titles
-		local new_title = paradox_title[mod.id]
-		if new_title then
-			orig_title = mod.title
-			mod.title = new_title
-		end
-
 		-- add new mod
 		local err, item_id, prepare_worked, prepare_results, existing_mod
 		if steam_upload then
@@ -161,6 +154,12 @@ do -- ModUpload
 			item_id = mod.steam_id
 		-- paradox mods
 		else
+			-- workaround for paradox blocking renaming of titles
+			if paradox_title[mod.id] then
+				orig_title = mod.title
+				mod.title = paradox_title[mod.id]
+			end
+
 			-- we override the Platform checkbox if a uuid is in metadata.lua
 			-- if both are "" then it's probably a new mod, otherwise check for a uuid and use that prop
 			if mod.pops_desktop_uuid == "" and mod.pops_any_uuid == "" then
@@ -458,9 +457,9 @@ do -- ModUpload
 
 						m_c = m_c + 1
 						if steam_upload then
-							upload_msg[m_c] = Translate(1000012--[[Mod <ModLabel> will be uploaded to Steam]]):gsub("<ModLabel>", mod.title)
+							upload_msg[m_c] = T{1000012, "Mod <ModLabel> will be uploaded to Steam", ModLabel = mod.title}
 						else
-							upload_msg[m_c] = Translate(1000771--[[Mod <ModLabel> will be uploaded to Paradox]]):gsub("<ModLabel>", mod.title)
+							upload_msg[m_c] = T{1000771, "Mod <ModLabel> will be uploaded to Paradox", ModLabel = mod.title}
 						end
 
 						if pack_mod then
@@ -505,7 +504,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 
 					if choices_len == 1 then
 						ChoGGi.ComFuncs.QuestionBox(
-							TableConcat(upload_msg),
+							table.concat(upload_msg),
 							UploadMod,
 							mod.title,
 							nil,
@@ -572,10 +571,16 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			end
 			error_msgs = TableConcat(error_msgs)
 
+			local error_text = Strings[302535920000221--[[See log for any batch errors.]]]
+			-- only add error msg if single mod
+			if choices_len == 1 then
+				error_text = error_text .. "\n\n" .. error_msgs
+			end
+
 			-- let user know if we're good or not
 			print(error_msgs)
 			ChoGGi.ComFuncs.MsgWait(
-				Strings[302535920000221--[[See log for any batch errors.]]] .. "\n\n" .. error_msgs,
+				error_text,
 				Strings[302535920001586--[[All Done!]]],
 				upload_image
 			)

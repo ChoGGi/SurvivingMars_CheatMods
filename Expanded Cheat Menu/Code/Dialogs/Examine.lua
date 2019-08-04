@@ -2316,8 +2316,18 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 				else
 					obj_name = "o[\"" .. obj_name .. "\"] = "
 				end
+
 				if obj_value_type == "string" then
+					-- add quotes to strings
 					obj_value_str = "\"" .. obj_value_str .. "\""
+				elseif obj_value_type == "userdata" then
+					if IsPoint(obj_value) then
+						-- add point to points
+						obj_value_str = "point" .. obj_value_str
+					elseif IsBox(obj_value) then
+						-- box to boxes, as well as subbing )-( to ,
+						obj_value_str = "box" .. obj_value_str:gsub("%)%-%(", ", ")
+					end
 				end
 
 				self:ShowExecCodeWithCode(obj_name .. obj_value_str)
@@ -2622,7 +2632,7 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 			local trans_str
 			if IsT(obj) then
 				trans_str = Translate(obj)
-				if trans_str == missing_text or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
+				if trans_str == missing_text then
 					trans_str = tostring(obj)
 				end
 			else

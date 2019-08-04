@@ -689,7 +689,7 @@ function ChoGGi_DlgListChoice:BuildList(save_pos)
 		-- add rollover text
 		local title = item.text
 		if type(item.value) ~= nil and item.value ~= item.text then
-			title = item.text .. ": <color 200 255 200>" .. item.value .. "</color>"
+			title = item.text .. ": <color 200 255 200>" .. tostring(item.value) .. "</color>"
 		end
 		listitem.RolloverTitle = Translate(title)
 

@@ -3559,7 +3559,7 @@ do -- ValueToStr
 			-- show translated text if possible, otherwise check for metatable name
 			if IsT(obj) then
 				local trans_str = Translate(obj)
-				if trans_str == missing_text or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
+				if trans_str == missing_text then
 					local meta = getmetatable(obj).__name
 					return tostring(obj) .. (meta and " " .. meta or ""), obj_type
 				end

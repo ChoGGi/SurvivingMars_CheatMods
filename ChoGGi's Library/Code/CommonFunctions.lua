@@ -455,7 +455,7 @@ do -- RetName
 			if IsT(obj) then
 				local trans_str = Translate(obj)
 				-- missing text is from internaltranslate, i check the str length before calling the func as it has to be at least 16 chars
-				if trans_str == missing_text or #trans_str > 16 and trans_str:sub(-16) == " *bad string id?" then
+				if trans_str == missing_text then
 					return tostring(obj)
 				end
 				return trans_str
