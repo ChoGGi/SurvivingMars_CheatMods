@@ -744,15 +744,15 @@ function OnMsg.ClassesPostprocess()
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
 				"Icon", "UI/Icons/IPButtons/automated_mode_on.tga",
-				"RolloverTitle", T(1000077--[[Rotate]]),
-				"RolloverText", T(7519--[[<left_click>]]) .. " "
-					.. T(312752058553--[[Rotate Building Left]]).. "\n"
-					.. T(7366--[[<right_click>]]) .. " "
-					.. T(306325555448--[[Rotate Building Right]]),
+				"RolloverTitle", T(1000077, "Rotate"),
+				"RolloverText", T(7519, "<left_click>") .. " "
+					.. T(312752058553, "Rotate Building Left").. "\n"
+					.. T(7366, "<right_click>") .. " "
+					.. T(306325555448, "Rotate Building Right"),
 				"RolloverHint", "",
-				"RolloverHintGamepad", T(7518--[[ButtonA]]) .. " "
-					.. T(312752058553--[[Rotate Building Left]]) .. " "
-					.. T(7618--[[ButtonX]]) .. " " .. T(306325555448--[[Rotate Building Right]]),
+				"RolloverHintGamepad", T(7518, "ButtonA") .. " "
+					.. T(312752058553, "Rotate Building Left") .. " "
+					.. T(7618, "ButtonX") .. " " .. T(306325555448, "Rotate Building Right"),
 				"OnPress", function (self, gamepad)
 					self.context:Rotate(not gamepad and IsMassUIModifierPressed())
 					ObjModified(self.context)
@@ -798,10 +798,10 @@ function OnMsg.ClassesPostprocess()
 
 <em>Would you care for another schnitzengruben?</em>]]),
 
-				"RolloverHint", T(7519--[[<left_click>]]) .. " " .. T(1000541--[[+]]) .. " "
-					.. T(7366--[[<right_click>]]) .. " " .. T(1000540--[[-]]),
-				"RolloverHintGamepad", T(7518--[[ButtonA]]) .. " " .. T(1000541--[[+]])
-					.. " " .. T(7618--[[ButtonX]]) .. " " .. T(1000540--[[-]]),
+				"RolloverHint", T(7519, "<left_click>") .. " " .. T(1000541, "+") .. " "
+					.. T(7366, "<right_click>") .. " " .. T(1000540, "-"),
+				"RolloverHintGamepad", T(7518, "ButtonA") .. " " .. T(1000541, "+")
+					.. " " .. T(7618, "ButtonX") .. " " .. T(1000540, "-"),
 				"OnPress", function (self, gamepad)
 					self.context:AdjustWallLength(not gamepad and IsMassUIModifierPressed())
 					ObjModified(self.context)

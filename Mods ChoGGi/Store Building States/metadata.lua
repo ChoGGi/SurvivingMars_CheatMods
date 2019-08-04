@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 7,
-			"version_minor", 2,
+			"version_minor", 3,
 		}),
 	},
 	"title", "Store Building States",
@@ -15,7 +15,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_StoreBuildingStates",
 	"steam_id", "1713268417",
-	"pops_any_uuid", "d80e39f7-43bc-4f8a-89a6-72bfbadcbd11",
+	"pops_desktop_uuid", "d80e39f7-43bc-4f8a-89a6-72bfbadcbd11",
 	"author", "ChoGGi",
 	"lua_revision", 245618,
 	"code", {

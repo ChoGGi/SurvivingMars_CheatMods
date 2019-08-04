@@ -34,8 +34,8 @@ local MulDivRound = MulDivRound
 local T = T
 local ResourceScale = const.ResourceScale
 
-local name = T(302535920011220, [[RC Tanker]])
-local description = T(302535920011221, [[Used to transport oxygen and water between tanks.
+local name = Translate(302535920011220, [[RC Tanker]])
+local description = Translate(302535920011221, [[Used to transport oxygen and water between tanks.
 Tank will always refer to the storage on the ground, not the tank on the RC.]])
 local display_icon = CurrentModPath .. "UI/rover_tanker.png"
 
@@ -117,7 +117,7 @@ DefineClass.RCTanker = {
 
 	entity = entity_rc,
 --~ 	accumulate_dust = false,
-	status_text = _InternalTranslate(T(6722--[[Idle]])),
+	status_text = Translate(6722, "Idle"),
 	-- refund res
 	on_demolish_resource_refund = { Metals = 20 * ResourceScale, MachineParts = 20 * ResourceScale , Electronics = 10 * ResourceScale },
 
@@ -208,23 +208,23 @@ local temp_status_table = {}
 function RCTanker:Getui_command()
 	temp_status_table[1] = self.status_text
 	if self.tank_type == "AirStorage" then
-		temp_status_table[2] = Translate(1074--[[Stored Air]]) .. " <image UI/Icons/Sections/Oxygen_1.tga> : " .. self.storage_amount / ResourceScale
+		temp_status_table[2] = Translate(1074, "Stored Air") .. " <image UI/Icons/Sections/Oxygen_1.tga> : " .. self.storage_amount / ResourceScale
 	else
-		temp_status_table[2] = Translate(33--[[Stored Water]]) .. " <image UI/Icons/Sections/Water_1.tga> : " .. self.storage_amount / ResourceScale
+		temp_status_table[2] = Translate(33, "Stored Water") .. " <image UI/Icons/Sections/Water_1.tga> : " .. self.storage_amount / ResourceScale
 	end
 
 	return TableConcat(temp_status_table, "<newline><left>")
 end
 
 function RCTanker:GotoFromUser(...)
-	self.status_text = Translate(63--[[Travelling]])
+	self.status_text = Translate(63, "Travelling")
 	-- if user broke off TankInteract then clear this here
 	self:TankInteractCleanup(2)
 	return BaseRover.GotoFromUser(self, ...)
 end
 
 function RCTanker:Idle()
-	self.status_text = Translate(6722--[[Idle]])
+	self.status_text = Translate(6722, "Idle")
 
 	self:SetState("idle")
 	self:Gossip("Idle")
@@ -236,9 +236,9 @@ end
 function RCTanker:RetResIconText()
 	local res_type = ""
 	if self.tank_type == "AirStorage" then
-		res_type = "<image UI/Icons/Sections/Oxygen_1.tga> " .. Translate(682--[[Oxygen]])
+		res_type = "<image UI/Icons/Sections/Oxygen_1.tga> " .. Translate(682, "Oxygen")
 	else
-		res_type = "<image UI/Icons/Sections/Water_1.tga> " .. Translate(681--[[Water]])
+		res_type = "<image UI/Icons/Sections/Water_1.tga> " .. Translate(681, "Water")
 	end
 	return res_type
 end
@@ -253,9 +253,9 @@ function RCTanker:RetInteractInfo(obj)
 
 	local res_obj, text
 	if self.tank_type == "AirStorage" then
-		res_obj, text = obj.air, Translate(682--[[Oxygen]])
+		res_obj, text = obj.air, Translate(682, "Oxygen")
 	else
-		res_obj, text = obj.water, Translate(681--[[Water]])
+		res_obj, text = obj.water, Translate(681, "Water")
 	end
 
 	local interact = self.interaction_mode
@@ -375,11 +375,11 @@ function RCTanker:TankInteract()
 	local obj = self.tank_interact_obj
 	-- make sure we're "close" enough
 	if obj:GetVisualDist(self:GetPos()) > self.min_dist_to_tank then
-		self.status_text = Translate(63--[[Travelling]])
+		self.status_text = Translate(63, "Travelling")
 		local nearest = obj:GetNearestSpot("idle", "Workrover", self)
 		self:Goto(obj:GetSpotPos(nearest))
 		self:SetState("idle")
-		self.status_text = Translate(6722--[[Idle]])
+		self.status_text = Translate(6722, "Idle")
 	end
 
 	-- if something went sideways between clicking and starting
@@ -427,7 +427,7 @@ function RCTanker:TankInteract()
 
 	-- drain tank to rc loop
 	if self.tank_direction then
-		self.status_text = Translate(11039--[[Loading cargo]])
+		self.status_text = Translate(11039, "Loading cargo")
 		while self.tank_interact_obj and res_obj.current_storage > 0 do
 			Sleep(delay)
 
@@ -454,7 +454,7 @@ function RCTanker:TankInteract()
 		end
 	-- fill tank from rc
 	else
-		self.status_text = Translate(11409--[[Unloading cargo]])
+		self.status_text = Translate(11409, "Unloading cargo")
 		local max_cap = res_obj.storage_capacity
 		while self.tank_interact_obj and self.storage_amount > 0 do
 			Sleep(delay)
@@ -578,12 +578,12 @@ Press to toggle.]]),
 		end
 		if self.tank_type == "AirStorage" then
 			self.tank_type = "WaterStorage"
-			button:SetRolloverTitle(T(681--[[Water]]) .. "\n\n" .. T(302535920011234, "Press to toggle."))
+			button:SetRolloverTitle(T(681, "Water") .. "\n\n" .. T(302535920011234, "Press to toggle."))
 			button:SetIcon("UI/Icons/Sections/Water_1.tga")
 			self.tank_obj:SetColorizationMaterial(1, -12211457, -24, 0)
 		else
 			self.tank_type = "AirStorage"
-			button:SetRolloverTitle(T(682--[[Oxygen]]) .. "\n\n" .. T(302535920011234, "Press to toggle."))
+			button:SetRolloverTitle(T(682, "Oxygen") .. "\n\n" .. T(302535920011234, "Press to toggle."))
 			button:SetIcon("UI/Icons/Sections/Oxygen_1.tga")
 			self.tank_obj:SetColorizationMaterial(1, -4450778, -24, 0)
 		end
@@ -601,7 +601,7 @@ Press to toggle.]]),
 			"__context_of_kind", "RCTanker",
 			"__template", "InfopanelButton",
 			"Icon", "UI/Icons/Sections/Oxygen_1.tga",
-			"RolloverTitle", T(682--[[Oxygen]]) .. "\n\n" .. T(302535920011234, "Press to toggle."),
+			"RolloverTitle", T(682, "Oxygen") .. "\n\n" .. T(302535920011234, "Press to toggle."),
 			"RolloverText", T{302535920011235, [[Type of resource you can transfer with this RC.
 
 <icon> Warning: Changing will empty RC tank!]], icon = str_image},

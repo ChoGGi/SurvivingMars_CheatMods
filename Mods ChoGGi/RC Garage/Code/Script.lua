@@ -2,9 +2,9 @@
 
 local Sleep = Sleep
 
-local text_disabled = T(302535920011184, "Main Garage") .. ": " .. ChoGGi.ComFuncs.Translate(847439380056--[[Disabled]])
-local text_idle = T(302535920011184, "Main Garage") .. ": " .. ChoGGi.ComFuncs.Translate(6939--[[Idle]])
-local text_rovers = ChoGGi.ComFuncs.Translate(5438--[[Rovers]]) .. ": "
+local text_disabled = T(302535920011184, "Main Garage") .. ": " .. T(847439380056, "Disabled")
+local text_idle = T(302535920011184, "Main Garage") .. ": " .. T(6939, "Idle")
+local text_rovers = T(5438, "Rovers") .. ": "
 
 -- stores rovers
 GlobalVar("g_ChoGGi_RCGarageRovers", {})

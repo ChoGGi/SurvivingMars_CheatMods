@@ -49,9 +49,9 @@ if BuildingTemplates.RCHarvesterBuilding then
 	fx_actor_class = "RCHarvester"
 end
 
-local idle_text = Translate(302535920011164, "Radius: %s") .. ", " .. Translate(49--[[Status]]) .. ": " .. Translate(6722--[[Idle]])
-local travel_text = Translate(302535920011164, "Radius: %s") .. ", " .. Translate(49--[[Status]]) .. ": " .. Translate(63--[[Travelling]])
-local flatten_text = Translate(302535920011164, "Radius: %s") .. ", " .. Translate(49--[[Status]]) .. ": " .. Translate(76--[[Performing maintenance]])
+local idle_text = Translate(302535920011164, "Radius: %s") .. ", " .. Translate(49, "Status") .. ": " .. Translate(6722, "Idle")
+local travel_text = Translate(302535920011164, "Radius: %s") .. ", " .. Translate(49, "Status") .. ": " .. Translate(63, "Travelling")
+local flatten_text = Translate(302535920011164, "Radius: %s") .. ", " .. Translate(49, "Status") .. ": " .. Translate(76, "Performing maintenance")
 
 DefineClass.RCBulldozer = {
 	__parents = {

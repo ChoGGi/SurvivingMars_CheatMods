@@ -6,8 +6,8 @@ Your huddled masses yearning to breathe free,
 The wretched refuse of your teeming shore.]])
 
 local display_icon = CurrentModPath .. "UI/rover_combat.png"
-local idle_text = ChoGGi.ComFuncs.Translate(6722--[[Idle]])
-local travel_text = ChoGGi.ComFuncs.Translate(63--[[Travelling]])
+local idle_text = T(6722, "Idle")
+local travel_text = T(63, "Travelling")
 
 GlobalVar("g_RCMechanicRepairing", {})
 

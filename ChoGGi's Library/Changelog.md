@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v7.3 (Unreleased)
+## v7.4 (Unreleased)
+
+## v7.3 (03 Aug 2019)
 - Cleaned up IsValidXWin.
 - Added a class filter to GetAllAttaches.
 

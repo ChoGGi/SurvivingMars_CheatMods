@@ -470,6 +470,7 @@ end)
 -- benchmarking stuff
 
 function ChoGGi.testing.LocalLoops()
+	-- if same value outside is faster, otherwise new local
 
 	local AsyncRand = AsyncRand
 	ChoGGi.ComFuncs.TickStart("LocalLoops.Tick.1")
@@ -488,9 +489,11 @@ function ChoGGi.testing.LocalLoops()
 		end
 	end
 	ChoGGi.ComFuncs.TickEnd("LocalLoops.Tick.2")
+
 end
 
 function ChoGGi.testing.StringVsDot()
+	-- dot
 
 	local lookup_table = {a = true,b = true,c = true,d = true,e = true,f = true}
 
@@ -512,6 +515,7 @@ end
 
 
 function ChoGGi.testing.LocalVsTableLookup()
+	-- local
 
 	local lookup_table = {}
 	for i = 1, 10000 do
@@ -521,7 +525,7 @@ function ChoGGi.testing.LocalVsTableLookup()
 	local nothing
 	ChoGGi.ComFuncs.TickStart("LocalVsTableLookup.Tick.1")
 	for _ = 1, 100000000 do
-		local lookuped = lookup_table[1234]
+		local lookuped = lookup_table[12345]
 		if lookuped then
 			nothing = lookuped
 		end
@@ -530,8 +534,8 @@ function ChoGGi.testing.LocalVsTableLookup()
 
 	ChoGGi.ComFuncs.TickStart("LocalVsTableLookup.Tick.2")
 	for _ = 1, 100000000 do
-		if lookup_table[1234] then
-			nothing = lookup_table[1234]
+		if lookup_table[12345] then
+			nothing = lookup_table[12345]
 		end
 	end
 	ChoGGi.ComFuncs.TickEnd("LocalVsTableLookup.Tick.2")
@@ -539,7 +543,7 @@ function ChoGGi.testing.LocalVsTableLookup()
 end
 
 function ChoGGi.testing.ToStr()
-	local tostring = tostring
+	-- ..
 
 	ChoGGi.ComFuncs.TickStart("ToStr.Tick.1")
 	for _ = 1, 1000000 do
@@ -549,6 +553,7 @@ function ChoGGi.testing.ToStr()
 	ChoGGi.ComFuncs.TickEnd("ToStr.Tick.1")
 
 	ChoGGi.ComFuncs.TickStart("ToStr.Tick.2")
+	local tostring = tostring
 	for _ = 1, 1000000 do
 		local num = 12345
 		num = tostring(num)
@@ -558,14 +563,37 @@ function ChoGGi.testing.ToStr()
 end
 
 function ChoGGi.testing.Attaches(obj)
+	-- tables < 100
+	-- local ForEachAttach(function(a), ForEachAttach, GetAttaches
+	-- > 100 = GetAttaches
+
 	obj = obj or ChoGGi.ComFuncs.SelObject()
 	if not IsValid(obj) then
-		print("TestAttaches invalid obj")
+		print("Test.Attaches invalid obj")
 		return
 	end
 
 	ChoGGi.ComFuncs.TickStart("Attaches.Tick.1")
-	for _ = 1, 1000 do
+	local function foreach(a)
+		if a.handle then
+		end
+	end
+	for _ = 1, 500000 do
+		obj:ForEachAttach(foreach)
+	end
+	ChoGGi.ComFuncs.TickEnd("Attaches.Tick.1")
+
+	ChoGGi.ComFuncs.TickStart("Attaches.Tick.2")
+	for _ = 1, 500000 do
+		obj:ForEachAttach(function(a)
+			if a.handle then
+			end
+		end)
+	end
+	ChoGGi.ComFuncs.TickEnd("Attaches.Tick.2")
+
+	ChoGGi.ComFuncs.TickStart("Attaches.Tick.3")
+	for _ = 1, 500000 do
 		local attaches = obj:GetAttaches() or ""
 		for i = 1, #attaches do
 			local a = attaches[i]
@@ -573,16 +601,7 @@ function ChoGGi.testing.Attaches(obj)
 			end
 		end
 	end
-	ChoGGi.ComFuncs.TickEnd("Attaches.Tick.1")
-
-	ChoGGi.ComFuncs.TickStart("Attaches.Tick.2")
-	for _ = 1, 1000 do
-		obj:ForEachAttach(function(a)
-			if a.handle then
-			end
-		end)
-	end
-	ChoGGi.ComFuncs.TickEnd("Attaches.Tick.2")
+	ChoGGi.ComFuncs.TickEnd("Attaches.Tick.3")
 end
 
 function ChoGGi.testing.TextExamine()
@@ -605,6 +624,8 @@ function ChoGGi.testing.TextExamine()
 end
 
 function ChoGGi.testing.TableIterate()
+	-- not ipairs (of course)
+
 	local list = MapGet(true)
 
 	ChoGGi.ComFuncs.TickStart("TableIterate.1.Tick")
@@ -625,15 +646,18 @@ function ChoGGi.testing.TableIterate()
 end
 
 function ChoGGi.testing.TableInsert()
-	ChoGGi.ComFuncs.TickStart("TableInsert.Tick")
+	-- c+c
+
+	ChoGGi.ComFuncs.TickStart("TableInsert.1.Tick")
 	local t1 = {}
 	local c = 0
 	for i=0, 10000000 do
 		c = c + 1
 		t1[c] = i
 	end
-	ChoGGi.ComFuncs.TickEnd("TableInsert.Tick")
-	ChoGGi.ComFuncs.TickStart("TableInsert.Tick")
+	ChoGGi.ComFuncs.TickEnd("TableInsert.1.Tick")
+
+	ChoGGi.ComFuncs.TickStart("TableInsert.2.Tick")
 	local rawset = rawset
 	local t2 = {}
 	local c2 = 0
@@ -641,7 +665,7 @@ function ChoGGi.testing.TableInsert()
 		c2 = c2 + 1
 		rawset(t2, c2, i)
 	end
-	ChoGGi.ComFuncs.TickEnd("TableInsert.Tick")
+	ChoGGi.ComFuncs.TickEnd("TableInsert.2.Tick")
 
 end
 
@@ -665,6 +689,11 @@ function ChoGGi.testing.Compress(amount)
 	-- 1508 ticks
 	-- 50 loops of compress/decompress
 	-- 1650, 1676, 1691 ticks (did it three times)
+
+	local TableToLuaCode = TableToLuaCode
+	local TranslationTable = TranslationTable
+	local AsyncCompress = AsyncCompress
+	local AsyncDecompress = AsyncDecompress
 
 	ChoGGi.ComFuncs.TickStart("Compress_lz4.Tick")
 	for _ = 1, amount or 50 do
@@ -705,32 +734,6 @@ function ChoGGi.testing.RandomColour(amount)
 	end
 	TickEnd("RandomColour2.Total")
 end
-
-function ChoGGi.testing.Random(amount)
-	ChoGGi.ComFuncs.TickStart("Random.Total")
-	local Random = Random
-	local Random1 = ChoGGi.ComFuncs.Random
-
-	ChoGGi.ComFuncs.TickStart("Random.Tick")
-		local values = {}
-		for i = 1, amount or 10000 do
-			values[i] = Random(0, 10000)
-		end
-	ChoGGi.ComFuncs.TickEnd("Random.Tick")
-	print("Random:\n", values)
-
-	ChoGGi.ComFuncs.TickStart("Random.1.Tick")
-		values = {}
-		for i = 1, amount or 10000 do
-			values[i] = Random1(0, 10000)
-		end
-	ChoGGi.ComFuncs.TickEnd("Random.1.Tick")
-	print("Random1:\n", values)
-
-	ChoGGi.ComFuncs.TickEnd("Random.Total")
-end
-
-print("ChoGGi.testing")
 
 ------------------------------------------------------------------------------------------
 --~ 	function OnMsg.ClassesGenerate()
@@ -1134,3 +1137,5 @@ function OnMsg.ModsReloaded()
 	print(ChoGGi.ComFuncs.TableConcat(ChoGGi.Temp.StartupMsgs))
 	table.iclear(ChoGGi.Temp.StartupMsgs)
 end
+
+print("ChoGGi.testing")

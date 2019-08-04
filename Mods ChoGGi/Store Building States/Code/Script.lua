@@ -199,10 +199,10 @@ local function AddNewState(profile,obj)
 end
 
 local function ShowList_AddTo(obj,profile)
-	local working_str = Translate(11230--[[Working]])
-	local priority_str = Translate(172--[[Priority]])
-	local shifts_str = Translate(217--[[Work Shifts]])
-	local enforce_spec_str = Translate(8746--[[Workforce: Enforce Specialists]])
+	local working_str = Translate(11230, "Working)
+	local priority_str = Translate(172, "Priority")
+	local shifts_str = Translate(217, "Work Shifts")
+	local enforce_spec_str = Translate(8746, "Workforce: Enforce Specialists")
 	local shifts1_str = shifts_str .. ": 1"
 	local shifts2_str = shifts_str .. ": 2"
 	local shifts3_str = shifts_str .. ": 3"
@@ -365,18 +365,18 @@ local function ShowList_AddTo(obj,profile)
 		width = 600,
 		checkboxes = {
 			{
-				title = Translate(11230--[[Working]]),
+				title = Translate(11230, "Working"),
 				hint = T(302535920011320, "Uncheck to exclude this setting from profile."),
 				checked = true,
 			},
 			{
-				title = Translate(172--[[Priority]]),
+				title = Translate(172, "Priority"),
 				hint = T(302535920011320, "Uncheck to exclude this setting from profile."),
 				checked = is_task_obj,
 				visible = is_task_obj,
 			},
 			{
-				title = Translate(217--[[Work Shifts]]),
+				title = Translate(217, "Work Shifts"),
 				hint = T(302535920011320, "Uncheck to exclude this setting from profile."),
 				checked = is_shift_obj,
 				visible = is_shift_obj,
