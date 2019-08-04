@@ -7,7 +7,6 @@ return PlaceObj("ModDef", {
 			"version_minor", 3,
 		}),
 	},
---~ 	"title", "RC Garage v0.3",
 	"title", "RC Garage",
 	"version", 5,
 	"version_major", 0,

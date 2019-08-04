@@ -2,6 +2,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ShowResearchProgressonHUD2",
 	"title", "Show Research Progress on HUD 2",
 	"steam_id", "1757762374",
+	"pops_desktop_uuid", "c4500700-e512-451c-8770-decb8e8a148c",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

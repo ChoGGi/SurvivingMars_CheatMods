@@ -7,7 +7,6 @@ return PlaceObj("ModDef", {
 			"version_minor", 3,
 		}),
 	},
---~ 	"title", "Show Transport Route Info v0.1",
 	"title", "Show Transport Route Info",
 	"version", 4,
 	"version_major", 0,

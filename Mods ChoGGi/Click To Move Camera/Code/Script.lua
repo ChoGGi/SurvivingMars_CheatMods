@@ -15,7 +15,6 @@ forbid.MouseL = nil
 forbid.MouseR = nil
 forbid.MouseM = nil
 
---~ local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 
 Actions[#Actions+1] = {ActionName = T(302535920011058, [[Click To Move]]),

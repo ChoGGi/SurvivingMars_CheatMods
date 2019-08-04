@@ -7,7 +7,6 @@ return PlaceObj("ModDef", {
 			"version_minor", 3,
 		}),
 	},
---~ 	"title", "Save Mission Profiles v0.1",
 	"title", "Save Mission Profiles",
 	"version", 4,
 	"version_major", 0,

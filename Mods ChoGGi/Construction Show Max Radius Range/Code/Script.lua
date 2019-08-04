@@ -1,12 +1,32 @@
 -- See LICENSE for terms
 
+local options
+local mod_ShowConstruct
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_ShowConstruct = options.ShowConstruct
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= "ChoGGi_ShowMaxRadiusRange" then
+		return
+	end
+
+	ModOptions()
+end
+
 local white = white
 local GridSpacing = const.GridSpacing
 local HexSize = const.HexSize
 local ShowHexRanges = ShowHexRanges
-
-local mod_id = "ChoGGi_ShowMaxRadiusRange"
-local mod = Mods[mod_id]
 
 local function AddRadius(self, radius)
 	local circle = Circle:new()
@@ -19,9 +39,9 @@ local cls_saved_settings = {"TriboelectricScrubber", "SubsurfaceHeater", "CoreHe
 local cls_heaters = {"SubsurfaceHeater", "CoreHeatConvector"}
 
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
-function CursorBuilding:GameInit()
-	if not mod.options.ShowConstruct then
-		return orig_CursorBuilding_GameInit(self)
+function CursorBuilding:GameInit(...)
+	if not mod_ShowConstruct then
+		return orig_CursorBuilding_GameInit(self, ...)
 	end
 
 	if self.template and self.template:IsKindOfClasses(cls_saved_settings) then
@@ -61,7 +81,7 @@ function CursorBuilding:GameInit()
 	end
 
 --~ 	ex(self)
-	return orig_CursorBuilding_GameInit(self)
+	return orig_CursorBuilding_GameInit(self, ...)
 end
 
 -- since the circle gets attached to the CursorBuilding it'll be removed when it's removed, no need to fiddle with :Close()

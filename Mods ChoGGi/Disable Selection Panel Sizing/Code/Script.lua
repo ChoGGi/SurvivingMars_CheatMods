@@ -1,35 +1,36 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_DisableSelectionPanelSizing"
-local mod = Mods[mod_id]
-local mod_Enabled = mod.options and mod.options.Enabled or true
-local mod_ScrollSelection = mod.options and mod.options.ScrollSelection or false
+local options
+local mod_Enabled
+local mod_ScrollSelection
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_Enabled = options.Enabled
+	mod_ScrollSelection = options.ScrollSelection
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_DisableSelectionPanelSizing" then
 		return
 	end
 
-	mod_Enabled = mod.options.Enabled
-	mod_ScrollSelection = mod.options.ScrollSelection
+	ModOptions()
 end
-
--- for some reason mod options aren't retrieved before this script is loaded...
-local function StartupCode()
-	mod_Enabled = mod.options.Enabled
-	mod_ScrollSelection = mod.options.ScrollSelection
-end
-
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
 
 local XSizeConstrained_WindowUpdateMeasure = XSizeConstrainedWindow.UpdateMeasure
 local XWindow_UpdateMeasure = XWindow.UpdateMeasure
 
 function XSizeConstrainedWindow:UpdateMeasure(...)
 	if mod_Enabled then
-		XWindow_UpdateMeasure(self, ...)
+		return XWindow_UpdateMeasure(self, ...)
 	else
 		return XSizeConstrained_WindowUpdateMeasure(self, ...)
 	end
@@ -39,7 +40,6 @@ local margin_offset = 0
 local margin_top = 32
 
 local GetSafeMargins = GetSafeMargins
-local GetDialog = GetDialog
 local GetInGameInterface = GetInGameInterface
 local box = box
 
@@ -48,7 +48,7 @@ function OnMsg.ClassesBuilt()
 	function InfopanelDlg:RecalculateMargins()
 		local margins = GetSafeMargins()
 		local bottom_margin = 0
-		local pins = GetDialog("PinsDlg")
+		local pins = Dialogs.PinsDlg
 		if pins then
 			local igi = GetInGameInterface()
 			bottom_margin = igi.box:maxy() - pins.box:miny() - margins:maxy()

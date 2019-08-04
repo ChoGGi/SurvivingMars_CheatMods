@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Prefab Safety v0.2",
 	"title", "Prefab Safety",
 	"version", 2,
 	"version_major", 0,

@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 function OnMsg.ModsReloaded()
 	local buildings = ClassTemplates.Building
 	for _, bld in pairs(buildings) do

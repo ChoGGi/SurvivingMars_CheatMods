@@ -8,7 +8,7 @@ DefineClass("ModOptions_ChoGGi_ResearchFilter", {
 			default = false,
 			editor = "bool",
 			id = "HideCompleted",
-			name = "Hide completed tech.",
+			name = T(302535920011465, "Hide Completed Tech"),
 		},
 	},
 })

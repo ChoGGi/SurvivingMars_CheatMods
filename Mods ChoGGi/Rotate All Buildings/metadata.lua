@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Rotate All Buildings v0.1",
 	"title", "Rotate All Buildings",
 	"version", 1,
 	"version_major", 0,

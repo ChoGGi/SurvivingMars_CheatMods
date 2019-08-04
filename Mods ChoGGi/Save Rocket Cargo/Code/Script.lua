@@ -1,25 +1,27 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_SaveRocketCargo"
-local mod = Mods[mod_id]
-local mod_ClearOnLaunch = mod.options and mod.options.ClearOnLaunch or true
+local options
+local mod_ClearOnLaunch
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_ClearOnLaunch = options.ClearOnLaunch
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_SaveRocketCargo" then
 		return
 	end
 
-	mod_ClearOnLaunch = mod.options.ClearOnLaunch
+	ModOptions()
 end
-
--- for some reason mod options aren't retrieved before this script is loaded...
-local function StartupCode()
-	mod_ClearOnLaunch = mod.options.ClearOnLaunch
-end
-
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
 
 local WaitMsg = WaitMsg
 
@@ -112,7 +114,7 @@ function ClearRocketCargo(...)
 		local toolbar = Dialogs.Resupply.idTemplate.idPayload.idToolBar
 		toolbar.idChoGGi_ClearButton = XTextButton:new({
 			Id = "idChoGGi_ClearButton",
-			Text = T(5448,"CLEAR"),
+			Text = T(5448, "CLEAR"),
 			FXMouseIn = "ActionButtonHover",
 			FXPress = "ActionButtonClick",
 			FXPressDisabled = "UIDisabledButtonPressed",
@@ -125,8 +127,8 @@ function ClearRocketCargo(...)
 			TextStyle = "Action",
 			MouseCursor = "UI/Cursors/Rollover.tga",
 			RolloverTemplate = "Rollover",
-			RolloverTitle = T(126095410863,"Info"),
-			RolloverText = T(0,[[Clear saved cargo list.
+			RolloverTitle = T(126095410863, "Info"),
+			RolloverText = T(302535920011470,[[Clear saved cargo list.
 My list not the game list (reopen dialog to see changes).]]),
 			OnPress = ClearCargo,
 		}, toolbar)

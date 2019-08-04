@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Fix: Missing Build/Upgrade Icons",
 	"title", "Fix Missing Mod Icons",
 	"version", 5,
 	"version_major", 0,

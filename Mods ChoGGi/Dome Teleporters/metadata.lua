@@ -7,7 +7,6 @@ return PlaceObj("ModDef", {
 			"version_minor", 3,
 		}),
 	},
---~ 	"title", "Dome Teleporters v0.5",
 	"title", "Dome Teleporters",
 	"version", 8,
 	"version_major", 0,

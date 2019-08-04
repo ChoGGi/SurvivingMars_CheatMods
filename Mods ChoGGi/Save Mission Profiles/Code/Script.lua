@@ -3,8 +3,6 @@
 -- setting params are saved here
 g_SaveMissionProfiles = {}
 
-local Strings = ChoGGi.Strings
-
 local function CleanGameRules(profile)
 	local GameRulesMap = GameRulesMap
 	local idGameRules = profile.idGameRules or empty_table
@@ -137,7 +135,7 @@ local function DeleteProfile(name, settings_list)
 			name = name,
 		},
 		CallBackFunc,
-		T(6779--[[Warning]]) .. ": " .. Strings[302535920000855--[[Last chance before deletion!]]]
+		T(6779, "Warning") .. ": " .. T(302535920000855, "Last chance before deletion!")
 	)
 end
 

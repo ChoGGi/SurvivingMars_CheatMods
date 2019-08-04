@@ -7,8 +7,8 @@ DefineClass("ModOptions_ChoGGi_ConstructionShowHexGrid", {
 			default = true,
 			editor = "bool",
 			id = "Option1",
-			name = "Show during construction",
-			desc = "Show during construction.",
+			name = T(302535920011401, "Show during construction"),
+--~ 			desc = "Show during construction.",
 		},
 	},
 })

@@ -10,7 +10,7 @@ DefineClass("ModOptions_ChoGGi_MoreTerrainRocks", {
 			min = 1,
 			editor = "number",
 			id = "LargeRocksCost",
-			name = "Cost of large rocks.",
+			name = T(302535920011435, "Cost of large rocks"),
 		},
 	},
 })

@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Make First Martianborn Celebrity v0.2",
 	"title", "Make First Martianborn Celebrity",
 	"version", 2,
 	"version_major", 0,

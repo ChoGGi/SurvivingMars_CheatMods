@@ -48,8 +48,3 @@ end
 OnMsg.SaveGame = CleanUp
 -- when selection is removed (or changed) hide all the lines
 OnMsg.SelectionRemoved = CleanUp
-
--- remove me
-function OnMsg.LoadGame()
-	MapDelete("map","Polyline")
-end

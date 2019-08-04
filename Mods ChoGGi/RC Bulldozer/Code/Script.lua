@@ -21,7 +21,6 @@ local PlaceObject = PlaceObject
 local ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
 local MovePointAwayXY = ChoGGi.ComFuncs.MovePointAwayXY
 local Translate = ChoGGi.ComFuncs.Translate
---~ local Strings = ChoGGi.Strings
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 
 

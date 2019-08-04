@@ -9,8 +9,8 @@ DefineClass("ModOptions_ChoGGi_AlienVisitors", {
 			min = 4,
 			editor = "number",
 			id = "MaxSpawn",
-			name = "Max Spawn",
-			desc = "Max amount on new games.",
+			name = T(302535920011387, "Max Spawn"),
+--~ 			desc = "Max amount on new games.",
 		},
 	},
 })

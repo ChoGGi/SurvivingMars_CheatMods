@@ -1,31 +1,36 @@
+-- See LICENSE for terms
+
+local options
+local mod_QueueCount
+local mod_HideWhenEmpty
+
 local UpdateResearchProgressBar
 
--- mod options
-local mod_id = "ChoGGi_ShowResearchProgressonHUD2"
-local mod = Mods[mod_id]
-
-local mod_QueueCount = mod.options and mod.options.QueueCount or false
-local mod_HideWhenEmpty = mod.options and mod.options.HideWhenEmpty or false
-
+-- fired when settings are changed/init
 local function ModOptions()
-	mod_QueueCount = mod.options.QueueCount
-	mod_HideWhenEmpty = mod.options.HideWhenEmpty
+	mod_QueueCount = options.QueueCount
+	mod_HideWhenEmpty = options.HideWhenEmpty
 
+	if not GameState.gameplay then
+		return
+	end
 	UpdateResearchProgressBar()
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
 end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_ShowResearchProgressonHUD2" then
 		return
 	end
 
 	ModOptions()
 end
-
--- for some reason mod options aren't retrieved before this script is loaded...
-OnMsg.CityStart = ModOptions
-OnMsg.LoadGame = ModOptions
 
 -- local some globals
 local T = T

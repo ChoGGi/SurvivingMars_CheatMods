@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
---~ local Strings = ChoGGi.Strings
 local RetName = ChoGGi.ComFuncs.RetName
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass

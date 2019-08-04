@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Show Saved Colonies v0.9",
 	"title", "Show Saved Colonies",
 	"version", 10,
 	"version_major", 1,

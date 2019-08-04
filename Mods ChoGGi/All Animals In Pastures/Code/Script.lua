@@ -1,12 +1,34 @@
 -- See LICENSE for terms
 
+if not g_AvailableDlc.shepard then
+	return
+end
+
+local options
+local mod_OpenOnSelect
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_OpenOnSelect = options.OpenOnSelect
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= "ChoGGi_AllAnimalsInPastures" then
+		return
+	end
+
+	ModOptions()
+end
+
 local table_find = table.find
 local table_rand = table.rand
-
-local mod_id = "ChoGGi_AllAnimalsInPastures"
-local mod = Mods[mod_id]
-
-local mod_OpenOnSelect = mod.options and mod.options.OpenOnSelect or false
 
 -- return all pasture animals to all pastures (in/out)
 local animals_origcount = #(Presets and Presets.Animal and Presets.Animal.Pasture or "12345678")
@@ -16,15 +38,6 @@ local function StartupCode()
 	animal_presets = Presets.Animal.Pasture
 	pasture_animals = table.copy(animal_presets)
 	table.sortby(pasture_animals, "infopanel_pos")
-
-	mod_OpenOnSelect = mod.options and mod.options.OpenOnSelect or false
-end
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == mod_id then
-		mod_OpenOnSelect = mod.options.OpenOnSelect
-	end
 end
 
 OnMsg.CityStart = StartupCode
@@ -45,13 +58,12 @@ Pasture.GetHarvestTypesTable = ReturnAllPastures
 local drone_entities = {"Drone", "Drone_Trailblazer", "DroneMaintenance", "DroneMiner", "DroneWorker"}
 if g_AvailableDlc.gagarin then
 	local c = #drone_entities
-	local EntityData = EntityData
-	for key in pairs(EntityData) do
-		if key:find("DroneJapanFlying") then
-			c = c + 1
-			drone_entities[c] = key
-		end
-	end
+	c = c + 1
+	drone_entities[c] = "DroneJapanFlying"
+	c = c + 1
+	drone_entities[c] = "DroneJapanFlying_02"
+	c = c + 1
+	drone_entities[c] = "DroneJapanFlying_03"
 end
 
 local CurrentModPath = CurrentModPath
@@ -349,7 +361,7 @@ local animals = {
 	GreenMan = {
 		description = T(381255823464, "Rabbits provide much better Food gain than chickens, but need more sustenance and need twice more time to grow."),
 		display_icon = CurrentModPath .. "UI/animal_greenman.tga",
-		display_name = T(0,"Alien"),
+		display_name = T(302535920011391, "Alien"),
 		entities = {
 			"GreenMan",
 		},
@@ -366,7 +378,7 @@ local animals = {
 	Drone = {
 		description = T(947790430318, "Chickens grow fast and have a small Oxygen and Water consumption, providing a fast and reliable Food source."),
 		display_icon = "UI/Icons/Buildings/drone.tga",
-		display_name = T(1681,"Drone"),
+		display_name = T(1681, "Drone"),
 		entities = drone_entities,
 		food = 200,
 		grazing_spot_in = "Turkey",
@@ -588,8 +600,4 @@ local orig_InfopanelItems_Open = InfopanelItems.Open
 function InfopanelItems:Open(...)
 	self:SetMaxWidth(width - Dialogs.Infopanel.box:sizex())
 	return orig_InfopanelItems_Open(self, ...)
-end
-
-if not g_AvailableDlc.shepard then
-	return
 end

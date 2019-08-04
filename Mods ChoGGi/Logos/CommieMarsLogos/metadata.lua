@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Commie Mars Logos v0.4",
 	"title", "Commie Mars Logos",
 	"version", 5,
 	"version_major", 0,

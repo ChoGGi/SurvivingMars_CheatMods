@@ -8,13 +8,13 @@ DefineClass("ModOptions_ChoGGi_ShowResearchProgressonHUD2", {
 			default = false,
 			editor = "bool",
 			id = "QueueCount",
-			name = "Show Number in Queue",
+			name = T(302535920011471, "Show Number in Queue"),
 		},
 		{
 			default = false,
 			editor = "bool",
 			id = "HideWhenEmpty",
-			name = "Hide When Queue is Empty",
+			name = T(302535920011472, "Hide When Queue is Empty"),
 		},
 	},
 })

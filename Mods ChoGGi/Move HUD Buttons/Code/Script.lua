@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local function SetTableValue(tab, id, id_name, item, value)
 	local idx = table.find(tab, id, id_name)
 	if idx then

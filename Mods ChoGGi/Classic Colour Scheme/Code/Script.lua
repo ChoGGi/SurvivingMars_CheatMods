@@ -13,7 +13,7 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	PlaceObj('ColonyColorScheme', {
-		display_name = T(0, "Classic Colours"),
+		display_name = T(302535920011398, "Classic Colours"),
 		id = "ChoGGi_Classic_Colour_Scheme",
 		group = "Default",
 

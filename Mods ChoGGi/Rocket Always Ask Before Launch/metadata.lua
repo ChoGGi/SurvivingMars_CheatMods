@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Rocket: Always Ask Before Launch v0.2",
 	"title", "Rocket Always Ask Before Launch",
 	"version", 2,
 	"version_major", 0,

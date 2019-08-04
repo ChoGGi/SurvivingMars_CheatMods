@@ -1,28 +1,29 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_ResearchSmallCheckMarks"
-local mod = Mods[mod_id]
+local options
+local mod_ChangePercent
+local mod_HideBackground
 
-local mod_ChangePercent = mod.options and mod.options.ChangePercent or true
-local mod_HideBackground = mod.options and mod.options.HideBackground or true
-
+-- fired when settings are changed/init
 local function ModOptions()
-	mod_ChangePercent = mod.options.ChangePercent
-	mod_HideBackground = mod.options.HideBackground
+	mod_ChangePercent = options.ChangePercent
+	mod_HideBackground = options.HideBackground
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
 end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_ResearchSmallCheckMarks" then
 		return
 	end
 
 	ModOptions()
 end
-
--- for some reason mod options aren't retrieved before this script is loaded...
-OnMsg.CityStart = ModOptions
-OnMsg.LoadGame = ModOptions
 
 local function EditDlg(dlg)
 	WaitMsg("OnRender")

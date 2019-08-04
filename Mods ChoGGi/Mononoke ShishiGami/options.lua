@@ -5,8 +5,8 @@ DefineClass("ModOptions_ChoGGi_MononokeShishiGami", {
 			default = true,
 			editor = "bool",
 			id = "ToggleShrubs",
-			name = "Toggle Shrubs",
-			desc = "Show shrubs beneath mouse cursor.",
+			name = T(302535920011434, "Toggle Shrubs"),
+--~ 			desc = "Show shrubs beneath mouse cursor.",
 		},
 	},
 })

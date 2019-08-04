@@ -8,19 +8,19 @@ DefineClass("ModOptions_ChoGGi_AutoEmptyWasteStorage", {
 			default = true,
 			editor = "bool",
 			id = "EmptyDumpSites",
-			name = "Empty Dump Sites",
+			name = T(302535920011392, "Empty Dump Sites"),
 		},
 		{
 			default = true,
 			editor = "bool",
 			id = "EmptyNewSol",
-			name = "Empty Each Sol",
+			name = T(302535920011393, "Empty Each Sol"),
 		},
 		{
 			default = false,
 			editor = "bool",
 			id = "EmptyNewHour",
-			name = "Empty Each Hour",
+			name = T(302535920011394, "Empty Each Hour"),
 		},
 	},
 })

@@ -9,7 +9,7 @@ DefineClass("ModOptions_ChoGGi_PatientTransportRoute", {
 			min = 1,
 			editor = "number",
 			id = "Amount",
-			name = "Amount to wait before delivery",
+			name = T(302535920011462, "Amount to wait before delivery"),
 		},
 	},
 })

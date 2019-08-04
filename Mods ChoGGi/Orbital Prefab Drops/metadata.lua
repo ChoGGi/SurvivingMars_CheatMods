@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Orbital Prefab Drops v0.5",
 	"title", "Orbital Prefab Drops",
 	"version", 7,
 	"version_major", 0,

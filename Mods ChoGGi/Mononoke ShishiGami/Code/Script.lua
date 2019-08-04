@@ -1,7 +1,29 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_MononokeShishiGami"
-local mod = Mods[mod_id]
+local options
+local mod_ToggleShrubs
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_ToggleShrubs = options.ToggleShrubs
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= "ChoGGi_MononokeShishiGami" then
+		return
+	end
+
+	ModOptions()
+end
+
+-- See LICENSE for terms
 
 local DoneObject = DoneObject
 local GetTerrainCursor = GetTerrainCursor
@@ -119,20 +141,11 @@ function OnMsg.SystemInactivate()
 	skip = true
 end
 
-local enabled = true
-function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
-		return
-	end
-	enabled = mod.options.ToggleShrubs
-end
-
 function OnMsg.InGameInterfaceCreated(igi)
-	enabled = mod.options.ToggleShrubs
 	local entity_cls = ChoGGi_TransitoryEntity
 
 	local function OnMousePos()
-		if enabled and not skip and GetTimeFactor() > 0 then
+		if mod_ToggleShrubs and not skip and GetTimeFactor() > 0 then
 			local cursor = GetTerrainCursor()
 			local obj = entity_cls:new()
 			local ent = entities[Random(1,count)]

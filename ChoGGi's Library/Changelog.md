@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v7.4 (Unreleased)
+- List Dialog: Blank text for certain items.
 
 ## v7.3 (03 Aug 2019)
 - Cleaned up IsValidXWin.

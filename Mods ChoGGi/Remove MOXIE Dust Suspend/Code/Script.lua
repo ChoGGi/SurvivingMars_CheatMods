@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local function RemoveMoxieFromSuspend()
 	local g_SuspendLabels = g_SuspendLabels
 	for i = 1, #g_SuspendLabels do
@@ -14,8 +16,8 @@ function OnMsg.ClassesPostprocess()
 	PlaceObj("TechPreset", {
 		SortKey = 11,
 		position = range(11, 11),
-		description = "no more suspension during dust storms",
-		display_name = "Remove MOXIE from dust storm suspend",
+		description = T(302535920011463, "No more suspension during dust storms"),
+		display_name = T(302535920011464,"Remove MOXIE from dust storm suspend"),
 		group = "Engineering",
 		icon = "UI/Icons/traits_disable.tga",
 		id = "ChoGGi_DustyMOXIE",

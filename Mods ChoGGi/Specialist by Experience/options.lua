@@ -7,8 +7,8 @@ DefineClass("ModOptions_ChoGGi_SpecialistByExperience", {
 			default = false,
 			editor = "bool",
 			id = "IgnoreSpec",
-			name = "Override existing specs",
-			desc = "XXXXXXXXXXXXXX",
+			name = T(302535920011473, "Override existing specs"),
+--~ 			desc = "XXXXXXXXXXXXXX",
 		},
 		{
 			default = 25,
@@ -16,8 +16,8 @@ DefineClass("ModOptions_ChoGGi_SpecialistByExperience", {
 			min = 1,
 			editor = "number",
 			id = "SolsToTrain",
-			name = "Sols to work before getting new spec",
-			desc = "XXXXXXXXXXXXXX",
+			name = T(302535920011474, "Sols to work before getting new spec"),
+--~ 			desc = "XXXXXXXXXXXXXX",
 		},
 	},
 })

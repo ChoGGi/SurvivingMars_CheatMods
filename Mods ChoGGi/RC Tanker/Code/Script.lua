@@ -22,7 +22,6 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
---~ local Strings = ChoGGi.Strings
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Random = ChoGGi.ComFuncs.Random
 local Translate = ChoGGi.ComFuncs.Translate

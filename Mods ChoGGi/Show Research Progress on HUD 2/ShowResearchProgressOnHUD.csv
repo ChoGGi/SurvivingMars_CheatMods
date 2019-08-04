@@ -3,4 +3,7 @@ ID,Text,Translation
 Research Progress: <em><percent(progress)> (<done> / <ResearchPoints(total)>)</em>
 Approximate Time Remaining: <em><eta></em>
 
-Queue: <em><queue></em>",
+Queue: <em><queue></em>"
+
+302535920011471,"Show Number in Queue"
+302535920011472,"Hide When Queue is Empty"

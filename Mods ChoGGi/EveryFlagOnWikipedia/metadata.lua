@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Every Flag On Wikipedia v0.6",
 	"title", "Every Flag On Wikipedia",
 	"version", 7,
 	"version_major", 0,

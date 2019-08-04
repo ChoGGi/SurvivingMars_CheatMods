@@ -44,6 +44,69 @@ do -- ModUpload
 		ChoGGi_XDefaultMod = true,
 		ChoGGi_testing = true,
 	}
+	-- hey paradox! renaming things is a thing...
+	local paradox_title = {
+		ChoGGi_AddMathFunctions = [["math." Functions]],
+		ChoGGi_AlienVisitors = "Alien Visitors v0.1",
+		ChoGGi_AllSponsorBuildings = "All Sponsor Buildings v0.2",
+		ChoGGi_AllSponsors = "All Sponsors v0.1",
+		ChoGGi_ChangeDroneType = "Change Drone Type v0.3",
+		ChoGGi_ChangeOtherToRandomGender = "Change Other To Random Gender v0.1",
+		ChoGGi_ChangeRocketSkin = "Change Rocket Skin v0.2",
+		ChoGGi_CommieMarxLogos = "Commie Mars Logos v0.4",
+		ChoGGi_ConstructionExtendLength = "Construction: Extend Length",
+		ChoGGi_ConstructionShowDomePassageLine = "Construction: Show Dome Passage Line v0.9",
+		ChoGGi_ConstructionShowDroneGrid = "Construction: Show Drone Grid v0.4",
+		ChoGGi_ConstructionShowDustGrid = "Construction: Show Dust Grid v0.2",
+		ChoGGi_ConstructionShowHexBuildableGrid = "Construction: Show Hex Buildable Grid",
+		ChoGGi_ConstructionShowHexGrid = "Construction: Show Hex Grid v0.2",
+		ChoGGi_DomeTeleporters = "Dome Teleporters v0.5",
+		ChoGGi_EveryFlagOnWikipedia = "Every Flag On Wikipedia v0.6",
+		ChoGGi_FixMissingBuildUpgradeIcons = "Fix: Missing Build/Upgrade Icons",
+		ChoGGi_FixRemovedModGameRules = "Fix: Removed Mod Game Rules",
+		ChoGGi_InfobarAddDischargeRates = "Infobar Add Discharge Rates",
+		ChoGGi_MakeFirstMartianbornCelebrity = "Make First Martianborn Celebrity v0.2",
+		ChoGGi_MapImagesPack = "Map Images Pack v0.1",
+		ChoGGi_MapOverviewShowSurfaceResources = "Map Overview: Show Surface Resources",
+		ChoGGi_MarkSelectedBuildingType = "Mark Selected Building Type v0.1",
+		ChoGGi_MarsCompanion = "Mars Companion v0.1",
+		ChoGGi_Minimap = "Minimap v0.5",
+		ChoGGi_MultiSelect = "Multi-Select v0.1",
+		ChoGGi_OrbitalPrefabDrops = "Orbital Prefab Drops v0.5",
+		ChoGGi_OutsideResidence = "Outside Residence",
+		ChoGGi_PassengerRocketTweaks = "Passenger Rocket Tweaks v0.2",
+		ChoGGi_PatientTransportRoute = "Patient Transport Route v0.2",
+		ChoGGi_PauseOnLoad = "Pause On Load v0.1",
+		ChoGGi_PermanentPriority = "Permanent Priority v0.2",
+		ChoGGi_PersonalShuttles = "Personal Shuttles v0.8",
+		ChoGGi_POIAddTooltips = "POI: Add Tooltips",
+		ChoGGi_PrefabSafety = "Prefab Safety v0.2",
+		ChoGGi_RCBulldozer = "RC Bulldozer v0.7",
+		ChoGGi_RCConstructorRoutes = "RC Constructor Routes v0.1",
+		ChoGGi_RCGarage = "RC Garage v0.3",
+		ChoGGi_RCRemote = "RC Remote v0.1",
+		ChoGGi_RCTanker = "RC Tanker v0.1",
+		ChoGGi_ResearchFilter = "Research Filter v0.2",
+		ChoGGi_RocketAlwaysAskBeforeLaunch = "Rocket: Always Ask Before Launch v0.2",
+		ChoGGi_RocketPinEnable = "Rocket: Pin Enable",
+		ChoGGi_RotateAllBuildings = "Rotate All Buildings v0.1",
+		ChoGGi_SaveMissionProfiles = "Save Mission Profiles v0.1",
+		ChoGGi_SelectableCables = "Selectable Cables v0.4",
+		ChoGGi_ShowLastColonies = "Show Saved Colonies v0.9",
+		ChoGGi_ShowMaxRadiusRange = "Construction: Show Max Radius Range v0.4",
+		ChoGGi_ShowTransportRouteInfo = "Show Transport Route Info v0.1",
+		ChoGGi_ShowTunnelLines = "Show Tunnel Lines v0.2",
+		ChoGGi_SolarArrayFollowsSun = "SArray Follows Sun",
+		ChoGGi_SolariaTelepresence = "Solaria Telepresence v0.9",
+		ChoGGi_SpiceHarvester = "Spice Harvester v0.7",
+		ChoGGi_StandingUnlocksSponsorBuildings = "Standing Unlocks Sponsor Buildings v0.2",
+		ChoGGi_StopColonistDeathFailure = "Stop Colonist Death Failure v0.1",
+		ChoGGi_StopCurrentDisasters = "Stop Current Disasters v0.4",
+		ChoGGi_StopTradeCamera = "Stop Trade Camera",
+		ChoGGi_UpgradeSlotsVisitorsCapacity = "Upgrade Slots: Visitors/Capacity",
+		ChoGGi_ViewColonyMap = "View Colony Map v0.9",
+	}
+
 	local mods_path = "AppData/Mods/"
 	local pack_path = "AppData/ModUpload/Pack/"
 	local dest_path = "AppData/ModUpload/"
@@ -64,6 +127,8 @@ do -- ModUpload
 	local image_steam = "UI/Common/mod_steam_workshop.tga"
 	local image_paradox = "UI/ParadoxLogo.tga"
 
+	local orig_title
+
 	local function UploadMod(answer, batch)
 		if not (answer or mod and mod.steam_id) then
 			return
@@ -76,6 +141,13 @@ do -- ModUpload
 
 		-- always start with fresh table
 		table.clear(mod_params)
+
+		-- workaround for paradox blocking renaming of titles
+		local new_title = paradox_title[mod.id]
+		if new_title then
+			orig_title = mod.title
+			mod.title = new_title
+		end
 
 		-- add new mod
 		local err, item_id, prepare_worked, prepare_results, existing_mod
@@ -237,7 +309,7 @@ do -- ModUpload
 			-- set last_changes to last_changes or version num
 			if not mod.last_changes or mod.last_changes == "" then
 				if testing then
-					local title = mod.title:gsub(" ","%%20")
+					local title = (orig_title or mod.title):gsub(" ","%%20")
 					mod.last_changes = "https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/" .. title .. "/changes.txt"
 				else
 					mod.last_changes = mod.version_major .. "." .. mod.version_minor
@@ -310,6 +382,11 @@ do -- ModUpload
 
 		if choices_len == 1 then
 			uploading = false
+		end
+
+		if orig_title then
+			mod.title = orig_title
+			orig_title = nil
 		end
 	end
 

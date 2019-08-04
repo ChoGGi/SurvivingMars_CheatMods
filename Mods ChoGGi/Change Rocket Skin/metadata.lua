@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Change Rocket Skin v0.2",
 	"title", "Change Rocket Skin",
 	"version", 3,
 	"version_major", 0,

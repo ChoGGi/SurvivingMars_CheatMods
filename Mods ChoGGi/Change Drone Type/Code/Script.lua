@@ -1,27 +1,29 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_ChangeDroneType"
-local mod = Mods[mod_id]
-local mod_Aerodynamics = mod.options and mod.options.Aerodynamics or false
-local mod_AlwaysWasp = mod.options and mod.options.AlwaysWasp or false
+local options
+local mod_Aerodynamics
+local mod_AlwaysWasp
 
+-- fired when settings are changed/init
 local function ModOptions()
-	mod_Aerodynamics = mod.options.Aerodynamics
-	mod_AlwaysWasp = mod.options.AlwaysWasp
+	mod_Aerodynamics = options.Aerodynamics
+	mod_AlwaysWasp = options.AlwaysWasp
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
 end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_ChangeDroneType" then
 		return
 	end
 
 	ModOptions()
 end
-
--- for some reason mod options aren't retrieved before this script is loaded...
-OnMsg.CityStart = ModOptions
-OnMsg.LoadGame = ModOptions
 
 -- function called when a drone is created
 function City:CreateDrone()
@@ -60,9 +62,8 @@ end
 -- add button to selection panels
 function OnMsg.ClassesPostprocess()
 	local Translate = ChoGGi.ComFuncs.Translate
-	local Strings = ChoGGi.Strings
 
-	local type_str = Strings[302535920000266, "Spawn"] .. ": %s"
+	local type_str = T(302535920000266, "Spawn") .. ": "
 	local name_table = {
 		FlyingDrone = Translate(10278, "Wasp Drone"),
 		Drone = Translate(1681, "Drone"),
@@ -83,10 +84,9 @@ function OnMsg.ClassesPostprocess()
 		end,
 
 		OnContextUpdate = function(self, context)
-			local city = context.city or UICity
-			self:SetTitle(type_str:format(
-				name_table[city.drone_class or "Drone"]
-			))
+			self:SetTitle(type_str
+				.. name_table[(context.city or UICity).drone_class or "Drone"]
+			)
 		end,
 
 		func = function(self, context)
@@ -97,7 +97,7 @@ function OnMsg.ClassesPostprocess()
 			else
 				city.drone_class = "Drone"
 			end
-			self:SetTitle(type_str:format(name_table[city.drone_class]))
+			self:SetTitle(type_str .. name_table[city.drone_class])
 			---
 		end,
 	}

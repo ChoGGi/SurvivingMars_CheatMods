@@ -19,9 +19,9 @@ for id, item in pairs(OnScreenNotificationPresets) do
 	local name
 	if priority then
 		if priority == 1 then
-			name = id .. " " .. T("<red>") .. T(item.title) .. T("</red>")
+			name = id .. " " .. "<red>" .. T(item.title) .. "</red>"
 		elseif priority == 2 then
-			name = id .. " " .. T("<color 115 117 216>") .. T(item.title) .. T("</color>")
+			name = id .. " " .. "<color 115 117 216>" .. T(item.title) .. "</color>"
 		end
 	else
 		name = id .. " " .. T(item.title)
@@ -33,7 +33,7 @@ for id, item in pairs(OnScreenNotificationPresets) do
 		editor = "bool",
 		id = id,
 		-- max 40 chars
-		name = name,
+		name = T(name),
 	}
 end
 

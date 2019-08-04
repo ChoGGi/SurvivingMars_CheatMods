@@ -59,23 +59,20 @@ do -- Translate
 	local missing_text = "Missing text"
 
 	-- local some globals
-	local _InternalTranslate = _InternalTranslate
-	local type, select, tostring = type, select, tostring
-	local T, IsT, count_params = T, IsT, count_params
+	local type, tostring, print = type, tostring, print
+	local _InternalTranslate, T, IsT = _InternalTranslate, T, IsT
 
 	-- translate func that always returns a string (string id, {id,value}, nil)
-	function Translate(...)
-		local str = _InternalTranslate(T(...) or "")
+	function Translate(t, context, ...)
+		local str = _InternalTranslate(
+			(context and T(t, context, ...) or T{t, context, ...}) or ""
+		)
 
 		-- Missing text means the string id wasn't found (generally)
-		if str == "" or str == missing_text or type(str) ~= "string" then
-			-- if count over 1 then use the second arg (which might be a string)
-			str = count_params(...) > 1 and select(2, ...)
-			if type(str) == "string" then
-				return str
-			end
-			-- i'd rather know if something failed by having a missing string rather than a failed func
-			return (IsT(...) or tostring(...)) .. " *bad string id?"
+		if str == missing_text or str == "" or type(str) ~= "string" then
+			-- try to return the string id, if we can
+			print("Translate Failed:", t, context, ...)
+			return tostring(IsT(t) or t) .. " *bad string id?"
 		end
 
 		-- and done

@@ -7,7 +7,6 @@ return PlaceObj("ModDef", {
 			"version_minor", 3,
 		}),
 	},
---~ 	"title", "Change Drone Type v0.3",
 	"title", "Change Drone Type",
 	"version", 4,
 	"version_major", 0,

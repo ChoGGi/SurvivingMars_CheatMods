@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Multi-Select v0.1",
 	"title", "Multi-Select",
 	"version", 2,
 	"version_major", 0,

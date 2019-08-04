@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Standing Unlocks Sponsor Buildings v0.2",
 	"title", "Standing Unlocks Sponsor Buildings",
 	"version", 3,
 	"version_major", 0,

@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Selectable Cables v0.4",
 	"title", "Selectable Cables",
 	"version", 4,
 	"version_major", 0,

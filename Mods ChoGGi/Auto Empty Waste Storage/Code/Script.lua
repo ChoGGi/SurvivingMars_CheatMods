@@ -1,30 +1,31 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_AutoEmptyWasteStorage"
-local mod = Mods[mod_id]
+local options
+local mod_EmptyDumpSites
+local mod_EmptyNewSol
+local mod_EmptyNewHour
 
-local mod_EmptyDumpSites = mod.options and mod.options.EmptyDumpSites or true
-local mod_EmptyNewSol = mod.options and mod.options.EmptyNewSol or true
-local mod_EmptyNewHour = mod.options and mod.options.EmptyNewHour or false
-
+-- fired when settings are changed/init
 local function ModOptions()
-	mod_EmptyDumpSites = mod.options.EmptyDumpSites
-	mod_EmptyNewSol = mod.options.EmptyNewSol
-	mod_EmptyNewHour = mod.options.EmptyNewHour
+	mod_EmptyDumpSites = options.EmptyDumpSites
+	mod_EmptyNewSol = options.EmptyNewSol
+	mod_EmptyNewHour = options.EmptyNewHour
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
 end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_AutoEmptyWasteStorage" then
 		return
 	end
 
 	ModOptions()
 end
-
--- for some reason mod options aren't retrieved before this script is loaded...
-OnMsg.CityStart = ModOptions
-OnMsg.LoadGame = ModOptions
 
 local function EmptyAll()
 	local objs = UICity.labels.WasteRockDumpSite or ""

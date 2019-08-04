@@ -30,23 +30,5 @@ DefineClass("ModOptions_ChoGGi_RealTimeClock", {
 			id = "TextStyle",
 			name = T(302535920011362, "Styles"),
 		},
-
---~ 		{
---~ 			default = "Infobar",
---~ 			editor = "choice",
---~ 			id = "PosChoices",
---~ 			items = {
---~ 				{
---~ 					text = T(9764, "Infobar"),
---~ 					value = "Infobar",
---~ 				},
---~ 				{
---~ 					text = T(7582, "Notifications"),
---~ 					value = "Notifications",
---~ 				},
---~ 			},
---~ 			name = T(3747, "Placement pos"),
---~ 		},
-
 	},
 })

@@ -1,10 +1,31 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_MarkDepositGround"
-local mod = Mods[mod_id]
-local mod_AlienAnomaly = mod.options and mod.options.AlienAnomaly or false
-local mod_HideSigns = mod.options and mod.options.HideSigns or false
-local mod_ShowConstruct = mod.options and mod_ShowConstruct or false
+local options
+local mod_AlienAnomaly
+local mod_HideSigns
+local mod_ShowConstruct
+
+-- fired when settings are changed/init
+local function ModOptions()
+	local mod_AlienAnomaly = options.AlienAnomaly
+	local mod_HideSigns = options.HideSigns
+	local mod_ShowConstruct = options.ShowConstruct
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= "ChoGGi_MarkDepositGround" then
+		return
+	end
+
+	ModOptions()
+end
 
 local AsyncRand = AsyncRand
 local GridOpFree = GridOpFree
@@ -113,8 +134,6 @@ end
 
 -- startup
 local function HideSigns()
-	mod_AlienAnomaly = mod.options.AlienAnomaly
-	mod_HideSigns = mod.options.HideSigns
 	SuspendPassEdits("ChoGGi.MarkDepositGround.HideSigns")
 
 	if mod_HideSigns then
@@ -175,12 +194,12 @@ end
 local function UpdateOptions()
 	-- update signs
 	if GameState.gameplay then
-		if mod_AlienAnomaly ~= mod.options.AlienAnomaly then
-			mod_AlienAnomaly = mod.options.AlienAnomaly
+		if mod_AlienAnomaly ~= options.AlienAnomaly then
+			mod_AlienAnomaly = options.AlienAnomaly
 			ChangeMarks("Anomaly", "GreenMan", mod_AlienAnomaly)
 		end
-		if mod_HideSigns ~= mod.options.HideSigns then
-			mod_HideSigns = mod.options.HideSigns
+		if mod_HideSigns ~= options.HideSigns then
+			mod_HideSigns = options.HideSigns
 			UpdateOpacity("SubsurfaceDeposit", mod_HideSigns)
 			UpdateOpacity("EffectDeposit", mod_HideSigns)
 			UpdateOpacity("TerrainDeposit", mod_HideSigns)
@@ -205,21 +224,21 @@ OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode
 
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
-function CursorBuilding:GameInit()
+function CursorBuilding.GameInit(...)
 	if mod_ShowConstruct and mod_HideSigns then
 		UpdateOpacity("SubsurfaceDeposit", false)
 		UpdateOpacity("EffectDeposit", false)
 		UpdateOpacity("TerrainDeposit", false)
 	end
-	return orig_CursorBuilding_GameInit(self)
+	return orig_CursorBuilding_GameInit(...)
 end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done
-function CursorBuilding:Done()
+function CursorBuilding.Done(...)
 	if mod_ShowConstruct and mod_HideSigns then
 		UpdateOpacity("SubsurfaceDeposit", true)
 		UpdateOpacity("EffectDeposit", true)
 		UpdateOpacity("TerrainDeposit", true)
 	end
-	return orig_CursorBuilding_Done(self)
+	return orig_CursorBuilding_Done(...)
 end

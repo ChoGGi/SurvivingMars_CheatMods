@@ -3,7 +3,6 @@
 local tostring = tostring
 
 local Translate = ChoGGi.ComFuncs.Translate
-local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
@@ -43,7 +42,7 @@ local build_str = "BuildmenuKeys.BuildMenu"
 local function AddMenuKey(num, key, name)
 	c = c + 1
 	Actions[c] = {
-		ActionName = Strings[302535920001414, "Build menu key: %s"]:format(Translate(name)),
+		ActionName = T(302535920011475, "Build menu key") .. ": " .. T(name),
 		ActionId = build_str .. num,
 		OnAction = function()
 			ShowBuildMenu(num)

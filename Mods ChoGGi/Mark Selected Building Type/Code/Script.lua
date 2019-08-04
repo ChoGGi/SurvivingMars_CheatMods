@@ -19,7 +19,6 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-
 local IsValid = IsValid
 local DoneObject = DoneObject
 local SuspendPassEdits = SuspendPassEdits

@@ -7,7 +7,6 @@ return PlaceObj("ModDef", {
 			"version_minor", 3,
 		}),
 	},
---~ 	"title", "Personal Shuttles v0.8",
 	"title", "Personal Shuttles",
 	"version", 10,
 	"version_major", 1,

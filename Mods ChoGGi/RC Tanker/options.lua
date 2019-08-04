@@ -10,7 +10,7 @@ DefineClass("ModOptions_ChoGGi_RCTanker", {
 			editor = "number",
 			id = "LimitStorage",
 			name = T(302535920011219, "Limit Tank Storage"),
-			desc = "How many resource units it can hold.",
+--~ 			desc = "How many resource units it can hold.",
 		},
 	},
 })

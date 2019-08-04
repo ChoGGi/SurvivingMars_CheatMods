@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Patient Transport Route v0.2",
 	"title", "Patient Transport Route",
 	"version", 2,
 	"version_major", 0,

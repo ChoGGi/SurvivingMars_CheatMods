@@ -27,7 +27,9 @@ local function DeleteAnom(self)
 	end
 
 	ChoGGi.ComFuncs.QuestionBox(
-		T{0, "Are you sure you want to delete <name>?", name = self.selected_spot.display_name},
+		T{302535920011405, "Are you sure you want to delete <name>?",
+			name = self.selected_spot.display_name,
+		},
 		CallBackFunc,
 		T(5451, "DELETE") .. "!!!!"
 	)
@@ -45,8 +47,8 @@ local function AddButton(self)
 			id = "idChoGGi_DeleteAnomaly",
 			text = T(5451, "DELETE"),
 
-			roll_title = T(0, "Delete Anomaly"),
-			roll_text = T(0, "Deletes Anomaly!!!"),
+			roll_title = T(302535920011406, "Delete Anomaly"),
+			roll_text = T(302535920011407, "Deletes Anomaly!!!"),
 			onpress = function()
 				DeleteAnom(self)
 			end,

@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local PlaceResourcePile = PlaceResourcePile
 local DoneObject = DoneObject
 local Sleep = Sleep

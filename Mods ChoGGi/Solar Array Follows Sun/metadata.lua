@@ -7,7 +7,6 @@ return PlaceObj("ModDef", {
 			"version_minor", 3,
 		}),
 	},
---~ 	"title", "SArray Follows Sun",
 	"title", "Solar Array Follows Sun",
 	"version", 5,
 	"version_major", 0,

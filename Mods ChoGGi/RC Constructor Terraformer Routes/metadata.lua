@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "RC Constructor Routes v0.1",
 	"title", "RC Constructor Terraformer Routes",
 	"version", 2,
 	"version_major", 0,

@@ -1,5 +1,6 @@
-local orig_Dome_OpenFilterTraits = Dome.OpenFilterTraits
+-- See LICENSE for terms
 
+local orig_Dome_OpenFilterTraits = Dome.OpenFilterTraits
 function Dome:OpenFilterTraits(...)
 	local orig = self.accept_colonists
 	orig_Dome_OpenFilterTraits(self, ...)

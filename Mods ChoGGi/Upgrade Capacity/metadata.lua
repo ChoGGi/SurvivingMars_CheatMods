@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Upgrade Slots: Visitors/Capacity",
 	"title", "Upgrade Capacity",
 	"version", 6,
 	"version_major", 0,

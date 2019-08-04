@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Stop Colonist Death Failure v0.1",
 	"title", "Stop Colonist Death Failure",
 	"version", 2,
 	"version_major", 0,

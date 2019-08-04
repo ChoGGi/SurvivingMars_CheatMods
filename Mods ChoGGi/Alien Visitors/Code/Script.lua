@@ -1,26 +1,27 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_AlienVisitors"
-local mod = Mods[mod_id]
-local mod_MaxSpawn = mod.options and mod.options.MaxSpawn or 10
+local options
+local mod_MaxSpawn
 
+-- fired when settings are changed/init
 local function ModOptions()
-	mod_MaxSpawn = mod.options.MaxSpawn
+	mod_MaxSpawn = options.MaxSpawn
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
 end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_AlienVisitors" then
 		return
 	end
 
 	ModOptions()
 end
-
--- for some reason mod options aren't retrieved before this script is loaded...
-
-OnMsg.CityStart = ModOptions
-OnMsg.LoadGame = ModOptions
 
 local image_pin = CurrentModPath .. "UI/Alien_Pin.png"
 
@@ -29,7 +30,7 @@ local DomeCollisionCheck = DomeCollisionCheck
 local WorldToHex = WorldToHex
 local GetBuildableZ = GetBuildableZ
 local AsyncRand = AsyncRand
-local IsPassable = terrain.IsPassable
+local terrain_IsPassable = terrain.IsPassable
 
 DefineClass.ChoGGi_Alien = {
 --~ 	__parents = { "Unit", "CityObject", "PinnableObject", "Shapeshifter", "InfopanelObj", "CycleMember" },
@@ -68,10 +69,10 @@ function ChoGGi_Alien:GetDisplayName()
 	return self.display_name or self:GetEntity()
 end
 function ChoGGi_Alien:PinDescription()
-	return [[Out for a stroll]]
+	return T(302535920011388, "Out for a stroll")
 end
 function ChoGGi_Alien:GetIPDescription()
-	return [[A bland visitor]]
+	return T(302535920011389, "A bland visitor")
 end
 
 function ChoGGi_Alien:KillThreads()
@@ -85,7 +86,7 @@ end
 
 local UnbuildableZ = buildUnbuildableZ()
 local function IsPlayablePoint(pt)
-	return pt:InBox2D(g_MapArea) and GetBuildableZ(WorldToHex(pt:xy())) ~= UnbuildableZ and IsPassable(pt)
+	return pt:InBox2D(g_MapArea) and GetBuildableZ(WorldToHex(pt:xy())) ~= UnbuildableZ and terrain_IsPassable(pt)
 end
 
 local names_list = {"Family", "Female", "Male"}

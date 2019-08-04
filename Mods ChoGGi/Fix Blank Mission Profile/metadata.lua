@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Fix: Removed Mod Game Rules",
 	"title", "Fix Blank Mission Profile",
 	"version", 2,
 	"version_major", 0,

@@ -7,7 +7,6 @@ return PlaceObj("ModDef", {
 			"version_minor", 3,
 		}),
 	},
---~ 	"title", "Stop Current Disasters v0.4",
 	"title", "Stop Current Disasters",
 	"version", 7,
 	"version_major", 0,

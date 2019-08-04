@@ -1,12 +1,11 @@
 -- See LICENSE for terms
 
-local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
 -- goes to placement mode with SelectedObj or last built object
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920001350--[[Place Last Selected/Constructed Building]]],
+Actions[c] = {ActionName = T(302535920001350, "Place Last Selected/Constructed Building",
 	ActionId = "BuildingPlacementOrientation.LastSelectedObject",
 	OnAction = ChoGGi.ComFuncs.PlaceLastSelectedConstructedBld,
 	ActionShortcut = "Ctrl-Space",
@@ -24,11 +23,11 @@ OnMsg.ConstructionSitePlaced = UpdateLast
 OnMsg.SelectionAdded = UpdateLast
 
 local function StartupCode()
-	local orig_ConstructionController_CreateCursorObj = ConstructionController.CreateCursorObj
-
 	local IsValid = IsValid
 	local table_unpack = table.unpack
+
 	-- set orientation to same as last object
+	local orig_ConstructionController_CreateCursorObj = ConstructionController.CreateCursorObj
 	function ConstructionController:CreateCursorObj(...)
 
 		local ret = {orig_ConstructionController_CreateCursorObj(self, ...)}

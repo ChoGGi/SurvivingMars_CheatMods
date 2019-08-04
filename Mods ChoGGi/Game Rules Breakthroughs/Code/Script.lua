@@ -33,7 +33,7 @@ local function SafeTrans(...)
 	procall(function()
 		str = _InternalTranslate(T(varargs))
 	end)
-	return str or "Missing text... Nope just needs UICity which isn't around till the game starts (ask the devs)."
+	return str or T(302535920011424, "Missing text... Nope just needs UICity which isn't around till the game starts (ask the devs).")
 end
 
 function OnMsg.ClassesPostprocess()

@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Stop Trade Camera",
 	"title", "Stop Rocket Camera",
 	"version", 2,
 	"version_major", 0,

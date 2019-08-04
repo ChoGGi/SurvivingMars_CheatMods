@@ -1,36 +1,37 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_AddWaterEachSol"
-local mod = Mods[mod_id]
-local mod_AmountOfWater = mod.options and mod.options.AmountOfWater or 50
+local options
+local mod_AmountOfWater
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_AmountOfWater = options.AmountOfWater * const.ResourceScale
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
+
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_AddWaterEachSol" then
 		return
 	end
 
-	mod_AmountOfWater = mod.options.AmountOfWater
+	ModOptions()
 end
 
--- for some reason mod options aren't retrieved before this script is loaded...
-local function StartupCode()
-	mod_AmountOfWater = mod.options.AmountOfWater
+local function EachDeposit(obj)
+	if type(obj.amount) == "number" then
+		obj.amount = obj.amount + mod_AmountOfWater
+		if obj.amount > obj.max_amount then
+			obj.amount = obj.max_amount
+		end
+	end
 end
-
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
 
 function OnMsg.NewDay()
-	local water = mod_AmountOfWater * const.ResourceScale
-
-	MapForEach("map", "SubsurfaceDepositWater", function(o)
-		if type(o.amount) == "number" then
-			o.amount = o.amount + water
-			if o.amount > o.max_amount then
-				o.amount = o.max_amount
-			end
-		end
-	end)
+	MapForEach("map", "SubsurfaceDepositWater", EachDeposit)
 end
-
-

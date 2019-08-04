@@ -1,3 +1,4 @@
+-- See LICENSE for terms
 
 local function StartupCode()
 

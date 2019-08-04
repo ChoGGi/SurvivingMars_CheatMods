@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Infobar Add Discharge Rates",
 	"title", "Infobar More Info",
 	"version", 13,
 	"version_major", 1,

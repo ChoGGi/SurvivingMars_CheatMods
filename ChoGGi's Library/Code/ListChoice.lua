@@ -658,11 +658,12 @@ function ChoGGi_DlgListChoice:BuildList(save_pos)
 				local icon = ValidateImage(item.icon)
 				if icon then
 					display_icon = icon
-					text = item.text
 				end
 			end
 		else
 			display_icon = not self.skip_icons and self:AddItemIcon(g, item)
+		end
+		if not text then
 			text = item.text
 		end
 
@@ -688,22 +689,12 @@ function ChoGGi_DlgListChoice:BuildList(save_pos)
 		-- add rollover text
 		local title = item.text
 		if type(item.value) ~= nil and item.value ~= item.text then
-			local value_str
-			if type(item.value) == "userdata" then
-				value_str = Translate(item.value)
-			else
-				value_str = item.value
-			end
-			title = item.text .. ": <color 200 255 200>" .. tostring(value_str) .. "</color>"
+			title = item.text .. ": <color 200 255 200>" .. item.value .. "</color>"
 		end
-		listitem.RolloverTitle = title
+		listitem.RolloverTitle = Translate(title)
 
 		if item.hint then
-			if type(item.hint) == "userdata" then
-				listitem.RolloverText = Translate(item.hint)
-			else
-				listitem.RolloverText = item.hint
-			end
+			listitem.RolloverText = Translate(item.hint)
 		end
 
 		if display_icon and not self.skip_icons then

@@ -2,7 +2,6 @@
 
 local table_concat = table.concat
 local MulDivRound = MulDivRound
-local _InternalTranslate = _InternalTranslate
 local T = T
 
 local function UnitPoints(unit, self)
@@ -16,13 +15,13 @@ local function GetPoints(self, text, skip, school)
 	local c = #text
 	if not skip then
 		c = c + 1
-		text[c] = "<newline><left>"
+		text[c] = T("<newline><left>")
 	end
 
 	for i = 1, #self.visitors do
 		local shift = self.visitors[i]
 		c = c + 1
-		text[c] = "<newline><left><color 119 212 255>Shift " .. i .. "</color>"
+		text[c] = T("<newline><left><color 119 212 255>Shift ") .. i .. "</color>"
 
 		for j = 1, #shift do
 			local unit = shift[j]
@@ -30,8 +29,8 @@ local function GetPoints(self, text, skip, school)
 
 			if school then
 				c = c + 1
-				text[c] = _InternalTranslate(T(unit:GetDisplayName()) .. "<right>"
-					.. T{0, "<str1> <percent(number1)>, <str2> <percent(number2)>",
+				text[c] = T(unit:GetDisplayName()) .. "<right>"
+					.. T{302535920011385, "<str1> <percent(number1)>, <str2> <percent(number2)>",
 						str1 = T(4779, "Adult"),
 						number1 = MulDivRound(
 							unit.age or 0,
@@ -41,13 +40,13 @@ local function GetPoints(self, text, skip, school)
 						-- 150 is from function School:OnTrainingCompleted(unit)
 						str2 = T(9828, "Required"),
 						number2 = MulDivRound(unit_points, 100, 150),
-				})
+					}
 			else
 				c = c + 1
-				text[c] = _InternalTranslate(T(unit:GetDisplayName()) .. "<right>"
-					.. T{0, "<percent(number)>",
+				text[c] = T(unit:GetDisplayName()) .. "<right>"
+					.. T{9766, "<percent(number)>",
 						number = MulDivRound(unit_points, 100, self.evaluation_points),
-				})
+					}
 			end
 		end
 	end

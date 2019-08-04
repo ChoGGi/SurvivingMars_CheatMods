@@ -33,7 +33,6 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
---~ local Strings = ChoGGi.Strings
 local Translate = ChoGGi.ComFuncs.Translate
 
 local table_clear = table.clear

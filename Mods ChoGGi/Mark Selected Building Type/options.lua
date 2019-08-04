@@ -7,8 +7,8 @@ DefineClass("ModOptions_ChoGGi_MarkSelectedBuildingType", {
 			default = true,
 			editor = "bool",
 			id = "Mark",
-			name = "Mark Buildings",
-			desc = "Toggle showing beams.",
+			name = T(302535920011433, "Mark Buildings"),
+--~ 			desc = "Toggle showing beams.",
 		},
 	},
 })

@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Show Tunnel Lines v0.2",
 	"title", "Show Tunnel Lines",
 	"version", 4,
 	"version_major", 0,

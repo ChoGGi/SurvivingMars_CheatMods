@@ -8,7 +8,7 @@ DefineClass("ModOptions_ChoGGi_Minimap", {
 			editor = "bool",
 			id = "UseScreenshots",
 			name = T(302535920011108, "Screenshots or topography images."),
-			desc = "it's a bool!",
+--~ 			desc = "it's a bool!",
 		},
 	},
 })

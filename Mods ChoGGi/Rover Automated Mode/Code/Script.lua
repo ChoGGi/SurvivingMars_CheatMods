@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local function StartupCode()
 	if g_RoverAIResearched then
 		return

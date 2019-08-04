@@ -7,7 +7,7 @@ DefineClass("ModOptions_ChoGGi_ShowMaxRadiusRange", {
 			default = true,
 			editor = "bool",
 			id = "ShowConstruct",
-			name = "Show during construction",
+			name = T(302535920011403, "Show during construction"),
 		},
 	},
 })

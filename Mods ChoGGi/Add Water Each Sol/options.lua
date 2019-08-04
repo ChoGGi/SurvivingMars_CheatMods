@@ -9,7 +9,7 @@ DefineClass("ModOptions_ChoGGi_AddWaterEachSol", {
 			min = 0,
 			editor = "number",
 			id = "AmountOfWater",
-			name = "How much water each deposit receives each Sol.",
+			name = T(302535920011386, "How much water each deposit receives each Sol."),
 		},
 	},
 })

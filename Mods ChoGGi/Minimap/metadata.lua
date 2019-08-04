@@ -7,7 +7,6 @@ return PlaceObj("ModDef", {
 			"version_minor", 3,
 		}),
 	},
---~ 	"title", "Minimap v0.5",
 	"title", "Minimap",
 	"version", 6,
 	"version_major", 0,

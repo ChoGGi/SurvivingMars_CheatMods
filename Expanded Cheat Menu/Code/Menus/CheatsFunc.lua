@@ -1931,7 +1931,7 @@ do -- ResearchTech
 				if text:find("\"") then
 					text = text:gsub("\"", "")
 				end
-				local icon1, icon2 = "", ""
+				local icon1, icon2 = nil, ""
 				if ValidateImage(tech.icon) and not tech.icon:find(" ") then
 					icon1 = "<image " .. tech.icon .. " 250>"
 					icon2 = "\n\n<image " .. tech.icon .. " 1500>"

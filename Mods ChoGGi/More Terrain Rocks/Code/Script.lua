@@ -23,13 +23,14 @@ local cats = {
 }
 
 local r = const.ResourceScale
-local mod_id = "ChoGGi_MoreTerrainRocks"
-local mod = Mods[mod_id]
 
-local mod_LargeRocksCost = mod.options and mod.options.LargeRocksCost or 10
+local options
+local mod_EnableMod
 
+-- fired when settings are changed/init
 local function ModOptions()
-	mod_LargeRocksCost = mod.options.LargeRocksCost
+	mod_LargeRocksCost = options.LargeRocksCost * r
+
 	-- update rocks
 	local bt = BuildingTemplates
 	local ct = ClassTemplates.Building
@@ -40,26 +41,29 @@ local function ModOptions()
 			local id = "ChoGGi_LandscapeRock_" .. group[j]
 			local rock = bt[id]
 			if rock then
-				local cost = cat == "LandscapeRockBuildingsLightSmall" and 1000 or (mod_LargeRocksCost * r)
+				local cost = cat == "LandscapeRockBuildingsLightSmall" and 1000 or mod_LargeRocksCost
 				rock.construction_cost_WasteRock = cost
 				ct[id].construction_cost_WasteRock = cost
 			end
 		end
 	end
+
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
 end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_MoreTerrainRocks" then
 		return
 	end
 
 	ModOptions()
 end
-
--- for some reason mod options aren't retrieved before this script is loaded...
-OnMsg.CityStart = ModOptions
-OnMsg.LoadGame = ModOptions
 
 local IsKindOf = IsKindOf
 -- we don't specifiy a PrefabMarkers to use, so we skip this to skip the error msg
@@ -144,7 +148,7 @@ function OnMsg.ClassesPostprocess()
 		build_pos = 1,
 		category = "RockFormations_ChoGGi",
 		description = desc,
-		display_name = "Rocks",
+		display_name = T(302535920011436, "Rocks"),
 		group = "Default",
 		icon = "UI/Icons/Buildings/numbers_01.tga",
 		category_name = "LandscapeRockBuildingsRocks",
@@ -154,7 +158,7 @@ function OnMsg.ClassesPostprocess()
 		build_pos = 2,
 		category = "RockFormations_ChoGGi",
 		description = desc,
-		display_name = "Dark",
+		display_name = T(302535920011437, "Dark"),
 		group = "Default",
 		icon = "UI/Icons/Buildings/numbers_02.tga",
 		category_name = "LandscapeRockBuildingsDark",
@@ -164,7 +168,7 @@ function OnMsg.ClassesPostprocess()
 		build_pos = 3,
 		category = "RockFormations_ChoGGi",
 		description = desc,
-		display_name = "Light",
+		display_name = T(302535920011438, "Light"),
 		group = "Default",
 		icon = "UI/Icons/Buildings/numbers_03.tga",
 		category_name = "LandscapeRockBuildingsLight",
@@ -174,7 +178,7 @@ function OnMsg.ClassesPostprocess()
 		build_pos = 4,
 		category = "RockFormations_ChoGGi",
 		description = T(544067769859, "Small stylish composition made of native Martian rocks."),
-		display_name = "Light Small",
+		display_name = T(302535920011439, "Light Small"),
 		group = "Default",
 		icon = "UI/Icons/Buildings/numbers_04.tga",
 		category_name = "LandscapeRockBuildingsLightSmall",
@@ -184,7 +188,7 @@ function OnMsg.ClassesPostprocess()
 		build_pos = 5,
 		category = "RockFormations_ChoGGi",
 		description = desc,
-		display_name = "Slate",
+		display_name = T(302535920011440, "Slate"),
 		group = "Default",
 		icon = "UI/Icons/Buildings/numbers_05.tga",
 		category_name = "LandscapeRockBuildingsSlate",
@@ -195,7 +199,7 @@ function OnMsg.ClassesPostprocess()
 		build_pos = 6,
 		category = "RockFormations_ChoGGi",
 		description = desc,
-		display_name = "Cliff",
+		display_name = T(302535920011441, "Cliff"),
 		group = "Default",
 		icon = "UI/Icons/Buildings/numbers_06.tga",
 		category_name = "LandscapeRockBuildingsCliff",
@@ -206,7 +210,7 @@ function OnMsg.ClassesPostprocess()
 		build_pos = 7,
 		category = "RockFormations_ChoGGi",
 		description = desc,
-		display_name = "Cliff Dark",
+		display_name = T(302535920011442, "Cliff Dark"),
 		group = "Default",
 		icon = "UI/Icons/Buildings/numbers_07.tga",
 		category_name = "LandscapeRockBuildingsCliffDark",
@@ -217,7 +221,7 @@ function OnMsg.ClassesPostprocess()
 		build_pos = 8,
 		category = "RockFormations_ChoGGi",
 		description = desc,
-		display_name = "Cliff Ice",
+		display_name = T(302535920011443, "Cliff Ice"),
 		group = "Default",
 		icon = "UI/Icons/Buildings/numbers_08.tga",
 		category_name = "LandscapeRockBuildingsCliffIce",
@@ -240,10 +244,10 @@ function OnMsg.ClassesPostprocess()
 			"Group", "RockFormations_ChoGGi",
 			"build_category", "RockFormations_ChoGGi",
 			"Id", "RockFormations_ChoGGi_Ignore",
-			"display_name", "Ignore me",
-			"display_name_pl", "Ignore me",
-			"description", [[Build menus need at least one actual item or they won't show up.
-You can build this if you want it won't hurt anything.]],
+			"display_name", T(302535920011444, "Ignore me"),
+			"display_name_pl", T(302535920011444, "Ignore me"),
+			"description", T(302535920011445, [[Build menus need at least one actual item or they won't show up.
+You can build this if you want it won't hurt anything.]]),
 			"template_class", "Building",
 			"display_icon", "UI/Icons/Buildings/placeholder.tga",
 		})
@@ -269,13 +273,12 @@ You can build this if you want it won't hurt anything.]],
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
 				"RolloverTitle", T(1000081, "Scale"),
-				"RolloverText", "Scale +",
+				"RolloverText", T(1000081, "Scale") .. " " .. T(1000541, "+"),
 				"RolloverHint", T(608042494285, "<left_click> Activate"),
 				"OnPress", function(self)
 					-- speeds it up if it's a large scale
 					SuspendPassEdits("ChoGGi_LevelPrefabBuilding.Scale")
-					local c = self.context
-					c:SetScale(c:GetScale()+25)
+					self.context:SetScale(self.context:GetScale()+25)
 					ResumePassEdits("ChoGGi_LevelPrefabBuilding.Scale")
 				end,
 				"Icon", "UI/Icons/IPButtons/drone_assemble.tga",
@@ -283,12 +286,11 @@ You can build this if you want it won't hurt anything.]],
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
 				"RolloverTitle", T(1000081, "Scale"),
-				"RolloverText", "Scale -",
+				"RolloverText", T(1000081, "Scale") .. " " .. T(1000540, "-"),
 				"RolloverHint", T(608042494285, "<left_click> Activate"),
 				"OnPress", function(self)
 					SuspendPassEdits("ChoGGi_LevelPrefabBuilding.Scale")
-					local c = self.context
-					c:SetScale(c:GetScale()-25)
+					self.context:SetScale(self.context:GetScale()-25)
 					ResumePassEdits("ChoGGi_LevelPrefabBuilding.Scale")
 				end,
 				"Icon", "UI/Icons/IPButtons/drone_dismantle.tga",
@@ -301,9 +303,8 @@ You can build this if you want it won't hurt anything.]],
 				"RolloverHint", T(608042494285, "<left_click> Activate"),
 				"OnPress", function(self)
 					SuspendPassEdits("ChoGGi_LevelPrefabBuilding.Rotate")
-					local c = self.context
-					c:SetAngle((c:GetAngle() or 0) + -3600)
-					ObjModified(c)
+					self.context:SetAngle((self.context:GetAngle() or 0) + -3600)
+					ObjModified(self.context)
 					ResumePassEdits("ChoGGi_LevelPrefabBuilding.Rotate")
 				end,
 				"Icon", "UI/Icons/IPButtons/automated_mode_on.tga",

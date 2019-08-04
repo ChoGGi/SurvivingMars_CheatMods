@@ -7,7 +7,6 @@ return PlaceObj("ModDef", {
 			"version_minor", 3,
 		}),
 	},
---~ 	"title", "Solaria Telepresence v0.9",
 	"title", "Solaria Telepresence",
 	"version", 10,
 	"version_major", 1,

@@ -8,7 +8,7 @@ DefineClass("ModOptions_ChoGGi_GameRulesBreakthroughs", {
 			default = false,
 			editor = "bool",
 			id = "BreakthroughsResearched",
-			name = "Breakthroughs Researched",
+			name = T(302535920011423, "Breakthroughs Researched"),
 		},
 	},
 })

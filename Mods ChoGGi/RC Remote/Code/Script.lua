@@ -23,7 +23,6 @@ local MapFindNearest = MapFindNearest
 
 local Translate = ChoGGi.ComFuncs.Translate
 
---~ 	local Strings = ChoGGi.Strings
 do -- add shortcut actions
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions

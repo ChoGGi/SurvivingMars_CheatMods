@@ -12,8 +12,8 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	PlaceObj("GameRules", {
-		description = T(0,"Start off with terraforming params maxed, and the ground green."),
-		display_name = T(0,"Fully Terraformed"),
+		description = T(302535920011425,"Start off with terraforming params maxed, and the ground green."),
+		display_name = T(302535920011426, "Fully Terraformed"),
 		flavor = T(323117615670, [[
 <grey>"Boredom always precedes a period of great creativity."
 <right>Robert M. Pirsig</grey><left>]]),
@@ -61,10 +61,9 @@ function OnMsg.ClassesPostprocess()
 	})
 
 	PlaceObj("GameRules", {
-		description = T(0,"Terraforming params never go down."),
-		display_name = T(0,"Terraforming Locked"),
-		flavor = T(0, [[
-<grey>"Water, fire, air and dirt
+		description = T(302535920011427, "Terraforming params never go down."),
+		display_name = T(302535920011428, "Terraforming Locked"),
+		flavor = T(302535920011429, "\n" .. [[<grey>"Water, fire, air and dirt
 Fucking magnets, how do they work?
 And I don't wanna talk to a scientist
 Y'all motherfuckers lying, and getting me pissed."

@@ -7,7 +7,6 @@ return PlaceObj("ModDef", {
 			"version_minor", 3,
 		}),
 	},
---~ 	"title", "Outside Residence",
 	"title", "MARSHA",
 	"version", 1,
 	"version_major", 0,

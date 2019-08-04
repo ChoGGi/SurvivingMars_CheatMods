@@ -9,7 +9,7 @@ DefineClass("ModOptions_ChoGGi_ConstructionExtendLength", {
 			min = 0,
 			editor = "number",
 			id = "BuildDist",
-			name = "How many hexes you can build",
+			name = T(302535920011399, "How many hexes you can build"),
 		},
 		{
 			default = 500,
@@ -17,7 +17,7 @@ DefineClass("ModOptions_ChoGGi_ConstructionExtendLength", {
 			min = 0,
 			editor = "number",
 			id = "PassChunks",
-			name = "Passage length if bent",
+			name = T(302535920011400, "Passage length if bent"),
 		},
 	},
 })

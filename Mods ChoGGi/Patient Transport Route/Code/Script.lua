@@ -1,28 +1,29 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_PatientTransportRoute"
-local mod = Mods[mod_id]
-local mod_Amount = mod.options and mod.options.Amount or 1 * const.ResourceScale
+local options
+local mod_Amount
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_Amount = options.Amount * const.ResourceScale
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
+end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_PatientTransportRoute" then
 		return
 	end
 
-	mod_Amount = mod.options.Amount * const.ResourceScale
+	ModOptions()
 end
-
--- for some reason mod options aren't retrieved before this script is loaded...
-local function StartupCode()
-	mod_Amount = mod.options.Amount * const.ResourceScale
-end
-
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
 
 local Sleep = Sleep
-local table_clear = table.clear
 
 local orig_RCTransport_TransportRouteLoad = RCTransport.TransportRouteLoad
 function RCTransport:TransportRouteLoad(...)
@@ -64,8 +65,8 @@ function RCTransport:TransportRouteLoad(...)
 			end
 
 			-- gotta clear these so they don't cause issues
-			table_clear(self.route_visited_dests)
-			table_clear(self.route_visited_sources)
+			table.clear(self.route_visited_dests)
+			table.clear(self.route_visited_sources)
 			local next_source = self:FindNextRouteSource()
 			-- check for nearby deposits
 			if next_source then

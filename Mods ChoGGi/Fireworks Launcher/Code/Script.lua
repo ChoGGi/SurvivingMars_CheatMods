@@ -233,9 +233,9 @@ function OnMsg.ClassesPostprocess()
 			"palette_color1", "outside_base",
 			"palette_color2", "inside_base",
 			"palette_color3", "rover_base",
-			"display_name", [[Fireworks Launcher]],
-			"display_name_pl", [[Fireworks Launchers]],
-			"description", [[Launches fireworks and slightly raises temperature.]],
+			"display_name", T(302535920011418,"Fireworks Launcher"),
+			"display_name_pl", T(302535920011419, "Fireworks Launchers"),
+			"description", T(302535920011420, "Launches fireworks and slightly raises temperature."),
 			"display_icon", display_icon,
 			"entity", entity,
 			"build_category", "ChoGGi",
@@ -265,10 +265,10 @@ function OnMsg.ClassesPostprocess()
 			"__context_of_kind", "FireworksLauncher",
 			"__template", "InfopanelButton",
 
-			"RolloverText", T(0, [[Fire off some fireworks (Costs 100 million to use).
+			"RolloverText", T(302535920011421, [[Fire off some fireworks (Costs 100 million to use).
 Right-click to skip cost/temperature increase (also happens if you don't have enough cash).]]),
 			"RolloverTitle", [[Yamato Hasshin!]],
-			"RolloverHint", T(0, [[<left_click> Hot Fireworks <right_click> Visual Fireworks]]),
+			"RolloverHint", T(302535920011422, [[<left_click> Hot Fireworks <right_click> Visual Fireworks]]),
 			"Icon", "UI/Icons/IPButtons/drill.tga",
 
 			"OnPress", function (self, gamepad)

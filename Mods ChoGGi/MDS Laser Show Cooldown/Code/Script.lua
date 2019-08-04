@@ -37,7 +37,9 @@ function OnMsg.ClassesPostprocess()
 			}, {
 				PlaceObj("XTemplateTemplate", {
 					"__template", "InfopanelText",
-					"Text", T(6750, "Reload Time") .. ": " .. T{"<time>", time = RetTime},
+					"Text", T{"<str>: <time>",
+						str = T(6750, "Reload Time"), time = RetTime,
+					},
 				}),
 			}),
 		}),

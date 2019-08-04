@@ -7,7 +7,6 @@ return PlaceObj("ModDef", {
 			"version_minor", 3,
 		}),
 	},
---~ 	"title", "Passenger Rocket Tweaks v0.2",
 	"title", "Passenger Rocket Tweaks",
 	"version", 7,
 	"version_major", 0,

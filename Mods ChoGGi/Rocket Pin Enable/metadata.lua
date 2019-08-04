@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Rocket: Pin Enable",
 	"title", "Rocket Pin Enable",
 	"version", 2,
 	"version_major", 0,

@@ -1,26 +1,27 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_ResearchFilter"
-local mod = Mods[mod_id]
+local options
+local mod_HideCompleted
 
-local mod_HideCompleted = mod.options and mod.options.HideCompleted or false
-
+-- fired when settings are changed/init
 local function ModOptions()
-	mod_HideCompleted = mod.options.HideCompleted
+	mod_HideCompleted = options.HideCompleted
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+	ModOptions()
 end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= "ChoGGi_ResearchFilter" then
 		return
 	end
 
 	ModOptions()
 end
-
--- for some reason mod options aren't retrieved before this script is loaded...
-OnMsg.CityStart = ModOptions
-OnMsg.LoadGame = ModOptions
 
 -- stores list of tech dialog ui hexy things
 local tech_list = {}
@@ -84,7 +85,7 @@ local function EditDlg(dlg)
 		Id = "idFilterBar",
 		RolloverTemplate = "Rollover",
 		RolloverTitle = T(126095410863, "Info"),
-		RolloverText = T(0,[[Filter checks name, description, and id.
+		RolloverText = T(302535920011466, [[Filter checks name, description, and id.
 <color 0 200 0>Shift-Enter</color> to clear.]]),
 		Hint = [[Tech Filter]],
 		TextStyle = "LogInTitle",

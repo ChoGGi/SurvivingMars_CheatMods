@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Change Other To Random Gender v0.1",
 	"title", "Change Other To Random Gender",
 	"version", 1,
 	"version_major", 0,

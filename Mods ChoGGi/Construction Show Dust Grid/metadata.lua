@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Construction: Show Dust Grid v0.2",
 	"title", "Construction Show Dust Grid",
 	"version", 15,
 	"version_major", 1,

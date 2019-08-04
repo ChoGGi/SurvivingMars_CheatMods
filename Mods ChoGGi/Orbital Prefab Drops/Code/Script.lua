@@ -74,35 +74,9 @@ local function YamatoHasshin(site)
 
 	local ar = AttackRover
 	local sr = SupplyRocket
---~ -- landing/takeoff parameters
---~ orbital_altitude = 2500*guim,
---~ orbital_velocity = 100*guim,
---~ -- second set for the first rocket
---~ orbital_altitude_first = 400*guim,
---~ orbital_velocity_first = 43*guim,
---~ warm_up = 10000,
-
---~ -- pre-hit ground moments, all are relative to hit-ground
---~ pre_hit_ground = 10000,
---~ pre_hit_ground2 = 13000,
---~ pre_hit_groud_decal = 0,
-
 
 	-- pretty much a copy n paste of AttackRover:Spawn()... okay not anymore, but I swear it was
 	CreateGameTimeThread(function()
-
---~ local PlayFX = PlayFX
---~ local IsValid = IsValid
---~ local SetRollPitchYaw = SetRollPitchYaw
---~ local AsyncRand = AsyncRand
---~ local Max = Max
---~ local atan = atan
---~ local point = point
---~ local GetDomeAtHex = GetDomeAtHex
---~ local WorldToHex = WorldToHex
---~ local MulDivRound = MulDivRound
---~ local terrain_GetIntersection = terrain.GetIntersection
-
 
 		-- get dir and angle of container
 		local dir = point(city:Random(-4096, 4096), city:Random(-4096, 4096))
@@ -157,7 +131,6 @@ local function YamatoHasshin(site)
 		pod:SetAcceleration(accel)
 		pod:SetPos(hover_pos, land_time)
 		SetRollPitchYaw(pod, 0, 0, yaw, land_time)
---~ 		Sleep(Max(0, site.pre_hit_ground2 - site.pre_hit_ground))
 		PlayFX("RocketLand", "pre-hit-ground", pod, false, spawn_pos)
 
 		-- just for you ski
@@ -189,7 +162,6 @@ local function YamatoHasshin(site)
 		if IsValid(site) then
 			-- use shuttle fx up arrow thing
 			pod.fx_actor_class = "Shuttle"
---~ 			PlayFX("Dust", "start", pod)
 			PlayFX("ShuttleUnload", "start", pod, false, spawn_pos)
 
 			spawn_pos = spawn_pos - site_height
@@ -200,7 +172,6 @@ local function YamatoHasshin(site)
 			-- it's like jebus
 			site:SetPos(spawn_pos, 3000)
 
---~ 			PlayFX("Dust", "end", pod)
 			-- fire off the usual stuff so the drones make with the building
 			orig_ConstructionSite_GameInit(site)
 		end

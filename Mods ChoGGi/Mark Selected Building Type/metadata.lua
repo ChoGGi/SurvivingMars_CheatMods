@@ -1,5 +1,4 @@
 return PlaceObj("ModDef", {
---~ 	"title", "Mark Selected Building Type v0.1",
 	"title", "Mark Selected Building Type",
 	"version", 4,
 	"version_major", 0,

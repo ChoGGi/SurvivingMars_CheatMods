@@ -10,7 +10,7 @@ DefineClass("ModOptions_ChoGGi_BouncyDrones", {
 			min = 0,
 			editor = "number",
 			id = "Gravity",
-			name = "Bouncy Drones",
+			name = T(302535920011395, "Bouncy Drones"),
 		},
 		{
 			default = 10,
@@ -18,7 +18,7 @@ DefineClass("ModOptions_ChoGGi_BouncyDrones", {
 			min = 0,
 			editor = "number",
 			id = "GravityRC",
-			name = "Gravity RC",
+			name = T(302535920011396, "Gravity RC"),
 		},
 		{
 			default = 25,
@@ -26,7 +26,7 @@ DefineClass("ModOptions_ChoGGi_BouncyDrones", {
 			min = 0,
 			editor = "number",
 			id = "GravityColonist",
-			name = "Gravity Colonist",
+			name = T(302535920011397, "Gravity Colonist"),
 		},
 	},
 })
