@@ -54,6 +54,8 @@ end
 -- used below
 local text_style1 = "ChoGGi_Text12"
 local text_style2 = "ChoGGi_TextList12"
+local text_style3 = "ChoGGi_Text14"
+
 if ChoGGi.testing then
 	text_style1 = "ChoGGi_Text14"
 	text_style2 = "ChoGGi_TextList14"
@@ -81,7 +83,7 @@ DefineClass.ChoGGi_XText_Follow = {
 		"ChoGGi_XText",
 	},
 	ZOrder = -1,
-	TextStyle = text_style3 or text_style1,
+	TextStyle = text_style3,
 	-- try to centre text on pos
 	Padding = box(0, -3, -4, -5),
 	Margins = box(-10, -10, 0, 0),
