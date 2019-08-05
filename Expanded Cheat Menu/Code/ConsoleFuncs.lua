@@ -632,7 +632,7 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 end
 
 local function BuildSciptButton(console, folder)
-	g_Classes.ChoGGi_XConsoleButton:new({
+	ChoGGi_XConsoleButton:new({
 		RolloverText = folder.RolloverText,
 		Text = folder.Text,
 		OnPress = function(self)
@@ -645,7 +645,7 @@ local function BuildSciptButton(console, folder)
 					if not err then
 						items[i] = {
 							name = files[i].name,
-							hint = Strings[302535920001138--[["Execute this command in the console, Right-click to paste code in console."]]] .. "\n\n" ..script,
+							hint = Strings[302535920001138--[["Execute this command in the console, Right-click to paste code in console."]]] .. "\n\n" .. script,
 							hint_bottom = Strings[302535920000407--[[<left_click> Execute <right_click> Paste]]],
 							mouseup = function(_, _, _, button)
 								if button == "R" then
@@ -679,7 +679,9 @@ function ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(dlg)
 		return
 	end
 
-	dlg = dlg or dlgConsole
+	if not dlg then
+		dlg = dlgConsole
+	end
 
 	if not dlg.idScripts then
 		-- we're in the select new map stuff screen
@@ -694,15 +696,41 @@ function ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(dlg)
 
 	-- clear out old buttons first
 	for i = #dlg.idScripts, 1, -1 do
-		dlg.idScripts[i]:delete()
-		table_remove(dlg.idScripts, i)
+		dlg.idScripts[i]:Close()
+	end
+
+	-- add my testing funcs
+	if testing then
+		ChoGGi_XConsoleButton:new({
+			RolloverText = "Funcs in ChoGGi.testing",
+			Text = "Testing",
+			OnPress = function(self)
+				-- build list of scripts to show
+				local items = {}
+				local c = 0
+				local funcs = ChoGGi.testing
+				for id, func in pairs(funcs) do
+					c = c + 1
+					items[c] = {
+						name = id,
+						hint = Strings[302535920001138--[["Execute this command in the console, Right-click to paste code in console."]]],
+						hint_bottom = Strings[302535920000407--[[<left_click> Execute <right_click> Paste]]],
+						mouseup = func,
+					}
+				end
+				table_sort(items, function(a, b)
+					CmpLower(a.name, b.name)
+				end)
+				PopupToggle(self, "ChoGGi_Testing_Funcs", items, "top")
+			end,
+		}, dlg.idScripts)
 	end
 
 	-- build Scripts button
 	if RetFilesInFolder(ChoGGi.scripts, ".lua") then
 		BuildSciptButton(dlg, {
 			Text = Strings[302535920000353--[[Scripts]]],
-			RolloverText = Strings[302535920000881--[["Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create folders for sorting)."]]]:format(ChoGGi.scripts),
+			RolloverText = Strings[302535920000881--[["Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create sub-folders for sorting)."]]]:format(ChoGGi.scripts),
 			id = "idScriptsMenuPopup",
 			script_path = ChoGGi.scripts,
 		})
@@ -732,7 +760,7 @@ function ChoGGi.ConsoleFuncs.BuildScriptFiles()
 	if not ChoGGi.ComFuncs.FileExists(script_path .. "/readme.txt") then
 		AsyncCreatePath(script_path .. "/Functions")
 		-- print some info
-		print(Strings[302535920000881--[["Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create folders for sorting)."]]]:format(ConvertToOSPath(script_path)))
+		print(Strings[302535920000881--[["Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create sub-folders for sorting)."]]]:format(ConvertToOSPath(script_path)))
 		-- add some example files and a readme
 		AsyncStringToFile(script_path .. "/readme.txt", Strings[302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.]]])
 		AsyncStringToFile(script_path .. "/Read Me.lua", [[ChoGGi.ComFuncs.MsgWait(ChoGGi.Strings[302535920000881]:format(ChoGGi.scripts))]])

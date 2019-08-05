@@ -1,4 +1,5 @@
 "ID"," Text"
+302535920000051,
 302535920000941,
 302535920000945,
 302535920000962,
@@ -21,7 +22,9 @@
 302535920001309,
 302535920001342,
 302535920001349,
+302535920001414,
 302535920001416,
+302535920001428,
 302535920001446,
 302535920001451,
 302535920001466,
@@ -237,7 +240,7 @@ See the bottom of Gameplay>Controls if you've changed the key binding."
 302535920000166,"BROKEN FUNCTION"
 302535920000353,"Scripts"
 302535920000793,"History"
-302535920000881,"Place .lua files in <green>%s</green> to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create folders for sorting)."
+302535920000881,"Place .lua files in <green>%s</green> to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create sub-folders for sorting)."
 302535920000888,"Any .lua files in here will be part of a list that you can execute in-game from the console menu."
 302535920001297,"Toggle Flight Grid"
 302535920001298,"Shows a square grid with terrain/objects shape."
@@ -1648,10 +1651,11 @@ Not noticeable unless using higher zoom."
 302535920000656,"Toggle between moving camera and selecting objects."
 302535920000221,"See log for any batch errors."
 302535920001586,"All Done!"
-302535920001572,"<color red>Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually instead.
-You can also stick the executable in the profile folder to use it instead (<green>no crashing</green>): <yellow>%s</yellow>."
+302535920001572,"<color red>Pack Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually to workaround it.
+You can also stick the executable in the profile folder to use it instead (<green>no crashing</green>):
+<yellow>%s</yellow>."
 302535920000323,"Modding"
-302535920001511,"AsyncPack will crash SM after calling it once, you can use hpk to pack mods ahead of time.
+302535920001511,"AsyncPack will CTD the second time you call it, you can use hpk to pack mods ahead of time.
 
 https://github.com/nickelc/hpk
 <green>hpk create ""Mod folder"" ModContent.hpk</green>
@@ -1670,8 +1674,6 @@ If you have a uuid in your metadata.lua this checkbox is ignored and it'll try t
 302535920001463,"Bug Report"
 302535920001464,"Yes, I know what I'm doing. This is a bug."
 302535920001427,"Pack"
-302535920001428,"Upload as a packed mod (default for mod editor upload).
-This will always apply if uploading to Paradox."
 302535920001412,"GUI Dock Side"
 302535920001413,"Change which side (most) GUI menus are on."
 302535920000321,"Enable Tooltips"
@@ -1695,7 +1697,6 @@ This will always apply if uploading to Paradox."
 302535920000236,"Mod Editor"
 302535920001265,"ModMessageLog"
 302535920001258,"Copy Files"
-302535920000051,"Mod will not be (automagically) packed in an hpk archive."
 302535920001259,"Copies all mod files to <green>%sModUpload</green>, uncheck to copy files manually."
 302535920001260,"Blank"
 302535920001261,"Uploads a blank mod, and prints id in log."
@@ -1874,7 +1875,6 @@ The end of mankind. Doesn't matter where it hits. Nothing would survive, not eve
 Restart to set disabled."
 302535920000717,"Switch to a different commander."
 302535920000718,"Set Bonuses Commander"
-302535920001414,"Build menu key: <green>%s</green>"
 302535920001380,"Report Bug"
 302535920001381,"Opens the bug report dialog (this will add a screenshot to AppData\BugReport)."
 302535920001346,"Random Colour"

@@ -2,23 +2,16 @@
 
 local Sleep = Sleep
 
-local text_disabled = T(302535920011184, "Main Garage") .. ": " .. T(847439380056, "Disabled")
-local text_idle = T(302535920011184, "Main Garage") .. ": " .. T(6939, "Idle")
-local text_rovers = T(5438, "Rovers") .. ": "
-
 -- stores rovers
 GlobalVar("g_ChoGGi_RCGarageRovers", {})
+
+local map_centre = point(300000, 300000)
 -- stores all garages and power used
-local map_center = point(0, 0)
 GlobalVar("g_ChoGGi_RCGarages", {
 	power_per_rover = 500,
 	power_per_garage = 1000,
-	last_pass = map_center,
+	last_pass = map_centre,
 })
-
-local name = T(302535920011185, [[RC Garage]])
-local description = T(302535920011186, [[Stores rovers in a massive underground parking garage (where all the cool kids hang out).]])
-local display_icon = CurrentModPath .. "UI/garage.png"
 
 DefineClass.RCGarage = {
 	__parents = {
@@ -73,12 +66,12 @@ function RCGarage:Getui_command()
 	if self:CheckMainGarage() and self.garages.main.working and self.working then
 		local amount = #self.stored_rovers
 		if amount > 0 then
-			self.status_text = text_rovers .. amount
+			self.status_text = T(5438, "Rovers") .. ": " .. amount
 		else
-			self.status_text = text_idle
+			self.status_text = T(302535920011184, "Main Garage") .. ": " .. T(6939, "Idle")
 		end
 	else
-		self.status_text = text_disabled
+		self.status_text = T(302535920011184, "Main Garage") .. ": " .. T(847439380056, "Disabled")
 	end
 
 	return ChoGGi.ComFuncs.TableConcat({self.status_text}, "<newline><left>")
@@ -134,9 +127,6 @@ function RCGarage:StickInGarage(unit)
 	unit.holder = false
 end
 
--- gagarin and pre-gagarin
-local IsValidPos = point20.IsValidPos or point20.IsValid
-
 function RCGarage:RemoveFromGarage(unit)
 	if not IsValid(unit) then
 		return
@@ -171,15 +161,18 @@ function RCGarage:RemoveFromGarage(unit)
 		local InvalidPos = InvalidPos()
 		local rem = unit.ChoGGi_RemHolderPos ~= InvalidPos and unit.ChoGGi_RemHolderPos
 		-- get nearby pass area
-		unit:SetCommand("Goto", GetPassablePointNearby(pt ~= InvalidPos and pt or rem))
+		unit:SetCommand("Goto", GetRandomPassableAround(pt ~= InvalidPos and pt or rem, 10000)
+			or GetRandomPassable()
+		)
 		Sleep(2500)
 
 		-- last ditch effort (should only happen when you cheat delete building)
-		if not IsValidPos(pt) then
+		if pt == InvalidPos then
 			local last = g_ChoGGi_RCGarages.last_pass
-			pt = rem or last ~= InvalidPos and last or point(0, 0, terrain.GetHeight(map_center))
+			pt = GetRandomPassableAround(
+				rem or last ~= InvalidPos and last or map_centre:SetTerrainZ(), 10000)
+				or GetRandomPassable()
 			unit:SetPos(pt)
-			unit:SetCommand("Goto", GetPassablePointNearby(unit:GetPos()))
 		end
 
 		-- drop some drones
@@ -320,12 +313,12 @@ function OnMsg.ClassesPostprocess()
 			"construction_cost_Electronics", 20000,
 
 			"dome_forbidden", true,
-			"display_name", name,
-			"display_name_pl", name,
-			"description", description,
+			"display_name", T(302535920011185, [[RC Garage]]),
+			"display_name_pl", T(302535920011185, [[RC Garage]]),
+			"description", T(302535920011186, [[Stores rovers in a massive underground parking garage (where all the cool kids hang out).]]),
 			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
-			"display_icon", display_icon,
+			"display_icon", CurrentModPath .. "UI/garage.png",
 			"encyclopedia_exclude", true,
 			"entity", "TunnelEntrance",
 			-- add a bit of pallor to the skeleton
@@ -389,7 +382,7 @@ function OnMsg.ClassesPostprocess()
 						end
 					end
 
-					if text_rovers .. #context.stored_rovers == context.status_text then
+					if T(5438, "Rovers") .. ": " .. #context.stored_rovers == context.status_text then
 						self:SetTitle(T(302535920011184, [[Main Garage]]))
 					else
 						self:SetTitle(context.pin_rollover)
@@ -449,7 +442,9 @@ function OnMsg.ClassesPostprocess()
 									unit.ChoGGi_InGarage = nil
 									unit.accumulate_dust = true
 									unit:SetPos(context:GetPos())
-									unit:SetCommand("Goto", GetPassablePointNearby(unit:GetPos()+point(Random(-5000, 5000), Random(-5000, 5000))))
+									unit:SetCommand("Goto",
+										GetRandomPassableAround(unit:GetPos(), 100000) or GetRandomPassable()
+									)
 								end
 								table.clear(g_ChoGGi_RCGarageRovers)
 								context:UpdateGaragePower()
@@ -473,7 +468,7 @@ function OnMsg.ClassesPostprocess()
 				"OnContextUpdate", function(self, context)
 					---
 					if context:CheckMainGarage() then
-						self:SetTitle(text_rovers .. #context.stored_rovers)
+						self:SetTitle(T(5438, "Rovers") .. ": " .. #context.stored_rovers)
 					end
 					---
 				end,

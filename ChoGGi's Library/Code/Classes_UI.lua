@@ -55,12 +55,12 @@ end
 local text_style1 = "ChoGGi_Text12"
 local text_style2 = "ChoGGi_TextList12"
 local text_style3 = "ChoGGi_Text14"
-
 if ChoGGi.testing then
 	text_style1 = "ChoGGi_Text14"
 	text_style2 = "ChoGGi_TextList14"
 	text_style3 = "ChoGGi_Text16"
 end
+
 DefineClass.ChoGGi_XText = {
 	__parents = {
 		"ChoGGi_XDefaults",

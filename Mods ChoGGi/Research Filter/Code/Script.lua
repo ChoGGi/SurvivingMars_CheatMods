@@ -36,21 +36,23 @@ local T, _InternalTranslate = T, _InternalTranslate
 
 local function FilterTech(str)
 	-- loop through the stored tech cats
-	for i = 1, count do
+	for i = count, 1, -1 do
 		local item = tech_list[i]
-		if str == "" or item.str:find_lower(str) then
-			-- only toggle vis if we need to
-			if not item.vis then
-				-- make sure option is off
-				if not (mod_HideCompleted and IsTechResearched(item.tech.context[1].id)) then
-					item.tech:SetVisible(true)
-					item.vis = true
+		if item then
+			if str == "" or item.str:find_lower(str) then
+				-- only toggle vis if we need to
+				if not item.vis then
+					-- make sure option is off
+					if not (mod_HideCompleted and IsTechResearched(item.tech.context[1].id)) then
+						item.tech:SetVisible(true)
+						item.vis = true
+					end
 				end
-			end
-		else
-			if item.vis then
-				item.tech:SetVisible(false)
-				item.vis = false
+			else
+				if item.vis then
+					item.tech:SetVisible(false)
+					item.vis = false
+				end
 			end
 		end
 	end

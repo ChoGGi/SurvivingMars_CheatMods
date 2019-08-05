@@ -33,12 +33,6 @@ do -- ModUpload
 		[ChoGGi.id] = true,
 		[ChoGGi.id_lib] = true,
 	}
-	-- and the pack box
-	local ChoGGi_pack = {
-		ChoGGi_EveryFlagOnWikipedia = true,
-		ChoGGi_MapImagesPack = true,
-		ChoGGi_CommieMarxLogos = true,
-	}
 	-- don't add these mods to upload list
 	local skip_mods = {
 		ChoGGi_XDefaultMod = true,
@@ -121,7 +115,7 @@ do -- ModUpload
 	end
 
 	-- it's fine...
-	local copy_files, blank_mod, clipboard, pack_mod, test, steam_upload, para_platform
+	local copy_files, blank_mod, clipboard, test, steam_upload, para_platform
 	local mod, mod_path, upload_image, diff_author, result, choices_len, uploading
 	local result_msg, result_title, upload_msg = {}, {}, {}
 	local image_steam = "UI/Common/mod_steam_workshop.tga"
@@ -244,52 +238,50 @@ do -- ModUpload
 					end
 				end
 			end
-		end -- do
+		end
 
-		if pack_mod then
-			local files_to_pack = {}
-			local substring_begin = #dest_path + 1
-			local err, all_files = AsyncListFiles(dest_path, nil, "recursive")
-			if err then
-				err = T{1000753, "Failed creating content package file (<err>)", err = err}
-			else
-				-- do this after listfiles so it doesn't include it
-				AsyncCreatePath(pack_path)
+		local files_to_pack = {}
+		local substring_begin = #dest_path + 1
+		local err, all_files = AsyncListFiles(dest_path, nil, "recursive")
+		if err then
+			err = T{1000753, "Failed creating content package file (<err>)", err = err}
+		else
+			-- do this after listfiles so it doesn't include it
+			AsyncCreatePath(pack_path)
 
-				for i = 1, #all_files do
-					local file = all_files[i]
-					local ignore
-					for j = 1, #mod.ignore_files do
-						if MatchWildcard(file, mod.ignore_files[j]) then
-							ignore = true
-							break
-						end
-					end
-					if not ignore then
-						table.insert(files_to_pack, {
-							src = file,
-							dst = file:sub(substring_begin),
-						})
+			for i = 1, #all_files do
+				local file = all_files[i]
+				local ignore
+				for j = 1, #mod.ignore_files do
+					if MatchWildcard(file, mod.ignore_files[j]) then
+						ignore = true
+						break
 					end
 				end
+				if not ignore then
+					table.insert(files_to_pack, {
+						src = file,
+						dst = file:sub(substring_begin),
+					})
+				end
+			end
 
-				-- try to use hpk exe instead of buggy ass AsyncPack
-				if hpk_path then
-					-- not sure if it matters, but delete ModContent.hpk first
-					local output = mods_path .. ModsPackFileName
+			-- try to use hpk exe instead of buggy ass AsyncPack
+			if hpk_path then
+				-- not sure if it matters, but delete ModContent.hpk first
+				local output = mods_path .. ModsPackFileName
+				AsyncFileDelete(output)
+				local exec = hpk_path .. " create --cripple-lua-files \""
+--~ 				local exec = hpk_path .. " create \""
+					.. mod.env.CurrentModPath:gsub(mods_path, ""):gsub("/", "") .. "\" " .. ModsPackFileName
+				-- AsyncExec(cmd, working_dir, hidden, capture_output, priority)
+				if not AsyncExec(exec, ConvertToOSPath(mods_path), true, false) then
+					-- hpk.exe is a little limited in where it places the output, so we need to move it over
+					AsyncCopyFile(output, pack_path .. ModsPackFileName, "raw")
 					AsyncFileDelete(output)
-					local exec = hpk_path .. " create --cripple-lua-files \""
---~ 					local exec = hpk_path .. " create \""
-						.. mod.env.CurrentModPath:gsub(mods_path, ""):gsub("/", "") .. "\" " .. ModsPackFileName
-					-- AsyncExec(cmd, working_dir, hidden, capture_output, priority)
-					if not AsyncExec(exec, ConvertToOSPath(mods_path), true, false) then
-						-- hpk.exe is a little limited in where it places the output, so we need to move it over
-						AsyncCopyFile(output, pack_path .. ModsPackFileName, "raw")
-						AsyncFileDelete(output)
-					end
-				else
-					err = AsyncPack(pack_path .. ModsPackFileName, dest_path, files_to_pack)
 				end
+			else
+				err = AsyncPack(pack_path .. ModsPackFileName, dest_path, files_to_pack)
 			end
 		end
 
@@ -327,7 +319,9 @@ do -- ModUpload
 
 		-- uploaded or failed?
 		if err and not blank_mod then
-			local msg = Translate(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>]]):gsub("<ModLabel>", mod.title):gsub("<err>", Translate(err))
+			local msg = T{1000013, "Mod <ModLabel> was not uploaded! Error: <err>",
+				ModLabel = mod.title, err = err,
+			}
 			result_msg[#result_msg+1] = msg
 			if choices_len == 1 then
 				result_title[#result_title+1] = Translate(1000592--[[Error]])
@@ -343,13 +337,15 @@ do -- ModUpload
 				print(Translate("<color red>" .. msg .. "\n" .. tostring(log_error) .. "</color>"))
 			end
 			if log_error then
-				result_title[#result_title+1] = "\n" .. Translate(1000592--[[Error]])
+				result_title[#result_title+1] = "\n" .. T(1000592, "Error")
 				result_msg[#result_msg+1] = log_error
 			end
 		else
 			if choices_len == 1 then
-				result_msg[#result_msg+1] = Translate(1000014--[[Mod <ModLabel> was successfully uploaded!]]):gsub("<ModLabel>", mod.title)
-				result_title[#result_title+1] = Translate(1000015--[[Success]])
+				result_msg[#result_msg+1] = T{1000014, "Mod <ModLabel> was successfully uploaded!",
+					ModLabel = mod.title,
+				}
+				result_title[#result_title+1] = T(1000015, "Success")
 			else
 				result_title[#result_title+1] = mod.title
 			end
@@ -362,16 +358,16 @@ do -- ModUpload
 				CopyToClipboard("	\"steam_id\", \"" .. item_id .. "\",")
 			end
 
-			local id_str = Translate(1000021--[[Steam ID]])
+			local id_str = 1000021--[[Steam ID]]
 			if not steam_upload then
 				if para_platform then
-					id_str = Translate(1000772--[[Paradox Desktop UUID]])
+					id_str = 1000772--[[Paradox Desktop UUID]]
 				else
-					id_str = Translate(1000773--[[Paradox All UUID]])
+					id_str = 1000773--[[Paradox All UUID]]
 				end
 			end
 
-			print(mod.title, ":", Translate(1000107--[[Mod]]), id_str, ":", item_id)
+			print(mod.title, ":", Translate(id_str), ":", item_id)
 		end
 
 		if not test and not err then
@@ -399,10 +395,9 @@ do -- ModUpload
 			copy_files = choice.check1
 			blank_mod = choice.check2
 			clipboard = choice.check3
-			pack_mod = choice.check4
-			test = choice.check5
-			steam_upload = choice.check6
-			para_platform = choice.check7
+			test = choice.check4
+			steam_upload = choice.check5
+			para_platform = choice.check6
 
 			choices_len = #choices
 
@@ -420,8 +415,6 @@ do -- ModUpload
 						upload_image = image_steam
 					else
 						upload_image = image_paradox
-						-- mods have to be packed for paradox
-						pack_mod = true
 					end
 
 					diff_author = mod.author ~= SteamGetPersonaName()
@@ -430,9 +423,6 @@ do -- ModUpload
 					-- my mods override
 					if ChoGGi_copy_files[mod.id] then
 						copy_files = false
-					end
-					if ChoGGi_pack[mod.id] or mod.id:find("ChoGGi_Logos_") then
-						pack_mod = true
 					end
 
 					-- remove blacklist warning from title (added in helpermod)
@@ -457,27 +447,23 @@ do -- ModUpload
 
 						m_c = m_c + 1
 						if steam_upload then
-							upload_msg[m_c] = T{1000012, "Mod <ModLabel> will be uploaded to Steam", ModLabel = mod.title}
+							upload_msg[m_c] = T{1000012,
+								"Mod <ModLabel> will be uploaded to Steam",
+								ModLabel = mod.title,
+							}
 						else
-							upload_msg[m_c] = T{1000771, "Mod <ModLabel> will be uploaded to Paradox", ModLabel = mod.title}
+							upload_msg[m_c] = T{1000771,
+								"Mod <ModLabel> will be uploaded to Paradox",
+								ModLabel = mod.title,
+							}
 						end
 
-						if pack_mod then
-							m_c = m_c + 1
-							upload_msg[m_c] = "\n\n"
-							m_c = m_c + 1
-							upload_msg[m_c] = Strings[302535920001427--[[Pack]]]
-							m_c = m_c + 1
-							upload_msg[m_c] = ": "
-							m_c = m_c + 1
-							upload_msg[m_c] = Strings[302535920001572--[["<color red>Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually instead.
-You can also stick the executable in the profile folder to use it instead (<green>no crashing</green>): <yellow>%s</yellow>."]]]:format(hpk_path)
-						else
-							m_c = m_c + 1
-							upload_msg[m_c] = "\n\n"
-							m_c = m_c + 1
-							upload_msg[m_c] = Strings[302535920000051--[[Mod will not be (automagically) packed in an hpk archive.]]]
-						end
+						m_c = m_c + 1
+						upload_msg[m_c] = "\n\n"
+						m_c = m_c + 1
+						upload_msg[m_c] = Strings[302535920001572--[["<color red>Pack Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually to workaround it.
+You can also stick the executable in the profile folder to use it instead (<green>no crashing</green>):
+<yellow>%s</yellow>."]]]:format(hpk_path)
 
 						if not copy_files then
 							m_c = m_c + 1
@@ -486,7 +472,6 @@ You can also stick the executable in the profile folder to use it instead (<gree
 							upload_msg[m_c] = Strings[302535920001262--[[%sModUpload folder is empty and waiting for files.]]]:format(ConvertToOSPath("AppData/"))
 							m_c = m_c + 1
 							upload_msg[m_c] = "</color>"
-
 						end
 
 						-- show diff author warning unless it's me
@@ -539,7 +524,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 						-- and show msg
 						ChoGGi.ComFuncs.QuestionBox(
 							Strings[302535920000221--[[Batch Upload mods?]]] .. "\n\n"
-								.. TableConcat(titles, ", "),
+								.. table.concat(titles, ", "),
 							CallBackFunc_BQ,
 							Strings[302535920000221--[[Batch Upload!]]],
 							nil,
@@ -569,7 +554,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 				c = c + 1
 				error_msgs[c] = result_title[i] .. " " .. result_msg[i]
 			end
-			error_msgs = TableConcat(error_msgs)
+			error_msgs = table.concat(error_msgs)
 
 			local error_text = Strings[302535920000221--[[See log for any batch errors.]]]
 			-- only add error msg if single mod
@@ -578,7 +563,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			end
 
 			-- let user know if we're good or not
-			print(error_msgs)
+			print(Translate(error_msgs))
 			ChoGGi.ComFuncs.MsgWait(
 				error_text,
 				Strings[302535920001586--[[All Done!]]],
@@ -595,7 +580,8 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			return
 		end
 		if not (Platform.steam or Platform.pops) then
-			local msg = Translate(1000760--[[Not Steam]]) .. "/" .. Translate(1000759--[[Not Paradox]])
+			local msg = Translate(1000760--[[Not Steam]]) .. "/"
+				.. Translate(1000759--[[Not Paradox]])
 			print(Strings[302535920000367--[[Mod Upload]]], ":", msg)
 			MsgPopup(
 				msg,
@@ -639,11 +625,11 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			callback = CallBackFunc,
 			items = item_list,
 			title = Strings[302535920000367--[[Mod Upload]]],
-			hint = Strings[302535920001511--[["AsyncPack will crash SM after calling it once, you can use hpk to pack mods ahead of time.
+			hint = Strings[302535920001511--[["AsyncPack will CTD the second time you call it, you can use hpk to pack mods ahead of time.
 
 https://github.com/nickelc/hpk
 hpk create ""Mod folder"" ModContent.hpk
-Move archive to ""Mod folder/Pack/ModContent.hpk"""]]],
+Move archive to ""Mod folder/Pack/ModContent.hpk"""]]] .. "\n\n" .. Strings[302535920001572]:format(hpk_path),
 			height = 800.0,
 			multisel = true,
 			checkboxes = {
@@ -658,13 +644,7 @@ Move archive to ""Mod folder/Pack/ModContent.hpk"""]]],
 					hint = Strings[302535920000665--[[If uploading a mod this copies steam id or uuid to clipboard.]]],
 					checked = true,
 				},
-				{title = Strings[302535920001427--[[Pack]]],
-					hint = Strings[302535920001428--[["Uploads as a packed mod (default for mod editor upload).
-This will always apply if uploading to Paradox."]]] .. "\n\n" .. Strings[302535920001572--[["<color red>Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually instead.
-You can also stick the executable in the profile folder to use it instead (<green>no crashing</green>): <yellow>%s</yellow>."]]]:format(hpk_path),
-					checked = true,
-				},
-				{title = Translate(186760604064, "Test"),
+				{title = T(186760604064, "Test"),
 					level = 2,
 					hint = Strings[302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).]]],
 				},
@@ -675,15 +655,13 @@ You can also stick the executable in the profile folder to use it instead (<gree
 					func = function(dlg, check)
 						upload_to_who = check
 						if check then
-							dlg.idCheckBox7:SetVisible()
-							dlg.idCheckBox6:SetText(Strings[302535920001506--[[Steam]]])
+							dlg.idCheckBox5:SetText(Strings[302535920001506--[[Steam]]])
+							dlg.idCheckBox6:SetVisible()
 							dlg.idBackgroundFrame:SetImage(image_steam)
 							dlg.idBackgroundFrame:SetMinHeight(image_steam_y)
 						else
-							dlg.idCheckBox6:SetText(T(5482, "Paradox"))
-							dlg.idCheckBox7:SetVisible(true)
-							-- mark Pack for users
-							dlg.idCheckBox4:SetCheck(true)
+							dlg.idCheckBox5:SetText(T(5482, "Paradox"))
+							dlg.idCheckBox6:SetVisible(true)
 							dlg.idBackgroundFrame:SetImage(image_paradox)
 							dlg.idBackgroundFrame:SetMinHeight(image_paradox_y)
 						end

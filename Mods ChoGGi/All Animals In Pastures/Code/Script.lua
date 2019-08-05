@@ -596,6 +596,7 @@ local width = GetScreenSize():x() - 100
 function OnMsg.SystemSize()
 	width = GetScreenSize():x() - 100
 end
+
 local orig_InfopanelItems_Open = InfopanelItems.Open
 function InfopanelItems:Open(...)
 	self:SetMaxWidth(width - Dialogs.Infopanel.box:sizex())

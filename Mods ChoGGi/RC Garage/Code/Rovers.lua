@@ -51,12 +51,14 @@ function BaseRover:InteractWithObject(obj, interaction_mode, ...)
 	return orig_BaseRover_InteractWithObject(self, obj, interaction_mode, ...)
 end
 
--- block rover from goto when in garage
+-- there isn't a BaseRover:GotoFromUser, or use Unit as fallback (just in case it gets added)
 local orig_BaseRover_GotoFromUser = BaseRover.GotoFromUser or Unit.GotoFromUser
-function BaseRover.GotoFromUser(...)
-	if not self.ChoGGi_InGarage then
-		return orig_BaseRover_GotoFromUser(...)
+function BaseRover:GotoFromUser(...)
+	-- block rover from goto when in garage
+	if self.ChoGGi_InGarage then
+		return
 	end
+	return orig_BaseRover_GotoFromUser(self, ...)
 end
 -- maybe add SetCommand
 

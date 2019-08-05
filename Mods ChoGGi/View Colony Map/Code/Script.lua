@@ -57,7 +57,11 @@ local orig_GetOverlayValues = GetOverlayValues
 function GetOverlayValues(lat, long, overlay_grids, params, ...)
 	orig_GetOverlayValues(lat, long, overlay_grids, params, ...)
 
-	local chall = Dialogs.PGMainMenu.idContent.PGChallenge
+	local PGMainMenu = Dialogs.PGMainMenu
+	local chall
+	if PGMainMenu then
+		chall = PGMainMenu.idContent.PGChallenge
+	end
 	-- check if we're in chall menu or regular to show
 	if not skip_showing_image
 		and (not chall or chall and mod_EnableChallenges)
