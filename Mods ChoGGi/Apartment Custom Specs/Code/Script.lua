@@ -25,10 +25,12 @@ function OnMsg.ClassesPostprocess()
 	a.capacity = capacity
 end
 
+GlobalVar("g_ChoGGi_ApartmentDoubleCapComfort", false)
+
 -- this will update the settings for existing apartments
 function OnMsg.LoadGame()
 	-- so it only loops once per game
-	if UICity.ChoGGi_ApartmentDoubleCapComfort then
+	if g_ChoGGi_ApartmentDoubleCapComfort then
 		return
 	end
 
@@ -42,5 +44,5 @@ function OnMsg.LoadGame()
 		obj.capacity = capacity
 	end
 
-	UICity.ChoGGi_ApartmentDoubleCapComfort = true
+	g_ChoGGi_ApartmentDoubleCapComfort = true
 end
