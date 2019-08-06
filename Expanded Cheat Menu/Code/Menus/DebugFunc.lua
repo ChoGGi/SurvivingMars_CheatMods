@@ -422,7 +422,7 @@ do -- BuildingPathMarkers_Toggle
 	local AveragePoint2D = AveragePoint2D
 	local OText, OPolyline
 --~ 	local XText, OPolyline
-	local parent
+--~ 	local parent
 
 	local objlist = objlist
 	local points, colours = objlist:new(), objlist:new()

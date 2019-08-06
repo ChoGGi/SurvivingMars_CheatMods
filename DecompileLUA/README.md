@@ -19,4 +19,4 @@ for %%g in (*.hpk) do mkdir %%~ng
 for %%g in (*.hpk) do hpk.exe extract --fix-lua-files "%%g" "%%~ng"
 ```
 
-##### unluac fails on CommonLua\Core\lib.lua, use hpk.exe to extract it without the --fix arg, then use luadec to decompile it.
+##### unluac fails on CommonLua\Core\lib.lua, use hpk.exe to extract it without the --fix arg, then use [luadec](https://github.com/viruscamp/luadec) to decompile it.

@@ -1,6 +1,11 @@
 ## ECM Changelog
 
-## v14.4 (Unreleased)
+## v14.5 (Unreleased)
+
+## v14.4 (05 Aug 2019)
+### Changed:
+- Slight rework of Mod Upload.
+- Code cleanup.
 
 ## v14.3 (03 Aug 2019)
 ### Added:

@@ -4,7 +4,6 @@
 
 local table_sort = table.sort
 local table_insert = table.insert
-local table_remove = table.remove
 local table_find = table.find
 local table_iclear = table.iclear
 local CmpLower = CmpLower

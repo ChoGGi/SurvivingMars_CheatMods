@@ -94,12 +94,23 @@ function UniversalStorageDepot:GameInit(...)
 	end
 end
 
+local safe_spots = {
+	Box1 = true,
+	Box2 = true,
+	Box3 = true,
+	Box4 = true,
+	Box5 = true,
+	Box6 = true,
+	Box7 = true,
+	Box8 = true,
+}
 function OnMsg.ClassesBuilt()
 	-- prevent log spam from seeds
 	local orig_GetSpotBeginIndex = UniversalStorageDepot.GetSpotBeginIndex
 	function UniversalStorageDepot:GetSpotBeginIndex(spot_name, ...)
-		return orig_GetSpotBeginIndex(self,
-			spot_name == "Box9" and "Box8" or spot_name, ...
-		)
+		if not safe_spots[spot_name] then
+			spot_name = "Box8"
+		end
+		return orig_GetSpotBeginIndex(self, spot_name, ...)
 	end
 end

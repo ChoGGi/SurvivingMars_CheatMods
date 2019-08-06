@@ -59,16 +59,13 @@ function Drone:ChangeSkin(skin, palette)
 	end
 end
 
+local name_lookup = {
+	FlyingDrone = 10278,
+	Drone = 1681,
+}
+
 -- add button to selection panels
 function OnMsg.ClassesPostprocess()
-	local Translate = ChoGGi.ComFuncs.Translate
-
-	local type_str = T(302535920000266, "Spawn") .. ": "
-	local name_table = {
-		FlyingDrone = Translate(10278, "Wasp Drone"),
-		Drone = Translate(1681, "Drone"),
-	}
-
 	local template_table = {
 		RolloverTitle = T(302535920011053, [[Change Spawn Type]]),
 		RolloverText = T(302535920011054, [[Spawn wasp drones or regular drones.]]),
@@ -84,8 +81,8 @@ function OnMsg.ClassesPostprocess()
 		end,
 
 		OnContextUpdate = function(self, context)
-			self:SetTitle(type_str
-				.. name_table[(context.city or UICity).drone_class or "Drone"]
+			self:SetTitle(T(302535920000266, "Spawn") .. ": "
+				.. T(name_lookup[(context.city or UICity).drone_class or "Drone"])
 			)
 		end,
 
@@ -97,7 +94,7 @@ function OnMsg.ClassesPostprocess()
 			else
 				city.drone_class = "Drone"
 			end
-			self:SetTitle(type_str .. name_table[city.drone_class])
+			self:SetTitle(T(302535920000266, "Spawn") .. ": " .. T(name_lookup[city.drone_class]))
 			---
 		end,
 	}

@@ -40,6 +40,7 @@ do -- ModUpload
 	}
 	-- hey paradox! renaming things is a thing...
 	local paradox_title = {
+		ChoGGi_Library = "ChoGGi's Library v5.1",
 		ChoGGi_AddMathFunctions = [["math." Functions]],
 		ChoGGi_AlienVisitors = "Alien Visitors v0.1",
 		ChoGGi_AllSponsorBuildings = "All Sponsor Buildings v0.2",
@@ -242,7 +243,8 @@ do -- ModUpload
 
 		local files_to_pack = {}
 		local substring_begin = #dest_path + 1
-		local err, all_files = AsyncListFiles(dest_path, nil, "recursive")
+    local all_files
+		err, all_files = AsyncListFiles(dest_path, nil, "recursive")
 		if err then
 			err = T{1000753, "Failed creating content package file (<err>)", err = err}
 		else

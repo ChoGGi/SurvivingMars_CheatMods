@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v7.4 (Unreleased)
+## v7.5 (Unreleased)
+
+## v7.4 (05 Aug 2019)
 - List Dialog: Blank text for certain items.
 
 ## v7.3 (03 Aug 2019)
