@@ -46,7 +46,7 @@ function ChoGGi.MenuFuncs.ExamineObjectRadius_Set()
 		items = item_list,
 		title = title,
 		skip_sort = true,
-		hint = Strings[302535920000923--[[Set the radius used for Shift-F4 examining.]]],
+		hint = Strings[302535920000923--[[Set the radius used for %s examining.]]]:format(ChoGGi.ComFuncs.GetShortcut(".Keys.Examine Objects Shift")),
 	}
 end
 

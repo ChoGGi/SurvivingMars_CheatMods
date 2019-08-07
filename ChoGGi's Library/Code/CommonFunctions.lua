@@ -576,8 +576,8 @@ do -- MsgPopup
 		-- build the popup
 		local data = {
 			id = AsyncRand(),
-			title = title or "",
-			text = text or T(3718, "NONE"),
+			title = title and tostring(title) or "",
+			text = text and tostring(text) or T(3718, "NONE"),
 			image = params.image and ValidateImage(params.image) or ChoGGi.library_path .. "UI/TheIncal.png",
 		}
 
@@ -1051,32 +1051,40 @@ function ChoGGi.ComFuncs.PopupToggle(parent, popup_id, items, anchor, reopen, su
 	return popup
 end
 
--- show a circle for time and delete it
-function ChoGGi.ComFuncs.Circle(pos, radius, colour, time)
-	local circle = ChoGGi_OCircle:new()
-	circle:SetPos(pos and pos:SetTerrainZ(10 * guic) or GetTerrainCursor())
-	circle:SetRadius(radius or 1000)
-	circle:SetColor(colour or ChoGGi.ComFuncs.RandomColourLimited())
+do -- Circle
+	local OCircle
 
-	CreateRealTimeThread(function()
-		Sleep(time or 50000)
-		if IsValid(circle) then
-			circle:delete()
+	-- show a circle for time and delete it
+	function ChoGGi.ComFuncs.Circle(pos, radius, colour, time)
+		if not OCircle then
+			OCircle = ChoGGi_OCircle
 		end
-	end)
-end
+
+		local circle = OCircle:new()
+		circle:SetPos(pos and pos:SetTerrainZ(10 * guic) or GetTerrainCursor())
+		circle:SetRadius(radius or 1000)
+		circle:SetColor(colour or ChoGGi.ComFuncs.RandomColourLimited())
+
+		CreateRealTimeThread(function()
+			Sleep(time or 50000)
+			if IsValid(circle) then
+				circle:delete()
+			end
+		end)
+	end
+end -- do
 
 -- this is a question box without a question (WaitPopupNotification only works in-game, not main menu)
-function ChoGGi.ComFuncs.MsgWait(text, caption, image, ok_text, context, parent, template, thread)
+function ChoGGi.ComFuncs.MsgWait(text, title, image, ok_text, context, parent, template, thread)
 	-- thread needed for WaitMarsQuestion
 	if not CurrentThread() and thread ~= "skip" then
-		return CreateRealTimeThread(ChoGGi.ComFuncs.MsgWait, text, caption, image, ok_text, context, parent, template, "skip")
+		return CreateRealTimeThread(ChoGGi.ComFuncs.MsgWait, text, title, image, ok_text, context, parent, template, "skip")
 	end
 
 	local dlg = CreateMarsQuestionBox(
-		caption or Translate(1000016--[[Title]]),
-		text or Translate(3718--[[NONE]]),
-		ok_text or nil,
+		title and tostring(title) or T(1000016, "Title"),
+		text and tostring(text) or T(3718, "NONE"),
+		ok_text and tostring(ok_text),
 		nil,
 		parent,
 		image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
@@ -1099,10 +1107,10 @@ function ChoGGi.ComFuncs.QuestionBox(text, func, title, ok_text, cancel_text, im
 
 	if WaitMarsQuestion(
 		parent,
-		title or Translate(1000016--[[Title]]),
-		text or Translate(3718--[[NONE]]),
-		ok_text or nil,
-		cancel_text or nil,
+		title and tostring(title) or T(1000016, "Title"),
+		text and tostring(text) or T(3718, "NONE"),
+		ok_text and tostring(ok_text),
+		cancel_text and tostring(cancel_text),
 		image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
 		context, template
 	) == "ok" then
@@ -4559,6 +4567,46 @@ do -- BuildableHexGrid
 	local grid_objs_c = 0
 	local Temp = ChoGGi.Temp
 	local OHexSpot, XText
+	-- for uneven terrain in construction
+	local shape_data = {
+		point(-1, 0),
+		point(-1, 1),
+		point(0, -1),
+		point(0, 0),
+		point(0, 1),
+		point(1, -1),
+		point(1, 0),
+	}
+	local shape_data_c = #shape_data
+	-- (self, shape_data, pos, angle)
+	-- stripped down version of ConstructionController:IsTerrainFlatForPlacement
+	local CalcBuildableGrid = CalcBuildableGrid
+	local l_UnbuildableZ, l_g_BuildableZ
+	local function IsTerrainNotFlatForPlacement(q_i, r_i)
+		local original_z = false
+
+		if not l_UnbuildableZ then
+			l_UnbuildableZ = UnbuildableZ
+			l_g_BuildableZ = g_BuildableZ
+			if not l_g_BuildableZ then
+				CalcBuildableGrid()
+				l_g_BuildableZ = g_BuildableZ
+			end
+		end
+
+		for i = 1, shape_data_c do
+			local q, r = shape_data[i]:xy()
+			q, r = q_i+q, r_i+r
+
+			local z = l_g_BuildableZ:get(q+r/2, r)
+			if not original_z then
+				original_z = z
+			end
+			if z == l_UnbuildableZ or z ~= original_z then
+				return true
+			end
+		end
+	end
 
 	local function CleanUp()
 		-- kill off thread
@@ -4721,8 +4769,8 @@ do -- BuildableHexGrid
 											-- get next hex marker from list, and move it to pos
 											c = c + 1
 											local hex = grid_objs[c]
-											local pt = point(HexToWorld(q_i, r_i))
-											hex:SetPos(pt)
+											local pos = point(HexToWorld(q_i, r_i))
+											hex:SetPos(pos)
 
 											-- green = pass/build, yellow = no pass/build, blue = pass/no build, red = no pass/no build
 
@@ -4746,12 +4794,12 @@ do -- BuildableHexGrid
 													-- returns UnbuildableZ if it isn't buildable
 													local build_z = g_BuildableZ:get(q_i + r_i / 2, r_i)
 
-													-- slopes over 1024? aren't passable (let alone buildable)
-													if build_z == UnbuildableZ or HexSlope(q_i, r_i) > 1024 then
+													-- check adjacent hexes for height diff, and slopes over 1024? aren't passable (let alone buildable)
+													if build_z == UnbuildableZ or IsTerrainNotFlatForPlacement(q_i, r_i) or HexSlope(q_i, r_i) > 1024 then
 														hex:SetColorModifier(red)
 													-- stuff that can be pathed? (or dump sites which IsPassable returns false for)
 --~ 													obj:IsKindOf("WasteRockStockpileUngridedNoBlockPass") then
-													elseif terrain_IsPassable(pt) or obj and obj.class == "WasteRockDumpSite" then
+													elseif terrain_IsPassable(pos) or obj and obj.class == "WasteRockDumpSite" then
 														if build_z ~= UnbuildableZ and not obj then
 															hex:SetColorModifier(green)
 														else

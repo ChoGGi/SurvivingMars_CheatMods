@@ -635,7 +635,12 @@ Actions[c] = {ActionName = Strings[302535920000491--[[Examine Object]]] .. " " .
 	ActionMenubar = "ECM.Debug.Object",
 	ActionId = ".Examine Object Radius",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleStretchFactor.tga",
-	RolloverText = Strings[302535920000923--[[Set the radius used for %s examining.]]]:format(ChoGGi.ComFuncs.GetShortcut(".Keys.Examine Objects Shift")),
+	RolloverText = function()
+		return SettingState(
+			"ChoGGi.UserSettings.ExamineObjectRadius",
+			Strings[302535920000923--[[Set the radius used for %s examining.]]]:format(ChoGGi.ComFuncs.GetShortcut(".Keys.Examine Objects Shift"))
+		)
+	end,
 	OnAction = ChoGGi.MenuFuncs.ExamineObjectRadius_Set,
 }
 

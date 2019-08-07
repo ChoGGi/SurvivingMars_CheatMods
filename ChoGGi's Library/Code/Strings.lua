@@ -18,8 +18,7 @@ local _InternalTranslate, T, IsT = _InternalTranslate, T, IsT
 local function Translate(t, context, ...)
 	if not t then
 		return missing_text
-	end
-	if t == "" then
+	elseif t == "" then
 		return t
 	end
 
@@ -27,8 +26,12 @@ local function Translate(t, context, ...)
 		(context and T(t, context, ...) or T{t, context, ...})
 	)
 
-	-- Missing text means the string id wasn't found (generally)
-	if str == missing_text or type(str) ~= "string" then
+	-- "Missing text" means the string id wasn't found
+	if str == missing_text then
+		-- try to return the string id (if we can)
+		return tostring(IsT(t) or missing_text)
+	-- something didn't work
+	elseif type(str) ~= "string" then
 		-- try to return the string id, if we can
 		print("Translate Failed:", t, context, ...)
 		return tostring(IsT(t) or missing_text)
