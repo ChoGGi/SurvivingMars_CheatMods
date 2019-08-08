@@ -535,7 +535,7 @@ end
 local ValidateImage = ChoGGi.ComFuncs.ValidateImage
 
 do -- MsgPopup
-	local TableSet_defaults = table.set_defaults
+	local table_set_defaults = table.set_defaults
 	local OpenDialog = OpenDialog
 
 	-- shows a popup msg with the rest of the notifications
@@ -576,13 +576,13 @@ do -- MsgPopup
 		-- build the popup
 		local data = {
 			id = AsyncRand(),
-			title = title and tostring(title) or "",
-			text = text and tostring(text) or T(3718, "NONE"),
+			title = type(title) == "number" and tostring(title) or title or "",
+			text = type(text) == "number" and tostring(text) or text or T(3718, "NONE"),
 			image = params.image and ValidateImage(params.image) or ChoGGi.library_path .. "UI/TheIncal.png",
 		}
 
-		TableSet_defaults(data, params)
-		TableSet_defaults(data, OnScreenNotificationPreset)
+		table_set_defaults(data, params)
+		table_set_defaults(data, OnScreenNotificationPreset)
 
 		-- click icon to view obj
 		if params.objects then
@@ -1082,14 +1082,15 @@ function ChoGGi.ComFuncs.MsgWait(text, title, image, ok_text, context, parent, t
 	end
 
 	local dlg = CreateMarsQuestionBox(
-		title and tostring(title) or T(1000016, "Title"),
-		text and tostring(text) or T(3718, "NONE"),
-		ok_text and tostring(ok_text),
+		type(title) == "number" and tostring(title) or title or T(1000016, "Title"),
+		type(text) == "number" and tostring(text) or text or T(3718, "NONE"),
+		type(ok_text) == "number" and tostring(ok_text) or ok_text,
 		nil,
 		parent,
 		image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
 		context, template
 	)
+
 	-- hide cancel button since we don't care about it, and we ignore them anyways...
 	dlg.idList[2]:delete()
 end
@@ -1107,10 +1108,10 @@ function ChoGGi.ComFuncs.QuestionBox(text, func, title, ok_text, cancel_text, im
 
 	if WaitMarsQuestion(
 		parent,
-		title and tostring(title) or T(1000016, "Title"),
-		text and tostring(text) or T(3718, "NONE"),
-		ok_text and tostring(ok_text),
-		cancel_text and tostring(cancel_text),
+		type(title) == "number" and tostring(title) or title or T(1000016, "Title"),
+		type(text) == "number" and tostring(text) or text or T(3718, "NONE"),
+		type(ok_text) == "number" and tostring(ok_text) or ok_text,
+		type(cancel_text) == "number" and tostring(cancel_text) or cancel_text,
 		image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
 		context, template
 	) == "ok" then

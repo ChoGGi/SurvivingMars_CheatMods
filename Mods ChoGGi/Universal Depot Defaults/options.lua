@@ -15,7 +15,7 @@ local properties = {
 		min = 0,
 		editor = "number",
 		id = "StoredAmount",
-		name = T(1000100, "Amount"),
+		name = T(10370, "Desire Amount"),
 	},
 }
 -- add any valid res
@@ -36,6 +36,12 @@ for id, item in pairs(Resources) do
 		}
 	end
 end
+
+local CmpLower = CmpLower
+local _InternalTranslate = _InternalTranslate
+table.sort(properties, function(a, b)
+	return CmpLower(_InternalTranslate(a.name), _InternalTranslate(b.name))
+end)
 
 -- max 40 chars
 DefineClass("ModOptions_ChoGGi_UniversalDepotDefaults", {

@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Universal Depot Defaults",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_UniversalDepotDefaults",
@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagGameplay", true,
 	"TagBuildings", true,
-	"description", [[Change default settings for new Universal Depots (also adds seeds).
+	"description", [[Set default settings for newly placed Universal Depots (also adds space for seeds).
 
 
 Requested by Maul.]],

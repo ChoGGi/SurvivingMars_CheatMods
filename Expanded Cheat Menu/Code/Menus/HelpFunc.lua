@@ -125,7 +125,7 @@ do -- ModUpload
 	local orig_title
 
 	local function UploadMod(answer, batch)
-		if not (answer or mod and mod.steam_id) then
+		if not answer or mod and not mod.steam_id then
 			return
 		end
 
@@ -490,14 +490,16 @@ You can also stick the executable in the profile folder to use it instead (<gree
 					AsyncCreatePath(dest_path)
 
 					if choices_len == 1 then
-						ChoGGi.ComFuncs.QuestionBox(
+						if ChoGGi.ComFuncs.QuestionBox(
 							table.concat(upload_msg),
 							UploadMod,
 							mod.title,
 							nil,
 							nil,
 							upload_image
-						)
+						) == "cancel" then
+							return
+						end
 					elseif ask_batch then
 						-- no more need to ask
 						UploadMod(true, "batch")
@@ -524,7 +526,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 							end
 						end
 						-- and show msg
-						ChoGGi.ComFuncs.QuestionBox(
+						if ChoGGi.ComFuncs.QuestionBox(
 							Strings[302535920000221--[[Batch Upload mods?]]] .. "\n\n"
 								.. table.concat(titles, ", "),
 							CallBackFunc_BQ,
@@ -534,7 +536,9 @@ You can also stick the executable in the profile folder to use it instead (<gree
 							upload_image,
 							nil, nil, nil,
 							CurrentThread()
-						)
+						) == "cancel" then
+							return
+						end
 						ask_batch = true
 					end
 
