@@ -574,8 +574,7 @@ If it's an associative table then o = value."]]],
 
 		-- do the magic
 		if self:SetObj(true) then
-			-- returns if it's a class object or not
-			if self.ChoGGi.UserSettings.FlashExamineObject and IsKindOf(self.obj_ref, "XWindow") and self.obj_ref.class ~= "InGameInterface" then
+			if self.ChoGGi.UserSettings.FlashExamineObject and IsKindOf(self.obj_ref, "XWindow") and not self.obj_ref:IsKindOf("InGameInterface") then
 				self:FlashWindow()
 			end
 		end
@@ -2275,8 +2274,6 @@ local function Examine_ConvertValueToInfo(self, button, obj, argument, hyperlink
 	end
 end
 
-string.sub("table: XXXXX",8)
-
 function ChoGGi_DlgExamine:ShowExecCodeWithCode(code)
 	-- open exec code and paste "o.obj_name = value"
 	self:idToggleExecCode_OnChange(true)
@@ -2549,7 +2546,7 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 		-- acts weird with main menu movie xlayer, so we check for GetVisualPos
 		if IsValid(obj) and obj.GetVisualPos then
 			return self:HyperLink(obj, Examine_ConvertValueToInfo)
-				.. obj.class .. self.hyperlink_end .. "@"
+				.. RetName(obj) .. self.hyperlink_end .. "@"
 				.. self:ConvertValueToInfo(obj:GetVisualPos())
 		else
 			local len = #obj
@@ -2942,11 +2939,8 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 					parent = self,
 				})
 			end)
-			.. obj.class
-			.. self.hyperlink_end
-			.. "@"
-			.. self:ConvertValueToInfo(obj:GetVisualPos())
-			.. "--"
+			.. obj.class .. self.hyperlink_end .. "@"
+			.. self:ConvertValueToInfo(obj:GetVisualPos()) .. "--"
 		)
 		-- add the particle name
 		if obj:IsKindOf("ParSystem") then
