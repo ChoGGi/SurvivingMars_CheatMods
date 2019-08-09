@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v7.5 (Unreleased)
+## v7.6 (Unreleased)
+
+## v7.5 (09 Aug 2019)
 - MsgPopup tried to translate numbers to string ids.
 - BuildableHexGrid checks directly adjacent hexes for height diffs.
 

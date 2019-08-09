@@ -24,7 +24,6 @@ function ChoGGi.MenuFuncs.SetRoverChargeRadius()
 		{text = 500, value = 500},
 	}
 
-	--other hint type
 	local hint = default_setting
 	if ChoGGi.UserSettings.RCChargeDist then
 		hint = ChoGGi.UserSettings.RCChargeDist
@@ -214,7 +213,6 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 		{text = 640, value = 640, hint = Strings[302535920000112--[[Cover the entire map from a corner.]]]},
 	}
 
-	--other hint type
 	local hint = default_setting
 	if ChoGGi.UserSettings.RCRoverMaxRadius then
 		hint = ChoGGi.UserSettings.RCRoverMaxRadius

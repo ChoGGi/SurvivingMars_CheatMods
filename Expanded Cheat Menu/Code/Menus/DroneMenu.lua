@@ -231,3 +231,17 @@ Actions[c] = {ActionName = Strings[302535920001403--[[Drone Type]]],
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDroneType,
 }
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000051--[[Drone Battery Cap]]],
+	ActionMenubar = "ECM.ECM.Drones",
+	ActionId = ".Drone Battery Cap",
+	ActionIcon = iconD,
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.DroneBatteryMax,
+			Strings[302535920000945--[[Change the capacity of drone batteries.]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.SetDroneBatteryCap,
+}

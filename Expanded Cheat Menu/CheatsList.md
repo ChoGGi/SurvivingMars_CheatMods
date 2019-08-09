@@ -262,7 +262,7 @@ This is temporary, use Options>Video>Framerate Counter to permanently save it.
 Debug.Framerate Counter>Up Left
 Debug.Framerate Counter>Up Right: Default
 Debug.Grids>Follow Mouse Grid Position: 0: Type of positioning to show.
-Debug.Grids>Follow Mouse Grid Size: 12: Sets the size of the Building/Flight grid.
+Debug.Grids>Follow Mouse Grid Size: 25: Sets the size of the Building/Flight grid.
 Debug.Grids>Follow Mouse Grid Trans: 15: How transparent the Building/Flight grid is.
 Debug.Grids>Show Grid 45 Square: Square 45 (use Disable to hide).
 Debug.Grids>Show Grid Disable: Hide the white ground grids.
@@ -278,7 +278,7 @@ Debug.Object>Anim State Set: Make selected object dance on command.
 Debug.Object>Delete All Of Selected Object: Will ask for confirmation beforehand (will not delete domes).
 Debug.Object>Delete Object(s): Deletes selected object or object under mouse cursor (most objs, not all).
 Debug.Object>Edit Object: Manipulate objects (selected or under mouse cursor)
-Debug.Object>Examine Object Radius: Set the radius used for Shift-F4 examining.
+Debug.Object>Examine Object Radius: 5000: Set the radius used for Shift-F4 examining.
 Debug.Object>Examine Object: Opens the object examiner for the selected or moused-over obj.
 Use Shift-F4 to show a list of all objects in a radius around cursor.
 Debug.Object>Object Cloner: Clones selected/moused over object to current mouse position (should probably use the shortcut key rather than this menu item).
@@ -323,8 +323,8 @@ ECM.Buildings.Capacity>Building Visitor Capacity: Set visitors capacity of all b
 ECM.Buildings.Capacity>Storage Mechanized Depots Temp: Allow the temporary storage to hold 100 instead of 50 cubes.
 ECM.Buildings.Capacity>Storage Mechanized Depots: Change mechanized depot storage capacity.
 ECM.Buildings.Capacity>Storage Other Depot: Change other storage depot capacity.
-ECM.Buildings.Capacity>Storage Universal Depot: Change universal storage depot capacity.
-ECM.Buildings.Capacity>Storage Waste Depot: Change waste storage depot capacity.
+ECM.Buildings.Capacity>Storage Universal Depot: 500000: Change universal storage depot capacity.
+ECM.Buildings.Capacity>Storage Waste Depot: 1000000: Change waste storage depot capacity.
 ECM.Buildings.Capacity>Worker Capacity: Set worker capacity of buildings of selected type, also applies to newly placed ones.
 ECM.Buildings.Farms>Crop fail threshold: Average performance of Farms required for Crops to succeed
 ECM.Buildings.Farms>Farm Shifts All On: Turns on all the farm shifts.
@@ -427,6 +427,7 @@ ECM.Colonists>Traits: Block For Selected Building Type: Select a building and us
 ECM.Colonists>Traits: Restrict For Selected Building Type: Select a building and use this to only allow workers with certain traits to work there (block will override).
 ECM.Drones>Change Amount of Drones in Hub: Select a DroneHub then change the amount of drones in said hub (dependent on prefab amount).
 ECM.Drones>Command center max Drones: Maximum number of Drones a Drone Hub can control
+ECM.Drones>Drone Battery Cap: Change the capacity of drone batteries.
 ECM.Drones>Drone Battery Infinite: Drone Battery Infinite
 ECM.Drones>Drone Build Speed: Instant build/repair when resources are ready.
 ECM.Drones>Drone Move Speed: How fast drones will move.

@@ -23,6 +23,7 @@ local table_iclear = table.iclear
 local table_sort = table.sort
 local table_copy = table.copy
 local table_rand = table.rand
+local CreateRealTimeThread = CreateRealTimeThread
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 
@@ -53,7 +54,7 @@ ChoGGi.ComFuncs.SaveOrigFunc = SaveOrigFunc
 do -- AddMsgToFunc
 	local Msg = Msg
 	-- changes a function to also post a Msg for use with OnMsg
-	function ChoGGi.ComFuncs.AddMsgToFunc(class_name, func_name, msg_str, ...)
+	function ChoGGi.ComFuncs.AddMsgToFunc(class_name, func_name, msg_str, thread, ...)
 		-- anything i want to pass onto the msg
 		local varargs = ...
 		-- save orig
@@ -64,7 +65,11 @@ do -- AddMsgToFunc
 		local newname = class_name .. "_" .. func_name
 		_G[class_name][func_name] = function(obj, ...)
 			-- send obj along with any extra args i added
-			Msg(msg_str, obj, varargs)
+			if thread then
+				CreateRealTimeThread(Msg, msg_str, obj, varargs)
+			else
+				Msg(msg_str, obj, varargs)
+			end
 
 --~ 			-- use to debug if getting an error
 --~ 			local params = {...}
@@ -2904,7 +2909,6 @@ end
 do -- DeleteObject
 	local DoneObject = DoneObject
 	local DeleteThread = DeleteThread
-	local CreateRealTimeThread = CreateRealTimeThread
 	local DestroyBuildingImmediate = DestroyBuildingImmediate
 	local FlattenTerrainInBuildShape = FlattenTerrainInBuildShape
 	local HasAnySurfaces = HasAnySurfaces

@@ -199,7 +199,7 @@ local function AddNewState(profile,obj)
 end
 
 local function ShowList_AddTo(obj,profile)
-	local working_str = Translate(11230, "Working)
+	local working_str = Translate(11230, "Working")
 	local priority_str = Translate(172, "Priority")
 	local shifts_str = Translate(217, "Work Shifts")
 	local enforce_spec_str = Translate(8746, "Workforce: Enforce Specialists")

@@ -7,21 +7,26 @@ local Strings = ChoGGi.Strings
 local Translate = ChoGGi.ComFuncs.Translate
 --~	local RetName = ChoGGi.ComFuncs.RetName
 
-function ChoGGi.MenuFuncs.SetRoverWorkRadius()
-	local default_setting = ChoGGi.Consts.RCRoverMaxRadius
+function ChoGGi.MenuFuncs.SetDroneBatteryCap()
+	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("DroneBatteryMax")
+	local r = const.ResourceScale
+
 	local item_list = {
-		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
-		{text = 40, value = 40},
-		{text = 80, value = 80},
-		{text = 160, value = 160},
-		{text = 320, value = 320, hint = Strings[302535920000111--[[Cover the entire map from the centre.]]]},
-		{text = 640, value = 640, hint = Strings[302535920000112--[[Cover the entire map from a corner.]]]},
+		{text = Translate(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting},
+		{text = 10, value = 10 * r},
+		{text = 25, value = 25 * r},
+		{text = 50, value = 50 * r},
+		{text = 100, value = 100 * r},
+		{text = 125, value = 125 * r},
+		{text = 250, value = 250 * r},
+		{text = 500, value = 500 * r},
+		{text = 1000, value = 1000 * r},
+		{text = 10000, value = 10000 * r},
 	}
 
-	--other hint type
 	local hint = default_setting
-	if ChoGGi.UserSettings.RCRoverMaxRadius then
-		hint = ChoGGi.UserSettings.RCRoverMaxRadius
+	if ChoGGi.UserSettings.DroneBatteryMax then
+		hint = ChoGGi.UserSettings.DroneBatteryMax
 	end
 
 	local function CallBackFunc(choice)
@@ -31,19 +36,24 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 		local value = choice[1].value
 		if type(value) == "number" then
 
-			-- we need to set this so the hex grid during placement is enlarged
-			const.RCRoverMaxRadius = value
-			ChoGGi.ComFuncs.SetSavedConstSetting("RCRoverMaxRadius")
+			-- i doubt updating this matters...
+			const.DroneBatteryMax = value
 
-			local objs = UICity.labels.RCRover or ""
+			local objs = UICity.labels.Drone or ""
 			for i = 1, #objs do
-				objs[i]:SetWorkRadius(value)
+				objs[i].battery_max = value
+			end
+
+			if value == default_setting then
+				ChoGGi.UserSettings.DroneBatteryMax = nil
+			else
+				ChoGGi.UserSettings.DroneBatteryMax = value
 			end
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RCRoverMaxRadius),
-				Strings[302535920000505--[[Work Radius RC Rover]]]
+				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneBatteryMax),
+				Strings[302535920000051--[[Drone Battery Cap]]]
 			)
 		end
 	end
@@ -51,9 +61,8 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000884--[[Set Rover Work Radius]]],
-		hint = Strings[302535920000106--[[Current]]] .. ": " .. hint .. "\n\n"
-			.. Strings[302535920000115--[[Toggle selection to update visible hex grid.]]],
+		title = Strings[302535920000051--[[Drone Battery Cap]]],
+		hint = Strings[302535920000106--[[Current]]] .. ": " .. hint,
 		skip_sort = true,
 	}
 end
@@ -109,7 +118,6 @@ function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
 		{text = 640, value = 640, hint = Strings[302535920000112--[[Cover the entire map from a corner.]]]},
 	}
 
-	--other hint type
 	local hint = default_setting
 	if ChoGGi.UserSettings.CommandCenterMaxRadius then
 		hint = ChoGGi.UserSettings.CommandCenterMaxRadius

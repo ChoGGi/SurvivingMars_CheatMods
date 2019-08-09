@@ -1,7 +1,4 @@
 "ID"," Text"
-302535920000051,
-302535920000941,
-302535920000945,
 302535920000962,
 302535920000975,
 302535920000976,
@@ -1290,6 +1287,9 @@ Attention: If you get yellow ground areas; just load it again or try %s."
 302535920000500,"Show a hex grid around mouse:
 Green = pass/build, Yellow = no pass/build,
 Blue = pass/no build, Red = no pass/no build."
+302535920000702,"Drone Wasp Move Speed"
+302535920000051,"Drone Battery Cap"
+302535920000945,"Change the capacity of drone batteries."
 302535920000237,"Check this to reset settings."
 302535920001317,"Launch Fuel Per Rocket"
 302535920001318,"Change how much fuel rockets need to launch."
@@ -1742,7 +1742,6 @@ For any issues; please report them to my Github/Steam/NexusMods page, or email <
 302535920000673,"info dialog."
 302535920000676,"Reset ECM Settings"
 302535920000677,"Reset all ECM settings to default (restart to enable)."
-302535920000702,"Drone Wasp Move Speed"
 302535920000356,"Time Factor"
 302535920000387,"Change the time factor (not permanently); for ease of screenshots or something."
 302535920000523,"How many to multiple the default speed by: <green>%s</green>."

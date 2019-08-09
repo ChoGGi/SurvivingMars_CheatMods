@@ -23,14 +23,15 @@ local testing = ChoGGi.testing
 
 do -- custom msgs
 	local AddMsgToFunc = ChoGGi.ComFuncs.AddMsgToFunc
-	AddMsgToFunc("BaseBuilding", "GameInit", "ChoGGi_SpawnedBaseBuilding")
-	AddMsgToFunc("Drone", "GameInit", "ChoGGi_SpawnedDrone")
+	-- true fires msg in a thread to delay it
+	AddMsgToFunc("BaseBuilding", "GameInit", "ChoGGi_SpawnedBaseBuilding", true)
+	AddMsgToFunc("Drone", "GameInit", "ChoGGi_SpawnedDrone", true)
 	AddMsgToFunc("PinnableObject", "TogglePin", "ChoGGi_TogglePinnableObject")
 
-	AddMsgToFunc("AirProducer", "CreateLifeSupportElements", "ChoGGi_SpawnedProducer", "air_production")
-	AddMsgToFunc("ElectricityProducer", "CreateElectricityElement", "ChoGGi_SpawnedProducer", "electricity_production")
-	AddMsgToFunc("WaterProducer", "CreateLifeSupportElements", "ChoGGi_SpawnedProducer", "water_production")
-	AddMsgToFunc("SingleResourceProducer", "Init", "ChoGGi_SpawnedProducer", "production_per_day")
+	AddMsgToFunc("AirProducer", "CreateLifeSupportElements", "ChoGGi_SpawnedProducer", nil, "air_production")
+	AddMsgToFunc("ElectricityProducer", "CreateElectricityElement", "ChoGGi_SpawnedProducer", nil, "electricity_production")
+	AddMsgToFunc("WaterProducer", "CreateLifeSupportElements", "ChoGGi_SpawnedProducer", nil, "water_production")
+	AddMsgToFunc("SingleResourceProducer", "Init", "ChoGGi_SpawnedProducer", nil, "production_per_day")
 end -- do
 
 -- stops crashing with certain missing pinned objects
@@ -615,6 +616,10 @@ function OnMsg.ChoGGi_SpawnedDrone(obj)
 		else
 			obj:SetBase("move_speed", UserSettings.SpeedDrone)
 		end
+	end
+
+	if UserSettings.DroneBatteryMax then
+		obj.battery_max = UserSettings.DroneBatteryMax
 	end
 
 end

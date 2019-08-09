@@ -1629,7 +1629,6 @@ function ChoGGi.MenuFuncs.ResearchQueueSize_Set()
 		{text = 500, value = 500},
 	}
 
-	--other hint type
 	local hint = default_setting
 	local ResearchQueueSize = ChoGGi.UserSettings.ResearchQueueSize
 	if ResearchQueueSize then

@@ -17,5 +17,6 @@ return PlaceObj("ModDef", {
 	"description", [[Layout construction allows building buildings that should be locked by tech (Triboelectric Scrubber).
 
 If you don't use any layout mods then you don't need this.
-Modders: [url=https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Fix%20Layout%20Construction%20Tech%20Lock]git Fix Layout Construction Tech Lock[/url]]],
+Modders: [url=https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Fix%20Layout%20Construction%20Tech%20Lock]git Fix Layout Construction Tech Lock[/url].
+]],
 })

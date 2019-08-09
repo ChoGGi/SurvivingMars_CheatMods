@@ -33,8 +33,6 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local Translate = ChoGGi.ComFuncs.Translate
-
 local table_clear = table.clear
 local needed_specialist = {}
 local all_specialist = {}

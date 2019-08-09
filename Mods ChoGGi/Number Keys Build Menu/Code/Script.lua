@@ -2,7 +2,6 @@
 
 local tostring = tostring
 
-local Translate = ChoGGi.ComFuncs.Translate
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 

@@ -433,7 +433,8 @@ function OnMsg.ClassesPostprocess()
 					"func", function(self, context)
 						---
 
-						local Random = ChoGGi.ComFuncs.Random
+						local GetRandomPassableAround = GetRandomPassableAround
+						local GetRandomPassable = GetRandomPassable
 						local function CallBackFunc(answer)
 							if answer then
 								local rovers = g_ChoGGi_RCGarageRovers
@@ -443,7 +444,8 @@ function OnMsg.ClassesPostprocess()
 									unit.accumulate_dust = true
 									unit:SetPos(context:GetPos())
 									unit:SetCommand("Goto",
-										GetRandomPassableAround(unit:GetPos(), 100000) or GetRandomPassable()
+										GetRandomPassableAround(unit:GetPos(), 100000)
+                    or GetRandomPassable()
 									)
 								end
 								table.clear(g_ChoGGi_RCGarageRovers)

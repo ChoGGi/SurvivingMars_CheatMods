@@ -91,8 +91,11 @@ function ChoGGi.ComFuncs.UpdateStringsList()
 	if not next(strings) then
 		setmetatable(strings, {
 			__index = function(_, id)
-				print("ECM Sez: *bad string id?", id)
-				return missing_text
+				-- we only want numbers, so if anything else is requested then ignore
+				if type(id) == "number" then
+					print("ECM Sez: *bad string id?", id)
+					return missing_text
+				end
 			end,
 		})
 	end

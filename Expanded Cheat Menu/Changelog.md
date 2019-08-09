@@ -1,6 +1,11 @@
 ## ECM Changelog
 
-## v14.5 (Unreleased)
+## v14.6 (Unreleased)
+
+## v14.5 (09 Aug 2019)
+### Added:
+- ECM>Drones>Drone Battery Cap: Change the capacity of drone batteries.
+
 ### Fixed:
 - Mod Upload cancel didn't cancel.
 

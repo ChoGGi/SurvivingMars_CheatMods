@@ -148,3 +148,27 @@ function OnMsg.ClassesPostprocess()
 	)
 
 end
+
+GlobalVar("g_ChoGGi_RemoveUnwantedColonists_StuckPassageFix", false)
+
+-- remove any invalid colonists from passages (fix for mod < v0.5)
+function OnMsg.LoadGame()
+	-- so it only loops once per game
+	if g_ChoGGi_RemoveUnwantedColonists_StuckPassageFix then
+		return
+	end
+
+	local remove = table.remove
+
+	local objs = UICity.labels.Passage or ""
+	for i = 1, #objs do
+		local traversing = objs[i].traversing_colonists or ""
+		for j = #traversing, 1, -1 do
+			if not IsValid(traversing[j]) then
+				remove(traversing, j)
+			end
+		end
+	end
+
+	g_ChoGGi_RemoveUnwantedColonists_StuckPassageFix = true
+end

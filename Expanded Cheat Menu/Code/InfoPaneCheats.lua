@@ -764,7 +764,7 @@ function Drone:CheatBattCapDbl()
 	self.battery_max = self.battery_max * 2
 end
 function Drone:CheatBattCapDef()
-	self.battery_max = const.BaseRoverMaxBattery
+	self.battery_max = ChoGGi.ComFuncs.GetResearchedTechValue("DroneBatteryMax")
 end
 
 -- CheatMoveSpeedDbl

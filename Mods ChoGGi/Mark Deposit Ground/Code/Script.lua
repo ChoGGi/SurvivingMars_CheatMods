@@ -7,9 +7,9 @@ local mod_ShowConstruct
 
 -- fired when settings are changed/init
 local function ModOptions()
-	local mod_AlienAnomaly = options.AlienAnomaly
-	local mod_HideSigns = options.HideSigns
-	local mod_ShowConstruct = options.ShowConstruct
+	mod_AlienAnomaly = options.AlienAnomaly
+	mod_HideSigns = options.HideSigns
+	mod_ShowConstruct = options.ShowConstruct
 end
 
 -- load default/saved settings

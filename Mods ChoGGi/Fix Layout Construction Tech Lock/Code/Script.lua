@@ -7,10 +7,10 @@ local function CleanUp(self)
 	local BuildingTemplates = BuildingTemplates
 
 	local controllers = self.controllers or empty_table
-	for entry, controller in pairs(controllers) do
+	for entry in pairs(controllers) do
 		local template = BuildingTemplates[entry.template]
 		if template then
-			local tech_shown, tech_enabled = GetBuildingTechsStatus(template.id, template.build_category)
+			local _, tech_enabled = GetBuildingTechsStatus(template.id, template.build_category)
 
 			-- if it isn't unlocked and there's no prefabs then remove it
 			if not tech_enabled and UICity:GetPrefabs(template.id) == 0 then

@@ -25,7 +25,7 @@ local cats = {
 local r = const.ResourceScale
 
 local options
-local mod_EnableMod
+local mod_LargeRocksCost
 
 -- fired when settings are changed/init
 local function ModOptions()

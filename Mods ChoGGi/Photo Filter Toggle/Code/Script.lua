@@ -17,8 +17,6 @@ table.sort(photos, function(a, b)
 	return CmpLower(a, b)
 end)
 
-local options
-
 local function ApplyFilter()
 	local apply
 	for i = 1, photo_c do

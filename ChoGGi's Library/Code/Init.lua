@@ -74,6 +74,7 @@ ChoGGi = {
 		const_names = {
 			"BreakThroughTechsPerGame",
 			"CommandCenterMaxRadius",
+			"DroneBatteryMax",
 			"DroneRestrictRadius",
 			"ExplorationQueueMaxSize",
 			"fastGameSpeed",
