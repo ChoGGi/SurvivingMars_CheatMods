@@ -615,11 +615,14 @@ do -- MsgPopup
 			if params.size then
 				local frame = GetParentOfKind(popup.idText, "XFrame")
 				if frame then
-					frame:SetMaxWidth(1000)
+					frame:SetMaxWidth(params.max_width or 1000)
 				end
-				popup.idText:SetMaxHeight(250)
+				popup.idText:SetMaxHeight(params.max_height or 250)
 			end
+
 		end)
+		-- if we need the popup notification_id
+		return data.id
 	end
 end -- do
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup

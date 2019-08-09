@@ -118,18 +118,18 @@ do -- ModUpload
 	-- it's fine...
 	local copy_files, blank_mod, clipboard, test, steam_upload, para_platform
 	local mod, mod_path, upload_image, diff_author, result, choices_len, uploading
+	local orig_title, msg_popup_id
 	local result_msg, result_title, upload_msg = {}, {}, {}
 	local image_steam = "UI/Common/mod_steam_workshop.tga"
 	local image_paradox = "UI/ParadoxLogo.tga"
 
-	local orig_title
 
 	local function UploadMod(answer, batch)
 		if not answer or mod and not mod.steam_id then
 			return
 		end
 
-		MsgPopup(
+		msg_popup_id = MsgPopup(
 			T(5452, "START"),
 			Strings[302535920000367--[[Mod Upload]]]
 		)
@@ -552,6 +552,13 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			-- wait for it
 			while uploading do
 				Sleep(1000)
+			end
+
+			-- update popup msg if it's still opened
+			local popups = ChoGGi.Temp.MsgPopups
+			local idx = table.find(popups, "notification_id", msg_popup_id)
+			if idx and ChoGGi.ComFuncs.IsValidXWin(popups[idx]) then
+				popups[idx].idText:SetText(Strings[302535920001453--[[Completed]]])
 			end
 
 			local error_msgs = {}

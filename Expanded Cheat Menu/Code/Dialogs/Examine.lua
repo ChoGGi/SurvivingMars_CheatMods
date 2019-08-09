@@ -723,15 +723,19 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 	local c = 0
 
 	local title, obj_str, obj_type
-	if self.obj_type == "table" or self.obj_type == "userdata" or self.obj_type == "string" or self.obj_type == "number" then
-		local obj_value = self.obj_type == "table" and self.ChoGGi.ComFuncs.RetTableValue(self.obj_ref, obj)
+	if self.obj_type == "table" or self.obj_type == "userdata"
+		or self.obj_type == "string" or self.obj_type == "number"
+	then
+		local obj_value = self.obj_type == "table"
+			and self.ChoGGi.ComFuncs.RetTableValue(self.obj_ref, obj)
 		local obj_value_type = type(obj_value)
+
 		if obj_value_type ~= "nil" then
 			obj_str, obj_type = self.ChoGGi.ComFuncs.ValueToStr(obj_value)
 			if obj_value_type == "function" then
 				obj_str = obj_str .. "\n" .. self.ChoGGi.ComFuncs.DebugGetInfo(obj_value)
+			-- check for and add dist from idx-1 and +1 (show hex count instead?)
 			elseif IsPoint(obj_value) and type(obj) == "number" then
-				-- check for and add dist from idx-1 and +1
 				c = self:AddDistToRollover(c, roll_text, self.obj_ref[obj-1], obj-1, obj, obj_value)
 				c = self:AddDistToRollover(c, roll_text, self.obj_ref[obj+1], obj+1, obj, obj_value)
 			end
@@ -792,7 +796,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLink(link, argument, hyperlink_box, pos
 	else
 		local func = self.onclick_funcs[link]
 		if func then
-			func(self, button, obj, argument, hyperlink_box, pos)
+			func(self, button, obj, argument, hyperlink_box, pos, link)
 		end
 	end
 
@@ -2250,17 +2254,28 @@ local function Show_ConvertValueToInfo(self, button, obj)
 		})
 	end
 end
-local function Examine_ConvertValueToInfo(self, button, obj)
+--~ local function Examine_ConvertValueToInfo(self, button, obj)
+local function Examine_ConvertValueToInfo(self, button, obj, argument, hyperlink_box, pos, link)
 	-- not ingame = no sense in using ShowObj
 	if button == "L" then
+		local title = RetName(obj)
+		-- use key name if there's no proper RetName
+		if title:find("^[function:|thread:|table:|userdata:]") then
+			-- needed for index tables
+			title = tostring(self.onclick_objs[link-1])
+		end
+
 		self.ChoGGi.ComFuncs.OpenInExamineDlg(obj, {
 			ex_params = true,
 			parent = self,
+			title = title,
 		})
 	else
 		self:AddSphere(obj)
 	end
 end
+
+string.sub("table: XXXXX",8)
 
 function ChoGGi_DlgExamine:ShowExecCodeWithCode(code)
 	-- open exec code and paste "o.obj_name = value"

@@ -972,12 +972,11 @@ function OnMsg.NewDay() -- NewSol...
 		FlushLogFile()
 	end
 
-	-- loop through and remove any missing popups
+	-- loop through and remove any old popups
+	local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 	local popups = ChoGGi.Temp.MsgPopups or ""
 	for i = #popups, 1, -1 do
-		local popup = popups[i]
-		if not popup:IsVisible() then
-			popup:delete()
+		if not IsValidXWin(popups[i]) then
 			table_remove(popups, i)
 		end
 	end
