@@ -17,7 +17,7 @@ function IdiotMonument:GameInit()
 	g_IdiotMonument = self
 
 	self:SetScale(250)
-	self:SetPos(self:GetPos()+point(0, 0, 5000), 10000)
+	self:SetPos(self:GetPos():AddZ(5000), 10000)
 end
 
 function IdiotMonument:OnDemolish()

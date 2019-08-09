@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"description", [[Allows more buildings to be built under pipes.
 Subsurface Heater, Tunnel, Landing/Trade Pad
 
-Some won't stick through depending on angle, up to you to make it not stupid:
+Some won't stick through depending on angle, up to you to make it not stupid looking:
 Drone Hub, Shuttle Hub, Automatic Metals Extractor, Rare/Metals Refinery, Waste Rock Processor, Polymer Plant, Drone Assembler, Fuel Refinery, MOXIE, Oxygen Tank, Water Extractor, Moisture Vaporator, Fungal Farm, Outside Ranch, Mech Storage
 
 Any I missed?

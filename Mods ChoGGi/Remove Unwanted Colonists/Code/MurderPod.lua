@@ -3,7 +3,7 @@
 local Sleep = Sleep
 local IsValid = IsValid
 local GetRandomPassableAround = GetRandomPassableAround
-local GetHeight = terrain.GetHeight
+local terrain_GetHeight = terrain.GetHeight
 
 local guim = guim
 
@@ -53,6 +53,8 @@ if IsValidEntity("ArcPod") then
 end
 
 function MurderPod:GameInit()
+	self.city = UICity
+
 	self:SetColorizationMaterial(1, -9169900, -50, 0)
 	self:SetColorizationMaterial(2, -12254204, 0, 0)
 	self:SetColorizationMaterial(3, -9408400, -127, 0)
@@ -69,19 +71,18 @@ function MurderPod:GetDisplayName()
 end
 
 function MurderPod:Spawn(arrival_height)
-	arrival_height = arrival_height or self.arrival_height
-
-	local x, y = self:GetVictimPos()
-	local current_pos = point(x, y)
+	if not arrival_height then
+		arrival_height = self.arrival_height
+	end
 
 	local goto_pos = GetRandomPassableAround(
-		current_pos,
+		self:GetVictimPos(),
 		self.max_pos_radius,
 		self.min_pos_radius
-	)
-	Sleep(1000)
-	self:SetPos(goto_pos:SetStepZ(GetHeight(current_pos) + arrival_height))
+	):SetTerrainZ(arrival_height)
 
+	Sleep(1000)
+	self:SetPos(goto_pos)
 	Sleep(5000)
 	self.fx_actor_class = "AttackRover"
 	self:PlayFX("Land", "start")
@@ -103,7 +104,7 @@ function MurderPod:Leave(leave_height)
 		self.max_pos_radius,
 		self.min_pos_radius
 	)
-	leave_height = (GetHeight(current_pos) + leave_height) * 2
+	leave_height = (terrain_GetHeight(current_pos) + leave_height) * 2
 	self.hover_height = leave_height / 4
 
 	self.fx_actor_class = "SupplyRocket"
@@ -157,28 +158,31 @@ end
 function MurderPod:GetVictimPos()
 	local victim = self.target
 	-- otherwise float around the victim walking around the dome/whatever building they're in, or if somethings borked then a rand pos
-	local x, y
+	local pos
 	if victim:IsValidPos() then
-		x, y = victim:GetVisualPosXYZ()
-	elseif victim.holder and victim.holder:IsValidPos() then
-		x, y = victim.holder:GetVisualPosXYZ()
+		pos = victim:GetVisualPos()
+	elseif IsValid(victim.holder) and victim.holder:IsValidPos() then
+		pos = victim.holder:GetVisualPos()
 	else
-		local rand = GetRandomPassable()
-		x, y = rand:x(), rand:y()
+		pos = GetRandomPassable()
 	end
-	return x, y
+	return pos
 end
 
-local point500 = point(0, 0, 500)
 function MurderPod:Abduct()
 	local victim = self.target
 
-	if victim:IsInDome() or not self:IsValidPos() then
+	-- stalk if in dome/building/passage
+	if victim:IsInDome() or not self:IsValidPos() or (IsValid(victim.lead_in_out)
+		and victim.lead_in_out:IsKindOf("PassageGridElement"))
+	then
 		self:SetCommand("StalkerTime")
 	end
 
-	victim:SetCommand("Goto", self:GetPos())
-	-- you ain't going nowhere
+	-- force them outside
+	victim:SetCommand("Goto", GetRandomPassableAwayFromBuilding(self.city))
+
+	-- you ain't going nowhere (fire them and override goto func so victim can't move)
 	if IsValid(victim.workplace) then
 		victim.workplace:FireWorker(victim)
 	end
@@ -209,19 +213,19 @@ function MurderPod:Abduct()
 	)
 	self:WaitFollowPath(path)
 --~ 	while self.next_spline do
---~ 		Sleep(1000)
+--~ 		Sleep(2500)
 --~ 	end
 
 	self.fx_actor_class = "Shuttle"
 	self:PlayFX("ShuttleLoad", "start", victim)
-	victim:SetPos(self:GetPos()+point500, 2500)
+	victim:SetPos(self:GetPos():AddZ(500), 2500)
 	Sleep(2500)
 	self:PlayFX("ShuttleLoad", "end", victim)
 
 	-- grab entity before we remove colonist (for our iceberg meteor)
 	local entity = victim.inner_entity
 	-- no need to keep colonist around now
-	victim:Erase()
+	victim:SetCommand("Erase")
 	-- change selection panel icon
 	self.panel_text = T(302535920011243, [[Victim going to "Earth"]])
 
@@ -238,24 +242,25 @@ function MurderPod:StalkerTime()
 	local victim = self.target
 	while IsValid(victim) do
 
-		local validpos = victim:IsValidPos()
-		-- check if they're not in a building and not in a dome (ie: outside)
-		if validpos and not victim:IsInDome() then
+		-- check if they're not in a building/dome/passage (ie: outside)
+		if victim:IsValidPos() and not victim:IsInDome() and not (IsValid(victim.lead_in_out)
+			and victim.lead_in_out:IsKindOf("PassageGridElement"))
+		then
 			self:SetCommand("Abduct")
 			break
 		end
 
 		-- otherwise float around the victim walking around the dome/whatever building they're in, or if somethings borked then a rand pos
-		local x, y = self:GetVictimPos()
-
-		local path = self:CalcPath(
-			self:GetPos(),
-			point(x+Random(-5000, 5000), y+Random(-5000, 5000))
+		local goto_pos = GetRandomPassableAround(
+			self:GetVictimPos(),
+			self.max_pos_radius,
+			self.min_pos_radius
 		)
 
-		self:FollowPathCmd(path)
+		self:FollowPathCmd(self:CalcPath(self:GetPos(), goto_pos))
+
 		while self.next_spline do
-			Sleep(1000)
+			Sleep(2500)
 		end
 
 		Sleep(Random(2500, 10000))

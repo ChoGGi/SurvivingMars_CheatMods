@@ -7,22 +7,19 @@ local maintenance_resource_amount = 5 * r
 local electricity_consumption = 10 * r
 local capacity = 125
 
-function OnMsg.ClassesPostprocess()
-	local a = BuildingTemplates.Apartments
-	-- update values
+local function UpdateObj(a)
 	a.construction_cost_Concrete = construction_cost_Concrete
 	a.construction_cost_Polymers = construction_cost_Polymers
 	a.maintenance_resource_amount = maintenance_resource_amount
 	a.electricity_consumption = electricity_consumption
 	a.capacity = capacity
+end
 
+function OnMsg.ClassesPostprocess()
+	-- update values
+	UpdateObj(BuildingTemplates.Apartments)
 	-- and update again, cause...
-	a = ClassTemplates.Building.Apartments
-	a.construction_cost_Concrete = construction_cost_Concrete
-	a.construction_cost_Polymers = construction_cost_Polymers
-	a.maintenance_resource_amount = maintenance_resource_amount
-	a.electricity_consumption = electricity_consumption
-	a.capacity = capacity
+	UpdateObj(ClassTemplates.Building.Apartments)
 end
 
 GlobalVar("g_ChoGGi_ApartmentDoubleCapComfort", false)

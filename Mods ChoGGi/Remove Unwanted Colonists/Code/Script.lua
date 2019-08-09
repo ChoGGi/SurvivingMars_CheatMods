@@ -147,6 +147,4 @@ function OnMsg.ClassesPostprocess()
 		})
 	)
 
-	-- add a button to select victim to selection panel of murder pod
-
 end

@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v14.5 (Unreleased)
+### Fixed:
+- Mod Upload cancel didn't cancel.
 
 ## v14.4 (05 Aug 2019)
 ### Changed:
