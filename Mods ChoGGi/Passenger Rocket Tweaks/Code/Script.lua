@@ -1,5 +1,10 @@
 -- See LICENSE for terms
 
+local table_clear = table.clear
+local table_find = table.find
+local T = T
+local procall = procall
+
 local options
 local mod_MoreSpecInfo
 local mod_PosPassList
@@ -33,7 +38,6 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local table_clear = table.clear
 local needed_specialist = {}
 local all_specialist = {}
 
@@ -102,11 +106,11 @@ end
 -- add extra info to select colonists
 ToggleSpecInfo = function()
 	-- I'm lazy, sue me
-	pcall(function()
+	procall(function()
 
 		local pass = XTemplates.ResupplyPassengers[1]
-		local template = pass[table.find(pass, "Id", "idContent")]
-		template = template[table.find(template, "Id", "idTop")]
+		local template = pass[table_find(pass, "Id", "idContent")]
+		template = template[table_find(template, "Id", "idTop")]
 		ChoGGi.ComFuncs.RemoveXTemplateSections(template, "Id", "idPassInfo_ChoGGi")
 		if not mod_MoreSpecInfo then
 			return
@@ -310,9 +314,9 @@ local function AddUIStuff(content)
 	-- wait for it (thanks SkiRich)
 	WaitMsg("OnRender")
 
-	mod_PosPassList = mod.options.PosPassList
-	mod_PosX = mod.options.PosX
-	mod_PosY = mod.options.PosY
+	mod_PosPassList = options.PosPassList
+	mod_PosX = options.PosX
+	mod_PosY = options.PosY
 	if mod_PosPassList then
 		content.idListsWrapper:SetMargins(box(
 			mod_PosX,
@@ -324,6 +328,9 @@ local function AddUIStuff(content)
 	-- fatty boy
 	content.idLeftScroll:SetMaxWidth(24)
 	content.idLeftScroll:SetMinWidth(24)
+	-- *cough cough* rare/precious
+	content.idScrollRight:SetMaxWidth(24)
+	content.idScrollRight:SetMinWidth(24)
 
 	-- back button
 	local orig_back = content.idToolBar.idback.OnPress
@@ -390,4 +397,34 @@ function OpenDialog(dlg_str, ...)
 		ResDlg(dlg)
 	end
 	return dlg
+end
+
+local function SafeChangeAge(self)
+	local descr = self.prop_meta.rollover.descr[1]
+	descr.Age = descr.Age .. ": " .. self.prop_meta.applicant[1].age
+end
+
+local function AddExtraInfo(xtemplate)
+	if xtemplate.ChoGGi_AddedExtraPassInfo then
+		return
+	end
+	xtemplate.ChoGGi_AddedExtraPassInfo = true
+
+	local idx = table_find(xtemplate, "name", "Open")
+	if not idx then
+		return
+	end
+	xtemplate = xtemplate[idx]
+
+	local orig = xtemplate.func
+	xtemplate.func = function(self, ...)
+		-- by safe I mean log spam instead of failing
+		procall(SafeChangeAge, self)
+		return orig(self, ...)
+	end
+end
+
+function OnMsg.ClassesPostprocess()
+	AddExtraInfo(XTemplates.PropApplicantSelected[1])
+	AddExtraInfo(XTemplates.PropApplicant[1])
 end

@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 DefineClass("ModOptions_ChoGGi_PassengerRocketTweaks", {
 	__parents = {
 		"ModOptionsObject",

@@ -1,14 +1,5 @@
 -- See LICENSE for terms
 
-local name = T(302535920011193, [[RC Mechanic]])
-local description = T(302535920011194, [[Give me your tired, your poor,
-Your huddled masses yearning to breathe free,
-The wretched refuse of your teeming shore.]])
-
-local display_icon = CurrentModPath .. "UI/rover_combat.png"
-local idle_text = T(6722, "Idle")
-local travel_text = T(63, "Travelling")
-
 GlobalVar("g_RCMechanicRepairing", {})
 
 DefineClass.RCMechanic = {
@@ -16,10 +7,9 @@ DefineClass.RCMechanic = {
 		"BaseRover",
 		"ComponentAttach",
 	},
-	name = name,
-	description = description,
-	display_icon = display_icon,
-	display_name = name,
+	description = T(302535920011194, [[Give me your tired, your poor,
+Your huddled masses yearning to breathe free,
+The wretched refuse of your teeming shore.]]),
 
 	going_to_repair = false,
 	blinky = false,
@@ -27,7 +17,7 @@ DefineClass.RCMechanic = {
 
 	entity = "CombatRover",
 	accumulate_dust = false,
-	status_text = idle_text,
+	status_text = T(6722, "Idle"),
 	-- refund res
 	on_demolish_resource_refund = { Metals = 20 * const.ResourceScale, MachineParts = 20 * const.ResourceScale , Electronics = 10 * const.ResourceScale },
 
@@ -48,13 +38,14 @@ function RCMechanic:GameInit()
 	self:Attach(self.blinky)
 
 	-- move blinky above bar thingy
-	local offsetx, offsety = self:GetVisualPos() - MovePointAway(
+	local offsetx, offsety = (self:GetVisualPos() - MovePointAway(
 		self:GetSpotLoc(self:GetSpotBeginIndex("Origin")),
 		self:GetSpotLoc(self:GetSpotBeginIndex("Particle1")),
 		200
-	):xy()
+	)):xy()
+
 	self.blinky:SetAttachOffset(
-		point(offsetx, offsety, self:GetObjectBBox():sizez())
+		point(offsetx, offsety, self:GetObjectBBox():sizez() or 100)
 	)
 
 	-- select sounds
@@ -69,13 +60,12 @@ function RCMechanic:GameInit()
 
 end
 
---~ function RCMechanic:GetStatusUpdate()
 function RCMechanic:Getui_command()
-	return ChoGGi.ComFuncs.TableConcat({self.status_text}, "<newline><left>")
+	return self.status_text
 end
 
 function RCMechanic:GotoFromUser(...)
-	self.status_text = travel_text
+	self.status_text = T(63, "Travelling")
 	return BaseRover.GotoFromUser(self, ...)
 end
 
@@ -154,9 +144,9 @@ And I'm about to put the hammer down."]], name = rover.name ~= "" and rover.name
 			self.move_speed = 2 * self.base_move_speed
 			-- and we're off
 			self:Goto(pos)
+			self.status_text = T(6924, "Repair")
+			self:SetState("idle")
 			rover:RCMech_CleanAndFix()
-
-			self.status_text = idle_text
 			return 5000
 		else
 			unreachable_objects[rover] = true
@@ -175,7 +165,7 @@ function RCMechanic:Idle()
 		self.going_to_repair = false
 	end
 
-	self.status_text = idle_text
+	self.status_text = T(6722, "Idle")
 	local sleep = self:ProcAutomation()
 	self:SetState("idle")
 
@@ -184,29 +174,33 @@ function RCMechanic:Idle()
 end
 
 function OnMsg.ClassesPostprocess()
-	if not BuildingTemplates.RCMechanicBuilding then
-		PlaceObj("BuildingTemplate", {
-			"Id", "RCMechanicBuilding",
-			"template_class", "RCMechanicBuilding",
-			-- pricey?
-			"construction_cost_Metals", 40000,
-			"construction_cost_MachineParts", 40000,
-			"construction_cost_Electronics", 20000,
-			-- add a bit of pallor to the skeleton
-			"palettes", AttackRover.palette,
-
-			"dome_forbidden", true,
-			"display_name", name,
-			"display_name_pl", name,
-			"description", description,
-			"build_category", "ChoGGi",
-			"Group", "ChoGGi",
-			"display_icon", display_icon,
-			"encyclopedia_exclude", true,
-			"on_off_button", false,
-			"entity", "CombatRover",
-		})
+	if BuildingTemplates.RCMechanicBuilding then
+		return
 	end
+
+	PlaceObj("BuildingTemplate", {
+		"Id", "RCMechanicBuilding",
+		"template_class", "RCMechanicBuilding",
+		-- pricey?
+		"construction_cost_Metals", 40000,
+		"construction_cost_MachineParts", 40000,
+		"construction_cost_Electronics", 20000,
+		-- add a bit of pallor to the skeleton
+		"palettes", AttackRover.palette,
+
+		"dome_forbidden", true,
+		"display_name", T(302535920011193, [[RC Mechanic]]),
+		"display_name_pl", T(302535920011193, [[RC Mechanic]]),
+		"description", T(302535920011194, [[Give me your tired, your poor,
+Your huddled masses yearning to breathe free,
+The wretched refuse of your teeming shore.]]),
+		"build_category", "ChoGGi",
+		"Group", "ChoGGi",
+		"display_icon", CurrentModPath .. "UI/rover_combat.png",
+		"encyclopedia_exclude", true,
+		"on_off_button", false,
+		"entity", "CombatRover",
+	})
 end
 
 -- RCMech_CleanAndFix
@@ -234,34 +228,30 @@ Drone.RCMech_ResetDust = RCMech_ResetDust
 BaseRover.RCMech_ResetDust = RCMech_ResetDust
 
 Drone.RCMech_CleanAndFix = function(self)
-	CreateGameTimeThread(function()
-		if not IsValid(self) then
-			return
-		end
-		self.auto_connect = false
-		if self.malfunction_end_state then
-			self:PlayState(self.malfunction_end_state, 1)
-		end
+	if not IsValid(self) then
+		return
+	end
+	self.auto_connect = false
+	if self.malfunction_end_state then
+		self:PlayState(self.malfunction_end_state, 1)
+	end
 
-		self:RCMech_ResetDust()
-		if self.command == "NoBattery" then
-			self.battery = self.battery_max
-			self:SetCommand("Fixed", "noBatteryFixed")
-		elseif self.command == "Malfunction" or self.command == "Freeze" and self:CanBeThawed() then
-			self:SetCommand("Fixed", "breakDownFixed")
-		else
-			self:SetCommand("Fixed", "Something")
-		end
+	self:RCMech_ResetDust()
+	if self.command == "NoBattery" then
+		self.battery = self.battery_max
+		self:SetCommand("Fixed", "noBatteryFixed")
+	elseif self.command == "Malfunction" or self.command == "Freeze" and self:CanBeThawed() then
+		self:SetCommand("Fixed", "breakDownFixed")
+	else
+		self:SetCommand("Fixed", "Something")
+	end
 
-		RebuildInfopanel(self)
- end)
+	RebuildInfopanel(self)
 end
 BaseRover.RCMech_CleanAndFix = function(self)
-	CreateGameTimeThread(function()
-		if not IsValid(self) then
-			return
-		end
-		self:RCMech_ResetDust()
-		self:Repair()
- end)
+	if not IsValid(self) then
+		return
+	end
+	self:RCMech_ResetDust()
+	self:Repair()
 end

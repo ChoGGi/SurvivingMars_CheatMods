@@ -88,7 +88,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 			res = "Food"
 		end
 		PlaceResourcePile(meat_bag:GetVisualPos(), res, Random(1, 5) * const.ResourceScale)
-		meat_bag:SetCommand("Erase")
+		meat_bag:Erase()
 	end
 
 	-- one meatbag at a time

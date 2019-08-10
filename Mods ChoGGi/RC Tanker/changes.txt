@@ -1,3 +1,6 @@
+v0.4
+Code cleanup.
+
 v0.3
 More stringent check for the different entities.
 

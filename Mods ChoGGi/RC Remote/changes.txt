@@ -1,3 +1,7 @@
+v0.4
+Code cleanup.
+Changed the colours a tad.
+
 v0.3
 Shift to toggle high speed.
 

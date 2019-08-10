@@ -92,11 +92,11 @@ OnMsg.LoadGame = StartupCode
 local concrete_paint = table.find(TerrainTextures, "name", "Dig")
 local metal_paint = table.find(TerrainTextures, "name", "SandFrozen")
 
-local name = T(302535920011207, [[RC Miner]])
-local name_pl = T(302535920011208, [[RC Miners]])
-local description = T(302535920011209, [[Will slowly (okay maybe a little quickly) mine Metal or Concrete into a resource pile.]])
-local display_icon = CurrentModPath .. "UI/rover_combat.png"
-local entity = "CombatRover"
+--~ local name = T(302535920011207, [[RC Miner]])
+--~ local name_pl = T(302535920011208, [[RC Miners]])
+--~ local description =
+--~ local display_icon = CurrentModPath .. "UI/rover_combat.png"
+--~ local entity = "CombatRover"
 
 DefineClass.PortableMiner = {
 	__parents = {
@@ -108,11 +108,11 @@ DefineClass.PortableMiner = {
 		"BuildingDepositExploiterComponent",
 	},
 	-- these are all set above
-	name = name,
-	display_name = name,
-	description = description,
-	display_icon = display_icon,
-	entity = entity,
+--~ 	name = T(302535920011207, [[RC Miner]]),
+--~ 	display_name = T(302535920011207, [[RC Miner]]),
+	description = T(302535920011209, [[Will slowly (okay maybe a little quickly) mine Metal or Concrete into a resource pile.]]),
+--~ 	display_icon = display_icon,
+	entity = "CombatRover",
 
 	default_anim = "attackIdle",
 	default_anim_idle = "idle",
@@ -137,6 +137,9 @@ DefineClass.PortableMiner = {
 
 	-- stops error when adding signs (Missing spot 'Top'), it doesn't have a Top spot, but Rocket is slightly higher then Origin
 	sign_spot = "Rocket",
+
+	concrete_paint = concrete_paint,
+	metal_paint = metal_paint,
 
 	-- erm... something?
 	last_serviced_time = 0,
@@ -555,10 +558,10 @@ function PortableMiner:DigErUp()
 	local extracted, paint
 	if self.resource == "Concrete" then
 		extracted = TerrainDepositExtractor.ExtractResource(self, amount)
-		paint = concrete_paint
+		paint = self.concrete_paint or concrete_paint
 	else
 		extracted = BuildingDepositExploiterComponent.ExtractResource(self, amount)
-		paint = metal_paint
+		paint = self.metal_paint or metal_paint
 	end
 
 	-- if it's empty ExtractResource will delete it
@@ -602,17 +605,17 @@ function OnMsg.ClassesPostprocess()
 			"palettes", AttackRover.palette,
 
 			"dome_forbidden", true,
-			"display_name", name,
-			"display_name_pl", name_pl,
-			"description", description,
+			"display_name", T(302535920011207, [[RC Miner]]),
+			"display_name_pl", T(302535920011208, [[RC Miners]]),
+			"description", T(302535920011209, [[Will slowly (okay maybe a little quickly) mine Metal or Concrete into a resource pile.]]),
 			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
-			"display_icon", display_icon,
+			"display_icon", CurrentModPath .. "UI/rover_combat.png",
 			"encyclopedia_exclude", true,
 			"count_as_building", false,
 			"prio_button", false,
 			"on_off_button", false,
-			"entity", entity,
+			"entity", "CombatRover",
 		})
 	end
 end

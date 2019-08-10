@@ -8,9 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Passenger Rocket Tweaks",
-	"version", 7,
+	"version", 8,
 	"version_major", 0,
-	"version_minor", 7,
+	"version_minor", 8,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_PassengerRocketTweaks",
@@ -21,6 +21,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"has_options", true,
 	"description", [[Adds an "Are you sure?" question box to the back button to stop you from losing your applicant list (just the button, pressing ESC still works as usual).
 
 Mod Options:
@@ -29,5 +30,4 @@ Hide Background: Shows a black background so you can see the text easier.
 Position Pass List: Enable changing position of passenger list.
 PosX/PosY: Margins to use for list.
 ]],
-	"has_options", true,
 })

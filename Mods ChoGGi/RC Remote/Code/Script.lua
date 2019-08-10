@@ -6,9 +6,6 @@ local vkW = const.vkW
 local vkA = const.vkA
 local vkS = const.vkS
 local vkD = const.vkD
-local function parabola(x)
-	return 4 * x - x * x / 25
-end
 local Min = Min
 local ValueLerp = ValueLerp
 local Sleep = Sleep
@@ -21,8 +18,7 @@ local GetTerrainCursor = GetTerrainCursor
 local MapFindNearest = MapFindNearest
 --~ local axis_z = axis_z
 
-local Translate = ChoGGi.ComFuncs.Translate
-
+local rc_obj
 do -- add shortcut actions
 	local Actions = ChoGGi.Temp.Actions
 	local c = #Actions
@@ -31,9 +27,8 @@ do -- add shortcut actions
 	Actions[c] = {ActionName = T(302535920011210, "Remote: Fire Missile"),
 		ActionId = "RCRemote.FireMissile",
 		OnAction = function()
-			local self = SelectedObj
-			if self and self:IsKindOf("RCRemote") then
-				self:FireRocket()
+			if rc_obj and rc_obj:IsKindOf("RCRemote") then
+				rc_obj:FireRocket()
 			end
 		end,
 		ActionToggle = true,
@@ -46,9 +41,8 @@ do -- add shortcut actions
 	Actions[c] = {ActionName = T(302535920011211, "Remote: Jump Forward"),
 		ActionId = "RCRemote.JumpForward",
 		OnAction = function()
-			local self = SelectedObj
-			if self and self:IsKindOf("RCRemote") then
-				CreateGameTimeThread(self.JumpForward,self)
+			if rc_obj and rc_obj:IsKindOf("RCRemote") then
+				CreateGameTimeThread(rc_obj.JumpForward, rc_obj)
 			end
 		end,
 		ActionToggle = true,
@@ -61,9 +55,8 @@ do -- add shortcut actions
 	Actions[c] = {ActionName = T(302535920011212, "Remote: Toggle Speed"),
 		ActionId = "RCRemote.ToggleSpeed",
 		OnAction = function()
-			local self = SelectedObj
-			if self and self:IsKindOf("RCRemote") then
-				self:ToggleSpeed()
+			if rc_obj and rc_obj:IsKindOf("RCRemote") then
+				rc_obj:ToggleSpeed()
 			end
 		end,
 		ActionToggle = true,
@@ -76,9 +69,8 @@ do -- add shortcut actions
 	Actions[c] = {ActionName = T(302535920011213, "Remote: Move Forward"),
 		ActionId = "RCRemote.Forward",
 		OnAction = function()
-			local self = SelectedObj
-			if self and self:IsKindOf("RCRemote") then
-				self:MoveRC(1)
+			if rc_obj and rc_obj:IsKindOf("RCRemote") then
+				rc_obj:MoveRC(1)
 			end
 		end,
 		ActionToggle = true,
@@ -92,9 +84,8 @@ do -- add shortcut actions
 	Actions[c] = {ActionName = T(302535920011214, "Remote: Move Backward"),
 		ActionId = "RCRemote.Backward",
 		OnAction = function()
-			local self = SelectedObj
-			if self and self:IsKindOf("RCRemote") then
-				self:MoveRC(2)
+			if rc_obj and rc_obj:IsKindOf("RCRemote") then
+				rc_obj:MoveRC(2)
 			end
 		end,
 		ActionShortcut = "S",
@@ -106,9 +97,8 @@ do -- add shortcut actions
 	Actions[c] = {ActionName = T(302535920011215, "Remote: Move Left"),
 		ActionId = "RCRemote.Left",
 		OnAction = function()
-			local self = SelectedObj
-			if self and self:IsKindOf("RCRemote") then
-				self:MoveRC(3)
+			if rc_obj and rc_obj:IsKindOf("RCRemote") then
+				rc_obj:MoveRC(3)
 			end
 		end,
 		ActionShortcut = "A",
@@ -120,9 +110,8 @@ do -- add shortcut actions
 	Actions[c] = {ActionName = T(302535920011216, "Remote: Move Right"),
 		ActionId = "RCRemote.Right",
 		OnAction = function()
-			local self = SelectedObj
-			if self and self:IsKindOf("RCRemote") then
-				self:MoveRC(4)
+			if rc_obj and rc_obj:IsKindOf("RCRemote") then
+				rc_obj:MoveRC(4)
 			end
 		end,
 		ActionShortcut = "D",
@@ -131,25 +120,17 @@ do -- add shortcut actions
 	}
 end -- do
 
-local name = T(302535920011217, [[RC Remote]])
-local description = T(302535920011218, [[Remote controlled RC
-
-WASD to move.
-Q to fire rocket.
-E to jump forward.
-Shift to toggle high speed.]])
-
-local display_icon = CurrentModPath .. "UI/rover_rc.png"
-
 DefineClass.RCRemote = {
 	__parents = {
 		"BaseRover",
 		"ComponentAttach",
 	},
-	name = name,
-	description = description,
-	display_icon = display_icon,
-	display_name = name,
+	description = T(302535920011218, [[Remote controlled RC
+
+WASD to move.
+Q to fire rocket.
+E to jump forward.
+Shift to toggle high speed.]]),
 
 	entity = "DroneTruck",
 --~ 	accumulate_dust = false,
@@ -209,18 +190,21 @@ DefineClass.RCRemote = {
 }
 
 function RCRemote:GameInit()
-	self.status_text = Translate(6722, "Idle")
+	self.status_text = T(6722, "Idle")
 	BaseRover.GameInit(self)
 
 	-- Colour #, Colour, Roughness, Metallic (r/m go from -128 to 127)
 	-- middle area
-	self:SetColorizationMaterial(1, -14710529, 12, 32)
+	self:SetColorizationMaterial(1, -6653022, 12, 32)
 	-- body
-	self:SetColorizationMaterial(2, -14710529, 12, 32)
+	self:SetColorizationMaterial(2, -7141339, 12, 32)
 	-- color of bands
-	self:SetColorizationMaterial(3, -13028496, 0, 12)
+	self:SetColorizationMaterial(3, -6381922, 0, 12)
 end
 
+local function parabola(x)
+	return 4 * x - x * x / 25
+end
 function RCRemote:RetParabola(from, to)
 	local parabola_h = Min(from:Dist(to), 50 * guim)
 	local pos_lerp = ValueLerp(from, to, 100)
@@ -236,7 +220,7 @@ function RCRemote:RetParabola(from, to)
 end
 
 function RCRemote:Getui_command()
-	return self.status_text .. "<newline><left>"
+	return self.status_text
 end
 
 -- 1 forward, 2 backwards, 3 left, 4 right
@@ -402,7 +386,7 @@ function RCRemote:Goto(...)
 end
 
 function RCRemote:GotoFromUser(...)
-	self.status_text = Translate(63, "Travelling")
+	self.status_text = T(63, "Travelling")
 	return BaseRover.GotoFromUser(self, ...)
 end
 
@@ -413,7 +397,7 @@ function RCRemote:Idle()
 		PlayFX("Moving", "end", self)
 	end
 
-	self.status_text = Translate(6722, "Idle")
+	self.status_text = T(6722, "Idle")
 
 	self:SetState("idle")
 	self:Gossip("Idle")
@@ -439,12 +423,17 @@ function OnMsg.ClassesPostprocess()
 			"palettes", AttackRover.palette,
 
 			"dome_forbidden", true,
-			"display_name", name,
-			"display_name_pl", name,
-			"description", description,
+			"display_name", T(302535920011217, [[RC Remote]]),
+			"display_name_pl", T(302535920011217, [[RC Remote]]),
+			"description", T(302535920011218, [[Remote controlled RC
+
+WASD to move.
+Q to fire rocket.
+E to jump forward.
+Shift to toggle high speed.]]),
 			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
-			"display_icon", display_icon,
+			"display_icon", CurrentModPath .. "UI/rover_rc.png",
 			"encyclopedia_exclude", true,
 			"on_off_button", false,
 			"entity", "RCRoverBuilding",
@@ -460,7 +449,7 @@ function OnMsg.SelectionAdded(obj)
 		CreateRealTimeThread(function()
 			WaitMsg("OnRender")
 			Camera3pFollow(obj)
-			SelectedObj = obj
+			rc_obj = obj
 			-- enable kb controls, and gamepad
 			shortcuts_mode = XShortcutsTarget and XShortcutsTarget:GetActionsMode()
 			XShortcutsSetMode("RCRemote")
@@ -476,6 +465,12 @@ function OnMsg.SelectionRemoved()
 		XShortcutsSetMode(shortcuts_mode)
 		shortcuts_mode = false
 	end
+end
+
+local orig = XShortcutsSetMode
+function XShortcutsSetMode(shortcuts_mode, ...)
+	print(shortcuts_mode)
+	return orig(shortcuts_mode, ...)
 end
 
 -- add all the rc skins with Droneentrance spot (maybe add the rest when I'm not lazy)

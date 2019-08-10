@@ -132,7 +132,10 @@ end
 
 function MurderPod:LaunchMeteor(entity)
 	--	1 to 4 sols
-	Sleep(Random(self.min_meteor_time, self.max_meteor_time))
+	Sleep(Random(
+		self.min_meteor_time or const.DayDuration,
+		self.max_meteor_time or const.DayDuration * 4
+	))
 --~ 	Sleep(5000)
 	local data = DataInstances.MapSettings_Meteor.Meteor_VeryLow
 	local descr = SpawnMeteor(data, nil, nil, GetRandomPassable())
@@ -173,8 +176,8 @@ function MurderPod:Abduct()
 	local victim = self.target
 
 	-- stalk if in dome/building/passage
-	if victim:IsInDome() or not self:IsValidPos() or (IsValid(victim.lead_in_out)
-		and victim.lead_in_out:IsKindOf("PassageGridElement"))
+	if not self:IsValidPos() or (victim:IsInDome() and not OpenAirBuildings)
+		or (IsValid(victim.lead_in_out) and victim.lead_in_out:IsKindOf("PassageGridElement"))
 	then
 		self:SetCommand("StalkerTime")
 	end
@@ -192,6 +195,7 @@ function MurderPod:Abduct()
 			victim.Goto = Colonist.Goto
 		end
 	end
+
 	victim:ClearPath()
 	victim:SetCommand("Idle")
 	victim:SetState("standPanicIdle")
@@ -207,14 +211,10 @@ function MurderPod:Abduct()
 	}
 	UpdateAttachedSign(victim, true)
 
-	local path = self:CalcPath(
+	self:WaitFollowPath(self:CalcPath(
 		self:GetPos(),
 		victim:GetPos()
-	)
-	self:WaitFollowPath(path)
---~ 	while self.next_spline do
---~ 		Sleep(2500)
---~ 	end
+	))
 
 	self.fx_actor_class = "Shuttle"
 	self:PlayFX("ShuttleLoad", "start", victim)
@@ -225,7 +225,7 @@ function MurderPod:Abduct()
 	-- grab entity before we remove colonist (for our iceberg meteor)
 	local entity = victim.inner_entity
 	-- no need to keep colonist around now
-	victim:SetCommand("Erase")
+	victim:Erase()
 	-- change selection panel icon
 	self.panel_text = T(302535920011243, [[Victim going to "Earth"]])
 
@@ -243,8 +243,10 @@ function MurderPod:StalkerTime()
 	while IsValid(victim) do
 
 		-- check if they're not in a building/dome/passage (ie: outside)
-		if victim:IsValidPos() and not victim:IsInDome() and not (IsValid(victim.lead_in_out)
+		local in_dome = victim:IsInDome()
+		if victim:IsValidPos() and not (IsValid(victim.lead_in_out)
 			and victim.lead_in_out:IsKindOf("PassageGridElement"))
+			and (not in_dome or in_dome and OpenAirBuildings)
 		then
 			self:SetCommand("Abduct")
 			break

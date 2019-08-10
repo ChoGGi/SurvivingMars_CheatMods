@@ -7,7 +7,6 @@ return PlaceObj("ModDef", {
 			"version_minor", 5,
 		}),
 	},
---~	 "title", "Martian Carwash v0.5",
 	"title", "Martian Carwash",
 	"version", 7,
 	"version_major", 0,

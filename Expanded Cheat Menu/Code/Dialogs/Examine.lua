@@ -2253,8 +2253,8 @@ local function Show_ConvertValueToInfo(self, button, obj)
 		})
 	end
 end
---~ local function Examine_ConvertValueToInfo(self, button, obj)
-local function Examine_ConvertValueToInfo(self, button, obj, argument, hyperlink_box, pos, link)
+
+local function Examine_ConvertValueToInfo(self, button, obj, _, _, _, link)
 	-- not ingame = no sense in using ShowObj
 	if button == "L" then
 		local title = RetName(obj)

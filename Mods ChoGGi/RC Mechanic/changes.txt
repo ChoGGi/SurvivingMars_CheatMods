@@ -1,3 +1,7 @@
+v0.9
+Fixed a couple issues.
+Status now shows Repair till it's done instead of Idle.
+
 v0.8
 Only one mechanic will go to the each job.
 While it's on the job:
