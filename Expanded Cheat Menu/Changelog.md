@@ -6,6 +6,9 @@
 - > table/func/userdata/thread objs in tables will now use the key name for the title if there's no proper name.
 - > Index tables try to show the name of valid objs (instead of class name).
 
+### Fixed:
+Issue with BuildableHexGrid.
+
 ## v14.5 (09 Aug 2019)
 ### Added:
 - ECM>Drones>Drone Battery Cap: Change the capacity of drone batteries.

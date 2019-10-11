@@ -4594,7 +4594,7 @@ do -- BuildableHexGrid
 		local original_z = false
 
 		if not l_UnbuildableZ then
-			l_UnbuildableZ = UnbuildableZ
+			l_UnbuildableZ = buildUnbuildableZ()
 			l_g_BuildableZ = g_BuildableZ
 			if not l_g_BuildableZ then
 				CalcBuildableGrid()
