@@ -62,7 +62,6 @@ function RCGarage:SetPalette()
 end
 
 function RCGarage:Getui_command()
-
 	if self:CheckMainGarage() and self.garages.main.working and self.working then
 		local amount = #self.stored_rovers
 		if amount > 0 then
@@ -74,10 +73,10 @@ function RCGarage:Getui_command()
 		self.status_text = T(302535920011184, "Main Garage") .. ": " .. T(847439380056, "Disabled")
 	end
 
-	return ChoGGi.ComFuncs.TableConcat({self.status_text}, "<newline><left>")
+	return self.status_text .. "<newline><left>"
 end
 function RCGarage:GetStatusText()
-	return ChoGGi.ComFuncs.TableConcat({self.status_text}, "<newline><left>")
+	return self.status_text .. "<newline><left>"
 end
 
 local DustMaterialExterior = const.DustMaterialExterior

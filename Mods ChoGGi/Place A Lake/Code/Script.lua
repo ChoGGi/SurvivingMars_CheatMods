@@ -21,7 +21,7 @@ function InstantLake:GameInit()
 
 	-- init water level
 	self.water_obj = WaterFill:new()
-	local pos = self:GetPos()+point(0, 0, 500)
+	local pos = self:GetPos():AddZ(500)
 	self.water_level = 500
 	self.water_obj:SetPos(pos)
 	ApplyAllWaterObjects()
@@ -43,7 +43,7 @@ function InstantLake:UpdateLevel(level)
 		self.water_level = (self.water_steps - 1) * -1
 	end
 
-	self.water_obj:SetPos(self:GetPos()+point(0, 0, self.water_level))
+	self.water_obj:SetPos(self:GetPos():AddZ(self.water_level))
 	ApplyAllWaterObjects()
 end
 

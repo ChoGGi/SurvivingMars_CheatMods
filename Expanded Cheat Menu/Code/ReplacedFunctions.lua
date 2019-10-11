@@ -878,60 +878,63 @@ function OnMsg.ClassesBuilt()
 
 	-- remove spire spot limit
 	do -- ConstructionController:UpdateCursor
+		local IsValid = IsValid
+		local FixConstructPos = FixConstructPos
 		local UnbuildableZ = buildUnbuildableZ()
 
 		SaveOrigFunc("ConstructionController", "UpdateCursor")
 		function ConstructionController:UpdateCursor(pos, force, ...)
+			if self.is_template and IsValid(self.cursor_obj)
+				and self.template_obj.dome_spot == "Spire"
+				and UserSettings.Building_dome_spot
+			then
+				self.spireless_dome = false
+				local hex_world_pos = HexGetNearestCenter(pos)
+				local build_z = g_BuildableZ and GetBuildableZ(WorldToHex(hex_world_pos)) or UnbuildableZ
+				if build_z == UnbuildableZ then
+					build_z = pos:z() or terrain.GetHeight(pos)
+				end
+				hex_world_pos = hex_world_pos:SetZ(build_z)
 
-			if self.template_obj.dome_spot == "Spire" and UserSettings.Building_dome_spot then
-				if IsValid(self.cursor_obj) then
-					self.spireless_dome = false
-					local hex_world_pos = HexGetNearestCenter(pos)
-					local build_z = g_BuildableZ and GetBuildableZ(WorldToHex(hex_world_pos)) or UnbuildableZ
-					if build_z == UnbuildableZ then
-						build_z = pos:z() or terrain.GetHeight(pos)
-					end
-					hex_world_pos = hex_world_pos:SetZ(build_z)
-					-- almost complete copy pasta from ConstructionController:UpdateCursor()
-					-- just comment out this chunk
-
---~ 					local placed_on_spot = false
---~ 					if self.is_template and not self.template_obj.dome_forbidden and self.template_obj.dome_spot ~= "none" then --dome not prohibited
---~ 						local dome = GetDomeAtPoint(hex_world_pos)
---~ 						if dome and IsValid(dome) and IsKindOf(dome, "Dome") then
---~ 							if dome:HasSpot(self.template_obj.dome_spot) then
---~ 								local idx = dome:GetNearestSpot(self.template_obj.dome_spot, hex_world_pos)
---~ 								hex_world_pos = HexGetNearestCenter(dome:GetSpotPos(idx))
---~ 								placed_on_spot = true
---~ 								if self.template_obj.dome_spot == "Spire" then
---~ 									if self.template_obj:IsKindOf("SpireBase") then
---~ 										local frame = self.cursor_obj:GetAttach("SpireFrame")
---~ 										if frame then
---~ 											local spot = dome:GetNearestSpot("idle", "Spireframe", self.cursor_obj)
---~ 											local pos = dome:GetSpotPos(spot)
---~ 											frame:SetAttachOffset(pos - hex_world_pos)
---~ 										end
+				-- almost complete copy pasta from ConstructionController:UpdateCursor()
+				-- just comment out this chunk
+--~ 				local placed_on_spot = false
+--~ 				if self.is_template and not self.template_obj.dome_forbidden and self.template_obj.dome_spot ~= "none" then --dome not prohibited
+--~ 					local dome = GetDomeAtPoint(hex_world_pos)
+--~ 					if dome and IsValid(dome) and IsKindOf(dome, "Dome") then
+--~ 						if dome:HasSpot(self.template_obj.dome_spot) then
+--~ 							local idx = dome:GetNearestSpot(self.template_obj.dome_spot, hex_world_pos)
+--~ 							hex_world_pos = HexGetNearestCenter(dome:GetSpotPos(idx))
+--~ 							placed_on_spot = true
+--~ 							if self.template_obj.dome_spot == "Spire" then
+--~ 								if self.template_obj:IsKindOf("SpireBase") then
+--~ 									local frame = self.cursor_obj:GetAttach("SpireFrame")
+--~ 									if frame then
+--~ 										local spot = dome:GetNearestSpot("idle", "Spireframe", self.cursor_obj)
+--~ 										local pos = dome:GetSpotPos(spot)
+--~ 										frame:SetAttachOffset(pos - hex_world_pos)
 --~ 									end
 --~ 								end
---~ 							elseif self.template_obj.dome_spot == "Spire" then
---~ 								self.spireless_dome = true
 --~ 							end
+--~ 						elseif self.template_obj.dome_spot == "Spire" then
+--~ 							self.spireless_dome = true
 --~ 						end
 --~ 					end
---~ 					local new_pos = self.snap_to_grid and hex_world_pos or pos
---~ 					if not placed_on_spot then
---~ 						new_pos = FixConstructPos(new_pos)
---~ 					end
-					local new_pos = FixConstructPos(self.snap_to_grid and hex_world_pos or pos)
+--~ 				end
+--~ 				local new_pos = self.snap_to_grid and hex_world_pos or pos
+--~ 				if not placed_on_spot then
+--~ 					new_pos = FixConstructPos(new_pos)
+--~ 				end
 
-					if force or (FixConstructPos(self.cursor_obj:GetPos()) ~= new_pos and hex_world_pos:InBox2D(ConstructableArea)) then
-						ShowNearbyHexGrid(hex_world_pos)
-						self.cursor_obj:SetPos(new_pos)
-						self:UpdateConstructionObstructors()
-						self:UpdateConstructionStatuses() --should go after obstructors
-						self:UpdateShortConstructionStatus()
-						ObjModified(self)
-					end
+				local new_pos = FixConstructPos(self.snap_to_grid and hex_world_pos or pos)
+
+				if force or (FixConstructPos(self.cursor_obj:GetPos()) ~= new_pos and hex_world_pos:InBox2D(ConstructableArea)) then
+					ShowNearbyHexGrid(hex_world_pos)
+					self.cursor_obj:SetPos(new_pos)
+					self:UpdateConstructionObstructors()
+					self:UpdateConstructionStatuses() --should go after obstructors
+					self:UpdateShortConstructionStatus()
+					ObjModified(self)
 				end
 
 			else

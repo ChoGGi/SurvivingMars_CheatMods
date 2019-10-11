@@ -88,11 +88,11 @@ function OnMsg.ChangeMapDone()
 end
 
 local function ResetFunc()
-	-- reset func once we know it's a new game (someone reported image showing up after landing)
-	if orig_FillRandomMapProps then
-		FillRandomMapProps = orig_FillRandomMapProps
-		orig_FillRandomMapProps = nil
-	end
+--~ 	-- reset func once we know it's a new game (someone reported image showing up after landing)
+--~ 	if orig_FillRandomMapProps then
+--~ 		FillRandomMapProps = orig_FillRandomMapProps
+--~ 		orig_FillRandomMapProps = nil
+--~ 	end
 	-- alright bugger...
 	skip_showing_image = true
 end
@@ -371,5 +371,5 @@ function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(gen)
 		table_insert(display_list, #display_list - 2, self.omega_msg)
 	end
 
-	self.idText:SetText(TableConcat(display_list, "\n"))
+	self.idText:SetText(table.concat(display_list, "\n"))
 end

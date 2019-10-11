@@ -108,7 +108,7 @@ end
 
 --~ function RCBulldozer:GetStatusUpdate()
 function RCBulldozer:Getui_command()
---~ 	return TableConcat({self.status_text}, "<newline><left>")
+--~ 	return table.concat({self.status_text}, "<newline><left>")
 	return self.status_text .. "<newline><left>"
 end
 
