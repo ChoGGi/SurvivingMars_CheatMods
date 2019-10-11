@@ -1,3 +1,6 @@
+v0.7
+Fix for issue with UI (thanks Olaf).
+
 v0.6
 Fix for issue with some rovers (thanks McKaby).
 

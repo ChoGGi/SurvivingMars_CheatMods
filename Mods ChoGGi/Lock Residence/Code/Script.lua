@@ -1,25 +1,20 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_LockResidence"
-local mod = Mods[mod_id]
-local mod_NeverChange = mod.options and mod.options.NeverChange or false
+local mod_NeverChange
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	ModOptions()
+end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= CurrentModId then
 		return
 	end
 
-	mod_NeverChange = mod.options.NeverChange
+	mod_NeverChange = CurrentModOptions.NeverChange
 end
-
--- for some reason mod options aren't retrieved before this script is loaded...
-local function StartupCode()
-	mod_NeverChange = mod.options.NeverChange
-end
-
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
 
 -- make the value the below buttons set actually do something
 local orig_Colonist_SetResidence = Colonist.SetResidence

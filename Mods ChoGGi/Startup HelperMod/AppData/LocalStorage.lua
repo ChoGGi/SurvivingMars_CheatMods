@@ -74,6 +74,7 @@ CreateRealTimeThread(function()
 					-- we need to use the original __newindex from OnMsg instead of replacing it, or mod OnMsgs don't work
 					if key ~= "OnMsg" then
 						local g_key = rawget(orig_G,key)
+						-- skip CurrentMod*
 						if g_key then
 							env[key] = g_key
 						end
@@ -97,5 +98,5 @@ CreateRealTimeThread(function()
 	end
 end)
 
--- and done
+-- and done (we need to return settings so LocalStorage.lua works fine)
 return settings

@@ -25,7 +25,7 @@ end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= "ChoGGi_LandscapeColdWaveVisibility" then
+	if id ~= CurrentModId then
 		return
 	end
 

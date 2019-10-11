@@ -4,23 +4,19 @@ if not g_AvailableDlc.shepard then
 	return
 end
 
-local options
 local mod_EnableMod
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_EnableMod = options.EnableMod
+	mod_EnableMod = CurrentModOptions.EnableMod
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= "ChoGGi_BlockPets" then
+	if id ~= CurrentModId then
 		return
 	end
 

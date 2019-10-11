@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local UpdateOptions
 local options
 local mod_AlienAnomaly
 local mod_HideSigns
@@ -16,15 +17,17 @@ end
 function OnMsg.ModsReloaded()
 	options = CurrentModOptions
 	ModOptions()
+	UpdateOptions()
 end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= "ChoGGi_MarkDepositGround" then
+	if id ~= CurrentModId then
 		return
 	end
 
 	ModOptions()
+	UpdateOptions()
 end
 
 local AsyncRand = AsyncRand
@@ -191,7 +194,7 @@ local function ChangeMarks(label, entity, value)
 	end
 end
 
-local function UpdateOptions()
+UpdateOptions = function()
 	-- update signs
 	if GameState.gameplay then
 		if mod_AlienAnomaly ~= options.AlienAnomaly then
@@ -206,22 +209,6 @@ local function UpdateOptions()
 		end
 	end
 end
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
-		return
-	end
-	UpdateOptions()
-end
-
--- for some reason mod options aren't retrieved before this script is loaded...
-local function StartupCode()
-	UpdateOptions()
-end
-
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
 
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding.GameInit(...)

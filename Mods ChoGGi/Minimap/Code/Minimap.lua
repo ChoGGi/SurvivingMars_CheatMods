@@ -1,16 +1,23 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_Minimap"
-local mod = Mods[mod_id]
-local mod_UseScreenshots = mod.options and mod.options.UseScreenshots or true
+local mod_UseScreenshots
 
--- for some reason mod options aren't retrieved before this script is loaded...
-local function StartupCode()
-	mod_UseScreenshots = mod.options and mod.options.UseScreenshots or true
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_UseScreenshots = CurrentModOptions.UseScreenshots
 end
 
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= CurrentModId then
+		return
+	end
+
+	ModOptions()
+end
 
 -- clickable map image
 
@@ -184,7 +191,8 @@ function ChoGGi_MinimapDlg:idUseScreenShotsOnChange()
 	ChoGGi_Minimap_Options.UpdateTopoImage(check)
 	GetRootDialog(self).idUpdateMap:SetVisible(check)
 
-	mod.options.UseScreenshots = check
+	CurrentModOptions.UseScreenshots = check
+	mod_UseScreenshots = check
 	-- hopefully the devs add an option to update options...
 end
 

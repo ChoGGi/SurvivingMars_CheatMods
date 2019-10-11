@@ -1,3 +1,7 @@
+v0.8
+Added Romanian names (thanks hmlendea).
+Evans update.
+
 v0.7
 Changed DefaultNationNames to default to true.
 

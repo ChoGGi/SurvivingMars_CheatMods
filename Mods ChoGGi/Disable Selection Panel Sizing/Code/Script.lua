@@ -18,7 +18,7 @@ end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= "ChoGGi_DisableSelectionPanelSizing" then
+	if id ~= CurrentModId then
 		return
 	end
 

@@ -86,7 +86,7 @@ end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= "ChoGGi_ConstructionShowDustGrid" then
+	if id ~= CurrentModId then
 		return
 	end
 

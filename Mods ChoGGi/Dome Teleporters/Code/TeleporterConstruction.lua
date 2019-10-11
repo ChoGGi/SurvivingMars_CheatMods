@@ -1,15 +1,11 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_DomeTeleporters"
-local mod = Mods[mod_id]
+local mod_BuildDist
 
-local mod_BuildDist = 20
-function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
-		return
-	end
+-- fired when settings are changed/init
+local function ModOptions()
+	local value = CurrentModOptions.BuildDist
 
-	local value = mod.options.BuildDist
 	mod_BuildDist = value
 	CityDomeTeleporterConstruction[UICity].max_hex_distance_to_allow_build = value
 	CityDomeTeleporterConstruction[UICity].max_range = value < 100 and 100 or value
@@ -18,6 +14,16 @@ function OnMsg.ApplyModOptions(id)
 	DomeTeleporterConstructionController.max_range = value < 100 and 100 or value
 end
 
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+function OnMsg.ApplyModOptions(id)
+	if id ~= CurrentModId then
+		return
+	end
+
+	ModOptions()
+end
 
 GlobalVar("CityDomeTeleporterConstruction", {})
 

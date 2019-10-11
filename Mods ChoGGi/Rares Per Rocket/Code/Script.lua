@@ -1,14 +1,11 @@
 -- See LICENSE for terms
 
-local mod_id = "ChoGGi_RaresPerRocket"
-local mod = Mods[mod_id]
-
 local r = const.ResourceScale
 
 -- if modoptions aren't a thing yet
 local function GetModValue()
-	if mod.options then
-		return mod.options.AmountOfRares * r
+	if CurrentModOptions then
+		return CurrentModOptions.AmountOfRares * r
 	end
 	return 90 * r
 end
@@ -38,7 +35,7 @@ OnMsg.LoadGame = UpdateExistingRockets
 
 -- update on mod applied
 function OnMsg.ApplyModOptions(id)
-	if id == mod_id then
+	if id ~= CurrentModId then
 		UpdateExistingRockets()
 	end
 end

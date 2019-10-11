@@ -11,9 +11,10 @@ function OnMsg.ModsReloaded()
 end
 
 function OnMsg.ApplyModOptions(id)
-	if id ~= "ChoGGi_RemoveBuildingLimits" then
+	if id ~= CurrentModId then
 		return
 	end
+
 	ModOptions()
 end
 

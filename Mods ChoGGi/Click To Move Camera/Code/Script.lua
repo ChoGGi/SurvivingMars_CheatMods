@@ -43,16 +43,13 @@ function SelectionModeDialog:OnMouseButtonDown(pt, button, ...)
 	return orig_SelectionModeDialog_OnMouseButtonDown(self, pt, button, ...)
 end
 
-local mod_id = "ChoGGi_ShiftClickToMove"
-local mod = Mods[mod_id]
-
 local edge_scrolling = true
 function OnMsg.ApplyModOptions(id)
-	if id ~= mod_id then
+	if id ~= CurrentModId then
 		return
 	end
 
-	edge_scrolling = mod.options.EdgeScrolling
+	edge_scrolling = CurrentModOptions.EdgeScrolling
 
 	if edge_scrolling then
 		cameraRTS.SetProperties(1, {ScrollBorder = 5})
