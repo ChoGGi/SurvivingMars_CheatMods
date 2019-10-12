@@ -8,13 +8,6 @@ local Strings = ChoGGi.Strings
 -- defaults to 20 items
 const.nConsoleHistoryMaxSize = 100
 
--- now to get the devs to add this by default (Added the X so people realise it isn't offical)
-local Mods, rawset = Mods, rawset
-for id, mod in pairs(Mods) do
-	rawset(mod.env, "CurrentModId_X", id)
-	rawset(mod.env, "CurrentModDef_X", mod)
-end
-
 -- bugfix?
 -- got me, MapTools shouldn't be doing anything
 if not rawget(_G, "DroneDebug") then

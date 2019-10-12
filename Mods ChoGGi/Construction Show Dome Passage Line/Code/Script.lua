@@ -1,14 +1,13 @@
 -- See LICENSE for terms
 
-local options
 local mod_Option1
 local mod_AdjustLineLength
 local max_line_len
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_Option1 = options.Option1
-	mod_AdjustLineLength = options.AdjustLineLength
+	mod_Option1 = CurrentModOptions.Option1
+	mod_AdjustLineLength = CurrentModOptions.AdjustLineLength
 
 	-- how long passages can be
 	local max_hex = GridConstructionController.max_hex_distance_to_allow_build - mod_AdjustLineLength
@@ -17,10 +16,7 @@ local function ModOptions()
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

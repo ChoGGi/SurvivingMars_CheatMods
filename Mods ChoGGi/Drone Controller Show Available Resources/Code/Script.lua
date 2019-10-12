@@ -1,19 +1,15 @@
 -- See LICENSE for terms
 
-local options
 local mod_TextScale
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_TextScale = options.TextScale * guim
+	mod_TextScale = CurrentModOptions:GetProperty("TextScale") * guim
 	mod_TextScale = point(mod_TextScale, mod_TextScale)
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
@@ -119,10 +115,16 @@ function CursorBuilding:GameInit(...)
 
 	-- DroneHubs or Rockets, not much point in rovers
 	local sel_radius = self.template.GetSelectionRadiusScale
-	if sel_radius or self.template:IsKindOfClasses(rockets) then
+	if (sel_radius or self.template:IsKindOfClasses(rockets))
+		and not self.template:IsKindOf("Dome")
+	then
+		-- if it has a radius then use it, otherwise fallback to rocket (for landing sites I think)
 		self.ChoGGi_UpdateAvailableResources = sel_radius and sel_radius(self)
 			or SupplyRocket.work_radius
-
+		-- 0 means not a radius building
+		if self.ChoGGi_UpdateAvailableResources == 0 then
+			return
+		end
 		txt_ctrl = XText:new({
 			Id = "ChoGGi_UpdateAvailableResources",
 			TextStyle = "PhotoModeWarning",
@@ -146,15 +148,17 @@ function CursorBuilding:UpdateShapeHexes(...)
 		local objs = MapGet(self, "hex", self.ChoGGi_UpdateAvailableResources, "StorageDepot", "ResourceStockpile", "SurfaceDeposit")
 		if #objs > 0 then
 			txt_ctrl:SetText(GetAvailableResources(self, objs))
+		else
+			txt_ctrl:SetText("")
 		end
 	end
 end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done
-function CursorBuilding:Done(...)
+function CursorBuilding.Done(...)
 	if txt_ctrl then
 		txt_ctrl:Close()
 		txt_ctrl = nil
 	end
-	return orig_CursorBuilding_Done(self, ...)
+	return orig_CursorBuilding_Done(...)
 end

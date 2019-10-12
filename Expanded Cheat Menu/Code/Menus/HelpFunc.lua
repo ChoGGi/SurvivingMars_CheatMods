@@ -646,7 +646,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			hint = Strings[302535920001511--[["AsyncPack will CTD the second time you call it, you can use hpk to pack mods ahead of time.
 
 https://github.com/nickelc/hpk
-hpk create ""Mod folder"" ModContent.hpk
+<green>hpk create ""Mod folder"" ModContent.hpk</green>
 Move archive to ""Mod folder/Pack/ModContent.hpk"""]]] .. "\n\n" .. Strings[302535920001572]:format(hpk_path),
 			height = 800.0,
 			multisel = true,

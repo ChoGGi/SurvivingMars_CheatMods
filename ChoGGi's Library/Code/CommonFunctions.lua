@@ -2953,7 +2953,7 @@ do -- DeleteObject
 			if not obj:CanDemolish() then
 				MsgPopup(
 					Strings[302535920001354--[["<green>%s</green> is a Dome with stuff still in it (crash if deleted)."]]]:format(RetName(obj)),
-					Strings[302535920000489--[[Delete Object(s)]]]
+					Strings[302535920000489--[["Delete Object(s)"]]]
 				)
 				return
 			end

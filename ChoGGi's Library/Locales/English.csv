@@ -1,4 +1,5 @@
 "ID"," Text"
+302535920000941,
 302535920000962,
 302535920000975,
 302535920000976,
@@ -626,7 +627,6 @@ Press Enter to refresh list (update names).
 302535920000213,"Previously set in an ECM menu (meaning it's active and the setting here will override this value)."
 302535920000158,"Consts"
 302535920000182,"The scale this amount will be multipled by when used."
-302535920000941,"Funding Per Rare Metal Export"
 302535920000850,"Change Resupply Settings"
 302535920000719,"Add Orbital Probes"
 302535920000720,"Add more probes."
