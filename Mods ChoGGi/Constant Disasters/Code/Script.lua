@@ -28,8 +28,8 @@ local function ModOptions()
 		local disaster = disasters[i]
 		local enable = "Constant_" .. disaster
 		local hours = "Delay_" .. disaster
-		mod[enable] = options[enable]
-		mod[hours] = options[hours]
+		mod[enable] = options:GetProperty(enable)
+		mod[hours] = options:GetProperty(hours)
 		-- make sure disabled disaster is 0
 		if not mod[enable] then
 			hours_passed[disaster] = 0

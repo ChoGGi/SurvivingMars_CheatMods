@@ -1,3 +1,6 @@
+v0.3
+Evans update.
+
 v0.2
 Doubled sleep time waiting for more res to show up (2.5s to 5).
 Added mod options option for minimum resources.

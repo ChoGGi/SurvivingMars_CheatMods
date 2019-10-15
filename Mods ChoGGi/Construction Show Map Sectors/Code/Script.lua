@@ -1,18 +1,14 @@
 -- See LICENSE for terms
 
-local options
 local mod_Option1
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_Option1 = options.Option1
+	mod_Option1 = CurrentModOptions:GetProperty("Option1")
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

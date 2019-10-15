@@ -7,7 +7,7 @@ local lookup_skips = {}
 local function ModOptions()
 	local OnScreenNotificationPresets = OnScreenNotificationPresets
 	for id in pairs(OnScreenNotificationPresets) do
-		lookup_skips[id] = options[id]
+		lookup_skips[id] = options:GetProperty(id)
 	end
 end
 

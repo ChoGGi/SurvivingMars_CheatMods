@@ -1,3 +1,6 @@
+v1.2
+Evans update.
+
 v1.1
 Fix for buttons being too visible.
 

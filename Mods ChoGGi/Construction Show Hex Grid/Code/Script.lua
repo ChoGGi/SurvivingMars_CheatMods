@@ -4,7 +4,7 @@ local mod_Option1
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_Option1 = CurrentModOptions.Option1
+	mod_Option1 = CurrentModOptions:GetProperty("Option1")
 end
 
 -- load default/saved settings

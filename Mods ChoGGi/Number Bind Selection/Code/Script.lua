@@ -1,20 +1,16 @@
 -- See LICENSE for terms
 
-local options
 local mod_SelectView
 local mod_ShowCentre
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_SelectView = options.SelectView
-	mod_ShowCentre = options.ShowCentre
+	mod_SelectView = CurrentModOptions:GetProperty("SelectView")
+	mod_ShowCentre = CurrentModOptions:GetProperty("ShowCentre")
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

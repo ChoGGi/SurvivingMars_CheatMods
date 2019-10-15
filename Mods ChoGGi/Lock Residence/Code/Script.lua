@@ -2,10 +2,13 @@
 
 local mod_NeverChange
 
--- load default/saved settings
-function OnMsg.ModsReloaded()
-	ModOptions()
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_NeverChange = CurrentModOptions:GetProperty("NeverChange")
 end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
@@ -13,7 +16,7 @@ function OnMsg.ApplyModOptions(id)
 		return
 	end
 
-	mod_NeverChange = CurrentModOptions.NeverChange
+	ModOptions()
 end
 
 -- make the value the below buttons set actually do something

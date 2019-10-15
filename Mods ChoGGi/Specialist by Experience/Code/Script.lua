@@ -1,20 +1,16 @@
 -- See LICENSE for terms
 
-local options
 local mod_IgnoreSpec
 local mod_SolsToTrain
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_IgnoreSpec = options.IgnoreSpec
-	mod_SolsToTrain = options.SolsToTrain
+	mod_IgnoreSpec = CurrentModOptions:GetProperty("IgnoreSpec")
+	mod_SolsToTrain = CurrentModOptions:GetProperty("SolsToTrain")
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

@@ -31,20 +31,20 @@ local mod_ShowRocket
 
 -- fired when settings are changed
 local function ModOptions()
-	pms.mine_amount = options.mine_amount * r
-	pms.max_res_amount_man = options.max_res_amount_man * r
-	pms.max_z_stack_man = options.max_res_amount_man / 10
-	pms.max_res_amount_auto = options.max_res_amount_auto * r
-	pms.max_z_stack_auto = options.max_res_amount_auto / 10
+	pms.mine_amount = options:GetProperty("mine_amount") * r
+	pms.max_res_amount_man = options:GetProperty("max_res_amount_man") * r
+	pms.max_z_stack_man = options:GetProperty("max_res_amount_man") / 10
+	pms.max_res_amount_auto = options:GetProperty("max_res_amount_auto") * r
+	pms.max_z_stack_auto = options:GetProperty("max_res_amount_auto") / 10
 
-	pms.mine_time_anim.Concrete = options.mine_time_animConcrete
-	pms.mine_time_idle.Concrete = options.mine_time_idleConcrete
-	pms.mine_time_anim.Metals = options.mine_time_animMetals
-	pms.mine_time_idle.Metals = options.mine_time_idleMetals
-	pms.mine_time_anim.PreciousMetals = options.mine_time_animPreciousMetals
-	pms.mine_time_idle.PreciousMetals = options.mine_time_idlePreciousMetals
-	pms.visual_cues = options.visual_cues
-	mod_ShowRocket = options.ShowRocket
+	pms.mine_time_anim.Concrete = options:GetProperty("mine_time_animConcrete")
+	pms.mine_time_idle.Concrete = options:GetProperty("mine_time_idleConcrete")
+	pms.mine_time_anim.Metals = options:GetProperty("mine_time_animMetals")
+	pms.mine_time_idle.Metals = options:GetProperty("mine_time_idleMetals")
+	pms.mine_time_anim.PreciousMetals = options:GetProperty("mine_time_animPreciousMetals")
+	pms.mine_time_idle.PreciousMetals = options:GetProperty("mine_time_idlePreciousMetals")
+	pms.visual_cues = options:GetProperty("visual_cues")
+	mod_ShowRocket = options:GetProperty("ShowRocket")
 end
 
 -- load default/saved settings

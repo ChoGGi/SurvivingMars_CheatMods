@@ -1,22 +1,18 @@
 -- See LICENSE for terms
 
-local options
 local mod_Gravity
 local mod_GravityRC
 local mod_GravityColonist
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_Gravity = options.Gravity * 1000
-	mod_GravityRC = options.GravityRC * 1000
-	mod_GravityColonist = options.GravityColonist * 10
+	mod_Gravity = CurrentModOptions:GetProperty("Gravity") * 1000
+	mod_GravityRC = CurrentModOptions:GetProperty("GravityRC") * 1000
+	mod_GravityColonist = CurrentModOptions:GetProperty("GravityColonist") * 10
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

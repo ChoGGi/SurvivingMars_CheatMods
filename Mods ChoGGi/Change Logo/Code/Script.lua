@@ -1,65 +1,11 @@
 -- See LICENSE for terms
 
+local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
+local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
+
 local options
 local mod_logos = {}
 local mod_logos_c = 0
-
-local ChangeLogo
--- fired when settings are changed/init
-local function ModOptions()
-	if not GameState.gameplay then
-		return
-	end
-
-	for i = 1, mod_logos_c do
-		local id = mod_logos[i]
-		if options[id] then
-			ChangeLogo(id)
-		end
-	end
-end
-
--- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
---~ 	ex(Dialogs)
-
-	-- update mod option properties
-	table.iclear(mod_logos)
-	mod_logos_c = 0
-
-	local p = options.properties
-	table.iclear(p)
-
-	local meta = getmetatable(options)
-	local MissionLogoPresetMap = MissionLogoPresetMap
-	for id, def in pairs(MissionLogoPresetMap) do
-		mod_logos_c = mod_logos_c + 1
-		p[mod_logos_c] = {
-			default = false,
-			editor = "bool",
-			name = T(def.display_name) .. "<right><image " .. def.image .. ">",
-			id = id,
-		}
-		mod_logos[mod_logos_c] = id
-		-- needed for mod options cancel (since I didn't add options in options.lua)
-		meta[id] = false
-	end
-
-	ModOptions()
-end
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
-
-local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
-local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
 
 local function ChangeAttachesLogo(label, entity_name)
 	label = RetAllOfClass(label)
@@ -71,7 +17,7 @@ local function ChangeAttachesLogo(label, entity_name)
 	end
 end
 
-ChangeLogo = function(logo_str)
+local function ChangeLogo(logo_str)
 	local logo = MissionLogoPresetMap[logo_str]
 	if not logo then
 		return
@@ -91,4 +37,79 @@ ChangeLogo = function(logo_str)
 	ChangeAttachesLogo("Building", entity_name)
 
 	ResumePassEdits("ChoGGi.ChangeLogo")
+end
+
+-- fired when settings are changed/init
+local function ModOptions()
+	if not GameState.gameplay then
+		return
+	end
+
+	for i = 1, mod_logos_c do
+		local id = mod_logos[i]
+		if options:GetProperty(id) then
+			ChangeLogo(id)
+		end
+	end
+end
+
+-- load default/saved settings
+function OnMsg.ModsReloaded()
+	options = CurrentModOptions
+
+	-- update mod option properties
+	table.iclear(mod_logos)
+	mod_logos_c = 0
+	-- reset options
+	local p = options.properties
+	table.iclear(p)
+	-- add table for defaults if needed
+	if not options.__defaults then
+		options.__defaults = {}
+	end
+
+	local items = CurrentModDef.items
+	local items_c = #items
+	local table_find = table.find
+
+	local MissionLogoPresetMap = MissionLogoPresetMap
+	for id, def in pairs(MissionLogoPresetMap) do
+		local image = T("<image " .. def.image .. ">")
+		local name = T(def.display_name)
+
+		mod_logos_c = mod_logos_c + 1
+		p[mod_logos_c] = {
+			default = false,
+			editor = "bool",
+			name = name,
+			help = image,
+			id = id,
+		}
+		-- add to mod items list if not already added
+		if not table_find(items, "name", id) then
+			items_c = items_c + 1
+			items[items_c] = PlaceObj("ModItemOptionToggle", {
+				"name", id,
+				"DisplayName", name,
+				"Help", image,
+				"DefaultValue", false,
+			})
+		end
+
+		mod_logos[mod_logos_c] = id
+		-- needed for mod options cancel (since I didn't add options in items.lua)
+		options.__defaults[id] = false
+	end
+
+
+	ModOptions()
+end
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= CurrentModId then
+		return
+	end
+
+	ModOptions()
 end

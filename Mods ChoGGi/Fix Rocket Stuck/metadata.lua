@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Rocket Stuck",
-	"version", 14,
+	"version", 15,
 	"version_major", 1,
-	"version_minor", 4,
+	"version_minor", 5,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixExpeditionRocketStuckUnloading",

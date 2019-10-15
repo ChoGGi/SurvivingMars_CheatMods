@@ -16,7 +16,7 @@ local function ModOptions()
 	local g_SpecialProjectNextSpawn = g_SpecialProjectNextSpawn
 	for id, item in pairs(g_SpecialProjectNextSpawn) do
 		-- if the next spawn time is larger then the max option then recalc
-		if item.day > (day + options[id .. "_Max"]) then
+		if item.day > (day + options:GetProperty(id .. "_Max")) then
 			CalcNextSpawnProject(id)
 		end
 	end
@@ -45,8 +45,8 @@ UpdateRate = function()
 
 	local POIPresets = POIPresets
 	for id, poi in pairs(POIPresets) do
-		poi.spawn_period.from = options[id .. "_Min"]
-		poi.spawn_period.to = options[id .. "_Max"]
+		poi.spawn_period.from = options:GetProperty(id .. "_Min")
+		poi.spawn_period.to = options:GetProperty(id .. "_Max")
 	end
 end
 

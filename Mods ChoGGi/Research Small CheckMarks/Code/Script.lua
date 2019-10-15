@@ -1,20 +1,16 @@
 -- See LICENSE for terms
 
-local options
 local mod_ChangePercent
 local mod_HideBackground
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_ChangePercent = options.ChangePercent
-	mod_HideBackground = options.HideBackground
+	mod_ChangePercent = CurrentModOptions:GetProperty("ChangePercent")
+	mod_HideBackground = CurrentModOptions:GetProperty("HideBackground")
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

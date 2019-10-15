@@ -40,7 +40,7 @@ do -- LoadEntity
 	LoadEntity(
 		"ChristmasMars",
 		CurrentModPath .. "Entities/ChristmasMars.ent",
-		Mods.ChoGGi_ChristmasMars
+		CurrentModDef
 	)
 end -- LoadEntity
 

@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 -- Mars Marx, eh close enough
-local mod = Mods.ChoGGi_HakenkreuzLogos
+local mod = CurrentModDef
 
 local logos = {
 	{

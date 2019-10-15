@@ -25,11 +25,11 @@ if not ChoGGi.testing then
 end
 
 -- hopefully they'll report "LUA ERROR"s one of these days
-function OnMsg.OnLuaError(err, stack)
-	print("OnLuaError", err, stack)
+function OnMsg.OnLuaError(err, stack, ...)
+	print("OnLuaError", err, stack, ...)
 end
-function OnMsg.OnModLuaError(err, stack)
-	print("OnModLuaError", err, stack)
+function OnMsg.OnModLuaError(err, stack, ...)
+	print("OnModLuaError", err, stack, ...)
 end
 
 -- for some annoying reason my account settings are sometimes reset, so (probably something to do with some pop funcs I block)
@@ -54,7 +54,7 @@ local function StartUp()
 	for i = 1, #msgs do
 		print(msgs[i])
 	end
-	table.iclear(ChoGGi.Temp.StartupMsgs)
+	table.iclear(msgs)
 
 	print("<color 200 200 200>ECM</color>: <color 128 255 128>Testing Enabled</color>")
 end

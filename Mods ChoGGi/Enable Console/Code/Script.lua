@@ -1,23 +1,19 @@
 -- See LICENSE for terms
 
-local options
 local mod_EnableLog
 local mod_EnableConsole
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_EnableLog = options.EnableLog
-	mod_EnableConsole = options.EnableConsole
+	mod_EnableLog = CurrentModOptions:GetProperty("EnableLog")
+	mod_EnableConsole = CurrentModOptions:GetProperty("EnableConsole")
 
 	ConsoleEnabled = mod_EnableConsole
 	ShowConsoleLog(mod_EnableLog)
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

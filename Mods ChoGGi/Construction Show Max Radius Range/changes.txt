@@ -1,3 +1,6 @@
+v0.7
+Evans update.
+
 v0.6
 Updated to work with mod buildings (Silva's Geo plant).
 

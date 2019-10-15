@@ -42,7 +42,7 @@ do -- LoadEntity
 	LoadEntity(
 		"StarshipTroopers",
 		CurrentModPath .. "Entities/StarshipTroopers.ent",
-		Mods.ChoGGi_Logos_StarshipTroopers
+		CurrentModDef
 	)
 end -- LoadEntity
 

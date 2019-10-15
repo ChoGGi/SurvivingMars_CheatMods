@@ -1,19 +1,14 @@
 -- See LICENSE for terms
 
-local options
 local mod_ColdCapacity
 
 -- fired when settings are changed/init
 local function ModOptions()
-	-- updated during building update
-	mod_ColdCapacity = options.ColdCapacity
+	mod_ColdCapacity = CurrentModOptions:GetProperty("ColdCapacity")
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

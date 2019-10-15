@@ -1,3 +1,6 @@
+v0.4
+Evans update.
+
 v0.3
 Mod Option to change the cost of rocks (larger rocks, small cost 1 waste rock).
 

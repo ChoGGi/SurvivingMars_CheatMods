@@ -1,18 +1,14 @@
 -- See LICENSE for terms
 
-local options
 local mod_SkipDelete
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_SkipDelete = options.SkipDelete
+	mod_SkipDelete = CurrentModOptions:GetProperty("SkipDelete")
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

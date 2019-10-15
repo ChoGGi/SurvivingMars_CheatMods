@@ -1,4 +1,4 @@
-local mod = Mods.ChoGGi_Logos_BnLCorp
+local mod = CurrentModDef
 
 local loadlogos = {
 	{

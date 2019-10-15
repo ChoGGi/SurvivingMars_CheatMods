@@ -78,7 +78,7 @@ function OnMsg.LoadGame()
 	for i = 1, #objs do
 		local obj = objs[i]
 		-- we skip the geodome n capital city
-		if options[obj.class] and not obj.workers then
+		if options:GetProperty(obj.class) and not obj.workers then
 			ShiftsBuilding_Init(obj)
 			Workplace_Init(obj)
 			ShiftsBuilding_GameInit(obj)
@@ -94,7 +94,7 @@ function OnMsg.LoadGame()
 end
 
 UpdateWorkers = function(obj)
-	local workers = options[obj.class]
+	local workers = options:GetProperty(obj.class)
 	if workers then
 		obj.max_workers = workers
 		if workers == 0 then

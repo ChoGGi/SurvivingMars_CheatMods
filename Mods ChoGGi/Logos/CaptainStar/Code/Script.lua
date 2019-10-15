@@ -41,7 +41,7 @@ do -- LoadEntity
 	LoadEntity(
 		"CaptainStar",
 		CurrentModPath .. "Entities/CaptainStar.ent",
-		Mods.ChoGGi_Logos_CaptainStar
+		CurrentModDef
 	)
 end -- LoadEntity
 

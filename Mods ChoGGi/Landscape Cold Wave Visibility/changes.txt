@@ -1,2 +1,5 @@
+v0.3
+Evans update.
+
 v0.2
 Forgot to remove markers when landscape done during cold wave.

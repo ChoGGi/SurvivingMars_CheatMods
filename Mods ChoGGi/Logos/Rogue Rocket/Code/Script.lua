@@ -1,4 +1,4 @@
-local mod = Mods.ChoGGi_Logos_RogueRocket
+local mod = CurrentModDef
 
 local loadlogos = {
 	{

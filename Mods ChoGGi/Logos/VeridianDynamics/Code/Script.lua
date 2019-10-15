@@ -42,7 +42,7 @@ do -- LoadEntity
 	LoadEntity(
 		"VeridianDynamics",
 		CurrentModPath .. "Entities/VeridianDynamics.ent",
-		Mods.ChoGGi_Logos_VeridianDynamics
+		CurrentModDef
 	)
 end -- LoadEntity
 

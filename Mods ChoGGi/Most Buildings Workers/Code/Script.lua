@@ -68,13 +68,13 @@ local workplaces = {
 	WindTurbine_Large = true,
 }
 
-local options
 local mod_DefaultPerformance
 local UpdateWorkers
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_DefaultPerformance = options.DefaultPerformance
+	mod_DefaultPerformance = CurrentModOptions:GetProperty("DefaultPerformance")
+
 	if not GameState.gameplay then
 		return
 	end
@@ -90,10 +90,7 @@ local function ModOptions()
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
@@ -124,7 +121,7 @@ function OnMsg.LoadGame()
 	for i = 1, #objs do
 		local obj = objs[i]
 		local template = RetTemplateOrClass(obj)
-		if workplaces[template] and options[template] and not obj.workers then
+		if workplaces[template] and options:GetProperty(template) and not obj.workers then
 			ShiftsBuilding_Init(obj)
 			Workplace_Init(obj)
 			ShiftsBuilding_GameInit(obj)
@@ -149,7 +146,7 @@ function OnMsg.LoadGame()
 end
 
 UpdateWorkers = function(obj, template)
-	local workers = options[template]
+	local workers = options:GetProperty(template)
 	if workers then
 		obj.max_workers = workers
 		if workers == 0 then

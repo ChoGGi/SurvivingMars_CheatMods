@@ -8,7 +8,7 @@ local mod_EnableMod
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_EnableMod = CurrentModOptions.EnableMod
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 end
 
 -- load default/saved settings

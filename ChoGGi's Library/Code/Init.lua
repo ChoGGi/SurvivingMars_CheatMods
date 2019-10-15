@@ -32,10 +32,9 @@ SOFTWARE.
 ChoGGi = {
 	-- anyone examining ChoGGi will see this first
 	_LICENSE = LICENSE,
-	-- ECM
-	id = "ChoGGi_CheatMenu",
-	-- this
-	id_lib = "ChoGGi_Library",
+	-- easy access to them
+	id_lib = CurrentModId,
+	def_lib = CurrentModDef,
 	-- is ECM shanghaied by the blacklist?
 	blacklist = true,
 	-- constants

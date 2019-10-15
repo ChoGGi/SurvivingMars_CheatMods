@@ -4,7 +4,7 @@ local mod_UseScreenshots
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_UseScreenshots = CurrentModOptions.UseScreenshots
+	mod_UseScreenshots = CurrentModOptions:GetProperty("UseScreenshots")
 	ChoGGi_Minimap_Options.UpdateTopoImage(mod_UseScreenshots)
 end
 
@@ -40,7 +40,7 @@ ChoGGi_Minimap_Options = {
 		else
 			local str = ChoGGi_Minimap_Options.image_str
 			if not str then
-				local image_mod = Mods.ChoGGi_MapImagesPack
+				image_mod = image_mod or Mods.ChoGGi_MapImagesPack
 				ChoGGi_Minimap_Options.image_str = image_mod and image_mod.env.CurrentModPath .. "Maps/"
 				str = ChoGGi_Minimap_Options.image_str
 			end
@@ -137,7 +137,7 @@ function HUD.idMinimapOnPress()
 			-- check for formatting string
 			local str = ChoGGi_Minimap_Options.image_str
 			if not str then
-				local image_mod = Mods.ChoGGi_MapImagesPack
+				image_mod = image_mod or Mods.ChoGGi_MapImagesPack
 				ChoGGi_Minimap_Options.image_str = image_mod and image_mod.env.CurrentModPath .. "Maps/"
 				str = ChoGGi_Minimap_Options.image_str
 			end

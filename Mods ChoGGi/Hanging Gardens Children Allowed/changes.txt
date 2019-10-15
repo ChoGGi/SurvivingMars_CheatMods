@@ -1,2 +1,5 @@
+v0.3
+Evans update.
+
 v0.2
 Made visiting a service count as a playground visit (thanks Ericus1).

@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Construction Show Max Radius Range",
-	"version", 6,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 7,
 	"saved", 0,
 	"id", "ChoGGi_ShowMaxRadiusRange",
 	"author", "ChoGGi",

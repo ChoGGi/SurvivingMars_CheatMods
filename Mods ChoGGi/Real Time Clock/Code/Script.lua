@@ -33,16 +33,16 @@ local style_lookup = {
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_ShowClock = options.ShowClock
-	mod_TimeFormat = options.TimeFormat
-	mod_TextStyle = options.TextStyle
-	mod_Background = options.Background
---~ 	mod_PosChoices = options.PosChoices
+	mod_ShowClock = options:GetProperty("ShowClock")
+	mod_TimeFormat = options:GetProperty("TimeFormat")
+	mod_TextStyle = options:GetProperty("TextStyle")
+	mod_Background = options:GetProperty("Background")
+--~ 	mod_PosChoices = options:GetProperty("PosChoices")
+
 	if mod_ShowClock then
 		if not IsValidXWin(Infobar) then
 			Infobar = Dialogs.Infobar
 		end
-
 		if Infobar then
 			-- add clock
 			AddTime(Infobar)

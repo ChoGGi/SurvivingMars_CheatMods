@@ -1,18 +1,11 @@
 -- See LICENSE for terms
 
-local options
 local mod_SpaceCount
-
 local EnableMarker
+
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_SpaceCount = options.SpaceCount
-end
-
--- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
+	mod_SpaceCount = CurrentModOptions:GetProperty("SpaceCount")
 
 	-- no sense in updating unless it's a cold wave
 	if g_ColdWave then
@@ -22,6 +15,9 @@ function OnMsg.ModsReloaded()
 		end
 	end
 end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

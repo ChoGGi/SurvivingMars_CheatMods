@@ -114,11 +114,6 @@ do -- ModUpload
 	if not Platform.pc then
 		hpk_path = "AppData/hpk"
 	end
-	if ChoGGi.ComFuncs.FileExists(hpk_path) then
-		hpk_path = ConvertToOSPath(hpk_path)
-	else
-		hpk_path = nil
-	end
 
 	-- it's fine...
 	local copy_files, blank_mod, clipboard, test, steam_upload, para_platform
@@ -304,11 +299,12 @@ do -- ModUpload
 			end
 
 			mod_params.os_pack_path = os_dest
-			-- set last_changes to last_changes or version num
+
+			-- if no last_changes then use version num
 			if not mod.last_changes or mod.last_changes == "" then
 				if testing then
-					local title = (orig_title or mod.title):gsub(" ","%%20")
-					mod.last_changes = "https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/" .. title .. "/changes.txt"
+					mod.last_changes = "https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/"
+						.. (orig_title or mod.title):gsub(" ","%%20") .. "/changes.txt"
 				else
 					mod.last_changes = mod.version_major .. "." .. mod.version_minor
 				end
@@ -319,7 +315,11 @@ do -- ModUpload
 				if steam_upload then
 					result, err = Steam_Upload(nil, mod, mod_params)
 				else
+					-- thanks LukeH
+					mod.description = mod.description:gsub("\n", "<br>")
 					result, err = PDX_Upload(nil, mod, mod_params)
+					-- shouldn't actually matter, but maybe some people will use mod editor along with ECM
+					mod.description = mod.description:gsub("<br>", "\n")
 				end
 			end
 		end
@@ -395,6 +395,13 @@ do -- ModUpload
 	local function CallBackFunc(choices)
 		if choices.nothing_selected then
 			return
+		end
+
+		-- we update this now, so the tooltip doesn't show nil
+		if ChoGGi.ComFuncs.FileExists(hpk_path) then
+			hpk_path = ConvertToOSPath(hpk_path)
+		else
+			hpk_path = nil
 		end
 
 		CreateRealTimeThread(function()

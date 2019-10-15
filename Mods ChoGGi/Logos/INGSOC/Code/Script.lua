@@ -1,4 +1,4 @@
-local mod = Mods.ChoGGi_Logos_INGSOC1984
+local mod = CurrentModDef
 
 local loadlogos = {
 	{

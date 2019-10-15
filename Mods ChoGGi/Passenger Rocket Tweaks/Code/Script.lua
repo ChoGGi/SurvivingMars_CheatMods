@@ -15,12 +15,13 @@ local mod_PosY
 -- fired when settings are changed/init
 local ToggleSpecInfo
 local function ModOptions()
-	mod_MoreSpecInfo = options.MoreSpecInfo
+	mod_MoreSpecInfo = options:GetProperty("MoreSpecInfo")
+	mod_PosPassList = options:GetProperty("PosPassList")
+	mod_HideRocket = options:GetProperty("HideRocket")
+	mod_PosX = options:GetProperty("PosX")
+	mod_PosY = options:GetProperty("PosY")
+
 	ToggleSpecInfo()
-	mod_PosPassList = options.PosPassList
-	mod_HideRocket = options.HideRocket
-	mod_PosX = options.PosX
-	mod_PosY = options.PosY
 end
 
 -- load default/saved settings
@@ -314,9 +315,9 @@ local function AddUIStuff(content)
 	-- wait for it (thanks SkiRich)
 	WaitMsg("OnRender")
 
-	mod_PosPassList = options.PosPassList
-	mod_PosX = options.PosX
-	mod_PosY = options.PosY
+	mod_PosPassList = options:GetProperty("PosPassList")
+	mod_PosX = options:GetProperty("PosX")
+	mod_PosY = options:GetProperty("PosY")
 	if mod_PosPassList then
 		content.idListsWrapper:SetMargins(box(
 			mod_PosX,

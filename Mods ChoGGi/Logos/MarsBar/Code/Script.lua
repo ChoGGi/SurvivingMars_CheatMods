@@ -42,7 +42,7 @@ do -- LoadEntity
 	LoadEntity(
 		"MarsBar",
 		CurrentModPath .. "Entities/MarsBar.ent",
-		Mods.ChoGGi_Logos_MarsBar
+		CurrentModDef
 	)
 end -- LoadEntity
 

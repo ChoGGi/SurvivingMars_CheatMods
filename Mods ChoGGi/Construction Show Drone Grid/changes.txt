@@ -1,3 +1,6 @@
+v1.3
+Evans update.
+
 v1.2
 Fix for a drone commander goes on a mission while grids are showing; it'll leave the grid till it comes back.
 

@@ -6,8 +6,8 @@ local max_line_len
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_Option1 = CurrentModOptions.Option1
-	mod_AdjustLineLength = CurrentModOptions.AdjustLineLength
+	mod_Option1 = CurrentModOptions:GetProperty("Option1")
+	mod_AdjustLineLength = CurrentModOptions:GetProperty("AdjustLineLength")
 
 	-- how long passages can be
 	local max_hex = GridConstructionController.max_hex_distance_to_allow_build - mod_AdjustLineLength

@@ -1,20 +1,16 @@
 -- See LICENSE for terms
 
-local options
 local mod_EnableText
 local mod_EnableIcon
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_EnableText = options.EnableText
-	mod_EnableIcon = options.EnableIcon
+	mod_EnableText = CurrentModOptions:GetProperty("EnableText")
+	mod_EnableIcon = CurrentModOptions:GetProperty("EnableIcon")
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

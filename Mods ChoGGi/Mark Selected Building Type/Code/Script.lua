@@ -1,14 +1,11 @@
 -- See LICENSE for terms
 
-local options
 local mod_Mark
 
 local ModOptions
+
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
@@ -71,7 +68,8 @@ local function MarkObjects(obj)
 	end
 
 	-- added in building_class so it doesn't mark all construction sites
-	local name = obj.template_name ~= "" and obj.template_name or obj.building_class or obj.class
+	local name = obj.template_name ~= "" and obj.template_name
+		or obj.building_class or obj.class
 	local labels = UICity.labels[name] or ""
 
 	-- skip if there's too many
@@ -105,7 +103,8 @@ OnMsg.SaveGame = ClearBeams
 
 -- fired when settings are changed/init
 ModOptions = function()
-	mod_Mark = options.Mark
+	mod_Mark = CurrentModOptions:GetProperty("Mark")
+
 	if mod_Mark and SelectedObj then
 		MarkObjects(SelectedObj)
 	else

@@ -1,17 +1,14 @@
 -- See LICENSE for terms
-local options
+
 local mod_LimitStorage
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_LimitStorage = options.LimitStorage
+	mod_LimitStorage = CurrentModOptions:GetProperty("LimitStorage")
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

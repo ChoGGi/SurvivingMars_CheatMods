@@ -1,7 +1,8 @@
 -- See LICENSE for terms
 
--- the below is needed for inside buildings to work outside
 local AttachToNearestDome
+
+-- the below is needed for inside buildings to work outside
 if Mods.ChoGGi_Library.version > 70 then
 	AttachToNearestDome = ChoGGi.ComFuncs.AttachToNearestDome
 else

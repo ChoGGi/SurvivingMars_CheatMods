@@ -42,7 +42,7 @@ do -- LoadEntity
 	LoadEntity(
 		"TerranDominion",
 		CurrentModPath .. "Entities/TerranDominion.ent",
-		Mods.ChoGGi_Logos_TerranDominion
+		CurrentModDef
 	)
 end -- LoadEntity
 

@@ -1,22 +1,18 @@
 -- See LICENSE for terms
 
-local options
 local mod_EmptyDumpSites
 local mod_EmptyNewSol
 local mod_EmptyNewHour
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_EmptyDumpSites = options.EmptyDumpSites
-	mod_EmptyNewSol = options.EmptyNewSol
-	mod_EmptyNewHour = options.EmptyNewHour
+	mod_EmptyDumpSites = CurrentModOptions:GetProperty("EmptyDumpSites")
+	mod_EmptyNewSol = CurrentModOptions:GetProperty("EmptyNewSol")
+	mod_EmptyNewHour = CurrentModOptions:GetProperty("EmptyNewHour")
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

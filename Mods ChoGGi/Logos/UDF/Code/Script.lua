@@ -1,4 +1,4 @@
-local mod = Mods.ChoGGi_Logos_UDFEdgeofTomorrow
+local mod = CurrentModDef
 
 local loadlogos = {
 	{

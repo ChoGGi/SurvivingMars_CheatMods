@@ -42,7 +42,7 @@ do -- LoadEntity
 	LoadEntity(
 		"PlanetHollywood",
 		CurrentModPath .. "Entities/PlanetHollywood.ent",
-		Mods.ChoGGi_Logos_PlanetHollywood
+		CurrentModDef
 	)
 end -- LoadEntity
 

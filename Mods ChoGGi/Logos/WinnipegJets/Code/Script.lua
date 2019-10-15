@@ -1,4 +1,4 @@
-local mod = Mods.ChoGGi_Logos_WinnipegJets
+local mod = CurrentModDef
 
 -- copy n paste from ChoGGi.ComFuncs.LoadEntity
 do -- LoadEntity

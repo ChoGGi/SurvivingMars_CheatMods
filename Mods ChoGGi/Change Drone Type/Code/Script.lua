@@ -1,20 +1,16 @@
 -- See LICENSE for terms
 
-local options
 local mod_Aerodynamics
 local mod_AlwaysWasp
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_Aerodynamics = options.Aerodynamics
-	mod_AlwaysWasp = options.AlwaysWasp
+	mod_Aerodynamics = CurrentModOptions:GetProperty("Aerodynamics")
+	mod_AlwaysWasp = CurrentModOptions:GetProperty("AlwaysWasp")
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

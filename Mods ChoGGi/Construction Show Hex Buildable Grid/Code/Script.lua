@@ -5,10 +5,10 @@ local mod_Option1
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_Option1 = options.Option1
+	mod_Option1 = options:GetProperty("Option1")
 	local u = ChoGGi.UserSettings
-	u.DebugGridOpacity = options.DebugGridOpacity
-	u.DebugGridSize = options.DebugGridSize
+	u.DebugGridOpacity = options:GetProperty("DebugGridOpacity")
+	u.DebugGridSize = options:GetProperty("DebugGridSize")
 	if ChoGGi.SettingFuncs.WriteSettings then
 		ChoGGi.SettingFuncs.WriteSettings()
 	end

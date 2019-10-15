@@ -1,3 +1,6 @@
+v0.3
+Evans update.
+
 v0.2
 Sorted options list.
 Changed Amount to "Desired Amount".

@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local options
 local mod_UndergroundDeposits
 local mod_MaxGrade
 
@@ -8,17 +7,14 @@ local MaxFillAll
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_UndergroundDeposits = options.UndergroundDeposits
-	mod_MaxGrade = options.MaxGrade
+	mod_UndergroundDeposits = CurrentModOptions:GetProperty("UndergroundDeposits")
+	mod_MaxGrade = CurrentModOptions:GetProperty("MaxGrade")
 
 	MaxFillAll()
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

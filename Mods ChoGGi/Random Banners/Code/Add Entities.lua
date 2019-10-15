@@ -20,7 +20,7 @@ local EntityLoadEntities = EntityLoadEntities
 local SetEntityFadeDistances = SetEntityFadeDistances
 -- getting called a bunch, so make them local
 local path_loc_str = CurrentModPath .. "Entities/"
-local mod = Mods.ChoGGi_RandomBanners
+local def = CurrentModDef
 
 -- no sense in making a new one for each entity
 local entity_template = {
@@ -37,7 +37,7 @@ for i = 1, #entity_list do
 	-- pretty much using what happens when you use ModItemEntity
 	EntityData[name] = entity_template
 	EntityLoadEntities[#EntityLoadEntities + 1] = {
-		mod,
+		def,
 		name,
 		path_loc_str .. name .. ".ent"
 	}

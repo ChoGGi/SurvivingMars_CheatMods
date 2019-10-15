@@ -1,3 +1,6 @@
+v0.6
+Evans update.
+
 v0.5
 Cleaned up code, and hopefully fixed the "not getting water after awhile" problem.
 

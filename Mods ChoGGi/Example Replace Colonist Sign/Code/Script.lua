@@ -5,7 +5,7 @@ local entity_list = {
 }
 -- getting called a bunch, so make them local
 local path_loc_str = CurrentModPath .. "Entities/"
-local mod = Mods.ChoGGi_ExampleReplaceSign
+local mod = CurrentModDef
 
 -- no sense in making a new one for each entity
 local EntityDataTableTemplate = {

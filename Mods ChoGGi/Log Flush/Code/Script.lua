@@ -7,9 +7,9 @@ local mod_NewMinute
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_NewDay = options.NewDay
-	mod_NewHour = options.NewHour
-	mod_NewMinute = options.NewMinute
+	mod_NewDay = options:GetProperty("NewDay")
+	mod_NewHour = options:GetProperty("NewHour")
+	mod_NewMinute = options:GetProperty("NewMinute")
 end
 
 -- load default/saved settings

@@ -1,3 +1,6 @@
+v0.3
+Evans update.
+
 v0.2
 You can now rebind the shortcut in the main menu.
 Renamed to Click To Move (instead of Shift-).

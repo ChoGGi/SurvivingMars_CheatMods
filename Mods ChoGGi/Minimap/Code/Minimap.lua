@@ -4,7 +4,7 @@ local mod_UseScreenshots
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_UseScreenshots = CurrentModOptions.UseScreenshots
+	mod_UseScreenshots = CurrentModOptions:GetProperty("UseScreenshots")
 end
 
 -- load default/saved settings
@@ -359,6 +359,10 @@ function ChoGGi_MinimapDlg:UpdateMapImage(image)
 	end
 end
 
+--~ GetRootDialog2(self)
+local function GetRootDialog2(dlg)
+	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_XMapControl")
+end
 DefineClass.ChoGGi_XMapControl = {
 	__parents = {"XControl"},
 	-- the little red circle that could

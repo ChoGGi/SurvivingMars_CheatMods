@@ -1,3 +1,6 @@
+v0.4
+Evans update.
+
 v0.3
 Removed flicker when near the grid dist limit.
 

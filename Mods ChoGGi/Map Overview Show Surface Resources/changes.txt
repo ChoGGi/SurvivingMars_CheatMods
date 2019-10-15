@@ -1,3 +1,6 @@
+v0.4
+Evans update.
+
 v0.3
 Changed to icon instead of text (less space used).
 Opacity now uses 255-0 (0 == completely visible).

@@ -5,8 +5,8 @@ local mod_DefaultNationNames
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_RandomBirthplace = CurrentModOptions.RandomBirthplace
-	mod_DefaultNationNames = CurrentModOptions.DefaultNationNames
+	mod_RandomBirthplace = CurrentModOptions:GetProperty("RandomBirthplace")
+	mod_DefaultNationNames = CurrentModOptions:GetProperty("DefaultNationNames")
 end
 
 -- load default/saved settings

@@ -4,19 +4,15 @@ if not g_AvailableDlc.shepard then
 	return
 end
 
-local options
 local mod_OpenOnSelect
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_OpenOnSelect = options.OpenOnSelect
+	mod_OpenOnSelect = CurrentModOptions:GetProperty("OpenOnSelect")
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

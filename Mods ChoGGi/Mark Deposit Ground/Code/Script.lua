@@ -8,9 +8,9 @@ local mod_ShowConstruct
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_AlienAnomaly = options.AlienAnomaly
-	mod_HideSigns = options.HideSigns
-	mod_ShowConstruct = options.ShowConstruct
+	mod_AlienAnomaly = options:GetProperty("AlienAnomaly")
+	mod_HideSigns = options:GetProperty("HideSigns")
+	mod_ShowConstruct = options:GetProperty("ShowConstruct")
 end
 
 -- load default/saved settings
@@ -197,12 +197,12 @@ end
 UpdateOptions = function()
 	-- update signs
 	if GameState.gameplay then
-		if mod_AlienAnomaly ~= options.AlienAnomaly then
-			mod_AlienAnomaly = options.AlienAnomaly
+		if mod_AlienAnomaly ~= options:GetProperty("AlienAnomaly") then
+			mod_AlienAnomaly = options:GetProperty("AlienAnomaly")
 			ChangeMarks("Anomaly", "GreenMan", mod_AlienAnomaly)
 		end
-		if mod_HideSigns ~= options.HideSigns then
-			mod_HideSigns = options.HideSigns
+		if mod_HideSigns ~= options:GetProperty("HideSigns") then
+			mod_HideSigns = options:GetProperty("HideSigns")
 			UpdateOpacity("SubsurfaceDeposit", mod_HideSigns)
 			UpdateOpacity("EffectDeposit", mod_HideSigns)
 			UpdateOpacity("TerrainDeposit", mod_HideSigns)

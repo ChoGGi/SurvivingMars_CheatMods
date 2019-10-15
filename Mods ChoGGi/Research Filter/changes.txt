@@ -1,8 +1,11 @@
+v1.0
+Evans update.
+
 v0.9
 Log spam.
 
 v0.8
-Repeatable techs aren't hidden by the completed option anymore. 
+Repeatable techs aren't hidden by the completed option anymore.
 
 v0.7
 Completed didn't stay hidden.

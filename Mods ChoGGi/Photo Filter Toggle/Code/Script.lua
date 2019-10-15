@@ -21,7 +21,7 @@ local function ApplyFilter()
 	local apply
 	for i = 1, photo_c do
 		local filter = photos[i]
-		if options[filter] then
+		if options:GetProperty(filter) then
 			apply = filter
 		end
 	end

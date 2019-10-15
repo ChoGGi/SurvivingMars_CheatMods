@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local options
 local mod_QueueCount
 local mod_HideWhenEmpty
 
@@ -8,8 +7,8 @@ local UpdateResearchProgressBar
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_QueueCount = options.QueueCount
-	mod_HideWhenEmpty = options.HideWhenEmpty
+	mod_QueueCount = CurrentModOptions:GetProperty("QueueCount")
+	mod_HideWhenEmpty = CurrentModOptions:GetProperty("HideWhenEmpty")
 
 	if not GameState.gameplay then
 		return
@@ -18,10 +17,7 @@ local function ModOptions()
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

@@ -10,7 +10,6 @@ local sqrt = sqrt
 local MulDivRound = MulDivRound
 local GameState = GameState
 
-local options
 local mod_EnableLakes
 local mod_EnableGridView
 
@@ -52,8 +51,8 @@ end
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_EnableLakes = options.EnableLakes
-	mod_EnableGridView = options.EnableGridView
+	mod_EnableLakes = CurrentModOptions:GetProperty("EnableLakes")
+	mod_EnableGridView = CurrentModOptions:GetProperty("EnableGridView")
 
 	if not GameState.gameplay then
 		return
@@ -99,12 +98,6 @@ local function ModOptions()
 		end
 	end
 	ApplyAllWaterObjects()
-end
-
--- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
 end
 
 -- fired when option is changed

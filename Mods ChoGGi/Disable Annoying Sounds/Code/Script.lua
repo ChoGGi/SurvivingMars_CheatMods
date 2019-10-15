@@ -11,11 +11,11 @@ local DisableSounds
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_SensorSensorTowerBeeping = options.SensorSensorTowerBeeping
-	mod_RCCommanderDronesDeployed = options.RCCommanderDronesDeployed
-	mod_MirrorSphereCrackling = options.MirrorSphereCrackling
-	mod_NurseryChild = options.NurseryChild
-	mod_SpacebarMusic = options.SpacebarMusic
+	mod_SensorSensorTowerBeeping = options:GetProperty("SensorSensorTowerBeeping")
+	mod_RCCommanderDronesDeployed = options:GetProperty("RCCommanderDronesDeployed")
+	mod_MirrorSphereCrackling = options:GetProperty("MirrorSphereCrackling")
+	mod_NurseryChild = options:GetProperty("NurseryChild")
+	mod_SpacebarMusic = options:GetProperty("SpacebarMusic")
 
 	if GameState.gameplay then
 		DisableSounds()

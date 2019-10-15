@@ -24,12 +24,11 @@ local cats = {
 
 local r = const.ResourceScale
 
-local options
 local mod_LargeRocksCost
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_LargeRocksCost = options.LargeRocksCost * r
+	mod_LargeRocksCost = CurrentModOptions:GetProperty("LargeRocksCost") * r
 
 	-- update rocks
 	local bt = BuildingTemplates
@@ -51,10 +50,7 @@ local function ModOptions()
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

@@ -8,10 +8,10 @@ local mod_UltimateNursery
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_GlobalDomeCount = options.GlobalDomeCount
-	mod_RespectIncubator = options.RespectIncubator
-	mod_BypassNoNurseries = options.BypassNoNurseries
-	mod_UltimateNursery = options.UltimateNursery
+	mod_GlobalDomeCount = options:GetProperty("GlobalDomeCount")
+	mod_RespectIncubator = options:GetProperty("RespectIncubator")
+	mod_BypassNoNurseries = options:GetProperty("BypassNoNurseries")
+	mod_UltimateNursery = options:GetProperty("UltimateNursery")
 end
 
 -- load default/saved settings

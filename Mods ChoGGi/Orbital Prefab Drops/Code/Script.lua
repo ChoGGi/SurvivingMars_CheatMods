@@ -9,11 +9,11 @@ local mod_ModelType
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_PrefabOnly = options.PrefabOnly
-	mod_Outside = options.Outside
-	mod_Inside = options.Inside
-	mod_DomeCrack = options.DomeCrack
-	mod_ModelType = options.ModelType
+	mod_PrefabOnly = options:GetProperty("PrefabOnly")
+	mod_Outside = options:GetProperty("Outside")
+	mod_Inside = options:GetProperty("Inside")
+	mod_DomeCrack = options:GetProperty("DomeCrack")
+	mod_ModelType = options:GetProperty("ModelType")
 end
 
 -- load default/saved settings

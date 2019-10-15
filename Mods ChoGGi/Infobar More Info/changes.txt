@@ -1,3 +1,6 @@
+v1.4
+Evans update.
+
 v1.3
 Jobs list shows amount of specs/open workspace slots of req spec.
 

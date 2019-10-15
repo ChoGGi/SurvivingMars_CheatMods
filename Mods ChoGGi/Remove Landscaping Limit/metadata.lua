@@ -8,9 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Remove Landscaping Limit",
-	"version", 4 + 10, -- stupid mod msg
+	"version", 5 + 10, -- stupid mod msg
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 5,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_AdjustLandscapingSize",
@@ -21,6 +21,8 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"TagLandscaping", true,
+	"TagInterface", true,
 	"has_options", true,
 	"description", [[Ignores most of the "errors" (NOT out of bounds as that can crash the game).
 
@@ -30,6 +32,4 @@ This will allow you to build regular buildings on top of others, turn off the bl
 
 
 Included in Expanded Cheat Menu.]],
-	"TagLandscaping", true,
-	"TagInterface", true,
 })

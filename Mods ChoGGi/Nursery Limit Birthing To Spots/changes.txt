@@ -1,3 +1,6 @@
+v0.6
+Evans update.
+
 v0.5
 Added mod option to count Ultimate Nurseries INSTEAD of regular ones.
 Why can't people edit existing buildings instead of adding a new ones?

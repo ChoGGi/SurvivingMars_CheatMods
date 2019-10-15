@@ -9,11 +9,11 @@ local mod_TextStyle
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_ShowPolymers = options.ShowPolymers
-	mod_ShowMetals = options.ShowMetals
-	mod_TextOpacity = options.TextOpacity
-	mod_TextBackground = options.TextBackground
-	mod_TextStyle = options.TextStyle
+	mod_ShowPolymers = options:GetProperty("ShowPolymers")
+	mod_ShowMetals = options:GetProperty("ShowMetals")
+	mod_TextOpacity = options:GetProperty("TextOpacity")
+	mod_TextBackground = options:GetProperty("TextBackground")
+	mod_TextStyle = options:GetProperty("TextStyle")
 end
 
 -- load default/saved settings

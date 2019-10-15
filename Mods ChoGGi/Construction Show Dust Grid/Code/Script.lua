@@ -37,11 +37,11 @@ local function CleanList(list)
 end
 
 local function ModOptions()
-	mod_EnableGrid = options.Option1
-	mod_DistFromCursor = options.DistFromCursor * 1000
-	mod_ShowConSites = options.ShowConSites
-	mod_GridOpacity = options.GridOpacity
-	mod_GridScale = options.GridScale
+	mod_EnableGrid = options:GetProperty("Option1")
+	mod_DistFromCursor = options:GetProperty("DistFromCursor") * 1000
+	mod_ShowConSites = options:GetProperty("ShowConSites")
+	mod_GridOpacity = options:GetProperty("GridOpacity")
+	mod_GridScale = options:GetProperty("GridScale")
 
 	local idx = table_find(classes, "ConstructionSite")
 	if mod_ShowConSites and not idx then

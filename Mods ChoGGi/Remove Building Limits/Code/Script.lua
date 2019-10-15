@@ -1,14 +1,12 @@
 -- See LICENSE for terms
 
-local options
+-- fired when settings are changed/init
 local function ModOptions()
-	ChoGGi.ComFuncs.SetBuildingLimits(options.RemoveBuildingLimits)
+	ChoGGi.ComFuncs.SetBuildingLimits(CurrentModOptions:GetProperty("RemoveBuildingLimits"))
 end
 
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
 
 function OnMsg.ApplyModOptions(id)
 	if id ~= CurrentModId then

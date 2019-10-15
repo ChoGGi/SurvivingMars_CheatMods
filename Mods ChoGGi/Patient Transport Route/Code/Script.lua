@@ -1,18 +1,14 @@
 -- See LICENSE for terms
 
-local options
 local mod_Amount
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_Amount = options.Amount * const.ResourceScale
+	mod_Amount = CurrentModOptions:GetProperty("Amount") * const.ResourceScale
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

@@ -1,18 +1,14 @@
 -- See LICENSE for terms
 
-local options
 local mod_MaxSpawn
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_MaxSpawn = options.MaxSpawn
+	mod_MaxSpawn = CurrentModOptions:GetProperty("MaxSpawn")
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

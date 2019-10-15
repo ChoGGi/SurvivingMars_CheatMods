@@ -1,3 +1,6 @@
+v0.6
+Evans update.
+
 v0.5
 Changed options to Mod Options (no more changing from selecting one).
 ChoGGi's Library not needed anymore.

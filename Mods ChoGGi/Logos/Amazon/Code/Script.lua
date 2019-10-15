@@ -42,7 +42,7 @@ do -- LoadEntity
 	LoadEntity(
 		"Amazon",
 		CurrentModPath .. "Entities/Amazon.ent",
-		Mods.ChoGGi_Logos_Amazon
+		CurrentModDef
 	)
 end -- LoadEntity
 

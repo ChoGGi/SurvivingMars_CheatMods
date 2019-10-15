@@ -1,2 +1,5 @@
+v0.3
+Evans update.
+
 v0.2
 Added a mod option to show a marker when select & view is enabled.

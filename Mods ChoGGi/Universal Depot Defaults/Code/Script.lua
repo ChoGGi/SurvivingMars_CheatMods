@@ -18,12 +18,12 @@ end
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_ShuttleAccess = options.ShuttleAccess
-	mod_StoredAmount = options.StoredAmount * const.ResourceScale
+	mod_ShuttleAccess = options:GetProperty("ShuttleAccess")
+	mod_StoredAmount = options:GetProperty("StoredAmount") * const.ResourceScale
 
 	for i = 1, c do
 		local id = storable_resources[i]
-		mod_options[id] = options[id]
+		mod_options[id] = options:GetProperty(id)
 	end
 end
 

@@ -7,7 +7,7 @@ local lookup_disable = {}
 local function ModOptions()
 	local OnScreenNotificationPresets = OnScreenNotificationPresets
 	for id in pairs(OnScreenNotificationPresets) do
-		lookup_disable[id] = options[id]
+		lookup_disable[id] = options:GetProperty(id)
 	end
 end
 

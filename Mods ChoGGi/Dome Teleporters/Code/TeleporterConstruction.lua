@@ -4,7 +4,7 @@ local mod_BuildDist
 
 -- fired when settings are changed/init
 local function ModOptions()
-	local value = CurrentModOptions.BuildDist
+	local value = CurrentModOptions:GetProperty("BuildDist")
 
 	mod_BuildDist = value
 	CityDomeTeleporterConstruction[UICity].max_hex_distance_to_allow_build = value

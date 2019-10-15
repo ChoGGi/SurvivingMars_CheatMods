@@ -49,7 +49,7 @@ function OnMsg.ApplyModOptions(id)
 		return
 	end
 
-	edge_scrolling = CurrentModOptions.EdgeScrolling
+	edge_scrolling = CurrentModOptions:GetProperty("EdgeScrolling")
 
 	if edge_scrolling then
 		cameraRTS.SetProperties(1, {ScrollBorder = 5})

@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Research Small CheckMarks",
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_ResearchSmallCheckMarks",
@@ -20,6 +20,6 @@ This also reduces the blue background opacity.
 
 Mod Options:
 Shrink percent counters: Like the checkmarks, but slightly bigger.
-Hide blue background: removes the light blue background over completed ones.
+Hide blue background: Removes the light blue background over completed ones.
 ]],
 })

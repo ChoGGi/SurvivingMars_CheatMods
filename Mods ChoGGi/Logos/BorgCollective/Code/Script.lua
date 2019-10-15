@@ -42,7 +42,7 @@ do -- LoadEntity
 	LoadEntity(
 		"BorgCollective",
 		CurrentModPath .. "Entities/BorgCollective.ent",
-		Mods.ChoGGi_Logos_BorgCollective
+		CurrentModDef
 	)
 end -- LoadEntity
 

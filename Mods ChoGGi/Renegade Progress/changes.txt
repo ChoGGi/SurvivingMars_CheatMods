@@ -1,2 +1,5 @@
+v0.3
+Evans update.
+
 v0.2
 Added a mod option to remove renegades as they appear.

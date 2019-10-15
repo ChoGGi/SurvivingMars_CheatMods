@@ -1,3 +1,6 @@
+v1.6
+Evans update.
+
 v1.5
 Removed Omega guesses because they're pretty useless.
 Since there's a total of 20 breakthroughs per map the list shows 17.

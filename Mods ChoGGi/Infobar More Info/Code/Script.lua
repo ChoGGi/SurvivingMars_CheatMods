@@ -9,11 +9,11 @@ local mod_RolloverWidth
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_SkipGrid0 = options.SkipGrid0
-	mod_SkipGrid1 = options.SkipGrid1
-	mod_SkipGridX = options.SkipGridX
-	mod_MergedGrids = options.MergedGrids
-	mod_RolloverWidth = options.RolloverWidth * 10
+	mod_SkipGrid0 = options:GetProperty("SkipGrid0")
+	mod_SkipGrid1 = options:GetProperty("SkipGrid1")
+	mod_SkipGridX = options:GetProperty("SkipGridX")
+	mod_MergedGrids = options:GetProperty("MergedGrids")
+	mod_RolloverWidth = options:GetProperty("RolloverWidth") * 10
 
 	-- ECM already changes it
 	if not table.find(ModsLoaded, "id", "ChoGGi_CheatMenu") then

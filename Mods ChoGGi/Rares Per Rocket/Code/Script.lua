@@ -2,12 +2,8 @@
 
 local r = const.ResourceScale
 
--- if modoptions aren't a thing yet
 local function GetModValue()
-	if CurrentModOptions then
-		return CurrentModOptions.AmountOfRares * r
-	end
-	return 90 * r
+	return CurrentModOptions:GetProperty("AmountOfRares") * r
 end
 
 local function UpdateExistingRockets()

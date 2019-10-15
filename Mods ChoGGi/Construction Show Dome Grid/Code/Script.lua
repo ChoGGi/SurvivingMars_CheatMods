@@ -19,12 +19,12 @@ local mod_GridScale
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_EnableGrid = options.Option1
-	mod_DistFromCursor = options.DistFromCursor * 1000
-	mod_GridOpacity = options.GridOpacity
-	mod_SelectDome = options.SelectDome
-	mod_SelectOutside = options.SelectOutside
-	mod_GridScale = options.GridScale
+	mod_EnableGrid = options:GetProperty("Option1")
+	mod_DistFromCursor = options:GetProperty("DistFromCursor") * 1000
+	mod_GridOpacity = options:GetProperty("GridOpacity")
+	mod_SelectDome = options:GetProperty("SelectDome")
+	mod_SelectOutside = options:GetProperty("SelectOutside")
+	mod_GridScale = options:GetProperty("GridScale")
 end
 
 -- load default/saved settings

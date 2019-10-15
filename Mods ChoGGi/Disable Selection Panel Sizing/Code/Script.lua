@@ -1,20 +1,16 @@
 -- See LICENSE for terms
 
-local options
 local mod_Enabled
 local mod_ScrollSelection
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_Enabled = options.Enabled
-	mod_ScrollSelection = options.ScrollSelection
+	mod_Enabled = CurrentModOptions:GetProperty("Enabled")
+	mod_ScrollSelection = CurrentModOptions:GetProperty("ScrollSelection")
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

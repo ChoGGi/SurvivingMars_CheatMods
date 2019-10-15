@@ -1,20 +1,16 @@
 -- See LICENSE for terms
 
-local options
 local mod_AlwaysDusty
 local mod_AlwaysClean
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_AlwaysDusty = options.AlwaysDusty
-	mod_AlwaysClean = options.AlwaysClean
+	mod_AlwaysDusty = CurrentModOptions:GetProperty("AlwaysDusty")
+	mod_AlwaysClean = CurrentModOptions:GetProperty("AlwaysClean")
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

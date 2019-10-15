@@ -1,3 +1,6 @@
+v0.9
+Evans update.
+
 v0.8
 Added mod option to skip deleting the mech depot after empty.
 
@@ -15,7 +18,7 @@ v0.4
 Curo update.
 
 v0.3
-Removed shortcut/cheat section. 
+Removed shortcut/cheat section.
 Added button to side panel instead.
 
 v0.2

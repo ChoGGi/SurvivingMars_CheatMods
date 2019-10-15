@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Lakes Toggle Visibility",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_LakesToggleVisibility",
@@ -16,7 +16,10 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagOther", true,
-	"description", [[Adds a mod option to hide all lake water (if you're stuck on macos and enjoying some lag).
+	"description", [[macOS lag bug fixed in "Evans" update.
+
+
+Adds a mod option to hide all lake water (if you're stuck on macos and enjoying some lag).
 
 Mod Options:
 Enable Lakes: Swap lakes with a fake ice/water texture, so you can still visually see the level

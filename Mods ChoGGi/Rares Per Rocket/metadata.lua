@@ -8,9 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Rares Per Rocket",
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_RaresPerRocket",
@@ -20,10 +20,9 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"has_options", true,
 	"description", [[Default to 90 rares per rocket.
 Has Mod Option to change amount.
 
 Requested by Mrpellaeon.]],
-
-	"has_options", true,
 })

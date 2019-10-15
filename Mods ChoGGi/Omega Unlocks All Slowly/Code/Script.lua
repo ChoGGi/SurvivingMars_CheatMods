@@ -1,18 +1,14 @@
 -- See LICENSE for terms
 
-local options
 local mod_SolsBetweenUnlock
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_SolsBetweenUnlock = options.SolsBetweenUnlock
+	mod_SolsBetweenUnlock = CurrentModOptions:GetProperty("SolsBetweenUnlock")
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
@@ -27,6 +23,7 @@ GlobalVar("ChoGGi_OmegaUnlocksAllSlowly_Sols", 0)
 
 -- unlock one per sol (assuming a telescope is working)
 function OnMsg.NewDay()
+-- testing
 --~ function OnMsg.NewHour()
 
 	-- no sense in checking if this isn't true

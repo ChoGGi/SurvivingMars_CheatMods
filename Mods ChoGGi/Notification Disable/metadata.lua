@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Notification Disable",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"saved", 0,
 	"id", "ChoGGi_NotificationDisable",
 	"author", "ChoGGi",
