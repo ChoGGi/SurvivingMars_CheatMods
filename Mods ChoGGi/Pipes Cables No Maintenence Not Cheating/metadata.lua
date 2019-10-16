@@ -13,7 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", 245618,
+	"lua_revision", 249143,
 	"description", [[Definitely not a cheat...
 
 https://steamcommunity.com/workshop/discussions/18446744073709551615/1694923613878153745/?appid=464920

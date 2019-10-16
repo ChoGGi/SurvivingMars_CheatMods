@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	"saved", 0,
 	"image", "Preview.png",
 	"author", "Waywocket & ChoGGi",
-	"lua_revision", 245618,
+	"lua_revision", 249143,
 	"code", {
 		"Code/Script.lua",
 	},

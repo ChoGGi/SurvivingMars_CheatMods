@@ -54,17 +54,17 @@ function ChoGGi.MenuFuncs.SetPodPrice()
 	}
 end
 
-function ChoGGi.MenuFuncs.AddPassengerArkPod_Toggle()
+function ChoGGi.MenuFuncs.PassengerArkPod_Toggle()
 	local sponsor = GetMissionSponsor()
 
-	if ChoGGi.UserSettings.AddPassengerArkPod then
-		ChoGGi.UserSettings.AddPassengerArkPod = nil
+	if ChoGGi.UserSettings.PassengerArkPod then
+		ChoGGi.UserSettings.PassengerArkPod = nil
 		-- only blank it out if sponsor isn't new ark
 		if GameState.gameplay  and sponsor.id ~= "NewArk"then
 			sponsor.passenger_pod_class = nil
 		end
 	else
-		ChoGGi.UserSettings.AddPassengerArkPod = true
+		ChoGGi.UserSettings.PassengerArkPod = true
 		if GameState.gameplay then
 			sponsor.passenger_pod_class = "ArkPod"
 		end
@@ -72,7 +72,7 @@ function ChoGGi.MenuFuncs.AddPassengerArkPod_Toggle()
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.AddPassengerArkPod),
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.PassengerArkPod),
 		Strings[302535920000941--[[Add Passenger Ark Pod]]]
 	)
 end

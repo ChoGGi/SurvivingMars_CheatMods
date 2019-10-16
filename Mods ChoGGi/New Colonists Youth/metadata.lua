@@ -10,6 +10,6 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", 245618,
+	"lua_revision", 249143,
 	"description", [[Turns all born/sent from Earth Colonists into youths (no more dealing with children).]],
 })

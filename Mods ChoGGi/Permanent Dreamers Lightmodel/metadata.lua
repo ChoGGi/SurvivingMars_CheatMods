@@ -12,7 +12,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 245618,
+	"lua_revision", 249143,
 	"description", [[Always a green morning.
 
 Requested by BLAde.

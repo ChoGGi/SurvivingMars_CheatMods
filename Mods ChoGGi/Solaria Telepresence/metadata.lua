@@ -21,7 +21,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 		"Code/WorkVRWorkshop.lua",
 	},
-	"lua_revision", 245618,
+	"lua_revision", 249143,
 	"description", [[Adds a telepresence VR building; remote control factories and mines (with reduced production).
 
 This mod also removes distance limits on workplace buildings placed outside of domes (hard not to).

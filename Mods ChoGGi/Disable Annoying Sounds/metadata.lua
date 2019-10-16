@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1816633344",
 	"pops_any_uuid", "03c6b6ff-1afd-489e-b923-69f171b248eb",
 	"author", "ChoGGi",
-	"lua_revision", 245618,
+	"lua_revision", 249143,
 	"code", {
 		"Code/Script.lua",
 	},

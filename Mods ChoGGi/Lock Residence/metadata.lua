@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_LockResidence",
 	"steam_id", "1635694550",
 	"pops_any_uuid", "eaa85815-b77c-416e-a71b-e23694489348",
-	"lua_revision", 245618,
+	"lua_revision", 249143,
 	"code", {
 		"Code/Script.lua",
 	},

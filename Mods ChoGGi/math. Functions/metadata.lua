@@ -12,7 +12,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"steam_id", "1443143020",
 	"pops_any_uuid", "c632be42-2a13-414c-a293-4ed7174211c0",
-	"lua_revision", 245618,
+	"lua_revision", 249143,
 	"description", [[Modders only (unless it's a mod that uses these functions).
 
 For some reason SM doesn't have any of lua "math." functions.

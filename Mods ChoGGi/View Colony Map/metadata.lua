@@ -26,7 +26,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 245618,
+	"lua_revision", 249143,
 	"has_options", true,
 	"description", [[Shows the map before you load it in the select colony screen.
 

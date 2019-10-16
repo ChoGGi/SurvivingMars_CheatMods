@@ -18,7 +18,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1411157810",
 	"pops_any_uuid", "21d18780-d793-4fe4-89ca-6895cd45d639",
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog",
-	"lua_revision", 245618,
+	"lua_revision", 249143,
 	"TagGameplay", true,
 	"TagInterface", true,
 	"TagTools", true,

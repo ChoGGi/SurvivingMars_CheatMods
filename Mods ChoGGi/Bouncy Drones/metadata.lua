@@ -13,7 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", 245618,
+	"lua_revision", 249143,
 	"has_options", true,
 	"description", [[Drones bounce when they move around (Colonists and Rovers default to no bounce).
 

@@ -9,6 +9,6 @@ return PlaceObj("ModDef", {
 	"steam_id", "1571465108",
 	"pops_any_uuid", "9d1bb5a5-7c0e-4217-9bd9-54412dd730e2",
 	"author", "ChoGGi",
-	"lua_revision", 245618,
+	"lua_revision", 249143,
 	"description", [[These images are used in more than one of my mods; no sense in having dupes.]],
 })
