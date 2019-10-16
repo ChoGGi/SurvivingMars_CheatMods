@@ -1,6 +1,10 @@
 ## ECM Changelog
 
 ## v14.6 (Unreleased)
+### Added:
+- ECM>Rockets>Passenger Ark Pod: Allows you to use Ark Pod with any sponsor.
+- ECM>Rockets>Pod Price: Change the price per pod (applies to both supply/passenger).
+
 ### Changed:
 - Mod Upload temporarily swaps \n with <br> for paradox upload (thanks LukeH).
 - Examine:

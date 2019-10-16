@@ -7,6 +7,76 @@ local Strings = ChoGGi.Strings
 local Translate = ChoGGi.ComFuncs.Translate
 --~	local RetName = ChoGGi.ComFuncs.RetName
 
+
+function ChoGGi.MenuFuncs.SetPodPrice()
+	local default_setting = MissionSponsorPreset.pod_price
+
+	local item_list = {
+		{text = Translate(1000121--[[Default]]) .. ": " .. (default_setting / 1000000) .. " M", value = default_setting},
+		{text = ".100 M", value = 100000, hint = Strings[302535920000977--[[Anything below 1 M will show as 0 M.]]]},
+		{text = ".500 M", value = 500000, hint = Strings[302535920000977]},
+		{text = "1 M", value = 1000000},
+		{text = "10 M", value = 10000000},
+		{text = "50 M", value = 50000000},
+		{text = "100 M", value = 100000000},
+		{text = "500 M", value = 500000000},
+		{text = "1 000 M", value = 1000000000},
+		{text = "10 000 M", value = 10000000000},
+	}
+
+	local function CallBackFunc(choice)
+		if choice.nothing_selected then
+			return
+		end
+		local value = choice[1].value
+		if type(value) == "number" then
+			GetMissionSponsor().pod_price = value
+			if value == default_setting then
+				ChoGGi.UserSettings.PodPrice = nil
+			else
+				ChoGGi.UserSettings.PodPrice = value
+			end
+
+			ChoGGi.SettingFuncs.WriteSettings()
+			MsgPopup(
+				choice[1].text,
+				Strings[302535920000975--[[Pod Price]]]
+			)
+		end
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = item_list,
+		title = Strings[302535920000975--[[Pod Price]]],
+		hint = Strings[302535920000977--[[Anything below 1 M will show as 0 M.]]],
+		skip_sort = true,
+	}
+end
+
+function ChoGGi.MenuFuncs.AddPassengerArkPod_Toggle()
+	local sponsor = GetMissionSponsor()
+
+	if ChoGGi.UserSettings.AddPassengerArkPod then
+		ChoGGi.UserSettings.AddPassengerArkPod = nil
+		-- only blank it out if sponsor isn't new ark
+		if GameState.gameplay  and sponsor.id ~= "NewArk"then
+			sponsor.passenger_pod_class = nil
+		end
+	else
+		ChoGGi.UserSettings.AddPassengerArkPod = true
+		if GameState.gameplay then
+			sponsor.passenger_pod_class = "ArkPod"
+		end
+	end
+
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.AddPassengerArkPod),
+		Strings[302535920000941--[[Add Passenger Ark Pod]]]
+	)
+end
+
 do -- ChangeResupplySettings
 	local function CheckResupplySetting(cargo_val, name, value, meta)
 		if ChoGGi.Tables.CargoPresets[name][cargo_val] == value then

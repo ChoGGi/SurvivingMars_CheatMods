@@ -1,9 +1,4 @@
 "ID"," Text"
-302535920000941,
-302535920000962,
-302535920000975,
-302535920000976,
-302535920000977,
 302535920000978,
 302535920000980,
 302535920000981,
@@ -1287,6 +1282,11 @@ Attention: If you get yellow ground areas; just load it again or try %s."
 302535920000500,"Show a hex grid around mouse:
 Green = pass/build, Yellow = no pass/build,
 Blue = pass/no build, Red = no pass/no build."
+302535920000977,"Anything below 1 M will show as 0 M."
+302535920000975,"Pod Price"
+302535920000976,"Change the price per pod (applies to both supply/passenger)."
+302535920000941,"Passenger Ark Pod"
+302535920000962,"Allows you to use Ark Pod with any sponsor."
 302535920000702,"Drone Wasp Move Speed"
 302535920000051,"Drone Battery Cap"
 302535920000945,"Change the capacity of drone batteries."

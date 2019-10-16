@@ -15,6 +15,34 @@ Actions[c] = {ActionName = Translate(5238--[[Rockets]]),
 }
 
 c = c + 1
+Actions[c] = {ActionName = Strings[302535920000975--[[Pod Price]]],
+	ActionMenubar = "ECM.ECM.Rockets",
+	ActionId = ".Pod Price",
+	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.PodPrice,
+			Strings[302535920000976--[[Change the price per pod (applies to both supply/passenger).]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.SetPodPrice,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000941--[[Passenger Ark Pod]]],
+	ActionMenubar = "ECM.ECM.Rockets",
+	ActionId = ".Passenger Ark Pod",
+	ActionIcon = "CommonAssets/UI/Menu/ToggleTerrainHeight.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.PassengerArkPod,
+			Strings[302535920000962--[[Allows you to use Ark Pod with any sponsor.]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.PassengerArkPod_Toggle,
+}
+
+c = c + 1
 Actions[c] = {ActionName = Strings[302535920001291--[[Max Export Amount]]],
 	ActionMenubar = "ECM.ECM.Rockets",
 	ActionId = ".Max Export Amount",

@@ -1238,6 +1238,7 @@ do -- LoadGame/CityStart
 		local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides
 		local hr = hr
 		local labels = UICity.labels
+		local sponsor = GetMissionSponsor()
 
 		-- late enough that I can set g_Consts.
 		ChoGGi.SettingFuncs.SetConstsToSaved()
@@ -1273,12 +1274,19 @@ do -- LoadGame/CityStart
 
 
 
-
+		-- update pod price
+		if type(UserSettings.PodPrice) == "number" then
+			sponsor.pod_price = UserSettings.PodPrice
+		end
+		-- use ark pass pod with any sponsor
+		if UserSettings.PassengerArkPod then
+			sponsor.passenger_pod_class = "ArkPod"
+		end
+		-- allow camera closer to edge
 		if UserSettings.MapEdgeLimit then
 			hr.CameraRTSBorderAtMinZoom = 1000
 			hr.CameraRTSBorderAtMaxZoom = 1000
 		end
-
 		-- update existing speeds
 		if UserSettings.SpeedColonist then
 			UpdateLabelSpeed(labels, UserSettings.SpeedColonist, "Colonist")

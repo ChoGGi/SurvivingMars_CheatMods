@@ -473,7 +473,9 @@ ECM.Rockets>Change Resupply Settings: Shows a list of all cargo and allows you t
 ECM.Rockets>Colonists per Rocket: Maximum number of Colonists that can arrive on Mars in a single Rocket
 ECM.Rockets>Launch Fuel Per Rocket: Change how much fuel rockets need to launch.
 ECM.Rockets>Max Export Amount: Change how many rares per rocket you can export.
+ECM.Rockets>Passenger Ark Pod: Allows you to use Ark Pod with any sponsor.
 ECM.Rockets>Payload Capacity: Maximum payload (in kg) of a resupply Rocket
+ECM.Rockets>Pod Price: Change the price per pod (applies to both supply/passenger).
 ECM.Rockets>Rockets Ignore Fuel: Rockets don't need fuel to launch.
 ECM.Rockets>Travel Time: 1000: Time it takes for a Rocket to travel from Mars to Earth
 ECM.Rovers>RC Instant Resource Transfer: Make it instantly gather/transfer resources.
