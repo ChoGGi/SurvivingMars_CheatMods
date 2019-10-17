@@ -323,7 +323,7 @@ Press once to clear this examine, again to clear all."]]],
 			Id = "idButDeleteObj",
 			Image = "CommonAssets/UI/Menu/delete_objects.tga",
 			RolloverTitle = T(502364928914, "Delete"),
-			RolloverText = Strings[302535920000414--[[Are you sure you wish to delete <color red>%s</color>?]]]:format(self.name),
+			RolloverText = Strings[302535920000414--[[Are you sure you wish to delete <color ChoGGi_red>%s</color>?]]]:format(self.name),
 			OnPress = self.idButDeleteObj_OnPress,
 		}, self.idToolbarButtons)
 		--
@@ -429,7 +429,7 @@ Press once to clear this examine, again to clear all."]]],
 			Id = "idChildLock",
 			Text = T(4775, "Child"),
 			RolloverTitle = T(4775, "Child") .. " " .. T(254324150154, "Lock"),
-			RolloverText = Strings[302535920000920--[[Examining objs from this dlg will <color red>%s</color>examine them all in a single dlg.]]]:format(Translate(3695, "NOT") .. " "),
+			RolloverText = Strings[302535920000920--[[Examining objs from this dlg will <color ChoGGi_red>%s</color>examine them all in a single dlg.]]]:format(Translate(3695, "NOT") .. " "),
 			OnChange = self.idChildLock_OnChange,
 		}, self.idToolbarButtonsRight)
 		--
@@ -926,7 +926,7 @@ function ChoGGi_DlgExamine:idChildLock_OnChange(visible)
 		visible = Translate(3695, "NOT") .. " "
 	end
 
-	self.idChildLock:SetRolloverText(Strings[302535920000920--[[Examining objs from this dlg will <color red>%s</color>examine them all in a single dlg.]]]:format(visible))
+	self.idChildLock:SetRolloverText(Strings[302535920000920--[[Examining objs from this dlg will <color ChoGGi_red>%s</color>examine them all in a single dlg.]]]:format(visible))
 end
 -- stable name for external use
 function ChoGGi_DlgExamine:RefreshExamine()

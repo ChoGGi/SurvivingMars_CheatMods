@@ -1822,7 +1822,6 @@ do -- GetMaterialProperties
 
 				mat.__mtl = mat_name
 				mat.__lod = li
-				mat.__state = li
 				mat[1] = {
 					ChoGGi_AddHyperLink = true,
 					hint = Strings[302535920001174--[[Show an example .mtl file for this material (not complete).]]],

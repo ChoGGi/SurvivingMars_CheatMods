@@ -41,9 +41,9 @@ local invis = 0
 DefineClass.ChoGGi_XDefaults = {
 	__parents = {"XWindow"},
 }
-local SetParent = XWindow.SetParent
+local XWindow_SetParent = XWindow.SetParent
 function ChoGGi_XDefaults:SetParent(...)
-	SetParent(self, ...)
+	XWindow_SetParent(self, ...)
 	local win = self.parent
 	while win and not win:IsKindOf("ChoGGi_XWindow") do
 		win = win.parent
@@ -55,10 +55,12 @@ end
 local text_style1 = "ChoGGi_Text12"
 local text_style2 = "ChoGGi_TextList12"
 local text_style3 = "ChoGGi_Text14"
+local dlg_border_width = 2
 if ChoGGi.testing then
 	text_style1 = "ChoGGi_Text14"
 	text_style2 = "ChoGGi_TextList14"
 	text_style3 = "ChoGGi_Text16"
+	dlg_border_width = 3
 end
 
 DefineClass.ChoGGi_XText = {
@@ -453,7 +455,7 @@ DefineClass.ChoGGi_XDialog = {
 	RolloverTemplate = "Rollover",
 	RolloverTitle = T(126095410863--[[Info]]),
 	Background = dark_gray,
-	BorderWidth = 2,
+	BorderWidth = dlg_border_width,
 	BorderColor = light_gray,
 	Clip = "self",
 }

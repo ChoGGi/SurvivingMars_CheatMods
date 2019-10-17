@@ -290,7 +290,7 @@ Actions[c] = {ActionName = Strings[302535920001618--[[Map Data (Breakthroughs)]]
 See survivingmaps.com for a filtered list.
 Don't use in start new game screens (rating/topo will be messed up).
 Difficulty Challenge/Named Location may not work on some saves (best to start a new game, or run from main menu)."]]]:format(ConvertToOSPath("AppData/"))
-	.. "\n\n" .. Strings[302535920001619--[[This will take <color red>longer</color> (about 15s).]]],
+	.. "\n\n" .. Strings[302535920001619--[[This will take <color ChoGGi_red>longer</color> (about 15s).]]],
 	OnAction = ChoGGi.ComFuncs.ExportMapDataToCSV,
 	setting_breakthroughs = true,
 }

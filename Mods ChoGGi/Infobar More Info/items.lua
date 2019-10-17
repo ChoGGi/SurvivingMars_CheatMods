@@ -14,7 +14,7 @@ return {
 	PlaceObj("ModItemOptionNumber", {
 		"name", "SkipGridX",
 		"DisplayName", table.concat(T(9428, "Skip") .. " " .. T{11629, "GRID <i>", i = "X"}),
-		"Help", T(302535920011496, "Grids that only have X amount of buildings (for smaller clusters, like a concrete ""hub"", 0 to disable)."),
+		"Help", T(302535920011496, "Grids that only have X amount of buildings (for smaller clusters, like a concrete \"hub\", 0 to disable)."),
 		"DefaultValue", 0,
 		"MinValue", 0,
 		"MaxValue", 50,
@@ -22,7 +22,7 @@ return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "MergedGrids",
 		"DisplayName", T(302535920011492, "Merge Grid Info"),
-		"Help", T(7850, "Aggregated information for your Colony."),
+		"Help", T(302535920011545, "Splits each grid into a separate section in the tooltip."),
 		"DefaultValue", true,
 	}),
 	PlaceObj("ModItemOptionNumber", {

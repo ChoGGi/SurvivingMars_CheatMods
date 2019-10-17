@@ -40,7 +40,7 @@ do -- ModUpload
 	}
 	-- hey paradox! renaming things is a thing...
 	local paradox_title = {
-		ChoGGi_AddMathFunctions = [["math." Functions]],
+		ChoGGi_AddMathFunctions = "\"math.\" Functions",
 		ChoGGi_AlienVisitors = "Alien Visitors v0.1",
 		ChoGGi_AllSponsorBuildings = "All Sponsor Buildings v0.2",
 		ChoGGi_AllSponsors = "All Sponsors v0.1",
@@ -64,11 +64,14 @@ do -- ModUpload
 		ChoGGi_MakeFirstMartianbornCelebrity = "Make First Martianborn Celebrity v0.2",
 		ChoGGi_MapImagesPack = "Map Images Pack v0.1",
 		ChoGGi_MapOverviewShowSurfaceResources = "Map Overview: Show Surface Resources",
+		ChoGGi_MarkDepositGround = "Mark Deposit Ground v0.4",
 		ChoGGi_MarkSelectedBuildingType = "Mark Selected Building Type v0.1",
 		ChoGGi_MarsCompanion = "Mars Companion v0.1",
 		ChoGGi_MartianCarwash = "Martian Carwash v0.5",
 		ChoGGi_Minimap = "Minimap v0.5",
+		ChoGGi_MononokeShishiGami = "Mononoke Shishi-Gami",
 		ChoGGi_MultiSelect = "Multi-Select v0.1",
+		ChoGGi_NurseryLimitBirthingToSpots = "Nursery: Limit Birthing To Spots",
 		ChoGGi_OrbitalPrefabDrops = "Orbital Prefab Drops v0.5",
 		ChoGGi_OutsideResidence = "Outside Residence",
 		ChoGGi_PassengerRocketTweaks = "Passenger Rocket Tweaks v0.2",
@@ -86,6 +89,7 @@ do -- ModUpload
 		ChoGGi_RCRemote = "RC Remote v0.1",
 		ChoGGi_RCTanker = "RC Tanker v0.1",
 		ChoGGi_ResearchFilter = "Research Filter v0.2",
+		ChoGGi_ResearchSmallCheckMarks = "Research: Small CheckMarks",
 		ChoGGi_RocketAlwaysAskBeforeLaunch = "Rocket: Always Ask Before Launch v0.2",
 		ChoGGi_RocketPinEnable = "Rocket: Pin Enable",
 		ChoGGi_RotateAllBuildings = "Rotate All Buildings v0.1",
@@ -105,6 +109,7 @@ do -- ModUpload
 		ChoGGi_StopTradeCamera = "Stop Trade Camera",
 		ChoGGi_UpgradeSlotsVisitorsCapacity = "Upgrade Slots: Visitors/Capacity",
 		ChoGGi_ViewColonyMap = "View Colony Map v0.9",
+		ChoGGi_LakesToggleVisibility = "Lakes: Toggle Visibility",
 	}
 
 	local mods_path = "AppData/Mods/"
@@ -125,7 +130,7 @@ do -- ModUpload
 
 
 	local function UploadMod(answer, batch)
-		if not answer or mod and not mod.steam_id then
+		if not answer or not mod or mod and not mod.steam_id then
 			return
 		end
 
@@ -341,13 +346,16 @@ do -- ModUpload
 				:gsub("'",""):gsub(":","")
 			-- print away
 			if batch then
-				print(Translate("<color red>" .. msg .. "\n" .. tostring(log_error) .. "</color>"))
+				print(Translate("<color ChoGGi_red>" .. msg .. "\n" .. tostring(log_error) .. "</color>"))
 			end
 			if log_error then
 				result_title[#result_title+1] = "\n" .. T(1000592, "Error")
 				result_msg[#result_msg+1] = log_error
 			end
 		else
+			if batch then
+				print(Translate("<color ChoGGi_green>" .. T(1000015, "Success") .. " " .. mod.title .. "</color>"))
+			end
 			if choices_len == 1 then
 				result_msg[#result_msg+1] = T{1000014, "Mod <ModLabel> was successfully uploaded!",
 					ModLabel = mod.title,
@@ -475,7 +483,7 @@ do -- ModUpload
 						m_c = m_c + 1
 						upload_msg[m_c] = "\n\n"
 						m_c = m_c + 1
-						upload_msg[m_c] = Strings[302535920001572--[["<color red>Pack Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually to workaround it.
+						upload_msg[m_c] = Strings[302535920001572--[["<color ChoGGi_red>Pack Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually to workaround it.
 You can also stick the executable in the profile folder to use it instead (<green>no crashing</green>):
 <yellow>%s</yellow>."]]]:format(hpk_path)
 

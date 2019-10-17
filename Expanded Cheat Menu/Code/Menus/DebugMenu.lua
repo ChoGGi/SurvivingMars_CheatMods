@@ -460,7 +460,7 @@ Actions[c] = {ActionName = Strings[302535920000049--[[Loading Screen Log]]],
 		return SettingState(
 			ChoGGi.UserSettings.LoadingScreenLog,
 			Strings[302535920001621--[["Be able to see the console log (and other dialogs) during the loading screen.
-<color red>Warning</color>: Leave welcome to Mars msg onscreen till map is loaded."]]]
+<color ChoGGi_red>Warning</color>: Leave welcome to Mars msg onscreen till map is loaded."]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.LoadingScreenLog_Toggle,

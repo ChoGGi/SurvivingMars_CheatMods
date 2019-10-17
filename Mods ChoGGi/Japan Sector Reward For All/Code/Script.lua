@@ -1,8 +1,5 @@
 -- See LICENSE for terms
 
-local type = type
-local GetMissionSponsor = GetMissionSponsor
-
 local function StartupCode()
 	-- try to get the number from japan
 	local amount
