@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_GameRulesBreakthroughs",
 	"steam_id", "1753933193",
-	"pops_any_uuid", "36cf3b33-5f6c-47d8-8a17-2ca2bd9290be",
+	"pops_any_uuid", "6729224c-c34e-46fb-9355-400a0cdc5402",
 	"author", "ChoGGi",
 	"lua_revision", 249143,
 	"code", {

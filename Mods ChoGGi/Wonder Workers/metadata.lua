@@ -8,9 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Wonder Workers",
-	"version", 4,
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 5,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_WonderWorkers",
@@ -26,8 +26,6 @@ return PlaceObj("ModDef", {
 	"TagBuildings", true,
 	"description", [[Wonders require workers.
 Mod options to set amount (or 0) of workers required (default 10 per shift).
-
-Didn't set any specs for ArtificialSun/SpaceElevator, suggestions?
 
 
 Requested by Blake Walsh.]],

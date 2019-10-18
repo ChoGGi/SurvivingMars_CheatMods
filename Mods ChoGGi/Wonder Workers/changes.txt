@@ -1,3 +1,6 @@
+v0.5
+Add security as spec for elevator.
+
 v0.4
 Evans update.
 

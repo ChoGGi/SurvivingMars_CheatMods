@@ -11,7 +11,6 @@ local wonders = {
 	"TheExcavator",
 }
 
--- add workplace as parent cls obj
 local bt = BuildingTemplates
 for i = 1, #wonders do
 	local wonder = wonders[i]

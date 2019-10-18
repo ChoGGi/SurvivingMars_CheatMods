@@ -59,6 +59,7 @@ do -- ModUpload
 		ChoGGi_EveryFlagOnWikipedia = "Every Flag On Wikipedia v0.6",
 		ChoGGi_FixMissingBuildUpgradeIcons = "Fix: Missing Build/Upgrade Icons",
 		ChoGGi_FixRemovedModGameRules = "Fix: Removed Mod Game Rules",
+		ChoGGi_GameRulesBreakthroughs = "Game Rules: Breakthroughs",
 		ChoGGi_InfobarAddDischargeRates = "Infobar Add Discharge Rates",
 		ChoGGi_Library = "ChoGGi's Library v5.1",
 		ChoGGi_MakeFirstMartianbornCelebrity = "Make First Martianborn Celebrity v0.2",
@@ -585,7 +586,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			local c = 0
 			for i = 1, #result_msg do
 				c = c + 1
-				error_msgs[c] = result_title[i] .. " " .. result_msg[i]
+				error_msgs[c] = result_title[i] .. ": " .. result_msg[i]
 			end
 			error_msgs = table.concat(error_msgs)
 
