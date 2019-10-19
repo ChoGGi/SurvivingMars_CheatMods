@@ -329,9 +329,7 @@ function OnMsg.ClassesPostprocess()
 			"maintenance_resource_amount", 1000,
 		})
 	end
---~ end
 
---~ function OnMsg.ClassesBuilt()
 	-- add some prod info to selection panel
 	local building = XTemplates.ipBuilding[1][1]
 

@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Log Flush",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"saved", 0,
 	"id", "ChoGGi_LogFlush",
 	"steam_id", "1414089790",

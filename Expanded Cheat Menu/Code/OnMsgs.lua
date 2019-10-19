@@ -43,8 +43,11 @@ if ChoGGi.UserSettings.FixMissingModBuildings then
 end
 
 -- use this message to mess with the classdefs (before classes are built)
---~ function OnMsg.ClassesGenerate()
---~ end
+function OnMsg.ClassesGenerate()
+	if ChoGGi.UserSettings.FlushLog then
+		FlushLogFile()
+	end
+end
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)
 function OnMsg.ClassesPreprocess()
@@ -70,6 +73,10 @@ function OnMsg.ClassesPreprocess()
 			cConsts[name] = const[name]
 		end
 		cConsts.InvalidPos = InvalidPos()
+	end
+
+	if ChoGGi.UserSettings.FlushLog then
+		FlushLogFile()
 	end
 end
 
@@ -276,11 +283,17 @@ function OnMsg.ClassesPostprocess()
 		}
 	end
 
+	if ChoGGi.UserSettings.FlushLog then
+		FlushLogFile()
+	end
 end
 
 -- use this message to perform post-built actions on the final classes
---~ function OnMsg.ClassesBuilt()
---~ end
+function OnMsg.ClassesBuilt()
+	if ChoGGi.UserSettings.FlushLog then
+		FlushLogFile()
+	end
+end
 
 function OnMsg.ModsReloaded()
 	local ChoGGi = ChoGGi

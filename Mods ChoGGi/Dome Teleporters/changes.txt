@@ -1,3 +1,6 @@
+v1.0
+Log spam (thanks Wingheart).
+
 v0.9
 Evans update.
 

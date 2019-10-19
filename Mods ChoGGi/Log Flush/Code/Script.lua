@@ -44,6 +44,11 @@ OnMsg.CityStart = FlushLogFile
 -- and for good measure.
 OnMsg.ReloadLua = FlushLogFile
 
+OnMsg.ClassesGenerate = FlushLogFile
+OnMsg.ClassesPreprocess = FlushLogFile
+OnMsg.ClassesPostprocess = FlushLogFile
+OnMsg.ClassesBuilt = FlushLogFile
+
 -- a daily flush is good for the sol.
 function OnMsg.NewDay()
 	if mod_NewDay then

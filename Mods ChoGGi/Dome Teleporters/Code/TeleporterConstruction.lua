@@ -5,13 +5,15 @@ local mod_BuildDist
 -- fired when settings are changed/init
 local function ModOptions()
 	local value = CurrentModOptions:GetProperty("BuildDist")
-
 	mod_BuildDist = value
-	CityDomeTeleporterConstruction[UICity].max_hex_distance_to_allow_build = value
-	CityDomeTeleporterConstruction[UICity].max_range = value < 100 and 100 or value
-	-- I don't think anymore will spawn once one has, but whatever
-	DomeTeleporterConstructionController.max_hex_distance_to_allow_build = value
-	DomeTeleporterConstructionController.max_range = value < 100 and 100 or value
+
+	if GameState.gameplay then
+		CityDomeTeleporterConstruction[UICity].max_hex_distance_to_allow_build = value
+		CityDomeTeleporterConstruction[UICity].max_range = value < 100 and 100 or value
+		-- I don't think anymore will spawn once one has, but whatever
+		DomeTeleporterConstructionController.max_hex_distance_to_allow_build = value
+		DomeTeleporterConstructionController.max_range = value < 100 and 100 or value
+	end
 end
 
 -- load default/saved settings

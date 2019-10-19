@@ -1,3 +1,6 @@
+v0.6
+Added flush for OnMsg.Classes*.
+
 v0.5
 Evans update.
 

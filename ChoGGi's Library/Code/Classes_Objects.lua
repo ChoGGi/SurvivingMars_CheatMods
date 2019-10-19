@@ -23,8 +23,10 @@ DefineClass.ChoGGi_OSphere = {
 DefineClass.ChoGGi_OPolyline = {
 	__parents = {"ChoGGi_ODeleteObjs","Polyline"},
 }
+local PolylineSetParabola = ChoGGi.ComFuncs.PolylineSetParabola
+local AveragePoint2D = AveragePoint2D
 function ChoGGi_OPolyline:SetParabola(a, b)
-	ChoGGi.ComFuncs.PolylineSetParabola(self, a, b)
+	PolylineSetParabola(self, a, b)
 	self:SetPos(AveragePoint2D(self.vertices))
 end
 
