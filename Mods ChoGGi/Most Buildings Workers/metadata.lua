@@ -25,6 +25,7 @@ return PlaceObj("ModDef", {
 	"TagGameplay", true,
 	"TagBuildings", true,
 	"description", [[Adds mod options to add workers to all buildings without workers.
+This means buildings will require domes, even if workers is set to 0.
 
 This defaults to not requiring workers for any buildings (that's up to you).
 This won't work on mod buildings (even if they show up in the options).

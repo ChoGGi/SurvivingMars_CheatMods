@@ -21,6 +21,6 @@ return {
 		"name", "UltimateNursery",
 		"DisplayName", T(302535920011456, "Ultimate Nursery"),
 		"Help", T(302535920011512, "Count Ultimate Nurseries INSTEAD of regular ones."),
-		"DefaultValue", true,
+		"DefaultValue", false,
 	}),
 }

@@ -34,18 +34,22 @@ function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	getmetatable = env.getmetatable
 end
 
--- backup orginal function for later use (checks if we already have a backup, or else problems)
+-- backup orginal function for later use (checks if we already have a backup, or else inf problems)
 local function SaveOrigFunc(class_or_func, func_name)
 	local OrigFuncs = ChoGGi.OrigFuncs
-
+	-- if it's a class func
 	if func_name then
 		local newname = class_or_func .. "_" .. func_name
 		if not OrigFuncs[newname] then
-			OrigFuncs[newname] = _G[class_or_func][func_name]
+			local class_obj = rawget(_G, class_or_func)
+			if class_obj then
+				OrigFuncs[newname] = rawget(class_obj, func_name)
+			end
 		end
+	-- regular func
 	else
 		if not OrigFuncs[class_or_func] then
-			OrigFuncs[class_or_func] = _G[class_or_func]
+			OrigFuncs[class_or_func] = rawget(_G, class_or_func)
 		end
 	end
 end
@@ -107,7 +111,8 @@ local function DotNameToObject(str, root, create)
 	-- [] () + ? . act like regexp ones
 	-- % escape special chars
 	-- ^ complement of the match (the "opposite" of the match)
-	for name, match in str:gmatch("([^%.]+)(.?)") do
+	local matches = str:gmatch("([^%.]+)(.?)")
+	for name, match in matches do
 		-- if str included .number we need to make it a number or [name] won't work
 		local num = tonumber(name)
 		if num then

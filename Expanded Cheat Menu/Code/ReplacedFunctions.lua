@@ -65,14 +65,13 @@ do -- non-class obj funcs
 		return ChoGGi_OrigFuncs.WaitMarsMessage(parent, title, msg, ...)
 	end
 
+	-- examine persist errors (if any)
 	function ReportPersistErrors(...)
-		if UserSettings.DebugPersistSaves and #__error_table__ > 0 then
+		if UserSettings.DebugPersistSaves and __error_table__ and #__error_table__ > 0 then
 			ChoGGi.ComFuncs.OpenInExamineDlg(__error_table__, nil, "__error_table__ (persists)")
 		else
 			ChoGGi_OrigFuncs.ReportPersistErrors(...)
 		end
-		-- be useful for restarting threads, see if devs will add it
-		Msg("PostSaveGame")
 	end
 
 	-- WARNING: Unable to retrieve a function's source code while saving!
