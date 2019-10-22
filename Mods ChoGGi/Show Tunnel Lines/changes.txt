@@ -1,3 +1,9 @@
+v0.5
+Requires my Lib mod.
+Slight speed up for large amount of tunnels.
+Added mod option to leave lines on when selection changes.
+Code cleanup.
+
 v0.4
 Made sure lines are removed from saved games.
 

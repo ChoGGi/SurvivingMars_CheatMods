@@ -1,50 +1,103 @@
 -- See LICENSE for terms
 
-local IsValid = IsValid
-local PlacePolyline = PlacePolyline
-local AveragePoint2D = AveragePoint2D
-local pairs = pairs
-local table_clear = table.clear
+local mod_RemoveOnSelect
+local mod_RandomColours
 
-local tunnel_lines = {}
-local two_pointer = {}
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_RemoveOnSelect = CurrentModOptions:GetProperty("RemoveOnSelect")
+	mod_RandomColours = CurrentModOptions:GetProperty("RandomColours")
+end
 
-function OnMsg.SelectionAdded(obj)
-	if not obj:IsKindOf("Tunnel") then
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= CurrentModId then
 		return
 	end
 
-	-- if type tunnel then build/update list and show lines
-	local tunnels = UICity.labels.Tunnel or ""
-	for i = 1, #tunnels do
-		-- get tunnel n linked one so we only have one of each in table
-		local t1, t2 = tunnels[i], tunnels[i].linked_obj
-		-- see if we already added a table for paired tunnel
-		local table_item = tunnel_lines[t1] or tunnel_lines[t2]
-		if not table_item then
-			-- no need to clear the table, we just replace the old points
-			two_pointer[1] = t1:GetVisualPos()
-			two_pointer[2] = t2:GetVisualPos()
-			tunnel_lines[t1] = {
-				t1 = t1,
-				t2 = t2,
-				line = PlacePolyline(two_pointer),
-			}
-			tunnel_lines[t1].line:SetPos(AveragePoint2D(two_pointer))
-		end
-	end
-
+	ModOptions()
 end
 
-local function CleanUp()
-	for _, table_item in pairs(tunnel_lines) do
-		if IsValid(table_item.line) then
-			table_item.line:delete()
+-- local some funcs
+local IsValid = IsValid
+local SuspendPassEdits = SuspendPassEdits
+local ResumePassEdits = ResumePassEdits
+local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
+
+local lines = {}
+local lines_c = 0
+local tunnels = {}
+local OPolyline
+
+local function CleanUp(skip)
+	if lines_c == 0 then
+		return
+	end
+	-- speed up when spawning/deleting objs
+	if not skip then
+		SuspendPassEdits("ChoGGi_ShowTunnelLines_Cleanup")
+	end
+
+	for i = 1, lines_c do
+		local line = lines[i]
+		if IsValid(line) then
+			line:delete()
 		end
 	end
-	table_clear(tunnel_lines)
+	if not skip then
+		ResumePassEdits("ChoGGi_ShowTunnelLines_Cleanup")
+	end
+	table.iclear(lines)
+	table.clear(tunnels)
+	lines_c = 0
+end
+
+function OnMsg.SelectionAdded(obj)
+	-- we only want tunnels
+	if not obj:IsKindOf("Tunnel") then
+		return
+	end
+	SuspendPassEdits("ChoGGi_ShowTunnelLines_SpawnTunnels")
+	CleanUp(true)
+
+	if not OPolyline then
+		OPolyline = ChoGGi_OPolyline
+	end
+
+	local objs = UICity.labels.Tunnel or ""
+	for i = 1, #objs do
+		-- get tunnel n linked one so we only have one of each in table
+		local t1 = objs[i]
+		local t2 = t1.linked_obj
+		-- see if we already added a table for paired tunnel
+		if not (tunnels[t1] or tunnels[t2]) then
+			-- no dupes
+			tunnels[t1] = true
+			tunnels[t2] = true
+			-- spawn a line and draw it with a parabolic arc
+			local line = OPolyline:new()
+			line:SetParabola(t1:GetPos(), t2:GetPos())
+			if mod_RandomColours then
+				line:SetColors(RandomColourLimited())
+			end
+			-- store line obj for delete
+			lines_c = lines_c + 1
+			lines[lines_c] = line
+		end
+	end
+--~ 	ex{tunnels,lines}
+
+	ResumePassEdits("ChoGGi_ShowTunnelLines_SpawnTunnels")
 end
 
 OnMsg.SaveGame = CleanUp
+
 -- when selection is removed (or changed) hide all the lines
-OnMsg.SelectionRemoved = CleanUp
+function OnMsg.SelectionRemoved()
+	if mod_RemoveOnSelect then
+		CleanUp()
+	end
+end

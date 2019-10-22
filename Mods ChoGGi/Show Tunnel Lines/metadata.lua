@@ -1,8 +1,16 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library",
+			"version_major", 7,
+			"version_minor", 5,
+		}),
+	},
 	"title", "Show Tunnel Lines",
-	"version", 4,
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 5,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_ShowTunnelLines",
@@ -13,5 +21,10 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[When any tunnel is selected; this will show lines connecting the paired tunnels.]],
+	"has_options", true,
+	"description", [[When any tunnel is selected; this will show lines connecting paired tunnels.
+
+Mod Options:
+Remove On Select: Remove lines when selection changes.
+Random Colours: Use a few colours, disable to only use white.]],
 })
