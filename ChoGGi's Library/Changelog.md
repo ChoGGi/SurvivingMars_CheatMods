@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v7.6 (Unreleased)
+## v7.7 (Unreleased)
+
+## v7.6 (25 Oct 2019)
 - Minor speed up for DotNameToObject.
 - ReportPersistErrors log spam.
 
