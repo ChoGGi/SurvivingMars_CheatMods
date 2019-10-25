@@ -19,7 +19,7 @@ local function GetSkins()
 	return rockets, palettes
 end
 
--- replace the useless getskins function with ours
+-- replace the default getskins function with ours
 SupplyRocket.GetSkins = GetSkins
 -- hey if you want to change the skin for a few seconds...
 SupplyPod.GetSkins = GetSkins
@@ -40,23 +40,15 @@ if g_AvailableDlc.gagarin then
 	DragonRocket.GetSkins = GetSkins
 end
 
--- Silva - International Fuel Corporation
+-- Silva - Orion Heavy Rocket
 function OnMsg.ModsReloaded()
-	-- already added
-	if table.find(rockets, "sRocket_Orion") then
-		return
+	-- check if the mod is loaded and if it was already added to the list
+	if not table.find(rockets, "RDM_OrionRocket")
+		and table.find(ModsLoaded, "id", "Ucv4buQ")
+	then
+		-- if not then add to the list
+		rockets[#rockets+1] = "RDM_OrionRocket"
+		palettes[#palettes+1] = RDM_OrionRocket.rocket_palette
+		RDM_OrionRocket.GetSkins = GetSkins
 	end
-
-	if table.find(ModsLoaded, "id", "o4zrnLN") then
-		rockets[#rockets+1] = "sRocket_Orion"
-		-- rocket_palette = "OrionRocket", doesn't work with changing the colony colour scheme
-		palettes[#palettes+1] = {
-			"rocket_base",
-			"rocket_accent",
-			"outside_accent_1",
-			"rocket_base",
-		}
-		sRocket_Orion.GetSkins = GetSkins
-	end
-
 end

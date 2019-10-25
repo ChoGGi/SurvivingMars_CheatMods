@@ -1,3 +1,6 @@
+v0.4
+Updated support for Silva - Orion Heavy Rocket.
+
 v0.3
 Forgot to add the DropPod entity from gagarin.
 

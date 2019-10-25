@@ -1,3 +1,6 @@
+v0.8
+Messed up the mod options in 0.7.
+
 v0.7
 Evans update.
 

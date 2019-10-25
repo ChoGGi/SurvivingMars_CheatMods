@@ -12,11 +12,21 @@ return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "Background",
 		"DisplayName", T(302535920011363, "Show Background"),
+		"Help", T(302535920011553, "Add black background to clock."),
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "TextStyle",
 		"DisplayName", T(302535920011362, "Styles"),
+		"Help", T(302535920011552, [[1. Orange large
+2. White small
+3. Blue medium
+4. White smaller
+5. Blue large
+6. White large
+7. Red medium
+8. Blue Darker medium
+9. Red Large]]),
 		"DefaultValue", 1,
 		"MinValue", 1,
 		"MaxValue", 9,

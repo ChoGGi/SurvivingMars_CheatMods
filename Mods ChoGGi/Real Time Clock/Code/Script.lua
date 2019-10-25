@@ -28,7 +28,6 @@ local style_lookup = {
 	"InfopanelResourceNoAccept",
 	"ListItem1",
 	"ModsUIItemStatusWarningBrawseConsole",
-	"LandingPosNameAlt",
 }
 
 -- fired when settings are changed/init

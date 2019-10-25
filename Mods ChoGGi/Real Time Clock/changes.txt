@@ -1,3 +1,6 @@
+v0.6
+Added tooltip with list of text styles.
+
 v0.5
 Evans update.
 

@@ -9,7 +9,7 @@ local Translate = ChoGGi.ComFuncs.Translate
 
 local pairs, tonumber, type, tostring = pairs, tonumber, type, tostring
 local AsyncRand = AsyncRand
-local FindNearestObject = FindNearestObject
+local FindNearestObject = FindNearestObject -- list,obj/point,filter
 local GetTerrainCursor = GetTerrainCursor
 local IsValid = IsValid
 local IsKindOf = IsKindOf
