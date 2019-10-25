@@ -5,6 +5,7 @@
 ## v7.6 (25 Oct 2019)
 - Minor speed up for DotNameToObject.
 - ReportPersistErrors log spam.
+- Minor tweaks.
 
 ## v7.5 (09 Aug 2019)
 - MsgPopup tried to translate numbers to string ids.

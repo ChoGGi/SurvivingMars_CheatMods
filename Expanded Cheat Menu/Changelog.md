@@ -8,7 +8,7 @@
 - ECM>Rockets>Pod Price: Change the price per pod (applies to both supply/passenger).
 
 ### Changed:
-- Mod Upload temporarily swaps \n with <br> for paradox upload (thanks LukeH).
+- Mod Upload temporarily swaps \n with \<br\> for paradox upload (thanks LukeH).
 - Examine:
 - > table/func/userdata/thread objs in tables will now use the key name for the title if there's no proper name.
 - > Index tables try to show the name of valid objs (instead of class name).
