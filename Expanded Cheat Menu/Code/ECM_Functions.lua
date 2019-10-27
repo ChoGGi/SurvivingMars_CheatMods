@@ -3818,15 +3818,15 @@ function ChoGGi.ComFuncs.MonitorFunctionResults(func, ...)
 end
 
 -- set UI transparency
-function ChoGGi.ComFuncs.SetDlgTrans(dlg)
+function ChoGGi.ComFuncs.SetDlgTrans(dlg, ...)
 	if not dlg or dlg and not dlg.class then
-		return
+		return dlg, ...
 	end
 	local t = ChoGGi.UserSettings.Transparency[dlg.class]
 	if t then
 		dlg:SetTransparency(t)
 	end
-	return dlg
+	return dlg, ...
 end
 
 -- close any examine dlgs opened from "parent" examine dlg

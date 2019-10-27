@@ -1,3 +1,4 @@
+-- See LICENSE for terms
 
 local orig_RCTransport_TransferResources = RCTransport.TransferResources
 function RCTransport:TransferResources(...)

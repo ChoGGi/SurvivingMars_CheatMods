@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local CurrentModPath = CurrentModPath
 local PlaceObj = PlaceObj
 

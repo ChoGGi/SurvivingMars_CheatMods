@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 
 function OnMsg.ClassesBuilt()
 

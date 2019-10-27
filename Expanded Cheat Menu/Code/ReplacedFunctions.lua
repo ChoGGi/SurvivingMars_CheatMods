@@ -154,6 +154,7 @@ do -- non-class obj funcs
 	-- lets you load saved games that have dlc
 	SaveOrigFunc("IsDlcAvailable")
 	function IsDlcAvailable(...)
+		-- returns true if the setting is true, or return the orig func
 		return UserSettings.SkipMissingDLC or ChoGGi_OrigFuncs.IsDlcAvailable(...)
 	end
 

@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local IsValid = IsValid
 
 function OnMsg.LoadGame()

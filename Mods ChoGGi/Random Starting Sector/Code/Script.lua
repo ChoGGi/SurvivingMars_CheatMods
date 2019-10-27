@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local AsyncRand = AsyncRand
 local CreateRand = CreateRand
 

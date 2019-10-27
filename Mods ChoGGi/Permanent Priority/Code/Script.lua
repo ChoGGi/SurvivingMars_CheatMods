@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local unpack = rawget(_G, "unpack") or table.unpack
 
 local orig_ConstructionSite_Complete = ConstructionSite.Complete

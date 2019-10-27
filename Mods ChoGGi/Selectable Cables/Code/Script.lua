@@ -1,3 +1,4 @@
+-- See LICENSE for terms
 
 -- we need to return our new infopanel (if it isn"t another panel)
 local orig_ElectricityGridElement_GetInfopanelTemplate = ElectricityGridElement.GetInfopanelTemplate

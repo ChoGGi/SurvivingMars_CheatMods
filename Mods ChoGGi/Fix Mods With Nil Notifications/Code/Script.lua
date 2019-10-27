@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local unpack = table.unpack
 
 local orig_LoadCustomOnScreenNotification = LoadCustomOnScreenNotification

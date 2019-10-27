@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local g_Classes = g_Classes
 local type = type
 

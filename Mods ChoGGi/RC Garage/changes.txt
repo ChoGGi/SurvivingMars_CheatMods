@@ -1,3 +1,9 @@
+v0.8
+Added button to change main garage.
+Too much power was being used by main garage (switch mains or move a rover to update).
+Cleaned up tooltips.
+Some rovers weren't counted as power usage.
+
 v0.7
 Fix for issue with UI (thanks Olaf).
 

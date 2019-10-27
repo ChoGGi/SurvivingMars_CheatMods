@@ -1,3 +1,4 @@
+-- See LICENSE for terms
 
 local rule_id = "replace with gamerule id"
 

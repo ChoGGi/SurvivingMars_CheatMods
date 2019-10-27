@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local that_time_of_the_year = GetDate():find("Dec")
 
 -- copy n paste from ChoGGi.ComFuncs.LoadEntity

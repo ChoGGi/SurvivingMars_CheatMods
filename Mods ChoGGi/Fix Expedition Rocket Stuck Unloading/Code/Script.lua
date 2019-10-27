@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local table_find = table.find
 
 function OnMsg.LoadGame()

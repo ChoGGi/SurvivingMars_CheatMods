@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 -- this is a copy n paste of one of the in-game schemes
 -- convert the numbers with ColorizationMaterialDecode(2209066747), this will return three numbers:
 -- a value you can use with GetRGB(value), roughness value, metallic value

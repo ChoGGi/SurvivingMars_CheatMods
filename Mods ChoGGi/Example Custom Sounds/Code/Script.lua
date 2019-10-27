@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 -- some sound funcs to use with the sounds defined below:
 --~ handle = PlaySound(sound, _type, volume, fade_time, looping, point_or_object, loud_distance)
 --~ StopSound(handle)

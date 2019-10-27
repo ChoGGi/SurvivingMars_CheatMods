@@ -74,18 +74,18 @@ function OnMsg.ClassesPostprocess()
 	ChoGGi.ComFuncs.RemoveXTemplateSections(building, "ChoGGi_Template_ShowDustAffectedToggle", true)
 
 	building[#building+1] = PlaceObj('XTemplateTemplate', {
-			"ChoGGi_Template_ShowDustAffectedToggle", true,
-			"__context_of_kind", "DustGenerator",
+		"ChoGGi_Template_ShowDustAffectedToggle", true,
+		"__context_of_kind", "DustGenerator",
 --~ 			"__condition", function (_, context) return context.is_hub or not context.is_switch end,
-			"__template", "InfopanelButton",
+		"__template", "InfopanelButton",
 
-			"Icon", "UI/Icons/IPButtons/drill.tga",
-			"RolloverText", T(302535920011547, "Show nearby buildings being affected by this dust generator."),
-			"RolloverTitle", T(302535920011546, "Toggle Dust Affected"),
+		"Icon", "UI/Icons/IPButtons/drill.tga",
+		"RolloverText", T(302535920011547, "Show nearby buildings being affected by this dust generator."),
+		"RolloverTitle", T(302535920011546, "Toggle Dust Affected"),
 
-			"OnPress", function (self, gamepad)
-				ToggleLines(self.context)
-			end,
-		})
+		"OnPress", function (self, gamepad)
+			ToggleLines(self.context)
+		end,
+	})
 
 end

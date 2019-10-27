@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 function OnMsg.ColonistBorn(obj)
 	if not UICity.ChoGGi_MakeFirstMartianbornCelebrity then
 		obj:AddTrait("Celebrity", true)

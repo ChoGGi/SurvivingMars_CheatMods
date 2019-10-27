@@ -1,3 +1,4 @@
+-- See LICENSE for terms
 
 -- add a new tech
 function OnMsg.ClassesPostprocess()

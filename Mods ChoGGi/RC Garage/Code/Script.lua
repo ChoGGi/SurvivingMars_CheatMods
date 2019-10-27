@@ -29,9 +29,11 @@ DefineClass.RCGarage = {
 	power_modifier = false,
 	-- show the pin info
 	pin_rollover = T(51, "<ui_command>"),
+	-- power for main
+	main_power_usage = 5000,
 }
 
-function RCGarage:GameInit(...)
+function RCGarage:GameInit()
 	-- add a ref to global var for easy access
 	self.stored_rovers = g_ChoGGi_RCGarageRovers
 	self.garages = g_ChoGGi_RCGarages
@@ -48,7 +50,6 @@ function RCGarage:GameInit(...)
 		-- easy access for later
 		self.door = a
 	end)
-
 end
 
 function RCGarage:SetPalette()
@@ -213,39 +214,76 @@ end
 -- assign one if we need to, skip is from RemoveGarage when we're removing main
 function RCGarage:CheckMainGarage(skip)
 	local main
+	local garages = self.garages
+
 	-- skip is from RemoveGarage when old main is removed (skip is a ref to .main)
 	if not skip then
-		if IsValid(self.garages.main) and not self.garages.main.destroyed then
-			main = self.garages.main
+		if IsValid(garages.main) and not garages.main.destroyed then
+			main = garages.main
 		end
 	end
 
 	if not main then
-		for i = 1, #self.garages do
-			local obj = self.garages[i]
+		for i = 1, #garages do
+			local obj = garages[i]
 			if obj ~= skip and IsValid(obj) and not obj.destroyed then
 				-- add as main and remove it's regular ref
 				main = obj
-				table.remove(self.garages, i)
+				table.remove(garages, i)
 				break
 			end
 		end
 	end
 	-- only update if changed
-	if main and main ~= self.garages.main then
+	if main and main ~= garages.main then
 		-- update ref and POWAH
-		self.garages.main = main
+		garages.main = main
 		main:UpdateGaragePower(true)
 	end
 
 	return main
 end
 
-local function CountPower(power, list, amount)
+function RCGarage:SetMainGarage(garage)
+	local garages = self.garages
+
+	if IsValid(garage) and not garage.destroyed then
+		-- clean up old main
+		local old_main = garages.main
+		if IsValid(old_main) then
+			-- add old main to garages list
+			garages[#garages+1] = old_main
+			-- remove power from existing main
+			local elec = old_main.modifications and old_main.modifications.electricity_consumption
+			if elec then
+				for i = #elec, 1, -1 do
+					elec[i]:delete()
+				end
+			end
+			old_main.power_modifier = nil
+		end
+
+		-- and add new
+		garages.main = garage
+		-- remove from list of garages (so it doesn't count for powah)
+		local idx = table.find(garage)
+		if idx then
+			table.remove(garages, idx)
+		end
+		-- powah!
+		garage:UpdateGaragePower(true)
+	else
+		-- stick with old main or randomly pick a main
+		self:CheckMainGarage()
+	end
+end
+
+function RCGarage:CountPower(power, list, amount, rover)
 	for i = #list, 1, -1 do
 		local item = list[i]
 		if IsValid(item) then
-			if item.working then
+			-- working is for buildings, some rovers will have .working = false
+			if rover or item.working then
 				power = power + amount
 			end
 		else
@@ -256,23 +294,42 @@ local function CountPower(power, list, amount)
 	return power
 end
 
+-- the main garage is getting two power mods on spawn for some reason
+function RCGarage:CleanUpPower(main)
+	-- make sure there's only one elec mod
+	local elec = main.modifications and main.modifications.electricity_consumption
+	if elec then
+		local powah = main.power_modifier
+		for i = #elec, 1, -1 do
+			local item = elec[i]
+			if item ~= powah then
+				item:delete()
+			end
+		end
+	end
+end
+
 function RCGarage:UpdateGaragePower(skip_check)
 	if skip_check or self:CheckMainGarage() then
 		-- main always uses 5
-		local power = 5000
+		local power = self.main_power_usage or 5000
 		-- add the rest
-		power = CountPower(power, self.garages, self.garages.power_per_garage)
-		power = CountPower(power, self.stored_rovers, self.garages.power_per_rover)
+		power = self:CountPower(power, self.garages, self.garages.power_per_garage)
+		power = self:CountPower(power, self.stored_rovers, self.garages.power_per_rover, true)
 		-- and update our modifier
-		if self.garages.main.power_modifier then
-			self.garages.main.power_modifier:Change(power)
+		local main = self.garages.main
+
+		if main.power_modifier then
+			main.power_modifier:Change(power)
+			main:CleanUpPower(main)
 		else
-			self.garages.main.power_modifier = ObjectModifier:new{
+			main.power_modifier = ObjectModifier:new{
 				target = self,
 				prop = "electricity_consumption",
 				amount = power,
 				percent = 0,
 			}
+			main:CleanUpPower(main)
 		end
 	end
 end
@@ -330,8 +387,36 @@ function OnMsg.ClassesPostprocess()
 		})
 	end
 
+	local building = XTemplates.ipBuilding[1]
+	-- check for and remove existing template
+	ChoGGi.ComFuncs.RemoveXTemplateSections(building, "ChoGGi_Template_SetMainGarage", true)
+
+	building[#building+1] = PlaceObj('XTemplateTemplate', {
+		"ChoGGi_Template_SetMainGarage", true,
+		"__context_of_kind", "RCGarage",
+		"__condition", function (_, context)
+			-- only show button if this isn't the main
+			return context.garages.main ~= context
+		end,
+		"__template", "InfopanelButton",
+		"Icon", "UI/Icons/IPButtons/drill.tga",
+		"RolloverTitle", T(302535920011555, "Set Main Garage"),
+		"RolloverText", T(302535920011554, "Set this garage as main garage."),
+		"OnPress", function (self)
+			local context = self.context
+
+			context:SetMainGarage(context)
+			-- update button vis
+			if context.garages.main == context then
+				self:SetVisible(false)
+			else
+				self:SetVisible(true)
+			end
+		end,
+	})
+
 	-- add some prod info to selection panel
-	local building = XTemplates.ipBuilding[1][1]
+	building = XTemplates.ipBuilding[1][1]
 
 	-- check for and remove existing template
 	local idx = table.find(building, "ChoGGi_Template_RCGarage", true)
@@ -364,27 +449,22 @@ function OnMsg.ClassesPostprocess()
 			PlaceObj('XTemplateTemplate', {
 				"__template", "InfopanelActiveSection",
 				"Icon", "UI/Icons/ColonyControlCenter/outside_buildings_on.tga",
-				"RolloverText", T(302535920011187, [[View main garage]]),
+				"RolloverText", T(302535920011187, [[View Main Garage
+(The one that needs power).]]),
 				"OnContextUpdate", function(self, context)
 					---
-
+					context:CheckMainGarage()
 					-- hide if this is main garage
-					if context:CheckMainGarage() then
-						if context.garages.main == context then
-							self:SetVisible(false)
-							self:SetMaxHeight(0)
-						else
-							self:SetVisible(true)
-							self:SetMaxHeight()
-						end
-					end
-
-					if T(5438, "Rovers") .. ": " .. #context.stored_rovers == context.status_text then
+					if context.garages.main == context then
+						self:SetVisible(false)
+						self:SetMaxHeight(0)
 						self:SetTitle(T(302535920011184, [[Main Garage]]))
 					else
+						self:SetVisible(true)
+						self:SetMaxHeight()
 						self:SetTitle(context.pin_rollover)
 					end
-
+					ObjModified(self.context)
 					---
 				end,
 			}, {
@@ -429,29 +509,27 @@ function OnMsg.ClassesPostprocess()
 					end,
 					"func", function(self, context)
 						---
-
-						local GetRandomPassableAround = GetRandomPassableAround
-						local GetRandomPassable = GetRandomPassable
-						local function CallBackFunc(answer)
-							if answer then
-								local rovers = g_ChoGGi_RCGarageRovers
-								for i = #rovers, 1, -1 do
-									local unit = rovers[i]
-									unit.ChoGGi_InGarage = nil
-									unit.accumulate_dust = true
-									unit:SetPos(context:GetPos())
-									unit:SetCommand("Goto",
-										GetRandomPassableAround(unit:GetPos(), 100000)
-                    or GetRandomPassable()
-									)
-								end
-								table.clear(g_ChoGGi_RCGarageRovers)
-								context:UpdateGaragePower()
-							end
-						end
 						ChoGGi.ComFuncs.QuestionBox(
 							T(302535920011190, [[Are you sure you want to eject all rovers?]]),
-							CallBackFunc,
+							function(answer)
+								if answer then
+									local GetRandomPassableAround = GetRandomPassableAround
+									local GetRandomPassable = GetRandomPassable
+									local rovers = context.stored_rovers or g_ChoGGi_RCGarageRovers
+									for i = #rovers, 1, -1 do
+										local unit = rovers[i]
+										unit.ChoGGi_InGarage = nil
+										unit.accumulate_dust = true
+										unit:SetPos(context:GetPos())
+										unit:SetCommand("Goto",
+											GetRandomPassableAround(unit:GetPos(), 10000)
+											or GetRandomPassable()
+										)
+									end
+									table.iclear(rovers)
+									context:UpdateGaragePower()
+								end
+							end,
 							T(302535920011188, [[Eject All]])
 						)
 						---
@@ -463,7 +541,8 @@ function OnMsg.ClassesPostprocess()
 			PlaceObj('XTemplateTemplate', {
 				"__template", "InfopanelActiveSection",
 				"Icon", "UI/Icons/Sections/accept_colonists_on.tga",
-				"RolloverText", T(302535920011191, [[Show list of stored rovers]]),
+				"RolloverText", T(302535920011191, [[Click to show a list of stored rovers.
+Click in list to eject a rover.]]),
 				"OnContextUpdate", function(self, context)
 					---
 					if context:CheckMainGarage() then

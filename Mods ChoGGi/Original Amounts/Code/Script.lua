@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 -- I included all the original costs just in case they change them later on.
 -- This won't block extra materials from being added to the cost.
 

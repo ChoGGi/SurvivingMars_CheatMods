@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 -- local is (slightly) faster then global (assuming you call it more then once)
 local XTemplates = XTemplates
 local ObjModified = ObjModified

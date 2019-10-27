@@ -1,3 +1,4 @@
+-- See LICENSE for terms
 
 local buildings_to_check = {
 	GardenLake = true,

@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 function OnMsg.TechResearched(tech_id, city)
 	-- fires on new game
 	if not GameState.gameplay then

@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local traits_age = {}
 
 --build age trait list

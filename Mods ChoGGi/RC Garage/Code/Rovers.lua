@@ -121,7 +121,6 @@ end
 -- override for Patriot missile sys
 function OnMsg.ClassesBuilt()
 
-
 	if rawget(g_Classes, "PMSAttackRover") then
 		local orig_PMSAttackRover_CanInteractWithObject = PMSAttackRover.CanInteractWithObject
 		function PMSAttackRover:CanInteractWithObject(obj, interaction_mode, ...)

@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 -- png or tga can be used
 g_LoadingScreens = {
 	CurrentModPath .. "UI/The Incal.png",

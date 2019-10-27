@@ -8,9 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "RC Garage",
-	"version", 7,
+	"version", 8,
 	"version_major", 0,
-	"version_minor", 7,
+	"version_minor", 8,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_RCGarage",
@@ -25,8 +25,9 @@ return PlaceObj("ModDef", {
 	"description", [[Massive underground connected parking garage for idle rovers, so you don't need to go looking for them.
 The more stored the more electricity it uses (0.5 per), and you can't remove any rovers if the main garage isn't working.
 
-The first placed garage is the main one that uses power the rest will draw it from (unless you remove it then it's a randomly different one).
-Each added garage is another 1 electricity use.
+The first placed garage is the main one that uses power the rest will draw from it.
+There's a button added to the other garages if you want to switch the main.
+Each garage is another 1 electricity use.
 
 Comes with built-in rover wash.
 

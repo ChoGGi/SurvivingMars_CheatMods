@@ -1,3 +1,4 @@
+-- See LICENSE for terms
 
 function OnMsg.LoadGame()
 	-- suspending speeds up deleting

@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local positive_traits = {}
 local negative_traits = {}
 

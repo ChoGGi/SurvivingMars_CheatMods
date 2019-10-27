@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local mod = CurrentModDef
 
 local loadlogos = {

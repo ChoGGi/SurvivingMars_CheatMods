@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local mod = CurrentModDef
 
 -- copy n paste from ChoGGi.ComFuncs.LoadEntity

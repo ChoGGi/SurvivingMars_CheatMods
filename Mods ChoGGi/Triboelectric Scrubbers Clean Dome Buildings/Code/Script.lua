@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 function TriboelectricScrubber:CleanBuildings()
   if not self.working then
     return

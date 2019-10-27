@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local IsValid = IsValid
 
 local removed_str = "Remove Invalid Label Buildings: %s> %s, entity: %s, handle: %s"

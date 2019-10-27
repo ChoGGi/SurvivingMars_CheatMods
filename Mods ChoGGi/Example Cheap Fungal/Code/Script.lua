@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 function OnMsg.ClassesPostprocess()
 	local bt = BuildingTemplates
 	bt.FungalFarm.production_per_day1 = 15000
