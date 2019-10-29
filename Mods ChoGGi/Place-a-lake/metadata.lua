@@ -24,7 +24,9 @@ return PlaceObj("ModDef", {
 	"description", [[Adds a rock you place to mark a lake spot (with a button to raise/lower the level).
 This will ignore the uneven terrain limitation.
 
-For now rovers and whatnot will ignore the lake and walk through it.]],
+For now rovers and whatnot will ignore the lake and walk through it.
+
+If you want a mod that makes the lakes improve the "Water" param and local soil then use [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1872988552]Rain Lakes[/url] by tanyfilina.]],
 	"TagTerraforming", true,
 	"TagLandscaping", true,
 })

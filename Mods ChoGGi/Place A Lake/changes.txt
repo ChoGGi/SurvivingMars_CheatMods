@@ -1,5 +1,0 @@
-v0.3
-Removed the uneven terrain limitation for the lake object.
-
-v0.2
-Was borking other lakes.
