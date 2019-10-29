@@ -21,9 +21,10 @@ function OnMsg.ModsReloaded()
 		if name:sub(1, 2) == "RC" and name:sub(-8) == "Building" then
 			name = name:gsub("Building", "")
 		end
-		local idx = table.find(BuildingTechRequirements[id], "check_supply", name)
+		local reqs = BuildingTechRequirements[id]
+		local idx = table.find(reqs, "check_supply", name)
 		if idx then
-			table.remove(BuildingTechRequirements[id], idx)
+			table.remove(reqs, idx)
 		end
 
 	end

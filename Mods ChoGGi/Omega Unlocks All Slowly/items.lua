@@ -7,4 +7,10 @@ return {
 		"MinValue", 1,
 		"MaxValue", 100,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "ShowNotification",
+		"DisplayName", T(302535920011556, "Show Notification"),
+		"Help", T(302535920011557, "Show a notification when a breakthrough is unlocked."),
+		"DefaultValue", true,
+	}),
 }

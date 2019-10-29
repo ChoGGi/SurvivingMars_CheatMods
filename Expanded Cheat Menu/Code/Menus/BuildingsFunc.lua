@@ -119,9 +119,10 @@ function ChoGGi.MenuFuncs.SponsorBuildingLimits_Toggle()
 			if name:sub(1, 2) == "RC" and name:sub(-8) == "Building" then
 				name = name:gsub("Building", "")
 			end
-			local idx = table_find(BuildingTechRequirements[id], "check_supply", name)
+			local reqs = BuildingTechRequirements[id]
+			local idx = table_find(reqs, "check_supply", name)
 			if idx then
-				table_remove(BuildingTechRequirements[id], idx)
+				table_remove(reqs, idx)
 			end
 
 		end

@@ -1,3 +1,7 @@
+v0.5
+Added mod option to disable notification.
+Added Sols remaining to the Research tooltip in the Infobar.
+
 v0.4
 Evans update.
 

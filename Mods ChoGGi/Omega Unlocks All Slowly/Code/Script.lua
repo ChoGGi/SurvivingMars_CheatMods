@@ -1,10 +1,12 @@
 -- See LICENSE for terms
 
 local mod_SolsBetweenUnlock
+local mod_ShowNotification
 
 -- fired when settings are changed/init
 local function ModOptions()
 	mod_SolsBetweenUnlock = CurrentModOptions:GetProperty("SolsBetweenUnlock")
+	mod_ShowNotification = CurrentModOptions:GetProperty("ShowNotification")
 end
 
 -- load default/saved settings
@@ -31,9 +33,8 @@ function OnMsg.NewDay()
 		return
 	end
 
-	local sols = ChoGGi_OmegaUnlocksAllSlowly_Sols
-	sols = sols + 1
-	-- wait another sol
+	local sols = ChoGGi_OmegaUnlocksAllSlowly_Sols + 1
+	-- wait another Sol if we haven't hit the limit
 	if sols < mod_SolsBetweenUnlock then
 		ChoGGi_OmegaUnlocksAllSlowly_Sols = sols
 		return
@@ -75,5 +76,19 @@ function OnMsg.NewDay()
 	UICity:SetTechDiscovered(def.id)
 
 	-- make this optional?
-	AddOnScreenNotification("BreakthroughDiscovered", OpenResearchDialog, {name = def.display_name, context = def, rollover_title = def.display_name, rollover_text = def.description})
+	if mod_ShowNotification then
+		AddOnScreenNotification("BreakthroughDiscovered", OpenResearchDialog, {name = def.display_name, context = def, rollover_title = def.display_name, rollover_text = def.description})
+	end
+end
+
+function OnMsg.AddResearchRolloverTexts(ret)
+	-- no text if it's set to 1 sol or omega isn't unlocked
+	if mod_SolsBetweenUnlock == 1 or not g_OmegaTelescopeBonusGiven then
+		return
+	end
+
+	ret[#ret+1] = "<newline>" .. T{302535920011560,
+		"Omega Unlock Sols<right><em><sols></em>",
+		sols = mod_SolsBetweenUnlock - ChoGGi_OmegaUnlocksAllSlowly_Sols,
+	}
 end
