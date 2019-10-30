@@ -8,9 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "RC Tanker",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_RCTanker",
@@ -23,9 +23,9 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"description", [[Allows you to drain an oxygen or water tank, and fill another tank.
-Adds two buttons to the selection panel: One to switch between draining and filling, and one to switch the resource type.
+Adds two buttons to the selection panel: One to switch between draining and filling, and one to switch between oxygen/water (will empty tank of current resource).
 
-By default it can hold an unlimited amount, includes a mod options setting to limit it to X units (if you feel it's too cheap).
+By default it can hold an unlimited amount, includes a mod option to limit it to X units (if you feel it's too cheap).
 
 Depending on DLC installed RC and tank will use different models.]],
 })
