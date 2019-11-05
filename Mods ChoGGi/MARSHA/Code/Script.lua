@@ -1,69 +1,15 @@
 -- See LICENSE for terms
 
-local AttachToNearestDome
-
--- the below is needed for inside buildings to work outside
-if Mods.ChoGGi_Library.version > 70 then
-	AttachToNearestDome = ChoGGi.ComFuncs.AttachToNearestDome
-else
-	-- remove this once 7.1 is out
-	local MapFilter = MapFilter
-	local FindNearestObject = FindNearestObject
-	local IsValid = IsValid
-	local function CanWork(obj)
-		return obj:CanWork()
-	end
-
-	-- if building requires a dome and that dome is borked then assign it to nearest dome
-	AttachToNearestDome = function(obj, force)
-		if force ~= "force" and not obj:GetDefaultPropertyValue("dome_required") then
-			return
-		end
-
-		-- find the nearest working dome
-		local working_domes = MapFilter(UICity.labels.Dome, CanWork)
-		local dome = FindNearestObject(working_domes, obj)
-
-		local current_dome_valid = IsValid(obj.parent_dome)
-		-- remove from old dome (assuming it's a different dome), or the dome is invalid
-		if obj.parent_dome and not current_dome_valid
-				or (current_dome_valid and dome and dome.handle ~= obj.parent_dome.handle) then
-			local current_dome = obj.parent_dome
-			-- add to dome labels
-			current_dome:RemoveFromLabel("InsideBuildings", obj)
-			if obj:IsKindOf("Residence") then
-				current_dome:RemoveFromLabel("Residence", obj)
-			end
-
-			if obj:IsKindOf("NetworkNode") then
-				current_dome:SetLabelModifier("BaseResearchLab", "NetworkNode")
-			end
-			obj.parent_dome = false
-		end
-
-		-- no need to fire if there's no dome, or the above didn't remove it
-		if dome and not IsValid(obj.parent_dome) then
-			obj:SetDome(dome)
-
-			-- add to dome labels
-			dome:AddToLabel("InsideBuildings", obj)
-			if obj:IsKindOf("Residence") then
-				dome:AddToLabel("Residence", obj)
-			end
-		end
-	end
-
-end
+local AttachToNearestDome = ChoGGi.ComFuncs.AttachToNearestDome
 
 DefineClass.ChoGGi_OutsideResidence = {
 	__parents = {
-		"LivingBase",
-		"WaypointsObj",
+		"LivingBase", "WaypointsObj",
 	},
 }
 
 function ChoGGi_OutsideResidence:GameInit()
-	-- speed up adding/removing objs
+	-- speed up adding/removing/scaling objs
 	SuspendPassEdits("ChoGGi_OutsideResidence.GameInit")
 
 	-- -128 to 127
@@ -77,6 +23,7 @@ function ChoGGi_OutsideResidence:GameInit()
 	-- add a cap to hide the vats
 	local top = EntityClass:new()
 	self:Attach(top)
+	-- diff entity for diff dlc
 	if IsValidEntity("MagneticFieldGenerator") then
 		top:ChangeEntity("MagneticFieldGenerator")
 		top:SetScale(20)
@@ -130,8 +77,8 @@ function OnMsg.ClassesPostprocess()
 		"build_points", 20000,
 
 		"electricity_consumption", 16000,
-		"service_comfort", 15000,
-		"comfort_increase", 1500,
+		"service_comfort", 20000,
+		"comfort_increase", 2000,
 		"capacity", 18,
 
 		"is_tall", true,

@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Lists all breakthroughs in the game rules (unlocked at start).
+	"description", [[Adds all breakthroughs to game rules (selected rules will be unlocked).
 
 Includes mod option to have them researched instead of just unlocked.]],
 })

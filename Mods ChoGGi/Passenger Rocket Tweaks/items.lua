@@ -13,7 +13,7 @@ return {
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "PosPassList",
-		"DisplayName", (302535920011129, "Position Pass List"),
+		"DisplayName", T(302535920011129, "Position Pass List"),
 		"Help", T(302535920011522, "Enable changing position of passenger list."),
 		"DefaultValue", false,
 	}),

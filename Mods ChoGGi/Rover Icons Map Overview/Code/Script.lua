@@ -1,41 +1,38 @@
 -- See LICENSE for terms
 
 local MulDivRound = MulDivRound
-local IsValid = IsValid
 local Sleep = Sleep
 
-local function UpdateIcons(time, direction, signs)
-	SuspendPassEdits("ChoGGi_UpdateOverviewIcons")
-	local SignsOverviewCameraScaleUp = const.SignsOverviewCameraScaleUp
+local step = 33
 
-	g_CurrentDepositScale = direction == "up" and SignsOverviewCameraScaleUp or 100
+local function UpdateIcons(time, direction, rovers)
+	SuspendPassEdits("ChoGGi_RoverIconsMapOverview_Update")
+	local scale = const.SignsOverviewCameraScaleUp
+
+	g_CurrentDepositScale = direction == "up" and scale or 100
 
 	local i = 0
-	local step = 33
+	local signs_scale = 0
 	repeat
 		Sleep(step)
-		local signs_scale
 		if time == 0 then
-			signs_scale = direction == "up" and SignsOverviewCameraScaleUp or 100
+			signs_scale = direction == "up" and scale or 100
 		else
-			signs_scale = 100 + MulDivRound(direction == "up" and i or time-i, SignsOverviewCameraScaleUp - 100, time)
+			signs_scale = 100 + MulDivRound(direction == "up" and i or time-i, scale - 100, time)
 		end
 
-		for i = 1, #signs do
-			local sign = signs[i]
-			if IsValid(sign) then
-				sign:SetScale(signs_scale)
-			end
+		for i = 1, #rovers do
+			rovers[i]:SetScale(signs_scale)
 		end
 		i = i + step
 	until i > time or not CameraTransitionThread
-	ResumePassEdits("ChoGGi_UpdateOverviewIcons")
+	ResumePassEdits("ChoGGi_RoverIconsMapOverview_Update")
 end
 
 local orig_OverviewModeDialog_ScaleSmallObjects = OverviewModeDialog.ScaleSmallObjects
 function OverviewModeDialog:ScaleSmallObjects(time, direction, ...)
-	orig_OverviewModeDialog_ScaleSmallObjects(self, time, direction, ...)
-
+	local ret = orig_OverviewModeDialog_ScaleSmallObjects(self, time, direction, ...)
 	CreateRealTimeThread(UpdateIcons, time, direction, MapGet(true, "BaseRover"))
+	return ret
 end
 

@@ -23,8 +23,9 @@ function RequiresMaintenance:UIRequestMaintenance()
 	return self:RequestMaintenance(true)
 end
 
+-- removed button
 function OnMsg.ClassesPostprocess()
-	-- restore the button
+
 	local xt = XTemplates.ipBuilding[1][1]
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xt, "ChoGGi_RestoreMaintenance")
 
@@ -41,8 +42,9 @@ function OnMsg.ClassesPostprocess()
 		"RolloverHintGamepad", T(919224409562, "<ButtonA> Activate <newline><ButtonX> Activate for all <display_name_pl>"),
 		"OnContextUpdate", function(self, context)
 			-- changed it so it only shows the button when main is needed/requested
-			self:SetVisible(context.accumulated_maintenance_points > 0)
-			self:SetEnabled(context.accumulated_maintenance_points > 0 and context.maintenance_phase == false)
+			local points = context.accumulated_maintenance_points > 0
+			self:SetVisible(points)
+			self:SetEnabled(points and context.maintenance_phase == false)
 		end,
 		"OnPressParam", "UIRequestMaintenance",
 		"OnPress", function(self, gamepad)
@@ -57,6 +59,6 @@ function OnMsg.ClassesPostprocess()
 				ObjModified(self.context)
 			end
 		end,
-		"Icon", "UI/Icons/IPButtons/rebuild.tga"
+		"Icon", "UI/Icons/IPButtons/rebuild.tga",
 	})
 end

@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v14.7 (Unreleased)
+### Changed:
+- Console log is always visible in mod editor mode.
 
 ## v14.6 (25 Oct 2019)
 ### Added:

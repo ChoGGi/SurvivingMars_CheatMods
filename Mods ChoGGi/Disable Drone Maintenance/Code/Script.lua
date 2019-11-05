@@ -1,9 +1,5 @@
 -- See LICENSE for terms
 
-local RetName = ChoGGi.ComFuncs.RetName
-local PopupToggle = ChoGGi.ComFuncs.PopupToggle
-local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
-
 local orig_RequiresMaintenance_RequestMaintenance = RequiresMaintenance.RequestMaintenance
 -- only allow main if disable isn't
 function RequiresMaintenance:RequestMaintenance(...)
@@ -12,9 +8,9 @@ function RequiresMaintenance:RequestMaintenance(...)
 	end
 end
 
-local function ToggleMain(obj)
+local function SetMain(obj, maintenance)
 	obj.maintenance_phase = false
-	if obj.ChoGGi_DisableMaintenance then
+	if maintenance then
 		-- re-enable main
 		obj.ChoGGi_DisableMaintenance = nil
 		-- reset main requests (thanks mk-fg)
@@ -32,13 +28,16 @@ local function ToggleMain(obj)
 end
 
 function OnMsg.ClassesPostprocess()
-	local XTemplates = XTemplates
+	local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
+	local PopupToggle = ChoGGi.ComFuncs.PopupToggle
+	local RetName = ChoGGi.ComFuncs.RetName
 
-	-- old version cleanup
-	if XTemplates.ipBuilding.ChoGGi_DisableMaintenance then
-		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipBuilding[1], "ChoGGi_DisableMaintenance")
-		XTemplates.ipBuilding.ChoGGi_DisableMaintenance = nil
-	end
+--~ 	local XTemplates = XTemplates
+--~ 	-- old version cleanup
+--~ 	if XTemplates.ipBuilding.ChoGGi_DisableMaintenance then
+--~ 		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipBuilding[1], "ChoGGi_DisableMaintenance")
+--~ 		XTemplates.ipBuilding.ChoGGi_DisableMaintenance = nil
+--~ 	end
 
 	ChoGGi.ComFuncs.AddXTemplate("DisableMaintenance", "ipBuilding", {
 		__context_of_kind = "Building",
@@ -46,14 +45,15 @@ function OnMsg.ClassesPostprocess()
 		__condition = function (_, context)
 			return context:IsKindOf("RequiresMaintenance") and context:DoesRequireMaintenance()
 		end,
+--~ 		RolloverHint = T(0000000, "<left_click> for menu, <right_click> to toggle selected.")
 		OnContextUpdate = function(self, context)
 			local name = RetName(context)
 			if context.ChoGGi_DisableMaintenance then
-				self:SetRolloverText(T{302535920011071, "This <name> will not be maintained (press for menu).", name = name})
+				self:SetRolloverText(T{302535920011071, "This <name> will not be maintained.", name = name})
 				self:SetTitle(T(302535920011072, "Maintenance Disabled"))
 				self:SetIcon("UI/Icons/traits_disapprove.tga")
 			else
-				self:SetRolloverText(T{302535920011073, "This <name> will be maintained (press for menu).", name = name})
+				self:SetRolloverText(T{302535920011073, "This <name> will be maintained.", name = name})
 				self:SetTitle(T(302535920011074, "Maintenance Enabled"))
 				self:SetIcon("UI/Icons/traits_approve.tga")
 			end
@@ -68,9 +68,8 @@ function OnMsg.ClassesPostprocess()
 				PopupToggle(self, "idDisableDroneMaintenanceMenu", {
 					{
 						name = T{302535920011075, "Toggle maintenance on this <name> only.", name = name},
-						hint = T{302535920011076, "Toggles maintenance on only this <name>.", name = name},
 						clicked = function()
-							ToggleMain(context)
+							SetMain(context, context.ChoGGi_DisableMaintenance)
 						end,
 					},
 					{
@@ -78,8 +77,27 @@ function OnMsg.ClassesPostprocess()
 						hint = T{302535920011078, "Toggles maintenance on all <name> (all will be set the same as this one).", name = name},
 						clicked = function()
 							local objs = RetAllOfClass(context.class)
+							local toggle = context.ChoGGi_DisableMaintenance
 							for i = 1, #objs do
-								ToggleMain(objs[i])
+								SetMain(objs[i], toggle)
+							end
+						end,
+					},
+					{
+						name = T{302535920011563, "Enable maintenance on all <name>.", name = name},
+						clicked = function()
+							local objs = RetAllOfClass(context.class)
+							for i = 1, #objs do
+								SetMain(objs[i], true)
+							end
+						end,
+					},
+					{
+						name = T{302535920011564, "Disable maintenance on all <name>.", name = name},
+						clicked = function()
+							local objs = RetAllOfClass(context.class)
+							for i = 1, #objs do
+								SetMain(objs[i], false)
 							end
 						end,
 					},

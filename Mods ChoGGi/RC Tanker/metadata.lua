@@ -22,7 +22,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Allows you to drain an oxygen or water tank, and fill another tank.
+	"description", [[Allows you to drain an oxygen or water tank then use it to fill another tank.
 Adds two buttons to the selection panel: One to switch between draining and filling, and one to switch between oxygen/water (will empty tank of current resource).
 
 By default it can hold an unlimited amount, includes a mod option to limit it to X units (if you feel it's too cheap).

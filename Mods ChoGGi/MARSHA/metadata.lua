@@ -8,9 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "MARSHA",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_OutsideResidence",
@@ -23,8 +23,8 @@ return PlaceObj("ModDef", {
 	},
 	"TagBuildings", true,
 	"description", [[Stores some colonists outside.
-The building feeds off the nearest dome and has low comfort, but it only needs concrete for maintenance.
-30 Concrete, 5 Polymers to build.
+The building feeds off the nearest dome and has low comfort (20), but it only needs concrete for maintenance.
+30 Concrete, 5 Polymers to build. Entity may look different depending on what DLC you have.
 
 @Xboxers Until the Paradox fixes it; I can't change the titles of mods... [url=https://mods.paradoxplaza.com/mods/955/Any]MARSHA[/url]
 

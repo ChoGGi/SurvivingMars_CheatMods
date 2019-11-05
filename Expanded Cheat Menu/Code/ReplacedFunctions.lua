@@ -171,8 +171,8 @@ do -- non-class obj funcs
 	-- console stuff
 	SaveOrigFunc("ShowConsoleLog")
 	function ShowConsoleLog(visible, ...)
-		-- we only want to show it if:
-		visible = UserSettings.ConsoleToggleHistory
+		-- we only want to show it if it's enabled or we're in mod editor mode
+		visible = UserSettings.ConsoleToggleHistory or Platform.editor
 
 		-- ShowConsoleLog doesn't check for existing like ShowConsole
 		if rawget(_G, "dlgConsoleLog") then

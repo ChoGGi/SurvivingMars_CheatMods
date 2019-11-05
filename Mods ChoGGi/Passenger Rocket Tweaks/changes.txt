@@ -1,3 +1,6 @@
+v1.0
+Missed a T in items.lua.
+
 v0.9
 Evans update.
 
