@@ -292,6 +292,8 @@ Debug.Path Markers>Path Markers: Shows the selected unit path or show a list to 
 Debug.Reloads>Particles Reload: Reloads particles from "Data/Particles"...
 Debug.Reloads>Reload Lua: Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it).
 Warning: Disables cheat menu submenus.
+Debug.Story bits>Skip Story Bits: Always select first option after slight delay.
+Debug.Story bits>Test Story Bits: Test activate a story bit.
 Debug.Toggles>Anim Debug Toggle: Attaches text to each object showing animation info (or just to selected object).
 Debug.Toggles>DTM Slots Display: Show DTM slots display
 Debug.Toggles>Examine Persist Errors: Shows an examine dialog with any persist errors when saving.
@@ -305,7 +307,6 @@ It's not as if domes need to be where you placed them (people will just ignore i
 Debug.Toggles>Toggle Object Collision: Select an object and activate this to toggle collision (if you have a rover stuck in a dome).
 Debug.Toggles>Toggle Render: Toggle rendering certain stuff.
 Debug>Test Locale File: Test a CSV for malformed strings (can cause freezing when loaded normally).
-Debug>Test Story Bits: Test activate a story bit.
 Debug>Used Terrain Textures: Show a list of terrain textures used in current map.
 ECM.Buildings.Buildings>Fully Automated Building: Work without workers (select a building and this will apply to all of type or selected).
 ECM.Buildings.Buildings>Oxygen-free Building: Toggle oxygen use for selected building type.

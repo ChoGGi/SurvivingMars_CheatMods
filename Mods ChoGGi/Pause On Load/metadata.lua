@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Pause On Load",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_PauseOnLoad",
@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"has_options", true,
 	"description", [[Pauses the game when you start a new game or load a saved one.
 
 Requested by testerb.]],

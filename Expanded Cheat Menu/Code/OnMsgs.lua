@@ -1522,22 +1522,6 @@ do -- LoadGame/CityStart
 			g_Classes.School.max_traits = #ChoGGi.Tables.PositiveTraits
 		end
 
-		CreateRealTimeThread(function()
-			-- clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)
-			local shown = g_ShownOnScreenNotifications or empty_table
-			for key in pairs(shown) do
-				if type(key) == "number" or tostring(key):find("ChoGGi_") then
-					shown[key] = nil
-				end
-			end
-
-			-- remove any dialogs we opened
-			if UserSettings.CloseDialogsECM then
-				ChoGGi.ComFuncs.CloseDialogsECM()
-			end
-
-		end)
-
 		-- everyone loves a new titlebar, unless they don't
 		if UserSettings.ChangeWindowTitle then
 			terminal.SetOSWindowTitle(Translate(1079--[[Surviving Mars]]) .. ": " .. Strings[302535920000887--[[ECM]]] .. " " .. ChoGGi._VERSION)
@@ -1574,8 +1558,6 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 			ChoGGi.ComFuncs.SetCameraSettings()
 		end)
 
-
-
 		------------------------------- always fired last
 
 
@@ -1597,6 +1579,29 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 
 		-- used to check when game has started and it's safe to print() etc
 		ChoGGi.Temp.GameLoaded = true
+
+		-- anything that needs a thread/delay
+		CreateRealTimeThread(function()
+			-- always pause on start (for saves with missing mod buildings)
+			if testing then
+				Sleep(100)
+				SetGameSpeedState("pause")
+			end
+
+			-- clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)
+			local shown = g_ShownOnScreenNotifications or empty_table
+			for key in pairs(shown) do
+				if type(key) == "number" or tostring(key):find("ChoGGi_") then
+					shown[key] = nil
+				end
+			end
+
+			-- remove any dialogs we opened
+			if UserSettings.CloseDialogsECM then
+				ChoGGi.ComFuncs.CloseDialogsECM()
+			end
+
+		end)
 	end --OnMsg
 end -- do
 

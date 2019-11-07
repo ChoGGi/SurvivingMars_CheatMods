@@ -7,15 +7,6 @@ local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
 c = c + 1
-Actions[c] = {ActionName = Translate(186760604064--[[Test]]) .. " " .. Translate(948928900281--[[Story Bits]]),
-	ActionMenubar = "ECM.Debug",
-	ActionId = ".Test Story Bits",
-	ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-	RolloverText = Strings[302535920001359--[[Test activate a story bit.]]],
-	OnAction = ChoGGi.MenuFuncs.TestStoryBits,
-}
-
-c = c + 1
 Actions[c] = {ActionName = Strings[302535920001181--[[Used Terrain Textures]]],
 	ActionMenubar = "ECM.Debug",
 	ActionId = ".Used Terrain Textures",
@@ -706,6 +697,38 @@ Actions[c] = {ActionName = Strings[302535920000495--[[Particles Reload]]],
 	ActionMenubar = "ECM.Debug.Reloads",
 	ActionId = ".Particles Reload",
 	ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
-	RolloverText = Strings[302535920000496--[[Reloads particles from "Data/Particles"...]]],
+	RolloverText = Strings[302535920000496--[["Reloads particles from ""Data/Particles""..."]]],
 	OnAction = ChoGGi.MenuFuncs.ParticlesReload,
+}
+
+-- menu
+c = c + 1
+Actions[c] = {ActionName = Translate(948928900281--[[Story Bits]]),
+	ActionMenubar = "ECM.Debug",
+	ActionId = ".Story Bits",
+	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+	OnActionEffect = "popup",
+}
+
+c = c + 1
+Actions[c] = {ActionName = Translate(186760604064--[[Test]]) .. " " .. Translate(948928900281--[[Story Bits]]),
+	ActionMenubar = "ECM.Debug.Story Bits",
+	ActionId = ".Test Story Bits",
+	ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
+	RolloverText = Strings[302535920001359--[[Test activate a story bit.]]],
+	OnAction = ChoGGi.MenuFuncs.TestStoryBits,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000978--[["Skip Story Bits"]]],
+	ActionMenubar = "ECM.Debug.Story Bits",
+	ActionId = ".Skip Story Bits",
+	ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.SkipStoryBitsDialogs,
+			Strings[302535920000980--[["Always select first option after slight delay."]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.SkipStoryBitsDialogs_Toggle,
 }

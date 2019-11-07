@@ -87,7 +87,10 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 		else
 			res = "Food"
 		end
-		PlaceResourcePile(meat_bag:GetVisualPos(), res, Random(1, 5) * const.ResourceScale)
+		PlaceResourcePile(
+			GetPassablePointNearby(meat_bag) or meat_bag:GetVisualPos(),
+			res, Random(1, 5) * const.ResourceScale
+		)
 		meat_bag:Erase()
 	end
 

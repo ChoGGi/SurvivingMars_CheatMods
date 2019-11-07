@@ -1,2 +1,6 @@
+v0.3
+Added mod options for pausing.
+Load Game issue.
+
 v0.2
 Fix for new game freeze.

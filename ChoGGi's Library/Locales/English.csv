@@ -1,6 +1,4 @@
 "ID"," Text"
-302535920000978,
-302535920000980,
 302535920000981,
 302535920000983,
 302535920000985,
@@ -1136,6 +1134,8 @@ Only works on colonists that have yet to spawn (maybe)."
 Not permanent."
 302535920000447,"Change the age at which colonists die (applies to newly arrived and born colonists as well)."
 302535920000448,"I'm afraid it could be 9/11 times 1,000."
+302535920000978, "Skip Story Bits"
+302535920000980, "Always select first option after slight delay."
 302535920000220,"Like %s, but this shows hex positioning (offset or map, change in settings)."
 302535920000680,"Follow Mouse Grid Position"
 302535920000681,"Type of positioning to show."

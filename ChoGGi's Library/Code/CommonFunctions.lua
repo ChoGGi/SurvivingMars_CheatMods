@@ -1494,13 +1494,17 @@ function ChoGGi.ComFuncs.SettingState(setting, text)
 		end
 	end
 
-	-- have it return false instead of nil
+	-- we want it to return false instead of nil
 	if type(setting) == "nil" then
 		setting = false
 	end
 
 	if text then
-		return "<color 0 255 0>" .. tostring(setting) .. "</color>: " .. text
+		if setting then
+			return "<color ChoGGi_green>" .. tostring(setting) .. "</color>: " .. text
+		else
+			return "<color ChoGGi_red>" .. tostring(setting) .. "</color>: " .. text
+		end
 	end
 
 	return tostring(setting)

@@ -662,6 +662,15 @@ function ChoGGi.MenuFuncs.OverrideConditionPrereqs_Toggle()
 	)
 end
 
+function ChoGGi.MenuFuncs.SkipStoryBitsDialogs_Toggle()
+	ChoGGi.UserSettings.SkipStoryBitsDialogs = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.SkipStoryBitsDialogs)
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SkipStoryBitsDialogs),
+		Strings[302535920000978--[["Skip Story Bits"]]]
+	)
+end
+
 function ChoGGi.MenuFuncs.TestStoryBits()
 --~ ~g_StoryBitStates
 --~ that'll show all the active story state thingss

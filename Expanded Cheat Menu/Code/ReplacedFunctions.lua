@@ -211,6 +211,21 @@ end -- do
 
 function OnMsg.ClassesGenerate()
 
+	-- hopefully just skips story bit dialogs, but we'll see?
+	SaveOrigFunc("PopupNotificationBegin")
+	function PopupNotificationBegin(dlg, ...)
+		if UserSettings.SkipStoryBitsDialogs then
+			CreateRealTimeThread(function()
+				Sleep(2500)
+				if dlg.idList and #dlg.idList > 0 then
+					dlg.idList[1]:OnMouseButtonDown(nil, "L")
+					dlg.idList[1]:OnMouseButtonUp(nil, "L")
+				end
+			end)
+		end
+		return ChoGGi_OrigFuncs.PopupNotificationBegin(dlg, ...)
+	end
+
 	do -- LandscapeConstructionController:Activate
 		local max_int = max_int
 
@@ -228,12 +243,14 @@ function OnMsg.ClassesGenerate()
 
 	do -- DroneBase:RegisterDustDevil
 		local fake_devil = {drone_speed_down = 0}
+
 		-- stop drones/rovers from slowing down in dustdevils
 		SaveOrigFunc("DroneBase", "RegisterDustDevil")
 		function DroneBase:RegisterDustDevil(devil, ...)
 			if (UserSettings.SpeedWaspDrone and self:IsKindOf("FlyingDrone"))
-					or (UserSettings.SpeedDrone and self:IsKindOf("Drone") and not self:IsKindOf("FlyingDrone"))
-					or (UserSettings.SpeedRC and self:IsKindOf("BaseRover")) then
+				or (UserSettings.SpeedDrone and self:IsKindOf("Drone") and not self:IsKindOf("FlyingDrone"))
+				or (UserSettings.SpeedRC and self:IsKindOf("BaseRover"))
+			then
 				devil = fake_devil
 			end
 			return ChoGGi_OrigFuncs.DroneBase_RegisterDustDevil(self, devil, ...)
@@ -243,10 +260,8 @@ function OnMsg.ClassesGenerate()
 	-- all storybit/neg/etc options enabled
 	SaveOrigFunc("Condition", "Evaluate")
 	function Condition.Evaluate(...)
-		if UserSettings.OverrideConditionPrereqs then
-			return true
-		end
-		return ChoGGi_OrigFuncs.Condition_Evaluate(...)
+		return UserSettings.OverrideConditionPrereqs
+			or ChoGGi_OrigFuncs.Condition_Evaluate(...)
 	end
 
 	-- limit size of crops to window width - selection panel size

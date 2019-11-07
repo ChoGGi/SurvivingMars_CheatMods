@@ -138,6 +138,7 @@ if testing then
 	Defaults.ShowStartupTicks = true
 	Defaults.WriteLogs = true
 	Defaults.FixMissingModBuildings = true
+	Defaults.FixMissingModBuildingsLog = false
 	Defaults.ExamineErrors = true
 	-- and maybe a bit of class
 	Defaults.Transparency = {

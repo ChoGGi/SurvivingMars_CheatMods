@@ -756,6 +756,9 @@ function OnMsg.ClassesPreprocess()
 	umc.SetIsNightLightPossible = empty_func
 	umc.Unassign = empty_func
 	umc.UpdateAttachedSigns = empty_func
+--~ 	umc.SetCount = empty_func
+--~ 	umc.GetFreeSpace = empty_func
+--~ 	umc.GetFreeWorkSlots = empty_func
 
 --~ 		-- fix the arcology dome spot
 --~ 		SaveOrigFunc("SpireBase", "GameInit")

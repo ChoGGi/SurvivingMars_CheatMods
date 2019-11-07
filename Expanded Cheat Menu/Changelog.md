@@ -1,7 +1,11 @@
 ## ECM Changelog
 
 ## v14.7 (Unreleased)
+### Added:
+- Debug>Story Bits>Skip Story Bits: Always select first option after slight delay.
+
 ### Changed:
+- Menu items that show true/false are now coloured green/red (instead of just green).
 - Console log is always visible in mod editor mode.
 
 ## v14.6 (25 Oct 2019)
