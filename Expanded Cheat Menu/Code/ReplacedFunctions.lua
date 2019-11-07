@@ -211,10 +211,12 @@ end -- do
 
 function OnMsg.ClassesGenerate()
 
-	-- hopefully just skips story bit dialogs, but we'll see?
+	-- skips story bit dialogs
 	SaveOrigFunc("PopupNotificationBegin")
 	function PopupNotificationBegin(dlg, ...)
-		if UserSettings.SkipStoryBitsDialogs then
+		if UserSettings.SkipStoryBitsDialogs
+			and dlg.context and dlg.context.is_storybit
+		then
 			CreateRealTimeThread(function()
 				Sleep(2500)
 				if dlg.idList and #dlg.idList > 0 then
