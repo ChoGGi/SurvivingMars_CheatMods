@@ -33,7 +33,7 @@ local function Translate(t, context, ...)
 	-- something didn't work
 	elseif type(str) ~= "string" then
 		-- try to return the string id, if we can
-		print("Translate Failed:", t, context, ...)
+		print("ECM Sez: Translate Failed:", t, context, ...)
 		return tostring(IsT(t) or missing_text)
 	end
 
@@ -47,7 +47,6 @@ do -- fix missing tech defs description in main menu/new game
 		GetConstructionCost = empty_func,
 		label_modifiers = {},
 	}
-
 	local orig_BuildingInfoLine = BuildingInfoLine
 	local procall = procall
 
@@ -67,7 +66,7 @@ do -- fix missing tech defs description in main menu/new game
 		return ret
 	end
 
-	-- we don't need to fake it once UICity exists
+	-- we don't need to fake it after UICity is created
 	local function ResetFunc()
 		BuildingInfoLine = orig_BuildingInfoLine
 	end
@@ -75,63 +74,67 @@ do -- fix missing tech defs description in main menu/new game
 	OnMsg.LoadGame = ResetFunc
 end -- do
 
--- we need to pad some zeros
-local locId_sig = shift(255, 56)
-local LightUserData = LightUserData
-local bor = bor
-local GetLanguage = GetLanguage
-local setmetatable, next = setmetatable, next
-function ChoGGi.ComFuncs.UpdateStringsList()
-	local lang = GetLanguage()
-	ChoGGi.lang = lang
-	-- a table of translated strings (includes <> stuff unlike TranslationTable)
-	local strings = ChoGGi.Strings
+do -- UpdateStringsList (fired below, and whenever lang is changed)
+	-- we need to pad some zeros
+	local locId_sig = shift(255, 56)
+	local LightUserData = LightUserData
+	local bor = bor
+	local GetLanguage = GetLanguage
+	local setmetatable, next = setmetatable, next
 
-	-- if there's a missing id print/return a warning
-	if not next(strings) then
-		setmetatable(strings, {
-			__index = function(_, id)
-				-- we only want numbers, so if anything else is requested then ignore
-				if type(id) == "number" then
-					print("ECM Sez: *bad string id?", id)
-					return missing_text
-				end
-			end,
-		})
-	end
-
-	-- translate all my strings
-	local iter = 302535920000000+string_limit
-	for i = 302535920000000, iter do
-		local str = _InternalTranslate(LightUserData(bor(i, locId_sig)))
-		-- if the missing text is within the last 50 then we can safely break
-		if (iter - 50) < i and str == missing_text then
-			break
+	function ChoGGi.ComFuncs.UpdateStringsList()
+		local lang = GetLanguage()
+		ChoGGi.lang = lang
+		-- a table of translated strings (includes <> stuff unlike TranslationTable)
+		local strings = ChoGGi.Strings
+		-- blank table from modload
+		if not next(strings) then
+			-- if there's a missing id print/return a warning
+			setmetatable(strings, {
+				__index = function(_, id)
+					-- we only want numbers, so if anything else is requested then ignore
+					if type(id) == "number" then
+						print("ECM Sez: *bad string id?", id)
+						return missing_text
+					end
+				end,
+			})
 		end
-		strings[i] = str
+
+		-- translate all my strings
+		local iter = 302535920000000+string_limit
+		for i = 302535920000000, iter do
+			local str = _InternalTranslate(LightUserData(bor(i, locId_sig)))
+			-- if the missing text is within the last 50 then we can safely break
+			if (iter - 50) < i and str == missing_text then
+				break
+			end
+			strings[i] = str
+		end
+
+		-- and update my global ref
+		ChoGGi.Strings = strings
+
+		-- devs didn't bother changing droid font to one that supports unicode, so we do this when it isn't eng
+		if lang ~= "English" then
+			-- first get the unicode font name
+			local f = Translate(997--[[*font*, 15, aa]])
+			-- index of first , then crop out the rest
+			f = f:sub(1, f:find(", ")-1)
+			-- might use it for something?
+			ChoGGi.font = f
+
+			-- these four don't get to use non-eng fonts, cause screw you is why
+			-- ok it's these aren't expected to be exposed to end users, but console is in mod editor so...
+			local TextStyles = TextStyles
+			TextStyles.Console.TextFont = f .. ", 18, bold, aa"
+			TextStyles.ConsoleLog.TextFont = f .. ", 13, bold, aa"
+			TextStyles.DevMenuBar.TextFont = f .. ", 18, aa"
+			TextStyles.GizmoText.TextFont = f .. ", 32, bold, aa"
+
+		end
 	end
+end -- do
 
-	-- and update my global ref
-	ChoGGi.Strings = strings
-
-	-- devs didn't bother changing droid font to one that supports unicode, so we do this when it isn't eng
-	if lang ~= "English" then
-		-- first get the unicode font name
-		local f = Translate(997--[[*font*, 15, aa]])
-		-- index of first , then crop out the rest
-		f = f:sub(1, f:find(", ")-1)
-		-- might use it?
-		ChoGGi.font = f
-
-		-- these four don't get to use non-eng fonts, cause screw you is why
-		-- ok it's these aren't expected to be exposed to end users, but console is in mod editor so...
-		local TextStyles = TextStyles
-		TextStyles.Console.TextFont = f .. ", 18, bold, aa"
-		TextStyles.ConsoleLog.TextFont = f .. ", 13, bold, aa"
-		TextStyles.DevMenuBar.TextFont = f .. ", 18, aa"
-		TextStyles.GizmoText.TextFont = f .. ", 32, bold, aa"
-
-	end
-end
 -- always fire on startup
 ChoGGi.ComFuncs.UpdateStringsList()

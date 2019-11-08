@@ -1,4 +1,4 @@
-"ID"," Text"
+ID,Text
 302535920000981,
 302535920000983,
 302535920000985,
@@ -43,9 +43,9 @@
 302535920001648,
 302535920001649,
 302535920001650,
+302535920000000,"Expanded Cheat Menu"
 302535920001400,"ChoGGi"
 302535920000887,"ECM"
-302535920000000,"Expanded Cheat Menu"
 302535920001026,"Update Text"
 302535920001449,"Export"
 302535920000758,"Will take some time for 25K and up."
@@ -1880,12 +1880,3 @@ Restart to set disabled."
 302535920001347,"Show Console"
 302535920001348,"Restart"
 302535920001350,"Place Last Selected/Constructed Building"
-302535920010000,"math.%s not implemented yet."
-302535920010001,"bad argument #%s to 'math.%s' (%s)"
-302535920010002,"zero"
-302535920010003,"less than or equals zero"
-302535920010004,"less than zero"
-302535920010005,"arg#2 - arg#1 == less than zero"
-302535920010006,"Testing math: Start"
-302535920010007,"Testing math: End"
-302535920010008,"Testing math: Error file: (%s) line number: (%s) val1: (%s) val2: (%s) func: (math.%s)"

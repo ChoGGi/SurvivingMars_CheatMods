@@ -27,18 +27,40 @@ local str = {
 	test_start = t(302535920010006, "Testing math: Start"),
 	test_end = t(302535920010007, "Testing math: End"),
 	test_error = t(302535920010008, "Testing math: Error file: (%s) line number: (%s) val1: (%s) val2: (%s) func: (math.%s)"),
+	nan = t(302535920010009, "nan"),
+	fmod = t(302535920010010, "fmod"),
+	log = t(302535920010011, "log"),
+	oneortwo = t(302535920010012, "1 or #2"),
+	random = t(302535920010013, "random"),
+	sqrt = t(302535920010014, "sqrt"),
+	sin = t(302535920010015, "sin"),
+	tan = t(302535920010016, "tan"),
+	acos = t(302535920010017, "acos"),
+	asin = t(302535920010018, "asin"),
+	atan = t(302535920010019, "atan"),
+	abs = t(302535920010020, "abs"),
+	ceil = t(302535920010021, "ceil"),
+	deg = t(302535920010022, "deg"),
+	exp = t(302535920010023, "exp"),
+	floor = t(302535920010024, "floor"),
+	modf = t(302535920010025, "modf"),
+	rad = t(302535920010026, "rad"),
+	tointeger = t(302535920010027, "tointeger"),
+	type = t(302535920010028, "type"),
+	cos = t(302535920010029, "cos"),
+	RoundDown = t(302535920010030, "RoundDown"),
+	pow = t(302535920010031, "pow"),
+	log10 = t(302535920010032, "log10"),
+	ldexp = t(302535920010033, "ldexp"),
+	frexp = t(302535920010034, "frexp"),
 }
-
--- whenever i get .cos etc added (needed for unit testing)
---~ -- needed for tmp file when doing unit tests
---~ local tmpfile = CurrentModPath .. "UnitTest.txt"
 
 local function CheckNum(x, name, arg)
 	x = tonumber(x)
 	if x then
 		return x
 	else
-		print(str.error:format(arg or 1, name, "nan"))
+		print(str.error:format(arg or 1, name, str.nan))
 		return 0/0
 	end
 end
@@ -49,7 +71,7 @@ math = {}
 -- Returns the absolute value of x. (integer/float)
 math.sm_abs = abs
 function math.abs(x)
-	x = CheckNum(x, "abs")
+	x = CheckNum(x, str.abs)
 
 	if x < 0 then
 		x = 0 - x
@@ -59,7 +81,7 @@ end
 
 -- Returns the smallest integral value larger than or equal to x.
 function math.ceil(x)
-	x = CheckNum(x, "ceil")
+	x = CheckNum(x, str.ceil)
 
 	-- needed for neg numbers
 	if x < 0 then
@@ -73,7 +95,7 @@ end
 
 -- Converts the angle x from radians to degrees.
 function math.deg(x)
-	x = CheckNum(x, "deg")
+	x = CheckNum(x, str.deg)
 
 	return x * 180.0 / math.pi
 end
@@ -83,26 +105,25 @@ math.e = 2.718281828459045235360287471352662497757247093699959574966967627724076
 
 -- Returns the value e^x (where e is the base of natural logarithms).
 function math.exp(x)
-	x = CheckNum(x, "exp")
+	x = CheckNum(x, str.exp)
 
 	return math.e^x
 end
 
 -- Returns the largest integral value smaller than or equal to x.
-local floatfloor = rawget(_G, "floatfloor")
-math.floor = floatfloor or function(x)
-	x = CheckNum(x, "floor")
+math.floor = rawget(_G, "floatfloor") or function(x)
+	x = CheckNum(x, str.floor)
 
 	return x - (x % 1)
 end
 
 -- Returns the remainder of the division of x by y that rounds the quotient towards zero. (integer/float)
 function math.fmod(x, y)
-	x = CheckNum(x, "fmod")
-	y = CheckNum(y, "fmod", 2)
+	x = CheckNum(x, str.fmod)
+	y = CheckNum(y, str.fmod, 2)
 
 	if y == 0 then
-		print(str.error:format(2, "fmod", str.zero))
+		print(str.error:format(2, str.fmod, str.zero))
 		return 0/0
 	end
 
@@ -129,9 +150,9 @@ math.huge = 10e500 + 10e500
 
 -- Returns the logarithm of x in the given base. The default for base is e (so that the function returns the natural logarithm of x).
 function math.log(x, base)
-	x = CheckNum(x, "log")
+	x = CheckNum(x, str.log)
 	if x < 0 or tostring(x) == "0" then
-		print(str.error:format(1, "log", str.less_than_or_equals_zero))
+		print(str.error:format(1, str.log, str.less_than_or_equals_zero))
 		return 0/0
 	end
 
@@ -139,7 +160,7 @@ function math.log(x, base)
 		base = tonumber(base)
 		if base then
 			if base < 0 then
-				print(str.error:format(2, "log", str.less_than_zero))
+				print(str.error:format(2, str.log, str.less_than_zero))
 				return 0/0
 			elseif base == 0 then
 				return -0.0
@@ -151,7 +172,7 @@ function math.log(x, base)
 			return math.log(x) / math.log(base)
 		else
 			-- user put something for base that isn't a number
-			print(str.error:format(2, "log", "nan"))
+			print(str.error:format(2, str.log, str.nan))
 			return 0/0
 		end
 	end
@@ -167,8 +188,7 @@ function math.log(x, base)
 		result = result + 1
 	end
 	local y = residue - 1
-	-- just enough to get the same result as math.log()
-	-- Taylor series
+	-- Taylor series, just enough to get the same result as math.log()
 	residue = 1+y-y ^2/2+y ^3/3-y ^4/4+y ^5/5-y ^6/6+y ^7/7-y ^8/8+y
 		^9/9-y ^10/10+y ^11/11-y ^12/12+y ^13/13-y ^14/14+y ^15/15-y ^16/16+y
 		^17/17-y ^18/18+y ^19/19-y ^20/20+y ^21/21-y ^22/22+y ^23/23-y ^24/24+y
@@ -195,7 +215,7 @@ math.mininteger = min_int
 
 -- Returns the integral part of x and the fractional part of x. Its second result is always a float.
 function math.modf(x)
-	x = CheckNum(x, "modf")
+	x = CheckNum(x, str.modf)
 
 	if math.type(x) == "integer" then
 		return x, 0.0
@@ -227,7 +247,7 @@ math.pi = 3.14159265358979323846264338327950288419716939937510582097494459230781
 
 -- Converts the angle x from degrees to radians.
 function math.rad(x)
-	x = CheckNum(x, "rad")
+	x = CheckNum(x, str.rad)
 
 	return x * math.pi / 180.0
 end
@@ -238,18 +258,18 @@ end
 function math.random(m, n)
 
 	if m and n then
-		m = CheckNum(m, "random")
-		n = CheckNum(n, "random")
+		m = CheckNum(m, str.random)
+		n = CheckNum(n, str.random)
 		if n-m < 0 then
-			print(str.error:format("1 or #2", "random", str.arg2_arg1_less_than_zero))
+			print(str.error:format(str.oneortwo, str.random, str.arg2_arg1_less_than_zero))
 			return 0/0
 		end
 
 		return AsyncRand(n - m + 1) + m
 	elseif m then
-		m = CheckNum(m, "random")
+		m = CheckNum(m, str.random)
 		if m <= 0 then
-			print(str.error:format(1, "random", str.less_than_or_equals_zero))
+			print(str.error:format(1, str.random, str.less_than_or_equals_zero))
 			return 0/0
 		end
 
@@ -267,9 +287,9 @@ math.randomseed = AsyncSetSeed
 
 -- Returns the square root of x.
 function math.sqrt(x)
-	x = CheckNum(x, "sqrt")
+	x = CheckNum(x, str.sqrt)
 	if x < 0 then
-		print(str.error:format(1, "sqrt", str.less_than_zero))
+		print(str.error:format(1, str.sqrt, str.less_than_zero))
 		return 0/0
 	end
 
@@ -278,15 +298,19 @@ end
 
 -- If the value x is convertible to an integer, returns that integer. Otherwise, returns nil.
 function math.tointeger(x)
-	x = CheckNum(x, "tointeger")
+	x = CheckNum(x, str.tointeger)
 
 	return math.floor(x)
 end
 
 -- Returns "integer" if x is an integer, "float" if it is a float, or nil if x is not a number.
 function math.type(x)
-	x = CheckNum(x, "type")
+	-- nil
+	if not tonumber(x) then
+		return
+	end
 
+	x = CheckNum(x, str.type)
 	-- SM thinks 5.5 == 5...
 	if tostring(math.floor(x)) == tostring(x) then
 		return "integer"
@@ -317,7 +341,7 @@ end
 -- Returns the cosine of x (assumed to be in radians).
 math.sm_cos = cos
 function math.cos(x)
-	x = CheckNum(x, "cos")
+	x = CheckNum(x, str.cos)
 
 	return math.sin(x + math.pi/2)
 end
@@ -325,41 +349,41 @@ end
 -- Returns the sine of x (assumed to be in radians).
 math.sm_sin = sin
 function math.sin(x)
-	x = CheckNum(x, "sin")
+	x = CheckNum(x, str.sin)
 
-	print(str.not_implemented:format("sin"))
+	print(str.not_implemented:format(str.sin))
 end
 
 -- Returns the tangent of x (assumed to be in radians).
 function math.tan(x)
-	x = CheckNum(x, "tan")
+	x = CheckNum(x, str.tan)
 
-	print(str.not_implemented:format("tan"))
+	print(str.not_implemented:format(str.tan))
 end
 
 -- Returns the arc cosine of x (in radians).
 math.sm_acos = acos
 function math.acos(x)
-	x = CheckNum(x, "acos")
+	x = CheckNum(x, str.acos)
 
-	print(str.not_implemented:format("acos"))
+	print(str.not_implemented:format(str.acos))
 end
 
 -- Returns the arc sine of x (in radians).
 math.sm_asin = asin
 function math.asin(x)
-	x = CheckNum(x, "asin")
+	x = CheckNum(x, str.asin)
 
-	print(str.not_implemented:format("asin"))
+	print(str.not_implemented:format(str.asin))
 end
 
 -- Returns the arc tangent of y/x (in radians), but uses the signs of both arguments to find the quadrant of the result. (It also handles correctly the case of x being zero.)
 -- The default value for x is 1, so that the call math.atan(y) returns the arc tangent of y.
 math.sm_atan = atan
 function math.atan(x)
-	x = CheckNum(x, "atan")
+	x = CheckNum(x, str.atan)
 
-	print(str.not_implemented:format("atan"))
+	print(str.not_implemented:format(str.atan))
 end
 
 
@@ -370,8 +394,8 @@ end
 
 -- round down to nearest (default 1000)
 function math.RoundDown(x, g)
-	x = CheckNum(x, "RoundDown")
-	g = CheckNum(g, "RoundDown", 2)
+	x = CheckNum(x, str.RoundDown)
+	g = CheckNum(g, str.RoundDown, 2)
 	g = g or 1000
 	return (x - x % g) / g * g
 end
@@ -413,28 +437,28 @@ end)
 -- deprecated
 
 function math.pow(x, y)
-	x = CheckNum(x, "pow")
-	y = CheckNum(y, "pow", 2)
+	x = CheckNum(x, str.pow)
+	y = CheckNum(y, str.pow, 2)
 
 	return x^y
 end
 
 function math.log10(x)
-	x = CheckNum(x, "log10")
+	x = CheckNum(x, str.log10)
 
 	return math.log(x, 10)
 end
 
 function math.ldexp(x, exp)
-	x = CheckNum(x, "ldexp")
-	exp = CheckNum(exp, "ldexp", 2)
+	x = CheckNum(x, str.ldexp)
+	exp = CheckNum(exp, str.ldexp, 2)
 
 	return x * 2.0^exp
 end
 
 --~ https://github.com/excessive/cpml/blob/master/modules/utils.lua
 function math.frexp(x)
-	x = CheckNum(x, "frexp")
+	x = CheckNum(x, str.frexp)
 
 	if x == 0 then
 		return 0, 0

@@ -1,9 +1,35 @@
-ID,Text,Translation
-302535920010001,bad argument #%s to 'math.%s' (%s),
-302535920010002,zero,
-302535920010003,less than or equals zero,
-302535920010004,less than zero,
-302535920010005,arg#2 - arg#1 == less than zero,
-302535920010006,Testing math: Start,
-302535920010007,Testing math: End,
-302535920010008,Testing math: Error file: (%s) line number: (%s) val1: (%s) val2: (%s) func: (math.%s),
+ID,Text
+302535920010001, "bad argument #%s to 'math.%s' (%s)"
+302535920010002, "zero"
+302535920010003, "less than or equals zero"
+302535920010004, "less than zero"
+302535920010005, "arg#2 - arg#1 == less than zero"
+302535920010006, "Testing math: Start"
+302535920010007, "Testing math: End"
+302535920010008, "Testing math: Error file: (%s) line number: (%s) val1: (%s) val2: (%s) func: (math.%s)"
+302535920010009, "nan"
+302535920010010, "fmod"
+302535920010011, "log"
+302535920010012, "1 or #2"
+302535920010013, "random"
+302535920010014, "sqrt"
+302535920010015, "sin"
+302535920010016, "tan"
+302535920010017, "acos"
+302535920010018, "asin"
+302535920010019, "atan"
+302535920010020, "abs"
+302535920010021, "ceil"
+302535920010022, "deg"
+302535920010023, "exp"
+302535920010024, "floor"
+302535920010025, "modf"
+302535920010026, "rad"
+302535920010027, "tointeger"
+302535920010028, "type"
+302535920010029, "cos"
+302535920010030, "RoundDown"
+302535920010031, "pow"
+302535920010032, "log10"
+302535920010033, "ldexp"
+302535920010034, "frexp"
