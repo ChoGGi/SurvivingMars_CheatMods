@@ -3,10 +3,7 @@
 local Sleep = Sleep
 local IsValid = IsValid
 local GetRandomPassableAround = GetRandomPassableAround
-local terrain_GetHeight = terrain.GetHeight
-
 local guim = guim
-
 local Random = ChoGGi.ComFuncs.Random
 
 DefineClass.MurderPod = {
@@ -97,14 +94,14 @@ function MurderPod:Leave(leave_height)
 	self:PlayFX("RocketEngine", "start")
 
 	Sleep(5000)
-	local current_pos = self:GetPos()
+	local current_pos = self:GetPos() or point20
 
 	local goto_pos = GetRandomPassableAround(
 		current_pos,
 		self.max_pos_radius,
 		self.min_pos_radius
 	)
-	leave_height = (terrain_GetHeight(current_pos) + leave_height) * 2
+	leave_height = (terrain.GetHeight(current_pos) + leave_height) * 2
 	self.hover_height = leave_height / 4
 
 	self.fx_actor_class = "SupplyRocket"

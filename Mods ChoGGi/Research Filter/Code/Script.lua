@@ -22,6 +22,7 @@ end
 -- stores list of tech dialog ui hexy things
 local tech_list = {}
 local count = 0
+local current_count = 0
 
 -- local some globals
 local table_find = table.find
@@ -84,8 +85,8 @@ local function EditDlg(dlg)
 		RolloverTemplate = "Rollover",
 		RolloverTitle = T(126095410863, "Info"),
 		RolloverText = T(302535920011466, [[Filter checks name, description, and id.
-<color 0 200 0>Shift-Enter</color> to clear.]]),
-		Hint = [[Tech Filter]],
+<color 150 255 150>Shift-Enter</color> to clear.]]),
+		Hint = _InternalTranslate(T(302535920011566, "Tech Filter")),
 		TextStyle = "LogInTitle",
 		OnKbdKeyUp = OnKbdKeyUp,
 		OnKbdKeyDown = OnKbdKeyDown,
@@ -98,7 +99,13 @@ local function EditDlg(dlg)
 
 	count = 0
 	-- if it's the first time opening research then build a list of name/desc to search
-	local first_time = #tech_list
+	local new_count = UICity:DiscoveredTechCount()
+	local needs_update = current_count ~= new_count or current_count == 0
+
+	if needs_update then
+		table.iclear(tech_list)
+		current_count = new_count
+	end
 
 	-- build a list of tech ui hexes which will be used for filtering (we just build it once per session, since new tech objs aren't added mid-game)
 	for i = 1, #dlg.idArea do
@@ -121,7 +128,7 @@ local function EditDlg(dlg)
 					tech:SetVisible(true)
 				end
 
-				if first_time == 0 then
+				if needs_update then
 					tech_list[count] = {
 						id = c.id,
 						-- stick all the strings into one for quicker searching (i use a \0 (null char) so the strings are separate)

@@ -30,7 +30,11 @@ DefineClass.RCMechanicBuilding = {
 	rover_class = "RCMechanic",
 }
 
-function RCMechanic:GameInit()
+function RCMechanic:AddBlinky()
+	if IsValid(self.blinky) then
+		return
+	end
+
 	-- add a blinky
 	self.blinky = RotatyThing:new()
 	self.blinky:SetVisible()
@@ -47,6 +51,10 @@ function RCMechanic:GameInit()
 	self.blinky:SetAttachOffset(
 		point(offsetx, offsety, self:GetObjectBBox():sizez() or 100)
 	)
+end
+
+function RCMechanic:GameInit()
+	self:AddBlinky()
 
 	-- select sounds
 	self.fx_actor_class = "AttackRover"
@@ -139,6 +147,7 @@ I says, "Pig Pen, this here's the Rubber Duck.
 And I'm about to put the hammer down."]], name = rover.name ~= "" and rover.name or rover.class}
 
 			-- add a pretty light
+			self:AddBlinky()
 			self.blinky:SetVisible(true)
 			self.going_to_repair = string_pos
 			self.move_speed = 2 * self.base_move_speed
@@ -159,6 +168,7 @@ end
 
 function RCMechanic:Idle()
 	if self.going_to_repair then
+		self:AddBlinky()
 		self.blinky:SetVisible(false)
 		self.move_speed = self.base_move_speed
 		self.repairing_list[self.going_to_repair] = nil

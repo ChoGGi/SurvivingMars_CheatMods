@@ -1,3 +1,6 @@
+v0.4
+Dialog stuck on screen when no deposits (Thanks jfffj).
+
 v0.3
 Added grade of deposit to the production tooltip.
 

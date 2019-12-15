@@ -1300,7 +1300,7 @@ do -- ConvertImagesToResEntities
 	end
 end -- do
 
-do -- ExamineEntSpots
+do -- ExamineEntSpots (Object>Entity Spots)
 	local spots_str = [[		<attach name="%s" spot_note="%s" bone="%s" spot_pos="%s, %s, %s" spot_scale="%s" spot_rot="%s, %s, %s, %s"/>]]
 
 	local RetOriginSurfaces
@@ -1390,13 +1390,15 @@ do -- ExamineEntSpots
 			c = c + 1
 			list[c] = [[		<state id="]] .. state_str .. [[">
 		<mesh_ref ref="mesh"/>
-		<anim file="]] .. entity .. "_" .. state_str .. [[.hga" duration="]] .. obj:GetAnimDuration(state_str) .. [["/>
-		<bsphere value="]] .. (pos_x - origin_pos_x) .. ", "
-				.. (pos_y - origin_pos_y) .. ", " .. (pos_z - origin_pos_z) .. ", "
+		<anim file="]] .. entity .. [[_]] .. state_str .. [[.hga" duration="]] .. obj:GetAnimDuration(state_str) .. [["/>
+		<bsphere value="]] .. (pos_x - origin_pos_x) .. [[, ]]
+				.. (pos_y - origin_pos_y) .. [[, ]] .. (pos_z - origin_pos_z) .. [[, ]]
 				.. radius .. [["/>
-		<box min="]] .. x1 .. ", " .. y1 .. ", " .. z1
-				.. [[" max="]] .. x2 .. ", " .. y2 .. ", " .. z2 .. [["/>
-	</state>]]
+		<box min="]] .. x1 .. [[, ]] .. y1 .. [[, ]] .. z1
+				.. [[" max="]] .. x2 .. [[, ]] .. y2 .. [[, ]] .. z2 .. [["/>
+		]] .. -- <step length="225" vector="225,0,0" />
+		-- ADD ME
+[[	</state>]]
 		end -- for states
 
 		local mat = GetStateMaterial(entity, 0, 0)

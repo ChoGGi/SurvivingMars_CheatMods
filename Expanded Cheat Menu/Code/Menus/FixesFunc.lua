@@ -299,8 +299,6 @@ function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
 end
 
 function ChoGGi.MenuFuncs.MirrorSphereStuck()
-	local type = type
-
 	local objs = UICity.labels.MirrorSpheres or ""
 	for i = 1, #objs do
 		local obj = objs[i]
@@ -310,6 +308,7 @@ function ChoGGi.MenuFuncs.MirrorSphereStuck()
 	end
 
 	SuspendPassEdits("ChoGGi.MenuFuncs.MirrorSphereStuck")
+	local type = type
 	MapDelete(true, "ParSystem", function(o)
 		if o:GetParticlesName() == "PowerDecoy_Captured" and
 				type(o.polyline) == "string" and o.polyline:find("\0") then

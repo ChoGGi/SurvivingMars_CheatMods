@@ -464,7 +464,7 @@ function OnMsg.ClassesPostprocess()
 						self:SetMaxHeight()
 						self:SetTitle(context.pin_rollover)
 					end
-					ObjModified(self.context)
+					ObjModified(context)
 					---
 				end,
 			}, {

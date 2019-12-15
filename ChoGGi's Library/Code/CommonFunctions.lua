@@ -1785,8 +1785,13 @@ do -- UpdateDataTables
 end -- do
 
 local function Random(m, n)
-	-- m = min, n = max OR if not n then m = max, min = 0 OR number between 0 and max_int?
-	return n and AsyncRand(n - m + 1) + m or m and AsyncRand(m) or AsyncRand()
+	return
+		-- m = min, n = max
+		(n and (AsyncRand(n - m + 1) + m))
+		-- OR if not n then m = max, min = 0
+		or (m and AsyncRand(m))
+		-- OR number between 0 and max_int
+		or AsyncRand()
 end
 ChoGGi.ComFuncs.Random = Random
 

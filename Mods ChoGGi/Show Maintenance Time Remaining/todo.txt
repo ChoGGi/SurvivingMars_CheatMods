@@ -1,0 +1,1 @@
+add N/A or skip showing for buildings with no main needed

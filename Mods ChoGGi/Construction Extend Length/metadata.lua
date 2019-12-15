@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Construction Extend Length",
-	"version", 3,
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 5,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_ConstructionExtendLength",
@@ -15,7 +15,10 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"description", [[Extend length of pipes/cables/passages from 20 to 500.
-Can be changed with mod options.
+
+Mod Options:
+Build Distance: How many hexes you can build.
+Passage Chunks: Passage length when bending.
 
 Requested by Adi.
 

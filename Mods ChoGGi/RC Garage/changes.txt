@@ -1,3 +1,6 @@
+v0.9
+Log spam.
+
 v0.8
 Added button to change main garage.
 Too much power was being used by main garage (switch mains or move a rover to update).

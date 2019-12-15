@@ -84,11 +84,6 @@ function OnMsg.ChangeMapDone()
 end
 
 local function ResetFunc()
---~ 	-- reset func once we know it's a new game (someone reported image showing up after landing)
---~ 	if orig_FillRandomMapProps then
---~ 		FillRandomMapProps = orig_FillRandomMapProps
---~ 		orig_FillRandomMapProps = nil
---~ 	end
 	-- alright bugger...
 	skip_showing_image = true
 end

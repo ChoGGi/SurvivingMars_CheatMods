@@ -10,7 +10,7 @@ return {
 	PlaceObj("ModItemOptionNumber", {
 		"name", "PassChunks",
 		"DisplayName", T(302535920011486, "Passage Chunks"),
-		"Help", T(302535920011400, "Passage length if bent."),
+		"Help", T(302535920011400, "Passage length when bending."),
 		"DefaultValue", 500,
 		"MinValue", 0,
 		"MaxValue", 1000,

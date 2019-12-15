@@ -110,11 +110,13 @@ local grade_str = {787, "Grade<right><grade_name>"}
 local orig_AvailableDeposits = AvailableDeposits
 function AvailableDeposits(bld, items, ...)
 	local ret = orig_AvailableDeposits(bld, items, ...)
-	local count = #items
-	-- append grade of deposit to rollover text
-	if items[count][1] == 298 then
-		grade_str.grade_name = DepositGradeToDisplayName[bld:GetDepositGrade()]
-		items[count+1] = T(grade_str)
+	if items then
+		local count = #items
+		-- append grade of deposit to rollover text
+		if type(items[count]) == "table" and items[count][1] == 298 then
+			grade_str.grade_name = DepositGradeToDisplayName[bld:GetDepositGrade()]
+			items[count+1] = T(grade_str)
+		end
 	end
 	return ret
 end

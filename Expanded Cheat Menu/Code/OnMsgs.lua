@@ -1228,16 +1228,16 @@ do -- LoadGame/CityStart
 
 	-- saved game is loaded
 	function OnMsg.LoadGame()
-		Msg("ChoGGi_Loaded")
+		Msg("ChoGGi_Loaded", "Load")
 	end
 	-- new game is loaded (this is before the map is loaded)
 	function OnMsg.CityStart()
 		-- reset my mystery msgs to hidden
 		ChoGGi.UserSettings.ShowMysteryMsgs = nil
-		Msg("ChoGGi_Loaded")
+		Msg("ChoGGi_Loaded", "New")
 	end
 
-	function OnMsg.ChoGGi_Loaded()
+	function OnMsg.ChoGGi_Loaded(game_type)
 		local UICity = UICity
 		local ChoGGi = ChoGGi
 
@@ -1583,7 +1583,7 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 		-- anything that needs a thread/delay
 		CreateRealTimeThread(function()
 			-- always pause on start (for saves with missing mod buildings)
-			if testing then
+			if testing and game_type == "Load" then
 				Sleep(100)
 				SetGameSpeedState("pause")
 			end
