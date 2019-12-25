@@ -63,15 +63,14 @@ DefineClass.ChoGGi_OBuildingEntityClassAttach = {
 	},
 	auto_attach_at_init = true,
 }
-function ChoGGi_OBuildingEntityClassAttach:GameInit()
-	AutoAttachObject.Init(self)
-end
+ChoGGi_OBuildingEntityClassAttach.GameInit = AutoAttachObject.Init
 
 -- add some info/functionality to spawned entity objects
 ChoGGi_OBuildingEntityClass.GetDisplayName = CObject.GetEntity
-function ChoGGi_OBuildingEntityClass:GetIPDescription()
+function ChoGGi_OBuildingEntityClass.GetIPDescription()
 	return Strings[302535920001110--[[Spawned entity object]]]
 end
+-- circle or hex thingy?
 ChoGGi_OBuildingEntityClass.OnSelected = AddSelectionParticlesToObj
 -- prevent an error msg in log
 ChoGGi_OBuildingEntityClass.BuildWaypointChains = empty_func

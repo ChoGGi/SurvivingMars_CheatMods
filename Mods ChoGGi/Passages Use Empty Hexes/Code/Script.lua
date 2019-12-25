@@ -156,7 +156,8 @@ function SupplyGridObject:SupplyGridConnectElement(element, ...)
 		-- don't replace if it's in a valid spot
 		local q, r = WorldToHex(self.start_el)
 --~ 		ChoGGi.ComFuncs.ShowQR(q, r)
-		local result, reason, obj = TestDomeBuildabilityForPassage(q, r, "check_edge", "check_road")
+--~		local result, reason, obj = TestDomeBuildabilityForPassage(q, r, "check_edge", "check_road")
+		local _, reason = TestDomeBuildabilityForPassage(q, r, "check_edge", "check_road")
 		-- in other words check for what we ignored above
 		if not res and skip_reasons[reason] then
 			IsObjInDome = fake_IsObjInDome

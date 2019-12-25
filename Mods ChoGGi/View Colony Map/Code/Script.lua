@@ -20,7 +20,6 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local table_insert = table.insert
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Translate = ChoGGi.ComFuncs.Translate
 local ValidateImage = ChoGGi.ComFuncs.ValidateImage
 local RetMapSettings = ChoGGi.ComFuncs.RetMapSettings

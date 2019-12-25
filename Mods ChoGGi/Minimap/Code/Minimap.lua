@@ -360,9 +360,9 @@ function ChoGGi_MinimapDlg:UpdateMapImage(image)
 end
 
 --~ GetRootDialog2(self)
-local function GetRootDialog2(dlg)
-	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_XMapControl")
-end
+--~ local function GetRootDialog2(dlg)
+--~ 	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_XMapControl")
+--~ end
 DefineClass.ChoGGi_XMapControl = {
 	__parents = {"XControl"},
 	-- the little red circle that could

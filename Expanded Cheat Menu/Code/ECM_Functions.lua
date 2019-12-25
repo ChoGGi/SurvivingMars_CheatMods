@@ -1390,12 +1390,12 @@ do -- ExamineEntSpots (Object>Entity Spots)
 			c = c + 1
 			list[c] = [[		<state id="]] .. state_str .. [[">
 		<mesh_ref ref="mesh"/>
-		<anim file="]] .. entity .. [[_]] .. state_str .. [[.hga" duration="]] .. obj:GetAnimDuration(state_str) .. [["/>
-		<bsphere value="]] .. (pos_x - origin_pos_x) .. [[, ]]
-				.. (pos_y - origin_pos_y) .. [[, ]] .. (pos_z - origin_pos_z) .. [[, ]]
+		<anim file="]] .. entity .. "_" .. state_str .. [[.hga" duration="]] .. obj:GetAnimDuration(state_str) .. [["/>
+		<bsphere value="]] .. (pos_x - origin_pos_x) .. ", "
+				.. (pos_y - origin_pos_y) .. ", " .. (pos_z - origin_pos_z) .. ", "
 				.. radius .. [["/>
-		<box min="]] .. x1 .. [[, ]] .. y1 .. [[, ]] .. z1
-				.. [[" max="]] .. x2 .. [[, ]] .. y2 .. [[, ]] .. z2 .. [["/>
+		<box min="]] .. x1 .. ", " .. y1 .. ", " .. z1
+				.. [[" max="]] .. x2 .. ", " .. y2 .. ", " .. z2 .. [["/>
 		]] .. -- <step length="225" vector="225,0,0" />
 		-- ADD ME
 [[	</state>]]

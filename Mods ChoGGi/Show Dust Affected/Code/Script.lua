@@ -83,7 +83,7 @@ function OnMsg.ClassesPostprocess()
 		"RolloverText", T(302535920011547, "Show nearby buildings being affected by this dust generator."),
 		"RolloverTitle", T(302535920011546, "Toggle Dust Affected"),
 
-		"OnPress", function (self, gamepad)
+		"OnPress", function (self)
 			ToggleLines(self.context)
 		end,
 	})

@@ -119,7 +119,7 @@ local function UpdateStanding()
 	local T = T
 	local standing_msg = {}
 	local c = 0
-	for id, rival in pairs(RivalAIs) do
+	for _, rival in pairs(RivalAIs) do
 		local standing = rival.resources.standing
 		c = c + 1
 		standing_msg[c] = T{302535920011562, "<name>: <stand_text><newline>",

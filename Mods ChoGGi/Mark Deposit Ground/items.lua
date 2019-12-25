@@ -2,7 +2,7 @@ return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "HideSigns",
 		"DisplayName", T(302535920011430, "Hide Signs"),
-		"Help", T(302535920011501, "Hide signs on the map (pressing "I" will not toggle them)."),
+		"Help", T(302535920011501, "Hide signs on the map (pressing \"I\" will not toggle them)."),
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
