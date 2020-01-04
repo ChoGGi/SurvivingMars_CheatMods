@@ -1585,7 +1585,9 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 			-- always pause on start (for saves with missing mod buildings)
 			if testing and game_type == "Load" then
 				Sleep(100)
-				SetGameSpeedState("pause")
+				if UISpeedState ~= "pause" then
+					SetGameSpeedState("pause")
+				end
 			end
 
 			-- clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)

@@ -21,9 +21,7 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local table = table
-local string_lower = string.lower
 local MapGet = MapGet
-local floatfloor = floatfloor
 
 local res_count = {}
 local res_str, res_str_c = {}, 0
@@ -71,6 +69,8 @@ local function GetAvailableResources(self, cursor_obj)
 	local text = cursor_obj and "<newline><resource(res)> <"
 		or "<newline><left><resource(res)><right><"
 
+	local string_lower = string.lower
+	local floatfloor = floatfloor
 	for i = 1, res_list_c do
 		local res = res_list[i]
 		local count = res_count[res]
@@ -108,10 +108,20 @@ end
 local rockets = {"RocketLandingSite", "SupplyRocketBuilding"}
 local txt_ctrl
 
+local function ClearOldText()
+	if txt_ctrl then
+		txt_ctrl:Close()
+		txt_ctrl = nil
+	end
+end
+
 -- add text info to building placement
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit(...)
 	orig_CursorBuilding_GameInit(self, ...)
+
+	-- self-suff domes will fire this more than once
+	ClearOldText()
 
 	-- DroneHubs or Rockets, not much point in rovers
 	local sel_radius = self.template.GetSelectionRadiusScale
@@ -156,9 +166,6 @@ end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding.Done(...)
-	if txt_ctrl then
-		txt_ctrl:Close()
-		txt_ctrl = nil
-	end
+	ClearOldText()
 	return orig_CursorBuilding_Done(...)
 end

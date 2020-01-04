@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local table_concat = table.concat
 local MulDivRound = MulDivRound
 local T = T
 
@@ -50,7 +49,7 @@ local function GetPoints(self, text, skip, school)
 			end
 		end
 	end
-	return table_concat(text, "<newline><left>")
+	return table.concat(text, "<newline><left>")
 end
 
 local orig_MartianUniversity_GetTrainedRollover = MartianUniversity.GetTrainedRollover

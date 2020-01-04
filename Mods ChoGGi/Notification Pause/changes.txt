@@ -1,3 +1,6 @@
+v1.1
+Made sure pausing doesn't un-pause.
+
 v1.0
 Evans update.
 
