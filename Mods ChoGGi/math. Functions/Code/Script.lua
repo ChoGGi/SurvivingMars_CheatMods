@@ -65,8 +65,11 @@ local function CheckNum(x, name, arg)
 	end
 end
 
--- global table holding all the functions
-math = {}
+-- don't overwrite math. table if it exists (maybe someone else added it)
+if type(math) ~= "table" then
+	-- global table holding all the functions
+	math = {}
+end
 
 -- Returns the absolute value of x. (integer/float)
 math.sm_abs = abs

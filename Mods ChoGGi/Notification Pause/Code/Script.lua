@@ -27,8 +27,8 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local function PauseGame(id, func, ...)
-	if lookup_skips[id] and UISpeedState ~= "pause"then
-		SetGameSpeedState("pause")
+	if lookup_skips[id] then
+		UICity:SetGameSpeed(0)
 	end
 	return func(id, ...)
 end

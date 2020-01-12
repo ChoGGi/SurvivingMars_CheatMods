@@ -32,7 +32,7 @@ g_ChoGGi_BuildingStates = {
 }
 ]]
 
-local function ToggleShift(obj,set_value,shift)
+local function ToggleShift(obj, set_value, shift)
 	if type(set_value) == "boolean" then
 		if set_value then
 			obj:OpenShift(shift)
@@ -123,7 +123,7 @@ function HUD.idBuildingStatesOnPress(dlg)
 	end
 end
 
-local function RemoveAllOfClass(profile,class)
+local function RemoveAllOfClass(profile, class)
 	if profile and #profile > 0 then
 		for i = #profile, 1, -1 do
 			local state = profile[i]
@@ -134,7 +134,7 @@ local function RemoveAllOfClass(profile,class)
 	end
 end
 
-local function BuildRemoveFromList(dlg,obj)
+local function BuildRemoveFromList(dlg, obj)
 	-- close tooltip
 	if RolloverWin then
 		XDestroyRolloverWindow()
@@ -178,7 +178,7 @@ local function BuildRemoveFromList(dlg,obj)
 	end
 end
 
-local function AddNewState(profile,obj)
+local function AddNewState(profile, obj)
 	local building_state
 	local idx = table_find(profile,"handle",obj.handle)
 	-- exists so clear the state
@@ -198,7 +198,7 @@ local function AddNewState(profile,obj)
 	return building_state
 end
 
-local function ShowList_AddTo(obj,profile)
+local function ShowList_AddTo(obj, profile_name)
 	local working_str = Translate(11230, "Working")
 	local priority_str = Translate(172, "Priority")
 	local shifts_str = Translate(217, "Work Shifts")
@@ -214,14 +214,16 @@ local function ShowList_AddTo(obj,profile)
 		{
 			text = profilename_str,
 			hint = T(302535920011312, "Type in a profile name to store this building state in."),
-			value = T{302535920011305, "Profile: <name>", name = profile or obj_name},
+--~ 			value = T{302535920011305, "Profile: <name>", name = profile_name or obj_name},
+			value = profile_name or obj_name,
 		},
 		{
 			text = working_str,
-			hint = T(302535920011313, "Enter <green>true</green> or <green>false</green> to have it turned on or off."),
+			hint = T(302535920011313, "Enter <green>true</green> or <red>false</red> to have it turned on or off."),
 			value = obj.ui_working,
 		},
 	}
+
 	local c = #item_list
 
 	local is_task_obj = obj:IsKindOf("TaskRequester")
@@ -232,9 +234,12 @@ local function ShowList_AddTo(obj,profile)
 			hint = T(302535920011314, "Enter <green>1</green>, <green>2</green>, or <green>3</green> for different priority levels."),
 			value = obj.priority,
 		}
+	else
+		-- needed for checkmark vis
+		is_task_obj = false
 	end
 
-	local boolean_hint_str = T(302535920011315, "Enter <green>true</green> or <green>false</green> to have it turned on or off.")
+	local boolean_hint_str = T(302535920011315, "Enter <green>true</green> or <red>false</red> to have it turned on or off.")
 
 	local is_workplace_obj = obj:IsKindOf("Workplace")
 	if is_workplace_obj then
@@ -244,6 +249,8 @@ local function ShowList_AddTo(obj,profile)
 			hint = boolean_hint_str,
 			value = obj.specialist_enforce_mode,
 		}
+	else
+		is_workplace_obj = false
 	end
 
 	local is_shift_obj = obj:IsKindOf("ShiftsBuilding")
@@ -266,6 +273,8 @@ local function ShowList_AddTo(obj,profile)
 			hint = boolean_hint_str,
 			value = not obj:IsClosedShift(3),
 		}
+	else
+		is_shift_obj = false
 	end
 
 	local function CallBackFunc(choices)
@@ -286,7 +295,7 @@ local function ShowList_AddTo(obj,profile)
 		local shifts_chk = choices[1].check3
 		local enforce_spec_chk = choices[1].check3
 
-		local profile,building_state
+		local profile, building_state
 		local BuildingStates = g_ChoGGi_BuildingStates
 		local profile_name = choices[1]
 		-- add the profile and a blank building state (or find existing)
@@ -302,37 +311,38 @@ local function ShowList_AddTo(obj,profile)
 
 			building_state = AddNewState(profile,obj)
 		else
-			local msg = T(302535920011317, "Error: list choice 1 should be the profile name!")
-			print(msg,obj_name,obj.handle)
-			ChoGGi.ComFuncs.MsgPopup(msg,T(302535920011307, "Building States"))
+			local msg = Translate(302535920011317, "Error: list choice 1 should be the profile name!")
+			print(msg, obj_name, obj.handle)
+			ChoGGi.ComFuncs.MsgPopup(msg, T(302535920011307, "Building States"))
 			return
 		end
 
 		-- if all of type then we use these below
-		local working,priority,shift1,shift2,shift3,specialist_enforce_mode
+		local working, priority, shift1, shift2, shift3, specialist_enforce_mode
 
 		for i = 2, #choices do
 
 			local choice = choices[i]
 			local value = choice.value
+			local value_type = type(value)
 			local text = choice.text
 
-			if text == working_str and working_chk and type(value) == "boolean" then
+			if text == working_str and working_chk and value_type == "boolean" then
 				building_state.working = value
 				working = value
-			elseif text == priority_str and priority_chk and type(value) == "number" and (value == 1 or value == 2 or value == 3) then
+			elseif text == priority_str and priority_chk and value_type == "number" and (value == 1 or value == 2 or value == 3) then
 				building_state.priority = value
 				priority = value
-			elseif text == shifts1_str and shifts_chk and type(value) == "boolean" then
+			elseif text == shifts1_str and shifts_chk and value_type == "boolean" then
 				building_state.shift1 = value
 				shift1 = value
-			elseif text == shifts2_str and shifts_chk and type(value) == "boolean" then
+			elseif text == shifts2_str and shifts_chk and value_type == "boolean" then
 				building_state.shift2 = value
 				shift2 = value
-			elseif text == shifts3_str and shifts_chk and type(value) == "boolean" then
+			elseif text == shifts3_str and shifts_chk and value_type == "boolean" then
 				building_state.shift3 = value
 				shift3 = value
-			elseif text == enforce_spec_str and enforce_spec_chk and type(value) == "boolean" then
+			elseif text == enforce_spec_str and enforce_spec_chk and value_type == "boolean" then
 				building_state.specialist_enforce_mode = value
 				specialist_enforce_mode = value
 			end
@@ -342,7 +352,7 @@ local function ShowList_AddTo(obj,profile)
 		if choices[1].check4 then
 			local objs = UICity.labels[obj.class] or ""
 			for i = 1, #objs do
-				building_state = AddNewState(profile,objs[i])
+				building_state = AddNewState(profile, objs[i])
 				-- add settings from above
 				building_state.working = working
 				building_state.priority = priority
@@ -382,7 +392,7 @@ local function ShowList_AddTo(obj,profile)
 				visible = is_shift_obj,
 			},
 			{
-				title = T(302535920011321, [[Enforce Spec]]),
+				title = T(302535920011321, "Enforce Spec"),
 				hint = T(302535920011320, "Uncheck to exclude this setting from profile."),
 				checked = is_workplace_obj,
 				visible = is_workplace_obj,
@@ -399,7 +409,7 @@ local function ShowList_AddTo(obj,profile)
 	}
 end
 
-local function BuildAddToList(dlg,obj)
+local function BuildAddToList(dlg, obj)
 	-- close tooltip
 	if RolloverWin then
 		XDestroyRolloverWindow()
@@ -436,7 +446,7 @@ local function BuildAddToList(dlg,obj)
 					name = obj_name, profile = profile.name
 				},
 				clicked = function()
-					ShowList_AddTo(obj,profile.name)
+					ShowList_AddTo(obj, profile.name)
 				end,
 			}
 		end

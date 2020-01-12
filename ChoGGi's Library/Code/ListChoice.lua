@@ -176,6 +176,7 @@ function ChoGGi_DlgListChoice:Init(parent, context)
 			if list_check.checked then
 				check:SetCheck(true)
 			end
+			-- have to use false, not nil (they all default to nil)
 			if list_check.visible == false then
 				check:SetVisible()
 			end
@@ -262,8 +263,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		MinWidth = 50,
 		Text = T(6878, "OK"),
 		Background = g_Classes.ChoGGi_XButton.bg_green,
-		RolloverText = Strings[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, and probably double left-clicking <left_click>).
-This will always send back all items (not selection)."]]],
+		RolloverText = Strings[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, or <left_click>*2 a list item)."]]],
 		OnPress = self.BuildReturnList
 	}, self.idButtonContainer)
 
@@ -520,7 +520,7 @@ end
 function ChoGGi_DlgListChoice:idEditValue_OnKbdKeyDown(vk, ...)
 	self = GetRootDialog(self)
 	if vk == const.vkEnter then
-		self:BuildReturnList(_, "L")
+		self:BuildReturnList(nil, "L")
 		return "break"
 	end
 	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self.idEditValue, vk, ...)

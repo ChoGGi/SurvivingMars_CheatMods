@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Mark Selected Building Type",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_MarkSelectedBuildingType",
@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"description", [[When you select a building/rover, all buildings of the same type will have a beam of light.
 
-Has mod option to toggle in-game.
+Has mod option to toggle in-game, and set limit on lines shown.
 
 Requested by JustCarlsFine.]],
 })

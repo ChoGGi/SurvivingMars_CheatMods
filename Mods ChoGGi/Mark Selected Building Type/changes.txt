@@ -1,3 +1,6 @@
+v0.6
+Added object count limit to mod options.
+
 v0.5
 Evans update.
 

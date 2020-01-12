@@ -1,8 +1,20 @@
 -- See LICENSE for terms
 
 local mod_Mark
+local mod_MaxObjects
 
-local ModOptions
+-- func added below
+local ClearBeams
+
+-- fired when settings are changed/init
+local function ModOptions(obj)
+	mod_MaxObjects = CurrentModOptions:GetProperty("MaxObjects")
+	mod_Mark = CurrentModOptions:GetProperty("Mark")
+
+	if not mod_Mark then
+		ClearBeams()
+	end
+end
 
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -49,7 +61,7 @@ function OverviewModeDialog:ScaleSmallObjects(time, direction, ...)
 
 end
 
-local function ClearBeams()
+ClearBeams = function()
 	for i = #beams, 1, -1 do
 		local beam = beams[i]
 		if IsValid(beam) then
@@ -63,7 +75,7 @@ local function MarkObjects(obj)
 	-- remove previous beams
 	ClearBeams()
 
-	if not (mod_Mark or obj) then
+	if not mod_Mark or not obj then
 		return
 	end
 
@@ -72,15 +84,19 @@ local function MarkObjects(obj)
 		or obj.building_class or obj.class
 	local labels = UICity.labels[name] or ""
 
+	local obj_count = #labels
+
 	-- skip if there's too many
-	if #labels > 1000 then
+	if obj_count >= mod_MaxObjects then
 		return
 	end
 
+	-- speed up obj creation
+	SuspendPassEdits("ChoGGi_MarkSelectedBuildingType:MarkObjects")
+
 	local obj_cls = DefenceLaserBeam
 	local c = 0
-	SuspendPassEdits("ChoGGi_MarkSelectedBuildingType:MarkObjects")
-	for i = 1, #labels do
+	for i = 1, obj_count do
 		local obj_pos = labels[i]:GetPos()
 		if obj_pos ~= InvalidPos then
 			c = c + 1
@@ -91,6 +107,7 @@ local function MarkObjects(obj)
 			beams[c] = beam
 		end
 	end
+
 	ResumePassEdits("ChoGGi_MarkSelectedBuildingType:MarkObjects")
 end
 
@@ -100,14 +117,3 @@ OnMsg.SelectionAdded = MarkObjects
 OnMsg.SelectionRemoved = ClearBeams
 -- make sure to remove beams on save
 OnMsg.SaveGame = ClearBeams
-
--- fired when settings are changed/init
-ModOptions = function()
-	mod_Mark = CurrentModOptions:GetProperty("Mark")
-
-	if mod_Mark and SelectedObj then
-		MarkObjects(SelectedObj)
-	else
-		ClearBeams()
-	end
-end

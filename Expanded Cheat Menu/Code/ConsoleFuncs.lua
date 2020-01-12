@@ -209,6 +209,13 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 				submenu_table[c] = BuildExamineItem(cls.GlobalMap)
 			end
 		end)
+--~ 		-- and any stored in Presets table
+--~ 		local Presets = Presets
+--~ 		for id in pairs(Presets) do
+--~ 			names_list[id] = true
+--~ 			c = c + 1
+--~ 			submenu_table[c] = BuildExamineItem("Presets." .. id, id)
+--~ 		end
 
 		table_sort(submenu_table,
 			function(a, b)
@@ -299,7 +306,7 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 	AddSubmenu("g_Classes", nil, "ClassTemplates", "Attaches", "FXRules", "FXLists")
 	AddSubmenu("g_CObjectFuncs", nil, "hr", "pf", "terrain", "UIL", "DTM", "lpeg", "srp", "camera", "camera3p", "cameraMax", "cameraRTS", "string", "table", "package", "debug", "lfs")
 	AddSubmenu("StoryBits", Translate(948928900281--[[Story Bits]]), "StoryBitCategories", "StoryBitTriggersCombo", "g_StoryBitStates", "g_StoryBitCategoryStates")
-	AddSubmenu("UICity", nil, "UICity.tech_status", "BuildMenuPrerequisiteOverrides", "BuildingTechRequirements", "g_ApplicantPool", "TaskRequesters", "LRManagerInstance")
+	AddSubmenu("UICity", nil, "UICity.tech_status", "BuildMenuPrerequisiteOverrides", "BuildingTechRequirements", "g_ApplicantPool", "RivalAIs", "TaskRequesters", "LRManagerInstance")
 
 	-- bonus addition at the top
 	table_insert(ExamineMenuToggle_list, 1, {

@@ -207,9 +207,6 @@ do -- non-class obj funcs
 	function OpenDialog(...)
 		return SetDlgTrans(ChoGGi_OrigFuncs.OpenDialog(...))
 	end
-end -- do
-
-function OnMsg.ClassesGenerate()
 
 	-- skips story bit dialogs
 	SaveOrigFunc("PopupNotificationBegin")
@@ -227,6 +224,10 @@ function OnMsg.ClassesGenerate()
 		end
 		return ChoGGi_OrigFuncs.PopupNotificationBegin(dlg, ...)
 	end
+
+end -- do
+
+function OnMsg.ClassesGenerate()
 
 	do -- LandscapeConstructionController:Activate
 		local max_int = max_int
@@ -328,27 +329,6 @@ function OnMsg.ClassesGenerate()
 		end
 	end -- do
 
-	do -- InfopanelDlg:RecalculateMargins
-		local GetSafeMargins = GetSafeMargins
-		local box = box
-
-		-- stop using 58 and the pins size for the selection panel margins
-		SaveOrigFunc("InfopanelDlg", "RecalculateMargins")
-		function InfopanelDlg:RecalculateMargins()
-			-- if infobar then use min-height of pad
-			local top_margin = 0
-			local infobar = Dialogs.Infobar
-			if infobar then
-				top_margin = infobar.box:sizey()
-			end
-
-			local margins = GetSafeMargins()
-			margins = box(margins:minx(), margins:miny() + top_margin, margins:maxx(), margins:maxy())
-
-			self:SetMargins(margins)
-		end
-	end -- do
-
 	-- allows you to build on geysers
 	SaveOrigFunc("ConstructionController", "IsObstructed")
 	function ConstructionController:IsObstructed(...)
@@ -421,128 +401,6 @@ function OnMsg.ClassesGenerate()
 		SetDlgTrans(self)
 		return ChoGGi_OrigFuncs.XShortcutsHost_SetVisible(self, ...)
 	end
-
-	-- pretty much a copy n paste, just slight addition to change font colour (i use a darker menu, so the menu icons background blends)
-	do -- XMenuEntry:SetShortcut
-		local margin = box(10, 0, 0, 0)
-
-		SaveOrigFunc("XMenuEntry", "SetShortcut")
-		function XMenuEntry:SetShortcut(shortcut_text)
-
-			if self.Icon == "CommonAssets/UI/Menu/folder.tga" then
-				local label = XLabel:new({
-					Dock = "right",
-					VAlign = "center",
-					Margins = margin,
-				}, self)
-				label:SetFontProps(self)
-				label:SetText("...")
-
-				-- folders don't have a shortcut so off we go
-				return
-			end
-
-			local shortcut = rawget(self, "idShortcut") or shortcut_text ~= "" and XLabel:new({
-				Dock = "right",
-				VAlign = "center",
-				Margins = margin,
-			}, self)
-			if shortcut then
-				shortcut:SetFontProps(self)
-				shortcut:SetText(shortcut_text)
-			end
-		end
-	end -- do
-
-	-- this one is easier than XPopupMenu, since it keeps a ref to the action (devs were kind enough to add a single line of "button.action = action")
-	SaveOrigFunc("XToolBar", "RebuildActions")
-	function XToolBar:RebuildActions(...)
-		ChoGGi_OrigFuncs.XToolBar_RebuildActions(self, ...)
-		-- we only care for the cheats menu toolbar tooltips thanks
-		if self.Toolbar ~= "DevToolbar" then
-			return
-		end
-		local buttons_c = #self
-		-- if any of them are a func then change it to the text
-		for i = 1, buttons_c do
-			local button = self[i]
-			if type(button:GetRolloverText()) == "function" then
-				function button.GetRolloverText()
-					return button.action.RolloverText()
-				end
-			end
-		end
-		-- hide it if no buttons
-		if buttons_c == 0 then
-			self.parent:SetVisible()
-		else
-			self.parent:SetVisible(true)
-		end
-
-	end
-
-	do -- XPopupMenu:RebuildActions
-		local XTemplateSpawn = XTemplateSpawn
-
-		-- yeah who gives a rats ass about mouseover hints on menu items
-		SaveOrigFunc("XPopupMenu", "RebuildActions")
-		function XPopupMenu:RebuildActions(host, ...)
-			local menu = self.MenuEntries
-			local popup = self.ActionContextEntries
-			local context = host.context
-			local ShowIcons = self.ShowIcons
-			self.idContainer:DeleteChildren()
-			for i = 1, #host.actions do
-				local action = host.actions[i]
-				if #popup == 0 and #menu ~= 0 and action.ActionMenubar == menu and host:FilterAction(action) or #popup ~= 0 and host:FilterAction(action, popup) then
-					local entry = XTemplateSpawn(action.ActionToggle and self.ToggleButtonTemplate or self.ButtonTemplate, self.idContainer, context)
-
-					-- that was hard...
-					if type(action.RolloverText) == "function" then
-						entry.RolloverText = action.RolloverText()
-					else
-						entry.RolloverText = action.RolloverText
-					end
-					entry.RolloverTitle = Translate(126095410863--[[Info]])
-					-- if this func added the id or something then i wouldn't need to do this copy n paste :(
-
-					function entry.OnPress(this, _)
-						if action.OnActionEffect ~= "popup" then
-							self:ClosePopupMenus()
-						end
-						host:OnAction(action, this)
-						if action.ActionToggle and IsValidXWin(self) then
-							self:RebuildActions(host)
-						end
-					end
-					function entry.OnAltPress(this, _)
-						self:ClosePopupMenus()
-						if action.OnAltAction then
-							action:OnAltAction(host, this)
-						end
-					end
-					entry:SetFontProps(self)
-					entry:SetTranslate(action.ActionTranslate)
-					entry:SetText(action.ActionName)
-					if action.ActionToggle then
-						entry:SetToggled(action:ActionToggled(host))
-					else
-						entry:SetIconReservedSpace(self.IconReservedSpace)
-					end
-					if ShowIcons then
-						entry:SetIcon(action:ActionToggled(host) and action.ActionToggledIcon ~= "" and action.ActionToggledIcon or action.ActionIcon)
-					end
-					entry:SetShortcut(Platform.desktop and action.ActionShortcut or action.ActionGamepad)
-					if action:ActionState(host) == "disabled" then
-						entry:SetEnabled(false)
-					end
-
-					entry:Open()
-				end
-			end
-
-		end
-	end -- do
 
 	-- larger trib/subsurfheater radius
 	SaveOrigFunc("UIRangeBuilding", "SetUIRange")
@@ -644,8 +502,156 @@ function OnMsg.ClassesGenerate()
 				end
 				return ChoGGi_OrigFuncs.XWindow_SetModal(self, set, ...)
 			end
+
 		end
 	end -- do
+
+	do -- InfopanelDlg:RecalculateMargins
+	-- last checked source: Jan 2020
+		local GetSafeMargins = GetSafeMargins
+		local box = box
+
+		-- stop using 58 and the pins size for the selection panel margins
+		SaveOrigFunc("InfopanelDlg", "RecalculateMargins")
+		function InfopanelDlg:RecalculateMargins()
+			-- if infobar then use min-height of pad
+			local top_margin = 0
+			local infobar = Dialogs.Infobar
+			if infobar then
+				top_margin = infobar.box:sizey()
+			end
+
+			local margins = GetSafeMargins()
+			margins = box(margins:minx(), margins:miny() + top_margin, margins:maxx(), margins:maxy())
+
+			self:SetMargins(margins)
+		end
+	end -- do
+
+	-- pretty much a copy n paste, just slight addition to change font colour (i use a darker menu, so the menu icons background blends)
+	-- last checked source: Jan 2020
+	do -- XMenuEntry:SetShortcut
+		local margin = box(10, 0, 0, 0)
+
+		SaveOrigFunc("XMenuEntry", "SetShortcut")
+		function XMenuEntry:SetShortcut(shortcut_text)
+
+			if self.Icon == "CommonAssets/UI/Menu/folder.tga" then
+				local label = XLabel:new({
+					Dock = "right",
+					VAlign = "center",
+					Margins = margin,
+				}, self)
+				label:SetFontProps(self)
+				label:SetText("...")
+
+				-- folders don't have a shortcut so off we go
+				return
+			end
+
+			local shortcut = rawget(self, "idShortcut") or shortcut_text ~= "" and XLabel:new({
+				Dock = "right",
+				VAlign = "center",
+				Margins = margin,
+			}, self)
+			if shortcut then
+				shortcut:SetEnabled(false)
+				shortcut:SetFontProps(self)
+				shortcut:SetText(shortcut_text)
+			end
+		end
+	end -- do
+
+	do -- XPopupMenu:RebuildActions
+	-- last checked source: Jan 2020
+		local XTemplateSpawn = XTemplateSpawn
+
+		-- yeah who gives a rats ass about mouseover hints on menu items
+		SaveOrigFunc("XPopupMenu", "RebuildActions")
+		function XPopupMenu:RebuildActions(host, ...)
+			local menu = self.MenuEntries
+			local popup = self.ActionContextEntries
+			local context = host.context
+			local ShowIcons = self.ShowIcons
+			self.idContainer:DeleteChildren()
+			for i = 1, #host.actions do
+				local action = host.actions[i]
+				if #popup == 0 and #menu ~= 0 and action.ActionMenubar == menu and host:FilterAction(action) or #popup ~= 0 and host:FilterAction(action, popup) then
+					local entry = XTemplateSpawn(action.ActionToggle and self.ToggleButtonTemplate or self.ButtonTemplate, self.idContainer, context)
+
+					-- that was hard...
+					if type(action.RolloverText) == "function" then
+						entry.RolloverText = action.RolloverText()
+					else
+						entry.RolloverText = action.RolloverText
+					end
+					entry.RolloverTitle = Translate(126095410863--[[Info]])
+					-- if this func added the id or something then i wouldn't need to do this copy n paste :(
+
+					function entry.OnPress(this, _)
+						if action.OnActionEffect ~= "popup" then
+							self:ClosePopupMenus()
+						end
+						host:OnAction(action, this)
+						if action.ActionToggle and IsValidXWin(self) then
+							self:RebuildActions(host)
+						end
+					end
+					function entry.OnAltPress(this, _)
+						self:ClosePopupMenus()
+						if action.OnAltAction then
+							action:OnAltAction(host, this)
+						end
+					end
+					entry:SetFontProps(self)
+					entry:SetTranslate(action.ActionTranslate)
+					entry:SetText(action.ActionName)
+					if action.ActionToggle then
+						entry:SetToggled(action:ActionToggled(host))
+					else
+						entry:SetIconReservedSpace(self.IconReservedSpace)
+					end
+					if ShowIcons then
+						entry:SetIcon(action:ActionToggled(host) and action.ActionToggledIcon ~= "" and action.ActionToggledIcon or action.ActionIcon)
+					end
+					entry:SetShortcut(Platform.desktop and action.ActionShortcut or action.ActionGamepad)
+					if action:ActionState(host) == "disabled" then
+						entry:SetEnabled(false)
+					end
+
+					entry:Open()
+				end
+			end
+
+		end
+	end -- do
+
+	-- this one is easier than XPopupMenu, since it keeps a ref to the action (devs were kind enough to add a single line of "button.action = action")
+	SaveOrigFunc("XToolBar", "RebuildActions")
+	function XToolBar:RebuildActions(...)
+		ChoGGi_OrigFuncs.XToolBar_RebuildActions(self, ...)
+		-- we only care for the cheats menu toolbar tooltips thanks
+		if self.Toolbar ~= "DevToolbar" then
+			return
+		end
+		local buttons_c = #self
+		-- if any of them are a func then change it to the text
+		for i = 1, buttons_c do
+			local button = self[i]
+			if type(button:GetRolloverText()) == "function" then
+				function button.GetRolloverText()
+					return button.action.RolloverText()
+				end
+			end
+		end
+		-- hide it if no buttons
+		if buttons_c == 0 then
+			self.parent:SetVisible()
+		else
+			self.parent:SetVisible(true)
+		end
+
+	end
 
 end -- ClassesGenerate
 
@@ -788,7 +794,7 @@ function OnMsg.ClassesBuilt()
 				else
 					MsgPopup(
 						Strings[302535920000735--[[Timer delay skipped]]],
-						Translate(3486--[[Mystery]])
+						T(3486, "Mystery")
 					)
 				end
 
@@ -895,6 +901,7 @@ function OnMsg.ClassesBuilt()
 
 	-- remove spire spot limit
 	do -- ConstructionController:UpdateCursor
+	-- last checked source: Jan 2020
 		local IsValid = IsValid
 		local FixConstructPos = FixConstructPos
 		local UnbuildableZ = buildUnbuildableZ()
@@ -1164,6 +1171,7 @@ function OnMsg.ClassesBuilt()
 
 	-- make the background hide when console not visible (instead of after a second or two)
 	do -- ConsoleLog:ShowBackground
+	-- last checked source: Jan 2020
 		local DeleteThread = DeleteThread
 		local RGBA = RGBA
 
@@ -1174,6 +1182,16 @@ function OnMsg.ClassesBuilt()
 				if visible or immediate then
 					self:SetBackground(RGBA(0, 0, 0, visible and 96 or 0))
 				else
+--~ 					self.background_thread = CreateRealTimeThread(function()
+--~ 						Sleep(3000)
+--~ 						local r, g, b, a = GetRGBA(self:GetBackground())
+--~ 						while a > 0 do
+--~ 							a = Max(0, a - 5)
+--~ 							self:SetBackground(RGBA(0, 0, 0, a))
+--~ 							Sleep(20)
+--~ 						end
+--~ 					end)
+					-- no fade plz
 					self:SetBackground(RGBA(0, 0, 0, 0))
 				end
 			end
@@ -1419,7 +1437,6 @@ end]]
 					__newindex = function(_, key, value)
 						-- bye bye annoying [LUA ERROR] Attempt to create a new global xxx (well for the console at least)
 						rawset(original_G, key, value)
---~ 						original_G[key] = value
 					end,
 				})
 			end)

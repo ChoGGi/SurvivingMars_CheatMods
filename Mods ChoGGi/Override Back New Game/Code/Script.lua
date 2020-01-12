@@ -30,20 +30,21 @@ function SetPlanetCamera(planet, state, ...)
 		CreateRealTimeThread(function()
 			WaitMsg("OnRender")
 			local pgmission = Dialogs.PGMainMenu.idContent.PGMission
-			local something = pgmission[1][1]
-			local toolbar = something.idToolBar
+			if type(pgmission) == "table" then
+				local something = pgmission[1][1]
+				local toolbar = something.idToolBar
 
-			if pgmission.Mode == "sponsor" then
-				OverrideBackButton(toolbar, something)
-
-				-- hook into toolbar button area so we can keep adding the button
-				local orig_RebuildActions = toolbar.RebuildActions
-				toolbar.RebuildActions = function(self, context, ...)
-					orig_RebuildActions(self, context, ...)
+				if pgmission.Mode == "sponsor" then
 					OverrideBackButton(toolbar, something)
+
+					-- hook into toolbar button area so we can keep adding the button
+					local orig_RebuildActions = toolbar.RebuildActions
+					toolbar.RebuildActions = function(self, context, ...)
+						orig_RebuildActions(self, context, ...)
+						OverrideBackButton(toolbar, something)
+					end
 				end
 			end
-
 		end)
 	end
 	return orig_SetPlanetCamera(planet, state, ...)

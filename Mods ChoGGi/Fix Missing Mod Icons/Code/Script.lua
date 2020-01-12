@@ -2,21 +2,20 @@
 
 -- local some globals
 local type = type
-local ConvertToOSPath = ConvertToOSPath
-local Measure = UIL.MeasureImage
+local UIL_Measure = UIL.MeasureImage
 
 -- updated below
 local mod_path1, mod_path2
 
 local function FixPath(image)
 	-- not everything sent from below is an image str (in-game paths all use tga)
-	if not image or type(image) == "string" and not image:find_lower(".tga") then
+	if not image or type(image) == "string" and not (image:find_lower(".tga") or image:find_lower(".png")) then
 		-- send back it
 		return image
 	end
 
 	-- if w and h are over 0 then it's an image
-	local w, h = Measure(image)
+	local w, h = UIL_Measure(image)
 	if w > 0 and h > 0 then
 		return image
 	end
@@ -51,6 +50,7 @@ function OnMsg.ModsReloaded()
 	end
 
 	-- loop through all the mods and test all the icon paths
+	local ConvertToOSPath = ConvertToOSPath
 	local Mods = Mods
 	for _, mod_def in pairs(Mods) do
 		-- no items, no paths to fix up (though my mods are probably the only ones with no items)

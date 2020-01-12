@@ -1,3 +1,6 @@
+v0.8
+Error in log (thanks westamastaflash).
+
 v0.7
 Evans update.
 

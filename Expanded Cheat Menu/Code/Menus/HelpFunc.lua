@@ -1051,7 +1051,7 @@ function ChoGGi.MenuFuncs.ListAllMenuItems()
 				icon = "<image " .. a.ActionIcon .. " 2500>"
 			end
 
-			local short = a.ActionShortcut
+			local short = a.ActionShortcut or ""
 
 			item_list[c] = {
 				text = a.ActionName,

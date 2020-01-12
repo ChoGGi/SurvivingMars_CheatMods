@@ -2,6 +2,8 @@
 
 local MulDivRound = MulDivRound
 local Sleep = Sleep
+local MapGet = MapGet
+local CreateRealTimeThread = CreateRealTimeThread
 
 local step = 33
 
@@ -26,13 +28,14 @@ local function UpdateIcons(time, direction, rovers)
 		end
 		i = i + step
 	until i > time or not CameraTransitionThread
+
 	ResumePassEdits("ChoGGi_RoverIconsMapOverview_Update")
 end
 
 local orig_OverviewModeDialog_ScaleSmallObjects = OverviewModeDialog.ScaleSmallObjects
 function OverviewModeDialog:ScaleSmallObjects(time, direction, ...)
 	local ret = orig_OverviewModeDialog_ScaleSmallObjects(self, time, direction, ...)
-	CreateRealTimeThread(UpdateIcons, time, direction, MapGet(true, "BaseRover"))
+	CreateRealTimeThread(UpdateIcons, time, direction, MapGet("map", "BaseRover"))
 	return ret
 end
 

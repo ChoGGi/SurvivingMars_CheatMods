@@ -1586,7 +1586,7 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 			if testing and game_type == "Load" then
 				Sleep(100)
 				if UISpeedState ~= "pause" then
-					SetGameSpeedState("pause")
+					UICity:SetGameSpeed(0)
 				end
 			end
 

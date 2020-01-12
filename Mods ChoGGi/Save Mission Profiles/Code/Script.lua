@@ -103,7 +103,9 @@ local function LoadProfile(name, settings, pgmission)
 	local function CallBackFunc(answer)
 		if answer then
 			-- update in-game settings
-			pgmission.context.params = settings.game
+			if type(pgmission) == "table" then
+				pgmission.context.params = settings.game
+			end
 			g_CurrentMapParams = settings.map
 			g_RocketCargo = settings.cargo
 
@@ -148,7 +150,9 @@ local function ProfileButtonPressed(pgmission, toolbar)
 			name = T(302535920011257, "Save Profile"),
 			hint = T(302535920011258, "Save current profile."),
 			clicked = function()
-				CreateRealTimeThread(SaveProfile, pgmission.context.params)
+				if type(pgmission) == "table" then
+					CreateRealTimeThread(SaveProfile, pgmission.context.params)
+				end
 			end,
 		},
 	}
@@ -218,13 +222,15 @@ function SetPlanetCamera(planet, state, ...)
 			WaitMsg("OnRender")
 			if Dialogs.PGMainMenu and Dialogs.PGMainMenu.idContent then
 				local pgmission = Dialogs.PGMainMenu.idContent.PGMission
-				local toolbar = pgmission[1][1].idToolBar
-				AddProfilesButton(pgmission, toolbar)
-				-- hook into toolbar button area so we can keep adding the button
-				local orig_RebuildActions = toolbar.RebuildActions
-				toolbar.RebuildActions = function(self, context, ...)
-					orig_RebuildActions(self, context, ...)
+				if type(pgmission) == "table" then
+					local toolbar = pgmission[1][1].idToolBar
 					AddProfilesButton(pgmission, toolbar)
+					-- hook into toolbar button area so we can keep adding the button
+					local orig_RebuildActions = toolbar.RebuildActions
+					toolbar.RebuildActions = function(self, context, ...)
+						orig_RebuildActions(self, context, ...)
+						AddProfilesButton(pgmission, toolbar)
+					end
 				end
 			end
 		end)

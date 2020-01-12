@@ -738,6 +738,20 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 				c = self:AddDistToRollover(c, roll_text, self.obj_ref[obj-1], obj-1, obj, obj_value)
 				c = self:AddDistToRollover(c, roll_text, self.obj_ref[obj+1], obj+1, obj, obj_value)
 			end
+		-- translate T()
+		elseif type(obj) == "table" and IsT(obj) then
+			local meta = getmetatable(obj)
+			if meta == TMeta then
+				obj_type = "TMeta"
+			elseif meta == TConcatMeta then
+				obj_type = "TConcatMeta"
+			else
+				obj_type = "LocId"
+			end
+			c = c + 1
+			roll_text[c] = self.ChoGGi.ComFuncs.Translate(obj)
+			c = c + 1
+			roll_text[c] = "\n\n"
 		else
 			obj_str, obj_type = self.ChoGGi.ComFuncs.ValueToStr(obj)
 		end
@@ -759,7 +773,9 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 		c = c + 2
 
 		-- if it's an image then add 'er to the text
-		if self.ChoGGi.ComFuncs.ValidateImage(obj_str) and self.ChoGGi.ComFuncs.ImageExts()[obj_str:sub(-3):lower()] then
+		if self.ChoGGi.ComFuncs.ValidateImage(obj_str) and
+			self.ChoGGi.ComFuncs.ImageExts()[obj_str:sub(-3):lower()]
+		then
 			c = c + 1
 			roll_text[c] = "\n\n<image "
 			c = c + 1
