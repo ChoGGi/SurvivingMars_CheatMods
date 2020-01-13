@@ -1,0 +1,31 @@
+return PlaceObj("ModDef", {
+	"title", "More Names",
+	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
+	"saved", 0,
+	"image", "Preview.jpg",
+	"id", "ChoGGi_MoreNames",
+	"steam_id", "1968507022",
+	"pops_any_uuid", "f0196c9b-a2ac-4a8f-a3f5-84c93e805e57",
+	"author", "ChoGGi",
+	"lua_revision", 249143,
+	"code", {
+		"Code/Script.lua",
+	},
+	"TagCosmetics", true,
+	"TagOther", true,
+	"has_options", true,
+	"description", [[Adds a bunch of "Unique" names to every nation which are (sometimes loosely) associated with space travel.
+They're all the same for each, so you might get von Braun as a Chinese colonist.
+If you have more names you think should be added; let me know.
+
+Names are a list of male/female/family or unique (first + last).
+A new game is required to see new unique names.
+
+Includes mod option to disable the transition to only Martian names.
+
+I'm not against expanding this mod to include more male/female/family names if you want to go through the trouble of compiling/formatting a list (or two).
+https://github.com/HaemimontGames/SurvivingMars/blob/master/Lua/Names.lua#L1009
+]],
+})

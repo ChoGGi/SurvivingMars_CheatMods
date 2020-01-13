@@ -120,6 +120,7 @@ do -- ModUpload
 	if not Platform.pc then
 		hpk_path = "AppData/hpk"
 	end
+	local hpk_path_working
 
 	-- it's fine...
 	local copy_files, blank_mod, clipboard, test, steam_upload, para_platform
@@ -275,12 +276,11 @@ do -- ModUpload
 			end
 
 			-- try to use hpk exe instead of buggy ass AsyncPack
-			if hpk_path then
+			if hpk_path_working then
 				-- not sure if it matters, but delete ModContent.hpk first
 				local output = mods_path .. ModsPackFileName
 				AsyncFileDelete(output)
-				local exec = hpk_path .. " create --cripple-lua-files \""
---~ 				local exec = hpk_path .. " create \""
+				local exec = hpk_path_working .. " create --cripple-lua-files \""
 					.. mod.env.CurrentModPath:gsub(mods_path, ""):gsub("/", "") .. "\" " .. ModsPackFileName
 				-- AsyncExec(cmd, working_dir, hidden, capture_output, priority)
 				if not AsyncExec(exec, ConvertToOSPath(mods_path), true, false) then
@@ -408,9 +408,9 @@ do -- ModUpload
 
 		-- we update this now, so the tooltip doesn't show nil
 		if ChoGGi.ComFuncs.FileExists(hpk_path) then
-			hpk_path = ConvertToOSPath(hpk_path)
+			hpk_path_working = ConvertToOSPath(hpk_path)
 		else
-			hpk_path = nil
+			hpk_path_working = nil
 		end
 
 		CreateRealTimeThread(function()
@@ -486,7 +486,7 @@ do -- ModUpload
 						m_c = m_c + 1
 						upload_msg[m_c] = Strings[302535920001572--[["<color ChoGGi_red>Pack Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually to workaround it.
 You can also stick the executable in the profile folder to use it instead (<green>no crashing</green>):
-<yellow>%s</yellow>."]]]:format(hpk_path)
+<yellow>%s</yellow>."]]]:format(ConvertToOSPath(hpk_path))
 
 						if not copy_files then
 							m_c = m_c + 1
@@ -663,7 +663,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 
 https://github.com/nickelc/hpk
 <green>hpk create ""Mod folder"" ModContent.hpk</green>
-Move archive to ""Mod folder/Pack/ModContent.hpk"""]]] .. "\n\n" .. Strings[302535920001572]:format(hpk_path),
+Move archive to ""Mod folder/Pack/ModContent.hpk"""]]] .. "\n\n" .. Strings[302535920001572]:format(ConvertToOSPath(hpk_path)),
 			height = 800.0,
 			multisel = true,
 			checkboxes = {
