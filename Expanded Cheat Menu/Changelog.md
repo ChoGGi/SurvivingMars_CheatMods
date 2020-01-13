@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v14.7 (Unreleased)
+## v14.8 (Unreleased)
+
+## v14.7 (13 Jan 2020)
 ### Added:
 - Debug>Story Bits>Skip Story Bits: Always select first option after slight delay.
 

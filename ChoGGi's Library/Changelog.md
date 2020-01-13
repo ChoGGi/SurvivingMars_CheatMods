@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v7.7 (Unreleased)
+## v7.8 (Unreleased)
+
+## v7.7 (13 Jan 2020)
 - Some log spam for ListDialog.
 - Minor code cleanup.
 
