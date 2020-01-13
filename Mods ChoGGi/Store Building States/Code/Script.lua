@@ -219,7 +219,7 @@ local function ShowList_AddTo(obj, profile_name)
 		},
 		{
 			text = working_str,
-			hint = T(302535920011313, "Enter <green>true</green> or <red>false</red> to have it turned on or off."),
+			hint = T(302535920011313, "Enter <ChoGGi_green>true</ChoGGi_green> or <ChoGGi_red>false</ChoGGi_red> to have it turned on or off."),
 			value = obj.ui_working,
 		},
 	}
@@ -231,7 +231,7 @@ local function ShowList_AddTo(obj, profile_name)
 		c = c + 1
 		item_list[c] = {
 			text = priority_str,
-			hint = T(302535920011314, "Enter <green>1</green>, <green>2</green>, or <green>3</green> for different priority levels."),
+			hint = T(302535920011314, "Enter <ChoGGi_green>1</ChoGGi_green>, <ChoGGi_green>2</ChoGGi_green>, or <ChoGGi_green>3</ChoGGi_green> for different priority levels."),
 			value = obj.priority,
 		}
 	else
@@ -239,7 +239,7 @@ local function ShowList_AddTo(obj, profile_name)
 		is_task_obj = false
 	end
 
-	local boolean_hint_str = T(302535920011315, "Enter <green>true</green> or <red>false</red> to have it turned on or off.")
+	local boolean_hint_str = T(302535920011315, "Enter <ChoGGi_green>true</ChoGGi_green> or <ChoGGi_red>false</ChoGGi_red> to have it turned on or off.")
 
 	local is_workplace_obj = obj:IsKindOf("Workplace")
 	if is_workplace_obj then

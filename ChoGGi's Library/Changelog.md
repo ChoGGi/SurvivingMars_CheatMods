@@ -1,6 +1,8 @@
 ## Library Changelog
 
 ## v7.7 (Unreleased)
+- Some log spam for ListDialog.
+- Minor code cleanup.
 
 ## v7.6 (25 Oct 2019)
 - Minor speed up for DotNameToObject.

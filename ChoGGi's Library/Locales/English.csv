@@ -1,4 +1,10 @@
-ID,Text
+"ID"," Text"
+302535920000962,
+302535920000975,
+302535920000976,
+302535920000977,
+302535920000978,
+302535920000980,
 302535920000981,
 302535920000983,
 302535920000985,
@@ -43,9 +49,10 @@ ID,Text
 302535920001648,
 302535920001649,
 302535920001650,
-302535920000000,"Expanded Cheat Menu"
 302535920001400,"ChoGGi"
 302535920000887,"ECM"
+302535920000000,"Expanded Cheat Menu"
+302535920001453,"Completed"
 302535920001026,"Update Text"
 302535920001449,"Export"
 302535920000758,"Will take some time for 25K and up."
@@ -98,7 +105,7 @@ ID,Text
 302535920000069,"Examine"
 302535920000491,"Examine Object"
 302535920001073,"Console"
-302535920000242,"<color ChoGGi_red>%s</color> is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access ;)"
+302535920000242,"<color red>%s</color> is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access ;)"
 302535920001302,"Find"
 302535920001303,"Search for text within <green>%s</green>."
 302535920000306,"Everything"
@@ -117,7 +124,7 @@ ID,Text
 302535920000042,"City"
 302535920000074,"Cancel without changing anything."
 302535920000084,"Auto-Refresh"
-302535920000090,"Error opening: <color ChoGGi_red>%s</color>"
+302535920000090,"Error opening: <color red>%s</color>"
 302535920000106,"Current"
 302535920000111,"Cover the entire map from the centre."
 302535920000112,"Cover the entire map from a corner."
@@ -157,7 +164,6 @@ ID,Text
 302535920001454,"Stockpiled"
 302535920001455,"Produced"
 302535920001456,"Consumed"
-302535920001453,"Completed"
 302535920000854,"Results Found"
 302535920000219,"Export viewed image to <green>%s</green>."
 302535920000109,"Invalid Image"
@@ -202,10 +208,10 @@ If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""T
 302535920000740,"Asian"
 302535920001283,"Indian"
 302535920001284,"Hispanic"
-302535920000006,"Failed to save settings to <color ChoGGi_red>%s</color>: <yellow>%s</yellow>"
-302535920000243,"Problem saving settings! Error: <color ChoGGi_red>%s</color>"
-302535920000007,"Problem loading settings! Error: <color ChoGGi_red>%s</color>"
-302535920000008,"Error: Couldn't convert old settings to new settings: <color ChoGGi_red>%s</color>"
+302535920000006,"Failed to save settings to <color red>%s</color>: <yellow>%s</yellow>"
+302535920000243,"Problem saving settings! Error: <color red>%s</color>"
+302535920000007,"Problem loading settings! Error: <color red>%s</color>"
+302535920000008,"Error: Couldn't convert old settings to new settings: <color red>%s</color>"
 302535920000009,"Missing Scenario Name"
 302535920000010,"Missing Name"
 302535920000011,"Missing Description"
@@ -235,11 +241,11 @@ See the bottom of Gameplay>Controls if you've changed the key binding."
 302535920000888,"Any .lua files in here will be part of a list that you can execute in-game from the console menu."
 302535920001297,"Toggle Flight Grid"
 302535920001298,"Shows a square grid with terrain/objects shape."
-302535920001267,"<color ChoGGi_red>%s</color> at position: <yellow>%s</yellow> was stopped."
+302535920001267,"<color red>%s</color> at position: <yellow>%s</yellow> was stopped."
 302535920000968,"Collisions"
 302535920000969,"Collisions <yellow>%s</yellow> on <green>%s</green>"
-302535920000012,"Error borked building: <color ChoGGi_red>%s</color>"
-302535920000015,"Can't colour <color ChoGGi_red>%s</color>."
+302535920000012,"Error borked building: <color red>%s</color>"
+302535920000015,"Can't colour <color red>%s</color>."
 302535920000017,"Use the colour picker (<right_click>*2 for instant change)."
 302535920000018,"Don't use the colour picker: Numbers range from -128 to 127.
 If you want shiny metal: use 120 for Metallic and -128 for Roughness."
@@ -255,29 +261,29 @@ You can copy and paste numbers if you want."
 302535920000026,"if they're there; resets to default colours."
 302535920000027,"Nothing selected"
 302535920000028,"Find Resource"
-302535920000029,"Error: Cannot find any <color ChoGGi_red>%s</color>."
+302535920000029,"Error: Cannot find any <color red>%s</color>."
 302535920000032,"Select a resource to find"
 302535920000030,"To show the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked."
 302535920001441,"<left_click> Activate MenuItem <right_click> Add/Remove Quickbar"
 302535920001439,"~obj, @func, @@type, $id, %img, ^str, *r/*g/*m threads. Hover mouse for more info."
-302535920001440,"<green>~</green><yellow>obj</yellow> opens object in examine dlg, use <color ChoGGi_red>ex(obj)</color> in lua code.
+302535920001440,"<green>~</green><yellow>obj</yellow> opens object in examine dlg, use <color red>ex(obj)</color> in lua code.
 <green>~!</green><yellow>obj</yellow> opens object's attachments in examine dlg.
 
 <green>&</green><yellow>handle</yellow> examines object with that handle.
 
-<green>@</green><yellow>GetMissionSponsor</yellow> prints file name and line number of function, use <color ChoGGi_red>format_value(obj)</color> in lua code.
+<green>@</green><yellow>GetMissionSponsor</yellow> prints file name and line number of function, use <color red>format_value(obj)</color> in lua code.
 
-<green>@@</green><yellow>EntityData</yellow> prints type of obj, use <color ChoGGi_red>type(obj)</color> in lua code.
+<green>@@</green><yellow>EntityData</yellow> prints type of obj, use <color red>type(obj)</color> in lua code.
 
-<green>%</green><yellow>""UI/Vignette.tga""</yellow> opens image in image viewer, use <color ChoGGi_red>OpenImageViewer(image)</color> in lua code.
+<green>%</green><yellow>""UI/Vignette.tga""</yellow> opens image in image viewer, use <color red>OpenImageViewer(image)</color> in lua code.
 
-<green>^</green><yellow>""text string""</yellow> opens text in text editor, use <color ChoGGi_red>OpenTextViewer(string)</color> in lua code.
+<green>^</green><yellow>""text string""</yellow> opens text in text editor, use <color red>OpenTextViewer(string)</color> in lua code.
 
-<green>$</green><yellow>123</yellow> or <green>$</green><yellow>EffectDeposit.display_name</yellow> prints translated string, use <color ChoGGi_red>trans(obj)</color> in lua code.
+<green>$</green><yellow>123</yellow> or <green>$</green><yellow>EffectDeposit.display_name</yellow> prints translated string, use <color red>trans(obj)</color> in lua code.
 
-<green>*r</green> <yellow>Sleep(1000) print(""sleeping"")</yellow> to wrap in a real time thread (or <green>*g</green>), use <color ChoGGi_red>CreateRealTimeThread(func)</color> in lua code..
+<green>*r</green> <yellow>Sleep(1000) print(""sleeping"")</yellow> to wrap in a real time thread (or <green>*g</green>), use <color red>CreateRealTimeThread(func)</color> in lua code..
 
-<green>!</green><yellow>UICity.labels.TerrainDeposit[1]</yellow> move camera and select obj, use <color ChoGGi_red>ViewAndSelectObject(obj)</color> in lua code.
+<green>!</green><yellow>UICity.labels.TerrainDeposit[1]</yellow> move camera and select obj, use <color red>ViewAndSelectObject(obj)</color> in lua code.
 
 <green>s</green> = <yellow>SelectedObj</yellow>, <green>c()</green> = <yellow>GetTerrainCursor()</yellow>, <green>restart()</green> = <yellow>quit(""restart"")</yellow>"
 302535920001401,"Removed missing mod building from %s: %s, entity: %s, handle: %s"
@@ -344,7 +350,7 @@ If this isn't a dumping site then waste rock will not be emptied."
 302535920000502,"Treat uppercase and lowercase as distinct."
 302535920001305,"Find Within"
 302535920001306,"Enter text to find"
-302535920001304,"Set how many levels within this table we search. <color ChoGGi_red>Warning</color>: O(n)."
+302535920001304,"Set how many levels within this table we search. <color red>Warning</color>: O(n)."
 302535920000870,"Max amount of pools that can form."
 302535920000532,"All Max"
 302535920000533,"All Min"
@@ -419,7 +425,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"
 302535920000071,"Show Mods Log"
 302535920000692,"Log is blank (well not anymore)."
 302535920000477,"Clear out the windowed console log."
-302535920000920,"Examining objs from this dlg will <color ChoGGi_red>%s</color>examine them all in a single dlg."
+302535920000920,"Examining objs from this dlg will <color red>%s</color>examine them all in a single dlg."
 302535920000590,"Batch"
 302535920000841,"If examining a table then exec this code for each entry.
 If it's an associative table then <yellow>o = value</yellow>."
@@ -429,7 +435,7 @@ If it's an associative table then <yellow>o = value</yellow>."
 302535920000417,"Null reference"
 302535920000628,"Close the examine dialog
 Hold <green>Shift</green> to close all ""grouped"" examine dialogs (any ex dlg opened from an ex dlg).
-Hold <green>Ctrl</green> to close <color ChoGGi_red>all</color> ECM dialogs."
+Hold <green>Ctrl</green> to close <color red>all</color> ECM dialogs."
 302535920000625,"Exec Func"
 302535920000627,"Show func name in exec code line."
 302535920000168,"Continually call this function while showing results in an examine dialog."
@@ -548,7 +554,7 @@ Press once to clear this examine, again to clear all."
 302535920000520,"Parents"
 302535920000525,"Ancestors"
 302535920000553,"Examine parent and ancestor classes."
-302535920000414,"Are you sure you wish to delete <color ChoGGi_red>%s</color>?"
+302535920000414,"Are you sure you wish to delete <color red>%s</color>?"
 302535920000228,"Assign to"
 302535920000043,"<green>Enter</green> to scroll to next found text
 <green>Ctrl-Enter</green> to scroll to previous found text
@@ -595,7 +601,7 @@ It won't be visible unless the ""%s"" checkbox is enabled.
 Warning: Entering the wrong value may crash the game or otherwise cause issues."
 302535920000078,"Custom Value"
 302535920000079,"* Use this custom value"
-302535920000080,"Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, or <left_click>*2)."
+302535920000080,"Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, or <left_click>*2 a list item)."
 302535920000082,"Check this for ""<yellow>All of type</yellow>"" to only apply to connected grid."
 302535920000085,"Auto-refresh list every ""<yellow>Amount</yellow>""."
 302535920000086,"Manually refresh the list."
@@ -620,6 +626,7 @@ Press Enter to refresh list (update names).
 302535920000213,"Previously set in an ECM menu (meaning it's active and the setting here will override this value)."
 302535920000158,"Consts"
 302535920000182,"The scale this amount will be multipled by when used."
+302535920000941,"Funding Per Rare Metal Export"
 302535920000850,"Change Resupply Settings"
 302535920000719,"Add Orbital Probes"
 302535920000720,"Add more probes."
@@ -922,7 +929,7 @@ Sequence part may have more then one check, you may have to skip twice or more.
 302535920000282,"This will remove the mystery, if you start it again; it'll be back to the start."
 302535920000283,"Remove All"
 302535920000284,"This will remove all the mysteries!"
-302535920000285,"Click ""<color ChoGGi_red>OK</color>"" to skip requirements (Warning: may cause issues later on, untested)."
+302535920000285,"Click ""<color red>OK</color>"" to skip requirements (Warning: may cause issues later on, untested)."
 302535920000286,"Part"
 302535920000287,"Timer delay removed (may take upto a Sol)."
 302535920000288,"Advancement requires"
@@ -1134,8 +1141,6 @@ Only works on colonists that have yet to spawn (maybe)."
 Not permanent."
 302535920000447,"Change the age at which colonists die (applies to newly arrived and born colonists as well)."
 302535920000448,"I'm afraid it could be 9/11 times 1,000."
-302535920000978, "Skip Story Bits"
-302535920000980, "Always select first option after slight delay."
 302535920000220,"Like %s, but this shows hex positioning (offset or map, change in settings)."
 302535920000680,"Follow Mouse Grid Position"
 302535920000681,"Type of positioning to show."
@@ -1152,7 +1157,7 @@ This is temporary, use Options>Video>Framerate Counter to permanently save it."
 302535920000416,"Delay isn't a valid class."
 302535920000049,"Loading Screen Log"
 302535920001621,"Be able to see the console log (and other dialogs) during the loading screen.
-<color ChoGGi_red>Warning</color>: Leave welcome to Mars msg onscreen till map is loaded."
+<color red>Warning</color>: Leave welcome to Mars msg onscreen till map is loaded."
 302535920001591,"Show Grid Small"
 302535920001592,"Small (use Disable to hide)."
 302535920001556,"Use the selected object."
@@ -1208,8 +1213,8 @@ You need my HelperMod installed to be able to use this."
 302535920001276,"Nothing is deleted unless you check this."
 302535920000146,"Delete Saved Games"
 302535920001273,"Shows a list of saved games, and allows you to delete more than one at a time."
-302535920001274,"This is <color ChoGGi_red>permanent!</color>"
-302535920001275,"Deleted <color ChoGGi_red>%s</color> saved games."
+302535920001274,"This is <color red>permanent!</color>"
+302535920001275,"Deleted <color red>%s</color> saved games."
 302535920000467,"Path Markers"
 302535920001175,"Debug FX"
 302535920000453,"Reload Lua"
@@ -1217,14 +1222,14 @@ You need my HelperMod installed to be able to use this."
 302535920001164,"Flattening has been stopped, now updating buildable."
 302535920000851,"isn't an object?
 Sounds like a borked save; send me the file and I'll take a look"
-302535920000852,"This will delete all <yellow>%s</yellow> of <color ChoGGi_red>%s</color>"
-302535920000856,"Yes, I want to delete all: <color ChoGGi_red>%s</color>"
+302535920000852,"This will delete all <yellow>%s</yellow> of <color red>%s</color>"
+302535920000856,"Yes, I want to delete all: <color red>%s</color>"
 302535920000857,"No, I need to backup my save first (like I should've done before clicking something called ""<green>Delete All</green>"")."
 302535920000859,"Anim State"
 302535920000860,"Set Anim State"
 302535920000861,"Current State: <green>%s</green>"
 302535920000868,"Choose Map"
-302535920000869,"This <color ChoGGi_red>%s</color> doesn't have GetPath function, something is probably borked."
+302535920000869,"This <color red>%s</color> doesn't have GetPath function, something is probably borked."
 302535920000871,"Doesn't seem to be an object that moves."
 302535920000872,"Pathing"
 302535920000873,"Doesn't work that well."
@@ -1233,7 +1238,7 @@ Sounds like a borked save; send me the file and I'll take a look"
 302535920000878,"Skip Flags"
 302535920000879,"Doesn't add the little flags, just lines and spheres (good for larger maps)."
 302535920000454,"Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it).
-<color ChoGGi_red>Warning</color>: Disables cheat menu submenus."
+<color red>Warning</color>: Disables cheat menu submenus."
 302535920000874,"(see Path Markers to mark more than one at a time)."
 302535920001176,"Toggle showing FX debug info in console."
 302535920001184,"Particles"
@@ -1282,11 +1287,6 @@ Attention: If you get yellow ground areas; just load it again or try %s."
 302535920000500,"Show a hex grid around mouse:
 Green = pass/build, Yellow = no pass/build,
 Blue = pass/no build, Red = no pass/no build."
-302535920000977,"Anything below 1 M will show as 0 M."
-302535920000975,"Pod Price"
-302535920000976,"Change the price per pod (applies to both supply/passenger)."
-302535920000941,"Passenger Ark Pod"
-302535920000962,"Allows you to use Ark Pod with any sponsor."
 302535920000702,"Drone Wasp Move Speed"
 302535920000051,"Drone Battery Cap"
 302535920000945,"Change the capacity of drone batteries."
@@ -1415,7 +1415,7 @@ Blue = pass/no build, Red = no pass/no build."
 302535920000578,"Change waste storage depot capacity."
 302535920000579,"Storage Mechanized Depots"
 302535920000580,"Change mechanized depot storage capacity."
-302535920000036,"<color ChoGGi_red>Click lightly!</color>"
+302535920000036,"<color red>Click lightly!</color>"
 302535920001533,"Remove Invalid Label Objects"
 302535920001534,"Checks the city.labels for invalid objects and removes them from the label."
 302535920001483,"Missing Mod Buildings"
@@ -1504,7 +1504,7 @@ Takes less then a second on a map with 3616 buildings and 54 drone hubs."
 302535920001625,"List Disaster"
 302535920001626,"Overrides List Normal."
 302535920001618,"Map Data (Breakthroughs)"
-302535920001619,"This will take <color ChoGGi_red>longer</color> (about 15s)."
+302535920001619,"This will take <color red>longer</color> (about 15s)."
 302535920000973,"Change the value (-1) to an index number from Terrain Textures.
 Open <green>%s</green> to see all the textures, the tooltips show the texture index."
 302535920001237,"Terrain Type Remap"
@@ -1651,7 +1651,7 @@ Not noticeable unless using higher zoom."
 302535920000656,"Toggle between moving camera and selecting objects."
 302535920000221,"See log for any batch errors."
 302535920001586,"All Done!"
-302535920001572,"<color ChoGGi_red>Pack Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually to workaround it.
+302535920001572,"<color red>Pack Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually to workaround it.
 You can also stick the executable in the profile folder to use it instead (<green>no crashing</green>):
 <yellow>%s</yellow>."
 302535920000323,"Modding"
@@ -1670,7 +1670,7 @@ If you have a uuid in your metadata.lua this checkbox is ignored and it'll try t
 302535920001482,"Prints to console how many ticks it takes the map to load."
 302535920000039,"Spam in the console log doesn't necessarily mean a problem with SM (it could just a warning).
 
-<color ChoGGi_red>This report will go to the %s developers not me.</color>"
+<color red>This report will go to the %s developers not me.</color>"
 302535920001463,"Bug Report"
 302535920001464,"Yes, I know what I'm doing. This is a bug."
 302535920001427,"Pack"
@@ -1701,7 +1701,7 @@ If you have a uuid in your metadata.lua this checkbox is ignored and it'll try t
 302535920001260,"Blank"
 302535920001261,"Uploads a blank mod, and prints id in log."
 302535920001262,"<green>%sModUpload</green> folder is empty and waiting for files."
-302535920001263,"<color ChoGGi_red>%s</color> is different from your name, do you have permission to upload it?"
+302535920001263,"<color red>%s</color> is different from your name, do you have permission to upload it?"
 302535920001244,"Saves settings to file, and applies any changes."
 302535920001245,"Abort without touching anything."
 302535920000466,"This will disable the cheats menu, cheats panel, and all hotkeys.
@@ -1880,3 +1880,12 @@ Restart to set disabled."
 302535920001347,"Show Console"
 302535920001348,"Restart"
 302535920001350,"Place Last Selected/Constructed Building"
+302535920010000,"math.%s not implemented yet."
+302535920010001,"bad argument #%s to 'math.%s' (%s)"
+302535920010002,"zero"
+302535920010003,"less than or equals zero"
+302535920010004,"less than zero"
+302535920010005,"arg#2 - arg#1 == less than zero"
+302535920010006,"Testing math: Start"
+302535920010007,"Testing math: End"
+302535920010008,"Testing math: Error file: (%s) line number: (%s) val1: (%s) val2: (%s) func: (math.%s)"

@@ -7,6 +7,10 @@
 ### Changed:
 - Menu items that show true/false are now coloured green/red (instead of just green).
 - Console log is always visible in mod editor mode.
+- Examine will display TMeta/TConcatMeta text in the hover tooltip.
+
+### Fixed:
+- Help>List All Menu Items didn't open.
 
 ## v14.6 (25 Oct 2019)
 ### Added:

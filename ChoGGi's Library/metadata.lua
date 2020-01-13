@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "ChoGGi's Library Test",
-	"version", 77,
+	"version", 78,
 	"version_major", 7,
-	"version_minor", 7,
+	"version_minor", 8,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_Library",
@@ -44,9 +44,7 @@ return PlaceObj("ModDef", {
 		"Code/MultiLineText.lua",
 	},
 	"description", [[Contains stuff needed by most of my mods.
-The load order for my library in relation to my mods isn't an issue.
 
-Reason for this mod:
 I got tired of copying and pasting functions between different mods to update them, now I just update this mod for those functions.
 
 

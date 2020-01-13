@@ -7,7 +7,7 @@ local mod_MaxObjects
 local ClearBeams
 
 -- fired when settings are changed/init
-local function ModOptions(obj)
+local function ModOptions()
 	mod_MaxObjects = CurrentModOptions:GetProperty("MaxObjects")
 	mod_Mark = CurrentModOptions:GetProperty("Mark")
 
