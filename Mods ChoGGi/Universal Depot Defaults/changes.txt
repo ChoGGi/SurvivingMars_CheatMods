@@ -1,3 +1,10 @@
+v0.5
+Compatible with LukeH's New Resource mod.
+
+v0.4
+Added icons to mod options.
+Skips seeds if no Green Planet DLC.
+
 v0.3
 Evans update.
 

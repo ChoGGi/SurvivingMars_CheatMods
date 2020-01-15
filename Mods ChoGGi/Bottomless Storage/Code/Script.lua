@@ -54,7 +54,7 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	local storable_resources = table.icopy(UniversalStorageDepot.storable_resources)
-	if not table.find(storable_resources, "Seeds") then
+	if g_AvailableDlc.armstrong and not table.find(storable_resources, "Seeds") then
 		storable_resources[#storable_resources+1] = "Seeds"
 	end
 

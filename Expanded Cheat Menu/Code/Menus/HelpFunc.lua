@@ -45,6 +45,7 @@ do -- ModUpload
 		ChoGGi_AllSponsorBuildings = "All Sponsor Buildings v0.2",
 		ChoGGi_AllSponsors = "All Sponsors v0.1",
 		ChoGGi_ChangeDroneType = "Change Drone Type v0.3",
+		ChoGGi_ChangeObjectColour = "Change Object Colour v1.0",
 		ChoGGi_ChangeOtherToRandomGender = "Change Other To Random Gender v0.1",
 		ChoGGi_ChangeRocketSkin = "Change Rocket Skin v0.2",
 		ChoGGi_CommieMarxLogos = "Commie Mars Logos v0.4",
