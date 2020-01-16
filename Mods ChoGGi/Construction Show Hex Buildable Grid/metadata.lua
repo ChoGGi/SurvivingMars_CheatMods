@@ -8,9 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Construction Show Hex Buildable Grid",
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_ConstructionShowHexBuildableGrid",
@@ -23,8 +23,9 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"description", [[Show Hex Buildable Grid during construction (follows the mouse).
-Passable (drones/rovers can drive here), Buildable (buildings can be placed here)
+Press Numpad 0 to toggle grids anytime (rebind in game options).
 
+Passable (drones/rovers can drive here), Buildable (buildings can be placed here)
 Green = pass/build
 Yellow = no pass/build
 Blue = pass/no build (shows blue for pipes, but you can build some stuff under them)

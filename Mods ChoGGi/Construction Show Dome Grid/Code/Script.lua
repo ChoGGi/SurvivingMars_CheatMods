@@ -42,13 +42,9 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
-function CursorBuilding:GameInit(...)
-	orig_CursorBuilding_GameInit(self, ...)
-	if not (mod_EnableGrid or self.template:IsKindOf("Dome")) then
-		return
-	end
+local grids_visible
 
+local function ShowGrids()
 	SuspendPassEdits("CursorBuilding.GameInit.Construction Show Dome Grid")
 	ShowHexRanges(nil, "Dome")
 
@@ -71,6 +67,21 @@ function CursorBuilding:GameInit(...)
 	end
 
 	ResumePassEdits("CursorBuilding.GameInit.Construction Show Dome Grid")
+	grids_visible = true
+end
+local function HideGrids()
+	SuspendPassEdits("CursorBuilding.Done.Construction Show Dome Grid")
+	HideHexRanges(nil, "Dome")
+	ResumePassEdits("CursorBuilding.Done.Construction Show Dome Grid")
+	grids_visible = false
+end
+
+local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
+function CursorBuilding:GameInit(...)
+	orig_CursorBuilding_GameInit(self, ...)
+	if mod_EnableGrid and self.template:IsKindOf("Dome") then
+		ShowGrids()
+	end
 end
 
 local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
@@ -107,9 +118,7 @@ end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding.Done(...)
-	SuspendPassEdits("CursorBuilding.Done.Construction Show Dome Grid")
-	HideHexRanges(nil, "Dome")
-	ResumePassEdits("CursorBuilding.Done.Construction Show Dome Grid")
+	HideGrids()
 	return orig_CursorBuilding_Done(...)
 end
 
@@ -137,3 +146,19 @@ function OnMsg.SelectionRemoved()
 	HideHexRanges(nil, "Dome")
 	ResumePassEdits("SelectionRemoved.Construction Show Dome Grid")
 end
+
+-- add keybind for toggle
+local Actions = ChoGGi.Temp.Actions
+Actions[#Actions+1] = {ActionName = T(302535920011488, "Construction Show Dome Range"),
+	ActionId = "ChoGGi.ConstructionShowDomeRange.ToggleGrid",
+	OnAction = function()
+		if grids_visible then
+			HideGrids()
+		else
+			ShowGrids()
+		end
+	end,
+	ActionShortcut = "Numpad 4",
+	replace_matching_id = true,
+	ActionBindable = true,
+}

@@ -1,8 +1,16 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library",
+			"version_major", 7,
+			"version_minor", 7,
+		}),
+	},
 	"title", "Construction Show Drone Grid",
-	"version", 13,
+	"version", 14,
 	"version_major", 1,
-	"version_minor", 3,
+	"version_minor", 4,
 	"saved", 0,
 	"id", "ChoGGi_ConstructionShowDroneGrid",
 	"author", "ChoGGi",
@@ -15,9 +23,10 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"description", [[Shows grid radius around Drone Hubs, Rockets, and RC Commanders when you're in construction mode.
+Press Numpad 3 to toggle grids anytime (rebind in game options).
 
 Mod Options:
-Show Grids: Use to disable temporarily.
+Show during construction: If you don't want grids showing up during construction placement.
 Dist From Cursor: Only show grids around buildings this close to the cursor (0 = disabled, 1 = 1000 and so on, 100 == over 2 map squares).
 Grid Opacity: Set opacity of grid icons.
 Grid Scale: Set scale of grid icons.

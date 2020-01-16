@@ -130,14 +130,9 @@ local function ShowBuildingHexesSite(bld, is_rocket)
 	end
 end
 
--- add grid hexes
-local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
-function CursorBuilding.GameInit(...)
-	orig_CursorBuilding_GameInit(...)
-	if not mod_EnableGrid then
-		return
-	end
+local grids_visible
 
+local function ShowGrids()
 	SuspendPassEdits("CursorBuilding.GameInit.Construction Show Dust Grid")
 
 	local ObjectGrid = ObjectGrid
@@ -207,7 +202,36 @@ function CursorBuilding.GameInit(...)
 	end
 
 	ResumePassEdits("CursorBuilding.GameInit.Construction Show Dust Grid")
+	grids_visible = true
+end
+local function HideGrids()
+	SuspendPassEdits("CursorBuilding.Done.Construction Show Dust Grid")
 
+	local UICity = UICity
+	for i = 1, classes_c do
+		HideHexRanges(UICity, classes[i])
+	end
+
+	-- any ConstructionSite finished while grids up
+	local g_HexRanges = g_HexRanges
+	for obj1, obj2 in pairs(g_HexRanges) do
+		if not IsValid(obj1) then
+			CleanList(obj2)
+			g_HexRanges[obj1] = nil
+		end
+	end
+
+	ResumePassEdits("CursorBuilding.Done.Construction Show Dust Grid")
+	grids_visible = false
+end
+
+-- add grid hexes
+local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
+function CursorBuilding.GameInit(...)
+	orig_CursorBuilding_GameInit(...)
+	if mod_EnableGrid then
+		ShowGrids()
+	end
 end
 
 -- update visibility
@@ -254,23 +278,22 @@ end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding.Done(...)
-	SuspendPassEdits("CursorBuilding.Done.Construction Show Dust Grid")
-
-	local UICity = UICity
-	for i = 1, classes_c do
-		HideHexRanges(UICity, classes[i])
-	end
-
-	-- any ConstructionSite finished while grids up
-	local g_HexRanges = g_HexRanges
-	for obj1, obj2 in pairs(g_HexRanges) do
-		if not IsValid(obj1) then
-			CleanList(obj2)
-			g_HexRanges[obj1] = nil
-		end
-	end
-
-	ResumePassEdits("CursorBuilding.Done.Construction Show Dust Grid")
-
+	HideGrids()
 	return orig_CursorBuilding_Done(...)
 end
+
+-- add keybind for toggle
+local Actions = ChoGGi.Temp.Actions
+Actions[#Actions+1] = {ActionName = T(302535920011486, "Construction Show Dust Range"),
+	ActionId = "ChoGGi.ConstructionShowDustGrid.ToggleGrid",
+	OnAction = function()
+		if grids_visible then
+			HideGrids()
+		else
+			ShowGrids()
+		end
+	end,
+	ActionShortcut = "Numpad 2",
+	replace_matching_id = true,
+	ActionBindable = true,
+}

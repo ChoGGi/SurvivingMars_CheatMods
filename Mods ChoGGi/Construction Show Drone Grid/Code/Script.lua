@@ -71,13 +71,9 @@ function RCRover:GetSelectionRadiusScale_OverrideChoGGi()
 	return self.work_radius
 end
 
-local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
-function CursorBuilding.GameInit(...)
-	orig_CursorBuilding_GameInit(...)
-	if not mod_EnableGrid then
-		return
-	end
+local grids_visible
 
+local function ShowGrids()
 	SuspendPassEdits("CursorBuilding.GameInit.Construction Show Drone Grid")
 
 	local UICity = UICity
@@ -122,7 +118,24 @@ function CursorBuilding.GameInit(...)
 	end
 
 	ResumePassEdits("CursorBuilding.GameInit.Construction Show Drone Grid")
+	grids_visible = true
+end
+local function HideGrids()
+	SuspendPassEdits("CursorBuilding.Done.Construction Show Drone Grid")
+	local UICity = UICity
+	HideHexRanges(UICity, "SupplyRocket")
+	HideHexRanges(UICity, "DroneHub")
+	HideHexRanges(UICity, "RCRover")
+	ResumePassEdits("CursorBuilding.Done.Construction Show Drone Grid")
+	grids_visible = false
+end
 
+local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
+function CursorBuilding.GameInit(...)
+	orig_CursorBuilding_GameInit(...)
+	if mod_EnableGrid then
+		ShowGrids()
+	end
 end
 
 local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
@@ -162,13 +175,7 @@ end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding.Done(...)
-	SuspendPassEdits("CursorBuilding.Done.Construction Show Drone Grid")
-	local UICity = UICity
-	HideHexRanges(UICity, "SupplyRocket")
-	HideHexRanges(UICity, "DroneHub")
-	HideHexRanges(UICity, "RCRover")
-	ResumePassEdits("CursorBuilding.Done.Construction Show Drone Grid")
-
+	HideGrids()
 	return orig_CursorBuilding_Done(...)
 end
 
@@ -189,3 +196,19 @@ function OnMsg.SaveGame()
 		end
 	end
 end
+
+-- add keybind for toggle
+local Actions = ChoGGi.Temp.Actions
+Actions[#Actions+1] = {ActionName = T(302535920011487, "Construction Show Drone Range"),
+	ActionId = "ChoGGi.ConstructionShowDroneRange.ToggleGrid",
+	OnAction = function()
+		if grids_visible then
+			HideGrids()
+		else
+			ShowGrids()
+		end
+	end,
+	ActionShortcut = "Numpad 3",
+	replace_matching_id = true,
+	ActionBindable = true,
+}

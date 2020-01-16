@@ -80,4 +80,4 @@ function CursorBuilding:GameInit(...)
 	return orig_CursorBuilding_GameInit(self, ...)
 end
 
--- since the circle gets attached to the CursorBuilding it'll be removed when it's removed, no need to fiddle with :Close()
+-- since the circle gets attached to the CursorBuilding it'll be removed when it's removed, no need to fiddle with :Done()

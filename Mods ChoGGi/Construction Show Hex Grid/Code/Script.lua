@@ -19,16 +19,43 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
+local grids_visible
+
+local function ShowGrids()
+	SetPostProcPredicate("hexgrid", true)
+	grids_visible = true
+end
+local function HideGrids()
+	SetPostProcPredicate("hexgrid", false)
+	grids_visible = false
+end
+
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding.GameInit(...)
 	if mod_Option1 then
-		SetPostProcPredicate("hexgrid", true)
+		ShowGrids()
 	end
 	return orig_CursorBuilding_GameInit(...)
 end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding.Done(...)
-	SetPostProcPredicate("hexgrid", false)
+	HideGrids()
 	return orig_CursorBuilding_Done(...)
 end
+
+-- add keybind for toggle
+local Actions = ChoGGi.Temp.Actions
+Actions[#Actions+1] = {ActionName = T(302535920011490, "Construction Show Hex Range"),
+	ActionId = "ChoGGi.ConstructionShowHexRange.ToggleGrid",
+	OnAction = function()
+		if grids_visible then
+			HideGrids()
+		else
+			ShowGrids()
+		end
+	end,
+	ActionShortcut = "Numpad 5",
+	replace_matching_id = true,
+	ActionBindable = true,
+}

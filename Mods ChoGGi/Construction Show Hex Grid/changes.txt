@@ -1,3 +1,6 @@
+v0.4
+Added keybind toggle (it'll work even if mod is disabled in mod options).
+
 v0.3
 Evans update.
 

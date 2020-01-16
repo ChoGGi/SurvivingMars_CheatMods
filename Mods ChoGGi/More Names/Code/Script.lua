@@ -184,7 +184,7 @@ function OnMsg.ModsReloaded()
 	end
 
 	-- loop through all the nation names and add new names
-	for id, name_table in pairs(HumanNames) do
+	for _, name_table in pairs(HumanNames) do
 		-- some don't have it
 		if not name_table.Unique then
 			name_table.Unique = {

@@ -38,13 +38,9 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
-function CursorBuilding.GameInit(...)
-	orig_CursorBuilding_GameInit(...)
-	if not mod_EnableGrid then
-		return
-	end
+local grids_visible
 
+local function ShowGrids()
 	SuspendPassEdits("CursorBuilding.GameInit.Construction Show Tribby Range")
 	ShowHexRanges(UICity, "TriboelectricScrubber")
 
@@ -66,6 +62,22 @@ function CursorBuilding.GameInit(...)
 	end
 
 	ResumePassEdits("CursorBuilding.GameInit.Construction Show Tribby Range")
+	grids_visible = true
+end
+
+local function HideGrids()
+	SuspendPassEdits("CursorBuilding.Done.Construction Show Tribby Range")
+	HideHexRanges(UICity, "TriboelectricScrubber")
+	ResumePassEdits("CursorBuilding.Done.Construction Show Tribby Range")
+	grids_visible = false
+end
+
+local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
+function CursorBuilding.GameInit(...)
+	orig_CursorBuilding_GameInit(...)
+	if mod_EnableGrid then
+		ShowGrids()
+	end
 end
 
 local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
@@ -102,8 +114,22 @@ end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding.Done(...)
-	SuspendPassEdits("CursorBuilding.Done.Construction Show Tribby Range")
-	HideHexRanges(UICity, "TriboelectricScrubber")
-	ResumePassEdits("CursorBuilding.Done.Construction Show Tribby Range")
+	HideGrids()
 	return orig_CursorBuilding_Done(...)
 end
+
+-- add keybind for toggle
+local Actions = ChoGGi.Temp.Actions
+Actions[#Actions+1] = {ActionName = T(302535920011485, "Construction Show Tribby Range"),
+	ActionId = "ChoGGi.ConstructionShowTribbyRange.ToggleGrid",
+	OnAction = function()
+		if grids_visible then
+			HideGrids()
+		else
+			ShowGrids()
+		end
+	end,
+	ActionShortcut = "Numpad 1",
+	replace_matching_id = true,
+	ActionBindable = true,
+}

@@ -1,8 +1,16 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library",
+			"version_major", 7,
+			"version_minor", 7,
+		}),
+	},
 	"title", "Construction Show Dust Grid",
-	"version", 16,
+	"version", 17,
 	"version_major", 1,
-	"version_minor", 6,
+	"version_minor", 7,
 	"saved", 0,
 	"id", "ChoGGi_ConstructionShowDustGrid",
 	"author", "ChoGGi",
@@ -15,9 +23,10 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"description", [[Show dust grids for all dust generating buildings during construction of any building.
+Press Numpad 2 to toggle grids anytime (rebind in game options).
 
 Mod Options:
-Show Grids: Use to disable temporarily.
+Show during construction: If you don't want grids showing up during construction placement.
 Show Construction Site Grids: Show grid around sites.
 Dist From Cursor: Only show grids around buildings this close to the cursor (0 = disabled, 1 = 1000 and so on, 100 == over 2 map squares).
 Grid Opacity: Set opacity of grid icons.
