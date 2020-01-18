@@ -118,6 +118,7 @@ ChoGGi.Defaults = {
 		"g_Classes",
 		"g_CObjectFuncs",
 		"GlobalVars",
+		"Mods",
 		"Presets",
 		"StoryBits",
 		"ThreadsRegister",

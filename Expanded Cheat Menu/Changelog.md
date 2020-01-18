@@ -3,6 +3,8 @@
 ## v14.8 (Unreleased)
 ### Changed:
 - Moved CleanInfoAttachDupes/ObjHexShape_Toggle to Lib mod.
+- Examine will display function params in the hover tooltip.
+- Console>Examine has Mods submenu.
 
 ## v14.7 (13 Jan 2020)
 ### Added:

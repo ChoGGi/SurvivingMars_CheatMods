@@ -1,5 +1,4 @@
 "ID"," Text"
-302535920000962,
 302535920000975,
 302535920000976,
 302535920000977,
@@ -425,6 +424,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"
 302535920000071,"Show Mods Log"
 302535920000692,"Log is blank (well not anymore)."
 302535920000477,"Clear out the windowed console log."
+302535920000962, "Func Params: "
 302535920000920,"Examining objs from this dlg will <color red>%s</color>examine them all in a single dlg."
 302535920000590,"Batch"
 302535920000841,"If examining a table then exec this code for each entry.

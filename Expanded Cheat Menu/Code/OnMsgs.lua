@@ -1558,6 +1558,8 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 			ChoGGi.ComFuncs.SetCameraSettings()
 		end)
 
+
+
 		------------------------------- always fired last
 
 
@@ -1566,11 +1568,6 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 		if ChoGGi.Temp.WriteSettings then
 			ChoGGi.SettingFuncs.WriteSettings()
 			ChoGGi.Temp.WriteSettings = nil
-		end
-
-		-- how long startup takes
-		if testing or UserSettings.ShowStartupTicks then
-			print("<color 200 200 200>", Strings[302535920000887--[[ECM]]], "</color>:", Strings[302535920000247--[[Startup ticks]]], ":", GetPreciseTicks() - ChoGGi.Temp.StartupTicks)
 		end
 
 		if UserSettings.FlushLog then
@@ -1604,6 +1601,11 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 			end
 
 		end)
+
+		-- how long startup takes
+		if testing or UserSettings.ShowStartupTicks then
+			print("<color 200 200 200>", Strings[302535920000887--[[ECM]]], "</color>:", Strings[302535920000247--[[Startup ticks]]], ":", GetPreciseTicks() - ChoGGi.Temp.StartupTicks)
+		end
 	end --OnMsg
 end -- do
 

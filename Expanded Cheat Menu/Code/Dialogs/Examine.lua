@@ -728,18 +728,19 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 		local obj_value = self.obj_type == "table"
 			and self.ChoGGi.ComFuncs.RetTableValue(self.obj_ref, obj)
 		local obj_value_type = type(obj_value)
+		local hovered_obj_type = type(obj)
 
 		if obj_value_type ~= "nil" then
 			obj_str, obj_type = self.ChoGGi.ComFuncs.ValueToStr(obj_value)
 			if obj_value_type == "function" then
 				obj_str = obj_str .. "\n" .. self.ChoGGi.ComFuncs.DebugGetInfo(obj_value)
 			-- check for and add dist from idx-1 and +1 (show hex count instead?)
-			elseif IsPoint(obj_value) and type(obj) == "number" then
+			elseif IsPoint(obj_value) and hovered_obj_type == "number" then
 				c = self:AddDistToRollover(c, roll_text, self.obj_ref[obj-1], obj-1, obj, obj_value)
 				c = self:AddDistToRollover(c, roll_text, self.obj_ref[obj+1], obj+1, obj, obj_value)
 			end
 		-- translate T()
-		elseif type(obj) == "table" and IsT(obj) then
+		elseif hovered_obj_type == "table" and IsT(obj) then
 			local meta = getmetatable(obj)
 			if meta == TMeta then
 				obj_type = "TMeta"
@@ -750,6 +751,12 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 			end
 			c = c + 1
 			roll_text[c] = self.ChoGGi.ComFuncs.Translate(obj)
+			c = c + 1
+			roll_text[c] = "\n\n"
+		elseif hovered_obj_type == "function" then
+			obj_type = hovered_obj_type
+			c = c + 1
+			roll_text[c] = self:RetFuncArgs(obj)
 			c = c + 1
 			roll_text[c] = "\n\n"
 		else
