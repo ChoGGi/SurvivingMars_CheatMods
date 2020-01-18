@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v7.8 (Unreleased)
+- Added CleanInfoAttachDupes/ObjHexShape_Toggle from ECM mod.
 
 ## v7.7 (13 Jan 2020)
 - Some log spam for ListDialog.

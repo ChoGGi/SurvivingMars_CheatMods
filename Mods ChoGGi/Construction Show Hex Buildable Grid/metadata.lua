@@ -35,6 +35,9 @@ The colours use the centre of the hex, so they aren't exact.
 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1479851929]Show Hex Grid[/url]
 
 
-Toggle in-game with Mod Options.
-You can also set the size/opacity.]],
+Mod Options:
+Show during construction: If you don't want grids showing up during construction placement.
+Grid Size: Set the size of the grid area.
+Grid Opacity: Set opacity of grid icons.
+]],
 })

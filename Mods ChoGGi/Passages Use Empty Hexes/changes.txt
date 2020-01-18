@@ -1,3 +1,7 @@
+v0.3
+Added mod option: Show usable hexes: Show hexes that can connect domes when placing passages.
+Press numpad 6 to toggle showing usable hexes.
+
 v0.2
 You can now place passages at the life-support/entrance areas, so you can use pretty much any dome.
 Manual kinks don't work when you use them though...

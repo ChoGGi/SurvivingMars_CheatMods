@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v14.8 (Unreleased)
+### Changed:
+- Moved CleanInfoAttachDupes/ObjHexShape_Toggle to Lib mod.
 
 ## v14.7 (13 Jan 2020)
 ### Added:
