@@ -60,34 +60,6 @@ function InstantLake:AdjustLevel(dir, smaller)
 end
 
 function OnMsg.ClassesPostprocess()
-	if not BuildingTemplates.InstantLake then
-		PlaceObj("BuildingTemplate", {
-			"Id", "InstantLake",
-			"template_class", "InstantLake",
-			"construction_cost_Concrete", 1000,
-			"palette_color1", "outside_base",
-
-			"dome_forbidden", true,
-			"display_name", T(302535920011155, [[Place-a-lake]]),
-			"display_name_pl", T(302535920011156, [[Place-a-lakes]]),
-			"description", T(302535920011157, [[lake thingy... ?]]),
-			"display_icon", "UI/Icons/Buildings/terraforming_big_lake.tga",
-			"entity", entity,
-			"build_category", "ChoGGi",
-			"Group", "ChoGGi",
-			"encyclopedia_exclude", true,
-			"on_off_button", false,
-			"prio_button", false,
-			"use_demolished_state", false,
-			"force_extend_bb_during_placement_checks", 30000,
-			"demolish_sinking", range(0, 0),
-			"demolish_debris", 0,
-			"auto_clear", true,
-		})
-	end
---~ end
-
---~ function OnMsg.ClassesBuilt()
 	local building = XTemplates.ipBuilding[1]
 
 	-- check for and remove existing template
@@ -122,6 +94,32 @@ function OnMsg.ClassesPostprocess()
 		})
 	)
 
+	if BuildingTemplates.InstantLake then
+		return
+	end
+	PlaceObj("BuildingTemplate", {
+		"Id", "InstantLake",
+		"template_class", "InstantLake",
+		"construction_cost_Concrete", 1000,
+		"palette_color1", "outside_base",
+
+		"dome_forbidden", true,
+		"display_name", T(302535920011155, [[Place-a-lake]]),
+		"display_name_pl", T(302535920011156, [[Place-a-lakes]]),
+		"description", T(302535920011157, [[lake thingy... ?]]),
+		"display_icon", "UI/Icons/Buildings/terraforming_big_lake.tga",
+		"entity", entity,
+		"build_category", "ChoGGi",
+		"Group", "ChoGGi",
+		"encyclopedia_exclude", true,
+		"on_off_button", false,
+		"prio_button", false,
+		"use_demolished_state", false,
+		"force_extend_bb_during_placement_checks", 30000,
+		"demolish_sinking", range(0, 0),
+		"demolish_debris", 0,
+		"auto_clear", true,
+	})
 end
 
 -- remove UnevenTerrain error

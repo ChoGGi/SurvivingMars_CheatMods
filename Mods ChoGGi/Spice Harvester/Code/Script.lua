@@ -177,26 +177,6 @@ function Melanger:CreateSelectionArrow()
 end
 
 function OnMsg.ClassesPostprocess()
-	PlaceObj("BuildingTemplate", {
-		"Id", "MelangerBuilding",
-		"template_class", "MelangerBuilding",
-		-- pricey bit 'o kit
-		"construction_cost_Metals", 1000,
-		"dome_forbidden", true,
-		"display_name", T(302535920011294, [[Spice Harvester]]),
-		"display_name_pl", T(302535920011295, [[Spice Harvesters]]),
-		"description", T(302535920011296, [[Doesn't do jack (unless you count roaming around and thumping).]]),
-		"build_category", "ChoGGi",
-		"Group", "ChoGGi",
-		"display_icon", "UI/Icons/Buildings/boomerang_garden.tga",
-		"encyclopedia_exclude", true,
-		"on_off_button", false,
-		"prio_button", false,
-		"entity", "PumpStationDemo",
-	})
---~ end --ClassesPostprocess
-
---~ function OnMsg.ClassesBuilt()
 	local orig_Attach = Melanger.Attach
 	function Melanger:Attach(obj, ...)
 		local ret = orig_Attach(self, obj, ...)
@@ -260,4 +240,24 @@ function OnMsg.ClassesPostprocess()
 		end,
 	})
 
+	if BuildingTemplates.MelangerBuilding then
+		return
+	end
+	PlaceObj("BuildingTemplate", {
+		"Id", "MelangerBuilding",
+		"template_class", "MelangerBuilding",
+		-- pricey bit 'o kit
+		"construction_cost_Metals", 1000,
+		"dome_forbidden", true,
+		"display_name", T(302535920011294, [[Spice Harvester]]),
+		"display_name_pl", T(302535920011295, [[Spice Harvesters]]),
+		"description", T(302535920011296, [[Doesn't do jack (unless you count roaming around and thumping).]]),
+		"build_category", "ChoGGi",
+		"Group", "ChoGGi",
+		"display_icon", "UI/Icons/Buildings/boomerang_garden.tga",
+		"encyclopedia_exclude", true,
+		"on_off_button", false,
+		"prio_button", false,
+		"entity", "PumpStationDemo",
+	})
 end

@@ -4532,7 +4532,10 @@ function ChoGGi.ComFuncs.DisastersStop()
 		g_RainDisaster = false
 	end
 
-	local objs = g_DustDevils or ""
+	-- might help me prevent log spam if I copy n paste elsewhere?
+	local objs
+
+	objs = g_DustDevils or ""
 	for i = #objs, 1, -1 do
 		objs[i]:delete()
 	end

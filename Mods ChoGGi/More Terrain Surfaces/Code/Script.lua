@@ -46,6 +46,15 @@ function OnMsg.ClassesPostprocess()
 		return
 	end
 
+	local bc = BuildCategories
+	if not table.find(bc, "id", "LandscapeTextures_ChoGGi") then
+		bc[#bc+1] = {
+			id = "LandscapeTextures_ChoGGi",
+			name = T(12400, "Change Surface"),
+			image = "UI/Icons/Buildings/terrain.tga",
+		}
+	end
+
 	local cs = T(12400, "Change Surface")
 	local desc = T(12445, "Mark the top layer of a surface to be rearranged by Drones. The marked ground will gradually change towards the desired texture.<if(has_dlc('armstrong'))><newline><newline><em>Degrades local Soil Quality.</em></if>")
 
@@ -191,15 +200,4 @@ You can build this if you want it won't hurt anything.]]),
 		})
 	end
 
---~ end
-
---~ function OnMsg.ClassesBuilt()
-	local bc = BuildCategories
-	if not table.find(bc, "id", "LandscapeTextures_ChoGGi") then
-		bc[#bc+1] = {
-			id = "LandscapeTextures_ChoGGi",
-			name = T(12400, "Change Surface"),
-			image = "UI/Icons/Buildings/terrain.tga",
-		}
-	end
 end

@@ -1,3 +1,6 @@
+v0.5
+Fixed a bug that's been around for awhile (thanks Pharaoh).
+
 v0.4
 Evans update.
 

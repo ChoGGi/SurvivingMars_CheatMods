@@ -31,7 +31,13 @@ function OnMsg.ClassesPostprocess()
 
 --~ 		print(colour,GetRGB(colour))
 		self:SetColor1(colour)
-		self:GetAttach("DroneHubAntenna"):SetColor1(colour)
+
+		local entity = self:GetEntity()
+		if entity == "DroneHubCP3" then
+			self:GetAttach("DroneHubCP3Antenna"):SetColor1(colour)
+		else
+			self:GetAttach("DroneHubAntenna"):SetColor1(colour)
+		end
 
 		return orig_UpdateHeavyLoadNotification(self, ...)
 	end

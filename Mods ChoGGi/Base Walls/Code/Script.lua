@@ -630,87 +630,6 @@ function ChoGGi_BaseWall:GameInit()
 end
 
 function OnMsg.ClassesPostprocess()
-	if BuildingTemplates.ChoGGi_BaseWall then
-		return
-	end
-
-	-- add our wall build objects
-	for id, item in pairs(wall_types) do
-		PlaceObj("BuildingTemplate", {
-			"Id", id,
-			"template_class", "ChoGGi_BaseWall",
---~ 			"construction_cost_Concrete", 1000,
-			"instant_build", true,
-
---~ 			"dome_forbidden", true,
-			"display_name", item.display_name,
-			"display_name_pl", item.display_name_pl,
-			"description", item.description or description,
-			"display_icon", item.display_icon,
-			"build_pos", item.build_pos,
-
-			-- changed below
---~ 			"entity", "Passage_Open",
-			"entity", "InvisibleObject",
-
-			"build_category", "ChoGGi_BaseWalls",
-			"Group", "Default",
-			"encyclopedia_exclude", true,
-
-			"on_off_button", false,
-			"prio_button", false,
-			"use_demolished_state", false,
-			"auto_clear", true,
-		})
-	end
-
-	-- and corner joiners
-	PlaceObj("BuildMenuSubcategory", {
-		build_pos = 1,
-		category = "ChoGGi_BaseWalls",
-		description = description_corner,
-		display_name = T(302535920011038, "Corner Joiners"),
-		group = "Default",
-		icon = icon_path .. "corner_subcat.png",
-		category_name = "ChoGGi_BaseWalls_Joiners",
-		id = "ChoGGi_BaseWalls_Joiners",
-	})
-
-	for id, item in pairs(corner_types) do
-		-- some are DLC
-		if IsValidEntity(item.entity) then
-			PlaceObj("BuildingTemplate", {
-
-				"Id", id,
-				"template_class", "ChoGGi_BaseWallCorner",
-	--~ 			"construction_cost_Concrete", 1000,
-				"instant_build", true,
-
---~ 				"dome_forbidden", true,
-				"display_name", item.display_name,
-				"display_name_pl", item.display_name_pl,
-				"description", item.description or description_corner,
-				"display_icon", item.display_icon,
-				"build_pos", item.build_pos,
-
-				-- needs something
-				"entity", "InvisibleObject",
-
-				"build_category", "ChoGGi_BaseWalls_Joiners",
-				"Group", "Default",
-				"encyclopedia_exclude", true,
-
-				"on_off_button", false,
-				"prio_button", false,
-				"use_demolished_state", false,
-				"auto_clear", true,
-			})
-
-		end
-	end
---~ end
-
---~ function OnMsg.ClassesBuilt()
 
 	OBaseWallClass = ChoGGi_BaseWallClass
 
@@ -875,6 +794,85 @@ function OnMsg.ClassesPostprocess()
 			}),
 		}),
 	})
+
+	if BuildingTemplates.ChoGGi_BaseWall then
+		return
+	end
+
+	-- add our wall build objects
+	for id, item in pairs(wall_types) do
+		PlaceObj("BuildingTemplate", {
+			"Id", id,
+			"template_class", "ChoGGi_BaseWall",
+--~ 			"construction_cost_Concrete", 1000,
+			"instant_build", true,
+
+--~ 			"dome_forbidden", true,
+			"display_name", item.display_name,
+			"display_name_pl", item.display_name_pl,
+			"description", item.description or description,
+			"display_icon", item.display_icon,
+			"build_pos", item.build_pos,
+
+			-- changed below
+--~ 			"entity", "Passage_Open",
+			"entity", "InvisibleObject",
+
+			"build_category", "ChoGGi_BaseWalls",
+			"Group", "Default",
+			"encyclopedia_exclude", true,
+
+			"on_off_button", false,
+			"prio_button", false,
+			"use_demolished_state", false,
+			"auto_clear", true,
+		})
+	end
+
+	-- and corner joiners
+	PlaceObj("BuildMenuSubcategory", {
+		build_pos = 1,
+		category = "ChoGGi_BaseWalls",
+		description = description_corner,
+		display_name = T(302535920011038, "Corner Joiners"),
+		group = "Default",
+		icon = icon_path .. "corner_subcat.png",
+		category_name = "ChoGGi_BaseWalls_Joiners",
+		id = "ChoGGi_BaseWalls_Joiners",
+	})
+
+	for id, item in pairs(corner_types) do
+		-- some are DLC
+		if IsValidEntity(item.entity) then
+			PlaceObj("BuildingTemplate", {
+
+				"Id", id,
+				"template_class", "ChoGGi_BaseWallCorner",
+	--~ 			"construction_cost_Concrete", 1000,
+				"instant_build", true,
+
+--~ 				"dome_forbidden", true,
+				"display_name", item.display_name,
+				"display_name_pl", item.display_name_pl,
+				"description", item.description or description_corner,
+				"display_icon", item.display_icon,
+				"build_pos", item.build_pos,
+
+				-- needs something
+				"entity", "InvisibleObject",
+
+				"build_category", "ChoGGi_BaseWalls_Joiners",
+				"Group", "Default",
+				"encyclopedia_exclude", true,
+
+				"on_off_button", false,
+				"prio_button", false,
+				"use_demolished_state", false,
+				"auto_clear", true,
+			})
+
+		end
+	end
 
 end
 

@@ -476,34 +476,7 @@ DefineClass.RCTankerBuilding = {
 }
 
 function OnMsg.ClassesPostprocess()
-	if not BuildingTemplates.RCTankerBuilding then
-		PlaceObj("BuildingTemplate", {
-			"Id", "RCTankerBuilding",
-			"template_class", "RCTankerBuilding",
-			-- pricey?
-			"construction_cost_Metals", 40000,
-			"construction_cost_MachineParts", 40000,
-			"construction_cost_Electronics", 20000,
-			-- add a bit of pallor to the skeleton
-			"palette_color1", "rover_base",
-
-			"dome_forbidden", true,
-			"display_name", T(302535920011220, [[RC Tanker]]),
-			"display_name_pl", T(302535920011220, [[RC Tanker]]),
-			"description", T(302535920011221, [[Used to transport oxygen and water between tanks.
-Tank will always refer to the storage on the ground, not the tank on the RC.]]),
-			"build_category", "ChoGGi",
-			"Group", "ChoGGi",
-			"display_icon", CurrentModPath .. "UI/rover_tanker.png",
-			"encyclopedia_exclude", true,
-			"on_off_button", false,
-			"entity", entity_rc_building,
-		})
-	end
---~ end
-
---~ -- add some prod info to selection panel
---~ function OnMsg.ClassesBuilt()
+	-- add some prod info to selection panel
 	local rover = XTemplates.ipRover[1]
 
 	-- check for and remove existing template
@@ -604,6 +577,33 @@ Press to toggle.]]),
 			end,
 		})
 	)
+
+	if BuildingTemplates.RCTankerBuilding then
+		return
+	end
+
+	PlaceObj("BuildingTemplate", {
+		"Id", "RCTankerBuilding",
+		"template_class", "RCTankerBuilding",
+		-- pricey?
+		"construction_cost_Metals", 40000,
+		"construction_cost_MachineParts", 40000,
+		"construction_cost_Electronics", 20000,
+		-- add a bit of pallor to the skeleton
+		"palette_color1", "rover_base",
+
+		"dome_forbidden", true,
+		"display_name", T(302535920011220, [[RC Tanker]]),
+		"display_name_pl", T(302535920011220, [[RC Tanker]]),
+		"description", T(302535920011221, [[Used to transport oxygen and water between tanks.
+Tank will always refer to the storage on the ground, not the tank on the RC.]]),
+		"build_category", "ChoGGi",
+		"Group", "ChoGGi",
+		"display_icon", CurrentModPath .. "UI/rover_tanker.png",
+		"encyclopedia_exclude", true,
+		"on_off_button", false,
+		"entity", entity_rc_building,
+	})
 
 end
 

@@ -304,63 +304,6 @@ function Workplace:OnDestroyed()
 end
 
 function OnMsg.ClassesPostprocess()
-	if not BuildingTemplates.Solaria then
-		PlaceObj("BuildingTemplate", {
-			"Id", "Solaria",
-			"template_class", "Solaria",
-			"construction_cost_Concrete", 40000,
-			"construction_cost_Electronics", 10000,
-			"build_points", 10000,
-			"dome_required", true,
-			"maintenance_resource_type", "Concrete",
-			"consumption_resource_type", "Electronics",
-			"consumption_max_storage", 6000,
-			"consumption_amount", 1500,
-			"consumption_type", 4,
-			"display_name", T(302535920011276, [[Solaria Telepresence]]),
-			"display_name_pl", T(302535920011277, [[Solaria Telepresences]]),
-			"description", T(302535920011278, [[A telepresence VR building, remote control factories and mines (with reduced production).
-Worker amount is dependent on controlled building.
-
-Telepresence control may take up to a shift to propagate to controlled building.]]),
-			"build_category", "ChoGGi",
-			"Group", "ChoGGi",
-			"display_icon", CurrentModPath .. "UI/TheIncal.png",
-			"build_pos", 12,
-			"label1", "InsideBuildings",
-			"label2", "Workshop",
-			"entity", "VRWorkshop",
---~ 			"palettes", "VRWorkshop",
-			"palette_color1","inside_accent_2",
-			"palette_color2","inside_base",
-			"palette_color3","inside_accent_service",
-
-			"demolish_sinking", range(5, 10),
-			"demolish_debris", 80,
-			"electricity_consumption", 15000,
-			"max_workers", 0, -- changed when controlling
-		})
-	end
-
-	PlaceObj("TechPreset", {
-		SortKey = 11,
-		description = T(302535920011279, [[New Building: <em>Solaria</em> (<buildinginfo('Solaria')>) - a building that allows colonists to remote control production buildings. Consumes Electronics.
-
-<grey>"How do you know it's Sci-Fi? VR is commercially viable."
-<right>Shams Jorjani</grey><left>]]),
-		display_name = T(302535920011280, [[Creative Realities Solaria]]),
-		group = "Physics",
-		icon = "UI/Icons/Research/creative_realities.tga",
-		id = "CreativeRealitiesSolaria",
-		position = range(11, 14),
-		PlaceObj("Effect_TechUnlockBuilding", {
-			Building = "Solaria",
-		}),
-	})
-
---~ end -- ClassesPostprocess
-
---~ function OnMsg.ClassesBuilt()
 	local XTemplates = XTemplates
 	local AddXTemplate = ChoGGi.ComFuncs.AddXTemplate
 	AddXTemplate(XTemplates.sectionWorkplace, "SolariaTelepresence_sectionWorkplace1", nil, {
@@ -480,6 +423,61 @@ Right click in list to view (closes menu).]]))
 		return ret
 	end -- ConstructionController:UpdateConstructionStatuses
 
+	if BuildingTemplates.Solaria then
+		return
+	end
+
+	PlaceObj("BuildingTemplate", {
+		"Id", "Solaria",
+		"template_class", "Solaria",
+		"construction_cost_Concrete", 40000,
+		"construction_cost_Electronics", 10000,
+		"build_points", 10000,
+		"dome_required", true,
+		"maintenance_resource_type", "Concrete",
+		"consumption_resource_type", "Electronics",
+		"consumption_max_storage", 6000,
+		"consumption_amount", 1500,
+		"consumption_type", 4,
+		"display_name", T(302535920011276, [[Solaria Telepresence]]),
+		"display_name_pl", T(302535920011277, [[Solaria Telepresences]]),
+		"description", T(302535920011278, [[A telepresence VR building, remote control factories and mines (with reduced production).
+Worker amount is dependent on controlled building.
+
+Telepresence control may take up to a shift to propagate to controlled building.]]),
+		"build_category", "ChoGGi",
+		"Group", "ChoGGi",
+		"display_icon", CurrentModPath .. "UI/TheIncal.png",
+		"build_pos", 12,
+		"label1", "InsideBuildings",
+		"label2", "Workshop",
+		"entity", "VRWorkshop",
+--~ 			"palettes", "VRWorkshop",
+		"palette_color1","inside_accent_2",
+		"palette_color2","inside_base",
+		"palette_color3","inside_accent_service",
+
+		"demolish_sinking", range(5, 10),
+		"demolish_debris", 80,
+		"electricity_consumption", 15000,
+		"max_workers", 0, -- changed when controlling
+	})
+
+	PlaceObj("TechPreset", {
+		SortKey = 11,
+		description = T(302535920011279, [[New Building: <em>Solaria</em> (<buildinginfo('Solaria')>) - a building that allows colonists to remote control production buildings. Consumes Electronics.
+
+<grey>"How do you know it's Sci-Fi? VR is commercially viable."
+<right>Shams Jorjani</grey><left>]]),
+		display_name = T(302535920011280, [[Creative Realities Solaria]]),
+		group = "Physics",
+		icon = "UI/Icons/Research/creative_realities.tga",
+		id = "CreativeRealitiesSolaria",
+		position = range(11, 14),
+		PlaceObj("Effect_TechUnlockBuilding", {
+			Building = "Solaria",
+		}),
+	})
 end
 
 local function StartupCode()

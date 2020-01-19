@@ -371,34 +371,6 @@ function OnMsg.InGameInterfaceCreated()
 end
 
 function OnMsg.ClassesPostprocess()
-	if not BuildingTemplates.RCBulldozerBuilding then
-		PlaceObj("BuildingTemplate", {
-			"Id", "RCBulldozerBuilding",
-			"template_class", "RCBulldozerBuilding",
-			-- pricey?
-			"construction_cost_Metals", 40000,
-			"construction_cost_MachineParts", 40000,
-			"construction_cost_Electronics", 20000,
-			"palettes", AttackRover.palette,
-
-			"dome_forbidden", true,
-			"display_name", name,
-			"display_name_pl", name,
-			"description", description,
-			"build_category", "ChoGGi",
-			"Group", "ChoGGi",
-			"display_icon", display_icon,
-			"encyclopedia_exclude", true,
-			"on_off_button", false,
-			"count_as_building", false,
-			"prio_button", false,
-
-			"entity", entity2,
-		})
-	end
---~ end
-
---~ function OnMsg.ClassesBuilt()
 	-- add some prod info to selection panel
 	local rover = XTemplates.ipRover[1]
 	-- check for and remove existing templates
@@ -556,5 +528,32 @@ function OnMsg.ClassesPostprocess()
 			end,
 		})
 	)
+
+	if BuildingTemplates.RCBulldozerBuilding then
+		return
+	end
+	PlaceObj("BuildingTemplate", {
+		"Id", "RCBulldozerBuilding",
+		"template_class", "RCBulldozerBuilding",
+		-- pricey?
+		"construction_cost_Metals", 40000,
+		"construction_cost_MachineParts", 40000,
+		"construction_cost_Electronics", 20000,
+		"palettes", AttackRover.palette,
+
+		"dome_forbidden", true,
+		"display_name", name,
+		"display_name_pl", name,
+		"description", description,
+		"build_category", "ChoGGi",
+		"Group", "ChoGGi",
+		"display_icon", display_icon,
+		"encyclopedia_exclude", true,
+		"on_off_button", false,
+		"count_as_building", false,
+		"prio_button", false,
+
+		"entity", entity2,
+	})
 
 end

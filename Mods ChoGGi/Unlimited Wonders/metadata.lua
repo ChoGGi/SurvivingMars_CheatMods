@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Unlimited Wonders",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_UnlimitedWonders",
@@ -14,7 +14,6 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"description", [[Build as many as you want.
-This will block off the Construct a Wonder milestone.
 
 Requested by Griffdy04/BlueNightfury.
 

@@ -35,6 +35,7 @@ local function UpdateTraits(c)
 	SetTraits(c, negative_traits, "RemoveTrait")
 end
 
+-- msg sends a single colonist
 OnMsg.ColonistArrived = UpdateTraits
 OnMsg.ColonistBorn = UpdateTraits
 
