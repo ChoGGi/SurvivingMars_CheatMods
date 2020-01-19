@@ -1,6 +1,6 @@
 return {
 	PlaceObj("ModItemCode", {
-		"name", "StupidModEditorDeletingShit",
+		"name", "StupidModEditorDeletingCrap",
 		"FileName", "Code/Script.lua",
 	}),
 }
