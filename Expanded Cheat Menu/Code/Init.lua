@@ -28,6 +28,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
+ChoGGi._LICENSE = LICENSE
+
 -- I didn't get a harumph outta that guy!
 ModEnvBlacklist = {--[[Harumph!]]}
 
