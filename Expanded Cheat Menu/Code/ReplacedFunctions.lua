@@ -52,7 +52,7 @@ do -- non-class obj funcs
 
 	-- stops the help webpage from showing up every single time
 	SaveOrigFunc("GedOpHelpMod")
-	if Platform.editor and UserSettings.SkipModHelpPage then
+	if UserSettings.SkipModHelpPage then
 		GedOpHelpMod = empty_func
 	end
 
@@ -172,9 +172,9 @@ do -- non-class obj funcs
 	SaveOrigFunc("ShowConsoleLog")
 	function ShowConsoleLog(visible, ...)
 		-- we only want to show it if it's enabled or we're in mod editor mode
-		visible = UserSettings.ConsoleToggleHistory or Platform.editor
+		visible = UserSettings.ConsoleToggleHistory or ChoGGi.ComFuncs.ModEditorActive()
 
-		-- ShowConsoleLog doesn't check for existing like ShowConsole
+		-- ShowConsoleLog doesn't check for existing dialog like ShowConsole does
 		if rawget(_G, "dlgConsoleLog") then
 			dlgConsoleLog:SetVisible(visible, ...)
 		else

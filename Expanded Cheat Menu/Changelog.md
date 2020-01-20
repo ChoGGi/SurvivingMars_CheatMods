@@ -1,10 +1,16 @@
 ## ECM Changelog
 
-## v14.8 (Unreleased)
+## v14.9 (Unreleased)
+
+## v14.8 (20 Jan 2020)
 ### Changed:
 - Moved CleanInfoAttachDupes/ObjHexShape_Toggle to Lib mod.
 - Examine will display function params in the hover tooltip.
 - Console>Examine has Mods submenu.
+
+### Fixed:
+- Console log text was always active.
+- Some missing text in cheat menu.
 
 ## v14.7 (13 Jan 2020)
 ### Added:

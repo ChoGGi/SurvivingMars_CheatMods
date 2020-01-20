@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v7.8 (Unreleased)
+## v7.9 (Unreleased)
+
+## v7.8 (20 Jan 2020)
 - Added CleanInfoAttachDupes/ObjHexShape_Toggle from ECM mod.
 
 ## v7.7 (13 Jan 2020)

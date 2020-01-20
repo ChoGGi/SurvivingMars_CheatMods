@@ -27,6 +27,10 @@ local IsPoint = IsPoint
 local IsKindOf = IsKindOf
 local GetDomeAtPoint = GetDomeAtPoint
 local table_unpack = table.unpack
+local ObjHexShape_Clear = ChoGGi.ComFuncs.ObjHexShape_Clear
+local HexAngleToDirection = HexAngleToDirection
+local HexRotate = HexRotate
+local WorldToHex = WorldToHex
 
 -- the only thing I care about is that a dome is at the current pos, the rest is up to the user
 local function IsDomePoint(obj)
@@ -86,9 +90,6 @@ end
 
 -- sites always have a parent_dome, so we have to check if the passage is on a HexInteriorShapes
 -- (the only place that grid connections work with)
-local HexAngleToDirection = HexAngleToDirection
-local HexRotate = HexRotate
-local WorldToHex = WorldToHex
 local function TestEndPoint(passage, end_point)
 	local dome = passage[end_point].parent_dome
 
@@ -151,177 +152,6 @@ function ConnectDomesWithPassage(d1, d2, ...)
 		return orig_ConnectDomesWithPassage(d1, d2, ...)
 	end
 end
-
-	local ObjHexShape_Clear = ChoGGi.ComFuncs.ObjHexShape_Clear
-
--- REMOVE NEXT LIBRARY UPDATE
-	local SuspendPassEdits = SuspendPassEdits
-	local ResumePassEdits = ResumePassEdits
-	local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
-	local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
-	local HexToWorld = HexToWorld
-	local tostring = tostring
-	local DoneObject = DoneObject
-	local table_clear = table.clear
-	local dupe_list = {}
-	local point = point
-	local OHexSpot, XText
-	local parent
-	local FallbackOutline = FallbackOutline
-
-	local function CleanInfoAttachDupes(list, cls)
-		table_clear(dupe_list)
-		SuspendPassEdits("ChoGGi.ComFuncs.CleanInfoAttachDupes")
-
-		-- clean up dupes in order of older
-		for i = 1, #list do
-			local mark = list[i]
-			if not cls or cls and mark:IsKindOf(cls) then
-
-				local pos = tostring(mark:GetPos())
-				local dupe = dupe_list[pos]
-				if dupe then
-					DoneObject(dupe)
-				else
-					dupe_list[pos] = mark
-				end
-
-			end
-		end
-
-		-- remove removed items
-		list:Validate()
-		ResumePassEdits("ChoGGi.ComFuncs.CleanInfoAttachDupes")
-	end
-	local function CleanInfoXwinDupes(list, cls)
-		table_clear(dupe_list)
-
-		-- clean up dupes in order of older
-		for i = #list, 1, -1 do
-			local mark = list[i]
-			if not cls or cls and mark:IsKindOf(cls) then
-
-				local pos = tostring(mark.FindModifier and mark:FindModifier("follow_obj").target:GetPos())
-				if pos then
-					local dupe = dupe_list[pos]
-					if dupe then
-						dupe:Close()
-					else
-						dupe_list[pos] = mark
-					end
-				end
-
-			end
-		end
-	end
-
-	-- function Dome:GenerateWalkablePoints() (mostly)
-	local function BuildShape(obj, shape, depth_test, hex_pos, colour1, colour2, offset)
-		local dir = HexAngleToDirection(obj:GetAngle())
-		local cq, cr = WorldToHex(obj)
-
-		local c = #obj.ChoGGi_shape_obj
-		for i = 1, #shape do
-			local sq, sr = shape[i]:xy()
-			local q, r = HexRotate(sq, sr, dir)
-			local pt = point(HexToWorld(cq + q, cr + r)):SetTerrainZ(offset)
-
-			local hex = OHexSpot:new()
-			hex:SetOpacity(25)
-			hex:SetPos(pt)
-
-			if colour1 then
-				hex:SetColorModifier(colour1)
-			end
-
-			-- wall hax off
-			if not depth_test then
-				hex:SetNoDepthTest(true)
-			end
-
-			-- pos text
-			if hex_pos then
-				local text_obj = XText:new(nil, parent)
-				if colour2 then
-					text_obj:SetTextColor(colour2)
-				end
-				text_obj:FollowObj(hex)
-
-				-- easy access
-				hex.text_obj = text_obj
-				text_obj:SetText(sq .. "," .. sr)
-			end
-
-			c = c + 1
-			obj.ChoGGi_shape_obj[c] = hex
-		end
-	end
-	local function ObjHexShape_Clear(obj)
-		if type(obj) ~= "table" then
-			return
-		end
-		SuspendPassEdits("ChoGGi.ComFuncs.ObjHexShape_Clear")
-		if obj.ChoGGi_shape_obj then
-			obj.ChoGGi_shape_obj:Destroy()
-			obj.ChoGGi_shape_obj = nil
-			if IsValidXWin(obj.ChoGGi_shape_obj_xwin) then
-				obj.ChoGGi_shape_obj_xwin:Close()
-				obj.ChoGGi_shape_obj_xwin = nil
-			end
-			return true
-		end
-		ResumePassEdits("ChoGGi.ComFuncs.ObjHexShape_Clear")
-	end
-	local ObjHexShape_Toggle = ChoGGi.ComFuncs.ObjHexShape_Toggle or function(obj, params)
-		params = params or {shape = FallbackOutline}
-		if not IsValid(obj) or not params.skip_return then
-			return
-		end
-		if not params.skip_clear then
-			if (ObjHexShape_Clear(obj) and not params.skip_return) then
-				return
-			end
-		end
-
-		obj.ChoGGi_shape_obj = obj.ChoGGi_shape_obj or objlist:new()
-		params.colour1 = params.colour1 or RandomColourLimited()
-		params.colour2 = params.colour2 or RandomColourLimited()
-		params.offset = params.offset or 1
-
-		if not OHexSpot then
-			OHexSpot = ChoGGi_OHexSpot
-		end
-		if not XText then
-			XText = ChoGGi_XText_Follow
-		end
-
-		if not IsValidXWin(obj.ChoGGi_shape_obj_xwin) then
-			local parent = terminal.desktop
-			local id = "ChoGGi_ObjHexShape_Toggle" .. obj.handle
-			parent[id] = XWindow:new({Id = id}, parent)
-			obj.ChoGGi_shape_obj_xwin = parent[id]
-		end
-		parent = obj.ChoGGi_shape_obj_xwin
-
-		SuspendPassEdits("ChoGGi.ComFuncs.ObjHexShape_Toggle")
-		BuildShape(
-			obj,
-			params.shape,
-			params.depth_test,
-			params.hex_pos,
-			params.colour1,
-			params.colour2,
-			params.offset
-		)
-		ResumePassEdits("ChoGGi.ComFuncs.ObjHexShape_Toggle")
-		if not params.skip_clear then
-			CleanInfoXwinDupes(obj.ChoGGi_shape_obj_xwin)
-			CleanInfoAttachDupes(obj.ChoGGi_shape_obj, "ChoGGi_OHexSpot")
-		end
-
-		return obj.ChoGGi_shape_obj
-	end
--- REMOVE NEXT LIBRARY UPDATE
 
 local grids_visible
 local function ShowGrids()

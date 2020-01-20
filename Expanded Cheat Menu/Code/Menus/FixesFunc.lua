@@ -576,7 +576,7 @@ function ChoGGi.MenuFuncs.FixMissingModBuildings_Toggle()
 	)
 end
 
--- broked ai mods... (fix your shit or take it down kthxbai)
+-- broked ai mods... (fix your crap or take it down kthxbai)
 function ChoGGi.MenuFuncs.ColonistsStuckOutsideServiceBuildings_Toggle()
 	if ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings then
 		ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings = nil

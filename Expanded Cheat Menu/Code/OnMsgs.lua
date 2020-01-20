@@ -356,7 +356,7 @@ function OnMsg.ModsReloaded()
 		end
 
 		-- show console log history
-		if UserSettings.ConsoleToggleHistory then
+		if UserSettings.ConsoleToggleHistory or ChoGGi.ComFuncs.ModEditorActive() then
 			ShowConsoleLog(true)
 		end
 
@@ -1341,7 +1341,7 @@ do -- LoadGame/CityStart
 			if UserSettings.DroneResourceCarryAmount == 1 then
 				UserSettings.DroneResourceCarryAmountFix = nil
 			else
-				-- fucking drones, pick yer shit up
+				-- damn drones, pick yer crap up
 				UserSettings.DroneResourceCarryAmountFix = true
 			end
 		end

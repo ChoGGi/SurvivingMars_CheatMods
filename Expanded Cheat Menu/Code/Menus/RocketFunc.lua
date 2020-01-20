@@ -73,7 +73,7 @@ function ChoGGi.MenuFuncs.PassengerArkPod_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.PassengerArkPod),
-		Strings[302535920000941--[[Add Passenger Ark Pod]]]
+		Strings[302535920000941--[[Passenger Ark Pod]]]
 	)
 end
 

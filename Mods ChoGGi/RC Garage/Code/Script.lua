@@ -147,7 +147,7 @@ function RCGarage:RemoveFromGarage(unit)
 			self.door:Open()
 			Sleep(self.door:TimeToOpen())
 		end
-		-- Get the fuck outta here!
+		-- Get outta here!
 		unit:SetCommand("ExitBuilding", self, nil, "tunnel_entrance")
 		-- get door opening anim and use it here
 		while unit.command == "ExitBuilding" do

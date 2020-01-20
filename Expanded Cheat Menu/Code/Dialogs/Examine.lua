@@ -143,7 +143,7 @@ DefineClass.ChoGGi_DlgExamine = {
 	string_Object = false,
 	string_State = false,
 
-	-- only chinese goes slow as shit for some reason (whatever text rendering they do)
+	-- only chinese goes slow as molasses for some reason (whatever text rendering they do?)
 	-- i added this to stop the game from freezing till obj is examined
 	-- that way you can at least close the dlg if it's taking too long
 	is_chinese = false,
@@ -3667,7 +3667,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 	-- we add a slight delay; useful for bigger lists like _G or MapGet(true)
 	-- so the dialog shows up (progress is happening user)
 		if startup or self.is_chinese then
-			-- the chinese text render is slow as shit, so we have a Sleep in ConvertObjToInfo to keep ui stuff accessible
+			-- the chinese text render is slow as molasses, so we have a Sleep in ConvertObjToInfo to keep ui stuff accessible
 			CreateRealTimeThread(function()
 				WaitMsg("OnRender")
 --~ self.ChoGGi.ComFuncs.TickStart("Examine")

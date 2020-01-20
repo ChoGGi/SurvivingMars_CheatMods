@@ -445,10 +445,10 @@ ECM.Drones>Work Radius RC Rover: Change RC Rover drone radius (this ignores slid
 ECM.Mission.Disasters>Cold Waves: Set the occurrence level of Cold Wave disasters.
 ECM.Mission.Disasters>Dust Devils: Set the occurrence level of Dust Devils disasters.
 ECM.Mission.Disasters>Dust Storms: Set the occurrence level of Dust Storm disasters.
-ECM.Mission.Disasters>Marsquake: Automated: Toggle occurrence of Marsquake disasters.
+ECM.Mission.Disasters>Marsquake: Toggle occurrence of Marsquake disasters.
 ECM.Mission.Disasters>Meteor Damage: Health damage from small meteor (one-time on impact)
 ECM.Mission.Disasters>Meteors: Set the occurrence level of Meteors disasters.
-ECM.Mission.Disasters>Toxic Rains: Automated: Toggle occurrence of Toxic Rain disasters.
+ECM.Mission.Disasters>Toxic Rains: Toggle occurrence of Toxic Rain disasters.
 ECM.Mission>Change Logo: MarsExpress: Change the logo for anything that uses the logo.
 ECM.Mission>Game Rules: Change the "Game Rules".
 ECM.Mission>Instant Colony Approval: Make your colony instantly approved (can be called before you summon your first victims).

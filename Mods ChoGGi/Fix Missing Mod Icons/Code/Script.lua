@@ -70,6 +70,15 @@ function OnMsg.ModsReloaded()
 				item.upgrade3_icon = FixPath(item.upgrade3_icon)
 				-- it can happen (i check if it's an image path above)
 				item.value = FixPath(item.value)
+				-- sponsors
+				for j = 1, 5 do
+					local image = "goal_image_" .. j
+					item[image] = FixPath(item[image])
+				end
+				for j = 1, 5 do
+					local image = "goal_pin_image_" .. j
+					item[image] = FixPath(item[image])
+				end
 			end
 		end
 	end

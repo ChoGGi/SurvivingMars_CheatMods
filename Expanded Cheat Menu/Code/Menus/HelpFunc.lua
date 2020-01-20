@@ -1180,8 +1180,8 @@ Old settings are saved as %s (or not saved if you don't use the HelperMod)]]]:fo
 end
 
 function ChoGGi.MenuFuncs.ReportBugDlg()
-	-- was in orig func, i guess there's never any bugs when modding :)
-	if Platform.ged or Platform.editor then
+	-- was in orig func, i guess there's never any bugs when modding ;)
+	if Platform.ged or ChoGGi.ComFuncs.ModEditorActive() then
 		return
 	end
 	CreateRealTimeThread(function()

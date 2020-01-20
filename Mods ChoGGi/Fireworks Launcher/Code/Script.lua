@@ -265,7 +265,7 @@ function OnMsg.ClassesPostprocess()
 
 			"RolloverText", T(302535920011421, [[Fire off some fireworks (Costs 100 million to use).
 Right-click to skip cost/temperature increase (also happens if you don't have enough cash).]]),
-			"RolloverTitle", [[Yamato Hasshin!]],
+			"RolloverTitle", T(302535920000944, [[Yamato Hasshin!]]),
 			"RolloverHint", T(302535920011422, [[<left_click> Hot Fireworks <right_click> Visual Fireworks]]),
 			"Icon", "UI/Icons/IPButtons/drill.tga",
 

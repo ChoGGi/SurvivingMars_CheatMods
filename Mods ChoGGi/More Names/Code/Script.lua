@@ -156,6 +156,7 @@ local name_table_Unique = {
 		"Yevgeny Ostashev",
 		"Yuri Gagarin",
 		"Yuri Shargin",
+		"Beef Testosterone",
 	},
 }
 -- no sense in counting over n over

@@ -16,7 +16,6 @@ end
 
 -- do some stuff
 local Platform = Platform
-Platform.editor = true
 -- fixes UpdateInterface nil value in editor mode
 local d_before = Platform.developer
 Platform.developer = true

@@ -139,14 +139,13 @@ DefineClass.ChoGGi_BaseWallClass = {
 		"ComponentAttach",
 	},
 
-	color_mod = -13824000,
 	building_scale = 25,
 
 	building_cap_entity = IsValidEntity("TubeChromeJoint")
 		and "TubeChromeJoint" or "TubeJoint",
 	building_scale_cap = 255,
 	building_cap_offset = point(-400, 0, 0),
-	building_cap_angle = 10800,
+	building_cap_angle = 180 * 60,
 
 	offsets = offsets,
 	coll_flags = const.efWalkable,
@@ -181,17 +180,13 @@ function ChoGGi_BaseWalls:GameInit()
 end
 
 -- default to reg pass
-function ChoGGi_BaseWalls:SpawnBaseObj(cls, parent, skip_colour)
+function ChoGGi_BaseWalls:SpawnBaseObj(cls, parent)
 	local obj = OBaseWallClass:new()
 	obj:ChangeEntity(cls or "PassageCovered")
-	if not skip_colour then
-		obj:SetColorModifier(self.color_mod)
-	end
-	-- the do end is needed, or a local
+
 	if cursor_building then
 		cursor_building:Attach(obj)
 	else
---~ 		do (parent or self):Attach(obj) end
 		(parent or self):Attach(obj)
 	end
 
@@ -293,7 +288,7 @@ function ChoGGi_BaseWalls:SpawnWallAttaches(cursor_obj, count)
 	end
 
 	-- not actual entity, but we use it to change skins
-	self.entity = "Passage"
+	self.entity = self.entity ~= "InvisibleObject" and self.entity or "Passage"
 
 	-- speeds up adding/removing/etc with objects
 	SuspendPassEdits("ChoGGi_BaseWalls:SpawnAttaches")
@@ -415,7 +410,7 @@ function ChoGGi_BaseWalls:SpawnCornerAttaches(cursor_obj)
 	SuspendPassEdits("ChoGGi_BaseWalls:SpawnCornerAttaches")
 
 	-- always spawn something
-	local obj = self:SpawnBaseObj(item.entity, nil, true)
+	local obj = self:SpawnBaseObj(item.entity)
 
 	-- Colour, Roughness, Metallic (r/m go from -128 to 127)
 	if id == "ChoGGi_CornerJoiner_Eye" then
@@ -436,7 +431,7 @@ function ChoGGi_BaseWalls:SpawnCornerAttaches(cursor_obj)
 		obj:SetColorizationMaterial(2, -4692187, 127, -48)
 		obj:SetColorizationMaterial(3, -13480117, -128, 48)
 		local holdee = table_rand(item.objects)
-		obj = self:SpawnBaseObj(holdee, obj, true)
+		obj = self:SpawnBaseObj(holdee, obj)
 		self:UpdateHoldee(obj, holdee)
 		self.current_holder_object = obj
 
@@ -447,7 +442,7 @@ function ChoGGi_BaseWalls:SpawnCornerAttaches(cursor_obj)
 		obj:SetAxisAngle(point(4096, 0, 0), 10700)
 		obj:SetAttachOffset(point(0, 0, 395))
 		local holdee = table_rand(item.objects)
-		obj = self:SpawnBaseObj(holdee, obj, true)
+		obj = self:SpawnBaseObj(holdee, obj)
 		self:UpdateHoldee(obj, holdee, true)
 		self.current_holder_object = obj
 
@@ -495,6 +490,98 @@ function ChoGGi_BaseWalls:AdjustWallLength(toggle)
 	self:AdjustLength(toggle and -2 or 2, self.spawn_wall_count)
 end
 
+local table_lookup = {
+	PassageCovered = "pass",
+	PassageCoveredFacet = "pass",
+	PassageCoveredGeoscape = "pass",
+	PassageCoveredPack = "pass",
+	PassageCoveredStar = "pass",
+
+	PassageCoveredTurn = "turn",
+	PassageCoveredTurnFacet = "turn",
+	PassageCoveredTurnGeoscape = "turn",
+	PassageCoveredTurnPack = "turn",
+	PassageCoveredTurnStar = "turn",
+
+	PassageEntrance = "enter",
+	PassageEntranceFacet = "enter",
+	PassageEntranceGeoscape = "enter",
+	PassageEntrancePack = "enter",
+	PassageEntranceStar = "enter",
+
+	PassageRamp = "ramp",
+	PassageRampFacet = "ramp",
+	PassageRampGeoscape = "ramp",
+	PassageRampPack = "ramp",
+	PassageRampStar = "ramp",
+}
+local lookup_skins = {
+	Passage = {
+		pass = "PassageCovered",
+		turn = "PassageCoveredTurn",
+		enter = "PassageEntrance",
+		ramp = "PassageRamp",
+	},
+	Facet = {
+		pass = "PassageCoveredFacet",
+		turn = "PassageCoveredTurnFacet",
+		enter = "PassageEntranceFacet",
+		ramp = "PassageRampFacet",
+	},
+	Geoscape = {
+		pass = "PassageCoveredGeoscape",
+		turn = "PassageCoveredTurnGeoscape",
+		enter = "PassageEntranceGeoscape",
+		ramp = "PassageRampGeoscape",
+	},
+	Pack = {
+		pass = "PassageCoveredPack",
+		turn = "PassageCoveredTurnPack",
+		enter = "PassageEntrancePack",
+		ramp = "PassageRampPack",
+	},
+}
+local pass_skins = {
+	"Passage",
+	"Facet",
+	"Geoscape",
+	"Pack",
+}
+-- dlc skin
+if IsValidEntity("PassageCoveredStar") then
+	lookup_skins.Star = {
+		pass = "PassageCoveredStar",
+		turn = "PassageCoveredTurnStar",
+		enter = "PassageEntranceStar",
+		ramp = "PassageRampStar",
+	}
+	pass_skins[#pass_skins+1] = "Star"
+end
+local pass_skins_c = #pass_skins
+
+function ChoGGi_BaseWalls:ChangeSkin(skin)
+	local lookup = lookup_skins[skin]
+	SuspendPassEdits("ChoGGi_BaseWalls:ChangeSkin")
+	-- we need to change each spawned entity
+	for i = 1, #self.attached_objs do
+		local obj = self.attached_objs[i]
+		obj:ChangeEntity(lookup[table_lookup[obj.entity]])
+	end
+	ResumePassEdits("ChoGGi_BaseWalls:ChangeSkin")
+
+	local idx = table_find(pass_skins, skin) + 1
+	if not pass_skins[idx] then
+		idx = 1
+	end
+	self.entity = pass_skins[idx]
+end
+
+function ChoGGi_BaseWalls:GetSkins()
+	if self.item_type == "wall" or self.item_type == "wall_adjust" then
+		return pass_skins, empty_table
+	end
+end
+
 -- used below and for build mode
 local spawn_wall_count = 1
 -- abort if we're already adjusting
@@ -522,7 +609,19 @@ function ChoGGi_BaseWalls:AdjustLength(size, current_size)
 	if self.previous_count ~= spawn_wall_count then
 		-- speeds up adding/removing/etc with objects
 		SuspendPassEdits("ChoGGi_BaseWalls:AdjustLength")
-		-- build menu or placed obj
+		-- get skin to reset new wall to
+		local entity = self.entity or "Passage"
+		local idx = table_find(pass_skins, entity) - 1
+		if not pass_skins[idx] then
+			if idx == 0 then
+				idx = pass_skins_c
+			else
+				idx = 1
+			end
+		end
+		entity = pass_skins[idx]
+
+	-- build menu or placed obj
 		if self:IsKindOf("ChoGGi_BaseWalls") then
 			self.spawn_wall_count = spawn_wall_count
 			self:SpawnWallAttaches()
@@ -531,78 +630,13 @@ function ChoGGi_BaseWalls:AdjustLength(size, current_size)
 			self.ChoGGi_bs.spawn_wall_count = spawn_wall_count
 			self.ChoGGi_bs:SpawnWallAttaches(self, spawn_wall_count)
 		end
+		self:ChangeSkin(entity)
 		ResumePassEdits("ChoGGi_BaseWalls:AdjustLength")
 
 		self.previous_count = spawn_wall_count
 	end
 
 	adjusting = false
-end
-
-local lookup_skins = {
-	Passage = {
-		pass = "PassageCovered",
-		turn = "PassageCoveredTurn",
-		enter = "PassageEntrance",
-	},
-	Facet = {
-		pass = "PassageCoveredFacet",
-		turn = "PassageCoveredTurnFacet",
-		enter = "PassageEntranceFacet",
-	},
-	Geoscape = {
-		pass = "PassageCoveredGeoscape",
-		turn = "PassageCoveredTurnGeoscape",
-		enter = "PassageEntranceGeoscape",
-	},
-	Pack = {
-		pass = "PassageCoveredPack",
-		turn = "PassageCoveredTurnPack",
-		enter = "PassageEntrancePack",
-	},
-}
-local pass_skins = {
-	"Passage",
-	"Facet",
-	"Geoscape",
-	"Pack",
-}
-
-function ChoGGi_BaseWalls:ChangeSkin(skin)
-	local lookup = lookup_skins[skin]
-	SuspendPassEdits("ChoGGi_BaseWalls:ChangeSkin")
-	-- we need to change each spawned entity
-	for i = 1, #self.attached_objs do
-		local obj = self.attached_objs[i]
-		if obj.entity:find("PassageCoveredTurn") then
-			obj:ChangeEntity(lookup.turn)
-		elseif obj.entity:find("PassageEntrance") then
-			obj:ChangeEntity(lookup.enter)
-		elseif obj.entity:find("PassageCovered") then
-			obj:ChangeEntity(lookup.pass)
-		end
-	end
-	ResumePassEdits("ChoGGi_BaseWalls:ChangeSkin")
-	local idx = table_find(pass_skins, skin) + 1
-	if not pass_skins[idx] then
-		idx = 1
-	end
-	self.entity = pass_skins[idx]
-end
-
-function ChoGGi_BaseWalls:GetSkins()
-	if self.item_type == "wall" or self.item_type == "wall_adjust" then
-		return pass_skins
-	end
-end
-
-if IsValidEntity("PassageCoveredStar") then
-	lookup_skins.Star = {
-		pass = "PassageCoveredStar",
-		turn = "PassageCoveredTurnStar",
-		enter = "PassageEntranceStar",
-	}
-	pass_skins[#pass_skins+1] = "Star"
 end
 
 DefineClass.ChoGGi_BaseWallCorner = {

@@ -4,13 +4,13 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 7,
-			"version_minor", 7,
+			"version_minor", 8,
 		}),
 	},
 	"title", "Base Walls",
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_BaseWalls",
@@ -35,6 +35,10 @@ I tried adding gamepad bindings, but it seems to eat them (no error msgs).
 
 There are buttons you can use to rotate/adjust length once placed (gamepads do work with them).
 
+You may need to use [url=https://steamcommunity.com/sharedfiles/filedetails/1763802580]Remove Building Limits[/url] when adding more than one to a single hex area.
 
-You may need to use [url=https://steamcommunity.com/sharedfiles/filedetails/1763802580]Remove Building Limits[/url] when adding more than one to a single hex area.]],
+
+Known Issues:
+Holding shift to place multiples doesn't work yet.
+]],
 })

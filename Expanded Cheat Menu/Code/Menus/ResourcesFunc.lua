@@ -42,7 +42,7 @@ function ChoGGi.MenuFuncs.SetFundingPerRareMetalExport()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				choice[1].text,
-				Strings[302535920000719--[[Funding Per Rare Metal Export]]]
+				T(4604, "Rare Metals Price (M)")
 			)
 		end
 	end
@@ -50,7 +50,7 @@ function ChoGGi.MenuFuncs.SetFundingPerRareMetalExport()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000719--[[Funding Per Rare Metal Export]]],
+		title = T(4604, "Rare Metals Price (M)"),
 		hint = Strings[302535920000106--[[Current]]] .. ": " .. hint,
 		skip_sort = true,
 	}

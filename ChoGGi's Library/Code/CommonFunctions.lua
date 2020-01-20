@@ -3557,98 +3557,100 @@ do -- UpdateConsoleMargins
 	end
 end -- do
 
-function ChoGGi.ComFuncs.Editor_Toggle()
-	if Platform.durango then
-		print(Strings[302535920001574--[[Crashes on XBOX!]]])
-		MsgPopup(Strings[302535920001574--[[Crashes on XBOX!]]])
-		return
-	end
+do -- Editor toggle
+	local editor_active
 
-	-- force editor to toggle once (makes status text work properly the "first" toggle instead of the second)
-	local idx = table_find(terminal.desktop, "class", "EditorInterface")
-	if not idx then
-		EditorState(1, 1)
-		EditorDeactivate()
-	end
+	function ChoGGi.ComFuncs.Editor_Toggle()
+		if Platform.durango then
+			print(Strings[302535920001574--[[Crashes on XBOX!]]])
+			MsgPopup(Strings[302535920001574--[[Crashes on XBOX!]]])
+			return
+		end
 
-	local p = Platform
-	-- copy n paste from... somewhere?
-	if IsEditorActive() then
-		EditorDeactivate()
-		p.editor = false
-		p.developer = false
-		-- restore cheats menu
-		XShortcutsTarget:SetVisible()
-		XShortcutsTarget:SetVisible(true)
-	else
-		p.editor = true
-		p.developer = true
-		table.change(hr, "Editor", {
-			ResolutionPercent = 100,
-			DynResTargetFps = 0,
-			EnablePreciseSelection = 1,
-			ObjectCounter = 1,
-			VerticesCounter = 1,
-			FarZ = 1500000
-		})
-		XShortcutsSetMode("Editor", function()
+		-- force editor to toggle once (makes status text work properly the "first" toggle instead of the second)
+		local idx = table_find(terminal.desktop, "class", "EditorInterface")
+		if not idx then
+			EditorState(1, 1)
 			EditorDeactivate()
-		end)
-		EditorState(1, 1)
-	end
-
-	ChoGGi.ComFuncs.UpdateConsoleMargins()
-
-	camera.Unlock(1)
-	ChoGGi.ComFuncs.SetCameraSettings()
-end
-
-function ChoGGi.ComFuncs.TerrainEditor_Toggle()
-	if Platform.durango then
-		print(Strings[302535920001574--[[Crashes on XBOX!]]])
-		MsgPopup(Strings[302535920001574--[[Crashes on XBOX!]]])
-		return
-	end
-	ChoGGi.ComFuncs.Editor_Toggle()
-	local ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
-	if Platform.editor then
-		editor.ClearSel()
-		-- need to set it to something
-		SetEditorBrush(const.ebtTerrainType)
-	else
-		-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
-		ToggleCollisions()
-		-- update uneven terrain checker thingy
-		RecalcBuildableGrid()
-		-- and back on when we're done
-		ToggleCollisions()
-		-- close dialog
-		if Dialogs.TerrainBrushesDlg then
-			Dialogs.TerrainBrushesDlg:delete()
 		end
-		-- update flight grid so shuttles don't fly into newly added mountains
-		Flight_OnHeightChanged()
-	end
-end
 
-function ChoGGi.ComFuncs.PlaceObjects_Toggle()
-	if Platform.durango then
-		print(Strings[302535920001574--[[Crashes on XBOX!]]])
-		MsgPopup(Strings[302535920001574--[[Crashes on XBOX!]]])
-		return
+		if IsEditorActive() then
+			EditorDeactivate()
+			editor_active = false
+			Platform.developer = false
+			-- restore cheats menu
+			XShortcutsTarget:SetVisible()
+			XShortcutsTarget:SetVisible(true)
+		else
+			editor_active = true
+			Platform.developer = true
+			table.change(hr, "Editor", {
+				ResolutionPercent = 100,
+				DynResTargetFps = 0,
+				EnablePreciseSelection = 1,
+				ObjectCounter = 1,
+				VerticesCounter = 1,
+				FarZ = 1500000
+			})
+			XShortcutsSetMode("Editor", function()
+				EditorDeactivate()
+			end)
+			EditorState(1, 1)
+		end
+
+		ChoGGi.ComFuncs.UpdateConsoleMargins()
+
+		camera.Unlock(1)
+		ChoGGi.ComFuncs.SetCameraSettings()
 	end
-	ChoGGi.ComFuncs.Editor_Toggle()
-	if Platform.editor then
-		editor.ClearSel()
-		-- place rocks/etc
-		SetEditorBrush(const.ebtPlaceSingleObject)
-	else
-		-- close dialog
-		if Dialogs.PlaceObjectDlg then
-			Dialogs.PlaceObjectDlg:delete()
+
+	function ChoGGi.ComFuncs.TerrainEditor_Toggle()
+		if Platform.durango then
+			print(Strings[302535920001574--[[Crashes on XBOX!]]])
+			MsgPopup(Strings[302535920001574--[[Crashes on XBOX!]]])
+			return
+		end
+		ChoGGi.ComFuncs.Editor_Toggle()
+		local ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
+		if editor_active then
+			editor.ClearSel()
+			-- need to set it to something
+			SetEditorBrush(const.ebtTerrainType)
+		else
+			-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
+			ToggleCollisions()
+			-- update uneven terrain checker thingy
+			RecalcBuildableGrid()
+			-- and back on when we're done
+			ToggleCollisions()
+			-- close dialog
+			if Dialogs.TerrainBrushesDlg then
+				Dialogs.TerrainBrushesDlg:delete()
+			end
+			-- update flight grid so shuttles don't fly into newly added mountains
+			Flight_OnHeightChanged()
 		end
 	end
-end
+
+	function ChoGGi.ComFuncs.PlaceObjects_Toggle()
+		if Platform.durango then
+			print(Strings[302535920001574--[[Crashes on XBOX!]]])
+			MsgPopup(Strings[302535920001574--[[Crashes on XBOX!]]])
+			return
+		end
+		ChoGGi.ComFuncs.Editor_Toggle()
+		if editor_active then
+			editor.ClearSel()
+			-- place rocks/etc
+			SetEditorBrush(const.ebtPlaceSingleObject)
+		else
+			-- close dialog
+			if Dialogs.PlaceObjectDlg then
+				Dialogs.PlaceObjectDlg:delete()
+			end
+		end
+	end
+end -- do
 
 -- set task request to new amount (for some reason changing the "limit" will also boost the stored amount)
 -- this will reset it back to whatever it was after changing it.
@@ -5218,3 +5220,11 @@ do -- ObjHexShape_Toggle
 		return obj.ChoGGi_shape_obj
 	end
 end -- do
+
+function ChoGGi.ComFuncs.ModEditorActive()
+	local m = mapdata
+	-- you can save the mod map and play it, so we also check for other stuff
+	if m.id == "Mod" and m.markers and m.NetHash then
+		return true
+	end
+end

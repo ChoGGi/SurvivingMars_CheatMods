@@ -1,3 +1,7 @@
+v0.4
+Added Change skin for ramps.
+Changing length of wall doesn't reset skin anymore.
+
 v0.3
 Fixed a bug that's been around for awhile (thanks Pharaoh).
 

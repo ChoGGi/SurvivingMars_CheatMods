@@ -29,7 +29,7 @@ function Colonist:ChoGGi_MP_LaunchPod()
 	-- used to update selection panel and to remove pod if needed
 	self.ChoGGi_MurderPod = pod
 
-	-- get the fuck outta here
+	-- get outta here
 	if IsValid(g_IdiotMonument) then
 		self:SetCommand("Goto", g_IdiotMonument:GetPos())
 		CreateGameTimeThread(Colonist.ChoGGi_MP_WaitForIt, self)
