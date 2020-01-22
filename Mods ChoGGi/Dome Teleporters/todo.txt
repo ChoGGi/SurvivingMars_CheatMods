@@ -1,3 +1,6 @@
+Power/Water/Air liek regular passages (add as mod option)
+
+
 different domes per different shifts
 
 onmsg domes built

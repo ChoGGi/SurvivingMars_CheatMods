@@ -690,8 +690,8 @@ function InfobarObj.GetJobsRollover(...)
 	for i = 1, #workplaces do
 		local bld = workplaces[i]
 		local spec = bld.specialist
-		if not bld.destroyed and not bld.demolishing and not bld.bulldozed then
-			needed_specs[spec] = needed_specs[spec] + bld:GetFreeWorkSlots()
+		if spec and not bld.destroyed and not bld.demolishing and not bld.bulldozed then
+			needed_specs[spec] = needed_specs[spec] + (bld:GetFreeWorkSlots() or 0)
 		end
 	end
 

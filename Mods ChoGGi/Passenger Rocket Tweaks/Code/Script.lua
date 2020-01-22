@@ -56,14 +56,15 @@ local function BuildSpecialistLists()
 		all_specialist[spec] = #(labels[spec] or "")
 		needed_specialist[spec] = 0
 	end
+	ex(needed_specialist)
 
 	-- needed count
 	local workplaces = labels.Workplace or ""
 	for i = 1, #workplaces do
 		local bld = workplaces[i]
 		local spec = bld.specialist
-		if not bld.destroyed and not bld.demolishing and not bld.bulldozed then
-			needed_specialist[spec] = needed_specialist[spec] + bld:GetFreeWorkSlots()
+		if spec and not bld.destroyed and not bld.demolishing and not bld.bulldozed then
+			needed_specialist[spec] = needed_specialist[spec] + (bld:GetFreeWorkSlots() or 0)
 		end
 	end
 

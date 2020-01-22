@@ -43,7 +43,7 @@ function Dome:SpawnChild(...)
 	local objs_g = (self.city or UICity).labels[class]
 	local objs
 
-	-- not global so use dome count
+	-- check all nurseries or per-dome
 	if mod_GlobalDomeCount then
 		objs = objs_g
 	else

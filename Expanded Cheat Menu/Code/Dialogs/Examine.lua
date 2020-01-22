@@ -75,7 +75,7 @@ local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 local missing_text = ChoGGi.Temp.missing_text
 
-local debug_getinfo, debug_getupvalue, debug_getlocal
+local debug_getinfo, debug_getupvalue, debug_getlocal = empty_func, empty_func, empty_func
 local debug = blacklist and false or debug
 if debug then
 	debug_getupvalue = debug.getupvalue
@@ -2750,6 +2750,9 @@ function ChoGGi_DlgExamine:RetDebugGetInfo(obj)
 	return TableConcat(temp, "\n")
 end
 function ChoGGi_DlgExamine:RetFuncArgs(obj)
+	if blacklist then
+		return "params: (?)"
+	end
 	self.RetDebugInfo_table = self.RetDebugInfo_table or objlist:new()
 	local temp = self.RetDebugInfo_table
 	temp:Destroy()

@@ -43,23 +43,25 @@ local function GetAvailableResources(self, cursor_obj)
 	local objs = cursor_obj or self.connected_task_requesters or ""
 	for i = 1, #objs do
 		local obj = objs[i]
-		-- factory storage depots
-		if obj:IsKindOf("ResourceStockpile") then
-			res_count[obj.resource] = res_count[obj.resource] + obj.stockpiled_amount
-		-- storage depots/rockets/wasterock
-		elseif obj:IsKindOf("StorageDepot") then
-			local resources = obj.resource or ""
-			for j = 1, #resources do
-				local r = resources[j]
-				if r then
-					res_count[r] = res_count[r] + (obj["GetStored_" .. r](obj) or 0)
-				-- wasterock site
-				elseif obj.resource then
-					res_count[obj.resource] = res_count[obj.resource] + obj.total_stockpiled
+		if res_count[obj.resource] then
+			-- factory storage depots
+			if obj:IsKindOf("ResourceStockpile") then
+				res_count[obj.resource] = res_count[obj.resource] + (obj.stockpiled_amount or 0)
+			-- storage depots/rockets/wasterock
+			elseif obj:IsKindOf("StorageDepot") then
+				local resources = obj.resource or ""
+				for j = 1, #resources do
+					local r = resources[j]
+					if r then
+						res_count[r] = res_count[r] + (obj["GetStored_" .. r](obj) or 0)
+					-- wasterock site
+					elseif obj.resource then
+						res_count[obj.resource] = res_count[obj.resource] + (obj.total_stockpiled or 0)
+					end
 				end
+			elseif obj:IsKindOf("SurfaceDeposit") then
+				res_count[obj.resource] = res_count[obj.resource] + (obj:GetAmount() or 0)
 			end
-		elseif obj:IsKindOf("SurfaceDeposit") then
-			res_count[obj.resource] = res_count[obj.resource] + obj:GetAmount()
 		end
 	end
 

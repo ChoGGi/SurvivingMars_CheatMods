@@ -1,3 +1,6 @@
+v0.7
+Log spam when certain mods installed (thanks SkiRich/willdog38).
+
 v0.6
 Fixed bug where mouse buttons stopped working after cancelling self-sufficient dome (Thanks Gamera).
 
