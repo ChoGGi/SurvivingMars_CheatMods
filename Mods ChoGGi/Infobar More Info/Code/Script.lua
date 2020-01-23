@@ -690,8 +690,11 @@ function InfobarObj.GetJobsRollover(...)
 	for i = 1, #workplaces do
 		local bld = workplaces[i]
 		local spec = bld.specialist
-		if spec and not bld.destroyed and not bld.demolishing and not bld.bulldozed then
-			needed_specs[spec] = needed_specs[spec] + (bld:GetFreeWorkSlots() or 0)
+		-- modded specs aren't always in ColonistSpecializationList
+		local count = needed_specs[spec]
+--~ 		if count and not bld.destroyed and not bld.demolishing and not bld.bulldozed then
+		if count and bld.working then
+			needed_specs[spec] = count + (bld:GetFreeWorkSlots() or 0)
 		end
 	end
 

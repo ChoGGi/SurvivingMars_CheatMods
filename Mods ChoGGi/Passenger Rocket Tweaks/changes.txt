@@ -1,3 +1,6 @@
+v1.2
+Log spam when certain mods installed (thanks SkiRich/willdog38).
+
 v1.1
 Log spam when certain mods installed (thanks SkiRich/willdog38).
 
