@@ -50,11 +50,11 @@ local function BuildSpecialistLists()
 
 	needed_specialist.none = 0
 	all_specialist.none = #(labels.none or "")
-	local ColonistSpecializationList = ColonistSpecializationList
-	for i = 1, #ColonistSpecializationList do
-		local spec = ColonistSpecializationList[i]
-		all_specialist[spec] = #(labels[spec] or "")
-		needed_specialist[spec] = 0
+
+	local ColonistClasses = ColonistClasses
+	for id in pairs(ColonistClasses) do
+		all_specialist[id] = #(labels[id] or "")
+		needed_specialist[id] = 0
 	end
 --~ 	ex(needed_specialist)
 
@@ -101,9 +101,9 @@ local function GetSpecInfo(self, win, label)
 end
 function SetUIResupplyParams(self, win)
 	GetSpecInfo(self, win, "none")
-	local ColonistSpecializationList = ColonistSpecializationList
-	for i = 1, #ColonistSpecializationList do
-		GetSpecInfo(self, win, ColonistSpecializationList[i])
+	local ColonistClasses = ColonistClasses
+	for id in pairs(ColonistClasses) do
+		GetSpecInfo(self, win, id)
 	end
 end
 

@@ -1,10 +1,12 @@
 ## ECM Changelog
 
 ## v14.9 (Unreleased)
+### Changed:
+- Added ChangeGrade to cheats section for selection panel of deposits.
+
 ### Fixed:
 - Examine Log spam (thanks LukeH).
 - Workers auto/manual in cheats section wasn't working (thanks JEFJ).
-
 
 ## v14.8 (20 Jan 2020)
 ### Changed:

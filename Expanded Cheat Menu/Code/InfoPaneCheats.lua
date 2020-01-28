@@ -354,6 +354,9 @@ It don't matter if you're black or white"]]],
 	StartLiftoff = {
 		des = Strings[302535920001597--[[Makes all crystals liftoff and head to the centre.]]],
 	},
+	ChangeGrade = {
+		des = Strings[302535920000977--[[Change grade of a deposit.]]],
+	},
 }
 -- stuff checked in the SetInfoPanelCheatHints func
 local cheats_lookup2 = {
@@ -551,6 +554,7 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 				else
 					SetHint(action, Translate(6924--[[Repair]]) .. " " .. Translate(3891--[[Pipe Leak]]))
 				end
+			-- no more elseif
 			end
 
 		else
@@ -682,6 +686,32 @@ end
 function Deposit:CheatDoubleMaxAmount()
 	self.max_amount = self.max_amount * 2
 end
+local function CheatChangeGrade(self)
+	-- build a list of grades
+	local item_list = {}
+	local DepositGradesTable = DepositGradesTable
+	for i = 1, #DepositGradesTable do
+		local grade = DepositGradesTable[i]
+		item_list[i] = {
+			text = DepositGradeToDisplayName[grade],
+			value = grade,
+		}
+	end
+
+	local function CallBackFunc(choice)
+		if choice.nothing_selected then
+			return
+		end
+		self.grade = choice[1].value
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = item_list,
+		title = Strings[302535920000977--[[Change grade of a deposit.]]],
+		skip_sort = true,
+	}
+end
 local function CheatEmpty(self)
 	if self.amount == 1 then
 		-- removes the object after the second click
@@ -692,7 +722,9 @@ local function CheatEmpty(self)
 	end
 end
 SubsurfaceDeposit.CheatEmpty = CheatEmpty
+SubsurfaceDeposit.CheatChangeGrade = CheatChangeGrade
 TerrainDeposit.CheatEmpty = CheatEmpty
+TerrainDeposit.CheatChangeGrade = CheatChangeGrade
 function TerrainDeposit:CheatRefill()
 	self.amount = self.max_amount
 end

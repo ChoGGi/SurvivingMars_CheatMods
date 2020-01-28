@@ -1,5 +1,4 @@
 "ID", " Text"
-302535920000977,
 302535920000981,
 302535920000983,
 302535920000985,
@@ -162,6 +161,7 @@
 302535920000854, "Results Found"
 302535920000219, "Export viewed image to <green>%s</green>."
 302535920000109, "Invalid Image"
+302535920000977, "Change grade of a deposit."
 302535920001617, "Toggle opening all dome glass (for screenshots?)."
 302535920001598, "Reset shuttle control amount to default."
 302535920001599, "Show flight trajectories."

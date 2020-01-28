@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Map Overview Show Surface Resources",
-	"version", 4,
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 5,
 	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_MapOverviewShowSurfaceResources",
@@ -21,7 +21,7 @@ Mod Options:
 Show Metals/Show Polymers: What you'd expect.
 Text Opacity: 0-255 (0 == completely visible).
 Text Background: Add black background around info.
-Text Style: I default to a larger one since I use a small UI scale.
+Text Style: Defaults to a larger text style, change with this (see tooltip for text styles).
 
 
 Requested by: Nobody... Though you can thank Skye Storme, since I noticed how often he had to mouse over sectors looking for them.]],

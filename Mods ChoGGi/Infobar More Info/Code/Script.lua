@@ -679,9 +679,9 @@ function InfobarObj.GetJobsRollover(...)
 		end
 	else
 		needed_specs = {none = 0}
-		local ColonistSpecializationList = ColonistSpecializationList
-		for i = 1, #ColonistSpecializationList do
-			needed_specs[ColonistSpecializationList[i]] = 0
+		local ColonistClasses = ColonistClasses
+		for id in pairs(ColonistClasses) do
+			needed_specs[id] = 0
 		end
 	end
 
@@ -690,7 +690,7 @@ function InfobarObj.GetJobsRollover(...)
 	for i = 1, #workplaces do
 		local bld = workplaces[i]
 		local spec = bld.specialist
-		-- modded specs aren't always in ColonistSpecializationList
+		-- modded specs aren't always in ColonistClasses
 		local count = needed_specs[spec]
 --~ 		if count and not bld.destroyed and not bld.demolishing and not bld.bulldozed then
 		if count and bld.working then

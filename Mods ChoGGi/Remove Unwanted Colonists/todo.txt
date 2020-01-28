@@ -1,1 +1,3 @@
 filter to auto remove traits
+
+random delay before colonist goes outside
