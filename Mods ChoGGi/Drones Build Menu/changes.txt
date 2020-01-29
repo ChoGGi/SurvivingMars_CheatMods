@@ -1,2 +1,6 @@
+v0.3
+Printed Electronics tech will also make these drones buildable with metal.
+Mod won't try and add Flying drones without Space Race.
+
 v0.2
 Added Wasp Drones as well (removing drones from hubs will reset them to whatever the hub uses).

@@ -15,6 +15,9 @@ return PlaceObj("ModDef", {
 	},
 	"description", [[Build as many as you want.
 
+To fix the issue with Solar panels ignoring more than one sun: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1981650262]Artificial Sun Range[/url]
+
+
 Requested by Griffdy04/BlueNightfury.
 
 

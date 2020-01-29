@@ -31,12 +31,29 @@ BuildList(StockpileResourceList)
 
 table.sort(res_list)
 TradePad.trade_resources = res_list
+SupplyRocket.storable_resources = res_list
 
 local mod_EnableWasteRock
 --~ local mod_ShowResupply
 
 local WaitForRocket
 local UpdateRivalRes
+local function UpdateRockets(objs)
+	local point20 = point20
+	for i = 1, #objs do
+		local obj = objs[i]
+		obj.storable_resources = res_list
+		obj.resource = res_list
+		for j = 1, res_list_c do
+			local resource_name = res_list[j]
+			obj.placement_offset[resource_name] = point20
+			local amount = (obj.stockpiled_amount[resource_name] or 0)
+			obj:SetCount(amount, resource_name)
+			obj:RegiterResourceRequest(resource_name)
+		end
+	end
+end
+
 -- fired when settings are changed/init
 local function ModOptions()
 	mod_EnableWasteRock = CurrentModOptions:GetProperty("EnableWasteRock")
@@ -56,6 +73,7 @@ local function ModOptions()
 	table.sort(res_list)
 
 	-- update any existing trade pad res lists
+	local UICity = UICity
 	if UICity then
 		local objs = UICity.labels.TradePad or ""
 		for i = 1, #objs do
@@ -70,9 +88,15 @@ local function ModOptions()
 				end
 			end
 		end
+		-- n rockets
+		UpdateRockets(UICity.labels.AllRockets or "")
+		UpdateRockets(UICity.labels.ForeignTradeRocket or "")
 	end
+
 	-- cls obj trade list (needed for new pads)
 	TradePad.trade_resources = res_list
+	SupplyRocket.storable_resources = res_list
+	ForeignTradeRocket.storable_resources = res_list
 end
 
 -- load default/saved settings
@@ -89,11 +113,25 @@ end
 
 -- update existing pads
 local function StartupCode()
+
+	-- whoops made some invis trade rockets...
+	local InvalidPos = InvalidPos()
 	-- could add a check, but even if people have the map filled with pads it won't take much
 	local objs = UICity.labels.TradePad or ""
 	for i = 1, #objs do
-		objs[i].trade_resources = res_list
+		local obj = objs[i]
+		obj.trade_resources = res_list
+		-- any pads with invis rockets
+		local r = obj.trade_rocket
+		if IsValid(r) and r:GetStateText() == "disembarkIdle" and r:GetPos() == InvalidPos then
+			DoneObject(r)
+			obj.trade_rocket = nil
+		end
 	end
+
+	-- make sure existing rockets work with new res
+	UpdateRockets(UICity.labels.AllRockets or "")
+	UpdateRockets(UICity.labels.ForeignTradeRocket or "")
 
 	-- hide my shame (and remember to test on new games)
 	local presets = Presets.Cargo
@@ -160,6 +198,7 @@ WaitForRocket = function(obj, name)
 	end
 end
 
+-- update amounts of res (dependant on other res colony has)
 UpdateRivalRes = function()
 	local RivalAIs = RivalAIs or empty_table
 	for _, rival in pairs(RivalAIs) do

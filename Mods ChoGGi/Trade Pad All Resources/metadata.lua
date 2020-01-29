@@ -16,7 +16,11 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagBuildings", true,
 	"TagCrops", true,
-	"description", [[Can trade almost all resources (skipped blackcubes/mystery) on the trade pads.
+	"description", [[
+BROKEN MODBROKEN MODBROKEN MODBROKEN MODBROKEN MODBROKEN MODBROKEN MODBROKEN MODBROKEN MODBROKEN MODBROKEN MODBROKEN MODBROKEN MODBROKEN MOD
+
+
+	Can trade almost all resources (skipped blackcubes/mystery) on the trade pads.
 Any res not shown on the planetary view isn't included in the colony so I calculate it from existing resources.
 
 Prices:
@@ -24,7 +28,8 @@ PreciousMetals: Electronics * 2
 WasteRock: Concrete / 16
 Fuel: Polymers / 2
 
-Includes mod option to skip waste rock since it's pretty cheesy.
+Mod Options:
+Waste Rock: Skip waste rock since it's pretty cheesy.
 
 
 Known Issues:
