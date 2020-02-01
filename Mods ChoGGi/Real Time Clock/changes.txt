@@ -1,3 +1,6 @@
+v0.7
+Changed tooltip to show actual styles and added one more.
+
 v0.6
 Added tooltip with list of text styles.
 

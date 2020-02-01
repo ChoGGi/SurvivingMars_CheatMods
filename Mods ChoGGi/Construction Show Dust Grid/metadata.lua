@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"version", 17,
 	"version_major", 1,
 	"version_minor", 7,
-	"saved", 0,
+
 	"id", "ChoGGi_ConstructionShowDustGrid",
 	"author", "ChoGGi",
 	"image", "Preview.png",

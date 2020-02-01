@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"version", 8,
 	"version_major", 0,
 	"version_minor", 8,
-	"saved", 0,
+
 	"id", "ChoGGi_StopCurrentDisasters",
 	"author", "ChoGGi",
 	"steam_id", "1411115645",

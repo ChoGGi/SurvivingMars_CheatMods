@@ -33,7 +33,7 @@ return {
 <style InfopanelResourceNoAccept>Example Text 7</style>
 <style ListItem1>Example Text 8</style>
 <style ModsUIItemStatusWarningBrawseConsole>Example Text 9</style>
-<style LandingPosNameAlt>Example Text 1</style>]]),
+<style LandingPosNameAlt>Example Text 10</style>]]),
 		"DefaultValue", 1,
 		"MinValue", 1,
 		"MaxValue", 10,

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Materials>
+	<Material>
+		<BaseColorMap Name="8251000.dds" mc="0"/>
+		<RMMap Name="8251005.dds" mc="0"/>
+		<NormalMap Name="8251002.dds" mc="0"/>
+		<AmbientOcclusionMap Name="8251003.dds" mc="0"/>
+		<SIMap Name="8251001.dds" mc="0"/>
+		<Property Opacity="100"/>
+		<Property ViewDependentOpacity="0"/>
+		<Property Wind="0"/>
+		<Property CastShadow="1"/>
+		<Property AlphaTest="1"/>
+		<Property TwoSidedShading="0"/>
+		<Property UOffset="0.000000"/>
+		<Property VOffset="0.000000"/>
+		<Property USize="1.000000"/>
+		<Property VSize="1.000000"/>
+		<Property DepthWrite="1"/>
+		<Property Distortion="0"/>
+		<Property DepthSmooth="0"/>
+		<Property StretchFactor1="8.471686"/>
+		<Property StretchFactor2="1.000000"/>
+		<Property AnimationFramesX="0"/>
+		<Property AnimationFramesY="0"/>
+		<Property AnimationTime="0"/>
+		<Property TerrainDistortedMesh="0"/>
+		<Property TransparentDecal="0"/>
+		<Property Deposition="0"/>
+		<Property ZClip="0"/>
+		<Property Special="None"/>
+		<Property AlphaBlend="None"/>
+	</Material>
+	<Material>
+		<BaseColorMap Name="8251000.dds" mc="0"/>
+		<NormalMap Name="8251002.dds" mc="0"/>
+		<Property Opacity="52"/>
+		<Property ViewDependentOpacity="0"/>
+		<Property Wind="0"/>
+		<Property CastShadow="1"/>
+		<Property AlphaTest="0"/>
+		<Property TwoSidedShading="0"/>
+		<Property UOffset="0.000000"/>
+		<Property VOffset="0.000000"/>
+		<Property USize="1.000000"/>
+		<Property VSize="1.000000"/>
+		<Property DepthWrite="1"/>
+		<Property Distortion="0"/>
+		<Property DepthSmooth="0"/>
+		<Property StretchFactor1="4.972447"/>
+		<Property StretchFactor2="1.000000"/>
+		<Property AnimationFramesX="0"/>
+		<Property AnimationFramesY="0"/>
+		<Property AnimationTime="0"/>
+		<Property TerrainDistortedMesh="0"/>
+		<Property TransparentDecal="0"/>
+		<Property Deposition="0"/>
+		<Property ZClip="0"/>
+		<Property Special="None"/>
+		<Property AlphaBlend="Glass"/>
+	</Material>
+</Materials>
+<!-- Exported to Build (314563742)-->

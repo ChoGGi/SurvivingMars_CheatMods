@@ -18,17 +18,18 @@ return {
 	PlaceObj("ModItemOptionNumber", {
 		"name", "TextStyle",
 		"DisplayName", T(302535920011362, "Styles"),
-		"Help", T(302535920011552, [[1. Orange large
-2. White small
-3. Blue medium
-4. White smaller
-5. Blue large
-6. White large
-7. Red medium
-8. Blue Darker medium
-9. Red Large]]),
+		"Help", T(302535920011552, [[<style LandingPosNameAlt>Example Text 1</style>
+<style BugReportScreenshot>Example Text 2</style>
+<style CategoryTitle>Example Text 3</style>
+<style ConsoleLog>Example Text 4</style>
+<style DomeName>Example Text 5</style>
+<style GizmoText>Example Text 6</style>
+<style InfopanelResourceNoAccept>Example Text 7</style>
+<style ListItem1>Example Text 8</style>
+<style ModsUIItemStatusWarningBrawseConsole>Example Text 9</style>
+<style EncyclopediaArticleTitle>Example Text 10</style>]]),
 		"DefaultValue", 1,
 		"MinValue", 1,
-		"MaxValue", 9,
+		"MaxValue", 10,
 	}),
 }

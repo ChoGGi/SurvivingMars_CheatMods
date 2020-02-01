@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity path="">
+	<state id="idle">
+		<mesh_ref ref="mesh"/>
+	</state>
+	<mesh_description id="mesh">
+		<src file="C:/Users/belac/AppData/Roaming/Surviving Mars/ModAssets/FBX/LATEST SETUP.fbx"/>
+		<mesh file="TubularHouse_mesh.m.hgm"/>
+		<material file="TubularHouse_mesh.mtl"/>
+		<bsphere value="47,0,1082,1232"/>
+		<box min="-454,-454,-10" max="548,454,2174"/>
+		<attach name="L" spot_note="sp,neutral,rad:25,int:50,imp,sim" spot_pos="0,0,2030" spot_scale="100000"/>
+		<attach name="L" spot_note="sp,neutral,rad:50,int:50,imp,sim" spot_pos="0,0,1500" spot_scale="100000"/>
+		<attach name="L" spot_note="sp,neutral,rad:50,int:50,imp,sim" spot_pos="0,0,1000" spot_scale="100000"/>
+		<attach name="L" spot_note="sp,neutral,rad:50,int:50,imp,sim" spot_pos="0,0,500" spot_scale="100000"/>
+		<attach name="Top" spot_pos="0,0,2200"/>
+		<surf type="collision" points="0,0,100;0,-577,100;-500,-289,100"/>
+		<surf type="collision" points="0,0,100;-500,-289,100;-500,289,100"/>
+		<surf type="collision" points="-500,289,100;0,577,100;0,0,100"/>
+		<surf type="collision" points="0,0,100;500,-289,100;0,-577,100"/>
+		<surf type="collision" points="0,0,100;0,577,100;500,289,100"/>
+		<surf type="collision" points="0,0,100;500,289,100;500,-289,100"/>
+		<surf type="hex_shape" points="-200,-200,0;-200,200,0;200,200,0"/>
+		<surf type="hex_shape" points="-200,-200,0;200,200,0;200,-200,0"/>
+		<surf type="selection" points="0,0,0;0,-577,0;-500,-289,0"/>
+		<surf type="selection" points="0,0,0;-500,-289,0;-500,289,0"/>
+		<surf type="selection" points="-500,289,0;0,577,0;0,0,0"/>
+		<surf type="selection" points="0,0,0;500,-289,0;0,-577,0"/>
+		<surf type="selection" points="0,0,0;0,577,0;500,289,0"/>
+		<surf type="selection" points="0,0,0;500,289,0;500,-289,0"/>
+		<surf_hash type="collision" value="3860959952"/>
+		<surf_hash type="hex_shape" value="372837990"/>
+		<surf_hash type="selection" value="3149937591"/>
+	</mesh_description>
+</entity>

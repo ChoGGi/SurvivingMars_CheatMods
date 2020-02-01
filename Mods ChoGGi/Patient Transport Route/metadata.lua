@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,
-	"saved", 0,
+
 	"image", "Preview.png",
 	"id", "ChoGGi_PatientTransportRoute",
 	"steam_id", "1549495949",

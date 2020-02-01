@@ -1,2 +1,5 @@
+v0.3
+Skip buildings demolished by non-user actions.
+
 v0.2
 Log spam.

@@ -28,6 +28,7 @@ local style_lookup = {
 	"InfopanelResourceNoAccept",
 	"ListItem1",
 	"ModsUIItemStatusWarningBrawseConsole",
+	"EncyclopediaArticleTitle",
 }
 
 -- fired when settings are changed/init

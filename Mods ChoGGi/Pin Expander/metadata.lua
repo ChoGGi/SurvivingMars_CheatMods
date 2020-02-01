@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"version", 9,
 	"version_major", 0,
 	"version_minor", 9,
-	"saved", 0,
+
 	"image", "Preview.png",
 	"id", "ChoGGi_PinExpander",
 	"steam_id", "1503773725",

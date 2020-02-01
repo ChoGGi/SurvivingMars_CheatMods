@@ -319,6 +319,11 @@ do -- ModUpload
 				end
 			end
 
+			-- needed for something?
+			if not mod.saved then
+				mod.saved = 0
+			end
+
 			-- skip it for testing
 			if not test then
 				if steam_upload then

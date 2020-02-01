@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "Real Time Clock",
-	"version", 6,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
-	"saved", 0,
+	"version_minor", 7,
+
 	"image", "Preview.png",
 	"id", "ChoGGi_RealTimeClock",
 	"steam_id", "1791902061",

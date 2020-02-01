@@ -53,16 +53,16 @@ local function ModOptions()
 	end
 end
 
--- load default/saved settings
+-- load default/saved settings, build list of logos
 function OnMsg.ModsReloaded()
 	options = CurrentModOptions
 
-	-- update mod option properties
+	-- reset logo list
 	table.iclear(mod_logos)
 	mod_logos_c = 0
 	-- reset options
-	local p = options.properties
-	table.iclear(p)
+	local properties = options.properties
+	table.iclear(properties)
 	-- add table for defaults if needed
 	if not options.__defaults then
 		options.__defaults = {}
@@ -74,11 +74,11 @@ function OnMsg.ModsReloaded()
 
 	local MissionLogoPresetMap = MissionLogoPresetMap
 	for id, def in pairs(MissionLogoPresetMap) do
-		local image = T("<image " .. def.image .. ">")
-		local name = T(def.display_name)
+		local image = "<image " .. def.image .. ">"
+		local name = def.display_name
 
 		mod_logos_c = mod_logos_c + 1
-		p[mod_logos_c] = {
+		properties[mod_logos_c] = {
 			default = false,
 			editor = "bool",
 			name = name,
@@ -101,7 +101,21 @@ function OnMsg.ModsReloaded()
 		options.__defaults[id] = false
 	end
 
+	-- sort logo list
+	local CmpLower = CmpLower
+	local _InternalTranslate = _InternalTranslate
+	table.sort(properties, function(a, b)
+		return CmpLower(_InternalTranslate(a.name), _InternalTranslate(b.name))
+	end)
+	table.sort(items, function(a, b)
+		return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
+	end)
+	for i = 1, mod_logos_c do
+		local id = properties[i].id
+		mod_logos[i] = id
+	end
 
+	-- update options
 	ModOptions()
 end
 

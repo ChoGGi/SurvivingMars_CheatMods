@@ -11,7 +11,6 @@ return PlaceObj("ModDef", {
 	"version", 149,
 	"version_major", 14,
 	"version_minor", 9,
-	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_CheatMenu",
 	"author", "ChoGGi",

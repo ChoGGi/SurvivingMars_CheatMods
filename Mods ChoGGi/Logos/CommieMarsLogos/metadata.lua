@@ -1,9 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Commie Mars Logos",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
-	"saved", 0,
+	"version_minor", 6,
 	"image", "Preview.png",
 	"id", "ChoGGi_CommieMarxLogos",
 	"steam_id", "1502077662",
@@ -15,7 +14,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua"
 	},
 	"description", [[Flags, Coats of Arms, Emblems, etc...
-94 different logos in all (and you thought one Space Communism logo was enough).
+99 different logos in all (and you thought one Space Communism logo was enough).
 If you're on the other side of the fence, see my sister mod [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1756589972]Hakenkreuz Logos[/url].
 
 From Marx with love.

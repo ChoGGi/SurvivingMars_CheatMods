@@ -1,2 +1,5 @@
+v0.3
+Sorted list of logos.
+
 v0.2
 Evans update.

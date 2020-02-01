@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-	"saved", 0,
+
 	"image", "Preview.png",
 	"id", "ChoGGi_UnlockAllBuildings",
 	"pops_any_uuid", "2020d16d-07e0-4d39-8fd9-ea7e9e87303d",

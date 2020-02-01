@@ -101,6 +101,10 @@ local logos = {
 		name = "Communist Party of Canada",
 	},
 	{
+		file = "Communist_Party_of_Canada_(2018)",
+		name = "Communist Party of Canada (2018)",
+	},
+	{
 		file = "Communist_Party_of_Chile",
 		name = "Communist Party of Chile",
 	},
@@ -233,6 +237,10 @@ local logos = {
 		name = "Hammer and Sickle Red",
 	},
 	{
+		file = "Ho_Chi_Minh",
+		name = "Ho Chi Minh",
+	},
+	{
 		file = "Interkosmos_Cuban_Stamp",
 		name = "Interkosmos Cuban Stamp",
 	},
@@ -295,6 +303,10 @@ local logos = {
 	{
 		file = "Orden_Pobeda_Marshal_Vasilevsky",
 		name = "Orden Pobeda Marshal Vasilevsky",
+	},
+	{
+		file = "Partido_Comunista_de_Chile",
+		name = "Partido Comunista de Chile",
 	},
 	{
 		file = "Party_of_Italian_Communists",
@@ -369,12 +381,20 @@ local logos = {
 		name = "USSR",
 	},
 	{
+		file = "Warsaw_Pact",
+		name = "Warsaw Pact",
+	},
+	{
 		file = "Workers_of_the_World_Unite",
 		name = "Workers of the World Unite",
 	},
 	{
 		file = "Workers_Party_of_New_Zealand",
 		name = "Workers Party of New Zealand",
+	},
+	{
+		file = "Xi_Jinping",
+		name = "Xi Jinping",
 	},
 	{
 		file = "Zapatismo_Subcommandante_Marcos",

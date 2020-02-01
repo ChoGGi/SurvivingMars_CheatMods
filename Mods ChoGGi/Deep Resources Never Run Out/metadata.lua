@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"version", 5,
 	"version_major", 0,
 	"version_minor", 5,
-	"saved", 0,
+
 	"id", "ChoGGi_DeepResourcesNeverRunOut",
 	"author", "ChoGGi",
 	"steam_id", "1775640697",

@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"version", 6,
 	"version_major", 0,
 	"version_minor", 6,
-	"saved", 0,
+
 	"id", "ChoGGi_OnMsgPrint",
 	"image", "Preview.png",
 	"steam_id", "1604230467",

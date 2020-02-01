@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"version", 10,
 	"version_major", 1,
 	"version_minor", 0,
-	"saved", 0,
+
 	"image", "Preview.png",
 	"id", "ChoGGi_RestoreRequestMaintenance",
 	"author", "ChoGGi",

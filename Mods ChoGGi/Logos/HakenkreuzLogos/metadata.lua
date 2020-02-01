@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-	"saved", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_HakenkreuzLogos",
 	"steam_id", "1756589972",
@@ -18,7 +17,7 @@ return PlaceObj("ModDef", {
 43 different logos in all.
 If you're on the other side of the fence, see my sister mod [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1502077662]Commie Mars Logos[/url].
 
-From Me with love.
+From Mahadeva with love.
 
 
 You can use Expanded Cheat Menu to change the logo of an existing game.

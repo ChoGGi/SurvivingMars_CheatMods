@@ -1,0 +1,2 @@
+v0.1
+Removed the redundant model files and extra images to reduce the mod size.
