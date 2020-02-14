@@ -20,7 +20,7 @@ end
 local Resources = Resources
 for id in pairs(Resources) do
 	if table_find(storable_resources, id) then
-		mod_options[id] = nil
+		mod_options[id] = false
 	end
 end
 

@@ -1,3 +1,6 @@
+v1.1
+Log spam.
+
 v1.0
 I borked the original landing spots visiblity (never went away).
 Code cleanup.

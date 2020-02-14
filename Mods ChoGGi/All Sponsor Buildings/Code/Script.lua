@@ -2,6 +2,7 @@
 
 local table = table
 
+-- we use ModsReloaded for any modded buildings
 function OnMsg.ModsReloaded()
 	local BuildingTechRequirements = BuildingTechRequirements
 	local BuildingTemplates = BuildingTemplates

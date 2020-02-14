@@ -3,6 +3,7 @@
 local properties = {}
 
 local wonders = {
+	-- buggy, might fix someday
 --~ 	"ArtificialSun",
 	"MoholeMine",
 	"OmegaTelescope",

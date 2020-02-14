@@ -2,12 +2,10 @@
 
 function OnMsg.Demolished(obj)
 	-- only demo on user stuff, not storybits
-	if not obj.bulldozed then
-		return
-	end
-
-	-- no demo if no tech for it
-	if not IsTechResearched("DecommissionProtocol") then
+	if not obj.bulldozed
+		-- no demo if no tech for it
+		or not IsTechResearched("DecommissionProtocol")
+	then
 		return
 	end
 

@@ -19,12 +19,10 @@ If you're on the other side of the fence, see my sister mod [url=https://steamco
 
 From Mahadeva with love.
 
-
-You can use Expanded Cheat Menu to change the logo of an existing game.
-
 I probably should've kept a list of credits... I didn't make any of these images.
 
 
+You can use my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1815122803]Change Logo[/url] mod to change the logo of an existing game.
 
 This is for you (you know who you are):
 Nazies are murders, so are Commies (and Capitalists and Christans and Muslims and so on).

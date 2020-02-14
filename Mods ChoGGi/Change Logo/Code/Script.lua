@@ -104,9 +104,6 @@ function OnMsg.ModsReloaded()
 	-- sort logo list
 	local CmpLower = CmpLower
 	local _InternalTranslate = _InternalTranslate
-	table.sort(properties, function(a, b)
-		return CmpLower(_InternalTranslate(a.name), _InternalTranslate(b.name))
-	end)
 	table.sort(items, function(a, b)
 		return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 	end)
@@ -115,8 +112,6 @@ function OnMsg.ModsReloaded()
 		mod_logos[i] = id
 	end
 
-	-- update options
-	ModOptions()
 end
 
 -- fired when option is changed

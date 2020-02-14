@@ -64,6 +64,11 @@ local function BuildMySpots()
 	-- get list of saves
 	SavegamesList:Refresh()
 
+	-- it can happen
+	if not PlanetRotationObj then
+		return
+	end
+
 	for i = 1, #SavegamesList do
 		local save = SavegamesList[i]
 		if type(save.longitude) == "number" and type(save.latitude) == "number" then

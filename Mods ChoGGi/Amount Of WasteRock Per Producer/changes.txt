@@ -1,2 +1,5 @@
+v0.3
+Mod option to adjust amount.
+
 v0.2
 Da Vinci
