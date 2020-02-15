@@ -134,7 +134,9 @@ Actions[c] = {ActionName = Translate(251103844022--[[Disable]]) .. " " .. String
 	ActionMenubar = "ECM.Help.Expanded Cheat Menu",
 	ActionId = ".Disable ECM",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
-	RolloverText = Strings[302535920000465--[["Disables menu, cheat panel, and hotkeys, but leaves settings intact. You'll need to manually re-enable in settings file, or check key bindings for Disable ECM."]]],
+	RolloverText = Strings[302535920000465--[["Disables menu, cheat panel, and hotkeys, but leaves settings intact. You'll need to manually re-enable in settings file, or check key bindings for Disable ECM.
+
+Ctrl-Shift-0 to re-enable, or see Game options>Key bindings for the re-enable key."]]],
 	OnAction = ChoGGi.MenuFuncs.DisableECM,
 }
 

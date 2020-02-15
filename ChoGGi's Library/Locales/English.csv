@@ -1717,7 +1717,9 @@ For any issues; please report them to my Github/Steam/NexusMods page, or email <
 302535920001242, "Edit ECM Settings"
 302535920001243, "Manually edit ECM settings."
 302535920000875, "Game Functions"
-302535920000465, "Disables menu, cheat panel, and hotkeys, but leaves settings intact. You'll need to manually re-enable in settings file, or check key bindings for Disable ECM."
+302535920000465, "Disables menu, cheat panel, and hotkeys, but leaves settings intact. You'll need to manually re-enable in settings file, or check key bindings for Disable ECM.
+
+<green>Ctrl-Shift-0</green> to re-enable, or see Game options>Key bindings for the re-enable key."
 302535920001025, "Help! I'm with stupid!"
 302535920001014, "Hide Cheats Menu"
 302535920001019, "This will hide the Cheats menu; Use F2 to see it again."

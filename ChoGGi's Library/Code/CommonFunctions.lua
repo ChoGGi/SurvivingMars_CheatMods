@@ -2073,7 +2073,7 @@ do -- Rebuildshortcuts
 
 		if DisableECM then
 		-- add a key binding to options to re-enable ECM
-			local name = Translate(754117323318--[[Enable]]) .. " " ..Strings[302535920000887--[[ECM]]]
+			local name = Translate(754117323318--[[Enable]]) .. " " .. Strings[302535920000887--[[ECM]]]
 			XShortcutsTarget:AddAction(XAction:new{
 				ActionName = name,
 				ActionId = name,
@@ -2081,7 +2081,7 @@ do -- Rebuildshortcuts
 					ChoGGi.UserSettings.DisableECM = false
 					ChoGGi.SettingFuncs.WriteSettings()
 					print(name, Strings[302535920001070--[[Restart to take effect.]]])
-					MsgPopup(
+					ChoGGi.ComFuncs.MsgWait(
 						Strings[302535920001070--[[Restart to take effect.]]],
 						name
 					)
@@ -4210,7 +4210,10 @@ do -- ConstructableArea
 end -- do
 
 function ChoGGi.ComFuncs.RetTemplateOrClass(obj)
-	return obj.template_name ~= "" and obj.template_name or obj.class
+	if obj then
+		return obj.template_name ~= "" and obj.template_name or obj.class
+	end
+	return ""
 end
 
 do -- ToggleBldFlags

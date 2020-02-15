@@ -4,8 +4,8 @@ local mod_TextScale
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_TextScale = CurrentModOptions:GetProperty("TextScale") * guim
-	mod_TextScale = point(mod_TextScale, mod_TextScale)
+	local scale = CurrentModOptions:GetProperty("TextScale") * guim
+	mod_TextScale = point(scale, scale)
 end
 
 -- load default/saved settings
@@ -24,6 +24,7 @@ local table = table
 local MapGet = MapGet
 
 local res_count = {}
+local added_objs = {}
 local res_str, res_str_c = {}, 0
 local res_list, res_list_c
 local r
@@ -40,27 +41,38 @@ local function GetAvailableResources(self, cursor_obj)
 		res_count[res_list[i]] = 0
 	end
 
+	table.clear(added_objs)
+
+--~ 	ex(cursor_obj)
+
 	local objs = cursor_obj or self.connected_task_requesters or ""
 	for i = 1, #objs do
 		local obj = objs[i]
-		if res_count[obj.resource] then
-			-- factory storage depots
-			if obj:IsKindOf("ResourceStockpile") then
-				res_count[obj.resource] = res_count[obj.resource] + (obj.stockpiled_amount or 0)
-			-- storage depots/rockets/wasterock
+		-- don't count counted objs
+		if not added_objs[obj] then
+			added_objs[obj] = true
+			local resource = obj.resource or ""
+			if res_count[resource] then
+				-- factory storage depots/mini storage depots
+				if obj:IsKindOf("ResourceStockpile") then
+					res_count[resource] = res_count[resource] + (obj.stockpiled_amount or 0)
+				-- wasterock dumping sites
+				elseif obj:IsKindOf("WasteRockDumpSite") then
+					res_count[resource] = res_count[resource] + (obj.total_stockpiled or 0)
+				-- large depots
+				elseif obj:IsKindOf("MechanizedDepot") then
+					res_count[resource] = res_count[resource] + (obj["GetStored_" .. resource](obj) or 0)
+				-- loose piles
+				elseif obj:IsKindOf("SurfaceDeposit") then
+					res_count[resource] = res_count[resource] + (obj:GetAmount() or 0)
+				end
 			elseif obj:IsKindOf("StorageDepot") then
-				local resources = obj.resource or ""
-				for j = 1, #resources do
-					local r = resources[j]
-					if r then
-						res_count[r] = res_count[r] + (obj["GetStored_" .. r](obj) or 0)
-					-- wasterock site
-					elseif obj.resource then
-						res_count[obj.resource] = res_count[obj.resource] + (obj.total_stockpiled or 0)
+				for j = 1, #resource do
+					local loop_res = resource[j]
+					if res_count[loop_res] then
+						res_count[loop_res] = res_count[loop_res] + (obj["GetStored_" .. loop_res](obj) or 0)
 					end
 				end
-			elseif obj:IsKindOf("SurfaceDeposit") then
-				res_count[obj.resource] = res_count[obj.resource] + (obj:GetAmount() or 0)
 			end
 		end
 	end
@@ -122,7 +134,7 @@ local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit(...)
 	orig_CursorBuilding_GameInit(self, ...)
 
-	-- self-suff domes will fire this more than once
+	-- self-suff domes will fire CursorBuilding:GameInit more than once, so we get whatever is last?
 	ClearOldText()
 
 	-- DroneHubs or Rockets, not much point in rovers
@@ -156,8 +168,10 @@ local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
 function CursorBuilding:UpdateShapeHexes(...)
 	orig_CursorBuilding_UpdateShapeHexes(self, ...)
 	if txt_ctrl and self.ChoGGi_UpdateAvailableResources then
-		-- not sure why SurfaceDepositGroup don't work?
-		local objs = MapGet(self, "hex", self.ChoGGi_UpdateAvailableResources, "StorageDepot", "ResourceStockpile", "SurfaceDeposit")
+		-- build list of objs within distance to cursor placing thingy
+		local objs = MapGet(self, "hex", self.ChoGGi_UpdateAvailableResources,
+			"MechanizedDepot", "StorageDepot", "ResourceStockpile", "SurfaceDeposit"
+		)
 		if #objs > 0 then
 			txt_ctrl:SetText(GetAvailableResources(self, objs))
 		else

@@ -1,3 +1,8 @@
+v0.8
+Fixed not counting storage depots.
+Fixed dupe counting resources.
+Added mechanized depots to count.
+
 v0.7
 Log spam when certain mods installed (thanks SkiRich/willdog38).
 

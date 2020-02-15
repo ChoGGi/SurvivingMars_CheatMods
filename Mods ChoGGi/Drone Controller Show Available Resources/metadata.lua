@@ -1,9 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Drone Controller Show Available Resources",
-	"version", 7,
+	"version", 8,
 	"version_major", 0,
-	"version_minor", 7,
-
+	"version_minor", 8,
 	"image", "Preview.png",
 	"id", "ChoGGi_DroneControllerShowAvailableResources",
 	"steam_id", "1822481407",
@@ -16,9 +15,10 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagInterface", true,
 	"description", [[Wondering why the little buggers aren't repairing a building?
-The Service Area tooltip now shows a list of resources available to the selected Drone Hub, Rocket, or Rover.
 
-Construction placement / rocket landing mode will display (rounded) resources on-screen.
+The Service Area tooltip now shows a list of resources available to the selected Drone Hub, Rocket, or Rover.
+Construction placement / rocket landing mode will display (rounded) resource counts at the cursor building.
+
 See mod options to change the text scale.
 ]],
 })
