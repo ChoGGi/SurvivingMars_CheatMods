@@ -28,6 +28,7 @@ local IsKindOf = IsKindOf
 local GetDomeAtPoint = GetDomeAtPoint
 local table_unpack = table.unpack
 local ObjHexShape_Clear = ChoGGi.ComFuncs.ObjHexShape_Clear
+local ObjHexShape_Toggle = ChoGGi.ComFuncs.ObjHexShape_Toggle
 local HexAngleToDirection = HexAngleToDirection
 local HexRotate = HexRotate
 local WorldToHex = WorldToHex
@@ -206,7 +207,7 @@ end
 
 -- add keybind for toggle
 local Actions = ChoGGi.Temp.Actions
-Actions[#Actions+1] = {ActionName = T(302535920011491, "Passages Use Empty Hexes"),
+Actions[#Actions+1] = {ActionName = T(302535920011511, "Passages Use Empty Hexes"),
 	ActionId = "ChoGGi.PassagesUseEmptyHexes.ToggleGrid",
 	OnAction = function()
 		if grids_visible then

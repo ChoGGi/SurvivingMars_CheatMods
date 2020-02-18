@@ -44,6 +44,10 @@ local logos = {
 		name = "NKAWTG NOBODY",
 	},
 	{
+		file = "NRO",
+		name = "National Reconnaissance Office",
+	},
+	{
 		file = "NROL_01",
 		name = "NROL 01",
 	},
@@ -136,6 +140,10 @@ local logos = {
 		name = "NROL 37",
 	},
 	{
+		file = "NROL_38",
+		name = "NROL 38",
+	},
+	{
 		file = "NROL_39",
 		name = "NROL 39",
 	},
@@ -150,6 +158,10 @@ local logos = {
 	{
 		file = "NROL_45",
 		name = "NROL 45",
+	},
+	{
+		file = "NROL_47",
+		name = "NROL 47",
 	},
 	{
 		file = "NROL_49",
@@ -168,8 +180,16 @@ local logos = {
 		name = "NROL 65",
 	},
 	{
+		file = "NROL_66",
+		name = "NROL 66",
+	},
+	{
 		file = "NROL_67",
 		name = "NROL 67",
+	},
+	{
+		file = "NROL_151",
+		name = "NROL 151",
 	},
 	{
 		file = "Si_Ego_Certiorem_Faciam",

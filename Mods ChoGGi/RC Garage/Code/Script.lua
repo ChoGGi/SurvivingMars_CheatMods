@@ -431,168 +431,169 @@ function OnMsg.ClassesPostprocess()
 
 	-- hopefully this fixes the issue for people that don't have the buttons...
 	if type(idx) ~= "number" then
-		idx = #(building or "0")
+		idx = #(building or "1")
 	end
 
-	table.insert(
-		building,
-		idx,
+	local template = PlaceObj('XTemplateTemplate', {
+		"ChoGGi_Template_RCGarage", true,
+		"__context_of_kind", "RCGarage",
+		"__template", "InfopanelSection",
+		"Icon", "UI/Icons/Sections/basic.tga",
+	}, {
 
+		-- show link to main garage on other garages
 		PlaceObj('XTemplateTemplate', {
-			"ChoGGi_Template_RCGarage", true,
-			"__context_of_kind", "RCGarage",
-			"__template", "InfopanelSection",
-			"Icon", "UI/Icons/Sections/basic.tga",
-		}, {
-
-			-- show link to main garage on other garages
-			PlaceObj('XTemplateTemplate', {
-				"__template", "InfopanelActiveSection",
-				"Icon", "UI/Icons/ColonyControlCenter/outside_buildings_on.tga",
-				"RolloverText", T(302535920011187, [[View Main Garage
+			"__template", "InfopanelActiveSection",
+			"Icon", "UI/Icons/ColonyControlCenter/outside_buildings_on.tga",
+			"RolloverText", T(302535920011187, [[View Main Garage
 (The one that needs power).]]),
-				"OnContextUpdate", function(self, context)
+			"OnContextUpdate", function(self, context)
+				---
+				context:CheckMainGarage()
+				-- hide if this is main garage
+				if context.garages.main == context then
+					self:SetVisible(false)
+					self:SetMaxHeight(0)
+					self:SetTitle(T(302535920011184, [[Main Garage]]))
+				else
+					self:SetVisible(true)
+					self:SetMaxHeight()
+					self:SetTitle(context.pin_rollover)
+				end
+				ObjModified(context)
+				---
+			end,
+		}, {
+			PlaceObj("XTemplateFunc", {
+				"name", "OnActivate(self, context)",
+				"parent", function(self)
+					return self.parent
+				end,
+				"func", function(self, context)
 					---
-					context:CheckMainGarage()
-					-- hide if this is main garage
+					if context:CheckMainGarage() then
+						ViewObjectMars(context.garages.main)
+					end
+					---
+				end,
+			}),
+		}),
+
+		-- add an eject all rovers to main garage
+		PlaceObj('XTemplateTemplate', {
+			"__template", "InfopanelActiveSection",
+			"Icon", "UI/Icons/ColonyControlCenter/homeless_off.tga",
+			"Title", T(302535920011188, [[Eject All]]),
+			"RolloverText", T(302535920011189, [[Forces out all rovers to main garage area.]]),
+			"OnContextUpdate", function(self, context)
+				-- hide if this isn't main garage
+				if context:CheckMainGarage() then
 					if context.garages.main == context then
-						self:SetVisible(false)
-						self:SetMaxHeight(0)
-						self:SetTitle(T(302535920011184, [[Main Garage]]))
-					else
 						self:SetVisible(true)
 						self:SetMaxHeight()
-						self:SetTitle(context.pin_rollover)
+					else
+						self:SetVisible(false)
+						self:SetMaxHeight(0)
 					end
+				end
+			end,
+		}, {
+			PlaceObj("XTemplateFunc", {
+				"name", "OnActivate(self, context)",
+				"parent", function(self)
+					return self.parent
+				end,
+				"func", function(self, context)
+					---
+					ChoGGi.ComFuncs.QuestionBox(
+						T(302535920011190, [[Are you sure you want to eject all rovers?]]),
+						function(answer)
+							if answer then
+								local GetRandomPassableAround = GetRandomPassableAround
+								local GetRandomPassable = GetRandomPassable
+								local rovers = context.stored_rovers or g_ChoGGi_RCGarageRovers
+								for i = #rovers, 1, -1 do
+									local unit = rovers[i]
+									unit.ChoGGi_InGarage = nil
+									unit.accumulate_dust = true
+									unit:SetPos(context:GetPos())
+									unit:SetCommand("Goto",
+										GetRandomPassableAround(unit:GetPos(), 10000)
+										or GetRandomPassable()
+									)
+								end
+								table.iclear(rovers)
+								context:UpdateGaragePower()
+							end
+						end,
+						T(302535920011188, [[Eject All]])
+					)
+					---
+				end,
+			}),
+		}),
+
+		-- list stored rovers
+		PlaceObj('XTemplateTemplate', {
+			"__template", "InfopanelActiveSection",
+			"Icon", "UI/Icons/Sections/accept_colonists_on.tga",
+			"RolloverText", T(302535920011191, [[Click to show a list of stored rovers.
+Click in list to eject a rover.]]),
+			"OnContextUpdate", function(self, context)
+				---
+				if context:CheckMainGarage() then
+					self:SetTitle(T(5438, "Rovers") .. ": " .. #context.stored_rovers)
+				end
+				---
+			end,
+		}, {
+			PlaceObj("XTemplateFunc", {
+				"name", "OnActivate(self, context)",
+				"parent", function(self)
+					return self.parent
+				end,
+				"func", function(self, context)
+					---
+
+					-- don't show list unless main and this garage are working
+					if not (context:CheckMainGarage() and context.garages.main.working and context.working and #context.stored_rovers > 0) then
+						return
+					end
+
+					local RetName = ChoGGi.ComFuncs.RetName
+					-- build a list of all rovers inside
+					local item_list = {}
+					local c = 0
+					for i = 1, #context.stored_rovers do
+						local obj = context.stored_rovers[i]
+						if IsValid(obj) then
+							local name = RetName(obj)
+							c = c + 1
+							item_list[c] = {
+								name = name,
+								hint = T{302535920011192, "Eject <name> from garage", name = name},
+								clicked = function()
+									context:RemoveFromGarage(obj)
+								end,
+							}
+						end
+					end
+
+					-- and show it
+					ChoGGi.ComFuncs.PopupToggle(self, "idRCGarageMenu", item_list, "left")
+
 					ObjModified(context)
 					---
 				end,
-			}, {
-				PlaceObj("XTemplateFunc", {
-					"name", "OnActivate(self, context)",
-					"parent", function(self)
-						return self.parent
-					end,
-					"func", function(self, context)
-						---
-						if context:CheckMainGarage() then
-							ViewObjectMars(context.garages.main)
-						end
-						---
-					end,
-				}),
 			}),
+		}),
 
-			-- add an eject all rovers to main garage
-			PlaceObj('XTemplateTemplate', {
-				"__template", "InfopanelActiveSection",
-				"Icon", "UI/Icons/ColonyControlCenter/homeless_off.tga",
-				"Title", T(302535920011188, [[Eject All]]),
-				"RolloverText", T(302535920011189, [[Forces out all rovers to main garage area.]]),
-				"OnContextUpdate", function(self, context)
-					-- hide if this isn't main garage
-					if context:CheckMainGarage() then
-						if context.garages.main == context then
-							self:SetVisible(true)
-							self:SetMaxHeight()
-						else
-							self:SetVisible(false)
-							self:SetMaxHeight(0)
-						end
-					end
-				end,
-			}, {
-				PlaceObj("XTemplateFunc", {
-					"name", "OnActivate(self, context)",
-					"parent", function(self)
-						return self.parent
-					end,
-					"func", function(self, context)
-						---
-						ChoGGi.ComFuncs.QuestionBox(
-							T(302535920011190, [[Are you sure you want to eject all rovers?]]),
-							function(answer)
-								if answer then
-									local GetRandomPassableAround = GetRandomPassableAround
-									local GetRandomPassable = GetRandomPassable
-									local rovers = context.stored_rovers or g_ChoGGi_RCGarageRovers
-									for i = #rovers, 1, -1 do
-										local unit = rovers[i]
-										unit.ChoGGi_InGarage = nil
-										unit.accumulate_dust = true
-										unit:SetPos(context:GetPos())
-										unit:SetCommand("Goto",
-											GetRandomPassableAround(unit:GetPos(), 10000)
-											or GetRandomPassable()
-										)
-									end
-									table.iclear(rovers)
-									context:UpdateGaragePower()
-								end
-							end,
-							T(302535920011188, [[Eject All]])
-						)
-						---
-					end,
-				}),
-			}),
+	}) -- PlaceObj
 
-			-- list stored rovers
-			PlaceObj('XTemplateTemplate', {
-				"__template", "InfopanelActiveSection",
-				"Icon", "UI/Icons/Sections/accept_colonists_on.tga",
-				"RolloverText", T(302535920011191, [[Click to show a list of stored rovers.
-Click in list to eject a rover.]]),
-				"OnContextUpdate", function(self, context)
-					---
-					if context:CheckMainGarage() then
-						self:SetTitle(T(5438, "Rovers") .. ": " .. #context.stored_rovers)
-					end
-					---
-				end,
-			}, {
-				PlaceObj("XTemplateFunc", {
-					"name", "OnActivate(self, context)",
-					"parent", function(self)
-						return self.parent
-					end,
-					"func", function(self, context)
-						---
-
-						-- don't show list unless main and this garage are working
-						if not (context:CheckMainGarage() and context.garages.main.working and context.working and #context.stored_rovers > 0) then
-							return
-						end
-
-						local RetName = ChoGGi.ComFuncs.RetName
-						-- build a list of all rovers inside
-						local item_list = {}
-						local c = 0
-						for i = 1, #context.stored_rovers do
-							local obj = context.stored_rovers[i]
-							if IsValid(obj) then
-								local name = RetName(obj)
-								c = c + 1
-								item_list[c] = {
-									name = name,
-									hint = T{302535920011192, "Eject <name> from garage", name = name},
-									clicked = function()
-										context:RemoveFromGarage(obj)
-									end,
-								}
-							end
-						end
-
-						-- and show it
-						ChoGGi.ComFuncs.PopupToggle(self, "idRCGarageMenu", item_list, "left")
-
-						ObjModified(context)
-						---
-					end,
-				}),
-			}),
-
-		}) -- PlaceObj
-	)
+	if building[idx] then
+		table.insert(building, idx, template)
+	else
+		table.insert(building, 1, template)
+	end
 end
 

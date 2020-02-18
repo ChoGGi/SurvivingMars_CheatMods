@@ -1,3 +1,6 @@
+v0.4
+Fix for bug last (none) update.
+
 v0.3
 Added mod option: Show usable hexes: Show hexes that can connect domes when placing passages.
 Press numpad 6 to toggle showing usable hexes.

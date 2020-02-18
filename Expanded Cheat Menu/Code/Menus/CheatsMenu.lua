@@ -7,6 +7,16 @@ local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
 c = c + 1
+Actions[c] = {ActionName = Strings[302535920000981--[[Delete Geysers]]],
+	ActionMenubar = "ECM.Cheats",
+	ActionId = ".Delete Geysers",
+	ActionIcon = "CommonAssets/UI/Menu/FixUndrwaterEges.tga",
+	RolloverText = Strings[302535920000983--[["Remove all geyser activity from the map (permanent per-save).
+You will not be able to build on them without also enabling <green>ECM>Buildings>Toggles>%s</green>."]]]:format(Strings[302535920000064--[[Build On Geysers]]]),
+	OnAction = ChoGGi.MenuFuncs.DeleteGeysers,
+}
+
+c = c + 1
 Actions[c] = {ActionName = Strings[302535920001587--[[Lightning Strike]]],
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Lightning Strike",

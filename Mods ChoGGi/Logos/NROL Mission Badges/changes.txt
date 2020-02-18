@@ -1,0 +1,3 @@
+v0.2
+Added more badges:
+NRO logo, 38, 47, 66, 151

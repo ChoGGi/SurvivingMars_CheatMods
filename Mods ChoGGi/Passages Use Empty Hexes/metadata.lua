@@ -8,10 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Passages Use Empty Hexes",
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
-
+	"version_minor", 4,
 	"image", "Preview.png",
 	"id", "ChoGGi_PassagesUseEmptyHexes",
 	"steam_id", "1809321641",

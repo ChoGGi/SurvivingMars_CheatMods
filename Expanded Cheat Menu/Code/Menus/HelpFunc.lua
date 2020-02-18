@@ -60,6 +60,7 @@ do -- ModUpload
 		ChoGGi_DroneHubHeavyLoadStrobe = "DroneHub: Heavy Load Strobe",
 		ChoGGi_DroneHubVisualDroneLoad = "DroneHub: Visual Drone Load",
 		ChoGGi_EveryFlagOnWikipedia = "Every Flag On Wikipedia v0.6",
+		ChoGGi_FixFindDroneToRepairLogSpam = "Fix: FindDroneToRepair Log Spam",
 		ChoGGi_FixMissingBuildUpgradeIcons = "Fix: Missing Build/Upgrade Icons",
 		ChoGGi_FixRemovedModGameRules = "Fix: Removed Mod Game Rules",
 		ChoGGi_GameRulesBreakthroughs = "Game Rules: Breakthroughs",

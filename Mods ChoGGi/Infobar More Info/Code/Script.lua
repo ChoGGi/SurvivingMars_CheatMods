@@ -6,6 +6,30 @@ local mod_SkipGrid1
 local mod_SkipGridX
 local mod_MergedGrids
 local mod_RolloverWidth
+local mod_DisableTransparency
+
+local function UpdateTrans()
+	CreateRealTimeThread(function()
+		local Dialogs = Dialogs
+		if not Dialogs.Infobar then
+			local Sleep = Sleep
+			while not Dialogs.Infobar do
+				Sleep(250)
+			end
+		end
+		local image = CurrentModPath .. "UI/resources.png"
+		if mod_DisableTransparency then
+			Dialogs.Infobar.idPad:SetImage(image)
+			Dialogs.Infobar.idTerraformingBar.idPad:SetImage(image)
+		else
+			-- get this path from game maybe?
+			Dialogs.Infobar.idPad:SetImage("UI/CommonNew/resources.tga")
+			Dialogs.Infobar.idTerraformingBar.idPad:SetImage("UI/CommonNew/resources.tga")
+		end
+	end)
+end
+
+OnMsg.InGameInterfaceCreated = UpdateTrans
 
 -- fired when settings are changed/init
 local function ModOptions()
@@ -14,6 +38,7 @@ local function ModOptions()
 	mod_SkipGridX = options:GetProperty("SkipGridX")
 	mod_MergedGrids = options:GetProperty("MergedGrids")
 	mod_RolloverWidth = options:GetProperty("RolloverWidth") * 10
+	mod_DisableTransparency = options:GetProperty("DisableTransparency")
 
 	-- ECM already changes it
 	if not table.find(ModsLoaded, "id", "ChoGGi_CheatMenu") then
@@ -27,6 +52,10 @@ local function ModOptions()
 				roll[idx].MaxWidth = mod_RolloverWidth
 			end
 		end
+	end
+
+	if Dialogs.Infobar then
+		UpdateTrans()
 	end
 end
 

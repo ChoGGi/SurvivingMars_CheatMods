@@ -9,6 +9,34 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local SelObject = ChoGGi.ComFuncs.SelObject
 local Strings = ChoGGi.Strings
 
+function ChoGGi.MenuFuncs.DeleteGeysers()
+	local function CallBackFunc(answer)
+		if answer and GameState.gameplay then
+			SuspendPassEdits("ChoGGi.MenuFuncs.DeleteGeysers")
+			MapDelete("map","PrefabFeatureMarker", function(obj)
+				if obj.FeatureType == "CO2 Jets" then
+					return true
+				end
+			end)
+			MapDelete("map",
+				"DecSpider_01", "DecSpider_02", "GeyserWarmup",
+				"Geyser_01", "Geyser_02", "Geyser_03"
+			)
+			ResumePassEdits("ChoGGi.MenuFuncs.DeleteGeysers")
+			MsgPopup(
+				Strings[302535920001586--[[All Done!]]],
+				Strings[302535920000981--[[Delete Geysers]]]
+			)
+		end
+	end
+	ChoGGi.ComFuncs.QuestionBox(
+		Strings[302535920000983--[["Remove all geyser activity from the map (permanent per-save).
+You will not be able to build on the area without also enabling <green>ECM>Buildings>Toggles>%s</green>."]]]:format(Strings[302535920000064--[[Build On Geysers]]]),
+		CallBackFunc,
+		Strings[302535920000981--[[Delete Geysers]]]
+	)
+end
+
 function ChoGGi.MenuFuncs.SpawnPOIs()
 	local item_list = {}
 	local c = 0

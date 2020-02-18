@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "NROL Mission Badges",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.png",
 	"id", "ChoGGi_NROLMissionBadges",
 	"steam_id", "1997798603",
@@ -13,9 +13,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua"
 	},
-	"description", [[A bunch of NROL badges (as well as a few others, and a couple random DEA ones).
-
-I probably should've kept a list of credits... I didn't make any of these images.
+	"description", [[A bunch of NROL badges (as well as a few others).
 
 
 You can use my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1815122803]Change Logo[/url] mod to change the logo of an existing game.
