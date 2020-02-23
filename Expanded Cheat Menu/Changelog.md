@@ -1,8 +1,12 @@
 ## ECM Changelog
 
 ## v14.9 (Unreleased)
+### Added:
+- Cheats>Delete Geysers: Remove all geyser activity from the map (permanent per-save).
+- ChangeGrade to cheats section for selection panel of deposits.
+- ToggleFrozen to cheats section for selection panel of heat sensitive buildings.
+
 ### Changed:
-- Added ChangeGrade to cheats section for selection panel of deposits.
 
 ### Fixed:
 - Examine Log spam (thanks LukeH).

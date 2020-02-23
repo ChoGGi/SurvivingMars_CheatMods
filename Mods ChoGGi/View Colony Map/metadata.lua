@@ -32,7 +32,8 @@ return PlaceObj("ModDef", {
 
 Includes a checkbox to show anomaly breakthroughs for each location.
 If you use a rule that changes the breakthrough list, then ignore the breakthrough list shown as it isn't accurate anymore.
-Shows map for challenges (mod option to turn it off).
+
+Also shows map for challenges (mod option to turn it off).
 
 Colour levels: Purple = mountainous, other colours = buildable.
 

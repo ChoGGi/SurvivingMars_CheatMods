@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_FireworksLauncher",
 	"steam_id", "1734717680",
@@ -15,8 +14,8 @@ return PlaceObj("ModDef", {
 	},
 	"description", [[Adds a building to manually set off dome fireworks.
 
-Provides a minimal boost to terraforming heat (0.01 once GP is here) for a cost (100M).
-There is a visual only option.
+Provides a minimal boost to terraforming heat (0.01) for a cost (100M).
+There is a visual only mod option.
 
 You can build it inside or outside, but outside will have some pretty particles.
 

@@ -34,14 +34,15 @@ Building.CheatOxygenFree = ComFuncs.RemoveBuildingAirConsump
 Building.CheatOxygenNeed = ComFuncs.AddBuildingAirConsump
 
 function ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
-	local g_Classes = g_Classes
 	if not CurrentMap:find("Tutorial") then
+		local g_Classes = g_Classes
 		g_Classes.Building.CheatAddMaintenancePnts = nil
 		g_Classes.Building.CheatMakeSphereTarget = nil
 		g_Classes.Building.CheatSpawnWorker = nil
 		g_Classes.Building.CheatSpawnVisitor = nil
 	end
 end
+ColdSensitive.CheatUnfreeze = nil
 
 local function SetHint(action, hint)
 	-- name has to be set to make the hint show up
@@ -245,6 +246,9 @@ It don't matter if you're black or white"]]],
 	},
 	ToggleGlass = {
 		des = Strings[302535920001617--[[Toggle opening all dome glass (for screenshots?).]]],
+	},
+	ToggleFreeze = {
+		des = Strings[302535920000985--[[Toggle frozen state of building.]]],
 	},
 
 -- Rover/Drone
@@ -572,7 +576,6 @@ function OnMsg.ClassesBuilt()
 	LifeSupportGridElement.CheatBreak = LifeSupportGridElement.Break
 end
 
-local Object = Object
 local Colonist = Colonist
 local Workplace = Workplace
 
@@ -581,6 +584,14 @@ function Object:CheatToggleSigns()
 		self:DestroyAttaches("BuildingSign")
 	else
 		self:UpdateSignsVisibility()
+	end
+end
+
+function ColdSensitive:CheatToggleFreeze()
+	if self.frozen then
+		self:SetFrozen(false)
+	else
+		self:SetFrozen(true)
 	end
 end
 

@@ -23,6 +23,20 @@ function RequiresMaintenance:UIRequestMaintenance()
 	return self:RequestMaintenance(true)
 end
 
+-- main requested on frozen building and cold wave ends before main
+local function RepairBuilding(obj)
+	Sleep(1000)
+	if obj.cold_mod == false and obj.working == false and not g_ColdWave then
+		obj:SetFrozen(false)
+	end
+end
+
+function OnMsg.Repaired(obj)
+	if obj.frozen then
+		CreateRealTimeThread(RepairBuilding, obj)
+	end
+end
+
 -- removed button
 function OnMsg.ClassesPostprocess()
 

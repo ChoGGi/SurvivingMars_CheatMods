@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_AndroidSpecUniforms",
 	"steam_id", "1780312214",
@@ -14,7 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"TagCosmetics", true,
-	"description", [[Android/Biorobot use the correct uniform for their specialisation.
+	"description", [[Androids/Biorobots use the correct uniform for their specialisation.
 
 
 Requested by BLade.]],

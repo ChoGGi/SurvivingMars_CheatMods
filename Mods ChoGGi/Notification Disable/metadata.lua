@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,
-
 	"id", "ChoGGi_NotificationDisable",
 	"author", "ChoGGi",
 	"steam_id", "1812220211",

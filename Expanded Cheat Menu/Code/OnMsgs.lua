@@ -396,7 +396,7 @@ function OnMsg.ModsReloaded()
 			edit.RolloverText = Strings[302535920001440--[["~obj opens object in examine dlg.
 ~~obj opens object's attachments in examine dlg.
 
-&handle examines object with that handle.
+<green>&</green><yellow>handle</yellow> examine object using handle id.
 
 @GetMissionSponsor prints file name and line number of function.
 

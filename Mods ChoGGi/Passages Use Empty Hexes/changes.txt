@@ -1,5 +1,5 @@
 v0.4
-Fix for bug last (none) update.
+Fix for bug last (non) update.
 
 v0.3
 Added mod option: Show usable hexes: Show hexes that can connect domes when placing passages.
