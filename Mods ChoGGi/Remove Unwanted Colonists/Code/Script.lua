@@ -69,16 +69,20 @@ function OnMsg.ClassesPostprocess()
 			"ChoGGi_Template_ColonistSucker", true,
 			"__template", "InfopanelActiveSection",
 			"Icon", "UI/Icons/traits_disapprove.tga",
-			"Title", T(302535920011244, [[Remove Colonist]]),
-			"RolloverTitle", T(302535920011244, [[Remove Colonist]]),
-			"RolloverText", T(302535920011245, [[Thumbs down means colonist will get sucked up and deported to Earth.]]),
-			"RolloverHint", T(302535920011246, [[<left_click> Toggle]]),
+			"Title", T(302535920011244, "Remove Colonist"),
+			"RolloverTitle", T(302535920011244, "Remove Colonist"),
+			"RolloverText", T(302535920011245, "Thumbs down means colonist will get sucked up and deported to Earth."),
+			"RolloverHint", T(302535920011246, "<left_click> Toggle"),
 			"OnContextUpdate", function(self, context)
 				---
 				if context.ChoGGi_MurderPod then
-					self:SetIcon("UI/Icons/traits_approve.tga")
-				else
 					self:SetIcon("UI/Icons/traits_disapprove.tga")
+					self:SetTitle(T(302535920011596, "Removing Colonist!"))
+					self:SetRolloverTitle(T(302535920011596, "Removing Colonist!"))
+				else
+					self:SetIcon("UI/Icons/traits_approve.tga")
+					self:SetTitle(T(302535920011244, "Remove Colonist"))
+					self:SetRolloverTitle(T(302535920011244, "Remove Colonist"))
 				end
 				---
 			end,
@@ -128,10 +132,10 @@ function OnMsg.ClassesPostprocess()
 				return IsValid(context.target)
 			end,
 			"Icon", "UI/Icons/Sections/colonist.tga",
-			"Title", T(302535920011247, [[Select Colonist]]),
-			"RolloverTitle", T(302535920011247, [[Select Colonist]]),
-			"RolloverText", T(302535920011248, [[Selects the colonist.]]),
-			"RolloverHint", T(302535920011249, [[<left_click> Select]]),
+			"Title", T(302535920011247, "Select Colonist"),
+			"RolloverTitle", T(302535920011247, "Select Colonist"),
+			"RolloverText", T(302535920011248, "Selects the colonist."),
+			"RolloverHint", T(302535920011249, "<left_click> Select"),
 		}, {
 			PlaceObj("XTemplateFunc", {
 				"name", "OnActivate(self, context)",
@@ -149,38 +153,38 @@ function OnMsg.ClassesPostprocess()
 
 end
 
-GlobalVar("g_ChoGGi_RemoveUnwantedColonists_StuckPassageFix", false)
-GlobalVar("g_ChoGGi_RemoveUnwantedColonists_StuckAirColonist", false)
+--~ GlobalVar("g_ChoGGi_RemoveUnwantedColonists_StuckPassageFix", false)
+--~ GlobalVar("g_ChoGGi_RemoveUnwantedColonists_StuckAirColonist", false)
 
--- remove any invalid colonists from passages (fix for mod < v0.5)
-function OnMsg.LoadGame()
-	-- so it only loops once per game
-	if not g_ChoGGi_RemoveUnwantedColonists_StuckPassageFix then
-		local remove = table.remove
+--~ -- remove any invalid colonists from passages (fix for mod < v0.5)
+--~ function OnMsg.LoadGame()
+--~ 	-- so it only loops once per game
+--~ 	if not g_ChoGGi_RemoveUnwantedColonists_StuckPassageFix then
+--~ 		local remove = table.remove
 
-		local objs = UICity.labels.Passage or ""
-		for i = 1, #objs do
-			local traversing = objs[i].traversing_colonists or ""
-			for j = #traversing, 1, -1 do
-				if not IsValid(traversing[j]) then
-					remove(traversing, j)
-				end
-			end
-		end
+--~ 		local objs = UICity.labels.Passage or ""
+--~ 		for i = 1, #objs do
+--~ 			local traversing = objs[i].traversing_colonists or ""
+--~ 			for j = #traversing, 1, -1 do
+--~ 				if not IsValid(traversing[j]) then
+--~ 					remove(traversing, j)
+--~ 				end
+--~ 			end
+--~ 		end
 
-		g_ChoGGi_RemoveUnwantedColonists_StuckPassageFix = true
+--~ 		g_ChoGGi_RemoveUnwantedColonists_StuckPassageFix = true
 
-	end
+--~ 	end
 
-	if not g_ChoGGi_RemoveUnwantedColonists_StuckAirColonist then
-		local objs = UICity.labels.Colonist or ""
-		for i = 1, #objs do
-			local obj = objs[i]
-			if obj.ChoGGi_MurderPod and not IsValid(obj.ChoGGi_MurderPod) then
-				obj:Erase()
-			end
-		end
-		g_ChoGGi_RemoveUnwantedColonists_StuckAirColonist = true
-	end
+--~ 	if not g_ChoGGi_RemoveUnwantedColonists_StuckAirColonist then
+--~ 		local objs = UICity.labels.Colonist or ""
+--~ 		for i = 1, #objs do
+--~ 			local obj = objs[i]
+--~ 			if obj.ChoGGi_MurderPod and not IsValid(obj.ChoGGi_MurderPod) then
+--~ 				obj:Erase()
+--~ 			end
+--~ 		end
+--~ 		g_ChoGGi_RemoveUnwantedColonists_StuckAirColonist = true
+--~ 	end
 
-end
+--~ end

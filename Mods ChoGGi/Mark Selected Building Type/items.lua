@@ -7,8 +7,8 @@ return {
 	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "MaxObjects",
-		"DisplayName", T(302535920011479, "Max Objects"),
-		"Help", T(302535920011480, "Skip adding lines if too many objects."),
+		"DisplayName", T(302535920011591, "Max Objects"),
+		"Help", T(302535920011592, "Skip adding lines if too many objects."),
 		"DefaultValue", 100,
 		"MinValue", 0,
 		"MaxValue", 1000,

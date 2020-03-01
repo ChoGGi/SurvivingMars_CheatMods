@@ -56,7 +56,7 @@ end
 
 -- add keybind for toggle
 local Actions = ChoGGi.Temp.Actions
-Actions[#Actions+1] = {ActionName = T(302535920011489, "Construction Show Hex Buildable Grid"),
+Actions[#Actions+1] = {ActionName = T(302535920011583, "Construction Show Hex Buildable Grid"),
 	ActionId = "ChoGGi.ConstructionShowHexBuildableGrid.ToggleGrid",
 	OnAction = function()
 		if grids_visible then

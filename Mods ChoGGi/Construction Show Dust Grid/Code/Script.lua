@@ -284,7 +284,7 @@ end
 
 -- add keybind for toggle
 local Actions = ChoGGi.Temp.Actions
-Actions[#Actions+1] = {ActionName = T(302535920011486, "Construction Show Dust Range"),
+Actions[#Actions+1] = {ActionName = T(302535920011585, "Construction Show Dust Range"),
 	ActionId = "ChoGGi.ConstructionShowDustGrid.ToggleGrid",
 	OnAction = function()
 		if grids_visible then

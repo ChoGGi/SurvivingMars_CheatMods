@@ -1,3 +1,6 @@
+v0.4
+Changed code to make sure min is always equal to or lower than max.
+
 v0.3
 Evans update.
 

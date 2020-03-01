@@ -1,13 +1,35 @@
 -- See LICENSE for terms
 
 local mod_EnableMod
+local mod_DisableHUD
 local SetMouse
+
+local orig_pin_margins
 
 -- fired when settings are changed/init
 local function ModOptions()
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+	mod_DisableHUD = CurrentModOptions:GetProperty("DisableHUD")
 
 	SetMouse(mod_EnableMod)
+
+	local d = Dialogs
+	if not orig_pin_margins then
+		orig_pin_margins = d.PinsDlg:GetMargins()
+	end
+
+	if mod_DisableHUD then
+		d.HUD.idMiddle:SetVisible(false)
+		d.HUD.idRight:SetVisible(false)
+--~ 		d.PinsDlg:SetMargins(box(100, 0, 100, 20))
+		local a, b = orig_pin_margins:minxyz()
+		local x = orig_pin_margins:maxxyz()
+		d.PinsDlg:SetMargins(box(a, b, x, 20))
+	else
+		d.HUD.idMiddle:SetVisible(true)
+		d.HUD.idRight:SetVisible(true)
+		d.PinsDlg:SetMargins(orig_pin_margins)
+	end
 end
 
 -- load default/saved settings
@@ -40,14 +62,38 @@ end
 local function StartupCode()
 	SetMouse(mod_EnableMod)
 end
+local function StartupCodeHUD()
+	local d = Dialogs
+	if not orig_pin_margins then
+		orig_pin_margins = d.PinsDlg:GetMargins()
+	end
+
+	if mod_DisableHUD then
+		d.HUD.idMiddle:SetVisible(false)
+		d.HUD.idRight:SetVisible(false)
+		local a, b = orig_pin_margins:minxyz()
+		local x = orig_pin_margins:maxxyz()
+		d.PinsDlg:SetMargins(box(a, b, x, 20))
+--~ 		d.PinsDlg:SetMargins(box(100, 0, 100, 20))
+	end
+end
+function OnMsg.CityStart()
+	StartupCode()
+	StartupCodeHUD()
+end
+function OnMsg.LoadGame()
+	StartupCode()
+	StartupCodeHUD()
+end
+--~ OnMsg.CityStart = StartupCode
+--~ OnMsg.LoadGame = StartupCode
+OnMsg.SystemActivate = StartupCode
+OnMsg.MouseInside = StartupCode
+
+-- always enable so when going back in the mouse won't be visible
 local function EnableMouse()
 	SetMouse(false)
 end
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
-OnMsg.SystemActivate = StartupCode
-OnMsg.MouseInside = StartupCode
--- always enable so when going back in the mouse won't be visible
 OnMsg.SystemMinimize = EnableMouse
 OnMsg.SystemInactivate = EnableMouse
 OnMsg.MouseOutside = EnableMouse

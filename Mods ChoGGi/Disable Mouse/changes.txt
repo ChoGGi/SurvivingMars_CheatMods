@@ -1,2 +1,5 @@
+v0.3
+Added mod option to hide bottom hud bottons.
+
 v0.2
 Evans update.

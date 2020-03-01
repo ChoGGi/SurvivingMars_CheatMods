@@ -2,7 +2,27 @@
 
 local options
 
-local UpdateRate
+local function UpdateRate()
+	-- ClassesPostprocess fires earlier than ModsReloaded (well probably just for me)
+	if not options then
+		return
+	end
+
+	local POIPresets = POIPresets
+	for id, poi in pairs(POIPresets) do
+		local min = options:GetProperty(id .. "_Min")
+		local max = options:GetProperty(id .. "_Max")
+
+		-- just to be safe
+		if min > max then
+			min = max
+		end
+
+		poi.spawn_period.from = min
+		poi.spawn_period.to = max
+	end
+end
+
 -- fired when settings are changed/init
 local function ModOptions()
 	UpdateRate()
@@ -10,9 +30,10 @@ local function ModOptions()
 	if not GameState.gameplay then
 		return
 	end
+
 	-- update spawn times
-	local CalcNextSpawnProject = CalcNextSpawnProject
 	local day = UICity.day
+	local CalcNextSpawnProject = CalcNextSpawnProject
 	local g_SpecialProjectNextSpawn = g_SpecialProjectNextSpawn
 	for id, item in pairs(g_SpecialProjectNextSpawn) do
 		-- if the next spawn time is larger then the max option then recalc
@@ -35,19 +56,6 @@ function OnMsg.ApplyModOptions(id)
 	end
 
 	ModOptions()
-end
-
-UpdateRate = function()
-	-- ClassesPostprocess fires earlier than ModsReloaded (well probably just for me)
-	if not options then
-		return
-	end
-
-	local POIPresets = POIPresets
-	for id, poi in pairs(POIPresets) do
-		poi.spawn_period.from = options:GetProperty(id .. "_Min")
-		poi.spawn_period.to = options:GetProperty(id .. "_Max")
-	end
 end
 
 OnMsg.ClassesPostprocess = UpdateRate

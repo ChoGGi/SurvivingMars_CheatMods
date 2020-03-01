@@ -8,10 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Remove Unwanted Colonists",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
-
+	"version_minor", 6,
 	"image", "Preview.png",
 	"id", "ChoGGi_RemoveUnwantedColonists",
 	"steam_id", "1594867237",
@@ -22,7 +21,12 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 		"Code/MurderPod.lua",
 		"Code/IdiotMonument.lua",
+		"Code/ModOptions.lua",
 	},
+	"has_options", true,
+	"TagGameplay", true,
+	"TagBuildings", true,
+	"TagOther", true,
 	"description", [[Adds a button to the colonist selection menu to send them back to Earth.
 A pod will come down and hover around the colonist till they make the mistake of going outside.
 If you change your mind; you can toggle it before they get sucked up.
@@ -35,6 +39,6 @@ Unfortunately frozen bodies don't have any propulsion systems. They'll come back
 On the bright side there won't be much left on impact, so other colonists won't be affected.
 
 
-
+Mod options to automagically remove colonists of certain traits (age, negative, other).
 This also adds a buildable monument to idiots, for those colonists less inclined to go outside.]],
 })

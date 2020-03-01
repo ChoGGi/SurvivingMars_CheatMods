@@ -166,7 +166,7 @@ function MurderPod:GetVictimPos()
 	else
 		pos = GetRandomPassable()
 	end
-	return pos
+	return pos or point20
 end
 
 function MurderPod:Abduct()
@@ -232,7 +232,9 @@ function MurderPod:Abduct()
 	end
 
 	-- What did Mission Control ever do for us? Without it, where would we be? Free! Free to roam the universe!
-	self:SetCommand("Leave")
+	if IsValid(self) then
+		self:SetCommand("Leave")
+	end
 end
 
 function MurderPod:StalkerTime()

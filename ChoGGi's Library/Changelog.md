@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v7.9 (Unreleased)
+- Fixed accessing Tourist desc in main menu (TFormat.has_researched).
 
 ## v7.8 (20 Jan 2020)
 - Added CleanInfoAttachDupes/ObjHexShape_Toggle from ECM mod.

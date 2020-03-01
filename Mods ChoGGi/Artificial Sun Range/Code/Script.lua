@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local mod_Range = 8
+local mod_Range = ArtificialSun.effect_range or 8
 
 -- loop through all suns and update any panels in range
 local function UpdateArtificialSunRange()
@@ -14,6 +14,7 @@ local function UpdateArtificialSunRange()
 	local suns = UICity.labels.ArtificialSun or ""
 	for i = 1, #suns do
 		suns[i].effect_range = mod_Range
+--~ 		suns[i].UIWorkRadius = mod_Range
 	end
 
 	-- large radius extension so it can catch large panels (dev comment)
@@ -73,3 +74,12 @@ OnMsg.LoadGame = UpdateArtificialSunRange
 
 -- fix for solar panels only expecting one sun
 SolarPanelBase.GameInit = UpdateArtificialSunRange
+
+--~ -- add ArtificialSun to ServiceArea section (without messing with other buildings/mods)
+--~ function OnMsg.ClassesPostprocess()
+--~ 	local xt = XTemplates.sectionServiceArea[1]
+--~ 	local orig_con = xt.__condition
+--~ 	xt.__condition = function(parent, context)
+--~ 		return context:IsKindOf("ArtificialSun") or orig_con(parent, context)
+--~ 	end
+--~ end

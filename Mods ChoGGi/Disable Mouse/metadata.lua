@@ -1,9 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Disable Mouse",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
-
+	"version_minor", 3,
 	"image", "Preview.png",
 	"id", "ChoGGi_DisableMouse",
 	"steam_id", "1802909239",
