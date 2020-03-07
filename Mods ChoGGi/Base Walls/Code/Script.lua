@@ -2,6 +2,7 @@
 
 -- I use the mirror ball thingy to hide my shame
 if not g_AvailableDlc.contentpack1 then
+	print("Base Walls Needs DLC Installed: Mysteries Resupply Pack (it's free)!")
 	return
 end
 

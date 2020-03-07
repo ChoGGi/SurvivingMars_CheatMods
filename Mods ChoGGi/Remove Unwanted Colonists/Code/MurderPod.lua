@@ -36,7 +36,7 @@ DefineClass.MurderPod = {
 	display_icon = "UI/Icons/Buildings/supply_pod.tga",
 
 	panel_icon = "",
-	panel_text = T(302535920011242, [[Waiting for victim]]),
+	panel_text = T(302535920011242, "Waiting for victim"),
 	ip_template = "ipShuttle",
 
 	thrust_max = 3000,
@@ -149,7 +149,7 @@ function MurderPod:LaunchMeteor(entity)
 		descr.meteor:SetColorModifier(-16772609)
 		-- it looks reasonable
 		descr.meteor:SetState("sitSoftChairIdle")
-		-- i don't maybe they swelled up from the heat and moisture permeating in space
+		-- i don't maybe they swelled up from the heat and moisture permeating in space (makes it easier to see the popsicle)
 		descr.meteor:SetScale(500)
 	end
 --~ 	ex(descr.meteor)

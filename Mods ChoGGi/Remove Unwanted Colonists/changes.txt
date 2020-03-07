@@ -1,3 +1,6 @@
+v0.7
+Added positive traits to filter list.
+
 v0.6
 Added mod options to automagically remove colonists of certain traits (age, negative, other).
 I can add positive if anyone wants, just figured it wasn't something most people want...

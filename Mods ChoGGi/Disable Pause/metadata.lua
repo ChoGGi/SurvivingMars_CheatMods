@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-
 	"id", "ChoGGi_DisablePause",
 	"image", "Preview.png",
 	"steam_id", "1579991229",
@@ -13,5 +12,5 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Space sets speed to 1 normal, and the pause button is hidden.]],
+	"description", [[Space sets speed to normal, and the pause button is hidden.]],
 })

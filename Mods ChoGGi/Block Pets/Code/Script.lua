@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.shepard then
+	print("Block Pets needs DLC Installed: Project Laika!")
 	return
 end
 

@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,
-
+	"steam_id", "1576382631",
 	"image", "Preview.png",
 	"id", "ChoGGi_FixFindDroneToRepairLogSpam",
 	"pops_any_uuid", "d8a6fb94-bc0b-4ad5-9aea-083ca8f51a93",

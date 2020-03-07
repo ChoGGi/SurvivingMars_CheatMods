@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.gagarin then
+	print("Change Skin Wasp Drones needs DLC Installed: Space Race!")
 	return
 end
 

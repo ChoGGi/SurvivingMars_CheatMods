@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.armstrong then
+	print("Terraforming Existing Saves needs DLC Installed: Green Planet!")
 	return
 end
 

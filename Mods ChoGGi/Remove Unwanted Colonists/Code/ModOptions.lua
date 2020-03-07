@@ -1,22 +1,21 @@
 -- See LICENSE for terms
 
-
 -- build list of traits/mod options
 local mod_options = {}
-local traits = {}
+local traits_list = {}
 c = 0
 local function AddColonists(list)
 	for i = 1, #list do
 		c = c + 1
 		local id = list[i]
-		traits[c] = id
+		traits_list[c] = id
 		mod_options[id] = false
 	end
 end
 local t = ChoGGi.Tables
 AddColonists(t.ColonistAges)
 AddColonists(t.NegativeTraits)
---~ AddColonists(t.PositiveTraits)
+AddColonists(t.PositiveTraits)
 AddColonists(t.OtherTraits)
 
 -- call down the wrath of Zeus for miscreants
@@ -51,8 +50,8 @@ local function ModOptions()
 	options = options or CurrentModOptions
 
 	for i = 1, c do
-		local id = traits[i]
-		mod_options[id] = options:GetProperty(id)
+		local id = traits_list[i]
+		mod_options[id] = options:GetProperty("Trait_" .. id)
 	end
 
 	-- make sure we're not in menus

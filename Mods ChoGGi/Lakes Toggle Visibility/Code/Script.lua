@@ -1,8 +1,10 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.armstrong then
+	print("Lakes Toggle Visibility needs DLC Installed: Green Planet!")
 	return
 end
+
 local IsValid = IsValid
 local DoneObject = DoneObject
 local ApplyAllWaterObjects = ApplyAllWaterObjects

@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.armstrong then
+	print("Game Rules Fully Terraformed needs DLC Installed: Green Planet!")
 	return
 end
 

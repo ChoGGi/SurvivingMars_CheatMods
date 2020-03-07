@@ -1,3 +1,6 @@
+v0.5
+Added some ()
+
 v0.4
 Replaced a different func, so I don't need to do all that copy pasta of local funcs.
 

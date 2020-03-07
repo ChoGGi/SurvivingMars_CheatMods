@@ -8,9 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Remove Unwanted Colonists",
-	"version", 6,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 7,
 	"image", "Preview.png",
 	"id", "ChoGGi_RemoveUnwantedColonists",
 	"steam_id", "1594867237",
@@ -39,6 +39,6 @@ Unfortunately frozen bodies don't have any propulsion systems. They'll come back
 On the bright side there won't be much left on impact, so other colonists won't be affected.
 
 
-Mod options to automagically remove colonists of certain traits (age, negative, other).
+Mod options to automagically remove colonists of certain traits.
 This also adds a buildable monument to idiots, for those colonists less inclined to go outside.]],
 })

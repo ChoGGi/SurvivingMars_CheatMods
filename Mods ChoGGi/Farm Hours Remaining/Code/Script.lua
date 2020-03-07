@@ -1,8 +1,8 @@
 -- See LICENSE for terms
 
 local time_str = {12265, "Remaining Time<right><time(time)>"}
-
 local shep = g_AvailableDlc.shepard
+
 if shep then
 	function Pasture:GetChoGGi_HarvestTimeRemaining()
 		time_str.time = self.current_herd_lifetime or 0

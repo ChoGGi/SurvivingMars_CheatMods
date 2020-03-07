@@ -3,6 +3,7 @@
 local properties = {}
 local c = 0
 
+local T = T
 local table_concat = table.concat
 local TraitPresets = TraitPresets
 local function AddColonists(list)
@@ -12,11 +13,11 @@ local function AddColonists(list)
 		local cat = trait.category == "other" and T(10405, "Other")
 			or trait.category == "Age Group" and T(11607,"Age Group")
 			or T(trait.category)
---~ 			or trait.category == "Negative" and T(0, "Negative")
+			--or trait.category == "Negative" and T(0, "Negative")
 
 		c = c + 1
 		properties[c] = PlaceObj("ModItemOptionToggle", {
-			"name", id,
+			"name", "Trait_" .. id,
 			"DisplayName", table_concat(cat .. ": " .. T(trait.display_name)),
 			"Help", table_concat(T(trait.description) .. "\n\n" .. id),
 			"DefaultValue", false,
@@ -27,7 +28,7 @@ end
 local t = ChoGGi.Tables
 AddColonists(t.ColonistAges)
 AddColonists(t.NegativeTraits)
---~ AddColonists(t.PositiveTraits)
+AddColonists(t.PositiveTraits)
 AddColonists(t.OtherTraits)
 
 local CmpLower = CmpLower
