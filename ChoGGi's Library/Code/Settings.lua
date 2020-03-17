@@ -142,6 +142,7 @@ function OnMsg.ClassesBuilt()
 
 	local bt = BuildingTemplates
 	ChoGGi.Consts.StorageWasteDepot = GetValueBT(bt.WasteRockDumpBig, "max_amount_WasteRock", 70 * r)
+	ChoGGi.Consts.StorageWasteDepotHuge = GetValueBT(bt.WasteRockDumpHuge, "max_amount_WasteRock", 285 * r)
 	ChoGGi.Consts.StorageOtherDepot = GetValueBT(bt.StorageConcrete, "max_storage_per_resource", 180 * r)
 	ChoGGi.Consts.StorageMechanizedDepot = GetValueBT(bt.MechanizedDepotConcrete, "max_storage_per_resource", 3950 * r) -- the other 50 is stored on the "porch"
 	-- ^ they're all UniversalStorageDepot

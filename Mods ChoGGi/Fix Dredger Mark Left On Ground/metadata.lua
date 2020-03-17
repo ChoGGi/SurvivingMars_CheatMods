@@ -1,9 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Dredger Mark Left On Ground",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
-
+	"version_minor", 2,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixDredgerMarkLeftOnGround",
 	"steam_id", "1646258448",
@@ -13,8 +12,12 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"has_options", true,
 	"description", [[(To keep spoilers to a minimum) it's a fix for this issue:
 https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-dredgers-mark-remains.1150177/
 
-This isn't too tested, so you shouldn't leave it enabled if you're playing the mystery without the issue.]],
+This isn't too tested, so you shouldn't leave it enabled if you're playing the mystery without the issue.
+
+Includes mod option to disable fix.
+]],
 })

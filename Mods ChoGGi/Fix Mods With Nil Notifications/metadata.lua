@@ -1,9 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Mods With Nil Notifications",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
-
+	"version_minor", 2,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixModsWithNilNotifications",
 	"steam_id", "1501634618",
@@ -13,7 +12,11 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"has_options", true,
 	"description", [[Some mods will try to add a notification without specifying an id for it; that makes baby Jesus cry.
 
-(also the game freezes on load)]],
+(also the game freezes on load)
+
+Includes mod option to disable fix.
+]],
 })

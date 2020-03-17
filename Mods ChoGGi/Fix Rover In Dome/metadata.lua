@@ -1,9 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Rover In Dome",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
-
+	"version_minor", 2,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixRoverInDome",
 	"steam_id", "1829688193",
@@ -14,5 +13,9 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"TagGameplay", true,
-	"description", [[If an idle rover is stuck in a dome, it'll get moved outside.]],
+	"has_options", true,
+	"description", [[If an idle rover is stuck in a dome, it'll get moved outside.
+
+Includes mod option to disable fix.
+]],
 })

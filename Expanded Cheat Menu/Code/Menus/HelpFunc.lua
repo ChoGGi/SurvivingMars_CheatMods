@@ -11,35 +11,9 @@ local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
 do -- ModUpload
-	local table_iclear = table.iclear
-
-	-- this keeps the check saved per session (true = steam, false = paradox)
-	local upload_to_who = true
-	-- true = desktop, false = desktop/console
-	local upload_to_whichplatform = false
-
-	local ConvertToOSPath = ConvertToOSPath
-	local MatchWildcard = MatchWildcard
-	local SplitPath = SplitPath
-	local AsyncCreatePath = AsyncCreatePath
-	local AsyncCopyFile = AsyncCopyFile
-	local Sleep = Sleep
-	local MeasureImage = UIL.MeasureImage
-
-	local mod_params = {}
-
-	-- check the copy box for these
-	local ChoGGi_copy_files = {
-		[ChoGGi.id] = true,
-		[ChoGGi.id_lib] = true,
-	}
-	-- don't add these mods to upload list
-	local skip_mods = {
-		ChoGGi_XDefaultMod = true,
-		ChoGGi_testing = true,
-	}
 	-- hey paradox! renaming things is a thing...
 	local paradox_title = {
+		ChoGGi_AddMathFunctions = "Fix: Transports Don't Move After Route Set",
 		ChoGGi_AddMathFunctions = "\"math.\" Functions",
 		ChoGGi_AlienVisitors = "Alien Visitors v0.1",
 		ChoGGi_AllSponsorBuildings = "All Sponsor Buildings v0.2",
@@ -63,6 +37,14 @@ do -- ModUpload
 		ChoGGi_FixFindDroneToRepairLogSpam = "Fix: FindDroneToRepair Log Spam",
 		ChoGGi_FixMissingBuildUpgradeIcons = "Fix: Missing Build/Upgrade Icons",
 		ChoGGi_FixRemovedModGameRules = "Fix: Removed Mod Game Rules",
+		ChoGGi_FixTransportsDontMoveAfterRouteSet = "Fix: Transports Don't Move After Route Set",
+		ChoGGi_FixBuildingsBrokenDownAndNoRepair = "Fix: Buildings Broken And No Repair",
+		ChoGGi_FixCanceledRocketOnPad = "Fix: Canceled Rocket On Pad",
+		ChoGGi_FixEternalDustStorm = "Fix: Eternal Dust Storm",
+		ChoGGi_FixLockedWindTurbine = "Fix: Locked Wind Turbine",
+		ChoGGi_FixMeteorStuckOnMap = "Fix: Meteor Stuck On Map",
+		ChoGGi_FixProjectMorpheusParticleFellDown = "Fix: Project Morpheus Particle Fell Down",
+		ChoGGi_FixShuttlesStuckMidAir = "Fix: Shuttles Stuck Mid-Air",
 		ChoGGi_GameRulesBreakthroughs = "Game Rules: Breakthroughs",
 		ChoGGi_InfobarAddDischargeRates = "Infobar Add Discharge Rates",
 		ChoGGi_Library = "ChoGGi's Library v5.1",
@@ -117,6 +99,33 @@ do -- ModUpload
 		ChoGGi_LakesToggleVisibility = "Lakes: Toggle Visibility",
 	}
 
+	local table_iclear = table.iclear
+
+	-- this keeps the check saved per session (true = steam, false = paradox)
+	local upload_to_who = true
+	-- true = desktop, false = desktop/console
+	local upload_to_whichplatform = false
+
+	local ConvertToOSPath = ConvertToOSPath
+	local MatchWildcard = MatchWildcard
+	local SplitPath = SplitPath
+	local AsyncCreatePath = AsyncCreatePath
+	local AsyncCopyFile = AsyncCopyFile
+	local Sleep = Sleep
+	local MeasureImage = UIL.MeasureImage
+
+	local mod_params = {}
+
+	-- check the copy box for these
+	local ChoGGi_copy_files = {
+		[ChoGGi.id] = true,
+		[ChoGGi.id_lib] = true,
+	}
+	-- don't add these mods to upload list
+	local skip_mods = {
+		ChoGGi_XDefaultMod = true,
+		ChoGGi_testing = true,
+	}
 	local mods_path = "AppData/Mods/"
 	local pack_path = "AppData/ModUpload/Pack/"
 	local dest_path = "AppData/ModUpload/"

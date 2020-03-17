@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 6,
 	"version_major", 0,
 	"version_minor", 6,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_GameRulesBreakthroughs",
 	"steam_id", "1753933193",
@@ -16,5 +15,5 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"description", [[Adds all breakthroughs to game rules (selected rules will be unlocked).
 
-Includes mod option to have them researched instead of just unlocked.]],
+Includes mod option to have them researched instead of just unlocked (takes effect on new games only).]],
 })

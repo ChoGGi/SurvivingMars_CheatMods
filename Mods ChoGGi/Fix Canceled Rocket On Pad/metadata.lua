@@ -1,9 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Canceled Rocket On Pad",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
-
+	"version_minor", 2,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixCanceledRocketOnPad",
 	"steam_id", "1767799264",
@@ -13,6 +12,10 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"has_options", true,
 	"description", [[Start building a rocket on a pad than cancel it, and the pad is blocked.
-This will check for borked pads when a save is loaded.]],
+This will check for borked pads when a save is loaded.
+
+Includes mod option to disable fix.
+]],
 })

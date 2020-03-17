@@ -1,5 +1,24 @@
 -- See LICENSE for terms
 
+local mod_EnableMod
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= CurrentModId then
+		return
+	end
+
+	ModOptions()
+end
+
 --~ function ChoGGi.ComFuncs.AddParentToClass(class_obj, parent_name)
 local function AddParentToClass(class_obj, parent_name)
 	local p = class_obj.__parents
@@ -8,15 +27,17 @@ local function AddParentToClass(class_obj, parent_name)
 	end
 end
 
---~ function OnMsg.ClassesPreprocess()
-	-- stops crashing with certain missing pinned objects
-	local umc = UnpersistedMissingClass
-	AddParentToClass(umc, "AutoAttachObject")
-	AddParentToClass(umc, "PinnableObject")
-	umc.entity = "ErrorAnimatedMesh"
---~ end
+-- stops crashing with certain missing pinned objects
+local umc = UnpersistedMissingClass
+AddParentToClass(umc, "AutoAttachObject")
+AddParentToClass(umc, "PinnableObject")
+umc.entity = "ErrorAnimatedMesh"
 
 function OnMsg.PersistPostLoad()
+	if not mod_EnableMod then
+		return
+	end
+
 	-- [LUA ERROR] Mars/Lua/Construction.lua:860: attempt to index a boolean value (global 'ControllerMarkers')
 	if type(ControllerMarkers) == "boolean" then
 		ControllerMarkers = {}

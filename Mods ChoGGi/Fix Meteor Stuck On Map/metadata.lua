@@ -1,9 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Meteor Stuck On Map",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
-
+	"version_minor", 2,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixMeteorStuckOnMap",
 	"steam_id", "1529788090",
@@ -13,5 +12,9 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Removes any meteors stuck on a map when you load a save.]],
+	"has_options", true,
+	"description", [[Removes any meteors stuck on a map when you load a save.
+
+Includes mod option to disable fix.
+]],
 })

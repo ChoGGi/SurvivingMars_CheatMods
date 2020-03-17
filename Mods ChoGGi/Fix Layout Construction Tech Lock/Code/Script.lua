@@ -1,8 +1,35 @@
 -- See LICENSE for terms
 
-local GetBuildingTechsStatus = GetBuildingTechsStatus
+local mod_EnableMod
 
-local function CleanUp(self)
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= CurrentModId then
+		return
+	end
+
+	ModOptions()
+end
+
+local orig_Activate = LayoutConstructionController.Activate
+function LayoutConstructionController:Activate(...)
+	-- fire first so it builds the tables/etc
+	local ret = orig_Activate(self, ...)
+
+	if not mod_EnableMod then
+		return ret
+	end
+
+	-- now remove what shouldn't be there
+	local GetBuildingTechsStatus = GetBuildingTechsStatus
 	local UICity = UICity
 	local BuildingTemplates = BuildingTemplates
 
@@ -21,12 +48,6 @@ local function CleanUp(self)
 
 		end
 	end
-end
 
-local orig_Activate = LayoutConstructionController.Activate
-function LayoutConstructionController:Activate(...)
-	-- fire first so it builds the tables/etc
-	orig_Activate(self, ...)
-	-- now remove what shouldn't be there
-	CleanUp(self)
+	return ret
 end

@@ -1,2 +1,5 @@
+v0.3
+Added mod option to disable mod.
+
 v0.2
 Won't remove radius markers from SkiRich's Toggle Hub Zone.

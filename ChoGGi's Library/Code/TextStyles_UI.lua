@@ -34,6 +34,7 @@ local GedDefault = font .. ", 15, aa"
 local Editor14Bold = font .. ", 14, bold, aa"
 local Editor12Bold = font .. ", 12, bold, aa"
 local Editor16Bold = font .. ", 16, bold, aa"
+local Editor18Bold = font .. ", 18, bold, aa"
 local Editor16 = font .. ", 16, aa"
 
 -- no sense in adding these to each item
@@ -83,6 +84,12 @@ function OnMsg.ClassesPostprocess()
 		TextFont = Editor16Bold,
 		id = "ChoGGi_Text16",
 	})
+	PlaceObj("ChoGGi_XTextStyle", {
+		TextColor = white,
+		RolloverTextColor = white,
+		TextFont = Editor18Bold,
+		id = "ChoGGi_Text18",
+	})
 	-- TextList
 	PlaceObj("ChoGGi_XTextStyle", {
 		TextColor = white,
@@ -95,6 +102,12 @@ function OnMsg.ClassesPostprocess()
 		RolloverTextColor = light_gray,
 		TextFont = Editor14Bold,
 		id = "ChoGGi_TextList14",
+	})
+	PlaceObj("ChoGGi_XTextStyle", {
+		TextColor = white,
+		RolloverTextColor = light_gray,
+		TextFont = Editor16Bold,
+		id = "ChoGGi_TextList16",
 	})
 	-- MultiLineEdit
 	PlaceObj("ChoGGi_XTextStyle", {

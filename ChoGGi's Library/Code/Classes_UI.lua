@@ -57,9 +57,12 @@ local text_style2 = "ChoGGi_TextList12"
 local text_style3 = "ChoGGi_Text14"
 local dlg_border_width = 2
 if ChoGGi.testing then
-	text_style1 = "ChoGGi_Text14"
-	text_style2 = "ChoGGi_TextList14"
-	text_style3 = "ChoGGi_Text16"
+--~ 	text_style1 = "ChoGGi_Text14"
+--~ 	text_style2 = "ChoGGi_TextList14"
+--~ 	text_style3 = "ChoGGi_Text16"
+	text_style1 = "ChoGGi_Text16"
+	text_style2 = "ChoGGi_TextList16"
+	text_style3 = "ChoGGi_Text18"
 	dlg_border_width = 3
 end
 

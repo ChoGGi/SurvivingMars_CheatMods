@@ -1,5 +1,24 @@
 -- See LICENSE for terms
 
+local mod_EnableMod
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= CurrentModId then
+		return
+	end
+
+	ModOptions()
+end
+
 local CObject_IsValidPos = CObject.IsValidPos
 local WorldToHex = WorldToHex
 local GetDomeAtHex = GetDomeAtHex
@@ -23,6 +42,10 @@ local function WaitItOut(idle_func, rover, ...)
 end
 
 function OnMsg.ClassesPostprocess()
+	if not mod_EnableMod then
+		return
+	end
+
 	-- replace some idles
 	local classes = {
 		"ExplorerRover",

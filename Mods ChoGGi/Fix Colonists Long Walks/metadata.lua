@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Colonists Long Walks",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixColonistsLongWalks",
 	"steam_id", "1811507300",
@@ -12,9 +12,12 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
---~ 	"has_options", true,
+	"has_options", true,
 	"TagOther", true,
 	"description", [[Changes the AreDomesConnectedWithPassage func to also check the walking distance instead of assuming passages == walkable.
 
-This should stop the random colonist has died from dehydration events we know and love.]],
+This should stop the random colonist has died from dehydration events we know and love.
+
+Includes mod option to disable fix.
+]],
 })

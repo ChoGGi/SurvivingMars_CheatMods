@@ -1,9 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Colonists Suffocating Inside Domes",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
-
+	"version_minor", 2,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixColonistsSuffocatingInsideDomes",
 	"steam_id", "1608402660",
@@ -13,8 +12,10 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"has_options", true,
 	"description", [[Some colonists are allergic to doors and suffocate inside a dome with their suit still on.
 This checks on load for them and removes their suits; so they can breathe...
+Includes mod option to disable fix.
 
 https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-w10-dead-colonists-no-oxygen.1141917/]],
 })

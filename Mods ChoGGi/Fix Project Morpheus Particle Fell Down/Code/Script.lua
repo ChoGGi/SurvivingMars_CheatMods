@@ -1,9 +1,34 @@
 -- See LICENSE for terms
 
-local IsValid = IsValid
-local WaitMsg = WaitMsg
+local mod_EnableMod
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= CurrentModId then
+		return
+	end
+
+	ModOptions()
+end
+
 
 local function CheckMorph()
+	if not mod_EnableMod then
+		return
+	end
+
+	local IsValid = IsValid
+	local WaitMsg = WaitMsg
+	local CreateGameTimeThread = CreateGameTimeThread
+
 	local morphs = UICity.labels.ProjectMorpheus or ""
 	for i = 1, #morphs do
 		local obj = morphs[i]

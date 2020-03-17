@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Fix FindDroneToRepair Log Spam",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"steam_id", "1576382631",
 	"image", "Preview.png",
 	"id", "ChoGGi_FixFindDroneToRepairLogSpam",
@@ -12,6 +12,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"has_options", true,
 	"description", [[This seems to be an issue from flying drones and a drone hub being destroyed.
 
 Your log will "fill" up with these errors:
@@ -29,5 +30,8 @@ Mars/Dlc/gagarin/Code/FlyingDrone.lua(312):	<>
 (116):	<>
 				--- end of stack
 
-Thanks to veryinky for that entertaining log.]],
+Thanks to veryinky for that entertaining log.
+
+Includes mod option to disable fix.
+]],
 })

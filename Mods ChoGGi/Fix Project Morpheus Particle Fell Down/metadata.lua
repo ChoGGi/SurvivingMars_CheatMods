@@ -1,9 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Project Morpheus Particle Fell Down",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
-
+	"version_minor", 2,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixProjectMorpheusParticleFellDown",
 	"steam_id", "1576281619",
@@ -13,7 +12,11 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"has_options", true,
 	"description", [[This one has been in since release...
 
-On load, and once a day it'll check if the blue growing thing has fallen off any morph towers, and re-attach if any have.]],
+On load, and once a day it'll check if the blue growing thing has fallen off any morph towers, and re-attach if any have.
+
+Includes mod option to disable fix.
+]],
 })

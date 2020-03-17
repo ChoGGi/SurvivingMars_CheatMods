@@ -1,3 +1,6 @@
+v0.6
+Added mod option to disable mod.
+
 v0.5
 Added some ()
 

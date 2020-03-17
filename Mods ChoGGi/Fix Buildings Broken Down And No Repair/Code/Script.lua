@@ -1,9 +1,32 @@
 -- See LICENSE for terms
 
-local type = type
-local table = table
+local mod_EnableMod
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= CurrentModId then
+		return
+	end
+
+	ModOptions()
+end
 
 function OnMsg.LoadGame()
+	if not mod_EnableMod then
+		return
+	end
+
+	local ResourceScale = const.ResourceScale
+	local type = type
+	local table_remove = table.remove
 	local blds = UICity.labels.Building or ""
 	for i = 1, #blds do
 		local bld = blds[i]
@@ -13,13 +36,13 @@ function OnMsg.LoadGame()
 		for j = #task_requests, 1, -1 do
 			local req = task_requests[j]
 			if type(req) ~= "userdata" then
-				table.remove(task_requests, j)
+				table_remove(task_requests, j)
 			end
 		end
 
 		if not bld.maintenance_resource_request and bld:DoesMaintenanceRequireResources() then
 			-- restore main res request
-			local resource_unit_count = 1 + (bld.maintenance_resource_amount / (const.ResourceScale * 10)) --1 per 10
+			local resource_unit_count = 1 + (bld.maintenance_resource_amount / (ResourceScale * 10)) --1 per 10
 			local r_req = bld:AddDemandRequest(bld.maintenance_resource_type, 0, 0, resource_unit_count)
 			bld.maintenance_resource_request = r_req
 			bld.maintenance_request_lookup[r_req] = true

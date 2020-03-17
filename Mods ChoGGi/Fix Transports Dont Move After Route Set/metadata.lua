@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_FixTransportsDontMoveAfterRouteSet",
 	"steam_id", "1549495547",
@@ -13,6 +12,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"has_options", true,
 	"description", [[If you set a transport route between two resources/stockpiles/etc and the transport just sits there like an idiot...
 
 Fixes this error in log:
