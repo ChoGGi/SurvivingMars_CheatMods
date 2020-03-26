@@ -1,50 +1,61 @@
 -- See LICENSE for terms
 
 local mod_Range = ArtificialSun.effect_range or 8
+local MapGet = MapGet
+local TestSunPanelRange = TestSunPanelRange
+local table_sort = table.sort
+
+local function UpdateSolarPanel(panel, suns)
+	-- get any suns in range of panel
+	suns = MapFilter(suns, sun_radius, function(sun)
+		return TestSunPanelRange(sun, panel)
+	end)
+	-- no suns means nothing close enough
+	if #suns > 0 then
+		-- sort dist by nearest
+		local obj_pos = panel:GetPos()
+		table_sort(suns, function(a, b)
+			return a:GetDist2D(obj_pos) < b:GetDist2D(obj_pos)
+		end)
+		-- update panel prod values
+		panel:SetArtificialSun(suns[1])
+	else
+		panel.artificial_sun = false
+	end
+
+	panel:UpdateProduction()
+end
 
 -- loop through all suns and update any panels in range
-local function UpdateArtificialSunRange()
+local function UpdateArtificialSunRange(obj)
 	-- local some globals
 	local GridSpacing = const.GridSpacing
-	local MapGet = MapGet
-	local TestSunPanelRange = TestSunPanelRange
-	local table_sort = table.sort
+	local is_valid = IsValid(obj)
+
+	local suns = UICity.labels.ArtificialSun or empty_table
 
 	-- first update range for all art suns
-	local suns = UICity.labels.ArtificialSun or ""
-	for i = 1, #suns do
-		suns[i].effect_range = mod_Range
---~ 		suns[i].UIWorkRadius = mod_Range
+	if is_valid and obj:IsKindOf("ArtificialSun") then
+			obj.effect_range = mod_Range
+	else
+		for i = 1, #suns do
+			suns[i].effect_range = mod_Range
+--~ 			suns[i].UIWorkRadius = mod_Range
+		end
 	end
 
 	-- large radius extension so it can catch large panels (dev comment)
 	local sun_radius = (mod_Range + 10) * GridSpacing
 
 	-- now update all solar panels
-	local panels = UICity.labels.SolarPanelBase or ""
-	for i = 1, #panels do
-		local panel = panels[i]
-
-		-- get any suns in range of panel
-		local suns = MapGet(panel, sun_radius, "ArtificialSun", function(sun)
-			return TestSunPanelRange(sun, panel)
-		end)
-
-		if #suns > 0 then
-			-- sort dist by nearest
-			local obj_pos = panel:GetPos()
-			table_sort(suns, function(a, b)
-				return a:GetDist2D(obj_pos) < b:GetDist2D(obj_pos)
-			end)
-			-- update panel prod values
-			panel:SetArtificialSun(suns[1])
-		else
-			panel.artificial_sun = false
-			panel:UpdateProduction()
+	if is_valid and obj:IsKindOf("SolarPanelBase") then
+		UpdateSolarPanel(obj, suns)
+	else
+		local panels = UICity.labels.SolarPanelBase or ""
+		for i = 1, #panels do
+			UpdateSolarPanel(panels[i], suns)
 		end
-
 	end
-
 end
 
 -- fired when settings are changed/init
@@ -74,6 +85,12 @@ OnMsg.LoadGame = UpdateArtificialSunRange
 
 -- fix for solar panels only expecting one sun
 SolarPanelBase.GameInit = UpdateArtificialSunRange
+
+local orig_ArtificialSun_GameInit = ArtificialSun.GameInit
+function ArtificialSun:GameInit(...)
+	UpdateArtificialSunRange(self)
+	return orig_ArtificialSun_GameInit(self, ...)
+end
 
 --~ -- add ArtificialSun to ServiceArea section (without messing with other buildings/mods)
 --~ function OnMsg.ClassesPostprocess()

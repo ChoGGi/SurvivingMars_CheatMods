@@ -5231,3 +5231,17 @@ function ChoGGi.ComFuncs.ModEditorActive()
 		return true
 	end
 end
+function ChoGGi.ComFuncs.UpdateDepotCapacity(obj, res_name)
+	if not res_name then
+		res_name = "max_storage_per_resource"
+	end
+	local storable_resources = obj.storable_resources
+	for i = 1, #storable_resources do
+		local resource_name = storable_resources[i]
+		local demand = obj.demand
+		if demand and demand[resource_name] then
+			demand[resource_name]:SetAmount(0)
+			demand[resource_name]:SetAmount(obj[res_name])
+		end
+	end
+end

@@ -712,16 +712,15 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 	elseif UserSettings.StorageUniversalDepot and obj:GetEntity() == "StorageDepot"
 			and obj:IsKindOf("UniversalStorageDepot") then
 		obj.max_storage_per_resource = UserSettings.StorageUniversalDepot
+		ChoGGi.ComFuncs.UpdateDepotCapacity(obj)
 
 	elseif UserSettings.StorageMechanizedDepot and obj:IsKindOf("MechanizedDepot") then
 		obj.max_storage_per_resource = UserSettings.StorageMechanizedDepot
+		ChoGGi.ComFuncs.UpdateDepotCapacity(obj)
 
 	elseif UserSettings.StorageWasteDepot and obj:IsKindOf("WasteRockDumpSite") then
 		obj.max_amount_WasteRock = UserSettings.StorageWasteDepot
-		if obj:GetStoredAmount() < 0 then
-			obj:CheatEmpty()
-			obj:CheatFill()
-		end
+		ChoGGi.ComFuncs.UpdateDepotCapacity(obj)
 
 	elseif UserSettings.ShuttleHubFuelStorage and obj:IsKindOf("ShuttleHub") then
 		obj.consumption_max_storage = UserSettings.ShuttleHubFuelStorage

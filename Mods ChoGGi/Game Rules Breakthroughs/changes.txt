@@ -1,3 +1,10 @@
+v0.8
+Mod option to research tech wasn't working.
+
+v0.7
+Added mod option to disable sorting breakthrough list.
+Added game rule to unlock/research all breakthroughs.
+
 v0.6
 Evans update.
 

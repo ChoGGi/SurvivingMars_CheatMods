@@ -42,6 +42,9 @@ local function WaitItOut(idle_func, rover, ...)
 end
 
 function OnMsg.ClassesPostprocess()
+	-- pp is too early for OnMsg.ModsReloaded
+	ModOptions()
+
 	if not mod_EnableMod then
 		return
 	end

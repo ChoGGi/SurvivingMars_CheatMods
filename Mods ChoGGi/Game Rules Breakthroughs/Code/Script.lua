@@ -1,10 +1,12 @@
 -- See LICENSE for terms
 
 local mod_BreakthroughsResearched
+local mod_SortBreakthroughs
 
 -- fired when settings are changed/init
 local function ModOptions()
 	mod_BreakthroughsResearched = CurrentModOptions:GetProperty("BreakthroughsResearched")
+	mod_SortBreakthroughs = CurrentModOptions:GetProperty("SortBreakthroughs")
 end
 
 -- load default/saved settings
@@ -37,11 +39,40 @@ function OnMsg.ClassesPostprocess()
 		return
 	end
 
+	ModOptions()
+
 	-- sort by id
-	local breaks = table.icopy(Presets.TechPreset.Breakthroughs)
-	table.sort(breaks, function(a, b)
-		return a.id < b.id
-	end)
+	local breaks
+	if mod_SortBreakthroughs then
+		breaks = table.icopy(Presets.TechPreset.Breakthroughs)
+		table.sort(breaks, function(a, b)
+			return a.id < b.id
+		end)
+	else
+		breaks = Presets.TechPreset.Breakthroughs
+	end
+
+	local name
+	if mod_BreakthroughsResearched then
+		name = _InternalTranslate(T(311, "Research"))
+	else
+		name = _InternalTranslate(T(510925660723, "Unlock"))
+	end
+
+	PlaceObj("GameRules", {
+		description = T(302535920011598, string.format("This will %s all breakthroughs <yellow>no matter</yellow> if you've checked or unchecked any in the list.", name)),
+		display_name = T(11451, "Breakthrough") .. ": " .. T(302535920011599, string.format("%s All Breakthroughs", name)),
+		group = "Default",
+		id = "ChoGGi_DoAllBreakthroughs",
+		PlaceObj("Effect_Code", {
+			OnApplyEffect = function(_, city)
+				local func = mod_BreakthroughsResearched and city.SetTechResearched or city.SetTechDiscovered
+				for i = 1, #breaks do
+					func(city, breaks[i].id)
+				end
+			end
+		}),
+	})
 
 	local PlaceObj = PlaceObj
 	for i = 1, #breaks do

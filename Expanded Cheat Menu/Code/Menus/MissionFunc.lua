@@ -337,8 +337,9 @@ function ChoGGi.MenuFuncs.SetSponsor()
 		local g_CurrentMissionParams = g_CurrentMissionParams
 		local UICity = UICity
 		local sponsor = GetMissionSponsor()
+
+		-- check to make sure it isn't a fake name (no sense in saving it)
 		for i = 1, #item_list do
-			-- check to make sure it isn't a fake name (no sense in saving it)
 			if item_list[i].value == value then
 				-- new spons
 				g_CurrentMissionParams.idMissionSponsor = value

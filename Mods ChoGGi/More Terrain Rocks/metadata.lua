@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 4,
 	"version_major", 0,
 	"version_minor", 4,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_MoreTerrainRocks",
 	"steam_id", "1743036391",

@@ -3,6 +3,9 @@
 local options
 
 local function UpdateRate()
+	options = CurrentModOptions
+	ModOptions()
+
 	-- ClassesPostprocess fires earlier than ModsReloaded (well probably just for me)
 	if not options then
 		return

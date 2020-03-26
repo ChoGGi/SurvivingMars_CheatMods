@@ -368,10 +368,6 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 
 			local value = value * r
 			if bld_type == "StorageWasteDepot" then
---~ 				-- limit amounts so saving with a full load doesn't delete your game
---~ 				if value > 1000000000 and not testing then
---~ 					value = 1000000000 -- might be safe above a million, but I figured I'd stop somewhere
---~ 				end
 				-- loop through and change all existing
 
 				local objs = UICity.labels.WasteRockDumpSite or ""
@@ -385,9 +381,6 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 				end
 
 			elseif bld_type == "StorageOtherDepot" then
---~ 				if value > 20000000 and not testing then
---~ 					value = 20000000
---~ 				end
 				local objs = UICity.labels.UniversalStorageDepot or ""
 				for i = 1, #objs do
 					local o = objs[i]
@@ -395,19 +388,17 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 						o.max_storage_per_resource = value
 					end
 				end
-				local function OtherDepot(label, res)
-					local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
-					for i = 1, #objs do
-						objs[i][res] = value
-					end
+
+				objs = UICity.labels.MysteryDepot or ""
+				for i = 1, #objs do
+					objs[i].max_storage_per_resource = value
 				end
-				OtherDepot("MysteryResource", "max_storage_per_resource")
-				OtherDepot("BlackCubeDumpSite", "max_amount_BlackCube")
+				objs = UICity.labels.BlackCubeDumpSite or ""
+				for i = 1, #objs do
+					objs[i].max_amount_BlackCube = value
+				end
 
 			elseif bld_type == "StorageUniversalDepot" then
---~ 				if value > 2500000 and not testing then
---~ 					value = 2500000 -- can go to 2900, but I got a crash; which may have been something else, but it's only 400
---~ 				end
 				local objs = UICity.labels.UniversalStorageDepot or ""
 				for i = 1, #objs do
 					local o = objs[i]
@@ -417,9 +408,6 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 				end
 
 			elseif bld_type == "StorageMechanizedDepot" then
---~ 				if value > 1000000000 and not testing then
---~ 					value = 1000000000 -- might be safe above a million, but I figured I'd stop somewhere
---~ 				end
 				local objs = UICity.labels.MechanizedDepots or ""
 				for i = 1, #objs do
 					objs[i].max_storage_per_resource = value

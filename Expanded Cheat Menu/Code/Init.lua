@@ -63,12 +63,13 @@ ChoGGi.settings_file = "AppData/CheatMenuModSettings.lua"
 if ChoGGi.blacklist then
 	ChoGGi.ComFuncs.FileExists = empty_func
 else
-	local AsyncGetFileAttribute = AsyncGetFileAttribute
-	function ChoGGi.ComFuncs.FileExists(file)
-		-- folders don't have a size
-		local err = AsyncGetFileAttribute(file, "size")
-		if not err then
-			return true
-		end
-	end
+	ChoGGi.ComFuncs.FileExists = io.exists
+--~ 	local AsyncGetFileAttribute = AsyncGetFileAttribute
+--~ 	function ChoGGi.ComFuncs.FileExists(file)
+--~ 		-- folders don't have a size
+--~ 		local err = AsyncGetFileAttribute(file, "size")
+--~ 		if not err then
+--~ 			return true
+--~ 		end
+--~ 	end
 end
