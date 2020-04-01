@@ -19,6 +19,8 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
+local display_icon = CurrentModPath .. "UI/rover_tanker.png"
+
 local Random = ChoGGi.ComFuncs.Random
 
 -- local some globals
@@ -140,6 +142,9 @@ Tank will always refer to the storage on the ground, not the tank on the RC.]]),
 
 	-- skip anything else
 	cls_storage = {"AirStorage", "WaterStorage"},
+
+	-- needed for pinned icon
+	display_icon = display_icon,
 }
 
 function RCTanker:Init()
@@ -599,7 +604,7 @@ Press to toggle.]]),
 Tank will always refer to the storage on the ground, not the tank on the RC.]]),
 		"build_category", "ChoGGi",
 		"Group", "ChoGGi",
-		"display_icon", CurrentModPath .. "UI/rover_tanker.png",
+		"display_icon", display_icon,
 		"encyclopedia_exclude", true,
 		"on_off_button", false,
 		"entity", entity_rc_building,

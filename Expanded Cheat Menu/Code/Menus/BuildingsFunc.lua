@@ -1625,6 +1625,9 @@ function ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle()
 		end
 	end
 
+	-- if the buildmenu is open
+	ChoGGi.ComFuncs.UpdateBuildMenu()
+
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.Building_hide_from_build_menu),

@@ -13,7 +13,6 @@ local testing = ChoGGi.testing
 do -- ModUpload
 	-- hey paradox! renaming things is a thing...
 	local paradox_title = {
-		ChoGGi_AddMathFunctions = "Fix: Transports Don't Move After Route Set",
 		ChoGGi_AddMathFunctions = "\"math.\" Functions",
 		ChoGGi_AlienVisitors = "Alien Visitors v0.1",
 		ChoGGi_AllSponsorBuildings = "All Sponsor Buildings v0.2",

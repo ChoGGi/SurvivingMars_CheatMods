@@ -92,10 +92,10 @@ OnMsg.LoadGame = StartupCode
 local concrete_paint = table.find(TerrainTextures, "name", "Dig")
 local metal_paint = table.find(TerrainTextures, "name", "SandFrozen")
 
+-- needs to be declared in two places so
+local display_icon = CurrentModPath .. "UI/rover_combat.png"
 --~ local name = T(302535920011207, [[RC Miner]])
 --~ local name_pl = T(302535920011208, [[RC Miners]])
---~ local description =
---~ local display_icon = CurrentModPath .. "UI/rover_combat.png"
 --~ local entity = "CombatRover"
 
 DefineClass.PortableMiner = {
@@ -169,6 +169,9 @@ DefineClass.PortableMiner = {
 
 	-- add a missile to "grows" while mining
 	thumper = false,
+
+	-- needed for pinned icon
+	display_icon = display_icon,
 }
 
 DefineClass.PortableMinerBuilding = {
@@ -274,7 +277,14 @@ function PortableMiner:SpawnThumper()
 end
 
 function PortableMiner:Goto(...)
+	-- if stockpile is filled and user takes rc to new mine than make sure we mine from new mine
+	table.iclear(self.nearby_deposits)
+	self.stockpile = false
+	-- needed to mine other concrete
+	self.found_deposit = false
+	-- hide my shame
 	self.thumper:SetVisible(false)
+	self:ShowNotWorkingSign(false)
 	return Unit.Goto(self, ...)
 end
 
@@ -358,6 +368,8 @@ function PortableMiner:DepositNearby()
 		self.resource = d.resource
 		-- we need to store res as [1] to use the built-in metal extract func
 		self.nearby_deposits[1] = d
+		-- concrete...
+		self.found_deposit = d
 		-- untouched concrete starts off with false for the amount...
 		d.amount = d.amount or d.max_amount
 
@@ -366,6 +378,7 @@ function PortableMiner:DepositNearby()
 
 	-- nadda
 	table.iclear(self.nearby_deposits)
+	self.found_deposit = false
 	return false
 end
 
@@ -439,7 +452,6 @@ function PortableMiner:Load()
 			-- feel that rocket slide
 			if mod_ShowRocket then
 				self.thumper:SetVisible(true)
---~ 				self.thumper:SetPos(rocket_pos+point(0,0,300), time)
 				self.thumper:SetPos(rocket_pos:AddZ(300), time)
 			end
 			Sleep(time)
@@ -484,7 +496,6 @@ function PortableMiner:Load()
 		if self:GetState() ~= 0 then
 			self:SetStateText(self.default_anim_idle)
 			if mod_ShowRocket then
---~ 				self.thumper:SetPos(rocket_pos+point(0,0,-300), time)
 				self.thumper:SetPos(rocket_pos:AddZ(-300), time)
 			end
 		end
@@ -610,7 +621,7 @@ function OnMsg.ClassesPostprocess()
 			"description", T(302535920011209, [[Will slowly (okay maybe a little quickly) mine Metal or Concrete into a resource pile.]]),
 			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
-			"display_icon", CurrentModPath .. "UI/rover_combat.png",
+			"display_icon", display_icon,
 			"encyclopedia_exclude", true,
 			"count_as_building", false,
 			"prio_button", false,

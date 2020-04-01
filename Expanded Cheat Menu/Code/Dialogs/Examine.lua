@@ -1476,11 +1476,12 @@ Which you can then mess around with some more in the console."]]],
 				if self.obj_ref.IsKindOf and self.obj_ref:IsKindOf("PropertyObject") then
 					local props = self.obj_ref:GetProperties()
 					local props_list = {
-						___readme = Strings[302535920001397--[["Not the actual properties (see object.properties for those).
+						___readme = Strings[302535920001397--[["Not the actual properties (see ___properties for those).
 
 Use obj:GetProperty(""NAME"") and obj:SetProperty(""NAME"", value)
 You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
-"]]]
+"]]],
+						___properties = self.obj_ref.properties,
 					}
 					for i = 1, #props do
 						props_list[props[i].id] = self.obj_ref:GetProperty(props[i].id)

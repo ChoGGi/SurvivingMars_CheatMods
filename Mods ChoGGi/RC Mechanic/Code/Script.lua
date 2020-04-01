@@ -2,6 +2,8 @@
 
 GlobalVar("g_RCMechanicRepairing", {})
 
+local display_icon = CurrentModPath .. "UI/rover_combat.png"
+
 DefineClass.RCMechanic = {
 	__parents = {
 		"BaseRover",
@@ -23,6 +25,8 @@ The wretched refuse of your teeming shore.]]),
 
 	-- show the pin info
 	pin_rollover = T(51, "<ui_command>"),
+	-- needed for pinned icon
+	display_icon = display_icon,
 }
 
 DefineClass.RCMechanicBuilding = {
@@ -81,8 +85,8 @@ end
 function RCMechanic:ProcAutomation()
 	self.repairing_list = self.repairing_list or g_RCMechanicRepairing or {}
 
-	local unreachable_objects = self:GetUnreachableObjectsTable()
-	unreachable_objects = unreachable_objects or {}
+	local unreachable_objects = self:GetUnreachableObjectsTable() or {}
+	local HourDuration = const.HourDuration
 
 	local rover = MapFindNearest(self, "map", "BaseRover", "Drone" , function(o)
 		local go_fix_it
@@ -108,7 +112,9 @@ function RCMechanic:ProcAutomation()
 					local centre = cc[i]
 					local drones_count = centre:GetDronesCount()
 					-- check for cc with no drones or all drones are malf'd
-					if drones_count == 0 or drones_count == centre:GetBrokenDronesCount()then
+					if drones_count == 0
+						or drones_count == centre:GetBrokenDronesCount()
+					then
 						not_working_count = not_working_count + 1
 					end
 				end
@@ -117,10 +123,13 @@ function RCMechanic:ProcAutomation()
 					go_fix_it = true
 				end
 			else
+				-- no cc
 				go_fix_it = true
 			end
 
 		end
+
+		-- return rover obj if it isn't in the unreachable list
 		if go_fix_it then
 			return not unreachable_objects[o]
 		end
@@ -131,7 +140,7 @@ function RCMechanic:ProcAutomation()
 		-- don't go if someone else is on the job
 		local string_pos = tostring(visual_pos)
 		if self.repairing_list[string_pos] then
-			return 10000
+			return HourDuration
 		end
 		self.repairing_list[string_pos] = true
 
@@ -150,18 +159,19 @@ And I'm about to put the hammer down."]], name = rover.name ~= "" and rover.name
 			self:AddBlinky()
 			self.blinky:SetVisible(true)
 			self.going_to_repair = string_pos
+			-- vrrrooom
 			self.move_speed = 2 * self.base_move_speed
 			-- and we're off
 			self:Goto(pos)
 			self.status_text = T(6924, "Repair")
 			self:SetState("idle")
 			rover:RCMech_CleanAndFix()
-			return 5000
+			return HourDuration
 		else
 			unreachable_objects[rover] = true
 		end
 	else
-		return 10000
+		return HourDuration
 	end
 	return 1000
 end
@@ -206,7 +216,7 @@ Your huddled masses yearning to breathe free,
 The wretched refuse of your teeming shore.]]),
 		"build_category", "ChoGGi",
 		"Group", "ChoGGi",
-		"display_icon", CurrentModPath .. "UI/rover_combat.png",
+		"display_icon", display_icon,
 		"encyclopedia_exclude", true,
 		"on_off_button", false,
 		"entity", "CombatRover",

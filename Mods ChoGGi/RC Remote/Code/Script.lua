@@ -18,6 +18,8 @@ local GetTerrainCursor = GetTerrainCursor
 local MapFindNearest = MapFindNearest
 --~ local axis_z = axis_z
 
+local display_icon = CurrentModPath .. "UI/rover_rc.png"
+
 local rc_obj
 do -- add shortcut actions
 	local Actions = ChoGGi.Temp.Actions
@@ -187,6 +189,8 @@ Shift to toggle high speed.]]),
 
 	-- show the pin info
 	pin_rollover = T(51, "<ui_command>"),
+	-- needed for pinned icon
+	display_icon = display_icon,
 }
 
 function RCRemote:GameInit()
@@ -433,7 +437,7 @@ E to jump forward.
 Shift to toggle high speed.]]),
 			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
-			"display_icon", CurrentModPath .. "UI/rover_rc.png",
+			"display_icon", display_icon,
 			"encyclopedia_exclude", true,
 			"on_off_button", false,
 			"entity", "RCRoverBuilding",

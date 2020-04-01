@@ -1,3 +1,6 @@
+v0.5
+Fixed pin icon.
+
 v0.4
 Code cleanup.
 Changed the colours a tad.

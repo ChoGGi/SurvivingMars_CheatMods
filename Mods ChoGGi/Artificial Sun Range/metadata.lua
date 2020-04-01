@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Artificial Sun Range",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.png",
 	"id", "ChoGGi_ArtificialSunRange",
 	"steam_id", "1981650262",

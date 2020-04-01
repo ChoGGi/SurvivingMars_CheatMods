@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_GameRulesFullyTerraformed",
 	"steam_id", "1743034799",
@@ -13,12 +12,12 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"TagTerraforming", true,
+	"TagGameplay", true,
 	"description", [[Adds two new game rules:
 Fully Terraformed: Start off with terraforming params maxed, and the ground green.
 Terraforming Locked: Terraforming params never go down.
 
 
 Requested by Bluepikmin64.]],
-	"TagTerraforming", true,
-	"TagGameplay", true,
 })

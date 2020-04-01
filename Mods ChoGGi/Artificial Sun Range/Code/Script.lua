@@ -1,11 +1,15 @@
 -- See LICENSE for terms
 
 local mod_Range = ArtificialSun.effect_range or 8
-local MapGet = MapGet
+local MapFilter = MapFilter
 local TestSunPanelRange = TestSunPanelRange
 local table_sort = table.sort
+local GridSpacing = const.GridSpacing
 
 local function UpdateSolarPanel(panel, suns)
+	-- large radius extension so it can catch large panels (dev comment)
+	local sun_radius = (mod_Range + 10) * GridSpacing
+
 	-- get any suns in range of panel
 	suns = MapFilter(suns, sun_radius, function(sun)
 		return TestSunPanelRange(sun, panel)
@@ -29,11 +33,9 @@ end
 -- loop through all suns and update any panels in range
 local function UpdateArtificialSunRange(obj)
 	-- local some globals
-	local GridSpacing = const.GridSpacing
 	local is_valid = IsValid(obj)
 
 	local suns = UICity.labels.ArtificialSun or empty_table
-
 	-- first update range for all art suns
 	if is_valid and obj:IsKindOf("ArtificialSun") then
 			obj.effect_range = mod_Range
@@ -43,9 +45,6 @@ local function UpdateArtificialSunRange(obj)
 --~ 			suns[i].UIWorkRadius = mod_Range
 		end
 	end
-
-	-- large radius extension so it can catch large panels (dev comment)
-	local sun_radius = (mod_Range + 10) * GridSpacing
 
 	-- now update all solar panels
 	if is_valid and obj:IsKindOf("SolarPanelBase") then

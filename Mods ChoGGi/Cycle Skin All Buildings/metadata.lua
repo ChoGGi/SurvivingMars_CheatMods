@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_CycleSkinAllBuildings",
 	"steam_id", "1973703265",
@@ -14,5 +13,5 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"TagInterface", true,
-	"description", [[Hold down Ctrl (I think the gamepad key is X?) to cycle the skins of all buildings (of the same type) instead of just selected.]],
+	"description", [[Hold down Ctrl (I think the gamepad key is X?) to cycle the skins of all buildings (of the same type) instead of just the selected building.]],
 })

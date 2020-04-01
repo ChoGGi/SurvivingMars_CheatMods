@@ -8,10 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "RC Miner",
-	"version", 23,
+	"version", 24,
 	"version_major", 2,
-	"version_minor", 3,
-
+	"version_minor", 4,
 	"image", "Preview.png",
 	"id", "ChoGGi_PortableMiner",
 	"author", "ChoGGi",

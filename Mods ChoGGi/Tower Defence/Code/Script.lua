@@ -3,7 +3,7 @@
 local Sleep = Sleep
 local IsValid = IsValid
 local PlaceObject = PlaceObject
-local GetRandomPassableAround = GetRandomPassableAround
+local GetPassablePointNearby = GetPassablePointNearby
 local table_remove = table.remove
 
 local Random = ChoGGi.ComFuncs.Random
@@ -150,7 +150,8 @@ function OnMsg.NewDay(sol)
 			Sleep(Random(2500,10000))
 			-- muhhahahaha
 			local r = PlaceObject("TowerDefense_Rover", {
-				spawn_pos = GetRandomPassableAround(stats.sectors[Random(1,stats.count)]:GetVisualPos(), 250),
+--~ 				spawn_pos = GetRandomPassableAround(stats.sectors[Random(1,stats.count)]:GetVisualPos(), 250),
+				spawn_pos = GetPassablePointNearby(stats.sectors[Random(1,stats.count)]:GetVisualPos()),
 				attacks_remaining = stats.ammo_next,
 			})
 			-- need to make 'em nasty

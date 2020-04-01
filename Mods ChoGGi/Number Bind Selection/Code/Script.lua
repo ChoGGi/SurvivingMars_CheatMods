@@ -31,19 +31,11 @@ local table_remove = table.remove
 local table_icopy = table.icopy
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-
 local function ShowMsg(msg, objs)
-	if Mods.ChoGGi_Library.version > 70 then
-		MsgPopup(
-			msg, T(302535920011343, "Number Bind"),
-			nil, {expiration = 3, objects = objs}
-		)
-	else
-		MsgPopup(
-			msg, T(302535920011343, "Number Bind"),
-			nil, nil, objs
-		)
-	end
+	MsgPopup(
+		msg, T(302535920011343, "Number Bind"),
+		nil, {expiration = 3, objects = objs}
+	)
 end
 
 local function AddObjs(action)

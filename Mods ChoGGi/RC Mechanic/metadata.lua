@@ -8,10 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "RC Mechanic",
-	"version", 10,
+	"version", 11,
 	"version_major", 1,
-	"version_minor", 0,
-
+	"version_minor", 1,
 	"image", "Preview.png",
 	"id", "ChoGGi_RCMechanic",
 	"author", "ChoGGi",
@@ -29,7 +28,6 @@ Ignores any that are within distance of working drone hubs/rockets.
 
 Known issues:
 Ignores requirements and just repairs instantly. I'll see about slowing the repair down a bit.
-It's got god mod. It is intentional, but that might be an issue for some people...
 
 
 

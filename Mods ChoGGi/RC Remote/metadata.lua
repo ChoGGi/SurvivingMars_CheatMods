@@ -8,10 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "RC Remote",
-	"version", 4,
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 4,
-
+	"version_minor", 5,
 	"image", "Preview.png",
 	"id", "ChoGGi_RCRemote",
 	"steam_id", "1667310894",

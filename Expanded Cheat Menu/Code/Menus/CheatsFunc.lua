@@ -190,7 +190,6 @@ function ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle()
 end
 
 function ChoGGi.MenuFuncs.UnlockAchievements()
-	local title = Strings[302535920000318--[[Unlock]]] .. " " .. Translate(697482021580--[[Achievements]])
 	local AchievementUnlock = AchievementUnlock
 	local EngineCanUnlockAchievement = EngineCanUnlockAchievement
 
@@ -224,8 +223,8 @@ function ChoGGi.MenuFuncs.UnlockAchievements()
 			end
 
 			MsgPopup(
-				#choice, Strings[302535920000318--[[Unlock]]] .. ": " .. T(697482021580, "Achievements"),
-				title
+				#choice,
+				Strings[302535920000318--[[Unlock]]] .. " " .. Translate(697482021580--[[Achievements]])
 			)
 		end)
 	end

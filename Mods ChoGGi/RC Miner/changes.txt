@@ -1,3 +1,7 @@
+v2.4
+Fixed pin icon.
+Fixed Miner mining from same concrete deposit after moving to new deposit.
+
 v2.3
 Evans update.
 

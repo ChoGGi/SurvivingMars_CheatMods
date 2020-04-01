@@ -1,3 +1,6 @@
+v0.7
+Fixed pin icon.
+
 v0.6
 I'd made the default 5 when updating to evans, it's now 0 again.
 Also make it step by 50 units and made the max 10K.
