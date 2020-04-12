@@ -1,12 +1,15 @@
 ## ECM Changelog
 
-## v15.0 (Unreleased)
+## v15.1 (Unreleased)
+
+## v15.0 (12 Apr 2020)
 ### Changed:
 - Added translations for TMeta/TConcatMeta in examine.
 - Changed Examine Objects Shift to Examine Objects Radius.
 
 ### Fixed:
 - Work Radius RC Rover wasn't opening (thanks GrandMas).
+- Issue with uploading mods and hpk.exe.
 
 ## v14.9  (25 Mar 2020)
 ### Added:

@@ -1,13 +1,6 @@
 -- See LICENSE for terms
 
-
 local GetModEnabled = ChoGGi.ComFuncs.GetModEnabled
--- remove after lib update 8.0
-if not GetModEnabled then
-	GetModEnabled = function(mod_id)
-		return table.find(ModsLoaded, "id", mod_id)
-	end
-end
 
 -- miner amounts table
 local r = const.ResourceScale

@@ -3,14 +3,14 @@ return PlaceObj("ModDef", {
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
-			"version_major", 7,
-			"version_minor", 9,
+			"version_major", 8,
+			"version_minor", 0,
 		}),
 --~ 		PlaceObj("ModDependency", {
 --~ 			"id", "ChoGGi_CheatMenu",
 --~ 			"title", "ECM",
 --~ 			"version_major", 14,
---~ 			"version_minor", 9,
+--~ 			"version_minor", 0,
 --~ 		}),
 	},
 	"title", "Example View TextStyles",

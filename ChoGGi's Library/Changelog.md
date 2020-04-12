@@ -1,6 +1,9 @@
 ## Library Changelog
 
-## v8.0 (Unreleased)
+## v8.1 (Unreleased)
+
+## v8.0 (12 Apr 2020)
+Version bump.
 
 ## v7.9 (25 Mar 2020)
 - Fixed accessing Tourist desc in main menu (TFormat.has_researched).

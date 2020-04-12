@@ -127,8 +127,9 @@ do -- ModUpload
 		ChoGGi_testing = true,
 	}
 	local mods_path = "AppData/Mods/"
-	local pack_path = "AppData/ModUpload/Pack/"
-	local dest_path = "AppData/ModUpload/"
+	local mod_upload_path = "AppData/ModUpload"
+	local pack_path = mod_upload_path .. "/Pack/"
+	local dest_path = mod_upload_path .. "/"
 	local hpk_path = "AppData/hpk.exe"
 	if not Platform.pc then
 		hpk_path = "AppData/hpk"
@@ -243,7 +244,7 @@ do -- ModUpload
 		end
 
 		do -- screenshots
-			local shots_path = "AppData/ModUpload/Screenshots/"
+			local shots_path = mod_upload_path .. "/Screenshots/"
 			AsyncCreatePath(shots_path)
 			mod_params.screenshots = {}
 			for i = 1, 5 do
@@ -261,6 +262,7 @@ do -- ModUpload
 			end
 		end
 
+		-- pack files in .hpk archive
 		local files_to_pack = {}
 		local substring_begin = #dest_path + 1
     local all_files
@@ -293,8 +295,8 @@ do -- ModUpload
 				-- not sure if it matters, but delete ModContent.hpk first
 				local output = mods_path .. ModsPackFileName
 				AsyncFileDelete(output)
-				local exec = hpk_path_working .. " create --cripple-lua-files \""
-					.. mod.env.CurrentModPath:gsub(mods_path, ""):gsub("/", "") .. "\" " .. ModsPackFileName
+				local exec = hpk_path_working .. [[ create --cripple-lua-files "]]
+					.. ConvertToOSPath(mod_upload_path) .. [[" ]] .. ModsPackFileName
 				-- AsyncExec(cmd, working_dir, hidden, capture_output, priority)
 				if not AsyncExec(exec, ConvertToOSPath(mods_path), true, false) then
 					-- hpk.exe is a little limited in where it places the output, so we need to move it over
@@ -304,6 +306,7 @@ do -- ModUpload
 			else
 				err = AsyncPack(pack_path .. ModsPackFileName, dest_path, files_to_pack)
 			end
+
 		end
 
 		-- update mod on workshop
