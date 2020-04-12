@@ -15,6 +15,13 @@ return PlaceObj("ModDef", {
 	"TagTools", true,
 	"TagOther", true,
 	"TagCheats", true,
+	"ignore_files", {
+		"*.bat",
+		"*.ini",
+		".gitignore",
+		"Locales/*.ahk",
+		"Locales/*.lua",
+	},
 	"code", {
 		-- build the ChoGGi object
 		"Code/Init.lua",

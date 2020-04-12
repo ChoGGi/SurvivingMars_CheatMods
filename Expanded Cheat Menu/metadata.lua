@@ -15,7 +15,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_CheatMenu",
 	"author", "ChoGGi",
 	"steam_id", "1411157810",
-	"pops_any_uuid", "21d18780-d793-4fe4-89ca-6895cd45d639",
+	"pops_desktop_uuid", "8d2fd3f3-d8e9-4f6c-aea4-501112d5c029",
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog",
 	"lua_revision", 249143,
 	"TagGameplay", true,
@@ -23,6 +23,13 @@ return PlaceObj("ModDef", {
 	"TagTools", true,
 	"TagOther", true,
 	"TagCheats", true,
+	"ignore_files", {
+		"*.bat",
+		"*.ini",
+		"*.lnk",
+		"*.txt",
+		".gitignore",
+	},
 	"code", {
 		-- start 'er up
 		"Code/Init.lua",

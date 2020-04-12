@@ -2109,6 +2109,7 @@ See the bottom of Gameplay>Controls if you've changed the key binding."]]]
 				ShowConsole(not dlgConsole:GetVisible())
 			end
 		end
+
 	end
 end -- do
 
@@ -5242,4 +5243,8 @@ function ChoGGi.ComFuncs.UpdateDepotCapacity(obj, max_store, storable)
 			demand[resource_name]:SetAmount(max_store)
 		end
 	end
+end
+
+function ChoGGi.ComFuncs.GetModEnabled(mod_id)
+	return table.find(ModsLoaded, "id", mod_id)
 end

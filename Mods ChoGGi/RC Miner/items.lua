@@ -1,7 +1,8 @@
 return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "visual_cues",
-		"DisplayName", T(302535920011196, "Paint ground around mine"),
+		"DisplayName", T(302535920011196, "Visual Cues"),
+		"Help", T(302535920011630, "Paint ground around mine with different texture."),
 		"DefaultValue", true,
 	}),
 	PlaceObj("ModItemOptionToggle", {

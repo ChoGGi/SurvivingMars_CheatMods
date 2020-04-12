@@ -1,3 +1,15 @@
+v2.8
+Forgot about LukeH's resources.
+
+v2.7
+Added resource filter to miners.
+
+v2.6
+Fiddled with the code a bit to hopefully prevent the stuck depot issue.
+
+v2.5
+Added salvage button to miner storage depots.
+
 v2.4
 Fixed pin icon.
 Fixed Miner mining from same concrete deposit after moving to new deposit.

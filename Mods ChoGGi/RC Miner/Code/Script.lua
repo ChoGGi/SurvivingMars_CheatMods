@@ -1,5 +1,15 @@
 -- See LICENSE for terms
 
+
+local GetModEnabled = ChoGGi.ComFuncs.GetModEnabled
+-- remove after lib update 8.0
+if not GetModEnabled then
+	GetModEnabled = function(mod_id)
+		return table.find(ModsLoaded, "id", mod_id)
+	end
+end
+
+-- miner amounts table
 local r = const.ResourceScale
 local pms = {
 	-- how much to mine each time
@@ -110,7 +120,7 @@ DefineClass.PortableMiner = {
 	-- these are all set above
 --~ 	name = T(302535920011207, [[RC Miner]]),
 --~ 	display_name = T(302535920011207, [[RC Miner]]),
-	description = T(302535920011209, [[Will slowly (okay maybe a little quickly) mine Metal or Concrete into a resource pile.]]),
+	description = T(302535920011209, "Will slowly (okay maybe a little quickly) mine Metal or Concrete into a resource pile."),
 --~ 	display_icon = display_icon,
 	entity = "CombatRover",
 
@@ -180,8 +190,16 @@ DefineClass.PortableMinerBuilding = {
 }
 
 DefineClass.PortableStockpile = {
-	__parents = {"ResourceStockpile"},
+	__parents = {"ResourceStockpile", "Demolishable"},
+	destroy_when_empty = true,
 }
+
+function PortableStockpile:ShouldShowDemolishButton()
+--~ 		return true
+	if self.stockpiled_amount <= 0 then
+		return true
+	end
+end
 
 function PortableMiner:GameInit()
 
@@ -214,17 +232,52 @@ function PortableMiner:GameInit()
 	self.producers = {self}
 
 	self:SpawnThumper()
+
+	self:BuildFilterList()
 end
 
--- retrieves prod info
-function PortableMiner:BuildProdInfo(info, res_name)
-	if self.resource ~= res_name then
-		info[#info+1] = T{476, "Lifetime production<right><resource(LifetimeProduction, resource)>",
-			resource = res_name, LifetimeProduction = self.lifetime_table[res_name], self}
+function PortableMiner:BuildFilterList()
+	if not self.miner_filter then
+		self.miner_filter = {
+			Metals = true,
+			Concrete = true,
+			PreciousMetals = true,
+			Radioactive = true,
+			Hydrocarbon = true,
+			Crystals = true,
+		}
 	end
 end
 
-function PortableMiner:Getui_command()
+function PortableMiner:BuildProdInfo(list, res_name)
+	if self.resource ~= res_name then
+		list[#list+1] = T{476,
+			"Lifetime production<right><resource(LifetimeProduction, resource)>",
+			resource = res_name,
+			LifetimeProduction = self.lifetime_table[res_name],
+			self,
+		}
+	end
+end
+
+-- retrieves prod info
+function PortableMiner:GetChoGGi_ui_production()
+	local info = {}
+	if self.resource == "Concrete" then
+		self:BuildProdInfo(info, "Concrete")
+	elseif self.resource == "Metals" then
+		self:BuildProdInfo(info, "Metals")
+	else
+		self:BuildProdInfo(info, "PreciousMetals")
+	end
+	-- change lifetime to lifetime of that res
+	self.lifetime_production = self.lifetime_table[self.resource]
+	info[#info+1] = ResourceProducer.GetUISectionResourceProducerRollover(self)
+	self.lifetime_production = self.lifetime_table.All
+	return table.concat(info, "<newline><left>")
+end
+
+function PortableMiner:GetUISectionProdRollover()
 	local info = {}
 	-- add life time info from the not selected reses
 	self:BuildProdInfo(info, "Metals")
@@ -236,6 +289,7 @@ function PortableMiner:Getui_command()
 	self.lifetime_production = self.lifetime_table.All
 	return table.concat(info, "<newline><left>")
 end
+
 -- fake it till you make it (needed by GetUISectionResourceProducerRollover)
 function PortableMiner:GetAmountStored()
 	return self.stockpile and self.stockpile:GetStoredAmount() or 0
@@ -290,11 +344,15 @@ end
 
 -- for auto mode
 function PortableMiner:ProcAutomation()
+	self:BuildFilterList()
+
 	local unreachable_objects = self:GetUnreachableObjectsTable()
 	local deposit = MapFindNearest(self, "map", "SubsurfaceDeposit", "TerrainDeposit", --[["SurfaceDeposit", ]] function(d)
-		if d:IsKindOf("TerrainDepositConcrete") and d:GetDepositMarker() or
+		if (d:IsKindOf("TerrainDepositConcrete") and d:GetDepositMarker() or
 				(d:IsKindOfClasses(self.mineable) and
-				(d.depth_layer < 2 or self.city:IsTechResearched("DeepMetalExtraction"))) then
+				(d.depth_layer < 2 or self.city:IsTechResearched("DeepMetalExtraction")
+			))) and self.miner_filter[d.resource]
+		then
 			return not unreachable_objects[d]
 		end
 	end)
@@ -403,6 +461,34 @@ function PortableMiner:SetWorking(work)
 	self:OnSetWorking(work)
 end
 
+function PortableMiner:GetStockpile()
+	-- remove removed stockpile
+	if not IsValid(self.stockpile) then
+		self.stockpile = false
+	end
+	-- check if a stockpile is in dist, and if it's the correct res, and not another miner's pile
+	if not self.stockpile or self:GetVisualDist(self.stockpile) > 5000 or
+				self.stockpile and (self.stockpile.resource ~= self.resource or self.stockpile.miner_handle ~= self.handle) then
+		-- try to get one close by
+		local stockpile = MapFindNearest(self, "map", "PortableStockpile", function(o)
+			return self:GetVisualDist(o) < 5000
+		end)
+
+	-- add new stockpile if none
+		if not stockpile or stockpile and (stockpile.resource ~= self.resource or stockpile.miner_handle ~= self.handle) then
+			-- plunk down a new res stockpile
+			stockpile = PortableStockpile:new()
+			stockpile:SetPos(MovePointAway(self:GetDestination(), self:GetSpotLoc(self:GetSpotBeginIndex(self.pooper_shooter)), -800))
+			stockpile:SetAngle(self:GetAngle())
+			stockpile.resource = self.resource
+		end
+		stockpile.miner_handle = self.handle
+		stockpile.max_z = self.auto_mode_on and pms.max_z_stack_auto or pms.max_z_stack_man
+		-- assign it to the miner
+		self.stockpile = stockpile
+	end
+end
+
 -- called it Load so it uses the load resource icon in pins
 function PortableMiner:Load()
 	local rocket_pos
@@ -415,32 +501,8 @@ function PortableMiner:Load()
 
 	local skip_end
 	if #self.nearby_deposits > 0 then
-		-- remove removed stockpile
-		if not IsValid(self.stockpile) then
-			self.stockpile = false
-		end
-		-- check if a stockpile is in dist, and if it's the correct res, and not another miner's pile
-		if not self.stockpile or self:GetVisualDist(self.stockpile) > 5000 or
-					self.stockpile and (self.stockpile.resource ~= self.resource or self.stockpile.miner_handle ~= self.handle) then
-			-- try to get one close by
-			local stockpile = MapFindNearest(self, "map", "PortableStockpile", function(o)
-				return self:GetVisualDist(o) < 5000
-			end)
-
-		-- add new stockpile if none
-			if not stockpile or stockpile and (stockpile.resource ~= self.resource or stockpile.miner_handle ~= self.handle) then
-				-- plunk down a new res stockpile
-				stockpile = PortableStockpile:new()
-				stockpile:SetPos(MovePointAway(self:GetDestination(), self:GetSpotLoc(self:GetSpotBeginIndex(self.pooper_shooter)), -800))
-				stockpile:SetAngle(self:GetAngle())
-				stockpile.resource = self.resource
-				stockpile.destroy_when_empty = true
-			end
-			stockpile.miner_handle = self.handle
-			stockpile.max_z = self.auto_mode_on and pms.max_z_stack_auto or pms.max_z_stack_man
-			-- assign it to the miner
-			self.stockpile = stockpile
-		end
+		-- create or use existing
+		self:GetStockpile()
 		--	stop at max_res_amount per stockpile
 		if self.stockpile:GetStoredAmount() < (self.auto_mode_on and pms.max_res_amount_auto or pms.max_res_amount_man) then
 			-- remove the sign
@@ -459,7 +521,9 @@ function PortableMiner:Load()
 			-- mine some loot
 			local mined = self:DigErUp()
 			if mined then
-				-- if it gets deleted by somebody mid mine :)
+				-- make sure there's a stockpile to use, if it gets deleted by somebody mid mine :)
+				self:GetStockpile()
+				-- doesn't hurt to check
 				if IsValid(self.stockpile) then
 					-- update stockpile
 					self.stockpile:AddResourceAmount(mined)
@@ -467,6 +531,7 @@ function PortableMiner:Load()
 					skip_end = true
 					self.stockpile = false
 				end
+
 				local infoamount = ResourceOverviewObj.data[self.resource]
 				infoamount = infoamount + 1
 				-- per res
@@ -616,9 +681,9 @@ function OnMsg.ClassesPostprocess()
 			"palettes", AttackRover.palette,
 
 			"dome_forbidden", true,
-			"display_name", T(302535920011207, [[RC Miner]]),
-			"display_name_pl", T(302535920011208, [[RC Miners]]),
-			"description", T(302535920011209, [[Will slowly (okay maybe a little quickly) mine Metal or Concrete into a resource pile.]]),
+			"display_name", T(302535920011207, "RC Miner"),
+			"display_name_pl", T(302535920011208, "RC Miners"),
+			"description", T(302535920011209, "Will slowly (okay maybe a little quickly) mine Metal or Concrete into a resource pile."),
 			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
 			"display_icon", display_icon,
@@ -629,4 +694,266 @@ function OnMsg.ClassesPostprocess()
 			"entity", "CombatRover",
 		})
 	end
+
+	local template = XTemplates.ipRover[1]
+	-- check for and remove existing template
+	ChoGGi.ComFuncs.RemoveXTemplateSections(template, "ChoGGi_Template_PortableMinerProdInfo", true)
+	template[#template+1] = PlaceObj("XTemplateTemplate", {
+		"ChoGGi_Template_PortableMinerProdInfo", true,
+		"__context_of_kind", "PortableMiner",
+		"__template", "InfopanelSection",
+		"RolloverText", T("<UISectionProdRollover>"),
+		"RolloverTitle", T(80, "Production"),
+		"Title", T(80, "Production"),
+		"Icon", "UI/Icons/Sections/facility.tga",
+	}, {
+		PlaceObj("XTemplateTemplate", {
+			"__template", "InfopanelText",
+			"Text", T("<ChoGGi_ui_production>"),
+		}),
+	})
+
+	local lukeh_newres = GetModEnabled("LH_Resources") and true
+
+	-- check for and remove existing template
+	ChoGGi.ComFuncs.RemoveXTemplateSections(template, "ChoGGi_Template_PortableMinerResFilter", true)
+	template[#template+1] = PlaceObj("XTemplateTemplate", {
+			"ChoGGi_Template_PortableMinerResFilter", true,
+			"__context_of_kind", "PortableMiner",
+			"__template", "InfopanelSection",
+			"RolloverText", T(302535920011631, "Filter types of resources when looking with automated mode."),
+			"RolloverTitle", T(302535920011632, "Automated Filter"),
+			"Title", T(302535920011633, "Filter"),
+			"Icon", "UI/Icons/Sections/facility.tga",
+		}, {
+
+		PlaceObj("XTemplateTemplate", {
+			"__template", "InfopanelActiveSection",
+			"Title", T(4139, "Rare Metals"),
+			"OnContextUpdate", function(self, context)
+				if context.miner_filter.PreciousMetals then
+					self:SetIcon("UI/Icons/Sections/resource_accept.tga")
+				else
+					self:SetIcon("UI/Icons/Sections/resource_no_accept.tga")
+				end
+			end,
+		}, {
+			PlaceObj("XTemplateFunc", {
+				"name", "OnActivate(self, context)",
+				"parent", function(self)
+					return self.parent
+				end,
+				"func", function(self, context)
+					---
+					context:BuildFilterList()
+					context.miner_filter.PreciousMetals = not context.miner_filter.PreciousMetals
+					context:SetCommand("Idle")
+					ObjModified(context)
+					---
+				end
+			}),
+		}),
+
+		PlaceObj("XTemplateTemplate", {
+			"__template", "InfopanelActiveSection",
+			"Title", T(3514, "Metals"),
+			"OnContextUpdate", function(self, context)
+				if context.miner_filter.Metals then
+					self:SetIcon("UI/Icons/Sections/resource_accept.tga")
+				else
+					self:SetIcon("UI/Icons/Sections/resource_no_accept.tga")
+				end
+			end,
+		}, {
+			PlaceObj("XTemplateFunc", {
+				"name", "OnActivate(self, context)",
+				"parent", function(self)
+					return self.parent
+				end,
+				"func", function(self, context)
+					---
+					context:BuildFilterList()
+					context.miner_filter.Metals = not context.miner_filter.Metals
+					context:SetCommand("Idle")
+					ObjModified(context)
+					---
+				end
+			}),
+		}),
+
+		PlaceObj("XTemplateTemplate", {
+			"__template", "InfopanelActiveSection",
+			"Title", T(3513, "Concrete"),
+			"OnContextUpdate", function(self, context)
+				if context.miner_filter.Concrete then
+					self:SetIcon("UI/Icons/Sections/resource_accept.tga")
+				else
+					self:SetIcon("UI/Icons/Sections/resource_no_accept.tga")
+				end
+			end,
+		}, {
+			PlaceObj("XTemplateFunc", {
+				"name", "OnActivate(self, context)",
+				"parent", function(self)
+					return self.parent
+				end,
+				"func", function(self, context)
+					---
+					context:BuildFilterList()
+					context.miner_filter.Concrete = not context.miner_filter.Concrete
+					context:SetCommand("Idle")
+					ObjModified(context)
+					---
+				end
+			}),
+		}),
+
+		PlaceObj("XTemplateTemplate", {
+			"__template", "InfopanelActiveSection",
+			"Title", T(1107010705, "Radioactive Materials"),
+			"__condition", function ()
+				return lukeh_newres
+			end,
+			"OnContextUpdate", function(self, context)
+				if context.miner_filter.Radioactive then
+					self:SetIcon("UI/Icons/Sections/resource_accept.tga")
+				else
+					self:SetIcon("UI/Icons/Sections/resource_no_accept.tga")
+				end
+			end,
+		}, {
+			PlaceObj("XTemplateFunc", {
+				"name", "OnActivate(self, context)",
+				"parent", function(self)
+					return self.parent
+				end,
+				"func", function(self, context)
+					---
+					context:BuildFilterList()
+					context.miner_filter.Radioactive = not context.miner_filter.Radioactive
+					context:SetCommand("Idle")
+					ObjModified(context)
+					---
+				end
+			}),
+		}),
+
+		PlaceObj("XTemplateTemplate", {
+			"__template", "InfopanelActiveSection",
+			"Title", T(1107012118, "Hydrocarbon"),
+			"__condition", function ()
+				return lukeh_newres
+			end,
+			"OnContextUpdate", function(self, context)
+				if context.miner_filter.Hydrocarbon then
+					self:SetIcon("UI/Icons/Sections/resource_accept.tga")
+				else
+					self:SetIcon("UI/Icons/Sections/resource_no_accept.tga")
+				end
+			end,
+		}, {
+			PlaceObj("XTemplateFunc", {
+				"name", "OnActivate(self, context)",
+				"parent", function(self)
+					return self.parent
+				end,
+				"func", function(self, context)
+					---
+					context:BuildFilterList()
+					context.miner_filter.Hydrocarbon = not context.miner_filter.Hydrocarbon
+					context:SetCommand("Idle")
+					ObjModified(context)
+					---
+				end
+			}),
+		}),
+
+		PlaceObj("XTemplateTemplate", {
+			"__template", "InfopanelActiveSection",
+			"Title", T(1107010505, "Crystals"),
+			"__condition", function ()
+				return lukeh_newres
+			end,
+			"OnContextUpdate", function(self, context)
+				if context.miner_filter.Crystals then
+					self:SetIcon("UI/Icons/Sections/resource_accept.tga")
+				else
+					self:SetIcon("UI/Icons/Sections/resource_no_accept.tga")
+				end
+			end,
+		}, {
+			PlaceObj("XTemplateFunc", {
+				"name", "OnActivate(self, context)",
+				"parent", function(self)
+					return self.parent
+				end,
+				"func", function(self, context)
+					---
+					context:BuildFilterList()
+					context.miner_filter.Crystals = not context.miner_filter.Crystals
+					context:SetCommand("Idle")
+					ObjModified(context)
+					---
+				end
+			}),
+		}),
+
+	})
+
+
+	template = XTemplates.ipResourcePile[1]
+	-- check for and remove existing template
+	ChoGGi.ComFuncs.RemoveXTemplateSections(template, "ChoGGi_Template_PortableMinerStockpileSalvage", true)
+
+	template[#template+1] = PlaceObj("XTemplateTemplate", {
+		"ChoGGi_Template_PortableMinerStockpileSalvage", true,
+		"comment", "salvage",
+		"__context_of_kind", "Demolishable",
+		"__condition", function (_, context)
+			return context:ShouldShowDemolishButton()
+		end,
+		"__template", "InfopanelButton",
+		"RolloverTitle", T(3973, --[[XTemplate ipBuilding RolloverTitle]] "Salvage"),
+		"RolloverHintGamepad", T(7657, --[[XTemplate ipBuilding RolloverHintGamepad]] "<ButtonY> Activate"),
+		"Id", "idSalvage",
+		"OnContextUpdate", function (self, context, ...)
+			local refund = context:GetRefundResources() or empty_table
+			local rollover = T(7822, "Destroy this building.")
+			if IsKindOf(context, "LandscapeConstructionSiteBase") then
+				self:SetRolloverTitle(T(12171, "Cancel Landscaping"))
+				rollover = T(12172, "Cancel this landscaping project. The terrain will remain in its current state")
+			end
+			if #refund > 0 then
+				rollover = rollover .. "<newline><newline>" .. T(7823, "<UIRefundRes> will be refunded upon salvage.")
+			end
+			self:SetRolloverText(rollover)
+			context:ToggleDemolish_Update(self)
+		end,
+		"OnPressParam", "ToggleDemolish",
+		"Icon", "UI/Icons/IPButtons/salvage_1.tga",
+	}, {
+		PlaceObj("XTemplateFunc", {
+			"name", "OnXButtonDown(self, button)",
+			"func", function (self, button)
+				if button == "ButtonY" then
+					return self:OnButtonDown(false)
+				elseif button == "ButtonX" then
+					return self:OnButtonDown(true)
+				end
+				return (button == "ButtonA") and "break"
+			end,
+		}),
+		PlaceObj("XTemplateFunc", {
+			"name", "OnXButtonUp(self, button)",
+			"func", function (self, button)
+				if button == "ButtonY" then
+					return self:OnButtonUp(false)
+				elseif button == "ButtonX" then
+					return self:OnButtonUp(true)
+				end
+				return (button == "ButtonA") and "break"
+			end,
+		}),
+	})
+
 end

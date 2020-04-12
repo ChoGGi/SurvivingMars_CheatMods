@@ -416,7 +416,7 @@ pcall(function()
 	math.sm_compare = compare -- (n1, n2)
 	math.sm_DivCeil = DivCeil -- (v, d)
 	math.sm_DivRound = DivRound -- (m, d)
-	math.sm_FastSin = FastSin -- (a)
+--~ 	math.sm_FastSin = FastSin -- (a)
 	math.sm_GetClock = GetClock
 	math.sm_GetPreciseTicks = GetPreciseTicks
 	math.sm_HermiteSpline = HermiteSpline -- (p1, m1, p2, m2, t, scale)

@@ -1,14 +1,18 @@
 ## ECM Changelog
 
 ## v15.0 (Unreleased)
+### Changed:
+- Added translations for TMeta/TConcatMeta in examine.
+- Changed Examine Objects Shift to Examine Objects Radius.
+
+### Fixed:
+- Work Radius RC Rover wasn't opening (thanks GrandMas).
 
 ## v14.9  (25 Mar 2020)
 ### Added:
 - Cheats>Delete Geysers: Remove all geyser activity from the map (permanent per-save).
 - ChangeGrade to cheats section for selection panel of deposits.
 - ToggleFrozen to cheats section for selection panel of heat sensitive buildings.
-
-### Changed:
 
 ### Fixed:
 - Examine Log spam (thanks LukeH).

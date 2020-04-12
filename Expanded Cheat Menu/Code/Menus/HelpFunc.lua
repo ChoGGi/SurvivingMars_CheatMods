@@ -13,6 +13,7 @@ local testing = ChoGGi.testing
 do -- ModUpload
 	-- hey paradox! renaming things is a thing...
 	local paradox_title = {
+		ChoGGi_CheatMenu = "Expanded Cheat Menu (ECM)",
 		ChoGGi_AddMathFunctions = "\"math.\" Functions",
 		ChoGGi_AlienVisitors = "Alien Visitors v0.1",
 		ChoGGi_AllSponsorBuildings = "All Sponsor Buildings v0.2",
@@ -115,11 +116,11 @@ do -- ModUpload
 
 	local mod_params = {}
 
-	-- check the copy box for these
-	local ChoGGi_copy_files = {
-		[ChoGGi.id] = true,
-		[ChoGGi.id_lib] = true,
-	}
+--~ 	-- check the copy box for these
+--~ 	local ChoGGi_copy_files = {
+--~ 		[ChoGGi.id] = true,
+--~ 		[ChoGGi.id_lib] = true,
+--~ 	}
 	-- don't add these mods to upload list
 	local skip_mods = {
 		ChoGGi_XDefaultMod = true,
@@ -460,10 +461,10 @@ do -- ModUpload
 					diff_author = mod.author ~= SteamGetPersonaName()
 					result = nil
 
-					-- my mods override
-					if ChoGGi_copy_files[mod.id] then
-						copy_files = false
-					end
+--~ 					-- my mods override
+--~ 					if ChoGGi_copy_files[mod.id] then
+--~ 						copy_files = false
+--~ 					end
 
 					-- remove blacklist warning from title (added in helpermod)
 					mod.title = mod.title:gsub(" %(Warning%)$", "")

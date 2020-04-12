@@ -60,6 +60,8 @@ local XCreateRolloverWindow = XCreateRolloverWindow
 local XDestroyRolloverWindow = XDestroyRolloverWindow
 
 local GameState = GameState
+local TMeta = TMeta
+local TConcatMeta = TConcatMeta
 
 -- local any funcs used a lot
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
@@ -2855,6 +2857,7 @@ function ChoGGi_DlgExamine:AddItemsToInfoList(obj, c, list, skip_dupes, list_obj
 	return c
 end
 
+-- the main "one"
 function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 	-- the list we return with concat
 	local list_obj_str = self.info_list_obj_str
@@ -3239,10 +3242,10 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				table_insert(data_meta, 1, "parseTuples(): " .. self:ConvertValueToInfo(obj:parseTuples()))
 				table_insert(data_meta, 1, "getInt(): " .. self:ConvertValueToInfo(obj:getInt()))
 				table_insert(data_meta, 1, "\nsize(): " .. self:ConvertValueToInfo(obj:size()))
---~ 			elseif name == "HGE.File" then
---~ 			elseif name == "HGE.ForEachReachable" then
---~ 			elseif name == "RSAKey" then
---~ 			elseif name == "lpeg-pattern" then
+--~ 				elseif name == "HGE.File" then
+--~ 				elseif name == "HGE.ForEachReachable" then
+--~ 				elseif name == "RSAKey" then
+--~ 				elseif name == "lpeg-pattern" then
 
 			else
 				table_insert(data_meta, 1, "\ngetmetatable():")
@@ -3257,6 +3260,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 					end
 				end
 			end
+
 
 			c = c + 1
 			list_obj_str[c] = TableConcat(data_meta, "\n")
@@ -3362,6 +3366,15 @@ Decompiled code won't scroll correctly as the line numbers are different."]]]:fo
 			list_obj_str[c] = self:ConvertValueToInfo(info_list.gethook)
 		end
 
+	end
+
+		-- try to add translated string if it's one of these
+	if obj_metatable == TMeta or obj_metatable == TConcatMeta then
+		c = c + 1
+		list_obj_str[c] = (obj_metatable == TMeta
+			and "\nTMeta " .. Strings[302535920000986--[[Translated]]] .. ": \n"
+			or "\nTConcatMeta " .. Strings[302535920000986--[[Translated]]] .. ": \n")
+			.. Translate(obj)
 	end
 
 	-- do we add a metatable to it?

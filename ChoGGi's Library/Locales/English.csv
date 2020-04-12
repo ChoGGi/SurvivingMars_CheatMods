@@ -1,5 +1,4 @@
 "ID", " Text"
-302535920000986,
 302535920000990,
 302535920001066,
 302535920001085,
@@ -419,6 +418,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"
 302535920000071, "Show Mods Log"
 302535920000692, "Log is blank (well not anymore)."
 302535920000477, "Clear out the windowed console log."
+302535920000986, "Translated"
 302535920000920, "Examining objs from this dlg will <color red>%s</color>examine them all in a single dlg."
 302535920000590, "Batch"
 302535920000841, "If examining a table then exec this code for each entry.
@@ -515,7 +515,7 @@ Use <green>%s</green>/<green>%s</green> to browse console history."
 302535920001426, "Various tools to use."
 302535920001422, "<right_click> to change refresh delay."
 302535920001248, "Sort normally or backwards."
-302535920001397, "Not the actual properties (see object.properties for those).
+302535920001397, "Not the actual properties (see ___properties for those).
 
 Use obj:GetProperty(""NAME"") and obj:SetProperty(""NAME"", value)
 You can access a default value with obj:GetDefaultPropertyValue(""NAME"")

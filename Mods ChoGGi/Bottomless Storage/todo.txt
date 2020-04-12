@@ -1,0 +1,3 @@
+tmairose 13 minutes ago 
+Any way to update this so that you can use the slider to determine the max amount of resources you want to keep, and any excess will then be delivered to this?
+Example: Set slider bar for concrete to 50 and if you have 40 concrete, it will not be delivered but once you reach 51, that extra will be delivered.
