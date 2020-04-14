@@ -1,10 +1,23 @@
 -- See LICENSE for terms
 
+local ConstantDisastersModLoaded
+
+-- abort if "main" mod is installed
+function OnMsg.ModsReloaded()
+	if table.find(ModsLoaded, "id", "ChoGGi_GameRulesConstantDisasters") then
+		ConstantDisastersModLoaded = true
+	end
+end
+
 local IsGameRuleActive = IsGameRuleActive
 
 -- make sure there's one (broad) cold area
 local orig_FillRandomMapProps = FillRandomMapProps
 function FillRandomMapProps(gen, ...)
+	if ConstantDisastersModLoaded then
+		return
+	end
+
 	local map = orig_FillRandomMapProps(gen, ...)
 
 	if gen and IsGameRuleActive("ChoGGi_WinterWonderland") then
@@ -19,6 +32,10 @@ end
 
 
 function OnMsg.ClassesPostprocess()
+	if ConstantDisastersModLoaded then
+		return
+	end
+
 	if GameRulesMap.ChoGGi_WinterWonderland then
 		return
 	end
@@ -35,6 +52,9 @@ function OnMsg.ClassesPostprocess()
 end
 
 local function StartupCode()
+	if ConstantDisastersModLoaded then
+		return
+	end
 	if IsGameRuleActive("ChoGGi_WinterWonderland") then
 		GrantTech("SubsurfaceHeating")
 	end

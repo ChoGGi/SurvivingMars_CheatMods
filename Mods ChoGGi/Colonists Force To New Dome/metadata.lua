@@ -11,7 +11,6 @@ return PlaceObj("ModDef", {
 	"version", 4,
 	"version_major", 0,
 	"version_minor", 4,
-
 	"id", "ChoGGi_ColonistsForceToNewDome",
 	"author", "ChoGGi",
 	"code", {

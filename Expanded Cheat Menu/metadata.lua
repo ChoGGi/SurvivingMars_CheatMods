@@ -24,6 +24,7 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"TagCheats", true,
 	"ignore_files", {
+		"!examples*",
 		"*.bat",
 		"*.ini",
 		"*.lnk",
@@ -61,7 +62,6 @@ return PlaceObj("ModDef", {
 		"Code/Dialogs/Examine.lua",
 		"Code/Dialogs/ExecCode.lua",
 		"Code/Dialogs/FindValue.lua",
---~ 		"Code/Dialogs/MonitorInfo.lua",
 		"Code/Dialogs/ObjectEditor.lua",
 		"Code/Dialogs/3DManipulator.lua",
 		"Code/Dialogs/ImageViewer.lua",
@@ -127,6 +127,6 @@ If you don't know where a menu item is: Menu>Help>List All Menu Items (use "Filt
 ##### Available From:
 https://steamcommunity.com/sharedfiles/filedetails/?id=1411157810
 https://www.nexusmods.com/survivingmars/mods/7
-https://mods.paradoxplaza.com/mods/645/Any
+https://mods.paradoxplaza.com/mods/6671/Windows
 https://github.com/ChoGGi/SurvivingMars_CheatMods]],
 })

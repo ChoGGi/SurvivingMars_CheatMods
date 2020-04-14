@@ -95,7 +95,7 @@ local function ActivateDisaster(name)
 	-- disaster happening already
 	local gvar = _G[disaster.var]
 	if gvar then
-		-- DustDevils needs a count
+		-- DustDevils needs a count (the rest are false normally, and dd stays a table?)
 		if name ~= "DustDevils" or name == "DustDevils" and #gvar > 0 then
 --~ 			print("Abort Disaster", name)
 			return
@@ -113,6 +113,8 @@ local function ActivateDisaster(name)
 		CreateGameTimeThread(function()
 			_G[disaster.func](table.rand(disaster.types), data)
 		end)
+--~ 	elseif name == "Rains" then
+--~ 		-- split into each type
 	elseif name == "MeteorStorms" then
 		_G[disaster.func](data, "storm")
 	elseif name == "DustDevils" then

@@ -9,6 +9,7 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local DeleteObject = ChoGGi.ComFuncs.DeleteObject
 local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
 local Strings = ChoGGi.Strings
+local testing = ChoGGi.testing
 
 function ChoGGi.MenuFuncs.RemoveInvalidLabelObjects()
 	local table_remove = table.remove
@@ -109,21 +110,6 @@ do -- DronesNotRepairingDome
 		end)
 	end
 end -- do
-
---~ function ChoGGi.MenuFuncs.CheckForBorkedTransportPath_Toggle()
---~ 	if ChoGGi.UserSettings.CheckForBorkedTransportPath then
---~ 		ChoGGi.UserSettings.CheckForBorkedTransportPath = nil
---~ 	else
---~ 		ChoGGi.UserSettings.CheckForBorkedTransportPath = true
---~ 		ChoGGi.MenuFuncs.StutterWithHighFPS(true)
---~ 	end
-
---~ 	ChoGGi.SettingFuncs.WriteSettings()
---~ 	MsgPopup(
---~ 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CheckForBorkedTransportPath),
---~ 		Strings[302535920001266--[[Borked Transport Pathing]]]
---~ 	)
---~ end
 
 do --ResetCommanders
 	local function ResetRover(rc)
@@ -323,16 +309,18 @@ function ChoGGi.MenuFuncs.MirrorSphereStuck()
 	)
 end
 
-function ChoGGi.MenuFuncs.StutterWithHighFPS(skip)
+function ChoGGi.MenuFuncs.StutterWithHighFPS()
 	local CheckForBorkedTransportPath = ChoGGi.ComFuncs.CheckForBorkedTransportPath
+	local bad_objs = {}
 	local objs = UICity.labels.Unit or ""
 	for i = 1, #objs do
-		CheckForBorkedTransportPath(objs[i])
+		CheckForBorkedTransportPath(objs[i], bad_objs)
+	end
+	if testing then
+		ex(bad_objs)
 	end
 
-	if skip ~= true then
-		ChoGGi.ComFuncs.ResetHumanCentipedes()
-	end
+	ChoGGi.ComFuncs.ResetHumanCentipedes()
 	MsgPopup(
 		T(4493, "All"),
 		Strings[302535920000597--[[Stutter With High FPS]]]

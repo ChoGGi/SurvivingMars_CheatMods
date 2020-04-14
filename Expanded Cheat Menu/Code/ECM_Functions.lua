@@ -3671,12 +3671,14 @@ function ChoGGi.ComFuncs.CloseChildExamineDlgs(self)
 	end
 end
 
-function ChoGGi.ComFuncs.CheckForBorkedTransportPath(obj)
+function ChoGGi.ComFuncs.CheckForBorkedTransportPath(obj, list)
 	CreateRealTimeThread(function()
 		-- let it sleep for awhile
-		Sleep(1000)
+--~ 		Sleep(1000)
+		Sleep(100)
 		-- 0 means it's stopped, so anything above that and without a path means it's borked (probably)
 		if obj:GetAnim() > 0 and obj:GetPathLen() == 0 then
+			list[obj] = true
 			obj:InterruptCommand()
 			MsgPopup(
 				Strings[302535920001267--[[%s at position: %s was stopped.]]]:format(RetName(obj), obj:GetVisualPos()),

@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local ConstantDisastersModLoaded
+
 local mod_Overkill
 local mod_NoDeposits
 local options
@@ -12,7 +14,14 @@ local function ModOptions()
 end
 
 -- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
+function OnMsg.ModsReloaded()
+	-- abort if "main" mod is installed
+	if table.find(ModsLoaded, "id", "ChoGGi_GameRulesConstantDisasters") then
+		ConstantDisastersModLoaded = true
+		return
+	end
+	ModOptions()
+end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
@@ -46,7 +55,9 @@ end
 
 GlobalGameTimeThread("ChoGGi_MeteorThreat_Thread", function()
 	local meteors = GetMeteorsDescr()
-	if not IsGameRuleActive("ChoGGi_MeteorThreat") or not meteors or meteors.forbidden then
+	if ConstantDisastersModLoaded
+		or not IsGameRuleActive("ChoGGi_MeteorThreat") or not meteors
+	then
 		return
 	end
 
@@ -82,6 +93,9 @@ end)
 local orig_GenerateMeteor = GenerateMeteor
 function GenerateMeteor(...)
 	local meteor = orig_GenerateMeteor(...)
+	if ConstantDisastersModLoaded then
+		return meteor
+	end
 	if mod_NoDeposits then
 		meteor.deposit_type = "Rocks"
 	end
@@ -89,7 +103,7 @@ function GenerateMeteor(...)
 end
 
 function OnMsg.ClassesPostprocess()
-	if GameRulesMap.ChoGGi_MeteorThreat then
+	if ConstantDisastersModLoaded or GameRulesMap.ChoGGi_MeteorThreat then
 		return
 	end
 

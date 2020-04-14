@@ -70,6 +70,7 @@ do -- AddMsgToFunc
 		_G[class_name][func_name] = function(obj, ...)
 			-- send obj along with any extra args i added
 			if thread then
+				-- calling it from a thread creates a slight delay
 				CreateRealTimeThread(Msg, msg_str, obj, varargs)
 			else
 				Msg(msg_str, obj, varargs)

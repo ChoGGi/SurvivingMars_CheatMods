@@ -1,0 +1,3 @@
+heat wave
+evaporates water from tanks/lakes
+lowers moisture produced by moist vaps

@@ -151,7 +151,7 @@ function ChoGGi_VCM_MapImageDlg:Init(parent, context)
 		or ""
 
 	if tech_variety ~= "" or chaos_theory ~= "" then
-		self.warning_str = T(302535920011334, [[Random tech game rule(s) <color red>active!</color>
+		self.warning_str = T(302535920011334, [[Random tech game rule(s) <color ChoGGi_red>active!</color>
 Breakthroughs will be random as well.
 ]]) .. tech_variety .. chaos_theory
 		self.idShowExtra.RolloverText = self.idShowExtra.RolloverText
