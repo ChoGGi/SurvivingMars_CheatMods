@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v15.1 (Unreleased)
+### Changed:
+- Cleaned up the Fixes menu.
 
 ## v15.0 (12 Apr 2020)
 ### Changed:

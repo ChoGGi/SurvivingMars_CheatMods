@@ -1,35 +1,8 @@
 -- See LICENSE for terms
 
-local mod_Option1
-local mod_AdjustLineLength
-local max_line_len
-
--- fired when settings are changed/init
-local function ModOptions()
-	mod_Option1 = CurrentModOptions:GetProperty("Option1")
-	mod_AdjustLineLength = CurrentModOptions:GetProperty("AdjustLineLength")
-
-	-- how long passages can be
-	local max_hex = GridConstructionController.max_hex_distance_to_allow_build - mod_AdjustLineLength
-	-- hex to hex
-	max_line_len = max_hex * 10 * guim
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
-
+-- local some globals
 local pairs = pairs
 local table_sort = table.sort
-
 local GetEntityBuildShape = GetEntityBuildShape
 local HexAngleToDirection = HexAngleToDirection
 local IsValid = IsValid
@@ -46,9 +19,48 @@ local green = green
 -- keep my hexes above dome ones (30 is from UpdateShapeHexes(obj))
 local point31z = point(0, 0, 31)
 -- no sense in checking domes too far away
-local too_far_away = 50000
+local too_far_away = 5000000
 -- stores list of domes, markers, and dome points
 local dome_list = {}
+
+local mod_Enable
+local mod_AdjustLineLength
+local max_line_len
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_Enable = CurrentModOptions:GetProperty("Enable")
+	mod_AdjustLineLength = CurrentModOptions:GetProperty("AdjustLineLength")
+
+	-- how long passages can be
+	local max_hex = GridConstructionController.max_hex_distance_to_allow_build - mod_AdjustLineLength
+	-- hex to hex
+	max_line_len = max_hex * 10 * guim
+end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= CurrentModId and id ~= "ChoGGi_ConstructionExtendLength"
+		-- Longer Passages Tech
+		and id ~= "SydEojd"
+	then
+		return
+	end
+
+	-- remove limit if mod(s) enabled
+	if table.find(ModsLoaded, "id", "ChoGGi_ConstructionExtendLength")
+		or table.find(ModsLoaded, "id", "SydEojd")
+	then
+		too_far_away = HexMapWidth * 1000
+	else
+		too_far_away = 50000
+	end
+
+	ModOptions()
+end
 
 -- if these are here when a save is loaded without this mod then it'll spam the console
 function OnMsg.SaveGame()
@@ -109,15 +121,17 @@ local function BuildMarkers(dome)
 end
 
 -- add any existing domes to dome_list
-local function BuildExistingDomeSpots()
-	local domes = UICity.labels.Domes or ""
+local function Startup()
+	ModOptions()
+
+	-- add markers for existing domes
+	local domes = UICity.labels.Dome or ""
 	for i = 1, #domes do
 		BuildMarkers(domes[i])
 	end
 end
-OnMsg.LoadGame = BuildExistingDomeSpots
--- I doubt any domes are on a new game (maybe a tutorial level?)
-OnMsg.CityStart = BuildExistingDomeSpots
+OnMsg.LoadGame = Startup
+OnMsg.CityStart = Startup
 
 -- sort the dome spots by the nearest to the "pos"
 local function RetNearestSpot(dome, pos)
@@ -141,11 +155,11 @@ end
 
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit(...)
-	if mod_Option1 then
+	if mod_Enable then
 --~ ex(dome_list)
 		if self.template:IsKindOf("Dome") then
 			-- loop through all domes and attach a line
-			local domes = UICity.labels.Domes or ""
+			local domes = UICity.labels.Dome or ""
 			for i = 1, #domes do
 				BuildMarkers(domes[i])
 			end
@@ -219,7 +233,7 @@ end
 
 local orig_ConstructionController_Rotate = ConstructionController.Rotate
 function ConstructionController:Rotate(...)
-	if mod_Option1 then
+	if mod_Enable then
 		-- it needs to fire first so we can get updated angle
 		local ret = orig_ConstructionController_Rotate(self, ...)
 		UpdateMarkers(self)
@@ -231,7 +245,7 @@ end
 
 local orig_ConstructionController_UpdateCursor = ConstructionController.UpdateCursor
 function ConstructionController:UpdateCursor(pos, ...)
-	if mod_Option1 then
+	if mod_Enable then
 		UpdateMarkers(self, pos)
 	end
 	return orig_ConstructionController_UpdateCursor(self, pos, ...)

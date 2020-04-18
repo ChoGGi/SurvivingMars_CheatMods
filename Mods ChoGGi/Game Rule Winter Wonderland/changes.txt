@@ -1,5 +1,0 @@
-v0.3
-Added support for Game Rules Permanent Disasters
-
-v0.2
-Fixed odd bug resulting in having no initial sector.

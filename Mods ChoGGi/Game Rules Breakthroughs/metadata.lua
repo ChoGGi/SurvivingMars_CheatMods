@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Game Rules Breakthroughs",
-	"version", 8,
+	"version", 9,
 	"version_major", 0,
-	"version_minor", 8,
+	"version_minor", 9,
 	"image", "Preview.png",
 	"id", "ChoGGi_GameRulesBreakthroughs",
 	"steam_id", "1753933193",
@@ -18,5 +18,6 @@ return PlaceObj("ModDef", {
 Mod Options:
 Breakthroughs Researched: Research instead of unlock breakthroughs (New game needed after option is applied).
 Sort Breakthrough List: Sort the list of breakthroughs alphabetically (order effects in-game cost), disable for random.
+Exclude Breakthroughs: Enabling a rule will stop that breakthrough from appearing.
 ]],
 })

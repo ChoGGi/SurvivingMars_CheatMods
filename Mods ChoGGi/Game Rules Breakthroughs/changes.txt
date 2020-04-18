@@ -1,3 +1,6 @@
+v0.9
+Added mod option to exclude breakthroughs.
+
 v0.8
 Mod option to research tech wasn't working.
 

@@ -1,6 +1,6 @@
 return {
 	PlaceObj("ModItemOptionToggle", {
-		"name", "Option1",
+		"name", "Enable",
 		"DisplayName", T(302535920011067, "Show during construction"),
 		"DefaultValue", true,
 	}),

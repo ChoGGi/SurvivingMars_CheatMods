@@ -2,11 +2,16 @@
 
 local mod_BreakthroughsResearched
 local mod_SortBreakthroughs
+local mod_ExcludeBreakthroughs
+local options
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_BreakthroughsResearched = CurrentModOptions:GetProperty("BreakthroughsResearched")
-	mod_SortBreakthroughs = CurrentModOptions:GetProperty("SortBreakthroughs")
+	options = options or CurrentModOptions
+
+	mod_BreakthroughsResearched = options:GetProperty("BreakthroughsResearched")
+	mod_SortBreakthroughs = options:GetProperty("SortBreakthroughs")
+	mod_ExcludeBreakthroughs = options:GetProperty("ExcludeBreakthroughs")
 end
 
 -- load default/saved settings
@@ -19,19 +24,6 @@ function OnMsg.ApplyModOptions(id)
 	end
 
 	ModOptions()
-end
-
-local T = T
-local _InternalTranslate = _InternalTranslate
-local procall = procall
-
-local function SafeTrans(...)
-	local varargs = ...
-	local str
-	procall(function()
-		str = _InternalTranslate(T(varargs))
-	end)
-	return str or T(302535920011424, "Missing text... Nope just needs UICity which isn't around till the game starts (ask the devs).")
 end
 
 function OnMsg.ClassesPostprocess()
@@ -51,6 +43,26 @@ function OnMsg.ClassesPostprocess()
 	else
 		breaks = Presets.TechPreset.Breakthroughs
 	end
+
+	local T = T
+	local SafeTrans
+	-- use rawget so game doesn't complain about missing _G stuff
+	if rawget(_G, "ChoGGi") then
+		SafeTrans = ChoGGi.ComFuncs.Translate
+	else
+		local _InternalTranslate = _InternalTranslate
+		local procall = procall
+
+		SafeTrans = function (...)
+			local varargs = ...
+			local str
+			procall(function()
+				str = _InternalTranslate(T(varargs))
+			end)
+			return str or T(302535920011424, "Missing text... Nope just needs UICity which isn't around till the game starts (ask the devs).")
+		end
+	end
+
 
 	local name
 	if mod_BreakthroughsResearched then
@@ -84,6 +96,10 @@ function OnMsg.ClassesPostprocess()
 			id = "ChoGGi_" .. def.id,
 			PlaceObj("Effect_Code", {
 				OnApplyEffect = function(_, city)
+					if mod_ExcludeBreakthroughs then
+						return
+					end
+
 					if mod_BreakthroughsResearched then
 						city:SetTechResearched(def.id)
 					else
@@ -98,7 +114,6 @@ end
 
 -- prevent blank mission profile screen
 function OnMsg.LoadGame()
-	local rules = g_CurrentMissionParams.idGameRules or empty_table
 	local GameRulesMap = GameRulesMap
 	for rule_id in pairs(rules) do
 		-- if it isn't in the map then it isn't a valid rule
@@ -106,4 +121,33 @@ function OnMsg.LoadGame()
 			rules[rule_id] = nil
 		end
 	end
+end
+
+local lookup_rules
+
+local orig_City_TechAvailableCondition = City.TechAvailableCondition
+function City:TechAvailableCondition(tech, ...)
+	if not mod_ExcludeBreakthroughs then
+		return orig_City_TechAvailableCondition(self, tech, ...)
+	end
+
+	-- build the list once
+	if not lookup_rules then
+		lookup_rules = {}
+		local rules = g_CurrentMissionParams.idGameRules or empty_table
+		for rule_id in pairs(rules) do
+			-- build list of choggi rules
+			if rule_id:sub(1, 7) == "ChoGGi_" then
+				-- length of rule name minus 7 for prefix
+				lookup_rules[rule_id:sub(-(rule_id:len()-7))] = true
+			end
+		end
+	end
+
+	-- return false to exclude tech
+	if lookup_rules[tech.id] then
+		return false
+	end
+
+	return orig_City_TechAvailableCondition(self, tech, ...)
 end

@@ -1,3 +1,6 @@
+v1.8
+It wasn't showing the dust grid for rockets.
+
 v1.7
 Added keybind toggle (it'll work even if mod is disabled in mod options).
 

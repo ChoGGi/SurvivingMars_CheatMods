@@ -46,7 +46,7 @@ local const_HoursPerDay = const.HoursPerDay
 -- ref to
 local dlg_frame
 
-local function AddResearchProgressBar(queue_count, dlg)
+local function AddResearchProgressBar2(queue_count, dlg)
 	if not dlg then
 		dlg = GetDialog("HUD")
 	end
@@ -199,7 +199,7 @@ local orig_OpenDialog = OpenDialog
 function OpenDialog(dlg_str, ...)
 	local dlg = orig_OpenDialog(dlg_str, ...)
 	if dlg_str == "HUD" then
-		AddResearchProgressBar(mod_QueueCount, dlg)
+		AddResearchProgressBar2(mod_QueueCount, dlg)
 		ModOptions()
 	end
 	return dlg

@@ -155,7 +155,7 @@ local function ShowGrids()
 					if is_rocket then
 						local q, r = WorldToHex(obj:GetPos())
 						local objs = HexGridGetObjects(ObjectGrid, q, r)
-						-- only actual rockets have a .landing_site so we need to check the obj grid
+						-- only actual rockets have a .landing_site so we need to check the obj grid for a pad
 						for k = 1, #objs do
 							if objs[k]:IsKindOf("LandingPad") then
 								landing_site = IsValid(objs[k])
@@ -171,7 +171,9 @@ local function ShowGrids()
 					end
 				else
 					local is_rocket = obj:IsKindOf("SupplyRocket")
-					if not is_rocket or is_rocket and not IsValid(obj.landing_site) then
+					if not is_rocket
+						or is_rocket and not IsValid(obj.landing_site.landing_pad)
+					then
 						ShowBuildingHexes(obj, "RangeHexMultiSelectRadius", "GetDustRadius")
 					end
 				end

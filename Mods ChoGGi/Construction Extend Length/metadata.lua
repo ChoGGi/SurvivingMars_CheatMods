@@ -13,11 +13,11 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Extend length of pipes/cables/passages from 20 to 500.
+	"description", [[Extend length of pipes/cables/passages from 20 to 250.
 
 Mod Options:
 Build Distance: How many hexes you can build.
-Passage Chunks: Passage length when bending.
+Passage Chunks: Passage length when bending (set it to the same as the dist if you're not sure).
 
 Requested by Adi.
 

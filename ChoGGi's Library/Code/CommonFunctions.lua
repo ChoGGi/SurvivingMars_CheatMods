@@ -5234,8 +5234,9 @@ function ChoGGi.ComFuncs.ModEditorActive()
 	end
 end
 function ChoGGi.ComFuncs.UpdateDepotCapacity(obj, max_store, storable)
-	max_store = obj[max_store or "max_storage_per_resource"]
+	max_store = max_store or obj.max_storage_per_resource
 	storable = storable or obj.storable_resources
+
 	for i = 1, #storable do
 		local resource_name = storable[i]
 		local demand = obj.demand
