@@ -5033,6 +5033,9 @@ function ChoGGi.ComFuncs.RetToolbarButton(params)
 end
 
 function ChoGGi.ComFuncs.IsAboveHeightLimit(obj)
+	if obj:IsKindOf("SupplyRocket") then
+		return
+	end
 	local z = obj:GetZ() or 0
 	if z > 65535 or obj.GetAttachOffset
 		and (z + obj:GetAttachOffset():z() > 65535)
@@ -5249,4 +5252,9 @@ end
 
 function ChoGGi.ComFuncs.GetModEnabled(mod_id)
 	return table.find(ModsLoaded, "id", mod_id)
+end
+
+function ChoGGi.ComFuncs.SetBuildingTemplates(template, key, value)
+	BuildingTemplates[template][key] = value
+	ClassTemplates.Building[template][key] = value
 end

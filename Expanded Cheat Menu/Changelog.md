@@ -1,6 +1,11 @@
 ## ECM Changelog
 
-## v15.1 (Unreleased)
+## v15.2 (Unreleased)
+
+## v15.1 (22 Apr 2020)
+### Fixed:
+- View All Entities only worked from main menu instead of ingame.
+
 ### Changed:
 - Cleaned up the Fixes menu.
 

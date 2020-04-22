@@ -527,6 +527,12 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 			-- don't fire the rest till map is good n loaded
 			WaitMsg("MessageBoxOpened")
 
+			-- wait a bit till we're sure the map is around
+			local GameState = GameState
+			while not GameState.gameplay do
+				Sleep(500)
+			end
+
 			-- close welcome to mars msg
 			local Dialogs = Dialogs
 			if Dialogs.PopupNotification then
@@ -540,11 +546,8 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 			local texture = table_find(TerrainTextures, "name", "Prefab_Orange")
 			terrain.SetTerrainType{type = texture or 1}
 
-			-- wait a bit till we're sure the map is around
-			local GameState = GameState
-			while not GameState.gameplay do
-				Sleep(500)
-			end
+			-- we need a delay when doing this from ingame instead of main menu
+			Sleep(1500)
 
 			-- make an index table of ents for placement
 			local entity_list = {}
@@ -632,7 +635,8 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 				cls()
 			end
 
-			Sleep(2500)
+			WaitMsg("OnRender")
+--~ 			Sleep(2500)
 			-- remove all notifications
 			local dlg = Dialogs.OnScreenNotificationsDlg
 			if dlg then
@@ -643,6 +647,10 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 			end
 
 		end)
+	end
+
+	if ChoGGi.testing then
+		return CallBackFunc(true)
 	end
 
 	ChoGGi.ComFuncs.QuestionBox(

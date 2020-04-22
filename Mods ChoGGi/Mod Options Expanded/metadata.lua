@@ -1,9 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Mod Options Expanded",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
-
+	"version_minor", 2,
 	"image", "Preview.png",
 	"id", "ChoGGi_ModOptionsExpanded",
 	"steam_id", "1813171300",
@@ -17,6 +16,8 @@ return PlaceObj("ModDef", {
 	"TagInterface", true,
 	"TagOther", true,
 	"description", [[The mod options added in Armstrong are nice, but still needs some improvements.
-So far all this does is remove the 400 MaxWidth added to the text.
+
+Remove the 400 MaxWidth added to the text.
+Buttons to adjust the number slider.
 ]],
 })

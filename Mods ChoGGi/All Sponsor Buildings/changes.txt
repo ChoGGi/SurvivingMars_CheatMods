@@ -1,3 +1,6 @@
+v0.4
+Added mod options to disable certain buildings.
+
 v0.3
 Updating code to parity with ECM.
 

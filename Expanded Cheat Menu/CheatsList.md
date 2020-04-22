@@ -327,7 +327,7 @@ ECM.Buildings.Capacity>Storage Mechanized Depots Temp: Allow the temporary stora
 ECM.Buildings.Capacity>Storage Mechanized Depots: Change mechanized depot storage capacity.
 ECM.Buildings.Capacity>Storage Other Depot: Change other storage depot capacity.
 ECM.Buildings.Capacity>Storage Universal Depot: 500000: Change universal storage depot capacity.
-ECM.Buildings.Capacity>Storage Waste Depot: 1000000: Change waste storage depot capacity.
+ECM.Buildings.Capacity>Storage Waste Depot: Change waste storage depot capacity.
 ECM.Buildings.Capacity>Worker Capacity: Set worker capacity of buildings of selected type, also applies to newly placed ones.
 ECM.Buildings.Farms>Crop fail threshold: Average performance of Farms required for Crops to succeed
 ECM.Buildings.Farms>Farm Shifts All On: Turns on all the farm shifts.
@@ -577,7 +577,7 @@ Game.UI>UI Transparency: Change the transparency of UI items (info panel, menu, 
 Shortcut Keys>Clear Log
 Shortcut Keys>Color Modifier Default Colour
 Shortcut Keys>Color Modifier Random Colour
-Shortcut Keys>Examine Objects Shift
+Shortcut Keys>Examine Objects Radius
 Shortcut Keys>Place Last Selected/Constructed Building
 Shortcut Keys>Restart
 Shortcut Keys>Show Console

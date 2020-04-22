@@ -24,6 +24,9 @@ if not ChoGGi.testing then
 	return
 end
 
+-- load up onmsg prints
+--~ dofile("AppData/Mods/Mods ChoGGi/OnMsg Print/Code/Script.lua")
+
 -- hopefully they'll report "LUA ERROR"s one of these days
 function OnMsg.OnLuaError(err, stack, ...)
 	print("OnLuaError", err, stack, ...)

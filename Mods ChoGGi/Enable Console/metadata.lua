@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 5,
 	"version_major", 0,
 	"version_minor", 5,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_EnableConsole",
 	"steam_id", "1747675475",
@@ -16,7 +15,7 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagInterface", true,
 	"TagTools", true,
-	"description", [[This will enable the console and the console log text (turn off in options).
+	"description", [[This will enable the console and the console log text (turn off in mod options).
 
 This is NOT meant to be used with Expanded Cheat Menu, which is what you should be using if you're modding.]],
 })

@@ -13,5 +13,5 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"TagGameplay", true,
-	"description", [[Remove limit for Rovers/Drones (2/20) on supply pods.]],
+	"description", [[Remove limit for Rovers/Drones (1/8 > 2/20) on supply pods.]],
 })

@@ -283,6 +283,11 @@ function OnMsg.ClassesPostprocess()
 		}
 	end
 
+	-- fiddle with mod options
+	if not table.find(ModsLoaded, "id", "ChoGGi_ModOptionsExpanded") then
+		ChoGGi.ComFuncs.ExpandModOptions(XTemplates)
+	end
+
 	if ChoGGi.UserSettings.FlushLog then
 		FlushLogFile()
 	end
@@ -1578,13 +1583,13 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 
 		-- anything that needs a thread/delay
 		CreateRealTimeThread(function()
-			-- always pause on start (for saves with missing mod buildings)
-			if testing and game_type == "Load" then
-				Sleep(100)
-				if UISpeedState ~= "pause" then
-					UICity:SetGameSpeed(0)
-				end
-			end
+--~ 			-- always pause on start (for saves with missing mod buildings)
+--~ 			if testing and game_type == "Load" then
+--~ 				Sleep(100)
+--~ 				if UISpeedState ~= "pause" then
+--~ 					UICity:SetGameSpeed(0)
+--~ 				end
+--~ 			end
 
 			-- clean up my old notifications (doesn't actually matter if there's a few left, but it can spam log)
 			local shown = g_ShownOnScreenNotifications or empty_table

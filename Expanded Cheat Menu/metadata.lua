@@ -4,13 +4,13 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 8,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "Expanded Cheat Menu Test",
-	"version", 151,
+	"version", 152,
 	"version_major", 15,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.png",
 	"id", "ChoGGi_CheatMenu",
 	"author", "ChoGGi",
@@ -108,8 +108,6 @@ return PlaceObj("ModDef", {
 
 		-- tortoise hares and all that
 		"Code/Testing.lua",
-
-		-- gee sure would be nice to load these like the devs do, but i suppose it's too much work to limit dofile env.
 	},
 
 	"description", [[and Modding Tools. Enables cheat menu, cheat info pane, console, examine object, adds a few hundred menu items.

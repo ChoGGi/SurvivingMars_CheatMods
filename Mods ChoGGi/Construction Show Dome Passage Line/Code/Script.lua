@@ -41,12 +41,19 @@ end
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
 
+-- return if not one of these ids
+local lookup_ids = {
+	-- mine
+	ChoGGi_ConstructionExtendLength = true,
+	-- Longer Passages Tech
+	SydEojd = true,
+	-- this mod
+	[CurrentModId] = true,
+}
+
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId and id ~= "ChoGGi_ConstructionExtendLength"
-		-- Longer Passages Tech
-		and id ~= "SydEojd"
-	then
+	if not lookup_ids[id] then
 		return
 	end
 

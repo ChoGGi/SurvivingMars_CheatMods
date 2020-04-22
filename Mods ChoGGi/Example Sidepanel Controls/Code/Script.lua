@@ -16,9 +16,11 @@ end
 
 function OnMsg.ClassesPostprocess()
 
-	RemoveXTemplateSections(XTemplates.sectionWorkplace, "SOMETHINGUNIQUE1")
+	local template = XTemplates.sectionWorkplace
+	RemoveXTemplateSections(template, "SOMETHINGUNIQUE1")
+
 	-- this adds a button to all workplaces that changes depending on Object.working (a building that works...)
-	XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
+	template[#template+1] = PlaceObj("XTemplateTemplate", {
 		-- we use this to check for our added template crap
 		"SOMETHINGUNIQUE1", true,
 
@@ -75,9 +77,9 @@ function OnMsg.ClassesPostprocess()
 		}),
 	})
 
-	RemoveXTemplateSections(XTemplates.sectionWorkplace, "SOMETHINGUNIQUE2")
+	RemoveXTemplateSections(template, "SOMETHINGUNIQUE2")
 	-- slider added to all workplaces to adjust number of workers allowed
-	XTemplates.sectionWorkplace[#XTemplates.sectionWorkplace+1] = PlaceObj("XTemplateTemplate", {
+	template[#template+1] = PlaceObj("XTemplateTemplate", {
 		"SOMETHINGUNIQUE2", true,
 
 		"__context_of_kind", "Workplace",
@@ -116,10 +118,12 @@ function OnMsg.ClassesPostprocess()
 		}),
 	})
 
-	RemoveXTemplateSections(XTemplates.ipBuilding[1], "SOMETHINGUNIQUE3")
+	template = XTemplates.ipBuilding[1]
+
+	RemoveXTemplateSections(template, "SOMETHINGUNIQUE")
 	-- two sliders, one header, or just remove Title to not have one at all
-	XTemplates.ipBuilding[1][#XTemplates.ipBuilding[1]+1] = PlaceObj("XTemplateTemplate", {
-		"SOMETHINGUNIQUE3", true,
+	template[#template+1] = PlaceObj("XTemplateTemplate", {
+		"SOMETHINGUNIQUE", true,
 
 		"__context_of_kind", "Workplace",
 		"__template", "InfopanelActiveSection",
@@ -158,11 +162,13 @@ function OnMsg.ClassesPostprocess()
 		}),
 	})
 
-	RemoveXTemplateSections(XTemplates.sectionWorkplace, "SOMETHINGUNIQUE4")
+	template = XTemplates.sectionWorkplace[1]
+
+	RemoveXTemplateSections(XTemplates, "SOMETHINGUNIQUE3")
 	-- this adds a button to the resource overview that only shows when hour is over 10
 	-- it needs the [1] or it takes over the whole screen (it's usually only needed for ipResourceOverview not the section ones)
-	XTemplates.ipResourceOverview[1][#XTemplates.ipResourceOverview[1]+1] = PlaceObj("XTemplateTemplate", {
-		"SOMETHINGUNIQUE4", true,
+	XTemplates[#XTemplates+1] = PlaceObj("XTemplateTemplate", {
+		"SOMETHINGUNIQUE3", true,
 
 		-- added to the resource overview panel
 		"__context_of_kind", "ResourceOverview",
@@ -186,10 +192,10 @@ function OnMsg.ClassesPostprocess()
 		end,
 	})
 
-	RemoveXTemplateSections(XTemplates.sectionWorkplace, "SOMETHINGUNIQUE5")
+	RemoveXTemplateSections(template, "SOMETHINGUNIQUE4")
 	-- add an actual button (at the top of the panel)
-	XTemplates.ipSubsurfaceDeposit[1][#XTemplates.ipSubsurfaceDeposit[1]+1] = PlaceObj("XTemplateTemplate", {
-		"SOMETHINGUNIQUE5", true,
+	template[#template+1] = PlaceObj("XTemplateTemplate", {
+		"SOMETHINGUNIQUE4", true,
 
 		"__template", "InfopanelButton",
 		"Icon", "UI/Icons/Sections/Metals_2.tga",

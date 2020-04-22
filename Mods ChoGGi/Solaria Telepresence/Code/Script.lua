@@ -4,11 +4,11 @@ local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local RetName = ChoGGi.ComFuncs.RetName
 local FilterFromTable = ChoGGi.ComFuncs.FilterFromTable
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local AddXTemplate = ChoGGi.ComFuncs.AddXTemplate
 
 local OnMsg = OnMsg
 local IsValid = IsValid
 local RebuildInfopanel = RebuildInfopanel
-local XTemplates = XTemplates
 local ObjModified = ObjModified
 local PlaceObj = PlaceObj
 local ViewPos = ViewPos
@@ -304,9 +304,8 @@ function Workplace:OnDestroyed()
 end
 
 function OnMsg.ClassesPostprocess()
-	local XTemplates = XTemplates
-	local AddXTemplate = ChoGGi.ComFuncs.AddXTemplate
-	AddXTemplate(XTemplates.sectionWorkplace, "SolariaTelepresence_sectionWorkplace1", nil, {
+	local template = XTemplates.sectionWorkplace
+	AddXTemplate(template, "SolariaTelepresence_sectionWorkplace1", nil, {
 		__context_of_kind = "Solaria",
 		RolloverTitle = T(302535920011281, [[Telepresence]]),
 		RolloverHint = T(302535920011282, [[Change to Pickup and select resource pile you've previously marked for pickup.
@@ -352,7 +351,7 @@ Right click in list to view (closes menu).]]))
 	})
 
 	-- list controlled buildings
-	AddXTemplate(XTemplates.sectionWorkplace, "SolariaTelepresence_sectionWorkplace2", nil, {
+	AddXTemplate(template, "SolariaTelepresence_sectionWorkplace2", nil, {
 		__context_of_kind = "Solaria",
 		Icon = "UI/Icons/Upgrades/build_2.tga",
 		Title = T(302535920011288, [[All Attached Buildings]]),
@@ -375,7 +374,7 @@ Right click in list to view (closes menu).]]))
 	})
 
 	-- go to controlled/controller building
-	AddXTemplate(XTemplates.sectionWorkplace, "SolariaTelepresence_sectionWorkplace3", nil, {
+	AddXTemplate(template, "SolariaTelepresence_sectionWorkplace3", nil, {
 		__context_of_kind = "Workplace",
 		Icon = "UI/Icons/Anomaly_Event.tga",
 		RolloverTitle = T(302535920011281, [[Telepresence]]),
