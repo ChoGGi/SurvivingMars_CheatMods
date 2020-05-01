@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"description", [[Adds all breakthroughs to game rules (selected rules will be unlocked).
 
 Mod Options:
-Breakthroughs Researched: Research instead of unlock breakthroughs (New game needed after option is applied).
+Breakthroughs Researched: Research instead of unlock breakthroughs (New game needed after option is applied or maybe restart game).
 Sort Breakthrough List: Sort the list of breakthroughs alphabetically (order effects in-game cost), disable for random.
 Exclude Breakthroughs: Enabling a rule will stop that breakthrough from appearing.
 ]],

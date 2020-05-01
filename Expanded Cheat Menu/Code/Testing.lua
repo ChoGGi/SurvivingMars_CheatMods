@@ -472,6 +472,59 @@ end)
 
 -- benchmarking stuff
 
+
+function ChoGGi.testing.LengthLocal()
+	local objs = UICity.labels.SurfaceDepositMarker or ""
+
+	ChoGGi.ComFuncs.TickStart("LengthLocal.Tick.1")
+	for _ = 1, 1000000 do
+		local count = #objs
+		if count > 0 then
+			for i = 1, count do
+				if objs[i] then
+				end
+			end
+		end
+	end
+	ChoGGi.ComFuncs.TickEnd("LengthLocal.Tick.1")
+
+	ChoGGi.ComFuncs.TickStart("LengthLocal.Tick.2")
+	for _ = 1, 1000000 do
+		for i = 1, #objs do
+			if objs[i] then
+			end
+		end
+	end
+	ChoGGi.ComFuncs.TickEnd("LengthLocal.Tick.2")
+
+end
+
+function ChoGGi.testing.IsKindOfSub()
+
+	ChoGGi.ComFuncs.TickStart("IsKindOfSub.Tick.1")
+	local objs = UICity.labels.SurfaceDepositMarker or ""
+	for _ = 1, 100000 do
+		for i = #objs, 1, -1 do
+			local obj = objs[i]
+			if obj:IsKindOf("ElectricityGridElement") then
+			end
+		end
+	end
+	ChoGGi.ComFuncs.TickEnd("IsKindOfSub.Tick.1")
+
+	ChoGGi.ComFuncs.TickStart("IsKindOfSub.Tick.2")
+	objs = UICity.labels.SurfaceDepositMarker or ""
+	for _ = 1, 100000 do
+		for i = #objs, 1, -1 do
+			local obj = objs[i]
+			if obj.entity:sub(1, 5) == "Cable" then
+			end
+		end
+	end
+	ChoGGi.ComFuncs.TickEnd("IsKindOfSub.Tick.2")
+
+end
+
 function ChoGGi.testing.LocalLoops()
 	-- if same value outside is faster, otherwise new local
 

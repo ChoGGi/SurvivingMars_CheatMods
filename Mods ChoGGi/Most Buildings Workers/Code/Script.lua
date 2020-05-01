@@ -70,10 +70,12 @@ local workplaces = {
 
 local mod_DefaultPerformance
 local UpdateWorkers
+local options
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_DefaultPerformance = CurrentModOptions:GetProperty("DefaultPerformance")
+	options = CurrentModOptions
+	mod_DefaultPerformance = options:GetProperty("DefaultPerformance")
 
 	if not GameState.gameplay then
 		return

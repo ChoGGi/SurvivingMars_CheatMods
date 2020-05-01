@@ -1,3 +1,7 @@
+v0.5
+Pipes as well.
+Added grid info to cables/pipes.
+
 v0.4
 Changed selection arrow to the usual hexy selection thing.
 Cleaned up the code.

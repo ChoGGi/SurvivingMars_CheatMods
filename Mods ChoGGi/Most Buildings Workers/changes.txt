@@ -1,2 +1,5 @@
+v0.3
+Fixed a bug with mod options (whoops).
+
 v0.2
 Evans update.

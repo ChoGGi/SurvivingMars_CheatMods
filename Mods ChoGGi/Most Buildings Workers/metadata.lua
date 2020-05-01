@@ -8,10 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Most Buildings Workers",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
-
+	"version_minor", 3,
 	"image", "Preview.png",
 	"id", "ChoGGi_MostBuildingsWorkers",
 	"steam_id", "1823230886",

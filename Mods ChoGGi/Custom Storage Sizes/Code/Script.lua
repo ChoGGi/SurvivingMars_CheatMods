@@ -68,7 +68,7 @@ local options
 
 -- fired when settings are changed/init
 local function ModOptions()
-	options = options or CurrentModOptions
+	options = CurrentModOptions
 
 	for id in pairs(mod_options) do
 		mod_options[id] = options:GetProperty("Capacity_" .. id)

@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2065605741",
 	"pops_any_uuid", "82ce2e51-b1b4-43fd-ba74-de6a2674763b",
 	"lua_revision", 249143,
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
@@ -14,5 +14,5 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"has_options", true,
 	"TagGameplay", true,
-	"description", [[Drones will always use nearest wasterock dump site.]],
+	"description", [[Drones will always use nearest wasterock dump site or processor.]],
 })

@@ -1,16 +1,13 @@
 -- See LICENSE for terms
 
 local table_remove = table.remove
-local orig_UpdateConstructionObstructors = ConstructionController.UpdateConstructionObstructors
-function ConstructionController:UpdateConstructionObstructors(...)
-	local ret = orig_UpdateConstructionObstructors(self, ...)
-
-	local objs = self.construction_obstructors or ""
-	for i = #objs, 1, -1 do
-		if objs[i]:IsKindOf("ElectricityGridElement") then
-			table_remove(objs, i)
+function ConstructionController:IsObstructed()
+	local obstructors = self.construction_obstructors or ""
+	for i = #obstructors, 1, -1 do
+		if obstructors[i]:IsKindOf("ElectricityGridElement") then
+			table_remove(obstructors, i)
 		end
 	end
-
-	return ret
+	-- orig func
+	return #obstructors > 0
 end

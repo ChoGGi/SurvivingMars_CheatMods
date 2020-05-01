@@ -219,7 +219,7 @@ function ChoGGi.MenuFuncs.UnlockAchievements()
 		CreateRealTimeThread(function()
 			for i = 1, #choice do
 				AchievementUnlock(XPlayerActive, choice[i].value)
-				Sleep(100)
+				WaitMsg("OnRender")
 			end
 
 			MsgPopup(

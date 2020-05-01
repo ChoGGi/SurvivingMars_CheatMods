@@ -1,0 +1,3 @@
+v0.2
+Plant Interval wasn't working correctly.
+Limited max range to stave off crashing.

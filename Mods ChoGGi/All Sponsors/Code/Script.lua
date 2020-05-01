@@ -1,10 +1,27 @@
 -- See LICENSE for terms
 
-local skip_lookup = {
-	random = true,
-	none = true,
-	default = true,
-}
+local mod_MaxRivals
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_MaxRivals = CurrentModOptions:GetProperty("MaxRivals")
+	-- make sure we're not in menus
+	if not GameState.gameplay then
+		return
+	end
+end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= CurrentModId then
+		return
+	end
+
+	ModOptions()
+end
 
 local function StartupCode()
 	-- abort if there's no rivals
@@ -12,32 +29,23 @@ local function StartupCode()
 		return
 	end
 
-	-- get current rival count
-	local RivalAIs = RivalAIs
-	local count = 0
-	for id in pairs(RivalAIs) do
-		count = count + 1
-		-- add 'em to the skip_lookup table for spawn loop below
-		skip_lookup[id] = true
-	end
-
 	-- we only add more if there's three rivals already
+	local count = table.count(RivalAIs)
 	if count ~= 3 then
 		return
 	end
 
-	-- skip current sponsor
-	skip_lookup[g_CurrentMissionParams.idMissionSponsor] = true
-
 	local SpawnRivalAI = SpawnRivalAI
 
 	-- spawn all the rest
-	local rival_colonies = MissionParams.idRivalColonies.items
-	for i = 1, #rival_colonies do
-		local rival = rival_colonies[i]
-		if not skip_lookup[rival.id] then
-			SpawnRivalAI(rival)
+	for i = 1, (#Presets.DumbAIDef.MissionSponsors - 2) do
+		-- stop spawning when we're maxed out
+		if count >= mod_MaxRivals then
+			break
 		end
+		-- defaults to random rival
+		SpawnRivalAI()
+		count = count + 1
 	end
 
 end

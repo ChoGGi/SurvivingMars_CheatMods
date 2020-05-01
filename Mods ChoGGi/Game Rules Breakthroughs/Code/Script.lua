@@ -7,7 +7,7 @@ local options
 
 -- fired when settings are changed/init
 local function ModOptions()
-	options = options or CurrentModOptions
+	options = CurrentModOptions
 
 	mod_BreakthroughsResearched = options:GetProperty("BreakthroughsResearched")
 	mod_SortBreakthroughs = options:GetProperty("SortBreakthroughs")
@@ -46,7 +46,7 @@ function OnMsg.ClassesPostprocess()
 
 	local T = T
 	local SafeTrans
-	-- use rawget so game doesn't complain about missing _G stuff
+	-- use rawget so game doesn't complain about _G
 	if rawget(_G, "ChoGGi") then
 		SafeTrans = ChoGGi.ComFuncs.Translate
 	else
@@ -89,11 +89,12 @@ function OnMsg.ClassesPostprocess()
 	local PlaceObj = PlaceObj
 	for i = 1, #breaks do
 		local def = breaks[i]
+		local id = def.id
 		PlaceObj("GameRules", {
 			description = SafeTrans{def.description, def},
 			display_name = T(11451, "Breakthrough") .. ": " .. T(def.display_name),
 			group = "Default",
-			id = "ChoGGi_" .. def.id,
+			id = "ChoGGi_" .. id,
 			PlaceObj("Effect_Code", {
 				OnApplyEffect = function(_, city)
 					if mod_ExcludeBreakthroughs then
@@ -101,9 +102,9 @@ function OnMsg.ClassesPostprocess()
 					end
 
 					if mod_BreakthroughsResearched then
-						city:SetTechResearched(def.id)
+						city:SetTechResearched(id)
 					else
-						city:SetTechDiscovered(def.id)
+						city:SetTechDiscovered(id)
 					end
 				end
 			}),

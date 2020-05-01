@@ -47,7 +47,7 @@ local options
 
 -- fired when settings are changed/init
 local function ModOptions()
-	options = options or CurrentModOptions
+	options = CurrentModOptions
 
 	for i = 1, c do
 		local id = traits_list[i]

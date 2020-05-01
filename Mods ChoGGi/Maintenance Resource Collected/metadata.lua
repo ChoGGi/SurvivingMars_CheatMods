@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_MaintenanceResourceCollected",
 	"steam_id", "1768553281",
@@ -14,5 +13,5 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"TagInterface", true,
-	"description", [[Show how much has been collected for maintenance (useful for larger repairs).]],
+	"description", [[Show how much needs to be collected for maintenance (useful for larger repairs).]],
 })

@@ -16,6 +16,9 @@ return PlaceObj("ModDef", {
 --~ 	},
 	"description", [[This cylindrical shaped house has got a lot of glass. There is a dead tree inside you can look at while safely managing the spiral staircases.
 
+If you clump too many together; drones won't be able to repair when they need maintenance.
+https://steamcommunity.com/app/464920/discussions/0/2263565217514774947/
+
 To do: colonists walking inside.
 
 

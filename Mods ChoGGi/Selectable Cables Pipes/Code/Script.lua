@@ -2,27 +2,44 @@
 
 -- we need to return our new infopanel (if it isn"t another panel)
 local orig_ElectricityGridElement_GetInfopanelTemplate = ElectricityGridElement.GetInfopanelTemplate
-function ElectricityGridElement:GetInfopanelTemplate(...)
-	local ret = orig_ElectricityGridElement_GetInfopanelTemplate(self, ...)
+function ElectricityGridElement.GetInfopanelTemplate(...)
+	local ret = orig_ElectricityGridElement_GetInfopanelTemplate(...)
 	if not ret or ret == "ipLeak" then
 		return "ipCable"
 	end
 	return ret
 end
+-- needed to show grid info template
+function ElectricityGridElement.ShowUISectionElectricityGrid()
+	return true
+end
+
+local orig_LifeSupportGridElement_GetInfopanelTemplate = LifeSupportGridElement.GetInfopanelTemplate
+function LifeSupportGridElement:GetInfopanelTemplate(...)
+	local ret = orig_LifeSupportGridElement_GetInfopanelTemplate(self, ...)
+	if self.is_switch or self.auto_connect or self.pillar
+		or self:IsKindOf("ConstructionSite")
+	then
+		return ret
+	end
+	-- needed to show grid info
+	self.pillar = true
+
+	return "ipPillaredPipe"
+end
 
 -- so we know something is selected
-function ElectricityGridElement:OnSelected()
+local function OnSelected(self)
 	-- not construction site and not a switch (they already have a parsystem added)
 	if not self.building_class_proto and not self.is_switch then
 		AddSelectionParticlesToObj(self)
 	end
 end
+ElectricityGridElement.OnSelected = OnSelected
+LifeSupportGridElement.OnSelected = OnSelected
 
 function OnMsg.ClassesPostprocess()
-
-	local XTemplates, PlaceObj = XTemplates, PlaceObj
-
-	-- saved per each game
+	-- clear old if existing
 	if XTemplates.ipCable then
 		XTemplates.ipCable:delete()
 	end
@@ -32,11 +49,12 @@ function OnMsg.ClassesPostprocess()
 		id = "ipCable",
 		PlaceObj("XTemplateTemplate", {
 			"__context_of_kind", "ElectricityGridElement",
-			"__condition", function (_, context) return context.is_hub or not context.is_switch end,
+			"__condition", function (_, context)
+				return context.is_hub or not context.is_switch
+			end,
 			"__template", "Infopanel",
 			"Description", T(313911890683, "<description>"),
 		}, {
-
 			PlaceObj("XTemplateTemplate", {
 				"comment", "salvage",
 				"__template", "InfopanelButton",
@@ -70,7 +88,10 @@ function OnMsg.ClassesPostprocess()
 					end,
 				}),
 			}),
-
+			PlaceObj('XTemplateTemplate', {
+				'__template', "sectionPowerGrid",
+			}),
 		}),
 	})
+
 end

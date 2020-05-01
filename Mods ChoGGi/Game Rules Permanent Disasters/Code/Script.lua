@@ -32,7 +32,7 @@ local options
 
 -- fired when settings are changed/init
 local function ModOptions()
-	options = options or CurrentModOptions
+	options = CurrentModOptions
 	mod_MeteorsOverkill = options:GetProperty("MeteorsOverkill")
 	mod_MeteorsNoDeposits = options:GetProperty("MeteorsNoDeposits")
 	mod_DustStormsAllowRockets = options:GetProperty("DustStormsAllowRockets")

@@ -13,15 +13,15 @@ for id, bld in pairs(BuildingTemplates) do
 	for i = 1, 3 do
 		if sponsor_buildings[id] or bld["sponsor_status" .. i] ~= false then
 			mod_options["ChoGGi_" .. id] = false
+			sponsor_buildings[id] = true
 			break
 		end
 	end
 end
 
-
 -- fired when settings are changed/init
 local function ModOptions()
-	options = options or CurrentModOptions
+	options = CurrentModOptions
 	for id in pairs(mod_options) do
 		mod_options[id] = options:GetProperty(id)
 	end
