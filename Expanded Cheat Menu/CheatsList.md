@@ -294,7 +294,7 @@ Debug.Path Markers>Path Markers: Shows the selected unit path or show a list to 
 Debug.Reloads>Particles Reload: Reloads particles from "Data/Particles"...
 Debug.Reloads>Reload Lua: Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it).
 Warning: Disables cheat menu submenus.
-Debug.Story Bits>Skip Story Bits: Always select first option after slight delay.
+Debug.Story Bits>Skip Story Bits: When a story bit appears; always select first option after slight delay.
 Debug.Story Bits>Test Story Bits: Test activate a story bit.
 Debug.Toggles>Anim Debug Toggle: Attaches text to each object showing animation info (or just to selected object).
 Debug.Toggles>DTM Slots Display: Show DTM slots display

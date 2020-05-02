@@ -13,7 +13,7 @@ local testing = ChoGGi.testing
 do -- ModUpload
 	-- hey paradox! renaming things is a thing...
 	local paradox_title = {
-		ChoGGi_CheatMenu = "Expanded Cheat Menu (ECM)",
+		[ChoGGi.id] = "Expanded Cheat Menu (ECM)",
 		ChoGGi_AddMathFunctions = "\"math.\" Functions",
 		ChoGGi_AlienVisitors = "Alien Visitors v0.1",
 		ChoGGi_AllSponsorBuildings = "All Sponsor Buildings v0.2",
@@ -50,7 +50,7 @@ do -- ModUpload
 		ChoGGi_GameRulesBreakthroughs = "Game Rules: Breakthroughs",
 		ChoGGi_GameRulesFullyTerraformed = "Game Rules: Fully Terraformed",
 		ChoGGi_InfobarAddDischargeRates = "Infobar Add Discharge Rates",
-		ChoGGi_Library = "ChoGGi's Library v5.1",
+--~ 		[ChoGGi.id_lib] = "ChoGGi's Library v5.1",
 		ChoGGi_MakeFirstMartianbornCelebrity = "Make First Martianborn Celebrity v0.2",
 		ChoGGi_MapImagesPack = "Map Images Pack v0.1",
 		ChoGGi_MapOverviewShowSurfaceResources = "Map Overview: Show Surface Resources",
@@ -119,11 +119,10 @@ do -- ModUpload
 
 	local mod_params = {}
 
---~ 	-- check the copy box for these
---~ 	local ChoGGi_copy_files = {
---~ 		[ChoGGi.id] = true,
---~ 		[ChoGGi.id_lib] = true,
---~ 	}
+	-- I upload two copies, one PC one Console
+	local ChoGGi_Dbl_Upload = {
+		[ChoGGi.id_lib] = true,
+	}
 	-- don't add these mods to upload list
 	local skip_mods = {
 		ChoGGi_XDefaultMod = true,
@@ -163,6 +162,7 @@ do -- ModUpload
 
 		-- add new mod
 		local err, item_id, prepare_worked, prepare_results, existing_mod
+		local prepare_worked_dbl, prepare_results_dbl, mod_title, mod_title_dbl
 		if steam_upload then
 			if mod.steam_id ~= 0 then
 				existing_mod = true
@@ -179,30 +179,49 @@ do -- ModUpload
 				mod.title = paradox_title[mod.id]
 			end
 
-			-- we override the Platform checkbox if a uuid is in metadata.lua
-			-- if both are "" then it's probably a new mod, otherwise check for a uuid and use that prop
-			if mod.pops_desktop_uuid == "" and mod.pops_any_uuid == "" then
-				-- desktop
-				if para_platform then
-					mod_params.publish_os = "windows"
-					mod_params.uuid_property = "pops_desktop_uuid"
-				-- desktop/console
-				else
-					mod_params.publish_os = "any"
-					mod_params.uuid_property = "pops_any_uuid"
-				end
-			elseif mod.pops_any_uuid ~= "" then
-				mod_params.publish_os = "any"
-				mod_params.uuid_property = "pops_any_uuid"
-				para_platform = false
-			elseif mod.pops_desktop_uuid ~= "" then
+			-- just choggi lib for now
+			if ChoGGi_Dbl_Upload[mod.id] then
+				orig_title = mod.title
+
+				mod_title = orig_title .. " " .. Strings[302535920000990--[[(PC)]]]
+				mod.title = mod_title
 				mod_params.publish_os = "windows"
 				mod_params.uuid_property = "pops_desktop_uuid"
-				para_platform = true
-			end
+				prepare_worked, prepare_results = PDX_PrepareForUpload(nil, mod, mod_params)
 
-			prepare_worked, prepare_results = PDX_PrepareForUpload(nil, mod, mod_params)
-			item_id = mod[mod_params.uuid_property]
+				mod_title_dbl = orig_title .. " " .. Strings[302535920001066--[[(Console)]]]
+				mod.title = mod_title_dbl
+				mod_params.publish_os = "any"
+				mod_params.uuid_property = "pops_any_uuid"
+				prepare_worked_dbl, prepare_results_dbl = PDX_PrepareForUpload(nil, mod, mod_params)
+
+			else
+				-- we override the Platform checkbox if a uuid is in metadata.lua
+				-- if both are "" then it's probably a new mod, otherwise check for a uuid and use that prop
+				if mod.pops_desktop_uuid == "" and mod.pops_any_uuid == "" then
+					-- desktop
+					if para_platform then
+						mod_params.publish_os = "windows"
+						mod_params.uuid_property = "pops_desktop_uuid"
+					-- desktop/console
+					else
+						mod_params.publish_os = "any"
+						mod_params.uuid_property = "pops_any_uuid"
+					end
+				elseif mod.pops_any_uuid ~= "" then
+					mod_params.publish_os = "any"
+					mod_params.uuid_property = "pops_any_uuid"
+					para_platform = false
+				elseif mod.pops_desktop_uuid ~= "" then
+					mod_params.publish_os = "windows"
+					mod_params.uuid_property = "pops_desktop_uuid"
+					para_platform = true
+				end
+
+				prepare_worked, prepare_results = PDX_PrepareForUpload(nil, mod, mod_params)
+
+				item_id = mod[mod_params.uuid_property]
+			end
 		end
 
 		-- issue with mod platform (workshop/paradox mods)
@@ -345,9 +364,25 @@ do -- ModUpload
 				if steam_upload then
 					result, err = Steam_Upload(nil, mod, mod_params)
 				else
-					-- thanks LukeH
+					-- thanks LukeH (line breaks needed for paradox)
 					mod.description = mod.description:gsub("\n", "<br>")
-					result, err = PDX_Upload(nil, mod, mod_params)
+
+						-- upload twice
+						if ChoGGi_Dbl_Upload[mod.id] then
+							-- console
+							mod.title = mod_title_dbl
+							mod_params.publish_os = "any"
+							mod_params.uuid_property = "pops_any_uuid"
+							result, err = PDX_Upload(nil, mod, mod_params)
+							-- pc
+							mod.title = mod_title
+							mod_params.publish_os = "windows"
+							mod_params.uuid_property = "pops_desktop_uuid"
+							result, err = PDX_Upload(nil, mod, mod_params)
+						else
+							result, err = PDX_Upload(nil, mod, mod_params)
+						end
+
 					-- shouldn't actually matter, but maybe some people will use mod editor along with ECM
 					mod.description = mod.description:gsub("<br>", "\n")
 				end

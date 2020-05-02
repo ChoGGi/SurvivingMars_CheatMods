@@ -1,13 +1,15 @@
 return PlaceObj("ModDef", {
 	"title", "ChoGGi's Library Test",
-	"version", 82,
+	"version", 83,
 	"version_major", 8,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.png",
 	"id", "ChoGGi_Library",
 	"author", "ChoGGi",
 	"steam_id", "1504386374",
-	"pops_any_uuid", "d8b39692-93b4-4446-9149-2e1addd28ac4",
+--~ 	"pops_any_uuid", "d8b39692-93b4-4446-9149-2e1addd28ac4",
+	"pops_any_uuid", "bbeae1a3-fa60-48d3-8bf4-bbfe7d5e018b",
+	"pops_desktop_uuid", "36c014ce-1fcd-4cef-9621-a4bd631d3ee0",
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/ChoGGi's%20Library/Changelog.md#library-changelog",
 	"lua_revision", 249143,
 	"TagGameplay", true,
@@ -58,6 +60,7 @@ I got tired of copying and pasting functions between different mods to update th
 Also available at:
 https://www.nexusmods.com/survivingmars/mods/89?tab=files
 https://steamcommunity.com/workshop/filedetails/?id=1504386374
-https://mods.paradoxplaza.com/mods/505/Any
+https://mods.paradoxplaza.com/mods/7528/Any
+https://mods.paradoxplaza.com/mods/7529/Windows
 https://github.com/ChoGGi/SurvivingMars_CheatMods]],
 })

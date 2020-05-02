@@ -699,6 +699,7 @@ function ChoGGi_DlgExamine:AddDistToRollover(c, roll_text, idx, idx_value, obj, 
 end
 
 -- hover (link, hyperlink_box, pos)
+
 function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 	self = GetRootDialog(self)
 
@@ -742,19 +743,33 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 				c = self:AddDistToRollover(c, roll_text, self.obj_ref[obj+1], obj+1, obj, obj_value)
 			end
 		-- translate T()
-		elseif hovered_obj_type == "table" and IsT(obj) then
-			local meta = getmetatable(obj)
-			if meta == TMeta then
-				obj_type = "TMeta"
-			elseif meta == TConcatMeta then
-				obj_type = "TConcatMeta"
+		elseif hovered_obj_type == "table" then
+
+			-- display any text in tooltip
+			if obj.text and obj.text ~= "" then
+				c = c + 1
+				roll_text[c] = self.ChoGGi.ComFuncs.Translate(obj.text)
+				c = c + 1
+				roll_text[c] = "\n\n"
+
+			-- translate text
+			elseif IsT(obj) then
+				local meta = getmetatable(obj)
+				if meta == TMeta then
+					obj_type = "TMeta"
+				elseif meta == TConcatMeta then
+					obj_type = "TConcatMeta"
+				else
+					obj_type = "LocId"
+				end
+				c = c + 1
+				roll_text[c] = self.ChoGGi.ComFuncs.Translate(obj)
+				c = c + 1
+				roll_text[c] = "\n\n"
 			else
-				obj_type = "LocId"
+				-- display tables
+
 			end
-			c = c + 1
-			roll_text[c] = self.ChoGGi.ComFuncs.Translate(obj)
-			c = c + 1
-			roll_text[c] = "\n\n"
 		elseif hovered_obj_type == "function" then
 			obj_type = hovered_obj_type
 			c = c + 1
@@ -764,7 +779,10 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 		else
 			obj_str, obj_type = self.ChoGGi.ComFuncs.ValueToStr(obj)
 		end
-		title = Strings[302535920000069--[[Examine]]] .. " (" .. obj_type .. ")"
+
+		if obj_type then
+			title = Strings[302535920000069--[[Examine]]] .. " (" .. obj_type .. ")"
+		end
 	else
 		-- for anything that isn't a table
 		title = Strings[302535920000069--[[Examine]]]

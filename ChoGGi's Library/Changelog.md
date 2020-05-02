@@ -1,6 +1,9 @@
 ## Library Changelog
 
-## v8.2 (Unreleased)
+## v8.3 (Unreleased)
+
+## v8.2 (02 May 2020)
+- Added code to Double upload my library mod (PC/Console).
 
 ## v8.1 (22 Apr 2020)
 - Launching rockets (and probably landing) were being deleted when the game was saved.

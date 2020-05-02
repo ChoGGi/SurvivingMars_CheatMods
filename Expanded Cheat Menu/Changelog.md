@@ -1,6 +1,10 @@
 ## ECM Changelog
 
-## v15.2 (Unreleased)
+## v15.3 (Unreleased)
+
+## v15.2 (02 May 2020)
+### Changed:
+- Code to Double upload my library mod (PC/Console).
 
 ## v15.1 (22 Apr 2020)
 ### Fixed:

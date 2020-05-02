@@ -707,6 +707,7 @@ Actions[c] = {ActionName = Translate(948928900281--[[Story Bits]]),
 	ActionMenubar = "ECM.Debug",
 	ActionId = ".Story Bits",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+	RolloverText = Strings[302535920000935--[[Random mini missions that happen while playing.]]],
 	OnActionEffect = "popup",
 }
 
@@ -727,7 +728,7 @@ Actions[c] = {ActionName = Strings[302535920000978--[["Skip Story Bits"]]],
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.SkipStoryBitsDialogs,
-			Strings[302535920000980--[["Always select first option after slight delay."]]]
+			Strings[302535920000980--[["When a story bit appears; always select first option after slight delay."]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SkipStoryBitsDialogs_Toggle,
