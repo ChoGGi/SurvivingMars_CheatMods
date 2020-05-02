@@ -1,2 +1,5 @@
+v0.3
+I borked it last update (thanks lygho).
+
 v0.2
 Fixed issue with Waste Rock Processors (thanks aklesevhsoj).
