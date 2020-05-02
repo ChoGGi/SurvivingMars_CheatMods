@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v15.3 (Unreleased)
+### Fixed:
+- Set Colonist Race wasn't setting the race (thanks Triggermage).
 
 ## v15.2 (02 May 2020)
 ### Changed:

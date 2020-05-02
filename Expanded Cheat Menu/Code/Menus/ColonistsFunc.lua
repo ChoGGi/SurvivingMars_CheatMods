@@ -1249,10 +1249,10 @@ function ChoGGi.MenuFuncs.SetColonistsRace(action)
 		choice = choice[1]
 
 		local value = choice.value
-		local obj = SelectedObj
+		local s_obj = SelectedObj
 		local dome
-		if IsKindOf(obj, "Colonist") and obj.dome and choice.check1 then
-			dome = obj.dome
+		if IsKindOf(s_obj, "Colonist") and s_obj.dome and choice.check1 then
+			dome = s_obj.dome
 		end
 
 		-- new
@@ -1267,16 +1267,16 @@ function ChoGGi.MenuFuncs.SetColonistsRace(action)
 		-- existing
 		elseif setting_mask == 2 then
 			if choice.check2 then
-				if obj then
-					ChoGGi.ComFuncs.ColonistUpdateRace(obj, value)
+				if s_obj then
+					ChoGGi.ComFuncs.ColonistUpdateRace(s_obj, value)
 				end
 			else
 				local objs = UICity.labels.Colonist or ""
 				for i = 1, #objs do
 					if dome then
-						local o = objs[i]
-						if o.dome and o.dome.handle == dome.handle then
-							ChoGGi.ComFuncs.ColonistUpdateRace(o, value)
+						local obj = objs[i]
+						if obj.dome and obj.dome.handle == dome.handle then
+							ChoGGi.ComFuncs.ColonistUpdateRace(obj, value)
 						end
 					else
 						ChoGGi.ComFuncs.ColonistUpdateRace(objs[i], value)

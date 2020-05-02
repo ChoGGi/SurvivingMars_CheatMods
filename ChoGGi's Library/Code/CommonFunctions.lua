@@ -2351,7 +2351,8 @@ function ChoGGi.ComFuncs.ColonistUpdateTraits(c, bool, traits)
 end
 
 function ChoGGi.ComFuncs.ColonistUpdateRace(c, race)
-	if not IsValid(c) or type(race) ~= "string" then
+	local race_type = type(race)
+	if (race_type ~= "number" and race_type ~= "string") or not IsValid(c) then
 		return
 	end
 
