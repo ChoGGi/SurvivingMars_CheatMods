@@ -8,10 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Show Dust Affected",
-	"version", 1,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 1,
-
+	"version_minor", 3,
 	"image", "Preview.png",
 	"id", "ChoGGi_ShowDustAffected",
 	"steam_id", "1892610371",
@@ -22,5 +21,6 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 --~ 	"has_options", true,
-	"description", [[Adds a button to Concrete/Metal extractors that can show which buildings are affected by that extractor.]],
+	"description", [[Adds a button to Concrete/Metal extractors that shows which buildings are affected by that extractor.
+]],
 })

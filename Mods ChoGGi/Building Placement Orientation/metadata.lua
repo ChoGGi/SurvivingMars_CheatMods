@@ -11,7 +11,6 @@ return PlaceObj("ModDef", {
 	"version", 8,
 	"version_major", 0,
 	"version_minor", 8,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_BuildingPlacementOrientation",
 	"steam_id", "1411105601",
@@ -21,7 +20,10 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua"
 	},
 	"lua_revision", 249143,
+--~ 	"has_options", true,
 	"description", [[Any object you place will have the same orientation as the last placed object.
 
-Ctrl-Space to activate placement mode with the selected or last placed object (or object under mouse).]],
+Pipette:
+Ctrl-Space to activate placement mode with the selected or last placed object (or object under mouse), rebind in game options.
+]],
 })

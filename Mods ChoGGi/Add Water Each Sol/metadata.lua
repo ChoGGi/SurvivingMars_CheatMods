@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 6,
 	"version_major", 0,
 	"version_minor", 6,
-
 	"id", "ChoGGi_AddWaterEachSol",
 	"author", "ChoGGi",
 	"image", "Preview.png",

@@ -1,9 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Just Music",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
-
+	"version_minor", 2,
 	"image", "Preview.png",
 	"id", "ChoGGi_OnlyRadioMusic",
 	"steam_id", "1701116117",
@@ -13,5 +12,9 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Skips all the other tracks and just plays music.]],
+	"has_options", true,
+	"description", [[Skips all the other tracks and just plays music.
+
+Includes mod options to only skip certain tracks.
+]],
 })

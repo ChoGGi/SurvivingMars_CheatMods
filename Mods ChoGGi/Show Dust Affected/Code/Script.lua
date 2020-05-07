@@ -39,14 +39,27 @@ local function ToggleLines(obj)
 		return
 	end
 
-	local objs = MapGet(obj, "hex", obj.dust_range, "DustGridElement", "Building", function(o)
+	local dust_range
+	if obj:IsKindOf("ConstructionSite") then
+		dust_range = obj.building_class_proto.dust_range
+	else
+		dust_range = obj.dust_range
+	end
+
+	local objs = MapGet(obj, "hex", dust_range, "DustGridElement", "Building", function(o)
 		-- skip self, cables, n pipes
-		if o == obj or o:IsKindOfClasses(skips) then
+		if o == obj or o:IsKindOfClasses(skips)
+			or (o:IsKindOf("ConstructionSite") and o.building_class_proto
+			and o.building_class_proto:IsKindOfClasses(skips))
+		then
 			return
 		end
+
 		-- from dustgen.lua (or somewhere)
 		if (o:IsKindOf("Building") and o.accumulate_dust)
 			or o:IsKindOf("DustGridElement")
+			or (o:IsKindOf("ConstructionSite") and o.building_class_proto
+			and o.building_class_proto.accumulate_dust)
 		then
 			return true
 		end
@@ -67,6 +80,7 @@ local function ToggleLines(obj)
 		lines_c = lines_c + 1
 		lines[lines_c] = line
 	end
+
 	ResumePassEdits("SelectionRemoved.Show Dust Affected.ToggleLines")
 end
 
@@ -79,10 +93,16 @@ function OnMsg.ClassesPostprocess()
 	-- check for and remove existing template
 	ChoGGi.ComFuncs.RemoveXTemplateSections(building, "ChoGGi_Template_ShowDustAffectedToggle", true)
 
+
+
 	building[#building+1] = PlaceObj('XTemplateTemplate', {
 		"ChoGGi_Template_ShowDustAffectedToggle", true,
-		"__context_of_kind", "DustGenerator",
---~ 			"__condition", function (_, context) return context.is_hub or not context.is_switch end,
+		"__context_of_kind", "Building",
+		"__condition", function (_, context)
+			return context:IsKindOf("DustGenerator")
+				or context:IsKindOf("ConstructionSite") and context.building_class_proto
+				and context.building_class_proto:IsKindOf("DustGenerator")
+		end,
 		"__template", "InfopanelButton",
 
 		"Icon", "UI/Icons/IPButtons/drill.tga",

@@ -113,19 +113,8 @@ function OnMsg.ClassesPostprocess()
 
 end
 
--- prevent blank mission profile screen
-function OnMsg.LoadGame()
-	local GameRulesMap = GameRulesMap
-	for rule_id in pairs(rules) do
-		-- if it isn't in the map then it isn't a valid rule
-		if not GameRulesMap[rule_id] then
-			rules[rule_id] = nil
-		end
-	end
-end
-
+-- block breakthroughs
 local lookup_rules
-
 local orig_City_TechAvailableCondition = City.TechAvailableCondition
 function City:TechAvailableCondition(tech, ...)
 	if not mod_ExcludeBreakthroughs then
@@ -139,7 +128,7 @@ function City:TechAvailableCondition(tech, ...)
 		for rule_id in pairs(rules) do
 			-- build list of choggi rules
 			if rule_id:sub(1, 7) == "ChoGGi_" then
-				-- length of rule name minus 7 for prefix
+				-- length of rule name minus 7 for prefix: ChoGGi_
 				lookup_rules[rule_id:sub(-(rule_id:len()-7))] = true
 			end
 		end
@@ -151,4 +140,15 @@ function City:TechAvailableCondition(tech, ...)
 	end
 
 	return orig_City_TechAvailableCondition(self, tech, ...)
+end
+
+-- prevent blank mission profile screen
+function OnMsg.LoadGame()
+	local GameRulesMap = GameRulesMap
+	for rule_id in pairs(rules) do
+		-- if it isn't in the map then it isn't a valid rule
+		if not GameRulesMap[rule_id] then
+			rules[rule_id] = nil
+		end
+	end
 end

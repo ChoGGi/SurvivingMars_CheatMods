@@ -1,3 +1,6 @@
+v0.4
+Fixed fixed issue Waste Rock Processors (thanks cybersol).
+
 v0.3
 I borked it last update (thanks lygho).
 
