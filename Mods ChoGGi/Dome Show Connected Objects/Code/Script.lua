@@ -11,7 +11,7 @@ local OPolyline
 
 -- remove existing lines
 local function CleanUp()
-	SuspendPassEdits("SelectionRemoved.Show Dome Connected Objects.CleanUp")
+	SuspendPassEdits("ChoGGi.SelectionRemoved.Show Dome Connected Objects.CleanUp")
 	for i = 1, #lines do
 		local line = lines[i]
 		if IsValid(line) then
@@ -20,7 +20,7 @@ local function CleanUp()
 	end
 	table_iclear(lines)
 	lines_c = 0
-	ResumePassEdits("SelectionRemoved.Show Dome Connected Objects.CleanUp")
+	ResumePassEdits("ChoGGi.SelectionRemoved.Show Dome Connected Objects.CleanUp")
 end
 
 local bad_objs = {}
@@ -42,7 +42,7 @@ local function ToggleLines(obj)
 	end
 
 
-	SuspendPassEdits("SelectionRemoved.Show Dome Connected Objects.ToggleLines")
+	SuspendPassEdits("ChoGGi.SelectionRemoved.Show Dome Connected Objects.ToggleLines")
 
 	table_iclear(bad_objs)
 	bad_objs_c = 0
@@ -68,7 +68,7 @@ local function ToggleLines(obj)
 		lines_c = lines_c + 1
 		lines[lines_c] = line
 	end
-	ResumePassEdits("SelectionRemoved.Show Dome Connected Objects.ToggleLines")
+	ResumePassEdits("ChoGGi.SelectionRemoved.Show Dome Connected Objects.ToggleLines")
 end
 
 -- clear lines when changing selection

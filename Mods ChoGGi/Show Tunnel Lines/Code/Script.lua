@@ -21,7 +21,7 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
--- local some funcs
+-- local some globals
 local IsValid = IsValid
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
@@ -38,7 +38,7 @@ local function CleanUp(skip)
 	end
 	-- speed up when spawning/deleting objs
 	if not skip then
-		SuspendPassEdits("ChoGGi_ShowTunnelLines_Cleanup")
+		SuspendPassEdits("ChoGGi.ShowTunnelLines.Cleanup")
 	end
 
 	for i = 1, lines_c do
@@ -48,7 +48,7 @@ local function CleanUp(skip)
 		end
 	end
 	if not skip then
-		ResumePassEdits("ChoGGi_ShowTunnelLines_Cleanup")
+		ResumePassEdits("ChoGGi.ShowTunnelLines.Cleanup")
 	end
 	table.iclear(lines)
 	table.clear(tunnels)
@@ -60,7 +60,7 @@ function OnMsg.SelectionAdded(obj)
 	if not obj:IsKindOf("Tunnel") then
 		return
 	end
-	SuspendPassEdits("ChoGGi_ShowTunnelLines_SpawnTunnels")
+	SuspendPassEdits("ChoGGi.ShowTunnelLines.SpawnTunnels")
 	CleanUp(true)
 
 	if not OPolyline then
@@ -90,7 +90,7 @@ function OnMsg.SelectionAdded(obj)
 	end
 --~ 	ex{tunnels,lines}
 
-	ResumePassEdits("ChoGGi_ShowTunnelLines_SpawnTunnels")
+	ResumePassEdits("ChoGGi.ShowTunnelLines.SpawnTunnels")
 end
 
 OnMsg.SaveGame = CleanUp

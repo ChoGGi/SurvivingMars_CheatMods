@@ -74,7 +74,7 @@ end
 local grids_visible
 
 local function ShowGrids()
-	SuspendPassEdits("CursorBuilding.GameInit.Construction Show Drone Grid")
+	SuspendPassEdits("ChoGGi.CursorBuilding.GameInit.Construction Show Drone Grid")
 
 	local UICity = UICity
 	ShowHexRanges(UICity, "SupplyRocket")
@@ -117,16 +117,16 @@ local function ShowGrids()
 		end
 	end
 
-	ResumePassEdits("CursorBuilding.GameInit.Construction Show Drone Grid")
+	ResumePassEdits("ChoGGi.CursorBuilding.GameInit.Construction Show Drone Grid")
 	grids_visible = true
 end
 local function HideGrids()
-	SuspendPassEdits("CursorBuilding.Done.Construction Show Drone Grid")
+	SuspendPassEdits("ChoGGi.CursorBuilding.Done.Construction Show Drone Grid")
 	local UICity = UICity
 	HideHexRanges(UICity, "SupplyRocket")
 	HideHexRanges(UICity, "DroneHub")
 	HideHexRanges(UICity, "RCRover")
-	ResumePassEdits("CursorBuilding.Done.Construction Show Drone Grid")
+	ResumePassEdits("ChoGGi.CursorBuilding.Done.Construction Show Drone Grid")
 	grids_visible = false
 end
 
@@ -147,7 +147,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 	local range_limit = mod_DistFromCursor > 0 and mod_DistFromCursor
 	local cursor_pos = self:GetPos()
 
-	SuspendPassEdits("CursorBuilding.UpdateShapeHexes.Construction Show Drone Grid")
+	SuspendPassEdits("ChoGGi.CursorBuilding.UpdateShapeHexes.Construction Show Drone Grid")
 	local g_HexRanges = g_HexRanges
 	for range, obj in pairs(g_HexRanges) do
 		if range.SetVisible and IsValid(obj) and IsKindOfClasses(obj, classes) then
@@ -168,7 +168,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 			end
 		end
 	end
-	ResumePassEdits("CursorBuilding.UpdateShapeHexes.Construction Show Drone Grid")
+	ResumePassEdits("ChoGGi.CursorBuilding.UpdateShapeHexes.Construction Show Drone Grid")
 
 	return orig_CursorBuilding_UpdateShapeHexes(self, ...)
 end

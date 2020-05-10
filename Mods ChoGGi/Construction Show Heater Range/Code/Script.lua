@@ -42,7 +42,7 @@ end
 local grids_visible
 
 local function ShowGrids()
-	SuspendPassEdits("CursorBuilding.GameInit.Show Heater Range")
+	SuspendPassEdits("ChoGGi.CursorBuilding.GameInit.Show Heater Range")
 	ShowHexRanges(UICity, "SubsurfaceHeater")
 
 	-- edit grids
@@ -62,14 +62,14 @@ local function ShowGrids()
 		end
 	end
 
-	ResumePassEdits("CursorBuilding.GameInit.Show Heater Range")
+	ResumePassEdits("ChoGGi.CursorBuilding.GameInit.Show Heater Range")
 	grids_visible = true
 end
 
 local function HideGrids()
-	SuspendPassEdits("CursorBuilding.Done.Show Heater Range")
+	SuspendPassEdits("ChoGGi.CursorBuilding.Done.Show Heater Range")
 	HideHexRanges(UICity, "SubsurfaceHeater")
-	ResumePassEdits("CursorBuilding.Done.Show Heater Range")
+	ResumePassEdits("ChoGGi.CursorBuilding.Done.Show Heater Range")
 	grids_visible = false
 end
 
@@ -90,7 +90,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 	local range_limit = mod_DistFromCursor > 0 and mod_DistFromCursor
 	local cursor_pos = self:GetPos()
 
-	SuspendPassEdits("CursorBuilding.UpdateShapeHexes.Show Heater Range")
+	SuspendPassEdits("ChoGGi.CursorBuilding.UpdateShapeHexes.Show Heater Range")
 	local g_HexRanges = g_HexRanges
 	for range, obj in pairs(g_HexRanges) do
 		if range.SetVisible and IsKindOf(obj, "SubsurfaceHeater") then
@@ -108,7 +108,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 			end
 		end
 	end
-	ResumePassEdits("CursorBuilding.UpdateShapeHexes.Show Heater Range")
+	ResumePassEdits("ChoGGi.CursorBuilding.UpdateShapeHexes.Show Heater Range")
 
 	return orig_CursorBuilding_UpdateShapeHexes(self, ...)
 end

@@ -22,7 +22,7 @@ function OnMsg.ApplyModOptions(id)
 end
 
 
--- local some funcs for faster access
+-- local some globals
 local type = type
 local AveragePoint2D = AveragePoint2D
 local IsValid = IsValid

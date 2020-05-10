@@ -1232,16 +1232,16 @@ do -- LoadGame/CityStart
 
 	-- saved game is loaded
 	function OnMsg.LoadGame()
-		Msg("ChoGGi_Loaded", "Load")
+		Msg("ChoGGi_Loaded")
 	end
 	-- new game is loaded (this is before the map is loaded)
 	function OnMsg.CityStart()
 		-- reset my mystery msgs to hidden
 		ChoGGi.UserSettings.ShowMysteryMsgs = nil
-		Msg("ChoGGi_Loaded", "New")
+		Msg("ChoGGi_Loaded")
 	end
 
-	function OnMsg.ChoGGi_Loaded(game_type)
+	function OnMsg.ChoGGi_Loaded()
 		local UICity = UICity
 		local ChoGGi = ChoGGi
 

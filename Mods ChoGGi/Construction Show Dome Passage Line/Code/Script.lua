@@ -71,7 +71,7 @@ end
 
 -- if these are here when a save is loaded without this mod then it'll spam the console
 function OnMsg.SaveGame()
-	SuspendPassEdits("SaveGame.DeleteChoGGiDomeLines")
+	SuspendPassEdits("ChoGGi.DeleteChoGGiDomeLines.SaveGame")
 	-- if it isn't a valid class then Map* will return all objects :(
 	if g_Classes.ChoGGi_OHexSpot then
 		MapDelete(true, "ChoGGi_OHexSpot")
@@ -79,7 +79,7 @@ function OnMsg.SaveGame()
 	if g_Classes.ChoGGi_OPolyline then
 		MapDelete(true, "ChoGGi_OPolyline")
 	end
-	ResumePassEdits("SaveGame.DeleteChoGGiDomeLines")
+	ResumePassEdits("ChoGGi.DeleteChoGGiDomeLines.SaveGame")
 	dome_list = {}
 end
 
@@ -187,7 +187,7 @@ end
 local orig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding:Done(...)
 	-- we're done construction hide all the markers
-	SuspendPassEdits("CursorBuilding:Done.ChoGGi_CleanupOldMarkers")
+	SuspendPassEdits("ChoGGi.CursorBuilding.Done.CleanupOldMarkers")
 	for dome, item in pairs(dome_list) do
 		if IsValid(dome) then
 			item.line:SetVisible()
@@ -197,7 +197,7 @@ function CursorBuilding:Done(...)
 			ListCleanup(dome, item)
 		end
 	end
-	ResumePassEdits("CursorBuilding:Done.ChoGGi_CleanupOldMarkers")
+	ResumePassEdits("ChoGGi.CursorBuilding.Done.CleanupOldMarkers")
 	return orig_CursorBuilding_Done(self, ...)
 end
 

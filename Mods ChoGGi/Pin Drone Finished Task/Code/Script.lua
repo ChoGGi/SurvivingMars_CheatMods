@@ -3,6 +3,8 @@
 local mod_PinDrone
 local mod_PauseGame
 local mod_UnpinSelectedDrone
+local mod_PinDroneIdle
+local mod_PauseGameIdle
 local options
 
 -- fired when settings are changed/init
@@ -12,6 +14,8 @@ local function ModOptions()
 	mod_PinDrone = options:GetProperty("PinDrone")
 	mod_UnpinSelectedDrone = options:GetProperty("UnpinSelectedDrone")
 	mod_PauseGame = options:GetProperty("PauseGame")
+	mod_PauseGameIdle = options:GetProperty("PauseGameIdle")
+	mod_PinDroneIdle = options:GetProperty("PinDroneIdle")
 end
 
 -- load default/saved settings
@@ -38,6 +42,18 @@ function Drone:GoHome(...)
 	end
 
 	return orig_Drone_GoHome(self, ...)
+end
+
+local orig_Drone_Idle = Drone.Idle
+function Drone:Idle(...)
+	if mod_PinDroneIdle and not table_find(g_PinnedObjs, self) then
+		self:TogglePin()
+	end
+	if mod_PauseGameIdle then
+		UICity:SetGameSpeed(0)
+	end
+
+	return orig_Drone_Idle(self, ...)
 end
 
 local orig_Drone_OnSelected = Drone.OnSelected

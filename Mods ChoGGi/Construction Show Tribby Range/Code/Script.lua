@@ -41,7 +41,7 @@ end
 local grids_visible
 
 local function ShowGrids()
-	SuspendPassEdits("CursorBuilding.GameInit.Construction Show Tribby Range")
+	SuspendPassEdits("ChoGGi.CursorBuilding.GameInit.Construction Show Tribby Range")
 	ShowHexRanges(UICity, "TriboelectricScrubber")
 
 	-- edit grids
@@ -61,14 +61,14 @@ local function ShowGrids()
 		end
 	end
 
-	ResumePassEdits("CursorBuilding.GameInit.Construction Show Tribby Range")
+	ResumePassEdits("ChoGGi.CursorBuilding.GameInit.Construction Show Tribby Range")
 	grids_visible = true
 end
 
 local function HideGrids()
-	SuspendPassEdits("CursorBuilding.Done.Construction Show Tribby Range")
+	SuspendPassEdits("ChoGGi.CursorBuilding.Done.Construction Show Tribby Range")
 	HideHexRanges(UICity, "TriboelectricScrubber")
-	ResumePassEdits("CursorBuilding.Done.Construction Show Tribby Range")
+	ResumePassEdits("ChoGGi.CursorBuilding.Done.Construction Show Tribby Range")
 	grids_visible = false
 end
 
@@ -89,7 +89,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 	local range_limit = mod_DistFromCursor > 0 and mod_DistFromCursor
 	local cursor_pos = self:GetPos()
 
-	SuspendPassEdits("CursorBuilding.UpdateShapeHexes.Construction Show Tribby Range")
+	SuspendPassEdits("ChoGGi.CursorBuilding.UpdateShapeHexes.Construction Show Tribby Range")
 	local g_HexRanges = g_HexRanges
 	for range, obj in pairs(g_HexRanges) do
 		if range.SetVisible and IsKindOf(obj, "TriboelectricScrubber") then
@@ -107,7 +107,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 			end
 		end
 	end
-	ResumePassEdits("CursorBuilding.UpdateShapeHexes.Construction Show Tribby Range")
+	ResumePassEdits("ChoGGi.CursorBuilding.UpdateShapeHexes.Construction Show Tribby Range")
 
 	return orig_CursorBuilding_UpdateShapeHexes(self, ...)
 end

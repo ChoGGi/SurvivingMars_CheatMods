@@ -292,7 +292,7 @@ function ChoGGi_BaseWalls:SpawnWallAttaches(cursor_obj, count)
 	self.entity = self.entity ~= "InvisibleObject" and self.entity or "Passage"
 
 	-- speeds up adding/removing/etc with objects
-	SuspendPassEdits("ChoGGi_BaseWalls:SpawnAttaches")
+	SuspendPassEdits("ChoGGi.BaseWalls.SpawnAttaches")
 
 	if id == "ChoGGi_BaseWall" then
 		self:SpawnPassages(count or self.spawn_wall_count)
@@ -392,11 +392,11 @@ function ChoGGi_BaseWalls:SpawnWallAttaches(cursor_obj, count)
 			end
 
 			self.spawning_objs = false
-			ResumePassEdits("ChoGGi_BaseWalls:SpawnAttaches")
+			ResumePassEdits("ChoGGi.BaseWalls.SpawnAttaches")
 		end)
 	else
 		self.spawning_objs = false
-		ResumePassEdits("ChoGGi_BaseWalls:SpawnAttaches")
+		ResumePassEdits("ChoGGi.BaseWalls.SpawnAttaches")
 	end
 
 end
@@ -408,7 +408,7 @@ function ChoGGi_BaseWalls:SpawnCornerAttaches(cursor_obj)
 	self.item_type = "corner"
 
 	-- speeds up adding/removing/etc with objects
-	SuspendPassEdits("ChoGGi_BaseWalls:SpawnCornerAttaches")
+	SuspendPassEdits("ChoGGi.BaseWalls.SpawnCornerAttaches")
 
 	-- always spawn something
 	local obj = self:SpawnBaseObj(item.entity)
@@ -458,7 +458,7 @@ function ChoGGi_BaseWalls:SpawnCornerAttaches(cursor_obj)
 
 	end
 
-	ResumePassEdits("ChoGGi_BaseWalls:SpawnCornerAttaches")
+	ResumePassEdits("ChoGGi.BaseWalls.SpawnCornerAttaches")
 end
 
 -- swap between stuff for the holder corners
@@ -562,13 +562,13 @@ local pass_skins_c = #pass_skins
 
 function ChoGGi_BaseWalls:ChangeSkin(skin)
 	local lookup = lookup_skins[skin]
-	SuspendPassEdits("ChoGGi_BaseWalls:ChangeSkin")
+	SuspendPassEdits("ChoGGi.BaseWalls.ChangeSkin")
 	-- we need to change each spawned entity
 	for i = 1, #self.attached_objs do
 		local obj = self.attached_objs[i]
 		obj:ChangeEntity(lookup[table_lookup[obj.entity]])
 	end
-	ResumePassEdits("ChoGGi_BaseWalls:ChangeSkin")
+	ResumePassEdits("ChoGGi.BaseWalls.ChangeSkin")
 
 	local idx = table_find(pass_skins, skin) + 1
 	if not pass_skins[idx] then
@@ -609,7 +609,7 @@ function ChoGGi_BaseWalls:AdjustLength(size, current_size)
 	-- no need to change if it's the same
 	if self.previous_count ~= spawn_wall_count then
 		-- speeds up adding/removing/etc with objects
-		SuspendPassEdits("ChoGGi_BaseWalls:AdjustLength")
+		SuspendPassEdits("ChoGGi.BaseWalls.AdjustLength")
 		-- get skin to reset new wall to
 		local entity = self.entity or "Passage"
 		local idx = table_find(pass_skins, entity) - 1
@@ -632,7 +632,7 @@ function ChoGGi_BaseWalls:AdjustLength(size, current_size)
 			self.ChoGGi_bs:SpawnWallAttaches(self, spawn_wall_count)
 		end
 		self:ChangeSkin(entity)
-		ResumePassEdits("ChoGGi_BaseWalls:AdjustLength")
+		ResumePassEdits("ChoGGi.BaseWalls.AdjustLength")
 
 		self.previous_count = spawn_wall_count
 	end

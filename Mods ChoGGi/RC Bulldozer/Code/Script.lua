@@ -196,7 +196,7 @@ local efSelectable = const.efSelectable
 
 -- a very ugly hack to update driveable area
 function RCBulldozer:AddDriveable()
-	SuspendPassEdits("RCBulldozer:AddDriveable")
+	SuspendPassEdits("ChoGGi.RCBulldozer.AddDriveable")
 	self.site = PlaceObject("ConstructionSite", {})
 --~ 	self.site:SetBuildingClass("DomeBasic")
 	self.site:SetBuildingClass("DomeMega")
@@ -214,7 +214,7 @@ function RCBulldozer:AddDriveable()
 		self.site.resource_stockpile:delete()
 		self.site.resource_stockpile = nil
 	end)
-	ResumePassEdits("RCBulldozer:AddDriveable")
+	ResumePassEdits("ChoGGi.RCBulldozer.AddDriveable")
 end
 
 function RCBulldozer:StartDozer()
@@ -265,7 +265,7 @@ function RCBulldozer:StartDozer()
 					-- flatten func
 					SetHeightCircle(pos, self.radius, self.radius, GetHeight(self:GetVisualPos()))
 					-- speed and needed for my ugly hack
-					SuspendPassEdits("RCBulldozer_flattening")
+					SuspendPassEdits("ChoGGi.RCBulldozer.flattening")
 					-- remove any pebbles in the way
 					MapDelete(pos, self.radius, efRemoveUnderConstruction)
 					-- add some dust
@@ -283,7 +283,7 @@ function RCBulldozer:StartDozer()
 					if type(self.texture_terrain) == "number" then
 						SetTypeCircle(pos, self.radius, self.texture_terrain)
 					end
-					ResumePassEdits("RCBulldozer_flattening")
+					ResumePassEdits("ChoGGi.RCBulldozer.flattening")
 					-- rest your weary soul
 					Sleep(25)
 				end

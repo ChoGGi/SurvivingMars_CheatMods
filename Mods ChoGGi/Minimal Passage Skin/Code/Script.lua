@@ -18,14 +18,14 @@ local orig_Passage_ChangeSkin = Passage.ChangeSkin
 function Passage:ChangeSkin(skin, ...)
 	self.skin_id = skin
 	if skin == "ChoGGi_MinimalPassageSkin" then
-		SuspendPassEdits("Passage:ChangeSkin_ChoGGi_MinimalPassageSkin")
+		SuspendPassEdits("ChoGGi.MinimalPassageSkin.ChangeSkin")
 		for i = 1, #self.elements do
 			local element = self.elements[i]
 			if element ~= self.start_el and element ~= self.end_el then
 				element:ChangeEntity("InvisibleObject")
 			end
 		end
-		ResumePassEdits("Passage:ChangeSkin_ChoGGi_MinimalPassageSkin")
+		ResumePassEdits("ChoGGi.MinimalPassageSkin.ChangeSkin")
 	else
 		return orig_Passage_ChangeSkin(self, skin, ...)
 	end

@@ -45,7 +45,7 @@ end
 local grids_visible
 
 local function ShowGrids()
-	SuspendPassEdits("CursorBuilding.GameInit.Construction Show Dome Grid")
+	SuspendPassEdits("ChoGGi.CursorBuilding.GameInit.Construction Show Dome Grid")
 	ShowHexRanges(nil, "Dome")
 
 	-- edit grids
@@ -66,13 +66,13 @@ local function ShowGrids()
 		end
 	end
 
-	ResumePassEdits("CursorBuilding.GameInit.Construction Show Dome Grid")
+	ResumePassEdits("ChoGGi.CursorBuilding.GameInit.Construction Show Dome Grid")
 	grids_visible = true
 end
 local function HideGrids()
-	SuspendPassEdits("CursorBuilding.Done.Construction Show Dome Grid")
+	SuspendPassEdits("ChoGGi.CursorBuilding.Done.Construction Show Dome Grid")
 	HideHexRanges(nil, "Dome")
-	ResumePassEdits("CursorBuilding.Done.Construction Show Dome Grid")
+	ResumePassEdits("ChoGGi.CursorBuilding.Done.Construction Show Dome Grid")
 	grids_visible = false
 end
 
@@ -93,7 +93,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 	local range_limit = mod_DistFromCursor > 0 and mod_DistFromCursor
 	local cursor_pos = self:GetPos()
 
-	SuspendPassEdits("CursorBuilding.UpdateShapeHexes.Construction Show Dome Grid")
+	SuspendPassEdits("ChoGGi.CursorBuilding.UpdateShapeHexes.Construction Show Dome Grid")
 	local g_HexRanges = g_HexRanges
 	for range, obj in pairs(g_HexRanges) do
 		if range.SetVisible and IsKindOf(obj, "Dome") then
@@ -111,7 +111,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 			end
 		end
 	end
-	ResumePassEdits("CursorBuilding.UpdateShapeHexes.Construction Show Dome Grid")
+	ResumePassEdits("ChoGGi.CursorBuilding.UpdateShapeHexes.Construction Show Dome Grid")
 
 	return orig_CursorBuilding_UpdateShapeHexes(self, ...)
 end
@@ -123,9 +123,9 @@ function CursorBuilding.Done(...)
 end
 
 local function AddRanges()
-	SuspendPassEdits("SelectionAdded.Construction Show Dome Grid")
+	SuspendPassEdits("ChoGGi.SelectionAdded.Construction Show Dome Grid")
 	ShowHexRanges(nil, "Dome")
-	ResumePassEdits("SelectionAdded.Construction Show Dome Grid")
+	ResumePassEdits("ChoGGi.SelectionAdded.Construction Show Dome Grid")
 end
 
 function OnMsg.SelectionAdded(obj)
@@ -142,9 +142,9 @@ function OnMsg.SelectionAdded(obj)
 end
 
 function OnMsg.SelectionRemoved()
-	SuspendPassEdits("SelectionRemoved.Construction Show Dome Grid")
+	SuspendPassEdits("ChoGGi.SelectionRemoved.Construction Show Dome Grid")
 	HideHexRanges(nil, "Dome")
-	ResumePassEdits("SelectionRemoved.Construction Show Dome Grid")
+	ResumePassEdits("ChoGGi.SelectionRemoved.Construction Show Dome Grid")
 end
 
 -- add keybind for toggle

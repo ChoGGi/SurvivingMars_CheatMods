@@ -3746,7 +3746,7 @@ function ChoGGi.ComFuncs.PlaceLastSelectedConstructedBld()
 	elseif Temp.LastPlacedObject then
 		obj = Temp.LastPlacedObject
 	else
-		obj = UICity.LastConstructedBuilding
+		obj = UICity and UICity.LastConstructedBuilding
 	end
 
 	if obj and obj.class then

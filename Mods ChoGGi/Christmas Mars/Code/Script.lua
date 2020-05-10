@@ -79,7 +79,7 @@ function OnMsg.CityStart()
 		UICity.ChristmasMars = true
 
 		-- less brown rocks
-		SuspendPassEdits("WhiteThoseRocks")
+		SuspendPassEdits("ChoGGi.ChristmasMars.CityStart")
 		MapForEach("map", {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor", "StoneSmall"}, function(o)
 			if o.class:find("Dark") then
 				o:SetColorModifier(white)
@@ -88,7 +88,6 @@ function OnMsg.CityStart()
 				o:delete()
 			end
 		end)
-		ResumePassEdits("WhiteThoseRocks")
 
 		-- starter rockets spawn with new map
 		local rockets = UICity.labels.SupplyRocket or ""
@@ -153,8 +152,9 @@ function OnMsg.CityStart()
 				invalid_type = -1,
 			}
 		end
-	end)
+		ResumePassEdits("ChoGGi.ChristmasMars.CityStart")
 
+	end)
 end -- OnMsg
 
 local DelayedCall = DelayedCall

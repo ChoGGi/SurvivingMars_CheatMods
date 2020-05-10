@@ -46,7 +46,7 @@ function OverviewModeDialog:ScaleSmallObjects(time, direction, ...)
 
 	local c = #beams
 	if c > 0 then
-		SuspendPassEdits("ChoGGi_MarkSelectedBuildingType:ScaleSmallObjects")
+		SuspendPassEdits("ChoGGi.MarkSelectedBuildingType.ScaleSmallObjects")
 		local scale = direction == "up" and 250 or 50
 		for i = c, 1, -1 do
 			local beam = beams[i]
@@ -56,7 +56,7 @@ function OverviewModeDialog:ScaleSmallObjects(time, direction, ...)
 				table_remove(beams, i)
 			end
 		end
-		ResumePassEdits("ChoGGi_MarkSelectedBuildingType:ScaleSmallObjects")
+		ResumePassEdits("ChoGGi.MarkSelectedBuildingType.ScaleSmallObjects")
 	end
 
 end
@@ -92,7 +92,7 @@ local function MarkObjects(obj)
 	end
 
 	-- speed up obj creation
-	SuspendPassEdits("ChoGGi_MarkSelectedBuildingType:MarkObjects")
+	SuspendPassEdits("ChoGGi.MarkSelectedBuildingType.MarkObjects")
 
 	local obj_cls = DefenceLaserBeam
 	local c = 0
@@ -108,7 +108,7 @@ local function MarkObjects(obj)
 		end
 	end
 
-	ResumePassEdits("ChoGGi_MarkSelectedBuildingType:MarkObjects")
+	ResumePassEdits("ChoGGi.MarkSelectedBuildingType.MarkObjects")
 end
 
 -- add beams (also fires when changing selection)

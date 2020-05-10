@@ -25,7 +25,7 @@ function OnMsg.LoadGame()
 	end
 
 	-- suspending speeds up deleting
-	SuspendPassEdits("RemoveBlueYellowGridMarks")
+	SuspendPassEdits("ChoGGi.RemoveBlueYellowGridMarks.LoadGame")
 
 	-- blue/yellow markers
 	MapDelete(true, "GridTile", "GridTileWater", "RangeHexRadius", function(o)
@@ -42,5 +42,5 @@ function OnMsg.LoadGame()
 		end
 	end)
 
-	ResumePassEdits("RemoveBlueYellowGridMarks")
+	ResumePassEdits("ChoGGi.RemoveBlueYellowGridMarks.LoadGame")
 end

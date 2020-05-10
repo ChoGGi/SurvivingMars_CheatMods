@@ -1,14 +1,12 @@
 -- See LICENSE for terms
 
 local MapFilter = MapFilter
-local FindNearestObject = FindNearestObject
 
 local obj_pos
 local function SortDist2D(a, b)
 	return a:GetDist2D(obj_pos) < b:GetDist2D(obj_pos)
 end
 local table_sort = table.sort
-local IsValid = IsValid
 
 local orig_TaskRequestHub_FindDemandRequest = TaskRequestHub.FindDemandRequest
 function TaskRequestHub:FindDemandRequest(obj, resource, amount, ...)

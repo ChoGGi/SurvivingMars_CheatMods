@@ -10,7 +10,7 @@ local OPolyline
 
 -- remove existing lines
 local function CleanUp()
-	SuspendPassEdits("SelectionRemoved.Show Dust Affected.CleanUp")
+	SuspendPassEdits("ChoGGi.SelectionRemoved.Show Dust Affected.CleanUp")
 	for i = 1, #lines do
 		local line = lines[i]
 		if IsValid(line) then
@@ -19,7 +19,7 @@ local function CleanUp()
 	end
 	table.iclear(lines)
 	lines_c = 0
-	ResumePassEdits("SelectionRemoved.Show Dust Affected.CleanUp")
+	ResumePassEdits("ChoGGi.SelectionRemoved.Show Dust Affected.CleanUp")
 end
 
 local skips = {"ElectricityGridElement", "LifeSupportGridElement"}
@@ -32,7 +32,7 @@ local function ToggleLines(obj)
 	else
 		CleanUp()
 	end
-	SuspendPassEdits("SelectionRemoved.Show Dust Affected.ToggleLines")
+	SuspendPassEdits("ChoGGi.SelectionRemoved.Show Dust Affected.ToggleLines")
 
 	-- safety first
 	if not IsValid(obj) then
@@ -81,7 +81,7 @@ local function ToggleLines(obj)
 		lines[lines_c] = line
 	end
 
-	ResumePassEdits("SelectionRemoved.Show Dust Affected.ToggleLines")
+	ResumePassEdits("ChoGGi.SelectionRemoved.Show Dust Affected.ToggleLines")
 end
 
 -- clear lines when changing selection

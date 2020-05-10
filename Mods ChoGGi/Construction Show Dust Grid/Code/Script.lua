@@ -133,7 +133,7 @@ end
 local grids_visible
 
 local function ShowGrids()
-	SuspendPassEdits("CursorBuilding.GameInit.Construction Show Dust Grid")
+	SuspendPassEdits("ChoGGi.CursorBuilding.GameInit.Construction Show Dust Grid")
 
 	local ObjectGrid = ObjectGrid
 	local labels = UICity.labels
@@ -203,11 +203,11 @@ local function ShowGrids()
 		end
 	end
 
-	ResumePassEdits("CursorBuilding.GameInit.Construction Show Dust Grid")
+	ResumePassEdits("ChoGGi.CursorBuilding.GameInit.Construction Show Dust Grid")
 	grids_visible = true
 end
 local function HideGrids()
-	SuspendPassEdits("CursorBuilding.Done.Construction Show Dust Grid")
+	SuspendPassEdits("ChoGGi.CursorBuilding.Done.Construction Show Dust Grid")
 
 	local UICity = UICity
 	for i = 1, classes_c do
@@ -223,7 +223,7 @@ local function HideGrids()
 		end
 	end
 
-	ResumePassEdits("CursorBuilding.Done.Construction Show Dust Grid")
+	ResumePassEdits("ChoGGi.CursorBuilding.Done.Construction Show Dust Grid")
 	grids_visible = false
 end
 
@@ -249,7 +249,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 --~ ex(self)
 --~ ex(classes)
 
-	SuspendPassEdits("CursorBuilding.UpdateShapeHexes.Construction Show Dust Grid")
+	SuspendPassEdits("ChoGGi.CursorBuilding.UpdateShapeHexes.Construction Show Dust Grid")
 	local g_HexRanges = g_HexRanges
 	for range, obj in pairs(g_HexRanges) do
 		if range.SetVisible and range.bind_to == "GetDustRadius"
@@ -273,7 +273,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 
 		end
 	end
-	ResumePassEdits("CursorBuilding.UpdateShapeHexes.Construction Show Dust Grid")
+	ResumePassEdits("ChoGGi.CursorBuilding.UpdateShapeHexes.Construction Show Dust Grid")
 
 	return orig_CursorBuilding_UpdateShapeHexes(self, ...)
 end

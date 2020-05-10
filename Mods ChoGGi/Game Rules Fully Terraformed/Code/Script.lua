@@ -33,7 +33,7 @@ function OnMsg.ClassesPostprocess()
 				OnSoilGridChanged()
 
 				-- spawn a bunch of trees
-				SuspendPassEdits("FullyTerraformed.spawning some trees")
+				SuspendPassEdits("ChoGGi.FullyTerraformed.spawning some trees")
 				if rawget(_G,"ChoGGi") and ChoGGi.ComFuncs.PlantRandomVegetation then
 					ChoGGi.ComFuncs.PlantRandomVegetation(2500)
 				elseif rawget(_G,"dbg_PlantRandomVegetation") then
@@ -56,7 +56,7 @@ function OnMsg.ClassesPostprocess()
 						},
 					})
 				end
-				ResumePassEdits("FullyTerraformed.spawning some trees")
+				ResumePassEdits("ChoGGi.FullyTerraformed.spawning some trees")
 			end,
 		}),
 	})

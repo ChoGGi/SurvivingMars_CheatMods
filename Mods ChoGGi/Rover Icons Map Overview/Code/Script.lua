@@ -8,7 +8,7 @@ local CreateRealTimeThread = CreateRealTimeThread
 local step = 33
 
 local function UpdateIcons(time, direction, rovers)
-	SuspendPassEdits("ChoGGi_RoverIconsMapOverview_Update")
+	SuspendPassEdits("ChoGGi.RoverIconsMapOverview.Update")
 	local scale = const.SignsOverviewCameraScaleUp
 
 	g_CurrentDepositScale = direction == "up" and scale or 100
@@ -29,7 +29,7 @@ local function UpdateIcons(time, direction, rovers)
 		i = i + step
 	until i > time or not CameraTransitionThread
 
-	ResumePassEdits("ChoGGi_RoverIconsMapOverview_Update")
+	ResumePassEdits("ChoGGi.RoverIconsMapOverview.Update")
 end
 
 local orig_OverviewModeDialog_ScaleSmallObjects = OverviewModeDialog.ScaleSmallObjects

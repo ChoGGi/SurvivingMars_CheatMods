@@ -85,6 +85,7 @@ do -- ModUpload
 		ChoGGi_RotateAllBuildings = "Rotate All Buildings v0.1",
 		ChoGGi_SaveMissionProfiles = "Save Mission Profiles v0.1",
 		ChoGGi_SelectableCables = "Selectable Cables v0.4",
+		ChoGGi_ShowDronesConstructionSite = "Show Drones Construction Site",
 		ChoGGi_ShowLastColonies = "Show Saved Colonies v0.9",
 		ChoGGi_ShowMaxRadiusRange = "Construction: Show Max Radius Range v0.4",
 		ChoGGi_ShowTransportRouteInfo = "Show Transport Route Info v0.1",

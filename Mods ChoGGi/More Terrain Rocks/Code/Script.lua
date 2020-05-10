@@ -273,9 +273,9 @@ You can build this if you want it won't hurt anything.]]),
 				"RolloverHint", T(608042494285, "<left_click> Activate"),
 				"OnPress", function(self)
 					-- speeds it up if it's a large scale
-					SuspendPassEdits("ChoGGi_LevelPrefabBuilding.Scale")
+					SuspendPassEdits("ChoGGi.LevelPrefabBuilding.Scale")
 					self.context:SetScale(self.context:GetScale()+25)
-					ResumePassEdits("ChoGGi_LevelPrefabBuilding.Scale")
+					ResumePassEdits("ChoGGi.LevelPrefabBuilding.Scale")
 				end,
 				"Icon", "UI/Icons/IPButtons/drone_assemble.tga",
 			}),
@@ -285,9 +285,9 @@ You can build this if you want it won't hurt anything.]]),
 				"RolloverText", T(1000081, "Scale") .. " " .. T(1000540, "-"),
 				"RolloverHint", T(608042494285, "<left_click> Activate"),
 				"OnPress", function(self)
-					SuspendPassEdits("ChoGGi_LevelPrefabBuilding.Scale")
+					SuspendPassEdits("ChoGGi.LevelPrefabBuilding.Scale")
 					self.context:SetScale(self.context:GetScale()-25)
-					ResumePassEdits("ChoGGi_LevelPrefabBuilding.Scale")
+					ResumePassEdits("ChoGGi.LevelPrefabBuilding.Scale")
 				end,
 				"Icon", "UI/Icons/IPButtons/drone_dismantle.tga",
 			}),
@@ -298,10 +298,10 @@ You can build this if you want it won't hurt anything.]]),
 				"RolloverText", T(312752058553, "Rotate Building Left"),
 				"RolloverHint", T(608042494285, "<left_click> Activate"),
 				"OnPress", function(self)
-					SuspendPassEdits("ChoGGi_LevelPrefabBuilding.Rotate")
+					SuspendPassEdits("ChoGGi.LevelPrefabBuilding.Rotate")
 					self.context:SetAngle((self.context:GetAngle() or 0) + -3600)
 					ObjModified(self.context)
-					ResumePassEdits("ChoGGi_LevelPrefabBuilding.Rotate")
+					ResumePassEdits("ChoGGi.LevelPrefabBuilding.Rotate")
 				end,
 				"Icon", "UI/Icons/IPButtons/automated_mode_on.tga",
 			}),

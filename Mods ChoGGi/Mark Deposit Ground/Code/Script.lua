@@ -164,6 +164,7 @@ local function HideSigns()
 			end
 		end
 	end
+
 	ResumePassEdits("ChoGGi.MarkDepositGround.HideSigns")
 end
 

@@ -38,7 +38,7 @@ local function StartupCode()
 	local SpawnRivalAI = SpawnRivalAI
 
 	-- spawn all the rest
-	for i = 1, (#Presets.DumbAIDef.MissionSponsors - 2) do
+	for _ = 1, (#Presets.DumbAIDef.MissionSponsors - 2) do
 		-- stop spawning when we're maxed out
 		if count >= mod_MaxRivals then
 			break

@@ -10,7 +10,7 @@ DefineClass.ChoGGi_OutsideResidence = {
 
 function ChoGGi_OutsideResidence:GameInit()
 	-- speed up adding/removing/scaling objs
-	SuspendPassEdits("ChoGGi_OutsideResidence.GameInit")
+	SuspendPassEdits("ChoGGi.OutsideResidence.GameInit")
 
 	-- -128 to 127
 	-- object, 1-4 , Color, Roughness, Metallic
@@ -48,7 +48,7 @@ function ChoGGi_OutsideResidence:GameInit()
 	bottom:SetAttachOffset(point(0, 0, -47))
 	bottom:SetColorizationMaterial(2, -8629977, 127, -128)
 
-	ResumePassEdits("ChoGGi_OutsideResidence.GameInit")
+	ResumePassEdits("ChoGGi.OutsideResidence.GameInit")
 
 	-- piggy back off nearest dome
 	AttachToNearestDome(self, "force")
