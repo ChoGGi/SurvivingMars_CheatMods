@@ -1588,6 +1588,7 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 --~ 				Sleep(100)
 --~ 				if UISpeedState ~= "pause" then
 --~ 					UICity:SetGameSpeed(0)
+--~ 					UISpeedState = "pause"
 --~ 				end
 --~ 			end
 

@@ -1,10 +1,5 @@
 -- See LICENSE for terms
 
--- local is (slightly) faster then global (assuming you call it more then once)
-local XTemplates = XTemplates
-local ObjModified = ObjModified
-local PlaceObj = PlaceObj
-
 -- remove (maybe) existing xtemplate entry (xtemplates are only built on New Game, and when new dlc is added?)
 local function RemoveXTemplateSections(list, name)
 	local idx = table.find(list, name, true)
@@ -72,6 +67,7 @@ function OnMsg.ClassesPostprocess()
 
 				-- if you modified a value then use this, if not remove
 				ObjModified(context)
+				RebuildInfopanel(context)
 				---
 			end
 		}),

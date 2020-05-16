@@ -7,7 +7,7 @@ function OnMsg.ConstructionSitePlaced(site)
 	end
 end
 
--- Somebody missed a Msg...
+-- "Somebody" missed a Msg...
 local orig_GameInit = LandscapeConstructionSiteBase.GameInit
 function LandscapeConstructionSiteBase:GameInit(...)
 	self:SetPriority(1)

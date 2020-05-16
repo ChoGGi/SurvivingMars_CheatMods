@@ -29,6 +29,7 @@ end
 local function PauseGame(id, func, ...)
 	if lookup_skips[id] then
 		UICity:SetGameSpeed(0)
+		UISpeedState = "pause"
 	end
 	return func(id, ...)
 end

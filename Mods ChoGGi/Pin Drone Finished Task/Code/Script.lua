@@ -39,6 +39,7 @@ function Drone:GoHome(...)
 	end
 	if mod_PauseGame then
 		UICity:SetGameSpeed(0)
+		UISpeedState = "pause"
 	end
 
 	return orig_Drone_GoHome(self, ...)
@@ -51,6 +52,7 @@ function Drone:Idle(...)
 	end
 	if mod_PauseGameIdle then
 		UICity:SetGameSpeed(0)
+		UISpeedState = "pause"
 	end
 
 	return orig_Drone_Idle(self, ...)
