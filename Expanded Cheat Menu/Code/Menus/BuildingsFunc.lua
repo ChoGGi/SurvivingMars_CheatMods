@@ -1528,38 +1528,18 @@ function ChoGGi.MenuFuncs.RemoveBuildingLimits_Toggle()
 	)
 end
 
-do -- Building_wonder_Toggle
-	local function SetWonders(bool)
-		local BuildingTemplates = BuildingTemplates
-		for id, bld in pairs(BuildingTemplates) do
-			if bld.group == "Wonders" then
-				bld.wonder = bool
-			-- a wonder, but not a wonder... how wonderful.
-			elseif id == "OpenCity" then
-				bld.wonder = bool
-			end
-		end
-	end
+function ChoGGi.MenuFuncs.Building_wonder_Toggle()
+	ChoGGi.UserSettings.Building_wonder = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.Building_wonder)
 
-	function ChoGGi.MenuFuncs.Building_wonder_Toggle()
-		if ChoGGi.UserSettings.Building_wonder then
-			ChoGGi.UserSettings.Building_wonder = nil
-			SetWonders(true)
-		else
-			ChoGGi.UserSettings.Building_wonder = true
-			SetWonders(false)
-		end
+	-- if the buildmenu is open
+	ChoGGi.ComFuncs.UpdateBuildMenu()
 
-		-- if the buildmenu is open
-		ChoGGi.ComFuncs.UpdateBuildMenu()
-
-		ChoGGi.SettingFuncs.WriteSettings()
-		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.Building_wonder),
-			Strings[302535920000159--[[Unlimited Wonders]]]
-		)
-	end
-end -- do
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.Building_wonder),
+		Strings[302535920000159--[[Unlimited Wonders]]]
+	)
+end
 
 function ChoGGi.MenuFuncs.Building_dome_spot_Toggle()
 	ChoGGi.UserSettings.Building_dome_spot = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.Building_dome_spot)

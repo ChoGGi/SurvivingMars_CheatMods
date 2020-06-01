@@ -1,3 +1,6 @@
+v1.0
+Made disabling Sort Breakthrough List actually randomize list.
+
 v0.9
 Added mod option to exclude breakthroughs.
 

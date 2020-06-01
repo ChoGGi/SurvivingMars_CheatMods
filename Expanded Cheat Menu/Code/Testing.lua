@@ -473,6 +473,23 @@ end)
 -- benchmarking stuff
 
 
+function ChoGGi.testing.NegNumber()
+	local num = 6565421
+
+	ChoGGi.ComFuncs.TickStart("NegNumber.Tick.1")
+	for _ = 1, 100000000 do
+		local temp = 0 - num
+	end
+	ChoGGi.ComFuncs.TickEnd("NegNumber.Tick.1")
+
+	ChoGGi.ComFuncs.TickStart("NegNumber.Tick.2")
+	for _ = 1, 100000000 do
+		local temp = num * -1
+	end
+	ChoGGi.ComFuncs.TickEnd("NegNumber.Tick.2")
+
+end
+
 function ChoGGi.testing.LengthLocal()
 	local objs = UICity.labels.SurfaceDepositMarker or ""
 

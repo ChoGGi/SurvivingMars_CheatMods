@@ -3439,12 +3439,10 @@ do -- ToggleObjLines
 		if type(obj) ~= "table" then
 			return
 		end
---~ 		SuspendPassEdits("ChoGGi.ComFuncs.ObjListLines_Clear")
 		if IsValid(obj.ChoGGi_ObjListLine) then
 			DoneObject(obj.ChoGGi_ObjListLine)
 		end
-		obj.ChoGGi_ObjListLine = nil
---~ 		ResumePassEdits("ChoGGi.ComFuncs.ObjListLines_Clear")
+		rawset(obj, "ChoGGi_ObjListLine", nil)
 	end
 	ChoGGi.ComFuncs.ObjListLines_Clear = ObjListLines_Clear
 

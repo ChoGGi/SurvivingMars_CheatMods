@@ -61,23 +61,25 @@ function OnMsg.ModsReloaded()
 			mod_path2 = ConvertToOSPath(mod_path1):gsub("\\","/")
 			for i = 1, #items do
 				local item = items[i]
-				-- start fixing paths
-				item.icon = FixPath(item.icon)
-				item.display_icon = FixPath(item.display_icon)
-				item.encyclopedia_image = FixPath(item.encyclopedia_image)
-				item.upgrade1_icon = FixPath(item.upgrade1_icon)
-				item.upgrade2_icon = FixPath(item.upgrade2_icon)
-				item.upgrade3_icon = FixPath(item.upgrade3_icon)
-				-- it can happen (i check if it's an image path above)
-				item.value = FixPath(item.value)
-				-- sponsors
-				for j = 1, 5 do
-					local image = "goal_image_" .. j
-					item[image] = FixPath(item[image])
-				end
-				for j = 1, 5 do
-					local image = "goal_pin_image_" .. j
-					item[image] = FixPath(item[image])
+				if item then
+					-- start fixing paths
+					item.icon = FixPath(item.icon)
+					item.display_icon = FixPath(item.display_icon)
+					item.encyclopedia_image = FixPath(item.encyclopedia_image)
+					item.upgrade1_icon = FixPath(item.upgrade1_icon)
+					item.upgrade2_icon = FixPath(item.upgrade2_icon)
+					item.upgrade3_icon = FixPath(item.upgrade3_icon)
+					-- it can happen (i check if it's an image path above)
+					item.value = FixPath(item.value)
+					-- sponsors
+					for j = 1, 5 do
+						local image = "goal_image_" .. j
+						item[image] = FixPath(item[image])
+					end
+					for j = 1, 5 do
+						local image = "goal_pin_image_" .. j
+						item[image] = FixPath(item[image])
+					end
 				end
 			end
 		end

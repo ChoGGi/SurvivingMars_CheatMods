@@ -33,6 +33,8 @@ function OnMsg.ClassesPostprocess()
 
 	ModOptions()
 
+	local table = table
+
 	-- sort by id
 	local breaks
 	if mod_SortBreakthroughs then
@@ -41,8 +43,16 @@ function OnMsg.ClassesPostprocess()
 			return a.id < b.id
 		end)
 	else
-		breaks = Presets.TechPreset.Breakthroughs
+		-- random
+		local temp_breaks = table.copy(Presets.TechPreset.Breakthroughs)
+		breaks = {}
+		for i = 1, #temp_breaks do
+			local breakthrough = table.rand(temp_breaks)
+			table.remove_value(temp_breaks, breakthrough)
+			breaks[i] = breakthrough
+		end
 	end
+--~ 	ex(breaks)
 
 	local T = T
 	local SafeTrans

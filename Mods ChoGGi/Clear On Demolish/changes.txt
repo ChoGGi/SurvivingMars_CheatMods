@@ -1,3 +1,6 @@
+v0.4
+Never bothered testing it with the Delete kill till now.
+
 v0.3
 Skip buildings demolished by non-user actions.
 

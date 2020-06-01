@@ -1,1 +1,2 @@
 v0.2
+Added some mod options for exempted buildings (suggestions?).

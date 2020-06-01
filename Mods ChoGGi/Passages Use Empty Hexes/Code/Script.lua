@@ -149,9 +149,7 @@ end
 
 local orig_ConnectDomesWithPassage = ConnectDomesWithPassage
 function ConnectDomesWithPassage(d1, d2, ...)
-	if d1 and d2 then
-		return orig_ConnectDomesWithPassage(d1, d2, ...)
-	end
+	return d1 and d2 and orig_ConnectDomesWithPassage(d1, d2, ...)
 end
 
 local grids_visible

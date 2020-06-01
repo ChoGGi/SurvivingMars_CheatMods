@@ -33,6 +33,7 @@ Press Numpad 6 to toggle showing usable hexes.
 
 
 Known Issues:
+Ramps will be ignored till you restart the game.
 You will get warning messages when trying to place passages in "wrong" places (just ignore them).
 I was more concerned with removing limitations than setting new ones, so you can build them in stupid places (if it doesn't place a complete passage then remove it).
 Placing a passage at the life-support/entrance hex works, but you can't do a manual kink in the line.

@@ -4,6 +4,9 @@
 ### Fixed:
 - Set Colonist Race wasn't setting the race (thanks Triggermage).
 
+### Changed:
+- Changed the unlimited wonders option to use the same method as the standalone mod I did (milestone works).
+
 ## v15.2 (02 May 2020)
 ### Changed:
 - Code to Double upload my library mod (PC/Console).

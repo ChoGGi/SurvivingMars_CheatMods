@@ -134,10 +134,27 @@ do -- non-class obj funcs
 	end
 
 	-- SkipMissingDLC and no mystery dlc installed means the buildmenu tries to add missing buildings, and call a func that doesn't exist
+	-- report building as not-a-wonder to the func that checks for wonders
 	SaveOrigFunc("UIGetBuildingPrerequisites")
-	function UIGetBuildingPrerequisites(cat_id, template, bCreateItems, ...)
+	function UIGetBuildingPrerequisites(cat_id, template, ...)
+		-- missing dlc
 		if BuildingTemplates[template.id] then
-			return ChoGGi_OrigFuncs.UIGetBuildingPrerequisites(cat_id, template, bCreateItems, ...)
+
+			-- save orig boolean
+			local orig_wonder = template.wonder
+
+			if UserSettings.Building_wonder then
+				-- always false so there's no build limit
+				template.wonder = false
+			end
+
+			-- store ret values as a table since there's more than one, and an update may change the amount
+			local ret = {ChoGGi_OrigFuncs.UIGetBuildingPrerequisites(cat_id, template, ...)}
+
+			-- make sure to restore orig value after func fires
+			template.wonder = orig_wonder
+
+			return table_unpack(ret)
 		end
 	end
 

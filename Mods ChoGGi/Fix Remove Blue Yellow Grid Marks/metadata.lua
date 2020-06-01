@@ -16,6 +16,7 @@ return PlaceObj("ModDef", {
 	"description", [[This will remove any blue or yellow grid marks from around objects when you load a game.
 You can disable it afterwards.
 
+This also takes care of stuck "ghost" rovers from transport tasks.
 By design this will not remove the grids added by SkiRich's Toggle Hub Zone mod. You'll need to manually turn them off.
 
 

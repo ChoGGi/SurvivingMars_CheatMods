@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"has_options", true,
 	"TagInterface", true,
-	"description", [[Selected buildings will highlight drones hauling material, on the way to it, or performing work on it.
+	"description", [[Selected buildings will highlight drones hauling material, on the way, or performing work on it.
 
 
 Requested by Funky.Bigodon.]],

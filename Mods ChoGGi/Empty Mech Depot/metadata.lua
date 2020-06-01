@@ -11,7 +11,6 @@ return PlaceObj("ModDef", {
 	"version", 9,
 	"version_major", 0,
 	"version_minor", 9,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_EmptyMechDepot",
 	"steam_id", "1411108310",

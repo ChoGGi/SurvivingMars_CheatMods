@@ -483,7 +483,6 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"]]]
 
 	local SponsorBuildingLimits = UserSettings.SponsorBuildingLimits
 	local Building_hide_from_build_menu = UserSettings.Building_hide_from_build_menu
-	local Building_wonder = UserSettings.Building_wonder
 
 	local BuildingTechRequirements = BuildingTechRequirements
 	local BuildingTemplates = BuildingTemplates
@@ -523,12 +522,6 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"]]]
 				bld.build_category = "HiddenX"
 			end
 		end
-
-		-- wonder building limit
-		if Building_wonder then
-			bld.wonder = nil
-		end
-
 	end
 
 	-- unlock buildings that cannot rotate
