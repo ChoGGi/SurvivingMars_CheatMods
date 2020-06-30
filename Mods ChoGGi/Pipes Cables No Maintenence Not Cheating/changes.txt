@@ -1,4 +1,11 @@
+v0.5
+Evans update (well some update, I don't know when they changed to a diff func).
+
 v0.4
 Da Vinci
-v0.3/2
+
+v0.3
+Didn't work
+
+v0.2
 Didn't work

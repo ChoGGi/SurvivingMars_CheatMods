@@ -254,37 +254,34 @@ function OnMsg.ClassesPostprocess()
 	-- check for and remove existing template
 	ChoGGi.ComFuncs.RemoveXTemplateSections(building, "ChoGGi_Template_FireworksLauncher_DoStuff", true)
 
-	table.insert(
-		building,
-		1,
-		PlaceObj('XTemplateTemplate', {
-			"ChoGGi_Template_FireworksLauncher_DoStuff", true,
-			"comment", "something something",
-			"__context_of_kind", "FireworksLauncher",
-			"__template", "InfopanelButton",
+	building[#building+1] = PlaceObj('XTemplateTemplate', {
+		"ChoGGi_Template_FireworksLauncher_DoStuff", true,
+		"Id", "ChoGGi_FireworksLauncher_DoStuff",
+		"comment", "something something",
+		"__context_of_kind", "FireworksLauncher",
+		"__template", "InfopanelButton",
 
-			"RolloverText", T(302535920011421, [[Fire off some fireworks (Costs 100 million to use).
+		"RolloverText", T(302535920011421, [[Fire off some fireworks (Costs 100 million to use).
 Right-click to skip cost/temperature increase (also happens if you don't have enough cash).]]),
-			"RolloverTitle", T(302535920000944, [[Yamato Hasshin!]]),
-			"RolloverHint", T(302535920011422, [[<left_click> Hot Fireworks <right_click> Visual Fireworks]]),
-			"Icon", "UI/Icons/IPButtons/drill.tga",
+		"RolloverTitle", T(302535920000944, [[Yamato Hasshin!]]),
+		"RolloverHint", T(302535920011422, [[<left_click> Hot Fireworks <right_click> Visual Fireworks]]),
+		"Icon", "UI/Icons/IPButtons/drill.tga",
 
-			"OnPress", function (self, gamepad)
-				-- left click action (arg is if ctrl is being held down)
-				self.context:LaunchFireworks(false, not gamepad and IsMassUIModifierPressed())
-				ObjModified(self.context)
-			end,
-			"AltPress", true,
-			"OnAltPress", function (self, gamepad)
-				-- right click action
-				if gamepad then
-					self.context:LaunchFireworks(true, true)
-				else
-					self.context:LaunchFireworks(true, IsMassUIModifierPressed())
-				end
-				ObjModified(self.context)
-			end,
-		})
-	)
+		"OnPress", function (self, gamepad)
+			-- left click action (arg is if ctrl is being held down)
+			self.context:LaunchFireworks(false, not gamepad and IsMassUIModifierPressed())
+			ObjModified(self.context)
+		end,
+		"AltPress", true,
+		"OnAltPress", function (self, gamepad)
+			-- right click action
+			if gamepad then
+				self.context:LaunchFireworks(true, true)
+			else
+				self.context:LaunchFireworks(true, IsMassUIModifierPressed())
+			end
+			ObjModified(self.context)
+		end,
+	})
 
 end

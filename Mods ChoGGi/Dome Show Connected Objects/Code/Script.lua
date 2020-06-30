@@ -82,6 +82,7 @@ function OnMsg.ClassesPostprocess()
 
 	building[#building+1] = PlaceObj('XTemplateTemplate', {
 		"ChoGGi_Template_ShowDomeConnectedObjects", true,
+		"Id", "ChoGGi_ShowDomeConnectedObjects",
 		"__context_of_kind", "Dome",
 		-- only show button when demo button isn't visible
 		"__condition", function (_, context)

@@ -7,11 +7,10 @@ return PlaceObj("ModDef", {
 			"version_minor", 2,
 		}),
 	},
-	"title", "Construction Show Hex Buildable Grid",
+	"title", "Construction Show Buildable Grid",
 	"version", 4,
 	"version_major", 0,
 	"version_minor", 4,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_ConstructionShowHexBuildableGrid",
 	"steam_id", "1743031290",
@@ -22,7 +21,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Show Hex Buildable Grid during construction (follows the mouse).
+	"description", [[Show hex buildable grid during construction (follows the mouse).
 Press Numpad 0 to toggle grids anytime (rebind in game options).
 
 Passable (drones/rovers can drive here), Buildable (buildings can be placed here)

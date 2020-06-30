@@ -40,11 +40,12 @@ end
 -- removed button
 function OnMsg.ClassesPostprocess()
 
-	local xt = XTemplates.ipBuilding[1][1]
+	local xt = XTemplates.ipBuilding[1]
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xt, "ChoGGi_RestoreMaintenance")
 
 	xt[#xt+1] = PlaceObj("XTemplateTemplate", {
 		"ChoGGi_RestoreMaintenance", true,
+		"Id", "ChoGGi_RestoreMaintenance",
 		"__condition", function(_, context)
 			return context:IsKindOf("RequiresMaintenance") and context:DoesRequireMaintenance()
 		end,
@@ -69,6 +70,7 @@ function OnMsg.ClassesPostprocess()
 		"AltPress", true,
 		"OnAltPress", function(self, gamepad)
 			if gamepad then
+				PlayFX("UIRequestMaintenance")
 				self.context:UIRequestMaintenance(true)
 				ObjModified(self.context)
 			end

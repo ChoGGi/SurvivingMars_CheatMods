@@ -97,6 +97,7 @@ function OnMsg.ModsReloaded()
 	table.insert(xt, #xt,
 		PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_CentredUI", true,
+			"Id", "ChoGGi_CentredUI",
 			"__template", "HUDButtonTemplate",
 
 			"RolloverTitle", [[Set Margin]],

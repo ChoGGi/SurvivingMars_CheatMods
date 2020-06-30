@@ -64,10 +64,10 @@ function OnMsg.ModsReloaded()
 	table.insert(xt, #xt,
 		PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_Minimap", true,
+			"Id", "idMinimap",
 			"__template", "HUDButtonTemplate",
 			"RolloverText", T(302535920011123, [[Click to go places (updates minimap first click).]]),
 			"RolloverTitle", T(302535920011124, [[Minimap]]),
-			"Id", "idMinimap",
 			"Image", CurrentModPath .. "UI/minimap.png",
 			"FXPress", "MainMenuButtonClick",
 			"OnPress", HUD.idMinimapOnPress,

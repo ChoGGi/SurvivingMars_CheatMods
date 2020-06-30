@@ -41,7 +41,7 @@ local safe_spots = {
 	Box8 = true,
 }
 function BottomlessStorage:GetSpotBeginIndex(spot_name, ...)
-	if not safe_spots[spot_name] then
+	if spot_name:sub(1, 3) == "Box" and not safe_spots[spot_name] then
 		spot_name = "Box8"
 	end
 	return UniversalStorageDepot.GetSpotBeginIndex(self, spot_name, ...)

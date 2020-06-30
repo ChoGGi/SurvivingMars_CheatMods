@@ -385,6 +385,7 @@ function OnMsg.ClassesPostprocess()
 		#rover,
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_RCBulldozer_Status", true,
+			"Id", "ChoGGi_RCBulldozer_Status",
 			"__context_of_kind", "RCBulldozer",
 			"__template", "InfopanelSection",
 			"Title", T(49, "Status"),
@@ -423,6 +424,7 @@ function OnMsg.ClassesPostprocess()
 		#rover+1,
 		PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_RCBulldozer_Texture", true,
+			"Id", "ChoGGi_RCBulldozer_Texture",
 			"__context_of_kind", "RCBulldozer",
 			"__template", "InfopanelActiveSection",
 			"RolloverTitle", T(302535920011168, [[Ground Texture]]),
@@ -461,6 +463,7 @@ function OnMsg.ClassesPostprocess()
 		#rover+1,
 		PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_RCBulldozer_Circle", true,
+			"Id", "ChoGGi_RCBulldozer_Circle",
 			"__context_of_kind", "RCBulldozer",
 			"__template", "InfopanelActiveSection",
 			"RolloverTitle", T(302535920011173, [[Visual Circle]]),
@@ -501,6 +504,7 @@ function OnMsg.ClassesPostprocess()
 		table.find(rover, "Icon", "UI/Icons/IPButtons/salvage_1.tga") + 1,
 		PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_RCBulldozer_Dozer", true,
+			"Id", "ChoGGi_RCBulldozer_Dozer",
 			"__context_of_kind", "RCBulldozer",
 			"__template", "InfopanelButton",
 			"OnPress", function(self)

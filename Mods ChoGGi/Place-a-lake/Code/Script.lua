@@ -70,6 +70,7 @@ function OnMsg.ClassesPostprocess()
 		#building+1,
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_InstantLake_Adjust", true,
+			"Id", "ChoGGi_InstantLake_Adjust",
 			"__context_of_kind", "InstantLake",
 			"__template", "InfopanelButton",
 			"Icon", "UI/Icons/IPButtons/drill.tga",

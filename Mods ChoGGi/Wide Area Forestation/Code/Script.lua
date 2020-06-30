@@ -82,6 +82,7 @@ function OnMsg.ClassesPostprocess()
 
 	building[#building+1] = PlaceObj('XTemplateTemplate', {
 		"ChoGGi_Template_WideAreaForestation", true,
+		"Id", "ChoGGi_WideAreaForestation",
 		"__context_of_kind", "ForestationPlant",
 		"__template", "InfopanelButton",
 

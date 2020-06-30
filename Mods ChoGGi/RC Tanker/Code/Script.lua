@@ -517,6 +517,7 @@ Press to toggle.]]))
 		#rover+1,
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_RCTanker_ToggleDir", true,
+			"Id", "ChoGGi_RCTanker_ToggleDir",
 			"comment", "fill/drain toggle",
 			"__context_of_kind", "RCTanker",
 			"__template", "InfopanelButton",
@@ -563,6 +564,7 @@ Press to toggle.]]),
 		#rover+1,
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_RCTanker_ToggleRes", true,
+			"Id", "ChoGGi_RCTanker_ToggleRes",
 			"comment", "air/water toggle",
 			"__context_of_kind", "RCTanker",
 			"__template", "InfopanelButton",

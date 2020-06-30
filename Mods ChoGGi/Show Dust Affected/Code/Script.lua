@@ -97,6 +97,7 @@ function OnMsg.ClassesPostprocess()
 
 	building[#building+1] = PlaceObj('XTemplateTemplate', {
 		"ChoGGi_Template_ShowDustAffectedToggle", true,
+		"Id", "ChoGGi_ShowDustAffectedToggle",
 		"__context_of_kind", "Building",
 		"__condition", function (_, context)
 			return context:IsKindOf("DustGenerator")

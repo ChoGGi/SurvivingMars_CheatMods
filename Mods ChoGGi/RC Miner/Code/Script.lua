@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local Sleep = Sleep
 local GetModEnabled = ChoGGi.ComFuncs.GetModEnabled
 
 -- miner amounts table
@@ -398,7 +399,8 @@ function PortableMiner:Idle()
 		self:ShowNotWorkingSign(false)
 	end
 
---~ 	Sleep(type(delay) == "number" or 2500)
+	-- freezing issue with flatten ground?
+	Sleep(1000)
 
 	self:Gossip("Idle")
 	self:SetState("idle")
@@ -484,6 +486,9 @@ end
 
 -- called it Load so it uses the load resource icon in pins
 function PortableMiner:Load()
+	-- freezing issue with flatten ground?
+	Sleep(100)
+
 	local rocket_pos
 	if mod_ShowRocket then
 		-- get pos of where the "rocket" moves
@@ -572,6 +577,9 @@ end
 
 -- called when the mine is gone/empty (returns nil to skip the add res amount stuff)
 function PortableMiner:MineIsEmpty()
+	-- freezing issue with flatten ground?
+	Sleep(100)
+
 	-- it's done so remove our ref to it
 	table.iclear(self.nearby_deposits)
 	-- needed to mine other concrete
@@ -588,6 +596,9 @@ function PortableMiner:MineIsEmpty()
 end
 
 function PortableMiner:DigErUp()
+	-- freezing issue with flatten ground?
+	Sleep(100)
+
 	local d = self.nearby_deposits[1]
 
 	if not IsValid(d) then
@@ -693,6 +704,7 @@ function OnMsg.ClassesPostprocess()
 	ChoGGi.ComFuncs.RemoveXTemplateSections(template, "ChoGGi_Template_PortableMinerProdInfo", true)
 	template[#template+1] = PlaceObj("XTemplateTemplate", {
 		"ChoGGi_Template_PortableMinerProdInfo", true,
+		"Id", "ChoGGi_PortableMinerProdInfo",
 		"__context_of_kind", "PortableMiner",
 		"__template", "InfopanelSection",
 		"RolloverText", T("<UISectionProdRollover>"),
@@ -712,6 +724,7 @@ function OnMsg.ClassesPostprocess()
 	ChoGGi.ComFuncs.RemoveXTemplateSections(template, "ChoGGi_Template_PortableMinerResFilter", true)
 	template[#template+1] = PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_PortableMinerResFilter", true,
+			"Id", "ChoGGi_PortableMinerResFilter",
 			"__context_of_kind", "PortableMiner",
 			"__template", "InfopanelSection",
 			"RolloverText", T(302535920011631, "Filter types of resources when looking with automated mode."),
@@ -900,6 +913,7 @@ function OnMsg.ClassesPostprocess()
 
 	template[#template+1] = PlaceObj("XTemplateTemplate", {
 		"ChoGGi_Template_PortableMinerStockpileSalvage", true,
+		"Id", "ChoGGi_PortableMinerStockpileSalvage",
 		"comment", "salvage",
 		"__context_of_kind", "Demolishable",
 		"__condition", function (_, context)

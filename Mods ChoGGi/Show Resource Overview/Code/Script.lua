@@ -31,10 +31,10 @@ function OnMsg.ModsReloaded()
 	table.insert(xt, #xt,
 		PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_ColonyOverview", true,
+			"Id", "idColonyOverview",
 			"__template", "HUDButtonTemplate",
 			"RolloverText", T(7850, "Aggregated information for your Colony."),
 			"RolloverTitle", T(7849, "Colony Overview"),
-			"Id", "idColonyOverview",
 			"Image", CurrentModPath .. "UI/statistics.png",
 			"ImageShine", "UI/HUD/statistics_shine.tga",
 			"FXPress", "MainMenuButtonClick",

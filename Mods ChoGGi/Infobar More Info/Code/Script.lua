@@ -18,13 +18,18 @@ local function UpdateTrans()
 			end
 		end
 		local image = CurrentModPath .. "UI/resources.png"
+		local infobar = Dialogs.Infobar
 		if mod_DisableTransparency then
-			Dialogs.Infobar.idPad:SetImage(image)
-			Dialogs.Infobar.idTerraformingBar.idPad:SetImage(image)
+			infobar.idPad:SetImage(image)
+			if infobar.idTerraformingBar then
+				infobar.idTerraformingBar.idPad:SetImage(image)
+			end
 		else
 			-- get this path from game maybe?
-			Dialogs.Infobar.idPad:SetImage("UI/CommonNew/resources.tga")
-			Dialogs.Infobar.idTerraformingBar.idPad:SetImage("UI/CommonNew/resources.tga")
+			infobar.idPad:SetImage("UI/CommonNew/resources.tga")
+			if infobar.idTerraformingBar then
+				infobar.idTerraformingBar.idPad:SetImage("UI/CommonNew/resources.tga")
+			end
 		end
 	end)
 end

@@ -67,6 +67,7 @@ function OnMsg.ClassesPostprocess()
 		warning,
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_ColonistSucker", true,
+			"Id", "ChoGGi_ColonistSucker",
 			"__template", "InfopanelActiveSection",
 			"Icon", "UI/Icons/traits_disapprove.tga",
 			"Title", T(302535920011244, "Remove Colonist"),

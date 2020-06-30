@@ -35,6 +35,7 @@ function OnMsg.ClassesPostprocess()
 		idx and idx+1 or #dome+1,
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_DomeLimitBirths", true,
+			"Id", "ChoGGi_DomeLimitBirths",
 			"__template", "InfopanelSection",
 			"Title", " ",
 			"Icon", "UI/Icons/Sections/dome.tga",
@@ -81,12 +82,12 @@ function OnMsg.ClassesPostprocess()
 							domes[i].ChoGGi_DomeLimitBirths = context.ChoGGi_DomeLimitBirths
 						end
 						pp:SetIcon("UI/Icons/Sections/Overpopulated.tga")
-						pp:SetRolloverText(T(302535920011414,"Apply value to all domes."))
+						pp:SetRolloverText(T(302535920011414, "Apply value to all domes!"))
+						pp:SetRolloverHint(T(302535920011688, "<left_click> Apply to this dome only."))
 					else
 						pp:SetIcon("UI/Icons/Sections/dome.tga")
-						pp:SetRolloverText(T(302535920011415,[[Apply value to this dome only.
-
-<left_click> to apply to all domes!]]))
+						pp:SetRolloverText(T(302535920011415, "Apply value to this dome only."))
+						pp:SetRolloverHint(T(302535920011689, "<left_click> Apply to all domes!"))
 					end
 					---
 				end,

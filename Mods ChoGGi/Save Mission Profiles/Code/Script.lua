@@ -81,6 +81,7 @@ local function ReadModSettings()
 end
 
 local function SaveProfile(params)
+	print("Save Mission Profiles: Ignore this error it doesn't matter")
 	local choice_str = WaitInputText(
 		T(302535920011253, "Save Profile"),
 		T(302535920011254, "Type a profile name to use.")

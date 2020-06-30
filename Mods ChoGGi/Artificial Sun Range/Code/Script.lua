@@ -35,24 +35,26 @@ local function UpdateArtificialSunRange(obj)
 	-- local some globals
 	local is_valid = IsValid(obj)
 
-	local suns = UICity.labels.ArtificialSun or empty_table
+	local suns = UICity.labels.ArtificialSun or ""
 	-- first update range for all art suns
 	if is_valid and obj:IsKindOf("ArtificialSun") then
 			obj.effect_range = mod_Range
 	else
 		for i = 1, #suns do
 			suns[i].effect_range = mod_Range
---~ 			suns[i].UIWorkRadius = mod_Range
 		end
 	end
 
-	-- now update all solar panels
-	if is_valid and obj:IsKindOf("SolarPanelBase") then
-		UpdateSolarPanel(obj, suns)
-	else
-		local panels = UICity.labels.SolarPanelBase or ""
-		for i = 1, #panels do
-			UpdateSolarPanel(panels[i], suns)
+	-- prevent log spam
+	if #suns > 0 then
+		-- now update all solar panels
+		if is_valid and obj:IsKindOf("SolarPanelBase") then
+			UpdateSolarPanel(obj, suns)
+		else
+			local panels = UICity.labels.SolarPanelBase or ""
+			for i = 1, #panels do
+				UpdateSolarPanel(panels[i], suns)
+			end
 		end
 	end
 end

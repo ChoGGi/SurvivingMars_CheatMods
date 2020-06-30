@@ -1,3 +1,6 @@
+v0.4
+Prevent log spam.
+
 v0.3
 Fix issue from v0.2
 

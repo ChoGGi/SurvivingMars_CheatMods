@@ -1,3 +1,6 @@
+v1.2
+Fix for missing button.
+
 v1.1
 Added fix for frozen buildings that start a maintenance request during a cold wave and drones don't repair till after cold wave ends.
 

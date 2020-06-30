@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Fireworks Launcher",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.png",
 	"id", "ChoGGi_FireworksLauncher",
 	"steam_id", "1734717680",

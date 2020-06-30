@@ -393,6 +393,7 @@ function OnMsg.ClassesPostprocess()
 
 	building[#building+1] = PlaceObj('XTemplateTemplate', {
 		"ChoGGi_Template_SetMainGarage", true,
+		"Id", "ChoGGi_SetMainGarage",
 		"__context_of_kind", "RCGarage",
 		"__condition", function (_, context)
 			-- only show button if this isn't the main
@@ -436,6 +437,7 @@ function OnMsg.ClassesPostprocess()
 
 	local template = PlaceObj('XTemplateTemplate', {
 		"ChoGGi_Template_RCGarage", true,
+		"Id", "ChoGGi_RCGarage",
 		"__context_of_kind", "RCGarage",
 		"__template", "InfopanelSection",
 		"Icon", "UI/Icons/Sections/basic.tga",

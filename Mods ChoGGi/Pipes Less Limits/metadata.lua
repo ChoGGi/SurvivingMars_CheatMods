@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_PipesLessLimits",
 	"steam_id", "1819506189",
@@ -21,5 +20,10 @@ Some won't stick through depending on angle, up to you to make it not stupid loo
 Drone Hub, Shuttle Hub, Automatic Metals Extractor, Rare/Metals Refinery, Waste Rock Processor, Polymer Plant, Drone Assembler, Fuel Refinery, MOXIE, Oxygen Tank, Water Extractor, Moisture Vaporator, Fungal Farm, Outside Ranch, Mech Storage
 
 Any I missed?
+
+
+
+Known Issues:
+Placing reversed air tanks next to each other under a pipe will cause the pipe to be invisible, you can also try removing and rebuilding?
 ]],
 })

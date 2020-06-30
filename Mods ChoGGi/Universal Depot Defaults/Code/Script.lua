@@ -125,7 +125,7 @@ if gp_dlc then
 		-- prevent log spam from seeds
 		local orig_GetSpotBeginIndex = UniversalStorageDepot.GetSpotBeginIndex
 		function UniversalStorageDepot:GetSpotBeginIndex(spot_name, ...)
-			if not safe_spots[spot_name] then
+			if spot_name:sub(1, 3) == "Box" and not safe_spots[spot_name] then
 				spot_name = "Box8"
 			end
 			return orig_GetSpotBeginIndex(self, spot_name, ...)

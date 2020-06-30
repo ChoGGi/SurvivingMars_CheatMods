@@ -11,7 +11,6 @@ return PlaceObj("ModDef", {
 	"version", 7,
 	"version_major", 0,
 	"version_minor", 7,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_RCBulldozer",
 	"author", "ChoGGi",
@@ -29,5 +28,7 @@ The buildable area won't be updated till you turn off Dozer Toggle (expensive fu
 
 Known issues:
 You can't place objects nearby the dozer when Dozer Toggle is enabled.
-The sides of ground on tall hills don't look that good, you can use my Terraformer mod to smooth them.]],
+The sides of ground on tall hills don't look that good, you can use my Terraformer mod to smooth them.
+Don't use near Philosopher's stones (the green stones).
+]],
 })

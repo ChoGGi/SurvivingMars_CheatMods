@@ -25,7 +25,7 @@ local function UpdateMurderPods()
 	for i = 1, c do
 		local obj = objs[i]
 		-- if colonist already has a pod after it then skip
-		if not IsValid(obj.ChoGGi_MurderPod) then
+		if obj and not IsValid(obj.ChoGGi_MurderPod) then
 			-- quicker to check age instead of looping all traits, so ageism rules
 			if mod_options[obj.age_trait] then
 				obj:ChoGGi_MP_LaunchPod()

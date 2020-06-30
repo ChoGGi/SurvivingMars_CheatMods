@@ -463,10 +463,10 @@ function OnMsg.ClassesPostprocess()
 		ChoGGi.ComFuncs.RemoveXTemplateSections(xt,"ChoGGi_Template_BuildingStates")
 		table.insert(xt,#xt,PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_BuildingStates", true,
+			"Id", "idMinimap",
 			"__template", "HUDButtonTemplate",
 			"RolloverText", T(302535920011328, [[Show list of building state profiles.]]),
 			"RolloverTitle", T(302535920011307, "Building States"),
-			"Id", "idMinimap",
 			"Image", CurrentModPath .. "UI/buildingstates.png",
 			"FXPress", "MainMenuButtonClick",
 			"OnPress", HUD.idBuildingStatesOnPress,
@@ -496,6 +496,7 @@ function OnMsg.ClassesPostprocess()
 
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_BuildingStates", true,
+			"Id", "ChoGGi_BuildingStates",
 			"__context_of_kind", "Building",
 			"__condition", function(_, context)
 				return not context:IsKindOfClasses(cls_skip)
