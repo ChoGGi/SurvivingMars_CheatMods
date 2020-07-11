@@ -1,3 +1,6 @@
+v0.4
+A group with a single object will select that object normally instead of grouped.
+
 v0.3
 Evans update.
 

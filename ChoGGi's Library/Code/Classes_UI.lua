@@ -11,7 +11,6 @@ end
 local Random = ChoGGi.ComFuncs.Random
 --~ local RetName = ChoGGi.ComFuncs.RetName
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
-local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local Strings = ChoGGi.Strings
 
 local T = T
@@ -653,42 +652,29 @@ function ChoGGi_XWindow:AddImageButton(UIScale)
 	end
 end
 
-function ChoGGi_XWindow:AddCloseXButton()
-	local close = self.close_func or empty_func
-
-	local RolloverText
-	if self:IsKindOf("ChoGGi_DlgExamine") then
-		RolloverText = Strings[302535920000628--[["Close the examine dialog
-Hold Shift to close all ""parent"" examine dialogs.
-Hold Ctrl to close all ECM dialogs."]]]
-	end
-	local g_Classes = g_Classes
+function ChoGGi_XWindow:AddCloseXButton(params)
+	params = params or empty_table
 
 	self.idCloseX = g_Classes.ChoGGi_XCloseButton:new({
 		Id = "idCloseX",
-		RolloverText = RolloverText or g_Classes.ChoGGi_XCloseButton.RolloverText,
+		RolloverText = params.rollover or g_Classes.ChoGGi_XCloseButton.RolloverText,
 		OnPress = function(...)
-			if self:IsKindOf("ChoGGi_DlgExamine") then
-				-- close all ecm dialogs
-				if IsControlPressed() then
-					ChoGGi.ComFuncs.CloseDialogsECM(self)
-				-- close all parent examine dialogs
-				elseif IsShiftPressed() then
-					ChoGGi.ComFuncs.CloseChildExamineDlgs(self)
-					-- we don't want to close this one
-					return
-				end
-			elseif self:IsKindOf("ChoGGi_DlgExecCode") then
-				-- kill off exter editor if active
-				local ext = g_ExternalTextEditorActiveCtrl
-				if ext and ext.delete then
-					ext:delete()
-					g_ExternalTextEditorActiveCtrl = false
-				end
+			local abort
+
+			-- stuff from my other dialogs
+			if self.CloseXButtonFunc then
+				abort = self:CloseXButtonFunc(...)
 			end
+
+			if abort then
+				return
+			end
+
 			-- pass along any args to the close func
-			close(...)
-			-- MultiLineTextDlg?
+			if self.close_func then
+				self:close_func(...)
+			end
+
 			self:Close(false)
 		end,
 	}, self.idTitleRightSection)

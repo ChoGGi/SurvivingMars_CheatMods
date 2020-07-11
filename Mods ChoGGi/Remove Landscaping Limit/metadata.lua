@@ -11,7 +11,6 @@ return PlaceObj("ModDef", {
 	"version", 5 + 10, -- stupid mod msg
 	"version_major", 0,
 	"version_minor", 5,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_AdjustLandscapingSize",
 	"steam_id", "1743029792",

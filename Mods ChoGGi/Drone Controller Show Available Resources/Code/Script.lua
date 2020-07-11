@@ -22,8 +22,10 @@ end
 
 local table = table
 local MapGet = MapGet
+local string_lower = string.lower
+local floatfloor = floatfloor
 
-local res_count = {}
+local res_count_orig, res_count = {}
 local added_objs = {}
 local res_str, res_str_c = {}, 0
 local res_list, res_list_c
@@ -31,15 +33,19 @@ local r
 
 local function GetAvailableResources(self, cursor_obj)
 	if not res_list then
+		-- build list of resources
 		res_list = AllResourcesList
 		res_list_c = #res_list
 		table.sort(res_list)
 		r = const.ResourceScale
+		-- build default list
+		for i = 1, res_list_c do
+			res_count_orig[res_list[i]] = 0
+		end
 	end
+
 	-- reset to 0
-	for i = 1, res_list_c do
-		res_count[res_list[i]] = 0
-	end
+	res_count = table.copy(res_count_orig)
 
 	table.clear(added_objs)
 
@@ -83,8 +89,6 @@ local function GetAvailableResources(self, cursor_obj)
 	local text = cursor_obj and "<newline><resource(res)> <"
 		or "<newline><left><resource(res)><right><"
 
-	local string_lower = string.lower
-	local floatfloor = floatfloor
 	for i = 1, res_list_c do
 		local res = res_list[i]
 		local count = res_count[res]
@@ -166,7 +170,7 @@ end
 
 local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
 function CursorBuilding:UpdateShapeHexes(...)
-	orig_CursorBuilding_UpdateShapeHexes(self, ...)
+	local ret = orig_CursorBuilding_UpdateShapeHexes(self, ...)
 	if txt_ctrl and self.ChoGGi_UpdateAvailableResources then
 		-- build list of objs within distance to cursor placing thingy
 		local objs = MapGet(self, "hex", self.ChoGGi_UpdateAvailableResources,
@@ -178,6 +182,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 			txt_ctrl:SetText("")
 		end
 	end
+	return ret
 end
 
 local orig_CursorBuilding_Done = CursorBuilding.Done

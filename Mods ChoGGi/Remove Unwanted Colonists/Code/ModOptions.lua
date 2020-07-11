@@ -3,7 +3,8 @@
 -- build list of traits/mod options
 local mod_options = {}
 local traits_list = {}
-c = 0
+local c = 0
+
 local function AddColonists(list)
 	for i = 1, #list do
 		c = c + 1

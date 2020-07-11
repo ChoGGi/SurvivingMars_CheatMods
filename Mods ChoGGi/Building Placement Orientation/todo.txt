@@ -1,4 +1,6 @@
-For placing large number of triangular buildings, eg. large solar panels,
+ mrudat
+ 
+ For placing large number of triangular buildings, eg. large solar panels,
 it would be useful to have an option to rotate the building one step after each placement.
 
 A possibly conflicting thought is that it would be nifty to track rotation of individual buildings separately,

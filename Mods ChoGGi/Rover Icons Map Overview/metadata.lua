@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_RoverIconsMapOverview",
 	"steam_id", "1582759681",
@@ -13,7 +12,9 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Makes rovers larger on zoom (same as res icons)
+	"description", [[Makes rovers larger on zoom (same as res icons).
+
+Causes issues with rovers and orphaned drones.
 
 Requested by oIMADMANIo.]],
 })

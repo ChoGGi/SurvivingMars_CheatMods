@@ -1,3 +1,6 @@
+v1.8
+Added percentage counts to colonist age groups.
+
 v1.7
 Added mod option to disable transparent infobar.
 

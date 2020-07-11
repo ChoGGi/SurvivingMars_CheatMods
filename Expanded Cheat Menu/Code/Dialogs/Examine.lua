@@ -65,6 +65,7 @@ local TConcatMeta = TConcatMeta
 
 -- local any funcs used a lot
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
+local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 local RetName = ChoGGi.ComFuncs.RetName
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Translate = ChoGGi.ComFuncs.Translate
@@ -3763,6 +3764,26 @@ function ChoGGi_DlgExamine:CleanupCustomObjs(obj, force)
 	end
 end
 
+function ChoGGi_DlgExamine:CloseXButtonFunc()
+	-- close all ecm dialogs
+	if IsControlPressed() then
+		ChoGGi.ComFuncs.CloseDialogsECM(self)
+	-- close all parent examine dialogs
+	elseif IsShiftPressed() then
+		ChoGGi.ComFuncs.CloseChildExamineDlgs(self)
+		-- abort closing window
+		return true
+	end
+end
+
+function ChoGGi_DlgExamine:AddCloseXButton()
+	return ChoGGi_XWindow.AddCloseXButton(self, {
+		rollover = Strings[302535920000628--[["Close the examine dialog
+	Hold Shift to close all ""parent"" examine dialogs.
+	Hold Ctrl to close all ECM dialogs."]]],
+	})
+end
+
 function ChoGGi_DlgExamine:Done()
 	-- revert funcs
 	self:SafeExamine()
@@ -3789,3 +3810,4 @@ function ChoGGi_DlgExamine:Done()
 	dlgs[self.obj] = nil
 	dlgs[obj] = nil
 end
+

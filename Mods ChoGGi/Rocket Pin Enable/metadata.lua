@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_RocketPinEnable",
 	"steam_id", "1743882177",
@@ -14,10 +13,10 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"TagInterface", true,
 	"description", [[Adds the pin button back to rockets (if you want to unpin them).
 
 Includes mod option to re-pin all rockets (if you unpinned an orbiting one).
 
 Requested by naresh963.]],
-	"TagInterface", true,
 })

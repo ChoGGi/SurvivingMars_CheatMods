@@ -14,5 +14,5 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"has_options", true,
 	"TagGameplay", true,
-	"description", [[Drones will always use nearest wasterock dump site or processor.]],
+	"description", [[Drones will always use nearest wasterock dump site.]],
 })

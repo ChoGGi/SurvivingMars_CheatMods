@@ -266,6 +266,15 @@ function ChoGGi_DlgExecCode:idEdit_OnKbdKeyDown(vk)
 	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self.idEdit, vk)
 end
 
+function ChoGGi_DlgExamine:CloseXButtonFunc()
+	-- kill off exter editor if active
+	local ext = g_ExternalTextEditorActiveCtrl
+	if ext and ext.delete then
+		ext:delete()
+		g_ExternalTextEditorActiveCtrl = false
+	end
+end
+
 function ChoGGi_DlgExecCode:Done()
 	-- kill off external editor stuff?
 	if self.idEdit == g_ExternalTextEditorActiveCtrl then

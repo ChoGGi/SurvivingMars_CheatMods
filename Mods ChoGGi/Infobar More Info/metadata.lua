@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Infobar More Info",
-	"version", 17,
+	"version", 18,
 	"version_major", 1,
-	"version_minor", 7,
+	"version_minor", 8,
 	"image", "Preview.png",
 	"id", "ChoGGi_InfobarAddDischargeRates",
 	"steam_id", "1775006723",
@@ -46,6 +46,9 @@ Shuttle count (max, total, current): Current = shuttles flying, Total =  flying+
 Jobs:
 On the end of the spec counts is the count of vacant workplace slots.
 
+Colonists:
+On the end of the age/nationality are percentage counts.
+
 
 
 Mod Options:
@@ -53,7 +56,7 @@ Aggregated info: Show sum totals instead of individual grids (skip grid options 
 Skip Grid 0: Grids with production+consumption = 0 (doesn't skip grids that aren't producing due to throttle).
 Skip Grid 1: Grids that only have a single bld (sensor towers).
 Skip Grid X: Grids that only have X amount of buildings (for smaller clusters, like a concrete "hub", 0 to disable).
-Rollover Size: Game default is 45, if you want the tooltips wider use this (I use small UI scale).
+Rollover Size: Game default is 45, if you want the tooltips wider use this.
 Disable Transparency: Disable transparency of Infobar.
 
 

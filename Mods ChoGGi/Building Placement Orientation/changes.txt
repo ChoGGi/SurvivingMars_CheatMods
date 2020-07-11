@@ -1,3 +1,6 @@
+v0.9
+Mod option to disable orientation (for pure pipette use).
+
 v0.8
 Last update broke the rotation.
 

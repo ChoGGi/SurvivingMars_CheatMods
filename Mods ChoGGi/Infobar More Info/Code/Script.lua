@@ -163,7 +163,6 @@ local function RemainingTime(g, scale)
 	end
 end
 
--- table cleared in funcs
 local count_deposit = {}
 local function CountDepositRemaining(remaining, deposits)
 	for i = 1, #deposits do
@@ -539,33 +538,75 @@ for func, res_name in pairs(resources) do
 	end
 end
 
--- add biorobots count
+-- add biorobots count/colonist percent
+local colonist_age_lookup = {
+	[554] = "children",
+	[555] = "youths",
+	[556] = "adults",
+	[557] = "middleageds",
+	[558] = "seniors",
+	[8035] = "martianborn",
+	[8036] = "earthborn",
+}
+local colonist_age_data = {
+	children = 0,
+	youths = 0,
+	adults = 0,
+	middleageds = 0,
+	seniors = 0,
+	martianborn = 0,
+	earthborn = 0,
+}
 local orig_ResourceOverview_GetColonistsRollover = ResourceOverview.GetColonistsRollover
-function ResourceOverview.GetColonistsRollover(...)
-	local UICity = UICity
-	-- no biorobots so return orig
-	if not UICity:IsTechResearched("ThePositronicBrain") then
-		return orig_ResourceOverview_GetColonistsRollover(...)
-	end
-
-	local ret = orig_ResourceOverview_GetColonistsRollover(...)
+function ResourceOverview:GetColonistsRollover(...)
+	local ret = orig_ResourceOverview_GetColonistsRollover(self, ...)
 	local list = ret[1]
+	local c = list.j
 
-	-- get android count in each dome (maybe faster than counting each colonist?)
-	local ac = 0
-	local objs = UICity.labels.Dome or ""
-	for i = 1, #objs do
-		ac = ac + #(objs[i].labels.Android or "")
+	-- add percent count to colonists
+	-- 0.0 needed for maths (try 10/100 in console)
+	local total = self:GetColonistCount() + 0.0
+	-- floatfloor to cleanup numbers
+	colonist_age_data.children = floatfloor((self.data.children / total) * 100)
+	colonist_age_data.youths = floatfloor((self.data.youths / total) * 100)
+	colonist_age_data.adults = floatfloor((self.data.adults / total) * 100)
+	colonist_age_data.middleageds = floatfloor((self.data.middleageds / total) * 100)
+	colonist_age_data.seniors = floatfloor((self.data.seniors / total) * 100)
+	colonist_age_data.martianborn = floatfloor((self.data.martianborn / total) * 100)
+	colonist_age_data.earthborn = floatfloor((self.data.earthborn / total) * 100)
+
+	for i = 1, c do
+		local item = list.table[i]
+		if type(item) == "table" then
+			local group = colonist_age_lookup[item[1]]
+			if group then
+				-- use 0 as string id to override text
+				item[1] = 0
+				item[2] = item[2] .. " " .. colonist_age_data[group] .. "%"
+			end
+		end
 	end
 
-	local c = list.j
-	c = c + 1
-	list.table[c] = T("<left>") .. T(7303, "Biorobot") .. T{
-		"<right><colonist(number)>", number = ac,
-	}
+--~ 	ex(list)
 
-	-- add count of all new strings
-	list.j = c
+	-- biorobots count
+	local UICity = UICity
+	if UICity:IsTechResearched("ThePositronicBrain") then
+		-- get android count in each dome (maybe faster than counting each colonist?)
+		local ac = 0
+		local objs = UICity.labels.Dome or ""
+		for i = 1, #objs do
+			ac = ac + #(objs[i].labels.Android or "")
+		end
+		-- add new entry to list
+		c = c + 1
+		list.table[c] = T("<left>") .. T(7303, "Biorobot") .. T{
+			"<right><colonist(number)>", number = ac,
+		}
+		-- add count of all new strings
+		list.j = c
+	end
+
 
 	return ret
 end
@@ -704,7 +745,6 @@ local orig_GetJobsRollover = InfobarObj.GetJobsRollover
 function InfobarObj.GetJobsRollover(...)
 	local ret = orig_GetJobsRollover(...)
 	local list = ret[1]
---~ 	ex(ret)
 
 	-- reset or add counts
 	if needed_specs then
@@ -742,6 +782,7 @@ function InfobarObj.GetJobsRollover(...)
 			end
 		end
 	end
+--~ 	ex(ret)
 
 	return ret
 end

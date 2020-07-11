@@ -1,3 +1,6 @@
+v0.9
+Localed something that should'nt have been global.
+
 v0.8
 Log spam.
 

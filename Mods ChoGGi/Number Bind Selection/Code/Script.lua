@@ -22,8 +22,9 @@ function OnMsg.ApplyModOptions(id)
 end
 
 -- selection groups (the actions need a string, so we might as well just store these as strings)
-GlobalVar("g_ChoGGi_CtrlNumBinds", {["1"] = {},["2"] = {},["3"] = {}, ["4"] = {},
-	["5"] = {},["6"] = {}, ["7"] = {},["8"] = {}, ["9"] = {}, ["0"] = {},
+GlobalVar("g_ChoGGi_CtrlNumBinds", {
+	["1"] = {},["2"] = {},["3"] = {}, ["4"] = {}, ["5"] = {},
+	["6"] = {}, ["7"] = {},["8"] = {}, ["9"] = {}, ["0"] = {},
 })
 
 local table_find = table.find
@@ -92,12 +93,16 @@ local function ActivateSelection(action)
 		return
 	end
 
-	SelectObj(MultiSelectionWrapper:new{
-		-- gotta be something
-		selection_class = saved[1].class,
-		-- we have to copy otherwise it'll mess with our saved
-		objects = table_icopy(saved),
-	})
+	if #saved == 1 then
+		SelectObj(saved[1])
+	else
+		SelectObj(MultiSelectionWrapper:new{
+			-- gotta be something
+			selection_class = saved[1].class,
+			-- we have to copy otherwise it'll mess with our saved
+			objects = table_icopy(saved),
+		})
+	end
 
 	if mod_SelectView then
 		CreateRealTimeThread(function()
@@ -105,7 +110,7 @@ local function ActivateSelection(action)
 			ViewAndSelectObject(Selection[1])
 			WaitMsg("OnRender")
 			if mod_ShowCentre then
-				ChoGGi.ComFuncs.Circle(Selection[1]:GetPos(), 250, nil, 1000)
+				ChoGGi.ComFuncs.Circle(Selection[1]:GetVisualPos(), 250, nil, 1000)
 			end
 		end)
 	end
@@ -161,6 +166,7 @@ function MultiSelectionWrapper:ResolveObjAt(...)
 	for _,subobj in ipairs(self.objects) do
 		-- the "fix", I suppose I could also add an empty_func to the objs, but that feels ugly
 		if subobj.ResolveObjAt then
+
 			local result = subobj:ResolveObjAt(...)
 			if result then
 				return result
@@ -175,6 +181,7 @@ function MultiSelectionWrapper:CheckAny(method, ...)
 	for _,subobj in ipairs(self.objects) do
 		-- the "fix"
 		if subobj[method] then
+
 			local result, r2, r3, r4, r5 = subobj[method](subobj, ...)
 			if result then return result, r2, r3, r4, r5 end
 		end
@@ -190,6 +197,7 @@ function MultiSelectionWrapper:Broadcast(method, ...)
 		for _,subobj in ipairs(self.objects) do
 			-- the "fix"
 			if subobj[method] then
+
 				subobj[method](subobj, ...)
 			end
 		end
@@ -205,6 +213,7 @@ function MultiSelectionWrapper:Union(method, comparison_key, ...)
 	for _,subobj in ipairs(self.objects) do
 		-- the "fix"
 		if subobj[method] then
+
 			local result = subobj[method](subobj, ...)
 			if result then
 				for _,v in ipairs(result) do

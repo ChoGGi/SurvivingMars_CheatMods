@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"description", [[Wondering why the little buggers aren't repairing a building?
 
 The Service Area tooltip now shows a list of resources available to the selected Drone Hub, Rocket, or Rover.
-Construction placement / rocket landing mode will display (rounded) resource counts at the cursor building.
+Construction placement (for Dronehubs) / rocket landing mode will display (rounded) resource counts at the cursor.
 
 See mod options to change the text scale.
 ]],

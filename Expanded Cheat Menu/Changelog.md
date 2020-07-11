@@ -6,6 +6,8 @@
 
 ### Changed:
 - Changed the unlimited wonders option to use the same method as the standalone mod I did (milestone works).
+- Show the rest of the presets in the examine>presets menu (denoted by an asterisk).
+- Added a warning to the Rover/Drone set speed tooltip.
 
 ## v15.2 (02 May 2020)
 ### Changed:

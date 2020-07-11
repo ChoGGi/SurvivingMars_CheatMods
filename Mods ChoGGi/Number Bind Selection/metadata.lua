@@ -8,9 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Number Bind Selection",
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.png",
 	"id", "ChoGGi_NumberBindSelection",
 	"steam_id", "1776371489",
@@ -33,5 +33,5 @@ You can have more than one type of obj in a group, but beware that multi-select 
 
 Mod Options:
 Select & View: Instead of just selecting.
-Show a marker when View option enabled.]],
+Show Centre: Show a centre marker when view option enabled.]],
 })

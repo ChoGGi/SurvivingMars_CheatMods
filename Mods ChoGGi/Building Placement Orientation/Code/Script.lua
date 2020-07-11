@@ -1,5 +1,25 @@
 -- See LICENSE for terms
 
+local mod_EnableMod
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= CurrentModId then
+		return
+	end
+
+	ModOptions()
+end
+
+
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
@@ -29,6 +49,10 @@ local function StartupCode()
 	-- set orientation to same as last object
 	local orig_ConstructionController_CreateCursorObj = ConstructionController.CreateCursorObj
 	function ConstructionController:CreateCursorObj(...)
+
+		if not mod_EnableMod then
+			return orig_ConstructionController_CreateCursorObj(self, ...)
+		end
 
 		local ret = {orig_ConstructionController_CreateCursorObj(self, ...)}
 		local last = ChoGGi.Temp.LastPlacedObject

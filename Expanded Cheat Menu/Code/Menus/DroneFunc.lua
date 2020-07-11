@@ -330,7 +330,8 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed(action)
 		callback = CallBackFunc,
 		items = item_list,
 		title = title,
-		hint = Strings[302535920000106--[[Current]]] .. ": " .. hint,
+		hint = Strings[302535920000106--[[Current]]] .. ": " .. hint .. "\n\n"
+			.. Strings[302535920001085--[[Setting speed to a non integer (e.g 2.5) crashes the game!]]],
 		skip_sort = true,
 	}
 end

@@ -120,7 +120,7 @@ local function BuildExamineItem(name, title)
 	local disp = title or name .. (func and "()" or "")
 	return {
 		name = disp,
-		hint = Strings[302535920000491--[[Examine Object]]] .. ": " .. disp,
+		hint = Strings[302535920000491--[[Examine Object]]] .. ": " .. name,
 		hint_bottom = Strings[302535920000407--[[<left_click> Execute <right_click> Paste]]],
 		mouseup = function(_, _, _, button)
 			if button == "R" then
@@ -130,12 +130,12 @@ local function BuildExamineItem(name, title)
 			else
 				if func then
 					if name == "GetLuaSaveGameData" then
-						OpenInExamineDlg({obj()}, nil, disp)
+						OpenInExamineDlg({obj()}, nil, name)
 					else
-						OpenInExamineDlg(obj(), nil, disp)
+						OpenInExamineDlg(obj(), nil, name)
 					end
 				else
-					OpenInExamineDlg(name, "str", disp)
+					OpenInExamineDlg(name, "str", name)
 				end
 			end
 		end,
@@ -192,6 +192,8 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 	end
 
 	-- add submenus to certain items
+
+	--
 	submenu = table_find(list, "Presets")
 	if submenu then
 		-- remove hint from "submenu" menu
@@ -209,13 +211,13 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 				submenu_table[c] = BuildExamineItem(cls.GlobalMap)
 			end
 		end)
---~ 		-- and any stored in Presets table
---~ 		local Presets = Presets
---~ 		for id in pairs(Presets) do
---~ 			names_list[id] = true
---~ 			c = c + 1
---~ 			submenu_table[c] = BuildExamineItem("Presets." .. id, id)
---~ 		end
+		-- and any stored in Presets table
+		local Presets = Presets
+		for id in pairs(Presets) do
+			names_list[id] = true
+			c = c + 1
+			submenu_table[c] = BuildExamineItem("Presets." .. id, id .. " *")
+		end
 
 		table_sort(submenu_table,
 			function(a, b)
