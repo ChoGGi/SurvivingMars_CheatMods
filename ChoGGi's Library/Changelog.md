@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v8.3 (Unreleased)
+## v8.4 (Unreleased)
+
+## v8.3 (18 July 2020)
 - The selected dialog will be pulled to the foreground of other dialogs.
 
 ## v8.2 (02 May 2020)

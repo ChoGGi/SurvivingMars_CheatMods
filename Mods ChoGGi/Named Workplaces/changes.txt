@@ -1,0 +1,2 @@
+v0.2
+Added fix for no buildings in command centre list (thanks Titule).
