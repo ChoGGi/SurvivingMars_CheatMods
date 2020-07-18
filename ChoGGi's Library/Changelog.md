@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v8.3 (Unreleased)
+- The selected dialog will be pulled to the foreground of other dialogs.
 
 ## v8.2 (02 May 2020)
 - Added code to Double upload my library mod (PC/Console).

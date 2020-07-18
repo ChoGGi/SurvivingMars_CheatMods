@@ -8,6 +8,7 @@
 - Changed the unlimited wonders option to use the same method as the standalone mod I did (milestone works).
 - Show the rest of the presets in the examine>presets menu (denoted by an asterisk).
 - Added a warning to the Rover/Drone set speed tooltip.
+- Clicking a hex pos in examine now goes to correct hex instead of bottom right of map.
 
 ## v15.2 (02 May 2020)
 ### Changed:

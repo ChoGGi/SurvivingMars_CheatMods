@@ -1093,6 +1093,11 @@ function ChoGGi_DlgExamine:idButToggleObjlist_OnPress()
 end
 
 function ChoGGi_DlgExamine:AddSphere(obj, c, colour, skip_view, skip_colour)
+	-- check if it's using on-map coords or hex, if it's hex then convert so we're not placing a marker in the bottom right of map
+	if IsPoint(obj) and WorldToHex(obj) == 0 then
+		local q, r = obj:xy()
+		obj = point(HexToWorld(q, r))
+	end
 	local sphere = self.ChoGGi.ComFuncs.ShowObj(obj, colour, skip_view, skip_colour)
 	if IsValid(sphere) then
 		c = (c or #self.marked_objects) + 1

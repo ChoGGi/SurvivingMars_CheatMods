@@ -91,7 +91,7 @@ function OnMsg.ClassesPostprocess()
 		"__template", "InfopanelButton",
 
 		"Icon", "UI/Icons/IPButtons/move.tga",
-		"RolloverText", T(302535920011610, "Show nearby objects blocking you from removing this dome."),
+		"RolloverText", T(302535920011610, "Show objects blocking you from removing this dome."),
 		"RolloverTitle", T(302535920011611, "Toggle Connected Objects"),
 
 		"OnPress", function (self)
