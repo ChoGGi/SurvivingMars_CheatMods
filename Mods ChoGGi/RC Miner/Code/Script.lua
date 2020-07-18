@@ -498,7 +498,7 @@ function PortableMiner:Load()
 	end
 
 	local skip_end
-	if #self.nearby_deposits > 0 then
+	if self.nearby_deposits[1] then
 		-- create or use existing
 		self:GetStockpile()
 		--	stop at max_res_amount per stockpile
@@ -930,7 +930,7 @@ function OnMsg.ClassesPostprocess()
 				self:SetRolloverTitle(T(12171, "Cancel Landscaping"))
 				rollover = T(12172, "Cancel this landscaping project. The terrain will remain in its current state")
 			end
-			if #refund > 0 then
+			if refund[1] then
 				rollover = rollover .. "<newline><newline>" .. T(7823, "<UIRefundRes> will be refunded upon salvage.")
 			end
 			self:SetRolloverText(rollover)

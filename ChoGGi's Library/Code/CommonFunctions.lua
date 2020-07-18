@@ -1355,7 +1355,7 @@ do -- TableCleanDupes
 		local c = 0
 
 		-- quicker to make a new list on large tables
-		if #list > 10000 then
+		if list[10000] then
 			dupe_t = {}
 			temp_t = {}
 		else
@@ -2832,7 +2832,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 				return
 			end
 
-			if #choice == 13 then
+			if choice[13] then
 
 				-- needed to set attachment colours
 				local label = obj.class

@@ -26,7 +26,7 @@ do -- ExamineObjectRadius
 	function ChoGGi.MenuFuncs.ExamineObjectRadius()
 		local radius = ChoGGi.UserSettings.ExamineObjectRadius or 2500
 		local objs = SelObjects(radius)
-		if #objs > 0 then
+		if objs[1] then
 			pt = GetTerrainCursor()
 			-- sort by nearest
 			table_sort(objs, SortDist)

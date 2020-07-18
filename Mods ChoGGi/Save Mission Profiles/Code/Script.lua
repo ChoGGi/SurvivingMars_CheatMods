@@ -25,7 +25,7 @@ local function WriteModSettings(settings)
 	end
 
 	-- too large
-	if #data > const.MaxModDataSize then
+	if data[const.MaxModDataSize+1] then
 		-- see if it'll fit now
 		err, data = AsyncCompress(lua_code, false, "zstd")
 		if err then
@@ -33,7 +33,7 @@ local function WriteModSettings(settings)
 			return
 		end
 
-		if #data > const.MaxModDataSize then
+		if data[const.MaxModDataSize+1] then
 			ChoGGi.ComFuncs.MsgWait(T(302535920011252, "SaveMissionProfiles: too much data, delete some saved settings"))
 			return
 		end

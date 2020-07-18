@@ -482,7 +482,7 @@ function ChoGGi_DlgListChoice:idCheckBoxAtLeastOne()
 			end
 		end
 		if not any_checked then
-			if #checks > 1 then
+			if checks[2] then
 				checks[other_idx or 1]:SetCheck(true)
 			else
 				checks[1]:SetCheck(true)
@@ -561,7 +561,7 @@ function ChoGGi_DlgListChoice:idEditValueOnTextChanged()
 			values[c] = tonumber(d)
 		end
 
-		if #values == 3 then
+		if values[3] then
 			value, value_type = RetProperType(_G[func](values[1], values[2], values[3]))
 		else
 			value, value_type = RetProperType(_G[func](values[1], values[2], values[3], values[4]))

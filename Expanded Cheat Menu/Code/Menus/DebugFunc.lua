@@ -1285,7 +1285,7 @@ do -- path markers
 			if #obj == 1 then
 				-- single obj
 				obj = obj[1]
- 			elseif #obj > 1 then
+ 			elseif obj[2] then
 				-- multiselect
 				for i = 1, #obj do
 					AddObjToGameTimeMarkers(obj[i], handles, delay)

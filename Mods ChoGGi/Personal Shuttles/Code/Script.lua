@@ -490,7 +490,7 @@ function PersonalShuttle:DefenceTick(already_fired)
 	end
 
 	-- remove devil handles only if they're actually gone
-	if #already_fired > 0 then
+	if already_fired[1] then
 		CreateGameTimeThread(function()
 			for i = #already_fired, 1, -1 do
 				if not IsValid(already_fired[i]) then

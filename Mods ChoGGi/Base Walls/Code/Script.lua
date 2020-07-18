@@ -789,7 +789,7 @@ function OnMsg.ClassesPostprocess()
 						self:SetRolloverTitle(T(12171, "Cancel Landscaping"))
 						rollover = T(12172, "Cancel this landscaping project. The terrain will remain in its current state")
 					end
-					if #refund > 0 then
+					if refund[1] then
 						rollover = rollover .. "<newline><newline>" .. T(7823, "<UIRefundRes> will be refunded upon salvage.")
 					end
 					self:SetRolloverText(rollover)

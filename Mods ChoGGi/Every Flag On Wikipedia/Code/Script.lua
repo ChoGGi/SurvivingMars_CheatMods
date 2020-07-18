@@ -65,7 +65,7 @@ function OnMsg.ModsReloaded()
 	local Nations = Nations
 
 	-- already added
-	if #Nations > 12 then
+	if Nations[13] then
 		return
 	end
 

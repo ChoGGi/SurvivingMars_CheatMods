@@ -1388,16 +1388,16 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 			hint = Strings[302535920001240--[[Show all functions of this object and parents/ancestors.]]],
 			image = "CommonAssets/UI/Menu/gear.tga",
 			clicked = function()
-				if #self.parents > 0 or #self.ancestors > 0 then
+				if self.parents[1] or self.ancestors[1] then
 					table_clear(self.menu_added)
 					table_clear(self.menu_list_items)
 
 					-- add examiner object with some spaces so it's at the top
 					self:BuildFuncList(self.obj_ref.class, "  ")
-					if #self.parents > 0 then
+					if self.parents[1] then
 						self:ProcessList(self.parents, " " .. Strings[302535920000520--[[Parents]]] .. ": ")
 					end
-					if #self.ancestors > 0 then
+					if self.ancestors[1] then
 						self:ProcessList(self.ancestors, Strings[302535920000525--[[Ancestors]]] .. ": ")
 					end
 					-- if Object hasn't been added, then add CObject (O has a few more funcs than CO)
@@ -2214,7 +2214,7 @@ function ChoGGi_DlgExamine:ShowSurfacesList()
 	-- yep, no idea what GetRelativeSurfaces uses, so 1024 it'll be (from what i've seen nothing above 10, but...)
 	for i = 1, 1024 do
 		local surfs = GetRelativeSurfaces(obj, i)
-		if #surfs > 0 then
+		if surfs[1] then
 			c = c + 1
 			item_list[c] = {
 				text = i .. "",
@@ -3666,7 +3666,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 		obj_class = g_Classes[obj.class]
 
 		-- add table length to title
-		if #obj > 0 then
+		if obj[1] then
 			name = name .. " " .. " (" .. #obj .. ")"
 		end
 
@@ -3678,7 +3678,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 			self:BuildParentsMenu(obj.__parents, "parents", Strings[302535920000520--[[Parents]]])
 			self:BuildParentsMenu(obj.__ancestors, "ancestors", Strings[302535920000525--[[Ancestors]]], true)
 			-- if anything was added to the list then add to the menu
-			if #self.parents_menu_popup > 0 then
+			if self.parents_menu_popup[1] then
 				SetWinObjectVis(self.idParents, true)
 			end
 		end
@@ -3802,7 +3802,7 @@ function ChoGGi_DlgExamine:Done()
 		self:CleanupCustomObjs(obj)
 	end
 	-- clear any spheres/colour marked objs
-	if #self.marked_objects > 0 then
+	if self.marked_objects[1] then
 		self:idButClear_OnPress()
 	end
 	-- remove this dialog from list of examine dialogs

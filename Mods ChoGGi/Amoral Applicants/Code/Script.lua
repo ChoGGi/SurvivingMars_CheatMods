@@ -88,7 +88,7 @@ function SupplyRocket:WaitInOrbit(arrive_time, ...)
 			end
 
 			if (count or 0) > 0 then
-				if #(self.city.labels.Colonist or empty_table) == 0 then
+				if #(self.city.labels.Colonist or "") == 0 then
 					GameOver("last_colonist_died")
 				else
 					-- notification

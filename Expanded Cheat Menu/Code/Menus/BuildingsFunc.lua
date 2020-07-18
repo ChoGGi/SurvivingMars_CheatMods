@@ -1201,7 +1201,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 				ChoGGi.ComFuncs.ToggleWorking(obj)
 			else
 				local blds = ChoGGi.ComFuncs.RetAllOfClass(obj.class)
-				if #blds > 0 then
+				if blds[1] then
 					-- GetClassValue gets the metatable for the obj, so just grab the first one and use those values
 --~ 					local max_workers = blds[1]:GetClassValue("max_workers")
 					local automation = blds[1]:GetClassValue("automation")

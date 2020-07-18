@@ -231,7 +231,7 @@ function OnMsg.ClassesPostprocess()
 					self:SetRolloverTitle(T(12171, "Cancel Landscaping"))
 					rollover = T(12172, "Cancel this landscaping project. The terrain will remain in its current state")
 				end
-				if #refund > 0 then
+				if refund[1] then
 					rollover = rollover .. "<newline><newline>" .. T(7823, "<UIRefundRes> will be refunded upon salvage.")
 				end
 				self:SetRolloverText(rollover)
@@ -970,7 +970,7 @@ function OnMsg.NewDay() -- NewSol...
 		for i = 1, #objs do
 			local obj = objs[i]
 			-- no sense in doing it with only one center
-			if #obj.command_centers > 1 then
+			if obj.command_centers[2] then
 				table_sort(obj.command_centers, function(a, b)
 					return obj:GetVisualDist(a) < obj:GetVisualDist(b)
 				end)

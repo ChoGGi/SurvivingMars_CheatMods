@@ -20,7 +20,6 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 		"Code/TeleporterConstruction.lua",
-		"Code/TeleporterLines.lua",
 	},
 	"has_options", true,
 	"description", [[In-dome teleporters that act like passages (also shows connected lines when you select one).

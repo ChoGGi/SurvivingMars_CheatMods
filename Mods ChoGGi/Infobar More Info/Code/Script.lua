@@ -1,5 +1,30 @@
 -- See LICENSE for terms
 
+-- local some globals
+local table = table
+local table_insert = table.insert
+local table_clear = table.clear
+local table_iclear = table.iclear
+local table_concat = table.concat
+local table_copy = table.copy
+local pairs = pairs
+local type = type
+local IsT = IsT
+local T = T
+local IsValid = IsValid
+local MapGet = MapGet
+local HexBoundingCircle = HexBoundingCircle
+local point = point
+local FormatResource = FormatResource
+local floatfloor = floatfloor
+
+local scale_hours = const.HourDuration
+local scale_sols = const.DayDuration
+local remaining_time_str = {12265, "Remaining Time<right><time(time)>"}
+
+
+
+-- mod options
 local options
 local mod_SkipGrid0
 local mod_SkipGrid1
@@ -38,6 +63,7 @@ OnMsg.InGameInterfaceCreated = UpdateTrans
 
 -- fired when settings are changed/init
 local function ModOptions()
+	options = CurrentModOptions
 	mod_SkipGrid0 = options:GetProperty("SkipGrid0")
 	mod_SkipGrid1 = options:GetProperty("SkipGrid1")
 	mod_SkipGridX = options:GetProperty("SkipGridX")
@@ -65,10 +91,7 @@ local function ModOptions()
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
@@ -78,28 +101,6 @@ function OnMsg.ApplyModOptions(id)
 
 	ModOptions()
 end
-
--- local some globals
-local table_insert = table.insert
-local table_clear = table.clear
-local table_iclear = table.iclear
-local table_concat = table.concat
-local table_copy = table.copy
-local pairs = pairs
-local type = type
-local IsT = IsT
-local T = T
-local IsValid = IsValid
-local MapGet = MapGet
-local HexBoundingCircle = HexBoundingCircle
-local point = point
-local FormatResource = FormatResource
-local floatfloor = floatfloor
-
-local scale_hours = const.HourDuration
-local scale_sols = const.DayDuration
-
-local remaining_time_str = {12265, "Remaining Time<right><time(time)>"}
 
 function OnMsg.AddResearchRolloverTexts(ret, city)
 	local res_points = ResourceOverviewObj:GetEstimatedRP() + 0.0
@@ -785,4 +786,20 @@ function InfobarObj.GetJobsRollover(...)
 --~ 	ex(ret)
 
 	return ret
+end
+
+-- use tribbies to reduce maintenance est to lower amounts
+local tribby_range
+local function ReturnWorking(obj)
+	return obj.working
+end
+
+local orig_RequiresMaintenance_GetDailyMaintenance = RequiresMaintenance.GetDailyMaintenance
+function RequiresMaintenance:GetDailyMaintenance(...)
+	-- so mods can change and have it reflect in infobar
+	tribby_range = tribby_range or TriboelectricScrubber.UIRange
+	-- only add main amount if we're not in range of a tribby
+	if not MapGet(self, "hex", tribby_range, "TriboelectricScrubber", ReturnWorking)[1] then
+		return orig_RequiresMaintenance_GetDailyMaintenance(self, ...)
+	end
 end

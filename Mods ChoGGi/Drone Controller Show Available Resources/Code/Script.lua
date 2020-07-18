@@ -176,7 +176,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 		local objs = MapGet(self, "hex", self.ChoGGi_UpdateAvailableResources,
 			"MechanizedDepot", "StorageDepot", "ResourceStockpile", "SurfaceDeposit"
 		)
-		if #objs > 0 then
+		if objs[1] then
 			txt_ctrl:SetText(GetAvailableResources(self, objs))
 		else
 			txt_ctrl:SetText("")

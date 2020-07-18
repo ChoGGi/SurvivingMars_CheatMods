@@ -322,7 +322,7 @@ do -- DumpTableFunc
 		c = 0
 		DumpTableFunc(obj, 0)
 
-		if #output_list > 0 then
+		if output_list[1] then
 			local filename = "AppData/logs/DumpedTable.txt"
 			AsyncStringToFile(filename, TableConcat(output_list), mode or "-1")
 
@@ -1927,7 +1927,7 @@ do -- DisplayObjectImages
 		end
 
 		-- and sort
-		if #images_table > 0 then
+		if images_table[1] then
 			ChoGGi.ComFuncs.TableCleanDupes(images_table)
 			table_sort(images_table, function(a, b)
 				return CmpLower(a.name, b.name)
@@ -2764,7 +2764,7 @@ do -- EntitySpots_Toggle
 		end
 
 		-- play connect the dots if there's chains
-		if #obj.ChoGGi_ShowAttachSpots > 1 and params.annotation and params.annotation:find("chain") then
+		if obj.ChoGGi_ShowAttachSpots[2] and params.annotation and params.annotation:find("chain") then
 			SuspendPassEdits("ChoGGi.ComFuncs.EntitySpots_Add_Annot")
 			EntitySpots_Add_Annot(obj, params.depth_test, RandomColourLimited())
 			ResumePassEdits("ChoGGi.ComFuncs.EntitySpots_Add_Annot")

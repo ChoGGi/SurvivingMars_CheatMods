@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Infobar More Info",
-	"version", 18,
+	"version", 19,
 	"version_major", 1,
-	"version_minor", 8,
+	"version_minor", 9,
 	"image", "Preview.png",
 	"id", "ChoGGi_InfobarAddDischargeRates",
 	"steam_id", "1775006723",
@@ -20,6 +20,7 @@ return PlaceObj("ModDef", {
 Resource tooltips:
 Time of stored resources remaining: stored / (production - (consumption + maintenance)).
 N/A means you have more production than consumption.
+Maintenance amounts reflect benefits of nearby Triboelectric Scrubbers.
 
 Grid (air/water/elec) tooltips:
 The max discharge from storage buildings.

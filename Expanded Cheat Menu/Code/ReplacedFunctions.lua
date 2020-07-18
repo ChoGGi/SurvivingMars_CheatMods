@@ -1384,7 +1384,7 @@ end]] -- title strings: Examine Console
 				"^~!(.*)",
 				[[local obj = %s
 local attaches = ChoGGi.ComFuncs.GetAllAttaches(obj)
-if #attaches > 0 then
+if attaches[1] then
 	OpenExamine(attaches, nil, "GetAllAttaches " .. ChoGGi.ComFuncs.RetName(obj))
 end]]
 			},

@@ -141,7 +141,7 @@ function SpiceHarvester_CargoShuttle:SpiceHarvester_FollowHarvester()
 			local worm = MapGet("map", "WasteRockObstructorSmall", function(o)
 				return pos:Dist2D(o:GetPos()) <= self.attack_radius
 			end)
-			if #worm > 0 then
+			if worm[1] then
 				self:AttackWorm(table.rand(worm))
 			end
 		end

@@ -473,6 +473,27 @@ end)
 -- benchmarking stuff
 
 
+function ChoGGi.testing.TableCountVsFirst()
+	local list = MapGet(true)
+
+	-- slower
+	ChoGGi.ComFuncs.TickStart("TableCountVsFirst.1.Tick")
+	for _ = 1, 1000000 do
+		if #list > 0 then
+		end
+	end
+	ChoGGi.ComFuncs.TickEnd("TableCountVsFirst.1.Tick")
+
+	-- faster
+	ChoGGi.ComFuncs.TickStart("TableCountVsFirst.2.Tick")
+	for _ = 1, 1000000 do
+		if list[1] then
+		end
+	end
+	ChoGGi.ComFuncs.TickEnd("TableCountVsFirst.2.Tick")
+
+end
+
 function ChoGGi.testing.NegNumber()
 	local num = 6565421
 

@@ -1,12 +1,4 @@
 return PlaceObj("ModDef", {
-	"dependencies", {
-		PlaceObj("ModDependency", {
-			"id", "ChoGGi_Library",
-			"title", "ChoGGi's Library",
-			"version_major", 8,
-			"version_minor", 2,
-		}),
-	},
 	"title", "Toggle Visible Vegetation",
 	"id", "ChoGGi_ToggleVisibleVegetation",
 	"lua_revision", 249143,

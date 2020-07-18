@@ -616,7 +616,7 @@ end
 --~			 dupes[pos] = true
 --~		 end
 --~	 end
---~	 if #dupes > 0 then
+--~	 if dupes[1] then
 --~		 table.sort(dupes)
 --~		 ChoGGi.ComFuncs.OpenInExamineDlg(dupes)
 --~	 end

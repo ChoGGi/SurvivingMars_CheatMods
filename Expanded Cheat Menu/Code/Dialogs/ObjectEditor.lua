@@ -334,7 +334,7 @@ function ChoGGi_DlgObjectEditor:CreateProp(obj)
 			for i = 1, Min(#obj, 3) do
 				res[i] = self:CreateProp(obj[i])
 			end
-			if #obj > 3 then
+			if obj[4] then
 				res[#res+1] = "..."
 			end
 			return "objlist{" .. TableConcat(res, ", ") .. "}"

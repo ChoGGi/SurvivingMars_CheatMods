@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 5,
 	"version_major", 0,
 	"version_minor", 5,
-
 	"id", "ChoGGi_DeepResourcesNeverRunOut",
 	"author", "ChoGGi",
 	"steam_id", "1775640697",
@@ -19,7 +18,7 @@ return PlaceObj("ModDef", {
 
 Mod Options:
 Do the same for regular underground deposits.
-Set grade to very high.
+Set grade to very high (less waste rock).
 
 Deposits will be refreshed when you apply mod options (if needed).
 

@@ -109,7 +109,7 @@ end
 
 function Passage:GetChoGGi_ValidDomes()
 	-- passages that don't connect won't have a parent_dome
-	if #self.elements > 0 then
+	if self.elements[1] then
 		return IsValid(self.parent_dome)
 			and T("<green>") .. T(8019, "Connected to building") .. T("</green>")
 			or T("<red>") .. T(8773, "No dome") .. T("</red>")

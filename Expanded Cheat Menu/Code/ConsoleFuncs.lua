@@ -278,7 +278,7 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 				local c = 0
 				local labels = UICity.labels
 				for key, value in pairs(labels) do
-					if #value > 0 then
+					if value[1] then
 						c = c + 1
 						list[c] = key
 					end
@@ -532,7 +532,7 @@ function ChoGGi.ConsoleFuncs.HistoryPopup(self)
 	local dlgConsole = dlgConsole
 	local ConsoleHistoryMenuLength = ChoGGi.UserSettings.ConsoleHistoryMenuLength or 50
 	local items = {}
-	if #dlgConsole.history_queue > 0 then
+	if dlgConsole.history_queue[1] then
 		local history = dlgConsole.history_queue
 		for i = 1, #history do
 			local text = tostring(history[i])

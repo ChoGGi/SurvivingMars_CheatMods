@@ -13,7 +13,7 @@ local function SortCC()
 	for i = 1, #objs do
 		local obj = objs[i]
 		-- no sense in doing it with only one center
-		if #obj.command_centers > 1 then
+		if obj.command_centers[2] then
 			obj_pos = obj:GetPos()
 			table_sort(obj.command_centers, SortDist2D)
 		end
