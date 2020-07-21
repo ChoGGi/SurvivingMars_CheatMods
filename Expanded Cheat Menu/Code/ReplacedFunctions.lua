@@ -994,8 +994,10 @@ function OnMsg.ClassesBuilt()
 		local function ToggleVis(idx, content, v, h)
 			for i = 6, idx do
 				local con = content[i]
-				con:SetVisible(v)
-				con:SetMaxHeight(h)
+				if con then
+					con:SetVisible(v)
+					con:SetMaxHeight(h)
+				end
 			end
 		end
 		local cls_training = {"Sanatorium", "School"}

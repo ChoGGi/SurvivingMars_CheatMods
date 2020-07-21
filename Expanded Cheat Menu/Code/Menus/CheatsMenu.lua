@@ -28,6 +28,17 @@ Actions[c] = {ActionName = Strings[302535920001587--[[Lightning Strike]]],
 }
 
 c = c + 1
+Actions[c] = {ActionName = Strings[302535920001086--[[Meteor Strike]]],
+	ActionMenubar = "ECM.Cheats",
+	ActionId = ".Meteor Strike",
+	ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
+	RolloverText = Strings[302535920001588--[[Strike a random pos or at mouse cursor if using shortcut.]]],
+	OnAction = ChoGGi.MenuFuncs.MeteorStrike,
+	ActionShortcut = "Ctrl-Shift-X",
+	ActionBindable = true,
+}
+
+c = c + 1
 Actions[c] = {ActionName = Strings[302535920001355--[[Map]]] .. " " .. Translate(5422--[[Exploration]]),
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Map Exploration",

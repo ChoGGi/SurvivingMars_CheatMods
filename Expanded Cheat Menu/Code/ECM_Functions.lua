@@ -1386,19 +1386,26 @@ do -- ExamineEntSpots (Object>Entity Spots)
 			local x1, y1, z1 = bbox:minxyz()
 			local x2, y2, z2 = bbox:maxxyz()
 			local pos_x, pos_y, pos_z, radius = obj:GetBSphere(state_str, true)
+			local anim_dur = obj:GetAnimDuration(state_str)
+			local step_len = obj:GetStepLength(state_str)
+--~ 			local step_vec = obj:GetStepVector(state_str, obj:GetAngle(), 0, obj:GetAnimPhase())
+			local step_vec = obj:GetStepVector(state_str, obj:GetAngle(), 0, anim_dur)
+			local sv1, sv2, sv3 = step_vec:xyz()
 --~ Basketball_idle.hga
 			c = c + 1
 			list[c] = [[		<state id="]] .. state_str .. [[">
-		<mesh_ref ref="mesh"/>
-		<anim file="]] .. entity .. "_" .. state_str .. [[.hga" duration="]] .. obj:GetAnimDuration(state_str) .. [["/>
-		<bsphere value="]] .. (pos_x - origin_pos_x) .. ", "
+			<mesh_ref ref="mesh"/>
+			<anim file="]] .. entity .. "_" .. state_str .. [[.hga" duration="]] .. anim_dur .. [["/>
+			<bsphere value="]] .. (pos_x - origin_pos_x) .. ", "
 				.. (pos_y - origin_pos_y) .. ", " .. (pos_z - origin_pos_z) .. ", "
 				.. radius .. [["/>
-		<box min="]] .. x1 .. ", " .. y1 .. ", " .. z1
+			<box min="]] .. x1 .. ", " .. y1 .. ", " .. z1
 				.. [[" max="]] .. x2 .. ", " .. y2 .. ", " .. z2 .. [["/>
-		]] .. -- <step length="225" vector="225,0,0" />
+			<step length="]] .. step_len .. [[" vector="]] .. sv1 .. ", " .. sv2 .. ", " .. sv3 ..  [["/>]]
+			.. [[</state>]]
 		-- ADD ME
-[[	</state>]]
+		-- compensate="CME"
+
 		end -- for states
 
 		local mat = GetStateMaterial(entity, 0, 0)

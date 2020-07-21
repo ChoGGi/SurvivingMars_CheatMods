@@ -1,6 +1,12 @@
 ## ECM Changelog
 
 ## v15.4 (Unreleased)
+### Added:
+- Cheats>Meteor Strike: Ctrl-Shift-X to spam them.
+
+### Changed:
+- Added StepLength/StepVector to Examine>Object>Entity Spots.
+- Selected dialog won't be in front of new dialogs.
 
 ## v15.3 (18 July 2020)
 ### Fixed:

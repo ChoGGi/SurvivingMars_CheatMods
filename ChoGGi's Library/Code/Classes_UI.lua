@@ -199,20 +199,6 @@ function ChoGGi_XMoveControl:OnMouseButtonDoubleClick(...)
 	return XMoveControl.OnMouseButtonDoubleClick(self, ...)
 end
 
-function ChoGGi_XMoveControl:OnMouseButtonDown(pt, button, ...)
-	-- make selected window the foremost window
-  if button == "L" then
-		-- default is 5, make them all 5 and selected to 6
-		local ChoGGi_dlgs_opened = ChoGGi_dlgs_opened
-		for win in pairs(ChoGGi_dlgs_opened) do
-			win:SetZOrder(5)
-		end
-		self.parent_dialog:SetZOrder(6)
-	end
-
-	return XMoveControl.OnMouseButtonDown(self, pt, button, ...)
-end
-
 DefineClass.ChoGGi_XSizeControl = {
 	__parents = {
 		"ChoGGi_XDefaults",
@@ -568,6 +554,8 @@ function ChoGGi_XWindow:AddElements()
 	local g_Classes = g_Classes
 
 	ChoGGi_dlgs_opened[self] = self.class
+
+	self:SetZorderHigher()
 
 	-- scale to UI (See OnMsgs.lua for UIScale)
 	local UIScale = ChoGGi.Temp.UIScale
@@ -997,6 +985,22 @@ function ChoGGi_XWindow:AddScrollEdit()
 		HScroll = "idScrollH",
 		WordWrap = ChoGGi.UserSettings.WordWrap or false,
 	}, self.idScrollSection)
+end
+
+function ChoGGi_XWindow:SetZorderHigher()
+	-- default is 5, make them all 5 and selected to 6
+	local ChoGGi_dlgs_opened = ChoGGi_dlgs_opened
+	for win in pairs(ChoGGi_dlgs_opened) do
+		win:SetZOrder(5)
+	end
+	(self.parent_dialog or self):SetZOrder(6)
+end
+
+function ChoGGi_XWindow:OnMouseButtonDown(pt, button, ...)
+	-- make selected window the foremost window
+  if button == "L" then
+		self:SetZorderHigher()
+	end
 end
 
 -- not sure why this isn't added?

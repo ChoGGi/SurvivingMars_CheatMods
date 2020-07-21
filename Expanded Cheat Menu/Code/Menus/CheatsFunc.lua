@@ -90,6 +90,17 @@ function ChoGGi.MenuFuncs.UnlockBreakthroughs()
 	MapForEach("map", "SubsurfaceAnomaly", reveal)
 end
 
+function ChoGGi.MenuFuncs.MeteorStrike(_, _, input)
+	local strike_pos
+	if input == "keyboard" then
+		strike_pos = GetTerrainCursor()
+	else
+		strike_pos = GetRandomPassable()
+	end
+
+	ChoGGi.MenuFuncs.DisasterTriggerMeteor("Meteor_High", "single", strike_pos)
+end
+
 function ChoGGi.MenuFuncs.LightningStrike(_, _, input)
 	local strike_pos
 	if input == "keyboard" then
@@ -479,7 +490,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(severity, major)
 	local descr = data[severity] or data[mapdata.MapSettings_DustDevils] or data.DustDevils_VeryLow
 	GenerateDustDevil(pos, descr, nil, major):Start()
 end
-function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity, meteors_type)
+function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity, meteors_type, pos)
 	meteors_type = meteors_type or "single"
 	local pos = SelObject() or GetTerrainCursor()
 	if IsValid(pos) then

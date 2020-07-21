@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 8,
 	"version_major", 0,
 	"version_minor", 8,
-
 	"id", "ChoGGi_ShowMaxRadiusRange",
 	"author", "ChoGGi",
 	"code", {

@@ -405,7 +405,9 @@ end
 
 local function SafeChangeAge(self)
 	local descr = self.prop_meta.rollover.descr[1]
-	descr.Age = descr.Age .. ": " .. self.prop_meta.applicant[1].age
+	if not descr.Age:find(": ", 1, true) then
+		descr.Age = descr.Age .. ": " .. self.prop_meta.applicant[1].age
+	end
 end
 
 local function AddExtraInfo(xtemplate)
