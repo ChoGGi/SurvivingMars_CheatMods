@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local IsValid = IsValid
 local MapGet = MapGet
 local RoadTileSize = terrain.RoadTileSize()
 local pf_AddTunnel = pf.AddTunnel
@@ -42,7 +41,7 @@ local function StartupCode()
 		local tunnel = tunnels[i]
 		-- make sure to clear old paths (probably will cause issues leaving dupes)
 		tunnel:RemovePFTunnel()
-		for j = 1, tunnels_c do
+		for _ = 1, tunnels_c do
 			MergeNewTunnel(tunnel, tunnels)
 		end
 	end

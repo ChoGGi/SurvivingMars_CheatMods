@@ -39,11 +39,12 @@ end
 
 -- removed button
 function OnMsg.ClassesPostprocess()
+	local XTemplates = XTemplates
 
 	local xt = XTemplates.ipBuilding[1]
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xt, "ChoGGi_RestoreMaintenance")
 
-	xt[#xt+1] = PlaceObj("XTemplateTemplate", {
+	local template = PlaceObj("XTemplateTemplate", {
 		"ChoGGi_RestoreMaintenance", true,
 		"Id", "ChoGGi_RestoreMaintenance",
 		"__condition", function(_, context)
@@ -77,4 +78,13 @@ function OnMsg.ClassesPostprocess()
 		end,
 		"Icon", "UI/Icons/IPButtons/rebuild.tga",
 	})
+	xt[#xt+1] = template
+
+	-- Large Drone Station
+	xt = XTemplates.ipRD_DHR
+	if xt then
+		xt = xt[1]
+		ChoGGi.ComFuncs.RemoveXTemplateSections(xt, "ChoGGi_RestoreMaintenance")
+		xt[#xt+1] = template
+	end
 end

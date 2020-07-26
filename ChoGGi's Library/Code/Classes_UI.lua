@@ -199,6 +199,14 @@ function ChoGGi_XMoveControl:OnMouseButtonDoubleClick(...)
 	return XMoveControl.OnMouseButtonDoubleClick(self, ...)
 end
 
+function ChoGGi_XMoveControl:OnMouseButtonDown(pt, button, ...)
+	-- make selected window the foremost window
+  if button == "L" then
+		ChoGGi_XWindow.SetZorderHigher(self)
+	end
+	return XMoveControl.OnMouseButtonDown(self, pt, button, ...)
+end
+
 DefineClass.ChoGGi_XSizeControl = {
 	__parents = {
 		"ChoGGi_XDefaults",
@@ -996,7 +1004,7 @@ function ChoGGi_XWindow:SetZorderHigher()
 	(self.parent_dialog or self):SetZOrder(6)
 end
 
-function ChoGGi_XWindow:OnMouseButtonDown(pt, button, ...)
+function ChoGGi_XWindow:OnMouseButtonDown(_, button, ...)
 	-- make selected window the foremost window
   if button == "L" then
 		self:SetZorderHigher()

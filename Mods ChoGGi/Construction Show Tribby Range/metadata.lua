@@ -11,7 +11,6 @@ return PlaceObj("ModDef", {
 	"version", 5,
 	"version_major", 0,
 	"version_minor", 5,
-
 	"id", "ChoGGi_ConstructionShowTribbyRange",
 	"author", "ChoGGi",
 	"image", "Preview.png",
@@ -23,7 +22,7 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"description", [[Shows (purple) grid radius around Triboelectric Scrubbers when you're in construction mode.
-Press Numpad 1 to toggle grids anytime (rebind in game options).
+Press Numpad 1 to toggle grid anytime (rebind in game options).
 
 Mod Options:
 Show during construction: If you don't want grids showing up during construction placement.

@@ -1,13 +1,13 @@
 -- See LICENSE for terms
 
 local options
-local lookup_skips = {}
+local lookup_pauses = {}
 
 -- fired when settings are changed/init
 local function ModOptions()
 	local OnScreenNotificationPresets = OnScreenNotificationPresets
 	for id in pairs(OnScreenNotificationPresets) do
-		lookup_skips[id] = options:GetProperty(id)
+		lookup_pauses[id] = options:GetProperty(id)
 	end
 end
 
@@ -26,8 +26,17 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
+-- causes issues with loading new game (freeze)
+local disable_pause = true
+local function StartupCode()
+	disable_pause = nil
+end
+
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
+
 local function PauseGame(id, func, ...)
-	if lookup_skips[id] then
+	if not disable_pause and lookup_pauses[id] then
 		UICity:SetGameSpeed(0)
 		UISpeedState = "pause"
 	end

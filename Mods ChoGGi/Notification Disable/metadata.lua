@@ -14,5 +14,10 @@ return PlaceObj("ModDef", {
 	"lua_revision", 249143,
 	"has_options", true,
 	"description", [[Use to disable certain notifications, look in Mod Options for the list.
-Red for Critical, and Blue for Important.]],
+Red for Critical, and Blue for Important.
+
+
+
+Warning: The notifications for mysteries could be considered spoilers.
+]],
 })

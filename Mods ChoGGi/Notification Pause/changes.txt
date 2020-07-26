@@ -1,3 +1,6 @@
+v1.2
+Fixed freezing on new games with certain options enabled (thanks Lesandrina).
+
 v1.1
 Made sure pausing doesn't un-pause.
 

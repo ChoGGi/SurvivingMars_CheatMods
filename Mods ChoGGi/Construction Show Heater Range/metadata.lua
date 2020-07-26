@@ -22,7 +22,7 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"description", [[Shows heat radius around Subsurface Heaters when you're in construction mode.
-Press Numpad 7 to toggle grids anytime (rebind in game options).
+Press Numpad 7 to toggle grid anytime (rebind in game options).
 
 Mod Options:
 Show during construction: If you don't want grids showing up during construction placement.

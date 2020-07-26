@@ -492,7 +492,8 @@ function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(severity, major)
 end
 function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity, meteors_type, pos)
 	meteors_type = meteors_type or "single"
-	local pos = SelObject() or GetTerrainCursor()
+	pos = pos or SelObject() or GetTerrainCursor()
+  -- target object
 	if IsValid(pos) then
 		pos = pos.GetVisualPos and pos:GetVisualPos() or pos:GetPos()
 	end

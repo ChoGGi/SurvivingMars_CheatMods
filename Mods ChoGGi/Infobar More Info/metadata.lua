@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Infobar More Info",
-	"version", 19,
-	"version_major", 1,
-	"version_minor", 9,
+	"version", 20,
+	"version_major", 2,
+	"version_minor", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_InfobarAddDischargeRates",
 	"steam_id", "1775006723",

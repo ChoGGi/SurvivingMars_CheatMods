@@ -1,3 +1,6 @@
+v1.3
+Added support for Large Drone Station by RustyDios.
+
 v1.2
 Fix for missing button.
 

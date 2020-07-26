@@ -1,9 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Notification Pause",
-	"version", 11,
+	"version", 12,
 	"version_major", 1,
-	"version_minor", 1,
-
+	"version_minor", 2,
 	"id", "ChoGGi_NotificationPause",
 	"author", "ChoGGi",
 	"steam_id", "1411111982",
@@ -17,5 +16,10 @@ return PlaceObj("ModDef", {
 	"description", [[Pauses the game on new notifications (defaults to only Critical/Important).
 
 Includes all notifications in Mod Options if you want to pick 'n choose.
-Red for Critical, and Blue for Important.]],
+Red for Critical, and Blue for Important.
+
+
+
+Warning: The notifications for mysteries could be considered spoilers.
+]],
 })

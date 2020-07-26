@@ -11,7 +11,6 @@ return PlaceObj("ModDef", {
 	"version", 4,
 	"version_major", 0,
 	"version_minor", 4,
-
 	"id", "ChoGGi_ConstructionShowHexGrid",
 	"author", "ChoGGi",
 	"image", "Preview.png",
@@ -23,7 +22,7 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"description", [[Show Hex Grid during construction.
-Press Numpad 5 to toggle grids anytime (rebind in game options).
+Press Numpad 5 to toggle grid anytime (rebind in game options).
 
 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1743031290]Show Hex Buildable Grid[/url]
 

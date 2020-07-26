@@ -1,3 +1,6 @@
+v2.0
+Fixed issue with Shuttle hubs and not Shuttles (thanks Stone Cold Jane Austen).
+
 v1.9
 Changed resource maintenance amounts to reflect benefits of nearby Triboelectric Scrubbers.
 

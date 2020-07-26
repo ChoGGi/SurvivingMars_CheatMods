@@ -22,7 +22,7 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"description", [[Show hex buildable grid during construction (follows the mouse).
-Press Numpad 0 to toggle grids anytime (rebind in game options).
+Press Numpad 0 to toggle grid anytime (rebind in game options).
 
 Passable (drones/rovers can drive here), Buildable (buildings can be placed here)
 Green = pass/build

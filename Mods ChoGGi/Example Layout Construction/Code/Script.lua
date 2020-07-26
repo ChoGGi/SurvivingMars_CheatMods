@@ -1,24 +1,25 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesPostprocess()
-	if BuildingTemplates.LayoutConstruction_ExampleChoGGi then
+	if BuildingTemplates.ChoGGi_Id_LayoutConstruction_Example then
 		return
 	end
 
 	PlaceObj("BuildingTemplate", {
 		-- keep it unique folks
-		"Id", "LayoutConstruction_ExampleChoGGi",
+		"Id", "ChoGGi_Id_LayoutConstruction_Example",
 		-- LayoutList id corresponds to the LayoutConstruction below
-		"LayoutList", "LayoutConstruction_ExampleChoGGi",
+		"LayoutList", "ChoGGi_LayoutConstruction_Example",
 		-- what group to add it to
 		"Group", "Infrastructure",
 		"build_category", "Infrastructure",
-		-- don't look at me
+		-- pos in build menu
+		"build_pos", 1,
+		-- don't look at me (0 means no id, use in-game mod editor to generate ids)
 		"display_name", T(0, "Layout Construction Example ChoGGi"),
 		"display_name_pl", T(0, "Layout Construction Example ChoGGis"),
 		"description", T(0, "Some buildings"),
 		"display_icon", "UI/Icons/Buildings/self-sufficient_dome.tga",
-		"build_pos", 1,
 		-- hands off
 		"template_class", "LayoutConstructionBuilding",
 		"entity", "InvisibleObject",
@@ -27,11 +28,14 @@ function OnMsg.ClassesPostprocess()
 
 	PlaceObj("LayoutConstruction", {
 		group = "Default",
-		id = "LayoutConstruction_ExampleChoGGi",
+		id = "ChoGGi_LayoutConstruction_Example",
 
 		-- you can find template names here:
 		-- https://github.com/HaemimontGames/SurvivingMars/blob/master/Data/BuildingTemplate.lua
-		-- they usually have the same entity name, but not always.
+		-- for DLC use my Expanded Cheat Menu mod, and in the console type in ~BuildingTemplates
+
+		-- they usually have the same entity name, but not always (check the template).
+
 		PlaceObj("LayoutConstructionEntry", {
 			"template", "DomeBasic",
 			"entity", "DomeBasic",
@@ -41,6 +45,7 @@ function OnMsg.ClassesPostprocess()
 			"template", "MOXIE",
 			-- you can use ECM to figure out the pos numbers
 			-- select obj>press f4 to examine>go to objects>hex shape toggle>see position numbers
+			-- or press Shift-F3 to have a grid follow the cursor
 			"pos", point(1, -8),
 			"entity", "Moxie",
 		}),

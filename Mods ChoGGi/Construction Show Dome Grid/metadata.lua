@@ -11,7 +11,6 @@ return PlaceObj("ModDef", {
 	"version", 6,
 	"version_major", 0,
 	"version_minor", 6,
-
 	"id", "ChoGGi_ConstructionShowDomeGrid",
 	"author", "ChoGGi",
 	"image", "Preview.png",
@@ -23,7 +22,7 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"description", [[Shows grid radius around Domes when you're in construction mode with a dome.
-Press Numpad 4 to toggle grids anytime (rebind in game options).
+Press Numpad 4 to toggle grid anytime (rebind in game options).
 
 Mod Options:
 Show during construction: If you don't want grids showing up during construction placement.

@@ -22,7 +22,7 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"description", [[Show dust grids for all dust generating buildings during construction of any building.
-Press Numpad 2 to toggle grids anytime (rebind in game options).
+Press Numpad 2 to toggle grid anytime (rebind in game options).
 
 Mod Options:
 Show during construction: If you don't want grids showing up during construction placement.

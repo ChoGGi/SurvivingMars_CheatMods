@@ -635,8 +635,9 @@ function OnMsg.ClassesPostprocess()
 end
 
 -- see Drone:IsDisabled()
+local borked_drones_list = {}
 function InfobarObj:ChoGGi_GetBrokenDrones()
-	local list = {}
+	table_iclear(borked_drones_list)
 	local c = 0
 	-- gotta use mapget instead of labels since dead drones aren't included
 	local objs = MapGet("map", "Drone")
@@ -644,10 +645,10 @@ function InfobarObj:ChoGGi_GetBrokenDrones()
 		local obj = objs[i]
 		if obj:IsDisabled() then
 			c = c + 1
-			list[c] = obj
+			borked_drones_list[c] = obj
 		end
 	end
-	return list, c
+	return borked_drones_list, c
 end
 
 local shuttlehubcount_str = {302535920011373, "<left>Shuttles Max/Total/Current<right><max>/<total>/<current>"}
@@ -671,11 +672,11 @@ function InfobarObj:GetDronesRollover(...)
 	if hubs then
 		for i = 1, #hubs do
 			local obj = hubs[i]
-			max = max + obj.max_shuttles or 0
+			max = max + (obj.max_shuttles or 0)
 			total = total + #(obj.shuttle_infos or "")
 		end
 		-- currently flying around
-		current = #(labels.CargoShuttle)
+		current = #(labels.CargoShuttle or "")
 
 		c = c + 1
 		shuttlehubcount_str.max = max
