@@ -1,3 +1,6 @@
+v1.3
+Game won't pause if notification is already on-screen.
+
 v1.2
 Fixed freezing on new games with certain options enabled (thanks Lesandrina).
 

@@ -2412,7 +2412,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 	]]
 	local function ReturnTechAmount(tech, prop)
 		local techdef = TechDef[tech]
-		local idx = table.find(techdef, "Prop", prop)
+		local idx = table_find(techdef, "Prop", prop)
 		if idx then
 			tech = techdef[idx]
 			local number
@@ -3911,7 +3911,7 @@ end
 
 do -- ExpandModOptions
 	local function UpdateProp(xtemplate)
-		local idx = table.find(xtemplate, "MaxWidth", 400)
+		local idx = table_find(xtemplate, "MaxWidth", 400)
 		if idx then
 			xtemplate[idx].MaxWidth = 1000000
 		end
@@ -3927,7 +3927,7 @@ do -- ExpandModOptions
 	end
 
 	local function AddSliderButtons(xtemplate)
-		local idx = table.find(xtemplate, "Id", "idSlider")
+		local idx = table_find(xtemplate, "Id", "idSlider")
 		if idx then
 			local template_left = PlaceObj("XTemplateWindow", {
 					"Id", "idButtonLower_ChoGGi",

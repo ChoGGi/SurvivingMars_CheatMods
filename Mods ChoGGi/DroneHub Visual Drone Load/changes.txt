@@ -1,2 +1,8 @@
+v0.4
+Added Gray colour for idle drone hubs / rovers.
+
+v0.3
+Added mod options to colour Rovers and Rover icons.
+
 v0.2
 Mod didn't work on DLC DroneHubs (thanks perpetualprose).

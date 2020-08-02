@@ -3,6 +3,7 @@
 local mod_QueueCount
 local mod_HideWhenEmpty
 
+-- declared here, so we can use the func declared after ModOptions is declared
 local UpdateResearchProgressBar
 
 -- fired when settings are changed/init
@@ -103,6 +104,7 @@ Approximate Time Remaining: <em><eta></em>
 
 Queue: <em><queue></em>]],
 			name = function()
+				-- GetCheapestTech is what gets researched when nothing in queue
 				local current_research = UICity:GetResearchInfo() or UICity:GetCheapestTech()
 				if not current_research then
 					return T(6761, "None")
@@ -160,8 +162,7 @@ Queue: <em><queue></em>]],
 
 end
 
--- declared above
-function UpdateResearchProgressBar()
+UpdateResearchProgressBar = function()
 	if not dlg_frame then
 		return
 	end
@@ -173,10 +174,10 @@ function UpdateResearchProgressBar()
 	XUpdateRolloverWindow(dlg_frame.idResearchProgress)
 	local current_research = UICity:GetResearchInfo()
 
-		dlg_frame.idResearchProgress:SetProgress(UICity:GetResearchProgress(
-			-- GetCheapestTech is what gets researched when queue is empty
-			current_research or UICity:GetCheapestTech()
-		))
+	dlg_frame.idResearchProgress:SetProgress(UICity:GetResearchProgress(
+		-- GetCheapestTech is what gets researched when queue is empty
+		current_research or UICity:GetCheapestTech()
+	))
 
 	dlg_frame.idQueueCount:SetVisible(mod_QueueCount)
 	if mod_QueueCount then

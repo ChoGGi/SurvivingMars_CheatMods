@@ -70,6 +70,7 @@ end
 
 local orig_School_GetTrainedRollover = School.GetTrainedRollover
 function School:GetTrainedRollover(...)
+	-- just in case the devs add rollovers to them
 	if orig_School_GetTrainedRollover then
 		local text = {orig_School_GetTrainedRollover(self, ...)}
 		return GetPoints(self, text)
@@ -86,16 +87,17 @@ function OnMsg.ClassesPostprocess()
 	end
 	xt = xt[idx]
 
-	if not xt.ChoGGi_AddProgressToTrainingSection then
-		xt.ChoGGi_AddProgressToTrainingSection = true
+	-- only add once
+	if xt.ChoGGi_AddProgressToTrainingSection then
+		return
+	end
+	xt.ChoGGi_AddProgressToTrainingSection = true
 
-		-- update each template (School/Sanatorium)
-		for i = 1, #xt do
-			local item = xt[i]
-			item.RolloverTemplate = "InfopanelSectionRollover"
-			item.RolloverText = T(7977, "<TrainedRollover>")
-			item.RolloverTitle = T(126824585435, "Training Program")
-		end
+	-- update each template (School/Sanatorium)
+	for i = 1, #xt do
+		local item = xt[i]
+		item.RolloverTemplate = "InfopanelSectionRollover"
+		item.RolloverText = T(7977, "<TrainedRollover>")
+		item.RolloverTitle = T(126824585435, "Training Program")
 	end
 end
-

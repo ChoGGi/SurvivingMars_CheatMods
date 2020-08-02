@@ -2024,7 +2024,7 @@ do -- Rebuildshortcuts
 
 		if testing then
 			-- goddamn annoying key
-			local idx = table.find(XShortcutsTarget.actions, "ActionId", "actionToggleFullscreen")
+			local idx = table_find(XShortcutsTarget.actions, "ActionId", "actionToggleFullscreen")
 			if idx then
 				XShortcutsTarget.actions[idx]:delete()
 				table_remove(XShortcutsTarget.actions, idx)
@@ -4380,13 +4380,13 @@ function ChoGGi.ComFuncs.RetHudButton(side)
 	side = side or "idLeft"
 
 	local xt = XTemplates
-	local idx = table.find(xt.HUD[1], "Id", "idBottom")
+	local idx = table_find(xt.HUD[1], "Id", "idBottom")
 	if not idx then
 		print("ChoGGi RetHudButton: Missing HUD control idBottom")
 		return
 	end
 	xt = xt.HUD[1][idx]
-	idx = table.find(xt, "Id", side)
+	idx = table_find(xt, "Id", side)
 	if not idx then
 		print("ChoGGi RetHudButton: Missing HUD control " .. side)
 		return
@@ -5252,7 +5252,7 @@ function ChoGGi.ComFuncs.UpdateDepotCapacity(obj, max_store, storable)
 end
 
 function ChoGGi.ComFuncs.GetModEnabled(mod_id)
-	return table.find(ModsLoaded, "id", mod_id)
+	return table_find(ModsLoaded, "id", mod_id)
 end
 
 function ChoGGi.ComFuncs.SetBuildingTemplates(template, key, value)

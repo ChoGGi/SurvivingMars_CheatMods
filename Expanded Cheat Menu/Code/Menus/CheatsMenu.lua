@@ -17,28 +17,6 @@ You will not be able to build on them without also enabling <green>ECM>Buildings
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920001587--[[Lightning Strike]]],
-	ActionMenubar = "ECM.Cheats",
-	ActionId = ".Lightning Strike",
-	ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
-	RolloverText = Strings[302535920001588--[[Strike a random pos or at mouse cursor if using shortcut.]]],
-	OnAction = ChoGGi.MenuFuncs.LightningStrike,
-	ActionShortcut = "Ctrl-Shift-Z",
-	ActionBindable = true,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920001086--[[Meteor Strike]]],
-	ActionMenubar = "ECM.Cheats",
-	ActionId = ".Meteor Strike",
-	ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
-	RolloverText = Strings[302535920001588--[[Strike a random pos or at mouse cursor if using shortcut.]]],
-	OnAction = ChoGGi.MenuFuncs.MeteorStrike,
-	ActionShortcut = "Ctrl-Shift-X",
-	ActionBindable = true,
-}
-
-c = c + 1
 Actions[c] = {ActionName = Strings[302535920001355--[[Map]]] .. " " .. Translate(5422--[[Exploration]]),
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Map Exploration",
@@ -64,15 +42,6 @@ Actions[c] = {ActionName = Strings[302535920000331--[[Mystery Start]]],
 	RolloverText = Strings[302535920000332--[["Pick and start a mystery (with instant start option).
 Certain mysteries need certain objects which get placed when the map is generated on a new game (the green rocks one for instance)."]]],
 	OnAction = ChoGGi.MenuFuncs.ShowMysteryList,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Translate(3983--[[Disasters]]),
-	ActionMenubar = "ECM.Cheats",
-	ActionId = ".Disasters",
-	ActionIcon = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
-	RolloverText = Strings[302535920000334--[[Show the disasters list and optionally start one.]]],
-	OnAction = ChoGGi.MenuFuncs.DisastersTrigger,
 }
 
 c = c + 1
@@ -468,3 +437,57 @@ Actions[c] = {ActionName = Strings[302535920000931--[[Spawn POIs]]],
 	RolloverText = Strings[302535920001395--[[Adds %s locations to Planetary View.]]]:format(Strings[302535920000934--[[POI]]]),
 	OnAction = ChoGGi.MenuFuncs.SpawnPOIs,
 }
+
+-- menu
+c = c + 1
+Actions[c] = {ActionName = Translate(3983--[[Disasters]]),
+	ActionMenubar = "ECM.Cheats",
+	ActionId = ".Disasters",
+	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
+	OnActionEffect = "popup",
+	ActionSortKey = "1Disasters",
+}
+
+c = c + 1
+Actions[c] = {ActionName = Translate(3983--[[Disasters]]),
+	ActionMenubar = "ECM.Cheats.Disasters",
+	ActionId = ".Disasters",
+	ActionIcon = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
+	RolloverText = Strings[302535920000334--[[Show the disasters list and optionally start one.]]],
+	OnAction = ChoGGi.MenuFuncs.DisastersTrigger,
+	ActionSortKey = "0",
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920001587--[[Lightning Strike]]],
+	ActionMenubar = "ECM.Cheats.Disasters",
+	ActionId = ".Lightning Strike",
+	ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
+	RolloverText = Strings[302535920001588--[[Strike a random pos or at mouse cursor if using shortcut.]]],
+	OnAction = ChoGGi.MenuFuncs.LightningStrike,
+	ActionShortcut = "Ctrl-Shift-Z",
+	ActionBindable = true,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920001086--[[Meteor Strike]]],
+	ActionMenubar = "ECM.Cheats.Disasters",
+	ActionId = ".Meteor Strike",
+	ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
+	RolloverText = Strings[302535920001588--[[Strike a random pos or at mouse cursor if using shortcut.]]],
+	OnAction = ChoGGi.MenuFuncs.MeteorStrike,
+	ActionShortcut = "Ctrl-Shift-X",
+	ActionBindable = true,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920001087--[[Missile Strike]]],
+	ActionMenubar = "ECM.Cheats.Disasters",
+	ActionId = ".Missile Strike",
+	ActionIcon = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
+	RolloverText = Strings[302535920001588--[[Strike a random pos or at mouse cursor if using shortcut.]]],
+	OnAction = ChoGGi.MenuFuncs.MissileStrike,
+	ActionShortcut = "Ctrl-Shift-M",
+	ActionBindable = true,
+}
+

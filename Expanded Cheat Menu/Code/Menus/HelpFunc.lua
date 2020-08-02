@@ -1154,20 +1154,25 @@ function ChoGGi.MenuFuncs.RetMapInfo()
 end
 
 function ChoGGi.MenuFuncs.EditECMSettings()
+	local UserSettings = ChoGGi.UserSettings
 	-- load up settings file in the editor
 	ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
-		text = TableToLuaCode(ChoGGi.UserSettings),
+		text = TableToLuaCode(UserSettings),
 		hint_ok = Strings[302535920001244--[["Saves settings to file, and applies any changes."]]],
 		hint_cancel = Strings[302535920001245--[[Abort without touching anything.]]],
 		update_func = function()
-			return TableToLuaCode(ChoGGi.UserSettings)
+			return TableToLuaCode(UserSettings)
 		end,
 		custom_func = function(answer, _, obj)
 			if answer then
 				-- get text and update settings file
 				local err, settings = LuaCodeToTuple(obj.idEdit:GetText())
 				if not err then
-					ChoGGi.UserSettings = ChoGGi.SettingFuncs.WriteSettings(settings)
+					settings = ChoGGi.SettingFuncs.WriteSettings(settings)
+					for key, value in pairs(settings) do
+						UserSettings[key] = value
+					end
+
 					-- for now just updates console examine list
 					Msg("ChoGGi_SettingsUpdated", settings)
 					local d, m, h = FormatElapsedTime(os.time(), "dhm")

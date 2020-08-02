@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Notification Pause",
-	"version", 12,
+	"version", 13,
 	"version_major", 1,
-	"version_minor", 2,
+	"version_minor", 3,
 	"id", "ChoGGi_NotificationPause",
 	"author", "ChoGGi",
 	"steam_id", "1411111982",
@@ -14,6 +14,7 @@ return PlaceObj("ModDef", {
 	"lua_revision", 249143,
 	"has_options", true,
 	"description", [[Pauses the game on new notifications (defaults to only Critical/Important).
+Doesn't pause if notification is already on-screen.
 
 Includes all notifications in Mod Options if you want to pick 'n choose.
 Red for Critical, and Blue for Important.

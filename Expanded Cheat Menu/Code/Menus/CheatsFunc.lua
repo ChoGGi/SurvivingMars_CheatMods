@@ -101,6 +101,17 @@ function ChoGGi.MenuFuncs.MeteorStrike(_, _, input)
 	ChoGGi.MenuFuncs.DisasterTriggerMeteor("Meteor_High", "single", strike_pos)
 end
 
+function ChoGGi.MenuFuncs.MissileStrike(_, _, input)
+	local strike_pos
+	if input == "keyboard" then
+		strike_pos = GetTerrainCursor()
+	else
+		strike_pos = GetRandomPassable()
+	end
+
+	ChoGGi.MenuFuncs.DisasterTriggerMissle()
+end
+
 function ChoGGi.MenuFuncs.LightningStrike(_, _, input)
 	local strike_pos
 	if input == "keyboard" then

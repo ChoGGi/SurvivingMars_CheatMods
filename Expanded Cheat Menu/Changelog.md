@@ -2,7 +2,8 @@
 
 ## v15.4 (Unreleased)
 ### Added:
-- Cheats>Meteor Strike: Ctrl-Shift-X to spam them.
+- Cheats>Disasters>Meteor Strike: Ctrl-Shift-X to attack at cursor (hold to spam).
+- Cheats>Disasters>Missile Strike: Ctrl-Shift-M to attack at cursor (hold to spam).
 
 ### Changed:
 - Added StepLength/StepVector to Examine>Object>Entity Spots.

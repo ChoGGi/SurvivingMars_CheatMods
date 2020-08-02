@@ -1217,6 +1217,8 @@ function OnMsg.ClassesBuilt()
 		end
 	end -- do
 
+	-- ChoGGi.ComFuncs.ToggleConsole(show)
+
 	-- tweak console when it's "opened"
 	SaveOrigFunc("Console", "Show")
 	function Console:Show(show, ...)
@@ -1267,6 +1269,8 @@ function OnMsg.ClassesBuilt()
 	end -- do
 
 	-- kind of an ugly way of making sure console doesn't include ` when using tilde to open console
+	-- I could do a thread and wait till the key isn't pressed, but it's slower
+	-- this does block user from typing in `, but eh
 	SaveOrigFunc("Console", "TextChanged")
 	function Console:TextChanged(...)
 		ChoGGi_OrigFuncs.Console_TextChanged(self, ...)
@@ -1280,18 +1284,18 @@ function OnMsg.ClassesBuilt()
 	do -- Console HistoryDown/HistoryUp
 		-- make it so caret is at the end of the text when you use history (who the heck wants it at the start...)
 		local function HistoryEnd(func, self, ...)
-			ChoGGi_OrigFuncs[func](self, ...)
+			func(self, ...)
 			self.idEdit:SetCursor(1, #self.idEdit:GetText())
 		end
 
 		SaveOrigFunc("Console", "HistoryDown")
 		function Console:HistoryDown(...)
-			HistoryEnd("Console_HistoryDown", self, ...)
+			HistoryEnd(ChoGGi_OrigFuncs.Console_HistoryDown, self, ...)
 		end
 
 		SaveOrigFunc("Console", "HistoryUp")
 		function Console:HistoryUp(...)
-			HistoryEnd("Console_HistoryUp", self, ...)
+			HistoryEnd(ChoGGi_OrigFuncs.Console_HistoryUp, self, ...)
 		end
 	end -- do
 
@@ -1321,8 +1325,8 @@ function OnMsg.ClassesBuilt()
 	end
 
 	do -- Console:Exec
-		-- add a bunch of rules to console input
-		local console_rules = {
+		-- override orig console rules with mine (thanks devs for making it a global var)
+		ConsoleRules = {
 			-- print info in console log
 			{
 				-- $userdata/string id
@@ -1421,9 +1425,6 @@ end]]
 			},
 		}
 
-		-- override with my rules (thanks devs)
-		ConsoleRules = console_rules
-
 		-- ReadHistory fires from :Show(), if it isn't loaded before you :Exec() then goodbye history
 		SaveOrigFunc("Console", "Exec")
 		function Console:Exec(...)
@@ -1433,6 +1434,7 @@ end]]
 			return ChoGGi_OrigFuncs.Console_Exec(self, ...)
 		end
 
+		-- we can't do anything if blacklist is active
 		if not blacklist then
 			-- and now the console has a blacklist :), though i am a little suprised they left it unfettered this long, been using it as a workaround for months
 			local WaitMsg = WaitMsg

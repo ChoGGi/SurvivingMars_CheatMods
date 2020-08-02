@@ -1,6 +1,8 @@
 -- See LICENSE for terms
 
+local table_concat = table.concat
 local T = T
+
 -- build sorted list of all notifications
 local properties = {}
 local c = 0
@@ -34,8 +36,8 @@ for id, item in pairs(OnScreenNotificationPresets) do
 	c = c + 1
 	properties[c] = PlaceObj("ModItemOptionToggle", {
 		"name", id,
-		"DisplayName", table.concat(T(name)),
-		"Help", table.concat(T(item.title) .. "\n" .. T(item.text) .. voiced
+		"DisplayName", table_concat(T(name)),
+		"Help", table_concat(T(item.title) .. "\n" .. T(item.text) .. voiced
 			.. "\n\n<image " .. item.image .. ">"),
 		"DefaultValue", priority and true or false,
 	})

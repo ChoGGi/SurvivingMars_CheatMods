@@ -1,5 +1,4 @@
 "ID", " Text"
-302535920001087,
 302535920001095,
 302535920001096,
 302535920001268,
@@ -795,6 +794,7 @@ Use with <green>%s</green> to fill up a dome with spires."
 302535920000230, "Remove Building Limits"
 302535920000231, "Buildings can be placed almost anywhere.
 See also %s."
+302535920001087, "Missile Strike"
 302535920001086, "Meteor Strike"
 302535920000981, "Delete Geysers"
 302535920000983, "Remove all geyser activity from the map (permanent per-save).

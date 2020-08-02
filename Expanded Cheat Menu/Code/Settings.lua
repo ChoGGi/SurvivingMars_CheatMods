@@ -224,25 +224,33 @@ function ChoGGi.SettingFuncs.ReadSettingsAdmin(settings)
 			-- something is definitely wrong so just abort, and let user know
 			if err then
 				PrintError(err)
+				return
 			end
 		end
 	end
 
 	-- and convert it to lua / update in-game settings
-	err, ChoGGi.UserSettings = LuaCodeToTuple(settings)
+	err, settings = LuaCodeToTuple(settings)
 	if err then
 		PrintError(err)
 	end
 
-	if err or type(ChoGGi.UserSettings) ~= "table" then
-		-- so now at least the game will start
-		ChoGGi.UserSettings = ChoGGi.Defaults
-		return ChoGGi.Defaults
+	local UserSettings = ChoGGi.UserSettings
+	-- update in-game settings, but keep the table the same for any locals I did
+	for key, value in pairs(settings) do
+		UserSettings[key] = value
 	end
 
-	-- all is well
-	return settings
+	if err or type(UserSettings) ~= "table" then
+		-- so now at least the game will start
+		settings = ChoGGi.Defaults
+		for key, value in pairs(settings) do
+			UserSettings[key] = value
+		end
+	end
 
+	-- all is well (we return it for EditECMSettings)
+	return settings
 end
 
 function ChoGGi.SettingFuncs.WriteSettingsLocal(settings)
@@ -269,8 +277,6 @@ function ChoGGi.SettingFuncs.ReadSettingsLocal(settings)
 
 	-- try to read settings
 	if not settings then
-
-		local LocalStorage = LocalStorage
 		if LocalStorage.ModPersistentData[ChoGGi.id] then
 			settings = LocalStorage.ModPersistentData[ChoGGi.id]
 		end
@@ -281,18 +287,26 @@ function ChoGGi.SettingFuncs.ReadSettingsLocal(settings)
 		end
 	end
 
-	-- update in-game settings
+	local UserSettings = ChoGGi.UserSettings
+
+	-- update in-game settings, but keep the table the same for any locals I did
+	for key, value in pairs(settings) do
+		UserSettings[key] = value
+	end
+
 	ChoGGi.UserSettings = settings
 
-	if type(ChoGGi.UserSettings) ~= "table" or not next(ChoGGi.UserSettings) then
+	if type(UserSettings) ~= "table" or not next(UserSettings) then
 		-- so now at least the game will start
 		settings = ChoGGi.Defaults
-		ChoGGi.UserSettings = settings
+
+		for key, value in pairs(settings) do
+			UserSettings[key] = value
+		end
 	end
 
 	-- all is well (we return it for EditECMSettings)
 	return settings
-
 end
 
 -- ClassesBuilt is the earliest we can call Consts funcs (which i don't actually call in here anymore...)

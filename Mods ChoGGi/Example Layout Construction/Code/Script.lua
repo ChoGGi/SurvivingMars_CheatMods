@@ -42,19 +42,19 @@ function OnMsg.ClassesPostprocess()
 		}),
 
 		PlaceObj("LayoutConstructionEntry", {
+			"template", "OxygenTank",
+			"pos", point(1, -9),
+			-- 0-5 (six hex angles), test with an existing obj with SelectedObj:SetAngle(5*3600) (3600 == 60*60)
+			"dir", 5,
+			"entity", "AirTank",
+		}),
+		PlaceObj("LayoutConstructionEntry", {
 			"template", "MOXIE",
 			-- you can use ECM to figure out the pos numbers
 			-- select obj>press f4 to examine>go to objects>hex shape toggle>see position numbers
 			-- or press Shift-F3 to have a grid follow the cursor
 			"pos", point(1, -8),
 			"entity", "Moxie",
-		}),
-		PlaceObj("LayoutConstructionEntry", {
-			"template", "OxygenTank",
-			"pos", point(1, -9),
-			-- 0-5 (six hex angles), test with an existing obj with SelectedObj:SetAngle(5*3600) (3600 == 60*60)
-			"dir", 5,
-			"entity", "AirTank",
 		}),
 		PlaceObj("LayoutConstructionEntry", {
 			"template", "MoistureVaporator",
@@ -93,15 +93,17 @@ function OnMsg.ClassesPostprocess()
 		}),
 	})
 
---~ { category = "Layout",   id = "template",      name = "Template",         editor = "choice", default = false, items = function() return BuildingsCombo() end, },
---~ { category = "Layout",   id = "pos",           name = "Offset Pos (Hex)", editor = "point",  default = point20 },
---~ { category = "Layout",   id = "cur_pos1",      name = "Grid Placement p1 (Hex)", editor = "point",  default = point20 },
---~ { category = "Layout",   id = "cur_pos2",      name = "Grid Placement p2 (Hex)", editor = "point",  default = point20 },
---~ { category = "Layout",   id = "switch_dobule_line_directions",  name = "Pipes Rotated?", editor = "bool",  default = false },
---~ { category = "Layout",   id = "dir",           name = "Offset Dir (Hex)", editor = "number", default = 0 },
---~ { category = "Layout",   id = "instant",       name = "Instant",       editor = "bool",   default = false, },
---~ { category = "Building", id = "entity",        name = "Entity",           editor = "text",   default = "", },
---~ { category = "Building", id = "palette",       name = "Palette",          editor = "text",   default = "", },
---~ { category = "Grid",     id = "grid_skin",     name = "Grid Skin",        editor = "text",   default = "Default", },
+--[[
+{ category = "Layout",   id = "template",      name = "Template",         editor = "choice", default = false, items = function() return BuildingsCombo() end, },
+{ category = "Layout",   id = "pos",           name = "Offset Pos (Hex)", editor = "point",  default = point20 },
+{ category = "Layout",   id = "cur_pos1",      name = "Grid Placement p1 (Hex)", editor = "point",  default = point20 },
+{ category = "Layout",   id = "cur_pos2",      name = "Grid Placement p2 (Hex)", editor = "point",  default = point20 },
+{ category = "Layout",   id = "switch_dobule_line_directions",  name = "Pipes Rotated?", editor = "bool",  default = false },
+{ category = "Layout",   id = "dir",           name = "Offset Dir (Hex)", editor = "number", default = 0 },
+{ category = "Layout",   id = "instant",       name = "Instant",       editor = "bool",   default = false, },
+{ category = "Building", id = "entity",        name = "Entity",           editor = "text",   default = "", },
+{ category = "Building", id = "palette",       name = "Palette",          editor = "text",   default = "", },
+{ category = "Grid",     id = "grid_skin",     name = "Grid Skin",        editor = "text",   default = "Default", },
+]]
 
 end

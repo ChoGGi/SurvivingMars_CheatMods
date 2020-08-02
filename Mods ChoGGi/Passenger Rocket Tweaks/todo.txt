@@ -1,0 +1,6 @@
+Lesandrina
+a) could you add male/female count, and behind people in the selected list? also a total how many male/female?
+b) add info who is a tourist for each person on the list? also a total how many will be tourists
+c) currently people count per role doesnt work in combination with escort mod  see screenshot left side
+d) change the mod option to default all 3 settings to on so it gets used by default when you enable the mod?
+e) where is the point in tourists having a specialization if they dont work? (maybe another mod - make tourist a specialization of its own, it is quite stupid currently?)
