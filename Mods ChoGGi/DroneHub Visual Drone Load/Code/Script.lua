@@ -116,24 +116,24 @@ end
 function OnMsg.ClassesPostprocess()
 	-- UpdateHeavyLoadNotification is the same func for all, but just in case someone changes one of them
 
-	local orig_RCRover_UpdateHeavyLoadNotification = RCRover.UpdateHeavyLoadNotification
-	function RCRover:UpdateHeavyLoadNotification(...)
-		return RoverUpdate(orig_RCRover_UpdateHeavyLoadNotification, self, ...)
-	end
-
-	if RCSensor then
-		local orig_RCSensor_UpdateHeavyLoadNotification = RCSensor.UpdateHeavyLoadNotification
-		function RCSensor:UpdateHeavyLoadNotification(...)
-			return RoverUpdate(orig_RCSensor_UpdateHeavyLoadNotification, self, ...)
+--~ 	if ChoGGi.def_lib.version > 83 then
+--~ 		ChoGGi.ComFuncs.ReplaceClassFunc("BaseRover", "UpdateHeavyLoadNotification", RoverUpdate, "DroneBase")
+--~ 	else
+		local classes = ClassDescendantsList("BaseRover")
+		local g = _G
+		local orig_funcs = {}
+		for i = 1, #classes do
+			local cls_obj = g[classes[i]]
+			local orig_func = cls_obj.UpdateHeavyLoadNotification
+			-- skip dupes / add any rovers that control drones
+			if orig_func and not orig_funcs[orig_func] and cls_obj:IsKindOf("DroneBase") then
+				orig_funcs[orig_func] = true
+				function cls_obj:UpdateHeavyLoadNotification(...)
+					return RoverUpdate(orig_func, self, ...)
+				end
+			end
 		end
-	end
-
-	if RCSolar then
-		local orig_RCSolar_UpdateHeavyLoadNotification = RCSolar.UpdateHeavyLoadNotification
-		function RCSolar:UpdateHeavyLoadNotification(...)
-			return RoverUpdate(orig_RCSolar_UpdateHeavyLoadNotification, self, ...)
-		end
-	end
+--~ 	end
 
 
 

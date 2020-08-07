@@ -26,6 +26,7 @@ local table_rand = table.rand
 local CreateRealTimeThread = CreateRealTimeThread
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
+local ClassDescendantsList = ClassDescendantsList
 
 local rawget, getmetatable = rawget, getmetatable
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
@@ -5258,4 +5259,25 @@ end
 function ChoGGi.ComFuncs.SetBuildingTemplates(template, key, value)
 	BuildingTemplates[template][key] = value
 	ClassTemplates.Building[template][key] = value
+end
+
+function ChoGGi.ComFuncs.ReplaceClassFunc(class, func_name, func_to_call)
+	-- ClassDescendantsList("BaseRover")
+	class = ClassDescendantsList(class)
+	local g = _G
+	-- shouldn't be any dupes?
+	local orig_funcs = {}
+	for i = 1, #class do
+		-- get cls obj and backup the func we're hitchhiking on
+		local cls_obj = g[class[i]]
+		local orig_func = cls_obj[func_name]
+		if not orig_funcs[orig_func] then
+			orig_funcs[orig_func] = true
+			-- actual func override
+			cls_obj[func_name] = function(self, ...)
+				-- return your func being called and send it the backuped func
+				return func_to_call(orig_func, self, ...)
+			end
+		end
+	end
 end

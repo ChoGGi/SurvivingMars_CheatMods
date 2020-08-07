@@ -1,6 +1,85 @@
 -- See LICENSE for terms
 
+-- build list of traits/mod options
+local mod_options = {}
+local traits_list = {}
+local c = 0
+local Random = ChoGGi.ComFuncs.Random
+local RetName = ChoGGi.ComFuncs.RetName
+local Sleep = Sleep
+
+local function AddColonists(list)
+	for i = 1, #list do
+		c = c + 1
+		local id = list[i]
+		traits_list[c] = id
+		mod_options[id] = false
+	end
+end
+local t = ChoGGi.Tables
+AddColonists(t.ColonistAges)
+AddColonists(t.NegativeTraits)
+AddColonists(t.PositiveTraits)
+AddColonists(t.OtherTraits)
+
+-- call down the wrath of Zeus for miscreants
 local IsValid = IsValid
+local function UpdateMurderPods()
+	local objs = UICity.labels.Colonist or ""
+	for i = 1, c do
+		local obj = objs[i]
+		-- if colonist already has a pod after it then skip
+		if obj and not IsValid(obj.ChoGGi_MurderPod) then
+			-- quicker to check age instead of looping all traits, so ageism rules
+			if mod_options[obj.age_trait] then
+				obj:ChoGGi_MP_LaunchPod()
+			else
+				-- loop through colonist traits for bad ones
+				for id in pairs(obj.traits) do
+					-- we found it, so stop checking rest of traits and on to next victim
+					if mod_options[id] then
+						obj:ChoGGi_MP_LaunchPod()
+						break
+					end
+				end
+			end
+		end
+	end
+end
+
+local options
+
+-- fired when settings are changed/init
+local function ModOptions()
+	options = CurrentModOptions
+
+	for i = 1, c do
+		local id = traits_list[i]
+		mod_options[id] = options:GetProperty("Trait_" .. id)
+	end
+
+	-- make sure we're not in menus
+	if not GameState.gameplay then
+		return
+	end
+
+	UpdateMurderPods()
+end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= CurrentModId then
+		return
+	end
+
+	ModOptions()
+end
+
+OnMsg.NewHour = UpdateMurderPods
 
 function Colonist:ChoGGi_MP_RemovePod()
 	if IsValid(self.ChoGGi_MurderPod) then
@@ -31,8 +110,11 @@ function Colonist:ChoGGi_MP_LaunchPod()
 
 	-- get outta here
 	if IsValid(g_IdiotMonument) then
-		self:SetCommand("Goto", g_IdiotMonument:GetPos())
-		CreateGameTimeThread(Colonist.ChoGGi_MP_WaitForIt, self)
+		CreateGameTimeThread(function()
+			Sleep(Random(1000, 15000))
+			self:SetCommand("Goto", g_IdiotMonument:GetPos())
+			self:ChoGGi_MP_WaitForIt()
+		end)
 	else
 		CreateGameTimeThread(function()
 			while IsValid(self) and IsValid(self.ChoGGi_MurderPod) do
@@ -46,7 +128,60 @@ function Colonist:ChoGGi_MP_LaunchPod()
 	end
 end
 
+GlobalVar("g_IdiotMonument", false)
+
+DefineClass.IdiotMonument = {
+	__parents = {
+		"Building",
+	},
+	entity = "IceSet_05",
+}
+
+function IdiotMonument:GameInit()
+	-- if there's already one replace with new one
+	if IsValid(g_IdiotMonument) then
+		g_IdiotMonument:OnDemolish()
+	end
+	g_IdiotMonument = self
+
+	self:SetScale(250)
+	self:SetPos(self:GetPos():AddZ(5000), 10000)
+end
+
+function IdiotMonument:OnDemolish()
+	g_IdiotMonument = false
+
+	CreateGameTimeThread(function()
+		PlayFX("ElectrostaticStormArea", "start", self)
+		self.fx_actor_class = "Crystal"
+		PlayFX("CrystalCompose", "attach1", self)
+		Sleep(2500)
+		for i = 100, 1, -1 do
+			self:SetOpacity(i)
+			Sleep(25)
+		end
+		DoneObject(self)
+	end)
+end
+
 function OnMsg.ClassesPostprocess()
+	if not BuildingTemplates.IdiotMonument then
+		PlaceObj("BuildingTemplate", {
+			"Id", "IdiotMonument",
+			"template_class", "IdiotMonument",
+			"construction_cost_Concrete", 1000,
+			"display_name", T(302535920011239, "Idiot Monument"),
+			"display_name_pl", T(302535920011240, "Idiot Monuments"),
+			"description", T(302535920011241, "Here kitty kitty kitty"),
+			"display_icon", CurrentModPath .. "UI/IdiotMonument.png",
+			"build_category", "ChoGGi",
+			"Group", "ChoGGi",
+			"dome_forbidden", true,
+			"encyclopedia_exclude", true,
+			"on_off_button", false,
+		})
+	end
+
 	local xt = XTemplates
 	local template = xt.ipColonist[1]
 
@@ -129,13 +264,16 @@ function OnMsg.ClassesPostprocess()
 			"ChoGGi_Template_ColonistSucker", true,
 			"__template", "InfopanelActiveSection",
 			"__context_of_kind", "MurderPod",
-			"__condition", function (_, context)
+			"__condition", function(_, context)
 				return IsValid(context.target)
 			end,
 			"Icon", "UI/Icons/Sections/colonist.tga",
 			"Title", T(302535920011247, "Select Colonist"),
 			"RolloverTitle", T(302535920011247, "Select Colonist"),
-			"RolloverText", T(302535920011248, "Selects the colonist."),
+			"RolloverText", T{302535920011248, "Select <name>.",
+				name = function(self)
+					return RetName(self[1].target)
+			end},
 			"RolloverHint", T(302535920011249, "<left_click> Select"),
 		}, {
 			PlaceObj("XTemplateFunc", {

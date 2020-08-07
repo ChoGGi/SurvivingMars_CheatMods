@@ -11,7 +11,6 @@ return PlaceObj("ModDef", {
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_RemoveBuildingLimits",
 	"steam_id", "1763802580",

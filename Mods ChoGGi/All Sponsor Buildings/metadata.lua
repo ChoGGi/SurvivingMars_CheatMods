@@ -16,6 +16,6 @@ return PlaceObj("ModDef", {
 	"description", [[Removes sponsor limit placed on certain buildings/vehicles.
 See mod options to disable any buildings you find cheaty (or if you just want one or two unlocked).
 
-You need to research "Robotics>Rover Printing" to build (any) rovers.
+You need to research Robotics>Rover Printing to build rovers.
 ]],
 })

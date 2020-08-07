@@ -488,10 +488,9 @@ Hold <green>Ctrl</green> to close <color ChoGGi_red>all</color> ECM dialogs."
 302535920001521, "Lua source file not found."
 302535920001519, "View Source"
 302535920001520, "Opens source code in text viewer (if it exists):
-Mod code works fine, as well as HG github code (decompiled will have different line numbers).
-
-Source code needs to be placed at: ""<green>%sSource</green>""
-Example: ""<yellow>Source/Lua/_const.lua</yellow>"""
+Mod code works as is, HG github game code needs to be placed at:
+<green>%sSource</green>
+Example: <yellow>Source/Lua/_const.lua</yellow>"
 302535920000264, "Defaults to obj:GetObjectBBox() if it can't find a func."
 302535920001514, "Toggle visibility of an input box for executing code."
 302535920001515, "Press <green>%s</green> to execute code.

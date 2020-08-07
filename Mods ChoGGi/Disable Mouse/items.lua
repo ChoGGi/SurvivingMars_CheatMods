@@ -1,7 +1,7 @@
 return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "EnableMod",
-		"DisplayName", table.concat(T(754117323318, "Enable") .. " " .. T(12360, "Mod")),
+		"DisplayName", T(302535920011303, "Enable Mod"),
 		"Help", T(302535920011593, "If you want to turn off the mod disable this option."),
 		"DefaultValue", true,
 	}),

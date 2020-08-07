@@ -9,7 +9,7 @@ return {
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "RemoveLandScapingLimits",
-		"DisplayName", T(302535920011238, "Remove Landscaping Limits"),
+		"DisplayName", T(302535920011303, "Enable Mod"),
 		"DefaultValue", true,
 	}),
 	PlaceObj("ModItemOptionToggle", {

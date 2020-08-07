@@ -3,6 +3,8 @@
 local Sleep = Sleep
 local IsValid = IsValid
 local GetRandomPassableAround = GetRandomPassableAround
+local PlaySound = PlaySound
+local IsSoundPlaying = IsSoundPlaying
 local guim = guim
 local Random = ChoGGi.ComFuncs.Random
 
@@ -16,7 +18,6 @@ DefineClass.MurderPod = {
 		"SkinChangeable",
 	},
 	palette = { "outside_accent_1", "outside_base", "outside_dark", "outside_base" },
-	entity = "SupplyPod",
 	-- victim
 	target = false,
 	arrival_height = 1000 * guim,
@@ -25,14 +26,17 @@ DefineClass.MurderPod = {
 	hover_height_orig = 30 * guim,
 	arrival_time = 10000,
 	min_pos_radius = 250 * guim,
-	max_pos_radius = 1500 * guim,
+	max_pos_radius = 750 * guim,
 	pre_leave_offset = 1000,
 	min_meteor_time = const.DayDuration,
 	max_meteor_time = const.DayDuration * 4,
 
 	fx_actor_base_class = "FXRocket",
 	fx_actor_class = "SupplyPod",
+	-- add a moving around sound
+	fx_move_sound = false,
 
+	entity = "SupplyPod",
 	display_icon = "UI/Icons/Buildings/supply_pod.tga",
 
 	panel_icon = "",
@@ -44,6 +48,7 @@ DefineClass.MurderPod = {
 	decel_dist = 60*guim,
 	collision_radius = 50*guim,
 }
+
 if IsValidEntity("ArcPod") then
 	MurderPod.entity = "ArcPod"
 	MurderPod.display_icon = "UI/Icons/Buildings/ark_pod.tga"
@@ -221,7 +226,7 @@ function MurderPod:Abduct()
 
 	-- grab entity before we remove colonist (for our iceberg meteor)
 	local entity = victim.inner_entity
-	-- no need to keep colonist around now
+	-- no need to keep colonist around now (func from storybits, used to remove colonist without affecting any stats)
 	victim:Erase()
 	-- change selection panel icon
 	self.panel_text = T(302535920011243, [[Victim going to "Earth"]])
@@ -237,9 +242,20 @@ function MurderPod:Abduct()
 	end
 end
 
+function MurderPod:FlyingSound()
+	-- It only lasts for so long, and it doesn't want to play right away
+	local snd = self.fx_move_sound
+	if not snd or snd and not IsSoundPlaying(snd) then
+		self.fx_move_sound = PlaySound("Unit Rocket Fly", "ObjectMineLoop", nil, 0, true, self, 50)
+		-- PlaySound(sound, _type, volume, fade_time, looping, point_or_object, loud_distance)
+	end
+end
+
 function MurderPod:StalkerTime()
-	local victim = self.target
-	while IsValid(victim) do
+	while IsValid(self.target) do
+		local victim = self.target
+
+		self:FlyingSound()
 
 		-- check if they're not in a building/dome/passage (ie: outside)
 		local in_dome = victim:IsInDome()
@@ -264,8 +280,12 @@ function MurderPod:StalkerTime()
 			Sleep(2500)
 		end
 
+		self:FlyingSound()
 		Sleep(Random(2500, 10000))
+		self:FlyingSound()
 	end
+
+--~ 	StopSound(self.fx_move_sound)
 
 	-- soundless sleep
 	if IsValid(self) then

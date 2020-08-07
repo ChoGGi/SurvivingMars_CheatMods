@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Rover In Dome",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixRoverInDome",
 	"steam_id", "1829688193",
