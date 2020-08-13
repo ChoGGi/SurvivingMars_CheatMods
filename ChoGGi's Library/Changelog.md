@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v8.4 (Unreleased)
+## v8.5 (Unreleased)
+
+## v8.4 (13 Aug 2020)
 - Moved obj path marker func into Lib.
 
 ## v8.3 (18 July 2020)

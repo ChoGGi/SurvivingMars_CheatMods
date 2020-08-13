@@ -208,6 +208,10 @@ Cheats.Consts.Workplace>AvoidWorkplaceSols Avoid Workplace Sols: After being fir
 Cheats.Consts.Workplace>DefaultOutsideWorkplacesRadius Default outside Workplaces radius: Colonists search this far (in hexes) outisde their Dome when looking for a Workplace
 Cheats.Consts.Workplace>OvertimedShiftPerformance Heavy workload Shift Performance: Heavy workload Shift Performance change
 Cheats.Consts.Workplace>WorkingHours Working hours: Normal shift duration
+Cheats.Disasters>Disasters: Show the disasters list and optionally start one.
+Cheats.Disasters>Lightning Strike: Strike a random pos or at mouse cursor if using shortcut.
+Cheats.Disasters>Meteor Strike: Strike a random pos or at mouse cursor if using shortcut.
+Cheats.Disasters>Missile Strike: Strike a random pos or at mouse cursor if using shortcut.
 Cheats.Menu>Draggable Cheats Menu: Cheats menu can be moved.
 Cheats.Menu>Hide Cheats Menu: This will hide the Cheats menu; Use F2 to see it again.
 Cheats.Menu>Infopanel Cheats Cleanup: Remove some entries from the cheat pane (restart to re-enable).
@@ -233,8 +237,6 @@ Cheats>Complete Constructions: Complete all constructions instantly.
 Cheats>Complete Wires & Pipes: Complete all wires and pipes instantly.
 Cheats>Delete Geysers: Remove all geyser activity from the map (permanent per-save).
 You will not be able to build on the area without also enabling ECM>Buildings>Toggles>Build On Geysers.
-Cheats>Disasters: Show the disasters list and optionally start one.
-Cheats>Lightning Strike: Strike a random pos or at mouse cursor if using shortcut.
 Cheats>Map Exploration: Scanning, deep scanning, core mines, and alien imprints.
 Cheats>Mod Editor: Open the mod editor.
 Cheats>Mystery Log: Advance to next part, show what part you're on, or remove mysteries.
@@ -326,7 +328,7 @@ ECM.Buildings.Capacity>Building Visitor Capacity: Set visitors capacity of all b
 ECM.Buildings.Capacity>Storage Mechanized Depots Temp: Allow the temporary storage to hold 100 instead of 50 cubes.
 ECM.Buildings.Capacity>Storage Mechanized Depots: Change mechanized depot storage capacity.
 ECM.Buildings.Capacity>Storage Other Depot: Change other storage depot capacity.
-ECM.Buildings.Capacity>Storage Universal Depot: 500000: Change universal storage depot capacity.
+ECM.Buildings.Capacity>Storage Universal Depot: Change universal storage depot capacity.
 ECM.Buildings.Capacity>Storage Waste Depot: Change waste storage depot capacity.
 ECM.Buildings.Capacity>Worker Capacity: Set worker capacity of buildings of selected type, also applies to newly placed ones.
 ECM.Buildings.Farms>Crop fail threshold: Average performance of Farms required for Crops to succeed

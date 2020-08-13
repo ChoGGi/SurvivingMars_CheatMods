@@ -50,22 +50,6 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	-- replace some idles
-	if ChoGGi.def_lib.version > 83 then
-		ChoGGi.ComFuncs.ReplaceClassFunc("BaseRover", "Idle", WaitItOut)
-	else
-		local classes = ClassDescendantsList("BaseRover")
-		local g = _G
-		local orig_funcs = {}
-		for i = 1, #classes do
-			local cls_obj = g[classes[i]]
-			local orig_func = cls_obj.Idle
-			if orig_func and not orig_funcs[orig_func] then
-				orig_funcs[orig_func] = true
-				function cls_obj:Idle(...)
-					return WaitItOut(orig_func, self, ...)
-				end
-			end
-		end
-	end
+	ChoGGi.ComFuncs.ReplaceClassFunc("BaseRover", "Idle", WaitItOut)
 
 end

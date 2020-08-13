@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v15.4 (Unreleased)
+## v15.5 (Unreleased)
+
+## v15.4 (13 Aug 2020)
 ### Added:
 - Cheats>Disasters>Meteor Strike: Ctrl-Shift-X to attack at cursor (hold to spam).
 - Cheats>Disasters>Missile Strike: Ctrl-Shift-M to attack at cursor (hold to spam).
