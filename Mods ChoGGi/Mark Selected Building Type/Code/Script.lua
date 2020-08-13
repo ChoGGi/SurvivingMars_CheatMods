@@ -2,17 +2,19 @@
 
 local mod_Mark
 local mod_MaxObjects
+local mod_HideSigns
 
 -- func added below
-local ClearBeams
+local ClearObjects
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_MaxObjects = CurrentModOptions:GetProperty("MaxObjects")
 	mod_Mark = CurrentModOptions:GetProperty("Mark")
+	mod_MaxObjects = CurrentModOptions:GetProperty("MaxObjects")
+	mod_HideSigns = CurrentModOptions:GetProperty("HideSigns")
 
 	if not mod_Mark then
-		ClearBeams()
+		ClearObjects()
 	end
 end
 
@@ -32,8 +34,11 @@ local IsValid = IsValid
 local DoneObject = DoneObject
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
+local CreateRealTimeThread = CreateRealTimeThread
+local WaitMsg = WaitMsg
 local table_remove = table.remove
 local table_iclear = table.iclear
+local table_clear = table.clear
 
 local beams = {}
 local green = green
@@ -61,7 +66,7 @@ function OverviewModeDialog:ScaleSmallObjects(time, direction, ...)
 
 end
 
-ClearBeams = function()
+ClearObjects = function()
 	for i = #beams, 1, -1 do
 		local beam = beams[i]
 		if IsValid(beam) then
@@ -69,35 +74,46 @@ ClearBeams = function()
 		end
 	end
 	table_iclear(beams)
+
+	-- show signs
+	local objs = UICity.labels.Building or ""
+	for i = 1, #objs do
+		objs[i]:UpdateSignsVisibility()
+	end
 end
 
+local objs_lookup = {}
 local function MarkObjects(obj)
 	-- remove previous beams
-	ClearBeams()
+	ClearObjects()
 
 	if not mod_Mark or not obj then
 		return
 	end
 
+	local UICity = obj.city or UICity
+
 	-- added in building_class so it doesn't mark all construction sites
 	local name = obj.template_name ~= "" and obj.template_name
 		or obj.building_class or obj.class
-	local labels = UICity.labels[name] or ""
-
-	local obj_count = #labels
+	local objs = UICity.labels[name] or ""
+	local objs_c = #objs
+	table_clear(objs_lookup)
 
 	-- skip if there's too many
-	if obj_count >= mod_MaxObjects then
+	if objs_c >= mod_MaxObjects then
 		return
 	end
 
-	-- speed up obj creation
+	-- speed up obj creation/deletion
 	SuspendPassEdits("ChoGGi.MarkSelectedBuildingType.MarkObjects")
 
 	local obj_cls = DefenceLaserBeam
 	local c = 0
-	for i = 1, obj_count do
-		local obj_pos = labels[i]:GetPos()
+	for i = 1, objs_c do
+		local obj = objs[i]
+		objs_lookup[obj] = true
+		local obj_pos = obj:GetPos()
 		if obj_pos ~= InvalidPos then
 			c = c + 1
 			local beam = obj_cls:new()
@@ -108,12 +124,28 @@ local function MarkObjects(obj)
 		end
 	end
 
+	-- needs a delay as I use a temp method of hiding signs
+	CreateRealTimeThread(function()
+		WaitMsg("OnRender")
+		-- remove signs
+		if mod_HideSigns then
+			objs = UICity.labels.Building or ""
+			for i = 1, #objs do
+				local obj = objs[i]
+				-- skip marked objs
+				if not objs_lookup[obj] then
+					obj:DestroyAttaches("BuildingSign")
+				end
+			end
+		end
+	end)
+
 	ResumePassEdits("ChoGGi.MarkSelectedBuildingType.MarkObjects")
 end
 
 -- add beams (also fires when changing selection)
 OnMsg.SelectionAdded = MarkObjects
 -- remove beams when no selection
-OnMsg.SelectionRemoved = ClearBeams
+OnMsg.SelectionRemoved = ClearObjects
 -- make sure to remove beams on save
-OnMsg.SaveGame = ClearBeams
+OnMsg.SaveGame = ClearObjects

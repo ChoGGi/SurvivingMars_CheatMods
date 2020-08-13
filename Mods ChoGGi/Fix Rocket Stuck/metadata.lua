@@ -1,9 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Rocket Stuck",
-	"version", 15,
+	"version", 16,
 	"version_major", 1,
-	"version_minor", 5,
-
+	"version_minor", 6,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixExpeditionRocketStuckUnloading",
 	"steam_id", "1567028510",
@@ -23,6 +22,7 @@ Drones stuck inside.
 Planetary anomaly drones stuck inside.
 Drones the rocket thinks are stuck inside (+2).
 Trade rocket with 0 res.
+Returned expedition rocket giving msg that it's still in orbit.
 
 If this doesn't fix it for you, then I'll need a copy of your saved game.
 

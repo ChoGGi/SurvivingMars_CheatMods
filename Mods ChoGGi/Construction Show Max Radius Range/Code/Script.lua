@@ -1,10 +1,12 @@
 -- See LICENSE for terms
 
 local mod_ShowConstruct
+local mod_SetMaxRadius
 
 -- fired when settings are changed/init
 local function ModOptions()
 	mod_ShowConstruct = CurrentModOptions:GetProperty("ShowConstruct")
+	mod_SetMaxRadius = CurrentModOptions:GetProperty("SetMaxRadius")
 end
 
 -- load default/saved settings
@@ -23,6 +25,7 @@ local white = white
 local GridSpacing = const.GridSpacing
 local HexSize = const.HexSize
 local ShowHexRanges = ShowHexRanges
+local table = table
 
 local function AddRadius(self, radius)
 	local circle = Circle:new()
@@ -81,3 +84,30 @@ function CursorBuilding:GameInit(...)
 end
 
 -- since the circle gets attached to the CursorBuilding it'll be removed when it's removed, no need to fiddle with :Done()
+
+
+-- set max radius
+function OnMsg.BuildingInit(obj)
+--~ 	if not mod_SetMaxRadius or not obj:IsKindOfClasses(cls_saved_settings) then
+--~ 		return
+--~ 	end
+	if not mod_SetMaxRadius then
+		return
+	end
+
+	-- if ECM is active we check for custom range, otherwise use default
+	local uirange
+	local idx = table.find(ModsLoaded, "id", "ChoGGi_Library")
+	if idx then
+		local bs = ChoGGi.UserSettings.BuildingSettings[obj.template_name]
+		if bs and bs.uirange then
+			uirange = bs.uirange
+		end
+	end
+	-- don't call func if we have a range from ECM
+	local prop = not uirange and obj:GetPropertyMetadata("UIRange")
+	uirange = uirange or prop and prop.max
+
+	-- set it
+	obj.UIRange = uirange
+end

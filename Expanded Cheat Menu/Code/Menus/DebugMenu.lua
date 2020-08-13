@@ -241,7 +241,7 @@ Actions[c] = {ActionName = Strings[302535920000467--[[Path Markers]]] .. " " .. 
 	ActionId = ".Game Time",
 	ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 	RolloverText = Strings[302535920000462--[[Maps paths in real time]]] .. " " .. Strings[302535920000874--[[(see "Path Markers" to mark more than one at a time).]]],
-	OnAction = ChoGGi.MenuFuncs.SetPathMarkersGameTime,
+	OnAction = ChoGGi.ComFuncs.SetPathMarkersGameTime,
 	ActionShortcut = "Ctrl-Numpad .",
 	ActionBindable = true,
 }

@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_CommandCenterDistanceSort",
 	"steam_id", "1655735750",
@@ -14,5 +13,6 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"description", [[On load and every new Sol this will sort the cc list of each building by distance.
-Hopefully makes the drones use the nearest first, but it's quite fast so feel free to leave it enabled.]],
+Hopefully makes the drones use the nearest first, but it's quite fast so don't worry about leaving it enabled.
+]],
 })

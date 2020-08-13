@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
-local pairs, print, type, tonumber, tostring, table = pairs, print, type, tonumber, tostring, table
-local table_remove = table.remove
+local pairs, type, tostring, table = pairs, type, tostring, table
 local table_clear = table.clear
 local table_iclear = table.iclear
 local table_sort = table.sort
@@ -1066,401 +1065,62 @@ function ChoGGi.MenuFuncs.BuildableHexGridSettings(action)
 	}
 end
 
-do -- path markers
-	local IsObjlist = ChoGGi.ComFuncs.IsObjlist
-	local CreateGameTimeThread = CreateGameTimeThread
-	local AveragePoint2D = AveragePoint2D
-	local terrain_GetHeight = terrain.GetHeight
-	local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
-	local SelObjects = ChoGGi.ComFuncs.SelObjects
-	local WaitMsg = WaitMsg
-	local Sleep = Sleep
+function ChoGGi.MenuFuncs.SetPathMarkers()
+	local Pathing_SetMarkers = ChoGGi.ComFuncs.Pathing_SetMarkers
+	local Pathing_CleanDupes = ChoGGi.ComFuncs.Pathing_CleanDupes
+	local Pathing_StopAndRemoveAll = ChoGGi.ComFuncs.Pathing_StopAndRemoveAll
+	ChoGGi.Temp.UnitPathingHandles = ChoGGi.Temp.UnitPathingHandles or {}
 
-	local path_classes = {"Movable", "CargoShuttle"}
-	local randcolours = {}
-	local colourcount = 0
-	local dupewppos = {}
-	-- default height of waypoints (maybe flag_height isn't the best name as i stopped using them)
-	local flag_height = 50
-	local OPolyline
+	local item_list = {
+		{text = Strings[302535920000413--[[Delay]]], value = 0, path_type = "Delay", hint = Strings[302535920000415--[[Delay in ms between updating paths (0 to update every other render).]]]},
+		{text = Translate(4493--[[All]]), value = "All"},
 
-	local function ShowWaypoints(waypoints, colour, obj, skip_height, obj_pos)
-		colour = tonumber(colour) or RandomColour()
-		-- also used for line height
-		if not skip_height then
-			flag_height = flag_height + 4
-		end
-
-		obj_pos = obj_pos or obj:GetVisualPos()
-		local obj_terrain = terrain_GetHeight(obj_pos)
-		local obj_height = obj:GetObjectBBox():sizez() / 2
-		if obj:IsKindOf("CargoShuttle") then
-			obj_height = obj_pos:z() - obj_terrain
-		end
-
-		-- some objects don't have pos as waypoint
-		local wp_c = #waypoints
-		if waypoints[wp_c] ~= obj_pos then
-			wp_c = wp_c + 1
-			waypoints[wp_c] = obj_pos
-		end
-
-		-- build a list of points that aren't high in the sky
-		for i = 1, wp_c do
-			local wp = waypoints[i]
-			local z = wp:z()
-			if not z or z and z < obj_terrain then
-				waypoints[i] = wp:SetTerrainZ(obj_height + flag_height)
-			end
-		end
-		-- and spawn the line
-		local spawnline = OPolyline:new()
-		spawnline:SetMesh(waypoints, colour)
-		spawnline:SetPos(AveragePoint2D(waypoints))
-
-		obj.ChoGGi_Stored_Waypoints[#obj.ChoGGi_Stored_Waypoints+1] = spawnline
-	end -- end of ShowWaypoints
-
-	local function SetWaypoint(obj, setcolour, skip_height)
-		local path = {}
-
-		-- we need to build a path for shuttles (and figure out a way to get their dest properly...)
-		local is_shuttle = obj:IsKindOf("CargoShuttle")
-		if is_shuttle then
-
-			-- going to pickup colonist
-			if obj.command == "GoHome" then
-				path[1] = obj.hub:GetPos()
-			elseif obj.command == "Transport" then
-				-- 2 is pickup loc, 3 is drop off
-				path[1] = obj.transport_task and ((obj.transport_task[2] and obj.transport_task[2]:GetBuilding():GetPos()) or (obj.transport_task[3] and obj.transport_task[3]:GetBuilding():GetPos()))
-			elseif obj.is_colonist_transport_task then
-				path[1] = obj.transport_task and (obj.transport_task.dest_pos or obj.transport_task.colonist:GetPos())
-			else
-				path[1] = obj:GetDestination()
-			end
-
-			-- jumper shuttles after first leg
-			if type(path[1]) ~= "userdata" then
-				path[1] = obj:GetDestination()
-			end
-
-			local c = #path
-
-			-- the next four points it's going to after current_spline
-			if type(obj.next_spline) == "table" then
-				for i = 1, #obj.next_spline do
-					c = c + 1
-					path[c] = obj.next_spline[i]
-				end
-			end
-
-			-- where the line starts
-			c = c + 1
-			path[c] = obj:GetPos()
-
-		else
-			-- rovers/drones/colonists
-			if obj.GetPath then
-				path = obj:GetPath()
-			else
-				ChoGGi.ComFuncs.OpenInExamineDlg(obj, nil, Strings[302535920000467--[[Path Markers]]])
-				print(Translate(6779--[[Warning]]), ":", Strings[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.]]]:format(RetName(obj)))
-			end
-		end
-
-		-- we have a path so add some colours, and build the waypoints
-		if path then
-			local colour
-			if setcolour then
-				colour = setcolour
-			else
-				if #randcolours < 1 then
-					colour = RandomColour()
-				else
-					-- we want to make sure all grouped waypoints are a different colour (or at least slightly diff)
-					colour = table_remove(randcolours)
-					-- table.remove(t) removes and returns the last value of the table
-				end
-			end
-
-			if not IsObjlist(obj.ChoGGi_Stored_Waypoints) then
-				obj.ChoGGi_Stored_Waypoints = objlist:new()
-			end
-
-			if not obj.ChoGGi_WaypointPathAdded then
-				-- used to reset the colour later on
-				obj.ChoGGi_WaypointPathAdded = obj:GetColorModifier()
-				obj.ChoGGi_WaypointPathAdded_storedcolour = colour
-			end
-
-			-- colour it up
-			obj:SetColorModifier(obj.ChoGGi_WaypointPathAdded_storedcolour or colour)
-
-			-- and lastly make sure path is sorted correctly
-			-- end is where the obj is, and start is where the dest is
-			if is_shuttle then
-				table_sort(path, function(a, b)
-					return obj:GetVisualDist(a) > obj:GetVisualDist(b)
-				end)
-			end
-
-			-- send path off to make wp
-			ShowWaypoints(
-				path,
-				colour,
-				obj,
-				skip_height,
-				obj.GetVisualPos and obj:GetVisualPos() or obj:GetPos()
-			)
-		end
-	end
-	ChoGGi.MenuFuncs.SetWaypoint = SetWaypoint
-
-	local function SetPathMarkersGameTime_Thread(obj, handles, delay)
-		local colour = RandomColour()
-		if not IsObjlist(obj.ChoGGi_Stored_Waypoints) then
-			obj.ChoGGi_Stored_Waypoints = objlist:new()
-		end
-
-		while handles[obj.handle] do
-			SetWaypoint(obj, colour, true)
-			if delay == 0 or delay == -1 then
-				-- if we only do one then it'll be invis unless paused
-				-- 2+ is too much ficker
-				WaitMsg("OnRender")
-				WaitMsg("OnRender")
-				-- if you like bears then you'd figure the third is just right... ah well twofer
-			else
-				Sleep(delay)
-			end
-
-			-- deletes all wp objs
-			obj.ChoGGi_Stored_Waypoints:Destroy()
-			-- clears table list
-			obj.ChoGGi_Stored_Waypoints:Clear()
-
-			-- break thread when obj isn't valid
-			if not IsValid(obj) then
-				handles[obj.handle] = nil
-				break
-			end
-		end
+		{text = Translate(547--[[Colonists]]), value = "Colonist"},
+		{text = Translate(517--[[Drones]]), value = "Drone"},
+		{text = Translate(5438--[[Rovers]]), value = "BaseRover", icon = RCTransport and RCTransport.display_icon or "UI/Icons/Buildings/rover_transport.tga"},
+		{text = Translate(745--[[Shuttles]]), value = "CargoShuttle", hint = Strings[302535920000873--[[Doesn't work that well.]]]},
+	}
+	if rawget(_G, "ChoGGi_Alien") then
+		aliens = true
+		item_list[#item_list+1] = {text = "Alien Visitors", value = "ChoGGi_Alien"}
 	end
 
-	local function AddObjToGameTimeMarkers(obj, handles, delay, skip)
-		if skip or obj:IsKindOfClasses(path_classes) then
-
-			if handles[obj.handle] then
-				-- already exists so remove thread
-				handles[obj.handle] = nil
-			elseif IsValid(obj) then
-				-- continous loooop of object for pathing it
-				handles[obj.handle] = CreateGameTimeThread(SetPathMarkersGameTime_Thread, obj, handles, delay)
-			end
+	local function CallBackFunc(choices)
+		local choice1 = choices[1]
+		local remove = choice1.check1
+		if choices[1].nothing_selected and remove ~= true then
+			return
 		end
-	end
-
-	local function SetPathMarkersGameTime(obj, menu_fired, menu_delay)
-		OPolyline = OPolyline or ChoGGi_OPolyline
-
-		local delay = 500
-		-- if fired from action menu (or shortcut)
-		if IsKindOf(obj, "XAction") then
-			obj = SelectedObj or SelObjects(1500)
-			menu_fired = true
-		else
-			obj = obj or SelectedObj or SelObjects(1500)
-			delay = type(menu_delay) == "number" and menu_delay or delay
-		end
-		if obj and obj.objects then
-			obj = obj.objects
-		end
-		if not next(obj) then
-			obj = nil
-		end
-
-		if obj then
-			local handles = ChoGGi.Temp.UnitPathingHandles
-			if #obj == 1 then
-				-- single obj
-				obj = obj[1]
- 			elseif obj[2] then
-				-- multiselect
-				for i = 1, #obj do
-					AddObjToGameTimeMarkers(obj[i], handles, delay)
-				end
-				return
-			end
-			-- single not in a table list (true because we already checked the kindof)
-			if obj:IsKindOfClasses(path_classes) then
-				return AddObjToGameTimeMarkers(obj, handles, delay, true)
-			end
-		end
-
-		if menu_fired then
-			MsgPopup(
-				Strings[302535920000871--[[Doesn't seem to be an object that moves.]]],
-				Strings[302535920000872--[[Pathing]]],
-				{objects = obj}
-			)
-		end
-	end
-	ChoGGi.MenuFuncs.SetPathMarkersGameTime = SetPathMarkersGameTime
-
-	local function RemoveWPDupePos(cls, obj)
-		-- remove dupe pos
-		if IsObjlist(obj.ChoGGi_Stored_Waypoints) then
-			for i = 1, #obj.ChoGGi_Stored_Waypoints do
-				local wp = obj.ChoGGi_Stored_Waypoints[i]
-
-				if wp.class == cls then
-					local pos = tostring(wp:GetPos())
-					if dupewppos[pos] then
-						dupewppos[pos]:SetColorModifier(6579300)
-						wp:delete()
-					else
-						dupewppos[pos] = obj.ChoGGi_Stored_Waypoints[i]
-					end
-				end
-			end
-			-- remove removed
-			obj.ChoGGi_Stored_Waypoints:Validate()
-		end
-	end
-
-	local function ClearColourAndWP(cls, skip)
-		-- remove all thread refs so they stop
-		table_clear(ChoGGi.Temp.UnitPathingHandles)
-		-- and waypoints/colour
-		local objs = RetAllOfClass(cls)
-		for i = 1, #objs do
-			local obj = objs[i]
-
-			if not skip and obj.ChoGGi_WaypointPathAdded then
-				obj:SetColorModifier(obj.ChoGGi_WaypointPathAdded)
-				obj.ChoGGi_WaypointPathAdded = nil
-				obj.ChoGGi_WaypointPathAdded_storedcolour = nil
-			end
-
-			local stored = obj.ChoGGi_Stored_Waypoints
-			if IsObjlist(stored) then
-				-- deletes all objs
-				stored:Destroy()
-				-- clears table list
-				stored:Clear()
-			end
-
-		end
-	end
-	local function CleanDupes()
-		-- remove any waypoints in the same pos
-		local function ClearAllDupeWP(cls)
-			local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
-			for i = 1, #objs do
-				local obj = objs[i]
-				if obj and obj.ChoGGi_Stored_Waypoints then
-					RemoveWPDupePos("WayPoint", obj)
-					RemoveWPDupePos("Sphere", obj)
-				end
-			end
-		end
-		ClearAllDupeWP("CargoShuttle")
-		ClearAllDupeWP("Unit")
-		ClearAllDupeWP("Colonist")
-	end
-
-
-	local aliens
-	local new_objs_loop = true
-	local function StopAndRemoveAll(skip)
-		if not skip then
-			new_objs_loop = false
-		end
-		-- reset all the base colours/waypoints
-		ClearColourAndWP("CargoShuttle", skip)
-		ClearColourAndWP("Unit", skip)
-		ClearColourAndWP("Colonist", skip)
-		if aliens then
-			ClearColourAndWP("ChoGGi_Alien", skip)
-		end
-
-		-- remove any extra lines
-		ChoGGi.ComFuncs.RemoveObjs("ChoGGi_OPolyline")
-
-		-- reset stuff
-		flag_height = 50
-		randcolours = {}
-		colourcount = 0
-		dupewppos = {}
-	end
-
-	local function SetMarkers(list, check, delay)
-		if check then
-			for i = 1, #list do
-				SetPathMarkersGameTime(list[i], nil, delay)
-			end
-		else
-			for i = 1, #list do
-				SetWaypoint(list[i])
-			end
-		end
-	end
-
-	function ChoGGi.MenuFuncs.SetPathMarkers()
-		OPolyline = OPolyline or ChoGGi_OPolyline
-		ChoGGi.Temp.UnitPathingHandles = ChoGGi.Temp.UnitPathingHandles or {}
-
-		local item_list = {
-			{text = Strings[302535920000413--[[Delay]]], value = 0, path_type = "Delay", hint = Strings[302535920000415--[[Delay in ms between updating paths (0 to update every other render).]]]},
-			{text = Translate(4493--[[All]]), value = "All"},
-
-			{text = Translate(547--[[Colonists]]), value = "Colonist"},
-			{text = Translate(517--[[Drones]]), value = "Drone"},
-			{text = Translate(5438--[[Rovers]]), value = "BaseRover", icon = RCTransport and RCTransport.display_icon or "UI/Icons/Buildings/rover_transport.tga"},
-			{text = Translate(745--[[Shuttles]]), value = "CargoShuttle", hint = Strings[302535920000873--[[Doesn't work that well.]]]},
-		}
-		if rawget(_G, "ChoGGi_Alien") then
-			aliens = true
-			item_list[#item_list+1] = {text = "Alien Visitors", value = "ChoGGi_Alien"}
-		end
-
-		local function CallBackFunc(choices)
-			local choice1 = choices[1]
-			local remove = choice1.check1
-			if choices[1].nothing_selected and remove ~= true then
-				return
-			end
 
 --~ ex(choices)
-			local choice, delay
-			for i = 1, #choices do
-				local choice_item = choices[i]
-				if choice_item.list_selected then
-					choice = choice_item
-				elseif choice_item.path_type == "Delay" then
-					delay = choice_item.value
-				end
+		local choice, delay
+		for i = 1, #choices do
+			local choice_item = choices[i]
+			if choice_item.list_selected then
+				choice = choice_item
+			elseif choice_item.path_type == "Delay" then
+				delay = choice_item.value
 			end
+		end
 
-			local value = choice.value
+		local value = choice.value
 
-			if remove then
-				-- remove wp/lines and reset colours
-				StopAndRemoveAll()
+		if remove then
+			-- remove wp/lines and reset colours
+			Pathing_StopAndRemoveAll()
 
-			-- naughty user
-			elseif value == "Delay" then
-				MsgPopup(
-					Strings[302535920000416--[[Delay isn't a valid class.]]],
-					Strings[302535920000872--[[Pathing]]]
-				)
-				return
+		-- naughty user
+		elseif value == "Delay" then
+			MsgPopup(
+				Strings[302535920000416--[[Delay isn't a valid class.]]],
+				Strings[302535920000872--[[Pathing]]]
+			)
+			return
 
-			-- add waypoints
-			elseif value then
+		-- add waypoints
+		elseif value then
 
-				if value == "All" then
+			if value == "All" then
 --~ 					local labels = UICity.labels
 
 --~ 					local table1 = labels.Unit or ""
@@ -1471,93 +1131,92 @@ do -- path markers
 --~ 					colourcount = colourcount + #table2
 --~ 					colourcount = colourcount + #table3
 --~ 					randcolours = RandomColour(colourcount + 1)
---~ 					SetMarkers(table1, choice1.check2, delay)
---~ 					SetMarkers(table2, choice1.check2, delay)
---~ 					SetMarkers(table3, choice1.check2, delay)
---~ 					CleanDupes()
+--~ 					Pathing_SetMarkers(table1, choice1.check2, delay)
+--~ 					Pathing_SetMarkers(table2, choice1.check2, delay)
+--~ 					Pathing_SetMarkers(table3, choice1.check2, delay)
+--~ 					Pathing_CleanDupes()
 
-					CreateGameTimeThread(function()
-						local labels = UICity.labels
-						local table1 = labels.Unit or ""
-						local table2 = labels.CargoShuttle or ""
-						local table3 = labels.Colonist or ""
-						-- +1 to make it fire the first time
-						local current = #table1+#table2+#table3+1
+				CreateGameTimeThread(function()
+					local labels = UICity.labels
+					local table1 = labels.Unit or ""
+					local table2 = labels.CargoShuttle or ""
+					local table3 = labels.Colonist or ""
+					-- +1 to make it fire the first time
+					local current = #table1+#table2+#table3+1
 
-						while new_objs_loop do
-							table1 = labels.Unit or ""
-							table2 = labels.CargoShuttle or ""
-							table3 = labels.Colonist or ""
-							local count = #table1+#table2+#table3
-							if current ~= count then
-								-- update list when
-								StopAndRemoveAll(true)
+					while new_objs_loop do
+						table1 = labels.Unit or ""
+						table2 = labels.CargoShuttle or ""
+						table3 = labels.Colonist or ""
+						local count = #table1+#table2+#table3
+						if current ~= count then
+							-- update list when
+							Pathing_StopAndRemoveAll(true)
 
-								current = count
-								colourcount = colourcount + #table1
-								colourcount = colourcount + #table2
-								colourcount = colourcount + #table3
-								randcolours = RandomColour(colourcount + 1)
-								SetMarkers(table1, choice1.check2, delay)
-								SetMarkers(table2, choice1.check2, delay)
-								SetMarkers(table3, choice1.check2, delay)
+							current = count
+							colourcount = colourcount + #table1
+							colourcount = colourcount + #table2
+							colourcount = colourcount + #table3
+							randcolours = RandomColour(colourcount + 1)
+							Pathing_SetMarkers(table1, choice1.check2, delay)
+							Pathing_SetMarkers(table2, choice1.check2, delay)
+							Pathing_SetMarkers(table3, choice1.check2, delay)
 
-								CleanDupes()
-							end
-							Sleep(2500)
+							Pathing_CleanDupes()
 						end
-						new_objs_loop = true
-					end)
+						Sleep(2500)
+					end
+					new_objs_loop = true
+				end)
 
-				-- skip any non-cls objects (or mapget returns all)
-				elseif g_Classes[value] then
-					CreateGameTimeThread(function()
-						local labels = UICity.labels
-						local table1 = labels[value] or MapGet("map", value)
-						-- +1 to make it fire the first time
-						local current = #table1+1
+			-- skip any non-cls objects (or mapget returns all)
+			elseif g_Classes[value] then
+				CreateGameTimeThread(function()
+					local labels = UICity.labels
+					local table1 = labels[value] or MapGet("map", value)
+					-- +1 to make it fire the first time
+					local current = #table1+1
 
-						while new_objs_loop do
-							table1 = labels[value] or MapGet("map", value)
-							if current ~= #table1 then
-								-- update list when
-								StopAndRemoveAll(true)
+					while new_objs_loop do
+						table1 = labels[value] or MapGet("map", value)
+						if current ~= #table1 then
+							-- update list when
+							Pathing_StopAndRemoveAll(true)
 
-								current = #table1
-								colourcount = colourcount + current
-								randcolours = RandomColour(colourcount + 1)
-								SetMarkers(table1, choice1.check2, delay)
-								CleanDupes()
-							end
-							Sleep(2500)
+							current = #table1
+							colourcount = colourcount + current
+							randcolours = RandomColour(colourcount + 1)
+							Pathing_SetMarkers(table1, choice1.check2, delay)
+							Pathing_CleanDupes()
 						end
-						new_objs_loop = true
-					end)
-				end
-
-
+						Sleep(2500)
+					end
+					new_objs_loop = true
+				end)
 			end
-		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
-			callback = CallBackFunc,
-			items = item_list,
-			title = Strings[302535920000467--[[Path Markers]]],
-			skip_sort = true,
-			custom_type = 4,
-			checkboxes = {
-				{
-					title = Strings[302535920000876--[[Remove Waypoints]]],
-					hint = Strings[302535920000877--[[Remove waypoints from the map and reset colours (select any object type to remove them all).]]],
-				},
-				{
-					title = Strings[302535920001382--[[Game time]]],
-					hint = Strings[302535920000462--[[Maps paths in real time]]],
-					checked = true,
-				},
-			},
-		}
+
+		end
 	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = item_list,
+		title = Strings[302535920000467--[[Path Markers]]],
+		skip_sort = true,
+		custom_type = 4,
+		checkboxes = {
+			{
+				title = Strings[302535920000876--[[Remove Waypoints]]],
+				hint = Strings[302535920000877--[[Remove waypoints from the map and reset colours (select any object type to remove them all).]]],
+			},
+			{
+				title = Strings[302535920001382--[[Game time]]],
+				hint = Strings[302535920000462--[[Maps paths in real time]]],
+				checked = true,
+			},
+		},
+	}
 end
 
 --little bit of painting

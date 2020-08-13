@@ -802,6 +802,12 @@ do -- DisastersTrigger
 			end
 		end
 
+
+																																										ex(item_list)
+
+
+
+
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,

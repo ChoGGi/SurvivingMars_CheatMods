@@ -1,3 +1,6 @@
+v0.9
+Added mod option to set radius to max for newly placed buildings.
+
 v0.8
 Messed up the mod options in 0.7.
 

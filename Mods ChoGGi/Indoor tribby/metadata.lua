@@ -1,0 +1,28 @@
+return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library",
+			"version_major", 8,
+			"version_minor", 3,
+		}),
+	},
+	"title", "Indoor Tribby",
+	"id", "ChoGGi_IndoorTribby",
+	"lua_revision", 249143,
+	"steam_id", "2191485240",
+	"pops_any_uuid", "49420dc7-9154-4dc3-95b5-d6cf1a538bf7",
+	"version", 2,
+	"version_major", 0,
+	"version_minor", 2,
+	"image", "Preview.png",
+	"author", "ChoGGi",
+	"code", {
+		"Code/Script.lua",
+	},
+	"TagBuildings", true,
+	"has_options", true,
+	"description", [[Same as the usual Triboelectric Scrubber, but works inside domes.
+Includes mod option to clean parent dome.
+]],
+})

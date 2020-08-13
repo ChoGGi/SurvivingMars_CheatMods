@@ -253,6 +253,38 @@ function OnMsg.LoadGame()
 				and r:GetStoredAmount() == 0
 			then
 				r:SetCommand("ExchangeResources")
+
+			-- returned expedition rocket giving msg that it's still in orbit
+			elseif r.command == "WaitingRefurbish"
+				and r.class ~= "RocketExpedition"
+				and #r.drones_exiting > 0
+			then
+				local site = r.landing_site
+				-- change command
+				r:SetCommand("WaitLaunchOrder")
+				-- remove drones exiting
+				local drones = r.drones_exiting
+				for j = #drones, 1, -1 do
+					table_remove(drones, j)
+				end
+
+				CreateRealTimeThread(function()
+					-- rocket was swapped to exped rocket
+					while r.class ~= "RocketExpedition" do
+						WaitMsg("OnRender")
+						r = GetLandingRocket(site)
+					end
+					-- abort "new" expedition it's now on
+					r.expedition.canceled = true
+					ObjModified(r)
+					if r.launch_valid_cmd[r.command] then
+						r:SetCommand("Unload", "cancel")
+					elseif r.command == "ExpeditionExecute" then
+						Wakeup(r.command_thread)
+					end
+				end)
+
+			-- rocket ifs
 			end
 
 		end

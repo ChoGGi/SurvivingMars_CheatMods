@@ -1,9 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Mark Selected Building Type",
-	"version", 6,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
-
+	"version_minor", 7,
 	"image", "Preview.png",
 	"id", "ChoGGi_MarkSelectedBuildingType",
 	"steam_id", "1592261075",
@@ -16,7 +15,11 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"description", [[When you select a building/rover, all buildings of the same type will have a beam of light.
 
-Has mod option to toggle in-game, and set limit on lines shown.
+Mod Options:
+Mark Buildings: If you want to turn off the mod disable this option.
+Max Objects: Skip adding lines if too many objects.
+Hide Signs: Hide signs on non-selected buildings.
+
 
 Requested by JustCarlsFine.]],
 })

@@ -13,9 +13,9 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Technially this should be called Cannibalistic Colonists, but they're not colonists yet.
+	"description", [[Personally this should be called Cannibalistic Colonists, but they're not colonists yet.
 
-Once the food runs out on an orbiting rocket, rather than just killing everyone off: Applicants start getting hungry, and applicants start disappearing.
+Once the food runs out on an orbiting rocket, rather than just killing everyone off; Applicants start getting hungry, and applicants start disappearing.
 Adds a new trait to the leftovers which will result in a daily sanity loss (small but still there).
 
 

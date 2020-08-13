@@ -14,7 +14,7 @@ local function ClickObj(old, new, button)
 	if button == "R" then
 		ViewObjectMars(new)
 	else
-		local c = old.labels.Colonist
+		local c = old.labels.Colonist or ""
 		for i = #c, 1, -1 do
 			c[i]:SetDome(new)
 		end
@@ -59,7 +59,8 @@ Living Spaces: <spaces>]],
 	end
 
 	-- add controller for ease of movement
-	item_list[#item_list+1] = {
+	c = c + 1
+	item_list[c] = {
 		name = T(302535920011060, [[Current Dome]]),
 		pos = dome:GetVisualPos(),
 		hint = T(302535920011061, [[Currently selected dome]]),

@@ -14,4 +14,10 @@ return {
 		"MaxValue", 1000,
 		"StepSize", 10,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "HideSigns",
+		"DisplayName", T(302535920011715, "Hide Signs"),
+		"Help", T(302535920011716, "Hide signs on non-selected buildings."),
+		"DefaultValue", false,
+	}),
 }

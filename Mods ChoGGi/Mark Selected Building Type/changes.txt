@@ -1,3 +1,6 @@
+v0.7
+Added mod option to hide building signs on non-selected buildings.
+
 v0.6
 Added object count limit to mod options.
 
