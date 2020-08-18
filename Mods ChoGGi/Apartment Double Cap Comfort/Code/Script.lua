@@ -10,6 +10,7 @@ function OnMsg.ClassesPostprocess()
 	if a.ChoGGi_UpdatedApartmentDoubleCapComfort then
 		return
 	end
+	a.ChoGGi_UpdatedApartmentDoubleCapComfort = true
 
 	-- we need values for LoadGame
 	capacity = a.capacity * 2
@@ -22,8 +23,6 @@ function OnMsg.ClassesPostprocess()
 	a.capacity = capacity
 	a.service_comfort = service_comfort
 
-
-	a.ChoGGi_UpdatedApartmentDoubleCapComfort = true
 end
 
 -- this will update the settings for existing apartments
