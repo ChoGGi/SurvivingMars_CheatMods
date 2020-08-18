@@ -1,6 +1,11 @@
 ## ECM Changelog
 
 ## v15.5 (Unreleased)
+### Added:
+- Cheats pane>DblChargeCap: Increase/reset charge/discharge of water/air/elec tanks.
+
+### Changed:
+- Large water tank didn't have capacity double cheat (thanks Lesandrina).
 
 ## v15.4 (13 Aug 2020)
 ### Added:

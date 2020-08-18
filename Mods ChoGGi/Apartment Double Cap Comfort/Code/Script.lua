@@ -1,15 +1,13 @@
 -- See LICENSE for terms
 
-ChoGGi_ApartmentDoubleCapComfort = false
-
 local capacity
 local service_comfort
 
 function OnMsg.ClassesPostprocess()
 	local a = BuildingTemplates.Apartments
 
-	-- it's called more than once
-	if ChoGGi_ApartmentDoubleCapComfort then
+	-- this msg can be called a fair bit, no sense in changing more than once
+	if a.ChoGGi_UpdatedApartmentDoubleCapComfort then
 		return
 	end
 
@@ -24,12 +22,13 @@ function OnMsg.ClassesPostprocess()
 	a.capacity = capacity
 	a.service_comfort = service_comfort
 
-	ChoGGi_ApartmentDoubleCapComfort = true
+
+	a.ChoGGi_UpdatedApartmentDoubleCapComfort = true
 end
 
 -- this will update the settings for existing apartments
 function OnMsg.LoadGame()
-	-- so it only loops once per game
+	-- so it only updates once per game
 	if UICity.ChoGGi_ApartmentDoubleCapComfort then
 		return
 	end

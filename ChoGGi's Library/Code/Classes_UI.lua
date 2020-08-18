@@ -168,9 +168,20 @@ function ChoGGi_XMoveControl:OnKbdKeyDown(vk, ...)
 end
 
 function ChoGGi_XMoveControl:ToggleRollup(win, bool)
-	for i = 1, #win.idDialog do
-		local section = win.idDialog[i]
-		if section.class ~= "ChoGGi_XMoveControl" then
+	local dlg = win.idDialog
+	for i = 1, #dlg do
+		local section = dlg[i]
+		-- only show exec code area when checkbox is checked
+		if section.Id == "idExecCodeArea" then
+			local check = dlg.idToggleExecCode:GetCheck()
+			if bool then
+				if check then
+					section:SetVisible(bool)
+				end
+			else
+				section:SetVisible(bool)
+			end
+		elseif section.class ~= "ChoGGi_XMoveControl" then
 			section:SetVisible(bool)
 		end
 	end

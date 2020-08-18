@@ -64,6 +64,10 @@ function OnMsg.ClassesPostprocess()
 		TextColor = RGB(200, 200, 150),
 		id = "ChoGGi_yellow",
 	})
+	PlaceObj("TextStyle", {
+		TextColor = RGB(150, 150, 255),
+		id = "ChoGGi_blue",
+	})
 
 	-- Text
 	PlaceObj("ChoGGi_XTextStyle", {

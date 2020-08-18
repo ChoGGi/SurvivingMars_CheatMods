@@ -13,6 +13,7 @@ local FindNearestObject = FindNearestObject -- list,obj/point,filter
 local GetTerrainCursor = GetTerrainCursor
 local IsValid = IsValid
 local IsKindOf = IsKindOf
+local IsPoint = IsPoint
 local MapFilter = MapFilter
 local MapGet = MapGet
 local PropObjGetProperty = PropObjGetProperty
@@ -27,6 +28,7 @@ local CreateRealTimeThread = CreateRealTimeThread
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local ClassDescendantsList = ClassDescendantsList
+local WorldToHex = WorldToHex
 
 local rawget, getmetatable = rawget, getmetatable
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
@@ -235,6 +237,7 @@ do -- RetName
 		"__mtl",
 		"text",
 		"value",
+		"name",
 		-- most stuff has a class
 		"class",
 	}
@@ -460,6 +463,9 @@ do -- RetName
 				--
 				if type(name) == "userdata" then
 					name = Translate(name)
+				end
+				if not name and PropObjGetProperty(obj, "GetDisplayName") then
+					name = Translate(obj:GetDisplayName())
 				end
 			end -- if
 
@@ -1538,7 +1544,6 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius, sort, pt)
 end
 
 do -- RetObjectAtPos/RetObjectsAtPos
-	local WorldToHex = WorldToHex
 	local HexGridGetObject = HexGridGetObject
 	local HexGridGetObjects = HexGridGetObjects
 
@@ -4764,7 +4769,6 @@ do -- BuildableHexGrid
 				local GetTerrainCursor = GetTerrainCursor
 				local HexGridGetObject = HexGridGetObject
 				local HexToWorld = HexToWorld
-				local WorldToHex = WorldToHex
 				local point = point
 				local WaitMsg = WaitMsg
 
@@ -5640,3 +5644,24 @@ do -- path markers
 	ChoGGi.ComFuncs.Pathing_SetMarkers = SetMarkers
 
 end -- do
+
+-- Drone:GetTarget()
+function ChoGGi.ComFuncs.GetTarget(obj)
+	local target = obj.target or obj.goto_target
+	local text
+	if IsPoint(target) then
+		local q, r = WorldToHex(target)
+		text = q .. ", " .. r
+	else
+		while IsValid(target) and target:HasMember("parent") and target.parent and target.parent ~= target do
+			target = target.parent
+		end
+		if target ~= false then
+			text = RetName(target)
+		end
+	end
+
+	if text then
+		return "(" .. text .. ")"
+	end
+end

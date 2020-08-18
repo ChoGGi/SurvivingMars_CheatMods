@@ -1,6 +1,4 @@
 "ID", " Text"
-302535920001095,
-302535920001096,
 302535920001268,
 302535920001309,
 302535920001342,
@@ -288,6 +286,8 @@ You can copy and paste numbers if you want."
 302535920000733, "Open a preset in the editor."
 302535920001410, "Toggle Visibility"
 302535920000735, "Timer delay skipped"
+302535920001095, "Double the charge capacity of this <green>%s</green>."
+302535920001096, "Reset the charge capacity of this <green>%s</green> to default."
 302535920001531, "Make the building model look like a construction site (toggle)."
 302535920000903, "Unfreeze frozen object."
 302535920001431, "Kill this colonist!"

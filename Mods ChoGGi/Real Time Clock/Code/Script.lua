@@ -1,5 +1,12 @@
 -- See LICENSE for terms
 
+local floatfloor = floatfloor
+local GetDate = GetDate
+local WaitMsg = WaitMsg
+local CurrentThread = CurrentThread
+local T = T
+local clock = {302535920011360, "<hour>:<min>"}
+
 local function IsValidXWin(win)
 	win = win and win.window_state
 	if win and win ~= "destroying" then
@@ -13,6 +20,7 @@ local mod_ShowClock
 local mod_TimeFormat
 local mod_TextStyle
 local mod_Background
+local mod_TextOpacity
 --~ local mod_PosChoices = "Infobar"
 
 local AddTime
@@ -37,6 +45,7 @@ local function ModOptions()
 	mod_TimeFormat = options:GetProperty("TimeFormat")
 	mod_TextStyle = options:GetProperty("TextStyle")
 	mod_Background = options:GetProperty("Background")
+	mod_TextOpacity = options:GetProperty("TextOpacity")
 --~ 	mod_PosChoices = options:GetProperty("PosChoices")
 
 	if mod_ShowClock then
@@ -50,6 +59,8 @@ local function ModOptions()
 			Infobar.idRealTimeClock:SetTextStyle(style_lookup[mod_TextStyle])
 			-- blue
 			Infobar.idRealTimeClock:SetBackground(mod_Background and -1825019475 or 0)
+			-- see through
+			Infobar.idRealTimeClockArea:SetTransparency(mod_TextOpacity)
 		end
 	else
 		RemoveTime()
@@ -71,10 +82,6 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local floatfloor = floatfloor
-local GetDate = GetDate
-local clock = {302535920011360, "<hour>:<min>"}
-
 function OnMsg.NewHour()
 	if not mod_ShowClock then
 		return
@@ -82,7 +89,7 @@ function OnMsg.NewHour()
 
 	local strproc = GetDate():gmatch("%d+")
 
---~ 	local day = strproc()
+	-- local day = strproc()
 	-- to the ether with you
 	strproc()
 
@@ -104,7 +111,7 @@ function OnMsg.NewHour()
 end
 
 AddTime = function(dlg)
-	WaitMsg("OnRender")
+--~ 	WaitMsg("OnRender")
 
 	-- skip if already added
 	if not dlg or dlg.idRealTimeClockArea then
@@ -126,6 +133,8 @@ AddTime = function(dlg)
 		TextStyle = style_lookup[mod_TextStyle],
 		Background = mod_Background and -1825019475 or 0,
 	}, area)
+
+	area:SetTransparency(mod_TextOpacity)
 
 	-- attach to dialog
 	area:SetParent(dlg)

@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 8,
 	"version_major", 0,
 	"version_minor", 8,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_OrbitalPrefabDrops",
 	"steam_id", "1545818603",
@@ -24,5 +23,10 @@ Prefab Only: Only rocket drop prefabs (or all buildings depending on above optio
 Dome Crack: If the prefab site is in a dome, it'll crack the glass.
 Model Type: 1 = supply pod, 2 = old black hex, 3 = arc pod, 4 = drop pod (3/4 Space Race DLC).
 
-Defaults are PrefabOnly = true, Outside = true, Inside = false, DomeCrack = true, ModelType = 1]],
+Defaults are PrefabOnly = true, Outside = true, Inside = false, DomeCrack = true, ModelType = 1
+
+
+
+Known Issues:
+Hills can intercept drops and make stuff weird.]],
 })

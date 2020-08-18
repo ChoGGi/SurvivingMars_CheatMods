@@ -99,9 +99,10 @@ function OnMsg.ClassesPostprocess()
 	local PlaceObj = PlaceObj
 	for i = 1, #breaks do
 		local def = breaks[i]
+--~ 		ex(def)
 		local id = def.id
 		PlaceObj("GameRules", {
-			description = SafeTrans{def.description, def},
+			description = SafeTrans(def.description, def),
 			display_name = T(11451, "Breakthrough") .. ": " .. T(def.display_name),
 			group = "Default",
 			id = "ChoGGi_" .. id,

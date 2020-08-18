@@ -1,9 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Real Time Clock",
-	"version", 7,
+	"version", 8,
 	"version_major", 0,
-	"version_minor", 7,
-
+	"version_minor", 8,
 	"image", "Preview.png",
 	"id", "ChoGGi_RealTimeClock",
 	"steam_id", "1791902061",
@@ -21,7 +20,8 @@ Mod Options:
 12/24 time format.
 Show Clock.
 Text Styles.
-Toggle Background.
+Text Background.
+Text Opacity.
 
 Requested by Khyinn.]],
 })

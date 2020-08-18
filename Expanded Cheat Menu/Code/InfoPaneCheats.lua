@@ -226,6 +226,14 @@ It don't matter if you're black or white"]]],
 		des = Strings[302535920001213--[[Reset the storage capacity of this %s to default.]]],
 		des_name = true,
 	},
+	ChargeDbl = {
+		des = Strings[302535920001095--[[Double the charge capacity of this %s.]]],
+		des_name = true,
+	},
+	ChargeDef = {
+		des = Strings[302535920001096--[[Reset the charge capacity of this %s to default.]]],
+		des_name = true,
+	},
 	EmptyDepot = {
 		des = Strings[302535920001214--[[Sticks small depot in front of mech depot and moves all resources to it (max of 20 000).]]],
 	},
@@ -741,6 +749,15 @@ function TerrainDeposit:CheatRefill()
 end
 
 -- CheatCap storage
+local function RetGridCharValues(obj)
+	if obj:IsKindOf("ElectricityStorage") then
+		return "max_electricity_charge", "max_electricity_discharge", obj.electricity
+	elseif obj:IsKindOf("AirStorage") then
+		return "max_air_charge", "max_air_discharge", obj.air
+	elseif obj:IsKindOf("WaterStorage") then
+		return "max_water_charge", "max_water_discharge", obj.water
+	end
+end
 local function RetGridValues(obj)
 	if obj:IsKindOf("ElectricityStorage") then
 		return "capacity", obj.electricity
@@ -750,12 +767,33 @@ local function RetGridValues(obj)
 		return "water_capacity", obj.water
 	end
 end
+local function CheatChargeDbl(obj)
+	local c_key, d_key, grid = RetGridCharValues(obj)
+	local c_new = obj[c_key] * 2
+	obj[c_key] = c_new
+	local d_new = obj[d_key] * 2
+	obj[d_key] = d_new
+
+	grid.max_charge = c_new
+	grid.max_discharge = d_new
+	ChoGGi.ComFuncs.ToggleWorking(obj)
+end
 local function CheatCapDbl(obj)
 	local cap_key, grid = RetGridValues(obj)
 	local new = obj[cap_key] * 2
 	obj[cap_key] = new
 	grid.storage_capacity = new
 	grid.storage_mode = "charging"
+	ChoGGi.ComFuncs.ToggleWorking(obj)
+end
+local function CheatChargeDef(obj)
+	local c_key, d_key, grid = RetGridCharValues(obj)
+	local c_new = obj:GetClassValue(c_key)
+	local d_new = obj:GetClassValue(d_key)
+	obj[c_key] = c_new
+	obj[d_key] = d_new
+	grid.max_charge = c_new
+	grid.max_discharge = d_new
 	ChoGGi.ComFuncs.ToggleWorking(obj)
 end
 local function CheatCapDef(obj)
@@ -768,10 +806,16 @@ local function CheatCapDef(obj)
 end
 ElectricityStorage.CheatCapDbl = CheatCapDbl
 ElectricityStorage.CheatCapDef = CheatCapDef
-WaterTank.CheatCapDbl = CheatCapDbl
-WaterTank.CheatCapDef = CheatCapDef
-OxygenTank.CheatCapDbl = CheatCapDbl
-OxygenTank.CheatCapDef = CheatCapDef
+WaterStorage.CheatCapDbl = CheatCapDbl
+WaterStorage.CheatCapDef = CheatCapDef
+AirStorage.CheatCapDbl = CheatCapDbl
+AirStorage.CheatCapDef = CheatCapDef
+ElectricityStorage.CheatChargeDbl = CheatChargeDbl
+ElectricityStorage.CheatChargeDef = CheatChargeDef
+WaterStorage.CheatChargeDbl = CheatChargeDbl
+WaterStorage.CheatChargeDef = CheatChargeDef
+AirStorage.CheatChargeDbl = CheatChargeDbl
+AirStorage.CheatChargeDef = CheatChargeDef
 
 -- CheatCapDbl people
 function Residence:CheatColonistCapDbl()

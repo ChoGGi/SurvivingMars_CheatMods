@@ -12,11 +12,13 @@ return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "TextBackground",
 		"DisplayName", T(302535920011376, "Text Background"),
+		"Help", T(302535920011553, "Add black background to text."),
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "TextOpacity",
 		"DisplayName", T(302535920011377, "Text Opacity"),
+		"Help", T(302535920011718, "0 = 100% visible, 255 = 0%"),
 		"DefaultValue", 0,
 		"MinValue", 0,
 		"MaxValue", 255,

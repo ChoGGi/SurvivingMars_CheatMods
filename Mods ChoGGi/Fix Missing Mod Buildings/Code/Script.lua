@@ -19,13 +19,13 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
---~ function ChoGGi.ComFuncs.AddParentToClass(class_obj, parent_name)
-local function AddParentToClass(class_obj, parent_name)
-	local p = class_obj.__parents
-	if not table.find(p, parent_name) then
-		p[#p+1] = parent_name
+local AddParentToClass = ChoGGi.ComFuncs.AddParentToClass
+	or function(class_obj, parent_name)
+		local p = class_obj.__parents
+		if not table.find(p, parent_name) then
+			p[#p+1] = parent_name
+		end
 	end
-end
 
 -- stops crashing with certain missing pinned objects
 local umc = UnpersistedMissingClass

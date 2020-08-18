@@ -1,3 +1,6 @@
+v1.1
+Fixed issue with <param> showing up instead of param amount (thanks Collateral Damage).
+
 v1.0
 Made disabling Sort Breakthrough List actually randomize list.
 

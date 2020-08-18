@@ -9,16 +9,26 @@ local pcall = pcall
 local stat = "<newline><name> <em><amount></em>"
 local c
 
+local function UpdateColour(amount)
+	if amount > 75 then
+		return "<color -6881386>" .. amount .. "</color>"
+	elseif amount < 50 then
+		return "<color -26986>" .. amount .. "</color>"
+	else
+		return "<color -3618666>" .. amount .. "</color>"
+	end
+end
+
 local orig_XRecreateRolloverWindow = XRecreateRolloverWindow
 function XRecreateRolloverWindow(win, ...)
 	local context = win.context
 	if IsKindOf(context, "Colonist") and SelectedObj == context.workplace then
 		local text = {
 			win.RolloverText, "\n",
-			T{stat, name = T(4291, "Health"), amount = context:GetHealth() or 0},
-			T{stat, name = T(4293, "Sanity"), amount = context:GetSanity() or 0},
-			T{stat, name = T(4295, "Comfort"), amount = context:GetComfort() or 0},
-			T{stat, name = T(4297, "Morale"), amount = context:GetMorale() or 0},
+			T{stat, name = T(4291, "Health"), amount = UpdateColour(context:GetHealth() or 0)},
+			T{stat, name = T(4293, "Sanity"), amount = UpdateColour(context:GetSanity() or 0)},
+			T{stat, name = T(4295, "Comfort"), amount = UpdateColour(context:GetComfort() or 0)},
+			T{stat, name = T(4297, "Morale"), amount = UpdateColour(context:GetMorale() or 0)},
 			"\n",
 		}
 		-- build traits list

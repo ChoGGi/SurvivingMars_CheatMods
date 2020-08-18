@@ -46,7 +46,6 @@ local margin_box_dbl = box(-25, -30, 0, 0)
 
 local text_table = {}
 
-
 local style_lookup = {
 	"EncyclopediaArticleTitle",
 	"BugReportScreenshot",

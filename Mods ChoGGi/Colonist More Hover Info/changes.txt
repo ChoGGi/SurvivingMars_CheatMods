@@ -1,1 +1,2 @@
 v0.2
+Added colour to stat amount (green = >75, yellow = 74-51, red = <50).
