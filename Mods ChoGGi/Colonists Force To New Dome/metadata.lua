@@ -8,9 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Colonists Force To New Dome",
-	"version", 4,
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 5,
 	"id", "ChoGGi_ColonistsForceToNewDome",
 	"author", "ChoGGi",
 	"code", {
@@ -22,6 +22,8 @@ return PlaceObj("ModDef", {
 	"lua_revision", 249143,
 	"description", [[Adds a menu to the dome selection panel allowing you to force colonists to migrate to a new dome.
 May have to do it a couple times to make sure they're all gone.
+You can also move individual colonists (select and use menu).
+
 
 Requested by BLAde (and probably a bunch of other people).]],
 })

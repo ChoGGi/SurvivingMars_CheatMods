@@ -20,7 +20,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua"
 	},
 	"lua_revision", 249143,
-	"description", [[Restores "Request Maintenance" button.
+	"description", [[Restores "Request Maintenance" button (call drones to work).
 Also fixes frozen buildings that start a maintenance request during a cold wave and drones don't repair till after cold wave ends.
 
 

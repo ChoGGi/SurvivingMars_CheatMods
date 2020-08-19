@@ -1,3 +1,6 @@
+v1.0
+Fixed issue with menu not going to correct obj (thanks Funky.Bigodon).
+
 v0.9
 Skip menu for Orbital Probes.
 

@@ -5,7 +5,6 @@ local table_iclear = table.iclear
 local IsKindOf = IsKindOf
 local IsValid = IsValid
 local WorldToHex = WorldToHex
-local TGetID = TGetID
 local WaitMsg = WaitMsg
 local SetPathMarkersGameTime = ChoGGi.ComFuncs.SetPathMarkersGameTime
 local Pathing_StopAndRemoveAll = ChoGGi.ComFuncs.Pathing_StopAndRemoveAll

@@ -91,16 +91,17 @@ function OnMsg.ClassesPostprocess()
 		"RolloverText", T(302535920011650, "Update range for all forestation plants to match this range."),
 
 		"OnPress", function(self)
-			local range = self.context.UIRange
+			local context = self.context
 
+			local range = context.UIRange
 			local objs = UICity.labels.ForestationPlant or ""
 			for i = 1, #objs do
 				objs[i].UIRange = range
 			end
 
 			-- update existing ranges
-			SelectionRemove(self.context)
-			SelectObj(self.context)
+			SelectionRemove(context)
+			SelectObj(context)
 
 		end,
 	})

@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 4,
 	"version_major", 0,
 	"version_minor", 4,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_WasterockProdInfo",
 	"steam_id", "1816128962",

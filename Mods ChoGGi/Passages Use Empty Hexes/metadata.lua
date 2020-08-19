@@ -22,6 +22,7 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagGameplay", true,
+	"TagBuildings", true,
 	"description", [[You can put passages anywhere, but only certain hexes will "connect" domes.
 Check the selection panel after placing a passage construction site, if it says "Connected to building" then it'll work, if it says "No dome" then remove the site and try again.
 

@@ -8,10 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Pin Expander",
-	"version", 9,
-	"version_major", 0,
-	"version_minor", 9,
-
+	"version", 10,
+	"version_major", 1,
+	"version_minor", 0,
 	"image", "Preview.png",
 	"id", "ChoGGi_PinExpander",
 	"steam_id", "1503773725",

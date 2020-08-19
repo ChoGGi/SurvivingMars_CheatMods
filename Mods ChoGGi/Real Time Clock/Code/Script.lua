@@ -2,8 +2,6 @@
 
 local floatfloor = floatfloor
 local GetDate = GetDate
-local WaitMsg = WaitMsg
-local CurrentThread = CurrentThread
 local T = T
 local clock = {302535920011360, "<hour>:<min>"}
 

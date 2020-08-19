@@ -8,7 +8,6 @@ local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 local T = T
 local IsT = IsT
 local CmpLower = CmpLower
-local getmetatable = getmetatable
 local type = type
 local table_find = table.find
 
@@ -239,6 +238,8 @@ local state_table = {
 	moveFreezing = "UI/Icons/pin_overpopulated.tga",
 }
 
+local items = {}
+local c = 0
 local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 	local varargs = ...
 
@@ -290,8 +291,8 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 	local str_Water = T(681, "Water")
 	local str_Oxygen = T(682, "Oxygen")
 
-	local items = {}
-	local c = 0
+	table.clear(items)
+	c = 0
 	for i = 1, #objs do
 		obj = objs[i]
 
@@ -379,17 +380,22 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 		local is_rocket = obj:IsKindOf("SupplyRocket")
 		if not is_rocket or is_rocket and obj.name ~= "" then
 			c = c + 1
+			local name = RetName(obj)
 			items[c] = {
-				name = RetName(obj),
+				sort_idx = image .. name,
+				name = name,
 				showobj = obj,
 				image = image,
 				hint = hint,
 				hint_title = hint_title,
 				hint_bottom = T(302535920011154, "<left_click> Select <right_click> View"),
-				mouseup = function(_, _, _, button)
+				mouseup = function(item, _, _, button)
 					if is_rocket then
 						button_func(button_obj, gamepad, varargs)
 					else
+						-- not sure why obj in this func always the last obj in items list?
+						obj = item.showobj
+
 						ViewObjectMars(obj)
 						if button == "L" then
 							SelectObj(obj)
@@ -407,7 +413,7 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 
 	-- sort by image then name
 	table.sort(items, function(a, b)
-		return CmpLower(a.image .. a.name, b.image .. b.name)
+		return CmpLower(a.sort_idx, b.sort_idx)
 	end)
 
 	-- personal touch
@@ -426,7 +432,8 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 		})
 	end
 
---~ ex(items)
+--~ 	ex(items)
+--~ 	ex(objs)
 	PopupToggle(button_obj.idCondition, "idPinPopup", items, "top", true)
 end
 
