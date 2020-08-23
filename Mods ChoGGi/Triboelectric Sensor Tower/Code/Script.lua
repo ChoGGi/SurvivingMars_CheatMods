@@ -8,8 +8,7 @@ DefineClass.ChoGGi_TriboelectricSensorTower = {
 		"TriboelectricScrubberBase",
 	},
 
-	properties =
-	{
+	properties = {
 		{ template = true, category = "Triboelectric Scrubber", name = T(826, "Charge time"),	id = "charge_time",	editor = "number", default = 2 * const.HourDuration, scale = const.HourDuration, help = "In hours",},
 		{ template = true, category = "Triboelectric Scrubber", name = T(827, "Dust to clean"),	id = "dust_clean",	editor = "number", default = 5000, help = "How much dust to clean from buildings in range.",},
 		{ template = true, category = "Triboelectric Scrubber", name = T(828, "Sphere Speed"),	id = "sphere_speed",editor = "number", default = 5 * guim, scale = guim, help = "Speed of the sphere movement in m/s",},
@@ -104,8 +103,9 @@ function OnMsg.ClassesPostprocess()
 
 	"display_name", T(302535920011720, "Triboelectric Sensor Tower"),
 	"display_name_pl", T(302535920011721, "Triboelectric Sensor Towers"),
-	"description", T(302535920011722, [[Boosts scanning speed, especially for nearby sectors. Extends the advance warning for disasters.
-Emits pulses which reduce the Dust accumulated on buildings in its range.]]),
+
+	"description", T(5259, "Boosts scanning speed, especially for nearby sectors. Extends the advance warning for disasters.")
+		.. "\n" .. T(5300, "Emits pulses which reduce the Dust accumulated on buildings in its range."),
 		"encyclopedia_id", "TriboelectricScrubber",
 		"encyclopedia_image", "UI/Encyclopedia/TriboelectricScrubber.tga",
 		"label1", "OutsideBuildings",
