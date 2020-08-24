@@ -76,26 +76,32 @@ ChoGGi_TriboelectricSensorTower.SetDust = TriboelectricScrubber.SetDust
 ChoGGi_TriboelectricSensorTower.GetChargeTime = TriboelectricScrubber.GetChargeTime
 
 function OnMsg.ClassesPostprocess()
+	local bt = BuildingTemplates
 	-- pp is too early for mod_Example, call ModOptions() if needed
-	if BuildingTemplates.ChoGGi_TriboelectricSensorTower then
+	if bt.ChoGGi_TriboelectricSensorTower then
 		return
 	end
+
+	local trib = bt.TriboelectricScrubber
+	local sens = bt.SensorTower
 
 	PlaceObj("BuildingTemplate", {
 		"Id", "ChoGGi_TriboelectricSensorTower",
 		"template_class", "ChoGGi_TriboelectricSensorTower",
-		"construction_cost_Metals", 20000,
-		"construction_cost_Electronics", 8000,
 
-		"build_points", 2000,
+		"construction_cost_Metals", trib.construction_cost_Metals + sens.construction_cost_Metals,
+		"construction_cost_Electronics", trib.construction_cost_Electronics + sens.construction_cost_Electronics,
+		"electricity_consumption", trib.electricity_consumption + sens.electricity_consumption,
+		"build_points", trib.build_points + sens.build_points,
+		"maintenance_resource_type", trib.maintenance_resource_type,
+		"maintenance_threshold_base", trib.maintenance_threshold_base,
+		"maintenance_build_up_per_hr", const.DefaultMaintenanceBuildUpPerHour + 50,
+
 		"is_tall", true,
 		"dome_forbidden", true,
-		"maintenance_resource_type", "Electronics",
-		"maintenance_threshold_base", 50000,
 		"entity", "SensorTower",
 		"show_range_all", true,
-		"electricity_consumption", 1800,
-		"dust_clean", 8000,
+		"dust_clean", trib.dust_clean,
 
 		"palette_color1", "outside_base",
 		"palette_color2", "inside_base",
