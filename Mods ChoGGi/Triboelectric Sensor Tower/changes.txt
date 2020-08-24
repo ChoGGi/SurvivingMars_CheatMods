@@ -1,3 +1,4 @@
 v0.2
+Sensor tower count wasn't updated.
 Made sure consump/main costs are a combination of trib + sensor costs.
 Slightly increased main build up amount.

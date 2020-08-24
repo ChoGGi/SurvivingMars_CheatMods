@@ -88,6 +88,8 @@ function OnMsg.ClassesPostprocess()
 	PlaceObj("BuildingTemplate", {
 		"Id", "ChoGGi_TriboelectricSensorTower",
 		"template_class", "ChoGGi_TriboelectricSensorTower",
+		"build_category", "ChoGGi",
+		"Group", "ChoGGi",
 
 		"construction_cost_Metals", trib.construction_cost_Metals + sens.construction_cost_Metals,
 		"construction_cost_Electronics", trib.construction_cost_Electronics + sens.construction_cost_Electronics,
@@ -98,28 +100,24 @@ function OnMsg.ClassesPostprocess()
 		"maintenance_build_up_per_hr", const.DefaultMaintenanceBuildUpPerHour + 50,
 		"dust_clean", trib.dust_clean,
 
-		"is_tall", true,
-		"dome_forbidden", true,
-		"entity", "SensorTower",
-		"show_range_all", true,
+		"display_name", T(302535920011720, "Triboelectric ") .. sens.display_name,
+		"display_name_pl", T(302535920011720, "Triboelectric ") .. sens.display_name,
+		"description", sens.description .. "\n" .. trib.description,
+		"encyclopedia_id", trib.encyclopedia_id,
+		"encyclopedia_image", trib.encyclopedia_image,
+		"label1", trib.label1,
+		"label2", trib.label2,
+		"display_icon", trib.display_icon,
+		"show_range_all", trib.show_range_all,
+		"is_tall", trib.is_tall,
+		"dome_forbidden", trib.dome_forbidden,
+		"entity", sens.entity,
+		"demolish_sinking", sens.demolish_sinking,
+		"demolish_debris", sens.demolish_debris,
+
 		"palette_color1", "outside_base",
 		"palette_color2", "inside_base",
 		"palette_color3", "rover_base",
-
-		"display_name", T(302535920011720, "Triboelectric Sensor Tower"),
-		"display_name_pl", T(302535920011721, "Triboelectric Sensor Towers"),
-		"description", T(5259, "Boosts scanning speed, especially for nearby sectors. Extends the advance warning for disasters.")
-			.. "\n" .. T(5300, "Emits pulses which reduce the Dust accumulated on buildings in its range."),
-		"encyclopedia_id", "TriboelectricScrubber",
-		"encyclopedia_image", "UI/Encyclopedia/TriboelectricScrubber.tga",
-		"label1", "OutsideBuildings",
-		"label2", "OutsideBuildingsTargets",
-		"display_icon", "UI/Icons/Buildings/triboelectric_schrubbe.tga",
-
-		"build_category", "ChoGGi",
-		"Group", "ChoGGi",
-		"demolish_sinking", range(5, 10),
-		"demolish_debris", 85,
 	})
 
 	local xtemplate = XTemplates.ipBuilding[1]
@@ -146,4 +144,41 @@ function OnMsg.ClassesPostprocess()
 		})
 	)
 
+end
+
+-- override sensor tower counting and add our numbers
+local GameTime = GameTime
+local Max = Max
+local SensorTowerPredictionAddTime = const.SensorTowerPredictionAddTime
+
+local orig_GetNumberOfSensorTowers = GetNumberOfSensorTowers
+function GetNumberOfSensorTowers(...)
+	local count = orig_GetNumberOfSensorTowers(...)
+
+	local prediction_add_time_ago = Max(GameTime() - SensorTowerPredictionAddTime, 0)
+	local objs = UICity.labels.ChoGGi_TriboelectricSensorTower or ""
+	for i = 1, #objs do
+		local obj = objs[i]
+		if obj.working or (obj.turn_off_time and obj.turn_off_time - prediction_add_time_ago > 0) then
+			count = count + 1
+		end
+	end
+
+	return count
+end
+
+local orig_GetWorkingSensorTowersCount = SensorTowerBase.GetWorkingSensorTowersCount
+function SensorTowerBase.GetWorkingSensorTowersCount(...)
+	local text = orig_GetWorkingSensorTowersCount(...)
+	local count = text.count
+
+	local objs = UICity.labels.ChoGGi_TriboelectricSensorTower or ""
+	for i = 1, #objs do
+		if objs[i].working then
+			count = count + 1
+		end
+	end
+	text.count = count
+
+	return text
 end
