@@ -77,7 +77,7 @@ ChoGGi_TriboelectricSensorTower.GetChargeTime = TriboelectricScrubber.GetChargeT
 
 function OnMsg.ClassesPostprocess()
 	local bt = BuildingTemplates
-	-- pp is too early for mod_Example, call ModOptions() if needed
+
 	if bt.ChoGGi_TriboelectricSensorTower then
 		return
 	end
@@ -96,22 +96,20 @@ function OnMsg.ClassesPostprocess()
 		"maintenance_resource_type", trib.maintenance_resource_type,
 		"maintenance_threshold_base", trib.maintenance_threshold_base,
 		"maintenance_build_up_per_hr", const.DefaultMaintenanceBuildUpPerHour + 50,
+		"dust_clean", trib.dust_clean,
 
 		"is_tall", true,
 		"dome_forbidden", true,
 		"entity", "SensorTower",
 		"show_range_all", true,
-		"dust_clean", trib.dust_clean,
-
 		"palette_color1", "outside_base",
 		"palette_color2", "inside_base",
 		"palette_color3", "rover_base",
 
-	"display_name", T(302535920011720, "Triboelectric Sensor Tower"),
-	"display_name_pl", T(302535920011721, "Triboelectric Sensor Towers"),
-
-	"description", T(5259, "Boosts scanning speed, especially for nearby sectors. Extends the advance warning for disasters.")
-		.. "\n" .. T(5300, "Emits pulses which reduce the Dust accumulated on buildings in its range."),
+		"display_name", T(302535920011720, "Triboelectric Sensor Tower"),
+		"display_name_pl", T(302535920011721, "Triboelectric Sensor Towers"),
+		"description", T(5259, "Boosts scanning speed, especially for nearby sectors. Extends the advance warning for disasters.")
+			.. "\n" .. T(5300, "Emits pulses which reduce the Dust accumulated on buildings in its range."),
 		"encyclopedia_id", "TriboelectricScrubber",
 		"encyclopedia_image", "UI/Encyclopedia/TriboelectricScrubber.tga",
 		"label1", "OutsideBuildings",
