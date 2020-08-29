@@ -85,6 +85,7 @@ do -- ModUpload
 		ChoGGi_RocketAlwaysAskBeforeLaunch = "Rocket: Always Ask Before Launch v0.2",
 		ChoGGi_RocketPinEnable = "Rocket: Pin Enable",
 		ChoGGi_RotateAllBuildings = "Rotate All Buildings v0.1",
+		ChoGGi_RoverAutomatedMode = "Rover Automated AI",
 		ChoGGi_SaveMissionProfiles = "Save Mission Profiles v0.1",
 		ChoGGi_SelectableCables = "Selectable Cables v0.4",
 		ChoGGi_ShowDronesConstructionSite = "Show Drones Construction Site",

@@ -156,6 +156,10 @@ local logos = {
 		name = "NROL 42",
 	},
 	{
+		file = "NROL_44",
+		name = "NROL 44",
+	},
+	{
 		file = "NROL_45",
 		name = "NROL 45",
 	},

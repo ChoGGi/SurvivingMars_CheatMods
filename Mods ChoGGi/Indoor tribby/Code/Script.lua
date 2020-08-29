@@ -3,10 +3,12 @@
 local IsValid = IsValid
 
 local mod_CleanDomes
+local mod_WaitForIt
 
 -- fired when settings are changed/init
 local function ModOptions()
 	mod_CleanDomes = CurrentModOptions:GetProperty("CleanDomes")
+	mod_WaitForIt = CurrentModOptions:GetProperty("WaitForIt")
 end
 
 -- load default/saved settings
@@ -39,6 +41,7 @@ function ChoGGi_IndoorTribby:GameInit()
 end
 
 function ChoGGi_IndoorTribby:CleanBuildings()
+	-- skip if domes not opened
 	if not self.working then
 		return
 	end
@@ -52,9 +55,14 @@ function ChoGGi_IndoorTribby:CleanBuildings()
 			if dirty ~= self then
 				if dirty:IsKindOf("DustGridElement") then
 					dirty:AddDust(-self.dust_clean)
---~ 				elseif not dirty.parent_dome then --outside of dome
-				elseif dirty.parent_dome then --inside of dome
-					dirty:AccumulateMaintenancePoints(-self.dust_clean)
+				elseif dirty.parent_dome then
+					-- don't clean inside if dome isn't opened
+					if not mod_WaitForIt
+						or mod_WaitForIt and dirty.parent_dome.open_air
+					then
+						print("cleaned",trans(dirty:GetDisplayName()))
+						dirty:AccumulateMaintenancePoints(-self.dust_clean)
+					end
 				end
 			end
 		elseif dirty:IsKindOf("DroneBase") then

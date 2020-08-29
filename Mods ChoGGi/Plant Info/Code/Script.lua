@@ -18,7 +18,7 @@ local entity_lookup = {
 	CropSpinachArm = "Spinach",
 }
 
-local AddParentToClass = ChoGGi.ComFuncs.AddParentToClass
+local AddParentToClass = rawget(_G, "ChoGGi") and ChoGGi.ComFuncs.AddParentToClass
 	or function(class_obj, parent_name)
 		local p = class_obj.__parents
 		if not table.find(p, parent_name) then
@@ -28,11 +28,11 @@ local AddParentToClass = ChoGGi.ComFuncs.AddParentToClass
 AddParentToClass(VegetationObject, "VegetationSelectionObject")
 
 function VegetationSelectionObject:GetDisplayName()
-	return veg_preset_lookup[entity_lookup[self.entity]].display_name
+	return veg_preset_lookup[entity_lookup[self.entity]].display_name or T(588, "Empty")
 end
 
 function VegetationSelectionObject:Getdescription()
-	return veg_preset_lookup[entity_lookup[self.entity]].description
+	return veg_preset_lookup[entity_lookup[self.entity]].description or T(588, "Empty")
 end
 VegetationSelectionObject.GetIPDescription = VegetationSelectionObject.GetDescription
 
@@ -47,12 +47,16 @@ function VegetationSelectionObject:GetChoGGi_NearestSeeder()
 	end
 
 	local objs = UICity.labels[label] or empty_table
-	local pt = self:GetPos()
-	table.sort(objs, function(a, b)
-		return a:GetDist2D(pt) < b:GetDist2D(pt)
-	end)
+	if #objs > 0 then
+		local pt = self:GetPos()
+		table.sort(objs, function(a, b)
+			return a:GetDist2D(pt) < b:GetDist2D(pt)
+		end)
 
-  return objs[1]:GetDisplayName()
+		return objs[1]:GetDisplayName()
+	else
+		return T(588, "Empty")
+	end
 end
 
 local orig_text

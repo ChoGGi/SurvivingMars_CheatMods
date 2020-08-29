@@ -1141,13 +1141,13 @@ end
 -- This doesn't add anything to metadata/items, it only converts files.
 --~ 	ChoGGi.ComFuncs.ConvertImagesToLogoFiles("MOD_ID")
 --~ 	ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.MOD_ID, ".tga")
---~ ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.ChoGGi_XDefaultMod)
+--~ ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.ChoGGi_)
 function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod, ext)
 	if blacklist then
 		ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.ConvertImagesToLogoFiles")
 		return
 	end
-	mod = mod or Mods.ChoGGi_XDefaultMod
+	mod = mod or Mods.ChoGGi_
 	if type(mod) == "string" then
 		mod = Mods[mod]
 	end
@@ -1280,7 +1280,7 @@ do -- ConvertImagesToResEntities
 			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.ConvertImagesToResEntities")
 			return
 		end
-		mod = mod or Mods.ChoGGi_XDefaultMod
+		mod = mod or Mods.ChoGGi_
 		if type(mod) == "string" then
 			mod = Mods[mod]
 		end

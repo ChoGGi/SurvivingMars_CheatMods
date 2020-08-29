@@ -2,7 +2,7 @@
 
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
-local default_passage_palette = {"none","none","none","none"}
+local default_passage_palette = {"none", "none", "none", "none"}
 
 -- add our "skin"
 local orig_Passage_GetSkins = Passage.GetSkins
@@ -13,7 +13,7 @@ function Passage:GetSkins(...)
 	return skins, palettes
 end
 
---	what happens when our "skin" is choosen
+--	happens when our "skin" is choosen
 local orig_Passage_ChangeSkin = Passage.ChangeSkin
 function Passage:ChangeSkin(skin, ...)
 	self.skin_id = skin

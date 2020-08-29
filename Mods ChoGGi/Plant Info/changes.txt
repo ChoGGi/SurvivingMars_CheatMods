@@ -1,1 +1,3 @@
 v0.2
+Tidied up code.
+Fixed what could be a bug.

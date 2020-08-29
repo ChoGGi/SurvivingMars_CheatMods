@@ -1,2 +1,5 @@
+v0.3
+Mod option to only clean when dome is opened.
+
 v0.2
 Mod option to clean parent dome.

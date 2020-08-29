@@ -97,7 +97,7 @@ function OnMsg.ClassesPostprocess()
 		"build_points", trib.build_points + sens.build_points,
 		"maintenance_resource_type", trib.maintenance_resource_type,
 		"maintenance_threshold_base", trib.maintenance_threshold_base,
-		"maintenance_build_up_per_hr", const.DefaultMaintenanceBuildUpPerHour + 50,
+		"maintenance_build_up_per_hr", const.DefaultMaintenanceBuildUpPerHour + 50, -- DefaultMaintenanceBuildUpPerHour is 600
 		"dust_clean", trib.dust_clean,
 
 		"display_name", T(302535920011720, "Triboelectric ") .. sens.display_name,

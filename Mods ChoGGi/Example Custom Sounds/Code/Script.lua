@@ -1,13 +1,14 @@
 -- See LICENSE for terms
 
--- some sound funcs to use with the sounds defined below:
---~ handle = PlaySound(sound, _type, volume, fade_time, looping, point_or_object, loud_distance)
---~ StopSound(handle)
---~ IsSoundPlaying(handle)
---~ SetSoundVolume(handle, volume, time)
---~ GetSoundVolume(handle)
-
 --[[
+
+-- some sound funcs to use with the sounds defined below:
+handle = PlaySound(sound, _type, volume, fade_time, looping, point_or_object, loud_distance)
+StopSound(handle)
+IsSoundPlaying(handle)
+SetSoundVolume(handle, volume, time)
+GetSoundVolume(handle)
+
 PlaySound("Object LandingPad Fail")
 PlaySound("Object MOXIE Loop", "ObjectLoopLimited-A", nil, 0, true, SelectedObj, 1000)
 
@@ -39,6 +40,7 @@ function OnMsg.ClassesPostprocess()
 	})
 
 	-- a loop for use with an object
+	-- like the thumper on the rare metals extractor
 	-- PlaySound("Object OhHaiMark Loop")
 	PlaceObj("SoundPreset", {
 		group = "Object",

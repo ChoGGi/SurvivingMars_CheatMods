@@ -200,9 +200,10 @@ function OnMsg.ModsReloaded()
 	upgrade_list_c = 0
 
 	local g_Classes = g_Classes
-	local ct = ClassTemplates.Building
 
+	local ct = ClassTemplates.Building
 	local BuildingTemplates = BuildingTemplates
+
 	for id, obj in pairs(BuildingTemplates) do
 		if custom_ids[id] then
 			AddBuilding(id, obj, ct[id], g_Classes[id])

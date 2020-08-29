@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"lua_revision", 249143,
 	"steam_id", "2191485240",
 	"pops_any_uuid", "49420dc7-9154-4dc3-95b5-d6cf1a538bf7",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
@@ -22,7 +22,10 @@ return PlaceObj("ModDef", {
 	},
 	"TagBuildings", true,
 	"has_options", true,
-	"description", [[Same as the usual Triboelectric Scrubber, but works inside domes.
-Includes mod option to clean parent dome.
+	"description", [[Same as the usual Triboelectric Scrubber, but cleans inside buildings instead.
+
+Mod Options:
+Clean Domes: Cleans the dome it's in (no matter where in the dome it is).
+Only Clean Opened Domes: Tribby will only clean if the dome is opened.
 ]],
 })

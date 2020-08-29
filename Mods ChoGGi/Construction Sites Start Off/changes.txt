@@ -1,2 +1,5 @@
+v0.3
+Skipped a bunch of mystery buildings.
+
 v0.2
 Added some mod options for exempted buildings (suggestions?).
