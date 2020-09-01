@@ -1,5 +1,24 @@
 -- See LICENSE for terms
 
+local mod_EnableMod
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= CurrentModId then
+		return
+	end
+
+	ModOptions()
+end
+
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local IsValid = IsValid
@@ -41,6 +60,9 @@ local function ToggleLines(obj)
 		CleanUp()
 	end
 
+	if not mod_EnableMod then
+		return
+	end
 
 	SuspendPassEdits("ChoGGi.SelectionRemoved.Show Dome Connected Objects.ToggleLines")
 

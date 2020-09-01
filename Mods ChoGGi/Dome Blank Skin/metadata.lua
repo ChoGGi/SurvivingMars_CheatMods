@@ -20,6 +20,7 @@ Flip through the skins to have the different roads as different blank skins (mig
 
 Known Issues:
 If you flip through the list of skins a few times it may show two blank skins in a row.
+Meteor impacts are ignored.
 
 
 Requested by Vas]],

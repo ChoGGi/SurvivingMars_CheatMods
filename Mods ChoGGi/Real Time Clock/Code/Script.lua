@@ -5,11 +5,12 @@ local GetDate = GetDate
 local T = T
 local clock = {302535920011360, "<hour>:<min>"}
 
-local function IsValidXWin(win)
-	win = win and win.window_state
-	if win and win ~= "destroying" then
-		return true
-	end
+local IsValidXWin = rawget(_G, "ChoGGi") and ChoGGi.ComFuncs.IsValidXWin
+	or function(win)
+		win = win and win.window_state
+		if win and win ~= "destroying" then
+			return true
+		end
 end
 local Infobar
 
@@ -93,6 +94,7 @@ function OnMsg.NewHour()
 
 	clock.hour = strproc()
 	clock.min = strproc()
+--~ 	local sec = strproc()
 
 	if not mod_TimeFormat then
 		-- why 13-12 somehow equals 1.0 I haven't a clue...

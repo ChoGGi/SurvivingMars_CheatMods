@@ -309,7 +309,7 @@ function ChoGGi_DlgExamine:Init(parent, context)
 			Id = "idButClear",
 			Image = "CommonAssets/UI/Menu/NoblePreview.tga",
 			RolloverTitle = T(594, "Clear"),
-			RolloverText = Strings[302535920000016--[["Remove any green spheres/reset green coloured objects
+			RolloverText = Strings[302535920000016--[["Remove any coloured spheres/reset coloured objects
 Press once to clear this examine, again to clear all."]]],
 			OnPress = self.idButClear_OnPress,
 		}, self.idToolbarButtons)
@@ -318,7 +318,7 @@ Press once to clear this examine, again to clear all."]]],
 			Id = "idButMarkObject",
 			Image = "CommonAssets/UI/Menu/DisableEyeSpec.tga",
 			RolloverTitle = Strings[302535920000057--[[Mark Object]]],
-			RolloverText = Strings[302535920000021--[[Mark object with green sphere and/or paint.]]],
+			RolloverText = Strings[302535920000021--[[Mark object with coloured sphere and/or paint.]]],
 			OnPress = self.idButMarkObject_OnPress,
 		}, self.idToolbarButtons)
 		--
@@ -342,7 +342,7 @@ Press once to clear this examine, again to clear all."]]],
 			Id = "idButMarkAll",
 			Image = "CommonAssets/UI/Menu/ExportImageSequence.tga",
 			RolloverTitle = Strings[302535920000058--[[Mark All Objects]]],
-			RolloverText = Strings[302535920000056--[[Mark all items in objlist with green spheres.]]],
+			RolloverText = Strings[302535920000056--[[Mark all items in objlist with coloured spheres.]]],
 			OnPress = self.idButMarkAll_OnPress,
 		}, self.idToolbarButtons)
 		--

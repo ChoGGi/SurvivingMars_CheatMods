@@ -9,9 +9,9 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Dome Show Connected Objects",
 	"id", "ChoGGi_ShowDomeConnectedObjects",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.png",
 	"steam_id", "2038895989",
 	"pops_any_uuid", "42e8c2ef-c183-4488-bce1-0b8b0223c7ba",
@@ -20,6 +20,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"has_options", true,
 	"TagBuildings", true,
 	"description", [[Wondering why you can't remove a dome? This mod will show any objects that will block you from doing so.]],
 })

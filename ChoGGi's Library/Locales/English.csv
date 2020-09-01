@@ -527,12 +527,12 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 302535920000059, "Destroy all objects in objlist!"
 302535920000057, "Mark Object"
 302535920000058, "Mark All Objects"
-302535920000056, "Mark all items in objlist with green spheres."
+302535920000056, "Mark all items in objlist with coloured spheres."
 302535920001369, "Ged Editor"
 302535920001353, "Thread info"
-302535920000016, "Remove any green spheres/reset green coloured objects
+302535920000016, "Remove any coloured spheres/reset coloured objects
 Press once to clear this examine, again to clear all."
-302535920000021, "Mark object with green sphere and/or paint."
+302535920000021, "Mark object with coloured sphere and/or paint."
 302535920001321, "UI Click To Examine"
 302535920001322, "Examine UI controls by clicking them."
 302535920000970, "UI Flash"

@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "NROL Mission Badges",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.png",
 	"id", "ChoGGi_NROLMissionBadges",
 	"steam_id", "1997798603",
