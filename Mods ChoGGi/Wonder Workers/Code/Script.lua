@@ -68,7 +68,6 @@ function OnMsg.LoadGame()
 	if g_ChoGGi_WonderWorkersAdded then
 		return
 	end
-	g_ChoGGi_WonderWorkersAdded = true
 
 	local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
 	local ShiftsBuilding_Init = ShiftsBuilding.Init
@@ -94,4 +93,6 @@ function OnMsg.LoadGame()
 			obj.specialist = spec
 		end
 	end
+
+	g_ChoGGi_WonderWorkersAdded = true
 end

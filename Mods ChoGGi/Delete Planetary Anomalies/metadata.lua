@@ -11,7 +11,6 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_DeletePlanetaryAnomalies",
 	"steam_id", "1774213486",
@@ -21,6 +20,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"TagInterface", true,
 	"description", [[Add a delete button to planetary anomalies (it'll ask first).
 
 Known Issues:
@@ -28,5 +28,4 @@ Stuff will look odd till you close then reopen planetary view.
 Could also be unknown issues from deleting them...
 
 Requested by MaebeKnot.]],
-	"TagInterface", true,
 })

@@ -1,3 +1,6 @@
+v0.3
+Mod compatibility.
+
 v0.2
 Sensor tower count wasn't updated.
 Made sure consump/main costs are a combination of trib + sensor costs.

@@ -3,25 +3,6 @@
 local AsyncRand = AsyncRand
 local table_icopy = table.icopy
 local table_copy = table.copy
---~ local table_rand = table.rand
-
---~ -- make meteor impacts work
---~ local leak_height = point(0, 0, 2000)
---~ local orig_IntersectRayWithObject = IntersectRayWithObject
---~ function IntersectRayWithObject(start, dest, glass, ...)
---~ 	if glass.class == "InvisibleObject" then
---~ 		local dome = glass:GetParent()
---~ 		if not dome then
---~ 			return glass:GetPos() + leak_height
---~ 		end
---~ 		local buildings = dome.labels.Buildings or ""
---~ 		if #buildings == 0 then
---~ 			return glass:GetPos() + leak_height
---~ 		end
---~ 		return table_rand(buildings):GetPos() + leak_height
---~ 	end
---~ 	return orig_IntersectRayWithObject(start, dest, glass, ...)
---~ end
 
 local function GetSkins(func, self, ...)
 	local skins, palettes = func(self, ...)
@@ -60,26 +41,16 @@ local function GetSkins(func, self, ...)
 	return skins, palettes
 end
 
-
 -- add our "skin"
-local orig_OpenAirBuilding_GetSkins = OpenAirBuilding.GetSkins
-function OpenAirBuilding:GetSkins(...)
-	return GetSkins(orig_OpenAirBuilding_GetSkins, self, ...)
-end
-
-function OnMsg.ClassesPostprocess()
-	local orig_Dome_GetSkins = Dome.GetSkins
-	function Dome:GetSkins(...)
-		return GetSkins(orig_Dome_GetSkins, self, ...)
+if g_AvailableDlc.armstrong then
+	local orig_OpenAirBuilding_GetSkins = OpenAirBuilding.GetSkins
+	function OpenAirBuilding:GetSkins(...)
+		return GetSkins(orig_OpenAirBuilding_GetSkins, self, ...)
 	end
-
---~ 	-- make meteor impacts work
---~ 	local orig_Building_GetAttach = Building.GetAttach
---~ 	function Building:GetAttach(entity, ...)
---~ 		if entity == self.entity .. "_Glass" and self:GetCurrentSkin()[2].ChoGGi_DomeBlankSkin then
---~ 			entity = "InvisibleObject"
---~ 		end
---~ 		return orig_Building_GetAttach(self, entity, ...)
---~ 	end
-
+else
+	local orig_GetSkins = Building.GetSkins
+	function Dome:GetSkins(...)
+		return GetSkins(orig_GetSkins, self, ...)
+	end
 end
+

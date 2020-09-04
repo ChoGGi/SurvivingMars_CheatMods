@@ -125,7 +125,13 @@ function OnMsg.ClassesPostprocess()
 	-- check for and remove existing template
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_TriboelectricSensorTower", true)
 
-	table.insert(xtemplate[1], 23,
+	-- insert after workshifts if we can or at the end
+	local idx = table.find(xtemplate[1], "__template", "sectionWorkshifts")
+	if not idx then
+		idx = #xtemplate[1]
+	end
+
+	table.insert(xtemplate[1], idx+1,
 		PlaceObj("XTemplateTemplate", {
 			"Id" , "ChoGGi_Template_TriboelectricSensorTower",
 			"ChoGGi_Template_TriboelectricSensorTower", true,

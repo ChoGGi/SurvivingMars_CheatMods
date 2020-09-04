@@ -1,2 +1,5 @@
+v0.3
+Didn't work without GP DLC (thanks Combine Pencil Sharpener).
+
 v0.2
 Wasn't adding crack from meteors (thanks Vas).

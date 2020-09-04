@@ -2194,7 +2194,7 @@ do -- SetCameraSettings
 	local GetScreenSize = UIL.GetScreenSize
 	function ChoGGi.ComFuncs.SetCameraSettings()
 		local ChoGGi = ChoGGi
-		--cameraRTS.GetProperties(1)
+		-- cameraRTS.GetProperties(1)
 
 		-- size of activation area for border scrolling
 		if ChoGGi.UserSettings.BorderScrollingArea then
@@ -2211,9 +2211,9 @@ do -- SetCameraSettings
 			SetProperties(1, {LookatDist = ChoGGi.Consts.CameraLookatDist})
 		end
 
-		--zoom
-		--camera.GetFovY()
-		--camera.GetFovX()
+		-- zoom
+		-- camera.GetFovY()
+		-- camera.GetFovX()
 		if ChoGGi.UserSettings.CameraZoomToggle then
 			if type(ChoGGi.UserSettings.CameraZoomToggle) == "number" then
 				SetZoomLimits(0, ChoGGi.UserSettings.CameraZoomToggle)
@@ -2239,7 +2239,7 @@ do -- SetCameraSettings
 			hr.CameraRTSBorderAtMaxZoom = 1000
 		end
 
-		--SetProperties(1, {HeightInertia = 0})
+		-- cameraRTS.SetProperties(1, {HeightInertia = 0})
 	end
 end -- do
 

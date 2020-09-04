@@ -21,7 +21,7 @@ end
 
 local function EachDeposit(obj)
 	if type(obj.amount) == "number" then
-		obj.amount = obj.amount + mod_AmountOfWater
+		obj.amount = obj.amount + (mod_AmountOfWater or 50000)
 		if obj.amount > obj.max_amount then
 			obj.amount = obj.max_amount
 		end

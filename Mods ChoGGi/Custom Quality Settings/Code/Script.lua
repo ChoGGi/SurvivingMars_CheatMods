@@ -130,11 +130,11 @@ end
 local function ModOptions()
 	options = CurrentModOptions
 
-	mod_LightsRadiusModifier = CurrentModOptions:GetProperty("LightsRadiusModifier")
-	mod_TR_MaxChunks = CurrentModOptions:GetProperty("TR_MaxChunks")
-	mod_DTM_VideoMemory = CurrentModOptions:GetProperty("DTM_VideoMemory")
-	mod_ShadowmapSize = CurrentModOptions:GetProperty("ShadowmapSize")
-	mod_LODDistanceModifier = CurrentModOptions:GetProperty("LODDistanceModifier")
+	mod_LightsRadiusModifier = options:GetProperty("LightsRadiusModifier")
+	mod_TR_MaxChunks = options:GetProperty("TR_MaxChunks")
+	mod_DTM_VideoMemory = options:GetProperty("DTM_VideoMemory")
+	mod_ShadowmapSize = options:GetProperty("ShadowmapSize")
+	mod_LODDistanceModifier = options:GetProperty("LODDistanceModifier")
 
 	UpdateHR()
 end

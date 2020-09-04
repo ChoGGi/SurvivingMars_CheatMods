@@ -35,10 +35,12 @@ local function DeleteAnom(self)
 	)
 end
 
-local function AddButton(self)
+local function AddButton(self, func, ...)
+	local ret = func(self, ...)
+
 	local toolbar = self.dialog.idToolBar
 	if not toolbar then
-		return
+		return ret
 	end
 
 	CreateRealTimeThread(function()
@@ -55,16 +57,15 @@ local function AddButton(self)
 		}
 	end)
 
+	return ret
 end
 
 local orig_SetUIAnomalyParams = LandingSiteObject.SetUIAnomalyParams
 function LandingSiteObject:SetUIAnomalyParams(...)
-	orig_SetUIAnomalyParams(self, ...)
-	AddButton(self)
+	return AddButton(self, orig_SetUIAnomalyParams, ...)
 end
 
 local orig_SetUIProjectParams = LandingSiteObject.SetUIProjectParams
 function LandingSiteObject:SetUIProjectParams(...)
-	orig_SetUIProjectParams(self, ...)
-	AddButton(self)
+	return AddButton(self, orig_SetUIProjectParams, ...)
 end
