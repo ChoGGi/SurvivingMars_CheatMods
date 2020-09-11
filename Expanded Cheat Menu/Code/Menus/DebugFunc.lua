@@ -1065,6 +1065,7 @@ function ChoGGi.MenuFuncs.BuildableHexGridSettings(action)
 	}
 end
 
+ChoGGi.Temp.PathMarkers_new_objs_loop = true
 function ChoGGi.MenuFuncs.SetPathMarkers()
 	local Pathing_SetMarkers = ChoGGi.ComFuncs.Pathing_SetMarkers
 	local Pathing_CleanDupes = ChoGGi.ComFuncs.Pathing_CleanDupes
@@ -1086,6 +1087,7 @@ function ChoGGi.MenuFuncs.SetPathMarkers()
 	end
 
 	local function CallBackFunc(choices)
+		local temp = ChoGGi.Temp
 		local choice1 = choices[1]
 		local remove = choice1.check1
 		if choices[1].nothing_selected and remove ~= true then
@@ -1144,7 +1146,7 @@ function ChoGGi.MenuFuncs.SetPathMarkers()
 					-- +1 to make it fire the first time
 					local current = #table1+#table2+#table3+1
 
-					while new_objs_loop do
+					while temp.PathMarkers_new_objs_loop do
 						table1 = labels.Unit or ""
 						table2 = labels.CargoShuttle or ""
 						table3 = labels.Colonist or ""
@@ -1166,7 +1168,7 @@ function ChoGGi.MenuFuncs.SetPathMarkers()
 						end
 						Sleep(2500)
 					end
-					new_objs_loop = true
+					temp.PathMarkers_new_objs_loop = true
 				end)
 
 			-- skip any non-cls objects (or mapget returns all)
@@ -1177,7 +1179,7 @@ function ChoGGi.MenuFuncs.SetPathMarkers()
 					-- +1 to make it fire the first time
 					local current = #table1+1
 
-					while new_objs_loop do
+					while temp.PathMarkers_new_objs_loop do
 						table1 = labels[value] or MapGet("map", value)
 						if current ~= #table1 then
 							-- update list when
@@ -1191,7 +1193,7 @@ function ChoGGi.MenuFuncs.SetPathMarkers()
 						end
 						Sleep(2500)
 					end
-					new_objs_loop = true
+					temp.PathMarkers_new_objs_loop = true
 				end)
 			end
 

@@ -166,7 +166,8 @@ GlobalGameTimeThread("ChoGGi_Twister_Thread", function()
 		local a = mod_DustDevilsTwisterAmount
 		local max = mod_DustDevilsTwisterMaxAmount > 0
 			and mod_DustDevilsTwisterMaxAmount or a + UICity:Random(a+1)
-		if #g_DustDevils < max then
+		-- skip if none allowed or onmap amount is at max already
+		if a > 0 and #g_DustDevils < max then
 			-- spawn just add enough to be at max amount
 			for _ = 1, (max - a) do
 				local hit_time = Min(spawn_time, warning_time)
@@ -184,7 +185,6 @@ GlobalGameTimeThread("ChoGGi_Twister_Thread", function()
 
 			local new_dustdevil = GetDustDevilsDescr()
 			while not new_dustdevil do
-	--~ 			Sleep(const.DayDuration)
 				Sleep(HourDuration)
 				new_dustdevil = GetDustDevilsDescr()
 			end

@@ -2,7 +2,6 @@
 
 -- local some globals
 local pairs = pairs
-local table_sort = table.sort
 local GetEntityBuildShape = GetEntityBuildShape
 local HexAngleToDirection = HexAngleToDirection
 local IsValid = IsValid
@@ -11,8 +10,9 @@ local HexToWorld = HexToWorld
 local WorldToHex = WorldToHex
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
-local MapDelete = MapDelete
 local point = point
+local GetTerrainCursor = GetTerrainCursor
+local AveragePoint2D = AveragePoint2D
 
 local point20 = point20
 local green = green
@@ -22,20 +22,57 @@ local point31z = point(0, 0, 31)
 local too_far_away = 5000000
 -- stores list of domes, markers, and dome points
 local dome_list = {}
+-- skip green squares if true
+local dome_over_count = false
 
 local mod_Enable
 local mod_AdjustLineLength
+local mod_LotsOfDomes
 local max_line_len
+local options
+
+local OPolyline
+local OHexSpot
+function OnMsg.ClassesPostprocess()
+	OPolyline = ChoGGi_OPolyline
+	OHexSpot = ChoGGi_OHexSpot
+	if not OPolyline.SetLine then
+		local line_points = {}
+		OPolyline.SetLine = function(a, b)
+			line_points[1] = a
+			line_points[2] = b
+		--~ 	self.vertices = line_points
+			self.max_vertices = #line_points
+			self:SetMesh(line_points)
+			self:SetPos(AveragePoint2D(line_points))
+		end
+	end
+end
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_Enable = CurrentModOptions:GetProperty("Enable")
-	mod_AdjustLineLength = CurrentModOptions:GetProperty("AdjustLineLength")
+	options = CurrentModOptions
+	mod_Enable = options:GetProperty("Enable")
+	mod_AdjustLineLength = options:GetProperty("AdjustLineLength")
+	mod_LotsOfDomes = options:GetProperty("LotsOfDomes")
 
 	-- how long passages can be
 	local max_hex = GridConstructionController.max_hex_distance_to_allow_build - mod_AdjustLineLength
 	-- hex to hex
 	max_line_len = max_hex * 10 * guim
+
+	-- make sure we're ingame
+	if not GameState.gameplay then
+		return
+	end
+
+	if mod_LotsOfDomes == 0 then
+		dome_over_count = false
+	elseif #(UICity.labels.Dome or "") > mod_LotsOfDomes then
+		dome_over_count = true
+	else
+		dome_over_count = false
+	end
 end
 
 -- load default/saved settings
@@ -69,17 +106,7 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
--- if these are here when a save is loaded without this mod then it'll spam the console
 function OnMsg.SaveGame()
-	SuspendPassEdits("ChoGGi.DeleteChoGGiDomeLines.SaveGame")
-	-- if it isn't a valid class then Map* will return all objects :(
-	if g_Classes.ChoGGi_OHexSpot then
-		MapDelete(true, "ChoGGi_OHexSpot")
-	end
-	if g_Classes.ChoGGi_OPolyline then
-		MapDelete(true, "ChoGGi_OPolyline")
-	end
-	ResumePassEdits("ChoGGi.DeleteChoGGiDomeLines.SaveGame")
 	dome_list = {}
 end
 
@@ -112,14 +139,16 @@ local function BuildMarkers(dome)
 	-- no need to re-add domes to the list
 	if not dome_list[dome] then
 		dome_list[dome] = {
-			line = ChoGGi_OPolyline:new(),
-			hex1 = ChoGGi_OHexSpot:new(),
-			hex2 = ChoGGi_OHexSpot:new(),
+			line = OPolyline:new(),
+			hex1 = OHexSpot:new(),
+			hex2 = OHexSpot:new(),
 		}
 		local item = dome_list[dome]
 
 		item.hex1:SetColorModifier(green)
 		item.hex2:SetColorModifier(green)
+		item.hex1:SetVisible(false)
+		item.hex2:SetVisible(false)
 		-- not my magic numbers
 --~ 		item.line:SetCustomDataString(1, 11, white_str)
 
@@ -128,7 +157,7 @@ local function BuildMarkers(dome)
 end
 
 -- add any existing domes to dome_list
-local function Startup()
+local function StartupCode()
 	ModOptions()
 
 	-- add markers for existing domes
@@ -137,33 +166,113 @@ local function Startup()
 		BuildMarkers(domes[i])
 	end
 end
-OnMsg.LoadGame = Startup
-OnMsg.CityStart = Startup
+OnMsg.LoadGame = StartupCode
+OnMsg.CityStart = StartupCode
 
--- sort the dome spots by the nearest to the "pos"
+-- return the dome hex nearest to the cursor pos
 local function RetNearestSpot(dome, pos)
 	local pos_spots
 
 	-- if it's in the table then it's a placed dome
-	if dome_list[dome] and dome_list[dome].spots then
+	if dome_list[dome] then
 		pos_spots = dome_list[dome].spots
 	else
 		-- else it's the cursor building (need to build spot pos each time since it's on the move)
 		pos_spots = BuildDomeSpots(dome)
 	end
 
-	-- sort by nearest
-	table_sort(pos_spots, function(a, b)
-		return a:Dist2D(pos) < b:Dist2D(pos)
-	end)
+	-- get nearest
+	local length = 99999999999999999
+	local nearest = pos_spots[1]
+	local new_length, spot
+	for i = 1, #pos_spots do
+		spot = pos_spots[i]
+		new_length = spot:Dist2D(pos)
+		if new_length < length then
+			length = new_length
+			nearest = spot
+		end
+	end
+
 	-- and done
-	return pos_spots[1]
+	return nearest
+end
+
+local function UpdateVisibleHide(item)
+	if item.line:GetVisible() then
+		item.line:SetVisible(false)
+		if not dome_over_count then
+			item.hex1:SetVisible(false)
+			item.hex2:SetVisible(false)
+		end
+	end
+end
+local function UpdateVisibleShow(item)
+	if not item.line:GetVisible() then
+		item.line:SetVisible(true)
+		if not dome_over_count then
+			item.hex1:SetVisible(true)
+			item.hex2:SetVisible(true)
+		end
+	end
+end
+
+local HexSize = const.HexSize
+local cursor_length = 99999999999
+local cursor_pos = point20
+local function UpdateMarkers(self, current_pos)
+	if not current_pos then
+		current_pos = GetTerrainCursor()
+	end
+
+	-- abort if mouse hasn't moved far enough
+	local current_length = current_pos:Dist2D(cursor_pos)
+	if current_length > HexSize then
+		cursor_pos = current_pos
+		cursor_length = current_length
+	else
+		return
+	end
+
+	SuspendPassEdits("ChoGGi.CursorBuilding.UpdateCursor.UpdateMarkers")
+	-- loop through domes and show any lines that are close enough
+	for dome, item in pairs(dome_list) do
+		if IsValid(dome) then
+			local dome_pos = dome:GetPos()
+			-- any domes too far away, just hide markers instead of checking for hex closeness
+			if current_pos:Dist2D(dome_pos) > too_far_away then
+				UpdateVisibleHide(item)
+			else
+				-- get nearest hex from placed dome to cursor
+				local placed_dome_spot = (RetNearestSpot(dome, current_pos) or point20) + point31z
+				-- get nearest hex from cursor dome to placed dome
+				local cursor_dome_spot = (RetNearestSpot(self.cursor_obj, dome_pos) or point20) + point31z
+				-- show line if it's close enough
+				if placed_dome_spot:Dist2D(cursor_dome_spot) > max_line_len then
+					-- hide it, or we'll have a line pointing at where the dome used to be (till it's too far away)
+					UpdateVisibleHide(item)
+				else
+					-- update hex/line pos and show
+					if not dome_over_count then
+						item.line:SetParabola(cursor_dome_spot, placed_dome_spot)
+						item.hex1:SetPos(cursor_dome_spot)
+						item.hex2:SetPos(placed_dome_spot)
+					else
+						item.line:SetLine(cursor_dome_spot, placed_dome_spot)
+					end
+					UpdateVisibleShow(item)
+				end
+			end
+		else
+			ListCleanup(dome, item)
+		end
+	end
+	ResumePassEdits("ChoGGi.CursorBuilding.UpdateCursor.UpdateMarkers")
 end
 
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit(...)
 	if mod_Enable then
---~ ex(dome_list)
 		if self.template:IsKindOf("Dome") then
 			-- loop through all domes and attach a line
 			local domes = UICity.labels.Dome or ""
@@ -190,52 +299,13 @@ function CursorBuilding:Done(...)
 	SuspendPassEdits("ChoGGi.CursorBuilding.Done.CleanupOldMarkers")
 	for dome, item in pairs(dome_list) do
 		if IsValid(dome) then
-			item.line:SetVisible()
-			item.hex1:SetVisible()
-			item.hex2:SetVisible()
+			UpdateVisibleHide(item)
 		else
 			ListCleanup(dome, item)
 		end
 	end
 	ResumePassEdits("ChoGGi.CursorBuilding.Done.CleanupOldMarkers")
 	return orig_CursorBuilding_Done(self, ...)
-end
-
-local function UpdateMarkers(self, pos)
-	pos = pos or self.cursor_obj:GetPos()
-	-- loop through domes and show any lines that are close enough
-	for dome, item in pairs(dome_list) do
-		if IsValid(dome) then
-			local d_pos = dome:GetPos()
-			-- any domes too far away, just hide markers instead of checking for hex closeness
-			if pos:Dist2D(d_pos) > too_far_away then
-				item.line:SetVisible()
-				item.hex1:SetVisible()
-				item.hex2:SetVisible()
-			else
-				-- get nearest hex from placed dome to cursor
-				local placed_dome_spot = (RetNearestSpot(dome, pos) or point20) + point31z
-				-- get nearest hex from cursor dome to placed dome
-				local cursor_dome_spot = (RetNearestSpot(self.cursor_obj, d_pos) or point20) + point31z
-				-- show line if it's close enough
-				if placed_dome_spot:Dist2D(cursor_dome_spot) > max_line_len then
-					-- hide it, or we'll have a line pointing at where the dome used to be (till it's too far away)
-					item.line:SetVisible()
-					item.hex1:SetVisible()
-					item.hex2:SetVisible()
-				else
-					item.line:SetParabola(cursor_dome_spot, placed_dome_spot)
-					item.line:SetVisible(true)
-					item.hex1:SetPos(cursor_dome_spot)
-					item.hex1:SetVisible(true)
-					item.hex2:SetPos(placed_dome_spot)
-					item.hex2:SetVisible(true)
-				end
-			end
-		else
-			ListCleanup(dome, item)
-		end
-	end
 end
 
 local orig_ConstructionController_Rotate = ConstructionController.Rotate

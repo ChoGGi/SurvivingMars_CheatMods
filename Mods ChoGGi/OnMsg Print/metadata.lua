@@ -1,10 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "OnMsg Print",
+	"id", "ChoGGi_OnMsgPrint",
 	"version", 6,
 	"version_major", 0,
 	"version_minor", 6,
-
-	"id", "ChoGGi_OnMsgPrint",
 	"image", "Preview.png",
 	"steam_id", "1604230467",
 	"pops_any_uuid", "2fe28c8c-c602-4ceb-8642-d41a7a560b7a",

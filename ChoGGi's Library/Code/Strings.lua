@@ -112,7 +112,7 @@ do -- UpdateStringsList (fired below, and whenever lang is changed)
 		end
 
 		-- translate all my strings
-		local iter = 302535920000000+string_limit
+		local iter = 302535920000000 + string_limit
 		for i = 302535920000000, iter do
 			local str = _InternalTranslate(LightUserData(bor(i, locId_sig)))
 			-- if the missing text is within the last 50 then we can safely break
@@ -135,7 +135,7 @@ do -- UpdateStringsList (fired below, and whenever lang is changed)
 			ChoGGi.font = f
 
 			-- these four don't get to use non-eng fonts, cause screw you is why
-			-- ok it's these aren't expected to be exposed to end users, but console is in mod editor so...
+			-- ok it's these aren't expected to be exposed to end users, but console is in mod editor so...?
 			local TextStyles = TextStyles
 			TextStyles.Console.TextFont = f .. ", 18, bold, aa"
 			TextStyles.ConsoleLog.TextFont = f .. ", 13, bold, aa"

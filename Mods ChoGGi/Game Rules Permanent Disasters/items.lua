@@ -54,7 +54,7 @@ local properties = {
 		"DisplayName", table_concat(T(4142, "Dust Devils") .. T(": ") .. T(302535920011620, "Twister Amount")),
 		"Help", T(302535920011621, "Minimum amount of twisters on the map (max is 2 * amount)."),
 		"DefaultValue", 4,
-		"MinValue", 1,
+		"MinValue", 0,
 		"MaxValue", 100,
 	}),
 	PlaceObj("ModItemOptionNumber", {

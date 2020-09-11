@@ -1417,11 +1417,7 @@ function ChoGGi.MenuFuncs.MoistureVaporatorPenalty_Toggle()
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
-		Strings[302535920000152--[["%s: Pussy, pussy, pussy! Come on in Pussy lovers! Here at the Titty Twister we’re slashing pussy in half! Give us an offer on our vast selection of pussy! This is a pussy blow out!
-Alright, we got white pussy, black pussy, spanish pussy, yellow pussy. We got hot pussy, cold pussy. We got wet pussy. We got smelly pussy. We got hairy pussy, bloody pussy. We got snapping pussy. We got silk pussy, velvet pussy, naugahyde pussy. We even got horse pussy, dog pussy, chicken pussy.
-C'mon, you want pussy, come on in Pussy Lovers! If we don’t got it, you don't want it! Come on in Pussy lovers! Attention pussy shoppers!
-Take advantage of our penny pussy sale! If you buy one piece of pussy at the regular price, you get another piece of pussy of equal or lesser value for only a penny!
-Try and beat pussy for a penny! If you can find cheaper pussy anywhere, fuck it!"]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.MoistureVaporatorRange)),
+		Strings[302535920000152--[["%s:  New penalty range"]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.MoistureVaporatorRange)),
 		Strings[302535920000210--[[Moisture Vaporator Penalty]]],
 		{expiration = 60}
 	)

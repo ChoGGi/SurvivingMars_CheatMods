@@ -5575,6 +5575,8 @@ do -- path markers
 				stored:Destroy()
 				-- clears table list
 				stored:Clear()
+				-- remove ref
+				obj.ChoGGi_Stored_Waypoints = nil
 			end
 
 		end
@@ -5600,12 +5602,10 @@ do -- path markers
 	end
 	ChoGGi.ComFuncs.Pathing_CleanDupes = CleanDupes
 
-
 	local aliens
-	local new_objs_loop = true
 	local function StopAndRemoveAll(skip)
 		if not skip then
-			new_objs_loop = false
+			ChoGGi.Temp.PathMarkers_new_objs_loop = false
 		end
 		SuspendPassEdits("ChoGGi.ComFuncs.Pathing_StopAndRemoveAll")
 

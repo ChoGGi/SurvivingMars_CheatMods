@@ -709,13 +709,9 @@ It's next to godliness. Isn't that what they say?"
 There's more vodka in this piss than there is piss."
 302535920000150, "%s: Good for what ails you"
 302535920000151, "%s: The spice must flow!"
-302535920000152, "%s: Pussy, pussy, pussy! Come on in Pussy lovers! Here at the Titty Twister we're slashing pussy in half! Give us an offer on our vast selection of pussy! This is a pussy blow out!
-Alright, we got white pussy, black pussy, spanish pussy, yellow pussy. We got hot pussy, cold pussy. We got wet pussy. We got smelly pussy. We got hairy pussy, bloody pussy. We got snapping pussy. We got silk pussy, velvet pussy, naugahyde pussy. We even got horse pussy, dog pussy, chicken pussy.
-C'mon, you want pussy, come on in Pussy Lovers! If we don't got it, you don't want it! Come on in Pussy lovers! Attention pussy shoppers!
-Take advantage of our penny pussy sale! If you buy one piece of pussy at the regular price, you get another piece of pussy of equal or lesser value for only a penny!
-Try and beat pussy for a penny! If you can find cheaper pussy anywhere, fuck it!"
+302535920000152, "%s:  New penalty range"
 302535920000153, "%s:
-So, er, we the crew of the Eagle 5,if we do encounter, make first contact with alien beings,
+So, er, we the crew of the Eagle 5, if we do encounter, make first contact with alien beings,
 it is a friendship greeting from the children of our small but great planet of Potatoho."
 302535920000154, "%s:
 Your home will not be a hut on some swampy outback planet your home will be the entire universe."
@@ -1263,7 +1259,7 @@ Use Shift + Arrow keys to change the height/radius."
 302535920000470, "Close any dialogs opened by ECM (Examine, Object Editor, Change Colours, etc...)."
 302535920000472, "Manipulate objects (selected or under mouse cursor)"
 302535920000475, "Entity Spawner"
-302535920000476, "Shows list of objects, and spawns at mouse cursor."
+302535920000476, "Shows list of entity objects with option to spawn at mouse cursor."
 302535920000478, "Clears console history display."
 302535920000479, "Toggle Editor"
 302535920000480, "Select object(s) then hold ctrl/shift/alt and drag mouse.

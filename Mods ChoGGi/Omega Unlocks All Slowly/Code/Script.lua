@@ -82,7 +82,7 @@ function OnMsg.NewDay()
 end
 
 function OnMsg.AddResearchRolloverTexts(ret)
-	-- no text if it's set to 1 sol or omega isn't unlocked
+	-- no text if it's set to 1 sol or omega isn't built
 	if mod_SolsBetweenUnlock == 1 or not g_OmegaTelescopeBonusGiven then
 		return
 	end

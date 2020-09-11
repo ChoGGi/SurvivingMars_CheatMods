@@ -1,1 +1,2 @@
 v0.2
+It was bugging out rovers after building a few tunnels.

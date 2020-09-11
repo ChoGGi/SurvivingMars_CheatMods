@@ -4,7 +4,7 @@ return {
 	PlaceObj("ModItemOptionNumber", {
 		"name", "RotateSpeed",
 		"DisplayName", T(302535920011734, "Rotate Speed"),
-		"Help", T(302535920011735, "How fast the camera moves when holding down alt/middle mouse and moving left/right."),
+		"Help", T(302535920011735, "How fast the camera moves when holding down <em><middle_click> / <ShortcutName('actionOrbitCamera')></em> and pressing <em><ShortcutName('actionPanLeft')> / <ShortcutName('actionPanRight')></em>."),
 		"DefaultValue", 6,
 		"MinValue", 1,
 		"MaxValue", 50,
@@ -12,7 +12,7 @@ return {
 	PlaceObj("ModItemOptionNumber", {
 		"name", "UpDownSpeed",
 		"DisplayName", T(302535920011736, "Up Down Speed"),
-		"Help", T(302535920011737, "How fast the camera moves when holding down alt/middle mouse and moving up/down."),
+		"Help", T(302535920011737, "How fast the camera moves when holding down <em><middle_click> / <ShortcutName('actionOrbitCamera')></em> and pressing <em><ShortcutName('actionPanLeft')> / <ShortcutName('actionPanRight')></em>."),
 		"DefaultValue", 320,
 		"MinValue", 0,
 		"MaxValue", 500,
@@ -30,7 +30,7 @@ return {
 	PlaceObj("ModItemOptionNumber", {
 		"name", "MaxHeight",
 		"DisplayName", T(302535920011740, "Max Height"),
-		"Help", T(302535920011741, "How far you can move the camera above buildings (for that top-down view)."),
+		"Help", T(302535920011741, "How far you can move the camera above buildings (bird's-eye)."),
 		"DefaultValue", 40,
 		"MinValue", 5,
 		"MaxValue", 100,
@@ -38,7 +38,7 @@ return {
 	PlaceObj("ModItemOptionNumber", {
 		"name", "MoveSpeed",
 		"DisplayName", T(302535920011742, "Move Speed"),
-		"Help", T(302535920011743, "WASD movement speed."),
+		"Help", T(302535920011743, "<em><ShortcutName('actionPanUp')><ShortcutName('actionPanLeft')><ShortcutName('actionPanDown')><ShortcutName('actionPanRight')></em> movement speed."),
 		"DefaultValue", 10,
 		"MinValue", 1,
 		"MaxValue", 50,

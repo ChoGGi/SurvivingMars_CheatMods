@@ -1,6 +1,8 @@
 -- See LICENSE for terms
 
 local Strings = ChoGGi.Strings
+local AveragePoint2D = AveragePoint2D
+local PolylineSetParabola = ChoGGi.ComFuncs.PolylineSetParabola
 
 -- blank CObject class we add to all the objects below for easier deleting
 DefineClass.ChoGGi_ODeleteObjs = {
@@ -23,11 +25,18 @@ DefineClass.ChoGGi_OSphere = {
 DefineClass.ChoGGi_OPolyline = {
 	__parents = {"ChoGGi_ODeleteObjs","Polyline"},
 }
-local PolylineSetParabola = ChoGGi.ComFuncs.PolylineSetParabola
-local AveragePoint2D = AveragePoint2D
 function ChoGGi_OPolyline:SetParabola(a, b)
 	PolylineSetParabola(self, a, b)
 	self:SetPos(AveragePoint2D(self.vertices))
+end
+local line_points = {}
+function ChoGGi_OPolyline:SetLine(a, b)
+	line_points[1] = a
+	line_points[2] = b
+--~ 	self.vertices = line_points
+	self.max_vertices = #line_points
+	self:SetMesh(line_points)
+	self:SetPos(AveragePoint2D(line_points))
 end
 
 --~ SetZOffsetInterpolation, SetOpacityInterpolation

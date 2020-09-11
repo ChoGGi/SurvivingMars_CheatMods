@@ -6,6 +6,7 @@
 
 ### Changed:
 - Large water tank didn't have capacity double cheat (thanks Lesandrina).
+- Removed an adult reference that probably shouldn't be in there.
 
 ## v15.4 (13 Aug 2020)
 ### Added:

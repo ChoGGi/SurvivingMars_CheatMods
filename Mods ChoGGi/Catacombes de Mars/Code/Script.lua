@@ -1,41 +1,30 @@
 -- See LICENSE for terms
 
-local MapGet = MapGet
 local RoadTileSize = terrain.RoadTileSize()
 local pf_AddTunnel = pf.AddTunnel
 local pf_GetTunnel = pf.GetTunnel
+local pathfind = pathfind
 
 -- add pathfinding for each tunnel to each tunnel
 local function MergeNewTunnel(obj, tunnels)
-	tunnels = tunnels or MapGet("map", "Tunnel", function(o)
-		-- skip self
-		if o ~= obj then
-			return true
-		end
-	end)
-
-	local pathfind = pathfind
-
 	for i = 1, #tunnels do
-		local entrance, start_point = obj:GetEntrance(nil, "tunnel_entrance")
-		local exit, exit_point = tunnels[i]:GetEntrance(nil, "tunnel_entrance")
+		local tunnel = tunnels[i]
+		if obj ~= tunnel then
+			local entrance, start_point = obj:GetEntrance(nil, "tunnel_entrance")
+			local exit, exit_point = tunnel:GetEntrance(nil, "tunnel_entrance")
 
-		local tunnel_len = entrance[1]:Dist2D(exit[1])
-		local enter_exit_len = entrance[1]:Dist2D(entrance[#entrance]) + exit[1]:Dist2D(exit[#exit])
-		local weight = (tunnel_len/10 + enter_exit_len) * pathfind[1].terrain / RoadTileSize
+			local tunnel_len = entrance[1]:Dist2D(exit[1])
+			local enter_exit_len = entrance[1]:Dist2D(entrance[#entrance]) + exit[1]:Dist2D(exit[#exit])
+			local weight = (tunnel_len/10 + enter_exit_len) * pathfind[1].terrain / RoadTileSize
 
-		pf_AddTunnel(obj, start_point, exit_point, weight, -1, 0)
+			pf_AddTunnel(obj, start_point, exit_point, weight, -1, 0)
+		end
 	end
 end
 
-GlobalVar("g_ChoGGi_CatacombesdeMars_UpdatedTunnels", false)
-local function StartupCode()
-	if g_ChoGGi_CatacombesdeMars_UpdatedTunnels then
-		return
-	end
-
+local function ReloadTunnels()
 	-- clear and rebuild existing tunnels
-	local tunnels = MapGet("map", "Tunnel")
+	local tunnels = UICity.labels.Tunnel or ""
 	local tunnels_c = #tunnels
 	for i = 1, tunnels_c do
 		local tunnel = tunnels[i]
@@ -45,16 +34,15 @@ local function StartupCode()
 			MergeNewTunnel(tunnel, tunnels)
 		end
 	end
-
-	g_ChoGGi_CatacombesdeMars_UpdatedTunnels = true
 end
 
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
+OnMsg.CityStart = ReloadTunnels
+OnMsg.LoadGame = ReloadTunnels
 
 -- add newly placed tunnel to all existing tunnels instead of just linked
+--~ local orig_AddPFTunnel = Tunnel.AddPFTunnel
 function Tunnel:AddPFTunnel()
-	MergeNewTunnel(self)
+	ReloadTunnels()
 end
 
 -- change .linked_obj to end_point tunnel (otherwise rover just goes in n out on a loop)

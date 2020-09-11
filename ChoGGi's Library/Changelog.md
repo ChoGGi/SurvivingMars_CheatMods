@@ -2,6 +2,7 @@
 
 ## v8.5 (Unreleased)
 - Titlebar rollup was showing exec code area (ignoring checkbox).
+- Path Markers were leaving stuff in objs when the game was saved (thread log spam).
 
 ## v8.4 (13 Aug 2020)
 - Moved obj path marker func into Lib.

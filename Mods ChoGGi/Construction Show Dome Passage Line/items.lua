@@ -12,4 +12,12 @@ return {
 		"MinValue", 0,
 		"MaxValue", 20,
 	}),
+	PlaceObj("ModItemOptionNumber", {
+		"name", "LotsOfDomes",
+		"DisplayName", T(302535920011746, "Lots Of Domes"),
+		"Help", T(302535920011747, "Over this many domes and skip showing green squares (0 to ignore)."),
+		"DefaultValue", 50,
+		"MinValue", 1,
+		"MaxValue", 250,
+	}),
 }

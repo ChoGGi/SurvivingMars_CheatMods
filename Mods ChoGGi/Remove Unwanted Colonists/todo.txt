@@ -1,1 +1,2 @@
-random delay before colonist goes outside
+random delay before colonist goes outside?
+mod option to hide buttons (add as condition)

@@ -1,3 +1,6 @@
+v1.3
+Sped it up (tested on 140 domes).
+
 v1.2
 Checks for Construction Extend Length and Longer Passages Tech mods and uses the extended length.
 

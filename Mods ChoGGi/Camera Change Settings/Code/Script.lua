@@ -7,10 +7,8 @@ local mod_ScrollBorder
 local mod_MaxHeight
 local mod_MoveSpeed
 
-local GetProperties = cameraRTS.GetProperties
-local SetProperties = cameraRTS.SetProperties
 local function UpdateCamera()
-	local params = GetProperties(1)
+	local params = cameraRTS.GetProperties(1)
 
 	params.RotateSpeed = mod_RotateSpeed
 	params.UpDownSpeed = mod_UpDownSpeed
@@ -20,7 +18,7 @@ local function UpdateCamera()
 	params.mod_MoveSpeedNormal = mod_MoveSpeed
 	params.mod_MoveSpeedFast = mod_MoveSpeed * 2
 
-	SetProperties(1, params)
+	cameraRTS.SetProperties(1, params)
 end
 
 local options
@@ -36,7 +34,7 @@ local function ModOptions()
 	mod_MaxHeight = options:GetProperty("MaxHeight")
 	mod_MoveSpeed = options:GetProperty("MoveSpeed")
 
-	-- make sure we're not in menus
+	-- make sure we're ingame
 	if not GameState.gameplay then
 		return
 	end

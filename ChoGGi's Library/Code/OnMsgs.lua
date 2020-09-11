@@ -68,6 +68,9 @@ local function RemoveChoGGiObjects()
 			objs[i]:delete()
 		end
 	end
+	-- stop any rovers with pathing being shown (it'll error out anyways)
+	ChoGGi.ComFuncs.Pathing_StopAndRemoveAll()
+
 	ResumePassEdits("ChoGGiLibrary.OnMsgs.RemoveChoGGiObjects")
 end
 OnMsg.SaveGame = RemoveChoGGiObjects
