@@ -27,7 +27,7 @@ DefineClass.ChoGGi_Dlg3DManipulator = {
 	dialog_width = 750.0,
 	dialog_height = 650.0,
 
-	-- if it's an attach item then we use different funcs
+	-- If it's an attach item then we use different funcs
 	is_attach = false,
 
 	-- obj funcs (if there's attaches)
@@ -90,7 +90,7 @@ function ChoGGi_Dlg3DManipulator:Init(parent, context)
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
 
-	do -- idPosArea
+	do -- IdPosArea
 		self.idPosArea = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idPosArea",
 			Dock = "top",
@@ -259,28 +259,28 @@ function ChoGGi_Dlg3DManipulator:Init(parent, context)
 
 	end -- do
 
---~ 	do -- idScaleArea
+--~ 	do -- IdScaleArea
 --~ 		self.idScaleArea = g_Classes.ChoGGi_XDialogSection:new({
 --~ 			Id = "idScaleArea",
 --~ 			Dock = "top",
 --~ 		}, self.idDialog)
 --~ 	end -- do
 
---~ 	do -- idAngleArea
+--~ 	do -- IdAngleArea
 --~ 		self.idAngleArea = g_Classes.ChoGGi_XDialogSection:new({
 --~ 			Id = "idAngleArea",
 --~ 			Dock = "top",
 --~ 		}, self.idDialog)
 --~ 	end -- do
 
---~ 	do -- idAxisArea
+--~ 	do -- IdAxisArea
 --~ 		self.idAxisArea = g_Classes.ChoGGi_XDialogSection:new({
 --~ 			Id = "idAxisArea",
 --~ 			Dock = "top",
 --~ 		}, self.idDialog)
 --~ 	end -- do
 
---~ 	do -- idOrientArea
+--~ 	do -- IdOrientArea
 --~ 		self.idOrientArea = g_Classes.ChoGGi_XDialogSection:new({
 --~ 			Id = "idOrientArea",
 --~ 			Dock = "top",
@@ -462,7 +462,7 @@ function ChoGGi_Dlg3DManipulator:idPosSave_OnPress()
 	self = GetRootDialog(self)
 	local obj = self.obj
 
-	-- if opening an xwindow object skip this (testing the 3dman dialog from main menu)
+	-- If opening an xwindow object skip this (testing the 3dman dialog from main menu)
 	if not obj:IsKindOf("CObject") then
 		return
 	end

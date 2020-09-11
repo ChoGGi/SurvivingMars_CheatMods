@@ -8,7 +8,7 @@ local skip_rockets = {
 
 function OnMsg.RocketLandAttempt(rocket)
 	if skip_rockets[rocket.class]
-		-- it's an export rocket, abort!
+		-- It's an export rocket, abort!
 		or rocket.name:sub(-6) == "Export"
 	then
 		return

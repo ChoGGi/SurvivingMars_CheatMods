@@ -58,7 +58,7 @@ function OnMsg.ClassesPostprocess()
 	if not idx then
 		return
 	end
-	xtemplate = xtemplate[idx][2][4] -- idJobs
+	xtemplate = xtemplate[idx][2][4] -- IdJobs
 
 	local rene_str = T(4368, "Renegade") .. " " .. T(83, "Domes")
 	xtemplate.RolloverHint = T(11708, "<left_click> Cycle unemployed citizens")

@@ -113,7 +113,7 @@ DefineClass.ChoGGi_VCM_MapImageDlg = {
 	dialog_width = 525.0,
 	dialog_height = 525.0,
 
-	-- if random tech rule active
+	-- If random tech rule active
 	random_warning = false,
 	warning_str = false,
 }
@@ -199,7 +199,7 @@ function ChoGGi_VCM_MapImageDlg:SetDefaultPos()
 end
 
 function ChoGGi_VCM_MapImageDlg:Done()
-	-- if someone closes the dialog this will open it back up
+	-- If someone closes the dialog this will open it back up
 	show_image_dlg = false
 	if extra_info_dlg then
 		extra_info_dlg:Close()

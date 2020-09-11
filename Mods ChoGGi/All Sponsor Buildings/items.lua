@@ -35,7 +35,7 @@ for id, bld in pairs(BuildingTemplates) do
 	end
 end
 
--- if first time then save them
+-- If first time then save them
 if not def.sponsor_buildings then
 	def.sponsor_buildings = sponsor_buildings
 end

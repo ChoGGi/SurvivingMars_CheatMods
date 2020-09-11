@@ -80,7 +80,7 @@ DefineClass.ChoGGi_DlgListChoice = {
 	-- some different stuff fires off a func
 	custom_func = false,
 	callback_func = false,
-	-- if listitem has .obj and this is true we "flash" it
+	-- If listitem has .obj and this is true we "flash" it
 	select_flash = false,
 	-- last value entered in idEditValue
 	old_edit_value = false,
@@ -377,7 +377,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	end
 
 	if self.list.multisel then
-		-- if it's a multiselect then add a hint
+		-- If it's a multiselect then add a hint
 		if self.list.hint then
 			self.list.hint = self.list.hint .. "\n\n" .. Strings[302535920001167--[[Use Ctrl/Shift for multiple selection.]]]
 		else
@@ -537,7 +537,7 @@ function ChoGGi_DlgListChoice:idEditValueOnTextChanged()
 	local value, value_type
 	local name_str = text
 
-	-- if user pastes an rgb or rgba func string translate to colour: RGBA(233, 123, 32, 100)
+	-- If user pastes an rgb or rgba func string translate to colour: RGBA(233, 123, 32, 100)
 	if text:sub(1, 3) == "RGB" then
 		-- remove any spaces/newlines etc
 		text = text:gsub("[%s%c]", "")
@@ -601,7 +601,7 @@ function ChoGGi_DlgListChoice:idEditValueOnTextChanged()
 	elseif self.idList.focused_item then
 		-- update the item's value
 		self.idList[self.idList.focused_item].item.value = value
-		-- if colour editor
+		-- If colour editor
 		if self.idColourContainer and value_type == "number" then
 			-- update obj colours
 			if self.custom_type == 2 then
@@ -648,7 +648,7 @@ function ChoGGi_DlgListChoice:BuildList(save_pos)
 	for i = 1, list_count do
 		local item = self.items[i]
 
-		-- is there an icon to add
+		-- Is there an icon to add
 		local text, display_icon
 		if item.icon then
 			if item.icon:find("<image ") then
@@ -800,7 +800,7 @@ function ChoGGi_DlgListChoice:idColorPicker_OnColorChanged(colour)
 		return
 	end
 	local item = self.idList[sel_idx].item
-	-- if it's colourpicker mode and we selected Metallic or Roughness then skip updating
+	-- If it's colourpicker mode and we selected Metallic or Roughness then skip updating
 	if self.custom_type == 2 and not item.text:find("Color") then
 		return
 	end
@@ -916,7 +916,7 @@ end
 
 -- update colour
 function ChoGGi_DlgListChoice:UpdateColourPicker(text)
-	-- if it's colourpicker mode and we selected Metallic or Roughness then skip updating
+	-- If it's colourpicker mode and we selected Metallic or Roughness then skip updating
 	if self.custom_type == 2 and not text:find("Color") then
 		return
 	end

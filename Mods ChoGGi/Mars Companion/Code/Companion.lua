@@ -46,7 +46,7 @@ function MarsCompanion:GameInit()
 
 	-- dust thread
 	self.dust_thread = CreateGameTimeThread(function()
-		-- if we local in the thread it isn't caught by debug.getupvalue
+		-- If we local in the thread it isn't caught by debug.getupvalue
 		local Sleep = Sleep
 		local GetTimeFactor = GetTimeFactor
 		local GetHeight = terrain.GetHeight
@@ -98,7 +98,7 @@ function MarsCompanion:GoHome()
 end
 
 
--- if it idles it'll go home, so we return my command till we remove thread
+-- If it idles it'll go home, so we return my command till we remove thread
 function MarsCompanion:Idle()
 	Sleep(1000)
 	self:SetCommand("MainLoop")

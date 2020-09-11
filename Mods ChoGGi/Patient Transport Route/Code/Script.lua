@@ -32,17 +32,17 @@ function RCTransport:TransportRouteLoad(...)
 	-- fire off orig
 	orig_RCTransport_TransportRouteLoad(self, ...)
 
-	-- if this is false then TransportRouteLoad removed it
+	-- If this is false then TransportRouteLoad removed it
 	if not self.transport_route.from then
 		-- add the missing half of the route back so it doesn't remove the route
 		self.transport_route.from = supply
 
-		-- if amount > storage then that's bad
+		-- If amount > storage then that's bad
 		if mod_Amount > self.max_shared_storage then
 			mod_Amount = self.max_shared_storage
 		end
 
-		-- if not enough res then set to idle anim
+		-- If not enough res then set to idle anim
 		if self:GetStoredAmount() < mod_Amount then
 			-- wonder how long this networking func will stick around? (considering there's no MP, unless it's a ged thing)
 			self:Gossip("Idle")
@@ -55,7 +55,7 @@ function RCTransport:TransportRouteLoad(...)
 			-- wait for it...
 			Sleep(5000)
 
-			-- if amount > storage then that's bad
+			-- If amount > storage then that's bad
 			if mod_Amount > self.max_shared_storage then
 				mod_Amount = self.max_shared_storage
 			end
@@ -70,23 +70,23 @@ function RCTransport:TransportRouteLoad(...)
 				self:ProcessRouteObj(next_source)
 				break
 			elseif self:GetStoredAmount() >= mod_Amount then
-				-- if we have enough than go to unload func (load n unload are in a loop in transport object)
+				-- If we have enough than go to unload func (load n unload are in a loop in transport object)
 				break
 			end
 
 		end	 -- while
-	end -- if
+	end -- If
 end
 
 local orig_RCTransport_TransportRouteUnload = RCTransport.TransportRouteUnload
 function RCTransport:TransportRouteUnload(...)
 
-	-- if amount > storage then that's bad
+	-- If amount > storage then that's bad
 	if mod_Amount > self.max_shared_storage then
 		mod_Amount = self.max_shared_storage
 	end
 
-	-- if not enough res then set to idle anim and return to load func
+	-- If not enough res then set to idle anim and return to load func
 	if self:GetStoredAmount() < mod_Amount then
 		return
 	end

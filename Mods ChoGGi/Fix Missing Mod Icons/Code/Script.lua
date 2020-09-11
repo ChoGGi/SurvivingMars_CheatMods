@@ -14,7 +14,7 @@ local function FixPath(image)
 		return image
 	end
 
-	-- if w and h are over 0 then it's an image
+	-- If w and h are over 0 then it's an image
 	local w, h = UIL_Measure(image)
 	if w > 0 and h > 0 then
 		return image
@@ -69,7 +69,7 @@ function OnMsg.ModsReloaded()
 					item.upgrade1_icon = FixPath(item.upgrade1_icon)
 					item.upgrade2_icon = FixPath(item.upgrade2_icon)
 					item.upgrade3_icon = FixPath(item.upgrade3_icon)
-					-- it can happen (i check if it's an image path above)
+					-- It can happen (i check if it's an image path above)
 					item.value = FixPath(item.value)
 					-- sponsors
 					for j = 1, 5 do

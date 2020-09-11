@@ -82,7 +82,7 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
 	-- build list with .
 	local g_Classes = g_Classes
 	for key,value in pairs(g_Classes) do
-		-- it adds them all and i just check .class
+		-- It adds them all and i just check .class
 		if value.pin_on_start and key ~= "BaseRover" and key ~= "SpaceElevator" then
 			c = c + 1
 			item_list[c] = {
@@ -204,8 +204,7 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Strings[302535920001135--[[%s: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.]]]:format(choice[1].text),
-				T(5505, "Game Speed"),
-				{size = true}
+				T(5505, "Game Speed")
 			)
 		end
 	end
@@ -370,7 +369,7 @@ function ChoGGi.MenuFuncs.Interface_Toggle()
 		-- retrieve shortcut key to display below
 		local options = OptionsCreateAndLoad()
 		local key = options["ECM.Game.Interface.Toggle Interface"]
-		-- if we don't have a shortcut set then do nothing
+		-- If we don't have a shortcut set then do nothing
 		if key then
 			key = key[1]
 			if not key then
@@ -927,7 +926,7 @@ function ChoGGi.MenuFuncs.ChangeMap()
 
 			-- only game rules needs something something, the rest can use the lookup_table
 			if text == Translate(8800--[[Game Rules]]) then
-				-- if more than one entry
+				-- If more than one entry
 				if value:find(" ") then
 					for i in value:gmatch("%S+") do
 						custom_params.idGameRules[i] = true
@@ -1091,7 +1090,7 @@ function ChoGGi.MenuFuncs.TerrainTextureChange()
 	local function RestoreSkins(label, temp_skin, idx)
 		for i = 1, #(label or "") do
 			local o = label[i]
-			-- if i don't set waste skins to the ground texture then it won't be the right texture for GetCurrentSkin
+			-- If i don't set waste skins to the ground texture then it won't be the right texture for GetCurrentSkin
 			-- got me
 			if temp_skin then
 				o.orig_terrain1 = idx
@@ -1173,7 +1172,7 @@ function ChoGGi.MenuFuncs.TerrainTextureChange()
 			end -- for
 
 			ResumePassEdits("ChoGGi.MenuFuncs.TerrainTextureChange")
-		end -- if TerrainTextures
+		end -- If TerrainTextures
 
 	end -- CallBackFunc
 
@@ -1207,7 +1206,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel()
 
 		local value = choice.value
 		if type(value) == "string" then
-			-- if perm isn't checked then remove the saved setting
+			-- If perm isn't checked then remove the saved setting
 			if not choice.check1 then
 				ChoGGi.UserSettings.Lightmodel = nil
 			end
@@ -1652,7 +1651,7 @@ do -- CameraFree_Toggle
 	end
 
 	function ChoGGi.MenuFuncs.CameraFollow_Toggle()
-		-- it was on the free camera so
+		-- It was on the free camera so
 		if not mapdata.GameLogic then
 			return
 		end
@@ -1724,7 +1723,7 @@ do -- CameraFree_Toggle
 				ChoGGi.ComFuncs.ToggleConsoleLog()
 			end
 
-			-- if it's a rover then stop the ctrl control mode from being active (from pressing ctrl-shift-f)
+			-- If it's a rover then stop the ctrl control mode from being active (from pressing ctrl-shift-f)
 			if type(obj.SetControlMode) == "function" then
 				obj:SetControlMode(false)
 			end

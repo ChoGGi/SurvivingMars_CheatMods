@@ -313,7 +313,7 @@ function ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies()
 			-- CheatSpawnPlanetaryAnomalies() but with a limit so GenerateMarsScreenPoI doesn't screw us
 			for _ = 1, safe_count do
 				local lat, long = GenerateMarsScreenPoI("anomaly")
-				-- i assume they'll fix it so there isn't an inf loop
+				-- I assume they'll fix it so there isn't an inf loop
 				if lat and long then
 					PlaceObject("PlanetaryAnomaly", {
 						display_name = T(11234, "Planetary Anomaly"),
@@ -880,7 +880,7 @@ function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
 		for i = 1, #choice do
 			local value = choice[i].value
 
-			-- if 4 are selected that's all
+			-- If 4 are selected that's all
 			if value == "All" or #choice > 3 then
 				local a = UICity.labels.Anomaly or ""
 				-- go backwards it'll be removed once scanned
@@ -995,7 +995,7 @@ Perhaps.
 But I nearly forgot! You must close your eyes.
 Otherwise you won't see anything."]]],
 			title,
-			{image = "UI/Achievements/TheRabbitHole.tga", size = true}
+			{image = "UI/Achievements/TheRabbitHole.tga"}
 		)
 	end
 
@@ -1106,7 +1106,7 @@ do -- StartMystery
 	local function StartMystery(mystery_id, instant)
 		local UICity = UICity
 
-		-- inform people of actions, so they don't add a bunch of them
+		-- Inform people of actions, so they don't add a bunch of them
 		ChoGGi.UserSettings.ShowMysteryMsgs = true
 
 		UICity.mystery_id = mystery_id
@@ -1127,7 +1127,7 @@ do -- StartMystery
 			UICity.mystery:ApplyMysteryResourceProperties()
 		end
 
-		-- instant start
+		-- Instant start
 		if instant then
 			local seqs = UICity.mystery.seq_player.seq_list[1]
 			for i = 1, #seqs do
@@ -1165,7 +1165,7 @@ do -- StartMystery
 			end
 			local value = choice[1].value
 			if choice[1].check1 then
-				-- instant
+				-- Instant
 				StartMystery(value, true)
 			else
 				StartMystery(value)
@@ -1484,7 +1484,7 @@ Skip it?]]]:format(seq.sequence),
 							title
 						)
 
-					end -- if seq type
+					end -- If seq type
 
 				end --if i >= ip
 			end --for seq_list
@@ -1585,8 +1585,7 @@ function ChoGGi.MenuFuncs.OutsourcingFree_Toggle()
 	MsgPopup(
 		Strings[302535920000297--[["%s
 Best hope you picked India as your Mars sponsor..."]]]:format(ChoGGi.UserSettings.OutsourceResearchCost),
-		Strings[302535920000355--[[Outsourcing For Free]]],
-		{size = true}
+		Strings[302535920000355--[[Outsourcing For Free]]]
 	)
 end
 
@@ -1859,7 +1858,7 @@ do -- ResearchRemove
 				end
 			end
 
-			-- if we unlocked any buildings and the buildmenu is open
+			-- If we unlocked any buildings and the buildmenu is open
 			ChoGGi.ComFuncs.UpdateBuildMenu()
 
 			MsgPopup(
@@ -1912,7 +1911,7 @@ do -- ResearchTech
 				field = "Mysteries",
 				points = 0,
 			}
-			-- instead of incrementing costs
+			-- Instead of incrementing costs
 			if mystery_costs[id] then
 				city.tech_status[id].cost = mystery_costs[id]
 			end
@@ -2063,7 +2062,7 @@ do -- ResearchTech
 				end
 			end
 
-			-- if we unlocked any buildings and the buildmenu is open
+			-- If we unlocked any buildings and the buildmenu is open
 			ChoGGi.ComFuncs.UpdateBuildMenu()
 
 			MsgPopup(

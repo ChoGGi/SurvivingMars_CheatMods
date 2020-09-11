@@ -36,7 +36,7 @@ ModEnvBlacklist = {--[[Harumph!]]}
 local ChoGGi = ChoGGi
 local def = CurrentModDef
 
--- is ECM shanghaied by the blacklist?
+-- Is ECM shanghaied by the blacklist?
 if def.no_blacklist then
 	ChoGGi.blacklist = false
 	local env = def.env

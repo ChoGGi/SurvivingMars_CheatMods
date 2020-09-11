@@ -66,7 +66,7 @@ function Carwash:GameInit()
 				local obj = nil
 				-- check for anything on the "tarmac"
 				obj = NearestObject(self, UICity.labels.Unit or {}, 1000)
-				-- if so clean them
+				-- If so clean them
 				if obj then
 					-- get dust amount, and convert to percentage
 					local dust_amt = (obj:GetDust() + 0.0) / 100
@@ -140,7 +140,7 @@ function Carwash:StartAnimThread(sprinkler)
 
 			end
 
-			-- if working state changed start over, otherwise set appropritate idle state, fire fx and wait
+			-- If working state changed start over, otherwise set appropritate idle state, fire fx and wait
 			if working == self.working then
 				sprinkler:SetAnim(1, working and "workingIdle" or "idle")
 				WaitWakeup()
@@ -256,7 +256,7 @@ end
 
 local GetPipeConnections = {
 	-- hex_point, direction (0..5), spot-index, entity-to-attach, something else
-	-- i only need 4 per, but i'm lazy
+	-- I only need 4 per, but i'm lazy
 	{point(1, -2), 0, 4, "SignWater"},
 	{point(1, -2), 1, 4, "SignWater"},
 	{point(1, -2), 2, 4, "SignWater"},

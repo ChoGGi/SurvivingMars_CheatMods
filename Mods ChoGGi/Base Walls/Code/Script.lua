@@ -600,8 +600,8 @@ function ChoGGi_BaseWalls:AdjustLength(size, current_size)
 	if spawn_wall_count < 1 then
 		spawn_wall_count = 1
 	elseif spawn_wall_count > 99 then
-		-- i could add more, but that's enough unless someone complains for more
-		-- i pre-make the list for speed
+		-- I could add more, but that's enough unless someone complains for more
+		-- I pre-make the list for speed
 		-- 202/4
 		spawn_wall_count = 100
 	end

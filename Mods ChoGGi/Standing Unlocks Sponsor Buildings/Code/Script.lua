@@ -140,8 +140,7 @@ local function UpdateStanding()
 
 	ChoGGi.ComFuncs.MsgPopup(
 		table.concat(standing_msg),
-		T(302535920011561, "Colony Standing"),
-		{size = true}
+		T(302535920011561, "Colony Standing")
 	)
 end
 

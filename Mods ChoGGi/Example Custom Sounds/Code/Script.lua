@@ -12,7 +12,7 @@ GetSoundVolume(handle)
 PlaySound("Object LandingPad Fail")
 PlaySound("Object MOXIE Loop", "ObjectLoopLimited-A", nil, 0, true, SelectedObj, 1000)
 
--- if you're making a looping sound test with:
+-- If you're making a looping sound test with:
 local snd_playing = false
 local function TestSound(snd)
 	StopSound(snd_playing)
@@ -22,7 +22,7 @@ TestSound("Object MOXIE Loop")
 ]]
 
 function OnMsg.ClassesPostprocess()
-	-- if you have ecm use OpenExamine(SoundPreset), to see the object properties
+	-- If you have ecm use OpenExamine(SoundPreset), to see the object properties
 	-- or grab the decompiled lua files from my discord channel and open CommonLua\Classes\Sounds\Sounds.lua
 	-- Data\SoundPreset.lua, and Lua\Config\__SoundTypes.lua
 

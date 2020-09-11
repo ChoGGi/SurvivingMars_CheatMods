@@ -474,7 +474,7 @@ function PastureAnimal:SetGrazingState(duration, ...)
 	return orig_PastureAnimal_SetGrazingState(self, duration, ...)
 end
 
--- inf loop if the grazing spot is missing (hello fallback...)
+-- Inf loop if the grazing spot is missing (hello fallback...)
 local orig_PastureAnimal_Graze = PastureAnimal.Graze
 function PastureAnimal:Graze(...)
 	local item

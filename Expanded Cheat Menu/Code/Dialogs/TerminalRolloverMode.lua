@@ -21,7 +21,7 @@ function ChoGGi_DlgRolloverModeTerminalTarget:MouseEvent(event, pt, button)
 			terminal_dialog.ChoGGi.ComFuncs.OpenInExamineDlg(target, {
 				ex_params = true,
 				parent = terminal_dialog,
-				-- ignore the Child checkbox in examine
+				-- Ignore the Child checkbox in examine
 				skip_child = true,
 			})
 		end

@@ -53,7 +53,7 @@ function SupplyRocket:WaitInOrbit(arrive_time, ...)
 --~ 			-- testing
 --~ 			Sleep(const.HourDuration)
 
-			-- instead of killing them all off, we remove the food and kill off one per sol
+			-- Instead of killing them all off, we remove the food and kill off one per sol
 			table_remove(cargo, table_find(cargo, "class", "Food"))
 			-- feeding schedule
 			local hour = const.HourDuration
@@ -76,7 +76,7 @@ function SupplyRocket:WaitInOrbit(arrive_time, ...)
 				self.ChoGGi_cann_a_snack = true
 			end
 
-			-- if we land before they're all dead the below won't fire
+			-- If we land before they're all dead the below won't fire
 
 			-- kill the passengers, call GameOver if there are no colonists on Mars
 			local count

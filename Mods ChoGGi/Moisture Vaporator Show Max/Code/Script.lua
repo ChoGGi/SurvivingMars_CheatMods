@@ -5,7 +5,7 @@ local function UpdateMax(self)
 	local prod = self.modifications and self.modifications.water_production
 	if prod then
 		local percent = 100.0
-		-- if something uses amounts (mod maybe?)
+		-- If something uses amounts (mod maybe?)
 		local amount = 0
 		for i = 1, #prod do
 			local mod = prod[i]

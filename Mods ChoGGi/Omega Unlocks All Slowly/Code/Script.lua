@@ -44,7 +44,7 @@ function OnMsg.NewDay()
 
 	local UICity = UICity
 
-	-- if there's none left to discover return
+	-- If there's none left to discover return
 	local breakthroughs = UICity:GetUnregisteredBreakthroughs()
 	if not breakthroughs[1] then
 		return

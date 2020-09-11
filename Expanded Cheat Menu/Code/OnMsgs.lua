@@ -310,7 +310,7 @@ function OnMsg.ModsReloaded()
 		-- remove all my actions from ecm
 		for i = #Actions, 1, -1 do
 			local a = Actions[i]
-			-- if it's a . than we haven't updated it yet
+			-- If it's a . than we haven't updated it yet
 			if a.ActionId:sub(1, 1) == "." then
 				table_remove(Actions, i)
 			end
@@ -351,7 +351,7 @@ function OnMsg.ModsReloaded()
 		-- add the defaults we skipped to my actions
 		for i = 1, c do
 			local a = Actions[i]
-			-- if it's a . than we haven't updated it yet
+			-- If it's a . than we haven't updated it yet
 			if a.ActionId:sub(1, 1) == "." then
 				a.ActionTranslate = false
 				a.replace_matching_id = true
@@ -551,7 +551,7 @@ function OnMsg.PersistPostLoad()
 			end
 		end
 
-		-- if there's a missing id print/return a warning
+		-- If there's a missing id print/return a warning
 		local printit = ChoGGi.UserSettings.FixMissingModBuildingsLog
 		-- GetFreeSpace, GetFreeLivingSpace, GetFreeWorkplaces, GetFreeWorkplacesAround
 		local labels = UICity.labels or empty_table
@@ -570,7 +570,7 @@ function OnMsg.PersistPostLoad()
 			end
 		end
 
-	end -- if FixMissingModBuildings
+	end -- If FixMissingModBuildings
 end
 
 -- for instant build
@@ -663,7 +663,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 	end
 
 	-- not working code from when trying to have passages placed in entrances
---~ 	-- if it's a fancy dome then we allow building in the removed entrances
+--~ 	-- If it's a fancy dome then we allow building in the removed entrances
 --~ 	if obj:IsKindOf("Dome") then
 --~ 		local id_start, id_end = obj:GetAllSpots(obj:GetState())
 --~ 		for i = id_start, id_end do
@@ -755,7 +755,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 		ChoGGi.ComFuncs.SetMechanizedDepotTempAmount(obj.parent)
 	end
 
-	-- if an inside building is placed outside of dome, attach it to nearest dome (if there is one)
+	-- If an inside building is placed outside of dome, attach it to nearest dome (if there is one)
 	if obj:GetDefaultPropertyValue("dome_required") then
 		-- a slight delay is needed
 		CreateRealTimeThread(function()
@@ -1079,7 +1079,7 @@ function OnMsg.ResearchQueueChange(city, tech_id)
 	end
 end
 
--- if you pick a mystery from the cheat menu
+-- If you pick a mystery from the cheat menu
 function OnMsg.MysteryBegin()
 	if ChoGGi.UserSettings.ShowMysteryMsgs then
 		MsgPopup(
@@ -1312,7 +1312,7 @@ do -- LoadGame/CityStart
 				objs[i]:SetBase("move_speed", speed)
 			end
 		end
-		-- i figure looping through it twice is better then some complicated if else
+		-- I figure looping through it twice is better then some complicated if else
 		if UserSettings.SpeedWaspDrone then
 			local speed = UserSettings.SpeedWaspDrone
 			local objs = labels.Drone or ""
@@ -1423,7 +1423,7 @@ do -- LoadGame/CityStart
 			end
 		end
 
-		-- if there's a lightmodel name saved
+		-- If there's a lightmodel name saved
 		if UserSettings.Lightmodel then
 			SetLightmodelOverride(1, UserSettings.Lightmodel)
 		end
@@ -1607,7 +1607,7 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 	end --OnMsg
 end -- do
 
--- if i need to do something on a new game that needs the map (or objs on the map)
+-- If i need to do something on a new game that needs the map (or objs on the map)
 --~ function OnMsg.MapSectorsReady()
 --~ end
 -- you can also do a thread and a WaitMsg for DepositsSpawned or Resume

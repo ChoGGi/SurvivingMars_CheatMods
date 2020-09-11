@@ -5,7 +5,7 @@ g_LoadingScreens = {
 	CurrentModPath .. "UI/The Incal.png",
 }
 
--- if we don't set this then it'll just use SplashScreen.tga
+-- If we don't set this then it'll just use SplashScreen.tga
 g_FirstLoadingScreen = false
 
 --[[ original table, you can add these to your new table

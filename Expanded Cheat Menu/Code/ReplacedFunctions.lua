@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
--- in-game functions replaced with custom ones
+-- In-game functions replaced with custom ones
 
 local type, rawget = type, rawget
 local table_unpack = table.unpack
@@ -509,7 +509,7 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	do -- XWindow:SetModal
-		-- i fucking hate modal windows
+		-- I fucking hate modal windows
 		if testing then
 			SaveOrigFunc("XWindow", "SetModal")
 
@@ -531,7 +531,7 @@ function OnMsg.ClassesGenerate()
 		-- stop using 58 and the pins size for the selection panel margins
 		SaveOrigFunc("InfopanelDlg", "RecalculateMargins")
 		function InfopanelDlg:RecalculateMargins()
-			-- if infobar then use min-height of pad
+			-- If infobar then use min-height of pad
 			local top_margin = 0
 			local infobar = Dialogs.Infobar
 			if infobar then
@@ -603,7 +603,7 @@ function OnMsg.ClassesGenerate()
 						entry.RolloverText = action.RolloverText
 					end
 					entry.RolloverTitle = Translate(126095410863--[[Info]])
-					-- if this func added the id or something then i wouldn't need to do this copy n paste :(
+					-- If this func added the id or something then i wouldn't need to do this copy n paste :(
 
 					function entry.OnPress(this, _)
 						if action.OnActionEffect ~= "popup" then
@@ -652,7 +652,7 @@ function OnMsg.ClassesGenerate()
 			return
 		end
 		local buttons_c = #self
-		-- if any of them are a func then change it to the text
+		-- If any of them are a func then change it to the text
 		for i = 1, buttons_c do
 			local button = self[i]
 			if type(button:GetRolloverText()) == "function" then
@@ -732,7 +732,7 @@ function OnMsg.ClassesBuilt()
 	do -- MouseEvent/XEvent
 		local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 		local function ResetFocus(func_name, self, event, ...)
-			-- if the focus is currently on an ecm dialog then focus on previous xdialog
+			-- If the focus is currently on an ecm dialog then focus on previous xdialog
 			if (event == "OnMouseButtonDown" or event == "OnXButtonDown")
 					and self.keyboard_focus
 					and GetParentOfKind(self.keyboard_focus, "ChoGGi_XWindow")
@@ -805,7 +805,7 @@ function OnMsg.ClassesBuilt()
 			local p = self.meta.player
 
 			if StopWait and p and StopWait.seed == p.seed then
-				-- inform user, or if it's a dbl then skip
+				-- Inform user, or if it's a dbl then skip
 				if StopWait.skipmsg then
 					StopWait.skipmsg = nil
 				else
@@ -1093,7 +1093,7 @@ function OnMsg.ClassesBuilt()
 					idx = 18
 				end
 
-				-- initially set to hidden
+				-- Initially set to hidden
 				ToggleVis(idx, c, false, 0)
 
 				local visthread
@@ -1300,7 +1300,7 @@ function OnMsg.ClassesBuilt()
 	end -- do
 
 	do -- RequiresMaintenance:AddDust
-		-- it wasn't checking if it was a number so we got errors in log
+		-- It wasn't checking if it was a number so we got errors in log
 		local tonumber = tonumber
 
 		SaveOrigFunc("RequiresMaintenance", "AddDust")

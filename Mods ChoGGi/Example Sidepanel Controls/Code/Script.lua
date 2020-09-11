@@ -65,7 +65,7 @@ function OnMsg.ClassesPostprocess()
 					-- and a not working building
 				end
 
-				-- if you modified a value then use this, if not remove
+				-- If you modified a value then use this, if not remove
 				ObjModified(context)
 				RebuildInfopanel(context)
 				---
@@ -96,7 +96,7 @@ function OnMsg.ClassesPostprocess()
 		PlaceObj("XTemplateTemplate", {
 			"__template", "InfopanelSlider",
 			"BindTo", "max_workers",
-			-- if it's a resource unit then add 1000, so 25000
+			-- If it's a resource unit then add 1000, so 25000
 			"Max", 25,
 			"Min", 5,
 			"StepSize", 5,
@@ -162,7 +162,7 @@ function OnMsg.ClassesPostprocess()
 
 	RemoveXTemplateSections(XTemplates, "SOMETHINGUNIQUE3")
 	-- this adds a button to the resource overview that only shows when hour is over 10
-	-- it needs the [1] or it takes over the whole screen (it's usually only needed for ipResourceOverview not the section ones)
+	-- It needs the [1] or it takes over the whole screen (it's usually only needed for ipResourceOverview not the section ones)
 	XTemplates[#XTemplates+1] = PlaceObj("XTemplateTemplate", {
 		"SOMETHINGUNIQUE3", true,
 

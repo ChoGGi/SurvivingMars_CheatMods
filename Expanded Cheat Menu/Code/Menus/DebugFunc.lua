@@ -374,7 +374,7 @@ function ChoGGi.MenuFuncs.ExamineObject()
 	local objs = ChoGGi.ComFuncs.SelObjects()
 	local c = #objs
 	if c > 0 then
-		-- if it's a single obj then examine that, otherwise the whole list
+		-- If it's a single obj then examine that, otherwise the whole list
 		ChoGGi.ComFuncs.OpenInExamineDlg(c == 1 and objs[1] or objs)
 		return
 	end
@@ -388,7 +388,7 @@ function ChoGGi.MenuFuncs.ExamineObject()
 		return ChoGGi.ComFuncs.OpenInExamineDlg(target)
 	end
 
-	-- if in main menu then open examine and console
+	-- If in main menu then open examine and console
 	if not Dialogs.HUD then
 		local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(terminal.desktop)
 		-- off centre of central monitor
@@ -608,7 +608,7 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 							obj:ChangeEntity(entity)
 							obj.entity = entity
 
-							-- if it has a working state then set it
+							-- If it has a working state then set it
 							local states_str = obj:GetStates()
 							local idx = table_find(states_str, "working")
 								or table_find(states_str, "idleOpened")
@@ -1295,7 +1295,7 @@ do -- FlightGrid_Toggle
 		flight_lines[0] = nil
 		ResumePassEdits("ChoGGi.MenuFuncs.FlightGrid_Toggle.DeleteLines")
 	end
-	-- if grid is left on when map changes it gets real laggy
+	-- If grid is left on when map changes it gets real laggy
 	function OnMsg.ChangeMap()
 		if IsValidThread(grid_thread) then
 			DeleteThread(grid_thread)
@@ -1362,7 +1362,7 @@ do -- FlightGrid_Toggle
 			grid_size = 256 * guim
 		end
 
-		-- if fired from action menu
+		-- If fired from action menu
 		if IsKindOf(size, "XAction") then
 			size = grid_size
 			zoffset = 0

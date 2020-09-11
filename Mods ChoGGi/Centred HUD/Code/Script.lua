@@ -68,7 +68,7 @@ function GetSafeMargins(win_box)
 	if win_box then
 		return orig_GetSafeMargins(win_box)
 	end
-	-- if lookup table doesn't have width we fire orginal func
+	-- If lookup table doesn't have width we fire orginal func
 	return current_margin or orig_GetSafeMargins()
 end
 
@@ -138,7 +138,7 @@ local function SetMargins(choice_str)
 	) or ""
 
 	if margin ~= "" then
-		-- it returns a string
+		-- It returns a string
 		margin = tonumber(margin)
 
 		if type(margin) == "number" then

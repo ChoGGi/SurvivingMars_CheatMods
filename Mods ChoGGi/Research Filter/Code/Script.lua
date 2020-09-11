@@ -55,7 +55,7 @@ local function FilterTech(str)
 	end
 end
 
--- it's quicker to the user
+-- It's quicker to the user
 local function OnKbdKeyDown(input, vk, ...)
 	if KbdShortcut(vk) == "Shift-Enter" then
 		input:SetText("")
@@ -98,7 +98,7 @@ local function EditDlg(dlg)
 	area:SetParent(left_side)
 
 	count = 0
-	-- if it's the first time opening research then build a list of name/desc to search
+	-- If it's the first time opening research then build a list of name/desc to search
 	local new_count = UICity:DiscoveredTechCount()
 	local needs_update = current_count ~= new_count or current_count == 0
 

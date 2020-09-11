@@ -23,7 +23,7 @@ local IsValid = IsValid
 local AttachToNearestDome = ChoGGi.ComFuncs.AttachToNearestDome
 
 function OnMsg.BuildingInit(obj)
-	-- if an inside building is placed outside of dome, attach it to nearest dome (if there is one)
+	-- If an inside building is placed outside of dome, attach it to nearest dome (if there is one)
 	if obj:GetDefaultPropertyValue("dome_required") then
 		-- a slight delay is needed
 		CreateRealTimeThread(function()

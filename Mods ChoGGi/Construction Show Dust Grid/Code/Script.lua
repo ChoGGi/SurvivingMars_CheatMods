@@ -191,7 +191,7 @@ local function ShowGrids()
 					range:SetOpacity(is_site and 100 or mod_GridOpacity)
 					range.ChoGGi_visible = true
 				end
-				-- if other range mods are installed we don't want them red as well
+				-- If other range mods are installed we don't want them red as well
 				if range.bind_to == "GetDustRadius" then
 					for i = 1, #range.decals do
 						local decal = range.decals[i]

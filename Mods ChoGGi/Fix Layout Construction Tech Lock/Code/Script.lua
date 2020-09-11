@@ -39,7 +39,7 @@ function LayoutConstructionController:Activate(...)
 		if template then
 			local _, tech_enabled = GetBuildingTechsStatus(template.id, template.build_category)
 
-			-- if it isn't unlocked and there's no prefabs then remove it
+			-- If it isn't unlocked and there's no prefabs then remove it
 			if not tech_enabled and UICity:GetPrefabs(template.id) == 0 then
 				self.skip_items[entry] = true
 				controllers[entry]:Deactivate()

@@ -11,7 +11,7 @@ local orig_FillTraitSelectorItems = FillTraitSelectorItems
 function FillTraitSelectorItems(object, items, traits, align, list, ...)
 	local traits_c = #traits
 
-	-- if there's only 9 then return orig func instead of my possibly out of date func
+	-- If there's only 9 then return orig func instead of my possibly out of date func
 	if traits_c < 10 then
 		return orig_FillTraitSelectorItems(object, items, traits, align, list, ...)
 	end

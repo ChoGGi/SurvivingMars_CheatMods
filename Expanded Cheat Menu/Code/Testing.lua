@@ -15,7 +15,7 @@
 --~ 		if win_box then
 --~ 			return orig_GetSafeMargins(win_box)
 --~ 		end
---~ 		-- if lookup table doesn't have width we fire orginal func
+--~ 		-- If lookup table doesn't have width we fire orginal func
 --~ 		return GetScreenSize():x() == 5760 and margins or orig_GetSafeMargins()
 --~ 	end
 --~ end
@@ -565,7 +565,7 @@ function ChoGGi.testing.IsKindOfSub()
 end
 
 function ChoGGi.testing.LocalLoops()
-	-- if same value outside is faster, otherwise new local
+	-- If same value outside is faster, otherwise new local
 
 	local AsyncRand = AsyncRand
 	ChoGGi.ComFuncs.TickStart("LocalLoops.Tick.1")

@@ -15,13 +15,13 @@ function TaskRequestHub:FindDemandRequest(obj, resource, amount, ...)
 	if resource ~= "WasteRock" then
 		return orig_TaskRequestHub_FindDemandRequest(self, obj, resource, amount, ...)
 	end
-	-- if it isn't a dumpsite abort
+	-- If it isn't a dumpsite abort
 	local dropoff = obj.d_request and obj.d_request:GetBuilding()
 	if IsValid(dropoff) and not dropoff:IsKindOf("WasteRockDumpSite") then
 		return orig_TaskRequestHub_FindDemandRequest(self, obj, resource, amount, ...)
 	end
 
-	-- ignore picked up from same obj
+	-- Ignore picked up from same obj
 	local pickup_obj_bld = obj.picked_up_from_req and obj.picked_up_from_req:GetBuilding()
 	if not IsValid(pickup_obj_bld) then
 		pickup_obj_bld = nil

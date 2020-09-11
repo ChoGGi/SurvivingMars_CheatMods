@@ -101,14 +101,14 @@ DefineClass.ChoGGi_DlgExamine = {
 	parent_id = false,
 	-- whatever RetName is
 	name = false,
-	-- if we're examining a string we want to convert to an object
+	-- If we're examining a string we want to convert to an object
 	str_object = false,
 	-- we store the str_object > obj here
 	obj_ref = false,
 	-- used to store visibility of obj
 	orig_vis_flash = false,
 	flashing_thread = false,
-	-- if it's transparent or not
+	-- If it's transparent or not
 	transp_mode = false,
 	-- get list of all values from metatables
 	show_all_values = false,
@@ -118,7 +118,7 @@ DefineClass.ChoGGi_DlgExamine = {
 	enum_vars = false,
 	-- going in through the backdoor
 	sort_dir = false,
-	-- if TaskRequest then store flags here
+	-- If TaskRequest then store flags here
 	obj_flags = false,
 	-- stores obj entity string
 	obj_entity = false,
@@ -147,7 +147,7 @@ DefineClass.ChoGGi_DlgExamine = {
 	string_State = false,
 
 	-- only chinese goes slow as molasses for some reason (whatever text rendering they do?)
-	-- i added this to stop the game from freezing till obj is examined
+	-- I added this to stop the game from freezing till obj is examined
 	-- that way you can at least close the dlg if it's taking too long
 	is_chinese = false,
 
@@ -228,7 +228,7 @@ function ChoGGi_DlgExamine:Init(parent, context)
 	self.string_Object = Translate(298035641454--[[Object]])
 	self.string_State = Translate(3722--[[State]])
 
-	-- if we're examining a string we want to convert to an object
+	-- If we're examining a string we want to convert to an object
 	if type(self.obj) == "string" then
 		if context.parent == "str" then
 			self.str_object = context.parent == "str" and true
@@ -254,7 +254,7 @@ function ChoGGi_DlgExamine:Init(parent, context)
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
 
-	-- ignoring scaling, this will bump the size of the next examine opened
+	-- Ignoring scaling, this will bump the size of the next examine opened
 	self.idSizeControl.OnMouseButtonUp = function(size_obj, pt, button, ...)
 		if button == "L" then
 			local x,y = self:GetSize():xy()
@@ -800,7 +800,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 		table_insert(roll_text, 2, obj_str .. "\n\n")
 		c = c + 2
 
-		-- if it's an image then add 'er to the text
+		-- If it's an image then add 'er to the text
 		if self.ChoGGi.ComFuncs.ValidateImage(obj_str) and
 			self.ChoGGi.ComFuncs.ImageExts()[obj_str:sub(-3):lower()]
 		then
@@ -994,7 +994,7 @@ function ChoGGi_DlgExamine:idButClear_OnPress()
 	else
 		-- clear all spheres
 		self.ChoGGi.ComFuncs.ClearShowObj(true)
-		-- if this has a custom colour
+		-- If this has a custom colour
 		self.ChoGGi.ComFuncs.ClearShowObj(self.obj_ref)
 	end
 	self.marked_objects:Clear()
@@ -1005,7 +1005,7 @@ end
 function ChoGGi_DlgExamine:idButMarkObject_OnPress()
 	self = GetRootDialog(self)
 	if IsValid(self.obj_ref) then
-		-- i don't use AddSphere since that won't add the ColourObj
+		-- I don't use AddSphere since that won't add the ColourObj
 		local c = #self.marked_objects
 		local sphere = self.ChoGGi.ComFuncs.ShowPoint(self.obj_ref)
 		if IsValid(sphere) then
@@ -1110,7 +1110,7 @@ function ChoGGi_DlgExamine:idAutoRefresh_OnChange()
 	local checked = self:GetCheck()
 	self = GetRootDialog(self)
 
-	-- if already running then stop and return
+	-- If already running then stop and return
 	if IsValidThread(self.autorefresh_thread) then
 
 		if checked then
@@ -1188,7 +1188,7 @@ function ChoGGi_DlgExamine:DumpExamineText(text, name, ext, overwrite)
 	name = name or "DumpedExamine"
 	ext = ext or "lua"
 
-	-- if it gets called from MultiLineTextDlg and the examine dialog was closed
+	-- If it gets called from MultiLineTextDlg and the examine dialog was closed
 	local ChoGGi = self.ChoGGi or ChoGGi
 
 	if ChoGGi.UserSettings.ExamineAppendDump then
@@ -1405,7 +1405,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 					if self.ancestors[1] then
 						self:ProcessList(self.ancestors, Strings[302535920000525--[[Ancestors]]] .. ": ")
 					end
-					-- if Object hasn't been added, then add CObject (O has a few more funcs than CO)
+					-- If Object hasn't been added, then add CObject (O has a few more funcs than CO)
 					if not self.menu_added.Object and self.menu_added.CObject then
 						self:BuildFuncList("CObject", self.menu_added.CObject)
 					end
@@ -1746,7 +1746,7 @@ function ChoGGi_DlgExamine:GetCleanText(scrolled_text, skip_ast)
 		if cache[self.idScrollArea.PendingOffsetY or 0] then
 			scrolled_text = self.idScrollArea.PendingOffsetY or 0
 		else
-			-- if it's nil we're between lines
+			-- If it's nil we're between lines
 			-- we send "" or it'll try to use the search text
 			self:FindNext("")
 			-- no need to test if it's in the cache
@@ -2334,11 +2334,11 @@ function ChoGGi_DlgExamine:ShowExecCodeWithCode(code)
 end
 
 function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
-	-- id for PopupToggle
+	-- Id for PopupToggle
 	self.opened_list_menu_id = self.opened_list_menu_id or self.ChoGGi.ComFuncs.Random()
 
 	local obj_name = RetName(obj)
-	-- i need to know if it's a number or string and so on
+	-- I need to know if it's a number or string and so on
 	local obj_key, obj_type = self.ChoGGi.ComFuncs.RetProperType(obj)
 
 	local obj_value = self.obj_ref[obj_key]
@@ -2406,7 +2406,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 	local c_orig = #list
 	local c = c_orig
 
-	-- if it's an image path then we add an image viewer
+	-- If it's an image path then we add an image viewer
 	if self.ChoGGi.ComFuncs.ImageExts()[obj_value_str:sub(-3):lower()] then
 		c = c + 1
 		list[c] = {name = Strings[302535920001469--[[Image Viewer]]],
@@ -2483,7 +2483,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 				local quote = obj_type == "number" and "" or "\""
 				-- can we ref it with .name (i'm ignoring _123 since i'm lazy)
 				local is_dot = tostring(obj_name):find("[%a_]")
-				-- if it's a cls obj then make sure to use the obj
+				-- If it's a cls obj then make sure to use the obj
 				local is_class = self.obj_ref.class and g_Classes[self.obj_ref.class] or self.obj_type == "userdata" or self.obj_type == "string"
 
 				local code
@@ -2508,7 +2508,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 			hint = Strings[302535920000168--[[Continually call this function while showing results in an examine dialog.]]],
 			image = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
 			clicked = function()
-				-- if it's a class object then add self ref
+				-- If it's a class object then add self ref
 				if self.obj_ref.class and g_Classes[self.obj_ref.class] or self.obj_type == "userdata" or self.obj_type == "string" then
 					self:ShowExecCodeWithCode("MonitorFunc(o." .. obj_name .. ", o)")
 				else
@@ -2602,7 +2602,7 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 			local len = #obj
 			local obj_metatable = getmetatable(obj)
 
-			-- if it's an objlist then we return a list of the objects
+			-- If it's an objlist then we return a list of the objects
 			if obj_metatable and IsObjlist(obj_metatable) then
 				local res = {
 					self:HyperLink(obj, Examine_ConvertValueToInfo),
@@ -2710,7 +2710,7 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 				trans_str = "<tags off>" .. trans_str .. "<tags on>" .. self:HyperLink(obj, Examine_ConvertValueToInfo) .. " *"
 			end
 
-			-- if meta name then add it
+			-- If meta name then add it
 			if meta and meta.__name then
 				-- add TaskRequest res name
 				if obj.GetResource then
@@ -2907,7 +2907,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 		local is_chinese = self.is_chinese
 		for k, v in pairs(obj) do
 			-- sorely needed delay for chinese (or it "freezes" the game when loading something like _G)
-			-- i assume text rendering is slower for the chars, 'cause examine is really slow with them.
+			-- I assume text rendering is slower for the chars, 'cause examine is really slow with them.
 			if is_chinese then
 				Sleep(1)
 			end
@@ -3038,7 +3038,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 			else
 				path = ""
 			end
-			-- if neither then add a newline
+			-- If neither then add a newline
 			if path == "" and step_vector == "" then
 				path = "\n"
 			end
@@ -3641,7 +3641,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 	if self.str_object then
 		-- check if obj string is a ref to an actual object
 		local obj_ref = self.ChoGGi.ComFuncs.DotNameToObject(obj)
-		-- if it is then we use that as the obj to examine
+		-- If it is then we use that as the obj to examine
 		if obj_ref then
 			if type(obj_ref) == "function" then
 				obj = obj_ref(self.varargs)
@@ -3682,7 +3682,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 			-- build menu list
 			self:BuildParentsMenu(obj.__parents, "parents", Strings[302535920000520--[[Parents]]])
 			self:BuildParentsMenu(obj.__ancestors, "ancestors", Strings[302535920000525--[[Ancestors]]], true)
-			-- if anything was added to the list then add to the menu
+			-- If anything was added to the list then add to the menu
 			if self.parents_menu_popup[1] then
 				SetWinObjectVis(self.idParents, true)
 			end
@@ -3691,7 +3691,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 		-- attaches button/menu
 		self:BuildAttachesPopup(obj)
 
-	end -- istable
+	end -- Istable
 
 	if obj == "nil" then
 		self.idCaption:SetTitle(self, obj)

@@ -136,7 +136,7 @@ function OnMsg.NewHour()
 		if mod["Constant_" .. disaster] then
 			local c = hours_passed[disaster]
 			c = c + 1
-			-- if we hit the mark than activate, and reset count
+			-- If we hit the mark than activate, and reset count
 			if c >= mod["Delay_" .. disaster] then
 				ActivateDisaster(disaster)
 				c = 0

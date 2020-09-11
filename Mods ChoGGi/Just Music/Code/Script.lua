@@ -47,7 +47,7 @@ function PlayTrack(track_list, index, silence, ...)
 		end
 	end
 
-	-- it's all good
+	-- It's all good
 	return orig_PlayTrack(track_list, index, silence, ...)
 end
 

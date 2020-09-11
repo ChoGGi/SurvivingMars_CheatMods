@@ -216,7 +216,7 @@ do -- AddPrefabs
 				Strings[302535920001191--[[Added prefabs to %s buildings.]]]:format(#choice),
 				T(1110, "Prefab Buildings")
 			)
-			-- if the build menu is opened and they add some prefabs it won't use them till it's toggled, so we do this instead
+			-- If the build menu is opened and they add some prefabs it won't use them till it's toggled, so we do this instead
 			ChoGGi.ComFuncs.UpdateBuildMenu()
 		end
 

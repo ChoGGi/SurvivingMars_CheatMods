@@ -27,7 +27,7 @@ function ChoGGi_DlgDTMSlots:Init(parent, context)
 		Id = "idInfo",
 	}, self.idDialog)
 
-	-- invis background
+	-- Invis background
 	self.idDialog:SetBackground(0)
 
 	self:PostInit(context.parent)

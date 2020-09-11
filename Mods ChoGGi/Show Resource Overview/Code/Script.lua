@@ -4,7 +4,7 @@ local T = T
 
 -- add action to GameShortcuts
 function OnMsg.ClassesPostprocess()
-	-- if action exists then replace it, otherwise add to the end
+	-- If action exists then replace it, otherwise add to the end
 	local GameShortcuts = XTemplates.GameShortcuts
 	local idx = table.find(GameShortcuts, "ActionId", "actionColonyOverview")
 	-- add the shortcut

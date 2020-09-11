@@ -254,7 +254,7 @@ local function BuildRollover(ret, grid_info, grid)
 
 	-- collect numbers (have to do two loops to play fair with mod_MergedGrids)
 	for i = 1, grid_c do
-		-- if old/new grid is the same count, no need for a new table, just overwrite existing numbers
+		-- If old/new grid is the same count, no need for a new table, just overwrite existing numbers
 		if not grid_info[i] then
 			grid_info[i] = table_copy(default_grid)
 		end
@@ -620,7 +620,7 @@ function OnMsg.ClassesPostprocess()
 	if not idx then
 		return
 	end
-	xtemplate = xtemplate[idx][2][1] -- idTotalDrones
+	xtemplate = xtemplate[idx][2][1] -- IdTotalDrones
 
 	local borked_str = T(65, "Malfunctioned") ..  " " .. T(517, "Drones")
 	xtemplate.RolloverHint = T(11704, "<left_click> Cycle drone controllers")

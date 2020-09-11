@@ -365,7 +365,7 @@ function OnMsg.SelectedObjChange(obj)
 		return
 	end
 
-	-- if type tunnel then build/update list and show lines
+	-- If type tunnel then build/update list and show lines
 	local tunnels = UICity.labels[cls] or ""
 	for i = 1, #tunnels do
 		-- get tunnel n linked one so we only have one of each in table

@@ -25,7 +25,7 @@ function OnMsg.LoadGame()
 			AddPanels(bld)
 		end
 	end
-	-- i probably need to do this since i load mods in the main menu and it's a GlobalGameTimeThread
+	-- I probably need to do this since i load mods in the main menu and it's a GlobalGameTimeThread
 	RestartGlobalGameTimeThread("SolarArrayOrientation")
 end
 

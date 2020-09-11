@@ -53,7 +53,7 @@ local comment = token("comment", multiline_comment + singleline_comment + sheban
 -- private interface
 local table_of_tokens = Ct((comment + token("error", 1)) ^ 0)
 
--- increment [line] by the number of line-ends in [text]
+-- Increment [line] by the number of line-ends in [text]
 local function sync(line, text)
 	local index, limit = 1, #text
 	while index <= limit do

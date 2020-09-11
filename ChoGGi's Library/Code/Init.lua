@@ -35,7 +35,7 @@ ChoGGi = {
 	-- easy access to them
 	id_lib = CurrentModId,
 	def_lib = CurrentModDef,
-	-- is ECM shanghaied by the blacklist?
+	-- Is ECM shanghaied by the blacklist?
 	blacklist = true,
 	-- constants
 	Consts = {InvalidPos = InvalidPos()},

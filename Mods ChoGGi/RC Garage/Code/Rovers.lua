@@ -15,7 +15,7 @@ rcc.ChoGGi_InGarage = T(302535920011182, [[Stored in garage]])
 
 local BaseRover = BaseRover
 
--- if it's garage otherwise return orig func
+-- If it's garage otherwise return orig func
 --~ (interact, obj, interaction_mode)
 local function CanInteractWithObject_local(interact, obj)
 	local garage = g_ChoGGi_RCGarages
@@ -103,7 +103,7 @@ function BaseRover:ChoGGi_UseGarage(garage)
 
 	-- pack away the drones
 	if self:IsKindOf("RCRover") and self.sieged_state then
-		-- if drones already being sent in
+		-- If drones already being sent in
 		self:Unsiege()
 		self.siege_state_name = "UnSiege"
 		self.sieged_state = false

@@ -45,7 +45,7 @@ local function WriteModSettings(settings)
 		return
 	end
 
-	-- if we call it from ReadModSettings looking for defaults
+	-- If we call it from ReadModSettings looking for defaults
 	return data
 end
 
@@ -73,7 +73,7 @@ local function ReadModSettings()
 
 	-- just in case
 	if type(g_SaveMissionProfiles) ~= "table" then
-		-- i have a defaults table i load up with my mod, if somethings wrong then at at the mod will have some settings to use
+		-- I have a defaults table i load up with my mod, if somethings wrong then at at the mod will have some settings to use
 		g_SaveMissionProfiles = {}
 	end
 

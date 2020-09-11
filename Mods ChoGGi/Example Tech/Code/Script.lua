@@ -18,7 +18,7 @@ function OnMsg.ClassesPostprocess()
 
 end
 
--- insert into existing saves
+-- Insert into existing saves
 function OnMsg.LoadGame()
 	local UICity = UICity
 

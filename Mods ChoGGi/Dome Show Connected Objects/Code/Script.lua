@@ -52,7 +52,7 @@ local function BuildObjList(list)
 end
 
 local function ToggleLines(obj)
-	-- it's a toggle so
+	-- It's a toggle so
 	if lines_c > 0 then
 		CleanUp()
 		return

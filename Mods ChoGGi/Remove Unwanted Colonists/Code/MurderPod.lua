@@ -152,9 +152,9 @@ function MurderPod:LaunchMeteor(entity)
 		descr.meteor:ChangeEntity(entity)
 		-- frozen meat popsicle (dark blue)
 		descr.meteor:SetColorModifier(-16772609)
-		-- it looks reasonable
+		-- It looks reasonable
 		descr.meteor:SetState("sitSoftChairIdle")
-		-- i don't maybe they swelled up from the heat and moisture permeating in space (makes it easier to see the popsicle)
+		-- I don't maybe they swelled up from the heat and moisture permeating in space (makes it easier to see the popsicle)
 		descr.meteor:SetScale(500)
 	end
 --~ 	ex(descr.meteor)

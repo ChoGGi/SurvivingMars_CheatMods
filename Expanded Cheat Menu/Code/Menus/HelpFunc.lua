@@ -143,7 +143,7 @@ do -- ModUpload
 	end
 	local hpk_path_working
 
-	-- it's fine...
+	-- It's fine...
 	local copy_files, blank_mod, clipboard, test, steam_upload, para_platform
 	local mod, mod_path, upload_image, diff_author, result, choices_len, uploading
 	local orig_title, msg_popup_id
@@ -202,7 +202,7 @@ do -- ModUpload
 
 			else
 				-- we override the Platform checkbox if a uuid is in metadata.lua
-				-- if both are "" then it's probably a new mod, otherwise check for a uuid and use that prop
+				-- If both are "" then it's probably a new mod, otherwise check for a uuid and use that prop
 				if mod.pops_desktop_uuid == "" and mod.pops_any_uuid == "" then
 					-- desktop
 					if para_platform then
@@ -229,7 +229,7 @@ do -- ModUpload
 			end
 		end
 
-		-- issue with mod platform (workshop/paradox mods)
+		-- Issue with mod platform (workshop/paradox mods)
 		if not prepare_worked then
 			local msg = Translate(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>]]):gsub("<ModLabel>", mod.title):gsub("<err>", Translate(prepare_results))
 			if batch then
@@ -349,7 +349,7 @@ do -- ModUpload
 
 			mod_params.os_pack_path = os_dest
 
-			-- if no last_changes then use version num
+			-- If no last_changes then use version num
 			if not mod.last_changes or mod.last_changes == "" then
 				if testing then
 					mod.last_changes = "https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/"
@@ -627,7 +627,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 						ask_batch = true
 					end
 
-				end -- if mod
+				end -- If mod
 			end -- for
 
 			-- QuestionBox creates a thread, so we set this to false in UploadMod for it
@@ -688,7 +688,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			return
 		end
 
-		-- if user copied a mod over after game started
+		-- If user copied a mod over after game started
 		print("ECM ModUpload ModsReloadDefs():")
 		ModsReloadDefs()
 
@@ -775,7 +775,7 @@ If you have a uuid in your metadata.lua this checkbox is ignored and it'll try t
 					func = function(_, check)
 						upload_to_whichplatform = check
 					end,
-					-- it defaults to hidden, so if it's paradox then we change it to visible
+					-- It defaults to hidden, so if it's paradox then we change it to visible
 					visible = not upload_to_who,
 				},
 			},
@@ -1002,7 +1002,7 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 	if Platform.steam or Platform.pops then
 		local mod_folders = {}
 
-		-- if user installed mod while game is running
+		-- If user installed mod while game is running
 		print("ECM ExtractHPKs ModsReloadDefs():")
 		ModsReloadDefs()
 

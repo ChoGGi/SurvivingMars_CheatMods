@@ -19,7 +19,7 @@ DefineClass.InstantLake = {
 function InstantLake:GameInit()
 	self:SetColorModifier(-12374251)
 
-	-- init water level
+	-- Init water level
 	self.water_obj = WaterFill:new()
 	local pos = self:GetPos():AddZ(500)
 	self.water_level = 500

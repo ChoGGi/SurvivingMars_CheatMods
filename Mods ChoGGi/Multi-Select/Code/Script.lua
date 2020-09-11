@@ -54,7 +54,7 @@ local function UpdateCircle()
 	-- connect the dots
 	points[steps+1] = points[1]
 
-	-- if more/less points we need to delete old polyline and spawn a new one
+	-- If more/less points we need to delete old polyline and spawn a new one
 	if #points > circle.max_vertices then
 		local new_line = PlaceObject("Polyline", {
 			max_vertices = #points
@@ -98,7 +98,7 @@ function OnMsg.ClassesBuilt()
 			return "break"
 
 		elseif button == "L" and MouseShortcut(button) == "Shift-MouseL" then
-			-- if obj under mouse then add/remove it from selection
+			-- If obj under mouse then add/remove it from selection
 			-- otherwise start a new circle
 			local obj = GetPreciseCursorObj()
 			if obj and obj:IsKindOf("DroneBase") then

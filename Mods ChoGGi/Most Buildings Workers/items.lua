@@ -58,7 +58,7 @@ local g = _G
 local BuildingTemplates = BuildingTemplates
 
 for id, template in pairs(BuildingTemplates) do
-	-- if there's no cls obj then we can't check if it's a workplace
+	-- If there's no cls obj then we can't check if it's a workplace
 	local cls = rawget(g, template.template_class)
 
 	if cls and not skip_cats[template.build_category] and not skip_ids[id]

@@ -317,7 +317,7 @@ local function ShowList_AddTo(obj, profile_name)
 			return
 		end
 
-		-- if all of type then we use these below
+		-- If all of type then we use these below
 		local working, priority, shift1, shift2, shift3, specialist_enforce_mode
 
 		for i = 2, #choices do
@@ -482,7 +482,7 @@ function OnMsg.ClassesPostprocess()
 		-- we need to remove for insert
 		table_remove(xt,idx)
 	else
-		-- insert above consumption
+		-- Insert above consumption
 		idx = table.find(xt, "__template", "sectionConsumption")
 	end
 

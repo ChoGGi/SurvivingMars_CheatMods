@@ -24,7 +24,7 @@ local Sleep = Sleep
 local type = type
 
 local function CleanupShuttles()
-	-- in case this func gets called again for some reason
+	-- In case this func gets called again for some reason
 	local old_pos = {}
 	local c = 0
 	local FlyingObjs = FlyingObjs or ""
@@ -54,7 +54,7 @@ local function CleanupShuttles()
 			item.obj:Idle()
 			o:SetCommand("GoHome")
 		end
-		-- if we do them all at once then it does a funky flipper dance
+		-- If we do them all at once then it does a funky flipper dance
 		-- shuttles that go back in the hub are deleted
 		local timer = 10000
 		while IsValid(item.obj) and timer > 0 do

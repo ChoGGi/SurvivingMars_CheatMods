@@ -236,7 +236,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 
 I think somebody has been playing too much Fallout...]]],
 					Strings[302535920000743--[[Childkiller]]],
-					{image = "UI/Icons/Logos/logo_09.tga", size = true}
+					{image = "UI/Icons/Logos/logo_09.tga"}
 				)
 				if not UICity.ChoGGi.Childkiller then
 					Msg("ChoGGi_Childkiller")
@@ -431,8 +431,7 @@ function ChoGGi.MenuFuncs.SetMinComfortBirth()
 			MsgPopup(
 				Strings[302535920000769--[[Selected]]] .. ": " .. choice[1].text .. Strings[302535920000770--[[
 Look at them, bloody Catholics, filling the bloody world up with bloody people they can't afford to bloody feed.]]],
-				T(7425, "Minimum Colonist Comfort for Birth"),
-				{size = true}
+				T(7425, "Minimum Colonist Comfort for Birth")
 			)
 		end
 	end
@@ -454,8 +453,7 @@ function ChoGGi.MenuFuncs.VisitFailPenalty_Toggle()
 	MsgPopup(
 		Strings[302535920000772--[["%s:
 The mill's closed. There's no more work. We're destitute. I'm afraid I have no choice but to sell you all for scientific experiments."]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.VisitFailPenalty)),
-		Strings[302535920000397--[[Visit Fail Penalty]]],
-		{size = true}
+		Strings[302535920000397--[[Visit Fail Penalty]]]
 	)
 end
 
@@ -510,8 +508,7 @@ function ChoGGi.MenuFuncs.SetRenegadeStatus()
 Really? Have you seen a man eat his own head?
 No.
 So then, you haven't seen everything."]]],
-			Strings[302535920000401--[[Set Renegade Status]]],
-			{size = true}
+			Strings[302535920000401--[[Set Renegade Status]]]
 		)
 	end
 
@@ -582,8 +579,7 @@ function ChoGGi.MenuFuncs.NoHomeComfortDamage_Toggle()
 Oh, give me a home where the Buffalo roam.
 Where the Deer and the Antelope play;
 Where seldom is heard a discouraging word."]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.NoHomeComfort)),
-		T(4559, "Homeless Comfort Penalty"),
-		{size = true}
+		T(4559, "Homeless Comfort Penalty")
 	)
 end
 
@@ -629,8 +625,7 @@ function ChoGGi.MenuFuncs.ColonistsStarve_Toggle()
 		Strings[302535920000784--[[%s: A stale piece of bread is better than nothing.
 And nothing is better than a big juicey steak.
 Therefore a stale piece of bread is better than a big juicy steak.]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.TimeBeforeStarving)),
-		Strings[302535920000418--[[Colonists Starve]]],
-		{size = true}
+		Strings[302535920000418--[[Colonists Starve]]]
 	)
 end
 
@@ -713,8 +708,7 @@ function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
 Down the road is where I'll always be
 Maybe tomorrow, I'll find what I call home
 Until tomorrow, you know I'm free to roam]]]:format(choice[1].text),
-				T(4691, "Default outside Workplaces radius"),
-				{size = true}
+				T(4691, "Default outside Workplaces radius")
 			)
 		end
 	end
@@ -1289,7 +1283,7 @@ function ChoGGi.MenuFuncs.SetColonistsRace(action)
 		if value == Translate(3490--[[Random]]) then
 			MilestoneCompleted.DaddysLittleHitler = nil
 			UICity.ChoGGi.DaddysLittleHitler = nil
-		-- if only changing one colonists then you aren't hitler :)
+		-- If only changing one colonists then you aren't hitler :)
 		elseif not choice.check2 and not UICity.ChoGGi.DaddysLittleHitler then
 			Msg("ChoGGi_DaddysLittleHitler")
 			UICity.ChoGGi.DaddysLittleHitler = true

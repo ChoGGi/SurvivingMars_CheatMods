@@ -325,7 +325,7 @@ function PortableMiner:SpawnThumper()
 end
 
 function PortableMiner:Goto(...)
-	-- if stockpile is filled and user takes rc to new mine than make sure we mine from new mine
+	-- If stockpile is filled and user takes rc to new mine than make sure we mine from new mine
 	table.iclear(self.nearby_deposits)
 	self.stockpile = false
 	-- needed to mine other concrete
@@ -354,7 +354,7 @@ function PortableMiner:ProcAutomation()
 	if deposit then
 		local deposit_pos = GetPassablePointNearby(deposit:GetPos())
 		if self:HasPath(deposit_pos, "Origin") then
-			-- if leaving an empty site then this sign should be turned off
+			-- If leaving an empty site then this sign should be turned off
 			self:ShowNotWorkingSign(false)
 			self:SetCommand("Goto", deposit_pos)
 		else
@@ -373,9 +373,9 @@ function PortableMiner:ProcAutomation()
 	Sleep(2500)
 end
 
--- if we're in auto-mode then make the stockpile take more
+-- If we're in auto-mode then make the stockpile take more
 function PortableMiner:ToggleAutoMode(broadcast)
-	-- if it's on it's about to be turned off
+	-- If it's on it's about to be turned off
 	if IsValid(self.stockpile) then
 		self.stockpile.max_z = self.auto_mode_on and pms.max_z_stack_man or pms.max_z_stack_auto
 	end
@@ -383,7 +383,7 @@ function PortableMiner:ToggleAutoMode(broadcast)
 end
 
 function PortableMiner:Idle()
-	-- if there's one near then mine that bugger
+	-- If there's one near then mine that bugger
 	if self:DepositNearby() then
 		self:ShowNotWorkingSign(false)
 		--	get to work
@@ -413,7 +413,7 @@ function PortableMiner:DepositNearby()
 		return self:GetVisualDist(o) < self.mine_dist
 	end)
 
-		-- if it's concrete and there's a marker then we're good, if it's sub then check depth + tech researched
+		-- If it's concrete and there's a marker then we're good, if it's sub then check depth + tech researched
 	if d and (d:IsKindOf("TerrainDepositConcrete") and d:GetDepositMarker() or
 					(d:IsKindOfClasses(self.mineable) and
 					(d.depth_layer < 2 or self.city:IsTechResearched("DeepMetalExtraction")))) then
@@ -555,7 +555,7 @@ function PortableMiner:Load()
 
 	if not skip_end then
 		local time = pms.mine_time_idle[self.resource] or self:TimeToAnimEnd()
-		-- if not idle state then make idle state (the raise up motion of the mining)
+		-- If not idle state then make idle state (the raise up motion of the mining)
 		if self:GetState() ~= 0 then
 			self:SetStateText(self.default_anim_idle)
 			if mod_ShowRocket then
@@ -580,11 +580,11 @@ function PortableMiner:MineIsEmpty()
 	-- freezing issue with flatten ground?
 	Sleep(100)
 
-	-- it's done so remove our ref to it
+	-- It's done so remove our ref to it
 	table.iclear(self.nearby_deposits)
 	-- needed to mine other concrete
 	self.found_deposit = false
-	-- if there's a mine nearby then off we go
+	-- If there's a mine nearby then off we go
 	if self:DepositNearby() then
 		self:SetCommand("Load")
 		return
@@ -630,7 +630,7 @@ function PortableMiner:DigErUp()
 ]]
 
 	local amount = pms.mine_amount
-	-- if there isn't much left get what's left
+	-- If there isn't much left get what's left
 	if amount > d.amount then
 		amount = d.amount
 	end
@@ -644,7 +644,7 @@ function PortableMiner:DigErUp()
 		paint = self.metal_paint or metal_paint
 	end
 
-	-- if it's empty ExtractResource will delete it
+	-- If it's empty ExtractResource will delete it
 	if extracted == 0 or not IsValid(d) then
 		return self:MineIsEmpty()
 	end

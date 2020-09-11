@@ -64,7 +64,7 @@ local function BuildMySpots()
 	-- get list of saves
 	SavegamesList:Refresh()
 
-	-- it can happen
+	-- It can happen
 	if not PlanetRotationObj then
 		return
 	end
@@ -135,7 +135,7 @@ function LandingSiteObject:AttachPredefinedSpots(...)
 
 	-- needed ref above
 	LandingSite_object = self
-	-- if I don't thread it I get an error from LandingSiteObject:DrawSpot
+	-- If I don't thread it I get an error from LandingSiteObject:DrawSpot
 	CreateRealTimeThread(BuildMySpots)
 end
 
@@ -165,7 +165,7 @@ function LandingSiteObject:DisplayCoord(...)
 		return
 	end
 
-	-- is it one of ours
+	-- Is it one of ours
 	local params = g_CurrentMapParams
 	local marker = new_markers[params.latitude .. "_" .. params.longitude]
 	if marker then

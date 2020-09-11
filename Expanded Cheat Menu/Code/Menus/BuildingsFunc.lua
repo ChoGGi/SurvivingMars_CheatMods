@@ -598,8 +598,7 @@ function ChoGGi.MenuFuncs.AlwaysDustyBuildings_Toggle()
 I will face my fear. I will permit it to pass over me and through me,
 and when it has gone past I will turn the inner eye to see its path.
 Where the fear has gone there will be nothing. Only I will remain.]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.AlwaysDustyBuildings)),
-		Strings[302535920000174--[[Always Dusty]]],
-		{size = true}
+		Strings[302535920000174--[[Always Dusty]]]
 	)
 end
 
@@ -720,7 +719,7 @@ function ChoGGi.MenuFuncs.UnlockLockedBuildings()
 			return
 		end
 		local UnlockBuilding = UnlockBuilding
-		-- if everything then ignore the choices and just use the itemlist
+		-- If everything then ignore the choices and just use the itemlist
 		if table.find(choice, "value", everything) then
 			choice = item_list
 		end
@@ -1026,8 +1025,7 @@ function ChoGGi.MenuFuncs.FarmShiftsAllOn()
 Going down, down
 Working in a coal mine
 Whew, about to slip down]]],
-		Strings[302535920000192--[[Farm Shifts All On]]],
-		{size = true}
+		Strings[302535920000192--[[Farm Shifts All On]]]
 	)
 end
 
@@ -1238,8 +1236,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 		MsgPopup(
 			Strings[302535920000143--[["%s
 I presume the PM's in favour of the scheme because it'll reduce unemployment."]]]:format(choice[1].text),
-			Strings[302535920000196--[[Fully Automated Building]]],
-			{size = true}
+			Strings[302535920000196--[[Fully Automated Building]]]
 		)
 	end
 
@@ -1300,8 +1297,7 @@ do -- SchoolTrainAll_Toggle/SanatoriumCureAll_Toggle
 			Strings[302535920000148--[["%s:
 You keep your work station so clean, Jerome.
 It's next to godliness. Isn't that what they say?"]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SchoolTrainAll)),
-			Strings[302535920000200--[[Train All]]],
-			{size = true}
+			Strings[302535920000200--[[Train All]]]
 		)
 	end
 
@@ -1318,8 +1314,7 @@ It's next to godliness. Isn't that what they say?"]]]:format(ChoGGi.ComFuncs.Set
 		MsgPopup(
 			Strings[302535920000149--[[%s:
 There's more vodka in this piss than there is piss.]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SanatoriumCureAll)),
-			Strings[302535920000198--[[Cure All]]],
-			{size = true}
+			Strings[302535920000198--[[Cure All]]]
 		)
 	end
 end -- do
@@ -1432,8 +1427,7 @@ function ChoGGi.MenuFuncs.CropFailThreshold_Toggle()
 		Strings[302535920000153--[["%s:
 So, er, we the crew of the Eagle 5, if we do encounter, make first contact with alien beings,
 it is a friendship greeting from the children of our small but great planet of Potatoho."]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CropFailThreshold)),
-		T(4711, "Crop Fail Threshold"),
-		{size = true}
+		T(4711, "Crop Fail Threshold")
 	)
 end
 
@@ -1485,8 +1479,7 @@ function ChoGGi.MenuFuncs.BuildingDamageCrime_Toggle()
 We were all feeling a bit shagged and fagged and fashed,
 it having been an evening of some small energy expenditure, O my brothers.
 So we got rid of the auto and stopped off at the Korova for a nightcap.]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CrimeEventSabotageBuildingsCount)),
-		Strings[302535920000216--[[Building Damage Crime]]],
-		{size = true}
+		Strings[302535920000216--[[Building Damage Crime]]]
 	)
 end
 
@@ -1527,7 +1520,7 @@ end
 function ChoGGi.MenuFuncs.Building_wonder_Toggle()
 	ChoGGi.UserSettings.Building_wonder = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.Building_wonder)
 
-	-- if the buildmenu is open
+	-- If the buildmenu is open
 	ChoGGi.ComFuncs.UpdateBuildMenu()
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -1601,7 +1594,7 @@ function ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle()
 		end
 	end
 
-	-- if the buildmenu is open
+	-- If the buildmenu is open
 	ChoGGi.ComFuncs.UpdateBuildMenu()
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -1669,8 +1662,7 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(action)
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				choice[1].text .. ":\n" .. msgpopup,
-				id,
-				{size = true}
+				id
 			)
 		end
 	end

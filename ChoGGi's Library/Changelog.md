@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v8.5 (Unreleased)
+## v8.6 (Unreleased)
+
+## v8.5 (11 Sep 2020)
 - Titlebar rollup was showing exec code area (ignoring checkbox).
 - Path Markers were leaving stuff in objs when the game was saved (thread log spam).
 

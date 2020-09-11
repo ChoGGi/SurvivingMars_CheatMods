@@ -52,7 +52,7 @@ function Dome:SpawnChild(...)
 
 	-- no nursery so abort
 	if not objs then
-		-- if there's no nurseries at all and then send back orig func
+		-- If there's no nurseries at all and then send back orig func
 		if not objs_g and mod_BypassNoNurseries then
 			return orig_SpawnChild(self, ...)
 		end

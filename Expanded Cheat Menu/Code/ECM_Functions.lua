@@ -179,7 +179,7 @@ function ChoGGi.ComFuncs.Dump(obj, overwrite, file, ext, skip_msg, gen_name)
 		return
 	end
 
-	-- if overwrite is nil then we append, if anything else we overwrite
+	-- If overwrite is nil then we append, if anything else we overwrite
 	if overwrite then
 		overwrite = nil
 	else
@@ -407,7 +407,7 @@ do -- WriteLogs_Toggle
 				buffer_table[buffer_cnt] = funcname .. ": " .. args
 			end
 
-			-- i have no idea why the devs consider this an error?
+			-- I have no idea why the devs consider this an error?
 			if mask == 1 and ... == "Attempt to use an undefined global '" then
 				return
 			end
@@ -564,7 +564,7 @@ do -- OpenInExamineDlg
 					if not IsValidXWin(child) then
 						parent.child_lock_dlg = false
 					else
-						-- it's valid so update with new obj
+						-- It's valid so update with new obj
 						child.obj = params.obj
 						child:SetObj()
 						-- no need for a new window
@@ -606,7 +606,7 @@ function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list, parent)
 end
 
 function ChoGGi.ComFuncs.OpenInObjectEditorDlg(obj, parent)
-	-- if fired from action menu
+	-- If fired from action menu
 	if IsKindOf(obj, "XAction") then
 		obj = ChoGGi.ComFuncs.SelObject()
 		parent = nil
@@ -629,7 +629,7 @@ function ChoGGi.ComFuncs.OpenInObjectEditorDlg(obj, parent)
 end
 
 function ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(obj, parent)
-	-- if fired from action menu
+	-- If fired from action menu
 	if IsKindOf(obj, "XAction") then
 		obj = ChoGGi.ComFuncs.SelObject()
 		parent = nil
@@ -693,7 +693,7 @@ function ChoGGi.ComFuncs.OpenInImageViewerDlg(obj, parent)
 end
 
 function ChoGGi.ComFuncs.OpenInDTMSlotsDlg(parent)
-	-- if fired from action menu
+	-- If fired from action menu
 	if parent and (IsKindOf(parent, "XAction") or not IsKindOf(parent, "XWindow")) then
 		parent = nil
 	end
@@ -705,7 +705,7 @@ end
 
 function ChoGGi.ComFuncs.EntitySpawner(obj, params)
 
-	-- if fired from action menu
+	-- If fired from action menu
 	if IsKindOf(obj, "XAction") then
 		params = {}
 		if obj.setting_planning then
@@ -834,7 +834,7 @@ function ChoGGi.ComFuncs.EntitySpawner(obj, params)
 end
 
 function ChoGGi.ComFuncs.SetAnimState(obj)
-	-- if fired from action menu
+	-- If fired from action menu
 	if IsKindOf(obj, "XAction") then
 		obj = ChoGGi.ComFuncs.SelObject()
 	else
@@ -869,7 +869,7 @@ function ChoGGi.ComFuncs.SetAnimState(obj)
 		choice = choice[1]
 
 		local value = choice.value
-		-- if user wants to play it again we'll need to have it set to another state and everything has idle
+		-- If user wants to play it again we'll need to have it set to another state and everything has idle
 		obj:SetState("idle")
 
 		if value ~= "idle" then
@@ -973,7 +973,7 @@ function ChoGGi.ComFuncs.MonitorTableLength(obj, skip_under, sortby, title)
 end
 
 function ChoGGi.ComFuncs.SetParticles(obj)
-	-- if fired from action menu
+	-- If fired from action menu
 	if IsKindOf(obj, "XAction") then
 		obj = ChoGGi.ComFuncs.SelObject()
 	else
@@ -1036,7 +1036,7 @@ function ChoGGi.ComFuncs.SetParticles(obj)
 		local action = choice.action
 		local moment = choice.moment
 
-		-- if there's one playing then stop it
+		-- If there's one playing then stop it
 		if obj.ChoGGi_playing_fx then
 			PlayFX(obj.ChoGGi_playing_fx, "end", obj)
 			if obj.DestroyFX then
@@ -1344,7 +1344,7 @@ do -- ExamineEntSpots (Object>Entity Spots)
 --~ list = ChoGGi.ComFuncs.TableConcat(list, "\n")
 --~ ChoGGi.ComFuncs.Dump(list, nil, nil, "ent")
 	function ChoGGi.ComFuncs.ExamineEntSpots(obj, parent_or_ret)
-		-- if fired from action menu
+		-- If fired from action menu
 		if IsKindOf(obj, "XAction") then
 			obj = ChoGGi.ComFuncs.SelObject()
 			parent_or_ret = nil
@@ -1424,7 +1424,7 @@ do -- ExamineEntSpots (Object>Entity Spots)
 
 		for i = id_start, id_end do
 			local name = obj:GetSpotName(i)
-			-- it isn't needed
+			-- It isn't needed
 			if name ~= "Origin" then
 				-- make a copy to edit
 				local spots_str_t = spots_str
@@ -1596,7 +1596,7 @@ do -- ObjFlagsList
 						name = tostring(flagged),
 						colour = flagged and us.ExamineColourBool or us.ExamineColourBoolFalse,
 						func = function(ex_dlg, _, list_obj)
-							-- if flag is true
+							-- If flag is true
 							if obj[get](obj, mask) == mask then
 								obj[clear](obj, mask)
 								list_obj.name = "false"
@@ -1632,7 +1632,7 @@ do -- ObjFlagsList
 	end
 
 	function ChoGGi.ComFuncs.ObjFlagsList(obj, parent_or_ret)
-		-- if fired from action menu
+		-- If fired from action menu
 		if IsKindOf(obj, "XAction") then
 			obj = ChoGGi.ComFuncs.SelObject()
 			parent_or_ret = nil
@@ -1853,7 +1853,7 @@ do -- GetMaterialProperties
 			return
 		end
 
-		-- if fired from action menu
+		-- If fired from action menu
 		if IsKindOf(obj, "XAction") then
 			obj = ChoGGi.ComFuncs.SelObject()
 			parent_or_ret = nil
@@ -2651,7 +2651,7 @@ do -- EntitySpots_Toggle
 			local spot_name = GetSpotNameByType(obj:GetSpotsType(i)) or ""
 			if not spot_type or spot_name == spot_type then
 				local spot_annot = obj:GetSpotAnnotation(i) or ""
-				-- if it's a chain then we need to check for "annot, " so chain=2 doesn't include chain=20
+				-- If it's a chain then we need to check for "annot, " so chain=2 doesn't include chain=20
 				local chain = annot and annot:find("chain")
 --~ printC(spot_type, "|", spot_annot, "|", annot, "|", chain, "|", spot_annot:sub(1, #annot+1) == annot .. ", ")
 				if not annot or annot and (chain and spot_annot:sub(1, #annot+1) == annot .. ","
@@ -2726,7 +2726,7 @@ do -- EntitySpots_Toggle
 	end
 
 	function ChoGGi.ComFuncs.EntitySpots_Toggle(obj, params)
-		-- if fired from action menu
+		-- If fired from action menu
 		if IsKindOf(obj, "XAction") then
 			obj = ChoGGi.ComFuncs.SelObject()
 			params = {}
@@ -2831,7 +2831,7 @@ do -- ShowAnimDebug_Toggle
 	end
 
 	function ChoGGi.ComFuncs.ShowAnimDebug_Toggle(obj, params)
-		-- if fired from action menu
+		-- If fired from action menu
 		if IsKindOf(obj, "XAction") then
 			obj = ChoGGi.ComFuncs.SelObject()
 		else
@@ -3058,8 +3058,8 @@ do -- PrintToFunc_Add/PrintToFunc_Remove
 		local saved
 		if parent == _G then
 			-- SM error spams console if you have the affront to try _G.NonExistingKey... (thanks autorun.lua)
-			-- it works prefectly fine of course, but i like a clean log.
-			-- in other words a workaround for "Attempt to use an undefined global '"
+			-- It works prefectly fine of course, but i like a clean log.
+			-- In other words a workaround for "Attempt to use an undefined global '"
 			saved = rawget(parent, saved_name)
 			if not saved then
 				rawset(parent, saved_name, func)
@@ -3092,7 +3092,7 @@ do -- PrintToFunc_Add/PrintToFunc_Remove
 					c = c + 1
 					text_table[c] = ": "
 
-					-- if it's a cls obj the first arg is always the cls obj
+					-- If it's a cls obj the first arg is always the cls obj
 					if i == 1 and cls_obj then
 						c = c + 1
 						text_table[c] = tostring(arg)
@@ -3378,7 +3378,7 @@ do -- ValueToStr
 			-- strings with (object) don't work well with Translate
 			if obj:find("%(") then
 				return obj, obj_type
-			-- if there's any <image, <color, etc tags
+			-- If there's any <image, <color, etc tags
 			elseif obj:find("[<>]") then
 				return Translate(obj), obj_type
 			else
@@ -3511,7 +3511,7 @@ function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
 		return
 	end
 
-	-- if fired from action menu
+	-- If fired from action menu
 	if IsKindOf(ret, "XAction") then
 		ret = nil
 	end

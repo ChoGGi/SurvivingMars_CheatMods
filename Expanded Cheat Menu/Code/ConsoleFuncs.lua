@@ -360,7 +360,7 @@ do -- ToggleLogErrors
 			end
 
 			if UserSettings.ExamineErrors then
-				-- i only care to see threads (i don't think funcs show up?)
+				-- I only care to see threads (i don't think funcs show up?)
 				if testing then
 					local err_type = type(msg)
 					-- not sure if it can ever be a func...?
@@ -563,7 +563,7 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 	dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
 	ChoGGi.ComFuncs.UpdateConsoleMargins(dlgConsole:GetVisible())
 
-	-- idBottomContainer isn't added when i normally setup the console stuff (ModsReloaded)
+	-- IdBottomContainer isn't added when i normally setup the console stuff (ModsReloaded)
 	local bottom = XShortcutsTarget.idBottomContainer
 	if bottom.HAlign ~= "left" then
 		bottom:SetHAlign("left")

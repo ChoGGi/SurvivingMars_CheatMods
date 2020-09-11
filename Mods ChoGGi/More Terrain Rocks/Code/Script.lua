@@ -133,7 +133,7 @@ end
 
 
 function OnMsg.ClassesPostprocess()
-	-- if entities aren't loaded then wait it out
+	-- If entities aren't loaded then wait it out
 	if not GetMaterialProperties(GetStateMaterial("Rocks_01", 0, 0), 0) or Presets.BuildMenuSubcategory.Default.LandscapeRockBuildingsRocks then
 		return
 	end

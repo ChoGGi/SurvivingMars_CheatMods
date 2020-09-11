@@ -89,7 +89,7 @@ function OnMsg.LoadGame()
 		return
 	end
 
-	-- if my lib mod is installed use my copy of this function
+	-- If my lib mod is installed use my copy of this function
 	local SpawnColonist_lib
 	if ModsLoaded.ChoGGi_Library then
 		SpawnColonist_lib = ChoGGi.ComFuncs.SpawnColonist
@@ -127,7 +127,7 @@ function OnMsg.LoadGame()
 							unload_it = true
 							c:SetCommand("Idle")
 							table_remove(crew, j)
-							-- if we don't add the thread it spams log with [LUA ERROR] attempt to yield across a C-call boundary
+							-- If we don't add the thread it spams log with [LUA ERROR] attempt to yield across a C-call boundary
 							CreateGameTimeThread(function()
 								c:ExitBuilding(r)
 							end)
@@ -166,7 +166,7 @@ function OnMsg.LoadGame()
 					end
 				end
 
-				-- invalid drones
+				-- Invalid drones
 				local invalid = RemoveInvalid(0, r.drones_exiting or "")
 				invalid = RemoveInvalid(invalid, r.drones_entering or "")
 				invalid = RemoveInvalid(invalid, r.drones_in_queue_to_charge or "")

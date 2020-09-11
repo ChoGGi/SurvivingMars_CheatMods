@@ -106,7 +106,7 @@ DisableSounds = function()
 		remove(FXRules.Working.start.Spacebar_Small.any, 1)
 		RemoveFromRules("Building Spacebar Loop")
 		RemoveFromRules("Building SpacebarSmall Loop")
-		-- includes reg and small
+		-- Includes reg and small
 		BldToggleWorking("Spacebar")
 	end
 end

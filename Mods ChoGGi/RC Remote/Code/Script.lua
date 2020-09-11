@@ -273,7 +273,7 @@ function RCRemote:JumpForward()
 end
 
 function RCRemote:MoveRC(dir)
-	-- if already moving in the same dir then abort
+	-- If already moving in the same dir then abort
 	if self.jumping or (self.command == "RemoteMove" and self.move_dir == dir) then
 		return
 	end

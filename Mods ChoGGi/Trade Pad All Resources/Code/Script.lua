@@ -168,7 +168,7 @@ local function StartupCode()
 	for i = max_idx, 1, -1 do
 		-- we only added a few random numbers, so we need to check the table for the def
 		if found[i] then
-			-- if we found unlocked seeds then remove all thr rest
+			-- If we found unlocked seeds then remove all thr rest
 			if found_unlocked then
 				table.remove(defs, i)
 			-- otherwise skip the first one
@@ -209,7 +209,7 @@ UpdateRivalRes = function()
 			res.wasterock = 0
 		end
 		res.seeds = (res.oxygen_production) * 10 + (res.water_production * 5)
-		-- if only the devs settled on one
+		-- If only the devs settled on one
 		res.preciousmetals = res.raremetals
 	end
 end

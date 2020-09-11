@@ -254,7 +254,7 @@ Debug.Debug FX>Particles: Toggle showing FX debug info in console.
 Debug.Debug FX>Sound FX: Toggle showing FX debug info in console.
 Debug.Entity>Change Entity Scale: You want them big, you want them small; have at it.
 Debug.Entity>Change Entity: Changes the entity of selected object, all of same type or all of same type in selected object's dome.
-Debug.Entity>Entity Spawner: Shows list of objects, and spawns at mouse cursor.
+Debug.Entity>Entity Spawner: Shows list of entity objects with option to spawn at mouse cursor.
 Debug.Entity>Entity Spots Toggle: Toggle showing attachment spots on selected object.
 Debug.Entity>Entity Spots: Shows list of attach spots for use with .ent files.
 Debug.Entity>Material Properties: Shows list of material settings/.dds files for use with .mtl files.

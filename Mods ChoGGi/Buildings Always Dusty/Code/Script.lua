@@ -30,7 +30,7 @@ function BuildingVisualDustComponent:SetDustVisuals(dust, ...)
 			self.ChoGGi_AlwaysDust = dust
 		end
 		dust = self.ChoGGi_AlwaysDust
-	-- if dusty is disabled and clean is enabled
+	-- If dusty is disabled and clean is enabled
 	elseif mod_AlwaysClean then
 		self.ChoGGi_AlwaysDust = nil
 		dust = 0

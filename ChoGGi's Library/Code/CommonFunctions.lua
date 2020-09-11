@@ -24,11 +24,13 @@ local table_iclear = table.iclear
 local table_sort = table.sort
 local table_copy = table.copy
 local table_rand = table.rand
+local table_set_defaults = table.set_defaults
 local CreateRealTimeThread = CreateRealTimeThread
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local ClassDescendantsList = ClassDescendantsList
 local WorldToHex = WorldToHex
+local OpenDialog = OpenDialog
 
 local rawget, getmetatable = rawget, getmetatable
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
@@ -40,7 +42,7 @@ end
 -- backup orginal function for later use (checks if we already have a backup, or else inf problems)
 local function SaveOrigFunc(class_or_func, func_name)
 	local OrigFuncs = ChoGGi.OrigFuncs
-	-- if it's a class func
+	-- If it's a class func
 	if func_name then
 		local newname = class_or_func .. "_" .. func_name
 		if not OrigFuncs[newname] then
@@ -117,7 +119,7 @@ local function DotNameToObject(str, root, create)
 	-- ^ complement of the match (the "opposite" of the match)
 	local matches = str:gmatch("([^%.]+)(.?)")
 	for name, match in matches do
-		-- if str included .number we need to make it a number or [name] won't work
+		-- If str included .number we need to make it a number or [name] won't work
 		local num = tonumber(name)
 		if num then
 			name = num
@@ -258,7 +260,7 @@ do -- RetName
 
 		local function BuildNameList(update_trans)
 			lookup_table = ChoGGi_lookup_names or {}
-			-- if env._G was updated from ECM HelperMod
+			-- If env._G was updated from ECM HelperMod
 			g = _G
 			lookup_table[g.terminal.desktop] = "terminal.desktop"
 
@@ -467,7 +469,7 @@ do -- RetName
 				if not name and PropObjGetProperty(obj, "GetDisplayName") then
 					name = Translate(obj:GetDisplayName())
 				end
-			end -- if
+			end -- If
 
 		elseif obj_type == "userdata" then
 			if IsT(obj) then
@@ -553,13 +555,18 @@ end
 local ValidateImage = ChoGGi.ComFuncs.ValidateImage
 
 do -- MsgPopup
-	local table_set_defaults = table.set_defaults
-	local OpenDialog = OpenDialog
+	local temp_params = {}
 
 	-- shows a popup msg with the rest of the notifications
+	-- params:
 	-- params.objects can be a single obj, or {obj1, obj2, ...}
+	-- expiration in ms or -1
+	-- size = true = long width
+	-- cycle_objs indexed table of in-game objs
+	-- callback func to call when left clicked (fires with args: c_obj,cycle_obj,dlg)
+
 	function ChoGGi.ComFuncs.MsgPopup(text, title, params)
-		-- notifications only show up in-game
+		-- notifications only show up in-game (UI stuff is missing)
 		if not GameState.gameplay then
 			return
 		end
@@ -569,20 +576,29 @@ do -- MsgPopup
 			ChoGGi.Temp.MsgPopups = {}
 		end
 
-		params = params or {}
+		if not params then
+			table_clear(temp_params)
+			params = temp_params
+		end
 
 		-- how many ms it stays open for
 		if not params.expiration then
+--~ 			params.expiration = -1,
+--~ 			params.dismissable = false,
 			params.expiration = 10
 			if params.size then
 				params.expiration = 25
 			end
 		end
---~ 		params.expiration = -1,
---~ 		params.dismissable = false,
-		params.expiration = params.expiration * 1000
+		-- change to ticks (seconds)
+		if params.expiration > -1 then
+			params.expiration = params.expiration * 1000
+		end
 
-		-- if there's no interface then we probably shouldn't open the popup
+		-- close on left click
+--~ 		params.close_on_read = true
+
+		-- If there's no interface then we probably shouldn't open the popup
 		local dlg = Dialogs.OnScreenNotificationsDlg
 		if not dlg then
 			local igi = Dialogs.InGameInterface
@@ -604,7 +620,7 @@ do -- MsgPopup
 
 		-- click icon to view obj
 		if params.objects then
-			-- if it's a single obj
+			-- If it's a single obj
 			if IsValid(params.objects) then
 				params.cycle_objs = {params.objects}
 			end
@@ -619,22 +635,22 @@ do -- MsgPopup
 		-- and show the popup
 		CreateRealTimeThread(function()
 			local popup = OnScreenNotification:new({}, dlg.idNotifications)
-			popup:FillData(data, nil, params, params.cycle_objs)
+			popup:FillData(data, params.callback, params, params.cycle_objs)
 			popup:Open()
 			dlg:ResolveRelativeFocusOrder()
 			ChoGGi.Temp.MsgPopups[#ChoGGi.Temp.MsgPopups+1] = popup
 
-			-- large amount of text option (four long lines o' text)
+			-- large amount of text option
 			if params.size then
 				local frame = GetParentOfKind(popup.idText, "XFrame")
 				if frame then
 					frame:SetMaxWidth(params.max_width or 1000)
 				end
-				popup.idText:SetMaxHeight(params.max_height or 250)
+				-- popup.idText:SetMaxHeight(params.max_height or 250)
 			end
 
 		end)
-		-- if we need the popup notification_id
+		-- If we need the popup notification_id
 		return data.id
 	end
 end -- do
@@ -841,7 +857,7 @@ function ChoGGi.ComFuncs.PopupSubMenu(menu, name, item)
 		AnchorType = "smart",
 		Anchor = menu.box,
 	}, terminal.desktop)
-	-- item == opened from PopupBuildMenu
+	-- Item == opened from PopupBuildMenu
 	if item then
 		ChoGGi.ComFuncs.PopupBuildMenu(item.submenu, submenu)
 	else
@@ -1069,7 +1085,7 @@ function ChoGGi.ComFuncs.PopupToggle(parent, popup_id, items, anchor, reopen, su
 
 	end
 
-	-- if we need to fiddle with it
+	-- If we need to fiddle with it
 	return popup
 end
 
@@ -1343,11 +1359,11 @@ function ChoGGi.ComFuncs.SetConstsG(name, value)
 	end
 end
 
--- if value is the same as stored then make it false instead of default value, so it doesn't apply next time
+-- If value is the same as stored then make it false instead of default value, so it doesn't apply next time
 function ChoGGi.ComFuncs.SetSavedConstSetting(setting, value)
 	value = value or const[setting] or Consts[setting]
 	local ChoGGi = ChoGGi
-	-- if setting is the same as the default then remove it
+	-- If setting is the same as the default then remove it
 	if ChoGGi.Consts[setting] == value then
 		ChoGGi.UserSettings[setting] = nil
 	else
@@ -1379,7 +1395,7 @@ do -- TableCleanDupes
 			end
 		end
 
-		-- instead of returning a new table we clear the old and add the values
+		-- Instead of returning a new table we clear the old and add the values
 		table_iclear(list)
 		for i = 1, #temp_t do
 			list[i] = temp_t[i]
@@ -1472,7 +1488,7 @@ function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(obj, parent)
 end
 
 function ChoGGi.ComFuncs.OpenInListChoice(list)
-	-- if list isn't a table or it has zero items or it doesn't have items/callback func
+	-- If list isn't a table or it has zero items or it doesn't have items/callback func
 	local list_table = type(list) == "table"
 	local items_table = type(list_table and list.items) == "table"
 	if not list_table or list_table and not items_table or items_table and #list.items < 1 then
@@ -1830,7 +1846,7 @@ do -- SelObject/SelObjects
 		local obj = SelectedObj or SelectionMouseObj()
 
 		if obj then
-			-- if it's multi then return the first one
+			-- If it's multi then return the first one
 			if obj:IsKindOf("MultiSelectionWrapper") then
 				return obj.objects[1]
 			end
@@ -1907,7 +1923,7 @@ do -- Rebuildshortcuts
 		actionPOCMapAlt5 = true,
 		-- added in kuiper modders beta (uses tilde to toggle menu instead of f2)
 		DE_Menu = true,
-		-- i need to override so i can reset zoom and other settings.
+		-- I need to override so i can reset zoom and other settings.
 		FreeCamera = true,
 		-- we def don't want this
 		G_CompleteConstructions = true,
@@ -2109,7 +2125,7 @@ See the bottom of Gameplay>Controls if you've changed the key binding."]]]
 		XShortcutsThread = false
 
 		if DisableECM == false then
-			-- i forget why i'm toggling this...
+			-- I forget why i'm toggling this...
 			local dlgConsole = dlgConsole
 			if dlgConsole then
 				ShowConsole(not dlgConsole:GetVisible())
@@ -2125,7 +2141,7 @@ do -- AttachToNearestDome
 		return obj:CanWork()
 	end
 
-	-- if building requires a dome and that dome is borked then assign it to nearest dome
+	-- If building requires a dome and that dome is borked then assign it to nearest dome
 	function ChoGGi.ComFuncs.AttachToNearestDome(obj, force)
 		if force ~= "force" and not obj:GetDefaultPropertyValue("dome_required") then
 			return
@@ -2408,7 +2424,7 @@ do -- FuckingDrones (took quite a while to figure this fun one out)
 			end
 		end
 
-		-- it happens
+		-- It happens
 		if not cc then
 			return
 		end
@@ -2465,7 +2481,7 @@ do -- FuckingDrones (took quite a while to figure this fun one out)
 			local carry = g_Consts.DroneResourceCarryAmount * ResourceScale
 			-- round to nearest 1000 (don't want uneven stacks)
 			stored = (stored - stored % 1000) / 1000 * 1000
-			-- if carry is smaller then stored then they may not pickup (depends on storage)
+			-- If carry is smaller then stored then they may not pickup (depends on storage)
 			if carry < stored or
 				-- no picking up more then they can carry
 				stored > carry then
@@ -2644,7 +2660,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 		if amount and type(amount) == "number" and amount > 1 then
 			-- temp associative table of colour ids
 			table_clear(color_ass)
-			-- indexed list of colours we return
+			-- Indexed list of colours we return
 			local colour_list = {}
 			-- when this reaches amount we return the list
 			local c = 0
@@ -2682,7 +2698,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 	ChoGGi.ComFuncs.RandomColour = RandomColour
 
 	function ChoGGi.ComFuncs.ObjectColourRandom(obj)
-		-- if fired from action menu
+		-- If fired from action menu
 		if IsKindOf(obj, "XAction") then
 			obj = SelObject()
 		else
@@ -2749,7 +2765,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 	end
 
 	function ChoGGi.ComFuncs.ObjectColourDefault(obj)
-		-- if fired from action menu
+		-- If fired from action menu
 		if IsKindOf(obj, "XAction") then
 			obj = SelObject()
 		else
@@ -3095,7 +3111,7 @@ local DeleteObject = ChoGGi.ComFuncs.DeleteObject
 
 -- sticks small depot in front of mech depot and moves all resources to it (max of 20 000)
 function ChoGGi.ComFuncs.EmptyMechDepot(obj, skip_delete)
-	-- if fired from action menu
+	-- If fired from action menu
 	if IsKindOf(obj, "XAction") then
 		obj = SelObject()
 	else
@@ -3190,7 +3206,7 @@ function ChoGGi.ComFuncs.DeleteAllAttaches(obj)
 end
 
 function ChoGGi.ComFuncs.FindNearestResource(obj)
-	-- if fired from action menu
+	-- If fired from action menu
 	if IsKindOf(obj, "XAction") then
 		obj = SelObject()
 	else
@@ -3259,7 +3275,7 @@ function ChoGGi.ComFuncs.FindNearestResource(obj)
 			)
 
 			local nearest = FindNearestObject(stockpiles, obj)
-			-- if there's no resource then there's no "nearest"
+			-- If there's no resource then there's no "nearest"
 			if nearest then
 				-- the power of god
 				ViewObjectMars(nearest)
@@ -3289,7 +3305,7 @@ do -- BuildingConsumption
 			return
 		end
 		local tempname = "ChoGGi_mod_" .. name
-		-- if this is here we know it has what we need so no need to check for mod/consump
+		-- If this is here we know it has what we need so no need to check for mod/consump
 		if obj[tempname] then
 			local mod = obj.modifications[name]
 			if mod[1] then
@@ -3362,7 +3378,7 @@ do -- BuildingConsumption
 end -- do
 
 function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj, skip_msg)
-	-- if fired from action menu
+	-- If fired from action menu
 	if IsKindOf(obj, "XAction") then
 		obj = SelObject()
 		skip_msg = nil
@@ -3665,7 +3681,7 @@ end -- do
 -- this will reset it back to whatever it was after changing it.
 function ChoGGi.ComFuncs.SetTaskReqAmount(obj, value, task, setting, task_num)
 --~ ChoGGi.ComFuncs.SetTaskReqAmount(rocket, value, "export_requests", "max_export_storage")
-	-- if it's in a table, it's almost always [1], i'm sure i'll have lots of crap to fix on any update anyways, so screw it
+	-- If it's in a table, it's almost always [1], i'm sure i'll have lots of crap to fix on any update anyways, so screw it
 	if type(obj[task]) == "userdata" then
 		task = obj[task]
 	else
@@ -3710,7 +3726,7 @@ do -- AddBlinkyToObj
 		if not IsValid(obj) then
 			return
 		end
-		-- if it was attached to something deleted, or fresh start
+		-- If it was attached to something deleted, or fresh start
 		if not IsValid(blinky_obj) then
 			blinky_obj = RotatyThing:new()
 		end
@@ -3727,7 +3743,7 @@ do -- AddBlinkyToObj
 		else
 			spot = obj:GetSpotBeginIndex("Origin")
 			offset = obj:GetEntityBBox():sizey()
-			-- if it's larger then a dome, but isn't a BaseBuilding then we'll just ignore it (DomeGeoscapeWater)
+			-- If it's larger then a dome, but isn't a BaseBuilding then we'll just ignore it (DomeGeoscapeWater)
 			if offset > 10000 and not obj:IsKindOf("BaseBuilding") or offset < 250 then
 				offset = 250
 			end
@@ -3831,7 +3847,7 @@ end
 
 -- build and show a list of attachments for changing their colours
 function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
-	-- if fired from action menu
+	-- If fired from action menu
 	if IsKindOf(obj, "XAction") then
 		obj = SelObject()
 	else
@@ -3978,9 +3994,9 @@ do -- PadNumWithZeros
 end -- do
 
 function ChoGGi.ComFuncs.RemoveObjs(cls, reason)
-	-- if there's a reason then check if it's suspending
+	-- If there's a reason then check if it's suspending
 	local not_sus = reason and not s_SuspendPassEditsReasons[reason]
-	-- if it isn't then suspend it
+	-- If it isn't then suspend it
 	if not_sus then
 		-- suspending pass edits makes deleting much faster
 		SuspendPassEdits(reason)
@@ -3991,7 +4007,7 @@ function ChoGGi.ComFuncs.RemoveObjs(cls, reason)
 		local MapDelete = MapDelete
 
 		for _ = 1, #cls do
-			-- if it isn't a valid class then Map* will return all objects :(
+			-- If it isn't a valid class then Map* will return all objects :(
 			if g_Classes[cls] then
 				MapDelete(true, cls)
 			end
@@ -4050,7 +4066,7 @@ do -- SpawnColonist
 			or GetRandomPassablePoint()):SetTerrainZ()
 		)
 
-		-- if age/spec is different this updates to new entity
+		-- If age/spec is different this updates to new entity
 		colonist:ChooseEntity()
 
 		return colonist
@@ -4080,7 +4096,7 @@ function ChoGGi.ComFuncs.RetAllOfClass(cls)
 	local objects = UICity.labels[cls] or {}
 	if #objects == 0 then
 		local g_cls = g_Classes[cls]
-		-- if it isn't in g_Classes and isn't a CObject then MapGet will return *everything*
+		-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything*
 		if g_cls and g_cls:IsKindOf("CObject") then
 			return MapGet(true, cls)
 		end
@@ -4675,7 +4691,7 @@ do -- BuildableHexGrid
 --~ 		table_iclear(grid_objs)
 	end
 
-	-- if grid is left on when map changes it gets real laggy
+	-- If grid is left on when map changes it gets real laggy
 	OnMsg.ChangeMap = CleanUp
 	-- make sure grid isn't saved in persist
 	OnMsg.SaveGame = CleanUp
@@ -4686,7 +4702,7 @@ do -- BuildableHexGrid
 		local u = ChoGGi.UserSettings
 		local grid_pos
 
-		-- if not fired from action
+		-- If not fired from action
 		if IsKindOf(action, "XAction") then
 			if action.setting_mask == "position" then
 				grid_pos = type(u.DebugGridPosition) == "number" and u.DebugGridPosition or 0
@@ -4697,7 +4713,7 @@ do -- BuildableHexGrid
 				CleanUp()
 				is_valid_thread = false
 			end
-			-- if it's false then we don't want to start it again
+			-- If it's false then we don't want to start it again
 			if action == false then
 				return
 			end
@@ -4876,12 +4892,12 @@ end
 function ChoGGi.ComFuncs.SetWinObjectVis(obj,visible)
 	-- XWindow:GetVisible()
 	if obj.target_visible then
-		-- it's visible and we don't want it visible
+		-- It's visible and we don't want it visible
 		if not visible then
 			obj:SetVisible()
 		end
 	else
-		-- it's not visible and we want it visible
+		-- It's not visible and we want it visible
 		if visible then
 			obj:SetVisible(true)
 		end
@@ -5448,11 +5464,11 @@ do -- path markers
 			SetWaypoint(obj, colour, true)
 			ResumePassEdits("ChoGGi.ComFuncs.SetPathMarkersGameTime_Thread")
 			if delay == 0 or delay == -1 then
-				-- if we only do one then it'll be invis unless paused
+				-- If we only do one then it'll be invis unless paused
 				-- 2+ is too much ficker
 				WaitMsg("OnRender")
 				WaitMsg("OnRender")
-				-- if you like bears then you'd figure the third is just right... ah well twofer
+				-- If you like bears then you'd figure the third is just right... ah well twofer
 			else
 				Sleep(delay)
 			end
@@ -5491,7 +5507,7 @@ do -- path markers
 		end
 
 		local delay = 500
-		-- if fired from action menu (or shortcut)
+		-- If fired from action menu (or shortcut)
 		if IsKindOf(obj, "XAction") then
 			obj = SelectedObj or SelObjects(1500)
 			menu_fired = true

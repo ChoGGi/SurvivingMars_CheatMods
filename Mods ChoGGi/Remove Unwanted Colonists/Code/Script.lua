@@ -28,7 +28,7 @@ local function UpdateMurderPods()
 	local objs = UICity.labels.Colonist or ""
 	for i = 1, c do
 		local obj = objs[i]
-		-- if colonist already has a pod after it then skip
+		-- If colonist already has a pod after it then skip
 		if obj and not IsValid(obj.ChoGGi_MurderPod) then
 			-- quicker to check age instead of looping all traits, so ageism rules
 			if mod_options[obj.age_trait] then
@@ -138,7 +138,7 @@ DefineClass.IdiotMonument = {
 }
 
 function IdiotMonument:GameInit()
-	-- if there's already one replace with new one
+	-- If there's already one replace with new one
 	if IsValid(g_IdiotMonument) then
 		g_IdiotMonument:OnDemolish()
 	end

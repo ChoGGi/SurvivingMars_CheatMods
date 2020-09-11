@@ -40,7 +40,7 @@ XMenuBar.Background = dark_gray
 XMenuBar.RolloverHint = Translate(608042494285--[[<left_click> Activate]])
 XPopupMenu.Background = dark_gray
 XPopupMenu.RolloverHint = Translate(608042494285--[[<left_click> Activate]])
--- it sometimes does a jarring white background
+-- It sometimes does a jarring white background
 XPopupMenu.DisabledBackground = dark_gray
 -- darker gray
 XPopupMenu.FocusedBackground = -11711669

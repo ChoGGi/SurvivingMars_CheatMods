@@ -18,13 +18,13 @@ DefineClass.ChoGGi_DlgImageViewer = {
 
 	dialog_width = 700.0,
 	dialog_height = 700.0,
-	-- index list of images
+	-- Index list of images
 	images = false,
-	-- index list of popup menu items
+	-- Index list of popup menu items
 	image_menu_popup = false,
 	-- viewed image path
 	image_path = false,
-	-- id for togglepopup
+	-- Id for togglepopup
 	idImageMenu = false,
 }
 
@@ -106,7 +106,7 @@ function ChoGGi_DlgImageViewer:ExportImage()
 	if slash then
 		local name = self.image_path:sub((slash * -1) + 1)
 		local dest_path = "AppData/" .. name
-		-- if error (devs swapped all? the images from .tga to .dds, but ref them as .tga)
+		-- If error (devs swapped all? the images from .tga to .dds, but ref them as .tga)
 		if AsyncCopyFile(self.image_path, dest_path) then
 			AsyncCopyFile(self.image_path:gsub(".tga", ".dds"), dest_path)
 		end

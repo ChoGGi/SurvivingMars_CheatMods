@@ -166,7 +166,7 @@ local storage_list = {
 local storage_list_c = #storage_list
 
 local function AddBuilding(id, obj, obj_ct, cls)
-	-- if the template doesn't have the prop, check the class obj
+	-- If the template doesn't have the prop, check the class obj
 	local template_id = obj.template_class
 	if template_id == "" then
 		template_id = obj.template_name

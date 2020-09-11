@@ -19,7 +19,7 @@ PersonalShuttles = {
 	friend_colour1 = -16711941,
 	friend_colour2 = -16760065,
 	friend_colour3 = -1,
-	-- i wouldn't set this too high...
+	-- I wouldn't set this too high...
 	max_shuttles = 50,
 	-- switch to drop item on pickup
 	drop_toggle = false,
@@ -61,7 +61,7 @@ DefineClass.PersonalShuttle = {
 	offset_other = point(0, 0, 350),
 }
 
--- if it idles it'll go home, so we return my command till we remove thread
+-- If it idles it'll go home, so we return my command till we remove thread
 function PersonalShuttle:Idle()
 	self:SetCommand("FollowMouse")
 	Sleep(1000)
@@ -77,7 +77,7 @@ function PersonalShuttle:GameInit()
 
 	local ps = PersonalShuttles
 
-	-- if it's an attack shuttle
+	-- If it's an attack shuttle
 	if UICity.PersonalShuttles.shuttle_threads[self.handle] then
 		self.defence_thread_DD = CreateGameTimeThread(function()
 			while IsValid(self) and not self.destroyed do
@@ -182,7 +182,7 @@ function PersonalShuttle:GotoPos(pos, dest)
 		-- rest on ground
 		self.hover_height = 0
 
-		-- if idle is ticking up
+		-- If idle is ticking up
 		if self.idle_time > 250 then
 			if not self.is_landed then
 				self:SetState("fly")
@@ -253,7 +253,7 @@ end
 function PersonalShuttle:DropCargo(obj, pos, dest)
 	local carried = self.carried_obj
 
-	-- if fired from recall
+	-- If fired from recall
 	dest = dest or GetPassablePointNearby(self:GetPos())
 	pos = pos or self:GetPos()
 
@@ -321,7 +321,7 @@ function PersonalShuttle:SelectedObject(obj, pos, dest)
 	elseif IsValid(self.carried_obj) and self.pickup_toggle == false then
 		self:DropCargo(obj, pos, dest)
 
-	-- if it's marked for pickup and shuttle is set to pickup and it isn't already carrying then grab it
+	-- If it's marked for pickup and shuttle is set to pickup and it isn't already carrying then grab it
 	elseif obj.PersonalShuttles_PickUpItem and self.pickup_toggle and not IsValid(self.carried_obj) then
 
 		-- goto item
@@ -442,7 +442,7 @@ function PersonalShuttle:DefenceTick(already_fired)
 		local obj = hostiles[i]
 
 		-- get dist (added * 10 as it didn't see to target at the range of it's hex grid)
-		-- it could be from me increasing protection radius, or just how it targets meteors
+		-- It could be from me increasing protection radius, or just how it targets meteors
 		if IsValid(obj) and self:GetVisualDist(obj) <= self.shoot_range * 10 then
 			-- check if tower is working
 			if not IsValid(self) or not self.working or self.destroyed then
@@ -451,7 +451,7 @@ function PersonalShuttle:DefenceTick(already_fired)
 
 			-- follow = small ones attached to majors
 			if not obj.follow and not already_fired[obj.handle] then
-			-- if not already_fired[obj.handle] then
+			-- If not already_fired[obj.handle] then
 				-- aim the tower at the dustdevil
 				if self.class == "DefenceTower" then
 					self:OrientPlatform(obj:GetVisualPos(), 7200)

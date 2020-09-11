@@ -449,7 +449,7 @@ function PinsDlg:InitPinButton(button, ...)
 	-- block orig func unless ctrl
 	local orig_button_OnPress = button.OnPress
 	function button.OnPress(button_obj, gamepad, ...)
-		-- if pressing ctrl then abort
+		-- If pressing ctrl then abort
 		if IsControlPressed() or button_obj:IsKindOfClasses(skip_menu_classes) then
 			return orig_button_OnPress(button_obj, gamepad, ...)
 		end

@@ -56,7 +56,7 @@ DefineClass.RCTankerTank = {
 	entity = entity_tank,
 	indicator_class = "AirTankArrow",
 
-	-- i want it fairly unique since we're using it as an id in ClassesPostprocess
+	-- I want it fairly unique since we're using it as an id in ClassesPostprocess
 	fx_actor_class = "ChoGGi_RCTankerTank",
 }
 function RCTankerTank:Init()
@@ -210,7 +210,7 @@ end
 
 function RCTanker:GotoFromUser(...)
 	self.status_text = T(63, "Travelling")
-	-- if user broke off TankInteract then clear this here
+	-- If user broke off TankInteract then clear this here
 	self:TankInteractCleanup(2)
 	return BaseRover.GotoFromUser(self, ...)
 end
@@ -374,7 +374,7 @@ function RCTanker:TankInteract()
 		self.status_text = T(6722, "Idle")
 	end
 
-	-- if something went sideways between clicking and starting
+	-- If something went sideways between clicking and starting
 	if self:RetInteractInfo(obj) ~= 0 then
 		return false
 	end
@@ -439,7 +439,7 @@ function RCTanker:TankInteract()
 			self.tank_obj:UpdateIndicators(res_obj)
 			obj:UpdateIndicators()
 
-			-- if there's a limit than check if we're there
+			-- If there's a limit than check if we're there
 			if limit and self.storage_amount == limit then
 				break
 			end
@@ -616,13 +616,13 @@ end
 
 -- the below is for removing the persist warnings from the log
 
--- idle any tankers, and save state of tankers fiddling with tanks
+-- Idle any tankers, and save state of tankers fiddling with tanks
 function OnMsg.SaveGame()
 	-- kill off the threads (spews c func persist errors in log)
 	local tankers = UICity.labels.RCTanker or ""
 	for i = 1, #tankers do
 		local t = tankers[i]
-		-- if user said go somewhere then we store the pos
+		-- If user said go somewhere then we store the pos
 		if t.command == "GotoFromUser" and t.goto_target and t.goto_target:IsValid() then
 			t.resume_goto = t.goto_target
 		end

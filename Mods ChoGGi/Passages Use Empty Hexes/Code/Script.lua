@@ -40,7 +40,7 @@ local function IsDomePoint(obj)
 	end
 	-- from construct controller or point
 	obj = obj.current_points and obj.current_points[#obj.current_points] or obj
-	-- if it's a point and a dome we're good (enough)
+	-- If it's a point and a dome we're good (enough)
 	if IsPoint(obj) and IsValid(GetDomeAtPoint(obj)) then
 		return true
 	end

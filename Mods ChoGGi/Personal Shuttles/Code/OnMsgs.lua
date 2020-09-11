@@ -131,7 +131,7 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 		end,
 	})
 
-	-- info showing carried item
+	-- Info showing carried item
 	AddXTemplate("PersonalShuttles_CarriedItem", "ipShuttle", {
 		__context_of_kind = "PersonalShuttle",
 		RolloverTitle = T(302535920011139, [[Carried Object]]),

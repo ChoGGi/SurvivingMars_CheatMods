@@ -93,7 +93,7 @@ function ElectricityStorage:UpdateFrozen()
 		end
 	end
 
-	-- if user changed mod options
+	-- If user changed mod options
 	local name = "ChoGGi_ColdBatteryRateLimitCap"
 	if mod_ColdCapacity and is_good and not self[name] then
 		AddMod(name, "capacity", self)

@@ -33,7 +33,7 @@ function OnMsg.LoadGame()
 		return
 	end
 
-	-- if there's placed landscapes grab the largest number
+	-- If there's placed landscapes grab the largest number
 	local Landscapes = Landscapes
 	if Landscapes and next(Landscapes) then
 		local largest = 0
@@ -42,7 +42,7 @@ function OnMsg.LoadGame()
 				largest = idx
 			end
 		end
-		-- if over 3K then reset to 0
+		-- If over 3K then reset to 0
 		if largest > 3000 then
 			LandscapeLastMark = 0
 		else

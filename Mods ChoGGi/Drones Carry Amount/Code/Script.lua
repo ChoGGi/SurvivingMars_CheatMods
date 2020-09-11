@@ -59,7 +59,7 @@ function OnMsg.ApplyModOptions(id)
 		return
 	end
 
-	-- if enabled then apply option
+	-- If enabled then apply option
 	if g_Consts then
 		if CurrentModOptions:GetProperty("UseCarryAmount") then
 			local amount = CurrentModOptions:GetProperty("CarryAmount")

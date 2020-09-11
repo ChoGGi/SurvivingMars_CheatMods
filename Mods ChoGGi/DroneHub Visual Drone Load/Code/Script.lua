@@ -58,7 +58,7 @@ local function UpdateColour(self)
 					return not drone:IsDisabled()
 				end) < 1 then
 			colour = purple
-		-- idle drones
+		-- Idle drones
 		elseif self:GetIdleDronesCount() == self:GetDronesCount() then
 			colour = gray
 		else

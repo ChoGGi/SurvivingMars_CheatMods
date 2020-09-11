@@ -103,7 +103,7 @@ function RCMechanic:ProcAutomation()
 				end
 			end
 
-			-- if has cc then check if they can fix, otherwise fix it
+			-- If has cc then check if they can fix, otherwise fix it
 			local cc = o.command_centers
 			if cc and #cc > 0 then
 				local cc_count = #cc
@@ -118,7 +118,7 @@ function RCMechanic:ProcAutomation()
 						not_working_count = not_working_count + 1
 					end
 				end
-				-- if all cc nearby have no working drones
+				-- If all cc nearby have no working drones
 				if not_working_count == cc_count then
 					go_fix_it = true
 				end

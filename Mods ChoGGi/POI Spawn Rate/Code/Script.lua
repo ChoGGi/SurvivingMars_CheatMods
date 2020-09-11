@@ -39,7 +39,7 @@ local function ModOptions()
 	local CalcNextSpawnProject = CalcNextSpawnProject
 	local g_SpecialProjectNextSpawn = g_SpecialProjectNextSpawn
 	for id, item in pairs(g_SpecialProjectNextSpawn) do
-		-- if the next spawn time is larger then the max option then recalc
+		-- If the next spawn time is larger then the max option then recalc
 		if item.day > (day + options:GetProperty(id .. "_Max")) then
 			CalcNextSpawnProject(id)
 		end

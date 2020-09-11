@@ -127,7 +127,7 @@ function ChoGGi_DlgFindValue:FindText()
 		return
 	end
 
-	-- if not case all strings are made lower
+	-- If not case all strings are made lower
 	local case = self.idCaseSen:GetCheck()
 	if not case then
 		str = str:lower()

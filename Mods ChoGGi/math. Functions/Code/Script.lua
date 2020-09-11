@@ -404,7 +404,7 @@ function math.RoundDown(x, g)
 end
 
 pcall(function()
-	-- integer round up to nearest
+	-- Integer round up to nearest
 	math.sm_RoundUp = round -- (number, granularity)
 
 	math.sm_AngleNormalize = AngleNormalize -- (angle)

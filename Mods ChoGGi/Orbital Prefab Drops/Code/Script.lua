@@ -170,7 +170,7 @@ local function YamatoHasshin(site)
 			-- oh look a construction site
 			site:SetVisible(true)
 			spawn_pos = spawn_pos + site_height
-			-- it's like jebus
+			-- It's like jebus
 			site:SetPos(spawn_pos, 3000)
 
 			-- fire off the usual stuff so the drones make with the building
@@ -199,7 +199,7 @@ local function YamatoHasshin(site)
 end
 
 function ConstructionSite:GameInit()
-	-- is inner or outer building
+	-- Is inner or outer building
 	local outside, inside
 	for i = 1, 3 do
 		local label = self.building_class_proto["label" .. i]
@@ -211,7 +211,7 @@ function ConstructionSite:GameInit()
 		 break
 		end
 	end
-	-- it's a dome/rover
+	-- It's a dome/rover
 	if not outside and not inside then
 		outside = true
 	end

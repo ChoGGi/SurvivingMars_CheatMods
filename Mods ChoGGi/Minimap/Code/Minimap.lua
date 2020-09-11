@@ -47,7 +47,7 @@ DefineClass.ChoGGi_MinimapDlg = {
 	opacity = 100,
 
 	map_name = false,
-	-- image name we save/load for map
+	-- Image name we save/load for map
 	filename = false,
 
 	map_update_thread = false,
@@ -217,7 +217,7 @@ end
 function ChoGGi_MinimapDlg:idOpacityOnTextChanged()
 	local num = tonumber(self:GetText())
 	if num then
-		-- invisible doesn't help anyone
+		-- Invisible doesn't help anyone
 		if num > 240 then
 			num = 240
 		end
@@ -309,7 +309,7 @@ end
 function ChoGGi_MinimapDlg:idUpdateMapOnPress()
 	self = GetRootDialog(self)
 
-	-- if someone decides to hammer the update button
+	-- If someone decides to hammer the update button
 	if IsValidThread(self.map_update_thread) then
 		return
 	end

@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
--- i translate all the strings at startup, so it's a table lookup instead of a func call
+-- I translate all the strings at startup, so it's a table lookup instead of a func call
 -- ~ ChoGGi.Strings[27]
 
 -- amount of entries in the CSV file
@@ -99,7 +99,7 @@ do -- UpdateStringsList (fired below, and whenever lang is changed)
 		local strings = ChoGGi.Strings
 		-- blank table from modload
 		if not next(strings) then
-			-- if there's a missing id print/return a warning
+			-- If there's a missing id print/return a warning
 			setmetatable(strings, {
 				__index = function(_, id)
 					-- we only want numbers, so if anything else is requested then ignore
@@ -115,7 +115,7 @@ do -- UpdateStringsList (fired below, and whenever lang is changed)
 		local iter = 302535920000000 + string_limit
 		for i = 302535920000000, iter do
 			local str = _InternalTranslate(LightUserData(bor(i, locId_sig)))
-			-- if the missing text is within the last 50 then we can safely break
+			-- If the missing text is within the last 50 then we can safely break
 			if (iter - 50) < i and str == missing_text then
 				break
 			end
@@ -129,7 +129,7 @@ do -- UpdateStringsList (fired below, and whenever lang is changed)
 		if lang ~= "English" then
 			-- first get the unicode font name
 			local f = Translate(997--[[*font*, 15, aa]])
-			-- index of first , then crop out the rest
+			-- Index of first , then crop out the rest
 			f = f:sub(1, f:find(", ")-1)
 			-- might use it for something?
 			ChoGGi.font = f

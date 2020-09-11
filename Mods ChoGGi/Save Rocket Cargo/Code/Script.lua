@@ -42,7 +42,7 @@ function ResetCargo(...)
 			for i = 1, #g_RocketCargo do
 				local cargo = g_RocketCargo[i]
 				local saved = list[i]
-				-- if there's already a table then use it
+				-- If there's already a table then use it
 				if saved then
 					saved.amount = cargo.amount
 					saved.class = cargo.class

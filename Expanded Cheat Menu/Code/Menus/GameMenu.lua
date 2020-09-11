@@ -623,7 +623,7 @@ Actions[c] = {ActionName = Strings[302535920000686--[[Auto Unpin Objects]]],
 	ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
 	RolloverText = function()
 		local value = ChoGGi.UserSettings.UnpinObjects or {}
-		-- it can get large, so for this one we stick the description first.
+		-- It can get large, so for this one we stick the description first.
 		return Strings[302535920000687--[[Will automagically stop any of these objects from being added to the pinned list.]]]
 			.. "\n<color 100 255 100>" .. ValueToLuaCode(value) .. "</color>"
 	end,

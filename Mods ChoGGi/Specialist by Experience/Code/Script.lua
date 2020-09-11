@@ -23,7 +23,7 @@ end
 
 local orig_Workplace_AddWorker = Workplace.AddWorker
 function Workplace:AddWorker(worker, shift)
-	-- ignore workplaces without a spec
+	-- Ignore workplaces without a spec
 	if self.specialist ~= "none" then
 		-- add table to store handles of workers with starting Sol
 		if not self.ChoGGi_SpecByExp then
@@ -95,7 +95,7 @@ function OnMsg.NewDay(sol) -- NewSol...
 						c_table.obj:ChangeWorkplacePerformance()
 					end
 				else
-					-- if not valid then might as well remove it
+					-- If not valid then might as well remove it
 					work.ChoGGi_SpecByExp[handle] = nil
 				end
 

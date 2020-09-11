@@ -163,7 +163,7 @@ function OnMsg.NewDay(sol)
 		stats.rovers_next = stats.rovers_next + 1
 		stats.ammo_next = stats.ammo_next + 2
 
-		-- i doubt anyone will make it to max_int rovers, but what the hell
+		-- I doubt anyone will make it to max_int rovers, but what the hell
 		if stats.rovers_next < 0 then
 			stats.rovers_next = 5
 		end

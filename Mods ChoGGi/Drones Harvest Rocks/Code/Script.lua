@@ -61,7 +61,7 @@ local function DroneRemoveRock(obj)
 	end
 end
 
--- if it's a waste rock and it doesn't DoesNotObstructConstruction then it's "safe" (read: non-cheaty) to remove
+-- If it's a waste rock and it doesn't DoesNotObstructConstruction then it's "safe" (read: non-cheaty) to remove
 local orig_CanDemolish = DemolishModeDialog.CanDemolish
 function DemolishModeDialog:CanDemolish(pt, obj, ...)
 	obj = obj or SelectionMouseObj() or GetTerrainCursorObj()

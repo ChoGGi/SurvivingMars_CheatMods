@@ -113,7 +113,7 @@ function RCGarage:StickInGarage(unit)
 		SelectionRemove(unit)
 	end
 
-	-- if user doesn't try to move it this keeps the status good (bother with adding an override to actual status?)
+	-- If user doesn't try to move it this keeps the status good (bother with adding an override to actual status?)
 	unit.command = "ChoGGi_InGarage"
 
 	-- remove any dust and make it not collect dust
@@ -197,13 +197,13 @@ end
 function RCGarage:RemoveGarage()
 	-- we need a new master controller?
 	if self == self.garages.main then
-		-- if there's no valid garages left (or this is the last one)
+		-- If there's no valid garages left (or this is the last one)
 		if not self:CheckMainGarage(self.garages.main) then
 			self:DumpAllRovers()
 		end
 	end
 
-	-- if last garage removed dump out all rovers
+	-- If last garage removed dump out all rovers
 	if not self:CheckMainGarage() then
 		self:DumpAllRovers()
 	end
@@ -426,7 +426,7 @@ function OnMsg.ClassesPostprocess()
 		-- we need to remove for insert
 		table.remove(building, idx)
 	else
-		-- insert above consumption
+		-- Insert above consumption
 		idx = table.find(building, "__template", "sectionConsumption")
 	end
 

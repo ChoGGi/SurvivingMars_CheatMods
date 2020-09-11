@@ -637,7 +637,7 @@ function ChoGGi_XWindow:AddElements()
 
 	-- needed for :Wait()
 	self.idDialog:Open()
-	-- it's so blue
+	-- It's so blue
 	self.idMoveControl:SetFocus()
 end
 
@@ -732,7 +732,7 @@ function ChoGGi_XWindow:BoxSize(obj)
 	x = box:minx()
 	y = box:miny() + self.header_scaled
 	if self.class == "ChoGGi_DlgExamine" then
-		-- it's a copy of examine/find value wanting a new window offset, so we want the size of it
+		-- It's a copy of examine/find value wanting a new window offset, so we want the size of it
 		w = box:sizex()
 		h = box:sizey()
 	else
@@ -808,11 +808,11 @@ function ChoGGi_XWindow:PostInit(parent, pt, title_skip)
 		parent = nil
 	end
 
-	-- if we're opened from another dialog then offset it, else open at mouse cursor
+	-- If we're opened from another dialog then offset it, else open at mouse cursor
 	if parent then
 		x, y, w, h = self:BoxSize(parent)
 	end
-	-- if BoxSize failed or there isn't a parent we don't change the size, just re-pos
+	-- If BoxSize failed or there isn't a parent we don't change the size, just re-pos
 	if not parent or not x then
 		local box = self.idDialog.box
 		w = box:sizex()
@@ -834,7 +834,7 @@ function ChoGGi_XWindow:PostInit(parent, pt, title_skip)
 	w = w or 100
 	h = h or 100
 
-	-- if it's negative then set it to 100
+	-- If it's negative then set it to 100
 	y = y < 0 and 100 or y
 	x = x < 0 and 100 or x
 
@@ -1057,7 +1057,7 @@ end
 
 function ChoGGi_XInputContextMenu:OnMouseButtonDown(pt, button, ...)
 	if button == "R" then
-		-- id for PopupToggle
+		-- Id for PopupToggle
 		self.opened_list_menu_id = self.opened_list_menu_id or Random()
 
 		local list = self:RetContextList()
@@ -1173,7 +1173,7 @@ DefineClass.ChoGGi_XMultiLineEdit = {
 	-- selected
 	SelectionBackground = light_gray,
 	SelectionColor = black,
-	-- it'll be fine
+	-- It'll be fine
 	MaxLen = max_int,
 	MaxLines = max_int,
 }

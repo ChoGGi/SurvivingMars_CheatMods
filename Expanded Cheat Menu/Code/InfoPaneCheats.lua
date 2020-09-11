@@ -58,7 +58,7 @@ local function SetIcon(action, name, icon)
 end
 
 local function SetUpgradeInfo(action, obj, num)
-	-- if there's an upgrade then add hint text, otherwise blank the id to hide it
+	-- If there's an upgrade then add hint text, otherwise blank the id to hide it
 	if obj:GetUpgradeID(num) ~= "" then
 		SetHint(action, Strings[302535920001207--[["Add: %s to this building.
 
@@ -414,7 +414,7 @@ function ChoGGi.InfoFuncs.CheckForMissingCheatDes()
 				checked[value_obj] = true
 
 				local aid = key_obj:sub(6)
-				-- if it isn't in a lookup table then it's missing
+				-- If it isn't in a lookup table then it's missing
 				if not cheats_lookup[aid] and not cheats_lookup2[aid] and not grid_lookup[aid] then
 					missing[value_obj] = true
 				end
@@ -436,7 +436,7 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 		local action = win.actions[i]
 		local aid = action.ActionId
 
-		-- if it's stored in table than we'll use that otherwise it's elseif time
+		-- If it's stored in table than we'll use that otherwise it's elseif time
 		local look = cheats_lookup[aid]
 		if look then
 			if look.des then
@@ -736,7 +736,7 @@ local function CheatEmpty(self)
 		-- removes the object after the second click
 		self.amount = 0
 	else
-		-- it'll look empty, but it won't actually remove the object
+		-- It'll look empty, but it won't actually remove the object
 		self.amount = 1
 	end
 end

@@ -146,7 +146,7 @@ function CursorBuilding:GameInit(...)
 	if (sel_radius or self.template:IsKindOfClasses(rockets))
 		and not self.template:IsKindOf("Dome")
 	then
-		-- if it has a radius then use it, otherwise fallback to rocket (for landing sites I think)
+		-- If it has a radius then use it, otherwise fallback to rocket (for landing sites I think)
 		self.ChoGGi_UpdateAvailableResources = sel_radius and sel_radius(self)
 			or SupplyRocket.work_radius
 		-- 0 means not a radius building

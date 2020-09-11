@@ -64,7 +64,7 @@ local function EditDlg(dlg)
 							element:SetImageScale(point(200, 200))
 						end
 					end
-				end -- if
+				end -- If
 
 			end
 		end

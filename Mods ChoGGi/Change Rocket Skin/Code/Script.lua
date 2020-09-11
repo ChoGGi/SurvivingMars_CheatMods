@@ -46,7 +46,7 @@ function OnMsg.ModsReloaded()
 	if not table.find(rockets, "RDM_OrionRocket")
 		and table.find(ModsLoaded, "id", "Ucv4buQ")
 	then
-		-- if not then add to the list
+		-- If not then add to the list
 		rockets[#rockets+1] = "RDM_OrionRocket"
 		palettes[#palettes+1] = RDM_OrionRocket.rocket_palette
 		RDM_OrionRocket.GetSkins = GetSkins

@@ -10,7 +10,7 @@ local function RetGridType(obj)
 end
 
 local function ToggleObj(obj, tank_type, bt_charge, toggle)
-	-- if charge rate is 0 than we're blocking tank from charging
+	-- If charge rate is 0 than we're blocking tank from charging
 	local grid_obj = obj[tank_type]
 	local ret_toggle
 	-- update selected obj

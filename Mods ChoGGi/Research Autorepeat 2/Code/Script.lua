@@ -24,7 +24,7 @@ function OnMsg.TechResearched(tech_id, city)
 		if #q == 1 and TechDef[q[1]].repeatable then
 			-- We just completed some normal research, leaving only a single repeatable research in
 			-- the queue. Add it again in order to avoid the 'no active research' notification when
-			-- it ends the first time
+			-- It ends the first time
 			city:QueueResearch(q[1])
 		end
 	end

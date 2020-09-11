@@ -36,7 +36,7 @@ function ChoGGi.MenuFuncs.SetDroneBatteryCap()
 		local value = choice[1].value
 		if type(value) == "number" then
 
-			-- i doubt updating this matters...
+			-- I doubt updating this matters...
 			const.DroneBatteryMax = value
 
 			local objs = UICity.labels.Drone or ""
@@ -94,7 +94,7 @@ function ChoGGi.MenuFuncs.SetDroneType()
 		)
 	end
 
-	-- if nothing is set than it's regular drones
+	-- If nothing is set than it's regular drones
 	local name = g_Classes[sponsor.drone_class]
 	name = name and name.display_name or 1681--[[Drone]]
 
@@ -511,8 +511,7 @@ function ChoGGi.MenuFuncs.DroneRechargeTime_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		Strings[302535920000907--[[%s: Well, if jacking on'll make strangers think I'm cool, I'll do it!]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneRechargeTime)),
-		T(4645, "Drone Recharge Time"),
-		{size = true}
+		T(4645, "Drone Recharge Time")
 	)
 end
 

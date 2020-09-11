@@ -37,7 +37,7 @@ do -- MapData
 	-- exported data temp stored here
 	local export_data = {}
 	local export_data_dupes = {}
-	-- it's an index based table
+	-- It's an index based table
 	local export_count = 0
 	-- stores temp landing spot
 	local landing

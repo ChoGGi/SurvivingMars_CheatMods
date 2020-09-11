@@ -135,7 +135,7 @@ function RCBulldozer:UpdateCircle()
 		self.visual_circle:SetPos(self:ReturnDozeArea())
 	end
 
-	-- it should be created by now, but just in case
+	-- It should be created by now, but just in case
 	if self.visual_circle then
 		if self.bulldozing and self.visual_circle_toggle then
 			self.visual_circle:SetVisible(true)
@@ -233,7 +233,7 @@ function RCBulldozer:StartDozer()
 		self:SetMoveAnim("workIdle")
 	end
 
-	-- it shouldn't already be running, but screw it
+	-- It shouldn't already be running, but screw it
 	if not IsValidThread(self.flatten_thread) then
 		-- store this thread so we can stop it
 		self.flatten_thread = CreateRealTimeThread(function()
@@ -244,7 +244,7 @@ function RCBulldozer:StartDozer()
 					WaitMsg("MarsResume")
 				end
 
-				-- if we're idle then we're not moving
+				-- If we're idle then we're not moving
 				if self.command == "Idle" then
 					while self.command == "Idle" do
 						Sleep(100)

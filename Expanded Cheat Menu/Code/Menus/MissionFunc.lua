@@ -83,7 +83,7 @@ function ChoGGi.MenuFuncs.ChangeRivalColonies()
 		local add = choices[1].check1
 		local remove = choices[1].check2
 
-		-- if it's an old save without rivals added
+		-- If it's an old save without rivals added
 		if not g_CurrentMissionParams.idRivalColonies then
 			local rivals_table = {}
 			local c = 0
@@ -111,7 +111,7 @@ function ChoGGi.MenuFuncs.ChangeRivalColonies()
 		if add then
 			for i = 1, #choices do
 				local choice = choices[i]
-				-- if it's an actual rival, and not one already added
+				-- If it's an actual rival, and not one already added
 				if not g_RivalAIs[choice.value] then
 					SpawnRivalAI(choice.rival)
 				end
@@ -293,8 +293,7 @@ function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
 Damage? Total, sir.
 It's what we call a global killer.
 The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria."]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.MeteorHealthDamage)),
-		Strings[302535920000708--[[Meteor Damage]]],
-		{size = true}
+		Strings[302535920000708--[[Meteor Damage]]]
 	)
 end
 

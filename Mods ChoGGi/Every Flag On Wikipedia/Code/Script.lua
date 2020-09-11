@@ -3118,7 +3118,7 @@ function OnMsg.ModsReloaded()
 	end
 
 
-	-- instead of just replacing the orig table we add on to it (just in case more nations are added, maybe by another mod)
+	-- Instead of just replacing the orig table we add on to it (just in case more nations are added, maybe by another mod)
 	local c = #Nations
 
 	-- make sure built-in ones use my bigger flags
@@ -4142,7 +4142,7 @@ function OnMsg.ModsReloaded()
 		Nations[c] = {
 			value = "kuban_people's_republic",
 			text = "Kuban People's Republic",
-			flag = path .. "kuban_people's_republic.png",
+			flag = path .. "kuban_peoples_republic.png",
 		}
 		c = c + 1
 		Nations[c] = {
@@ -5312,7 +5312,7 @@ function OnMsg.ModsReloaded()
 		Nations[c] = {
 			value = "the_inner_mongolian_people's_party",
 			text = "The Inner Mongolian People's Party",
-			flag = path .. "the_inner_mongolian_people's_party.png",
+			flag = path .. "the_inner_mongolian_peoples_party.png",
 		}
 		c = c + 1
 		Nations[c] = {
@@ -5502,9 +5502,15 @@ function OnMsg.ModsReloaded()
 		}
 		c = c + 1
 		Nations[c] = {
+			value = "taiwan",
+			text = "Taiwan",
+			flag = path .. "flag_taiwan.png",
+		}
+		c = c + 1
+		Nations[c] = {
 			value = "the_republic_of_china",
-			text = "The Republic Of China (Taiwan)",
-			flag = path .. "the_republic_of_china.png",
+			text = "The People's Republic Of China",
+			flag = path .. "flag_the_peoples_republic_of_china.png",
 		}
 		c = c + 1
 		Nations[c] = {
@@ -5648,7 +5654,7 @@ function OnMsg.ModsReloaded()
 		Nations[c] = {
 			value = "the_tuvan_people's_republic",
 			text = "The Tuvan People's Republic",
-			flag = path .. "the_tuvan_people's_republic.png",
+			flag = path .. "the_tuvan_peoples_republic.png",
 		}
 		c = c + 1
 		Nations[c] = {

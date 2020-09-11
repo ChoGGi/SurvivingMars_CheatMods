@@ -44,7 +44,7 @@ function CursorBuilding:GameInit(...)
 	end
 
 	if self.template and self.template:IsKindOfClasses(cls_saved_settings) then
-		-- if ecm is active we check for custom range, otherwise use default
+		-- If ecm is active we check for custom range, otherwise use default
 		local uirange
 		local idx = table.find(ModsLoaded, "id", "ChoGGi_Library")
 		if idx then
@@ -95,7 +95,7 @@ function OnMsg.BuildingInit(obj)
 		return
 	end
 
-	-- if ECM is active we check for custom range, otherwise use default
+	-- If ECM is active we check for custom range, otherwise use default
 	local uirange
 	local idx = table.find(ModsLoaded, "id", "ChoGGi_Library")
 	if idx then

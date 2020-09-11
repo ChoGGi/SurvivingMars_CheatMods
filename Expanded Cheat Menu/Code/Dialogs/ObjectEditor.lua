@@ -204,7 +204,7 @@ function ChoGGi_DlgObjectEditor:idEditValue_OnTextChanged()
 		return
 	end
 
-	-- if types match then we're fine, or nil if we're removing something
+	-- If types match then we're fine, or nil if we're removing something
 	if obj_type == edit_type or edit_type == "nil" or
 			--false bools can be made a string or num
 			(obj_value == false and edit_type == "string" or edit_type == "number") or
@@ -227,7 +227,7 @@ end
 
 function ChoGGi_DlgObjectEditor:idAutoRefresh_OnChange()
 	self = GetRootDialog(self)
-	-- if already running then stop and return
+	-- If already running then stop and return
 	if IsValidThread(self.autorefresh_thread) then
 		DeleteThread(self.autorefresh_thread)
 		return

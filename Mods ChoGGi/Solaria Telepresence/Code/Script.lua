@@ -41,7 +41,7 @@ function Solaria:GameInit()
 --~ 	self:SetColorizationMaterial(2, -7963804, 120, 20)
 --~ 	self:SetColorizationMaterial(3, -10263981, -128, 48)
 
-	-- it's a workplace after all (bland ftw)
+	-- It's a workplace after all (bland ftw)
 	self:DestroyAttaches{"VRWorkshopHologram", "DecorInt_02"}
 	self:ForEachAttach(function(a)
 		if a.class:find("Door") then
@@ -127,7 +127,7 @@ Right click to view selected list item building.]])
 		}
 	end
 
-	-- if list is empty that means no controlled/able buildings so return
+	-- If list is empty that means no controlled/able buildings so return
 	if #item_list == 0 then
 		MsgPopup(
 			T(302535920011270, [[Nothing to control.]]),
@@ -265,7 +265,7 @@ function Solaria:StartWorkCycle(unit)
 
 		-- get amount of workers for shifts
 		local shift = self.current_shift
-		-- if shift is closed then 0
+		-- If shift is closed then 0
 		local workers = 0
 		-- set Solaria shifts based on controlled building
 		self.closed_shifts = obj.closed_shifts

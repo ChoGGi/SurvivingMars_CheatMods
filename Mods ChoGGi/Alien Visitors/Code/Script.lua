@@ -159,7 +159,7 @@ function ChoGGi_Alien:RoamTick()
 			if dome then
 				dome:LeadIn(self, dome:GetEntrances())
 			else
-				-- if we're in a dome and the pt is outside the dome
+				-- If we're in a dome and the pt is outside the dome
 				if self.current_dome and not dome then
 					self.current_dome:LeadOut(self, self.current_dome:GetEntrances())
 				else

@@ -312,7 +312,7 @@ end
 -- ClassesBuilt is the earliest we can call Consts funcs (which i don't actually call in here anymore...)
 function OnMsg.ClassesBuilt()
 	local UserSettings = ChoGGi.UserSettings
-	-- if setting doesn't exist then add default
+	-- If setting doesn't exist then add default
 	local Defaults = ChoGGi.Defaults
 	for key, value in pairs(Defaults) do
 		if type(UserSettings[key]) == "nil" then

@@ -115,7 +115,7 @@ local function BuildDomeSpots(dome)
 	local spots = {}
 	local c = 0
 
-	-- interior shape of dome without roads (con sites need to use alternative_entity or it's the wrong entity)
+	-- Interior shape of dome without roads (con sites need to use alternative_entity or it's the wrong entity)
 	local shape = GetEntityBuildShape(dome.alternative_entity or dome:GetEntity())
 	-- needed if dome isn't placed in default angle
 	local rotation = HexAngleToDirection(dome:GetAngle())
@@ -173,7 +173,7 @@ OnMsg.CityStart = StartupCode
 local function RetNearestSpot(dome, pos)
 	local pos_spots
 
-	-- if it's in the table then it's a placed dome
+	-- If it's in the table then it's a placed dome
 	if dome_list[dome] then
 		pos_spots = dome_list[dome].spots
 	else
@@ -311,7 +311,7 @@ end
 local orig_ConstructionController_Rotate = ConstructionController.Rotate
 function ConstructionController:Rotate(...)
 	if mod_Enable then
-		-- it needs to fire first so we can get updated angle
+		-- It needs to fire first so we can get updated angle
 		local ret = orig_ConstructionController_Rotate(self, ...)
 		UpdateMarkers(self)
 		return ret

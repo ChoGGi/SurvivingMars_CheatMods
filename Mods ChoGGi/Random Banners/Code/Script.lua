@@ -13,7 +13,7 @@ local lookup_table = {
 	Flag_03_ = {"Hex1_Placeholder"},
 }
 
--- if any mods add flags
+-- If any mods add flags
 function OnMsg.ModsReloaded()
 	-- build lists of flag entities (nation names)
 	local flag_c = 0
