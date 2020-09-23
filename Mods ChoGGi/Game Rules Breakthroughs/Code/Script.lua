@@ -155,10 +155,11 @@ end
 
 -- prevent blank mission profile screen
 function OnMsg.LoadGame()
-	local rules = GameRulesMap
+	local GameRulesMap = GameRulesMap
+	local rules = g_CurrentMissionParams.idGameRules or empty_table
 	for rule_id in pairs(rules) do
 		-- If it isn't in the map then it isn't a valid rule
-		if not rules[rule_id] then
+		if not GameRulesMap[rule_id] then
 			rules[rule_id] = nil
 		end
 	end

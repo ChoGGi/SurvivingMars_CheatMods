@@ -1,7 +1,9 @@
 -- See LICENSE for terms
 
+local table_find = table.find
+
 local function UpdateProp(xtemplate)
-	local idx = table.find(xtemplate, "MaxWidth", 400)
+	local idx = table_find(xtemplate, "MaxWidth", 400)
 	if idx then
 		xtemplate[idx].MaxWidth = 1000000
 	end
@@ -17,7 +19,7 @@ local function AdjustNumber(self, direction)
 end
 
 local function AddSliderButtons(xtemplate)
-	local idx = table.find(xtemplate, "Id", "idSlider")
+	local idx = table_find(xtemplate, "Id", "idSlider")
 	if idx then
 		local template_left = PlaceObj("XTemplateWindow", {
 				"Id", "idButtonLower_ChoGGi",
@@ -65,6 +67,16 @@ local function AddSliderButtons(xtemplate)
 	end
 end
 
+local function ChangeBoolColour(xtemplate, id, colour)
+	local idx = table_find(xtemplate, "Id", id)
+	if not idx then
+		return
+	end
+
+	local template = xtemplate[idx]
+	template.Text = table.concat(T("<" .. colour .. ">") .. template.Text .. "</color>")
+end
+
 function OnMsg.ClassesPostprocess()
 	local xtemplate = XTemplates.PropBool[1]
 	if xtemplate.ChoGGi_ModOptionsExpanded then
@@ -72,9 +84,13 @@ function OnMsg.ClassesPostprocess()
 	end
 	xtemplate.ChoGGi_ModOptionsExpanded = true
 
+	-- Change On/Off text to green/red/duct tape
+	ChangeBoolColour(xtemplate, "idOn", "green")
+	ChangeBoolColour(xtemplate, "idOff", "red")
 
 	UpdateProp(xtemplate)
 	UpdateProp(XTemplates.PropChoiceOptions[1])
+
 	xtemplate = XTemplates.PropNumber[1]
 	UpdateProp(xtemplate)
 	-- add buttons to number

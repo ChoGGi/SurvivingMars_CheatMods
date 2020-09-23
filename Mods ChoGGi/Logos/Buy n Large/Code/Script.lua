@@ -62,12 +62,15 @@ end -- LoadEntity
 function OnMsg.ClassesPostprocess()
 	for i = 1, #loadlogos do
 		local name = loadlogos[i].name
-		PlaceObj("MissionLogoPreset", {
-			display_name = loadlogos[i].display_name,
-			decal_entity = name,
-			entity_name = name,
-			id = "ChoGGi.Logos." .. name,
-			image = CurrentModPath .. "UI/" .. name .. ".png",
-		})
+		local id = "ChoGGi.Logos." .. name
+		if not MissionLogoPresetMap[id] then
+			PlaceObj("MissionLogoPreset", {
+				display_name = loadlogos[i].display_name,
+				decal_entity = name,
+				entity_name = name,
+				id = id,
+				image = CurrentModPath .. "UI/" .. name .. ".png",
+			})
+		end
 	end
 end

@@ -30,7 +30,7 @@ end
 local function ModOptions()
 	UpdateRate()
 
-	if not GameState.gameplay then
+	if not UICity then
 		return
 	end
 

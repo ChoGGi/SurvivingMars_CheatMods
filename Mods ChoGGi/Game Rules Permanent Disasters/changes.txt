@@ -1,2 +1,5 @@
+v0.3
+Fixed rockets and dust storms (thanks Blade).
+
 v0.2
 Changed dust devils to allow 0 devils on map (no regerts).

@@ -213,17 +213,21 @@ do -- Postprocess
 	local logo_path = mod.env.CurrentModPath .. "UI/"
 
 	function OnMsg.ClassesPostprocess()
+	local MissionLogoPresetMap = MissionLogoPresetMap
 		for i = 1, logos_length do
 			local logo = logos[i]
 			local file = logo.file
 
-			PlaceObj("MissionLogoPreset", {
-				decal_entity = file,
-				entity_name = file,
-				display_name = "Hakenkreuz: " .. logo.name,
-				id = "HakenkreuzLogos_" .. file,
-				image = logo_path .. file .. ".png",
-			})
+			local id = "HakenkreuzLogos_" .. file
+			if not MissionLogoPresetMap[id] then
+				PlaceObj("MissionLogoPreset", {
+					decal_entity = file,
+					entity_name = file,
+					display_name = "Hakenkreuz: " .. logo.name,
+					id = id,
+					image = logo_path .. file .. ".png",
+				})
+			end
 		end
 	end
 end -- Postprocess

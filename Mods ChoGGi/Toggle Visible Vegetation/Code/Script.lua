@@ -35,8 +35,8 @@ local function ModOptions()
 	mod_ToggleBushes = CurrentModOptions:GetProperty("ToggleBushes")
 	mod_EnableVegetation = CurrentModOptions:GetProperty("EnableVegetation")
 
-	-- make sure we're not in menus
-	if not GameState.gameplay then
+	-- make sure we're ingame
+	if not UICity then
 		return
 	end
 	ToggleTrees()

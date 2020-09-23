@@ -1,6 +1,13 @@
 ## ECM Changelog
 
 ## v15.6 (Unreleased)
+### Added:
+- Console>Settings>Flush Log / Flush Log Constantly: Exposed settings in UI instead of having to edit manually.
+
+### Changed:
+- The Empty cheat in the Selection Panel>Cheats ignored the consumption depot.
+- Moved Toggle Object Collision from Debug to Game>Object.
+- FlushLog setting to false by default.
 
 ## v15.5 (11 Sep 2020)
 ### Added:

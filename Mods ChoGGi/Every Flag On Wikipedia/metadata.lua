@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 
 Since this game uses nations for names, this also takes all the in-game names and applies them to all the new nations.
 
-This also sets const.FullTransitionToMarsNames to 9999 (Sols), and adds all the names to Mars (I think we've all seen enough of Cosmo Cosmos).
+This also sets const.FullTransitionToMarsNames to 99999 (Sols), and adds all the names to Mars (I think we've all seen enough of Cosmo Cosmos).
 
 mod options:
 If you want Martians to have martian names: Randomise Birthplace = false

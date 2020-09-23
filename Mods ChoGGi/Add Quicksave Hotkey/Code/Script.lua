@@ -7,7 +7,7 @@ local Actions = ChoGGi.Temp.Actions
 Actions[#Actions+1] = {ActionName = T(302535920011641, "Quicksave"),
 	ActionId = "ChoGGi.AddQuicksaveHotkey.Quicksave",
 	OnAction = function()
-		if not GameState.gameplay then
+		if not UICity then
 			return
 		end
 

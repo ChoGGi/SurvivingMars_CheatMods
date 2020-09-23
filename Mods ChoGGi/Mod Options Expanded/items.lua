@@ -1,0 +1,19 @@
+--~ return {
+--~ 	PlaceObj("ModItemOptionToggle", {
+--~ 		"name", "Boolean1",
+--~ 		"DisplayName", T("Boolean 1"),
+--~ 		"DefaultValue", true,
+--~ 	}),
+--~ 	PlaceObj("ModItemOptionToggle", {
+--~ 		"name", "Boolean2",
+--~ 		"DisplayName", T("Boolean 2"),
+--~ 		"DefaultValue", false,
+--~ 	}),
+--~ 	PlaceObj("ModItemOptionNumber", {
+--~ 		"name", "ExampleInt",
+--~ 		"DisplayName", T("Press - or + to change the amount instead of finicky sliders"),
+--~ 		"DefaultValue", 5,
+--~ 		"MinValue", 0,
+--~ 		"MaxValue", 100,
+--~ 	}),
+--~ }

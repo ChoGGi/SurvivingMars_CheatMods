@@ -1,3 +1,6 @@
+v0.6
+Hopefully fixed orphaned colonists.
+
 v0.5
 Added button to individual colonists if you only want to move one or two.
 

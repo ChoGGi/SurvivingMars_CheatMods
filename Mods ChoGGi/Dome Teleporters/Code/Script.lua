@@ -29,38 +29,38 @@ end
 
 -- build menu button
 function OnMsg.ClassesPostprocess()
-	if not BuildingTemplates.DomeTeleporter then
-		PlaceObj("BuildingTemplate", {
-			"Id", "DomeTeleporter",
-			"template_class", "DomeTeleporter",
-			"can_rotate_during_placement", true,
-
-			"construction_cost_Concrete", 2000,
-			"build_points", 1000,
-			"palette_color1", "mining_base",
-			"palette_color2", "life_base",
-			"palette_color3", "outside_base",
-
-			"electricity_consumption", 500,
-
-			"dome_required", true,
-			"display_name", T(302535920011080, [[Dome Teleporter]]),
-			"description", T(302535920011081, [[It's a teleporter for your domes that acts like a passage.]]),
-			"build_category", "ChoGGi",
-			"Group", "ChoGGi",
-			"display_icon", CurrentModPath .. "UI/orbital_drop.png",
-			"encyclopedia_exclude", true,
-			"on_off_button", true,
-			"prio_button", true,
-			"entity", "RechargeStation",
-			"demolish_sinking", range(0, 0),
-
-			"construction_mode", "dome_teleporter_construction",
-			"ip_template", "ipBuilding",
-
---~ 			count_as_building
-		})
+	if BuildingTemplates.DomeTeleporter then
+		return
 	end
+
+	PlaceObj("BuildingTemplate", {
+		"Id", "DomeTeleporter",
+		"template_class", "DomeTeleporter",
+		"can_rotate_during_placement", true,
+
+		"construction_cost_Concrete", 2000,
+		"build_points", 1000,
+		"palette_color1", "mining_base",
+		"palette_color2", "life_base",
+		"palette_color3", "outside_base",
+
+		"electricity_consumption", 500,
+
+		"dome_required", true,
+		"display_name", T(302535920011080, [[Dome Teleporter]]),
+		"description", T(302535920011081, [[It's a teleporter for your domes that acts like a passage.]]),
+		"build_category", "ChoGGi",
+		"Group", "ChoGGi",
+		"display_icon", CurrentModPath .. "UI/orbital_drop.png",
+		"encyclopedia_exclude", true,
+		"on_off_button", true,
+		"prio_button", true,
+		"entity", "RechargeStation",
+		"demolish_sinking", range(0, 0),
+
+		"construction_mode", "dome_teleporter_construction",
+		"ip_template", "ipBuilding",
+	})
 end
 
 -- we fire our own modified GameInit, so we don't want the one from tunnel (not sure how else to remove it)

@@ -1,2 +1,8 @@
+v0.4
+Wasn't being removed from some dome labels when removed (Thanks Vas).
+
+v0.3
+Slightly higher comfort (2 - 2.5).
+
 v0.2
 Code cleanup.

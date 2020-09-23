@@ -46,14 +46,23 @@ function VegetationSelectionObject:GetChoGGi_NearestSeeder()
 		label = "OpenFarm"
 	end
 
-	local objs = UICity.labels[label] or empty_table
+	local objs = UICity.labels[label] or ""
 	if #objs > 0 then
-		local pt = self:GetPos()
-		table.sort(objs, function(a, b)
-			return a:GetDist2D(pt) < b:GetDist2D(pt)
-		end)
+		local obj_pos = self:GetPos()
 
-		return objs[1]:GetDisplayName()
+		-- get nearest
+		local length = max_int
+		local nearest = objs[1]
+		local new_length, spot
+		for i = 1, #objs do
+			spot = objs[i]
+			new_length = spot:GetPos():Dist2D(obj_pos)
+			if new_length < length then
+				length = new_length
+				nearest = spot
+			end
+		end
+		return nearest:GetDisplayName()
 	else
 		return T(588, "Empty")
 	end

@@ -1,2 +1,5 @@
+v0.3
+Green/Red for Boolean On/Off.
+
 v0.2
 Added buttons to number slider for finer adjustments.

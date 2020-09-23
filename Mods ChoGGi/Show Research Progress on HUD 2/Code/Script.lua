@@ -11,7 +11,7 @@ local function ModOptions()
 	mod_QueueCount = CurrentModOptions:GetProperty("QueueCount")
 	mod_HideWhenEmpty = CurrentModOptions:GetProperty("HideWhenEmpty")
 
-	if not GameState.gameplay then
+	if not UICity then
 		return
 	end
 	UpdateResearchProgressBar()

@@ -10,6 +10,7 @@ local MeteorsDisaster = MeteorsDisaster
 local GenerateDustDevil = GenerateDustDevil
 local GetRandomPassableAwayFromBuilding = GetRandomPassableAwayFromBuilding
 local table_find = table.find
+local table_remove = table.remove
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 
 local SolDuration = const.Scale.sols
@@ -74,7 +75,7 @@ function OnMsg.ApplyModOptions(id)
 
 	ModOptions()
 
-	if not GameState.gameplay then
+	if not UICity then
 		return
 	end
 
@@ -197,16 +198,29 @@ end)
 local function RemoveSuspend(list, name)
 	local idx = table_find(list, name)
 	if idx then
-		table.remove(list, idx)
+		table_remove(list, idx)
 	end
 end
 
 local orig_SupplyRocket_IsFlightPermitted = SupplyRocket.IsFlightPermitted
 function SupplyRocket:IsFlightPermitted(...)
+	return mod_DustStormsAllowRockets or orig_SupplyRocket_IsFlightPermitted(self, ...)
+end
+
+local orig_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
+function ConstructionController:UpdateConstructionStatuses(_, ...)
+	local ret = orig_UpdateConstructionStatuses(self, ...)
 	if mod_DustStormsAllowRockets then
-		return true
+		local statuses = self.construction_statuses
+		for i = 1, #statuses do
+			if statuses[i] == ConstructionStatus.RocketLandingDustStorm then
+				table_remove(statuses, i)
+				self:PickCursorObjColor()
+				break
+			end
+		end
 	end
-	return orig_SupplyRocket_IsFlightPermitted(self, ...)
+	return ret
 end
 
 -- remove dust storm notification button
@@ -389,4 +403,16 @@ function OnMsg.ClassesPostprocess()
 		group = "Default",
 		id = "ChoGGi_Twister",
 	})
+end
+
+-- prevent blank mission profile screen
+function OnMsg.LoadGame()
+	local GameRulesMap = GameRulesMap
+	local rules = g_CurrentMissionParams.idGameRules or empty_table
+	for rule_id in pairs(rules) do
+		-- If it isn't in the map then it isn't a valid rule
+		if not GameRulesMap[rule_id] then
+			rules[rule_id] = nil
+		end
+	end
 end

@@ -1,13 +1,12 @@
 return PlaceObj("ModDef", {
 	"title", "1 Percenter",
-	"version", 2,
-	"version_major", 0,
-	"version_minor", 2,
-
 	"id", "ChoGGi_1Percenter",
-	"author", "ChoGGi",
 	"steam_id", "1411216506",
 	"pops_any_uuid", "63bbd317-5310-4f6c-8ff4-24e715812c1e",
+	"version", 3,
+	"version_major", 0,
+	"version_minor", 3,
+	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua"
 	},

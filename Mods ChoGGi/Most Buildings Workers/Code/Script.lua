@@ -77,7 +77,7 @@ local function ModOptions()
 	options = CurrentModOptions
 	mod_DefaultPerformance = options:GetProperty("DefaultPerformance")
 
-	if not GameState.gameplay then
+	if not UICity then
 		return
 	end
 

@@ -49,8 +49,25 @@ end
 
 -- add building to building template list
 function OnMsg.ClassesPostprocess()
-	if BuildingTemplates.BottomlessStorage then
-		return
+	if not BuildingTemplates.BottomlessStorage then
+		PlaceObj("BuildingTemplate", {
+			"Id", "BottomlessStorage",
+			"template_class", "BottomlessStorage",
+			"instant_build", true,
+			"dome_forbidden", true,
+			"display_name", T(302535920011047, [[Bottomless Storage]]),
+			"display_name_pl", T(302535920011048, [[Bottomless Storages]]),
+			"description", T(302535920011049, [[Warning: Anything added to this depot will disappear.]]),
+			"build_category", "ChoGGi",
+			"Group", "ChoGGi",
+			"display_icon", CurrentModPath .. "UI/bottomless_storage.png",
+			"entity", "ResourcePlatform",
+			"on_off_button", true,
+			"prio_button", false,
+			"count_as_building", false,
+			"storable_resources", storable_resources,
+			"resource", storable_resources,
+		})
 	end
 
 	local storable_resources = table.icopy(UniversalStorageDepot.storable_resources)
@@ -58,22 +75,4 @@ function OnMsg.ClassesPostprocess()
 		storable_resources[#storable_resources+1] = "Seeds"
 	end
 
-	PlaceObj("BuildingTemplate", {
-		"Id", "BottomlessStorage",
-		"template_class", "BottomlessStorage",
-		"instant_build", true,
-		"dome_forbidden", true,
-		"display_name", T(302535920011047, [[Bottomless Storage]]),
-		"display_name_pl", T(302535920011048, [[Bottomless Storages]]),
-		"description", T(302535920011049, [[Warning: Anything added to this depot will disappear.]]),
-		"build_category", "ChoGGi",
-		"Group", "ChoGGi",
-		"display_icon", CurrentModPath .. "UI/bottomless_storage.png",
-		"entity", "ResourcePlatform",
-		"on_off_button", true,
-		"prio_button", false,
-		"count_as_building", false,
-		"storable_resources", storable_resources,
-		"resource", storable_resources,
-	})
 end

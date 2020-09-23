@@ -100,6 +100,7 @@ local mod_TR_MaxChunks
 local mod_DTM_VideoMemory
 local mod_ShadowmapSize
 local mod_LODDistanceModifier
+local mod_ShadowRangeOverride
 local options
 
 
@@ -121,7 +122,7 @@ local function UpdateHR()
 	if mod_LODDistanceModifier > 0 then
 		hr.LODDistanceModifier = lookup_settings.LODDistanceModifier[mod_LODDistanceModifier]
 	end
-	if mod_ShadowRangeOverride > 0 then
+	if mod_ShadowRangeOverride ~= 0 then
 		hr.ShadowRangeOverride = lookup_settings.ShadowRangeOverride[mod_ShadowRangeOverride]
 	end
 end
@@ -135,6 +136,7 @@ local function ModOptions()
 	mod_DTM_VideoMemory = options:GetProperty("DTM_VideoMemory")
 	mod_ShadowmapSize = options:GetProperty("ShadowmapSize")
 	mod_LODDistanceModifier = options:GetProperty("LODDistanceModifier")
+	mod_ShadowRangeOverride = options:GetProperty("ShadowRangeOverride")
 
 	UpdateHR()
 end

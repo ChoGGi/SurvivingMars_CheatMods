@@ -1,1 +1,2 @@
 v0.2
+Shadow Range wasn't added properly.

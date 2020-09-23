@@ -83,7 +83,7 @@ ChoGGi.Defaults = {
 	FlattenGround_HeightDiff = 100,
 	FlattenGround_RadiusDiff = 100,
 	-- dumps the log to disk on startup, and every new Sol (good for some crashes)
-	FlushLog = true,
+	FlushLog = false,
 	-- dumps log to disk every in-game hour (30 000 ticks of GameTime)
 	FlushLogConstantly = false,
 	-- show Cheats section in the selection panel
@@ -137,7 +137,7 @@ if testing then
 	local Defaults = ChoGGi.Defaults
 	-- add extra debugging defaults for me
 	Defaults.ShowStartupTicks = true
-	Defaults.WriteLogs = true
+--~ 	Defaults.WriteLogs = true
 	Defaults.FixMissingModBuildings = true
 	Defaults.FixMissingModBuildingsLog = false
 	Defaults.ExamineErrors = true
@@ -156,6 +156,8 @@ if testing then
 	Defaults.StopSelectionPanelResize = true
 	-- the only good text editor
 	Defaults.ExternalEditorCmd = [[scite "%s"]]
+	-- dumps the log to disk on startup, and every new Sol (good for some crashes)
+	Defaults.FlushLog = true
 end
 
 -- set game values to saved values

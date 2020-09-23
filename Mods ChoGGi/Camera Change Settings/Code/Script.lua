@@ -35,7 +35,7 @@ local function ModOptions()
 	mod_MoveSpeed = options:GetProperty("MoveSpeed")
 
 	-- make sure we're ingame
-	if not GameState.gameplay then
+	if not UICity then
 		return
 	end
 	UpdateCamera()

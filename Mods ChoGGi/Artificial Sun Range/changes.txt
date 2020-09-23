@@ -1,3 +1,6 @@
+v0.5
+Mod compatibility.
+
 v0.4
 Prevent log spam.
 

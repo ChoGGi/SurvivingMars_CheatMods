@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v8.6 (Unreleased)
+- Added Open File to MultiLineText when viewing source code from Examine (opens in default text editor).
 
 ## v8.5 (11 Sep 2020)
 - Titlebar rollup was showing exec code area (ignoring checkbox).

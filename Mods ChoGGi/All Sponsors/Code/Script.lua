@@ -5,10 +5,6 @@ local mod_MaxRivals
 -- fired when settings are changed/init
 local function ModOptions()
 	mod_MaxRivals = CurrentModOptions:GetProperty("MaxRivals")
-	-- make sure we're not in menus
-	if not GameState.gameplay then
-		return
-	end
 end
 
 -- load default/saved settings

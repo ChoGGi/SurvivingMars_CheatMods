@@ -48,11 +48,13 @@ do -- LoadEntity
 end -- LoadEntity
 
 function OnMsg.ClassesPostprocess()
-	PlaceObj("MissionLogoPreset", {
-		display_name = [[Captain Star]],
-		decal_entity = "CaptainStar",
-		entity_name = "CaptainStar",
-		id = "ChoGGi.Logos.CaptainStar",
-		image = CurrentModPath .. "UI/CaptainStar.png",
-	})
+	if not MissionLogoPresetMap["ChoGGi.Logos.CaptainStar"] then
+		PlaceObj("MissionLogoPreset", {
+			display_name = [[Captain Star]],
+			decal_entity = "CaptainStar",
+			entity_name = "CaptainStar",
+			id = "ChoGGi.Logos.CaptainStar",
+			image = CurrentModPath .. "UI/CaptainStar.png",
+		})
+	end
 end

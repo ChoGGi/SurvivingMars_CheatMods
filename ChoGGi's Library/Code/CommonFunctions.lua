@@ -23,8 +23,10 @@ local table_clear = table.clear
 local table_iclear = table.iclear
 local table_sort = table.sort
 local table_copy = table.copy
+local table_icopy = table.icopy
 local table_rand = table.rand
 local table_set_defaults = table.set_defaults
+local table_append = table.append
 local CreateRealTimeThread = CreateRealTimeThread
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
@@ -2103,7 +2105,7 @@ do -- Rebuildshortcuts
 				OnAction = function()
 					ChoGGi.UserSettings.DisableECM = false
 					ChoGGi.SettingFuncs.WriteSettings()
-					print(name, Strings[302535920001070--[[Restart to take effect.]]])
+					print(name, ":", Strings[302535920001070--[[Restart to take effect.]]])
 					ChoGGi.ComFuncs.MsgWait(
 						Strings[302535920001070--[[Restart to take effect.]]],
 						name
@@ -2151,12 +2153,12 @@ do -- AttachToNearestDome
 		local working_domes = MapFilter(UICity.labels.Dome, CanWork)
 		local dome = FindNearestObject(working_domes, obj)
 
-		local current_dome_valid = IsValid(obj.parent_dome)
 		-- remove from old dome (assuming it's a different dome), or the dome is invalid
+		local current_dome_valid = IsValid(obj.parent_dome)
 		if obj.parent_dome and not current_dome_valid
 				or (current_dome_valid and dome and dome.handle ~= obj.parent_dome.handle) then
 			local current_dome = obj.parent_dome
-			-- add to dome labels
+			-- remove from dome labels
 			current_dome:RemoveFromLabel("InsideBuildings", obj)
 			if obj:IsKindOf("Workplace") then
 				current_dome:RemoveFromLabel("Workplace", obj)
@@ -3194,7 +3196,7 @@ function ChoGGi.ComFuncs.EmptyMechDepot(obj, skip_delete)
 
 end
 
---returns the near hex grid for object placement
+-- returns the near hex grid for object placement
 function ChoGGi.ComFuncs.CursorNearestHex(pt)
 	return HexGetNearestCenter(pt or GetTerrainCursor())
 end
@@ -3205,98 +3207,135 @@ function ChoGGi.ComFuncs.DeleteAllAttaches(obj)
 	end
 end
 
-function ChoGGi.ComFuncs.FindNearestResource(obj)
-	-- If fired from action menu
-	if IsKindOf(obj, "XAction") then
-		obj = SelObject()
-	else
-		obj = obj or SelObject()
+do -- RetNearestResource/FindNearestResource
+	local GetStored, res_amount, res_resource
+	local function FilterTable(o)
+		-- not all stockpiles use this func name
+		if o.resource == res_resource and o[GetStored] and o[GetStored](o) >= res_amount then
+			return true
+		end
 	end
 
-	if not IsValid(obj) then
-		MsgPopup(
-			Strings[302535920000027--[[Nothing selected]]],
-			Strings[302535920000028--[[Find Resource]]]
-		)
-		return
-	end
+	local filter_res_piles = {"ResourceStockpile", "ResourceStockpileLR"}
+--~ 	local filter_res_func = function(o)
+--~ 		if o.resource == res_resource and o:GetStoredAmount() > 999 then
+--~ 			return true
+--~ 		end
+--~ 	end
 
-	-- build list of resources
-	local item_list = {}
-	local ResourceDescription = ResourceDescription
-	local res = ChoGGi.Tables.Resources
-	local TagLookupTable = const.TagLookupTable
-	for i = 1, #res do
-		local item = ResourceDescription[table_find(ResourceDescription, "name", res[i])]
-		item_list[i] = {
-			text = Translate(item.display_name),
-			value = item.name,
-			icon = TagLookupTable["icon_" .. item.name],
-		}
-	end
+	local stockpiles
+	local function RetNearestResourceDepot(resource, obj, list, amount)
+--~ 		-- clear temp list (slightly faster than a new table each time)
+--~ 		table_iclear(stockpiles)
 
-	local function CallBackFunc(choice)
-		if choice.nothing_selected then
+		if list then
+			res_amount = amount
+			stockpiles = list
+		else
+			-- attached stockpiles/stockpiles left from removed objects
+			stockpiles = table_icopy(MapGet("map", filter_res_piles))
+
+			res_amount = 1000
+			local labels = UICity.labels
+			-- every resource has a mech depot
+			table_append(stockpiles, labels["MechanizedDepot" .. resource])
+
+			-- labels.UniversalStorageDepot includes the "other" depots, but not the below three
+			if resource == "BlackCube" then
+				table_append(stockpiles, labels.BlackCubeDumpSite)
+			elseif resource == "MysteryResource" then
+				table_append(stockpiles, labels.MysteryDepot)
+			elseif resource == "WasteRock" then
+				table_append(stockpiles, labels.WasteRockDumpSite)
+			else
+				table_append(stockpiles, labels.UniversalStorageDepot)
+			end
+
+--~ 			-- attached stockpiles/stockpiles left from removed objects
+--~ 			table_append(stockpiles, MapGet("map", filter_res_piles, filter_res_func))
+		end
+
+--~ 		-- filter out empty/diff res stockpiles
+--~ 		local GetStored = "GetStored_" .. resource
+--~ 		stockpiles = MapFilter(stockpiles, function(o)
+--~ 			-- not all stockpiles use this func name
+--~ 			if o[GetStored] and o[GetStored](o) > 999 then
+--~ 				return true
+--~ 			end
+--~ 		end)
+
+--~ 			-- attached stockpiles/stockpiles left from removed objects
+--~ 			table_append(stockpiles, MapGet("map", filter_res_piles, filter_res_func))
+
+		GetStored = "GetStored_" .. resource
+		res_resource = resource
+--~ 		return FindNearestObject(stockpiles, obj)
+		return FindNearestObject(stockpiles, obj, FilterTable)
+
+	end
+	ChoGGi.ComFuncs.RetNearestResourceDepot = RetNearestResourceDepot
+
+	function ChoGGi.ComFuncs.FindNearestResource(obj)
+		-- If fired from action menu
+		if IsKindOf(obj, "XAction") then
+			obj = SelObject()
+		else
+			obj = obj or SelObject()
+		end
+
+		if not IsValid(obj) then
+			MsgPopup(
+				Strings[302535920000027--[[Nothing selected]]],
+				Strings[302535920000028--[[Find Resource]]]
+			)
 			return
 		end
-		local value = choice[1].value
-		if type(value) == "string" then
 
-			-- get nearest stockpiles to object
-			local labels = UICity.labels
+		-- build list of resources
+		local item_list = {}
+		local ResourceDescription = ResourceDescription
+		local res = ChoGGi.Tables.Resources
+		local TagLookupTable = const.TagLookupTable
+		for i = 1, #res do
+			local item = ResourceDescription[table_find(ResourceDescription, "name", res[i])]
+			item_list[i] = {
+				text = Translate(item.display_name),
+				value = item.name,
+				icon = TagLookupTable["icon_" .. item.name],
+			}
+		end
 
-			local stockpiles = {}
-			table.append(stockpiles, labels["MechanizedDepot" .. value])
-			if value == "BlackCube" then
-				table.append(stockpiles, labels.BlackCubeDumpSite)
-			elseif value == "MysteryResource" then
-				table.append(stockpiles, labels.MysteryDepot)
-			elseif value == "WasteRock" then
-				table.append(stockpiles, labels.WasteRockDumpSite)
-			else
-				table.append(stockpiles, labels.UniversalStorageDepot)
+		local function CallBackFunc(choice)
+			if choice.nothing_selected then
+				return
 			end
-
-			-- filter out empty/diff res stockpiles
-			local GetStored = "GetStored_" .. value
-			stockpiles = MapFilter(stockpiles, function(o)
-				if o[GetStored] and o[GetStored](o) > 999 then
-					return true
+			local value = choice[1].value
+			if type(value) == "string" then
+				local nearest = RetNearestResourceDepot(value, obj)
+				-- If there's no resource then there's no "nearest"
+				if nearest then
+					-- the power of god
+					ViewObjectMars(nearest)
+					ChoGGi.ComFuncs.AddBlinkyToObj(nearest)
+				else
+					MsgPopup(
+						Strings[302535920000029--[[Error: Cannot find any %s.]]]:format(choice[1].text),
+						T(15, "Resource")
+					)
 				end
-			end)
 
-			-- attached stockpiles/stockpiles left from removed objects
-			table.append(stockpiles,
-				MapGet("map", {"ResourceStockpile", "ResourceStockpileLR"}, function(o)
-					if o.resource == value and o:GetStoredAmount() > 999 then
-						return true
-					end
-				end)
-			)
-
-			local nearest = FindNearestObject(stockpiles, obj)
-			-- If there's no resource then there's no "nearest"
-			if nearest then
-				-- the power of god
-				ViewObjectMars(nearest)
-				ChoGGi.ComFuncs.AddBlinkyToObj(nearest)
-			else
-				MsgPopup(
-					Strings[302535920000029--[[Error: Cannot find any %s.]]]:format(choice[1].text),
-					T(15, "Resource")
-				)
 			end
 		end
-	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
-		callback = CallBackFunc,
-		items = item_list,
-		title = Strings[302535920000031--[[Find Nearest Resource]]] .. ": " .. RetName(obj),
-		hint = Strings[302535920000032--[[Select a resource to find]]],
-		skip_sort = true,
-		custom_type = 7,
-	}
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = item_list,
+			title = Strings[302535920000031--[[Find Nearest Resource]]] .. ": " .. RetName(obj),
+			hint = Strings[302535920000032--[[Select a resource to find]]],
+			skip_sort = true,
+			custom_type = 7,
+		}
+	end
 end
 
 do -- BuildingConsumption
@@ -4104,6 +4143,7 @@ function ChoGGi.ComFuncs.RetAllOfClass(cls)
 	return objects
 end
 
+-- if it's an object than we can Clone() it, otherwise copy it
 function ChoGGi.ComFuncs.CopyTable(list)
 	local new
 	if list.class and g_Classes[list.class] then
@@ -5523,7 +5563,7 @@ do -- path markers
 		end
 
 		if obj then
-			local handles = ChoGGi.Temp.UnitPathingHandles
+			local handles = ChoGGi.Temp.UnitPathingHandles or {}
 			if #obj == 1 then
 				-- single obj
 				obj = obj[1]
@@ -5573,7 +5613,7 @@ do -- path markers
 
 	local function ClearColourAndWP(cls, skip)
 		-- remove all thread refs so they stop
-		table_clear(ChoGGi.Temp.UnitPathingHandles)
+		table_clear(ChoGGi.Temp.UnitPathingHandles or empty_table)
 		-- and waypoints/colour
 		local objs = RetAllOfClass(cls)
 		for i = 1, #objs do
@@ -5680,4 +5720,24 @@ function ChoGGi.ComFuncs.GetTarget(obj)
 	if text then
 		return "(" .. text .. ")"
 	end
+end
+
+function ChoGGi.ComFuncs.GetNearestObj(obj, list)
+	local obj_pos = obj:GetVisualPos()
+
+	-- get nearest
+	local length = max_int
+	local nearest = list[1]
+	local new_length, spot
+	for i = 1, #list do
+		spot = list[i]
+		new_length = spot:GetVisualPos():Dist2D(obj_pos)
+		if new_length < length then
+			length = new_length
+			nearest = spot
+		end
+	end
+
+	-- and done
+	return nearest
 end

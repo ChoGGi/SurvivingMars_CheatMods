@@ -62,7 +62,7 @@ local function ModOptions()
 	max_line_len = max_hex * 10 * guim
 
 	-- make sure we're ingame
-	if not GameState.gameplay then
+	if not UICity then
 		return
 	end
 
@@ -182,7 +182,7 @@ local function RetNearestSpot(dome, pos)
 	end
 
 	-- get nearest
-	local length = 99999999999999999
+	local length = max_int
 	local nearest = pos_spots[1]
 	local new_length, spot
 	for i = 1, #pos_spots do
@@ -218,7 +218,7 @@ local function UpdateVisibleShow(item)
 end
 
 local HexSize = const.HexSize
-local cursor_length = 99999999999
+--~ local cursor_length = max_int
 local cursor_pos = point20
 local function UpdateMarkers(self, current_pos)
 	if not current_pos then
@@ -229,7 +229,7 @@ local function UpdateMarkers(self, current_pos)
 	local current_length = current_pos:Dist2D(cursor_pos)
 	if current_length > HexSize then
 		cursor_pos = current_pos
-		cursor_length = current_length
+--~ 		cursor_length = current_length
 	else
 		return
 	end

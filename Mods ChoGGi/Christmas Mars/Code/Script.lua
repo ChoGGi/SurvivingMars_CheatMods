@@ -47,13 +47,15 @@ do -- LoadEntity
 end -- LoadEntity
 
 function OnMsg.ClassesPostprocess()
-	PlaceObj("MissionLogoPreset", {
-		decal_entity = "ChristmasMars",
-		display_name = [[Christmas Mars]],
-		entity_name = "ChristmasMars",
-		id = "ChristmasMars",
-		image = CurrentModPath .. "UI/ChristmasMars.png",
-	})
+	if not MissionLogoPresetMap.ChristmasMars then
+		PlaceObj("MissionLogoPreset", {
+			decal_entity = "ChristmasMars",
+			display_name = T(0, "Christmas Mars"),
+			entity_name = "ChristmasMars",
+			id = "ChristmasMars",
+			image = CurrentModPath .. "UI/ChristmasMars.png",
+		})
+	end
 	-- default logo during spending month
 	if that_time_of_the_year then
 		-- sugar... corn syrup water ftw

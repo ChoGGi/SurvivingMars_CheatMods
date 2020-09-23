@@ -656,8 +656,9 @@ function ChoGGi_DlgExamine:ViewSourceCode()
 	local info = debug_getinfo(self.obj_ref, "S")
 	-- =[C] is 4 chars
 	local str, path = self.ChoGGi.ComFuncs.RetSourceFile(info.source)
+	path = ConvertToOSPath(path)
 	if not str then
-		local msg = Strings[302535920001521--[[Lua source file not found.]]] .. ": " .. ConvertToOSPath(path)
+		local msg = Strings[302535920001521--[[Lua source file not found.]]] .. ": " .. path
 		self.ChoGGi.ComFuncs.MsgPopup(
 			msg,
 			Strings[302535920001519--[[View Source]]]
@@ -665,14 +666,17 @@ function ChoGGi_DlgExamine:ViewSourceCode()
 		print(msg)
 		return
 	end
+
 	self.ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 		parent = self,
 		checkbox = true,
 		text = str,
 		code = true,
 		scrollto = info.linedefined,
-		title = Strings[302535920001519--[[View Source]]] .. ": " .. info.source,
+		title = Strings[302535920001519--[[View Source]]] .. " " .. info.source,
 		hint_ok = Strings[302535920000047--[["View Text/Object, and optionally dumps text to <green>%slogs\DumpedExamine.lua</green> (may take awhile for large text)."]]]:format(ConvertToOSPath("AppData/")),
+		file_path = path,
+		_G = _G,
 		custom_func = function(answer, overwrite)
 			if answer then
 				self.ChoGGi.ComFuncs.Dump("\n" .. str, overwrite, "DumpedSource", "lua")

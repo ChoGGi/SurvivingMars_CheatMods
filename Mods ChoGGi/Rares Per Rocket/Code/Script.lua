@@ -7,7 +7,7 @@ local function GetModValue()
 end
 
 local function UpdateExistingRockets()
-	if not GameState.gameplay then
+	if not UICity then
 		return
 	end
 

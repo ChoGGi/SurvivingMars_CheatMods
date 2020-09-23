@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 local MapFindNearest = MapFindNearest
-local WaitMsg = WaitMsg
 local IsValid = IsValid
 local Sleep = Sleep
 local PlayFX = PlayFX
@@ -49,15 +48,14 @@ local function DroneRemoveRock(obj)
 
 	local pos = GetRandomPassableAround(rock_pos, 500)
 	if pos then
-		drone:SetCommand("Goto",
-		pos:SetTerrainZ())
+		GetCommandFunc(drone)(drone, "Goto", pos:SetTerrainZ())
 
 		-- good enough
 		while drone.command ~= "Idle" and drone.command ~= "GoHome" do
-			WaitMsg("OnRender")
+			Sleep(250)
 		end
 
-		drone:SetCommand("ChoGGi_RockRemove", obj)
+		GetCommandFunc(drone)(drone, "ChoGGi_RockRemove", obj)
 	end
 end
 

@@ -514,11 +514,8 @@ function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity, meteors_type, pos)
 		data[severity] or data[mapdata.MapSettings_Meteor] or data.Meteor_VeryLow
 	)
 	if meteors_type == "single" then
-		-- defaults to 50000, which is fine for multiple ones i suppose.
+		-- defaults to 50000 (no good for aiming).
 		descr.storm_radius = 2500
---~ 	else
---~ 		-- reset it back to 50000 (maybe i should just copy the table?)
---~ 		descr.storm_radius = descr:GetDefaultPropertyValue("storm_radius")
 	end
 
 	CreateGameTimeThread(function()

@@ -416,33 +416,35 @@ DefineClass.RCRemoteBuilding = {
 }
 
 function OnMsg.ClassesPostprocess()
-	if not BuildingTemplates.RCRemoteBuilding then
-		PlaceObj("BuildingTemplate", {
-			"Id", "RCRemoteBuilding",
-			"template_class", "RCRemoteBuilding",
-			"construction_cost_Metals", 1000,
-			"construction_cost_MachineParts", 1000,
-			"construction_cost_Electronics", 1000,
-			-- add a bit of pallor to the skeleton
-			"palettes", AttackRover.palette,
+	if BuildingTemplates.RCRemoteBuilding then
+		return
+	end
 
-			"dome_forbidden", true,
-			"display_name", T(302535920011217, [[RC Remote]]),
-			"display_name_pl", T(302535920011217, [[RC Remote]]),
-			"description", T(302535920011218, [[Remote controlled RC
+	PlaceObj("BuildingTemplate", {
+		"Id", "RCRemoteBuilding",
+		"template_class", "RCRemoteBuilding",
+		"construction_cost_Metals", 1000,
+		"construction_cost_MachineParts", 1000,
+		"construction_cost_Electronics", 1000,
+		-- add a bit of pallor to the skeleton
+		"palettes", AttackRover.palette,
+
+		"dome_forbidden", true,
+		"display_name", T(302535920011217, [[RC Remote]]),
+		"display_name_pl", T(302535920011217, [[RC Remote]]),
+		"description", T(302535920011218, [[Remote controlled RC
 
 WASD to move.
 Q to fire rocket.
 E to jump forward.
 Shift to toggle high speed.]]),
-			"build_category", "ChoGGi",
-			"Group", "ChoGGi",
-			"display_icon", display_icon,
-			"encyclopedia_exclude", true,
-			"on_off_button", false,
-			"entity", "RCRoverBuilding",
-		})
-	end
+		"build_category", "ChoGGi",
+		"Group", "ChoGGi",
+		"display_icon", display_icon,
+		"encyclopedia_exclude", true,
+		"on_off_button", false,
+		"entity", "RCRoverBuilding",
+	})
 end
 
 -- also fires when changing selection

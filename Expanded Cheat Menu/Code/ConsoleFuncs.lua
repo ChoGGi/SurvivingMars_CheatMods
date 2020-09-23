@@ -492,6 +492,39 @@ The number is a count of stored msgs, right-click to view the list."]]],
 			end
 		end,
 	},
+	{name = Strings[302535920000473--[[Flush Log]]],
+		hint = Strings[302535920001342--[[Dumps the log to disk on startup, and every new Sol (good for some crashes).]]],
+		class = "ChoGGi_XCheckButtonMenu",
+		value = "ChoGGi.UserSettings.FlushLog",
+		clicked = function()
+			ChoGGi.UserSettings.FlushLog = not ChoGGi.UserSettings.FlushLog
+			ChoGGi.SettingFuncs.WriteSettings()
+		end,
+	},
+	{name = Strings[302535920001349--[[Flush Log Constantly]]],
+		hint = Strings[302535920001414--[[Dumps log to disk every in-game hour (30 000 ticks of GameTime).]]],
+		class = "ChoGGi_XCheckButtonMenu",
+		value = "ChoGGi.UserSettings.FlushLogConstantly",
+		clicked = function()
+			ChoGGi.UserSettings.FlushLogConstantly = not ChoGGi.UserSettings.FlushLogConstantly
+			ChoGGi.SettingFuncs.WriteSettings()
+		end,
+	},
+	{name = Strings[302535920000483--[[Write Console Log]]],
+		hint = Strings[302535920000484--[[Write console log to %slogs/ConsoleLog.log (updated every 5 seconds).]]]:format(ConvertToOSPath("AppData/")),
+		class = "ChoGGi_XCheckButtonMenu",
+		value = "ChoGGi.UserSettings.WriteLogs",
+		clicked = function()
+			if ChoGGi.UserSettings.WriteLogs then
+				ChoGGi.UserSettings.WriteLogs = false
+				ChoGGi.ComFuncs.WriteLogs_Toggle(false)
+			else
+				ChoGGi.UserSettings.WriteLogs = true
+				ChoGGi.ComFuncs.WriteLogs_Toggle(true)
+			end
+			ChoGGi.SettingFuncs.WriteSettings()
+		end,
+	},
 	{name = Strings[302535920001576--[[Show Log When Console Active]]],
 		hint = Strings[302535920001575--[[Show console log text when console is active (needs %s enabled).]]]:format(Strings[302535920001112--[[Console Log]]]),
 		class = "ChoGGi_XCheckButtonMenu",
@@ -509,21 +542,6 @@ The number is a count of stored msgs, right-click to view the list."]]],
 			ChoGGi.UserSettings.ConsoleHistoryWin = not ChoGGi.UserSettings.ConsoleHistoryWin
 			ChoGGi.SettingFuncs.WriteSettings()
 			ChoGGi.ComFuncs.ShowConsoleLogWin(ChoGGi.UserSettings.ConsoleHistoryWin)
-		end,
-	},
-	{name = Strings[302535920000483--[[Write Console Log]]],
-		hint = Strings[302535920000484--[[Write console log to %slogs/ConsoleLog.log (updated every 5 seconds).]]]:format(ConvertToOSPath("AppData/")),
-		class = "ChoGGi_XCheckButtonMenu",
-		value = "ChoGGi.UserSettings.WriteLogs",
-		clicked = function()
-			if ChoGGi.UserSettings.WriteLogs then
-				ChoGGi.UserSettings.WriteLogs = false
-				ChoGGi.ComFuncs.WriteLogs_Toggle(false)
-			else
-				ChoGGi.UserSettings.WriteLogs = true
-				ChoGGi.ComFuncs.WriteLogs_Toggle(true)
-			end
-			ChoGGi.SettingFuncs.WriteSettings()
 		end,
 	},
 }

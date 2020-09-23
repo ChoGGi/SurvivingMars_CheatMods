@@ -441,13 +441,16 @@ do -- Postprocess
 			local logo = logos[i]
 			local file = logo.file
 
-			PlaceObj("MissionLogoPreset", {
-				decal_entity = file,
-				entity_name = file,
-				display_name = "Commie Marx: " .. logo.name,
-				id = "CommieMarsLogos_" .. file,
-				image = logo_path .. file .. ".png",
-			})
+			local id = "CommieMarsLogos_" .. file
+			if not MissionLogoPresetMap[id] then
+				PlaceObj("MissionLogoPreset", {
+					decal_entity = file,
+					entity_name = file,
+					display_name = "Commie Marx: " .. logo.name,
+					id = id,
+					image = logo_path .. file .. ".png",
+				})
+			end
 		end
 	end
 end -- Postprocess

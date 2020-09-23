@@ -1,3 +1,9 @@
+v0.5
+Mod compatibility.
+
+v0.4
+Removed a print I shouldn't have had in there.
+
 v0.3
 Mod option to only clean when dome is opened.
 

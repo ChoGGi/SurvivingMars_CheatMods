@@ -1,13 +1,13 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesPostprocess()
-	if BuildingTemplates.ChoGGi_Id_LayoutConstruction_Example then
+	if BuildingTemplates.ChoGGi_LayoutConstruction_Example then
 		return
 	end
 
 	PlaceObj("BuildingTemplate", {
 		-- keep it unique folks
-		"Id", "ChoGGi_Id_LayoutConstruction_Example",
+		"Id", "ChoGGi_LayoutConstruction_Example",
 		-- LayoutList id corresponds to the LayoutConstruction below
 		"LayoutList", "ChoGGi_LayoutConstruction_Example",
 		-- what group to add it to
@@ -38,7 +38,7 @@ function OnMsg.ClassesPostprocess()
 
 		PlaceObj("LayoutConstructionEntry", {
 			"template", "DomeBasic",
-			"entity", "DomeBasic",
+--~ 			"entity", "DomeBasic",
 		}),
 
 		PlaceObj("LayoutConstructionEntry", {

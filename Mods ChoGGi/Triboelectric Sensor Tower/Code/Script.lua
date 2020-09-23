@@ -74,51 +74,50 @@ ChoGGi_TriboelectricSensorTower.StopCharging = TriboelectricScrubber.StopChargin
 ChoGGi_TriboelectricSensorTower.ResetCharging = TriboelectricScrubber.ResetCharging
 ChoGGi_TriboelectricSensorTower.SetDust = TriboelectricScrubber.SetDust
 ChoGGi_TriboelectricSensorTower.GetChargeTime = TriboelectricScrubber.GetChargeTime
+ChoGGi_TriboelectricSensorTower.Done = TriboelectricScrubber.Done
 
 function OnMsg.ClassesPostprocess()
+
 	local bt = BuildingTemplates
+	if not bt.ChoGGi_TriboelectricSensorTower then
+		local trib = bt.TriboelectricScrubber
+		local sens = bt.SensorTower
 
-	if bt.ChoGGi_TriboelectricSensorTower then
-		return
+		PlaceObj("BuildingTemplate", {
+			"Id", "ChoGGi_TriboelectricSensorTower",
+			"template_class", "ChoGGi_TriboelectricSensorTower",
+			"build_category", "ChoGGi",
+			"Group", "ChoGGi",
+
+			"construction_cost_Metals", trib.construction_cost_Metals + sens.construction_cost_Metals,
+			"construction_cost_Electronics", trib.construction_cost_Electronics + sens.construction_cost_Electronics,
+			"electricity_consumption", trib.electricity_consumption + sens.electricity_consumption,
+			"build_points", trib.build_points + sens.build_points,
+			"maintenance_resource_type", trib.maintenance_resource_type,
+			"maintenance_threshold_base", trib.maintenance_threshold_base,
+			"maintenance_build_up_per_hr", const.DefaultMaintenanceBuildUpPerHour + 50, -- DefaultMaintenanceBuildUpPerHour is 600
+			"dust_clean", trib.dust_clean,
+
+			"display_name", T(302535920011720, "Triboelectric ") .. sens.display_name,
+			"display_name_pl", T(302535920011720, "Triboelectric ") .. sens.display_name,
+			"description", sens.description .. "\n" .. trib.description,
+			"encyclopedia_id", trib.encyclopedia_id,
+			"encyclopedia_image", trib.encyclopedia_image,
+			"label1", trib.label1,
+			"label2", trib.label2,
+			"display_icon", trib.display_icon,
+			"show_range_all", trib.show_range_all,
+			"is_tall", trib.is_tall,
+			"dome_forbidden", trib.dome_forbidden,
+			"entity", sens.entity,
+			"demolish_sinking", sens.demolish_sinking,
+			"demolish_debris", sens.demolish_debris,
+
+			"palette_color1", "outside_base",
+			"palette_color2", "inside_base",
+			"palette_color3", "rover_base",
+		})
 	end
-
-	local trib = bt.TriboelectricScrubber
-	local sens = bt.SensorTower
-
-	PlaceObj("BuildingTemplate", {
-		"Id", "ChoGGi_TriboelectricSensorTower",
-		"template_class", "ChoGGi_TriboelectricSensorTower",
-		"build_category", "ChoGGi",
-		"Group", "ChoGGi",
-
-		"construction_cost_Metals", trib.construction_cost_Metals + sens.construction_cost_Metals,
-		"construction_cost_Electronics", trib.construction_cost_Electronics + sens.construction_cost_Electronics,
-		"electricity_consumption", trib.electricity_consumption + sens.electricity_consumption,
-		"build_points", trib.build_points + sens.build_points,
-		"maintenance_resource_type", trib.maintenance_resource_type,
-		"maintenance_threshold_base", trib.maintenance_threshold_base,
-		"maintenance_build_up_per_hr", const.DefaultMaintenanceBuildUpPerHour + 50, -- DefaultMaintenanceBuildUpPerHour is 600
-		"dust_clean", trib.dust_clean,
-
-		"display_name", T(302535920011720, "Triboelectric ") .. sens.display_name,
-		"display_name_pl", T(302535920011720, "Triboelectric ") .. sens.display_name,
-		"description", sens.description .. "\n" .. trib.description,
-		"encyclopedia_id", trib.encyclopedia_id,
-		"encyclopedia_image", trib.encyclopedia_image,
-		"label1", trib.label1,
-		"label2", trib.label2,
-		"display_icon", trib.display_icon,
-		"show_range_all", trib.show_range_all,
-		"is_tall", trib.is_tall,
-		"dome_forbidden", trib.dome_forbidden,
-		"entity", sens.entity,
-		"demolish_sinking", sens.demolish_sinking,
-		"demolish_debris", sens.demolish_debris,
-
-		"palette_color1", "outside_base",
-		"palette_color2", "inside_base",
-		"palette_color3", "rover_base",
-	})
 
 	local xtemplate = XTemplates.ipBuilding[1]
 
@@ -175,7 +174,14 @@ end
 
 local orig_GetWorkingSensorTowersCount = SensorTowerBase.GetWorkingSensorTowersCount
 function SensorTowerBase.GetWorkingSensorTowersCount(...)
-	local text = orig_GetWorkingSensorTowersCount(...)
+	local text
+	-- orig func doesn't check if towers exist
+	if UICity.labels.SensorTower then
+		text = orig_GetWorkingSensorTowersCount(...)
+	else
+		text = T{11231, "Working Sensor Towers:<right><count>", count = 0}
+	end
+
 	local count = text.count
 
 	local objs = UICity.labels.ChoGGi_TriboelectricSensorTower or ""

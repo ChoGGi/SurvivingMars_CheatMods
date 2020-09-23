@@ -123,21 +123,23 @@ end
 
 -- add building to building template list
 function OnMsg.ClassesPostprocess()
-	if not BuildingTemplates.GoldenStorage then
-		PlaceObj("BuildingTemplate", {
-			"Id", "GoldenStorage",
-			"template_class", "GoldenStorage",
-			"instant_build", true,
-			"display_name", T(302535920011084, "Golden Storage"),
-			"display_name_pl", T(302535920011085, "Golden Storages"),
-			"description", T(302535920011086, "Converts 10 <resource('Metals')> to 1 <resource('PreciousMetals')>."),
-			"build_category", "ChoGGi",
-			"Group", "ChoGGi",
-			"display_icon", CurrentModPath .. "UI/golden_storage.png",
-			"entity", "ResourcePlatform",
-			"on_off_button", true,
-			"prio_button", false,
-			"count_as_building", false,
-		})
+	if BuildingTemplates.GoldenStorage then
+		return
 	end
-end --ClassesPostprocess
+
+	PlaceObj("BuildingTemplate", {
+		"Id", "GoldenStorage",
+		"template_class", "GoldenStorage",
+		"instant_build", true,
+		"display_name", T(302535920011084, "Golden Storage"),
+		"display_name_pl", T(302535920011085, "Golden Storages"),
+		"description", T(302535920011086, "Converts 10 <resource('Metals')> to 1 <resource('PreciousMetals')>."),
+		"build_category", "ChoGGi",
+		"Group", "ChoGGi",
+		"display_icon", CurrentModPath .. "UI/golden_storage.png",
+		"entity", "ResourcePlatform",
+		"on_off_button", true,
+		"prio_button", false,
+		"count_as_building", false,
+	})
+end

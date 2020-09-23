@@ -60,8 +60,8 @@ local kill_current = {
 
 -- fired when settings are changed/init
 local function ModOptions(skip_disabled)
-	-- make sure we're not in menus
-	if not GameState.gameplay then
+	-- make sure we're ingame
+	if not UICity then
 		return
 	end
 

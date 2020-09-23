@@ -14,52 +14,54 @@ return PlaceObj("ModDef", {
 	},
 	"TagInterface", true,
 	"has_options", true,
-	"description", [[Want to know if your battery storage will last the night? See how many resources are remaining in active deposits. Curious why you keep getting a "not enough power" warning even though capacity is full?
+	"description", [[Want to know if your battery storage will last the night? See how many resources are remaining in occupied deposits. Curious why you keep getting a "not enough power" warning even though capacity is full?
 
 
 Resource tooltips:
-Time of stored resources remaining: stored / (production - (consumption + maintenance)).
+[b]Stored Resources Remaining Time[/b]: Estimate of time till consumption + maintenance overtake production + stored.
 N/A means you have more production than consumption.
-Maintenance amounts reflect benefits of nearby Triboelectric Scrubbers.
+[b]Maintenance[/b]: Amounts now reflect benefits of nearby Triboelectric Scrubbers.
+Deposit remaining amount added to resources (shows how much is left in occupied deposits).
 
 Grid (air/water/elec) tooltips:
-The max discharge from storage buildings.
-Max production values (some producers will throttle on demand).
-Storage grid remaining time (oomph in tanks countdown, reduce build need when doing a solar overnight).
-Removes the sum totals, and shows info for all individual grids (see mod options).
+Removes the sum totals, and shows info for all individual grids (see mod options to split grids).
 I merged some lines, removed the header, and split air/water to reduce vertical space.
-
-Resource/Grid tooltips:
-For stuff getting mined (water, metals, concrete) the remaining amounts in currently mined deposits are shown.
+(I'm using electricity for the text, but the below applies to all three grid resource tooltips)
+[b]Production/Max production[/b]: Amount of power the grid is producing/Maximum power the grid can produce (stuff can throttle based on demand).
+[b]Capacity/Consumption[/b]: Battery storage capacity/Current demand levels.
+[b]Storage/Max output[/b]: Amount of electricity in battery storage/Amount of juice the batteries can output hourly.
+[b]Storage Remaining Time[/b]: Amount of time you can sustain your current power requirements.
 
 Research tooltip:
-Total points per Sol.
-Time left for current research.
+[b]Research per Sol[/b]: Total points per Sol.
+[b]Research Remaining Time[/b]: Time left for current research.
 
 Food:
-Current max food consumption (daily): 0.2 for each colonist (0.4 for gluttons).
+[b]MAX Food Consumption[/b]: Current max food consumption (daily): 0.2 for each colonist (0.4 for gluttons).
 
 Drones:
 Right-click Drones icon to cycle through all borked drones (also adds count):
-NoBattery, Malfunction, Freeze, Dead, WaitingCommand (orphaned).
-Shuttle count (max, total, current): Current = shuttles flying, Total =  flying+resting in hubs, Max = shuttles that can be built.
+[b]Malfunctioned Drones[/b]: NoBattery, Malfunction, Freeze, Dead, WaitingCommand (orphaned).
+[b]Shuttles Max/Total/Current[/b]: Max shuttles that can be built / Shuttles that are built (flying+in hub) / Shuttles flying.
 
 Jobs:
 On the end of the spec counts is the count of vacant workplace slots.
 
 Colonists:
-On the end of the age/nationality are percentage counts.
+On the end of the age/nationality are percentage counts (rounded).
 
 
 
 Mod Options:
-Aggregated info: Show sum totals instead of individual grids (skip grid options ignored).
-Skip Grid 0: Grids with production+consumption = 0 (doesn't skip grids that aren't producing due to throttle).
-Skip Grid 1: Grids that only have a single bld (sensor towers).
-Skip Grid X: Grids that only have X amount of buildings (for smaller clusters, like a concrete "hub", 0 to disable).
-Rollover Size: Game default is 45, if you want the tooltips wider use this.
-Disable Transparency: Disable transparency of Infobar.
+[b]Aggregated info[/b]: Show sum totals instead of individual grids (skip grid options ignored if enabled).
+[b]Skip Grid 0[/b]: Grids with production+consumption = 0 (doesn't skip grids that aren't producing due to throttle).
+[b]Skip Grid 1[/b]: Grids that only have a single bld (sensor towers).
+[b]Skip Grid X[/b]: Grids that only have X amount of buildings (for smaller clusters, like a concrete "hub", 0 to disable).
+[b]Rollover Size[/b]: Game default is 45, if you want the tooltips wider use this.
+[b]Disable Transparency[/b]: Disable transparency of Infobar.
 
 
-Suggestions of info you'd like to see?]],
+Suggestions of info you'd like to see?
+Infobar More Info
+]],
 })

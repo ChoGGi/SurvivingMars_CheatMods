@@ -24,6 +24,10 @@ DefineClass.ChoGGi_DlgMultiLineText = {
 
 	-- sent with context, used to update text (if viewing a log or something from examine etc)
 	update_func = false,
+	-- Async*file str
+	file_path = false,
+	-- sent from ECM if we need _G
+	_G = false,
 }
 
 function ChoGGi_DlgMultiLineText:Init(parent, context)
@@ -83,13 +87,20 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		OnPress = self.idOkay_OnPress,
 	}, self.idButtonContainer)
 
+	self.idOpenFile = g_Classes.ChoGGi_XButton:new({
+		Id = "idOpenFile",
+		Dock = "left",
+		Text = Strings[302535920001268--[[Open File]]],
+		RolloverText = Strings[302535920001309--[[Open file in default editor.]]],
+		OnPress = self.idOpenFile_OnPress,
+	}, self.idButtonContainer)
+
 	self.update_func = context.update_func
 	if type(self.update_func) == "function" then
 		self.idUpdateText = g_Classes.ChoGGi_XButton:new({
 			Id = "idUpdateText",
 			Dock = "left",
 			Text = Strings[302535920001026--[[Update Text]]],
---~ 			Background = g_Classes.ChoGGi_XButton.bg_green,
 			RolloverText = Strings[302535920000381--[[Replaces text using the same func that created it.]]],
 			OnPress = self.idUpdateText_OnPress,
 		}, self.idButtonContainer)
@@ -138,6 +149,13 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 
 	if context.scrollto then
 		self:ScrollToText(context.scrollto)
+	end
+
+	if context.file_path then
+		self.file_path = context.file_path
+	end
+	if context._G then
+		self._G = context._G
 	end
 
 	if context.code then
@@ -281,6 +299,14 @@ function ChoGGi_DlgMultiLineText:ShowCodeHighlights()
 	self.idToggleCode:SetCheck(true)
 end
 
+--
+function ChoGGi_DlgMultiLineText:idOpenFile_OnPress()
+	self = GetRootDialog(self)
+	if ChoGGi.blacklist or not self.file_path then
+		return
+	end
+	self._G.AsyncExec("cmd /c \"" .. self.file_path .. "\"", true, true)
+end
 --
 function ChoGGi_DlgMultiLineText:idUpdateText_OnPress()
 	self = GetRootDialog(self)

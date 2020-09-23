@@ -2,7 +2,7 @@
 
 function OnMsg.TechResearched(tech_id, city)
 	-- TechResearched fires on new game (sometimes), so use this to skip an error in the log
-	if not GameState.gameplay then
+	if not UICity then
 		return
 	end
 

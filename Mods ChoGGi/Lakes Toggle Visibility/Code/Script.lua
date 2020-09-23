@@ -10,7 +10,6 @@ local DoneObject = DoneObject
 local ApplyAllWaterObjects = ApplyAllWaterObjects
 local sqrt = sqrt
 local MulDivRound = MulDivRound
-local GameState = GameState
 
 local mod_EnableLakes
 local mod_EnableGridView
@@ -56,7 +55,7 @@ local function ModOptions()
 	mod_EnableLakes = CurrentModOptions:GetProperty("EnableLakes")
 	mod_EnableGridView = CurrentModOptions:GetProperty("EnableGridView")
 
-	if not GameState.gameplay then
+	if not UICity then
 		return
 	end
 

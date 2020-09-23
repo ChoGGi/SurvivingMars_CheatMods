@@ -41,7 +41,7 @@ end
 
 -- fired when settings are changed/init
 local function ModOptions()
-	if not GameState.gameplay then
+	if not UICity then
 		return
 	end
 

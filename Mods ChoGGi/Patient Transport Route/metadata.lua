@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Patient Transport Route",
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.png",
 	"id", "ChoGGi_PatientTransportRoute",
 	"steam_id", "1549495949",
@@ -16,5 +16,5 @@ return PlaceObj("ModDef", {
 	"description", [[Transports will no longer remove a route just because the supply area is empty of resources.
 Instead they'll just sit by the pickup area till more shows up.
 
-Use mod options to change minimum resource to wait for (default 1).]],
+Use mod options to change minimum resource to wait for (default 10).]],
 })

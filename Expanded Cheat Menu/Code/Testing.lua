@@ -473,10 +473,85 @@ end)
 -- benchmarking stuff
 
 
+function ChoGGi.testing.NearestObjFromList()
+	if #(UICity.labels.Building or "") == 0 then
+		print("NearestObjFromList: NO BUILDINGS ABORT")
+		return
+	end
+
+	local objs = UICity.labels.Building
+	local base_obj = table.rand(UICity.labels.Building)
+	local obj_pos = base_obj:GetPos()
+
+	ChoGGi.ComFuncs.TickStart("NearestObjFromList.1.Tick")
+	local FindNearestObject = FindNearestObject
+	local function NotSelf(obj)
+		return obj ~= base_obj
+	end
+
+	for _ = 1, 1000 do
+		FindNearestObject(objs, base_obj, NotSelf)
+	end
+	ChoGGi.ComFuncs.TickEnd("NearestObjFromList.1.Tick")
+
+	ChoGGi.ComFuncs.TickStart("NearestObjFromList.2.Tick")
+	local max_int = max_int
+
+	for _ = 1, 1000 do
+		local length = max_int
+		local nearest = objs[1]
+		local new_length, spot
+		for i = 1, #objs do
+			spot = objs[i]
+			new_length = spot:GetPos():Dist2D(obj_pos)
+			if new_length < length then
+				length = new_length
+				nearest = spot
+			end
+		end
+	end
+	ChoGGi.ComFuncs.TickEnd("NearestObjFromList.2.Tick")
+
+end
+
+function ChoGGi.testing.TableSortVsLoop()
+	local obj_pos = GetRandomPassablePoint(AsyncRand())
+	local table_icopy = table.icopy
+	local objs = UICity.labels.SurfaceDepositMarker or ""
+
+	-- faster
+	ChoGGi.ComFuncs.TickStart("TableSortVsLoop.1.Tick")
+	for _ = 1, 1000 do
+		local temp_table = table_icopy(objs)
+		local length = max_int
+		local nearest = temp_table[1]
+		local new_length, spot
+		for i = 1, #temp_table do
+			spot = temp_table[i]:GetPos()
+			new_length = spot:Dist2D(obj_pos)
+			if new_length < length then
+				length = new_length
+				nearest = spot
+			end
+		end
+	end
+	ChoGGi.ComFuncs.TickEnd("TableSortVsLoop.1.Tick")
+
+	ChoGGi.ComFuncs.TickStart("TableSortVsLoop.2.Tick")
+		local table_sort = table.sort
+		local function SortNearest(a, b)
+			return a:GetDist2D(obj_pos) < b:GetDist2D(obj_pos)
+		end
+		for _ = 1, 1000 do
+			table_sort(table_icopy(objs), SortNearest)
+		end
+	ChoGGi.ComFuncs.TickEnd("TableSortVsLoop.2.Tick")
+
+end
+
 function ChoGGi.testing.TableCountVsFirst()
 	local list = MapGet(true)
 
-	-- slower
 	ChoGGi.ComFuncs.TickStart("TableCountVsFirst.1.Tick")
 	for _ = 1, 1000000 do
 		if #list > 0 then
@@ -504,6 +579,7 @@ function ChoGGi.testing.NegNumber()
 	end
 	ChoGGi.ComFuncs.TickEnd("NegNumber.Tick.1")
 
+	-- maybe faster?
 	ChoGGi.ComFuncs.TickStart("NegNumber.Tick.2")
 	for _ = 1, 100000000 do
 		temp = num * -1
@@ -527,6 +603,7 @@ function ChoGGi.testing.LengthLocal()
 	end
 	ChoGGi.ComFuncs.TickEnd("LengthLocal.Tick.1")
 
+	-- maybe faster?
 	ChoGGi.ComFuncs.TickStart("LengthLocal.Tick.2")
 	for _ = 1, 1000000 do
 		for i = 1, #objs do
@@ -551,6 +628,7 @@ function ChoGGi.testing.IsKindOfSub()
 	end
 	ChoGGi.ComFuncs.TickEnd("IsKindOfSub.Tick.1")
 
+	-- faster
 	ChoGGi.ComFuncs.TickStart("IsKindOfSub.Tick.2")
 	objs = UICity.labels.SurfaceDepositMarker or ""
 	for _ = 1, 100000 do
@@ -565,8 +643,8 @@ function ChoGGi.testing.IsKindOfSub()
 end
 
 function ChoGGi.testing.LocalLoops()
-	-- If same value outside is faster, otherwise new local
 
+	-- faster
 	local AsyncRand = AsyncRand
 	ChoGGi.ComFuncs.TickStart("LocalLoops.Tick.1")
 	for _ = 1, 100000000 do
@@ -588,7 +666,7 @@ function ChoGGi.testing.LocalLoops()
 end
 
 function ChoGGi.testing.StringVsDot()
-	-- dot
+	-- same
 
 	local lookup_table = {a = true,b = true,c = true,d = true,e = true,f = true}
 
@@ -610,8 +688,6 @@ end
 
 
 function ChoGGi.testing.LocalVsTableLookup()
-	-- local
-
 	local lookup_table = {}
 	for i = 1, 10000 do
 		lookup_table[i] = true
@@ -627,6 +703,7 @@ function ChoGGi.testing.LocalVsTableLookup()
 	end
 	ChoGGi.ComFuncs.TickEnd("LocalVsTableLookup.Tick.1")
 
+	-- faster
 	ChoGGi.ComFuncs.TickStart("LocalVsTableLookup.Tick.2")
 	for _ = 1, 100000000 do
 		if lookup_table[12345] then
@@ -638,10 +715,10 @@ function ChoGGi.testing.LocalVsTableLookup()
 end
 
 function ChoGGi.testing.ToStr()
-	-- ..
 
+	-- faster
 	ChoGGi.ComFuncs.TickStart("ToStr.Tick.1")
-	for _ = 1, 1000000 do
+	for _ = 1, 2000000 do
 		local num = 12345
 		num = num .. ""
 	end
@@ -649,7 +726,7 @@ function ChoGGi.testing.ToStr()
 
 	ChoGGi.ComFuncs.TickStart("ToStr.Tick.2")
 	local tostring = tostring
-	for _ = 1, 1000000 do
+	for _ = 1, 2000000 do
 		local num = 12345
 		num = tostring(num)
 	end
@@ -668,6 +745,7 @@ function ChoGGi.testing.Attaches(obj)
 		return
 	end
 
+	-- faster
 	ChoGGi.ComFuncs.TickStart("Attaches.Tick.1")
 	local function foreach(a)
 		if a.handle then
@@ -678,6 +756,7 @@ function ChoGGi.testing.Attaches(obj)
 	end
 	ChoGGi.ComFuncs.TickEnd("Attaches.Tick.1")
 
+	-- faster
 	ChoGGi.ComFuncs.TickStart("Attaches.Tick.2")
 	for _ = 1, 500000 do
 		obj:ForEachAttach(function(a)
@@ -723,8 +802,9 @@ function ChoGGi.testing.TableIterate()
 
 	local list = MapGet(true)
 
+	--faster
 	ChoGGi.ComFuncs.TickStart("TableIterate.1.Tick")
-	for _ = 1, 1000 do
+	for _ = 1, 10000 do
 		for _ = 1, #list do
 		end
 	end
@@ -732,7 +812,7 @@ function ChoGGi.testing.TableIterate()
 
 	local ipairs = ipairs
 	ChoGGi.ComFuncs.TickStart("TableIterate.2.Tick")
-	for _ = 1, 1000 do
+	for _ = 1, 10000 do
 		for _ in ipairs(list) do
 		end
 	end
@@ -741,12 +821,12 @@ function ChoGGi.testing.TableIterate()
 end
 
 function ChoGGi.testing.TableInsert()
-	-- c+c
 
+	-- faster
 	ChoGGi.ComFuncs.TickStart("TableInsert.1.Tick")
 	local t1 = {}
 	local c = 0
-	for i=0, 10000000 do
+	for i = 0, 10000000 do
 		c = c + 1
 		t1[c] = i
 	end
@@ -756,7 +836,7 @@ function ChoGGi.testing.TableInsert()
 	local rawset = rawset
 	local t2 = {}
 	local c2 = 0
-	for i=0, 10000000 do
+	for i = 0, 10000000 do
 		c2 = c2 + 1
 		rawset(t2, c2, i)
 	end

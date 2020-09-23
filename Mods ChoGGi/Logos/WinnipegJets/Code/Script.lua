@@ -56,11 +56,17 @@ end -- LoadEntity
 
 local logo_path = CurrentModPath .. "UI/"
 local function LoadLogo(name, display)
+	local id = "ChoGGi.Logos." .. name
+
+	if MissionLogoPresetMap[id] then
+		return
+	end
+
 	PlaceObj("MissionLogoPreset", {
 		display_name = display,
 		decal_entity = name,
 		entity_name = name,
-		id = "ChoGGi.Logos." .. name,
+		id = id,
 		image = logo_path .. name .. ".png",
 	})
 end

@@ -322,31 +322,33 @@ end
 
 -- add building to building template list
 function OnMsg.ClassesPostprocess()
-	if not BuildingTemplates.Carwash then
-		PlaceObj("BuildingTemplate", {
-			"Id", "Carwash",
-			"template_class", "Carwash",
-			"dome_forbidden", true,
-			"display_name", T(302535920011106, [[Martian Carwash]]),
-			"display_name_pl", T(302535920011107, [[Martian Carwashes]]),
-			"description", description_text,
-			"build_category", "ChoGGi",
-			"Group", "ChoGGi",
-			"display_icon", CurrentModPath .. "UI/carwash.png",
-			"entity", "Farm",
-			"electricity_consumption", 2500,
-			"water_consumption", 1000,
-			"air_consumption", 0,
-			"construction_cost_Concrete", 20000,
-			"construction_cost_Metals", 15000,
-			"construction_cost_Electronics", 1000,
-			"construction_cost_Polymers", 1000,
-			"maintenance_resource_type", "Metals",
-			"maintenance_resource_amount", 1000,
-			"demolish_sinking", range(1, 5),
-		})
+	if BuildingTemplates.Carwash then
+		return
 	end
-end --ClassesPostprocess
+
+	PlaceObj("BuildingTemplate", {
+		"Id", "Carwash",
+		"template_class", "Carwash",
+		"dome_forbidden", true,
+		"display_name", T(302535920011106, [[Martian Carwash]]),
+		"display_name_pl", T(302535920011107, [[Martian Carwashes]]),
+		"description", description_text,
+		"build_category", "ChoGGi",
+		"Group", "ChoGGi",
+		"display_icon", CurrentModPath .. "UI/carwash.png",
+		"entity", "Farm",
+		"electricity_consumption", 2500,
+		"water_consumption", 1000,
+		"air_consumption", 0,
+		"construction_cost_Concrete", 20000,
+		"construction_cost_Metals", 15000,
+		"construction_cost_Electronics", 1000,
+		"construction_cost_Polymers", 1000,
+		"maintenance_resource_type", "Metals",
+		"maintenance_resource_amount", 1000,
+		"demolish_sinking", range(1, 5),
+	})
+end
 
 -- dust buildup during storms
 function Carwash:GetUIWarning()

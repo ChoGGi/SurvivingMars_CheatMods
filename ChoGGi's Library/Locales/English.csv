@@ -1,9 +1,4 @@
 "ID", " Text"
-302535920001268,
-302535920001309,
-302535920001342,
-302535920001349,
-302535920001414,
 302535920001416,
 302535920001428,
 302535920001446,
@@ -357,6 +352,8 @@ If this isn't a dumping site then waste rock will not be emptied."
 302535920000564, "Set Soil Quality"
 302535920000709, "Allows you to start building on uneven ground, and removes the size limits."
 302535920000722, "Open the domes to the fresh air (or lack of)."
+302535920001268, "Open File"
+302535920001309, "Open file in default editor."
 302535920000381, "Replaces text using the same func that created it."
 302535920000382, "Closes dialogs and sends positive return value."
 302535920001529, "Press <green>Enter</green> to select next found text, and <green>Ctrl-Enter</green> to scroll to previous found text."
@@ -366,6 +363,9 @@ If this isn't a dumping site then waste rock will not be emptied."
 302535920001301, "Edit Text"
 302535920000721, "Overwrite"
 302535920000827, "Check this to overwrite file instead of appending to it."
+302535920001342, "Dumps the log to disk on startup, and every new Sol (good for some crashes)."
+302535920001349, "Flush Log Constantly"
+302535920001414, "Dumps log to disk every in-game hour (30 000 ticks of GameTime)."
 302535920000473, "Flush Log"
 302535920000474, "Flushes log to file."
 302535920000406, "Copy text to the clipboard."
@@ -1154,7 +1154,8 @@ This is temporary, use Options>Video>Framerate Counter to permanently save it."
 302535920000416, "Delay isn't a valid class."
 302535920000049, "Loading Screen Log"
 302535920001621, "Be able to see the console log (and other dialogs) during the loading screen.
-<color ChoGGi_red>Warning</color>: Leave welcome to Mars msg onscreen till map is loaded."
+
+Warning: Leaves ""Welcome to Mars"" msg onscreen till map is loaded."
 302535920001591, "Show Grid Small"
 302535920001592, "Small (use Disable to hide)."
 302535920001556, "Use the selected object."
@@ -1265,7 +1266,11 @@ Use Shift + Arrow keys to change the height/radius."
 302535920000480, "Select object(s) then hold ctrl/shift/alt and drag mouse.
 click+drag for multiple selection.
 
-It's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look)."
+It's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look).
+
+
+
+<color ChoGGi_red>WARNING</color>: Can be buggy, devs hid this! I kinda got it working, but expect bugs!"
 302535920000481, "Open In Ged Object Editor"
 302535920000482, "Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."
 302535920000487, "Delete All Of Selected Object"

@@ -52,8 +52,8 @@ local function ModOptions()
 	mod_TextOpacity = options:GetProperty("TextOpacity")
 	mod_TextStyle = options:GetProperty("TextStyle")
 
-	-- make sure we're not in menus
-	if not GameState.gameplay then
+	-- make sure we're ingame
+	if not UICity then
 		return
 	end
 	ClearUnitInfo()

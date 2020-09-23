@@ -1011,16 +1011,26 @@ function Dome:CheatCrimeEvent()
 end
 
 if LandscapeLake then
-	local function LandscapeLakeCheatVol(self,num)
+	local function LandscapeLakeCheatVol(self, num)
 		local five = 0.05 * self.volume_max
 		self:SetVolume(self.volume + (five * num))
 	end
 
 	function LandscapeLake:CheatVolPlus5()
-		LandscapeLakeCheatVol(self,1)
+		LandscapeLakeCheatVol(self, 1)
 	end
 
 	function LandscapeLake:CheatVolMinus5()
-		LandscapeLakeCheatVol(self,-1)
+		LandscapeLakeCheatVol(self, -1)
 	end
+end
+
+-- CheatEmpty only empties the production depot, not the consumption one.
+local orig_ResourceProducer_CheatEmpty = ResourceProducer.CheatEmpty
+function ResourceProducer:CheatEmpty(...)
+	-- An IsValid won't hurt
+	if IsValid(self.consumption_resource_stockpile) then
+		self:Consume_Internal(self.consumption_stored_resources)
+	end
+	return orig_ResourceProducer_CheatEmpty(self, ...)
 end

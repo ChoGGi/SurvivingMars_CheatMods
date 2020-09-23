@@ -79,8 +79,8 @@ function OnMsg.ModsReloaded()
 	-- replace the func that gets a nation (it gets a weighted nation depending on your sponsors instead of all of them)
 	GetWeightedRandNation = GetNationName
 
-	-- I doubt any game will last 9999 sols
-	const.FullTransitionToMarsNames = 9999
+	-- I doubt any game will last 99999 sols
+	const.FullTransitionToMarsNames = 99999
 
 	-- get all human names then merge into one table and apply to all nations
 	local name_table = {

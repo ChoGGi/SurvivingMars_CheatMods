@@ -3,12 +3,6 @@
 local MapFilter = MapFilter
 local IsValid = IsValid
 
-local obj_pos
-local function SortDist2D(a, b)
-	return a:GetDist2D(obj_pos) < b:GetDist2D(obj_pos)
-end
-local table_sort = table.sort
-
 local orig_TaskRequestHub_FindDemandRequest = TaskRequestHub.FindDemandRequest
 function TaskRequestHub:FindDemandRequest(obj, resource, amount, ...)
 	-- we only care about WasteRock
@@ -42,8 +36,21 @@ function TaskRequestHub:FindDemandRequest(obj, resource, amount, ...)
 	end
 
 	-- sort by dist to drone
-	obj_pos = obj:GetVisualPos()
-	table_sort(sites, SortDist2D)
-	return sites[1].demand.WasteRock
+	local obj_pos = obj:GetVisualPos()
+
+	-- get nearest
+	local length = max_int
+	local nearest = sites[1]
+	local new_length, spot
+	for i = 1, #sites do
+		spot = sites[i]
+		new_length = spot:GetPos():Dist2D(obj_pos)
+		if new_length < length then
+			length = new_length
+			nearest = spot
+		end
+	end
+	-- and done
+	return nearest.demand.WasteRock
 
 end

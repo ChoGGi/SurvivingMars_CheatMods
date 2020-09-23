@@ -24,6 +24,7 @@ local function SetNewDome(old, new, button, obj_type)
 			local objs = old.labels.Colonist or ""
 			for i = #objs, 1, -1 do
 				local obj = objs[i]
+				obj:SetDome(false)
 				obj.dome = false -- force the setter
 				obj:SetDome(new)
 			end

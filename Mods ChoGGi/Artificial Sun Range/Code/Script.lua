@@ -1,28 +1,37 @@
 -- See LICENSE for terms
 
 local mod_Range = ArtificialSun.effect_range or 8
-local MapFilter = MapFilter
 local TestSunPanelRange = TestSunPanelRange
-local table_sort = table.sort
-local GridSpacing = const.GridSpacing
+local IsValid = IsValid
+--~ local GridSpacing = const.GridSpacing
 
 local function UpdateSolarPanel(panel, suns)
 	-- large radius extension so it can catch large panels (dev comment)
-	local sun_radius = (mod_Range + 10) * GridSpacing
+--~ local sun_radius = (mod_Range + 10) * GridSpacing
 
+	local panel_pos = panel:GetPos()
+	local length = max_int
+	local nearest = suns[1]
+	local new_length, found
 	-- get any suns in range of panel
-	suns = MapFilter(suns, sun_radius, function(sun)
-		return TestSunPanelRange(sun, panel)
-	end)
-	-- no suns means nothing close enough
-	if suns[1] then
-		-- sort dist by nearest
-		local obj_pos = panel:GetPos()
-		table_sort(suns, function(a, b)
-			return a:GetDist2D(obj_pos) < b:GetDist2D(obj_pos)
-		end)
+	for i = #suns, 1, -1 do
+		local sun = suns[i]
+		if TestSunPanelRange(sun, panel) then
+			-- sorted by nearest
+			new_length = sun:GetPos():Dist2D(panel_pos)
+			if new_length < length then
+				length = new_length
+				nearest = sun
+			end
+			-- update if there's a sun in range
+			found = true
+		end
+	end
+
+	-- if anything is close enough to count
+	if found then
 		-- update panel prod values
-		panel:SetArtificialSun(suns[1])
+		panel:SetArtificialSun(nearest)
 	else
 		panel.artificial_sun = false
 	end
@@ -45,15 +54,19 @@ local function UpdateArtificialSunRange(obj)
 		end
 	end
 
-	-- prevent log spam
-	if suns[1] then
-		-- now update all solar panels
-		if is_valid and obj:IsKindOf("SolarPanelBase") then
-			UpdateSolarPanel(obj, suns)
-		else
-			local panels = UICity.labels.SolarPanelBase or ""
-			for i = 1, #panels do
-				UpdateSolarPanel(panels[i], suns)
+	if #suns == 0 then
+		return
+	end
+
+	-- now update all solar panels
+	if is_valid and obj:IsKindOf("SolarPanelBase") then
+		UpdateSolarPanel(obj, suns)
+	else
+		local panels = UICity.labels.SolarPanelBase or ""
+		for i = 1, #panels do
+			local panel = panels[i]
+			if IsValid(panel) then
+				UpdateSolarPanel(panel, suns)
 			end
 		end
 	end
@@ -62,8 +75,9 @@ end
 -- fired when settings are changed/init
 local function ModOptions()
 	mod_Range = CurrentModOptions:GetProperty("Range")
-	-- make sure we're not in menus
-	if not GameState.gameplay then
+
+	-- make sure we're ingame
+	if not UICity then
 		return
 	end
 	UpdateArtificialSunRange()

@@ -1,12 +1,13 @@
+-- See LICENSE for terms
+
 if not g_AvailableDlc.shepard then
 	return
 end
 
--- See LICENSE for terms
-
 local mod_StockMax
 
 local function ProdUpdate(obj)
+	-- const.resourcescale=1000
 	local max_z = (mod_StockMax / 1000) / 4
 	obj.stock_max = mod_StockMax
 	obj.max_storage = mod_StockMax
@@ -37,8 +38,8 @@ local function ModOptions()
 
 	ChoGGi.ComFuncs.SetBuildingTemplates("OpenPasture", "max_storage1", mod_StockMax)
 
-	-- make sure we're not in menus
-	if not GameState.gameplay then
+	-- make sure we're ingame
+	if not UICity then
 		return
 	end
 
@@ -57,13 +58,18 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-
+local changed
 function OnMsg.ClassesPostprocess()
+	if changed then
+		return
+	end
+
 	local orig_Pasture_GameInit = Pasture.GameInit
 	function Pasture.GameInit(...)
 		orig_Pasture_GameInit(self, ...)
 		ProdUpdate(self:GetProducerObj())
 	end
+	changed = true
 end
 
 OnMsg.CityStart = UpdateRanches

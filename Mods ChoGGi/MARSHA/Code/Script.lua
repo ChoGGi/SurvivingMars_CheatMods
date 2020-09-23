@@ -58,6 +58,14 @@ function ChoGGi_OutsideResidence:BuildingUpdate()
 	AttachToNearestDome(self, "force")
 end
 
+-- AttachToNearestDome adds it to this label (Residence gets removed when it's demo'd)
+function ChoGGi_OutsideResidence:Done()
+	local dome = self.parent_dome
+	if IsValid(dome) then
+		dome:RemoveFromLabel("InsideBuildings", self)
+	end
+end
+
 function OnMsg.ClassesPostprocess()
 	if BuildingTemplates.ChoGGi_OutsideResidence then
 		return
@@ -78,7 +86,7 @@ function OnMsg.ClassesPostprocess()
 
 		"electricity_consumption", 16000,
 		"service_comfort", 20000,
-		"comfort_increase", 2000,
+		"comfort_increase", 2500,
 		"capacity", 18,
 
 		"is_tall", true,

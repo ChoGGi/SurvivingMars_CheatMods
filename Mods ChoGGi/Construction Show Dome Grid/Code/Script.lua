@@ -46,7 +46,7 @@ local grids_visible
 
 local function ShowGrids()
 	SuspendPassEdits("ChoGGi.CursorBuilding.GameInit.Construction Show Dome Grid")
-	ShowHexRanges(nil, "Dome")
+	ShowHexRanges(UICity, "Dome")
 
 	-- edit grids
 	local g_HexRanges = g_HexRanges
@@ -71,7 +71,7 @@ local function ShowGrids()
 end
 local function HideGrids()
 	SuspendPassEdits("ChoGGi.CursorBuilding.Done.Construction Show Dome Grid")
-	HideHexRanges(nil, "Dome")
+	HideHexRanges(UICity, "Dome")
 	ResumePassEdits("ChoGGi.CursorBuilding.Done.Construction Show Dome Grid")
 	grids_visible = false
 end
@@ -124,7 +124,7 @@ end
 
 local function AddRanges()
 	SuspendPassEdits("ChoGGi.SelectionAdded.Construction Show Dome Grid")
-	ShowHexRanges(nil, "Dome")
+	ShowHexRanges(UICity, "Dome")
 	ResumePassEdits("ChoGGi.SelectionAdded.Construction Show Dome Grid")
 end
 
@@ -143,7 +143,7 @@ end
 
 function OnMsg.SelectionRemoved()
 	SuspendPassEdits("ChoGGi.SelectionRemoved.Construction Show Dome Grid")
-	HideHexRanges(nil, "Dome")
+	HideHexRanges(UICity, "Dome")
 	ResumePassEdits("ChoGGi.SelectionRemoved.Construction Show Dome Grid")
 end
 

@@ -26,7 +26,7 @@ local function ApplyFilter()
 		end
 	end
 
-	if not GameState.gameplay then
+	if not UICity then
 		return
 	end
 

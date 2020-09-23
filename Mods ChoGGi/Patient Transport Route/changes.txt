@@ -1,3 +1,7 @@
+v0.4
+Bumped amount to wait for to 200.
+Hopeful fix for inf loop.
+
 v0.3
 Evans update.
 

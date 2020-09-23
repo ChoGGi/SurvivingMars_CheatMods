@@ -8,9 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Colonists Force To New Dome",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"id", "ChoGGi_ColonistsForceToNewDome",
 	"author", "ChoGGi",
 	"code", {

@@ -12,6 +12,9 @@ end
 
 -- add the tech to research
 function OnMsg.ClassesPostprocess()
+	if TechDef.ChoGGi_DustyMOXIE then
+		return
+	end
 
 	PlaceObj("TechPreset", {
 		SortKey = 11,

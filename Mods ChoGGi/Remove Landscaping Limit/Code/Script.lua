@@ -1,24 +1,20 @@
 -- See LICENSE for terms
 
-local options
 local mod_RemoveLandScapingLimits
 local mod_StepSize
+local mod_BlockObjects
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_RemoveLandScapingLimits = options:GetProperty("RemoveLandScapingLimits")
-	mod_StepSize = options:GetProperty("StepSize") * guim
+	mod_RemoveLandScapingLimits = CurrentModOptions:GetProperty("RemoveLandScapingLimits")
+	mod_StepSize = CurrentModOptions:GetProperty("StepSize") * guim
+	mod_BlockObjects = CurrentModOptions:GetProperty("BlockObjects")
 
-	ChoGGi.ComFuncs.SetLandScapingLimits(
-		mod_RemoveLandScapingLimits, options:GetProperty("BlockObjects")
-	)
+	ChoGGi.ComFuncs.SetLandScapingLimits(mod_RemoveLandScapingLimits, mod_BlockObjects)
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
@@ -29,7 +25,7 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-function OnMsg.ClassesGenerate()
+--~ function OnMsg.ClassesGenerate()
 	-- no more limit to R+T
 	local orig_Activate = LandscapeConstructionController.Activate
 	function LandscapeConstructionController:Activate(...)
@@ -40,4 +36,4 @@ function OnMsg.ClassesGenerate()
 		end
 		return orig_Activate(self, ...)
 	end
-end
+--~ end

@@ -451,7 +451,8 @@ Actions[c] = {ActionName = Strings[302535920000049--[[Loading Screen Log]]],
 		return SettingState(
 			ChoGGi.UserSettings.LoadingScreenLog,
 			Strings[302535920001621--[["Be able to see the console log (and other dialogs) during the loading screen.
-<color ChoGGi_red>Warning</color>: Leave welcome to Mars msg onscreen till map is loaded."]]]
+
+Warning: Leaves "Welcome to Mars" msg onscreen till map is loaded."]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.LoadingScreenLog_Toggle,
@@ -522,19 +523,22 @@ Actions[c] = {ActionName = Strings[302535920000479--[[Toggle Editor]]],
 	RolloverText = Strings[302535920000480--[["Select object(s) then hold ctrl/shift/alt and drag mouse.
 click+drag for multiple selection.
 
-It's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look)."]]],
+It's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look).
+
+
+WARNING: Can be buggy, devs hid this! I kinda got it working, but expect bugs!"]]],
 	OnAction = ChoGGi.ComFuncs.Editor_Toggle,
 	ActionShortcut = "Ctrl-Shift-E",
 	ActionBindable = true,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000581--[[Toggle Object Collision]]],
+Actions[c] = {ActionName = Strings[302535920000061--[[Place Objects]]],
 	ActionMenubar = "ECM.Debug.Toggles",
-	ActionId = ".Toggle Object Collision",
-	ActionIcon = "CommonAssets/UI/Menu/road_type.tga",
-	RolloverText = Strings[302535920000582--[[Select an object and activate this to toggle collision (if you have a rover stuck in a dome).]]],
-	OnAction = ChoGGi.ComFuncs.CollisionsObject_Toggle,
+	ActionId = ".Place Objects",
+	ActionIcon = "CommonAssets/UI/Menu/enrich_terrain.tga",
+	RolloverText = Strings[302535920000062--[[Opens editor mode with the place objects dialog.]]],
+	OnAction = ChoGGi.ComFuncs.PlaceObjects_Toggle,
 }
 
 c = c + 1

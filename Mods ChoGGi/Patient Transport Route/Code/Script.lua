@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+local table_clear = table.clear
+local Sleep = Sleep
+
 local mod_Amount
 
 -- fired when settings are changed/init
@@ -19,11 +22,8 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local Sleep = Sleep
-
 local orig_RCTransport_TransportRouteLoad = RCTransport.TransportRouteLoad
 function RCTransport:TransportRouteLoad(...)
-
 	-- [LUA ERROR] Mars/Lua/Units/RCTransport.lua:1018: attempt to index a boolean value (field 'unreachable_objects')
 	self.unreachable_objects = self.unreachable_objects or {}
 
@@ -61,8 +61,9 @@ function RCTransport:TransportRouteLoad(...)
 			end
 
 			-- gotta clear these so they don't cause issues
-			table.clear(self.route_visited_dests)
-			table.clear(self.route_visited_sources)
+			table_clear(self.route_visited_dests)
+			table_clear(self.route_visited_sources)
+
 			local next_source = self:FindNextRouteSource()
 			-- check for nearby deposits
 			if next_source then
@@ -80,7 +81,6 @@ end
 
 local orig_RCTransport_TransportRouteUnload = RCTransport.TransportRouteUnload
 function RCTransport:TransportRouteUnload(...)
-
 	-- If amount > storage then that's bad
 	if mod_Amount > self.max_shared_storage then
 		mod_Amount = self.max_shared_storage
@@ -88,6 +88,8 @@ function RCTransport:TransportRouteUnload(...)
 
 	-- If not enough res then set to idle anim and return to load func
 	if self:GetStoredAmount() < mod_Amount then
+		-- fix for inf loop
+		Sleep(1000)
 		return
 	end
 

@@ -1,2 +1,6 @@
+v0.3
+Changed notifaction to work with my notifaction disable mod.
+Amount rounded to not use decimals (looks weird when looking at money).
+
 v0.2
 Da Vinci

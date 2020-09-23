@@ -29,8 +29,8 @@ end
 local function ModOptions()
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 
-	-- make sure we're not in menus
-	if not GameState.gameplay then
+	-- make sure we're ingame
+	if not UICity then
 		return
 	end
 	SetSigns1()

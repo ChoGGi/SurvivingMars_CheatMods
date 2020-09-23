@@ -49,11 +49,13 @@ do -- LoadEntity
 end -- LoadEntity
 
 function OnMsg.ClassesPostprocess()
-	PlaceObj("MissionLogoPreset", {
-		display_name = [[Veridian Dynamics]],
-		decal_entity = "VeridianDynamics",
-		entity_name = "VeridianDynamics",
-		id = "ChoGGi.Logos.VeridianDynamics",
-		image = CurrentModPath .. "UI/VeridianDynamics.png",
-	})
+	if not MissionLogoPresetMap["ChoGGi.Logos.VeridianDynamics"] then
+		PlaceObj("MissionLogoPreset", {
+			display_name = [[Veridian Dynamics]],
+			decal_entity = "VeridianDynamics",
+			entity_name = "VeridianDynamics",
+			id = "ChoGGi.Logos.VeridianDynamics",
+			image = CurrentModPath .. "UI/VeridianDynamics.png",
+		})
+	end
 end

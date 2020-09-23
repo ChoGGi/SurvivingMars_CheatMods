@@ -124,7 +124,7 @@ return {
 7 = 1000000, Default shadow fade out.
 8 = 2000000,
 9 = 5000000,
-10 = 0, No shadow fade out when zooming]]),
+10 = -1, No shadow fade out when zooming]]),
 		"DefaultValue", 0,
 		"MinValue", 0,
 		"MaxValue", 10,

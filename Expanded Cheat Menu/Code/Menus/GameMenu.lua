@@ -682,15 +682,6 @@ Actions[c] = {ActionName = Strings[302535920000678--[[Change Surface Signs To Ma
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000061--[[Place Objects]]],
-	ActionMenubar = "ECM.Game.Object",
-	ActionId = ".Place Objects",
-	ActionIcon = "CommonAssets/UI/Menu/enrich_terrain.tga",
-	RolloverText = Strings[302535920000062--[[Opens editor mode with the place objects dialog.]]],
-	OnAction = ChoGGi.ComFuncs.PlaceObjects_Toggle,
-}
-
-c = c + 1
 Actions[c] = {ActionName = Strings[302535920000862--[[Object Planner]]],
 	ActionMenubar = "ECM.Game.Object",
 	ActionId = ".Object Planner",
@@ -700,6 +691,15 @@ Actions[c] = {ActionName = Strings[302535920000862--[[Object Planner]]],
 	setting_planning = true,
 	ActionShortcut = "Ctrl-Shift-A",
 	ActionBindable = true,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000581--[[Toggle Object Collision]]],
+	ActionMenubar = "ECM.Game.Object",
+	ActionId = ".Toggle Object Collision",
+	ActionIcon = "CommonAssets/UI/Menu/road_type.tga",
+	RolloverText = Strings[302535920000582--[[Select an object and activate this to toggle collision (if you have a rover stuck in a dome).]]],
+	OnAction = ChoGGi.ComFuncs.CollisionsObject_Toggle,
 }
 
 -- menu
