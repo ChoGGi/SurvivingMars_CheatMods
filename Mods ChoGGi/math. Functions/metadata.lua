@@ -1,17 +1,16 @@
 return PlaceObj("ModDef", {
 	"title", "math. Functions",
+	"id", "ChoGGi_AddMathFunctions",
+	"steam_id", "1443143020",
+	"pops_any_uuid", "c632be42-2a13-414c-a293-4ed7174211c0",
 	"version", 6,
 	"version_major", 0,
 	"version_minor", 6,
-
-	"id", "ChoGGi_AddMathFunctions",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"steam_id", "1443143020",
-	"pops_any_uuid", "c632be42-2a13-414c-a293-4ed7174211c0",
 	"lua_revision", 249143,
 	"description", [[Modders only (unless it's a mod that uses these functions).
 

@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2065605741",
 	"pops_any_uuid", "82ce2e51-b1b4-43fd-ba74-de6a2674763b",
 	"lua_revision", 249143,
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
@@ -14,5 +14,8 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"has_options", true,
 	"TagGameplay", true,
-	"description", [[Drones will always use nearest wasterock dump site.]],
+	"description", [[Drones will always use nearest wasterock dump site to drop off.
+
+
+If you'd like the drones to pick up the nearest resource; use this mod: "Drones Pickup Nearest Resource"]],
 })

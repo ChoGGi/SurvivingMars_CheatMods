@@ -19,7 +19,7 @@ function OnMsg.ClassesPostprocess()
 	PlaceObj("TechPreset", {
 		SortKey = 11,
 		position = range(11, 11),
-		description = T(302535920011463, "No more suspension during dust storms"),
+		description = T(302535920011463, "No more suspension during dust storms."),
 		display_name = T(302535920011464,"Remove MOXIE from dust storm suspend"),
 		group = "Engineering",
 		icon = "UI/Icons/traits_disable.tga",

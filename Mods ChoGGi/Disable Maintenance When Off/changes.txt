@@ -1,2 +1,5 @@
+v0.3
+Mod option to quarter the points build up when turned off (instead of completely stopping it).
+
 v0.2
 Hopefully fixed issue with dust devils.

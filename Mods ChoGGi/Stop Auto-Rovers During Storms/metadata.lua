@@ -11,7 +11,6 @@ return PlaceObj("ModDef", {
 	"version", 5,
 	"version_major", 0,
 	"version_minor", 5,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_StopAutoRoversDuringStorms",
 	"steam_id", "1796377313",

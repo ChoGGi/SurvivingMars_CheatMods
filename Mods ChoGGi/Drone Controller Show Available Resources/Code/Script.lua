@@ -44,13 +44,18 @@ local function GetAvailableResources(self, cursor_obj)
 		end
 	end
 
+	if self:IsKindOf("Drone") then
+		if not self.command_center then
+			return T(5672, "Orphaned Drones")
+		end
+		self = self.command_center
+	end
+
 	-- reset to 0
 	res_count = table.copy(res_count_orig)
-
 	table.clear(added_objs)
 
 --~ 	ex(cursor_obj)
-
 	local objs = cursor_obj or self.connected_task_requesters or ""
 	for i = 1, #objs do
 		local obj = objs[i]
@@ -112,15 +117,28 @@ end
 RCRover.ChoGGi_GetAvailableResources = GetAvailableResources
 SupplyRocket.ChoGGi_GetAvailableResources = GetAvailableResources
 DroneHub.ChoGGi_GetAvailableResources = GetAvailableResources
+Drone.ChoGGi_GetAvailableResources = GetAvailableResources
 
-function OnMsg.ClassesPostprocess()
-	local xtemplate = XTemplates.sectionServiceArea[1]
+local function AddTemplate(xtemplate)
 	if xtemplate.ChoGGi_Added_DroneControllerShowAvailableResources then
 		return
 	end
 	xtemplate.ChoGGi_Added_DroneControllerShowAvailableResources = true
+	if xtemplate.RolloverText then
+		xtemplate.RolloverText = xtemplate.RolloverText .. T("<newline><ChoGGi_GetAvailableResources>")
+	else
+		xtemplate.RolloverText = T("<newline><ChoGGi_GetAvailableResources>")
+	end
+end
 
-	xtemplate.RolloverText = xtemplate.RolloverText .. T("<newline><ChoGGi_GetAvailableResources>")
+function OnMsg.ClassesPostprocess()
+	AddTemplate(XTemplates.sectionServiceArea[1])
+
+	local xtemplate = XTemplates.ipDrone[1]
+	local idx = table.find(XTemplates.ipDrone[1], "Icon", "UI/Icons/Sections/facility.tga")
+	if idx then
+		AddTemplate(xtemplate[idx])
+	end
 end
 
 local rockets = {"RocketLandingSite", "SupplyRocketBuilding"}

@@ -1,13 +1,12 @@
 return PlaceObj("ModDef", {
 	"title", "Centred HUD",
-	"version", 1,
-	"version_major", 0,
-	"version_minor", 1,
-
-	"image", "Preview.png",
 	"id", "ChoGGi_CentredHUD",
 	"steam_id", "1594140397",
 	"pops_any_uuid", "55b08156-3710-4274-afdf-4e8d046da0b8",
+	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"lua_revision", 249143,
 	"code", {

@@ -1,0 +1,5 @@
+v0.3
+Fixed another drone loopy.
+
+v0.2
+Added mod option to disable mod.

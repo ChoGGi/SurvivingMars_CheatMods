@@ -800,7 +800,7 @@ do -- DisastersTrigger
 		end
 
 
-																																										ex(item_list)
+--~ 																																										ex(item_list)
 
 
 

@@ -1,5 +1,45 @@
 -- See LICENSE for terms
 
+local ResourceScale = const.ResourceScale
+
+local resources
+
+local mod_options = {}
+local options
+
+-- fired when settings are changed/init
+local function ModOptions()
+	options = CurrentModOptions
+	for i = 1, #(resources or "") do
+		local id = resources[i]
+		mod_options[id] = options:GetProperty("MinResourceAmount_" .. id)
+	end
+
+	--~
+--~ 	for id in pairs(mod_options) do
+--~ 		mod_options[id] = options:GetProperty(id)
+--~ 	end
+
+--~ 	mod_Example = CurrentModOptions:GetProperty("Example")
+
+--~ 	-- make sure we're ingame
+--~ 	if not UICity then
+--~ 		return
+--~ 	end
+end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= CurrentModId then
+		return
+	end
+
+	ModOptions()
+end
+
 DefineClass.BottomlessStorage = {
 	__parents = {
 		"UniversalStorageDepot",
@@ -21,10 +61,20 @@ end
 
 -- om nom nom nom nom
 --~ function BottomlessStorage:DroneUnloadResource(drone, request, resource, amount, ...)
-function BottomlessStorage:DroneUnloadResource(...)
-	UniversalStorageDepot.DroneUnloadResource(self, ...)
+function BottomlessStorage:DroneUnloadResource(drone, request, resource, ...)
+	UniversalStorageDepot.DroneUnloadResource(self, drone, request, resource, ...)
 	if self.working then
-		self:ClearAllResources()
+		-- check and clear each resource that can be cleared
+		if ResourceOverviewObj:GetAvailable(resource) > mod_options[resource] * ResourceScale then
+			-- function UniversalStorageDepot:ClearAllResources()
+			if self.supply and self.supply[resource] then
+				self.supply[resource]:SetAmount(0)
+				self.demand[resource]:SetAmount(self.max_storage_per_resource)
+				self.stockpiled_amount[resource] = 0
+				self:SetCount(0, resource)
+			end
+		end
+		-- update selection panel
 		RebuildInfopanel(self)
 	end
 end
@@ -49,30 +99,46 @@ end
 
 -- add building to building template list
 function OnMsg.ClassesPostprocess()
+	resources = table.icopy(UniversalStorageDepot.storable_resources)
+	resources[#resources+1] = "WasteRock"
+	if g_AvailableDlc.armstrong and not table.find(resources, "Seeds") then
+		resources[#resources+1] = "Seeds"
+	end
+
 	if not BuildingTemplates.BottomlessStorage then
 		PlaceObj("BuildingTemplate", {
 			"Id", "BottomlessStorage",
 			"template_class", "BottomlessStorage",
 			"instant_build", true,
-			"dome_forbidden", true,
-			"display_name", T(302535920011047, [[Bottomless Storage]]),
-			"display_name_pl", T(302535920011048, [[Bottomless Storages]]),
-			"description", T(302535920011049, [[Warning: Anything added to this depot will disappear.]]),
+			"display_name", T(302535920011047, "Bottomless Storage"),
+			"display_name_pl", T(302535920011048, "Bottomless Storages"),
+			"description", T(302535920011049, "Warning: Anything added to this depot will disappear."),
 			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
 			"display_icon", CurrentModPath .. "UI/bottomless_storage.png",
 			"entity", "ResourcePlatform",
-			"on_off_button", true,
-			"prio_button", false,
 			"count_as_building", false,
-			"storable_resources", storable_resources,
-			"resource", storable_resources,
+			"storable_resources", resources,
+			"resource", resources,
+			"max_storage_per_resource", 250000,
 		})
 	end
 
-	local storable_resources = table.icopy(UniversalStorageDepot.storable_resources)
-	if g_AvailableDlc.armstrong and not table.find(storable_resources, "Seeds") then
-		storable_resources[#storable_resources+1] = "Seeds"
-	end
+	local xtemplate = XTemplates.sectionStorage[2]
+	-- check for and remove existing template
+	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_WasteRockToggle", true)
+
+	-- add wasterock toggle to depot resource list
+	xtemplate[#xtemplate+1] = PlaceObj('XTemplateTemplate', {
+		"Id" , "ChoGGi_Template_WasteRockToggle",
+		"ChoGGi_Template_WasteRockToggle", true,
+		"__context", function (_, context)
+      return SubContext(context, {res = "WasteRock"})
+    end,
+		"__template", "sectionStorageRow",
+		"Title", T(615073837286, "<resource(res)><right><resource(GetStoredAmount(res),GetMaxStorage(res),res)>"),
+		"Icon", "UI/Icons/Sections/workshifts_active.tga",
+		"TitleHAlign", "stretch",
+	})
 
 end

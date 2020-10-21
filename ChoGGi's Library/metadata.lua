@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"version", 86,
 	"version_major", 8,
 	"version_minor", 6,
-	"image", "Preview.png",
+	"image", "Preview.jpg",
 	"id", "ChoGGi_Library",
 	"author", "ChoGGi",
 	"steam_id", "1504386374",

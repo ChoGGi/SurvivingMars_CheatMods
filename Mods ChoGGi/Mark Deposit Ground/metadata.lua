@@ -1,14 +1,12 @@
 return PlaceObj("ModDef", {
 	"title", "Mark Deposit Ground",
+	"id", "ChoGGi_MarkDepositGround",
+	"steam_id", "1555446081",
+	"pops_any_uuid", "3b37cc32-66d0-4233-8366-9038691ebe0e",
 	"version", 8,
 	"version_major", 0,
 	"version_minor", 8,
-
-	"image", "Preview.png",
-	"id", "ChoGGi_MarkDepositGround",
-	"steam_id", "1555446081",
---~ 	"pops_desktop_uuid", "8a57f30a-6bae-46c0-99b9-ca497bf74bd3",
-	"pops_any_uuid", "3b37cc32-66d0-4233-8366-9038691ebe0e",
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"lua_revision", 249143,
 	"code", {

@@ -18,11 +18,12 @@ function OnMsg.ClassesPostprocess()
 end
 
 function OnMsg.NewDay()
-	local amount = floatfloor((UICity.funding / 1000000) * 0.01) -- 0.01 = 1%
+	local amount = (UICity.funding / 1000000) * 0.01 -- 0.01 = 1%
 	ChangeFunding(amount)
+	floatfloor(UICity.funding)
+	UICity:ChangeFunding(1)
 
 	CreateRealTimeThread(function()
 		AddOnScreenNotification("ChoGGi_1Percenter", nil, {amount = amount})
 	end)
-
 end

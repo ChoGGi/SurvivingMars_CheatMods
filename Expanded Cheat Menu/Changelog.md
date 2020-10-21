@@ -8,6 +8,7 @@
 - The Empty cheat in the Selection Panel>Cheats ignored the consumption depot.
 - Moved Toggle Object Collision from Debug to Game>Object.
 - FlushLog setting to false by default.
+- Infopanel grid cheats don't hide when you enable "Free" anymore.
 
 ## v15.5 (11 Sep 2020)
 ### Added:

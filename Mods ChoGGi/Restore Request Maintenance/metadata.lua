@@ -24,5 +24,5 @@ return PlaceObj("ModDef", {
 Also fixes frozen buildings that start a maintenance request during a cold wave and drones don't repair till after cold wave ends.
 
 
-It stays hidden when maintenance isn't required.]],
+Button stays hidden when maintenance isn't required.]],
 })

@@ -1,3 +1,6 @@
+v0.5
+Added mod option to change the min standing required.
+
 v0.4
 Shows a notification msg when unlocked buildings have changed.
 

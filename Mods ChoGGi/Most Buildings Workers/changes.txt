@@ -1,3 +1,7 @@
+v0.4
+Added an enable mod option.
+Changed tooltips.
+
 v0.3
 Fixed a bug with mod options (whoops).
 

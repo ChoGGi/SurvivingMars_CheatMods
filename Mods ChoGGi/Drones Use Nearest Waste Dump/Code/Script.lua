@@ -2,6 +2,7 @@
 
 local MapFilter = MapFilter
 local IsValid = IsValid
+local FindNearestObject = FindNearestObject
 
 local orig_TaskRequestHub_FindDemandRequest = TaskRequestHub.FindDemandRequest
 function TaskRequestHub:FindDemandRequest(obj, resource, amount, ...)
@@ -9,6 +10,7 @@ function TaskRequestHub:FindDemandRequest(obj, resource, amount, ...)
 	if resource ~= "WasteRock" then
 		return orig_TaskRequestHub_FindDemandRequest(self, obj, resource, amount, ...)
 	end
+
 	-- If it isn't a dumpsite abort
 	local dropoff = obj.d_request and obj.d_request:GetBuilding()
 	if IsValid(dropoff) and not dropoff:IsKindOf("WasteRockDumpSite") then
@@ -26,7 +28,6 @@ function TaskRequestHub:FindDemandRequest(obj, resource, amount, ...)
 		return obj ~= pickup_obj_bld and obj:IsKindOf("WasteRockDumpSite") and obj.has_free_landing_slots
 			and (obj.max_amount_WasteRock - obj:GetStored_WasteRock()) >= amount
 	end)
-
 	-- not sure what happens when two drones go to the same site and one of them takes the last spot/fills it up?
 	-- hopefully whatever happens happens lower then this :)
 
@@ -35,22 +36,5 @@ function TaskRequestHub:FindDemandRequest(obj, resource, amount, ...)
 		return orig_TaskRequestHub_FindDemandRequest(self, obj, resource, amount, ...)
 	end
 
-	-- sort by dist to drone
-	local obj_pos = obj:GetVisualPos()
-
-	-- get nearest
-	local length = max_int
-	local nearest = sites[1]
-	local new_length, spot
-	for i = 1, #sites do
-		spot = sites[i]
-		new_length = spot:GetPos():Dist2D(obj_pos)
-		if new_length < length then
-			length = new_length
-			nearest = spot
-		end
-	end
-	-- and done
-	return nearest.demand.WasteRock
-
+	return FindNearestObject(sites, obj).demand.WasteRock
 end

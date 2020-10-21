@@ -1,10 +1,12 @@
 -- See LICENSE for terms
 
 local mod_ShowNotification
+local mod_MinStanding
 
 -- fired when settings are changed/init
 local function ModOptions()
 	mod_ShowNotification = CurrentModOptions:GetProperty("ShowNotification")
+	mod_MinStanding = CurrentModOptions:GetProperty("MinStanding")
 end
 
 --~ -- load default/saved settings
@@ -96,7 +98,7 @@ local function UpdateStanding()
 			end
 
 			--  61 for excellent
-			local standing_excel = standing_curr > 60
+			local standing_excel = standing_curr >= mod_MinStanding
 			for bld_id, list in pairs(rival_bld) do
 				-- not sure why they added three sponsors (when they only use one) so we'll just be lazy
 				for i = 1, 3 do
@@ -114,6 +116,7 @@ local function UpdateStanding()
 		return
 	end
 
+	-- build list of changed standings and display
 	local GetStandingText = GetStandingText
 	local Max = Max
 	local T = T

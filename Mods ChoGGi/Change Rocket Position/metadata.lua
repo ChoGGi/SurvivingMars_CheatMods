@@ -8,14 +8,13 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Change Rocket Position",
-	"version", 1,
-	"version_major", 0,
-	"version_minor", 1,
-
-	"image", "Preview.png",
 	"id", "ChoGGi_ChangeRocketPosition",
 	"steam_id", "1707472695",
 	"pops_any_uuid", "c2854565-a76e-473a-8464-47349176169f",
+	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"lua_revision", 249143,
 	"code", {

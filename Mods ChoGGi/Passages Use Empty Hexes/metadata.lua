@@ -8,13 +8,13 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Passages Use Empty Hexes",
-	"version", 4,
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 5,
 	"image", "Preview.png",
 	"id", "ChoGGi_PassagesUseEmptyHexes",
 	"steam_id", "1809321641",
-	"pops_any_uuid", "2273f89a-7721-4550-b777-024352538af9",
+	"pops_any_uuid", "6285e6a7-f89a-47a3-a3ee-0b22e470e600",
 	"author", "ChoGGi",
 	"lua_revision", 249143,
 	"code", {
@@ -34,7 +34,7 @@ Press Numpad 6 to toggle showing usable hexes.
 
 
 Known Issues:
-Ramps will be ignored till you restart the game.
+Ramps will be ignored till you reload the save.
 You will get warning messages when trying to place passages in "wrong" places (just ignore them).
 I was more concerned with removing limitations than setting new ones, so you can build them in stupid places (if it doesn't place a complete passage then remove it).
 Placing a passage at the life-support/entrance hex works, but you can't do a manual kink in the line.

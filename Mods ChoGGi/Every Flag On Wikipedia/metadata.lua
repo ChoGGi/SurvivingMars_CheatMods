@@ -24,7 +24,7 @@ If you want Martians to have martian names: Randomise Birthplace = false
 If you want existing nations to use random names: Default Nation Names = false
 
 I also added a few unique names associated with space.
-Suggestions welcome, for names already added see: https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Mods%20ChoGGi/EveryFlagOnWikipedia/Code/Script.lua#L2944
+Suggestions welcome, for names already added see: https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Mods%20ChoGGi/Every%20Flag%20On%20Wikipedia/Code/Script.lua#L2944
 ^ New game needed to see uniques.
 
 If you have a list of names you'd like to add:

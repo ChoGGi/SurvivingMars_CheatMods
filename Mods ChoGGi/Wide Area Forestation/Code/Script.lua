@@ -10,7 +10,6 @@ local mod_RemovePower
 local options
 
 local MulDivRound = MulDivRound
-local HourDuration = const.HourDuration
 
 -- fired when settings are changed/init
 local function ModOptions()
@@ -44,9 +43,10 @@ local function ModOptions()
 	-- existing plants
 	local meta = ForestationPlant:GetPropertyMetadata("vegetation_interval")
 	local objs = UICity.labels.ForestationPlant or ""
+	local HourDuration = const.HourDuration
 	for i = 1, #objs do
 		local obj = objs[i]
-		obj.building_update_time = MulDivRound(obj.mod_PlantInterval, HourDuration, meta.scale)
+		obj.building_update_time = MulDivRound(mod_PlantInterval, HourDuration, meta.scale)
 		power_func(obj)
 	end
 end

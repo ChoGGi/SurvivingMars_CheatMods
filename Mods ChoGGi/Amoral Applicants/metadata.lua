@@ -1,13 +1,12 @@
 return PlaceObj("ModDef", {
 	"title", "Amoral Applicants",
-	"version", 1,
-	"version_major", 0,
-	"version_minor", 1,
-
-	"image", "Preview.png",
 	"id", "ChoGGi_AmoralApplicants",
 	"steam_id", "1765618288",
 	"pops_any_uuid", "e2ea440f-f332-424f-882f-e85aadd3d97b",
+	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"lua_revision", 249143,
 	"code", {

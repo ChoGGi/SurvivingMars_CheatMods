@@ -471,8 +471,6 @@ end)
 
 
 -- benchmarking stuff
-
-
 function ChoGGi.testing.NearestObjFromList()
 	if #(UICity.labels.Building or "") == 0 then
 		print("NearestObjFromList: NO BUILDINGS ABORT")
@@ -978,8 +976,10 @@ end -- ClassesPreprocess
 --~ local table_iclear = table.iclear
 --~ local function hookTick(...)
 --~ 	if not dlg then
---~ 		dlg = ChoGGi.ComFuncs.OpenInExamineDlg(list)
---~ 		dlg:EnableAutoRefresh()
+--~ 		dlg = ChoGGi.ComFuncs.OpenInExamineDlg(list, {
+--~ 			ex_params = true,
+--~ 			auto_refresh = true,
+--~ 	})
 --~ 	end
 --~ 	c = c + 1
 --~ 	list[c] = ...

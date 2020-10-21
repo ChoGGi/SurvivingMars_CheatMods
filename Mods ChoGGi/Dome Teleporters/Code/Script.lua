@@ -9,8 +9,6 @@ local IsObjInDome = IsObjInDome
 local SetState = g_CObjectFuncs.SetState
 local table_remove = table.remove
 local table_find = table.find
-local PlacePolyline = PlacePolyline
-local AveragePoint2D = AveragePoint2D
 local pairs = pairs
 local next = next
 local IsKindOf = IsKindOf
@@ -357,16 +355,20 @@ end
 local teleporter_lines = {}
 local two_pointer = {}
 
-local cls = "DomeTeleporter"
-
 --~ (obj, prev)
+local OPolyline
 function OnMsg.SelectedObjChange(obj)
-	if not IsKindOf(obj, cls) then
+	if not IsKindOf(obj, "DomeTeleporter") then
 		return
 	end
 
+	-- my lines are removed on savegame
+	if not OPolyline then
+		OPolyline = ChoGGi_OPolyline
+	end
+
 	-- If type tunnel then build/update list and show lines
-	local tunnels = UICity.labels[cls] or ""
+	local tunnels = UICity.labels.DomeTeleporter or ""
 	for i = 1, #tunnels do
 		-- get tunnel n linked one so we only have one of each in table
 		local t1, t2 = tunnels[i], tunnels[i].linked_obj
@@ -379,9 +381,11 @@ function OnMsg.SelectedObjChange(obj)
 			teleporter_lines[t1] = {
 				t1 = t1,
 				t2 = t2,
-				line = PlacePolyline(two_pointer),
+--~ 				line = PlacePolyline(two_pointer),
+				line = OPolyline:new(),
 			}
-			teleporter_lines[t1].line:SetPos(AveragePoint2D(two_pointer))
+			teleporter_lines[t1].line:SetParabola(two_pointer[1], two_pointer[2])
+--~ 			teleporter_lines[t1].line:SetPos(AveragePoint2D(two_pointer))
 		end
 	end
 

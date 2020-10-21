@@ -34,6 +34,11 @@ if debug then
 	debug_gethook = debug.gethook
 end
 
+-- Ease of access to _G for my lib mod (when HelperMod is installed for ECM)
+function ChoGGi.ComFuncs.RetUnrestricedG()
+	return _G
+end
+
 local function PlacePolyline(points, colours)
 	local line = ChoGGi_OPolyline:new{
 		max_vertices = #points
@@ -892,8 +897,12 @@ end
 
 function ChoGGi.ComFuncs.MonitorThreads()
 	local table_list = {}
-	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list, nil, Strings[302535920000853--[[Monitor]]] .. ": ThreadsRegister")
-	dlg:EnableAutoRefresh()
+	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list, {
+		ex_params = true,
+		auto_refresh = true,
+		title = Strings[302535920000853--[[Monitor]]] .. ": ThreadsRegister",
+	})
+
 	local RetThreadInfo = ChoGGi.ComFuncs.RetThreadInfo
 
 	CreateRealTimeThread(function()
@@ -936,8 +945,12 @@ function ChoGGi.ComFuncs.MonitorTableLength(obj, skip_under, sortby, title)
 	title = title or RetName(obj)
 	skip_under = skip_under or 25
 	local table_list = {}
-	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list, nil, title)
-	dlg:EnableAutoRefresh()
+	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list, {
+		ex_params = true,
+		auto_refresh = true,
+		title = title,
+	})
+
 	local PadNumWithZeros = ChoGGi.ComFuncs.PadNumWithZeros
 
 	CreateRealTimeThread(function()
@@ -3626,17 +3639,16 @@ function ChoGGi.ComFuncs.SetLoadingScreenLog()
 	end
 end
 
---MonitorFunc (shortcut name in AddedFunctions)
+-- MonitorFunc (shortcut name in AddedFunctions)
 function ChoGGi.ComFuncs.MonitorFunctionResults(func, ...)
 	local varargs = ...
 
 	local results_list = {}
-	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(
-		results_list,
-		nil,
-		Strings[302535920000853--[[Monitor]]] .. " " .. Strings[302535920000110--[[Function Results]]]
-	)
-	dlg:EnableAutoRefresh()
+	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(results_list, {
+		ex_params = true,
+		auto_refresh = true,
+		title = Strings[302535920000853--[[Monitor]]] .. " " .. Strings[302535920000110--[[Function Results]]],
+	})
 
 	CreateRealTimeThread(function()
 		-- stop when dialog is closed

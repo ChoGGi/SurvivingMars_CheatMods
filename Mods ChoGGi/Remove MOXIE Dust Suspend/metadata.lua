@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-
 	"id", "ChoGGi_RemoveMOXIEDustSuspend",
 	"author", "ChoGGi",
 	"code", {
@@ -11,5 +10,5 @@ return PlaceObj("ModDef", {
 	},
 	"image", "Preview.png",
 	"lua_revision", 249143,
-	"description", [[Remove MOXIE Dust Suspend]],
+	"description", [[No more suspension during dust storms.]],
 })

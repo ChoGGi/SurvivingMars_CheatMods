@@ -119,8 +119,9 @@ local grid_lookup = {
 	},
 }
 local function SetGridInfo(action, obj, name, grid)
-	local consumption = obj[grid.con]
-	if consumption and consumption ~= 0 then
+--~ 	local consumption = obj[grid.con]
+--~ 	if consumption and consumption ~= 0 then
+	if obj[grid.con] then
 		SetHint(action, grid.text2:format(name, grid.name))
 		SetIcon(action, grid.text1, grid.icon)
 	else
@@ -308,6 +309,9 @@ It don't matter if you're black or white"]]],
 	},
 	MaxShuttlesDef = {
 		des = Strings[302535920001598--[[Reset shuttle control amount to default.]]],
+	},
+	MaxShuttles = {
+		des = Strings[302535920001416--[[Max out shuttles for this hub.]]],
 	},
 
 -- Misc
@@ -845,6 +849,11 @@ function ShuttleHub:CheatMaxShuttlesDbl()
 end
 function ShuttleHub:CheatMaxShuttlesDef()
 	self.max_shuttles = self:GetClassValue("max_shuttles")
+end
+function ShuttleHub:CheatMaxShuttles()
+	for _ = 1, (self.max_shuttles - #self.shuttle_infos) do
+		self:SpawnShuttle()
+	end
 end
 
 function Drone:CheatBattCapDbl()

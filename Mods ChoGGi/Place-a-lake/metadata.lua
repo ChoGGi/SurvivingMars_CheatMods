@@ -8,14 +8,13 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Place-a-lake",
-	"version", 3,
-	"version_major", 0,
-	"version_minor", 3,
-
-	"image", "Preview.png",
 	"id", "ChoGGi_Placealake",
 	"steam_id", "1743037328",
 	"pops_any_uuid", "9f01952e-daec-4fc8-a10b-f8754a147663",
+	"version", 3,
+	"version_major", 0,
+	"version_minor", 3,
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"lua_revision", 249143,
 	"code", {

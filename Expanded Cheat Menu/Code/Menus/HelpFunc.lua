@@ -11,102 +11,6 @@ local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
 do -- ModUpload
-	-- hey paradox! renaming things is a thing...
-	local paradox_title = {
-		[ChoGGi.id] = "Expanded Cheat Menu (ECM)",
-		ChoGGi_AddMathFunctions = "\"math.\" Functions",
-		ChoGGi_AlienVisitors = "Alien Visitors v0.1",
-		ChoGGi_AllSponsorBuildings = "All Sponsor Buildings v0.2",
-		ChoGGi_AllSponsors = "All Sponsors v0.1",
-		ChoGGi_ChangeDroneType = "Change Drone Type v0.3",
-		ChoGGi_ChangeObjectColour = "Change Object Colour v1.0",
-		ChoGGi_ChangeOtherToRandomGender = "Change Other To Random Gender v0.1",
-		ChoGGi_ChangeRocketSkin = "Change Rocket Skin v0.2",
-		ChoGGi_CommieMarxLogos = "Commie Mars Logos v0.4",
-		ChoGGi_ColonistsForceToNewDome = "Colonists: Force To New Dome",
-		ChoGGi_ConstructionExtendLength = "Construction: Extend Length",
-		ChoGGi_ConstructionShowDomePassageLine = "Construction: Show Dome Passage Line v0.9",
-		ChoGGi_ConstructionShowDroneGrid = "Construction: Show Drone Grid v0.4",
-		ChoGGi_ConstructionShowDustGrid = "Construction: Show Dust Grid v0.2",
-		ChoGGi_ConstructionShowHexBuildableGrid = "Construction: Show Hex Buildable Grid",
-		ChoGGi_ConstructionShowHexGrid = "Construction: Show Hex Grid v0.2",
-		ChoGGi_ConstructionShowMapSectors = "Construction: Show Map Sectors v0.2",
-		ChoGGi_DomeStopFilterTraitsResetQuarantine = "Dome: Stop Filter Traits Reset Quarantine",
-		ChoGGi_DomeTeleporters = "Dome Teleporters v0.5",
-		ChoGGi_DomesLimitBirths = "Domes: Limit Births",
-		ChoGGi_DroneHubHeavyLoadStrobe = "DroneHub: Heavy Load Strobe",
-		ChoGGi_DroneHubVisualDroneLoad = "DroneHub: Visual Drone Load",
-		ChoGGi_EveryFlagOnWikipedia = "Every Flag On Wikipedia v0.6",
-		ChoGGi_FixFindDroneToRepairLogSpam = "Fix: FindDroneToRepair Log Spam",
-		ChoGGi_FixMissingBuildUpgradeIcons = "Fix: Missing Build/Upgrade Icons",
-		ChoGGi_FixRemovedModGameRules = "Fix: Removed Mod Game Rules",
-		ChoGGi_FixTransportsDontMoveAfterRouteSet = "Fix: Transports Don't Move After Route Set",
-		ChoGGi_FixBuildingsBrokenDownAndNoRepair = "Fix: Buildings Broken And No Repair",
-		ChoGGi_FixCanceledRocketOnPad = "Fix: Canceled Rocket On Pad",
-		ChoGGi_FixEternalDustStorm = "Fix: Eternal Dust Storm",
-		ChoGGi_FixLockedWindTurbine = "Fix: Locked Wind Turbine",
-		ChoGGi_FixMeteorStuckOnMap = "Fix: Meteor Stuck On Map",
-		ChoGGi_FixProjectMorpheusParticleFellDown = "Fix: Project Morpheus Particle Fell Down",
-		ChoGGi_FixShuttlesStuckMidAir = "Fix: Shuttles Stuck Mid-Air",
-		ChoGGi_GameRulesBreakthroughs = "Game Rules: Breakthroughs",
-		ChoGGi_GameRulesFullyTerraformed = "Game Rules: Fully Terraformed",
-		ChoGGi_InfobarAddDischargeRates = "Infobar Add Discharge Rates",
---~ 		[ChoGGi.id_lib] = "ChoGGi's Library v5.1",
-		ChoGGi_MakeFirstMartianbornCelebrity = "Make First Martianborn Celebrity v0.2",
-		ChoGGi_MapImagesPack = "Map Images Pack v0.1",
-		ChoGGi_MapOverviewShowSurfaceResources = "Map Overview: Show Surface Resources",
-		ChoGGi_MarkDepositGround = "Mark Deposit Ground v0.4",
-		ChoGGi_MarkSelectedBuildingType = "Mark Selected Building Type v0.1",
-		ChoGGi_MarsCompanion = "Mars Companion v0.1",
-		ChoGGi_MartianCarwash = "Martian Carwash v0.5",
-		ChoGGi_Minimap = "Minimap v0.5",
-		ChoGGi_MononokeShishiGami = "Mononoke Shishi-Gami",
-		ChoGGi_MultiSelect = "Multi-Select v0.1",
-		ChoGGi_NotCheatingPipesCablesNoMaintenence = "Pipes & Cables: No Maintenence, not cheating!",
-		ChoGGi_NurseryLimitBirthingToSpots = "Nursery: Limit Birthing To Spots",
-		ChoGGi_OrbitalPrefabDrops = "Orbital Prefab Drops v0.5",
-		ChoGGi_OutsideResidence = "Outside Residence",
-		ChoGGi_PassengerRocketTweaks = "Passenger Rocket Tweaks v0.2",
-		ChoGGi_PatientTransportRoute = "Patient Transport Route v0.2",
-		ChoGGi_PauseOnLoad = "Pause On Load v0.1",
-		ChoGGi_PermanentPriority = "Permanent Priority v0.2",
-		ChoGGi_PersonalShuttles = "Personal Shuttles v0.8",
-		ChoGGi_POIAddTooltips = "POI: Add Tooltips",
-		ChoGGi_PortableMiner = "RC Miner v1.8",
-		ChoGGi_PrefabSafety = "Prefab Safety v0.2",
-		ChoGGi_RCBulldozer = "RC Bulldozer v0.7",
-		ChoGGi_RCConstructorRoutes = "RC Constructor Routes v0.1",
-		ChoGGi_RCGarage = "RC Garage v0.3",
-		ChoGGi_RCMechanic = "RC Mechanic v0.7",
-		ChoGGi_RCRemote = "RC Remote v0.1",
-		ChoGGi_RCTanker = "RC Tanker v0.1",
-		ChoGGi_ResearchFilter = "Research Filter v0.2",
-		ChoGGi_ResearchSmallCheckMarks = "Research: Small CheckMarks",
-		ChoGGi_RocketAlwaysAskBeforeLaunch = "Rocket: Always Ask Before Launch v0.2",
-		ChoGGi_RocketPinEnable = "Rocket: Pin Enable",
-		ChoGGi_RotateAllBuildings = "Rotate All Buildings v0.1",
-		ChoGGi_RoverAutomatedMode = "Rover Automated AI",
-		ChoGGi_SaveMissionProfiles = "Save Mission Profiles v0.1",
-		ChoGGi_SelectableCables = "Selectable Cables v0.4",
-		ChoGGi_ShowDronesConstructionSite = "Show Drones Construction Site",
-		ChoGGi_ShowLastColonies = "Show Saved Colonies v0.9",
-		ChoGGi_ConstructionShowHexBuildableGrid = "Construction Show Hex Buildable Grid",
-		ChoGGi_ShowMaxRadiusRange = "Construction: Show Max Radius Range v0.4",
-		ChoGGi_ShowTransportRouteInfo = "Show Transport Route Info v0.1",
-		ChoGGi_ShowTunnelLines = "Show Tunnel Lines v0.2",
-		ChoGGi_SolarArrayFollowsSun = "SArray Follows Sun",
-		ChoGGi_SolariaTelepresence = "Solaria Telepresence v0.9",
-		ChoGGi_SpecialistByExperience = "Specialist By Experience v0.4",
-		ChoGGi_SpiceHarvester = "Spice Harvester v0.7",
-		ChoGGi_StandingUnlocksSponsorBuildings = "Standing Unlocks Sponsor Buildings v0.2",
-		ChoGGi_StopColonistDeathFailure = "Stop Colonist Death Failure v0.1",
-		ChoGGi_StopCurrentDisasters = "Stop Current Disasters v0.4",
-		ChoGGi_StopTradeCamera = "Stop Trade Camera",
-		ChoGGi_UpgradeSlotsVisitorsCapacity = "Upgrade Slots: Visitors/Capacity",
-		ChoGGi_ViewColonyMap = "View Colony Map v0.9",
-		ChoGGi_LakesToggleVisibility = "Lakes: Toggle Visibility",
-	}
-
 	local table_iclear = table.iclear
 
 	-- this keeps the check saved per session (true = steam, false = paradox)
@@ -124,10 +28,11 @@ do -- ModUpload
 
 	local mod_params = {}
 
-	-- I upload two copies, one PC one Console
-	local ChoGGi_Dbl_Upload = {
-		[ChoGGi.id_lib] = true,
-	}
+--~ 	-- I upload two copies, one PC one Console
+--~ 	local ChoGGi_Dbl_Upload = {
+--~ 		[ChoGGi.id_lib] = true,
+--~ 	}
+	local lib_id = ChoGGi.id_lib
 	-- don't add these mods to upload list
 	local skip_mods = {
 		ChoGGi_XDefaultMod = true,
@@ -167,7 +72,6 @@ do -- ModUpload
 
 		-- add new mod
 		local err, item_id, prepare_worked, prepare_results, existing_mod
-		local prepare_worked_dbl, prepare_results_dbl, mod_title, mod_title_dbl
 		if steam_upload then
 			if mod.steam_id ~= 0 then
 				existing_mod = true
@@ -178,29 +82,29 @@ do -- ModUpload
 			item_id = mod.steam_id
 		-- paradox mods
 		else
-			-- workaround for paradox blocking renaming of titles
-			if paradox_title[mod.id] then
+			-- workaround for paradox blocking renaming of titles (well only on mod uploads now, website finally got update)
+			if mod.id == lib_id then
 				orig_title = mod.title
-				mod.title = paradox_title[mod.id]
+				mod.title = "ChoGGi's Library (Console)"
 			end
 
-			-- just choggi lib for now
-			if ChoGGi_Dbl_Upload[mod.id] then
-				orig_title = mod.title
+--~ 			-- just choggi lib for now
+--~ 			if ChoGGi_Dbl_Upload[mod.id] then
+--~ 				orig_title = mod.title
 
-				mod_title = orig_title .. " " .. Strings[302535920000990--[[(PC)]]]
-				mod.title = mod_title
-				mod_params.publish_os = "windows"
-				mod_params.uuid_property = "pops_desktop_uuid"
-				prepare_worked, prepare_results = PDX_PrepareForUpload(nil, mod, mod_params)
+--~ 				mod_title = orig_title .. " " .. Strings[302535920000990--[[(PC)]]]
+--~ 				mod.title = mod_title
+--~ 				mod_params.publish_os = "windows"
+--~ 				mod_params.uuid_property = "pops_desktop_uuid"
+--~ 				prepare_worked, prepare_results = PDX_PrepareForUpload(nil, mod, mod_params)
 
-				mod_title_dbl = orig_title .. " " .. Strings[302535920001066--[[(Console)]]]
-				mod.title = mod_title_dbl
-				mod_params.publish_os = "any"
-				mod_params.uuid_property = "pops_any_uuid"
-				prepare_worked_dbl, prepare_results_dbl = PDX_PrepareForUpload(nil, mod, mod_params)
+--~ 				mod_title_dbl = orig_title .. " " .. Strings[302535920001066--[[(Console)]]]
+--~ 				mod.title = mod_title_dbl
+--~ 				mod_params.publish_os = "any"
+--~ 				mod_params.uuid_property = "pops_any_uuid"
+--~ 				prepare_worked_dbl, prepare_results_dbl = PDX_PrepareForUpload(nil, mod, mod_params)
 
-			else
+--~ 			else
 				-- we override the Platform checkbox if a uuid is in metadata.lua
 				-- If both are "" then it's probably a new mod, otherwise check for a uuid and use that prop
 				if mod.pops_desktop_uuid == "" and mod.pops_any_uuid == "" then
@@ -226,7 +130,7 @@ do -- ModUpload
 				prepare_worked, prepare_results = PDX_PrepareForUpload(nil, mod, mod_params)
 
 				item_id = mod[mod_params.uuid_property]
-			end
+--~ 			end
 		end
 
 		-- Issue with mod platform (workshop/paradox mods)
@@ -372,21 +276,21 @@ do -- ModUpload
 					-- thanks LukeH (line breaks needed for paradox)
 					mod.description = mod.description:gsub("\n", "<br>")
 
-						-- upload twice
-						if ChoGGi_Dbl_Upload[mod.id] then
-							-- console
-							mod.title = mod_title_dbl
-							mod_params.publish_os = "any"
-							mod_params.uuid_property = "pops_any_uuid"
+--~ 						-- upload twice
+--~ 						if ChoGGi_Dbl_Upload[mod.id] then
+--~ 							-- console
+--~ 							mod.title = mod_title_dbl
+--~ 							mod_params.publish_os = "any"
+--~ 							mod_params.uuid_property = "pops_any_uuid"
+--~ 							result, err = PDX_Upload(nil, mod, mod_params)
+--~ 							-- pc
+--~ 							mod.title = mod_title
+--~ 							mod_params.publish_os = "windows"
+--~ 							mod_params.uuid_property = "pops_desktop_uuid"
+--~ 							result, err = PDX_Upload(nil, mod, mod_params)
+--~ 						else
 							result, err = PDX_Upload(nil, mod, mod_params)
-							-- pc
-							mod.title = mod_title
-							mod_params.publish_os = "windows"
-							mod_params.uuid_property = "pops_desktop_uuid"
-							result, err = PDX_Upload(nil, mod, mod_params)
-						else
-							result, err = PDX_Upload(nil, mod, mod_params)
-						end
+--~ 						end
 
 					-- shouldn't actually matter, but maybe some people will use mod editor along with ECM
 					mod.description = mod.description:gsub("<br>", "\n")

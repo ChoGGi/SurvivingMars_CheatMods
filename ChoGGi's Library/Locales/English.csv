@@ -1,5 +1,4 @@
 "ID", " Text"
-302535920001416,
 302535920001428,
 302535920001446,
 302535920001451,
@@ -148,6 +147,7 @@
 302535920000854, "Results Found"
 302535920000219, "Export viewed image to <green>%s</green>."
 302535920000109, "Invalid Image"
+302535920001416, "Max out shuttles for this hub."
 302535920000985, "Toggle frozen state of building."
 302535920000977, "Change grade of a deposit."
 302535920001617, "Toggle opening all dome glass (for screenshots?)."
@@ -410,7 +410,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"
 302535920001119, "Show console log text in-game (probably an annoyance to non-modders)."
 302535920001133, "Show the console log in a window."
 302535920000407, "<left_click> Execute <right_click> Paste"
-302535920001138, "Execute this command in the console, <right_click> to paste code in console."
+302535920001138, "<left_click> Execute this command in the console, <right_click> to paste code in console."
 302535920001159, "Any .lua files in <green>%s</green>."
 302535920000071, "Show Mods Log"
 302535920000692, "Log is blank (well not anymore)."

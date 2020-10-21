@@ -1,12 +1,12 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Transports Dont Move After Route Set",
+	"id", "ChoGGi_FixTransportsDontMoveAfterRouteSet",
+	"steam_id", "1549495547",
+	"pops_any_uuid", "55a56705-9282-4852-b885-7c9360317283",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
 	"image", "Preview.png",
-	"id", "ChoGGi_FixTransportsDontMoveAfterRouteSet",
-	"steam_id", "1549495547",
-	"pops_any_uuid", "55a56705-9282-4852-b885-7c9360317283",
 	"author", "ChoGGi",
 	"lua_revision", 249143,
 	"code", {

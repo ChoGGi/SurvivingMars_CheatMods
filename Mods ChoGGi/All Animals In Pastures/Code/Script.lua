@@ -425,50 +425,52 @@ local graze_rand1 = {"pee", "jump"}
 local graze_rand2 = {"playGround1", "playGround2"}
 local orig_PastureAnimal_SetGrazingState = PastureAnimal.SetGrazingState
 function PastureAnimal:SetGrazingState(duration, ...)
-	if self.ChoGGi_animal then
-		local states = self:GetStates()
-		local state = "idle"
-		local table_find = table.find
-		if table_find(states,"graze") then
-			state = "graze"
-		-- the pees have jump
-		elseif table_find(states,"pee") then
-			state = table.rand(graze_rand1)
-		-- long pig
-		elseif table_find(states,"standEnjoySurfaceIdle") then
-			state = "standEnjoySurface"
-		-- shorter long pig
-		elseif table_find(states,"playGround1Idle") then
-			state = table.rand(graze_rand2)
-		-- crunchy pig
-		elseif table_find(states,"rechargeDroneIdle") then
-			state = "gather"
-		end
+	if not self.ChoGGi_animal then
+		return orig_PastureAnimal_SetGrazingState(self, duration, ...)
+	end
 
-		if state == "graze" then
-			local tEnd = GameTime() + duration
-			while tEnd - GameTime() > 0 do
-				self:PlayState(state)
-				self:SetState("idle","ChoGGi_skip")
-				Sleep(1000)
-			end
-		-- start idle end
-		elseif state == "standEnjoySurface"
-				or state == "playGround1" or state == "playGround2"
-				or state == "gather" then
-			local anim_time = self:SetState(state .. "Start","ChoGGi_skip")
-			Sleep(anim_time)
-			self:SetState(state .. "Idle","ChoGGi_skip")
-			Sleep(duration)
-			anim_time = self:SetState(state .. "End","ChoGGi_skip")
-			Sleep(anim_time)
+	local states = self:GetStates()
+	local state = "idle"
+	local table_find = table.find
+	if table_find(states,"graze") then
+		state = "graze"
+	-- the pees have jump
+	elseif table_find(states,"pee") then
+		state = table.rand(graze_rand1)
+	-- long pig
+	elseif table_find(states,"standEnjoySurfaceIdle") then
+		state = "standEnjoySurface"
+	-- shorter long pig
+	elseif table_find(states,"playGround1Idle") then
+		state = table.rand(graze_rand2)
+	-- crunchy pig
+	elseif table_find(states,"rechargeDroneIdle") then
+		state = "gather"
+	end
 
+	if state == "graze" then
+		local tEnd = GameTime() + duration
+		while tEnd - GameTime() > 0 do
+			self:PlayState(state)
 			self:SetState("idle","ChoGGi_skip")
-		else
-			self:SetState(state,"ChoGGi_skip")
-			Sleep(duration)
-			self:SetState("idle","ChoGGi_skip")
+			Sleep(1000)
 		end
+	-- start idle end
+	elseif state == "standEnjoySurface"
+			or state == "playGround1" or state == "playGround2"
+			or state == "gather" then
+		local anim_time = self:SetState(state .. "Start","ChoGGi_skip")
+		Sleep(anim_time)
+		self:SetState(state .. "Idle","ChoGGi_skip")
+		Sleep(duration)
+		anim_time = self:SetState(state .. "End","ChoGGi_skip")
+		Sleep(anim_time)
+
+		self:SetState("idle","ChoGGi_skip")
+	else
+		self:SetState(state,"ChoGGi_skip")
+		Sleep(duration)
+		self:SetState("idle","ChoGGi_skip")
 	end
 
 	return orig_PastureAnimal_SetGrazingState(self, duration, ...)

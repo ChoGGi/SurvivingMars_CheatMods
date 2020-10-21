@@ -1,3 +1,6 @@
+v0.9
+Added info to drone "Commanded by" tooltip.
+
 v0.8
 Fixed not counting storage depots.
 Fixed dupe counting resources.

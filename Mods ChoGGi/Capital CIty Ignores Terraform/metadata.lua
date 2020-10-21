@@ -19,7 +19,7 @@ return PlaceObj("ModDef", {
 
 
 Known Issues:
-Colonists living in the city will be lazy when it comes to donning/doffing suits.
+Colonists living in the city will be lazy when it comes to donning/doffing suits (visual effect only).
 
 
 Requested by sargatanus.]],

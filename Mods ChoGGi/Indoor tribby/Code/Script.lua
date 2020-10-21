@@ -120,7 +120,7 @@ function OnMsg.ClassesPostprocess()
 	-- check for and remove existing template
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_ChoGGi_IndoorTribby", true)
 
-	table.insert(xtemplate, 1,
+	table.insert(xtemplate, 2,
 		PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_ChoGGi_IndoorTribby", true,
 			"__context_of_kind", "ChoGGi_IndoorTribby",

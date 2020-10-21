@@ -9,7 +9,7 @@ local Translate = ChoGGi.ComFuncs.Translate
 
 local pairs, tonumber, type, tostring = pairs, tonumber, type, tostring
 local AsyncRand = AsyncRand
-local FindNearestObject = FindNearestObject -- list,obj/point,filter
+local FindNearestObject = FindNearestObject -- (list,obj) or (list,pos,filterfunc)
 local GetTerrainCursor = GetTerrainCursor
 local IsValid = IsValid
 local IsKindOf = IsKindOf
@@ -23,7 +23,6 @@ local table_clear = table.clear
 local table_iclear = table.iclear
 local table_sort = table.sort
 local table_copy = table.copy
-local table_icopy = table.icopy
 local table_rand = table.rand
 local table_set_defaults = table.set_defaults
 local table_append = table.append
@@ -3208,37 +3207,47 @@ function ChoGGi.ComFuncs.DeleteAllAttaches(obj)
 end
 
 do -- RetNearestResource/FindNearestResource
+	local res_funcs = {}
+	local res_mechdepot = {}
+	local AllResourcesList = AllResourcesList
+	for i = 1, #AllResourcesList do
+		local res = AllResourcesList[i]
+		res_funcs[res] = "GetStored_" .. res
+		res_mechdepot[res] = "MechanizedDepot" .. res
+	end
 	local GetStored, res_amount, res_resource
-	local function FilterTable(o)
-		-- not all stockpiles use this func name
-		if o.resource == res_resource and o[GetStored] and o[GetStored](o) >= res_amount then
+	local function FilterTable(depot)
+		-- check if depot has the resource
+		if (depot.resource == res_resource or table_find(depot.resource, res_resource))
+			-- check if depot has resource amount
+			and depot[GetStored] and depot[GetStored](depot) >= res_amount
+		then
 			return true
 		end
 	end
 
-	local filter_res_piles = {"ResourceStockpile", "ResourceStockpileLR"}
---~ 	local filter_res_func = function(o)
---~ 		if o.resource == res_resource and o:GetStoredAmount() > 999 then
---~ 			return true
---~ 		end
---~ 	end
-
+	local stockpiles_table = {}
 	local stockpiles
-	local function RetNearestResourceDepot(resource, obj, list, amount)
---~ 		-- clear temp list (slightly faster than a new table each time)
---~ 		table_iclear(stockpiles)
+	local function RetNearestResourceDepot(resource, obj, list, amount, skip_stocks)
+		GetStored = res_funcs[resource] or "GetStored_" .. resource
+		res_resource = resource
 
 		if list then
-			res_amount = amount
 			stockpiles = list
+			res_amount = amount
 		else
 			-- attached stockpiles/stockpiles left from removed objects
-			stockpiles = table_icopy(MapGet("map", filter_res_piles))
+			if skip_stocks then
+				stockpiles = MapGet("map", "ResourceStockpile", "ResourceStockpileLR")
+			else
+				table_iclear(stockpiles_table)
+				stockpiles = stockpiles_table
+			end
+			res_amount = amount or 1000
 
-			res_amount = 1000
 			local labels = UICity.labels
 			-- every resource has a mech depot
-			table_append(stockpiles, labels["MechanizedDepot" .. resource])
+			table_append(stockpiles, labels[res_mechdepot[resource] or "MechanizedDepot" .. resource])
 
 			-- labels.UniversalStorageDepot includes the "other" depots, but not the below three
 			if resource == "BlackCube" then
@@ -3250,28 +3259,9 @@ do -- RetNearestResource/FindNearestResource
 			else
 				table_append(stockpiles, labels.UniversalStorageDepot)
 			end
-
---~ 			-- attached stockpiles/stockpiles left from removed objects
---~ 			table_append(stockpiles, MapGet("map", filter_res_piles, filter_res_func))
 		end
 
---~ 		-- filter out empty/diff res stockpiles
---~ 		local GetStored = "GetStored_" .. resource
---~ 		stockpiles = MapFilter(stockpiles, function(o)
---~ 			-- not all stockpiles use this func name
---~ 			if o[GetStored] and o[GetStored](o) > 999 then
---~ 				return true
---~ 			end
---~ 		end)
-
---~ 			-- attached stockpiles/stockpiles left from removed objects
---~ 			table_append(stockpiles, MapGet("map", filter_res_piles, filter_res_func))
-
-		GetStored = "GetStored_" .. resource
-		res_resource = resource
---~ 		return FindNearestObject(stockpiles, obj)
-		return FindNearestObject(stockpiles, obj, FilterTable)
-
+		return FindNearestObject(stockpiles, obj:GetPos():SetInvalidZ(), FilterTable)
 	end
 	ChoGGi.ComFuncs.RetNearestResourceDepot = RetNearestResourceDepot
 
@@ -3533,6 +3523,7 @@ do -- AddXTemplate/RemoveXTemplateSections
 		end
 		table.insert(xt, pos, PlaceObj("XTemplateTemplate", {
 			stored_name, true,
+			"Id", stored_name,
 			"__condition", list.__condition or RetTrue,
 			"__context_of_kind", list.__context_of_kind or "",
 			"__template", list.__template or "InfopanelActiveSection",
@@ -4032,7 +4023,7 @@ do -- PadNumWithZeros
 	end
 end -- do
 
-function ChoGGi.ComFuncs.RemoveObjs(cls, reason)
+function ChoGGi.ComFuncs.RemoveObjs(class, reason)
 	-- If there's a reason then check if it's suspending
 	local not_sus = reason and not s_SuspendPassEditsReasons[reason]
 	-- If it isn't then suspend it
@@ -4041,19 +4032,19 @@ function ChoGGi.ComFuncs.RemoveObjs(cls, reason)
 		SuspendPassEdits(reason)
 	end
 
-	if type(cls) == "table" then
+	if type(class) == "table" then
 		local g_Classes = g_Classes
 		local MapDelete = MapDelete
 
-		for _ = 1, #cls do
+		for _ = 1, #class do
 			-- If it isn't a valid class then Map* will return all objects :(
-			if g_Classes[cls] then
-				MapDelete(true, cls)
+			if g_Classes[class] then
+				MapDelete(true, class)
 			end
 		end
 	else
-		if g_Classes[cls] then
-			MapDelete(true, cls)
+		if g_Classes[class] then
+			MapDelete(true, class)
 		end
 	end
 
@@ -4120,9 +4111,11 @@ do -- IsControlPressed/IsShiftPressed/IsAltPressed
 	local vkLwin = const.vkLwin
 	local osx = Platform.osx
 
-	function ChoGGi.ComFuncs.IsControlPressed()
+	local function IsControlPressed()
 		return IsKeyPressed(vkControl) or osx and IsKeyPressed(vkLwin)
 	end
+	ChoGGi.ComFuncs.IsControlPressed = IsControlPressed
+	ChoGGi.ComFuncs.IsCtrlPressed = IsControlPressed
 	function ChoGGi.ComFuncs.IsShiftPressed()
 		return IsKeyPressed(vkShift)
 	end
@@ -4131,16 +4124,16 @@ do -- IsControlPressed/IsShiftPressed/IsAltPressed
 	end
 end -- do
 
-function ChoGGi.ComFuncs.RetAllOfClass(cls)
-	local objects = UICity.labels[cls] or {}
-	if #objects == 0 then
-		local g_cls = g_Classes[cls]
+function ChoGGi.ComFuncs.RetAllOfClass(class)
+	local objs = UICity.labels[class] or {}
+	if #objs == 0 then
+		local g_cls = g_Classes[class]
 		-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything*
 		if g_cls and g_cls:IsKindOf("CObject") then
-			return MapGet(true, cls)
+			return MapGet(true, class)
 		end
 	end
-	return objects
+	return objs
 end
 
 -- if it's an object than we can Clone() it, otherwise copy it
@@ -5007,10 +5000,10 @@ function ChoGGi.ComFuncs.PlantRandomVegetation(amount)
 	ResumeTerrainInvalidations("ChoGGi.ComFuncs.PlantRandomVegetation")
 end
 
-function ChoGGi.ComFuncs.GetDialogECM(cls)
+function ChoGGi.ComFuncs.GetDialogECM(class)
 	local ChoGGi_dlgs_opened = ChoGGi_dlgs_opened
 	for dlg in pairs(ChoGGi_dlgs_opened) do
-		if dlg:IsKindOf(cls) then
+		if dlg:IsKindOf(class) then
 			return dlg
 		end
 	end
@@ -5740,4 +5733,20 @@ function ChoGGi.ComFuncs.GetNearestObj(obj, list)
 
 	-- and done
 	return nearest
+end
+
+--~ ChoGGi.ComFuncs.MapDelete("ShuttleHub")
+function ChoGGi.ComFuncs.MapDelete(class)
+	SuspendPassEdits("ChoGGi.ComFuncs.MapDelete")
+	local objs = UICity.labels[class] or {}
+	if #objs > 0 then
+		for i = #objs, 1, -1 do
+			DeleteObject(objs[i])
+		end
+	elseif IsKindOf(g_Classes[class], "CObject") then
+		-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything*
+		MapDelete(true, class)
+	end
+
+	ResumePassEdits("ChoGGi.ComFuncs.MapDelete")
 end

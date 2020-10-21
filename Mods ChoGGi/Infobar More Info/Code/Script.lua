@@ -22,8 +22,6 @@ local scale_hours = const.HourDuration
 local scale_sols = const.DayDuration
 local remaining_time_str = {12265, "Remaining Time<right><time(time)>"}
 
-
-
 -- mod options
 local options
 local mod_SkipGrid0

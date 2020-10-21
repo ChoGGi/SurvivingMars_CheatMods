@@ -1,3 +1,6 @@
+v0.5
+Show hexes for Capital City.
+
 v0.4
 Fix for bug last (non) update.
 

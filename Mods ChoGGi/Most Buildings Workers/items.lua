@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+local table_concat = table.concat
+local T = T
+
 local properties = {}
 local c = 0
 
@@ -69,8 +72,8 @@ for id, template in pairs(BuildingTemplates) do
 		properties[c] = PlaceObj("ModItemOptionNumber", {
 			"name", id,
 			"DisplayName", T(template.display_name),
-			"Help", table.concat(T("<image " .. template.display_icon
-				.. ">\n\n<image " .. template.encyclopedia_image .. ">")),
+			"Help", table_concat(T(302535920011756, "Set to 0 for no workers required.") .. T("<newline><newline><newline><image " .. template.display_icon
+				.. "><newline><newline><newline><image " .. template.encyclopedia_image .. ">")),
 			"DefaultValue", 0,
 			"MinValue", 0,
 			"MaxValue", 100,
@@ -86,11 +89,18 @@ end)
 
 table.insert(properties, 1, PlaceObj("ModItemOptionNumber", {
 	"name", "DefaultPerformance",
-	"DisplayName", table.concat(T(1000121, "Default") .. " " .. T(302535920011383, "Performance")),
+	"DisplayName", table_concat(T(1000121, "Default") .. " " .. T(302535920011383, "Performance")),
+	"Help", T(302535920011757, "How much performance the building has without workers."),
 	"DefaultValue", 100,
 	"MinValue", 0,
 	"MaxValue", 1000,
 	"StepSize", 10,
+}))
+
+table.insert(properties, 1, PlaceObj("ModItemOptionToggle", {
+	"name", "EnableMod",
+	"DisplayName", T(302535920011303, "Enable Mod"),
+	"DefaultValue", true,
 }))
 
 return properties

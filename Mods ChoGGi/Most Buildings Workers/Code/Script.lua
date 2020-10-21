@@ -69,6 +69,7 @@ local workplaces = {
 }
 
 local mod_DefaultPerformance
+local mod_EnableMod
 local UpdateWorkers
 local options
 
@@ -76,7 +77,11 @@ local options
 local function ModOptions()
 	options = CurrentModOptions
 	mod_DefaultPerformance = options:GetProperty("DefaultPerformance")
+	mod_EnableMod = options:GetProperty("EnableMod")
 
+	if not mod_EnableMod then
+		return
+	end
 	if not UICity then
 		return
 	end
@@ -107,6 +112,10 @@ end
 GlobalVar("g_ChoGGi_MostBuildingsWorkersAdded", false)
 
 function OnMsg.LoadGame()
+	if not mod_EnableMod then
+		return
+	end
+
 	if g_ChoGGi_MostBuildingsWorkersAdded then
 		return
 	end
@@ -164,6 +173,9 @@ end
 -- else it'll default to 5
 local orig_GameInit = Workplace.GameInit
 function Workplace:GameInit(...)
+	if not mod_EnableMod then
+		return orig_GameInit(self, ...)
+	end
 	local template = RetTemplateOrClass(self)
 	if workplaces[template] then
 		UpdateWorkers(self, template)

@@ -8,19 +8,23 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Bottomless Storage",
-	"version", 5,
-	"version_major", 0,
-	"version_minor", 5,
-	"image", "Preview.png",
 	"id", "ChoGGi_BottomlessStorage",
-	"author", "ChoGGi",
 	"steam_id", "1411102605",
 	"pops_any_uuid", "72c1a8e6-a886-4448-b726-f81f92e37faa",
+	"version", 7,
+	"version_major", 0,
+	"version_minor", 7,
+	"image", "Preview.jpg",
+	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 	"lua_revision", 249143,
+	"has_options", true,
 	"description", [[Anything added to this storage depot will disappear (good for excess resources).
 
-Be careful where you place it as drones will use it like a regular depot (defaults to no resources accepted).]],
+Be careful where you place it as drones will use it like a regular depot (defaults to no resources accepted).
+
+See mod options to set a minimum amount of resources to not remove.
+]],
 })

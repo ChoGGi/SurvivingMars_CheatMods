@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_StopRoundingNumbers",
 	"steam_id", "1983626281",
@@ -17,6 +16,8 @@ return PlaceObj("ModDef", {
 	"TagInterface", true,
 	"description", [[The game now shows the full amount instead of the truncated one.
 180 == 180000
+
+This'll probably mess with the UI somewhere...
 
 
 Not exactly requested by vonBoomslang.]],

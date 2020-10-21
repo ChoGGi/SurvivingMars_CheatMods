@@ -87,6 +87,7 @@ function OnMsg.ClassesPostprocess()
 		end,
 
 		"RolloverText", "Look ma it slides!",
+		"RolloverHint", "",
 		"RolloverHintGamepad", "",
 		"RolloverTitle", " ",
 		-- updated below, can't be blank

@@ -1,3 +1,6 @@
+v0.3
+Fixed issue with updating existing plants (Thanks Vas).
+
 v0.2
 Plant Interval wasn't working correctly.
 Limited max range to stave off crashing.

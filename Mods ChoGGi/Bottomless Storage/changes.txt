@@ -1,3 +1,7 @@
+v0.7
+Mod option to set minimum amount of resources to not remove.
+Added Waste Rock to the depot and obsoleted Bottomless Waste Rock.
+
 v0.6
 Made shuttles default to off.
 Added On/Off button.

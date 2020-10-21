@@ -7,6 +7,7 @@
 XXXXX = {
 	ChoGGi_AddHyperLink = true,
 	name = "do something",
+	hint = "do somethings",
 	func = function(self, button, obj, argument, hyperlink_box, pos) end,
 }
 
@@ -18,6 +19,7 @@ ex(obj, {
 	override_title = true,
 	parent = self,
 	title = "hello",
+	auto_refresh = true,
 })
 ]]
 
@@ -582,6 +584,14 @@ If it's an associative table then o = value."]]],
 			end
 		end
 
+		if context.auto_refresh then
+			self.idAutoRefresh_OnChange(self.idAutoRefresh)
+		end
+		if context.toggle_sort then
+			self:idSortDir_OnChange()
+			self.idSortDir:SetIconRow(2)
+		end
+
 		-- certain funcs need to have an override so we can examine stuff
 		self:SafeExamine(true)
 
@@ -1142,7 +1152,6 @@ end
 function ChoGGi_DlgExamine:EnableAutoRefresh()
 	self.idAutoRefresh_OnChange(self.idAutoRefresh)
 end
-
 function ChoGGi_DlgExamine:idAutoRefresh_OnMouseButtonDown(pt, button, ...)
 	g_Classes.ChoGGi_XCheckButton.OnMouseButtonDown(self, pt, button, ...)
 	if button == "R" then
@@ -2635,7 +2644,6 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 				return TableConcat(res):gsub(", }", "}")
 
 			elseif rawget(obj, "ChoGGi_AddHyperLink") and obj.ChoGGi_AddHyperLink then
---~ 			if rawget(obj, "ChoGGi_AddHyperLink") and obj.ChoGGi_AddHyperLink then
 				if obj.colour then
 					return "<color " .. obj.colour .. ">" .. (obj.name or "") .. "</color> "
 						.. self:HyperLink(obj, obj.func, obj.hint) .. "@" .. self.hyperlink_end

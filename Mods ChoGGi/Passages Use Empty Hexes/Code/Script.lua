@@ -164,6 +164,7 @@ local function ShowGrids()
 		offset = 1,
 		skip_clear = false,
 		skip_return = true,
+		shape = o,
 	}
 
 	local domes = UICity.labels.Dome or ""
@@ -172,7 +173,12 @@ local function ShowGrids()
 		local entity = dome:GetEntity()
 		-- probably don't need to check, but eh
 		if IsValidEntity(entity) then
-			params.shape = HexInteriorShapes[entity]
+			-- open city hex shape can be different for each city
+			if dome:IsKindOf("OpenCity") then
+				params.shape = dome.hex_shape_interior or Dome.GetInteriorShape(dome)
+			else
+				params.shape = HexInteriorShapes[entity]
+			end
 			ObjHexShape_Toggle(dome, params)
 		end
 	end

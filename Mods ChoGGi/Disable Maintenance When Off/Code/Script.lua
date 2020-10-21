@@ -1,9 +1,32 @@
 -- See LICENSE for terms
 
+local mod_QuarterPoints
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_QuarterPoints = CurrentModOptions:GetProperty("QuarterPoints")
+end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= CurrentModId then
+		return
+	end
+
+	ModOptions()
+end
+
 local orig_AccumulateMaintenancePoints = RequiresMaintenance.AccumulateMaintenancePoints
 function RequiresMaintenance:AccumulateMaintenancePoints(new_points, ...)
 	if not self.working then
-		new_points = 0
+		if mod_QuarterPoints then
+			new_points = new_points / 4
+		else
+			new_points = 0
+		end
 	end
 	return orig_AccumulateMaintenancePoints(self, new_points, ...)
 end

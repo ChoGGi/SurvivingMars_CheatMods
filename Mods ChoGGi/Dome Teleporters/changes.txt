@@ -1,3 +1,6 @@
+v1.1
+Fixed mod option distance not sticking.
+
 v1.0
 Log spam (thanks Wingheart).
 

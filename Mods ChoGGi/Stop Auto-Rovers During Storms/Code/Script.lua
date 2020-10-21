@@ -1,5 +1,13 @@
 -- See LICENSE for terms
 
+local RetSpotPos = ChoGGi.ComFuncs.RetSpotPos
+local IsValid = IsValid
+local MapFilter = MapFilter
+local FindNearestObject = FindNearestObject
+local GetPassablePointNearby = GetPassablePointNearby
+local Sleep = Sleep
+local empty_table = empty_table
+
 local mod_NearestLaser
 local mod_NearestHub
 
@@ -36,19 +44,21 @@ local function WaitItOut(idle_func, self, ...)
 		if (mod_NearestLaser or mod_NearestHub) and not self.ChoGGi_AutoRoversDuringStorms then
 			local valid_obj, working_objs
 
+			local labels = UICity.labels
+
 			if mod_NearestLaser then
 				-- try lasers first since towers are from mystery (usually)
-				working_objs = MapFilter(UICity.labels.MDSLaser or empty_table, IsWorking)
+				working_objs = MapFilter(labels.MDSLaser or empty_table, IsWorking)
 				valid_obj = FindNearestObject(working_objs, self)
 
 				if not IsValid(valid_obj) then
-					working_objs = MapFilter(UICity.labels.DefenceTower or empty_table, IsWorking)
+					working_objs = MapFilter(labels.DefenceTower or empty_table, IsWorking)
 					valid_obj = FindNearestObject(working_objs, self)
 				end
 			end
 
 			if mod_NearestHub and not IsValid(valid_obj) then
-				working_objs = MapFilter(UICity.labels.DroneHub or empty_table, IsWorking)
+				working_objs = MapFilter(labels.DroneHub or empty_table, IsWorking)
 				valid_obj = FindNearestObject(working_objs, self)
 			end
 
@@ -57,7 +67,7 @@ local function WaitItOut(idle_func, self, ...)
 
 			-- off we go
 			if IsValid(valid_obj) then
-				local pos = GetPassablePointNearby(ChoGGi.ComFuncs.RetSpotPos(self, valid_obj, "Workrover"))
+				local pos = GetPassablePointNearby(RetSpotPos(self, valid_obj, "Workrover"))
 				self:SetCommand("GotoFromUser", pos)
 			else
 				-- something messed up, or there's no buildings to hide around
