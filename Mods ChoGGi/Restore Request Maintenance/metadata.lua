@@ -8,10 +8,10 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Restore Request Maintenance",
-	"version", 13,
+	"version", 14,
 	"version_major", 1,
-	"version_minor", 3,
-	"image", "Preview.png",
+	"version_minor", 4,
+	"image", "Preview.jpg",
 	"id", "ChoGGi_RestoreRequestMaintenance",
 	"author", "ChoGGi",
 	"steam_id", "1411114444",
@@ -22,6 +22,7 @@ return PlaceObj("ModDef", {
 	"lua_revision", 249143,
 	"description", [[Restores "Request Maintenance" button (call drones to work).
 Also fixes frozen buildings that start a maintenance request during a cold wave and drones don't repair till after cold wave ends.
+Use Ctrl-R as a shortcut key (change default in keybindings).
 
 
 Button stays hidden when maintenance isn't required.]],

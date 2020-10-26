@@ -16,7 +16,7 @@ local function ModOptions()
 	mod_ChangePinnedRoverIcons = CurrentModOptions:GetProperty("ChangePinnedRoverIcons")
 
 	-- make sure we're not in menus
-	if not GameState.gameplay
+	if not UICity
 		-- reset pin bg (below)
 		or mod_ChangePinnedRoverIcons
 	then

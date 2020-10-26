@@ -23,6 +23,14 @@ function RequiresMaintenance:UIRequestMaintenance()
 	return self:RequestMaintenance(true)
 end
 
+function Building:UIRequestMaintenance(broadcast)
+	self:RequestMaintenance(true)
+	RebuildInfopanel(self)
+	if broadcast then
+		BroadcastAction(self, "RequestMaintenance", true)
+	end
+end
+
 -- main requested on frozen building and cold wave ends before main
 local function RepairBuilding(obj)
 	Sleep(1000)
@@ -88,3 +96,26 @@ function OnMsg.ClassesPostprocess()
 		xt[#xt+1] = template
 	end
 end
+
+local function RequestMain()
+	-- make sure we've selected something
+	local obj = SelectedObj
+	if not obj then
+		return
+	end
+	-- something that has main
+	if obj:IsKindOf("RequiresMaintenance") and obj:DoesRequireMaintenance() then
+		PlayFX("UIRequestMaintenance")
+		obj:UIRequestMaintenance()
+	end
+end
+
+local Actions = ChoGGi.Temp.Actions
+Actions[#Actions+1] = {
+	ActionName = T(0, "Request Maintenance"),
+	ActionId = "ChoGGi.RestoreMaintenance.RequestMaintenance",
+	OnAction = RequestMain,
+	ActionShortcut = "Ctrl-R",
+	replace_matching_id = true,
+	ActionBindable = true,
+}

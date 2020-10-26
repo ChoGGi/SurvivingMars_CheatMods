@@ -116,7 +116,7 @@ local function UpdateStanding()
 		return
 	end
 
-	-- build list of changed standings and display
+	-- build list of changed standings and display msg
 	local GetStandingText = GetStandingText
 	local Max = Max
 	local T = T
@@ -146,7 +146,6 @@ local function UpdateStanding()
 		T(302535920011561, "Colony Standing")
 	)
 end
-
 
 OnMsg.CityStart = UpdateStanding
 OnMsg.LoadGame = UpdateStanding

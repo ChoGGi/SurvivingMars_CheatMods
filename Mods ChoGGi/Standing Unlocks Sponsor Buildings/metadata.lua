@@ -29,6 +29,8 @@ Mod Options:
 Show Notification: Show a notification when unlocked buildings have changed.
 Minimum Standing: Your standing needs to be at or above this to unlock buildings.
 
+Known Issues:
+You'll need to restart the game to reset unlocked buildings between different saves.
 
 Requested by ve2dmn/veryinky.]],
 })

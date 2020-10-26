@@ -59,7 +59,7 @@ local function ModOptions()
 
 	end
 
-	if GameState.gameplay then
+	if UICity then
 		local labels = UICity.labels
 		UpdateBuildings(labels.TrainingBuilding or "")
 		UpdateBuildings(labels.Residence or "")

@@ -17,7 +17,7 @@ local function ModOptions()
 	mod_NurseryChild = options:GetProperty("NurseryChild")
 	mod_SpacebarMusic = options:GetProperty("SpacebarMusic")
 
-	if GameState.gameplay then
+	if UICity then
 		DisableSounds()
 	end
 end

@@ -18,5 +18,5 @@ return PlaceObj("ModDef", {
 	"description", [[Adds drone pack/unpack buttons to rockets.
 
 
-Requested by Lesandrina.]],
+Requested by Tilyene/Lesandrina.]],
 })

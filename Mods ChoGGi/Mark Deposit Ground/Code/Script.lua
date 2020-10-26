@@ -197,7 +197,7 @@ end
 
 UpdateOptions = function()
 	-- update signs
-	if GameState.gameplay then
+	if UICity then
 		if mod_AlienAnomaly ~= options:GetProperty("AlienAnomaly") then
 			mod_AlienAnomaly = options:GetProperty("AlienAnomaly")
 			ChangeMarks("Anomaly", "GreenMan", mod_AlienAnomaly)

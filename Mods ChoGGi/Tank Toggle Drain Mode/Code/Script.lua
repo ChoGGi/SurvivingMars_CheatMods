@@ -9,14 +9,14 @@ local function RetGridType(obj)
 		or obj:IsKindOf("WaterStorage") and "water"
 end
 
-local function ToggleObj(obj, tank_type, bt_charge, toggle)
+local function ToggleObj(obj, tank_type, max_charge, toggle)
 	-- If charge rate is 0 than we're blocking tank from charging
 	local grid_obj = obj[tank_type]
 	local ret_toggle
 	-- update selected obj
 	if toggle == "init" then
 		if grid_obj.max_charge == 0 then
-			grid_obj.max_charge = bt_charge
+			grid_obj.max_charge = max_charge
 			ret_toggle = false
 		else
 			grid_obj.max_charge = 0
@@ -27,7 +27,7 @@ local function ToggleObj(obj, tank_type, bt_charge, toggle)
 		if toggle then
 			grid_obj.max_charge = 0
 		else
-			grid_obj.max_charge = bt_charge
+			grid_obj.max_charge = max_charge
 		end
 	end
 
@@ -46,17 +46,21 @@ local function ToggleTanks(obj, all_objs)
 		return
 	end
 	local tank_type = RetGridType(obj)
-	local bt_charge = bt["max_" .. tank_type .. "_charge"]
+	if not tank_type then
+		return
+	end
+
+	local max_charge = bt["max_" .. tank_type .. "_charge"]
 
 	-- updated selecte obj and get toggle status
-	local toggle = ToggleObj(obj, tank_type, bt_charge, "init")
+	local toggle = ToggleObj(obj, tank_type, max_charge, "init")
 
 	if all_objs then
 		-- loop through all of type and set to same
 		local objs = UICity.labels[obj.template_name] or ""
 		for i = 1, #objs do
 			-- send toggle so we don't have to check each one
-			ToggleObj(objs[i], tank_type, bt_charge, toggle)
+			ToggleObj(objs[i], tank_type, max_charge, toggle)
 		end
 	end
 
@@ -94,7 +98,7 @@ function OnMsg.ClassesPostprocess()
 			"Icon", "UI/Icons/IPButtons/unload.tga",
 
 			"OnPress", function (self, gamepad)
-				-- left click action (second arg is if ctrl is being held down)
+				-- left click action
 				ToggleTanks(self.context, not gamepad and IsMassUIModifierPressed())
 				UpdateButton(self, self.context)
 			end,

@@ -26,7 +26,7 @@ end
 local orig_SetPlanetCamera = SetPlanetCamera
 function SetPlanetCamera(planet, state, ...)
 	-- fire only in mission setup menu
-	if not state and not GameState.gameplay then
+	if not state and not UICity then
 		CreateRealTimeThread(function()
 			WaitMsg("OnRender")
 			local pgmission = Dialogs.PGMainMenu.idContent.PGMission

@@ -129,7 +129,7 @@ local orig_LandingSiteObject_AttachPredefinedSpots = LandingSiteObject.AttachPre
 function LandingSiteObject:AttachPredefinedSpots(...)
 	orig_LandingSiteObject_AttachPredefinedSpots(self, ...)
 	-- we only want it to happen during the new game planet
-	if GameState.gameplay then
+	if UICity then
 		return
 	end
 
@@ -143,7 +143,7 @@ end
 local orig_LandingSiteObject_CalcMarkersVisibility = LandingSiteObject.CalcMarkersVisibility
 function LandingSiteObject:CalcMarkersVisibility(...)
 	-- we only want it to happen during the new game planet
-	if GameState.gameplay then
+	if UICity then
 		return orig_LandingSiteObject_CalcMarkersVisibility(self, ...)
 	end
 
@@ -161,7 +161,7 @@ local orig_LandingSiteObject_DisplayCoord = LandingSiteObject.DisplayCoord
 function LandingSiteObject:DisplayCoord(...)
 	orig_LandingSiteObject_DisplayCoord(self, ...)
 	-- we only want it to happen during the new game planet
-	if GameState.gameplay then
+	if UICity then
 		return
 	end
 

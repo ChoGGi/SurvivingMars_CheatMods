@@ -2,7 +2,7 @@
 
 -- fired when settings are changed/init
 local function ModOptions()
-	if CurrentModOptions:GetProperty("PinAllRockets") and GameState.gameplay then
+	if CurrentModOptions:GetProperty("PinAllRockets") and UICity then
 		MapForEach(true, "SupplyRocket", function(o)
 			if o.command ~= "OnEarth" then
 				o:SetPinned(true)

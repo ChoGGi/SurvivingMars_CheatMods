@@ -3802,7 +3802,11 @@ function ChoGGi.ComFuncs.PlaceLastSelectedConstructedBld()
 	end
 
 	if obj and obj.class then
-		ChoGGi.ComFuncs.ConstructionModeSet(ChoGGi.ComFuncs.RetTemplateOrClass(obj))
+		local obj_class = ChoGGi.ComFuncs.RetTemplateOrClass(obj)
+		if obj_class == "ConstructionSite" then
+			obj_class = obj.building_class
+		end
+		ChoGGi.ComFuncs.ConstructionModeSet(obj_class)
 	end
 end
 

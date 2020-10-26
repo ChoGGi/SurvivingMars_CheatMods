@@ -1,3 +1,7 @@
+v1.4
+Added shortcut key for req main button (change default in key bindings).
+Fixed Ctrl-click not repairing all of type.
+
 v1.3
 Added support for Large Drone Station by RustyDios.
 
