@@ -13,7 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"description", [[Adds all the animals to the pasture breeds.
-Mmmmm dog meat.
+Mmmmm dog meat (not sure if I like A Boy and His Dog, but the ending is nice).
 
 There's a mod option to open outside ranches when selected.
 

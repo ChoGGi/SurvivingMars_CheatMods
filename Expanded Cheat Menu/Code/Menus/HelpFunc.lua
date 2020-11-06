@@ -255,11 +255,13 @@ do -- ModUpload
 
 			-- If no last_changes then use version num
 			if not mod.last_changes or mod.last_changes == "" then
+				local version = mod.version_major .. "." .. mod.version_minor
 				if testing then
-					mod.last_changes = "https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/"
+					mod.last_changes = Strings[302535920001428--[[v]]] .. version
+						.. "\nhttps://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/"
 						.. (orig_title or mod.title):gsub(" ","%%20") .. "/changes.txt"
 				else
-					mod.last_changes = mod.version_major .. "." .. mod.version_minor
+					mod.last_changes = version
 				end
 			end
 

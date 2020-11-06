@@ -302,13 +302,15 @@ Debug.Toggles>Anim Debug Toggle: Attaches text to each object showing animation 
 Debug.Toggles>DTM Slots Display: Show DTM slots display
 Debug.Toggles>Examine Persist Errors: Shows an examine dialog with any persist errors when saving.
 Debug.Toggles>Loading Screen Log: Be able to see the console log (and other dialogs) during the loading screen.
-Warning: Leave welcome to Mars msg onscreen till map is loaded.
+Warning: Leaves "Welcome to Mars" msg onscreen till map is loaded.
 Debug.Toggles>Measure Tool: Measures stuff (press again to remove the lines).
 Debug.Toggles>Override Condition Prereqs: All storybit/negotiation/etc options are enabled.
+Debug.Toggles>Place Objects: Opens editor mode with the place objects dialog.
 Debug.Toggles>Toggle Editor: Select object(s) then hold ctrl/shift/alt and drag mouse.
 click+drag for multiple selection.
 It's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look).
-Debug.Toggles>Toggle Object Collision: Select an object and activate this to toggle collision (if you have a rover stuck in a dome).
+
+WARNING: Can be buggy, devs hid this! I kinda got it working, but expect bugs!
 Debug.Toggles>Toggle Render: Toggle rendering certain stuff.
 Debug>Test Locale File: Test a CSV for malformed strings (can cause freezing when loaded normally).
 Debug>Used Terrain Textures: Show a list of terrain textures used in current map.
@@ -548,8 +550,8 @@ Game.Object>Color Modifier: Select/mouse over an object to change the colours
 Use Shift- or Ctrl- for random colours/reset colours.
 Game.Object>List All Objects: A list of objects; <image UI/Infopanel/left_click.tga 1400>*2 on one to select and move the camera to it.
 Game.Object>Object Planner: Places fake construction site objects at mouse cursor (collision disabled).
-Game.Object>Place Objects: Opens editor mode with the place objects dialog.
 Game.Object>Set Opacity: Change the opacity of objects.
+Game.Object>Toggle Object Collision: Select an object and activate this to toggle collision (if you have a rover stuck in a dome).
 Game.Render>Higher Render Distance: Renders model from further away.
 Not noticeable unless using higher zoom.
 Game.Render>Higher Shadow Distance: Renders shadows from further away.

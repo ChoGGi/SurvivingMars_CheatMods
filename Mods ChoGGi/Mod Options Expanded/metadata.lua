@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Mod Options Expanded",
+	"title", "OBSOLOETE Mod Options Expanded",
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,
@@ -16,7 +16,10 @@ return PlaceObj("ModDef", {
 --~ 	"has_options", true,
 	"TagInterface", true,
 	"TagOther", true,
-	"description", [[The mod options added in Armstrong are nice, but still needs some improvements.
+	"description", [[OBSOLOETE use ChoGGi's Library instead.
+
+
+The mod options added in Armstrong are nice, but still needs some improvements.
 
 Remove the 400 MaxWidth added to the text.
 Buttons to adjust the number slider.

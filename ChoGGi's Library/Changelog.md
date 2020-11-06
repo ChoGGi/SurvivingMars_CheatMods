@@ -1,7 +1,11 @@
 ## Library Changelog
 
-## v8.6 (Unreleased)
+## v8.7 (Unreleased)
+
+## v8.6 (06 Nov 2020)
 - Added Open File to MultiLineText when viewing source code from Examine (opens in default text editor).
+- Added a Mod Options button to the in-game menu (no idea why the devs hid it in options).
+- Integrated Mod Options Expanded mod.
 
 ## v8.5 (11 Sep 2020)
 - Titlebar rollup was showing exec code area (ignoring checkbox).

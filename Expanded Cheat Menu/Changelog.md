@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v15.6 (Unreleased)
+## v15.7 (Unreleased)
+
+## v15.6 (06 Nov 2020)
 ### Added:
 - Console>Settings>Flush Log / Flush Log Constantly: Exposed settings in UI instead of having to edit manually.
 

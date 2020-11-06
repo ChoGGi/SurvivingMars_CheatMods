@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "ChoGGi's Library Test",
-	"version", 86,
+	"version", 87,
 	"version_major", 8,
-	"version_minor", 6,
+	"version_minor", 7,
 	"image", "Preview.jpg",
 	"id", "ChoGGi_Library",
 	"author", "ChoGGi",
@@ -17,6 +17,8 @@ return PlaceObj("ModDef", {
 	"TagTools", true,
 	"TagOther", true,
 	"TagCheats", true,
+	-- I can't make my options show up :)
+--~ 	"has_options", true,
 	"ignore_files", {
 		"*.bat",
 		"*.ini",
@@ -50,6 +52,8 @@ return PlaceObj("ModDef", {
 		-- some dialogs i use
 		"Code/ListChoice.lua",
 		"Code/MultiLineText.lua",
+		-- Mod Options button
+		"Code/ModOptions.lua",
 	},
 	"description", [[Contains stuff needed by most of my mods.
 

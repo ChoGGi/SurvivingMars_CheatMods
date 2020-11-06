@@ -1,9 +1,7 @@
 -- See LICENSE for terms
 
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
-local RetName = ChoGGi.ComFuncs.RetName
 local IsValid = IsValid
-local WorldToHex = WorldToHex
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
 
@@ -11,32 +9,40 @@ local function SortName(a, b)
 	return CmpLower(_InternalTranslate(a.name), _InternalTranslate(b.name))
 end
 
-local function SetNewDome(old, new, button, obj_type)
-	-- skip selected dome
-	if not old or not IsValid(new) then
+local function SetNewDome(old, new_dome, button, obj_type)
+	if not IsValid(old) or not IsValid(new_dome) then
 		return
 	end
 
 	if button == "R" then
-		ViewObjectMars(new)
+		ViewObjectMars(new_dome)
 	else
 		if obj_type == "dome" then
 			local objs = old.labels.Colonist or ""
 			for i = #objs, 1, -1 do
 				local obj = objs[i]
+				obj.current_dome = false
+				obj:SetOutside(true)
+				obj:SetWorkplace(false)
+				obj:SetResidence(false)
 				obj:SetDome(false)
 				obj.dome = false -- force the setter
-				obj:SetDome(new)
+				obj:SetDome(new_dome)
 			end
 --~ 		elseif obj_type == "unit" then
 		else
+			old.current_dome = false
+			old:SetOutside(true)
+			old:SetWorkplace(false)
+			old:SetResidence(false)
+			old:SetDome(false)
 			old.dome = false -- force the setter
-			old:SetDome(new)
+			old:SetDome(new_dome)
 		end
 	end
 end
 
-local function ListBuildings(parent, input_obj, obj_type)
+local function ListBuildings(sidepanel, input_obj, obj_type)
 	local domes = UICity.labels.Dome or ""
 
 	local item_list = {}
@@ -46,18 +52,15 @@ local function ListBuildings(parent, input_obj, obj_type)
 	for i = 1, #domes do
 		local obj = domes[i]
 		-- skip non-working domes, and current dome
-		if obj.working and obj.handle ~= input_obj.handle then
+		if obj.working and obj ~= input_obj then
 			local pos = obj:GetPos()
-			local h1, h2 = WorldToHex(pos)
 			c = c + 1
 			item_list[c] = {
 				pos = pos,
-				name = RetName(obj),
+				name = obj:GetDisplayName(),
 				 -- provide a slight reference
-				hint = T{302535920011059, [[Position: <position>
-Colonists: <colonist>
-Living Spaces: <spaces>]],
-					position = h1 .. ", " .. h2,
+				hint = T{302535920011059, [[Colonists: <yellow><colonist></yellow>
+Living Spaces: <yellow><spaces></yellow>]],
 					colonist = #(obj.labels.Colonist or ""),
 					spaces = obj:GetLivingSpace() or 0,
 				},
@@ -74,7 +77,6 @@ Living Spaces: <spaces>]],
 
 	if obj_type == "dome" then
 		local pos = input_obj:GetPos()
-		local h1, h2 = WorldToHex(pos)
 		-- add controller for ease of movement
 		c = c + 1
 		item_list[c] = {
@@ -82,10 +84,8 @@ Living Spaces: <spaces>]],
 				name = input_obj:GetDisplayName(),
 			},
 			pos = pos,
-			hint = T{302535920011059, [[Position: <position>
-Colonists: <colonist>
-Living Spaces: <spaces>]],
-				position = h1 .. ", " .. h2,
+			hint = T{302535920011059, [[Colonists: <yellow><colonist></yellow>
+Living Spaces: <yellow><spaces></yellow>]],
 				colonist = #(input_obj.labels.Colonist or ""),
 				spaces = input_obj:GetLivingSpace() or 0,
 			},
@@ -101,9 +101,8 @@ Living Spaces: <spaces>]],
 	if popup then
 		popup:Close()
 	else
-		PopupToggle(parent, "idForceNewDomeMenu", item_list)
+		PopupToggle(sidepanel, "idForceNewDomeMenu", item_list)
 	end
-
 end
 
 function OnMsg.ClassesPostprocess()
@@ -116,13 +115,10 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	ChoGGi.ComFuncs.AddXTemplate("ForceNewDome", "sectionDome", {
-		-- skip any ruined domes
-		__condition = function(_, context)
-			return context.working
-		end,
 		Icon = "UI/Icons/bmc_domes_shine.tga",
 		Title = T(302535920011062, "Force New Dome"),
 		RolloverText = T(302535920011063, "Force colonists to migrate to new dome."),
+		RolloverHint = T(302535920011766, "<left_click> View Dome List"),
 		func = function(self, context)
 			ListBuildings(self, context, "dome")
 		end,
@@ -132,6 +128,7 @@ function OnMsg.ClassesPostprocess()
 		Icon = "UI/Icons/bmc_domes_shine.tga",
 		Title = T(302535920011062, "Force New Dome"),
 		RolloverText = T(302535920011061, "Force colonist to migrate to new dome."),
+		RolloverHint = T(302535920011766, "<left_click> View Dome List"),
 		func = function(self, context)
 			ListBuildings(self, context, "unit")
 		end,
