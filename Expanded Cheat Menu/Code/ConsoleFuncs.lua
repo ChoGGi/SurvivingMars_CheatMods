@@ -14,7 +14,7 @@ OnMsg.ChoGGi_SettingsUpdated = ChoGGi.ConsoleFuncs.BuildExamineMenu
 
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
-local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
+local DotPathToObject = ChoGGi.ComFuncs.DotPathToObject
 local RetFilesInFolder = ChoGGi.ComFuncs.RetFilesInFolder
 local Translate = ChoGGi.ComFuncs.Translate
 local TableConcat = ChoGGi.ComFuncs.TableConcat
@@ -115,7 +115,7 @@ local function BuildExamineItem(name, title)
 	if not name then
 		return
 	end
-	local obj = DotNameToObject(name)
+	local obj = DotPathToObject(name)
 	local func = type(obj) == "function"
 	local disp = title or name .. (func and "()" or "")
 	return {
@@ -170,9 +170,9 @@ end
 --~ 			hint = "ChoGGi.ComFuncs.MonitorTableLength(" .. name .. ")",
 --~ 			clicked = function()
 --~ 				if name == "_G" then
---~ 					ChoGGi.ComFuncs.MonitorTableLength(DotNameToObject(name), nil, nil, nil, name)
+--~ 					ChoGGi.ComFuncs.MonitorTableLength(DotPathToObject(name), nil, nil, nil, name)
 --~ 				else
---~ 					ChoGGi.ComFuncs.MonitorTableLength(DotNameToObject(name), 0, nil, nil, name)
+--~ 					ChoGGi.ComFuncs.MonitorTableLength(DotPathToObject(name), 0, nil, nil, name)
 --~ 				end
 --~ 			end,
 --~ 		})

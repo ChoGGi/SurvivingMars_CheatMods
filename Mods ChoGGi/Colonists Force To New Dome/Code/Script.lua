@@ -1,5 +1,25 @@
 -- See LICENSE for terms
 
+local mod_CleanupColonists
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_CleanupColonists = CurrentModOptions:GetProperty("CleanupColonists")
+end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= CurrentModId then
+		return
+	end
+
+	ModOptions()
+end
+
+
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local IsValid = IsValid
 local CmpLower = CmpLower
@@ -21,13 +41,20 @@ local function SetNewDome(old, new_dome, button, obj_type)
 			local objs = old.labels.Colonist or ""
 			for i = #objs, 1, -1 do
 				local obj = objs[i]
-				obj.current_dome = false
-				obj:SetOutside(true)
-				obj:SetWorkplace(false)
-				obj:SetResidence(false)
-				obj:SetDome(false)
-				obj.dome = false -- force the setter
-				obj:SetDome(new_dome)
+				if mod_CleanupColonists and not IsValid(obj) then
+					-- probably not needed
+					old:RemoveFromLabel("Colonist", obj)
+					-- needed
+					table.remove(objs, i)
+				else
+					obj.current_dome = false
+					obj:SetOutside(true)
+					obj:SetWorkplace(false)
+					obj:SetResidence(false)
+					obj:SetDome(false)
+					obj.dome = false -- force the setter
+					obj:SetDome(new_dome)
+				end
 			end
 --~ 		elseif obj_type == "unit" then
 		else

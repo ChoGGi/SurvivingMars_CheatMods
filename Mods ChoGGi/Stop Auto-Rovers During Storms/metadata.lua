@@ -23,6 +23,8 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagGameplay", true,
 	"description", [[Rovers will not do automated tasks when a meteor storm is active.
+Such as collecting the goodies that just dropped from the sky.
+
 They'll finish up whatever task they're on then stop moving till it's over, so you may need to move them out of the way.
 
 Mod Options:

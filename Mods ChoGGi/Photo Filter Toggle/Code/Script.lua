@@ -1,8 +1,16 @@
 -- See LICENSE for terms
 
+local SetSceneParam = SetSceneParam
+local Min = Min
+local Lerp = Lerp
+local SetDOFParams = SetDOFParams
+local sqrt = sqrt
+
 local options
 local photos = {}
 local photo_c = 0
+local settings = {}
+local settings_c = 0
 
 local PhotoFilterPresetMap = PhotoFilterPresetMap
 for id in pairs(PhotoFilterPresetMap) do
@@ -12,22 +20,34 @@ for id in pairs(PhotoFilterPresetMap) do
 	end
 end
 
-local CmpLower = CmpLower
-table.sort(photos, function(a, b)
-	return CmpLower(a, b)
-end)
+-- add settings
+local white_list = {
+	fogDensity = true,
+	bloomStrength = true,
+	exposure = true,
+	vignette = true,
+	depthOfField = true,
+	focusDepth = true,
+	defocusStrength = true,
+	fogDensity = true,
+}
+
+--~ local CmpLower = CmpLower
+--~ table.sort(photos, function(a, b)
+--~ 	return CmpLower(a, b)
+--~ end)
 
 local function ApplyFilter()
+	if not UICity then
+		return
+	end
+
 	local apply
 	for i = 1, photo_c do
 		local filter = photos[i]
 		if options:GetProperty(filter) then
 			apply = filter
 		end
-	end
-
-	if not UICity then
-		return
 	end
 
 	apply = PhotoFilterPresetMap[apply]
@@ -38,10 +58,46 @@ local function ApplyFilter()
 	end
 	PP_Rebuild()
 
+	local hr = hr
+	for i = 1, settings_c do
+		local setting = settings[i]
+		local prop_id = setting.id
+		local mod_setting = options:GetProperty(prop_id)
+
+		-- pretty much copypasta from PhotoMode.lua
+		if prop_id == "fogDensity" then
+			SetSceneParam(1, "FogGlobalDensity", mod_setting, 0, 0)
+		elseif prop_id == "bloomStrength" then
+			SetSceneVectorParam(1, "Bloom", 0, mod_setting, 0, 0)
+		elseif prop_id == "exposure" then
+			SetSceneParam(1, "GlobalExposure", mod_setting, 0, 0)
+		elseif prop_id == "vignette" then
+			SetSceneParam(1, "Vignette", mod_setting, 0, 0)
+		elseif prop_id == "depthOfField" or prop_id == "focusDepth" or prop_id == "defocusStrength" then
+			local detail = 3
+			local focus_depth = Lerp(hr.NearZ, hr.FarZ, mod_setting ^ detail, 100 ^ detail)
+			local dof = Lerp(0, hr.FarZ - hr.NearZ, mod_setting ^ detail, 100 ^ detail)
+			local strength = sqrt(mod_setting * 100)
+			SetDOFParams(strength, Max(focus_depth - dof / 3, hr.NearZ), Max(focus_depth - dof / 6, hr.NearZ), strength, Min(focus_depth + dof / 3, hr.FarZ), Min(focus_depth + dof * 2 / 3, hr.FarZ), 0)
+		end
+
+	end
+
 end
 
 -- load default/saved settings
 function OnMsg.ModsReloaded()
+	-- can't call it right away
+	local filter_settings = PhotoModeObject:GetProperties()
+
+	for i = 1, #filter_settings do
+		local filter_setting = filter_settings[i]
+		if white_list[filter_setting.id] then
+			settings_c = settings_c + 1
+			settings[settings_c] = filter_setting
+		end
+	end
+
 	options = CurrentModOptions
 	ApplyFilter()
 end

@@ -1,3 +1,6 @@
+v0.8
+Mod option to also remove invalid colonists stuck in dome.
+
 v0.7
 Fixed issue with colonists being stuck in old/new dome (hopefully for good).
 Code cleanup/Slight UI changes.

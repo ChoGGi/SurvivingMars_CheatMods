@@ -833,7 +833,7 @@ function ChoGGi.MenuFuncs.Render_Toggle()
 
 		local value = choice.value
 		local new_value
-		local obj = ChoGGi.ComFuncs.DotNameToObject(value)
+		local obj = ChoGGi.ComFuncs.DotPathToObject(value)
 		if type(obj) == "function" then
 			new_value = obj()
 		else

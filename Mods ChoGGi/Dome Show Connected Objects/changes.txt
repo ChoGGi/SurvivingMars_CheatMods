@@ -1,2 +1,5 @@
+v0.3
+Added mod option to clean up invalid objects in a dome.
+
 v0.2
 Added mod option to disable mod.

@@ -1,2 +1,5 @@
+v0.3
+Added mod options to adjust filter settings.
+
 v0.2
 Evans update.

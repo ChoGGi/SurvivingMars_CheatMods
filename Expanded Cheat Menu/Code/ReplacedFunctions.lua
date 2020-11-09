@@ -681,7 +681,7 @@ function OnMsg.ClassesBuilt()
 
 	SaveOrigFunc("SpaceElevator", "DroneUnloadResource")
 	function SpaceElevator:DroneUnloadResource(...)
-		local export_when = ChoGGi.ComFuncs.DotNameToObject("ChoGGi.UserSettings.BuildingSettings.SpaceElevator.export_when_this_amount")
+		local export_when = ChoGGi.ComFuncs.DotPathToObject("ChoGGi.UserSettings.BuildingSettings.SpaceElevator.export_when_this_amount")
 		local amount = self.max_export_storage - self.export_request:GetActualAmount()
 		if export_when and amount >= export_when then
 			self.pod_thread = CreateGameTimeThread(function()

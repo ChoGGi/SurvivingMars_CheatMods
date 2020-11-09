@@ -108,7 +108,7 @@ ChoGGi.ComFuncs.IsObjlist = IsObjlist
 -- use .number for index based tables ("terminal.desktop.1.box")
 -- root is where we start looking (defaults to _G).
 -- create is a boolean to add a table if the "name" is absent.
-local function DotNameToObject(str, root, create)
+local function DotPathToObject(str, root, create)
 	local _G = _G
 
 	-- parent always starts out as "root"
@@ -127,7 +127,7 @@ local function DotNameToObject(str, root, create)
 		end
 
 		local obj_child
-		-- workaround for "Attempt to use an undefined global"
+		-- workaround for "Attempt to use an undefined global" msg the devs added
 		if parent == _G then
 			obj_child = rawget(parent, name)
 		else
@@ -150,7 +150,9 @@ local function DotNameToObject(str, root, create)
 
 	end
 end
-ChoGGi.ComFuncs.DotNameToObject = DotNameToObject
+ChoGGi.ComFuncs.DotPathToObject = DotPathToObject
+-- remove DotNameToObject for 8.7
+ChoGGi.ComFuncs.DotNameToObject = DotPathToObject
 
 do -- RetName
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
@@ -204,7 +206,7 @@ do -- RetName
 	local function AddFuncs(name)
 		local list
 		if name:find("%.") then
-			list = DotNameToObject(name)
+			list = DotPathToObject(name)
 		else
 			list = g[name]
 		end
@@ -950,7 +952,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items, popup)
 		if item.value then
 
 			local is_vis
-			local value = DotNameToObject(item.value)
+			local value = DotPathToObject(item.value)
 
 			-- dlgConsole.visible i think? damn me and my lazy commenting
 			if type(value) == "table" then
@@ -1512,7 +1514,7 @@ end
 function ChoGGi.ComFuncs.SettingState(setting, text)
 	if type(setting) == "string" and setting:find("%.") then
 		-- some of the menu items passed are "table.table.exists?.setting"
-		local obj = DotNameToObject(setting)
+		local obj = DotPathToObject(setting)
 		if obj then
 			setting = obj
 		else
@@ -1825,7 +1827,7 @@ ChoGGi.ComFuncs.Random = Random
 --~ end
 
 function ChoGGi.ComFuncs.CreateSetting(str, setting_type)
-	local setting = DotNameToObject(str, nil, true)
+	local setting = DotPathToObject(str, nil, true)
 	if type(setting) == setting_type then
 		return true
 	end

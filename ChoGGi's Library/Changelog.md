@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v8.7 (Unreleased)
+- Changed DotNameToObject to DotPathToObject.
 
 ## v8.6 (06 Nov 2020)
 - Added Open File to MultiLineText when viewing source code from Examine (opens in default text editor).

@@ -56,7 +56,7 @@ ChoGGi.ComFuncs.OpenInListChoice{
 --~ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local RetProperType = ChoGGi.ComFuncs.RetProperType
 local Translate = ChoGGi.ComFuncs.Translate
-local DotNameToObject = ChoGGi.ComFuncs.DotNameToObject
+local DotPathToObject = ChoGGi.ComFuncs.DotPathToObject
 local ValidateImage = ChoGGi.ComFuncs.ValidateImage
 local Strings = ChoGGi.Strings
 
@@ -573,7 +573,7 @@ function ChoGGi_DlgListChoice:idEditValueOnTextChanged()
 		if type(value) == "number" then
 			value_type = "number"
 		else
-			value = DotNameToObject(name_str)
+			value = DotPathToObject(name_str)
 			if type(value) == "number" then
 				value_type = "number"
 			else

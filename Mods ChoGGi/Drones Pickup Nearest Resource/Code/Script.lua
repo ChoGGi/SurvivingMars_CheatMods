@@ -19,71 +19,7 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
---~ local RetNearestResourceDepot = ChoGGi.ComFuncs.RetNearestResourceDepot
-
--- remove when update lib mod
-local table_append = table.append
-local table_find = table.find
-local table_iclear = table.iclear
-local FindNearestObject = FindNearestObject
-local MapGet = MapGet
-
-local res_funcs = {}
-local res_mechdepot = {}
-local AllResourcesList = AllResourcesList
-for i = 1, #AllResourcesList do
-	local res = AllResourcesList[i]
-	res_funcs[res] = "GetStored_" .. res
-	res_mechdepot[res] = "MechanizedDepot" .. res
-end
-local GetStored, res_amount, res_resource
-local function FilterTable(depot)
-	-- check if depot has the resource
-	if (depot.resource == res_resource or table_find(depot.resource, res_resource))
-		-- check if depot has resource amount
-		and depot[GetStored] and depot[GetStored](depot) >= res_amount
-	then
-		return true
-	end
-end
-local stockpiles_table = {}
-local stockpiles
-local RetNearestResourceDepot = ChoGGi.ComFuncs.RetNearestResourceDepot or function(resource, obj, list, amount, skip_stocks)
-	GetStored = res_funcs[resource] or "GetStored_" .. resource
-	res_resource = resource
-
-	if list then
-		stockpiles = list
-		res_amount = amount
-	else
-		-- attached stockpiles/stockpiles left from removed objects
-		if skip_stocks then
-			stockpiles = MapGet("map", "ResourceStockpile", "ResourceStockpileLR")
-		else
-			stockpiles = stockpiles_table
-			table_iclear(stockpiles)
-		end
-		res_amount = amount or 1000
-
-		local labels = UICity.labels
-		-- every resource has a mech depot
-		table_append(stockpiles, labels["MechanizedDepot" .. resource])
-
-		if resource == "BlackCube" then
-			table_append(stockpiles, labels.BlackCubeDumpSite)
-		elseif resource == "MysteryResource" then
-			table_append(stockpiles, labels.MysteryDepot)
-		elseif resource == "WasteRock" then
-			table_append(stockpiles, labels.WasteRockDumpSite)
-		else
-			-- labels.UniversalStorageDepot includes the "other" depots, but not the above three
-			table_append(stockpiles, labels.UniversalStorageDepot)
-		end
-	end
-
-	return FindNearestObject(stockpiles, obj:GetPos():SetInvalidZ(), FilterTable)
-end
--- remove when update lib mod
+local RetNearestResourceDepot = ChoGGi.ComFuncs.RetNearestResourceDepot
 
 local skips = {"LandscapeConstructionSiteBase"}
 

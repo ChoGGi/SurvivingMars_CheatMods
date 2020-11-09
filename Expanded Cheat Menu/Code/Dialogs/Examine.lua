@@ -252,7 +252,7 @@ function ChoGGi_DlgExamine:Init(parent, context)
 	-- examining list
 	ChoGGi_dlgs_examine[self.obj] = self
 	-- obj name
-	self.name = RetName(self.str_object and self.ChoGGi.ComFuncs.DotNameToObject(self.obj) or self.obj)
+	self.name = RetName(self.str_object and self.ChoGGi.ComFuncs.DotPathToObject(self.obj) or self.obj)
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
 
@@ -3652,7 +3652,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 
 	if self.str_object then
 		-- check if obj string is a ref to an actual object
-		local obj_ref = self.ChoGGi.ComFuncs.DotNameToObject(obj)
+		local obj_ref = self.ChoGGi.ComFuncs.DotPathToObject(obj)
 		-- If it is then we use that as the obj to examine
 		if obj_ref then
 			if type(obj_ref) == "function" then

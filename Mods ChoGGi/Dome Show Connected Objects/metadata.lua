@@ -9,9 +9,9 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Dome Show Connected Objects",
 	"id", "ChoGGi_ShowDomeConnectedObjects",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.png",
 	"steam_id", "2038895989",
 	"pops_any_uuid", "42e8c2ef-c183-4488-bce1-0b8b0223c7ba",
@@ -24,5 +24,9 @@ return PlaceObj("ModDef", {
 	"TagBuildings", true,
 	"description", [[Wondering why you can't remove a dome? This mod will show any objects that will block you from doing so.
 
-Includes mod option to disable mod.]],
+Mod Options:
+Enable Mod: If you want to disable the mod without the mod manager.
+Clean Up Invalid: Remove any invalid objects stuck in the dome when you press the toggle connected objs button (default disabled).
+If you see a white line going off to the bottom right, it's invalid (probably).
+]],
 })

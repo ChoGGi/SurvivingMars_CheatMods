@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_StopTradeCamera",
 	"steam_id", "1796377374",
@@ -15,7 +14,8 @@ return PlaceObj("ModDef", {
 	},
 	"TagInterface", true,
 	"TagOther", true,
-	"description", [[Stop the camera from moving to the rocket when:
+	"description", [[Stop the camera from moving to the rocket:
 Accepted a trade.
-Selected an expedition.]],
+Selected an expedition.
+]],
 })
