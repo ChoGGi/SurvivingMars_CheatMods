@@ -1,11 +1,15 @@
 -- See LICENSE for terms
 
 local mod_TextScale
+local mod_ShowText
+local mod_CompactText
 
 -- fired when settings are changed/init
 local function ModOptions()
 	local scale = CurrentModOptions:GetProperty("TextScale") * guim
 	mod_TextScale = point(scale, scale)
+	mod_ShowText = CurrentModOptions:GetProperty("ShowText")
+	mod_CompactText = CurrentModOptions:GetProperty("CompactText")
 end
 
 -- load default/saved settings
@@ -88,17 +92,27 @@ local function GetAvailableResources(self, cursor_obj)
 		end
 	end
 
+--~ 	ex(res_count)
+
 	table.iclear(res_str)
 	res_str_c = 0
 
-	local text = cursor_obj and "<newline><resource(res)> <"
-		or "<newline><left><resource(res)><right><"
+	local text
+	-- only compact for construction cursor
+	if mod_CompactText and cursor_obj then
+		text = " <"
+--~ 		res_str_c = 1
+--~ 		res_str[1] = T("<newline>")
+	else
+		text = cursor_obj and "<newline><resource(res)> <"
+			or "<newline><left><resource(res)><right><"
+	end
 
 	for i = 1, res_list_c do
 		local res = res_list[i]
 		local count = res_count[res]
 		if count > 0 then
-			-- round out decimals
+			-- round decimal points
 			if cursor_obj then
 				count = (floatfloor(count / r)) * r
 			end
@@ -154,10 +168,14 @@ end
 -- add text info to building placement
 local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit(...)
-	orig_CursorBuilding_GameInit(self, ...)
+	local ret = orig_CursorBuilding_GameInit(self, ...)
 
 	-- self-suff domes will fire CursorBuilding:GameInit more than once, so we get whatever is last?
 	ClearOldText()
+
+	if not mod_ShowText then
+		return ret
+	end
 
 	-- DroneHubs or Rockets, not much point in rovers
 	local sel_radius = self.template.GetSelectionRadiusScale
@@ -169,13 +187,14 @@ function CursorBuilding:GameInit(...)
 			or SupplyRocket.work_radius
 		-- 0 means not a radius building
 		if self.ChoGGi_UpdateAvailableResources == 0 then
-			return
+			return ret
 		end
 		txt_ctrl = XText:new({
 			Id = "ChoGGi_UpdateAvailableResources",
 			TextStyle = "PhotoModeWarning",
 			-- offset from the status text
-			Margins = box(0, 5, 0, 0),
+			Margins = box(0, 40, 0, 0),
+--~ 			Padding = box(0, 40, 0, 0),
 			ScaleModifier = mod_TextScale,
 		}, Dialogs.HUD)
 
@@ -184,11 +203,14 @@ function CursorBuilding:GameInit(...)
 			target = self,
 		}
 	end
+
+	return ret
 end
 
 local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
 function CursorBuilding:UpdateShapeHexes(...)
 	local ret = orig_CursorBuilding_UpdateShapeHexes(self, ...)
+
 	if txt_ctrl and self.ChoGGi_UpdateAvailableResources then
 		-- build list of objs within distance to cursor placing thingy
 		local objs = MapGet(self, "hex", self.ChoGGi_UpdateAvailableResources,
@@ -200,6 +222,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 			txt_ctrl:SetText("")
 		end
 	end
+
 	return ret
 end
 

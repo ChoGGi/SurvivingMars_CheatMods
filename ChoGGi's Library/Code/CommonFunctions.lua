@@ -1555,7 +1555,7 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius, sort, pt)
 	else
 		-- sort nearest
 		table_sort(list, function(a, b)
-			return a:GetVisualDist(pt) < b:GetVisualDist(pt)
+			return a:GetVisualDist2D(pt) < b:GetVisualDist2D(pt)
 		end)
 	end
 
@@ -2396,7 +2396,7 @@ do -- FuckingDrones (took quite a while to figure this fun one out)
 	local building
 	local function SortNearest(a, b)
 		if IsValid(a) and IsValid(b) then
-			return building:GetVisualDist(a) < building:GetVisualDist(b)
+			return building:GetVisualDist2D(a) < building:GetVisualDist2D(b)
 		end
 	end
 
@@ -5476,7 +5476,7 @@ do -- path markers
 			-- end is where the obj is, and start is where the dest is
 			if is_shuttle then
 				table_sort(path, function(a, b)
-					return obj:GetVisualDist(a) > obj:GetVisualDist(b)
+					return obj:GetVisualDist2D(a) > obj:GetVisualDist2D(b)
 				end)
 			end
 

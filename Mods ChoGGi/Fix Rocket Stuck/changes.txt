@@ -1,3 +1,6 @@
+v1.7
+Canceled expedition rocket stuck in limbo canceled mode.
+
 v1.6
 Returned expedition rocket giving msg that it's still in orbit.
 

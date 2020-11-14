@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Rocket Stuck",
-	"version", 16,
+	"version", 17,
 	"version_major", 1,
-	"version_minor", 6,
+	"version_minor", 7,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixExpeditionRocketStuckUnloading",
 	"steam_id", "1567028510",
@@ -20,12 +20,14 @@ Unloading colonist crew from expedition.
 Maintenance */5.
 Drones stuck inside.
 Planetary anomaly drones stuck inside.
-Drones the rocket thinks are stuck inside (+2).
+Drones the rocket thinks are stuck inside (*2).
 Trade rocket with 0 res.
 Returned expedition rocket giving msg that it's still in orbit.
+Canceled expedition rocket stuck in limbo canceled mode.
 
 If this doesn't fix it for you, then I'll need a copy of your saved game.
 
 
-Has mod option to disable mod (once you've applied the fix).]],
+Has mod option to disable mod (once the rocket is fixed).
+]],
 })

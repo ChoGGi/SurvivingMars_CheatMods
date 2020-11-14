@@ -3,10 +3,10 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_DroneControllerShowAvailableResources",
 	"steam_id", "1822481407",
 	"pops_any_uuid", "de76c1e8-9ef1-4e47-a3ff-dfcd4d516e34",
-	"version", 9,
-	"version_major", 0,
-	"version_minor", 9,
-	"image", "Preview.png",
+	"version", 10,
+	"version_major", 1,
+	"version_minor", 0,
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"lua_revision", 249143,
 	"code", {
@@ -20,6 +20,9 @@ The Service Area tooltip now shows a list of resources available to the selected
 Construction placement (for Dronehubs) / rocket landing mode will display (rounded) resource counts at the cursor.
 Drone selection panel "Commanded by" tooltip will also show resources (if they have a commander).
 
-See mod options to change the text scale.
+Mod Options:
+Text Scale: How big the text size is.
+Show Text: Use this to turn off text when in construction mode.
+Compact Text: Just show count/icon for construction mode text.
 ]],
 })

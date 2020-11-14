@@ -25,6 +25,10 @@ local orig_GetUISectionResourceProducerRollover = ResourceProducer.GetUISectionR
 function ResourceProducer:GetUISectionResourceProducerRollover(...)
 	local ret = orig_GetUISectionResourceProducerRollover(self, ...)
 
+	if not self.consumption_amount or not self.SumOfAllProducers then
+		return ret
+	end
+
 	local str = ret[1]
 
 	-- try to stick it under daily prod
@@ -44,6 +48,10 @@ end
 local orig_GetUISectionConsumptionRollover = Building.GetUISectionConsumptionRollover
 function Building:GetUISectionConsumptionRollover(...)
 	local ret = orig_GetUISectionConsumptionRollover(self, ...)
+
+	if not self.consumption_amount or not self.SumOfAllProducers then
+		return ret
+	end
 
 	local res_prod = self:IsKindOf("ResourceProducer")
 	if not res_prod or res_prod and not self:DoesHaveConsumption() then

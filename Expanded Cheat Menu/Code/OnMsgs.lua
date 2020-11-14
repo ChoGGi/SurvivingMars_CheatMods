@@ -972,7 +972,7 @@ function OnMsg.NewDay() -- NewSol...
 			-- no sense in doing it with only one center
 			if obj.command_centers[2] then
 				table_sort(obj.command_centers, function(a, b)
-					return obj:GetVisualDist(a) < obj:GetVisualDist(b)
+					return obj:GetVisualDist2D(a) < obj:GetVisualDist2D(b)
 				end)
 			end
 		end

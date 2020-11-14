@@ -1,3 +1,6 @@
+v1.0
+Added mod options to hide/compact text.
+
 v0.9
 Added info to drone "Commanded by" tooltip.
 

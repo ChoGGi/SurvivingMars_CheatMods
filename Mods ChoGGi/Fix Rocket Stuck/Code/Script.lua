@@ -40,41 +40,6 @@ local function RemoveInvalid(count, list)
 	return count
 end
 
-local function SpawnColonist(old_c, building, pos, city)
-	city = city or UICity
-
-	local colonist
-	if old_c then
-		colonist = GenerateColonistData(city, old_c.age_trait, false, {
-			gender = old_c.gender, entity_gender = old_c.entity_gender,
-			no_traits = "no_traits", no_specialization = true,
-		})
-		-- we set all the set gen doesn't (it's more for random gen after all)
-		colonist.birthplace = old_c.birthplace
-		colonist.death_age = old_c.death_age
-		colonist.name = old_c.name
-		colonist.race = old_c.race
-		colonist.specialist = old_c.specialist
-		for trait_id, _ in pairs(old_c.traits) do
-			if trait_id and trait_id ~= "" then
-				colonist.traits[trait_id] = true
-			end
-		end
-	else
-		colonist = GenerateColonistData(city)
-	end
-
-	Colonist:new(colonist)
-	Msg("ColonistBorn", colonist)
-
-	colonist:SetPos(pos or building and GetPassablePointNearby(building:GetPos())
-		or GetRandomPassablePoint())
-
-	--if spec is different then updates to new entity
-	colonist:ChooseEntity()
-	return colonist
-end
-
 local function AddStockPile(res, amount, pos)
 	local stockpile = PlaceObj("ResourceStockpile", {
 		"Pos", pos,
@@ -84,20 +49,59 @@ local function AddStockPile(res, amount, pos)
 	stockpile:AddResourceAmount(amount)
 end
 
+-- we need to wait till mods are loaded to check for my mod
+local SpawnColonist
+
 function OnMsg.LoadGame()
 	if not mod_EnableMod then
 		return
 	end
+	local UICity = UICity
 
 	-- If my lib mod is installed use my copy of this function
-	local SpawnColonist_lib
-	if ModsLoaded.ChoGGi_Library then
-		SpawnColonist_lib = ChoGGi.ComFuncs.SpawnColonist
-	end
-	SpawnColonist_lib = type(SpawnColonist_lib) == "function"
-		and SpawnColonist_lib or SpawnColonist
+	if not SpawnColonist then
+		if table_find(ModsLoaded, "id", "ChoGGi_Library") then
+			SpawnColonist = ChoGGi.ComFuncs.SpawnColonist
+		end
+		SpawnColonist = type(SpawnColonist) == "function"
+			and SpawnColonist or function(old_c, building, pos, city)
+			if not city then
+				city = UICity
+			end
 
-	local UICity = UICity
+			local colonist
+			if old_c then
+				colonist = GenerateColonistData(city, old_c.age_trait, false, {
+					gender = old_c.gender, entity_gender = old_c.entity_gender,
+					no_traits = "no_traits", no_specialization = true,
+				})
+				-- we set all the set gen doesn't (it's more for random gen after all)
+				colonist.birthplace = old_c.birthplace
+				colonist.death_age = old_c.death_age
+				colonist.name = old_c.name
+				colonist.race = old_c.race
+				colonist.specialist = old_c.specialist
+				for trait_id, _ in pairs(old_c.traits) do
+					if trait_id and trait_id ~= "" then
+						colonist.traits[trait_id] = true
+					end
+				end
+			else
+				colonist = GenerateColonistData(city)
+			end
+
+			Colonist:new(colonist)
+			Msg("ColonistBorn", colonist)
+
+			colonist:SetPos(pos or building and GetPassablePointNearby(building:GetPos())
+				or GetRandomPassablePoint())
+
+			-- if spec is different then updates to new entity
+			colonist:ChooseEntity()
+			return colonist
+		end
+	end
+
 	local rockets = UICity.labels.AllRockets or ""
 	for i = 1, #rockets do
 		local r = rockets[i]
@@ -133,7 +137,7 @@ function OnMsg.LoadGame()
 							end)
 						else
 							-- more invalid colonists...
-							SpawnColonist_lib(c, r, nil, UICity)
+							SpawnColonist(c, r, nil, UICity)
 							table_remove(crew, j)
 						end
 					end
@@ -283,6 +287,14 @@ function OnMsg.LoadGame()
 						Wakeup(r.command_thread)
 					end
 				end)
+
+			-- canceled exped doesn't get canceled properly back
+			elseif r.command == "ExpeditionPrepare"
+				and r.class == "RocketExpedition"
+				and r.expedition and r.expedition.canceled
+			then
+				r.expedition.canceled = false
+				r:ExpeditionCancel()
 
 			-- rocket ifs
 			end

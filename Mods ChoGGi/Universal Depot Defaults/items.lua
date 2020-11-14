@@ -12,6 +12,10 @@ local properties = {
 		"DefaultValue", 3,
 		"MinValue", 0,
 		"MaxValue", function()
+			-- use my mod if setting set
+			if Mods and Mods.ChoGGi_CheatMenu and ChoGGi.UserSettings.StorageUniversalDepot then
+				return ChoGGi.UserSettings.StorageUniversalDepot / const.ResourceScale
+			end
 			return UniversalStorageDepot:GetDefaultPropertyValue("max_storage_per_resource") / const.ResourceScale
 		end,
 	}),

@@ -1,3 +1,6 @@
+v0.6
+Bumped range to 250.
+
 v0.5
 Mod compatibility.
 
