@@ -246,6 +246,15 @@ end -- do
 
 function OnMsg.ClassesGenerate()
 
+--~ 	-- needed for SetDesiredAmount in depots
+--~ 	SaveOrigFunc("ResourceStockpileBase", "GetMax")
+--~ 	function ResourceStockpileBase:GetMax(...)
+--~ 		if UserSettings.StorageUniversalDepot and self.template_name == "UniversalStorageDepot" then
+--~ 			return UserSettings.StorageUniversalDepot / const.ResourceScale
+--~ 		end
+--~ 		return ChoGGi_OrigFuncs.ResourceStockpileBase_GetMax(self, ...)
+--~ 	end
+
 	do -- LandscapeConstructionController:Activate
 		local max_int = max_int
 

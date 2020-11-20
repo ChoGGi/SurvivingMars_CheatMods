@@ -158,6 +158,8 @@ do -- RetName
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	local IsT = IsT
 	local missing_text = ChoGGi.Temp.missing_text
+	local TMeta = TMeta
+	local TConcatMeta = TConcatMeta
 
 	-- we use this table to display names of objects for RetName
 	local g = _G
@@ -466,12 +468,16 @@ do -- RetName
 					end
 				end
 				--
-				if type(name) == "userdata" then
+				local meta = getmetatable(name)
+				if meta == TMeta or meta == TConcatMeta then
+					name = Translate(name)
+				elseif type(name) == "userdata" then
 					name = Translate(name)
 				end
 				if not name and PropObjGetProperty(obj, "GetDisplayName") then
 					name = Translate(obj:GetDisplayName())
 				end
+
 			end -- If
 
 		elseif obj_type == "userdata" then
@@ -2099,7 +2105,7 @@ do -- Rebuildshortcuts
 
 		if DisableECM then
 		-- add a key binding to options to re-enable ECM
-			local name = Translate(754117323318--[[Enable]]) .. " " .. Strings[302535920000887--[[ECM]]]
+			local name = Translate(754117323318--[[Enable]]) .. " " .. Strings[302535920000002--[[ECM]]]
 			XShortcutsTarget:AddAction(XAction:new{
 				ActionName = name,
 				ActionId = name,
@@ -5755,4 +5761,25 @@ function ChoGGi.ComFuncs.MapDelete(class)
 	end
 
 	ResumePassEdits("ChoGGi.ComFuncs.MapDelete")
+end
+
+function ChoGGi.ComFuncs.ReloadLua()
+	if not ModsLoaded then
+		return
+	end
+	-- get list of enabled mods
+	local enabled = table.icopy(ModsLoaded)
+	-- turn off all mods
+	AllModsOff()
+	-- re-enable ecm/lib (or we get black screen of nadda)
+	TurnModOn(ChoGGi.id)
+	TurnModOn(ChoGGi.id_lib)
+	-- reload lua code
+	ModsReloadItems()
+	-- enable disabled mods
+	for i = 1, #enabled do
+		TurnModOn(enabled[i].id)
+	end
+	-- reload lua code
+	ModsReloadItems()
 end

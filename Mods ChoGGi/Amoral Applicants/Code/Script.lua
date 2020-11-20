@@ -1,5 +1,35 @@
 -- See LICENSE for terms
 
+local mod_DailySanityLoss
+local mod_DailyColonistLoss
+local mod_MaxFeedingTime
+local mod_MinFeedingTime
+local ChoGGi_lib
+
+-- fired when settings are changed/init
+local function ModOptions()
+	local options = CurrentModOptions
+	mod_DailySanityLoss = options:GetProperty("DailySanityLoss")
+	mod_DailyColonistLoss = options:GetProperty("DailyColonistLoss")
+	mod_MaxFeedingTime = options:GetProperty("MaxFeedingTime")
+	mod_MinFeedingTime = options:GetProperty("MinFeedingTime")
+
+	-- skip log nagging with rawget
+	ChoGGi_lib = rawget(_G, "ChoGGi")
+end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+-- fired when option is changed
+function OnMsg.ApplyModOptions(id)
+	if id ~= CurrentModId then
+		return
+	end
+
+	ModOptions()
+end
+
 local table_find = table.find
 local table_remove = table.remove
 local table_rand = table.rand
@@ -11,16 +41,16 @@ local AsyncRand = AsyncRand
 local orig_WaitInOrbit = SupplyRocket.WaitInOrbit
 function SupplyRocket:WaitInOrbit(arrive_time, ...)
 
-	-- check for pass and abort if not
+	-- check for passengers and abort if not
 	local pass_table
 	if self.cargo then
 		pass_table = table_find(self.cargo, "class", "Passengers")
-	end
-	if not pass_table then
-		return orig_WaitInOrbit(self, arrive_time, ...)
+		if not pass_table then
+			return orig_WaitInOrbit(self, arrive_time, ...)
+		end
 	end
 
-	-- SupplyRocket:WaitInOrbit()
+	-- most of SupplyRocket:WaitInOrbit() follows
 	self:OffPlanet()
 	self.orbit_arrive_time = arrive_time
 
@@ -28,9 +58,9 @@ function SupplyRocket:WaitInOrbit(arrive_time, ...)
 --~ 	self.cargo = self.cargo or {}
 	local cargo = self.cargo
 
-	-- skip the below, since we know it's a pass rocket
-	self.orbit_arrive_time = self.orbit_arrive_time or GameTime()
---~ 	-- release probes immediately, mark orbit arrival time if carrying passengers
+	-- skip most of this, since we know it's a pass rocket
+
+	-- release probes immediately, mark orbit arrival time if carrying passengers
 --~ 	for i = #cargo, 1, -1 do
 --~ 		local item = cargo[i]
 --~ 		if IsKindOf(g_Classes[item.class], "OrbitalProbe") then
@@ -39,7 +69,7 @@ function SupplyRocket:WaitInOrbit(arrive_time, ...)
 --~ 			end
 --~ 			table.remove(cargo, i)
 --~ 		elseif item.class == "Passengers" then
---~ 			self.orbit_arrive_time = self.orbit_arrive_time or GameTime()
+			self.orbit_arrive_time = self.orbit_arrive_time or GameTime()
 --~ 		end
 --~ 	end
 
@@ -48,35 +78,52 @@ function SupplyRocket:WaitInOrbit(arrive_time, ...)
 
 	if not self:IsLandAutomated() or not self:IsFlightPermitted() or landing_disabled then
 --~ 		if self.orbit_arrive_time then
-			-- wait the usual orbit time
-			Sleep(Max(0, self.passenger_orbit_life + GameTime() - self.orbit_arrive_time))
---~ 			-- testing
---~ 			Sleep(const.HourDuration)
 
-			-- Instead of killing them all off, we remove the food and kill off one per sol
+			if ChoGGi_lib and ChoGGi.testing then
+				-- testing
+				Sleep(const.HourDuration)
+			else
+				-- wait the usual orbit time
+				Sleep(Max(0, self.passenger_orbit_life + GameTime() - self.orbit_arrive_time))
+			end
+
+			-- Instead of killing them all off, we remove the food and kill off one per sol (probably a haffy would be better, or variable based on amount?)
 			table_remove(cargo, table_find(cargo, "class", "Food"))
+
 			-- feeding schedule
 			local hour = const.HourDuration
-			local max = hour * 6
-			local min = hour * 2
+			local max = hour * mod_MaxFeedingTime
+			local min = hour * mod_MinFeedingTime
 			local min1 = min + 1
 
+			local route66 = 667 * hour
+
+			-- make the rocket tooltip a bir more obvious
+			self.passenger_orbit_life = route66
+			self.orbit_arrive_time = GameTime()
+
 			pass_table = cargo[pass_table]
+			-- while longpig is left
 			while pass_table.amount > 0 do
-				-- between 2 and 6 hours per feed
-				Sleep(Max(0, (AsyncRand(max - min1) + min) + GameTime() - self.orbit_arrive_time))
-				-- who's it gonn' be?
-				local _, idx = table_rand(pass_table.applicants_data)
-				-- just in case
-				if not idx then
-					break
+				Sleep(AsyncRand(max - min1) + min)
+				-- just a reminder
+				self.passenger_orbit_life = route66
+				self.orbit_arrive_time = GameTime()
+
+				for i = 1, mod_DailyColonistLoss do
+					-- who's it gonn' be?
+					local _, idx = table_rand(pass_table.applicants_data)
+					-- just in case
+					if idx then
+						table_remove(pass_table.applicants_data, idx)
+						pass_table.amount = pass_table.amount - 1
+					end
 				end
-				table_remove(pass_table.applicants_data, idx)
-				pass_table.amount = pass_table.amount - 1
+				-- mark the rocket
 				self.ChoGGi_cann_a_snack = true
 			end
 
-			-- If we land before they're all dead the below won't fire
+			-- If the rocket lands before they're all dead the below won't fire
 
 			-- kill the passengers, call GameOver if there are no colonists on Mars
 			local count
@@ -101,7 +148,9 @@ function SupplyRocket:WaitInOrbit(arrive_time, ...)
 			end
 			self.orbit_arrive_time = nil
 			self:UpdateStatus(self.status) -- force update to get rid of the passenger-specific texts in rollover/summary
---~ 		end
+
+--~ 		end -- if self.orbit_arrive_time
+
 		WaitWakeup()
 	end
 	self:SetCommand("LandOnMars", self.landing_site)
@@ -109,8 +158,11 @@ end
 
 local orig_LandOnMars = SupplyRocket.LandOnMars
 function SupplyRocket:LandOnMars(...)
-	-- longpig lu'au?
+	-- longpig Lūʻau?
 	if self.ChoGGi_cann_a_snack then
+		-- whoopsie, should've checked for this...
+		self.ChoGGi_cann_a_snack = nil
+
 		local cargo = self.cargo
 		local pass_table
 		if cargo then
@@ -138,7 +190,8 @@ function OnMsg.ClassesPostprocess()
 
 	PlaceObj("TraitPreset", {
 		daily_update_func = function (colonist, trait)
-			colonist:ChangeSanity(-trait.param*const.Scale.Stat, trait.id)
+
+			colonist:ChangeSanity(-mod_DailySanityLoss*const.Scale.Stat, trait.id)
 		end,
 		description = T(101452796812,"<DisplayName> loses Sanity")
 			.. T(302535920011355, " from having eaten uncooked flesh (BBQ party next time)."),
@@ -146,7 +199,6 @@ function OnMsg.ClassesPostprocess()
 		group = "Negative",
 		id = "ChoGGi_cannibal",
 		incompatible = {},
-		param = 4,
 	})
 
 end

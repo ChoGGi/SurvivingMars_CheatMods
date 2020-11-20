@@ -28,19 +28,25 @@ function OnMsg.LoadGame()
 	SuspendPassEdits("ChoGGi.RemoveBlueYellowGridMarks.LoadGame")
 
 	-- blue/yellow markers
-	MapDelete(true, "GridTile", "GridTileWater", "RangeHexRadius", function(o)
-		-- SkiRich's Toggle Hub Zone
+	local objs = MapGet(true, "GridTile", "GridTileWater", "RangeHexRadius", function(o)
+		-- SkiRich's Toggle Work Zone
 		if not o.ToggleWorkZone then
 			return true
 		end
 	end)
+	for i = #objs, 1, -1 do
+		objs[i]:delete()
+	end
 
 	-- remove the rover outlines added from https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-persistent-transport-route-blueprint-on-map.1121333/
-	MapDelete(true, "WireFramedPrettification", function(o)
+	local objs = MapGet(true, "WireFramedPrettification", function(o)
 		if o:GetEntity() == "RoverTransport" then
 			return true
 		end
 	end)
+	for i = #objs, 1, -1 do
+		objs[i]:delete()
+	end
 
 	ResumePassEdits("ChoGGi.RemoveBlueYellowGridMarks.LoadGame")
 end

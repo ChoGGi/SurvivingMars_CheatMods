@@ -1,0 +1,1 @@
+make state text less computeish

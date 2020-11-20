@@ -250,11 +250,14 @@ end -- do
 
 function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
 	SuspendPassEdits("ChoGGi.MenuFuncs.ParticlesWithNullPolylines")
-	MapDelete(true, "ParSystem", function(o)
+	local objs = MapGet(true, "ParSystem", function(o)
 		if type(o.polyline) == "string" and o.polyline:find("\0") then
 			return true
 		end
 	end)
+	for i = #objs, 1, -1 do
+		objs[i]:delete()
+	end
 	ResumePassEdits("ChoGGi.MenuFuncs.ParticlesWithNullPolylines")
 
 	MsgPopup(
@@ -294,13 +297,16 @@ function ChoGGi.MenuFuncs.MirrorSphereStuck()
 	end
 
 	SuspendPassEdits("ChoGGi.MenuFuncs.MirrorSphereStuck")
-	local type = type
-	MapDelete(true, "ParSystem", function(o)
+	local objs = MapGet(true, "ParSystem", function(o)
 		if o:GetParticlesName() == "PowerDecoy_Captured" and
 				type(o.polyline) == "string" and o.polyline:find("\0") then
 			return true
 		end
 	end)
+	for i = #objs, 1, -1 do
+		objs[i]:delete()
+	end
+
 	ResumePassEdits("ChoGGi.MenuFuncs.MirrorSphereStuck")
 
 	MsgPopup(
@@ -406,17 +412,24 @@ end
 
 function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
 	SuspendPassEdits("ChoGGi.MenuFuncs.RemoveBlueGridMarks")
-	MapDelete(true, "RangeHexRadius", function(o)
+	local objs = MapGet(true, "RangeHexRadius", function(o)
 		if not o.ToggleWorkZone then
 			return true
 		end
 	end)
+	for i = #objs, 1, -1 do
+		objs[i]:delete()
+	end
 	-- remove the rover outlines added from https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-persistent-transport-route-blueprint-on-map.1121333/
-	MapDelete(true, "WireFramedPrettification", function(o)
+	local objs = MapGet(true, "WireFramedPrettification", function(o)
 		if o:GetEntity() == "RoverTransport" then
 			return true
 		end
 	end)
+	for i = #objs, 1, -1 do
+		objs[i]:delete()
+	end
+
 	ResumePassEdits("ChoGGi.MenuFuncs.RemoveBlueGridMarks")
 
 	MsgPopup(

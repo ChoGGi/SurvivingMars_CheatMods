@@ -10,6 +10,11 @@ return {
 		"DefaultValue", true,
 	}),
 	PlaceObj("ModItemOptionToggle", {
+		"name", "ShowScanProgress",
+		"DisplayName", T(302535920011782, "Show Scan Progress"),
+		"DefaultValue", true,
+	}),
+	PlaceObj("ModItemOptionToggle", {
 		"name", "TextBackground",
 		"DisplayName", T(302535920011376, "Text Background"),
 		"Help", T(302535920011553, "Add black background to text."),

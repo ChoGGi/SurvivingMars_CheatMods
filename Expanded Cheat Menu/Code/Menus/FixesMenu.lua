@@ -284,7 +284,7 @@ This may break the save in other ways, best to just use it for testing."]]]
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000887--[[ECM]]] .. " " .. Strings[302535920000922--[[Fixes]]],
+Actions[c] = {ActionName = Strings[302535920000002--[[ECM]]] .. " " .. Strings[302535920000922--[[Fixes]]],
 	ActionMenubar = "ECM.ECM.Fixes",
 	ActionId = ".ECM Fixes",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",

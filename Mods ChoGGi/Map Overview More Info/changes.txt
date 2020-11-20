@@ -1,3 +1,7 @@
+v0.6
+Added scanning progress.
+Changed title.
+
 v0.5
 Added tooltip to mod option for text styles showing examples of text.
 

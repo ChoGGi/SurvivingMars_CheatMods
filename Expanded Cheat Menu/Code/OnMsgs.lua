@@ -359,6 +359,8 @@ function OnMsg.ModsReloaded()
 				a.ChoGGi_ECM = true
 			end
 		end
+		-- add ged presets to menu right away (this only affects those that use ECM from startup mods)
+		ChoGGi.ComFuncs.Rebuildshortcuts()
 
 		-- show console log history
 		if UserSettings.ConsoleToggleHistory or ChoGGi.ComFuncs.ModEditorActive() then
@@ -941,7 +943,7 @@ function OnMsg.ChangeMapDone(map)
 		ChoGGi.SettingFuncs.WriteSettings()
 
 		ChoGGi.ComFuncs.MsgWait(
-			Strings[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
+			Strings[302535920001400--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
 If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."]]]
 				.. "\n\n" .. Strings[302535920000030--[["To show the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked."]]]:format(Strings[302535920001308--[[Settings]]], Strings[302535920001112--[[Console Log]]]),
 			Translate(10126--[[Installed Mods]]) .. ": " .. Strings[302535920000000--[[Expanded Cheat Menu]]],
@@ -1521,7 +1523,7 @@ do -- LoadGame/CityStart
 
 		-- everyone loves a new titlebar, unless they don't
 		if UserSettings.ChangeWindowTitle then
-			terminal.SetOSWindowTitle(Translate(1079--[[Surviving Mars]]) .. ": " .. Strings[302535920000887--[[ECM]]] .. " " .. ChoGGi._VERSION)
+			terminal.SetOSWindowTitle(Translate(1079--[[Surviving Mars]]) .. ": " .. Strings[302535920000002--[[ECM]]] .. " " .. ChoGGi._VERSION)
 		end
 
 		-- first time run info
@@ -1530,7 +1532,7 @@ do -- LoadGame/CityStart
 			DestroyConsoleLog()
 			ChoGGi.Temp.WriteSettings = true
 			ChoGGi.ComFuncs.MsgWait(
-				Strings[302535920000001--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
+				Strings[302535920001400--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
 If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."]]]
 					.. "\n\n" .. Strings[302535920000030--[["To show the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked."]]]:format(Strings[302535920001308--[[Settings]]], Strings[302535920001112--[[Console Log]]]),
 				T(10126, "Installed Mods") .. ": " .. Strings[302535920000000--[[Expanded Cheat Menu]]],
@@ -1602,7 +1604,7 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 
 		-- how long startup takes
 		if testing or UserSettings.ShowStartupTicks then
-			print("<color 200 200 200>", Strings[302535920000887--[[ECM]]], "</color>:", Strings[302535920000247--[[Startup ticks]]], ":", GetPreciseTicks() - ChoGGi.Temp.StartupTicks)
+			print("<color 200 200 200>", Strings[302535920000002--[[ECM]]], "</color>:", Strings[302535920000247--[[Startup ticks]]], ":", GetPreciseTicks() - ChoGGi.Temp.StartupTicks)
 		end
 	end --OnMsg
 end -- do

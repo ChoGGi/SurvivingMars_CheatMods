@@ -47,17 +47,17 @@ Actions[c] = {ActionName = Strings[302535920000367--[[Mod Upload]]],
 	ActionSortKey = "95.Mod Upload",
 }
 
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920001380--[[Report Bug]]],
-	ActionMenubar = "ECM.Help",
-	ActionId = ".Report Bug",
-	ActionIcon = "CommonAssets/UI/Menu/ReportBug.tga",
-	RolloverText = Strings[302535920001381--[[Opens the bug report dialog (this will add a screenshot to AppData\BugReport).]]],
-	OnAction = ChoGGi.MenuFuncs.CreateBugReportDlg,
-	ActionShortcut = "Ctrl-F1",
-	ActionBindable = true,
-	ActionSortKey = "99.Report Bug",
-}
+--~ c = c + 1
+--~ Actions[c] = {ActionName = Strings[302535920001380--[[Report Bug]]],
+--~ 	ActionMenubar = "ECM.Help",
+--~ 	ActionId = ".Report Bug",
+--~ 	ActionIcon = "CommonAssets/UI/Menu/ReportBug.tga",
+--~ 	RolloverText = Strings[302535920001381--[[Opens the bug report dialog (this will add a screenshot to AppData\BugReport).]]],
+--~ 	OnAction = ChoGGi.MenuFuncs.CreateBugReportDlg,
+--~ 	ActionShortcut = "Ctrl-F1",
+--~ 	ActionBindable = true,
+--~ 	ActionSortKey = "99.Report Bug",
+--~ }
 
 -- menu
 c = c + 1
@@ -80,7 +80,7 @@ Actions[c] = {ActionName = Strings[302535920000672--[[About ECM]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000887--[[ECM]]] .. " " .. Strings[302535920001020--[[Read me]]],
+Actions[c] = {ActionName = Strings[302535920000002--[[ECM]]] .. " " .. Strings[302535920001020--[[Read me]]],
 	ActionMenubar = "ECM.Help.Expanded Cheat Menu",
 	ActionId = ".ECM Read me",
 	ActionIcon = "CommonAssets/UI/Menu/help.tga",
@@ -130,7 +130,7 @@ Actions[c] = {ActionName = Strings[302535920001481--[[Show Startup Ticks]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(251103844022--[[Disable]]) .. " " .. Strings[302535920000887--[[ECM]]],
+Actions[c] = {ActionName = Translate(251103844022--[[Disable]]) .. " " .. Strings[302535920000002--[[ECM]]],
 	ActionMenubar = "ECM.Help.Expanded Cheat Menu",
 	ActionId = ".Disable ECM",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",

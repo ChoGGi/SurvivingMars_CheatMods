@@ -2605,7 +2605,6 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 	end
 	--
 	if obj_type == "table" then
-
 		-- acts weird with main menu movie xlayer, so we check for GetVisualPos
 		if IsValid(obj) and obj.GetVisualPos then
 			return self:HyperLink(obj, Examine_ConvertValueToInfo)

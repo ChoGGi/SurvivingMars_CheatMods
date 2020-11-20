@@ -873,10 +873,10 @@ function ChoGGi.MenuFuncs.ChangeMap()
 	-- open a list dialog to set g_CurrentMissionParams
 	local itemlist = {
 		{text = "Map", value = "BlankBig_01"},
-		{text = Translate(3474--[[Mission Sponsor]]), value = "IMM", hint = Strings[302535920001386--[[Can be changed after in %s>%s>%s.]]]:format(Strings[302535920000887--[[ECM]]], Translate(1635--[[Mission]]), Strings[302535920000712--[[Set Sponsor]]])},
-		{text = Translate(3478--[[Commander Profile]]), value = "rocketscientist", hint = Strings[302535920001386--[[Can be changed after in %s>%s>%s.]]]:format(Strings[302535920000887--[[ECM]]], Translate(1635--[[Mission]]), Strings[302535920000716--[[Set Commander]]])},
+		{text = Translate(3474--[[Mission Sponsor]]), value = "IMM", hint = Strings[302535920001386--[[Can be changed after in %s>%s>%s.]]]:format(Strings[302535920000002--[[ECM]]], Translate(1635--[[Mission]]), Strings[302535920000712--[[Set Sponsor]]])},
+		{text = Translate(3478--[[Commander Profile]]), value = "rocketscientist", hint = Strings[302535920001386--[[Can be changed after in %s>%s>%s.]]]:format(Strings[302535920000002--[[ECM]]], Translate(1635--[[Mission]]), Strings[302535920000716--[[Set Commander]]])},
 		{text = Translate(3486--[[Mystery]]), value = "random", hint = Strings[302535920001386--[[Can be changed after in %s>%s>%s.]]]:format(Translate(27--[[Cheats]]), Strings[302535920000331--[[Mystery Start]]], "")},
-		{text = Translate(3482--[[Colony Logo]]), value = "MarsExpress", hint = Strings[302535920001386--[[Can be changed after in %s>%s>%s.]]]:format(Strings[302535920000887--[[ECM]]], Translate(1635--[[Mission]]), Strings[302535920000710--[[Change Logo]]])},
+		{text = Translate(3482--[[Colony Logo]]), value = "MarsExpress", hint = Strings[302535920001386--[[Can be changed after in %s>%s>%s.]]]:format(Strings[302535920000002--[[ECM]]], Translate(1635--[[Mission]]), Strings[302535920000710--[[Change Logo]]])},
 		{text = Translate(8800--[[Game Rules]]), value = "", hint = str_hint_rules},
 		{text = "ResPreset_Concrete", value = ""},
 		{text = "ResPreset_Metals", value = ""},

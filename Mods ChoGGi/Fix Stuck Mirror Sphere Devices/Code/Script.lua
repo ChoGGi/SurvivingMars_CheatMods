@@ -26,11 +26,14 @@ local function StartupCode()
 	end
 
 	SuspendPassEdits("ChoGGi.FixStuckMirrorSphereDevices.Startup")
-	MapDelete("map", "ParSystem", function(o)
+	local objs = MapGet("map", "ParSystem", function(o)
 		if o.polyline and o:GetParticlesName() == "PowerDecoy_Capture" then
 			return true
 		end
 	end)
+	for i = #objs, 1, -1 do
+		objs[i]:delete()
+	end
 	ResumePassEdits("ChoGGi.FixStuckMirrorSphereDevices.Startup")
 
 end

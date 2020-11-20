@@ -1,0 +1,4 @@
+v0.2
+Added various mod options.
+Fixed bug where the rocket would keep making new colonists cannibals.
+Made it more obvious when it's a feeding rocket.

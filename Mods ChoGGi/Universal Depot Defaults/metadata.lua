@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Universal Depot Defaults",
-	"version", 6,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 7,
 	"image", "Preview.png",
 	"id", "ChoGGi_UniversalDepotDefaults",
 	"steam_id", "1812669986",

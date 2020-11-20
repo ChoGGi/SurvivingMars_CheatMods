@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local ResourceScale = const.ResourceScale
+
 local gp_dlc = g_AvailableDlc.armstrong
 local table_find = table.find
 
@@ -27,7 +29,7 @@ end
 -- fired when settings are changed/init
 local function ModOptions()
 	mod_ShuttleAccess = options:GetProperty("ShuttleAccess")
-	mod_StoredAmount = options:GetProperty("StoredAmount") * const.ResourceScale
+	mod_StoredAmount = options:GetProperty("StoredAmount")
 
 	for i = 1, c do
 		local id = storable_resources[i]
@@ -65,14 +67,14 @@ local seed_offsets = {
 	Concrete = base * 7,
 }
 
-local orig_GameInit = UniversalStorageDepot.GameInit
+local orig_UniversalStorageDepot_GameInit = UniversalStorageDepot.GameInit
 function UniversalStorageDepot:GameInit(...)
 	-- we only want the uni depot, not the res-specfic ones
 	if self.template_name ~= "UniversalStorageDepot" then
-		return orig_GameInit(self, ...)
+		return orig_UniversalStorageDepot_GameInit(self, ...)
 	end
 
-	orig_GameInit(self, ...)
+	orig_UniversalStorageDepot_GameInit(self, ...)
 
 	for i = 1, #self.storable_resources do
 		local name = self.storable_resources[i]
@@ -94,8 +96,13 @@ function UniversalStorageDepot:GameInit(...)
 		self.placement_offset.Seeds = self.placement_offset.Concrete:AddX(offset)
 	end
 
-	-- desired slider setting
-	self:SetDesiredAmount(mod_StoredAmount)
+	-- desired slider setting (needs a slight delay to set the "correct" amount)
+	CreateRealTimeThread(function()
+		self:SetDesiredAmount(mod_StoredAmount * ResourceScale)
+		-- ... don't look at me (without this 270 in mod options == 267 in depots)
+		Sleep(1000)
+		self:SetDesiredAmount(mod_StoredAmount * ResourceScale)
+	end)
 
 	-- turn off shuttles
 	if not mod_ShuttleAccess then
@@ -131,4 +138,13 @@ if gp_dlc then
 			return orig_GetSpotBeginIndex(self, spot_name, ...)
 		end
 	end
+end
+
+-- needed for SetDesiredAmount in depots
+local orig_ResourceStockpileBase_GetMax = ResourceStockpileBase.GetMax
+function ResourceStockpileBase:GetMax(...)
+	if self.template_name == "UniversalStorageDepot" and mod_StoredAmount > 30 then
+		return mod_StoredAmount / ResourceScale
+	end
+	return orig_ResourceStockpileBase_GetMax(self, ...)
 end

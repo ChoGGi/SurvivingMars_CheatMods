@@ -286,6 +286,9 @@ It don't matter if you're black or white"]]],
 	MoveSpeedDef = {
 		des = Strings[302535920001615--[[Reset the move speed to default.]]],
 	},
+	GoHome = {
+		des = Strings[302535920000929--[[Tell drone to go back to controller.]]],
+	},
 
 -- Rocket/Shuttles
 	-- when i added a "working" AddDust to rockets it showed up twice, so i'm lazy
@@ -885,6 +888,10 @@ local function RemoveDust(self)
 end
 Drone.CheatAddDust = CheatAddDust
 BaseRover.CheatAddDust = CheatAddDust
+--
+function Drone:CheatGoHome()
+	self:SetCommand("GoHome", nil, nil, nil, "ReturningToController")
+end
 
 function Drone:CheatCleanAndFix()
 	CreateRealTimeThread(function()

@@ -31,5 +31,5 @@ Mouse over an item to highlight it (green).
 Colonists are limited to same dome if over 5000.
 Hold Shift to show full list.
 
-Hold Ctrl for old pin button functionality (might not work with a gamepad, but only console users would sink to that level).]],
+Hold Ctrl for old pin button functionality (might not work with a gamepad).]],
 })

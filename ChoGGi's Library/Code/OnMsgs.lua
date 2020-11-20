@@ -2,10 +2,15 @@
 
 local OnMsg = OnMsg
 local IsAboveHeightLimit = ChoGGi.ComFuncs.IsAboveHeightLimit
+local function HasRotatyBlinky(o)
+	if o.ChoGGi_blinky then
+		return true
+	end
+end
 
 -- we don't add shortcuts and ain't supposed to drink no booze
 OnMsg.ShortcutsReloaded = ChoGGi.ComFuncs.Rebuildshortcuts
--- so we at least have keys when it happens (what is "it"?)
+-- so we have shortcuts when LUA reloads
 OnMsg.ReloadLua = ChoGGi.ComFuncs.Rebuildshortcuts
 
 -- use this message to perform post-built actions on the final classes
@@ -15,7 +20,7 @@ function OnMsg.ClassesBuilt()
 	if not table.find(bc, "id", "ChoGGi") then
 		bc[#bc+1] = {
 			id = "ChoGGi",
-			name = ChoGGi.Strings[302535920001400--[[ChoGGi]]],
+			name = ChoGGi.Strings[302535920000001--[[ChoGGi]]],
 			image = ChoGGi.library_path .. "UI/bmc_incal_resources.png",
 		}
 	end
@@ -53,23 +58,26 @@ end
 ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100
 
 -- obj cleanup if mod is removed from saved game
-local function RemoveChoGGiObjects()
+local function RemoveChoGGiObjects(skip_height)
 	SuspendPassEdits("ChoGGiLibrary.OnMsgs.RemoveChoGGiObjects")
-	MapDelete(true, "RotatyThing", function(o)
-		if o.ChoGGi_blinky then
-			return true
-		end
-	end)
+
+	local objs = MapGet(true, "RotatyThing", HasRotatyBlinky)
+	for i = #objs, 1, -1 do
+		objs[i]:delete()
+	end
+
+	-- any of my objs added in Classes_Objects.lua
 	ChoGGi.ComFuncs.RemoveObjs("ChoGGi_ODeleteObjs")
+	-- stop any rovers with pathing being shown (it'll error out anyways)
+	ChoGGi.ComFuncs.Pathing_StopAndRemoveAll()
+
 	-- remove anything above 65536 (or bad things happen)
-	if ChoGGi.UserSettings.RemoveHeightLimitObjs then
+	if not skip_height and ChoGGi.UserSettings.RemoveHeightLimitObjs then
 		local objs = MapGet("map", IsAboveHeightLimit)
 		for i = #objs, 1, -1 do
 			objs[i]:delete()
 		end
 	end
-	-- stop any rovers with pathing being shown (it'll error out anyways)
-	ChoGGi.ComFuncs.Pathing_StopAndRemoveAll()
 
 	ResumePassEdits("ChoGGiLibrary.OnMsgs.RemoveChoGGiObjects")
 end
@@ -78,5 +86,5 @@ OnMsg.SaveGame = RemoveChoGGiObjects
 function OnMsg.LoadGame()
 	ChoGGi.ComFuncs.UpdateDataTablesCargo()
 	Startup()
-	RemoveChoGGiObjects()
+	RemoveChoGGiObjects(true)
 end

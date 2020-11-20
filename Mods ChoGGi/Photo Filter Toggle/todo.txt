@@ -1,0 +1,2 @@
+add some of the other light scenes to the list
+write light settings to mod settings files as well as a custom one for users.

@@ -416,11 +416,8 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 		return CmpLower(a.sort_idx, b.sort_idx)
 	end)
 
-	-- personal touch
-	local count = T(298035641454, "Object") .. " " .. T(3732, "Count") .. ": "
-		.. c
-
 	if c > 1 then
+		local count = T(298035641454, "Object") .. " " .. T(3732, "Count") .. ": " .. c
 		table.insert(items, 1, {
 			name = count,
 			image = "UI/Icons/res_theoretical_research.tga",

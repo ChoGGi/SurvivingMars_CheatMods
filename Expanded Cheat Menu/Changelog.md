@@ -1,6 +1,15 @@
 ## ECM Changelog
 
 ## v15.7 (Unreleased)
+### Changed:
+- Debug>Reload LUA (changed how it reloads, so now it works without messing up ECM).
+- Moved Debug>Particles Reload to Debug>Entity.
+
+### Added:
+- Cheats pane>GoHome: Make drone go back to controller.
+
+### Removed:
+- Report Bug (not much point anymore).
 
 ## v15.6 (06 Nov 2020)
 ### Added:

@@ -35,7 +35,7 @@ do -- ModUpload
 	local lib_id = ChoGGi.id_lib
 	-- don't add these mods to upload list
 	local skip_mods = {
-		ChoGGi_XDefaultMod = true,
+		ChoGGi_ = true,
 		ChoGGi_testing = true,
 	}
 	local mods_path = "AppData/Mods/"
@@ -877,25 +877,6 @@ function ChoGGi.MenuFuncs.ToolTips_Toggle()
 	)
 end
 
-function ChoGGi.MenuFuncs.CreateBugReportDlg()
-	local function CallBackFunc(answer)
-		if answer then
-			CreateRealTimeThread(function()
-				-- delay (automagical) screenshot till after question box is closed
-				Sleep(100)
-				CreateBugReportDlg()
-			end)
-		end
-	end
-	ChoGGi.ComFuncs.QuestionBox(
-		Strings[302535920000039--[["Spam in the console log doesn't necessarily mean a problem with SM (it could just a warning).
-This report will go to the %s developers not me."]]]:format(Translate(1079--[[Surviving Mars]])),
-		CallBackFunc,
-		Translate(1079--[[Surviving Mars]]) .. " " .. Strings[302535920001463--[[Bug Report]]],
-		Strings[302535920001464--[[Yes, I know what I'm doing. This is a bug.]]]
-	)
-end
-
 function ChoGGi.MenuFuncs.ExtractHPKs()
 	if blacklist then
 		ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.MenuFuncs.ExtractHPKs")
@@ -1095,7 +1076,7 @@ function ChoGGi.MenuFuncs.EditECMSettings()
 end
 
 function ChoGGi.MenuFuncs.DisableECM()
-	local title = Translate(251103844022--[[Disable]]) .. " " .. Strings[302535920000887--[[ECM]]]
+	local title = Translate(251103844022--[[Disable]]) .. " " .. Strings[302535920000002--[[ECM]]]
 	local function CallBackFunc(answer)
 		if answer then
 			ChoGGi.UserSettings.DisableECM = not ChoGGi.UserSettings.DisableECM

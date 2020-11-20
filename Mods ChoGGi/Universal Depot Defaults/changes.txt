@@ -1,3 +1,6 @@
+v0.7
+Hacky workaround for large Desired Amounts not setting properly.
+
 v0.6
 Desired Amount now checks for ECM override.
 

@@ -7,6 +7,15 @@ local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
 c = c + 1
+Actions[c] = {ActionName = Strings[302535920000453--[[Reload LUA]]],
+	ActionMenubar = "ECM.Debug",
+	ActionId = ".Reload LUA",
+	ActionIcon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
+	RolloverText = Strings[302535920000454--[[Reloads code from any enabled mods (excluding ECM/Lib).]]],
+	OnAction = ChoGGi.ComFuncs.ReloadLua,
+}
+
+c = c + 1
 Actions[c] = {ActionName = Strings[302535920001181--[[Used Terrain Textures]]],
 	ActionMenubar = "ECM.Debug",
 	ActionId = ".Used Terrain Textures",
@@ -343,6 +352,15 @@ Actions[c] = {ActionName = Translate(155--[[Entity]]),
 }
 
 c = c + 1
+Actions[c] = {ActionName = Strings[302535920000495--[[Particles Reload]]],
+	ActionMenubar = "ECM.Debug.Entity",
+	ActionId = ".Particles Reload",
+	ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
+	RolloverText = Strings[302535920000496--[["Reloads particles from ""Data/Particles""..."]]],
+	OnAction = ChoGGi.MenuFuncs.ParticlesReload,
+}
+
+c = c + 1
 Actions[c] = {ActionName = Strings[302535920000449--[[Entity Spots Toggle]]],
 	ActionMenubar = "ECM.Debug.Entity",
 	ActionId = ".Entity Spots Toggle",
@@ -675,34 +693,6 @@ Actions[c] = {ActionName = Strings[302535920000489--[[Delete Object(s)]]],
 	OnAction = ChoGGi.MenuFuncs.DeleteObject,
 	ActionShortcut = "Ctrl-Alt-Shift-D",
 	ActionBindable = true,
-}
-
--- menu
-c = c + 1
-Actions[c] = {ActionName = Translate(302535920000929--[[Reloads]]),
-	ActionMenubar = "ECM.Debug",
-	ActionId = ".Reloads",
-	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
-	OnActionEffect = "popup",
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000453--[[Reload Lua]]],
-	ActionMenubar = "ECM.Debug.Reloads",
-	ActionId = ".Reload Lua",
-	ActionIcon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
-	RolloverText = Strings[302535920000454--[["Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it).
-Warning: Disables cheat menu submenus."]]],
-	OnAction = ChoGGi.MenuFuncs.ReloadLua,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000495--[[Particles Reload]]],
-	ActionMenubar = "ECM.Debug.Reloads",
-	ActionId = ".Particles Reload",
-	ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
-	RolloverText = Strings[302535920000496--[["Reloads particles from ""Data/Particles""..."]]],
-	OnAction = ChoGGi.MenuFuncs.ParticlesReload,
 }
 
 -- menu

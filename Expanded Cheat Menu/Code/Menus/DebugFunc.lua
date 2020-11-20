@@ -894,21 +894,6 @@ function ChoGGi.MenuFuncs.MeasureTool_Toggle()
 	)
 end
 
-function ChoGGi.MenuFuncs.ReloadLua()
-	if ChoGGi.blacklist then
-		ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.MenuFuncs.ReloadLua")
-		return
-	end
-
-	force_load_build = true
-	ReloadLua()
-	force_load_build = false
-	MsgPopup(
-		"true",
-		Strings[302535920000453--[[Reload Lua]]]
-	)
-end
-
 function ChoGGi.MenuFuncs.DeleteAllSelectedObjects()
 	local obj = ChoGGi.ComFuncs.SelObject()
 	local is_valid = IsValid(obj)

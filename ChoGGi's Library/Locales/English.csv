@@ -1,4 +1,7 @@
 "ID", " Text"
+302535920000887,
+302535920001463,
+302535920001464,
 302535920001577,
 302535920001628,
 302535920001629,
@@ -23,9 +26,9 @@
 302535920001648,
 302535920001649,
 302535920001650,
-302535920001400, "ChoGGi"
-302535920000887, "ECM"
 302535920000000, "Expanded Cheat Menu"
+302535920000001, "ChoGGi"
+302535920000002, "ECM"
 302535920001428, "v"
 302535920001085, "Setting speed to a non integer (e.g 2.5) crashes the game!"
 302535920001586, "All Done!"
@@ -151,6 +154,7 @@ Green/Red for Boolean On/Off."
 302535920000854, "Results Found"
 302535920000219, "Export viewed image to <green>%s</green>."
 302535920000109, "Invalid Image"
+302535920000929, "Tell drone to go back to controller."
 302535920001416, "Max out shuttles for this hub."
 302535920000985, "Toggle frozen state of building."
 302535920000977, "Change grade of a deposit."
@@ -188,8 +192,6 @@ It don't matter if you're black or white"
 302535920001541, "Start a Crime Event"
 302535920001542, "Renegades not required."
 302535920001518, "<left_click>*2 title to rollup into the title bar."
-302535920000001, "F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
-If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""To import your old settings""."
 302535920000222, "Oh look ECM hit the itty bitty limit of const.MaxModDataSize. Who'd a thunk it? Eh' Mortimer."
 302535920000739, "Black"
 302535920000740, "Asian"
@@ -217,7 +219,7 @@ Use <green>%s</green> to enable it, or change <yellow>DisableECM</yellow> to fal
 See the bottom of Gameplay>Controls if you've changed the key binding."
 302535920001383, "AddXTemplate borked template name: %s template: %s list: %s"
 302535920000013, "This shouldn't happen... Well dang something's bork bork bork."
-302535920000002, "Dumped"
+302535920000039, "Dumped"
 302535920000003, "Can't dump nothing"
 302535920000041, "Add new entry to <green>%s</green> (Defaults to name/value of selected item)."
 302535920000165, "or"
@@ -250,6 +252,8 @@ You can copy and paste numbers if you want."
 302535920000028, "Find Resource"
 302535920000029, "Error: Cannot find any <color ChoGGi_red>%s</color>."
 302535920000032, "Select a resource to find"
+302535920001400, "F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
+If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""To import your old settings""."
 302535920000030, "To show the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked."
 302535920001441, "<left_click> Activate MenuItem <right_click> Add/Remove Quickbar"
 302535920001439, "~obj, @func, @@type, $id, %img, ^str, *r/*g/*m threads. Hover mouse for more info."
@@ -1147,7 +1151,6 @@ Not permanent."
 302535920000681, "Type of positioning to show."
 302535920000923, "Set the radius used for <green>%s</green> examining."
 302535920000926, "Toggle"
-302535920000929, "Reloads"
 302535920000421, "Override Condition Prereqs"
 302535920000919, "All storybit/negotiation/etc options are enabled."
 302535920000905, "Switch between FPS, ms, and off.
@@ -1219,7 +1222,7 @@ You need my HelperMod installed to be able to use this."
 302535920001275, "Deleted <color ChoGGi_red>%s</color> saved games."
 302535920000467, "Path Markers"
 302535920001175, "Debug FX"
-302535920000453, "Reload Lua"
+302535920000453, "Reload LUA"
 302535920001163, "Flatten height has been choosen <green>%s</green>, press shortcut again to update buildable."
 302535920001164, "Flattening has been stopped, now updating buildable."
 302535920000851, "isn't an object?
@@ -1239,8 +1242,7 @@ Sounds like a borked save; send me the file and I'll take a look"
 302535920000877, "Remove waypoints from the map and reset colours (select any object type to remove them all)."
 302535920000878, "Skip Flags"
 302535920000879, "Doesn't add the little flags, just lines and spheres (good for larger maps)."
-302535920000454, "Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it).
-<color ChoGGi_red>Warning</color>: Disables cheat menu submenus."
+302535920000454, "Reloads code from any enabled mods (excluding ECM/Lib)."
 302535920000874, "(see Path Markers to mark more than one at a time)."
 302535920001176, "Toggle showing FX debug info in console."
 302535920001184, "Particles"
@@ -1673,11 +1675,6 @@ If you have a uuid in your metadata.lua this checkbox is ignored and it'll try t
 302535920001485, "Does everything other than uploading mod to workshop (see AppData/ModUpload)."
 302535920001481, "Show Startup Ticks"
 302535920001482, "Prints to console how many ticks it takes the map to load."
-302535920000039, "Spam in the console log doesn't necessarily mean a problem with SM (it could just a warning).
-
-<color ChoGGi_red>This report will go to the %s developers not me.</color>"
-302535920001463, "Bug Report"
-302535920001464, "Yes, I know what I'm doing. This is a bug."
 302535920001427, "Pack"
 302535920001412, "GUI Dock Side"
 302535920001413, "Change which side (most) GUI menus are on."

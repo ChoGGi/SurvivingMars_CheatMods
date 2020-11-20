@@ -204,7 +204,7 @@ function ChoGGi.ComFuncs.Dump(obj, overwrite, file, ext, skip_msg, gen_name)
 
 	-- let user know
 	if not skip_msg then
-		local msg = Strings[302535920000002--[[Dumped]]] .. ": " .. RetName(obj)
+		local msg = Strings[302535920000039--[[Dumped]]] .. ": " .. RetName(obj)
 		print(filename,"\n",msg:sub(1,msg:find("\n")))
 		MsgPopup(
 			msg,
@@ -331,7 +331,7 @@ do -- DumpTableFunc
 			local filename = "AppData/logs/DumpedTable.txt"
 			AsyncStringToFile(filename, TableConcat(output_list), mode or "-1")
 
-			local msg = Strings[302535920000002--[[Dumped]]] .. ": " .. name
+			local msg = Strings[302535920000039--[[Dumped]]] .. ": " .. name
 			-- print msg to first newline
 			print(filename,"\n",msg:sub(1,msg:find("\n")))
 			MsgPopup(

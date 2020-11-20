@@ -13,11 +13,15 @@ function ChoGGi.MenuFuncs.DeleteGeysers()
 	local function CallBackFunc(answer)
 		if answer and GameState.gameplay then
 			SuspendPassEdits("ChoGGi.MenuFuncs.DeleteGeysers")
-			MapDelete("map","PrefabFeatureMarker", function(obj)
+			-- I can't get MapDelete and func filter working...
+			local objs = MapGet("map", "PrefabFeatureMarker", function(obj)
 				if obj.FeatureType == "CO2 Jets" then
 					return true
 				end
 			end)
+			for i = #objs, 1, -1 do
+				objs[i]:delete()
+			end
 			MapDelete("map",
 				"DecSpider_01", "DecSpider_02", "GeyserWarmup",
 				"Geyser_01", "Geyser_02", "Geyser_03"
