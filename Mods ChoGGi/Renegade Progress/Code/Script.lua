@@ -90,7 +90,7 @@ function InfobarObj:ChoGGi_CycleRenegadeDomes()
 		end
 	end
 
-	if list[1] then
+	if c > 0 then
 		-- dunno why they localed it, instead of making it InfobarObj:CycleObjects()...
 		local idx = SelectedObj and table.find(list, SelectedObj) or 0
 		idx = (idx % #list) + 1

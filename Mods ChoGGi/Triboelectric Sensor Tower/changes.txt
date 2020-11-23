@@ -1,3 +1,6 @@
+v0.6
+It was adding dupe sliders (thanks spectrospork242).
+
 v0.5
 Mod compatibility.
 

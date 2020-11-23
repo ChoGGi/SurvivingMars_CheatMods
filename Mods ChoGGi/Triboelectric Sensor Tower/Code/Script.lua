@@ -121,33 +121,33 @@ function OnMsg.ClassesPostprocess()
 
 	local xtemplate = XTemplates.ipBuilding[1]
 
-	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_TriboelectricSensorTower", true)
+	if not table.find(xtemplate[1], "Id", "ChoGGi_Template_TriboelectricSensorTower") then
 
-	-- Insert after workshifts if we can or at the end
-	local idx = table.find(xtemplate[1], "__template", "sectionWorkshifts")
-	if not idx then
-		idx = #xtemplate[1]
-	end
+		-- Insert after workshifts if we can or at the end
+		local idx = table.find(xtemplate[1], "__template", "sectionWorkshifts")
+		if not idx then
+			idx = #xtemplate[1]
+		end
 
-	table.insert(xtemplate[1], idx+1,
-		PlaceObj("XTemplateTemplate", {
-			"Id" , "ChoGGi_Template_TriboelectricSensorTower",
-			"ChoGGi_Template_TriboelectricSensorTower", true,
-			"__context_of_kind", "ChoGGi_TriboelectricSensorTower",
-			"__template", "InfopanelSection",
-
-			"RolloverText", T(488709956734, --[[XTemplate customTriboelectricScrubber RolloverText]] "Increasing the area of effect will greatly increase the power consumption of the building.<newline><newline>Charging time<right><em><ChargeTime> h<em><newline><left>Service range<right><SelectionRadiusScale> hexes"),
-			"RolloverHintGamepad", T(253409130526, --[[XTemplate customTriboelectricScrubber RolloverHintGamepad]] "<LB> / <RB>    change service radius"),
-			"Title", T(994862568830, --[[XTemplate customTriboelectricScrubber Title]] "Service area"),
-			"Icon", "UI/Icons/Sections/facility.tga",
-		}, {
+		table.insert(xtemplate[1], idx+1,
 			PlaceObj("XTemplateTemplate", {
-				"__template", "InfopanelSlider",
-				"BindTo", "UIRange",
-			}),
-		})
-	)
+				"Id" , "ChoGGi_Template_TriboelectricSensorTower",
+				"ChoGGi_Template_TriboelectricSensorTower", true,
+				"__context_of_kind", "ChoGGi_TriboelectricSensorTower",
+				"__template", "InfopanelSection",
+
+				"RolloverText", T(488709956734, --[[XTemplate customTriboelectricScrubber RolloverText]] "Increasing the area of effect will greatly increase the power consumption of the building.<newline><newline>Charging time<right><em><ChargeTime> h<em><newline><left>Service range<right><SelectionRadiusScale> hexes"),
+				"RolloverHintGamepad", T(253409130526, --[[XTemplate customTriboelectricScrubber RolloverHintGamepad]] "<LB> / <RB>    change service radius"),
+				"Title", T(994862568830, --[[XTemplate customTriboelectricScrubber Title]] "Service area"),
+				"Icon", "UI/Icons/Sections/facility.tga",
+			}, {
+				PlaceObj("XTemplateTemplate", {
+					"__template", "InfopanelSlider",
+					"BindTo", "UIRange",
+				}),
+			})
+		)
+	end
 
 end
 

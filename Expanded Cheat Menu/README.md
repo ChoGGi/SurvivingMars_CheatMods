@@ -4,7 +4,7 @@ For packaged versions of these mods see [Steam](https://steamcommunity.com/works
 
 Enables cheat menu, cheat info pane, console, examine object, adds a whole bunch of menuitems: set gravity, follow camera, higher render/shadow distance, larger shadow map, change logo/sponsor/commander, unlimited wonders, build almost anywhere, instant mysteries, useful shortcuts, etc... Requests are welcome.
 
-##### Install help
+##### Install help (non-steam/paradox)
 ```
 Place Expanded Cheat Menu folder in %AppData%\Surviving Mars\Mods
 (create Mods folder if it doesn't exist)
@@ -89,14 +89,8 @@ Going above 4096 capacity will make certain buildings laggy (houses/schools), an
 If you increase a number high enough it'll go negative.
 	>Don't go too high or you'll need to reset the value to default.
 
-Depot capacities have been limited, so adding too much won't crash and delete your game when you save.
-	>Best I can tell is a height limit of 65536 for any objects.
-
 SM will freeze when you disable ECM.
 	> ECM hooks into a lot of stuff, if you don't want the game to freeze when you disable it then restart SM so mods aren't loaded and then disable it.
-
-Silva's Modular Apartments and the Cheats pane upgrade 1/2/3 == game freezing.
-	> Fixed in v13.4
 
 Examine can fail to examine stuff.
 	> Please let me know what it failed on.
@@ -135,8 +129,6 @@ ChoGGi.ComFuncs.MonitorThreads()
 Copy English.csv to the name of the language you want to translate it to.
 Translate what you can (I don't expect anyone to bother with 1000+ strings).
 Send me the file to include it.
-
-OpenExamine(AllLanguages) for a list of language names (use the "value" for the file name).
 ```
 
 ##### Help it doesn't work!

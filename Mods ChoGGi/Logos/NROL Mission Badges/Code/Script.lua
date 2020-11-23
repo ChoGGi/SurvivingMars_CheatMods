@@ -244,7 +244,7 @@ do -- Postprocess
 			local logo = logos[i]
 			local file = logo.file
 
-			local id = "NROLMissionBadges_" .. name
+			local id = "NROLMissionBadges_" .. logo.name
 			if not MissionLogoPresetMap[id] then
 				PlaceObj("MissionLogoPreset", {
 					decal_entity = file,

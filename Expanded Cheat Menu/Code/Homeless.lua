@@ -2,7 +2,8 @@
 
 -- not sure where to put this stuff
 
-local Translate = ChoGGi.ComFuncs.Translate
+--~ local Translate = ChoGGi.ComFuncs.Translate
+local T = T
 local Strings = ChoGGi.Strings
 
 -- defaults to 20 items
@@ -22,9 +23,9 @@ ChoGGi.ComFuncs.SetLibraryToolTips()
 
 -- be too annoying to add templates to all of these manually
 XMenuEntry.RolloverTemplate = "Rollover"
-XMenuEntry.RolloverHint = Translate(608042494285--[[<left_click> Activate]])
+XMenuEntry.RolloverHint = T(608042494285, "<left_click> Activate")
 XListItem.RolloverTemplate = "Rollover"
-XListItem.RolloverHint = Translate(608042494285--[[<left_click> Activate]])
+XListItem.RolloverHint = T(608042494285, "<left_click> Activate")
 
 -- sure, lets have them appear under certain items (though i think mostly just happens from console, and I've changed that so I could remove this?)
 XRolloverWindow.ZOrder = max_int
@@ -37,9 +38,9 @@ XShortcutsHost.ZOrder = 4
 -- make cheats menu look like older one (more gray, less white)
 local dark_gray = -9868951
 XMenuBar.Background = dark_gray
-XMenuBar.RolloverHint = Translate(608042494285--[[<left_click> Activate]])
+XMenuBar.RolloverHint = T(608042494285, "<left_click> Activate")
 XPopupMenu.Background = dark_gray
-XPopupMenu.RolloverHint = Translate(608042494285--[[<left_click> Activate]])
+XPopupMenu.RolloverHint = T(608042494285, "<left_click> Activate")
 -- It sometimes does a jarring white background
 XPopupMenu.DisabledBackground = dark_gray
 -- darker gray
@@ -61,11 +62,11 @@ local function AddMenuitem(id, name, sort)
 		ChoGGi_ECM = true,
 	}
 end
-AddMenuitem("ECM.Cheats", Translate(27), "1")
-AddMenuitem("ECM.ECM", Strings[302535920000887], "2")
-AddMenuitem("ECM.Game", Translate(283142739680), "3")
-AddMenuitem("ECM.Debug", Translate(1000113), "4")
-AddMenuitem("ECM.Help", Translate(487939677892), "5")
+AddMenuitem("ECM.Cheats", T(27, "Cheats"), "1")
+AddMenuitem("ECM.ECM", Strings[302535920000002--[[ECM]]], "2")
+AddMenuitem("ECM.Game", T(283142739680, "Game"), "3")
+AddMenuitem("ECM.Debug", T(1000113, "Debug"), "4")
+AddMenuitem("ECM.Help", T(487939677892, "Help"), "5")
 
 -- unforbid binding some keys (i left Enter and Menu, not sure what Menu is for? seems best to leave it)
 local f = ForbiddenShortcutKeys

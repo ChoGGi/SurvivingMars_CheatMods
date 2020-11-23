@@ -7,23 +7,23 @@ return PlaceObj("ModDef", {
 			"version_minor", 6,
 		}),
 	},
-	"title", "Triboelectric Sensor Tower",
-	"id", "ChoGGi_TriboelectricSensorTower",
+	"title", "Rocket Next Rocket Button",
+	"id", "ChoGGi_RocketNextRocketButton",
 	"lua_revision", 249143,
-	"steam_id", "2201623384",
-	"pops_any_uuid", "aab7ae97-d2e0-42d6-bbf8-18c5a6efaee5",
-	"version", 6,
+	"steam_id", "2293455455",
+	"pops_any_uuid", "0869b5fc-d5c6-47e5-ab09-fcc3b319d943",
+	"version", 1,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 1,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 --~ 	"has_options", true,
-	"TagBuildings", true,
-	"description", [[Adds a sensor tower that doubles as a Triboelectric Scrubber.
+	"TagInterface", true,
+	"description", [[A button to quickly loop through your rockets.
 
 
-Requested by sargatanus.]],
+Requested by isntit2017.]],
 })

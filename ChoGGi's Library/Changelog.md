@@ -4,6 +4,7 @@
 - Changed DotNameToObject to DotPathToObject.
 - RetName checks for TMeta/TConcatMeta.
 - My cleanup save func may have been removing some blinky lights when saving?
+- Added CycleSelectedObjects()
 
 ## v8.6 (06 Nov 2020)
 - Added Open File to MultiLineText when viewing source code from Examine (opens in default text editor).

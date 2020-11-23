@@ -3,13 +3,13 @@
 local table = table
 local type = type
 
--- CurrentModPath, CurrentModOptions, CurrentModDef, CurrentModId
-
--- for some reason mod options don't show up, so ...
---~ local mod_ModOptionsButton
---~ local mod_ModOptionsExpanded
 local mod_ModOptionsButton = true
 local mod_ModOptionsExpanded = true
+
+-- for some reason mod options don't show up for this mod so ...
+
+--~ local mod_ModOptionsButton
+--~ local mod_ModOptionsExpanded
 
 -- fired when settings are changed/init
 local function ModOptions()
@@ -22,17 +22,17 @@ local function ModOptions()
 --~ 	end
 end
 
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
+--~ -- load default/saved settings
+--~ OnMsg.ModsReloaded = ModOptions
 
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
+--~ -- fired when option is changed
+--~ function OnMsg.ApplyModOptions(id)
+--~ 	if id ~= CurrentModId then
+--~ 		return
+--~ 	end
 
-	ModOptions()
-end
+--~ 	ModOptions()
+--~ end
 
 local function UpdateProp(xtemplate)
 	local idx = table.find(xtemplate, "MaxWidth", 400)
@@ -112,6 +112,7 @@ end
 function OnMsg.ClassesPostprocess()
 	ModOptions()
 
+	--
 	if mod_ModOptionsExpanded then
 		local xtemplate = XTemplates.PropBool[1]
 		if not xtemplate.ChoGGi_ModOptionsExpanded then
@@ -133,7 +134,7 @@ function OnMsg.ClassesPostprocess()
 --~ 			UpdateProp(XTemplates.PropKeybinding[1])
 		end
 	end
-
+	--
 	if mod_ModOptionsButton and HasModsWithOptions() then
 		local xtemplate = XTemplates.XIGMenu[1]
 		if not xtemplate.ChoGGi_ModOptionsButton then
@@ -174,6 +175,8 @@ function OnMsg.ClassesPostprocess()
 		end
 
 	end
+	-- Add input text box
 
+	--
 
 end

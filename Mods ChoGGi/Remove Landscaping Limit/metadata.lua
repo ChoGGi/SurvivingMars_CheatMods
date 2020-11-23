@@ -26,8 +26,9 @@ return PlaceObj("ModDef", {
 	"description", [[Ignores most of the "errors" (NOT out of bounds as that can crash the game).
 
 The landscaping needs to override the BlockingObjects status otherwise you can't flatten next to/under buildings.
-This will allow you to build regular buildings on top of others, turn off the blocking objects option if it bothers you.
+This will allow you to build regular buildings on top of others, turn off the blocking objects option if it bothers you (see mod options).
 
+This overrides max and min sizes.
 
 
 Included in Expanded Cheat Menu.]],

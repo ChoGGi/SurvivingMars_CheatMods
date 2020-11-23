@@ -14,15 +14,11 @@ end
 
 local mod_EnableMod
 
-local function SetSigns(setting)
-	SetSignsVisible(not setting)
+local function SetBuildingSigns1()
+	SetSignsVisible(not mod_EnableMod)
 end
-
-local function SetSigns1()
-	SetSigns(mod_EnableMod)
-end
-local function SetSigns2()
-	SetSigns(g_SignsVisible)
+local function SetBuildingSigns2()
+	SetSignsVisible(not g_SignsVisible)
 end
 
 -- fired when settings are changed/init
@@ -30,10 +26,9 @@ local function ModOptions()
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 
 	-- make sure we're ingame
-	if not UICity then
-		return
+	if UICity then
+		SetBuildingSigns1()
 	end
-	SetSigns1()
 end
 
 -- load default/saved settings
@@ -48,15 +43,15 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-OnMsg.CityStart = SetSigns1
-OnMsg.LoadGame = SetSigns1
+OnMsg.CityStart = SetBuildingSigns1
+OnMsg.LoadGame = SetBuildingSigns1
 
 -- add keybind for toggle
 local Actions = ChoGGi.Temp.Actions
 Actions[#Actions+1] = {ActionName = T(302535920011687, "Hide Building Signs"),
 	ActionId = "ChoGGi.HideBuildingSigns.ToggleSigns",
 	OnAction = function()
-		SetSigns2()
+		SetBuildingSigns2()
 	end,
 	ActionShortcut = "Numpad 8",
 	replace_matching_id = true,

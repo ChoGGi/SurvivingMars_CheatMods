@@ -66,15 +66,19 @@ end
 local orig_RCRover_Siege = RCRover.Siege
 function RCRover:Siege(...)
 	if self.ChoGGi_InGarage then
-		Sleep(5000)
+		Sleep(1000)
 	else
 		return orig_RCRover_Siege(self, ...)
 	end
 end
 
+function BaseRover:ChoGGi_GetNearestGarage()
+	return FindNearestObject((self.city or UICity).labels.RCGarage or empty_table, self)
+end
+
 -- fix for any rovers stuck on the map from missing rover story
 local function RestoreMissingRover(obj)
-	local nearest = FindNearestObject(UICity.labels.RCGarage, obj)
+	local nearest = obj:ChoGGi_GetNearestGarage()
 	obj:SetPos(nearest:GetPos())
 	nearest:RemoveFromGarage(obj)
 end
@@ -89,6 +93,7 @@ function OnMsg.LoadGame()
 		end
 	end
 end
+
 local orig_BaseRover_Appear = BaseRover.Appear or Unit.Appear
 function BaseRover:Appear(...)
 	if self.ChoGGi_InGarage then
@@ -143,4 +148,32 @@ function OnMsg.ClassesBuilt()
 		end
 	end
 
+end
+
+-- collect idle funcs
+local function CollectIdle(idle_func, self, ...)
+
+	if not self.ChoGGi_InGarage and not self.auto_mode_on and g_ChoGGi_RCGarages.collect_idle_rovers then
+		self:SetCommand("ChoGGi_UseGarage", self:ChoGGi_GetNearestGarage())
+		SetUnitControlInteractionMode(self, false) --toggle button
+		return
+	end
+
+	return idle_func(self, ...)
+end
+
+-- overrride idles for garage toggle
+local classes = {
+	"ExplorerRover",
+	"RCTransport",
+	"RCHarvester",
+	"RCTerraformer",
+}
+local g = _G
+for i = 1, #classes do
+	local cls_obj = g[classes[i]]
+	local idle_func = cls_obj.Idle
+	function cls_obj:Idle(...)
+		return CollectIdle(idle_func, self, ...)
+	end
 end

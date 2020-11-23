@@ -21,7 +21,6 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"TagBuildings", true,
 	"TagInterface", true,
 	"description", [[Don't show signs above buildings.
 

@@ -1,3 +1,6 @@
+v0.6
+Added mod option for random chance of receiving breakthrough (0 to disable).
+
 v0.5
 Added mod option to disable notification.
 Added Sols remaining to the Research tooltip in the Infobar.

@@ -3,8 +3,7 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-
-	"image", "Preview.png",
+	"image", "Preview.jpg",
 	"id", "ChoGGi_OmegaUnlocksAll",
 	"pops_any_uuid", "694072ce-c6b9-4cf9-b20e-4fd60ce3adef",
 	"author", "ChoGGi",

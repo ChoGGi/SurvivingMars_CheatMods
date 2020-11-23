@@ -11,6 +11,7 @@ GlobalVar("g_ChoGGi_RCGarages", {
 	power_per_rover = 500,
 	power_per_garage = 1000,
 	last_pass = map_centre,
+	collect_idle_rovers = false,
 })
 
 DefineClass.RCGarage = {
@@ -168,7 +169,8 @@ function RCGarage:RemoveFromGarage(unit)
 
 		-- last ditch effort (should only happen when you cheat delete building)
 		if pt == InvalidPos then
-			local last = g_ChoGGi_RCGarages.last_pass
+--~ 			local last = g_ChoGGi_RCGarages.last_pass
+			local last = self.garages.last_pass
 			pt = GetRandomPassableAround(
 				rem or last ~= InvalidPos and last or map_centre:SetTerrainZ(), 10000)
 				or GetRandomPassable()
@@ -346,6 +348,26 @@ function RCGarage:OnDemolish(...)
 	self:RemoveGarage()
 end
 
+function RCGarage:ToggleCollectIdleRovers()
+	-- toggle saved setting
+	self.garages.collect_idle_rovers = not self.garages.collect_idle_rovers
+
+	if self.garages.collect_idle_rovers then
+		-- check for idle rovers and send them to garage
+		local objs = (self.city or UICity).labels.Rover or ""
+		for i = 1, #objs do
+			local obj = objs[i]
+			-- ignore deployIdle rovers
+			if not obj.ChoGGi_InGarage and not obj.auto_mode_on and obj:GetStateText() == "idle" then
+				obj:SetCommand("ChoGGi_UseGarage", obj:ChoGGi_GetNearestGarage())
+				SetUnitControlInteractionMode(obj, false) --toggle button
+			end
+		end
+--~ 	else
+--~ 		-- check for rovers going to garage and idle them
+	end
+end
+
 function OnMsg.OnSetWorking(obj, working)
 	local garages = g_ChoGGi_RCGarages
 	if obj == garages.main then
@@ -390,10 +412,9 @@ function OnMsg.ClassesPostprocess()
 	local building = XTemplates.ipBuilding[1]
 	-- check for and remove existing template
 	ChoGGi.ComFuncs.RemoveXTemplateSections(building, "ChoGGi_Template_SetMainGarage", true)
-
 	building[#building+1] = PlaceObj('XTemplateTemplate', {
 		"ChoGGi_Template_SetMainGarage", true,
-		"Id", "ChoGGi_SetMainGarage",
+		"Id", "ChoGGi_Template_SetMainGarage",
 		"__context_of_kind", "RCGarage",
 		"__condition", function (_, context)
 			-- only show button if this isn't the main
@@ -412,6 +433,28 @@ function OnMsg.ClassesPostprocess()
 				self:SetVisible(false)
 			else
 				self:SetVisible(true)
+			end
+		end,
+	})
+
+	ChoGGi.ComFuncs.RemoveXTemplateSections(building, "ChoGGi_Template_IdleRovers", true)
+	building[#building+1] = PlaceObj('XTemplateTemplate', {
+		"ChoGGi_Template_IdleRovers", true,
+		"Id", "ChoGGi_Template_IdleRovers",
+		"__context_of_kind", "RCGarage",
+		"__template", "InfopanelButton",
+		"Icon", "UI/Icons/ColonyControlCenter/rcrover_r.tga",
+		"RolloverTitle", T(0000, "Collect Idle Rovers"),
+		"RolloverText", T(0000, "Idle rovers will enter the garage automagically."),
+		"OnPress", function(self)
+			-- toggle value
+			self.context:ToggleCollectIdleRovers()
+		end,
+		"OnContextUpdate", function(self, context)
+			if context.garages.collect_idle_rovers then
+				self:SetIcon("UI/Icons/ColonyControlCenter/rcrover_g.tga")
+			else
+				self:SetIcon("UI/Icons/ColonyControlCenter/rcrover_r.tga")
 			end
 		end,
 	})
@@ -437,7 +480,7 @@ function OnMsg.ClassesPostprocess()
 
 	local template = PlaceObj('XTemplateTemplate', {
 		"ChoGGi_Template_RCGarage", true,
-		"Id", "ChoGGi_RCGarage",
+		"Id", "ChoGGi_Template_RCGarage",
 		"__context_of_kind", "RCGarage",
 		"__template", "InfopanelSection",
 		"Icon", "UI/Icons/Sections/basic.tga",
@@ -456,13 +499,12 @@ function OnMsg.ClassesPostprocess()
 				if context.garages.main == context then
 					self:SetVisible(false)
 					self:SetMaxHeight(0)
-					self:SetTitle(T(302535920011184, [[Main Garage]]))
+					self:SetTitle(T(302535920011184, "Main Garage"))
 				else
 					self:SetVisible(true)
 					self:SetMaxHeight()
 					self:SetTitle(context.pin_rollover)
 				end
-				ObjModified(context)
 				---
 			end,
 		}, {
@@ -485,8 +527,8 @@ function OnMsg.ClassesPostprocess()
 		PlaceObj('XTemplateTemplate', {
 			"__template", "InfopanelActiveSection",
 			"Icon", "UI/Icons/ColonyControlCenter/homeless_off.tga",
-			"Title", T(302535920011188, [[Eject All]]),
-			"RolloverText", T(302535920011189, [[Forces out all rovers to main garage area.]]),
+			"Title", T(302535920011188, "Eject All"),
+			"RolloverText", T(302535920011189, "Forces out all rovers to main garage area."),
 			"OnContextUpdate", function(self, context)
 				-- hide if this isn't main garage
 				if context:CheckMainGarage() then
@@ -508,7 +550,7 @@ function OnMsg.ClassesPostprocess()
 				"func", function(self, context)
 					---
 					ChoGGi.ComFuncs.QuestionBox(
-						T(302535920011190, [[Are you sure you want to eject all rovers?]]),
+						T(302535920011190, "Are you sure you want to eject all rovers?"),
 						function(answer)
 							if answer then
 								local GetRandomPassableAround = GetRandomPassableAround
@@ -528,7 +570,7 @@ function OnMsg.ClassesPostprocess()
 								context:UpdateGaragePower()
 							end
 						end,
-						T(302535920011188, [[Eject All]])
+						T(302535920011188, "Eject All")
 					)
 					---
 				end,

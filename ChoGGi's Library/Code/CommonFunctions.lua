@@ -32,6 +32,8 @@ local ResumePassEdits = ResumePassEdits
 local ClassDescendantsList = ClassDescendantsList
 local WorldToHex = WorldToHex
 local OpenDialog = OpenDialog
+local ViewAndSelectObject = ViewAndSelectObject
+local XDestroyRolloverWindow = XDestroyRolloverWindow
 
 local rawget, getmetatable = rawget, getmetatable
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
@@ -3530,7 +3532,9 @@ do -- AddXTemplate/RemoveXTemplateSections
 			pos = 1
 		end
 		table.insert(xt, pos, PlaceObj("XTemplateTemplate", {
+			-- legacy ref
 			stored_name, true,
+			-- new ref
 			"Id", stored_name,
 			"__condition", list.__condition or RetTrue,
 			"__context_of_kind", list.__context_of_kind or "",
@@ -3550,11 +3554,11 @@ do -- AddXTemplate/RemoveXTemplateSections
 		}))
 	end
 
-	--~ AddXTemplateNew(XTemplates.ipColonist[1], "LockworkplaceColonist", nil, {
-	--~ AddXTemplate("SolariaTelepresence_sectionWorkplace1", "sectionWorkplace", {
+	-- new	xt, 		name, 		pos, 	list
+		--~ AddXTemplate(XTemplates.ipColonist[1], "LockworkplaceColonist", nil, {
+	-- old: name, template, list, toplevel
+		--~ AddXTemplate("SolariaTelepresence_sectionWorkplace1", "sectionWorkplace", {
 	function ChoGGi.ComFuncs.AddXTemplate(xt, name, pos, list)
-		-- old: name, template, list, toplevel
-		-- new	xt, 		name, 		pos, 	list
 		if type(xt) == "string" then
 			if list then
 				AddTemplate(XTemplates[name], xt, nil, pos)
@@ -5782,4 +5786,21 @@ function ChoGGi.ComFuncs.ReloadLua()
 	end
 	-- reload lua code
 	ModsReloadItems()
+end
+
+-- needs an indexed list or a label
+function ChoGGi.ComFuncs.CycleSelectedObjects(list, count)
+	if not count then
+		list = UICity.labels[list] or empty_table
+		count = #list
+	end
+
+	if list and count > 0 then
+		local idx = SelectedObj and table_find(list, SelectedObj) or 0
+		idx = (idx % count) + 1
+		local next_obj = list[idx]
+
+		ViewAndSelectObject(next_obj)
+		XDestroyRolloverWindow()
+	end
 end

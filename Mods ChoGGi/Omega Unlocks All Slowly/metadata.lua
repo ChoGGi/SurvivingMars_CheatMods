@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "Omega Unlocks All Slowly",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
-	"image", "Preview.png",
+	"version_minor", 6,
+	"image", "Preview.jpg",
 	"id", "ChoGGi_OmegaUnlocksAllSlowly",
 	"steam_id", "1732442747",
 	"pops_any_uuid", "b8b0933a-99cd-4580-a921-619171e39289",

@@ -2,11 +2,13 @@
 
 local mod_SolsBetweenUnlock
 local mod_ShowNotification
+local mod_RandomChance
 
 -- fired when settings are changed/init
 local function ModOptions()
 	mod_SolsBetweenUnlock = CurrentModOptions:GetProperty("SolsBetweenUnlock")
 	mod_ShowNotification = CurrentModOptions:GetProperty("ShowNotification")
+	mod_RandomChance = CurrentModOptions:GetProperty("RandomChance")
 end
 
 -- load default/saved settings
@@ -70,6 +72,12 @@ function OnMsg.NewDay()
 
 	-- we already checked for breakthroughs[1], but why not check again :)
 	if not def then
+		return
+	end
+
+	-- gambling time
+	if mod_RandomChance > 0 and AsyncRand(100) > mod_RandomChance then
+		-- add a failed notifaction?
 		return
 	end
 
