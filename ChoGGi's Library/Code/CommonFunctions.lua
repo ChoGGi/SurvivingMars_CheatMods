@@ -9,6 +9,7 @@ local Translate = ChoGGi.ComFuncs.Translate
 
 local pairs, tonumber, type, tostring = pairs, tonumber, type, tostring
 local AsyncRand = AsyncRand
+local AveragePoint2D = AveragePoint2D
 local FindNearestObject = FindNearestObject -- (list,obj) or (list,pos,filterfunc)
 local GetTerrainCursor = GetTerrainCursor
 local IsValid = IsValid
@@ -21,11 +22,13 @@ local table_remove = table.remove
 local table_find = table.find
 local table_clear = table.clear
 local table_iclear = table.iclear
+local table_icopy = table.icopy
 local table_sort = table.sort
 local table_copy = table.copy
 local table_rand = table.rand
 local table_set_defaults = table.set_defaults
 local table_append = table.append
+local table_ifilter = table.ifilter
 local CreateRealTimeThread = CreateRealTimeThread
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
@@ -1557,14 +1560,16 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius, sort, pt)
 
 	-- sort list custom
 	if sort then
-		table_sort(list, function(a, b)
+		local function sort(a, b)
 			return a[sort] < b[sort]
-		end)
+		end
+		table_sort(list, sort)
 	else
 		-- sort nearest
-		table_sort(list, function(a, b)
+		local function sort(a, b)
 			return a:GetVisualDist2D(pt) < b:GetVisualDist2D(pt)
-		end)
+		end
+		table_sort(list, sort)
 	end
 
 	return list
@@ -5803,4 +5808,51 @@ function ChoGGi.ComFuncs.CycleSelectedObjects(list, count)
 		ViewAndSelectObject(next_obj)
 		XDestroyRolloverWindow()
 	end
+end
+
+do -- IsDroneIdle/GetIdleDrones
+	local idle_drone_cmds = {
+		Idle = true,
+		-- fresh drone (only lasts a little bit)
+		Start = true,
+		-- go back to controller
+		GoHome = true,
+		-- doesn't have a controller
+		WaitingCommand = true,
+	}
+
+	function ChoGGi.ComFuncs.IsDroneIdle(drone)
+		return idle_drone_cmds[drone.command]
+	end
+
+	local function IsDroneIdle(_, drone)
+		return idle_drone_cmds[drone.command]
+	end
+	function ChoGGi.ComFuncs.GetIdleDrones()
+		return table_ifilter(table_icopy(UICity.labels.Drone or empty_table), IsDroneIdle)
+	end
+end
+
+function ChoGGi.ComFuncs.PlacePolyline(points, colours, set_default_pos)
+	local line = ChoGGi_OPolyline:new{
+		max_vertices = #points
+	}
+	line:SetMesh(points, colours)
+	-- objects spawn off-map
+	if set_default_pos then
+		line:SetPos(AveragePoint2D(line.vertices))
+	end
+	return line
+end
+
+-- https://gist.github.com/Uradamus/10323382
+function ChoGGi.ComFuncs.FisherYates_Shuffle(list, min)
+	-- I don't think there's any 0 based tables in SM, but just in case
+	if not min then
+		min = 1
+	end
+  for i = #list, 2, -1 do
+    local j = Random(min, i)
+    list[i], list[j] = list[j], list[i]
+  end
 end

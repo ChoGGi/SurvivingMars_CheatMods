@@ -8,13 +8,13 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Passages Use Empty Hexes",
+	"id", "ChoGGi_PassagesUseEmptyHexes",
+	"steam_id", "1809321641",
+	"pops_any_uuid", "6285e6a7-f89a-47a3-a3ee-0b22e470e600",
 	"version", 5,
 	"version_major", 0,
 	"version_minor", 5,
 	"image", "Preview.png",
-	"id", "ChoGGi_PassagesUseEmptyHexes",
-	"steam_id", "1809321641",
-	"pops_any_uuid", "6285e6a7-f89a-47a3-a3ee-0b22e470e600",
 	"author", "ChoGGi",
 	"lua_revision", 249143,
 	"code", {
@@ -23,8 +23,8 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagGameplay", true,
 	"TagBuildings", true,
-	"description", [[You can put passages anywhere, but only certain hexes will "connect" domes.
-Check the selection panel after placing a passage construction site, if it says "Connected to building" then it'll work, if it says "No dome" then remove the site and try again.
+	"description", [[You can place passages at hexes you normally can't build on.
+Check the selection panel after placing a passage construction site, if it says "Connected to building" then it'll work, if it says "No dome" then remove the site and try elsewhere (white highlighted hexes only).
 
 
 Mod Options:

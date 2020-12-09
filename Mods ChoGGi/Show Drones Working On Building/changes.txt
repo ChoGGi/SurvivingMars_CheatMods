@@ -1,3 +1,6 @@
+v0.4
+Fixed no highlighted drones for drone hubs (thanks pidgey6).
+
 v0.3
 Also shows drones working on it.
 

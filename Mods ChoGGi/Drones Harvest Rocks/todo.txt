@@ -1,1 +1,3 @@
 randomly add random amounts of metals as well as waste rock
+
+use a grid (like flatten) to remove areas of rocks

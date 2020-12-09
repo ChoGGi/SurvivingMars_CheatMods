@@ -1,0 +1,4 @@
+- autp-update maybe once an hour + compensate brightness for time of day so map looks about the same all time
+- move options to mod options so no more buttons and headline in the minimap ;) 
+would be even better if it would auto-hide when leaving the regular game screen (e.g. into research / resupply / ..) 
+ 

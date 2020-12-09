@@ -22,6 +22,7 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
 local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
+local PlacePolyline = ChoGGi.ComFuncs.PlacePolyline
 local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
@@ -38,15 +39,6 @@ end
 function ChoGGi.ComFuncs.RetUnrestricedG()
 	return _G
 end
-
-local function PlacePolyline(points, colours)
-	local line = ChoGGi_OPolyline:new{
-		max_vertices = #points
-	}
-	line:SetMesh(points, colours)
-	return line
-end
-ChoGGi.ComFuncs.PlacePolyline = PlacePolyline
 
 local function SetCheatsMenuPos(pos)
 	pos = pos or ChoGGi.UserSettings.KeepCheatsMenuPosition

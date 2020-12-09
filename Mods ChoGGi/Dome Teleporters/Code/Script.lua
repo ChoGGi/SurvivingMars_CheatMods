@@ -381,7 +381,6 @@ function OnMsg.SelectedObjChange(obj)
 			teleporter_lines[t1] = {
 				t1 = t1,
 				t2 = t2,
---~ 				line = PlacePolyline(two_pointer),
 				line = OPolyline:new(),
 			}
 			teleporter_lines[t1].line:SetParabola(two_pointer[1], two_pointer[2])

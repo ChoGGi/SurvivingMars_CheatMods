@@ -1,2 +1,5 @@
+v0.3
+Updated for Armstrong.
+
 v0.2
 Broke Salvage (thanks McKaby).

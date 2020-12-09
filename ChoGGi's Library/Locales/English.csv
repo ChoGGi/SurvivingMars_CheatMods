@@ -1269,14 +1269,14 @@ Use Shift + Arrow keys to change the height/radius."
 302535920000476, "Shows list of entity objects with option to spawn at mouse cursor."
 302535920000478, "Clears console history display."
 302535920000479, "Toggle Editor"
-302535920000480, "Select object(s) then hold ctrl/shift/alt and drag mouse.
+302535920000480, "Some sort of editor the devs left buried in code.
+Select object(s) then hold ctrl/shift/alt and drag mouse.
 click+drag for multiple selection.
 
 It's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look).
 
 
-
-<color ChoGGi_red>WARNING</color>: Can be buggy, devs hid this! I kinda got it working, but expect bugs!"
+<color ChoGGi_red>WARNING</color>: Buggy! I kinda got it working, but expect issues!"
 302535920000481, "Open In Ged Object Editor"
 302535920000482, "Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."
 302535920000487, "Delete All Of Selected Object"

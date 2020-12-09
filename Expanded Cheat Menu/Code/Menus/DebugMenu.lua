@@ -538,13 +538,14 @@ Actions[c] = {ActionName = Strings[302535920000479--[[Toggle Editor]]],
 	ActionMenubar = "ECM.Debug.Toggles",
 	ActionId = ".Toggle Editor",
 	ActionIcon = "CommonAssets/UI/Menu/SelectionEditor.tga",
-	RolloverText = Strings[302535920000480--[["Select object(s) then hold ctrl/shift/alt and drag mouse.
+	RolloverText = Strings[302535920000480--[["Some sort of editor the devs left buried in code.
+Select object(s) then hold ctrl/shift/alt and drag mouse.
 click+drag for multiple selection.
 
 It's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look).
 
 
-WARNING: Can be buggy, devs hid this! I kinda got it working, but expect bugs!"]]],
+WARNING: Buggy! I kinda got it working, but expect issues!"]]],
 	OnAction = ChoGGi.ComFuncs.Editor_Toggle,
 	ActionShortcut = "Ctrl-Shift-E",
 	ActionBindable = true,

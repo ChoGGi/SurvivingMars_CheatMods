@@ -301,7 +301,7 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 	local AddSubmenu = ChoGGi.ConsoleFuncs.AddSubmenu
 	AddSubmenu("_G", nil, "AccountStorage", "__cobjectToCObject", "FlagsByBits", "HandleToObject", "TranslationTable", "DeletedCObjects", "Flight_MarkedObjs", "PropertySetMethod", "debug.getregistry")
 	AddSubmenu("ThreadsRegister", nil, "ThreadsMessageToThreads", "ThreadsThreadToMessage", "s_SeqListPlayers", "GameInitThreads")
-	AddSubmenu("Consts", nil, "g_Consts", "const", "ModifiablePropScale", "const.TagLookupTable")
+	AddSubmenu("Consts", nil, "g_Consts", "const", "ModifiablePropScale", "const.TagLookupTable", "const.Scale")
 	AddSubmenu("Dialogs", nil, "terminal.desktop", "GetInGameInterface")
 	AddSubmenu("GlobalVars", nil, "GlobalVarValues", "PersistableGlobals", "GetLuaSaveGameData", "GetLuaLoadGamePermanents", "GlobalObjs", "GlobalObjClasses", "GlobalGameTimeThreads", "GlobalGameTimeThreadFuncs", "GlobalRealTimeThreads", "GlobalRealTimeThreadFuncs")
 	AddSubmenu("EntityData", nil, "GetAllEntities", "EntityStates", "EntitySurfaces", "HexOutlineShapes", "HexInteriorShapes", "HexOutlineByHash", "HexBuildShapes", "HexBuildShapesInversed", "HexPeripheralShapes", "HexCombinedShapes")

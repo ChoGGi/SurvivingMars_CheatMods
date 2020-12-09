@@ -18,7 +18,7 @@ return PlaceObj("ModDef", {
 
 
 Known Issues:
-Earth spins slightly faster
+Earth spins slightly faster (and the wrong way, next update)
 
 Requested by veryinky.]],
 })

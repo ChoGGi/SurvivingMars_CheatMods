@@ -1,1 +1,2 @@
 v0.2
+Shows map grid in text (eg: e4).

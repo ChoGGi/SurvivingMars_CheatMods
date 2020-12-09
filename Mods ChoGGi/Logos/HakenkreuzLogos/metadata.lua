@@ -25,11 +25,11 @@ I probably should've kept a list of credits... I didn't make any of these images
 You can use my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1815122803]Change Logo[/url] mod to change the logo of an existing game.
 
 This is for you (you know who you are):
-Nazies are murders, so are Commies (and Capitalists and Christans and Muslims and so on).
+Nazies are murderers, so are Commies (and Capitalists and Christans and Muslims and so on).
 Congratulations! You win an Interwebs!
 
 
 
-I guess incompatible is better then just removing it.
-Thank you random Steam moderator! Those thumbs are for you.]],
+I guess incompatible is better then just removing it (thank you random Steam moderator).
+]],
 })

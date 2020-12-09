@@ -6,11 +6,13 @@ local IsKindOf = IsKindOf
 local IsValid = IsValid
 local WorldToHex = WorldToHex
 local WaitMsg = WaitMsg
+local CreateGameTimeThread = CreateGameTimeThread
+local DeleteThread = DeleteThread
+local GetMapSector = GetMapSector
 local SetPathMarkersGameTime = ChoGGi.ComFuncs.SetPathMarkersGameTime
 local Pathing_StopAndRemoveAll = ChoGGi.ComFuncs.Pathing_StopAndRemoveAll
 local RetName = ChoGGi.ComFuncs.RetName
-local CreateGameTimeThread = CreateGameTimeThread
-local DeleteThread = DeleteThread
+local GetTarget = ChoGGi.ComFuncs.GetTarget
 
 local threads = {}
 local threads_c = 0
@@ -84,26 +86,6 @@ local style_lookup = {
 	"LandingPosNameAlt",
 }
 
-local GetTarget = ChoGGi.ComFuncs.GetTarget or function(obj)
-	local target = obj.target or obj.goto_target
-	local text
-	if IsPoint(target) then
-		local q, r = WorldToHex(target)
-		text = q .. ", " .. r
-	else
-		while IsValid(target) and target:HasMember("parent") and target.parent and target.parent ~= target do
-			target = target.parent
-		end
-		if target ~= false then
-			text = RetName(target)
-		end
-	end
-
-	if text then
-		return "(" .. text .. ")"
-	end
-end
-
 local function UpdateText(obj, text_dlg, orig_text, orig_target)
 	if not obj then
 		return
@@ -118,7 +100,14 @@ local function UpdateText(obj, text_dlg, orig_text, orig_target)
 
 	local text
 	if target then
-		text = {obj:GetDisplayName() .. "<newline>", T{command, obj}, target}
+		local grid = ""
+		if IsPoint(obj.target or obj.goto_target) then
+			grid = GetMapSector(obj.target or obj.goto_target)
+			if grid then
+				grid = " " .. grid.display_name
+			end
+		end
+		text = {obj:GetDisplayName() .. "<newline>", T{command, obj}, target, grid}
 	else
 		text = {obj:GetDisplayName() .. "<newline>", T{command, obj}}
 	end

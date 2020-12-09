@@ -23,5 +23,7 @@ Now with Mod Options integration.
 
 
 Originally created by Ampoliros, I updated the code to work with current.
-A game update removed specs from newborn biorobots, so that isn't an option anymore (I did add an option to remove Martianborn).]],
+A game update removed specs from newborn biorobots, so that isn't an option anymore (I did add an option to remove Martianborn).
+See also:  [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1780312214]Biorobot Specialisation Uniforms[/url]
+]],
 })

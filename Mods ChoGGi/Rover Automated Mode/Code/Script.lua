@@ -1,19 +1,9 @@
 -- See LICENSE for terms
 
 local function StartupCode()
-	if g_RoverAIResearched then
-		return
+	if not g_RoverAIResearched then
+		Msg("TechResearched", "RoverCommandAI", UICity)
 	end
-
-	g_RoverAIResearched = true
-	MapForEach("map", "BaseRover", function(r)
-		if r.has_auto_mode and (r.command == "Idle" or r.command == "LoadingComplete") then
-			r:SetCommand(r.command)
-			if r == SelectedObj then
-				ObjModified(r)
-			end
-		end
-	end)
 end
 
 OnMsg.CityStart = StartupCode

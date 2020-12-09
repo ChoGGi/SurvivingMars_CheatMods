@@ -1,3 +1,6 @@
+v0.6
+It wasn't properly updating for idle drone hubs.
+
 v0.5
 Code cleanup.
 

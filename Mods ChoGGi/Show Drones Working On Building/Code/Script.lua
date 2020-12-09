@@ -7,7 +7,7 @@ local ResumePassEdits = ResumePassEdits
 local drones = {}
 local c = 0
 
-local function AddArrows(obj, func, ...)
+function OnMsg.SelectionAdded(obj)
 	table.iclear(drones)
 	c = 0
 	local cc = obj.command_centers or ""
@@ -26,13 +26,4 @@ local function AddArrows(obj, func, ...)
 	SuspendPassEdits("ChoGGi.ShowDronesConstructionSite.OnSelected")
 	SelectionArrowAdd(drones)
 	ResumePassEdits("ChoGGi.ShowDronesConstructionSite.OnSelected")
-
-	if func then
-		return func(obj, ...)
-	end
-end
-
-local orig_Building_OnSelected = Building.OnSelected
-function Building:OnSelected(...)
-	return AddArrows(self, orig_Building_OnSelected, ...)
 end

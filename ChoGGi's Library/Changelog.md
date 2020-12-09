@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v8.7 (Unreleased)
+- Added IsDroneIdle/GetIdleDrones/PlacePolyline/FisherYates_Shuffle
 - Changed DotNameToObject to DotPathToObject.
 - RetName checks for TMeta/TConcatMeta.
 - My cleanup save func may have been removing some blinky lights when saving?

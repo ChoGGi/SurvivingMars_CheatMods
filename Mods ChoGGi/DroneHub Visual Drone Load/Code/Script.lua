@@ -50,12 +50,20 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
+local idle_drone_cmds = {
+	Idle = true,
+	GoHome = true,
+	WaitingCommand = true,
+	Start = true,
+}
+
 local function UpdateColour(self)
 	local colour = white
 	if self.working then
 		-- no working drones
 		if #table_ifilter(self.drones, function(_, drone)
-					return not drone:IsDisabled()
+--~ 					return not drone:IsDisabled()
+					return idle_drone_cmds[drone.command]
 				end) < 1 then
 			colour = purple
 		-- Idle drones
