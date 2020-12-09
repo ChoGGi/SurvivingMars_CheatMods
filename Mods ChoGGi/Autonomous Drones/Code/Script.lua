@@ -111,6 +111,9 @@ end
 -- ChoGGi.ComFuncs.SendDroneToCC
 local function SendDroneToCC(drone, new_cc)
 	local old_cc = drone.command_center
+	if old_cc == new_cc then
+		return
+	end
 	-- ultra valid
 	if IsValid(old_cc) and IsValid(new_cc) and IsValid(drone)
 	-- if drone dist to new cc is further than dist to old cc than pack and unpack, otherwise SetCommandCenter() to drive over

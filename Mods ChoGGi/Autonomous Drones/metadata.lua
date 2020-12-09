@@ -23,7 +23,7 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagGameplay", true,
 	"description", [[Takes care of moving drones to different drone controllers.
-Each hour build a list of idle drones, drones from low/medium load controllers, then reassign to high/med load controllers.
+Each hour build a list of prefab drones, idle drones, drones from low/medium load controllers, then reassign to high/med load controllers.
 Drones'll either drive over or pack/unpack over depending on distance (further than dist to controller).
 If they're on a task; they'll wait till it's over before reassign.
 
