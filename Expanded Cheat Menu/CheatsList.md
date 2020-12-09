@@ -258,6 +258,7 @@ Debug.Entity>Entity Spawner: Shows list of entity objects with option to spawn a
 Debug.Entity>Entity Spots Toggle: Toggle showing attachment spots on selected object.
 Debug.Entity>Entity Spots: Shows list of attach spots for use with .ent files.
 Debug.Entity>Material Properties: Shows list of material settings/.dds files for use with .mtl files.
+Debug.Entity>Particles Reload: Reloads particles from "Data/Particles"...
 Debug.Entity>View All Entities: Loads a blank map and places all entities in it.
 Debug.Framerate Counter>Down Left
 Debug.Framerate Counter>Down Right
@@ -293,9 +294,6 @@ Debug.Object>Visible Objects: Shows list of objects rendered in the current fram
 Debug.Path Markers>Building Path Markers: Show inside waypoints colonists take to move around (not all buildings).
 Debug.Path Markers>Path Markers Game Time: Maps paths in real time (see Path Markers to mark more than one at a time).
 Debug.Path Markers>Path Markers: Shows the selected unit path or show a list to add/remove paths for rovers, drones, colonists, or shuttles.
-Debug.Reloads>Particles Reload: Reloads particles from "Data/Particles"...
-Debug.Reloads>Reload Lua: Fires some commands to reload lua files (use OnMsg.ReloadLua() to listen for it).
-Warning: Disables cheat menu submenus.
 Debug.Story Bits>Skip Story Bits: When a story bit appears; always select first option after slight delay.
 Debug.Story Bits>Test Story Bits: Test activate a story bit.
 Debug.Toggles>Anim Debug Toggle: Attaches text to each object showing animation info (or just to selected object).
@@ -306,12 +304,14 @@ Warning: Leaves "Welcome to Mars" msg onscreen till map is loaded.
 Debug.Toggles>Measure Tool: Measures stuff (press again to remove the lines).
 Debug.Toggles>Override Condition Prereqs: All storybit/negotiation/etc options are enabled.
 Debug.Toggles>Place Objects: Opens editor mode with the place objects dialog.
-Debug.Toggles>Toggle Editor: Select object(s) then hold ctrl/shift/alt and drag mouse.
+Debug.Toggles>Toggle Editor: Some sort of editor the devs left buried in code.
+Select object(s) then hold ctrl/shift/alt and drag mouse.
 click+drag for multiple selection.
 It's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look).
 
-WARNING: Can be buggy, devs hid this! I kinda got it working, but expect bugs!
+WARNING: Buggy! I kinda got it working, but expect issues!
 Debug.Toggles>Toggle Render: Toggle rendering certain stuff.
+Debug>Reload LUA: Reloads code from any enabled mods (excluding ECM/Lib).
 Debug>Test Locale File: Test a CSV for malformed strings (can cause freezing when loaded normally).
 Debug>Used Terrain Textures: Show a list of terrain textures used in current map.
 ECM.Buildings.Buildings>Fully Automated Building: Work without workers (select a building and this will apply to all of type or selected).
@@ -484,7 +484,7 @@ ECM.Rockets>Passenger Ark Pod: Allows you to use Ark Pod with any sponsor.
 ECM.Rockets>Payload Capacity: Maximum payload (in kg) of a resupply Rocket
 ECM.Rockets>Pod Price: Change the price per pod (applies to both supply/passenger).
 ECM.Rockets>Rockets Ignore Fuel: Rockets don't need fuel to launch.
-ECM.Rockets>Travel Time: 1000: Time it takes for a Rocket to travel from Mars to Earth
+ECM.Rockets>Travel Time: Time it takes for a Rocket to travel from Mars to Earth
 ECM.Rovers>RC Instant Resource Transfer: Make it instantly gather/transfer resources.
 ECM.Rovers>RC Move Speed: How fast RCs will move.
 ECM.Rovers>RC Set Charging Distance: Distance from power lines that rovers can charge.

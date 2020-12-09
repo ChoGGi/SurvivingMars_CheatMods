@@ -297,7 +297,7 @@ function ChoGGi.MenuFuncs.MirrorSphereStuck()
 	end
 
 	SuspendPassEdits("ChoGGi.MenuFuncs.MirrorSphereStuck")
-	local objs = MapGet(true, "ParSystem", function(o)
+	objs = MapGet(true, "ParSystem", function(o)
 		if o:GetParticlesName() == "PowerDecoy_Captured" and
 				type(o.polyline) == "string" and o.polyline:find("\0") then
 			return true
@@ -421,7 +421,7 @@ function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
 		objs[i]:delete()
 	end
 	-- remove the rover outlines added from https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-persistent-transport-route-blueprint-on-map.1121333/
-	local objs = MapGet(true, "WireFramedPrettification", function(o)
+	objs = MapGet(true, "WireFramedPrettification", function(o)
 		if o:GetEntity() == "RoverTransport" then
 			return true
 		end

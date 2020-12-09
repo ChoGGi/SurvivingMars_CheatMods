@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v8.7 (Unreleased)
+## v8.8 (Unreleased)
+
+## v8.7 (08 Dec 2020)
 - Added IsDroneIdle/GetIdleDrones/PlacePolyline/FisherYates_Shuffle
 - Changed DotNameToObject to DotPathToObject.
 - RetName checks for TMeta/TConcatMeta.

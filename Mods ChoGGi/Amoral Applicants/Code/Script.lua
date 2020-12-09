@@ -110,7 +110,7 @@ function SupplyRocket:WaitInOrbit(arrive_time, ...)
 				self.passenger_orbit_life = route66
 				self.orbit_arrive_time = GameTime()
 
-				for i = 1, mod_DailyColonistLoss do
+				for _ = 1, mod_DailyColonistLoss do
 					-- who's it gonn' be?
 					local _, idx = table_rand(pass_table.applicants_data)
 					-- just in case

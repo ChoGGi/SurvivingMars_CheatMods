@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v15.7 (Unreleased)
+## v15.8 (Unreleased)
+
+## v15.7 (08 Dec 2020)
 ### Changed:
 - Debug>Reload LUA (changed how it reloads, so now it works without messing up ECM).
 - Moved Debug>Particles Reload to Debug>Entity.

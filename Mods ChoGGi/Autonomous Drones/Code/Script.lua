@@ -44,7 +44,6 @@ end
 
 local table_icopy = table.icopy
 local table_ifilter = table.ifilter
-local table_find = table.find
 local table_iclear = table.iclear
 local table_rand = table.rand
 local table_remove = table.remove
@@ -284,7 +283,7 @@ end
 
 -- needs list of drones from medium load ccs to reassign to high load
 
-function OnMsg.NewHour(hour)
+function OnMsg.NewHour()
 	if not mod_EnableMod then
 		return
 	end

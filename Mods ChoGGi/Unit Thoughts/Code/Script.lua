@@ -4,14 +4,12 @@ local table_concat = table.concat
 local table_iclear = table.iclear
 local IsKindOf = IsKindOf
 local IsValid = IsValid
-local WorldToHex = WorldToHex
 local WaitMsg = WaitMsg
 local CreateGameTimeThread = CreateGameTimeThread
 local DeleteThread = DeleteThread
 local GetMapSector = GetMapSector
 local SetPathMarkersGameTime = ChoGGi.ComFuncs.SetPathMarkersGameTime
 local Pathing_StopAndRemoveAll = ChoGGi.ComFuncs.Pathing_StopAndRemoveAll
-local RetName = ChoGGi.ComFuncs.RetName
 local GetTarget = ChoGGi.ComFuncs.GetTarget
 
 local threads = {}

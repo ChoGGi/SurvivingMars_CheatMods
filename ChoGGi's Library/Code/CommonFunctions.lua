@@ -156,8 +156,6 @@ local function DotPathToObject(str, root, create)
 	end
 end
 ChoGGi.ComFuncs.DotPathToObject = DotPathToObject
--- remove DotNameToObject for 8.7
-ChoGGi.ComFuncs.DotNameToObject = DotPathToObject
 
 do -- RetName
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
