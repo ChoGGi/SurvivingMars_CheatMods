@@ -20,7 +20,7 @@ return PlaceObj("ModDef", {
 Resource tooltips:
 [b]Stored Resources Remaining Time[/b]: Estimate of time till consumption + maintenance overtake production + stored.
 N/A means you have more production than consumption.
-[b]Maintenance[/b]: Amounts now reflect benefits of nearby Triboelectric Scrubbers.
+[b]Maintenance[/b]: Amounts reflect benefits of nearby Triboelectric Scrubbers.
 Deposit remaining amount added to resources (shows how much is left in occupied deposits).
 
 Grid (air/water/elec) tooltips:

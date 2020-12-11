@@ -10,6 +10,7 @@ local mod_HidePackButtons
 local mod_RandomiseHubList
 local mod_EnableMod
 local mod_AddEmpty
+local mod_UpdateDelay
 
 -- fired when settings are changed/init
 local function ModOptions()
@@ -21,6 +22,7 @@ local function ModOptions()
 	mod_HidePackButtons = options:GetProperty("HidePackButtons")
 	mod_RandomiseHubList = options:GetProperty("RandomiseHubList")
 	mod_EnableMod = options:GetProperty("EnableMod")
+	mod_UpdateDelay = options:GetProperty("UpdateDelay")
 
 	if not med_drones then
 		med_drones = {}
@@ -286,7 +288,7 @@ end
 
 -- needs list of drones from medium load ccs to reassign to high load
 
-function OnMsg.NewHour()
+local function UpdateDrones()
 	if not mod_EnableMod then
 		return
 	end
@@ -332,5 +334,17 @@ function OnMsg.NewHour()
 		-- update med load drone ccs
 --~ 		threshold = "orange"
 		ListHubs()
+	end
+end
+
+function OnMsg.NewDay()
+	if mod_UpdateDelay then
+		UpdateDrones()
+	end
+end
+
+function OnMsg.NewHour()
+	if not mod_UpdateDelay then
+		UpdateDrones()
 	end
 end

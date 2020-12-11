@@ -1,1 +1,3 @@
 v0.2
+Choose between Hour/Sol.
+Slight speed up.
