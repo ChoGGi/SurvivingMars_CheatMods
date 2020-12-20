@@ -11,6 +11,9 @@ local mod_RandomiseHubList
 local mod_EnableMod
 local mod_AddEmpty
 local mod_UpdateDelay
+local mod_UseDroneHubs
+local mod_UseCommanders
+local mod_UseRockets
 
 -- fired when settings are changed/init
 local function ModOptions()
@@ -23,6 +26,9 @@ local function ModOptions()
 	mod_RandomiseHubList = options:GetProperty("RandomiseHubList")
 	mod_EnableMod = options:GetProperty("EnableMod")
 	mod_UpdateDelay = options:GetProperty("UpdateDelay")
+	mod_UseDroneHubs = options:GetProperty("UseDroneHubs")
+	mod_UseCommanders = options:GetProperty("UseCommanders")
+	mod_UseRockets = options:GetProperty("UseRockets")
 
 	if not med_drones then
 		med_drones = {}
@@ -121,7 +127,7 @@ local function SendDroneToCC(drone, new_cc)
 	-- if drone dist to new cc is further than dist to old cc than pack and unpack, otherwise SetCommandCenter() to drive over
 		and drone:GetDist(old_cc) < drone:GetDist(new_cc)
 	then
-		-- function DroneControl:ConvertDroneToPrefab(bulk)
+		-- DroneControl:ConvertDroneToPrefab()
 		if drone.demolishing then
 			drone:ToggleDemolish()
 		end
@@ -131,6 +137,7 @@ local function SendDroneToCC(drone, new_cc)
 		table_remove_entry(old_cc.drones, drone)
 		SelectionArrowRemove(drone)
 		drone:SetCommand("DespawnAtHub")
+
 		-- wait till drone is sucked up
 		while IsValid(drone) do
 			Sleep(1000)
@@ -193,10 +200,6 @@ local function AssignDrones(cc)
 	AssignWorkingDrones(med_drones, count, cc)
 end
 
--- function DroneControl:CalcLapTime(), just wanted the funcs local since we call this a lot
-local function CalcLapTime(cc, drones)
-	return drones == 0 and 0 or Max(cc.lap_time, GameTime() - cc.lap_start)
-end
 --~ -- function DroneControl:GetIdleDronesCount(), same but now with more idle
 --~ local function GetIdleDronesCount(cc)
 --~ 	local count = 0
@@ -233,7 +236,9 @@ local function UpdateHub(cc, build_list, drone_prefabs)
 --~ 	elseif GetIdleDronesCount(cc) == #cc.drones then
 --~ 		-- all idle drones
 	else
-		local lap_time = CalcLapTime(cc, #drones)
+		-- function DroneControl:CalcLapTime(), wanted the funcs local since we call this a lot
+		local lap_time = #drones == 0 and 0 or Max(cc.lap_time, GameTime() - cc.lap_start)
+
 		if lap_time < DroneLoadLowThreshold then
 			-- low load
 			if build_list == "low" then
@@ -275,7 +280,12 @@ local function ListHubs(build_list, drone_prefabs)
 	for i = 1, #ccs do
 		local cc = ccs[i]
 		-- skip disabled ccs/off map rockets
-		if cc.working then
+		if cc.working and (
+			mod_UseCommanders and cc:IsKindOf("RCRover")
+			or mod_UseDroneHubs and cc:IsKindOf("DroneHub")
+			or mod_UseRockets and cc:IsKindOf("SupplyRocket")
+
+		) then
 			UpdateHub(cc, build_list, drone_prefabs)
 		else
 			-- remove any drones from busted ccs?

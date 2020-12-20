@@ -18,7 +18,7 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"TagCheats", true,
 	-- I can't make my options show up :)
---~ 	"has_options", true,
+	"has_options", true,
 	"ignore_files", {
 		"*.bat",
 		"*.ini",
@@ -52,7 +52,7 @@ return PlaceObj("ModDef", {
 		-- some dialogs i use
 		"Code/ListChoice.lua",
 		"Code/MultiLineText.lua",
-		-- Mod Options button
+		-- Mod Options
 		"Code/ModOptions.lua",
 	},
 	"description", [[Contains stuff needed by most of my mods.

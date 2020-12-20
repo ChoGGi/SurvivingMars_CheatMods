@@ -23,6 +23,7 @@ return PlaceObj("ModDef", {
 	"TagTools", true,
 	"TagOther", true,
 	"TagCheats", true,
+	"has_options", true,
 	"ignore_files", {
 		"!examples*",
 		"*.bat",

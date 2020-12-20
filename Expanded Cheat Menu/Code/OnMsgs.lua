@@ -300,7 +300,35 @@ function OnMsg.ClassesBuilt()
 	end
 end
 
+-- fired when settings are changed/init
+local function ModOptions()
+	-- I cxheck mod options earlier than I should, so this prevents blank mod options (somwhow)
+	CurrentModOptions:GetProperties()
+
+	-- rebuild cheats menu to hide items
+	local desktop = terminal.desktop
+	for i = 1, #desktop do
+		local dlg = desktop[i].idMenuBar
+		if dlg and dlg.MenuEntries == "DevMenu" then
+			dlg:RebuildActions(dlg:GetActionsHost())
+		end
+	end
+
+end
+
+-- fired when Mod Options>Apply button is clicked
+function OnMsg.ApplyModOptions(id)
+	if id ~= CurrentModId then
+		return
+	end
+
+	ModOptions()
+end
+
 function OnMsg.ModsReloaded()
+	-- load default/saved settings
+	ModOptions()
+
 	local ChoGGi = ChoGGi
 	local UserSettings = ChoGGi.UserSettings
 

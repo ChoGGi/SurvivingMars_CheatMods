@@ -1,3 +1,6 @@
+v0.3
+Mod options to choose which controllers to use for assignment.
+
 v0.2
 Choose between Hour/Sol.
 Slight speed up.

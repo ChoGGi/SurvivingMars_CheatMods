@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+local T = T
+local concat = table.concat
+
 return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "EnableMod",
@@ -23,13 +26,31 @@ return {
 		"name", "UpdateDelay",
 		"DisplayName", T(302535920011798, "Update Delay"),
 		"Help", T(302535920011799, "On = Sol, Off = Hour."),
-		"DefaultValue", false,
+		"DefaultValue", true,
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "HidePackButtons",
 		"DisplayName", T(302535920011800, "Hide Pack Buttons"),
 		"Help", T(302535920011801, "Hide Pack/Unpack buttons for drone controllers."),
 		"DefaultValue", true,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "UseDroneHubs",
+		"DisplayName", concat(T(302535920011808, "Use ") .. T(5048, "Drone Hubs")),
+		"Help", concat(T(302535920011809, "Assign Drones to ") .. T(5048, "Drone Hubs")),
+		"DefaultValue", true,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "UseCommanders",
+		"DisplayName", concat(T(302535920011808, "Use ") .. T(12091, "RC Commanders")),
+		"Help", concat(T(302535920011809, "Assign Drones to ") .. T(12091, "RC Commanders") .. T(302535920011810, " and other DLC Commanders.")),
+		"DefaultValue", true,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "UseRockets",
+		"DisplayName", concat(T(302535920011808, "Use ") .. T(5238, "Rockets")),
+		"Help", concat(T(302535920011809, "Assign Drones to ") .. T(5238, "Rockets")),
+		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "AddHeavy",

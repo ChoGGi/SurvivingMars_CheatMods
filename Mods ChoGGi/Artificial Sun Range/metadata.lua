@@ -14,7 +14,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagGameplay", true,
-	"description", [[Change the range of the Artificial Sun to add more Solar Panels (defaults to default sun range).
+	"description", [[Change the range of the Artificial Sun to add more Solar Panels (mod option defaults to default sun range).
 
-This also fixes the issue of having more than one sun and solar panels ignoring sun + 1.]],
+This also fixes the issue of having more than one sun and solar panels ignoring sun + 1.
+]],
 })

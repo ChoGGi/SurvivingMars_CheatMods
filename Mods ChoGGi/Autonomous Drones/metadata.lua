@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"lua_revision", 249143,
 	"steam_id", "2313642931",
 	"pops_any_uuid", "4313ca38-0202-4d35-b630-1290369995eb",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -34,9 +34,8 @@ Randomise Hub List: Randomise list of drone controllers, so the order is differe
 Use Prefabs: Use drone prefabs to adjust the loads.
 Update Delay: On = Sol, Off = Hour.
 Hide Pack Buttons: Hide Pack/Unpack buttons for drone controllers.
-Add Heavy: How many drones to add to heavy load controllers.
-Add Medium: How many drones to add to medium load controllers.
-Add Empty: How many drones to add to empty controllers.
+Use Drone Hubs/RC Commanders/Rockets: Toggle assigning or ignoring certain controllers.
+Add Empty/Heavy/Medium: How many drones to add to empty and heavy/medium load controllers.
 (Recommendations for the default Add amounts?)
 ]],
 })

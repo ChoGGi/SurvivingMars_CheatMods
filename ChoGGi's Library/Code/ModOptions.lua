@@ -3,37 +3,6 @@
 local table = table
 local type = type
 
-local mod_ModOptionsButton = true
-local mod_ModOptionsExpanded = true
-
--- for some reason mod options don't show up for this mod so ...
-
---~ local mod_ModOptionsButton
---~ local mod_ModOptionsExpanded
-
--- fired when settings are changed/init
-local function ModOptions()
---~ 	mod_ModOptionsButton = CurrentModOptions:GetProperty("ModOptionsButton")
---~ 	mod_ModOptionsExpanded = CurrentModOptions:GetProperty("ModOptionsExpanded")
-
---~ 	-- make sure we"re ingame
---~ 	if not UICity then
---~ 		return
---~ 	end
-end
-
---~ -- load default/saved settings
---~ OnMsg.ModsReloaded = ModOptions
-
---~ -- fired when option is changed
---~ function OnMsg.ApplyModOptions(id)
---~ 	if id ~= CurrentModId then
---~ 		return
---~ 	end
-
---~ 	ModOptions()
---~ end
-
 local function UpdateProp(xtemplate)
 	local idx = table.find(xtemplate, "MaxWidth", 400)
 	if idx then
@@ -110,71 +79,70 @@ local function ChangeBoolColour(xtemplate, id, colour)
 end
 
 function OnMsg.ClassesPostprocess()
-	ModOptions()
 
-	--
-	if mod_ModOptionsExpanded then
-		local xtemplate = XTemplates.PropBool[1]
-		if not xtemplate.ChoGGi_ModOptionsExpanded then
-			xtemplate.ChoGGi_ModOptionsExpanded = true
+	-- Mod Options Expanded
+	local xtemplate = XTemplates.PropBool[1]
+	if not xtemplate.ChoGGi_ModOptionsExpanded then
+		xtemplate.ChoGGi_ModOptionsExpanded = true
 
-			-- Change On/Off text to green/red/duct tape
-			ChangeBoolColour(xtemplate, "idOn", "green")
-			ChangeBoolColour(xtemplate, "idOff", "red")
+		-- Change On/Off text to green/red/duct tape
+		ChangeBoolColour(xtemplate, "idOn", "green")
+		ChangeBoolColour(xtemplate, "idOff", "red")
 
-			UpdateProp(xtemplate)
-			UpdateProp(XTemplates.PropChoiceOptions[1])
+		UpdateProp(xtemplate)
+		UpdateProp(XTemplates.PropChoiceOptions[1])
 
-			xtemplate = XTemplates.PropNumber[1]
-			UpdateProp(xtemplate)
-			-- add buttons to number
-			AddSliderButtons(xtemplate)
+		xtemplate = XTemplates.PropNumber[1]
+		UpdateProp(xtemplate)
+		-- add buttons to number
+		AddSliderButtons(xtemplate)
 
---~ 			-- hmm
---~ 			UpdateProp(XTemplates.PropKeybinding[1])
-		end
+--~ 		-- hmm
+--~ 		UpdateProp(XTemplates.PropKeybinding[1])
 	end
-	--
-	if mod_ModOptionsButton and HasModsWithOptions() then
-		local xtemplate = XTemplates.XIGMenu[1]
-		if not xtemplate.ChoGGi_ModOptionsButton then
-			xtemplate.ChoGGi_ModOptionsButton = true
 
-			-- XTemplateWindow[3] ("Margins" = (60, 40)-(0, 0) *(HGE.Box)) >
-			xtemplate = xtemplate[3]
-			for i = 1, #xtemplate do
-				if xtemplate[i].Id == "idList" then
-					xtemplate = xtemplate[i]
-					break
-				end
+	-- Mod Options Button
+	local xtemplate = XTemplates.XIGMenu[1]
+	if not xtemplate.ChoGGi_ModOptionsButton then
+		xtemplate.ChoGGi_ModOptionsButton = true
+
+		-- XTemplateWindow[3] ("Margins" = (60, 40)-(0, 0) *(HGE.Box)) >
+		xtemplate = xtemplate[3]
+		for i = 1, #xtemplate do
+			if xtemplate[i].Id == "idList" then
+				xtemplate = xtemplate[i]
+				break
 			end
+		end
 
-			if xtemplate.Id == "idList" then
-				table.insert(xtemplate, 5, PlaceObj("XTemplateAction", {
-					"ActionId", "idModOptions",
-					"ActionName", T(1000867, "Mod Options"),
-					"ActionToolbar", "mainmenu",
-					"OnAction", function (_, host, _)
-						-- change to options dialog
-						host:SetMode("Options")
+		if xtemplate.Id == "idList" then
+			table.insert(xtemplate, 5, PlaceObj("XTemplateAction", {
+				"ActionId", "idModOptions",
+				"ActionName", T(1000867, "Mod Options"),
+				"ActionToolbar", "mainmenu",
+				"__condition", function()
+					return CurrentModOptions:GetProperty("ModOptionsButton") and HasModsWithOptions()
+				end,
+				"OnAction", function(_, host, _)
+					-- change to options dialog
+					host:SetMode("Options")
 
-						-- then change to mod options
-						-- [2]XContentTemplate>
-						local list = host[2].idOverlayDlg.idList
-						for i = 1, #list do
-							local button = list[i]
-							if type(button.context) == "table" and button.context.id == "ModOptions" then
-								SetDialogMode(button, "mod_choice", button.context)
-								break
-							end
+					-- then change to mod options
+					-- [2]XContentTemplate>
+					local list = host[2].idOverlayDlg.idList
+					for i = 1, #list do
+						local button = list[i]
+						if type(button.context) == "table" and button.context.id == "ModOptions" then
+							SetDialogMode(button, "mod_choice", button.context)
+							break
 						end
-					end,
-				}))
-			end
-
+					end
+				end,
+			}))
 		end
 
 	end
+
 	-- Add input text box
 
 	--

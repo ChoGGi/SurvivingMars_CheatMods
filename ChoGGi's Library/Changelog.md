@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v8.8 (Unreleased)
+- Added mod option to toggle Mod Options button (added in v8.6).
 
 ## v8.7 (08 Dec 2020)
 - Added IsDroneIdle/GetIdleDrones/PlacePolyline/FisherYates_Shuffle

@@ -679,6 +679,52 @@ function OnMsg.ClassesGenerate()
 
 	end
 
+	do --XMenuBar:RebuildActions
+		local function SetVis(entry, options, mod_option)
+			if options:GetProperty(mod_option) then
+				entry:SetVisible(false)
+				entry.FoldWhenHidden = true
+			else
+				entry:SetVisible(true)
+			end
+		end
+
+		SaveOrigFunc("XMenuBar", "RebuildActions")
+		function XMenuBar:RebuildActions(...)
+			ChoGGi_OrigFuncs.XMenuBar_RebuildActions(self, ...)
+			-- we only care for the cheats menu thanks (not that there's any other menu toolbars)
+			if self.MenuEntries ~= "DevMenu" then
+				return
+			end
+			local TGetID = TGetID
+			local options = CurrentModOptions
+			-- not built yet (calling options:GetProperty(X) would give us blank options)
+			if #options.properties == 0 then
+				return
+			end
+
+			for i = 1, #self do
+				local entry = self[i]
+
+				if entry.Text == Strings[302535920000002--[[ECM]]] then
+					SetVis(entry, options, "HideECMMenu")
+				-- Cheats
+				elseif TGetID(entry.Text) == 27 then
+					SetVis(entry, options, "HideCheatsMenu")
+				-- Game
+				elseif TGetID(entry.Text) == 283142739680 then
+					SetVis(entry, options, "HideGameMenu")
+				-- Debug
+				elseif TGetID(entry.Text) == 1000113 then
+					SetVis(entry, options, "HideDebugMenu")
+				-- Help
+				elseif TGetID(entry.Text) == 487939677892 then
+					SetVis(entry, options, "HideHelpMenu")
+				end
+			end
+		end
+	end -- do
+
 end -- ClassesGenerate
 
 --~ function OnMsg.ClassesPreprocess()

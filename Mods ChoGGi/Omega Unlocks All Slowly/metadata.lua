@@ -18,6 +18,7 @@ return PlaceObj("ModDef", {
 Mod Options:
 Sols Between Unlock: How many Sols to wait before unlocking the next one (default 1).
 Show Notification: Show a notification when a breakthrough is unlocked.
+Random Chance: If you want to gamble your chance of unlocking breakthoughs each Sol (0 = disabled).
 
 Check the Research tooltip in the Infobar to see how many Sols till next unlock (assuming you've raised Sols Between Unlock).
 

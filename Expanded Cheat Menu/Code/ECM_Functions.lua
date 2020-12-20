@@ -3995,3 +3995,67 @@ do -- ExpandModOptions
 
 	end
 end -- do
+
+
+do -- UnpublishParadoxMod
+	local function PDX_GetModDetails(mod_title, os_type)
+		local query = {
+			Query = mod_title,
+			Author = "",
+			RequiredVersion = "",
+			Tags = {},
+			Page = 0,
+			PageSize = 20,
+			SortBy = "displayName",
+			OrderBy = "asc",
+			OSType = os_type
+		}
+		local err, results = AsyncOpWait(PopsAsyncOpTimeout, nil, "AsyncPopsModsSearch", query)
+		if err then
+			return err
+		end
+		-- to unpublish a mod we have to parse search results, instead of using the guid to look it up?
+		for i, entry in ipairs(results) do
+			if entry.DisplayName == mod_title then
+				return entry
+			end
+		end
+		return "mod not found"
+	end
+
+	-- platform = "any" for pc/xbox, "windows" for only pc
+	-- mod_title = name of mod on paradox platform
+--~ ChoGGi.ComFuncs.UnpublishParadoxMod("Lakes Toggle Visibility")
+	function ChoGGi.ComFuncs.UnpublishParadoxMod(mod_title, platform)
+		if blacklist then
+			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.UnpublishParadoxMod")
+			return
+		end
+		if not mod_title then
+			return
+		end
+
+		local function CallBackFunc(answer)
+			if answer then
+
+				platform = platform or "any"
+				local result = PDX_GetModDetails(mod_title, platform)
+
+				if type(result) == "table" then
+					result = AsyncOpWait(PopsAsyncOpTimeout, nil, "AsyncPopsModsDeleteMod", result.ModID)
+				end
+
+				if type(result) == "string" then
+					print("UnpublishParadoxMod ERROR", result)
+				else
+					print("UnpublishParadoxMod", Translate(1000015--[[Success]]))
+				end
+			end
+		end
+		ChoGGi.ComFuncs.QuestionBox(
+			Translate(6779--[[Warning]]) .. "!\n" .. Translate(672683736395--[[Unpublish from Paradox]]),
+			CallBackFunc,
+			mod_title
+		)
+	end
+end -- do

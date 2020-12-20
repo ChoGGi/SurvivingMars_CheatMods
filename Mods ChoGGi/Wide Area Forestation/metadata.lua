@@ -24,7 +24,7 @@ return PlaceObj("ModDef", {
 	"TagGameplay", true,
 	"TagBuildings", true,
 	"TagTerraforming", true,
-	"description", [[Set a larger grid size for the Forestation Plant.
+	"description", [[Set a larger grid size for the Forestation Plant (or smaller if you want to spell something).
 Adds a button to change all plants to use grid size of selected plant.
 
 Mod Options:

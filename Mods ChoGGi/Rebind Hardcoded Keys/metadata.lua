@@ -22,10 +22,11 @@ return PlaceObj("ModDef", {
 	},
 	"TagInterface", true,
 	"TagOther", true,
-	"description", [[Lets you rebind hardcoded keys:
-Cycle visual variant backward ([)
-Cycle visual variant forward (])
-Construction cancel (Escape) (you'll need to reset your keybinds to restore this as you can't bind esc)
+	"description", [[Lets you rebind hardcoded keys.
+
+Cycle visual variant backward: [
+Cycle visual variant forward: ]
+Construction cancel: Escape (you'll need to reset your keybinds to restore this as you can't bind esc)
 
 
 More keys?
