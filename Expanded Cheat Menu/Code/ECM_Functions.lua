@@ -4015,7 +4015,8 @@ do -- UnpublishParadoxMod
 			return err
 		end
 		-- to unpublish a mod we have to parse search results, instead of using the guid to look it up?
-		for i, entry in ipairs(results) do
+		for i = 1, #results do
+			local entry = results[i]
 			if entry.DisplayName == mod_title then
 				return entry
 			end

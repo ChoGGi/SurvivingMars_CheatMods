@@ -37,6 +37,7 @@ local WorldToHex = WorldToHex
 local OpenDialog = OpenDialog
 local ViewAndSelectObject = ViewAndSelectObject
 local XDestroyRolloverWindow = XDestroyRolloverWindow
+local SelectionArrowRemove = SelectionArrowRemove
 
 local rawget, getmetatable = rawget, getmetatable
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
@@ -5853,4 +5854,36 @@ function ChoGGi.ComFuncs.FisherYates_Shuffle(list, min)
     local j = Random(min, i)
     list[i], list[j] = list[j], list[i]
   end
+end
+
+function ChoGGi.ComFuncs.SendDroneToCC(drone, new_hub)
+	local old_hub = drone.command_center
+	if old_hub == new_hub then
+		return
+	end
+	-- ultra valid
+	if IsValid(old_hub) and IsValid(new_hub) and IsValid(drone)
+	-- if drone dist to new hub is further than dist to old hub than pack and unpack, otherwise SetCommandCenter() to drive over
+		and drone:GetDist(old_hub) < drone:GetDist(new_hub)
+	then
+		-- DroneControl:ConvertDroneToPrefab()
+		if drone.demolishing then
+			drone:ToggleDemolish()
+		end
+		drone.can_demolish = false
+		UICity.drone_prefabs = UICity.drone_prefabs + 1
+		table_remove_entry(old_hub.drones, drone)
+		SelectionArrowRemove(drone)
+		drone:SetCommand("DespawnAtHub")
+
+		-- wait till drone is sucked up
+		while IsValid(drone) do
+			Sleep(1000)
+		end
+		-- spawn drone from prefab at new hub
+		new_hub:UseDronePrefab()
+	else
+		-- close enough to drive
+		drone:SetCommandCenter(hub)
+	end
 end

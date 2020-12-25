@@ -73,9 +73,6 @@ local IsKindOf = IsKindOf
 local floatfloor = floatfloor
 local AsyncRand = AsyncRand
 
-local SelectionArrowRemove = SelectionArrowRemove
-local Random = ChoGGi.ComFuncs.Random
-
 local DroneLoadLowThreshold = const.DroneLoadLowThreshold
 local DroneLoadMediumThreshold = const.DroneLoadMediumThreshold
 local idle_drone_cmds = {
@@ -87,7 +84,10 @@ local idle_drone_cmds = {
 
 --~ local GetIdleDrones = ChoGGi.ComFuncs.GetIdleDrones
 --~ local FisherYates_Shuffle = ChoGGi.ComFuncs.FisherYates_Shuffle
+--~ local SendDroneToCC = ChoGGi.ComFuncs.SendDroneToCC
 -- remove after update
+local Random = ChoGGi.ComFuncs.Random
+local SelectionArrowRemove = SelectionArrowRemove
 local function IsDroneIdle(_, drone)
 	return idle_drone_cmds[drone.command]
 end
@@ -102,6 +102,38 @@ local FisherYates_Shuffle = ChoGGi.ComFuncs.FisherYates_Shuffle or function(list
     local j = Random(min, i)
     list[i], list[j] = list[j], list[i]
   end
+end
+
+local SendDroneToCC = ChoGGi.ComFuncs.SendDroneToCC or function(drone, new_hub)
+	local old_hub = drone.command_center
+	if old_hub == new_hub then
+		return
+	end
+	-- ultra valid
+	if IsValid(old_hub) and IsValid(new_hub) and IsValid(drone)
+	-- if drone dist to new hub is further than dist to old hub than pack and unpack, otherwise SetCommandCenter() to drive over
+		and drone:GetDist(old_hub) < drone:GetDist(new_hub)
+	then
+		-- DroneControl:ConvertDroneToPrefab()
+		if drone.demolishing then
+			drone:ToggleDemolish()
+		end
+		drone.can_demolish = false
+		UICity.drone_prefabs = UICity.drone_prefabs + 1
+		table_remove_entry(old_hub.drones, drone)
+		SelectionArrowRemove(drone)
+		drone:SetCommand("DespawnAtHub")
+
+		-- wait till drone is sucked up
+		while IsValid(drone) do
+			Sleep(1000)
+		end
+		-- spawn drone from prefab at new hub
+		new_hub:UseDronePrefab()
+	else
+		-- close enough to drive
+		drone:SetCommandCenter(hub)
+	end
 end
 -- remove after update
 
@@ -124,40 +156,6 @@ local function AssignDronePrefabs(hub)
 	local count = threshold == "red" and mod_AddHeavy or mod_AddMedium
 	for _ = 1, count do
 		hub:UseDronePrefab()
-	end
-end
-
--- ChoGGi.ComFuncs.SendDroneToCC
-local function SendDroneToCC(drone, new_hub)
-	local old_hub = drone.command_center
-	if old_hub == new_hub then
-		return
-	end
-	-- ultra valid
-	if IsValid(old_hub) and IsValid(new_hub) and IsValid(drone)
-	-- if drone dist to new hub is further than dist to old hub than pack and unpack, otherwise SetCommandCenter() to drive over
-		and drone:GetDist(old_hub) < drone:GetDist(new_hub)
-	then
-		-- DroneControl:ConvertDroneToPrefab()
-		if drone.demolishing then
-			drone:ToggleDemolish()
-		end
-		drone.can_demolish = false
-		local UICity = UICity
-		UICity.drone_prefabs = UICity.drone_prefabs + 1
-		table_remove_entry(old_hub.drones, drone)
-		SelectionArrowRemove(drone)
-		drone:SetCommand("DespawnAtHub")
-
-		-- wait till drone is sucked up
-		while IsValid(drone) do
-			Sleep(1000)
-		end
-		-- spawn drone from prefab at new hub
-		new_hub:UseDronePrefab()
-	else
-		-- close enough to drive
-		drone:SetCommandCenter(hub)
 	end
 end
 

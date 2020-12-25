@@ -1,10 +1,13 @@
 ## Library Changelog
 
-## v8.8 (Unreleased)
+## v8.9 (Unreleased)
+
+## v8.8 (25 Dec 2020)
 - Added mod option to toggle Mod Options button (added in v8.6).
+- Added SendDroneToCC.
 
 ## v8.7 (08 Dec 2020)
-- Added IsDroneIdle/GetIdleDrones/PlacePolyline/FisherYates_Shuffle
+- Added IsDroneIdle/GetIdleDrones/PlacePolyline/FisherYates_Shuffle.
 - Changed DotNameToObject to DotPathToObject.
 - RetName checks for TMeta/TConcatMeta.
 - My cleanup save func may have been removing some blinky lights when saving?

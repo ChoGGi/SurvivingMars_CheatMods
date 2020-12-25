@@ -1,9 +1,11 @@
 ## ECM Changelog
 
-## v15.8 (Unreleased)
+## v15.9 (Unreleased)
+
+## v15.8 (25 Dec 2020)
 ### Added:
 - Cheat menu entries can now be individually hidden in mod options.
-- UnpublishParadoxMod() func: You don't need to use mod editor to remove a mod.
+- UnpublishParadoxMod() func: You don't need to use mod editor to remove a mod (needs HelperMod).
 
 ## v15.7 (08 Dec 2020)
 ### Changed:

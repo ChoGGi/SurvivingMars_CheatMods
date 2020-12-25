@@ -103,7 +103,7 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	-- Mod Options Button
-	local xtemplate = XTemplates.XIGMenu[1]
+	xtemplate = XTemplates.XIGMenu[1]
 	if not xtemplate.ChoGGi_ModOptionsButton then
 		xtemplate.ChoGGi_ModOptionsButton = true
 
