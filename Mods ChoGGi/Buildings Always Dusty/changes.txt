@@ -1,3 +1,6 @@
+v0.5
+Forget the setting to actually show mod options...
+
 v0.4
 Evans update.
 

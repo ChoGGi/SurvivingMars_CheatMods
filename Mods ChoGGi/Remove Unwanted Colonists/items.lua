@@ -12,9 +12,9 @@ local function AddColonists(list)
 		local id = list[i]
 		local trait = TraitPresets[id]
 		local cat = trait.category == "other" and T(10405, "Other")
-			or trait.category == "Age Group" and T(11607,"Age Group")
+			or trait.category == "Age Group" and T(11607, "Age Group")
 			or T(trait.category)
-			--or trait.category == "Negative" and T(0, "Negative")
+			--or trait.category == "Negative" and T(0000, "Negative")
 
 --~ 		-- add categories
 --~ 		if not added_cats[trans(cat)] then
@@ -42,6 +42,7 @@ AddColonists(t.ColonistAges)
 AddColonists(t.NegativeTraits)
 AddColonists(t.PositiveTraits)
 AddColonists(t.OtherTraits)
+
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
 table.sort(properties, function(a, b)

@@ -1,1 +1,4 @@
 add light blue? icon? for cold areas
+
+Deemedrol
+filter to only show certain hexes.

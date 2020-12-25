@@ -2,6 +2,7 @@
 
 local table = table
 local type = type
+local HasModsWithOptions = HasModsWithOptions
 
 local function UpdateProp(xtemplate)
 	local idx = table.find(xtemplate, "MaxWidth", 400)
@@ -121,19 +122,22 @@ function OnMsg.ClassesPostprocess()
 				"ActionName", T(1000867, "Mod Options"),
 				"ActionToolbar", "mainmenu",
 				"__condition", function()
-					return CurrentModOptions:GetProperty("ModOptionsButton") and HasModsWithOptions()
+					if CurrentModOptions.GetProperty then
+						return CurrentModOptions:GetProperty("ModOptionsButton") and HasModsWithOptions()
+					end
+					return HasModsWithOptions()
 				end,
-				"OnAction", function(_, host, _)
+				"OnAction", function(_, host)
 					-- change to options dialog
 					host:SetMode("Options")
 
 					-- then change to mod options
-					-- [2]XContentTemplate>
+					-- [2]XContentTemplate.idOverlayDlg.idList
 					local list = host[2].idOverlayDlg.idList
 					for i = 1, #list do
-						local button = list[i]
-						if type(button.context) == "table" and button.context.id == "ModOptions" then
-							SetDialogMode(button, "mod_choice", button.context)
+						local context = list[i].context
+						if type(context) == "table" and context.id == "ModOptions" then
+							SetDialogMode(list[i], "mod_choice", context)
 							break
 						end
 					end
@@ -143,7 +147,7 @@ function OnMsg.ClassesPostprocess()
 
 	end
 
-	-- Add input text box
+	-- Add input text box mod option
 
 	--
 

@@ -67,10 +67,10 @@ function OnMsg.ModsReloaded()
 
 		local g_Classes = g_Classes
 
+		-- dust gens and rockets, but not supply pods
 		local BuildingTemplates = BuildingTemplates
 		for id in pairs(BuildingTemplates) do
 			local o = g_Classes[id]
-			-- dust gens and rockets, but not supply pods
 			if o and o.GetDustRadius and not o:IsKindOf("SupplyRocket") then
 				classes_c = classes_c + 1
 				classes[classes_c] = id
