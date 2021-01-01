@@ -63,7 +63,7 @@ local table_rand = table.rand
 local table_insert = table.insert
 local table_remove = table.remove
 local table_remove_entry = table.remove_entry
-local table_copy = table.copy
+local table_icopy = table.icopy
 local CreateGameTimeThread = CreateGameTimeThread
 local Sleep = Sleep
 local Max = Max
@@ -82,60 +82,9 @@ local idle_drone_cmds = {
 	Start = true,
 }
 
---~ local GetIdleDrones = ChoGGi.ComFuncs.GetIdleDrones
---~ local FisherYates_Shuffle = ChoGGi.ComFuncs.FisherYates_Shuffle
---~ local SendDroneToCC = ChoGGi.ComFuncs.SendDroneToCC
--- remove after update
-local Random = ChoGGi.ComFuncs.Random
-local SelectionArrowRemove = SelectionArrowRemove
-local function IsDroneIdle(_, drone)
-	return idle_drone_cmds[drone.command]
-end
-local GetIdleDrones = ChoGGi.ComFuncs.GetIdleDrones or function()
-	return table_ifilter(table_icopy(UICity.labels.Drone or empty_table), IsDroneIdle)
-end
-local FisherYates_Shuffle = ChoGGi.ComFuncs.FisherYates_Shuffle or function(list, min)
-	if not min then
-		min = 1
-	end
-  for i = #list, 2, -1 do
-    local j = Random(min, i)
-    list[i], list[j] = list[j], list[i]
-  end
-end
-
-local SendDroneToCC = ChoGGi.ComFuncs.SendDroneToCC or function(drone, new_hub)
-	local old_hub = drone.command_center
-	if old_hub == new_hub then
-		return
-	end
-	-- ultra valid
-	if IsValid(old_hub) and IsValid(new_hub) and IsValid(drone)
-	-- if drone dist to new hub is further than dist to old hub than pack and unpack, otherwise SetCommandCenter() to drive over
-		and drone:GetDist(old_hub) < drone:GetDist(new_hub)
-	then
-		-- DroneControl:ConvertDroneToPrefab()
-		if drone.demolishing then
-			drone:ToggleDemolish()
-		end
-		drone.can_demolish = false
-		UICity.drone_prefabs = UICity.drone_prefabs + 1
-		table_remove_entry(old_hub.drones, drone)
-		SelectionArrowRemove(drone)
-		drone:SetCommand("DespawnAtHub")
-
-		-- wait till drone is sucked up
-		while IsValid(drone) do
-			Sleep(1000)
-		end
-		-- spawn drone from prefab at new hub
-		new_hub:UseDronePrefab()
-	else
-		-- close enough to drive
-		drone:SetCommandCenter(hub)
-	end
-end
--- remove after update
+local GetIdleDrones = ChoGGi.ComFuncs.GetIdleDrones
+local FisherYates_Shuffle = ChoGGi.ComFuncs.FisherYates_Shuffle
+local SendDroneToCC = ChoGGi.ComFuncs.SendDroneToCC
 
 local function Template__condition(_, context)
 	return not mod_HidePackButtons and IsKindOf(context, "DroneControl")
@@ -153,8 +102,7 @@ function OnMsg.ClassesPostprocess()
 end
 
 local function AssignDronePrefabs(hub)
-	local count = threshold == "red" and mod_AddHeavy or mod_AddMedium
-	for _ = 1, count do
+	for _ = 1, (threshold == "red" and mod_AddHeavy or mod_AddMedium) do
 		hub:UseDronePrefab()
 	end
 end
@@ -323,7 +271,7 @@ local function UpdateDrones()
 		then
 			hub_count = hub_count + 1
 			filtered_hubs[hub_count] = hub
-		else
+		elseif mod_UsePrefabs then
 			-- remove any drones from busted hubs (just in case they aren't)
 			for _ = 1, #(hub.drones or "") do
 				hub:ConvertDroneToPrefab()
@@ -358,7 +306,7 @@ local function UpdateDrones()
 
 	-- if there's less drones then the threshold set in mod options we evenly split drones across hubs
 	-- copied so we can table.remove from it (maybe filter out the not working drones?)
-	local drones = table_copy(UICity.labels.Drone)
+	local drones = table_icopy(UICity.labels.Drone)
 	if mod_EarlyGame == 0 or mod_EarlyGame > #drones then
 		-- get numbers for amount of drones split between hubs (rounded down)
 		local split_count = floatfloor(#drones / hub_count)

@@ -351,12 +351,12 @@ do -- ToggleLogErrors
 
 			local func_name = Strings[302535920001077--[[Error from function]]] .. [[ "]] .. name .. [[" = ]]
 			local stack_trace = GetStack(2, false, "\t")
-			print(func_name, msg, ..., "\nGetStack:\n", stack_trace)
+			print(func_name, msg, ..., "\nGetStack():\n", stack_trace)
 
 			local stack_trace2
 			if not blacklist then
 				stack_trace2 = debug_traceback(nil, 2)
-				print("\ndebug.traceback:\n", stack_trace2)
+				print("\ndebug.traceback():\n", stack_trace2)
 			end
 
 			if UserSettings.ExamineErrors then

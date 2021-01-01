@@ -5526,12 +5526,14 @@ do -- path markers
 				Sleep(delay)
 			end
 
-			SuspendPassEdits("ChoGGi.ComFuncs.SetPathMarkersGameTime_Thread")
-			-- deletes all wp objs
-			obj.ChoGGi_Stored_Waypoints:Destroy()
-			-- clears table list
-			obj.ChoGGi_Stored_Waypoints:Clear()
-			ResumePassEdits("ChoGGi.ComFuncs.SetPathMarkersGameTime_Thread")
+			if obj.ChoGGi_Stored_Waypoints then
+				SuspendPassEdits("ChoGGi.ComFuncs.SetPathMarkersGameTime_Thread")
+				-- deletes all wp objs
+				obj.ChoGGi_Stored_Waypoints:Destroy()
+				-- clears table list
+				obj.ChoGGi_Stored_Waypoints:Clear()
+				ResumePassEdits("ChoGGi.ComFuncs.SetPathMarkersGameTime_Thread")
+			end
 
 			-- break thread when obj isn't valid
 			if not IsValid(obj) then
@@ -5604,24 +5606,26 @@ do -- path markers
 	ChoGGi.ComFuncs.SetPathMarkersGameTime = SetPathMarkersGameTime
 
 	local function RemoveWPDupePos(cls, obj)
-		-- remove dupe pos
-		if IsObjlist(obj.ChoGGi_Stored_Waypoints) then
-			for i = 1, #obj.ChoGGi_Stored_Waypoints do
-				local wp = obj.ChoGGi_Stored_Waypoints[i]
+		if not IsObjlist(obj.ChoGGi_Stored_Waypoints) then
+			return
+		end
 
-				if wp.class == cls then
-					local pos = tostring(wp:GetPos())
-					if dupewppos[pos] then
-						dupewppos[pos]:SetColorModifier(6579300)
-						wp:delete()
-					else
-						dupewppos[pos] = obj.ChoGGi_Stored_Waypoints[i]
-					end
+		-- remove dupe pos
+		for i = 1, #obj.ChoGGi_Stored_Waypoints do
+			local wp = obj.ChoGGi_Stored_Waypoints[i]
+
+			if wp.class == cls then
+				local pos = tostring(wp:GetPos())
+				if dupewppos[pos] then
+					dupewppos[pos]:SetColorModifier(6579300)
+					wp:delete()
+				else
+					dupewppos[pos] = wp
 				end
 			end
-			-- remove removed
-			obj.ChoGGi_Stored_Waypoints:Validate()
 		end
+		-- remove removed
+		obj.ChoGGi_Stored_Waypoints:Validate()
 	end
 
 	local function ClearColourAndWP(cls, skip)
@@ -5644,9 +5648,9 @@ do -- path markers
 				stored:Destroy()
 				-- clears table list
 				stored:Clear()
-				-- remove ref
-				obj.ChoGGi_Stored_Waypoints = nil
 			end
+			-- remove ref
+			obj.ChoGGi_Stored_Waypoints = nil
 
 		end
 	end
@@ -5682,6 +5686,8 @@ do -- path markers
 		ClearColourAndWP("CargoShuttle", skip)
 		ClearColourAndWP("Unit", skip)
 		ClearColourAndWP("Colonist", skip)
+		-- and pets for Unit Thoughts (seems they're not "Unit"y enough)
+--~ 		ClearColourAndWP("BasePet", skip)
 		if aliens then
 			ClearColourAndWP("ChoGGi_Alien", skip)
 		end
@@ -5718,8 +5724,17 @@ end -- do
 function ChoGGi.ComFuncs.GetTarget(obj)
 	local target = obj.target or obj.goto_target
 	local text
-	if IsPoint(target) then
-		local q, r = WorldToHex(target)
+
+	local is_point = IsPoint(target)
+	if is_point or (type(target) == "table" and target[1]) then
+		local q, r
+		if is_point then
+			q, r = WorldToHex(target)
+		else
+			-- when goto_target is a table (last one is dest)
+			q, r = WorldToHex(target[#target])
+		end
+
 		text = q .. ", " .. r
 	else
 		while IsValid(target) and target:HasMember("parent") and target.parent and target.parent ~= target do

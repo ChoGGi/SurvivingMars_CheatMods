@@ -405,6 +405,8 @@ local function Screenie(map)
 	WaitMsg("OnRender")
 	print(name)
 end
+--~ ChoGGi.testing.LoadMapForScreenShot("BlankBigCanyonCMix_04")
+-- you'll need to load this from main menu (doesn't work from within the game yet)
 function ChoGGi.testing.LoadMapForScreenShot(map)
 	if CurrentThread() then
 		Screenie(map)

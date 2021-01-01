@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v8.9 (Unreleased)
+- Log spam.
 
 ## v8.8 (25 Dec 2020)
 - Added mod option to toggle Mod Options button (added in v8.6).

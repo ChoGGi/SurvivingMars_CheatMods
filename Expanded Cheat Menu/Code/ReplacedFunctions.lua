@@ -466,10 +466,10 @@ function OnMsg.ClassesGenerate()
 	end
 
 	do -- SetDustVisuals/AddDust
-		local function ChangeDust(obj, func, dust, ...)
+		local function ChangeDust(obj, dust, func, ...)
 			if UserSettings.AlwaysCleanBuildings then
 				dust = 0
-				if func == "DustGridElement_AddDust" then
+				if func == ChoGGi_OrigFuncs.DustGridElement_AddDust then
 					obj.dust_current = 0
 				end
 			elseif UserSettings.AlwaysDustyBuildings then
@@ -479,17 +479,21 @@ function OnMsg.ClassesGenerate()
 				dust = obj.ChoGGi_AlwaysDust
 			end
 
-			return ChoGGi_OrigFuncs[func](obj, dust, ...)
+			return func(obj, dust, ...)
 		end
 
 		-- set amount of dust applied
 		SaveOrigFunc("BuildingVisualDustComponent", "SetDustVisuals")
 		function BuildingVisualDustComponent:SetDustVisuals(dust, ...)
-			return ChangeDust(self, "BuildingVisualDustComponent_SetDustVisuals", dust, ...)
+			return ChangeDust(self, dust, ChoGGi_OrigFuncs.BuildingVisualDustComponent_SetDustVisuals, ...)
+		end
+		SaveOrigFunc("Building", "SetDustVisuals")
+		function Building:SetDustVisuals(dust, ...)
+			return ChangeDust(self, dust, ChoGGi_OrigFuncs.Building_SetDustVisuals, ...)
 		end
 		SaveOrigFunc("DustGridElement", "AddDust")
 		function DustGridElement:AddDust(dust, ...)
-			return ChangeDust(self, "DustGridElement_AddDust", dust, ...)
+			return ChangeDust(self, dust, ChoGGi_OrigFuncs.DustGridElement_AddDust, ...)
 		end
 	end --do
 

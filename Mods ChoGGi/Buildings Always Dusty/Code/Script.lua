@@ -21,9 +21,7 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local orig_SetDustVisuals = BuildingVisualDustComponent.SetDustVisuals
-function BuildingVisualDustComponent:SetDustVisuals(dust, ...)
-
+local function SetDust(self, dust, func, ...)
 	-- always dusty gets first dibs
 	if mod_AlwaysDusty then
 		if not self.ChoGGi_AlwaysDust or self.ChoGGi_AlwaysDust < dust then
@@ -37,5 +35,21 @@ function BuildingVisualDustComponent:SetDustVisuals(dust, ...)
 	end
 
 	-- orig func do your thing
-	return orig_SetDustVisuals(self, dust, ...)
+	return func(self, dust, ...)
+end
+
+-- buildings
+local orig_BuildingVisualDustComponent_SetDustVisuals = BuildingVisualDustComponent.SetDustVisuals
+function BuildingVisualDustComponent:SetDustVisuals(dust, ...)
+	return SetDust(self, dust, orig_BuildingVisualDustComponent_SetDustVisuals, ...)
+end
+-- domes
+local orig_Building_SetDustVisuals = Building.SetDustVisuals
+function Building:SetDustVisuals(dust, ...)
+	return SetDust(self, dust, orig_Building_SetDustVisuals, ...)
+end
+-- pipes/cables
+local orig_DustGridElement_AddDust = DustGridElement.AddDust
+function DustGridElement:AddDust(dust, ...)
+	return SetDust(self, dust, orig_DustGridElement_AddDust, ...)
 end

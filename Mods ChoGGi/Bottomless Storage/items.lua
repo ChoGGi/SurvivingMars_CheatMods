@@ -8,10 +8,12 @@ local properties = {}
 local c = 0
 
 local resources = table.icopy(UniversalStorageDepot.storable_resources)
+
 resources[#resources+1] = "WasteRock"
 if g_AvailableDlc.armstrong and not table.find(resources, "Seeds") then
 	resources[#resources+1] = "Seeds"
 end
+
 for i = 1, #resources do
 	local res = resources[i]
 	c = c + 1

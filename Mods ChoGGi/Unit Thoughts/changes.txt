@@ -1,2 +1,5 @@
+v0.3
+Pets don't stay coloured anymore (some of them can display "table" instead of a position till I update my lib mod).
+
 v0.2
 Shows map grid in text (eg: e4).

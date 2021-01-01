@@ -1,3 +1,6 @@
+v0.6
+Added mod option to change walking speed in passages.
+
 v0.5
 Issue from v0.4.
 

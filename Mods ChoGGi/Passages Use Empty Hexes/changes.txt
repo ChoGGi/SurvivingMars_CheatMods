@@ -1,3 +1,6 @@
+v0.6
+Cleaned up the text.
+
 v0.5
 Show hexes for Capital City.
 

@@ -111,14 +111,12 @@ function Passage:GetChoGGi_ValidDomes()
 	-- passages that don't connect won't have a parent_dome
 	if self.elements[1] then
 		return IsValid(self.parent_dome)
-			and T("<green>") .. T(8019, "Connected to building") .. T("</green>")
-			or T("<red>") .. T(8773, "No dome") .. T("</red>")
-	else
-		if TestEndPoint(self, "start_el") and TestEndPoint(self, "end_el") then
-			return T("<green>") .. T(8019, "Connected to building") .. T("</green>")
-		end
-		return T("<red>") .. T(8773, "No dome") .. T("</red>")
+			and T(302535920011818, "<green>Connection Established</green>")
+			or T(302535920011819, "<red>Connection Failed! (white hexes only)</red>")
 	end
+	return TestEndPoint(self, "start_el") and TestEndPoint(self, "end_el")
+		and T(302535920011818, "<green>Connection Established</green>")
+		or T(302535920011819, "<red>Connection Failed! (white hexes only)</red>")
 end
 
 -- add status to let people know if it"s a valid spot
@@ -134,7 +132,7 @@ function OnMsg.ClassesPostprocess()
 			return IsKindOf(context, "Passage")
 		end,
 		"__template", "InfopanelSection",
-		"Title", T(10351, "Connect"),
+		"Title", T(302535920011820, "Dome Connection"),
 	}, {
 		PlaceObj("XTemplateTemplate", {
 			"__template", "InfopanelText",
@@ -142,9 +140,9 @@ function OnMsg.ClassesPostprocess()
 		}),
 	})
 	-- add template to passage and construction site
-	xtemplate[#xtemplate+1] = section
-	local con = XTemplates.sectionConstructionSite[1][1]
-	con[#con+1] = section
+	table.insert(xtemplate, 1, section)
+--~ 	xtemplate[#xtemplate+1] = section
+	table.insert(XTemplates.sectionConstructionSite[1][1], 1, section)
 end
 
 local orig_ConnectDomesWithPassage = ConnectDomesWithPassage

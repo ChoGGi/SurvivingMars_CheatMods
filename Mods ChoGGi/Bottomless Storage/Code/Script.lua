@@ -74,6 +74,7 @@ function BottomlessStorage:DroneUnloadResource(drone, request, resource, ...)
 				self:SetCount(0, resource)
 			end
 		end
+
 		-- update selection panel
 		RebuildInfopanel(self)
 	end
