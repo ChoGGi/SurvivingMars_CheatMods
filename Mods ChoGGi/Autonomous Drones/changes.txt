@@ -1,3 +1,6 @@
+v0.5
+UseDronePrefab() doesn't check if you have prefabs.
+
 v0.4
 Early game mod option to evenly split drones across all controllers.
 Tweaked how drones are assigned (hopefully reduces the 0 drones hub).

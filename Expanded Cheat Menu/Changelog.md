@@ -1,6 +1,13 @@
 ## ECM Changelog
 
-## v15.9 (Unreleased)
+## v16.0 (Unreleased)
+
+## v15.9 (02 Jan 2021)
+### Changed:
+- Cleaned up text for error msgs.
+
+### Fixed:
+- Always Clean/Dusty buildings didn't work for domes.
 
 ## v15.8 (25 Dec 2020)
 ### Added:

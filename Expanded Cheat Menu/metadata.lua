@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 			"version_minor", 9,
 		}),
 	},
-	"title", "Expanded Cheat Menu Test",
+	"title", "Expanded Cheat Menu",
 	"version", 159,
 	"version_major", 15,
 	"version_minor", 9,

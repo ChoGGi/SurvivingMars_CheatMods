@@ -29,6 +29,7 @@ local table_rand = table.rand
 local table_set_defaults = table.set_defaults
 local table_append = table.append
 local table_ifilter = table.ifilter
+local table_remove_entry = table.remove_entry
 local CreateRealTimeThread = CreateRealTimeThread
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits

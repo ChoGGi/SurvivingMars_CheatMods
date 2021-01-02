@@ -56,19 +56,16 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local table = table
-local table_icopy = table.icopy
 local table_ifilter = table.ifilter
 local table_iclear = table.iclear
 local table_rand = table.rand
 local table_insert = table.insert
 local table_remove = table.remove
-local table_remove_entry = table.remove_entry
 local table_icopy = table.icopy
 local CreateGameTimeThread = CreateGameTimeThread
 local Sleep = Sleep
 local Max = Max
 local GameTime = GameTime
-local IsValid = IsValid
 local IsKindOf = IsKindOf
 local floatfloor = floatfloor
 local AsyncRand = AsyncRand
@@ -103,7 +100,9 @@ end
 
 local function AssignDronePrefabs(hub)
 	for _ = 1, (threshold == "red" and mod_AddHeavy or mod_AddMedium) do
-		hub:UseDronePrefab()
+		if hub.city.drone_prefabs > 0 then
+			hub:UseDronePrefab()
+		end
 	end
 end
 

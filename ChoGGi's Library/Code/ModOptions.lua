@@ -149,6 +149,7 @@ function OnMsg.ClassesPostprocess()
 
 	-- Add input text box mod option
 
-	--
+	-- Add check for mod options with: "Header", true, and remove On/Off text from it
+	-- If it ignores fake values then use "name" and check for prefix Header_
 
 end
