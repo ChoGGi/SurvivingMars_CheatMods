@@ -1,13 +1,14 @@
 -- See LICENSE for terms
 
--- updating medium/high hubs, list of idle drones, list of all drones from low load hubs, list of all drones from medium load hubs, filtered list of mod option hubs
-local threshold, idle_drones, low_drones, med_drones, filtered_hubs
+-- updating medium/high hubs, list of idle drones, list of all drones from low load hubs, list of all drones from medium load hubs, filtered list of mod option hubs, non-filtered hubs to clear out
+local threshold, idle_drones, low_drones, med_drones, filtered_hubs, useless_hubs
 
 local mod_AddHeavy
 local mod_AddMedium
 local mod_UsePrefabs
 local mod_HidePackButtons
 local mod_RandomiseHubList
+local mod_SortHubListLoad
 local mod_EnableMod
 local mod_AddEmpty
 local mod_UpdateDelay
@@ -15,6 +16,8 @@ local mod_UseDroneHubs
 local mod_UseCommanders
 local mod_UseRockets
 local mod_EarlyGame
+local mod_IgnoreUnusedHubs
+local mod_DroneWorkDelay
 
 -- fired when settings are changed/init
 local function ModOptions()
@@ -25,12 +28,15 @@ local function ModOptions()
 	mod_UsePrefabs = options:GetProperty("UsePrefabs")
 	mod_HidePackButtons = options:GetProperty("HidePackButtons")
 	mod_RandomiseHubList = options:GetProperty("RandomiseHubList")
+	mod_SortHubListLoad = options:GetProperty("SortHubListLoad")
 	mod_EnableMod = options:GetProperty("EnableMod")
 	mod_UpdateDelay = options:GetProperty("UpdateDelay")
 	mod_UseDroneHubs = options:GetProperty("UseDroneHubs")
 	mod_UseCommanders = options:GetProperty("UseCommanders")
 	mod_UseRockets = options:GetProperty("UseRockets")
 	mod_EarlyGame = options:GetProperty("EarlyGame")
+	mod_IgnoreUnusedHubs = options:GetProperty("IgnoreUnusedHubs")
+	mod_DroneWorkDelay = options:GetProperty("DroneWorkDelay")
 
 	if not med_drones then
 		med_drones = {}
@@ -61,7 +67,6 @@ local table_iclear = table.iclear
 local table_rand = table.rand
 local table_insert = table.insert
 local table_remove = table.remove
-local table_icopy = table.icopy
 local CreateGameTimeThread = CreateGameTimeThread
 local Sleep = Sleep
 local Max = Max
@@ -116,19 +121,22 @@ local function AssignWorkingDrones(drones, count, hub, not_rand)
 		else
 			drone, idx = table_rand(drones)
 		end
---~ 		local drone, idx = table_rand(drones)
 
---~ 		if drone and idx and not drone.ChoGGi_WaitingForIdleDrone then
 		if drone and idx then
 			-- need to remove entry right away (before table idx changes)
 			table_remove(drones, idx)
 			-- no need to move to same hub
 			if not drone.ChoGGi_WaitingForIdleDrone and drone.command_center ~= hub then
-				drone.ChoGGi_WaitingForIdleDrone = true
-				CreateGameTimeThread(function()
+				drone.ChoGGi_WaitingForIdleDrone = CreateGameTimeThread(function()
 					-- wait till drone is idle then send it off
+					local count = 0
 					while not idle_drone_cmds[drone.command] do
+						-- stop waiting after so long
+						if mod_DroneWorkDelay > 0 and count > mod_DroneWorkDelay then
+							break
+						end
 						Sleep(1000)
+						count = count + 1
 					end
 					drone.ChoGGi_WaitingForIdleDrone = nil
 					SendDroneToCC(drone, hub)
@@ -169,17 +177,6 @@ local function AssignDrones(hub)
 	AssignWorkingDrones(med_drones, count, hub)
 end
 
---~ -- function DroneControl:GetIdleDronesCount(), same but now with more idle
---~ local function GetIdleDronesCount(hub)
---~ 	local count = 0
---~ 	local drones = self.drones
---~ 	for i = 1, #drones do
---~ 		if idle_drone_cmds[drones[i].command]
---~ 			count = count + 1
---~ 		end
---~ 	end
---~ 	return count
---~ end
 local DisablingCommands = {
 	Malfunction = true,
 	NoBattery = true,
@@ -189,35 +186,38 @@ local DisablingCommands = {
 	DieNow = true,
 }
 local function FilterDrones(_, drone)
-	return not DisablingCommands[drone.command] or false
+	return not (DisablingCommands[drone.command] or false)
 end
 
-local function UpdateHubs(hub_count, build_list, drone_prefabs)
+local function UpdateHubs(hub_count, build_list, drone_prefabs, last_go)
 	for i = 1, hub_count do
 		local hub = filtered_hubs[i]
 		local drones = hub.drones
 
-		if (threshold == "empty" or threshold == "all") and #table_ifilter(drones, FilterDrones) < 1 then
+		if (threshold == "empty" or threshold == "all") and (#drones == 0 or #table_ifilter(drones, FilterDrones) < 1) then
 			-- no drones
 			if drone_prefabs then
 				AssignDronePrefabs(hub)
 			else
 				AssignDrones(hub)
 			end
---~ 		elseif GetIdleDronesCount(hub) == #hub.drones then
---~ 			-- all idle drones
 		else
 			-- function DroneControl:CalcLapTime(), wanted the funcs local since we call this a lot
-			local lap_time = #drones == 0 and 0 or Max(hub.lap_time, GameTime() - hub.lap_start)
+			local lap_time = Max(hub.lap_time, GameTime() - hub.lap_start)
+--~ 			local lap_time = #drones == 0 and 0 or Max(hub.lap_time, GameTime() - hub.lap_start)
 
 			if lap_time < DroneLoadLowThreshold then
 				-- low load
 				if build_list == "low" then
 					local c = #low_drones
-					for j = 1, #(drones or "") do
+					for j = 1, #drones do
 						c = c + 1
 						low_drones[c] = drones[j]
 					end
+				end
+				-- all other hubs have filled up on drones and these are the left over prefabs
+				if last_go and drone_prefabs then
+					AssignDronePrefabs(hub)
 				end
 			elseif (threshold == "red" or threshold == "all") and lap_time >= DroneLoadMediumThreshold then
 				-- high load
@@ -226,12 +226,12 @@ local function UpdateHubs(hub_count, build_list, drone_prefabs)
 				else
 					AssignDrones(hub)
 				end
---~ 			elseif (threshold == "orange" or threshold == "all") and lap_time < DroneLoadMediumThreshold then
-			elseif (threshold == "orange" or threshold == "all") then
+			elseif (threshold == "orange" or threshold == "all") and lap_time < DroneLoadMediumThreshold then
+--~ 			elseif threshold == "orange" or threshold == "all" then
 				-- medium load
 				if build_list == "medium" then
 					local c = #med_drones
-					for j = 1, #(drones or "") do
+					for j = 1, #drones do
 						c = c + 1
 						med_drones[c] = drones[j]
 					end
@@ -248,6 +248,13 @@ local function UpdateHubs(hub_count, build_list, drone_prefabs)
 	end
 end
 
+local function UsePrefabs(drone_prefabs, hub_count)
+	if drone_prefabs > 0 then
+		threshold = "all"
+		UpdateHubs(hub_count, nil, drone_prefabs)
+	end
+end
+
 local function UpdateDrones()
 	if not mod_EnableMod then
 		return
@@ -261,46 +268,71 @@ local function UpdateDrones()
 	-- build list of filtered hubs
 	table_iclear(filtered_hubs)
 	local hub_count = 0
+	table_iclear(useless_hubs)
+	local use_hubs_c = 0
 	for i = 1, #hubs do
 		local hub = hubs[i]
-		-- we want working hubs and mod option hubs, all the rest get emptied
-		if hub.working and (mod_UseCommanders and hub:IsKindOf("RCRover")
-				or mod_UseDroneHubs and hub:IsKindOf("DroneHub")
-				or mod_UseRockets and hub:IsKindOf("SupplyRocket"))
+		-- build list of hubs to use
+		if hub.working and
+			(mod_UseCommanders and hub:IsKindOf("RCRover")
+			or mod_UseDroneHubs and hub:IsKindOf("DroneHub")
+			or mod_UseRockets and hub:IsKindOf("SupplyRocket"))
 		then
 			hub_count = hub_count + 1
 			filtered_hubs[hub_count] = hub
 		elseif mod_UsePrefabs then
-			-- remove any drones from busted hubs (just in case they aren't)
+			-- we only clear these hubs if mod option (and only after checking hub_count)
+			if hub.working then
+				use_hubs_c = use_hubs_c + 1
+				useless_hubs[use_hubs_c] = hub
+			else
+				-- always clear out borked hubs
+				for _ = 1, #(hub.drones or "") do
+					hub:ConvertDroneToPrefab()
+				end
+			end
+		end
+	end
+
+	-- not much point if there's only one hub
+	if hub_count < 2 then
+		-- there could be some?
+		if mod_UsePrefabs then
+			UsePrefabs(UICity.drone_prefabs, hub_count)
+		end
+		return
+	end
+
+	-- remove any drones from hubs we don't use
+	if not mod_IgnoreUnusedHubs then
+		for i = 1, use_hubs_c do
+			local hub = useless_hubs[i]
 			for _ = 1, #(hub.drones or "") do
 				hub:ConvertDroneToPrefab()
 			end
 		end
 	end
 
-	-- not much point if there's only one hub
-	if hub_count == 0 then
-		return
-	end
-
+	-- sort hubs by drone load (empty, heavy, med, low)
+	if mod_SortHubListLoad then
+		local DroneHubLoad = ChoGGi.ComFuncs.DroneHubLoad
+		table.sort(filtered_hubs, function(a, b)
+			return DroneHubLoad(a, true) > DroneHubLoad(b, true)
+		end)
 	-- randomise hub list (firsters get more drones)
-	if mod_RandomiseHubList then
+	elseif mod_RandomiseHubList then
 		FisherYates_Shuffle(filtered_hubs)
-	end
-	-- stick all empty hubs at start (otherwise they may stay empty for too long)
-	for i = 1, hub_count do
-		if #filtered_hubs[i].drones == 0 then
-			table_insert(filtered_hubs, 1, table_remove(filtered_hubs, i))
+		-- stick all empty hubs at start (otherwise they may stay empty for too long)
+		for i = 1, hub_count do
+			if #filtered_hubs[i].drones == 0 then
+				table_insert(filtered_hubs, 1, table_remove(filtered_hubs, i))
+			end
 		end
 	end
 
 	-- assign any prefabs to hubs
 	if mod_UsePrefabs then
-		local drone_prefabs = UICity.drone_prefabs
-		if drone_prefabs > 0 then
-			threshold = "all"
-			UpdateHubs(hub_count, nil, drone_prefabs)
-		end
+		UsePrefabs(UICity.drone_prefabs, hub_count)
 	end
 
 	-- if there's less drones then the threshold set in mod options we evenly split drones across hubs
@@ -331,7 +363,7 @@ local function UpdateDrones()
 		-- random assign for leftover round down drones
 		CreateGameTimeThread(function()
 			Sleep(1000)
-			for _ = leftovers, 1, -1 do
+			for _ = 1, leftovers do
 				AssignWorkingDrones(drones, 1, filtered_hubs[AsyncRand(hub_count)+1], true)
 			end
 		end)
@@ -340,7 +372,7 @@ local function UpdateDrones()
 		return
 	end
 
-	-- list of idle drones (prefab-able)
+	-- build list of idle drones (prefab-able)
 	idle_drones = GetIdleDrones()
 
 	-- update empty drone hubs first
@@ -351,9 +383,10 @@ local function UpdateDrones()
 	table_iclear(med_drones)
 	threshold = "orange"
 	UpdateHubs(hub_count, "medium")
+
 	-- and low
 	table_iclear(low_drones)
-	threshold = "orange"
+	threshold = "green"
 	UpdateHubs(hub_count, "low")
 
 	-- update heavy load drone hubs (some may turn into medium after)
@@ -361,8 +394,14 @@ local function UpdateDrones()
 	UpdateHubs(hub_count)
 
 	-- update med load drone hubs
---~ 	threshold = "orange"
+	threshold = "orange"
 	UpdateHubs(hub_count)
+
+	-- assign any extra prefabs to low load hubs
+	if mod_UsePrefabs and UICity.drone_prefabs > 0 then
+		threshold = "green"
+		UpdateHubs(hub_count, nil, UICity.drone_prefabs, true)
+	end
 end
 
 function OnMsg.NewDay()

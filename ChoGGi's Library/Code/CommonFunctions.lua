@@ -39,6 +39,8 @@ local OpenDialog = OpenDialog
 local ViewAndSelectObject = ViewAndSelectObject
 local XDestroyRolloverWindow = XDestroyRolloverWindow
 local SelectionArrowRemove = SelectionArrowRemove
+local Max = Max
+local GameTime = GameTime
 
 local rawget, getmetatable = rawget, getmetatable
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
@@ -5825,7 +5827,7 @@ function ChoGGi.ComFuncs.CycleSelectedObjects(list, count)
 	end
 end
 
-do -- IsDroneIdle/GetIdleDrones
+do -- IsDroneIdle/GetIdleDrones/DroneHubLoad
 	local idle_drone_cmds = {
 		Idle = true,
 		-- fresh drone (only lasts a little bit)
@@ -5835,16 +5837,50 @@ do -- IsDroneIdle/GetIdleDrones
 		-- doesn't have a controller
 		WaitingCommand = true,
 	}
+	local DroneLoadLowThreshold = const.DroneLoadLowThreshold
+	local DroneLoadMediumThreshold = const.DroneLoadMediumThreshold
+	local DroneLoadExtra = DroneLoadMediumThreshold * 100
 
 	function ChoGGi.ComFuncs.IsDroneIdle(drone)
 		return idle_drone_cmds[drone.command]
 	end
-
 	local function IsDroneIdle(_, drone)
 		return idle_drone_cmds[drone.command]
 	end
+	local function IsDroneWorking(_, drone)
+		return not drone:IsDisabled()
+	end
 	function ChoGGi.ComFuncs.GetIdleDrones()
 		return table_ifilter(table_icopy(UICity.labels.Drone or empty_table), IsDroneIdle)
+	end
+
+	-- -1 = borked, 0 = low, 1 = medium, 2 = high, empty = 3
+	-- higher the laptime the more load (use order = true to return lap_time first)
+	function ChoGGi.ComFuncs.DroneHubLoad(hub, order)
+		local drone_load = -1
+		local lap_time = -1
+		if hub.working then
+			-- no working drones / empty hub
+			local drones = hub.drones
+			if #drones == 0 or #table_ifilter(drones, IsDroneWorking) < 1 then
+				drone_load = 3
+				lap_time = DroneLoadExtra
+			else
+				lap_time = Max(hub.lap_time, GameTime() - hub.lap_start)
+--~ 				local lap_time = hub:CalcLapTime()
+				if lap_time < DroneLoadLowThreshold then
+					drone_load = 0
+				elseif lap_time < DroneLoadMediumThreshold then
+					drone_load = 1
+				else
+					drone_load = 2
+				end
+			end
+		end
+		if order then
+			return lap_time, drone_load
+		end
+		return drone_load, lap_time
 	end
 end
 
@@ -5872,34 +5908,36 @@ function ChoGGi.ComFuncs.FisherYates_Shuffle(list, min)
   end
 end
 
-function ChoGGi.ComFuncs.SendDroneToCC(drone, new_hub)
-	local old_hub = drone.command_center
-	if old_hub == new_hub then
-		return
-	end
-	-- ultra valid
-	if IsValid(old_hub) and IsValid(new_hub) and IsValid(drone)
-	-- if drone dist to new hub is further than dist to old hub than pack and unpack, otherwise SetCommandCenter() to drive over
-		and drone:GetDist(old_hub) < drone:GetDist(new_hub)
-	then
-		-- DroneControl:ConvertDroneToPrefab()
-		if drone.demolishing then
-			drone:ToggleDemolish()
-		end
-		drone.can_demolish = false
-		UICity.drone_prefabs = UICity.drone_prefabs + 1
-		table_remove_entry(old_hub.drones, drone)
-		SelectionArrowRemove(drone)
-		drone:SetCommand("DespawnAtHub")
+--~ function ChoGGi.ComFuncs.SendDroneToCC(drone, new_hub)
+--~ 	local old_hub = drone.command_center
+--~ 	if old_hub == new_hub then
+--~ 		return
+--~ 	end
+--~ 	-- ultra valid
+--~ 	if IsValid(old_hub) and IsValid(new_hub) and IsValid(drone)
+--~ 	-- if drone dist to new hub is further than dist to old hub than pack and unpack, otherwise SetCommandCenter() to drive over
+--~ 		and drone:GetDist(old_hub) < drone:GetDist(new_hub)
+--~ 	then
+--~ 		-- DroneControl:ConvertDroneToPrefab()
+--~ 		if drone.demolishing then
+--~ 			drone:ToggleDemolish()
+--~ 		end
+--~ 		drone.can_demolish = false
+--~ 		UICity.drone_prefabs = UICity.drone_prefabs + 1
+--~ 		table_remove_entry(old_hub.drones, drone)
+--~ 		SelectionArrowRemove(drone)
+--~ 		drone:SetCommand("DespawnAtHub")
 
-		-- wait till drone is sucked up
-		while IsValid(drone) do
-			Sleep(1000)
-		end
-		-- spawn drone from prefab at new hub
-		new_hub:UseDronePrefab()
-	else
-		-- close enough to drive
-		drone:SetCommandCenter(hub)
-	end
-end
+--~ 		-- wait till drone is sucked up
+--~ 		while IsValid(drone) do
+--~ 			Sleep(1000)
+--~ 		end
+--~ 		-- spawn drone from prefab at new hub
+--~ 		if UICity.drone_prefabs > 0 then
+--~ 			new_hub:UseDronePrefab()
+--~ 		end
+--~ 	else
+--~ 		-- close enough to drive
+--~ 		drone:SetCommandCenter(hub)
+--~ 	end
+--~ end

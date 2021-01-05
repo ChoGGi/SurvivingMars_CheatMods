@@ -143,7 +143,7 @@ local function BuildExamineItem(name, title)
 end
 ChoGGi.ConsoleFuncs.BuildExamineItem = BuildExamineItem
 --
-function ChoGGi.ConsoleFuncs.AddSubmenu(name, title, ...)
+local function AddSubmenu(name, title, ...)
 	local submenu = table_find(ExamineMenuToggle_list, "name", name)
 	if submenu then
 		local temp_menu = ExamineMenuToggle_list[submenu]
@@ -163,6 +163,7 @@ function ChoGGi.ConsoleFuncs.AddSubmenu(name, title, ...)
 
 	end
 end
+ChoGGi.ConsoleFuncs.AddSubmenu = AddSubmenu
 
 --~ 	function ChoGGi.ConsoleFuncs.AddMonitor(name, submenu, idx)
 --~ 		table_insert(submenu, idx or 2, {
@@ -298,7 +299,6 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 		})
 	end
 	--
-	local AddSubmenu = ChoGGi.ConsoleFuncs.AddSubmenu
 	AddSubmenu("_G", nil, "AccountStorage", "__cobjectToCObject", "FlagsByBits", "HandleToObject", "TranslationTable", "DeletedCObjects", "Flight_MarkedObjs", "PropertySetMethod", "debug.getregistry")
 	AddSubmenu("ThreadsRegister", nil, "ThreadsMessageToThreads", "ThreadsThreadToMessage", "s_SeqListPlayers", "GameInitThreads")
 	AddSubmenu("Consts", nil, "g_Consts", "const", "ModifiablePropScale", "const.TagLookupTable", "const.Scale")

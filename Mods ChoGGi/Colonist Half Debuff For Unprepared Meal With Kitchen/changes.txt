@@ -1,2 +1,5 @@
+v0.3
+Log spam (didn't check if the colonist is valid).
+
 v0.2
 : to . (whoops, thanks optimusgd).

@@ -13,7 +13,13 @@ return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "RandomiseHubList",
 		"DisplayName", T(302535920011794, "Randomise Hub List"),
-		"Help", T(302535920011795, [[Randomise list of drone controllers, so the order is different each update (lowers the chance of "bunching").]]),
+		"Help", T(302535920011795, [[Randomise list of drone controllers, so the order is different each update (helps reduce "bunching").]]),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "SortHubListLoad",
+		"DisplayName", T(000, "Sort Hub List Load"),
+		"Help", T(000, "Sort hub list by drone load order (overrides random list)."),
 		"DefaultValue", true,
 	}),
 	PlaceObj("ModItemOptionToggle", {
@@ -35,12 +41,26 @@ return {
 		"DefaultValue", true,
 	}),
 	PlaceObj("ModItemOptionNumber", {
+		"name", "DroneWorkDelay",
+		"DisplayName", T(000, "Drone Work Delay"),
+		"Help", T(000, [[How many "seconds" to wait before forcing the busy drone (0 to disable and wait).]]),
+		"DefaultValue", 15,
+		"MinValue", 0,
+		"MaxValue", 100,
+	}),
+	PlaceObj("ModItemOptionNumber", {
 		"name", "EarlyGame",
 		"DisplayName", T(302535920011816, "Early Game"),
 		"Help", T(302535920011817, "If under this amount of drones then try to evenly distribute drones across controllers instead of by load (0 to always enable, 1 to disable)."),
 		"DefaultValue", 1,
 		"MinValue", 0,
 		"MaxValue", 250,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "IgnoreUnusedHubs",
+		"DisplayName", T(302535920011823, "Ignore Unused Hubs"),
+		"Help", T(302535920011824, "Any hubs not used will have their drones ignored (manual assignment only)."),
+		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "UseDroneHubs",

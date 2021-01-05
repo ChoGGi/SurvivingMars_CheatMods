@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"lua_revision", 249143,
 	"steam_id", "2313642931",
 	"pops_any_uuid", "4313ca38-0202-4d35-b630-1290369995eb",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -30,11 +30,13 @@ If they're on a task; they'll wait till it's over before reassign.
 
 Mod Options:
 Enable Mod: Disable mod without having to see missing mod msg.
-Randomise Hub List: Randomise list of drone controllers, so the order is different each update (lowers the chance of "bunching").
+Randomise Hub List: Randomise list of drone controllers, so the order is different each update (turn off to sort by load).
 Use Prefabs: Use drone prefabs to adjust the loads.
 Update Delay: On = Sol, Off = Hour.
 Hide Pack Buttons: Hide Pack/Unpack buttons for drone controllers.
+Drone Work Delay: How many "seconds" to wait before forcing the busy drone (0 to disable and wait).
 Early Game: If under this amount of drones then try to evenly distribute drones across controllers instead of by load (0 to always enable, 1 to disable).
+Ignore Unused Hubs: Any hubs not used will have their drones ignored (manual assignment only).
 Use Drone Hubs/RC Commanders/Rockets: Toggle assigning or ignoring certain controllers.
 Add Empty/Heavy/Medium: How many drones to add to empty and heavy/medium load controllers.
 

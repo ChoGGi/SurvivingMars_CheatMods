@@ -1,3 +1,10 @@
+v0.6
+New mod option Ignore Unused Hubs.
+Fixed issue with single hubs.
+Extra prefabs left over will be used at low load hubs.
+Turning off Randomise Hub List will sort drones by load.
+Drone Work Delay: How many "seconds" to wait before forcing the busy drone (0 to disable and wait).
+
 v0.5
 UseDronePrefab() doesn't check if you have prefabs.
 

@@ -15,44 +15,9 @@ local GetTarget = ChoGGi.ComFuncs.GetTarget
 local threads = {}
 local threads_c = 0
 
--- remove for lib 8.9
-local table_clear = table.clear
-local IsObjlist = ChoGGi.ComFuncs.IsObjlist
-local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
-local function ClearColourAndWP(cls, skip)
-	-- remove all thread refs so they stop
-	table_clear(ChoGGi.Temp.UnitPathingHandles or empty_table)
-	-- and waypoints/colour
-	local objs = RetAllOfClass(cls)
-	for i = 1, #objs do
-		local obj = objs[i]
-
-		if not skip and obj.ChoGGi_WaypointPathAdded then
-			obj:SetColorModifier(obj.ChoGGi_WaypointPathAdded)
-			obj.ChoGGi_WaypointPathAdded = nil
-			obj.ChoGGi_WaypointPathAdded_storedcolour = nil
-		end
-
-		local stored = obj.ChoGGi_Stored_Waypoints
-		if IsObjlist(stored) then
-			-- deletes all objs
-			stored:Destroy()
-			-- clears table list
-			stored:Clear()
-		end
-		-- remove ref
-		obj.ChoGGi_Stored_Waypoints = nil
-
-	end
-end
--- remove for lib 8.9
-
 -- clear away lines/text
 local function ClearUnitInfo()
 	Pathing_StopAndRemoveAll()
-
-	-- whoops... (remove for lib 8.9)
-	ClearColourAndWP("BasePet")
 
 	-- update text threads
 	for i = 1, threads_c do

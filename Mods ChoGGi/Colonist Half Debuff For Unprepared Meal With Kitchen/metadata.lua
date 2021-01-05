@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Colonist Half Debuff For Unprepared Meal With Kitchen",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.png",
 	"id", "ChoGGi_ColonistHalfDebuffForUnpreparedMealWithKitchen",
 	"steam_id", "1581367762",
