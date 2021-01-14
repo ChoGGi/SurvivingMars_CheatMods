@@ -41,6 +41,9 @@ local XDestroyRolloverWindow = XDestroyRolloverWindow
 local SelectionArrowRemove = SelectionArrowRemove
 local Max = Max
 local GameTime = GameTime
+local guic = guic
+local ViewObjectMars = ViewObjectMars
+local InvalidPos = ChoGGi.Consts.InvalidPos
 
 local rawget, getmetatable = rawget, getmetatable
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
@@ -673,11 +676,6 @@ end -- do
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
 do -- ShowObj
-	local IsPoint = IsPoint
-	local IsValid = IsValid
-	local guic = guic
-	local ViewObjectMars = ViewObjectMars
-	local InvalidPos = ChoGGi.Consts.InvalidPos
 	local OVector, OSphere
 
 	-- we just use a few noticeable colours for rand
@@ -1851,7 +1849,6 @@ end
 do -- SelObject/SelObjects
 	local SelectionMouseObj = SelectionMouseObj
 	local MapFindNearest = MapFindNearest
-	local MapGet = MapGet
 	local radius4h = const.HexSize / 4
 
 	-- returns whatever is selected > moused over > nearest object to cursor
@@ -2613,6 +2610,24 @@ do -- GetAllAttaches
 end -- do
 local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
 
+local function MapGet_ChoGGi(label, area, ...)
+	local objs = UICity.labels[label] or {}
+	if #objs == 0 then
+		local g_cls = g_Classes[label]
+		-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything* (think gary oldman in professional)
+		if g_cls and g_cls:IsKindOf("CObject") then
+			-- area can be: "map" = only objs spawned on map, or true = objs on map and off map (objs spawned at invalid location)
+			return MapGet(area or true, label, ...)
+			-- use obj:SetPos(pos) to move objs to map (and away with pos = InvalidPos())
+		end
+	end
+	return objs
+end
+ChoGGi.ComFuncs.MapGet = MapGet_ChoGGi
+-- remove 16.0
+ChoGGi.ComFuncs.RetAllOfClass = MapGet_ChoGGi
+-- remove 16.0
+
 do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRandom/ObjectColourDefault/ChangeObjectColour
 	local color_ass = {}
 	local colour_funcs = {}
@@ -2905,7 +2920,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 
 				-- all of type checkbox
 				if choice1.check1 then
-					local labels = ChoGGi.ComFuncs.RetAllOfClass(label)
+					local labels = MapGet_ChoGGi(label)
 					for i = 1, #labels do
 						local lab_obj = labels[i]
 						if parent then
@@ -4147,18 +4162,6 @@ do -- IsControlPressed/IsShiftPressed/IsAltPressed
 	end
 end -- do
 
-function ChoGGi.ComFuncs.RetAllOfClass(class)
-	local objs = UICity.labels[class] or {}
-	if #objs == 0 then
-		local g_cls = g_Classes[class]
-		-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything*
-		if g_cls and g_cls:IsKindOf("CObject") then
-			return MapGet(true, class)
-		end
-	end
-	return objs
-end
-
 -- if it's an object than we can Clone() it, otherwise copy it
 function ChoGGi.ComFuncs.CopyTable(list)
 	local new
@@ -5110,14 +5113,14 @@ function ChoGGi.ComFuncs.RetToolbarButton(params)
 	}, params.parent)
 end
 
-function ChoGGi.ComFuncs.IsAboveHeightLimit(obj)
-	if obj:IsKindOf("SupplyRocket") then
+-- save a game with attachments (res cubes in storage depots) that have an origin point above 65535 and goodbye save game.
+function ChoGGi.ComFuncs.IsAttachAboveHeightLimit(obj)
+	-- we only want to check attachments
+	if not obj:GetParent() then
 		return
 	end
-	local z = obj:GetZ() or 0
-	if z > 65535 or obj.GetAttachOffset
-		and (z + obj:GetAttachOffset():z() > 65535)
-	then
+
+	if obj:GetZ() + obj:GetAttachOffset():z() > 65535 then
 		return true
 	end
 end
@@ -5363,7 +5366,6 @@ do -- path markers
 	local CreateGameTimeThread = CreateGameTimeThread
 	local AveragePoint2D = AveragePoint2D
 	local terrain_GetHeight = terrain.GetHeight
-	local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
 	local SelObjects = ChoGGi.ComFuncs.SelObjects
 	local WaitMsg = WaitMsg
 	local Sleep = Sleep
@@ -5635,7 +5637,7 @@ do -- path markers
 		-- remove all thread refs so they stop
 		table_clear(ChoGGi.Temp.UnitPathingHandles or empty_table)
 		-- and waypoints/colour
-		local objs = RetAllOfClass(cls)
+		local objs = MapGet_ChoGGi(cls)
 		for i = 1, #objs do
 			local obj = objs[i]
 
@@ -5660,7 +5662,7 @@ do -- path markers
 
 	-- remove any waypoints in the same pos
 	local function ClearAllDupeWP(cls)
-		local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
+		local objs = MapGet_ChoGGi(cls)
 		for i = 1, #objs do
 			local obj = objs[i]
 			if obj and obj.ChoGGi_Stored_Waypoints then

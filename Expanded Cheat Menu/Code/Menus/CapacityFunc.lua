@@ -397,6 +397,9 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 				for i = 1, #objs do
 					objs[i].max_amount_BlackCube = value
 				end
+				if value > 5000 then
+					ChoGGi.UserSettings.RemoveHeightLimitObjs = true
+				end
 
 			elseif bld_type == "StorageUniversalDepot" then
 				local objs = UICity.labels.UniversalStorageDepot or ""
@@ -405,6 +408,9 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 					if o.template_name == "UniversalStorageDepot" then
 						o.max_storage_per_resource = value
 					end
+				end
+				if value > 2000 then
+					ChoGGi.UserSettings.RemoveHeightLimitObjs = true
 				end
 
 			elseif bld_type == "StorageMechanizedDepot" then

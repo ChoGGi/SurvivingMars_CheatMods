@@ -1,5 +1,10 @@
 -- See LICENSE for terms
 
+local skip_buildings = {
+	-- Underground-Tec apartments capacity resets
+	UndergroundApartments = true,
+}
+
 local custom_ids = {
 	-- Silva's Mods:
 	-- Medium Apartments - Steam Mod ID: 1565367065
@@ -140,11 +145,12 @@ local upgrade_list_c = 0
 local function StartupCode()
 --~ 	ex(upgrade_list)
 
+	local unlocked_upgrades = UICity.unlocked_upgrades
 	for i = 1, upgrade_list_c do
 		local name = upgrade_list[i]
-		UICity.unlocked_upgrades[name .. "_Capacity1"] = true
-		UICity.unlocked_upgrades[name .. "_Capacity2"] = true
-		UICity.unlocked_upgrades[name .. "_Capacity3"] = true
+		unlocked_upgrades[name .. "_Capacity1"] = true
+		unlocked_upgrades[name .. "_Capacity2"] = true
+		unlocked_upgrades[name .. "_Capacity3"] = true
 	end
 end
 
@@ -207,7 +213,8 @@ function OnMsg.ModsReloaded()
 	for id, obj in pairs(BuildingTemplates) do
 		if custom_ids[id] then
 			AddBuilding(id, obj, ct[id], g_Classes[id])
-		elseif obj.group == "Dome Services" or obj.group == "Decorations"
+		elseif not skip_buildings[id] and
+			obj.group == "Dome Services" or obj.group == "Decorations"
 			or obj.group == "Habitats" or obj.group == "Dome Spires"
 --~ 			or obj.group == "MechanizedDepots" or obj.group == "Depots" or obj.group == "Storages"
 		then

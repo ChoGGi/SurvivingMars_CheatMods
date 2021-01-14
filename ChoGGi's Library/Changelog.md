@@ -1,6 +1,8 @@
 ## Library Changelog
 
 ## v9.0 (Unreleased)
+- Fiddled with IsAttachAboveHeightLimit.
+- RetAllOfClass is now MapGet.
 
 ## v8.9 (02 Jan 2021)
 - Log spam.

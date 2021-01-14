@@ -1,3 +1,6 @@
+v0.7
+Add skip list for misbehaving modded buildings.
+
 v0.6
 Properly added upgrades to modded buildings (thanks XxUnkn0wnxX).
 

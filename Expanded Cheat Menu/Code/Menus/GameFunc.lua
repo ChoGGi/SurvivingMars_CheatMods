@@ -518,7 +518,7 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
 			obj:SetOpacity(value)
 		elseif type(value) == "string" then
 			local function SettingOpacity(label)
-				local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
+				local objs = ChoGGi.ComFuncs.MapGet(label)
 				for i = 1, #objs do
 					objs[i]:SetOpacity(100)
 				end

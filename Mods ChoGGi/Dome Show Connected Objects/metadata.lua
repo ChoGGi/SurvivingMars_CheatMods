@@ -9,9 +9,9 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Dome Show Connected Objects",
 	"id", "ChoGGi_ShowDomeConnectedObjects",
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.png",
 	"steam_id", "2038895989",
 	"pops_any_uuid", "42e8c2ef-c183-4488-bce1-0b8b0223c7ba",
@@ -26,7 +26,8 @@ return PlaceObj("ModDef", {
 
 Mod Options:
 Enable Mod: If you want to disable the mod without the mod manager.
+Move Invalid Position: Move any objects at an invalid pos to the dome when you press the toggle connected objs button (default disabled).
 Clean Up Invalid: Remove any invalid objects stuck in the dome when you press the toggle connected objs button (default disabled).
-If you see a white line going off to the bottom right, it's invalid (probably).
+If you see a white line going off to nothing, it's invalid (probably).
 ]],
 })

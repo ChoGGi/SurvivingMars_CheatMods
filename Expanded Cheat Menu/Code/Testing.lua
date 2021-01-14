@@ -5,21 +5,6 @@
 --~ ChoGGi.ComFuncs.ChoGGi.ComFuncs.TickStart("Tick.1")
 --~ ChoGGi.ComFuncs.ChoGGi.ComFuncs.TickEnd("Tick.1")
 
---~ -- for some reason this doesn't work on the selection panel when it's in Generate...
---~ if Mods.ChoGGi_testing then
---~ 	-- centred hud
---~ 	local GetScreenSize = UIL.GetScreenSize
---~ 	local margins = box(2560, 0, 2560, 0)
---~ 	local orig_GetSafeMargins = GetSafeMargins
---~ 	function GetSafeMargins(win_box)
---~ 		if win_box then
---~ 			return orig_GetSafeMargins(win_box)
---~ 		end
---~ 		-- If lookup table doesn't have width we fire orginal func
---~ 		return GetScreenSize():x() == 5760 and margins or orig_GetSafeMargins()
---~ 	end
---~ end
-
 if not ChoGGi.testing then
 	return
 end
@@ -208,126 +193,154 @@ do -- ExportTranslatedStrings
 	end
 end -- do
 
---~ do -- TraceCall/Trace (commented out in CommonLua\PropertyObject.lua)
---~ -- g_traceMeta
---~ -- g_traceEntryMeta
---~ 	-- needs to be true for traces to be active (see CommonLua\Classes\StateObject.lua)
---~ 	StateObject.so_debug_triggers = true
---~ 	-- CommonLua\Movable.lua
---~ 	function Movable:SetSpeed(speed)
---~ 		pf.SetSpeed(self, speed)
---~ 	end
+function ChoGGi.testing.ExportBuildingFootprints()
+	if not UICity then
+		return
+	end
 
---~ 	local GetStack = GetStack
---~ 	local GameTime = GameTime
---~ 	local rawget, rawset = rawget, rawset
---~ 	local setmetatable = setmetatable
---~ 	local table_remove = table.remove
---~ 	local table_insert = table.insert
+	-- show position grid
+--~ 	local action = XAction:new()
+--~ 	action.setting_mask = "position"
+--~ 	ChoGGi.ComFuncs.BuildableHexGrid(action)
 
---~ 	function PropertyObject:TraceCall(member)
---~ 		print("PropertyObject:TraceCall", self.class)
---~ 		local orig_member_fn = self[member]
---~ 		self[member] = function(self, ...)
---~ 			self:Trace("[Call]", member, GetStack(2), ...)
---~ 			return orig_member_fn(self, ...)
---~ 		end
---~ 	end
---~ 	function PropertyObject:Trace(...)
---~ 		print("PropertyObject:Trace", self.class)
---~ 		local t = rawget(self, "trace_log")
---~ 		if not t then
---~ 			t = {}
---~ 			setmetatable(t, g_traceMeta)
---~ 			rawset(self, "trace_log", t)
---~ 		end
---~ 		local threshold = GameTime() - (3000)
---~ 		while #t >= 50 and threshold > t[#t][1] do
---~ 			table_remove(t)
---~ 		end
---~ 		local data = {
---~ 			GameTime(),
---~ 			...
---~ 		}
---~ 		setmetatable(data, g_traceEntryMeta)
---~ 		table_insert(t, 1, data)
---~ 	end
+--~ 	LightmodelPresets.TheMartian1_Night.exterior_envmap = nil
+--~ 	SetLightmodelOverride(1, "TheMartian1_Night")
+	hr.FarZ = 7000000
+	local cam_params = {GetCamera()}
+	cam_params[4] = 5000
+	SetCamera(table.unpack(cam_params))
 
---~ 	function SetCommandErrorChecks(self, command, ...)
---~ 		print("SetCommandErrorChecks", self.class)
---~ 		local destructors = self.command_destructors
---~ 		if command == "->Idle" and destructors and destructors[1] > 0 then
---~ 			print("Command", self.class .. "." .. tostring(self.command), "remaining destructors:")
---~ 			for i = 1, destructors[1] do
---~ 				local destructor = destructors[i + 1]
---~ 				local info = debug.getinfo(destructor, "S") or empty_table
---~ 				local source = info.source or "Unknown"
---~ 				local line = info.linedefined or -1
---~ 				printf("\t%d. %s(%d)", i, source, line)
+	local obj = ChoGGi_OBuildingEntityClass:new()
+
+
+	local parent = Dialogs.HUD
+	if not parent.ChoGGi_TempBuildingName then
+		parent.ChoGGi_TempBuildingName = XWindow:new({
+			Id = "ChoGGi_TempBuildingName",
+		}, parent)
+	end
+	parent = parent.ChoGGi_TempBuildingName
+	local text_dlg = XText:new({
+		TextStyle = "LandingPosNameAlt",
+--~ 		Padding = padding_box,
+--~ 		Margins = c == 3 and margin_box_trp or c == 2 and margin_box_dbl or margin_box,
+--~ 		Background = background,
+		Dock = "box",
+		HAlign = "left",
+		VAlign = "top",
+		Clip = false,
+		UseClipBox = false,
+		HandleMouse = false,
+	}, parent)
+	text_dlg:SetVisible(true)
+	text_dlg:AddDynamicPosModifier{
+		id = "sector_info",
+		target = obj,
+	}
+
+--~ 	ex(text_dlg)
+
+
+	-- crash prevention
+	obj:SetState("idle")
+	obj:SetPos(ChoGGi.ComFuncs.CursorNearestHex())
+	obj:SetGameFlags(const.gofPermanent+const.gofUnderConstruction)
+
+	local print = print
+	local WriteScreenshot = WriteScreenshot
+	local WaitMsg = WaitMsg
+	local Sleep = Sleep
+	local SetCamera = SetCamera
+	local SelectObj = SelectObj
+	local SelectionRemove = SelectionRemove
+	local CursorNearestHex = ChoGGi.ComFuncs.CursorNearestHex
+	local ObjHexShape_Toggle = ChoGGi.ComFuncs.ObjHexShape_Toggle
+	local table_unpack = table.unpack
+
+	local HexOutlineShapes = HexOutlineShapes
+
+	local skip = {
+		Landscape
+	}
+	local zoom_out = {
+		DomeDiamond = true,
+		DomeMega = true,
+		DomeMegaTrigon = true,
+		DomeTrigon = true,
+		GeoscapeDome = true,
+		OpenCity = true,
+		OpenFarm = true,
+		TheExcavator = true,
+		XXXXX = true,
+		XXXXX = true,
+		XXXXX = true,
+		XXXXX = true,
+		XXXXX = true,
+		XXXXX = true,
+		XXXXX = true,
+		XXXXX = true,
+		XXXXX = true,
+		XXXXX = true,
+
+	}
+
+	CreateRealTimeThread(function()
+	local c = 0
+	local BuildingTemplates = BuildingTemplates
+		for id, template in pairs(BuildingTemplates) do
+--~ 			c = c + 1
+--~ 			if c == 25 then
+--~ 				break
 --~ 			end
---~ 			error(string.format("Command %s.%s did not pop its destructors.", self.class, tostring(self.command)), 2)
---~ 		end
---~ 		if command and command ~= "->Idle" then
---~ 			if type(command) ~= "function" and not self:HasMember(command) then
---~ 				error(string.format("Invalid command %s:%s", self.class, tostring(command)), 3)
---~ 			end
---~ 			if IsBeingDestructed(self) then
---~ 				error(string.format("%s:SetCommand('%s') called from Done() or delete()", self.class, tostring(command)), 3)
---~ 			end
---~ 		end
---~ 		self.command_call_stack = GetStack(3)
---~ 		if self.trace_setcmd then
---~ 			if self.trace_setcmd == "log" then
---~ 				self:Trace("SetCommand", tostring(command), self.command_call_stack, ...)
---~ 			else
---~ 				error(string.format("%s:SetCommand(%s) time %d, old command %s", self.class, concat_params(", ", tostring(command), ...), GameTime(), tostring(self.command)), 3)
---~ 			end
---~ 		end
---~ 	end
 
---~ end -- do
+			text_dlg:SetText(id)
+
+			local entity = template.construction_entity ~= "" and template.construction_entity
+				or template.entity
+
+			obj:ChangeEntity(entity)
+			obj.entity = entity
+
+			ObjHexShape_Toggle(obj, {
+				shape = HexOutlineShapes[entity] or empty_table,
+				skip_return = true,
+--~ 				depth_test = choice.check1,
+--~ 				hex_pos = true,
+--~ 				skip_clear = choice.check3,
+				colour1 = white,
+--~ 				colour2 = red,
+			})
+			-- build and place hexes to mark ground
+
+			if id:sub(1, 9) ~= "Landscape" then
+				if zoom_out[id] then
+					cam_params[4] = 10000
+				else
+					cam_params[4] = 5000
+				end
+				SetCamera(table_unpack(cam_params))
+
+				Sleep(50)
+
+				WaitMsg("OnRender")
+
+				local name = "AppData/BUILDING_" .. id .. ".tga"
+				WriteScreenshot(name)
+				WaitMsg("OnRender")
+				print(name)
+			end
 
 
---~ 		-- ParseText is picky about the text it'll parse
---~ 		local orig = XText.ParseText
---~ 		function XText:ParseText(...)
---~ 			local varargs = ...
---~ 			local ret
---~ 			if not procall(function()
---~ 				ret = orig(self, varargs)
---~ 			end) then
---~ 				ChoGGi.ComFuncs.Dump(self.text, "w", "ParseText", "lua", nil, true)
---~ 			end
---~ 			return ret
---~ 		end
+		end
 
---~ 		local orig_XImage_DrawContent = XImage.DrawContent
---~ 		local RetName = ChoGGi.ComFuncs.RetName
---~ 		local FileExists = ChoGGi.ComFuncs.FileExists
---~ 		function XImage:DrawContent(...)
---~ 			local image = self:GetImage()
---~ 			-- unless it is bitching about memorysavegame :)
---~ 			if image ~= "" and not image:find("memorysavegame") and not FileExists(image) then
---~ 				print(RetName(self.parent), image, "DC")
---~ 			end
---~ 			return orig_XImage_DrawContent(self, ...)
---~ 		end
+			Sleep(50)
+			ChoGGi.ComFuncs.ObjHexShape_Clear(obj)
+			ChoGGi.ComFuncs.DeleteObject(obj)
+	end)
 
---~ 		-- stop welcome to mars msg for LoadMapForScreenShot
---~ 		ShowStartGamePopup = empty_func
--- this is just for Map Images Pack. it loads the map, positions camera to fixed pos, and takes named screenshot
---~ ChoGGi.testing.LoadMapForScreenShot("BlankBigTerraceCMix_13")
---~ if false then
---~ 	CreateRealTimeThread(function()
---~ 		for map in pairs(MapData) do
---~ 			if map:sub(1, 5) == "Blank" then
---~ 				ChoGGi.testing.LoadMapForScreenShot(map)
---~ 				print(map)
---~ 			end
---~ 		end
---~ 	end)
---~ end
---~ LoadMapForScreenShot_cam_params = false
+end
+
+
 local function Screenie(map)
 	-- a mystery without anything visible added to the ground
 	g_CurrentMissionParams.idMystery = "BlackCubeMystery"
@@ -909,6 +922,143 @@ function ChoGGi.testing.RandomColour(amount)
 	end
 	TickEnd("RandomColour2.Total")
 end
+
+
+--~ -- for some reason this doesn't work on the selection panel when it's in Generate...
+--~ if Mods.ChoGGi_testing then
+--~ 	-- centred hud
+--~ 	local GetScreenSize = UIL.GetScreenSize
+--~ 	local margins = box(2560, 0, 2560, 0)
+--~ 	local orig_GetSafeMargins = GetSafeMargins
+--~ 	function GetSafeMargins(win_box)
+--~ 		if win_box then
+--~ 			return orig_GetSafeMargins(win_box)
+--~ 		end
+--~ 		-- If lookup table doesn't have width we fire orginal func
+--~ 		return GetScreenSize():x() == 5760 and margins or orig_GetSafeMargins()
+--~ 	end
+--~ end
+--~ do -- TraceCall/Trace (commented out in CommonLua\PropertyObject.lua)
+--~ -- g_traceMeta
+--~ -- g_traceEntryMeta
+--~ 	-- needs to be true for traces to be active (see CommonLua\Classes\StateObject.lua)
+--~ 	StateObject.so_debug_triggers = true
+--~ 	-- CommonLua\Movable.lua
+--~ 	function Movable:SetSpeed(speed)
+--~ 		pf.SetSpeed(self, speed)
+--~ 	end
+
+--~ 	local GetStack = GetStack
+--~ 	local GameTime = GameTime
+--~ 	local rawget, rawset = rawget, rawset
+--~ 	local setmetatable = setmetatable
+--~ 	local table_remove = table.remove
+--~ 	local table_insert = table.insert
+
+--~ 	function PropertyObject:TraceCall(member)
+--~ 		print("PropertyObject:TraceCall", self.class)
+--~ 		local orig_member_fn = self[member]
+--~ 		self[member] = function(self, ...)
+--~ 			self:Trace("[Call]", member, GetStack(2), ...)
+--~ 			return orig_member_fn(self, ...)
+--~ 		end
+--~ 	end
+--~ 	function PropertyObject:Trace(...)
+--~ 		print("PropertyObject:Trace", self.class)
+--~ 		local t = rawget(self, "trace_log")
+--~ 		if not t then
+--~ 			t = {}
+--~ 			setmetatable(t, g_traceMeta)
+--~ 			rawset(self, "trace_log", t)
+--~ 		end
+--~ 		local threshold = GameTime() - (3000)
+--~ 		while #t >= 50 and threshold > t[#t][1] do
+--~ 			table_remove(t)
+--~ 		end
+--~ 		local data = {
+--~ 			GameTime(),
+--~ 			...
+--~ 		}
+--~ 		setmetatable(data, g_traceEntryMeta)
+--~ 		table_insert(t, 1, data)
+--~ 	end
+
+--~ 	function SetCommandErrorChecks(self, command, ...)
+--~ 		print("SetCommandErrorChecks", self.class)
+--~ 		local destructors = self.command_destructors
+--~ 		if command == "->Idle" and destructors and destructors[1] > 0 then
+--~ 			print("Command", self.class .. "." .. tostring(self.command), "remaining destructors:")
+--~ 			for i = 1, destructors[1] do
+--~ 				local destructor = destructors[i + 1]
+--~ 				local info = debug.getinfo(destructor, "S") or empty_table
+--~ 				local source = info.source or "Unknown"
+--~ 				local line = info.linedefined or -1
+--~ 				printf("\t%d. %s(%d)", i, source, line)
+--~ 			end
+--~ 			error(string.format("Command %s.%s did not pop its destructors.", self.class, tostring(self.command)), 2)
+--~ 		end
+--~ 		if command and command ~= "->Idle" then
+--~ 			if type(command) ~= "function" and not self:HasMember(command) then
+--~ 				error(string.format("Invalid command %s:%s", self.class, tostring(command)), 3)
+--~ 			end
+--~ 			if IsBeingDestructed(self) then
+--~ 				error(string.format("%s:SetCommand('%s') called from Done() or delete()", self.class, tostring(command)), 3)
+--~ 			end
+--~ 		end
+--~ 		self.command_call_stack = GetStack(3)
+--~ 		if self.trace_setcmd then
+--~ 			if self.trace_setcmd == "log" then
+--~ 				self:Trace("SetCommand", tostring(command), self.command_call_stack, ...)
+--~ 			else
+--~ 				error(string.format("%s:SetCommand(%s) time %d, old command %s", self.class, concat_params(", ", tostring(command), ...), GameTime(), tostring(self.command)), 3)
+--~ 			end
+--~ 		end
+--~ 	end
+
+--~ end -- do
+
+
+--~ 		-- ParseText is picky about the text it'll parse
+--~ 		local orig = XText.ParseText
+--~ 		function XText:ParseText(...)
+--~ 			local varargs = ...
+--~ 			local ret
+--~ 			if not procall(function()
+--~ 				ret = orig(self, varargs)
+--~ 			end) then
+--~ 				ChoGGi.ComFuncs.Dump(self.text, "w", "ParseText", "lua", nil, true)
+--~ 			end
+--~ 			return ret
+--~ 		end
+
+--~ 		local orig_XImage_DrawContent = XImage.DrawContent
+--~ 		local RetName = ChoGGi.ComFuncs.RetName
+--~ 		local FileExists = ChoGGi.ComFuncs.FileExists
+--~ 		function XImage:DrawContent(...)
+--~ 			local image = self:GetImage()
+--~ 			-- unless it is bitching about memorysavegame :)
+--~ 			if image ~= "" and not image:find("memorysavegame") and not FileExists(image) then
+--~ 				print(RetName(self.parent), image, "DC")
+--~ 			end
+--~ 			return orig_XImage_DrawContent(self, ...)
+--~ 		end
+
+--~ 		-- stop welcome to mars msg for LoadMapForScreenShot
+--~ 		ShowStartGamePopup = empty_func
+-- this is just for Map Images Pack. it loads the map, positions camera to fixed pos, and takes named screenshot
+--~ ChoGGi.testing.LoadMapForScreenShot("BlankBigTerraceCMix_13")
+--~ if false then
+--~ 	CreateRealTimeThread(function()
+--~ 		for map in pairs(MapData) do
+--~ 			if map:sub(1, 5) == "Blank" then
+--~ 				ChoGGi.testing.LoadMapForScreenShot(map)
+--~ 				print(map)
+--~ 			end
+--~ 		end
+--~ 	end)
+--~ end
+--~ LoadMapForScreenShot_cam_params = false
+
 
 ------------------------------------------------------------------------------------------
 --~ 	function OnMsg.ClassesGenerate()

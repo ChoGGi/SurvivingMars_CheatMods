@@ -592,7 +592,7 @@ Press Enter to show all items."
 The listitem <green>must</green> be selected for this to take effect (it's the last listitem).
 It won't be visible unless the ""%s"" checkbox is enabled.
 
-Warning: Entering the wrong value may crash the game or otherwise cause issues."
+Warning: Entering the wrong type of value may crash the game or otherwise cause issues."
 302535920000078, "Custom Value"
 302535920000079, "* Use this custom value"
 302535920000080, "Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, or <left_click>*2 a list item)."
@@ -1158,7 +1158,7 @@ This is temporary, use Options>Video>Framerate Counter to permanently save it."
 302535920000049, "Loading Screen Log"
 302535920001621, "Be able to see the console log (and other dialogs) during the loading screen.
 
-Warning: Leaves ""Welcome to Mars"" msg onscreen till map is loaded."
+Warning: Leave ""Welcome to Mars"" msg onscreen till map is loaded."
 302535920001591, "Show Grid Small"
 302535920001592, "Small (use Disable to hide)."
 302535920001556, "Use the selected object."
@@ -1392,7 +1392,7 @@ Blue = pass/no build, Red = no pass/no build."
 302535920000952, "%s: Long pig sardines"
 302535920000953, "Set Colonist Capacity"
 302535920000954, "You need to select a building that has workers."
-302535920000956, "for colonist capacity: Above a thousand is laggy (above 60K may crash)."
+302535920000956, "Above a thousand is laggy (above 60K may crash)."
 302535920000957, "<green>%s</green> capacity is now <yellow>%s</yellow>."
 302535920000958, "You need to select a building that has capacity (colonists/air/water/elec)."
 302535920000959, "You need to select something that has space for visitors (services/trainingbuildings)."
@@ -1682,7 +1682,8 @@ If you have a uuid in your metadata.lua this checkbox is ignored and it'll try t
 302535920001364, "Don't be an asshole to %s... Always ask permission before using other people's hard work."
 302535920001365, "HPK files will be unpacked into AppData/Mods/ModSteamId"
 302535920001362, "Extract HPKs"
-302535920001363, "Shows list of Steam/Paradox downloaded mod hpk files for extraction (or use hpk.exe)."
+302535920001363, "Shows list of Steam/Paradox downloaded mod hpk files for extraction (or use hpk.exe).
+Files are placed in your profile folder\Mods"
 302535920000504, "List All Menu Items"
 302535920001323, "Show all the cheat menu items in a list dialog."
 302535920001285, "Opens in webbrowser."

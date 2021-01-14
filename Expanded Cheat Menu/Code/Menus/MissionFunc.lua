@@ -600,10 +600,10 @@ end
 function ChoGGi.MenuFuncs.ChangeGameLogo()
 	local MissionLogoPresetMap = MissionLogoPresetMap
 	local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
-	local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
+	local MapGet = ChoGGi.ComFuncs.MapGet
 
 	local function ChangeLogo(label, entity_name)
-		label = RetAllOfClass(label)
+		label = MapGet(label)
 		for i = 1, #label do
 			local attaches = GetAllAttaches(label[i], nil, "Logo")
 --~ ex(attaches)

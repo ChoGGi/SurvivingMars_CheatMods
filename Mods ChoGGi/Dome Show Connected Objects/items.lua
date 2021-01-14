@@ -12,4 +12,12 @@ return {
 		"Help", T(302535920011770, "Remove any invalid objects stuck in the dome when you press the toggle connected objs button."),
 		"DefaultValue", false,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "MoveInvalidPosition",
+		"DisplayName", T(302535920011826, "Move Invalid Position"),
+		"Help", T(302535920011827, [[Move any objects at an invalid pos to the dome when you press the toggle connected objs button.
+
+Colonists in buildings are at invalid positions; this will skip them, but as for other stuff...]]),
+		"DefaultValue", false,
+	}),
 }

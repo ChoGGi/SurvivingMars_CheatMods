@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v16.0 (Unreleased)
+### Changed:
+- Made sure RemoveHeightLimitObjs check is enabled when depot capacities are above certain amounts.
 
 ## v15.9 (02 Jan 2021)
 ### Changed:

@@ -14,7 +14,7 @@ Actions[c] = {ActionName = Strings[302535920000146--[[Delete Saved Games]]],
 	ActionIcon = "CommonAssets/UI/Menu/DeleteArea.tga",
 	RolloverText = Strings[302535920001273--[["Shows a list of saved games, and allows you to delete more than one at a time."]]] .. "\n\n" .. Strings[302535920001274--[[This is permanent!]]],
 	OnAction = ChoGGi.MenuFuncs.DeleteSavedGames,
-	ActionSortKey = "94.Extract HPKs",
+	ActionSortKey = "94.Delete Saved Games",
 }
 
 c = c + 1
@@ -32,7 +32,8 @@ Actions[c] = {ActionName = Strings[302535920001362--[[Extract HPKs]]],
 	ActionMenubar = "ECM.Help",
 	ActionId = ".Extract HPKs",
 	ActionIcon = "CommonAssets/UI/Menu/editmapdata.tga",
-	RolloverText = Strings[302535920001363--[[Shows list of Steam/Paradox downloaded mod hpk files for extraction (or use hpk.exe).]]],
+	RolloverText = Strings[302535920001363--[[Shows list of Steam/Paradox downloaded mod hpk files for extraction (or use hpk.exe).
+Files are placed in your profile folder\Mods.]]],
 	OnAction = ChoGGi.MenuFuncs.ExtractHPKs,
 	ActionSortKey = "95.Extract HPKs",
 }

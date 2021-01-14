@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesPostprocess()
+	-- don't want dupes showing up
 	if BuildingTemplates.ChoGGi_LayoutConstruction_Example then
 		return
 	end
@@ -8,7 +9,7 @@ function OnMsg.ClassesPostprocess()
 	PlaceObj("BuildingTemplate", {
 		-- keep it unique folks
 		"Id", "ChoGGi_LayoutConstruction_Example",
-		-- LayoutList id corresponds to the LayoutConstruction below
+		-- LayoutList corresponds to the LayoutConstruction id below
 		"LayoutList", "ChoGGi_LayoutConstruction_Example",
 		-- what group to add it to
 		"Group", "Infrastructure",

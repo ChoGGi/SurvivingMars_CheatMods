@@ -190,7 +190,7 @@ function ChoGGi.MenuFuncs.SetTrainingPoints()
 		local value = choice[1].value
 
 		if type(value) == "number" then
-			local objs = ChoGGi.ComFuncs.RetAllOfClass(obj.class)
+			local objs = ChoGGi.ComFuncs.MapGet(obj.class)
 
 			if value == default_setting then
 				setting.evaluation_points = nil
@@ -305,7 +305,7 @@ function ChoGGi.MenuFuncs.SetServiceBuildingStats()
 			end
 
 			-- reset existing to defaults
-			local objs = ChoGGi.ComFuncs.RetAllOfClass(id)
+			local objs = ChoGGi.ComFuncs.MapGet(id)
 			for i = 1, #objs do
 				local obj = objs[i]
 				obj:SetBase("health_change", temp.health_change)
@@ -340,7 +340,7 @@ function ChoGGi.MenuFuncs.SetServiceBuildingStats()
 				end
 			end
 			-- update existing buildings
-			local objs = ChoGGi.ComFuncs.RetAllOfClass(id)
+			local objs = ChoGGi.ComFuncs.MapGet(id)
 			local UpdateServiceComfortBld = ChoGGi.ComFuncs.UpdateServiceComfortBld
 			for i = 1, #objs do
 				UpdateServiceComfortBld(objs[i], bs_setting.service_stats)
@@ -553,7 +553,7 @@ function ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery()
 			end
 
 			local function SetStor(cls)
-				local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
+				local objs = ChoGGi.ComFuncs.MapGet(cls)
 				for i = 1, #objs do
 					local o = objs[i]
 					o.consumption_stored_resources = value
@@ -662,7 +662,7 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
 		local value = choice[1].value
 		if type(value) == "number" then
 
-			local objs = ChoGGi.ComFuncs.RetAllOfClass(id)
+			local objs = ChoGGi.ComFuncs.MapGet(id)
 			for i = 1, #objs do
 				local obj = objs[i]
 				obj.protect_range = value
@@ -799,7 +799,7 @@ local function BuildingConsumption_Toggle(type1, str1, type2, func1, func2, str2
 	end
 
 	local ComFuncs = ChoGGi.ComFuncs
-	local blds = ComFuncs.RetAllOfClass(id)
+	local blds = ComFuncs.MapGet(id)
 	for i = 1, #blds do
 		ComFuncs[which](blds[i])
 	end
@@ -1101,7 +1101,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 
 			-- all this just to update the displayed amount :)
 			local function SetProd(label)
-				local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
+				local objs = ChoGGi.ComFuncs.MapGet(label)
 				for i = 1, #objs do
 					local o = objs[i]
 					if RetTemplateOrClass(o) == id then
@@ -1119,7 +1119,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 			else -- other prod
 
 				local function SetProdOther(label)
-					local objs = ChoGGi.ComFuncs.RetAllOfClass(label)
+					local objs = ChoGGi.ComFuncs.MapGet(label)
 					for i = 1, #objs do
 						local o = objs[i]
 						if RetTemplateOrClass(o) == id then
@@ -1198,7 +1198,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 				obj.auto_performance = obj:GetClassValue("auto_performance")
 				ChoGGi.ComFuncs.ToggleWorking(obj)
 			else
-				local blds = ChoGGi.ComFuncs.RetAllOfClass(obj.class)
+				local blds = ChoGGi.ComFuncs.MapGet(obj.class)
 				if blds[1] then
 					-- GetClassValue gets the metatable for the obj, so just grab the first one and use those values
 --~ 					local max_workers = blds[1]:GetClassValue("max_workers")
@@ -1220,7 +1220,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 				obj.auto_performance = value
 				ChoGGi.ComFuncs.ToggleWorking(obj)
 			else
-				local blds = ChoGGi.ComFuncs.RetAllOfClass(obj.class)
+				local blds = ChoGGi.ComFuncs.MapGet(obj.class)
 				for i = 1, #blds do
 					local bld = blds[i]
 --~ 					bld.max_workers = 0
@@ -1270,7 +1270,7 @@ end
 do -- SchoolTrainAll_Toggle/SanatoriumCureAll_Toggle
 	-- used to add or remove traits from schools/sanitariums
 	local function BuildingsSetAll_Traits(cls, traits, bool)
-		local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
+		local objs = ChoGGi.ComFuncs.MapGet(cls)
 		for i = 1, #objs do
 			local obj = objs[i]
 			for j = 1, #traits do
@@ -1649,7 +1649,7 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(action)
 			CreateRealTimeThread(function()
 				local SelectObj = SelectObj
 				local WaitMsg = WaitMsg
-				local objs = ChoGGi.ComFuncs.RetAllOfClass(id)
+				local objs = ChoGGi.ComFuncs.MapGet(id)
 				for i = 1, #objs do
 					local o = objs[i]
 					o:SetUIRange(value)

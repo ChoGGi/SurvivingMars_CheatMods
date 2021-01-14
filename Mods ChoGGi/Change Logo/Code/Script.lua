@@ -1,14 +1,14 @@
 -- See LICENSE for terms
 
 local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
-local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
+local MapGet = ChoGGi.ComFuncs.MapGet
 
 local options
 local mod_logos = {}
 local mod_logos_c = 0
 
 local function ChangeAttachesLogo(label, entity_name)
-	label = RetAllOfClass(label)
+	label = MapGet(label)
 	for i = 1, #label do
 		local attaches = GetAllAttaches(label[i], nil, "Logo")
 		for j = 1, #attaches do

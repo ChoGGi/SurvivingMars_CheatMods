@@ -2,11 +2,13 @@
 
 local mod_EnableMod
 local mod_CleanUpInvalid
+local mod_MoveInvalidPosition
 
 -- fired when settings are changed/init
 local function ModOptions()
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_CleanUpInvalid = CurrentModOptions:GetProperty("CleanUpInvalid")
+	mod_MoveInvalidPosition = CurrentModOptions:GetProperty("MoveInvalidPosition")
 end
 
 -- load default/saved settings
@@ -26,6 +28,8 @@ local ResumePassEdits = ResumePassEdits
 local IsValid = IsValid
 --~ local table_iclear = table.iclear
 local table_clear = table.clear
+local InvalidPos = ChoGGi.Consts.InvalidPos
+local RetName = ChoGGi.ComFuncs.RetName
 
 local lines = {}
 local lines_c = 0
@@ -52,7 +56,6 @@ local function BuildObjList(list)
 		local obj = list[i]
 		bad_objs_c = bad_objs_c + 1
 		bad_objs[bad_objs_c] = obj
-		-- for removing invalids
 		bad_objs[obj] = list
 	end
 end
@@ -89,16 +92,23 @@ local function ToggleLines(dome)
 	end
 
 	-- attach lines
-	local pos = dome:GetPos()
+	local dome_name = RetName(dome)
+	local dome_pos = dome:GetPos()
 	for i = #bad_objs, 1, -1 do
 		local bad_obj = bad_objs[i]
 		if mod_CleanUpInvalid and not IsValid(bad_obj) then
-			-- remove the not obj from dome list
+			-- remove invalid obj from dome list
 			table.remove_entry(bad_objs[bad_obj], "handle", bad_obj.handle)
+			print("Dome Show Connected Objects: Removed invalid object", RetName(bad_obj), "from dome!", dome_name)
+		-- obj stuck outside the map area ("holding area" for off planet rockets and so on)
+		elseif mod_MoveInvalidPosition and (bad_obj:GetPos() or point20) == InvalidPos and not (bad_obj:IsKindOf("Colonist") and IsValid(bad_obj.holder)) then
+			-- stick in dome for user to remove
+			print("Dome Show Connected Objects: Moved object", RetName(bad_obj), "from invalid position to in-dome position!", dome_name)
+			bad_obj:SetPos(table.rand(dome.walkable_points or empty_table))
 		else
 			local line = OPolyline:new()
 			-- FixConstructPos sets z to ground height
-			line:SetParabola(pos, bad_obj:GetVisualPos())
+			line:SetParabola(dome_pos, bad_obj:GetVisualPos())
 			-- store dome for delete toggle
 			lines_c = lines_c + 1
 			lines[lines_c] = line

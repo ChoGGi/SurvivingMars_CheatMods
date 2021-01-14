@@ -28,7 +28,7 @@ local function SetMain(obj, maintenance)
 end
 
 function OnMsg.ClassesPostprocess()
-	local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
+	local MapGet = ChoGGi.ComFuncs.MapGet
 	local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 	local RetName = ChoGGi.ComFuncs.RetName
 
@@ -69,7 +69,7 @@ function OnMsg.ClassesPostprocess()
 						name = T{302535920011077, "Toggle maintenance on all <yellow><name></yellow>.", name = name},
 						hint = T{302535920011078, "Toggles maintenance on all <yellow><name></yellow> (same state as this one).", name = name},
 						clicked = function()
-							local objs = RetAllOfClass(context.class)
+							local objs = MapGet(context.class)
 							local toggle = context.ChoGGi_DisableMaintenance
 							for i = 1, #objs do
 								SetMain(objs[i], toggle)
@@ -79,7 +79,7 @@ function OnMsg.ClassesPostprocess()
 					{
 						name = T{302535920011563, "Enable maintenance on all <yellow><name></yellow>.", name = name},
 						clicked = function()
-							local objs = RetAllOfClass(context.class)
+							local objs = MapGet(context.class)
 							for i = 1, #objs do
 								SetMain(objs[i], true)
 							end
@@ -88,7 +88,7 @@ function OnMsg.ClassesPostprocess()
 					{
 						name = T{302535920011564, "Disable maintenance on all <yellow><name></yellow>.", name = name},
 						clicked = function()
-							local objs = RetAllOfClass(context.class)
+							local objs = MapGet(context.class)
 							for i = 1, #objs do
 								SetMain(objs[i], false)
 							end

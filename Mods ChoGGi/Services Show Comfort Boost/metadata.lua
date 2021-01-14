@@ -25,6 +25,6 @@ return PlaceObj("ModDef", {
 	"TagInterface", true,
 	"TagOther", true,
 	"description", [[Services only show the "Service Comfort" number, but that's just used as a threshold. It's not the actual comfort received.
-This mod adds the "Comfort increase on visit" to the UI.
+This mod adds the "Comfort increase on visit" to the UI (what shows up in the comfort log after a visit).
 ]],
 })

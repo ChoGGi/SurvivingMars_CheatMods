@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 local OnMsg = OnMsg
-local IsAboveHeightLimit = ChoGGi.ComFuncs.IsAboveHeightLimit
+local IsAttachAboveHeightLimit = ChoGGi.ComFuncs.IsAttachAboveHeightLimit
 local function HasRotatyBlinky(o)
 	if o.ChoGGi_blinky then
 		return true
@@ -71,9 +71,9 @@ local function RemoveChoGGiObjects(skip_height)
 	-- stop any rovers with pathing being shown (it'll error out anyways)
 	ChoGGi.ComFuncs.Pathing_StopAndRemoveAll()
 
-	-- remove anything above 65536 (or bad things happen)
+	-- remove any origin points above 65535 (or bad things happen)
 	if not skip_height and ChoGGi.UserSettings.RemoveHeightLimitObjs then
-		local objs = MapGet("map", IsAboveHeightLimit)
+		local objs = MapGet("map", IsAttachAboveHeightLimit)
 		for i = #objs, 1, -1 do
 			objs[i]:delete()
 		end

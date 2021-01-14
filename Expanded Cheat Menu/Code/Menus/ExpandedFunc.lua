@@ -75,7 +75,7 @@ do -- ViewObjInfo_Toggle
 	local IsValid = IsValid
 	local table_find = table.find
 	local r = const.ResearchPointsScale
-	local RetAllOfClass = ChoGGi.ComFuncs.RetAllOfClass
+	local MapGet = ChoGGi.ComFuncs.MapGet
 	local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
 	local update_info_thread = {}
 	local viewing_obj_info = {}
@@ -250,7 +250,7 @@ do -- ViewObjInfo_Toggle
 	local ptz8000 = point(0, 0, 8000)
 	local ptz2000 = point(0, 0, 2000)
 	local function AddViewObjInfo(label)
-		local objs = RetAllOfClass(label)
+		local objs = MapGet(label)
 		SuspendPassEdits("ChoGGi.MenuFuncs.BuildingInfo_Toggle.AddViewObjInfo")
 		for i = 1, #objs do
 			local obj = objs[i]
@@ -279,7 +279,7 @@ do -- ViewObjInfo_Toggle
 
 	local function RemoveViewObjInfo(cls)
 		-- clear out the text objects
-		local objs = RetAllOfClass(cls)
+		local objs = MapGet(cls)
 		for i = 1, #objs do
 			local obj = objs[i]
 			if IsValid(obj.ChoGGi_ViewObjInfo_text) then
@@ -295,7 +295,7 @@ do -- ViewObjInfo_Toggle
 			local cameraRTS_GetPos = cameraRTS.GetPos
 			local InvalidPos = ChoGGi.Consts.InvalidPos
 
-			local objs = RetAllOfClass(cls)
+			local objs = MapGet(cls)
 			local thread = update_info_thread[cls]
 			while thread do
 				local cam_pos = cameraRTS_GetPos()

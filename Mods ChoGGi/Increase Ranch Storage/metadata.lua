@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_IncreaseRanchStorage",
 	"lua_revision", 249143,
 	"steam_id", "2155123211",
-	"pops_any_uuid", "b6010dad-35d6-40c4-afd7-4659b033cff7",
+	"pops_any_uuid", "ef3dc1b6-2657-49dc-bf0e-4d610d74eae9",
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

@@ -2822,14 +2822,14 @@ do -- ShowAnimDebug_Toggle
 	end
 
 	local function AnimDebug_ShowAll(cls, colour)
-		local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
+		local objs = ChoGGi.ComFuncs.MapGet(cls)
 		for i = 1, #objs do
 			AnimDebug_Show(objs[i], colour)
 		end
 	end
 
 	local function AnimDebug_HideAll(cls)
-		local objs = ChoGGi.ComFuncs.RetAllOfClass(cls)
+		local objs = ChoGGi.ComFuncs.MapGet(cls)
 		for i = 1, #objs do
 			AnimDebug_Hide(objs[i])
 		end
