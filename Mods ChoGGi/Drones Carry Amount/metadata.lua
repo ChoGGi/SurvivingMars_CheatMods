@@ -11,7 +11,6 @@ return PlaceObj("ModDef", {
 	"version", 13,
 	"version_major", 1,
 	"version_minor", 3,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_DronesCarryAmountFix",
 	"steam_id", "1411107961",
@@ -27,8 +26,5 @@ Example: if there's 1 res cube and you have the 2x carry upgrade they'll wait fo
 This mod forces them to pick up whenever there's at least 1 res cube.
 
 Includes mod option to choose the amount of res to carry.
-
-
-
-Included in Expanded Cheat Menu.]],
+]],
 })

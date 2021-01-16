@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,
-
 	"id", "ChoGGi_IncreasedRenderDistance",
 	"author", "ChoGGi",
 	"image", "Preview.png",
@@ -17,8 +16,5 @@ return PlaceObj("ModDef", {
 This is somewhat useless without increasing zoom in Expanded Cheat Menu.
 
 You won't see the increased shadow/render difference, but you will have sharper shadows.
-
-
-
-Included in Expanded Cheat Menu.]],
+]],
 })

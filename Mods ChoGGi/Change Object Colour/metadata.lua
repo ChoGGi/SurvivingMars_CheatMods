@@ -11,7 +11,6 @@ return PlaceObj("ModDef", {
 	"version", 10,
 	"version_major", 1,
 	"version_minor", 0,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_ChangeObjectColour",
 	"author", "ChoGGi",
@@ -26,8 +25,5 @@ return PlaceObj("ModDef", {
 Use the "Default" checkbox to reset colours.
 
 You can also use Shift+F6 or Ctrl+F6 for random colours and default colours.
-
-
-
-Included in Expanded Cheat Menu.]],
+]],
 })

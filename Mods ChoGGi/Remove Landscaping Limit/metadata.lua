@@ -29,7 +29,5 @@ The landscaping needs to override the BlockingObjects status otherwise you can't
 This will allow you to build regular buildings on top of others, turn off the blocking objects option if it bothers you (see mod options).
 
 This overrides max and min sizes.
-
-
-Included in Expanded Cheat Menu.]],
+]],
 })

@@ -18,7 +18,5 @@ To fix the issue with Solar panels ignoring more than one sun: [url=https://stea
 
 
 Requested by Griffdy04/BlueNightfury.
-
-
-Included in Expanded Cheat Menu.]],
+]],
 })

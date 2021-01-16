@@ -21,6 +21,5 @@ Always Clean: Off by default (dusty takes precedent if both are enabled).
 
 
 Requested by: LegendGamer
-
-Included in Expanded Cheat Menu.]],
+]],
 })

@@ -37,7 +37,7 @@ function OnMsg.ClassesPostprocess()
 		-- https://github.com/HaemimontGames/SurvivingMars/blob/master/Data/BuildingTemplate.lua
 		-- for DLC use my Expanded Cheat Menu mod, and in the console type in ~BuildingTemplates
 
-		-- they usually have the same entity name, but not always (check the template).
+		-- they usually have the same entity name, but not always (check the building template with ECM).
 
 		PlaceObj("LayoutConstructionEntry", {
 			"template", "DomeBasic",
@@ -50,6 +50,7 @@ function OnMsg.ClassesPostprocess()
 			-- you can use ECM to figure out the "pos" numbers
 			-- press Shift-F3 to have a numbered grid show up at the cursor
 			-- or select an object>press f4 to examine it>go to Objects menu>hex shape toggle>see position numbers
+			-- point(0, 0) == orgin point of building (usually the centre of it, rotate a building around in construction mode to find it)
 			"dir", 5,
 			-- 0-5 (six hex angles), test with an existing obj with SelectedObj:SetAngle(5*3600) (3600 == 60*60)
 			"entity", "AirTank",

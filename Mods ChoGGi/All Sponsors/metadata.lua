@@ -17,7 +17,5 @@ return PlaceObj("ModDef", {
 This adds the rival A.I. sponsors, they aren't the same as regular sponsors.
 
 Includes mod option to limit the max number of rivals.
-
-
-Included in Expanded Cheat Menu.]],
+]],
 })

@@ -33,8 +33,5 @@ Ctrl-Shift-Alt-D to delete object under mouse (any object and there's no confirm
 You can rebind keys with the in-game options (scroll to the bottom).
 
 There's a hard limit on how close to the edge you can build (I'll probably figure that out one of these days), so I wouldn't bother flattening the border mountains.
-
-
-
-Included in Expanded Cheat Menu.]],
+]],
 })

@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 5,
 	"version_major", 0,
 	"version_minor", 5,
-
 	"id", "ChoGGi_PermanentDreamersLightmodel",
 	"author", "ChoGGi",
 	"image", "Preview.png",
@@ -16,8 +15,5 @@ return PlaceObj("ModDef", {
 	"description", [[Always a green morning.
 
 Requested by BLAde.
-
-
-
-Included in Expanded Cheat Menu.]],
+]],
 })

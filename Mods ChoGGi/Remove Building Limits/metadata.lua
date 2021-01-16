@@ -21,12 +21,9 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
+	"TagInterface", true,
 	"description", [[Changes all errors to warnings (not landscaping ones, see Remove Landscaping Limits for those).
 
 This will also attach any inside buildings placed outside to the nearest dome (there's a new Sol check for a working/closer dome).
-
-
-
-Included in Expanded Cheat Menu.]],
-	"TagInterface", true,
+]],
 })

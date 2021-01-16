@@ -14,8 +14,5 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"description", [[Removes rotate limit imposed on certain buildings (large wind turbine).
-
-
-
-Included in Expanded Cheat Menu.]],
+]],
 })
