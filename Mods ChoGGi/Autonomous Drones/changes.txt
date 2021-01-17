@@ -1,3 +1,10 @@
+v0.7
+Stopped using prefabs for transfer since something I'm doing must be copying them instead of moving.
+Drones now shrink then appear at new hub.
+Merged Sort/Random mod options.
+Removed some log spam.
+Re-fangled code.
+
 v0.6
 New mod option Ignore Unused Hubs.
 Fixed issue with single hubs.

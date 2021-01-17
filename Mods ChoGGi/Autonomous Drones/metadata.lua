@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"lua_revision", 249143,
 	"steam_id", "2313642931",
 	"pops_any_uuid", "4313ca38-0202-4d35-b630-1290369995eb",
-	"version", 6,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 7,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -25,12 +25,13 @@ return PlaceObj("ModDef", {
 	"description", [[Takes care of moving drones to different drone controllers (hubs/shuttles/rovers).
 Each Sol build a list of prefab drones, idle drones, drones from low/medium load controllers, then reassign to high/med load controllers.
 Drones'll either drive over or pack/unpack over depending on distance (further than dist to controller).
-If they're on a task; they'll wait till it's over before reassign.
+If they're on a task; they'll wait till it's over before reassign (set delay in mod options).
 
 
 Mod Options:
 Enable Mod: Disable mod without having to see missing mod msg.
-Randomise Hub List: Randomise list of drone controllers, so the order is different each update (turn off to sort by load).
+Sort Hub List Load: Sort hub list by drone load order (overrides random list).
+Turning off means randomise list of drone controllers, so the order is different each update (helps reduce "bunching").
 Use Prefabs: Use drone prefabs to adjust the loads.
 Update Delay: On = Sol, Off = Hour.
 Hide Pack Buttons: Hide Pack/Unpack buttons for drone controllers.
@@ -40,6 +41,9 @@ Ignore Unused Hubs: Any hubs not used will have their drones ignored (manual ass
 Use Drone Hubs/RC Commanders/Rockets: Toggle assigning or ignoring certain controllers.
 Add Empty/Heavy/Medium: How many drones to add to empty and heavy/medium load controllers.
 
-Recommendations for the default "Add" amounts?
+
+Known Issues:
+If you turn off update delay then the drone work delay may build up a bunch of drones to be reassigned, I plan to have a system to limit "waiting" drones next update or two.
+The lower delay will help shuffle drones around quicker, but it'll look like adding limits are being ignored.
 ]],
 })

@@ -11,15 +11,11 @@ return {
 		"DefaultValue", true,
 	}),
 	PlaceObj("ModItemOptionToggle", {
-		"name", "RandomiseHubList",
-		"DisplayName", T(302535920011794, "Randomise Hub List"),
-		"Help", T(302535920011795, [[Randomise list of drone controllers, so the order is different each update (helps reduce "bunching").]]),
-		"DefaultValue", false,
-	}),
-	PlaceObj("ModItemOptionToggle", {
 		"name", "SortHubListLoad",
-		"DisplayName", T(000, "Sort Hub List Load"),
-		"Help", T(000, "Sort hub list by drone load order (overrides random list)."),
+		"DisplayName", T(302535920011794, "Sort Hub List Load"),
+		"Help", T(302535920011795, [[Sort hub list by drone load order (overrides random list).
+
+Turning off means randomise list of drone controllers, so the order is different each update (helps reduce "bunching").]]),
 		"DefaultValue", true,
 	}),
 	PlaceObj("ModItemOptionToggle", {
@@ -44,7 +40,7 @@ return {
 		"name", "DroneWorkDelay",
 		"DisplayName", T(000, "Drone Work Delay"),
 		"Help", T(000, [[How many "seconds" to wait before forcing the busy drone (0 to disable and wait).]]),
-		"DefaultValue", 15,
+		"DefaultValue", 30,
 		"MinValue", 0,
 		"MaxValue", 100,
 	}),
@@ -59,7 +55,7 @@ return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "IgnoreUnusedHubs",
 		"DisplayName", T(302535920011823, "Ignore Unused Hubs"),
-		"Help", T(302535920011824, "Any hubs not used will have their drones ignored (manual assignment only)."),
+		"Help", T(302535920011824, "Any hubs not used (see below) will have their drones ignored (manual assignment only)."),
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
@@ -84,7 +80,7 @@ return {
 		"name", "AddHeavy",
 		"DisplayName", T(302535920011802, "Add Heavy"),
 		"Help", T(302535920011803, "How many drones to add to heavy load controllers."),
-		"DefaultValue", 7,
+		"DefaultValue", 5,
 		"MinValue", 0,
 		"MaxValue", 100,
 	}),
@@ -92,7 +88,7 @@ return {
 		"name", "AddMedium",
 		"DisplayName", T(302535920011804, "Add Medium"),
 		"Help", T(302535920011805, "How many drones to add to medium load controllers."),
-		"DefaultValue", 5,
+		"DefaultValue", 3,
 		"MinValue", 0,
 		"MaxValue", 100,
 	}),
@@ -100,7 +96,7 @@ return {
 		"name", "AddEmpty",
 		"DisplayName", T(302535920011806, "Add Empty"),
 		"Help", T(302535920011807, "How many drones to add to empty controllers."),
-		"DefaultValue", 3,
+		"DefaultValue", 1,
 		"MinValue", 0,
 		"MaxValue", 100,
 	}),
