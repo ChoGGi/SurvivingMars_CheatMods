@@ -325,6 +325,7 @@ It don't matter if you're black or white"]]],
 	Examine = {
 		des = Strings[302535920001277--[[Open %s in the Object Examiner.]]],
 		des_name = true,
+		icon = ChoGGi.library_path .. "UI/incal_egg.png",
 	},
 	AddFuel = {
 		des = Strings[302535920001053--[[Fill up %s with fuel.]]],

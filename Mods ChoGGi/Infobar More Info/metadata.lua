@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Infobar More Info",
-	"version", 20,
+	"version", 21,
 	"version_major", 2,
-	"version_minor", 0,
+	"version_minor", 1,
 	"image", "Preview.png",
 	"id", "ChoGGi_InfobarAddDischargeRates",
 	"steam_id", "1775006723",
@@ -59,9 +59,9 @@ Mod Options:
 [b]Skip Grid X[/b]: Grids that only have X amount of buildings (for smaller clusters, like a concrete "hub", 0 to disable).
 [b]Rollover Size[/b]: Game default is 45, if you want the tooltips wider use this.
 [b]Disable Transparency[/b]: Disable transparency of Infobar.
+[b]Always Show Remaining[/b]: Keep showing remaining amount of resources instead of N/A when prod over consump (time formatting only shows hours for neg numbers, this game uses 24 per Sol).
 
 
 Suggestions of info you'd like to see?
-Infobar More Info
 ]],
 })

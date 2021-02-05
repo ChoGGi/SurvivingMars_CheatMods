@@ -389,14 +389,6 @@ local animals = {
 	},
 }
 
-local orig_PastureAnimal_GameInit = PastureAnimal.GameInit
-function PastureAnimal:GameInit(...)
-	if self.animal_type:sub(1,21) == "ChoGGi_PastureAnimal_" then
-		self.ChoGGi_animal = true
-	end
-	return orig_PastureAnimal_GameInit(self, ...)
-end
-
 -- make drones smaller
 local orig_PastureAnimal_Spawn = PastureAnimal.Spawn
 function PastureAnimal:Spawn(...)
@@ -509,6 +501,16 @@ local roam_rand3 = {"breakDownIdle", "chargingStationIdle", "cleanBuildingIdle",
 
 -- add new non-pasture animal objects
 function OnMsg.ClassesPostprocess()
+
+	-- mark "my" animals
+	local orig_PastureAnimal_GameInit = PastureAnimal.GameInit
+	function PastureAnimal:GameInit(...)
+		if self.animal_type:sub(1, 21) == "ChoGGi_PastureAnimal_" then
+			self.ChoGGi_animal = true
+		end
+		return orig_PastureAnimal_GameInit(self, ...)
+	end
+
 	-- set idle anim
 	local orig_PastureAnimal_SetState = PastureAnimal.SetState
 	function PastureAnimal:SetState(state, skip, ...)

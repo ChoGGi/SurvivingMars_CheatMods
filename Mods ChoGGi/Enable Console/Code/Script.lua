@@ -25,7 +25,8 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local function ShowConsole()
-	if not mod_EnableConsole then
+	if not mod_EnableConsole or table.find(ModsLoaded, "id", "ChoGGi_CheatMenu")
+	then
 		return
 	end
 

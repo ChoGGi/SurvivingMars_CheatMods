@@ -1,3 +1,6 @@
+v0.6
+Log spam.
+
 v0.5
 Fixed a bug that's been around for awhile (thanks Pharaoh).
 

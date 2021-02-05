@@ -68,7 +68,7 @@ local function RemoveChoGGiObjects(skip_height)
 
 	-- any of my objs added in Classes_Objects.lua
 	ChoGGi.ComFuncs.RemoveObjs("ChoGGi_ODeleteObjs")
-	-- stop any rovers with pathing being shown (it'll error out anyways)
+	-- stop any units with pathing being shown (it'll error out anyways)
 	ChoGGi.ComFuncs.Pathing_StopAndRemoveAll()
 
 	-- remove any origin points above 65535 (or bad things happen)

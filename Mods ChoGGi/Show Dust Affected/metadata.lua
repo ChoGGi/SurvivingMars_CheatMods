@@ -21,6 +21,6 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 --~ 	"has_options", true,
-	"description", [[Adds a button to Concrete/Metal extractors that shows which buildings are affected by that extractor.
+	"description", [[Adds a button to Dust Generators (Concrete/Metal/Water extractors) that shows which buildings are affected by the dust.
 ]],
 })

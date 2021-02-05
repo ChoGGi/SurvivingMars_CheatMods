@@ -112,18 +112,20 @@ return PlaceObj("ModDef", {
 	},
 
 	"description", [[and Modding Tools. Enables cheat menu, cheat info pane, console, examine object, adds a few hundred menu items.
+The mod for modding Surviving Mars.
+
 Requests are welcome.
 
 If you don't know where a menu item is; Menu>Help>List All Menu Items (use "Filter Items" at the bottom).
-
 
 [url=https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/README.md]README[/url]
 [url=https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog]Changelog[/url]
 [url=https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/CheatsList.md]Menu Cheats List[/url]
 
+Known Issues:
+The game can crash if you disable this mod or my lib mod after the game has loaded mods: You have to disable from the main menu BEFORE new game/load game.
 
-
-##### Available From:
+Available From:
 https://steamcommunity.com/sharedfiles/filedetails/?id=1411157810
 https://www.nexusmods.com/survivingmars/mods/7
 https://mods.paradoxplaza.com/mods/6671/Windows

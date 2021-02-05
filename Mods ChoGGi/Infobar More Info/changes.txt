@@ -1,3 +1,6 @@
+v2.1
+Added mod option to stop showing N/A when production is above consumption.
+
 v2.0
 Fixed issue with Shuttle hubs and not Shuttles (thanks Stone Cold Jane Austen).
 

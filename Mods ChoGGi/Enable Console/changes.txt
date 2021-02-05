@@ -1,3 +1,6 @@
+v0.6
+Disable mod when ECM is enabled.
+
 v0.5
 Evans update.
 

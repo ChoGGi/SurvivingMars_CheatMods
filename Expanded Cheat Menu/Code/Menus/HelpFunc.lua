@@ -11,6 +11,8 @@ local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
 do -- ModUpload
+	-- redo this someday...
+
 	-- since they use the title as the folder name you can't use the same name as other mods, or mods that got blocked and I'm supposed to re-upload
 	-- CopyToClipboard([[	"pops_any_uuid", "]] .. GetUUID() .. [[",]])
 	local diff_mod_titles_paradox = {
@@ -58,7 +60,6 @@ do -- ModUpload
 	local image_steam = "UI/Common/mod_steam_workshop.tga"
 	local image_paradox = "UI/ParadoxLogo.tga"
 
-
 	local function UploadMod(answer, batch)
 		if not answer or not mod or mod and not mod.steam_id then
 			return
@@ -84,6 +85,7 @@ do -- ModUpload
 			prepare_worked, prepare_results = Steam_PrepareForUpload(nil, mod, mod_params)
 			-- mod id for clipboard
 			item_id = mod.steam_id
+
 		-- paradox mods
 		else
 			-- paradox has some annoyances when it comes to mod titles
@@ -118,6 +120,23 @@ do -- ModUpload
 			prepare_worked, prepare_results = PDX_PrepareForUpload(nil, mod, mod_params)
 
 			item_id = mod[mod_params.uuid_property]
+
+			-- add some text to ECM description to hopefully reduce people reporting the mod.
+			if mod.id == ChoGGi.id then
+				mod.description = Strings[302535920000990--[["You need to have a mouse to use this mod."]]] .. Strings[302535920000887--[["If you have any issues with this mod, please send me a bug report instead of reporting the mod.
+You can contact me through:
+Github: https://github.com/ChoGGi/SurvivingMars_CheatMods
+Discord: ChoGGi#9210
+Steam: https://steamcommunity.com/id/ChoGGi/
+email: ECM@choggi.org"]]] .. "\n\n\n" .. mod.description
+			else
+				mod.description = Strings[302535920000887--[["If you have any issues with this mod, please send me a bug report instead of reporting the mod.
+You can contact me through:
+Github: https://github.com/ChoGGi/SurvivingMars_CheatMods
+Discord: ChoGGi#9210
+Steam: https://steamcommunity.com/id/ChoGGi/
+email: ECM@choggi.org"]]] .. "\n\n\n" .. mod.description
+			end
 		end
 
 		-- Issue with mod platform (workshop/paradox mods)
@@ -262,11 +281,15 @@ do -- ModUpload
 				if steam_upload then
 					result, err = Steam_Upload(nil, mod, mod_params)
 				else
+					local org_mod_description = mod.description
+
 					-- thanks LukeH (line breaks needed for paradox)
-					mod.description = mod.description:gsub("\n", "<br>")
+					-- not bold (what's bold on paradox?)
+					mod.description = mod.description:gsub("\n", "<br>"):gsub("%[b%]", ""):gsub("%[%/b%]", "")
+
 					result, err = PDX_Upload(nil, mod, mod_params)
-					-- shouldn't actually matter, but maybe some people will use mod editor along with ECM
-					mod.description = mod.description:gsub("<br>", "\n")
+					-- shouldn't actually matter, but maybe some weird person will use mod editor along with ECM upload?
+					local org_mod_description = mod.description
 				end
 			end
 		end

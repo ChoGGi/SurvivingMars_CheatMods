@@ -23,8 +23,12 @@ end
 
 -- override naming func
 local table_rand = table.rand
+local Nationsl = Nations
 local function GetNationName()
-	return table_rand(Nations).value
+	if not Nationsl then
+	`Nationsl = Nations
+	end
+	return table_rand(Nationsl).value
 end
 
 local NameUnit = NameUnit

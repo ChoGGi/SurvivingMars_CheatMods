@@ -1,0 +1,5 @@
+v0.3
+Removed outside decorations from service slice.
+
+v0.2
+Added layout for "service slice" (diner/infirmary/grocer).

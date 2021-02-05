@@ -39,4 +39,10 @@ return {
 		"Help", T(302535920011576, "Disable transparency of Infobar."),
 		"DefaultValue", false,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "AlwaysShowRemaining",
+		"DisplayName", T(302535920011828, "Always Show Remaining"),
+		"Help", T(302535920011829, "Keep showing remaining amount of resources instead of N/A when prod over consump (time formatting only shows hours for neg numbers, this game uses 24 per Sol)."),
+		"DefaultValue", true,
+	}),
 }

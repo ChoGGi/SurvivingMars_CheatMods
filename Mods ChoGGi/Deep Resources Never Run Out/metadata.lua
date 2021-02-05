@@ -6,7 +6,8 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_DeepResourcesNeverRunOut",
 	"author", "ChoGGi",
 	"steam_id", "1775640697",
-	"pops_desktop_uuid", "0a776f42-0e6b-4521-a5a3-9ceeb7c176af",
+--~ 	"pops_desktop_uuid", "0a776f42-0e6b-4521-a5a3-9ceeb7c176af",
+	"pops_any_uuid", "a468ea08-8d6f-4e23-99a4-a45b2a3e9ffe",
 	"code", {
 		"Code/Script.lua",
 	},

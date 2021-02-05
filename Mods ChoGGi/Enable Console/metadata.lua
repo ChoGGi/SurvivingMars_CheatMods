@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Enable Console",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"image", "Preview.png",
 	"id", "ChoGGi_EnableConsole",
 	"steam_id", "1747675475",

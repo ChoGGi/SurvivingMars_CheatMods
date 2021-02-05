@@ -30,6 +30,7 @@ local mod_SkipGridX
 local mod_MergedGrids
 local mod_RolloverWidth
 local mod_DisableTransparency
+local mod_AlwaysShowRemaining
 
 local function UpdateTrans()
 	CreateRealTimeThread(function()
@@ -68,6 +69,7 @@ local function ModOptions()
 	mod_MergedGrids = options:GetProperty("MergedGrids")
 	mod_RolloverWidth = options:GetProperty("RolloverWidth") * 10
 	mod_DisableTransparency = options:GetProperty("DisableTransparency")
+	mod_AlwaysShowRemaining = options:GetProperty("SkipNA")
 
 	-- ECM already changes it
 	if not table.find(ModsLoaded, "id", "ChoGGi_CheatMenu") then
@@ -144,11 +146,11 @@ end
 local under_an_hour = {"<red><text></red>"}
 local function RemainingTime(g, scale)
 	local time_left = g.production - g.consumption + 0.0
-	-- losing resources
-	if time_left < 0 then
+	-- option enabled or losing resources
+	if mod_AlwaysShowRemaining and time_left ~= 0.0 or time_left < 0 then
 		remaining_time_str.time = floatfloor((g.stored / (time_left * -1)) * (scale or scale_hours))
-		local text = T(remaining_time_str)
 
+		local text = T(remaining_time_str)
 		-- less than an hour
 		if time_left == 0 then
 			under_an_hour.text = text

@@ -2,12 +2,11 @@
 
 ```
 Find and rename LocalStorage.lua to LocalStorage_Settings.lua
-It's located in
-%AppData%\Surviving Mars\
-C:\Users\USERNAME\AppData\Roaming\Surviving Mars (AppData is a hidden folder)
+
+It's located in your game profile, see here to find it:
+https://steamcommunity.com/sharedfiles/filedetails/?id=1777493789
 
 Then you can move "LocalStorage.lua" and "BinAssets" to the profile folder
-
 
 This will allow ECM to bypass the blacklist added in the Da Vinci update (reverts to Curiosity and below permissions).
 ```
@@ -18,14 +17,9 @@ If you add a file with your steam id to the Mod Ids, then it will also work for 
 A warning will be added to the mod manager to any mods without the blacklist active.
 ```
 
-##### Other OS locations
-```
-macOS (OS X):
-~/Library/Application Support/Surviving Mars/
-Linux:
-$XDG_DATA_HOME/Surviving Mars/
-~/.local/share/Surviving Mars
-```
+
 
 ##### For those previously using the HelperMod
+```
 Move the BinAssets folder to the appdata folder to keep any mods/settings.
+```

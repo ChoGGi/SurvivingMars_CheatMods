@@ -3,6 +3,7 @@
 ## v16.0 (Unreleased)
 ### Changed:
 - Made sure RemoveHeightLimitObjs check is enabled when depot capacities are above certain amounts.
+- Selection panel>Cheats>Examine is now an egg.
 
 ## v15.9 (02 Jan 2021)
 ### Changed:

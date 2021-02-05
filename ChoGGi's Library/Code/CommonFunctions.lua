@@ -1560,16 +1560,14 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius, sort, pt)
 
 	-- sort list custom
 	if sort then
-		local function sort(a, b)
+		table_sort(list, function(a, b)
 			return a[sort] < b[sort]
-		end
-		table_sort(list, sort)
+		end)
 	else
 		-- sort nearest
-		local function sort(a, b)
+		table_sort(list, function(a, b)
 			return a:GetVisualDist2D(pt) < b:GetVisualDist2D(pt)
-		end
-		table_sort(list, sort)
+		end)
 	end
 
 	return list
@@ -5386,8 +5384,8 @@ do -- path markers
 		end
 
 		obj_pos = obj_pos or obj:GetVisualPos()
-		local obj_terrain = terrain_GetHeight(obj_pos)
-		local obj_height = obj:GetObjectBBox():sizez() / 2
+		local obj_terrain = terrain_GetHeight(obj_pos) or 0
+		local obj_height = (obj:GetObjectBBox():sizez() / 2) or 0
 		if obj:IsKindOf("CargoShuttle") then
 			obj_height = obj_pos:z() - obj_terrain
 		end
@@ -5680,7 +5678,6 @@ do -- path markers
 	end
 	ChoGGi.ComFuncs.Pathing_CleanDupes = CleanDupes
 
-	local aliens
 	local function StopAndRemoveAll(skip)
 		if not skip then
 			ChoGGi.Temp.PathMarkers_new_objs_loop = false
@@ -5693,7 +5690,7 @@ do -- path markers
 		ClearColourAndWP("Colonist", skip)
 		-- and pets for Unit Thoughts (seems they're not "Unit"y enough)
 --~ 		ClearColourAndWP("BasePet", skip)
-		if aliens then
+		if #MapGet_ChoGGi("ChoGGi_Alien") > 0 then
 			ClearColourAndWP("ChoGGi_Alien", skip)
 		end
 
@@ -5778,7 +5775,7 @@ end
 --~ ChoGGi.ComFuncs.MapDelete("ShuttleHub")
 function ChoGGi.ComFuncs.MapDelete(class)
 	SuspendPassEdits("ChoGGi.ComFuncs.MapDelete")
-	local objs = UICity.labels[class] or {}
+	local objs = UICity.labels[class] or ""
 	if #objs > 0 then
 		for i = #objs, 1, -1 do
 			DeleteObject(objs[i])
