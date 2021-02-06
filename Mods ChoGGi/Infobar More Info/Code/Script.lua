@@ -22,6 +22,7 @@ local scale_hours = const.HourDuration
 local scale_sols = const.DayDuration
 local remaining_time_str = {12265, "Remaining Time<right><time(time)>"}
 
+
 -- mod options
 local options
 local mod_SkipGrid0
@@ -146,18 +147,34 @@ end
 local under_an_hour = {"<red><text></red>"}
 local function RemainingTime(g, scale)
 	local time_left = g.production - g.consumption + 0.0
-	-- option enabled or losing resources
 	if mod_AlwaysShowRemaining and time_left ~= 0.0 or time_left < 0 then
-		remaining_time_str.time = floatfloor((g.stored / (time_left * -1)) * (scale or scale_hours))
 
-		local text = T(remaining_time_str)
+		local negative = time_left > 0
+		if negative then
+			-- we want to see time left without production else it'll mess up the numbers, or I'm a bit too sleepy
+			time_left = (g.consumption + 0.0) * -1
+		end
+
+		local remaining = floatfloor((g.stored / (time_left * -1)) * (scale or scale_hours))
+
+		-- "negative" amounts for showing storage remaining while production is positive
+		-- can't be actual -number or it'll just show "-hours" instead of "-sols, hours". thanks FormatDuration()
+		if negative then
+			return T{"<str><right>-<time(time)>",
+				str = T(12014,"Remaining Time"),
+				time = remaining
+			}
+		end
+
+		remaining_time_str.time = remaining
+
 		-- less than an hour
 		if time_left == 0 then
-			under_an_hour.text = text
+			under_an_hour.text = remaining_time_str
 			return T(under_an_hour)
 		end
 
-		return text
+		return T(remaining_time_str)
 	else
 		-- more prod than consump
 		return T(12014, "Remaining Time") .. "<right>" .. T(130, "N/A")

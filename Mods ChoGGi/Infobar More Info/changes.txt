@@ -1,3 +1,6 @@
+v2.2
+Production above consumption numbers were wrong (FormatDuration() expects positive numbers).
+
 v2.1
 Added mod option to stop showing N/A when production is above consumption.
 
