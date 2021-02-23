@@ -1,2 +1,5 @@
+v0.3
+Mod option to set percent.
+
 v0.2
 Evans update.

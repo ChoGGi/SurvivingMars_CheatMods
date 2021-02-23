@@ -5,6 +5,9 @@
 - Made sure RemoveHeightLimitObjs check is enabled when depot capacities are above certain amounts.
 - Selection panel>Cheats>Examine is now an egg.
 
+### Fixed:
+- Cheats pane>ToggleSigns was freezing the game when used on colonists.
+
 ## v15.9 (02 Jan 2021)
 ### Changed:
 - Cleaned up text for error msgs.

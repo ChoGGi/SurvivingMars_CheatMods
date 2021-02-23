@@ -1,5 +1,9 @@
 -- See LICENSE for terms
 
+local table_find = table.find
+local table_rand = table.rand
+local NameUnit = NameUnit
+
 local mod_RandomBirthplace
 local mod_DefaultNationNames
 
@@ -22,16 +26,11 @@ function OnMsg.ApplyModOptions(id)
 end
 
 -- override naming func
-local table_rand = table.rand
-local Nationsl = Nations
+-- we need a local function for GetWeightedRandNation below
 local function GetNationName()
-	if not Nationsl then
-	`Nationsl = Nations
-	end
-	return table_rand(Nationsl).value
+	return table_rand(Nations).value
 end
 
-local NameUnit = NameUnit
 local orig_GenerateColonistData = GenerateColonistData
 function GenerateColonistData(...)
 	if mod_RandomBirthplace then
@@ -45,7 +44,6 @@ function GenerateColonistData(...)
 end
 
 -- local some stuff
-local table_find = table.find
 local path = CurrentModPath .. "Flags/flag_"
 
 local function AddExisting(name, flag_name, Nations, c)
@@ -61,6 +59,21 @@ local function AddExisting(name, flag_name, Nations, c)
 		}
 	end
 	return c
+end
+
+local orig_Colonist_GetUIInfo = Colonist.GetUIInfo
+function Colonist:GetUIInfo(...)
+	local ret = orig_Colonist_GetUIInfo(self, ...)
+
+	local Nations = Nations
+	local idx = table_find(Nations, "value", self.birthplace)
+	-- ret[1].table[4] = T{4357, "Birthplace<right><UIBirthplace>", self}
+	-- when you hover over the colonist section of a selected colonist
+	ret[1].table[4] = T{0000, "<orig><newline><right><birthplace>",
+		orig = ret[1].table[4],
+		birthplace = Nations[idx].text,
+	}
+	return ret
 end
 
 -- just in case anyone adds some custom HumanNames
@@ -3091,6 +3104,7 @@ function OnMsg.ModsReloaded()
 		-- then each type of name Family, Female, Male, Unique
 		for Type, Names in pairs(Race) do
 
+			-- first + last
 			if Type == "Unique" then
 				for Type2, Names2 in pairs(Names) do
 					for i = 1, #Names2 do
@@ -3098,7 +3112,7 @@ function OnMsg.ModsReloaded()
 					end
 				end
 
-			-- Bulgarian and Russian both have extra tables added
+			-- Bulgarian and Russian both have extra tables added (you can probably add this to any lang, but I haven't checked)
 			elseif Name_R == "Bulgarian" or Name_R == "Russian" then
 				for Type2, Names2 in pairs(Names) do
 					if Type2 == "First" then
@@ -3106,13 +3120,15 @@ function OnMsg.ModsReloaded()
 							name_table[Type][#name_table[Type]+1] = Names2[i]
 						end
 					else
+						-- family
 						for i = 1, #Names2 do
 							name_table[Type][Type2][#name_table[Type][Type2]+1] = Names2[i]
 						end
 					end
 				end
 
-			else -- regular names (Female, Male, Family)
+			-- regular names (Female, Male, Family)
+			else
 				for i = 1, #Names do
 					name_table[Type][#name_table[Type]+1] = Names[i]
 				end
@@ -4894,9 +4910,9 @@ function OnMsg.ModsReloaded()
 		}
 		c = c + 1
 		Nations[c] = {
-			value = "simple_of_the_grand_duchy_of_tuscany",
-			text = "Simple Of The Grand Duchy Of Tuscany",
-			flag = path .. "simple_of_the_grand_duchy_of_tuscany.png",
+			value = "the_grand_duchy_of_tuscany",
+			text = "The Grand Duchy Of Tuscany",
+			flag = path .. "the_grand_duchy_of_tuscany.png",
 		}
 		c = c + 1
 		Nations[c] = {
@@ -5464,6 +5480,12 @@ function OnMsg.ModsReloaded()
 		}
 		c = c + 1
 		Nations[c] = {
+			value = "the_peoples_republic_of_china",
+			text = "The People's Republic Of China",
+			flag = path .. "flag_the_peoples_republic_of_china.png",
+		}
+		c = c + 1
+		Nations[c] = {
 			value = "the_peru-bolivian_confederation",
 			text = "The Peru-bolivian Confederation",
 			flag = path .. "the_peru-bolivian_confederation.png",
@@ -5513,8 +5535,8 @@ function OnMsg.ModsReloaded()
 		c = c + 1
 		Nations[c] = {
 			value = "the_republic_of_china",
-			text = "The People's Republic Of China",
-			flag = path .. "flag_the_peoples_republic_of_china.png",
+			text = "The Republic of China",
+			flag = path .. "flag_the_republic_of_china.png",
 		}
 		c = c + 1
 		Nations[c] = {

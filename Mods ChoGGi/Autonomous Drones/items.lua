@@ -55,7 +55,7 @@ Turning off means randomise list of drone controllers, so the order is different
 	PlaceObj("ModItemOptionToggle", {
 		"name", "IgnoreUnusedHubs",
 		"DisplayName", T(302535920011823, "Ignore Unused Hubs"),
-		"Help", T(302535920011824, "Any hubs not used (see below) will have their drones ignored (manual assignment only)."),
+		"Help", T(302535920011824, [[Any hubs not "used" (see below) will have their drones ignored (manual assignment only).]]),
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {

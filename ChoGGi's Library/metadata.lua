@@ -64,6 +64,5 @@ Also available at:
 https://www.nexusmods.com/survivingmars/mods/89?tab=files
 https://steamcommunity.com/workshop/filedetails/?id=1504386374
 https://mods.paradoxplaza.com/mods/7528/Any
-https://mods.paradoxplaza.com/mods/7529/Windows
 https://github.com/ChoGGi/SurvivingMars_CheatMods]],
 })

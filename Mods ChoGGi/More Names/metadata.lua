@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-
 	"image", "Preview.jpg",
 	"id", "ChoGGi_MoreNames",
 	"steam_id", "1968507022",
@@ -26,8 +25,5 @@ Names are a list of male/female/family or unique (first + last).
 A new game is required to see new unique names.
 
 Includes mod option to disable the transition to only Martian names.
-
-I'm not against expanding this mod to include more male/female/family names if you want to go through the trouble of compiling/formatting a list (or two).
-https://github.com/HaemimontGames/SurvivingMars/blob/master/Lua/Names.lua#L1009
 ]],
 })

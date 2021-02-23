@@ -13,7 +13,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua"
 	},
-	"description", [[A bunch of NROL badges (as well as a few others).
+	"description", [[A bunch of United States National Reconnaissance Office badges (as well as a few DEA ones).
 
 
 You can use my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1815122803]Change Logo[/url] mod to change the logo of an existing game.

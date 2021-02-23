@@ -3,7 +3,6 @@ return PlaceObj("ModDef", {
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,
-
 	"image", "Preview.png",
 	"id", "ChoGGi_TerraformingExistingSaves",
 	"steam_id", "1743037670",
@@ -13,7 +12,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[This will allow you to use Terraforming on existing save games, don't be surprised if it's buggy.
-Once you save the game you can disable this mod.]],
 	"TagTerraforming", true,
+	"description", [[This will allow you to use Terraforming on existing save games, don't be surprised if it's buggy.
+Once you save the game you can disable this mod (or leave it enabled it won't do anything).]],
 })

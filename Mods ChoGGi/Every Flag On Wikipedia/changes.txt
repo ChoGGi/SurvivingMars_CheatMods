@@ -1,3 +1,6 @@
+v0.9
+Added birthplace name below the flag.
+
 v0.8
 Added Romanian names (thanks hmlendea).
 Evans update.

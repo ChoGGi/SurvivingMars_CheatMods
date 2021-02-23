@@ -599,7 +599,11 @@ function Object:CheatToggleSigns()
 	if self:CountAttaches("BuildingSign") > 0 then
 		self:DestroyAttaches("BuildingSign")
 	else
-		self:UpdateSignsVisibility()
+		if self:IsKindOf("Colonist") then
+			self:ShowAttachedSigns(not self.status_effect_sign_visible)
+		else
+			self:UpdateSignsVisibility()
+		end
 	end
 end
 

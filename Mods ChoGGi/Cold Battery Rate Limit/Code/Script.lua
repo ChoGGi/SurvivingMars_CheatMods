@@ -1,10 +1,13 @@
 -- See LICENSE for terms
 
 local mod_ColdCapacity
+local mod_PenaltyPercent
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_ColdCapacity = CurrentModOptions:GetProperty("ColdCapacity")
+	local options = CurrentModOptions
+	mod_ColdCapacity = options:GetProperty("ColdCapacity")
+	mod_PenaltyPercent = options:GetProperty("PenaltyPercent") * -1
 end
 
 -- load default/saved settings
@@ -37,7 +40,7 @@ local function AddMod(name, prop, obj)
 	obj[name] = ObjectModifier:new({
 		target = obj,
 		prop = prop,
-		percent = -25,
+		percent = mod_PenaltyPercent,
 	})
 end
 
