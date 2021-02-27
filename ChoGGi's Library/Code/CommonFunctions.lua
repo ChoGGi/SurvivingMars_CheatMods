@@ -3454,28 +3454,28 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj, skip_msg)
 		end
 		return
 	end
-	local coll = const.efCollision + const.efApplyToGrids
+	local collision = const.efCollision + const.efApplyToGrids
 
 	local which
 	-- hopefully give it a bit more speed
 	SuspendPassEdits("ChoGGi.ComFuncs.CollisionsObject_Toggle")
 	-- re-enable col on obj and any attaches
 	if obj.ChoGGi_CollisionsDisabled then
-		-- coll on object
-		obj:SetEnumFlags(coll)
+		-- collision on object
+		obj:SetEnumFlags(collision)
 		-- and any attaches
 		if obj.ForEachAttach then
 			obj:ForEachAttach(function(a)
-				a:SetEnumFlags(coll)
+				a:SetEnumFlags(collision)
 			end)
 		end
 		obj.ChoGGi_CollisionsDisabled = nil
 		which = Translate(12227--[[Enabled]])
 	else
-		obj:ClearEnumFlags(coll)
+		obj:ClearEnumFlags(collision)
 		if obj.ForEachAttach then
 			obj:ForEachAttach(function(a)
-				a:ClearEnumFlags(coll)
+				a:ClearEnumFlags(collision)
 			end)
 		end
 		obj.ChoGGi_CollisionsDisabled = true

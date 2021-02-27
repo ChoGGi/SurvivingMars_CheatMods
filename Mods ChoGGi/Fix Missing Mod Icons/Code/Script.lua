@@ -7,24 +7,27 @@ local UIL_Measure = UIL.MeasureImage
 -- updated below
 local mod_path1, mod_path2
 
+-- called below, image should be a string path that we can validate (otherwise return as is)
 local function FixPath(image)
-	-- not everything sent from below is an image str (in-game paths all use tga)
+	-- not everything sent from below is an image str (in-game paths all use tga, mods can use png but it can't hurt to check)
 	if not image or type(image) == "string" and not (image:find_lower(".tga") or image:find_lower(".png")) then
 		-- send back it
 		return image
 	end
 
-	-- If w and h are over 0 then it's an image
+	-- If w and h are over 0 then it's a valid image
 	local w, h = UIL_Measure(image)
 	if w > 0 and h > 0 then
 		return image
 	end
 
-	-- ClassTemplates doesn't have the .mod added, so there's no path to use
+	-- modded game object with a .mod entry we can use to find the path
 	if mod_path1 then
-		-- strip away packed path if the image is missing
+		-- strip away "packed" path
 		return image:gsub(mod_path1, ""):gsub(mod_path2, "")
 	else
+		-- "ClassTemplates" have no .mod entry, so we find where the UI dir is
+
 		-- need to reverse string so it finds the last one, since find looks ltr
 		local last = image:reverse():find("/IU/", 1, true)
 		if last then
@@ -51,16 +54,17 @@ function OnMsg.ModsReloaded()
 
 	-- loop through all the mods and test all the icon paths
 	local ConvertToOSPath = ConvertToOSPath
-	local Mods = Mods
-	for _, mod_def in pairs(Mods) do
+	local ModsLoaded = ModsLoaded
+	for i = 1, #ModsLoaded do
+		local mod_def = ModsLoaded[i]
 		-- no items, no paths to fix up (though my mods are probably the only ones with no items)
 		local items = mod_def.items
 		if items then
 			-- update path var (used in FixPath)
 			mod_path1 = mod_def.env.CurrentModPath
 			mod_path2 = ConvertToOSPath(mod_path1):gsub("\\","/")
-			for i = 1, #items do
-				local item = items[i]
+			for j = 1, #items do
+				local item = items[j]
 				if item then
 					-- start fixing paths
 					item.icon = FixPath(item.icon)
@@ -69,15 +73,15 @@ function OnMsg.ModsReloaded()
 					item.upgrade1_icon = FixPath(item.upgrade1_icon)
 					item.upgrade2_icon = FixPath(item.upgrade2_icon)
 					item.upgrade3_icon = FixPath(item.upgrade3_icon)
-					-- It can happen (i check if it's an image path above)
+					-- It can happen (I check if it's an image path above)
 					item.value = FixPath(item.value)
 					-- sponsors
-					for j = 1, 5 do
-						local image = "goal_image_" .. j
+					for k = 1, 5 do
+						local image = "goal_image_" .. k
 						item[image] = FixPath(item[image])
 					end
-					for j = 1, 5 do
-						local image = "goal_pin_image_" .. j
+					for k = 1, 5 do
+						local image = "goal_pin_image_" .. k
 						item[image] = FixPath(item[image])
 					end
 				end

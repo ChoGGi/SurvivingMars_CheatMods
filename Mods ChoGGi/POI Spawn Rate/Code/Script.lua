@@ -1,11 +1,12 @@
 -- See LICENSE for terms
 
 local options
+local ModOptions
 
 local function UpdateRate()
-	options = CurrentModOptions
-	ModOptions()
+	ModOptions(true)
 
+	options = CurrentModOptions
 	-- ClassesPostprocess fires earlier than ModsReloaded (well probably just for me)
 	if not options then
 		return
@@ -27,13 +28,16 @@ local function UpdateRate()
 end
 
 -- fired when settings are changed/init
-local function ModOptions()
-	UpdateRate()
+ModOptions = function(skip)
+	if not skip then
+		UpdateRate()
+	end
 
 	if not UICity then
 		return
 	end
 
+	options = CurrentModOptions
 	-- update spawn times
 	local day = UICity.day
 	local CalcNextSpawnProject = CalcNextSpawnProject
@@ -47,10 +51,7 @@ local function ModOptions()
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ClassesPostprocess = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
