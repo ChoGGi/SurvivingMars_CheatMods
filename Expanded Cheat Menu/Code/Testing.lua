@@ -251,17 +251,11 @@ function ChoGGi.testing.ExportBuildingFootprints()
 	local WaitMsg = WaitMsg
 	local Sleep = Sleep
 	local SetCamera = SetCamera
-	local SelectObj = SelectObj
-	local SelectionRemove = SelectionRemove
-	local CursorNearestHex = ChoGGi.ComFuncs.CursorNearestHex
 	local ObjHexShape_Toggle = ChoGGi.ComFuncs.ObjHexShape_Toggle
 	local table_unpack = table.unpack
 
 	local HexOutlineShapes = HexOutlineShapes
 
-	local skip = {
-		Landscape
-	}
 	local zoom_out = {
 		DomeDiamond = true,
 		DomeMega = true,
@@ -285,7 +279,7 @@ function ChoGGi.testing.ExportBuildingFootprints()
 	}
 
 	CreateRealTimeThread(function()
-	local c = 0
+--~	local c = 0
 	local BuildingTemplates = BuildingTemplates
 		for id, template in pairs(BuildingTemplates) do
 --~ 			c = c + 1

@@ -53,14 +53,11 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local table = table
-local table_icopy = table.icopy
 local table_ifilter = table.ifilter
 local table_iclear = table.iclear
 local table_rand = table.rand
 local table_insert = table.insert
 local table_remove = table.remove
-local table_remove_entry = table.remove_entry
-local table_icopy = table.icopy
 local CreateGameTimeThread = CreateGameTimeThread
 local Sleep = Sleep
 local Max = Max
@@ -69,7 +66,6 @@ local IsValid = IsValid
 local IsKindOf = IsKindOf
 local floatfloor = floatfloor
 local AsyncRand = AsyncRand
-local SelectionArrowRemove = SelectionArrowRemove
 
 local DroneLoadLowThreshold = const.DroneLoadLowThreshold
 local DroneLoadMediumThreshold = const.DroneLoadMediumThreshold
@@ -86,8 +82,8 @@ local DroneHubLoad = ChoGGi.ComFuncs.DroneHubLoad
 
 -- height is actually 188: point(0, 0, SelectedObj:GetObjectBBox():sizez())
 -- just adding some buffer if carrying something whatnot
-local drone_height = point(0, 0, 500)
-local work_spots = {21, 22, 23, 24, 25}
+-- local drone_height = point(0, 0, 500)
+-- local work_spots = {21, 22, 23, 24, 25}
 
 local function SendDroneToCC(drone, new_hub)
 	if drone.ChoGGi_SendDroneToCC_Wait then

@@ -15,7 +15,7 @@ function SupplyPod:Unload(...)
 		local first, last = self:GetSpotRange("Drone")
 		local city = self.city
 		local Random = city.Random
-		for i = 1, cargo.amount do
+		for _ = 1, cargo.amount do
 			local pos, angle = self:GetSpotLoc(Random(city, first, last))
 			local obj = PlaceObject(cargo.class, {city = city, is_orphan = true})
 			obj:SetPos(pos)

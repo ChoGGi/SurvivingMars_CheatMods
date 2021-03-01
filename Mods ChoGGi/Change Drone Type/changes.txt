@@ -1,3 +1,6 @@
+v0.6
+Enabling Always wasp option will hide the button.
+
 v0.5
 Evans update.
 

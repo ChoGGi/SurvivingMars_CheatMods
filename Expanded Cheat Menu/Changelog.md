@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v16.0 (Unreleased)
+## v16.1 (Unreleased)
+
+## v16.0 (01 March 2021)
 ### Changed:
 - Made sure RemoveHeightLimitObjs check is enabled when depot capacities are above certain amounts.
 - Selection panel>Cheats>Examine is now an egg.

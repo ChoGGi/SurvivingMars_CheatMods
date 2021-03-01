@@ -1,5 +1,10 @@
 -- See LICENSE for terms
 
+if not g_AvailableDlc.gagarin then
+	print("Change Drone Type requires Space Race DLC installed!")
+	return
+end
+
 local mod_Aerodynamics
 local mod_AlwaysWasp
 
@@ -63,12 +68,17 @@ local name_lookup = {
 -- add button to selection panels
 function OnMsg.ClassesPostprocess()
 	local template_table = {
-		RolloverTitle = T(302535920011053, [[Change Spawn Type]]),
-		RolloverText = T(302535920011054, [[Spawn wasp drones or regular drones.]]),
-		Title = T(302535920011055, [[Drone Type]]),
+		RolloverTitle = T(302535920011053, "Change Spawn Type"),
+		RolloverText = T(302535920011054, "Spawn wasp drones or regular drones."),
+		Title = T(302535920011055, "Drone Type"),
 		Icon = "UI/Icons/Sections/drone.tga",
 
 		__condition = function()
+			-- no point in showing the button
+			if mod_AlwaysWasp then
+				return
+			end
+
 			if mod_Aerodynamics then
 				return UICity:IsTechResearched("MartianAerodynamics")
 			else

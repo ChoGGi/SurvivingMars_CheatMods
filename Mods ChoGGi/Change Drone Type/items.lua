@@ -8,7 +8,7 @@ return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "AlwaysWasp",
 		"DisplayName", T(302535920011065, "Always Wasp Drones"),
-		"Help", T(302535920011483, "Override drone type to always wasps."),
+		"Help", T(302535920011483, "Override drone type to always spawn wasp drones (this will hide the button)."),
 		"DefaultValue", false,
 	}),
 }

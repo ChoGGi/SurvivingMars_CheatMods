@@ -17,6 +17,7 @@ do -- ModUpload
 	-- CopyToClipboard([[	"pops_any_uuid", "]] .. GetUUID() .. [[",]])
 	local diff_mod_titles_paradox = {
 		[ChoGGi.id_lib] = "ChoGGi's Library (upload 2)",
+		[ChoGGi.id] = "Expanded Cheat Menu (upload 2)",
 		ChoGGi_IncreaseRanchStorage = "Increase Ranch Storage (upload 2)",
 		ChoGGi_DeepResourcesNeverRunOut = "Deep Resources Never Run Out (upload 2)",
 	}
@@ -289,7 +290,7 @@ email: ECM@choggi.org"]]] .. "\n\n\n" .. mod.description
 
 					result, err = PDX_Upload(nil, mod, mod_params)
 					-- shouldn't actually matter, but maybe some weird person will use mod editor along with ECM upload?
-					local org_mod_description = mod.description
+					mod.description = org_mod_description
 				end
 			end
 		end

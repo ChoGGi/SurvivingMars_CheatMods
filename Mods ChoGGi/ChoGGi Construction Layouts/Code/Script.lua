@@ -142,9 +142,9 @@ local stirling_points = {
 	point(-8, 8),
 }
 
-local windturbine_points = {
-	point(0, 1),
-}
+--~ 	local windturbine_points = {
+--~ 		point(0, 1),
+--~ 	}
 
 -- id = entity
 local single_hex_decorations = {

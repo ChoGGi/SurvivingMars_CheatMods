@@ -300,7 +300,7 @@ Debug.Toggles>Anim Debug Toggle: Attaches text to each object showing animation 
 Debug.Toggles>DTM Slots Display: Show DTM slots display
 Debug.Toggles>Examine Persist Errors: Shows an examine dialog with any persist errors when saving.
 Debug.Toggles>Loading Screen Log: Be able to see the console log (and other dialogs) during the loading screen.
-Warning: Leaves "Welcome to Mars" msg onscreen till map is loaded.
+Warning: Leave "Welcome to Mars" msg onscreen till map is loaded.
 Debug.Toggles>Measure Tool: Measures stuff (press again to remove the lines).
 Debug.Toggles>Override Condition Prereqs: All storybit/negotiation/etc options are enabled.
 Debug.Toggles>Place Objects: Opens editor mode with the place objects dialog.

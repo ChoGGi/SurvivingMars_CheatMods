@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
-	"title", "ChoGGi's Library Test",
-	"version", 90,
+	"title", "ChoGGi's Library",
+	"version", 91,
 	"version_major", 9,
-	"version_minor", 0,
+	"version_minor", 1,
 	"image", "Preview.jpg",
 	"id", "ChoGGi_Library",
 	"author", "ChoGGi",
@@ -17,7 +17,6 @@ return PlaceObj("ModDef", {
 	"TagTools", true,
 	"TagOther", true,
 	"TagCheats", true,
-	-- I can't make my options show up :)
 	"has_options", true,
 	"ignore_files", {
 		"*.bat",

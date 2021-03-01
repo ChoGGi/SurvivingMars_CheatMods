@@ -3,15 +3,14 @@ return PlaceObj("ModDef", {
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
-			"version_major", 8,
-			"version_minor", 9,
+			"version_major", 9,
+			"version_minor", 0,
 		}),
 	},
 	"title", "Change Drone Type",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
-
+	"version_minor", 6,
 	"image", "Preview.png",
 	"id", "ChoGGi_ChangeDroneType",
 	"steam_id", "1592984375",
@@ -24,7 +23,10 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"description", [[Adds a button to hubs and rovers that lets you switch between wasp (flying) and regular drones (global setting, not per building). You will need to repack/unpack to change them on current hubs.
 
+This mod requires Space Race DLC.
+
 Mod Options:
 Option to only show button when Martian Aerodynamics is researched.
-Always Wasp Drones: Forces drones to always be wasp drones.]],
+Always Wasp Drones: Forces drones to always be wasp drones (hides button).
+]],
 })
