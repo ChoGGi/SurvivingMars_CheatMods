@@ -18,11 +18,9 @@ end
 OnMsg.ModsReloaded = ModOptions
 
 function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
+	if id == CurrentModId then
+		ModOptions()
 	end
-
-	ModOptions()
 end
 
 GlobalVar("CityDomeTeleporterConstruction", {})

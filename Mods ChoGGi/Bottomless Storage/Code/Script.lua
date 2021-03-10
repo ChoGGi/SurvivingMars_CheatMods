@@ -15,17 +15,6 @@ local function ModOptions()
 		mod_options[id] = options:GetProperty("MinResourceAmount_" .. id)
 	end
 
-	--~
---~ 	for id in pairs(mod_options) do
---~ 		mod_options[id] = options:GetProperty(id)
---~ 	end
-
---~ 	mod_Example = CurrentModOptions:GetProperty("Example")
-
---~ 	-- make sure we're ingame
---~ 	if not UICity then
---~ 		return
---~ 	end
 end
 
 -- load default/saved settings
@@ -33,11 +22,9 @@ OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
+	if id == CurrentModId then
+		ModOptions()
 	end
-
-	ModOptions()
 end
 
 DefineClass.BottomlessStorage = {

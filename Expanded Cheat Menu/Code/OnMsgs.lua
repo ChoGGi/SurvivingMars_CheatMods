@@ -318,11 +318,9 @@ end
 
 -- fired when Mod Options>Apply button is clicked
 function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
+	if id == CurrentModId then
+		ModOptions()
 	end
-
-	ModOptions()
 end
 
 function OnMsg.ModsReloaded()

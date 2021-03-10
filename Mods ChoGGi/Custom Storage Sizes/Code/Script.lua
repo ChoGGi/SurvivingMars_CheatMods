@@ -93,11 +93,9 @@ OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
+	if id == CurrentModId then
+		ModOptions()
 	end
-
-	ModOptions()
 end
 
 OnMsg.CityStart = ModOptions

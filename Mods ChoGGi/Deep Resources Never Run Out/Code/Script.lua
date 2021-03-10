@@ -18,18 +18,14 @@ OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
+	if id == CurrentModId then
+		ModOptions()
 	end
-
-	ModOptions()
 end
-
-
--- depth_layer: 2 = core, 1 = underground
 
 local max = 500000 * const.ResourceScale
 
+-- depth_layer: 2 = core, 1 = underground
 local function MaxDeposits(objs)
 	for i = 1, #objs do
 		local obj = objs[i]

@@ -4,9 +4,6 @@
 local type = type
 local UIL_Measure = UIL.MeasureImage
 
--- updated below
-local mod_path1, mod_path2
-
 -- called below, image should be a string path that we can validate (otherwise return as is)
 local function FixPath(image)
 	-- not everything sent from below is an image str (in-game paths all use tga, mods can use png but it can't hurt to check)
@@ -21,19 +18,11 @@ local function FixPath(image)
 		return image
 	end
 
-	-- modded game object with a .mod entry we can use to find the path
-	if mod_path1 then
-		-- strip away "packed" path
-		return image:gsub(mod_path1, ""):gsub(mod_path2, "")
-	else
-		-- "ClassTemplates" have no .mod entry, so we find where the UI dir is
-
-		-- need to reverse string so it finds the last one, since find looks ltr
-		local last = image:reverse():find("/IU/", 1, true)
-		if last then
-			-- we need a neg number for sub + 1 to remove the slash
-			return "UI/" .. image:sub((last * -1) + 1)
-		end
+	-- need to reverse string so it finds the last one, since find looks ltr
+	local last = image:reverse():find("/IU/", 1, true)
+	if last then
+		-- we need a neg number for sub + 1 to remove the slash
+		return "UI/" .. image:sub((last * -1) + 1)
 	end
 
 	-- make sure we don't blank out the icon... If there's some weird issue (Sir McKaby, Destroyer of Mods)
@@ -60,9 +49,6 @@ function OnMsg.ModsReloaded()
 		-- no items, no paths to fix up (though my mods are probably the only ones with no items)
 		local items = mod_def.items
 		if items then
-			-- update path var (used in FixPath)
-			mod_path1 = mod_def.env.CurrentModPath
-			mod_path2 = ConvertToOSPath(mod_path1):gsub("\\","/")
 			for j = 1, #items do
 				local item = items[j]
 				if item then

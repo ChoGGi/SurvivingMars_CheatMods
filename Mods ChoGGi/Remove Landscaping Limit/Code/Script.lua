@@ -18,22 +18,18 @@ OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
+	if id == CurrentModId then
+		ModOptions()
 	end
-
-	ModOptions()
 end
 
---~ function OnMsg.ClassesGenerate()
-	-- no more limit to R+T
-	local orig_Activate = LandscapeConstructionController.Activate
-	function LandscapeConstructionController:Activate(...)
-		if mod_RemoveLandScapingLimits then
-			self.brush_radius_step = mod_StepSize or 10*guim
-			self.brush_radius_max = max_int
-			self.brush_radius_min = 100
-		end
-		return orig_Activate(self, ...)
+-- no more limit to R+T keys (enlarge/shrink)
+local orig_Activate = LandscapeConstructionController.Activate
+function LandscapeConstructionController:Activate(...)
+	if mod_RemoveLandScapingLimits then
+		self.brush_radius_step = mod_StepSize or 10*guim
+		self.brush_radius_max = max_int
+		self.brush_radius_min = 100
 	end
---~ end
+	return orig_Activate(self, ...)
+end

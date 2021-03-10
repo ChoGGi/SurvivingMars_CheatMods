@@ -12,13 +12,10 @@ OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
+	if id == CurrentModId then
+		ModOptions()
 	end
-
-	ModOptions()
 end
-
 
 local removed_str = "Remove Invalid Label Buildings: %s> %s, entity: %s, handle: %s"
 function OnMsg.LoadGame()

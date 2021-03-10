@@ -30,11 +30,9 @@ end
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
+	if id == CurrentModId then
+		ModOptions()
 	end
-
-	ModOptions()
 end
 
 --~ 	-- Data\SoundPreset.lua, and Lua\Config\__SoundTypes.lua
