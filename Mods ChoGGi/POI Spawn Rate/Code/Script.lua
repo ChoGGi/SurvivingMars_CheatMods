@@ -3,9 +3,8 @@
 local options
 local ModOptions
 
-local function UpdateRate()
-	ModOptions(true)
-
+-- fired when settings are changed/init
+local function ModOptions()
 	options = CurrentModOptions
 	-- ClassesPostprocess fires earlier than ModsReloaded (well probably just for me)
 	if not options then
@@ -25,19 +24,16 @@ local function UpdateRate()
 		poi.spawn_period.from = min
 		poi.spawn_period.to = max
 	end
-end
 
--- fired when settings are changed/init
-ModOptions = function(skip)
-	if not skip then
-		UpdateRate()
+	-- stop options from blanking out from ClassesPostprocess
+	if #options.properties == 0 then
+		options.properties = nil
 	end
 
 	if not UICity then
 		return
 	end
 
-	options = CurrentModOptions
 	-- update spawn times
 	local day = UICity.day
 	local CalcNextSpawnProject = CalcNextSpawnProject
@@ -61,7 +57,3 @@ function OnMsg.ApplyModOptions(id)
 
 	ModOptions()
 end
-
-OnMsg.ClassesPostprocess = UpdateRate
--- could do load game, but I think from mod options is better
---~ OnMsg.LoadGame = UpdateRate

@@ -1,3 +1,6 @@
+v0.6
+Mod options were blank (thanks Zanko Hale).
+
 v0.5
 I didn't test the code properly (thanks PaganoCristo).
 

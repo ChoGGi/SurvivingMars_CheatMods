@@ -1131,7 +1131,8 @@ function ChoGGi.ComFuncs.MsgWait(text, title, image, ok_text, context, parent, t
 		return CreateRealTimeThread(ChoGGi.ComFuncs.MsgWait, text, title, image, ok_text, context, parent, template, "skip")
 	end
 
-	local dlg = CreateMarsQuestionBox(
+--~ 	local dlg = CreateMarsQuestionBox(
+	CreateMessageBox(
 		type(title) == "number" and tostring(title) or title or T(1000016, "Title"),
 		type(text) == "number" and tostring(text) or text or T(3718, "NONE"),
 		type(ok_text) == "number" and tostring(ok_text) or ok_text,
@@ -1141,9 +1142,10 @@ function ChoGGi.ComFuncs.MsgWait(text, title, image, ok_text, context, parent, t
 		context, template
 	)
 
-	-- hide cancel button since we don't care about it, and we ignore them anyways...
-	dlg.idList[2]:delete()
+--~ 	-- hide cancel button since we don't care about it, and we ignore them anyways...
+--~ 	dlg.idList[2]:delete()
 end
+
 
 -- well that's the question isn't it?
 function ChoGGi.ComFuncs.QuestionBox(text, func, title, ok_text, cancel_text, image, context, parent, template, thread)
@@ -5313,6 +5315,7 @@ function ChoGGi.ComFuncs.ModEditorActive()
 		return true
 	end
 end
+
 function ChoGGi.ComFuncs.UpdateDepotCapacity(obj, max_store, storable)
 	max_store = max_store or obj.max_storage_per_resource
 	storable = storable or obj.storable_resources

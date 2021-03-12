@@ -20,8 +20,7 @@ for id, poi in pairs(POIPresets) do
 	c = c + 1
 	properties[c] = PlaceObj("ModItemOptionNumber", {
 		"name", id .. "_Max",
-		"DisplayName", table_concat(T(poi.display_name) .. " "
-			.. T(8780, "MAX")),
+		"DisplayName", table_concat(T(poi.display_name) .. " " .. T(8780, "MAX")),
 		"Help", T(302535920011524, "WARNING: Make sure min isn't above max or it won't work correctly."),
 		"DefaultValue", poi.spawn_period.to or 1,
 		"MinValue", 1,
