@@ -3506,13 +3506,6 @@ end
 
 do -- AddXTemplate/RemoveXTemplateSections
 	local function RemoveTableItem(list, name, value)
---~ 		local idx = table_find(list, name, value)
---~ 		if idx then
---~ 			list[idx]:delete()
---~ 			table_remove(list, idx)
---~ 		end
---~ 	end
-
 		local idx = table_find(list, name, value)
 		if idx then
 			if not type(list[idx]) == "function" then
@@ -3521,8 +3514,6 @@ do -- AddXTemplate/RemoveXTemplateSections
 			table_remove(list, idx)
 		end
 	end
-
-
 	ChoGGi.ComFuncs.RemoveTableItem = RemoveTableItem
 
 	-- check for and remove old object (XTemplates are created on new game/new dlc ?)
@@ -4538,7 +4529,7 @@ do -- RetMapBreakthroughs
 		StableShuffle(break_order, CreateRand(true, gen.Seed, "ShuffleBreakThroughTech"), 100)
 
 		while #break_order > breakthrough_count do
-			table_remove(break_order)
+			break_order[#break_order] = nil
 		end
 
 		local tech_list = {}
@@ -5472,7 +5463,8 @@ do -- path markers
 					colour = RandomColourLimited()
 				else
 					-- we want to make sure all grouped waypoints are a different colour (or at least slightly diff)
-					colour = table_remove(randcolours)
+					colour = randcolours[#randcolours]
+					randcolours[#randcolours] = nil
 					-- table.remove(t) removes and returns the last value of the table
 				end
 			end
@@ -5924,7 +5916,7 @@ end
 --~ 		end
 --~ 		drone.can_demolish = false
 --~ 		UICity.drone_prefabs = UICity.drone_prefabs + 1
---~ 		table_remove_entry(old_hub.drones, drone)
+--~ 		table.remove_entry(old_hub.drones, drone)
 --~ 		SelectionArrowRemove(drone)
 --~ 		drone:SetCommand("DespawnAtHub")
 

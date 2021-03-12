@@ -5,7 +5,7 @@ local table_iclear = table.iclear
 local table_clear = table.clear
 local table_find = table.find
 local table_remove = table.remove
-local pairs,tonumber = pairs,tonumber
+local pairs, tonumber = pairs, tonumber
 local IsValid = IsValid
 
 local Translate = ChoGGi.ComFuncs.Translate
@@ -48,7 +48,7 @@ local function ActivateProfile(profile)
 		local obj = state.obj
 		-- obj was deleted or something, so remove it from profile
 		if not IsValid(obj) then
-			table_remove(profile,i)
+			table_remove(profile, i)
 		else
 			-- update obj with saved state
 			for setting,set_value in pairs(state) do
@@ -91,7 +91,7 @@ function HUD.idBuildingStatesOnPress(dlg)
 		local profile = BuildingStates[i]
 		-- remove any empty profiles since we're here
 		if #profile == 0 then
-			table_remove(BuildingStates,i)
+			table_remove(BuildingStates, i)
 		else
 			c = c + 1
 			popup[c] = {
@@ -100,7 +100,7 @@ function HUD.idBuildingStatesOnPress(dlg)
 				hint = hint_str,
 				mouseup = function(_, _, _, button)
 					if button == "R" then
-						table_remove(BuildingStates,i)
+						table_remove(BuildingStates, i)
 						ChoGGi.ComFuncs.MsgPopup(
 							T{302535920011306, "Deleted Profile: <name>", name = profile.name},
 							T(302535920011307, "Building States")
@@ -128,7 +128,7 @@ local function RemoveAllOfClass(profile, class)
 		for i = #profile, 1, -1 do
 			local state = profile[i]
 			if state.obj.class == class then
-				table_remove(profile,i)
+				table_remove(profile, i)
 			end
 		end
 	end
@@ -149,7 +149,7 @@ local function BuildRemoveFromList(dlg, obj)
 		local profile = BuildingStates[i]
 		-- remove any empty profiles since we're here
 		if #profile == 0 then
-			table_remove(BuildingStates,i)
+			table_remove(BuildingStates, i)
 		else
 			local idx = table_find(profile,"handle",obj.handle)
 			if idx then
@@ -164,7 +164,7 @@ local function BuildRemoveFromList(dlg, obj)
 						if button == "R" then
 							RemoveAllOfClass(profile,class)
 						else
-							table_remove(profile,idx)
+							table_remove(profile, idx)
 						end
 					end,
 				}
@@ -174,13 +174,13 @@ local function BuildRemoveFromList(dlg, obj)
 
 	-- don't show menu if empty
 	if c > 0 then
-		ChoGGi.ComFuncs.PopupToggle(dlg,"idBuildingStatesMenuPopup_Remove",popup,"left")
+		ChoGGi.ComFuncs.PopupToggle(dlg, "idBuildingStatesMenuPopup_Remove", popup, "left")
 	end
 end
 
 local function AddNewState(profile, obj)
 	local building_state
-	local idx = table_find(profile,"handle",obj.handle)
+	local idx = table_find(profile, "handle", obj.handle)
 	-- exists so clear the state
 	if idx then
 		building_state = profile[idx]
@@ -435,7 +435,7 @@ local function BuildAddToList(dlg, obj)
 		local profile = BuildingStates[i]
 		-- remove any empty profiles since we're here
 		if #profile == 0 then
-			table_remove(BuildingStates,i)
+			table_remove(BuildingStates, i)
 		else
 			c = c + 1
 			popup[c] = {
@@ -480,7 +480,7 @@ function OnMsg.ClassesPostprocess()
 	if idx then
 		xt[idx]:delete()
 		-- we need to remove for insert
-		table_remove(xt,idx)
+		table_remove(xt, idx)
 	else
 		-- Insert above consumption
 		idx = table.find(xt, "__template", "sectionConsumption")

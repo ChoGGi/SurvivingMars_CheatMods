@@ -12,6 +12,9 @@ local IsKindOf = IsKindOf
 local IsValidEntity = IsValidEntity
 local Sleep = Sleep
 local WaitMsg = WaitMsg
+local table_remove = table.remove
+local IsPoint = IsPoint
+local IsBox = IsBox
 
 local debug_getinfo, debug_getlocal, debug_getupvalue, debug_gethook
 
@@ -23,6 +26,7 @@ local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
 local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 local PlacePolyline = ChoGGi.ComFuncs.PlacePolyline
+local InvalidPos = ChoGGi.Consts.InvalidPos
 local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
@@ -3442,11 +3446,6 @@ do -- ValueToStr
 end -- do
 
 do -- ToggleObjLines
-	local table_remove = table.remove
-	local IsPoint = IsPoint
-	local IsBox = IsBox
-	local InvalidPos = ChoGGi.Consts.InvalidPos
-
 	local function ObjListLines_Clear(obj)
 		if type(obj) ~= "table" then
 			return

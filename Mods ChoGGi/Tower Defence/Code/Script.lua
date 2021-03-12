@@ -112,7 +112,7 @@ local function RemoveOldRovers(label,sol)
 	for i = #(label or ""), 1, -1 do
 		local r = label[i]
 		if not IsValid(r) then
-			table_remove(label,i)
+			table_remove(label, i)
 		elseif r.class == "TowerDefense_Rover" and r.TowerDefense_spawned_sol ~= sol then
 			CreateGameTimeThread(SuicideByRocket,r)
 		end

@@ -818,11 +818,11 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 		end
 
 		-- remove any saves we deleted
+		local table_remove = table.remove
 		local FileExists = ChoGGi.ComFuncs.FileExists
 		local games_amt = #SavegamesList
 		for i = #SavegamesList, 1, -1 do
 			if not FileExists(save_folder .. SavegamesList[i].savename) then
-				SavegamesList[i] = nil
 				table_remove(SavegamesList, i)
 			end
 		end

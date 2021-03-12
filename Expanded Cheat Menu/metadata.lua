@@ -9,6 +9,7 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Expanded Cheat Menu Test",
 	"version", 161,
+--~ 	"pops_any_uuid", "e2018d89-5b38-4068-b4fe-cb67352ee86a",
 	"version_major", 16,
 	"version_minor", 1,
 	"image", "Preview.png",
@@ -128,6 +129,6 @@ The game can crash if you disable this mod or my lib mod after the game has load
 Available From:
 https://steamcommunity.com/sharedfiles/filedetails/?id=1411157810
 https://www.nexusmods.com/survivingmars/mods/7
-https://mods.paradoxplaza.com/mods/6671/Windows
+https://mods.paradoxplaza.com/mods/21536/Windows
 https://github.com/ChoGGi/SurvivingMars_CheatMods]],
 })

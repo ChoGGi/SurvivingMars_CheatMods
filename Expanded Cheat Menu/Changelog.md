@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v16.1 (Unreleased)
+### Fixed:
+- Delete Saved Games may not have worked properly if deleting more than one save (or at least not update save list properly).
 
 ## v16.0 (01 March 2021)
 ### Changed:
