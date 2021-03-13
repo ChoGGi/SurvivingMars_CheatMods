@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Buildings Broken And No Repair",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixBuildingsBrokenDownAndNoRepair",
 	"steam_id", "1599190080",
@@ -13,16 +13,15 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[The Long Winter event seems to be responsible.
-
-If you have broken down buildings the drones won't repair. This will check for them on load game.
+	"description", [[If you have broken down buildings the drones won't repair. This will check for them on load game.
 The affected buildings will say something about exceptional circumstances.
 Any buildings affected by this issue will need to be repaired with 000.1 resource after the fix happens.
 
+This also has a fix for buildings hit with lightning during a cold wave.
+
+
+
+
 Includes mod option to disable fix.
-
-
-
-There'll be a fix whenever the next update hits:
-https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-wind-turbines-are-no-longer-repaired-by-drones.1141272/#post-25040223]],
+]],
 })

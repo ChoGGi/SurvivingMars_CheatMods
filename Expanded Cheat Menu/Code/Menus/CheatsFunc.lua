@@ -1815,26 +1815,6 @@ do -- ResearchRemove
 			end
 		end
 
---~ 			local IsTechResearched = IsTechResearched
---~ 			local TechDef = TechDef
---~ 			for tech_id, tech in pairs(TechDef) do
---~ 				-- only show stuff researched
---~ 				if IsTechResearched(tech_id) then
---~ 					local text = Translate(tech.display_name)
---~ 					-- remove " from that one tech...
---~ 					if text:find("\"") then
---~ 						text = text:gsub("\"", "")
---~ 					end
---~ 					c = c + 1
---~ 					item_list[c] = {
---~ 						text = text,
---~ 						value = tech_id,
---~ 						icon = "<image " .. tech.icon .. " 250>",
---~ 						hint = Translate(T{tech.description, tech}) .. "\n\n" .. Translate(1000097--[[Category]]) .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
---~ 					}
---~ 				end
---~ 			end
-
 		local function CallBackFunc(choice)
 			if choice.nothing_selected then
 				return
@@ -1859,7 +1839,7 @@ do -- ResearchRemove
 				end
 			end
 
-			-- If we unlocked any buildings and the buildmenu is open
+			-- If we locked any buildings and the buildmenu is open
 			ChoGGi.ComFuncs.UpdateBuildMenu()
 
 			MsgPopup(

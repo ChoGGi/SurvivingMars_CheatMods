@@ -38,7 +38,12 @@ function OnMsg.LoadGame()
 			end
 		end
 
-		if not bld.maintenance_resource_request and bld:DoesMaintenanceRequireResources() then
+		-- buildings hit with lightning during a cold wave
+		if bld.is_malfunctioned and bld.accumulated_maintenance_points == 0 then
+			bld:AccumulateMaintenancePoints(bld.maintenance_threshold_base * 2)
+
+		-- exceptional circumstance buildings
+		elseif not bld.maintenance_resource_request and bld:DoesMaintenanceRequireResources() then
 			-- restore main res request
 			local resource_unit_count = 1 + (bld.maintenance_resource_amount / (ResourceScale * 10)) --1 per 10
 			local r_req = bld:AddDemandRequest(bld.maintenance_resource_type, 0, 0, resource_unit_count)

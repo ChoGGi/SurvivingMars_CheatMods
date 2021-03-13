@@ -14,7 +14,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"description", [[Transports will no longer remove a route just because the supply area is empty of resources.
-Instead they'll just sit by the pickup area till more shows up.
+Instead they'll just sit by the pickup area till more shows up (same for drop off).
 
-Use mod options to change minimum resource to wait for (default 10).]],
+Use mod options to change minimum resource to wait for (default 10).
+]],
 })

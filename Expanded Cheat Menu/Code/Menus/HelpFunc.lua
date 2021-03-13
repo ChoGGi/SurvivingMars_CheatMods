@@ -348,7 +348,7 @@ email: ECM@choggi.org"]]] .. "\n\n\n" .. mod.description
 				end
 			end
 
-			print(mod.title, ":", Translate(id_str), ":", item_id)
+			print(mod.title, ":<color ChoGGi_red>", Translate(id_str), "</color>:", item_id)
 		end
 
 		if not test and not err then

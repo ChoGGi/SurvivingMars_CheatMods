@@ -1,3 +1,6 @@
+v0.4
+Added layout for hub/uni depot/seed depot/forest plant.
+
 v0.3
 Removed outside decorations from service slice.
 

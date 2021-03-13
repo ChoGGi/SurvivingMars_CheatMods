@@ -154,7 +154,7 @@ local single_hex_decorations = {
 	{"Statue", "GardenStatue_01"},
 }
 
-local function BuildTribbyLayouts(params)
+local function BuildLayouts(params)
 	PlaceObj("BuildingTemplate", {
 		"Id", params.id,
 		"LayoutList", params.id,
@@ -227,6 +227,32 @@ local function BuildTribbyLayouts(params)
 				"dir", 1,
 			}),
 		})
+
+	elseif params.id == "ChoGGi_LayoutConstruction_ForestPlantGroup" then
+		PlaceObj("LayoutConstruction", {
+			group = "Default",
+			id = params.id,
+
+			PlaceObj("LayoutConstructionEntry", {
+				"template", "DroneHub",
+				"entity", "DroneHub",
+			}),
+			PlaceObj("LayoutConstructionEntry", {
+				"template", "UniversalStorageDepot",
+				"entity", "StorageDepot",
+				"pos", point(-1, 2),
+			}),
+			PlaceObj("LayoutConstructionEntry", {
+				"template", "StorageSeeds",
+				"entity", "StorageDepotSmallArm",
+				"pos", point(-1, -1),
+			}),
+			PlaceObj("LayoutConstructionEntry", {
+				"template", "ForestationPlant",
+				"entity", "ForestationPlant",
+				"pos", point(-1, 0),
+			}),
+		})
 	end
 
 end
@@ -236,7 +262,7 @@ function OnMsg.ClassesPostprocess()
 		return
 	end
 
-	BuildTribbyLayouts{
+	BuildLayouts{
 		id = "ChoGGi_LayoutConstruction_TribbyStirling",
 		build_pos = 1,
 		display_name = T(302535920011776, "TribbyStirling Inf"),
@@ -248,7 +274,7 @@ function OnMsg.ClassesPostprocess()
 		entity = "StirlingGenerator",
 		build_category = "Infrastructure",
 	}
-	BuildTribbyLayouts{
+	BuildLayouts{
 		id = "ChoGGi_LayoutConstruction_ServiceSlice",
 		build_pos = 1,
 		display_name = T(000, "Service Slice"),
@@ -261,7 +287,17 @@ function OnMsg.ClassesPostprocess()
 		build_category = "Dome Services",
 	}
 
---~ 	BuildTribbyLayouts{
+	BuildLayouts{
+		id = "ChoGGi_LayoutConstruction_ForestPlantGroup",
+		build_pos = 2,
+		display_name = T(000, "Forest Plant Group"),
+		display_name_pl = T(000, "Forest Plant Groups"),
+		description = T(000, "Drone Hub, Universal Depot, Seed Depot, and Forestation Plant."),
+		display_icon = "UI/Icons/Buildings/forestation_plant.tga",
+		build_category = "Terraforming",
+	}
+
+--~ 	BuildLayouts{
 --~ 		id = "ChoGGi_LayoutConstruction_Tribbywindturbine",
 --~ 		build_pos = 1,
 --~ 		display_name = T(302535920011779, "TribbyWindTurbine Inf"),

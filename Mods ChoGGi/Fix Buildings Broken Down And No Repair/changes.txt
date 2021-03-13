@@ -1,2 +1,5 @@
+v0.3
+Added check for another kind of break down.
+
 v0.2
 Added mod option to disable mod.
