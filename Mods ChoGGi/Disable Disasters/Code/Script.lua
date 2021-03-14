@@ -65,6 +65,8 @@ local function ModOptions(skip_disabled)
 		return
 	end
 
+	options = CurrentModOptions
+
 	for i = 1, c do
 		local id = disasters[i]
 		-- stop disaster threads
@@ -91,10 +93,7 @@ local function ModOptions(skip_disabled)
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

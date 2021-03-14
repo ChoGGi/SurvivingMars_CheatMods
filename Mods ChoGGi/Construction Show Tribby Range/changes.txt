@@ -1,3 +1,6 @@
+v0.6
+Mod option to change colour of hexes.
+
 v0.5
 Added keybind toggle (it'll work even if mod is disabled in mod options).
 

@@ -40,6 +40,7 @@ local style_lookup = {
 
 -- fired when settings are changed/init
 local function ModOptions()
+	options = CurrentModOptions
 	mod_ShowClock = options:GetProperty("ShowClock")
 	mod_TimeFormat = options:GetProperty("TimeFormat")
 	mod_TextStyle = options:GetProperty("TextStyle")
@@ -67,10 +68,7 @@ local function ModOptions()
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

@@ -42,6 +42,8 @@ local function ApplyFilter()
 		return
 	end
 
+	options = CurrentModOptions
+
 	local apply
 	for i = 1, photo_c do
 		local filter = photos[i]
@@ -98,7 +100,6 @@ function OnMsg.ModsReloaded()
 		end
 	end
 
-	options = CurrentModOptions
 	ApplyFilter()
 end
 

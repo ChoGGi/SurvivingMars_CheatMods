@@ -24,6 +24,7 @@ local hours_passed = {}
 
 -- fired when settings are changed/init
 local function ModOptions()
+	options = CurrentModOptions
 	for i = 1, disasters_c do
 		local disaster = disasters[i]
 		local enable = "Constant_" .. disaster
@@ -38,10 +39,7 @@ local function ModOptions()
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

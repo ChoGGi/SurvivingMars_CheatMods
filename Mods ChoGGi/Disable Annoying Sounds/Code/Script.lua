@@ -11,6 +11,7 @@ local DisableSounds
 
 -- fired when settings are changed/init
 local function ModOptions()
+	options = CurrentModOptions
 	mod_SensorSensorTowerBeeping = options:GetProperty("SensorSensorTowerBeeping")
 	mod_RCCommanderDronesDeployed = options:GetProperty("RCCommanderDronesDeployed")
 	mod_MirrorSphereCrackling = options:GetProperty("MirrorSphereCrackling")
@@ -23,10 +24,7 @@ local function ModOptions()
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

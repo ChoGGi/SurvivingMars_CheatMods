@@ -7,16 +7,14 @@ local mod_NewMinute
 
 -- fired when settings are changed/init
 local function ModOptions()
+	options = CurrentModOptions
 	mod_NewDay = options:GetProperty("NewDay")
 	mod_NewHour = options:GetProperty("NewHour")
 	mod_NewMinute = options:GetProperty("NewMinute")
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

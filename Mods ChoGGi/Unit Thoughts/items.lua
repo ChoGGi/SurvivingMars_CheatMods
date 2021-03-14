@@ -7,6 +7,12 @@ return {
 		"DefaultValue", true,
 	}),
 	PlaceObj("ModItemOptionToggle", {
+		"name", "ForceClearLines",
+		"DisplayName", T(302535920011833, "Force Clear Lines"),
+		"Help", T(302535920011834, "This will remove any lines stuck on the map (including any from my other mods)."),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
 		"name", "EnableText",
 		"DisplayName", T(302535920011717, "Enable Text"),
 		"DefaultValue", true,

@@ -35,6 +35,8 @@ local mod_ShowRocket
 
 -- fired when settings are changed
 local function ModOptions()
+	options = CurrentModOptions
+
 	pms.mine_amount = options:GetProperty("mine_amount") * r
 	pms.max_res_amount_man = options:GetProperty("max_res_amount_man") * r
 	pms.max_z_stack_man = options:GetProperty("max_res_amount_man") / 10
@@ -52,10 +54,7 @@ local function ModOptions()
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

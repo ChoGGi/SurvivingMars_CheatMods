@@ -1,6 +1,10 @@
 ## Library Changelog
 
-## v9.1 (Unreleased)
+## v9.2 (Unreleased)
+
+## v9.1 (14 March 2021)
+- Added RGBtoColour.
+- Added a new mod option: ModItemOptionInputBox a text input box for the user.
 
 ## v9.0 (01 March 2021)
 - Fiddled with IsAttachAboveHeightLimit.

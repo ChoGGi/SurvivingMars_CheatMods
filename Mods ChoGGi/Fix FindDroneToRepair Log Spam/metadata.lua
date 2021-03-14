@@ -1,13 +1,13 @@
 return PlaceObj("ModDef", {
 	"title", "Fix FindDroneToRepair Log Spam",
+	"id", "ChoGGi_FixFindDroneToRepairLogSpam",
+	"steam_id", "1576382631",
+	"pops_any_uuid", "d8a6fb94-bc0b-4ad5-9aea-083ca8f51a93",
+	"image", "Preview.png",
+	"author", "ChoGGi",
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,
-	"steam_id", "1576382631",
-	"image", "Preview.png",
-	"id", "ChoGGi_FixFindDroneToRepairLogSpam",
-	"pops_any_uuid", "d8a6fb94-bc0b-4ad5-9aea-083ca8f51a93",
-	"author", "ChoGGi",
 	"lua_revision", 249143,
 	"code", {
 		"Code/Script.lua",

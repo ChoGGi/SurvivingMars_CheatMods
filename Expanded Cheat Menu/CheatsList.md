@@ -226,7 +226,7 @@ Cheats.Research>Outsourcing For Free: Outsource Research Cost (in millions)
 Cheats.Research>Research / Unlock Tech: Pick what you want to unlock/research (defaults to unlock).
 Cheats.Research>Research Current Tech: Complete item currently being researched.
 Cheats.Research>Research Queue Size: Allow more items in queue.
-Cheats.Research>Research Remove: Remove a tech from researched list.
+Cheats.Research>Research Remove: Remove a tech from researched list and reset any values it adds (not complicated stuff from mods).
 Cheats.Research>Reset All Research: Resets all research (includes breakthrough tech).
 Cheats.Research>Set Amount Of Breakthroughs Allowed: How many breakthroughs are allowed to be unlocked?
 Cheats.StoryBits>Clear Cooldowns: Sets story.cooldown_end to GameTime.

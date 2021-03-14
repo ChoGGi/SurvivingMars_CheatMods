@@ -12,9 +12,6 @@ local CleanupHexRanges = CleanupHexRanges
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local DoneObject = DoneObject
-local green = green
-local yellow = yellow
-local cyan = cyan
 local InvalidPos = InvalidPos()
 
 local options
@@ -22,20 +19,25 @@ local mod_EnableGrid
 local mod_DistFromCursor
 local mod_GridOpacity
 local mod_GridScale
+local mod_HexColourDroneHub
+local mod_HexColourRCRover
+local mod_HexColourSupplyRocket
 
 -- fired when settings are changed/init
 local function ModOptions()
+	options = CurrentModOptions
 	mod_EnableGrid = options:GetProperty("Option1")
 	mod_DistFromCursor = options:GetProperty("DistFromCursor") * 1000
 	mod_GridOpacity = options:GetProperty("GridOpacity")
 	mod_GridScale = options:GetProperty("GridScale")
+
+	mod_HexColourDroneHub = RGBtoColour(options:GetProperty("HexColourDroneHub"))
+	mod_HexColourRCRover = RGBtoColour(options:GetProperty("HexColourRCRover"))
+	mod_HexColourSupplyRocket = RGBtoColour(options:GetProperty("HexColourSupplyRocket"))
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
@@ -94,20 +96,19 @@ local function ShowGrids()
 				if obj:IsKindOf("DroneHub") then
 					for i = 1, #range.decals do
 						local decal = range.decals[i]
-						decal:SetColorModifier(cyan)
+						decal:SetColorModifier(mod_HexColourDroneHub)
 						decal:SetScale(mod_GridScale)
 					end
 				elseif obj:IsKindOf("RCRover") then
 					for i = 1, #range.decals do
 						local decal = range.decals[i]
-						decal:SetColorModifier(yellow)
+						decal:SetColorModifier(mod_HexColourRCRover)
 						decal:SetScale(mod_GridScale)
 					end
 				elseif obj:IsKindOf("SupplyRocket") then
---~ 				else
 					for i = 1, #range.decals do
 						local decal = range.decals[i]
-						decal:SetColorModifier(green)
+						decal:SetColorModifier(mod_HexColourSupplyRocket)
 						decal:SetScale(mod_GridScale)
 					end
 				end

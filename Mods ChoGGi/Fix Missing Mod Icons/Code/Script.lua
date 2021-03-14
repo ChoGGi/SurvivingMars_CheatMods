@@ -42,7 +42,6 @@ function OnMsg.ModsReloaded()
 	end
 
 	-- loop through all the mods and test all the icon paths
-	local ConvertToOSPath = ConvertToOSPath
 	local ModsLoaded = ModsLoaded
 	for i = 1, #ModsLoaded do
 		local mod_def = ModsLoaded[i]

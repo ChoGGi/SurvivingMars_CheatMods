@@ -55,6 +55,12 @@ local function ModOptions()
 	if not UICity then
 		return
 	end
+
+	-- this will remove any lines no matter what
+	if options:GetProperty("ForceClearLines") then
+		MapDelete("map", "ChoGGi_OPolyline")
+	end
+
 	ClearUnitInfo()
 end
 

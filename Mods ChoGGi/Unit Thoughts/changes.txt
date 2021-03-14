@@ -1,3 +1,6 @@
+v0.4
+Added mod option to force clear out lines (turn on then apply mod options).
+
 v0.3
 Pets don't stay coloured anymore (some of them can display "table" instead of a position till I update my lib mod).
 

@@ -5,7 +5,7 @@ local ShowHexRanges = ShowHexRanges
 local HideHexRanges = HideHexRanges
 local IsKindOf = IsKindOf
 local pairs = pairs
-local paleblue = -8413185
+local RGBtoColour = ChoGGi.ComFuncs.RGBtoColour
 
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
@@ -15,20 +15,21 @@ local mod_EnableGrid
 local mod_DistFromCursor
 local mod_GridOpacity
 local mod_GridScale
+local mod_HexColour
 
 -- fired when settings are changed/init
 local function ModOptions()
+	options = CurrentModOptions
 	mod_EnableGrid = options:GetProperty("Option1")
 	mod_DistFromCursor = options:GetProperty("DistFromCursor") * 1000
 	mod_GridOpacity = options:GetProperty("GridOpacity")
 	mod_GridScale = options:GetProperty("GridScale")
+
+	mod_HexColour = RGBtoColour(options:GetProperty("HexColour"))
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
@@ -54,7 +55,7 @@ local function ShowGrids()
 
 			for i = 1, #range.decals do
 				local decal = range.decals[i]
-				decal:SetColorModifier(paleblue)
+				decal:SetColorModifier(mod_HexColour)
 				decal:SetScale(mod_GridScale)
 			end
 		end

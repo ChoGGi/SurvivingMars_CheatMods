@@ -4,17 +4,17 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 0,
+			"version_minor", 1,
 		}),
 	},
 	"title", "Unit Thoughts",
 	"id", "ChoGGi_UnitThoughts",
 	"lua_revision", 249143,
 	"steam_id", "2196814512",
-	"pops_any_uuid", "646cf5c2-b36e-40bd-b939-ab7b3fe73f06",
-	"version", 3,
+	"pops_any_uuid", "c0c08914-7259-44e5-85a6-cdde9764ebb2",
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
@@ -26,6 +26,6 @@ return PlaceObj("ModDef", {
 Optionally show unit name, target, map grid target area.
 
 Mod Options:
-Enable Mod, Enable Text, Text Background, Text Opacity, Text Style
+Force Clear Lines, Enable Mod, Enable Text, Text Background, Text Opacity, Text Style
 ]],
 })

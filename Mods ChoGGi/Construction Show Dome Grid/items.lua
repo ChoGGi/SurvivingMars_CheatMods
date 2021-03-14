@@ -1,4 +1,10 @@
 return {
+	PlaceObj("ModItemOptionInputBox", {
+		"name", "HexColour",
+		"DisplayName", T(302535920011835, "Hex Colour"),
+		"Help", T(302535920011836, "<color ChoGGi_red>R</color> <color ChoGGi_green>G</color> <color ChoGGi_blue>B</color> colour code, yellow example: 255,255,0 (range is 0-255)"),
+		"DefaultValue", "255,70,70",
+	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "Option1",
 		"DisplayName", T(302535920011364, "Show during construction"),

@@ -8,6 +8,7 @@ local mod_UltimateNursery
 
 -- fired when settings are changed/init
 local function ModOptions()
+	options = CurrentModOptions
 	mod_GlobalDomeCount = options:GetProperty("GlobalDomeCount")
 	mod_RespectIncubator = options:GetProperty("RespectIncubator")
 	mod_BypassNoNurseries = options:GetProperty("BypassNoNurseries")
@@ -15,10 +16,7 @@ local function ModOptions()
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

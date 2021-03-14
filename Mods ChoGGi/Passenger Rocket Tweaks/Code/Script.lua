@@ -15,6 +15,7 @@ local mod_PosY
 -- fired when settings are changed/init
 local ToggleSpecInfo
 local function ModOptions()
+	options = CurrentModOptions
 	mod_MoreSpecInfo = options:GetProperty("MoreSpecInfo")
 	mod_PosPassList = options:GetProperty("PosPassList")
 	mod_HideRocket = options:GetProperty("HideRocket")
@@ -25,10 +26,7 @@ local function ModOptions()
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

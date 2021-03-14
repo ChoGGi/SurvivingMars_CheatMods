@@ -1,11 +1,8 @@
 -- See LICENSE for terms
 
-local options
-local ModOptions
-
 -- fired when settings are changed/init
 local function ModOptions()
-	options = CurrentModOptions
+	local options = CurrentModOptions
 	-- ClassesPostprocess fires earlier than ModsReloaded (well probably just for me)
 	if not options then
 		return

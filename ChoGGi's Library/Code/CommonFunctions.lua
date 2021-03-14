@@ -41,6 +41,7 @@ local Max = Max
 local GameTime = GameTime
 local guic = guic
 local ViewObjectMars = ViewObjectMars
+local RGB = RGB
 local InvalidPos = ChoGGi.Consts.InvalidPos
 
 local rawget, getmetatable = rawget, getmetatable
@@ -1298,7 +1299,7 @@ function ChoGGi.ComFuncs.RemoveFromLabel(label, obj)
 end
 
 -- tries to convert "65" to 65, "boolean" to boolean, "nil" to nil, or just returns "str" as "str"
-function ChoGGi.ComFuncs.RetProperType(value)
+local function RetProperType(value)
 	-- boolean
 	if value == "true" or value == true then
 		return true, "boolean"
@@ -1317,6 +1318,7 @@ function ChoGGi.ComFuncs.RetProperType(value)
 	-- then it's a string (probably)
 	return value, "string"
 end
+ChoGGi.ComFuncs.RetProperType = RetProperType
 
 do -- RetType
 	-- used to check for some SM objects (Points/Boxes)
@@ -5899,7 +5901,33 @@ function ChoGGi.ComFuncs.FisherYates_Shuffle(list, min)
     list[i], list[j] = list[j], list[i]
   end
 end
+do -- RGBtoColour
+	local values = {}
+	local c = 0
 
+	-- input as text "0,0,0"
+	function ChoGGi.ComFuncs.RGBtoColour(text)
+		-- remove any spaces/newlines etc
+		text = text:gsub("[%s%c]", "")
+		-- grab the values
+		values = {}
+		c = 0
+
+		-- loop through all the numbers
+		for d in text:gmatch("%d+") do
+			c = c + 1
+			values[c] = tonumber(d)
+		end
+
+		local colour, obj_type = RetProperType(RGB(values[1], values[2], values[3]))
+		if obj_type == "number" then
+			return colour
+		else
+			-- fallback
+			return 0
+		end
+	end
+end
 --~ function ChoGGi.ComFuncs.SendDroneToCC(drone, new_hub)
 --~ 	local old_hub = drone.command_center
 --~ 	if old_hub == new_hub then

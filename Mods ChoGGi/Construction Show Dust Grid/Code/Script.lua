@@ -18,8 +18,9 @@ local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local HexGridGetObjects = HexGridGetObjects
 local WorldToHex = WorldToHex
-local red = red
 local InvalidPos = InvalidPos()
+
+local RGBtoColour = ChoGGi.ComFuncs.RGBtoColour
 
 -- mod options
 local options
@@ -28,6 +29,7 @@ local mod_DistFromCursor
 local mod_ShowConSites
 local mod_GridOpacity
 local mod_GridScale
+local mod_HexColour
 
 local function CleanList(list)
 	for i = #(list or ""), 1, -1 do
@@ -37,11 +39,14 @@ local function CleanList(list)
 end
 
 local function ModOptions()
+	options = CurrentModOptions
 	mod_EnableGrid = options:GetProperty("Option1")
 	mod_DistFromCursor = options:GetProperty("DistFromCursor") * 1000
 	mod_ShowConSites = options:GetProperty("ShowConSites")
 	mod_GridOpacity = options:GetProperty("GridOpacity")
 	mod_GridScale = options:GetProperty("GridScale")
+
+	mod_HexColour = RGBtoColour(options:GetProperty("HexColour"))
 
 	local idx = table_find(classes, "ConstructionSite")
 	if mod_ShowConSites and not idx then
@@ -57,7 +62,6 @@ local RangeHexMultiSelectRadius_cls
 
 -- load default/saved settings
 function OnMsg.ModsReloaded()
-	options = CurrentModOptions
 	ModOptions()
 
 	-- build dust list in ModsReloaded for modded buildings
@@ -193,7 +197,7 @@ local function ShowGrids()
 				if range.bind_to == "GetDustRadius" then
 					for i = 1, #range.decals do
 						local decal = range.decals[i]
-						decal:SetColorModifier(red)
+						decal:SetColorModifier(mod_HexColour)
 						decal:SetScale(mod_GridScale)
 					end
 				end

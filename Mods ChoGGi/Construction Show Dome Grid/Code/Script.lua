@@ -7,7 +7,7 @@ local IsKindOf = IsKindOf
 local pairs = pairs
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
-local reddish = -46777 -- lighter red than "red"
+local RGBtoColour = ChoGGi.ComFuncs.RGBtoColour
 
 local options
 local mod_EnableGrid
@@ -16,22 +16,23 @@ local mod_GridOpacity
 local mod_SelectDome
 local mod_SelectOutside
 local mod_GridScale
+local mod_HexColour
 
 -- fired when settings are changed/init
 local function ModOptions()
+	options = CurrentModOptions
 	mod_EnableGrid = options:GetProperty("Option1")
 	mod_DistFromCursor = options:GetProperty("DistFromCursor") * 1000
 	mod_GridOpacity = options:GetProperty("GridOpacity")
 	mod_SelectDome = options:GetProperty("SelectDome")
 	mod_SelectOutside = options:GetProperty("SelectOutside")
 	mod_GridScale = options:GetProperty("GridScale")
+
+	mod_HexColour = RGBtoColour(options:GetProperty("HexColour"))
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
@@ -57,7 +58,7 @@ local function ShowGrids()
 
 			for i = 1, #range.decals do
 				local decal = range.decals[i]
-				decal:SetColorModifier(reddish)
+				decal:SetColorModifier(mod_HexColour)
 				decal:SetScale(mod_GridScale)
 			end
 

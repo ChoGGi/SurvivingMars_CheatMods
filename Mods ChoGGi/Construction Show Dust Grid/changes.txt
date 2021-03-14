@@ -1,3 +1,6 @@
+v1.9
+Mod option to change colour of hexes.
+
 v1.8
 It wasn't showing the dust grid for rockets.
 

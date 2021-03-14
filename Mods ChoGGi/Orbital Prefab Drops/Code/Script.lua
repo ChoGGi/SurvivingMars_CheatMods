@@ -9,6 +9,7 @@ local mod_ModelType
 
 -- fired when settings are changed/init
 local function ModOptions()
+	options = CurrentModOptions
 	mod_PrefabOnly = options:GetProperty("PrefabOnly")
 	mod_Outside = options:GetProperty("Outside")
 	mod_Inside = options:GetProperty("Inside")
@@ -17,10 +18,7 @@ local function ModOptions()
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

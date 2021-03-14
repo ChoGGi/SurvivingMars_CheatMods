@@ -7,6 +7,7 @@ local lookup_pauses = {}
 
 -- fired when settings are changed/init
 local function ModOptions()
+	options = CurrentModOptions
 	local OnScreenNotificationPresets = OnScreenNotificationPresets
 	for id in pairs(OnScreenNotificationPresets) do
 		lookup_pauses[id] = options:GetProperty(id)
@@ -14,10 +15,7 @@ local function ModOptions()
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

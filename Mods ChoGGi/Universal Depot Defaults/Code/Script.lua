@@ -26,8 +26,11 @@ for id in pairs(Resources) do
 	end
 end
 
+local IsLukeHNewResActive
+
 -- fired when settings are changed/init
 local function ModOptions()
+	options = CurrentModOptions
 	mod_ShuttleAccess = options:GetProperty("ShuttleAccess")
 	mod_StoredAmount = options:GetProperty("StoredAmount")
 
@@ -35,16 +38,12 @@ local function ModOptions()
 		local id = storable_resources[i]
 		mod_options[id] = options:GetProperty(id)
 	end
-end
-
-local IsLukeHNewResActive
--- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
 
 	IsLukeHNewResActive = table_find(ModsLoaded, "id", "LH_Resources")
 end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

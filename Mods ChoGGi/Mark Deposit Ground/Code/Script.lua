@@ -8,6 +8,8 @@ local mod_ShowConstruct
 
 -- fired when settings are changed/init
 local function ModOptions()
+	options = CurrentModOptions
+
 	mod_AlienAnomaly = options:GetProperty("AlienAnomaly")
 	mod_HideSigns = options:GetProperty("HideSigns")
 	mod_ShowConstruct = options:GetProperty("ShowConstruct")
@@ -15,7 +17,6 @@ end
 
 -- load default/saved settings
 function OnMsg.ModsReloaded()
-	options = CurrentModOptions
 	ModOptions()
 	UpdateOptions()
 end

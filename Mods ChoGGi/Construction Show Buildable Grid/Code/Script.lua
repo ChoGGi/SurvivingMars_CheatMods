@@ -5,6 +5,7 @@ local mod_Option1
 
 -- fired when settings are changed/init
 local function ModOptions()
+	options = CurrentModOptions
 	mod_Option1 = options:GetProperty("Option1")
 	local u = ChoGGi.UserSettings
 	u.DebugGridOpacity = options:GetProperty("DebugGridOpacity")
@@ -15,10 +16,7 @@ local function ModOptions()
 end
 
 -- load default/saved settings
-function OnMsg.ModsReloaded()
-	options = CurrentModOptions
-	ModOptions()
-end
+OnMsg.ModsReloaded = ModOptions
 
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)

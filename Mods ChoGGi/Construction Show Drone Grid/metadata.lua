@@ -4,13 +4,13 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 0,
+			"version_minor", 1,
 		}),
 	},
 	"title", "Construction Show Drone Grid",
-	"version", 14,
+	"version", 15,
 	"version_major", 1,
-	"version_minor", 4,
+	"version_minor", 5,
 	"id", "ChoGGi_ConstructionShowDroneGrid",
 	"author", "ChoGGi",
 	"image", "Preview.png",
@@ -25,6 +25,7 @@ return PlaceObj("ModDef", {
 Press Numpad 3 to toggle grid anytime (rebind in game options).
 
 Mod Options:
+Hex Colour: Change colour of hex grids (default Rocket:green, RCRover:yellow, DroneHub:cyan).
 Show during construction: If you don't want grids showing up during construction placement.
 Dist From Cursor: Only show grids around buildings this close to the cursor (0 = disabled, 1 = 1000 and so on, 100 == over 2 map squares).
 Grid Opacity: Set opacity of grid icons.
