@@ -26,8 +26,9 @@ return PlaceObj("ModDef", {
 
 Mod Options:
 Enable Mod: If you want to disable the mod without the mod manager.
-Move Invalid Position: Move any objects at an invalid pos to the dome when you press the toggle connected objs button (default disabled).
+Move Invalid Position: Move any objects at an invalid position to the dome when you press the toggle connected objs button (default disabled).
 Clean Up Invalid: Remove any invalid objects stuck in the dome when you press the toggle connected objs button (default disabled).
-If you see a white line going off to nothing, it's invalid (probably).
+
+If you see a white line going off to nothing, it's an invalid object (probably).
 ]],
 })

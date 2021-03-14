@@ -20,7 +20,7 @@ do -- ModUpload
 		[ChoGGi.id] = "Expanded Cheat Menu (upload 2)",
 		ChoGGi_DeepResourcesNeverRunOut = "Deep Resources Never Run Out (upload 2)",
 		ChoGGi_IncreaseRanchStorage = "Increase Ranch Storage (upload 2)",
-		ChoGGi_UnitThoughts = "Unit Thoughts (upload 2)",
+		ChoGGi_UnitThoughts = "Unit Thoughts (upload 3)",
 	}
 
 	local table_iclear = table.iclear

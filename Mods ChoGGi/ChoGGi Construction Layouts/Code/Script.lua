@@ -4,6 +4,27 @@
 local point = point
 local PlaceObj = PlaceObj
 
+local three_hex_buildings = {
+	point(0, 0),
+	point(2, 0),
+	point(4, 0),
+	point(6, 0),
+	point(-3, 3),
+	point(-1, 3),
+	point(1, 3),
+	point(3, 3),
+}
+local three_hex_buildings_dir2 = {
+	point(-2, 1),
+	point(0, 1),
+	point(2, 1),
+	point(4, 1),
+	point(-5, 4),
+	point(-3, 4),
+	point(-1, 4),
+	point(1, 4),
+}
+
 local stirling_points = {
 	point(0, 1),
 	point(0, -1),
@@ -195,6 +216,34 @@ local function BuildLayouts(params)
 			})
 		end
 
+	elseif params.id == "ChoGGi_LayoutConstruction_SmallWindTurbines"
+		or params.id == "ChoGGi_LayoutConstruction_LargeSolarPanels"
+	then
+		local layout = PlaceObj("LayoutConstruction", {
+			group = "Default",
+			id = params.id,
+		})
+
+		-- add all the points as stirlings
+		local c = #layout
+		for i = 1, #params.points do
+			c = c + 1
+			layout[c] = PlaceObj("LayoutConstructionEntry", {
+				"template", params.template,
+				"entity", params.entity,
+				"pos", params.points[i],
+				"dir", 1,
+			})
+		end
+		for i = 1, #params.points2 do
+			c = c + 1
+			layout[c] = PlaceObj("LayoutConstructionEntry", {
+				"template", params.template,
+				"entity", params.entity,
+				"pos", params.points2[i],
+			})
+		end
+
 	elseif params.id == "ChoGGi_LayoutConstruction_ServiceSlice" then
 		-- pick a random decoration for the middle hex
 		local dec = table.rand(single_hex_decorations)
@@ -273,6 +322,33 @@ function OnMsg.ClassesPostprocess()
 		template = "StirlingGenerator",
 		entity = "StirlingGenerator",
 		build_category = "Infrastructure",
+	}
+
+	BuildLayouts{
+		id = "ChoGGi_LayoutConstruction_SmallWindTurbines",
+		build_pos = 4,
+		display_name = T(0, "Small Wind Turbine Layout"),
+		display_name_pl = T(0, "Small Wind Turbines"),
+		description = T(0, "Bunch of small Wind Turbines."),
+		display_icon = "UI/Icons/Buildings/wind_turbine.tga",
+		points = three_hex_buildings,
+		points2 = three_hex_buildings_dir2,
+		template = "WindTurbine",
+		entity = "WindTurbine",
+		build_category = "Power",
+	}
+	BuildLayouts{
+		id = "ChoGGi_LayoutConstruction_LargeSolarPanels",
+		build_pos = 2,
+		display_name = T(0, "Large Solar Panel Layout"),
+		display_name_pl = T(0, "Large Solar Panels"),
+		description = T(0, "Bunch of large Solar Panel."),
+		display_icon = "UI/Icons/Buildings/solar_aray.tga",
+		points = three_hex_buildings,
+		points2 = three_hex_buildings_dir2,
+		template = "SolarPanel",
+		entity = "SolarPanelBig",
+		build_category = "Power",
 	}
 	BuildLayouts{
 		id = "ChoGGi_LayoutConstruction_ServiceSlice",

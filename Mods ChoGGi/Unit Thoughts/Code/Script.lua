@@ -40,6 +40,10 @@ local mod_EnableText
 local mod_TextBackground
 local mod_TextOpacity
 local mod_TextStyle
+local mod_DroneBatteryInfo
+local mod_OnlyBatteryInfo
+local mod_EnableLines
+local mod_ShowNames
 local options
 
 -- fired when settings are changed/init
@@ -50,6 +54,10 @@ local function ModOptions()
 	mod_TextBackground = options:GetProperty("TextBackground")
 	mod_TextOpacity = options:GetProperty("TextOpacity")
 	mod_TextStyle = options:GetProperty("TextStyle")
+	mod_DroneBatteryInfo = options:GetProperty("DroneBatteryInfo")
+	mod_OnlyBatteryInfo = options:GetProperty("OnlyBatteryInfo")
+	mod_EnableLines = options:GetProperty("EnableLines")
+	mod_ShowNames = options:GetProperty("ShowNames")
 
 	-- make sure we're ingame
 	if not UICity then
@@ -74,6 +82,13 @@ function OnMsg.ApplyModOptions(id)
 	end
 
 	ModOptions()
+end
+
+local function GetBatteryInfo(obj, space)
+	if space then
+		return T(" ") .. const.TagLookupTable.icon_Power .. obj:GetBatteryProgress()
+	end
+	return T(const.TagLookupTable.icon_Power) .. obj:GetBatteryProgress()
 end
 
 local style_lookup = {
@@ -103,6 +118,11 @@ local function UpdateText(obj, text_dlg, orig_text, orig_target)
 		return command, target, obj
 	end
 
+	local name = ""
+	if mod_ShowNames then
+		name = obj:GetDisplayName() .. " "
+	end
+
 	local text
 	if target then
 		local grid = ""
@@ -112,9 +132,19 @@ local function UpdateText(obj, text_dlg, orig_text, orig_target)
 				grid = " " .. grid.display_name
 			end
 		end
-		text = {obj:GetDisplayName() .. "<newline>", T{command, obj}, target, grid}
+		text = {name, T{command, obj}, target, grid}
 	else
-		text = {obj:GetDisplayName() .. "<newline>", T{command, obj}}
+		text = {name, T{command, obj}}
+	end
+
+	if obj:IsKindOf("Drone") then
+		if mod_OnlyBatteryInfo then
+		-- replace text
+			text = {GetBatteryInfo(obj)}
+		elseif mod_DroneBatteryInfo then
+		-- append text
+			text[#text] = GetBatteryInfo(obj, true)
+		end
 	end
 
 	text_dlg:SetText(table_concat(text, ""))
@@ -180,7 +210,9 @@ local function MarkUnits(obj)
 		local objs = obj.objects
 		for i = 1, #objs do
 			local obj2 = objs[i]
-			SetPathMarkersGameTime(obj2, nil, delay)
+			if mod_EnableLines then
+				SetPathMarkersGameTime(obj2, nil, delay)
+			end
 			if ValidObj(obj2) then
 				threads_c = threads_c + 1
 				threads[threads_c] = CreateGameTimeThread(AddTextInfo, obj2, parent, text_style, text_background)
@@ -188,7 +220,9 @@ local function MarkUnits(obj)
 		end
 
 	else
-		SetPathMarkersGameTime(obj)
+		if mod_EnableLines then
+			SetPathMarkersGameTime(obj)
+		end
 		if ValidObj(obj) then
 			threads_c = threads_c + 1
 			threads[threads_c] = CreateGameTimeThread(AddTextInfo, obj, parent, text_style, text_background)

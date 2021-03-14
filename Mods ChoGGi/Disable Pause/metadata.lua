@@ -12,5 +12,8 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Space sets speed to normal, and the pause button is hidden.]],
+	"description", [[Space sets speed to normal, and the pause button is hidden.
+
+
+Requested by Charlie Pryor.]],
 })

@@ -10,7 +10,7 @@ return PlaceObj("ModDef", {
 	"title", "RC Mechanic",
 	"id", "ChoGGi_RCMechanic",
 	"steam_id", "1528832147",
-	"pops_any_uuid", "9c7eb052-0151-4a3e-bdfc-9392b71264bd",
+	"pops_any_uuid", "8437a4f7-7f3f-4eb1-bb14-7d09c724178c",
 	"version", 11,
 	"version_major", 1,
 	"version_minor", 1,

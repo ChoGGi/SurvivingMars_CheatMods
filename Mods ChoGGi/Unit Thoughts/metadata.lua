@@ -11,10 +11,10 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_UnitThoughts",
 	"lua_revision", 249143,
 	"steam_id", "2196814512",
-	"pops_any_uuid", "c0c08914-7259-44e5-85a6-cdde9764ebb2",
-	"version", 4,
+	"pops_any_uuid", "528635cc-5241-4303-87aa-6fa9cfef66c3",
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 5,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
@@ -23,9 +23,9 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagInterface", true,
 	"description", [[Select a unit (drone/rover/colonist/shuttle) to see what it's up to.
-Optionally show unit name, target, map grid target area.
+Optionally show unit name, target, map grid target area, drone battery life.
 
 Mod Options:
-Force Clear Lines, Enable Mod, Enable Text, Text Background, Text Opacity, Text Style
+Enable Lines, Show Names, Drone Battery Info, Only Battery Info, Force Clear Lines, Enable Mod, Enable Text, Text Background, Text Opacity, Text Style
 ]],
 })

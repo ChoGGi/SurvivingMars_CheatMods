@@ -1,3 +1,6 @@
+v0.5
+Added repeating large solar panel/small wind turbine layouts.
+
 v0.4
 Added layout for hub/uni depot/seed depot/forest plant.
 

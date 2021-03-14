@@ -4,6 +4,9 @@
 ##### Tabs denote repetition of Msg. They could also be repeated later on in the game, but this list is during loading.
 ##### () on the end means the msg has arguments (this list is for the order), to see args use OnMsg Print
 ##### Parts of the log are also included to get an idea of when the Msgs fire
+
+##### If you need to change UICity.tech_status on new game, then use OnMsg.DepositsSpawned
+
 ```lua
 [mod] Loading mod items...
 Reloading lua files

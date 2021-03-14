@@ -13,9 +13,31 @@ return {
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
+		"name", "EnableLines",
+		"DisplayName", T(302535920011841, "Enable Lines"),
+		"DefaultValue", true,
+	}),
+	PlaceObj("ModItemOptionToggle", {
 		"name", "EnableText",
 		"DisplayName", T(302535920011717, "Enable Text"),
 		"DefaultValue", true,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "ShowNames",
+		"DisplayName", T(302535920011846, "Show Names"),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "DroneBatteryInfo",
+		"DisplayName", T(302535920011842, "Drone Battery Info"),
+		"Help", T(302535920011842, "Show Drone remaining battery life with unit info."),
+		"DefaultValue", true,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "OnlyBatteryInfo",
+		"DisplayName", T(302535920011844, "Only Battery Info"),
+		"Help", T(302535920011845, "Only show battery info when selecting drones."),
+		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "TextBackground",
