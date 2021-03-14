@@ -145,7 +145,7 @@ Actions[c] = {ActionName = Translate(311--[[Research]]) .. " " .. Strings[302535
 	ActionMenubar = "ECM.Cheats.Research",
 	ActionId = ".Research Remove",
 	ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
-	RolloverText = Strings[302535920001494--[[Remove a tech from researched list.]]],
+	RolloverText = Strings[302535920001494--[[Remove a tech from researched list and reset any values it adds (not stuff from mods).]]],
 	OnAction = ChoGGi.MenuFuncs.ResearchRemove,
 	ActionSortKey = "-2",
 }

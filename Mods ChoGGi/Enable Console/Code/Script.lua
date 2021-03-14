@@ -23,8 +23,7 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local function ShowConsole()
-	if not mod_EnableConsole or table.find(ModsLoaded, "id", "ChoGGi_CheatMenu")
-	then
+	if not mod_EnableConsole or table.find(ModsLoaded, "id", "ChoGGi_CheatMenu") then
 		return
 	end
 
@@ -38,17 +37,18 @@ end
 
 function OnMsg.ClassesPostprocess()
 	local CommonShortcuts = XTemplates.CommonShortcuts
-
-	if not table.find(CommonShortcuts, "ActionId", "ChoGGi_EnableConsole") then
-		CommonShortcuts[#CommonShortcuts+1] = PlaceObj("XTemplateAction", {
-			"ActionId", "ChoGGi_EnableConsole",
-			"ActionTranslate", false,
-			"ActionShortcut", "Enter",
-			"ActionShortcut2", "~",
-			"OnAction", ShowConsole,
-			"replace_matching_id", true,
-		})
+	if table.find(CommonShortcuts, "ActionId", "ChoGGi_EnableConsole") then
+		return
 	end
+
+	CommonShortcuts[#CommonShortcuts+1] = PlaceObj("XTemplateAction", {
+		"ActionId", "ChoGGi_EnableConsole",
+		"ActionTranslate", false,
+		"ActionShortcut", "Enter",
+		"ActionShortcut2", "~",
+		"OnAction", ShowConsole,
+		"replace_matching_id", true,
+	})
 end
 
 function restart()

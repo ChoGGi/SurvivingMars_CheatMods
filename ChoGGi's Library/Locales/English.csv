@@ -817,7 +817,7 @@ Deep items will unlock the ability to exploit those resources."
 302535920001508, "Save your game.
 This will switch to a new map."
 302535920001496, "Show a list of achievements to unlock (permanent!)."
-302535920001494, "Remove a tech from researched list."
+302535920001494, "Remove a tech from researched list and reset any values it adds (not complicated stuff from mods)."
 302535920001495, "This tries to reverse the changes made when the tech is researched (emphasis on tries)."
 302535920001478, "Open the Mod Editor and load the Mod map."
 302535920001402, "Add some party to your domes for 3 hours (10 domes max)."

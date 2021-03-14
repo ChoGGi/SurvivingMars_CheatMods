@@ -1821,10 +1821,10 @@ do -- ResearchRemove
 			end
 
 			for i = 1, #choice do
-				local value = choice[i].value
+				local tech_id = choice[i].value
 
-				-- some tech changes a global value, so we false what we can here
-				local global_value = lookup_gvalue[value]
+				-- some tech changes a global value we reset that here
+				local global_value = lookup_gvalue[tech_id]
 				if global_value then
 					if type(global_value) == "function" then
 						global_value(UICity)
@@ -1832,7 +1832,8 @@ do -- ResearchRemove
 						g[global_value] = false
 					end
 				end
-				local tech_status = UICity.tech_status[value]
+				-- the entry needed to reset it in the research screen
+				local tech_status = UICity.tech_status[tech_id]
 				if tech_status then
 					tech_status.researched = nil
 					tech_status.new = nil
