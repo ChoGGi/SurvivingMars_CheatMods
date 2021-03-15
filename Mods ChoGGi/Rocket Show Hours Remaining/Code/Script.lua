@@ -7,7 +7,7 @@ local Clamp = Clamp
 local MulDivRound = MulDivRound
 local HourDuration = const.HourDuration
 
-function SupplyRocket:GetArrivalTimePercent()
+function RocketBase:GetArrivalTimePercent()
 	if not self.launch_time or (self.flight_time or 0) <= 0 then
 		return 0
 	end

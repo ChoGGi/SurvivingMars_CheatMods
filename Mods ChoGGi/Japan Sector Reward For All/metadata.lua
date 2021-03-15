@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_JapanSectorRewardForAll",
 	"pops_any_uuid", "2e6c3217-99de-4477-a782-a4babe735f9b",
 	"author", "ChoGGi",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"code", {
 		"Code/Script.lua",
 	},

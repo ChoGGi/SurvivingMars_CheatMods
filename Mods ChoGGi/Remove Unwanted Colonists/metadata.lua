@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "Remove Unwanted Colonists",
@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1594867237",
 	"pops_any_uuid", "fb8fc954-40d2-4818-b84f-157903c4ed36",
 	"author", "ChoGGi",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"code", {
 		"Code/Script.lua",
 		"Code/MurderPod.lua",

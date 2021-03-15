@@ -712,7 +712,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 		obj.consumption_stored_resources = storedv
 		obj.consumption_max_storage = UserSettings.ServiceWorkplaceFoodStorage
 
-	elseif UserSettings.RocketMaxExportAmount and obj:IsKindOf("SupplyRocket") then
+	elseif UserSettings.RocketMaxExportAmount and obj:IsKindOf("RocketBase") then
 		obj.max_export_storage = UserSettings.RocketMaxExportAmount
 
 	elseif obj:IsKindOf("BaseRover") then

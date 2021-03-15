@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "Construction Show Dome Grid",
@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"steam_id", "1781388419",
 	"pops_any_uuid", "e5e834a8-16ba-438a-bd03-32d9ba5d0113",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"code", {
 		"Code/Script.lua",
 	},

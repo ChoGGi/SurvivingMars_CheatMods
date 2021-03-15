@@ -452,10 +452,10 @@ local function BuildAddToList(dlg, obj)
 		end
 	end
 
-	ChoGGi.ComFuncs.PopupToggle(dlg,"idBuildingStatesMenuPopup_Add",popup,"left")
+	ChoGGi.ComFuncs.PopupToggle(dlg, "idBuildingStatesMenuPopup_Add", popup, "left")
 end
 
-local cls_skip = {"SupplyRocket","ExplorableObject","UniversalStorageDepot"}
+local cls_skip = {"RocketBase", "ExplorableObject", "UniversalStorageDepot"}
 function OnMsg.ClassesPostprocess()
 	-- hud button
 	local xt = ChoGGi.ComFuncs.RetHudButton("idRight")

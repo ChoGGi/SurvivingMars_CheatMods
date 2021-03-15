@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "Building Placement Orientation",
@@ -19,7 +19,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua"
 	},
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"has_options", true,
 	"description", [[Any object you place will have the same orientation as the last placed object. Mod option to disable orientation.
 

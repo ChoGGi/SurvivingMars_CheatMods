@@ -1,14 +1,14 @@
 -- See LICENSE for terms
 
-local orig_SupplyRocket_UILaunch = SupplyRocket.UILaunch
-function SupplyRocket:UILaunch()
+local orig_RocketBase_UILaunch = RocketBase.UILaunch
+function RocketBase:UILaunch()
 	if self:IsDemolishing() then
 		self:ToggleDemolish()
 	end
 
 	-- we only care about no issues
 	if self:GetLaunchIssue() then
-		orig_SupplyRocket_UILaunch(self)
+		orig_RocketBase_UILaunch(self)
 	else
 		-- no issues so show the msg
 		CreateRealTimeThread(function()

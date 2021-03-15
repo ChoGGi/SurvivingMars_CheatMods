@@ -342,6 +342,9 @@ end
 function OnMsg.DlcsLoaded(...)
 	print("Msg.DlcsLoaded",...)
 end
+function OnMsg.DomeDestroyed(...)
+	print("Msg.DomeDestroyed",...)
+end
 function OnMsg.DomeHitByMeteor(...)
 	print("Msg.DomeHitByMeteor",...)
 end
@@ -651,9 +654,6 @@ end
 function OnMsg.MeteorStormEnded(...)
 	print("Msg.MeteorStormEnded",...)
 end
-function OnMsg.MilestoneAnomalyAnalyzed(...)
-	print("Msg.MilestoneAnomalyAnalyzed",...)
-end
 function OnMsg.MilestoneCompleted(...)
 	print("Msg.MilestoneCompleted",...)
 end
@@ -831,9 +831,6 @@ end
 function OnMsg.OurColonyPlaced(...)
 	print("Msg.OurColonyPlaced",...)
 end
-function OnMsg.OverlaySupplyGridChanged(...)
-	print("Msg.OverlaySupplyGridChanged",...)
-end
 function OnMsg.ParadoxFeedLoaded(...)
 	print("Msg.ParadoxFeedLoaded",...)
 end
@@ -857,9 +854,6 @@ function OnMsg.PersistLoad(...)
 end
 function OnMsg.PersistPostLoad(...)
 	print("Msg.PersistPostLoad",...)
-end
-function OnMsg.PersistPreLoad(...)
-	print("Msg.PersistPreLoad",...)
 end
 function OnMsg.PersistSave(...)
 	print("Msg.PersistSave",...)

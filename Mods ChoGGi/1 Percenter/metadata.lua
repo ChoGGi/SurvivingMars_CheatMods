@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua"
 	},
 	"image", "Preview.png",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"description", [[Receive a bonus of one percent of your funds each Sol.
 
 Requested by: EasyMoney]],

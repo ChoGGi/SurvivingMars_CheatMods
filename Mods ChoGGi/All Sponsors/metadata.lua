@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_AllSponsors",
 	"steam_id", "1596612055",
 	"pops_any_uuid", "aded8470-6312-4651-ad23-09688c2818e3",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

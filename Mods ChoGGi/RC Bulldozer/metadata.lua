@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "RC Bulldozer",
@@ -19,7 +19,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"description", [[Flattens the ground in front of it.
 
 Options to change the radius, show a circle where it flattens, and change the ground texture (or turn it off).

@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Plant Info",
 	"id", "ChoGGi_PlantInfo",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"steam_id", "2199536533",
 	"pops_any_uuid", "1b7a1351-6444-44b7-b7e3-965e351d2443",
 	"version", 2,

@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "Solaria Telepresence",
@@ -21,7 +21,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 		"Code/WorkVRWorkshop.lua",
 	},
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"description", [[Adds a telepresence VR building; remote control factories and mines (with reduced production).
 
 This mod also removes distance limits on workplace buildings placed outside of domes (hard not to).

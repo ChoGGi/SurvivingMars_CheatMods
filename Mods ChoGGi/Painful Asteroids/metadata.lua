@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Painful Asteroids",
 	"id", "ChoGGi_PainfulAsteroids",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"steam_id", "2424938510",
 	"pops_any_uuid", "c6fa07e9-c83a-4f86-89a7-b7c1a390bebd",
 	"version", 2,

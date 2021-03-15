@@ -272,7 +272,7 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 	res_table.__condition = function(_, context)
 		if #(UICity.labels.PersonalShuttle or "") > 0 then
 			-- make sure we can only pickup actual depots, not rockets or elevators...
-			return IsKindOf(context, "UniversalStorageDepot") and not context:IsKindOf("SupplyRocket") and not IsKindOf(context, "SpaceElevator")
+			return IsKindOf(context, "UniversalStorageDepot") and not context:IsKindOf("RocketBase") and not IsKindOf(context, "SpaceElevator")
 		end
 	end
 	AddXTemplate("PersonalShuttles_UniversalStorageDepot", "ipBuilding", res_table)

@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Capital City Ignores Terraform",
 	"id", "ChoGGi_CapitalCityIgnoresTerraform",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"steam_id", "2227480416",
 	"pops_any_uuid", "f5491acd-2e8a-419d-89cc-8b808eb5e12b",
 	"version", 1,

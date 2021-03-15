@@ -31,7 +31,7 @@ BuildList(StockpileResourceList)
 
 table.sort(res_list)
 TradePad.trade_resources = res_list
-SupplyRocket.storable_resources = res_list
+RocketBase.storable_resources = res_list
 
 local mod_EnableWasteRock
 --~ local mod_ShowResupply
@@ -95,7 +95,7 @@ local function ModOptions()
 
 	-- cls obj trade list (needed for new pads)
 	TradePad.trade_resources = res_list
-	SupplyRocket.storable_resources = res_list
+	RocketBase.storable_resources = res_list
 	ForeignTradeRocket.storable_resources = res_list
 end
 

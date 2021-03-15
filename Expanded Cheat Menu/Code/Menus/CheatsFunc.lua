@@ -146,7 +146,7 @@ function ChoGGi.MenuFuncs.LightningStrike(_, _, input)
 			elseif obj:IsKindOf("RCRover") then
 				obj:SetCommand("Malfunction")
 			elseif obj:IsKindOf("UniversalStorageDepot") then
-				if not obj:IsKindOf("SupplyRocket") and obj:GetStoredAmount("Fuel") > 0 then
+				if not obj:IsKindOf("RocketBase") and obj:GetStoredAmount("Fuel") > 0 then
 					obj:CheatEmpty()
 					fuel_explosions[#fuel_explosions + 1] = obj
 				end
@@ -565,7 +565,7 @@ do -- DisasterTriggerLightningStrike
 			elseif obj:IsKindOf("RCRover") then
 				obj:SetCommand("Malfunction")
 			elseif obj:IsKindOf("UniversalStorageDepot") then
-				if not obj:IsKindOf("SupplyRocket") and obj:GetStoredAmount("Fuel") > 0 then
+				if not obj:IsKindOf("RocketBase") and obj:GetStoredAmount("Fuel") > 0 then
 					obj:CheatEmpty()
 					fuel_exp_count = fuel_exp_count + 1
 					fuel_explosions[fuel_exp_count] = obj

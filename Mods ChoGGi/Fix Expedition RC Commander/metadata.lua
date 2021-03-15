@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Expedition RC Commander",
 	"id", "ChoGGi_FixExpeditionRCCommander",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"steam_id", "2253103829",
 	"pops_any_uuid", "094092b1-d496-4242-af9f-c6f21aac4c38",
 	"version", 1,

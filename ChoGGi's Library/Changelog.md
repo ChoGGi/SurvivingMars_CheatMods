@@ -1,6 +1,9 @@
 ## Library Changelog
 
-## v9.2 (Unreleased)
+## v9.3 (Unreleased)
+
+## v9.2 (15 March 2021)
+- Version number.
 
 ## v9.1 (14 March 2021)
 - Added RGBtoColour.

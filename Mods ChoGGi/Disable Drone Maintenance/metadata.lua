@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "Disable Drone Maintenance",
@@ -19,6 +19,6 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"description", [[Adds a menu button to buildings to disable drones from performing maintenance (on all of type or just selected).]],
 })

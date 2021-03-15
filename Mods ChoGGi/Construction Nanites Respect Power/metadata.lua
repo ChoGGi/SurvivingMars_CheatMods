@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ConstructionNanitesRespectPower",
 	"steam_id", "2070226527",
 	"pops_any_uuid", "84539780-fc3c-4fed-bf2d-6621b1a0ad9b",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

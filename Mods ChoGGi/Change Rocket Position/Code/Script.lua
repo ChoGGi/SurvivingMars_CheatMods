@@ -8,11 +8,11 @@ local function CanPositionRocket(obj)
 end
 
 -- we need to get the fuel amount from here (after the drones have been kicked out)
-local orig_SupplyRocket_Takeoff = SupplyRocket.Takeoff
-function SupplyRocket:Takeoff(...)
+local orig_RocketBase_Takeoff = RocketBase.Takeoff
+function RocketBase:Takeoff(...)
 	-- save fuel amount -10
 	self.ChoGGi_RepositionRocket = (self.launch_fuel - self.refuel_request:GetActualAmount()) - fuel_needed
-	return orig_SupplyRocket_Takeoff(self, ...)
+	return orig_RocketBase_Takeoff(self, ...)
 end
 
 local Sleep = Sleep

@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "Show Transport Route Info",
@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1628726303",
 	"pops_any_uuid", "d25a14ac-acf8-4132-bda6-ac116688b011",
 	"author", "ChoGGi",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"code", {
 		"Code/Script.lua",
 	},

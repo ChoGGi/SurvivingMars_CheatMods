@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Pins Missing Some Status Icons",
 	"id", "ChoGGi_PinsMissingSomeStatusIcons",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"steam_id", "2254963005",
 	"pops_any_uuid", "2888b4bb-ad89-467b-af74-652cff8b18b9",
 	"version", 1,

@@ -3,7 +3,7 @@
 -- fired when settings are changed/init
 local function ModOptions()
 	if CurrentModOptions:GetProperty("PinAllRockets") and UICity then
-		MapForEach(true, "SupplyRocket", function(o)
+		MapForEach(true, "RocketBase", function(o)
 			if o.command ~= "OnEarth" then
 				o:SetPinned(true)
 			end
@@ -23,14 +23,14 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-function SupplyRocket.CanBeUnpinned()
+function RocketBase.CanBeUnpinned()
 	return true
 end
 
-SupplyRocket.show_pin_toggle = true
+RocketBase.show_pin_toggle = true
 
 local function StartupCode()
-	MapForEach(true, "SupplyRocket", function(o)
+	MapForEach(true, "RocketBase", function(o)
 		o.show_pin_toggle = true
 	end)
 end

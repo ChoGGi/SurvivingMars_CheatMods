@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "Stop Current Disasters",
@@ -20,7 +20,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua"
 	},
 	"image", "Preview.png",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"has_options", true,
 	"description", [[Stops any running disasters when you load a save.
 

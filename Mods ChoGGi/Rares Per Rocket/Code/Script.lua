@@ -38,7 +38,7 @@ end
 
 -- set when new rocket made
 function OnMsg.BuildingInit(obj)
-	if obj:IsKindOf("SupplyRocket") then
+	if obj:IsKindOf("RocketBase") then
 		obj.max_export_storage = GetModValue()
 	end
 end

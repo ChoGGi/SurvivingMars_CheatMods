@@ -497,7 +497,7 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 				end
 
 			elseif aid == "Destroy" then
-				if obj:IsKindOf("SupplyRocket") or obj.destroyed then
+				if obj:IsKindOf("RocketBase") or obj.destroyed then
 					action.ActionId = ""
 				else
 					SetHint(action, Strings[302535920001227--[[Turns object into ruin.]]])
@@ -529,7 +529,7 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 				SetHint(action, Strings[302535920001209--[[Make this %s not need workers (performance: %s).]]]:format(name, bs and bs[id] and bs[id].performance or 100))
 
 			elseif aid == "CapDbl" then
-				if obj:IsKindOf("SupplyRocket") then
+				if obj:IsKindOf("RocketBase") then
 					SetHint(action, Strings[302535920001211--[[Double the export storage capacity of this %s.]]]:format(name))
 				else
 					SetHint(action, Strings[302535920001212--[[Double the storage capacity of this %s.]]]:format(name))
@@ -945,14 +945,14 @@ function SecurityStation:CheatReneagadeCapDef()
 	self.negated_renegades = self.max_negated_renegades
 end
 
-function SupplyRocket:CheatCapDbl()
+function RocketBase:CheatCapDbl()
 	ChoGGi.ComFuncs.SetTaskReqAmount(self, self.max_export_storage * 2, "export_requests", "max_export_storage")
 end
-function SupplyRocket:CheatCapDef()
+function RocketBase:CheatCapDef()
 	ChoGGi.ComFuncs.SetTaskReqAmount(self, self:GetClassValue("max_export_storage"), "export_requests", "max_export_storage")
 end
 
-function SupplyRocket:CheatAddFuel()
+function RocketBase:CheatAddFuel()
 	-- skip if we're full/over full
 	local actual = self.refuel_request:GetActualAmount()
 	if actual == 0 then
@@ -971,11 +971,11 @@ function SupplyRocket:CheatAddFuel()
 		RebuildInfopanel(self)
 	end
 end
-function SupplyRocket:CheatAddDust2()
+function RocketBase:CheatAddDust2()
 	self:SetDust(600, 0)
 	ApplyToObjAndAttaches(self, SetObjDust, 600)
 end
-function SupplyRocket:CheatCleanAndFix2()
+function RocketBase:CheatCleanAndFix2()
 	self:SetDust(0, 0)
 	ApplyToObjAndAttaches(self, SetObjDust, 0)
 end

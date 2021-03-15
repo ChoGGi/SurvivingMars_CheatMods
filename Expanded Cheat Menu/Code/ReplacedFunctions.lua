@@ -392,26 +392,26 @@ function OnMsg.ClassesGenerate()
 	end
 
 	-- stupid supply pods don't want to play nice
-	SaveOrigFunc("SupplyRocket", "FlyToEarth")
-	function SupplyRocket:FlyToEarth(flight_time, ...)
+	SaveOrigFunc("RocketBase", "FlyToEarth")
+	function RocketBase:FlyToEarth(flight_time, ...)
 		if UserSettings.TravelTimeMarsEarth then
 			flight_time = g_Consts.TravelTimeMarsEarth
 		end
-		return ChoGGi_OrigFuncs.SupplyRocket_FlyToEarth(self, flight_time, ...)
+		return ChoGGi_OrigFuncs.RocketBase_FlyToEarth(self, flight_time, ...)
 	end
 
-	SaveOrigFunc("SupplyRocket", "FlyToMars")
-	function SupplyRocket:FlyToMars(cargo, cost, flight_time, ...)
+	SaveOrigFunc("RocketBase", "FlyToMars")
+	function RocketBase:FlyToMars(cargo, cost, flight_time, ...)
 		if UserSettings.TravelTimeEarthMars then
 			flight_time = g_Consts.TravelTimeEarthMars
 		end
-		return ChoGGi_OrigFuncs.SupplyRocket_FlyToMars(self, cargo, cost, flight_time, ...)
+		return ChoGGi_OrigFuncs.RocketBase_FlyToMars(self, cargo, cost, flight_time, ...)
 	end
 
 	-- no need for fuel to launch rocket
-	SaveOrigFunc("SupplyRocket", "HasEnoughFuelToLaunch")
-	function SupplyRocket.HasEnoughFuelToLaunch(...)
-		return UserSettings.RocketsIgnoreFuel or ChoGGi_OrigFuncs.SupplyRocket_HasEnoughFuelToLaunch(...)
+	SaveOrigFunc("RocketBase", "HasEnoughFuelToLaunch")
+	function RocketBase.HasEnoughFuelToLaunch(...)
+		return UserSettings.RocketsIgnoreFuel or ChoGGi_OrigFuncs.RocketBase_HasEnoughFuelToLaunch(...)
 	end
 
 	-- override any performance changes if needed

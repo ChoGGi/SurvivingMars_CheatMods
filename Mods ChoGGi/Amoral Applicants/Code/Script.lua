@@ -36,8 +36,8 @@ local Max = Max
 local Sleep = Sleep
 local AsyncRand = AsyncRand
 
-local orig_WaitInOrbit = SupplyRocket.WaitInOrbit
-function SupplyRocket:WaitInOrbit(arrive_time, ...)
+local orig_WaitInOrbit = RocketBase.WaitInOrbit
+function RocketBase:WaitInOrbit(arrive_time, ...)
 
 	-- check for passengers and abort if not
 	local pass_table
@@ -48,7 +48,7 @@ function SupplyRocket:WaitInOrbit(arrive_time, ...)
 		end
 	end
 
-	-- most of SupplyRocket:WaitInOrbit() follows
+	-- most of RocketBase:WaitInOrbit() follows
 	self:OffPlanet()
 	self.orbit_arrive_time = arrive_time
 
@@ -154,8 +154,8 @@ function SupplyRocket:WaitInOrbit(arrive_time, ...)
 	self:SetCommand("LandOnMars", self.landing_site)
 end
 
-local orig_LandOnMars = SupplyRocket.LandOnMars
-function SupplyRocket:LandOnMars(...)
+local orig_LandOnMars = RocketBase.LandOnMars
+function RocketBase:LandOnMars(...)
 	-- longpig Lūʻau?
 	if self.ChoGGi_cann_a_snack then
 		-- whoopsie, should've checked for this...

@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "Stop Auto-Rovers During Storms",
@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1796377313",
 	"pops_any_uuid", "047b4e7f-37d7-4c89-a600-598339e2d955",
 	"author", "ChoGGi",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"code", {
 		"Code/Script.lua",
 	},

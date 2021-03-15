@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "Golden Storage",
@@ -22,6 +22,6 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagGameplay", true,
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"description", [[Converts Metals to Precious Metals (10 to 1 ratio).]],
 })

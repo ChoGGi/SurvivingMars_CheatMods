@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "Drones Carry Amount",
@@ -20,7 +20,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"description", [[Drones normally only pick up resources from buildings when the amount stored is equal or greater to their carry amount.
 Example: if there's 1 res cube and you have the 2x carry upgrade they'll wait for another res cube before picking up.
 This mod forces them to pick up whenever there's at least 1 res cube.

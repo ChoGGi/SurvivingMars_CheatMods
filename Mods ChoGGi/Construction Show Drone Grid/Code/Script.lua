@@ -21,7 +21,7 @@ local mod_GridOpacity
 local mod_GridScale
 local mod_HexColourDroneHub
 local mod_HexColourRCRover
-local mod_HexColourSupplyRocket
+local mod_HexColourRocketBase
 
 -- fired when settings are changed/init
 local function ModOptions()
@@ -33,7 +33,7 @@ local function ModOptions()
 
 	mod_HexColourDroneHub = RGBtoColour(options:GetProperty("HexColourDroneHub"))
 	mod_HexColourRCRover = RGBtoColour(options:GetProperty("HexColourRCRover"))
-	mod_HexColourSupplyRocket = RGBtoColour(options:GetProperty("HexColourSupplyRocket"))
+	mod_HexColourRocketBase = RGBtoColour(options:GetProperty("HexColourSupplyRocket"))
 end
 
 -- load default/saved settings
@@ -46,7 +46,7 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local classes = {"SupplyRocket", "DroneHub", "RCRover", "ConstructionSite"}
+local classes = {"RocketBase", "DroneHub", "RCRover", "ConstructionSite"}
 
 local orig_ShowBuildingHexes = ShowBuildingHexes
 function ShowBuildingHexes(bld, hex_range_class, bind_func, ...)
@@ -105,7 +105,7 @@ local function ShowGrids()
 						decal:SetColorModifier(mod_HexColourRCRover)
 						decal:SetScale(mod_GridScale)
 					end
-				elseif obj:IsKindOf("SupplyRocket") then
+				elseif obj:IsKindOf("RocketBase") then
 					for i = 1, #range.decals do
 						local decal = range.decals[i]
 						decal:SetColorModifier(mod_HexColourSupplyRocket)

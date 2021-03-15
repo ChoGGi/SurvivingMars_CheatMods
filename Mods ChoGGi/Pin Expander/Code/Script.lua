@@ -377,7 +377,7 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 		hint = "<color 203 120 30>" .. str_state
 			.. ":</color> <color 255 200 200>" .. state_text .. "</color>\n" .. hint
 
-		local is_rocket = obj:IsKindOf("SupplyRocket")
+		local is_rocket = obj:IsKindOf("RocketBase")
 		if not is_rocket or is_rocket and obj.name ~= "" then
 			c = c + 1
 			local name = RetName(obj)

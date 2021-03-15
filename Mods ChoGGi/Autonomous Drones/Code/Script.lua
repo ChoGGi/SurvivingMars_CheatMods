@@ -301,7 +301,7 @@ local function UpdateDrones()
 		if hub.working and
 			(mod_UseCommanders and hub:IsKindOf("RCRover")
 			or mod_UseDroneHubs and hub:IsKindOf("DroneHub")
-			or mod_UseRockets and hub:IsKindOf("SupplyRocket"))
+			or mod_UseRockets and hub:IsKindOf("RocketBase"))
 		then
 			hub_count = hub_count + 1
 			filtered_hubs[hub_count] = hub

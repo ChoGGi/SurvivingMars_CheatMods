@@ -127,7 +127,7 @@ local function GetAvailableResources(self, cursor_obj)
 end
 
 RCRover.ChoGGi_GetAvailableResources = GetAvailableResources
-SupplyRocket.ChoGGi_GetAvailableResources = GetAvailableResources
+RocketBase.ChoGGi_GetAvailableResources = GetAvailableResources
 DroneHub.ChoGGi_GetAvailableResources = GetAvailableResources
 Drone.ChoGGi_GetAvailableResources = GetAvailableResources
 
@@ -182,7 +182,7 @@ function CursorBuilding:GameInit(...)
 	then
 		-- If it has a radius then use it, otherwise fallback to rocket (for landing sites I think)
 		self.ChoGGi_UpdateAvailableResources = sel_radius and sel_radius(self)
-			or SupplyRocket.work_radius
+			or RocketBase.work_radius
 		-- 0 means not a radius building
 		if self.ChoGGi_UpdateAvailableResources == 0 then
 			return ret

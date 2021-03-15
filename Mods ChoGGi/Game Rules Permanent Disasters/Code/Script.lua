@@ -202,9 +202,9 @@ local function RemoveSuspend(list, name)
 	end
 end
 
-local orig_SupplyRocket_IsFlightPermitted = SupplyRocket.IsFlightPermitted
-function SupplyRocket:IsFlightPermitted(...)
-	return mod_DustStormsAllowRockets or orig_SupplyRocket_IsFlightPermitted(self, ...)
+local orig_RocketBase_IsFlightPermitted = RocketBase.IsFlightPermitted
+function RocketBase:IsFlightPermitted(...)
+	return mod_DustStormsAllowRockets or orig_RocketBase_IsFlightPermitted(self, ...)
 end
 
 local orig_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses

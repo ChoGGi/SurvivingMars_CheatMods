@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "Remove Landscaping Limit",
@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1743029792",
 	"pops_any_uuid", "a4ef5012-a7d1-4f13-8b09-2e82809cf428",
 	"author", "ChoGGi",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"code", {
 		"Code/Script.lua",
 	},

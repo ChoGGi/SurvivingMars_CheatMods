@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_MapImagesPack",
@@ -25,7 +25,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"has_options", true,
 	"description", [[Shows the map before you load it in the select colony screen.
 

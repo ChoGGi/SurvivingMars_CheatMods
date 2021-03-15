@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Projector Lamp",
 	"id", "ChoGGi_FixProjectorLamp",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"steam_id", "2387107341",
 	"pops_any_uuid", "d1288e04-d8e6-41a6-b4ba-5a0e84d4c1ac",
 	"version", 1,

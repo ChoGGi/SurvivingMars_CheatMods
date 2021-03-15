@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "Spice Harvester",
@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 	"version", 9,
 	"version_major", 0,
 	"version_minor", 9,
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {

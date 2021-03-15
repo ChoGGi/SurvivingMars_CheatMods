@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "Construction Show Life Support",
@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"steam_id", "2206032033",
 	"pops_any_uuid", "2e8a30ad-627c-4b37-985b-ad6f5ca3b43f",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"code", {
 		"Code/Script.lua",
 	},

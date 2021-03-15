@@ -1,3 +1,11 @@
+v0.7
+Tito added Msg:
+DomeDestroyed
+Removed:
+MilestoneAnomalyAnalyzed
+OverlaySupplyGridChanged
+PersistPreLoad
+
 v0.6
 Cernan added Msgs:
 AtmosphereChanged

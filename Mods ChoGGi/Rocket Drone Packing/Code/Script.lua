@@ -81,13 +81,13 @@ function OnMsg.ClassesPostprocess()
 end
 
 -- don't mind me, just fixing a bug: https://github.com/HaemimontGames/SurvivingMars/blob/master/Lua/Buildings/Rocket.lua#L1698
-function SupplyRocket:GetEntrancePoints(entrance_type, spot_name, ...)
+function RocketBase:GetEntrancePoints(entrance_type, spot_name, ...)
 	return WaypointsObj.GetEntrancePoints(self, entrance_type or "rocket_entrance", spot_name, ...)
 end
 
 -- UseDronePrefab() needs a return to remove from city.drone_prefabs count
 -- and the Embark command keeps them stuck inside the rocket forever
-function SupplyRocket:SpawnDrone()
+function RocketBase:SpawnDrone()
 	if #self.drones >= self:GetMaxDrones() then
 		return
 	end

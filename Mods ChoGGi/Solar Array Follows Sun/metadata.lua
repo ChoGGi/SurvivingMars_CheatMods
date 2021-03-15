@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "Solar Array Follows Sun",
@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1570918489",
 	"pops_any_uuid", "105b752a-e526-4055-9009-c253bbe0e3fa",
 	"author", "ChoGGi",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"code", {
 		"Code/Script.lua",
 	},

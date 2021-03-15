@@ -9,8 +9,8 @@ local rockets = {
 }
 
 local palettes = {
-	SupplyRocket.rocket_palette,
-	SupplyRocket.rocket_palette,
+	RocketBase.rocket_palette,
+	RocketBase.rocket_palette,
 	AttackRover.palette,
 	SupplyPod.rocket_palette,
 }
@@ -20,7 +20,7 @@ local function GetSkins()
 end
 
 -- replace the default getskins function with ours
-SupplyRocket.GetSkins = GetSkins
+RocketBase.GetSkins = GetSkins
 -- hey if you want to change the skin for a few seconds...
 SupplyPod.GetSkins = GetSkins
 

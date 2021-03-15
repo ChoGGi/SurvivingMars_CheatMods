@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Rocket Turn Off Rare Export",
 	"id", "ChoGGi_RocketTurnOffRareExport",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"steam_id", "2210974030",
 	"pops_any_uuid", "6940f2e6-32de-4550-91ab-6a08755dd46a",
 	"version", 2,

@@ -1,7 +1,5 @@
 -- See LICENSE for terms
 
--- CurrentModPath, CurrentModOptions, CurrentModDef, CurrentModId
-
 local mod_ToggleBushes
 local mod_EnableVegetation
 
@@ -21,7 +19,6 @@ local function ToggleTrees()
 		return
 	end
 
-
 	-- don't toggle if already set
 	if mod_EnableVegetation and not veg[1]:GetVisible() then
 		ToggleFunc(veg)
@@ -39,6 +36,7 @@ local function ModOptions()
 	if not UICity then
 		return
 	end
+
 	ToggleTrees()
 end
 

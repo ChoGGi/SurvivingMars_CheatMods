@@ -75,14 +75,14 @@ function OnMsg.ModsReloaded()
 		local BuildingTemplates = BuildingTemplates
 		for id in pairs(BuildingTemplates) do
 			local o = g_Classes[id]
-			if o and o.GetDustRadius and not o:IsKindOf("SupplyRocket") then
+			if o and o.GetDustRadius and not o:IsKindOf("RocketBase") then
 				classes_c = classes_c + 1
 				classes[classes_c] = id
 			end
 		end
 		-- no need to add all the diff rockets, just the base class'll do
 		classes_c = classes_c + 1
-		classes[classes_c] = "SupplyRocket"
+		classes[classes_c] = "RocketBase"
 		classes_c = classes_c + 1
 		classes[classes_c] = "SupplyRocketBuilding"
 	end
@@ -126,7 +126,7 @@ local function ShowBuildingHexesSite(bld, is_rocket)
 				obj:SetScale(radius(bld))
 			else
 				-- SupplyRocketBuilding
-				obj:SetScale(SupplyRocket:GetDustRadius())
+				obj:SetScale(RocketBase:GetDustRadius())
 			end
 		end
 	end
@@ -172,7 +172,7 @@ local function ShowGrids()
 						ShowBuildingHexesSite(obj, is_rocket)
 					end
 				else
-					local is_rocket = obj:IsKindOf("SupplyRocket")
+					local is_rocket = obj:IsKindOf("RocketBase")
 					if not is_rocket
 						or is_rocket and not IsValid(obj.landing_site.landing_pad)
 					then

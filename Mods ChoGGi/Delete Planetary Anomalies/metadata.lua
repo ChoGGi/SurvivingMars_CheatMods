@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "Delete Planetary Anomalies",
@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1774213486",
 	"pops_any_uuid", "4fa20c81-a38c-4fde-abee-ef73117c827f",
 	"author", "ChoGGi",
-	"lua_revision", 249143,
+	"lua_revision", 1001514,
 	"code", {
 		"Code/Script.lua",
 	},
