@@ -151,20 +151,22 @@ function OnMsg.ClassesPostprocess()
 	-- If it ignores fake values then use "name" and check for prefix Header_
 end
 
+if not rawget(_G, "ModItemOptionInputBox") then
 	-- Add input text box mod option
-DefineClass.ModItemOptionInputBox = {
-  __parents = {
-    "ModItemOption"
-  },
-  properties = {
-		{
-      id = "DefaultValue",
-      name = "Default Text",
-      editor = "text",
-      default = "",
-      translate = false,
-    },
-  },
-  ValueEditor = "textinput",
-  EditorName = "Option (text)"
-}
+	DefineClass.ModItemOptionInputBox = {
+		__parents = {
+			"ModItemOption"
+		},
+		properties = {
+			{
+				id = "DefaultValue",
+				name = "Default Text",
+				editor = "text",
+				default = "",
+				translate = false,
+			},
+		},
+		ValueEditor = "textinput",
+		EditorName = "Option (text)"
+	}
+end

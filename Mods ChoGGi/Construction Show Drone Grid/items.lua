@@ -1,19 +1,19 @@
 return {
 	PlaceObj("ModItemOptionInputBox", {
 		"name", "HexColourDroneHub",
-		"DisplayName", table.concat(T(302535920011835, "Hex Colour"), " ", T(3518,"Drone Hub")),
+		"DisplayName", table.concat(T(302535920011835, "Hex Colour") .. " " .. T(3518,"Drone Hub")),
 		"Help", T(302535920011836, "<color ChoGGi_red>R</color> <color ChoGGi_green>G</color> <color ChoGGi_blue>B</color> colour code, yellow example: 255,255,0 (range is 0-255)"),
 		"DefaultValue", "0,255,255",
 	}),
 	PlaceObj("ModItemOptionInputBox", {
 		"name", "HexColourRCRover",
-		"DisplayName", table.concat(T(302535920011835, "Hex Colour"), " ", T(4828,"RC Commander")),
+		"DisplayName", table.concat(T(302535920011835, "Hex Colour") .. " " .. T(4828,"RC Commander")),
 		"Help", T(302535920011836, "<color ChoGGi_red>R</color> <color ChoGGi_green>G</color> <color ChoGGi_blue>B</color> colour code, yellow example: 255,255,0 (range is 0-255)"),
 		"DefaultValue", "255,255,0",
 	}),
 	PlaceObj("ModItemOptionInputBox", {
 		"name", "HexColourSupplyRocket",
-		"DisplayName", table.concat(T(302535920011835, "Hex Colour"), " ", T(1685,"Rocket")),
+		"DisplayName", table.concat(T(302535920011835, "Hex Colour") .. " " .. T(1685,"Rocket")),
 		"Help", T(302535920011836, "<color ChoGGi_red>R</color> <color ChoGGi_green>G</color> <color ChoGGi_blue>B</color> colour code, yellow example: 255,255,0 (range is 0-255)"),
 		"DefaultValue", "0,255,0",
 	}),

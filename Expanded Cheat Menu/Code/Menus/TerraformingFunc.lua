@@ -56,7 +56,7 @@ function ChoGGi.MenuFuncs.SetAllTerraformingParams(action)
 	if g_NoTerraforming then
 		MsgPopup(
 			Strings[302535920000562--[[Terraforming not enabled!]]],
-			T(11719, "Terraforming")
+			T(12476, "Terraforming")
 		)
 		return
 	end
@@ -275,7 +275,7 @@ function ChoGGi.MenuFuncs.SetTerraformingParams(action)
 
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.value),
-				T(11719, "Terraforming")
+				T(12476, "Terraforming")
 			)
 		end
 	end

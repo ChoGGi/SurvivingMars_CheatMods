@@ -7,7 +7,7 @@ local c = #Actions
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(11719--[[Terraforming]]),
+Actions[c] = {ActionName = Translate(12476--[[Terraforming]]),
 	ActionMenubar = "ECM.ECM",
 	ActionId = ".Terraforming",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",

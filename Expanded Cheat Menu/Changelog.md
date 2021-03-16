@@ -3,6 +3,7 @@
 ## v16.3 (Unreleased)
 ### Fixed:
 - Cheats pane>ToggleSigns was freezing the game when used on concrete deposits.
+- Menu>ECM>Missing Text > Terraforming.
 
 ## v16.2 (15 March 2021)
 ### Fixed:

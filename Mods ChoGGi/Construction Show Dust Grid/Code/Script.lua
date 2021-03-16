@@ -80,7 +80,13 @@ function OnMsg.ModsReloaded()
 				classes[classes_c] = id
 			end
 		end
-		-- no need to add all the diff rockets, just the base class'll do
+		-- no need to add all the diff rockets, just the base class'll do (or not since Tito update...)
+		classes_c = classes_c + 1
+		classes[classes_c] = "SupplyRocket"
+		classes_c = classes_c + 1
+		classes[classes_c] = "RocketExpedition"
+		classes_c = classes_c + 1
+		classes[classes_c] = "TradeRocket"
 		classes_c = classes_c + 1
 		classes[classes_c] = "RocketBase"
 		classes_c = classes_c + 1

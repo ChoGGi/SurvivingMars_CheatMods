@@ -1,2 +1,8 @@
+v0.4
+Fixed mod option disabling fix...
+
+v0.3
+Added mod option to disable mod.
+
 v0.2
 Found another place with the log.

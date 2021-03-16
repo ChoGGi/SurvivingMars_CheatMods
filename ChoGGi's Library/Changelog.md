@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v9.3 (Unreleased)
+- Library will disable my ModItemOptionInputBox if already available (being added to main game).
 
 ## v9.2 (15 March 2021)
 - Version number.

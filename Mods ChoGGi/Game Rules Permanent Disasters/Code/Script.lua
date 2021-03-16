@@ -379,7 +379,8 @@ function OnMsg.ClassesPostprocess()
 	})
 
 	PlaceObj("GameRules", {
-		description = T(486621856457, "A team of Scientists argues over the satellite data as you quietly ponder the situation. It's going to be a long winter."),
+		description = table.concat(T(486621856457, "A team of Scientists argues over the satellite data as you quietly ponder the situation. It's going to be a long winter.")
+			.. "\n\n" .. T(302535920011848, "The ground will always be icy everywhere (unlocks Subsurface Heaters from the get-go).")),
 		display_name = T(293468065101, "Winter Wonderland"),
 		flavor = T{"<grey><text><newline><right>Haemimont Games</grey><left>",
 			text = T(838846202028, "I know! Let's organize a winter festival!"),
