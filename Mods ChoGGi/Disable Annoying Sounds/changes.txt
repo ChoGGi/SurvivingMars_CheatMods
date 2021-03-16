@@ -1,3 +1,6 @@
+v0.4
+Some idiot forgot to add the library mod req for this mod...
+
 v0.3
 Evans update.
 

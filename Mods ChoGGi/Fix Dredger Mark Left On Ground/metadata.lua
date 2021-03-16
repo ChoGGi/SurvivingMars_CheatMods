@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
+	"TagOther", true,
 	"description", [[(To keep spoilers to a minimum) it's a fix for this issue:
 https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-dredgers-mark-remains.1150177/
 

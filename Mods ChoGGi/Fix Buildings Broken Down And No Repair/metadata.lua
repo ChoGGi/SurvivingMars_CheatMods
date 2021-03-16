@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
+	"TagOther", true,
 	"description", [[If you have broken down buildings the drones won't repair. This will check for them on load game.
 The affected buildings will say something about exceptional circumstances.
 Any buildings affected by this issue will need to be repaired with 000.1 resource after the fix happens.

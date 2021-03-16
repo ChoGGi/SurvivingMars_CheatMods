@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
+	"TagOther", true,
 	"description", [[Some mods will try to add a notification without specifying an id for it; that makes baby Jesus cry.
 
 (also the game freezes on load)

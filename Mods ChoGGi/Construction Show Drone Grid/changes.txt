@@ -1,3 +1,6 @@
+v1.6
+Tito.
+
 v1.5
 Mod option to change colour of hexes.
 

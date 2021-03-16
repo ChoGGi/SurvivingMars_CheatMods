@@ -1,5 +1,10 @@
 -- See LICENSE for terms
 
+local table_remove = table.remove
+local RemoveFromRules = RemoveFromRules
+local PlayFX = PlayFX
+local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
+
 local options
 local mod_SensorSensorTowerBeeping
 local mod_RCCommanderDronesDeployed
@@ -33,25 +38,13 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
---~ 	-- Data\SoundPreset.lua, and Lua\Config\__SoundTypes.lua
---~ 	-- test sounds:
---~ 	function TestSound(snd)
---~ 		StopSound(ChoGGi.Temp.Sound)
---~ 		ChoGGi.Temp.Sound = PlaySound(snd, "UI")
---~ 	end
---~ 	TestSound("Object MOXIE Loop")
---~
---~ TestSound("Building Nurcery LoopEmpty")
-
 local function BldToggleWorking(label)
-	local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
 	local objs = UICity.labels[label] or ""
 	for i = 1, #objs do
 		ToggleWorking(objs[i])
 	end
 end
 local function BldToggleSounds(label, snd)
-	local PlayFX = PlayFX
 	local objs = UICity.labels[label] or ""
 	for i = 1, #objs do
 		local obj = objs[i]
@@ -61,11 +54,9 @@ local function BldToggleSounds(label, snd)
 end
 
 DisableSounds = function()
-	local remove = table.remove
-	local RemoveFromRules = RemoveFromRules
 
 	if mod_SensorSensorTowerBeeping then
-		remove(FXRules.Working.start.SensorTower.any, 3)
+		table_remove(FXRules.Working.start.SensorTower.any, 3)
 		RemoveFromRules("Object SensorTower Loop")
 		BldToggleWorking("SensorTower")
 	end
@@ -74,7 +65,7 @@ DisableSounds = function()
 		local list = FXRules.RoverDeploy.start.RCRover.any
 		for i = #list, 1, -1 do
 			if list[i].Sound == "Unit Rover DeployAntennaON" or list[i].Sound == "Unit Rover DeployLoop" then
-				remove(list, i)
+				table_remove(list, i)
 			end
 		end
 		RemoveFromRules("Unit Rover DeployLoop")
@@ -84,7 +75,7 @@ DisableSounds = function()
 	end
 
 	if mod_MirrorSphereCrackling then
-		remove(FXRules.Freeze.start.MirrorSphere.any, 2)
+		table_remove(FXRules.Freeze.start.MirrorSphere.any, 2)
 		FXRules.Freeze.start.any = nil
 		RemoveFromRules("Mystery Sphere Freeze")
 
@@ -92,14 +83,14 @@ DisableSounds = function()
 	end
 
 	if mod_NurseryChild then
-		remove(FXRules.Working.start.Nursery.any, 1)
+		table_remove(FXRules.Working.start.Nursery.any, 1)
 		RemoveFromRules("Building Nurcery LoopEmpty")
 		BldToggleWorking("Nursery")
 	end
 
 	if mod_SpacebarMusic then
-		remove(FXRules.Working.start.Spacebar.any, 1)
-		remove(FXRules.Working.start.Spacebar_Small.any, 1)
+		table_remove(FXRules.Working.start.Spacebar.any, 1)
+		table_remove(FXRules.Working.start.Spacebar_Small.any, 1)
 		RemoveFromRules("Building Spacebar Loop")
 		RemoveFromRules("Building SpacebarSmall Loop")
 		-- Includes reg and small
@@ -110,3 +101,15 @@ end
 
 OnMsg.CityStart = DisableSounds
 OnMsg.LoadGame = DisableSounds
+
+
+--~ -- Data\SoundPreset.lua, and Lua\Config\__SoundTypes.lua
+--~ -- test sounds:
+function TestSound(snd)
+	StopSound(ChoGGi.Temp.Sound)
+	ChoGGi.Temp.Sound = PlaySound(snd, "UI")
+end
+--~ TestSound("Object MOXIE Loop")
+
+--~ TestSound("Building Spacebar Loop")
+

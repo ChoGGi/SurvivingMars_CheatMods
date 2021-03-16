@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"TagBuildings", true,
+	"TagOther", true,
 	"description", [[For some reason the devs put it in the Decorations instead of the Outside Decorations category.
 This mod moves it to the correct category.
 ]],

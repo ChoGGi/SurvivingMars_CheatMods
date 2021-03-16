@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
+	"TagOther", true,
 	"description", [[If you have malfunctioning drones at a dronehub and they never get repaired (off map).
 
 This'll check on load each time for them (once should be enough though), and move them near the hub.

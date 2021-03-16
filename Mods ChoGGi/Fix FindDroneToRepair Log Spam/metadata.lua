@@ -12,6 +12,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"TagOther", true,
 	"has_options", true,
 	"description", [[This seems to be an issue from flying drones and a drone hub being destroyed.
 

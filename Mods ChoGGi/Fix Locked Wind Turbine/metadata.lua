@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
+	"TagOther", true,
 	"description", [[Wind turbine gets locked by a game event.
 This checks on load for the locked turbine and unlocks it.
 

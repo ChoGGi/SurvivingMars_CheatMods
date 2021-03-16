@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
+	"TagOther", true,
 	"description", [[If you're playing the mystery with the mirror spheres and the blue lights from certain devices remain on the ground.
 Use this to fix the issue, includes mod option to disable fix after you load your save.
 ]],

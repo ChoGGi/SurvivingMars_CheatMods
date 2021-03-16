@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
+	"TagOther", true,
 	"description", [[This one has been in since release...
 
 On load, and once a day it'll check if the blue growing thing has fallen off any morph towers, and re-attach if any have.

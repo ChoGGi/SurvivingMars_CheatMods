@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
+	"TagOther", true,
 	"description", [[Start building a rocket on a pad than cancel it, and the pad is blocked.
 This will check for borked pads when a save is loaded.
 

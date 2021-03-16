@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
+	"TagOther", true,
 	"description", [[This will remove any blue or yellow grid marks from around objects when you load a game.
 Includes mod option to disable.
 

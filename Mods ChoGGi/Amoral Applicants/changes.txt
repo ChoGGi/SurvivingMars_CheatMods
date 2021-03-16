@@ -1,3 +1,6 @@
+v0.3
+Tito.
+
 v0.2
 Added various mod options.
 Fixed bug where the rocket would keep making new colonists cannibals.

@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
+	"TagOther", true,
 	"description", [[Removes any meteors stuck on a map when you load a save.
 
 Includes mod option to disable fix.

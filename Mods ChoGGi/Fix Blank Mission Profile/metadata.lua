@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
+	"TagOther", true,
 	"description", [[If you removed modded rules from your current save then the Mission Profile dialog will be blank.
 
 You don't need to leave this enabled afterwards.

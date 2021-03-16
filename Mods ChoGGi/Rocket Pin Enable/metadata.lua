@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Rocket Pin Enable",
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.png",
 	"id", "ChoGGi_RocketPinEnable",
 	"steam_id", "1743882177",

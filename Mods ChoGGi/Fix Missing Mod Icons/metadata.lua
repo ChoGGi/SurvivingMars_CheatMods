@@ -12,6 +12,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"TagOther", true,
 	"description", [[If you have mods missing the build menu, upgrade, crop, etc icons; this is the mod for you.
 
 This will validate images for mod items and try to fix the image path of missing ones.

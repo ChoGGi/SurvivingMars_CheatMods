@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
+	"TagOther", true,
 	"description", [[If you've got any shuttles stuck mid-air...
 This only checks for them on load, if it's a common occurrence for you then send me a msg.
 

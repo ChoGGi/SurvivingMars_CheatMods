@@ -4038,7 +4038,9 @@ do -- UnpublishParadoxMod
 		local function CallBackFunc(answer)
 			if answer then
 
-				platform = platform or "any"
+				if not platform then
+					platform = "any"
+				end
 				local result = PDX_GetModDetails(mod_title, platform)
 
 				if type(result) == "table" then
@@ -4046,9 +4048,9 @@ do -- UnpublishParadoxMod
 				end
 
 				if type(result) == "string" then
-					print("UnpublishParadoxMod ERROR", result)
+					print("UnpublishParadoxMod<color ChoGGi_red> ERROR", result, "</color>")
 				else
-					print("UnpublishParadoxMod", Translate(1000015--[[Success]]))
+					print("UnpublishParadoxMod<color ChoGGi_green>", Translate(1000015--[[Success]]), "</color>")
 				end
 			end
 		end

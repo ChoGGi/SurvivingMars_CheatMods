@@ -3,7 +3,7 @@
 local type = type
 local pairs = pairs
 local table_clear = table.clear
-local WaitMsg = WaitMsg
+local Sleep = Sleep
 local ScaleXY = ScaleXY
 local box = box
 local Min = Min
@@ -34,9 +34,9 @@ end
 local function BuildMySpots()
 	-- wait for it...
 	while not PlanetRotationObj do
-		WaitMsg("OnRender")
+		Sleep(250)
 	end
-	local PlanetRotationObj = PlanetRotationObj
+--~ 	local PlanetRotationObj = PlanetRotationObj
 	local PlanetRotationObj_spot = PlanetRotationObj:GetSpotBeginIndex("Planet")
 	local PlanetRotationObj_pos = PlanetRotationObj:GetPos()
 	local PlanetRotationObj_axis = PlanetRotationObj:GetAxis()
@@ -64,10 +64,10 @@ local function BuildMySpots()
 	-- get list of saves
 	SavegamesList:Refresh()
 
-	-- It can happen
-	if not PlanetRotationObj then
-		return
-	end
+--~ 	-- It can happen
+--~ 	if not PlanetRotationObj then
+--~ 		return
+--~ 	end
 
 	for i = 1, #SavegamesList do
 		local save = SavegamesList[i]

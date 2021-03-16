@@ -1,3 +1,6 @@
+v0.8
+Tito.
+
 v0.7
 Stopped using prefabs for transfer since something I'm doing must be copying them instead of moving.
 Drones now shrink then appear at new hub.

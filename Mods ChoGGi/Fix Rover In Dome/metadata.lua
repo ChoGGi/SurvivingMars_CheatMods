@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"TagGameplay", true,
+	"TagOther", true,
 	"has_options", true,
 	"description", [[If an idle rover is stuck in a dome, it'll get moved outside.
 

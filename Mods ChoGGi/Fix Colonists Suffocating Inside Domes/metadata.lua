@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
+	"TagOther", true,
 	"description", [[Some colonists are allergic to doors and suffocate inside a dome with their suit still on.
 This checks on load for them and removes their suits; so they can breathe...
 Includes mod option to disable fix.

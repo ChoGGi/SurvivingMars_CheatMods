@@ -75,79 +75,76 @@ function RocketBase:WaitInOrbit(arrive_time, ...)
 	self:UpdateStatus(self:IsFlightPermitted() and (landing_disabled and "landing disabled" or "in orbit") or "suspended in orbit")
 
 	if not self:IsLandAutomated() or not self:IsFlightPermitted() or landing_disabled then
---~ 		if self.orbit_arrive_time then
 
-			if ChoGGi_lib and ChoGGi.testing then
-				-- testing
-				Sleep(const.HourDuration)
-			else
-				-- wait the usual orbit time
-				Sleep(Max(0, self.passenger_orbit_life + GameTime() - self.orbit_arrive_time))
-			end
+		if ChoGGi_lib and ChoGGi.testing then
+			-- testing
+			Sleep(const.HourDuration)
+		else
+			-- wait the usual orbit time
+			Sleep(Max(0, self.passenger_orbit_life + GameTime() - self.orbit_arrive_time))
+		end
 
-			-- Instead of killing them all off, we remove the food and kill off one per sol (probably a haffy would be better, or variable based on amount?)
-			table_remove(cargo, table_find(cargo, "class", "Food"))
+		-- Instead of killing them all off, we remove the food and kill off one per sol (probably a haffy would be better, or variable based on amount?)
+		table_remove(cargo, table_find(cargo, "class", "Food"))
 
-			-- feeding schedule
-			local hour = const.HourDuration
-			local max = hour * mod_MaxFeedingTime
-			local min = hour * mod_MinFeedingTime
-			local min1 = min + 1
+		-- feeding schedule
+		local hour = const.HourDuration
+		local max = hour * mod_MaxFeedingTime
+		local min = hour * mod_MinFeedingTime
+		local min1 = min + 1
 
-			local route66 = 667 * hour
+		local route66 = 667 * hour
 
-			-- make the rocket tooltip a bir more obvious
+		-- make the rocket tooltip a bir more obvious
+		self.passenger_orbit_life = route66
+		self.orbit_arrive_time = GameTime()
+
+		pass_table = cargo[pass_table]
+		-- while longpig is left
+		while pass_table.amount > 0 do
+			Sleep(AsyncRand(max - min1) + min)
+			-- just a reminder
 			self.passenger_orbit_life = route66
 			self.orbit_arrive_time = GameTime()
 
-			pass_table = cargo[pass_table]
-			-- while longpig is left
-			while pass_table.amount > 0 do
-				Sleep(AsyncRand(max - min1) + min)
-				-- just a reminder
-				self.passenger_orbit_life = route66
-				self.orbit_arrive_time = GameTime()
-
-				for _ = 1, mod_DailyColonistLoss do
-					-- who's it gonn' be?
-					local _, idx = table_rand(pass_table.applicants_data)
-					-- just in case
-					if idx then
-						table_remove(pass_table.applicants_data, idx)
-						pass_table.amount = pass_table.amount - 1
-					end
-				end
-				-- mark the rocket
-				self.ChoGGi_cann_a_snack = true
-			end
-
-			-- If the rocket lands before they're all dead the below won't fire
-
-			-- kill the passengers, call GameOver if there are no colonists on Mars
-			local count
-			for i = #cargo, 1, -1 do
-				if cargo[i].class == "Passengers" then
-					count = cargo[i].amount
-					table_remove(cargo, i)
+			for _ = 1, mod_DailyColonistLoss do
+				-- who's it gonn' be?
+				local _, idx = table_rand(pass_table.applicants_data)
+				-- just in case
+				if idx then
+					table_remove(pass_table.applicants_data, idx)
+					pass_table.amount = pass_table.amount - 1
 				end
 			end
+			-- mark the rocket
+			self.ChoGGi_cann_a_snack = true
+		end
 
-			if (count or 0) > 0 then
-				if #(self.city.labels.Colonist or "") == 0 then
-					GameOver("last_colonist_died")
-				else
-					-- notification
-					AddOnScreenNotification("DeadColonistsInSpace", nil, {count = count})
-				end
+		-- If the rocket lands before they're all dead the below won't fire
 
-				-- call if all die
-				self:OnPassengersLost()
-
+		-- kill the passengers, call GameOver if there are no colonists on Mars
+		local count
+		for i = #cargo, 1, -1 do
+			if cargo[i].class == "Passengers" then
+				count = cargo[i].amount
+				table_remove(cargo, i)
 			end
-			self.orbit_arrive_time = nil
-			self:UpdateStatus(self.status) -- force update to get rid of the passenger-specific texts in rollover/summary
+		end
 
---~ 		end -- if self.orbit_arrive_time
+		if (count or 0) > 0 then
+			if #(self.city.labels.Colonist or "") == 0 then
+				GameOver("last_colonist_died")
+			else
+				-- notification
+				AddOnScreenNotification("DeadColonistsInSpace", nil, {count = count})
+			end
+
+			-- call if all die
+			self:OnPassengersLost()
+
+		end
+		self.orbit_arrive_time = nil
+		self:UpdateStatus(self.status) -- force update to get rid of the passenger-specific texts in rollover/summary
 
 		WaitWakeup()
 	end

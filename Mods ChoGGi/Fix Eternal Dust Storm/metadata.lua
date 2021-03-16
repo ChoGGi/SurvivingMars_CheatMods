@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
+	"TagOther", true,
 	"description", [[There's no notification, but any newly placed buildings will complain about a dust storm.
 You don't need to leave this enabled afterwards.
 

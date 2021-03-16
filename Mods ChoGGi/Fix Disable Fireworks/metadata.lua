@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 --~ 	"has_options", true,
+	"TagOther", true,
 	"description", [[The disable fireworks option doesn't "stick" on xbox.
 
 

@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
+	"TagOther", true,
 	"description", [[If you set a transport route between two resources/stockpiles/etc and the transport just sits there like an idiot...
 
 Fixes this error in log:

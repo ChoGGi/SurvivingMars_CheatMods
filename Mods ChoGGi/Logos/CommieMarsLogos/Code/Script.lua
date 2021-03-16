@@ -105,6 +105,10 @@ local logos = {
 		name = "Communist Party of Canada (2018)",
 	},
 	{
+		file = "Communist_Party_of_Canada_(Marxist-Leninist)",
+		name = "Communist Party of Canada (Marxist-Leninist)",
+	},
+	{
 		file = "Communist_Party_of_Chile",
 		name = "Communist Party of Chile",
 	},

@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
+	"TagOther", true,
 	"description", [[Labels are a place where the game stores buildings and whatnot.
 I came across a non-modded 700 Sol+ game (thanks marklion29) that had some invalid buildings in the labels.
 This won't remove any buildings, just the reference in the label list (invalid meaning it isn't an actual obj, so nothing to remove).

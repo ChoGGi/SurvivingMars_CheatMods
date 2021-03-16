@@ -1,9 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Rocket Show Hours Remaining",
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
-
+	"version_minor", 4,
 	"image", "Preview.png",
 	"id", "ChoGGi_RocketShowHoursRemaining",
 	"steam_id", "1799581714",

@@ -1,9 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Rocket Always Ask Before Launch",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
-
+	"version_minor", 3,
 	"id", "ChoGGi_RocketAlwaysAskBeforeLaunch",
 	"author", "ChoGGi",
 	"code", {

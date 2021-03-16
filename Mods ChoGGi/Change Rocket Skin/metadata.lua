@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Change Rocket Skin",
-	"version", 4,
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 5,
 	"image", "Preview.jpg",
 	"id", "ChoGGi_ChangeRocketSkin",
 	"steam_id", "1570126808",

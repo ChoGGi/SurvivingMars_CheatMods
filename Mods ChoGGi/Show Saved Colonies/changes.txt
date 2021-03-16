@@ -1,3 +1,6 @@
+v1.2
+Tito.
+
 v1.1
 Log spam.
 

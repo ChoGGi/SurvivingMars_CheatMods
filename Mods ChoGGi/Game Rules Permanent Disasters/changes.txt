@@ -1,3 +1,6 @@
+v0.4
+Tito.
+
 v0.3
 Fixed rockets and dust storms (thanks Blade).
 

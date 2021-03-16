@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
+	"TagOther", true,
 	"description", [[This will check on load game for certain rockets stuck on the ground unable to do jack.
 So far:
 Unloading colonists.

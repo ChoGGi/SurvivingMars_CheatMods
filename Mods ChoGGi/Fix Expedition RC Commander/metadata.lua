@@ -13,6 +13,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 --~ 	"has_options", true,
+	"TagOther", true,
 	"TagGameplay", true,
 	"description", [[Expeditions that require an RC Commander will work with faction specific rovers (Seeker, Generator, etc).
 You'll need to restart existing expeditions waiting for an RC Commander for this to take effect.
