@@ -1,6 +1,9 @@
 ## ECM Changelog
 
 ## v16.3 (Unreleased)
+### Added:
+- Menu>ECM>Debug>Toggles>InfoPanel Dialog: Center the InfoPanel dialog (selection panel).
+
 ### Fixed:
 - Cheats pane>ToggleSigns was freezing the game when used on concrete deposits.
 - Menu>ECM>Missing Text > Terraforming.

@@ -1,1 +1,15 @@
 keep a count/limit of how many drones are "waiting" to be reassigned to each hub
+
+
+]
+CanadianACOG
+:
+@ChoGGi, I just wanted to let you know that there is a bug in your “Autonomous Drones” mod;
+I started a brand new game to test out some mods and
+I decided to try out your autonomous drones mod, but every so often,
+all my drones would disappear.  I thought they might have been hit by an asteroid or something,
+so I got some more from a resupply rocket, but those drones disappeared too.
+I deactivated and then disable the mod before uninstalling it,
+and everything’s been working fine since,
+besides the fact that I have to manually reassign drones to commander.
+ I am on Xbox One though, so that may or may not be the reason.

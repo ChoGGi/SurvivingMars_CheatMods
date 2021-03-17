@@ -1,3 +1,6 @@
+v1.3
+Added mod option to limit amount of saves shown (default 5).
+
 v1.2
 Tito.
 

@@ -1,3 +1,6 @@
+v0.5
+No mod option then.
+
 v0.4
 Fixed mod option disabling fix...
 

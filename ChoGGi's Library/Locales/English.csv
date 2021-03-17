@@ -1,6 +1,4 @@
 "ID", " Text"
-302535920001066,
-302535920001451,
 302535920001463,
 302535920001464,
 302535920001466,
@@ -1139,6 +1137,8 @@ Only works on colonists that have yet to spawn (maybe)."
 Not permanent."
 302535920000447, "Change the age at which colonists die (applies to newly arrived and born colonists as well)."
 302535920000448, "I'm afraid it could be 9/11 times 1,000."
+302535920001066, "InfoPanel Dialog"
+302535920001451, "Center the InfoPanel dialog (selection panel)."
 302535920000935, "Random mini missions that happen while playing."
 302535920000978, "Skip Story Bits"
 302535920000980, "When a story bit appears; always select first option after slight delay."

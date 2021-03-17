@@ -447,6 +447,17 @@ Actions[c] = {ActionName = Strings[302535920001367--[[Toggles]]],
 }
 
 c = c + 1
+Actions[c] = {ActionName = Strings[302535920001066--[[InfoPanel Dialog]]],
+	ActionMenubar = "ECM.Debug.Toggles",
+	ActionId = ".InfoPanel Dialog",
+	ActionIcon = "CommonAssets/UI/Menu/EnrichTerrainEditor.tga",
+	RolloverText = Strings[302535920001451--[[Center the InfoPanel dialog (selection panel).]]],
+	OnAction = ChoGGi.MenuFuncs.InfoPanelDlg_Toggle,
+	ActionShortcut = "Ctrl-Shift-I",
+	ActionBindable = true,
+}
+
+c = c + 1
 Actions[c] = {ActionName = Strings[302535920000421--[[Override Condition Prereqs]]],
 	ActionMenubar = "ECM.Debug.Toggles",
 	ActionId = ".Override Condition Prereqs",

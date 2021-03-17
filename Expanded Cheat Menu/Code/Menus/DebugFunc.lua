@@ -13,6 +13,21 @@ local Translate = ChoGGi.ComFuncs.Translate
 local RandomColour = ChoGGi.ComFuncs.RandomColour
 local Strings = ChoGGi.Strings
 
+function ChoGGi.MenuFuncs.InfoPanelDlg_Toggle()
+	local info = Dialogs.Infopanel
+	if not info then
+		return
+	end
+
+	if info.HAlign == "center" then
+		info:SetHAlign("right")
+		info:SetVAlign("top")
+	else
+		info:SetHAlign("center")
+		info:SetVAlign("center")
+	end
+end
+
 function ChoGGi.MenuFuncs.ExamineObjectRadius_Set()
 	local item_list = {
 		{text = 100, value = 100},

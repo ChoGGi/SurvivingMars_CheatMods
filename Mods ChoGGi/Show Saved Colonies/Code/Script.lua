@@ -1,5 +1,22 @@
 -- See LICENSE for terms
 
+local mod_AmountOfSaves
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_AmountOfSaves = CurrentModOptions:GetProperty("AmountOfSaves")
+end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+-- fired when Mod Options>Apply button is clicked
+function OnMsg.ApplyModOptions(id)
+	if id == CurrentModId then
+		ModOptions()
+	end
+end
+
 local type = type
 local pairs = pairs
 local table_clear = table.clear
@@ -30,6 +47,7 @@ local function DrawSpot(win)
 	DrawImage(img, box(-left, -up, right, down), box(0, 0, x, y), -1, 0, 0)
 end
 
+local spot_counts = {}
 -- add our visited icons
 local function BuildMySpots()
 	-- wait for it...
@@ -69,6 +87,8 @@ local function BuildMySpots()
 --~ 		return
 --~ 	end
 
+	table_clear(spot_counts)
+
 	for i = 1, #SavegamesList do
 		local save = SavegamesList[i]
 		if type(save.longitude) == "number" and type(save.latitude) == "number" then
@@ -79,7 +99,24 @@ local function BuildMySpots()
 			if new_markers[table_name] then
 				-- merge save names if dupe location
 				local marker = new_markers[table_name]
-				marker.text = marker.text .. ", " .. save.displayname
+				local text = marker.text
+				-- keep count for adding to marker
+				local count = spot_counts[table_name]
+				spot_counts[table_name] = count + 1
+				-- only update count for text instead of adding more names
+				if count >= mod_AmountOfSaves then
+					-- is there already a count on the end (reversed text to sub off the end)
+					local idx = text:find(" + ", 1, true)
+					if idx then
+						-- remove old numberand append new
+						marker.text = text:sub(1, idx + 2) .. " " .. count
+					else
+						-- first count
+						marker.text = text .. " + " .. count
+					end
+				else
+					marker.text = text .. ", " .. save.displayname
+				end
 			else
 				-- plunk down a new one (most of this code is copied from LandingSiteObject:AttachPredefinedSpots)
 				local attach = PlaceObject("Shapeshifter")
@@ -94,6 +131,8 @@ local function BuildMySpots()
 					longitude = save.longitude,
 					text = save.displayname,
 				}
+
+				spot_counts[table_name] = 1
 
 				marker:SetId(marker_id)
 				marker.DrawContent = template.DrawContent
