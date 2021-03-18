@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Standing Unlocks Sponsor Buildings",
 	"id", "ChoGGi_StandingUnlocksSponsorBuildings",
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"steam_id", "1569118695",
 	"pops_any_uuid", "118d2bb6-8210-4fda-b0d8-125713fe1ee9",
 	"version", 5,

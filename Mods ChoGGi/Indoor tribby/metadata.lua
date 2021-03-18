@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Indoor Tribby",
 	"id", "ChoGGi_IndoorTribby",
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"steam_id", "2191485240",
 	"pops_any_uuid", "49420dc7-9154-4dc3-95b5-d6cf1a538bf7",
 	"version", 6,

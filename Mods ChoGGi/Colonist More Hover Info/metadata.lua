@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Colonist More Hover Info",
 	"id", "ChoGGi_ColonistMoreHoverInfo",
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"steam_id", "2192503547",
 	"pops_any_uuid", "6269bc14-c913-405e-9c27-a99e19db7781",
 	"version", 2,

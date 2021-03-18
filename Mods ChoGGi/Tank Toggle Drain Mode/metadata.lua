@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Tank Toggle Drain Mode",
 	"id", "ChoGGi_TankToggleDrainMode",
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"steam_id", "2214626980",
 	"pops_any_uuid", "d87650c0-ced0-4755-997f-c47627550549",
 	"version", 1,

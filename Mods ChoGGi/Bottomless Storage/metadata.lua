@@ -19,7 +19,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"has_options", true,
 	"description", [[Anything added to this storage depot will disappear (good for excess resources).
 

@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"steam_id", "1440164001",
 	"pops_any_uuid", "370cf581-9210-435e-8457-1d2685195ce8",
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"code", {
 		"Code/Script.lua",
 	},

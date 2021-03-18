@@ -19,6 +19,6 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"description", [[Adds a menu button to buildings to disable drones from performing maintenance (on all of type or just selected).]],
 })

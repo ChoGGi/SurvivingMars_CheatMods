@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.jpg",
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"description", [[Defence towers will attack dustdevils.
 
 Requested by: rdr99 and Emmote

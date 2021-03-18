@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Rebind Hardcoded Keys",
 	"id", "ChoGGi_RebindHardcodedKeys",
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"steam_id", "2163750555",
 	"pops_any_uuid", "0876037c-42bf-4f8a-8939-36638ba10a62",
 	"version", 1,

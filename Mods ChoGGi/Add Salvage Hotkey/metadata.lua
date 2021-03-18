@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_AddSalvageHotkey",
 	"steam_id", "2049406876",
 	"pops_any_uuid", "d2df35a1-0fff-47c7-954c-fd42e3da4cba",
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

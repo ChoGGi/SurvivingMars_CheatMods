@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_NurseryLimitBirthingToSpots",
 	"steam_id", "1757251849",
 	"pops_any_uuid", "6b40791e-6005-470e-b928-3d2cd08d4a94",
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"version", 8,
 	"version_major", 0,
 	"version_minor", 8,

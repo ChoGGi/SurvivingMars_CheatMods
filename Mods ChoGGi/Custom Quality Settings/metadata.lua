@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Custom Quality Settings",
 	"id", "ChoGGi_CustomQualitySettings",
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"steam_id", "2106942055",
 	"pops_any_uuid", "4d26f48b-bb04-4859-8947-0bd36e239f8e",
 	"version", 2,

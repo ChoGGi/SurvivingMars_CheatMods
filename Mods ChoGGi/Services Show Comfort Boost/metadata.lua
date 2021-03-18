@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Services Show Comfort Boost",
 	"id", "ChoGGi_ServicesShowComfortBoost",
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"steam_id", "2212802600",
 	"pops_any_uuid", "80fc30b4-6e46-4fff-af2a-7f06eaa2e954",
 	"version", 1,

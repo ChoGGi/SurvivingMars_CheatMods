@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Disable Fireworks",
 	"id", "ChoGGi_FixDisableFireworks",
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

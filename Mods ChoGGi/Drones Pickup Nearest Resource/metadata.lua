@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_DronesPickupNearestResource",
 	"steam_id", "2239948173",
 	"pops_any_uuid", "37c4f613-4487-4016-b130-30578eec00f8",
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,

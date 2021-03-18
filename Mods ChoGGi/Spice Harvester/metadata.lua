@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 	"version", 9,
 	"version_major", 0,
 	"version_minor", 9,
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {

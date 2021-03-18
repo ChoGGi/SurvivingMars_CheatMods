@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Set Speed Keys",
 	"id", "ChoGGi_SetSpeedKeys",
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"steam_id", "2099080307",
 	"pops_any_uuid", "d6997ba2-00c9-46bf-9cef-a32d6b2bb3a2",
 	"version", 1,

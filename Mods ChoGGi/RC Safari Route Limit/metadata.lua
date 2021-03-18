@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "RC Safari Route Limit",
 	"id", "ChoGGi_RCSafariRouteLimit",
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"steam_id", "2425963097",
 	"pops_any_uuid", "5deed936-d551-4dfa-99c8-729d5f6e85c1",
 	"version", 1,

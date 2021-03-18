@@ -3697,20 +3697,6 @@ function ChoGGi.ComFuncs.CheckForBorkedTransportPath(obj, list)
 	end)
 end
 
-function ChoGGi.ComFuncs.ResetHumanCentipedes()
-	local objs = UICity.labels.Colonist or ""
-	for i = 1, #objs do
-		local obj = objs[i]
-		-- only need to do people walking outside (pathing issue), and if they don't have a path (not moving or walking into an invis wall)
-		if obj:IsValidPos() and not obj:GetPath() then
-			-- too close and they keep doing the human centipede
-			obj:SetCommand("Goto",
-				GetPassablePointNearby(obj:GetVisualPos()+point(Random(-1000, 1000), Random(-1000, 1000)))
-			)
-		end
-	end
-end
-
 do -- DisplayMonitorList
 	local function AddGrid(city, name, info)
 		local c = #info.tables

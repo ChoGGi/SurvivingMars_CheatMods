@@ -5928,6 +5928,23 @@ do -- RGBtoColour
 		end
 	end
 end
+
+function ChoGGi.ComFuncs.ResetHumanCentipedes()
+	local objs = UICity.labels.Colonist or ""
+	for i = 1, #objs do
+		local obj = objs[i]
+		-- only need to do people walking outside (pathing issue), and if they don't have a path (not moving or walking into an invis wall)
+		if obj:IsValidPos() and not obj:GetPath() then
+			-- too close and they keep doing the human centipede
+			obj:SetCommand("Goto",
+				GetPassablePointNearby(obj:GetVisualPos()+point(Random(-1000, 1000), Random(-1000, 1000)))
+			)
+		end
+	end
+end
+
+
+-- bugged
 --~ function ChoGGi.ComFuncs.SendDroneToCC(drone, new_hub)
 --~ 	local old_hub = drone.command_center
 --~ 	if old_hub == new_hub then

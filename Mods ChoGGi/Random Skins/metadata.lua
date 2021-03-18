@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Random Skins",
 	"id", "ChoGGi_RandomSkins",
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"steam_id", "0", -- should hopefully give an error if I forget and post it to steam
 	"pops_any_uuid", "7a7c8ea3-1607-4bf1-85cc-e37c91800cf6",
 	"version", 1,

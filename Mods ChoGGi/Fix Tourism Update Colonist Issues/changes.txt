@@ -1,3 +1,7 @@
+v0.6
+Aborts if hotfix installed.
+Uses code from hotfix for people stuck on Tito.
+
 v0.5
 No mod option then.
 

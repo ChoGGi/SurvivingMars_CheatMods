@@ -18,13 +18,7 @@ local entity_lookup = {
 	CropSpinachArm = "Spinach",
 }
 
-local AddParentToClass = rawget(_G, "ChoGGi") and ChoGGi.ComFuncs.AddParentToClass
-	or function(class_obj, parent_name)
-		local p = class_obj.__parents
-		if not table.find(p, parent_name) then
-			p[#p+1] = parent_name
-		end
-	end
+local AddParentToClass = ChoGGi.ComFuncs.AddParentToClass
 AddParentToClass(VegetationObject, "VegetationSelectionObject")
 
 function VegetationSelectionObject:GetDisplayName()

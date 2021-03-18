@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Salvage Drops All",
 	"id", "ChoGGi_SalvageDropsAll",
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"steam_id", "2425210552",
 	"pops_any_uuid", "28891b61-907d-48a6-8fb0-1b0a3fee0de0",
 	"version", 1,

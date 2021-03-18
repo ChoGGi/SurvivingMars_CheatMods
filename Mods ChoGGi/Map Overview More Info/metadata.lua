@@ -2,7 +2,7 @@ return PlaceObj("ModDef", {
 --~ 	"title", "Map Overview Show Surface Resources",
 	"title", "Map Overview More Info",
 	"id", "ChoGGi_MapOverviewShowSurfaceResources",
-	"lua_revision", 1001514,
+	"lua_revision", 1001551,
 	"steam_id", "1768449416",
 	"pops_any_uuid", "77783c38-6f89-4371-9628-a6fdb2fec8bb",
 	"version", 6,
