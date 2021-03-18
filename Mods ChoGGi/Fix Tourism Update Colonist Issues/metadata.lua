@@ -12,10 +12,11 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
---~ 	"has_options", true,
-	"TagGameplay", true,
 	"TagOther", true,
-	"description", [[A fix for the colonist suicides introduced in Tito/Tourism update.
+	"description", [[Obsolete: Fixed in https://forum.paradoxplaza.com/forum/threads/tourism-update-hotfix-patch-notes.1462378/
+This mod will do nothing on revision 1001539 or later
+
+A fix for the colonist suicides introduced in Tito/Tourism update.
 As well as other colonist issues (aging, moving to other domes, probably more).
 ]],
 })

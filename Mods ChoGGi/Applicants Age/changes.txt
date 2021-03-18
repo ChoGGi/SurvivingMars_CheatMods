@@ -1,1 +1,2 @@
 v0.2
+Bumps age trait when applicant hits min age of next age group.

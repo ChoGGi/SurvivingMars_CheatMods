@@ -1,21 +1,21 @@
 return PlaceObj("ModDef", {
 	"title", "Construction Show Max Radius Range",
-	"version", 9,
-	"version_major", 0,
-	"version_minor", 9,
 	"id", "ChoGGi_ShowMaxRadiusRange",
-	"author", "ChoGGi",
-	"code", {
-		"Code/Script.lua",
-	},
-	"image", "Preview.png",
 	"steam_id", "1522200776",
 	"pops_any_uuid", "f11ce232-278a-422e-b12d-476f9a148d1c",
 	"lua_revision", 1001514,
+	"version", 10,
+	"version_major", 1,
+	"version_minor", 0,
+	"code", {
+		"Code/Script.lua",
+	},
+	"author", "ChoGGi",
+	"image", "Preview.png",
 	"has_options", true,
 	"description", [[Shows maxed grid for ranged buildings when in construction mode.
 Ranged buildings:
-Triboelectric Scrubber
+Triboelectric Scrubber / Triboelectric Sensor Tower
 Subsurface Heater
 Core Heat Convector
 Forestation Plant

@@ -1,3 +1,6 @@
+v1.0
+Added my Triboelectric Sensor Tower.
+
 v0.9
 Added mod option to set radius to max for newly placed buildings.
 

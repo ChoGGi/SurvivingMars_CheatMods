@@ -14,7 +14,10 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagOther", true,
-	"description", [[Tito / Tourism update made all rockets display "Rocket" as their name.
+	"description", [[Obsolete: Fixed in https://forum.paradoxplaza.com/forum/threads/tourism-update-hotfix-patch-notes.1462378/
+This mod will do nothing on revision 1001539 or later
+
+Tito / Tourism update made all rockets display "Rocket" as their name.
 
 
 Requested by Rocket.

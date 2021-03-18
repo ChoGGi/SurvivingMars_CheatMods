@@ -1,3 +1,6 @@
+v0.8
+Now checks for Large Nursery buildings.
+
 v0.7
 Accidentally default enabled Ultimate Nursery mod option.
 

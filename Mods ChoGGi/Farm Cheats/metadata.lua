@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagCrops", true,
-	"description", [[Adds button to quickly finish growing current crop, as well as mod options to improve failure/yields.
+	"description", [[Adds button to quickly finish growing current crop, as well as mod options to reduce failure/improve yields.
 
 Mod Options:
 Crops Never Fail: Crops will never fail no matter the conditions (you'll get a random yield amount instead of failing).

@@ -15,7 +15,5 @@ return PlaceObj("ModDef", {
 --~ 	"has_options", true,
 	"TagGameplay", true,
 	"description", [[Drones will always use nearest wasterock dump site to drop off.
-
-
-If you'd like the drones to pick up the nearest resource; use this mod: "Drones Pickup Nearest Resource"]],
+]],
 })

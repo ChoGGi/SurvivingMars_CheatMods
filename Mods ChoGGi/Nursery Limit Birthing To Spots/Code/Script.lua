@@ -1,6 +1,8 @@
 -- See LICENSE for terms
 
-local options
+local table = table
+local Max = Max
+
 local mod_GlobalDomeCount
 local mod_RespectIncubator
 local mod_BypassNoNurseries
@@ -8,7 +10,7 @@ local mod_UltimateNursery
 
 -- fired when settings are changed/init
 local function ModOptions()
-	options = CurrentModOptions
+	local options = CurrentModOptions
 	mod_GlobalDomeCount = options:GetProperty("GlobalDomeCount")
 	mod_RespectIncubator = options:GetProperty("RespectIncubator")
 	mod_BypassNoNurseries = options:GetProperty("BypassNoNurseries")
@@ -35,21 +37,32 @@ function Dome:SpawnChild(...)
 	if mod_RespectIncubator and self.IncubatorReloc then
 		return orig_SpawnChild(self, ...)
 	end
+	local city = self.city or UICity
 
 	local class = mod_UltimateNursery and "UltimateNursery" or "Nursery"
 
-	local objs_g = (self.city or UICity).labels[class]
+	local objs_g = table.icopy(city.labels[class] or empty_table)
+	if not mod_UltimateNursery then
+		-- why make a label with all the nursery varients, when you can cause extra work for modders...
+		table.append(objs_g, city.labels.LargeNursery or empty_table)
+	end
+
 	local objs
 
 	-- check all nurseries or per-dome
 	if mod_GlobalDomeCount then
 		objs = objs_g
 	else
-		objs = self.labels[class]
+		objs = table.icopy(self.labels[class] or empty_table)
+		if not mod_UltimateNursery then
+			table.append(objs, self.labels.LargeNursery or empty_table)
+		end
 	end
 
+	local objs_count = #objs
+
 	-- no nursery so abort
-	if not objs then
+	if objs_count == 0 then
 		-- If there's no nurseries at all and then send back orig func
 		if not objs_g and mod_BypassNoNurseries then
 			return orig_SpawnChild(self, ...)
@@ -60,7 +73,7 @@ function Dome:SpawnChild(...)
 	-- cut down copy of function Dome:GetFreeLivingSpace()
 	local used = 0
 	local capacity = 0
-	for i = 1, #objs do
+	for i = 1, objs_count do
 		local obj = objs[i]
 		if not obj.destroyed then
 			capacity = capacity + (obj.capacity - obj.closed)

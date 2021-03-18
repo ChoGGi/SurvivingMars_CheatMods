@@ -1,15 +1,14 @@
 return PlaceObj("ModDef", {
 	"title", "Nursery Limit Birthing To Spots",
-	"version", 7,
-	"version_major", 0,
-	"version_minor", 7,
-
-	"image", "Preview.png",
 	"id", "ChoGGi_NurseryLimitBirthingToSpots",
 	"steam_id", "1757251849",
 	"pops_any_uuid", "6b40791e-6005-470e-b928-3d2cd08d4a94",
-	"author", "ChoGGi",
 	"lua_revision", 1001514,
+	"version", 8,
+	"version_major", 0,
+	"version_minor", 8,
+	"image", "Preview.jpg",
+	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},

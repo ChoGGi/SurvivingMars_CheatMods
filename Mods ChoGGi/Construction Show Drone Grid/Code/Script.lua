@@ -16,7 +16,6 @@ local InvalidPos = InvalidPos()
 
 local RGBtoColour = ChoGGi.ComFuncs.RGBtoColour
 
-local options
 local mod_EnableGrid
 local mod_DistFromCursor
 local mod_GridOpacity
@@ -27,7 +26,7 @@ local mod_HexColourRocketBase
 
 -- fired when settings are changed/init
 local function ModOptions()
-	options = CurrentModOptions
+	local options = CurrentModOptions
 	mod_EnableGrid = options:GetProperty("Option1")
 	mod_DistFromCursor = options:GetProperty("DistFromCursor") * 1000
 	mod_GridOpacity = options:GetProperty("GridOpacity")

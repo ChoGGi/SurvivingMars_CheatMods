@@ -5036,7 +5036,7 @@ function ChoGGi.ComFuncs.CloseDialogsECM(skip)
 	end
 end
 
-function ChoGGi.ComFuncs.SetLandScapingLimits(force, skip_objs)
+function ChoGGi.ComFuncs.SetLandScapingLimits(force, skip_objs, out_of_bounds)
 	local cs = ConstructionStatus
 	if force or ChoGGi.UserSettings.RemoveLandScapingLimits then
 		cs.LandscapeTooLarge.type = "warning"
@@ -5048,7 +5048,7 @@ function ChoGGi.ComFuncs.SetLandScapingLimits(force, skip_objs)
 			cs.BlockingObjects.type = "warning"
 		end
 		-- can cause crashing
-		if testing then
+		if testing or out_of_bounds then
 			cs.LandscapeOutOfBounds.type = "warning"
 		end
 	else

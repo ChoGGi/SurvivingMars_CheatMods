@@ -1,3 +1,6 @@
+v0.6
+Mod option to landscape out of bounds.
+
 v0.5
 Evans update.
 

@@ -1,5 +1,9 @@
 -- See LICENSE for terms
 
+if LuaRevision > 1001514 then
+	return
+end
+
 local mod_EnableMod
 
 -- fired when settings are changed/init
