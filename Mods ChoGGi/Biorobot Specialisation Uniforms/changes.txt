@@ -1,2 +1,5 @@
+v0.3
+Looser with detecting Biorobots.
+
 v0.2
 Forgot to override GetSpecializationIcons (thanks BLade).

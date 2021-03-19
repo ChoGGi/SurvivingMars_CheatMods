@@ -95,7 +95,7 @@ function OnMsg.ClassesPostprocess()
 		"RolloverText", T(302535920011850, "Quickly harvest current crop."),
 		"Icon", "UI/Icons/IPButtons/unload.tga",
 
-		"OnPress", function (self, gamepad)
+		"OnPress", function (self)
 			local context = self.context
 			-- change growth time to now
 			context.harvest_planted_time = 1

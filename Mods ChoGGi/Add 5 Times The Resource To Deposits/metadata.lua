@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 2,
+			"version_minor", 3,
 		}),
 	},
 	"title", "Add 5 Times The Resource To Deposits",

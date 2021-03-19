@@ -29,8 +29,6 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local Max = Max
-
 local orig_SpawnChild = Dome.SpawnChild
 function Dome:SpawnChild(...)
 	-- hi Ski

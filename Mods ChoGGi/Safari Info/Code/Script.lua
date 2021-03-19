@@ -1,9 +1,6 @@
 -- See LICENSE for terms
 
 local table_concat = table.concat
-local table_iclear = table.iclear
-local IsKindOf = IsKindOf
-local IsValid = IsValid
 local Msg = Msg
 local MapGet = MapGet
 

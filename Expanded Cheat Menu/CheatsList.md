@@ -22,13 +22,20 @@ Cheats.Consts.Camera>OverviewFovX_4_3: OverviewFovX_4_3
 Cheats.Consts.Colonist>ApplicantsPoolStartingSize Applicants pool starting size: Applicants pool starting size
 Cheats.Consts.Colonist>BirthThreshold Threshold of accumulated stat points to trigger birth of a new Colonist: BirthThreshold Threshold of accumulated stat points to trigger birth of a new Colonist
 Cheats.Consts.Colonist>ForcedByUserLockTimeout ForcedByUserLockTimeout: Lock time to Workplace, Residence, Dome selected by user
-Cheats.Consts.Colonist>FundingFromTourist FundingFromTourist: Funding received from each tourist when landing on Mars (in M)
+Cheats.Consts.Colonist>HolidayCapThreshold HolidayCapThreshold: Holiday rating is capped when health/sanity falls under this limit
+Cheats.Consts.Colonist>HolidayCelebrityMultiplier HolidayCelebrityMultiplier: Celebrity reward money multiplier
+Cheats.Consts.Colonist>HolidayGeniusResearchPoints HolidayGeniusResearchPoints: Awarded research points for having a Genius Tourist
+Cheats.Consts.Colonist>HolidayRenegadeCapRating HolidayRenegadeCapRating: Capped holiday rating for Renegades
+Cheats.Consts.Colonist>HolidaySaintMultiplier HolidaySaintMultiplier: Multiplier for number of applicants
+Cheats.Consts.Colonist>HolidayStatCapRating HolidayStatCapRating: Capped holiday rating when stat is below the HolidayCapThreshold
 Cheats.Consts.Colonist>NonHomeDomePerformancePenalty Connected dome performance penalty: Performance penalty for colonists working in another connected dome
 Cheats.Consts.Colonist>NonSpecialistPerformancePenalty Non-specialist performance penalty: Performance penalty for non-Specialists assigned to a specialized work position
 Cheats.Consts.Colonist>Other_gender_chance 'Other' sex chance: The chance to generate a Colonist with 'Other' sex
 Cheats.Consts.Colonist>ProjectMorphiousPositiveTraitChance ProjectMorpheusPositiveTraitChance: Chance to get positive trait when Resting and ProjectMorpheus is active
 Cheats.Consts.Colonist>TimeBeforeStarving Time before starting to starve: TimeBeforeStarving Time before starting to starve
-Cheats.Consts.Colonist>TouristSolsOnMars TouristSolsOnMars: The number of sols that tourists stay on Mars.
+Cheats.Consts.Colonist>TouristFundingMultiplier TouristFundingMultiplier: Multiplier to funding received from each tourist when returning to earth in percent
+Cheats.Consts.Colonist>TouristSolsOnMarsMax TouristSolsOnMarsMax: The maximum number of sols that tourists stay on Mars.
+Cheats.Consts.Colonist>TouristSolsOnMarsMin TouristSolsOnMarsMin: The number of sols that tourists stay on Mars.
 Cheats.Consts.Colonist>VisitFailPenalty Comfort penalty when failing to satisfy a need via a visit: VisitFailPenalty Comfort penalty when failing to satisfy a need via a visit
 Cheats.Consts.Colonist>botanist_arrival_chance Arrival chance (Botanist): botanist_arrival_chance Arrival chance (Botanist)
 Cheats.Consts.Colonist>cloning_points Cloning points: Cloning points at full performance per hour
@@ -108,6 +115,7 @@ Cheats.Consts.Gameplay>MaxColonistsPerPod Colonists per Pod: Maximum number of C
 Cheats.Consts.Gameplay>MaxColonistsPerRocket Colonists per Rocket: Maximum number of Colonists that can arrive on Mars in a single Rocket
 Cheats.Consts.Gameplay>MaxGameDevelopmentCollaborationLoss Max Game Development Collaboration Loss (%): MaxGameDevelopmentCollaborationLoss Max Game Development Collaboration Loss (%)
 Cheats.Consts.Gameplay>MaxResearchCollaborationLoss Max Research Collaboration Loss (%): MaxResearchCollaborationLoss Max Research Collaboration Loss (%)
+Cheats.Consts.Gameplay>MaxTVShowDevelopmentCollaborationLoss Max TV Show Development Collaboration Loss (%): MaxTVShowDevelopmentCollaborationLoss Max TV Show Development Collaboration Loss (%)
 Cheats.Consts.Gameplay>OutsourceDisabled Outsource Disabled: Determines whether the player can buy research points via outsourcing.
 Cheats.Consts.Gameplay>OutsourceMaxOrderCount Maximum Outsource Orders: OutsourceMaxOrderCount Maximum Outsource Orders
 Cheats.Consts.Gameplay>OutsourceResearch Outsource Research Points: OutsourceResearch Outsource Research Points
@@ -115,6 +123,7 @@ Cheats.Consts.Gameplay>OutsourceResearchCost Outsource Research Cost (in million
 Cheats.Consts.Gameplay>OutsourceResearchTime Outsource Research Duration: OutsourceResearchTime Outsource Research Duration
 Cheats.Consts.Gameplay>OverpopulatedDome OverpopulatedDome: The number of Homless colonists that Overpopulated the dome.
 Cheats.Consts.Gameplay>ProgressPointsPerGame Progress Points Per Game: Progress points needed for Game Developer buildings to publish a new game
+Cheats.Consts.Gameplay>ProgressPointsPerTVShow Progress Points Per TV Show: Progress points needed to broadcast a new TV show
 Cheats.Consts.Gameplay>RivalAIMinResourceAmount Minimum Rival AI resource amount: Rival will not help if resource amount is lower than this number
 Cheats.Consts.Gameplay>RivalNeutralStandingHelpChance Rival's chance of sending aid when in neutral standing: RivalNeutralStandingHelpChance Rival's chance of sending aid when in neutral standing
 Cheats.Consts.Gameplay>RivalPositiveStandingHelpChance Rival's chance of sending aid when standing is positive: RivalPositiveStandingHelpChance Rival's chance of sending aid when standing is positive
@@ -144,6 +153,7 @@ Cheats.Consts.Rover>RCRoverDroneRechargeCost RC Commander Drone battery recharge
 Cheats.Consts.Rover>RCRoverMaxDrones RC Commander max Drones: Maximum Drones an RC Commander can control
 Cheats.Consts.Rover>RCRoverScanAnomalyTime RC Commander Anomaly scan time: RC Commander Anomaly scanning time (for each layer of depth)
 Cheats.Consts.Rover>RCRoverTransferResourceWorkTime RC Commander resource gather time: The time it takes for an RC Commander to transfer 1 resource to a Depot.
+Cheats.Consts.Rover>RCSafariMaxWaypoints RC Transport maximum waypoints: How many waypoints a safari can have.
 Cheats.Consts.Rover>RCTransportGatherResourceWorkTime RC Transport resource gather time: The time it takes the RC Transport to gather 1 resource from a deposit
 Cheats.Consts.Scale>Resources: Resources
 Cheats.Consts.Scale>SoilQuality: SoilQuality
@@ -178,6 +188,18 @@ Cheats.Consts.Stat>OutsideWorkplaceSanityDecrease Outside Workplace Sanity Penal
 Cheats.Consts.Stat>OxygenMaxOutsideTime Oxygen max outside time: This is the time it takes for Colonists outside of Domes to start losing health
 Cheats.Consts.Stat>PerformanceEffectOnServiceComfort Max effect of worker performance on Service Quality: PerformanceEffectOnServiceComfort Max effect of worker performance on Service Quality
 Cheats.Consts.Stat>RenegadeCreation Renegade creation point: RenegadeCreation Renegade creation point
+Cheats.Consts.Stat>SatisfactionGainFlaw Satisfaction Gain Flaw: Satisfaction decreases when tourists gain a flaw
+Cheats.Consts.Stat>SatisfactionGainPerk Satisfaction Gain Perk: Satisfaction increases when tourists gain a new perk
+Cheats.Consts.Stat>SatisfactionHighComfortBonus SatisfactionHighComfortBonus: Satisfaction bonus awarded when Comfort is above high threshold
+Cheats.Consts.Stat>SatisfactionHighStatBonus SatisfactionHighStatBonus: Satisfaction bonus awarded when stat is above high threshold
+Cheats.Consts.Stat>SatisfactionLoseFlaw Satisfaction Lose Flaw: Satisfaction increases when tourists lose a flaw
+Cheats.Consts.Stat>SatisfactionLowStatPenalty SatisfactionLowStatPenalty: Satisfaction loss when stat is below the low threshold
+Cheats.Consts.Stat>SatisfactionNoHomeComfort Satisfaction No Home Comfort: Satisfaction decreases when tourists have no residence
+Cheats.Consts.Stat>SatisfactionOverstay Satisfaction Overstay Penalty: Satisfaction decreases when tourists stay on Mars longer than intended
+Cheats.Consts.Stat>SatisfactionPerfectComfortBonus SatisfactionPerfectComfortBonus: Satisfaction bonus awarded when Comfort is maxed out
+Cheats.Consts.Stat>SatisfactionPerfectStatBonus SatisfactionPerfectStatBonus: Satisfaction bonus awarded when stat is maxed out
+Cheats.Consts.Stat>SatisfactionSanityBreakdown Satisfaction Sanity Breakdown: Satisfaction decreases when tourists have a breakdown
+Cheats.Consts.Stat>SatisfactionShockPenalty Satisfaction Shock Penalty: Tourists Satisfaction decreases while in shock
 Cheats.Consts.Stat>SeeDeadSanity Seeing Death: Colonist Sanity decreases when a Colonist from the same Residence dies from non-natural causes
 Cheats.Consts.Stat>WaterMaxOutsideTime Water max outside time: This is the time it takes for Colonists outside of Domes to become dehydrated
 Cheats.Consts.Stat>WorkDarkHoursSanityDecrease Dark hours work Sanity decrease: When working during dark hours Colonists will lose this much Sanity (per work shift)
@@ -299,6 +321,7 @@ Debug.Story Bits>Test Story Bits: Test activate a story bit.
 Debug.Toggles>Anim Debug Toggle: Attaches text to each object showing animation info (or just to selected object).
 Debug.Toggles>DTM Slots Display: Show DTM slots display
 Debug.Toggles>Examine Persist Errors: Shows an examine dialog with any persist errors when saving.
+Debug.Toggles>InfoPanel Dialog: Center the InfoPanel dialog (selection panel).
 Debug.Toggles>Loading Screen Log: Be able to see the console log (and other dialogs) during the loading screen.
 Warning: Leave "Welcome to Mars" msg onscreen till map is loaded.
 Debug.Toggles>Measure Tool: Measures stuff (press again to remove the lines).

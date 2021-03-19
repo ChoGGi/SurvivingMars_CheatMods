@@ -1,8 +1,10 @@
 ## Library Changelog
 
-## v9.3 (Unreleased)
-- Library will disable my ModItemOptionInputBox if already available (being added to main game).
-- SetLandScapingLimits removed (devs added it in Tito-Hotfix).
+## v9.4 (Unreleased)
+
+## v9.3 (18 March 2021)
+- ModItemOptionInputBox removed (devs added it in Tito-Hotfix).
+- SetLandScapingLimits has option to ignore out of bounds error for Tito.
 
 ## v9.2 (15 March 2021)
 - Version number.

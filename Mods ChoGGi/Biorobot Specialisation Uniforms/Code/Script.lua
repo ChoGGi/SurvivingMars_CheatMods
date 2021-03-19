@@ -41,23 +41,22 @@ end
 
 -- do we update on load?
 function OnMsg.LoadGame()
-	if not IsTechResearched("ThePositronicBrain") then
+	-- _2 so we change pin/ip icons on existing saves with v0.1 of mod
+	if UICity.ChoGGi_AndroidSpecUniforms_2 then
 		return
 	end
 
-	-- _2 so we change pin/ip icons on existing saves with v0.1 of mod
-	if not UICity.ChoGGi_AndroidSpecUniforms_2 then
-		local objs = UICity.labels.Colonist or ""
-		for i = 1, #objs do
-			local obj = objs[i]
-			if obj.specialist ~= "none" and obj.traits and obj.traits.Android
-				and (obj.entity:find("Colonist") or not obj.pin_specialization_icon
-					or obj.ip_specialization_icon == ""
-				)
-			then
-				obj:ChooseEntity()
-			end
+	local objs = UICity.labels.Colonist or ""
+	for i = 1, #objs do
+		local obj = objs[i]
+		if obj.specialist ~= "none" and obj.traits and obj.traits.Android
+			and (obj.entity:find("Colonist") or not obj.pin_specialization_icon
+				or obj.ip_specialization_icon == ""
+			)
+		then
+			obj:ChooseEntity()
 		end
-		UICity.ChoGGi_AndroidSpecUniforms_2 = true
 	end
+
+	UICity.ChoGGi_AndroidSpecUniforms_2 = true
 end

@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix Safari No GP DLC",
+	"title", "Fix Safari No Green Planet",
 	"id", "ChoGGi_FixSafariNoGPDLC",
 	"steam_id", "2428296255",
 	"pops_any_uuid", "7349ec08-42ae-4601-8de9-22c1b2650e93",

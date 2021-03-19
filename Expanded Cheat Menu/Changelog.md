@@ -1,8 +1,11 @@
 ## ECM Changelog
 
-## v16.3 (Unreleased)
+## v16.4 (Unreleased)
+
+## v16.3 (18 March 2021)
 ### Added:
 - Menu>ECM>Debug>Toggles>InfoPanel Dialog: Center the InfoPanel dialog (selection panel).
+- Cheats pane>Drone Factory FinishConstruct: fills the constructing bar.
 
 ### Fixed:
 - Cheats pane>ToggleSigns was freezing the game when used on concrete deposits.

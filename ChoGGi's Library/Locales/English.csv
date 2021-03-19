@@ -1,5 +1,4 @@
 "ID", " Text"
-302535920001428,
 302535920001463,
 302535920001464,
 302535920001466,
@@ -283,6 +282,7 @@ If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""T
 302535920000733, "Open a preset in the editor."
 302535920001410, "Toggle Visibility"
 302535920000735, "Timer delay skipped"
+302535920001428, "Instantly finish current drone/biorobot."
 302535920001095, "Double the charge capacity of this <green>%s</green>."
 302535920001096, "Reset the charge capacity of this <green>%s</green> to default."
 302535920001531, "Make the building model look like a construction site (toggle)."

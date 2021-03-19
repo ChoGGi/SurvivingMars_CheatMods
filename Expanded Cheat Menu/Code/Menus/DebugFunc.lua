@@ -1071,10 +1071,8 @@ function ChoGGi.MenuFuncs.SetPathMarkers()
 	local Pathing_CleanDupes = ChoGGi.ComFuncs.Pathing_CleanDupes
 	local Pathing_StopAndRemoveAll = ChoGGi.ComFuncs.Pathing_StopAndRemoveAll
 	ChoGGi.Temp.UnitPathingHandles = ChoGGi.Temp.UnitPathingHandles or {}
-	local flag_height = 50
 	local randcolours = {}
 	local colourcount = 0
-	local dupewppos = {}
 
 	local item_list = {
 		{text = Strings[302535920000413--[[Delay]]], value = 0, path_type = "Delay", hint = Strings[302535920000415--[[Delay in ms between updating paths (0 to update every other render).]]]},

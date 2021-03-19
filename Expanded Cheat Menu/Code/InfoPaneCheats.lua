@@ -259,6 +259,9 @@ It don't matter if you're black or white"]]],
 	ToggleFreeze = {
 		des = Strings[302535920000985--[[Toggle frozen state of building.]]],
 	},
+	FinishConstruct = {
+		des = Strings[302535920001428--[[Instantly finish current drone/biorobot.]]],
+	},
 
 -- Rover/Drone
 	BattCapDbl = {
@@ -894,6 +897,12 @@ end
 Drone.CheatAddDust = CheatAddDust
 BaseRover.CheatAddDust = CheatAddDust
 --
+function DroneFactory:CheatFinishConstruct()
+	if self.drone_construction_progress > 0 then
+		self.drone_construction_progress = 100000
+	end
+end
+
 function Drone:CheatGoHome()
 	self:SetCommand("GoHome", nil, nil, nil, "ReturningToController")
 end
