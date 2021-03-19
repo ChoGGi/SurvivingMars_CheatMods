@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v9.4 (Unreleased)
+## v9.5 (Unreleased)
+
+## v9.4 (19 March 2021)
 - Made funcs use either mouse or gamepad for positions.
 
 ## v9.3 (18 March 2021)
