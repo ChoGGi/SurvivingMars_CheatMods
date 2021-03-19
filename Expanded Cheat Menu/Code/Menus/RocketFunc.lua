@@ -60,12 +60,12 @@ function ChoGGi.MenuFuncs.PassengerArkPod_Toggle()
 	if ChoGGi.UserSettings.PassengerArkPod then
 		ChoGGi.UserSettings.PassengerArkPod = nil
 		-- only blank it out if sponsor isn't new ark
-		if GameState.gameplay  and sponsor.id ~= "NewArk"then
+		if UICity  and sponsor.id ~= "NewArk"then
 			sponsor.passenger_pod_class = nil
 		end
 	else
 		ChoGGi.UserSettings.PassengerArkPod = true
-		if GameState.gameplay then
+		if UICity then
 			sponsor.passenger_pod_class = "ArkPod"
 		end
 	end

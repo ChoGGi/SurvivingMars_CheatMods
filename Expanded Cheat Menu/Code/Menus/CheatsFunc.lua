@@ -12,7 +12,7 @@ local GetCursorOrGamePad = ChoGGi.ComFuncs.GetCursorOrGamePad
 
 function ChoGGi.MenuFuncs.DeleteGeysers()
 	local function CallBackFunc(answer)
-		if answer and GameState.gameplay then
+		if answer and UICity then
 			SuspendPassEdits("ChoGGi.MenuFuncs.DeleteGeysers")
 			-- I can't get MapDelete and func filter working...
 			local objs = MapGet("map", "PrefabFeatureMarker", function(obj)

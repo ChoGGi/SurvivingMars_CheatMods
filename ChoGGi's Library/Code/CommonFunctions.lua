@@ -595,7 +595,7 @@ do -- MsgPopup
 
 	function ChoGGi.ComFuncs.MsgPopup(text, title, params)
 		-- notifications only show up in-game (UI stuff is missing)
-		if not GameState.gameplay then
+		if not UICity then
 			return
 		end
 
@@ -1872,7 +1872,7 @@ do -- SelObject/SelObjects
 	-- returns whatever is selected > moused over > nearest object to cursor
 	-- single selection
 	function ChoGGi.ComFuncs.SelObject(radius, pt)
-		if not GameState.gameplay then
+		if not UICity then
 			return
 		end
 		-- single selection
@@ -1894,7 +1894,7 @@ do -- SelObject/SelObjects
 
 	-- returns an indexed table of objects, add a radius to get objs close to cursor
 	function ChoGGi.ComFuncs.SelObjects(radius, pt)
-		if not GameState.gameplay then
+		if not UICity then
 			return empty_table
 		end
 		local objs = SelectedObj or GetCursorOrGamePadSelectObj()
@@ -2585,7 +2585,7 @@ do -- GetAllAttaches
 		end
 	end
 
-	function ChoGGi.ComFuncs.GetAllAttaches(obj, mark_attaches, only_include)
+	function ChoGGi.ComFuncs.GetAllAttaches(obj, mark_attaches, only_include, safe)
 		mark = mark_attaches
 
 		table_clear(attach_dupes)
@@ -2599,22 +2599,29 @@ do -- GetAllAttaches
 		attaches_count = 0
 		parent_obj = obj
 
---~ 		local attaches = obj:GetClassFlags(const.cfComponentAttach) ~= 0
-
 		-- add regular attachments
 		if obj.ForEachAttach then
 			obj:ForEachAttach(ForEach, obj.class, only_include)
 		end
 
-		-- add any non-attached attaches (stuff that's kinda attached, like the concrete arm thing)
-		AddAttaches(obj, only_include)
-		-- and the anim_obj added in gagarin
-		if IsValid(obj.anim_obj) then
-			AddAttaches(obj.anim_obj, only_include)
-		end
-		-- pastures
-		if obj.current_herd then
-			AddAttaches(obj.current_herd, only_include)
+		if safe then
+			local attaches = obj:GetAttaches() or ""
+			for i = 1, #attaches do
+				local a = attaches[i]
+				ForEach(a, a.class, only_include)
+			end
+
+		else
+			-- add any non-attached attaches (stuff that's kinda attached, like the concrete arm thing)
+			AddAttaches(obj, only_include)
+			-- and the anim_obj added in gagarin
+			if IsValid(obj.anim_obj) then
+				AddAttaches(obj.anim_obj, only_include)
+			end
+			-- pastures
+			if obj.current_herd then
+				AddAttaches(obj.current_herd, only_include)
+			end
 		end
 
 		-- remove original obj if it's in the list
@@ -4741,7 +4748,7 @@ do -- BuildableHexGrid
 		Temp.grid_thread = false
 
 		-- SuspendPassEdits errors out if there's no map
-		if GameState.gameplay then
+		if UICity then
 			SuspendPassEdits("ChoGGi.ComFuncs.BuildableHexGrid_CleanUp")
 			for i = 1, grid_objs_c do
 				local o = grid_objs[i]

@@ -11,9 +11,9 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_NoticeableSalvage",
 	"steam_id", "1814312982",
 	"pops_any_uuid", "d31d1b93-a913-4e4c-bd44-36997f56887d",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"lua_revision", 1001551,
@@ -22,5 +22,6 @@ return PlaceObj("ModDef", {
 	},
 	"TagBuildings", true,
 	"TagOther", true,
-	"description", [[Changes buildings in the process of being salvaged/removed to have a black colour.]],
+	"description", [[Changes buildings in the process of being salvaged/removed to have a black shade.
+]],
 })

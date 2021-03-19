@@ -168,7 +168,7 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
 			local rc_con_value = ChoGGi.ComFuncs.GetResearchedTechValue("RCTransportStorageCapacity", "RCConstructor")
 
 			-- loop through and set all
-			if GameState.gameplay then
+			if UICity then
 				local label = UICity.labels.RCTransport or ""
 				for i = 1, #label do
 					local rc = label[i]

@@ -387,10 +387,14 @@ local function Screenie(map)
 --~ 	Sleep(1000)
 
 	-- wait a bit till we're sure the map is around
-	local GameState = GameState
-	while not GameState.gameplay do
+	local UICity = UICity
+	while not UICity do
 		Sleep(1000)
 	end
+--~ 	local GameState = GameState
+--~ 	while not GameState.gameplay do
+--~ 		Sleep(1000)
+--~ 	end
 
 	-- hide signs (just in case any are in the currently exposed sector)
 	SetSignsVisible(false)

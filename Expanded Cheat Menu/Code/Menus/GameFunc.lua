@@ -481,7 +481,7 @@ function ChoGGi.MenuFuncs.WhiterRocks()
 end
 
 function ChoGGi.MenuFuncs.SetObjectOpacity()
-	if not GameState.gameplay then
+	if not UICity then
 		return
 	end
 
@@ -675,7 +675,7 @@ do -- ListAllObjects
 	end
 
 	function ChoGGi.MenuFuncs.ListAllObjects()
-		if not GameState.gameplay then
+		if not UICity then
 			return
 		end
 

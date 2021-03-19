@@ -543,8 +543,12 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 			WaitMsg("MessageBoxOpened")
 
 			-- wait a bit till we're sure the map is around
-			local GameState = GameState
-			while not GameState.gameplay do
+--~ 			local GameState = GameState
+--~ 			while not GameState.gameplay do
+--~ 				Sleep(500)
+--~ 			end
+			local UICity = UICity
+			while not UICity do
 				Sleep(500)
 			end
 
@@ -1303,7 +1307,7 @@ do -- FlightGrid_Toggle
 			DeleteThread(grid_thread)
 		end
 		grid_thread = false
-		if GameState.gameplay then
+		if UICity then
 			DeleteLines()
 		end
 	end

@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v16.5 (Unreleased)
+### Fixed:
+- Examine>Object>Entity Spots Toggle: Some update changed the waypoint whitespace.
 
 ## v16.4 (19 March 2021)
 ### Changed:

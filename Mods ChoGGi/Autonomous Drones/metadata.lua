@@ -30,17 +30,17 @@ This will hide the now useless pack/unpack drone prefab buttons (use mod option 
 
 
 Mod Options:
-Enable Mod: Disable mod without having to see missing mod msg.
-Sort Hub List Load: Sort hub list by drone load order (overrides random list).
-Turning off means randomise list of drone controllers, so the order is different each update (helps reduce "bunching").
-Use Prefabs: Use drone prefabs to adjust the loads.
-Update Delay: On = Sol, Off = Hour.
-Hide Pack Buttons: Hide Pack/Unpack buttons for drone controllers.
-Drone Work Delay: How many "seconds" to wait before forcing the busy drone (0 to disable and wait).
-Early Game: If under this amount of drones then try to evenly distribute drones across controllers instead of by load (0 to always enable, 1 to disable).
-Add Empty/Heavy/Medium: How many drones to add to empty and heavy/medium load controllers.
-Ignore Unused Hubs: Any hubs not "used" will have their drones ignored (manual assignment only).
-Use Drone Hubs/RC Commanders/Rockets: Toggle assigning or ignoring certain controllers.
+[b]Enable Mod[/b]: Disable mod without having to see missing mod msg.
+[b]Sort Hub List Load[/b]: Sort hub list by drone load order (overrides random list).
+Turning off means randomise order of drone controllers for receiving drones.
+[b]Use Prefabs[/b]: Use drone prefabs to adjust the loads.
+[b]Update Delay[/b]: On = Sol, Off = Hour.
+[b]Hide Pack Buttons[/b]: Hide Pack/Unpack buttons for drone controllers.
+[b]Drone Work Delay[/b]: How many "seconds" to wait before forcing the busy drone (0 to disable and wait).
+[b]Early Game[/b]: If under this amount of drones then try to evenly distribute drones across controllers instead of by load (0 to always enable, 1 to disable).
+[b]Add Empty/Heavy/Medium[/b]: How many drones to add to empty and heavy/medium load controllers.
+[b]Ignore Unused Hubs[/b]: Any hubs not "used" will have their drones ignored (manual assignment only).
+[b]Use Drone Hubs/RC Commanders/Rockets[/b]: Toggle assigning or ignoring certain controllers.
 
 
 Known Issues:

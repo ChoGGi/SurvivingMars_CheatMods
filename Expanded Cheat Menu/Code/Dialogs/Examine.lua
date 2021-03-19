@@ -910,6 +910,8 @@ function ChoGGi_DlgExamine:idExecCode_OnKbdKeyDown(vk, ...)
 				o = self.obj_ref
 				-- fire!
 				dlgConsole:Exec(text)
+				-- update examine
+				self:SetObj()
 			end
 		end
 		return "break"
@@ -2139,7 +2141,7 @@ function ChoGGi_DlgExamine:ShowEntitySpotsList()
 
 		-- remove waypoints from chain points so they count as one
 		if spot_annot:find("chain") then
-			spot_annot = spot_annot:gsub(", waypoint=%d", "")
+			spot_annot = spot_annot:gsub(",%s?waypoint=%d", "")
 		end
 
 		local name = spot_name .. (spot_annot ~= "" and ";" .. spot_annot or "")
@@ -2307,7 +2309,7 @@ end
 --
 local function Show_ConvertValueToInfo(self, button, obj)
 	-- not ingame = no sense in using ShowObj
-	if button == "L" and GameState.gameplay and (IsValid(obj) or IsPoint(obj)) then
+	if button == "L" and UICity and (IsValid(obj) or IsPoint(obj)) then
 		self:AddSphere(obj)
 	else
 		self.ChoGGi.ComFuncs.OpenInExamineDlg(obj, {
@@ -3535,7 +3537,7 @@ function ChoGGi_DlgExamine:SetToolbarVis(obj, obj_metatable)
 	SetWinObjectVis(self.idObjects)
 
 	-- no sense in showing it in mainmenu/new game screens
-	SetWinObjectVis(self.idButClear, GameState.gameplay)
+	SetWinObjectVis(self.idButClear, UICity)
 
 	SetWinObjectVis(self.idShowAllValues, obj_metatable and self.obj_type ~= "userdata")
 
@@ -3761,7 +3763,7 @@ end
 
 function ChoGGi_DlgExamine:CleanupCustomObjs(obj, force)
 	-- can't have game objs in main menu (and log spam)
-	if not GameState.gameplay then
+	if not UICity then
 		return
 	end
 

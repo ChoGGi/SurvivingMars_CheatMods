@@ -409,11 +409,6 @@ email: ECM@choggi.org"]]] .. "\n\n\n" .. mod.description
 					diff_author = mod.author ~= SteamGetPersonaName()
 					result = nil
 
---~ 					-- my mods override
---~ 					if ChoGGi_copy_files[mod.id] then
---~ 						copy_files = false
---~ 					end
-
 					-- remove blacklist warning from title (added in helpermod)
 					mod.title = mod.title:gsub(" %(Warning%)$", "")
 
@@ -606,9 +601,14 @@ You can also stick the executable in the profile folder to use it instead (<gree
 				if ValidateImage(mod.image) and not mod.image:find(" ") then
 					image = "<image " .. mod.image .. ">\n\n"
 				end
+				-- colour mine so I don't clicky
+				local title = mod.title
+				if id == ChoGGi.id_lib or id == ChoGGi.id then
+					title = "<color ChoGGi_green>" .. title .. "</color>"
+				end
 				c = c + 1
 				item_list[c] = {
-					text = mod.title,
+					text = title,
 					value = id,
 					hint = image .. mod.description,
 					mod = mod,
@@ -1029,7 +1029,7 @@ function ChoGGi.MenuFuncs.ListAllMenuItems()
 end
 
 function ChoGGi.MenuFuncs.RetMapInfo()
-	if not GameState.gameplay then
+	if not UICity then
 		return
 	end
 	local data = HashLogToTable()

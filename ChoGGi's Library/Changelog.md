@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v9.5 (Unreleased)
+- Added option to tame GetAllAttaches.
 
 ## v9.4 (19 March 2021)
 - Made funcs use either mouse or gamepad for positions.

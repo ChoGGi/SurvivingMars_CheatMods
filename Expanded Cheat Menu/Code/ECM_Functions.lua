@@ -3511,7 +3511,7 @@ do -- ToggleObjLines
 end
 
 function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
-	if not GameState.gameplay then
+	if not UICity then
 		return
 	end
 
