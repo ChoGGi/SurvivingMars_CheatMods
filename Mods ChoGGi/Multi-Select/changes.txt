@@ -1,3 +1,6 @@
+v0.3
+Now uses either mouse or gamepad for positions.
+
 v0.2
 Double Shift-Click a unit to select all units of the same class in the last used radius.
 Shift-Click a unit to add/remove that unit from the selection.

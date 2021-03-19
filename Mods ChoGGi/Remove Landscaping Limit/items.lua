@@ -16,7 +16,13 @@ return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "BlockObjects",
 		"DisplayName", T(302535920011238, "Skip Blocking Objects"),
-		"Help", T(302535920011532, "Enable to be able to paint terrain near buildings. This will also allow you to place buildings in odd places."),
+		"Help", T(302535920011532, "Turn on to be able to paint terrain near buildings. This will also allow you to place buildings in odd places."),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "AllowOutOfBounds",
+		"DisplayName", T(302535920011855, "Allow Out Of Bounds"),
+		"Help", T(302535920011856, "Turn on to landscape out of bounds (warning can crash when used near the edge of map, save first)."),
 		"DefaultValue", false,
 	}),
 }

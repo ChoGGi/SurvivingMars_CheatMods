@@ -1,11 +1,19 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library",
+			"version_major", 9,
+			"version_minor", 3,
+		}),
+	},
 	"title", "Defence Towers Attack DustDevils",
 	"id", "ChoGGi_DefenceTowersAttackDustDevils",
 	"steam_id", "1504597628",
 	"pops_any_uuid", "957bd9ec-fb96-4c00-9065-984aae313e1f",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",

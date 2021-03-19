@@ -414,7 +414,7 @@ function ChoGGi_Dlg3DManipulator:idPosButtons_OnPress()
 end
 
 function ChoGGi_Dlg3DManipulator:idMousePos_OnPress()
-	GetRootDialog(self).obj:SetPos(GetTerrainCursor())
+	GetRootDialog(self).obj:SetPos(ChoGGi.ComFuncs.GetCursorOrGamePad())
 end
 
 function ChoGGi_Dlg3DManipulator:idPosClear_OnPress()

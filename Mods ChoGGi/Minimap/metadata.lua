@@ -8,10 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Minimap",
-	"version", 7,
+	"version", 8,
 	"version_major", 0,
-	"version_minor", 7,
-
+	"version_minor", 8,
 	"image", "Preview.png",
 	"id", "ChoGGi_Minimap",
 	"steam_id", "1571476937",

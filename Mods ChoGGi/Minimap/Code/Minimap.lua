@@ -21,6 +21,7 @@ end
 
 -- clickable map image
 
+
 local ViewObjectMars = ViewObjectMars
 local Clamp = Clamp
 local point = point
@@ -33,6 +34,8 @@ local GetSurfaceHeight = terrain.GetSurfaceHeight
 local cameraRTS = cameraRTS
 local terrain = terrain
 local transition_time = 0
+
+local GetCursorOrGamePad = ChoGGi.ComFuncs.GetCursorOrGamePad
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
@@ -267,7 +270,7 @@ function ChoGGi_MinimapDlg:CameraPos_Screenshot()
 end
 
 function ChoGGi_MinimapDlg:CameraPos_Restore()
-	local lookat = self.saved_camera and self.saved_camera.lookat or GetTerrainCursor()
+	local lookat = self.saved_camera and self.saved_camera.lookat or GetCursorOrGamePad()
 
 	-- clamp to the map borders
 	local min_border = cameraRTS.GetBorder()

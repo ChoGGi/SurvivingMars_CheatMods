@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local GetCursorOrGamePad = ChoGGi.ComFuncs.GetCursorOrGamePad
+
 local IsKindOf = IsKindOf
 local IsValid = IsValid
 
@@ -67,7 +69,7 @@ local function SpawnShuttle(hub, attacker)
 				hub = hub,
 				transport_task = PersonalShuttles_ShuttleFollowTask:new({
 					state = "ready_to_follow",
-					dest_pos = GetTerrainCursor() or GetRandomPassable()
+					dest_pos = GetCursorOrGamePad() or GetRandomPassable()
 				}),
 				info_obj = s_i
 			})

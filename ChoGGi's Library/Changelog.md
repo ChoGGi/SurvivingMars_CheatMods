@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v9.4 (Unreleased)
+- Made funcs use either mouse or gamepad for positions.
 
 ## v9.3 (18 March 2021)
 - ModItemOptionInputBox removed (devs added it in Tito-Hotfix).

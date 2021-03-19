@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local GetCursorOrGamePad = ChoGGi.ComFuncs.GetCursorOrGamePad
+
 local mapw, maph
 local height_tile = terrain.HeightTileSize()
 local function StartupCode()
@@ -14,7 +16,6 @@ OnMsg.LoadGame = StartupCode
 local MapGet = MapGet
 local SelectionAdd = SelectionAdd
 local SelectionRemove = SelectionRemove
-local GetTerrainCursor = GetTerrainCursor
 local RotateRadius = RotateRadius
 local MulDivRound = MulDivRound
 local Max = Max
@@ -42,7 +43,7 @@ local points = objlist:new()
 local function UpdateCircle()
 	points:Clear()
 
-	radius = orig_pos:Dist2D(GetTerrainCursor()) or 100
+	radius = orig_pos:Dist2D(GetCursorOrGamePad()) or 100
 	local steps = Min(Max(12, 44 * radius / (guim7)), 360)
 
 	for i = 1, steps do
@@ -115,10 +116,10 @@ function OnMsg.ClassesBuilt()
 				if circle and IsValid(circle) then
 					DoneObject(circle)
 				end
-				orig_pos = GetTerrainCursor()
+				orig_pos = GetCursorOrGamePad()
 
 				-- PlaceTerrainCircle(center, radius, color, step, offset, max_steps)
-				radius = orig_pos and orig_pos:Dist2D(GetTerrainCursor()) or 10
+				radius = orig_pos and orig_pos:Dist2D(GetCursorOrGamePad()) or 10
 				circle = PlaceTerrainCircle(orig_pos, radius)
 				circle:SetDepthTest(false)
 
@@ -136,7 +137,7 @@ function OnMsg.ClassesBuilt()
 			local selected = GetPreciseCursorObj()
 			if selected and selected:IsKindOf("DroneBase") then
 				local temp_radius = saved_radius
-				local mouse_pt = GetTerrainCursor()
+				local mouse_pt = GetCursorOrGamePad()
 				local cls = selected.class
 
 				local objs = MapGet("map", "attached", false, selected.class, function(o)

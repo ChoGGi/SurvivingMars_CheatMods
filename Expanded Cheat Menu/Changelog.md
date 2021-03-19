@@ -1,6 +1,11 @@
 ## ECM Changelog
 
 ## v16.4 (Unreleased)
+### Changed:
+- Made funcs use either mouse or gamepad for positions.
+
+### Fixed:
+- Cheats pane>AddDust: Removed some dupes.
 
 ## v16.3 (18 March 2021)
 ### Added:

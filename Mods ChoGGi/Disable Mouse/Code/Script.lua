@@ -95,6 +95,11 @@ end
 OnMsg.SystemMinimize = EnableMouse
 OnMsg.SystemInactivate = EnableMouse
 OnMsg.MouseOutside = EnableMouse
+-- workaround for https://forum.paradoxplaza.com/forum/threads/disable-mouse.1461783
+local function DisableMouse()
+	SetMouse(true)
+end
+OnMsg.NewHour = DisableMouse
 
 local orig_XDesktop_OnShortcut = XDesktop.OnShortcut
 function XDesktop:OnShortcut(shortcut, source, ...)

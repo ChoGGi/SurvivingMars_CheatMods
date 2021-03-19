@@ -8,6 +8,7 @@ local Random = ChoGGi.ComFuncs.Random
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local SelObject = ChoGGi.ComFuncs.SelObject
 local Strings = ChoGGi.Strings
+local GetCursorOrGamePad = ChoGGi.ComFuncs.GetCursorOrGamePad
 
 function ChoGGi.MenuFuncs.DeleteGeysers()
 	local function CallBackFunc(answer)
@@ -97,7 +98,7 @@ end
 function ChoGGi.MenuFuncs.MeteorStrike(_, _, input)
 	local strike_pos
 	if input == "keyboard" then
-		strike_pos = GetTerrainCursor()
+		strike_pos = GetCursorOrGamePad()
 	else
 		strike_pos = GetRandomPassable()
 	end
@@ -108,7 +109,7 @@ end
 function ChoGGi.MenuFuncs.MissileStrike(_, _, input)
 	local strike_pos
 	if input == "keyboard" then
-		strike_pos = GetTerrainCursor()
+		strike_pos = GetCursorOrGamePad()
 	else
 		strike_pos = GetRandomPassable()
 	end
@@ -119,7 +120,7 @@ end
 function ChoGGi.MenuFuncs.LightningStrike(_, _, input)
 	local strike_pos
 	if input == "keyboard" then
-		strike_pos = GetTerrainCursor()
+		strike_pos = GetCursorOrGamePad()
 	else
 		strike_pos = GetRandomPassable()
 	end
@@ -453,7 +454,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerMissle(amount)
 	if amount == 1 then
 		-- (pt, radius, count, delay_min, delay_max)
 		StartBombard(
-			SelObject() or GetTerrainCursor(),
+			SelObject() or GetCursorOrGamePad(),
 			-- somewhere between 1K and 2K is too small to target some buildings for whatever reason...
 			2000,
 			amount
@@ -496,7 +497,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerDustStorm(severity, storm_type)
 	end)
 end
 function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(severity, major)
-	local pos = SelObject() or GetTerrainCursor()
+	local pos = SelObject() or GetCursorOrGamePad()
 	if type(pos) == "table" then
 		pos = pos:GetPos()
 	end
@@ -507,7 +508,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(severity, major)
 end
 function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity, meteors_type, pos)
 	meteors_type = meteors_type or "single"
-	pos = pos or SelObject() or GetTerrainCursor()
+	pos = pos or SelObject() or GetCursorOrGamePad()
   -- target object
 	if IsValid(pos) then
 		pos = pos.GetVisualPos and pos:GetVisualPos() or pos:GetPos()
@@ -527,7 +528,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity, meteors_type, pos)
 	end)
 end
 function ChoGGi.MenuFuncs.DisasterTriggerMetatronIonStorm()
-	local pos = SelObject() or GetTerrainCursor()
+	local pos = SelObject() or GetCursorOrGamePad()
 	if type(pos) == "table" then
 		pos = pos:GetPos()
 	end

@@ -20,10 +20,10 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local DoneObject = DoneObject
-local GetTerrainCursor = GetTerrainCursor
 local point = point
 local Sleep = Sleep
 local GetTimeFactor = GetTimeFactor
+local GetCursorOrGamePad = ChoGGi.ComFuncs.GetCursorOrGamePad
 
 -- entities to use
 local entities = {}
@@ -140,7 +140,7 @@ function OnMsg.InGameInterfaceCreated(igi)
 
 	local function OnMousePos()
 		if mod_ToggleShrubs and not skip and GetTimeFactor() > 0 then
-			local cursor = GetTerrainCursor()
+			local cursor = GetCursorOrGamePad()
 			local obj = entity_cls:new()
 			local ent = entities[Random(1,count)]
 			obj:ChangeEntity(ent)

@@ -299,6 +299,9 @@ It don't matter if you're black or white"]]],
 		des = Strings[302535920001225--[[Adds dust and maintenance points.]]],
 		name = "AddDust",
 	},
+	AddDustRC = {
+		des = Strings[302535920001225--[[Adds dust and maintenance points.]]],
+	},
 	CleanAndFix2 = {
 		des = Strings[302535920001226--[[Cleans dust and removes maintenance points.]]],
 		name = "CleanAndFix",
@@ -402,7 +405,7 @@ local cheats_lookup2 = {
 	Repair = true,
 }
 
-local skip_CleanAndFix_AddDust = {"UniversalStorageDepot", "WasteRockDumpSite"}
+local skip_CleanAndFix_AddDust = {"UniversalStorageDepot", "WasteRockDumpSite", "BaseRover"}
 local skip_ToggleSigns = {"TerrainDeposit", "SubsurfaceDeposit", "SurfaceDeposit", "WasteRockDumpSite"}
 local skip_Empty = {"SubsurfaceDeposit", "TerrainDeposit"}
 

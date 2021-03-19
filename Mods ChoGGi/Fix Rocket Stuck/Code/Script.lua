@@ -303,11 +303,23 @@ function OnMsg.LoadGame()
 	-- expedition rocket never lands on pad
 	local pads = UICity.labels.LandingPad or ""
 	for i = 1, #pads do
-		local p = pads[i]
-		local has, rocket = p:HasRocket()
+		local pad = pads[i]
+		local has, rocket = pad:HasRocket()
 		-- InvalidPos means it's not on mars
 		if has and rocket:GetPos() == InvalidPos and IsValid(rocket.landing_site) then
 			rocket:SetCommand("LandOnMars", rocket.landing_site)
+		end
+	end
+
+	-- could be me? but he said dust storms...
+	pads = UICity.labels.TradePad or ""
+	for i = 1, #pads do
+		local pad = pads[i]
+		if IsValid(pad.trade_rocket) and pad.trade_rocket.command == "OnEarth"
+			and pad.trade_rocket.ChoGGi_RepositionRocket == -10000
+		then
+			pad.trade_rocket:SetCommand("LandOnMars", pad)
+			pad.trade_rocket.ChoGGi_RepositionRocket = nil
 		end
 	end
 

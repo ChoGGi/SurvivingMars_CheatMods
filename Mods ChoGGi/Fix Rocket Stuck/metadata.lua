@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Rocket Stuck",
-	"version", 17,
+	"version", 18,
 	"version_major", 1,
-	"version_minor", 7,
+	"version_minor", 8,
 	"image", "Preview.png",
 	"id", "ChoGGi_FixExpeditionRocketStuckUnloading",
 	"steam_id", "1567028510",
@@ -25,6 +25,7 @@ Drones the rocket thinks are stuck inside (*2).
 Trade rocket with 0 res.
 Returned expedition rocket giving msg that it's still in orbit.
 Canceled expedition rocket stuck in limbo canceled mode.
+Trade rockets stuck in orbit?
 
 If this doesn't fix it for you, then I'll need a copy of your saved game.
 

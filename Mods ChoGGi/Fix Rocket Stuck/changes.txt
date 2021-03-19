@@ -1,3 +1,6 @@
+v1.8
+Trade rockets stuck in orbit?
+
 v1.7
 Canceled expedition rocket stuck in limbo canceled mode.
 

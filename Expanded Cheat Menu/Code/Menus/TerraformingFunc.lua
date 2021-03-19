@@ -203,7 +203,7 @@ function ChoGGi.MenuFuncs.SetSoilQuality()
 		return
 	end
 
-	local soil_quality = GetSoilQuality(WorldToHex(GetTerrainCursor()))
+	local soil_quality = GetSoilQuality(WorldToHex(ChoGGi.ComFuncs.GetCursorOrGamePad()))
 
 	local item_list = {
 		{text = Strings[302535920000106--[[Current]]], value = soil_quality},

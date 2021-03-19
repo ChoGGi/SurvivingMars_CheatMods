@@ -1,3 +1,6 @@
+v1.2
+Now uses either mouse or gamepad for positions.
+
 v1.1
 Tito.
 

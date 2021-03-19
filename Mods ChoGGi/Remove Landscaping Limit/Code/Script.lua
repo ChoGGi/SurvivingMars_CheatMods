@@ -1,16 +1,22 @@
 -- See LICENSE for terms
 
+local guim = guim
+local SetLandScapingLimits = ChoGGi.ComFuncs.SetLandScapingLimits
+
 local mod_RemoveLandScapingLimits
 local mod_StepSize
 local mod_BlockObjects
+local mod_AllowOutOfBounds
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_RemoveLandScapingLimits = CurrentModOptions:GetProperty("RemoveLandScapingLimits")
-	mod_StepSize = CurrentModOptions:GetProperty("StepSize") * guim
-	mod_BlockObjects = CurrentModOptions:GetProperty("BlockObjects")
+	local options = CurrentModOptions
+	mod_RemoveLandScapingLimits = options:GetProperty("RemoveLandScapingLimits")
+	mod_StepSize = options:GetProperty("StepSize") * guim
+	mod_BlockObjects = options:GetProperty("BlockObjects")
+	mod_AllowOutOfBounds = options:GetProperty("AllowOutOfBounds")
 
-	ChoGGi.ComFuncs.SetLandScapingLimits(mod_RemoveLandScapingLimits, mod_BlockObjects)
+	SetLandScapingLimits(mod_RemoveLandScapingLimits, mod_BlockObjects, mod_AllowOutOfBounds)
 end
 
 -- load default/saved settings
@@ -27,7 +33,7 @@ end
 local orig_Activate = LandscapeConstructionController.Activate
 function LandscapeConstructionController:Activate(...)
 	if mod_RemoveLandScapingLimits then
-		self.brush_radius_step = mod_StepSize or 10*guim
+		self.brush_radius_step = mod_StepSize or 10 * guim
 		self.brush_radius_max = max_int
 		self.brush_radius_min = 100
 	end

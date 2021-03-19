@@ -12,6 +12,10 @@ local AsyncRand = AsyncRand
 local AveragePoint2D = AveragePoint2D
 local FindNearestObject = FindNearestObject -- (list,obj) or (list,pos,filterfunc)
 local GetTerrainCursor = GetTerrainCursor
+local GetTerrainGamepadCursor = GetTerrainGamepadCursor
+local GetUIStyleGamepad = GetUIStyleGamepad
+local SelectionGamepadObj = SelectionGamepadObj
+local SelectionMouseObj = SelectionMouseObj
 local IsValid = IsValid
 local IsKindOf = IsKindOf
 local IsPoint = IsPoint
@@ -42,6 +46,12 @@ local GameTime = GameTime
 local guic = guic
 local ViewObjectMars = ViewObjectMars
 local RGB = RGB
+local terrain_IsPassable = terrain.IsPassable
+local HexGridGetObject = HexGridGetObject
+local HexToWorld = HexToWorld
+local point = point
+local WaitMsg = WaitMsg
+
 local InvalidPos = ChoGGi.Consts.InvalidPos
 
 local rawget, getmetatable = rawget, getmetatable
@@ -1102,6 +1112,15 @@ function ChoGGi.ComFuncs.PopupToggle(parent, popup_id, items, anchor, reopen, su
 	return popup
 end
 
+local function GetCursorOrGamePad()
+	return GetUIStyleGamepad() and GetTerrainGamepadCursor() or GetTerrainCursor()
+end
+ChoGGi.ComFuncs.GetCursorOrGamePad = GetCursorOrGamePad
+local function GetCursorOrGamePadSelectObj()
+	return GetUIStyleGamepad() and SelectionGamepadObj() or SelectionMouseObj()
+end
+ChoGGi.ComFuncs.GetCursorOrGamePadSelectObj = GetCursorOrGamePadSelectObj
+
 do -- Circle
 	local OCircle
 
@@ -1112,7 +1131,7 @@ do -- Circle
 		end
 
 		local circle = OCircle:new()
-		circle:SetPos(pos and pos:SetTerrainZ(10 * guic) or GetTerrainCursor())
+		circle:SetPos(pos and pos:SetTerrainZ(10 * guic) or GetCursorOrGamePad())
 		circle:SetRadius(radius or 1000)
 		circle:SetColor(colour or RandomColourLimited())
 
@@ -1555,7 +1574,7 @@ end
 -- ChoGGi.ComFuncs.OpenInExamineDlg(ReturnAllNearby(1000, "class"))
 function ChoGGi.ComFuncs.ReturnAllNearby(radius, sort, pt)
 	radius = radius or 5000
-	pt = pt or GetTerrainCursor()
+	pt = pt or GetCursorOrGamePad()
 
 	-- get all objects within radius
 	local list = MapGet(pt, radius)
@@ -1847,7 +1866,6 @@ function ChoGGi.ComFuncs.CreateSetting(str, setting_type)
 end
 
 do -- SelObject/SelObjects
-	local SelectionMouseObj = SelectionMouseObj
 	local MapFindNearest = MapFindNearest
 	local radius4h = const.HexSize / 4
 
@@ -1858,7 +1876,7 @@ do -- SelObject/SelObjects
 			return
 		end
 		-- single selection
-		local obj = SelectedObj or SelectionMouseObj()
+		local obj = SelectedObj or GetCursorOrGamePadSelectObj()
 
 		if obj then
 			-- If it's multi then return the first one
@@ -1867,7 +1885,7 @@ do -- SelObject/SelObjects
 			end
 		else
 			-- radius selection
-			pt = pt or GetTerrainCursor()
+			pt = pt or GetCursorOrGamePad()
 			obj = MapFindNearest(pt, pt, radius or radius4h)
 		end
 
@@ -1879,7 +1897,7 @@ do -- SelObject/SelObjects
 		if not GameState.gameplay then
 			return empty_table
 		end
-		local objs = SelectedObj or SelectionMouseObj()
+		local objs = SelectedObj or GetCursorOrGamePadSelectObj()
 
 		if not radius and objs then
 			if objs:IsKindOf("MultiSelectionWrapper") then
@@ -1889,7 +1907,7 @@ do -- SelObject/SelObjects
 			end
 		end
 
-		pt = pt or GetTerrainCursor()
+		pt = pt or GetCursorOrGamePad()
 		return MapGet(pt, radius or radius4h, "attached", false)
 	end
 end
@@ -3229,7 +3247,7 @@ end
 
 -- returns the near hex grid for object placement
 function ChoGGi.ComFuncs.CursorNearestHex(pt)
-	return HexGetNearestCenter(pt or GetTerrainCursor())
+	return HexGetNearestCenter(pt or GetCursorOrGamePad())
 end
 
 function ChoGGi.ComFuncs.DeleteAllAttaches(obj)
@@ -4831,13 +4849,6 @@ do -- BuildableHexGrid
 			-- off we go
 			Temp.grid_thread = CreateRealTimeThread(function()
 				-- local all the globals we use more than once for some speed
-				local terrain_IsPassable = terrain.IsPassable
-				local GetTerrainCursor = GetTerrainCursor
-				local HexGridGetObject = HexGridGetObject
-				local HexToWorld = HexToWorld
-				local point = point
-				local WaitMsg = WaitMsg
-
 				CalcBuildableGrid()
 				local g_BuildableZ = g_BuildableZ
 				local UnbuildableZ = buildUnbuildableZ()
@@ -4858,7 +4869,7 @@ do -- BuildableHexGrid
 
 				while Temp.grid_thread do
 					-- only update if cursor moved a hex
-					pt = GetTerrainCursor()
+					pt = GetCursorOrGamePad()
 					if old_pt:Dist2D(pt) > const_HexSize then
 						old_pt = pt
 
@@ -5942,7 +5953,6 @@ function ChoGGi.ComFuncs.ResetHumanCentipedes()
 		end
 	end
 end
-
 
 -- bugged
 --~ function ChoGGi.ComFuncs.SendDroneToCC(drone, new_hub)

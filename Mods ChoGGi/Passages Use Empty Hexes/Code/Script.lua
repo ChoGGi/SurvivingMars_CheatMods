@@ -27,11 +27,12 @@ local IsPoint = IsPoint
 local IsKindOf = IsKindOf
 local GetDomeAtPoint = GetDomeAtPoint
 local table_unpack = table.unpack
-local ObjHexShape_Clear = ChoGGi.ComFuncs.ObjHexShape_Clear
-local ObjHexShape_Toggle = ChoGGi.ComFuncs.ObjHexShape_Toggle
 local HexAngleToDirection = HexAngleToDirection
 local HexRotate = HexRotate
 local WorldToHex = WorldToHex
+local ObjHexShape_Clear = ChoGGi.ComFuncs.ObjHexShape_Clear
+local ObjHexShape_Toggle = ChoGGi.ComFuncs.ObjHexShape_Toggle
+local DeleteObject = ChoGGi.ComFuncs.DeleteObject
 
 -- the only thing I care about is that a dome is at the current pos, the rest is up to the user
 local function IsDomePoint(obj)
@@ -205,6 +206,37 @@ function GridConstructionDialog:Close(...)
 		HideGrids()
 	end
 	return orig_GridConstructionDialog_Close(self, ...)
+end
+
+function OnMsg.LoadGame()
+	local fallback_dome = UICity.labels.Dome[1]
+
+	local objs = UICity.labels.Passage or ""
+	for i = #objs, 1, -1 do
+		local obj = objs[i]
+
+		-- stuck in demolish countdown with no colonists inside
+		if obj.demolishing and (obj.demolishing_countdown or 1) <= 0
+			and #obj.traversing_colonists == 0
+		then
+			-- get a valid dome
+			local start_el = obj.start_el
+			local end_el = obj.end_el
+			local start_dome = IsValid(start_el.dome) and start_el.dome
+			local end_dome = IsValid(end_el.dome) and end_el.dome
+			-- reset passage to have valid domes, so we can delete without errors
+			if not start_dome and not end_dome then
+				start_el.dome = fallback_dome
+				end_el.dome = fallback_dome
+			elseif start_dome and not end_dome then
+				end_el.dome = start_dome
+			elseif end_dome and not start_dome then
+				start_el.dome = end_dome
+			end
+			-- bye bye
+			DeleteObject(obj)
+		end
+	end
 end
 
 -- add keybind for toggle

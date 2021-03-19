@@ -7,6 +7,7 @@ local PlayFX = PlayFX
 local GetRandomPassableAround = GetRandomPassableAround
 local TransformToStockpile = WasteRockObstructor.TransformToStockpile
 local efSelectable = const.efSelectable
+local GetCursorOrGamePadSelectObj = ChoGGi.ComFuncs.GetCursorOrGamePadSelectObj
 
 function Drone:ChoGGi_RockRemove(rock)
 	self:Face(rock, 100)
@@ -77,7 +78,7 @@ end
 
 local orig_CanDemolish = DemolishModeDialog.CanDemolish
 function DemolishModeDialog:CanDemolish(pt, obj, ...)
-	obj = obj or SelectionMouseObj() or GetTerrainCursorObj()
+	obj = obj or GetCursorOrGamePadSelectObj()
 	if IsValid(obj) then
 		if obj:IsKindOf("WasteRockObstructor") or obj:IsKindOf("StoneSmall") then
 			return true
@@ -90,7 +91,7 @@ end
 local orig_OnMouseButtonDown = DemolishModeDialog.OnMouseButtonDown
 function DemolishModeDialog:OnMouseButtonDown(pt, button, obj, ...)
 	if button == "L" then
-		obj = obj or SelectionMouseObj() or GetTerrainCursorObj()
+		obj = obj or GetCursorOrGamePadSelectObj()
 		if IsValid(obj) then
 			if obj:IsKindOf("WasteRockObstructor") or obj:IsKindOf("StoneSmall") then
 				CreateGameTimeThread(DroneRemoveRock, obj)

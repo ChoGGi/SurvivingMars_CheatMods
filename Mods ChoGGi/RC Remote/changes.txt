@@ -1,3 +1,6 @@
+v0.6
+Now uses either mouse or gamepad for positions.
+
 v0.5
 Fixed pin icon.
 

@@ -1,3 +1,6 @@
+v0.4
+Every in-game hour hide the mouse.
+
 v0.3
 Added mod option to hide bottom hud bottons.
 

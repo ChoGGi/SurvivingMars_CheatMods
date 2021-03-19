@@ -53,6 +53,7 @@ end
 local table = table
 local table_ifilter = table.ifilter
 local table_iclear = table.iclear
+local table_icopy = table.icopy
 local table_rand = table.rand
 local table_insert = table.insert
 local table_remove = table.remove
@@ -352,7 +353,7 @@ local function UpdateDrones()
 
 	-- if there's less drones then the threshold set in mod options we evenly split drones across hubs
 	-- copied so we can table.remove from it (maybe filter out the not working drones?)
-	local drones = table_icopy(UICity.labels.Drone)
+	local drones = table_icopy(UICity.labels.Drone or empty_table)
 	if mod_EarlyGame == 0 or mod_EarlyGame > #drones then
 		-- get numbers for amount of drones split between hubs (rounded down)
 		local split_count = floatfloor(#drones / hub_count)

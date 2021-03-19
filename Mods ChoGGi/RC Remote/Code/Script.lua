@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local GetCursorOrGamePad = ChoGGi.ComFuncs.GetCursorOrGamePad
+
 -- local some globals
 local ResourceScale = const.ResourceScale
 local vkW = const.vkW
@@ -14,7 +16,6 @@ local PlaySound = PlaySound
 local MovePointAway = MovePointAway
 local IsKeyPressed = terminal.IsKeyPressed
 local IsValid = IsValid
-local GetTerrainCursor = GetTerrainCursor
 local MapFindNearest = MapFindNearest
 --~ local axis_z = axis_z
 
@@ -323,7 +324,7 @@ end
 
 local cls_removable = {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor", "StoneSmall"}
 function RCRemote:FireRocket(target)
-	local pt = GetTerrainCursor()
+	local pt = GetCursorOrGamePad()
 	target = target or MapFindNearest(pt, pt, 1500)
 	if not IsValid(target) then
 		return

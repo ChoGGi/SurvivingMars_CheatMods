@@ -1,3 +1,6 @@
+v0.8
+Now uses either mouse or gamepad for positions.
+
 v0.7
 Evans update.
 

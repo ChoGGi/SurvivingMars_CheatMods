@@ -2,9 +2,9 @@
 
 -- move cam to mouse pos
 local ViewObjectRTS = ViewObjectRTS
-local GetTerrainCursor = GetTerrainCursor
-local function go_to_mouse()
-	ViewObjectRTS(GetTerrainCursor())
+local GetCursorOrGamePad = ChoGGi.ComFuncs.GetCursorOrGamePad
+local function go_to_cursor()
+	ViewObjectRTS(GetCursorOrGamePad())
 end
 
 -- unforbid binding some keys
@@ -38,7 +38,7 @@ local MouseShortcut = MouseShortcut
 local orig_SelectionModeDialog_OnMouseButtonDown = SelectionModeDialog.OnMouseButtonDown
 function SelectionModeDialog:OnMouseButtonDown(pt, button, ...)
 	if MouseShortcut(button) == shortcut then
-		return CreateRealTimeThread(go_to_mouse)
+		return CreateRealTimeThread(go_to_cursor)
 	end
 	return orig_SelectionModeDialog_OnMouseButtonDown(self, pt, button, ...)
 end
