@@ -35,7 +35,7 @@ function ChoGGi_DlgObjectEditor:Init(parent, context)
 
 	self.obj_name = RetName(context.obj)
 	self.obj = context.obj
-	self.title = Translate(327465361219--[[Edit]]) .. " " .. Translate(298035641454--[[Object]]) .. ": " .. self.obj_name
+	self.title = context.title or Translate(327465361219--[[Edit]]) .. " " .. Translate(298035641454--[[Object]]) .. ": " .. self.obj_name
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)

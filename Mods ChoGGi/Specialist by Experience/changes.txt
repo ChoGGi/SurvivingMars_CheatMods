@@ -1,3 +1,6 @@
+v0.8
+Works for existing workers in saved games.
+
 v0.7
 Evans update.
 

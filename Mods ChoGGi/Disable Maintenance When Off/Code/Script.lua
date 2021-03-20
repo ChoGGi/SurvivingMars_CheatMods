@@ -22,6 +22,9 @@ function RequiresMaintenance:AccumulateMaintenancePoints(new_points, ...)
 	if not self.working then
 		if mod_QuarterPoints then
 			new_points = new_points / 4
+			if new_points < 0 then
+				new_points = 0
+			end
 		else
 			new_points = 0
 		end

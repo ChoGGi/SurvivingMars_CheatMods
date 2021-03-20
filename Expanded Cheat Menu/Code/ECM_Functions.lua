@@ -606,7 +606,7 @@ function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list, parent)
 	})
 end
 
-function ChoGGi.ComFuncs.OpenInObjectEditorDlg(obj, parent)
+function ChoGGi.ComFuncs.OpenInObjectEditorDlg(obj, parent, title)
 	-- If fired from action menu
 	if IsKindOf(obj, "XAction") then
 		obj = ChoGGi.ComFuncs.SelObject()
@@ -626,6 +626,7 @@ function ChoGGi.ComFuncs.OpenInObjectEditorDlg(obj, parent)
 	return ChoGGi_DlgObjectEditor:new({}, terminal.desktop, {
 		obj = obj,
 		parent = parent,
+		title = title,
 	})
 end
 

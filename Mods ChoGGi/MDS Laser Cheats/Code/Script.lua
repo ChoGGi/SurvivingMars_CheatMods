@@ -23,12 +23,13 @@ end
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_HitChance = CurrentModOptions:GetProperty("HitChance")
-	mod_FireRate = CurrentModOptions:GetProperty("FireRate")
-	mod_ProtectRange = CurrentModOptions:GetProperty("ProtectRange") * guim
-	mod_ShootRange = CurrentModOptions:GetProperty("ShootRange") * guim
-	mod_RotateSpeed = CurrentModOptions:GetProperty("RotateSpeed") * 60
-	mod_BeamTime = CurrentModOptions:GetProperty("BeamTime")
+	local options = CurrentModOptions
+	mod_HitChance = options:GetProperty("HitChance")
+	mod_FireRate = options:GetProperty("FireRate")
+	mod_ProtectRange = options:GetProperty("ProtectRange") * guim
+	mod_ShootRange = options:GetProperty("ShootRange") * guim
+	mod_RotateSpeed = options:GetProperty("RotateSpeed") * 60
+	mod_BeamTime = options:GetProperty("BeamTime")
 
 	-- make sure we're ingame
 	if not UICity then

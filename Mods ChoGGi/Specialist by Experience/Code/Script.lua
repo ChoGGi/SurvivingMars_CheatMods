@@ -78,6 +78,12 @@ end
 
 -- loop through all the workplaces, and check for anyone who worked over 24 Sols
 local pairs, IsValid = pairs, IsValid
+
+-- for testing
+--~ function OnMsg.NewHour()
+--~ 	mod_SolsToTrain = 1
+--~ 	local sol = UICity.day
+
 function OnMsg.NewDay(sol) -- NewSol...
 	local workplaces = UICity.labels.Workplace or ""
 	for i = 1, #workplaces do
@@ -100,7 +106,40 @@ function OnMsg.NewDay(sol) -- NewSol...
 				end
 
 			end
+
 		end
 	end
 
-end -- OnMsg
+end
+
+GlobalVar("g_ChoGGi_SpecByExp_loadgame", false)
+
+function OnMsg.LoadGame()
+	-- only fire once or it'll keep resetting everyone
+	if g_ChoGGi_SpecByExp_loadgame then
+		return
+	end
+
+	-- update any buildings with existing workers
+	local workplaces = UICity.labels.Workplace or ""
+	for i = 1, #workplaces do
+		local workplace = workplaces[i]
+		if workplace.specialist ~= "none" and not workplace.ChoGGi_SpecByExp then
+			workplace.ChoGGi_SpecByExp = {}
+			for j = 1,  #workplace.workers do
+				local workers = workplace.workers[j]
+				for k = 1, #workers do
+					local worker = workers[k]
+					if not workplace.ChoGGi_SpecByExp[worker.handle] then
+						workplace.ChoGGi_SpecByExp[worker.handle] = {
+							started_on = UICity.day,
+							obj = worker,
+						}
+					end
+				end
+			end
+		end
+	end -- for the fords
+
+	g_ChoGGi_SpecByExp_loadgame = true
+end

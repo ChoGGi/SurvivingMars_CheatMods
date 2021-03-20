@@ -1,3 +1,6 @@
+v0.4
+Fixed issue with negative numbers.
+
 v0.3
 Mod option to quarter the points build up when turned off (instead of completely stopping it).
 

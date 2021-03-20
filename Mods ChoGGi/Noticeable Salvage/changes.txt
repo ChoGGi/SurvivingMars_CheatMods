@@ -1,2 +1,5 @@
+v0.3
+Removed fix.
+
 v0.2
 Maybe fixed a bug.

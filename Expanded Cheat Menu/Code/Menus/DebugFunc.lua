@@ -981,11 +981,6 @@ function ChoGGi.MenuFuncs.ObjectCloner(flat)
 	local hex = ChoGGi.ComFuncs.CursorNearestHex()
 	if flat == true or flat.flatten_to_ground == true then
 		clone:SetPos(hex:SetTerrainZ())
---~ 		clone:SetPos(point(
---~ 			hex:x(),
---~ 			hex:y(),
---~ 			clone:GetZ()
---~ 		))
 	else
 		clone:SetPos(hex)
 	end

@@ -30,3 +30,24 @@ function AreDomesConnectedWithPassage(d1, d2, ...)
 		-- "d1 == d2" is from orig func (no need to check dist if both domes are the same)
 		and (d1 == d2 or d1:GetDist2D(d2) <= dome_walk_dist)
 end
+
+
+--~ local orig_Colonist_Goto = Colonist.Goto
+--~ function Colonist:Goto(pos, ...)
+
+--~ 	if not mod_EnableMod then
+--~ 		return orig_Colonist_Goto(self, pos, ...)
+--~ 	end
+
+--~   local curr_pos = self:GetVisualPos()
+--~ 	if curr_pos:Dist2D(pos) > dome_walk_dist then
+--~ 		ex(self)
+--~ 			UICity:SetGameSpeed(0)
+--~ 			UISpeedState = "pause"
+
+--~ 		self:SetCommand("Idle")
+--~ 		return
+--~ 	end
+
+--~ 	return orig_Colonist_Goto(self, pos, ...)
+--~ end

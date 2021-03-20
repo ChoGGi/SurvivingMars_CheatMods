@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+-- last checked source: Tito Hotfix2
+
 -- In-game functions replaced with custom ones
 
 local type, rawget = type, rawget
@@ -537,7 +539,7 @@ function OnMsg.ClassesGenerate()
 	end -- do
 
 	do -- InfopanelDlg:RecalculateMargins
-	-- last checked source: Jan 2020
+	-- last checked source: Tito Hotfix2
 		local GetSafeMargins = GetSafeMargins
 		local box = box
 
@@ -558,13 +560,12 @@ function OnMsg.ClassesGenerate()
 		end
 	end -- do
 
-	-- pretty much a copy n paste, just slight addition to change font colour (i use a darker menu, so the menu icons background blends)
-	-- last checked source: Jan 2020
+	-- Adding some ... to folders
 	do -- XMenuEntry:SetShortcut
 		local margin = box(10, 0, 0, 0)
 
 		SaveOrigFunc("XMenuEntry", "SetShortcut")
-		function XMenuEntry:SetShortcut(shortcut_text)
+		function XMenuEntry:SetShortcut(...)
 
 			if self.Icon == "CommonAssets/UI/Menu/folder.tga" then
 				local label = XLabel:new({
@@ -574,26 +575,15 @@ function OnMsg.ClassesGenerate()
 				}, self)
 				label:SetFontProps(self)
 				label:SetText("...")
-
-				-- folders don't have a shortcut so off we go
-				return
+			else
+				ChoGGi_OrigFuncs.XMenuEntry_SetShortcut(self, ...)
 			end
 
-			local shortcut = rawget(self, "idShortcut") or shortcut_text ~= "" and XLabel:new({
-				Dock = "right",
-				VAlign = "center",
-				Margins = margin,
-			}, self)
-			if shortcut then
-				shortcut:SetEnabled(false)
-				shortcut:SetFontProps(self)
-				shortcut:SetText(shortcut_text)
-			end
 		end
 	end -- do
 
 	do -- XPopupMenu:RebuildActions
-	-- last checked source: Jan 2020
+	-- last checked source: Tito Hotfix2
 		local XTemplateSpawn = XTemplateSpawn
 
 		-- yeah who gives a rats ass about mouseover hints on menu items
@@ -977,7 +967,7 @@ function OnMsg.ClassesBuilt()
 
 	-- remove spire spot limit
 	do -- ConstructionController:UpdateCursor
-	-- last checked source: Jan 2020
+	-- last checked source: Tito Hotfix2
 		local IsValid = IsValid
 		local FixConstructPos = FixConstructPos
 		local UnbuildableZ = buildUnbuildableZ()
@@ -1249,7 +1239,7 @@ function OnMsg.ClassesBuilt()
 
 	-- make the background hide when console not visible (instead of after a second or two)
 	do -- ConsoleLog:ShowBackground
-	-- last checked source: Jan 2020
+	-- last checked source: Tito Hotfix2
 		local DeleteThread = DeleteThread
 		local RGBA = RGBA
 

@@ -1,23 +1,27 @@
 return PlaceObj("ModDef", {
 	"title", "Specialist By Experience",
-	"version", 7,
-	"version_major", 0,
-	"version_minor", 7,
-
 	"id", "ChoGGi_SpecialistByExperience",
+	"steam_id", "1461190633",
+	"pops_any_uuid", "16aa5fa7-f019-4772-92a5-7dd977a35322",
+	"lua_revision", 1001551,
+	"version", 8,
+	"version_major", 0,
+	"version_minor", 8,
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
 	"image", "Preview.png",
-	"steam_id", "1461190633",
-	"pops_any_uuid", "16aa5fa7-f019-4772-92a5-7dd977a35322",
-	"lua_revision", 1001551,
-	"description", [[Colonists that work at the same job for 25 Sols will automagically get the specialisation needed for that workplace.
+	"description", [[Colonists without a spec that work at the same job for 25 Sols will automagically get the specialisation needed for that workplace.
 
-Does not include colonists that already have a spec (you can allow that with mod options).
-Works on saved games, but only on newly hired colonists (you can use Expanded Cheat Menu to fire everyone).
+Mod Options:
+Override Existing Spec: If colonist is already a specialist it will be replaced.
+Sols To Train: How many Sols of working does it take to get a spec.
+
+Known Issues:
+For saved games this obviously doesn't have a count of how long colonists have previously worked (got a feeling I'd be answering this question eventually).
+
 
 Idea by Dragonmystic.]],
 })
