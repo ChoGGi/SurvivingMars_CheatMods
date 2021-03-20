@@ -326,6 +326,11 @@ It don't matter if you're black or white"]]],
 		des = Strings[302535920001416--[[Max out shuttles for this hub.]]],
 	},
 
+-- Units
+	Breadcrumbs = {
+		des = Strings[302535920001464--[[Leave a trail of rudimentary orbs.]]],
+	},
+
 -- Misc
 	FindResource = {
 		des = Strings[302535920001218--[[Selects nearest storage containing specified resource (shows list of resources).]]],
@@ -686,6 +691,11 @@ function Colonist:CheatDie()
 		Translate(6779--[[Warning]]) .. ": " .. Strings[302535920000855--[[Last chance before deletion!]]]
 	)
 end
+
+function Unit:CheatBreadcrumbs()
+	return ChoGGi.ComFuncs.ToggleBreadcrumbs(self)
+end
+
 -- CheatAllShifts
 local function CheatAllShiftsOn(self)
 	self.closed_shifts[1] = false

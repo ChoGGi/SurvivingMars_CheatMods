@@ -210,20 +210,20 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 				CullTrait(value)
 			elseif text:find(Translate(4357--[[Birthplace]]):gsub("<right><UIBirthplace>", "")) and Tables.ColonistBirthplaces[value] then
 				Cull(value, "birthplace")
-				-- bonus round
-				if not UICity.ChoGGi.DaddysLittleHitler then
-					Msg("ChoGGi_DaddysLittleHitler")
-					UICity.ChoGGi.DaddysLittleHitler = true
-				end
+--~ 				-- bonus round
+--~ 				if not UICity.ChoGGi.DaddysLittleHitler then
+--~ 					Msg("ChoGGi_DaddysLittleHitler")
+--~ 					UICity.ChoGGi.DaddysLittleHitler = true
+--~ 				end
 			elseif text:find(Translate(4356--[[Sex]]):gsub("<right><Gender>", "")) and Tables.ColonistGenders[value] then
 				CullTrait(value)
 			elseif text:find(Strings[302535920000741--[[Race]]]) and Tables.ColonistRaces[value] then
 				Cull(value, "race", choice[1].idx)
-				-- bonus round
-				if not UICity.ChoGGi.DaddysLittleHitler then
-					Msg("ChoGGi_DaddysLittleHitler")
-					UICity.ChoGGi.DaddysLittleHitler = true
-				end
+--~ 				-- bonus round
+--~ 				if not UICity.ChoGGi.DaddysLittleHitler then
+--~ 					Msg("ChoGGi_DaddysLittleHitler")
+--~ 					UICity.ChoGGi.DaddysLittleHitler = true
+--~ 				end
 			end
 
 			if value == "Child" then
@@ -1279,15 +1279,15 @@ function ChoGGi.MenuFuncs.SetColonistsRace(action)
 			end
 		end
 
-		-- remove if random
-		if value == Translate(3490--[[Random]]) then
-			MilestoneCompleted.DaddysLittleHitler = nil
-			UICity.ChoGGi.DaddysLittleHitler = nil
-		-- If only changing one colonists then you aren't hitler :)
-		elseif not choice.check2 and not UICity.ChoGGi.DaddysLittleHitler then
-			Msg("ChoGGi_DaddysLittleHitler")
-			UICity.ChoGGi.DaddysLittleHitler = true
-		end
+--~ 		-- remove if random
+--~ 		if value == Translate(3490--[[Random]]) then
+--~ 			MilestoneCompleted.DaddysLittleHitler = nil
+--~ 			UICity.ChoGGi.DaddysLittleHitler = nil
+--~ 		-- If only changing one colonists then you aren't hitler :)
+--~ 		elseif not choice.check2 and not UICity.ChoGGi.DaddysLittleHitler then
+--~ 			Msg("ChoGGi_DaddysLittleHitler")
+--~ 			UICity.ChoGGi.DaddysLittleHitler = true
+--~ 		end
 
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(choice.race, Strings[302535920000819--[[Nationalsozialistische Rassenhygiene]]]),

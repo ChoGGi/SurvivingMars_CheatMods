@@ -1200,19 +1200,19 @@ function OnMsg.ChoGGi_TogglePinnableObject(obj)
 	end)
 end
 
--- hidden milestones
-function OnMsg.ChoGGi_DaddysLittleHitler()
-	local MilestoneCompleted = MilestoneCompleted
-	PlaceObj("Milestone", {
-		base_score = 0,
-		display_name = Strings[302535920000731--[[Deutsche Gesellschaft für Rassenhygiene]]],
-		group = "Default",
-		id = "DaddysLittleHitler"
-	})
-	if not MilestoneCompleted.DaddysLittleHitler then
-		MilestoneCompleted.DaddysLittleHitler = 3025359200000
-	end
-end
+--~ -- hidden milestones
+--~ function OnMsg.ChoGGi_DaddysLittleHitler()
+--~ 	local MilestoneCompleted = MilestoneCompleted
+--~ 	PlaceObj("Milestone", {
+--~ 		base_score = 0,
+--~ 		display_name = Strings[302535920000731--[[Deutsche Gesellschaft für Rassenhygiene]]],
+--~ 		group = "Default",
+--~ 		id = "DaddysLittleHitler"
+--~ 	})
+--~ 	if not MilestoneCompleted.DaddysLittleHitler then
+--~ 		MilestoneCompleted.DaddysLittleHitler = 3025359200000
+--~ 	end
+--~ end
 
 function OnMsg.ChoGGi_Childkiller()
 	local MilestoneCompleted = MilestoneCompleted
@@ -1426,18 +1426,18 @@ do -- LoadGame/CityStart
 			HintsEnabled = false
 		end
 
-		-- show completed hidden milestones
-		if UICity.ChoGGi.DaddysLittleHitler then
-			PlaceObj("Milestone", {
-				base_score = 0,
-				display_name = Strings[302535920000731--[[Deutsche Gesellschaft für Rassenhygiene]]],
-				group = "Default",
-				id = "DaddysLittleHitler"
-			})
-			if not MilestoneCompleted.DaddysLittleHitler then
-				MilestoneCompleted.DaddysLittleHitler = 3025359200000 -- hitler's birthday
-			end
-		end
+--~ 		-- show completed hidden milestones
+--~ 		if UICity.ChoGGi.DaddysLittleHitler then
+--~ 			PlaceObj("Milestone", {
+--~ 				base_score = 0,
+--~ 				display_name = Strings[302535920000731--[[Deutsche Gesellschaft für Rassenhygiene]]],
+--~ 				group = "Default",
+--~ 				id = "DaddysLittleHitler"
+--~ 			})
+--~ 			if not MilestoneCompleted.DaddysLittleHitler then
+--~ 				MilestoneCompleted.DaddysLittleHitler = 3025359200000 -- hitler's birthday
+--~ 			end
+--~ 		end
 		if UICity.ChoGGi.Childkiller then
 			PlaceObj("Milestone", {
 				base_score = 0,

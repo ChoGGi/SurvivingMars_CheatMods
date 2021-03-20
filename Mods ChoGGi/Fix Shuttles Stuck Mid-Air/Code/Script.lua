@@ -17,56 +17,13 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local IsValid = IsValid
-local Sleep = Sleep
 local type = type
-
-local function CleanupShuttles()
-	-- In case this func gets called again for some reason
-	local old_pos = {}
-	local c = 0
-	local FlyingObjs = FlyingObjs or ""
-
-	-- get list of any shuttles on the GoHome command (all stuck ones are)
-	for i = 1, #FlyingObjs do
-		local obj = FlyingObjs[i]
-		if obj:IsKindOf("CargoShuttle") and obj.command == "GoHome" then
-			-- store it
-			c = c + 1
-			old_pos[c] = {
-				pos = obj:GetPos(),
-				obj = obj,
-			}
-		end
-	end
-
-	-- wait for it...
-	Sleep(1000)
-
-	-- now we loop through all the stored ones and see if the pos is any diff
-	for i = 1, #old_pos do
-		local item = old_pos[i]
-		-- same place, so probably a stuck shuttle
-		if item.pos == item.obj:GetPos() then
-			-- send it the idle command which'll reset it, and send it on it's merry way
-			item.obj:Idle()
-			o:SetCommand("GoHome")
-		end
-		-- If we do them all at once then it does a funky flipper dance
-		-- shuttles that go back in the hub are deleted
-		local timer = 10000
-		while IsValid(item.obj) and timer > 0 do
-			Sleep(1000)
-			timer = timer - 1000
-		end
-	end
-end
+local IsValid = IsValid
 
 function OnMsg.LoadGame()
 	if not mod_EnableMod then
 		return
 	end
-
 
 	-- req has an invalid building
 	CreateRealTimeThread(function()
@@ -90,13 +47,18 @@ function OnMsg.LoadGame()
 
 			end
 		end
-	end)
 
-	CreateGameTimeThread(function()
-		CleanupShuttles()
-		-- just in case
-		Sleep(60000)
-		CleanupShuttles()
+
+		-- fuck it just reset them all
+		Sleep(1000)
+		for i = 1, #objs do
+			local obj = objs[i]
+			if IsValid(obj) then
+				obj:Idle()
+				obj:SetCommand("GoHome")
+			end
+		end
+
 	end)
 
 end

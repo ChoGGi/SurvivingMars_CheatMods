@@ -1,3 +1,6 @@
+v0.4
+Fixed depthOfField, focusDepth, defocusStrength.
+
 v0.3
 Added mod options to adjust filter settings.
 

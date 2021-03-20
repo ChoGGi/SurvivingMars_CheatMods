@@ -3,6 +3,7 @@
 ## v16.5 (Unreleased)
 ### Added:
 - Cheats pane>FillAll: Fill all depots of same type.
+- Cheats pane>Units>Breadcrumbs: Leave a trail of rudimentary orbs.
 
 ### Fixed:
 - Examine>Object>Entity Spots Toggle: Some update changed the waypoint whitespace.

@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Photo Filter Toggle",
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.png",
 	"id", "ChoGGi_PhotoFilterToggle",
 	"steam_id", "1825629300",
@@ -17,5 +17,6 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"description", [[Toggle photo filters during gameplay.
 
-If you enable more than one, whichever is last will be the one enabled.]],
+If you enable more than one filter, whichever is last will be the one enabled.
+]],
 })

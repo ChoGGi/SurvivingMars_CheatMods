@@ -864,6 +864,7 @@ do -- ShowObj
 	end
 
 end -- do
+local ShowPoint = ChoGGi.ComFuncs.ShowPoint
 local ShowObj = ChoGGi.ComFuncs.ShowObj
 local ColourObj = ChoGGi.ComFuncs.ColourObj
 local ClearShowObj = ChoGGi.ComFuncs.ClearShowObj
@@ -1142,7 +1143,20 @@ do -- Circle
 			end
 		end)
 	end
+
+	-- show a circle for time and delete it
+	function ChoGGi.ComFuncs.Sphere(pos, colour, time)
+		local orb = ShowPoint(pos and pos:SetTerrainZ(10 * guic) or GetCursorOrGamePad(), colour)
+
+		CreateRealTimeThread(function()
+			Sleep(time or 50000)
+			if IsValid(orb) then
+				orb:delete()
+			end
+		end)
+	end
 end -- do
+local Sphere = ChoGGi.ComFuncs.Sphere
 
 -- this is a question box without a question (WaitPopupNotification only works in-game, not main menu)
 function ChoGGi.ComFuncs.MsgWait(text, title, image, ok_text, context, parent, template, thread)
@@ -5960,6 +5974,34 @@ function ChoGGi.ComFuncs.ResetHumanCentipedes()
 		end
 	end
 end
+
+function ChoGGi.ComFuncs.ToggleBreadcrumbs(obj)
+	if not IsValid(obj) then
+		print("ToggleBreadcrumbs Not valid:", obj)
+		return
+	end
+
+	if IsValidThread(obj.ChoGGi_breadcrumbThread) then
+		DeleteThread(obj.ChoGGi_breadcrumbThread)
+		obj.ChoGGi_breadcrumbThread = nil
+		return
+	end
+
+	obj.ChoGGi_breadcrumbThread = CreateGameTimeThread(function()
+		local colour = RandomColourLimited()
+		local last_pos
+		while true do
+			local pos = obj:GetVisualPos()
+			if tostring(last_pos) ~= tostring(pos) then
+				Sphere(pos, colour, 15000)
+				last_pos = pos
+			end
+			Sleep(1500)
+		end
+	end)
+end
+
+--
 
 -- bugged
 --~ function ChoGGi.ComFuncs.SendDroneToCC(drone, new_hub)

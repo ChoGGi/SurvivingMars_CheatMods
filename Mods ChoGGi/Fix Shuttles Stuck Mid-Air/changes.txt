@@ -1,3 +1,6 @@
+v0.4
+Doesn't check anymore and just resets all shuttles.
+
 v0.3
 Added mod option to disable mod.
 

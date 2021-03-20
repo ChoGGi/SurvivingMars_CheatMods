@@ -32,11 +32,6 @@ local white_list = {
 	fogDensity = true,
 }
 
---~ local CmpLower = CmpLower
---~ table.sort(photos, function(a, b)
---~ 	return CmpLower(a, b)
---~ end)
-
 local function ApplyFilter()
 	if not UICity then
 		return
@@ -61,6 +56,13 @@ local function ApplyFilter()
 	PP_Rebuild()
 
 	local hr = hr
+
+	local shared_props = {
+		depthOfField = options:GetProperty("depthOfField"),
+		focusDepth = options:GetProperty("focusDepth"),
+		defocusStrength = options:GetProperty("defocusStrength"),
+	}
+
 	for i = 1, settings_c do
 		local setting = settings[i]
 		local prop_id = setting.id
@@ -77,9 +79,9 @@ local function ApplyFilter()
 			SetSceneParam(1, "Vignette", mod_setting, 0, 0)
 		elseif prop_id == "depthOfField" or prop_id == "focusDepth" or prop_id == "defocusStrength" then
 			local detail = 3
-			local focus_depth = Lerp(hr.NearZ, hr.FarZ, mod_setting ^ detail, 100 ^ detail)
-			local dof = Lerp(0, hr.FarZ - hr.NearZ, mod_setting ^ detail, 100 ^ detail)
-			local strength = sqrt(mod_setting * 100)
+			local focus_depth = Lerp(hr.NearZ, hr.FarZ, shared_props.focusDepth ^ detail, 100 ^ detail)
+			local dof = Lerp(0, hr.FarZ - hr.NearZ, shared_props.depthOfField ^ detail, 100 ^ detail)
+			local strength = sqrt(shared_props.defocusStrength * 100)
 			SetDOFParams(strength, Max(focus_depth - dof / 3, hr.NearZ), Max(focus_depth - dof / 6, hr.NearZ), strength, Min(focus_depth + dof / 3, hr.FarZ), Min(focus_depth + dof * 2 / 3, hr.FarZ), 0)
 		end
 

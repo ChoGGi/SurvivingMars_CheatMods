@@ -1,5 +1,4 @@
 "ID", " Text"
-302535920001464,
 302535920001466,
 302535920001577,
 302535920001628,
@@ -146,6 +145,7 @@
 302535920000854, "Results Found"
 302535920000219, "Export viewed image to <green>%s</green>."
 302535920000109, "Invalid Image"
+302535920001464, "Leave a trail of rudimentary orbs."
 302535920001463, "Fill all depots of same type."
 302535920000929, "Tell drone to go back to controller."
 302535920001416, "Max out shuttles for this hub."
