@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v9.5 (Unreleased)
+## v9.6 (Unreleased)
+
+## v9.5 (19 March 2021)
 - Added option to tame GetAllAttaches.
 
 ## v9.4 (19 March 2021)

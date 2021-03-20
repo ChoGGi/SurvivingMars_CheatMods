@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v16.5 (Unreleased)
+## v16.6 (Unreleased)
+
+## v16.5 (19 March 2021)
 ### Added:
 - Cheats pane>FillAll: Fill all depots of same type.
 - Cheats pane>Units>Breadcrumbs: Leave a trail of rudimentary orbs.

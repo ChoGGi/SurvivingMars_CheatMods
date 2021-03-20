@@ -61,7 +61,6 @@ local Sleep = Sleep
 local XCreateRolloverWindow = XCreateRolloverWindow
 local XDestroyRolloverWindow = XDestroyRolloverWindow
 
-local GameState = GameState
 local TMeta = TMeta
 local TConcatMeta = TConcatMeta
 

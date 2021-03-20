@@ -8,7 +8,6 @@ local mod_TravelTimeMarsEarth
 local mod_RocketPrice
 local mod_CargoCapacity
 local mod_FoodPerRocketPassenger
-local mod_
 
 -- some stuff checks one some other...
 local function SetConsts(id, value)
