@@ -325,7 +325,7 @@ function OnMsg.ClassesGenerate()
 		end
 	end -- do
 
-	do -- speedup large cheat fills
+	do -- CheatFill (speedup large cheat fills)
 		local function SuspendAndFire(func, ...)
 			SuspendPassEdits("SuspendAndFire:CheatFill")
 			local ret = ChoGGi_OrigFuncs[func](...)

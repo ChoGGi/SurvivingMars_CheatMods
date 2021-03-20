@@ -262,6 +262,9 @@ It don't matter if you're black or white"]]],
 	FinishConstruct = {
 		des = Strings[302535920001428--[[Instantly finish current drone/biorobot.]]],
 	},
+	FillAll = {
+		des = Strings[302535920001463--[[Fill all depots of same type.]]],
+	},
 
 -- Rover/Drone
 	BattCapDbl = {
@@ -765,7 +768,21 @@ TerrainDeposit.CheatChangeGrade = CheatChangeGrade
 function TerrainDeposit:CheatRefill()
 	self.amount = self.max_amount
 end
-
+-- storage
+local function CheatFillAll(self)
+	local template = self.template_name
+	local objs = (self.city or UICity).labels[template]
+	for i = 1, #objs do
+		local obj = objs[i]
+		-- UniversalStorageDepot label has all depots in it
+		if obj.template_name == template then
+			obj:CheatFill()
+		end
+	end
+end
+UniversalStorageDepot.CheatFillAll = CheatFillAll
+StorageDepot.CheatFillAll = CheatFillAll
+MechanizedDepot.CheatFillAll = CheatFillAll
 -- CheatCap storage
 local function RetGridCharValues(obj)
 	if obj:IsKindOf("ElectricityStorage") then

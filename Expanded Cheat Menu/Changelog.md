@@ -1,6 +1,9 @@
 ## ECM Changelog
 
 ## v16.5 (Unreleased)
+### Added:
+- Cheats pane>FillAll: Fill all depots of same type.
+
 ### Fixed:
 - Examine>Object>Entity Spots Toggle: Some update changed the waypoint whitespace.
 
