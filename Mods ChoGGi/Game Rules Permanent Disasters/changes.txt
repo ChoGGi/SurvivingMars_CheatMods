@@ -1,3 +1,7 @@
+v0.5
+Tito again (cold areas changed a bit).
+Mod options added: Unbreakable Cables/Pipes, and Give Subsurface Heaters.
+
 v0.4
 Tito.
 

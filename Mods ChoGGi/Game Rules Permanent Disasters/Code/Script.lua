@@ -22,6 +22,7 @@ local MinuteDuration = const.MinuteDuration
 -- mod options
 local mod_MeteorsOverkill
 local mod_MeteorsNoDeposits
+local mod_DustStormsUnbreakableCP
 local mod_DustStormsAllowRockets
 local mod_DustStormsMOXIEPerformance
 local mod_DustStormsElectrostatic
@@ -29,6 +30,7 @@ local mod_DustStormsGreatStorm
 local mod_DustDevilsTwisterAmount
 local mod_DustDevilsTwisterMaxAmount
 local mod_DustDevilsElectrostatic
+local mod_ColdAreaGiveSubsurfaceHeaters
 local options
 
 -- fired when settings are changed/init
@@ -36,6 +38,7 @@ local function ModOptions()
 	options = CurrentModOptions
 	mod_MeteorsOverkill = options:GetProperty("MeteorsOverkill")
 	mod_MeteorsNoDeposits = options:GetProperty("MeteorsNoDeposits")
+	mod_DustStormsUnbreakableCP = options:GetProperty("DustStormsUnbreakableCP")
 	mod_DustStormsAllowRockets = options:GetProperty("DustStormsAllowRockets")
 	mod_DustStormsMOXIEPerformance = options:GetProperty("DustStormsMOXIEPerformance")
 	mod_DustStormsElectrostatic = options:GetProperty("DustStormsElectrostatic")
@@ -43,6 +46,7 @@ local function ModOptions()
 	mod_DustDevilsTwisterAmount = options:GetProperty("DustDevilsTwisterAmount")
 	mod_DustDevilsTwisterMaxAmount = options:GetProperty("DustDevilsTwisterMaxAmount")
 	mod_DustDevilsElectrostatic = options:GetProperty("DustDevilsElectrostatic")
+	mod_ColdAreaGiveSubsurfaceHeaters = options:GetProperty("ColdAreaGiveSubsurfaceHeaters")
 end
 
 -- load default/saved settings
@@ -312,19 +316,40 @@ GlobalGameTimeThread("ChoGGi_Bakersfield_Thread", function()
 	end
 end)
 
--- make sure there's one (broad) cold area
-local orig_FillRandomMapProps = FillRandomMapProps
-function FillRandomMapProps(gen, ...)
-	local map = orig_FillRandomMapProps(gen, ...)
-
-	if gen and IsGameRuleActive("ChoGGi_WinterWonderland") then
-		gen.ColdAreaChance = 100
-		gen.ColdAreaCount = 1
-		-- max map size * 4 (make sure everything is covered no matter where the area is)
-		gen.ColdAreaSize = range(4857600, 4857600)
+-- don't break when mod option enabled
+local classes = {
+	"ElectricityGridElement",
+	"LifeSupportGridElement",
+}
+local g = _G
+for i = 1, #classes do
+	local cls_obj = g[classes[i]]
+	local func = cls_obj.CanBreak
+	function cls_obj.CanBreak(...)
+		if mod_DustStormsUnbreakableCP then
+			return false
+		end
+		return func(...)
 	end
+end
 
-	return map
+-- cold areas
+local orig_RandomMapGenerator_OnGenerateLogic = RandomMapGenerator.OnGenerateLogic
+function RandomMapGenerator:OnGenerateLogic(env, ...)
+	if IsGameRuleActive("ChoGGi_WinterWonderland") then
+		self.ColdFeatureRadius = 100
+		self.ColdAreaChance = 100
+		self.ColdAreaCount = 1
+		-- max map size * 4 (make sure everything is covered no matter where the area is)
+		self.ColdAreaSize = range(4857600, 4857600)
+	end
+	-- testing
+--~ 	if IsGameRuleActive("ChoGGi_WinterWonderland") then
+--~ 		env.GenMarkerObj(ColdArea, point(0,0), {Range = 1214400})
+--~ 		local marker = env.GenMarkerObj(PrefabFeatureMarker, point(0,0), {FeatureRadius = 607200, FeatureType = "Cold Area"})
+--~ 		env.prefab_features[#env.prefab_features + 1] = marker
+--~ 	end
+	orig_RandomMapGenerator_OnGenerateLogic(self, env, ...)
 end
 
 local function StartupCode()
@@ -337,7 +362,7 @@ local function StartupCode()
 		UpdateMOXIES()
 	end
 
-	if IsGameRuleActive("ChoGGi_WinterWonderland") then
+	if mod_ColdAreaGiveSubsurfaceHeaters then
 		GrantTech("SubsurfaceHeating")
 	end
 end
@@ -354,12 +379,12 @@ function OnMsg.ChoGGi_GreatBakersfield_Msg(obj)
 end
 
 function OnMsg.ClassesPostprocess()
-	-- trand func from City.lua>function CreateRand(stable, ...) doesn't like < 2
+	-- trand func from City.lua>function CreateRand(stable, ...) doesn't like < 2 (or maybe < 1, but whatever safety first)
 	local orig_MapSector_new = MapSector.new
 	function MapSector.new(...)
 		local sector = orig_MapSector_new(...)
 		-- good thing avg_heat is added when the sector is created
-		if sector.avg_heat == 0 and IsGameRuleActive("ChoGGi_WinterWonderland") then
+		if sector.avg_heat < 2 and IsGameRuleActive("ChoGGi_WinterWonderland") then
 			sector.avg_heat = 2
 		end
 		return sector
@@ -406,10 +431,14 @@ function OnMsg.ClassesPostprocess()
 	})
 end
 
--- prevent blank mission profile screen
+-- prevent blank mission profile screen (well not if the mod isn't loaded)
 function OnMsg.LoadGame()
+	local rules = g_CurrentMissionParams.idGameRules
+	if not rules then
+		return
+	end
+
 	local GameRulesMap = GameRulesMap
-	local rules = g_CurrentMissionParams.idGameRules or empty_table
 	for rule_id in pairs(rules) do
 		-- If it isn't in the map then it isn't a valid rule
 		if not GameRulesMap[rule_id] then

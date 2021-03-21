@@ -542,20 +542,6 @@ Actions[c] = {ActionName = Strings[302535920000184--[[Unlimited Connection Lengt
 	OnAction = ChoGGi.MenuFuncs.UnlimitedConnectionLength_Toggle,
 }
 
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000064--[[Build On Geysers]]],
-	ActionMenubar = "ECM.ECM.Buildings.Toggles",
-	ActionId = ".Build On Geysers",
-	ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
-	OnAction = ChoGGi.MenuFuncs.BuildOnGeysers_Toggle,
-	RolloverText = function()
-		return SettingState(
-			ChoGGi.UserSettings.BuildOnGeysers,
-			Strings[302535920000065--[[Allows you to build on geysers. Use %s around the area to delete the geyser objects (about 10-20 depending on size).]]]:format(ChoGGi.ComFuncs.GetShortcut(".Keys.Examine Objects Shift"))
-		)
-	end,
-}
-
 if g_AvailableDlc.gagarin then
 	c = c + 1
 	Actions[c] = {ActionName = Strings[302535920001398--[[Remove Sponsor Limits]]],

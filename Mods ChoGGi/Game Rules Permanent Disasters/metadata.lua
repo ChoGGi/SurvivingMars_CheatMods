@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2060296355",
 	"pops_any_uuid", "09c4df72-ad70-43c3-aa81-558431221377",
 	"lua_revision", 1001551,
-	"version", 4,
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 5,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
@@ -30,12 +30,13 @@ Overkill: For those that want extra pain.
 No Deposits: No goodies from the meteors.
 
 [b]Winter Wonderland[/b]: The ground will always be icy everywhere.
-This will unlock Subsurface Heaters from the get-go.
+Give Subsurface Heaters: Start game with Subsurface Heaters unlocked.
 
 [b]Great Bakersfield Dust Storm[/b]: Permanent dust storm.
 This will allow MOXIEs (since you can't play without them) operating at a reduced capacity.
 Mod Options:
 Allow Rockets: Allow rockets to take off and land.
+Unbreakable Cables/Pipes: Cables/Pipes won't break (same as breakthrough tech, but no free construction).
 MOXIE Performance: Set the negative performance of MOXIEs during dust storms (higher = worse for you).
 Electrostatic Storm: Chance of an electrostatic storm (lightning strikes).
 Great Storm: Chance of a great storm (turbines spin faster?).

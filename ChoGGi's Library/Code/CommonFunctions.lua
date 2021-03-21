@@ -22,6 +22,7 @@ local IsPoint = IsPoint
 local MapFilter = MapFilter
 local MapGet = MapGet
 local PropObjGetProperty = PropObjGetProperty
+local table = table
 local table_remove = table.remove
 local table_find = table.find
 local table_clear = table.clear
@@ -50,6 +51,7 @@ local terrain_IsPassable = terrain.IsPassable
 local HexGridGetObject = HexGridGetObject
 local HexToWorld = HexToWorld
 local point = point
+local point20 = point20
 local WaitMsg = WaitMsg
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
@@ -2698,17 +2700,21 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 		obj:SetColorModifier(choice[13].value)
 	end
 
+	local function SetChoGGiPalette(obj, c)
+		obj:SetColorModifier(c[-1])
+		obj:SetColorizationMaterial(1, c[1][1], c[1][2], c[1][3])
+		obj:SetColorizationMaterial(2, c[2][1], c[2][2], c[2][3])
+		obj:SetColorizationMaterial(3, c[3][1], c[3][2], c[3][3])
+		obj:SetColorizationMaterial(4, c[4][1], c[4][2], c[4][3])
+	end
+	ChoGGi.ComFuncs.SetChoGGiPalette = SetChoGGiPalette
+
 	local function RestoreOldPalette(obj)
 		if not IsValid(obj) then
 			return
 		end
 		if obj.ChoGGi_origcolors then
-			local c = obj.ChoGGi_origcolors
-			obj:SetColorModifier(c[-1])
-			obj:SetColorizationMaterial(1, c[1][1], c[1][2], c[1][3])
-			obj:SetColorizationMaterial(2, c[2][1], c[2][2], c[2][3])
-			obj:SetColorizationMaterial(3, c[3][1], c[3][2], c[3][3])
-			obj:SetColorizationMaterial(4, c[4][1], c[4][2], c[4][3])
+			SetChoGGiPalette(obj, obj.ChoGGi_origcolors)
 			obj.ChoGGi_origcolors = nil
 		end
 	end
@@ -3062,6 +3068,22 @@ do -- DeleteObject
 		if obj:IsKindOf("Dome") and not obj:CanDemolish() then
 			DeleteLabelObjs(obj, "Building")
 			DeleteLabelObjs(obj, "Colonist")
+			local connected_domes = obj.connected_domes
+			if connected_domes then
+				for bad_obj in pairs(connected_domes) do
+					if not IsValid(bad_obj) then
+						-- remove invalid obj from dome list
+						table.remove_entry(connected_domes[bad_obj], "handle", bad_obj.handle)
+					-- obj stuck outside the map area ("holding area" for off planet rockets and so on)
+					elseif (bad_obj:GetPos() or point20) == InvalidPos and not (bad_obj:IsKindOf("Colonist") and IsValid(bad_obj.holder)) then
+						-- stick in dome for user to remove
+						DeleteObject(bad_obj)
+					end
+				end
+			end
+			-- try deleting again
+			DeleteObject(obj)
+
 			if not obj:CanDemolish() then
 				MsgPopup(
 					Strings[302535920001354--[["<green>%s</green> is a Dome with stuff still in it (crash if deleted)."]]]:format(RetName(obj)),
@@ -4178,6 +4200,8 @@ do -- IsControlPressed/IsShiftPressed/IsAltPressed
 	local vkAlt = const.vkAlt
 	local vkLwin = const.vkLwin
 	local osx = Platform.osx
+	local XInput_IsControllerConnected = XInput.IsControllerConnected
+	local XInput_IsCtrlButtonPressed = XInput.IsCtrlButtonPressed
 
 	local function IsControlPressed()
 		return IsKeyPressed(vkControl) or osx and IsKeyPressed(vkLwin)
@@ -4189,6 +4213,9 @@ do -- IsControlPressed/IsShiftPressed/IsAltPressed
 	end
 	function ChoGGi.ComFuncs.IsAltPressed()
 		return IsKeyPressed(vkAlt)
+	end
+	function ChoGGi.ComFuncs.IsGamepadButtonPressed(button)
+		return XInput_IsCtrlButtonPressed(XInput_IsControllerConnected(s_XInputControllersConnected-1), button)
 	end
 end -- do
 

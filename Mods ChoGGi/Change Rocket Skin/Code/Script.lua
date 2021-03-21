@@ -1,30 +1,42 @@
 -- See LICENSE for terms
 
--- start with base game rockets (we add space race and silva below)
-local rockets = {
+-- set below
+local rockets, palettes
+
+-- override skin funcs
+local function GetSkins(self)
+	return rockets, palettes
+end
+
+-- replace the default getskins function with ours
+RocketBase.GetSkins = GetSkins
+-- probably not needed
+SupplyPod.GetSkins = GetSkins
+
+-- start with base game rockets
+rockets = {
 	"Rocket",
 	"Rocket_Trailblazer",
 	"CombatRover",
 	"SupplyPod",
 }
 
-local palettes = {
+palettes = {
 	RocketBase.rocket_palette,
 	RocketBase.rocket_palette,
 	AttackRover.palette,
 	SupplyPod.rocket_palette,
 }
 
-local function GetSkins()
-	return rockets, palettes
-end
+-- unlock Trailblazer skins
+local tb = g_TrailblazerSkins
+tb.Drone = "Drone_Trailblazer"
+tb.RCRover = "Rover_Trailblazer"
+tb.RCTransport = "RoverTransport_Trailblazer"
+tb.ExplorerRover = "RoverExplorer_Trailblazer"
+tb.SupplyRocket = "Rocket_Trailblazer"
 
--- replace the default getskins function with ours
-RocketBase.GetSkins = GetSkins
--- hey if you want to change the skin for a few seconds...
-SupplyPod.GetSkins = GetSkins
-
--- add gag entities
+-- add space race entities
 if g_AvailableDlc.gagarin then
 	rockets[#rockets+1] = "DropPod"
 	rockets[#rockets+1] = "ArcPod"
@@ -50,5 +62,6 @@ function OnMsg.ModsReloaded()
 		rockets[#rockets+1] = "RDM_OrionRocket"
 		palettes[#palettes+1] = RDM_OrionRocket.rocket_palette
 		RDM_OrionRocket.GetSkins = GetSkins
+		RDM_OrionRocket.GetCurrentSkin = GetCurrentSkin
 	end
 end

@@ -22,7 +22,7 @@ local mod_GridOpacity
 local mod_GridScale
 local mod_HexColourDroneHub
 local mod_HexColourRCRover
-local mod_HexColourRocketBase
+local mod_HexColourSupplyRocket
 
 -- fired when settings are changed/init
 local function ModOptions()
@@ -34,7 +34,7 @@ local function ModOptions()
 
 	mod_HexColourDroneHub = RGBtoColour(options:GetProperty("HexColourDroneHub"))
 	mod_HexColourRCRover = RGBtoColour(options:GetProperty("HexColourRCRover"))
-	mod_HexColourRocketBase = RGBtoColour(options:GetProperty("HexColourSupplyRocket"))
+	mod_HexColourSupplyRocket = RGBtoColour(options:GetProperty("HexColourSupplyRocket"))
 end
 
 -- load default/saved settings

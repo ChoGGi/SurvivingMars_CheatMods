@@ -210,7 +210,7 @@ function OnMsg.ClassesPostprocess()
 			end
 			---
 		end,
-		-- add a right-click or button x action
+		-- add a right-click or button y action
 		"AltPress", true,
 		"OnAltPress", function (self, gamepad)
 			if gamepad then

@@ -357,27 +357,6 @@ function OnMsg.ClassesGenerate()
 		end
 	end -- do
 
-	-- allows you to build on geysers
-	SaveOrigFunc("ConstructionController", "IsObstructed")
-	function ConstructionController:IsObstructed(...)
-		if UserSettings.BuildOnGeysers then
-			local o = self.construction_obstructors
-			-- we need to make sure it's the only obstructor
-			if o and #o == 1 and o[1] == g_DontBuildHere then
-				return false
-			end
-		end
-		return ChoGGi_OrigFuncs.ConstructionController_IsObstructed(self, ...)
-	end
-
-	SaveOrigFunc("DontBuildHere", "Check")
-	function DontBuildHere.Check(...)
-		if UserSettings.BuildOnGeysers then
-			return false
-		end
-		return ChoGGi_OrigFuncs.DontBuildHere_Check(...)
-	end
-
 	-- allows you to build outside buildings inside and vice
 	SaveOrigFunc("CursorBuilding", "GameInit")
 	function CursorBuilding:GameInit(...)
@@ -393,7 +372,7 @@ function OnMsg.ClassesGenerate()
 		return ChoGGi_OrigFuncs.CursorBuilding_GameInit(self, ...)
 	end
 
-	-- stupid supply pods don't want to play nice
+	-- stupid supply pods don't want to play nice (override for custom_travel_time_mars/custom_travel_time_earth)
 	SaveOrigFunc("RocketBase", "FlyToEarth")
 	function RocketBase:FlyToEarth(flight_time, ...)
 		if UserSettings.TravelTimeMarsEarth then

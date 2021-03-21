@@ -1,6 +1,12 @@
 ## ECM Changelog
 
 ## v16.6 (Unreleased)
+### Added:
+- Cheats pane>DroneFactory/Control:SpawnAndroid/Drone: Instant spawn.
+- More stuff in Console>Examine>*.
+
+### Removed:
+- Build On Geysers/Delete Geysers: Moved to Dust Geyser Allow Building mod.
 
 ## v16.5 (19 March 2021)
 ### Added:

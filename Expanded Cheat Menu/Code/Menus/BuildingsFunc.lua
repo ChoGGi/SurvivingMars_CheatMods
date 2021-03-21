@@ -136,15 +136,6 @@ function ChoGGi.MenuFuncs.SponsorBuildingLimits_Toggle()
 	)
 end
 
-function ChoGGi.MenuFuncs.BuildOnGeysers_Toggle()
-	ChoGGi.UserSettings.BuildOnGeysers = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.BuildOnGeysers)
-	ChoGGi.SettingFuncs.WriteSettings()
-	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.BuildOnGeysers),
-		Strings[302535920000064--[[Build On Geysers]]]
-	)
-end
-
 function ChoGGi.MenuFuncs.SetTrainingPoints()
 	local obj = ChoGGi.ComFuncs.SelObject()
 	if not obj or not IsKindOf(obj, "TrainingBuilding") then

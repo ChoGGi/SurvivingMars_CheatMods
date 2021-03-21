@@ -265,6 +265,15 @@ It don't matter if you're black or white"]]],
 	FillAll = {
 		des = Strings[302535920001463--[[Fill all depots of same type.]]],
 	},
+	SpawnDrone = {
+		des = Strings[302535920001466--[[Spawn a drone.]]],
+	},
+	SpawnDrone = {
+		des = Strings[302535920001466--[[Spawn a drone.]]],
+	},
+	SpawnAndroid = {
+		des = Strings[302535920001577--[[Spawn an Android.]]],
+	},
 
 -- Rover/Drone
 	BattCapDbl = {
@@ -932,6 +941,29 @@ function DroneFactory:CheatFinishConstruct()
 		self.drone_construction_progress = 100000
 	end
 end
+
+function DroneFactory:CheatSpawnAndroid()
+	self:SpawnAndroid()
+end
+
+local function CheatSpawnDrone(self)
+	if self:IsKindOf("RocketBase") then
+		if #self.drones >= self:GetMaxDrones() then
+			return
+		end
+		local drone = self.city:CreateDrone()
+		drone:SetCommandCenter(self)
+		local spawn_pos = self:GetSpotLoc(self:GetSpotBeginIndex(self.drone_spawn_spot))
+		drone:SetPos(spawn_pos)
+		-- dunno doesn't work...
+--~ 		CreateGameTimeThread(Drone.SetCommand, drone, "Embark")
+		drone:SetCommand("Embark")
+	else
+		self:SpawnDrone()
+	end
+end
+DroneControl.CheatSpawnDrone = CheatSpawnDrone
+DroneFactory.CheatSpawnDrone = CheatSpawnDrone
 
 function Drone:CheatGoHome()
 	self:SetCommand("GoHome", nil, nil, nil, "ReturningToController")

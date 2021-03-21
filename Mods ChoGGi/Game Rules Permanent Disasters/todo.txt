@@ -1,12 +1,5 @@
-rockets couldn't take off eh
-
-
 heat wave
 evaporates water from tanks/lakes
 lowers moisture produced by moist vaps
 
 prefabs laser defernse/heaters
-
-mod options
-unbreakable cables/pipes for duststorm
-working vaps for dust storm

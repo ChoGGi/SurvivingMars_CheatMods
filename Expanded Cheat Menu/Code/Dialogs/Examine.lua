@@ -3705,17 +3705,18 @@ function ChoGGi_DlgExamine:SetObj(startup)
 
 	end -- Istable
 
+	local title = ""
 	if obj == "nil" then
-		self.idCaption:SetTitle(self, obj)
+		title = obj
 	else
 		if self.override_title then
-			self.idCaption:SetTitle(self, self.title)
+			title = self.title
 		else
 			local name_type = obj_type .. ": "
-			local title = self.title or name or obj
-			self.idCaption:SetTitle(self, name_type .. title:gsub(name_type, ""))
+			title = name_type .. (self.title or name or obj):gsub(name_type, "")
 		end
 	end
+	self.idCaption:SetTitle(self, title)
 
 	-- we add a slight delay; useful for bigger lists like _G or MapGet(true)
 	-- so the dialog shows up (progress is happening user)

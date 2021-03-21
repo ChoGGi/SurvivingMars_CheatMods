@@ -1,3 +1,6 @@
+v0.6
+Mod option to use adjusted colour (Building colour scheme).
+
 v0.5
 Tito.
 

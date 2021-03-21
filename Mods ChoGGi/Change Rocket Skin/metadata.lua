@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Change Rocket Skin",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"image", "Preview.jpg",
 	"id", "ChoGGi_ChangeRocketSkin",
 	"steam_id", "1570126808",
@@ -12,7 +12,10 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
+	"has_options", true,
+	"TagCosmetics", true,
 	"description", [[Makes the Change Skin button mean something.
+Mod option to use adjusted colour (Building colour scheme).
 
 The skin may not "stick" the first time it comes back from earth.]],
 })

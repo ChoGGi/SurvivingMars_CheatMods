@@ -1,3 +1,6 @@
+v0.5
+Every in-game hour set the mouse to mod option.
+
 v0.4
 Every in-game hour hide the mouse.
 

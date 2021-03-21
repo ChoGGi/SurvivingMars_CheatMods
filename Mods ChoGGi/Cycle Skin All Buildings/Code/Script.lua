@@ -1,9 +1,19 @@
 -- See LICENSE for terms
 
---~ function ChoGGi.ComFuncs.RetTemplateOrClass(obj)
-local function RetTemplateOrClass(obj)
-	return obj.template_name ~= "" and obj.template_name or obj.class
+local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
+local ObjectColourRandom = ChoGGi.ComFuncs.ObjectColourRandom
+
+--~ local SetChoGGiPalette = ChoGGi.ComFuncs.SetChoGGiPalette
+local function SetChoGGiPalette(obj, c)
+	obj:SetColorModifier(c[-1])
+	obj:SetColorizationMaterial(1, c[1][1], c[1][2], c[1][3])
+	obj:SetColorizationMaterial(2, c[2][1], c[2][2], c[2][3])
+	obj:SetColorizationMaterial(3, c[3][1], c[3][2], c[3][3])
+	obj:SetColorizationMaterial(4, c[4][1], c[4][2], c[4][3])
 end
+
+local IsKindOf = IsKindOf
+local IsMassUIModifierPressed = IsMassUIModifierPressed
 
 local function CycleAllSkins(obj)
 	local skin, palette = obj:GetCurrentSkin()
@@ -11,6 +21,21 @@ local function CycleAllSkins(obj)
 	for i = 1, #objs do
 		objs[i]:ChangeSkin(skin, palette)
 	end
+end
+
+local function RandomSkin(obj, all_skins)
+	ObjectColourRandom(obj)
+
+	if all_skins then
+		local palette = obj.ChoGGi_origcolors
+		local objs = UICity.labels[RetTemplateOrClass(obj)] or ""
+		for i = 1, #objs do
+			SetChoGGiPalette(objs[i], palette)
+		end
+	end
+
+	-- we don't need to keep this around, since changing the skin will reset it
+	obj.ChoGGi_origcolors = nil
 end
 
 function OnMsg.ClassesPostprocess()
@@ -31,19 +56,44 @@ function OnMsg.ClassesPostprocess()
 		end
 	end
 	if not button then
-		print("CANNOT FIND BUTTON: Cycle Skin All Buildings")
+		print("CANNOT FIND SKIN BUTTON: Cycle Skin All Buildings")
 		return
 	end
 
 	xtemplate.ChoGGi_CycleSkinAllBuildings_Button = true
 
-	local IsMassUIModifierPressed = IsMassUIModifierPressed
-	button.OnPress = function (self, gamepad)
-		self.context:CycleSkin()
-		if gamepad or IsMassUIModifierPressed() then
-			CycleAllSkins(self.context)
+	button.OnPress = function(self, gamepad)
+		local context = self.context
+
+		-- objs with one skin so we can reset random colours
+		local skins, palettes = context:GetSkins()
+		if #skins == 1 then
+			local skin, palette = context:GetCurrentSkin()
+			context:ChangeSkin(skin, palette)
+		else
+			context:CycleSkin()
+		end
+
+		if (gamepad or IsMassUIModifierPressed()) then
+			CycleAllSkins(context)
 		end
 	end
 
-	button.RolloverText = button.RolloverText .. T(302535920011495, "\n\nPress Ctrl to cycle all buildings.")
+	-- add a right-click or button y action
+	button.AltPress = true
+	button.OnAltPress = function(self, gamepad)
+		RandomSkin(self.context)
+		if (gamepad or IsMassUIModifierPressed()) then
+			RandomSkin(self.context, true)
+		end
+	end
+
+	-- show button for stuff with at least one skin
+	button.__condition = function(_, context)
+		if not IsKindOf(context, "ConstructionSite") then
+			return #(context:GetSkins() or "") > 0 or IsKindOf(context, "RocketBase")
+		end
+	end
+
+	button.RolloverText = button.RolloverText .. T(302535920011495, "\n\nPress Ctrl to cycle all buildings, <right_click> to use a randomly coloured skin.")
 end

@@ -1,1 +1,2 @@
 v0.2
+Override for certain rockets/pods.

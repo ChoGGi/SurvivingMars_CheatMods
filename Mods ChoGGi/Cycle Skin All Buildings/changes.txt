@@ -1,0 +1,2 @@
+v0.2
+Right-click (gamepad Y?) to randomly colour the skin.

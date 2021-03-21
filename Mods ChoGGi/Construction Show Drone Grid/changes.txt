@@ -1,3 +1,6 @@
+v1.8
+Log spam.
+
 v1.7
 Missed some stuff from 1.5.
 

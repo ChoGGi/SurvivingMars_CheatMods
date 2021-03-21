@@ -9,6 +9,23 @@ local mod_RocketPrice
 local mod_CargoCapacity
 local mod_FoodPerRocketPassenger
 
+-- override for custom_travel_time_mars/custom_travel_time_earth
+local orig_RocketBase_FlyToEarth = RocketBase.FlyToEarth
+function RocketBase:FlyToEarth(flight_time, ...)
+	if mod_TravelTimeEarthMars then
+		flight_time = mod_TravelTimeEarthMars
+	end
+	return orig_RocketBase_FlyToEarth(self, flight_time, ...)
+end
+
+local orig_RocketBase_FlyToMars = RocketBase.FlyToMars
+function RocketBase:FlyToMars(cargo, cost, flight_time, ...)
+	if mod_TravelTimeMarsEarth then
+		flight_time = mod_TravelTimeMarsEarth
+	end
+	return orig_RocketBase_FlyToMars(self, cargo, cost, flight_time, ...)
+end
+
 -- some stuff checks one some other...
 local function SetConsts(id, value)
 	Consts[id] = value

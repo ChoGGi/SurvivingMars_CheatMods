@@ -1,17 +1,33 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library",
+			"version_major", 9,
+			"version_minor", 5,
+		}),
+	},
 	"title", "Cycle Skin All Buildings",
-	"version", 1,
-	"version_major", 0,
-	"version_minor", 1,
-	"image", "Preview.png",
 	"id", "ChoGGi_CycleSkinAllBuildings",
 	"steam_id", "1973703265",
 	"pops_any_uuid", "bc722ad7-38a1-493d-9669-bc6fa4e8205f",
-	"author", "ChoGGi",
 	"lua_revision", 1001551,
+	"version", 2,
+	"version_major", 0,
+	"version_minor", 2,
+	"image", "Preview.jpg",
+	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
+--~ 	"has_options", true,
 	"TagInterface", true,
-	"description", [[Hold down Ctrl (I think the gamepad key is X?) to cycle the skins of all buildings (of the same type) instead of just the selected building.]],
+	"TagCosmetics", true,
+	"TagBuildings", true,
+	"description", [[Hold down Ctrl (gamepad X?) to cycle the skins of all buildings (of the same type) instead of just the selected building.
+Right-click (gamepad Y?) to randomly colour the skin.
+
+Known Issues:
+For objects with only one skin and a logo; the logo will disappear when changing the skin.
+]],
 })
