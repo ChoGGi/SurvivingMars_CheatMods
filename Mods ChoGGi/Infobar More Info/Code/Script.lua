@@ -35,25 +35,29 @@ local mod_AlwaysShowRemaining
 
 local function UpdateTrans()
 	CreateRealTimeThread(function()
-		local Dialogs = Dialogs
-		if not Dialogs.Infobar then
-			local Sleep = Sleep
-			while not Dialogs.Infobar do
-				Sleep(250)
-			end
-		end
-		local image = CurrentModPath .. "UI/resources.png"
-		local infobar = Dialogs.Infobar
-		if mod_DisableTransparency then
-			infobar.idPad:SetImage(image)
-			if infobar.idTerraformingBar then
-				infobar.idTerraformingBar.idPad:SetImage(image)
-			end
+		if not mod_EnableMod then
+			Sleep(5000)
 		else
-			-- get this path from game maybe?
-			infobar.idPad:SetImage("UI/CommonNew/resources.tga")
-			if infobar.idTerraformingBar then
-				infobar.idTerraformingBar.idPad:SetImage("UI/CommonNew/resources.tga")
+			local Dialogs = Dialogs
+			if not Dialogs.Infobar then
+				local Sleep = Sleep
+				while not Dialogs.Infobar do
+					Sleep(250)
+				end
+			end
+			local image = CurrentModPath .. "UI/resources.png"
+			local infobar = Dialogs.Infobar
+			if mod_DisableTransparency then
+				infobar.idPad:SetImage(image)
+				if infobar.idTerraformingBar then
+					infobar.idTerraformingBar.idPad:SetImage(image)
+				end
+			else
+				-- get this path from game maybe?
+				infobar.idPad:SetImage("UI/CommonNew/resources.tga")
+				if infobar.idTerraformingBar then
+					infobar.idTerraformingBar.idPad:SetImage("UI/CommonNew/resources.tga")
+				end
 			end
 		end
 	end)
@@ -64,7 +68,7 @@ OnMsg.InGameInterfaceCreated = UpdateTrans
 -- fired when settings are changed/init
 local function ModOptions()
 	local options = CurrentModOptions
-	mod_EnableMod = options:GetProperty("mod_EnableMod")
+	mod_EnableMod = options:GetProperty("EnableMod")
 	mod_SkipGrid0 = options:GetProperty("SkipGrid0")
 	mod_SkipGrid1 = options:GetProperty("SkipGrid1")
 	mod_SkipGridX = options:GetProperty("SkipGridX")
@@ -102,7 +106,7 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-function OnMsg.AddResearchRolloverTexts(ret, city)
+function OnMsg.AddResearchRolloverTexts(text, city)
 	if not mod_EnableMod then
 		return
 	end
@@ -110,7 +114,7 @@ function OnMsg.AddResearchRolloverTexts(ret, city)
 	local res_points = ResourceOverviewObj:GetEstimatedRP() + 0.0
 
 	-- research per sol
-	ret[#ret+1] = "<newline>" .. T{445070088246,
+	text[#text+1] = "<newline>" .. T{445070088246,
 		"Research per Sol<right><research(EstimatedDailyProduction)>",
 		EstimatedDailyProduction = res_points,
 	}
@@ -120,7 +124,7 @@ function OnMsg.AddResearchRolloverTexts(ret, city)
 		return
 	end
 	remaining_time_str.time = floatfloor(((max_points - points) / res_points) * scale_sols)
-	ret[#ret+1] = T(311, "Research") .. " " .. T(remaining_time_str)
+	text[#text+1] = T(311, "Research") .. " " .. T(remaining_time_str)
 end
 
 -- should the grid be displayed
@@ -424,6 +428,7 @@ local terminal_GetMousePos = terminal.GetMousePos
 local orig_ResourceOverview_GetLifesupportGridRollover = ResourceOverview.GetLifesupportGridRollover
 function ResourceOverview.GetLifesupportGridRollover(...)
 	if not mod_EnableMod then
+	print("RETUREND")
 		return orig_ResourceOverview_GetLifesupportGridRollover(...)
 	end
 
@@ -684,13 +689,13 @@ function InfobarObj:ChoGGi_GetBrokenDrones()
 end
 
 local shuttlehubcount_str = {302535920011373, "<left>Shuttles Max/Total/Current<right><max>/<total>/<current>"}
-local orig_GetDronesRollover = InfobarObj.GetDronesRollover
+local orig_InfobarObj_GetDronesRollover = InfobarObj.GetDronesRollover
 function InfobarObj:GetDronesRollover(...)
 	if not mod_EnableMod then
-		return orig_GetDronesRollover(self, ...)
+		return orig_InfobarObj_GetDronesRollover(self, ...)
 	end
 
-	local ret = orig_GetDronesRollover(self, ...)
+	local ret = orig_InfobarObj_GetDronesRollover(self, ...)
 	local list = ret[1]
 
 	local _, count = self:ChoGGi_GetBrokenDrones()
@@ -743,13 +748,13 @@ end
 
 -- max food consumption
 local foodcon_str = {3644, "Food consumption<right><food(FoodConsumedByConsumptionYesterday)>"}
-local orig_GetFoodRollover = InfobarObj.GetFoodRollover
+local orig_InfobarObj_GetFoodRollover = InfobarObj.GetFoodRollover
 function InfobarObj.GetFoodRollover(...)
 	if not mod_EnableMod then
-		return orig_GetFoodRollover(...)
+		return orig_InfobarObj_GetFoodRollover(...)
 	end
 
-	local ret = orig_GetFoodRollover(...)
+	local ret = orig_InfobarObj_GetFoodRollover(...)
 	local list = ret[1]
 
 	local eat_food_per_visit = g_Consts.eat_food_per_visit
@@ -783,13 +788,13 @@ local str_id_to_spec = {
 	[3857] = "security",
 }
 
-local orig_GetJobsRollover = InfobarObj.GetJobsRollover
+local orig_InfobarObj_GetJobsRollover = InfobarObj.GetJobsRollover
 function InfobarObj.GetJobsRollover(...)
 	if not mod_EnableMod then
-		return orig_GetJobsRollover(...)
+		return orig_InfobarObj_GetJobsRollover(...)
 	end
 
-	local ret = orig_GetJobsRollover(...)
+	local ret = orig_InfobarObj_GetJobsRollover(...)
 	local list = ret[1]
 
 	-- reset or add counts

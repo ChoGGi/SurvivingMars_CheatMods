@@ -5,6 +5,9 @@
 - Cheats pane>DroneFactory/Control:SpawnAndroid/Drone: Instant spawn.
 - More stuff in Console>Examine>*.
 
+### Fixed:
+- Changed override for IsDlcAvailable to skip "picard", as the future dlc is not implemented and is erroring stuff.
+
 ### Removed:
 - Build On Geysers/Delete Geysers: Moved to Dust Geyser Allow Building mod.
 
