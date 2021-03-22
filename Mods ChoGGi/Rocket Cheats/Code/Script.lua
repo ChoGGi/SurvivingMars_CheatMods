@@ -49,7 +49,6 @@ local function UpdateRockets()
 	end
 end
 
-
 -- fired when settings are changed/init
 local function ModOptions()
 	local options = CurrentModOptions

@@ -1,3 +1,6 @@
+v2.3
+Added option to disable mod (still shows some right-click cmds in menu).
+
 v2.2
 Production above consumption numbers were wrong (FormatDuration() expects positive numbers).
 

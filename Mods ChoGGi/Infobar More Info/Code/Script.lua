@@ -24,7 +24,7 @@ local remaining_time_str = {12265, "Remaining Time<right><time(time)>"}
 
 
 -- mod options
-local options
+local mod_EnableMod
 local mod_SkipGrid0
 local mod_SkipGrid1
 local mod_SkipGridX
@@ -63,7 +63,8 @@ OnMsg.InGameInterfaceCreated = UpdateTrans
 
 -- fired when settings are changed/init
 local function ModOptions()
-	options = CurrentModOptions
+	local options = CurrentModOptions
+	mod_EnableMod = options:GetProperty("mod_EnableMod")
 	mod_SkipGrid0 = options:GetProperty("SkipGrid0")
 	mod_SkipGrid1 = options:GetProperty("SkipGrid1")
 	mod_SkipGridX = options:GetProperty("SkipGridX")
@@ -102,6 +103,10 @@ function OnMsg.ApplyModOptions(id)
 end
 
 function OnMsg.AddResearchRolloverTexts(ret, city)
+	if not mod_EnableMod then
+		return
+	end
+
 	local res_points = ResourceOverviewObj:GetEstimatedRP() + 0.0
 
 	-- research per sol
@@ -401,6 +406,10 @@ local ResourceOverview = ResourceOverview
 
 local orig_ResourceOverview_GetElectricityGridRollover = ResourceOverview.GetElectricityGridRollover
 function ResourceOverview.GetElectricityGridRollover(...)
+	if not mod_EnableMod then
+		return orig_ResourceOverview_GetElectricityGridRollover(...)
+	end
+
 	local ret = BuildRollover(nil, elec_grid_info, UICity.electricity or "")
 
 	-- no grids so return orig func
@@ -414,6 +423,10 @@ local terminal_GetMousePos = terminal.GetMousePos
 
 local orig_ResourceOverview_GetLifesupportGridRollover = ResourceOverview.GetLifesupportGridRollover
 function ResourceOverview.GetLifesupportGridRollover(...)
+	if not mod_EnableMod then
+		return orig_ResourceOverview_GetLifesupportGridRollover(...)
+	end
+
 	-- get infobar
 	if not infobar_cache or infobar_cache.window_state == "destroying" then
 		infobar_cache = Dialogs.Infobar.idPad.idLifeSupport
@@ -575,6 +588,10 @@ local colonist_age_data = {
 }
 local orig_ResourceOverview_GetColonistsRollover = ResourceOverview.GetColonistsRollover
 function ResourceOverview:GetColonistsRollover(...)
+	if not mod_EnableMod then
+		return orig_ResourceOverview_GetColonistsRollover(self, ...)
+	end
+
 	local ret = orig_ResourceOverview_GetColonistsRollover(self, ...)
 	local list = ret[1]
 	local c = list.j
@@ -669,6 +686,10 @@ end
 local shuttlehubcount_str = {302535920011373, "<left>Shuttles Max/Total/Current<right><max>/<total>/<current>"}
 local orig_GetDronesRollover = InfobarObj.GetDronesRollover
 function InfobarObj:GetDronesRollover(...)
+	if not mod_EnableMod then
+		return orig_GetDronesRollover(self, ...)
+	end
+
 	local ret = orig_GetDronesRollover(self, ...)
 	local list = ret[1]
 
@@ -724,6 +745,10 @@ end
 local foodcon_str = {3644, "Food consumption<right><food(FoodConsumedByConsumptionYesterday)>"}
 local orig_GetFoodRollover = InfobarObj.GetFoodRollover
 function InfobarObj.GetFoodRollover(...)
+	if not mod_EnableMod then
+		return orig_GetFoodRollover(...)
+	end
+
 	local ret = orig_GetFoodRollover(...)
 	local list = ret[1]
 
@@ -760,6 +785,10 @@ local str_id_to_spec = {
 
 local orig_GetJobsRollover = InfobarObj.GetJobsRollover
 function InfobarObj.GetJobsRollover(...)
+	if not mod_EnableMod then
+		return orig_GetJobsRollover(...)
+	end
+
 	local ret = orig_GetJobsRollover(...)
 	local list = ret[1]
 
@@ -812,6 +841,10 @@ end
 
 local orig_RequiresMaintenance_GetDailyMaintenance = RequiresMaintenance.GetDailyMaintenance
 function RequiresMaintenance:GetDailyMaintenance(...)
+	if not mod_EnableMod then
+		return orig_RequiresMaintenance_GetDailyMaintenance(self, ...)
+	end
+
 	-- so mods can change and have it reflect in infobar
 	tribby_range = tribby_range or TriboelectricScrubber.UIRange
 	-- only add main amount if we're not in range of a tribby

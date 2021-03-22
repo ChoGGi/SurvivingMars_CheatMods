@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Infobar More Info",
-	"version", 22,
+	"version", 23,
 	"version_major", 2,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.png",
 	"id", "ChoGGi_InfobarAddDischargeRates",
 	"steam_id", "1775006723",
@@ -60,6 +60,7 @@ Mod Options:
 [b]Rollover Size[/b]: Game default is 45, if you want the tooltips wider use this.
 [b]Disable Transparency[/b]: Disable transparency of Infobar.
 [b]Always Show Remaining[/b]: Keep showing remaining amount of resources instead of N/A when prod over consump (time formatting only shows hours for neg numbers, this game uses 24 per Sol).
+[b]Enable Mod[/b]: Disable mod without having to see missing mod msg (still adds some text to certain tooltips).
 
 
 Suggestions of info you'd like to see?

@@ -22,6 +22,7 @@ return PlaceObj("ModDef", {
 	"lua_revision", 1001551,
 	"description", [[Autonomous repair of Drones/RCs that have broken down due to driving into a dust devil or something equally smart.
 
+This is only for malfunctioned drones.
 Ignores any that are within distance of working drone hubs/rockets.
 
 

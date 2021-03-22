@@ -1,12 +1,12 @@
 return PlaceObj("ModDef", {
-	"title", "RC Safari Route Limit",
-	"id", "ChoGGi_RCSafariRouteLimit",
+	"title", "RC Safari Cheats",
+	"id", "ChoGGi_RCSafariRouteCheats",
 	"lua_revision", 1001551,
 	"steam_id", "2425963097",
 	"pops_any_uuid", "5deed936-d551-4dfa-99c8-729d5f6e85c1",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -14,7 +14,10 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagGameplay", true,
-	"description", [[Change the max safari route limit (in mod options).
-Defaults to double the max.
+	"description", [[Vroom vroom
+
+Mod Options:
+Max Safari Length: Change the max safari route limit.
+
 ]],
 })

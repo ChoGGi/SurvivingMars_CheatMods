@@ -1,5 +1,11 @@
 return {
 	PlaceObj("ModItemOptionToggle", {
+		"name", "EnableMod",
+		"DisplayName", T(302535920011303, "Enable Mod"),
+		"Help", T(302535920011793, "Disable mod without having to see missing mod msg."),
+		"DefaultValue", true,
+	}),
+	PlaceObj("ModItemOptionToggle", {
 		"name", "SkipGrid0",
 		"DisplayName", table.concat(T(9428, "Skip") .. " " .. T{11629, "GRID <i>", i = 0}),
 		"Help", T(302535920011573, "Grids with production+consumption = 0 (doesn't skip grids that aren't producing due to throttle)."),
