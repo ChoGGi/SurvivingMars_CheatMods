@@ -1,3 +1,6 @@
+v0.6
+Reverted, use SkiRich's fix mod.
+
 v0.5
 Fix for buildings stick in requiring maintenance after turning back on from a long time off.
 Thank you SkiRich

@@ -1,2 +1,5 @@
+v0.3
+Added mod options Destruction Percent/Extra Fractures.
+
 v0.2
 Of course I forgot to re-add the impact range code.

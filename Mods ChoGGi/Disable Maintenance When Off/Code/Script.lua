@@ -17,13 +17,6 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local orig_RequiresMaintenance_SetMalfunction = RequiresMaintenance.SetMalfunction
-function RequiresMaintenance:SetMalfunction(...)
-	if self.accumulated_maintenance_points => self.maintenance_threshold_current then
-		return orig_RequiresMaintenance_SetMalfunction(self, ...)
-	end
-end
-
 local orig_RequiresMaintenance_AccumulateMaintenancePoints = RequiresMaintenance.AccumulateMaintenancePoints
 function RequiresMaintenance:AccumulateMaintenancePoints(new_points, ...)
 	if not self.ui_working then
