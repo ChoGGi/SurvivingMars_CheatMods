@@ -23,8 +23,7 @@ return {
 		"Help", T(4597, "Maximum payload (in kg) of a resupply Rocket"),
 		"DefaultValue", (g_Consts and g_Consts.CargoCapacity or Consts.CargoCapacity) / const.ResourceScale,
 		"MinValue", 0,
-		"MaxValue", 10000,
-		"StepSize", 100,
+		"MaxValue", 1000,
 	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "FoodPerRocketPassenger",

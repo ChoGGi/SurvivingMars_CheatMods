@@ -428,7 +428,6 @@ local terminal_GetMousePos = terminal.GetMousePos
 local orig_ResourceOverview_GetLifesupportGridRollover = ResourceOverview.GetLifesupportGridRollover
 function ResourceOverview.GetLifesupportGridRollover(...)
 	if not mod_EnableMod then
-	print("RETUREND")
 		return orig_ResourceOverview_GetLifesupportGridRollover(...)
 	end
 

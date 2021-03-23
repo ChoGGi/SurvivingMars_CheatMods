@@ -17,9 +17,16 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local orig_AccumulateMaintenancePoints = RequiresMaintenance.AccumulateMaintenancePoints
+local orig_RequiresMaintenance_SetMalfunction = RequiresMaintenance.SetMalfunction
+function RequiresMaintenance:SetMalfunction(...)
+	if self.accumulated_maintenance_points => self.maintenance_threshold_current then
+		return orig_RequiresMaintenance_SetMalfunction(self, ...)
+	end
+end
+
+local orig_RequiresMaintenance_AccumulateMaintenancePoints = RequiresMaintenance.AccumulateMaintenancePoints
 function RequiresMaintenance:AccumulateMaintenancePoints(new_points, ...)
-	if not self.working then
+	if not self.ui_working then
 		if mod_QuarterPoints then
 			new_points = new_points / 4
 			if new_points < 0 then
@@ -29,5 +36,5 @@ function RequiresMaintenance:AccumulateMaintenancePoints(new_points, ...)
 			new_points = 0
 		end
 	end
-	return orig_AccumulateMaintenancePoints(self, new_points, ...)
+	return orig_RequiresMaintenance_AccumulateMaintenancePoints(self, new_points, ...)
 end

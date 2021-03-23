@@ -1,2 +1,6 @@
+v0.3
+Removed step size from CargoCapacity so 100k isn't the minimum cargo.
+Changed the max for CargoCapacity to be 1000.
+
 v0.2
 Override for certain rockets/pods.

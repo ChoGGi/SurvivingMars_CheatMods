@@ -1,3 +1,6 @@
+v0.4
+Added Multiply Divide option.
+
 v0.3
 Mod option to adjust amount.
 
