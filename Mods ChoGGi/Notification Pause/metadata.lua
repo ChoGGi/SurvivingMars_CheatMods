@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"has_options", true,
 	"description", [[Pauses the game on new notifications (defaults to only Critical/Important).
 Doesn't pause if notification is already on-screen.

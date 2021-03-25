@@ -111,7 +111,7 @@ do -- DronesNotRepairingDome
 	end
 end -- do
 
-do --ResetCommanders
+do -- ResetCommanders
 	local function ResetRover(rc)
 		local drones
 		if rc.attached_drones then
@@ -209,7 +209,8 @@ do -- Colonist stuff
 			if is_valid and c:GetStateText() == "movePlanet" then
 				local rocket = FindNearestObject(rockets, c)
 				SpawnColonist(c, rocket, c:GetVisualPos(), UICity)
-				c:delete()
+--~ 				c:delete()
+				DeleteObject(c)
 			end
 		end
 

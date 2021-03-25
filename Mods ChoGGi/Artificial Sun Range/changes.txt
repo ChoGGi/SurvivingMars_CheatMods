@@ -1,3 +1,6 @@
+v0.7
+Code cleanup.
+
 v0.6
 Bumped range to 250.
 

@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Unit Thoughts",
 	"id", "ChoGGi_UnitThoughts",
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"steam_id", "2196814512",
 	"pops_any_uuid", "528635cc-5241-4303-87aa-6fa9cfef66c3",
 	"version", 5,

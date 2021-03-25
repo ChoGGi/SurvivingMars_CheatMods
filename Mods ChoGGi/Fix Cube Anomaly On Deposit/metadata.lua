@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Cube Anomaly On Deposit",
 	"id", "ChoGGi_FixCubeAnomalyOnDeposit",
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"steam_id", "2218366213",
 	"pops_any_uuid", "649acc33-1d36-456c-95dc-79dd0224cc97",
 	"version", 1,

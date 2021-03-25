@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "RC Commander Always Show Radius",
 	"id", "ChoGGi_RCCommanderAlwaysShowRadius",
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"steam_id", "2100912446",
 	"pops_any_uuid", "a6a32de9-7b81-4d77-8500-97a3c96bde1a",
 	"version", 1,

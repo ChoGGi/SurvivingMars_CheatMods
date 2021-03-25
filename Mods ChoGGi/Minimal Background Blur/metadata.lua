@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Minimal Background Blur",
 	"id", "ChoGGi_MinimalBackgroundBlur",
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"steam_id", "2424803510",
 	"pops_any_uuid", "37c9fea9-77d4-4367-88a2-c8b72f3a618b",
 	"version", 1,

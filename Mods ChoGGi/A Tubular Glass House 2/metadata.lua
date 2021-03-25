@@ -6,7 +6,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.jpg",
 	"id", "ChoGGi_ATubularGlassHouse",
 	"author", "Stealth4Health & ChoGGi",
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"steam_id", "1984158799",
 	"pops_all_uuid", "5b0b29ab-ca72-4d92-aa24-541935ea0217",
 	"bin_assets", true,

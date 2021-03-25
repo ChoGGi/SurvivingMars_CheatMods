@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Triboelectric Sensor Tower",
 	"id", "ChoGGi_TriboelectricSensorTower",
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"steam_id", "2201623384",
 	"pops_any_uuid", "aab7ae97-d2e0-42d6-bbf8-18c5a6efaee5",
 	"version", 6,

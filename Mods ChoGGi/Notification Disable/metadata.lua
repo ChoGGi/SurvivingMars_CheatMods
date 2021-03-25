@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"has_options", true,
 	"description", [[Use to disable certain notifications, look in Mod Options for the list.
 Red for Critical, and Blue for Important.

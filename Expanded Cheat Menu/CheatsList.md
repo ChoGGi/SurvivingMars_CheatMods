@@ -257,8 +257,6 @@ Cheats.StoryBits>Testing Delete Backlog: Sets AccountStorage.StoryBitTimestamp t
 Cheats.StoryBits>Testing Toggle: Toggles g_StoryBitTesting.
 Cheats>Complete Constructions: Complete all constructions instantly.
 Cheats>Complete Wires & Pipes: Complete all wires and pipes instantly.
-Cheats>Delete Geysers: Remove all geyser activity from the map (permanent per-save).
-You will not be able to build on the area without also enabling ECM>Buildings>Toggles>Build On Geysers.
 Cheats>Map Exploration: Scanning, deep scanning, core mines, and alien imprints.
 Cheats>Mod Editor: Open the mod editor.
 Cheats>Mystery Log: Advance to next part, show what part you're on, or remove mysteries.
@@ -371,7 +369,6 @@ ECM.Buildings.Space Elevator>Instant Export On Toggle: Toggle Forbid Exports to 
 ECM.Buildings.Toggles>Always Clean: Buildings will never get dusty.
 ECM.Buildings.Toggles>Always Dusty: Buildings will never lose their dust (unless you turn this off, then it'll reset the dust amount).
 Will be overridden by Always Clean.
-ECM.Buildings.Toggles>Build On Geysers: Allows you to build on geysers. Use Shift-F4 around the area to delete the geyser objects (about 10-20 depending on size).
 ECM.Buildings.Toggles>Building Damage Crime: Disable damage from renegedes to buildings.
 ECM.Buildings.Toggles>Cheap Construction: Build with minimal resources.
 ECM.Buildings.Toggles>Instant Build: Buildings are built instantly.
@@ -558,7 +555,6 @@ Game.Game Speed>Time Factor: 1000: Change the time factor (not permanently); for
 Game.Interface>GUI Dock Side: Left: Change which side (most) GUI menus are on.
 Game.Interface>Never Show Hints: No more hints ever.
 Game.Interface>Reset on-screen hints: Just in case you wanted to see them again.
-Game.Interface>Toggle Interface: Warning! This will hide everything. Remember the shortcut or have fun restarting.
 Game.Interface>Toggle Signs: Concrete, metal deposits, not working, etc...
 Game.Interface>Toggle on-screen hints: Don't show hints for this game.
 Game.Lightmodel>Light model: Changes the lighting mode (temporary or permanent).

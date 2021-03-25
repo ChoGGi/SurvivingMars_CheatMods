@@ -9,6 +9,6 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"description", [[No more suspension during dust storms.]],
 })

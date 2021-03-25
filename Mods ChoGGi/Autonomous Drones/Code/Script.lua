@@ -85,11 +85,12 @@ local DroneHubLoad = ChoGGi.ComFuncs.DroneHubLoad
 -- local work_spots = {21, 22, 23, 24, 25}
 
 local function SendDroneToCC(drone, new_hub)
-	if drone.ChoGGi_SendDroneToCC_Wait then
-		return
-	end
 	local old_hub = drone.command_center
-	if old_hub == new_hub then
+	-- abort if drone is already waiting, or hub is same, or hub is full of drones
+	if drone.ChoGGi_SendDroneToCC_Wait
+		or old_hub == new_hub
+		or not new_hub:CanHaveMoreDrones()
+	then
 		return
 	end
 

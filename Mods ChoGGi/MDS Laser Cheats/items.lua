@@ -24,7 +24,7 @@ return {
 		"Help", T(302535920011863, "If meteors would fall within dist range it can be destroyed by the laser (in hexes)."),
 		"DefaultValue", MDSLaser:GetProperty("protect_range"),
 		"MinValue", 1,
-		"MaxValue", 128,
+		"MaxValue", 256,
 	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "ShootRange",
@@ -32,7 +32,7 @@ return {
 		"Help", T(302535920011864, "Range at which meteors can be destroyed. Should be greater than the protection range (in hexes)."),
 		"DefaultValue", MDSLaser:GetProperty("shoot_range"),
 		"MinValue", 1,
-		"MaxValue", 128,
+		"MaxValue", 256,
 	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "RotateSpeed",

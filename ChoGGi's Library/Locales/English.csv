@@ -1,6 +1,8 @@
 "ID", " Text"
 302535920000064,
 302535920000065,
+302535920000244,
+302535920000663,
 302535920000981,
 302535920000983,
 302535920001628,
@@ -1691,7 +1693,6 @@ Files are placed in your profile folder\Mods"
 302535920000504, "List All Menu Items"
 302535920001323, "Show all the cheat menu items in a list dialog."
 302535920001285, "Opens in webbrowser."
-302535920000244, "Warning! This will hide everything. Remember the shortcut or have fun restarting."
 302535920001281, "Information about your computer (as seen by SM)."
 302535920001282, "Information about this saved game (mostly objects)."
 302535920000892, "Screenshot"
@@ -1736,7 +1737,6 @@ For any issues; please report them to my Github/Steam/NexusMods page, or email <
 302535920000660, "Write screenshot upsampled"
 302535920000661, "Show Interface in Screenshots"
 302535920000662, "Do you want to see the interface in screenshots?"
-302535920000663, "Toggle Interface"
 302535920000666, "Toggle on-screen hints"
 302535920000667, "Don't show hints for this game."
 302535920000668, "Reset on-screen hints"

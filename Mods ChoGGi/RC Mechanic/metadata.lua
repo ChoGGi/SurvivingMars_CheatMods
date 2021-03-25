@@ -19,7 +19,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"description", [[Autonomous repair of Drones/RCs that have broken down due to driving into a dust devil or something equally smart.
 
 This is only for malfunctioned drones.

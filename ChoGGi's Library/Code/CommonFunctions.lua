@@ -53,6 +53,9 @@ local HexToWorld = HexToWorld
 local point = point
 local point20 = point20
 local WaitMsg = WaitMsg
+local Sleep = Sleep
+local CreateGameTimeThread = CreateGameTimeThread
+local terrain_GetHeight = terrain.GetHeight
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
 
@@ -653,8 +656,9 @@ do -- MsgPopup
 			-- If it's a single obj
 			if IsValid(params.objects) then
 				params.cycle_objs = {params.objects}
+			else
+				params.cycle_objs = params.objects
 			end
-			params.cycle_objs = params.objects
 		end
 
 		-- needed in Sagan update
@@ -3203,90 +3207,88 @@ do -- DeleteObject
 end -- do
 local DeleteObject = ChoGGi.ComFuncs.DeleteObject
 
--- sticks small depot in front of mech depot and moves all resources to it (max of 20 000)
-function ChoGGi.ComFuncs.EmptyMechDepot(obj, skip_delete)
-	-- If fired from action menu
-	if IsKindOf(obj, "XAction") then
-		obj = SelObject()
-	else
-		obj = IsKindOf(obj, "MechanizedDepot") and obj or SelObject()
-	end
+do -- EmptyMechDepot
+	local angle_x = {
+		[0] = 500,
+		[3600] = 500,
+		[7200] = 0,
+		[10800] = -600,
+		[14400] = 0,
+		[18000] = 500,
+	}
+	local angle_y = {
+		[0] = 0,
+		[3600] = 500,
+		[7200] = 500,
+		[10800] = 0,
+		[14400] = -500,
+		[18000] = -500,
+	}
+	-- sticks small depot in front of mech depot and moves all resources to it (max of 20 000)
+	function ChoGGi.ComFuncs.EmptyMechDepot(obj, skip_delete)
+		-- If fired from action menu
+		if IsKindOf(obj, "XAction") then
+			obj = SelObject()
+		else
+			obj = IsKindOf(obj, "MechanizedDepot") and obj or SelObject()
+		end
 
-	if not obj or not IsKindOf(obj, "MechanizedDepot") then
-		return
-	end
+		if not obj or not IsKindOf(obj, "MechanizedDepot") then
+			return
+		end
 
-	local res = obj.resource
-	local amount = obj["GetStored_" .. res](obj)
-	-- not good to be larger then this when game is saved (height limit of map objects seems to be 65536)
-	if amount > 20000000 then
-		amount = amount
-	end
-	local stock = obj.stockpiles[obj:GetNextStockpileIndex()]
-	local angle = obj:GetAngle()
-	-- new pos based on angle of old depot (so it's in front not inside)
-	local newx = 0
-	local newy = 0
-	if angle == 0 then
-		newx = 500
-		newy = 0
-	elseif angle == 3600 then
-		newx = 500
-		newy = 500
-	elseif angle == 7200 then
-		newx = 0
-		newy = 500
-	elseif angle == 10800 then
-		newx = -600
-		newy = 0
-	elseif angle == 14400 then
-		newx = 0
-		newy = -500
-	elseif angle == 18000 then
-		newx = 500
-		newy = -500
-	end
+		local res = obj.resource
+		local amount = obj["GetStored_" .. res](obj)
+		-- not good to be larger then this when game is saved (height limit of map objects seems to be 65536)
+		if amount > 20000000 then
+			amount = amount
+		end
+		local stock = obj.stockpiles[obj:GetNextStockpileIndex()]
+		local angle = obj:GetAngle()
+		-- new pos based on angle of old depot (so it's in front not inside)
+		local newx = angle_x[angle]
+		local newy = angle_y[angle]
 
-	-- yeah guys. lets have two names for a resource and use them interchangeably, it'll be fine...
-	local res2 = res
-	if res == "PreciousMetals" then
-		res2 = "RareMetals"
-	end
+		-- yeah guys. lets have two names for a resource and use them interchangeably, it'll be fine...
+		local res2 = res
+		if res == "PreciousMetals" then
+			res2 = "RareMetals"
+		end
 
-	local x, y, z = stock:GetVisualPosXYZ()
-	-- so it doesn't look weird make sure it's on a hex point
-
-	-- create new depot, and set max amount to stored amount of old depot
-	local newobj = PlaceObj("UniversalStorageDepot", {
-		"template_name", "Storage" .. res2,
-		"storable_resources", {res},
-		"max_storage_per_resource", amount,
+		local x, y, z = stock:GetVisualPosXYZ()
 		-- so it doesn't look weird make sure it's on a hex point
-		"Pos", HexGetNearestCenter(point(x + newx, y + newy, z)),
-	})
 
-	-- make it align with the depot
-	newobj:SetAngle(angle)
-	-- give it a bit before filling
-	local Sleep = Sleep
-	CreateRealTimeThread(function()
-		local time = 0
-		repeat
-			Sleep(250)
-			time = time + 25
-		until type(newobj.requester_id) == "number" or time > 5000
-		-- since we set new depot max amount to old amount we can just CheatFill it
-		newobj:CheatFill()
+		-- create new depot, and set max amount to stored amount of old depot
+		local newobj = PlaceObj("UniversalStorageDepot", {
+			"template_name", "Storage" .. res2,
+			"storable_resources", {res},
+			"max_storage_per_resource", amount,
+			-- so it doesn't look weird make sure it's on a hex point
+			"Pos", HexGetNearestCenter(point(x + newx, y + newy, z)),
+		})
+
+		-- make it align with the depot
+		newobj:SetAngle(angle)
 		-- clean out old depot
 		obj:CheatEmpty()
+		-- give it a bit before filling
+		CreateGameTimeThread(function()
+			local time = 0
+			repeat
+				Sleep(250)
+				time = time + 25
+			until type(newobj.requester_id) == "number" or time > 5000
+			-- since we set new depot max amount to old amount we can just CheatFill it
+			newobj:CheatFill()
+			-- goodbye to old depot
+			if not skip_delete then
+				Sleep(250)
+				DeleteObject(obj)
+			end
+		end)
 
-		if not skip_delete then
-			Sleep(250)
-			DeleteObject(obj)
-		end
-	end)
-
-end
+	end
+end -- do
 
 -- returns the near hex grid for object placement
 function ChoGGi.ComFuncs.CursorNearestHex(pt)
@@ -4308,7 +4310,9 @@ do -- LoadEntity
 	end
 end -- do
 
+
 -- this only adds a parent, no ___BuildingUpdate or anything
+-- AddParentToClass(DontBuildHere, "InfopanelObj")
 function ChoGGi.ComFuncs.AddParentToClass(class_obj, parent_name)
 	local p = class_obj.__parents
 	if not table_find(p, parent_name) then
@@ -4585,7 +4589,7 @@ do -- RetMapBreakthroughs
 					translated_tech[tech_id] = Translate(tech.display_name)
 				end
 			end
-			-- breakthroughs per map are 20? in total (4 planetary, 3 omega, 8 on the ground, 5?)
+			-- breakthroughs per map are 20? in total (4 planetary, 3 omega, 8 on the ground, 5 Storybits?)
 			breakthrough_count = const.BreakThroughTechsPerGame
 				+ const.OmegaTelescopeBreakthroughsCount
 				+ Consts.PlanetaryBreakthroughCount
@@ -5413,14 +5417,6 @@ function ChoGGi.ComFuncs.ReplaceClassFunc(class, func_name, func_to_call)
 end
 
 do -- path markers
-	local IsObjlist = ChoGGi.ComFuncs.IsObjlist
-	local CreateGameTimeThread = CreateGameTimeThread
-	local AveragePoint2D = AveragePoint2D
-	local terrain_GetHeight = terrain.GetHeight
-	local SelObjects = ChoGGi.ComFuncs.SelObjects
-	local WaitMsg = WaitMsg
-	local Sleep = Sleep
-
 	local path_classes = {"Movable", "CargoShuttle"}
 	local randcolours = {}
 	local colourcount = 0

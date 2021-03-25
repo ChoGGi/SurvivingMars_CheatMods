@@ -3683,7 +3683,6 @@ end
 function ChoGGi.ComFuncs.CheckForBorkedTransportPath(obj, list)
 	CreateRealTimeThread(function()
 		-- let it sleep for awhile
---~ 		Sleep(1000)
 		Sleep(100)
 		-- 0 means it's stopped, so anything above that and without a path means it's borked (probably)
 		if obj:GetAnim() > 0 and obj:GetPathLen() == 0 then

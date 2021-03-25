@@ -10,6 +10,6 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"description", [[Makes all newly spawned dust devils lighter brown.]],
 })

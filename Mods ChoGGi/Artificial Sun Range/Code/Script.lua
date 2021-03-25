@@ -3,33 +3,17 @@
 local mod_Range = ArtificialSun.effect_range or 8
 local TestSunPanelRange = TestSunPanelRange
 local IsValid = IsValid
---~ local GridSpacing = const.GridSpacing
+local MapFindNearest = MapFindNearest
 
-local function UpdateSolarPanel(panel, suns)
-	-- large radius extension so it can catch large panels (dev comment)
---~ local sun_radius = (mod_Range + 10) * GridSpacing
-
-	local panel_pos = panel:GetPos()
-	local length = max_int
-	local nearest = suns[1]
-	local new_length, found
-	-- get any suns in range of panel
-	for i = #suns, 1, -1 do
-		local sun = suns[i]
+local function UpdateSolarPanel(panel)
+	local nearest = MapFindNearest(panel, panel, mod_Range, "ArtificialSun", function(sun)
 		if TestSunPanelRange(sun, panel) then
-			-- sorted by nearest
-			new_length = sun:GetPos():Dist2D(panel_pos)
-			if new_length < length then
-				length = new_length
-				nearest = sun
-			end
-			-- update if there's a sun in range
-			found = true
+			return true
 		end
-	end
+	end)
 
 	-- if anything is close enough to count
-	if found then
+	if nearest then
 		-- update panel prod values
 		panel:SetArtificialSun(nearest)
 	else
@@ -41,10 +25,9 @@ end
 
 -- loop through all suns and update any panels in range
 local function UpdateArtificialSunRange(obj)
-	-- local some globals
 	local is_valid = IsValid(obj)
-
 	local suns = UICity.labels.ArtificialSun or ""
+
 	-- first update range for all art suns
 	if is_valid and obj:IsKindOf("ArtificialSun") then
 			obj.effect_range = mod_Range
@@ -60,13 +43,13 @@ local function UpdateArtificialSunRange(obj)
 
 	-- now update all solar panels
 	if is_valid and obj:IsKindOf("SolarPanelBase") then
-		UpdateSolarPanel(obj, suns)
+		UpdateSolarPanel(obj)
 	else
 		local panels = UICity.labels.SolarPanelBase or ""
 		for i = 1, #panels do
 			local panel = panels[i]
 			if IsValid(panel) then
-				UpdateSolarPanel(panel, suns)
+				UpdateSolarPanel(panel)
 			end
 		end
 	end
@@ -98,6 +81,9 @@ OnMsg.LoadGame = UpdateArtificialSunRange
 
 -- fix for solar panels only expecting one sun
 SolarPanelBase.GameInit = UpdateArtificialSunRange
+
+SolarPanelBase.OnSetWorking = UpdateArtificialSunRange
+
 
 local orig_ArtificialSun_GameInit = ArtificialSun.GameInit
 function ArtificialSun:GameInit(...)

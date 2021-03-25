@@ -238,7 +238,11 @@ do -- non-class obj funcs
 			and dlg.context and dlg.context.is_storybit
 		then
 			CreateRealTimeThread(function()
-				Sleep(2500)
+				if testing then
+					Sleep(100)
+				else
+					Sleep(2500)
+				end
 				if dlg.idList and #dlg.idList > 0 then
 					dlg.idList[1]:OnMouseButtonDown(nil, "L")
 					dlg.idList[1]:OnMouseButtonUp(nil, "L")

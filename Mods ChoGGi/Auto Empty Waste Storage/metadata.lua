@@ -12,7 +12,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua"
 	},
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"has_options", true,
 	"description", [[Automatically empties waste storage sites.
 

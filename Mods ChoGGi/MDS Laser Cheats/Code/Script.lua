@@ -26,8 +26,8 @@ local function ModOptions()
 	local options = CurrentModOptions
 	mod_HitChance = options:GetProperty("HitChance")
 	mod_FireRate = options:GetProperty("FireRate")
-	mod_ProtectRange = options:GetProperty("ProtectRange") * guim
-	mod_ShootRange = options:GetProperty("ShootRange") * guim
+	mod_ProtectRange = options:GetProperty("ProtectRange")
+	mod_ShootRange = options:GetProperty("ShootRange")
 	mod_RotateSpeed = options:GetProperty("RotateSpeed") * 60
 	mod_BeamTime = options:GetProperty("BeamTime")
 

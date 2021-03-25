@@ -364,40 +364,6 @@ function ChoGGi.MenuFuncs.OnScreenHints_Toggle()
 	)
 end
 
-function ChoGGi.MenuFuncs.Interface_Toggle()
-	if hr.RenderUIL == 1 then
-
-		-- retrieve shortcut key to display below
-		local options = OptionsCreateAndLoad()
-		local key = options["ECM.Game.Interface.Toggle Interface"]
-		-- If we don't have a shortcut set then do nothing
-		if key then
-			key = key[1]
-			if not key then
-				return
-			end
-		else
-			return
-		end
-
-		local function CallBackFunc(answer)
-			if answer then
-				hr.RenderUIL = 0
-			end
-		end
-
-		ChoGGi.ComFuncs.QuestionBox(
-			Strings[302535920000244--[[Warning! This will hide everything. Remember the shortcut or have fun restarting.]]] .. "\n\n" .. key,
-			CallBackFunc,
-			Strings[302535920000663--[[Toggle Interface]]]
-		)
-
-	else
-		hr.RenderUIL = 1
-	end
-
-end
-
 function ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle()
 	hr.InterfaceInScreenshot = hr.InterfaceInScreenshot ~= 0 and 0 or 1
 	-- needs default

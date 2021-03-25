@@ -1,8 +1,12 @@
 ## Library Changelog
 
 ## v9.6 (Unreleased)
+
+## v9.6 (24 March 2021)
 - Added SetChoGGiPalette, IsGamepadButtonPressed.
 - DeleteObject tries to delete domes the first time instead of making you do two passes with a confusing msg.
+- EmptyMechDepot Tito update.
+- MsgPopup cycle objs was borked.
 
 ## v9.5 (19 March 2021)
 - Added option to tame GetAllAttaches.

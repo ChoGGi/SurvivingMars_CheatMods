@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1599190080",
 	"pops_any_uuid", "56012643-cfef-4dd2-b358-a80d651b542f",
 	"author", "ChoGGi",
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"code", {
 		"Code/Script.lua",
 	},
@@ -19,10 +19,9 @@ The affected buildings will say something about exceptional circumstances.
 Any buildings affected by this issue will need to be repaired with 000.1 resource after the fix happens.
 
 This also has a fix for buildings hit with lightning during a cold wave.
-
-
-
-
 Includes mod option to disable fix.
+
+
+A proper fix made by SkiRich (solves the underlying issue): https://steamcommunity.com/sharedfiles/filedetails/?id=2433157820
 ]],
 })

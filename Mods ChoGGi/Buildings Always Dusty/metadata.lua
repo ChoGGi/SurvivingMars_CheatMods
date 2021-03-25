@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"has_options", true,
 	"description", [[Buildings will never lose their dust. This is a visual mod, it doesn't affect maintenance.
 

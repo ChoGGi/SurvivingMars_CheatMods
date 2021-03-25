@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Rocket Next Rocket Button",
 	"id", "ChoGGi_RocketNextRocketButton",
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"steam_id", "2293455455",
 	"pops_any_uuid", "0869b5fc-d5c6-47e5-ab09-fcc3b319d943",
 	"version", 2,

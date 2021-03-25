@@ -352,17 +352,6 @@ Actions[c] = {ActionName = Strings[302535920000893--[[Interface]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000663--[[Toggle Interface]]],
-	ActionMenubar = "ECM.Game.Interface",
-	ActionId = ".Toggle Interface",
-	ActionIcon = "CommonAssets/UI/Menu/ToggleSelectionOcclusion.tga",
-	RolloverText = Strings[302535920000244--[[Warning! This will hide everything. Remember the shortcut or have fun restarting.]]],
-	OnAction = ChoGGi.MenuFuncs.Interface_Toggle,
-	ActionShortcut = "Ctrl-Alt-I",
-	ActionBindable = true,
-}
-
-c = c + 1
 Actions[c] = {ActionName = Strings[302535920001387--[[Toggle Signs]]],
 	ActionMenubar = "ECM.Game.Interface",
 	ActionId = ".Toggle Signs",

@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_SafariInfo",
 	"steam_id", "2428050982",
 	"pops_any_uuid", "72136be6-4453-4f59-903f-489293aa619e",
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

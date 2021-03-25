@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Rover Automated Mode",
 	"id", "ChoGGi_RoverAutomatedMode",
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"steam_id", "1693093435",
 	"pops_any_uuid", "d3e2de14-a8fe-4cf8-8318-9899363a8b6d",
 	"version", 1,

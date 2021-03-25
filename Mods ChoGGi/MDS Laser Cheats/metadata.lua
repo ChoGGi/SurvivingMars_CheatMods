@@ -3,10 +3,10 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_MDSLaserCheats",
 	"steam_id", "2428918892",
 	"pops_any_uuid", "69f8402d-8226-4928-828d-b564c5942673",
-	"lua_revision", 1001551,
-	"version", 1,
+	"lua_revision", 1001569,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -15,10 +15,6 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagGameplay", true,
 	"description", [[Pew pew pew!
-
-
-Known Issues:
-Selecting MDS Lasers will lag for a sec each time, no idea why.
 
 
 Mod Options:

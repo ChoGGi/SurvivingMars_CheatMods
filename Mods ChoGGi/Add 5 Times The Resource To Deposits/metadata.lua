@@ -20,7 +20,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"steam_id", "1427609324",
 	"pops_any_uuid", "6ff9709d-3a3b-48b5-be2f-ce3216aa5699",
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"description", [[Adds a button to water/metal/concrete deposits to multiple the amount of all deposits of the same resource by 5.
 
 Requested by Peacemaker.]],

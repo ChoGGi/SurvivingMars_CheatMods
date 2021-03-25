@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v16.6 (Unreleased)
+## v16.7 (Unreleased)
+
+## v16.6 (24 March 2021)
 ### Added:
 - Cheats pane>DroneFactory/Control:SpawnAndroid/Drone: Instant spawn.
 - More stuff in Console>Examine>*.

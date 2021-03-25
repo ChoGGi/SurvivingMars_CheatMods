@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Unlock Research Tech",
 	"id", "ChoGGi_UnlockResearchTech",
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"steam_id", "2429688365",
 	"pops_any_uuid", "a2d712d9-57d2-47cd-bc9d-f09eeceb2193",
 	"version", 1,

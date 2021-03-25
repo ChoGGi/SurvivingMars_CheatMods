@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Unlock Breakthroughs",
 	"id", "ChoGGi_UnlockBreakthroughs",
-	"lua_revision", 1001551,
+	"lua_revision", 1001569,
 	"steam_id", "2324443848",
 	"pops_any_uuid", "36ec1f1c-283a-419c-9fa6-d7c640a81967",
 	"version", 1,
