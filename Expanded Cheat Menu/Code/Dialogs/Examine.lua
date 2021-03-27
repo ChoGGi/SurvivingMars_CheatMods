@@ -2917,9 +2917,10 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 	if obj_type == "table" then
 
 		local is_chinese = self.is_chinese
-		for k, v in pairs(obj) do
+
+		local function BuildObjTable(k, v)
 			-- sorely needed delay for chinese (or it "freezes" the game when loading something like _G)
-			-- I assume text rendering is slower for the chars, 'cause examine is really slow with them.
+			-- I assume text rendering is slower for the chars, 'cause examine is "really" slow with them.
 			if is_chinese then
 				Sleep(1)
 			end
@@ -2944,6 +2945,33 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				list_sort_num[str_tmp] = k
 			else
 				list_sort_obj[str_tmp] = sort
+			end
+		end
+		-- faster if it is, otherwise a waste of 180~ ms for 300K objects
+		if self.ChoGGi.ComFuncs.IsArray(obj) then
+			-- wrap it so we can ask a question and be able to answer
+			local limit_check
+			local thread = CurrentThread()
+			for i = 1, #obj do
+				BuildObjTable(i, obj[i])
+				--
+				if not limit_check and thread and i > 50001 then
+					if WaitMarsQuestion(
+						nil,T(718,"Abort"),
+						Strings[302535920001633--[[Reached %s objects, abort?]]]:format("50 000"),
+						T(718,"Abort"),T(7317,"Continue"),
+						ChoGGi.library_path .. "UI/message_picture_01.png"
+					) == "ok" then
+						break
+					else
+						limit_check = true
+					end
+				end
+				--
+			end
+		else
+			for k, v in pairs(obj) do
+				BuildObjTable(k, v)
 			end
 		end
 

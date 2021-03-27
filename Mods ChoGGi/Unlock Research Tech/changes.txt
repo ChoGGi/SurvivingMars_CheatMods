@@ -1,1 +1,2 @@
 v0.2
+Fixed bugged tooltip in main menu without my library mod installed.

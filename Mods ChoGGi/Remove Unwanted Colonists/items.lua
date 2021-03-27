@@ -49,4 +49,11 @@ table.sort(properties, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
+table.insert(properties, 1, PlaceObj("ModItemOptionToggle", {
+	"name", "SkipTourists",
+	"DisplayName", T(302535920011898, "Skip Tourists"),
+	"Help", T(302535920011899, "Never remove tourists."),
+	"DefaultValue", false,
+}))
+
 return properties

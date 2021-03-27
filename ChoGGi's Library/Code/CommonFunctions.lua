@@ -3136,7 +3136,7 @@ do -- DeleteObject
 		-- surface metal
 		if is_deposit and obj.group then
 			for i = #obj.group, 1, -1 do
-				obj.group[i]:delete()
+				DoneObject(obj.group[i])
 			end
 		end
 
@@ -4312,7 +4312,7 @@ end -- do
 
 
 -- this only adds a parent, no ___BuildingUpdate or anything
--- AddParentToClass(DontBuildHere, "InfopanelObj")
+-- ChoGGi.ComFuncs.AddParentToClass(DontBuildHere, "InfopanelObj")
 function ChoGGi.ComFuncs.AddParentToClass(class_obj, parent_name)
 	local p = class_obj.__parents
 	if not table_find(p, parent_name) then
@@ -6024,8 +6024,19 @@ function ChoGGi.ComFuncs.ToggleBreadcrumbs(obj)
 	end)
 end
 
+-- https://stackoverflow.com/questions/6077006/how-can-i-check-if-a-lua-table-contains-only-sequential-numeric-indices#answer-6080274
+function ChoGGi.ComFuncs.IsArray(list)
+--~ 	do return false end
+	local i = 0
+	for _ in pairs(list) do
+		i = i + 1
+		if list[i] == nil then
+			return false
+		end
+	end
+	return true
+end
 --
-
 -- bugged
 --~ function ChoGGi.ComFuncs.SendDroneToCC(drone, new_hub)
 --~ 	local old_hub = drone.command_center

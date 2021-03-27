@@ -154,29 +154,30 @@ function RCTanker:Init()
 	local tank = PlaceObject("RCTankerTank")
 	self.tank_obj = tank
 
-	if entity_tank == "OxygenTankLargeCP3" then
-		self:Attach(tank, self:GetSpotBeginIndex("Panel"))
-		tank:SetScale(35)
-		tank:SetAttachOffset(point(0, 0, 83))
-	else
-		self:Attach(tank, self:GetSpotBeginIndex("Drone"))
-		tank:SetScale(70)
-		tank:SetAttachOffset(point(-360, 0, 980))
+	-- slight delay needed or Attach() creates a phantom tank...
+	CreateRealTimeThread(function()
+		if entity_tank == "OxygenTankLargeCP3" then
+			self:Attach(tank, self:GetSpotBeginIndex("Panel"))
+			tank:SetScale(35)
+			tank:SetAttachOffset(point(0, 0, 83))
+		else
+			self:Attach(tank, self:GetSpotBeginIndex("Drone"))
+			tank:SetScale(70)
+			tank:SetAttachOffset(point(-360, 0, 980))
 
-		-- rotate it a bit
-		local rotate = quaternion(0, 2700, 0) * quaternion(0, 2700, 0)
-		local rotate_axis, rotate_angle = rotate:GetAxisAngle()
-		tank:SetAttachAxis(rotate_axis)
-		tank:SetAttachAngle(rotate_angle)
-	end
+			-- rotate it a bit
+			local rotate = quaternion(0, 2700, 0) * quaternion(0, 2700, 0)
+			local rotate_axis, rotate_angle = rotate:GetAxisAngle()
+			tank:SetAttachAxis(rotate_axis)
+			tank:SetAttachAngle(rotate_angle)
+		end
+	end)
 
 	-- stop arrows from spinning round n round
 	tank:ResetIndicatorAnimations()
 end
 
 function RCTanker:GameInit()
---~ 	BaseRover.GameInit(self)
-
 	-- select sound
 	self.fx_actor_class = "AttackRover"
 
@@ -437,7 +438,10 @@ function RCTanker:TankInteract()
 
 			-- the wee little arrow
 			self.tank_obj:UpdateIndicators(res_obj)
-			obj:UpdateIndicators()
+			-- Silva's large water tank has none
+			if obj:HasMember("UpdateIndicators") then
+				obj:UpdateIndicators()
+			end
 
 			-- If there's a limit than check if we're there
 			if limit and self.storage_amount == limit then
@@ -459,7 +463,10 @@ function RCTanker:TankInteract()
 			res_obj:SetStoredAmount(res_obj.current_storage + new_amount, res_type)
 
 			self.tank_obj:UpdateIndicators(res_obj)
-			obj:UpdateIndicators()
+			-- Silva's large water tank has none
+			if obj:HasMember("UpdateIndicators") then
+				obj:UpdateIndicators()
+			end
 
 			-- don't overfill tanks (waste of res)
 			if res_obj.current_storage == max_cap then

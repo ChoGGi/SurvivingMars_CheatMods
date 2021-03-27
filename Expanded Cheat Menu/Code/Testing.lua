@@ -841,7 +841,7 @@ function ChoGGi.testing.TableIterate()
 
 	--faster
 	ChoGGi.ComFuncs.TickStart("TableIterate.1.Tick")
-	for _ = 1, 10000 do
+	for _ = 1, 1000 do
 		for _ = 1, #list do
 		end
 	end
@@ -849,7 +849,7 @@ function ChoGGi.testing.TableIterate()
 
 	local ipairs = ipairs
 	ChoGGi.ComFuncs.TickStart("TableIterate.2.Tick")
-	for _ = 1, 10000 do
+	for _ = 1, 1000 do
 		for _ in ipairs(list) do
 		end
 	end

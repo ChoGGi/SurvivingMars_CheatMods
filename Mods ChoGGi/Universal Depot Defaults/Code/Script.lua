@@ -54,16 +54,20 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local base = 34
+-- all offset by 34 (even spacing between them with seeds)
 local seed_offsets = {
-	PreciousMetals = 0,
-	Polymers = base,
-	Metals = base * 2,
-	MachineParts = base * 3,
-	Fuel = base * 4,
-	Food = base * 5,
-	Electronics = base * 6,
-	Concrete = base * 7,
+-- Fuel/Concrete are unchanged
+	MachineParts = point(651, -231, 30),
+	Electronics = point(415, -231, 30),
+	Polymers = point(179, -231, 30),
+	PreciousMetals = point(-57, -231, 30),
+	Metals = point(-293, -231, 30),
+	Food = point(-529, -231, 30),
+	Seeds = point(-765, -231, 30),
+}
+local skips = {
+	Fuel = true,
+	Concrete = true,
 }
 
 local orig_UniversalStorageDepot_GameInit = UniversalStorageDepot.GameInit
@@ -82,17 +86,11 @@ function UniversalStorageDepot:GameInit(...)
 			self:ToggleAcceptResource(name)
 		end
 
-		-- and change res cube offsets (thanks LukeH for the gappage idea)
-		if gp_dlc and name ~= "Seeds" and not IsLukeHNewResActive then
-			self.placement_offset[name] = self.placement_offset[name]:AddX(seed_offsets[name])
+		-- and change res cube offsets (thanks LukeH for the gappage)
+		if gp_dlc and not IsLukeHNewResActive and not skips[name] then
+			self.placement_offset[name] = seed_offsets[name]
 		end
 
-	end
-
-	if gp_dlc and not IsLukeHNewResActive then
-		-- seeds (same outer border offset as raremetals)
-		local offset = seed_offsets.Concrete * -1
-		self.placement_offset.Seeds = self.placement_offset.Concrete:AddX(offset)
 	end
 
 	-- desired slider setting (needs a slight delay to set the "correct" amount)
@@ -137,6 +135,7 @@ if gp_dlc then
 			return orig_GetSpotBeginIndex(self, spot_name, ...)
 		end
 	end
+
 end
 
 -- needed for SetDesiredAmount in depots

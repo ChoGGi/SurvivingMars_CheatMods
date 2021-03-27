@@ -148,3 +148,25 @@ if Mods.ChoGGi_testing then
 else
 	printC = empty_func
 end
+
+
+-- get rid of log spam from RCTransport:Automation_Gather()
+-- how long are they going to leave in it? (tito was 2021-03-24)
+-- DefineClass("SurfaceDepositPreciousMinerals" < ends in a ctd and I can't be bothered to dig into it
+
+printC"RCTransport:Automation_Gather() override is still in place..."
+local orig_MapFindNearest = MapFindNearest
+local function fake_MapFindNearest(rover, world, metals, concrete, polymers, minerals, func, ...)
+	-- if it changes from an update
+	if minerals == "SurfaceDepositPreciousMinerals" and not SurfaceDepositPreciousMinerals then
+		return orig_MapFindNearest(rover, world, metals, concrete, polymers, func)
+	end
+	return orig_MapFindNearest(rover, world, metals, concrete, polymers, minerals, func, ...)
+end
+
+local orig_RCTransport_Automation_Gather = RCTransport.Automation_Gather
+function RCTransport.Automation_Gather(...)
+	MapFindNearest = fake_MapFindNearest
+	orig_RCTransport_Automation_Gather(...)
+	MapFindNearest = orig_MapFindNearest
+end

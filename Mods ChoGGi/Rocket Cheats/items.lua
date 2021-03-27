@@ -10,6 +10,14 @@ return {
 		"MaxValue", 1000,
 	}),
 	PlaceObj("ModItemOptionNumber", {
+		"name", "MaxExportStorage",
+		"DisplayName", T(758, "Max Export Storage"),
+		"Help", T(302535920011897, "How many rares on one rocket."),
+		"DefaultValue", RocketBase:GetProperty("max_export_storage") / const.ResourceScale,
+		"MinValue", 0,
+		"MaxValue", 1000,
+	}),
+	PlaceObj("ModItemOptionNumber", {
 		"name", "PassengerOrbitLifetime",
 		"DisplayName", T(8457, "Passenger Orbit Lifetime"),
 		"Help", T(302535920011868, "Passengers on board will die if the rocket doesn't land this many hours after arriving in orbit."),

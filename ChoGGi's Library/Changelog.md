@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v9.6 (Unreleased)
+- Added IsArray.
 
 ## v9.6 (24 March 2021)
 - Added SetChoGGiPalette, IsGamepadButtonPressed.

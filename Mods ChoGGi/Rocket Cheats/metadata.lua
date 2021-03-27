@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2429782883",
 	"pops_any_uuid", "1e254009-499e-4e01-a948-81e98fc661e3",
 	"lua_revision", 1001569,
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -18,6 +18,7 @@ return PlaceObj("ModDef", {
 
 Mod Options:
 Launch Fuel: The amount of fuel it takes to launch the rocket.
+Max Export Storage: How many rares on one rocket.
 Passenger Orbit Lifetime: Passengers on board will die if the rocket doesn't land this many hours after arriving in orbit.
 Payload Capacity: Maximum payload (in kg) of a resupply Rocket
 Food per Rocket Passenger: The amount of Food (unscaled) supplied with each Colonist arrival

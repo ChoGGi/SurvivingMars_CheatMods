@@ -1,6 +1,11 @@
 ## ECM Changelog
 
 ## v16.7 (Unreleased)
+### Added:
+- A bunch of tooltips for new cheat pane items from Tito update.
+
+### Changed:
+- Examine uses a numerical loop for indexed tables.
 
 ## v16.6 (24 March 2021)
 ### Added:

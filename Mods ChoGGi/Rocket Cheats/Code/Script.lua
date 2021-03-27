@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local mod_LaunchFuel
+local mod_MaxExportStorage
 local mod_PassengerOrbitLifetime
 local mod_MaxColonistsPerRocket
 local mod_TravelTimeEarthMars
@@ -46,6 +47,7 @@ local function UpdateRockets()
 		obj.launch_fuel = mod_LaunchFuel
 		obj.launch_fuel_expedition = mod_LaunchFuel
 		obj.passenger_orbit_life = mod_PassengerOrbitLifetime
+		obj.max_export_storage = mod_MaxExportStorage
 	end
 end
 
@@ -53,6 +55,7 @@ end
 local function ModOptions()
 	local options = CurrentModOptions
 	mod_LaunchFuel = options:GetProperty("LaunchFuel") * const.ResourceScale
+	mod_MaxExportStorage = options:GetProperty("MaxExportStorage") * const.ResourceScale
 	mod_PassengerOrbitLifetime = options:GetProperty("PassengerOrbitLifetime") * const.HourDuration
 	mod_CargoCapacity = options:GetProperty("CargoCapacity") * const.ResourceScale
 	mod_FoodPerRocketPassenger = options:GetProperty("FoodPerRocketPassenger") * const.ResourceScale

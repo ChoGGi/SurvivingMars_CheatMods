@@ -4,21 +4,38 @@ local PlaceObj = PlaceObj
 local T = T
 local table_concat = table.concat
 
+-- add some descriptions
+local SafeTrans
+-- use rawget so game doesn't complain about _G
+if rawget(_G, "ChoGGi") then
+	SafeTrans = ChoGGi.ComFuncs.Translate
+else
+	local _InternalTranslate = _InternalTranslate
+	local procall = procall
+
+	SafeTrans = function(...)
+		local varargs = ...
+		local str
+		procall(function()
+			str = _InternalTranslate(T(varargs))
+		end)
+		return str or T(302535920011424, "Missing text... Nope just needs UICity which isn't around till in-game (ask the devs).")
+	end
+end
+
 local properties = {}
 local c = 0
 
 local TechDef = TechDef
 for id, item in pairs(TechDef) do
-	if item.group ~= "Breakthroughs" then
-		if id ~= "None" then
-			c = c + 1
-			properties[c] = PlaceObj("ModItemOptionToggle", {
-				"name", id,
-				"DisplayName", T(item.display_name),
-				"Help", table_concat(T(item.description) .. "\n\n<image " .. item.icon .. ">"),
-				"DefaultValue", false,
-			})
-		end
+	if item.group ~= "Breakthroughs" and id ~= "None" then
+		c = c + 1
+		properties[c] = PlaceObj("ModItemOptionToggle", {
+			"name", id,
+			"DisplayName", T(item.display_name),
+			"Help", table_concat(T(SafeTrans(item.description, item)) .. "\n\n<image " .. item.icon .. ">"),
+			"DefaultValue", false,
+		})
 	end
 end
 

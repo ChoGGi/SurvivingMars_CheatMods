@@ -15,6 +15,7 @@ local WaitMsg = WaitMsg
 local table_remove = table.remove
 local IsPoint = IsPoint
 local IsBox = IsBox
+local DoneObject = DoneObject
 
 local debug_getinfo, debug_getlocal, debug_getupvalue, debug_gethook
 
@@ -2821,7 +2822,7 @@ do -- ShowAnimDebug_Toggle
 	local function AnimDebug_Hide(obj)
 		obj:ForEachAttach("ChoGGi_OText", function(a)
 			if a.ChoGGi_AnimDebug then
-				a:delete()
+				DoneObject(a)
 			end
 		end)
 	end

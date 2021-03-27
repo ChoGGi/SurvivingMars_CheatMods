@@ -61,16 +61,15 @@ function OnMsg.ClassesPostprocess()
 		local _InternalTranslate = _InternalTranslate
 		local procall = procall
 
-		SafeTrans = function (...)
+		SafeTrans = function(...)
 			local varargs = ...
 			local str
 			procall(function()
 				str = _InternalTranslate(T(varargs))
 			end)
-			return str or T(302535920011424, "Missing text... Nope just needs UICity which isn't around till the game starts (ask the devs).")
+			return str or T(302535920011424, "Missing text... Nope just needs UICity which isn't around till in-game (ask the devs).")
 		end
 	end
-
 
 	local name
 	if mod_BreakthroughsResearched then
@@ -100,7 +99,7 @@ function OnMsg.ClassesPostprocess()
 --~ 		ex(def)
 		local id = def.id
 		PlaceObj("GameRules", {
-			description = SafeTrans(def.description, def),
+			description = SafeTrans(T(def.description, def)) .. "\n\n<image " .. def.icon .. ">",
 			display_name = T(11451, "Breakthrough") .. ": " .. T(def.display_name),
 			group = "Default",
 			id = "ChoGGi_" .. id,

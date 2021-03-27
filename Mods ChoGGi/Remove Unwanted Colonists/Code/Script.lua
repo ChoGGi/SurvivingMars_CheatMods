@@ -7,6 +7,7 @@ local c = 0
 local Random = ChoGGi.ComFuncs.Random
 local RetName = ChoGGi.ComFuncs.RetName
 local Sleep = Sleep
+local mod_SkipTourists
 
 local function AddColonists(list)
 	for i = 1, #list do
@@ -32,14 +33,18 @@ local function UpdateMurderPods()
 		if obj and not IsValid(obj.ChoGGi_MurderPod) then
 			-- quicker to check age instead of looping all traits, so ageism rules
 			if mod_options[obj.age_trait] then
-				obj:ChoGGi_MP_LaunchPod()
+				if not mod_SkipTourists or mod_SkipTourists and not obj.traits.Tourist then
+					obj:ChoGGi_MP_LaunchPod()
+				end
 			else
 				-- loop through colonist traits for bad ones
 				for id in pairs(obj.traits) do
 					-- we found it, so stop checking rest of traits and on to next victim
 					if mod_options[id] then
-						obj:ChoGGi_MP_LaunchPod()
-						break
+						if not mod_SkipTourists or mod_SkipTourists and id ~= "Tourist" then
+							obj:ChoGGi_MP_LaunchPod()
+							break
+						end
 					end
 				end
 			end
@@ -52,6 +57,8 @@ local options
 -- fired when settings are changed/init
 local function ModOptions()
 	options = CurrentModOptions
+
+	mod_SkipTourists = options:GetProperty("SkipTourists")
 
 	for i = 1, c do
 		local id = traits_list[i]
@@ -231,7 +238,7 @@ function OnMsg.ClassesPostprocess()
 					if context.ChoGGi_MurderPod then
 						-- tell pod to piss off
 						context:ChoGGi_MP_RemovePod()
-					else
+					elseif not mod_SkipTourists or mod_SkipTourists and not context.traits.Tourist then
 						-- send down a pod
 						context:ChoGGi_MP_LaunchPod()
 					end

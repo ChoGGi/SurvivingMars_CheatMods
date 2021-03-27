@@ -8,9 +8,9 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Remove Unwanted Colonists",
-	"version", 10,
+	"version", 11,
 	"version_major", 1,
-	"version_minor", 0,
+	"version_minor", 1,
 	"image", "Preview.png",
 	"id", "ChoGGi_RemoveUnwantedColonists",
 	"steam_id", "1594867237",
@@ -36,7 +36,9 @@ Once they go outside it'll suck them up and take them back to Earth (truthfully 
 Unfortunately frozen bodies don't have any propulsion systems. They'll come back as human shaped meteors (in a few Sols). You wouldn't want to experience the Kessler syndrome around your shiny new planet after all.
 On the bright side there won't be much left on impact, so other colonists won't be affected (no hit to applicants).
 
-
+Mod Options:
+Skip Tourists: Never remove tourists.
 See mod options to automagically remove colonists of certain traits.
+
 This also adds a buildable monument to idiots, for those colonists less inclined to go outside.]],
 })

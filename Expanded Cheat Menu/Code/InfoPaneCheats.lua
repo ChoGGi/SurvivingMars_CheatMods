@@ -2,6 +2,7 @@
 
 -- add items/hint to the cheats pane
 
+local pairs = pairs
 local IsValid = IsValid
 local CreateRealTimeThread = CreateRealTimeThread
 
@@ -211,6 +212,21 @@ It don't matter if you're black or white"]]],
 	RenegadeClear = {
 		des = Strings[302535920001610--[[Remove the renegade trait from this colonist.]]],
 	},
+	MakeEarthsick = {
+		des = Strings[302535920000064--[[Add Earthsick status to Colonist.]]],
+	},
+	Kill = {
+		des = Strings[302535920000065--[[Colonist will no longer enjoy life.]]],
+	},
+	Age1Year = {
+		des = Strings[302535920000244--[[Age will increase by 1 year.]]],
+	},
+	AddTouristTrait = {
+		des = Strings[302535920000663--[[Change colonist into a tourist.]]],
+	},
+	AddSolOnMars = {
+		des = Strings[302535920000981--[[Bump the time they've spent on Mars.]]],
+	},
 
 -- Building
 	VisitorsDbl = {des = doublec},
@@ -274,6 +290,18 @@ It don't matter if you're black or white"]]],
 	SpawnAndroid = {
 		des = Strings[302535920001577--[[Spawn an Android.]]],
 	},
+	AddProgressPoints = {
+		des = Strings[302535920000983--[[Bump the TV Show progress by 5000.]]],
+	},
+	ResetShowProgress = {
+		des = Strings[302535920001628--[[Reset the TV Show progress.]]],
+	},
+	VolMinus5 = {
+		des = Strings[302535920001629--[[Increase lake volume by 5.]]],
+	},
+	VolPlus5 = {
+		des = Strings[302535920001630--[[Decrease lake volume by 5.]]],
+	},
 
 -- Rover/Drone
 	BattCapDbl = {
@@ -303,6 +331,9 @@ It don't matter if you're black or white"]]],
 	},
 	GoHome = {
 		des = Strings[302535920000929--[[Tell drone to go back to controller.]]],
+	},
+	RemoveDustRC = {
+		des = Strings[302535920001631--[[Remove dust covering Rover.]]],
 	},
 
 -- Rocket/Shuttles
@@ -339,6 +370,31 @@ It don't matter if you're black or white"]]],
 	Breadcrumbs = {
 		des = Strings[302535920001464--[[Leave a trail of rudimentary orbs.]]],
 	},
+	SpawnDog = {
+		des = Strings[302535920001632--[[Spawn an animal.]]],
+	},
+	SpawnGoat = {
+		des = Strings[302535920001632--[[Spawn an animal.]]],
+	},
+	SpawnCat = {
+		des = Strings[302535920001632--[[Spawn an animal.]]],
+	},
+	SpawnPony = {
+		des = Strings[302535920001632--[[Spawn an animal.]]],
+	},
+	SpawnPenguin = {
+		des = Strings[302535920001632--[[Spawn an animal.]]],
+	},
+	SpawnRabbit = {
+		des = Strings[302535920001632--[[Spawn an animal.]]],
+	},
+	SpawnDeer = {
+		des = Strings[302535920001632--[[Spawn an animal.]]],
+	},
+	SpawnLlama = {
+		des = Strings[302535920001632--[[Spawn an animal.]]],
+	},
+
 
 -- Misc
 	FindResource = {
@@ -428,8 +484,6 @@ local skip_Empty = {"SubsurfaceDeposit", "TerrainDeposit"}
 
 -- check for any cheat funcs missing the tooltip description
 function ChoGGi.InfoFuncs.CheckForMissingCheatDes()
-	local type, pairs = type, pairs
-
 	-- list any missing ones
 	local missing = {}
 	-- funcs already checked
@@ -459,6 +513,7 @@ function ChoGGi.InfoFuncs.CheckForMissingCheatDes()
 	end
 end
 
+-- called from InfopanelObj:CreateCheatActions()
 function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 	local obj = win.context
 	local name = RetName(obj)

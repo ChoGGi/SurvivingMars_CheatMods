@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local table = table
+
 local disasters = {
 	"ColdWaves",
 	"DustStorms",
@@ -85,14 +87,14 @@ local disaster_lookup = {
 -- only activate if disaster isn't already active
 local function ActivateDisaster(name)
 --~ 	print("Activate Disaster", name)
+	local g = _G
 
 	local disaster = disaster_lookup[name]
 
 	-- disaster happening already
-	local gvar = _G[disaster.var]
-	if gvar then
+	if g[disaster.var] then
 		-- DustDevils needs a count (the rest are false normally, and dd stays a table?)
-		if name ~= "DustDevils" or name == "DustDevils" and #gvar > 0 then
+		if name ~= "DustDevils" or name == "DustDevils" and #g[disaster.var] > 0 then
 --~ 			print("Abort Disaster", name)
 			return
 		end
@@ -104,17 +106,17 @@ local function ActivateDisaster(name)
 
 	-- start new disaster
 	if name == "ColdWaves" or name == "Marsquakes" or name == "Rains" then
-		_G[disaster.func](data.name)
+		g[disaster.func](data.name)
 	elseif name == "DustStorms" then
 		CreateGameTimeThread(function()
-			_G[disaster.func](table.rand(disaster.types), data)
+			g[disaster.func](table.rand(disaster.types), data)
 		end)
 --~ 	elseif name == "Rains" then
 --~ 		-- split into each type
 	elseif name == "MeteorStorms" then
-		_G[disaster.func](data, "storm")
+		g[disaster.func](data, "storm")
 	elseif name == "DustDevils" then
-		_G[disaster.func](nil, data):Start()
+		g[disaster.func](nil, data):Start()
 	end
 end
 

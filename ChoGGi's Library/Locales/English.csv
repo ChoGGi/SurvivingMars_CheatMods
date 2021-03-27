@@ -1,16 +1,4 @@
 "ID", " Text"
-302535920000064,
-302535920000065,
-302535920000244,
-302535920000663,
-302535920000981,
-302535920000983,
-302535920001628,
-302535920001629,
-302535920001630,
-302535920001631,
-302535920001632,
-302535920001633,
 302535920001634,
 302535920001635,
 302535920001636,
@@ -149,8 +137,19 @@
 302535920000854, "Results Found"
 302535920000219, "Export viewed image to <green>%s</green>."
 302535920000109, "Invalid Image"
+302535920000064, "Add Earthsick status to Colonist."
+302535920000065, "Colonist will no longer enjoy life."
+302535920000244, "Age will increase by 1 year."
+302535920000663, "Change colonist into a tourist."
+302535920000981, "Bump the time they've spent on Mars."
+302535920000983, "Bump the TV Show progress by 5000."
+302535920001628, "Reset the TV Show progress."
+302535920001629, "Increase lake volume by 5."
+302535920001630, "Decrease lake volume by 5."
+302535920001631, "Remove dust covering Rover."
+302535920001632, "Spawn an animal."
 302535920001577, "Spawn an Android."
-302535920001466, "Spawn a drone."
+302535920001466, "Spawn a Drone."
 302535920001464, "Leave a trail of rudimentary orbs."
 302535920001463, "Fill all depots of same type."
 302535920000929, "Tell drone to go back to controller."
@@ -423,6 +422,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"
 302535920000071, "Show Mods Log"
 302535920000692, "Log is blank (well not anymore)."
 302535920000477, "Clear out the windowed console log."
+302535920001633, "Reached %s objects, abort?"
 302535920000986, "Translated"
 302535920000920, "Examining objs from this dlg will <color ChoGGi_red>%s</color>examine them all in a single dlg."
 302535920000590, "Batch"

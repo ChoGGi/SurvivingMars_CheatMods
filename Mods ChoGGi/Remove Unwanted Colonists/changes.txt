@@ -1,3 +1,6 @@
+v1.1
+Added mod option to never remove tourists.
+
 v1.0
 Added flying around sound to murder pods.
 Random delay before idiot looks at idiot monument.

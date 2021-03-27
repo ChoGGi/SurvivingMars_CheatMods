@@ -23,6 +23,7 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"has_options", true,
 	"description", [[Obsolete: Fixed in https://forum.paradoxplaza.com/forum/threads/tourism-update-hotfix-3.1463960/
+(this will still unstick them, since the devs didn't bother doing that)
 
 
 The hotel uses a door model from Space Race DLC (the Mega Mall), it bugs out when you don't have that DLC.

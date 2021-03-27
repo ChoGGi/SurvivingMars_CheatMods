@@ -64,6 +64,7 @@ local function BldToggleSounds(label, snd)
 end
 
 DisableSounds = function()
+	local FXRules = FXRules
 
 	if mod_SensorSensorTowerBeeping then
 		table_remove(FXRules.Working.start.SensorTower.any, 3)

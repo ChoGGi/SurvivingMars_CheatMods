@@ -1,3 +1,9 @@
+v0.9
+Checks for Extra Large Water Tank.
+
+v0.8
+Fixed phantom tanker (thanks HoGrRo).
+
 v0.7
 Fixed pin icon.
 
