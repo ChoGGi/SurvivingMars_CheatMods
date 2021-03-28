@@ -22,8 +22,12 @@ local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 function OpenExamine(...)
 	OpenInExamineDlg(...)
 end
+function OpenExamineRet(...)
+	return OpenInExamineDlg(...)
+end
 -- short n sweet
 ex = OpenExamine
+exr = OpenExamineRet
 
 function restart()
 	quit("restart")

@@ -1,3 +1,6 @@
+v0.5
+Log spam
+
 v0.4
 Added Multiply Divide option.
 

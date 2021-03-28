@@ -1,17 +1,24 @@
 -- See LICENSE for terms
 
+local PlaceObj = PlaceObj
+
 local mod_BreakthroughsResearched
 local mod_SortBreakthroughs
 local mod_ExcludeBreakthroughs
-local options
 
 -- fired when settings are changed/init
 local function ModOptions()
-	options = CurrentModOptions
 
+	local options = CurrentModOptions
 	mod_BreakthroughsResearched = options:GetProperty("BreakthroughsResearched")
 	mod_SortBreakthroughs = options:GetProperty("SortBreakthroughs")
 	mod_ExcludeBreakthroughs = options:GetProperty("ExcludeBreakthroughs")
+
+	-- stop options from blanking out from ClassesPostprocess (2/2)
+	if #options.properties == 0 then
+		options.properties = nil
+	end
+
 end
 
 -- load default/saved settings
@@ -67,7 +74,7 @@ function OnMsg.ClassesPostprocess()
 			procall(function()
 				str = _InternalTranslate(T(varargs))
 			end)
-			return str or T(302535920011424, "Missing text... Nope just needs UICity which isn't around till in-game (ask the devs).")
+			return str or T(302535920011424, "You need to be in-game to see this text (or use my Library mod).")
 		end
 	end
 
@@ -79,8 +86,8 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	PlaceObj("GameRules", {
-		description = T(302535920011598, string.format("This will %s all breakthroughs <yellow>no matter</yellow> if you've checked or unchecked any in the list.", name)),
-		display_name = T(11451, "Breakthrough") .. ": " .. T(302535920011599, string.format("%s All Breakthroughs", name)),
+		description = T{302535920011598, "This will <name> all breakthroughs <yellow>no matter</yellow> if you've checked or unchecked any in the list.", name = name},
+		display_name = T(11451, "Breakthrough") .. ": " .. T{302535920011599, "<name> All Breakthroughs", name = name},
 		group = "Default",
 		id = "ChoGGi_DoAllBreakthroughs",
 		PlaceObj("Effect_Code", {
@@ -93,14 +100,24 @@ function OnMsg.ClassesPostprocess()
 		}),
 	})
 
-	local PlaceObj = PlaceObj
 	for i = 1, #breaks do
 		local def = breaks[i]
 --~ 		ex(def)
+		-- spaces don't work in image tags
+		local image,newline
+		if def.icon:find(" ", 1, true) then
+			image = ""
+			newline = ""
+		else
+			image = "<image " .. def.icon .. ">"
+			newline = "\n\n"
+		end
 		local id = def.id
 		PlaceObj("GameRules", {
-			description = SafeTrans(T(def.description, def)) .. "\n\n<image " .. def.icon .. ">",
-			display_name = T(11451, "Breakthrough") .. ": " .. T(def.display_name),
+			description = SafeTrans(def.description, def) .. newline .. image,
+			display_name = T(11451, "Breakthrough") .. ": " .. T(def.display_name) .. (
+				def.icon ~= "UI/Icons/Research/story_bit.tga" and " <right>" .. image or ""
+			),
 			group = "Default",
 			id = "ChoGGi_" .. id,
 			PlaceObj("Effect_Code", {

@@ -21,7 +21,7 @@ end
 
 local orig_CalcWasteRockAmount = CalcWasteRockAmount
 function CalcWasteRockAmount(...)
-	if MultiplyDivide then
+	if mod_MultiplyDivide then
 		return orig_CalcWasteRockAmount(...) / mod_Amount
 	end
 	return orig_CalcWasteRockAmount(...) * mod_Amount

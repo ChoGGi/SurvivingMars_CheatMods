@@ -2,7 +2,6 @@
 
 local PlaceObj = PlaceObj
 local T = T
-local table_concat = table.concat
 
 -- add some descriptions
 local SafeTrans
@@ -19,7 +18,7 @@ else
 		procall(function()
 			str = _InternalTranslate(T(varargs))
 		end)
-		return str or T(302535920011424, "Missing text... Nope just needs UICity which isn't around till in-game (ask the devs).")
+		return str or T(302535920011424, "You need to be in-game to see this text (or use my Library mod).")
 	end
 end
 
@@ -28,14 +27,26 @@ local c = 0
 
 local bt = Presets.TechPreset.Breakthroughs
 for i = 1, #bt do
-	local item = bt[i]
-	local id = item.id
+	local def = bt[i]
+	local id = def.id
 	if id ~= "None" then
+		-- spaces don't work in image tags
+		local image,newline
+		if def.icon:find(" ", 1, true) then
+			image = ""
+			newline = ""
+		else
+			image = "<image " .. def.icon .. ">"
+			newline = "\n\n"
+		end
+
 		c = c + 1
 		properties[c] = PlaceObj("ModItemOptionToggle", {
 			"name", id,
-			"DisplayName", T(item.display_name),
-			"Help", table_concat(T(SafeTrans(item.description, item)) .. "\n\n<image " .. item.icon .. ">"),
+			"DisplayName", SafeTrans(def.display_name) .. (
+				def.icon ~= "UI/Icons/Research/story_bit.tga" and " <right>" .. image or ""
+			),
+			"Help", SafeTrans(def.description, def) .. newline .. image,
 			"DefaultValue", false,
 		})
 	end
@@ -50,15 +61,14 @@ end)
 -- stick res option first
 table.insert(properties, 1, PlaceObj("ModItemOptionToggle", {
 	"name", "BreakthroughsResearched",
-	"DisplayName", table_concat(T("<yellow>") .. T(302535920011423, "Breakthroughs Researched")),
+	"DisplayName", "<yellow>" .. SafeTrans(T(302535920011423, "Breakthroughs Researched")),
 	"Help", T(302535920011813, "Turn on to research instead of unlock breakthroughs."),
 	"DefaultValue", false,
 }))
 table.insert(properties, 1, PlaceObj("ModItemOptionToggle", {
 	"name", "AlwaysApplyOptions",
-	"DisplayName", T(),
-	"DisplayName", table_concat(T("<yellow>") .. T(302535920011814, "Always Apply Options")),
-	"Help", T(302535920011815, "Unlock/Research Breakthroughs whenever you load a game/start a new game."),
+	"DisplayName", "<yellow>" .. SafeTrans(T(302535920011814, "Always Apply Options")),
+	"Help", T(302535920011815, "Unlock/Research Breakthroughs whenever you load a game/start a new game/apply options."),
 	"DefaultValue", false,
 }))
 

@@ -18,10 +18,11 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local table_insert = table.insert
+local rawget = rawget
 
 local orig_SupplyRocket_UIOpenTouristOverview = SupplyRocket.UIOpenTouristOverview
 function SupplyRocket:UIOpenTouristOverview(...)
-	if not mod_EnableMod then
+	if not mod_EnableMod or rawget(_G, "g_AT_Options") then
 		return orig_SupplyRocket_UIOpenTouristOverview(self, ...)
 	end
 
@@ -37,5 +38,4 @@ function SupplyRocket:UIOpenTouristOverview(...)
 		rocket_name = Untranslated(self.name),
 		colonists = tourists,
 	}
-
 end

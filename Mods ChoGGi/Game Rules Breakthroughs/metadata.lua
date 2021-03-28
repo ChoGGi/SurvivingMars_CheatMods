@@ -4,10 +4,10 @@ return PlaceObj("ModDef", {
 	"steam_id", "1753933193",
 	"pops_any_uuid", "6729224c-c34e-46fb-9355-400a0cdc5402",
 	"lua_revision", 1001569,
-	"version", 12,
+	"version", 13,
 	"version_major", 1,
-	"version_minor", 2,
-	"image", "Preview.png",
+	"version_minor", 3,
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
@@ -20,5 +20,9 @@ Mod Options:
 Breakthroughs Researched: Research instead of unlock breakthroughs (New game needed after option is applied or maybe restart game).
 Sort Breakthrough List: Sort the list of breakthroughs alphabetically (order effects in-game cost), disable for random.
 Exclude Breakthroughs: Enabling a rule will stop that breakthrough from appearing.
+
+
+Known Issues:
+You need to be in-game to be able to see the mod options.
 ]],
 })

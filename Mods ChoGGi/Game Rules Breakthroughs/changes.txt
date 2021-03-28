@@ -1,3 +1,6 @@
+v1.3
+Name icons.
+
 v1.2
 Added icons to tooltip.
 

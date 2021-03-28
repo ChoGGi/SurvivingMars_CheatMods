@@ -3,6 +3,7 @@
 ## v16.7 (Unreleased)
 ### Added:
 - A bunch of tooltips for new cheat pane items from Tito update.
+- OpenExamineRet/exr: They both return the examine dialog (if you want to access it unlike ex()).
 
 ### Changed:
 - Examine uses a numerical loop for indexed tables.
