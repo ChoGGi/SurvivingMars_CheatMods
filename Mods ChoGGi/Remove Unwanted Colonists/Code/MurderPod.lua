@@ -49,10 +49,10 @@ DefineClass.MurderPod = {
 	collision_radius = 50*guim,
 }
 
-if IsValidEntity("ArcPod") then
-	MurderPod.entity = "ArcPod"
-	MurderPod.display_icon = "UI/Icons/Buildings/ark_pod.tga"
-end
+--~ if IsValidEntity("ArcPod") then
+--~ 	MurderPod.entity = "ArcPod"
+--~ 	MurderPod.display_icon = "UI/Icons/Buildings/ark_pod.tga"
+--~ end
 
 function MurderPod:GameInit()
 	self.city = UICity

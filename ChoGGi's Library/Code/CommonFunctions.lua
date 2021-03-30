@@ -2662,6 +2662,7 @@ local function MapGet_ChoGGi(label, area, ...)
 		-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything* (think gary oldman in professional)
 		if g_cls and g_cls:IsKindOf("CObject") then
 			-- area can be: "map" = only objs spawned on map, or true = objs on map and off map (objs spawned at invalid location)
+			-- "detached" or "outsiders" = anything off map (rockets not on planet/etc)
 			return MapGet(area or true, label, ...)
 			-- use obj:SetPos(pos) to move objs to map (and away with pos = InvalidPos())
 		end

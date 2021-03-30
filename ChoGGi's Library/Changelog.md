@@ -2,6 +2,7 @@
 
 ## v9.6 (Unreleased)
 - Added IsArray.
+- ExportMapDataToCSV has option to return data in tables instead of csv.
 
 ## v9.6 (24 March 2021)
 - Added SetChoGGiPalette, IsGamepadButtonPressed.

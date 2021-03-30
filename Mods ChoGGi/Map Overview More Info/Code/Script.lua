@@ -1,12 +1,12 @@
 -- See LICENSE for terms
 
-local options
 local mod_ShowPolymers
 local mod_ShowMetals
 local mod_ShowScanProgress
 local mod_TextOpacity
 local mod_TextBackground
 local mod_TextStyle
+local mod_ShowDropped
 
 local style_lookup = {
 	"EncyclopediaArticleTitle",
@@ -23,13 +23,14 @@ local style_lookup = {
 
 -- fired when settings are changed/init
 local function ModOptions()
-	options = CurrentModOptions
+	local options = CurrentModOptions
 	mod_ShowPolymers = options:GetProperty("ShowPolymers")
 	mod_ShowMetals = options:GetProperty("ShowMetals")
 	mod_ShowScanProgress = options:GetProperty("ShowScanProgress")
 	mod_TextOpacity = options:GetProperty("TextOpacity")
 	mod_TextBackground = options:GetProperty("TextBackground")
 	mod_TextStyle = options:GetProperty("TextStyle")
+	mod_ShowDropped = options:GetProperty("ShowDropped")
 end
 
 -- load default/saved settings
@@ -50,6 +51,9 @@ local table_concat = table.concat
 local IsValid = IsValid
 local T = T
 local MulDivRound = MulDivRound
+local GetMapSectorXY = GetMapSectorXY
+local MapGet = MapGet
+
 local black = black
 
 -- try to centre the text a bit more
@@ -62,6 +66,7 @@ local margin_box_trp = box(-25, -50, 0, 0)
 
 
 local text_table = {}
+local sector_piles = {}
 
 local sector_nums = {
  [1] = true,
@@ -97,6 +102,28 @@ local function AddIcons()
 	local text_style = style_lookup[mod_TextStyle]
 	local background = mod_TextBackground and black or XText.Background
 	local deep = g_Consts.DeepScanAvailable ~= 0
+
+	table.clear(sector_piles)
+	if mod_ShowDropped then
+		MapGet("map", "ResourceStockpile", function(pile)
+			if not IsValid(pile.parent) and #(pile.command_centers or "") == 0 then
+				-- maybe I'll add something to mark different stuff someday...
+--~ 				sector_piles[GetMapSectorXY(pile:GetVisualPosXYZ()).id] = true
+				local sector = GetMapSectorXY(pile:GetVisualPosXYZ()).id
+				local list = sector_piles[sector]
+				if not list then
+					sector_piles[sector] = {}
+					list = sector_piles[sector]
+				end
+				-- now add any res in pile to list
+				if not list[pile.resource] then
+					list[pile.resource] = 0
+				end
+				list[pile.resource] = list[pile.resource] + pile.stockpiled_amount
+			end
+		end)
+	end
+--~ 	ex(sector_piles)
 
 	local g_MapSectors = g_MapSectors
 	for sector in pairs(g_MapSectors) do
@@ -140,6 +167,12 @@ local function AddIcons()
 			if polymers_c > 0 then
 				c = c + 1
 				text_table[c] = str_Polymers .. (polymers_c/r)
+			end
+
+			-- add dropped res
+			if sector_piles[sector.id] then
+				c = c + 1
+				text_table[c] = "<image UI/Icons/Sections/storage.tga>"
 			end
 
 			if c > 0 then
@@ -194,3 +227,24 @@ end
 
 -- We don't want them around for saves (I should check that they get saved I suppose...)
 OnMsg.SaveGame = ClearIcons
+
+local orig_GenerateSectorRolloverContext = OverviewModeDialog.GenerateSectorRolloverContext
+function OverviewModeDialog:GenerateSectorRolloverContext(sector, ...)
+	local ret1, ret2 = orig_GenerateSectorRolloverContext(self, sector, ...)
+
+	-- append counts to sector tooltip
+	local pile = sector_piles[sector.id]
+	if pile then
+		local r = const.ResourceScale
+		local roll = ret1.RolloverText
+
+		roll = roll .. "<left>\n\n"
+		for res, amount in pairs(pile) do
+			roll = roll .. " " .. T("<icon_" .. res .. ">") .. ": " .. (amount / r)
+		end
+
+		ret1.RolloverText = roll
+	end
+
+	return ret1, ret2
+end

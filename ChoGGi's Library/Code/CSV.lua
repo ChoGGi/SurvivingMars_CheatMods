@@ -4,11 +4,13 @@
 local table = table
 local CmpLower = CmpLower
 
-local Strings = ChoGGi.Strings
 local RetName = ChoGGi.ComFuncs.RetName
 local Translate = ChoGGi.ComFuncs.Translate
 local RetMapSettings = ChoGGi.ComFuncs.RetMapSettings
 local RetMapBreakthroughs = ChoGGi.ComFuncs.RetMapBreakthroughs
+
+local Strings = ChoGGi.Strings
+local testing = ChoGGi.testing
 
 local function ExportDoneMsg(path)
 	local msg = Strings[302535920001449--[[Export]]] .. " " .. Strings[302535920001448--[[CSV]]]
@@ -45,7 +47,7 @@ do -- MapData
 
 	local MapData = MapData
 	local MarsLocales = MarsLocales
-	local function AddLandingSpot(lat, long, breakthroughs)
+	local function AddLandingSpot(lat, long, breakthroughs, skip_csv)
 		-- coord names in csv
 		local lat_0, long_0 = lat < 0, long < 0
 		local lat_name, long_name = lat_0 and north or south, long_0 and west or east
@@ -114,8 +116,14 @@ do -- MapData
 		if breakthroughs then
 			local data = export_data[export_count]
 			local tech_list = RetMapBreakthroughs(gen)
-			for i = 1, #tech_list do
-				data["break" .. i] = tech_list[i]
+			if skip_csv then
+				for i = 1, #tech_list do
+					data[i] = tech_list[i]
+				end
+			else
+				for i = 1, #tech_list do
+					data["break" .. i] = tech_list[i]
+				end
 			end
 		end
 
@@ -126,12 +134,19 @@ do -- MapData
 		end
 	end
 
-	function ChoGGi.ComFuncs.ExportMapDataToCSV(action)
+	--[[
+	ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
+		setting_breakthroughs = true,
+		setting_skip_csv = true,
+	})
+	]]
 
-		local breakthroughs
+	function ChoGGi.ComFuncs.ExportMapDataToCSV(action)
+		local breakthroughs, skip_csv
 		-- fired from action menu
 		if action and IsKindOf(action, "XAction") and action.setting_breakthroughs then
 			breakthroughs = true
+			skip_csv = action.setting_skip_csv
 		end
 
 		north, east, south, west = Translate(1000487--[[N]]), Translate(1000478--[[E]]), Translate(1000492--[[S]]), Translate(1000496--[[W]])
@@ -168,13 +183,15 @@ do -- MapData
 		for lat = 0, 70 do
 			for long = 0, 180 do
 				-- SE
-				AddLandingSpot(lat, long, breakthroughs)
-				-- SW
-				AddLandingSpot(lat, long * -1, breakthroughs)
-				-- NE
-				AddLandingSpot(lat * -1, long, breakthroughs)
-				-- NW
-				AddLandingSpot(lat * -1, long * -1, breakthroughs)
+				AddLandingSpot(lat, long, breakthroughs, skip_csv)
+				if action.ActionId ~= "" or not testing then
+					-- SW
+					AddLandingSpot(lat, long * -1, breakthroughs, skip_csv)
+					-- NE
+					AddLandingSpot(lat * -1, long, breakthroughs, skip_csv)
+					-- NW
+					AddLandingSpot(lat * -1, long * -1, breakthroughs, skip_csv)
+				end
 			end
 		end
 		-- not needed anymore so restore back to orig
@@ -195,44 +212,47 @@ do -- MapData
 			params[key] = value
 		end
 
-		local csv_columns = {
-			{"latitude_degree", Translate(6890--[[Latitude]]) .. " " .. Strings[302535920001505--[[°]]]},
-			{"latitude", Translate(6890--[[Latitude]])},
-			{"longitude_degree", Translate(6892--[[Longitude]]) .. " " .. Strings[302535920001505--[[°]]]},
-			{"longitude", Translate(6892--[[Longitude]])},
-			{"topography", Translate(284813068603--[[Topography]])},
-			{"diff_chall", Translate(774720837511--[[Difficulty Challenge ]]):gsub(" <percentage>%%", "")},
-			{"altitude", Translate(4135--[[Altitude]])},
-			{"temperature", Translate(4141--[[Temperature]])},
+		if skip_csv then
+			return export_data
+		else
+			local csv_columns = {
+				{"latitude_degree", Translate(6890--[[Latitude]]) .. " " .. Strings[302535920001505--[[°]]]},
+				{"latitude", Translate(6890--[[Latitude]])},
+				{"longitude_degree", Translate(6892--[[Longitude]]) .. " " .. Strings[302535920001505--[[°]]]},
+				{"longitude", Translate(6892--[[Longitude]])},
+				{"topography", Translate(284813068603--[[Topography]])},
+				{"diff_chall", Translate(774720837511--[[Difficulty Challenge ]]):gsub(" <percentage>%%", "")},
+				{"altitude", Translate(4135--[[Altitude]])},
+				{"temperature", Translate(4141--[[Temperature]])},
 
-			{"metals", Translate(3514--[[Metals]])},
-			{"metals_rare", Translate(4139--[[Rare Metals]])},
-			{"concrete", Translate(3513--[[Concrete]])},
-			{"water", Translate(681--[[Water]])},
+				{"metals", Translate(3514--[[Metals]])},
+				{"metals_rare", Translate(4139--[[Rare Metals]])},
+				{"concrete", Translate(3513--[[Concrete]])},
+				{"water", Translate(681--[[Water]])},
 
-			{"dust_devils", Translate(4142--[[Dust Devils]])},
-			{"dust_storms", Translate(4144--[[Dust Storms]])},
-			{"meteors", Translate(4146--[[Meteors]])},
-			{"cold_waves", Translate(4148--[[Cold Waves]])},
+				{"dust_devils", Translate(4142--[[Dust Devils]])},
+				{"dust_storms", Translate(4144--[[Dust Storms]])},
+				{"meteors", Translate(4146--[[Meteors]])},
+				{"cold_waves", Translate(4148--[[Cold Waves]])},
 
-			{"map_name", Strings[302535920001503--[[Map Name]]]},
-			{"landing_spot", Strings[302535920001504--[[Named]]] .. " " .. Translate(7396--[[Location]])},
-		}
-		if breakthroughs then
-			local b_str = Translate(11451--[[Breakthrough]])
-			local c = #csv_columns
---~ 			for i = 1, const.BreakThroughTechsPerGame do
-			for i = 1, 17 do
-				c = c + 1
-				csv_columns[c] = {"break" .. i, b_str .. " " .. i}
+				{"map_name", Strings[302535920001503--[[Map Name]]]},
+				{"landing_spot", Strings[302535920001504--[[Named]]] .. " " .. Translate(7396--[[Location]])},
+			}
+			if breakthroughs then
+				local b_str = Translate(11451--[[Breakthrough]])
+				local c = #csv_columns
+				for i = 1, (const.BreakThroughTechsPerGame + Consts.PlanetaryBreakthroughCount) do
+					c = c + 1
+					csv_columns[c] = {"break" .. i, b_str .. " " .. i}
+				end
 			end
-		end
 
---~ ex(export_data)
-		-- and now we can save it to disk
-		SaveCSV("AppData/MapData-" .. os.time() .. ".csv", export_data, table.map(csv_columns, 1), table.map(csv_columns, 2))
-		-- let user know where the csv is
-		ExportDoneMsg(ConvertToOSPath("AppData/MapData-" .. os.time() .. ".csv"))
+	--~ ex(export_data)
+			-- and now we can save it to disk
+			SaveCSV("AppData/MapData-" .. os.time() .. ".csv", export_data, table.map(csv_columns, 1), table.map(csv_columns, 2))
+			-- let user know where the csv is
+			ExportDoneMsg(ConvertToOSPath("AppData/MapData-" .. os.time() .. ".csv"))
+		end
 	end
 end --do
 

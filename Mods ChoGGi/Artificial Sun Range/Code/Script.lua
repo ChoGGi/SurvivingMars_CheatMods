@@ -1,21 +1,24 @@
 -- See LICENSE for terms
 
 local mod_Range = ArtificialSun.effect_range or 8
+local const_HexHeight = const.HexHeight
+
 local TestSunPanelRange = TestSunPanelRange
 local IsValid = IsValid
-local MapFindNearest = MapFindNearest
+local table = table
+local next = next
 
-local function UpdateSolarPanel(panel)
-	local nearest = MapFindNearest(panel, panel, mod_Range, "ArtificialSun", function(sun)
-		if TestSunPanelRange(sun, panel) then
-			return true
-		end
+local function UpdateSolarPanel(panel, suns)
+	local in_range, ignore = table.filter(suns, function(_, sun)
+		return TestSunPanelRange(sun, panel)
 	end)
+	-- filter will return indexed keys with their orig index
+	ignore, in_range = next(in_range)
 
 	-- if anything is close enough to count
-	if nearest then
+	if in_range then
 		-- update panel prod values
-		panel:SetArtificialSun(nearest)
+		panel:SetArtificialSun(in_range)
 	else
 		panel.artificial_sun = false
 	end
@@ -43,13 +46,13 @@ local function UpdateArtificialSunRange(obj)
 
 	-- now update all solar panels
 	if is_valid and obj:IsKindOf("SolarPanelBase") then
-		UpdateSolarPanel(obj)
+		UpdateSolarPanel(obj, suns)
 	else
 		local panels = UICity.labels.SolarPanelBase or ""
 		for i = 1, #panels do
 			local panel = panels[i]
 			if IsValid(panel) then
-				UpdateSolarPanel(panel)
+				UpdateSolarPanel(panel, suns)
 			end
 		end
 	end
@@ -83,6 +86,7 @@ OnMsg.LoadGame = UpdateArtificialSunRange
 SolarPanelBase.GameInit = UpdateArtificialSunRange
 
 SolarPanelBase.OnSetWorking = UpdateArtificialSunRange
+SolarPanelBuilding.OnSetWorking = UpdateArtificialSunRange
 
 
 local orig_ArtificialSun_GameInit = ArtificialSun.GameInit

@@ -1,5 +1,11 @@
 return {
 	PlaceObj("ModItemOptionToggle", {
+		"name", "ShowDropped",
+		"DisplayName", T(302535920011916, "Show Dropped Resources"),
+		"Help", T(302535920011917, "Show indicator <image UI/Icons/Sections/storage.tga> for any dropped resource piles (this will ignore any within range of a drone controller)."),
+		"DefaultValue", true,
+	}),
+	PlaceObj("ModItemOptionToggle", {
 		"name", "ShowMetals",
 		"DisplayName", T(302535920011374, "Show Metals"),
 		"DefaultValue", true,

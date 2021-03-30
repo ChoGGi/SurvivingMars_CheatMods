@@ -1,3 +1,7 @@
+v1.2
+Maybe fixed gray cube as pod.
+Made idiot monument fit into one hex and not float (I can add old style as mod option if wanted).
+
 v1.1
 Added mod option to never remove tourists.
 

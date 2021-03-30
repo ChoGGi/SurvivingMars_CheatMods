@@ -1,18 +1,17 @@
 return PlaceObj("ModDef", {
 	"title", "Triboelectric Scrubbers Clean Dome Buildings",
-	"version", 3,
-	"version_major", 0,
-	"version_minor", 3,
-
-	"image", "Preview.png",
 	"id", "ChoGGi_TriboelectricScrubbersCleanDomeBuildings",
 	"pops_any_uuid", "bb7da91d-9d37-448f-9923-2c766a90f407",
-	"author", "ChoGGi",
 	"steam_id", "1417507249",
+	"lua_revision", 1001569,
+	"version", 4,
+	"version_major", 0,
+	"version_minor", 4,
+	"image", "Preview.png",
+	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 1001569,
 	"description", [[They removed this in the Spirit Update.
 
 Requested by Cinereously.]],

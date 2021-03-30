@@ -115,9 +115,10 @@ function OnMsg.ClassesPostprocess()
 		local id = def.id
 		PlaceObj("GameRules", {
 			description = SafeTrans(def.description, def) .. newline .. image,
-			display_name = T(11451, "Breakthrough") .. ": " .. T(def.display_name) .. (
-				def.icon ~= "UI/Icons/Research/story_bit.tga" and " <right>" .. image or ""
-			),
+--~ 			display_name = T(11451, "Breakthrough") .. ": " .. T(def.display_name) .. (
+--~ 				def.icon ~= "UI/Icons/Research/story_bit.tga" and " <right>" .. image or ""
+--~ 			),
+			display_name = T(11451, "Breakthrough") .. ": " .. T(def.display_name),
 			group = "Default",
 			id = "ChoGGi_" .. id,
 			PlaceObj("Effect_Code", {

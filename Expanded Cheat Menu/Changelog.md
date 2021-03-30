@@ -7,6 +7,7 @@
 
 ### Changed:
 - Examine uses a numerical loop for indexed tables.
+- Menu>ECM>Rockets>Travel Time: Now applies to expedition rockets as well.
 
 ## v16.6 (24 March 2021)
 ### Added:

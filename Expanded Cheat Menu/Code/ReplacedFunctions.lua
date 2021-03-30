@@ -235,7 +235,7 @@ do -- non-class obj funcs
 	SaveOrigFunc("PopupNotificationBegin")
 	function PopupNotificationBegin(dlg, ...)
 		if UserSettings.SkipStoryBitsDialogs
-			and dlg.context and dlg.context.is_storybit
+			and (testing or dlg.context and dlg.context.is_storybit)
 		then
 			CreateRealTimeThread(function()
 				if testing then
@@ -395,6 +395,14 @@ function OnMsg.ClassesGenerate()
 			flight_time = g_Consts.TravelTimeEarthMars
 		end
 		return ChoGGi_OrigFuncs.RocketBase_FlyToMars(self, cargo, cost, flight_time, ...)
+	end
+
+	SaveOrigFunc("RocketExpedition", "ExpeditionSleep")
+	function RocketExpedition:ExpeditionSleep(s_t, ...)
+		if UserSettings.TravelTimeEarthMars then
+			s_t = g_Consts.TravelTimeEarthMars
+		end
+		return ChoGGi_OrigFuncs.RocketExpedition_ExpeditionSleep(self, s_t, ...)
 	end
 
 	-- no need for fuel to launch rocket

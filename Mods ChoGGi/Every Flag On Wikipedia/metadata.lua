@@ -13,7 +13,8 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Adds every flag on Wikipedia (450+), and no more Martian only names.
+	"description", [[
+Adds every flag on Wikipedia (450+), and no more Martian only names.
 
 Since this game uses nations for names, this also takes all the in-game names and applies them to all the new nations.
 
@@ -26,5 +27,9 @@ If you want existing nations to use random names: Default Nation Names = false
 Unique names are available in my More Names mod.
 
 If you have a list of names you'd like to add; please format them like these: https://github.com/HaemimontGames/SurvivingMars/blob/master/Lua/Names.lua#L1009
-]],
+
+
+
+Known Issues:
+<image> tags don't like spaces in the path (no flag icon).]],
 })

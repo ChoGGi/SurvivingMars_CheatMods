@@ -1,3 +1,6 @@
+v0.4
+Safari constant malfunctions (thanks boneys26).
+
 v0.3
 Armstrong (thanks Brainrot83).
 
