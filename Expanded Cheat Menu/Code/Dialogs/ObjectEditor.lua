@@ -172,8 +172,13 @@ function ChoGGi_DlgObjectEditor:idAddNew_OnPress()
 			return
 		end
 		local value = choice[1].value
+--~ 		ex(choice)
 
-		-- add it to the actual object
+--~ 		-- add it to the actual object
+--~ 		print(self.obj[tostring(value)])
+--~ 		print(choice[2].value, type(choice[2].value))
+--~ 		print(RetProperType(choice[2].value))
+
 		self.obj[tostring(value)] = RetProperType(choice[2].value)
 		-- refresh list
 		self:UpdateListContent()

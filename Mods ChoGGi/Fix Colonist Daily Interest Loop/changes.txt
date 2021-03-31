@@ -1,1 +1,2 @@
 v0.2
+Zeroed out daily_interest_fail as well.

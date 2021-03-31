@@ -1,7 +1,5 @@
 -- See LICENSE for terms
 
-local IsValid = IsValid
-
 local mod_EnableMod
 
 -- fired when settings are changed/init
@@ -23,9 +21,12 @@ function OnMsg.ClassesPostprocess()
 	--
 	local orig_Colonist_EnterBuilding = Colonist.EnterBuilding
 	function Colonist:EnterBuilding(building, ...)
+		-- don't need to check if it's valid (well hopefully not)
 		if mod_EnableMod and self.daily_interest ~= "" and building:IsOneOfInterests(self.daily_interest) then
 --~ 			printC("daily_interest CLEARED", self.daily_interest)
 			self.daily_interest = ""
+			-- here ya go
+			self.daily_interest_fail = 0
 		end
 
 		return orig_Colonist_EnterBuilding(self, building, ...)
