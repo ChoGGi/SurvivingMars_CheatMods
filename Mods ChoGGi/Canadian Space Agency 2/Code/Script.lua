@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local GetMissionSponsor = GetMissionSponsor
+
 local MachineNames = MachineNames
 
 MachineNames.Rocket.ChoGGi_CanadianSpaceAgency = {
@@ -36,4 +38,34 @@ if g_AvailableDlc.gagarin then
 	function OnMsg.ModsReloaded()
 		Presets.MissionSponsorPreset.Default.ChoGGi_CanadianSpaceAgency.rocket_class = "DragonRocket"
 	end
+end
+
+
+
+
+-- if you want a new "welcome to mars" sound
+function OnMsg.ClassesPostprocess()
+
+	PlaceObj("SoundPreset", {
+		id = "ChoGGi_TakeOffEh",
+--~ 		type = "UI",
+		type = "Voiceover",
+		PlaceObj("Sample", {
+			-- ThisIsOurMarsEh.opus
+			"file", CurrentModPath .. "Sound/ThisIsOurMarsEh",
+		}),
+	})
+	ReloadSoundBanks()
+
+end
+
+local TGetID = TGetID
+
+local orig_VoiceSampleByText = VoiceSampleByText
+function VoiceSampleByText(text, ...)
+	if TGetID(text) == 7155 and GetMissionSponsor().id == "ChoGGi_CanadianSpaceAgency" then
+		return "ChoGGi_TakeOffEh"
+	end
+
+	return orig_VoiceSampleByText(text, ...)
 end

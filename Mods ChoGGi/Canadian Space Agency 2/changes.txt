@@ -1,1 +1,4 @@
 v0.2
+Changed Welcome to Mars audio.
+Added some mission goals.
+Fiddled with the sponsor code to bring it up to date (slight changes).
