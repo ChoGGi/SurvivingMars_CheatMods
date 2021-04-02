@@ -1,3 +1,6 @@
+v0.9
+Fixed bug checking for nurseries (thanks Acerocket).
+
 v0.8
 Now checks for Large Nursery buildings.
 

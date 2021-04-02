@@ -101,21 +101,21 @@ do -- ExportTranslatedStrings
 	local Translate = ChoGGi.ComFuncs.Translate
 	local export_data = {}
 
-	-- export csv files containing translated strings
+	-- export csv files containing translated strings (csv files need to be in game profile (where saves are)
 	function ChoGGi.testing.ExportTranslatedStrings()
-		local time = os.time()
-
 		-- lists of str_id > string
 		langs = {
 			en = TranslationTable,
-			br = ChoGGi.ComFuncs.RetLangTable("Brazilian.csv"),
-			fr = ChoGGi.ComFuncs.RetLangTable("French.csv"),
-			ge = ChoGGi.ComFuncs.RetLangTable("German.csv"),
-			po = ChoGGi.ComFuncs.RetLangTable("Polish.csv"),
-			ru = ChoGGi.ComFuncs.RetLangTable("Russian.csv"),
-			sc = ChoGGi.ComFuncs.RetLangTable("Schinese.csv"),
-			sp = ChoGGi.ComFuncs.RetLangTable("Spanish.csv"),
+			br = ChoGGi.ComFuncs.RetLangTable("AppData/Brazilian.csv"),
+			fr = ChoGGi.ComFuncs.RetLangTable("AppData/French.csv"),
+			ge = ChoGGi.ComFuncs.RetLangTable("AppData/German.csv"),
+			po = ChoGGi.ComFuncs.RetLangTable("AppData/Polish.csv"),
+			ru = ChoGGi.ComFuncs.RetLangTable("AppData/Russian.csv"),
+			sc = ChoGGi.ComFuncs.RetLangTable("AppData/Schinese.csv"),
+			sp = ChoGGi.ComFuncs.RetLangTable("AppData/Spanish.csv"),
 		}
+
+		local time = os.time()
 
 		-- breakthroughs
 		local export_bt_names = {}
