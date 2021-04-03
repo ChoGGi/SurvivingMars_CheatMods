@@ -150,9 +150,19 @@ else
 end
 
 
+
+
+
+
+
+
+
+
+
+
 -- get rid of log spam from RCTransport:Automation_Gather()
 -- how long are they going to leave in it? (tito was 2021-03-24)
--- DefineClass("SurfaceDepositPreciousMinerals" < ends in a ctd and I can't be bothered to dig into it
+-- DefineClass("SurfaceDepositPreciousMinerals", etc)		< ends in a ctd and I can't be bothered to dig into it
 
 printC"RCTransport:Automation_Gather() override is still in place..."
 local orig_MapFindNearest = MapFindNearest

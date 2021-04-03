@@ -2,15 +2,7 @@
 
 local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 local ObjectColourRandom = ChoGGi.ComFuncs.ObjectColourRandom
-
---~ local SetChoGGiPalette = ChoGGi.ComFuncs.SetChoGGiPalette
-local function SetChoGGiPalette(obj, c)
-	obj:SetColorModifier(c[-1])
-	obj:SetColorizationMaterial(1, c[1][1], c[1][2], c[1][3])
-	obj:SetColorizationMaterial(2, c[2][1], c[2][2], c[2][3])
-	obj:SetColorizationMaterial(3, c[3][1], c[3][2], c[3][3])
-	obj:SetColorizationMaterial(4, c[4][1], c[4][2], c[4][3])
-end
+local SetChoGGiPalette = ChoGGi.ComFuncs.SetChoGGiPalette
 
 local IsKindOf = IsKindOf
 local IsMassUIModifierPressed = IsMassUIModifierPressed
@@ -18,8 +10,12 @@ local IsMassUIModifierPressed = IsMassUIModifierPressed
 local function CycleAllSkins(obj)
 	local skin, palette = obj:GetCurrentSkin()
 	local objs = UICity.labels[RetTemplateOrClass(obj)] or ""
+	local name = obj.template_name
 	for i = 1, #objs do
-		objs[i]:ChangeSkin(skin, palette)
+		local all_obj = objs[i]
+		if all_obj.template_name == name then
+			all_obj:ChangeSkin(skin, palette)
+		end
 	end
 end
 

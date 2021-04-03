@@ -1,6 +1,6 @@
 ## Library Changelog
 
-## v9.6 (Unreleased)
+## v9.7 (Unreleased)
 - Added IsArray.
 - ExportMapDataToCSV has option to return data in tables instead of csv.
 

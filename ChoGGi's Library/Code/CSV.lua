@@ -92,6 +92,7 @@ do -- MapData
 		-- create item in export list
 		export_count = export_count + 1
 		export_data[export_count] = {
+			seed = params.seed,
 			latitude = lat_name,
 			latitude_degree = lat,
 			longitude = long_name,
@@ -142,11 +143,11 @@ do -- MapData
 	]]
 
 	function ChoGGi.ComFuncs.ExportMapDataToCSV(action)
-		local breakthroughs, skip_csv
+		local breakthroughs
+		local skip_csv = action.setting_skip_csv
 		-- fired from action menu
 		if action and IsKindOf(action, "XAction") and action.setting_breakthroughs then
 			breakthroughs = true
-			skip_csv = action.setting_skip_csv
 		end
 
 		north, east, south, west = Translate(1000487--[[N]]), Translate(1000478--[[E]]), Translate(1000492--[[S]]), Translate(1000496--[[W]])

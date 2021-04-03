@@ -82,12 +82,23 @@ end
 OnMsg.CityStart = UpdateArtificialSunRange
 OnMsg.LoadGame = UpdateArtificialSunRange
 
--- fix for solar panels only expecting one sun
-SolarPanelBase.GameInit = UpdateArtificialSunRange
+local orig_SolarPanelBuilding_OnSetWorking = SolarPanelBuilding.OnSetWorking
+function SolarPanelBuilding:OnSetWorking(...)
+	UpdateArtificialSunRange(self)
+	return orig_SolarPanelBuilding_OnSetWorking(self, ...)
+end
 
-SolarPanelBase.OnSetWorking = UpdateArtificialSunRange
-SolarPanelBuilding.OnSetWorking = UpdateArtificialSunRange
+local orig_SolarPanelBase_OnSetWorking = SolarPanelBase.OnSetWorking
+function SolarPanelBase:OnSetWorking(...)
+	UpdateArtificialSunRange(self)
+	return orig_SolarPanelBase_OnSetWorking(self, ...)
+end
 
+local orig_SolarPanelBase_GameInit = SolarPanelBase.GameInit
+function SolarPanelBase:GameInit(...)
+	UpdateArtificialSunRange(self)
+	return orig_SolarPanelBase_GameInit(self, ...)
+end
 
 local orig_ArtificialSun_GameInit = ArtificialSun.GameInit
 function ArtificialSun:GameInit(...)

@@ -28,7 +28,6 @@ function OnMsg.ClassesPostprocess()
 		then
 --~ 			printC("daily_interest CLEARED", self.daily_interest)
 			self.daily_interest = ""
-			-- here ya go
 			self.daily_interest_fail = 0
 		end
 

@@ -1,1 +1,2 @@
 v0.2
+Apply will update the list for meteors to shoot.

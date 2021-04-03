@@ -1,2 +1,5 @@
+v0.3
+Too many buildings were being changed (thanks NotThatHarkness).
+
 v0.2
 Right-click (gamepad Y?) to randomly colour the skin.

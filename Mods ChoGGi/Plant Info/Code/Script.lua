@@ -18,8 +18,7 @@ local entity_lookup = {
 	CropSpinachArm = "Spinach",
 }
 
-local AddParentToClass = ChoGGi.ComFuncs.AddParentToClass
-AddParentToClass(VegetationObject, "VegetationSelectionObject")
+ChoGGi.ComFuncs.AddParentToClass(VegetationObject, "VegetationSelectionObject")
 
 function VegetationSelectionObject:GetDisplayName()
 	return veg_preset_lookup[entity_lookup[self.entity]].display_name or T(588, "Empty")

@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix Remove Blue Yellow Grid Marks",
+	"title", "Fix Remove Blue Yellow Marks And Ghosts",
 	"id", "ChoGGi_FixRemoveBlueYellowGridMarks",
 	"steam_id", "1553086208",
 	"pops_any_uuid", "7486c4ab-af06-42d5-b30d-7815ac10998b",
@@ -15,9 +15,10 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagOther", true,
 	"description", [[This will remove any blue or yellow grid marks from around objects when you load a game.
+This also takes care of stuck "ghost" rovers from transport tasks.
 Includes mod option to disable.
 
-This also takes care of stuck "ghost" rovers from transport tasks.
+
 By design this will not remove the grids added by SkiRich's Toggle Hub Zone mod. You'll need to manually turn them off.
 ]],
 })

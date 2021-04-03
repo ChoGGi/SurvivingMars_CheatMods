@@ -1,3 +1,6 @@
+v0.9
+Hopefully it's all good now, I did test this time... (thanks Neocray).
+
 v0.8
 Messed up panels last update.
 

@@ -5,6 +5,38 @@ local mod_IgnoreAnomalies
 local mod_IgnoreMetals
 local mod_IgnorePolymers
 
+local function RemoveMeteor(deposit_type)
+	-- it's usually rocks
+	if deposit_type == "Rocks" then
+		return true
+	elseif deposit_type == "Metals" and mod_IgnoreMetals then
+		return false
+	elseif deposit_type == "Polymers" and mod_IgnorePolymers then
+		return false
+	elseif deposit_type == "Anomaly" and mod_IgnoreAnomalies then
+		return false
+	end
+	return true
+end
+
+local function CheckMeteors()
+	if not mod_EnableMod then
+		return
+	end
+
+	local meteors = g_MeteorsPredicted or ""
+	for i = #meteors, 1, -1 do
+		local meteor = meteors[i]
+		if RemoveMeteor(meteor.deposit_type) then
+			-- refire the msg that we blocked in :Track()
+			Msg("Meteor", meteor)
+		end
+	end
+end
+
+OnMsg.CityStart = CheckMeteors
+OnMsg.LoadGame = CheckMeteors
+
 -- fired when settings are changed/init
 local function ModOptions()
 	local options = CurrentModOptions
@@ -13,6 +45,13 @@ local function ModOptions()
 	mod_IgnoreAnomalies = options:GetProperty("IgnoreAnomalies")
 	mod_IgnoreMetals = options:GetProperty("IgnoreMetals")
 	mod_IgnorePolymers = options:GetProperty("IgnorePolymers")
+
+	-- make sure we're ingame
+	if not UICity then
+		return
+	end
+
+	CheckMeteors()
 end
 
 -- load default/saved settings
@@ -26,15 +65,8 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local function AbortDefence(func, self, meteor, ...)
-	if mod_EnableMod then
-		local deposit_type = meteor.deposit_type
-		if deposit_type == "Metals" and mod_IgnoreMetals then
-			return
-		elseif deposit_type == "Polymers" and mod_IgnorePolymers then
-			return
-		elseif deposit_type == "Anomaly" and mod_IgnoreAnomalies then
-			return
-		end
+	if mod_EnableMod and not RemoveMeteor(meteor.deposit_type) then
+		return
 	end
 
 	return func(self, meteor, ...)
