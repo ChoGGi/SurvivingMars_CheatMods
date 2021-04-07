@@ -18,7 +18,7 @@ return PlaceObj("ModDef", {
 	"description", [[Set a minimum interval between disasters (if you want hourly toxic rains for some reason).
 
 This is "separate" from the regular disaster happenings, so turning off all the options won't disable regularly scheduled disasters.
-To be clear it won't screw you over and double up the same disaster.
+It won't screw you over and double up the same disaster.
 
 Mod Options:
 Set all disasters, and the time between (max is 600 hours = 25 Sols, more/less?).

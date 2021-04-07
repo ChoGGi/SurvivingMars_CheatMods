@@ -8,9 +8,9 @@ local GameTime = GameTime
 local DeleteThread = DeleteThread
 local PlayFX = PlayFX
 local IsValid = IsValid
+local GetCursorWorldPos = GetCursorWorldPos
 
 local Random = ChoGGi.ComFuncs.Random
-local GetCursorOrGamePad = ChoGGi.ComFuncs.GetCursorOrGamePad
 
 PersonalShuttles = {
 	time_limit = const.DayDuration * 4,
@@ -129,7 +129,7 @@ function PersonalShuttle:FollowMouse()
 	-- following mouse loop
 	repeat
 		local pos = self:GetVisualPos()
-		local dest = GetCursorOrGamePad()
+		local dest = GetCursorWorldPos()
 
 		self:GotoPos(pos, dest)
 

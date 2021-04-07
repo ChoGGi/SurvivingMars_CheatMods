@@ -16,7 +16,7 @@ end
 do -- ExamineObjectRadius
 	local table_sort = table.sort
 	local SelObjects = ChoGGi.ComFuncs.SelObjects
-	local GetCursorOrGamePad = ChoGGi.ComFuncs.GetCursorOrGamePad
+	local GetCursorWorldPos = GetCursorWorldPos
 	local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 
 	local pt
@@ -27,7 +27,7 @@ do -- ExamineObjectRadius
 		local radius = ChoGGi.UserSettings.ExamineObjectRadius or 2500
 		local objs = SelObjects(radius)
 		if objs[1] then
-			pt = GetCursorOrGamePad()
+			pt = GetCursorWorldPos()
 			-- sort by nearest
 			table_sort(objs, SortDist)
 

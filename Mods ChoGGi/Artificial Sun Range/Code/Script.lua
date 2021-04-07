@@ -9,11 +9,11 @@ local table = table
 local next = next
 
 local function UpdateSolarPanel(panel, suns)
-	local in_range, ignore = table.filter(suns, function(_, sun)
+	local in_range, _ = table.ifilter(suns, function(_, sun)
 		return TestSunPanelRange(sun, panel)
 	end)
 	-- filter will return indexed keys with their orig index
-	ignore, in_range = next(in_range)
+	_, in_range = next(in_range)
 
 	-- if anything is close enough to count
 	if in_range then
@@ -81,6 +81,8 @@ end
 
 OnMsg.CityStart = UpdateArtificialSunRange
 OnMsg.LoadGame = UpdateArtificialSunRange
+
+-- I;m lazy so copy and paste
 
 local orig_SolarPanelBuilding_OnSetWorking = SolarPanelBuilding.OnSetWorking
 function SolarPanelBuilding:OnSetWorking(...)

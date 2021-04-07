@@ -6,12 +6,12 @@ local table_iclear = table.iclear
 local table_sort = table.sort
 local table_find = table.find
 local IsValid = IsValid
+local GetCursorWorldPos = GetCursorWorldPos
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local Translate = ChoGGi.ComFuncs.Translate
 local RandomColour = ChoGGi.ComFuncs.RandomColour
-local GetCursorOrGamePad = ChoGGi.ComFuncs.GetCursorOrGamePad
 local Strings = ChoGGi.Strings
 
 function ChoGGi.MenuFuncs.InfoPanelDlg_Toggle()
@@ -948,7 +948,7 @@ function ChoGGi.MenuFuncs.ObjectCloner(flat)
 	end
 
 	if obj:IsKindOf("Colonist") then
-		ChoGGi.ComFuncs.SpawnColonist(obj, nil, GetCursorOrGamePad())
+		ChoGGi.ComFuncs.SpawnColonist(obj, nil, GetCursorWorldPos())
 		return
 	end
 
@@ -1228,7 +1228,7 @@ end
 --~ local terrain_type_idx = table_find(TerrainTextures, "name", terrain_type)
 --~ CreateRealTimeThread(function()
 --~	 while true do
---~		 terrain.SetTypeCircle(GetCursorOrGamePad(), 2500, terrain_type_idx)
+--~		 terrain.SetTypeCircle(GetCursorWorldPos(), 2500, terrain_type_idx)
 --~		 						WaitMsg("OnRender")
 
 --~	 end
@@ -1258,8 +1258,8 @@ do -- FlightGrid_Toggle
 	local OPolyline
 
 	local function RasterLine(pos1, pos0, zoffset, line_num)
-		pos1 = pos1 or GetCursorOrGamePad()
-		pos0 = pos0 or FindPassable(GetCursorOrGamePad())
+		pos1 = pos1 or GetCursorWorldPos()
+		pos0 = pos0 or FindPassable(GetCursorWorldPos())
 		local steps = 1 + ((pos1 - pos0):Len2D() + dbg_stepm1) / dbg_step
 
 		for i = 1, steps do
@@ -1325,7 +1325,7 @@ do -- FlightGrid_Toggle
 		local pos_old, pos_new, pos
 		while grid_thread do
 			-- we only update when cursor moves
-			pos_new = GetCursorOrGamePad()
+			pos_new = GetCursorWorldPos()
 			if pos_old ~= pos_new then
 				pos_old = pos_new
 

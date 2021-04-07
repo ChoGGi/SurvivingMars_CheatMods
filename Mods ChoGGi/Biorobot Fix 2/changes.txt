@@ -1,1 +1,2 @@
 v0.2
+Issue with update? (thanks Horta).

@@ -1,18 +1,10 @@
 -- See LICENSE for terms
 
-local specs
-local function UpdateSpecs()
-	specs = table.copy(const.ColonistSpecialization)
-	specs.Tourist = nil
-	specs.none = nil
-end
-
 local mod_EnableMod
 
 -- fired when settings are changed/init
 local function ModOptions()
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
-	UpdateSpecs()
 end
 
 -- load default/saved settings
@@ -26,11 +18,12 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local pairs = pairs
+local ColonistSpecializationList = ColonistSpecializationList
 local function UpdateColonist(obj)
 	local traits = obj.traits
 	if traits and traits.Tourist then
 		for trait in pairs(traits) do
-			if specs[trait] then
+			if ColonistSpecializationList[trait] then
 				-- tourist with a spec
 				obj.city:RemoveFromLabel(trait, obj)
 				obj:RemoveTrait(trait)
@@ -51,7 +44,6 @@ local function StartupCode()
 		return
 	end
 
-	UpdateSpecs()
 	local objs = UICity.labels.Colonist or ""
 	for i = 1,# objs do
 		UpdateColonist(objs[i])
@@ -66,7 +58,6 @@ OnMsg.LoadGame = StartupCode
 -- update newly arrived
 function OnMsg.ColonistArrived(obj)
 	if mod_EnableMod or not rawget(_G, "g_AT_Options") then
-		UpdateSpecs()
 		UpdateColonist(obj)
 	end
 end

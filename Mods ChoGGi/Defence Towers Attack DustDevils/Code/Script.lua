@@ -96,11 +96,11 @@ end -- ClassesBuilt
 	for _ = 1, 15 do
 		local data = DataInstances.MapSettings_DustDevils
 		local descr = data[mapdata.MapSettings_DustDevils] or data.DustDevils_VeryLow
-		GenerateDustDevil(ChoGGi.ComFuncs.GetCursorOrGamePad(), descr, nil, "major"):Start()
+		GenerateDustDevil(GetCursorWorldPos(), descr, nil, "major"):Start()
 	end
 	for _ = 1, 15 do
 		local data = DataInstances.MapSettings_DustDevils
 		local descr = data[mapdata.MapSettings_DustDevils] or data.DustDevils_VeryLow
-		GenerateDustDevil(ChoGGi.ComFuncs.GetCursorOrGamePad(), descr, nil):Start()
+		GenerateDustDevil(GetCursorWorldPos(), descr, nil):Start()
 	end
 ]]

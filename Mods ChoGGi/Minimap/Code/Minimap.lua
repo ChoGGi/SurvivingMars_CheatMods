@@ -35,7 +35,7 @@ local cameraRTS = cameraRTS
 local terrain = terrain
 local transition_time = 0
 
-local GetCursorOrGamePad = ChoGGi.ComFuncs.GetCursorOrGamePad
+local GetCursorWorldPos = GetCursorWorldPos
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
@@ -270,7 +270,7 @@ function ChoGGi_MinimapDlg:CameraPos_Screenshot()
 end
 
 function ChoGGi_MinimapDlg:CameraPos_Restore()
-	local lookat = self.saved_camera and self.saved_camera.lookat or GetCursorOrGamePad()
+	local lookat = self.saved_camera and self.saved_camera.lookat or GetCursorWorldPos()
 
 	-- clamp to the map borders
 	local min_border = cameraRTS.GetBorder()

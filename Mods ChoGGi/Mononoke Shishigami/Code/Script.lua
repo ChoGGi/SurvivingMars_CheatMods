@@ -23,7 +23,7 @@ local DoneObject = DoneObject
 local point = point
 local Sleep = Sleep
 local GetTimeFactor = GetTimeFactor
-local GetCursorOrGamePad = ChoGGi.ComFuncs.GetCursorOrGamePad
+local GetCursorWorldPos = GetCursorWorldPos
 
 -- entities to use
 local entities = {}
@@ -140,7 +140,7 @@ function OnMsg.InGameInterfaceCreated(igi)
 
 	local function OnMousePos()
 		if mod_ToggleShrubs and not skip and GetTimeFactor() > 0 then
-			local cursor = GetCursorOrGamePad()
+			local cursor = GetCursorWorldPos()
 			local obj = entity_cls:new()
 			local ent = entities[Random(1,count)]
 			obj:ChangeEntity(ent)

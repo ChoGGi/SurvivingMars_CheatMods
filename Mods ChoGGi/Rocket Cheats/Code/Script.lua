@@ -28,6 +28,7 @@ function RocketBase:FlyToMars(cargo, cost, flight_time, ...)
 end
 
 -- some stuff checks one some other...
+--~ local SetConsts = ChoGGi.ComFuncs.SetConstsG
 local function SetConsts(id, value)
 	Consts[id] = value
 	g_Consts[id] = value

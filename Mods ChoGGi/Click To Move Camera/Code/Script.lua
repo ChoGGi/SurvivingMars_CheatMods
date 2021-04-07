@@ -2,9 +2,9 @@
 
 -- move cam to mouse pos
 local ViewObjectRTS = ViewObjectRTS
-local GetCursorOrGamePad = ChoGGi.ComFuncs.GetCursorOrGamePad
+local GetCursorWorldPos = GetCursorWorldPos
 local function go_to_cursor()
-	ViewObjectRTS(GetCursorOrGamePad())
+	ViewObjectRTS(GetCursorWorldPos())
 end
 
 -- unforbid binding some keys

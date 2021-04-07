@@ -18,7 +18,7 @@ local PlaySound = PlaySound
 local GetSoundDuration = GetSoundDuration
 
 local Random = ChoGGi.ComFuncs.Random
-local GetCursorOrGamePad = ChoGGi.ComFuncs.GetCursorOrGamePad
+local GetCursorWorldPos = GetCursorWorldPos
 
 function SpiceHarvester.SpawnShuttle(hub)
 	local sh = SpiceHarvester
@@ -38,7 +38,7 @@ function SpiceHarvester.SpawnShuttle(hub)
 			hub = hub,
 			transport_task = SpiceHarvester_ShuttleFollowTask:new{
 				state = "ready_to_follow",
-				dest_pos = GetCursorOrGamePad() or GetRandomPassable()
+				dest_pos = GetCursorWorldPos() or GetRandomPassable()
 			},
 			info_obj = s_i
 		}

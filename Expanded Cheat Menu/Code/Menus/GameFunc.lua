@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local next, type, tostring = next, type, tostring
+local GetCursorWorldPos = GetCursorWorldPos
 
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -10,7 +11,6 @@ local RetIcon = ChoGGi.ComFuncs.RetIcon
 local RetHint = ChoGGi.ComFuncs.RetHint
 local Random = ChoGGi.ComFuncs.Random
 local Translate = ChoGGi.ComFuncs.Translate
-local GetCursorOrGamePad = ChoGGi.ComFuncs.GetCursorOrGamePad
 
 
 function ChoGGi.MenuFuncs.SetTimeFactor()
@@ -780,7 +780,7 @@ do -- FlattenGround
 			radius = size * guic
 
 			ToggleHotkeys(true)
-			flatten_height = GetHeight(GetCursorOrGamePad())
+			flatten_height = GetHeight(GetCursorWorldPos())
 			MsgPopup(
 				Strings[302535920001163--[[Flatten height has been choosen %s, press shortcut again to update buildable.]]]:format(flatten_height),
 				Strings[302535920000485--[[Terrain Flatten Toggle]]]
@@ -793,7 +793,7 @@ do -- FlattenGround
 			are_we_flattening = CreateRealTimeThread(function()
 				-- thread gets deleted, but just in case
 				while are_we_flattening do
-					local cursor = GetCursorOrGamePad()
+					local cursor = GetCursorWorldPos()
 					visual_circle:SetPos(cursor)
 					local outer
 					if square == true then
@@ -812,7 +812,7 @@ end
 
 --~ -- we'll get more concrete one of these days
 --~ local terrain_type_idx = table.find(TerrainTextures, "name", "Regolith")
---~ terrain.SetTypeCircle(GetCursorOrGamePad(), 5000, terrain_type_idx)
+--~ terrain.SetTypeCircle(GetCursorWorldPos(), 5000, terrain_type_idx)
 function ChoGGi.MenuFuncs.ChangeMap()
 	local lookup_table = {
 		[Translate(3474--[[Mission Sponsor]])] = "idMissionSponsor",

@@ -8,7 +8,7 @@
 
 local WorldToHex = WorldToHex
 local WaitMsg = WaitMsg
-local GetCursorOrGamePad = ChoGGi.ComFuncs.GetCursorOrGamePad
+local GetCursorWorldPos = GetCursorWorldPos
 
 local OHexSpot
 local painted_hexes = false
@@ -39,7 +39,7 @@ function PaintHexArray(arr, mid_hex_pt) --paints zero based hex shapes (such as 
 				if mid_hex_pt then
 					q, r = mid_hex_pt:x(), mid_hex_pt:y()
 				else
-					q, r = WorldToHex(GetCursorOrGamePad())
+					q, r = WorldToHex(GetCursorWorldPos())
 				end
 				if last_q ~= q or last_r ~= r then
 					for i = 1, #arr do
@@ -69,7 +69,7 @@ function HexPainter(arr)
 		Dialogs.InGameInterface:SetMode("selection")
 	else
 		HexPainter_toggle = true
-		Dialogs.InGameInterface:SetMode("hex_painter", {res_arr = arr, hex_mid_pt = point(WorldToHex(GetCursorOrGamePad()))})
+		Dialogs.InGameInterface:SetMode("hex_painter", {res_arr = arr, hex_mid_pt = point(WorldToHex(GetCursorWorldPos()))})
 	end
 end
 
@@ -108,7 +108,7 @@ end
 --~ function HexPainterModeDialog:OnMouseButtonDown(pt, button)
 function HexPainterModeDialog:OnMouseButtonDown(_, button)
 	if button == "L" then
-		local p = point(WorldToHex(GetCursorOrGamePad()))
+		local p = point(WorldToHex(GetCursorWorldPos()))
 		if self.hex_mid_pt then
 			p = p - self.hex_mid_pt
 		end
@@ -131,7 +131,7 @@ function HexPainterModeDialog:OnMouseButtonDown(_, button)
 
 
 		end
-		self.hex_mid_pt = point(WorldToHex(GetCursorOrGamePad()))
+		self.hex_mid_pt = point(WorldToHex(GetCursorWorldPos()))
 
 		if self.hex_mid_pt then
 			for i = 1, #self.res_arr do

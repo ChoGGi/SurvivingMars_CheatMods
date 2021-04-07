@@ -92,6 +92,9 @@ function OnMsg.BuildingInit(obj)
 	if not mod_SetMaxRadius then
 		return
 	end
+	if obj:IsKindOf("CoreHeatConvector") then
+		return
+	end
 
 	-- If ECM is active we check for custom range, otherwise use default
 	local uirange
@@ -107,5 +110,6 @@ function OnMsg.BuildingInit(obj)
 	uirange = uirange or prop and prop.max
 
 	-- set it
+	self.GetSelectionRadiusScale = uirange
 	obj.UIRange = uirange
 end

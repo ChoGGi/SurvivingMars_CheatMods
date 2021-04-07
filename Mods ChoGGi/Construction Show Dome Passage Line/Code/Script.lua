@@ -12,7 +12,7 @@ local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local point = point
 local AveragePoint2D = AveragePoint2D
-local GetCursorOrGamePad = ChoGGi.ComFuncs.GetCursorOrGamePad
+local GetCursorWorldPos = GetCursorWorldPos
 
 local point20 = point20
 local green = green
@@ -222,7 +222,7 @@ local HexSize = const.HexSize
 local cursor_pos = point20
 local function UpdateMarkers(self, current_pos)
 	if not current_pos then
-		current_pos = GetCursorOrGamePad()
+		current_pos = GetCursorWorldPos()
 	end
 
 	-- abort if mouse hasn't moved far enough

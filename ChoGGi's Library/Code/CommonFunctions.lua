@@ -12,10 +12,10 @@ local AsyncRand = AsyncRand
 local AveragePoint2D = AveragePoint2D
 local FindNearestObject = FindNearestObject -- (list,obj) or (list,pos,filterfunc)
 local GetTerrainCursor = GetTerrainCursor
-local GetTerrainGamepadCursor = GetTerrainGamepadCursor
-local GetUIStyleGamepad = GetUIStyleGamepad
+local UseGamepadUI = UseGamepadUI
 local SelectionGamepadObj = SelectionGamepadObj
 local SelectionMouseObj = SelectionMouseObj
+local GetCursorWorldPos = GetCursorWorldPos
 local IsValid = IsValid
 local IsKindOf = IsKindOf
 local IsPoint = IsPoint
@@ -1119,12 +1119,8 @@ function ChoGGi.ComFuncs.PopupToggle(parent, popup_id, items, anchor, reopen, su
 	return popup
 end
 
-local function GetCursorOrGamePad()
-	return GetUIStyleGamepad() and GetTerrainGamepadCursor() or GetTerrainCursor()
-end
-ChoGGi.ComFuncs.GetCursorOrGamePad = GetCursorOrGamePad
 local function GetCursorOrGamePadSelectObj()
-	return GetUIStyleGamepad() and SelectionGamepadObj() or SelectionMouseObj()
+	return UseGamepadUI() and SelectionGamepadObj() or SelectionMouseObj()
 end
 ChoGGi.ComFuncs.GetCursorOrGamePadSelectObj = GetCursorOrGamePadSelectObj
 
@@ -1138,7 +1134,7 @@ do -- Circle
 		end
 
 		local circle = OCircle:new()
-		circle:SetPos(pos and pos:SetTerrainZ(10 * guic) or GetCursorOrGamePad())
+		circle:SetPos(pos and pos:SetTerrainZ(10 * guic) or GetCursorWorldPos())
 		circle:SetRadius(radius or 1000)
 		circle:SetColor(colour or RandomColourLimited())
 
@@ -1152,7 +1148,7 @@ do -- Circle
 
 	-- show a circle for time and delete it
 	function ChoGGi.ComFuncs.Sphere(pos, colour, time)
-		local orb = ShowPoint(pos and pos:SetTerrainZ(10 * guic) or GetCursorOrGamePad(), colour)
+		local orb = ShowPoint(pos and pos:SetTerrainZ(10 * guic) or GetCursorWorldPos(), colour)
 
 		CreateRealTimeThread(function()
 			Sleep(time or 50000)
@@ -1594,7 +1590,7 @@ end
 -- ChoGGi.ComFuncs.OpenInExamineDlg(ReturnAllNearby(1000, "class"))
 function ChoGGi.ComFuncs.ReturnAllNearby(radius, sort, pt)
 	radius = radius or 5000
-	pt = pt or GetCursorOrGamePad()
+	pt = pt or GetCursorWorldPos()
 
 	-- get all objects within radius
 	local list = MapGet(pt, radius)
@@ -1905,7 +1901,7 @@ do -- SelObject/SelObjects
 			end
 		else
 			-- radius selection
-			pt = pt or GetCursorOrGamePad()
+			pt = pt or GetCursorWorldPos()
 			obj = MapFindNearest(pt, pt, radius or radius4h)
 		end
 
@@ -1927,7 +1923,7 @@ do -- SelObject/SelObjects
 			end
 		end
 
-		pt = pt or GetCursorOrGamePad()
+		pt = pt or GetCursorWorldPos()
 		return MapGet(pt, radius or radius4h, "attached", false)
 	end
 end
@@ -3293,7 +3289,7 @@ end -- do
 
 -- returns the near hex grid for object placement
 function ChoGGi.ComFuncs.CursorNearestHex(pt)
-	return HexGetNearestCenter(pt or GetCursorOrGamePad())
+	return HexGetNearestCenter(pt or GetCursorWorldPos())
 end
 
 function ChoGGi.ComFuncs.DeleteAllAttaches(obj)
@@ -4321,6 +4317,15 @@ function ChoGGi.ComFuncs.AddParentToClass(class_obj, parent_name)
 	end
 end
 
+function ChoGGi.ComFuncs.Add___Func(class_obj, init_key, func)
+	local funcs = class_obj[init_key]
+	if funcs and not table.find(funcs, func) then
+		funcs[#funcs+1] = func
+	else
+		print("Add___Func: Can't find class func:", init_key)
+	end
+end
+
 function ChoGGi.ComFuncs.RetSpotPos(obj, building, spot)
 	local nearest = building:GetNearestSpot("idle", spot or "Origin", obj)
 	return building:GetSpotPos(nearest)
@@ -4922,7 +4927,7 @@ do -- BuildableHexGrid
 
 				while Temp.grid_thread do
 					-- only update if cursor moved a hex
-					pt = GetCursorOrGamePad()
+					pt = GetCursorWorldPos()
 					if old_pt:Dist2D(pt) > const_HexSize then
 						old_pt = pt
 
