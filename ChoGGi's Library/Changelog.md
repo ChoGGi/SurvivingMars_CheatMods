@@ -3,6 +3,7 @@
 ## v9.7 (Unreleased)
 - Added IsArray.
 - ExportMapDataToCSV has option to return data in tables instead of csv.
+- CreateNumberEditor: Added param to skip creating XEdit.
 
 ## v9.6 (24 March 2021)
 - Added SetChoGGiPalette, IsGamepadButtonPressed.

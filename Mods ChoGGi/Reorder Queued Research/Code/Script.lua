@@ -1,9 +1,8 @@
 -- See LICENSE for terms
 
-local CreateRealTimeThread = CreateRealTimeThread
-local WaitMsg = WaitMsg
 local DoneObject = DoneObject
 local CreateNumberEditor = CreateNumberEditor
+local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 
 local mod_EnableMod
 
@@ -27,31 +26,30 @@ local function AddButtons(item, order, list, dlg)
 		if order == 1 then
 			return
 		end
---~ 		print("order-", order, order-1, list[order-1], list[order])
 		local orig = list[order-1]
 		local new = list[order]
 		list[order-1] = new
 		list[order] = orig
 
---~ 		print("up")
-		dlg:Close()
-		HUD.idResearchOnPress()
+		Msg("ResearchQueueChange", UICity, new, dlg)
 	end, function(self, _)
 		if order == #list then
 			return
 		end
---~ 		print("order+", order, order+1, list[order+1], list[order])
 		local orig = list[order+1]
 		local new = list[order]
 		list[order+1] = new
 		list[order] = orig
 
---~ 		print("down")
-		dlg:Close()
-		HUD.idResearchOnPress()
-	end)
+		Msg("ResearchQueueChange", UICity, new, dlg)
+	end, true)
+
+	-- Lib 9.7
 	-- CreateNumberEditor adds an edit input
-	DoneObject(edit)
+	if IsValidXWin(edit) then
+		DoneObject(edit)
+	end
+	-- Lib 9.7
 
 	top_btn:SetBackground(-1)
 	bottom_btn:SetBackground(-1)
@@ -59,9 +57,9 @@ end
 
 
 local function EditDlg(dlg)
+--~ 	ex(dlg)
 	WaitMsg("OnRender")
 	local res_list = dlg.idResearchQueueList
---~ 	ex(res_list)
 
 	local context = res_list.context
 	local count = #res_list
@@ -77,6 +75,14 @@ local function EditDlg(dlg)
 	end
 end
 
+function OnMsg.ResearchQueueChange(UICity, tech_id, dlg)
+	if mod_EnableMod and dlg and dlg.idResearchQueueList and
+		IsValidXWin(dlg.idResearchQueueList)
+	then
+		CreateRealTimeThread(EditDlg, dlg)
+	end
+end
+
 local orig_OpenDialog = OpenDialog
 function OpenDialog(dlg_str, ...)
 	local dlg = orig_OpenDialog(dlg_str, ...)
@@ -88,5 +94,6 @@ function OpenDialog(dlg_str, ...)
 	if dlg_str == "ResearchDlg" then
 		CreateRealTimeThread(EditDlg, dlg)
 	end
+
 	return dlg
 end

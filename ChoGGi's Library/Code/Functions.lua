@@ -54,7 +54,7 @@ if not rawget(_G, "CreateNumberEditor") then
 	local padding1 = box(1, 2, 1, 1)
 	local padding2 = box(1, 1, 1, 2)
 
-	function CreateNumberEditor(parent, id, up_pressed, down_pressed)
+	function CreateNumberEditor(parent, id, up_pressed, down_pressed, skip_edit)
 		local g_Classes = g_Classes
 
 		local button_panel = g_Classes.XWindow:new({
@@ -86,11 +86,14 @@ if not rawget(_G, "CreateNumberEditor") then
 			RolloverBackground = RolloverBackground,
 			PressedBackground = PressedBackground,
 		}, button_panel, nil, nil, "NumberArrow")
-		local edit = g_Classes.XEdit:new({
-			Id = id,
-			Dock = "box",
-		}, parent)
+		local edit
+		if not skip_edit then
+			edit = g_Classes.XEdit:new({
+				Id = id,
+				Dock = "box",
+			}, parent)
 
+		end
 		return edit, top_btn, bottom_btn
 	end
 end
