@@ -573,11 +573,16 @@ DefineClass.ChoGGi_XWindow = {
 
 	action_close = false,
 	action_host = false,
+
+	-- add an id thingy to check for whatever
+	dialog_marker = false,
 }
 
 -- parent, context
-function ChoGGi_XWindow:AddElements()
+function ChoGGi_XWindow:AddElements(parent, context)
 	local g_Classes = g_Classes
+
+	self.dialog_marker = context.dialog_marker
 
 	ChoGGi_dlgs_opened[self] = self.class
 

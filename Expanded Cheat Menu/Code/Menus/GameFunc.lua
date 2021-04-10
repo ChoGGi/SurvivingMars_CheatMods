@@ -876,8 +876,8 @@ function ChoGGi.MenuFuncs.ChangeMap()
 	info_lists[6].name = Translate(692--[[Resources]])
 	info_lists[6].name = Translate(3996--[[Map Overview]])
 
-	local dlg_ex_params = ChoGGi.ComFuncs.OpenInExamineDlg(info_lists, {
-		ex_params = true,
+	local dlg_has_params = ChoGGi.ComFuncs.OpenInExamineDlg(info_lists, {
+		has_params = true,
 		override_title = true,
 		title = Translate(126095410863--[[Info]]) .. ": " .. Translate(10892--[[MISSION PARAMETERS]]),
 	})
@@ -907,9 +907,9 @@ function ChoGGi.MenuFuncs.ChangeMap()
 		end
 
 		-- close dialogs we opened
-		dlg_ex_params:Close()
-		-- close any ex opened from ex_params
-		ChoGGi.ComFuncs.CloseChildExamineDlgs(dlg_ex_params)
+		dlg_has_params:Close()
+		-- close any ex opened from has_params
+		ChoGGi.ComFuncs.CloseChildExamineDlgs(dlg_has_params)
 
 		-- cleans out missions params
 		InitNewGameMissionParams()
@@ -984,7 +984,7 @@ function ChoGGi.MenuFuncs.ChangeMap()
 	}
 
 	dlg_list_MissionParams:SetPos(point(450, 75))
-	dlg_ex_params:SetPos(point(10, 75))
+	dlg_has_params:SetPos(point(10, 75))
 end
 
 function ChoGGi.MenuFuncs.PulsatingPins_Toggle()

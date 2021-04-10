@@ -503,30 +503,6 @@ function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list, parent)
 	})
 end
 
-function ChoGGi.ComFuncs.OpenInObjectEditorDlg(obj, parent, title)
-	-- If fired from action menu
-	if IsKindOf(obj, "XAction") then
-		obj = ChoGGi.ComFuncs.SelObject()
-		parent = nil
-	else
-		obj = obj or ChoGGi.ComFuncs.SelObject()
-	end
-
-	if not obj then
-		return
-	end
-
-	if not IsKindOf(parent, "XWindow") then
-		parent = nil
-	end
-
-	return ChoGGi_DlgObjectEditor:new({}, terminal.desktop, {
-		obj = obj,
-		parent = parent,
-		title = title,
-	})
-end
-
 function ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(obj, parent)
 	-- If fired from action menu
 	if IsKindOf(obj, "XAction") then
@@ -751,7 +727,7 @@ end
 function ChoGGi.ComFuncs.MonitorThreads()
 	local table_list = {}
 	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list, {
-		ex_params = true,
+		has_params = true,
 		auto_refresh = true,
 		title = Strings[302535920000853--[[Monitor]]] .. ": ThreadsRegister",
 	})
@@ -799,7 +775,7 @@ function ChoGGi.ComFuncs.MonitorTableLength(obj, skip_under, sortby, title)
 	skip_under = skip_under or 25
 	local table_list = {}
 	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list, {
-		ex_params = true,
+		has_params = true,
 		auto_refresh = true,
 		title = title,
 	})
@@ -3493,7 +3469,7 @@ function ChoGGi.ComFuncs.MonitorFunctionResults(func, ...)
 
 	local results_list = {}
 	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(results_list, {
-		ex_params = true,
+		has_params = true,
 		auto_refresh = true,
 		title = Strings[302535920000853--[[Monitor]]] .. " " .. Strings[302535920000110--[[Function Results]]],
 	})

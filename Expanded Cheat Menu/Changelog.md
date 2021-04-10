@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v16.7 (Unreleased)
+## v16.8 (Unreleased)
+
+## v16.7 (10 Apr 2021)
 ### Added:
 - A bunch of tooltips for new cheat pane items from Tito update.
 - OpenExamineRet/exr: They both return the examine dialog (if you want to access it unlike ex()).
@@ -9,6 +11,7 @@
 - Examine uses a numerical loop for indexed tables.
 - Menu>ECM>Rockets>Travel Time: Now applies to expedition rockets as well.
 - Console>Scripts won't echo unless you add -- rem echo on to them.
+- ex_params is now has_params.
 
 ### Removed:
 - Examine/ExecCode/FindValue/ImageViewer/ObjectEditor (and Open* funcs).

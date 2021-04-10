@@ -1417,12 +1417,12 @@ elseif #params == 3
 	OpenExamine(params[1], {
 		parent = params[2],
 		title = params[3],
-		ex_params = true,
+		has_params = true,
 		override_title = true,
 	})
 else
 	OpenExamine(params, {
-		ex_params = true,
+		has_params = true,
 		override_title = true,
 		title = ChoGGi.Strings[302535920000069] .. " " .. ChoGGi.Strings[302535920001073]
 			.. ": " .. ChoGGi.ComFuncs.RetName(params[1]),

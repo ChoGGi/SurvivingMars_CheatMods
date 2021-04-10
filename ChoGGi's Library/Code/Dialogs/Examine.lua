@@ -14,13 +14,13 @@ XXXXX = {
 ~obj
 ex(obj, pos/parent, title)
 ex(obj, {
-	ex_params = true,
+	has_params = true,
 	parent = self,
 	auto_refresh = true,
 	-- fired when left clicking on a table
 	exec_tables = function (obj, self) end,
 	-- shows image in path in tooltip
-	tooltip_image = function (obj, self) end,
+	tooltip_info = function (obj, self) end,
 	title = "hello",
 	-- skip prefix
 	override_title = true,
@@ -43,6 +43,7 @@ end
 local width, height
 
 -- local some globals
+local table = table
 local table_clear = table.clear
 local table_iclear = table.iclear
 local table_insert = table.insert
@@ -185,7 +186,7 @@ DefineClass.ChoGGi_DlgExamine = {
 	-- change default leftclick action for tables
 	exec_tables = false,
 	-- show image in some tooltips
-	tooltip_image = false,
+	tooltip_info = false,
 
 	idAutoRefresh_update_str = false,
 }
@@ -203,6 +204,7 @@ function ChoGGi_DlgExamine:Init(parent, context)
 		us.ExamineColourBoolFalse = "255 150 150"
 		us.ExamineColourStr = "255 255 255"
 		us.ExamineColourNil = "175 175 175"
+		us.EnableToolTips = true
 	end
 
 	-- my popup func checks for ids and "refreshs" a popup with the same id, so random it is
@@ -236,7 +238,7 @@ function ChoGGi_DlgExamine:Init(parent, context)
 	self.varargs = context.varargs
 	self.prefix = Strings[302535920000069--[[Examine]]]
 	self.exec_tables = context.exec_tables
-	self.tooltip_image = context.tooltip_image
+	self.tooltip_info = context.tooltip_info
 
 	-- these are used during SetObj, so we trans once to speed up autorefresh
 	self.string_Loadingresources = Translate(67--[[Loading resources]])
@@ -798,11 +800,42 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 				c = c + 1
 				roll_text[c] = "\n\n"
 
+			-- add tooltip info
+			elseif self.tooltip_info then
+				-- make sure breaks are "sorted" and at the top
+				local b_count = #obj
+				for i = 1, b_count do
+					c = c + 1
+					roll_text[c] = self:ConvertValueToInfo(obj[i]):gsub("'", "")
+					if i ~= b_count then
+						c = c + 1
+						roll_text[c] = ", "
+					end
+				end
 
-			-- add tooltip image
-			elseif self.tooltip_image then
+				-- sort list of other values
+				local values = {}
+				local values_c = 0
+				local values_temp = {"\n",""," ", ""}
+
+				for key, value in pairs(obj) do
+					-- breakthroughs
+					if type(key) ~= "number" then
+
+						values_temp[2] = self:ConvertValueToInfo(key):gsub("'", "")
+						values_temp[4] = self:ConvertValueToInfo(value):gsub("'", "")
+						values_c = values_c + 1
+						values[values_c] = TableConcat(values_temp)
+					end
+				end
+				table_sort(values)
 				c = c + 1
-				roll_text[c] = "<image " .. self.tooltip_image(obj) .. ">"
+				roll_text[c] = "\n"
+				c = c + 1
+				roll_text[c] = TableConcat(values)
+
+				c = c + 1
+				roll_text[c] = "\n\n<image " .. self.tooltip_info(obj, self) .. ">"
 				c = c + 1
 				roll_text[c] = "\n\n"
 
@@ -872,7 +905,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLink(link, argument, hyperlink_box, pos
 	-- we always examine on right-click
 	if button == "R" then
 		self.ChoGGi.ComFuncs.OpenInExamineDlg(obj, {
-			ex_params = true,
+			has_params = true,
 			parent = self,
 		})
 	else
@@ -1333,7 +1366,7 @@ function ChoGGi_DlgExamine:BuildObjectMenuPopup()
 			image = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.OpenInExamineDlg(self.ChoGGi.ComFuncs.RetSurfaceMasks(self.obj_ref), {
-					ex_params = true,
+					has_params = true,
 					parent = self,
 					title = Strings[302535920001524--[[Entity Surfaces]]] .. ": " .. self.name,
 				})
@@ -1451,7 +1484,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 					end
 
 					self.ChoGGi.ComFuncs.OpenInExamineDlg(self.menu_list_items, {
-						ex_params = true,
+						has_params = true,
 						parent = self,
 						title = Strings[302535920001239--[[Functions]]] .. ": " .. self.name,
 					})
@@ -1524,7 +1557,7 @@ Which you can then mess around with some more in the console."]]],
 			clicked = function()
 				if self.obj_ref.IsKindOf and self.obj_ref:IsKindOf("PropertyObject") then
 					self.ChoGGi.ComFuncs.OpenInExamineDlg(GetModifiedProperties(self.obj_ref), {
-						ex_params = true,
+						has_params = true,
 						parent = self,
 						title = Translate(931, "Modified property") .. ": " .. self.name,
 						override_title = true,
@@ -1553,7 +1586,7 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 						props_list[props[i].id] = self.obj_ref:GetProperty(props[i].id)
 					end
 					self.ChoGGi.ComFuncs.OpenInExamineDlg(props_list, {
-						ex_params = true,
+						has_params = true,
 						parent = self,
 						title = Strings[302535920001389--[[All Properties]]] .. ": " .. self.name,
 					})
@@ -2338,7 +2371,7 @@ local function Show_ConvertValueToInfo(self, button, obj)
 		self:AddSphere(obj)
 	else
 		self.ChoGGi.ComFuncs.OpenInExamineDlg(obj, {
-			ex_params = true,
+			has_params = true,
 			parent = self,
 		})
 	end
@@ -2360,7 +2393,7 @@ local function Examine_ConvertValueToInfo(self, button, obj, _, _, _, link)
 		end
 
 		self.ChoGGi.ComFuncs.OpenInExamineDlg(obj, {
-			ex_params = true,
+			has_params = true,
 			parent = self,
 			title = title,
 		})
@@ -2471,7 +2504,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 			image = "CommonAssets/UI/Menu/AreaProperties.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.OpenInExamineDlg(GetMaterialProperties(obj_value_str), {
-					ex_params = true,
+					has_params = true,
 					parent = self,
 					title = Strings[302535920001458--[[Material Properties]]],
 				})
@@ -3045,7 +3078,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 		c = c + 1
 		list_obj_str[c] = self:HyperLink(obj, function()
 			self.ChoGGi.ComFuncs.OpenInExamineDlg(obj, {
-				ex_params = true,
+				has_params = true,
 				parent = self,
 			})
 		end) .. RetName(obj) .. self.hyperlink_end
@@ -3060,7 +3093,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 		table_insert(list_obj_str, 1, "\t--"
 			.. self:HyperLink(obj, function()
 				self.ChoGGi.ComFuncs.OpenInExamineDlg(getmetatable(obj), {
-					ex_params = true,
+					has_params = true,
 					parent = self,
 				})
 			end)
@@ -3186,7 +3219,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				table_insert(data_meta, 1, "Unpack(): "
 					.. self:HyperLink(obj, function()
 						self.ChoGGi.ComFuncs.OpenInExamineDlg({obj:Unpack()}, {
-							ex_params = true,
+							has_params = true,
 							parent = self,
 							title = Strings[302535920000885--[[Unpacked]]],
 						})
@@ -3240,7 +3273,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 					name = "levels(true, 1):",
 					func = function()
 						self.ChoGGi.ComFuncs.OpenInExamineDlg({obj:levels(true, 1)}, {
-							ex_params = true,
+							has_params = true,
 							parent = self,
 						})
 					end,
@@ -3480,7 +3513,7 @@ Decompiled code won't scroll correctly as the line numbers are different."]]]:fo
 		if self.enum_vars and next(self.enum_vars) then
 			list_obj_str[1] = list_obj_str[1] .. self:HyperLink(obj, function()
 				self.ChoGGi.ComFuncs.OpenInExamineDlg(self.enum_vars, {
-					ex_params = true,
+					has_params = true,
 					parent = self,
 					title = Strings[302535920001442--[[Enum]]],
 				})
@@ -3501,7 +3534,7 @@ do -- BuildAttachesPopup
 		else
 			item.dlg.ChoGGi.ComFuncs.ClearShowObj(item.showobj)
 			item.dlg.ChoGGi.ComFuncs.OpenInExamineDlg(item.showobj, {
-				ex_params = true,
+				has_params = true,
 				parent = item.dlg,
 			})
 		end
@@ -3659,7 +3692,7 @@ do -- BuildParentsMenu
 			CopyToClipboard(item.name)
 		else
 			item.dlg.ChoGGi.ComFuncs.OpenInExamineDlg(g_Classes[item.name], {
-				ex_params = true,
+				has_params = true,
 				parent = item.dlg,
 			})
 		end

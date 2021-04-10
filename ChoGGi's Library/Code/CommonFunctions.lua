@@ -4317,12 +4317,12 @@ function ChoGGi.ComFuncs.AddParentToClass(class_obj, parent_name)
 	end
 end
 
-function ChoGGi.ComFuncs.Add___Func(class_obj, init_key, func)
-	local funcs = class_obj[init_key]
+function ChoGGi.ComFuncs.Add___Func(class_obj, ___key, func)
+	local funcs = class_obj[___key]
 	if funcs and not table.find(funcs, func) then
 		funcs[#funcs+1] = func
 	else
-		print("Add___Func: Can't find class func:", init_key)
+		print("Add___Func: Can't find class func:", ___key)
 	end
 end
 
@@ -6043,6 +6043,31 @@ function ChoGGi.ComFuncs.IsArray(list)
 	return true
 end
 
+local function RetParamsParents(parent, params, ...)
+	local parent_type
+	if parent then
+		parent_type = type(parent)
+
+		-- we only (somewhat) care about parent being a string, point, dialog
+		if parent_type == "table" and parent.has_params then
+			params = parent
+			parent = nil
+		elseif parent_type ~= "string" and parent_type ~= "table" and parent_type ~= "userdata" then
+			parent = nil
+		end
+	end
+	params = params or {}
+	params.varargs = params.varargs or ...
+
+	-- pass the marker along
+	if params.parent and params.parent.dialog_marker then
+		params.dialog_marker = params.parent.dialog_marker
+	end
+
+	return params, parent, parent_type
+end
+ChoGGi.ComFuncs.RetParamsParents = RetParamsParents
+
 do -- OpenInExamineDlg
 	local IsPoint = IsPoint
 	local red = red
@@ -6053,20 +6078,8 @@ do -- OpenInExamineDlg
 	end
 
 	function ChoGGi.ComFuncs.OpenInExamineDlg(obj, parent, title, ...)
-		local params, p_type
-		-- check if parent is an opened examine dialog, or other
-		if parent then
-			p_type = type(parent)
-			-- we only (somewhat) care about parent being a string, point, dialog
-			if p_type == "table" and parent.ex_params then
-				params = parent
-				parent = nil
-			elseif p_type ~= "string" and p_type ~= "table" and p_type ~= "userdata" then
-				parent = nil
-			end
-		end
-		params = params or {}
-		params.varargs = params.varargs or ...
+		local params, parent_type
+		params, parent, parent_type = RetParamsParents(parent, params, ...)
 
 		-- preserve the orig params
 		params.obj = obj
@@ -6079,7 +6092,7 @@ do -- OpenInExamineDlg
 		end
 
 		-- check if the parent has an id and use it
-		if params.parent and p_type == "table" and params.parent.parent_id then
+		if params.parent and parent_type == "table" and params.parent.parent_id then
 			params.parent_id = params.parent.parent_id
 		end
 
@@ -6148,46 +6161,83 @@ do -- OpenInExamineDlg
 	end
 end -- do
 
-function ChoGGi.ComFuncs.OpenInExecCodeDlg(context, parent)
-	if not IsKindOf(parent, "XWindow") then
-		parent = nil
-	end
-
-	return ChoGGi_DlgExecCode:new({}, terminal.desktop, {
-		obj = context,
-		parent = parent,
-	})
-end
-
-function ChoGGi.ComFuncs.OpenInFindValueDlg(context, parent)
-	if not context then
-		return
-	end
+function ChoGGi.ComFuncs.OpenInExecCodeDlg(obj, parent, ...)
+	local params, parent_type
+	params, parent, parent_type = RetParamsParents(parent, params, ...)
 
 	if not IsKindOf(parent, "XWindow") then
 		parent = nil
 	end
 
-	return ChoGGi_DlgFindValue:new({}, terminal.desktop, {
-		obj = context,
-		parent = parent,
-	})
+	params.obj = obj
+	params.parent = parent
+
+	return ChoGGi_DlgExecCode:new({}, terminal.desktop, params)
 end
 
-function ChoGGi.ComFuncs.OpenInImageViewerDlg(obj, parent)
+function ChoGGi.ComFuncs.OpenInFindValueDlg(obj, parent, ...)
 	if not obj then
 		return
 	end
 
+	local params, parent_type
+	params, parent, parent_type = RetParamsParents(parent, params, ...)
+
 	if not IsKindOf(parent, "XWindow") then
 		parent = nil
 	end
 
-	return ChoGGi_DlgImageViewer:new({}, terminal.desktop, {
-		obj = obj,
-		parent = parent,
-	})
+	params.obj = obj
+	params.parent = parent
+
+	return ChoGGi_DlgFindValue:new({}, terminal.desktop, params)
 end
+
+function ChoGGi.ComFuncs.OpenInImageViewerDlg(obj, parent, ...)
+	if not obj then
+		return
+	end
+
+	local params, parent_type
+	params, parent, parent_type = RetParamsParents(parent, params, ...)
+
+	if not IsKindOf(parent, "XWindow") then
+		parent = nil
+	end
+
+	params.obj = obj
+	params.parent = parent
+
+	return ChoGGi_DlgImageViewer:new({}, terminal.desktop, params)
+end
+
+function ChoGGi.ComFuncs.OpenInObjectEditorDlg(obj, parent, title, ...)
+	-- If fired from action menu
+	if IsKindOf(obj, "XAction") then
+		obj = ChoGGi.ComFuncs.SelObject()
+		parent = nil
+	else
+		obj = obj or ChoGGi.ComFuncs.SelObject()
+	end
+
+	if not obj then
+		return
+	end
+
+	local params, parent_type
+	params, parent, parent_type = RetParamsParents(parent, params, ...)
+
+	if not IsKindOf(parent, "XWindow") then
+		parent = nil
+	end
+
+	params.obj = obj
+	params.parent = parent
+	params.title = title
+
+	return ChoGGi_DlgObjectEditor:new({}, terminal.desktop, params)
+end
+
 --
 -- bugged
 --~ function ChoGGi.ComFuncs.SendDroneToCC(drone, new_hub)

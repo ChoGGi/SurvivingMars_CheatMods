@@ -1,11 +1,13 @@
 ## Library Changelog
 
-## v9.7 (Unreleased)
+## v9.8 (Unreleased)
+
+## v9.7 (10 Apr 2021)
 - Added IsArray.
 - ExportMapDataToCSV has option to return data in tables instead of csv.
 - CreateNumberEditor: Added param to skip creating XEdit.
 - Added: Examine/ExecCode/FindValue/ImageViewer/ObjectEditor (and Open* funcs).
-- Examine: Added tooltip_image/exec_tables.
+- Examine: Added tooltip_info/exec_tables.
 
 ## v9.6 (24 March 2021)
 - Added SetChoGGiPalette, IsGamepadButtonPressed.

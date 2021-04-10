@@ -32,7 +32,7 @@ do -- ExamineObjectRadius
 			table_sort(objs, SortDist)
 
 			OpenInExamineDlg(objs, {
-				ex_params = true,
+				has_params = true,
 				override_title = true,
 				title = Strings[302535920000069--[[Examine]]] .. " "
 					.. Strings[302535920001103--[[Objects]]] .. " "

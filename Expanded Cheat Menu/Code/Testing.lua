@@ -1153,7 +1153,7 @@ end -- ClassesPreprocess
 --~ local function hookTick(...)
 --~ 	if not dlg then
 --~ 		dlg = ChoGGi.ComFuncs.OpenInExamineDlg(list, {
---~ 			ex_params = true,
+--~ 			has_params = true,
 --~ 			auto_refresh = true,
 --~ 	})
 --~ 	end

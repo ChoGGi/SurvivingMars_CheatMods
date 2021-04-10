@@ -42,13 +42,6 @@ local function AddButtons(item, order, list, dlg)
 		MoveItem(order == #list, list, order+1, order, dlg)
 	end, true)
 
-	-- Lib 9.7
-	-- CreateNumberEditor adds an edit input
-	if IsValidXWin(edit) then
-		DoneObject(edit)
-	end
-	-- Lib 9.7
-
 	top_btn:SetBackground(-1)
 	bottom_btn:SetBackground(-1)
 

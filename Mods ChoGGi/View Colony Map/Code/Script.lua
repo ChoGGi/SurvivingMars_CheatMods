@@ -24,6 +24,7 @@ local Translate = ChoGGi.ComFuncs.Translate
 local ValidateImage = ChoGGi.ComFuncs.ValidateImage
 local RetMapSettings = ChoGGi.ComFuncs.RetMapSettings
 local RetMapBreakthroughs = ChoGGi.ComFuncs.RetMapBreakthroughs
+local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 
 local image_str = Mods.ChoGGi_MapImagesPack.env.CurrentModPath .. "Maps/"
 
@@ -35,7 +36,7 @@ local extra_info_dlg
 
 local function ShowDialogs(map, gen)
 	-- check if we already created image viewer, and make one if not
-	if not show_image_dlg then
+	if not IsValidXWin(show_image_dlg) then
 		show_image_dlg = ChoGGi_VCM_MapImageDlg:new({}, terminal.desktop, {})
 	end
 	-- pretty little image
@@ -170,7 +171,7 @@ end
 
 function ChoGGi_VCM_MapImageDlg:idShowExtra_OnChange(check)
 	if check then
-		if not extra_info_dlg then
+		if not IsValidXWin(extra_info_dlg) then
 			extra_info_dlg = ChoGGi_VCM_ExtraInfoDlg:new({}, terminal.desktop, {})
 		end
 	else

@@ -65,10 +65,10 @@ function ChoGGi_DlgFindValue:Init(parent, context)
 		Margins = box(0, 0, 0, 4),
 	}, self.idDialog)
 
-	self.idFind = g_Classes.ChoGGi_XButton:new({
-		Id = "idFind",
+	self.idSearch = g_Classes.ChoGGi_XButton:new({
+		Id = "idSearch",
 		Dock = "left",
-		Text = Strings[302535920001302--[[Find]]],
+		Text = T(10123, "Search"),
 		Background = g_Classes.ChoGGi_XButton.bg_green,
 		RolloverText = Strings[302535920001303--[[Search for text within %s.]]]:format(self.obj_name),
 		Margins = box(10, 0, 0, 0),
