@@ -123,20 +123,25 @@ do -- ModUpload
 
 			item_id = mod[mod_params.uuid_property]
 
+			-- tell paradox users if it needs my library
+			local needs_lib = table.find(mod.dependencies, "id", ChoGGi.id_lib)
+				and Strings[302535920001634--[["This mod requires my lib mod (ChoGGi's Library)."]]] .. "\n\n"
+				or ""
+
 			-- add some text to ECM description to hopefully reduce people reporting the mod.
 			if mod.id == ChoGGi.id then
 				mod.description = Strings[302535920000990--[["You need to have a mouse to use this mod."]]] .. "\n"
-					.. Strings[302535920000887--[["If you have any issues with this mod, please send me a bug report instead of reporting the mod.
+					.. needs_lib .. Strings[302535920000887--[["If you have any issues with this mod, please send me a bug report instead of reporting the mod.
 You can contact me through:
 Github: https://github.com/ChoGGi/SurvivingMars_CheatMods
-Discord: ChoGGi#9210
+Discord: https://discord.gg/bkdjEZU
 Steam: https://steamcommunity.com/id/ChoGGi/
 email: ECM@choggi.org"]]] .. "\n\n\n" .. mod.description
 			else
-				mod.description = Strings[302535920000887--[["If you have any issues with this mod, please send me a bug report instead of reporting the mod.
+				mod.description = needs_lib .. Strings[302535920000887--[["If you have any issues with this mod, please send me a bug report instead of reporting the mod.
 You can contact me through:
 Github: https://github.com/ChoGGi/SurvivingMars_CheatMods
-Discord: ChoGGi#9210
+Discord: https://discord.gg/bkdjEZU
 Steam: https://steamcommunity.com/id/ChoGGi/
 email: ECM@choggi.org"]]] .. "\n\n\n" .. mod.description
 			end

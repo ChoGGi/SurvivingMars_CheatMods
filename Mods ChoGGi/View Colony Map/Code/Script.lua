@@ -206,9 +206,8 @@ function ChoGGi_VCM_MapImageDlg:Done()
 	end
 end
 
--- needed?
 local function GetRootDialog_Extra(dlg)
-	return GetParentOfKind(dlg, "ChoGGi_VCM_ExtraInfoDlg")
+	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_VCM_ExtraInfoDlg")
 end
 
 DefineClass.ChoGGi_VCM_ExtraInfoDlg = {

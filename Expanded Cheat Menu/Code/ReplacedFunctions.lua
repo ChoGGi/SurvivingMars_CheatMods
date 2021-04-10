@@ -1471,11 +1471,22 @@ end]]
 
 		-- ReadHistory fires from :Show(), if it isn't loaded before you :Exec() then goodbye history
 		SaveOrigFunc("Console", "Exec")
-		function Console:Exec(...)
+		function Console:Exec(text, hide_text, ...)
 			if not self.history_queue or #self.history_queue == 0 then
 				self:ReadHistory()
 			end
-			return ChoGGi_OrigFuncs.Console_Exec(self, ...)
+			if hide_text and not blacklist then
+				-- same as Console:Exec(), but skips log text
+				self:AddHistory(text)
+--~ 				AddConsoleLog("> ", true)
+--~ 				AddConsoleLog(text, false)
+				local err = ConsoleExec(text, ConsoleRules)
+				if err then
+					ConsolePrint(err)
+				end
+				return
+			end
+			return ChoGGi_OrigFuncs.Console_Exec(self, text, hide_text, ...)
 		end
 
 		-- we can't do anything if blacklist is active

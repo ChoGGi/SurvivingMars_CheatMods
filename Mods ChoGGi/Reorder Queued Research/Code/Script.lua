@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local type = type
 local DoneObject = DoneObject
 local CreateNumberEditor = CreateNumberEditor
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
@@ -21,27 +22,24 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
+local function MoveItem(test, list, order1, order2, dlg)
+	if test then
+		return
+	end
+	-- swap around tech ids
+	local orig = list[order1]
+	local new = list[order2]
+	list[order1] = new
+	list[order2] = orig
+
+	Msg("ResearchQueueChange", UICity, new, dlg)
+end
+
 local function AddButtons(item, order, list, dlg)
-	local edit, top_btn, bottom_btn = CreateNumberEditor(item, "useless_edit", function(self, _)
-		if order == 1 then
-			return
-		end
-		local orig = list[order-1]
-		local new = list[order]
-		list[order-1] = new
-		list[order] = orig
-
-		Msg("ResearchQueueChange", UICity, new, dlg)
-	end, function(self, _)
-		if order == #list then
-			return
-		end
-		local orig = list[order+1]
-		local new = list[order]
-		list[order+1] = new
-		list[order] = orig
-
-		Msg("ResearchQueueChange", UICity, new, dlg)
+	local edit, top_btn, bottom_btn = CreateNumberEditor(item, "useless_edit", function()
+		MoveItem(order == 1, list, order-1, order, dlg)
+	end, function()
+		MoveItem(order == #list, list, order+1, order, dlg)
 	end, true)
 
 	-- Lib 9.7
@@ -53,13 +51,16 @@ local function AddButtons(item, order, list, dlg)
 
 	top_btn:SetBackground(-1)
 	bottom_btn:SetBackground(-1)
+
+	-- centre button height
+	top_btn.parent:SetVAlign("center")
 end
 
 
 local function EditDlg(dlg)
---~ 	ex(dlg)
 	WaitMsg("OnRender")
 	local res_list = dlg.idResearchQueueList
+--~ 	ex(res_list)
 
 	local context = res_list.context
 	local count = #res_list
@@ -76,9 +77,7 @@ local function EditDlg(dlg)
 end
 
 function OnMsg.ResearchQueueChange(UICity, tech_id, dlg)
-	if mod_EnableMod and dlg and dlg.idResearchQueueList and
-		IsValidXWin(dlg.idResearchQueueList)
-	then
+	if mod_EnableMod and type(dlg) == "table" and IsValidXWin(dlg.idResearchQueueList) then
 		CreateRealTimeThread(EditDlg, dlg)
 	end
 end

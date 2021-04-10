@@ -1,24 +1,25 @@
 -- See LICENSE for terms
 
+local mod_EnableMod
+
 -- edited from orig func to remove deposits
 local function SetSignsVisible(visible)
-	if visible and not g_SignsVisible then
+	if visible then
 		MapSetEnumFlags(const.efVisible, "map", "BuildingSign", "UnitSign", "ArrowTutorialBase", "SelectionArrow")
-		g_SignsVisible = true
-	end
-	if not visible and g_SignsVisible then
+	else
 		MapClearEnumFlags(const.efVisible, "map", "BuildingSign", "UnitSign", "ArrowTutorialBase", "SelectionArrow")
-		g_SignsVisible = false
 	end
 end
 
-local mod_EnableMod
 
 local function SetBuildingSigns1()
 	SetSignsVisible(not mod_EnableMod)
 end
+
+local temp_vis = false
 local function SetBuildingSigns2()
-	SetSignsVisible(not g_SignsVisible)
+	temp_vis = not temp_vis
+	SetSignsVisible(temp_vis)
 end
 
 -- fired when settings are changed/init

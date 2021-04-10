@@ -68,7 +68,8 @@ local function ToggleTanks(obj, all_objs)
 end
 
 local function UpdateButton(self, context)
-	if context[RetGridType(context)].max_charge == 0 then
+	local obj = context[RetGridType(context)]
+	if obj and obj.max_charge == 0 then
 		self:SetRolloverText(T(302535920011728, "Tank won't be filled by the grid."))
 		self:SetIcon("UI/Icons/IPButtons/unload.tga")
 	else

@@ -1,3 +1,6 @@
+v0.3
+Hiding too many signs (thanks Animus Yosho).
+
 v0.2
 Added keyboard bind.
 Stopped hiding resource icons as well.

@@ -1,2 +1,5 @@
+v0.3
+Centred arrows.
+
 v0.2
 Don't need to close/open research dialog anymore.

@@ -1,5 +1,4 @@
 "ID", " Text"
-302535920001634,
 302535920001635,
 302535920001636,
 302535920001637,
@@ -1652,11 +1651,12 @@ Not noticeable unless using higher zoom."
 302535920000654, "Select (or mouse over) an object to follow."
 302535920000655, "Toggle Cursor"
 302535920000656, "Toggle between moving camera and selecting objects."
+302535920001634, "This mod requires my lib mod (ChoGGi's Library)."
 302535920000990, "You need to have a mouse to use this mod."
 302535920000887, "If you have any issues with this mod please send me a bug report instead of reporting the mod.
 You can contact me through:
 Github: https://github.com/ChoGGi/SurvivingMars_CheatMods
-Discord: ChoGGi#9210
+Discord: https://discord.gg/bkdjEZU
 Steam: https://steamcommunity.com/id/ChoGGi/
 email: SurvivingMarsMods@choggi.org"
 302535920000221, "See log for any batch errors."
