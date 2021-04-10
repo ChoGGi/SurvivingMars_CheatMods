@@ -388,13 +388,22 @@ function ChoGGi.MenuFuncs.SetSponsorBonus()
 			end
 
 			local user_set = UserSettings["Sponsor" .. spon.id]
+			if user_set then
+				user_set = ": " .. tostring(user_set)
+			else
+				user_set = " false"
+			end
+			local save_in = ""
+			if spon.save_in and spon.save_in ~= "" then
+				save_in = "\nsave_in: " .. spon.save_in
+			end
+
 			c = c + 1
 			item_list[c] = {
 				text = Translate(spon.display_name),
 				value = spon.id,
-				hint = Translate(T{spon.effect, stats[2]}) .. "\n\n" .. Strings[302535920001165--[[Enabled Status]]]
-					.. (user_set and ": " .. user_set or " false")
-					.. (spon.save_in ~= "" and "\n\nsave_in: " .. spon.save_in or ""),
+				hint = Translate(T{spon.effect, stats[2]}) .. "\n\n"
+					.. Strings[302535920001165--[[Enabled Status]]] .. user_set .. save_in,
 			}
 		end
 	end

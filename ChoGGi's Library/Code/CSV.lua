@@ -185,14 +185,14 @@ do -- MapData
 			for long = 0, 180 do
 				-- SE
 				AddLandingSpot(lat, long, breakthroughs, skip_csv)
---~ 				if action.ActionId ~= "" or not testing then
+				if action.ActionId ~= "" or not testing then
 					-- SW
 					AddLandingSpot(lat, long * -1, breakthroughs, skip_csv)
 					-- NE
 					AddLandingSpot(lat * -1, long, breakthroughs, skip_csv)
 					-- NW
 					AddLandingSpot(lat * -1, long * -1, breakthroughs, skip_csv)
---~ 				end
+				end
 			end
 		end
 		-- not needed anymore so restore back to orig

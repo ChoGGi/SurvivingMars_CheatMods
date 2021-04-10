@@ -13,6 +13,7 @@ function OnMsg.ClassesPostprocess()
 			if not BreathableAtmosphere then
 				return
 			end
+
 			if context.open_air then
 				context:ChangeOpenAirState(false)
 			else
@@ -20,4 +21,12 @@ function OnMsg.ClassesPostprocess()
 			end
 		end,
 	})
+end
+
+local orig_Dome_UpdateOpenCloseState = Dome.UpdateOpenCloseState
+function Dome:UpdateOpenCloseState(...)
+	local orig = OpenAirBuildings
+	OpenAirBuildings = false
+	orig_Dome_UpdateOpenCloseState(self, ...)
+	OpenAirBuildings = orig
 end

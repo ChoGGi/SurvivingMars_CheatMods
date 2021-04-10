@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v9.8 (Unreleased)
+- Forgot to check if examine needed funcs were in blacklist.
 
 ## v9.7 (10 Apr 2021)
 - Added IsArray.

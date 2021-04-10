@@ -1,7 +1,7 @@
 
 -- See LICENSE for terms
 
-local tostring, type, table = tostring, type, table
+local tostring, type, table, tonumber = tostring, type, table, tonumber
 local table_find = table.find
 
 local RetMapSettings = ChoGGi.ComFuncs.RetMapSettings
@@ -11,6 +11,7 @@ local ValidateImage = ChoGGi.ComFuncs.ValidateImage
 local RetName = ChoGGi.ComFuncs.RetName
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 local TableConcat = ChoGGi.ComFuncs.TableConcat
+local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 
 local Strings = ChoGGi.Strings
 
@@ -325,6 +326,29 @@ function ChoGGi_VLI_MapInfoDlg:Input_OnKbdKeyDown(vk)
 	self = GetRootDialog(self)
 	if vk == const.vkEnter then
 		self:FindText()
+		return "break"
+	elseif vk == const.vkTab then
+		if self.input_box_count == 1 then
+			return "break"
+		end
+
+		local current_idx = tonumber(old_self.Id:sub(9))
+
+		local is_shift = IsShiftPressed()
+
+		-- tab to go down, shift-tab to go up
+		if not is_shift and current_idx >= self.input_box_count then
+			current_idx = 1
+		elseif is_shift and current_idx == 1 then
+			current_idx = self.input_box_count
+		elseif is_shift then
+			current_idx = current_idx - 1
+		else
+			current_idx = current_idx + 1
+		end
+
+		self["idSearch" .. current_idx]:SetFocus()
+
 		return "break"
 	end
 

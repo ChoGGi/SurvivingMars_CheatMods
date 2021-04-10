@@ -9,7 +9,7 @@ return {
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "CleanUpInvalid",
-		"DisplayName", T(302535920011769, "Clean Up Invalid"),
+		"DisplayName", T(302535920011769, "Clean Up Invalid Objects"),
 		"Help", T(302535920011770, "Remove any invalid objects stuck in the dome when you press the toggle connected objs button."),
 		"DefaultValue", false,
 	}),

@@ -84,12 +84,18 @@ local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 local missing_text = ChoGGi.Temp.missing_text
 
-local debug_getinfo, debug_getupvalue, debug_getlocal = empty_func, empty_func, empty_func
-local debug = blacklist and false or debug
-if debug then
-	debug_getupvalue = debug.getupvalue
-	debug_getinfo = debug.getinfo
-	debug_getlocal = debug.getlocal
+local debug_getinfo, debug_getupvalue = empty_func, empty_func
+local debug_getlocal, debug_getmetatable = empty_func, empty_func
+
+function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
+	blacklist = ChoGGi.blacklist
+	local debug = env.debug
+	if debug then
+		debug_getupvalue = debug.getupvalue
+		debug_getinfo = debug.getinfo
+		debug_getlocal = debug.getlocal
+		debug_getmetatable = debug.getmetatable
+	end
 end
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
@@ -3019,10 +3025,10 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 			for i = 1, #obj do
 				BuildObjTable(i, obj[i])
 				--
-				if not limit_check and thread and i > 50001 then
+				if not limit_check and thread and i > 25001 then
 					if WaitMarsQuestion(
 						nil,T(718,"Abort"),
-						Strings[302535920001633--[[Reached %s objects, abort?]]]:format("50 000"),
+						Strings[302535920001633--[[Reached %s objects, abort?]]]:format("25 000"),
 						T(718,"Abort"),T(7317,"Continue"),
 						ChoGGi.library_path .. "UI/message_picture_01.png"
 					) == "ok" then
@@ -3065,7 +3071,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 
 		-- the regular getmetatable will use __metatable if it exists, so we check this as well
 		if testing and not blacklist then
-			local dbg_metatable = debug.getmetatable(obj)
+			local dbg_metatable = debug_getmetatable(obj)
 			if dbg_metatable and dbg_metatable ~= obj_metatable then
 				print("ECM Sez DIFFERENT METATABLE", self.name, "\nmeta:", obj_metatable, "\ndbg:", dbg_metatable, "")
 			end

@@ -1,1 +1,2 @@
 v0.2
+use Tab and Shift-Tab to move between text inputs.
