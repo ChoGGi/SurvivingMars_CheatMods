@@ -75,7 +75,8 @@
 302535920001073, "Console"
 302535920000242, "<color ChoGGi_red>%s</color> is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access ;)"
 302535920001302, "Find"
-302535920001303, "Search for text within <green>%s</green>."
+302535920001303, "Search for text within <green>%s</green>.
+Leave blank to skip search box."
 302535920000306, "Everything"
 302535920000855, "Last chance before deletion!"
 302535920000800, "MaleOrFemale"

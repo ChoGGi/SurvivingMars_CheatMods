@@ -61,12 +61,7 @@ return PlaceObj("ModDef", {
 
 		-- custom dialogs
 		"Code/Dialogs/ConsoleLogWin.lua",
-		"Code/Dialogs/Examine.lua",
-		"Code/Dialogs/ExecCode.lua",
-		"Code/Dialogs/FindValue.lua",
-		"Code/Dialogs/ObjectEditor.lua",
 		"Code/Dialogs/3DManipulator.lua",
-		"Code/Dialogs/ImageViewer.lua",
 		"Code/Dialogs/DTMSlots.lua",
 		"Code/Dialogs/TerminalRolloverMode.lua",
 

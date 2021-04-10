@@ -49,8 +49,14 @@ return PlaceObj("ModDef", {
 		-- gagarin is all about styles it seems... kinda annoying having to define a style just to change colour
 		"Code/TextStyles_UI.lua",
 		-- some dialogs i use
-		"Code/ListChoice.lua",
-		"Code/MultiLineText.lua",
+		"Code/Dialogs/ListChoice.lua",
+		"Code/Dialogs/MultiLineText.lua",
+		-- examine (and dialogs for it)
+		"Code/Dialogs/Examine.lua",
+		"Code/Dialogs/FindValue.lua",
+		"Code/Dialogs/ImageViewer.lua",
+		"Code/Dialogs/ExecCode.lua",
+		"Code/Dialogs/ObjectEditor.lua",
 		-- Mod Options
 		"Code/ModOptions.lua",
 	},

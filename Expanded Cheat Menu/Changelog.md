@@ -10,6 +10,9 @@
 - Menu>ECM>Rockets>Travel Time: Now applies to expedition rockets as well.
 - Console>Scripts won't echo unless you add -- rem echo on to them.
 
+### Removed:
+- Examine/ExecCode/FindValue/ImageViewer/ObjectEditor (and Open* funcs).
+
 ## v16.6 (24 March 2021)
 ### Added:
 - Cheats pane>DroneFactory/Control:SpawnAndroid/Drone: Instant spawn.

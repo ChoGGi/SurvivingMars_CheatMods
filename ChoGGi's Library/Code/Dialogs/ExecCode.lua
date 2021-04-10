@@ -163,7 +163,7 @@ Press again to toggle updating."]]],
 		RolloverText = Strings[302535920001475--[[Toggle lua code highlighting.]]],
 		OnChange = self.idToggleCode_OnChange,
 	}, self.idRightButs)
-	self.idToggleCode:SetIconRow(2)
+	self.idToggleCode:SetCheckBox(true)
 
 	self.idWrapLines = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idWrapLines",
@@ -173,7 +173,7 @@ Press again to toggle updating."]]],
 		Margins = box10,
 		OnChange = self.idWrapLines_OnChange,
 	}, self.idRightButs)
-	self.idWrapLines:SetIconRow(ChoGGi.UserSettings.WordWrap and 2 or 1)
+	self.idWrapLines:SetCheckBox(ChoGGi.UserSettings.WordWrap and true or false)
 
 	self.idCancel = g_Classes.ChoGGi_XButton:new({
 		Id = "idCancel",

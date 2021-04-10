@@ -15,11 +15,15 @@ XXXXX = {
 ex(obj, pos/parent, title)
 ex(obj, {
 	ex_params = true,
+	parent = self,
+	auto_refresh = true,
+	-- fired when left clicking on a table
+	exec_tables = function (obj, self) end,
+	-- shows image in path in tooltip
+	tooltip_image = function (obj, self) end,
+	title = "hello",
 	-- skip prefix
 	override_title = true,
-	parent = self,
-	title = "hello",
-	auto_refresh = true,
 })
 ]]
 
@@ -178,17 +182,28 @@ DefineClass.ChoGGi_DlgExamine = {
 	onclick_objs = false,
 	onclick_count = false,
 	hex_shape_tables = false,
+	-- change default leftclick action for tables
+	exec_tables = false,
+	-- show image in some tooltips
+	tooltip_image = false,
 
 	idAutoRefresh_update_str = false,
 }
 
 function ChoGGi_DlgExamine:Init(parent, context)
 	local g_Classes = g_Classes
-
+	self.ChoGGi = ChoGGi
 	self.obj = context.obj
 
-	self.ChoGGi = ChoGGi
-	local const = const
+	-- ECM isn't installed
+	if not self.ChoGGi.UserSettings.ExamineColourNum then
+		local us = self.ChoGGi.UserSettings
+		us.ExamineColourNum = "255 255 0"
+		us.ExamineColourBool = "0 255 0"
+		us.ExamineColourBoolFalse = "255 150 150"
+		us.ExamineColourStr = "255 255 255"
+		us.ExamineColourNil = "175 175 175"
+	end
 
 	-- my popup func checks for ids and "refreshs" a popup with the same id, so random it is
 	self.idAttachesMenu = self.ChoGGi.ComFuncs.Random()
@@ -220,6 +235,8 @@ function ChoGGi_DlgExamine:Init(parent, context)
 	self.override_title = context.override_title
 	self.varargs = context.varargs
 	self.prefix = Strings[302535920000069--[[Examine]]]
+	self.exec_tables = context.exec_tables
+	self.tooltip_image = context.tooltip_image
 
 	-- these are used during SetObj, so we trans once to speed up autorefresh
 	self.string_Loadingresources = Translate(67--[[Loading resources]])
@@ -780,6 +797,15 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 				roll_text[c] = self.ChoGGi.ComFuncs.Translate(obj)
 				c = c + 1
 				roll_text[c] = "\n\n"
+
+
+			-- add tooltip image
+			elseif self.tooltip_image then
+				c = c + 1
+				roll_text[c] = "<image " .. self.tooltip_image(obj) .. ">"
+				c = c + 1
+				roll_text[c] = "\n\n"
+
 			else
 				-- display tables
 
@@ -2321,6 +2347,11 @@ end
 local function Examine_ConvertValueToInfo(self, button, obj, _, _, _, link)
 	-- not ingame = no sense in using ShowObj
 	if button == "L" then
+		if self.exec_tables then
+			self.exec_tables(obj, self)
+			return
+		end
+
 		local title = RetName(obj)
 		-- use key name if there's no proper RetName
 		if title:find("^[function:|thread:|table:|userdata:]") then

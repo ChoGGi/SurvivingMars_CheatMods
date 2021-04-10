@@ -342,6 +342,13 @@ DefineClass.ChoGGi_XCheckButton = {
 function ChoGGi_XCheckButton:Init()
 	self.idIcon:SetBackground(light_gray)
 end
+function ChoGGi_XCheckButton:SetCheckBox(toggle)
+	if toggle then
+		self:SetIconRow(2)
+	else
+		self:SetIconRow(1)
+	end
+end
 
 DefineClass.ChoGGi_XPopupList = {
 	__parents = {
@@ -784,20 +791,20 @@ function ChoGGi_XWindow:ResetSize(dialog)
 	self:SetSize(self.dialog_width_scaled, self.dialog_height_scaled, dialog or "idDialog")
 end
 function ChoGGi_XWindow:SetWidth(w, dialog)
-	self:SetSize(w, (self[dialog or "idDialog"] or dialog).box:sizey())
+	self:SetSize(w, (self[dialog or "idDialog"] or dialog or self).box:sizey())
 end
 function ChoGGi_XWindow:SetHeight(h, dialog)
-	self:SetSize((self[dialog or "idDialog"] or dialog).box:sizex(), h)
+	self:SetSize((self[dialog or "idDialog"] or dialog or self).box:sizex(), h)
 end
 function ChoGGi_XWindow:GetSize(dialog)
 --~ 	return (self[dialog or "idDialog"] or dialog):size()
-	return (self[dialog or "idDialog"] or dialog).box:size()
+	return (self[dialog or "idDialog"] or dialog or self).box:size()
 end
 function ChoGGi_XWindow:GetHeight(dialog)
-	return (self[dialog or "idDialog"] or dialog).box:sizey()
+	return (self[dialog or "idDialog"] or dialog or self).box:sizey()
 end
 function ChoGGi_XWindow:GetWidth(dialog)
-	return (self[dialog or "idDialog"] or dialog).box:sizex()
+	return (self[dialog or "idDialog"] or dialog or self).box:sizex()
 end
 
 function ChoGGi_XWindow:PostInit(parent, pt, title_skip)
