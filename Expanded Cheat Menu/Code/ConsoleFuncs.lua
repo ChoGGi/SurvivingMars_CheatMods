@@ -594,7 +594,7 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 		OnPress = function()
 			dlgConsole:Show()
 		end,
-		Margins = box(0, 0, 0, -26),
+		Margins = box(0, 0, 0, -24),
 		Dock = "bottom",
 		VAlign = "bottom",
 		HAlign = "right",
@@ -603,7 +603,7 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 	-- stick everything in
 	dlgConsole.idContainer = g_Classes.XWindow:new({
 		Id = "idContainer",
-		Margins = box(10, 0, 0, 0),
+		Margins = box(6, 0, 0, 5),
 		HAlign = "left",
 		Dock = "bottom",
 		LayoutMethod = "HList",

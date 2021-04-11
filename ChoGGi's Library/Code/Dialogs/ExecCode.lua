@@ -3,7 +3,6 @@
 -- shows a dialog with to execute code in
 
 local Strings = ChoGGi.Strings
-local blacklist = ChoGGi.blacklist
 local Translate = ChoGGi.ComFuncs.Translate
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
@@ -28,7 +27,7 @@ local box10 = box(10, 0, 0, 0)
 function ChoGGi_DlgExecCode:Init(parent, context)
 	local g_Classes = g_Classes
 
-	if blacklist then
+	if ChoGGi.blacklist then
 		self.plugin_names = {"ChoGGi_XCodeEditorPlugin"}
 	else
 		self.plugin_names = {
@@ -72,7 +71,7 @@ Press Ctrl-Enter or Shift-Enter to execute code."]]]
 	}, self.idDialog)
 
 	-- top row
-	if not blacklist then
+	if not ChoGGi.blacklist then
 		self.idTopButs = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idTopButs",
 			Dock = "top",

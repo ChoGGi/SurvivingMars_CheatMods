@@ -97,10 +97,11 @@ function ChoGGi_DlgImageViewer:Init(parent, context)
 end
 
 function ChoGGi_DlgImageViewer:ExportImage()
-	if blacklist then
+	if ChoGGi.blacklist then
 		ChoGGi.ComFuncs.BlacklistMsg("ChoGGi_DlgImageViewer:ExportImage()")
 		return
 	end
+
 	-- need to reverse string so it finds the last /, since find looks ltr
 	local slash = self.image_path:reverse():find("/")
 	if slash then

@@ -1,4 +1,5 @@
 "ID", " Text"
+302535920000044,
 302535920001302,
 302535920001635,
 302535920001636,
@@ -557,8 +558,7 @@ Press once to clear this examine, again to clear all."
 302535920000043, "<green>Enter</green> to scroll to next found text
 <green>Ctrl-Enter</green> to scroll to previous found text
 <yellow>Arrow Keys</yellow> to scroll to each end"
-302535920000044, "Go To Text"
-302535920000045, "Scrolls down one line or scrolls between text in ""<yellow>Go to text</yellow>""."
+302535920000045, "Scrolls down one line or scrolls between text in ""<yellow>Search</yellow>""."
 302535920000050, "Opens object in Object Editor."
 302535920000052, "Execute code (using console for output). <green>o</green> is whatever object is opened in examiner.
 Which you can then mess around with some more in the console."

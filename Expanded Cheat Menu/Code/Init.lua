@@ -41,7 +41,7 @@ if def.no_blacklist then
 	ChoGGi.blacklist = false
 	local env = def.env
 	Msg("ChoGGi_UpdateBlacklistFuncs", env)
-	-- makes some stuff easier
+	-- make lib mod have access as well
 	local lib_env = ChoGGi.def_lib.env
 	lib_env._G = env._G
 	lib_env.rawget = env.rawget

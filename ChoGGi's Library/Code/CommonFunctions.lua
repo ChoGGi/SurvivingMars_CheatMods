@@ -34,6 +34,7 @@ local table_rand = table.rand
 local table_set_defaults = table.set_defaults
 local table_append = table.append
 local table_ifilter = table.ifilter
+local table_imap = table.imap
 local CreateRealTimeThread = CreateRealTimeThread
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
@@ -4599,7 +4600,7 @@ do -- RetMapBreakthroughs
 			breakthrough_count = const.BreakThroughTechsPerGame
 				+ const.OmegaTelescopeBreakthroughsCount
 				+ Consts.PlanetaryBreakthroughCount
-			orig_break_list = table.imap(Presets.TechPreset.Breakthroughs, "id")
+			orig_break_list = table_imap(Presets.TechPreset.Breakthroughs, "id")
 		end
 
 		-- start with a clean copy of breaks
@@ -4614,7 +4615,7 @@ do -- RetMapBreakthroughs
 
 		table_clear(remove_added)
 
-		local c = #break_order - 3 -- 3=omega
+		local c = #break_order - 3 -- 3 for omega
 		for i = 1, c do
 			local id = break_order[i]
 			-- translate tech

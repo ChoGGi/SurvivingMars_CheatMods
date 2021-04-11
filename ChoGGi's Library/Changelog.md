@@ -2,6 +2,9 @@
 
 ## v9.8 (Unreleased)
 - Forgot to check if examine needed funcs were in blacklist.
+- Slight speedup for ExportMapDataToCSV.
+- Made X close icon a little smaller, so it fits the height of the Examine toolbar.
+- Examine: "Go to text" is now "Search".
 
 ## v9.7 (10 Apr 2021)
 - Added IsArray.

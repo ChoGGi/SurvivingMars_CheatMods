@@ -69,7 +69,6 @@ local XDestroyRolloverWindow = XDestroyRolloverWindow
 local TMeta = TMeta
 local TConcatMeta = TConcatMeta
 
--- local any funcs used a lot
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 local RetName = ChoGGi.ComFuncs.RetName
@@ -80,22 +79,21 @@ local SetWinObjectVis = ChoGGi.ComFuncs.SetWinObjectVis
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
 local Strings = ChoGGi.Strings
-local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 local missing_text = ChoGGi.Temp.missing_text
 
+-- We can't get anything till ECM is loaded (without the blacklist)
 local debug_getinfo, debug_getupvalue = empty_func, empty_func
 local debug_getlocal, debug_getmetatable = empty_func, empty_func
 
+local blacklist
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	blacklist = ChoGGi.blacklist
 	local debug = env.debug
-	if debug then
-		debug_getupvalue = debug.getupvalue
-		debug_getinfo = debug.getinfo
-		debug_getlocal = debug.getlocal
-		debug_getmetatable = debug.getmetatable
-	end
+	debug_getupvalue = debug.getupvalue
+	debug_getinfo = debug.getinfo
+	debug_getlocal = debug.getlocal
+	debug_getmetatable = debug.getmetatable
 end
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
@@ -474,7 +472,7 @@ Press once to clear this examine, again to clear all."]]],
 		self.idSearchText = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idSearchText",
 			RolloverText = Strings[302535920000043--[["Press <color 0 200 0>Enter</color> to scroll to next found text, <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text, <color 0 200 0>Arrow Keys</color> to scroll to each end."]]],
-			Hint = Strings[302535920000044--[[Go To Text]]],
+			Hint = Translate(10123, "Search"),
 			OnKbdKeyDown = self.idSearchText_OnKbdKeyDown,
 		}, self.idSearchArea)
 		--
@@ -484,7 +482,7 @@ Press once to clear this examine, again to clear all."]]],
 			Dock = "right",
 			RolloverAnchor = "right",
 			RolloverHint = Strings[302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"]]],
-			RolloverText = Strings[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
+			RolloverText = Strings[302535920000045--[["Scrolls down one line or scrolls between text in "Search".
 Right-click <right_click> to go up, middle-click <middle_click> to scroll to the top."]]],
 			OnMouseButtonDown = self.idSearch_OnMouseButtonDown,
 		}, self.idSearchArea)
@@ -1725,6 +1723,7 @@ function ChoGGi_DlgExamine:idSearch_OnMouseButtonDown(pt, button, ...)
 end
 
 function ChoGGi_DlgExamine:idSearchText_OnKbdKeyDown(vk, ...)
+	local old_self = self
 	self = GetRootDialog(self)
 
 	local c = const
@@ -1735,27 +1734,29 @@ function ChoGGi_DlgExamine:idSearchText_OnKbdKeyDown(vk, ...)
 			self:FindNext()
 		end
 		return "break"
+
 	elseif vk == c.vkUp then
 		self.idScrollArea:ScrollTo(nil, 0)
 		return "break"
+
 	elseif vk == c.vkDown then
 		local v = self.idScrollV
 		if v:IsVisible() then
 			self.idScrollArea:ScrollTo(nil, v.Max - (v.FullPageAtEnd and v.PageSize or 0))
 		end
 		return "break"
+
 	elseif vk == c.vkRight then
 		local h = self.idScrollH
 		if h:IsVisible() then
 			self.idScrollArea:ScrollTo(h.Max - (h.FullPageAtEnd and h.PageSize or 0))
 		end
 		-- break doesn't work for left/right
+
 	elseif vk == c.vkLeft then
 		self.idScrollArea:ScrollTo(0)
 		-- break doesn't work for left/right
-	elseif vk == c.vkEsc then
-		self.idCloseX:OnPress()
-		return "break"
+
 	elseif vk == c.vkV then
 		if IsControlPressed() then
 			CreateRealTimeThread(function()
@@ -1763,9 +1764,14 @@ function ChoGGi_DlgExamine:idSearchText_OnKbdKeyDown(vk, ...)
 				self:FindNext()
 			end)
 		end
+
+	elseif vk == c.vkEsc then
+		self.idCloseX:OnPress()
+		return "break"
+
 	end
 
-	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self.idSearchText, vk, ...)
+	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(old_self, vk, ...)
 end
 
 -- adds class name then list of functions below

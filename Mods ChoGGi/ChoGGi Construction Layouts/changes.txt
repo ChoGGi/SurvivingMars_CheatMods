@@ -1,3 +1,9 @@
+v0.7
+Added large wind turbine layout, and park slice.
+
+v0.6
+Never bothered checking for DLC.
+
 v0.5
 Added repeating large solar panel/small wind turbine layouts.
 

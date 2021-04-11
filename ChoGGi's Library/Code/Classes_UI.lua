@@ -266,7 +266,8 @@ end
 
 DefineClass.ChoGGi_XCloseButton = {
 	__parents = {"ChoGGi_XButtons"},
-	Image = "UI/Common/mission_no.tga",
+--~ 	Image = "UI/Common/mission_no.tga",
+	Image = ChoGGi.library_path .. "UI/mission_no.png",
 	VAlign = "center",
 	HAlign = "right",
 	Margins = box(0, 0, 2, 0),

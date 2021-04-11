@@ -8,6 +8,7 @@ local RetName = ChoGGi.ComFuncs.RetName
 local Translate = ChoGGi.ComFuncs.Translate
 local RetMapSettings = ChoGGi.ComFuncs.RetMapSettings
 local RetMapBreakthroughs = ChoGGi.ComFuncs.RetMapBreakthroughs
+local TableConcat = ChoGGi.ComFuncs.TableConcat
 
 local Strings = ChoGGi.Strings
 local testing = ChoGGi.testing
@@ -19,41 +20,42 @@ local function ExportDoneMsg(path)
 end
 
 do -- MapData
-	local function MapChallengeRatingToDifficulty(rating)
-		if rating <= 59 then
-			-- Relatively Flat
-			return 4154
-		elseif rating <= 99 then
-			-- Rough
-			return 4155
-		elseif rating <= 139 then
-			-- Steep
-			return 4156
-		else
-			-- Mountainous
-			return 4157
-		end
+	local str_RelativelyFlat = Translate(4154)
+	local str_Rough = Translate(4155)
+	local str_Steep = Translate(4156)
+	local str_Mountainous = Translate(4157)
+
+	local MarsLocales = MarsLocales
+	local str_MarsLocales = {}
+	for idx, T_data in pairs(MarsLocales) do
+		str_MarsLocales[idx] = Translate(T_data)
 	end
+
 	local GetOverlayValues = GetOverlayValues
 	local FillRandomMapProps = FillRandomMapProps
 	-- exported data temp stored here
 	local export_data = {}
 	local export_data_dupes = {}
-	-- It's an index based table
 	local export_count = 0
 	-- stores temp landing spot
 	local landing
 	local north, east, south, west
 
+	local loc_table = {"","","",""}
 	local MapData = MapData
-	local MarsLocales = MarsLocales
 	local function AddLandingSpot(lat, long, breakthroughs, skip_csv)
 		-- coord names in csv
 		local lat_0, long_0 = lat < 0, long < 0
 		local lat_name, long_name = lat_0 and north or south, long_0 and west or east
 
-		-- no dupes (whoops)
-		local location = lat_name .. lat .. long_name .. long
+		-- no dupes
+		loc_table[1] = lat_name
+		loc_table[2] = lat
+		loc_table[3] = long_name
+		loc_table[4] = long
+		local location = TableConcat(loc_table)
+--~ 		local location = lat_name .. lat .. long_name .. long
+
 		if export_data_dupes[location] then
 			return
 		end
@@ -89,6 +91,16 @@ do -- MapData
 		local threat = landing.threat_resource_levels
 		local mapdata = MapData[map_name]
 
+		local topography
+		local rating = mapdata and mapdata.challenge_rating or 0
+		if rating <= 59 then
+			topography =  str_RelativelyFlat
+		elseif rating <= 99 then
+			topography =  str_Rough
+		elseif rating <= 139 then
+			topography =  str_Steep
+		end
+
 		-- create item in export list
 		export_count = export_count + 1
 		export_data[export_count] = {
@@ -98,7 +110,7 @@ do -- MapData
 			longitude = long_name,
 			longitude_degree = long,
 
-			topography = Translate(MapChallengeRatingToDifficulty(mapdata and mapdata.challenge_rating or 0)),
+			topography = topography or str_Mountainous,
 			diff_chall = g_TitleObj:GetDifficultyBonus(),
 			altitude = params.Altitude,
 			temperature = params.Temperature,
@@ -114,8 +126,9 @@ do -- MapData
 
 			map_name = map_name,
 		}
+		local data = export_data[export_count]
+
 		if breakthroughs then
-			local data = export_data[export_count]
 			local tech_list = RetMapBreakthroughs(gen)
 			if skip_csv then
 				for i = 1, #tech_list do
@@ -128,10 +141,16 @@ do -- MapData
 			end
 		end
 
+		-- none of them have a params.landing_spot, so skip it...
+--~ 		-- named location spots
+--~ 		if params.landing_spot then
+--~ 			data.landing_spot = Translate(params.landing_spot)
+--~ 		elseif params.Locales then
+--~ 			data.landing_spot = str_MarsLocales[params.Locales]
+--~ 		end
 		-- named location spots
-		local spot_name = params.landing_spot or MarsLocales[params.Locales]
-		if spot_name then
-			export_data[export_count].landing_spot = Translate(spot_name)
+		if params.Locales then
+			data.landing_spot = str_MarsLocales[params.Locales]
 		end
 	end
 
@@ -172,7 +191,6 @@ do -- MapData
 		export_count = 0
 		table.clear(export_data_dupes)
 
---~ ChoGGi.ComFuncs.TickStart("ExportMapDataToCSV")
 
 		-- needed for RecalcThreatResourceLevels func
 		local orig_GameState = GameState.gameplay
@@ -180,11 +198,13 @@ do -- MapData
 		local orig_spotchall = g_SelectedSpotChallengeMods
 		g_SelectedSpotChallengeMods = {}
 
+--~ ChoGGi.ComFuncs.TickStart("ExportMapDataToCSV")
 		-- loop through all the spots, update landing spot and stick in export list
 		for lat = 0, 70 do
 			for long = 0, 180 do
 				-- SE
 				AddLandingSpot(lat, long, breakthroughs, skip_csv)
+				-- skip the rest for speed in testing
 				if action.ActionId ~= "" or not testing then
 					-- SW
 					AddLandingSpot(lat, long * -1, breakthroughs, skip_csv)
@@ -195,11 +215,12 @@ do -- MapData
 				end
 			end
 		end
+--~ ChoGGi.ComFuncs.TickEnd("ExportMapDataToCSV")
+
 		-- not needed anymore so restore back to orig
 		GameState.gameplay = orig_GameState
 		g_SelectedSpotChallengeMods = orig_spotchall
 
---~ ChoGGi.ComFuncs.TickEnd("ExportMapDataToCSV")
 
 		-- remove landing spot obj (not needed anymore)
 		landing:delete()
