@@ -150,3 +150,19 @@ function OnMsg.ClassesPostprocess()
 	-- Add check for mod options with: "Header", true, and remove On/Off text from it
 	-- If it ignores fake values then use "name" and check for prefix Header_
 end
+
+-- sort list of mods for mod options
+
+local CmpLower = CmpLower
+local function sort_mods(a, b)
+	return CmpLower(a.title, b.title)
+end
+
+local orig_XTemplateForEach_map = XTemplateForEach.map
+function XTemplateForEach.map(parent, context, array, i)
+	if array == ModsLoaded then
+		array = table.icopy(array)
+		table.sort(array, sort_mods)
+	end
+	return orig_XTemplateForEach_map(parent, context, array, i)
+end

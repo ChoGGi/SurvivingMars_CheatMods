@@ -26,10 +26,13 @@ local function ShowDialogs()
 	if not map_data then
 		map_data = ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{setting_breakthroughs = true, setting_skip_csv = true})
 
-		-- change all strings to lowercase here instead of while searching
+		local map_info = ChoGGi_VLI_MapInfoDlg.RetMapLocation
 		for i = 1, #map_data do
 			local data = map_data[i]
-			-- breaks
+
+			data.coordinates = map_info(nil, data, true):lower()
+			-- change all strings to lowercase here instead of while searching
+			-- breakthroughs
 			for j = 1, #data do
 				data[j] = data[j]:lower()
 			end

@@ -1,3 +1,6 @@
+v0.6
+Added coordinates to map data for easier searching.
+
 v0.5
 Added input for ignoring text.
 Finding maps is faster (slightly slower initial load).
