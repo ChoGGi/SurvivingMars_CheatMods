@@ -1521,44 +1521,6 @@ function ChoGGi.ComFuncs.FilterFromTableFunc(list, func, value, is_bool)
 	end)
 end
 
-function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(obj, parent)
-	if not obj then
-		return
-	end
-
-	if obj.text then
-		return ChoGGi_DlgMultiLineText:new({}, terminal.desktop, obj)
-	end
-
-	if not IsKindOf(parent, "XWindow") then
-		parent = nil
-	end
-	return ChoGGi_DlgMultiLineText:new({}, terminal.desktop, {
-		text = obj,
-		parent = parent,
-	})
-end
-
-function ChoGGi.ComFuncs.OpenInListChoice(list)
-	-- If list isn't a table or it has zero items or it doesn't have items/callback func
-	local list_table = type(list) == "table"
-	local items_table = type(list_table and list.items) == "table"
-	if not list_table or list_table and not items_table or items_table and #list.items < 1 then
-		print(
-		Strings[302535920001324--[[ECM: OpenInListChoice(list) is blank... This shouldn't happen.]]], "\n", list, "\n",
-			list and ValueToLuaCode(list)
-		)
-		return
-	end
-	if not IsKindOf(list.parent, "XWindow") then
-		list.parent = nil
-	end
-
-	return ChoGGi_DlgListChoice:new({}, terminal.desktop, {
-		list = list,
-	})
-end
-
 -- return a string setting/text for menus
 function ChoGGi.ComFuncs.SettingState(setting, text)
 	if type(setting) == "string" and setting:find("%.") then
@@ -6237,6 +6199,48 @@ function ChoGGi.ComFuncs.OpenInObjectEditorDlg(obj, parent, title, ...)
 	params.title = title
 
 	return ChoGGi_DlgObjectEditor:new({}, terminal.desktop, params)
+end
+
+function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(obj, parent, ...)
+	if not obj then
+		return
+	end
+
+	local params, parent_type
+	params, parent, parent_type = RetParamsParents(parent, params, ...)
+
+	if obj.text then
+		return ChoGGi_DlgMultiLineText:new({}, terminal.desktop, obj)
+	end
+
+	if not IsKindOf(parent, "XWindow") then
+		parent = nil
+	end
+
+	params.text = obj
+	params.parent = parent
+
+	return ChoGGi_DlgMultiLineText:new({}, terminal.desktop, params)
+end
+
+function ChoGGi.ComFuncs.OpenInListChoice(list)
+	-- If list isn't a table or it has zero items or it doesn't have items/callback func
+	local list_table = type(list) == "table"
+	local items_table = type(list_table and list.items) == "table"
+	if not list_table or list_table and not items_table or items_table and #list.items < 1 then
+		print(
+		Strings[302535920001324--[[ECM: OpenInListChoice(list) is blank... This shouldn't happen.]]], "\n", list, "\n",
+			list and ValueToLuaCode(list)
+		)
+		return
+	end
+	if not IsKindOf(list.parent, "XWindow") then
+		list.parent = nil
+	end
+
+	return ChoGGi_DlgListChoice:new({}, terminal.desktop, {
+		list = list,
+	})
 end
 
 --

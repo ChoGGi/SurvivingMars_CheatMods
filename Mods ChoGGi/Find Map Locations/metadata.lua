@@ -18,9 +18,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2453011286",
 	"pops_any_uuid", "b97dbd4e-71cf-4e82-80a0-46dd104133bc",
 	"lua_revision", 1001569,
-	"version", 2,
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 5,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -30,7 +30,9 @@ return PlaceObj("ModDef", {
 	"description", [[
 Find maps with a combination of breakthroughs (Neo-Concrete, Wireless Power), resources (metals2), threats(dust_devils4), etc.
 
-Left click an item to see it on the map, right click to open info for it.
+Left click an item to move the globe to it.
+Use ignore to find maps without certain breakthroughs, etc.
+
 It isn't as pretty as Surviving Maps, but it works...
 ]],
 })

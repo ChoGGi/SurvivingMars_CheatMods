@@ -1,9 +1,9 @@
 -- See LICENSE for terms
 
 local type = type
+local table = table
 local DoneObject = DoneObject
 local CreateNumberEditor = CreateNumberEditor
-local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 
 local mod_EnableMod
 
@@ -22,7 +22,7 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local function MoveItem(test, list, order1, order2, dlg)
+local function MoveItem(test, list, order1, order2)
 	if test then
 		return
 	end
@@ -32,14 +32,15 @@ local function MoveItem(test, list, order1, order2, dlg)
 	list[order1] = new
 	list[order2] = orig
 
-	Msg("ResearchQueueChange", UICity, new, dlg)
+	PlayFX("EnqueueResearch", "start")
+	Msg("ResearchQueueChange", UICity, new)
 end
 
-local function AddButtons(item, order, list, dlg)
-	local edit, top_btn, bottom_btn = CreateNumberEditor(item, "useless_edit", function()
-		MoveItem(order == 1, list, order-1, order, dlg)
+local function AddButtons(item, order, list)
+	local _, top_btn, bottom_btn = CreateNumberEditor(item, "useless_edit", function()
+		MoveItem(order == 1, list, order-1, order)
 	end, function()
-		MoveItem(order == #list, list, order+1, order, dlg)
+		MoveItem(order == #list, list, order+1, order)
 	end, true)
 
 	top_btn:SetBackground(-1)
@@ -47,31 +48,45 @@ local function AddButtons(item, order, list, dlg)
 
 	-- centre button height
 	top_btn.parent:SetVAlign("center")
+
+	top_btn.parent.ChoGGi_ReorderButtons = true
 end
 
 
-local function EditDlg(dlg)
+local function EditDlg(dlg, res_list)
+	if not mod_EnableMod then
+		return
+	end
 	WaitMsg("OnRender")
-	local res_list = dlg.idResearchQueueList
+
 --~ 	ex(res_list)
 
 	local context = res_list.context
 	local count = #res_list
 
 	for i = 1, count do
-		if i == 1 then
-			AddButtons(res_list[i][2], i, context, dlg)
-		elseif i == count then
-			AddButtons(res_list[i][2], i, context, dlg)
-		else
-			AddButtons(res_list[i][2], i, context, dlg)
+		local list_item = res_list[i]
+		if list_item.context then
+			local right_side = list_item[2]
+			-- holding ctrl while adding an item to a full list with add double buttons
+			if not table.find(right_side, "ChoGGi_ReorderButtons", true) then
+				if i == 1 then
+					AddButtons(right_side, i, context)
+				elseif i == count then
+					AddButtons(right_side, i, context)
+				else
+					AddButtons(right_side, i, context)
+				end
+			end
 		end
 	end
+
 end
 
-function OnMsg.ResearchQueueChange(UICity, tech_id, dlg)
-	if mod_EnableMod and type(dlg) == "table" and IsValidXWin(dlg.idResearchQueueList) then
-		CreateRealTimeThread(EditDlg, dlg)
+function OnMsg.ResearchQueueChange(UICity, tech_id)
+	local dlg = Dialogs.ResearchDlg
+	if dlg then
+		CreateRealTimeThread(EditDlg, dlg, dlg.idResearchQueueList)
 	end
 end
 
@@ -79,12 +94,8 @@ local orig_OpenDialog = OpenDialog
 function OpenDialog(dlg_str, ...)
 	local dlg = orig_OpenDialog(dlg_str, ...)
 
-	if not mod_EnableMod then
-		return dlg
-	end
-
 	if dlg_str == "ResearchDlg" then
-		CreateRealTimeThread(EditDlg, dlg)
+		CreateRealTimeThread(EditDlg, dlg, dlg.idResearchQueueList)
 	end
 
 	return dlg

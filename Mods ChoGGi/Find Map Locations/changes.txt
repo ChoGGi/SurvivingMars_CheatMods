@@ -1,2 +1,12 @@
+v0.5
+Added input for ignoring text.
+Finding maps is faster (slightly slower initial load).
+
+v0.4
+Removed Cancel button (it's kinda useless).
+
+v0.3
+Added info button to show some text.
+
 v0.2
 use Tab and Shift-Tab to move between text inputs.

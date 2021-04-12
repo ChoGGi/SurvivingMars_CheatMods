@@ -1,7 +1,7 @@
 
 -- See LICENSE for terms
 
-local tostring, type, table, tonumber = tostring, type, table, tonumber
+local pairs, tostring, type, table, tonumber = pairs, tostring, type, table, tonumber
 local table_find = table.find
 
 local RetMapSettings = ChoGGi.ComFuncs.RetMapSettings
@@ -25,8 +25,26 @@ local function ShowDialogs()
 	-- we only need to build once, not as if it'll change anytime soon (save as csv?, see if it's shorter to load)
 	if not map_data then
 		map_data = ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{setting_breakthroughs = true, setting_skip_csv = true})
+
+		-- change all strings to lowercase here instead of while searching
+		for i = 1, #map_data do
+			local data = map_data[i]
+			-- breaks
+			for j = 1, #data do
+				data[j] = data[j]:lower()
+			end
+			-- only these three have case
+			if data.landing_spot then
+				data.landing_spot = data.landing_spot:lower()
+			end
+			data.map_name = data.map_name:lower()
+			data.topography = data.topography:lower()
+		end
+
 	end
 --~ 	map_data = {}
+
+--~ 	ex(map_data)
 
 	-- check if we already created finder, and make one if not
 	if not IsValidXWin(dlg_locations) then
@@ -62,16 +80,20 @@ DefineClass.ChoGGi_VLI_MapInfoDlg = {
 	__parents = {"ChoGGi_XWindow"},
 --~ 	obj = false,
 	obj_name = false,
-	dialog_width = 700.0,
-	dialog_height = 89.0,
+	dialog_width = 750.0,
+	dialog_height = 140.0,
 
 	-- actual amount of boxes
-	input_box_count = 0,
+	input_box_count_add = 0,
+	input_box_count_rem = 0,
+	-- ones with text
+	input_box_count_add2 = 0,
+	input_box_count_rem2 = 0,
 	-- boxes with text
-	input_box_count2 = 0,
-	input_boxs = false,
+	input_boxs_add = false,
+	input_boxs_rem = false,
 	found_objs = false,
-	-- use it to set titles
+	-- store dlg to set title
 	current_examine_dlg = false,
 }
 
@@ -85,10 +107,10 @@ function ChoGGi_VLI_MapInfoDlg:Init(parent, context)
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
 
-	self.idButtonContainer = g_Classes.ChoGGi_XDialogSection:new({
-		Id = "idButtonContainer",
+	self.idTopArea = g_Classes.ChoGGi_XDialogSection:new({
+		Id = "idTopArea",
 		Dock = "top",
-		Margins = box(0, 8, 0, 0),
+		Margins = box(0, 8, 0, 8),
 	}, self.idDialog)
 
 	self.idSearch = g_Classes.ChoGGi_XButton:new({
@@ -100,79 +122,191 @@ function ChoGGi_VLI_MapInfoDlg:Init(parent, context)
 Leave blank to skip search box.]]]:format(Translate(self.title)),
 		Margins = box(6, 0, 0, 0),
 		OnPress = self.FindText,
-	}, self.idButtonContainer)
+	}, self.idTopArea)
 
-	self.idAddOne = g_Classes.ChoGGi_XButton:new({
-		Id = "idAddOne",
+	self.idShowInfo = g_Classes.ChoGGi_XButton:new({
+		Id = "idShowInfo",
 		Dock = "left",
-		Text = T(302535920011918, "Add Input"),
-		RolloverText = T(302535920011919, "Add another text input field to use (leave input blank to ignore)."),
+		Text = T(126095410863, "Info"),
+		RolloverText = T(302535920011927, "Show a list of breakthroughs/map names/etc to use."),
 		Margins = box(6, 0, 0, 0),
-		OnPress = self.AddSearchBox,
-	}, self.idButtonContainer)
+		OnPress = self.ShowInfoDialog,
+	}, self.idTopArea)
 
 	self.idAndOr = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idAndOr",
 		Dock = "left",
-		Margins = box(15, 0, 0, 0),
+		Margins = box(10, 0, 0, 0),
 		Text = T(302535920011920, "And / Or"),
 		RolloverText = T(302535920011921, "If you don't know what this means, then leave it checked (And)."),
-	}, self.idButtonContainer)
+	}, self.idTopArea)
 	self.idAndOr:SetCheckBox(true)
 
 	self.idReuseResults = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idReuseResults",
 		Dock = "left",
-		Margins = box(15, 0, 0, 0),
+		Margins = box(10, 0, 0, 0),
 		Text = T(302535920011922, "Reuse Results"),
 		RolloverText = T(302535920011923, "Open all results in the same dialog."),
-	}, self.idButtonContainer)
+	}, self.idTopArea)
 	self.idReuseResults:SetCheckBox(true)
 
-	self.idCancel = g_Classes.ChoGGi_XButton:new({
-		Id = "idCancel",
-		Dock = "right",
-		MinWidth = 80,
-		Text = Translate(6879--[[Cancel]]),
-		Background = g_Classes.ChoGGi_XButton.bg_red,
-		RolloverText = Strings[302535920000074--[[Cancel without changing anything.]]],
-		Margins = box(0, 0, 10, 0),
-		OnPress = self.idCloseX.OnPress,
-	}, self.idButtonContainer)
-
-	self.idTextArea = g_Classes.ChoGGi_XDialogSection:new({
-		Id = "idTextArea",
-		Dock = "bottom",
-		LayoutMethod = "VList",
+	-- inputs and ignores
+	self.idSearchArea = g_Classes.ChoGGi_XDialogSection:new({
+		Id = "idSearchArea",
 	}, self.idDialog)
 
+	-- inputs
+	self.idInputButtonArea = g_Classes.ChoGGi_XDialogSection:new({
+		Id = "idInputButtonArea",
+		Dock = "top",
+	}, self.idSearchArea)
+
+	self.idInputArea = g_Classes.ChoGGi_XDialogSection:new({
+		Id = "idInputArea",
+		Dock = "top",
+	}, self.idSearchArea)
+
+	self.idAddOne = g_Classes.ChoGGi_XButton:new({
+		Id = "idAddOne",
+		Dock = "left",
+		Text = T(302535920011918, "+ Input"),
+		RolloverText = T(302535920011919, "Add another text input field to use (leave input blank to ignore)."),
+		Margins = box(6, 0, 0, 0),
+		OnPress = function()
+			self:AddSearchBox("add")
+		end,
+	}, self.idInputButtonArea)
+
+	self.idAddTextArea = g_Classes.ChoGGi_XDialogSection:new({
+		Id = "idAddTextArea",
+		Dock = "bottom",
+		LayoutMethod = "VList",
+		Margins = box(10, 0, 0, 0),
+	}, self.idInputArea)
+
+	-- ignores
+	self.idIgnoreButtonArea = g_Classes.ChoGGi_XDialogSection:new({
+		Id = "idIgnoreButtonArea",
+		Dock = "top",
+		Margins = box(0, 4, 0, 0),
+	}, self.idSearchArea)
+
+	self.idIgnoreArea = g_Classes.ChoGGi_XDialogSection:new({
+		Id = "idIgnoreArea",
+		Dock = "top",
+	}, self.idSearchArea)
+
+	self.idRemOne = g_Classes.ChoGGi_XButton:new({
+		Id = "idRemOne",
+		Dock = "left",
+		Text = T(302535920011928, "+ Ignore"),
+		RolloverText = T(302535920011929, "Add another text input field to use to ignore text (leave input blank to ignore)."),
+		Margins = box(6, 0, 0, 0),
+		OnPress = function()
+			self:AddSearchBox("rem")
+		end,
+	}, self.idIgnoreButtonArea)
+
+	self.idRemTextArea = g_Classes.ChoGGi_XDialogSection:new({
+		Id = "idRemTextArea",
+		Dock = "bottom",
+		LayoutMethod = "VList",
+		Margins = box(8, 0, 0, 8),
+	}, self.idIgnoreArea)
+
 	-- add one search box by default
-	self.input_boxs = {}
-	self:AddSearchBox()
+	self.input_boxs_add = {}
+	self.input_boxs_rem	= {}
+	self:AddSearchBox("add")
+	self:AddSearchBox("rem")
 
 	self.idSearch1:SetFocus()
 
 	self:PostInit()
 end
 
-function ChoGGi_VLI_MapInfoDlg:AddSearchBox()
+function ChoGGi_VLI_MapInfoDlg:ShowInfoDialog()
+	local text = {}
+	local temp_data = {}
+	local c = 0
+
+	-- add breaks
+	local breaks = Presets.TechPreset.Breakthroughs
+	for i = 1, #breaks do
+		temp_data[i] = Translate(breaks[i].display_name)
+	end
+	c = #breaks
+	table.sort(temp_data)
+	c = c + 1
+	temp_data[c] = "\n"
+	table.append(text, temp_data)
+
+	-- map names
+	temp_data = {}
+	c = 0
+	for id, data in pairs(MapData) do
+		if data.IsRandomMap then
+			c = c + 1
+			temp_data[c] = id
+		end
+	end
+	table.sort(temp_data)
+	c = c + 1
+	temp_data[c] = "\n"
+	table.append(text, temp_data)
+
+	-- named locations
+	temp_data = {}
+	c = 0
+	for _, location in pairs(MarsLocales) do
+		c = c + 1
+		temp_data[c] = Translate(location)
+	end
+	table.sort(temp_data)
+	table.append(text, temp_data)
+
+	ChoGGi.ComFuncs.OpenInMultiLineTextDlg(TableConcat(text, "\n"), {
+		has_params = true,
+		title = T(302535920011926, "Show Info"),
+	})
+end
+
+function ChoGGi_VLI_MapInfoDlg:AddSearchBox(input_type)
 	self = GetRootDialog(self)
 
-	self.input_box_count = self.input_box_count + 1
-	local id = "idSearch" .. self.input_box_count
+	local area, count, id, str_roll, str_hint
+	if input_type == "add" then
+		area = "idAddTextArea"
+		count = "input_box_count_add"
+		id = "idSearch"
+		str_roll = T(302535920011932, [[Search for text in map data.
+Leave blank to skip search box.]])
+		str_hint = Strings[302535920001306--[[Enter text to find]]]
+	elseif input_type == "rem" then
+		area = "idRemTextArea"
+		count = "input_box_count_rem"
+		id = "idSearchRem"
+		str_roll = T(302535920011930, [[Search for text to remove from the results (overrides search text).
+Leave blank to skip search box.]])
+		str_hint = Translate(T(302535920011931, "Enter text to ignore"))
+	end
+
+	self[count] = self[count] + 1
+	id = id .. self[count]
 
 	self[id] = ChoGGi_XTextInput:new({
 		Id = id,
-		MinWidth = 600,
-		RolloverText = Strings[302535920001303--[[Search for text within %s.
-Leave blank to skip search box.]]]:format(Translate(self.title)),
-		Hint = Strings[302535920001306--[[Enter text to find]]],
-		OnKbdKeyDown = self.Input_OnKbdKeyDown,
-	}, self.idTextArea)
+--~ 		MinWidth = 600,
+		RolloverText = str_roll,
+		Hint = str_hint,
+		OnKbdKeyDown = function(self_input, vk, ...)
+			self.idSearchInput_OnKbdKeyDown(self_input, vk, input_type, ...)
+		end,
+	}, self[area])
 
 	self:SetHeight(self:GetHeight() + 21)
 end
-
 
 function ChoGGi_VLI_MapInfoDlg:FindText()
 	self = GetRootDialog(self)
@@ -204,13 +338,24 @@ function ChoGGi_VLI_MapInfoDlg:FindText()
 	end
 
 	-- get strings from input box(s)
-	self.input_box_count2 = 0
-	for i = 1, self.input_box_count do
+	self.input_box_count_add2 = 0
+	for i = 1, self.input_box_count_add do
 		local str = self["idSearch" .. i]:GetText()
 		-- no need to search blank ones
 		if str ~= "" and str ~= " " then
-			self.input_box_count2 = self.input_box_count2 + 1
-			self.input_boxs[self.input_box_count2] = str:lower()
+			self.input_box_count_add2 = self.input_box_count_add2 + 1
+			self.input_boxs_add[self.input_box_count_add2] = str:lower()
+		end
+	end
+
+	-- get strings from input box(s)
+	self.input_box_count_rem2 = 0
+	for i = 1, self.input_box_count_rem do
+		local str = self["idSearchRem" .. i]:GetText()
+		-- no need to search blank ones
+		if str ~= "" and str ~= " " then
+			self.input_box_count_rem2 = self.input_box_count_rem2 + 1
+			self.input_boxs_rem[self.input_box_count_rem2] = str:lower()
 		end
 	end
 
@@ -230,10 +375,12 @@ function ChoGGi_VLI_MapInfoDlg:FindText()
 	end)
 end
 
-local joined = {"", ""}
-function ChoGGi_VLI_MapInfoDlg:FindObject(key_name, value_name)
-	for i = 1, self.input_box_count2 do
-		local str = self.input_boxs[i]
+function ChoGGi_VLI_MapInfoDlg:FindObject(key_name, value_name, rem)
+	local count = rem and self.input_box_count_rem2 or self.input_box_count_add2
+	local input = rem and "input_boxs_rem" or "input_boxs_add"
+
+	for i = 1, count do
+		local str = self[input][i]
 		-- :find(str, 1, true) (1, true means don't use lua patterns, just plain text)
 		if key_name:find(str, 1, true) then
 			return key_name
@@ -241,12 +388,6 @@ function ChoGGi_VLI_MapInfoDlg:FindObject(key_name, value_name)
 			return value_name
 		elseif key_name .. value_name == str then
 			return str
---~ 		else
---~ 			joined[1] = key_name
---~ 			joined[2] = value_name
---~ 			if TableConcat(joined) == str then
---~ 				return str
---~ 			end
 		end
 	end
 end
@@ -270,7 +411,9 @@ function ChoGGi_VLI_MapInfoDlg:RetMapLocation(map, merged)
 end
 
 function ChoGGi_VLI_MapInfoDlg:SetExamineTitle()
-	local title = "(" .. table.count(self.found_objs) .. ") " .. TableConcat(self.input_boxs, " ")
+	local title = T(1000100, "Amount") .. " " .. table.count(self.found_objs) .. ": + "
+		.. TableConcat(self.input_boxs_add, " ") .. ", - " .. TableConcat(self.input_boxs_rem, " ")
+
 	self.current_examine_dlg.override_title = true
 	self.current_examine_dlg.idCaption:SetTitle(self.current_examine_dlg, title)
 end
@@ -279,16 +422,23 @@ function ChoGGi_VLI_MapInfoDlg:UpdateFoundObjects()
 
 	local andor = self.idAndOr:GetCheck()
 	local matches = {}
+
 	-- loopy time
 	for i = 1, #map_data do
 		local map = map_data[i]
 
+		local remove_found
 		table.clear(matches)
 		local key_location = self:RetMapLocation(map)
 
 		for key, value in pairs(map) do
-			local key_name, value_name = tostring(key):lower(), tostring(value):lower()
-			if not self.found_objs[key_location] then
+			local key_name, value_name = tostring(key), tostring(value)
+
+			-- always check for removes first
+			if self:FindObject(key_name, value_name, true) then
+				remove_found = true
+			elseif not self.found_objs[key_location] then
+
 				-- true is "and"
 				if andor then
 					local match = self:FindObject(key_name, value_name)
@@ -300,61 +450,76 @@ function ChoGGi_VLI_MapInfoDlg:UpdateFoundObjects()
 						self.found_objs[key_location] = map
 					end
 				end
-			end
+				--
 
+			end
 		end
+
 		-- check if all strings were matched and add if so
-		if andor then
+		if remove_found then
+			self.found_objs[key_location] = nil
+		elseif andor then
 			local found_count = 0
 			for str in pairs(matches) do
 				found_count = found_count + 1
 			end
 			-- found is same as inputs with text
-			if found_count == self.input_box_count2 then
+			if found_count == self.input_box_count_add2 then
 				self.found_objs[key_location] = map
 			end
 		end
 
 	end
-
+	-- done looping so set title
 	self:SetExamineTitle()
 end
 
 local const = const
-function ChoGGi_VLI_MapInfoDlg:Input_OnKbdKeyDown(vk)
+function ChoGGi_VLI_MapInfoDlg:idSearchInput_OnKbdKeyDown(vk, input_type)
 	local old_self = self
 	self = GetRootDialog(self)
+
+	local count, id, length
+	if input_type == "add" then
+		count = "input_box_count_add"
+		id = "idSearch"
+		length = 9
+	elseif input_type == "rem" then
+		count = "input_box_count_rem"
+		id = "idSearchRem"
+		length = 12
+	end
+
 	if vk == const.vkEnter then
 		self:FindText()
 		return "break"
 	elseif vk == const.vkTab then
-		if self.input_box_count == 1 then
+		if self[count] == 1 then
 			return "break"
 		end
 
-		local current_idx = tonumber(old_self.Id:sub(9))
+		local current_idx = tonumber(old_self.Id:sub(length))
 
 		local is_shift = IsShiftPressed()
 
 		-- tab to go down, shift-tab to go up
-		if not is_shift and current_idx >= self.input_box_count then
+		if not is_shift and current_idx >= self[count] then
 			current_idx = 1
 		elseif is_shift and current_idx == 1 then
-			current_idx = self.input_box_count
+			current_idx = self[count]
 		elseif is_shift then
 			current_idx = current_idx - 1
 		else
 			current_idx = current_idx + 1
 		end
 
-		self["idSearch" .. current_idx]:SetFocus()
+		self[id .. current_idx]:SetFocus()
 
 		return "break"
 	end
 
-	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(old_self, vk)
+	return ChoGGi_XTextInput.OnKbdKeyDown(old_self, vk)
 end
-
 
 -- fired when we go to first new game section
 local function AddProfilesButton(toolbar)

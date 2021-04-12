@@ -5,6 +5,7 @@
 - Slight speedup for ExportMapDataToCSV.
 - Made X close icon a little smaller, so it fits the height of the Examine toolbar.
 - Examine: "Go to text" is now "Search".
+- More params for OpenInMultiLineTextDlg.
 
 ## v9.7 (10 Apr 2021)
 - Added IsArray.
