@@ -9,9 +9,6 @@ local function ModOptions()
 	mod_MinStanding = CurrentModOptions:GetProperty("MinStanding")
 end
 
---~ -- load default/saved settings
---~ OnMsg.ModsReloaded = ModOptions
-
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
 	if id ~= CurrentModId then

@@ -18,8 +18,6 @@ return {
 		id = "ChoGGi_CanadianSpaceAgency",
 		name = "ChoGGi_CanadianSpaceAgency",
 		dlc = "gagarin",
-		rocket_class = "DragonRocket",
-		drone_class = "FlyingDrone",
 		group = "Default",
 		comment = "We're go'in to Mars eh?",
 
@@ -51,10 +49,7 @@ return {
 		lock_value3 = "unlocked",
 
 		display_name = T(300715699908, "Canadian Space Agency"),
-		effect = T(182713539151, [[Difficulty: <color 250 236 208>Hard</color>
-
-	Funding: $<funding> M
-	Research per Sol: 100
+		effect = T(182713539151, [[Research per Sol: 100
 	Rare Metals price: $<ExportPricePreciousMetals> M
 	Starting Applicants: <ApplicantsPoolStartingSize>
 
@@ -164,6 +159,32 @@ Canada and space are a natural fit.
 			Amount = 1,
 			Label = "Consts",
 			Prop = "OutsourceDisabled",
+		}),
+	}),
+
+
+	PlaceObj('ModItemCommanderProfilePreset', {
+--~ 		challenge_mod = 10,
+		display_name = T(0000, "Diplomat"),
+		effect = T(0000,  [[- Reduce chance of Renegades by 20% (inc. Rebel Yell)
+- Additional starting standing with rival colonies (trade tech from start)
+- Bonus tech: Supportive community (colonists are less likely to gain flaws after sanity breakdown)
+- Acts as Politician for story bits]]),
+		group = "Default",
+		id = "ChoGGi_CanadianSpaceAgency_Commander",
+		PlaceObj('Effect_ModifyLabel', {
+			Label = "Consts",
+			Percent = 20,
+			Prop = "GameRuleRebelYellRenegadeCreation",
+		}),
+		PlaceObj('Effect_ModifyLabel', {
+			Label = "Consts",
+			Percent = 20,
+			Prop = "RenegadeCreation",
+		}),
+		PlaceObj('Effect_GrantTech', {
+			Field = "Social",
+			Research = "SupportiveCommunity",
 		}),
 	}),
 

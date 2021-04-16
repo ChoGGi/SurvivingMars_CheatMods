@@ -1,3 +1,6 @@
+v0.4
+Changed around code, so it should work better...
+
 v0.3
 Code cleanup.
 

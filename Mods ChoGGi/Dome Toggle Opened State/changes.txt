@@ -1,2 +1,5 @@
+v0.3
+Doesn't show button for Open City.
+
 v0.2
 Fixed not being able to click when domes are opened then closed.

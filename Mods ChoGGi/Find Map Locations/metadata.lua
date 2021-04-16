@@ -28,11 +28,9 @@ return PlaceObj("ModDef", {
 	},
 	"TagTools", true,
 	"description", [[
-Find maps with a combination of breakthroughs (Neo-Concrete, Wireless Power), resources (metals2), threats(dust_devils4), etc.
+Find maps with/without a combination of breakthroughs (Neo-Concrete, Wireless Power), resources (metals2), threats(dust_devils4), etc.
 
 Left click an item to move the globe to it.
-Use ignore to find maps without certain breakthroughs, etc.
-
 It isn't as pretty as Surviving Maps, but it works...
 ]],
 })
