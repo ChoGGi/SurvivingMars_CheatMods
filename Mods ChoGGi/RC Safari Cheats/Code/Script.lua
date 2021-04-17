@@ -48,7 +48,7 @@ local function ModOptions()
 	mod_ServiceComfort = options:GetProperty("ServiceComfort") * const.ResourceScale
 	mod_ComfortIncrease = options:GetProperty("ComfortIncrease") * const.ResourceScale
 
-	-- make sure we're ingame
+	-- make sure we're in-game
 	if not UICity then
 		return
 	end

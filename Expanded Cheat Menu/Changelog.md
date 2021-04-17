@@ -1,6 +1,7 @@
 ## ECM Changelog
 
 ## v16.8 (Unreleased)
+- Moved Examine dialogs to Library mod.
 
 ## v16.7 (10 Apr 2021)
 ### Added:

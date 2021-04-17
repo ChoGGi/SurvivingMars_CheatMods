@@ -39,7 +39,7 @@ local function ModOptions()
 
 	ChoGGi.ComFuncs.SetBuildingTemplates("OpenPasture", "max_storage1", mod_StockMax)
 
-	-- make sure we're ingame
+	-- make sure we're in-game
 	if not UICity then
 		return
 	end

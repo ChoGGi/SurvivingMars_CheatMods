@@ -65,7 +65,7 @@ local function ModOptions()
 	mod_TravelTimeMarsEarth = options:GetProperty("TravelTimeMarsEarth") * const.Scale.hours
 	mod_RocketPrice = options:GetProperty("RocketPrice") * const.Scale.mil
 
-	-- make sure we're ingame
+	-- make sure we're in-game
 	if not UICity then
 		return
 	end

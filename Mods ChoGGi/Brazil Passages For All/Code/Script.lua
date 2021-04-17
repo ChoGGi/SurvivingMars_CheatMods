@@ -41,7 +41,7 @@ local function ModOptions()
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_InstantPassages = CurrentModOptions:GetProperty("InstantPassages")
 
-	-- make sure we're ingame
+	-- make sure we're in-game
 	if not UICity then
 		return
 	end

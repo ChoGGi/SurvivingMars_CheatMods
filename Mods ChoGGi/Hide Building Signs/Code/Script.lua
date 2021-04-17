@@ -26,7 +26,7 @@ end
 local function ModOptions()
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 
-	-- make sure we're ingame
+	-- make sure we're in-game
 	if UICity then
 		SetBuildingSigns1()
 	end

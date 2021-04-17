@@ -6243,6 +6243,77 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
 	})
 end
 
+do -- AttachFireflyParticlesAndLights
+
+	-- Dlc\contentpack1\Code\Fireflies.lua
+	local colours = {
+		[0] = RGB(132, 128, 255),
+		[1] = RGB(128, 234, 255),
+		[2] = RGB(255, 82, 60),
+		[3] = RGB(255, 128, 185),
+		[4] = RGB(77, 136, 255),
+	}
+	local particle_spots = {
+		"Particle",
+		"Particle1",
+		"Particle2",
+	}
+	local light_spots = {
+		"Light",
+		"Light1",
+		"Light2",
+	}
+	local AttachPartToObject = AttachPartToObject
+	local GetSpotAnnotation = GetSpotAnnotation
+	local AttachToObject = AttachToObject
+
+	function ChoGGi.ComFuncs.AttachFireflyParticlesAndLights(obj, scale, count)
+
+		local particles = {}
+		local lights = {}
+		for i = 1, (obj.firefly_attach_count or count or 3) do
+			local rand5 = Random(5)
+			obj.color = colours[rand5]
+			if rand5 == 2 and obj.class == "Firefly" then
+				obj.is_red = true
+			end
+
+			local particle = AttachPartToObject(obj, "FireflyGlow_0" .. rand5 + 1, particle_spots[i])
+			particle:SetScale(scale or 50)
+			local autolight_idx = obj:GetSpotBeginIndex(light_spots[i])
+			local ann = GetSpotAnnotation(obj, autolight_idx)
+			local light_type = obj.class == "FlowerLampSmall" and "SpotLight" or "PointLight"
+			local light = AttachToObject(obj, light_type, light_spots[i])
+			if obj:IsKindOf("FlowerLamp") then
+				particle:SetVisible(false)
+				light:SetVisible(false)
+			end
+			if obj.class == "Firefly" then
+				light:SetAttenuationRadius(1000)
+				if obj.is_red then
+					light:SetIntensity(3)
+				else
+					light:SetIntensity(5)
+				end
+			elseif obj.class == "FlowerLampSmall" then
+				light:SetAttenuationRadius(1000)
+				light:SetIntensity(180)
+				light:SetConeInnerAngle(10)
+				light:SetConeOuterAngle(120)
+			elseif obj.class == "FlowerLampMedium" then
+				light:SetAttenuationRadius(2200)
+				light:SetIntensity(30)
+			else
+				light:SetAttenuationRadius(1000)
+				light:SetIntensity(20)
+			end
+			light:SetColor(obj.color)
+			particles[#particles + 1] = particle
+			lights[#lights + 1] = light
+		end
+		return particles, lights
+	end
+end -- do
 --
 -- bugged
 --~ function ChoGGi.ComFuncs.SendDroneToCC(drone, new_hub)

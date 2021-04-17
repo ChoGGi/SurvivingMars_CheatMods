@@ -59,7 +59,7 @@ local function ModOptions()
 	mod_EnableLines = options:GetProperty("EnableLines")
 	mod_ShowNames = options:GetProperty("ShowNames")
 
-	-- make sure we're ingame
+	-- make sure we're in-game
 	if not UICity then
 		return
 	end

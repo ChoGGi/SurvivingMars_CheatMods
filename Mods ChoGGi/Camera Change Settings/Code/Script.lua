@@ -34,7 +34,7 @@ local function ModOptions()
 	mod_MaxHeight = options:GetProperty("MaxHeight")
 	mod_MoveSpeed = options:GetProperty("MoveSpeed")
 
-	-- make sure we're ingame
+	-- make sure we're in-game
 	if not UICity then
 		return
 	end

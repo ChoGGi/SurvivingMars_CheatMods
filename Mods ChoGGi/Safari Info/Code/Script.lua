@@ -29,7 +29,7 @@ local function ModOptions()
 	mod_TextOpacity = options:GetProperty("TextOpacity")
 	mod_TextStyle = options:GetProperty("TextStyle")
 
-	-- make sure we're ingame
+	-- make sure we're in-game
 	if not UICity then
 		return
 	end

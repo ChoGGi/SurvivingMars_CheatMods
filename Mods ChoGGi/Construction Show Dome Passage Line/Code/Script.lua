@@ -61,7 +61,7 @@ local function ModOptions()
 	-- hex to hex
 	max_line_len = max_hex * 10 * guim
 
-	-- make sure we're ingame
+	-- make sure we're in-game
 	if not UICity then
 		return
 	end

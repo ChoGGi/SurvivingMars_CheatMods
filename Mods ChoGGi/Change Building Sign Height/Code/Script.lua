@@ -36,7 +36,7 @@ local function ModOptions()
 	mod_SignHeight = CurrentModOptions:GetProperty("SignHeight")
 	mod_LowerHigher = CurrentModOptions:GetProperty("LowerHigher")
 
-	-- make sure we're ingame
+	-- make sure we're in-game
 	if not UICity then
 		return
 	end

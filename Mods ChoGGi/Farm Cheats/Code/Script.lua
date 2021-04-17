@@ -20,7 +20,7 @@ local function ModOptions()
 	mod_CropsNeverFail = CurrentModOptions:GetProperty("CropsNeverFail")
 	mod_ConstantSoilQuality = CurrentModOptions:GetProperty("ConstantSoilQuality") * const.SoilQualityScale
 
-	-- make sure we're ingame
+	-- make sure we're in-game
 	if not UICity then
 		return
 	end

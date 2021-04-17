@@ -65,7 +65,7 @@ local function ModOptions()
 		mod_options[id] = options:GetProperty("Trait_" .. id)
 	end
 
-	-- make sure we're ingame
+	-- make sure we're in-game
 	if not UICity then
 		return
 	end

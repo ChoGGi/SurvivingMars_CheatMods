@@ -62,7 +62,7 @@ end
 local function ModOptions()
 	mod_Range = CurrentModOptions:GetProperty("Range")
 
-	-- make sure we're ingame
+	-- make sure we're in-game
 	if not UICity then
 		return
 	end

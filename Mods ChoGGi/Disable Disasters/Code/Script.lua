@@ -60,7 +60,7 @@ local kill_current = {
 
 -- fired when settings are changed/init
 local function ModOptions(skip_disabled)
-	-- make sure we're ingame
+	-- make sure we're in-game
 	if not UICity then
 		return
 	end

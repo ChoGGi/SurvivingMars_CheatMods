@@ -79,7 +79,7 @@ local function ModOptions()
 		end
 	end
 
-	-- make sure we're ingame
+	-- make sure we're in-game
 	if not UICity then
 		return
 	end

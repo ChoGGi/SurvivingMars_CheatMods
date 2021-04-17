@@ -46,7 +46,7 @@ local function ModOptions()
 	mod_IgnoreMetals = options:GetProperty("IgnoreMetals")
 	mod_IgnorePolymers = options:GetProperty("IgnorePolymers")
 
-	-- make sure we're ingame
+	-- make sure we're in-game
 	if not UICity then
 		return
 	end

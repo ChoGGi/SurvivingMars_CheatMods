@@ -27,7 +27,7 @@ local function ModOptions()
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_DeleteGeysers = CurrentModOptions:GetProperty("DeleteGeysers")
 
-	-- make sure we're ingame
+	-- make sure we're in-game
 	if not UICity then
 		return
 	end

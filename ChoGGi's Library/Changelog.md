@@ -7,6 +7,7 @@
 - Examine: "Go to text" is now "Search".
 - More params for OpenInMultiLineTextDlg.
 - Sorts list of mods in Options>Mod Options.
+- Exposed mod string id lists.
 
 ## v9.7 (10 Apr 2021)
 - Added IsArray.
