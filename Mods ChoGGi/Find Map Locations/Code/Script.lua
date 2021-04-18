@@ -414,7 +414,7 @@ function ChoGGi_VLI_MapInfoDlg:RetMapLocation(map, merged)
 end
 
 function ChoGGi_VLI_MapInfoDlg:SetExamineTitle()
-	local title = T(1000100, "Amount") .. " " .. table.count(self.found_objs) .. ": + "
+	local title = T(3732, "Count") .. " " .. table.count(self.found_objs) .. ": + "
 		.. TableConcat(self.input_boxs_add, " ") .. ", - " .. TableConcat(self.input_boxs_rem, " ")
 
 	self.current_examine_dlg.override_title = true

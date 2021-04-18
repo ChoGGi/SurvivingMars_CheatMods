@@ -6015,6 +6015,9 @@ local function RetParamsParents(parent, params, ...)
 		if parent_type == "table" and parent.has_params then
 			params = parent
 			parent = nil
+		elseif parent_type == "string" and parent == "str" then
+			params = params or {}
+			params.parent = parent
 		elseif parent_type ~= "string" and parent_type ~= "table" and parent_type ~= "userdata" then
 			parent = nil
 		end
@@ -6314,6 +6317,62 @@ do -- AttachFireflyParticlesAndLights
 		return particles, lights
 	end
 end -- do
+
+do -- GetLowestPointEachSector
+	local GetMapSectorXY = GetMapSectorXY
+	local IsInMapPlayableArea = IsInMapPlayableArea
+
+	local lowest_points
+	function ChoGGi.ComFuncs.GetLowestPointEachSector()
+		-- max the z of the default points
+		local max_point = point(0, 0, terrain.GetMapHeight())
+		-- build a list of sectors with it
+		if not lowest_points then
+			lowest_points = {}
+			local g_MapSectors = g_MapSectors
+			for sector in pairs(g_MapSectors) do
+				if type(sector) ~= "number" then
+					lowest_points[sector.id] = max_point
+				end
+			end
+		-- or reset the list of sectors
+		else
+			for sector in pairs(lowest_points) do
+				if lowest_points[sector.id] then
+					lowest_points[sector.id] = max_point
+				end
+			end
+		end
+
+		local width, height = ConstructableArea:sizexyz()
+		width = width / 1000
+		height = height / 1000
+
+		-- I dunno, grid size or something? (it's what I get for not commenting)
+		for x = 100, width do
+			for y = 10, height do
+
+				local x1000, y1000 = x * 1000, y * 1000
+				-- the area outside grids is counted as the nearest grid.
+				if IsInMapPlayableArea(x1000, y1000) then
+					local sector_id = GetMapSectorXY(x1000, y1000).id
+					local pos = point(x1000, y1000):SetTerrainZ()
+					-- current pos z is lower then stored z
+					if pos:z() < lowest_points[sector_id]:z() then
+						lowest_points[sector_id] = pos
+					end
+				end
+
+			end
+		end
+
+	--~ 	ex(lowest_points)
+		return lowest_points
+	end
+
+end -- do
+
+
 --
 -- bugged
 --~ function ChoGGi.ComFuncs.SendDroneToCC(drone, new_hub)

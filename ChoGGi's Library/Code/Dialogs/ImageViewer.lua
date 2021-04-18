@@ -9,6 +9,12 @@ local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local Random = ChoGGi.ComFuncs.Random
 local Translate = ChoGGi.ComFuncs.Translate
 
+local blacklist, g
+function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
+	g = env
+	blacklist = ChoGGi.blacklist
+end
+
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
 	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_DlgImageViewer")
@@ -108,8 +114,8 @@ function ChoGGi_DlgImageViewer:ExportImage()
 		local name = self.image_path:sub((slash * -1) + 1)
 		local dest_path = "AppData/" .. name
 		-- If error (devs swapped all? the images from .tga to .dds, but ref them as .tga)
-		if AsyncCopyFile(self.image_path, dest_path) then
-			AsyncCopyFile(self.image_path:gsub(".tga", ".dds"), dest_path)
+		if g.AsyncCopyFile(self.image_path, dest_path) then
+			g.AsyncCopyFile(self.image_path:gsub(".tga", ".dds"), dest_path)
 		end
 		local msg = ConvertToOSPath(dest_path)
 		print(msg)

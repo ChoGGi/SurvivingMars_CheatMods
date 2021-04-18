@@ -8,6 +8,12 @@ local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Strings = ChoGGi.Strings
 
+local blacklist, g
+function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
+	g = env
+	blacklist = ChoGGi.blacklist
+end
+
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
 	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_DlgMultiLineText")
@@ -26,8 +32,6 @@ DefineClass.ChoGGi_DlgMultiLineText = {
 	update_func = false,
 	-- Async*file str
 	file_path = false,
-	-- sent from ECM if we need _G
-	_G = false,
 }
 
 function ChoGGi_DlgMultiLineText:Init(parent, context)
@@ -153,9 +157,6 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 
 	if context.file_path then
 		self.file_path = context.file_path
-	end
-	if context._G then
-		self._G = context._G
 	end
 
 	if context.code then
@@ -305,7 +306,7 @@ function ChoGGi_DlgMultiLineText:idOpenFile_OnPress()
 	if ChoGGi.blacklist or not self.file_path then
 		return
 	end
-	self._G.AsyncExec("cmd /c \"" .. self.file_path .. "\"", true, true)
+	g.AsyncExec("cmd /c \"" .. self.file_path .. "\"", true, true)
 end
 --
 function ChoGGi_DlgMultiLineText:idUpdateText_OnPress()

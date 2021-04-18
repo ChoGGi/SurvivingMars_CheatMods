@@ -13,6 +13,7 @@ XXXXX = {
 
 ~obj
 ex(obj, pos/parent, title)
+ex(obj, "str") -- examine a string obj ("SunAboveHorizon" / "table.find" / etc) with auto-refresh
 ex(obj, {
 	has_params = true,
 	parent = self,
@@ -86,10 +87,11 @@ local missing_text = ChoGGi.Temp.missing_text
 local debug_getinfo, debug_getupvalue = empty_func, empty_func
 local debug_getlocal, debug_getmetatable = empty_func, empty_func
 
-local blacklist
+local blacklist, g
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
+	g = env
 	blacklist = ChoGGi.blacklist
-	local debug = env.debug
+	local debug = g.debug
 	debug_getupvalue = debug.getupvalue
 	debug_getinfo = debug.getinfo
 	debug_getlocal = debug.getlocal
@@ -258,7 +260,7 @@ function ChoGGi_DlgExamine:Init(parent, context)
 			self.str_object = context.parent == "str" and true
 			context.parent = nil
 		elseif not blacklist then
-			local err, files = AsyncListFiles(self.obj)
+			local err, files = g.AsyncListFiles(self.obj)
 			if not err and #files > 0 then
 				self.obj = files
 			end
@@ -274,7 +276,7 @@ function ChoGGi_DlgExamine:Init(parent, context)
 	-- examining list
 	ChoGGi_dlgs_examine[self.obj] = self
 	-- obj name
-	self.name = RetName(self.str_object and self.ChoGGi.ComFuncs.DotPathToObject(self.obj) or self.obj)
+	self.name = RetName(self.str_object and self.obj or self.obj)
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
 
@@ -3749,21 +3751,19 @@ end -- do
 function ChoGGi_DlgExamine:SetObj(startup)
 	local obj = self.obj
 
-	-- reset the hyperlinks
+	-- Reset the hyperlinks
 	table_iclear(self.onclick_funcs)
 	table_iclear(self.onclick_objs)
 	self.onclick_count = 0
 
 	if self.str_object then
-		-- check if obj string is a ref to an actual object
+		-- Get whatever the obj leads to (if anything)
 		local obj_ref = self.ChoGGi.ComFuncs.DotPathToObject(obj)
 		-- If it is then we use that as the obj to examine
-		if obj_ref then
-			if type(obj_ref) == "function" then
-				obj = obj_ref(self.varargs)
-			else
-				obj = obj_ref
-			end
+		if type(obj_ref) == "function" then
+			obj = obj_ref(self.varargs)
+		else
+			obj = obj_ref
 		end
 	end
 	-- so we can access the obj elsewhere
@@ -3773,7 +3773,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 	self.obj_type = obj_type
 	local obj_class
 
-	local name = RetName(obj)
+	local name = RetName(self.str_object and obj or obj)
 	self.name = name
 
 	local obj_metatable = getmetatable(obj)

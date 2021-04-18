@@ -8,6 +8,8 @@
 - More params for OpenInMultiLineTextDlg.
 - Sorts list of mods in Options>Mod Options.
 - Exposed mod string id lists.
+- Added GetLowestPointEachSector.
+- Tidied up examining a dot path str.
 
 ## v9.7 (10 Apr 2021)
 - Added IsArray.
