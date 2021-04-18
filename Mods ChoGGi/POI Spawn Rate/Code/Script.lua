@@ -15,7 +15,7 @@ local function ModOptions()
 
 		-- just to be safe
 		if min > max then
-			min = max
+			max = min + 1
 		end
 
 		poi.spawn_period.from = min

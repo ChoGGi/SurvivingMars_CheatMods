@@ -9,20 +9,21 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Triboelectric Sensor Tower",
 	"id", "ChoGGi_TriboelectricSensorTower",
-	"lua_revision", 1001569,
 	"steam_id", "2201623384",
 	"pops_any_uuid", "aab7ae97-d2e0-42d6-bbf8-18c5a6efaee5",
-	"version", 6,
+	"lua_revision", 1001569,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 7,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
---~ 	"has_options", true,
+	"has_options", true,
 	"TagBuildings", true,
 	"description", [[Adds a sensor tower that doubles as a Triboelectric Scrubber.
+Mod option to lock it behind the tribby tech (default enabled).
 
 
 Requested by sargatanus.]],

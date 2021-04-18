@@ -1,6 +1,10 @@
 ## ECM Changelog
 
 ## v16.8 (Unreleased)
+### Added:
+- CheatFill to buildings with depots.
+
+### Changed:
 - Moved Examine dialogs to Library mod.
 
 ## v16.7 (10 Apr 2021)
@@ -8,7 +12,6 @@
 - A bunch of tooltips for new cheat pane items from Tito update.
 - OpenExamineRet/exr: They both return the examine dialog (if you want to access it unlike ex()).
 
-### Changed:
 - Examine uses a numerical loop for indexed tables.
 - Menu>ECM>Rockets>Travel Time: Now applies to expedition rockets as well.
 - Console>Scripts won't echo unless you add -- rem echo on to them.

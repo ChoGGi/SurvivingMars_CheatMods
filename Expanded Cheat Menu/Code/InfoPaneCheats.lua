@@ -842,6 +842,12 @@ TerrainDeposit.CheatChangeGrade = CheatChangeGrade
 function TerrainDeposit:CheatRefill()
 	self.amount = self.max_amount
 end
+-- building depots
+function Building:CheatFill()
+	self:ForEachAttach("ConsumptionResourceStockpile", function(stock)
+		stock:AddResource(self.consumption_resource_request:GetActualAmount(), nil, true)
+	end)
+end
 -- storage
 local function CheatFillAll(self)
 	local template = self.template_name

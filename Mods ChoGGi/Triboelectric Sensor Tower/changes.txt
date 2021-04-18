@@ -1,3 +1,6 @@
+v0.7
+Mod option to lock it behind tech.
+
 v0.6
 It was adding dupe sliders (thanks spectrospork242).
 

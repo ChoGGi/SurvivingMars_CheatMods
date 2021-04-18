@@ -1,5 +1,52 @@
 -- See LICENSE for terms
 
+local mod_LockBehindTech
+
+local function ToggleTech()
+	if mod_LockBehindTech then
+		-- build menu
+		if not BuildingTechRequirements.ChoGGi_TriboelectricSensorTower then
+			BuildingTechRequirements.ChoGGi_TriboelectricSensorTower = {{ tech = "TriboelectricScrubbing", hide = false, }}
+		end
+		-- add an entry to unlock it with the tech
+		local tech = TechDef.TriboelectricScrubbing
+		if not table.find(tech, "Building", "TriboelectricScrubber") then
+			tech[#tech+1] = PlaceObj('Effect_TechUnlockBuilding', {
+				Building = "ChoGGi_TriboelectricSensorTower",
+			})
+		end
+	else
+		if BuildingTechRequirements.ChoGGi_TriboelectricSensorTower then
+			BuildingTechRequirements.ChoGGi_TriboelectricSensorTower = nil
+		end
+	end
+end
+
+-- fired when settings are changed/init
+local function ModOptions()
+	mod_LockBehindTech = CurrentModOptions:GetProperty("LockBehindTech")
+
+	-- make sure we're in-game
+	if not UICity then
+		return
+	end
+
+	ToggleTech()
+end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+-- fired when Mod Options>Apply button is clicked
+function OnMsg.ApplyModOptions(id)
+	if id == CurrentModId then
+		ModOptions()
+	end
+end
+
+OnMsg.CityStart = ToggleTech
+OnMsg.LoadGame = ToggleTech
+
 DefineClass.ChoGGi_TriboelectricSensorTower = {
 	__parents = {
 		"RangeElConsumer",
