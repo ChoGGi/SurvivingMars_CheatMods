@@ -843,7 +843,7 @@ function TerrainDeposit:CheatRefill()
 	self.amount = self.max_amount
 end
 -- building depots
-function Building:CheatFill()
+function Building:CheatFillDepot()
 	self:ForEachAttach("ConsumptionResourceStockpile", function(stock)
 		stock:AddResource(self.consumption_resource_request:GetActualAmount(), nil, true)
 	end)

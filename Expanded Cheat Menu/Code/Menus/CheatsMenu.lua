@@ -239,14 +239,14 @@ Actions[c] = {ActionName = Strings[302535920000357--[[Set Amount Of Breakthrough
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000359--[[Breakthroughs From OmegaTelescope]]],
+Actions[c] = {ActionName = Strings[302535920000359--[[Breakthroughs From Omega Telescope]]],
 	ActionMenubar = "ECM.Cheats.Research",
 	ActionId = ".Breakthroughs From OmegaTelescope",
 	ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.OmegaTelescopeBreakthroughsCount,
-			Strings[302535920000360--[[How many breakthroughs the OmegaTelescope will unlock.]]]
+			Strings[302535920000360--[[How many breakthroughs the Omega Telescope will unlock.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.BreakThroughsOmegaTelescope_Set,

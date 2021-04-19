@@ -2,7 +2,7 @@
 
 ## v16.8 (Unreleased)
 ### Added:
-- CheatFill to buildings with depots.
+- CheatFillDepot to buildings with depots.
 
 ### Changed:
 - Moved Examine dialogs to Library mod.

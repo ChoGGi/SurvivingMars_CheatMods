@@ -278,7 +278,7 @@ end
 function ChoGGi.MenuFuncs.FillResource()
 	local obj = ChoGGi.ComFuncs.SelObject()
 	local is_valid = IsValid(obj)
-	if not is_valid or is_valid and not obj.CheatFill and not obj.CheatRefill then
+	if not is_valid or is_valid and not obj.CheatFill and not obj.CheatRefill or not obj.CheatFillDepot then
 		MsgPopup(
 			Strings[302535920001526--[[Not a valid object]]],
 			Strings[302535920000727--[[Fill Selected Resource]]]
@@ -291,6 +291,9 @@ function ChoGGi.MenuFuncs.FillResource()
 	end
 	if obj.CheatRefill then
 		obj:CheatRefill()
+	end
+	if obj.CheatFillDepot then
+		obj:CheatFillDepot()
 	end
 
 	MsgPopup(

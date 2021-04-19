@@ -17,6 +17,7 @@ return PlaceObj("ModDef", {
 	"description", [[
 Colonists are cheap, Oxygen costs money.
 Turns off the air over night for a more sedate population.
+A colonist will take a 13.5 hit to sanity for suffocating.
 
 If you don't want to see the notifications then use my Notification Disable mod.
 

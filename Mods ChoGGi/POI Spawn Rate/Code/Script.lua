@@ -13,13 +13,17 @@ local function ModOptions()
 		local min = options:GetProperty(id .. "_Min")
 		local max = options:GetProperty(id .. "_Max")
 
-		-- just to be safe
-		if min > max then
-			max = min + 1
+		-- some mod added a POI without a min/max spawn time
+		if min and max then
+			-- just to be safe
+			if min > max then
+				max = min + 1
+			end
+
+			poi.spawn_period.from = min
+			poi.spawn_period.to = max
 		end
 
-		poi.spawn_period.from = min
-		poi.spawn_period.to = max
 	end
 
 	-- stop options from blanking out from ClassesPostprocess

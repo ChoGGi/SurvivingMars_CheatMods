@@ -4523,7 +4523,7 @@ end -- do
 
 do -- RetMapBreakthroughs
 
---~ 	local function UnlockAnom()
+--~ 	local function UnlockAnoms()
 --~ 		local objs = UICity.labels.Anomaly or ""
 --~ 		local c = 0
 --~ 		for i = #objs, 1, -1 do
@@ -4540,15 +4540,16 @@ do -- RetMapBreakthroughs
 --~ 		-- 4 planetary
 --~ 		-- other 5 from meteors?
 --~ 	end
---~ 	UnlockAnom()
+--~ 	UnlockAnoms()
 
 	local StableShuffle = StableShuffle
 	local CreateRand = CreateRand
-	local breakthrough_count, orig_break_list
+
+	local orig_break_list
 	local remove_added = {}
 	local translated_tech
 
-	function ChoGGi.ComFuncs.RetMapBreakthroughs(gen, omega)
+	function ChoGGi.ComFuncs.RetMapBreakthroughs(gen)
 		-- build list of names once
 		if not translated_tech then
 			translated_tech = {}
@@ -4558,12 +4559,14 @@ do -- RetMapBreakthroughs
 					translated_tech[tech_id] = Translate(tech.display_name)
 				end
 			end
-			-- breakthroughs per map are 20? in total (4 planetary, 3 omega, 8 on the ground, 5 Storybits?)
-			breakthrough_count = const.BreakThroughTechsPerGame
-				+ const.OmegaTelescopeBreakthroughsCount
-				+ Consts.PlanetaryBreakthroughCount
 			orig_break_list = table_imap(Presets.TechPreset.Breakthroughs, "id")
 		end
+
+		-- breakthroughs per map are (at least?) 20 in total (4 planetary, 3 omega, 8 on the ground, 5 Storybits?)
+		local breakthrough_count = const.BreakThroughTechsPerGame
+		-- + const.OmegaTelescopeBreakthroughsCount, it's seed based but it shuffles the list of unregistered breakthroughs
+		+ g_Consts and g_Consts.PlanetaryBreakthroughCount or Consts.PlanetaryBreakthroughCount
+		-- g_ is the in-game object
 
 		-- start with a clean copy of breaks
 		local break_order = table_copy(orig_break_list)
@@ -4577,29 +4580,12 @@ do -- RetMapBreakthroughs
 
 		table_clear(remove_added)
 
-		local c = #break_order - 3 -- 3 for omega
+		local c = #break_order
 		for i = 1, c do
 			local id = break_order[i]
 			-- translate tech
 			tech_list[i] = translated_tech[id]
 			remove_added[id] = true
-		end
-
---~ 		ex(break_order)
---~ 	OmegaTelescope.UnlockBreakthroughs({city = UICity}, 3)
-
-		if omega then
-			for i = c, 1, -1 do
-				if remove_added[break_order[i]] then
-					table_remove(break_order, i)
-				end
-			end
-
-			-- use the previously shuffled break_order
-			StableShuffle(break_order, CreateRand(true, gen.Seed, "OmegaTelescope"), 100)
-			for i = c+1, c+3 do
-				tech_list[i] = translated_tech[table_remove(break_order)]
-			end
 		end
 
 		return tech_list

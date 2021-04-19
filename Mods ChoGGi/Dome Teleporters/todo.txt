@@ -1,3 +1,7 @@
+stop colonists from walking outside, other then to work next to dome.
+dome.dome_entrances
+
+
 Power/Water/Air liek regular passages (add as mod option)
 
 
