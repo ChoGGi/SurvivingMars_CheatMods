@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RCTanker",
 	"steam_id", "1653353483",
 	"pops_any_uuid", "aaa0130c-0757-4938-8b57-0d5cded4e892",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 9,
 	"version_major", 0,
 	"version_minor", 9,

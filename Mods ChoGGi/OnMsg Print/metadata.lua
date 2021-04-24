@@ -1,14 +1,14 @@
 return PlaceObj("ModDef", {
 	"title", "OnMsg Print",
 	"id", "ChoGGi_OnMsgPrint",
+	"steam_id", "1604230467",
+	"pops_any_uuid", "2fe28c8c-c602-4ceb-8642-d41a7a560b7a",
+	"lua_revision", 1001514, -- Tito
 	"version", 7,
 	"version_major", 0,
 	"version_minor", 7,
 	"image", "Preview.png",
-	"steam_id", "1604230467",
-	"pops_any_uuid", "2fe28c8c-c602-4ceb-8642-d41a7a560b7a",
 	"author", "ChoGGi",
-	"lua_revision", 1001569,
 	"code", {
 		"Code/Script.lua",
 	},
@@ -16,12 +16,12 @@ return PlaceObj("ModDef", {
 I've got an ahk script to get all msgs from the lua files. If anyone wants a whole bunch of msgs printed in their log use this mod...
 
 Excluded (very spammy):
-ConsoleLine
-ObjModified
 OnRender
+ObjModified
+UIPropertyChanged
 OverlaySupplyGridChanged
 PrefabCacheUnloaded
-UIPropertyChanged
+ConsoleLine
 
 
 

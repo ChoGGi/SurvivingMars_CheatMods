@@ -45,7 +45,7 @@ end
 
 local orig_BaseMeteor_CrackDome = BaseMeteor.CrackDome
 function BaseMeteor:CrackDome(dome, ...)
-	for i = 1, mod_ExtraFractures do
+	for _ = 1, mod_ExtraFractures do
 		orig_BaseMeteor_CrackDome(self, dome)
 	end
 

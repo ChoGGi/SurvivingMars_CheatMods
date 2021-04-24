@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_MeteorDefenceIgnoresAnomalies",
 	"steam_id", "2438415420",
 	"pops_any_uuid", "fb227e70-2835-4b02-a203-56bd61d78c9b",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

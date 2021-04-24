@@ -10,6 +10,6 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"description", [[Schools and Universities lower maintenance cost (half).]],
 })

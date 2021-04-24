@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_UnlockResearchTech",
 	"steam_id", "2429688365",
 	"pops_any_uuid", "a2d712d9-57d2-47cd-bc9d-f09eeceb2193",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,

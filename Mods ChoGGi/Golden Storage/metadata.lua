@@ -22,6 +22,6 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagGameplay", true,
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"description", [[Converts Metals to Precious Metals (10 to 1 ratio).]],
 })

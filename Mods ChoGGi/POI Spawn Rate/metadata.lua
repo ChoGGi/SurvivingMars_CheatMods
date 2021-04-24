@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_POISpawnRate",
 	"steam_id", "1819311083",
 	"pops_any_uuid", "adc2ea74-4ba3-46fb-a5a9-ccffaa600426",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 7,
 	"version_major", 0,
 	"version_minor", 7,

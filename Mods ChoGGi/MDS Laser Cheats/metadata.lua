@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_MDSLaserCheats",
 	"steam_id", "2428918892",
 	"pops_any_uuid", "69f8402d-8226-4928-828d-b564c5942673",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

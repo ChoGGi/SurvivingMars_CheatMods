@@ -330,6 +330,10 @@ function OnMsg.ModsReloaded()
 	local ChoGGi = ChoGGi
 	local UserSettings = ChoGGi.UserSettings
 
+	if UserSettings.FlushLogConstantly then
+		print(Strings[302535920001349--[[Flush Log Constantly]]], Strings[302535920001414--[[Call FlushLogFile() every render update!]]])
+	end
+
 	-- added this here, as it's early enough to load during the New Game Menu
 	local Actions = ChoGGi.Temp.Actions
 	if UserSettings.DisableECM then
@@ -1074,18 +1078,17 @@ function OnMsg.NewHour()
 	if UserSettings.ColonistsStuckOutsideServiceBuildings then
 		ChoGGi.ComFuncs.ResetHumanCentipedes()
 	end
+end
 
-	-- some types of crashing won't allow SM to gracefully close and leave a log/minidump as the devs envisioned... No surprise to anyone who's ever done any sort of debugging before.
-	if UserSettings.FlushLogConstantly then
+--~ -- const.MinuteDuration is 500 ticks (GameTime)
+--~ function OnMsg.NewMinute()
+--~ end
+
+function OnMsg.OnRender()
+	if ChoGGi.UserSettings.FlushLogConstantly then
 		FlushLogFile()
 	end
 end
-
--- const.MinuteDuration is 500 ticks (GameTime)
---~ OnMsg.NewMinute = FlushLogFile
---~ function OnMsg.NewMinute()
---~ 	FlushLogFile()
---~ end
 
 function OnMsg.AfterLightmodelChange()
 	if ChoGGi.UserSettings.Lightmodel then

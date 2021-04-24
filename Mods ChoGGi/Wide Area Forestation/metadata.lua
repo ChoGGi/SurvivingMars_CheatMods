@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_WideAreaForestation",
 	"steam_id", "2072656358",
 	"pops_any_uuid", "8cb80dc5-846e-4042-8f04-28f46488d8a0",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,

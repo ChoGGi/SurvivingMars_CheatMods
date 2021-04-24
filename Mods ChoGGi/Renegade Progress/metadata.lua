@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RenegadeProgress",
 	"steam_id", "1802131001",
 	"pops_any_uuid", "ce2f0465-bec8-48d1-acab-9656b9c5907e",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,

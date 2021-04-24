@@ -6,6 +6,7 @@
 
 ### Changed:
 - Moved Examine dialogs to Library mod.
+- FlushLogConstantly now fires for OnRender instead of NewHour.
 
 ## v16.7 (10 Apr 2021)
 ### Added:

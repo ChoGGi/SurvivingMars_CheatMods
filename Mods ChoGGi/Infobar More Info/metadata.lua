@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_InfobarAddDischargeRates",
 	"steam_id", "1775006723",
 	"pops_any_uuid", "34ead2f4-80f9-4200-b73c-12e441babbe9",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 24,
 	"version_major", 2,
 	"version_minor", 4,

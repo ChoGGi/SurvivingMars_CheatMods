@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Autonomous Drones",
 	"id", "ChoGGi_AutonomousDrones",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"steam_id", "2313642931",
 	"pops_any_uuid", "4313ca38-0202-4d35-b630-1290369995eb",
 	"version", 10,

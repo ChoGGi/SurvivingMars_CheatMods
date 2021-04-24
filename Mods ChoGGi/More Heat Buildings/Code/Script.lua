@@ -51,7 +51,7 @@ AddBaseheater(WaterExtractor, 2 * const.MaxHeat, 5)
 
 
 
-local function AddFueledExtractorHeat(name, class)
+local function AddFueledExtractorHeat(_, class)
 	local orig_class_OnUpgradeToggled = class.OnUpgradeToggled
 	function class:OnUpgradeToggled(...)
 		return PassthroughHeatUpdate(orig_class_OnUpgradeToggled, self, ...)

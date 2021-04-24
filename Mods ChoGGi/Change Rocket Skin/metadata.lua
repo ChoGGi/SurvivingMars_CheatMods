@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ChangeRocketSkin",
 	"steam_id", "1570126808",
 	"pops_any_uuid", "16b2049c-41cb-42de-9c26-6b21c0311967",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 6,
 	"version_major", 0,
 	"version_minor", 6,

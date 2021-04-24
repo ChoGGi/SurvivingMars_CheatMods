@@ -16,11 +16,13 @@ return PlaceObj("ModDef", {
 	"steam_id", "1813398570",
 	"pops_any_uuid", "4b566c4f-503e-490a-8257-d5cd8aca9e85",
 	"author", "ChoGGi",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"code", {
 		"Code/Script.lua",
 	},
 	"TagVegetation", true,
 	"TagInterface", true,
-	"description", [[Salvage tool works with trees, bushes, etc.]],
+	"description", [[
+Salvage tool works with trees, bushes, etc.
+]],
 })

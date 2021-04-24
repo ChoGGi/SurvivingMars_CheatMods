@@ -1241,6 +1241,9 @@ Leave blank to skip search box."
 [[Add Planetary Anomaly Breakthroughs]]
 302535920011933, "Add Planetary Anomaly Breakthroughs"
 302535920011934, "Add this many breakthroughs to the anomaly breakthrough list the game grabs from (<color 255 110 110>press "Apply" to add</color>)."
+[[Project Phoenix No Renegades]]
+302535920011935, "No Negative"
+302535920011936, "Remove all negative traits (almost like it's an actual breakthrough)."
 [[UNUSED]]
 
 
@@ -1257,8 +1260,6 @@ Leave blank to skip search box."
 
 
 [[UNUSED]]
-302535920011935,
-302535920011936,
 302535920011937,
 302535920011938,
 302535920011939,

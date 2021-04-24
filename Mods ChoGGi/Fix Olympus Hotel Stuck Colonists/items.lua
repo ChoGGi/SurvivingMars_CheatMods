@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "EnableMod",
@@ -5,4 +7,4 @@ return {
 		"Help", T(302535920011793, "Disable mod without having to see missing mod msg."),
 		"DefaultValue", true,
 	}),
-end
+}

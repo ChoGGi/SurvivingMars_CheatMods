@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_FixDestroyedTunnelsStillWork",
 	"steam_id", "2434547711",
 	"pops_any_uuid", "4af78298-fff5-4881-b92b-fb0129cb3f0a",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

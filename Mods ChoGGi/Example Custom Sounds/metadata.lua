@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Custom Sounds Example",
 	"id", "ChoGGi_CustomSoundsExample",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

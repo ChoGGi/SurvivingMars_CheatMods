@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Pin Drone Finished Task",
 	"id", "ChoGGi_PinDroneFinishedTask",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"steam_id", "2087572485",
 	"pops_any_uuid", "711ad49a-96d0-4837-aba8-5ebd06b84dc5",
 	"version", 2,

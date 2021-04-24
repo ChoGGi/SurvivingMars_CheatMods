@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_AmountOfWasteRockPerProducer",
 	"steam_id", "1428163993",
 	"pops_any_uuid", "2128aa77-6734-4ea8-808c-be1a54cbdd23",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 5,
 	"version_major", 0,
 	"version_minor", 5,

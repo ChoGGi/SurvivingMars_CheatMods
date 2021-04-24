@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Unlock All Achievements",
 	"id", "ChoGGi_UnlockAllAchievements",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"steam_id", "2079858618",
 	"version", 1,
 	"version_major", 0,

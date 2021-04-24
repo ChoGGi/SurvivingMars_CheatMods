@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 local mod_Range = ArtificialSun.effect_range or 8
-local const_HexHeight = const.HexHeight
 
 local TestSunPanelRange = TestSunPanelRange
 local IsValid = IsValid

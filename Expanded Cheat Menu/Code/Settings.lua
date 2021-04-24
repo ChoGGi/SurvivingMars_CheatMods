@@ -84,7 +84,7 @@ ChoGGi.Defaults = {
 	FlattenGround_RadiusDiff = 100,
 	-- dumps the log to disk on startup, and every new Sol (good for some crashes)
 	FlushLog = false,
-	-- dumps log to disk every in-game hour (30 000 ticks of GameTime)
+	-- call FlushLogFile() every render update
 	FlushLogConstantly = false,
 	-- show Cheats section in the selection panel
 	InfopanelCheats = true,

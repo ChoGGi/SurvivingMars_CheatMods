@@ -2,13 +2,8 @@
 -- See LICENSE for terms
 
 local pairs, tostring, type, table, tonumber = pairs, tostring, type, table, tonumber
-local table_find = table.find
 
-local RetMapSettings = ChoGGi.ComFuncs.RetMapSettings
-local RetMapBreakthroughs = ChoGGi.ComFuncs.RetMapBreakthroughs
 local Translate = ChoGGi.ComFuncs.Translate
-local ValidateImage = ChoGGi.ComFuncs.ValidateImage
-local RetName = ChoGGi.ComFuncs.RetName
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
@@ -463,7 +458,7 @@ function ChoGGi_VLI_MapInfoDlg:UpdateFoundObjects()
 			self.found_objs[key_location] = nil
 		elseif andor then
 			local found_count = 0
-			for str in pairs(matches) do
+			for _ in pairs(matches) do
 				found_count = found_count + 1
 			end
 			-- found is same as inputs with text

@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_BrazilPassagesForAll",
 	"steam_id", "2442247161",
 	"pops_any_uuid", "6ef52d96-9599-4350-8818-5c9836fceb77",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

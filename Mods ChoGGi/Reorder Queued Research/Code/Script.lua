@@ -1,8 +1,6 @@
 -- See LICENSE for terms
 
-local type = type
 local table = table
-local DoneObject = DoneObject
 local CreateNumberEditor = CreateNumberEditor
 
 local mod_EnableMod
@@ -53,7 +51,7 @@ local function AddButtons(item, order, list)
 end
 
 
-local function EditDlg(dlg, res_list)
+local function EditDlg(res_list)
 	if not mod_EnableMod then
 		return
 	end
@@ -83,10 +81,10 @@ local function EditDlg(dlg, res_list)
 
 end
 
-function OnMsg.ResearchQueueChange(UICity, tech_id)
+function OnMsg.ResearchQueueChange()
 	local dlg = Dialogs.ResearchDlg
 	if dlg then
-		CreateRealTimeThread(EditDlg, dlg, dlg.idResearchQueueList)
+		CreateRealTimeThread(EditDlg, dlg.idResearchQueueList)
 	end
 end
 
@@ -95,7 +93,7 @@ function OpenDialog(dlg_str, ...)
 	local dlg = orig_OpenDialog(dlg_str, ...)
 
 	if dlg_str == "ResearchDlg" then
-		CreateRealTimeThread(EditDlg, dlg, dlg.idResearchQueueList)
+		CreateRealTimeThread(EditDlg, dlg.idResearchQueueList)
 	end
 
 	return dlg

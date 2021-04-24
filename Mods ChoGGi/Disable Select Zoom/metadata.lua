@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_DisableSelectZoom",
 	"steam_id", "2431723963",
 	"pops_any_uuid", "54dd7f54-1ab4-42d3-abcf-88fba81ff734",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

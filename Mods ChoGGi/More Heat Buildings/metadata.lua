@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_MoreHeatBuildings",
 	"steam_id", "2435302154",
 	"pops_any_uuid", "e21529d6-d961-4df7-90f6-35523ff8d7c8",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

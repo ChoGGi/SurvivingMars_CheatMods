@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Change Lightmodel",
 	"id", "ChoGGi_ChangeLightmodel",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"steam_id", "2374255691",
 	"pops_any_uuid", "da3534ae-2882-4b77-a628-5ff66fbc8027",
 	"version", 1,

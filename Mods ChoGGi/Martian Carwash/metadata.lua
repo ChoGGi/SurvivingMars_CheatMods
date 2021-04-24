@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_MartianCarwash",
 	"steam_id", "1411110474",
 	"pops_any_uuid", "c146c971-70c2-41da-92ea-3cb7c3d9c6b7",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 7,
 	"version_major", 0,
 	"version_minor", 7,

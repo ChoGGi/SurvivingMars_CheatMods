@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_Fix UnlockRCSafariResupply",
 	"steam_id", "2427995890",
 	"pops_any_uuid", "581fb4dc-b070-480e-9633-6af6eaf68d90",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

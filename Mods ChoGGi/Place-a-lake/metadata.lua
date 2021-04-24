@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"version_minor", 3,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"code", {
 		"Code/Script.lua",
 	},

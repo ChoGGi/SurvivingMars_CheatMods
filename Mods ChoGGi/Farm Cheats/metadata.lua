@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Farm Cheats",
 	"id", "ChoGGi_FarmCheats",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"steam_id", "2426931293",
 	"pops_any_uuid", "204e9e89-25af-44e3-a6f2-8b9c824d92e5",
 	"version", 1,

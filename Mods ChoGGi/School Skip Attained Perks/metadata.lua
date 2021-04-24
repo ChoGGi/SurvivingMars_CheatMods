@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "School Skip Attained Perks",
 	"id", "ChoGGi_SchoolSkipAttainedPerks",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"steam_id", "2328026145",
 	"pops_any_uuid", "ef641b18-53ad-40eb-8941-cab5f309a9d4",
 	"version", 1,

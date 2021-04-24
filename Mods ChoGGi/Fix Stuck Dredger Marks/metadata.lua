@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_FixStuckDredgerMarks",
 	"steam_id", "2453113211",
 	"pops_any_uuid", "8817cb9d-0795-469f-970c-37c7e257973f",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

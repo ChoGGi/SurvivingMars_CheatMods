@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_FindMapLocations",
 	"steam_id", "2453011286",
 	"pops_any_uuid", "b97dbd4e-71cf-4e82-80a0-46dd104133bc",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 6,
 	"version_major", 0,
 	"version_minor", 6,
@@ -28,7 +28,7 @@ return PlaceObj("ModDef", {
 	},
 	"TagTools", true,
 	"description", [[
-Find maps with/without a combination of breakthroughs (Neo-Concrete, Wireless Power), resources (metals2), threats(dust_devils4), etc.
+Find landing spots with/without a combination of breakthroughs (Extractor AI), resources (metals2), threats(dust_devils4), etc.
 
 Left click an item to move the globe to it.
 It isn't as pretty as Surviving Maps, but it works...

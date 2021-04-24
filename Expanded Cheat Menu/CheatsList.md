@@ -241,7 +241,7 @@ AddMaintenancePnts, MakeSphereTarget, SpawnWorker, SpawnVisitor
 Cheats.Menu>Infopanel Cheats: Shows the cheat pane in the info panel (selection panel).
 Cheats.Menu>Keep Cheats Menu Position: This menu will stay where you drag it.
 Cheats.Research>Add Research Points: Add a specified amount of research points.
-Cheats.Research>Breakthroughs From OmegaTelescope: How many breakthroughs the OmegaTelescope will unlock.
+Cheats.Research>Breakthroughs From Omega Telescope: How many breakthroughs the Omega Telescope will unlock.
 Cheats.Research>Instant Research: Instantly research anything you click.
 Cheats.Research>Maximum Outsource Orders: How many times you can outsource in a row.
 Cheats.Research>Outsourcing For Free: Outsource Research Cost (in millions)

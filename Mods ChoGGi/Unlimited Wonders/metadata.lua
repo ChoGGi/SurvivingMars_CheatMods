@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_UnlimitedWonders",
 	"steam_id", "1754331978",
 	"pops_any_uuid", "ab3fc120-a161-4d9b-b7a9-c3fb685e51e7",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

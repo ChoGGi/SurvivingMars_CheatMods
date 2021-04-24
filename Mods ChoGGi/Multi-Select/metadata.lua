@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_MultiSelect",
 	"steam_id", "1673928672",
 	"pops_any_uuid", "d9ea47ff-e175-416f-bcf0-fa8ce3ac4cc0",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,

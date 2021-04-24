@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Dome Blank Skin",
 	"id", "ChoGGi_DomeBlankSkin",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"steam_id", "2211606998",
 	"pops_any_uuid", "318c5f27-060e-4b43-9af6-7bc26b6c2639",
 	"version", 3,

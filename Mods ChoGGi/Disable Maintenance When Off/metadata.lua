@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_DisableMaintenanceWhenOff",
 	"steam_id", "1823134252",
 	"pops_any_uuid", "79d0b3b2-e9b4-44df-bd13-31ee7a9d6d0d",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 6,
 	"version_major", 0,
 	"version_minor", 6,

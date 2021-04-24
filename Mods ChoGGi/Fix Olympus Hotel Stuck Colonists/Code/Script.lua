@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 if LuaRevision < 1001569 then
+
 	local doors = {
 		"MegaMallDoor_01",
 		"MegaMallDoor_02",
@@ -18,6 +19,7 @@ if LuaRevision < 1001569 then
 			entity = door,
 		}
 	end
+
 end
 
 -- If we need to wait for the map

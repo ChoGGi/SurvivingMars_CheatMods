@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"image", "Preview.png",
 	"steam_id", "1571465108",
 	"pops_any_uuid", "9d1bb5a5-7c0e-4217-9bd9-54412dd730e2",

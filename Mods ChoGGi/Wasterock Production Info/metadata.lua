@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Wasterock Production Info",
 	"id", "ChoGGi_WasterockProdInfo",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"steam_id", "1816128962",
 	"pops_any_uuid", "10811f3f-2a27-4ecb-a34a-17eef76d7385",
 	"version", 4,

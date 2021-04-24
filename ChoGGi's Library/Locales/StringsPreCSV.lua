@@ -414,7 +414,7 @@ end !Skipped Line!
 do !Skipped Line! [[ConsoleFuncs.lua" "ConsoleLogWin.lua]] !Skipped Line!
 302535920001342, "Dumps the log to disk on startup, and every new Sol (good for some crashes)."
 302535920001349, "Flush Log Constantly"
-302535920001414, "Dumps log to disk every in-game hour (30 000 ticks of GameTime)."
+302535920001414, "Call FlushLogFile() every render update!"
 302535920000473, "Flush Log"
 302535920000474, "Flushes log to file."
 302535920000406, "Copy text to the clipboard."

@@ -503,7 +503,7 @@ The number is a count of stored msgs, right-click to view the list."]]],
 		end,
 	},
 	{name = Strings[302535920001349--[[Flush Log Constantly]]],
-		hint = Strings[302535920001414--[[Dumps log to disk every in-game hour (30 000 ticks of GameTime).]]],
+		hint = Strings[302535920001414--[[Call FlushLogFile() every render update!]]],
 		class = "ChoGGi_XCheckButtonMenu",
 		value = "ChoGGi.UserSettings.FlushLogConstantly",
 		clicked = function()

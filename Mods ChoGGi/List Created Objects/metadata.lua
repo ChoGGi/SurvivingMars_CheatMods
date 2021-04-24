@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	},
 	"title", "List Created Objects",
 	"id", "ChoGGi_ListCreatedObjects",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 --~ 	"steam_id", "000000000",
 --~ CopyToClipboard([[	"pops_any_uuid", "]] .. GetUUID() .. [[",]])
 	"version", 2,

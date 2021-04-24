@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_FixSoftlockHotfix3",
 	"steam_id", "2434359529",
 	"pops_any_uuid", "2dffb277-a8f8-438b-b9a8-aa78da0333f9",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

@@ -1,3 +1,6 @@
+v1.3
+Possible fix for missing mod options (mods making old traits).
+
 v1.2
 Maybe fixed gray cube as pod.
 Made idiot monument fit into one hex and not float (I can add old style as mod option if wanted).

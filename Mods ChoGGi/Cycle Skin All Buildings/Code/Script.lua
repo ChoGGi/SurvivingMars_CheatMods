@@ -62,7 +62,7 @@ function OnMsg.ClassesPostprocess()
 		local context = self.context
 
 		-- objs with one skin so we can reset random colours
-		local skins, palettes = context:GetSkins()
+		local skins = context:GetSkins()
 		if #skins == 1 then
 			local skin, palette = context:GetCurrentSkin()
 			context:ChangeSkin(skin, palette)

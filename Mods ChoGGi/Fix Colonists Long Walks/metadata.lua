@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 	"steam_id", "1811507300",
 	"pops_any_uuid", "000d3384-12ac-42a4-9808-191b1038060f",
 	"author", "ChoGGi",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"code", {
 		"Code/Script.lua",
 	},
@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"description", [[Changes the AreDomesConnectedWithPassage func to also check the walking distance instead of assuming passages == walkable.
 
-This should stop the random colonist has died from dehydration events we know and love.
+This [i]should[/i] stop the random colonist has died from dehydration events we know and love.
 
 Includes mod option to disable fix.
 ]],

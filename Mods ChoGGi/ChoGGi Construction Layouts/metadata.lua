@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	},
 	"title", "ChoGGi Construction Layouts",
 	"id", "ChoGGi_Construction_Layouts",
-	"lua_revision", 1001569,
+	"lua_revision", 1001514, -- Tito
 	"steam_id", "2234863273",
 	"pops_any_uuid", "77fd2531-04b6-4e98-9968-f21253455476",
 	"version", 7,

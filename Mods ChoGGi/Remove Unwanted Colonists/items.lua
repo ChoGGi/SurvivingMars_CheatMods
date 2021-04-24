@@ -11,29 +11,33 @@ local function AddColonists(list)
 	for i = 1, #list do
 		local id = list[i]
 		local trait = TraitPresets[id]
-		local cat = trait.category == "other" and T(10405, "Other")
-			or trait.category == "Age Group" and T(11607, "Age Group")
-			or T(trait.category)
-			--or trait.category == "Negative" and T(0000, "Negative")
+		local category = trait.category or trait.group
+		-- backwards compat?
+		if category then
+			local category_str = category == "other" and T(10405, "Other")
+				or category == "Age Group" and T(11607, "Age Group")
+				or T(category)
+				--or trait.category == "Negative" and T(0000, "Negative")
 
---~ 		-- add categories
---~ 		if not added_cats[trans(cat)] then
---~ 			c = c + 1
---~ 			properties[c] = PlaceObj("ModItemOptionToggle", {
---~ 				"name", "cats" .. cat,
---~ 				"DisplayName", table_concat(T(cat) .. T("  <yellow>-Category-</color>")),
---~ 				"Help", T(302535920011751, "On/Off does nothing."),
---~ 			})
---~ 			added_cats[trans(cat)] = true
---~ 		end
+	--~ 				-- add categories
+	--~ 				if not added_cats[trans(cat)] then
+	--~ 					c = c + 1
+	--~ 					properties[c] = PlaceObj("ModItemOptionToggle", {
+	--~ 						"name", "cats" .. cat,
+	--~ 						"DisplayName", table_concat(T(cat) .. T("  <yellow>-Category-</color>")),
+	--~ 						"Help", T(302535920011751, "On/Off does nothing."),
+	--~ 					})
+	--~ 					added_cats[trans(cat)] = true
+	--~ 				end
 
-		c = c + 1
-		properties[c] = PlaceObj("ModItemOptionToggle", {
-			"name", "Trait_" .. id,
-			"DisplayName", table_concat(cat .. ": " .. T(trait.display_name)),
-			"Help", table_concat(T(trait.description) .. "\n\n" .. id),
-			"DefaultValue", false,
-		})
+			c = c + 1
+			properties[c] = PlaceObj("ModItemOptionToggle", {
+				"name", "Trait_" .. id,
+				"DisplayName", table_concat(category_str .. ": " .. T(trait.display_name)),
+				"Help", table_concat(T(trait.description) .. "\n\n" .. id),
+				"DefaultValue", false,
+			})
+		end
 	end
 end
 

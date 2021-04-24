@@ -20,7 +20,7 @@ end
 local function UpdateBuildings()
 	-- update all BaseHeater buildings
 	local s_Heaters = s_Heaters
-	for obj, info in pairs(s_Heaters) do
+	for obj in pairs(s_Heaters) do
 		-- skip ColdArea objs
 		if obj.working and obj.heat > 0 and not obj:IsKindOf("ColdArea") then
 			obj:ApplyHeat(false)
