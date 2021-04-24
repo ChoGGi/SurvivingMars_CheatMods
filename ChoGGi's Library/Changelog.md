@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v9.8 (Unreleased)
+## v9.9 (Unreleased)
+
+## v9.8 (24 Apr 2021)
 - Forgot to check if examine needed funcs were in blacklist.
 - Slight speedup for ExportMapDataToCSV.
 - Made X close icon a little smaller, so it fits the height of the Examine toolbar.
