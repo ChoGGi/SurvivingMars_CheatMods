@@ -2867,7 +2867,6 @@ function ChoGGi_DlgExamine:RetDebugGetInfo(obj)
 	return TableConcat(temp, "\n")
 end
 function ChoGGi_DlgExamine:RetFuncArgs(obj)
-print("blacklist",blacklist)
 	if blacklist then
 		return "params: (?)"
 	end
