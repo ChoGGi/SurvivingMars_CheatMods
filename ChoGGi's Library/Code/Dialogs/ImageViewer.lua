@@ -9,10 +9,10 @@ local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local Random = ChoGGi.ComFuncs.Random
 local Translate = ChoGGi.ComFuncs.Translate
 
-local blacklist, g
+local blacklist, g = ChoGGi.blacklist
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	g = env
-	blacklist = ChoGGi.blacklist
+	blacklist = env.ChoGGi.blacklist
 end
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind

@@ -8,10 +8,10 @@ local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Strings = ChoGGi.Strings
 
-local blacklist, g
+local blacklist, g = ChoGGi.blacklist
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	g = env
-	blacklist = ChoGGi.blacklist
+	blacklist = env.ChoGGi.blacklist
 end
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind

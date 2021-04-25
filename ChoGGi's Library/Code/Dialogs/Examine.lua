@@ -87,10 +87,10 @@ local missing_text = ChoGGi.Temp.missing_text
 local debug_getinfo, debug_getupvalue = empty_func, empty_func
 local debug_getlocal, debug_getmetatable = empty_func, empty_func
 
-local blacklist, g
+local blacklist, g = ChoGGi.blacklist
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	g = env
-	blacklist = ChoGGi.blacklist
+	blacklist = env.ChoGGi.blacklist
 	local debug = g.debug
 	debug_getupvalue = debug.getupvalue
 	debug_getinfo = debug.getinfo
@@ -2867,6 +2867,7 @@ function ChoGGi_DlgExamine:RetDebugGetInfo(obj)
 	return TableConcat(temp, "\n")
 end
 function ChoGGi_DlgExamine:RetFuncArgs(obj)
+print("blacklist",blacklist)
 	if blacklist then
 		return "params: (?)"
 	end

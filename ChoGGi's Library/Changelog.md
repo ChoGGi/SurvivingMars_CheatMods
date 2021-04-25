@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v9.9 (Unreleased)
+- Examining funcs with the blacklist enabled gave an error.
 
 ## v9.8 (24 Apr 2021)
 - Forgot to check if examine needed funcs were in blacklist.
