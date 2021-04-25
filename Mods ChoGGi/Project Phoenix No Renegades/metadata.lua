@@ -15,7 +15,7 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagGameplay", true,
 	"description", [[
-Renegade trait isn't carried over when being reborn with Project Phoenix.
+Renegade trait isn't carried over when a colonist is reborn by Project Phoenix.
 Mod option to remove all negative traits (almost like it's an actual breakthrough).
 ]],
 })

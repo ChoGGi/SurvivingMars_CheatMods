@@ -1,3 +1,6 @@
+v0.7
+It wasn't finding all that it should.
+
 v0.6
 Added coordinates to map data for easier searching.
 

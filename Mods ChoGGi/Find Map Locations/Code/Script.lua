@@ -379,13 +379,13 @@ function ChoGGi_VLI_MapInfoDlg:FindObject(key_name, value_name, rem)
 
 	for i = 1, count do
 		local str = self[input][i]
+		if key_name .. value_name == str then
+			return str
 		-- :find(str, 1, true) (1, true means don't use lua patterns, just plain text)
-		if key_name:find(str, 1, true) then
+		elseif key_name:find(str, 1, true) then
 			return key_name
 		elseif value_name:find(str, 1, true) then
 			return value_name
-		elseif key_name .. value_name == str then
-			return str
 		end
 	end
 end
@@ -461,8 +461,7 @@ function ChoGGi_VLI_MapInfoDlg:UpdateFoundObjects()
 			for _ in pairs(matches) do
 				found_count = found_count + 1
 			end
-			-- found is same as inputs with text
-			if found_count == self.input_box_count_add2 then
+			if found_count >= self.input_box_count_add2 or self.input_box_count_add2 == 1 and found_count > 0 then
 				self.found_objs[key_location] = map
 			end
 		end

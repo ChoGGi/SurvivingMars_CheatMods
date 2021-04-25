@@ -8,8 +8,8 @@
 - Made X close icon a little smaller, so it fits the height of the Examine toolbar.
 - Examine: "Go to text" is now "Search".
 - More params for OpenInMultiLineTextDlg.
-- Sorts list of mods in Options>Mod Options.
-- Exposed mod string id lists.
+- Sorts list of mods by title in Options>Mod Options (default was mod load order).
+- Exposed mod string id lists (see Locales directory).
 - Added GetLowestPointEachSector.
 - Tidied up examining a dot path str.
 
