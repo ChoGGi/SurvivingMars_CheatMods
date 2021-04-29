@@ -419,13 +419,19 @@ do -- RetName
 				end
 			end
 
-		end
+		end -- BuildNameList
 
 		-- so they work in the main menu
 		BuildNameList()
 
 		-- called from onmsgs for citystart/loadgame
 		ChoGGi.ComFuncs.RetName_Update = BuildNameList
+
+		if ChoGGi.testing then
+			function ChoGGi.ComFuncs.RetName_lookup_table()
+				return lookup_table
+			end
+		end
 	end -- do
 
 	-- try to return a decent name for the obj, failing that return a string
@@ -520,7 +526,7 @@ do -- RetName
 		elseif obj_type == "function" then
 			return DebugGetInfo(obj)
 
-		end
+		end -- if obj_type ==
 
 		-- just in case...
 		return type(name) == "string" and name or tostring(name or obj)
@@ -5405,7 +5411,8 @@ do -- path markers
 		for i = 1, wp_c do
 			local wp = waypoints[i]
 			local z = wp:z()
-			if not z or z and z < obj_terrain then
+			-- wp ~= InvalidPos = hopefully a fix for that HGE::l_SetPos log spam
+			if wp ~= InvalidPos and not z or z and z < obj_terrain then
 				waypoints[i] = wp:SetTerrainZ(obj_height + flag_height)
 			end
 		end

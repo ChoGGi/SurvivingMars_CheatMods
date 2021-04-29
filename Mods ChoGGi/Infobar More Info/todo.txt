@@ -1,1 +1,3 @@
 add remaining sols for outsourcing
+
+add tooltip to grid info to show grid colours
