@@ -668,6 +668,10 @@ function OnMsg.ClassesBuilt()
 	LifeSupportGridElement.CheatRepair = LifeSupportGridElement.Repair
 	ElectricityGridElement.CheatBreak = ElectricityGridElement.Break
 	LifeSupportGridElement.CheatBreak = LifeSupportGridElement.Break
+
+	-- lazy devs... (stop using the Building class for rovers)
+	RCSafari.CheatDestroy = nil
+	RCSafari.CheatMalfunction = nil
 end
 
 local Colonist = Colonist

@@ -2,6 +2,9 @@
 
 ## v16.9 (Unreleased)
 
+### Fixed:
+- The `[UI WARNING]` msgs when selecting a Safari Rover (not sure why the devs used the Building class for the safari).
+
 ## v16.8 (24 Apr 2021)
 ### Added:
 - CheatFillDepot to buildings with depots.
