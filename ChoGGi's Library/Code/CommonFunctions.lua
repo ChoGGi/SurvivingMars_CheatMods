@@ -56,6 +56,7 @@ local point20 = point20
 local WaitMsg = WaitMsg
 local Sleep = Sleep
 local CreateGameTimeThread = CreateGameTimeThread
+local IsInMapPlayableArea = IsInMapPlayableArea
 local terrain_GetHeight = terrain.GetHeight
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
@@ -5411,17 +5412,23 @@ do -- path markers
 		for i = 1, wp_c do
 			local wp = waypoints[i]
 			local z = wp:z()
-			-- wp ~= InvalidPos = hopefully a fix for that HGE::l_SetPos log spam
-			if wp ~= InvalidPos and not z or z and z < obj_terrain then
+			if not z or z and z < obj_terrain then
 				waypoints[i] = wp:SetTerrainZ(obj_height + flag_height)
 			end
 		end
-		-- and spawn the line
-		local spawnline = OPolyline:new()
-		spawnline:SetMesh(waypoints, colour)
-		spawnline:SetPos(AveragePoint2D(waypoints))
 
-		obj.ChoGGi_Stored_Waypoints[#obj.ChoGGi_Stored_Waypoints+1] = spawnline
+		-- HGE::l_SetPos error hopeful fix
+		local avg_pos = AveragePoint2D(waypoints)
+		if IsInMapPlayableArea(avg_pos) then
+			-- and spawn the line
+			local spawnline = OPolyline:new()
+			spawnline:SetMesh(waypoints, colour)
+			-- HGE::l_SetPos error
+			spawnline:SetPos(avg_pos)
+
+			obj.ChoGGi_Stored_Waypoints[#obj.ChoGGi_Stored_Waypoints+1] = spawnline
+		end
+
 	end -- end of ShowWaypoints
 
 	local function SetWaypoint(obj, setcolour, skip_height)
@@ -6313,7 +6320,6 @@ end -- do
 
 do -- GetLowestPointEachSector
 	local GetMapSectorXY = GetMapSectorXY
-	local IsInMapPlayableArea = IsInMapPlayableArea
 
 	local lowest_points
 	function ChoGGi.ComFuncs.GetLowestPointEachSector()
