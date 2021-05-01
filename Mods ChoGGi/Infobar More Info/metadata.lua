@@ -1,12 +1,20 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library",
+			"version_major", 9,
+			"version_minor", 8,
+		}),
+	},
 	"title", "Infobar More Info",
 	"id", "ChoGGi_InfobarAddDischargeRates",
 	"steam_id", "1775006723",
 	"pops_any_uuid", "34ead2f4-80f9-4200-b73c-12e441babbe9",
 	"lua_revision", 1001514, -- Tito
-	"version", 24,
+	"version", 25,
 	"version_major", 2,
-	"version_minor", 4,
+	"version_minor", 5,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
@@ -35,6 +43,7 @@ I merged some lines, removed the header, and split air/water to reduce vertical 
 Research tooltip:
 [b]Research per Sol[/b]: Total points per Sol.
 [b]Research Remaining Time[/b]: Time left for current research.
+[b]Outsourcing Remaining Time[/b]: Time left till you can outsource again.
 
 Food:
 [b]MAX Food Consumption[/b]: Current max food consumption (daily): 0.2 for each colonist (0.4 for gluttons).
@@ -57,6 +66,7 @@ Mod Options:
 [b]Skip Grid 0[/b]: Grids with production+consumption = 0 (doesn't skip grids that aren't producing due to throttle).
 [b]Skip Grid 1[/b]: Grids that only have a single bld (sensor towers).
 [b]Skip Grid X[/b]: Grids that only have X amount of buildings (for smaller clusters, like a concrete "hub", 0 to disable).
+[b]Deposit Remaining Warning[/b]: Show warning message when resource deposits (all of a single type) are below X amount (0 to disable).
 [b]Rollover Size[/b]: Game default is 45, if you want the tooltips wider use this.
 [b]Disable Transparency[/b]: Disable transparency of Infobar.
 [b]Always Show Remaining[/b]: Keep showing remaining amount of resources instead of N/A when prod over consump (time formatting only shows hours for neg numbers, this game uses 24 per Sol).

@@ -1,3 +1,8 @@
+v2.5
+Added warning for deposit remaining amount.
+Added outsourcing remaining time.
+Show idle research when nothing queued.
+
 v2.4
 Fudged a line and broke the mod.
 

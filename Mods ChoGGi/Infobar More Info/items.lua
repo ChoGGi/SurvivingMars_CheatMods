@@ -25,6 +25,14 @@ return {
 		"MinValue", 0,
 		"MaxValue", 50,
 	}),
+	PlaceObj("ModItemOptionNumber", {
+		"name", "DepositRemainingWarning",
+		"DisplayName", T(302535920011939, "Deposit Remaining Warning"),
+		"Help", T(302535920011940, "Show warning message when resource deposits (all of a single type) are below X amount (0 to disable)."),
+		"DefaultValue", 100,
+		"MinValue", 0,
+		"MaxValue", 1000,
+	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "MergedGrids",
 		"DisplayName", T(302535920011492, "Merge Grid Info"),

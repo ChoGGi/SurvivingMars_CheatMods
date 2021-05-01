@@ -1,3 +1,6 @@
+v0.6
+Locked behind appropriate tech.
+
 v0.5
 Fixed issue with mod options.
 

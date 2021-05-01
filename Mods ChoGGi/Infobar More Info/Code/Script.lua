@@ -17,10 +17,10 @@ local HexBoundingCircle = HexBoundingCircle
 local point = point
 local FormatResource = FormatResource
 local floatfloor = floatfloor
+local MulDivRound = MulDivRound
 
 local scale_hours = const.HourDuration
 local scale_sols = const.DayDuration
-local remaining_time_str = {12265, "Remaining Time<right><time(time)>"}
 
 
 -- mod options
@@ -32,6 +32,7 @@ local mod_MergedGrids
 local mod_RolloverWidth
 local mod_DisableTransparency
 local mod_AlwaysShowRemaining
+local mod_DepositRemainingWarning
 
 local function UpdateTrans()
 	CreateRealTimeThread(function()
@@ -76,6 +77,7 @@ local function ModOptions()
 	mod_RolloverWidth = options:GetProperty("RolloverWidth") * 10
 	mod_DisableTransparency = options:GetProperty("DisableTransparency")
 	mod_AlwaysShowRemaining = options:GetProperty("SkipNA")
+	mod_DepositRemainingWarning = options:GetProperty("DepositRemainingWarning")
 
 	-- ECM already changes it
 	if not table.find(ModsLoaded, "id", "ChoGGi_CheatMenu") then
@@ -98,7 +100,6 @@ end
 
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
 -- fired when option is changed
 function OnMsg.ApplyModOptions(id)
 	if id == CurrentModId then
@@ -111,6 +112,7 @@ function OnMsg.AddResearchRolloverTexts(text, city)
 		return
 	end
 
+	local UICity = UICity
 	local res_points = ResourceOverviewObj:GetEstimatedRP() + 0.0
 
 	-- research per sol
@@ -118,13 +120,42 @@ function OnMsg.AddResearchRolloverTexts(text, city)
 		"Research per Sol<right><research(EstimatedDailyProduction)>",
 		EstimatedDailyProduction = res_points,
 	}
+
 	-- time left of current res
 	local id, points, max_points = city:GetResearchInfo()
-	if not id then
-		return
+	if id then
+		local time_str = T{12265, "Remaining Time<right><time(time)>",
+			time = floatfloor(((max_points - points) / res_points) * scale_sols)
+		}
+		text[#text+1] = T(311, "Research") .. " " .. T(time_str)
 	end
-	remaining_time_str.time = floatfloor(((max_points - points) / res_points) * scale_sols)
-	text[#text+1] = T(311, "Research") .. " " .. T(remaining_time_str)
+
+	-- time left on outsourcing
+	local orders = UICity.OutsourceResearchOrders
+	if #orders > 0 then
+		local time_str = T{12265, "Remaining Time<right><time(time)>",
+			time = #orders * scale_hours
+		}
+		text[#text+1] = T(1594, "Outsourcing") .. " " .. T(time_str)
+	end
+
+	-- show default research when nothing is queued up
+	local cheapest = UICity:GetCheapestTech()
+	if not UICity:GetResearchInfo() and cheapest then
+		local points, max_points
+		cheapest, points, max_points = UICity:GetResearchInfo(cheapest)
+
+		text[#text+1] = T({12475, "Researching <em><name></em> (<percent(progress)>)",
+      name = function()
+        return cheapest and TechDef[cheapest].display_name or T(6761, "None")
+      end,
+      progress = function()
+        return max_points and MulDivRound(100, points, max_points) or 0
+      end,
+    })
+
+	end
+
 end
 
 -- should the grid be displayed
@@ -173,15 +204,17 @@ local function RemainingTime(g, scale)
 			}
 		end
 
-		remaining_time_str.time = remaining
+		local time_str = T{12265, "Remaining Time<right><time(time)>",
+			time = remaining
+		}
 
 		-- less than an hour
 		if time_left == 0 then
-			under_an_hour.text = remaining_time_str
+			under_an_hour.text = time_str
 			return T(under_an_hour)
 		end
 
-		return T(remaining_time_str)
+		return time_str
 	else
 		-- more prod than consump
 		return T(12014, "Remaining Time") .. "<right>" .. T(130, "N/A")
@@ -201,6 +234,35 @@ local function CountDepositRemaining(remaining, deposits)
 	return remaining
 end
 
+local function CountConcrete(city)
+	local remaining_res = 0
+	-- get all concrete deposits around miners
+
+	-- local what we can
+	local MaxTerrainDepositRadius = MaxTerrainDepositRadius
+
+	local objs = (city or UICity).labels.ResourceExploiter or ""
+	for i = 1, #objs do
+		-- kinda copy pasta from TerrainDepositExtractor:FindClosestDeposit()
+		local obj = objs[i]
+		if obj:IsKindOf("TerrainDepositExtractor") then
+			local info = obj:GetRessourceInfo()
+			local shape = obj:GetExtractionShape() or ""
+			if not info or #shape == 0 then
+				return
+			end
+			local radius, xc, yc = HexBoundingCircle(shape, obj)
+			local center = point(xc, yc)
+
+			remaining_res = CountDepositRemaining(remaining_res,
+				MapGet(center, center, MaxTerrainDepositRadius + radius, info.deposit_class)
+			)
+		end
+	end
+
+	return remaining_res
+end
+
 local function CountSubDeposit(cls, city)
 	local remaining_res = 0
 	table_clear(count_deposit)
@@ -213,6 +275,54 @@ local function CountSubDeposit(cls, city)
 		end
 	end
 	return remaining_res
+end
+
+local function HasExploiters(class)
+	local objs = UICity.labels.ResourceExploiter
+	for i = 1, #objs do
+		if objs[i]:IsKindOf(class) then
+			return true
+		end
+	end
+end
+
+local function ShowResourceWarningMsg(resource)
+	ChoGGi.ComFuncs.MsgWait(T{302535920011941, "<color ChoGGi_red>Warning</color>: <resource> remaining in mined deposits below threshold set in mod options (<remaining>)!",
+		resource = resource,
+		remaining = remaining,
+	}, T(302535920011942, "Infobar More Info") .. ": " .. resource)
+end
+
+function OnMsg.NewHour()
+	if mod_DepositRemainingWarning == 0 then
+		return
+	end
+
+	local UICity = UICity
+
+	-- no point if there's no exploiters
+	if not UICity.labels.ResourceExploiter then
+		return
+	end
+
+	local r = const.ResourceScale
+
+	if HasExploiters("RegolithExtractor") and (CountConcrete(UICity) / r) < mod_DepositRemainingWarning then
+		ShowResourceWarningMsg(mod_DepositRemainingWarning, T(3513, "Concrete"))
+	end
+
+	if HasExploiters("WaterExtractor") and (CountSubDeposit("SubsurfaceDepositWater", UICity) / r) < mod_DepositRemainingWarning then
+		ShowResourceWarningMsg(mod_DepositRemainingWarning, T(681, "Water"))
+	end
+
+	if HasExploiters("PreciousMetalsExtractor") and (CountSubDeposit("SubsurfaceDepositPreciousMetals", UICity) / r) < mod_DepositRemainingWarning then
+		ShowResourceWarningMsg(mod_DepositRemainingWarning, T(4139, "Rare Metals"))
+	end
+
+	if HasExploiters("MetalsExtractor") and (CountSubDeposit("SubsurfaceDepositMetals", UICity) / r) < mod_DepositRemainingWarning then
+		ShowResourceWarningMsg(mod_DepositRemainingWarning, T(3514, "Metals"))
+	end
+
 end
 
 -- default grid info table
@@ -493,32 +603,7 @@ local function DepositRemaining(self, res_name, ret)
 
 	local res_str
 	if res_name == "Concrete" then
-		local remaining_res = 0
-		-- get all concrete deposits around the miner
-
-		-- local what we can
-		local MaxTerrainDepositRadius = MaxTerrainDepositRadius
-
-		local objs = UICity.labels.ResourceExploiter or ""
-		for i = 1, #objs do
-			-- kinda copy pasta from TerrainDepositExtractor:FindClosestDeposit()
-			local obj = objs[i]
-			if obj:IsKindOf("TerrainDepositExtractor") then
-				local info = obj:GetRessourceInfo()
-				local shape = obj:GetExtractionShape() or ""
-				if not info or #shape == 0 then
-					return
-				end
-				local radius, xc, yc = HexBoundingCircle(shape, obj)
-				local center = point(xc, yc)
-
-				remaining_res = CountDepositRemaining(remaining_res,
-					MapGet(center, center, MaxTerrainDepositRadius + radius, info.deposit_class)
-				)
-			end
-		end
-
-		res_str = {"<concrete(number)>", number = remaining_res}
+		res_str = {"<concrete(number)>", number = CountConcrete()}
 	elseif res_name == "PreciousMetals" then
 		res_str = {"<preciousmetals(number)>", number = CountSubDeposit("SubsurfaceDeposit" .. res_name)}
 	elseif res_name == "Metals" then

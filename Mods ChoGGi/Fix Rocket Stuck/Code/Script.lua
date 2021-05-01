@@ -256,10 +256,10 @@ function OnMsg.LoadGame()
 			then
 				r:SetCommand("ExchangeResources")
 
-			-- returned expedition rocket giving msg that it's still in orbit
+			-- returned expedition rocket giving msg it hasn't landed
 			elseif r.command == "WaitingRefurbish"
 				and r.class ~= "RocketExpedition"
-				and #r.drones_exiting > 0
+				and (#r.drones_exiting > 0 or r:GetRefuelProgress() == r.launch_fuel)
 			then
 				local site = r.landing_site
 				-- change command

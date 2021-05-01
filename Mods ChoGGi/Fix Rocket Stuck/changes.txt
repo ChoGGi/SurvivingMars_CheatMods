@@ -1,3 +1,6 @@
+v1.9
+Previous expedition rocket shows msg it isn't landed when trying to launch.
+
 v1.8
 Trade rockets stuck in orbit?
 

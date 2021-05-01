@@ -46,4 +46,12 @@ table.sort(properties, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
+table.insert(properties, 1, PlaceObj("ModItemOptionToggle", {
+		"name", "LockBehindTech",
+		"DisplayName", T(302535920011937, "Lock Behind Tech"),
+		"Help", T(302535920011938, "You need to research tech to unlock certain buildings (reload save to take effect)."),
+		"DefaultValue", true,
+	})
+)
+
 return properties

@@ -1729,7 +1729,9 @@ end end end end !Skipped Line!
 do !Skipped Line! [[HelpMenu.lua" "HelpFunc.lua]] !Skipped Line!
 302535920001634, "This mod requires my lib mod (ChoGGi's Library)."
 302535920000990, "You need to have a mouse to use this mod."
-302535920000887, "If you have any issues with this mod please send me a bug report instead of reporting the mod.
+302535920000887, "If you get a disabled content restrictions error: It's on Paradox to review/restore it (bug them not me).
+
+If you have any issues with this mod please send me a bug report instead of reporting the mod.
 You can contact me through:
 Github: https://github.com/ChoGGi/SurvivingMars_CheatMods
 Discord: https://discord.gg/bkdjEZU

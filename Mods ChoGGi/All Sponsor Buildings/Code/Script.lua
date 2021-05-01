@@ -5,7 +5,7 @@ local def = CurrentModDef
 local sponsor_buildings = def.sponsor_buildings or {}
 
 local mod_options = {}
-local options
+local mod_LockBehindTech
 
 -- build options list
 local BuildingTemplates = BuildingTemplates
@@ -21,10 +21,13 @@ end
 
 -- fired when settings are changed/init
 local function ModOptions()
-	options = CurrentModOptions
+	local options = CurrentModOptions
 	for id in pairs(mod_options) do
 		mod_options[id] = options:GetProperty(id)
 	end
+
+	mod_LockBehindTech = options:GetProperty("LockBehindTech")
+
 --~ ex(mod_options)
 	local BuildingTechRequirements = BuildingTechRequirements
 	local table = table
@@ -67,3 +70,51 @@ function OnMsg.ApplyModOptions(id)
 		ModOptions()
 	end
 end
+
+-- gotta list them manually
+local techs = {
+	AdvancedStirlingGenerator = "StirlingGenerator",
+--~ 	AutomaticMetalsExtractor = "",
+--~ 	ConcretePlant = "",
+--~ 	CorporateOffice = "",
+--~ 	GameDeveloper = "",
+	JumperShuttleHub = "CO2JetPropulsion",
+	LowGLab = "MartianInstituteOfScience",
+--~ 	MegaMall = "",
+--~ 	MetalsRefinery = "",
+--~ 	RareMetalsRefinery = "",
+--~ 	RCConstructorBuilding = "",
+--~ 	RCDrillerBuilding = "",
+--~ 	RCHarvesterBuilding = "",
+--~ 	RCSensorBuilding = "",
+--~ 	RCSolarBuilding = "",
+--~ 	SolarArray = "",
+--~ 	TaiChiGarden = "",
+--~ 	Temple = "",
+}
+
+local function LockTech(bld_id, tech_id)
+	-- build menu
+--~ 	if not BuildingTechRequirements[bld_id] then
+		BuildingTechRequirements[bld_id] = {{ tech = tech_id, hide = false, }}
+--~ 	end
+	-- add an entry to unlock it with the tech
+	local tech = TechDef[tech_id]
+	if not table.find(tech, "Building", bld_id) then
+		tech[#tech+1] = PlaceObj("Effect_TechUnlockBuilding", {
+			Building = bld_id,
+		})
+	end
+
+end
+
+local function LockTechs()
+	if mod_LockBehindTech then
+		for bld_id, tech_id in pairs(techs) do
+			LockTech(bld_id, tech_id)
+		end
+	end
+end
+
+OnMsg.CityStart = LockTechs
+OnMsg.LoadGame = LockTechs

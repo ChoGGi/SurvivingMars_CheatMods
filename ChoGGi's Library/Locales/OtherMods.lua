@@ -3,6 +3,7 @@
 302535920011303, "Enable Mod"
 302535920011793, "Disable mod without having to see missing mod msg."
 302535920011424, "You need to be in-game to see this text (or use my Library mod)."
+302535920011937, "Lock Behind Tech"
 [[Construction Mods]]
 302535920011835, "Hex Colour"
 302535920011836, "<color ChoGGi_red>R</color> <color ChoGGi_green>G</color> <color ChoGGi_blue>B</color> colour code, yellow example: 255,255,0 (range is 0-255)"
@@ -539,6 +540,10 @@ Breakthroughs will be random as well.
 302535920011571, "Grids that only have X amount of buildings (for smaller clusters, like a concrete \"hub\", 0 to disable)."
 302535920011569, "Splits each grid into a separate section in the tooltip."
 302535920011568, "Game default is 45, if you want the tooltips wider use this (I use small UI scale)."
+302535920011939, "Deposit Remaining Warning"
+302535920011940, "Show warning message when resource deposits (all of a single type) are below X amount (0 to disable)."
+302535920011941, "<color ChoGGi_red>Warning</color>: <resource> remaining in mined deposits below threshold set in mod options (<remaining>)!"
+302535920011942, "Infobar More Info"
 [[Map Overview More Info]]
 302535920011374, "Show Metals"
 302535920011375, "Show Polymers"
@@ -1244,6 +1249,8 @@ Leave blank to skip search box."
 [[Project Phoenix No Renegades]]
 302535920011935, "No Negative"
 302535920011936, "Remove all negative traits (almost like it's an actual breakthrough)."
+[[All Sponsor Buildings]]
+302535920011938, "You need to research tech to unlock certain buildings (reload save to take effect)."
 [[UNUSED]]
 
 
@@ -1260,12 +1267,6 @@ Leave blank to skip search box."
 
 
 [[UNUSED]]
-302535920011937,
-302535920011938,
-302535920011939,
-302535920011940,
-302535920011941,
-302535920011942,
 302535920011943,
 302535920011944,
 302535920011945,
