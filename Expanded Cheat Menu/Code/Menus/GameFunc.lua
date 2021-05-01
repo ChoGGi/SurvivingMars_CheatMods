@@ -687,7 +687,10 @@ do -- FlattenGround
 	local ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
 	local GetHeight = terrain.GetHeight
 	local SetHeightCircle = terrain.SetHeightCircle
+	local SetTypeCircle = terrain.SetTypeCircle
+
 	local Sleep = Sleep
+
 	local guic = guic
 	local white = white
 
@@ -789,7 +792,7 @@ do -- FlattenGround
 			visual_circle:SetRadius(size)
 			visual_circle:SetColor(white)
 
---~ 				local terrain_type_idx = table.find(TerrainTextures, "name", "Grass_03")
+			local terrain_type_idx = table.find(TerrainTextures, "name", "Grass_03")
 			are_we_flattening = CreateRealTimeThread(function()
 				-- thread gets deleted, but just in case
 				while are_we_flattening do
@@ -800,7 +803,7 @@ do -- FlattenGround
 						outer = radius / 2
 					end
 					SetHeightCircle(cursor, radius, outer or radius, flatten_height)
---~ 						terrain.SetTypeCircle(cursor, radius, terrain_type_idx)
+					SetTypeCircle(cursor, radius, terrain_type_idx)
 					-- used to set terrain type (see above)
 					Sleep(10)
 				end

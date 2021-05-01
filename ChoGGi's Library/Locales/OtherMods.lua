@@ -1251,6 +1251,10 @@ Leave blank to skip search box."
 302535920011936, "Remove all negative traits (almost like it's an actual breakthrough)."
 [[All Sponsor Buildings]]
 302535920011938, "You need to research tech to unlock certain buildings (reload save to take effect)."
+[[Custom Resource Icon Toggle]]
+302535920011943, "Turn on to have these icons toggled, turn off to always be visible."
+302535920011944, "<color 255 255 0>Show Icons</color>"
+302535920011945, "Turn this on to show all icons, turn off to hide certain icons."
 [[UNUSED]]
 
 
@@ -1267,9 +1271,6 @@ Leave blank to skip search box."
 
 
 [[UNUSED]]
-302535920011943,
-302535920011944,
-302535920011945,
 302535920011946,
 302535920011947,
 302535920011948,

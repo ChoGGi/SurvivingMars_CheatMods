@@ -4,6 +4,7 @@
 
 ### Fixed:
 - The `[UI WARNING]` msgs when selecting a Safari Rover (not sure why the devs used the Building class for the safari).
+- Possible fix for Flatten ground ignoring soil quality (#38).
 
 ## v16.8 (24 Apr 2021)
 ### Added:

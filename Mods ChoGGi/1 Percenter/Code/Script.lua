@@ -18,12 +18,31 @@ function OnMsg.ClassesPostprocess()
 end
 
 function OnMsg.NewDay()
+	local UICity = UICity
+
 	local amount = (UICity.funding / 1000000) * 0.01 -- 0.01 = 1%
 	ChangeFunding(amount)
-	floatfloor(UICity.funding)
+
+	-- limit so we don't go neg
+	if UICity.funding > 90000000000 or < 0 then
+		UICity.funding = 80000000000
+	end
+
+	UICity.funding = floatfloor(UICity.funding)
 	UICity:ChangeFunding(1)
 
 	CreateRealTimeThread(function()
 		AddOnScreenNotification("ChoGGi_1Percenter", nil, {amount = amount})
 	end)
 end
+
+
+local function StartupCode()
+	if UICity.funding > 90000000000 or < 0 then
+		UICity.funding = 80000000000
+	end
+	UICity:ChangeFunding(1)
+end
+
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode

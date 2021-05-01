@@ -1,3 +1,6 @@
+v0.4
+Limited amount to 80 000 000 000 M, so it doesn't go negative.
+
 v0.3
 Changed notifaction to work with my notifaction disable mod.
 Amount rounded to not use decimals (looks weird when looking at money).
