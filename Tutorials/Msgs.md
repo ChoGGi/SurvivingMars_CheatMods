@@ -57,3 +57,6 @@ OpenExamine(GetHandledMsg(true))
 local _,v = debug.getupvalue(getmetatable(OnMsg).__newindex,1)
 OpenExamine(v)
 ```
+
+##### Print Msgs in the console
+[OnMsg Print](https://steamcommunity.com/sharedfiles/filedetails/?id=1604230467)
