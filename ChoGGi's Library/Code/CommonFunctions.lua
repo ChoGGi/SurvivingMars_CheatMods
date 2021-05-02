@@ -1406,16 +1406,29 @@ function ChoGGi.ComFuncs.StringToTable(str)
 	return temp
 end
 
--- value is ChoGGi.UserSettings.name
-function ChoGGi.ComFuncs.SetConstsG(name, value)
+function ChoGGi.ComFuncs.SetConstsG(id, value)
 	-- we only want to change it if user set value
 	if value then
 		-- some mods check Consts or g_Consts, so we'll just do both to be sure
-		Consts[name] = value
+		Consts[id] = value
 		if g_Consts then
-			g_Consts[name] = value
+			g_Consts[id] = value
 		end
 	end
+end
+
+function ChoGGi.ComFuncs.SetPropertyProp(obj, prop_id, value_id, value)
+	if not obj or obj and not obj:IsKindOf("PropertyObject") then
+		return
+	end
+
+	local props = obj.properties
+	local idx = table_find(props, "id", prop_id)
+	if not idx then
+		return
+	end
+
+	props[idx][value_id] = value
 end
 
 -- If value is the same as stored then make it false instead of default value, so it doesn't apply next time
@@ -5600,7 +5613,10 @@ do -- path markers
 		end
 
 		if obj then
-			local handles = ChoGGi.Temp.UnitPathingHandles or {}
+			if not ChoGGi.Temp.UnitPathingHandles then
+				ChoGGi.Temp.UnitPathingHandles = {}
+			end
+			local handles = ChoGGi.Temp.UnitPathingHandles
 			if #obj == 1 then
 				-- single obj
 				obj = obj[1]
@@ -5652,7 +5668,9 @@ do -- path markers
 
 	local function ClearColourAndWP(cls, skip)
 		-- remove all thread refs so they stop
-		table_clear(ChoGGi.Temp.UnitPathingHandles or empty_table)
+		if ChoGGi.Temp.UnitPathingHandles then
+			table_clear(ChoGGi.Temp.UnitPathingHandles)
+		end
 		-- and waypoints/colour
 		local objs = MapGet_ChoGGi(cls)
 		for i = 1, #objs do

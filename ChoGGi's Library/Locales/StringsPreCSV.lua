@@ -3,8 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! green: <green>%s</green>
 !Skipped Line! yellow: <yellow>%s</yellow>
 "ID", " Text"
-302535920000044,
-302535920001302,
 302535920001635,
 302535920001636,
 302535920001637,
@@ -127,6 +125,8 @@ do !Skipped Line! [[Multiple locations/mods: ]] !Skipped Line!
 end !Skipped Line!
 do !Skipped Line! [[ModOptions.lua]] !Skipped Line!
 302535920001446, "Add Mod Options button to Game Options."
+302535920000044, "Ignore Persist Errors"
+302535920001302, "This prevents persist errors from spamming the log."
 end !Skipped Line!
 do !Skipped Line! [[3DManipulator.lua]] !Skipped Line!
 302535920000908, "Move obj to mouse pos."

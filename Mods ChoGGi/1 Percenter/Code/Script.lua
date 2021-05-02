@@ -24,8 +24,8 @@ function OnMsg.NewDay()
 	ChangeFunding(amount)
 
 	-- limit so we don't go neg
-	if UICity.funding > 90000000000 or < 0 then
-		UICity.funding = 80000000000
+	if UICity.funding > 1000000000000 or UICity.funding < 0 then
+		UICity.funding = 1000000000000
 	end
 
 	UICity.funding = floatfloor(UICity.funding)
@@ -38,8 +38,8 @@ end
 
 
 local function StartupCode()
-	if UICity.funding > 90000000000 or < 0 then
-		UICity.funding = 80000000000
+	if UICity.funding > 1000000000000 or UICity.funding < 0 then
+		UICity.funding = 1000000000000
 	end
 	UICity:ChangeFunding(1)
 end

@@ -5,6 +5,7 @@ local tostring, type = tostring, type
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Strings = ChoGGi.Strings
 local Translate = ChoGGi.ComFuncs.Translate
+local SetProperty = ChoGGi.ComFuncs.SetProperty
 --~	local RetName = ChoGGi.ComFuncs.RetName
 
 function ChoGGi.MenuFuncs.SetDroneBatteryCap()
@@ -136,7 +137,9 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 
 			local objs = UICity.labels.RCRover or ""
 			for i = 1, #objs do
-				objs[i]:SetWorkRadius(value)
+				local obj = objs[i]
+				SetProperty(obj, "UIWorkRadius", "max", value)
+				obj:SetWorkRadius(value)
 			end
 
 			ChoGGi.SettingFuncs.WriteSettings()
@@ -186,7 +189,9 @@ function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
 
 			local objs = UICity.labels.DroneHub or ""
 			for i = 1, #objs do
-				objs[i]:SetWorkRadius(value)
+				local obj = objs[i]
+				SetProperty(obj, "UIWorkRadius", "max", value)
+				obj:SetWorkRadius(value)
 			end
 
 			ChoGGi.SettingFuncs.WriteSettings()

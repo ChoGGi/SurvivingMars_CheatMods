@@ -4,13 +4,13 @@ Each OnMsg you declare is added to a list, and fired in that order when the Msg 
 
 ##### Do something when a Msg() is fired
 ```lua
-local function somefunc()
-	print("game is loaded")
+local function somefunc(params)
+	print("game is loaded", params)
 end
 
 -- you can either do it this way
-function OnMsg.LoadGame()
-	somefunc()
+function OnMsg.LoadGame(arg1, arg2)
+	somefunc(arg1, arg2)
 end
 -- or this
 OnMsg.LoadGame = somefunc
@@ -23,9 +23,9 @@ OnMsg.LoadGame = somefunc
 Msg("CustomMsgBlahBlah", arg1, arg2, etc)
 ```
 
-##### Waiting for a msg
+##### Waiting for a msg (game time doesn't run when paused, real always runs
 ```lua
-CreateRealTimeThread(function() -- or GameTime
+CreateGameTimeThread(function() -- or RealTime
 	while true do
 		WaitMsg("OnRender")
 		print("scene render update")

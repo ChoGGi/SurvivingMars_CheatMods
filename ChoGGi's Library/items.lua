@@ -9,4 +9,10 @@ return {
 		"Help", T(302535920001446, "Add Mod Options button to Game Options."),
 		"DefaultValue", true,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "IgnorePersistErrors",
+		"DisplayName", T(302535920000044, "Ignore Persist Errors"),
+		"Help", T(302535920001302, "This prevents persist errors from spamming the log."),
+		"DefaultValue", true,
+	}),
 }

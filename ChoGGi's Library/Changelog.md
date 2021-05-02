@@ -3,6 +3,8 @@
 ## v9.9 (Unreleased)
 - Examining funcs with the blacklist enabled gave an error.
 - Hopefully a fix for that HGE::l_SetPos log spam (it doesn't harm anything, but it's annoying).
+- Added mod option to ignore persist errors.
+- Added SetPropertyProp
 
 ## v9.8 (24 Apr 2021)
 - Forgot to check if examine needed funcs were in blacklist.

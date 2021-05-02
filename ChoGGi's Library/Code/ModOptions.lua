@@ -81,6 +81,17 @@ end
 
 function OnMsg.ClassesPostprocess()
 
+	-- ignore persist errors
+	-- this is in pp so it overrides ECM overriding the func
+	local orig_ReportPersistErrors = ReportPersistErrors
+	function ReportPersistErrors(...)
+		if CurrentModOptions:GetProperty("IgnorePersistErrors") then
+			return
+		end
+
+		return orig_ReportPersistErrors(...)
+	end
+
 	-- Mod Options Expanded
 	local xtemplate = XTemplates.PropBool[1]
 	if not xtemplate.ChoGGi_ModOptionsExpanded then

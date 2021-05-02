@@ -12,10 +12,10 @@ return PlaceObj("ModDef", {
 	"lua_revision", 1001514, -- Tito
 	"steam_id", "2196814512",
 	"pops_any_uuid", "528635cc-5241-4303-87aa-6fa9cfef66c3",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
-	"image", "Preview.png",
+	"version_minor", 6,
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",

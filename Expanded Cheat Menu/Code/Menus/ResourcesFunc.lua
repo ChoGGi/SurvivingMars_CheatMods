@@ -243,7 +243,7 @@ Fix with: %s]]]:format(default_setting)
 		{text = "10 000 M", value = 10000, hint = hint},
 		{text = "100 000 M", value = 100000, hint = hint},
 		{text = "1 000 000 000 M", value = 1000000000, hint = hint},
-		{text = "90 000 000 000 M", value = 90000000000, hint = hint},
+		{text = "1 000 000 000 000 M", value = 1000000000000, hint = hint},
 	}
 
 	local function CallBackFunc(choice)

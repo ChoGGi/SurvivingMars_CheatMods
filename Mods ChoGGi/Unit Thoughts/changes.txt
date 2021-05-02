@@ -1,3 +1,6 @@
+v0.6
+Force clear lines didn't actually do anything...
+
 v0.5
 Added mod options: Enable Lines, Show Names, Drone Battery Info, Only Battery Info
 

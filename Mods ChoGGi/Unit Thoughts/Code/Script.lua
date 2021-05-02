@@ -44,11 +44,11 @@ local mod_DroneBatteryInfo
 local mod_OnlyBatteryInfo
 local mod_EnableLines
 local mod_ShowNames
-local options
+local mod_ForceClearLines
 
 -- fired when settings are changed/init
 local function ModOptions()
-	options = CurrentModOptions
+	local options = CurrentModOptions
 	mod_EnableMod = options:GetProperty("EnableMod")
 	mod_EnableText = options:GetProperty("EnableText")
 	mod_TextBackground = options:GetProperty("TextBackground")
@@ -58,6 +58,7 @@ local function ModOptions()
 	mod_OnlyBatteryInfo = options:GetProperty("OnlyBatteryInfo")
 	mod_EnableLines = options:GetProperty("EnableLines")
 	mod_ShowNames = options:GetProperty("ShowNames")
+	mod_ForceClearLines = options:GetProperty("ForceClearLines")
 
 	-- make sure we're in-game
 	if not UICity then
