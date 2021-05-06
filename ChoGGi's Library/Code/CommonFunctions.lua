@@ -1170,12 +1170,16 @@ local Sphere = ChoGGi.ComFuncs.Sphere
 
 -- this is a question box without a question (WaitPopupNotification only works in-game, not main menu)
 function ChoGGi.ComFuncs.MsgWait(text, title, image, ok_text, context, parent, template, thread)
-	-- thread needed for WaitMarsQuestion
+	-- thread needed for WaitMarsMsg
 	if not CurrentThread() and thread ~= "skip" then
 		return CreateRealTimeThread(ChoGGi.ComFuncs.MsgWait, text, title, image, ok_text, context, parent, template, "skip")
 	end
 
---~ 	local dlg = CreateMarsQuestionBox(
+	if UICity then
+		PauseGame()
+	end
+
+--~ 	WaitMessage(
 	CreateMessageBox(
 		type(title) == "number" and tostring(title) or title or T(1000016, "Title"),
 		type(text) == "number" and tostring(text) or text or T(3718, "NONE"),
@@ -1185,9 +1189,15 @@ function ChoGGi.ComFuncs.MsgWait(text, title, image, ok_text, context, parent, t
 		image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
 		context, template
 	)
+	if UICity then
+		ResumeGame()
+	end
 
---~ 	-- hide cancel button since we don't care about it, and we ignore them anyways...
---~ 	dlg.idList[2]:delete()
+--~ 	CreateRealTimeThread(function()
+--~ 		PauseGame()
+--~ 		WaitMessage(nil, "title", "text")
+--~ 		ResumeGame()
+--~ 	end)
 end
 
 
@@ -4291,11 +4301,11 @@ do -- LoadEntity
 end -- do
 
 
--- this only adds a parent, no ___BuildingUpdate or anything
+-- this only adds a parent, no ___BuildingUpdate/__Init or anything
 -- ChoGGi.ComFuncs.AddParentToClass(DontBuildHere, "InfopanelObj")
 function ChoGGi.ComFuncs.AddParentToClass(class_obj, parent_name)
 	local p = class_obj.__parents
-	if not table_find(p, parent_name) then
+	if p and not table_find(p, parent_name) then
 		p[#p+1] = parent_name
 	end
 end
@@ -5103,6 +5113,7 @@ end
 
 function ChoGGi.ComFuncs.SetBuildingLimits(force)
 	local cs = ConstructionStatus
+	-- force is from my mods (or yours), usersettings is from ECM
 	if force or ChoGGi.UserSettings.RemoveBuildingLimits then
 		for id, status in pairs(cs) do
 			if id:sub(1, 9) ~= "Landscape" and status.type == "error" then
@@ -5110,6 +5121,7 @@ function ChoGGi.ComFuncs.SetBuildingLimits(force)
 			end
 		end
 	else
+		-- table created in Code\Settings.lua
 		local orig_cs = ChoGGi.Tables.ConstructionStatus
 		for id, status in pairs(cs) do
 			if id:sub(1, 9) ~= "Landscape" and status.type == "warning" then
@@ -5817,8 +5829,8 @@ function ChoGGi.ComFuncs.MapDelete(class)
 		for i = #objs, 1, -1 do
 			DeleteObject(objs[i])
 		end
+	-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything*
 	elseif IsKindOf(g_Classes[class], "CObject") then
-		-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything*
 		MapDelete(true, class)
 	end
 

@@ -82,9 +82,10 @@ do -- stored tables stuff
 	}
 	-- these are edited when removing building limits
 	local ConstructionStatus = ConstructionStatus
-	local table_copy = table.copy
+	local table = table
+	-- if I table.copy(ConstructionStatus) then all the tables inside are still the same tables
 	for id, status in pairs(ConstructionStatus) do
-		Tables.ConstructionStatus[id] = table_copy(status)
+		Tables.ConstructionStatus[id] = table.copy(status)
 	end
 
 	ChoGGi.ComFuncs.UpdateOtherTables()

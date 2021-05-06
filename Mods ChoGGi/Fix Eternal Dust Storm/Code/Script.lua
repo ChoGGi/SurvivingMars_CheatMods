@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local tostring, string = tostring, string
+
 local mod_EnableMod
 
 -- fired when settings are changed/init
@@ -18,11 +20,7 @@ function OnMsg.ApplyModOptions(id)
 end
 
 function OnMsg.InGameInterfaceCreated()
-	if not mod_EnableMod then
-		return
-	end
-
-	if not g_DustStorm then
+	if not mod_EnableMod or not g_DustStorm then
 		return
 	end
 
@@ -30,16 +28,11 @@ function OnMsg.InGameInterfaceCreated()
 	StopDustStorm()
 
 	-- skip working dust storms
-	local not_broked
 	local notes = g_ActiveOnScreenNotifications
 	for i = 1, #notes do
-		local id = notes[i][1]
-		if type(id) == "string" and id:find("DustStorm") then
-			not_broked = true
+		if string.find(tostring(notes[i][1]), "DustStorm") then
+			return
 		end
-	end
-	if not_broked then
-		return
 	end
 
 	-- what should be getting called with the above func, but the thread was stopped already without it happening.

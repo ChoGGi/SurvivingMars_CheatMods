@@ -23,16 +23,15 @@ local function AddTimeRemaining(xtemplate)
 	xtemplate.ChoGGi_AddedFarmTimeRemaining = true
 
 	local idx = table.find(xtemplate, "Image", "UI/CommonNew/ip_header.tga")
-	if not idx then
-		return
+	if idx then
+		xtemplate = xtemplate[idx]
+		xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
+			"__template", "InfopanelText",
+			"Margins", box(52, 0, 20, 0),
+			"Text", T("<ChoGGi_HarvestTimeRemaining>"),
+		})
 	end
 
-	xtemplate = xtemplate[idx]
-	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
-		"__template", "InfopanelText",
-		"Margins", box(52, 0, 20, 0),
-		"Text", T("<ChoGGi_HarvestTimeRemaining>"),
-	})
 end
 
 function OnMsg.ClassesPostprocess()

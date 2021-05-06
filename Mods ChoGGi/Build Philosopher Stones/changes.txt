@@ -1,1 +1,6 @@
+v0.3
+Sinkholes and fireflies
+
 v0.2
+You can hook up and get your rares now.
+Added a launch button if you like the spectacle.

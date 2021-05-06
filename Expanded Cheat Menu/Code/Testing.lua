@@ -291,17 +291,6 @@ function ChoGGi.testing.ExportBuildingFootprints()
 		OpenCity = true,
 		OpenFarm = true,
 		TheExcavator = true,
-		XXXXX = true,
-		XXXXX = true,
-		XXXXX = true,
-		XXXXX = true,
-		XXXXX = true,
-		XXXXX = true,
-		XXXXX = true,
-		XXXXX = true,
-		XXXXX = true,
-		XXXXX = true,
-
 	}
 
 	CreateRealTimeThread(function()

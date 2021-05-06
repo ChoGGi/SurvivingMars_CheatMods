@@ -2,7 +2,8 @@
 
 -- add items/hint to the cheats pane
 
-local pairs = pairs
+local pairs, table = pairs, table
+local DoneObject = DoneObject
 local IsValid = IsValid
 local CreateRealTimeThread = CreateRealTimeThread
 
@@ -1074,6 +1075,94 @@ function Building:CheatCleanAndFix()
 end
 
 -- misc
+
+do -- Fireflies
+	function Building:CheatRemoveAllFireflies()
+		if not self.fireflies then
+			return
+		end
+
+		for i = #self.fireflies, 1, -1 do
+			DoneObject(self.fireflies[i])
+		end
+
+		self.fireflies = nil
+	end
+
+	local IsValid = IsValid
+	local GetRandomPassableAround = GetRandomPassableAround
+	local guim600 = guim * 600
+
+	local firefly_states = {
+		"lightTrap",
+		"moistureVaporator",
+		"waterExtractor",
+		"waterPillar",
+		"waterPipe",
+		"waterTank",
+		"lightTrap",
+		"waterTankLarge",
+	}
+
+	local	function Firefly_Drain(self)
+		self:SetAngle(Random(0, 21600))
+		while true do
+			-- remove firefly if building removed
+			if not IsValid(self.sinkhole) then
+				DoneObject(self)
+				return
+			end
+
+
+--~ 			PlayFX("Approach", "start", self)
+
+			if self.water_source.class == "WaterTank" then
+				self:PlayState("waterTankStart")
+				self:SetState("waterTankIdle")
+			elseif self.water_source.class == "WaterTankLarge" then
+				self:PlayState("waterTankLargeStart")
+				self:SetState("waterTankLargeIdle")
+			elseif self.water_source.class == "MoistureVaporator" then
+				self:PlayState("moistureVaporatorStart")
+				self:SetState("moistureVaporatorIdle")
+			elseif self.water_source.class == "LifeSupportGridElement" then
+				if self.water_source.entity == "Tube" then
+					self:PlayState("waterPipeStart")
+					self:SetState("waterPipeIdle")
+				else
+					self:PlayState("waterPillarStart")
+					self:SetState("waterPillarIdle")
+				end
+			else
+				local state = table.rand(firefly_states)
+				self:PlayState(state .. "Start")
+				self:SetState(state .. "Idle")
+			end
+
+			self.lights[1]:SetIntensity(Random(1, 150))
+
+			Sleep(self:TimeToAnimEnd())
+		end
+	end
+
+	function Building:CheatSpawnAFirefly()
+		if not self.fireflies then
+			self.fireflies = {}
+		end
+
+		local firefly = Firefly:new{sinkhole = self}
+	--~ 	ex(firefly)
+
+		firefly.water_source = self
+		firefly.Drain = Firefly_Drain
+
+		firefly:SetPos(self:GetPos())
+		firefly:SetAngle(Random(0, 21600))
+		table.insert(self.fireflies, firefly)
+		firefly:SetCommand("Start")
+	end
+end -- do
+
 function SecurityStation:CheatReneagadeCapDbl()
 	self.negated_renegades = self.negated_renegades * 2
 end

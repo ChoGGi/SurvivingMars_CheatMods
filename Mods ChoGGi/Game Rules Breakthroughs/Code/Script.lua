@@ -162,7 +162,16 @@ function City:TechAvailableCondition(tech, ...)
 
 	-- return false to exclude tech
 	if lookup_rules[tech.id] then
-		return false
+		local new_tech
+		while not new_tech do
+			local temp = self:GetUnregisteredBreakthroughs()[1]
+			if temp and not lookup_rules[temp.id] then
+				new_tech = TechDef[temp.id]
+				break
+			end
+		end
+		tech = new_tech
+--~ 		return false
 	end
 
 	return orig_City_TechAvailableCondition(self, tech, ...)

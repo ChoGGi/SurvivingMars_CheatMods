@@ -1,3 +1,6 @@
+v1.4
+Exclude Breakthroughs was skipping some anomaly breakthroughs.
+
 v1.3
 Name icons.
 

@@ -2,6 +2,9 @@
 
 ## v16.9 (Unreleased)
 
+### Added:
+- Cheats pane>RemoveAllFireflies and SpawnAFirefly: kinda jerky but they work.
+
 ### Fixed:
 - The `[UI WARNING]` msgs when selecting a Safari Rover (not sure why the devs used the Building class for the safari).
 - Possible fix for Flatten ground ignoring soil quality (#38).

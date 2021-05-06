@@ -2,6 +2,7 @@
 
 local mod_EnableMod
 local mod_DroneHubRange
+local mod_DroneHubRangeDefault
 
 local orig_CommandCenterMaxRadius = const.CommandCenterMaxRadius
 
@@ -32,6 +33,10 @@ local function SetModOptions()
 	const.CommandCenterMaxRadius = mod_DroneHubRange
 	ChoGGi.ComFuncs.SetConstsG("CommandCenterMaxRadius", mod_DroneHubRange)
 
+	-- default range of new hubs
+	DroneHub.UIWorkRadius = mod_DroneHubRangeDefault
+	DroneHub.work_radius = mod_DroneHubRangeDefault
+
 	local objs = UICity.labels.DroneHub or ""
 	for i = 1, #objs do
 		local obj = objs[i]
@@ -44,6 +49,10 @@ end
 local function ModOptions()
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_DroneHubRange = CurrentModOptions:GetProperty("DroneHubRange")
+	mod_DroneHubRangeDefault = CurrentModOptions:GetProperty("DroneHubRangeDefault")
+
+	SetPropertyProp(DroneHub, "UIWorkRadius", "max", mod_DroneHubRange)
+
 
 	-- make sure we're in-game
 	if not UICity then

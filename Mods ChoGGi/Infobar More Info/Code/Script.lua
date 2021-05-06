@@ -286,11 +286,17 @@ local function HasExploiters(class)
 	end
 end
 
-local function ShowResourceWarningMsg(resource)
-	ChoGGi.ComFuncs.MsgWait(T{302535920011941, "<color ChoGGi_red>Warning</color>: <resource> remaining in mined deposits below threshold set in mod options (<remaining>)!",
-		resource = resource,
-		remaining = remaining,
-	}, T(302535920011942, "Infobar More Info") .. ": " .. resource)
+local function ShowResourceWarningMsg(remaining, resource)
+	CreateRealTimeThread(function()
+		PauseGame()
+		WaitMessage(nil, T(302535920011942, "Infobar More Info") .. ": " .. resource, T{302535920011941, [[<color ChoGGi_red>Warning</color>: <resource> remaining in mined deposits below <remaining>!
+
+(see mod options to disable message)]],
+			resource = resource,
+			remaining = remaining,
+		})
+		ResumeGame()
+	end)
 end
 
 function OnMsg.NewHour()

@@ -9,7 +9,15 @@ return {
 	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "DroneHubRange",
-		"DisplayName", table.concat(T(3518,"Drone Hub") .. " " .. T(643,"Range")),
+		"DisplayName", table.concat(T(8780,"MAX") .. " " .. T(3518,"Drone Hub") .. " " .. T(643,"Range")),
+		"DefaultValue", const.CommandCenterDefaultRadius,
+		"MinValue", const.CommandCenterMinRadius,
+		"MaxValue", 500,
+		"StepSize", 5,
+	}),
+	PlaceObj("ModItemOptionNumber", {
+		"name", "DroneHubRangeDefault",
+		"DisplayName", table.concat(T(1000121,"Default") .. " " .. T(3518,"Drone Hub") .. " " .. T(643,"Range")),
 		"DefaultValue", const.CommandCenterDefaultRadius,
 		"MinValue", const.CommandCenterMinRadius,
 		"MaxValue", 500,

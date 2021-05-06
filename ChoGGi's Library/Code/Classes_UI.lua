@@ -780,6 +780,13 @@ function ChoGGi_XWindow:SetPos(obj, dialog, children)
 		h = box:sizey()
 	end
 
+	-- make sure titlebar is onscreen
+	if y < 0 then
+		y = 100
+	elseif y > terminal.desktop.measure_height then
+		y = 100
+	end
+
 	dlg:SetBox(x, y, w, h, children)
 end
 

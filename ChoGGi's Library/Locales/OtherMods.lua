@@ -1255,6 +1255,10 @@ Leave blank to skip search box."
 302535920011943, "Turn on to have these icons toggled, turn off to always be visible."
 302535920011944, "<color 255 255 0>Show Icons</color>"
 302535920011945, "Turn this on to show all icons, turn off to hide certain icons."
+[[Build Philosopher Stones]]
+302535920011946, "Starts takeoff animation, planting more stones and doing this again will spam the log. Doesn't seem to hurt anything though."
+302535920011947, "Spawn a wisp."
+302535920011948, "Remove all wisps."
 [[UNUSED]]
 
 
@@ -1271,9 +1275,6 @@ Leave blank to skip search box."
 
 
 [[UNUSED]]
-302535920011946,
-302535920011947,
-302535920011948,
 302535920011949,
 302535920011950,
 302535920011951,
