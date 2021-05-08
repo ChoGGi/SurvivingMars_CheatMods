@@ -8,20 +8,7 @@ local mod_DroneHubRangeDefault
 
 local orig_CommandCenterMaxRadius = const.CommandCenterMaxRadius
 
---~ local SetPropertyProp = ChoGGi.ComFuncs.SetPropertyProp
-local SetPropertyProp = ChoGGi.ComFuncs.SetPropertyProp or function(obj, prop_id, value_id, value)
-	if not obj or obj and not obj:IsKindOf("PropertyObject") then
-		return
-	end
-
-	local props = obj.properties
-	local idx = table.find(props, "id", prop_id)
-	if not idx then
-		return
-	end
-
-	props[idx][value_id] = value
-end
+local SetPropertyProp = ChoGGi.ComFuncs.SetPropertyProp
 
 local function SetModOptions()
 	if not mod_EnableMod then

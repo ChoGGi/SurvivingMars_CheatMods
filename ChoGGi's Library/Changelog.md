@@ -1,5 +1,7 @@
 ## Library Changelog
 
+## v10.0 (08 May 2021)
+
 ## v9.9 (Unreleased)
 - Examining funcs with the blacklist enabled gave an error.
 - Hopefully a fix for that HGE::l_SetPos log spam (it doesn't harm anything, but it's annoying).
