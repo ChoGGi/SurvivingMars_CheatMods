@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local table = table
 local pairs, type = pairs, type
 local Sleep = Sleep
 local IsValid = IsValid
@@ -13,13 +14,12 @@ local Strings = ChoGGi.Strings
 local testing = ChoGGi.testing
 
 function ChoGGi.MenuFuncs.RemoveInvalidLabelObjects()
-	local table_remove = table.remove
 	local labels = UICity.labels
 	for id, label in pairs(labels) do
 		if id ~= "Consts" then
 			for i = #label, 1, -1 do
 				if not IsValid(label[i]) then
-					table_remove(label, i)
+					table.remove(label, i)
 				end
 			end
 		end

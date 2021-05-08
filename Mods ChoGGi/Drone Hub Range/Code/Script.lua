@@ -1,21 +1,21 @@
 -- See LICENSE for terms
 
+local table = table
+
 local mod_EnableMod
 local mod_DroneHubRange
 local mod_DroneHubRangeDefault
 
 local orig_CommandCenterMaxRadius = const.CommandCenterMaxRadius
 
-local SetConstsG = ChoGGi.ComFuncs.SetConstsG
 --~ local SetPropertyProp = ChoGGi.ComFuncs.SetPropertyProp
-
-local SetPropertyProp = ChoGGi.ComFuncs.SetPropertyProp or function(obj, prop_id, id, value)
+local SetPropertyProp = ChoGGi.ComFuncs.SetPropertyProp or function(obj, prop_id, value_id, value)
 	if not obj or obj and not obj:IsKindOf("PropertyObject") then
 		return
 	end
 
 	local props = obj.properties
-	local idx = table_find(props, "id", prop_id)
+	local idx = table.find(props, "id", prop_id)
 	if not idx then
 		return
 	end

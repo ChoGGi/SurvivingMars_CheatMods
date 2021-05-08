@@ -45,10 +45,6 @@ local width, height
 
 -- local some globals
 local table = table
-local table_clear = table.clear
-local table_iclear = table.iclear
-local table_insert = table.insert
-local table_sort = table.sort
 local CmpLower = CmpLower
 local CreateRealTimeThread = CreateRealTimeThread
 local DeleteThread = DeleteThread
@@ -834,7 +830,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 						values[values_c] = TableConcat(values_temp)
 					end
 				end
-				table_sort(values)
+				table.sort(values)
 				c = c + 1
 				roll_text[c] = "\n"
 				c = c + 1
@@ -871,11 +867,11 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 		title = obj_name .. " " .. T(1000162, "Menu") .. " (" .. obj_type .. ")"
 
 		-- stick info at the top of list
-		table_insert(roll_text, 1, Strings[302535920001540--[[Show context menu for <green>%s</green>.]]]:format(obj_name)
+		table.insert(roll_text, 1, Strings[302535920001540--[[Show context menu for <green>%s</green>.]]]:format(obj_name)
 			.. "\n"
 		)
 		-- add the value to the key tooltip
-		table_insert(roll_text, 2, obj_str .. "\n\n")
+		table.insert(roll_text, 2, obj_str .. "\n\n")
 		c = c + 2
 
 		-- If it's an image then add 'er to the text
@@ -1473,8 +1469,8 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 			image = "CommonAssets/UI/Menu/gear.tga",
 			clicked = function()
 				if self.parents[1] or self.ancestors[1] then
-					table_clear(self.menu_added)
-					table_clear(self.menu_list_items)
+					table.clear(self.menu_added)
+					table.clear(self.menu_list_items)
 
 					-- add examiner object with some spaces so it's at the top
 					self:BuildFuncList(self.obj_ref.class, "  ")
@@ -1848,7 +1844,7 @@ function ChoGGi_DlgExamine:GetCleanText(scrolled_text, skip_ast)
 	local text_temp = {}
 	for line, list in pairs(cache) do
 		-- we stick all the text chunks into a table to concat after
-		table_iclear(text_temp)
+		table.iclear(text_temp)
 		for i = 1, #list do
 			local text = list[i].text
 			if i == 1 and skip_ast and text == "* " then
@@ -1866,7 +1862,7 @@ function ChoGGi_DlgExamine:GetCleanText(scrolled_text, skip_ast)
 	end
 
 	-- sort by line group
-	table_sort(cache_temp, function(a, b)
+	table.sort(cache_temp, function(a, b)
 		return a.line < b.line
 	end)
 
@@ -1892,7 +1888,7 @@ function ChoGGi_DlgExamine:FindNext(text, previous)
 	-- see about getting previous working better
 --~ 	local prev_y = 0
 	for y, list_draw_info in pairs(cache) do
-		table_iclear(text_table)
+		table.iclear(text_table)
 		for i = 1, #list_draw_info do
 			text_table[i] = list_draw_info[i].text or ""
 		end
@@ -2642,7 +2638,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 	end
 
 	if c ~= c_orig and not list[6].is_spacer then
-		table_insert(list, 6, {is_spacer = true})
+		table.insert(list, 6, {is_spacer = true})
 	end
 
 	-- style it like the other examine menus
@@ -2861,9 +2857,9 @@ function ChoGGi_DlgExamine:RetDebugGetInfo(obj)
 		temp[c] = key .. ": " .. self:ConvertValueToInfo(value)
 	end
 	-- since pairs doesn't have an order we need a sort
-	table_sort(temp)
+	table.sort(temp)
 
-	table_insert(temp, 1, "\ngetinfo(): ")
+	table.insert(temp, 1, "\ngetinfo(): ")
 	return TableConcat(temp, "\n")
 end
 function ChoGGi_DlgExamine:RetFuncArgs(obj)
@@ -2880,7 +2876,7 @@ function ChoGGi_DlgExamine:RetFuncArgs(obj)
 			temp[i] = debug_getlocal(obj, i)
 		end
 
-		table_insert(temp, 1, "params: ")
+		table.insert(temp, 1, "params: ")
 		local args = TableConcat(temp, ", ")
 
 		-- remove extra , from concat and add ... if it has a vararg
@@ -2908,7 +2904,7 @@ function ChoGGi_DlgExamine:SortInfoList(list, list_sort_num)
 	local list_sort_obj = self.info_list_sort_obj
 	if self.sort_dir then
 		-- sort backwards
-		table_sort(list, function(a, b)
+		table.sort(list, function(a, b)
 			-- strings
 			local c, d = list_sort_obj[a], list_sort_obj[b]
 			if c and d then
@@ -2927,7 +2923,7 @@ function ChoGGi_DlgExamine:SortInfoList(list, list_sort_num)
 		end)
 	else
 		-- sort normally
-		table_sort(list, function(a, b)
+		table.sort(list, function(a, b)
 			-- strings
 			local c, d = list_sort_obj[a], list_sort_obj[b]
 			if c and d then
@@ -2982,10 +2978,10 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 	-- dupe list for the "All" checkbox
 	local skip_dupes = self.info_list_skip_dupes
 
-	table_iclear(list_obj_str)
-	table_clear(list_sort_obj)
-	table_clear(list_sort_num)
-	table_clear(skip_dupes)
+	table.iclear(list_obj_str)
+	table.clear(list_sort_obj)
+	table.clear(list_sort_num)
+	table.clear(skip_dupes)
 
 	local obj_metatable = getmetatable(obj)
 	local c = 0
@@ -3104,7 +3100,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 	if self.is_valid_obj and obj:IsKindOf("CObject") then
 		local entity = self.ChoGGi.ComFuncs.RetObjectEntity(obj)
 
-		table_insert(list_obj_str, 1, "\t--"
+		table.insert(list_obj_str, 1, "\t--"
 			.. self:HyperLink(obj, function()
 				self.ChoGGi.ComFuncs.OpenInExamineDlg(getmetatable(obj), {
 					has_params = true,
@@ -3118,7 +3114,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 		if obj:IsKindOf("ParSystem") then
 			local par_name = obj:GetParticlesName()
 			if par_name ~= "" then
-				table_insert(list_obj_str, 2, "GetParticlesName(): " .. self:ConvertValueToInfo(par_name) .. "\n")
+				table.insert(list_obj_str, 2, "GetParticlesName(): " .. self:ConvertValueToInfo(par_name) .. "\n")
 			end
 		end
 
@@ -3161,7 +3157,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				path = "\n"
 			end
 
-			table_insert(list_obj_str, 2, self.string_State .. ": "
+			table.insert(list_obj_str, 2, self.string_State .. ": "
 				.. GetStateName(state) .. step_vector .. path
 			)
 
@@ -3170,7 +3166,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 		-- parent object of attached obj
 		local parent = obj:GetParent()
 		if IsValid(parent) then
-			table_insert(list_obj_str, 2, "\nGetParent(): " .. self:ConvertValueToInfo(parent)
+			table.insert(list_obj_str, 2, "\nGetParent(): " .. self:ConvertValueToInfo(parent)
 				.. "\nGetAttachOffset(): " .. self:ConvertValueToInfo(obj:GetAttachOffset())
 				.. "\nGetAttachAxis(): " .. self:ConvertValueToInfo(obj:GetAttachAxis())
 				.. "\nGetAttachAngle(): " .. self:ConvertValueToInfo(obj:GetAttachAngle())
@@ -3189,7 +3185,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 			end
 
 			-- some entity details as well
-			table_insert(list_obj_str, 2, "GetEntity(): " .. self:ConvertValueToInfo(entity)
+			table.insert(list_obj_str, 2, "GetEntity(): " .. self:ConvertValueToInfo(entity)
 				.. ver_tris
 				.. "\nGetAxis(): " .. self:ConvertValueToInfo(obj:GetAxis())
 				.. "\nGetAngle(): " .. self:ConvertValueToInfo(obj:GetAngle())
@@ -3213,9 +3209,9 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 		-- add any functions from getmetatable to the (scant) list
 		if obj_metatable then
 			local data_meta = self.info_list_data_meta
-			table_clear(data_meta)
-			table_clear(skip_dupes)
-			table_clear(list_sort_obj)
+			table.clear(data_meta)
+			table.clear(skip_dupes)
+			table.clear(list_sort_obj)
 
 			local m_c = 0
 			mc = self:AddItemsToInfoList(empty_table, m_c, obj_metatable, skip_dupes, data_meta)
@@ -3229,8 +3225,8 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 			-- add some info for HGE. stuff
 			local name = obj_metatable.__name
 			if name == "HGE.TaskRequest" then
-				table_insert(data_meta, 1, "\ngetmetatable():")
-				table_insert(data_meta, 1, "Unpack(): "
+				table.insert(data_meta, 1, "\ngetmetatable():")
+				table.insert(data_meta, 1, "Unpack(): "
 					.. self:HyperLink(obj, function()
 						self.ChoGGi.ComFuncs.OpenInExamineDlg({obj:Unpack()}, {
 							has_params = true,
@@ -3242,7 +3238,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				)
 				-- we use this with Object>Flags
 				self.obj_flags = obj:GetFlags()
-				table_insert(data_meta, 1, "GetFlags(): " .. self:ConvertValueToInfo(self.obj_flags)
+				table.insert(data_meta, 1, "GetFlags(): " .. self:ConvertValueToInfo(self.obj_flags)
 					.. self:ConvertValueToInfo({
 						ChoGGi_AddHyperLink = true,
 						hint = Strings[302535920001447--[[Shows list of flags set for selected object.-]]],
@@ -3251,37 +3247,37 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 						end,
 					})
 				)
-				table_insert(data_meta, 1, "GetReciprocalRequest(): " .. self:ConvertValueToInfo(obj:GetReciprocalRequest()))
-				table_insert(data_meta, 1, "GetLastServiced(): " .. self:ConvertValueToInfo(obj:GetLastServiced()))
-				table_insert(data_meta, 1, "GetFreeUnitSlots(): " .. self:ConvertValueToInfo(obj:GetFreeUnitSlots()))
-				table_insert(data_meta, 1, "GetFillIndex(): " .. self:ConvertValueToInfo(obj:GetFillIndex()))
-				table_insert(data_meta, 1, "GetTargetAmount(): " .. self:ConvertValueToInfo(obj:GetTargetAmount()))
-				table_insert(data_meta, 1, "GetDesiredAmount(): " .. self:ConvertValueToInfo(obj:GetDesiredAmount()))
-				table_insert(data_meta, 1, "GetActualAmount(): " .. self:ConvertValueToInfo(obj:GetActualAmount()))
-				table_insert(data_meta, 1, "GetWorkingUnits(): " .. self:ConvertValueToInfo(obj:GetWorkingUnits()))
-				table_insert(data_meta, 1, "GetResource(): " .. self:ConvertValueToInfo(obj:GetResource()))
-				table_insert(data_meta, 1, "\nGetBuilding(): " .. self:ConvertValueToInfo(obj:GetBuilding()))
+				table.insert(data_meta, 1, "GetReciprocalRequest(): " .. self:ConvertValueToInfo(obj:GetReciprocalRequest()))
+				table.insert(data_meta, 1, "GetLastServiced(): " .. self:ConvertValueToInfo(obj:GetLastServiced()))
+				table.insert(data_meta, 1, "GetFreeUnitSlots(): " .. self:ConvertValueToInfo(obj:GetFreeUnitSlots()))
+				table.insert(data_meta, 1, "GetFillIndex(): " .. self:ConvertValueToInfo(obj:GetFillIndex()))
+				table.insert(data_meta, 1, "GetTargetAmount(): " .. self:ConvertValueToInfo(obj:GetTargetAmount()))
+				table.insert(data_meta, 1, "GetDesiredAmount(): " .. self:ConvertValueToInfo(obj:GetDesiredAmount()))
+				table.insert(data_meta, 1, "GetActualAmount(): " .. self:ConvertValueToInfo(obj:GetActualAmount()))
+				table.insert(data_meta, 1, "GetWorkingUnits(): " .. self:ConvertValueToInfo(obj:GetWorkingUnits()))
+				table.insert(data_meta, 1, "GetResource(): " .. self:ConvertValueToInfo(obj:GetResource()))
+				table.insert(data_meta, 1, "\nGetBuilding(): " .. self:ConvertValueToInfo(obj:GetBuilding()))
 
 			elseif name == "HGE.Grid" then
-				table_insert(data_meta, 1, "\ngetmetatable():")
-				table_insert(data_meta, 1, "get_default(): " .. self:ConvertValueToInfo(obj:get_default()))
-				table_insert(data_meta, 1, "max_value(): " .. self:ConvertValueToInfo(obj:max_value()))
+				table.insert(data_meta, 1, "\ngetmetatable():")
+				table.insert(data_meta, 1, "get_default(): " .. self:ConvertValueToInfo(obj:get_default()))
+				table.insert(data_meta, 1, "max_value(): " .. self:ConvertValueToInfo(obj:max_value()))
 				local size = {obj:size()}
 				if size[1] then
-					table_insert(data_meta, 1, "\nsize(): " .. self:ConvertValueToInfo(size[1])
+					table.insert(data_meta, 1, "\nsize(): " .. self:ConvertValueToInfo(size[1])
 						.. " " .. self:ConvertValueToInfo(size[2]))
 				end
 
 			elseif name == "HGE.XMGrid" then
-				table_insert(data_meta, 1, "\ngetmetatable():")
-				table_insert(data_meta, 1, "GridGetAllocSize(): " .. self:ConvertValueToInfo(GridGetAllocSize(obj) or 0))
+				table.insert(data_meta, 1, "\ngetmetatable():")
+				table.insert(data_meta, 1, "GridGetAllocSize(): " .. self:ConvertValueToInfo(GridGetAllocSize(obj) or 0))
 				local minmax = {obj:minmax()}
 				if minmax[1] then
-					table_insert(data_meta, 1, "minmax(): " .. self:ConvertValueToInfo(minmax[1]) .. " "
+					table.insert(data_meta, 1, "minmax(): " .. self:ConvertValueToInfo(minmax[1]) .. " "
 						.. self:ConvertValueToInfo(minmax[2]))
 				end
 				-- this takes a few seconds to load, so it's in a clickable link
-				table_insert(data_meta, 1, self:ConvertValueToInfo({
+				table.insert(data_meta, 1, self:ConvertValueToInfo({
 					ChoGGi_AddHyperLink = true,
 					hint = Strings[302535920001124--[[Will take a few seconds to complete.]]],
 					name = "levels(true, 1):",
@@ -3293,20 +3289,20 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 					end,
 				}))
 
-				table_insert(data_meta, 1, "GetPositiveCells(): " .. self:ConvertValueToInfo(obj:GetPositiveCells()))
-				table_insert(data_meta, 1, "EnumZones(): " .. self:ConvertValueToInfo(obj:EnumZones()))
-				table_insert(data_meta, 1, "size(): " .. self:ConvertValueToInfo(obj:size()))
-				table_insert(data_meta, 1, "packing(): " .. self:ConvertValueToInfo(obj:packing()))
+				table.insert(data_meta, 1, "GetPositiveCells(): " .. self:ConvertValueToInfo(obj:GetPositiveCells()))
+				table.insert(data_meta, 1, "EnumZones(): " .. self:ConvertValueToInfo(obj:EnumZones()))
+				table.insert(data_meta, 1, "size(): " .. self:ConvertValueToInfo(obj:size()))
+				table.insert(data_meta, 1, "packing(): " .. self:ConvertValueToInfo(obj:packing()))
 				-- crashing tendencies
---~ 				table_insert(data_meta, 1, "histogram(): " .. self:ConvertValueToInfo({obj:histogram()}))
+--~ 				table.insert(data_meta, 1, "histogram(): " .. self:ConvertValueToInfo({obj:histogram()}))
 				-- freeze screen with render error in log ex(Flight_Height:GetBinData())
-				table_insert(data_meta, 1, "\nCenterOfMass(): " .. self:ConvertValueToInfo(obj:CenterOfMass()))
+				table.insert(data_meta, 1, "\nCenterOfMass(): " .. self:ConvertValueToInfo(obj:CenterOfMass()))
 
 			elseif name == "HGE.Box" then
-				table_insert(data_meta, 1, "\ngetmetatable():")
+				table.insert(data_meta, 1, "\ngetmetatable():")
 				local points2d = {obj:ToPoints2D()}
 				if points2d[1] then
-					table_insert(data_meta, 1, "ToPoints2D(): " .. self:ConvertValueToInfo(points2d[1])
+					table.insert(data_meta, 1, "ToPoints2D(): " .. self:ConvertValueToInfo(points2d[1])
 						.. " " .. self:ConvertValueToInfo(points2d[2])
 						.. "\n" .. self:ConvertValueToInfo(points2d[3])
 						.. " " .. self:ConvertValueToInfo(points2d[4])
@@ -3314,91 +3310,91 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				end
 				local bsphere = {obj:GetBSphere()}
 				if bsphere[1] then
-					table_insert(data_meta, 1, "GetBSphere(): "
+					table.insert(data_meta, 1, "GetBSphere(): "
 						.. self:ConvertValueToInfo(bsphere[1]) .. " "
 						.. self:ConvertValueToInfo(bsphere[2]))
 				end
 				local center = obj:Center()
-				table_insert(data_meta, 1, "Center(): " .. self:ConvertValueToInfo(center))
-				table_insert(data_meta, 1, "IsEmpty(): " .. self:ConvertValueToInfo(obj:IsEmpty()))
+				table.insert(data_meta, 1, "Center(): " .. self:ConvertValueToInfo(center))
+				table.insert(data_meta, 1, "IsEmpty(): " .. self:ConvertValueToInfo(obj:IsEmpty()))
 				local Radius = obj:Radius()
 				local Radius2D = obj:Radius2D()
-				table_insert(data_meta, 1, "Radius(): " .. self:ConvertValueToInfo(Radius))
+				table.insert(data_meta, 1, "Radius(): " .. self:ConvertValueToInfo(Radius))
 				if Radius ~= Radius2D then
-					table_insert(data_meta, 1, "Radius2D(): " .. self:ConvertValueToInfo(Radius2D))
+					table.insert(data_meta, 1, "Radius2D(): " .. self:ConvertValueToInfo(Radius2D))
 				end
-				table_insert(data_meta, 1, "IsValidZ(): " .. self:ConvertValueToInfo(obj:IsValidZ()))
-				table_insert(data_meta, 1, "IsValid(): " .. self:ConvertValueToInfo(obj:IsValid()))
-				table_insert(data_meta, 1, "max(): " .. self:ConvertValueToInfo(obj:max()))
+				table.insert(data_meta, 1, "IsValidZ(): " .. self:ConvertValueToInfo(obj:IsValidZ()))
+				table.insert(data_meta, 1, "IsValid(): " .. self:ConvertValueToInfo(obj:IsValid()))
+				table.insert(data_meta, 1, "max(): " .. self:ConvertValueToInfo(obj:max()))
 				local min = obj:size()
 				if min:z() then
-					table_insert(data_meta, 1, "min() x, y, z: " .. self:ConvertValueToInfo(min))
+					table.insert(data_meta, 1, "min() x, y, z: " .. self:ConvertValueToInfo(min))
 				else
-					table_insert(data_meta, 1, "min() x, y: " .. self:ConvertValueToInfo(min))
+					table.insert(data_meta, 1, "min() x, y: " .. self:ConvertValueToInfo(min))
 				end
 				local size = obj:size()
 				if size:z() then
-					table_insert(data_meta, 1, "\nsize() w, h, d: " .. self:ConvertValueToInfo(size))
+					table.insert(data_meta, 1, "\nsize() w, h, d: " .. self:ConvertValueToInfo(size))
 				else
-					table_insert(data_meta, 1, "\nsize() w, h: " .. self:ConvertValueToInfo(size))
+					table.insert(data_meta, 1, "\nsize() w, h: " .. self:ConvertValueToInfo(size))
 				end
 				if center:InBox2D(self.ChoGGi.ComFuncs.ConstructableArea()) then
-					table_insert(data_meta, 1, self:HyperLink(obj, self.ToggleBBox, Strings[302535920001550--[[Toggle viewing BBox.]]]) .. Strings[302535920001549--[[View BBox]]] .. self.hyperlink_end)
+					table.insert(data_meta, 1, self:HyperLink(obj, self.ToggleBBox, Strings[302535920001550--[[Toggle viewing BBox.]]]) .. Strings[302535920001549--[[View BBox]]] .. self.hyperlink_end)
 				end
 
 			elseif name == "HGE.Point" then
-				table_insert(data_meta, 1, "\ngetmetatable():")
-				table_insert(data_meta, 1, "__unm(): " .. self:ConvertValueToInfo(obj:__unm()))
+				table.insert(data_meta, 1, "\ngetmetatable():")
+				table.insert(data_meta, 1, "__unm(): " .. self:ConvertValueToInfo(obj:__unm()))
 				local x, y, z = obj:xyz()
 				local xyz = "x: " .. self:ConvertValueToInfo(x)
 					.. ", y: " .. self:ConvertValueToInfo(y)
 				if z then
 					xyz = xyz .. ", z: " .. self:ConvertValueToInfo(z)
 				end
-				table_insert(data_meta, 1, xyz)
-				table_insert(data_meta, 1, "IsValidZ(): " .. self:ConvertValueToInfo(obj:IsValidZ()))
-				table_insert(data_meta, 1, "\nIsValid(): " .. self:ConvertValueToInfo(obj:IsValid()))
+				table.insert(data_meta, 1, xyz)
+				table.insert(data_meta, 1, "IsValidZ(): " .. self:ConvertValueToInfo(obj:IsValidZ()))
+				table.insert(data_meta, 1, "\nIsValid(): " .. self:ConvertValueToInfo(obj:IsValid()))
 
 			elseif name == "HGE.RandState" then
-				table_insert(data_meta, 1, "\ngetmetatable():")
-				table_insert(data_meta, 1, "Last(): " .. self:ConvertValueToInfo(obj:Last()))
-				table_insert(data_meta, 1, "GetStable(): " .. self:ConvertValueToInfo(obj:GetStable()))
-				table_insert(data_meta, 1, "Get(): " .. self:ConvertValueToInfo(obj:Get()))
-				table_insert(data_meta, 1, "\nCount(): " .. self:ConvertValueToInfo(obj:Count()))
+				table.insert(data_meta, 1, "\ngetmetatable():")
+				table.insert(data_meta, 1, "Last(): " .. self:ConvertValueToInfo(obj:Last()))
+				table.insert(data_meta, 1, "GetStable(): " .. self:ConvertValueToInfo(obj:GetStable()))
+				table.insert(data_meta, 1, "Get(): " .. self:ConvertValueToInfo(obj:Get()))
+				table.insert(data_meta, 1, "\nCount(): " .. self:ConvertValueToInfo(obj:Count()))
 
 			elseif name == "HGE.Quaternion" then
-				table_insert(data_meta, 1, "\ngetmetatable():")
-				table_insert(data_meta, 1, "Norm(): " .. self:ConvertValueToInfo(obj:Norm()))
-				table_insert(data_meta, 1, "Inv(): " .. self:ConvertValueToInfo(obj:Inv()))
+				table.insert(data_meta, 1, "\ngetmetatable():")
+				table.insert(data_meta, 1, "Norm(): " .. self:ConvertValueToInfo(obj:Norm()))
+				table.insert(data_meta, 1, "Inv(): " .. self:ConvertValueToInfo(obj:Inv()))
 				local roll, pitch, yaw = obj:GetRollPitchYaw()
-				table_insert(data_meta, 1, "GetRollPitchYaw(): "
+				table.insert(data_meta, 1, "GetRollPitchYaw(): "
 					.. self:ConvertValueToInfo(roll)
 					.. " " .. self:ConvertValueToInfo(pitch)
 					.. " " .. self:ConvertValueToInfo(yaw))
-				table_insert(data_meta, 1, "\nGetAxisAngle(): " .. self:ConvertValueToInfo(obj:GetAxisAngle()))
+				table.insert(data_meta, 1, "\nGetAxisAngle(): " .. self:ConvertValueToInfo(obj:GetAxisAngle()))
 
 			elseif name == "LuaPStr" then
-				table_insert(data_meta, 1, "\ngetmetatable():")
-				table_insert(data_meta, 1, "hash(): " .. self:ConvertValueToInfo(obj:hash()))
-				table_insert(data_meta, 1, "str(): " .. self:ConvertValueToInfo(obj:str()))
-				table_insert(data_meta, 1, "parseTuples(): " .. self:ConvertValueToInfo(obj:parseTuples()))
-				table_insert(data_meta, 1, "getInt(): " .. self:ConvertValueToInfo(obj:getInt()))
-				table_insert(data_meta, 1, "\nsize(): " .. self:ConvertValueToInfo(obj:size()))
+				table.insert(data_meta, 1, "\ngetmetatable():")
+				table.insert(data_meta, 1, "hash(): " .. self:ConvertValueToInfo(obj:hash()))
+				table.insert(data_meta, 1, "str(): " .. self:ConvertValueToInfo(obj:str()))
+				table.insert(data_meta, 1, "parseTuples(): " .. self:ConvertValueToInfo(obj:parseTuples()))
+				table.insert(data_meta, 1, "getInt(): " .. self:ConvertValueToInfo(obj:getInt()))
+				table.insert(data_meta, 1, "\nsize(): " .. self:ConvertValueToInfo(obj:size()))
 --~ 				elseif name == "HGE.File" then
 --~ 				elseif name == "HGE.ForEachReachable" then
 --~ 				elseif name == "RSAKey" then
 --~ 				elseif name == "lpeg-pattern" then
 
 			else
-				table_insert(data_meta, 1, "\ngetmetatable():")
+				table.insert(data_meta, 1, "\ngetmetatable():")
 
 				local is_t = IsT(obj)
 				if is_t then
-					table_insert(data_meta, 1, "THasArgs(): " .. self:ConvertValueToInfo(THasArgs(obj)))
+					table.insert(data_meta, 1, "THasArgs(): " .. self:ConvertValueToInfo(THasArgs(obj)))
 					-- IsT returns the string id, but we'll just call it TGetID() to make it more obvious for people
-					table_insert(data_meta, 1, "\nTGetID(): " .. self:ConvertValueToInfo(is_t))
+					table.insert(data_meta, 1, "\nTGetID(): " .. self:ConvertValueToInfo(is_t))
 					if str_not_translated and not UICity then
-						table_insert(data_meta, 1, Strings[302535920001500--[[userdata object probably needs UICity to translate.]]])
+						table.insert(data_meta, 1, Strings[302535920001500--[[userdata object probably needs UICity to translate.]]])
 					end
 				end
 			end
@@ -3522,7 +3518,7 @@ Decompiled code won't scroll correctly as the line numbers are different."]]]:fo
 	-- do we add a metatable to it?
 	if not (obj == "nil" or self.is_valid_obj or obj_type == "userdata") and obj_metatable
 			or self.is_valid_obj and obj:IsKindOf("BaseSocket") then
-		table_insert(list_obj_str, 1, "\t-- metatable: " .. self:ConvertValueToInfo(obj_metatable) .. " --")
+		table.insert(list_obj_str, 1, "\t-- metatable: " .. self:ConvertValueToInfo(obj_metatable) .. " --")
 
 		if self.enum_vars and next(self.enum_vars) then
 			list_obj_str[1] = list_obj_str[1] .. self:HyperLink(obj, function()
@@ -3558,7 +3554,7 @@ do -- BuildAttachesPopup
 	end
 
 	function ChoGGi_DlgExamine:BuildAttachesPopup(obj)
-		table_iclear(self.attaches_menu_popup)
+		table.iclear(self.attaches_menu_popup)
 		local attaches = self.ChoGGi.ComFuncs.GetAllAttaches(obj, true)
 		local attach_amount = #attaches
 
@@ -3572,7 +3568,7 @@ do -- BuildAttachesPopup
 			end
 
 			-- build hint
-			table_iclear(self.attaches_menu_popup_hint)
+			table.iclear(self.attaches_menu_popup_hint)
 			local c = 1
 			self.attaches_menu_popup_hint[c] = self.string_Classname .. ": " .. a.class
 			c = c + 1
@@ -3617,7 +3613,7 @@ do -- BuildAttachesPopup
 		end
 
 		if attach_amount > 0 then
-			table_sort(self.attaches_menu_popup, SortList)
+			table.sort(self.attaches_menu_popup, SortList)
 
 			SetWinObjectVis(self.idAttaches, true)
 			self.idAttaches.RolloverText = Strings[302535920000070--[["Shows list of attachments. This %s has %s.
@@ -3752,8 +3748,8 @@ function ChoGGi_DlgExamine:SetObj(startup)
 	local obj = self.obj
 
 	-- Reset the hyperlinks
-	table_iclear(self.onclick_funcs)
-	table_iclear(self.onclick_objs)
+	table.iclear(self.onclick_funcs)
+	table.iclear(self.onclick_objs)
 	self.onclick_count = 0
 
 	if self.str_object then
@@ -3793,8 +3789,8 @@ function ChoGGi_DlgExamine:SetObj(startup)
 
 		-- build parents/ancestors menu
 		if obj_class then
-			table_iclear(self.parents_menu_popup)
-			table_clear(self.pmenu_skip_dupes)
+			table.iclear(self.parents_menu_popup)
+			table.clear(self.pmenu_skip_dupes)
 			-- build menu list
 			self:BuildParentsMenu(obj.__parents, "parents", Strings[302535920000520--[[Parents]]])
 			self:BuildParentsMenu(obj.__ancestors, "ancestors", Strings[302535920000525--[[Ancestors]]], true)

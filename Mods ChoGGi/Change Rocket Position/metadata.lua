@@ -11,16 +11,17 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ChangeRocketPosition",
 	"steam_id", "1707472695",
 	"pops_any_uuid", "d7bd5fe9-ebb5-4800-ace3-4d66c8f53d8f",
+	"lua_revision", 1001514, -- Tito
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
-	"lua_revision", 1001514, -- Tito
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Adds a button to rockets that lets you re-position the rocket.
+	"description", [[
+Adds a button to rockets that lets you re-position the rocket (hidden if no fuel).
 Costs 10 fuel per re-position.
 
 

@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local print = print
+local table = table
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local TableConcat = ChoGGi.ComFuncs.TableConcat
@@ -23,7 +24,6 @@ do -- ModUpload
 		ChoGGi_UnitThoughts = "Unit Thoughts (upload 3)",
 	}
 
-	local table_iclear = table.iclear
 
 	-- this keeps the check saved per session (true = steam, false = paradox)
 	local upload_to_who = true
@@ -429,13 +429,13 @@ email: ECM@choggi.org"]]] .. "\n\n\n" .. mod.description
 						mod.saved_with_revision = LuaRevision
 					end
 
-					table_iclear(result_msg)
-					table_iclear(result_title)
+					table.iclear(result_msg)
+					table.iclear(result_title)
 
 					-- only one mod to upload so we ask questions
 					if choices_len == 1 then
 						-- build / show confirmation dialog
-						table_iclear(upload_msg)
+						table.iclear(upload_msg)
 						local m_c = 0
 
 						m_c = m_c + 1
@@ -716,7 +716,7 @@ function ChoGGi.MenuFuncs.RetHardwareInfo()
 			hw[chw] = key .. ": " .. value .. "\n"
 		end
 	end
-	table_sort(hw)
+	table.sort(hw)
 	chw = chw + 1
 	hw[chw] = "\n"
 
@@ -828,12 +828,11 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 		end
 
 		-- remove any saves we deleted
-		local table_remove = table.remove
 		local FileExists = ChoGGi.ComFuncs.FileExists
 		local games_amt = #SavegamesList
 		for i = #SavegamesList, 1, -1 do
 			if not FileExists(save_folder .. SavegamesList[i].savename) then
-				table_remove(SavegamesList, i)
+				table.remove(SavegamesList, i)
 			end
 		end
 

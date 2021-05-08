@@ -2,10 +2,8 @@
 
 -- OnMsgs (most of them)
 
+local table = table
 local type, pairs = type, pairs
-local table_sort = table.sort
-local table_remove = table.remove
-local table_find = table.find
 local FlushLogFile = FlushLogFile
 local Msg = Msg
 local OnMsg = OnMsg
@@ -95,7 +93,7 @@ function OnMsg.ClassesPostprocess()
 				xt.Id = "id" .. template.id .. "_ChoGGi"
 			end
 		-- add cheats section to stuff without it
-		elseif key:sub(1, 2) == "ip" and not table_find(xt, "__template", "sectionCheats") then
+		elseif key:sub(1, 2) == "ip" and not table.find(xt, "__template", "sectionCheats") then
 			xt[#xt+1] = PlaceObj("XTemplateTemplate", {
 				"__template", "sectionCheats",
 			})
@@ -124,10 +122,10 @@ function OnMsg.ClassesPostprocess()
 	-- change rollover max width
 	if UserSettings.WiderRollovers then
 		local roll = XTemplates.Rollover[1]
-		local idx = table_find(roll, "Id", "idContent")
+		local idx = table.find(roll, "Id", "idContent")
 		if idx then
 			roll = roll[idx]
-			idx = table_find(roll, "Id", "idText")
+			idx = table.find(roll, "Id", "idText")
 			if idx then
 				roll[idx].MaxWidth = UserSettings.WiderRollovers
 			end
@@ -274,7 +272,7 @@ function OnMsg.ClassesPostprocess()
 
 	-- add HiddenX cat for Hidden items
 	local bc = BuildCategories
-	if ChoGGi.UserSettings.Building_hide_from_build_menu and not table_find(bc, "id", "HiddenX") then
+	if ChoGGi.UserSettings.Building_hide_from_build_menu and not table.find(bc, "id", "HiddenX") then
 		bc[#bc+1] = {
 			id = "HiddenX",
 			name = T(1000155--[[Hidden]]),
@@ -342,7 +340,7 @@ function OnMsg.ModsReloaded()
 			local a = Actions[i]
 			-- If it's a . than we haven't updated it yet
 			if a.ActionId:sub(1, 1) == "." then
-				table_remove(Actions, i)
+				table.remove(Actions, i)
 			end
 		end
 	else
@@ -538,9 +536,9 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"]]]
 				name = name:gsub("Building", "")
 			end
 			local reqs = BuildingTechRequirements[id]
-			local idx = table_find(reqs, "check_supply", name)
+			local idx = table.find(reqs, "check_supply", name)
 			if idx then
-				table_remove(reqs, idx)
+				table.remove(reqs, idx)
 			end
 		end
 
@@ -596,7 +594,7 @@ function OnMsg.PersistPostLoad()
 							print(Strings[302535920001401--[["Removed missing mod building from %s: %s, entity: %s, handle: %s"]]]:format(label_id, RetName(obj), obj:GetEntity(), obj.handle))
 						end
 						obj:delete()
-						table_remove(label, i)
+						table.remove(label, i)
 					end
 				end
 			end
@@ -1003,7 +1001,7 @@ function OnMsg.NewDay() -- NewSol...
 			local obj = objs[i]
 			-- no sense in doing it with only one center
 			if obj.command_centers[2] then
-				table_sort(obj.command_centers, function(a, b)
+				table.sort(obj.command_centers, function(a, b)
 					return obj:GetVisualDist2D(a) < obj:GetVisualDist2D(b)
 				end)
 			end
@@ -1020,7 +1018,7 @@ function OnMsg.NewDay() -- NewSol...
 	local popups = ChoGGi.Temp.MsgPopups or ""
 	for i = #popups, 1, -1 do
 		if not IsValidXWin(popups[i]) then
-			table_remove(popups, i)
+			table.remove(popups, i)
 		end
 	end
 

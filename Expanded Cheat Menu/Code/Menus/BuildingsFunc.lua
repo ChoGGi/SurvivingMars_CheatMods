@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local table = table
 -- BuildingTemplates, ClassTemplates.Building
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -81,8 +82,6 @@ end
 function ChoGGi.MenuFuncs.SponsorBuildingLimits_Toggle()
 	local BuildingTechRequirements = BuildingTechRequirements
 	local BuildingTemplates = BuildingTemplates
-	local table_remove = table.remove
-	local table_find = table.find
 
 	if ChoGGi.UserSettings.SponsorBuildingLimits then
 		-- used when starting/loading a game
@@ -120,9 +119,9 @@ function ChoGGi.MenuFuncs.SponsorBuildingLimits_Toggle()
 				name = name:gsub("Building", "")
 			end
 			local reqs = BuildingTechRequirements[id]
-			local idx = table_find(reqs, "check_supply", name)
+			local idx = table.find(reqs, "check_supply", name)
 			if idx then
-				table_remove(reqs, idx)
+				table.remove(reqs, idx)
 			end
 
 		end

@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local table = table
 local Strings = ChoGGi.Strings
 
 function ChoGGi.MenuFuncs.ConsoleRestart()
@@ -14,7 +15,6 @@ function ChoGGi.MenuFuncs.ConsoleRestart()
 end
 
 do -- ExamineObjectRadius
-	local table_sort = table.sort
 	local SelObjects = ChoGGi.ComFuncs.SelObjects
 	local GetCursorWorldPos = GetCursorWorldPos
 	local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
@@ -29,7 +29,7 @@ do -- ExamineObjectRadius
 		if objs[1] then
 			pt = GetCursorWorldPos()
 			-- sort by nearest
-			table_sort(objs, SortDist)
+			table.sort(objs, SortDist)
 
 			OpenInExamineDlg(objs, {
 				has_params = true,

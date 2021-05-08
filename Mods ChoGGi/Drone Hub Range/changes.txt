@@ -1,2 +1,5 @@
+v0.3
+Missed a _
+
 v0.2
 Added mod option to set default range of new hubs.

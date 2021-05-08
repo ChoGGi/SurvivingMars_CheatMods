@@ -8,10 +8,11 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Translate = ChoGGi.ComFuncs.Translate
 
 local pairs, tonumber, type, tostring = pairs, tonumber, type, tostring
+local table = table
+local terrain = terrain
 local AsyncRand = AsyncRand
 local AveragePoint2D = AveragePoint2D
 local FindNearestObject = FindNearestObject -- (list,obj) or (list,pos,filterfunc)
-local GetTerrainCursor = GetTerrainCursor
 local UseGamepadUI = UseGamepadUI
 local SelectionGamepadObj = SelectionGamepadObj
 local SelectionMouseObj = SelectionMouseObj
@@ -22,19 +23,6 @@ local IsPoint = IsPoint
 local MapFilter = MapFilter
 local MapGet = MapGet
 local PropObjGetProperty = PropObjGetProperty
-local table = table
-local table_remove = table.remove
-local table_find = table.find
-local table_clear = table.clear
-local table_iclear = table.iclear
-local table_icopy = table.icopy
-local table_sort = table.sort
-local table_copy = table.copy
-local table_rand = table.rand
-local table_set_defaults = table.set_defaults
-local table_append = table.append
-local table_ifilter = table.ifilter
-local table_imap = table.imap
 local CreateRealTimeThread = CreateRealTimeThread
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
@@ -48,7 +36,6 @@ local GameTime = GameTime
 local guic = guic
 local ViewObjectMars = ViewObjectMars
 local RGB = RGB
-local terrain_IsPassable = terrain.IsPassable
 local HexGridGetObject = HexGridGetObject
 local HexToWorld = HexToWorld
 local point = point
@@ -57,7 +44,6 @@ local WaitMsg = WaitMsg
 local Sleep = Sleep
 local CreateGameTimeThread = CreateGameTimeThread
 local IsInMapPlayableArea = IsInMapPlayableArea
-local terrain_GetHeight = terrain.GetHeight
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
 
@@ -618,7 +604,7 @@ do -- MsgPopup
 		end
 
 		if not params then
-			table_clear(temp_params)
+			table.clear(temp_params)
 			params = temp_params
 		end
 
@@ -656,8 +642,8 @@ do -- MsgPopup
 			image = params.image and ValidateImage(params.image) or ChoGGi.library_path .. "UI/TheIncal.png",
 		}
 
-		table_set_defaults(data, params)
-		table_set_defaults(data, OnScreenNotificationPreset)
+		table.set_defaults(data, params)
+		table.set_defaults(data, OnScreenNotificationPreset)
 
 		-- click icon to view obj
 		if params.objects then
@@ -671,7 +657,7 @@ do -- MsgPopup
 
 		-- needed in Sagan update
 		local aosn = g_ActiveOnScreenNotifications
-		local idx = table_find(aosn, 1, data.id) or #aosn + 1
+		local idx = table.find(aosn, 1, data.id) or #aosn + 1
 		aosn[idx] = {data.id}
 
 		-- and show the popup
@@ -709,7 +695,7 @@ do -- ShowObj
 		-39680, -- slightly darker orange (don't want it blending in to the ground as much as -23296)
 	}
 	local function rand_c()
-		return table_rand(rand_colours)
+		return table.rand(rand_colours)
 	end
 	ChoGGi.ComFuncs.RandomColourLimited = rand_c
 
@@ -744,7 +730,7 @@ do -- ShowObj
 			for k, v in pairs(markers) do
 				ClearMarker(k, v)
 			end
-			table_clear(markers)
+			table.clear(markers)
 			ResumePassEdits("ChoGGi.ComFuncs.ClearShowObj")
 			return
 		end
@@ -1319,7 +1305,7 @@ function ChoGGi.ComFuncs.RemoveMissingLabelObjects(label)
 	local list = UICity.labels[label] or ""
 	for i = #list, 1, -1 do
 		if not IsValid(list[i]) then
-			table_remove(UICity.labels[label], i)
+			table.remove(UICity.labels[label], i)
 		end
 	end
 end
@@ -1328,13 +1314,13 @@ function ChoGGi.ComFuncs.RemoveMissingTableObjects(list, obj)
 	if obj then
 		for i = #list, 1, -1 do
 			if #list[i][list] == 0 then
-				table_remove(list, i)
+				table.remove(list, i)
 			end
 		end
 	else
 		for i = #list, 1, -1 do
 			if not IsValid(list[i]) then
-				table_remove(list, i)
+				table.remove(list, i)
 			end
 		end
 	end
@@ -1346,7 +1332,7 @@ function ChoGGi.ComFuncs.RemoveFromLabel(label, obj)
 	local list = UICity.labels[label] or ""
 	for i = 1, #list do
 		if list[i] and list[i].handle and list[i] == obj.handle then
-			table_remove(UICity.labels[label], i)
+			table.remove(UICity.labels[label], i)
 		end
 	end
 end
@@ -1433,7 +1419,7 @@ function ChoGGi.ComFuncs.SetPropertyProp(obj, prop_id, value_id, value)
 	end
 
 	local props = obj.properties
-	local idx = table_find(props, "id", prop_id)
+	local idx = table.find(props, "id", prop_id)
 	if not idx then
 		return
 	end
@@ -1464,8 +1450,8 @@ do -- TableCleanDupes
 			dupe_t = {}
 			temp_t = {}
 		else
-			table_iclear(temp_t)
-			table_clear(dupe_t)
+			table.iclear(temp_t)
+			table.clear(dupe_t)
 		end
 
 		for i = 1, #list do
@@ -1478,7 +1464,7 @@ do -- TableCleanDupes
 		end
 
 		-- Instead of returning a new table we clear the old and add the values
-		table_iclear(list)
+		table.iclear(list)
 		for i = 1, #temp_t do
 			list[i] = temp_t[i]
 		end
@@ -1590,12 +1576,12 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius, sort, pt)
 
 	-- sort list custom
 	if sort then
-		table_sort(list, function(a, b)
+		table.sort(list, function(a, b)
 			return a[sort] < b[sort]
 		end)
 	else
 		-- sort nearest
-		table_sort(list, function(a, b)
+		table.sort(list, function(a, b)
 			return a:GetVisualDist2D(pt) < b:GetVisualDist2D(pt)
 		end)
 	end
@@ -1642,7 +1628,7 @@ function ChoGGi.ComFuncs.RetSortTextAssTable(list, for_type)
 	end
 
 	-- and send back sorted
-	table_sort(temp_table)
+	table.sort(temp_table)
 	return temp_table
 end
 
@@ -1676,7 +1662,7 @@ function ChoGGi.ComFuncs.UpdateDataTablesCargo()
 	local Tables = ChoGGi.Tables
 
 	-- update cargo resupply
-	table_clear(Tables.Cargo)
+	table.clear(Tables.Cargo)
 	local ResupplyItemDefinitions = ResupplyItemDefinitions or ""
 	for i = 1, #ResupplyItemDefinitions do
 		local def = ResupplyItemDefinitions[i]
@@ -1738,8 +1724,8 @@ do -- UpdateDataTables
 		local Tables = ChoGGi.Tables
 		local Presets = Presets
 
-		table_clear(Tables.Sponsors)
-		table_clear(Tables.Commanders)
+		table.clear(Tables.Sponsors)
+		table.clear(Tables.Commanders)
 		UpdateProfile(Presets.MissionSponsorPreset.Default,Tables.Sponsors)
 		UpdateProfile(Presets.CommanderProfilePreset.Default,Tables.Commanders)
 	end
@@ -1748,16 +1734,16 @@ do -- UpdateDataTables
 		local c
 
 		local Tables = ChoGGi.Tables
-		table_clear(Tables.CargoPresets)
-		table_clear(Tables.ColonistAges)
-		table_clear(Tables.ColonistBirthplaces)
-		table_clear(Tables.ColonistGenders)
-		table_clear(Tables.ColonistSpecializations)
-		table_clear(Tables.Mystery)
-		table_clear(Tables.NegativeTraits)
-		table_clear(Tables.OtherTraits)
-		table_clear(Tables.PositiveTraits)
-		table_clear(Tables.Resources)
+		table.clear(Tables.CargoPresets)
+		table.clear(Tables.ColonistAges)
+		table.clear(Tables.ColonistBirthplaces)
+		table.clear(Tables.ColonistGenders)
+		table.clear(Tables.ColonistSpecializations)
+		table.clear(Tables.Mystery)
+		table.clear(Tables.NegativeTraits)
+		table.clear(Tables.OtherTraits)
+		table.clear(Tables.PositiveTraits)
+		table.clear(Tables.Resources)
 		Tables.SchoolTraits = const.SchoolTraits
 		Tables.SanatoriumTraits = const.SanatoriumTraits
 
@@ -2075,7 +2061,7 @@ do -- Rebuildshortcuts
 			local a = ass[i]
 			if a.ChoGGi_ECM or remove_lookup[a.ActionId] then
 				a:delete()
-				table_remove(XShortcutsTarget.actions, i)
+				table.remove(XShortcutsTarget.actions, i)
 --~ 			else
 --~ 				-- hide any menuitems added from devs
 --~ 				a.ActionMenubar = nil
@@ -2088,10 +2074,10 @@ do -- Rebuildshortcuts
 
 		if testing then
 			-- goddamn annoying key
-			local idx = table_find(XShortcutsTarget.actions, "ActionId", "actionToggleFullscreen")
+			local idx = table.find(XShortcutsTarget.actions, "ActionId", "actionToggleFullscreen")
 			if idx then
 				XShortcutsTarget.actions[idx]:delete()
-				table_remove(XShortcutsTarget.actions, idx)
+				table.remove(XShortcutsTarget.actions, idx)
 			end
 		end
 
@@ -2456,7 +2442,7 @@ do -- FuckingDrones (took quite a while to figure this fun one out)
 		else
 			-- sort command_centers by nearest, then loop through each of them till we find an idle drone
 			building = bld
-			table_sort(bld.command_centers, SortNearest)
+			table.sort(bld.command_centers, SortNearest)
 			-- get command_center with idle drones
 			for i = 1, #bld.command_centers do
 				if bld.command_centers[i]:GetIdleDronesCount() > 0 then
@@ -2472,11 +2458,11 @@ do -- FuckingDrones (took quite a while to figure this fun one out)
 		end
 
 		-- get an idle drone
-		local idle_idx = table_find(cc, "command", "Idle")
+		local idle_idx = table.find(cc, "command", "Idle")
 		if idle_idx then
 			return cc[idle_idx]
 		end
-		idle_idx = table_find(cc, "command", "WaitCommand")
+		idle_idx = table.find(cc, "command", "WaitCommand")
 		if idle_idx then
 			return cc[idle_idx]
 		end
@@ -2597,7 +2583,7 @@ do -- GetAllAttaches
 	function ChoGGi.ComFuncs.GetAllAttaches(obj, mark_attaches, only_include, safe)
 		mark = mark_attaches
 
-		table_clear(attach_dupes)
+		table.clear(attach_dupes)
 		if not IsValid(obj) then
 			-- I always use #attach_list so "" is fine by me
 			return ""
@@ -2634,9 +2620,9 @@ do -- GetAllAttaches
 		end
 
 		-- remove original obj if it's in the list
-		local idx = table_find(attaches_list, obj)
+		local idx = table.find(attaches_list, obj)
 		if idx then
-			table_remove(attaches_list, idx)
+			table.remove(attaches_list, idx)
 		end
 
 		return attaches_list
@@ -2731,7 +2717,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 	local function RandomColour(amount)
 		if amount and type(amount) == "number" and amount > 1 then
 			-- temp associative table of colour ids
-			table_clear(color_ass)
+			table.clear(color_ass)
 			-- Indexed list of colours we return
 			local colour_list = {}
 			-- when this reaches amount we return the list
@@ -2942,7 +2928,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 				end
 
 				-- sort table so it's the same as was displayed
-				table_sort(choice, function(a, b)
+				table.sort(choice, function(a, b)
 					return a.text < b.text
 				end)
 
@@ -3303,7 +3289,7 @@ do -- RetNearestResource/FindNearestResource
 	local GetStored, res_amount, res_resource
 	local function FilterTable(depot)
 		-- check if depot has the resource
-		if (depot.resource == res_resource or table_find(depot.resource, res_resource))
+		if (depot.resource == res_resource or table.find(depot.resource, res_resource))
 			-- check if depot has resource amount
 			and depot[GetStored] and depot[GetStored](depot) >= res_amount
 		then
@@ -3325,24 +3311,24 @@ do -- RetNearestResource/FindNearestResource
 			if skip_stocks then
 				stockpiles = MapGet("map", "ResourceStockpile", "ResourceStockpileLR")
 			else
-				table_iclear(stockpiles_table)
+				table.iclear(stockpiles_table)
 				stockpiles = stockpiles_table
 			end
 			res_amount = amount or 1000
 
 			local labels = UICity.labels
 			-- every resource has a mech depot
-			table_append(stockpiles, labels[res_mechdepot[resource] or "MechanizedDepot" .. resource])
+			table.append(stockpiles, labels[res_mechdepot[resource] or "MechanizedDepot" .. resource])
 
 			-- labels.UniversalStorageDepot includes the "other" depots, but not the below three
 			if resource == "BlackCube" then
-				table_append(stockpiles, labels.BlackCubeDumpSite)
+				table.append(stockpiles, labels.BlackCubeDumpSite)
 			elseif resource == "MysteryResource" then
-				table_append(stockpiles, labels.MysteryDepot)
+				table.append(stockpiles, labels.MysteryDepot)
 			elseif resource == "WasteRock" then
-				table_append(stockpiles, labels.WasteRockDumpSite)
+				table.append(stockpiles, labels.WasteRockDumpSite)
 			else
-				table_append(stockpiles, labels.UniversalStorageDepot)
+				table.append(stockpiles, labels.UniversalStorageDepot)
 			end
 		end
 
@@ -3372,7 +3358,7 @@ do -- RetNearestResource/FindNearestResource
 		local res = ChoGGi.Tables.Resources
 		local TagLookupTable = const.TagLookupTable
 		for i = 1, #res do
-			local item = ResourceDescription[table_find(ResourceDescription, "name", res[i])]
+			local item = ResourceDescription[table.find(ResourceDescription, "name", res[i])]
 			item_list[i] = {
 				text = Translate(item.display_name),
 				value = item.name,
@@ -3561,12 +3547,12 @@ end
 
 do -- AddXTemplate/RemoveXTemplateSections
 	local function RemoveTableItem(list, name, value)
-		local idx = table_find(list, name, value)
+		local idx = table.find(list, name, value)
 		if idx then
 			if not type(list[idx]) == "function" then
 				list[idx]:delete()
 			end
-			table_remove(list, idx)
+			table.remove(list, idx)
 		end
 	end
 	ChoGGi.ComFuncs.RemoveTableItem = RemoveTableItem
@@ -3701,7 +3687,7 @@ do -- Editor toggle
 		end
 
 		-- force editor to toggle once (makes status text work properly the "first" toggle instead of the second)
-		local idx = table_find(terminal.desktop, "class", "EditorInterface")
+		local idx = table.find(terminal.desktop, "class", "EditorInterface")
 		if not idx then
 			EditorState(1, 1)
 			EditorDeactivate()
@@ -3811,7 +3797,7 @@ function ChoGGi.ComFuncs.SetTaskReqAmount(obj, value, task, setting, task_num)
 end
 
 function ChoGGi.ComFuncs.ReturnEditorType(list, key, value)
-	local idx = table_find(list, key, value)
+	local idx = table.find(list, key, value)
 	value = list[idx].editor
 	-- I use it to compare to type() so
 	if value == "bool" then
@@ -4075,7 +4061,7 @@ function ChoGGi.ComFuncs.UpdateBuildMenu()
 end
 
 function ChoGGi.ComFuncs.SetTableValue(tab, id, id_name, item, value)
-	local idx = table_find(tab, id, id_name)
+	local idx = table.find(tab, id, id_name)
 	if idx then
 		tab[idx][item] = value
 		return tab[idx]
@@ -4305,7 +4291,7 @@ end -- do
 -- ChoGGi.ComFuncs.AddParentToClass(DontBuildHere, "InfopanelObj")
 function ChoGGi.ComFuncs.AddParentToClass(class_obj, parent_name)
 	local p = class_obj.__parents
-	if p and not table_find(p, parent_name) then
+	if p and not table.find(p, parent_name) then
 		p[#p+1] = parent_name
 	end
 end
@@ -4504,7 +4490,7 @@ do -- PolylineSetParabola
 		local pos_lerp = ValueLerp(from, to, 100)
 		local steps = 10
 		local c = 0
-		table_iclear(vertices)
+		table.iclear(vertices)
 		for i = 0, steps do
 			local x = i * (100 / steps)
 			local pos = pos_lerp(x)
@@ -4521,13 +4507,13 @@ function ChoGGi.ComFuncs.RetHudButton(side)
 	side = side or "idLeft"
 
 	local xt = XTemplates
-	local idx = table_find(xt.HUD[1], "Id", "idBottom")
+	local idx = table.find(xt.HUD[1], "Id", "idBottom")
 	if not idx then
 		print("ChoGGi RetHudButton: Missing HUD control idBottom")
 		return
 	end
 	xt = xt.HUD[1][idx]
-	idx = table_find(xt, "Id", side)
+	idx = table.find(xt, "Id", side)
 	if not idx then
 		print("ChoGGi RetHudButton: Missing HUD control " .. side)
 		return
@@ -4589,7 +4575,7 @@ do -- RetMapBreakthroughs
 					translated_tech[tech_id] = Translate(tech.display_name)
 				end
 			end
-			orig_break_list = table_imap(Presets.TechPreset.Breakthroughs, "id")
+			orig_break_list = table.imap(Presets.TechPreset.Breakthroughs, "id")
 		end
 
 		-- breakthroughs per map are (at least?) 20 in total (4 planetary, 3 omega, 8 on the ground, 5 Storybits?)
@@ -4599,7 +4585,7 @@ do -- RetMapBreakthroughs
 		-- g_ is the in-game object
 
 		-- start with a clean copy of breaks
-		local break_order = table_copy(orig_break_list)
+		local break_order = table.copy(orig_break_list)
 		StableShuffle(break_order, CreateRand(true, gen.Seed, "ShuffleBreakThroughTech"), 100)
 
 		while #break_order > breakthrough_count do
@@ -4608,7 +4594,7 @@ do -- RetMapBreakthroughs
 
 		local tech_list = {}
 
-		table_clear(remove_added)
+		table.clear(remove_added)
 
 		local c = #break_order
 		for i = 1, c do
@@ -4685,7 +4671,7 @@ function ChoGGi.ComFuncs.DisastersStop()
 	objs = g_IonStorms or ""
 	for i = #objs, 1, -1 do
 		objs[i]:delete()
-		table_remove(g_IonStorms, i)
+		table.remove(g_IonStorms, i)
 	end
 
   if g_RainDisaster then
@@ -4793,7 +4779,7 @@ do -- BuildableHexGrid
 				parent:Close()
 			end
 		end
---~ 		table_iclear(grid_objs)
+--~ 		table.iclear(grid_objs)
 	end
 
 	-- If grid is left on when map changes it gets real laggy
@@ -4952,7 +4938,7 @@ do -- BuildableHexGrid
 														hex:SetColorModifier(red)
 													-- stuff that can be pathed? (or dump sites which IsPassable returns false for)
 --~ 													obj:IsKindOf("WasteRockStockpileUngridedNoBlockPass") then
-													elseif terrain_IsPassable(pos) or obj and obj.class == "WasteRockDumpSite" then
+													elseif terrain.IsPassable(pos) or obj and obj.class == "WasteRockDumpSite" then
 														if build_z ~= UnbuildableZ and not obj then
 															hex:SetColorModifier(green)
 														else
@@ -5185,7 +5171,7 @@ do -- CleanInfoAttachDupes
 	local dupe_list = {}
 
 	function ChoGGi.ComFuncs.CleanInfoAttachDupes(list, cls)
-		table_clear(dupe_list)
+		table.clear(dupe_list)
 		SuspendPassEdits("ChoGGi.ComFuncs.CleanInfoAttachDupes")
 
 		-- clean up dupes in order of older
@@ -5209,7 +5195,7 @@ do -- CleanInfoAttachDupes
 		ResumePassEdits("ChoGGi.ComFuncs.CleanInfoAttachDupes")
 	end
 	function ChoGGi.ComFuncs.CleanInfoXwinDupes(list, cls)
-		table_clear(dupe_list)
+		table.clear(dupe_list)
 
 		-- clean up dupes in order of older
 		for i = #list, 1, -1 do
@@ -5374,7 +5360,7 @@ function ChoGGi.ComFuncs.UpdateDepotCapacity(obj, max_store, storable)
 end
 
 function ChoGGi.ComFuncs.GetModEnabled(mod_id)
-	return table_find(ModsLoaded, "id", mod_id)
+	return table.find(ModsLoaded, "id", mod_id)
 end
 
 function ChoGGi.ComFuncs.SetBuildingTemplates(template, key, value)
@@ -5420,7 +5406,7 @@ do -- path markers
 		end
 
 		obj_pos = obj_pos or obj:GetVisualPos()
-		local obj_terrain = terrain_GetHeight(obj_pos) or 0
+		local obj_terrain = terrain.GetHeight(obj_pos) or 0
 		local obj_height = (obj:GetObjectBBox():sizez() / 2) or 0
 		if obj:IsKindOf("CargoShuttle") then
 			obj_height = obj_pos:z() - obj_terrain
@@ -5536,7 +5522,7 @@ do -- path markers
 			-- and lastly make sure path is sorted correctly
 			-- end is where the obj is, and start is where the dest is
 			if is_shuttle then
-				table_sort(path, function(a, b)
+				table.sort(path, function(a, b)
 					return obj:GetVisualDist2D(a) > obj:GetVisualDist2D(b)
 				end)
 			end
@@ -5681,7 +5667,7 @@ do -- path markers
 	local function ClearColourAndWP(cls, skip)
 		-- remove all thread refs so they stop
 		if ChoGGi.Temp.UnitPathingHandles then
-			table_clear(ChoGGi.Temp.UnitPathingHandles)
+			table.clear(ChoGGi.Temp.UnitPathingHandles)
 		end
 		-- and waypoints/colour
 		local objs = MapGet_ChoGGi(cls)
@@ -5866,7 +5852,7 @@ function ChoGGi.ComFuncs.CycleSelectedObjects(list, count)
 	end
 
 	if list and count > 0 then
-		local idx = SelectedObj and table_find(list, SelectedObj) or 0
+		local idx = SelectedObj and table.find(list, SelectedObj) or 0
 		idx = (idx % count) + 1
 		local next_obj = list[idx]
 
@@ -5899,7 +5885,7 @@ do -- IsDroneIdle/GetIdleDrones/DroneHubLoad
 		return not drone:IsDisabled()
 	end
 	function ChoGGi.ComFuncs.GetIdleDrones()
-		return table_ifilter(table_icopy(UICity.labels.Drone or empty_table), IsDroneIdle)
+		return table.ifilter(table.icopy(UICity.labels.Drone or empty_table), IsDroneIdle)
 	end
 
 	-- -1 = borked, 0 = low, 1 = medium, 2 = high, empty = 3
@@ -5910,7 +5896,7 @@ do -- IsDroneIdle/GetIdleDrones/DroneHubLoad
 		if hub.working then
 			-- no working drones / empty hub
 			local drones = hub.drones
-			if #drones == 0 or #table_ifilter(drones, IsDroneWorking) < 1 then
+			if #drones == 0 or #table.ifilter(drones, IsDroneWorking) < 1 then
 				drone_load = 3
 				lap_time = DroneLoadExtra
 			else
@@ -6275,78 +6261,6 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
 		list = list,
 	})
 end
-
-do -- AttachFireflyParticlesAndLights
-
-	-- Dlc\contentpack1\Code\Fireflies.lua
-	local colours = {
-		[0] = RGB(132, 128, 255),
-		[1] = RGB(128, 234, 255),
-		[2] = RGB(255, 82, 60),
-		[3] = RGB(255, 128, 185),
-		[4] = RGB(77, 136, 255),
-	}
-	local particle_spots = {
-		"Particle",
-		"Particle1",
-		"Particle2",
-	}
-	local light_spots = {
-		"Light",
-		"Light1",
-		"Light2",
-	}
-	local AttachPartToObject = AttachPartToObject
-	local GetSpotAnnotation = GetSpotAnnotation
-	local AttachToObject = AttachToObject
-
-	function ChoGGi.ComFuncs.AttachFireflyParticlesAndLights(obj, scale, count)
-
-		local particles = {}
-		local lights = {}
-		for i = 1, (obj.firefly_attach_count or count or 3) do
-			local rand5 = Random(5)
-			obj.color = colours[rand5]
-			if rand5 == 2 and obj.class == "Firefly" then
-				obj.is_red = true
-			end
-
-			local particle = AttachPartToObject(obj, "FireflyGlow_0" .. rand5 + 1, particle_spots[i])
-			particle:SetScale(scale or 50)
-			local autolight_idx = obj:GetSpotBeginIndex(light_spots[i])
-			local ann = GetSpotAnnotation(obj, autolight_idx)
-			local light_type = obj.class == "FlowerLampSmall" and "SpotLight" or "PointLight"
-			local light = AttachToObject(obj, light_type, light_spots[i])
-			if obj:IsKindOf("FlowerLamp") then
-				particle:SetVisible(false)
-				light:SetVisible(false)
-			end
-			if obj.class == "Firefly" then
-				light:SetAttenuationRadius(1000)
-				if obj.is_red then
-					light:SetIntensity(3)
-				else
-					light:SetIntensity(5)
-				end
-			elseif obj.class == "FlowerLampSmall" then
-				light:SetAttenuationRadius(1000)
-				light:SetIntensity(180)
-				light:SetConeInnerAngle(10)
-				light:SetConeOuterAngle(120)
-			elseif obj.class == "FlowerLampMedium" then
-				light:SetAttenuationRadius(2200)
-				light:SetIntensity(30)
-			else
-				light:SetAttenuationRadius(1000)
-				light:SetIntensity(20)
-			end
-			light:SetColor(obj.color)
-			particles[#particles + 1] = particle
-			lights[#lights + 1] = light
-		end
-		return particles, lights
-	end
-end -- do
 
 do -- GetLowestPointEachSector
 	local GetMapSectorXY = GetMapSectorXY

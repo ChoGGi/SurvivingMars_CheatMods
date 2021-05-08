@@ -9,6 +9,7 @@ if not ChoGGi.testing then
 	return
 end
 
+local table = table
 
 ----------------------
 
@@ -77,10 +78,9 @@ OnMsg.LoadGame = StartUp
 OnMsg.CityStart = StartUp
 
 do -- ExportTranslatedStrings
-	local table_sort = table.sort
 	local CmpLower = CmpLower
 	local function SortList(list)
-		table_sort(list, function(a, b)
+		table.sort(list, function(a, b)
 			return CmpLower(a.name_en, b.name_en)
 		end)
 		return list
@@ -278,7 +278,6 @@ function ChoGGi.testing.ExportBuildingFootprints()
 	local Sleep = Sleep
 	local SetCamera = SetCamera
 	local ObjHexShape_Toggle = ChoGGi.ComFuncs.ObjHexShape_Toggle
-	local table_unpack = table.unpack
 
 	local HexOutlineShapes = HexOutlineShapes
 
@@ -327,7 +326,7 @@ function ChoGGi.testing.ExportBuildingFootprints()
 				else
 					cam_params[4] = 5000
 				end
-				SetCamera(table_unpack(cam_params))
+				SetCamera(table.unpack(cam_params))
 
 				Sleep(50)
 
@@ -542,13 +541,12 @@ end
 
 function ChoGGi.testing.TableSortVsLoop()
 	local obj_pos = GetRandomPassablePoint(AsyncRand())
-	local table_icopy = table.icopy
 	local objs = UICity.labels.SurfaceDepositMarker or ""
 
 	-- faster
 	ChoGGi.ComFuncs.TickStart("TableSortVsLoop.1.Tick")
 	for _ = 1, 1000 do
-		local temp_table = table_icopy(objs)
+		local temp_table = table.icopy(objs)
 		local length = max_int
 		local nearest = temp_table[1]
 		local new_length, spot
@@ -564,12 +562,11 @@ function ChoGGi.testing.TableSortVsLoop()
 	ChoGGi.ComFuncs.TickEnd("TableSortVsLoop.1.Tick")
 
 	ChoGGi.ComFuncs.TickStart("TableSortVsLoop.2.Tick")
-		local table_sort = table.sort
 		local function SortNearest(a, b)
 			return a:GetDist2D(obj_pos) < b:GetDist2D(obj_pos)
 		end
 		for _ = 1, 1000 do
-			table_sort(table_icopy(objs), SortNearest)
+			table.sort(table.icopy(objs), SortNearest)
 		end
 	ChoGGi.ComFuncs.TickEnd("TableSortVsLoop.2.Tick")
 
@@ -965,8 +962,6 @@ end
 --~ 	local GameTime = GameTime
 --~ 	local rawget, rawset = rawget, rawset
 --~ 	local setmetatable = setmetatable
---~ 	local table_remove = table.remove
---~ 	local table_insert = table.insert
 
 --~ 	function PropertyObject:TraceCall(member)
 --~ 		print("PropertyObject:TraceCall", self.class)
@@ -986,14 +981,14 @@ end
 --~ 		end
 --~ 		local threshold = GameTime() - (3000)
 --~ 		while #t >= 50 and threshold > t[#t][1] do
---~ 			table_remove(t)
+--~ 			table.remove(t)
 --~ 		end
 --~ 		local data = {
 --~ 			GameTime(),
 --~ 			...
 --~ 		}
 --~ 		setmetatable(data, g_traceEntryMeta)
---~ 		table_insert(t, 1, data)
+--~ 		table.insert(t, 1, data)
 --~ 	end
 
 --~ 	function SetCommandErrorChecks(self, command, ...)
@@ -1138,7 +1133,6 @@ end -- ClassesPreprocess
 --~ local list = {}
 --~ local c = 0
 --~ local dlg
---~ local table_iclear = table.iclear
 --~ local function hookTick(...)
 --~ 	if not dlg then
 --~ 		dlg = ChoGGi.ComFuncs.OpenInExamineDlg(list, {
@@ -1149,7 +1143,7 @@ end -- ClassesPreprocess
 --~ 	c = c + 1
 --~ 	list[c] = ...
 --~ 	if c > 100 then
---~ 		table_iclear(list)
+--~ 		table.iclear(list)
 --~ 		c = 0
 --~ 	end
 --~ end

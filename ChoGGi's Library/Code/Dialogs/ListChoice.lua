@@ -61,7 +61,7 @@ local ValidateImage = ChoGGi.ComFuncs.ValidateImage
 local Strings = ChoGGi.Strings
 
 local type, tostring = type, tostring
-local table_sort = table.sort
+local table = table
 local point = point
 local MeasureImage = UIL.MeasureImage
 
@@ -281,7 +281,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	if not self.list.skip_sort then
 		local sortby = self.list.sortby
 		if sortby then
-			table_sort(self.list.items, function(a, b)
+			table.sort(self.list.items, function(a, b)
 				a = a[sortby]
 				b = b[sortby]
 				if type(a) == "number" and type(b) == "number" then
@@ -291,7 +291,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 			end)
 		else
 			-- default to display text
-			table_sort(self.list.items, function(a, b)
+			table.sort(self.list.items, function(a, b)
 				return CmpLower(Translate(a.text), Translate(b.text))
 			end)
 		end

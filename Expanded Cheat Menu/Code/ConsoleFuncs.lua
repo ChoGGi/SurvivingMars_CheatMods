@@ -2,10 +2,7 @@
 
 -- menus/buttons added to the Console
 
-local table_sort = table.sort
-local table_insert = table.insert
-local table_find = table.find
-local table_iclear = table.iclear
+local table = table
 local CmpLower = CmpLower
 local print, type, rawget = print, type, rawget
 
@@ -144,7 +141,7 @@ end
 ChoGGi.ConsoleFuncs.BuildExamineItem = BuildExamineItem
 --
 local function AddSubmenu(name, title, ...)
-	local submenu = table_find(ExamineMenuToggle_list, "name", name)
+	local submenu = table.find(ExamineMenuToggle_list, "name", name)
 	if submenu then
 		local temp_menu = ExamineMenuToggle_list[submenu]
 		temp_menu.hint = nil
@@ -166,7 +163,7 @@ end
 ChoGGi.ConsoleFuncs.AddSubmenu = AddSubmenu
 
 --~ 	function ChoGGi.ConsoleFuncs.AddMonitor(name, submenu, idx)
---~ 		table_insert(submenu, idx or 2, {
+--~ 		table.insert(submenu, idx or 2, {
 --~ 			name = Strings[302535920000853--[[Monitor]]] .. ": " .. name,
 --~ 			hint = "ChoGGi.ComFuncs.MonitorTableLength(" .. name .. ")",
 --~ 			clicked = function()
@@ -181,13 +178,13 @@ ChoGGi.ConsoleFuncs.AddSubmenu = AddSubmenu
 
 -- build list of objects to examine
 function ChoGGi.ConsoleFuncs.BuildExamineMenu()
-	table_iclear(ExamineMenuToggle_list)
+	table.iclear(ExamineMenuToggle_list)
 
 	local list = ChoGGi.UserSettings.ConsoleExamineList or ""
 	local submenu
 
 	-- add saved examine items
-	table_sort(list, CmpLower)
+	table.sort(list, CmpLower)
 	for i = 0, #list do
 		ExamineMenuToggle_list[i] = BuildExamineItem(list[i])
 	end
@@ -195,7 +192,7 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 	-- add submenus to certain items
 
 	--
-	submenu = table_find(list, "Presets")
+	submenu = table.find(list, "Presets")
 	if submenu then
 		-- remove hint from "submenu" menu
 		ExamineMenuToggle_list[submenu].hint = nil
@@ -220,19 +217,19 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 			submenu_table[c] = BuildExamineItem("Presets." .. id, id .. " *")
 		end
 
-		table_sort(submenu_table,
+		table.sort(submenu_table,
 			function(a, b)
 				-- damn eunuchs
 				return CmpLower(a.name, b.name)
 			end
 		)
 		-- add orig to the menu (we want it at start so no sorting)
-		table_insert(submenu_table, 1, BuildExamineItem("Presets"))
+		table.insert(submenu_table, 1, BuildExamineItem("Presets"))
 		-- and done
 		ExamineMenuToggle_list[submenu].submenu = submenu_table
 	end
 	--
-	submenu = table_find(list, "DataInstances")
+	submenu = table.find(list, "DataInstances")
 	if submenu then
 		ExamineMenuToggle_list[submenu].hint = nil
 		-- we need to build a list
@@ -245,7 +242,7 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 			submenu_table[c] = BuildExamineItem("DataInstances." .. key, key)
 		end
 
-		table_sort(submenu_table,
+		table.sort(submenu_table,
 			function(a, b)
 				-- damn eunuchs
 				return CmpLower(a.name, b.name)
@@ -253,15 +250,15 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 		)
 
 		-- add orig to the menu (we want it at start so no sorting)
-		table_insert(submenu_table, 1, BuildExamineItem("DataInstances"))
+		table.insert(submenu_table, 1, BuildExamineItem("DataInstances"))
 		-- and done
 		ExamineMenuToggle_list[submenu].submenu = submenu_table
 	end
 	--
-	submenu = table_find(list, "UICity")
+	submenu = table.find(list, "UICity")
 	if submenu then
 		local labels_name = "UICity.labels"
-		table_insert(ExamineMenuToggle_list, submenu+1, {
+		table.insert(ExamineMenuToggle_list, submenu+1, {
 			name = labels_name,
 			hint = labels_name,
 			submenu = {},
@@ -284,10 +281,10 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 						list[c] = key
 					end
 				end
-				table_sort(list, CmpLower)
-				local temp_menu = ExamineMenuToggle_list[table_find(ExamineMenuToggle_list, "name", labels_name)]
+				table.sort(list, CmpLower)
+				local temp_menu = ExamineMenuToggle_list[table.find(ExamineMenuToggle_list, "name", labels_name)]
 
-				table_iclear(temp_menu.submenu)
+				table.iclear(temp_menu.submenu)
 				for i = 1, c do
 					local name = list[i]
 					temp_menu.submenu[i] = BuildExamineItem(
@@ -312,7 +309,7 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 	AddSubmenu("Mods", nil, "ModsLoaded", "ModsList")
 
 	-- bonus addition at the top
-	table_insert(ExamineMenuToggle_list, 1, {
+	table.insert(ExamineMenuToggle_list, 1, {
 		name = Strings[302535920001376--[[Auto Update List]]],
 		hint = Strings[302535920001377--[[Update this list when ECM updates it.]]],
 		class = "ChoGGi_XCheckButtonMenu",
@@ -617,7 +614,7 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 		Text = Strings[302535920001308--[[Settings]]],
 		OnPress = function()
 			-- update value
-			local idx = table_find(ConsoleMenuPopupToggle_list, "value", "ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals")
+			local idx = table.find(ConsoleMenuPopupToggle_list, "value", "ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals")
 			ConsoleMenuPopupToggle_list[idx].name = Strings[302535920000310--[[Skip Undefined Globals]]] .. " (" .. #ChoGGi.Temp.UndefinedGlobals .. ")"
 			PopupToggle(dlgConsole.idConsoleMenu, "idConsoleMenuPopup", ConsoleMenuPopupToggle_list, "top")
 		end,
@@ -746,7 +743,7 @@ function ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(dlg)
 						mouseup = func,
 					}
 				end
-				table_sort(items, function(a, b)
+				table.sort(items, function(a, b)
 					CmpLower(a.name, b.name)
 				end)
 				PopupToggle(self, "ChoGGi_Testing_Funcs", items, "top")

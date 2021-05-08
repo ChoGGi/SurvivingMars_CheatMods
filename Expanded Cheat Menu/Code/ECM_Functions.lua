@@ -1,9 +1,6 @@
 -- See LICENSE for terms
 
-local table_find = table.find
-local table_clear = table.clear
-local table_iclear = table.iclear
-local table_sort = table.sort
+local table = table
 local type, pairs, next, print = type, pairs, next, print
 local tostring, tonumber, rawget = tostring, tonumber, rawget
 local AveragePoint2D = AveragePoint2D
@@ -12,7 +9,6 @@ local IsKindOf = IsKindOf
 local IsValidEntity = IsValidEntity
 local Sleep = Sleep
 local WaitMsg = WaitMsg
-local table_remove = table.remove
 local IsPoint = IsPoint
 local IsBox = IsBox
 local DoneObject = DoneObject
@@ -267,7 +263,7 @@ do -- DumpTableFunc
 					value = value,
 				}
 			end
-			table_sort(temp_list, SortTableFunc)
+			table.sort(temp_list, SortTableFunc)
 
 			-- now we can return an ordered list
 			for i = 1, t_c do
@@ -320,7 +316,7 @@ do -- DumpTableFunc
 		level_limit = limit or 3
 
 		-- make sure it's empty
-		table_iclear(output_list)
+		table.iclear(output_list)
 		c = 0
 		DumpTableFunc(obj, 0)
 
@@ -382,7 +378,7 @@ do -- WriteLogs_Toggle
 			Sleep(timer)
 			if buffer_cnt > 1 then
 				Dump(TableConcat(buffer_table, newline), nil, "Console", "log", true)
-				table_iclear(buffer_table)
+				table.iclear(buffer_table)
 				buffer_table[1] = newline
 				buffer_cnt = 1
 			end
@@ -743,7 +739,7 @@ function ChoGGi.ComFuncs.MonitorThreads()
 			if msg_dlg == dlg then
 				-- we use a "tags" tag to store a unique number (examine uses tags off for text, so we need to use on
 				local c = 0
-				table_clear(table_list)
+				table.clear(table_list)
 				for thread in pairs(ThreadsRegister) do
 					if blacklist then
 						-- first func is always a C func (WaitMsg or Sleep), and we want a file name
@@ -788,7 +784,7 @@ function ChoGGi.ComFuncs.MonitorTableLength(obj, skip_under, sortby, title)
 			-- only update when it's our dlg sending the msg
 			local _,msg_dlg = WaitMsg("ChoGGi_dlgs_examine_autorefresh")
 			if msg_dlg == dlg then
-				table_clear(table_list)
+				table.clear(table_list)
 
 				for key, value in pairs(obj) do
 					if type(value) == "table" then
@@ -1153,7 +1149,7 @@ do -- ExamineEntSpots (Object>Entity Spots)
 		local surfs = RetOriginSurfaces(obj, surf)
 		for i = 1, #surfs do
 			local pts = surfs[i]
-			table_iclear(pts_tmp)
+			table.iclear(pts_tmp)
 			pts_c = 0
 
 			local count = #pts
@@ -1776,7 +1772,7 @@ do -- DisplayObjectImages
 		-- and sort
 		if images_table[1] then
 			ChoGGi.ComFuncs.TableCleanDupes(images_table)
-			table_sort(images_table, function(a, b)
+			table.sort(images_table, function(a, b)
 				return CmpLower(a.name, b.name)
 			end)
 			ChoGGi.ComFuncs.OpenInImageViewerDlg(images_table, parent)
@@ -2001,7 +1997,7 @@ end
 
 function ChoGGi.ComFuncs.GetDesktopWindow(class)
 	local desktop = terminal.desktop
-	return desktop[table_find(desktop, "class", class)]
+	return desktop[table.find(desktop, "class", class)]
 end
 
 do -- RetThreadInfo/FindThreadFunc
@@ -2057,7 +2053,7 @@ do -- RetThreadInfo/FindThreadFunc
 			GedInspectedObjects_l = GedInspectedObjects_l or GedInspectedObjects
 			-- func expects a table
 			if GedInspectedObjects_l[thread] then
-				table_clear(GedInspectedObjects_l[thread])
+				table.clear(GedInspectedObjects_l[thread])
 			else
 				GedInspectedObjects_l[thread] = {}
 			end
@@ -2252,7 +2248,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 	]]
 	local function ReturnTechAmount(tech, prop)
 		local techdef = TechDef[tech]
-		local idx = table_find(techdef, "Prop", prop)
+		local idx = table.find(techdef, "Prop", prop)
 		if idx then
 			tech = techdef[idx]
 			local number
@@ -2828,7 +2824,7 @@ do -- ToggleFuncHook
 		if not ChoGGi.Temp.FunctionsHooked then
 			ChoGGi.Temp.FunctionsHooked = true
 			-- always start fresh
-			table_clear(func_table)
+			table.clear(func_table)
 			-- setup path
 			path = path or "@AppData/Mods/"
 			local str_len = #path
@@ -2919,7 +2915,7 @@ do -- PrintToFunc_Add/PrintToFunc_Remove
 		-- and replace the func reference
 		parent[name] = function(...)
 			if params then
-				table_iclear(text_table)
+				table.iclear(text_table)
 				local c = 0
 
 				local varargs = {...}
@@ -3314,7 +3310,7 @@ do -- ToggleObjLines
 		-- remove any invalid pos
 		for i = #vertices, 1, -1 do
 			if vertices[i] == InvalidPos then
-				table_remove(vertices, i)
+				table.remove(vertices, i)
 			end
 		end
 
@@ -3478,7 +3474,7 @@ function ChoGGi.ComFuncs.MonitorFunctionResults(func, ...)
 			-- only update when it's our dlg sending the msg
 			local _,msg_dlg = WaitMsg("ChoGGi_dlgs_examine_autorefresh")
 			if msg_dlg == dlg then
-				table_iclear(results_list)
+				table.iclear(results_list)
 				local results = {func(varargs)}
 				for i = 1, #results do
 					results_list[i] = results[i]
@@ -3702,8 +3698,8 @@ do -- RetLangTable
 	}
 
 	function ChoGGi.ComFuncs.RetLangTable(filepath)
-		table_iclear(loaded)
-		table_iclear(translate_gen)
+		table.iclear(loaded)
+		table.iclear(translate_gen)
 		LoadCSV(filepath, loaded, csv_load_fields, "omit_captions")
 		local translate = {}
 		ProcessLoadedTables(loaded, nil, translate, translate_gen)
@@ -3730,7 +3726,7 @@ end
 
 do -- ExpandModOptions
 	local function UpdateProp(xtemplate)
-		local idx = table_find(xtemplate, "MaxWidth", 400)
+		local idx = table.find(xtemplate, "MaxWidth", 400)
 		if idx then
 			xtemplate[idx].MaxWidth = 1000000
 		end
@@ -3746,7 +3742,7 @@ do -- ExpandModOptions
 	end
 
 	local function AddSliderButtons(xtemplate)
-		local idx = table_find(xtemplate, "Id", "idSlider")
+		local idx = table.find(xtemplate, "Id", "idSlider")
 		if idx then
 			local template_left = PlaceObj("XTemplateWindow", {
 					"Id", "idButtonLower_ChoGGi",

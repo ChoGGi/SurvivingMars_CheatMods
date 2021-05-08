@@ -1090,8 +1090,6 @@ do -- Fireflies
 	end
 
 	local IsValid = IsValid
-	local GetRandomPassableAround = GetRandomPassableAround
-	local guim600 = guim * 600
 
 	local firefly_states = {
 		"lightTrap",

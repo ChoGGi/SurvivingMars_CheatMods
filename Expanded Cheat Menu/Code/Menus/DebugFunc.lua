@@ -1,10 +1,6 @@
 -- See LICENSE for terms
 
 local pairs, type, tostring, table = pairs, type, tostring, table
-local table_clear = table.clear
-local table_iclear = table.iclear
-local table_sort = table.sort
-local table_find = table.find
 local IsValid = IsValid
 local GetCursorWorldPos = GetCursorWorldPos
 
@@ -562,7 +558,7 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 			LightmodelPresets.TheMartian1_Night.exterior_envmap = nil
 			SetLightmodelOverride(1, "TheMartian1_Night")
 
-			local texture = table_find(TerrainTextures, "name", "Prefab_Orange")
+			local texture = table.find(TerrainTextures, "name", "Prefab_Orange")
 			terrain.SetTerrainType{type = texture or 1}
 
 			-- we need a delay when doing this from ingame instead of main menu
@@ -576,7 +572,7 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 				c = c + 1
 				entity_list[c] = key
 			end
-			table_sort(entity_list)
+			table.sort(entity_list)
 			local entity_count = #entity_list
 
 			local IsBuildableZoneQR = IsBuildableZoneQR
@@ -630,12 +626,12 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 
 							-- If it has a working state then set it
 							local states_str = obj:GetStates()
-							local idx = table_find(states_str, "working")
-								or table_find(states_str, "idleOpened")
-								or table_find(states_str, "rotate")
-								or table_find(states_str, "moveWalk")
-								or table_find(states_str, "walk")
-								or table_find(states_str, "run")
+							local idx = table.find(states_str, "working")
+								or table.find(states_str, "idleOpened")
+								or table.find(states_str, "rotate")
+								or table.find(states_str, "moveWalk")
+								or table.find(states_str, "walk")
+								or table.find(states_str, "run")
 							if idx then
 								obj:SetState(states_str[idx])
 							end
@@ -709,7 +705,7 @@ function ChoGGi.MenuFuncs.TestStoryBits()
 
 	local temp_table = {}
 	for id, story_def in pairs(StoryBits) do
-		table_clear(temp_table)
+		table.clear(temp_table)
 		for i = 1, #story_def do
 			local def = story_def[i]
 			if def.Name and def.Value then
@@ -1225,7 +1221,7 @@ end
 
 --little bit of painting
 --~ local terrain_type = "Grass_01"
---~ local terrain_type_idx = table_find(TerrainTextures, "name", terrain_type)
+--~ local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
 --~ CreateRealTimeThread(function()
 --~	 while true do
 --~		 terrain.SetTypeCircle(GetCursorWorldPos(), 2500, terrain_type_idx)
@@ -1292,7 +1288,7 @@ do -- FlightGrid_Toggle
 				DoneObject(o)
 			end
 		end
-		table_iclear(flight_lines)
+		table.iclear(flight_lines)
 		flight_lines[0] = nil
 		ResumePassEdits("ChoGGi.MenuFuncs.FlightGrid_Toggle.DeleteLines")
 	end
@@ -1375,8 +1371,8 @@ do -- FlightGrid_Toggle
 		Flight_Height_temp = Flight_Height
 
 		OPolyline = OPolyline or ChoGGi_OPolyline
-		table_iclear(points)
-		table_iclear(colours)
+		table.iclear(points)
+		table.iclear(colours)
 		grid_thread = CreateRealTimeThread(GridFunc, size, zoffset)
 	end
 end -- do

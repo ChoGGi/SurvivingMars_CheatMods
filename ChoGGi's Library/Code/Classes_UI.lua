@@ -580,7 +580,7 @@ DefineClass.ChoGGi_XWindow = {
 }
 
 -- parent, context
-function ChoGGi_XWindow:AddElements(parent, context)
+function ChoGGi_XWindow:AddElements(_, context)
 	local g_Classes = g_Classes
 
 	self.dialog_marker = context.dialog_marker

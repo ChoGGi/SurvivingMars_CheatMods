@@ -4,8 +4,8 @@
 
 -- In-game functions replaced with custom ones
 
+local table = table
 local type, rawget = type, rawget
-local table_unpack = table.unpack
 local Sleep = Sleep
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -124,7 +124,7 @@ do -- non-class obj funcs
 	SaveOrigFunc("LoadCustomOnScreenNotification")
 	function LoadCustomOnScreenNotification(notification, ...)
 		-- the first return is id, and some mods (cough Ambassadors cough) send a nil id, which breaks the func
-		if table_unpack(notification) then
+		if table.unpack(notification) then
 			return ChoGGi_OrigFuncs.LoadCustomOnScreenNotification(notification, ...)
 		end
 	end
@@ -156,7 +156,7 @@ do -- non-class obj funcs
 			-- make sure to restore orig value after func fires
 			template.wonder = orig_wonder
 
-			return table_unpack(ret)
+			return table.unpack(ret)
 		end
 	end
 
@@ -1031,7 +1031,6 @@ function OnMsg.ClassesBuilt()
 
 	-- add height limits to certain panels (cheats/traits/colonists) till mouseover, and convert workers to vertical list on mouseover if over 14 (visible limit)
 	do -- InfopanelDlg:Open
-		local table_find_value = table.find_value
 		local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 		local CreateRealTimeThread = CreateRealTimeThread
 		local DeleteThread = DeleteThread
@@ -1155,7 +1154,7 @@ function OnMsg.ClassesBuilt()
 			end
 			--
 
-			local section = table_find_value(c, "Id", "idsectionCheats_ChoGGi")
+			local section = table.find_value(c, "Id", "idsectionCheats_ChoGGi")
 			if section then
 				section.idIcon.FXMouseIn = "ActionButtonHover"
 				section.idSectionTitle.MouseCursor = "UI/Cursors/Rollover.tga"
@@ -1175,7 +1174,7 @@ function OnMsg.ClassesBuilt()
 				end
 			end
 
-			section = table_find_value(c, "Id", "idsectionResidence_ChoGGi")
+			section = table.find_value(c, "Id", "idsectionResidence_ChoGGi")
 			if section then
 				local toggle = true
 				if self.context.capacity > 100 then

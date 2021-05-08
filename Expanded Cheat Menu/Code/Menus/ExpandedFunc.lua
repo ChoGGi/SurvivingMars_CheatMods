@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local type, tostring = type, tostring
+local table = table
 
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local RetName = ChoGGi.ComFuncs.RetName
@@ -73,7 +74,6 @@ end -- do
 do -- ViewObjInfo_Toggle
 	local GetStateName = GetStateName
 	local IsValid = IsValid
-	local table_find = table.find
 	local r = const.ResearchPointsScale
 	local MapGet = ChoGGi.ComFuncs.MapGet
 	local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
@@ -115,7 +115,7 @@ do -- ViewObjInfo_Toggle
 --~ 				print("OutsideBuildings")
 --~ 				return "- " .. RetName(obj) .. " -\n" .. Strings[302535920000035--[[Grids]]]
 --~ 					.. ": " .. Translate(682--[[Oxygen]])
---~ 					.. "(" .. (table_find(UICity.air, obj.air.grid) or Translate(6774--[[Error]])) .. ") "
+--~ 					.. "(" .. (table.find(UICity.air, obj.air.grid) or Translate(6774--[[Error]])) .. ") "
 --~ 					.. Translate(681--[[Water]]) .. "("
 --~ 					.. tostring(obj.water and obj.water.grid.ChoGGi_GridHandle) .. ") "
 --~ 					.. Translate(79--[[Power]]) .. "("
@@ -216,9 +216,9 @@ do -- ViewObjInfo_Toggle
 			local ga = obj.air
 			local ge = obj.electricity
 			local gw = obj.water
-			local ga_id = table_find(city.air, ga.grid) or Translate(6774--[[Error]])
-			local ge_id = table_find(city.electricity, ge.grid) or Translate(6774--[[Error]])
-			local gw_id = table_find(city.water, gw.grid) or Translate(6774--[[Error]])
+			local ga_id = table.find(city.air, ga.grid) or Translate(6774--[[Error]])
+			local ge_id = table.find(city.electricity, ge.grid) or Translate(6774--[[Error]])
+			local gw_id = table.find(city.water, gw.grid) or Translate(6774--[[Error]])
 			local l = obj.labels
 
 			return "- " .. RetName(obj) .. " -\n"
