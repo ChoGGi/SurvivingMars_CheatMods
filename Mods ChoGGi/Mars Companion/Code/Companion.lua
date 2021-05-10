@@ -108,33 +108,37 @@ function MarsCompanion:MainLoop()
 	local IsValid = IsValid
 	local Sleep = Sleep
 
-	local cGetLookAt = cameraRTS.GetLookAt
-	local cGetPos = cameraRTS.GetPos
-	local cGetProperties = cameraRTS.GetProperties
-	local tIsPointInBounds = terrain.IsPointInBounds
-	local tGetHeight = terrain.GetHeight
+	local cameraRTS = cameraRTS
+	local terrain = terrain
 
---~ 	local current_cam_pos = cGetPos()
+--~ 	local current_cam_pos = cameraRTS.GetPos()
 --~ 	local same_pos_count = 0
 
+	local max_dist = 12000
+	local max_dist_neg = -12000
+
 	while IsValid(self) do
-		local cam = cGetLookAt()
-		if not tIsPointInBounds(cam) then
-			print("else")
+		local cam = cameraRTS.GetLookAt()
+		if not terrain.IsPointInBounds(cam) then
 			cam = self.last_good_pos
 		end
 		local x, y = cam:x(), cam:y()
 
-		local max = (cGetPos():z() - tGetHeight(x, y)) - 10000
+		local height = terrain.GetHeight(x, y)
+		if not height then
+			height = self.Random(11000, 15000)
+		end
+
+		local max = (cameraRTS.GetPos():z() - height) - 10000
 		self.hover_height = self.Random(self.min_hover_height, max > self.min_hover_height and max or self.min_hover_height+1)
 
-		if self.hover_height > cGetProperties(1).MaxZoom then
+		if self.hover_height > cameraRTS.GetProperties(1).MaxZoom then
 			self.hover_height = 1000
 		elseif self.hover_height < self.min_hover_height then
 			self.hover_height = self.min_hover_height
 		end
 
-		local dest = point(x+self.Random(-15000, 15000), y+self.Random(-15000, 15000))
+		local dest = point(x+self.Random(max_dist_neg, max_dist), y+self.Random(max_dist_neg, max_dist))
 		self.last_good_pos = dest
 
 		self:FlyingFace(dest, 2500)
@@ -152,10 +156,10 @@ function MarsCompanion:MainLoop()
 --~ 			self:BoredFriend()
 --~ 			same_pos_count = 0
 --~ 		end
---~ 		if current_cam_pos == cGetPos() then
+--~ 		if current_cam_pos == cameraRTS.GetPos() then
 --~ 			same_pos_count = same_pos_count + 1
 --~ 		end
---~ 		current_cam_pos = cGetPos()
+--~ 		current_cam_pos = cameraRTS.GetPos()
 
 	end
 

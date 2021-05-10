@@ -6315,6 +6315,21 @@ do -- GetLowestPointEachSector
 
 end -- do
 
+function ChoGGi.ComFuncs.SetBldMaintenance(obj, value)
+	if not IsValid(obj) then
+		return
+	end
+
+	if value then
+		obj:SetBase("disable_maintenance", 1)
+	else
+		obj.accumulate_maintenance_points = true
+		obj.maintenance_resource_type = BuildingTemplates[RetTemplateOrClass(obj)].maintenance_resource_type
+		obj:SetBase("disable_maintenance", 0)
+		obj:ResetMaintenanceState()
+	end
+
+end
 
 --
 -- bugged

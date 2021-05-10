@@ -2,11 +2,13 @@
 
 local mod_AlwaysDusty
 local mod_AlwaysClean
+local mod_SkipCablesPipes
 
 -- fired when settings are changed/init
 local function ModOptions()
 	mod_AlwaysDusty = CurrentModOptions:GetProperty("AlwaysDusty")
 	mod_AlwaysClean = CurrentModOptions:GetProperty("AlwaysClean")
+	mod_SkipCablesPipes = CurrentModOptions:GetProperty("SkipCablesPipes")
 end
 
 -- load default/saved settings
@@ -49,5 +51,8 @@ end
 -- pipes/cables
 local orig_DustGridElement_AddDust = DustGridElement.AddDust
 function DustGridElement:AddDust(dust, ...)
+	if mod_SkipCablesPipes then
+		return orig_DustGridElement_AddDust(self, dust, ...)
+	end
 	return SetDust(self, dust, orig_DustGridElement_AddDust, ...)
 end

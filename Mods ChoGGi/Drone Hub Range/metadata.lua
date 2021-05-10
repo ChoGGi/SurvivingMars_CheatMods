@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2474837548",
 	"pops_any_uuid", "f7e5153e-862e-4805-aff4-6d74d9f1a4a9",
 	"lua_revision", 1001514, -- Tito
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -26,7 +26,7 @@ return PlaceObj("ModDef", {
 	"TagInterface", true,
 	"TagTools", true,
 	"description", [[
-Change range of drone hubs.
+Change range of drone hubs (see mod options).
 
 
 Requested by lovely_sombrero.

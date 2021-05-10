@@ -15,6 +15,12 @@ return {
 		"MaxValue", 500,
 		"StepSize", 5,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "UpdateExistingHubs",
+		"DisplayName", T(302535920011949, "Update Existing Hubs"),
+		"Help", T(302535920011950, "Existing drone hub ranges will be updated to the new default range."),
+		"DefaultValue", false,
+	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "DroneHubRangeDefault",
 		"DisplayName", table.concat(T(1000121,"Default") .. " " .. T(3518,"Drone Hub") .. " " .. T(643,"Range")),

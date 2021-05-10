@@ -1259,6 +1259,9 @@ Leave blank to skip search box."
 302535920011946, "Starts takeoff animation, planting more stones and doing this again will spam the log. Doesn't seem to hurt anything though."
 302535920011947, "Spawn a wisp."
 302535920011948, "Remove all wisps."
+[[Drone Hub Range]]
+302535920011949, "Update Existing Hubs"
+302535920011950, "Existing drone hub ranges will be updated to the new default range."
 [[UNUSED]]
 
 
@@ -1275,8 +1278,6 @@ Leave blank to skip search box."
 
 
 [[UNUSED]]
-302535920011949,
-302535920011950,
 302535920011951,
 302535920011952,
 302535920011953,

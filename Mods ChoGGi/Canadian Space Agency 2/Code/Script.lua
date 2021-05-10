@@ -27,12 +27,29 @@ MachineNames.RCTransport.ChoGGi_CanadianSpaceAgency = {
 	T(302535920011909, "Hosehead"),
 }
 
--- change rocket/drones if space race
+--~ -- change rocket/drones if space race
+--~ if g_AvailableDlc.gagarin then
+--~ 	function OnMsg.ModsReloaded()
+--~ 		local sponsor = Presets.MissionSponsorPreset.Default.ChoGGi_CanadianSpaceAgency
+--~ 		sponsor.rocket_class = "DragonRocket"
+--~ 		sponsor.drone_class = "FlyingDrone"
+--~ 	end
+--~ end
+
+-- unlock drone skins
 if g_AvailableDlc.gagarin then
-	function OnMsg.ModsReloaded()
-		local sponsor = Presets.MissionSponsorPreset.Default.ChoGGi_CanadianSpaceAgency
-		sponsor.rocket_class = "DragonRocket"
-		sponsor.drone_class = "FlyingDrone"
+	local skins = {}
+	local c = 0
+	local EntityData = EntityData
+	for key in pairs(EntityData) do
+		if key:find("DroneJapanFlying") then
+			c = c + 1
+			skins[c] = key
+		end
+	end
+
+	function FlyingDrone:GetSkins()
+		return skins
 	end
 end
 

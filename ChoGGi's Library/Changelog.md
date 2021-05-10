@@ -1,12 +1,13 @@
 ## Library Changelog
 
-## v10.0 (08 May 2021)
+## v10.0 (Unreleased)
+- Added SetBldMaintenance.
 
-## v9.9 (Unreleased)
+## v9.9 (08 May 2021)
 - Examining funcs with the blacklist enabled gave an error.
 - Hopefully a fix for that HGE::l_SetPos log spam (it doesn't harm anything, but it's annoying).
 - Added mod option to ignore persist errors.
-- Added SetPropertyProp
+- Added SetPropertyProp.
 - MsgWait will pause the game.
 - Check y position of my dialogs to stay on screen.
 

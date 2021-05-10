@@ -1,3 +1,7 @@
+v0.4
+Fixed drones not showing up in resupply.
+Unlock flying drone skins (if you have space race).
+
 v0.3
 Commander profile Diplomat.
 Only uses Dragon Rocket/Flying Drones if Space Race DLC installed.

@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local PlaceObj = PlaceObj
+local table = table
 
 local mod_BreakthroughsResearched
 local mod_SortBreakthroughs
@@ -37,8 +38,6 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	ModOptions()
-
-	local table = table
 
 	-- sort by id
 	local breaks
@@ -139,43 +138,53 @@ function OnMsg.ClassesPostprocess()
 
 end
 
--- block breakthroughs
-local lookup_rules
-local orig_City_TechAvailableCondition = City.TechAvailableCondition
-function City:TechAvailableCondition(tech, ...)
-	if not mod_ExcludeBreakthroughs then
-		return orig_City_TechAvailableCondition(self, tech, ...)
-	end
+--~ local function City_GetUnregisteredBreakthroughs(self)
+--~ 	local BreakthroughOrder = BreakthroughOrder
+--~ 	local objs = Presets.TechPreset.Breakthroughs
+--~ 	for i = 1, #objs do
+--~ 		local tech = objs[i]
+--~     if not table.find(BreakthroughOrder, tech.id) and not self:IsTechDiscovered(tech.id) then
+--~ 			return tech
+--~     end
+--~   end
+--~ end
 
-	-- build the list once
-	if not lookup_rules then
-		lookup_rules = {}
-		local rules = g_CurrentMissionParams.idGameRules or empty_table
-		for rule_id in pairs(rules) do
-			-- build list of choggi rules
-			if rule_id:sub(1, 7) == "ChoGGi_" then
-				-- length of rule name minus 7 for prefix: ChoGGi_
-				lookup_rules[rule_id:sub(-(rule_id:len()-7))] = true
-			end
-		end
-	end
+--~ -- block breakthroughs
+--~ local lookup_rules
+--~ local orig_City_TechAvailableCondition = City.TechAvailableCondition
+--~ function City:TechAvailableCondition(tech, ...)
+--~ 	if not mod_ExcludeBreakthroughs then
+--~ 		return orig_City_TechAvailableCondition(self, tech, ...)
+--~ 	end
 
-	-- return false to exclude tech
-	if lookup_rules[tech.id] then
-		local new_tech
-		while not new_tech do
-			local temp = self:GetUnregisteredBreakthroughs()[1]
-			if temp and not lookup_rules[temp.id] then
-				new_tech = TechDef[temp.id]
-				break
-			end
-		end
-		tech = new_tech
---~ 		return false
-	end
+--~ 	-- build the list once
+--~ 	if not lookup_rules then
+--~ 		lookup_rules = {}
+--~ 		local rules = g_CurrentMissionParams.idGameRules or empty_table
+--~ 		for rule_id in pairs(rules) do
+--~ 			-- build list of choggi rules
+--~ 			if rule_id:sub(1, 7) == "ChoGGi_" then
+--~ 				-- length of rule name minus 7 for prefix: ChoGGi_
+--~ 				lookup_rules[rule_id:sub(-(rule_id:len()-7))] = true
+--~ 			end
+--~ 		end
+--~ 	end
 
-	return orig_City_TechAvailableCondition(self, tech, ...)
-end
+--~ 	-- return false to exclude tech
+--~ 	if lookup_rules[tech.id] then
+--~ 		local new_tech
+--~ 		while not new_tech do
+--~ 			local temp = City_GetUnregisteredBreakthroughs(self)
+--~ 			if temp and not lookup_rules[temp.id] then
+--~ 				new_tech = TechDef[temp.id]
+--~ 				break
+--~ 			end
+--~ 		end
+--~ 		tech = new_tech
+--~ 	end
+
+--~ 	return orig_City_TechAvailableCondition(self, tech, ...)
+--~ end
 
 -- prevent blank mission profile screen
 function OnMsg.LoadGame()
