@@ -27,14 +27,26 @@ MachineNames.RCTransport.ChoGGi_CanadianSpaceAgency = {
 	T(302535920011909, "Hosehead"),
 }
 
---~ -- change rocket/drones if space race
---~ if g_AvailableDlc.gagarin then
---~ 	function OnMsg.ModsReloaded()
---~ 		local sponsor = Presets.MissionSponsorPreset.Default.ChoGGi_CanadianSpaceAgency
---~ 		sponsor.rocket_class = "DragonRocket"
---~ 		sponsor.drone_class = "FlyingDrone"
---~ 	end
---~ end
+-- change rocket/drones if space race
+function OnMsg.ModsReloaded()
+	local sponsor = Presets.MissionSponsorPreset.Default.ChoGGi_CanadianSpaceAgency
+
+	if g_AvailableDlc.gagarin then
+		sponsor.FlyingDrone = 5
+		sponsor.drone_class = "FlyingDrone"
+		sponsor.rocket_class = "DragonRocket"
+		sponsor.banners_name = "Japan"
+
+		sponsor.lock_name1 = "FlyingDrone"
+		sponsor.lock_value1 = "unlocked"
+		sponsor.lock_name2 = "Drone"
+		sponsor.lock_value2 = "locked"
+		sponsor.lock_name3 = "RCSolar"
+		sponsor.lock_value3 = "unlocked"
+	else
+		sponsor.Drone = 5
+	end
+end
 
 -- unlock drone skins
 if g_AvailableDlc.gagarin then
