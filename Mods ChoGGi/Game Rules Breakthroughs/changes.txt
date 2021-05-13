@@ -1,3 +1,6 @@
+v1.5
+Hopefully it works now...
+
 v1.4
 Exclude Breakthroughs was skipping some anomaly breakthroughs.
 

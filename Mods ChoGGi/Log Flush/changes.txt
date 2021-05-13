@@ -1,3 +1,6 @@
+v0.7
+Added OnRender option.
+
 v0.6
 Added flush for OnMsg.Classes*.
 

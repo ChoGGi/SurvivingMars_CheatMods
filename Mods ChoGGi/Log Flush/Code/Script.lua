@@ -4,6 +4,7 @@ local options
 local mod_NewDay
 local mod_NewHour
 local mod_NewMinute
+local mod_NewRender
 
 -- fired when settings are changed/init
 local function ModOptions()
@@ -11,6 +12,7 @@ local function ModOptions()
 	mod_NewDay = options:GetProperty("NewDay")
 	mod_NewHour = options:GetProperty("NewHour")
 	mod_NewMinute = options:GetProperty("NewMinute")
+	mod_NewRender = options:GetProperty("NewRender")
 end
 
 -- load default/saved settings
@@ -68,5 +70,9 @@ function OnMsg.NewMinute()
 	end
 end
 
--- I wouldn't...
---~ OnMsg.OnRender = FlushLogFile
+-- I wouldn't... (it works fine though)
+function OnMsg.OnRender()
+	if mod_NewRender then
+		FlushLogFile()
+	end
+end

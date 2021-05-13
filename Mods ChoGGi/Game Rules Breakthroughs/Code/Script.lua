@@ -9,8 +9,8 @@ local mod_ExcludeBreakthroughs
 
 -- fired when settings are changed/init
 local function ModOptions()
-
 	local options = CurrentModOptions
+
 	mod_BreakthroughsResearched = options:GetProperty("BreakthroughsResearched")
 	mod_SortBreakthroughs = options:GetProperty("SortBreakthroughs")
 	mod_ExcludeBreakthroughs = options:GetProperty("ExcludeBreakthroughs")
@@ -114,9 +114,6 @@ function OnMsg.ClassesPostprocess()
 		local id = def.id
 		PlaceObj("GameRules", {
 			description = SafeTrans(def.description, def) .. newline .. image,
---~ 			display_name = T(11451, "Breakthrough") .. ": " .. T(def.display_name) .. (
---~ 				def.icon ~= "UI/Icons/Research/story_bit.tga" and " <right>" .. image or ""
---~ 			),
 			display_name = T(11451, "Breakthrough") .. ": " .. T(def.display_name),
 			group = "Default",
 			id = "ChoGGi_" .. id,
@@ -138,53 +135,75 @@ function OnMsg.ClassesPostprocess()
 
 end
 
---~ local function City_GetUnregisteredBreakthroughs(self)
---~ 	local BreakthroughOrder = BreakthroughOrder
---~ 	local objs = Presets.TechPreset.Breakthroughs
---~ 	for i = 1, #objs do
---~ 		local tech = objs[i]
---~     if not table.find(BreakthroughOrder, tech.id) and not self:IsTechDiscovered(tech.id) then
---~ 			return tech
---~     end
---~   end
---~ end
+local function City_GetUnregisteredBreakthroughs(self)
+	local BreakthroughOrder = BreakthroughOrder
+	local objs = Presets.TechPreset.Breakthroughs
+	for i = 1, #objs do
+		local tech = objs[i]
+    if not table.find(BreakthroughOrder, tech.id) and not self:IsTechDiscovered(tech.id) then
+			return tech
+    end
+  end
+end
 
---~ -- block breakthroughs
---~ local lookup_rules
---~ local orig_City_TechAvailableCondition = City.TechAvailableCondition
---~ function City:TechAvailableCondition(tech, ...)
---~ 	if not mod_ExcludeBreakthroughs then
---~ 		return orig_City_TechAvailableCondition(self, tech, ...)
---~ 	end
+local lookup_rules
+local function BuildRules()
+	lookup_rules = {}
+	local rules = g_CurrentMissionParams.idGameRules or empty_table
+	for rule_id in pairs(rules) do
+		-- build list of choggi rules
+		if rule_id:sub(1, 7) == "ChoGGi_" then
+			-- length of rule name minus 7 for prefix: ChoGGi_
+			lookup_rules[rule_id:sub(-(rule_id:len()-7))] = true
+		end
+	end
+end
 
---~ 	-- build the list once
---~ 	if not lookup_rules then
---~ 		lookup_rules = {}
---~ 		local rules = g_CurrentMissionParams.idGameRules or empty_table
---~ 		for rule_id in pairs(rules) do
---~ 			-- build list of choggi rules
---~ 			if rule_id:sub(1, 7) == "ChoGGi_" then
---~ 				-- length of rule name minus 7 for prefix: ChoGGi_
---~ 				lookup_rules[rule_id:sub(-(rule_id:len()-7))] = true
---~ 			end
---~ 		end
---~ 	end
+-- block breakthroughs
+local orig_City_TechAvailableCondition = City.TechAvailableCondition
+function City:TechAvailableCondition(tech, ...)
+	if not mod_ExcludeBreakthroughs then
+		return orig_City_TechAvailableCondition(self, tech, ...)
+	end
 
---~ 	-- return false to exclude tech
---~ 	if lookup_rules[tech.id] then
---~ 		local new_tech
---~ 		while not new_tech do
---~ 			local temp = City_GetUnregisteredBreakthroughs(self)
---~ 			if temp and not lookup_rules[temp.id] then
---~ 				new_tech = TechDef[temp.id]
---~ 				break
---~ 			end
---~ 		end
---~ 		tech = new_tech
---~ 	end
+	if not lookup_rules then
+		BuildRules()
+	end
 
---~ 	return orig_City_TechAvailableCondition(self, tech, ...)
---~ end
+	if lookup_rules[tech.id] then
+--~ 		-- return false to skip it
+--~ 		return false
+	-- rand breakthrough to use instead
+		tech = table.rand(City_GetUnregisteredBreakthroughs(self))
+	end
+
+	return orig_City_TechAvailableCondition(self, tech, ...)
+end
+
+local orig_SubsurfaceAnomaly_ScanCompleted = SubsurfaceAnomaly.ScanCompleted
+function SubsurfaceAnomaly:ScanCompleted(scanner, ...)
+  if self.tech_action == "breakthrough" then
+		if not lookup_rules then
+			BuildRules()
+		end
+
+		-- blocked breakthrough
+		if lookup_rules[tech.id] then
+			local breaks = (scanner and scanner.city or UICity):GetUnregisteredBreakthroughs()
+			for i = 1, #breaks do
+				local tech_id = breaks[i]
+				-- if there's a rule left to use then use it, otherwise it's random tech
+				if not lookup_rules[tech_id] then
+					self.breakthrough_tech = tech_id
+				end
+			end
+		end
+
+  end
+
+	return orig_SubsurfaceAnomaly_ScanCompleted(self, scanner, ...)
+end
+
 
 -- prevent blank mission profile screen
 function OnMsg.LoadGame()

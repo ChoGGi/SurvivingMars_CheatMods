@@ -1,5 +1,10 @@
 return {
 	PlaceObj("ModItemOptionToggle", {
+		"name", "NewRender",
+		"DisplayName", T(302535920011951, "Each Render"),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
 		"name", "NewMinute",
 		"DisplayName", T(302535920011346, "Each Minute"),
 		"DefaultValue", false,

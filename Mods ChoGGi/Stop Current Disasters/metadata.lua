@@ -8,19 +8,18 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Stop Current Disasters",
+	"id", "ChoGGi_StopCurrentDisasters",
+	"steam_id", "1411115645",
+	"pops_any_uuid", "a5c6f132-f1f9-4e98-b637-a180732cb923",
+	"lua_revision", 1001514, -- Tito
 	"version", 8,
 	"version_major", 0,
 	"version_minor", 8,
-
-	"id", "ChoGGi_StopCurrentDisasters",
 	"author", "ChoGGi",
-	"steam_id", "1411115645",
-	"pops_any_uuid", "a5c6f132-f1f9-4e98-b637-a180732cb923",
 	"code", {
 		"Code/Script.lua"
 	},
 	"image", "Preview.png",
-	"lua_revision", 1001514, -- Tito
 	"has_options", true,
 	"description", [[Stops any running disasters when you load a save.
 

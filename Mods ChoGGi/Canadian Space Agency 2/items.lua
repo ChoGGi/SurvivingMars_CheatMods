@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 return {
-	PlaceObj('ModItemMissionSponsorPreset', {
+	PlaceObj("ModItemMissionSponsorPreset", {
 		id = "ChoGGi_CanadianSpaceAgency",
 		name = "ChoGGi_CanadianSpaceAgency",
 		group = "Default",
@@ -117,22 +117,22 @@ return {
 		sponsor_nation_name7 = "German",
 		sponsor_nation_percent7 = 5,
 
-		PlaceObj('Effect_ModifyLabel', {
+		PlaceObj("Effect_ModifyLabel", {
 			Amount = -40,
 			Label = "Consts",
 			Prop = "ApplicantsPoolStartingSize",
 		}),
-		PlaceObj('Effect_ModifyLabel', {
+		PlaceObj("Effect_ModifyLabel", {
 			Amount = -2,
 			Label = "Consts",
 			Prop = "MaxColonistsPerRocket",
 		}),
-		PlaceObj('Effect_ModifyLabel', {
+		PlaceObj("Effect_ModifyLabel", {
 			Amount = 100,
 			Label = "AllRockets",
 			Prop = "travel_time",
 		}),
-		PlaceObj('Effect_ModifyLabel', {
+		PlaceObj("Effect_ModifyLabel", {
 			Amount = 1,
 			Label = "Consts",
 			Prop = "OutsourceDisabled",
@@ -145,7 +145,7 @@ return {
 		"display_name", "Canadian Space Agency",
 		"filename", "C:/Users/admin/Documents/csa.png",
 	}),
-	PlaceObj('ModItemMissionLogoPreset', {
+	PlaceObj("ModItemMissionLogoPreset", {
 		display_name = T(234596496631, "Canadian Space Agency logo"),
 		entity_name = "CanSpaAgDec",
 		decal_entity = "CanSpaAgDec",
@@ -153,7 +153,7 @@ return {
 		image = "UI/CanSpaAgDecUI.png",
 		group = "Default",
 	}),
-	PlaceObj('ModItemCommanderProfilePreset', {
+	PlaceObj("ModItemCommanderProfilePreset", {
 --~ 		challenge_mod = 10,
 		display_name = T(0000, "Diplomat"),
 		effect = T(0000,  [[- Reduce chance of Renegades by 20% (inc. Rebel Yell)
@@ -162,17 +162,17 @@ return {
 - Acts as Politician for story bits]]),
 		group = "Default",
 		id = "ChoGGi_CanadianSpaceAgency_Commander",
-		PlaceObj('Effect_ModifyLabel', {
+		PlaceObj("Effect_ModifyLabel", {
 			Label = "Consts",
 			Percent = 20,
 			Prop = "GameRuleRebelYellRenegadeCreation",
 		}),
-		PlaceObj('Effect_ModifyLabel', {
+		PlaceObj("Effect_ModifyLabel", {
 			Label = "Consts",
 			Percent = 20,
 			Prop = "RenegadeCreation",
 		}),
-		PlaceObj('Effect_GrantTech', {
+		PlaceObj("Effect_GrantTech", {
 			Field = "Social",
 			Research = "SupportiveCommunity",
 		}),

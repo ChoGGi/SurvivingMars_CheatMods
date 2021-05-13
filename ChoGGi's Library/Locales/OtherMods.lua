@@ -508,6 +508,7 @@ Breakthroughs will be random as well.
 302535920011346, "Each Minute"
 302535920011347, "Each Hour"
 302535920011348, "Each Sol"
+302535920011951, "Each Render"
 [[Upgrade Capacity]]
 302535920011349, "+<display_cap> Capacity, +<display_elec> <icon_Power> Consumption"
 302535920011350, "+<display_cap> Capacity"
@@ -1278,7 +1279,6 @@ Leave blank to skip search box."
 
 
 [[UNUSED]]
-302535920011951,
 302535920011952,
 302535920011953,
 302535920011954,
