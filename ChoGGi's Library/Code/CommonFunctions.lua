@@ -2231,28 +2231,24 @@ function ChoGGi.ComFuncs.ToggleWorking(obj)
 end
 
 do -- SetCameraSettings
-	local SetZoomLimits = cameraRTS.SetZoomLimits
-	local SetFovY = camera.SetFovY
-	local SetFovX = camera.SetFovX
-	local SetProperties = cameraRTS.SetProperties
-	local GetScreenSize = UIL.GetScreenSize
+	local cameraRTS = cameraRTS
 	function ChoGGi.ComFuncs.SetCameraSettings()
 		local ChoGGi = ChoGGi
 		-- cameraRTS.GetProperties(1)
 
 		-- size of activation area for border scrolling
 		if ChoGGi.UserSettings.BorderScrollingArea then
-			SetProperties(1, {ScrollBorder = ChoGGi.UserSettings.BorderScrollingArea})
+			cameraRTS.SetProperties(1, {ScrollBorder = ChoGGi.UserSettings.BorderScrollingArea})
 		else
 			-- default
-			SetProperties(1, {ScrollBorder = ChoGGi.Consts.CameraScrollBorder})
+			cameraRTS.SetProperties(1, {ScrollBorder = ChoGGi.Consts.CameraScrollBorder})
 		end
 
 		if ChoGGi.UserSettings.CameraLookatDist then
-			SetProperties(1, {LookatDist = ChoGGi.UserSettings.CameraLookatDist})
+			cameraRTS.SetProperties(1, {LookatDist = ChoGGi.UserSettings.CameraLookatDist})
 		else
 			-- default
-			SetProperties(1, {LookatDist = ChoGGi.Consts.CameraLookatDist})
+			cameraRTS.SetProperties(1, {LookatDist = ChoGGi.Consts.CameraLookatDist})
 		end
 
 		-- zoom
@@ -2260,19 +2256,19 @@ do -- SetCameraSettings
 		-- camera.GetFovX()
 		if ChoGGi.UserSettings.CameraZoomToggle then
 			if type(ChoGGi.UserSettings.CameraZoomToggle) == "number" then
-				SetZoomLimits(0, ChoGGi.UserSettings.CameraZoomToggle)
+				cameraRTS.SetZoomLimits(0, ChoGGi.UserSettings.CameraZoomToggle)
 			else
-				SetZoomLimits(0, 24000)
+				cameraRTS.SetZoomLimits(0, 24000)
 			end
 
 			-- 5760x1080 doesn't get the correct zoom size till after zooming out
-			if GetScreenSize():x() == 5760 then
-				SetFovY(2580)
-				SetFovX(7745)
+			if UIL.GetScreenSize():x() == 5760 then
+				camera.SetFovY(2580)
+				camera.SetFovX(7745)
 			end
 		else
 			-- default
-			SetZoomLimits(ChoGGi.Consts.CameraMinZoom, ChoGGi.Consts.CameraMaxZoom)
+			cameraRTS.SetZoomLimits(ChoGGi.Consts.CameraMinZoom, ChoGGi.Consts.CameraMaxZoom)
 		end
 
 		if ChoGGi.UserSettings.MapEdgeLimit then
@@ -2414,7 +2410,12 @@ function ChoGGi.ComFuncs.ColonistUpdateRace(c, race)
 end
 
 
-do -- FuckingDrones (took quite a while to figure this fun one out)
+do -- FuckingDrones
+	-- fucking drones because if you assign more than one resource cube to be picked up
+	-- the drones won't pick up any if that number isn't available for pickup
+	-- try that breakthrough where they carry two, and get a depot (at a factory/mine/etc) with one resource left in it
+	-- yes it took awhile to figure it out, hence the name...
+
 	-- force drones to pickup from pile even if they have a carry cap larger then the amount stored
 	local ResourceScale = const.ResourceScale
 

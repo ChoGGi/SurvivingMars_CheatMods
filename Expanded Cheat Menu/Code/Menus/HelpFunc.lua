@@ -133,21 +133,19 @@ do -- ModUpload
 				mod.description = Strings[302535920000990--[["You need to have a mouse to use this mod."]]] .. "\n"
 					.. needs_lib .. Strings[302535920000887--[["If you get a disabled content restrictions error: It's on Paradox to review/restore it (bug them not me).
 
-If you have any issues with this mod, please send me a bug report instead of reporting the mod.
-You can contact me through:
-Github: https://github.com/ChoGGi/SurvivingMars_CheatMods
-Discord: https://discord.gg/bkdjEZU
-Steam: https://steamcommunity.com/id/ChoGGi/
-email: ECM@choggi.org"]]] .. "\n\n\n" .. mod.description
+If you have any issues with this mod then please send me a bug report instead of reporting the mod.
+https://github.com/ChoGGi/SurvivingMars_CheatMods
+https://discord.gg/bkdjEZU
+https://steamcommunity.com/id/ChoGGi/
+SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 			else
 				mod.description = needs_lib .. Strings[302535920000887--[["If you get a disabled content restrictions error: It's on Paradox to review/restore it (bug them not me).
 
-If you have any issues with this mod, please send me a bug report instead of reporting the mod.
-You can contact me through:
-Github: https://github.com/ChoGGi/SurvivingMars_CheatMods
-Discord: https://discord.gg/bkdjEZU
-Steam: https://steamcommunity.com/id/ChoGGi/
-email: ECM@choggi.org"]]] .. "\n\n\n" .. mod.description
+If you have any issues with this mod then please send me a bug report instead of reporting the mod.
+https://github.com/ChoGGi/SurvivingMars_CheatMods
+https://discord.gg/bkdjEZU
+https://steamcommunity.com/id/ChoGGi/
+SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 			end
 		end
 

@@ -33,6 +33,7 @@ local FlushLogFile = FlushLogFile
 -- early as possible
 FlushLogFile()
 
+-- errors from mods? no...
 OnMsg.ModsReloaded = FlushLogFile
 
 -- loaded a saved game

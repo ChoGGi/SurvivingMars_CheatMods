@@ -1731,12 +1731,11 @@ do !Skipped Line! [[HelpMenu.lua" "HelpFunc.lua]] !Skipped Line!
 302535920000990, "You need to have a mouse to use this mod."
 302535920000887, "If you get a disabled content restrictions error: It's on Paradox to review/restore it (bug them not me).
 
-If you have any issues with this mod please send me a bug report instead of reporting the mod.
-You can contact me through:
-Github: https://github.com/ChoGGi/SurvivingMars_CheatMods
-Discord: https://discord.gg/bkdjEZU
-Steam: https://steamcommunity.com/id/ChoGGi/
-email: SurvivingMarsMods@choggi.org"
+If you have any issues with this mod then please send me a bug report instead of reporting the mod.
+https://github.com/ChoGGi/SurvivingMars_CheatMods
+https://discord.gg/bkdjEZU
+https://steamcommunity.com/id/ChoGGi/
+SurvivingMarsMods@choggi.org"
 302535920000221, "See log for any batch errors."
 302535920001572, "<color ChoGGi_red>Pack Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually to workaround it.
 You can also stick the executable in the profile folder to use it instead (<green>no crashing</green>):

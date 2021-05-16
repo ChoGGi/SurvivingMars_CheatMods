@@ -1318,6 +1318,7 @@ function OnMsg.ClassesBuilt()
 	function Console:TextChanged(...)
 		ChoGGi_OrigFuncs.Console_TextChanged(self, ...)
 		local text = self.idEdit:GetText()
+
 		if text:sub(-1) == "`" then
 			self.idEdit:SetText(text:sub(1, -2))
 			self.idEdit:SetCursor(1, #text-1)

@@ -24,5 +24,7 @@ return PlaceObj("ModDef", {
 	"TagBuildings", true,
 	"TagTerraforming", true,
 	"TagInterface", true,
-	"description", [[Adds a button to domes to toggle individual opened state.]],
+	"description", [[
+Adds a button to domes to toggle individual opened state (requires breathable atmosphere).
+]],
 })

@@ -1263,6 +1263,11 @@ Leave blank to skip search box."
 [[Drone Hub Range]]
 302535920011949, "Update Existing Hubs"
 302535920011950, "Existing drone hub ranges will be updated to the new default range."
+[[Mouse Edge Scroll]]
+302535920011952, "Scroll Border Size"
+302535920011953, "-1: Disable mouse border scrolling, WASD works fine.
+0-2: Down scrolling may not work (dependant on aspect ratio?).
+3+ activation size of border."
 [[UNUSED]]
 
 
@@ -1279,8 +1284,6 @@ Leave blank to skip search box."
 
 
 [[UNUSED]]
-302535920011952,
-302535920011953,
 302535920011954,
 302535920011955,
 302535920011956,
