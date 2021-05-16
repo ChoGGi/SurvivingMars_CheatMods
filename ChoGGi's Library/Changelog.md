@@ -2,6 +2,7 @@
 
 ## v10.0 (Unreleased)
 - Added SetBldMaintenance.
+- Properly fixed issue with CTD while examining certain game objects (thanks LukeH).
 
 ## v9.9 (08 May 2021)
 - Examining funcs with the blacklist enabled gave an error.

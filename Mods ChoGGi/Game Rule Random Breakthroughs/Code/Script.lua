@@ -6,23 +6,12 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	PlaceObj("GameRules", {
+		challenge_mod = 10,
 		description = T(302535920011749, "This will randomise breakthroughs."),
 		display_name = T(302535920011750, "Randomise Breakthroughs"),
 		group = "Default",
 		id = "ChoGGi_RandomBreakthroughs",
 	})
-end
-
--- prevent blank mission profile screen
-function OnMsg.LoadGame()
-	local GameRulesMap = GameRulesMap
-	local rules = g_CurrentMissionParams.idGameRules
-	for rule_id in pairs(rules) do
-		-- If it isn't in the map then it isn't a valid rule
-		if not GameRulesMap[rule_id] then
-			rules[rule_id] = nil
-		end
-	end
 end
 
 -- change func to always use rand number instead of supplied num

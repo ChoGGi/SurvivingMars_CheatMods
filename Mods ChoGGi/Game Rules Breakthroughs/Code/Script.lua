@@ -85,6 +85,7 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	PlaceObj("GameRules", {
+		challenge_mod = -50,
 		description = T{302535920011598, "This will <name> all breakthroughs <yellow>no matter</yellow> if you've checked or unchecked any in the list.", name = name},
 		display_name = T(11451, "Breakthrough") .. ": " .. T{302535920011599, "<name> All Breakthroughs", name = name},
 		group = "Default",
@@ -113,6 +114,7 @@ function OnMsg.ClassesPostprocess()
 		end
 		local id = def.id
 		PlaceObj("GameRules", {
+			challenge_mod = -50,
 			description = SafeTrans(def.description, def) .. newline .. image,
 			display_name = T(11451, "Breakthrough") .. ": " .. T(def.display_name),
 			group = "Default",
@@ -135,7 +137,7 @@ function OnMsg.ClassesPostprocess()
 
 end
 
-local function City_GetUnregisteredBreakthroughs(self)
+local function City_GetUnregisteredBreakthrough(self)
 	local BreakthroughOrder = BreakthroughOrder
 	local objs = Presets.TechPreset.Breakthroughs
 	for i = 1, #objs do
@@ -173,8 +175,8 @@ function City:TechAvailableCondition(tech, ...)
 	if lookup_rules[tech.id] then
 --~ 		-- return false to skip it
 --~ 		return false
-	-- rand breakthrough to use instead
-		tech = table.rand(City_GetUnregisteredBreakthroughs(self))
+		-- not checking again if tech is in lookup_rules
+		tech = City_GetUnregisteredBreakthrough(self)
 	end
 
 	return orig_City_TechAvailableCondition(self, tech, ...)
@@ -188,31 +190,15 @@ function SubsurfaceAnomaly:ScanCompleted(scanner, ...)
 		end
 
 		-- blocked breakthrough
-		if lookup_rules[tech.id] then
-			local breaks = (scanner and scanner.city or UICity):GetUnregisteredBreakthroughs()
-			for i = 1, #breaks do
-				local tech_id = breaks[i]
-				-- if there's a rule left to use then use it, otherwise it's random tech
-				if not lookup_rules[tech_id] then
-					self.breakthrough_tech = tech_id
-				end
+		if lookup_rules[self.breakthrough_tech] then
+			local tech = City_GetUnregisteredBreakthrough(scanner and scanner.city or UICity)
+			-- not checking again if tech is in lookup_rules
+			if tech then
+				self.breakthrough_tech = tech.id
 			end
 		end
 
   end
 
 	return orig_SubsurfaceAnomaly_ScanCompleted(self, scanner, ...)
-end
-
-
--- prevent blank mission profile screen
-function OnMsg.LoadGame()
-	local GameRulesMap = GameRulesMap
-	local rules = g_CurrentMissionParams.idGameRules or empty_table
-	for rule_id in pairs(rules) do
-		-- If it isn't in the map then it isn't a valid rule
-		if not GameRulesMap[rule_id] then
-			rules[rule_id] = nil
-		end
-	end
 end

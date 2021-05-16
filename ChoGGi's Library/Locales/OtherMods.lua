@@ -1268,6 +1268,11 @@ Leave blank to skip search box."
 302535920011953, "-1: Disable mouse border scrolling, WASD works fine.
 0-2: Down scrolling may not work (dependant on aspect ratio?).
 3+ activation size of border."
+[[Game Rule One MOXIE]]
+302535920011954, "You can only build one MOXIE."
+302535920011955, "<grey>"Tell me Jim, what did you see when the psychologist held up that blank sheet of paper?"
+<right>Clayton Stone</grey><left>"
+302535920011956, "One MOXIE"
 [[UNUSED]]
 
 
@@ -1284,9 +1289,6 @@ Leave blank to skip search box."
 
 
 [[UNUSED]]
-302535920011954,
-302535920011955,
-302535920011956,
 302535920011957,
 302535920011958,
 302535920011959,

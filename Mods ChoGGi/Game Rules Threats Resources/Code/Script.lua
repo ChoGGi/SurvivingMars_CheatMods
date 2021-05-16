@@ -39,6 +39,7 @@ function OnMsg.ClassesPostprocess()
 		display_name = T(302535920011370, "Low Resources"),
 		group = "Default",
 		id = "ChoGGi_LowResources",
+		challenge_mod = 50,
 	})
 
 	PlaceObj("GameRules", {
@@ -48,17 +49,6 @@ function OnMsg.ClassesPostprocess()
 		display_name = T(302535920011372, "Max Threats"),
 		group = "Default",
 		id = "ChoGGi_MaxThreats",
+		challenge_mod = 50,
 	})
-end
-
--- prevent blank mission profile screen
-function OnMsg.LoadGame()
-	local GameRulesMap = GameRulesMap
-	local rules = g_CurrentMissionParams.idGameRules or empty_table
-	for rule_id in pairs(rules) do
-		-- If it isn't in the map then it isn't a valid rule
-		if not GameRulesMap[rule_id] then
-			rules[rule_id] = nil
-		end
-	end
 end

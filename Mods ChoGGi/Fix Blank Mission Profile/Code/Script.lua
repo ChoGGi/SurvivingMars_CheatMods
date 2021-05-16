@@ -23,15 +23,14 @@ function OnMsg.LoadGame()
 	end
 
 	local rules = g_CurrentMissionParams.idGameRules
-	if not rules then
-		return
-	end
-
-	local GameRulesMap = GameRulesMap
-	for rule_id in pairs(rules) do
-		-- If it isn't in the map then it isn't a valid rule
-		if not GameRulesMap[rule_id] then
-			rules[rule_id] = nil
+	if rules then
+		local GameRulesMap = GameRulesMap
+		for rule_id in pairs(rules) do
+			-- If it isn't in the map then it isn't a valid rule
+			if not GameRulesMap[rule_id] then
+				rules[rule_id] = nil
+			end
 		end
 	end
+
 end

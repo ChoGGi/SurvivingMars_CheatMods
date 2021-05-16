@@ -13,6 +13,7 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	PlaceObj("GameRules", {
+		challenge_mod = -50,
 		description = T(302535920011425,"Start off with terraforming params maxed, and the ground green."),
 		display_name = T(302535920011426, "Fully Terraformed"),
 		flavor = T(323117615670, [[
@@ -62,6 +63,7 @@ function OnMsg.ClassesPostprocess()
 	})
 
 	PlaceObj("GameRules", {
+		challenge_mod = -100,
 		description = T(302535920011427, "Terraforming params never go down."),
 		display_name = T(302535920011428, "Terraforming Locked"),
 		flavor = T(302535920011429, "\n" .. [[<grey>"Water, fire, air and dirt
@@ -82,17 +84,5 @@ end
 function OnMsg.TerraformParamChanged(name, new_value, old_value)
 	if new_value < old_value and g_ChoGGi_GM_TerraformingLocked then
 		SetTerraformParam(name, old_value)
-	end
-end
-
--- prevent blank mission profile screen
-function OnMsg.LoadGame()
-	local GameRulesMap = GameRulesMap
-	local rules = g_CurrentMissionParams.idGameRules or empty_table
-	for rule_id in pairs(rules) do
-		-- If it isn't in the map then it isn't a valid rule
-		if not GameRulesMap[rule_id] then
-			rules[rule_id] = nil
-		end
 	end
 end

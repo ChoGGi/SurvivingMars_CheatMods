@@ -401,6 +401,7 @@ function OnMsg.ClassesPostprocess()
 		flavor = T(302535920011605, [[<grey>"Why don't you stick a broom up my ass? I can sweep the carpet on the way out."<newline><right>Dr. Paul Bradley</grey><left>]]),
 		group = "Default",
 		id = "ChoGGi_MeteorThreat",
+		challenge_mod = 100,
 	})
 
 	PlaceObj("GameRules", {
@@ -412,6 +413,7 @@ function OnMsg.ClassesPostprocess()
 		},
 		group = "Default",
 		id = "ChoGGi_WinterWonderland",
+		challenge_mod = 100,
 	})
 
 	PlaceObj("GameRules", {
@@ -420,6 +422,7 @@ function OnMsg.ClassesPostprocess()
 		flavor = T(302535920011626, [[<grey>"The wind blew the big plate glass window in and all the others out. They went out of business right then and there."<newline><right>Michael Boyt</grey><left>]]),
 		group = "Default",
 		id = "ChoGGi_GreatBakersfield",
+		challenge_mod = 100,
 	})
 
 	PlaceObj("GameRules", {
@@ -428,21 +431,6 @@ function OnMsg.ClassesPostprocess()
 		flavor = T(302535920011629, [[<grey>"'The Suck Zone'. It's the point basically when the twister... sucks you up. That's not the technical term for it, obviously."<newline><right>Dusty</grey><left>]]),
 		group = "Default",
 		id = "ChoGGi_Twister",
+		challenge_mod = 100,
 	})
-end
-
--- prevent blank mission profile screen (well not if the mod isn't loaded)
-function OnMsg.LoadGame()
-	local rules = g_CurrentMissionParams.idGameRules
-	if not rules then
-		return
-	end
-
-	local GameRulesMap = GameRulesMap
-	for rule_id in pairs(rules) do
-		-- If it isn't in the map then it isn't a valid rule
-		if not GameRulesMap[rule_id] then
-			rules[rule_id] = nil
-		end
-	end
 end

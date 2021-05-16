@@ -86,6 +86,8 @@ ChoGGi.Defaults = {
 	FlushLog = false,
 	-- call FlushLogFile() every render update
 	FlushLogConstantly = false,
+	-- every hour
+	FlushLogHourly = false,
 	-- show Cheats section in the selection panel
 	InfopanelCheats = true,
 	-- maybe you don't want to see the interface in screenshots
@@ -97,7 +99,7 @@ ChoGGi.Defaults = {
 	-- stops panel from shrinking
 	StopSelectionPanelResize = false,
 	-- remove any objects above the height limit (or game will delete save and crash)
-	RemoveHeightLimitObjs = true,
+	RemoveHeightLimitObjs = false,
 	-- change rollovers from 450 to 600
 	WiderRollovers = 600,
 

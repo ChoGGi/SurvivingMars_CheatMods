@@ -508,6 +508,15 @@ The number is a count of stored msgs, right-click to view the list."]]],
 			ChoGGi.SettingFuncs.WriteSettings()
 		end,
 	},
+	{name = Strings[302535920001635--[[Flush Log Hourly]]],
+		hint = Strings[302535920001636--[[Call FlushLogFile() every in-game hour.]]],
+		class = "ChoGGi_XCheckButtonMenu",
+		value = "ChoGGi.UserSettings.FlushLogHourly",
+		clicked = function()
+			ChoGGi.UserSettings.FlushLogHourly = not ChoGGi.UserSettings.FlushLogHourly
+			ChoGGi.SettingFuncs.WriteSettings()
+		end,
+	},
 	{name = Strings[302535920000483--[[Write Console Log]]],
 		hint = Strings[302535920000484--[[Write console log to %slogs/ConsoleLog.log (updated every 5 seconds).]]]:format(ConvertToOSPath("AppData/")),
 		class = "ChoGGi_XCheckButtonMenu",

@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1753933193",
 	"pops_any_uuid", "6729224c-c34e-46fb-9355-400a0cdc5402",
 	"lua_revision", 1001514, -- Tito
-	"version", 15,
+	"version", 17,
 	"version_major", 1,
-	"version_minor", 5,
+	"version_minor", 7,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -24,5 +24,6 @@ Exclude Breakthroughs: Enabling a rule will stop that breakthrough from appearin
 
 Known Issues:
 You need to be in-game to be able to see the mod options.
+Exclude Breakthroughs may not always work on breakthrough anomalies scanned by explorers.
 ]],
 })

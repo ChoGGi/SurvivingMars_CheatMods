@@ -272,7 +272,7 @@ function OnMsg.ClassesPostprocess()
 
 	-- add HiddenX cat for Hidden items
 	local bc = BuildCategories
-	if ChoGGi.UserSettings.Building_hide_from_build_menu and not table.find(bc, "id", "HiddenX") then
+	if UserSettings.Building_hide_from_build_menu and not table.find(bc, "id", "HiddenX") then
 		bc[#bc+1] = {
 			id = "HiddenX",
 			name = T(1000155--[[Hidden]]),
@@ -286,7 +286,7 @@ function OnMsg.ClassesPostprocess()
 		ChoGGi.ComFuncs.ExpandModOptions(XTemplates)
 	end
 
-	if ChoGGi.UserSettings.FlushLog then
+	if UserSettings.FlushLog then
 		FlushLogFile()
 	end
 end
@@ -1039,6 +1039,10 @@ end
 -- const.HourDuration is 30 000 ticks (GameTime)
 function OnMsg.NewHour()
 	local UserSettings = ChoGGi.UserSettings
+
+	if UserSettings.FlushLogHourly then
+		FlushLogFile()
+	end
 
 	-- make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
 	if UserSettings.DroneResourceCarryAmountFix then

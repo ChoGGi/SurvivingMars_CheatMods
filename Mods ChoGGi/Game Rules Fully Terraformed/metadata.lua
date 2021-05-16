@@ -1,14 +1,14 @@
 return PlaceObj("ModDef", {
 	"title", "Game Rules Fully Terraformed",
-	"version", 1,
-	"version_major", 0,
-	"version_minor", 1,
-	"image", "Preview.png",
 	"id", "ChoGGi_GameRulesFullyTerraformed",
 	"steam_id", "1743034799",
 	"pops_any_uuid", "caeda005-4595-4c8f-b133-3c4dbce8eb2c",
-	"author", "ChoGGi",
 	"lua_revision", 1001514, -- Tito
+	"version", 2,
+	"version_major", 0,
+	"version_minor", 2,
+	"image", "Preview.png",
+	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},

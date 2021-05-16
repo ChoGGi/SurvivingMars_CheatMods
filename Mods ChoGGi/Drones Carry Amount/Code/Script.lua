@@ -1,9 +1,11 @@
 -- See LICENSE for terms
 
--- fucking drones because if you assign more than one resource cube to be picked up
--- the drones won't pick up any if that number isn't available for pickup
--- try that breakthrough where they carry two, and get a depot (at a factory/mine/etc) with one resource left in it
--- yes it took awhile to figure it out, hence the name...
+--[[
+	fucking drones because if you assign more than one resource cube to be picked up
+	the drones won't pick up any if that number isn't available for pickup
+	try that breakthrough where they carry two, and get a depot (at a factory/mine/etc) with one resource left in it
+	yes it took awhile to figure it out, hence the name...
+]]
 local FuckingDrones = ChoGGi.ComFuncs.FuckingDrones
 
 function OnMsg.ClassesPostprocess()

@@ -3,8 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! green: <green>%s</green>
 !Skipped Line! yellow: <yellow>%s</yellow>
 "ID", " Text"
-302535920001635,
-302535920001636,
 302535920001637,
 302535920001638,
 302535920001639,
@@ -412,10 +410,12 @@ do !Skipped Line! [[MultiLineText.lua]] !Skipped Line!
 302535920000827, "Check this to overwrite file instead of appending to it."
 end !Skipped Line!
 do !Skipped Line! [[ConsoleFuncs.lua" "ConsoleLogWin.lua]] !Skipped Line!
-302535920001342, "Dumps the log to disk on startup, and every new Sol (good for some crashes)."
+302535920001635, "Flush Log Hourly"
+302535920001636, "Call FlushLogFile() every in-game hour."
 302535920001349, "Flush Log Constantly"
 302535920001414, "Call FlushLogFile() every render update!"
 302535920000473, "Flush Log"
+302535920001342, "Dumps the log to disk on startup, and every new Sol."
 302535920000474, "Flushes log to file."
 302535920000406, "Copy text to the clipboard."
 302535920000313, "OnMsg/Msg blacklist"

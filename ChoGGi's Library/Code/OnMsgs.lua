@@ -2,11 +2,6 @@
 
 local OnMsg = OnMsg
 local IsAttachAboveHeightLimit = ChoGGi.ComFuncs.IsAttachAboveHeightLimit
-local function HasRotatyBlinky(o)
-	if o.ChoGGi_blinky then
-		return true
-	end
-end
 
 -- we don't add shortcuts and ain't supposed to drink no booze
 OnMsg.ShortcutsReloaded = ChoGGi.ComFuncs.Rebuildshortcuts
@@ -57,10 +52,16 @@ end
 
 ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100
 
+local function HasRotatyBlinky(o)
+	if o.ChoGGi_blinky then
+		return true
+	end
+end
 -- obj cleanup if mod is removed from saved game
 local function RemoveChoGGiObjects(skip_height)
 	SuspendPassEdits("ChoGGiLibrary.OnMsgs.RemoveChoGGiObjects")
 
+	-- MapDelete doesn't seem to work with func filtering?
 	local objs = MapGet(true, "RotatyThing", HasRotatyBlinky)
 	for i = #objs, 1, -1 do
 		objs[i]:delete()
@@ -87,4 +88,16 @@ function OnMsg.LoadGame()
 	ChoGGi.ComFuncs.UpdateDataTablesCargo()
 	Startup()
 	RemoveChoGGiObjects(true)
+
+	-- prevent blank mission profile screen (from removing game rule mods mid-game)
+	local rules = g_CurrentMissionParams.idGameRules
+	if rules then
+		local GameRulesMap = GameRulesMap
+		for rule_id in pairs(rules) do
+			-- If it isn't in the map then it isn't a valid rule
+			if not GameRulesMap[rule_id] then
+				rules[rule_id] = nil
+			end
+		end
+	end
 end
