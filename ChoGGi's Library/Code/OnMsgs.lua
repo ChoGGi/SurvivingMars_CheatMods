@@ -1,7 +1,9 @@
 -- See LICENSE for terms
 
+local DoneObject = DoneObject
 local OnMsg = OnMsg
-local IsAttachAboveHeightLimit = ChoGGi.ComFuncs.IsAttachAboveHeightLimit
+
+local RemoveAttachAboveHeightLimit = ChoGGi.ComFuncs.RemoveAttachAboveHeightLimit
 
 -- we don't add shortcuts and ain't supposed to drink no booze
 OnMsg.ShortcutsReloaded = ChoGGi.ComFuncs.Rebuildshortcuts
@@ -52,9 +54,9 @@ end
 
 ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100
 
-local function HasRotatyBlinky(o)
+local function RemoveMyBlinky(o)
 	if o.ChoGGi_blinky then
-		return true
+		DoneObject(o)
 	end
 end
 -- obj cleanup if mod is removed from saved game
@@ -62,10 +64,7 @@ local function RemoveChoGGiObjects(skip_height)
 	SuspendPassEdits("ChoGGiLibrary.OnMsgs.RemoveChoGGiObjects")
 
 	-- MapDelete doesn't seem to work with func filtering?
-	local objs = MapGet(true, "RotatyThing", HasRotatyBlinky)
-	for i = #objs, 1, -1 do
-		objs[i]:delete()
-	end
+	MapForEach(true, "RotatyThing", RemoveMyBlinky)
 
 	-- any of my objs added in Classes_Objects.lua
 	ChoGGi.ComFuncs.RemoveObjs("ChoGGi_ODeleteObjs")
@@ -74,10 +73,7 @@ local function RemoveChoGGiObjects(skip_height)
 
 	-- remove any origin points above 65535 (or bad things happen)
 	if not skip_height and ChoGGi.UserSettings.RemoveHeightLimitObjs then
-		local objs = MapGet("map", IsAttachAboveHeightLimit)
-		for i = #objs, 1, -1 do
-			objs[i]:delete()
-		end
+		MapForEach("map", RemoveAttachAboveHeightLimit)
 	end
 
 	ResumePassEdits("ChoGGiLibrary.OnMsgs.RemoveChoGGiObjects")

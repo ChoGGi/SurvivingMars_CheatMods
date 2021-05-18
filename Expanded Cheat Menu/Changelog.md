@@ -1,9 +1,11 @@
 ## ECM Changelog
 
 ## v17.0 (Unreleased)
+### Changed:
+- Moved some examine funcs from ECM to Lib.
+- Re-added Flush Log Hourly option.
 
 ## v16.9 (08 May 2021)
-
 ### Added:
 - Cheats pane>RemoveAllFireflies and SpawnAFirefly: kinda jerky but they work.
 

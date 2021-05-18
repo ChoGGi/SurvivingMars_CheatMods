@@ -44,6 +44,7 @@ local WaitMsg = WaitMsg
 local Sleep = Sleep
 local CreateGameTimeThread = CreateGameTimeThread
 local IsInMapPlayableArea = IsInMapPlayableArea
+local DoneObject = DoneObject
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
 
@@ -2271,6 +2272,7 @@ do -- SetCameraSettings
 			cameraRTS.SetZoomLimits(ChoGGi.Consts.CameraMinZoom, ChoGGi.Consts.CameraMaxZoom)
 		end
 
+		--
 		if ChoGGi.UserSettings.MapEdgeLimit then
 			hr.CameraRTSBorderAtMinZoom = -1000
 			hr.CameraRTSBorderAtMaxZoom = -1000
@@ -2403,7 +2405,7 @@ function ChoGGi.ComFuncs.ColonistUpdateRace(c, race)
 	end
 
 	if race == Translate(3490--[[Random]]) then
-		race = Random(1, 5)
+		race = Random(1, 5) -- max amount of races
 	end
 	c.race = race
 	c:ChooseEntity()
@@ -2639,8 +2641,7 @@ local function MapGet_ChoGGi(label, area, ...)
 		local g_cls = g_Classes[label]
 		-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything* (think gary oldman in professional)
 		if g_cls and g_cls:IsKindOf("CObject") then
-			-- area can be: "map" = only objs spawned on map, or true = objs on map and off map (objs spawned at invalid location)
-			-- "detached" = anything off map (rockets not on planet/etc), "outsiders" = ?
+			-- area can be: true, "map", "detached", "outsiders" (see Surviving Mars/ModTools/Docs/LuaMapEnumeration.md.html)
 			return MapGet(area or true, label, ...)
 			-- use obj:SetPos(pos) to move objs to map (and away with pos = InvalidPos())
 		end
@@ -3011,7 +3012,6 @@ function ChoGGi.ComFuncs.BuildMenu_Toggle()
 end
 
 do -- DeleteObject
-	local DoneObject = DoneObject
 	local DeleteThread = DeleteThread
 	local DestroyBuildingImmediate = DestroyBuildingImmediate
 	local FlattenTerrainInBuildShape = FlattenTerrainInBuildShape
@@ -5144,15 +5144,10 @@ function ChoGGi.ComFuncs.RetToolbarButton(params)
 end
 
 -- save a game with attachments (res cubes in storage depots) that have an origin point above 65535 and goodbye save game.
-function ChoGGi.ComFuncs.IsAttachAboveHeightLimit(obj)
-	local valid = IsValid(obj)
+function ChoGGi.ComFuncs.RemoveAttachAboveHeightLimit(obj)
 	-- we only want to check attachments
-	if not valid or valid and not obj:GetParent() then
-		return false
-	end
-
-	if obj:GetZ() + obj:GetAttachOffset():z() > 65535 then
-		return true
+	if obj:GetParent() and (obj:GetZ() + obj:GetAttachOffset():z()) > 65535 then
+		DoneObject(obj)
 	end
 end
 
@@ -5171,7 +5166,6 @@ function ChoGGi.ComFuncs.GetShortcut(id)
 end
 
 do -- CleanInfoAttachDupes
-	local DoneObject = DoneObject
 	local dupe_list = {}
 
 	function ChoGGi.ComFuncs.CleanInfoAttachDupes(list, cls)
@@ -7106,7 +7100,6 @@ do -- EntitySpots_Toggle
 		SuspendPassEdits("ChoGGi.ComFuncs.EntitySpots_Clear")
 		-- just in case (old way of doing it)
 		if obj.ChoGGi_ShowAttachSpots == true then
-			local DoneObject = DoneObject
 			obj:DestroyAttaches(old_remove_table, function(a)
 				if a.ChoGGi_ShowAttachSpots then
 					DoneObject(a)

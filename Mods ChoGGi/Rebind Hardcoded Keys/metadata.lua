@@ -9,12 +9,12 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Rebind Hardcoded Keys",
 	"id", "ChoGGi_RebindHardcodedKeys",
-	"lua_revision", 1001514, -- Tito
 	"steam_id", "2163750555",
 	"pops_any_uuid", "0876037c-42bf-4f8a-8939-36638ba10a62",
-	"version", 1,
+	"lua_revision", 1001514, -- Tito
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
@@ -27,6 +27,7 @@ return PlaceObj("ModDef", {
 Cycle visual variant backward: [
 Cycle visual variant forward: ]
 Construction cancel: Escape (you'll need to reset your keybinds to restore this as you can't bind esc)
+Salvage Cursor: Ctrl-Delete (You may need to reload your save when changing this)
 
 
 More keys?

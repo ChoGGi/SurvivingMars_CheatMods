@@ -1,8 +1,10 @@
 ## Library Changelog
 
 ## v10.0 (Unreleased)
-- Added SetBldMaintenance.
 - Properly fixed issue with CTD while examining certain game objects (thanks LukeH).
+- Added SetBldMaintenance.
+- Moved some examine funcs from ECM to Lib.
+- Added my prevent blank mission profile screen fix.
 
 ## v9.9 (08 May 2021)
 - Examining funcs with the blacklist enabled gave an error.

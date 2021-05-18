@@ -8,16 +8,15 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Number Keys Build Menu",
-	"version", 1,
-	"version_major", 0,
-	"version_minor", 1,
-
-	"image", "Preview.png",
 	"id", "ChoGGi_NumberKeysBuildMenu",
 	"steam_id", "1594874242",
 	"pops_any_uuid", "5e0057b9-4f8d-46e2-918b-ad161e4df697",
-	"author", "ChoGGi",
 	"lua_revision", 1001514, -- Tito
+	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
+	"image", "Preview.png",
+	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},

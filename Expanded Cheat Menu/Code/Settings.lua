@@ -98,8 +98,9 @@ ChoGGi.Defaults = {
 	SkipModHelpPage = true,
 	-- stops panel from shrinking
 	StopSelectionPanelResize = false,
-	-- remove any objects above the height limit (or game will delete save and crash)
-	RemoveHeightLimitObjs = false,
+	-- remove any objects above the height limit (or game will delete save and crash).
+	-- takes under a second to run, so best to enable by default
+	RemoveHeightLimitObjs = true,
 	-- change rollovers from 450 to 600
 	WiderRollovers = 600,
 

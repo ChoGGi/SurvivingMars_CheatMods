@@ -23,7 +23,8 @@ return PlaceObj("ModDef", {
 --~ 	"has_options", true,
 	"TagGameplay", true,
 	"description", [[
-You can only build one MOXIE.
+You can only build one MOXIE (Farms and algae ftw).
+
 
 Requested by YertyL.
 ]],
