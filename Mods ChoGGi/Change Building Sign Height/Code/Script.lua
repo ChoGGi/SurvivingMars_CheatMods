@@ -9,7 +9,7 @@ local point = point
 local function GetHeight()
 	local height = 0
 	if mod_LowerHigher then
-		height = (mod_SignHeight * 10) * -1
+		height = -(mod_SignHeight * 10)
 	else
 		height = mod_SignHeight * 10
 	end

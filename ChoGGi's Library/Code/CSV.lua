@@ -207,11 +207,11 @@ do -- MapData
 				-- skip the rest for speed in testing
 				if action.ActionId ~= "" or not testing then
 					-- SW
-					AddLandingSpot(lat, long * -1, breakthroughs, skip_csv)
+					AddLandingSpot(lat, -long, breakthroughs, skip_csv)
 					-- NE
-					AddLandingSpot(lat * -1, long, breakthroughs, skip_csv)
+					AddLandingSpot(-lat, long, breakthroughs, skip_csv)
 					-- NW
-					AddLandingSpot(lat * -1, long * -1, breakthroughs, skip_csv)
+					AddLandingSpot(-lat1, -long, breakthroughs, skip_csv)
 				end
 			end
 		end

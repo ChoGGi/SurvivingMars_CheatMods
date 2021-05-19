@@ -72,7 +72,7 @@ function ChoGGi.ComFuncs.DraggableCheatsMenu(enable)
 		CreateRealTimeThread(function()
 			WaitMsg("OnRender")
 			-- needs a delay (cause we added the control?)
-			local height = XShortcutsTarget.idToolbar.box:maxy() * -1
+			local height = -XShortcutsTarget.idToolbar.box:maxy()
 			XShortcutsTarget.idMoveControl:SetMargins(box(0, height, 0, 0))
 		end)
 	else
@@ -1377,14 +1377,14 @@ do -- ReturnTechAmount/GetResearchedTechValue
 			-- defaults for the objects have both percent/amount, so whoever isn't 0 means something
 			if tech.Percent == 0 then
 				if tech.Amount < 0 then
-					number = tech.Amount * -1 -- always gotta be positive
+					number = -tech.Amount
 				else
 					number = tech.Amount
 				end
 			-- probably just have an else here instead...
 			elseif tech.Amount == 0 then
 				if tech.Percent < 0 then
-					tech.Percent = tech.Percent * -1 -- -50 > 50
+					tech.Percent = -tech.Percent -- -50 > 50
 				end
 				number = (tech.Percent + 0.0) / 100 -- (50 > 50.0) > 0.50
 			end
@@ -2616,7 +2616,7 @@ function ChoGGi.ComFuncs.RetLastLineFromStr(str, text)
 	local last = str:reverse():find(text, 1, true)
 	if last then
 		-- we need a neg number for sub + 1 to remove the slash
-		return str:sub((last * -1) + 1)
+		return str:sub(-last + 1)
 	end
 	return ""
 end

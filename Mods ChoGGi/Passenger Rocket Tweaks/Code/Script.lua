@@ -322,7 +322,7 @@ local function AddUIStuff(content)
 	if mod_PosPassList then
 		content.idListsWrapper:SetMargins(box(
 			mod_PosX,
-			mod_PosY * -1,
+			-mod_PosY,
 			0, 0
 		))
 	end

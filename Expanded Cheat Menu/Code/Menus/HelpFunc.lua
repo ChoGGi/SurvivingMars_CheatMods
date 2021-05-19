@@ -916,7 +916,7 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 			-- need to reverse string so it finds the last \, since find looks ltr
 			local slash = folder:reverse():find("\\")
 			-- we need a neg number for sub + 1 to remove the slash
-			local id = folder:sub((slash * -1) + 1)
+			local id = folder:sub(-slash + 1)
 
 			local hpk = folder:gsub("\\", "/") .. "/ModContent.hpk"
 			-- skip any mods that aren't packed (uploaded by ECM, or just old)

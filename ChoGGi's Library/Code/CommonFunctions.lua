@@ -361,7 +361,7 @@ do -- RetName
 								-- need to reverse string so it finds the last /, since find looks ltr
 								local slash = name:reverse():find("/")
 								if slash then
-									lookup_table[value] = name:sub((slash * -1) + 1) .. ":" .. key
+									lookup_table[value] = name:sub(-slash + 1) .. ":" .. key
 								else
 									-- the name'll be [string ""](8):
 									lookup_table[value] = "string():" .. key
@@ -3455,7 +3455,7 @@ do -- BuildingConsumption
 	function ChoGGi.ComFuncs.RemoveBuildingWaterConsump(obj)
 		RemoveConsumption(obj, "water_consumption", "LifeSupportConsumer")
 		if obj:IsKindOf("LandscapeLake") then
-			obj.irrigation = obj:GetDefaultPropertyValue("irrigation") * -1
+			obj.irrigation = -obj:GetDefaultPropertyValue("irrigation")
 			ChoGGi.ComFuncs.ToggleWorking(obj)
 		end
 	end
@@ -3793,9 +3793,9 @@ function ChoGGi.ComFuncs.SetTaskReqAmount(obj, value, task, setting, task_num)
 	task:ResetAmount(obj[setting])
 	-- then add stored, but don't set to above new limit or it'll look weird (and could mess stuff up)
 	if amount > obj[setting] then
-		task:AddAmount(obj[setting] * -1)
+		task:AddAmount(-obj[setting])
 	else
-		task:AddAmount(amount * -1)
+		task:AddAmount(-amount)
 	end
 end
 
@@ -7154,7 +7154,7 @@ do -- EntitySpots_Toggle
 					local equal = spot_annot:reverse():find("=")
 					if equal then
 						-- we need a neg number for sub + 1 to remove the slash
-						text_obj.order = tonumber(spot_annot:sub((equal * -1) + 1))
+						text_obj.order = tonumber(spot_annot:sub(-equal + 1))
 					end
 
 				end

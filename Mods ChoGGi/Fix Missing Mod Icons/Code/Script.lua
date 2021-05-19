@@ -22,7 +22,7 @@ local function FixPath(image)
 	local last = image:reverse():find("/IU/", 1, true)
 	if last then
 		-- we need a neg number for sub + 1 to remove the slash
-		return "UI/" .. image:sub((last * -1) + 1)
+		return "UI/" .. image:sub(-last + 1)
 	end
 
 	-- make sure we don't blank out the icon... If there's some weird issue (Sir McKaby, Destroyer of Mods)

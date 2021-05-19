@@ -329,7 +329,7 @@ function ChoGGi_Dlg3DManipulator:CorrectNumber(num, negative)
 	local amount = self:GetAdjustAmount()
 
 	if negative then
-		amount = amount * -1
+		amount = -amount
 	end
 
 	if num > -1 then
@@ -401,11 +401,11 @@ function ChoGGi_Dlg3DManipulator:idPosButtons_OnPress()
 	elseif text == "Z+" then
 		z = amount
 	elseif text == "X-" then
-		x = amount * -1
+		x = -amount
 	elseif text == "Y-" then
-		y = amount * -1
+		y = -amount
 	elseif text == "Z-" then
-		z = amount * -1
+		z = -amount
 	end
 
 	self.func_pos_set(obj,

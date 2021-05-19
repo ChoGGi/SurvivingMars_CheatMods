@@ -111,7 +111,7 @@ function ChoGGi_DlgImageViewer:ExportImage()
 	-- need to reverse string so it finds the last /, since find looks ltr
 	local slash = self.image_path:reverse():find("/")
 	if slash then
-		local name = self.image_path:sub((slash * -1) + 1)
+		local name = self.image_path:sub(-slash + 1)
 		local dest_path = "AppData/" .. name
 		-- If error (devs swapped all? the images from .tga to .dds, but ref them as .tga)
 		if g.AsyncCopyFile(self.image_path, dest_path) then

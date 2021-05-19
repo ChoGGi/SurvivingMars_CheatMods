@@ -621,7 +621,7 @@ function PortableMiner:DigErUp()
 		end
 		-- remove what we need
 		if res.transport_request:GetActualAmount() >= amount then
-			res.transport_request:SetAmount(amount * -1)
+			res.transport_request:SetAmount(-amount)
 		end
 	else
 		amount = self.nearby_deposits[1]:TakeAmount(amount)

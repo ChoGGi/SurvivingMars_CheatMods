@@ -131,19 +131,19 @@ function math.fmod(x, y)
 	end
 
 	if y < 0 then
-		y = y * -1
+		y = -y
 	end
 
 	local neg
 	if x < 0 then
 		neg = true
-		x = x * -1
+		x = -x
 	end
 
 	x = x % y
-		if neg then
-			return -x
-		end
+	if neg then
+		return -x
+	end
 	return x
 
 end
@@ -227,7 +227,7 @@ function math.modf(x)
 	local neg
 	if x < 0 then
 		neg = true
-		x = x * -1
+		x = -x
 	end
 
 	local int = math.floor(x)

@@ -40,7 +40,7 @@ function InstantLake:UpdateLevel(level)
 
 	-- not much point going far below the ground
 	if self.water_level < 0 then
-		self.water_level = (self.water_steps - 1) * -1
+		self.water_level = -(self.water_steps - 1)
 	end
 
 	self.water_obj:SetPos(self:GetPos():AddZ(self.water_level))
@@ -54,7 +54,7 @@ function InstantLake:AdjustLevel(dir, smaller)
 	end
 
 	if dir == "down" then
-		level = level * -1
+		level = -level
 	end
 	self:UpdateLevel(level)
 end

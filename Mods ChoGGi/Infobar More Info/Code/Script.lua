@@ -190,10 +190,10 @@ local function RemainingTime(g, scale)
 		local negative = time_left > 0
 		if negative then
 			-- we want to see time left without production else it'll mess up the numbers, or I'm a bit too sleepy
-			time_left = (g.consumption + 0.0) * -1
+			time_left = -(g.consumption + 0.0)
 		end
 
-		local remaining = floatfloor((g.stored / (time_left * -1)) * (scale or scale_hours))
+		local remaining = floatfloor((g.stored / -time_left) * (scale or scale_hours))
 
 		-- "negative" amounts for showing storage remaining while production is positive
 		-- can't be actual -number or it'll just show "-hours" instead of "-sols, hours". thanks FormatDuration()

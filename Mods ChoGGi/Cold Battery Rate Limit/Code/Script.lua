@@ -7,7 +7,7 @@ local mod_PenaltyPercent
 local function ModOptions()
 	local options = CurrentModOptions
 	mod_ColdCapacity = options:GetProperty("ColdCapacity")
-	mod_PenaltyPercent = options:GetProperty("PenaltyPercent") * -1
+	mod_PenaltyPercent = -options:GetProperty("PenaltyPercent")
 end
 
 -- load default/saved settings
