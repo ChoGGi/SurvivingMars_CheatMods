@@ -23,3 +23,12 @@ A warning will be added to the mod manager to any mods without the blacklist act
 ```
 Move the BinAssets folder to the appdata folder to keep any mods/settings.
 ```
+
+
+
+
+##### For new users
+```
+Your old ECM settings will need to be manually moved from LocalStorage to CheatMenuModSettings
+```
+

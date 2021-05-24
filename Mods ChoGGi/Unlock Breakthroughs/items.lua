@@ -30,8 +30,8 @@ for i = 1, #bt do
 	local def = bt[i]
 	local id = def.id
 	if id ~= "None" then
-		-- spaces don't work in image tags
-		local image,newline
+		-- spaces don't work in image tags...
+		local image, newline
 		if def.icon:find(" ", 1, true) then
 			image = ""
 			newline = ""

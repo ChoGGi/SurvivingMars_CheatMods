@@ -1,0 +1,2 @@
+mod options for each resource
+sols between bump

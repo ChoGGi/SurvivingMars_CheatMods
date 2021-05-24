@@ -20,3 +20,10 @@ Though HelperMod shouldn't be updated too often.
 
 For those previously using the HelperMod:
 Move the BinAssets folder to the appdata folder to keep any mods/settings.
+
+
+
+
+
+For new users:
+Your old ECM settings will need to be manually moved from LocalStorage to CheatMenuModSettings

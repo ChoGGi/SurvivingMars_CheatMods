@@ -1,3 +1,6 @@
+v0.5
+Issue with applying mod options manually.
+
 v0.4
 Added delay for always apply on new games to stop buildings sinking into ground (thanks BluePuppet60).
 https://github.com/ChoGGi/SurvivingMars_CheatMods/issues/36

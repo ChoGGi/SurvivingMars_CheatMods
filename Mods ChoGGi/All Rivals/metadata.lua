@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "All Sponsors",
+	"title", "All Rivals",
 	"id", "ChoGGi_AllSponsors",
 	"steam_id", "1596612055",
 	"pops_any_uuid", "aded8470-6312-4651-ad23-09688c2818e3",

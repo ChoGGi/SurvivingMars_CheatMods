@@ -26,8 +26,8 @@ local function UnlockBreaks(newgame)
 
 end
 
-local function ModOptions(newgame)
-	if CurrentModOptions:GetProperty("AlwaysApplyOptions") then
+local function ModOptions(newgame, from_mod_options)
+	if from_mod_options or CurrentModOptions:GetProperty("AlwaysApplyOptions") then
 		UnlockBreaks(newgame)
 	end
 end
@@ -41,6 +41,8 @@ end
 function OnMsg.CityStart()
 	ModOptions(true)
 end
+function OnMsg.ModsReloaded()
+	ModOptions(nil, true)
+end
 
-OnMsg.ModsReloaded = ModOptions
 OnMsg.LoadGame = ModOptions
