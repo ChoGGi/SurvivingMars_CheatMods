@@ -51,14 +51,15 @@ function OnMsg.ClassesPostprocess()
 				"display_name_pl", entity,
 				"description", T(87, "Decorations"),
 				"display_icon", "UI/Icons/Buildings/placeholder.tga",
+				"Group", "ChoGGi_Decorations",
+				"build_category", "ChoGGi_Decorations",
 
 				"instant_build", true,
 				"build_points", 0,
-
-				"Group", "ChoGGi_Decorations",
-				"build_category", "ChoGGi_Decorations",
 				"on_off_button", false,
 				"prio_button", false,
+				"count_as_building", false,
+				"use_demolished_state", false,
 			})
 		end
 	end

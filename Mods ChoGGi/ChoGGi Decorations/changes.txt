@@ -1,1 +1,2 @@
 v0.2
+Buildings were staying after being demo'd.

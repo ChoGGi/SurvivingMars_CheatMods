@@ -26,7 +26,7 @@ GlobalVar("g_ChoGGi_ApartmentDoubleCapComfort", false)
 
 -- this will update the settings for existing apartments
 function OnMsg.LoadGame()
-	-- so it only loops once per game
+	-- so it only loops once per save
 	if g_ChoGGi_ApartmentDoubleCapComfort then
 		return
 	end

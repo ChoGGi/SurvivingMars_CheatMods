@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
-local table_ifilter = table.ifilter
-local table_find = table.find
+local table = table
 local DroneLoadLowThreshold = const.DroneLoadLowThreshold
 local DroneLoadMediumThreshold = const.DroneLoadMediumThreshold
 
@@ -32,7 +31,7 @@ local function ModOptions()
 	for i = 1, #objs do
 		local obj = objs[i]
 		if obj:IsKindOf("RCRover") or obj:IsKindOf("DroneHub") then
-			pins_dlg[table_find(pins_dlg, "context", obj)].idCondition:SetBackground(0)
+			pins_dlg[table.find(pins_dlg, "context", obj)].idCondition:SetBackground(0)
 		end
 	end
 
@@ -52,7 +51,7 @@ local function UpdateColour(self)
 	local colour = white
 	if self.working then
 		-- no working drones
-		if #table_ifilter(self.drones, function(_, drone)
+		if #table.ifilter(self.drones, function(_, drone)
 					return not drone:IsDisabled()
 				end) < 1 then
 			colour = purple
@@ -104,7 +103,7 @@ local function RoverUpdate(func, self, ...)
 		local pins_dlg = OpenDialog("PinsDlg", GetInGameInterface())
 		if pins_dlg and self:IsPinned() then
 			-- get button and update
-			pins_dlg[table_find(pins_dlg, "context", self)].idCondition:SetBackground(colour)
+			pins_dlg[table.find(pins_dlg, "context", self)].idCondition:SetBackground(colour)
 		end
 	end
 
