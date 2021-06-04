@@ -25,7 +25,7 @@ return PlaceObj("ModDef", {
 	"description", [[Wondering why you can't remove a dome? This mod will show any objects that will block you from doing so.
 
 Mod Options:
-Enable Mod
+[b]Enable Mod[/b]: Disable mod without having to see missing mod msg.
 [b]Move Invalid Position[/b]: Move any objects at an invalid position to the dome when you press the toggle connected objs button (default disabled).
 [b]Clean Up Invalid Objects[/b]: Remove any invalid objects stuck in the dome when you press the toggle connected objs button (default disabled).
 

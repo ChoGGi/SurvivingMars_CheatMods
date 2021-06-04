@@ -4581,7 +4581,7 @@ do -- RetMapBreakthroughs
 			orig_break_list = table.imap(Presets.TechPreset.Breakthroughs, "id")
 		end
 
-		-- breakthroughs per map are (at least?) 20 in total (4 planetary, 3 omega, 8 on the ground, 5 Storybits?)
+		-- breakthroughs per map are (at least?) 20 (4 planetary, 3 omega, 8 on the ground, 5 Storybits?)
 		local breakthrough_count = const.BreakThroughTechsPerGame
 		-- + const.OmegaTelescopeBreakthroughsCount, it's seed based but it shuffles the list of unregistered breakthroughs
 		+ (g_Consts and g_Consts.PlanetaryBreakthroughCount or Consts.PlanetaryBreakthroughCount)

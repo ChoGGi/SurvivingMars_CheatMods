@@ -11,7 +11,11 @@ local GenerateDustDevil = GenerateDustDevil
 local GetRandomPassableAwayFromBuilding = GetRandomPassableAwayFromBuilding
 local table_find = table.find
 local table_remove = table.remove
+local Min = Min
+local Max = Max
+
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
+local Random = ChoGGi.ComFuncs.Random
 
 local SolDuration = const.Scale.sols
 local SolDuration9 = SolDuration * 999
@@ -91,13 +95,6 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local function GetMeteorsDescr()
-	local data = DataInstances.MapSettings_Meteor
-	return OverrideDisasterDescriptor(
-		data[mapdata.MapSettings_Meteor] or data["Meteor_VeryHigh"]
-	)
-end
-
 local orig_GenerateMeteor = GenerateMeteor
 function GenerateMeteor(...)
 	local meteor = orig_GenerateMeteor(...)
@@ -107,38 +104,46 @@ function GenerateMeteor(...)
 	return meteor
 end
 
+local function GetMeteorsDescr()
+	local data = DataInstances.MapSettings_Meteor
+	return OverrideDisasterDescriptor(
+		data[mapdata.MapSettings_Meteor] or data["Meteor_VeryHigh"]
+	)
+end
+
 GlobalGameTimeThread("ChoGGi_MeteorThreat_Thread", function()
-	local meteor = GetMeteorsDescr()
-	if not meteor or not IsGameRuleActive("ChoGGi_MeteorThreat") then
-		return
-	end
-
-	local UICity = UICity
+	local meteor
 	while true do
---~ 		local spawn_time = UICity:Random(meteor.spawntime, meteor.spawntime + meteor.spawntime_random)
-		local spawn_time = UICity:Random(mod_MeteorsOverkill and MinuteDuration or HourDurationHalf)
-		local warning_time = GetDisasterWarningTime(meteor)
-		local start_time = GameTime()
-		if GameTime() - start_time > spawn_time - warning_time then
-			Sleep(5000)
+		if not meteor then
+			meteor = GetMeteorsDescr()
 		end
-		local chance = UICity:Random(100)
-		local meteors_type
-		if mod_MeteorsOverkill or chance < meteor.multispawn_chance then
-			meteors_type = "multispawn"
-		else
-			meteors_type = "single"
-		end
-		local hit_time = Min(spawn_time, warning_time)
-		Sleep(hit_time)
-		MeteorsDisaster(meteor, meteors_type)
+		if meteor and IsGameRuleActive("ChoGGi_MeteorThreat") then
+	--~ 		local spawn_time = Random(meteor.spawntime, meteor.spawntime + meteor.spawntime_random)
+			local spawn_time = Random(mod_MeteorsOverkill and MinuteDuration or HourDurationHalf)
+			local warning_time = GetDisasterWarningTime(meteor)
+			local start_time = GameTime()
+			if GameTime() - start_time > spawn_time - warning_time then
+				Sleep(5000)
+			end
+			local chance = Random(100)
+			local meteors_type
+			if mod_MeteorsOverkill or chance < meteor.multispawn_chance then
+				meteors_type = "multispawn"
+			else
+				meteors_type = "single"
+			end
+			local hit_time = Min(spawn_time, warning_time)
+			Sleep(hit_time)
+			MeteorsDisaster(meteor, meteors_type)
 
-		local new_meteors = GetMeteorsDescr()
-		while not new_meteors do
-			Sleep(HourDuration)
-			new_meteors = GetMeteorsDescr()
+			local new_meteor = GetMeteorsDescr()
+			while not new_meteor do
+				Sleep(HourDuration)
+				new_meteor = GetMeteorsDescr()
+			end
+			meteor = new_meteor
 		end
-		meteor = new_meteors
+		Sleep(1000)
 	end
 end)
 
@@ -150,52 +155,49 @@ local function GetDustDevilsDescr()
 end
 
 GlobalGameTimeThread("ChoGGi_Twister_Thread", function()
-	local dustdevil = GetDustDevilsDescr()
-	if not dustdevil or not IsGameRuleActive("ChoGGi_Twister") then
-		return
-	end
-
-	dustdevil.electro_chance = mod_DustDevilsElectrostatic
-
-	local Min = Min
-	local Max = Max
-	local UICity = UICity
-	local g_DustDevils = g_DustDevils
+	local dustdevil
 	while true do
---~ 		local spawn_time = UICity:Random(dustdevil.spawntime, dustdevil.spawntime + dustdevil.spawntime_random)
-		local spawn_time = UICity:Random(HourDurationHalf)
-		local warning_time = dustdevil.warning_time
-		Sleep(Max(spawn_time - warning_time, 1000))
-
---~ 		local count = UICity:Random(dustdevil.count_min, dustdevil.count_max) * dustdevil.spawn_chance / 100
-		local a = mod_DustDevilsTwisterAmount
-		local max = mod_DustDevilsTwisterMaxAmount > 0
-			and mod_DustDevilsTwisterMaxAmount or a + UICity:Random(a+1)
-		-- skip if none allowed or onmap amount is at max already
-		if a > 0 and #g_DustDevils < max then
-			-- spawn just add enough to be at max amount
-			for _ = 1, (max - a) do
-				local hit_time = Min(spawn_time, warning_time)
-				Sleep(hit_time)
-				local pos = GetRandomPassableAwayFromBuilding()
-				if not pos then
-					break
-				end
-				GenerateDustDevil(pos, dustdevil):Start()
-				Sleep(UICity:Random(
-					dustdevil.spawn_delay_min,
-					dustdevil.spawn_delay_max
-				))
-			end
-
-			local new_dustdevil = GetDustDevilsDescr()
-			while not new_dustdevil do
-				Sleep(HourDuration)
-				new_dustdevil = GetDustDevilsDescr()
-			end
-			dustdevil = new_dustdevil
-			dustdevil.electro_chance = mod_DustDevilsElectrostatic
+		if not dustdevil then
+			dustdevil = GetDustDevilsDescr()
 		end
+		if dustdevil and IsGameRuleActive("ChoGGi_Twister") then
+			dustdevil.electro_chance = mod_DustDevilsElectrostatic
+
+			local spawn_time = Random(HourDurationHalf)
+			local warning_time = dustdevil.warning_time
+			Sleep(Max(spawn_time - warning_time, 1000))
+
+			local a = mod_DustDevilsTwisterAmount
+			local max = mod_DustDevilsTwisterMaxAmount > 0
+				and mod_DustDevilsTwisterMaxAmount or a + Random(a+1)
+			-- skip if none allowed or on-map amount is at max already
+			if a > 0 and #g_DustDevils < max then
+				-- spawn just add enough to be at max amount
+				for _ = 1, (max - a) do
+					local hit_time = Min(spawn_time, warning_time)
+					Sleep(hit_time)
+					local pos = GetRandomPassableAwayFromBuilding()
+					if not pos then
+						break
+					end
+					GenerateDustDevil(pos, dustdevil):Start()
+					Sleep(Random(
+						-- 500/1500 default in dustdevil props
+						dustdevil.spawn_delay_min or 500,
+						dustdevil.spawn_delay_max or 1500
+					))
+				end
+
+				local new_dustdevil = GetDustDevilsDescr()
+				while not new_dustdevil do
+					Sleep(HourDuration)
+					new_dustdevil = GetDustDevilsDescr()
+				end
+				dustdevil = new_dustdevil
+				dustdevil.electro_chance = mod_DustDevilsElectrostatic
+			end
+		end
+		Sleep(1000)
 	end
 end)
 
@@ -253,66 +255,71 @@ local function GetDustStormDescr()
 end
 
 GlobalGameTimeThread("ChoGGi_Bakersfield_Thread", function()
-	local dust_storm = GetDustStormDescr()
-	if not dust_storm or not IsGameRuleActive("ChoGGi_GreatBakersfield") then
-		return
-	end
-	dust_storm.electrostatic = mod_DustStormsElectrostatic
-	dust_storm.great = mod_DustStormsGreatStorm
-	dust_storm.min_duration = SolDuration9
-	dust_storm.max_duration = SolDuration9
-
+	local dust_storm
 	local wait_time = 0
 	while true do
-		wait_time = UICity:Random(HourDurationHalf)
-
-		if not g_DustStormType then
-			local rand = UICity:Random(101)
-			if rand < dust_storm.electrostatic then
-				g_DustStormType = "electrostatic"
-			elseif rand < dust_storm.electrostatic + dust_storm.great then
-				g_DustStormType = "great"
-			else
-				g_DustStormType = "normal"
-			end
+		if not dust_storm then
+			dust_storm = GetDustStormDescr()
 		end
+		if dust_storm and IsGameRuleActive("ChoGGi_GreatBakersfield") then
 
-		-- wait and show the notification
-		local start_time = GameTime()
-		while true do
-			local warn_time = GetDisasterWarningTime(dust_storm)
-			if GameTime() - start_time > wait_time - warn_time then
-				WaitMsg("TriggerDustStorm", wait_time - (GameTime() - start_time))
-				while IsDisasterActive() do
-					WaitMsg("TriggerDustStorm", 5000)
+			dust_storm.electrostatic = mod_DustStormsElectrostatic
+			dust_storm.great = mod_DustStormsGreatStorm
+			dust_storm.min_duration = SolDuration9
+			dust_storm.max_duration = SolDuration9
+
+			wait_time = Random(HourDurationHalf)
+
+			if not g_DustStormType then
+				local rand = Random(101)
+				if rand < dust_storm.electrostatic then
+					g_DustStormType = "electrostatic"
+				elseif rand < dust_storm.electrostatic + dust_storm.great then
+					g_DustStormType = "great"
+				else
+					g_DustStormType = "normal"
 				end
-				break
 			end
 
-			local forced = WaitMsg("TriggerDustStorm", 5000)
-			if forced then
-				break
+			-- wait and show the notification
+			local start_time = GameTime()
+			while true do
+				local warn_time = GetDisasterWarningTime(dust_storm)
+				if GameTime() - start_time > wait_time - warn_time then
+					WaitMsg("TriggerDustStorm", wait_time - (GameTime() - start_time))
+					while IsDisasterActive() do
+						WaitMsg("TriggerDustStorm", 5000)
+					end
+					break
+				end
+
+				local forced = WaitMsg("TriggerDustStorm", 5000)
+				if forced then
+					break
+				end
 			end
+
+			wait_time = 0
+			local next_storm = g_DustStormType
+			g_DustStormType = false
+			if not DustStormsDisabled then
+				StartDustStorm(next_storm, dust_storm)
+			end
+
+			local new_dust_storm = GetDustStormDescr()
+			while not new_dust_storm do
+	--~ 			Sleep(const.DayDuration)
+				Sleep(HourDuration)
+				new_dust_storm = GetDustStormDescr()
+			end
+			dust_storm = new_dust_storm
+			dust_storm.electrostatic = mod_DustStormsElectrostatic
+			dust_storm.great = mod_DustStormsGreatStorm
+			dust_storm.min_duration = SolDuration9
+			dust_storm.max_duration = SolDuration9
 		end
 
-		wait_time = 0
-		local next_storm = g_DustStormType
-		g_DustStormType = false
-		if not DustStormsDisabled then
-			StartDustStorm(next_storm, dust_storm)
-		end
-
-		local new_dust_storm = GetDustStormDescr()
-		while not new_dust_storm do
---~ 			Sleep(const.DayDuration)
-			Sleep(HourDuration)
-			new_dust_storm = GetDustStormDescr()
-		end
-		dust_storm = new_dust_storm
-		dust_storm.electrostatic = mod_DustStormsElectrostatic
-		dust_storm.great = mod_DustStormsGreatStorm
-		dust_storm.min_duration = SolDuration9
-		dust_storm.max_duration = SolDuration9
+		Sleep(1000)
 	end
 end)
 

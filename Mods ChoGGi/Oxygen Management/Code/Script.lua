@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+ChoGGi.ComFuncs.AddParentToClass(ElectronicsFactory, "LifeSupportConsumer")
+ChoGGi.ComFuncs.AddParentToClass(MachinePartsFactory, "LifeSupportConsumer")
+
 function OnMsg.ClassesPostprocess()
 	local bt = BuildingTemplates
 	local ct = ClassTemplates.Building
@@ -30,29 +33,39 @@ function OnMsg.ClassesPostprocess()
 	for id, template in pairs(bt) do
 		local cls_obj = g_Classes[template.template_class]
 		if cls_obj and cls_obj:IsKindOf("Factory") then
-			template.air_consumption = 2000
-			ct[id].air_consumption = 2000
+			if id == "ElectronicsFactory_Small" or id == "MachinePartsFactory_Small" then
+				template.air_consumption = 1000
+				ct[id].air_consumption = 1000
+				-- LifeSupportConsumer defaults to 10 water
+				template.water_consumption = 0
+				ct[id].water_consumption = 0
+			else
+				template.air_consumption = 2000
+				ct[id].air_consumption = 2000
+				template.water_consumption = 0
+				ct[id].water_consumption = 0
+			end
 		end
 	end
 
 end
 
-local function ToggleTech()
-	-- build menu
-	if not BuildingTechRequirements.MOXIE then
-		BuildingTechRequirements.MOXIE = {{ tech = "MagneticFiltering", hide = false, }}
-	end
-	-- add an entry to unlock it with the tech
-	local tech = TechDef.MagneticFiltering
-	if not table.find(tech, "Building", "MOXIE") then
-		tech[#tech+1] = PlaceObj('Effect_TechUnlockBuilding', {
-			Building = "MOXIE",
-		})
-	end
-end
+--~ local function ToggleTech()
+--~ 	-- build menu
+--~ 	if not BuildingTechRequirements.MOXIE then
+--~ 		BuildingTechRequirements.MOXIE = {{ tech = "MagneticFiltering", hide = false, }}
+--~ 	end
+--~ 	-- add an entry to unlock it with the tech
+--~ 	local tech = TechDef.MagneticFiltering
+--~ 	if not table.find(tech, "Building", "MOXIE") then
+--~ 		tech[#tech+1] = PlaceObj('Effect_TechUnlockBuilding', {
+--~ 			Building = "MOXIE",
+--~ 		})
+--~ 	end
+--~ end
 
-OnMsg.CityStart = ToggleTech
-OnMsg.LoadGame = ToggleTech
+--~ OnMsg.CityStart = ToggleTech
+--~ OnMsg.LoadGame = ToggleTech
 
 -- you could consider additional oxygen cost per colonist, though I assume there is a reason water and O2 are currently calculated per dome instead of per inhabitant.
 

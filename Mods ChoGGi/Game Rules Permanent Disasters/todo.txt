@@ -2,4 +2,4 @@ heat wave
 evaporates water from tanks/lakes
 lowers moisture produced by moist vaps
 
-prefabs laser defernse/heaters
+prefabs laser defense/heaters

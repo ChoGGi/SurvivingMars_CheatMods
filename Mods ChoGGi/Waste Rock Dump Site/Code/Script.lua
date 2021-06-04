@@ -22,7 +22,7 @@ function OnMsg.ClassesPostprocess()
 		"build_category", "ChoGGi",
 		"Group", "ChoGGi",
 
-		"max_amount_WasteRock", 99000 * 1000,
+		"max_amount_WasteRock", 99000 * const.ResourceScale,
 		"build_points", 0,
 		"instant_build", true,
 		"encyclopedia_id", "WasteRockDumpBig",

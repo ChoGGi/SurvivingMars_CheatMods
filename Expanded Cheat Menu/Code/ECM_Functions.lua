@@ -2,7 +2,7 @@
 
 local table = table
 local type, pairs, next, print = type, pairs, next, print
-local tostring, tonumber, rawget = tostring, tonumber, rawget
+local tostring, tonumber, rawget, rawset = tostring, tonumber, rawget, rawset
 local AveragePoint2D = AveragePoint2D
 local IsValid = IsValid
 local IsKindOf = IsKindOf
@@ -1820,7 +1820,6 @@ end -- do
 
 do -- PrintToFunc_Add/PrintToFunc_Remove
 	local ValueToLuaCode = ValueToLuaCode
-	local rawset = rawset
 
 	function ChoGGi.ComFuncs.PrintToFunc_Remove(name, parent)
 		name = tostring(name)

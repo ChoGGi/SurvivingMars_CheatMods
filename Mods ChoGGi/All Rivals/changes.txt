@@ -1,2 +1,5 @@
+v0.3
+Removed log spam: Trying to create new value hr.PlanetColony5Longitude
+
 v0.2
 Added max option for rivals.

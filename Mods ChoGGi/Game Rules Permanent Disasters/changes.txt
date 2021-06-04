@@ -1,3 +1,6 @@
+v0.7
+Freezing issue when enabling all four rules and loading a save.
+
 v0.6
 Added challenge rating.
 

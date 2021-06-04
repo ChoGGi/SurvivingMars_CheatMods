@@ -112,11 +112,11 @@ function Passage:GetChoGGi_ValidDomes()
 	-- passages that don't connect won't have a parent_dome
 	if self.elements[1] then
 		return IsValid(self.parent_dome)
-			and T(302535920011818, "<green>Connection Established</green>")
+			and T(302535920011818, "<green>Dome Connection Established</green>")
 			or T(302535920011819, "<red>Connection Failed! (white hexes only)</red>")
 	end
 	return TestEndPoint(self, "start_el") and TestEndPoint(self, "end_el")
-		and T(302535920011818, "<green>Connection Established</green>")
+		and T(302535920011818, "<green>Dome Connection Established</green>")
 		or T(302535920011819, "<red>Connection Failed! (white hexes only)</red>")
 end
 

@@ -32,9 +32,9 @@ function OnMsg.ClassesPostprocess()
 	local orig_text = template.RolloverText
 	template.RolloverText = T{"<orig_text><newline><newline><playing>: <track>",
 		orig_text = orig_text,
-		playing = T(1020,"Playing"),
+		playing = T(1020, "Playing"),
 		track = function()
-			local path = Music.Track.path
+			local path = Music.Track and Music.Track.path
 			if path then
 				local underscore = path:reverse():find("_")
 				if underscore then
@@ -43,22 +43,9 @@ function OnMsg.ClassesPostprocess()
 					return path
 				end
 			else
-				return T(6761,"None")
+				return T(130, "N/A")
 			end
 		end,
 	}
 
-
-end
-
-local function StartupCode()
-
-	CreateRealTimeThread(function()
-		while true do
-			-- the code from OnMsg.NewMinute would go here
-
-			-- 30 seconds (if game time, depends on game speed)
-			Sleep(30000)
-		end
-	end)
 end

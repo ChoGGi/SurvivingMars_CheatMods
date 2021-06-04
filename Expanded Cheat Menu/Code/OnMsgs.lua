@@ -9,6 +9,8 @@ local Msg = Msg
 local OnMsg = OnMsg
 local CreateRealTimeThread = CreateRealTimeThread
 local T = T
+-- no sense in localing it, but I keep forgetting the name...
+local ClassDescendantsList = ClassDescendantsList
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName

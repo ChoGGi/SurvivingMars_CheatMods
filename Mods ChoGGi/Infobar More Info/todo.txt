@@ -1,1 +1,5 @@
 figure out that food info request and where I bookmarked it
+
+death count, or split by natural/unnatural?
+
+add buildings using main resources to infobar?

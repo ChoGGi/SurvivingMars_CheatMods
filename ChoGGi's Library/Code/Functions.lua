@@ -43,7 +43,7 @@ function SetUserUIScale(val, ...)
 	ChoGGi.Temp.UIScale = UIScale
 end
 
--- copied from GedPropEditors.lua. it's normally only called when GED is loaded, but we need it for the colour picker
+-- copied from GedPropEditors.lua. it's normally only called when GED is loaded, but we need it for the colour picker (among others)
 if not rawget(_G, "CreateNumberEditor") then
 	local IconScale = point(500, 500)
 	local IconColor = RGB(0, 0, 0)

@@ -564,8 +564,8 @@ DefineClass.ChoGGi_XWindow = {
 	dialog_height_scaled = false,
 	-- above console
 	ZOrder = 5,
-	-- how far down to y-offset new dialogs
-	header = 34.0,
+	-- how far down to y-offset new dialogs (just past the header)
+	header = 30.0,
 	header_scaled = false,
 	-- prefix some string to the title
 	prefix = false,
@@ -890,6 +890,7 @@ function ChoGGi_XWindow:PostInit(parent, pt, title_skip)
 			if self.idList[1] then
 				local width = self.idList[1].box:sizex()
 				if width > 0 then
+					-- what is 35...
 					self:SetWidth(width + 35)
 				end
 			end
