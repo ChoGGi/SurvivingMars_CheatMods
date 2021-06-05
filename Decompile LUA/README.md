@@ -15,6 +15,8 @@ Use [hpk](https://github.com/nickelc/hpk/releases) to extract LUA files from hpk
 
 ##### Stick this in a .bat file to unpack any .hpk archives in the same folder as the .bat
 ```
-for %%g in (*.hpk) do mkdir %%~ng
-for %%g in (*.hpk) do hpk.exe extract --fix-lua-files "%%g" "%%~ng"
+@for %%g in (*.hpk) do mkdir %%~ng
+@for %%g in (*.hpk) do hpk.exe extract --fix-lua-files "%%g" "%%~ng"
+@echo Files are extracted, now use my AutohotKey script to decompile them.
+@pause
 ```
