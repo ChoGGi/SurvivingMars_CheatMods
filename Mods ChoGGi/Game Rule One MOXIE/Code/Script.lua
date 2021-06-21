@@ -2,32 +2,7 @@
 
 local IsKindOf = IsKindOf
 local IsGameRuleActive = IsGameRuleActive
-
- -- library 10.0
-local OneBuildingExists = ChoGGi.ComFuncs.OneBuildingExists or function(template_id)
-  local building_exists
-	if 0 < #(UICity.labels[template_id] or "") then
-		return true
-	else
-		local sites = UICity.labels.ConstructionSite or ""
-		for i = 1, #sites do
-			local site = sites[i]
-			if site.building_class_proto.template_name == template_id then
-				return true
-			end
-		end
-		if not building_exists then
-			local sites = UICity.labels.ConstructionSiteWithHeightSurfaces or ""
-			for i = 1, #sites do
-				local site = sites[i]
-				if site.building_class_proto.template_name == template_id then
-					return true
-				end
-			end
-		end
-	end
-end
--- library 10.0
+local OneBuildingExists = ChoGGi.ComFuncs.OneBuildingExists
 
 function OnMsg.GetAdditionalBuildingLocks(template, locks)
 	if IsGameRuleActive("ChoGGi_OneMOXIE") and OneBuildingExists("MOXIE") then

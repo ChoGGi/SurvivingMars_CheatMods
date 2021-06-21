@@ -1,7 +1,5 @@
 -- See LICENSE for terms
 
-local table = table
-
 local mod_EnableMod
 local mod_DroneHubRange
 local mod_DroneHubRangeDefault

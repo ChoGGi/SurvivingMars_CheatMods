@@ -6329,30 +6329,26 @@ function ChoGGi.ComFuncs.SetBldMaintenance(obj, value)
 
 end
 
--- copy pasta from UIGetBuildingPrerequisites()
-function ChoGGi.ComFuncs.OneBuildingExists(template_id)
-  local building_exists
-	if 0 < #(UICity.labels[template_id] or "") then
-		return true
-	else
-		local sites = UICity.labels.ConstructionSite or ""
+do -- OneBuildingExists
+	-- (at least one exists) scooped from UIGetBuildingPrerequisites as wonder code
+	local function CheckConstructionLabel(label, template_name)
+		local sites = UICity.labels[label] or ""
 		for i = 1, #sites do
-			local site = sites[i]
-			if site.building_class_proto.template_name == template_id then
+			if sites[i].building_class_proto.template_name == template_name then
 				return true
 			end
 		end
-		if not building_exists then
-			local sites = UICity.labels.ConstructionSiteWithHeightSurfaces or ""
-			for i = 1, #sites do
-				local site = sites[i]
-				if site.building_class_proto.template_name == template_id then
-					return true
-				end
-			end
-		end
 	end
-end
+
+	function ChoGGi.ComFuncs.OneBuildingExists(template_name)
+		if #(UICity.labels[template_name] or "") > 0 then
+			return true
+		end
+		return CheckConstructionLabel("ConstructionSite", template_name)
+			or CheckConstructionLabel("ConstructionSiteWithHeightSurfaces", template_name)
+			or false
+	end
+end -- do
 
 -- close any examine dlgs opened from "parent" examine dlg
 function ChoGGi.ComFuncs.CloseChildExamineDlgs(self)

@@ -31,7 +31,6 @@ AddColonists(t.PositiveTraits)
 AddColonists(t.OtherTraits)
 
 -- call down the wrath of Zeus for miscreants
-local IsValid = IsValid
 local function UpdateMurderPods()
 	local objs = UICity.labels.Colonist or ""
 	for i = 1, c do

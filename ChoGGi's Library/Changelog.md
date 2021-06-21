@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v10.0 (Unreleased)
+## v10.1 (Unreleased)
+
+## v10.0 (21 June 2021)
 - Properly fixed issue with CTD while examining certain game objects (thanks LukeH).
 - Added SetBldMaintenance.
 - Moved some examine funcs from ECM to Lib.

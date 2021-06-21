@@ -3,8 +3,8 @@ return PlaceObj("ModDef", {
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
-			"version_major", 9,
-			"version_minor", 9,
+			"version_major", 10,
+			"version_minor", 0,
 		}),
 	},
 	"title", "Construction Show Buildable Grid",

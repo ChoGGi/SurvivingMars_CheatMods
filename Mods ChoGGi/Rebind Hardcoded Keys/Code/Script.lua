@@ -18,7 +18,6 @@ Actions[#Actions+1] = {ActionName = T(0000, "Salvage Cursor"),
 	end,
 	ActionBindable = true,
 }
-local Actions = ChoGGi.Temp.Actions
 Actions[#Actions+1] = {ActionName = T(302535920011698, "Cycle Visual Variant Backward"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.CycleVisualVariantBackward",
 	ActionShortcut = "[",

@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v17.0 (Unreleased)
+## v17.1 (Unreleased)
+
+## v17.0 (21 June 2021)
 ### Changed:
 - Moved some examine funcs from ECM to Lib.
 - Re-added Flush Log Hourly option.

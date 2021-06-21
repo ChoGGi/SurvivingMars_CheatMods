@@ -3,8 +3,8 @@ return PlaceObj("ModDef", {
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
-			"version_major", 9,
-			"version_minor", 9,
+			"version_major", 10,
+			"version_minor", 0,
 		}),
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_MapImagesPack",
@@ -15,8 +15,8 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Find Map Locations",
 	"id", "ChoGGi_FindMapLocations",
-	"steam_id", "2453011286",
 	"pops_any_uuid", "b97dbd4e-71cf-4e82-80a0-46dd104133bc",
+	"steam_id", "2453011286",
 	"lua_revision", 1001514, -- Tito
 	"version", 7,
 	"version_major", 0,
