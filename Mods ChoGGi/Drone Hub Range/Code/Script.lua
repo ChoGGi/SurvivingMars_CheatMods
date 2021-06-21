@@ -12,6 +12,7 @@ local orig_CommandCenterMaxRadius = const.CommandCenterMaxRadius
 local SetPropertyProp = ChoGGi.ComFuncs.SetPropertyProp
 
 local function SetModOptions()
+	-- defaults
 	if not mod_EnableMod then
 		const.CommandCenterMaxRadius = orig_CommandCenterMaxRadius
 		ChoGGi.ComFuncs.SetConstsG("CommandCenterMaxRadius", orig_CommandCenterMaxRadius)

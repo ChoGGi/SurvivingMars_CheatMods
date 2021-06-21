@@ -5,7 +5,7 @@ local mod_IgnoreAnomalies
 local mod_IgnoreMetals
 local mod_IgnorePolymers
 
-local function RemoveMeteor(deposit_type)
+local function TestRemoveMeteor(deposit_type)
 	-- it's usually rocks
 	if deposit_type == "Rocks" then
 		return true
@@ -16,6 +16,7 @@ local function RemoveMeteor(deposit_type)
 	elseif deposit_type == "Anomaly" and mod_IgnoreAnomalies then
 		return false
 	end
+
 	return true
 end
 
@@ -27,7 +28,7 @@ local function CheckMeteors()
 	local meteors = g_MeteorsPredicted or ""
 	for i = #meteors, 1, -1 do
 		local meteor = meteors[i]
-		if RemoveMeteor(meteor.deposit_type) then
+		if TestRemoveMeteor(meteor.deposit_type) then
 			-- refire the msg that we blocked in :Track()
 			Msg("Meteor", meteor)
 		end
@@ -65,7 +66,7 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local function AbortDefence(func, self, meteor, ...)
-	if mod_EnableMod and not RemoveMeteor(meteor.deposit_type) then
+	if mod_EnableMod and not TestRemoveMeteor(meteor.deposit_type) then
 		return
 	end
 

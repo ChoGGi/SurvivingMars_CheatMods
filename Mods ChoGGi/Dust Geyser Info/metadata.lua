@@ -7,31 +7,22 @@ return PlaceObj("ModDef", {
 			"version_minor", 9,
 		}),
 	},
-	"title", "Drone Hub Range",
-	"id", "ChoGGi_DroneHubRange",
-	"steam_id", "2474837548",
-	"pops_any_uuid", "f7e5153e-862e-4805-aff4-6d74d9f1a4a9",
+	"title", "Dust Geyser Info",
+	"id", "ChoGGi_DustGeyserInfo",
+	"steam_id", "2522466305",
+	"pops_any_uuid", "b49b376f-7947-4b6b-9200-591becb1d02a",
 	"lua_revision", 1001514, -- Tito
-	"version", 4,
+	"version", 1,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 1,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
-	"has_options", true,
-	"TagGameplay", true,
-	"TagBuildings", true,
+--~ 	"has_options", true,
 	"TagInterface", true,
-	"TagTools", true,
 	"description", [[
-Change range of drone hubs (see mod options).
-
-
-Doesn't seem to work on xbox.
-
-
-Requested by lovely_sombrero.
+Select a dust geyser to see the damage radius.
 ]],
 })

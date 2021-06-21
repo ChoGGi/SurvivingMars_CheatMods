@@ -1,3 +1,7 @@
+v1.4
+Fiddled with code testing if out of dome.
+Mod option to ignore domes.
+
 v1.3
 Possible fix for missing mod options (mods making old traits).
 

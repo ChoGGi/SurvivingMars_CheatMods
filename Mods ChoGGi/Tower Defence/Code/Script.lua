@@ -4,7 +4,7 @@ local Sleep = Sleep
 local IsValid = IsValid
 local PlaceObject = PlaceObject
 local GetPassablePointNearby = GetPassablePointNearby
-local table_remove = table.remove
+local table = table
 
 local Random = ChoGGi.ComFuncs.Random
 
@@ -108,11 +108,12 @@ end
 OnMsg.MapSectorsReady = LoadMapSectorsStats
 OnMsg.LoadGame = LoadMapSectorsStats
 
-local function RemoveOldRovers(label,sol)
+local function RemoveOldRovers(label, sol)
+	-- go backwards and remove any invalid/old rovers
 	for i = #(label or ""), 1, -1 do
 		local r = label[i]
 		if not IsValid(r) then
-			table_remove(label, i)
+			table.remove(label, i)
 		elseif r.class == "TowerDefense_Rover" and r.TowerDefense_spawned_sol ~= sol then
 			CreateGameTimeThread(SuicideByRocket,r)
 		end
@@ -151,7 +152,7 @@ function OnMsg.NewDay(sol)
 			-- muhhahahaha
 			local r = PlaceObject("TowerDefense_Rover", {
 --~ 				spawn_pos = GetRandomPassableAround(stats.sectors[Random(1,stats.count)]:GetVisualPos(), 250),
-				spawn_pos = GetPassablePointNearby(stats.sectors[Random(1,stats.count)]:GetVisualPos()),
+				spawn_pos = GetPassablePointNearby(stats.sectors[Random(1,stats.count)]:GetPos()),
 				attacks_remaining = stats.ammo_next,
 			})
 			-- need to make 'em nasty

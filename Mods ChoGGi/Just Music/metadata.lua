@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Just Music",
 	"id", "ChoGGi_OnlyRadioMusic",
-	"steam_id", "1701116117",
 	"pops_any_uuid", "a92baeaf-5c48-41c0-8b48-e8b48a0dcb94",
+	"steam_id", "1701116117",
 	"lua_revision", 1001514, -- Tito
 	"version", 2,
 	"version_major", 0,

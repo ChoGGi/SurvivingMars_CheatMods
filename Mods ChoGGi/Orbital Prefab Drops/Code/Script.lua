@@ -201,6 +201,7 @@ function ConstructionSite:GameInit()
 	local outside, inside
 	for i = 1, 3 do
 		local label = self.building_class_proto["label" .. i]
+
 		if label == "OutsideBuildings" then
 		 outside = true
 		 break
@@ -208,6 +209,7 @@ function ConstructionSite:GameInit()
 		 inside = true
 		 break
 		end
+
 	end
 	-- It's a dome/rover
 	if not outside and not inside then

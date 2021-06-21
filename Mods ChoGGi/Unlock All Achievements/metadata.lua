@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Unlock All Achievements",
 	"id", "ChoGGi_UnlockAllAchievements",
-	"lua_revision", 1001514, -- Tito
 	"steam_id", "2079858618",
+	"lua_revision", 1001514, -- Tito
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
@@ -11,10 +11,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
---~ 	"has_options", true,
-	"TagOther", true,
-	"description", [[Unlocks all achievements when you toggle it in the mod manager.
-
-
-Requested by scorptank.]],
+	"description", [[
+Unlocks all achievements when you toggle it in the mod manager.
+]],
 })

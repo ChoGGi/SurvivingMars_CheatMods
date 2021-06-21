@@ -17,5 +17,8 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"description", [[
 Set or disable edge scrolling with the mouse (see mod options).
+
+
+Not exactly requested by [url=https://steamcommunity.com/app/464920/discussions/0/3148556875507975983/]Freygea[/url].
 ]],
 })

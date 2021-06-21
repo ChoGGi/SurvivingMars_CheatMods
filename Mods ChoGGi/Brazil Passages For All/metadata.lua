@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"TagMissionSponsors", true,
 	"TagGameplay", true,
 	"description", [[
-No passage penalty no matter who you use.
+No passage penalty no matter who you use as sponsor.
 
 Mod Options:
 Enable Mod

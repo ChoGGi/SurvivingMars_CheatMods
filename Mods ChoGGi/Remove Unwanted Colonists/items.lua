@@ -59,5 +59,11 @@ table.insert(properties, 1, PlaceObj("ModItemOptionToggle", {
 	"Help", T(302535920011899, "Never remove tourists."),
 	"DefaultValue", false,
 }))
+table.insert(properties, 2, PlaceObj("ModItemOptionToggle", {
+	"name", "IgnoreDomes",
+	"DisplayName", T(302535920011959, "Ignore Domes"),
+	"Help", T(302535920011960, "Remove colonists inside domes/passages."),
+	"DefaultValue", false,
+}))
 
 return properties

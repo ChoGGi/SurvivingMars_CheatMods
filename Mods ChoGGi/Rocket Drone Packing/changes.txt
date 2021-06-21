@@ -1,2 +1,5 @@
+v0.3
+Possible cure for glitchy drones.
+
 v0.2
 Tito.

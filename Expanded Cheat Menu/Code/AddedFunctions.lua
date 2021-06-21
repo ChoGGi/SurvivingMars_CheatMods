@@ -17,18 +17,6 @@ function OpenTextViewer(...)
 	OpenInMultiLineTextDlg(...)
 end
 
-local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
--- legacy (and used for console rules, so we can get around it spamming the log)
-function OpenExamine(...)
-	OpenInExamineDlg(...)
-end
-function OpenExamineRet(...)
-	return OpenInExamineDlg(...)
-end
--- short n sweet
-ex = OpenExamine
-exr = OpenExamineRet
-
 function restart()
 	quit("restart")
 end

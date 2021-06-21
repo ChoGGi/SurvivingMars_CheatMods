@@ -1,0 +1,1 @@
+mod options choose what to block from spawning

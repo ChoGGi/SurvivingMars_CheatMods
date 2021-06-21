@@ -378,6 +378,8 @@ Press to toggle."
 302535920011596, "Removing Colonist!"
 302535920011898, "Skip Tourists"
 302535920011899, "Never remove tourists."
+302535920011959, "Ignore Domes"
+302535920011960, "Remove colonists inside domes/passages."
 [[Restore Request Maintenance]]
 302535920011250, "Maintenance already requested"
 302535920011251, "<status>, Remaining: <points>"
@@ -1273,6 +1275,13 @@ Leave blank to skip search box."
 302535920011955, "<grey>"Tell me Jim, what did you see when the psychologist held up that blank sheet of paper?"
 <right>Clayton Stone</grey><left>"
 302535920011956, "One MOXIE"
+[[Dust Geyser Info]]
+302535920011957, "Dust Geyser"
+302535920011958, "Martian dust geysers spray dust...
+
+Circle is radius of potential dust.
+
+Time between dust and time it lasts (random each time, these are min/max):"
 [[UNUSED]]
 
 
@@ -1289,10 +1298,6 @@ Leave blank to skip search box."
 
 
 [[UNUSED]]
-302535920011957,
-302535920011958,
-302535920011959,
-302535920011960,
 302535920011961,
 302535920011962,
 302535920011963,
