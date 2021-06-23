@@ -211,7 +211,7 @@ do -- MapData
 					-- NE
 					AddLandingSpot(-lat, long, breakthroughs, skip_csv)
 					-- NW
-					AddLandingSpot(-lat1, -long, breakthroughs, skip_csv)
+					AddLandingSpot(-lat, -long, breakthroughs, skip_csv)
 				end
 			end
 		end
