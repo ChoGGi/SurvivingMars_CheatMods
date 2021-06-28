@@ -53,7 +53,7 @@ table.insert(properties, 1, PlaceObj("ModItemOptionToggle", {
 
 table.insert(properties, 1, PlaceObj("ModItemOptionToggle", {
 	"name", "EnableMod",
-	"DisplayName", T(302535920011303, "Enable Mod"),
+	"DisplayName", T(302535920011303, "<color ChoGGi_yellow>Enable Mod</color>"),
 	"Help", T(302535920011793, "Disable mod without having to see missing mod msg."),
 	"DefaultValue", true,
 }))

@@ -1,2 +1,5 @@
+v0.3
+Mod options to choose pets/spawn delay.
+
 v0.2
 Evans update.

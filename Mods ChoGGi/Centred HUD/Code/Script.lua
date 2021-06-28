@@ -3,6 +3,7 @@
 -- collection of res widths
 local hud_lookup_table = {
 	[5760] = box(2560, 0, 2560, 0),
+	[7680] = box(1802, 0, 1802, 0),
 }
 -- value we check for a margin to use
 local current_margin
@@ -100,10 +101,10 @@ function OnMsg.ModsReloaded()
 			"Id", "ChoGGi_CentredUI",
 			"__template", "HUDButtonTemplate",
 
-			"RolloverTitle", [[Set Margin]],
-			"RolloverText", [[Allows you to Test/Save a custom margin.
-Don't forget to send me your res and margin, so I can add them to the list.]],
-			"RolloverHint", T(0, [[<left_click> Show Options <right_click> Test Margin]]),
+			"RolloverTitle", T(0, "Set Margin"),
+			"RolloverText", T(0, [[Allows you to Test/Save a custom margin.
+Don't forget to send me your res and margin, so I can add them to the list.]]),
+			"RolloverHint", T(0, "<left_click> Show Options <right_click> Test Margin"),
 			"Id", "idSetupMargins",
 			"Image", CurrentModPath .. "UI/hud_margin.png",
 			"FXPress", "MainMenuButtonClick",

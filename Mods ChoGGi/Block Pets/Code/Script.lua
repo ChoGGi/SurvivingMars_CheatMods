@@ -5,11 +5,35 @@ if not g_AvailableDlc.shepard then
 	return
 end
 
+local DoneObject = DoneObject
+
+local classes = {
+  RoamingPet = true,
+  Pet = true,
+  StaticPet = true,
+}
+
 local mod_EnableMod
+local mod_SpawnDelayPercent
+local mod_options = {}
+
+local Animals = Animals
+for id, def in pairs(Animals) do
+	if classes[def.AnimalClass] then
+		mod_options[id] = true
+	end
+end
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+	local options = CurrentModOptions
+
+	mod_EnableMod = options:GetProperty("EnableMod")
+	mod_SpawnDelayPercent = (options:GetProperty("SpawnDelayPercent") + 0.0) / 100
+	for id in pairs(mod_options) do
+		mod_options[id] = options:GetProperty(id)
+	end
+
 end
 
 -- load default/saved settings
@@ -22,27 +46,32 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
+-- override spawn funcs for the pets
+local spawn_classes = {
+	"StaticPet",
+	"RoamingPet",
+	"Pet",
+}
+for i = 1, #spawn_classes do
+	local class = _G[spawn_classes[i]]
+
+	local orig_func = class.Spawn
+	class.Spawn = function(self, ...)
+		if mod_EnableMod and mod_options[self.animal_type] then
+			DoneObject(self)
+			return
+		end
+		return orig_func(self, ...)
+	end
+end
+
+-- halve spawn delay for more animals
 local orig_SpawnPets = SpawnPets
 function SpawnPets(...)
-	if mod_EnableMod then
-		return const.DayDuration
-	end
+	local spawn_delay = orig_SpawnPets(...)
 
-	return orig_SpawnPets(...)
-end
-
-local orig_Residence_SpawnAnimal = Residence.SpawnAnimal
-function Residence.SpawnAnimal(...)
 	if mod_EnableMod then
-		return
+		return spawn_delay * mod_SpawnDelayPercent
 	end
-	return orig_Residence_SpawnAnimal(...)
-end
-
-local orig_Service_SpawnAnimal = Service.SpawnAnimal
-function Service.SpawnAnimal(...)
-	if mod_EnableMod then
-		return
-	end
-	return orig_Service_SpawnAnimal(...)
+	return spawn_delay
 end

@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1757251849",
 	"pops_any_uuid", "6b40791e-6005-470e-b928-3d2cd08d4a94",
 	"lua_revision", 1001514, -- Tito
-	"version", 9,
-	"version_major", 0,
-	"version_minor", 9,
+	"version", 10,
+	"version_major", 1,
+	"version_minor", 0,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -18,11 +18,12 @@ This uses a per-dome count; if there's no nursery in a dome it'll never have bab
 
 If you want something more random, see my Domes: Limit Births mod.
 
+Compatible mods: Ultimate Nursery, Incubator (this mod will do nothing on Incubator enabled domes).
+
+
 Mod Options:
 All Domes Count: Check spot count of all domes instead of per-dome.
 Bypass No Nurseries: If there's no nurseries act like vanilla (default enabled).
-Respect Incubator: Allow SkiRich's Incubator mod to relocate newborns to incubator dome.
-Ultimate Nursery: Count Ultimate Nurseries INSTEAD of regular ones.
 
 
 Requested by BrowncoatTrekky.]],

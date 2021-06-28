@@ -1,6 +1,6 @@
 [[Shared locale strings]]
 302535920011751, "On/Off does nothing."
-302535920011303, "Enable Mod"
+302535920011303, "<color ChoGGi_yellow>Enable Mod</color>"
 302535920011793, "Disable mod without having to see missing mod msg."
 302535920011424, "You need to be in-game to see this text (or use my Library mod)."
 302535920011937, "Lock Behind Tech"
@@ -692,8 +692,6 @@ You can build this if you want it won't hurt anything."
 [[Nursery Limit Birthing To Spots]]
 302535920011453, "All Domes Count"
 302535920011454, "Bypass No Nurseries"
-302535920011455, "Respect Incubator"
-302535920011456, "Ultimate Nursery"
 [[Orbital Prefab Drops]]
 302535920011457, "Model Type"
 302535920011458, "Prefab Only"
@@ -1282,6 +1280,10 @@ Leave blank to skip search box."
 Circle is radius of potential dust.
 
 Time between dust and time it lasts (random each time, these are min/max):"
+[[Block Pets]]
+302535920011961, "Turning <color ChoGGi_red>off</color> will allow the animal to spawn."
+302535920011962, "<color ChoGGi_yellow>Spawn Delay Percent</color>"
+302535920011963, "100% is default delay, 50% is half the delay."
 [[UNUSED]]
 
 
@@ -1297,10 +1299,12 @@ Time between dust and time it lasts (random each time, these are min/max):"
 
 
 
+
 [[UNUSED]]
-302535920011961,
-302535920011962,
-302535920011963,
+302535920011456,
+302535920011455,
+302535920011511,
+302535920011512,
 302535920011964,
 302535920011965,
 302535920011966,

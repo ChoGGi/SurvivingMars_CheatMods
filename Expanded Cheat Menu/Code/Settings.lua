@@ -46,8 +46,6 @@ ChoGGi.Defaults = {
 	ConsoleExamineListUpdate = true,
 	-- how wide the text for the history menu in the Console is
 	ConsoleHistoryMenuLength = 50,
-	-- ECM and Lib make a lot of these :)
-	ConsoleSkipUndefinedGlobals = true,
 	-- the build/passibility grid in debug menu
 	DebugGridOpacity = 15,
 	DebugGridSize = 25,
@@ -161,6 +159,8 @@ if testing then
 	Defaults.ExternalEditorCmd = [[scite "%s"]]
 	-- dumps the log to disk on startup, and every new Sol (good for some crashes)
 	Defaults.FlushLog = true
+	-- ECM and Lib make a lot of these :)
+	Defaults.ConsoleSkipUndefinedGlobals = true
 end
 
 -- set game values to saved values

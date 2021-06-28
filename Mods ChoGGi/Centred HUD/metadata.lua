@@ -3,9 +3,9 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_CentredHUD",
 	"steam_id", "1594140397",
 	"pops_any_uuid", "55b08156-3710-4274-afdf-4e8d046da0b8",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"lua_revision", 1001514, -- Tito
@@ -26,7 +26,7 @@ Use Mod Setting: Tries to use mod margin setting (also happens when game is star
 
 Currently included settings:
 5760x1080 (48:9): 2560
-
+7680x1440: 1802
 
 
 Known Issues:

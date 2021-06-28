@@ -1,8 +1,7 @@
 -- See LICENSE for terms
 
-local def = CurrentModDef
 -- we need to store the list of sponsor locked buildings
-local sponsor_buildings = def.sponsor_buildings or {}
+local sponsor_buildings = CurrentModDef.sponsor_buildings or {}
 
 local mod_options = {}
 local mod_LockBehindTech
@@ -95,9 +94,7 @@ local techs = {
 
 local function LockTech(bld_id, tech_id)
 	-- build menu
---~ 	if not BuildingTechRequirements[bld_id] then
-		BuildingTechRequirements[bld_id] = {{ tech = tech_id, hide = false, }}
---~ 	end
+	BuildingTechRequirements[bld_id] = {{ tech = tech_id, hide = false, }}
 	-- add an entry to unlock it with the tech
 	local tech = TechDef[tech_id]
 	if not table.find(tech, "Building", bld_id) then

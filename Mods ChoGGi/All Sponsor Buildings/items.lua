@@ -4,9 +4,9 @@ local def = CurrentModDef
 -- we need to store the list of sponsor locked buildings
 local sponsor_buildings = def.sponsor_buildings or {}
 
-local table_concat = table.concat
 local T = T
 local PlaceObj = PlaceObj
+local table = table
 
 local properties = {}
 local c = 0
@@ -27,7 +27,7 @@ for id, bld in pairs(BuildingTemplates) do
 			properties[c] = PlaceObj("ModItemOptionToggle", {
 				"name", "ChoGGi_" .. id,
 				"DisplayName", T(bld.display_name),
-				"Help", table_concat(T(bld.description) .. image),
+				"Help", table.concat(T(bld.description) .. image),
 				"DefaultValue", true,
 			})
 			break
