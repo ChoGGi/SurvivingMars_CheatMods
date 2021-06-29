@@ -25,10 +25,12 @@ function OnMsg.ClassesPostprocess()
 
 end
 
+-- so it only updates once per game
+GlobalVar("g_ChoGGi_ApartmentDoubleCapComfort", false)
+
 -- this will update the settings for existing apartments
 function OnMsg.LoadGame()
-	-- so it only updates once per game
-	if UICity.ChoGGi_ApartmentDoubleCapComfort then
+	if g_ChoGGi_ApartmentDoubleCapComfort then
 		return
 	end
 
@@ -39,5 +41,5 @@ function OnMsg.LoadGame()
 		obj.service_comfort = service_comfort
 	end
 
-	UICity.ChoGGi_ApartmentDoubleCapComfort = true
+	g_ChoGGi_ApartmentDoubleCapComfort = true
 end
