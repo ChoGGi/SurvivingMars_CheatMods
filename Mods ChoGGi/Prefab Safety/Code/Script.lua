@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local table_unpack = table.unpack
+local table = table
 
 -- add marker to any prefab building
 local orig_ConstructionSite_Complete = ConstructionSite.Complete
@@ -11,7 +11,7 @@ function ConstructionSite:Complete(...)
 		ret[1].ChoGGi_PrefabSafety = true
 	end
 
-	return table_unpack(ret)
+	return table.unpack(ret)
 end
 
 -- need to get the proper class name for rover buildings

@@ -20,6 +20,12 @@ local function ToggleTech()
 			BuildingTechRequirements.ChoGGi_TriboelectricSensorTower = nil
 		end
 	end
+
+
+	-- add cargo entry for saved games
+	if not table.find(ResupplyItemDefinitions, "id", "RCSensor") then
+		RocketPayload_Init()
+	end
 end
 
 -- fired when settings are changed/init
@@ -163,6 +169,19 @@ function OnMsg.ClassesPostprocess()
 			"palette_color1", "outside_base",
 			"palette_color2", "inside_base",
 			"palette_color3", "rover_base",
+		})
+
+		-- add cargo option
+		PlaceObj("Cargo", {
+			description = sens.description .. "\n" .. trib.description,
+			group = "Locked",
+			SaveIn = "",
+			icon = trib.display_icon,
+			id = "ChoGGi_TriboelectricSensorTower",
+			kg = 3500,
+			locked = false,
+			name = T(302535920011720, "Triboelectric ") .. sens.display_name,
+			price = 200000000
 		})
 	end
 

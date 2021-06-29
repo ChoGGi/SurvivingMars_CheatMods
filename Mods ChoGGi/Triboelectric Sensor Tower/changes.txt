@@ -1,3 +1,6 @@
+v0.8
+Added a cargo payload for it.
+
 v0.7
 Mod option to lock it behind tech.
 
