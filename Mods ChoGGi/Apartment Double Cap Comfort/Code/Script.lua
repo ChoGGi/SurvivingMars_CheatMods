@@ -6,15 +6,10 @@ local service_comfort
 function OnMsg.ClassesPostprocess()
 	local a = BuildingTemplates.Apartments
 
-	-- this msg can be called a fair bit, no sense in changing more than once
-	if a.ChoGGi_UpdatedApartmentDoubleCapComfort then
-		return
-	end
-	a.ChoGGi_UpdatedApartmentDoubleCapComfort = true
-
 	-- we need values for LoadGame
 	capacity = a.capacity * 2
 	service_comfort = a.service_comfort * 2
+
 	-- update values
 	a.capacity = capacity
 	a.service_comfort = service_comfort
