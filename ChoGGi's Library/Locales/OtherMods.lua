@@ -1284,6 +1284,11 @@ Time between dust and time it lasts (random each time, these are min/max):"
 302535920011961, "Turning <color ChoGGi_red>off</color> will allow the animal to spawn."
 302535920011962, "<color ChoGGi_yellow>Spawn Delay Percent</color>"
 302535920011963, "100% is default delay, 50% is half the delay."
+[[Mohole Limit Production]]
+302535920011455, "Allow Mohole to produce metals."
+302535920011456, "Toggle Metals"
+302535920011511, "Toggle Rare Metals"
+302535920011512, "Allow Mohole to produce rare metals."
 [[UNUSED]]
 
 
@@ -1301,10 +1306,6 @@ Time between dust and time it lasts (random each time, these are min/max):"
 
 
 [[UNUSED]]
-302535920011456,
-302535920011455,
-302535920011511,
-302535920011512,
 302535920011964,
 302535920011965,
 302535920011966,

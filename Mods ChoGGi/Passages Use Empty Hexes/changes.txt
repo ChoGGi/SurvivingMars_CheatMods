@@ -1,6 +1,9 @@
+v0.8
+Added button to toggle collisions on passage chunks inside domes (no more entrance blocking).
+
 v0.7
 Uneven ground may leave you with half a passage you can't remove.
-There's now a loadgame cehck to remove them.
+There's now a loadgame check to remove them.
 
 v0.6
 Cleaned up the text.

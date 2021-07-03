@@ -33,6 +33,7 @@ local WorldToHex = WorldToHex
 local ObjHexShape_Clear = ChoGGi.ComFuncs.ObjHexShape_Clear
 local ObjHexShape_Toggle = ChoGGi.ComFuncs.ObjHexShape_Toggle
 local DeleteObject = ChoGGi.ComFuncs.DeleteObject
+local CollisionsObject_Toggle = ChoGGi.ComFuncs.CollisionsObject_Toggle
 
 -- the only thing I care about is that a dome is at the current pos, the rest is up to the user
 local function IsDomePoint(obj)
@@ -120,7 +121,7 @@ function Passage:GetChoGGi_ValidDomes()
 		or T(302535920011819, "<red>Connection Failed! (white hexes only)</red>")
 end
 
--- add status to let people know if it"s a valid spot
+-- add status to let people know if it's a valid spot (also add toggle coll button)
 function OnMsg.ClassesPostprocess()
 	local xtemplate = XTemplates.ipPassage[1]
 	if xtemplate.ChoGGi_PassageWarningAdded then
@@ -142,6 +143,26 @@ function OnMsg.ClassesPostprocess()
 	})
 	-- add template to passage and construction site
 	table.insert(xtemplate, 1, section)
+
+  xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
+		"__template", "InfopanelButton",
+		"RolloverTitle", T(302535920000581, "Toggle Object Collision"),
+		"RolloverText", T(302535920000582, "Select an object and activate this to toggle collision (if you have a rover stuck in a dome)."),
+		"OnPress", function(self, gamepad)
+			-- doesn't do anything, but I use it for notification
+			CollisionsObject_Toggle(self.context)
+			local objs = self.context.elements or ""
+			for i = 1, #objs do
+				local obj = objs[i]
+				-- skip outside passage chunks
+				if IsValid(obj.dome) then
+					CollisionsObject_Toggle(obj, true)
+				end
+			end
+		end,
+		"Icon", "UI/Icons/IPButtons/dome_buildings.tga",
+	})
+
 --~ 	xtemplate[#xtemplate+1] = section
 	table.insert(XTemplates.sectionConstructionSite[1][1], 1, section)
 end

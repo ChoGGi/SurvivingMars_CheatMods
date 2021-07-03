@@ -14,10 +14,9 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagGameplay", true,
-	"description", [[Vroom vroom
+	"description", [[
+Vroom vroom
 
-Mod Options:
-Max Safari Length: Change the max safari route limit.
-
+See mod options for cheats.
 ]],
 })
