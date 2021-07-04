@@ -1,3 +1,8 @@
+v0.4
+Colonist oxygen usage added to mod options (defaults lowered).
+Stop colonists using air when domes are opened.
+Mod option to lock MOXIEs behind Magnetic Filtering.
+
 v0.3
 Removed water req from factories.
 Removed tech lock for now (will add back as mod option).

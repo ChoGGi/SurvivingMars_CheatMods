@@ -1067,7 +1067,7 @@ function OnMsg.ClassesBuilt()
 			if setting == "InfopanelCheatsVis" then
 				section = section.idSectionTitle
 			end
-
+			--
 			if setting ~= "InfopanelMainButVis" then
 				section.OnMouseEnter = function()
 					title:SetVisible(true)
@@ -1076,19 +1076,22 @@ function OnMsg.ClassesBuilt()
 					title:SetVisible()
 				end
 			end
-
-			section.OnMouseButtonDown = function()
-				if toggle then
-					toolbar:SetVisible()
-					toggle = false
-				else
-					toolbar:SetVisible(true)
-					toggle = true
-				end
-				if setting then
-					ChoGGi.Temp[setting] = not toggle
+			--
+			if toolbar and IsValidXWin(toolbar) then
+				section.OnMouseButtonDown = function()
+					if toggle then
+						toolbar:SetVisible()
+						toggle = false
+					else
+						toolbar:SetVisible(true)
+						toggle = true
+					end
+					if setting then
+						ChoGGi.Temp[setting] = not toggle
+					end
 				end
 			end
+			--
 		end
 
 		local function InfopanelDlgOpen(self)

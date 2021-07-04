@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local table_concat = table.concat
+local table = table
 local T = T
 
 local properties = {}
@@ -13,8 +13,8 @@ for id, item in pairs(PhotoFilterPresetMap) do
 		c = c + 1
 		properties[c] = PlaceObj("ModItemOptionToggle", {
 			"name", id,
-			"DisplayName", table_concat(T(3454,"Photo Filter") .. ": " .. T(item.displayName)),
-			"Help", table_concat(T(item.desc) .. T(0, [[
+			"DisplayName", table.concat(T(3454,"Photo Filter") .. ": " .. T(item.displayName)),
+			"Help", table.concat(T(item.desc) .. T(0, [[
 
 
 <yellow>Only enable one filter (whichever is last will be used).</yellow>]])),
@@ -43,7 +43,7 @@ for i = 1, #filter_settings do
 		c = c + 1
 		properties[c] = PlaceObj("ModItemOptionNumber", {
 			"name", setting.id,
-			"DisplayName", table_concat(T(" ") .. T(setting.name)),
+			"DisplayName", table.concat(T(" ") .. T(setting.name)),
 			"Help", T(0, "Adjust settings for selected photo filter."),
 			"DefaultValue", setting.default,
 			"MinValue", setting.min,

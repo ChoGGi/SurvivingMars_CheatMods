@@ -17,7 +17,7 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local table_remove = table.remove
+local table = table
 local Sleep = Sleep
 local IsValid = IsValid
 local RebuildInfopanel = RebuildInfopanel
@@ -44,7 +44,7 @@ function GoldenStorage:GameInit()
 			self:ToggleAcceptResource(res, "startup")
 		elseif res ~= "Metals" then
 			self:ToggleAcceptResource(res, "startup")
-			table_remove(self.resource, i)
+			table.remove(self.resource, i)
 		end
 	end
 

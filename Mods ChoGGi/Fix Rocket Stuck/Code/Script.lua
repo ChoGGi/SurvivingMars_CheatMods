@@ -17,11 +17,10 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local table_find = table.find
-local table_remove = table.remove
+local table = table
 local type = type
-local IsValid = IsValid
 local pairs = pairs
+local IsValid = IsValid
 local Msg = Msg
 local GenerateColonistData = GenerateColonistData
 local GetRandomPassablePoint = GetRandomPassablePoint
@@ -32,7 +31,7 @@ local function RemoveInvalid(count, list)
 	for i = #list, 1, -1 do
 		if not IsValid(list[i]) then
 			count = count + 1
-			table_remove(list, i)
+			table.remove(list, i)
 		end
 	end
 	return count
@@ -58,7 +57,7 @@ function OnMsg.LoadGame()
 
 	-- If my lib mod is installed use my copy of this function
 	if not SpawnColonist then
-		if table_find(ModsLoaded, "id", "ChoGGi_Library") then
+		if table.find(ModsLoaded, "id", "ChoGGi_Library") then
 			SpawnColonist = ChoGGi.ComFuncs.SpawnColonist
 		end
 		SpawnColonist = type(SpawnColonist) == "function"
@@ -110,7 +109,7 @@ function OnMsg.LoadGame()
 			if r.command == "Unload" then
 				-- has expectation of passengers, but none are on the rocket
 				if type(r.cargo) == "table" then
-					local pass = table_find(r.cargo, "class", "Passengers")
+					local pass = table.find(r.cargo, "class", "Passengers")
 					pass = r.cargo[pass]
 					if type(pass) == "table" and pass.amount > 0
 						and #pass.applicants_data == 0
@@ -128,7 +127,7 @@ function OnMsg.LoadGame()
 							-- valid but stuck on WorkCycle cmd
 							unload_it = true
 							c:SetCommand("Idle")
-							table_remove(crew, j)
+							table.remove(crew, j)
 							-- If we don't add the thread it spams log with [LUA ERROR] attempt to yield across a C-call boundary
 							CreateGameTimeThread(function()
 								c:ExitBuilding(r)
@@ -136,7 +135,7 @@ function OnMsg.LoadGame()
 						else
 							-- more invalid colonists...
 							SpawnColonist(c, r, nil, UICity)
-							table_remove(crew, j)
+							table.remove(crew, j)
 						end
 					end
 
@@ -155,11 +154,11 @@ function OnMsg.LoadGame()
 										UICity.drone_prefabs = UICity.drone_prefabs + 1
 									end
 								end)
-								table_remove(drones, j)
+								table.remove(drones, j)
 							end
 						else
 							UICity.drone_prefabs = UICity.drone_prefabs + 1
-							table_remove(drones, j)
+							table.remove(drones, j)
 						end
 					end
 
@@ -209,13 +208,13 @@ function OnMsg.LoadGame()
 						local drone = r.drones_exiting[j]
 						-- off map
 						if r.command == "Takeoff" and drone:GetPos() == InvalidPos then
-							table_remove(r.drones_exiting, j)
+							table.remove(r.drones_exiting, j)
 							drone:delete()
 							UICity.drone_prefabs = UICity.drone_prefabs + 1
 						-- not moving or outside the rocket
 						elseif r.command == "Countdown" and (drone.moving == false
 								or r_pos:Dist2D(drone:GetVisualPos()) > 1500) then
-							table_remove(r.drones_exiting, j)
+							table.remove(r.drones_exiting, j)
 						end
 					end
 				end
@@ -267,7 +266,7 @@ function OnMsg.LoadGame()
 				-- remove drones exiting
 				local drones = r.drones_exiting
 				for j = #drones, 1, -1 do
-					table_remove(drones, j)
+					table.remove(drones, j)
 				end
 
 				CreateRealTimeThread(function()

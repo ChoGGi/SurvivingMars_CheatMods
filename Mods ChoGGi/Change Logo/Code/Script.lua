@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local table = table
+
 local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
 local MapGet = ChoGGi.ComFuncs.MapGet
 
@@ -70,7 +72,6 @@ function OnMsg.ModsReloaded()
 
 	local items = CurrentModDef.items
 	local items_c = #items
-	local table_find = table.find
 
 	local MissionLogoPresetMap = MissionLogoPresetMap
 	for id, def in pairs(MissionLogoPresetMap) do
@@ -86,7 +87,7 @@ function OnMsg.ModsReloaded()
 			id = id,
 		}
 		-- add to mod items list if not already added
-		if not table_find(items, "name", id) then
+		if not table.find(items, "name", id) then
 			items_c = items_c + 1
 			items[items_c] = PlaceObj("ModItemOptionToggle", {
 				"name", id,

@@ -21,11 +21,10 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
+local table = table
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local IsValid = IsValid
---~ local table_iclear = table.iclear
-local table_clear = table.clear
 local InvalidPos = ChoGGi.Consts.InvalidPos
 local RetName = ChoGGi.ComFuncs.RetName
 
@@ -42,7 +41,7 @@ local function CleanUp()
 			line:delete()
 		end
 	end
---~ 	table_iclear(lines)
+--~ 	table.iclear(lines)
 	lines_c = 0
 	ResumePassEdits("ChoGGi.SelectionRemoved.Show Dome Connected Objects.CleanUp")
 end
@@ -73,7 +72,7 @@ local function ToggleLines(dome)
 
 	SuspendPassEdits("ChoGGi.SelectionRemoved.Show Dome Connected Objects.ToggleLines")
 
-	table_clear(bad_objs)
+	table.clear(bad_objs)
 	bad_objs_c = 0
 	BuildObjList(dome.labels.Building or "", dome.labels.Building)
 	BuildObjList(dome.labels.Colonist or "", dome.labels.Colonist)

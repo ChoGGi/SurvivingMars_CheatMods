@@ -19,7 +19,7 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local table_insert = table.insert
+local table = table
 local Translate = ChoGGi.ComFuncs.Translate
 local ValidateImage = ChoGGi.ComFuncs.ValidateImage
 local RetMapSettings = ChoGGi.ComFuncs.RetMapSettings
@@ -352,13 +352,13 @@ function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(gen)
 	end
 
 	-- add bt text after the first four (POIs)
-	table_insert(display_list, self.planet_msg_count, self.breakthrough_msg)
+	table.insert(display_list, self.planet_msg_count, self.breakthrough_msg)
 	-- first four are POI breaks
-	table_insert(display_list, 1, self.planet_msg)
+	table.insert(display_list, 1, self.planet_msg)
 
 	if self.show_omegas then
 		-- 3 from the end
-		table_insert(display_list, #display_list - 2, self.omega_msg)
+		table.insert(display_list, #display_list - 2, self.omega_msg)
 	end
 
 	self.idText:SetText(table.concat(display_list, "\n"))

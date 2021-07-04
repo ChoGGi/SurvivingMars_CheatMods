@@ -12,7 +12,7 @@ local RebuildInfopanel = RebuildInfopanel
 local ObjModified = ObjModified
 local PlaceObj = PlaceObj
 local ViewPos = ViewPos
-local table_insert = table.insert
+local table = table
 
 DefineClass.Solaria = {
 	__parents = {
@@ -137,7 +137,7 @@ Right click to view selected list item building.]])
 	end
 
 	-- add controller for ease of movement
-	table_insert(item_list, 1, {
+	table.insert(item_list, 1, {
 		name = T(302535920011272, [[Solaria Controller]]),
 		hint = T(302535920011273, [[Solaria control building.
 You can't remove... Only view (or maybe See would be a better term).]]),

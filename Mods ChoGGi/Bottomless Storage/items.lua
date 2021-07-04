@@ -2,7 +2,7 @@
 
 local Resources = Resources
 local T = T
-local table_concat = table.concat
+local table = table
 
 local properties = {}
 local c = 0
@@ -19,7 +19,7 @@ for i = 1, #resources do
 	c = c + 1
 	properties[c] = PlaceObj("ModItemOptionNumber", {
 		"name", "MinResourceAmount_" .. res,
-		"DisplayName", table_concat(T(302535920011754, "Min Resource Amount") .. ": " .. T(Resources[res].display_name)),
+		"DisplayName", table.concat(T(302535920011754, "Min Resource Amount") .. ": " .. T(Resources[res].display_name)),
 		"Help", T(302535920011755, "If stored resource is below this amount then don't remove resource from depot."),
 		"DefaultValue", 0,
 		"MinValue", 0,

@@ -1,10 +1,7 @@
 -- See LICENSE for terms
 
 -- local some globals
-local table_iclear = table.iclear
-local table_clear = table.clear
-local table_find = table.find
-local table_remove = table.remove
+local table = table
 local pairs, tonumber = pairs, tonumber
 local IsValid = IsValid
 
@@ -48,7 +45,7 @@ local function ActivateProfile(profile)
 		local obj = state.obj
 		-- obj was deleted or something, so remove it from profile
 		if not IsValid(obj) then
-			table_remove(profile, i)
+			table.remove(profile, i)
 		else
 			-- update obj with saved state
 			for setting,set_value in pairs(state) do
@@ -80,7 +77,7 @@ end
 local popup = {}
 
 function HUD.idBuildingStatesOnPress(dlg)
-	table_iclear(popup)
+	table.iclear(popup)
 	local c = 0
 
 	local hint_str = T(302535920011304, [[<left_click> Activate this profile.
@@ -91,7 +88,7 @@ function HUD.idBuildingStatesOnPress(dlg)
 		local profile = BuildingStates[i]
 		-- remove any empty profiles since we're here
 		if #profile == 0 then
-			table_remove(BuildingStates, i)
+			table.remove(BuildingStates, i)
 		else
 			c = c + 1
 			popup[c] = {
@@ -100,7 +97,7 @@ function HUD.idBuildingStatesOnPress(dlg)
 				hint = hint_str,
 				mouseup = function(_, _, _, button)
 					if button == "R" then
-						table_remove(BuildingStates, i)
+						table.remove(BuildingStates, i)
 						ChoGGi.ComFuncs.MsgPopup(
 							T{302535920011306, "Deleted Profile: <name>", name = profile.name},
 							T(302535920011307, "Building States")
@@ -128,7 +125,7 @@ local function RemoveAllOfClass(profile, class)
 		for i = #profile, 1, -1 do
 			local state = profile[i]
 			if state.obj.class == class then
-				table_remove(profile, i)
+				table.remove(profile, i)
 			end
 		end
 	end
@@ -140,7 +137,7 @@ local function BuildRemoveFromList(dlg, obj)
 		XDestroyRolloverWindow()
 	end
 
-	table_iclear(popup)
+	table.iclear(popup)
 	local c = 0
 
 	-- build list of profiles
@@ -149,9 +146,9 @@ local function BuildRemoveFromList(dlg, obj)
 		local profile = BuildingStates[i]
 		-- remove any empty profiles since we're here
 		if #profile == 0 then
-			table_remove(BuildingStates, i)
+			table.remove(BuildingStates, i)
 		else
-			local idx = table_find(profile,"handle",obj.handle)
+			local idx = table.find(profile,"handle",obj.handle)
 			if idx then
 				local class = profile[idx].obj.class
 				c = c + 1
@@ -164,7 +161,7 @@ local function BuildRemoveFromList(dlg, obj)
 						if button == "R" then
 							RemoveAllOfClass(profile,class)
 						else
-							table_remove(profile, idx)
+							table.remove(profile, idx)
 						end
 					end,
 				}
@@ -180,11 +177,11 @@ end
 
 local function AddNewState(profile, obj)
 	local building_state
-	local idx = table_find(profile, "handle", obj.handle)
+	local idx = table.find(profile, "handle", obj.handle)
 	-- exists so clear the state
 	if idx then
 		building_state = profile[idx]
-		table_clear(building_state)
+		table.clear(building_state)
 		building_state.handle = obj.handle
 		building_state.obj = obj
 	else
@@ -300,7 +297,7 @@ local function ShowList_AddTo(obj, profile_name)
 		local profile_name = choices[1]
 		-- add the profile and a blank building state (or find existing)
 		if profile_name.text == profilename_str then
-			local idx = table_find(BuildingStates, "name", profile_name.value)
+			local idx = table.find(BuildingStates, "name", profile_name.value)
 			-- existing profile
 			if idx then
 				profile = BuildingStates[idx]
@@ -418,7 +415,7 @@ local function BuildAddToList(dlg, obj)
 	local obj_name = RetName(obj)
 
 	-- build list of profiles
-	table_iclear(popup)
+	table.iclear(popup)
 	popup[1] = {
 		name = T(302535920011325, "New Profile"),
 		hint_title = T(302535920011325, "New Profile"),
@@ -435,7 +432,7 @@ local function BuildAddToList(dlg, obj)
 		local profile = BuildingStates[i]
 		-- remove any empty profiles since we're here
 		if #profile == 0 then
-			table_remove(BuildingStates, i)
+			table.remove(BuildingStates, i)
 		else
 			c = c + 1
 			popup[c] = {
@@ -480,7 +477,7 @@ function OnMsg.ClassesPostprocess()
 	if idx then
 		xt[idx]:delete()
 		-- we need to remove for insert
-		table_remove(xt, idx)
+		table.remove(xt, idx)
 	else
 		-- Insert above consumption
 		idx = table.find(xt, "__template", "sectionConsumption")

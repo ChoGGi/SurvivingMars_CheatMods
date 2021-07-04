@@ -678,7 +678,7 @@ function ChoGGi.ComFuncs.MonitorThreads()
 		local ThreadsRegister = ThreadsRegister
 		while IsValidXWin(dlg) do
 			-- only update when it's our dlg sending the msg
-			local _,msg_dlg = WaitMsg("ChoGGi_dlgs_examine_autorefresh")
+			local _, msg_dlg = WaitMsg("ChoGGi_dlgs_examine_autorefresh")
 			if msg_dlg == dlg then
 				-- we use a "tags" tag to store a unique number (examine uses tags off for text, so we need to use on
 				local c = 0

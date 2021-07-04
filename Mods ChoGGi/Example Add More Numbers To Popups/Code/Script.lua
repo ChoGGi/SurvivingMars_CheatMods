@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 -- local some globals
-local table_insert = table.insert
+local table = table
 local T = T
 local IsTraitAvailable = IsTraitAvailable
 local IsValid = IsValid
@@ -36,7 +36,7 @@ function FillTraitSelectorItems(object, items, traits, align, list, ...)
 			end
 
 			local enabled = trait.id ~= object.trait1 and trait.id ~= object.trait2 and trait.id ~= object.trait3
-			table_insert(items, HexButtonInfopanel:new({
+			table.insert(items, HexButtonInfopanel:new({
 				ButtonAlign = align,
 				name = trait.id,
 				icon = icon,

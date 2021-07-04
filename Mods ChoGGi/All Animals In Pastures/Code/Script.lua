@@ -5,6 +5,8 @@ if not g_AvailableDlc.shepard then
 	return
 end
 
+local table = table
+
 local mod_OpenOnSelect
 
 -- fired when settings are changed/init
@@ -21,9 +23,6 @@ function OnMsg.ApplyModOptions(id)
 		ModOptions()
 	end
 end
-
-local table_find = table.find
-local table_rand = table.rand
 
 -- return all pasture animals to all pastures (in/out)
 local animals_origcount = #(Presets and Presets.Animal and Presets.Animal.Pasture or "12345678")
@@ -421,20 +420,19 @@ function PastureAnimal:SetGrazingState(duration, ...)
 
 	local states = self:GetStates()
 	local state = "idle"
-	local table_find = table.find
-	if table_find(states,"graze") then
+	if table.find(states,"graze") then
 		state = "graze"
 	-- the pees have jump
-	elseif table_find(states,"pee") then
+	elseif table.find(states,"pee") then
 		state = table.rand(graze_rand1)
 	-- long pig
-	elseif table_find(states,"standEnjoySurfaceIdle") then
+	elseif table.find(states,"standEnjoySurfaceIdle") then
 		state = "standEnjoySurface"
 	-- shorter long pig
-	elseif table_find(states,"playGround1Idle") then
+	elseif table.find(states,"playGround1Idle") then
 		state = table.rand(graze_rand2)
 	-- crunchy pig
-	elseif table_find(states,"rechargeDroneIdle") then
+	elseif table.find(states,"rechargeDroneIdle") then
 		state = "gather"
 	end
 
@@ -515,14 +513,14 @@ function OnMsg.ClassesPostprocess()
 		if skip ~= "ChoGGi_skip" and self.ChoGGi_animal then
 			local states = self:GetStates()
 			-- long pig
-			if table_find(states,"standDrawIdle") then
-				state = table_rand(roam_rand1)
+			if table.find(states,"standDrawIdle") then
+				state = table.rand(roam_rand1)
 			-- shorter long pig
-			elseif table_find(states,"playGround1Idle") then
-				state = table_rand(roam_rand2)
+			elseif table.find(states,"playGround1Idle") then
+				state = table.rand(roam_rand2)
 			-- crunchy pig
-			elseif table_find(states,"rechargeDroneIdle") then
-				state = table_rand(roam_rand3)
+			elseif table.find(states,"rechargeDroneIdle") then
+				state = table.rand(roam_rand3)
 			end
 
 			if skip == "ChoGGi_skip" then

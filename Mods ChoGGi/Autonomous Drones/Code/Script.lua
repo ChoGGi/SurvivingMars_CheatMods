@@ -51,12 +51,6 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local table = table
-local table_ifilter = table.ifilter
-local table_iclear = table.iclear
-local table_icopy = table.icopy
-local table_rand = table.rand
-local table_insert = table.insert
-local table_remove = table.remove
 local CreateGameTimeThread = CreateGameTimeThread
 local Sleep = Sleep
 local Max = Max
@@ -150,12 +144,12 @@ local function AssignWorkingDrones(drones, count, hub, not_rand)
 		if not_rand then
 			drone, idx = drones[drones_c], drones_c
 		else
-			drone, idx = table_rand(drones)
+			drone, idx = table.rand(drones)
 		end
 
 		if drone and idx then
 			-- need to remove entry right away (before table idx changes)
-			table_remove(drones, idx)
+			table.remove(drones, idx)
 			-- no need to move to same hub
 			if not drone.ChoGGi_WaitingForIdleDrone and drone.command_center ~= hub then
 				drone.ChoGGi_WaitingForIdleDrone = CreateGameTimeThread(function()
@@ -195,9 +189,9 @@ local function AssignDrones(hub)
 	local idle_drones_c = #idle_drones
 	if idle_drones_c > 0 then
 		for _ = 1, count do
-			local drone, idx = table_rand(idle_drones)
+			local drone, idx = table.rand(idle_drones)
 			if drone and idx then
-				table_remove(idle_drones, idx)
+				table.remove(idle_drones, idx)
 				CreateGameTimeThread(SendDroneToCC, drone, hub)
 			end
 			-- no sense in looping for naught
@@ -226,7 +220,7 @@ local function UpdateHubs()
 
 		-- no drones/no working drones
 		if (threshold == "empty" or threshold == "all") and
-			(#drones == 0 or #table_ifilter(drones, FilterBorkedDrones) == 0)
+			(#drones == 0 or #table.ifilter(drones, FilterBorkedDrones) == 0)
 		then
 			AssignDrones(hub)
 		else
@@ -255,7 +249,7 @@ local function BuildDroneList()
 		local hub = filtered_hubs[i]
 		local drones = hub.drones
 
-		if #drones == 0 or #table_ifilter(drones, FilterBorkedDrones) < 1 then
+		if #drones == 0 or #table.ifilter(drones, FilterBorkedDrones) < 1 then
 			-- no drones
 		else
 			-- function DroneControl:CalcLapTime(), wanted the funcs local since we call this a lot
@@ -293,9 +287,9 @@ local function UpdateDrones()
 --~ 	ex(filtered_hubs)
 
 	-- build list of filtered hubs
-	table_iclear(filtered_hubs)
+	table.iclear(filtered_hubs)
 	hub_count = 0
-	table_iclear(useless_hubs)
+	table.iclear(useless_hubs)
 	local use_hubs_c = 0
 	for i = 1, #hubs do
 		local hub = hubs[i]
@@ -347,14 +341,14 @@ local function UpdateDrones()
 		-- stick all empty hubs at start (otherwise they may stay empty for too long)
 		for i = 1, hub_count do
 			if #filtered_hubs[i].drones == 0 then
-				table_insert(filtered_hubs, 1, table_remove(filtered_hubs, i))
+				table.insert(filtered_hubs, 1, table.remove(filtered_hubs, i))
 			end
 		end
 	end
 
 	-- if there's less drones then the threshold set in mod options we evenly split drones across hubs
 	-- copied so we can table.remove from it (maybe filter out the not working drones?)
-	local drones = table_icopy(UICity.labels.Drone or empty_table)
+	local drones = table.icopy(UICity.labels.Drone or empty_table)
 	if mod_EarlyGame == 0 or mod_EarlyGame > #drones then
 		-- get numbers for amount of drones split between hubs (rounded down)
 		local split_count = floatfloor(#drones / hub_count)
@@ -398,8 +392,8 @@ local function UpdateDrones()
 	UpdateHubs()
 
 	-- build list of drones from low/medium load hubs
-	table_iclear(med_drones)
-	table_iclear(low_drones)
+	table.iclear(med_drones)
+	table.iclear(low_drones)
 	BuildDroneList()
 
 	-- update heavy load drone hubs (some may turn into medium after)

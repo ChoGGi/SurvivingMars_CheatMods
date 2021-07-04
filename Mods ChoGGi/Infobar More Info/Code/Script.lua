@@ -2,11 +2,6 @@
 
 -- local some globals
 local table = table
-local table_insert = table.insert
-local table_clear = table.clear
-local table_iclear = table.iclear
-local table_concat = table.concat
-local table_copy = table.copy
 local pairs = pairs
 local type = type
 local IsT = IsT
@@ -265,7 +260,7 @@ end
 
 local function CountSubDeposit(cls, city)
 	local remaining_res = 0
-	table_clear(count_deposit)
+	table.clear(count_deposit)
 	local objs = (city or UICity).labels.ResourceExploiter or ""
 	for i = 1, #objs do
 		local deposits = objs[i].nearby_deposits
@@ -341,7 +336,7 @@ local default_grid = {
 	stored = 0,
 	bld_count = 0,
 }
-local merged_grid = table_copy(default_grid)
+local merged_grid = table.copy(default_grid)
 -- stores some string ids and grid info
 local elec_grid_info = {
 	string_ids = {
@@ -379,7 +374,7 @@ local function BuildRollover(ret, grid_info, grid)
 	local grid_c = #grid
 	-- grid count was changed, so clear list
 	if grid_c ~= #grid_info then
-		table_iclear(grid_info)
+		table.iclear(grid_info)
 	end
 
 	-- clean up merged_grid if we're using it
@@ -396,7 +391,7 @@ local function BuildRollover(ret, grid_info, grid)
 	for i = 1, grid_c do
 		-- If old/new grid is the same count, no need for a new table, just overwrite existing numbers
 		if not grid_info[i] then
-			grid_info[i] = table_copy(default_grid)
+			grid_info[i] = table.copy(default_grid)
 		end
 		local info = grid_info[i]
 		local grid = grid[i]
@@ -534,7 +529,7 @@ function ResourceOverview.GetElectricityGridRollover(...)
 
 	-- no grids so return orig func
 	return not ret and orig_ResourceOverview_GetElectricityGridRollover(...)
-		or table_concat(ret)
+		or table.concat(ret)
 --~ 			.. "\n\n\n" .. orig_ResourceOverview_GetElectricityGridRollover(...)
 end
 
@@ -565,11 +560,11 @@ function ResourceOverview.GetLifesupportGridRollover(...)
 		if ret then
 			local deposit = CountSubDeposit("SubsurfaceDepositWater")
 			if deposit > 0 then
-				table_insert(ret, 1, T(681, "Water") .. " " .. T(3982, "Deposits")
+				table.insert(ret, 1, T(681, "Water") .. " " .. T(3982, "Deposits")
 					.. "<right>" .. T{"<water(number)>",
 					number = deposit}
 				)
-				table_insert(ret, 2, "<newline><newline><left>")
+				table.insert(ret, 2, "<newline><newline><left>")
 			end
 		end
 	else
@@ -578,11 +573,11 @@ function ResourceOverview.GetLifesupportGridRollover(...)
 
 	-- no grids so return orig func
 	return not ret and orig_ResourceOverview_GetLifesupportGridRollover(...)
-		or table_concat(ret)
+		or table.concat(ret)
 end
 
 -- calc n return time left
-local fake_grid = table_copy(default_grid)
+local fake_grid = table.copy(default_grid)
 local function ResRemaining(self, res_name, ret)
 --~ ex(ret)
 	local list = ret[1]
@@ -593,7 +588,7 @@ local function ResRemaining(self, res_name, ret)
 		+ self["Get" .. res_name .. "ConsumedByMaintenanceYesterday"](self)
 
 	-- 3 is "production"
-	table_insert(list.table, 3, T(359672804540, "Stored Resources") .. " "
+	table.insert(list.table, 3, T(359672804540, "Stored Resources") .. " "
 		.. RemainingTime(fake_grid, scale_sols))
 
 	-- add count of all new strings
@@ -604,7 +599,7 @@ end
 
 local function DepositRemaining(self, res_name, ret)
 --~ 	ex(ret)
-	table_clear(count_deposit)
+	table.clear(count_deposit)
 	local list = ret[1]
 
 	local res_str
@@ -617,7 +612,7 @@ local function DepositRemaining(self, res_name, ret)
 	end
 
 	-- just above Remaining Time
-	table_insert(list.table, 3,
+	table.insert(list.table, 3,
 		T{"<resource(res)>", res = res_name} .. " " .. T(3982, "Deposits")
 			.. "<right>" .. T(res_str)
 	)
@@ -764,7 +759,7 @@ end
 -- see Drone:IsDisabled()
 local borked_drones_list = {}
 function InfobarObj:ChoGGi_GetBrokenDrones()
-	table_iclear(borked_drones_list)
+	table.iclear(borked_drones_list)
 	local c = 0
 	-- gotta use mapget instead of labels since dead drones aren't included
 	local objs = MapGet("map", "Drone")
@@ -859,7 +854,7 @@ function InfobarObj.GetFoodRollover(...)
 	local c = list.j
 	c = c + 1
 	-- just below Food Consumption
-	table_insert(list.table, 6,	T(8780, "MAX") .. " " .. T(foodcon_str))
+	table.insert(list.table, 6,	T(8780, "MAX") .. " " .. T(foodcon_str))
 
 	-- add count of all new strings
 	list.j = c

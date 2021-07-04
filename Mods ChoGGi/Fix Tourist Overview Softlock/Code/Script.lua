@@ -21,7 +21,7 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local table_insert = table.insert
+local table = table
 local rawget = rawget
 
 local orig_SupplyRocket_UIOpenTouristOverview = SupplyRocket.UIOpenTouristOverview
@@ -35,7 +35,7 @@ function SupplyRocket:UIOpenTouristOverview(...)
 	for i = 1, #boarded do
 		local colonist = self.boarded[i]
 		if colonist.traits.Tourist then
-			table_insert(tourists, colonist)
+			table.insert(tourists, colonist)
 		end
 	end
 	HolidayRating:OpenTouristOverview{

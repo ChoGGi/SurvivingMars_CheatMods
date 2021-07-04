@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local table_find = table.find
+local table = table
 
 local options
 local lookup_pauses = {}
@@ -36,7 +36,7 @@ OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode
 
 local function PauseGame(id, func, ...)
-	if not disable_pause and lookup_pauses[id] and not table_find(g_ActiveOnScreenNotifications, 1, id) then
+	if not disable_pause and lookup_pauses[id] and not table.find(g_ActiveOnScreenNotifications, 1, id) then
 		UICity:SetGameSpeed(0)
 		UISpeedState = "pause"
 	end

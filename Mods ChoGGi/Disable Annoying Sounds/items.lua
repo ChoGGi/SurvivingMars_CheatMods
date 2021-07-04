@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 local T = T
-local table_concat = table.concat
+local table = table
 
 return {
 	PlaceObj("ModItemOptionToggle", {
@@ -54,13 +54,13 @@ return {
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "NurseryChild",
-		"DisplayName", table_concat(T(5179, "Nursery") .. " " .. T(4775, "Child")),
+		"DisplayName", table.concat(T(5179, "Nursery") .. " " .. T(4775, "Child")),
 		"Help", T(302535920011593, "Turn <color ChoGGi_green>On</color> to disable sound."),
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "SpacebarMusic",
-		"DisplayName", table_concat(T(5280, "Spacebar") .. " " .. T(3580, "Music")),
+		"DisplayName", table.concat(T(5280, "Spacebar") .. " " .. T(3580, "Music")),
 		"Help", T(302535920011593, "Turn <color ChoGGi_green>On</color> to disable sound."),
 		"DefaultValue", false,
 	}),

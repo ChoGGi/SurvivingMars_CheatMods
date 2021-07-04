@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
-local table_concat = table.concat
-local table_iclear = table.iclear
+local table = table
 local IsKindOf = IsKindOf
 local IsValid = IsValid
 local WaitMsg = WaitMsg
@@ -23,7 +22,7 @@ local function ClearUnitInfo()
 	for i = 1, threads_c do
 		DeleteThread(threads[i])
 	end
-	table_iclear(threads)
+	table.iclear(threads)
 	threads_c = 0
 
 	-- clean up text
@@ -148,7 +147,7 @@ local function UpdateText(obj, text_dlg, orig_text, orig_target)
 		end
 	end
 
-	text_dlg:SetText(table_concat(text, ""))
+	text_dlg:SetText(table.concat(text, ""))
 
 	return command, target, obj
 end

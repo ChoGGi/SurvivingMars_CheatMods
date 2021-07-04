@@ -1289,6 +1289,11 @@ Time between dust and time it lasts (random each time, these are min/max):"
 302535920011456, "Toggle Metals"
 302535920011511, "Toggle Rare Metals"
 302535920011512, "Allow Mohole to produce rare metals."
+[[Oxygen Management]]
+302535920011964, "Lock MOXIEs"
+302535920011965, "MOXIEs will be locked behind the Magnetic Filtering tech."
+302535920011966, "Oxygen Use "
+302535920011967, "How much oxygen is consumed per Sol by these colonists."
 [[UNUSED]]
 
 
@@ -1300,16 +1305,7 @@ Time between dust and time it lasts (random each time, these are min/max):"
 
 
 
-
-
-
-
-
 [[UNUSED]]
-302535920011964,
-302535920011965,
-302535920011966,
-302535920011967,
 302535920011968,
 302535920011969,
 302535920011970,

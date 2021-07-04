@@ -2,10 +2,11 @@
 
 ## v17.1 (Unreleased)
 ### Changed:
- - ConsoleSkipUndefinedGlobals defaults to false.
+- ConsoleSkipUndefinedGlobals defaults to false.
 
 ### Fixed:
 - Fill resource didn't work on deposits (thanks Dhamptastic).
+- log spam from selection panel toggle with certain buttons (thanks Tremualin).
 
 ## v17.0 (21 June 2021)
 ### Changed:

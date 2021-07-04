@@ -21,12 +21,11 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-
+local table = table
 local IsValid = IsValid
 local IsPoint = IsPoint
 local IsKindOf = IsKindOf
 local GetDomeAtPoint = GetDomeAtPoint
-local table_unpack = table.unpack
 local HexAngleToDirection = HexAngleToDirection
 local HexRotate = HexRotate
 local WorldToHex = WorldToHex
@@ -76,7 +75,7 @@ function PlacePassageLine(...)
 	SupplyGridElementHexStatus.blocked = 1
 	local ret = {orig_PlacePassageLine(...)}
 	SupplyGridElementHexStatus.blocked = orig_block
-	return table_unpack(ret)
+	return table.unpack(ret)
 end
 
 -- extend your massive passage from a DOME (or road)?
@@ -148,7 +147,7 @@ function OnMsg.ClassesPostprocess()
 		"__template", "InfopanelButton",
 		"RolloverTitle", T(302535920000581, "Toggle Object Collision"),
 		"RolloverText", T(302535920000582, "Select an object and activate this to toggle collision (if you have a rover stuck in a dome)."),
-		"OnPress", function(self, gamepad)
+		"OnPress", function(self)
 			-- doesn't do anything, but I use it for notification
 			CollisionsObject_Toggle(self.context)
 			local objs = self.context.elements or ""

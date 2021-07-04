@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local table_concat = table.concat
+local table = table
 local type = type
 local T = T
 
@@ -13,7 +13,7 @@ function OnMsg.ClassesPostprocess()
 		"Id" , "ChoGGi_Template_ServiceShowComfortIncrease",
 		"ChoGGi_Template_ServiceShowComfortIncrease", true,
 		"__template", "InfopanelText",
-		"Text", table_concat{
+		"Text", table.concat{
 			T(731, "Comfort increase on visit"),
 			T("<right><Stat(ChoGGi_EffectiveComfortIncrease)>"),
 		},
@@ -40,7 +40,7 @@ function GetConstructionDescription(class, ...)
 			-- 3963 == "Service Comfort: <Stat(comfort)>"
 			if type(tmeta.table[i]) == "table" and tmeta.table[i][1] == 3963 then
 				tmeta.j = tmeta.j + 1
-				tmeta.table[tmeta.j] = table_concat{
+				tmeta.table[tmeta.j] = table.concat{
 					T(731, "Comfort increase on visit"),
 					T{": <Stat(comfort)>",
 						comfort = class.comfort_increase or 0,

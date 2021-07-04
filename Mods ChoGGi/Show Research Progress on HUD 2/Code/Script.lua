@@ -36,8 +36,7 @@ local MulDivRound = MulDivRound
 local FormatDuration = FormatDuration
 local GetDialog = GetDialog
 local XUpdateRolloverWindow = XUpdateRolloverWindow
-local table_concat = table.concat
-local table_iclear = table.iclear
+local table = table
 
 local const_HoursPerDay = const.HoursPerDay
 
@@ -138,13 +137,13 @@ Queue: <em><queue></em>]],
 					return T(6761, "None")
 				end
 
-				table_iclear(queue_table)
+				table.iclear(queue_table)
 				local c = 0
 				for i = 2, queue_c do
 					c = c + 1
 					queue_table[c] = TechDef[research_queue[i]].display_name
 				end
-				return table_concat(queue_table, ", ")
+				return table.concat(queue_table, ", ")
 			end,
 		}, -- RolloverText
 	}, dlg_frame)

@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+local type = type
+local table = table
+
 local mod_EnableMod
 
 -- fired when settings are changed/init
@@ -23,8 +26,6 @@ function OnMsg.LoadGame()
 	end
 
 	local ResourceScale = const.ResourceScale
-	local type = type
-	local table_remove = table.remove
 	local blds = UICity.labels.Building or ""
 	for i = 1, #blds do
 		local bld = blds[i]
@@ -34,7 +35,7 @@ function OnMsg.LoadGame()
 		for j = #task_requests, 1, -1 do
 			local req = task_requests[j]
 			if type(req) ~= "userdata" then
-				table_remove(task_requests, j)
+				table.remove(task_requests, j)
 			end
 		end
 

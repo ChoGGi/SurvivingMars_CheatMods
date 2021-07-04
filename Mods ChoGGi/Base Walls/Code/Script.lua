@@ -6,10 +6,8 @@ if not g_AvailableDlc.contentpack1 then
 	return
 end
 
+local table = table
 local point = point
-local table_find = table.find
-local table_iclear = table.iclear
-local table_rand = table.rand
 local IsValidEntity = IsValidEntity
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
@@ -285,7 +283,7 @@ function ChoGGi_BaseWalls:SpawnWallAttaches(cursor_obj, count)
 	do (cursor_obj or self):DestroyAttaches() end
 
 	if self.attached_objs then
-		table_iclear(self.attached_objs)
+		table.iclear(self.attached_objs)
 	end
 
 	-- not actual entity, but we use it to change skins
@@ -431,7 +429,7 @@ function ChoGGi_BaseWalls:SpawnCornerAttaches(cursor_obj)
 		obj:SetColorizationMaterial(1, -1, -128, 127)
 		obj:SetColorizationMaterial(2, -4692187, 127, -48)
 		obj:SetColorizationMaterial(3, -13480117, -128, 48)
-		local holdee = table_rand(item.objects)
+		local holdee = table.rand(item.objects)
 		obj = self:SpawnBaseObj(holdee, obj)
 		self:UpdateHoldee(obj, holdee)
 		self.current_holder_object = obj
@@ -442,7 +440,7 @@ function ChoGGi_BaseWalls:SpawnCornerAttaches(cursor_obj)
 		obj:SetState("idle2")
 		obj:SetAxisAngle(point(4096, 0, 0), 10700)
 		obj:SetAttachOffset(point(0, 0, 395))
-		local holdee = table_rand(item.objects)
+		local holdee = table.rand(item.objects)
 		obj = self:SpawnBaseObj(holdee, obj)
 		self:UpdateHoldee(obj, holdee, true)
 		self.current_holder_object = obj
@@ -468,7 +466,7 @@ function ChoGGi_BaseWalls:SwapHolder()
 	end
 
 	-- grab the next entity
-	local idx = table_find(self.item_table.objects, self.current_holder_object.entity)
+	local idx = table.find(self.item_table.objects, self.current_holder_object.entity)
 	local next_ent = self.item_table.objects[idx+1]
 	if not next_ent then
 		next_ent = self.item_table.objects[1]
@@ -570,7 +568,7 @@ function ChoGGi_BaseWalls:ChangeSkin(skin)
 	end
 	ResumePassEdits("ChoGGi.BaseWalls.ChangeSkin")
 
-	local idx = table_find(pass_skins, skin) + 1
+	local idx = table.find(pass_skins, skin) + 1
 	if not pass_skins[idx] then
 		idx = 1
 	end
@@ -612,7 +610,7 @@ function ChoGGi_BaseWalls:AdjustLength(size, current_size)
 		SuspendPassEdits("ChoGGi.BaseWalls.AdjustLength")
 		-- get skin to reset new wall to
 		local entity = self.entity or "Passage"
-		local idx = table_find(pass_skins, entity) - 1
+		local idx = table.find(pass_skins, entity) - 1
 		if not pass_skins[idx] then
 			if idx == 0 then
 				idx = pass_skins_c

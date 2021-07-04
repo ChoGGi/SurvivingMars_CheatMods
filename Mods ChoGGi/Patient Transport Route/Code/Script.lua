@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local table_clear = table.clear
+local table = table
 local Sleep = Sleep
 
 local mod_Amount
@@ -66,8 +66,8 @@ function RCTransport:TransportRouteLoad(...)
 		end
 
 		-- gotta clear these so they don't cause issues
-		table_clear(self.route_visited_dests)
-		table_clear(self.route_visited_sources)
+		table.clear(self.route_visited_dests)
+		table.clear(self.route_visited_sources)
 
 		local next_source = self:FindNextRouteSource()
 		-- check for nearby deposits

@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local table_concat = table.concat
+local table = table
 local Msg = Msg
 local MapGet = MapGet
 
@@ -109,7 +109,7 @@ local function MarkUnits()
 --~ 			"\n", T(12895, "sight_visible_size"), ": ", obj:GetVisibleSize(),
 		}
 
-		text_dlg:SetText(table_concat(text, ""))
+		text_dlg:SetText(table.concat(text, ""))
 
 		text_dlg:AddDynamicPosModifier{
 			id = "obj_info",

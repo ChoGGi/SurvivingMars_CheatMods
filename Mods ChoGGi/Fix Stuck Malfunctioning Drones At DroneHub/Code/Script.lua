@@ -24,14 +24,14 @@ function OnMsg.LoadGame()
 
 	local GetRandomPassableAround = GetRandomPassableAround
 	local InvalidPos = ChoGGi.Consts.InvalidPos
-	local table_clear = table.clear
+	local table = table
 	local radius = 100 * guim
 	local positions = {}
 
 	local objs = UICity.labels.DroneHub or ""
 	for i = 1, #objs do
 		local hub = objs[i]
-		table_clear(positions)
+		table.clear(positions)
 		for j = 1 , #(hub.drones or "") do
 			local drone = hub.drones[j]
 			local pos = drone:GetPos()

@@ -3,7 +3,7 @@
 local MapFilter = MapFilter
 local ViewAndSelectObject = ViewAndSelectObject
 local XDestroyRolloverWindow = XDestroyRolloverWindow
-local table_find = table.find
+local table = table
 
 local function CycleRockets(context)
 	local list = (context.city or UICity).labels.SupplyRocket or empty_table
@@ -14,7 +14,7 @@ local function CycleRockets(context)
 
 	if count > 0 then
 		-- dunno why they localed it, instead of making it InfobarObj:CycleObjects()...
-		local idx = SelectedObj and table_find(list, SelectedObj) or 0
+		local idx = SelectedObj and table.find(list, SelectedObj) or 0
 		idx = (idx % count) + 1
 		local next_obj = list[idx]
 

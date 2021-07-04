@@ -9,7 +9,7 @@ local T = T
 local IsT = IsT
 local CmpLower = CmpLower
 local type = type
-local table_find = table.find
+local table = table
 
 local pin_state_table = {
 	["UI/Icons/pin_attack.tga"] = "pin_attack",
@@ -297,7 +297,7 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 		obj = objs[i]
 
 		-- add rollover text
-		local pinbutton = pins_obj[table_find(pins_obj, "context", obj)]
+		local pinbutton = pins_obj[table.find(pins_obj, "context", obj)]
 		local hint
 		local hint_title = ""
 

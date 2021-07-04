@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+local IsValid = IsValid
+local table = table
+
 local mod_EnableMod
 
 -- fired when settings are changed/init
@@ -22,12 +25,10 @@ function OnMsg.LoadGame()
 		return
 	end
 
-	local IsValid = IsValid
-	local table_remove = table.remove
 	local broke = g_BrokenDrones
   for i = #broke, 1, -1 do
     if not IsValid(broke[i]) then
-      table_remove(broke, i)
+      table.remove(broke, i)
     end
   end
 end

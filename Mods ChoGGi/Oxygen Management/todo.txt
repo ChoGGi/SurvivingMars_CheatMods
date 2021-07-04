@@ -1,6 +1,0 @@
-stop colonists using air when domes are opened.
-Another bug: Colonist oxygen demand persists after opening the domes.
-I also still feel that 0.1 per colonist is a bit high. It is e.g. normal for a medium dome to eat 10 oxygen just from colonists (2 base + 80 colonists), and if you produce oxygen via algea, you almost need no other food production: algea in this mod will produce food to oxygen 1:1, but with buffs that comes close to 2:1, which is the current colonist consuption rate, 0.2 food and 0.1 oxygen 
-
-
-https://forum.paradoxplaza.com/forum/threads/more-oxygen-consuming-buildings-and-facilities-are-needed.1175384/page-2#post-27580569

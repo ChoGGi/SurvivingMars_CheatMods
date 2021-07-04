@@ -25,7 +25,7 @@ end
 
 GlobalVar("CityDomeTeleporterConstruction", {})
 
-local table_unpack = table.unpack
+local table = table
 
 -- chooses which construct mode to start
 local orig_GetConstructionController = GetConstructionController
@@ -68,7 +68,7 @@ local function CallTunnelFunc(func, ...)
 	CityTunnelConstruction = CityDomeTeleporterConstruction
 	local ret = {func(...)}
 	CityTunnelConstruction = GetCityTunnelConstruction()
-	return table_unpack(ret)
+	return table.unpack(ret)
 end
 
 local orig_OpenTunnelConstructionInfopanel = OpenTunnelConstructionInfopanel
@@ -136,5 +136,5 @@ function DomeTeleporterConstructionController.Activate(...)
 	-- restore func
 	CreateConstructionGroup = orig_CreateConstructionGroup
 	-- and done
-	return table_unpack(ret)
+	return table.unpack(ret)
 end

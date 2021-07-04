@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+local table = table
+local TGetID = TGetID
+
 -- build city when terraforming is disabled
 function OnMsg.GetAdditionalBuildingLocks(template, locks)
 	if template.id == "OpenCity" then
@@ -8,13 +11,11 @@ function OnMsg.GetAdditionalBuildingLocks(template, locks)
 end
 
 -- allow to build whenever
-local TGetID = TGetID
-local table_remove = table.remove
 function OnMsg.GatherUIBuildingPrerequisites(building, reasons)
 	if building.template_class == "OpenCity" then
 		for i = 1, #reasons do
 			if TGetID(reasons[i]) == 12340 then
-				table_remove(reasons, i)
+				table.remove(reasons, i)
 				break
 			end
 		end

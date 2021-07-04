@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+local IsValid = IsValid
+local table = table
+
 local mod_EnableMod
 
 -- fired when settings are changed/init
@@ -22,15 +25,13 @@ function OnMsg.LoadGame()
 		return
 	end
 
-	local IsValid = IsValid
-	local table_remove = table.remove
 	local objs = UICity.labels.RCRover or ""
 	for i = 1, #objs do
 		local attached_drones = objs[i].attached_drones
 		for j = #attached_drones, 1, -1 do
 			local drone = attached_drones[j]
 			if not IsValid(drone) then
-				table_remove(attached_drones, j)
+				table.remove(attached_drones, j)
 			end
 		end
 	end

@@ -3,7 +3,7 @@
 local ResourceScale = const.ResourceScale
 
 local gp_dlc = g_AvailableDlc.armstrong
-local table_find = table.find
+local table = table
 
 local options
 local mod_ShuttleAccess
@@ -21,7 +21,7 @@ end
 -- build mod options
 local Resources = Resources
 for id in pairs(Resources) do
-	if table_find(storable_resources, id) then
+	if table.find(storable_resources, id) then
 		mod_options[id] = false
 	end
 end
@@ -39,7 +39,7 @@ local function ModOptions()
 		mod_options[id] = options:GetProperty(id)
 	end
 
-	IsLukeHNewResActive = table_find(ModsLoaded, "id", "LH_Resources")
+	IsLukeHNewResActive = table.find(ModsLoaded, "id", "LH_Resources")
 end
 
 -- load default/saved settings

@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local table_remove = table.remove
+local table = table
 local RemoveFromRules = RemoveFromRules
 local StopSound = StopSound
 local PlayFX = PlayFX
@@ -67,7 +67,7 @@ DisableSounds = function()
 	local FXRules = FXRules
 
 	if mod_SensorSensorTowerBeeping then
-		table_remove(FXRules.Working.start.SensorTower.any, 3)
+		table.remove(FXRules.Working.start.SensorTower.any, 3)
 		RemoveFromRules("Object SensorTower Loop")
 		BldToggleWorking("SensorTower")
 	end
@@ -80,7 +80,7 @@ DisableSounds = function()
 			for i = #list, 1, -1 do
 				local sound = list[i].Sound
 				if sound == "Unit Rover DeployAntennaON" or sound == "Unit Rover DeployLoop" then
-					table_remove(list, i)
+					table.remove(list, i)
 				end
 			end
 			RemoveFromRules("Unit Rover DeployLoop")
@@ -92,7 +92,7 @@ DisableSounds = function()
 	end
 
 	if mod_MirrorSphereCrackling then
-		table_remove(FXRules.Freeze.start.MirrorSphere.any, 2)
+		table.remove(FXRules.Freeze.start.MirrorSphere.any, 2)
 		FXRules.Freeze.start.any = nil
 		RemoveFromRules("Mystery Sphere Freeze")
 
@@ -100,14 +100,14 @@ DisableSounds = function()
 	end
 
 	if mod_NurseryChild then
-		table_remove(FXRules.Working.start.Nursery.any, 1)
+		table.remove(FXRules.Working.start.Nursery.any, 1)
 		RemoveFromRules("Building Nurcery LoopEmpty")
 		BldToggleWorking("Nursery")
 	end
 
 	if mod_SpacebarMusic then
-		table_remove(FXRules.Working.start.Spacebar.any, 1)
-		table_remove(FXRules.Working.start.Spacebar_Small.any, 1)
+		table.remove(FXRules.Working.start.Spacebar.any, 1)
+		table.remove(FXRules.Working.start.Spacebar_Small.any, 1)
 		RemoveFromRules("Building Spacebar Loop")
 		RemoveFromRules("Building SpacebarSmall Loop")
 		-- Includes reg and small
@@ -115,13 +115,13 @@ DisableSounds = function()
 	end
 
 	if mod_BioroboticsWorkshop then
-		table_remove(FXRules.Working.start.BioroboticsWorkshop.any, 1)
+		table.remove(FXRules.Working.start.BioroboticsWorkshop.any, 1)
 		RemoveFromRules("Building WorkshopBiorobotics Loop")
 		BldToggleWorking("BioroboticsWorkshop")
 	end
 
 	if mod_RareMetalsExtractor then
-		table_remove(FXRules.Working.start.PreciousMetalsExtractor.any, 1)
+		table.remove(FXRules.Working.start.PreciousMetalsExtractor.any, 1)
 		RemoveFromRules("Object PreciousExtractor Loop")
 		BldToggleWorking("PreciousMetalsExtractor")
 	end
@@ -136,7 +136,7 @@ DisableSounds = function()
 				local sound = list[i].Sound
 				if sound == "UI SelectBuilding" or sound:sub(-6) == "Select" then
 					RemoveFromRules("list[i].Sound")
-					table_remove(list, i)
+					table.remove(list, i)
 				end
 			end
 		end
@@ -148,7 +148,7 @@ DisableSounds = function()
 			local sound = list[i].Sound
 			if sound == "Ambience Disaster ColdwaveWave" or sound == "Ambience Disaster ColdwaveCracks" then
 				StopSound(sound.handle)
-				table_remove(list, i)
+				table.remove(list, i)
 			end
 		end
 		RemoveFromRules("Ambience Disaster ColdwaveWave")

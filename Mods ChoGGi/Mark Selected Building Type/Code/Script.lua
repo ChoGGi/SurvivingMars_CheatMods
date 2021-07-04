@@ -30,15 +30,13 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
+local table = table
 local IsValid = IsValid
 local DoneObject = DoneObject
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local CreateRealTimeThread = CreateRealTimeThread
 local WaitMsg = WaitMsg
-local table_remove = table.remove
-local table_iclear = table.iclear
-local table_clear = table.clear
 
 local beams = {}
 local green = green
@@ -58,7 +56,7 @@ function OverviewModeDialog:ScaleSmallObjects(time, direction, ...)
 			if IsValid(beam) then
 				beam:SetScale(scale)
 			else
-				table_remove(beams, i)
+				table.remove(beams, i)
 			end
 		end
 		ResumePassEdits("ChoGGi.MarkSelectedBuildingType.ScaleSmallObjects")
@@ -73,7 +71,7 @@ ClearObjects = function()
 			DoneObject(beam)
 		end
 	end
-	table_iclear(beams)
+	table.iclear(beams)
 
 	-- show signs
 	local objs = UICity.labels.Building or ""
@@ -98,7 +96,7 @@ local function MarkObjects(obj)
 		or obj.building_class or obj.class
 	local objs = UICity.labels[name] or ""
 	local objs_c = #objs
-	table_clear(objs_lookup)
+	table.clear(objs_lookup)
 
 	-- skip if there's too many
 	if objs_c >= mod_MaxObjects then

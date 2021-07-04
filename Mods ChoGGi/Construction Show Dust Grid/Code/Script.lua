@@ -4,9 +4,8 @@ local classes = {}
 local classes_c = 0
 
 -- local some globals
+local table = table
 local pairs = pairs
-local table_find = table.find
-local table_remove = table.remove
 local CleanupHexRanges = CleanupHexRanges
 local HideHexRanges = HideHexRanges
 local ShowBuildingHexes = ShowBuildingHexes
@@ -34,7 +33,7 @@ local mod_HexColour
 local function CleanList(list)
 	for i = #(list or ""), 1, -1 do
 		DoneObject(list[i])
-		table_remove(list, i)
+		table.remove(list, i)
 	end
 end
 
@@ -48,13 +47,13 @@ local function ModOptions()
 
 	mod_HexColour = RGBtoColour(options:GetProperty("HexColour"))
 
-	local idx = table_find(classes, "ConstructionSite")
+	local idx = table.find(classes, "ConstructionSite")
 	if mod_ShowConSites and not idx then
 		classes_c = classes_c + 1
 		classes[classes_c] = "ConstructionSite"
 	elseif not mod_ShowConSites and idx then
 		classes_c = classes_c - 1
-		table_remove(classes, idx)
+		table.remove(classes, idx)
 	end
 end
 
@@ -172,7 +171,7 @@ local function ShowGrids()
 						end
 					end
 
-					if table_find(classes, obj.building_class) and
+					if table.find(classes, obj.building_class) and
 						(not is_rocket or is_rocket and not landing_site)
 					then
 						ShowBuildingHexesSite(obj, is_rocket)
@@ -194,7 +193,7 @@ local function ShowGrids()
 	for range, obj in pairs(g_HexRanges) do
 		if IsKindOfClasses(obj, classes) then
 			local is_site = obj:IsKindOf("ConstructionSite")
-			if not is_site or (is_site and table_find(classes, obj.building_class)) then
+			if not is_site or (is_site and table.find(classes, obj.building_class)) then
 				if IsKindOf(range, "RangeHexMultiSelectRadius") then
 					range:SetOpacity(is_site and 100 or mod_GridOpacity)
 					range.ChoGGi_visible = true
@@ -264,7 +263,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 			and IsValid(obj) and IsKindOfClasses(obj, classes)
 		then
 			local is_site = obj:IsKindOf("ConstructionSite")
-			if not is_site or (is_site and table_find(classes, obj.building_class)) then
+			if not is_site or (is_site and table.find(classes, obj.building_class)) then
 				if range_limit and cursor_pos:Dist2D(obj:GetPos()) > range_limit then
 					-- GetVisible() always returns true (for ranges?)
 					if range.ChoGGi_visible then

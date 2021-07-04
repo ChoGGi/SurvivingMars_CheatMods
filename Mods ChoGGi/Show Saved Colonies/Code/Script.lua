@@ -19,7 +19,7 @@ end
 
 local type = type
 local pairs = pairs
-local table_clear = table.clear
+local table = table
 local Sleep = Sleep
 local ScaleXY = ScaleXY
 local box = box
@@ -73,7 +73,7 @@ local function BuildMySpots()
 	template:SetVisible(true)
 
 	-- always start with a blank table
-	table_clear(new_markers)
+	table.clear(new_markers)
 
 	-- start above the default landing spots added
 	local idx = #Presets.LandingSpot.Default
@@ -87,7 +87,7 @@ local function BuildMySpots()
 --~ 		return
 --~ 	end
 
-	table_clear(spot_counts)
+	table.clear(spot_counts)
 
 	for i = 1, #SavegamesList do
 		local save = SavegamesList[i]

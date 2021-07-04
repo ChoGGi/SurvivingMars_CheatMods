@@ -46,8 +46,7 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local pairs = pairs
-local table_iclear = table.iclear
-local table_concat = table.concat
+local table = table
 local IsValid = IsValid
 local T = T
 local MulDivRound = MulDivRound
@@ -147,7 +146,7 @@ local function AddIcons()
 			end
 
 			-- add text for found res
-			table_iclear(text_table)
+			table.iclear(text_table)
 			local c = 0
 
 			-- add scan info
@@ -189,7 +188,7 @@ local function AddIcons()
 					HandleMouse = false,
 				}, parent)
 
-				text_dlg:SetText(table_concat(text_table, "\n"))
+				text_dlg:SetText(table.concat(text_table, "\n"))
 
 				text_dlg:AddDynamicPosModifier{
 					id = "sector_info",

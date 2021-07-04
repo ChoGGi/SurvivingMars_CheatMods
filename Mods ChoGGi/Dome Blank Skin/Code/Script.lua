@@ -1,8 +1,7 @@
 -- See LICENSE for terms
 
 local AsyncRand = AsyncRand
-local table_icopy = table.icopy
-local table_copy = table.copy
+local table = table
 
 local function GetSkins(func, self, ...)
 	local skins, palettes = func(self, ...)
@@ -14,14 +13,14 @@ local function GetSkins(func, self, ...)
 		local rand = AsyncRand(skin_count - 1 + 1) + 1
 		local count = skin_count + 1
 		-- we need to make sure we make a copy of the skin and not override the built-in skin tables
-		skins[count] = table_copy(skins[rand])
+		skins[count] = table.copy(skins[rand])
 		local new_skin = skins[count]
 		new_skin[2].ChoGGi_DomeBlankSkin = true
 
-		new_skin[2] = table_icopy(skins[rand][2])
+		new_skin[2] = table.icopy(skins[rand][2])
 		local skin_entities = new_skin[2]
 		for i = 1, #skin_entities do
-			skin_entities[i] = table_icopy(skin_entities[i])
+			skin_entities[i] = table.icopy(skin_entities[i])
 		end
 
 		-- change it to not use any glass

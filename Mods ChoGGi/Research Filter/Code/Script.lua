@@ -25,7 +25,7 @@ local count = 0
 local current_count = 0
 
 -- local some globals
-local table_find = table.find
+local table = table
 local KbdShortcut = KbdShortcut
 local IsTechResearched = IsTechResearched
 local CreateRealTimeThread = CreateRealTimeThread
@@ -141,7 +141,7 @@ local function EditDlg(dlg)
 					}
 				else
 					-- could just use tech_list[count], but just in case? (it's still quicker than translating each time I suppose)
-					local item = tech_list[table_find(tech_list, "id", c.id)]
+					local item = tech_list[table.find(tech_list, "id", c.id)]
 					if item then
 						item.tech = tech
 						item.vis = true

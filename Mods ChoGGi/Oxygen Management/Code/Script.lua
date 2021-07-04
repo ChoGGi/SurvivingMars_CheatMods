@@ -1,5 +1,74 @@
 -- See LICENSE for terms
 
+local mod_LockMOXIEs
+
+local function ToggleTechLock()
+	-- add tech lock
+	if mod_LockMOXIEs then
+		-- build menu
+		if not BuildingTechRequirements.MOXIE then
+			BuildingTechRequirements.MOXIE = {{ tech = "MagneticFiltering", hide = false, }}
+		end
+		-- add an entry to unlock it with the tech
+		local tech = TechDef.MagneticFiltering
+		if not table.find(tech, "Building", "MOXIE") then
+			tech[#tech+1] = PlaceObj('Effect_TechUnlockBuilding', {
+				Building = "MOXIE",
+			})
+		end
+	else
+	-- remove lock
+		BuildingTechRequirements.MOXIE = nil
+		local tech = TechDef.MagneticFiltering
+		local idx = table.find(tech, "Building", "MOXIE")
+		if idx then
+			table.remove(tech, idx)
+		end
+	end
+end
+
+OnMsg.CityStart = ToggleTechLock
+OnMsg.LoadGame = ToggleTechLock
+
+local oxygen_mod_options = {
+	Child = 25,
+	Youth = 25,
+	Adult = 25,
+	["Middle Aged"] = 25,
+	Senior = 25,
+}
+
+-- fired when settings are changed/init
+local function ModOptions()
+	local options = CurrentModOptions
+
+	mod_LockMOXIEs = options:GetProperty("LockMOXIEs")
+
+	oxygen_mod_options.Child = options:GetProperty("OxygenUseChild")
+	oxygen_mod_options.Youth = options:GetProperty("OxygenUseYouth")
+	oxygen_mod_options.Adult = options:GetProperty("OxygenUseAdult")
+	oxygen_mod_options["Middle Aged"] = options:GetProperty("OxygenUseMiddleAged")
+	oxygen_mod_options.Senior = options:GetProperty("OxygenUseSenior")
+
+	-- make sure we're in-game
+	if not UICity then
+		return
+	end
+
+	ToggleTechLock()
+end
+
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+
+-- fired when Mod Options>Apply button is clicked
+function OnMsg.ApplyModOptions(id)
+	-- I'm sure it wouldn't be that hard to only call this msg for the mod being applied, but...
+	if id == CurrentModId then
+		ModOptions()
+	end
+end
+
 ChoGGi.ComFuncs.AddParentToClass(ElectronicsFactory, "LifeSupportConsumer")
 ChoGGi.ComFuncs.AddParentToClass(MachinePartsFactory, "LifeSupportConsumer")
 
@@ -50,25 +119,6 @@ function OnMsg.ClassesPostprocess()
 
 end
 
---~ local function ToggleTech()
---~ 	-- build menu
---~ 	if not BuildingTechRequirements.MOXIE then
---~ 		BuildingTechRequirements.MOXIE = {{ tech = "MagneticFiltering", hide = false, }}
---~ 	end
---~ 	-- add an entry to unlock it with the tech
---~ 	local tech = TechDef.MagneticFiltering
---~ 	if not table.find(tech, "Building", "MOXIE") then
---~ 		tech[#tech+1] = PlaceObj('Effect_TechUnlockBuilding', {
---~ 			Building = "MOXIE",
---~ 		})
---~ 	end
---~ end
-
---~ OnMsg.CityStart = ToggleTech
---~ OnMsg.LoadGame = ToggleTech
-
--- you could consider additional oxygen cost per colonist, though I assume there is a reason water and O2 are currently calculated per dome instead of per inhabitant.
-
 -- add modifier to each dome for colonist oxygen use
 local orig_Dome_Init = Dome.Init
 function Dome:Init(...)
@@ -79,22 +129,22 @@ function Dome:Init(...)
 	return orig_Dome_Init(self, ...)
 end
 
-local air_usage = {
-	Child = 35,
-	Senior = 70,
-	["Middle Aged"] = 85,
-	Adult = 90,
-	Youth = 100,
-}
 local function AirCount(dome, label)
-	return #(dome.labels[label] or "") * air_usage[label]
+	return #(dome.labels[label] or "") * oxygen_mod_options[label]
 end
 
 local orig_Dome_BuildingUpdate = Dome.BuildingUpdate
 function Dome:BuildingUpdate(...)
-	local count = AirCount(self, "Child") + AirCount(self, "Senior")
-		+ AirCount(self, "Middle Aged") + AirCount(self, "Adult") + AirCount(self, "Youth")
-  self.ChoGGi_OxygenManagement_oxygen_modifier:Change(count, 0)
+	-- I have a mod to toggle opened domes (someone could make one for individual domes)
+	if self:IsOpen() then
+		-- no consumption for opened dome
+		self.ChoGGi_OxygenManagement_oxygen_modifier:Change(0, 0)
+	else
+		local count = AirCount(self, "Child") + AirCount(self, "Senior")
+			+ AirCount(self, "Middle Aged") + AirCount(self, "Adult") + AirCount(self, "Youth")
+
+		self.ChoGGi_OxygenManagement_oxygen_modifier:Change(count, 0)
+	end
 
 	return orig_Dome_BuildingUpdate(self, ...)
 end

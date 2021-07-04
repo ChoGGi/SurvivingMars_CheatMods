@@ -1,8 +1,7 @@
 -- See LICENSE for terms
 
 -- local whatever globals we call
-local table_find = table.find
-local table_remove = table.remove
+local table = table
 local ShowHexRanges = ShowHexRanges
 local HideHexRanges = HideHexRanges
 local IsKindOf = IsKindOf
@@ -88,7 +87,7 @@ local function ShowGrids()
 	for range, obj in pairs(g_HexRanges) do
 		if IsKindOfClasses(obj, classes) then
 			local is_site = obj:IsKindOf("ConstructionSite")
-			if not is_site or (is_site and table_find(classes, obj.building_class)) then
+			if not is_site or (is_site and table.find(classes, obj.building_class)) then
 				if IsKindOf(range, "RangeHexMultiSelectRadius") then
 					range:SetOpacity(is_site and 100 or mod_GridOpacity)
 					range.ChoGGi_visible = true
@@ -152,7 +151,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 	for range, obj in pairs(g_HexRanges) do
 		if range.SetVisible and IsValid(obj) and IsKindOfClasses(obj, classes) then
 			local is_site = obj:IsKindOf("ConstructionSite")
-			if not is_site or (is_site and table_find(classes, obj.building_class)) then
+			if not is_site or (is_site and table.find(classes, obj.building_class)) then
 				if range_limit and cursor_pos:Dist2D(obj:GetPos()) > range_limit then
 					-- GetVisible() always returns true (for ranges?)
 					if range.ChoGGi_visible then
@@ -182,7 +181,7 @@ end
 local function CleanList(list)
 	for i = #(list or ""), 1, -1 do
 		DoneObject(list[i])
-		table_remove(list, i)
+		table.remove(list, i)
 	end
 end
 

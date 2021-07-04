@@ -18,7 +18,7 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local type = type
-local table_unpack = table.unpack
+local table = table
 
 local orig_LoadCustomOnScreenNotification = LoadCustomOnScreenNotification
 function LoadCustomOnScreenNotification(notification, ...)
@@ -27,7 +27,7 @@ function LoadCustomOnScreenNotification(notification, ...)
 	end
 
 	-- the first return is id, and some mods (cough Ambassadors cough) send a nil id, which breaks the func
-	if type(notification) == "table" and table_unpack(notification) then
+	if type(notification) == "table" and table.unpack(notification) then
 		return orig_LoadCustomOnScreenNotification(notification, ...)
 	end
 end

@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
-local table_clear = table.clear
-local table_find = table.find
+local table = table
 local T = T
 local procall = procall
 
@@ -43,8 +42,8 @@ local all_specialist = {}
 local function BuildSpecialistLists()
 	local labels = UICity.labels
 
---~ 	table_clear(needed_specialist)
---~ 	table_clear(all_specialist)
+--~ 	table.clear(needed_specialist)
+--~ 	table.clear(all_specialist)
 
 	needed_specialist.none = 0
 	all_specialist.none = #(labels.none or "")
@@ -72,7 +71,7 @@ end
 
 local filter_table = {}
 local function GetMatchingColonistsCount(self, spec)
-	table_clear(filter_table)
+	table.clear(filter_table)
 	filter_table[spec] = true
 
 	local colonists = self.approved_applicants
@@ -111,8 +110,8 @@ ToggleSpecInfo = function()
 	procall(function()
 
 		local pass = XTemplates.ResupplyPassengers[1]
-		local template = pass[table_find(pass, "Id", "idContent")]
-		template = template[table_find(template, "Id", "idTop")]
+		local template = pass[table.find(pass, "Id", "idContent")]
+		template = template[table.find(template, "Id", "idTop")]
 		ChoGGi.ComFuncs.RemoveXTemplateSections(template, "Id", "idPassInfo_ChoGGi")
 		if not mod_MoreSpecInfo then
 			return
@@ -414,7 +413,7 @@ local function AddExtraInfo(xtemplate)
 	end
 	xtemplate.ChoGGi_AddedExtraPassInfo = true
 
-	local idx = table_find(xtemplate, "name", "Open")
+	local idx = table.find(xtemplate, "name", "Open")
 	if not idx then
 		return
 	end

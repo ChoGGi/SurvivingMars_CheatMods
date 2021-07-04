@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
-local table_find = table.find
-local table_rand = table.rand
+local table = table
 local NameUnit = NameUnit
 
 local mod_RandomBirthplace
@@ -26,7 +25,7 @@ end
 -- override naming func
 -- we need a local function for GetWeightedRandNation below
 local function GetNationName()
-	return table_rand(Nations).value
+	return table.rand(Nations).value
 end
 
 local orig_GenerateColonistData = GenerateColonistData
@@ -45,7 +44,7 @@ end
 local path = CurrentModPath .. "Flags/flag_"
 
 local function AddExisting(name, flag_name, Nations, c)
-	local idx = table_find(Nations, "value", name)
+	local idx = table.find(Nations, "value", name)
 	if idx then
 		Nations[idx].flag = path .. flag_name .. ".png"
 	else
@@ -64,7 +63,7 @@ function Colonist:GetUIInfo(...)
 	local ret = orig_Colonist_GetUIInfo(self, ...)
 
 	local Nations = Nations
-	local idx = table_find(Nations, "value", self.birthplace)
+	local idx = table.find(Nations, "value", self.birthplace)
 	-- ret[1].table[4] = T{4357, "Birthplace<right><UIBirthplace>", self}
 	-- when you hover over the colonist section of a selected colonist
 	ret[1].table[4] = T{0000, "<orig><newline><right><birthplace>",

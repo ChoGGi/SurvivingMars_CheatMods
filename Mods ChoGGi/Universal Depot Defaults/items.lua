@@ -29,12 +29,12 @@ if g_AvailableDlc.armstrong then
 	storable_resources[#storable_resources+1] = "Seeds"
 end
 
-local table_find = table.find
+local table = table
 
 -- get display_name and add to list
 local Resources = Resources
 for id, item in pairs(Resources) do
-	if table_find(storable_resources, id) then
+	if table.find(storable_resources, id) then
 		local image = ""
 		if id == "Seeds" then
 			image = T("<image UI/Icons/ColonyControlCenter/seeds_on.tga> ")

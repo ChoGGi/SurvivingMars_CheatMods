@@ -30,11 +30,11 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local table_find = table.find
+local table = table
 
 local orig_Drone_GoHome = Drone.GoHome
 function Drone:GoHome(...)
-	if mod_PinDrone and not table_find(g_PinnedObjs, self) then
+	if mod_PinDrone and not table.find(g_PinnedObjs, self) then
 		self:TogglePin()
 	end
 	if mod_PauseGame then
@@ -47,7 +47,7 @@ end
 
 local orig_Drone_Idle = Drone.Idle
 function Drone:Idle(...)
-	if mod_PinDroneIdle and not table_find(g_PinnedObjs, self) then
+	if mod_PinDroneIdle and not table.find(g_PinnedObjs, self) then
 		self:TogglePin()
 	end
 	if mod_PauseGameIdle then
@@ -60,7 +60,7 @@ end
 
 local orig_Drone_OnSelected = Drone.OnSelected
 function Drone:OnSelected(...)
-	if mod_UnpinSelectedDrone and table_find(g_PinnedObjs, self) then
+	if mod_UnpinSelectedDrone and table.find(g_PinnedObjs, self) then
 		self:TogglePin()
 	end
 

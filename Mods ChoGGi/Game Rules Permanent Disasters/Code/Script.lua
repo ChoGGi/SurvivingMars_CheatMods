@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 -- local some globals
+local table = table
 local IsGameRuleActive = IsGameRuleActive
 local OverrideDisasterDescriptor = OverrideDisasterDescriptor
 local GetDisasterWarningTime = GetDisasterWarningTime
@@ -9,8 +10,6 @@ local Sleep = Sleep
 local MeteorsDisaster = MeteorsDisaster
 local GenerateDustDevil = GenerateDustDevil
 local GetRandomPassableAwayFromBuilding = GetRandomPassableAwayFromBuilding
-local table_find = table.find
-local table_remove = table.remove
 local Min = Min
 local Max = Max
 
@@ -202,9 +201,9 @@ GlobalGameTimeThread("ChoGGi_Twister_Thread", function()
 end)
 
 local function RemoveSuspend(list, name)
-	local idx = table_find(list, name)
+	local idx = table.find(list, name)
 	if idx then
-		table_remove(list, idx)
+		table.remove(list, idx)
 	end
 end
 
@@ -220,7 +219,7 @@ function ConstructionController:UpdateConstructionStatuses(_, ...)
 		local statuses = self.construction_statuses
 		for i = 1, #statuses do
 			if statuses[i] == ConstructionStatus.RocketLandingDustStorm then
-				table_remove(statuses, i)
+				table.remove(statuses, i)
 				self:PickCursorObjColor()
 				break
 			end

@@ -4,7 +4,7 @@ local entity = "Ice_Cliff_06"
 
 local IsMassUIModifierPressed = IsMassUIModifierPressed
 local ApplyAllWaterObjects = ApplyAllWaterObjects
-local table_remove = table.remove
+local table = table
 
 DefineClass.InstantLake = {
 	__parents = {
@@ -134,7 +134,7 @@ function ConstructionController:UpdateConstructionStatuses(...)
 		for i = 1, #statuses do
 			local status = statuses[i]
 			if status == cs_UnevenTerrain then
-				table_remove(statuses, i)
+				table.remove(statuses, i)
 				self.cursor_obj:SetColorModifier(-256)
 				break
 			end

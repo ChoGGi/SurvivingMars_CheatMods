@@ -3,9 +3,10 @@
 local properties = {}
 local c = 0
 
+local table = table
 local T = T
-local table_concat = table.concat
 local TraitPresets = TraitPresets
+
 --~ local added_cats = {}
 local function AddColonists(list)
 	for i = 1, #list do
@@ -24,7 +25,7 @@ local function AddColonists(list)
 	--~ 					c = c + 1
 	--~ 					properties[c] = PlaceObj("ModItemOptionToggle", {
 	--~ 						"name", "cats" .. cat,
-	--~ 						"DisplayName", table_concat(T(cat) .. T("  <yellow>-Category-</color>")),
+	--~ 						"DisplayName", table.concat(T(cat) .. T("  <yellow>-Category-</color>")),
 	--~ 						"Help", T(302535920011751, "On/Off does nothing."),
 	--~ 					})
 	--~ 					added_cats[trans(cat)] = true
@@ -33,8 +34,8 @@ local function AddColonists(list)
 			c = c + 1
 			properties[c] = PlaceObj("ModItemOptionToggle", {
 				"name", "Trait_" .. id,
-				"DisplayName", table_concat(category_str .. ": " .. T(trait.display_name)),
-				"Help", table_concat(T(trait.description) .. "\n\n" .. id),
+				"DisplayName", table.concat(category_str .. ": " .. T(trait.display_name)),
+				"Help", table.concat(T(trait.description) .. "\n\n" .. id),
 				"DefaultValue", false,
 			})
 		end

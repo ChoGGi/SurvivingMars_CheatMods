@@ -39,10 +39,10 @@ local MulDivRound = MulDivRound
 
 local TerrainTextures = TerrainTextures
 
-local table_find = table.find
-local texture_metal = table_find(TerrainTextures, "name", "RockDark") + 1
-local texture_mpres = table_find(TerrainTextures, "name", "GravelDark") + 1
-local texture_water = table_find(TerrainTextures, "name", "Spider") + 1
+local table = table
+local texture_metal = table.find(TerrainTextures, "name", "RockDark") + 1
+local texture_mpres = table.find(TerrainTextures, "name", "GravelDark") + 1
+local texture_water = table.find(TerrainTextures, "name", "Spider") + 1
 
 local function UpdateDeposit(d)
 	if d:IsKindOf("EffectDeposit") then

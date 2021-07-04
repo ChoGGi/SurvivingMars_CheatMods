@@ -18,7 +18,7 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local type, pairs = type, pairs
-local table_clear = table.clear
+local table = table
 local MulDivRound = MulDivRound
 local IsValid = IsValid
 local DoneObject = DoneObject
@@ -62,7 +62,7 @@ local function RemoveStuckSectors(obj)
 end
 
 local function RemoveSectors()
-	table_clear(sectors)
+	table.clear(sectors)
 
 	local g_MapSectors = g_MapSectors
 	for sector in pairs(g_MapSectors) do

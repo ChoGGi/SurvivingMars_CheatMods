@@ -1,8 +1,8 @@
 -- See LICENSE for terms
 
+local table = table
 local sorted_pairs = sorted_pairs
 local IsKindOf = IsKindOf
-local table_concat = table.concat
 local T = T
 local pcall = pcall
 
@@ -45,7 +45,7 @@ function XRecreateRolloverWindow(win, ...)
 		-- all done
 		local safe_data
 		pcall(function()
-			safe_data = table_concat(text)
+			safe_data = table.concat(text)
 		end)
 		win.RolloverText = safe_data or win.RolloverText
 	end

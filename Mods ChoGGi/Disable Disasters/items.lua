@@ -2,7 +2,7 @@
 
 local properties = {}
 local c = 0
-local table_concat = table.concat
+local table = table
 
 local disasters = {
 	ColdWave = T(4148, "Cold Waves"),
@@ -17,7 +17,7 @@ for id, text in pairs(disasters) do
 	c = c + 1
 	properties[c] = PlaceObj("ModItemOptionToggle", {
 		"name", id,
-		"DisplayName", table_concat(T(302535920011494, "Turn off ") .. text),
+		"DisplayName", table.concat(T(302535920011494, "Turn off ") .. text),
 		"Help", T(302535920011493, "Enable this option to stop this type of disaster from occurring."),
 		"DefaultValue", false,
 	})

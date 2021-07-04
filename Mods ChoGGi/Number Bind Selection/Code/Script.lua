@@ -27,11 +27,9 @@ GlobalVar("g_ChoGGi_CtrlNumBinds", {
 	["6"] = {}, ["7"] = {},["8"] = {}, ["9"] = {}, ["0"] = {},
 })
 
-local table_find = table.find
-local table_remove = table.remove
-local table_icopy = table.icopy
-
+local table = table
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+
 local function ShowMsg(msg, objs)
 	MsgPopup(
 		msg, T(302535920011343, "Number Bind"),
@@ -53,7 +51,7 @@ local function AddObjs(action)
 			-- no point in storing Wrappers
 			and not sel:IsKindOf("MultiSelectionWrapper")
 			-- don't add if we already added it
-			and not table_find(saved, "handle", sel.handle)
+			and not table.find(saved, "handle", sel.handle)
 		then
 			saved_c = saved_c + 1
 			saved[saved_c] = sel
@@ -74,9 +72,9 @@ local function RemoveObjs(action)
 	local Selection = Selection
 	local sel_c = #Selection
 	for i = 1, sel_c do
-		local idx = table_find(saved, "handle", Selection[i].handle)
+		local idx = table.find(saved, "handle", Selection[i].handle)
 		if idx then
-			table_remove(saved, idx)
+			table.remove(saved, idx)
 		end
 	end
 
@@ -100,7 +98,7 @@ local function ActivateSelection(action)
 			-- gotta be something
 			selection_class = saved[1].class,
 			-- we have to copy otherwise it'll mess with our saved
-			objects = table_icopy(saved),
+			objects = table.icopy(saved),
 		})
 	end
 

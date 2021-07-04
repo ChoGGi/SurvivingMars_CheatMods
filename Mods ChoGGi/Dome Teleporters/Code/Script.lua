@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+local table = table
+local pairs = pairs
+local next = next
 local IsValid = IsValid
 local Sleep = Sleep
 local PlayFX = PlayFX
@@ -7,21 +10,16 @@ local CreateDomeNetworks = CreateDomeNetworks
 local ConnectDomesWithPassage = ConnectDomesWithPassage
 local IsObjInDome = IsObjInDome
 local SetState = g_CObjectFuncs.SetState
-local table_remove = table.remove
-local table_find = table.find
-local pairs = pairs
-local next = next
 local IsKindOf = IsKindOf
-local table_clear = table.clear
 
 local function RemoveTableItem(list, name, value)
-	local idx = table_find(list, name, value)
+	local idx = table.find(list, name, value)
 	if idx then
 		local obj = list[idx]
 		if not type(obj) == "function" then
 			obj:delete()
 		end
-		table_remove(list, idx)
+		table.remove(list, idx)
 	end
 end
 
@@ -45,8 +43,8 @@ function OnMsg.ClassesPostprocess()
 		"electricity_consumption", 500,
 
 		"dome_required", true,
-		"display_name", T(302535920011080, [[Dome Teleporter]]),
-		"description", T(302535920011081, [[It's a teleporter for your domes that acts like a passage.]]),
+		"display_name", T(302535920011080, "Dome Teleporter"),
+		"description", T(302535920011081, "It's a teleporter for your domes that acts like a passage."),
 		"build_category", "ChoGGi",
 		"Group", "ChoGGi",
 		"display_icon", CurrentModPath .. "UI/orbital_drop.png",
@@ -401,5 +399,5 @@ function OnMsg.SelectionRemoved()
 			table_item.line:delete()
 		end
 	end
-	table_clear(teleporter_lines)
+	table.clear(teleporter_lines)
 end

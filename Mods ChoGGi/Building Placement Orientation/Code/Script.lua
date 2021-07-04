@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+local table = table
+local IsValid = IsValid
+
 local mod_EnableMod
 
 -- fired when settings are changed/init
@@ -40,8 +43,6 @@ OnMsg.ConstructionSitePlaced = UpdateLast
 OnMsg.SelectionAdded = UpdateLast
 
 local function StartupCode()
-	local IsValid = IsValid
-	local table_unpack = table.unpack
 
 	-- set orientation to same as last object
 	local orig_ConstructionController_CreateCursorObj = ConstructionController.CreateCursorObj
@@ -56,7 +57,7 @@ local function StartupCode()
 		if self.template_obj and self.template_obj.can_rotate_during_placement and IsValid(last) then
 			ret[1]:SetAngle(last:GetAngle() or 0)
 		end
-		return table_unpack(ret)
+		return table.unpack(ret)
 
 	end
 

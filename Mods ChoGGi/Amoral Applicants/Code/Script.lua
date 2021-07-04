@@ -28,9 +28,7 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local table_find = table.find
-local table_remove = table.remove
-local table_rand = table.rand
+local table = table
 local GameTime = GameTime
 local Max = Max
 local Sleep = Sleep
@@ -42,7 +40,7 @@ function RocketBase:WaitInOrbit(arrive_time, ...)
 	-- check for passengers and abort if not
 	local pass_table
 	if self.cargo then
-		pass_table = table_find(self.cargo, "class", "Passengers")
+		pass_table = table.find(self.cargo, "class", "Passengers")
 		if not pass_table then
 			return orig_WaitInOrbit(self, arrive_time, ...)
 		end
@@ -85,7 +83,7 @@ function RocketBase:WaitInOrbit(arrive_time, ...)
 		end
 
 		-- Instead of killing them all off, we remove the food and kill off one per sol (probably a haffy would be better, or variable based on amount?)
-		table_remove(cargo, table_find(cargo, "class", "Food"))
+		table.remove(cargo, table.find(cargo, "class", "Food"))
 
 		-- feeding schedule
 		local hour = const.HourDuration
@@ -109,10 +107,10 @@ function RocketBase:WaitInOrbit(arrive_time, ...)
 
 			for _ = 1, mod_DailyColonistLoss do
 				-- who's it gonn' be?
-				local _, idx = table_rand(pass_table.applicants_data)
+				local _, idx = table.rand(pass_table.applicants_data)
 				-- just in case
 				if idx then
-					table_remove(pass_table.applicants_data, idx)
+					table.remove(pass_table.applicants_data, idx)
 					pass_table.amount = pass_table.amount - 1
 				end
 			end
@@ -127,7 +125,7 @@ function RocketBase:WaitInOrbit(arrive_time, ...)
 		for i = #cargo, 1, -1 do
 			if cargo[i].class == "Passengers" then
 				count = cargo[i].amount
-				table_remove(cargo, i)
+				table.remove(cargo, i)
 			end
 		end
 
@@ -161,7 +159,7 @@ function RocketBase:LandOnMars(...)
 		local cargo = self.cargo
 		local pass_table
 		if cargo then
-			pass_table = table_find(cargo, "class", "Passengers")
+			pass_table = table.find(cargo, "class", "Passengers")
 		end
 		-- just in case
 		if not pass_table then
