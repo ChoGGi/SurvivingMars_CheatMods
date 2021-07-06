@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 local p = Platform
 local d_before = p.developer
 p.developer = true

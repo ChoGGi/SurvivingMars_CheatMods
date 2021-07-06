@@ -1,19 +1,45 @@
 -- See LICENSE for terms
 
+-- add keybind for photo mode
+local Actions = ChoGGi.Temp.Actions
+Actions[#Actions+1] = {ActionName = T(302535920011968, "Photo Mode Toggle"),
+	ActionId = "ChoGGi.RebindHardcodedKeys.PhotoMode",
+	ActionShortcut = "Shift-F12",
+	replace_matching_id = true,
+	OnAction = function()
+		if g_PhotoMode then
+			PhotoModeEnd()
+			Dialogs.PhotoMode:Close()
+			if GetTimeFactor() == 0 then
+				local dlg = (GetMarsPauseDlg())
+				if dlg then
+					dlg:SetParent(terminal.desktop)
+				end
+			end
+
+		else
+			CloseIngameMainMenu()
+			StartPhotoMode()
+		end
+	end,
+	ActionBindable = true,
+}
 -- add keybind for toggle
 local Actions = ChoGGi.Temp.Actions
-Actions[#Actions+1] = {ActionName = T(0000, "Salvage Cursor"),
+Actions[#Actions+1] = {ActionName = T(302535920011969, "Salvage Cursor"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.SalvageCursor",
 	ActionShortcut = "Ctrl-Delete",
 	replace_matching_id = true,
 	OnAction = function()
 		local igi = GetInGameInterface()
-		if igi.mode == "selection" then
-			g_LastBuildItem = "Salvage"
-			igi:SetMode("demolish")
-			PlayFX("DemolishButton", "start")
-		else
-			igi:SetMode("selection")
+		if igi then
+			if igi.mode == "selection" then
+				g_LastBuildItem = "Salvage"
+				igi:SetMode("demolish")
+				PlayFX("DemolishButton", "start")
+			else
+				igi:SetMode("selection")
+			end
 		end
 	end,
 	ActionBindable = true,

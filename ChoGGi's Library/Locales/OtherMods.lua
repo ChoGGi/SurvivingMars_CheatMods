@@ -1009,10 +1009,13 @@ This will override all Meteors!"
 302535920011695, "Turn off to hide vegetation."
 302535920011696, "Toggle Bushes"
 302535920011697, "Also toggle bushes along with trees."
-[[Rebind Hardcoded Keys]]
+[[More Keybinds]]
 302535920011698, "Cycle Visual Variant Backward"
 302535920011699, "Cycle Visual Variant Forward"
 302535920011700, "Construction Cancel"
+302535920011968, "Photo Mode Toggle"
+302535920011969, "Salvage Cursor"
+
 [[Get More Tourists]]
 302535920011701, "Applicant Amount"
 302535920011702, "How many more tourist applicants to add per each successful tourist."
@@ -1256,10 +1259,14 @@ Leave blank to skip search box."
 302535920011943, "Turn on to have these icons toggled, turn off to always be visible."
 302535920011944, "<color 255 255 0>Show Icons</color>"
 302535920011945, "Turn this on to show all icons, turn off to hide certain icons."
-[[Build Philosopher Stones]]
+[[Build Mystery Rewards]]
 302535920011946, "Starts takeoff animation, planting more stones and doing this again will spam the log. Doesn't seem to hurt anything though."
 302535920011947, "Spawn a wisp."
 302535920011948, "Remove all wisps."
+302535920011970, "Escavate"
+302535920011971, "Detach Sphere from excavation site."
+302535920011972, "Delete Excavation Site"
+302535920011973, "You'll need to flatten the ground afterwards."
 [[Drone Hub Range]]
 302535920011949, "Update Existing Hubs"
 302535920011950, "Existing drone hub ranges will be updated to the new default range."
@@ -1306,12 +1313,6 @@ Time between dust and time it lasts (random each time, these are min/max):"
 
 
 [[UNUSED]]
-302535920011968,
-302535920011969,
-302535920011970,
-302535920011971,
-302535920011972,
-302535920011973,
 302535920011974,
 302535920011975,
 302535920011976,

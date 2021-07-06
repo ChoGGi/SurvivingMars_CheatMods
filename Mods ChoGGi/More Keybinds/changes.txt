@@ -1,0 +1,6 @@
+v0.3
+Renamed mod from Rebind Hardcoded Keys.
+Added toggle for photo mode.
+
+v0.2
+Added Salvage bind.

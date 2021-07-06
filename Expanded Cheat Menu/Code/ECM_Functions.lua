@@ -13,8 +13,6 @@ local IsPoint = IsPoint
 local IsBox = IsBox
 local DoneObject = DoneObject
 
-local debug_getinfo, debug_getlocal, debug_getupvalue, debug_gethook
-
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local Translate = ChoGGi.ComFuncs.Translate
@@ -28,6 +26,7 @@ local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
+local debug_getinfo, debug_getlocal, debug_getupvalue, debug_gethook
 local debug = blacklist and false or debug
 if debug then
 	debug_getinfo = debug.getinfo

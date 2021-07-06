@@ -20,6 +20,7 @@ This fixes them (mod option to disable when fixed by devs).
 
 
 https://www.reddit.com/r/SurvivingMars/comments/obb7hx/planetary_expedition_bug_floor_is_lava_and/
+https://www.reddit.com/r/SurvivingMars/comments/ocse8b/foreigner_in_a_foreign_land_bug_broken_expedition/
 https://forum.paradoxplaza.com/forum/threads/surviving-mars-missed-a-reference-to-supplyrocket.1481634/
 ]],
 })

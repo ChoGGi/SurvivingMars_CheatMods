@@ -22,11 +22,13 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local function SetTemplate(id)
+local function SetTemplate(id, skip)
 	local bt = BuildingTemplates[id]
 	bt.Group = "ChoGGi"
 	bt.build_category = "ChoGGi"
-	bt.display_icon = "UI/Icons/Buildings/placeholder.tga"
+	if not skip then
+		bt.display_icon = "UI/Icons/Buildings/placeholder.tga"
+	end
 end
 
 local function StartupCode()
@@ -37,6 +39,14 @@ local function StartupCode()
 	SetTemplate("CrystalsBig")
 	SetTemplate("CrystalsSmall")
 	SetTemplate("Sinkhole")
+	SetTemplate("MirrorSphere", true)
+	SetTemplate("PowerDecoy", true)
+
+	-- needed to capture spheres/show them in build menu
+	UICity.tech_status["Purpose of the Spheres"] = {field = "Mysteries", points = 0}
+	UICity.tech_status["Xeno-Terraforming"] = {field = "Mysteries", points = 0}
+	UICity:SetTechResearched("Purpose of the Spheres")
+	UICity:SetTechResearched("Xeno-Terraforming")
 end
 
 OnMsg.CityStart = StartupCode
@@ -72,7 +82,7 @@ function OnMsg.ClassesPostprocess()
 				return mod_EnableMod
 			end,
 
-			"RolloverTitle", T(4253,"LAUNCH"),
+			"RolloverTitle", T(4253, "LAUNCH"),
 			"RolloverText", T(302535920011946, "Starts takeoff animation, planting more stones and doing this again will spam the log. Doesn't seem to hurt anything though."),
 			"Icon", "UI/Icons/IPButtons/drill.tga",
 
@@ -89,31 +99,59 @@ function OnMsg.ClassesPostprocess()
 		})
 	)
 
-	xtemplate = XTemplates.ipSinkhole[1]
+	--
+	xtemplate = XTemplates.ipMirrorSphereBuilding[1]
 
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Spawn", true)
+	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStones_SphereEscavate", true)
 	table.insert(xtemplate, 1,
 		PlaceObj("XTemplateTemplate", {
-			"Id" , "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Spawn",
-			"ChoGGi_Template_BuildPhilosopherStonesSinkhole_Spawn", true,
-			"__context_of_kind", "Sinkhole",
+			"Id" , "ChoGGi_Template_BuildPhilosopherStones_SphereEscavate",
+			"ChoGGi_Template_BuildPhilosopherStones_SphereEscavate", true,
+			"__context_of_kind", "MirrorSphereBuilding",
 			"__template", "InfopanelButton",
 			"__condition", function()
 				return mod_EnableMod
 			end,
 
-			"RolloverTitle", T(8940, "Wisp"),
-			"RolloverText", T(302535920011947, "Spawn a wisp."),
-			"Icon", "UI/Icons/IPButtons/drill.tga",
+			"RolloverTitle", T(302535920011970, "Escavate"),
+			"RolloverText", T(302535920011971, "Detach Sphere from excavation site."),
+			"Icon", "UI/Icons/IPButtons/force_launch.tga",
 
 			"OnPress", function(self)
-				-- Yamato Hasshin!
-				self.context.max_firefly_number = 999
-				self.context:TestSpawnFireflyAndGo()
+				self.context:SetProgressPct(100)
 				ObjModified(self.context)
 			end,
 		})
 	)
+
+	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStones_DeleteSite", true)
+	table.insert(xtemplate, 2,
+		PlaceObj("XTemplateTemplate", {
+			"Id" , "ChoGGi_Template_BuildPhilosopherStones_DeleteSite",
+			"ChoGGi_Template_BuildPhilosopherStones_DeleteSite", true,
+			"__context_of_kind", "MirrorSphereBuilding",
+			"__template", "InfopanelButton",
+			"__condition", function()
+				return mod_EnableMod
+			end,
+
+			"RolloverTitle", T(302535920011972, "Delete Excavation Site"),
+			"RolloverText", T(302535920011973, "You'll need to flatten the ground afterwards."),
+			"Icon", "UI/Icons/IPButtons/stop.tga",
+
+			"OnPress", function(self)
+				local context = self.context
+				if IsValid(context.sphere) then
+					ChoGGi.ComFuncs.DeleteObject(context.sphere)
+				end
+				ChoGGi.ComFuncs.DeleteObject(context)
+				ObjModified(context)
+			end,
+		})
+	)
+
+	--
+	xtemplate = XTemplates.ipSinkhole[1]
 
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Remove", true)
 	table.insert(xtemplate, 2,

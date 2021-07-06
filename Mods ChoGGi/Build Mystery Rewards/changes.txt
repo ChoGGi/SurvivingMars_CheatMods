@@ -1,3 +1,7 @@
+v0.4
+Mirror spheres.
+Renamed mod from Build Philosopher Stones.
+
 v0.3
 Sinkholes and fireflies
 

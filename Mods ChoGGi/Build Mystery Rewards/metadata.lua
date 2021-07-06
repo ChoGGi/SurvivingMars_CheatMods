@@ -7,14 +7,14 @@ return PlaceObj("ModDef", {
 			"version_minor", 0,
 		}),
 	},
-	"title", "Build Philosopher Stones",
+	"title", "Build Mystery Rewards",
 	"id", "ChoGGi_BuildPhilosopherStones",
 	"steam_id", "2473444332",
 	"pops_any_uuid", "44ae546c-2ac0-43d4-8f2b-74f12fc906b8",
 	"lua_revision", 1001514, -- Tito
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -23,9 +23,9 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagBuildings", true,
 	"description", [[
-Lets you build Philosopher Stones to trade electricity for rare metals.
-
-You can also build sinkholes and spawn fireflies.
+Build philosopher stones to trade electricity for rare metals.
+Build sinkholes and spawn fireflies.
+Build mirror sphere excavation sites and spawn spheres (build capture buildings first).
 
 
 Requested by chivalry20.

@@ -2,8 +2,7 @@
 
 -- stores default values and some tables
 
-local next, pairs, type, table = next, pairs, type, table
-local os_time = os.time
+local next, pairs, type, table, os = next, pairs, type, table, os
 
 local LuaCodeToTuple = LuaCodeToTuple
 local TableToLuaCode = TableToLuaCode
@@ -190,7 +189,7 @@ end
 function ChoGGi.SettingFuncs.WriteSettingsAdmin(settings)
 	local ChoGGi = ChoGGi
 	settings = settings or ChoGGi.UserSettings
-	settings._SAVED = os_time()
+	settings._SAVED = os.time()
 
 	local bak = ChoGGi.settings_file .. ".bak"
 	--locks the file while we write (i mean it says thread, ah well can't hurt)?
@@ -260,7 +259,7 @@ end
 
 function ChoGGi.SettingFuncs.WriteSettingsLocal(settings)
 	settings = settings or ChoGGi.UserSettings
-	settings._SAVED = os_time()
+	settings._SAVED = os.time()
 
 	-- we want it stored as a table in LocalStorage, not a string (sometimes i send it as a string so)
 	if type(settings) == "string" then
