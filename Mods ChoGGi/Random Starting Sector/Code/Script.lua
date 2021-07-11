@@ -25,7 +25,7 @@ local table = table
 local AsyncRand = AsyncRand
 local CreateRand = CreateRand
 
--- only needed for mod_MinimumDeposits == 0; we ignore this value if > 0, but this is (probably slightly) faster then orig func
+-- only needed for mod_MinimumDeposits == 0; we ignore this if mod option > 0, but this is (probably slightly) faster then orig func so no need to bother checking
 local orig_City_CreateMapRand = City.CreateMapRand
 function City:CreateMapRand(which, ...)
 	-- we don't want to mess with CreateResearchRand
@@ -52,7 +52,6 @@ function InitialReveal(eligible, ...)
 	end
 
 	-- probably too high of a min
-
 	table.sort(eligible, function(a, b)
 		return #a.markers.surface > #b.markers.surface
 	end)

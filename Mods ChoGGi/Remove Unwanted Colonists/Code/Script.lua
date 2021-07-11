@@ -9,6 +9,34 @@ local guim = guim
 local Random = ChoGGi.ComFuncs.Random
 local RetName = ChoGGi.ComFuncs.RetName
 
+local LaunchHumanMeteor = ChoGGi.ComFuncs.LaunchHumanMeteor or function(entity, min, max)
+	--	1 to 4 sols
+	Sleep(Random(
+		min or const.DayDuration,
+		max or const.DayDuration * 4
+	))
+--~ 	Sleep(5000)
+	local data = DataInstances.MapSettings_Meteor.Meteor_VeryLow
+	local descr = SpawnMeteor(data, nil, nil, GetRandomPassable())
+	-- I got a missle once, not sure why...
+	if descr.meteor:IsKindOf("BombardMissile") then
+		g_IncomingMissiles[descr.meteor] = nil
+		if IsValid(descr.meteor) then
+			DoneObject(descr.meteor)
+		end
+	else
+		descr.meteor:Fall(descr.start)
+		descr.meteor:ChangeEntity(entity)
+		-- frozen meat popsicle (dark blue)
+		descr.meteor:SetColorModifier(-16772609)
+		-- It looks reasonable
+		descr.meteor:SetState("sitSoftChairIdle")
+		-- I don't maybe they swelled up from the heat and moisture permeating in space (makes it easier to see the popsicle)
+		descr.meteor:SetScale(500)
+	end
+--~ 	ex(descr.meteor)
+end
+
 -- build list of traits/mod options
 local mod_options = {}
 local traits_list = {}
@@ -361,8 +389,6 @@ DefineClass.MurderPod = {
 	min_pos_radius = 250 * guim,
 	max_pos_radius = 750 * guim,
 	pre_leave_offset = 1000,
-	min_meteor_time = const.DayDuration,
-	max_meteor_time = const.DayDuration * 4,
 
 	fx_actor_base_class = "FXRocket",
 	fx_actor_class = "SupplyPod",
@@ -465,34 +491,6 @@ function MurderPod:Leave(leave_height)
 	DoneObject(self)
 end
 
-function MurderPod:LaunchMeteor(entity)
-	--	1 to 4 sols
-	Sleep(Random(
-		self.min_meteor_time or const.DayDuration,
-		self.max_meteor_time or const.DayDuration * 4
-	))
---~ 	Sleep(5000)
-	local data = DataInstances.MapSettings_Meteor.Meteor_VeryLow
-	local descr = SpawnMeteor(data, nil, nil, GetRandomPassable())
-	-- I got a missle once, not sure why...
-	if descr.meteor:IsKindOf("BombardMissile") then
-		g_IncomingMissiles[descr.meteor] = nil
-		if IsValid(descr.meteor) then
-			DoneObject(descr.meteor)
-		end
-	else
-		descr.meteor:Fall(descr.start)
-		descr.meteor:ChangeEntity(entity)
-		-- frozen meat popsicle (dark blue)
-		descr.meteor:SetColorModifier(-16772609)
-		-- It looks reasonable
-		descr.meteor:SetState("sitSoftChairIdle")
-		-- I don't maybe they swelled up from the heat and moisture permeating in space (makes it easier to see the popsicle)
-		descr.meteor:SetScale(500)
-	end
---~ 	ex(descr.meteor)
-end
-
 function MurderPod:GetVictimPos()
 	local victim = self.target
 	-- otherwise float around the victim walking around the dome/whatever building they're in, or if somethings borked then a rand pos
@@ -569,7 +567,7 @@ function MurderPod:Abduct()
 
 	-- human shaped meteors (bonus meteors, since murder is bad)
 	for _ = 1, Random(1, 3) do
-		CreateGameTimeThread(MurderPod.LaunchMeteor, self, entity)
+		CreateGameTimeThread(LaunchHumanMeteor, entity)
 	end
 
 	-- What did Mission Control ever do for us? Without it, where would we be? Free! Free to roam the universe!

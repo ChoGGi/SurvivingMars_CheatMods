@@ -1,0 +1,2 @@
+v0.2
+Forgot to check gamerule when rocket landing.

@@ -18,7 +18,7 @@ return PlaceObj("ModDef", {
 A colonist will repeatedly use a daily interest building to satisfy a daily interest already satisfied.
 Repeating a daily interest will gain a comfort boost "if" colonist comfort is below the service comfort threshold, but a resource will always be consumed each visit.
 
-An unemployed scientist will wander around outside till the Sol is over instead of chewing up 0.6 electronics.
+This mod will block the colonist from having a visit, instead: An unemployed scientist will wander around outside till the Sol is over instead of chewing up 0.6 electronics.
 
 
 Mod option to disable.

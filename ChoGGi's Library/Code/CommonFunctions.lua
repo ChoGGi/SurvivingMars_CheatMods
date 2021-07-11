@@ -7415,6 +7415,45 @@ function ChoGGi.ComFuncs.SetAnimState(obj)
 	}
 end
 
+function ChoGGi.ComFuncs.LaunchHumanMeteor(entity, min, max)
+	if not IsValidEntity(entity) then
+		entity = "Unit_Astronaut_All_Child_01"
+		min = 0
+		max = 1
+	end
+
+	if not CurrentThread() then
+		return CreateGameTimeThread(ChoGGi.ComFuncs.LaunchHumanMeteor, entity, min, max)
+	end
+
+	--	1 to 4 sols
+	Sleep(Random(
+		min or const.DayDuration,
+		max or const.DayDuration * 4
+	))
+
+	local data = DataInstances.MapSettings_Meteor.Meteor_VeryLow
+	local descr = SpawnMeteor(data, nil, nil, GetRandomPassable())
+
+	-- I got a missle once, not sure why...
+	if descr.meteor:IsKindOf("BombardMissile") then
+		g_IncomingMissiles[descr.meteor] = nil
+		if IsValid(descr.meteor) then
+			DoneObject(descr.meteor)
+		end
+		return
+	end
+
+	descr.meteor:Fall(descr.start)
+	descr.meteor:ChangeEntity(entity)
+	-- frozen meat popsicle (dark blue)
+	descr.meteor:SetColorModifier(-16772609)
+	-- It looks reasonable
+	descr.meteor:SetState("sitSoftChairIdle")
+	-- I don't maybe they swelled up from the heat and moisture permeating in space (makes it easier to see the popsicle)
+	descr.meteor:SetScale(500)
+end
+
 --
 -- bugged
 --~ function ChoGGi.ComFuncs.SendDroneToCC(drone, new_hub)
