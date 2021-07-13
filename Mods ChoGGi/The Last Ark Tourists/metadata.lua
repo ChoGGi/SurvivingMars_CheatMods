@@ -24,7 +24,7 @@ return PlaceObj("ModDef", {
 	"TagGameplay", true,
 	"description", [[
 Allows passenger rockets with tourists.
-Any non-tourists will be shunted into space and come down as human shaped meteors (in a few Sols).
+Any non-tourist will be shunted into space and come down as a human shaped meteor (in a few Sols).
 
 
 Requested by Tremualin and sorta requested by gottalikemilk (probly Apex Akolos too)
