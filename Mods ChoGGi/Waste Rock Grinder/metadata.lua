@@ -23,7 +23,7 @@ return PlaceObj("ModDef", {
 --~ 	"has_options", true,
 	"TagBuildings", true,
 	"description", [[
-Automated waste rock extractor that only produces waste rock (and dust).
+Automated waste rock extractor that produces waste rock (and dust).
 Produces 24 per Sol.
 
 

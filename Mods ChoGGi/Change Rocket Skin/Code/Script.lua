@@ -62,6 +62,6 @@ function OnMsg.ModsReloaded()
 		rockets[#rockets+1] = "RDM_OrionRocket"
 		palettes[#palettes+1] = RDM_OrionRocket.rocket_palette
 		RDM_OrionRocket.GetSkins = GetSkins
-		RDM_OrionRocket.GetCurrentSkin = GetCurrentSkin
+--~ 		RDM_OrionRocket.GetCurrentSkin = GetCurrentSkin
 	end
 end

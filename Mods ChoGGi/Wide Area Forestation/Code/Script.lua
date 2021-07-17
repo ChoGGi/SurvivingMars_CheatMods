@@ -4,16 +4,16 @@ local SetBuildingTemplates = ChoGGi.ComFuncs.SetBuildingTemplates
 local RemoveBuildingElecConsump = ChoGGi.ComFuncs.RemoveBuildingElecConsump
 local AddBuildingElecConsump = ChoGGi.ComFuncs.AddBuildingElecConsump
 
+local HourDuration = const.HourDuration
+local MulDivRound = MulDivRound
+
 local mod_MaxSize
 local mod_PlantInterval
 local mod_RemovePower
-local options
-
-local MulDivRound = MulDivRound
 
 -- fired when settings are changed/init
 local function ModOptions()
-	options = CurrentModOptions
+	local options = CurrentModOptions
 	mod_MaxSize = options:GetProperty("MaxSize")
 	mod_PlantInterval = options:GetProperty("PlantInterval")
 	mod_RemovePower = options:GetProperty("RemovePower")
@@ -43,7 +43,6 @@ local function ModOptions()
 	-- existing plants
 	local meta = ForestationPlant:GetPropertyMetadata("vegetation_interval")
 	local objs = UICity.labels.ForestationPlant or ""
-	local HourDuration = const.HourDuration
 	for i = 1, #objs do
 		local obj = objs[i]
 		obj.building_update_time = MulDivRound(mod_PlantInterval, HourDuration, meta.scale)

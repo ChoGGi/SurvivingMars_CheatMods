@@ -3,11 +3,13 @@
 local Sleep = Sleep
 local IsValid = IsValid
 local GetRandomPassableAround = GetRandomPassableAround
+local GetRandomPassable = GetRandomPassable
 local PlaySound = PlaySound
 local IsSoundPlaying = IsSoundPlaying
 local guim = guim
 local Random = ChoGGi.ComFuncs.Random
 local RetName = ChoGGi.ComFuncs.RetName
+local InvalidPos = ChoGGi.Consts.InvalidPos
 
 local LaunchHumanMeteor = ChoGGi.ComFuncs.LaunchHumanMeteor or function(entity, min, max)
 	--	1 to 4 sols
@@ -378,7 +380,12 @@ DefineClass.MurderPod = {
 		"PinnableObject",
 		"SkinChangeable",
 	},
-	palette = { "outside_accent_1", "outside_base", "outside_dark", "outside_base" },
+	palette = {
+		"outside_accent_1",
+		"outside_base",
+		"outside_dark",
+		"outside_base",
+	},
 	-- victim
 	target = false,
 	arrival_height = 1000 * guim,
@@ -408,13 +415,10 @@ DefineClass.MurderPod = {
 	collision_radius = 50*guim,
 }
 
---~ if IsValidEntity("ArcPod") then
---~ 	MurderPod.entity = "ArcPod"
---~ 	MurderPod.display_icon = "UI/Icons/Buildings/ark_pod.tga"
---~ end
-
 function MurderPod:GameInit()
-	self.city = UICity
+	if self.city ~= UICity then
+		self.city = UICity
+	end
 
 	self:SetColorizationMaterial(1, -9169900, -50, 0)
 	self:SetColorizationMaterial(2, -12254204, 0, 0)
@@ -458,7 +462,7 @@ function MurderPod:Leave(leave_height)
 	self:PlayFX("RocketEngine", "start")
 
 	Sleep(5000)
-	local current_pos = self:GetPos() or point20
+	local current_pos = self:GetPos() or GetRandomPassable()
 
 	local goto_pos = GetRandomPassableAround(
 		current_pos,
@@ -494,22 +498,18 @@ end
 function MurderPod:GetVictimPos()
 	local victim = self.target
 	-- otherwise float around the victim walking around the dome/whatever building they're in, or if somethings borked then a rand pos
-	local pos
-	if victim:IsValidPos() then
-		pos = victim:GetVisualPos()
+	local pos = victim:GetVisualPos()
+	if victim:IsValidPos() and pos ~= InvalidPos then
+--~ 		pos = victim:GetVisualPos()
 	elseif IsValid(victim.holder) and victim.holder:IsValidPos() then
 		pos = victim.holder:GetVisualPos()
 	else
 		pos = GetRandomPassable()
 	end
-	return pos or point20
+	return pos or GetRandomPassable()
 end
 
 function MurderPod:Abduct()
---~ 	if not self:IsValidPos() then
---~ 		self:SetCommand("StalkerTime")
---~ 	end
---~
 	local victim = self.target
 
 	-- stalk if in dome/building/passage
@@ -594,8 +594,11 @@ function MurderPod:StalkerTime()
 		-- outside_start is a count of oxygen left, false if out of spacesuit
 		local outside = victim.outside_start
 		if mod_IgnoreDomes or outside or not outside and OpenAirBuildings then
-			self:SetCommand("Abduct")
-			break
+			-- just in case, probably where the new crash is coming from?
+			if victim:GetVictimPos() ~= InvalidPos then
+				self:SetCommand("Abduct")
+				break
+			end
 		end
 
 		-- otherwise float around the victim walking around the dome/whatever building they're in, or if somethings borked then a rand pos
@@ -645,5 +648,17 @@ if g_AvailableDlc.gagarin then
 
 	function MurderPod:GetSkins()
 		return pods, palettes
+	end
+end
+
+-- crash fix for lastest update (probably, guessing it was tracking people out of bounds)
+function OnMsg.LoadGame()
+	local objs = MapGet("map", "MurderPod")
+	for i = 1, #objs do
+		local obj = objs[i]
+		-- actually 33325, but it'll do
+		if obj:GetPos():z() > 30000 then
+			DoneObject(obj)
+		end
 	end
 end

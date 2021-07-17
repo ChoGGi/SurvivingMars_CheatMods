@@ -1,5 +1,11 @@
 -- See LICENSE for terms
 
+local table = table
+local GameTime = GameTime
+local Max = Max
+local Sleep = Sleep
+local AsyncRand = AsyncRand
+
 local mod_DailySanityLoss
 local mod_DailyColonistLoss
 local mod_MaxFeedingTime
@@ -27,12 +33,6 @@ function OnMsg.ApplyModOptions(id)
 		ModOptions()
 	end
 end
-
-local table = table
-local GameTime = GameTime
-local Max = Max
-local Sleep = Sleep
-local AsyncRand = AsyncRand
 
 local orig_WaitInOrbit = RocketBase.WaitInOrbit
 function RocketBase:WaitInOrbit(arrive_time, ...)

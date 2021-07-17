@@ -1,3 +1,6 @@
+v0.7
+Fix possible issue with Silva - Orion Heavy Rocket.
+
 v0.6
 Wrong upload, this should've been 0.5...
 

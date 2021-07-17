@@ -173,7 +173,7 @@ function FireworksLauncher:LaunchFireworks(visual_only)
 		-- fire?
 		self.landing_thread = CreateGameTimeThread(function()
 			PlayFX("RocketLand", "start", self)
-			Sleep(const.HourDuration/8)
+			Sleep(const.HourDuration / 8)
 			PlayFX("RocketLand", "end", self)
 		end)
 

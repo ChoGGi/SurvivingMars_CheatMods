@@ -10,11 +10,12 @@ return PlaceObj("ModDef", {
 	"title", "Wide Area Forestation",
 	"id", "ChoGGi_WideAreaForestation",
 	"steam_id", "2072656358",
-	"pops_any_uuid", "8cb80dc5-846e-4042-8f04-28f46488d8a0",
+--~ 	"pops_any_uuid", "8cb80dc5-846e-4042-8f04-28f46488d8a0", old upload
+	"pops_any_uuid", "542a9ecf-a195-48ea-8f52-6e716ea4f1be",
 	"lua_revision", 1001514, -- Tito
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -24,12 +25,15 @@ return PlaceObj("ModDef", {
 	"TagGameplay", true,
 	"TagBuildings", true,
 	"TagTerraforming", true,
-	"description", [[Set a larger grid size for the Forestation Plant (or smaller if you want to spell something).
+	"description", [[Set a larger grid size for the Forestation Plant (or smaller if you want to write something).
 Adds a button to change all plants to use grid size of selected plant.
 
+
 Mod Options:
-Max Size: Set the max size of the forestation area (can crash when set too high, save before raising).
 Plant Interval: Plant vegetation interval in hours.
 Remove Power: Remove the requirement for electricity.
+Max Size: Set the max size of the forestation area (can crash when set too high, save before raising).
+
+The game has a hard limit on objects, and selecting a plant makes a lot of objects (each hex is counted as one), so depending on how large your colony is...
 ]],
 })

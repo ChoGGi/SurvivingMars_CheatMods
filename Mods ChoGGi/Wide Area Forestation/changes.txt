@@ -1,3 +1,7 @@
+v0.4
+Plant Interval option wasn't working correctly.
+Applying mod options again is needed to update existing plants.
+
 v0.3
 Fixed issue with updating existing plants (Thanks Vas).
 

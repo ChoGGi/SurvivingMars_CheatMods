@@ -1,3 +1,6 @@
+v1.5
+I think the ignore domes option was causing a crash, should be good now.
+
 v1.4
 Fiddled with code testing if out of dome.
 Mod option to ignore domes.

@@ -22,6 +22,7 @@ do -- ModUpload
 		ChoGGi_DeepResourcesNeverRunOut = "Deep Resources Never Run Out (upload 2)",
 		ChoGGi_IncreaseRanchStorage = "Increase Ranch Storage (upload 2)",
 		ChoGGi_UnitThoughts = "Unit Thoughts (upload 3)",
+		ChoGGi_WideAreaForestation = "Wide Area Forestation (upload 2)",
 	}
 
 
