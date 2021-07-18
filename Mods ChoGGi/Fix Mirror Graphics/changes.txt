@@ -1,2 +1,6 @@
+v0.3
+Changed dome grass to prefab_green.
+Changed lake to use other SandDune.
+
 v0.2
 Changed more textures.

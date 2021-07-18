@@ -29,8 +29,8 @@ local function UpdateTextures()
 	end
 
 	if mod_DomeGrass then
-		AddMap("Grass_01", "SandDune_01")
-		AddMap("Grass_02", "SandDune_02")
+		AddMap("Grass_01", "Prefab_Green")
+		AddMap("Grass_02", "Prefab_Green")
 	end
 	if mod_DomeRubble then
 		AddMap("DomeRubble", "ChaosSet03_02")
@@ -45,8 +45,9 @@ local function UpdateTextures()
 		AddMap("TerraGrassDead_02", "RockRed_2")
 	end
 	if mod_TerraLake then
-		AddMap("TerraLake_01", "Polar_01")
+		AddMap("TerraLake_01", "SandDune_01")
 		AddMap("TerraLake_02", "RockDark")
+		AddMap("BeachSand", "SandRed_stones_2")
 	end
 	if mod_TerraLichen then
 		AddMap("TerraLichen_01", "GravelDark")
