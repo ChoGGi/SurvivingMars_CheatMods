@@ -13,9 +13,9 @@ OnMsg.ReloadLua = ChoGGi.ComFuncs.Rebuildshortcuts
 -- use this message to perform post-built actions on the final classes
 function OnMsg.ClassesBuilt()
 	-- add build cat for my items
-	local bc = BuildCategories
-	if not table.find(bc, "id", "ChoGGi") then
-		bc[#bc+1] = {
+	local BuildCategories = BuildCategories
+	if not table.find(BuildCategories, "id", "ChoGGi") then
+		BuildCategories[#BuildCategories+1] = {
 			id = "ChoGGi",
 			name = ChoGGi.Strings[302535920000001--[[ChoGGi]]],
 			image = ChoGGi.library_path .. "UI/bmc_incal_resources.png",

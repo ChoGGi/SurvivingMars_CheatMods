@@ -109,7 +109,7 @@ function OnMsg.CityStart()
 		local TerrainTextures = TerrainTextures
 
 		-- polar map texture
-		local polar_idx = table.find(TerrainTextures, "name", "Polar_01")
+		local polar_idx = GetTerrainTextureIndex("Polar_01")
 		terrain.SetTerrainType{type = polar_idx}
 
 		-- add back dome grass
@@ -126,8 +126,8 @@ function OnMsg.CityStart()
 		local guim = guim
 
 		-- re-build concrete textures (if any are visible)
-		local texture_idx1 = table.find(TerrainTextures, "name", "Regolith") + 1
-		local texture_idx2 = table.find(TerrainTextures, "name", "Regolith_02") + 1
+		local texture_idx1 = GetTerrainTextureIndex("Regolith") + 1
+		local texture_idx2 = GetTerrainTextureIndex("Regolith_02") + 1
 		local deposits = UICity.labels.TerrainDeposit or ""
 		local NoisePreset = DataInstances.NoisePreset
 

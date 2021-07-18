@@ -138,21 +138,38 @@ return {
 			Prop = "OutsourceDisabled",
 		}),
 	}),
+
+
 	PlaceObj("ModItemDecalEntity", {
-		"name", "CSAdec",
-		"comment", "Decal for Canadian Space Agency",
-		"entity_name", "CanSpaAgDec",
-		"display_name", "Canadian Space Agency",
-		"filename", "C:/Users/admin/Documents/csa.png",
+		"name", "Canadian_Space_Agency_logo_2",
+		"comment", "Decal for Canadian Space Agency 2",
+		"entity_name", "Canadian_Space_Agency_logo_2",
+		"display_name", "Canadian Space Agency 2",
 	}),
 	PlaceObj("ModItemMissionLogoPreset", {
-		display_name = T(234596496631, "Canadian Space Agency logo"),
-		entity_name = "CanSpaAgDec",
-		decal_entity = "CanSpaAgDec",
+		display_name = T(0000, "Canadian Space Agency logo 2"),
+		entity_name = "Canadian_Space_Agency_logo_2",
+		decal_entity = "Canadian_Space_Agency_logo_2",
 		id = "CSAlogo",
-		image = "UI/CanSpaAgDecUI.png",
+		image = "UI/Canadian_Space_Agency_logo_2.png",
 		group = "Default",
 	}),
+	PlaceObj("ModItemDecalEntity", {
+		"name", "Canadian_Space_Agency_logo_1",
+		"comment", "Decal for Canadian Space Agency 1",
+		"entity_name", "Canadian_Space_Agency_logo_1",
+		"display_name", "Canadian Space Agency 1",
+	}),
+	PlaceObj("ModItemMissionLogoPreset", {
+		display_name = T(234596496631, "Canadian Space Agency logo 1"),
+		entity_name = "Canadian_Space_Agency_logo_1",
+		decal_entity = "Canadian_Space_Agency_logo_1",
+		id = "CSAlogo2",
+		image = "UI/Canadian_Space_Agency_logo_1.png",
+		group = "Default",
+	}),
+
+
 	PlaceObj("ModItemCommanderProfilePreset", {
 --~ 		challenge_mod = 10,
 		display_name = T(0000, "Diplomat"),

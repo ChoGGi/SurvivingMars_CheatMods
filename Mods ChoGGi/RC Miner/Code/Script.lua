@@ -92,8 +92,8 @@ OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode
 
 -- for painting the ground
-local concrete_paint = table.find(TerrainTextures, "name", "Dig")
-local metal_paint = table.find(TerrainTextures, "name", "SandFrozen")
+local concrete_paint = GetTerrainTextureIndex("Dig")
+local metal_paint = GetTerrainTextureIndex("SandFrozen")
 
 -- needs to be declared in two places so
 local display_icon = CurrentModPath .. "UI/rover_combat.png"

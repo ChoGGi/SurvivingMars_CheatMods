@@ -6,7 +6,7 @@
 	<mesh_description id="mesh">
 		<src file=""/>
 		<mesh file="DecLogo_mesh.hgm"/>
-		<material file="CanSpaAgDec_mesh.mtl"/>
+		<material file="Canadian_Space_Agency_logo_2_mesh.mtl"/>
 		<bsphere value="0,0,118,1428"/>
 		<box min="-1000,-1000,-82" max="1000,1000,318"/>
 	</mesh_description>

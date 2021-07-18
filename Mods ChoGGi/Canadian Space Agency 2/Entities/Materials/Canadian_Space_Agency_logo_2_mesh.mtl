@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Materials>
 	<Material>
-		<BaseColorMap Name="mod_texture_CanSpaAgDec.dds" mc="0"/>
+		<BaseColorMap Name="mod_texture_Canadian_Space_Agency_logo_2.dds" mc="0"/>
 		<Property TwoSided="0"/>
 		<Property TwoSidedShading="0"/>
 		<Property SunFacingShading="0"/>
@@ -12,7 +12,6 @@
 		<Property ViewDependentOpacity="0"/>
 		<Property SelfIllum="0"/>
 		<Property Wind="0"/>
-		<Property NumInstances="1"/>
 		<Property CastShadow="0"/>
 		<Property AlphaTest="1"/>
 		<Property UOffset="0.000000"/>

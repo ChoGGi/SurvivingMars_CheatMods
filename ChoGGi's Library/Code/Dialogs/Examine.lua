@@ -3178,8 +3178,8 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 
 		if entity then
 			local ver_tris = ""
-			-- calling GetNumTris/GetNumVertices on InvisibleObject (and other stuff without mesh/material) == CTD
-			if GetStateMaterial(entity, 0, 0) ~= "" then
+			-- CRASH warning! calling GetNumTris/GetNumVertices on InvisibleObject (and other stuff without mesh/material) == CTD
+			if entity ~= "PointLight" and GetStateMaterial(entity, 0, 0) ~= "" then
 				ver_tris = "\nGetNumTris(): " .. self:ConvertValueToInfo(obj:GetNumTris())
 				.. ", GetNumVertices(): " .. self:ConvertValueToInfo(obj:GetNumVertices())
 			end

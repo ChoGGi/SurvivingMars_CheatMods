@@ -45,9 +45,32 @@ end
 
 function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.ChoGGi_WasteRockGrinder then
-		local proc = BuildingTemplates.WasteRockProcessor
-
 		PlaceObj("BuildingTemplate", {
+			"maintenance_resource_type", "Concrete",
+--~ 			"consumption_resource_type", "Concrete",
+--~ 			"consumption_max_storage", 20000,
+--~ 			"consumption_amount", 0,
+			"resource_produced1", "WasteRock",
+--~ 			"production_per_day1", 25 * const.ResourceScale,
+
+			"stockpile_class1", "WasteRockStockpile",
+
+			"Id", "ChoGGi_WasteRockGrinder",
+			"template_class", "ChoGGi_WasteRockGrinder",
+			"palette_color1", "outside_base",
+			"palette_color2", "inside_base",
+			"palette_color3", "rover_base",
+
+			"dome_forbidden", true,
+			"display_name", T(0000, "Waste Rock Grinder"),
+			"display_name_pl", T(0000, "Waste Rock Grinders"),
+			"description", T(0000, "Grinds dirt. Produces waste rock."),
+
+			"build_category", "ChoGGi",
+			"Group", "ChoGGi",
+			"encyclopedia_exclude", true,
+
+
 			"construction_cost_Metals", 12000,
 			"construction_cost_MachineParts", 2000,
 			"build_points", 5000,
@@ -92,30 +115,6 @@ function OnMsg.ClassesPostprocess()
 			"demolish_sinking", range(20, 20),
 			"demolish_tilt_angle", range(600, 600),
 			"demolish_debris", 0,
-
-			"maintenance_resource_type", "Concrete",
---~ 			"consumption_resource_type", "Concrete",
---~ 			"consumption_max_storage", 20000,
---~ 			"consumption_amount", 0,
-			"resource_produced1", "WasteRock",
---~ 			"production_per_day1", 25 * const.ResourceScale,
-
-			"stockpile_class1", "WasteRockStockpile",
-
-			"Id", "ChoGGi_WasteRockGrinder",
-			"template_class", "ChoGGi_WasteRockGrinder",
-			"palette_color1", "outside_base",
-			"palette_color2", "inside_base",
-			"palette_color3", "rover_base",
-
-			"dome_forbidden", true,
-			"display_name", T(0000, "Waste Rock Grinder"),
-			"display_name_pl", T(0000, "Waste Rock Grinders"),
-			"description", T(0000, "Grinds dirt. Produces waste rock."),
-
-			"build_category", "ChoGGi",
-			"Group", "ChoGGi",
-			"encyclopedia_exclude", true,
 		})
 	end
 end

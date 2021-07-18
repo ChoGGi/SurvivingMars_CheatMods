@@ -2,6 +2,7 @@
 
 ## v10.1 (Unreleased)
 - Added LaunchHumanMeteor.
+- Fixed crash examining PointLight objects (okay not properly fixed, since some invisible objects do have a mesh).
 
 ## v10.0 (21 June 2021)
 - Properly fixed issue with CTD while examining certain game objects (thanks LukeH).

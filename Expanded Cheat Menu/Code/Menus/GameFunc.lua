@@ -2,6 +2,8 @@
 
 local next, type, tostring = next, type, tostring
 local GetCursorWorldPos = GetCursorWorldPos
+local SuspendPassEdits = SuspendPassEdits
+local ResumePassEdits = ResumePassEdits
 
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -792,7 +794,7 @@ do -- FlattenGround
 			visual_circle:SetRadius(size)
 			visual_circle:SetColor(white)
 
-			local terrain_type_idx = table.find(TerrainTextures, "name", "Grass_03")
+			local terrain_type_idx = GetTerrainTextureIndex("Grass_03")
 			are_we_flattening = CreateRealTimeThread(function()
 				-- thread gets deleted, but just in case
 				while are_we_flattening do
@@ -814,7 +816,7 @@ do -- FlattenGround
 end
 
 --~ -- we'll get more concrete one of these days
---~ local terrain_type_idx = table.find(TerrainTextures, "name", "Regolith")
+--~ local terrain_type_idx = GetTerrainTextureIndex("Regolith")
 --~ terrain.SetTypeCircle(GetCursorWorldPos(), 5000, terrain_type_idx)
 function ChoGGi.MenuFuncs.ChangeMap()
 	local lookup_table = {
@@ -1036,7 +1038,10 @@ Open %s to see all the textures, the tooltips show the texture index."]]]:format
 				map[choice.index] = choice.value
 			end
 		end
+		ex(map)
+		SuspendPassEdits("ChoGGi.MenuFuncs.TerrainTextureRemap")
 		terrain.RemapType(map)
+		ResumePassEdits("ChoGGi.MenuFuncs.TerrainTextureRemap")
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
@@ -1110,8 +1115,8 @@ function ChoGGi.MenuFuncs.TerrainTextureChange()
 			RestoreSkins(UICity.labels.WasteRockDumpSite, choice.text, choice.value)
 
 			-- re-build concrete marker textures
-			local texture_idx1 = table.find(TerrainTextures, "name", "Regolith") + 1
-			local texture_idx2 = table.find(TerrainTextures, "name", "Regolith_02") + 1
+			local texture_idx1 = GetTerrainTextureIndex("Regolith") + 1
+			local texture_idx2 = GetTerrainTextureIndex("Regolith_02") + 1
 
 			local deposits = UICity.labels.TerrainDeposit or ""
 			for i = 1, #deposits do

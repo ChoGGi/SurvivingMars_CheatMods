@@ -558,7 +558,7 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 			LightmodelPresets.TheMartian1_Night.exterior_envmap = nil
 			SetLightmodelOverride(1, "TheMartian1_Night")
 
-			local texture = table.find(TerrainTextures, "name", "Prefab_Orange")
+			local texture = GetTerrainTextureIndex("Prefab_Orange")
 			terrain.SetTerrainType{type = texture or 1}
 
 			-- we need a delay when doing this from ingame instead of main menu
@@ -1221,7 +1221,7 @@ end
 
 --little bit of painting
 --~ local terrain_type = "Grass_01"
---~ local terrain_type_idx = table.find(TerrainTextures, "name", terrain_type)
+--~ local terrain_type_idx = GetTerrainTextureIndex(terrain_type)
 --~ CreateRealTimeThread(function()
 --~	 while true do
 --~		 terrain.SetTypeCircle(GetCursorWorldPos(), 2500, terrain_type_idx)

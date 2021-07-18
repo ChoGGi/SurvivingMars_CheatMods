@@ -80,7 +80,7 @@ DefineClass.RCBulldozer = {
 	-- show the pin info
 	pin_rollover = T(51, "<ui_command>"),
 	-- change texture when dozing
-	texture_terrain = table.find(TerrainTextures, "name", "Dig"),
+	texture_terrain = GetTerrainTextureIndex("Dig"),
 	-- used to place the circle
 	away_spot = false,
 }

@@ -1,3 +1,6 @@
+v0.5
+Updated logo, and added logo with transparent letters.
+
 v0.4
 Fixed drones not showing up in resupply.
 Unlock flying drone skins (if you have space race).

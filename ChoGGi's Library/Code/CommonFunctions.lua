@@ -6405,6 +6405,7 @@ do -- ExamineEntSpots (Object>Entity Spots)
 --~ ChoGGi.ComFuncs.Dump(list, nil, nil, "ent")
 	function ChoGGi.ComFuncs.ExamineEntSpots(obj, parent_or_ret)
 		-- If fired from action menu
+
 		if IsKindOf(obj, "XAction") then
 			obj = ChoGGi.ComFuncs.SelObject()
 			parent_or_ret = nil

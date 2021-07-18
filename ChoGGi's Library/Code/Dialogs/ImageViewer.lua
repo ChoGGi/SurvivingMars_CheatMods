@@ -3,11 +3,11 @@
 -- displays images
 
 local MeasureImage = UIL.MeasureImage
+local T = T
 
 local Strings = ChoGGi.Strings
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local Random = ChoGGi.ComFuncs.Random
-local Translate = ChoGGi.ComFuncs.Translate
 
 local blacklist, g = ChoGGi.blacklist
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
@@ -64,7 +64,7 @@ function ChoGGi_DlgImageViewer:Init(parent, context)
 	self:BuildImageMenuPopup()
 	self.idImages = g_Classes.ChoGGi_XComboButton:new({
 		Id = "idImages",
-		Text = Translate(3794--[[Image]]),
+		Text = T(3794, "Image"),
 		OnMouseButtonDown = self.idImages_OnMouseButtonDown,
 		Dock = "left",
 	}, self.idButtonContainer)

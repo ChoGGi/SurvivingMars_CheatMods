@@ -6,7 +6,7 @@ if not g_AvailableDlc.armstrong then
 end
 
 local function RestoreMissingTableValues(old,new)
-	for key,value in pairs(old) do
+	for key, value in pairs(old) do
 		if not new[key] then
 			new[key] = value
 		end
@@ -47,16 +47,16 @@ local function EnableTerra()
 	UICity.OutsourceResearchPoints = OutsourceResearchPoints
 	UICity.OutsourceResearchOrders = OutsourceResearchOrders
 
-	RestoreMissingTableValues(tech_status,UICity.tech_status)
-	RestoreMissingTableValues(tech_field,UICity.tech_field)
-	RestoreMissingTableValues(TechBoostPerField,UICity.TechBoostPerField)
-	RestoreMissingTableValues(TechBoostPerTech,UICity.TechBoostPerTech)
+	RestoreMissingTableValues(tech_status, UICity.tech_status)
+	RestoreMissingTableValues(tech_field, UICity.tech_field)
+	RestoreMissingTableValues(TechBoostPerField, UICity.TechBoostPerField)
+	RestoreMissingTableValues(TechBoostPerTech, UICity.TechBoostPerTech)
 
 	-- City:GameInitResearch copy pasta
 	-- we're already in a thread, but since it's a realtime one there might be some issues so gametime it is
 	local thread = CreateGameTimeThread(function()
 		local TechDef = TechDef
-		for id,status in pairs(UICity.tech_status) do
+		for id, status in pairs(UICity.tech_status) do
 			if status.field == "Terraforming" then
 				TechDef[id]:EffectsInit(UICity)
 			end
@@ -152,7 +152,7 @@ local function EnableTerra()
 	end
 end
 
--- we need a slight delay before checking g_NoTerraforming
+-- we need a slight delay before checking g_NoTerraforming (stuck it in thread)
 function OnMsg.LoadGame()
 	CreateRealTimeThread(EnableTerra)
 end

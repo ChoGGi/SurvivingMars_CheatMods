@@ -21,5 +21,8 @@ Once you hit 909 "suicides" you win the game (if a milestone counts as winning t
 Known Issues:
 The death count doesn't start till you load this mod (or a new game).
 There is an UnnaturalDeaths var, but if you have Space Race DLC then the count is doubled (bug report filed).
+
+
+Not exactly what I'd call requested by Jack_ov_most_trades.
 ]],
 })

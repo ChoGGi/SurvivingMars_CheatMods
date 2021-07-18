@@ -106,7 +106,7 @@ function Melanger:GameInit()
 
 	-- a slimy trail of sand
 	self.slime_thread = CreateGameTimeThread(function()
-		local terrain_type_idx = table.find(TerrainTextures, "name", "Sand_01")
+		local terrain_type_idx = GetTerrainTextureIndex("Sand_01")
 		local SetTypeCircle = terrain.SetTypeCircle
 		while self.slime_thread do
 			SetTypeCircle(self:GetVisualPos(), 900, terrain_type_idx)

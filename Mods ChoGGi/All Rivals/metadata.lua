@@ -13,9 +13,13 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[If you have three rivals; this will add all the other rivals.
+	"description", [[
+If you have three rivals; this will add all the other rivals.
 This adds the rival A.I. sponsors, they aren't the same as regular sponsors.
 
 Includes mod option to limit the max number of rivals.
+
+
+This mod doesn't work on saves that haven't been started with Space Race DLC, for those use my "Add Rivals" mod.
 ]],
 })

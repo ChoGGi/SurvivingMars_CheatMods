@@ -1,5 +1,10 @@
 -- See LICENSE for terms
 
+if not g_AvailableDlc.gagarin then
+	print("All Rivals needs DLC Installed: Space Race!")
+	return
+end
+
 local mod_MaxRivals
 
 -- fired when settings are changed/init
