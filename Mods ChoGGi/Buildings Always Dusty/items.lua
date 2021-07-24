@@ -11,8 +11,8 @@ return {
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "SkipCablesPipes",
-		"DisplayName", T(0000, "Skip Cables Pipes"),
-		"Help", T(0000, "Doesn't change pipes or cables (hopefully helps for the borken looking pipes/cables."),
+		"DisplayName", T(302535920011987, "Skip Cables Pipes"),
+		"Help", T(302535920011988, "Doesn't change pipes or cables (hopefully helps for the borken looking pipes/cables)."),
 		"DefaultValue", false,
 	}),
 }

@@ -1,1 +1,0 @@
-min/max death age, both default ==  use new colonist func to gen new death age

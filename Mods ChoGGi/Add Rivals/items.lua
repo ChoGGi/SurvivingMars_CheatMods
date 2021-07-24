@@ -9,7 +9,7 @@ return {
 	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "AddRivals",
-		"DisplayName", T(0000, "Add Rivals"),
+		"DisplayName", T(302535920011986, "Add Rivals"),
 		"DefaultValue", 3,
 		"MinValue", 0,
 		"MaxValue", #Presets.DumbAIDef.MissionSponsors,

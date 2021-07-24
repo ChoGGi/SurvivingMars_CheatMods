@@ -3,12 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! green: <green>%s</green>
 !Skipped Line! yellow: <yellow>%s</yellow>
 "ID", " Text"
-302535920001639,
-302535920001640,
-302535920001641,
-302535920001642,
-302535920001643,
-302535920001644,
 302535920001645,
 302535920001646,
 302535920001647,
@@ -118,6 +112,14 @@ do !Skipped Line! [[Multiple locations/mods: ]] !Skipped Line!
 302535920000033, "Post a request on Nexus or Github or send an email to: <green>%s</green>"
 302535920001092, "Pins"
 302535920000004, "Dump"
+end !Skipped Line!
+do !Skipped Line! [[items.lua]] !Skipped Line!
+302535920001639, "Hide a menu entry to reduce horizontal space."
+302535920001640, "Hide Cheats Menu"
+302535920001641, "Hide ECM Menu"
+302535920001642, "Hide Game Menu"
+302535920001643, "Hide Debug Menu"
+302535920001644, "Hide Help Menu"
 end !Skipped Line!
 do !Skipped Line! [[ModOptions.lua]] !Skipped Line!
 302535920001446, "Add Mod Options button to Game Options."

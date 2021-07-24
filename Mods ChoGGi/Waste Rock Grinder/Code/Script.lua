@@ -62,9 +62,9 @@ function OnMsg.ClassesPostprocess()
 			"palette_color3", "rover_base",
 
 			"dome_forbidden", true,
-			"display_name", T(0000, "Waste Rock Grinder"),
-			"display_name_pl", T(0000, "Waste Rock Grinders"),
-			"description", T(0000, "Grinds dirt. Produces waste rock."),
+			"display_name", T(302535920012011, "Waste Rock Grinder"),
+			"display_name_pl", T(302535920012012, "Waste Rock Grinders"),
+			"description", T(302535920012013, "Grinds dirt. Produces waste rock."),
 
 			"build_category", "ChoGGi",
 			"Group", "ChoGGi",

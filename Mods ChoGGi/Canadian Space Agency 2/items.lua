@@ -147,7 +147,7 @@ return {
 		"display_name", "Canadian Space Agency 2",
 	}),
 	PlaceObj("ModItemMissionLogoPreset", {
-		display_name = T(0000, "Canadian Space Agency logo 2"),
+		display_name = T(302535920011989, "Canadian Space Agency logo 2"),
 		entity_name = "Canadian_Space_Agency_logo_2",
 		decal_entity = "Canadian_Space_Agency_logo_2",
 		id = "CSAlogo",
@@ -172,8 +172,8 @@ return {
 
 	PlaceObj("ModItemCommanderProfilePreset", {
 --~ 		challenge_mod = 10,
-		display_name = T(0000, "Diplomat"),
-		effect = T(0000,  [[- Reduce chance of Renegades by 20% (inc. Rebel Yell)
+		display_name = T(302535920011990, "Diplomat"),
+		effect = T(302535920011991, [[- Reduce chance of Renegades by 20% (inc. Rebel Yell)
 - Additional starting standing with rival colonies (trade tech from start)
 - Bonus tech: Supportive community (colonists are less likely to gain flaws after sanity breakdown)
 - Acts as Politician for story bits]]),

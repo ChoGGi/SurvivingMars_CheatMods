@@ -41,7 +41,7 @@ function OnMsg.ClassesPostprocess()
 		base_score = 909,
 		bonus_score = 909,
 		bonus_score_expiration = 909,
-		display_name = T(0000, "Pull a Jim Jones"),
+		display_name = T(302535920011998, "Pull a Jim Jones"),
 		group = "Default",
 		id = "ChoGGi_Jonestown",
 	})

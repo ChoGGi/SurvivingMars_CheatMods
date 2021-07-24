@@ -8,7 +8,7 @@ return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "UnlockDefenseTowers",
 		"DisplayName", table.concat(T(2, "Unlock Tech") .. " " .. T(7301, "Defence Turret")),
-		"Help", T(0000, "Start with towers unlocked (needed unless playing mystery that unlocks them)."),
+		"Help", T(302535920011994, "Start with towers unlocked (needed unless playing mystery that unlocks them)."),
 		"DefaultValue", true,
 	}),
 }

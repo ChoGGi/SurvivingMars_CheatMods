@@ -1,10 +1,4 @@
 "ID", " Text"
-302535920001639,
-302535920001640,
-302535920001641,
-302535920001642,
-302535920001643,
-302535920001644,
 302535920001645,
 302535920001646,
 302535920001647,
@@ -108,6 +102,12 @@
 302535920000033, "Post a request on Nexus or Github or send an email to: <green>%s</green>"
 302535920001092, "Pins"
 302535920000004, "Dump"
+302535920001639, "Hide a menu entry to reduce horizontal space."
+302535920001640, "Hide Cheats Menu"
+302535920001641, "Hide ECM Menu"
+302535920001642, "Hide Game Menu"
+302535920001643, "Hide Debug Menu"
+302535920001644, "Hide Help Menu"
 302535920001446, "Add Mod Options button to Game Options."
 302535920000044, "Ignore Persist Errors"
 302535920001302, "This prevents persist errors from spamming the log."
@@ -1146,7 +1146,7 @@ Not permanent."
 302535920000980, "When a story bit appears; always select first option after slight delay."
 302535920000220, "Like %s, but this shows hex positioning (offset or map, change in settings)."
 302535920000680, "Follow Mouse Grid Position"
-302535920000681, "Type of positioning to show."
+302535920000681, "Type of positioning to show (relative or absolute)."
 302535920000923, "Set the radius used for <green>%s</green> examining."
 302535920000926, "Toggle"
 302535920000421, "Override Condition Prereqs"

@@ -6,7 +6,7 @@ local table = table
 return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "ColdWaveCrackling",
-		"DisplayName", T(0000, "Cold Wave Crackling"),
+		"DisplayName", T(302535920011995, "Cold Wave Crackling"),
 		"Help", T(302535920011593, "Turn <color ChoGGi_green>On</color> to disable sound."),
 		"DefaultValue", false,
 	}),

@@ -118,6 +118,8 @@ return {
 [[Buildings Always Dusty]]
 302535920011125, "Always Dusty"
 302535920011126, "Always Clean"
+302535920011987, "Skip Cables Pipes"
+302535920011988, "Doesn't change pipes or cables (hopefully helps for the borken looking pipes/cables)."
 [[Change Drone Type]]
 302535920011053, "Change Spawn Type"
 302535920011054, "Spawn wasp drones or regular drones."
@@ -288,6 +290,8 @@ Drop: select something on the ground, and carried item will be dropped nearby."
 302535920011190, "Are you sure you want to eject all rovers?"
 302535920011191, "Show list of stored rovers."
 302535920011192, "Eject <name> from garage"
+302535920012003, "Collect Idle Rovers"
+302535920012004, "Idle rovers will enter the garage automagically."
 [[RC Mechanic]]
 302535920011193, "RC Mechanic"
 302535920011194, "Give me your tired, your poor,
@@ -402,6 +406,10 @@ You'll have to change the ""page"" to visually update settings."
 302535920011265, "Amount received per rare/precious exported."
 302535920011266, "Per Rare: <amount>"
 302535920011825, "Per Rare: <amount>,   <count> * <amount> = <added>"
+302535920012005, "Round Display"
+302535920012006, "Amount will be rounded to selection."
+302535920012007, "Millions"
+302535920012008, "Billions"
 [[Solaria Telepresence]]
 302535920011267, "Click to remotely control building.
 
@@ -558,6 +566,7 @@ Breakthroughs will be random as well.
 302535920011380, "RC Commander Drones Deployed"
 302535920011381, "Mirror Sphere Crackling"
 302535920011593, "Turn <color ChoGGi_green>On</color> to disable sound."
+302535920011995, "Cold Wave Crackling"
 [[POI Spawn Rate]]
 302535920011382, "Min"
 [[Most Buildings Workers]]
@@ -1309,6 +1318,56 @@ Default will do nothing."
 302535920011977, "Change Colour Secondary"
 302535920011978, "Change Colour Tertiary"
 302535920011979, "Change Colour Quaternary"
+[[Colonist Min Ages]]
+302535920011980, "Change Death Age"
+302535920011981, "Changes each colonist age to a random number between min/max ages."
+302535920011982, "Min Death Age"
+302535920011983, "Set the min age for death.
+
+To reset death ages:
+Set this and max to 0 to revert all colonist death ages to game default random values (this will use the modified senior age)."
+302535920011984, "Max Death Age"
+302535920011985, "Set the max age for death.
+
+To reset death ages:
+Set this and min to 0 to revert all colonist death ages to game default random values (this will use the modified senior age)."
+[[Add Rivals]]
+302535920011986, "Add Rivals"
+[[Canadian Space Agency 2]]
+302535920011989, "Canadian Space Agency logo 2"
+302535920011990, "Diplomat"
+302535920011991, "- Reduce chance of Renegades by 20% (inc. Rebel Yell)
+- Additional starting standing with rival colonies (trade tech from start)
+- Bonus tech: Supportive community (colonists are less likely to gain flaws after sanity breakdown)
+- Acts as Politician for story bits"
+[[Change Rain Type]]
+302535920011992, "Rain Type"
+302535920011993, "0 is default, 1 is always toxic, and 2 is always normal."
+[[Defence Towers Attack DustDevils]]
+302535920011994, "Start with towers unlocked (needed unless playing mystery that unlocks them)."
+[[Empty Mech Depot]]
+302535920011996, "Salvage Full Depots"
+302535920011997, "If a mechanical depot has resources it in they'll be removed!"
+[[Milestone Jonestown]]
+302535920011998, "Pull a Jim Jones"
+[[Random Starting Sector]]
+302535920011999, "Minimum Surface Deposits"
+302535920012000, "Use a sector with at least this many surface deposits (concrete and scattered metals).
+
+If no sector has enough than return the one with the most.
+Set both to 0 for random (how it used to work"
+302535920012001, "Minimum Subsurface Deposits"
+302535920012002, "Use a sector with at least this many subsurface deposits (metals/rare metals deposits).
+
+If no sector has enough than return the one with the most.
+Set both to 0 for random (how it used to work)"
+[[Show Saved Colonies]]
+302535920012009,"Amount Of Saves"
+302535920012010, "Limit visible amount of saved games."
+[[Waste Rock Grinder]]
+302535920012011, "Waste Rock Grinder"
+302535920012012, "Waste Rock Grinders"
+302535920012013, "Grinds dirt. Produces waste rock."
 [[UNUSED]]
 
 
@@ -1321,24 +1380,40 @@ Default will do nothing."
 
 
 [[UNUSED]]
-302535920011980,
-302535920011981,
-302535920011982,
-302535920011983,
-302535920011984,
-302535920011985,
-302535920011986,
-302535920011987,
-302535920011988,
-302535920011989,
-302535920011990,
-302535920011991,
-302535920011992,
-302535920011993,
-302535920011994,
-302535920011995,
-302535920011996,
-302535920011997,
-302535920011998,
-302535920011999,
-302535920012000,
+302535920012014,
+302535920012015,
+302535920012016,
+302535920012017,
+302535920012018,
+302535920012019,
+302535920012020,
+302535920012021,
+302535920012022,
+302535920012023,
+302535920012024,
+302535920012025,
+302535920012026,
+302535920012027,
+302535920012028,
+302535920012029,
+302535920012030,
+302535920012031,
+302535920012032,
+302535920012033,
+302535920012034,
+302535920012035,
+302535920012036,
+302535920012037,
+302535920012038,
+302535920012039,
+302535920012040,
+302535920012041,
+302535920012042,
+302535920012043,
+302535920012044,
+302535920012045,
+302535920012046,
+302535920012047,
+302535920012048,
+302535920012049,
+302535920012050,

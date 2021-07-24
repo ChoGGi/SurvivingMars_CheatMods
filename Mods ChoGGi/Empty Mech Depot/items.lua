@@ -6,8 +6,8 @@ return {
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "SalvageFullDepots",
-		"DisplayName", T(0000, "Salvage Full Depots"),
-		"Help", T(0000, "If a mechanical depot has resources it in they'll be removed!"),
+		"DisplayName", T(302535920011996, "Salvage Full Depots"),
+		"Help", T(302535920011997, "If a mechanical depot has resources it in they'll be removed!"),
 		"DefaultValue", false,
 	}),
 }

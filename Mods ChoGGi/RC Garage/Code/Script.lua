@@ -444,8 +444,8 @@ function OnMsg.ClassesPostprocess()
 		"__context_of_kind", "RCGarage",
 		"__template", "InfopanelButton",
 		"Icon", "UI/Icons/ColonyControlCenter/rcrover_r.tga",
-		"RolloverTitle", T(0000, "Collect Idle Rovers"),
-		"RolloverText", T(0000, "Idle rovers will enter the garage automagically."),
+		"RolloverTitle", T(302535920012003, "Collect Idle Rovers"),
+		"RolloverText", T(302535920012004, "Idle rovers will enter the garage automagically."),
 		"OnPress", function(self)
 			-- toggle value
 			self.context:ToggleCollectIdleRovers()
