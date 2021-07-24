@@ -3,6 +3,7 @@
 ## v17.1 (Unreleased)
 ### Changed:
 - ConsoleSkipUndefinedGlobals defaults to false.
+- Cloning objects to mouse cursor (Shift-Q) no longer places at middle of hexes.
 
 ### Fixed:
 - Fill resource didn't work on deposits (thanks Dhamptastic).

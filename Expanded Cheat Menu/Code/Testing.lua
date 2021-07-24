@@ -269,7 +269,7 @@ function ChoGGi.testing.ExportBuildingFootprints()
 
 	-- crash prevention
 	obj:SetState("idle")
-	obj:SetPos(ChoGGi.ComFuncs.CursorNearestHex())
+	obj:SetPos(GetCursorWorldPos())
 	obj:SetGameFlags(const.gofPermanent+const.gofUnderConstruction)
 
 	local print = print

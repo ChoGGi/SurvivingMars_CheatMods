@@ -92,3 +92,22 @@ function ConstructionModeDialog:OnKbdKeyDown(virtual_key, ...)
 
 	return "continue"
 end
+
+Actions[#Actions+1] = {ActionName = T(302535920011974, "Place Multiple Buildings"),
+	ActionId = "ChoGGi.RebindHardcodedKeys.PlaceMultipleBuildings",
+	ActionShortcut = "Shift",
+	replace_matching_id = true,
+	ActionBindable = true,
+}
+
+local IsKeyPressed = terminal.IsKeyPressed
+
+local orig_IsPlacingMultipleConstructions = IsPlacingMultipleConstructions
+function IsPlacingMultipleConstructions(...)
+	local shift1, shift2, shift3 = RetShortcuts("ChoGGi.RebindHardcodedKeys.PlaceMultipleBuildings")
+	if IsKeyPressed(shift1) or IsKeyPressed(shift2) or IsKeyPressed(shift3) then
+    return true
+	end
+
+	return orig_IsPlacingMultipleConstructions(...)
+end

@@ -20,6 +20,8 @@ local GetCursorWorldPos = GetCursorWorldPos
 local IsValid = IsValid
 local IsKindOf = IsKindOf
 local IsPoint = IsPoint
+local IsBox = IsBox
+local IsT = IsT
 local MapFilter = MapFilter
 local MapGet = MapGet
 local PropObjGetProperty = PropObjGetProperty
@@ -2649,9 +2651,6 @@ local function MapGet_ChoGGi(label, area, ...)
 	return objs
 end
 ChoGGi.ComFuncs.MapGet = MapGet_ChoGGi
--- remove 16.0
-ChoGGi.ComFuncs.RetAllOfClass = MapGet_ChoGGi
--- remove 16.0
 
 do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRandom/ObjectColourDefault/ChangeObjectColour
 	local color_ass = {}
@@ -3268,11 +3267,6 @@ do -- EmptyMechDepot
 
 	end
 end -- do
-
--- returns the near hex grid for object placement
-function ChoGGi.ComFuncs.CursorNearestHex(pt)
-	return HexGetNearestCenter(pt or GetCursorWorldPos())
-end
 
 function ChoGGi.ComFuncs.DeleteAllAttaches(obj)
 	if obj.DestroyAttaches then
@@ -7453,6 +7447,107 @@ function ChoGGi.ComFuncs.LaunchHumanMeteor(entity, min, max)
 	descr.meteor:SetState("sitSoftChairIdle")
 	-- I don't maybe they swelled up from the heat and moisture permeating in space (makes it easier to see the popsicle)
 	descr.meteor:SetScale(500)
+end
+
+do -- ValueToStr
+	local missing_text = ChoGGi.Temp.missing_text
+
+	function ChoGGi.ComFuncs.ValueToStr(obj, obj_type)
+		obj_type = obj_type or type(obj)
+
+		if obj_type == "string" then
+			-- strings with (object) don't work well with Translate
+			if obj:find("%(") then
+				return obj, obj_type
+			-- If there's any <image, <color, etc tags
+			elseif obj:find("[<>]") then
+				return Translate(obj), obj_type
+			else
+				return obj, obj_type
+			end
+		end
+		--
+		if obj_type == "number" then
+			-- faster than tostring()
+			return obj .. "", obj_type
+		end
+		--
+		if obj_type == "boolean" then
+			return tostring(obj), obj_type
+		end
+		--
+		if obj_type == "table" then
+			return RetName(obj), obj_type
+		end
+		--
+		if obj_type == "userdata" then
+			if IsPoint(obj) then
+				return "point" .. tostring(obj), obj_type
+			elseif IsBox(obj) then
+				return "box" .. tostring(obj), obj_type
+			end
+			-- show translated text if possible, otherwise check for metatable name
+			if IsT(obj) then
+				local trans_str = Translate(obj)
+				if trans_str == missing_text then
+					local meta = getmetatable(obj).__name
+					return tostring(obj) .. (meta and " " .. meta or ""), obj_type
+				end
+				return trans_str, obj_type
+			end
+			--
+			local meta = getmetatable(obj).__name
+			return tostring(obj) .. (meta and " " .. meta or ""), obj_type
+		end
+		--
+		if obj_type == "function" then
+			return RetName(obj), obj_type
+		end
+		--
+		if obj_type == "thread" then
+			return tostring(obj), obj_type
+		end
+		--
+		if obj_type == "nil" then
+			return "nil", obj_type
+		end
+
+		-- just in case
+		return tostring(obj), obj_type
+	end
+end -- do
+
+function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
+	if not UICity then
+		return
+	end
+
+	-- If fired from action menu
+	if IsKindOf(ret, "XAction") then
+		ret = nil
+	end
+
+	local MulDivRound = MulDivRound
+	local TerrainTextures = TerrainTextures
+
+	local tm = terrain.GetTypeGrid()
+	local _, levels_info = tm:levels(true, 1)
+	local size = tm:size()
+	local textures = {}
+	for level, count in pairs(levels_info) do
+		local texture = TerrainTextures[level]
+		if texture then
+			local perc = MulDivRound(100, count, size * size)
+			if perc > 0 then
+				textures[texture.name] = perc
+			end
+		end
+	end
+
+	if ret then
+		return textures
+	end
+	ChoGGi.ComFuncs.OpenInExamineDlg(textures, nil, Strings[302535920001181--[[Used Terrain Textures]]])
 end
 
 --

@@ -1,3 +1,6 @@
+v0.4
+Added keybind for Shift for placing multiple buildings.
+
 v0.3
 Renamed mod from Rebind Hardcoded Keys.
 Added toggle for photo mode.

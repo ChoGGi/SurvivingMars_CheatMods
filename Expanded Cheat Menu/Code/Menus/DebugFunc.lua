@@ -974,11 +974,11 @@ function ChoGGi.MenuFuncs.ObjectCloner(flat)
 	end
 
 	-- make sure it's hex worthy
-	local hex = ChoGGi.ComFuncs.CursorNearestHex()
+	local pos = GetCursorWorldPos()
 	if flat == true or flat.flatten_to_ground == true then
-		clone:SetPos(hex:SetTerrainZ())
+		clone:SetPos(pos:SetTerrainZ())
 	else
-		clone:SetPos(hex)
+		clone:SetPos(pos)
 	end
 
 end
@@ -1022,10 +1022,9 @@ function ChoGGi.MenuFuncs.BuildableHexGridSettings(action)
 		name = Strings[302535920001419--[[Follow Mouse Grid Translate]]]
 	elseif setting == "DebugGridPosition" then
 		item_list = {
-			{text = T(1000073, "Offset"), value = 0},
-			{text = Strings[302535920001355--[[Map]]], value = 1},
+			{text = Strings[302535920001638--[[Relative]]], value = 0},
+			{text = Strings[302535920001637--[[Absolute]]], value = 1},
 		}
-
 		name = Strings[302535920000680--[[Follow Mouse Grid Position]]]
 	end
 

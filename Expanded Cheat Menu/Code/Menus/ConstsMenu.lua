@@ -14,7 +14,9 @@ Actions[c] = {ActionName = Strings[302535920000158--[[Consts]]],
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
 	ActionSortKey = "1Consts",
-	RolloverText = Strings[302535920000526--[[Any cheats changed here will override ones from a non-Consts menu.]]],
+	RolloverText = Strings[302535920000526--[[Any cheats changed here will override ones from a non-Consts menu.
+
+ <color ChoGGi_red>Warning</color>: Changing these settings may cause crashing!]]],
 }
 
 -- group name to icon
@@ -54,6 +56,9 @@ for i = 1, #ConstDef do
 		ActionId = "." .. group_name,
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
+		RolloverText = Strings[302535920000526--[[Any cheats changed here will override ones from a non-Consts menu.
+
+<color ChoGGi_red>Warning</color>: Changing these settings may cause crashing!]]],
 	}
 
 	for j = 1, #def do

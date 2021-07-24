@@ -170,7 +170,7 @@ Actions[c] = {ActionName = Strings[302535920000680--[[Follow Mouse Grid Position
 	RolloverText = function()
 		return SettingState(
 			"ChoGGi.UserSettings.DebugGridPosition",
-			Strings[302535920000681--[[Type of positioning to show.]]]
+			Strings[302535920000681--[[Type of positioning to show (relative or absolute).]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.BuildableHexGridSettings,

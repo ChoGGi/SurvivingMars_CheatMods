@@ -5,6 +5,7 @@ local GetTerrainTextureIndex = GetTerrainTextureIndex
 local mod_EnableMod
 local mod_DumpingSites
 local mod_DomeGrass
+local mod_DomeBeachSand
 local mod_DomeRubble
 local mod_TerraGrass
 local mod_TerraLake
@@ -32,6 +33,9 @@ local function UpdateTextures()
 		AddMap("Grass_01", "Prefab_Green")
 		AddMap("Grass_02", "Prefab_Green")
 	end
+	if mod_DomeBeachSand then
+		AddMap("BeachSand", "SandRed_stones_2")
+	end
 	if mod_DomeRubble then
 		AddMap("DomeRubble", "ChaosSet03_02")
 		AddMap("DomeDemolish", "ChaosSet03_01")
@@ -47,7 +51,6 @@ local function UpdateTextures()
 	if mod_TerraLake then
 		AddMap("TerraLake_01", "SandDune_01")
 		AddMap("TerraLake_02", "RockDark")
-		AddMap("BeachSand", "SandRed_stones_2")
 	end
 	if mod_TerraLichen then
 		AddMap("TerraLichen_01", "GravelDark")
@@ -64,10 +67,11 @@ local function UpdateTextures()
 		AddMap("TerraSoilQuality", "SandMIX_01")
 	end
 
-	SuspendPassEdits("ChoGGi_FixMirrorGraphics")
-	terrain.RemapType(mapped_textures)
-	ResumePassEdits("ChoGGi_FixMirrorGraphics")
-
+	if next(mapped_textures) then
+		SuspendPassEdits("ChoGGi_FixMirrorGraphics")
+		terrain.RemapType(mapped_textures)
+		ResumePassEdits("ChoGGi_FixMirrorGraphics")
+	end
 end
 
 
@@ -77,6 +81,7 @@ local function ModOptions()
 	mod_EnableMod = options:GetProperty("EnableMod")
 	mod_DumpingSites = options:GetProperty("DumpingSites")
 	mod_DomeGrass = options:GetProperty("DomeGrass")
+	mod_DomeBeachSand = options:GetProperty("DomeBeachSand")
 	mod_DomeRubble = options:GetProperty("DomeRubble")
 	mod_TerraGrass = options:GetProperty("TerraGrass")
 	mod_TerraLake = options:GetProperty("TerraLake")
@@ -110,8 +115,10 @@ OnMsg.CityStart = UpdateTextures
 OnMsg.LoadGame = UpdateTextures
 
 function OnMsg.TerrainTexturesChanged()
+	if mod_TerraSoil then
 --~   local soil_terrain_idx = GetTerrainTextureIndex("TerraSoilQuality")
-  local soil_terrain_idx = GetTerrainTextureIndex("SandMIX_01")
-  hr.SoilTextureIdx = soil_terrain_idx or -1
-  hr.RenderSoilGrid = soil_terrain_idx and 1 or 0
+		local soil_terrain_idx = GetTerrainTextureIndex("SandMIX_01")
+		hr.SoilTextureIdx = soil_terrain_idx or -1
+		hr.RenderSoilGrid = soil_terrain_idx and 1 or 0
+	end
 end

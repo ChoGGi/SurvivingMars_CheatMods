@@ -1,0 +1,106 @@
+-- See LICENSE for terms
+
+local choices = {
+	"Default",
+	"BeachSand",
+	"Chaos_dark",
+	"Chaos_light",
+	"ChaosSet03_01",
+	"ChaosSet03_02",
+	"Dig",
+	"DomeDemolish",
+	"DomeRubble",
+	"DustRust",
+	"Grass_01",
+	"Grass_02",
+	"Gravel_01",
+	"GravelDark",
+	"GravelRed_1",
+	"LavaCoils",
+	"Polar_01",
+	"Prefab_Green",
+	"Prefab_Orange",
+	"Prefab_Red",
+	"Prefab_Violet",
+	"Prefab_Yellow",
+	"Regolith",
+	"Regolith_02",
+	"RockDark",
+	"RockLight",
+	"RockRed_1",
+	"RockRed_2",
+	"Sand01_stones_01",
+	"Sand_01",
+	"Sand_02",
+	"SandDark_01",
+	"SandDark_02",
+	"SandDark_03",
+	"SandDune_01",
+	"SandDune_02",
+	"SandFrozen",
+	"SandMIX_01",
+	"SandRed_1",
+	"SandRed_stones_1",
+	"SandRed_stones_2",
+	"Spider",
+	"TerraGrass_01",
+	"TerraGrass_02",
+	"TerraGrass_03",
+	"TerraGrassDead_01",
+	"TerraGrassDead_02",
+	"TerraLake_01",
+	"TerraLake_02",
+	"TerraLichen_01",
+	"TerraLichen_02",
+	"TerraLichen_03",
+	"TerraLichen_04",
+	"TerraMoss_01",
+	"TerraSoil_01",
+	"TerraSoilQuality",
+	"WasteRock",
+}
+
+return {
+	PlaceObj("ModItemOptionToggle", {
+		"name", "EnableMod",
+		"DisplayName", T(302535920011303, "<color ChoGGi_yellow>Enable Mod</color>"),
+		"Help", T(302535920011793, "Disable mod without having to see missing mod msg."),
+		"DefaultValue", true,
+	}),
+	PlaceObj('ModItemOptionChoice', {
+		"name", "ChangeColour1",
+		"DisplayName", T(302535920011976, "Change Colour Primary"),
+		"Help", T(302535920011975, [[Pick a colour and apply mod options.
+
+Default will do nothing.]]),
+		'DefaultValue', "Default",
+		'ChoiceList', choices,
+	}),
+	PlaceObj('ModItemOptionChoice', {
+		"name", "ChangeColour2",
+		"DisplayName", T(302535920011977, "Change Colour Secondary"),
+		"Help", T(302535920011975, [[Pick a colour and apply mod options.
+
+Default will do nothing.]]),
+		'DefaultValue', "Default",
+		'ChoiceList', choices,
+	}),
+	PlaceObj('ModItemOptionChoice', {
+		"name", "ChangeColour3",
+		"DisplayName", T(302535920011978, "Change Colour Tertiary"),
+		"Help", T(302535920011975, [[Pick a colour and apply mod options.
+
+Default will do nothing.]]),
+		'DefaultValue', "Default",
+		'ChoiceList', choices,
+	}),
+	PlaceObj('ModItemOptionChoice', {
+		"name", "ChangeColour4",
+		"DisplayName", T(302535920011979, "Change Colour Quaternary"),
+		"Help", T(302535920011975, [[Pick a colour and apply mod options.
+
+Default will do nothing.]]),
+		'DefaultValue', "Default",
+		'ChoiceList', choices,
+	}),
+}

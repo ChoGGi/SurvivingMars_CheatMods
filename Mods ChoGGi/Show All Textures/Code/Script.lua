@@ -31,7 +31,6 @@ local function StartupCode()
 		-- wait for igi so we can add text boxes
 		WaitMsg("InGameInterfaceCreated")
 
-
 		local XText = XText
 		local igi = Dialogs.InGameInterface
 

@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2549884520",
 	"pops_any_uuid", "bc22317d-d723-4a4c-9814-919eefe38f02",
 	"lua_revision", 1001514, -- Tito
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -15,14 +15,16 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagOther", true,
 	"description", [[
-By default this mod only changes dumping sites and dome grass, see mod options to enable other textures you need changed.
+Not so much a fix as changing textures to other ones that don't show the ugly mirrored textures.
+Terraforming will still look ugly, but at least there's no mirror holes in the ground.
+If you use my Show All Textures mod; you can see a list of textures to use. Suggestions are welcome if you think something would look better.
 
-Not so much a fix as changing textures to something that doesn't show the ugly mirrored textures.
-If you want to see soil quality; you'll need to use a forestation plant to toggle the soil view.
+By default this mod only changes dumping sites, see mod options to enable other textures you need changed.
 
 
 Known Issues:
-You'll probably have to stick with these textures till you start a new game, or disable this mod and rebuild anything changed.
 There is a mod option to disable the mod, but once textures are remapped it's part of the save so no backsies.
+If you want to see soil quality; you'll need to use a forestation plant to toggle the soil view.
+You'll probably have to stick with these textures till you start a new game, or disable this mod and rebuild anything changed (as terraforming changes stuff it should go back to proper textures if disabled).
 ]],
 })

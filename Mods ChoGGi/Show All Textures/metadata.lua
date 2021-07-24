@@ -15,7 +15,9 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagOther", true,
 	"description", [[
-This will "build" a list of textured areas on the map.
-The mod will look weird on a save with trees and such.
+This will "build" a list of textured areas on the map, it'll look weird on a save with trees and such.
+
+
+I'd recommend not saving with this mod enabled (unless you like the look I suppose).
 ]],
 })

@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"image", "Preview.png",
+	"image", "Preview.jpg",
 	"has_options", true,
 	"TagTools", true,
 	"TagOther", true,

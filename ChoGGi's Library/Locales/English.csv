@@ -1,6 +1,4 @@
 "ID", " Text"
-302535920001637,
-302535920001638,
 302535920001639,
 302535920001640,
 302535920001641,
@@ -623,7 +621,9 @@ Press Enter to refresh list (update names).
 302535920000941, "Passenger Ark Pod"
 302535920000975, "Pod Price"
 302535920000976, "Change the price per pod (applies to both supply/passenger)."
-302535920000526, "Any cheats changed here will override ones from a non-Consts menu."
+302535920000526, "Any cheats changed here will override ones from a non-Consts menu.
+
+<color ChoGGi_red>Warning</color>: Changing these settings may cause crashing!"
 302535920000213, "Previously set in an ECM menu (meaning it's active and the setting here will override this value)."
 302535920000158, "Consts"
 302535920000182, "The scale this amount will be multipled by when used."
@@ -1137,6 +1137,8 @@ Only works on colonists that have yet to spawn (maybe)."
 Not permanent."
 302535920000447, "Change the age at which colonists die (applies to newly arrived and born colonists as well)."
 302535920000448, "I'm afraid it could be 9/11 times 1,000."
+302535920001637, "Absolute"
+302535920001638, "Relative"
 302535920001066, "InfoPanel Dialog"
 302535920001451, "Center the InfoPanel dialog (selection panel)."
 302535920000935, "Random mini missions that happen while playing."

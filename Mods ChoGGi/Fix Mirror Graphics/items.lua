@@ -15,7 +15,13 @@ return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "DomeGrass",
 		"DisplayName", T(0000, "Dome Grass"),
-		"DefaultValue", true,
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "DomeBeachSand",
+		"DisplayName", T(0000, "Dome Beach Sand"),
+		"Help", T(0000, "Sandy beaches in geoscape domes."),
+		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "DomeRubble",
@@ -25,26 +31,31 @@ return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "TerraGrass",
 		"DisplayName", T(0000, "Terraform Grass"),
+		"Help", T(0000, "Most green areas after terraforming."),
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "TerraLake",
 		"DisplayName", T(0000, "TerraTerraform Lake"),
+		"Help", T(0000, "Textures under lakes?"),
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "TerraLichen",
 		"DisplayName", T(0000, "TerraTerraform Lichen"),
+		"Help", T(0000, "Also includes leftovers from toxic rain."),
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "TerraMoss",
 		"DisplayName", T(0000, "TerraTerraform Moss"),
+		"Help", T(0000, "dunno?"),
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "TerraSoil",
 		"DisplayName", T(0000, "TerraTerraform Soil"),
+		"Help", T(0000, "probably farm stuff?"),
 		"DefaultValue", false,
 	}),
 }

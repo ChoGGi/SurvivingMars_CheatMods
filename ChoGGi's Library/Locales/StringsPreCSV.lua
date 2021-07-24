@@ -3,8 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! green: <green>%s</green>
 !Skipped Line! yellow: <yellow>%s</yellow>
 "ID", " Text"
-302535920001637,
-302535920001638,
 302535920001639,
 302535920001640,
 302535920001641,
@@ -679,7 +677,9 @@ do !Skipped Line! [[RocketMenu.lua RocketFunc.lua]] !Skipped Line!
 302535920000976, "Change the price per pod (applies to both supply/passenger)."
 end !Skipped Line!
 do !Skipped Line! [[ConstsMenu.lua" "ConstsFunc.lua]] !Skipped Line!
-302535920000526, "Any cheats changed here will override ones from a non-Consts menu."
+302535920000526, "Any cheats changed here will override ones from a non-Consts menu.
+
+<color ChoGGi_red>Warning</color>: Changing these settings may cause crashing!"
 302535920000213, "Previously set in an ECM menu (meaning it's active and the setting here will override this value)."
 302535920000158, "Consts"
 302535920000182, "The scale this amount will be multipled by when used."
@@ -1203,6 +1203,8 @@ Not permanent."
 302535920000448, "I'm afraid it could be 9/11 times 1,000."
 end !Skipped Line!
 do do !Skipped Line! [[DebugMenu.lua" "DebugFunc.lua]] !Skipped Line!
+302535920001637, "Absolute"
+302535920001638, "Relative"
 302535920001066, "InfoPanel Dialog"
 302535920001451, "Center the InfoPanel dialog (selection panel)."
 302535920000935, "Random mini missions that happen while playing."
@@ -1210,7 +1212,7 @@ do do !Skipped Line! [[DebugMenu.lua" "DebugFunc.lua]] !Skipped Line!
 302535920000980, "When a story bit appears; always select first option after slight delay."
 302535920000220, "Like %s, but this shows hex positioning (offset or map, change in settings)."
 302535920000680, "Follow Mouse Grid Position"
-302535920000681, "Type of positioning to show."
+302535920000681, "Type of positioning to show (relative or absolute)."
 302535920000923, "Set the radius used for <green>%s</green> examining."
 302535920000926, "Toggle"
 302535920000421, "Override Condition Prereqs"

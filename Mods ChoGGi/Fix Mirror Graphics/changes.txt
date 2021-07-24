@@ -1,3 +1,7 @@
+v0.4
+Moved beach sand into it's own option.
+Changed Dome Grass option to disabled by default. 
+
 v0.3
 Changed dome grass to prefab_green.
 Changed lake to use other SandDune.

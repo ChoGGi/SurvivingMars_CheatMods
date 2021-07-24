@@ -1015,7 +1015,7 @@ This will override all Meteors!"
 302535920011700, "Construction Cancel"
 302535920011968, "Photo Mode Toggle"
 302535920011969, "Salvage Cursor"
-
+302535920011974, "Place Multiple Buildings"
 [[Get More Tourists]]
 302535920011701, "Applicant Amount"
 302535920011702, "How many more tourist applicants to add per each successful tourist."
@@ -1301,6 +1301,14 @@ Time between dust and time it lasts (random each time, these are min/max):"
 302535920011965, "MOXIEs will be locked behind the Magnetic Filtering tech."
 302535920011966, "Oxygen Use "
 302535920011967, "How much oxygen is consumed per Sol by these colonists."
+[[Terrain Colour]]
+302535920011975, "Pick a colour and apply mod options.
+
+Default will do nothing."
+302535920011976, "Change Colour Primary"
+302535920011977, "Change Colour Secondary"
+302535920011978, "Change Colour Tertiary"
+302535920011979, "Change Colour Quaternary"
 [[UNUSED]]
 
 
@@ -1313,12 +1321,6 @@ Time between dust and time it lasts (random each time, these are min/max):"
 
 
 [[UNUSED]]
-302535920011974,
-302535920011975,
-302535920011976,
-302535920011977,
-302535920011978,
-302535920011979,
 302535920011980,
 302535920011981,
 302535920011982,
