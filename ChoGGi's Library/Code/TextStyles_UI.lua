@@ -57,6 +57,10 @@ function OnMsg.ClassesPostprocess()
 		id = "ChoGGi_red",
 	})
 	PlaceObj("TextStyle", {
+		TextColor = RGB(255, 150, 150),
+		id = "ChoGGi_red_ex",
+	})
+	PlaceObj("TextStyle", {
 		TextColor = RGB(150, 255, 150),
 		id = "ChoGGi_green",
 	})
@@ -65,8 +69,32 @@ function OnMsg.ClassesPostprocess()
 		id = "ChoGGi_yellow",
 	})
 	PlaceObj("TextStyle", {
+		TextColor = RGB(255, 255, 0),
+		id = "ChoGGi_yellow_ex",
+	})
+	PlaceObj("TextStyle", {
 		TextColor = RGB(150, 150, 255),
 		id = "ChoGGi_blue",
+	})
+	PlaceObj("TextStyle", {
+		TextColor = RGB(0, 255, 0),
+		id = "ChoGGi_blue_ex",
+	})
+	PlaceObj("TextStyle", {
+		TextColor = RGB(225, 148, 60),
+		id = "ChoGGi_orange",
+	})
+	PlaceObj("TextStyle", {
+		TextColor = RGB(150, 170, 250),
+		id = "ChoGGi_turquoise",
+	})
+	PlaceObj("TextStyle", {
+		TextColor = RGB(255, 255, 255),
+		id = "ChoGGi_white_ex",
+	})
+	PlaceObj("TextStyle", {
+		TextColor = RGB(175, 175, 175),
+		id = "ChoGGi_gray_ex",
 	})
 
 	-- Text

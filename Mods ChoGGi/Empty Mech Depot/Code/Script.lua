@@ -3,7 +3,6 @@
 local IsValid = IsValid
 local Sleep = Sleep
 
-
 local mod_SkipDelete
 local mod_SalvageFullDepots
 
@@ -69,8 +68,10 @@ function MechanizedDepot:ToggleDemolish(...)
 		while self.demolishing do
 			Sleep(1000)
 		end
-
-		self["GetStored_" .. self.resource] = orig_GetStored
+		-- eh doesn't hurt to check...
+    if IsValid(self) then
+      self["GetStored_" .. self.resource] = orig_GetStored
+    end
 	end)
 
 end

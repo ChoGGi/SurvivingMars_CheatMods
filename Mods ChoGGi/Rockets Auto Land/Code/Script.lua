@@ -26,7 +26,7 @@ local function AddTemplate(template, params)
 		"Id", params.id,
 		"__template", "InfopanelActiveSection",
 		"__context_of_kind", params.__context_of_kind,
-		"__condition", function (_, context)
+		"__condition", function()
 			return mod_EnableMod
 		end,
 		"Icon", params.DisallowIcon,

@@ -25,7 +25,6 @@ Actions[#Actions+1] = {ActionName = T(302535920011968, "Photo Mode Toggle"),
 	ActionBindable = true,
 }
 -- add keybind for toggle
-local Actions = ChoGGi.Temp.Actions
 Actions[#Actions+1] = {ActionName = T(302535920011969, "Salvage Cursor"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.SalvageCursor",
 	ActionShortcut = "Ctrl-Delete",

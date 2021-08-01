@@ -2,7 +2,6 @@
 
 local table = table
 local GetSpecialistEntity = GetSpecialistEntity
-local GameTime = GameTime
 local CreateGameTimeThread = CreateGameTimeThread
 local Random = ChoGGi.ComFuncs.Random
 --~ local LaunchHumanMeteor = ChoGGi.ComFuncs.LaunchHumanMeteor

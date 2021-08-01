@@ -20,7 +20,7 @@ local function UpdateAges()
 	end
 
 	-- new colonists
-	for id, value in pairs(mod_options) do
+	for id in pairs(mod_options) do
 		Colonist["MinAge_" .. id] = mod_options[id]
 	end
 
@@ -41,7 +41,7 @@ local function UpdateAges()
 			end
 		end
 
-		for id, value in pairs(mod_options) do
+		for id in pairs(mod_options) do
 			obj["MinAge_" .. id] = mod_options[id]
 		end
 	end

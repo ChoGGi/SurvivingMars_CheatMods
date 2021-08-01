@@ -286,7 +286,7 @@ Debug.Framerate Counter>Toggle: Disabled: Switch between FPS, ms, and off.
 This is temporary, use Options>Video>Framerate Counter to permanently save it.
 Debug.Framerate Counter>Up Left
 Debug.Framerate Counter>Up Right: Default
-Debug.Grids>Follow Mouse Grid Position: 0: Type of positioning to show.
+Debug.Grids>Follow Mouse Grid Position: Type of positioning to show (relative or absolute).
 Debug.Grids>Follow Mouse Grid Size: 25: Sets the size of the Building/Flight grid.
 Debug.Grids>Follow Mouse Grid Trans: 15: How transparent the Building/Flight grid is.
 Debug.Grids>Show Grid 45 Square: Square 45 (use Disable to hide).
@@ -532,7 +532,7 @@ ECM>Fix All Objects: Fixes all malfunctioned objects.
 ECM>Grid Info: List objects in grids (air, electricity, and water).
 ECM>Scanner Queue Larger: Queue up to 100 squares.
 Game.Camera>Bird's Eye: 20: How far up the camera can move.
-Game.Camera>Border Scrolling: 2: Set size of activation for mouse border scrolling.
+Game.Camera>Border Scrolling: 5: Set size of activation for mouse border scrolling.
 Game.Camera>Reset: If something makes the camera view wonky you can use this to fix it.
 Game.Camera>Toggle Cursor: Toggle between moving camera and selecting objects.
 Game.Camera>Toggle Follow Camera: Select (or mouse over) an object to follow.

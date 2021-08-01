@@ -1272,13 +1272,18 @@ do -- LoadGame/CityStart
 	function OnMsg.ChoGGi_Loaded()
 		local UICity = UICity
 		local ChoGGi = ChoGGi
+		local UserSettings = ChoGGi.UserSettings
 
 		-- a place to store per-game values... that i'll use one of these days (tm)
 		if not UICity.ChoGGi then
 			UICity.ChoGGi = {}
+			UICity.ChoGGi.version_init_ECM = ChoGGi.def.version
+			UICity.ChoGGi.version_init_LIB = ChoGGi.def_lib.version
 		end
+		UICity.ChoGGi.version_current_ECM = ChoGGi.def.version
+		UICity.ChoGGi.version_current_LIB = ChoGGi.def_lib.version
+		UICity.ChoGGi.current_settings = UserSettings
 
-		local UserSettings = ChoGGi.UserSettings
 		local g_Classes = g_Classes
 		local const = const
 		local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides

@@ -106,8 +106,6 @@ function OnMsg.CityStart()
 			end)
 		end
 
-		local TerrainTextures = TerrainTextures
-
 		-- polar map texture
 		local polar_idx = GetTerrainTextureIndex("Polar_01")
 		terrain.SetTerrainType{type = polar_idx}

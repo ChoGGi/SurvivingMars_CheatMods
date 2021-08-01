@@ -2,11 +2,16 @@
 
 ## v10.1 (Unreleased)
 - Added LaunchHumanMeteor.
-- Fixed crash examining PointLight objects (okay not properly fixed, since some invisible objects do have a mesh).
-- Moved some more Examine funcs from ECM I missed.
 - Fixed issue with map locations resetting challenge mod number.
-- Changed Examine>table>* menu>MonitorFunc to be more forgiving.
 - Updated log spam remover for SurfaceDepositPreciousMinerals.
+
+### Examine:
+- Moved some more Examine funcs from ECM I missed.
+- Fixed crash examining PointLight objects (okay not properly fixed, since some invisible objects do have a mesh).
+- Changed Examine>table>* menu>MonitorFunc to be more forgiving.
+- Clear button will now remove any bboxes added by other examines.
+- Made the = in examine an orangy colour to notice it in large 'text' = 'text' tables.
+- Examining tables that are both strings/numbers (g_MapSectors) are now sorted properly.
 
 ## v10.0 (21 June 2021)
 - Properly fixed issue with CTD while examining certain game objects (thanks LukeH).

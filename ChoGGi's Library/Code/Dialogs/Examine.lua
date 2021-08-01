@@ -199,7 +199,14 @@ function ChoGGi_DlgExamine:Init(parent, context)
 	self.obj = context.obj
 
 	-- ECM isn't installed
-	if not self.ChoGGi.UserSettings.ExamineColourNum then
+	if testing then
+		local us = self.ChoGGi.UserSettings
+		us.ExamineColourNum = "ChoGGi_yellow_ex"
+		us.ExamineColourBool = "ChoGGi_blue_ex"
+		us.ExamineColourBoolFalse = "ChoGGi_red_ex"
+		us.ExamineColourStr = "ChoGGi_white_ex"
+		us.ExamineColourNil = "ChoGGi_gray_ex"
+	elseif not self.ChoGGi.UserSettings.ExamineColourNum then
 		local us = self.ChoGGi.UserSettings
 		us.ExamineColourNum = "255 255 0"
 		us.ExamineColourBool = "0 255 0"
@@ -930,7 +937,7 @@ function ChoGGi_DlgExamine:HyperLink(obj, func, name)
 		self.onclick_name[c] = name
 	end
 
-	return "<color 150 170 250><h " .. c .. " 230 195 50>", c
+	return "<color ChoGGi_turquoise><h " .. c .. " 230 195 50>", c
 end
 
 function ChoGGi_DlgExamine:BatchExecCode(text)
@@ -1072,6 +1079,14 @@ function ChoGGi_DlgExamine:idButClear_OnPress()
 		self.ChoGGi.ComFuncs.ClearShowObj(true)
 		-- If this has a custom colour
 		self.ChoGGi.ComFuncs.ClearShowObj(self.obj_ref)
+		-- clear all bboxes
+		local boxes = self.ChoGGi.Temp.Examine_BBoxes
+		if boxes then
+			for i = #boxes, 1, -1 do
+				boxes[i]:Destroy()
+				table.remove(boxes, i)
+			end
+		end
 	end
 	self.marked_objects:Clear()
 
@@ -2896,14 +2911,18 @@ function ChoGGi_DlgExamine:ToggleBBox(_, bbox)
 		self.spawned_bbox = false
 	else
 		self.spawned_bbox = self.ChoGGi.ComFuncs.BBoxLines_Toggle(bbox)
+		if not self.ChoGGi.Temp.Examine_BBoxes then
+			self.ChoGGi.Temp.Examine_BBoxes = {}
+		end
+		self.ChoGGi.Temp.Examine_BBoxes[#self.ChoGGi.Temp.Examine_BBoxes+1] = self.spawned_bbox
 	end
 end
 
 function ChoGGi_DlgExamine:SortInfoList(list, list_sort_num)
 	list_sort_num = list_sort_num or self.info_list_sort_num
 	local list_sort_obj = self.info_list_sort_obj
+	-- sort backwards
 	if self.sort_dir then
-		-- sort backwards
 		table.sort(list, function(a, b)
 			-- strings
 			local c, d = list_sort_obj[a], list_sort_obj[b]
@@ -2921,22 +2940,26 @@ function ChoGGi_DlgExamine:SortInfoList(list, list_sort_num)
 			-- just in case
 			return CmpLower(b, a)
 		end)
+	-- sort normally
 	else
-		-- sort normally
 		table.sort(list, function(a, b)
+
 			-- strings
 			local c, d = list_sort_obj[a], list_sort_obj[b]
 			if c and d then
 				return CmpLower(c, d)
 			end
+
 			-- numbers
 			c, d = list_sort_num[a], list_sort_num[b]
 			if c and d then
 				return c < d
 			end
+
 			if c or d then
 				return c and true
 			end
+
 			-- just in case
 			return CmpLower(a, b)
 		end)
@@ -2971,9 +2994,9 @@ end
 function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 	-- the list we return with concat
 	local list_obj_str = self.info_list_obj_str
-	-- list of nums to sort with
-	local list_sort_obj = self.info_list_sort_obj
 	-- list of strs to sort with
+	local list_sort_obj = self.info_list_sort_obj
+	-- list of nums to sort with
 	local list_sort_num = self.info_list_sort_num
 	-- dupe list for the "All" checkbox
 	local skip_dupes = self.info_list_skip_dupes
@@ -3010,7 +3033,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				skip_dupes[sort] = true
 			end
 			c = c + 1
-			local str_tmp = name .. " = " .. self:ConvertValueToInfo(v)
+			local str_tmp = name .. " <color ChoGGi_orange>=</color> " .. self:ConvertValueToInfo(v)
 			list_obj_str[c] = str_tmp
 --~ 			-- so we can copy the actual line of text
 --~ 			self.onclick_linetext[hyper_c] = str_tmp
@@ -3018,7 +3041,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 			if type(k) == "number" then
 				list_sort_num[str_tmp] = k
 			else
-				list_sort_obj[str_tmp] = sort
+				list_sort_obj[str_tmp] = sort:gsub("<.->", "")
 			end
 		end
 		-- faster if it is, otherwise a waste of 180~ ms for 300K objects
