@@ -4,7 +4,6 @@ local table = table
 local RemoveFromRules = RemoveFromRules
 local StopSound = StopSound
 local PlayFX = PlayFX
-local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
 
 local mod_SensorSensorTowerBeeping
 local mod_RCCommanderDronesDeployed
@@ -16,6 +15,8 @@ local mod_RareMetalsExtractor
 local mod_SelectBuildingSound
 local mod_ResearchComplete
 local mod_ColdWaveCrackling
+local mod_ArtificialSunZapping
+local mod_DustGeyserBurst
 
 local DisableSounds
 
@@ -32,6 +33,8 @@ local function ModOptions()
 	mod_SelectBuildingSound = options:GetProperty("SelectBuildingSound")
 	mod_ResearchComplete = options:GetProperty("ResearchComplete")
 	mod_ColdWaveCrackling = options:GetProperty("ColdWaveCrackling")
+	mod_ArtificialSunZapping = options:GetProperty("ArtificialSunZapping")
+	mod_DustGeyserBurst = options:GetProperty("DustGeyserBurst")
 
 	if UICity then
 		DisableSounds()
@@ -48,12 +51,13 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local function BldToggleWorking(label)
+local function BldStopSounds(label)
 	local objs = UICity.labels[label] or ""
 	for i = 1, #objs do
-		ToggleWorking(objs[i])
+		objs[i]:StopSound()
 	end
 end
+
 local function BldToggleSounds(label, snd)
 	local objs = UICity.labels[label] or ""
 	for i = 1, #objs do
@@ -69,7 +73,7 @@ DisableSounds = function()
 	if mod_SensorSensorTowerBeeping then
 		table.remove(FXRules.Working.start.SensorTower.any, 3)
 		RemoveFromRules("Object SensorTower Loop")
-		BldToggleWorking("SensorTower")
+		BldStopSounds("SensorTower")
 	end
 
 	if mod_RCCommanderDronesDeployed then
@@ -102,7 +106,7 @@ DisableSounds = function()
 	if mod_NurseryChild then
 		table.remove(FXRules.Working.start.Nursery.any, 1)
 		RemoveFromRules("Building Nurcery LoopEmpty")
-		BldToggleWorking("Nursery")
+		BldStopSounds("Nursery")
 	end
 
 	if mod_SpacebarMusic then
@@ -111,19 +115,19 @@ DisableSounds = function()
 		RemoveFromRules("Building Spacebar Loop")
 		RemoveFromRules("Building SpacebarSmall Loop")
 		-- Includes reg and small
-		BldToggleWorking("Spacebar")
+		BldStopSounds("Spacebar")
 	end
 
 	if mod_BioroboticsWorkshop then
 		table.remove(FXRules.Working.start.BioroboticsWorkshop.any, 1)
 		RemoveFromRules("Building WorkshopBiorobotics Loop")
-		BldToggleWorking("BioroboticsWorkshop")
+		BldStopSounds("BioroboticsWorkshop")
 	end
 
 	if mod_RareMetalsExtractor then
 		table.remove(FXRules.Working.start.PreciousMetalsExtractor.any, 1)
 		RemoveFromRules("Object PreciousExtractor Loop")
-		BldToggleWorking("PreciousMetalsExtractor")
+		BldStopSounds("PreciousMetalsExtractor")
 	end
 
 	if mod_SelectBuildingSound then
@@ -135,7 +139,7 @@ DisableSounds = function()
 			for i = #list, 1, -1 do
 				local sound = list[i].Sound
 				if sound == "UI SelectBuilding" or sound:sub(-6) == "Select" then
-					RemoveFromRules("list[i].Sound")
+					RemoveFromRules(list[i].Sound)
 					table.remove(list, i)
 				end
 			end
@@ -155,6 +159,34 @@ DisableSounds = function()
 		RemoveFromRules("Ambience Disaster ColdwaveCracks")
 	end
 
+	if mod_ArtificialSunZapping then
+		local list = FXRules.ArtificialSunProduce.start.ArtificialSun.any
+		for i = #list, 1, -1 do
+			local sound = list[i].Sound
+			if sound == "Object ArtificialSun Produce" then
+				StopSound(sound.handle)
+				table.remove(list, i)
+			end
+		end
+		RemoveFromRules("Object ArtificialSun Produce")
+		BldStopSounds("ArtificialSun")
+	end
+
+	if mod_DustGeyserBurst then
+		RemoveFromRules("Ambience Geyser BurstLoop")
+		local rules = FXRules.BurstOut.start
+		for id, list in pairs(rules) do
+			list = rules[id].PrefabFeatureMarker
+			for i = #list, 1, -1 do
+				local sound = list[i].Sound
+				if sound == "Ambience Geyser BurstLoop" then
+					RemoveFromRules(list[i].Sound)
+					table.remove(list, i)
+				end
+			end
+		end
+	end
+
 end
 
 
@@ -171,16 +203,15 @@ function Voice:Play(text, ...)
 	return orig_Voice_Play(self, text, ...)
 end
 
-if not ChoGGi.testing then
-	return
-end
-
 --~ -- Data\SoundPreset.lua, and Lua\Config\__SoundTypes.lua
 --~ -- test sounds:
-function TestSound(snd)
-	StopSound(ChoGGi.Temp.Sound)
-	ChoGGi.Temp.Sound = PlaySound(snd, "UI")
-end
 --~ TestSound("Ambience Disaster ColdwaveWave")
 --~ TestSound("Ambience Disaster ColdwaveCracks")
---~ TestSound("Building Spacebar Loop")
+--~ TestSound("Ambience Geyser BurstStart")
+
+if rawget(_G, "ChoGGi") and ChoGGi.testing then
+	function TestSound(snd)
+		StopSound(ChoGGi.Temp.Sound)
+		ChoGGi.Temp.Sound = PlaySound(snd, "UI")
+	end
+end

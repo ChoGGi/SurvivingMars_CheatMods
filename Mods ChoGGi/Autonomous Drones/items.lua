@@ -38,8 +38,8 @@ Turning off means randomise list of drone controllers, so the order is different
 	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "DroneWorkDelay",
-		"DisplayName", T(000, "Drone Work Delay"),
-		"Help", T(000, [[How many "seconds" to wait before forcing the busy drone (0 to disable and wait).]]),
+		"DisplayName", T(302535920012023, "Drone Work Delay"),
+		"Help", T(302535920012024, [[How many "seconds" to wait before forcing the busy drone (0 to disable and wait).]]),
 		"DefaultValue", 30,
 		"MinValue", 0,
 		"MaxValue", 100,

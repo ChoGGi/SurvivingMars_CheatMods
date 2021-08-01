@@ -457,6 +457,9 @@ It don't matter if you're black or white"]]],
 	ChangeGrade = {
 		des = Strings[302535920000977--[[Change grade of a deposit.]]],
 	},
+	FillWater = {
+		des = Strings[302535920001646--[[Max out the stored water to fire it up immediately.]]],
+	},
 }
 -- stuff checked in the SetInfoPanelCheatHints func
 local cheats_lookup2 = {
@@ -1277,4 +1280,8 @@ function ResourceProducer:CheatEmpty(...)
 		self:Consume_Internal(self.consumption_stored_resources)
 	end
 	return orig_ResourceProducer_CheatEmpty(self, ...)
+end
+
+function ArtificialSun:CheatFillWater()
+	self.stored_water = self.water_capacity
 end

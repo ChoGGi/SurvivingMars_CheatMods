@@ -37,9 +37,9 @@ function OnMsg.ClassesPostprocess()
 
 		"electricity_production", 10000,
 
-		"display_name", T(0, "Example"),
-		"display_name_pl", T(0, "Examples"),
-		"description", T(0, "Example description"),
+		"display_name", T(0000, "Example"),
+		"display_name_pl", T(0000, "Examples"),
+		"description", T(0000, "Example description"),
 		"display_icon", "UI/Icons/Buildings/placeholder.tga",
 		"entity", "ElectronicsFactory",
 		"build_category", "ChoGGi",

@@ -49,7 +49,7 @@ local roaming_pets = {
 		entities = {"Goose"},
 	},
 	GreenMan = {
-		display_name = T(0,"GreenMan"),
+		display_name = T(302535920011640,"GreenMan"),
 		ambient = "Penguin",
 		entities = {"GreenMan"},
 	},

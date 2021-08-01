@@ -387,6 +387,7 @@ Press to toggle."
 [[Restore Request Maintenance]]
 302535920011250, "Maintenance already requested"
 302535920011251, "<status>, Remaining: <points>"
+302535920012034, "Request Maintenance"
 [[Save Mission Profiles]]
 302535920011252, "SaveMissionProfiles: too much data, delete some saved settings"
 302535920011253, "Save Profile"
@@ -567,6 +568,10 @@ Breakthroughs will be random as well.
 302535920011381, "Mirror Sphere Crackling"
 302535920011593, "Turn <color ChoGGi_green>On</color> to disable sound."
 302535920011995, "Cold Wave Crackling"
+302535920012019, "Dust Geyser Burst"
+302535920012020, "Artificial Sun Crackling"
+302535920012021, "Select Building"
+302535920012022, "Nursery Children"
 [[POI Spawn Rate]]
 302535920011382, "Min"
 [[Most Buildings Workers]]
@@ -1153,6 +1158,8 @@ The Nearest forestation plant is <ChoGGi_NearForestPlant>.
 302535920011817, "If under this amount of drones then try to evenly distribute drones across controllers instead of by load (0 to disable manually)."
 302535920011823, "Ignore Unused Hubs"
 302535920011824, "Any hubs not used below will have their drones ignored (manual assignment only)."
+302535920012023, "Drone Work Delay"
+302535920012024, "How many "seconds" to wait before forcing the busy drone (0 to disable and wait)."
 [[Lakes Toggle Visibility]]
 302535920011497, "Enable Lakes"
 302535920011811, "Turn on to show original water, off for modded."
@@ -1374,6 +1381,24 @@ Set both to 0 for random (how it used to work)"
 302535920012016, "Allow Auto-Landing"
 302535920012017, "Toggle allowing auto-land rockets to land here."
 302535920012018, "Toggle allowing this rocket to auto-land."
+[[Rocket Next Rocket Button]]
+302535920012025, "Next Rocket"
+302535920012026, "Loop between your rockets quickly."
+[[Centred HUD]]
+302535920012027, "Set Margin"
+302535920012028, "Allows you to Test/Save a custom margin.
+Don't forget to send me your res and margin, so I can add them to the list."
+302535920012029, "<left_click> Show Options <right_click> Test Margin"
+[[Christmas Mars]]
+302535920012030, "Christmas Mars"
+[[Amazon Logo]]
+302535920012031, "Amazon"
+[[Photo Filter Toggle]]
+302535920012032, "
+
+
+<yellow>Only enable one filter (whichever is last will be used).</yellow>"
+302535920012033, "Adjust settings for selected photo filter."
 [[UNUSED]]
 
 
@@ -1386,22 +1411,6 @@ Set both to 0 for random (how it used to work)"
 
 
 [[UNUSED]]
-302535920012019,
-302535920012020,
-302535920012021,
-302535920012022,
-302535920012023,
-302535920012024,
-302535920012025,
-302535920012026,
-302535920012027,
-302535920012028,
-302535920012029,
-302535920012030,
-302535920012031,
-302535920012032,
-302535920012033,
-302535920012034,
 302535920012035,
 302535920012036,
 302535920012037,

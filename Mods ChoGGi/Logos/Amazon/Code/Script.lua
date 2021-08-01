@@ -51,7 +51,7 @@ end -- LoadEntity
 function OnMsg.ClassesPostprocess()
 	if not MissionLogoPresetMap["ChoGGi.Logos.Amazon"] then
 		PlaceObj("MissionLogoPreset", {
-			display_name = T(0, "Amazon"),
+			display_name = T(302535920012031, "Amazon"),
 			decal_entity = "Amazon",
 			entity_name = "Amazon",
 			id = "ChoGGi.Logos.Amazon",

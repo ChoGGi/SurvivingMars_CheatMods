@@ -112,7 +112,7 @@ end
 
 local Actions = ChoGGi.Temp.Actions
 Actions[#Actions+1] = {
-	ActionName = T(0, "Request Maintenance"),
+	ActionName = T(302535920012034, "Request Maintenance"),
 	ActionId = "ChoGGi.RestoreMaintenance.RequestMaintenance",
 	OnAction = RequestMain,
 	ActionShortcut = "Ctrl-R",

@@ -18,9 +18,9 @@ function OnMsg.ClassesPostprocess()
 		"build_pos", 1,
 
 		-- don't look at me (0 means no id, use in-game mod editor to generate ids)
-		"display_name", T(0, "Layout Construction Example ChoGGi"),
-		"display_name_pl", T(0, "Layout Construction Example ChoGGis"),
-		"description", T(0, "Some buildings"),
+		"display_name", T(0000, "Layout Construction Example ChoGGi"),
+		"display_name_pl", T(0000, "Layout Construction Example ChoGGis"),
+		"description", T(0000, "Some buildings"),
 		"display_icon", "UI/Icons/Buildings/self-sufficient_dome.tga",
 
 		-- hands off

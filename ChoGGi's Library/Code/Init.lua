@@ -168,7 +168,7 @@ printC"RCTransport:Automation_Gather() override is still in place..."
 local orig_MapFindNearest = MapFindNearest
 local function fake_MapFindNearest(rover, world, metals, concrete, polymers, minerals, func, ...)
 	-- if it changes from an update
-	if minerals == "SurfaceDepositPreciousMinerals" and not SurfaceDepositPreciousMinerals then
+	if minerals == "SurfaceDepositPreciousMinerals" and not g_Classes.SurfaceDepositPreciousMinerals then
 		return orig_MapFindNearest(rover, world, metals, concrete, polymers, func)
 	end
 	return orig_MapFindNearest(rover, world, metals, concrete, polymers, minerals, func, ...)

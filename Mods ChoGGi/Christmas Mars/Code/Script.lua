@@ -50,7 +50,7 @@ function OnMsg.ClassesPostprocess()
 	if not MissionLogoPresetMap.ChristmasMars then
 		PlaceObj("MissionLogoPreset", {
 			decal_entity = "ChristmasMars",
-			display_name = T(0, "Christmas Mars"),
+			display_name = T(302535920012030, "Christmas Mars"),
 			entity_name = "ChristmasMars",
 			id = "ChristmasMars",
 			image = CurrentModPath .. "UI/ChristmasMars.png",

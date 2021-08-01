@@ -5,6 +5,18 @@ local table = table
 
 return {
 	PlaceObj("ModItemOptionToggle", {
+		"name", "DustGeyserBurst",
+		"DisplayName", T(302535920012019, "Dust Geyser Burst"),
+		"Help", T(302535920011593, "Turn <color ChoGGi_green>On</color> to disable sound."),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "ArtificialSunZapping",
+		"DisplayName", T(302535920012020, "Artificial Sun Zapping"),
+		"Help", T(302535920011593, "Turn <color ChoGGi_green>On</color> to disable sound."),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
 		"name", "ColdWaveCrackling",
 		"DisplayName", T(302535920011995, "Cold Wave Crackling"),
 		"Help", T(302535920011593, "Turn <color ChoGGi_green>On</color> to disable sound."),
@@ -18,19 +30,19 @@ return {
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "SelectBuildingSound",
-		"DisplayName", T(000, "Select Building Sound"),
+		"DisplayName", T(302535920012021, "Select Building"),
 		"Help", T(302535920011593, "Turn <color ChoGGi_green>On</color> to disable sound."),
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "RareMetalsExtractor",
-		"DisplayName", T(3530, "Rare Metals Extractor"),
+		"DisplayName", T(3530, "Rare Metals Extractor Thumping"),
 		"Help", T(302535920011593, "Turn <color ChoGGi_green>On</color> to disable sound."),
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "BioroboticsWorkshop",
-		"DisplayName", T(8825, "Biorobotics Workshop"),
+		"DisplayName", T(8825, "Biorobotics Workshop Ambience"),
 		"Help", T(302535920011593, "Turn <color ChoGGi_green>On</color> to disable sound."),
 		"DefaultValue", false,
 	}),
@@ -42,7 +54,7 @@ return {
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "RCCommanderDronesDeployed",
-		"DisplayName", T(302535920011380, "RC Drones Deployed"),
+		"DisplayName", T(302535920011380, "RC Drones Deployed Beeping"),
 		"Help", T(302535920011593, "Turn <color ChoGGi_green>On</color> to disable sound."),
 		"DefaultValue", false,
 	}),
@@ -54,7 +66,7 @@ return {
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "NurseryChild",
-		"DisplayName", table.concat(T(5179, "Nursery") .. " " .. T(4775, "Child")),
+		"DisplayName", T(302535920012022, "Nursery Children"),
 		"Help", T(302535920011593, "Turn <color ChoGGi_green>On</color> to disable sound."),
 		"DefaultValue", false,
 	}),

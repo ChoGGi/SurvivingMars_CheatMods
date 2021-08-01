@@ -23,7 +23,7 @@ end
 --~ 		PlaceObj('CropPreset', {
 --~ 			CropEntity = "CropWheat",
 --~ 			Desc = T(7001, --[[CropPreset Wheat Desc]] "Low yield but grows fast and requires less Water"),
---~ 			DisplayName = T(0, --[[CropPreset Wheat DisplayName]] "WheatXXXX"),
+--~ 			DisplayName = T(0000, --[[CropPreset Wheat DisplayName]] "WheatXXXX"),
 --~ 			FarmClass = "FarmConventional",
 --~ 			group = "Farm",
 --~ 			icon = "UI/Icons/Buildings/crops_wheat.tga",

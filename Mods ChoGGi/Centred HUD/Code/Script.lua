@@ -101,10 +101,10 @@ function OnMsg.ModsReloaded()
 			"Id", "ChoGGi_CentredUI",
 			"__template", "HUDButtonTemplate",
 
-			"RolloverTitle", T(0, "Set Margin"),
-			"RolloverText", T(0, [[Allows you to Test/Save a custom margin.
+			"RolloverTitle", T(302535920012027, "Set Margin"),
+			"RolloverText", T(302535920012028, [[Allows you to Test/Save a custom margin.
 Don't forget to send me your res and margin, so I can add them to the list.]]),
-			"RolloverHint", T(0, "<left_click> Show Options <right_click> Test Margin"),
+			"RolloverHint", T(302535920012029, "<left_click> Show Options <right_click> Test Margin"),
 			"Id", "idSetupMargins",
 			"Image", CurrentModPath .. "UI/hud_margin.png",
 			"FXPress", "MainMenuButtonClick",

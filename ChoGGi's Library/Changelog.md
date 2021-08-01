@@ -6,6 +6,7 @@
 - Moved some more Examine funcs from ECM I missed.
 - Fixed issue with map locations resetting challenge mod number.
 - Changed Examine>table>* menu>MonitorFunc to be more forgiving.
+- Updated log spam remover for SurfaceDepositPreciousMinerals.
 
 ## v10.0 (21 June 2021)
 - Properly fixed issue with CTD while examining certain game objects (thanks LukeH).

@@ -1,3 +1,7 @@
+v0.6
+No more toggling buildings to stop sounds.
+Added Artificial Sun, and Dust Geysers.
+
 v0.5
 Seeker and Sensor rovers
 Rare Metals Extractor

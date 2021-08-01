@@ -14,7 +14,7 @@ for id, item in pairs(PhotoFilterPresetMap) do
 		properties[c] = PlaceObj("ModItemOptionToggle", {
 			"name", id,
 			"DisplayName", table.concat(T(3454,"Photo Filter") .. ": " .. T(item.displayName)),
-			"Help", table.concat(T(item.desc) .. T(0, [[
+			"Help", table.concat(T(item.desc) .. T(302535920012032, [[
 
 
 <yellow>Only enable one filter (whichever is last will be used).</yellow>]])),
@@ -44,7 +44,7 @@ for i = 1, #filter_settings do
 		properties[c] = PlaceObj("ModItemOptionNumber", {
 			"name", setting.id,
 			"DisplayName", table.concat(T(" ") .. T(setting.name)),
-			"Help", T(0, "Adjust settings for selected photo filter."),
+			"Help", T(302535920012033, "Adjust settings for selected photo filter."),
 			"DefaultValue", setting.default,
 			"MinValue", setting.min,
 			"MaxValue", setting.max,

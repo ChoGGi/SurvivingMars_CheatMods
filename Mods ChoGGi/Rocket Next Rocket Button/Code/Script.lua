@@ -27,9 +27,9 @@ function OnMsg.ClassesPostprocess()
 
 	ChoGGi.ComFuncs.AddXTemplate(XTemplates.ipBuilding[1], "RocketNextButton", nil, {
 		__context_of_kind = "RocketBase",
-		Title = T(000, "Next Rocket"),
-		RolloverTitle = T(000, "Next Rocket"),
-		RolloverText = T(000, "Loop between your rockets quickly."),
+		Title = T(302535920012025, "Next Rocket"),
+		RolloverTitle = T(302535920012025, "Next Rocket"),
+		RolloverText = T(302535920012026, "Loop between your rockets quickly."),
 		Icon = "UI/Icons/Research/plasma_rocket.tga",
 		func = function(self, context)
 			CycleRockets(context)
