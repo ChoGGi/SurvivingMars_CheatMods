@@ -14,7 +14,8 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"has_options", true,
 	"TagGameplay", true,
-	"description", [[Schools won't pick a trait the colonist already has when training is complete.
+	"description", [[
+Schools won't pick a trait the colonist already has when training is complete.
 
 
 Requested by https://www.reddit.com/r/SurvivingMars/comments/kgystg/im_playing_as_church_of_the_new_ark_so_everyone/

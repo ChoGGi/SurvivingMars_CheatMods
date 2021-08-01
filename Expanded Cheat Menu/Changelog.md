@@ -4,6 +4,7 @@
 ### Changed:
 - ConsoleSkipUndefinedGlobals defaults to false.
 - Cloning objects to mouse cursor (Shift-Q) no longer places at middle of hexes.
+- Added warning to shadow render size setting.
 
 ### Fixed:
 - Fill resource didn't work on deposits (thanks Dhamptastic).

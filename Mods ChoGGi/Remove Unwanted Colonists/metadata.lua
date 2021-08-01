@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1594867237",
 	"pops_any_uuid", "fb8fc954-40d2-4818-b84f-157903c4ed36",
 	"lua_revision", 1001514, -- Tito
-	"version", 15,
+	"version", 16,
 	"version_major", 1,
-	"version_minor", 5,
+	"version_minor", 6,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
@@ -24,11 +24,13 @@ return PlaceObj("ModDef", {
 	"TagGameplay", true,
 	"TagBuildings", true,
 	"TagOther", true,
-	"description", [[Adds a button to the colonist selection menu to send them back to Earth.
+	"description", [[
+Adds a button to the colonist selection menu to send them back to Earth.
 A pod will come down and hover around the colonist till they make the mistake of going outside.
 If you change your mind; you can toggle it before they get sucked up.
 
 Once they go outside it'll suck them up and take them back to Earth (truthfully just outside the atmosphere before spacing them).
+This mod also adds a buildable monument to idiots, for those colonists less inclined to go outside.
 
 
 
@@ -37,8 +39,7 @@ On the bright side there won't be much left on impact, so other colonists won't 
 
 Mod Options:
 Skip Tourists: Never remove tourists.
-Ignore Domes: Remove colonists inside domes/passages.
 See mod options to automagically remove colonists of certain traits.
 
-This also adds a buildable monument to idiots, for those colonists less inclined to go outside.]],
+]],
 })

@@ -23,6 +23,7 @@ do -- ModUpload
 		ChoGGi_IncreaseRanchStorage = "Increase Ranch Storage (upload 2)",
 		ChoGGi_UnitThoughts = "Unit Thoughts (upload 3)",
 		ChoGGi_WideAreaForestation = "Wide Area Forestation (upload 2)",
+		ChoGGi_FixMirrorGraphics = "Fix Mirror Graphics (upload 2)",
 	}
 
 

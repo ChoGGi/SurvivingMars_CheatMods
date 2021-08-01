@@ -44,7 +44,7 @@ local mod_options = {}
 local traits_list = {}
 local c = 0
 local mod_SkipTourists
-local mod_IgnoreDomes
+--~ local mod_IgnoreDomes
 
 local function AddColonists(list)
 	for i = 1, #list do
@@ -95,7 +95,7 @@ local function ModOptions()
 	options = CurrentModOptions
 
 	mod_SkipTourists = options:GetProperty("SkipTourists")
-	mod_IgnoreDomes = options:GetProperty("IgnoreDomes")
+--~ 	mod_IgnoreDomes = options:GetProperty("IgnoreDomes")
 
 	for i = 1, c do
 		local id = traits_list[i]
@@ -514,7 +514,10 @@ function MurderPod:Abduct()
 
 	-- stalk if in dome/building/passage
 	local inside = not victim.outside_start
-	if inside and not OpenAirBuildings and not mod_IgnoreDomes then
+--~ 	if inside and not OpenAirBuildings and not mod_IgnoreDomes then
+--~ 		self:SetCommand("StalkerTime")
+--~ 	end
+	if inside and not OpenAirBuildings then
 		self:SetCommand("StalkerTime")
 	end
 
@@ -593,7 +596,8 @@ function MurderPod:StalkerTime()
 
 		-- outside_start is a count of oxygen left, false if out of spacesuit
 		local outside = victim.outside_start
-		if mod_IgnoreDomes or outside or not outside and OpenAirBuildings then
+--~ 		if mod_IgnoreDomes or outside or not outside and OpenAirBuildings then
+		if outside or not outside and OpenAirBuildings then
 			-- just in case, probably where the new crash is coming from?
 			if victim:GetVictimPos() ~= InvalidPos then
 				self:SetCommand("Abduct")

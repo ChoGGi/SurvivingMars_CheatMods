@@ -1,6 +1,12 @@
+v0.6
+Dust geysers fixed.
+
+v0.5
+Added dust geysers.
+
 v0.4
 Moved beach sand into it's own option.
-Changed Dome Grass option to disabled by default. 
+Changed Dome Grass option to disabled by default.
 
 v0.3
 Changed dome grass to prefab_green.

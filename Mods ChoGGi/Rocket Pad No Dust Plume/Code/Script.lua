@@ -23,12 +23,14 @@ local IsValid = IsValid
 
 local orig_PlayFX = PlayFX
 function PlayFX(actionFXClass, actionFXMoment, actor, ...)
+
 	if not mod_EnableMod or not IsValid(actor) or not actor:IsKindOf("RocketBase")
 		or actionFXClass ~= "RocketLand"
 		or (actionFXMoment ~= "pre-hit-ground2" and actionFXMoment ~= "pre-hit-ground")
 	then
 		return orig_PlayFX(actionFXClass, actionFXMoment, actor, ...)
 	end
+
 	if IsValid(actor.landing_site and actor.landing_site.landing_pad) then
 		if mod_LessDust and actionFXMoment == "pre-hit-ground" then
 			return orig_PlayFX(actionFXClass, actionFXMoment, actor, ...)

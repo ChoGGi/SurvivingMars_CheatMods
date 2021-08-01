@@ -3,7 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! green: <green>%s</green>
 !Skipped Line! yellow: <yellow>%s</yellow>
 "ID", " Text"
-302535920001645,
 302535920001646,
 302535920001647,
 302535920001648,
@@ -1578,6 +1577,7 @@ Takes less then a second on a map with 3616 buildings and 54 drone hubs."
 302535920000622, "If you have any buildings that aren't aligned to the hex grids use this."
 end end end end end !Skipped Line!
 do !Skipped Line! [[GameMenu.lua" "GameFunc.lua]] !Skipped Line!
+302535920001645, "May cause crashing!"
 302535920001627, "This is only visual; this won't affect the game state (unless something uses the list to check)."
 302535920001623, "List Normal"
 302535920001624, "Changes the list of lightmodels to use (night/day/etc)."

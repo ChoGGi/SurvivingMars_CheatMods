@@ -17,6 +17,8 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"description", [[Unlock research tech in mod options.
 
+Related mods: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2324443848]Unlock Breakthroughs[/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1753933193]Game Rules Breakthroughs[/url]
+
 Other Mod Options:
 Tech Researched: Turn on to research instead of unlock tech.
 Always Apply Options: Unlock/Research techs whenever you load a game/start a new game.

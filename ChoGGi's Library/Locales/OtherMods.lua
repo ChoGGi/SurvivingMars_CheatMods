@@ -1368,6 +1368,12 @@ Set both to 0 for random (how it used to work)"
 302535920012011, "Waste Rock Grinder"
 302535920012012, "Waste Rock Grinders"
 302535920012013, "Grinds dirt. Produces waste rock."
+[[Rockets Auto Land]]
+302535920012014, "No Auto-Landing"
+302535920012015, "<left_click> Toggle, <em>Ctrl+<left_click></em> Toggle All"
+302535920012016, "Allow Auto-Landing"
+302535920012017, "Toggle allowing auto-land rockets to land here."
+302535920012018, "Toggle allowing this rocket to auto-land."
 [[UNUSED]]
 
 
@@ -1380,11 +1386,6 @@ Set both to 0 for random (how it used to work)"
 
 
 [[UNUSED]]
-302535920012014,
-302535920012015,
-302535920012016,
-302535920012017,
-302535920012018,
 302535920012019,
 302535920012020,
 302535920012021,

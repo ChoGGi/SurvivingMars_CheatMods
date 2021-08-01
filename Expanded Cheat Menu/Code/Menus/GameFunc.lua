@@ -1485,8 +1485,8 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
 		{text = Strings[302535920001045--[[3 Low (1536)]]] .. " < " .. Strings[302535920001065--[[Menu Option]]], value = 1536},
 		{text = Strings[302535920001046--[[4 Medium (2048)]]] .. " < " .. Strings[302535920001065--[[Menu Option]]], value = 2048},
 		{text = Strings[302535920001047--[[5 High (4096)]]] .. " < " .. Strings[302535920001065--[[Menu Option]]], value = 4096},
-		{text = Strings[302535920001048--[[6 Higher (8192)]]], value = 8192},
-		{text = Strings[302535920001049--[[7 Highest (16384)]]], value = 16384, hint = hint_highest},
+		{text = Strings[302535920001048--[[6 Higher (8192)]]], value = 8192, hint = T(302535920001645, "May cause crashing!")},
+		{text = Strings[302535920001049--[[7 Highest (16384)]]], value = 16384, hint = hint_highest .. "\n\n" .. T(302535920001645, "May cause crashing!")},
 	}
 
 	local function CallBackFunc(choice)

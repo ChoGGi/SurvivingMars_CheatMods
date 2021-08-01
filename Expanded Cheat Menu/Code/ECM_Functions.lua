@@ -2623,16 +2623,18 @@ do -- ExpandModOptions
 		end
 	end
 
-	function ChoGGi.ComFuncs.ExpandModOptions(XTemplates)
-		local xtemplate = XTemplates.PropBool[1]
+	function ChoGGi.ComFuncs.ExpandModOptions(XTemplates_param)
+		XTemplates_param = XTemplates_param or XTemplates
+
+		local xtemplate = XTemplates_param.PropBool[1]
 		if xtemplate.ChoGGi_ModOptionsExpanded then
 			return
 		end
 		xtemplate.ChoGGi_ModOptionsExpanded = true
 
 		UpdateProp(xtemplate)
-		UpdateProp(XTemplates.PropChoiceOptions[1])
-		xtemplate = XTemplates.PropNumber[1]
+		UpdateProp(XTemplates_param.PropChoiceOptions[1])
+		xtemplate = XTemplates_param.PropNumber[1]
 		UpdateProp(xtemplate)
 		-- add buttons to number
 		AddSliderButtons(xtemplate)

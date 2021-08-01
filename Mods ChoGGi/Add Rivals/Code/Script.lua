@@ -20,7 +20,7 @@ local function AddRivals()
 	if not hr.PlanetColony5Longitude then
 		local rawset = rawset
 		local hr = hr
-		for i = 5, 12 do
+		for i = 5, 20 do
 			rawset(hr, "PlanetColony" .. i .. "Longitude", 0)
 			rawset(hr, "PlanetColony" .. i .. "Latitude", 0)
 		end

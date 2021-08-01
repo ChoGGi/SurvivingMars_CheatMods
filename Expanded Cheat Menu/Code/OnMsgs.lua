@@ -302,6 +302,11 @@ end
 
 -- fired when settings are changed/init
 local function ModOptions()
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	-- I cxheck mod options earlier than I should, so this prevents blank mod options (somwhow)
 	CurrentModOptions:GetProperties()
 
@@ -315,13 +320,8 @@ local function ModOptions()
 	end
 
 end
+OnMsg.ApplyModOptions = ModOptions
 
--- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
 
 function OnMsg.ModsReloaded()
 	-- load default/saved settings

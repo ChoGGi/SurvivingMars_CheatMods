@@ -1,3 +1,6 @@
+v1.6
+No more ignore domes option (for now).
+
 v1.5
 I think the ignore domes option was causing a crash, should be good now.
 

@@ -7,6 +7,7 @@ local mod_DumpingSites
 local mod_DomeGrass
 local mod_DomeBeachSand
 local mod_DomeRubble
+local mod_DustGeysers
 local mod_TerraGrass
 local mod_TerraLake
 local mod_TerraLichen
@@ -20,6 +21,14 @@ end
 
 local function UpdateTextures()
 	if not mod_EnableMod then
+		-- show spiders again
+		if mod_DustGeysers then
+			local objs = MapGet("map", "DecSpider")
+			for i = 1, #objs do
+				objs[i]:SetVisible(true)
+			end
+		end
+
 		return
 	end
 
@@ -39,6 +48,14 @@ local function UpdateTextures()
 	if mod_DomeRubble then
 		AddMap("DomeRubble", "ChaosSet03_02")
 		AddMap("DomeDemolish", "ChaosSet03_01")
+	end
+
+	if mod_DustGeysers then
+		AddMap("Spider", "RockDark")
+		local objs = MapGet("map", "DecSpider")
+		for i = 1, #objs do
+			objs[i]:SetVisible(false)
+		end
 	end
 
 	if mod_TerraGrass then
@@ -83,6 +100,7 @@ local function ModOptions()
 	mod_DomeGrass = options:GetProperty("DomeGrass")
 	mod_DomeBeachSand = options:GetProperty("DomeBeachSand")
 	mod_DomeRubble = options:GetProperty("DomeRubble")
+	mod_DustGeysers = options:GetProperty("DustGeysers")
 	mod_TerraGrass = options:GetProperty("TerraGrass")
 	mod_TerraLake = options:GetProperty("TerraLake")
 	mod_TerraLichen = options:GetProperty("TerraLichen")

@@ -2598,9 +2598,9 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 			clicked = function()
 				-- If it's a class object then add self ref
 				if self.obj_ref.class and g_Classes[self.obj_ref.class] or self.obj_type == "userdata" or self.obj_type == "string" then
-					self:ShowExecCodeWithCode("MonitorFunc(o." .. obj_name .. ", o)")
+					self:ShowExecCodeWithCode("MonitorFunc(o[" .. obj_name .. "], o)")
 				else
-					self:ShowExecCodeWithCode("MonitorFunc(o." .. obj_name .. ")")
+					self:ShowExecCodeWithCode("MonitorFunc(o[" .. obj_name .. "])")
 				end
 			end,
 		}

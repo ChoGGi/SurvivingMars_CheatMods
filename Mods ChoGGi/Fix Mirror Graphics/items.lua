@@ -29,6 +29,11 @@ return {
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
+		"name", "DustGeysers",
+		"DisplayName", T(0000, "Dust Geysers"),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
 		"name", "TerraGrass",
 		"DisplayName", T(0000, "Terraform Grass"),
 		"Help", T(0000, "Most green areas after terraforming."),

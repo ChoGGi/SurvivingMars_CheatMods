@@ -31,6 +31,6 @@ return PlaceObj("ModDef", {
 Find landing spots with/without a combination of breakthroughs (Extractor AI), resources (metals2), threats(dust_devils4), etc.
 
 Left click an item to move the globe to it.
-It isn't as pretty as [url=https://survivingmaps.com/]Surviving Maps[/url], but it works...
+For something easier to use: [url=https://survivingmaps.com/]Surviving Maps[/url]
 ]],
 })

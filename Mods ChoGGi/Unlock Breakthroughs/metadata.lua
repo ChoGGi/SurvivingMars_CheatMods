@@ -16,7 +16,10 @@ return PlaceObj("ModDef", {
 	"TagGameplay", true,
 	"TagOther", true,
 	"description", [[Unlock breakthroughs in mod options.
-Sister mod: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1753933193]Game Rules Breakthroughs[/url]
+
+Related mods: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2429688365]Unlock Research Tech[/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1753933193]Game Rules Breakthroughs[/url]
+
+
 
 Other Mod Options:
 Breakthroughs Researched: Turn on to research instead of unlock breakthroughs.

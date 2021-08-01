@@ -14,7 +14,9 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"description", [[Adds all breakthroughs to game rules (selected rules will be unlocked).
-Sister mod: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2324443848]Unlock Breakthroughs[/url]
+
+Related mods: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2324443848]Unlock Breakthroughs[/url]
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=2429688365]Unlock Research Tech[/url]
 
 Mod Options:
 Breakthroughs Researched: Research instead of unlock breakthroughs (New game needed after option is applied or maybe restart game).

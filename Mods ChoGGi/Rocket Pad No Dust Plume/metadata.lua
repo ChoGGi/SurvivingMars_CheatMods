@@ -14,11 +14,13 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagCosmetics", true,
-	"description", [[When a rocket lands on a pad, there won't be a visible dust plume.
+	"description", [[
+When a rocket lands on a pad, there won't be a visible dust plume.
 
 Mod Options:
 Less Dust: Some dust not as much as the usual.
 
 
-Requested by catloverjerrygarcia.]],
+Requested by catloverjerrygarcia.
+]],
 })

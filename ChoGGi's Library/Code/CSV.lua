@@ -176,8 +176,10 @@ do -- MapData
 		local params_saved = table.copy(params)
 
 		-- g_TitleObj used for getting map topo
+		local not_title
 		if not g_TitleObj then
 			PGTitleObjectCreate()
+			not_title = true
 		end
 
 		-- make a fake landing spot
@@ -225,7 +227,7 @@ do -- MapData
 		-- remove landing spot obj (not needed anymore)
 		landing:delete()
 		-- and title obj
-		if g_TitleObj then
+		if g_TitleObj and not_title then
 			g_TitleObj:delete()
 			g_TitleObj = false
 		end
