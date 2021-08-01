@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v17.1 (Unreleased)
+
+## v17.1 (1 Aug 2021)
 ### Changed:
 - ConsoleSkipUndefinedGlobals defaults to false.
 - Cloning objects to mouse cursor (Shift-Q) no longer places at middle of hexes.

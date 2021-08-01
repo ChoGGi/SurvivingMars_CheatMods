@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v10.1 (Unreleased)
+## v10.2 (Unreleased)
+
+## v10.1 (1 Aug 2021)
 - Added LaunchHumanMeteor.
 - Fixed issue with map locations resetting challenge mod number.
 - Updated log spam remover for SurfaceDepositPreciousMinerals.

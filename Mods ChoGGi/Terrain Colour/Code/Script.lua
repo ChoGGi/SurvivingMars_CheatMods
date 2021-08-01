@@ -1,40 +1,6 @@
 -- See LICENSE for terms
 
---~ local UsedTerrainTextures = ChoGGi.ComFuncs.UsedTerrainTextures
-
--- remove in 10.1
-local UsedTerrainTextures = ChoGGi.ComFuncs.UsedTerrainTextures or function(ret)
-	if not UICity then
-		return
-	end
-
-	-- If fired from action menu
-	if IsKindOf(ret, "XAction") then
-		ret = nil
-	end
-
-	local MulDivRound = MulDivRound
-	local TerrainTextures = TerrainTextures
-
-	local tm = terrain.GetTypeGrid()
-	local _, levels_info = tm:levels(true, 1)
-	local size = tm:size()
-	local textures = {}
-	for level, count in pairs(levels_info) do
-		local texture = TerrainTextures[level]
-		if texture then
-			local perc = MulDivRound(100, count, size * size)
-			if perc > 0 then
-				textures[texture.name] = perc
-			end
-		end
-	end
-
-	if ret then
-		return textures
-	end
-end
--- remove in 10.1
+local UsedTerrainTextures = ChoGGi.ComFuncs.UsedTerrainTextures
 
 local mod_EnableMod
 local mod_ChangeColour1
