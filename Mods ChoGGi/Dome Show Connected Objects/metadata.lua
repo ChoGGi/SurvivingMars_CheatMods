@@ -22,7 +22,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagBuildings", true,
-	"description", [[Wondering why you can't remove a dome? This mod will show any objects that will block you from doing so.
+	"description", [[
+Wondering why you can't remove a dome? This mod will show any objects that will block you from doing so.
 
 Mod Options:
 [b]Enable Mod[/b]: Disable mod without having to see missing mod msg.

@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagOther", true,
-	"description", [[Probably caused by a mod badly adding cargo.
-There's a mod option to disable the mod afterwards, but if you want to keep the mod, then leave this enabled...
+	"description", [[
+Probably caused by a mod badly adding cargo.
 ]],
 })

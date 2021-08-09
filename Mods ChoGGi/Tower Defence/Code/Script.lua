@@ -1,5 +1,18 @@
 -- See LICENSE for terms
 
+local mod_EnableMod
+
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+end
+OnMsg.ModsReloaded = ModOptions
+OnMsg.ApplyModOptions = ModOptions
+
 local Sleep = Sleep
 local IsValid = IsValid
 local PlaceObject = PlaceObject
@@ -11,7 +24,7 @@ local Random = ChoGGi.ComFuncs.Random
 -- redefined AttackRover to blow up after it's out of ammo or too old
 DefineClass.TowerDefense_Rover = {
 	__parents = {"AttackRover"},
-	attack_range = 500*guim,
+	attack_range = 500 * guim,
 }
 
 -- sometimes they get stuck in the mountains so we blow them up after a Sol
@@ -97,9 +110,13 @@ local function LoadMapSectorsStats()
 		AddFirstLast(g_MapSectors[9])
 
 		UICity.ChoGGi_TowerDefense = {
+			-- rovers to spawn next sol
 			rovers_next = 5,
+			-- ammo to give each rover
 			ammo_next = 4,
+			-- index table of sectors
 			sectors = sector_table,
+			-- count of sectors
 			count = c,
 		}
 	end
@@ -122,6 +139,10 @@ local function RemoveOldRovers(label, sol)
 end
 
 function OnMsg.NewDay(sol)
+	if not mod_EnableMod then
+		return
+	end
+
 	CreateGameTimeThread(function()
 		-- let other stuff go first
 		Sleep(1000)
@@ -137,8 +158,8 @@ function OnMsg.NewDay(sol)
 		local UICity = UICity
 
 		-- remove any old rovers stuck in the mountains
-		RemoveOldRovers(UICity.labels.HostileAttackRovers,sol)
-		RemoveOldRovers(UICity.labels.Rover,sol)
+		RemoveOldRovers(UICity.labels.HostileAttackRovers, sol)
+		RemoveOldRovers(UICity.labels.Rover, sol)
 
 		-- just in case
 		if not UICity.ChoGGi_TowerDefense then
@@ -146,13 +167,12 @@ function OnMsg.NewDay(sol)
 		end
 
 		local stats = UICity.ChoGGi_TowerDefense
-		for _ = 1, #stats.rovers_next do
+		for _ = 1, stats.rovers_next do
 			-- add a bit of a random delay
-			Sleep(Random(2500,10000))
+			Sleep(Random(2500, 10000))
 			-- muhhahahaha
 			local r = PlaceObject("TowerDefense_Rover", {
---~ 				spawn_pos = GetRandomPassableAround(stats.sectors[Random(1,stats.count)]:GetVisualPos(), 250),
-				spawn_pos = GetPassablePointNearby(stats.sectors[Random(1,stats.count)]:GetPos()),
+				spawn_pos = GetPassablePointNearby(stats.sectors[Random(1, stats.count)]:GetPos()),
 				attacks_remaining = stats.ammo_next,
 			})
 			-- need to make 'em nasty

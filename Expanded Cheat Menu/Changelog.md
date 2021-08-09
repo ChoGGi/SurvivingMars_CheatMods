@@ -3,6 +3,9 @@
 ## v17.1 (Unreleased)
 
 ## v17.1 (1 Aug 2021)
+### Added:
+- Cheats pane>FillWater (Artificial Sun charge up).
+
 ### Changed:
 - ConsoleSkipUndefinedGlobals defaults to false.
 - Cloning objects to mouse cursor (Shift-Q) no longer places at middle of hexes.

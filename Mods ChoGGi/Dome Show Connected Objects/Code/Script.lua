@@ -30,7 +30,6 @@ local RetName = ChoGGi.ComFuncs.RetName
 
 local lines = {}
 local lines_c = 0
-local OPolyline
 
 -- remove existing lines
 local function CleanUp()
@@ -84,9 +83,7 @@ local function ToggleLines(dome)
 	end
 
 	-- my lines are removed on savegame
-	if not OPolyline then
-		OPolyline = ChoGGi_OPolyline
-	end
+	local ChoGGi_OPolyline = ChoGGi_OPolyline
 
 	-- attach lines
 	local dome_name = RetName(dome)
@@ -98,19 +95,27 @@ local function ToggleLines(dome)
 			table.remove_entry(bad_objs[bad_obj], "handle", bad_obj.handle)
 			print("Dome Show Connected Objects: Removed invalid object", RetName(bad_obj), "from dome!", dome_name)
 		-- obj stuck outside the map area ("holding area" for off planet rockets and so on)
-		elseif mod_MoveInvalidPosition and (bad_obj:GetPos() or point20) == InvalidPos and not (bad_obj:IsKindOf("Colonist") and IsValid(bad_obj.holder)) then
+		elseif mod_MoveInvalidPosition and (bad_obj:GetVisualPos() or point20) == InvalidPos and not (bad_obj:IsKindOf("Colonist") and IsValid(bad_obj.holder)) then
 			-- stick in dome for user to remove
 			print("Dome Show Connected Objects: Moved object", RetName(bad_obj), "from invalid position to in-dome position!", dome_name)
 			bad_obj:SetPos(table.rand(dome.walkable_points or empty_table))
 		else
-			local line = OPolyline:new()
+			local line = ChoGGi_OPolyline:new()
 			-- FixConstructPos sets z to ground height
 			line:SetParabola(dome_pos, bad_obj:GetVisualPos())
-			-- store dome for delete toggle
+			-- store line for delete toggle
 			lines_c = lines_c + 1
 			lines[lines_c] = line
 		end
 	end
+
+--~ 	if ChoGGi.testing then
+--~ 		local line = ChoGGi_OPolyline:new()
+--~ 		line:SetParabola(dome_pos, ChoGGi.Consts.InvalidPos)
+--~ 		lines_c = lines_c + 1
+--~ 		lines[lines_c] = line
+--~ 	end
+
 	ResumePassEdits("ChoGGi.SelectionRemoved.Show Dome Connected Objects.ToggleLines")
 end
 

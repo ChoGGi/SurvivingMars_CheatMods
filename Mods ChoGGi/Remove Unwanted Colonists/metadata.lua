@@ -12,10 +12,10 @@ return PlaceObj("ModDef", {
 	"steam_id", "1594867237",
 	"pops_any_uuid", "fb8fc954-40d2-4818-b84f-157903c4ed36",
 	"lua_revision", 1001514, -- Tito
-	"version", 16,
+	"version", 17,
 	"version_major", 1,
-	"version_minor", 6,
-	"image", "Preview.png",
+	"version_minor", 7,
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
@@ -39,7 +39,9 @@ On the bright side there won't be much left on impact, so other colonists won't 
 
 Mod Options:
 Skip Tourists: Never remove tourists.
+Ignore Domes: Remove colonists inside domes.
+Less Takeoff Dust: Pods have less dust when taking off (for the mass murders).
+Hide Button: Don't show the Remove Colonist button.
 See mod options to automagically remove colonists of certain traits.
-
 ]],
 })

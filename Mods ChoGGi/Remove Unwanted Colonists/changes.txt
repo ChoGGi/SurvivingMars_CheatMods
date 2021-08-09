@@ -1,3 +1,7 @@
+v1.7
+Ignore domes works now.
+Added mod option for less dust on take off, and one to hide the button.
+
 v1.6
 No more ignore domes option (for now).
 

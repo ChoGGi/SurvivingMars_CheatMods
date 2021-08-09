@@ -7,10 +7,4 @@ return {
 		"Help", T(302535920011793, "Disable mod without having to see missing mod msg."),
 		"DefaultValue", true,
 	}),
-	PlaceObj("ModItemOptionToggle", {
-		"name", "LessDust",
-		"DisplayName", T(302535920011895, "Less Dust"),
-		"Help", T(302535920011896, "Some dust not as much as the usual."),
-		"DefaultValue", off,
-	}),
 }

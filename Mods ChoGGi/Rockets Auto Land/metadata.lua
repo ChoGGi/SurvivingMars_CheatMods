@@ -26,7 +26,7 @@ return PlaceObj("ModDef", {
 Rockets will automagically land on pads.
 Pad to land on is picked alphabetically.
 
-Since you don't get to pick which rocket to launch; you need to set both the pads and the rockets for auto-landing.
+You need to set both the pads and the rockets for auto-landing.
 Auto-landing for rockets can only be changed when landed, pads can be changed anytime.
 
 

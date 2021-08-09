@@ -8,24 +8,29 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Tower Defence",
-	"version", 4,
-	"version_major", 0,
-	"version_minor", 4,
-	"image", "Preview.png",
 	"id", "ChoGGi_TowerDefense",
 	"steam_id", "1504640997",
 	"pops_any_uuid", "de575d3f-099e-4c4f-9ab0-18c174506aab",
-	"author", "ChoGGi",
 	"lua_revision", 1001514, -- Tito
+	"version", 5,
+	"version_major", 0,
+	"version_minor", 5,
+	"image", "Preview.png",
+	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Starting at Sol 50 this will spawn an ever increasing amount of attack rovers (with an increasing amount of ammo).
+	"has_options", true,
+	"TagGameplay", true,
+	"description", [[
+Starting at Sol 50 this will spawn an ever increasing amount of attack rovers (with an increasing amount of ammo).
 
 They'll be randomly spawned around the edges (mostly), so build inward.
 Starts at 5 rovers with an extra 1 added each Sol (ammo = 4 + 2 each Sol).
 
 Defense Tower tech unlocked at Sol 25.
+Mod option to stop spawning rovers.
 
-Balancing ideas?]],
+Balancing ideas?
+]],
 })

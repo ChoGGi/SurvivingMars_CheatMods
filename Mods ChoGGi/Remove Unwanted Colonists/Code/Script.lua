@@ -9,42 +9,17 @@ local IsSoundPlaying = IsSoundPlaying
 local guim = guim
 local Random = ChoGGi.ComFuncs.Random
 local RetName = ChoGGi.ComFuncs.RetName
+local LaunchHumanMeteor = ChoGGi.ComFuncs.LaunchHumanMeteor
 local InvalidPos = ChoGGi.Consts.InvalidPos
-
-local LaunchHumanMeteor = ChoGGi.ComFuncs.LaunchHumanMeteor or function(entity, min, max)
-	--	1 to 4 sols
-	Sleep(Random(
-		min or const.DayDuration,
-		max or const.DayDuration * 4
-	))
---~ 	Sleep(5000)
-	local data = DataInstances.MapSettings_Meteor.Meteor_VeryLow
-	local descr = SpawnMeteor(data, nil, nil, GetRandomPassable())
-	-- I got a missle once, not sure why...
-	if descr.meteor:IsKindOf("BombardMissile") then
-		g_IncomingMissiles[descr.meteor] = nil
-		if IsValid(descr.meteor) then
-			DoneObject(descr.meteor)
-		end
-	else
-		descr.meteor:Fall(descr.start)
-		descr.meteor:ChangeEntity(entity)
-		-- frozen meat popsicle (dark blue)
-		descr.meteor:SetColorModifier(-16772609)
-		-- It looks reasonable
-		descr.meteor:SetState("sitSoftChairIdle")
-		-- I don't maybe they swelled up from the heat and moisture permeating in space (makes it easier to see the popsicle)
-		descr.meteor:SetScale(500)
-	end
---~ 	ex(descr.meteor)
-end
 
 -- build list of traits/mod options
 local mod_options = {}
 local traits_list = {}
 local c = 0
 local mod_SkipTourists
---~ local mod_IgnoreDomes
+local mod_IgnoreDomes
+local mod_LessTakeoffDust
+local mod_HideButton
 
 local function AddColonists(list)
 	for i = 1, #list do
@@ -87,15 +62,21 @@ local function UpdateMurderPods()
 		end
 	end
 end
-
-local options
+OnMsg.NewHour = UpdateMurderPods
 
 -- fired when settings are changed/init
-local function ModOptions()
-	options = CurrentModOptions
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	local options = CurrentModOptions
 
 	mod_SkipTourists = options:GetProperty("SkipTourists")
---~ 	mod_IgnoreDomes = options:GetProperty("IgnoreDomes")
+	mod_IgnoreDomes = options:GetProperty("IgnoreDomes")
+	mod_LessTakeoffDust = options:GetProperty("LessTakeoffDust")
+	mod_HideButton = options:GetProperty("HideButton")
 
 	for i = 1, c do
 		local id = traits_list[i]
@@ -109,19 +90,8 @@ local function ModOptions()
 
 	UpdateMurderPods()
 end
-
--- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-OnMsg.NewHour = UpdateMurderPods
+OnMsg.ApplyModOptions = ModOptions
 
 function Colonist:ChoGGi_MP_RemovePod()
 	if IsValid(self.ChoGGi_MurderPod) then
@@ -246,6 +216,9 @@ function OnMsg.ClassesPostprocess()
 			"ChoGGi_Template_ColonistSucker", true,
 			"Id", "ChoGGi_ColonistSucker",
 			"__template", "InfopanelActiveSection",
+			"__condition", function()
+				return not mod_HideButton
+			end,
 			"Icon", "UI/Icons/traits_disapprove.tga",
 			"Title", T(302535920011244, "Remove Colonist"),
 			"RolloverTitle", T(302535920011244, "Remove Colonist"),
@@ -307,7 +280,7 @@ function OnMsg.ClassesPostprocess()
 			"__template", "InfopanelActiveSection",
 			"__context_of_kind", "MurderPod",
 			"__condition", function(_, context)
-				return IsValid(context.target)
+				return not mod_HideButton and IsValid(context.target)
 			end,
 			"Icon", "UI/Icons/Sections/colonist.tga",
 			"Title", T(302535920011247, "Select Colonist"),
@@ -369,7 +342,6 @@ end
 --~ 	end
 
 --~ end
-
 
 DefineClass.MurderPod = {
 	__parents = {
@@ -474,7 +446,10 @@ function MurderPod:Leave(leave_height)
 
 	self.fx_actor_class = "SupplyRocket"
 	self:PlayFX("RocketEngine", "end")
-	self:PlayFX("RocketLaunch", "start")
+
+	if not mod_LessTakeoffDust then
+		self:PlayFX("RocketLaunch", "start")
+	end
 
 	self:FollowPathCmd(self:CalcPath(
 		current_pos,
@@ -514,10 +489,7 @@ function MurderPod:Abduct()
 
 	-- stalk if in dome/building/passage
 	local inside = not victim.outside_start
---~ 	if inside and not OpenAirBuildings and not mod_IgnoreDomes then
---~ 		self:SetCommand("StalkerTime")
---~ 	end
-	if inside and not OpenAirBuildings then
+	if inside and not OpenAirBuildings and not mod_IgnoreDomes then
 		self:SetCommand("StalkerTime")
 	end
 
@@ -596,10 +568,9 @@ function MurderPod:StalkerTime()
 
 		-- outside_start is a count of oxygen left, false if out of spacesuit
 		local outside = victim.outside_start
---~ 		if mod_IgnoreDomes or outside or not outside and OpenAirBuildings then
-		if outside or not outside and OpenAirBuildings then
+		if mod_IgnoreDomes or outside or (not outside and OpenAirBuildings) then
 			-- just in case, probably where the new crash is coming from?
-			if victim:GetVictimPos() ~= InvalidPos then
+			if self:GetVictimPos() ~= InvalidPos then
 				self:SetCommand("Abduct")
 				break
 			end

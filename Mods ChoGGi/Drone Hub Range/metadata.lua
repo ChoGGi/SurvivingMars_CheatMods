@@ -26,7 +26,7 @@ return PlaceObj("ModDef", {
 	"TagInterface", true,
 	"TagTools", true,
 	"description", [[
-Change range of drone hubs (see mod options).
+Increase range of drone hubs (see mod options).
 
 
 Doesn't seem to work on xbox.

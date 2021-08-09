@@ -384,6 +384,10 @@ Press to toggle."
 302535920011899, "Never remove tourists."
 302535920011959, "Ignore Domes"
 302535920011960, "Remove colonists inside domes/passages."
+302535920012035, "<color ChoGGi_yellow>Less Takeoff Dust</color>"
+302535920012036, "Pods have less dust when taking off (for the mass murders)."
+302535920012037, "<color ChoGGi_yellow>Hide Button</color>"
+302535920012038, "Don't show the Remove Colonist button."
 [[Restore Request Maintenance]]
 302535920011250, "Maintenance already requested"
 302535920011251, "<status>, Remaining: <points>"
@@ -1399,6 +1403,8 @@ Don't forget to send me your res and margin, so I can add them to the list."
 
 <yellow>Only enable one filter (whichever is last will be used).</yellow>"
 302535920012033, "Adjust settings for selected photo filter."
+[[Challenge Show Scores]]
+302535920012039, "\nScore: <score>"
 [[UNUSED]]
 
 
@@ -1411,11 +1417,6 @@ Don't forget to send me your res and margin, so I can add them to the list."
 
 
 [[UNUSED]]
-302535920012035,
-302535920012036,
-302535920012037,
-302535920012038,
-302535920012039,
 302535920012040,
 302535920012041,
 302535920012042,

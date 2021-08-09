@@ -139,7 +139,7 @@ DisableSounds = function()
 			for i = #list, 1, -1 do
 				local sound = list[i].Sound
 				if sound == "UI SelectBuilding" or sound:sub(-6) == "Select" then
-					RemoveFromRules(list[i].Sound)
+					RemoveFromRules(sound)
 					table.remove(list, i)
 				end
 			end
@@ -180,7 +180,7 @@ DisableSounds = function()
 			for i = #list, 1, -1 do
 				local sound = list[i].Sound
 				if sound == "Ambience Geyser BurstLoop" then
-					RemoveFromRules(list[i].Sound)
+					RemoveFromRules(sound)
 					table.remove(list, i)
 				end
 			end

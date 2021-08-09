@@ -23,7 +23,8 @@ return PlaceObj("ModDef", {
 	"TagLandscaping", true,
 	"TagInterface", true,
 	"has_options", true,
-	"description", [[Ignores most of the "errors".
+	"description", [[
+Ignores most of the "errors", so you can place in more places.
 
 The landscaping needs to override the BlockingObjects status otherwise you can't flatten next to/under buildings.
 This will allow you to build regular buildings on top of others, turn off the blocking objects option if it bothers you (see mod options).

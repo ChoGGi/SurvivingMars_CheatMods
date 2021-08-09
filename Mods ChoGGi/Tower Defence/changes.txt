@@ -1,3 +1,7 @@
+v0.5
+Wasn't spawning rovers.
+Added mod option to stop spawning rovers.
+
 v0.4
 Log spam on new game.
 
