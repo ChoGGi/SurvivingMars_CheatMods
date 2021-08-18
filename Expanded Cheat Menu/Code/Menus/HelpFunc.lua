@@ -881,6 +881,16 @@ function ChoGGi.MenuFuncs.ToolTips_Toggle()
 	)
 end
 
+function ChoGGi.MenuFuncs.ChangeWindowTitle_Toggle()
+	ChoGGi.UserSettings.ChangeWindowTitle = not ChoGGi.UserSettings.ChangeWindowTitle
+
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ChangeWindowTitle),
+		Strings[302535920001647--[[Window Title]]]
+	)
+end
+
 function ChoGGi.MenuFuncs.ExtractHPKs()
 	if blacklist then
 		ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.MenuFuncs.ExtractHPKs")
@@ -1049,6 +1059,8 @@ function ChoGGi.MenuFuncs.EditECMSettings()
 	local UserSettings = ChoGGi.UserSettings
 	-- load up settings file in the editor
 	ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+		code = true,
+		title = Strings[302535920001242--[[Edit ECM Settings]]],
 		text = TableToLuaCode(UserSettings),
 		hint_ok = Strings[302535920001244--[["Saves settings to file, and applies any changes."]]],
 		hint_cancel = Strings[302535920001245--[[Abort without touching anything.]]],

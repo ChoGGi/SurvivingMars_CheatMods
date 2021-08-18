@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+-- TESTING123
+local luarev = LuaRevision > 1001586
+
 local next, type, tostring = next, type, tostring
 local GetCursorWorldPos = GetCursorWorldPos
 local SuspendPassEdits = SuspendPassEdits
@@ -329,6 +332,9 @@ function ChoGGi.MenuFuncs.GUIDockSide_Toggle()
 end
 
 function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
+	-- TESTING123
+	local mapdata = luarev and ActiveMapData or mapdata
+
 	if ChoGGi.UserSettings.DisableHints then
 		ChoGGi.UserSettings.DisableHints = nil
 		mapdata.DisableHints = false
@@ -358,7 +364,8 @@ end
 function ChoGGi.MenuFuncs.OnScreenHints_Toggle()
 	HintsEnabled = not HintsEnabled
 	SetHintNotificationsEnabled(HintsEnabled)
-	mapdata.DisableHints = not HintsEnabled
+	-- TESTING123
+	(luarev and ActiveMapData or mapdata).DisableHints = not HintsEnabled
 	UpdateOnScreenHintDlg()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(HintsEnabled),
@@ -863,6 +870,10 @@ function ChoGGi.MenuFuncs.ChangeMap()
 	}
 
 	-- shows the mission param info for people to look at
+
+	-- TESTING123
+	local MapData = rawget(_G , "MapData") and MapData or MapDataPresets
+
 	local info_lists = {
 		[-1] = Strings[302535920001385--[[Use these lists to find the correct ids.]]],
 		table.icopy(MissionParams.idCommanderProfile.items),
@@ -1150,11 +1161,13 @@ function ChoGGi.MenuFuncs.TerrainTextureChange()
 
 	end -- CallBackFunc
 
+
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = Strings[302535920000623--[[Terrain Texture Change]]],
-		hint = Strings[302535920000974--[[Map default: %s]]]:format(mapdata.BaseLayer),
+		-- TESTING123
+		hint = Strings[302535920000974--[[Map default: %s]]]:format((luarev and ActiveMapData or mapdata).BaseLayer),
 		custom_type = 7,
 	}
 end
@@ -1626,7 +1639,8 @@ do -- CameraFree_Toggle
 
 	function ChoGGi.MenuFuncs.CameraFollow_Toggle()
 		-- It was on the free camera so
-		if not mapdata.GameLogic then
+		-- TESTING123
+		if not (luarev and ActiveMapData or mapdata).GameLogic then
 			return
 		end
 

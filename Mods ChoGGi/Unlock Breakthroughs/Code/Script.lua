@@ -2,8 +2,8 @@
 
 -- fired when settings are changed/init
 local function UnlockBreaks(newgame)
-	local UICity = UICity
-	if not UICity then
+	local colony = ChoGGi.ComFuncs.RetUIColony()
+	if not colony then
 		return
 	end
 
@@ -14,12 +14,12 @@ local function UnlockBreaks(newgame)
 		end
 
 		local options = CurrentModOptions
-		local func = options:GetProperty("BreakthroughsResearched") and UICity.SetTechResearched or UICity.SetTechDiscovered
+		local func = options:GetProperty("BreakthroughsResearched") and colony.SetTechResearched or colony.SetTechDiscovered
 		local bt = Presets.TechPreset.Breakthroughs
 		for i = 1, #bt do
 			local id = bt[i].id
 			if options:GetProperty(id) then
-				func(UICity, id)
+				func(colony, id)
 			end
 		end
 	end)

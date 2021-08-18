@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+-- TESTING123
+local luarev = LuaRevision > 1001586
+
 -- OnMsgs (most of them)
 
 local table = table
@@ -1296,7 +1299,7 @@ do -- LoadGame/CityStart
 
 		-- any saved Consts settings (from the Consts menu)
 		local SetConstsG = ChoGGi.ComFuncs.SetConstsG
-		local ChoGGi_Consts = ChoGGi.UserSettings.Consts
+		local ChoGGi_Consts = UserSettings.Consts
 		for key, value in pairs(ChoGGi_Consts) do
 			SetConstsG(key, value)
 		end
@@ -1431,7 +1434,9 @@ do -- LoadGame/CityStart
 		end
 
 		-- bloody hint popups
-		if ChoGGi.UserSettings.DisableHints then
+		if UserSettings.DisableHints then
+			-- TESTING123
+			local mapdata = luarev and ActiveMapData or mapdata
 			if mapdata.DisableHints == false then
 				mapdata.DisableHints = true
 			end

@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+-- TESTING123
+local luarev = LuaRevision > 1001586
+
 local pairs, type, tostring, table = pairs, type, tostring, table
 local IsValid = IsValid
 local GetCursorWorldPos = GetCursorWorldPos
@@ -39,7 +42,7 @@ function ChoGGi.MenuFuncs.ExamineObjectRadius_Set()
 		{text = 1000000, value = 1000000},
 	}
 
-	local title = Strings[302535920000491--[[Examine Object]]] .. " " .. Strings[302535920000163--[[Radius]]]
+	local title = Strings[302535920000069--[[Examine]]] .. " " .. Strings[302535920000163--[[Radius]]]
 
 	local function CallBackFunc(choice)
 		if choice.nothing_selected then
@@ -756,7 +759,13 @@ function ChoGGi.MenuFuncs.TestStoryBits()
 			obj = SelectedObj
 		end
 
-		ForceActivateStoryBit(choice.value, obj, true)
+		-- TESTING123
+		if luarev then
+			ForceActivateStoryBit(choice.value, MainMapID, obj, true)
+			-- ActiveMapID
+		else
+			ForceActivateStoryBit(choice.value, obj, true)
+		end
 
 	end
 
@@ -1242,7 +1251,9 @@ do -- FlightGrid_Toggle
 
 	local grid_thread = false
 	local Flight_Height_temp = false
-	local work_step = 16 * terrain.TypeTileSize()
+	-- TESTING123
+	local type_tile = const.TerrainTypeTileSize or terrain.TypeTileSize()
+	local work_step = 16 * type_tile
 	local dbg_step = work_step / 4 -- 400
 	local dbg_stepm1 = dbg_step - 1
 	local max_diff = 5 * guim

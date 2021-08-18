@@ -22,6 +22,8 @@ local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
+
+
 do -- non-class obj funcs
 
 	-- this will reset override, so we sleep and reset it
@@ -69,11 +71,14 @@ do -- non-class obj funcs
 
 	-- examine persist errors (if any)
 	function ReportPersistErrors(...)
+		local errors, warnings = 0, 0
 		if UserSettings.DebugPersistSaves and __error_table__ and #__error_table__ > 0 then
 			ChoGGi.ComFuncs.OpenInExamineDlg(__error_table__, nil, "__error_table__ (persists)")
 		else
-			ChoGGi_OrigFuncs.ReportPersistErrors(...)
+			errors, warnings = ChoGGi_OrigFuncs.ReportPersistErrors(...)
 		end
+		-- the assert in PersistGame() attempts to concat a nil value
+		return errors, warnings
 	end
 
 	-- WARNING: Unable to retrieve a function's source code while saving!

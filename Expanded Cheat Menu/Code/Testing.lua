@@ -1057,6 +1057,8 @@ end
 --~ ChoGGi.testing.LoadMapForScreenShot("BlankBigTerraceCMix_13")
 --~ if false then
 --~ 	CreateRealTimeThread(function()
+--~ 		-- TESTING123
+--~ 		local MapData = rawget(_G , "MapData") and MapData or MapDataPresets
 --~ 		for map in pairs(MapData) do
 --~ 			if map:sub(1, 5) == "Blank" then
 --~ 				ChoGGi.testing.LoadMapForScreenShot(map)
@@ -1474,5 +1476,3 @@ function OnMsg.ModsReloaded()
 	print(ChoGGi.ComFuncs.TableConcat(ChoGGi.Temp.StartupMsgs))
 	table.iclear(ChoGGi.Temp.StartupMsgs)
 end
-
-print("ChoGGi.testing")

@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-if LuaRevision > 1001514 then
+if LuaRevision > 1001586 then
 	return
 end
 

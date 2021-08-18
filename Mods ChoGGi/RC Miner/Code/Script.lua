@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local Sleep = Sleep
+local IsTechResearched = IsTechResearched
 local GetModEnabled = ChoGGi.ComFuncs.GetModEnabled
 
 -- miner amounts table
@@ -343,7 +344,7 @@ function PortableMiner:ProcAutomation()
 	local deposit = MapFindNearest(self, "map", "SubsurfaceDeposit", "TerrainDeposit", --[["SurfaceDeposit", ]] function(d)
 		if (d:IsKindOf("TerrainDepositConcrete") and d:GetDepositMarker() or
 				(d:IsKindOfClasses(self.mineable) and
-				(d.depth_layer < 2 or self.city:IsTechResearched("DeepMetalExtraction")
+				(d.depth_layer < 2 or IsTechResearched("DeepMetalExtraction")
 			))) and self.miner_filter[d.resource]
 		then
 			return not unreachable_objects[d]
@@ -415,7 +416,7 @@ function PortableMiner:DepositNearby()
 		-- If it's concrete and there's a marker then we're good, if it's sub then check depth + tech researched
 	if d and (d:IsKindOf("TerrainDepositConcrete") and d:GetDepositMarker() or
 					(d:IsKindOfClasses(self.mineable) and
-					(d.depth_layer < 2 or self.city:IsTechResearched("DeepMetalExtraction")))) then
+					(d.depth_layer < 2 or IsTechResearched("DeepMetalExtraction")))) then
 		-- let miner know what kind we're mining
 		self.resource = d.resource
 		-- we need to store res as [1] to use the built-in metal extract func

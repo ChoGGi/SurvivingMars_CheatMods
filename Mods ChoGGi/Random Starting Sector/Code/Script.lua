@@ -1,29 +1,27 @@
 -- See LICENSE for terms
 
+local table = table
+local AsyncRand = AsyncRand
+local CreateRand = CreateRand
+local InitSector = InitSector
+
 local mod_MinimumSurfaceDeposits
 local mod_MinimumSubsurfaceDeposits
 
 -- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_MinimumSurfaceDeposits = CurrentModOptions:GetProperty("MinimumSurfaceDeposits")
 	mod_MinimumSubsurfaceDeposits = CurrentModOptions:GetProperty("MinimumSubsurfaceDeposits")
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
 -- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	-- I'm sure it wouldn't be that hard to only call this msg for the mod being applied, but...
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-local table = table
-
-local AsyncRand = AsyncRand
-local CreateRand = CreateRand
+OnMsg.ApplyModOptions = ModOptions
 
 -- only needed for mod_MinimumDeposits == 0; we ignore this if mod option > 0, but this is (probably slightly) faster then orig func so no need to bother checking
 local orig_City_CreateMapRand = City.CreateMapRand
@@ -48,10 +46,12 @@ function InitialReveal(eligible, ...)
 
 	-- pick a random sector from list of found ones
 	if #found_mins > 0 then
-		return {table.rand(found_mins)}
+		-- table.rand returns value, count (sending count along messes up func)
+		local sector = table.rand(found_mins)
+		return {sector}
 	end
+	-- probably too high of a min, so sort the rest and pick highest
 
-	-- probably too high of a min
 	table.sort(eligible, function(a, b)
 		return #a.markers.surface > #b.markers.surface
 	end)
@@ -59,6 +59,6 @@ function InitialReveal(eligible, ...)
 	table.sort(eligible, function(a, b)
 		return #a.markers.subsurface > #b.markers.subsurface
 	end)
-	return {eligible[1]}
 
+	return {eligible[1]}
 end

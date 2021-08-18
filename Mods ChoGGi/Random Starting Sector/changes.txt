@@ -1,2 +1,5 @@
+v0.3
+Fixed issue with no rockets/probes (thanks nights99).
+
 v0.2
 Mod options to only pick sectors with deposits.

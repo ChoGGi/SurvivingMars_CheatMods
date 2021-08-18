@@ -12,7 +12,8 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Last updated: Tito
+	"description", [[
+Last updated: Tito
 I've got an ahk script to get all msgs from the lua files. If anyone wants a whole bunch of msgs printed in their log use this mod...
 
 Excluded (very spammy):

@@ -32,6 +32,31 @@ Actions[c] = {ActionName = Strings[302535920001125--[[Test Locale File]]],
 	RolloverText = Strings[302535920001136--[[Test a CSV for malformed strings (can cause freezing when loaded normally).]]],
 	OnAction = ChoGGi.MenuFuncs.TestLocaleFile,
 }
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000069--[[Examine]]],
+	ActionMenubar = "ECM.Debug",
+	ActionId = ".Examine",
+	ActionIcon = "CommonAssets/UI/Menu/PlayerInfo.tga",
+	RolloverText = Strings[302535920000492--[[Opens the object examiner for the selected or moused-over obj.
+Use %s to show a list of all objects in a radius around cursor.]]]:format(ChoGGi.ComFuncs.GetShortcut(".Keys.Examine Objects Shift")),
+	OnAction = ChoGGi.MenuFuncs.ExamineObject,
+	ActionShortcut = "F4",
+	ActionBindable = true,
+}
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000069--[[Examine]]] .. " " .. Strings[302535920000163--[[Radius]]],
+	ActionMenubar = "ECM.Debug",
+	ActionId = ".Examine Radius",
+	ActionIcon = "CommonAssets/UI/Menu/ToggleStretchFactor.tga",
+	RolloverText = function()
+		return SettingState(
+			"ChoGGi.UserSettings.ExamineObjectRadius",
+			Strings[302535920000923--[[Set the radius used for %s examining.]]]:format(ChoGGi.ComFuncs.GetShortcut(".Keys.Examine Objects Shift"))
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.ExamineObjectRadius_Set,
+	ActionBindable = true,
+}
 
 -- menu
 c = c + 1
@@ -641,32 +666,6 @@ Actions[c] = {ActionName = Strings[302535920000481--[[Open In Ged Object Editor]
 	ActionIcon = "CommonAssets/UI/Menu/SelectionEditor.tga",
 	RolloverText = Strings[302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."]]],
 	OnAction = ChoGGi.MenuFuncs.OpenInGedObjectEditor,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000491--[[Examine Object]]],
-	ActionMenubar = "ECM.Debug.Object",
-	ActionId = ".Examine Object",
-	ActionIcon = "CommonAssets/UI/Menu/PlayerInfo.tga",
-	RolloverText = Strings[302535920000492--[[Opens the object examiner for the selected or moused-over obj.
-Use %s to show a list of all objects in a radius around cursor.]]]:format(ChoGGi.ComFuncs.GetShortcut(".Keys.Examine Objects Shift")),
-	OnAction = ChoGGi.MenuFuncs.ExamineObject,
-	ActionShortcut = "F4",
-	ActionBindable = true,
-}
-
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000491--[[Examine Object]]] .. " " .. Strings[302535920000163--[[Radius]]],
-	ActionMenubar = "ECM.Debug.Object",
-	ActionId = ".Examine Object Radius",
-	ActionIcon = "CommonAssets/UI/Menu/ToggleStretchFactor.tga",
-	RolloverText = function()
-		return SettingState(
-			"ChoGGi.UserSettings.ExamineObjectRadius",
-			Strings[302535920000923--[[Set the radius used for %s examining.]]]:format(ChoGGi.ComFuncs.GetShortcut(".Keys.Examine Objects Shift"))
-		)
-	end,
-	OnAction = ChoGGi.MenuFuncs.ExamineObjectRadius_Set,
 }
 
 c = c + 1

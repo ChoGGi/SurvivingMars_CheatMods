@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+-- TESTING123
+local luarev = LuaRevision > 1001586
+
 local pairs, type = pairs, type
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -453,14 +456,16 @@ end
 function ChoGGi.MenuFuncs.DisasterTriggerColdWave(severity)
 	CreateGameTimeThread(function()
 		local data = DataInstances.MapSettings_ColdWave
-		local descr = data[severity] or data[mapdata.MapSettings_ColdWave] or data.ColdWave_VeryLow
+		-- TESTING123
+		local descr = data[severity] or data[(luarev and ActiveMapData or mapdata).MapSettings_ColdWave] or data.ColdWave_VeryLow
 		StartColdWave(descr)
 	end)
 end
 function ChoGGi.MenuFuncs.DisasterTriggerDustStorm(severity, storm_type)
 	CreateGameTimeThread(function()
 		local data = DataInstances.MapSettings_DustStorm
-		local descr = data[severity] or data[mapdata.MapSettings_DustStorm] or data.DustStorm_VeryLow
+		-- TESTING123
+		local descr = data[severity] or data[(luarev and ActiveMapData or mapdata).MapSettings_DustStorm] or data.DustStorm_VeryLow
 		StartDustStorm(storm_type or "normal", descr)
 	end)
 end
@@ -471,7 +476,8 @@ function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(severity, major)
 	end
 
 	local data = DataInstances.MapSettings_DustDevils
-	local descr = data[severity] or data[mapdata.MapSettings_DustDevils] or data.DustDevils_VeryLow
+		-- TESTING123
+	local descr = data[severity] or data[(luarev and ActiveMapData or mapdata).MapSettings_DustDevils] or data.DustDevils_VeryLow
 	GenerateDustDevil(pos, descr, nil, major):Start()
 end
 function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity, meteors_type, pos)
@@ -484,7 +490,8 @@ function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity, meteors_type, pos)
 
 	local data = DataInstances.MapSettings_Meteor
 	local descr = ChoGGi.ComFuncs.CopyTable(
-		data[severity] or data[mapdata.MapSettings_Meteor] or data.Meteor_VeryLow
+		-- TESTING123
+		data[severity] or data[(luarev and ActiveMapData or mapdata).MapSettings_Meteor] or data.Meteor_VeryLow
 	)
 	if meteors_type == "single" then
 		-- defaults to 50000 (no good for aiming).

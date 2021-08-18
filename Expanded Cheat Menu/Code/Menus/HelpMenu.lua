@@ -160,6 +160,19 @@ Actions[c] = {ActionName = Strings[302535920001242--[[Edit ECM Settings]]],
 	OnAction = ChoGGi.MenuFuncs.EditECMSettings,
 	ActionSortKey = "99",
 }
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920001647--[[Window Title]]],
+	ActionMenubar = "ECM.Help.Expanded Cheat Menu",
+	ActionId = ".Window Title",
+	ActionIcon = "CommonAssets/UI/Menu/ExportImageSequence.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.ChangeWindowTitle,
+			Strings[302535920001648--[[If you don't want ECM to change the window title than disable this (restart to take effect).]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.ChangeWindowTitle_Toggle,
+}
 
 -- menu
 c = c + 1

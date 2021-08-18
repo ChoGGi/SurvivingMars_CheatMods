@@ -154,6 +154,9 @@ Actions[c] = {ActionName = Strings[302535920000708--[[Meteor Damage]]],
 	OnAction = ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle,
 }
 
+-- TESTING123
+local luarev = LuaRevision > 1001586
+
 c = c + 1
 Actions[c] = {ActionName = Translate(4142--[[Dust Devils]]),
 	ActionMenubar = "ECM.ECM.Mission.Disasters",
@@ -161,7 +164,8 @@ Actions[c] = {ActionName = Translate(4142--[[Dust Devils]]),
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = function()
 		return SettingState(
-			mapdata.MapSettings_DustDevils,
+			-- TESTING123
+			(luarev and ActiveMapData or mapdata).MapSettings_DustDevils,
 			Strings[302535920000966--[[Set the occurrence level of %s disasters.]]]:format(
 				Translate(4142--[[Dust Devils]])
 			)
@@ -178,7 +182,8 @@ Actions[c] = {ActionName = Translate(4148--[[Cold Waves]]),
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = function()
 		return SettingState(
-			mapdata.MapSettings_ColdWave,
+			-- TESTING123
+			(luarev and ActiveMapData or mapdata).MapSettings_ColdWave,
 			Strings[302535920000966--[[Set the occurrence level of %s disasters.]]]:format(
 				Translate(4149--[[Cold Wave]])
 			)
@@ -195,7 +200,8 @@ Actions[c] = {ActionName = Translate(4144--[[Dust Storms]]),
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = function()
 		return SettingState(
-			mapdata.MapSettings_DustStorm,
+			-- TESTING123
+			(luarev and ActiveMapData or mapdata).MapSettings_DustStorm,
 			Strings[302535920000966--[[Set the occurrence level of %s disasters.]]]:format(
 				Translate(4250--[[Dust Storm]])
 			)
@@ -212,7 +218,8 @@ Actions[c] = {ActionName = Translate(4146--[[Meteors]]),
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = function()
 		return SettingState(
-			mapdata.MapSettings_Meteor,
+			-- TESTING123
+			(luarev and ActiveMapData or mapdata).MapSettings_Meteor,
 			Strings[302535920000966--[[Set the occurrence level of %s disasters.]]]:format(
 				Translate(4146--[[Meteors]])
 			)

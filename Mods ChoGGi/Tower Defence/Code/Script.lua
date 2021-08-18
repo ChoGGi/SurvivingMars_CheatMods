@@ -148,7 +148,7 @@ function OnMsg.NewDay(sol)
 		Sleep(1000)
 
 		if sol > 24 and not IsTechDiscovered("DefenseTower") then
-			UICity:SetTechDiscovered("DefenseTower")
+			ChoGGi.ComFuncs.RetUIColony():SetTechDiscovered("DefenseTower")
 		end
 
 		if sol < 49 then

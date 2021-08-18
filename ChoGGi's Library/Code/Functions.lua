@@ -7,9 +7,11 @@ local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 -- add PostSaveGame to be a companion for SaveGame
 SaveOrigFunc("ReportPersistErrors")
 function ReportPersistErrors(...)
-	ChoGGi_OrigFuncs.ReportPersistErrors(...)
+	local errors, warnings = ChoGGi_OrigFuncs.ReportPersistErrors(...)
 	-- be useful for restarting threads, see if devs will add it
 	Msg("PostSaveGame")
+	-- the assert in PersistGame() attempts to concat a nil value
+	return errors, warnings
 end
 
 -- This updates my dlgs when the ui scale is changed

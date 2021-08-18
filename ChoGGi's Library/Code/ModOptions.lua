@@ -85,8 +85,11 @@ function OnMsg.ClassesPostprocess()
 	-- this is in pp so it overrides ECM overriding the func
 	local orig_ReportPersistErrors = ReportPersistErrors
 	function ReportPersistErrors(...)
+		-- be useful for restarting threads, see if devs will add it
+		Msg("PostSaveGame")
+
 		if CurrentModOptions:GetProperty("IgnorePersistErrors") then
-			return
+			return 0, 0
 		end
 
 		return orig_ReportPersistErrors(...)

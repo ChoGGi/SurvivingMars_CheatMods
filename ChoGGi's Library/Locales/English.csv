@@ -1,6 +1,4 @@
 "ID", " Text"
-302535920001647,
-302535920001648,
 302535920001649,
 302535920001650,
 302535920000000, "Expanded Cheat Menu"
@@ -1653,6 +1651,8 @@ Not noticeable unless using higher zoom."
 302535920000654, "Select (or mouse over) an object to follow."
 302535920000655, "Toggle Cursor"
 302535920000656, "Toggle between moving camera and selecting objects."
+302535920001647, "Window Title"
+302535920001648, "If you don't want ECM to change the window title than disable this (restart to take effect)."
 302535920001634, "This mod requires my lib mod (ChoGGi's Library)."
 302535920000990, "You need to have a mouse to use this mod."
 302535920000887, "If you get a disabled content restrictions error: It's on Paradox to review/restore it (bug them not me).

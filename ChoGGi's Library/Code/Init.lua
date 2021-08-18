@@ -1,3 +1,9 @@
+-- TESTING123
+local luarev = LuaRevision > 1001586
+if luarev then
+	assert = empty_func
+end
+
 -- See LICENSE for terms
 
 local LICENSE = [[
@@ -149,26 +155,19 @@ else
 	printC = empty_func
 end
 
-
-
-
-
-
-
-
-
-
-
+-- TESTING123
+if luarev then
+	return
+end
 
 -- get rid of log spam from RCTransport:Automation_Gather()
 -- how long are they going to leave in it? (tito was 2021-03-24)
 -- DefineClass("SurfaceDepositPreciousMinerals", etc)		< ends in a ctd and I can't be bothered to dig into it
-
 printC"RCTransport:Automation_Gather() override is still in place..."
 local orig_MapFindNearest = MapFindNearest
 local function fake_MapFindNearest(rover, realm, metals, concrete, polymers, minerals, func, ...)
 	-- if the mineral class doesn't exist then return map func minus the log spam
-	if minerals == "SurfaceDepositPreciousMinerals" and not g_Classes.SurfaceDepositPreciousMinerals then
+	if minerals == "SurfaceDepositPreciousMinerals" then
 		-- I moved polymers in front of concrete because...
 		return orig_MapFindNearest(rover, realm, metals, polymers, concrete, func)
 	end

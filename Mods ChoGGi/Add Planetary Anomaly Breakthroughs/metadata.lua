@@ -14,6 +14,12 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagGameplay", true,
-	"description", [[When you apply the mod options for this mod, it'll add that amount of breakthroughs to the list grabbed from (game starts with 4).
+	"description", [[
+When you apply the mod options for this mod, it'll add that amount of breakthroughs to the list grabbed from (game starts with 4).
+
+You must be in-game before you apply the mod options or it won't do anything.
+The breakthrough anomalies don't show up right away they're on a timer, use my POI Spawn Rate mod to have them spawn quicker.
+
+Nothing happens if you've already unlocked all the breakthroughs.
 ]],
 })

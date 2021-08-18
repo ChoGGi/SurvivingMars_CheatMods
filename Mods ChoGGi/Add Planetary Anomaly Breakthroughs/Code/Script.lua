@@ -1,19 +1,21 @@
 -- See LICENSE for terms
 
-local mod_EnableMod
 local mod_AddPlanetaryAnomalyBreakthroughs
 
 -- fired when settings are changed/init
-local function ModOptions()
-	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
-	mod_AddPlanetaryAnomalyBreakthroughs = CurrentModOptions:GetProperty("AddPlanetaryAnomalyBreakthroughs")
-
-
-	if not mod_EnableMod then
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
 		return
 	end
+
+	mod_AddPlanetaryAnomalyBreakthroughs = CurrentModOptions:GetProperty("AddPlanetaryAnomalyBreakthroughs")
+
+	if not CurrentModOptions:GetProperty("EnableMod") then
+		return
+	end
+
 	-- make sure we're in-game
-	local UICity = UICity
 	if not UICity then
 		return
 	end
@@ -30,13 +32,5 @@ local function ModOptions()
 	end
 
 end
-
---~ -- load default/saved settings
 --~ OnMsg.ModsReloaded = ModOptions
-
--- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+OnMsg.ApplyModOptions = ModOptions

@@ -78,7 +78,7 @@ function OnMsg.ClassesPostprocess()
 			end
 
 			if mod_Aerodynamics then
-				return UICity:IsTechResearched("MartianAerodynamics")
+				return IsTechResearched("MartianAerodynamics")
 			else
 				return true
 			end

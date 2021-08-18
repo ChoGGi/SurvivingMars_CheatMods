@@ -40,7 +40,7 @@ On the bright side there won't be much left on impact, so other colonists won't 
 Mod Options:
 Skip Tourists: Never remove tourists.
 Ignore Domes: Remove colonists inside domes.
-Less Takeoff Dust: Pods have less dust when taking off (for the mass murders).
+Less Takeoff Dust: Pods have less dust when taking off (for the mass murderers).
 Hide Button: Don't show the Remove Colonist button.
 See mod options to automagically remove colonists of certain traits.
 ]],

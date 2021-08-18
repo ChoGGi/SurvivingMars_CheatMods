@@ -1395,13 +1395,13 @@ do -- ReturnTechAmount/GetResearchedTechValue
 
 	function ChoGGi.ComFuncs.GetResearchedTechValue(name, cls)
 		local ChoGGi_Consts = ChoGGi.Consts
-		local UICity = UICity
+		local IsTechResearched = IsTechResearched
 
 		-- cls
 		if name == "RCTransportStorageCapacity" then
 			local amount = cls == "RCConstructor" and ChoGGi_Consts.RCConstructorStorageCapacity or ChoGGi_Consts.RCTransportStorageCapacity
 
-			if UICity:IsTechResearched("TransportOptimization") then
+			if IsTechResearched("TransportOptimization") then
 				local a = ReturnTechAmount("TransportOptimization", "max_shared_storage")
 				return amount + (a * const.ResourceScale)
 			end
@@ -1410,7 +1410,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 
 		--
 		if name == "DroneBatteryMax" then
-			if UICity:IsTechResearched("BatteryOptimization") then
+			if IsTechResearched("BatteryOptimization") then
 				local p = ReturnTechAmount("BatteryOptimization", "battery_max")
 				return floatfloor(ChoGGi_Consts.DroneBatteryMax + (ChoGGi_Consts.DroneBatteryMax * p))
 			end
@@ -1420,11 +1420,11 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		if name == "SpeedDrone" then
 			local move_speed = ChoGGi_Consts.SpeedDrone
 
-			if UICity:IsTechResearched("LowGDrive") then
+			if IsTechResearched("LowGDrive") then
 				local p = ReturnTechAmount("LowGDrive", "move_speed")
 				move_speed = move_speed + (move_speed * p)
 			end
-			if UICity:IsTechResearched("AdvancedDroneDrive") then
+			if IsTechResearched("AdvancedDroneDrive") then
 				local p = ReturnTechAmount("AdvancedDroneDrive", "move_speed")
 				move_speed = move_speed + (move_speed * p)
 			end
@@ -1433,11 +1433,11 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		--
 		if name == "MaxColonistsPerRocket" then
 			local per_rocket = ChoGGi_Consts.MaxColonistsPerRocket
-			if UICity:IsTechResearched("CompactPassengerModule") then
+			if IsTechResearched("CompactPassengerModule") then
 				local a = ReturnTechAmount("CompactPassengerModule", "MaxColonistsPerRocket")
 				per_rocket = per_rocket + a
 			end
-			if UICity:IsTechResearched("CryoSleep") then
+			if IsTechResearched("CryoSleep") then
 				local a = ReturnTechAmount("CryoSleep", "MaxColonistsPerRocket")
 				per_rocket = per_rocket + a
 			end
@@ -1445,7 +1445,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		end
 		--
 		if name == "FuelRocket" then
-			if UICity:IsTechResearched("AdvancedMartianEngines") then
+			if IsTechResearched("AdvancedMartianEngines") then
 				local a = ReturnTechAmount("AdvancedMartianEngines", "launch_fuel")
 				return ChoGGi_Consts.LaunchFuelPerRocket - (a * const.ResourceScale)
 			end
@@ -1453,7 +1453,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		end
 		--
 		if name == "SpeedRC" then
-			if UICity:IsTechResearched("LowGDrive") then
+			if IsTechResearched("LowGDrive") then
 				local p = ReturnTechAmount("LowGDrive", "move_speed")
 				return floatfloor(ChoGGi_Consts.SpeedRC + (ChoGGi_Consts.SpeedRC * p))
 			end
@@ -1461,7 +1461,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		end
 		--
 		if name == "CargoCapacity" then
-			if UICity:IsTechResearched("FuelCompression") then
+			if IsTechResearched("FuelCompression") then
 				local a = ReturnTechAmount("FuelCompression", "CargoCapacity")
 				return ChoGGi_Consts.CargoCapacity + a
 			end
@@ -1469,7 +1469,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		end
 		--
 		if name == "CommandCenterMaxDrones" then
-			if UICity:IsTechResearched("DroneSwarm") then
+			if IsTechResearched("DroneSwarm") then
 				local a = ReturnTechAmount("DroneSwarm", "CommandCenterMaxDrones")
 				return ChoGGi_Consts.CommandCenterMaxDrones + a
 			end
@@ -1477,7 +1477,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		end
 		--
 		if name == "DroneResourceCarryAmount" then
-			if UICity:IsTechResearched("ArtificialMuscles") then
+			if IsTechResearched("ArtificialMuscles") then
 				local a = ReturnTechAmount("ArtificialMuscles", "DroneResourceCarryAmount")
 				return ChoGGi_Consts.DroneResourceCarryAmount + a
 			end
@@ -1485,7 +1485,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		end
 		--
 		if name == "LowSanityNegativeTraitChance" then
-			if UICity:IsTechResearched("SupportiveCommunity") then
+			if IsTechResearched("SupportiveCommunity") then
 				local p = ReturnTechAmount("SupportiveCommunity", "LowSanityNegativeTraitChance")
 				--[[
 				LowSanityNegativeTraitChance = 30%
@@ -1498,7 +1498,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		end
 		--
 		if name == "NonSpecialistPerformancePenalty" then
-			if UICity:IsTechResearched("GeneralTraining") then
+			if IsTechResearched("GeneralTraining") then
 				local a = ReturnTechAmount("GeneralTraining", "NonSpecialistPerformancePenalty")
 				return ChoGGi_Consts.NonSpecialistPerformancePenalty - a
 			end
@@ -1506,7 +1506,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		end
 		--
 		if name == "RCRoverMaxDrones" then
-			if UICity:IsTechResearched("RoverCommandAI") then
+			if IsTechResearched("RoverCommandAI") then
 				local a = ReturnTechAmount("RoverCommandAI", "RCRoverMaxDrones")
 				return ChoGGi_Consts.RCRoverMaxDrones + a
 			end
@@ -1514,7 +1514,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		end
 		--
 		if name == "RCTransportGatherResourceWorkTime" then
-			if UICity:IsTechResearched("TransportOptimization") then
+			if IsTechResearched("TransportOptimization") then
 				local p = ReturnTechAmount("TransportOptimization", "RCTransportGatherResourceWorkTime")
 				return floatfloor(ChoGGi_Consts.RCTransportGatherResourceWorkTime * p)
 			end
@@ -1522,7 +1522,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		end
 		--
 		if name == "TravelTimeEarthMars" then
-			if UICity:IsTechResearched("PlasmaRocket") then
+			if IsTechResearched("PlasmaRocket") then
 				local p = ReturnTechAmount("PlasmaRocket", "TravelTimeEarthMars")
 				return floatfloor(ChoGGi_Consts.TravelTimeEarthMars * p)
 			end
@@ -1530,7 +1530,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 		end
 		--
 		if name == "TravelTimeMarsEarth" then
-			if UICity:IsTechResearched("PlasmaRocket") then
+			if IsTechResearched("PlasmaRocket") then
 				local p = ReturnTechAmount("PlasmaRocket", "TravelTimeMarsEarth")
 				return floatfloor(ChoGGi_Consts.TravelTimeMarsEarth * p)
 			end

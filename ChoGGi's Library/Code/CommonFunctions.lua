@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+-- TESTING123
+local luarev = LuaRevision > 1001586
+
 local Strings = ChoGGi.Strings
 local testing = ChoGGi.testing
 -- Init.lua
@@ -56,6 +59,15 @@ function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	rawget = env.rawget
 	getmetatable = env.getmetatable
 end
+
+local function RetUIColony()
+	-- TESTING123
+	if luarev then
+		return UIColony
+	end
+	return UICity
+end
+ChoGGi.ComFuncs.RetUIColony = RetUIColony
 
 -- backup orginal function for later use (checks if we already have a backup, or else inf problems)
 local function SaveOrigFunc(class_or_func, func_name)
@@ -666,7 +678,12 @@ do -- MsgPopup
 		-- and show the popup
 		CreateRealTimeThread(function()
 			local popup = OnScreenNotification:new({}, dlg.idNotifications)
-			popup:FillData(data, params.callback, params, params.cycle_objs)
+			-- TESTING123
+			if luarev then
+				popup:FillData(data.id, data, params.callback, params, params.cycle_objs)
+			else
+				popup:FillData(data, params.callback, params, params.cycle_objs)
+			end
 			popup:Open()
 			dlg:ResolveRelativeFocusOrder()
 			ChoGGi.Temp.MsgPopups[#ChoGGi.Temp.MsgPopups+1] = popup
@@ -2685,6 +2702,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 
 	local function SetChoGGiPalette(obj, c)
 		obj:SetColorModifier(c[-1])
+		-- object, 1-4 , Color, Roughness, Metallic
 		obj:SetColorizationMaterial(1, c[1][1], c[1][2], c[1][3])
 		obj:SetColorizationMaterial(2, c[2][1], c[2][2], c[2][3])
 		obj:SetColorizationMaterial(3, c[3][1], c[3][2], c[3][3])
@@ -5330,7 +5348,8 @@ do -- ObjHexShape_Toggle
 end -- do
 
 function ChoGGi.ComFuncs.ModEditorActive()
-	local m = mapdata
+	-- TESTING123
+	local m = luarev and ActiveMapData or mapdata
 	-- you can save the mod map and play it, so we also check for other stuff
 	if m.id == "Mod" and m.markers and m.NetHash then
 		return true

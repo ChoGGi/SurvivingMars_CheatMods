@@ -5,7 +5,8 @@ return PlaceObj("ModDef", {
 --~ 	"pops_any_uuid", "d8b39692-93b4-4446-9149-2e1addd28ac4",
 	"pops_any_uuid", "bbeae1a3-fa60-48d3-8bf4-bbfe7d5e018b",
 	"pops_desktop_uuid", "36c014ce-1fcd-4cef-9621-a4bd631d3ee0",
-	"lua_revision", 1001514, -- Tito
+--~ 	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- ?
 	"version", 102,
 	"version_major", 10,
 	"version_minor", 2,

@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+-- TESTING123
+local luarev = LuaRevision > 1001586
+
 local type = type
 
 local Translate = ChoGGi.ComFuncs.Translate
@@ -254,7 +257,13 @@ Fix with: %s]]]:format(default_setting)
 		if type(value) == "number" then
 			if value == 500 then
 				-- reset money back to 0
-				UICity.funding = 0
+
+				-- TESTING123
+				if luarev then
+					UIColony.funds.funding = 0
+				else
+					UICity.funding = 0
+				end
 			end
 			-- and add the new amount
 			ChangeFunding(value)

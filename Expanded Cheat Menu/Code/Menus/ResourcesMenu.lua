@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+-- TESTING123
+local luarev = LuaRevision > 1001586
+
 local Translate = ChoGGi.ComFuncs.Translate
 local SettingState = ChoGGi.ComFuncs.SettingState
 local Strings = ChoGGi.Strings
@@ -82,7 +85,8 @@ Actions[c] = {ActionName = Translate(3613--[[Funding]]),
 	RolloverText = function()
 		if UICity then
 			return SettingState(
-				LocaleInt(UICity.funding),
+				-- TESTING123
+				LocaleInt(luarev and UIColony.funds.funding or UICity.funding),
 				Strings[302535920000726--[[Add more funding (or reset back to 500 M).]]]
 			)
 		end

@@ -3,11 +3,9 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! green: <green>%s</green>
 !Skipped Line! yellow: <yellow>%s</yellow>
 "ID", " Text"
-302535920001647,
-302535920001648,
 302535920001649,
 end !Skipped Line!
-do !Skipped Line! [[UPDATE Strings.lua when this is larger UPDATE]] !Skipped Line!
+do !Skipped Line! [[!UPDATE! Lib\Code\Strings.lua when this is larger !UPDATE!]] !Skipped Line!
 302535920001650,
 end !Skipped Line!
 do !Skipped Line! [[Expanded Cheat Menu]] !Skipped Line!
@@ -1729,6 +1727,8 @@ Not noticeable unless using higher zoom."
 302535920000656, "Toggle between moving camera and selecting objects."
 end end end end !Skipped Line!
 do !Skipped Line! [[HelpMenu.lua" "HelpFunc.lua]] !Skipped Line!
+302535920001647, "Window Title"
+302535920001648, "If you don't want ECM to change the window title than disable this (restart to take effect)."
 302535920001634, "This mod requires my lib mod (ChoGGi's Library)."
 302535920000990, "You need to have a mouse to use this mod."
 302535920000887, "If you get a disabled content restrictions error: It's on Paradox to review/restore it (bug them not me).

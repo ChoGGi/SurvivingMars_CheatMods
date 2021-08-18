@@ -714,7 +714,7 @@ function ResourceOverview:GetColonistsRollover(...)
 
 	-- biorobots count
 	local UICity = UICity
-	if UICity:IsTechResearched("ThePositronicBrain") then
+	if IsTechResearched("ThePositronicBrain") then
 		-- get android count in each dome (maybe faster than counting each colonist?)
 		local ac = 0
 		local objs = UICity.labels.Dome or ""

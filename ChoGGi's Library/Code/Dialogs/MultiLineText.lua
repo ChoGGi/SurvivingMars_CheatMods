@@ -52,6 +52,10 @@ function ChoGGi_DlgMultiLineText:Init(parent, context)
 	self:AddScrollEdit()
 	self.idEdit:SetText(context.text)
 
+	if context.file_path then
+		self.file_path = context.file_path
+	end
+
 	do -- search area
 		self.idSearchArea = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idSearchArea",
@@ -91,13 +95,15 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		OnPress = self.idOkay_OnPress,
 	}, self.idButtonContainer)
 
-	self.idOpenFile = g_Classes.ChoGGi_XButton:new({
-		Id = "idOpenFile",
-		Dock = "left",
-		Text = Strings[302535920001268--[[Open File]]],
-		RolloverText = Strings[302535920001309--[[Open file in default editor.]]],
-		OnPress = self.idOpenFile_OnPress,
-	}, self.idButtonContainer)
+	if not blacklist and self.file_path then
+		self.idOpenFile = g_Classes.ChoGGi_XButton:new({
+			Id = "idOpenFile",
+			Dock = "left",
+			Text = Strings[302535920001268--[[Open File]]],
+			RolloverText = Strings[302535920001309--[[Open file in default editor.]]],
+			OnPress = self.idOpenFile_OnPress,
+		}, self.idButtonContainer)
+	end
 
 	self.update_func = context.update_func
 	if type(self.update_func) == "function" then
@@ -153,10 +159,6 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 
 	if context.scrollto then
 		self:ScrollToText(context.scrollto)
-	end
-
-	if context.file_path then
-		self.file_path = context.file_path
 	end
 
 	if context.code then
@@ -303,7 +305,7 @@ end
 --
 function ChoGGi_DlgMultiLineText:idOpenFile_OnPress()
 	self = GetRootDialog(self)
-	if ChoGGi.blacklist or not self.file_path then
+	if blacklist or not self.file_path then
 		return
 	end
 	g.AsyncExec("cmd /c \"" .. self.file_path .. "\"", true, true)

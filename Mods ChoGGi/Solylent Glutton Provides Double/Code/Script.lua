@@ -1,13 +1,18 @@
 -- See LICENSE for terms
 
+local IsTechResearched = IsTechResearched
+local PlaceResourcePile = PlaceResourcePile
+local GetPassablePointNearby = GetPassablePointNearby
+local ResourceScale = const.ResourceScale
+
 function OnMsg.ColonistDie(colonist)
 	if colonist.traits and colonist.traits.Glutton and
-		colonist.city:IsTechResearched("SoylentGreen")
+		IsTechResearched("SoylentGreen")
 	then
 		PlaceResourcePile(
-			GetPassablePointNearby(colonist) or colonist:GetPos(),
+			GetPassablePointNearby(colonist) or colonist:GetVisualPos(),
 			"Food",
-			1*const.ResourceScale
+			1 * ResourceScale
 		)
 	end
 end
