@@ -489,7 +489,7 @@ function MurderPod:Abduct()
 
 	-- stalk if in dome/building/passage
 	local inside = not victim.outside_start
-	if inside and not OpenAirBuildings and not mod_IgnoreDomes then
+	if inside and not GetOpenAirBuildings(ActiveMapID) and not mod_IgnoreDomes then
 		self:SetCommand("StalkerTime")
 	end
 
@@ -568,7 +568,7 @@ function MurderPod:StalkerTime()
 
 		-- outside_start is a count of oxygen left, false if out of spacesuit
 		local outside = victim.outside_start
-		if mod_IgnoreDomes or outside or (not outside and OpenAirBuildings) then
+		if mod_IgnoreDomes or outside or (not outside and GetOpenAirBuildings(ActiveMapID)) then
 			-- just in case, probably where the new crash is coming from?
 			if self:GetVictimPos() ~= InvalidPos then
 				self:SetCommand("Abduct")

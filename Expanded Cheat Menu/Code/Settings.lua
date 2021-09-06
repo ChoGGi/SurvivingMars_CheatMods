@@ -1,8 +1,5 @@
 -- See LICENSE for terms
 
--- TESTING123
-local luarev = LuaRevision > 1001586
-
 -- stores default values and some tables
 
 local next, pairs, type, table, os = next, pairs, type, table, os
@@ -398,8 +395,7 @@ end
 
 -- bloody hint popups
 if UserSettings.DisableHints then
-	-- TESTING123
-	local mapdata = luarev and ActiveMapData or mapdata
+	local mapdata = ActiveMapData
 	if mapdata.DisableHints == false then
 		mapdata.DisableHints = true
 	end

@@ -22,6 +22,6 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagGameplay", true,
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"description", [[Converts Metals to Precious Metals (10 to 1 ratio).]],
 })

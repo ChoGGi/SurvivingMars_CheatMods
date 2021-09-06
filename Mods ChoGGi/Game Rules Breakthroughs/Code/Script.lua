@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local RetUIColony = ChoGGi.ComFuncs.RetUIColony
 local PlaceObj = PlaceObj
 local table = table
 
@@ -93,7 +92,7 @@ function OnMsg.ClassesPostprocess()
 		id = "ChoGGi_DoAllBreakthroughs",
 		PlaceObj("Effect_Code", {
 			OnApplyEffect = function(_, colony)
-				colony = colony.SetTechResearched and colony or RetUIColony()
+				colony = colony.SetTechResearched and colony or UIColony
 				local func = mod_BreakthroughsResearched and colony.SetTechResearched or colony.SetTechDiscovered
 				for i = 1, #breaks do
 					func(colony, breaks[i].id)
@@ -126,7 +125,7 @@ function OnMsg.ClassesPostprocess()
 					if mod_ExcludeBreakthroughs then
 						return
 					end
-					colony = colony.SetTechResearched and colony or RetUIColony()
+					colony = colony.SetTechResearched and colony or UIColony
 					if mod_BreakthroughsResearched then
 						colony:SetTechResearched(id)
 					else

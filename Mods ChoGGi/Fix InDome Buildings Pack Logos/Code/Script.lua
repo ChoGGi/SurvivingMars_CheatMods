@@ -1,5 +1,9 @@
 -- See LICENSE for terms
 
+if LuaRevision > 1001586 then
+	return
+end
+
 if not g_AvailableDlc.kerwin then
 	print("Fix InDome Buildings Pack Logos: DLC not installed!")
 	return

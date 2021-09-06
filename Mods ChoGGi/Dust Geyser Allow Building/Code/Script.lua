@@ -51,7 +51,7 @@ local orig_ConstructionController_IsObstructed = ConstructionController.IsObstru
 function ConstructionController:IsObstructed(...)
 	if mod_EnableMod then
 		if not l_DontBuildHere then
-			l_DontBuildHere = g_DontBuildHere
+			l_DontBuildHere = g_DontBuildHere[ActiveMapID]
 		end
 
 		local o = self.construction_obstructors

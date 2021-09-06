@@ -19,7 +19,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua"
 	},
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"description", [[Restores "Request Maintenance" button (call drones to work).
 Also fixes frozen buildings that start a maintenance request during a cold wave and drones don't repair till after cold wave ends.
 Use Ctrl-R as a shortcut key (change default in keybindings).

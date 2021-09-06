@@ -1,11 +1,12 @@
 -- See LICENSE for terms
 
--- I translate all the strings at startup, so it's a table lookup instead of a func call
+-- I translate all the strings at startup, so it's a table lookup instead of a func call (okay it wasn't worth it)
 -- ~ ChoGGi.Strings[27]
 
 -- amount of entries in the CSV file
-local string_limit = 1650
+local string_limit = 1700
 
+local testing = ChoGGi.testing
 
 -- what _InternalTranslate returns on failure
 local missing_text = ChoGGi.Temp.missing_text
@@ -33,7 +34,7 @@ local function Translate(t, context, ...)
 	-- something didn't work
 	elseif type(str) ~= "string" then
 		-- try to return the string id, if we can
-		print("ECM Sez: Translate Failed:", t, context, ...)
+		print("ChoGGi Lib Sez: Translate Failed:", t, context, ...)
 		return tostring(IsT(t) or missing_text)
 	end
 
@@ -101,10 +102,14 @@ do -- UpdateStringsList (fired below, and whenever lang is changed)
 		if not next(strings) then
 			-- If there's a missing id print/return a warning
 			setmetatable(strings, {
-				__index = function(_, id)
+				__index = function(errorsout, id)
 					-- we only want numbers, so if anything else is requested then ignore
 					if type(id) == "number" then
-						print("ECM Sez: *bad string id?", id)
+						print("ChoGGi Lib: *bad string id?", id)
+						if testing then
+							-- this will error out, but I'll know where it comes from at least.
+							ex(errorsout)
+						end
 						return missing_text
 					end
 				end,

@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ProjectPhoenixNoRenegades",
 	"steam_id", "2463513394",
 	"pops_any_uuid", "6967fd74-c9b3-4c47-95e9-b38a494572ba",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

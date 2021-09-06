@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ConstructionShowMapSectors",
 	"author", "ChoGGi",
 	"image", "Preview.png",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"steam_id", "1493819550",
 	"pops_any_uuid", "8b9f7119-c1ec-4aa2-afbf-77065611df3a",
 	"code", {

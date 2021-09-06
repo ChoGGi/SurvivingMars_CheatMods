@@ -1,8 +1,5 @@
 -- See LICENSE for terms
 
--- TESTING123
-local luarev = LuaRevision > 1001586
-
 local pairs, type, tostring, table = pairs, type, tostring, table
 local IsValid = IsValid
 local GetCursorWorldPos = GetCursorWorldPos
@@ -12,6 +9,10 @@ local RetName = ChoGGi.ComFuncs.RetName
 local Translate = ChoGGi.ComFuncs.Translate
 local RandomColour = ChoGGi.ComFuncs.RandomColour
 local Strings = ChoGGi.Strings
+
+function ChoGGi.MenuFuncs.Interface_Toggle()
+	hr.RenderUIL = hr.RenderUIL == 0 and 1 or 0
+end
 
 function ChoGGi.MenuFuncs.InfoPanelDlg_Toggle()
 	local info = Dialogs.Infopanel
@@ -759,14 +760,7 @@ function ChoGGi.MenuFuncs.TestStoryBits()
 			obj = SelectedObj
 		end
 
-		-- TESTING123
-		if luarev then
-			ForceActivateStoryBit(choice.value, MainMapID, obj, true)
-			-- ActiveMapID
-		else
-			ForceActivateStoryBit(choice.value, obj, true)
-		end
-
+		ForceActivateStoryBit(choice.value, ActiveMapID, obj, true)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{

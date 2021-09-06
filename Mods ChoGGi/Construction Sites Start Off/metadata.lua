@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Construction Sites Start Off",
 	"id", "ChoGGi_ConstructionSitesStartOff",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"steam_id", "2098431358",
 	"pops_any_uuid", "043cdf2e-81b7-46d0-85ae-208ce4730a88",
 	"version", 3,

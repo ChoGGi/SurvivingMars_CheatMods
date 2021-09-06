@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_MapImagesPack",
 	"pops_any_uuid", "9d1bb5a5-7c0e-4217-9bd9-54412dd730e2",
 	"steam_id", "1571465108",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

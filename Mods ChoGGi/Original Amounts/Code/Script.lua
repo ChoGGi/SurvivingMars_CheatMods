@@ -61,12 +61,13 @@ function OnMsg.ClassesPostprocess()
 		bt.BlackCubeSmallMonument.construction_cost_BlackCube = 42000
 	end
 
-	if bt["Casino Complex"] then
-		bt["Casino Complex"].construction_cost_Concrete = 40000
-		bt["Casino Complex"].construction_cost_Electronics = 20000
-		bt["Casino Complex"].maintenance_build_up_per_hr = 600
-		bt["Casino Complex"].maintenance_resource_amount = 2000
-		bt["Casino Complex"].maintenance_resource_type = "Electronics"
+	local cc = bt["Casino Complex"] or bt.CasinoComplex
+	if cc then
+		cc.construction_cost_Concrete = 40000
+		cc.construction_cost_Electronics = 20000
+		cc.maintenance_build_up_per_hr = 600
+		cc.maintenance_resource_amount = 2000
+		cc.maintenance_resource_type = "Electronics"
 	end
 
 	if bt.CloningVats then

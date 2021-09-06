@@ -2,7 +2,7 @@
 
 -- fired when settings are changed/init
 local function UnlockBreaks(newgame)
-	local colony = ChoGGi.ComFuncs.RetUIColony()
+	local colony = UIColony
 	if not colony then
 		return
 	end

@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_FindMapLocations",
 	"pops_any_uuid", "b97dbd4e-71cf-4e82-80a0-46dd104133bc",
 	"steam_id", "2453011286",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 7,
 	"version_major", 0,
 	"version_minor", 7,

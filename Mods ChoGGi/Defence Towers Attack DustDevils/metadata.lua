@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_DefenceTowersAttackDustDevils",
 	"steam_id", "1504597628",
 	"pops_any_uuid", "957bd9ec-fb96-4c00-9065-984aae313e1f",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 7,
 	"version_major", 0,
 	"version_minor", 7,

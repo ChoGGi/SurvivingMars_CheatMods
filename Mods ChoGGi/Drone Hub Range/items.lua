@@ -24,6 +24,7 @@ return {
 	PlaceObj("ModItemOptionNumber", {
 		"name", "DroneHubRangeDefault",
 		"DisplayName", table.concat(T(1000121,"Default") .. " " .. T(3518,"Drone Hub") .. " " .. T(643,"Range")),
+		"Help", T(0000, "New hubs will have this range set by default."),
 		"DefaultValue", const.CommandCenterDefaultRadius,
 		"MinValue", const.CommandCenterMinRadius,
 		"MaxValue", 500,

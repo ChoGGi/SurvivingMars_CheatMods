@@ -42,11 +42,11 @@ function OnMsg.ClassesPostprocess()
 		OnContextUpdate = function(self, context)
 			local name = RetName(context)
 			if context.ChoGGi_DisableMaintenance then
-				self:SetRolloverText(T{302535920011071, "This <yellow><name></yellow> will not be maintained.", name = name})
+				self:SetRolloverText(T{302535920011071, "This <name> will not be maintained.", name = name})
 				self:SetTitle(T(302535920011072, "Maintenance Disabled"))
 				self:SetIcon("UI/Icons/traits_disapprove.tga")
 			else
-				self:SetRolloverText(T{302535920011073, "This <yellow><name></yellow> will be maintained.", name = name})
+				self:SetRolloverText(T{302535920011073, "This <name> will be maintained.", name = name})
 				self:SetTitle(T(302535920011074, "Maintenance Enabled"))
 				self:SetIcon("UI/Icons/traits_approve.tga")
 			end
@@ -60,14 +60,14 @@ function OnMsg.ClassesPostprocess()
 				local name = RetName(context)
 				PopupToggle(self, "idDisableDroneMaintenanceMenu", {
 					{
-						name = T{302535920011075, "Toggle maintenance on this <yellow><name></yellow> only.", name = name},
+						name = T{302535920011075, "Toggle maintenance on this <name> only.", name = name},
 						clicked = function()
 							SetMain(context, context.ChoGGi_DisableMaintenance)
 						end,
 					},
 					{
-						name = T{302535920011077, "Toggle maintenance on all <yellow><name></yellow>.", name = name},
-						hint = T{302535920011078, "Toggles maintenance on all <yellow><name></yellow> (same state as this one).", name = name},
+						name = T{302535920011077, "Toggle maintenance on all <name>.", name = name},
+						hint = T{302535920011078, "Toggles maintenance on all <name> (same state as this one).", name = name},
 						clicked = function()
 							local objs = MapGet(context.class)
 							local toggle = context.ChoGGi_DisableMaintenance
@@ -77,7 +77,7 @@ function OnMsg.ClassesPostprocess()
 						end,
 					},
 					{
-						name = T{302535920011563, "Enable maintenance on all <yellow><name></yellow>.", name = name},
+						name = T{302535920011563, "Enable maintenance on all <name>.", name = name},
 						clicked = function()
 							local objs = MapGet(context.class)
 							for i = 1, #objs do
@@ -86,7 +86,7 @@ function OnMsg.ClassesPostprocess()
 						end,
 					},
 					{
-						name = T{302535920011564, "Disable maintenance on all <yellow><name></yellow>.", name = name},
+						name = T{302535920011564, "Disable maintenance on all <name>.", name = name},
 						clicked = function()
 							local objs = MapGet(context.class)
 							for i = 1, #objs do

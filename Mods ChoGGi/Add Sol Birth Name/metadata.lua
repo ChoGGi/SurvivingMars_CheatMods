@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Add Sol Birth Name",
 	"id", "ChoGGi_AddSolBirthName",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"steam_id", "2083968711",
 	"pops_any_uuid", "c2d030a2-ec5d-4cd4-bbc0-b548ccbfbee7",
 	"version", 1,

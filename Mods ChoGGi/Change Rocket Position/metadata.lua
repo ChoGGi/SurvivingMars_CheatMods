@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ChangeRocketPosition",
 	"steam_id", "1707472695",
 	"pops_any_uuid", "d7bd5fe9-ebb5-4800-ace3-4d66c8f53d8f",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

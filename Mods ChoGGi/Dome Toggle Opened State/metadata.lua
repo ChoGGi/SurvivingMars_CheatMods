@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Dome Toggle Opened State",
 	"id", "ChoGGi_DomeToggleOpenedState",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"steam_id", "2211515319",
 	"pops_any_uuid", "25e34382-41fd-40f5-9a6e-34bc9ece44ba",
 	"version", 3,

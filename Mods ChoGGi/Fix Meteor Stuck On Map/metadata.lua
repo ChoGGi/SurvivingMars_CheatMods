@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_FixMeteorStuckOnMap",
 	"steam_id", "1529788090",
 	"pops_any_uuid", "52131cff-856e-40b9-ac18-782f28811ad3",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,

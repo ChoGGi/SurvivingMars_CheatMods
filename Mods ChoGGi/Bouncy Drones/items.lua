@@ -2,16 +2,16 @@ return {
 	PlaceObj("ModItemOptionNumber", {
 		"name", "Gravity",
 		"DisplayName", T(302535920011395, "Gravity Drones"),
-		"DefaultValue", 2,
+		"DefaultValue", 20,
 		"MinValue", 0,
-		"MaxValue", 100,
+		"MaxValue", 1000,
 	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "GravityRC",
 		"DisplayName", T(302535920011396, "Gravity RC"),
-		"DefaultValue", 10,
+		"DefaultValue", 100,
 		"MinValue", 0,
-		"MaxValue", 100,
+		"MaxValue", 1000,
 	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "GravityColonist",

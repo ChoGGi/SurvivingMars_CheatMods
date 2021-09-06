@@ -8,9 +8,10 @@ function OnMsg.ClassesPostprocess()
 		end,
 		Icon = "UI/Icons/bmc_domes_shine.tga",
 		Title = T(302535920011727, "Toggle Opened State"),
+		RolloverText = T(302535920011727, "Toggle Opened State"),
 		func = function(_, context)
 			-- odd seeing people walking around an opened dome without any breathing issues.
-			if not BreathableAtmosphere then
+			if not GetAtmosphereBreathable(ActiveMapID) then
 				return
 			end
 

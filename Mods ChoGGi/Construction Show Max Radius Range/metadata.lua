@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ShowMaxRadiusRange",
 	"steam_id", "1522200776",
 	"pops_any_uuid", "f11ce232-278a-422e-b12d-476f9a148d1c",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 11,
 	"version_major", 1,
 	"version_minor", 1,

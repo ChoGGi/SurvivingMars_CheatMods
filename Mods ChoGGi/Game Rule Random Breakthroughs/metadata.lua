@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_GameRuleRandomBreakthroughss",
 	"steam_id", "2234859917",
 	"pops_any_uuid", "96979bef-39e9-4edc-9d31-156e73ebaf8a",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

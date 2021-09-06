@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Salvage Drop Amount",
 	"id", "ChoGGi_SalvageDropsAll",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"steam_id", "2425210552",
 	"pops_any_uuid", "28891b61-907d-48a6-8fb0-1b0a3fee0de0",
 	"version", 2,

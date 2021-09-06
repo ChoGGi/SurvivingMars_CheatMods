@@ -31,9 +31,9 @@ end
 
 local models
 if g_AvailableDlc.gagarin then
-	models = {"SupplyPod", "Hex1_Placeholder", "ArcPod", "DropPod"}
+	models = {"SupplyPod", "Hex1_Placeholder", "ArcPod", "DropPod", }
 else
-	models = {"SupplyPod", "Hex1_Placeholder", "SupplyPod", "SupplyPod"}
+	models = {"SupplyPod", "Hex1_Placeholder", "SupplyPod", "SupplyPod", }
 end
 
 local Sleep = Sleep

@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_FixShuttlesStuckMidAir",
 	"steam_id", "1549680063",
 	"pops_any_uuid", "fa1f8a78-767f-4322-a4ff-13f83a354bf9",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 4,
 	"version_major", 0,
 	"version_minor", 4,

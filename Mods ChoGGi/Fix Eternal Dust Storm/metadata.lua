@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_FixEternalDustStorm",
 	"steam_id", "1594158818",
 	"pops_any_uuid", "06dcbc57-c2d7-456f-9091-4d93babe14f6",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,

@@ -1,8 +1,5 @@
 -- See LICENSE for terms
 
--- TESTING123
-local luarev = LuaRevision > 1001586
-
 local next, type, tostring = next, type, tostring
 local GetCursorWorldPos = GetCursorWorldPos
 local SuspendPassEdits = SuspendPassEdits
@@ -333,7 +330,7 @@ end
 
 function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
 	-- TESTING123
-	local mapdata = luarev and ActiveMapData or mapdata
+	local mapdata = ActiveMapData
 
 	if ChoGGi.UserSettings.DisableHints then
 		ChoGGi.UserSettings.DisableHints = nil
@@ -364,8 +361,7 @@ end
 function ChoGGi.MenuFuncs.OnScreenHints_Toggle()
 	HintsEnabled = not HintsEnabled
 	SetHintNotificationsEnabled(HintsEnabled)
-	-- TESTING123
-	(luarev and ActiveMapData or mapdata).DisableHints = not HintsEnabled
+	ActiveMapData.DisableHints = not HintsEnabled
 	UpdateOnScreenHintDlg()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(HintsEnabled),
@@ -782,7 +778,7 @@ do -- FlattenGround
 			-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
 			ToggleCollisions(ChoGGi)
 			-- update uneven terrain checker thingy
-			RecalcBuildableGrid()
+			ActiveGameMap:RefreshBuildableGrid()
 			-- and back on when we're done
 			ToggleCollisions(ChoGGi)
 
@@ -1167,7 +1163,7 @@ function ChoGGi.MenuFuncs.TerrainTextureChange()
 		items = item_list,
 		title = Strings[302535920000623--[[Terrain Texture Change]]],
 		-- TESTING123
-		hint = Strings[302535920000974--[[Map default: %s]]]:format((luarev and ActiveMapData or mapdata).BaseLayer),
+		hint = Strings[302535920000974--[[Map default: %s]]]:format(ActiveMapData.BaseLayer),
 		custom_type = 7,
 	}
 end
@@ -1639,8 +1635,7 @@ do -- CameraFree_Toggle
 
 	function ChoGGi.MenuFuncs.CameraFollow_Toggle()
 		-- It was on the free camera so
-		-- TESTING123
-		if not (luarev and ActiveMapData or mapdata).GameLogic then
+		if not ActiveMapData.GameLogic then
 			return
 		end
 

@@ -1,8 +1,5 @@
 -- See LICENSE for terms
 
--- TESTING123
-local luarev = LuaRevision > 1001586
-
 -- OnMsgs (most of them)
 
 local table = table
@@ -1436,7 +1433,7 @@ do -- LoadGame/CityStart
 		-- bloody hint popups
 		if UserSettings.DisableHints then
 			-- TESTING123
-			local mapdata = luarev and ActiveMapData or mapdata
+			local mapdata = ActiveMapData
 			if mapdata.DisableHints == false then
 				mapdata.DisableHints = true
 			end

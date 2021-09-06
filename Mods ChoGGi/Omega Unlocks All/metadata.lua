@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_OmegaUnlocksAll",
 	"pops_any_uuid", "694072ce-c6b9-4cf9-b20e-4fd60ce3adef",
 	"author", "ChoGGi",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"code", {
 		"Code/Script.lua",
 	},

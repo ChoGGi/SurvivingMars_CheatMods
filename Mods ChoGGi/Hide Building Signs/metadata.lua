@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Hide Building Signs",
 	"id", "ChoGGi_HideBuildingSigns",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"steam_id", "2107647345",
 	"pops_any_uuid", "872bf77b-dd93-46dd-932b-4284b3d533d6",
 	"version", 3,

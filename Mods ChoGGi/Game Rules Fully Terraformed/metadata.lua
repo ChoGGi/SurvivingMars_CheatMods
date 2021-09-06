@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_GameRulesFullyTerraformed",
 	"steam_id", "1743034799",
 	"pops_any_uuid", "caeda005-4595-4c8f-b133-3c4dbce8eb2c",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

@@ -581,7 +581,7 @@ function OpenPasture:OnSelected(...)
 end
 -- revert back when unselected
 function OnMsg.SelectionRemoved(obj)
-	if obj.entity == "OpenPasture_Open" and obj:IsKindOf("OpenPasture") and not OpenAirBuildings then
+	if obj.entity == "OpenPasture_Open" and obj:IsKindOf("OpenPasture") and not GetOpenAirBuildings(ActiveMapID) then
 		obj:ChangeEntity("OpenPasture")
 	end
 end

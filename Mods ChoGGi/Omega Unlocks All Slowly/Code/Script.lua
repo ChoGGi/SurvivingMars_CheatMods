@@ -81,7 +81,7 @@ function OnMsg.NewDay()
 		return
 	end
 
-	ChoGGi.ComFuncs.RetUIColony():SetTechDiscovered(def.id)
+	UIColony:SetTechDiscovered(def.id)
 
 	-- make this optional?
 	if mod_ShowNotification then

@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_Milestones", -- Maybe I'll add some more...
 	"steam_id", "2545577508",
 	"pops_any_uuid", "9bd2f5d5-33bd-49f2-8db7-19c3267cd75d",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

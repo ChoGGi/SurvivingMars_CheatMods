@@ -54,7 +54,7 @@ function XShortcutsHost:GetSize()
 end
 
 local function DiscoverTech(tech_id)
-	ChoGGi.ComFuncs.RetUIColony():SetTechDiscovered(tech_id)
+	UIColony:SetTechDiscovered(tech_id)
 end
 DiscoverTech_Old = DiscoverTech
 

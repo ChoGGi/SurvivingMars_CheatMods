@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_AddQuickSaveLoadHotkeys",
 	"steam_id", "2071297869",
 	"pops_any_uuid", "b0c4b8cf-02dc-498f-b2cc-aad055a6022f",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

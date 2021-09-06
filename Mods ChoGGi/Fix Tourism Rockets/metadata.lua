@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_FixTourismRockets",
 	"steam_id", "2534236742",
 	"pops_any_uuid", "3cdb06e3-8611-430c-b185-ce4e7a815ea5",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

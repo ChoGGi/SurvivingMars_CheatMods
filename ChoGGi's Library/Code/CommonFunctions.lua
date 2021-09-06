@@ -1,8 +1,5 @@
 -- See LICENSE for terms
 
--- TESTING123
-local luarev = LuaRevision > 1001586
-
 local Strings = ChoGGi.Strings
 local testing = ChoGGi.testing
 -- Init.lua
@@ -59,15 +56,6 @@ function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	rawget = env.rawget
 	getmetatable = env.getmetatable
 end
-
-local function RetUIColony()
-	-- TESTING123
-	if luarev then
-		return UIColony
-	end
-	return UICity
-end
-ChoGGi.ComFuncs.RetUIColony = RetUIColony
 
 -- backup orginal function for later use (checks if we already have a backup, or else inf problems)
 local function SaveOrigFunc(class_or_func, func_name)
@@ -626,7 +614,6 @@ do -- MsgPopup
 		-- how many ms it stays open for
 		if not params.expiration then
 --~ 			params.expiration = -1,
---~ 			params.dismissable = false,
 			params.expiration = 10
 			if params.size then
 				params.expiration = 25
@@ -637,8 +624,10 @@ do -- MsgPopup
 			params.expiration = params.expiration * 1000
 		end
 
-		-- close on left click
+--~ 		-- close on left click
 --~ 		params.close_on_read = true
+--~ 		-- close on right click
+--~ 		params.dismissable = false
 
 		-- If there's no interface then we probably shouldn't open the popup
 		local dlg = Dialogs.OnScreenNotificationsDlg
@@ -649,16 +638,16 @@ do -- MsgPopup
 			end
 			dlg = OpenDialog("OnScreenNotificationsDlg", igi)
 		end
-		-- build the popup
-		local data = {
-			id = AsyncRand(),
+
+		local preset = {
+			id = "popup" .. AsyncRand() .. ActiveMapID,
 			title = type(title) == "number" and tostring(title) or title or "",
 			text = type(text) == "number" and tostring(text) or text or T(3718, "NONE"),
 			image = params.image and ValidateImage(params.image) or ChoGGi.library_path .. "UI/TheIncal.png",
 		}
 
-		table.set_defaults(data, params)
-		table.set_defaults(data, OnScreenNotificationPreset)
+		table.set_defaults(preset, params)
+		table.set_defaults(preset, OnScreenNotificationPreset)
 
 		-- click icon to view obj
 		if params.objects then
@@ -672,18 +661,13 @@ do -- MsgPopup
 
 		-- needed in Sagan update
 		local aosn = g_ActiveOnScreenNotifications
-		local idx = table.find(aosn, 1, data.id) or #aosn + 1
-		aosn[idx] = {data.id}
+		local idx = table.find(aosn, 1, preset.id) or #aosn + 1
+		aosn[idx] = {preset.id}
 
 		-- and show the popup
 		CreateRealTimeThread(function()
 			local popup = OnScreenNotification:new({}, dlg.idNotifications)
-			-- TESTING123
-			if luarev then
-				popup:FillData(data.id, data, params.callback, params, params.cycle_objs)
-			else
-				popup:FillData(data, params.callback, params, params.cycle_objs)
-			end
+			popup:FillData(preset.id, preset, params.callback, params, params.cycle_objs)
 			popup:Open()
 			dlg:ResolveRelativeFocusOrder()
 			ChoGGi.Temp.MsgPopups[#ChoGGi.Temp.MsgPopups+1] = popup
@@ -699,7 +683,7 @@ do -- MsgPopup
 
 		end)
 		-- If we need the popup notification_id
-		return data.id
+		return preset.id
 	end
 end -- do
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -794,7 +778,7 @@ do -- ShowObj
 		return obj
 	end
 
-	local function AddSphere(pt, colour)
+	local function AddSphere(pt, colour, size)
 		local pos = tostring(pt)
 		if not IsValid(markers[pos]) then
 			markers[pos] = nil
@@ -806,25 +790,25 @@ do -- ShowObj
 		else
 			local sphere = OSphere:new()
 			sphere:SetPos(pt)
-			sphere:SetRadius(50 * guic)
+			sphere:SetRadius((size or 50) * guic)
 			sphere:SetColor(colour)
 			markers[pos] = sphere
 		end
 		return markers[pos]
 	end
 
-	function ChoGGi.ComFuncs.ShowPoint(obj, colour)
+	function ChoGGi.ComFuncs.ShowPoint(obj, colour, size)
 		OSphere = OSphere or ChoGGi_OSphere
 		colour = colour or rand_c()
 		-- single pt
 		if IsPoint(obj) and InvalidPos ~= obj then
-			return AddSphere(obj, colour)
+			return AddSphere(obj, colour, size)
 		end
 		-- obj to pt
 		if IsValid(obj) then
 			local pt = obj:GetVisualPos()
 			if IsValid(obj) and InvalidPos ~= pt then
-				return AddSphere(pt, colour)
+				return AddSphere(pt, colour, size)
 			end
 		end
 
@@ -3754,7 +3738,7 @@ do -- Editor toggle
 			-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
 			ToggleCollisions()
 			-- update uneven terrain checker thingy
-			RecalcBuildableGrid()
+			ActiveGameMap:RefreshBuildableGrid()
 			-- and back on when we're done
 			ToggleCollisions()
 			-- close dialog
@@ -4724,7 +4708,8 @@ end
 do -- BuildableHexGrid
 	-- this is somewhat from Lua\hex.lua: debug_build_grid()
 	-- sped up to work with being attached to the mouse pos
-	local IsValid = IsValid
+
+	local UnbuildableZ = buildUnbuildableZ()
 	local grid_objs = {}
 	local grid_objs_c = 0
 	local Temp = ChoGGi.Temp
@@ -4740,35 +4725,56 @@ do -- BuildableHexGrid
 		point(1, 0),
 	}
 	local shape_data_c = #shape_data
-	-- (self, shape_data, pos, angle)
-	-- stripped down version of ConstructionController:IsTerrainFlatForPlacement
-	local CalcBuildableGrid = CalcBuildableGrid
-	local l_UnbuildableZ, l_g_BuildableZ
-	local function IsTerrainNotFlatForPlacement(q_i, r_i)
+	-- stripped down version of function IsTerrainFlatForPlacement(buildable_grid, shape_data, pos, angle)
+	local function IsTerrainNotFlatForPlacement(buildable_z_grid, q_i, r_i)
 		local original_z = false
-
-		if not l_UnbuildableZ then
-			l_UnbuildableZ = buildUnbuildableZ()
-			l_g_BuildableZ = g_BuildableZ
-			if not l_g_BuildableZ then
-				CalcBuildableGrid()
-				l_g_BuildableZ = g_BuildableZ
-			end
-		end
-
 		for i = 1, shape_data_c do
 			local q, r = shape_data[i]:xy()
 			q, r = q_i+q, r_i+r
 
-			local z = l_g_BuildableZ:get(q+r/2, r)
+
+--~ 			local z = buildable:GetZ(q + r / 2, r)
+--~ 			if not original_z then
+--~ 				original_z = z
+--~ 			end
+			local z = buildable_z_grid:get(q+r/2, r)
 			if not original_z then
 				original_z = z
 			end
-			if z == l_UnbuildableZ or z ~= original_z then
+
+
+			if z == UnbuildableZ or z ~= original_z then
 				return true
 			end
 		end
 	end
+
+--~ 	local l_UnbuildableZ, l_g_BuildableZ
+--~ 	local function IsTerrainNotFlatForPlacement(q_i, r_i)
+--~ 		local original_z = false
+
+--~ 		if not l_UnbuildableZ then
+--~ 			l_UnbuildableZ = buildUnbuildableZ()
+--~ 			l_g_BuildableZ = g_BuildableZ
+--~ 			if not l_g_BuildableZ then
+--~ 				CalcBuildableGrid()
+--~ 				l_g_BuildableZ = g_BuildableZ
+--~ 			end
+--~ 		end
+
+--~ 		for i = 1, shape_data_c do
+--~ 			local q, r = shape_data[i]:xy()
+--~ 			q, r = q_i+q, r_i+r
+
+--~ 			local z = buildable_z_grid:get(q+r/2, r)
+--~ 			if not original_z then
+--~ 				original_z = z
+--~ 			end
+--~ 			if z == l_UnbuildableZ or z ~= original_z then
+--~ 				return true
+--~ 			end
+--~ 		end
+--~ 	end
 
 	local function CleanUp()
 		-- kill off thread
@@ -4860,6 +4866,8 @@ do -- BuildableHexGrid
 			local z = -q - r
 			SuspendPassEdits("ChoGGi.ComFuncs.BuildableHexGrid")
 			local colour = RandomColourLimited()
+			-- try to centre the text a bit more
+			local margin_box = box(-25, -15, 0, 0)
 			for q_i = q - grid_size, q + grid_size do
 				for r_i = r - grid_size, r + grid_size do
 					for z_i = z - grid_size, z + grid_size do
@@ -4873,6 +4881,7 @@ do -- BuildableHexGrid
 							-- add text_obj
 							if grid_pos then
 								local text_obj = XText:new(nil, parent)
+								text_obj:SetMargins(margin_box)
 								text_obj:SetTextColor(colour)
 								text_obj:FollowObj(hex)
 								-- easy access
@@ -4886,20 +4895,35 @@ do -- BuildableHexGrid
 
 			-- off we go
 			Temp.grid_thread = CreateRealTimeThread(function()
+				ActiveGameMap:RefreshBuildableGrid()
+--~ 				CalcBuildableGrid()
+
 				-- local all the globals we use more than once for some speed
-				CalcBuildableGrid()
-				local g_BuildableZ = g_BuildableZ
-				local UnbuildableZ = buildUnbuildableZ()
+				local buildable_z_grid = ActiveGameMap.buildable.z_grid
+--~ 				local g_BuildableZ = g_BuildableZ
+
+				local terrain = ActiveGameMap.terrain
+				local IsPassable = terrain.IsPassable
+
+				local VegetationGrid = VegetationGrid
+				local forbid_growth = forbid_growth
 
 				local red = red
 				local green = green
-				local yellow = yellow
 				local blue = blue
+				local yellow = yellow
+				local white = white
+--~ 	local rand_colours = {
+--~ 		green, yellow, cyan, white,
+--~ 		-46777, -- lighter red than "red"
+--~ 		-65369, -- pink
+--~ 		-39680, -- slightly darker orange (don't want it blending in to the ground as much as -23296)
+--~ 	}
 
-				local ObjectGrid = ObjectGrid
+				local object_hex_grid = ActiveGameMap.object_hex_grid.grid
 				local const_HexSize = const.HexSize
 
-				local g_DontBuildHere = g_DontBuildHere
+				local g_DontBuildHere = g_DontBuildHere[ActiveMapID]
 
 				local last_q, last_r
 				-- 0, 0 to make sure it updates the first time
@@ -4928,7 +4952,7 @@ do -- BuildableHexGrid
 
 											-- green = pass/build, yellow = no pass/build, blue = pass/no build, red = no pass/no build
 
-											local obj = HexGridGetObject(ObjectGrid, q_i, r_i)
+											local obj = HexGridGetObject(object_hex_grid, q_i, r_i)
 											-- skip! (CameraObj, among others?)
 											if obj and obj.GetEntity and obj:GetEntity() == "InvisibleObject" then
 												obj = nil
@@ -4946,16 +4970,22 @@ do -- BuildableHexGrid
 													hex:SetColorModifier(blue)
 												else
 													-- returns UnbuildableZ if it isn't buildable
-													local build_z = g_BuildableZ:get(q_i + r_i / 2, r_i)
-
+													local q_hex_stor = q_i + r_i / 2
+													local build_z = buildable_z_grid:get(q_hex_stor, r_i)
 													-- check adjacent hexes for height diff, and slopes over 1024? aren't passable (let alone buildable)
-													if build_z == UnbuildableZ or IsTerrainNotFlatForPlacement(q_i, r_i) or HexSlope(q_i, r_i) > 1024 then
+													if build_z == UnbuildableZ or IsTerrainNotFlatForPlacement(buildable_z_grid, q_i, r_i) or HexSlope(q_i, r_i) > 1024 then
 														hex:SetColorModifier(red)
 													-- stuff that can be pathed? (or dump sites which IsPassable returns false for)
---~ 													obj:IsKindOf("WasteRockStockpileUngridedNoBlockPass") then
-													elseif terrain.IsPassable(pos) or obj and obj.class == "WasteRockDumpSite" then
+													elseif IsPassable(terrain, pos) or obj and obj.class == "WasteRockDumpSite" then
 														if build_z ~= UnbuildableZ and not obj then
 															hex:SetColorModifier(green)
+
+															-- no veg here
+															if testing and VegetationGrid:get(q_hex_stor, r_i) & forbid_growth == forbid_growth then
+																hex:SetColorModifier(white)
+															end
+															-- no veg here
+
 														else
 															hex:SetColorModifier(blue)
 														end
@@ -5348,8 +5378,7 @@ do -- ObjHexShape_Toggle
 end -- do
 
 function ChoGGi.ComFuncs.ModEditorActive()
-	-- TESTING123
-	local m = luarev and ActiveMapData or mapdata
+	local m = ActiveMapData
 	-- you can save the mod map and play it, so we also check for other stuff
 	if m.id == "Mod" and m.markers and m.NetHash then
 		return true
@@ -6283,8 +6312,8 @@ do -- GetLowestPointEachSector
 		-- build a list of sectors with it
 		if not lowest_points then
 			lowest_points = {}
-			local g_MapSectors = g_MapSectors
-			for sector in pairs(g_MapSectors) do
+			local sectors = UICity.MapSectors
+			for sector in pairs(sectors) do
 				if type(sector) ~= "number" then
 					lowest_points[sector.id] = max_point
 				end
@@ -7102,6 +7131,8 @@ do -- EntitySpots_Toggle
 	local GetSpotNameByType = GetSpotNameByType
 	local old_remove_table = {"ChoGGi_OText", "ChoGGi_OOrientation"}
 	local OText, OPolyline
+	local offset_z = 150
+	local annot_offset = point(0, 0, offset_z)
 
 	local function EntitySpots_Clear(obj)
 		if type(obj) ~= "table" then
@@ -7116,18 +7147,51 @@ do -- EntitySpots_Toggle
 				end
 			end)
 			obj.ChoGGi_ShowAttachSpots = nil
+		ResumePassEdits("ChoGGi.ComFuncs.EntitySpots_Clear")
 			return true
 		elseif obj.ChoGGi_ShowAttachSpots then
 			obj.ChoGGi_ShowAttachSpots:Destroy()
 			obj.ChoGGi_ShowAttachSpots = nil
+		ResumePassEdits("ChoGGi.ComFuncs.EntitySpots_Clear")
 			return true
 		end
+
 		ResumePassEdits("ChoGGi.ComFuncs.EntitySpots_Clear")
+
 	end
 	ChoGGi.ComFuncs.EntitySpots_Clear = EntitySpots_Clear
 
 	local function EntitySpots_Add(obj, spot_type, annot, depth_test, show_pos, colour)
 		local c = #obj.ChoGGi_ShowAttachSpots
+
+--[[
+		-- parent dialog storage
+		local parent = Dialogs.HUD
+		if not parent.ChoGGi_TempEntitySpots then
+			parent.ChoGGi_TempEntitySpots = XWindow:new({
+				Id = "ChoGGi_TempEntitySpots",
+			}, parent)
+		end
+		parent = parent.ChoGGi_TempEntitySpots
+
+		local text_dlg = ChoGGi_XText_Follow:new({
+--~ 			TextStyle = text_style,
+--~ 			Padding = padding_box,
+--~ 			Margins = c == 3 and margin_box_trp or c == 2 and margin_box_dbl or margin_box,
+--~ 			Background = background,
+			Dock = "box",
+			Clip = false,
+			UseClipBox = false,
+			HandleMouse = false,
+		}, parent)
+
+		text_dlg:SetText(tostring(obj:GetAngle()))
+		text_dlg:FollowObj(obj)
+		text_dlg:SetVisible(true)
+
+		ex(text_dlg)
+]]
+
 		local obj_pos = obj:GetVisualPos()
 		local start_id, id_end = obj:GetAllSpots(obj:GetState())
 		for i = start_id, id_end do
@@ -7156,8 +7220,15 @@ do -- EntitySpots_Toggle
 					text_obj:SetText(text_str)
 					text_obj:SetColor1(colour)
 					obj:Attach(text_obj, i)
+					text_obj:SetAttachOffset(annot_offset)
 					c = c + 1
 					obj.ChoGGi_ShowAttachSpots[c] = text_obj
+					c = c + 1
+					local point_obj = ShowPoint(text_obj, colour, 10)
+					-- remove the offset
+					point_obj:SetPos(point_obj:GetPos():AddZ(-offset_z))
+					obj.ChoGGi_ShowAttachSpots[c] = point_obj
+
 
 					-- append waypoint num for chains later on
 					-- need to reverse string so it finds the last =, since find looks ltr
@@ -7247,6 +7318,26 @@ do -- EntitySpots_Toggle
 			params.show_pos,
 			params.colour
 		)
+
+		local c = #obj.ChoGGi_ShowAttachSpots
+
+		-- show obj angle
+		local text_obj = OText:new()
+		if params.depth_test then
+			text_obj:SetDepthTest(true)
+		end
+		text_obj:SetText("Angle: " .. obj:GetAngle())
+		-- maybe diff colour from annots
+		text_obj:SetColor1(RandomColourLimited())
+		local origin = -1
+		obj:Attach(text_obj, origin)
+		-- stick it above obj
+		local obj_height = point(0, 0, obj:GetObjectBBox():sizez()):AddZ(250)
+		text_obj:SetAttachOffset(obj_height)
+
+		c = c + 1
+		obj.ChoGGi_ShowAttachSpots[c] = text_obj
+
 		ResumePassEdits("ChoGGi.ComFuncs.EntitySpots_Add")
 
 		if not params.skip_clear then

@@ -1,3 +1,8 @@
+v0.6
+Changed limit from 100-1000,
+Changed it so the bounce less per
+(before 2 = 2000, now 20 = 2000)
+
 v0.5
 Evans update.
 

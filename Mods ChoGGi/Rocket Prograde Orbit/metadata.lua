@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Rocket Prograde Orbit",
 	"id", "ChoGGi_RocketProgradeOrbit",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"steam_id", "2266021717",
 	"pops_any_uuid", "7d6a7749-7f77-4a76-a53d-16c7b4267336",
 	"version", 1,

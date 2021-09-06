@@ -7,7 +7,7 @@ local function ModOptions(id)
 		return
 	end
 
-	local colony = ChoGGi.ComFuncs.RetUIColony()
+	local colony = UIColony
 	if not colony then
 		return
 	end

@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RandomBuildingColour",
 	"steam_id", "1535187230",
 	"pops_any_uuid", "be840c93-a616-4175-9049-472b297c897c",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

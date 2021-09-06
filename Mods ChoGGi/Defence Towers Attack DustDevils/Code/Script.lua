@@ -118,8 +118,7 @@ function DefenceTower:DefenceTick(...)
 end -- DefenceTick
 
 --[[
-	-- TESTING123
-	local mapdata = LuaRevision > 1001586 and ActiveMapData or mapdata
+	local mapdata = ActiveMapData
 
 	-- spawn a bunch of dustdevils to test
 	for _ = 1, 15 do

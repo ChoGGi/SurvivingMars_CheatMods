@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_AddRivals",
 	"steam_id", "2550126745",
 	"pops_any_uuid", "8c5161aa-1706-4b03-aac4-d7fda6b12c04",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

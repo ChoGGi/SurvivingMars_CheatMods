@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"description", [[Always a green morning.
 
 Requested by BLAde.

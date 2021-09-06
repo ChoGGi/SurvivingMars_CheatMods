@@ -1,8 +1,5 @@
 -- See LICENSE for terms
 
--- TESTING123
-local luarev = LuaRevision > 1001586
-
 local pairs, type = pairs, type
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -457,7 +454,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerColdWave(severity)
 	CreateGameTimeThread(function()
 		local data = DataInstances.MapSettings_ColdWave
 		-- TESTING123
-		local descr = data[severity] or data[(luarev and ActiveMapData or mapdata).MapSettings_ColdWave] or data.ColdWave_VeryLow
+		local descr = data[severity] or data[ActiveMapData.MapSettings_ColdWave] or data.ColdWave_VeryLow
 		StartColdWave(descr)
 	end)
 end
@@ -465,7 +462,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerDustStorm(severity, storm_type)
 	CreateGameTimeThread(function()
 		local data = DataInstances.MapSettings_DustStorm
 		-- TESTING123
-		local descr = data[severity] or data[(luarev and ActiveMapData or mapdata).MapSettings_DustStorm] or data.DustStorm_VeryLow
+		local descr = data[severity] or data[ActiveMapData.MapSettings_DustStorm] or data.DustStorm_VeryLow
 		StartDustStorm(storm_type or "normal", descr)
 	end)
 end
@@ -477,7 +474,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(severity, major)
 
 	local data = DataInstances.MapSettings_DustDevils
 		-- TESTING123
-	local descr = data[severity] or data[(luarev and ActiveMapData or mapdata).MapSettings_DustDevils] or data.DustDevils_VeryLow
+	local descr = data[severity] or data[ActiveMapData.MapSettings_DustDevils] or data.DustDevils_VeryLow
 	GenerateDustDevil(pos, descr, nil, major):Start()
 end
 function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity, meteors_type, pos)
@@ -491,7 +488,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity, meteors_type, pos)
 	local data = DataInstances.MapSettings_Meteor
 	local descr = ChoGGi.ComFuncs.CopyTable(
 		-- TESTING123
-		data[severity] or data[(luarev and ActiveMapData or mapdata).MapSettings_Meteor] or data.Meteor_VeryLow
+		data[severity] or data[ActiveMapData.MapSettings_Meteor] or data.Meteor_VeryLow
 	)
 	if meteors_type == "single" then
 		-- defaults to 50000 (no good for aiming).

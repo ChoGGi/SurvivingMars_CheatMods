@@ -20,7 +20,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"description", [[
 Adds a button to mech depots to empty them out into a small depot in front of them.
 

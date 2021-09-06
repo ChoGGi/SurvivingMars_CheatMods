@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Selectable Cables Pipes",
 	"id", "ChoGGi_SelectableCables",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"steam_id", "1411114741",
 	"pops_any_uuid", "98f9f60e-447d-4b3d-aeed-9aa0b5cbf637",
 	"version", 5,

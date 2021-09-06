@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_LogFlush",
 	"steam_id", "1414089790",
 	"pops_any_uuid", "7d2ffef4-855b-400a-9b23-ad5384d979bc",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 7,
 	"version_major", 0,
 	"version_minor", 7,

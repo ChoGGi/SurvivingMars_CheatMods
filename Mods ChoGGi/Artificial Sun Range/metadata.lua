@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ArtificialSunRange",
 	"steam_id", "1981650262",
 	"pops_any_uuid", "f64b4c50-b2cc-4bdf-87a5-93ef596facd6",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 9,
 	"version_major", 0,
 	"version_minor", 9,

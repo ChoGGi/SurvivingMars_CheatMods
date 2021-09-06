@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_FixResupplyMenuNotOpening",
 	"steam_id", "2433491007",
 	"pops_any_uuid", "76597d6f-292a-4a9a-b1ff-1ec3f872fbad",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

@@ -583,10 +583,9 @@ DefineClass.ChoGGi_XWindow = {
 function ChoGGi_XWindow:AddElements(_, context)
 	local g_Classes = g_Classes
 
+	--
 	self.dialog_marker = context.dialog_marker
-
 	ChoGGi_dlgs_opened[self] = self.class
-
 	self:SetZorderHigher()
 
 	-- scale to UI (See OnMsgs.lua for UIScale)
@@ -623,7 +622,6 @@ function ChoGGi_XWindow:AddElements(_, context)
 		dialog = self,
 			-- need a bit of space so the X fits in the header
 		Padding = box(0, 1, 0, 1),
-		-- stop title from overflowing
 	}, self.idDialog)
 
 	self.idTitleLeftSection = g_Classes.ChoGGi_XDialogSection:new({
@@ -652,6 +650,7 @@ function ChoGGi_XWindow:AddElements(_, context)
 	self.idDialog:Open()
 	-- It's so blue
 	self.idMoveControl:SetFocus()
+
 end
 
 function ChoGGi_XWindow:AddImageButton(UIScale)

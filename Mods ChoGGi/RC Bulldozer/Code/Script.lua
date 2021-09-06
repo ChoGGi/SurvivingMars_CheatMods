@@ -12,7 +12,6 @@ local DeleteThread = DeleteThread
 local IsValidThread = IsValidThread
 local CreateRealTimeThread = CreateRealTimeThread
 local IsValid = IsValid
-local RecalcBuildableGrid = RecalcBuildableGrid
 local MapDelete = MapDelete
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
@@ -24,8 +23,8 @@ local Translate = ChoGGi.ComFuncs.Translate
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 
 
-local name = T(302535920011162, [[RC Bulldozer]])
-local description = T(302535920011163, [[Crush, Kill, Destroy]]) -- Sarcófago not lost in space...
+local name = T(302535920011162, "RC Bulldozer")
+local description = T(302535920011163, "Crush, Kill, Destroy") -- SarcÃ³fago not lost in space
 local display_icon = CurrentModPath .. "UI/rover_combat.png"
 
 local entity1 = "CombatRover"
@@ -150,7 +149,7 @@ function RCBulldozer:UpdateBuildable()
 	-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
 	ToggleCollisions()
 	-- update uneven terrain checker thingy
-	RecalcBuildableGrid()
+	ActiveGameMap:RefreshBuildableGrid()
 	-- and back on when we're done
 	ToggleCollisions()
 end

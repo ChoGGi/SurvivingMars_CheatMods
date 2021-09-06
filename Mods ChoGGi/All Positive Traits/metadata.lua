@@ -9,6 +9,6 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"description", [[Add all positive traits to ColonistArrived/ColonistBorn, and removes all negative, see the bottom of Script.lua to apply to colonists already born/arrived.]],
 })

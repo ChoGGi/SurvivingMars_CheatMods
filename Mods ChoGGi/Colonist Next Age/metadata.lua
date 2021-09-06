@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ColonistNextAge",
 	"steam_id", "2555000211",
 	"pops_any_uuid", "273e25bc-7a9e-4f80-b398-619c3e57186a",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

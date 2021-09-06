@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RemoveUnwantedColonists",
 	"steam_id", "1594867237",
 	"pops_any_uuid", "fb8fc954-40d2-4818-b84f-157903c4ed36",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 17,
 	"version_major", 1,
 	"version_minor", 7,

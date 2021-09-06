@@ -12,7 +12,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua"
 	},
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"has_options", true,
 	"description", [[Automatically empties waste storage sites.
 

@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_TheLastArkTourists",
 	"steam_id", "2539477465",
 	"pops_any_uuid", "248720ab-972c-4fb1-9340-84c3882c0d0e",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

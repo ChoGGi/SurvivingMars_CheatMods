@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ServicesShowComfortBoost",
 	"pops_any_uuid", "80fc30b4-6e46-4fff-af2a-7f06eaa2e954",
 	"steam_id", "2212802600",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

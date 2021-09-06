@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
--- add keybind for photo mode
 local Actions = ChoGGi.Temp.Actions
+
 Actions[#Actions+1] = {ActionName = T(302535920011968, "Photo Mode Toggle"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.PhotoMode",
 	ActionShortcut = "Shift-F12",
@@ -24,7 +24,7 @@ Actions[#Actions+1] = {ActionName = T(302535920011968, "Photo Mode Toggle"),
 	end,
 	ActionBindable = true,
 }
--- add keybind for toggle
+
 Actions[#Actions+1] = {ActionName = T(302535920011969, "Salvage Cursor"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.SalvageCursor",
 	ActionShortcut = "Ctrl-Delete",
@@ -43,6 +43,7 @@ Actions[#Actions+1] = {ActionName = T(302535920011969, "Salvage Cursor"),
 	end,
 	ActionBindable = true,
 }
+
 Actions[#Actions+1] = {ActionName = T(302535920011698, "Cycle Visual Variant Backward"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.CycleVisualVariantBackward",
 	ActionShortcut = "[",
@@ -55,6 +56,7 @@ Actions[#Actions+1] = {ActionName = T(302535920011699, "Cycle Visual Variant For
 	replace_matching_id = true,
 	ActionBindable = true,
 }
+
 Actions[#Actions+1] = {ActionName = T(302535920011700, "Construction Cancel"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.ConstructionCancel",
 	ActionShortcut = "Escape",
@@ -62,9 +64,9 @@ Actions[#Actions+1] = {ActionName = T(302535920011700, "Construction Cancel"),
 	ActionBindable = true,
 }
 
+-- Cycle Visual Variant/Construction Cancel
 local GetShortcuts = GetShortcuts
 local VKStrNamesInverse = VKStrNamesInverse
-
 local function RetShortcuts(id)
 	local keys = GetShortcuts(id)
 
@@ -91,7 +93,7 @@ function ConstructionModeDialog:OnKbdKeyDown(virtual_key, ...)
 
 	return "continue"
 end
-
+--
 Actions[#Actions+1] = {ActionName = T(302535920011974, "Place Multiple Buildings"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.PlaceMultipleBuildings",
 	ActionShortcut = "Shift",
@@ -110,3 +112,65 @@ function IsPlacingMultipleConstructions(...)
 
 	return orig_IsPlacingMultipleConstructions(...)
 end
+
+--~ -- Camera panning
+--~ local cameraRTS = cameraRTS
+--~ local function PanCamera(cmd, dist)
+--~ 	local cur_pos, cur_la = cameraRTS.GetPosLookAt()
+--~ 	local cur_off = cur_la - cur_pos
+
+--~ 	-- +x left -x right +y up -y down
+--~ 	local la = cur_la[cmd](cur_la, dist)
+
+--~ 	local pos = la - cur_off
+
+--~ 	cameraRTS.SetCamera(pos, la, 100)
+
+--~ end
+
+--[[
+-- remove orig actions
+function OnMsg.ShortcutsReloaded()
+	local target = XShortcutsTarget
+	target:RemoveAction(target:ActionById("actionPanUp"))
+	target:RemoveAction(target:ActionById("actionPanDown"))
+	target:RemoveAction(target:ActionById("actionPanLeft"))
+	target:RemoveAction(target:ActionById("actionPanRight"))
+end
+]]
+--~ Actions[#Actions+1] = {ActionName = T(0000, "Pan RTS Camera Left"),
+--~ 	ActionId = "ChoGGi.RebindHardcodedKeys.PanRTSCameraLeft",
+--~ 	ActionShortcut = "A",
+--~ 	replace_matching_id = true,
+--~ 	OnAction = function()
+--~ 		PanCamera("AddX", 5000)
+--~ 	end,
+--~ 	ActionBindable = true,
+--~ }
+--~ Actions[#Actions+1] = {ActionName = T(0000, "Pan RTS Camera Right"),
+--~ 	ActionId = "ChoGGi.RebindHardcodedKeys.PanRTSCameraRight",
+--~ 	ActionShortcut = "D",
+--~ 	replace_matching_id = true,
+--~ 	OnAction = function()
+--~ 		PanCamera("AddX", -5000)
+--~ 	end,
+--~ 	ActionBindable = true,
+--~ }
+--~ Actions[#Actions+1] = {ActionName = T(0000, "Pan RTS Camera Up"),
+--~ 	ActionId = "ChoGGi.RebindHardcodedKeys.PanRTSCameraUp",
+--~ 	ActionShortcut = "W",
+--~ 	replace_matching_id = true,
+--~ 	OnAction = function()
+--~ 		PanCamera("AddY", 5000)
+--~ 	end,
+--~ 	ActionBindable = true,
+--~ }
+--~ Actions[#Actions+1] = {ActionName = T(0000, "Pan RTS Camera Down"),
+--~ 	ActionId = "ChoGGi.RebindHardcodedKeys.PanRTSCameraDown",
+--~ 	ActionShortcut = "S",
+--~ 	replace_matching_id = true,
+--~ 	OnAction = function()
+--~ 		PanCamera("AddY", -5000)
+--~ 	end,
+--~ 	ActionBindable = true,
+--~ }

@@ -7,7 +7,7 @@ function OnMsg.ModsReloaded()
 	local function HasAir(self, ...)
 		local consump_added = self.city.label_modifiers.Dome and self.city.label_modifiers.Dome.ChoGGi_NightlyShutdowns_AirConsumption
 
-		if not mod_EnableMod or BreathableAtmosphere then
+		if not mod_EnableMod or GetAtmosphereBreathable(ActiveMapID) then
 			-- remove my override
 			if consump_added then
 				self.city:SetLabelModifier("Dome", "ChoGGi_NightlyShutdowns_AirConsumption")

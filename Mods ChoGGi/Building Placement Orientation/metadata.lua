@@ -19,7 +19,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua"
 	},
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"has_options", true,
 	"description", [[Any object you place will have the same orientation as the last placed object. Mod option to disable orientation.
 

@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RandomStartingSector",
 	"steam_id", "1575530067",
 	"pops_any_uuid", "68fc6b59-2a1c-4fdc-93a1-317193278a84",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,

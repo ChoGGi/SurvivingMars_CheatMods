@@ -18,8 +18,7 @@ function FillRandomMapProps(gen, params, ...)
 			params.Water = 0
 		end
 		if rules.ChoGGi_MaxThreats then
-			-- TESTING123
-			local mapdata = LuaRevision > 1001586 and ActiveMapData or mapdata
+			local mapdata = ActiveMapData
 			mapdata.MapSettings_ColdWave = "ColdWave_VeryHigh"
 			mapdata.MapSettings_DustStorm = "DustStorm_VeryHigh"
 			mapdata.MapSettings_Meteor = "Meteor_VeryHigh"

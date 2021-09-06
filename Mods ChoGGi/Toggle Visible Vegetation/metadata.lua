@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Toggle Visible Vegetation",
 	"id", "ChoGGi_ToggleVisibleVegetation",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"steam_id", "2162375075",
 	"pops_any_uuid", "e42779d0-c633-4a69-b3c4-69db21c0216f",
 	"version", 1,

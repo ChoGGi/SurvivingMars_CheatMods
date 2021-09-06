@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua"
 	},
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"has_options", true,
 	"TagOther", true,
 	"description", [[This replaces my Missing Residences/Missing Workplaces mods, it also adds support for some other missing buildings.

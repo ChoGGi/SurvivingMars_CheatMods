@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_TriboelectricScrubbersCleanDomeBuildings",
 	"pops_any_uuid", "bb7da91d-9d37-448f-9923-2c766a90f407",
 	"steam_id", "1417507249",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 4,
 	"version_major", 0,
 	"version_minor", 4,

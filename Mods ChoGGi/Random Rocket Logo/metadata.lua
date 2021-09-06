@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Random Rocket Logo",
 	"id", "ChoGGi_RandomRocketLogo",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"steam_id", "2206869172",
 	"pops_any_uuid", "1f103e06-5d49-4c27-b297-443bb5474e8e",
 	"version", 1,

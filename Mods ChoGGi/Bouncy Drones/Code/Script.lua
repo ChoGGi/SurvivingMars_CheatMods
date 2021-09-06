@@ -6,8 +6,8 @@ local mod_GravityColonist
 
 -- fired when settings are changed/init
 local function ModOptions()
-	mod_Gravity = CurrentModOptions:GetProperty("Gravity") * 1000
-	mod_GravityRC = CurrentModOptions:GetProperty("GravityRC") * 1000
+	mod_Gravity = CurrentModOptions:GetProperty("Gravity") * 100
+	mod_GravityRC = CurrentModOptions:GetProperty("GravityRC") * 100
 	mod_GravityColonist = CurrentModOptions:GetProperty("GravityColonist") * 10
 end
 

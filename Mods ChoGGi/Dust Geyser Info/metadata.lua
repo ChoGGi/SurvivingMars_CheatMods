@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_DustGeyserInfo",
 	"steam_id", "2522466305",
 	"pops_any_uuid", "b49b376f-7947-4b6b-9200-591becb1d02a",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

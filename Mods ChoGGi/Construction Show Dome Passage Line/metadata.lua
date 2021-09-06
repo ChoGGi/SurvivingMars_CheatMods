@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ConstructionShowDomePassageLine",
 	"steam_id", "1428027914",
 	"pops_any_uuid", "64d161e9-828a-41c9-bdfc-61b9790405e8",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 15,
 	"version_major", 1,
 	"version_minor", 5,

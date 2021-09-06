@@ -8,24 +8,25 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Lock Workplace",
+	"id", "ChoGGi_LockWorkplace",
+	"steam_id", "1422914403",
+	"pops_any_uuid", "33d9ca4d-cc48-4676-9773-7a98b8c90328",
+	"lua_revision", 1007000, -- Picard
 	"version", 12,
 	"version_major", 1,
 	"version_minor", 2,
-
 	"image", "Preview.png",
-	"id", "ChoGGi_LockWorkplace",
 	"author", "ChoGGi",
-	"steam_id", "1422914403",
-	"pops_any_uuid", "33d9ca4d-cc48-4676-9773-7a98b8c90328",
-	"lua_revision", 1001514, -- Tito
 	"code", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Adds a "Lock Workplace" button to the selection panel for colonists, and workplaces ("Lock Workers").
+	"description", [[
+Adds a "Lock Workplace" button to the selection panel for colonists, and workplaces ("Lock Workers").
 They can still be fired (if you shutdown the building/shift), they just won't change to a new workplace if they're locked.
 
 Includes mod options to force workers to never change workplace (may cause issues).
 
-Lock Residence: https://steamcommunity.com/sharedfiles/filedetails/?id=1635694550]],
+Lock Residence: https://steamcommunity.com/sharedfiles/filedetails/?id=1635694550
+]],
 })

@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_FixNoPowerDomeBuildings",
 	"steam_id", "2499783266",
 	"pops_any_uuid", "2d626790-e286-4387-9303-f04c8f165dcc",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

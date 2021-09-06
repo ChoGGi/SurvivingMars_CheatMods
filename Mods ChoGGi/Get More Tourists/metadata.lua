@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Get More Tourists",
 	"id", "ChoGGi_GetMoreTourists",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"steam_id", "2167584305",
 	"pops_any_uuid", "8851ae37-cddd-48f8-8940-3921599cb0ea",
 	"version", 1,

@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v17.1 (Unreleased)
+### Added:
+- ECM.Debug.Toggles>Toggle Interface (Ctrl-Alt-I).
 
 ## v17.1 (1 Aug 2021)
 ### Added:

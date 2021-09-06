@@ -12,7 +12,7 @@ local largest = 30000
 
 local function MoveRovers()
 	-- no point in checking if domes have been opened
-	if not mod_EnableMod or OpenAirBuildings then
+	if not mod_EnableMod or GetOpenAirBuildings(ActiveMapID) then
 		return
 	end
 

@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_DisableStoryBits",
 	"steam_id", "2556338651",
 	"pops_any_uuid", "2b7ca71b-edf8-43b2-97a9-1d103a07440d",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

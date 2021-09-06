@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"description", [[Modders only (unless it's a mod that uses these functions).
 
 For some reason SM doesn't have any of lua "math." functions.

@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_WonderCheats", -- eh might add more stuff
 	"steam_id", "2532590401",
 	"pops_any_uuid", "86be1e59-737d-4bb5-87e7-ad728ac714c1",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

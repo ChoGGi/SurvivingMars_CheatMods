@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_GameRuleOneMOXIE",
 	"steam_id", "2489093558",
 	"pops_any_uuid", "f7026d21-7c46-4db2-9d7c-ab83df6f5cdb",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

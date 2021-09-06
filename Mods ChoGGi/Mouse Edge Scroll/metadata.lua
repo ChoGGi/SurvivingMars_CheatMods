@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_MouseEdgeScroll",
 	"steam_id", "2488425106",
 	"pops_any_uuid", "95666d62-3663-4fb8-bf81-f0955b48313d",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

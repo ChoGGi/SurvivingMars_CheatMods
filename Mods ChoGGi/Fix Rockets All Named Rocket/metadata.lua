@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Fix Rockets All Named Rocket",
 	"id", "ChoGGi_FixRocketsAllNamedRocket",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"steam_id", "2426232717",
 	"pops_any_uuid", "5993aa72-7b6b-4455-815c-5011d7772090",
 	"version", 1,

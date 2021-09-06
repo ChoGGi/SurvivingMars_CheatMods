@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RocketCheats",
 	"steam_id", "2429782883",
 	"pops_any_uuid", "1e254009-499e-4e01-a948-81e98fc661e3",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 4,
 	"version_major", 0,
 	"version_minor", 4,

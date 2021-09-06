@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Camera Change Settings",
 	"id", "ChoGGi_CameraChangeSettings",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"steam_id", "2219393389",
 	"pops_any_uuid", "f3ac3900-6dce-4db1-8bb4-3d1abdea4b8e",
 	"version", 1,

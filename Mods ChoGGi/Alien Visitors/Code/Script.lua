@@ -24,7 +24,6 @@ local DomeCollisionCheck = DomeCollisionCheck
 local WorldToHex = WorldToHex
 local GetBuildableZ = GetBuildableZ
 local AsyncRand = AsyncRand
-local terrain_IsPassable = terrain.IsPassable
 
 DefineClass.ChoGGi_Alien = {
 --~ 	__parents = { "Unit", "CityObject", "PinnableObject", "Shapeshifter", "InfopanelObj", "CycleMember" },
@@ -80,7 +79,8 @@ end
 
 local UnbuildableZ = buildUnbuildableZ()
 local function IsPlayablePoint(pt)
-	return pt:InBox2D(g_MapArea) and GetBuildableZ(WorldToHex(pt:xy())) ~= UnbuildableZ and terrain_IsPassable(pt)
+	-- TESTING123
+	return pt:InBox2D(UICity.MapArea) and GetBuildableZ(WorldToHex(pt:xy())) ~= UnbuildableZ and ActiveGameMap.terrain:IsPassable(pt)
 end
 
 local names_list = {"Family", "Female", "Male"}
@@ -110,12 +110,13 @@ function ChoGGi_Alien:Spawn()
 
 	local spawn_pos = self.spawn_pos
 
-	local g_MapSectors = g_MapSectors
+	local sectors = UICity.MapSectors
+
 	-- pick position
 	while not spawn_pos do
 		local sector_x = city:Random(1, 10)
 		local sector_y = city:Random(1, 10)
-		local sector = g_MapSectors[sector_x][sector_y]
+		local sector = sectors[sector_x][sector_y]
 
 		--local maxx, maxy = sector.area:
 		local minx, miny = sector.area:minxyz()

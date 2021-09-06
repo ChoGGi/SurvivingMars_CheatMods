@@ -21,7 +21,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"steam_id", "1415296985",
 	"pops_any_uuid", "0d6e7eed-312b-4f3e-822c-4a3ff6e92abf",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"description", [[Simple guide: https://steamcommunity.com/sharedfiles/filedetails/?id=1530394137
 
 If you're feeling OCD about a perfect layout for your base then look no further.

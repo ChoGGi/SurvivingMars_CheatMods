@@ -9,7 +9,7 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Waste Rock Dump Site",
 	"id", "ChoGGi_WasteRockDumpSite",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"steam_id", "2313588593",
 	"pops_any_uuid", "8672b8b5-64ff-4965-a668-58f35c224421",
 	"version", 1,

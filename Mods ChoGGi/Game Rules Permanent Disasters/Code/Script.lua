@@ -1,8 +1,5 @@
 -- See LICENSE for terms
 
--- TESTING123
-local luarev = LuaRevision > 1001586
-
 -- local some globals
 local table = table
 local IsGameRuleActive = IsGameRuleActive
@@ -109,8 +106,7 @@ end
 local function GetMeteorsDescr()
 	local data = DataInstances.MapSettings_Meteor
 	return OverrideDisasterDescriptor(
-	-- TESTING123
-		data[(luarev and ActiveMapData or mapdata).MapSettings_Meteor] or data["Meteor_VeryHigh"]
+		data[ActiveMapData.MapSettings_Meteor] or data["Meteor_VeryHigh"]
 	)
 end
 
@@ -153,8 +149,7 @@ end)
 local function GetDustDevilsDescr()
 	local data = DataInstances.MapSettings_DustDevils
 	return OverrideDisasterDescriptor(
-		-- TESTING123
-		data[(luarev and ActiveMapData or mapdata).MapSettings_DustDevils] or data["DustDevils_VeryHigh"]
+		data[ActiveMapData.MapSettings_DustDevils] or data["DustDevils_VeryHigh"]
 	)
 end
 
@@ -254,8 +249,7 @@ end
 local function GetDustStormDescr()
 	local data = DataInstances.MapSettings_DustStorm
 	return OverrideDisasterDescriptor(
-		-- TESTING123
-		data[(luarev and ActiveMapData or mapdata).MapSettings_DustStorm] or data["DustStorm_VeryHigh"]
+		data[ActiveMapData.MapSettings_DustStorm] or data["DustStorm_VeryHigh"]
 	)
 end
 

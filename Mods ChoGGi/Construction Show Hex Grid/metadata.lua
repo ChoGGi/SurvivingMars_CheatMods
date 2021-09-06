@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ConstructionShowHexGrid",
 	"author", "ChoGGi",
 	"image", "Preview.jpg",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"pops_any_uuid", "cd13269f-0574-4f8c-8217-603e5d6bc30a",
 	"steam_id", "1479851929",
 	"code", {

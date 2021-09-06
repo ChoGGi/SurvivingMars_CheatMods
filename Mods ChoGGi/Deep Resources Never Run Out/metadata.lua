@@ -12,7 +12,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"has_options", true,
 	"TagGameplay", true,
 	"description", [[Deep resources amounts are all set to 500k and get refilled every new Sol (also kicks in when a deposit is revealed).

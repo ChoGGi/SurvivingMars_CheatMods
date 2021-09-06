@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_FixSafariNoGPDLC",
 	"steam_id", "2428296255",
 	"pops_any_uuid", "7349ec08-42ae-4601-8de9-22c1b2650e93",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

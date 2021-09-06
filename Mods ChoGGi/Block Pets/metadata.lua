@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_BlockPets",
 	"steam_id", "1790982885",
 	"pops_any_uuid", "80075020-7955-46c2-9392-60a3460871a9",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,

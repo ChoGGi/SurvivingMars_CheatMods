@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_FixExpeditionRCCommander",
 	"steam_id", "2253103829",
 	"pops_any_uuid", "094092b1-d496-4242-af9f-c6f21aac4c38",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

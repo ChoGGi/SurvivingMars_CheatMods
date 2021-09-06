@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_CycleSkinAllBuildings",
 	"steam_id", "1973703265",
 	"pops_any_uuid", "bc722ad7-38a1-493d-9669-bc6fa4e8205f",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,

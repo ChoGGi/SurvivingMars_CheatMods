@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RocketPadNoDustPlume",
 	"steam_id", "2434500886",
 	"pops_any_uuid", "a643b3b0-8917-4407-86c5-8f86b002e4bd",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,

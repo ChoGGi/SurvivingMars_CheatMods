@@ -678,8 +678,7 @@ end
 function ChoGGi.MenuFuncs.SetDisasterOccurrence(action)
 	local setting_id = action.setting_id
 
-	-- TESTING123
-	local mapdata = LuaRevision > 1001586 and ActiveMapData or mapdata
+	local mapdata = ActiveMapData
 
 	local item_list = {
 		{

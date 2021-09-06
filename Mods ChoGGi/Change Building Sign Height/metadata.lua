@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Change Building Sign Height",
 	"id", "ChoGGi_ChangeBuildingSignHeight",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"steam_id", "2191449806",
 	"pops_any_uuid", "2da04523-2d1e-4749-a051-c8c3b635ed68",
 	"version", 1,

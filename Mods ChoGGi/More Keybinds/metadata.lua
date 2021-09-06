@@ -11,7 +11,8 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RebindHardcodedKeys",
 	"steam_id", "2163750555",
 	"pops_any_uuid", "0876037c-42bf-4f8a-8939-36638ba10a62",
-	"lua_revision", 1001514, -- Tito
+--~ 	"lua_revision", 1007000, -- Picard
+	"lua_revision", 1007000, -- ?
 	"version", 4,
 	"version_major", 0,
 	"version_minor", 4,

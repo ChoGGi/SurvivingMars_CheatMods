@@ -3,11 +3,11 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_OrbitalPrefabDrops",
 	"steam_id", "1545818603",
 	"pops_any_uuid", "20be6c5b-b62d-41c5-af97-de631190ea8a",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 8,
 	"version_major", 0,
 	"version_minor", 8,
-	"image", "Preview.png",
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",

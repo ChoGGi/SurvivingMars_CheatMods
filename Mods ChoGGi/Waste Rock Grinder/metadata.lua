@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_WasteRockGrinder",
 	"steam_id", "2544246919",
 	"pops_any_uuid", "53a56418-38cd-4b05-bc06-144a517292b7",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

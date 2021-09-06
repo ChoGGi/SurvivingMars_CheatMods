@@ -122,7 +122,7 @@ Actions[c] = {ActionName = Strings[302535920000559--[[Open Air Domes Toggle]]],
 	ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 	RolloverText = function()
 		return ChoGGi.ComFuncs.SettingState(
-			OpenAirBuildings,
+			GetOpenAirBuildings(ActiveMapID),
 			Strings[302535920000722--[[Open the domes to the fresh air (or lack of).]]]
 		)
 	end,

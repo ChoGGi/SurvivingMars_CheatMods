@@ -8,7 +8,7 @@ return PlaceObj("ModDef", {
 	"version", 3,
 	"version_major", 0,
 	"version_minor", 3,
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"code", {
 		"Code/Script.lua",
 	},

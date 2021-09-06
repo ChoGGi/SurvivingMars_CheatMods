@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Show Consumption Resources",
 	"id", "ChoGGi_ShowConsumptionResources",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"steam_id", "2217524879",
 	"pops_any_uuid", "6942fd37-2558-4116-a982-ea9b3527bb35",
 	"version", 2,

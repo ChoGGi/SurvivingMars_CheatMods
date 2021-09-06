@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Biorobot Fix 2",
 	"id", "ChoGGi_BiorobotFix",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"steam_id", "2264098735",
 	"pops_any_uuid", "18bf6153-894a-4e00-b596-643be9afee51",
 	"version", 2,

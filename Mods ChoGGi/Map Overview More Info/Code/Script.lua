@@ -124,8 +124,9 @@ local function AddIcons()
 	end
 --~ 	ex(sector_piles)
 
-	local g_MapSectors = g_MapSectors
-	for sector in pairs(g_MapSectors) do
+
+	local sectors = UICity.MapSectors
+	for sector in pairs(sectors) do
 		-- skip 1-10
 		if not sector_nums[sector] then
 

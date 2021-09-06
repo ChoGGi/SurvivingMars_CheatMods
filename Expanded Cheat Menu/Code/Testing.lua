@@ -387,8 +387,8 @@ local function Screenie(map)
 	-- hide signs (just in case any are in the currently exposed sector)
 	SetSignsVisible(false)
 	-- hide all the sector markers
-	local g_MapSectors = g_MapSectors
-	for sector in pairs(g_MapSectors) do
+	local sectors = UICity.MapSectors
+	for sector in pairs(sectors) do
 		if type(sector) ~= "number" and sector.decal then
 --~ 			sector.decal:SetVisible(false)
 			sector.decal:delete()

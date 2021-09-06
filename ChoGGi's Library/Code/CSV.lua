@@ -1,8 +1,5 @@
 -- See LICENSE for terms
 
--- TESTING123
-local luarev = LuaRevision > 1001586
-
 -- local some globals
 local table = table
 local CmpLower = CmpLower
@@ -46,7 +43,7 @@ do -- MapData
 
 	local loc_table = {"","","",""}
 	-- TESTING123
-	local MapData = luarev and MapDataPresets or MapData
+	local MapData = MapDataPresets
 
 	local function AddLandingSpot(lat, long, breakthroughs, skip_csv)
 		-- coord names in csv
@@ -83,11 +80,7 @@ do -- MapData
 		end
 
 		-- updates threat/res map info
-		if luarev then
-			landing:RecalcThreatAndResourceLevels()
-		else
-			landing:RecalcThreatResourceLevels()
-		end
+		landing:RecalcThreatAndResourceLevels()
 
 		local map_name, gen, params
 		if breakthroughs then

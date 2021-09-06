@@ -1,7 +1,7 @@
 return PlaceObj("ModDef", {
 	"title", "Catacombes de Mars",
 	"id", "ChoGGi_CatacombesdeMars",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"steam_id", "2170232881",
 	"pops_any_uuid", "74704c3f-4cde-4ed7-8b17-7c8bb0753a43",
 	"version", 2,

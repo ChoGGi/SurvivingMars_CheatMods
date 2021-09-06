@@ -1,3 +1,6 @@
+v1.2
+Text was messed up.
+
 v1.1
 Added Enable/Disable all to menu popup.
 

@@ -28,8 +28,8 @@ local green = green
 
 local function AddSectors()
 	local SectorUnexplored = SectorUnexplored
-	local g_MapSectors = g_MapSectors
-	for sector in pairs(g_MapSectors) do
+	local sectors = UICity.MapSectors
+	for sector in pairs(sectors) do
 		-- skip the 1-10 sector tables
 		if type(sector) == "table" then
 			-- unexplored sector
@@ -64,8 +64,8 @@ end
 local function RemoveSectors()
 	table.clear(sectors)
 
-	local g_MapSectors = g_MapSectors
-	for sector in pairs(g_MapSectors) do
+	local sectors = UICity.MapSectors
+	for sector in pairs(sectors) do
 		if type(sector) == "table" then
 			-- I'm lazy and deleting them now instead of checking for scanned sectors and removing them then
 			if IsValid(sector.ChoGGi_decal) then

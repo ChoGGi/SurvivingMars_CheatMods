@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_Challenge Show Scores",
 	"steam_id", "2569673451",
 	"pops_any_uuid", "cb358485-c9bc-4d8a-84e0-2f402fd1c085",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

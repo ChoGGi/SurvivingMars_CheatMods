@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ChangeRainType",
 	"steam_id", "2546489916",
 	"pops_any_uuid", "0369dbc2-87ff-4305-be64-77d4db41b679",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

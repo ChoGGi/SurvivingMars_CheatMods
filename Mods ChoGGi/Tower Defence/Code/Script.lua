@@ -81,7 +81,7 @@ local function LoadMapSectorsStats()
 	-- store amounts per save here
 	if not UICity.ChoGGi_TowerDefense then
 		-- build list of out map sectors (all of 1 and 10, and the top/bottom from the rest
-		local g_MapSectors = g_MapSectors
+		local sectors = UICity.MapSectors
 		local sector_table = {}
 		local c = 0
 
@@ -91,23 +91,16 @@ local function LoadMapSectorsStats()
 				sector_table[c] = sector[i]
 			end
 		end
-		AddOneTen(g_MapSectors[1])
-		AddOneTen(g_MapSectors[10])
+		AddOneTen(sectors[1])
+		AddOneTen(sectors[10])
 
-		local function AddFirstLast(sector)
+		for i = 2, 9 do
+			local sector = sectors[i]
 			c = c + 1
 			sector_table[c] = sector[1]
 			c = c + 1
 			sector_table[c] = sector[10]
 		end
-		AddFirstLast(g_MapSectors[2])
-		AddFirstLast(g_MapSectors[3])
-		AddFirstLast(g_MapSectors[4])
-		AddFirstLast(g_MapSectors[5])
-		AddFirstLast(g_MapSectors[6])
-		AddFirstLast(g_MapSectors[7])
-		AddFirstLast(g_MapSectors[8])
-		AddFirstLast(g_MapSectors[9])
 
 		UICity.ChoGGi_TowerDefense = {
 			-- rovers to spawn next sol
@@ -148,7 +141,7 @@ function OnMsg.NewDay(sol)
 		Sleep(1000)
 
 		if sol > 24 and not IsTechDiscovered("DefenseTower") then
-			ChoGGi.ComFuncs.RetUIColony():SetTechDiscovered("DefenseTower")
+			UIColony:SetTechDiscovered("DefenseTower")
 		end
 
 		if sol < 49 then

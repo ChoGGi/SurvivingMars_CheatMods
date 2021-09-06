@@ -3285,6 +3285,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				table.insert(data_meta, 1, "\ngetmetatable():")
 				table.insert(data_meta, 1, "get_default(): " .. self:ConvertValueToInfo(obj:get_default()))
 				table.insert(data_meta, 1, "max_value(): " .. self:ConvertValueToInfo(obj:max_value()))
+				table.insert(data_meta, 1, "bits(): " .. self:ConvertValueToInfo(obj:bits()))
 				local size = {obj:size()}
 				if size[1] then
 					table.insert(data_meta, 1, "\nsize(): " .. self:ConvertValueToInfo(size[1])
@@ -3403,10 +3404,19 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				table.insert(data_meta, 1, "parseTuples(): " .. self:ConvertValueToInfo(obj:parseTuples()))
 				table.insert(data_meta, 1, "getInt(): " .. self:ConvertValueToInfo(obj:getInt()))
 				table.insert(data_meta, 1, "\nsize(): " .. self:ConvertValueToInfo(obj:size()))
---~ 				elseif name == "HGE.File" then
---~ 				elseif name == "HGE.ForEachReachable" then
---~ 				elseif name == "RSAKey" then
---~ 				elseif name == "lpeg-pattern" then
+			elseif name == "HGE.TerrainRef" then
+				table.insert(data_meta, 1, "\ngetmetatable():")
+				table.insert(data_meta, 1, "GetAllTerrainTypes(): " .. self:ConvertValueToInfo(obj:GetAllTerrainTypes()))
+				table.insert(data_meta, 1, "GetAreaHeight(): " .. self:ConvertValueToInfo(obj:GetAreaHeight()))
+				table.insert(data_meta, 1, "GetMapSize(): " .. self:ConvertValueToInfo(obj:GetMapSize()))
+				table.insert(data_meta, 1, "GetHeightGrid(): " .. self:ConvertValueToInfo(obj:GetHeightGrid()))
+			elseif name == "HGE.RealmRef" then
+				table.insert(data_meta, 1, "\ngetmetatable():")
+				table.insert(data_meta, 1, "GetMapBox(): " .. self:ConvertValueToInfo(obj:GetMapBox()))
+--~ 			elseif name == "HGE.File" then
+--~ 			elseif name == "HGE.ForEachReachable" then
+--~ 			elseif name == "RSAKey" then
+--~ 			elseif name == "lpeg-pattern" then
 
 			else
 				table.insert(data_meta, 1, "\ngetmetatable():")

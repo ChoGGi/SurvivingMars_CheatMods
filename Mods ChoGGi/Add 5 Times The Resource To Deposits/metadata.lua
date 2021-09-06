@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_Add5TimesTheResourceToDeposits",
 	"pops_any_uuid", "6ff9709d-3a3b-48b5-be2f-ce3216aa5699",
 	"steam_id", "1427609324",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 6,
 	"version_major", 0,
 	"version_minor", 6,

@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_LockResidence",
 	"steam_id", "1635694550",
 	"pops_any_uuid", "eaa85815-b77c-416e-a71b-e23694489348",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"code", {
 		"Code/Script.lua",
 	},

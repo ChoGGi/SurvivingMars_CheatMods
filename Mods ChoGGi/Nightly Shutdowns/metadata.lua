@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_NightlyShutdowns",
 	"steam_id", "2460728463",
 	"pops_any_uuid", "0cb80e06-0767-4e5f-a20b-e627aa8792a5",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,

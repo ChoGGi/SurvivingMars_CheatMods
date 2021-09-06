@@ -23,7 +23,7 @@ return PlaceObj("ModDef", {
 --~ 	"steam_id", "000000000",
 --~ CopyToClipboard([[	"pops_any_uuid", "]] .. GetUUID() .. [[",]])
 	"author", "ChoGGi",
-	"lua_revision", 1001514, -- Tito
+	"lua_revision", 1007000, -- Picard
 	"code", {
 		"Code/Script.lua",
 	},
