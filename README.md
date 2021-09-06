@@ -1,6 +1,6 @@
-You should buy a copy: [Steam](https://store.steampowered.com/bundle/15028/Surviving_Mars_First_Colony_Edition/), [GOG](https://www.gog.com/game/surviving_mars_first_colony_edition), or [Paradox](https://www.paradoxplaza.com/surviving-mars)
+You should buy a copy: [Steam](https://store.steampowered.com/bundle/15028/Surviving_Mars_First_Colony_Edition/) or [Paradox](https://www.paradoxplaza.com/surviving-mars)
 
-For packaged versions of these mods see [Steam](https://steamcommunity.com/workshop/filedetails/?id=1411210466) or [Nexus Mods](https://www.nexusmods.com/survivingmars/users/659381?tab=user+files).
+For packaged versions of these mods see [Steam](https://steamcommunity.com/workshop/filedetails/?id=1411210466), [Nexus Mods](https://www.nexusmods.com/survivingmars/users/659381?tab=user+files), or [Paradox Mods](https://mods.paradoxplaza.com/games/surviving_mars?orderBy=desc&search=choggi&sortBy=updated).
 
 ##### Install help (Nexus/GoG)
 ```

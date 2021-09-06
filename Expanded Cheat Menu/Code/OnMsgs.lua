@@ -301,7 +301,7 @@ function OnMsg.ClassesBuilt()
 end
 
 -- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
 	-- id is from ApplyModOptions
 	if id and id ~= CurrentModId then
 		return

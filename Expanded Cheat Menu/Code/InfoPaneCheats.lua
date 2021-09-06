@@ -36,7 +36,7 @@ Building.CheatOxygenFree = ComFuncs.RemoveBuildingAirConsump
 Building.CheatOxygenNeed = ComFuncs.AddBuildingAirConsump
 
 function ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
-	if CurrentMap and not CurrentMap:find("Tutorial") then
+	if ActiveMapID and not ActiveMapID:find("Tutorial") then
 		local g_Classes = g_Classes
 		g_Classes.Building.CheatAddMaintenancePnts = nil
 		g_Classes.Building.CheatMakeSphereTarget = nil

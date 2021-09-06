@@ -1,6 +1,9 @@
 ## ECM Changelog
 
 ## v17.1 (Unreleased)
+### Changed:
+- Picard update
+
 ### Added:
 - ECM.Debug.Toggles>Toggle Interface (Ctrl-Alt-I).
 

@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v10.2 (Unreleased)
+- Picard update
 
 ## v10.1 (1 Aug 2021)
 - Added LaunchHumanMeteor.
