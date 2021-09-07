@@ -64,7 +64,7 @@ local function RemoveChoGGiObjects(skip_height)
 	SuspendPassEdits("ChoGGiLibrary.OnMsgs.RemoveChoGGiObjects")
 
 	-- MapDelete doesn't seem to work with func filtering?
-	ActiveGameMap.realm:MapForEach(true, "RotatyThing", RemoveMyBlinky)
+	MapForEach(true, "RotatyThing", RemoveMyBlinky)
 
 	-- any of my objs added in Classes_Objects.lua
 	ChoGGi.ComFuncs.RemoveObjs("ChoGGi_ODeleteObjs")
@@ -73,7 +73,7 @@ local function RemoveChoGGiObjects(skip_height)
 
 	-- remove any origin points above 65535 (or bad things happen)
 	if not skip_height and ChoGGi.UserSettings.RemoveHeightLimitObjs then
-		ActiveGameMap.realm:MapForEach("map", RemoveAttachAboveHeightLimit)
+		MapForEach("map", RemoveAttachAboveHeightLimit)
 	end
 
 	ResumePassEdits("ChoGGiLibrary.OnMsgs.RemoveChoGGiObjects")

@@ -10,7 +10,7 @@ return PlaceObj("ModDef", {
 	"title", "Martian Carwash",
 	"id", "ChoGGi_MartianCarwash",
 	"steam_id", "1411110474",
-	"pops_any_uuid", "c146c971-70c2-41da-92ea-3cb7c3d9c6b7",
+	"pops_any_uuid", "14858ef6-7615-493c-ba0f-5f2bce11c3f4",
 	"lua_revision", 1007000, -- Picard
 	"version", 7,
 	"version_major", 0,

@@ -10,7 +10,7 @@ return PlaceObj("ModDef", {
 	"title", "Rockets Auto Land",
 	"id", "ChoGGi_RocketsAutoLand",
 	"steam_id", "2562669388",
-	"pops_any_uuid", "1d61ec45-44ba-4059-8abc-24b5a10066e0",
+	"pops_any_uuid", "4f913b10-1f4b-4564-9bb1-2b72184c1718",
 	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,

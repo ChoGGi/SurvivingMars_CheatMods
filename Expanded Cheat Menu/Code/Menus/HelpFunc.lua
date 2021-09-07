@@ -20,10 +20,17 @@ do -- ModUpload
 		[ChoGGi.id_lib] = "ChoGGi's Library (upload 2)",
 		[ChoGGi.id] = "Expanded Cheat Menu (upload 2)",
 		ChoGGi_DeepResourcesNeverRunOut = "Deep Resources Never Run Out (upload 2)",
+		ChoGGi_DronesCarryAmountFix = "Drones Carry Amount (upload 2)",
+		ChoGGi_FixMirrorGraphics = "Fix Mirror Graphics (upload 2)",
 		ChoGGi_IncreaseRanchStorage = "Increase Ranch Storage (upload 2)",
+		ChoGGi_MartianCarwash = "Martian Carwash (upload 2)",
+		ChoGGi_PodNoBounce = "Pod No Bounce (upload 2)",
+		ChoGGi_RocketProgradeOrbit = "Rocket Prograde Orbit (upload 2)",
+		ChoGGi_RocketsAutoLand = "Rockets Auto Land (upload 2)",
+		ChoGGi_SelectableCables = "Selectable Cables Pipes (upload 2)",
+		ChoGGi_StopColonistDeathFailure = "Stop Death Failure (upload 2)",
 		ChoGGi_UnitThoughts = "Unit Thoughts (upload 3)",
 		ChoGGi_WideAreaForestation = "Wide Area Forestation (upload 2)",
-		ChoGGi_FixMirrorGraphics = "Fix Mirror Graphics (upload 2)",
 	}
 
 

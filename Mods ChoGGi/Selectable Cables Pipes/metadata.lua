@@ -3,7 +3,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_SelectableCables",
 	"lua_revision", 1007000, -- Picard
 	"steam_id", "1411114741",
-	"pops_any_uuid", "98f9f60e-447d-4b3d-aeed-9aa0b5cbf637",
+	"pops_any_uuid", "e63f42d5-8873-448e-997f-9db4e771a554",
 	"version", 5,
 	"version_major", 0,
 	"version_minor", 5,
@@ -12,5 +12,7 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua"
 	},
-	"description", [[Adds salvage button/grid info to Cables and Pipes.]],
+	"description", [[
+Adds salvage button/grid info to Cables and Pipes.
+]],
 })

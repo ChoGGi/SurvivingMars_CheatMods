@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 	"image", "Preview.png",
 	"id", "ChoGGi_DronesCarryAmountFix",
 	"steam_id", "1411107961",
-	"pops_any_uuid", "a100af94-09ad-46a4-8a79-95c18f590e58",
+	"pops_any_uuid", "f89fcb61-6a9b-494a-852f-aa37b68dafcc",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
