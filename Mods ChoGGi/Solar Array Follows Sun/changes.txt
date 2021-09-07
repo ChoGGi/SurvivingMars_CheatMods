@@ -1,3 +1,6 @@
+v0.6
+Issue with missing panels? (Thanks SkiRich)
+
 v0.5
 Requires my Library mod.
 

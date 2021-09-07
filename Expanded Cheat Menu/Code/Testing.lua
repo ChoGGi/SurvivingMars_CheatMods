@@ -573,7 +573,7 @@ function ChoGGi.testing.TableSortVsLoop()
 end
 
 function ChoGGi.testing.TableCountVsFirst()
-	local list = MapGet(true)
+	local list = ActiveGameMap.realm:MapGet(true)
 
 	ChoGGi.ComFuncs.TickStart("TableCountVsFirst.1.Tick")
 	for _ = 1, 1000000 do
@@ -804,7 +804,7 @@ end
 function ChoGGi.testing.TextExamine()
 	local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 	local WaitMsg = WaitMsg
-	local list = MapGet(true)
+	local list = ActiveGameMap.realm:MapGet(true)
 
 	CreateRealTimeThread(function()
 		ChoGGi.ComFuncs.TickStart("TextExamine.Tick")
@@ -823,7 +823,7 @@ end
 function ChoGGi.testing.TableIterate()
 	-- not ipairs (of course)
 
-	local list = MapGet(true)
+	local list = ActiveGameMap.realm:MapGet(true)
 
 	--faster
 	ChoGGi.ComFuncs.TickStart("TableIterate.1.Tick")
@@ -1057,8 +1057,7 @@ end
 --~ ChoGGi.testing.LoadMapForScreenShot("BlankBigTerraceCMix_13")
 --~ if false then
 --~ 	CreateRealTimeThread(function()
---~ 		-- TESTING123
---~ 		local MapData = rawget(_G , "MapData") and MapData or MapDataPresets
+--~ 		local MapData = MapDataPresets
 --~ 		for map in pairs(MapData) do
 --~ 			if map:sub(1, 5) == "Blank" then
 --~ 				ChoGGi.testing.LoadMapForScreenShot(map)

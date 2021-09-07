@@ -133,7 +133,7 @@ do -- SetEntity
 				if check2 then
 					SetEntity(obj, value)
 				else
-					MapForEach("map", obj.class, function(o)
+					ActiveGameMap.realm:MapForEach("map", obj.class, function(o)
 						if dome then
 							if o.dome and o.dome.handle == dome.handle then
 								SetEntity(o, value)
@@ -236,7 +236,7 @@ do -- SetEntityScale
 				if check2 then
 					SetScale(obj, value)
 				else
-					MapForEach("map", obj.class, function(o)
+					ActiveGameMap.realm:MapForEach("map", obj.class, function(o)
 						if dome then
 							if o.dome and o.dome.handle == dome.handle then
 								SetScale(o, value)
@@ -424,7 +424,7 @@ end
 
 function ChoGGi.MenuFuncs.ListVisibleObjects()
 	local frame = (GetFrameMark() / 1024 - 1) * 1024
-	local visible = MapGet("map", "attached", false, function(obj)
+	local visible = ActiveGameMap.realm:MapGet("map", "attached", false, function(obj)
 		return obj:GetFrameMark() - frame > 0
 	end)
 	ChoGGi.ComFuncs.OpenInExamineDlg(visible, nil, Strings[302535920001547--[[Visible Objects]]])
@@ -563,12 +563,12 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 			SetLightmodelOverride(1, "TheMartian1_Night")
 
 			local texture = GetTerrainTextureIndex("Prefab_Orange")
-			terrain.SetTerrainType{type = texture or 1}
+			ActiveGameMap.terrain:SetTerrainType{type = texture or 1}
 
 			-- we need a delay when doing this from ingame instead of main menu
 			Sleep(1500)
 
-			-- make an index table of ents for placement
+			-- make a (sorted) index table of entities for placement
 			local entity_list = {}
 			local c = 0
 			local EntityData = EntityData
@@ -631,11 +631,12 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 							-- If it has a working state then set it
 							local states_str = obj:GetStates()
 							local idx = table.find(states_str, "working")
-								or table.find(states_str, "idleOpened")
-								or table.find(states_str, "rotate")
-								or table.find(states_str, "moveWalk")
-								or table.find(states_str, "walk")
-								or table.find(states_str, "run")
+									or table.find(states_str, "idleOpened")
+									or table.find(states_str, "rotate")
+									or table.find(states_str, "moveWalk")
+									or table.find(states_str, "walk")
+									or table.find(states_str, "run")
+
 							if idx then
 								obj:SetState(states_str[idx])
 							end
@@ -926,13 +927,13 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects()
 			return
 		end
 		SuspendPassEdits("ChoGGi.MenuFuncs.DeleteAllSelectedObjects")
-		MapDelete(true, obj.class)
+		ActiveGameMap.realm:MapDelete(true, obj.class)
 		ResumePassEdits("ChoGGi.MenuFuncs.DeleteAllSelectedObjects")
 	end
 
 	ChoGGi.ComFuncs.QuestionBox(
 		Translate(6779--[[Warning]]) .. "!\n"
-			.. Strings[302535920000852--[[This will delete all %s of %s]]]:format(MapCount("map", obj.class), obj.class),
+			.. Strings[302535920000852--[[This will delete all %s of %s]]]:format(ActiveGameMap.realm:MapCount("map", obj.class), obj.class),
 		CallBackFunc,
 		Translate(6779--[[Warning]]) .. ": " .. Strings[302535920000855--[[Last chance before deletion!]]],
 		Strings[302535920000856--[[Yes, I want to delete all: %s]]]:format(obj.class),
@@ -1175,12 +1176,12 @@ function ChoGGi.MenuFuncs.SetPathMarkers()
 			elseif g_Classes[value] then
 				CreateGameTimeThread(function()
 					local labels = UICity.labels
-					local table1 = labels[value] or MapGet("map", value)
+					local table1 = labels[value] or ActiveGameMap.realm:MapGet("map", value)
 					-- +1 to make it fire the first time
 					local current = #table1+1
 
 					while temp.PathMarkers_new_objs_loop do
-						table1 = labels[value] or MapGet("map", value)
+						table1 = labels[value] or ActiveGameMap.realm:MapGet("map", value)
 						if current ~= #table1 then
 							-- update list when
 							Pathing_StopAndRemoveAll(true)
@@ -1226,7 +1227,7 @@ end
 --~ local terrain_type_idx = GetTerrainTextureIndex(terrain_type)
 --~ CreateRealTimeThread(function()
 --~	 while true do
---~		 terrain.SetTypeCircle(GetCursorWorldPos(), 2500, terrain_type_idx)
+--~		 ActiveGameMap.terrain:SetTypeCircle(GetCursorWorldPos(), 2500, terrain_type_idx)
 --~		 						WaitMsg("OnRender")
 
 --~	 end
@@ -1240,13 +1241,11 @@ do -- FlightGrid_Toggle
 	local point = point
 	local AveragePoint2D = AveragePoint2D
 	local FindPassable = FindPassable
-	local terrain_GetHeight = terrain.GetHeight
 	local DoneObject = DoneObject
 
 	local grid_thread = false
 	local Flight_Height_temp = false
-	-- TESTING123
-	local type_tile = const.TerrainTypeTileSize or terrain.TypeTileSize()
+	local type_tile = ActiveGameMap.terrain:TypeTileSize()
 	local work_step = 16 * type_tile
 	local dbg_step = work_step / 4 -- 400
 	local dbg_stepm1 = dbg_step - 1
@@ -1270,7 +1269,7 @@ do -- FlightGrid_Toggle
 			colours[i] = InterpolateRGB(
 				white,
 				green,
-				Clamp(height - zoffset - terrain_GetHeight(pos), 0, max_diff),
+				Clamp(height - zoffset - ActiveGameMap.terrain:GetHeight(pos), 0, max_diff),
 				max_diff
 			)
 		end

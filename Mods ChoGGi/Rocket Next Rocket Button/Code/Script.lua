@@ -1,13 +1,12 @@
 -- See LICENSE for terms
 
-local MapFilter = MapFilter
 local ViewAndSelectObject = ViewAndSelectObject
 local XDestroyRolloverWindow = XDestroyRolloverWindow
 local table = table
 
 local function CycleRockets(context)
 	local list = (context.city or UICity).labels.SupplyRocket or empty_table
-	list = MapFilter(list, function(rocket)
+	list = ActiveGameMap.realm:MapFilter(list, function(rocket)
 		return rocket:IsRocketLanded()
 	end)
 	local count = #list

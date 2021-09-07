@@ -49,6 +49,7 @@ Cheats.Consts.Colonist>security_arrival_chance Arrival chance (Officer): securit
 Cheats.Consts.Colonist>specialist_chance_mul Specialist chance multiplier: Multiplier for arrival chances of all Specialist types
 Cheats.Consts.Cost>Concrete_cost_modifier Cost modifier (Concrete): All building construction costs in Concrete will be modified by this percent
 Cheats.Consts.Cost>Concrete_dome_cost_modifier Dome cost modifier (Concrete): All Dome construction costs in in Concrete will be modified by this percent
+Cheats.Consts.Cost>DiscoveryScanCost Discovery Scan Cost: DiscoveryScanCost Discovery Scan Cost
 Cheats.Consts.Cost>Electronics_cost_modifier Cost modifier (Electronics): All building construction costs in Electronics will be modified by this percent
 Cheats.Consts.Cost>Electronics_dome_cost_modifier Dome cost modifier (Electronics): All Dome construction costs in in Electronics will be modified by this percent
 Cheats.Consts.Cost>MachineParts_cost_modifier Cost modifier (Machine Parts): All building construction costs in Machine Parts will be modified by this percent
@@ -91,7 +92,10 @@ Cheats.Consts.Drone>DroneTransformWasteRockObstructorToStockpileBatteryUse Drone
 Cheats.Consts.Drone>RechargeCleansDrones Recharging cleans Drones: Drones will be cleaned of dust when being recharged if this value is bigger than 0
 Cheats.Consts.Gameplay>ApplicantGenerationInterval Applicant Generation Period: How long it takes to generate a new Applicant in the Applicant Pool
 Cheats.Consts.Gameplay>ApplicantSuspendGenerate Applicant Generation Suspended: Determines whether the applicant pool gains new entries.
+Cheats.Consts.Gameplay>AsteroidLanderPrice Asteroid Lander Price: The price of the Asteroid Lander
+Cheats.Consts.Gameplay>AsteroidOutOfRangeWarningInSols Number of Sols before popup shows that Asteroid will go out of range: AsteroidOutOfRangeWarningInSols Number of Sols before popup shows that Asteroid will go out of range
 Cheats.Consts.Gameplay>CargoCapacity Payload Capacity: Maximum payload (in kg) of a resupply Rocket
+Cheats.Consts.Gameplay>CaveInDamage Amount of maintenance points a cave-in adds to buildings: Amount of maintenance points a cave-in adds to buildings
 Cheats.Consts.Gameplay>CrimeEventDestroyedBuildingsCount CrimeEventDestroyedBuildingsCount: CrimeEvent -  the number of destroyed buildings from single crime event
 Cheats.Consts.Gameplay>CrimeEventSabotageBuildingsCount CrimeEventSabotageBuildingsCount: CrimeEvent -  the number of sabotaged buildings from single crime event
 Cheats.Consts.Gameplay>DeepScanAvailable Can perform deep scan: Deep scanning is available when this is not 0
@@ -110,10 +114,15 @@ Cheats.Consts.Gameplay>InstantPassages Instant Passages: Passages are built inst
 Cheats.Consts.Gameplay>InstantPipes Instant Pipes: Pipes are built instantly when this is not 0
 Cheats.Consts.Gameplay>IsDeepMetalsExploitable Exploitable Deep Metals: Deep Metals deposits are exploitable when this is not 0
 Cheats.Consts.Gameplay>IsDeepPreciousMetalsExploitable Can exploit deep Rare Metals: Deep Rare Metals deposits are exploitable when this is not 0
+Cheats.Consts.Gameplay>IsDeepPreciousMineralsExploitable Can exploit deep Exotic Minerals: Deep Exotic Mineral deposits are exploitable when this is not 0
 Cheats.Consts.Gameplay>IsDeepWaterExploitable Exploitable Deep Water: Deep Water deposits are exploitable when this is not 0
+Cheats.Consts.Gameplay>MarsquakeRandomTime Random extra hours before the next underground Marsquake: Minimum + random = hours until next Underground Marsquake
+Cheats.Consts.Gameplay>MarsquakeSpawnTime Minimum time in hours before the next underground Marsquake: Minimum + random = hours until next Underground Marsquake
+Cheats.Consts.Gameplay>MaxAsteroids Max Asteroids: MaxAsteroids Max Asteroids
 Cheats.Consts.Gameplay>MaxColonistsPerPod Colonists per Pod: Maximum number of Colonists that can arrive on Mars in a single Pod
 Cheats.Consts.Gameplay>MaxColonistsPerRocket Colonists per Rocket: Maximum number of Colonists that can arrive on Mars in a single Rocket
 Cheats.Consts.Gameplay>MaxGameDevelopmentCollaborationLoss Max Game Development Collaboration Loss (%): MaxGameDevelopmentCollaborationLoss Max Game Development Collaboration Loss (%)
+Cheats.Consts.Gameplay>MaxReconCollaborationLoss Max Recon Collaboration Loss (%): MaxReconCollaborationLoss Max Recon Collaboration Loss (%)
 Cheats.Consts.Gameplay>MaxResearchCollaborationLoss Max Research Collaboration Loss (%): MaxResearchCollaborationLoss Max Research Collaboration Loss (%)
 Cheats.Consts.Gameplay>MaxTVShowDevelopmentCollaborationLoss Max TV Show Development Collaboration Loss (%): MaxTVShowDevelopmentCollaborationLoss Max TV Show Development Collaboration Loss (%)
 Cheats.Consts.Gameplay>OutsourceDisabled Outsource Disabled: Determines whether the player can buy research points via outsourcing.
@@ -138,6 +147,7 @@ Cheats.Consts.Gameplay>SponsorFundingPerInterval Additional Funding (M): Amount 
 Cheats.Consts.Gameplay>SponsorGoalsCount Number of sponsor goals: Number of sponsor goals
 Cheats.Consts.Gameplay>SupplyMissionsEnabled Supply Missions Enabled: Determines where supply missions are enabled
 Cheats.Consts.Gameplay>TravelTimeEarthMars Rocket Travel Time (Earth to Mars): Time it takes for a Rocket to travel from Earth to Mars
+Cheats.Consts.Gameplay>TravelTimeMarsAsteroid Rocket Travel Time (Mars to Asteroid): Time it takes for a Rocket to travel from Mars to Asteroid
 Cheats.Consts.Gameplay>TravelTimeMarsEarth Rocket Travel Time (Mars to Earth): Time it takes for a Rocket to travel from Mars to Earth
 Cheats.Consts.Gameplay>VegetationGrowthMultiplier Vegetation Growth Multiplier: Vegetation growth times are modified by this number.
 Cheats.Consts.Gameplay>WasteRockToConcreteRatio WasteRock To Concrete Ratio: WasteRockToConcreteRatio WasteRock To Concrete Ratio
@@ -170,6 +180,7 @@ Cheats.Consts.Stat>DustStormSanityDamage Sanity damage from Dust Storms (per hou
 Cheats.Consts.Stat>GameRuleRebelYellRenegadeCreation Renegade creation point when game rule Rebel Yell is activated: GameRuleRebelYellRenegadeCreation Renegade creation point when game rule Rebel Yell is activated
 Cheats.Consts.Stat>HighStatLevel High Stat Threshold: Stats above this level are considered high
 Cheats.Consts.Stat>HighStatMoraleEffect High Stat Morale Effect: High Health, Sanity and Comfort increase the Colonist's morale by this much
+Cheats.Consts.Stat>LackOfLight Lack of Light: Colonist Sanity decreases when a Colonist is living Underground
 Cheats.Consts.Stat>LowSanityNegativeTraitChance Chance for getting a flaw when experiencing a Sanity breakdown: Chance of getting a negative trait when Sanity reaches zero, in %
 Cheats.Consts.Stat>LowSanitySuicideChance Chance of Suicide: Chance of suicide when Sanity reaches zero, in %
 Cheats.Consts.Stat>LowStatLevel Low Stat Threshold: Stats below this level are considered low
@@ -227,7 +238,7 @@ Cheats.Consts.Terraforming>WasteRockPerHexCube WasteRock per Cubic Hex: WasteRoc
 Cheats.Consts.Traits>ExtrovertIncreaseComfortThreshold ExtrovertIncreaseComfortThreshold: Increases Comfort Threshold for Social Buildings when used by extroverts
 Cheats.Consts.Traits>MaxColonistTraitsToGenerate MaxColonistTraitsToGenerate: Max base traits generated per Colonist
 Cheats.Consts.Workplace>AvoidWorkplaceSols Avoid Workplace Sols: After being fired, Colonists will avoid that Workplace for this many days when searching for a Workplace
-Cheats.Consts.Workplace>DefaultOutsideWorkplacesRadius Default outside Workplaces radius: Colonists search this far (in hexes) outisde their Dome when looking for a Workplace
+Cheats.Consts.Workplace>DefaultOutsideWorkplacesRadius Default outside Workplaces radius: Colonists search this far (in hexes) outside their Dome when looking for a Workplace
 Cheats.Consts.Workplace>OvertimedShiftPerformance Heavy workload Shift Performance: Heavy workload Shift Performance change
 Cheats.Consts.Workplace>WorkingHours Working hours: Normal shift duration
 Cheats.Disasters>Disasters: Show the disasters list and optionally start one.
@@ -303,9 +314,6 @@ Debug.Object>Anim State Set: Make selected object dance on command.
 Debug.Object>Delete All Of Selected Object: Will ask for confirmation beforehand (will not delete domes).
 Debug.Object>Delete Object(s): Deletes selected object or object under mouse cursor (most objs, not all).
 Debug.Object>Edit Object: Manipulate objects (selected or under mouse cursor)
-Debug.Object>Examine Object Radius: 5000: Set the radius used for Shift-F4 examining.
-Debug.Object>Examine Object: Opens the object examiner for the selected or moused-over obj.
-Use Shift-F4 to show a list of all objects in a radius around cursor.
 Debug.Object>Object Cloner: Clones selected/moused over object to current mouse position (should probably use the shortcut key rather than this menu item).
 Debug.Object>Object Edit Flags: Shows list of flags set for selected object.
 Debug.Object>Open In Ged Object Editor: Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset).
@@ -331,7 +339,11 @@ click+drag for multiple selection.
 It's not as if domes need to be where you placed them (people will just ignore if you move the domes all to one place for that airy mars look).
 
 WARNING: Buggy! I kinda got it working, but expect issues!
+Debug.Toggles>Toggle Interface: Toggle all interface elements for screenshots/etc.
 Debug.Toggles>Toggle Render: Toggle rendering certain stuff.
+Debug>Examine Radius: Set the radius used for Shift-F4 examining.
+Debug>Examine: Opens the object examiner for the selected or moused-over obj.
+Use Shift-F4 to show a list of all objects in a radius around cursor.
 Debug>Reload LUA: Reloads code from any enabled mods (excluding ECM/Lib).
 Debug>Test Locale File: Test a CSV for malformed strings (can cause freezing when loaded normally).
 Debug>Used Terrain Textures: Show a list of terrain textures used in current map.
@@ -421,7 +433,7 @@ Works after colonist idle.
 ECM.Colonists.Workplaces>Clear Forced Workplaces: Removes "user_forced_workplace" from all colonists.
 ECM.Colonists.Workplaces>Connected dome performance penalty: Performance penalty for colonists working in another connected dome
 Activated when colonist changes job.
-ECM.Colonists.Workplaces>Default outside Workplaces radius: Colonists search this far (in hexes) outisde their Dome when looking for a Workplace
+ECM.Colonists.Workplaces>Default outside Workplaces radius: Colonists search this far (in hexes) outside their Dome when looking for a Workplace
 ECM.Colonists.Workplaces>Fire All Colonists!: Fires everyone from every job.
 ECM.Colonists.Workplaces>Non-specialist performance penalty: Performance penalty for non-Specialists assigned to a specialized work position
 Activated when colonist changes job.

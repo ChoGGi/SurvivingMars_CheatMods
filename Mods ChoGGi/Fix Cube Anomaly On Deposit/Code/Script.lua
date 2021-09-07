@@ -3,7 +3,7 @@
 local function CheckObjs(obj)
 	-- check if there's a deposit below it
 	local pos = obj:GetPos()
-	local objs = MapGet(pos, 100)
+	local objs = ActiveGameMap.realm:MapGet(pos, 100)
 	for i = 1, #objs do
 		-- found one
 		if objs[i]:IsKindOf("SubsurfaceDeposit") then
@@ -27,7 +27,7 @@ local function StartupCode()
 		return
 	end
 
-	local objs = MapGet("map", "SubsurfaceAnomaly")
+	local objs = ActiveGameMap.realm:MapGet("map", "SubsurfaceAnomaly")
 	for i = 1, #objs do
 		CheckObjs(objs[i])
 	end

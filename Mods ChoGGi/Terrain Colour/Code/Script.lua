@@ -53,7 +53,7 @@ local function NewColours()
 
 	if next(remaps) then
 		SuspendPassEdits("ChoGGi_TerrainColour")
-		terrain.RemapType(remaps)
+		ActiveGameMap.terrain:RemapType(remaps)
 		ResumePassEdits("ChoGGi_TerrainColour")
 	end
 

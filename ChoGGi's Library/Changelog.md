@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v10.2 (Unreleased)
+## v10.3 (Unreleased)
+
+## v10.2 (7 Sep 2021)
 - Picard update
 
 ## v10.1 (1 Aug 2021)

@@ -28,11 +28,12 @@ local function UpdateColonist(obj)
 				obj.city:RemoveFromLabel(trait, obj)
 				obj:RemoveTrait(trait)
 				-- I guess I could, I mean devs added it to ColonistSpecialization
-				obj.specialist = "Tourist"
---~ 				obj.specialist = "none"
+--~ 				obj.specialist = "Tourist"
+				obj.specialist = "none"
 				obj:ChooseEntity()
 			elseif trait == "Tourist" then
-				obj.specialist = "Tourist"
+				obj.specialist = "none"
+--~ 				obj.specialist = "Tourist"
 			end
 		end
 	end

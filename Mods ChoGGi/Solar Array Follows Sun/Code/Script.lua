@@ -50,7 +50,7 @@ GlobalGameTimeThread("SolarArrayOrientation", function()
 		for i = 1, #arrays do
 			local array = arrays[i]
 			local art_sun = array.artificial_sun and array.artificial_sun:GetPos()
-			for j = 1, #array.ChoGGi_panels do
+			for j = 1, #(array.ChoGGi_panels or "") do
 				local panel_obj = array.ChoGGi_panels[j]
 
 				if array:IsAffectedByArtificialSun() then

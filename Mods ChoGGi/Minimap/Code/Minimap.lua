@@ -30,7 +30,6 @@ local sizebox = sizebox
 local tonumber = tonumber
 local ScaleXY = ScaleXY
 local DrawImageFit = UIL.DrawImageFit
-local GetSurfaceHeight = terrain.GetSurfaceHeight
 local cameraRTS = cameraRTS
 local terrain = terrain
 local transition_time = 0
@@ -425,7 +424,7 @@ function ChoGGi_XMapControl:OnMousePos(pt)
 	)
 --~ 	pt = HexGetNearestCenter(pt) or pt
 
-	self.sphere:SetPos(pt:SetZ(GetSurfaceHeight(pt)))
+	self.sphere:SetPos(pt:SetZ(ActiveGameMap.terrain:GetSurfaceHeight(pt)))
 
 	-- off we go
 	ViewObjectMars(pt)

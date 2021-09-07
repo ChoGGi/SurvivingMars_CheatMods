@@ -5,7 +5,7 @@ local function BumpAmount(self)
 
 	-- hey guys, lets just remove some labels, I'm sure no modders would ever use them
 --~ 	local objs = UICity.labels[self.context.class] or ""
-	local objs = MapGet("map",self.context.class)
+	local objs = ActiveGameMap.realm:MapGet("map",self.context.class)
 	for i = 1, #objs do
 		local obj = objs[i]
 		-- bump the amounts

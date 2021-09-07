@@ -4,10 +4,10 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 10,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
-	"title", "Tank Toggle Drain Mode",
+	"title", "Storage Toggle Drain Mode",
 	"id", "ChoGGi_TankToggleDrainMode",
 	"lua_revision", 1007000, -- Picard
 	"steam_id", "2214626980",
@@ -22,8 +22,8 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"has_options", true,
 	"TagInterface", true,
-	"description", [[Adds a button to toggle drain only mode on water/air/electrical tanks.
-You can use this to move tanks without throwing away the contents.
+	"description", [[Adds a button to toggle drain only mode on water/air/electrical storage.
+You can use this to move storage without throwing away the contents.
 
 
 Requested by Vas.]],

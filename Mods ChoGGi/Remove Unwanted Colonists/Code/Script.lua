@@ -441,7 +441,7 @@ function MurderPod:Leave(leave_height)
 		self.max_pos_radius,
 		self.min_pos_radius
 	)
-	leave_height = (terrain.GetHeight(current_pos) + leave_height) * 2
+	leave_height = (ActiveGameMap.terrain:GetHeight(current_pos) + leave_height) * 2
 	self.hover_height = leave_height / 4
 
 	self.fx_actor_class = "SupplyRocket"
@@ -628,7 +628,7 @@ end
 
 -- crash fix for lastest update (probably, guessing it was tracking people out of bounds)
 function OnMsg.LoadGame()
-	local objs = MapGet("map", "MurderPod")
+	local objs = ActiveGameMap.realm:MapGet("map", "MurderPod")
 	for i = 1, #objs do
 		local obj = objs[i]
 		-- actually 33325, but it'll do

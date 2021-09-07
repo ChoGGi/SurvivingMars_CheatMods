@@ -980,9 +980,13 @@ function OnMsg.ClassesBuilt()
 			then
 				self.spireless_dome = false
 				local hex_world_pos = HexGetNearestCenter(pos)
-				local build_z = g_BuildableZ and GetBuildableZ(WorldToHex(hex_world_pos)) or UnbuildableZ
+				local game_map = ActiveGameMap
+--~ 				local build_z = g_BuildableZ and GetBuildableZ(WorldToHex(hex_world_pos)) or UnbuildableZ
+				local build_z = game_map.buildable:GetZ(WorldToHex(hex_world_pos)) or UnbuildableZ
+				local terrain = game_map.terrain
+
 				if build_z == UnbuildableZ then
-					build_z = pos:z() or terrain.GetHeight(pos)
+					build_z = pos:z() or terrain:GetHeight(pos)
 				end
 				hex_world_pos = hex_world_pos:SetZ(build_z)
 
@@ -1016,9 +1020,9 @@ function OnMsg.ClassesBuilt()
 --~ 					new_pos = FixConstructPos(new_pos)
 --~ 				end
 
-				local new_pos = FixConstructPos(self.snap_to_grid and hex_world_pos or pos)
+				local new_pos = FixConstructPos(terrain, self.snap_to_grid and hex_world_pos or pos)
 
-				if force or (FixConstructPos(self.cursor_obj:GetPos()) ~= new_pos and hex_world_pos:InBox2D(ConstructableArea)) then
+				if force or (FixConstructPos(terrain, self.cursor_obj:GetPos()) ~= new_pos and hex_world_pos:InBox2D(ConstructableArea)) then
 					ShowNearbyHexGrid(hex_world_pos)
 					self.cursor_obj:SetPos(new_pos)
 					self:UpdateConstructionObstructors()

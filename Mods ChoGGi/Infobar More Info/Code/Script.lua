@@ -7,7 +7,6 @@ local type = type
 local IsT = IsT
 local T = T
 local IsValid = IsValid
-local MapGet = MapGet
 local HexBoundingCircle = HexBoundingCircle
 local point = point
 local FormatResource = FormatResource
@@ -107,8 +106,8 @@ function OnMsg.AddResearchRolloverTexts(text, city)
 		return
 	end
 
-	local UICity = UICity
-	local res_points = ResourceOverviewObj:GetEstimatedRP() + 0.0
+	local UICity = city or UICity
+	local res_points = g_ResourceOverviewCity[UICity.map_id]:GetEstimatedRP() + 0.0
 
 	-- research per sol
 	text[#text+1] = "<newline>" .. T{445070088246,
@@ -117,7 +116,7 @@ function OnMsg.AddResearchRolloverTexts(text, city)
 	}
 
 	-- time left of current res
-	local id, points, max_points = city:GetResearchInfo()
+	local id, points, max_points = UICity:GetResearchInfo()
 	if id then
 		local time_str = T{12265, "Remaining Time<right><time(time)>",
 			time = floatfloor(((max_points - points) / res_points) * scale_sols)
@@ -235,6 +234,7 @@ local function CountConcrete(city)
 
 	-- local what we can
 	local MaxTerrainDepositRadius = MaxTerrainDepositRadius
+	local realm = ActiveGameMap.realm
 
 	local objs = (city or UICity).labels.ResourceExploiter or ""
 	for i = 1, #objs do
@@ -250,7 +250,7 @@ local function CountConcrete(city)
 			local center = point(xc, yc)
 
 			remaining_res = CountDepositRemaining(remaining_res,
-				MapGet(center, center, MaxTerrainDepositRadius + radius, info.deposit_class)
+				realm:MapGet(center, center, MaxTerrainDepositRadius + radius, info.deposit_class)
 			)
 		end
 	end
@@ -762,7 +762,7 @@ function InfobarObj:ChoGGi_GetBrokenDrones()
 	table.iclear(borked_drones_list)
 	local c = 0
 	-- gotta use mapget instead of labels since dead drones aren't included
-	local objs = MapGet("map", "Drone")
+	local objs = ActiveGameMap.realm:MapGet("map", "Drone")
 	for i = 1, #objs do
 		local obj = objs[i]
 		if obj:IsDisabled() then
@@ -938,7 +938,7 @@ function RequiresMaintenance:GetDailyMaintenance(...)
 	-- so mods can change and have it reflect in infobar
 	tribby_range = tribby_range or TriboelectricScrubber.UIRange
 	-- only add main amount if we're not in range of a tribby
-	if not MapGet(self, "hex", tribby_range, "TriboelectricScrubber", ReturnWorking)[1] then
+	if not ActiveGameMap.realm:MapGet(self, "hex", tribby_range, "TriboelectricScrubber", ReturnWorking)[1] then
 		return orig_RequiresMaintenance_GetDailyMaintenance(self, ...)
 	end
 end

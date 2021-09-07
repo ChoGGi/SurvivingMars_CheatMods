@@ -23,7 +23,6 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local table = table
-local MapGet = MapGet
 local string_lower = string.lower
 local floatfloor = floatfloor
 
@@ -211,7 +210,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 
 	if txt_ctrl and self.ChoGGi_UpdateAvailableResources then
 		-- build list of objs within distance to cursor placing thingy
-		local objs = MapGet(self, "hex", self.ChoGGi_UpdateAvailableResources,
+		local objs = ActiveGameMap.realm:MapGet(self, "hex", self.ChoGGi_UpdateAvailableResources,
 			"MechanizedDepot", "StorageDepot", "ResourceStockpile", "SurfaceDeposit"
 		)
 		if objs[1] then

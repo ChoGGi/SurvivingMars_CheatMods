@@ -2,7 +2,6 @@
 
 local RetSpotPos = ChoGGi.ComFuncs.RetSpotPos
 local IsValid = IsValid
-local MapFilter = MapFilter
 local FindNearestObject = FindNearestObject
 local GetPassablePointNearby = GetPassablePointNearby
 local Sleep = Sleep
@@ -48,17 +47,17 @@ local function WaitItOut(idle_func, self, ...)
 
 			if mod_NearestLaser then
 				-- try lasers first since towers are from mystery (usually)
-				working_objs = MapFilter(labels.MDSLaser or empty_table, IsWorking)
+				working_objs = ActiveGameMap.realm:MapFilter(labels.MDSLaser or empty_table, IsWorking)
 				valid_obj = FindNearestObject(working_objs, self)
 
 				if not IsValid(valid_obj) then
-					working_objs = MapFilter(labels.DefenceTower or empty_table, IsWorking)
+					working_objs = ActiveGameMap.realm:MapFilter(labels.DefenceTower or empty_table, IsWorking)
 					valid_obj = FindNearestObject(working_objs, self)
 				end
 			end
 
 			if mod_NearestHub and not IsValid(valid_obj) then
-				working_objs = MapFilter(labels.DroneHub or empty_table, IsWorking)
+				working_objs = ActiveGameMap.realm:MapFilter(labels.DroneHub or empty_table, IsWorking)
 				valid_obj = FindNearestObject(working_objs, self)
 			end
 

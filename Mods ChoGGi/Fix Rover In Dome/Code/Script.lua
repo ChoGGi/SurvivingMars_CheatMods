@@ -16,7 +16,7 @@ local function MoveRovers()
 		return
 	end
 
-	local rovers = MapGet("map", "BaseRover")
+	local rovers = ActiveGameMap.realm:MapGet("map", "BaseRover")
 	for i = 1, #rovers do
 		local rover = rovers[i]
 		local dome = IsUnitInDome(rover)

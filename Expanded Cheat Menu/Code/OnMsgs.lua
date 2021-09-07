@@ -1432,7 +1432,6 @@ do -- LoadGame/CityStart
 
 		-- bloody hint popups
 		if UserSettings.DisableHints then
-			-- TESTING123
 			local mapdata = ActiveMapData
 			if mapdata.DisableHints == false then
 				mapdata.DisableHints = true

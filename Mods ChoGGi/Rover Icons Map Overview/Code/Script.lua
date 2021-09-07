@@ -2,7 +2,6 @@
 
 local MulDivRound = MulDivRound
 local Sleep = Sleep
-local MapGet = MapGet
 local CreateRealTimeThread = CreateRealTimeThread
 
 local step = 33
@@ -35,7 +34,7 @@ end
 local orig_OverviewModeDialog_ScaleSmallObjects = OverviewModeDialog.ScaleSmallObjects
 function OverviewModeDialog:ScaleSmallObjects(time, direction, ...)
 	local ret = orig_OverviewModeDialog_ScaleSmallObjects(self, time, direction, ...)
-	CreateRealTimeThread(UpdateIcons, time, direction, MapGet("map", "BaseRover"))
+	CreateRealTimeThread(UpdateIcons, time, direction, ActiveGameMap.realm:MapGet("map", "BaseRover"))
 	return ret
 end
 

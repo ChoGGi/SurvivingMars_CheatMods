@@ -54,13 +54,13 @@ function ChoGGi.MenuFuncs.UnlockBreakthroughs()
 		anomaly:ScanCompleted(false)
 		DoneObject(anomaly)
 	end
-	MapForEach("map", "SubsurfaceAnomalyMarker", function(marker)
+	ActiveGameMap.realm:MapForEach("map", "SubsurfaceAnomalyMarker", function(marker)
 		if marker.tech_action == "breakthrough" then
 			reveal(marker:PlaceDeposit())
 			DoneObject(marker)
 		end
 	end)
-	MapForEach("map", "SubsurfaceAnomaly", reveal)
+	ActiveGameMap.realm:MapForEach("map", "SubsurfaceAnomaly", reveal)
 end
 
 function ChoGGi.MenuFuncs.MeteorStrike(_, _, input)
@@ -103,7 +103,7 @@ function ChoGGi.MenuFuncs.LightningStrike(_, _, input)
 	local IsObjInDome = IsObjInDome
 	local IsCloser2D = IsCloser2D
 	local FuelExplosion = FuelExplosion
-	MapForEach(strike_pos, strike_radius + GetEntityMaxSurfacesRadius(),
+	ActiveGameMap.realm:MapForEach(strike_pos, strike_radius + GetEntityMaxSurfacesRadius(),
 			"Colonist", "Building", "Drone", "RCRover", "ResourceStockpileBase", function(obj)
 		if not IsCloser2D(obj, strike_pos, strike_radius) or IsObjInDome(obj) then
 			return
@@ -453,7 +453,6 @@ end
 function ChoGGi.MenuFuncs.DisasterTriggerColdWave(severity)
 	CreateGameTimeThread(function()
 		local data = DataInstances.MapSettings_ColdWave
-		-- TESTING123
 		local descr = data[severity] or data[ActiveMapData.MapSettings_ColdWave] or data.ColdWave_VeryLow
 		StartColdWave(descr)
 	end)
@@ -461,7 +460,6 @@ end
 function ChoGGi.MenuFuncs.DisasterTriggerDustStorm(severity, storm_type)
 	CreateGameTimeThread(function()
 		local data = DataInstances.MapSettings_DustStorm
-		-- TESTING123
 		local descr = data[severity] or data[ActiveMapData.MapSettings_DustStorm] or data.DustStorm_VeryLow
 		StartDustStorm(storm_type or "normal", descr)
 	end)
@@ -473,7 +471,6 @@ function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(severity, major)
 	end
 
 	local data = DataInstances.MapSettings_DustDevils
-		-- TESTING123
 	local descr = data[severity] or data[ActiveMapData.MapSettings_DustDevils] or data.DustDevils_VeryLow
 	GenerateDustDevil(pos, descr, nil, major):Start()
 end
@@ -487,7 +484,6 @@ function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity, meteors_type, pos)
 
 	local data = DataInstances.MapSettings_Meteor
 	local descr = ChoGGi.ComFuncs.CopyTable(
-		-- TESTING123
 		data[severity] or data[ActiveMapData.MapSettings_Meteor] or data.Meteor_VeryLow
 	)
 	if meteors_type == "single" then
@@ -520,7 +516,6 @@ do -- DisasterTriggerLightningStrike
 	local strike_pos
 
 	local Sleep = Sleep
-	local MapForEach = MapForEach
 	local GetRandomPassable = GetRandomPassable
 	local PlayFX = PlayFX
 	local IsValid = IsValid
@@ -576,7 +571,7 @@ do -- DisasterTriggerLightningStrike
 				strike_pos = GetRandomPassable()
 				PlayFX("ElectrostaticStormArea", "start", nil, nil, strike_pos)
 				PlayFX("ElectrostaticStorm", "hit-moment" .. Random(1, 5), nil, nil, strike_pos)
-				MapForEach(strike_pos, strike_radius + GetEntityMaxSurfacesRadius(), "Colonist", "Building", "Drone", "RCRover", "ResourceStockpileBase", MapForEachObjStrike)
+				ActiveGameMap.realm:MapForEach(strike_pos, strike_radius + GetEntityMaxSurfacesRadius(), "Colonist", "Building", "Drone", "RCRover", "ResourceStockpileBase", MapForEachObjStrike)
 				local exp = fuel_explosions or ""
 				for i = 1, #exp do
 					if IsValid(exp[i]) then
@@ -1720,7 +1715,7 @@ do -- ResearchRemove
 		end,
 		NanoRefinement = function()
 			local IsKindOf = IsKindOf
-			MapForEach("map", "DepositExploiter", function(obj)
+			ActiveGameMap.realm:MapForEach("map", "DepositExploiter", function(obj)
 				if IsKindOf(obj, "BaseBuilding") then
 					obj:UpdateConsumption()
 					if obj:HasMember("DepositChanged") then

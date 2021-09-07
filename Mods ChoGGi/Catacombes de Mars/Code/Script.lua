@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local RoadTileSize = terrain.RoadTileSize()
+local RoadTileSize = ActiveGameMap.terrain:RoadTileSize()
 local pf_AddTunnel = pf.AddTunnel
 local pf_GetTunnel = pf.GetTunnel
 local pathfind = pathfind

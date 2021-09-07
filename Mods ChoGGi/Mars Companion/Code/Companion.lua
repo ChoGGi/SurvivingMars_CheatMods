@@ -49,18 +49,18 @@ function MarsCompanion:GameInit()
 		-- If we local in the thread it isn't caught by debug.getupvalue
 		local Sleep = Sleep
 		local GetTimeFactor = GetTimeFactor
-		local GetHeight = terrain.GetHeight
+		local terrain = ActiveGameMap.terrain
 
 		while self.dust_thread do
 			-- check if our height is low enough for some dust kickup
 			local pos = self:GetVisualPos()
-			if pos and (pos:z() - GetHeight(pos)) < 1500 then
+			if pos and (pos:z() - terrain:GetHeight(pos)) < 1500 then
 				-- cough cough
 				self:PlayFX("Dust", "start")
 				-- break loop if game is paused or height is changed to above 1500, otherwise dust
 				while GetTimeFactor() ~= 0 do
 					pos = self:GetVisualPos()
-					if (pos:z() - GetHeight(pos)) > 1500 then
+					if (pos:z() - terrain:GetHeight(pos)) > 1500 then
 						break
 					end
 					Sleep(1000)
@@ -119,12 +119,12 @@ function MarsCompanion:MainLoop()
 
 	while IsValid(self) do
 		local cam = cameraRTS.GetLookAt()
-		if not terrain.IsPointInBounds(cam) then
+		if not ActiveGameMap.terrain:IsPointInBounds(cam) then
 			cam = self.last_good_pos
 		end
 		local x, y = cam:x(), cam:y()
 
-		local height = terrain.GetHeight(x, y)
+		local height = ActiveGameMap.terrain:GetHeight(x, y)
 		if not height then
 			height = self.Random(11000, 15000)
 		end

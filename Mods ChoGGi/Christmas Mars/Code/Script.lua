@@ -82,7 +82,7 @@ function OnMsg.CityStart()
 
 		-- less brown rocks
 		SuspendPassEdits("ChoGGi.ChristmasMars.CityStart")
-		MapForEach("map", {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor", "StoneSmall"}, function(o)
+		ActiveGameMap.realm:MapForEach("map", {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor", "StoneSmall"}, function(o)
 			if o.class:find("Dark") then
 				o:SetColorModifier(white)
 			else
@@ -108,7 +108,7 @@ function OnMsg.CityStart()
 
 		-- polar map texture
 		local polar_idx = GetTerrainTextureIndex("Polar_01")
-		terrain.SetTerrainType{type = polar_idx}
+		ActiveGameMap.terrain:SetTerrainType{type = polar_idx}
 
 		-- add back dome grass
 		local domes = UICity.labels.Dome or ""

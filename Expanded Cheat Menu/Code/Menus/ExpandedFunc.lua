@@ -418,7 +418,7 @@ end
 
 function ChoGGi.MenuFuncs.CleanAllObjects()
 	local dust = const.DustMaterialExterior
-	MapForEach("map", "BaseBuilding", function(o)
+	ActiveGameMap.realm:MapForEach("map", "BaseBuilding", function(o)
 		if o.SetDust then
 			o:SetDust(0, dust)
 		end
@@ -430,14 +430,14 @@ function ChoGGi.MenuFuncs.CleanAllObjects()
 end
 
 function ChoGGi.MenuFuncs.FixAllObjects()
-	MapForEach("map", "BaseBuilding", function(o)
+	ActiveGameMap.realm:MapForEach("map", "BaseBuilding", function(o)
 		if o.Repair then
 			o:Repair()
 			o.accumulated_maintenance_points = 0
 		end
 	end)
 
-	MapForEach("map", "Drone", function(o)
+	ActiveGameMap.realm:MapForEach("map", "Drone", function(o)
 		o:CheatRechargeBattery()
 		o:SetCommand("RepairDrone", o)
 	end)

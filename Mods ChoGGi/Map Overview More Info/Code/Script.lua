@@ -51,7 +51,6 @@ local IsValid = IsValid
 local T = T
 local MulDivRound = MulDivRound
 local GetMapSectorXY = GetMapSectorXY
-local MapGet = MapGet
 
 local black = black
 
@@ -104,11 +103,11 @@ local function AddIcons()
 
 	table.clear(sector_piles)
 	if mod_ShowDropped then
-		MapGet("map", "ResourceStockpile", function(pile)
+		ActiveGameMap.realm:MapGet("map", "ResourceStockpile", function(pile)
 			if not IsValid(pile.parent) and #(pile.command_centers or "") == 0 then
 				-- maybe I'll add something to mark different stuff someday...
 --~ 				sector_piles[GetMapSectorXY(pile:GetVisualPosXYZ()).id] = true
-				local sector = GetMapSectorXY(pile:GetVisualPosXYZ()).id
+				local sector = GetMapSectorXY(UICity, pile:GetVisualPosXYZ()).id
 				local list = sector_piles[sector]
 				if not list then
 					sector_piles[sector] = {}

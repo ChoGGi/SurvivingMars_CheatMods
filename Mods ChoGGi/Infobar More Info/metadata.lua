@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 10,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "Infobar More Info",
@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1775006723",
 	"pops_any_uuid", "34ead2f4-80f9-4200-b73c-12e441babbe9",
 	"lua_revision", 1007000, -- Picard
-	"version", 26,
+	"version", 27,
 	"version_major", 2,
-	"version_minor", 6,
+	"version_minor", 7,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {

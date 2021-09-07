@@ -85,7 +85,7 @@ end
 
 local InvalidPos = InvalidPos()
 function OnMsg.LoadGame()
-	local rovers = MapGet("map", "BaseRover")
+	local rovers = ActiveGameMap.realm:MapGet("map", "BaseRover")
 	for i = 1, #rovers do
 		local r = rovers[i]
 		if r.ChoGGi_InGarage and r:GetPos() ~= InvalidPos then

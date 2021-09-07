@@ -329,7 +329,6 @@ function ChoGGi.MenuFuncs.GUIDockSide_Toggle()
 end
 
 function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
-	-- TESTING123
 	local mapdata = ActiveMapData
 
 	if ChoGGi.UserSettings.DisableHints then
@@ -440,7 +439,7 @@ function ChoGGi.MenuFuncs.WhiterRocks()
 	-- less brown rocks
 	SuspendPassEdits("ChoGGi.MenuFuncs.WhiterRocks")
 	local white = white
-	MapForEach("map", {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor", "StoneSmall"}, function(o)
+	ActiveGameMap.realm:MapForEach("map", {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor", "StoneSmall"}, function(o)
 		if o.class:find("Dark") then
 			o:SetColorModifier(white)
 --~ 			else
@@ -690,12 +689,7 @@ end
 
 do -- FlattenGround
 	local ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
-	local GetHeight = terrain.GetHeight
-	local SetHeightCircle = terrain.SetHeightCircle
-	local SetTypeCircle = terrain.SetTypeCircle
-
 	local Sleep = Sleep
-
 	local guic = guic
 	local white = white
 
@@ -788,7 +782,7 @@ do -- FlattenGround
 			radius = size * guic
 
 			ToggleHotkeys(true)
-			flatten_height = GetHeight(GetCursorWorldPos())
+			flatten_height = ActiveGameMap.terrain:GetHeight(GetCursorWorldPos())
 			MsgPopup(
 				Strings[302535920001163--[[Flatten height has been choosen %s, press shortcut again to update buildable.]]]:format(flatten_height),
 				Strings[302535920000485--[[Terrain Flatten Toggle]]]
@@ -797,6 +791,7 @@ do -- FlattenGround
 			visual_circle:SetRadius(size)
 			visual_circle:SetColor(white)
 
+			local terrain = ActiveGameMap.terrain
 			local terrain_type_idx = GetTerrainTextureIndex("Grass_03")
 			are_we_flattening = CreateRealTimeThread(function()
 				-- thread gets deleted, but just in case
@@ -807,8 +802,8 @@ do -- FlattenGround
 					if square == true then
 						outer = radius / 2
 					end
-					SetHeightCircle(cursor, radius, outer or radius, flatten_height)
-					SetTypeCircle(cursor, radius, terrain_type_idx)
+					terrain:SetHeightCircle(cursor, radius, outer or radius, flatten_height)
+					terrain:SetTypeCircle(cursor, radius, terrain_type_idx)
 					-- used to set terrain type (see above)
 					Sleep(10)
 				end
@@ -820,7 +815,7 @@ end
 
 --~ -- we'll get more concrete one of these days
 --~ local terrain_type_idx = GetTerrainTextureIndex("Regolith")
---~ terrain.SetTypeCircle(GetCursorWorldPos(), 5000, terrain_type_idx)
+--~ ActiveGameMap.terrain:SetTypeCircle(GetCursorWorldPos(), 5000, terrain_type_idx)
 function ChoGGi.MenuFuncs.ChangeMap()
 	local lookup_table = {
 		[Translate(3474--[[Mission Sponsor]])] = "idMissionSponsor",
@@ -867,8 +862,7 @@ function ChoGGi.MenuFuncs.ChangeMap()
 
 	-- shows the mission param info for people to look at
 
-	-- TESTING123
-	local MapData = rawget(_G , "MapData") and MapData or MapDataPresets
+	local MapData = MapDataPresets
 
 	local info_lists = {
 		[-1] = Strings[302535920001385--[[Use these lists to find the correct ids.]]],
@@ -1045,9 +1039,9 @@ Open %s to see all the textures, the tooltips show the texture index."]]]:format
 				map[choice.index] = choice.value
 			end
 		end
-		ex(map)
+--~ 		ex(map)
 		SuspendPassEdits("ChoGGi.MenuFuncs.TerrainTextureRemap")
-		terrain.RemapType(map)
+		ActiveGameMap.terrain:RemapType(map)
 		ResumePassEdits("ChoGGi.MenuFuncs.TerrainTextureRemap")
 	end
 
@@ -1114,7 +1108,7 @@ function ChoGGi.MenuFuncs.TerrainTextureChange()
 
 		if TerrainTextures[choice.value] then
 			SuspendPassEdits("ChoGGi.MenuFuncs.TerrainTextureChange")
-			terrain.SetTerrainType{type = choice.value}
+			ActiveGameMap.terrain:SetTerrainType{type = choice.value}
 
 			-- add back dome grass
 			RestoreSkins(UICity.labels.Dome)
@@ -1162,7 +1156,6 @@ function ChoGGi.MenuFuncs.TerrainTextureChange()
 		callback = CallBackFunc,
 		items = item_list,
 		title = Strings[302535920000623--[[Terrain Texture Change]]],
-		-- TESTING123
 		hint = Strings[302535920000974--[[Map default: %s]]]:format(ActiveMapData.BaseLayer),
 		custom_type = 7,
 	}

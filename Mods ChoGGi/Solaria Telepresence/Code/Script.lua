@@ -84,7 +84,7 @@ function Solaria:ListBuildings(which, parent)
 
 Right click to view selected list item building.]])
 		-- remove any we already control
-		list = MapFilter(list, function(o)
+		list = ActiveGameMap.realm:MapFilter(list, function(o)
 			if not o.SolariaTelepresence_Remote_Controlled then
 				return true
 			end
@@ -102,7 +102,7 @@ Right click to view selected list item building.]])
 		hint = T(302535920011268, [[Click to remove control of building.
 
 Right click to view selected list item building.]])
-		list = MapFilter(list, function(o)
+		list = ActiveGameMap.realm:MapFilter(list, function(o)
 			if o.SolariaTelepresence_Remote_Controlled then
 				return true
 			end

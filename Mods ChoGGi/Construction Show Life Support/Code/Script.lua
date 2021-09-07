@@ -5,7 +5,6 @@
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local SetObjWaterMarkers = SetObjWaterMarkers
-local MapGet = MapGet
 
 local hexes_visible
 local temp_list
@@ -53,7 +52,7 @@ local function ShowHexes()
 	SuspendPassEdits("ChoGGi.CursorBuilding.GameInit.Construction Show Life Support")
 
 	-- skip pipes and any buildings in domes
-	temp_list = MapGet("map", "LifeSupportGridObject", function(o)
+	temp_list = ActiveGameMap.realm:MapGet("map", "LifeSupportGridObject", function(o)
 		if not o:IsKindOf("LifeSupportGridElement") and not o.parent_dome then
 			return true
 		end

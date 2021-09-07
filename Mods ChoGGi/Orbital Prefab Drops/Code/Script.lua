@@ -89,7 +89,7 @@ local function YamatoHasshin(site)
 		end
 
 		local starting_pos = spawn_pos + dir
-		spawn_pos = terrain.GetIntersection(starting_pos, spawn_pos)
+		spawn_pos = ActiveGameMap.terrain:GetIntersection(starting_pos, spawn_pos)
 		local hover_pos = spawn_pos + site_height
 
 		local pod = InvisibleObject:new()

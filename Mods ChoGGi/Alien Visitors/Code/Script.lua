@@ -79,7 +79,6 @@ end
 
 local UnbuildableZ = buildUnbuildableZ()
 local function IsPlayablePoint(pt)
-	-- TESTING123
 	return pt:InBox2D(UICity.MapArea) and GetBuildableZ(WorldToHex(pt:xy())) ~= UnbuildableZ and ActiveGameMap.terrain:IsPassable(pt)
 end
 
@@ -107,9 +106,7 @@ end
 function ChoGGi_Alien:Spawn()
 	-- pick a random buildable spot within the playable area
 	local city = self.city or UICity
-
 	local spawn_pos = self.spawn_pos
-
 	local sectors = UICity.MapSectors
 
 	-- pick position
@@ -181,7 +178,7 @@ end
 --~ function ChoGGi_Alien:GetElecBldNearby(rad) --within charge range
 --~ 	rad = rad or self.electricity_radius
 
---~ 	local lst = MapGet(self, "hex", rad + 1, "ElectricityConsumer", function(o) return o:GetGameFlags(gofUnderConstruction) == 0 end	)
+--~ 	local lst = ActiveGameMap.realm:MapGet(self, "hex", rad + 1, "ElectricityConsumer", function(o) return o:GetGameFlags(gofUnderConstruction) == 0 end	)
 --~ 	local c = FindNearestObject(lst, self)
 --~ 	return c and HexAxialDistance(c, self) <= rad and c or false
 --~ end

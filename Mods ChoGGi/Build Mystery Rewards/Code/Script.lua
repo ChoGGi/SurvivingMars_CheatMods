@@ -171,7 +171,7 @@ function OnMsg.ClassesPostprocess()
 			"OnPress", function(self)
 				local context = self.context
 
-				MapDelete("map", "Firefly")
+				ActiveGameMap.realm:MapDelete("map", "Firefly")
 
 				ObjModified(context)
 			end,

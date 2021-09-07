@@ -10,7 +10,6 @@ SpiceHarvester = {
 	Max_Shuttles = 50,
 }
 
-local MapCount = MapCount
 local DoneObject = DoneObject
 local Sleep = Sleep
 local IsValid = IsValid
@@ -23,7 +22,7 @@ local GetCursorWorldPos = GetCursorWorldPos
 function SpiceHarvester.SpawnShuttle(hub)
 	local sh = SpiceHarvester
 	for _, s_i in pairs(hub.shuttle_infos) do
-		if MapCount("map", "CargoShuttle") >= (sh.Max_Shuttles or 50) then
+		if ActiveGameMap.realm:MapCount("map", "CargoShuttle") >= (sh.Max_Shuttles or 50) then
 			return
 		end
 
@@ -105,17 +104,18 @@ function SpiceHarvester_CargoShuttle:SpiceHarvester_FollowHarvester()
 	-- dust thread
 	self.dust_thread = CreateGameTimeThread(function()
 		-- we're done if the host harvester is gone
-		local GetHeight = terrain.GetHeight
+		local terrain = ActiveGameMap.terrain
+
 		while self.dust_thread do
 			-- check if our height is low enough for some dust kickup
 			local pos = self:GetVisualPos()
-			if pos and (pos:z() - GetHeight(pos)) < 1500 then
+			if pos and (pos:z() - terrain:GetHeight(pos)) < 1500 then
 				-- cough cough
 				self:PlayFX("Dust", "start")
 				-- break loop if game is paused or height is changed to above 1500, otherwise dust
 				while IsValid(self) do
 					pos = self:GetVisualPos()
-					if UISpeedState == "pause" or (pos:z() - GetHeight(pos)) > 1500 then
+					if UISpeedState == "pause" or (pos:z() - terrain:GetHeight(pos)) > 1500 then
 						break
 					end
 					Sleep(1000)
@@ -139,7 +139,7 @@ function SpiceHarvester_CargoShuttle:SpiceHarvester_FollowHarvester()
 			count_before_attack = 0
 
 			local pos = self:GetVisualPos()
-			local worm = MapGet("map", "WasteRockObstructorSmall", function(o)
+			local worm = ActiveGameMap.realm:MapGet("map", "WasteRockObstructorSmall", function(o)
 				return pos:Dist2D(o:GetPos()) <= self.attack_radius
 			end)
 			if worm[1] then

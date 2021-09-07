@@ -47,7 +47,7 @@ end
 
 function ChoGGi.MenuFuncs.ToggleWorkingAll()
 	local skips = {"OrbitalProbe", "ResourceStockpile", "WasteRockStockpile", "BaseRover"}
-	MapForEach("map", "BaseBuilding", function(o)
+	ActiveGameMap.realm:MapForEach("map", "BaseBuilding", function(o)
 		if type(o.ToggleWorking) == "function" and not o:IsKindOfClasses(skips) then
 			ToggleWorking(o)
 		end
@@ -63,7 +63,6 @@ do -- DronesNotRepairingDome
 	local looping_thread
 
 	function ChoGGi.MenuFuncs.DronesNotRepairingDomes()
-		local MapGet = MapGet
 		local Sleep = Sleep
 		MsgPopup(
 			T(83, "Domes"),
@@ -87,7 +86,7 @@ do -- DronesNotRepairingDome
 				for i = 1, #domes do
 					-- get a list of all res in the center of dome
 					local pos = domes[i]:GetSpotPos(-1)
-					local objs = MapGet(pos, 1000, "ResourcePile")
+					local objs = ActiveGameMap.realm:MapGet(pos, 1000, "ResourcePile")
 					-- loop through the spots till we find a Workdrone outside the dome (any spot outside will do)
 					local id_start, id_end = domes[i]:GetAllSpots(domes[i]:GetState())
 					for j = id_start, id_end do
@@ -140,7 +139,7 @@ do -- ResetCommanders
 			local before_table = {}
 
 			-- get all commanders stuck in deploy with at least one drone
-			MapForEach("map", "RCRover", function(rc)
+			ActiveGameMap.realm:MapForEach("map", "RCRover", function(rc)
 				local drones = #rc.attached_drones > 0
 				if drones then
 					if rc:GetState() == GetStateIdx("deployIdle") then
@@ -251,7 +250,7 @@ end -- do
 
 function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
 	SuspendPassEdits("ChoGGi.MenuFuncs.ParticlesWithNullPolylines")
-	local objs = MapGet(true, "ParSystem", function(o)
+	local objs = ActiveGameMap.realm:MapGet(true, "ParSystem", function(o)
 		if type(o.polyline) == "string" and o.polyline:find("\0") then
 			return true
 		end
@@ -271,7 +270,7 @@ function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
 	local function CallBackFunc(answer)
 		if answer then
 			SuspendPassEdits("ChoGGi.MenuFuncs.RemoveMissingClassObjects")
-			MapDelete(true, "UnpersistedMissingClass")
+			ActiveGameMap.realm:MapDelete(true, "UnpersistedMissingClass")
 			ResumePassEdits("ChoGGi.MenuFuncs.RemoveMissingClassObjects")
 			MsgPopup(
 				T(4493, "All"),
@@ -298,7 +297,7 @@ function ChoGGi.MenuFuncs.MirrorSphereStuck()
 	end
 
 	SuspendPassEdits("ChoGGi.MenuFuncs.MirrorSphereStuck")
-	objs = MapGet(true, "ParSystem", function(o)
+	objs = ActiveGameMap.realm:MapGet(true, "ParSystem", function(o)
 		if o:GetParticlesName() == "PowerDecoy_Captured" and
 				type(o.polyline) == "string" and o.polyline:find("\0") then
 			return true
@@ -337,7 +336,7 @@ end
 do -- DronesKeepTryingBlockedAreas
 	local function ResetPriorityQueue(cls_name)
 		local max = const.MaxBuildingPriority
-		MapForEach("map", cls_name, function(o)
+		ActiveGameMap.realm:MapForEach("map", cls_name, function(o)
 			-- clears out the queues
 			o.priority_queue = {}
 			for priority = -1, max do
@@ -351,7 +350,7 @@ do -- DronesKeepTryingBlockedAreas
 		ResetPriorityQueue("RCRover")
 		ResetPriorityQueue("DroneHub")
 		-- toggle working state on all ConstructionSite (wakes up drones else they'll wait at hub)
-		MapForEach("map", "ConstructionSite", ToggleWorking)
+		ActiveGameMap.realm:MapForEach("map", "ConstructionSite", ToggleWorking)
 		MsgPopup(
 			T(4493, "All"),
 			Strings[302535920000599--[[Drones Keep Trying Blocked Areas]]]
@@ -361,7 +360,7 @@ end -- do
 
 function ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid()
 	local HexGetNearestCenter = HexGetNearestCenter
-	MapForEach("map", "Building", function(o)
+	ActiveGameMap.realm:MapForEach("map", "Building", function(o)
 		o:SetPos(HexGetNearestCenter(o:GetVisualPos()))
 	end)
 	MsgPopup(
@@ -373,7 +372,7 @@ end
 do -- RemoveUnreachableConstructionSites
 	local type, pairs = type, pairs
 	local function RemoveUnreachable(cls_name)
-		MapForEach("map", cls_name, function(o)
+		ActiveGameMap.realm:MapForEach("map", cls_name, function(o)
 			local unreach = o.unreachable_buildings or empty_table
 			for bld in pairs(unreach) do
 				if type(bld.IsKindOf) == "function" and bld:IsKindOf("ConstructionSite") then
@@ -402,8 +401,8 @@ end -- do
 
 function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
 	SuspendPassEdits("ChoGGi.MenuFuncs.RemoveYellowGridMarks")
-	MapDelete(true, "GridTile")
-	MapDelete(true, "GridTileWater")
+	ActiveGameMap.realm:MapDelete(true, "GridTile")
+	ActiveGameMap.realm:MapDelete(true, "GridTileWater")
 	ResumePassEdits("ChoGGi.MenuFuncs.RemoveYellowGridMarks")
 	MsgPopup(
 		T(4493, "All"),
@@ -413,7 +412,7 @@ end
 
 function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
 	SuspendPassEdits("ChoGGi.MenuFuncs.RemoveBlueGridMarks")
-	local objs = MapGet(true, "RangeHexRadius", function(o)
+	local objs = ActiveGameMap.realm:MapGet(true, "RangeHexRadius", function(o)
 		if not o.ToggleWorkZone then
 			return true
 		end
@@ -422,7 +421,7 @@ function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
 		DoneObject(objs[i])
 	end
 	-- remove the rover outlines added from https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-persistent-transport-route-blueprint-on-map.1121333/
-	objs = MapGet(true, "WireFramedPrettification", function(o)
+	objs = ActiveGameMap.realm:MapGet(true, "WireFramedPrettification", function(o)
 		if o:GetEntity() == "RoverTransport" then
 			return true
 		end
@@ -452,7 +451,7 @@ function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
 end
 
 function ChoGGi.MenuFuncs.RebuildWalkablePointsInDomes()
-	MapForEach("map", "Dome", function(o)
+	ActiveGameMap.realm:MapForEach("map", "Dome", function(o)
 		o.walkable_points = false
 		o:GenerateWalkablePoints()
 	end)
@@ -637,7 +636,7 @@ end
 --~ end
 
 --~ function ChoGGi.MenuFuncs.DeathToObjects(cls)
---~ use MapDelete above
+--~ use ActiveGameMap.realm:MapDelete above
 --~ 	end
 
 --~ ChoGGi.MenuFuncs.DeathToObjects("BaseRover")
@@ -650,7 +649,7 @@ end
 
 --~ --show all elec consumption
 --~ local amount = 0
---~ MapForEach("map", nil, function(o)
+--~ ActiveGameMap.realm:MapForEach("map", nil, function(o)
 --~ 	if o.class and o.electricity and o.electricity.consumption then
 --~ 		local temp = o.electricity.consumption / 1000
 --~ 		amount = amount + temp

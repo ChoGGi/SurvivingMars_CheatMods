@@ -109,7 +109,7 @@ end
 function FireworksLauncher:RocketMove()
 	local tick = 50
 	local dir = SetLen(self.move_dir, self.start_speed)
-	local max_height = terrain.GetMaxHeight()
+	local max_height = ActiveGameMap.terrain:GetMaxHeight()
 	local target = self.target
 	local max_travel = MulDivRound(self.max_speed, tick, 1000)
 
@@ -184,7 +184,7 @@ function FireworksLauncher:LaunchFireworks(visual_only)
 		rocket:SetScale(400)
 		rocket.move_dir = axis_z
 		rocket.shooter = self
-		local x, y = terrain.GetMapSize()
+		local x, y = ActiveGameMap.terrain:GetMapSize()
 		local target
 		if IsValid(FireworksLauncher_targetobj) then
 			target = FireworksLauncher_targetobj
@@ -193,7 +193,7 @@ function FireworksLauncher:LaunchFireworks(visual_only)
 			FireworksLauncher_targetobj = target
 		end
 
-		local target_pos = point(self:Random(0, x), self:Random(0, y), terrain.GetMaxHeight())
+		local target_pos = point(self:Random(0, x), self:Random(0, y), ActiveGameMap.terrain:GetMaxHeight())
 		target:SetPos(target_pos)
 		rocket.target = target
 		rocket.Move = self.RocketMove

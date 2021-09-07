@@ -66,7 +66,7 @@ local function ModOptions()
 
 	-- this will remove any lines no matter what
 	if options:GetProperty("ForceClearLines") then
-		MapDelete("map", "ChoGGi_OPolyline")
+		ActiveGameMap.realm:MapDelete("map", "ChoGGi_OPolyline")
 	end
 
 	ClearUnitInfo()
@@ -127,7 +127,7 @@ local function UpdateText(obj, text_dlg, orig_text, orig_target)
 	if target then
 		local grid = ""
 		if IsPoint(obj.target or obj.goto_target) then
-			grid = GetMapSector(obj.target or obj.goto_target)
+			grid = GetMapSector(UICity, obj.target or obj.goto_target)
 			if grid then
 				grid = " " .. grid.display_name
 			end

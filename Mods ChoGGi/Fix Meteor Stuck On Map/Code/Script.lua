@@ -17,7 +17,6 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local MapGet = MapGet
 local IsValidThread = IsValidThread
 
 function OnMsg.LoadGame()
@@ -25,7 +24,7 @@ function OnMsg.LoadGame()
 		return
 	end
 
-	local objs = MapGet("map", "BaseMeteor")
+	local objs = ActiveGameMap.realm:MapGet("map", "BaseMeteor")
 	for i = #objs, 1, -1 do
 		local obj = objs[i]
 

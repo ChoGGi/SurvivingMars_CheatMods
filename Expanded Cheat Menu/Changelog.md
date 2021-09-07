@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v17.1 (Unreleased)
+## v17.3 (Unreleased)
+
+## v17.2 (7 Sep 2021)
 ### Changed:
 - Picard update
 

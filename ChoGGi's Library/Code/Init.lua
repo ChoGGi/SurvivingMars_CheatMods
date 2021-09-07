@@ -1,6 +1,3 @@
--- TESTING123
-assert = empty_func
-
 -- See LICENSE for terms
 
 local LICENSE = [[

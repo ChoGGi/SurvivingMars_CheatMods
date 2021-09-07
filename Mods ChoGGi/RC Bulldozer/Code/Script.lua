@@ -3,16 +3,11 @@
 -- local funcs for that small bit o' speed
 
 local type = type
-
-local GetHeight = terrain.GetHeight
-local SetHeightCircle = terrain.SetHeightCircle
-local SetTypeCircle = terrain.SetTypeCircle
 local Sleep = Sleep
 local DeleteThread = DeleteThread
 local IsValidThread = IsValidThread
 local CreateRealTimeThread = CreateRealTimeThread
 local IsValid = IsValid
-local MapDelete = MapDelete
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local PlaceObject = PlaceObject
@@ -232,6 +227,7 @@ function RCBulldozer:StartDozer()
 		self:SetMoveAnim("workIdle")
 	end
 
+	local terrain = ActiveGameMap.terrain
 	-- It shouldn't already be running, but screw it
 	if not IsValidThread(self.flatten_thread) then
 		-- store this thread so we can stop it
@@ -262,11 +258,11 @@ function RCBulldozer:StartDozer()
 					end
 
 					-- flatten func
-					SetHeightCircle(pos, self.radius, self.radius, GetHeight(self:GetVisualPos()))
+					terrain:SetHeightCircle(pos, self.radius, self.radius, terrain:GetHeight(self:GetVisualPos()))
 					-- speed and needed for my ugly hack
 					SuspendPassEdits("ChoGGi.RCBulldozer.flattening")
 					-- remove any pebbles in the way
-					MapDelete(pos, self.radius, efRemoveUnderConstruction)
+					ActiveGameMap.realm:MapDelete(pos, self.radius, efRemoveUnderConstruction)
 					-- add some dust
 --~ 					PlayFX("Dust", "start", self)
 --~ PlayFX(actionFXClass, actionFXMoment, actor, target, action_pos, action_dir)
@@ -280,7 +276,7 @@ function RCBulldozer:StartDozer()
 					self.site:ClearHierarchyEnumFlags(efCollision)
 					-- are we changing ground texture
 					if type(self.texture_terrain) == "number" then
-						SetTypeCircle(pos, self.radius, self.texture_terrain)
+						terrain:SetTypeCircle(pos, self.radius, self.texture_terrain)
 					end
 					ResumePassEdits("ChoGGi.RCBulldozer.flattening")
 					-- rest your weary soul

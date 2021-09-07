@@ -1,3 +1,6 @@
+v2.7
+Picard
+
 v2.6
 Fixed remaining resource msg.
 Game pauses when msg displayed.

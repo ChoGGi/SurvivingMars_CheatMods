@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local MapFilter = MapFilter
 local IsValid = IsValid
 local FindNearestObject = FindNearestObject
 
@@ -24,7 +23,7 @@ function TaskRequestHub:FindDemandRequest(obj, resource, amount, ...)
 	end
 
 	-- filter hub list of connected buildings for dumpsite with free slots and storage space remaining
-	local sites = MapFilter(self.connected_task_requesters, function(obj)
+	local sites = ActiveGameMap.realm:MapFilter(self.connected_task_requesters, function(obj)
 		return obj ~= pickup_obj_bld and obj:IsKindOf("WasteRockDumpSite") and obj.has_free_landing_slots
 			and (obj.max_amount_WasteRock - obj:GetStored_WasteRock()) >= amount
 	end)

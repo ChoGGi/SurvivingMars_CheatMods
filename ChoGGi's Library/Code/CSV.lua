@@ -42,7 +42,6 @@ do -- MapData
 	local north, east, south, west
 
 	local loc_table = {"","","",""}
-	-- TESTING123
 	local MapData = MapDataPresets
 
 	local function AddLandingSpot(lat, long, breakthroughs, skip_csv)

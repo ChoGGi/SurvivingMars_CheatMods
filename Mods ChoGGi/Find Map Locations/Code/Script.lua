@@ -243,8 +243,7 @@ function ChoGGi_VLI_MapInfoDlg:ShowInfoDialog()
 	-- map names
 	temp_data = {}
 	c = 0
-	-- TESTING123
-	local MapData = rawget(_G , "MapData") and MapData or MapDataPresets
+	local MapData = MapDataPresets
 	for id, data in pairs(MapData) do
 		if data.IsRandomMap then
 			c = c + 1

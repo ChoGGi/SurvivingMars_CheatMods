@@ -3,7 +3,6 @@
 local table = table
 local AsyncRand = AsyncRand
 local floatfloor = floatfloor
-local MapGet = MapGet
 local HexShapeRadius = HexShapeRadius
 local DestroyBuildingImmediate = DestroyBuildingImmediate
 local const_HexHeight = const.HexHeight
@@ -70,7 +69,7 @@ function BaseMeteor:CrackDome(dome, ...)
 		end
 
 		-- Zardoz comes for you
-		local units = MapGet(dome, (HexShapeRadius(dome:GetBuildShape()) * const_HexHeight), "Unit")
+		local units = ActiveGameMap.realm:MapGet(dome, (HexShapeRadius(dome:GetBuildShape()) * const_HexHeight), "Unit")
 		for i = 1, #units do
 			local unit = units[i]
 			-- drones/rovers (don't park your rovers right next to your domes)

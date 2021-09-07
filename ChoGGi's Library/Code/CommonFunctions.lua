@@ -9,7 +9,6 @@ local Translate = ChoGGi.ComFuncs.Translate
 
 local pairs, tonumber, type, tostring = pairs, tonumber, type, tostring
 local table = table
-local terrain = terrain
 local AsyncRand = AsyncRand
 local AveragePoint2D = AveragePoint2D
 local FindNearestObject = FindNearestObject -- (list,obj) or (list,pos,filterfunc)
@@ -22,8 +21,6 @@ local IsKindOf = IsKindOf
 local IsPoint = IsPoint
 local IsBox = IsBox
 local IsT = IsT
-local MapFilter = MapFilter
-local MapGet = MapGet
 local PropObjGetProperty = PropObjGetProperty
 local CreateRealTimeThread = CreateRealTimeThread
 local SuspendPassEdits = SuspendPassEdits
@@ -46,6 +43,7 @@ local WaitMsg = WaitMsg
 local Sleep = Sleep
 local CreateGameTimeThread = CreateGameTimeThread
 local IsInMapPlayableArea = IsInMapPlayableArea
+local GetMapSectorXY = GetMapSectorXY
 local DoneObject = DoneObject
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
@@ -1499,7 +1497,7 @@ function ChoGGi.ComFuncs.FilterFromTable(list, exclude_list, include_list, name)
 	if type(list) ~= "table" then
 		return {}
 	end
-	return MapFilter(list, function(o)
+	return ActiveGameMap.realm:MapFilter(list, function(o)
 		if exclude_list or include_list then
 			if exclude_list and include_list then
 				if not exclude_list[o[name]] then
@@ -1530,7 +1528,7 @@ function ChoGGi.ComFuncs.FilterFromTableFunc(list, func, value, is_bool)
 	if type(list) ~= "table" then
 		return {}
 	end
-	return MapFilter(list, function(o)
+	return ActiveGameMap.realm:MapFilter(list, function(o)
 		if is_bool then
 			if _G[func](o) then
 				return true
@@ -1576,7 +1574,7 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius, sort, pt)
 	pt = pt or GetCursorWorldPos()
 
 	-- get all objects within radius
-	local list = MapGet(pt, radius)
+	local list = ActiveGameMap.realm:MapGet(pt, radius)
 
 	-- sort list custom
 	if sort then
@@ -1865,7 +1863,6 @@ function ChoGGi.ComFuncs.CreateSetting(str, setting_type)
 end
 
 do -- SelObject/SelObjects
-	local MapFindNearest = MapFindNearest
 	local radius4h = const.HexSize / 4
 
 	-- returns whatever is selected > moused over > nearest object to cursor
@@ -1885,7 +1882,7 @@ do -- SelObject/SelObjects
 		else
 			-- radius selection
 			pt = pt or GetCursorWorldPos()
-			obj = MapFindNearest(pt, pt, radius or radius4h)
+			obj = ActiveGameMap.realm:MapFindNearest(pt, pt, radius or radius4h)
 		end
 
 		return obj
@@ -1907,7 +1904,7 @@ do -- SelObject/SelObjects
 		end
 
 		pt = pt or GetCursorWorldPos()
-		return MapGet(pt, radius or radius4h, "attached", false)
+		return ActiveGameMap.realm:MapGet(pt, radius or radius4h, "attached", false)
 	end
 end
 local SelObject = ChoGGi.ComFuncs.SelObject
@@ -2180,7 +2177,7 @@ do -- AttachToNearestDome
 		end
 
 		-- find the nearest working dome
-		local working_domes = MapFilter(UICity.labels.Dome, CanWork)
+		local working_domes = ActiveGameMap.realm:MapFilter(UICity.labels.Dome, CanWork)
 		local dome = FindNearestObject(working_domes, obj)
 
 		-- remove from old dome (assuming it's a different dome), or the dome is invalid
@@ -2645,7 +2642,7 @@ local function MapGet_ChoGGi(label, area, ...)
 		-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything* (think gary oldman in professional)
 		if g_cls and g_cls:IsKindOf("CObject") then
 			-- area can be: true, "map", "detached", "outsiders" (see Surviving Mars/ModTools/Docs/LuaMapEnumeration.md.html)
-			return MapGet(area or true, label, ...)
+			return ActiveGameMap.realm:MapGet(area or true, label, ...)
 			-- use obj:SetPos(pos) to move objs to map (and away with pos = InvalidPos())
 		end
 	end
@@ -3018,8 +3015,6 @@ do -- DeleteObject
 	local FlattenTerrainInBuildShape = FlattenTerrainInBuildShape
 	local HasAnySurfaces = HasAnySurfaces
 	local ApplyAllWaterObjects = ApplyAllWaterObjects
-	local terrain_HasRestoreHeight = terrain.HasRestoreHeight
-	local terrain_UpdateWaterGridFromObject = terrain.UpdateWaterGridFromObject
 	local EntitySurfaces_Height = EntitySurfaces.Height
 	local procall = procall
 
@@ -3101,7 +3096,7 @@ do -- DeleteObject
 		-- remove leftover water
 		if is_water then
 			if IsValid(obj.water_obj) then
-				terrain_UpdateWaterGridFromObject(obj.water_obj)
+				ActiveGameMap.terrain:UpdateWaterGridFromObject(obj.water_obj)
 			end
 			ApplyAllWaterObjects()
 		end
@@ -3129,7 +3124,7 @@ do -- DeleteObject
 			local shape = obj:GetFlattenShape()
 			if shape ~= FallbackOutline then
 				if HasAnySurfaces(obj, EntitySurfaces_Height, true)
-				and not terrain_HasRestoreHeight() then
+				and not ActiveGameMap.terrain:HasRestoreHeight() then
 					FlattenTerrainInBuildShape(shape, obj)
 				end
 			end
@@ -3308,7 +3303,7 @@ do -- RetNearestResource/FindNearestResource
 		else
 			-- attached stockpiles/stockpiles left from removed objects
 			if skip_stocks then
-				stockpiles = MapGet("map", "ResourceStockpile", "ResourceStockpileLR")
+				stockpiles = ActiveGameMap.realm:MapGet("map", "ResourceStockpile", "ResourceStockpileLR")
 			else
 				table.iclear(stockpiles_table)
 				stockpiles = stockpiles_table
@@ -3538,7 +3533,7 @@ function ChoGGi.ComFuncs.ToggleCollisions(cls)
 	local CollisionsObject_Toggle = ChoGGi.ComFuncs.CollisionsObject_Toggle
 	-- hopefully give it a bit more speed
 	SuspendPassEdits("ChoGGi.ComFuncs.ToggleCollisions")
-	MapForEach("map", cls, function(o)
+	ActiveGameMap.realm:MapForEach("map", cls, function(o)
 		CollisionsObject_Toggle(o, true)
 	end)
 	ResumePassEdits("ChoGGi.ComFuncs.ToggleCollisions")
@@ -3916,7 +3911,7 @@ function ChoGGi.ComFuncs.DeleteLargeRocks()
 	local function CallBackFunc(answer)
 		if answer then
 			SuspendPassEdits("ChoGGi.ComFuncs.DeleteLargeRocks")
-			MapDelete(true, {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor"})
+			ActiveGameMap.realm:MapDelete(true, {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor"})
 			ResumePassEdits("ChoGGi.ComFuncs.DeleteLargeRocks")
 		end
 	end
@@ -3931,7 +3926,7 @@ function ChoGGi.ComFuncs.DeleteSmallRocks()
 	local function CallBackFunc(answer)
 		if answer then
 			SuspendPassEdits("ChoGGi.ComFuncs.DeleteSmallRocks")
-			MapDelete(true, "StoneSmall")
+			ActiveGameMap.realm:MapDelete(true, "StoneSmall")
 			ResumePassEdits("ChoGGi.ComFuncs.DeleteSmallRocks")
 		end
 	end
@@ -4101,17 +4096,16 @@ function ChoGGi.ComFuncs.RemoveObjs(class, reason)
 
 	if type(class) == "table" then
 		local g_Classes = g_Classes
-		local MapDelete = MapDelete
 
 		for _ = 1, #class do
 			-- If it isn't a valid class then Map* will return all objects :(
 			if g_Classes[class] then
-				MapDelete(true, class)
+				ActiveGameMap.realm:MapDelete(true, class)
 			end
 		end
 	else
 		if g_Classes[class] then
-			MapDelete(true, class)
+			ActiveGameMap.realm:MapDelete(true, class)
 		end
 	end
 
@@ -4330,7 +4324,7 @@ do -- ConstructableArea
 	local ConstructableArea
 	function ChoGGi.ComFuncs.ConstructableArea()
 		if not ConstructableArea then
-			local sizex, sizey = terrain.GetMapSize()
+			local sizex, sizey = ActiveGameMap.terrain:GetMapSize()
 			local border = 1000 or const.ConstructBorder
 			ConstructableArea = box(border, border, (sizex or 0) - border, (sizey or 0) - border)
 		end
@@ -4895,6 +4889,7 @@ do -- BuildableHexGrid
 
 			-- off we go
 			Temp.grid_thread = CreateRealTimeThread(function()
+				local ActiveGameMap = ActiveGameMap
 				ActiveGameMap:RefreshBuildableGrid()
 --~ 				CalcBuildableGrid()
 
@@ -4904,6 +4899,7 @@ do -- BuildableHexGrid
 
 				local terrain = ActiveGameMap.terrain
 				local IsPassable = terrain.IsPassable
+
 
 				local VegetationGrid = VegetationGrid
 				local forbid_growth = forbid_growth
@@ -5060,7 +5056,7 @@ function ChoGGi.ComFuncs.PlantRandomVegetation(amount)
 	local LandscapeGrid = LandscapeGrid
 	local VegetationGrid = VegetationGrid
 	local HexMapWidth = HexMapWidth
-  local twidth, theight = terrain.GetMapSize()
+  local twidth, theight = ActiveGameMap.terrain:GetMapSize()
   local total_elements = HexMapWidth * HexMapHeight
 
 	-- stored placed
@@ -5446,7 +5442,7 @@ do -- path markers
 		end
 
 		obj_pos = obj_pos or obj:GetVisualPos()
-		local obj_terrain = terrain.GetHeight(obj_pos) or 0
+		local obj_terrain = ActiveGameMap.terrain:GetHeight(obj_pos) or 0
 		local obj_height = (obj:GetObjectBBox():sizez() / 2) or 0
 		if obj:IsKindOf("CargoShuttle") then
 			obj_height = obj_pos:z() - obj_terrain
@@ -5470,7 +5466,7 @@ do -- path markers
 
 		-- HGE::l_SetPos error hopeful fix
 		local avg_pos = AveragePoint2D(waypoints)
-		if IsInMapPlayableArea(avg_pos) then
+		if IsInMapPlayableArea(ActiveMapID, avg_pos) then
 			-- and spawn the line
 			local spawnline = OPolyline:new()
 			spawnline:SetMesh(waypoints, colour)
@@ -5857,7 +5853,7 @@ function ChoGGi.ComFuncs.MapDelete(class)
 		end
 	-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything*
 	elseif IsKindOf(g_Classes[class], "CObject") then
-		MapDelete(true, class)
+		ActiveGameMap.realm:MapDelete(true, class)
 	end
 
 	ResumePassEdits("ChoGGi.ComFuncs.MapDelete")
@@ -6303,12 +6299,12 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
 end
 
 do -- GetLowestPointEachSector
-	local GetMapSectorXY = GetMapSectorXY
-
 	local lowest_points
 	function ChoGGi.ComFuncs.GetLowestPointEachSector()
+		local UICity = UICity
+
 		-- max the z of the default points
-		local max_point = point(0, 0, terrain.GetMapHeight())
+		local max_point = point(0, 0, ActiveGameMap.terrain:GetMapHeight())
 		-- build a list of sectors with it
 		if not lowest_points then
 			lowest_points = {}
@@ -6337,8 +6333,8 @@ do -- GetLowestPointEachSector
 
 				local x1000, y1000 = x * 1000, y * 1000
 				-- the area outside grids is counted as the nearest grid.
-				if IsInMapPlayableArea(x1000, y1000) then
-					local sector_id = GetMapSectorXY(x1000, y1000).id
+				if IsInMapPlayableArea(ActiveMapID, x1000, y1000) then
+					local sector_id = GetMapSectorXY(UICity, x1000, y1000).id
 					local pos = point(x1000, y1000):SetTerrainZ()
 					-- current pos z is lower then stored z
 					if pos:z() < lowest_points[sector_id]:z() then
@@ -7640,7 +7636,7 @@ function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
 	local MulDivRound = MulDivRound
 	local TerrainTextures = TerrainTextures
 
-	local tm = terrain.GetTypeGrid()
+	local tm = ActiveGameMap.terrain:GetTypeGrid()
 	local _, levels_info = tm:levels(true, 1)
 	local size = tm:size()
 	local textures = {}
