@@ -1245,7 +1245,7 @@ do -- FlightGrid_Toggle
 
 	local grid_thread = false
 	local Flight_Height_temp = false
-	local type_tile = ActiveGameMap.terrain:TypeTileSize()
+	local type_tile = const.TerrainTypeTileSize or terrain.TypeTileSize()
 	local work_step = 16 * type_tile
 	local dbg_step = work_step / 4 -- 400
 	local dbg_stepm1 = dbg_step - 1
