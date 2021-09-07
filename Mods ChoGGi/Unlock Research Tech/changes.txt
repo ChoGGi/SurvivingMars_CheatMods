@@ -1,3 +1,6 @@
+v0.4
+Forgot to remove an "end".
+
 v0.3
 Name icons.
 

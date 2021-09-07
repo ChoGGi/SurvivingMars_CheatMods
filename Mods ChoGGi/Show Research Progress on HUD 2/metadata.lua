@@ -1,14 +1,14 @@
 return PlaceObj("ModDef", {
-	"id", "ChoGGi_ShowResearchProgressonHUD2",
 	"title", "Show Research Progress on HUD 2",
-	"steam_id", "1757762374",
+	"id", "ChoGGi_ShowResearchProgressonHUD2",
 	"pops_desktop_uuid", "c4500700-e512-451c-8770-decb8e8a148c",
-	"version", 2,
+	"steam_id", "1757762374",
+	"lua_revision", 1007000, -- Picard
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.png",
 	"author", "Waywocket & ChoGGi",
-	"lua_revision", 1007000, -- Picard
 	"code", {
 		"Code/Script.lua",
 	},

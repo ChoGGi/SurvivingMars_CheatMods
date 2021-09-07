@@ -72,6 +72,9 @@ do -- ModUpload
 	local image_paradox = "UI/ParadoxLogo.tga"
 
 	local function UploadMod(answer, batch)
+
+
+
 		if not answer or not mod or mod and not mod.steam_id then
 			return
 		end
@@ -406,13 +409,14 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 
 			choices_len = #choices
 
-			local ask_batch
+			local asked_batch
 --~ ex(choices)
 			uploading = true
 			for i = 1, choices_len do
 				choice = choices[i]
 				-- select all means the fake item is also selected
 				if choice.value then
+
 					mod = choice.mod
 					mod_path = choice.path
 					-- pick logo for upload msg boxes
@@ -498,7 +502,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 						) == "cancel" then
 							return
 						end
-					elseif ask_batch then
+					elseif asked_batch then
 						-- no more need to ask
 						UploadMod(true, "batch")
 					else
@@ -515,10 +519,10 @@ You can also stick the executable in the profile folder to use it instead (<gree
 						local titles_c = 0
 						for j = 1, choices_len do
 							choice = choices[j]
-							mod = choice.mod
-							if mod then
+							local temp_mod = choice.mod
+							if temp_mod then
 								titles_c = titles_c + 1
-								titles[titles_c] = mod.title
+								titles[titles_c] = temp_mod.title
 									-- remove blacklist warning from title (added in helpermod)
 									:gsub(" %(Warning%)$", "")
 							end
@@ -537,7 +541,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 						) == "cancel" then
 							return
 						end
-						ask_batch = true
+						asked_batch = true
 					end
 
 				end -- If mod

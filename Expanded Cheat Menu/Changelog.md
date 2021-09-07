@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v17.3 (Unreleased)
+### Fixed:
+- Help>Mod Upload will correctly upload first mod when uploading a bunch.
 
 ## v17.2 (7 Sep 2021)
 ### Changed:

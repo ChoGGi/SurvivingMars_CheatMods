@@ -1,8 +1,8 @@
 -- See LICENSE for terms
 
-local orig_Dome_OpenFilterTraits = Dome.OpenFilterTraits
-function Dome:OpenFilterTraits(...)
+local orig_Community_OpenFilterTraits = Community.OpenFilterTraits
+function Community:OpenFilterTraits(...)
 	local orig = self.accept_colonists
-	orig_Dome_OpenFilterTraits(self, ...)
+	orig_Community_OpenFilterTraits(self, ...)
 	self.accept_colonists = orig
 end

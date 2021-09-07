@@ -10,7 +10,6 @@ end
 
 -- replace the default getskins function with ours
 RocketBase.GetSkins = GetSkins
--- probably not needed
 SupplyPod.GetSkins = GetSkins
 
 -- start with base game rockets
@@ -23,7 +22,7 @@ rockets = {
 
 palettes = {
 	RocketBase.rocket_palette,
-	RocketBase.rocket_palette,
+	{},
 	AttackRover.palette,
 	SupplyPod.rocket_palette,
 }
@@ -50,6 +49,16 @@ if g_AvailableDlc.gagarin then
 	DropPod.GetSkins = GetSkins
 	ZeusRocket.GetSkins = GetSkins
 	DragonRocket.GetSkins = GetSkins
+end
+
+-- landers
+if g_AvailableDlc.picard then
+	rockets[#rockets+1] = "LanderRocket"
+	rockets[#rockets+1] = "LanderRocket_Asteroid"
+	palettes[#palettes+1] = LanderRocketBase.rocket_palette
+	palettes[#palettes+1] = LanderRocketBase.rocket_palette
+	LanderRocketBase.GetSkins = GetSkins
+	LanderRocketBase.GetSkins = GetSkins
 end
 
 -- Silva - Orion Heavy Rocket

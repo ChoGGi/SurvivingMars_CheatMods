@@ -29,7 +29,7 @@ function OnMsg.CityStart()
 	CreateRealTimeThread(function()
 		WaitMsg("MessageBoxClosed")
 		Sleep(100)
-		UICity:SetGameSpeed(0)
+		UIColony:SetGameSpeed(0)
 		UISpeedState = "pause"
 	end)
 end
@@ -40,7 +40,7 @@ function OnMsg.LoadGame()
 	end
 	CreateRealTimeThread(function()
 		Sleep(100)
-		UICity:SetGameSpeed(0)
+		UIColony:SetGameSpeed(0)
 		UISpeedState = "pause"
 	end)
 end

@@ -5,11 +5,10 @@ local mod_PauseGame
 local mod_UnpinSelectedDrone
 local mod_PinDroneIdle
 local mod_PauseGameIdle
-local options
 
 -- fired when settings are changed/init
 local function ModOptions()
-	options = CurrentModOptions
+	local options = CurrentModOptions
 
 	mod_PinDrone = options:GetProperty("PinDrone")
 	mod_UnpinSelectedDrone = options:GetProperty("UnpinSelectedDrone")
@@ -38,7 +37,7 @@ function Drone:GoHome(...)
 		self:TogglePin()
 	end
 	if mod_PauseGame then
-		UICity:SetGameSpeed(0)
+		UIColony:SetGameSpeed(0)
 		UISpeedState = "pause"
 	end
 
@@ -51,7 +50,7 @@ function Drone:Idle(...)
 		self:TogglePin()
 	end
 	if mod_PauseGameIdle then
-		UICity:SetGameSpeed(0)
+		UIColony:SetGameSpeed(0)
 		UISpeedState = "pause"
 	end
 

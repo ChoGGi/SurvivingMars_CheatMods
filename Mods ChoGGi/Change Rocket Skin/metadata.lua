@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1570126808",
 	"pops_any_uuid", "16b2049c-41cb-42de-9c26-6b21c0311967",
 	"lua_revision", 1007000, -- Picard
-	"version", 7,
+	"version", 8,
 	"version_major", 0,
-	"version_minor", 7,
+	"version_minor", 8,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -14,7 +14,9 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"has_options", true,
 	"TagCosmetics", true,
-	"description", [[Makes the Change Skin button mean something.
+	"description", [[
+Makes the Change Skin button mean something.
 
-The skin may not "stick" the first time it comes back from earth.]],
+The skin may not "stick" the first time it comes back from earth.
+]],
 })

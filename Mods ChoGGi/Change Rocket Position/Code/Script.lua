@@ -67,8 +67,8 @@ end
 function OnMsg.ClassesPostprocess()
 	-- add button to colonists
 	ChoGGi.ComFuncs.AddXTemplate(XTemplates.customSupplyRocket[1], "ChangeRocketPosition", nil, {
-		RolloverText = T(302535920011056, [[<left_click> Land this rocket somewhere else.]]),
-		Title = T(302535920011057, [[Reposition Rocket]]),
+		RolloverText = T(302535920011056, "<left_click> Land this rocket somewhere else."),
+		Title = T(302535920011057, "Reposition Rocket"),
 		Icon = "UI/Icons/IPButtons/automated_mode.tga",
 
 		OnContextUpdate = function(self, context)

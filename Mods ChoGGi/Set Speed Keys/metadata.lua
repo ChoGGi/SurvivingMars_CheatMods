@@ -9,12 +9,12 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Set Speed Keys",
 	"id", "ChoGGi_SetSpeedKeys",
-	"lua_revision", 1007000, -- Picard
 	"steam_id", "2099080307",
 	"pops_any_uuid", "d6997ba2-00c9-46bf-9cef-a32d6b2bb3a2",
-	"version", 1,
+	"lua_revision", 1007000, -- Picard
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
@@ -22,8 +22,10 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"has_options", true,
 	"TagOther", true,
-	"description", [[Add keybindings for speed 1 2 3.
+	"description", [[
+Add keybindings for speed 1 2 3.
 
 
-Requested by jaskij.]],
+Requested by jaskij.
+]],
 })

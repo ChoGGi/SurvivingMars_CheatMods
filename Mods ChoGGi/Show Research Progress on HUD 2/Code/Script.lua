@@ -11,7 +11,7 @@ local function ModOptions()
 	mod_QueueCount = CurrentModOptions:GetProperty("QueueCount")
 	mod_HideWhenEmpty = CurrentModOptions:GetProperty("HideWhenEmpty")
 
-	if not UICity then
+	if not UIColony then
 		return
 	end
 	UpdateResearchProgressBar()
@@ -74,10 +74,10 @@ local function AddResearchProgressBar2(queue_count, dlg)
 
 	dlg_frame = sol_frame.idResearchProgressContainer
 
-	local UICity = UICity
+	local UIColony = UIColony
 	local TechDef = TechDef
 	local queue_table = {}
-	local research_queue = UICity.research_queue
+	local research_queue = UIColony.research_queue
 
 	dlg_frame.idResearchProgress = XFrameProgress:new({
 		Id = "idResearchProgress",
@@ -104,26 +104,26 @@ Approximate Time Remaining: <em><eta></em>
 Queue: <em><queue></em>]],
 			name = function()
 				-- GetCheapestTech is what gets researched when nothing in queue
-				local current_research = UICity:GetResearchInfo() or UICity:GetCheapestTech()
+				local current_research = UIColony:GetResearchInfo() or UIColony:GetCheapestTech()
 				if not current_research then
 					return T(6761, "None")
 				end
 				return TechDef[current_research].display_name
 			end,
 			progress = function()
-				return UICity:GetResearchProgress(research_queue[1] or UICity:GetCheapestTech())
+				return UIColony:GetResearchProgress(research_queue[1] or UIColony:GetCheapestTech())
 			end,
 			done = function()
-				local tech_id, points, _ = UICity:GetResearchInfo(research_queue[1] or UICity:GetCheapestTech())
+				local tech_id, points, _ = UIColony:GetResearchInfo(research_queue[1] or UIColony:GetCheapestTech())
 				return tech_id and points or 0
 			end,
 			total = function()
-				local tech_id, _, max_points = UICity:GetResearchInfo(research_queue[1] or UICity:GetCheapestTech())
+				local tech_id, _, max_points = UIColony:GetResearchInfo(research_queue[1] or UIColony:GetCheapestTech())
 				return tech_id and max_points or 0
 			end,
 			eta = function()
-				local tech_id, points, max_points = UICity:GetResearchInfo(research_queue[1] or UICity:GetCheapestTech())
-				local rate = UICity:GetEstimatedRP()
+				local tech_id, points, max_points = UIColony:GetResearchInfo(research_queue[1] or UIColony:GetCheapestTech())
+				local rate = UIColony:GetEstimatedRP()
 				if tech_id and rate > 0 then
 					local eta = MulDivRound(const_HoursPerDay, (max_points - points), rate)
 					return FormatDuration(eta)
@@ -169,19 +169,19 @@ UpdateResearchProgressBar = function()
 	-- When you mouse over an element, its tooltip ('rollover') is updated
 	-- automatically, but to have it update while it's open, it needs to be
 	-- triggered
-	local UICity = UICity
+	local UIColony = UIColony
 	XUpdateRolloverWindow(dlg_frame.idResearchProgress)
-	local current_research = UICity:GetResearchInfo()
+	local current_research = UIColony:GetResearchInfo()
 
-	dlg_frame.idResearchProgress:SetProgress(UICity:GetResearchProgress(
+	dlg_frame.idResearchProgress:SetProgress(UIColony:GetResearchProgress(
 		-- GetCheapestTech is what gets researched when queue is empty
-		current_research or UICity:GetCheapestTech()
+		current_research or UIColony:GetCheapestTech()
 	))
 
 	dlg_frame.idQueueCount:SetVisible(mod_QueueCount)
 	if mod_QueueCount then
 		dlg_frame.idQueueCount:SetText(T{12612, "<ResearchPoints(cost)>",
-			cost = #UICity.research_queue,
+			cost = #UIColony.research_queue,
 		})
 	end
 

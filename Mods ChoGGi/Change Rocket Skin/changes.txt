@@ -1,3 +1,7 @@
+v0.8
+Added Picard landers.
+Fixed skin colour of trail blazer rocket.
+
 v0.7
 Fix possible issue with Silva - Orion Heavy Rocket.
 

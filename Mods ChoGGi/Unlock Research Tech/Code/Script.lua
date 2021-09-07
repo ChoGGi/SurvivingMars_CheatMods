@@ -7,27 +7,25 @@ local function ModOptions(id)
 		return
 	end
 
-	local colony = UIColony
-	if not colony then
+	local UIColony = UIColony
+	if not UIColony then
 		return
 	end
 
 	local options = CurrentModOptions
-	local func = options:GetProperty("TechResearched") and colony.SetTechResearched or colony.SetTechDiscovered
+	local func = options:GetProperty("TechResearched") and UIColony.SetTechResearched or UIColony.SetTechDiscovered
 
 	local TechDef = TechDef
 	for id, item in pairs(TechDef) do
 		if item.group ~= "Breakthroughs" then
 			if options:GetProperty(id) then
-				func(colony, id)
+				func(UIColony, id)
 			end
 		end
 	end
 
 end
 OnMsg.ApplyModOptions = ModOptions
-
-end
 
 local function UpdateResearch()
 	if CurrentModOptions:GetProperty("AlwaysApplyOptions") then

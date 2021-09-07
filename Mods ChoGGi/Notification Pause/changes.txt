@@ -1,3 +1,6 @@
+v1.4
+Picard update.
+
 v1.3
 Game won't pause if notification is already on-screen.
 

@@ -14,34 +14,38 @@ function OnMsg.ClassesPostprocess()
 		image = "UI/Icons/Notifications/placeholder.tga",
 		text = T(302535920011384, "You've received: <amount> M"),
 		title = T(302535920011336, "1 Percenter"),
+		name = T(302535920011336, "1 Percenter"),
 	})
 end
 
 function OnMsg.NewDay()
-	local UICity = UICity
+	local UIColony = UIColony
 
-	local amount = (UICity.funding / 1000000) * 0.01 -- 0.01 = 1%
+	local funding = UIColony.funds.funding
+
+	local amount = (funding / 1000000) * 0.01 -- 0.01 = 1%
 	ChangeFunding(amount)
 
 	-- limit so we don't go neg
-	if UICity.funding > 1000000000000 or UICity.funding < 0 then
-		UICity.funding = 1000000000000
+	if funding > 1000000000000 or funding < 0 then
+		UIColony.funds.funding = 1000000000000
 	end
 
-	UICity.funding = floatfloor(UICity.funding)
-	UICity:ChangeFunding(1)
+	UIColony.funds.funding = floatfloor(UIColony.funds.funding)
+	UIColony.funds:ChangeFunding(1)
 
-	CreateRealTimeThread(function()
+	CreateGameTimeThread(function()
 		AddOnScreenNotification("ChoGGi_1Percenter", nil, {amount = amount})
 	end)
 end
 
 
 local function StartupCode()
-	if UICity.funding > 1000000000000 or UICity.funding < 0 then
-		UICity.funding = 1000000000000
+	local funding = UIColony.funds.funding
+	if funding > 1000000000000 or funding < 0 then
+		UIColony.funds.funding = 1000000000000
 	end
-	UICity:ChangeFunding(1)
+	UIColony.funds:ChangeFunding(1)
 end
 
 OnMsg.CityStart = StartupCode

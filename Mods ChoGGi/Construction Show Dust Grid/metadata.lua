@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 			"version_minor", 2,
 		}),
 	},
-	"title", "Construction Show Dust Grid",
+	"title", "Construction Show Dust Grid (Obsolete)",
 	"id", "ChoGGi_ConstructionShowDustGrid",
 	"steam_id", "1566670588",
 	"pops_any_uuid", "b53b9bb2-60ca-44da-a36e-72b7d062b8f9",
@@ -21,7 +21,11 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Show dust grids for all dust generating buildings during construction of any building.
+	"description", [[
+Obsolete: Devs added this to base game.
+
+
+Show dust grids for all dust generating buildings during construction of any building.
 Press Numpad 2 to toggle grid anytime (rebind in game options).
 
 Mod Options:
@@ -33,5 +37,6 @@ Grid Opacity: Set opacity of grid icons.
 Grid Scale: Set scale of grid icons.
 
 
-Requested by still__alive.]],
+Requested by still__alive.
+]],
 })

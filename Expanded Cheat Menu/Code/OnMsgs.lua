@@ -1621,7 +1621,7 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 --~ 			if testing and game_type == "Load" then
 --~ 				Sleep(100)
 --~ 				if UISpeedState ~= "pause" then
---~ 					UICity:SetGameSpeed(0)
+--~ 					UIColony:SetGameSpeed(0)
 --~ 					UISpeedState = "pause"
 --~ 				end
 --~ 			end

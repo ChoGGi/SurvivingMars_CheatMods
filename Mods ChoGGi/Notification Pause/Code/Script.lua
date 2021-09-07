@@ -2,12 +2,11 @@
 
 local table = table
 
-local options
 local lookup_pauses = {}
 
 -- fired when settings are changed/init
 local function ModOptions()
-	options = CurrentModOptions
+	local options = CurrentModOptions
 	local OnScreenNotificationPresets = OnScreenNotificationPresets
 	for id in pairs(OnScreenNotificationPresets) do
 		lookup_pauses[id] = options:GetProperty(id)
@@ -37,7 +36,7 @@ OnMsg.LoadGame = StartupCode
 
 local function PauseGame(id, func, ...)
 	if not disable_pause and lookup_pauses[id] and not table.find(g_ActiveOnScreenNotifications, 1, id) then
-		UICity:SetGameSpeed(0)
+		UIColony:SetGameSpeed(0)
 		UISpeedState = "pause"
 	end
 	return func(id, ...)

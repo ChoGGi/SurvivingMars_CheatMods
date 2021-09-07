@@ -5,7 +5,7 @@ local Actions = ChoGGi.Temp.Actions
 Actions[#Actions+1] = {ActionName = T(302535920011668, "Set Speed 1"),
 	ActionId = "ChoGGi.SetSpeedKeys.SetSpeed1",
 	OnAction = function()
-		UICity:SetGameSpeed(1)
+		UIColony:SetGameSpeed(1)
 		UISpeedState = "play"
 	end,
 	ActionShortcut = "1",
@@ -16,7 +16,7 @@ Actions[#Actions+1] = {ActionName = T(302535920011668, "Set Speed 1"),
 Actions[#Actions+1] = {ActionName = T(302535920011669, "Set Speed 2"),
 	ActionId = "ChoGGi.SetSpeedKeys.SetSpeed2",
 	OnAction = function()
-		UICity:SetGameSpeed(const.mediumGameSpeed)
+		UIColony:SetGameSpeed(const.mediumGameSpeed)
 		UISpeedState = "medium"
 	end,
 	ActionShortcut = "2",
@@ -27,7 +27,7 @@ Actions[#Actions+1] = {ActionName = T(302535920011669, "Set Speed 2"),
 Actions[#Actions+1] = {ActionName = T(302535920011670, "Set Speed 3"),
 	ActionId = "ChoGGi.SetSpeedKeys.SetSpeed3",
 	OnAction = function()
-		UICity:SetGameSpeed(const.fastGameSpeed)
+		UIColony:SetGameSpeed(const.fastGameSpeed)
 		UISpeedState = "fast"
 	end,
 	ActionShortcut = "3",

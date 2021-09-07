@@ -54,9 +54,10 @@ do -- fix missing tech defs/tourist description in main menu/new game (expectati
 	end
 
 	local fake_city = {
-		GetConstructionCost = empty_func,
+		construction_cost = {GetConstructionCost = empty_func},
 		label_modifiers = {},
 	}
+
 	local orig_BuildingInfoLine = BuildingInfoLine
 	local procall = procall
 
@@ -64,6 +65,7 @@ do -- fix missing tech defs/tourist description in main menu/new game (expectati
 		-- add fake city so BuildingInfoLine doesn't fail
 		if not UICity then
 			UICity = fake_city
+			UIColony = fake_city
 		end
 
 		-- just to on the safe side (procall)
@@ -71,6 +73,7 @@ do -- fix missing tech defs/tourist description in main menu/new game (expectati
 
 		if UICity == fake_city then
 			UICity = false
+			UIColony = false
 		end
 
 		return ret

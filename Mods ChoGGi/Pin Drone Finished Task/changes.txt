@@ -1,2 +1,5 @@
+v0.3
+Picard update.
+
 v0.2
 Added mod options: Pin Drone Idle, Pause Game Idle.

@@ -1,13 +1,5 @@
 -- See LICENSE for terms
 
-local function ClearRestrictions(template)
-	template.disabled_in_environment1 = ""
-	template.disabled_in_environment2 = ""
-	template.disabled_in_environment3 = ""
-	template.disabled_in_environment4 = ""
-end
-
-
 local mod_EnableMod
 
 local function UnlockBuildings()
@@ -15,32 +7,14 @@ local function UnlockBuildings()
 		return
 	end
 
-	local bt = BuildingTemplates
+	local BuildingTemplates = BuildingTemplates
+	for _, template in pairs(BuildingTemplates) do
+		template.disabled_in_environment1 = ""
+		template.disabled_in_environment2 = ""
+		template.disabled_in_environment3 = ""
+		template.disabled_in_environment4 = ""
+	end
 
-	ClearRestrictions(bt.TriboelectricScrubber)
-	ClearRestrictions(bt.RCConstructorBuilding)
-	ClearRestrictions(bt.RCDrillerBuilding)
-	ClearRestrictions(bt.RCExplorerBuilding)
-	ClearRestrictions(bt.RCHarvesterBuilding)
-	ClearRestrictions(bt.RCRoverBuilding)
-	ClearRestrictions(bt.RCSafariBuilding)
-	ClearRestrictions(bt.RCSensorBuilding)
-	ClearRestrictions(bt.RCSolarBuilding)
-	ClearRestrictions(bt.RCTerraformerBuilding)
-	ClearRestrictions(bt.RCTransportBuilding)
-
-	ClearRestrictions(bt.ShuttleHub)
-	ClearRestrictions(bt.JumperShuttleHub)
-
-	ClearRestrictions(bt.StirlingGenerator)
-	ClearRestrictions(bt.AdvancedStirlingGenerator)
-
---~ 	ClearRestrictions(bt.WindTurbine)
---~ 	ClearRestrictions(bt.WindTurbine_Large)
-
-	ClearRestrictions(bt.LandscapeTerrace)
-
---~ 	ClearRestrictions(bt.XXXX)
 end
 
 local function ModOptions(id)

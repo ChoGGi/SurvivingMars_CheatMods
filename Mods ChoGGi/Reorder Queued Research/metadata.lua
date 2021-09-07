@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 			"version_minor", 2,
 		}),
 	},
-	"title", "Reorder Queued Research",
+	"title", "Reorder Queued Research (Obsolete)",
 	"id", "ChoGGi_ReorderQueuedResearch",
 	"steam_id", "2449037850",
 	"pops_any_uuid", "8ec18d2c-3035-4f7a-8af3-3a6f14507bc0",
@@ -23,6 +23,9 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagInterface", true,
 	"description", [[
+Obsolete: devs added this in Picard.
+
+
 Reorder the research queue with crappy looking buttons.
 ]],
 })
