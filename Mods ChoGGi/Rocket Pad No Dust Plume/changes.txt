@@ -1,3 +1,6 @@
+v0.4
+Log spam.
+
 v0.3
 Oh yeah, takeoff... (thanks  Immentale)
 

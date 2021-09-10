@@ -62,7 +62,7 @@ local function AddUpgrades(obj, id, prop, value)
 	-- don't override built-in upgrades
 	if obj.upgrade1_id == "" then
 		obj.upgrade1_id = id_cap1
-		obj.upgrade1_display_name = T(109035890389, "Capacity")
+		obj.upgrade1_display_name = T(302535920012052, "Capacity 1")
 		obj.upgrade1_icon = "UI/Icons/Upgrades/home_collective_01.tga"
 		obj.upgrade1_mod_prop_id_1 = prop
 		obj.upgrade1_add_value_1 = value
@@ -93,7 +93,7 @@ local function AddUpgrades(obj, id, prop, value)
 
 	if obj.upgrade2_id == "" then
 		obj.upgrade2_id = id .. "_Capacity2"
-		obj.upgrade2_display_name = T(109035890389, "Capacity")
+		obj.upgrade2_display_name = T(302535920012053, "Capacity 2")
 		obj.upgrade2_icon = "UI/Icons/Upgrades/home_collective_01.tga"
 		obj.upgrade2_mod_prop_id_1 = prop
 		obj.upgrade2_add_value_1 = value
@@ -116,7 +116,7 @@ local function AddUpgrades(obj, id, prop, value)
 
 	if obj.upgrade3_id == "" then
 		obj.upgrade3_id = id .. "_Capacity3"
-		obj.upgrade3_display_name = T(109035890389, "Capacity")
+		obj.upgrade3_display_name = T(302535920012054, "Capacity 3")
 		obj.upgrade3_icon = "UI/Icons/Upgrades/home_collective_01.tga"
 		obj.upgrade3_mod_prop_id_1 = prop
 		obj.upgrade3_add_value_1 = value
@@ -145,7 +145,7 @@ local upgrade_list_c = 0
 local function StartupCode()
 --~ 	ex(upgrade_list)
 
-	local unlocked_upgrades = UICity.unlocked_upgrades
+	local unlocked_upgrades = UIColony.unlocked_upgrades
 	for i = 1, upgrade_list_c do
 		local name = upgrade_list[i]
 		unlocked_upgrades[name .. "_Capacity1"] = true

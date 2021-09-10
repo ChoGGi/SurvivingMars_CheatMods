@@ -14,7 +14,7 @@ function OnMsg.ClassesPostprocess()
 			---
 			local loaded = context:GetStoredExportResourceAmount()
 			if loaded > 0 then
-				local funding = context.city:CalcBaseExportFunding(1000)
+				local funding = context.city.colony.funds:CalcBaseExportFunding(1000)
 				local count = floatfloor(loaded / ResourceScale)
 
 				self:SetTitle(T{302535920011825,
@@ -26,7 +26,7 @@ function OnMsg.ClassesPostprocess()
 			else
 				self:SetTitle(T{302535920011266,
 					"Per Rare: <amount>",
-					amount = InfobarObj_FmtRes(nil, context.city:CalcBaseExportFunding(1000)),
+					amount = InfobarObj_FmtRes(nil, context.city.colony.funds:CalcBaseExportFunding(1000)),
 				})
 			end
 			---

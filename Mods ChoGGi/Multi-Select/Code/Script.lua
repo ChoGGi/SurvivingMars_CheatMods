@@ -3,9 +3,9 @@
 local GetCursorWorldPos = GetCursorWorldPos
 
 local mapw, maph
-local height_tile = ActiveGameMap.terrain:HeightTileSize()
+local height_tile = const.TerrainHeightTileSize
 local function StartupCode()
-	mapw, maph = ActiveGameMap.terrain:GetMapSize()
+	mapw, maph = terrain.GetMapSize()
 	mapw = mapw - height_tile
 	maph = maph - height_tile
 end

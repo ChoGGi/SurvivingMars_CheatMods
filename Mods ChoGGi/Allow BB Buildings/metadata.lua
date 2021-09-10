@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Allow Buildings",
+	"title", "Allow BB Buildings",
 	"id", "ChoGGi_AllowBuildings",
 	"steam_id", "2595725610",
 	"pops_any_uuid", "72724cbe-731f-4edd-b7bb-fcabaa1b10ec",

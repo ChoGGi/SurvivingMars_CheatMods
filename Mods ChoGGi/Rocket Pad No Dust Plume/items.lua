@@ -11,6 +11,6 @@ return {
 		"name", "LessDust",
 		"DisplayName", T(302535920011895, "Less Dust"),
 		"Help", T(302535920011896, "Some dust not as much as the usual."),
-		"DefaultValue", off,
+		"DefaultValue", false,
 	}),
 }

@@ -37,7 +37,10 @@ function StirlingGenerator:GetHeatBorder()
   return const.SubsurfaceHeaterFrameRange
 end
 function StirlingGenerator:GetSelectionRadiusScale()
-  return self:ChoGGi_34Heating()
+	-- self can be the template/cursor building (or at least it can be in picard)
+	if self:IsKindOf("StirlingGenerator") then
+		return self:ChoGGi_34Heating()
+	end
 end
 
 
@@ -51,28 +54,30 @@ AddBaseheater(WaterExtractor, 2 * const.MaxHeat, 5)
 
 
 
-local function AddFueledExtractorHeat(_, class)
-	local orig_class_OnUpgradeToggled = class.OnUpgradeToggled
-	function class:OnUpgradeToggled(...)
+local function AddFueledExtractorHeat(_, cls)
+	local orig_class_OnUpgradeToggled = cls.OnUpgradeToggled
+	function cls:OnUpgradeToggled(...)
 		return PassthroughHeatUpdate(orig_class_OnUpgradeToggled, self, ...)
 	end
 
-	local orig_class_OnSetWorking = class.OnSetWorking
-	function class:OnSetWorking(...)
+	local orig_class_OnSetWorking = cls.OnSetWorking
+	function cls:OnSetWorking(...)
 		return PassthroughHeatUpdate(orig_class_OnSetWorking, self, ...)
 	end
 
-	function class:UpdateHeat()
+	function cls:UpdateHeat()
 		self:ApplyHeat(self.working and self:IsUpgradeOn(self.template_name .. "_FueledExtractor"))
 	end
-	function class:GetHeatRange()
+	function cls:GetHeatRange()
 		return const.AdvancedStirlingGeneratorHeatRadius * 10 * guim
 	end
-	function class:GetHeatBorder()
+	function cls:GetHeatBorder()
 		return const.SubsurfaceHeaterFrameRange
 	end
-	function class:GetSelectionRadiusScale()
-		return const.AdvancedStirlingGeneratorHeatRadius
+	function cls:GetSelectionRadiusScale()
+		if self:IsKindOf(cls.class) then
+			return const.AdvancedStirlingGeneratorHeatRadius
+		end
 	end
 end
 

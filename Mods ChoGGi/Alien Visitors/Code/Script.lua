@@ -1,5 +1,10 @@
 -- See LICENSE for terms
 
+local point = point
+local IsPlayablePoint = IsPlayablePoint
+local GetDomeAtPoint = GetDomeAtPoint
+local GetObjectHexGrid = GetObjectHexGrid
+
 local mod_MaxSpawn
 
 -- fired when settings are changed/init
@@ -123,7 +128,7 @@ function ChoGGi_Alien:Spawn()
 		local y = city:Random(miny, maxy)
 		local pt = point(x, y)
 
-		if IsPlayablePoint(pt) and not GetDomeAtPoint(pt) then
+		if IsPlayablePoint(pt) and not GetDomeAtPoint(GetObjectHexGrid(city), pt) then
 			pt = pt:SetStepZ()
 			if not DomeCollisionCheck(pt, pt) then
 				spawn_pos = pt
@@ -151,7 +156,7 @@ function ChoGGi_Alien:RoamTick()
 
 		local pt = RotateRadius(dist, angle, pos)
 		if IsPlayablePoint(pt) then
-			local dome = GetDomeAtPoint(pt)
+			local dome = GetDomeAtPoint(GetObjectHexGrid(city), pt)
 			if dome then
 				dome:LeadIn(self, dome:GetEntrances())
 			else

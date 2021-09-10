@@ -209,7 +209,7 @@ function FireworksLauncher:LaunchFireworks(visual_only)
 	end
 
 	-- got enough to raise the temps?
-	if UICity.funding < (100 * 1000000) then
+	if UIColony.funds.funding < (100 * 1000000) then
 		return
 	end
 	ChangeFunding(-100)

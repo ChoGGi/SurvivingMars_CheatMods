@@ -34,17 +34,27 @@ local function DisasterTriggerMeteor(pos, spawn_type)
 	CreateGameTimeThread(function()
 		MeteorsDisaster(descr, "single", pos)
  		WaitMsg("OnRender")
-		local meteor = g_MeteorsPredicted[#g_MeteorsPredicted]
-		if not meteor or meteor and meteor.entity ~= "Asteroid" then
-			return
+
+		-- find the meteor we just spawned (or at least a random one)
+		local meteor
+		local g_MeteorsPredicted = g_MeteorsPredicted
+		local break_count = 0
+		while break_count < 10 do
+			local temp_meteor = table.rand(g_MeteorsPredicted)
+			if temp_meteor and not temp_meteor.ChoGGi_MeteoroidDeposits then
+				temp_meteor.ChoGGi_MeteoroidDeposits = true
+				meteor = temp_meteor
+				break
+			end
+			break_count = break_count + 1
 		end
 
 		meteor:SetScale(500)
-
 --~ 		ex(meteor)
 
+		-- wait for it to land
 		while IsValid(meteor) do
-			WaitMsg("OnRender")
+			Sleep(100)
 		end
 
     local marker
@@ -104,10 +114,10 @@ function OnMsg.NewHour()
 	end
 
 	local city = UICity
-	local pfClass = 0
 	local buildable_grid = GetBuildableGrid(city)
 	local object_hex_grid = GetObjectHexGrid(city)
 	local realm = GetRealm(city)
+	local pfClass = 0
 
 	local deposits = {
 		TerrainDepositConcrete = mod_ConcreteThreshold,
@@ -131,7 +141,7 @@ function OnMsg.NewHour()
 				or cls == "SubsurfaceDepositPreciousMetals" and "PreciousMetals"
 
 			count = realm:MapCount("map", cls) + realm:MapCount("map", "SubsurfaceDepositMarker", function(o)
-				return not o.is_placed and o.resource == res
+				return not o.is_placed and o.resource == spawn_type
 			end)
 		end
 

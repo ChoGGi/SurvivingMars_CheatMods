@@ -8,20 +8,21 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Construction Show Heater Range",
+	"id", "ChoGGi_ConstructionShowHeaterRange",
+	"pops_any_uuid", "eb644519-c6fa-425c-ad9c-bf46ca98e656",
+	"steam_id", "2433762531",
+	"lua_revision", 249143,
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,
-	"id", "ChoGGi_ConstructionShowHeaterRange",
 	"author", "ChoGGi",
-	"image", "Preview.png",
-	"steam_id", "2433762531",
-	"pops_any_uuid", "eb644519-c6fa-425c-ad9c-bf46ca98e656",
-	"lua_revision", 249143,
+	"image", "Preview.jpg",
 	"code", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Shows heat radius around Subsurface Heaters when you're in construction mode.
+	"description", [[
+Shows heat radius around Subsurface Heaters when you're in construction mode.
 Press Numpad 7 to toggle grid anytime (rebind in game options).
 
 Mod Options:

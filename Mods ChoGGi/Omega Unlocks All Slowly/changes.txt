@@ -1,3 +1,6 @@
+v0.7
+Picard update.
+
 v0.6
 Added mod option for random chance of receiving breakthrough (0 to disable).
 

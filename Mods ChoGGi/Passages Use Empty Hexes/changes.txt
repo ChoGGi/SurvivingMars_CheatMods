@@ -1,3 +1,6 @@
+v0.9
+Picard update.
+
 v0.8
 Added button to toggle collisions on passage chunks inside domes (no more entrance blocking).
 

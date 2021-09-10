@@ -8,20 +8,21 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Construction Show Dome Grid",
+	"id", "ChoGGi_ConstructionShowDomeGrid",
+	"pops_any_uuid", "e5e834a8-16ba-438a-bd03-32d9ba5d0113",
+	"steam_id", "1781388419",
+	"lua_revision", 1007000, -- Picard
 	"version", 7,
 	"version_major", 0,
 	"version_minor", 7,
-	"id", "ChoGGi_ConstructionShowDomeGrid",
 	"author", "ChoGGi",
-	"image", "Preview.png",
-	"steam_id", "1781388419",
-	"pops_any_uuid", "e5e834a8-16ba-438a-bd03-32d9ba5d0113",
-	"lua_revision", 1007000, -- Picard
+	"image", "Preview.jpg",
 	"code", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Shows grid radius around Domes when you're in construction mode with a dome.
+	"description", [[
+Shows grid radius around Domes when you're in construction mode with a dome.
 Press Numpad 4 to toggle grid anytime (rebind in game options).
 
 Mod Options:
@@ -34,5 +35,6 @@ Selection Dome: Show all dome grids when selecting a dome.
 Selection Outside: Show all dome grids when selecting an outside dome building.
 
 
-Requested by DARK_MASTER.]],
+Requested by DARK_MASTER.
+]],
 })

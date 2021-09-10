@@ -23,24 +23,22 @@ end
 
 
 function OnMsg.CityStart()
-	if not mod_NewPause then
-		return
+	if mod_NewPause then
+		CreateRealTimeThread(function()
+			WaitMsg("MessageBoxClosed")
+			Sleep(100)
+			UIColony:SetGameSpeed(0)
+			UISpeedState = "pause"
+		end)
 	end
-	CreateRealTimeThread(function()
-		WaitMsg("MessageBoxClosed")
-		Sleep(100)
-		UIColony:SetGameSpeed(0)
-		UISpeedState = "pause"
-	end)
 end
 
 function OnMsg.LoadGame()
-	if not mod_LoadPause then
-		return
+	if mod_LoadPause then
+		CreateRealTimeThread(function()
+			Sleep(100)
+			UIColony:SetGameSpeed(0)
+			UISpeedState = "pause"
+		end)
 	end
-	CreateRealTimeThread(function()
-		Sleep(100)
-		UIColony:SetGameSpeed(0)
-		UISpeedState = "pause"
-	end)
 end

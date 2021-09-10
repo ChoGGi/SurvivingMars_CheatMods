@@ -44,10 +44,8 @@ function OnMsg.NewDay()
 	-- hit the amount so reset
 	ChoGGi_OmegaUnlocksAllSlowly_Sols = 0
 
-	local UICity = UICity
-
 	-- If there's none left to discover return
-	local breakthroughs = UICity:GetUnregisteredBreakthroughs()
+	local breakthroughs = UIColony:GetUnregisteredBreakthroughs()
 	if not breakthroughs[1] then
 		return
 	end

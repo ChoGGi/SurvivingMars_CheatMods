@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
--- for those of you interested in adding new flags (you'll also have to do something with SponsorBannerBase:GetEntity())
+-- this code will add a new banner (pretty much the same as a regular logo)
 
 -- not much point without it
 if not g_AvailableDlc.gagarin then

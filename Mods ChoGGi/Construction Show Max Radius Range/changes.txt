@@ -1,3 +1,9 @@
+v1.3
+Picard update.
+
+v1.2
+Log spam.
+
 v1.1
 Core Heat Convector was using too small of an area with max radius mod option (thanks Thor).
 

@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+-- for those of you interested in adding new banners (you'll also have to do something with SponsorBannerBase:GetEntity()/:GetSkins())
+
 -- not much point without it
 if not g_AvailableDlc.gagarin then
 	print("Random Banners needs DLC Installed: Space Race!")
@@ -29,26 +31,24 @@ function OnMsg.ModsReloaded()
 	table.sort(flag_spons_1)
 
 	for i = 1, flag_c do
-		lookup_table.Flag_02_[i] = "Flag_02_" .. flag_spons_1[i]
-		lookup_table.Flag_03_[i] = "Flag_03_" .. flag_spons_1[i]
-		flag_spons_1[i] = "Flag_01_" .. flag_spons_1[i]
+		local flag = flag_spons_1[i]
+		lookup_table.Flag_02_[i] = "Flag_02_" .. flag
+		lookup_table.Flag_03_[i] = "Flag_03_" .. flag
+		flag_spons_1[i] = "Flag_01_" .. flag
 	end
 end
 
--- the below is setup to load a random flag when placed and so the change skin button works properly
-
---~ local orig_SponsorBannerBase_GetEntity = SponsorBannerBase.GetEntity
-function SponsorBannerBase:GetEntity(...)
+-- Load a random flag when banner is placed
+function SponsorBannerBase:GetEntity()
 	if self.entity == "Hex1_Placeholder" then
 		-- default entity = return a random flag
 		return table.rand(lookup_table[self.banner])
---~ 	-- default entity = return orig func flag
---~ 		return orig_SponsorBannerBase_GetEntity(self, ...)
 	else
 		return self.entity
 	end
 end
 
+-- make the change skin button work properly
 function SponsorBannerBase:GetSkins()
 	return lookup_table[self.banner]
 end

@@ -6013,7 +6013,7 @@ function ChoGGi.ComFuncs.ResetHumanCentipedes()
 		if obj:IsValidPos() and not obj:GetPath() then
 			-- too close and they keep doing the human centipede
 			obj:SetCommand("Goto",
-				GetPassablePointNearby(obj:GetVisualPos()+point(Random(-1000, 1000), Random(-1000, 1000)))
+				GetPassablePointNearby(obj:GetPos()+point(Random(-1000, 1000), Random(-1000, 1000)))
 			)
 		end
 	end

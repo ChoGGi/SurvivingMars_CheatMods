@@ -629,7 +629,9 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 							obj.entity = entity
 
 							-- If it has a working state then set it
-							local states_str = obj:GetStates()
+--~ 							local states_str = obj:GetStates()
+							local default_state = 0
+							local states_str = obj:HasState(default_state) and obj:GetStates() or ""
 							local idx = table.find(states_str, "working")
 									or table.find(states_str, "idleOpened")
 									or table.find(states_str, "rotate")

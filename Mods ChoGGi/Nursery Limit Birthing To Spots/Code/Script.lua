@@ -23,8 +23,8 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local orig_SpawnChild = Dome.SpawnChild
-function Dome:SpawnChild(...)
+local orig_SpawnChild = Community.SpawnChild
+function Community:SpawnChild(...)
 	-- hi Ski
 	if self.IncubatorReloc then
 		return orig_SpawnChild(self, ...)

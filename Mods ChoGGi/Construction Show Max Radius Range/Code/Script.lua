@@ -41,9 +41,9 @@ function CursorBuilding:GameInit(...)
 		return orig_CursorBuilding_GameInit(self, ...)
 	end
 
+	local uirange
 	if self.template and self.template:IsKindOfClasses(cls_saved_settings) then
 		-- If ecm is active we check for custom range, otherwise use default
-		local uirange
 		local idx = table.find(ModsLoaded, "id", "ChoGGi_Library")
 		if idx then
 			local bs = ChoGGi.UserSettings.BuildingSettings[self.template.template_name]
@@ -55,6 +55,7 @@ function CursorBuilding:GameInit(...)
 
 		-- update with max size
 		self.GetSelectionRadiusScale = uirange
+
 		-- and call this again to update grid marker
 		ShowHexRanges(UICity, false, self, "GetSelectionRadiusScale")
 
@@ -110,6 +111,11 @@ function OnMsg.BuildingInit(obj)
 	uirange = uirange or prop and prop.max
 
 	-- set it
-	self.GetSelectionRadiusScale = uirange
+
+--~ 	obj.GetSelectionRadiusScale = uirange
+	obj.GetSelectionRadiusScale = function()
+		return uirange
+	end
+
 	obj.UIRange = uirange
 end

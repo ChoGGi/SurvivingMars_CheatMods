@@ -9,7 +9,7 @@ local orig_CommandCenterMaxRadius = const.CommandCenterMaxRadius
 
 local SetPropertyProp = ChoGGi.ComFuncs.SetPropertyProp
 
-local function SetModOptions()
+local function SetHubRange()
 	-- defaults
 	if not mod_EnableMod then
 		const.CommandCenterMaxRadius = orig_CommandCenterMaxRadius
@@ -41,8 +41,11 @@ local function SetModOptions()
 	end
 end
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_DroneHubRange = CurrentModOptions:GetProperty("DroneHubRange")
 	mod_DroneHubRangeDefault = CurrentModOptions:GetProperty("DroneHubRangeDefault")
@@ -53,18 +56,18 @@ local function ModOptions()
 		return
 	end
 
-	SetModOptions()
+	SetHubRange()
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
 -- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
+OnMsg.ApplyModOptions = ModOptions
+
+function OnMsg.BuildingInit(obj)
+	if IsKindOf(obj, "DroneHub") then
+		SetHubRange()
 	end
 end
 
-OnMsg.CityStart = SetModOptions
-OnMsg.LoadGame = SetModOptions
+OnMsg.CityStart = SetHubRange
+OnMsg.LoadGame = SetHubRange

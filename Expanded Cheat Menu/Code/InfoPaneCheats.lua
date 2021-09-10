@@ -1285,3 +1285,28 @@ end
 function ArtificialSun:CheatFillWater()
 	self.stored_water = self.water_capacity
 end
+
+-- needs better spin animation (full circle)
+function SpaceElevator:CheatFidgetSpinner()
+	if self.ChoGGi_FidgetSpinner_thread then
+		if IsValidThread(self.ChoGGi_FidgetSpinner_thread) then
+			DeleteThread(self.ChoGGi_FidgetSpinner_thread)
+		end
+		local angle = self.ChoGGi_FidgetSpinner_orig_angle
+
+		self.ChoGGi_FidgetSpinner_thread = nil
+		self.ChoGGi_FidgetSpinner_orig_angle = nil
+		self:SetAngle(angle or 0, 1500)
+		return
+	end
+
+	self.ChoGGi_FidgetSpinner_orig_angle = self:GetAngle()
+	self.ChoGGi_FidgetSpinner_thread = CreateGameTimeThread(function()
+		while true do
+			self:SetAngle(10800, 1500)
+			Sleep(1000)
+			self:SetAngle(0, 1500)
+			Sleep(1000)
+		end
+	end)
+end

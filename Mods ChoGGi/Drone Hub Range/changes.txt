@@ -1,3 +1,9 @@
+v0.6
+Removed the extra "end" (whoopise).
+
+v0.5
+Updates ranges for newly built hubs.
+
 v0.4
 Added mod option to update ranges of existing hubs.
 

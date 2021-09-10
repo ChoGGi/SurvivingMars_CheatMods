@@ -295,10 +295,12 @@ function LifeSupportGridElement:UpdateVisuals(supply_resource, ...)
 		local skin = self:GetSkinFromGrid(self:GetGridSkinName()).TubeJointSeam
 		local my_q, my_r = WorldToHex(self)
 		local conn = self.conn
+
+		local object_hex_grid = GetObjectHexGrid(self.city)
 		for dir = 0, 5 do
 			if testbit(conn, dir) then
 				local dq, dr = HexNeighbours[dir + 1]:xy()
-				local bld = HexGetBuilding(my_q + dq, my_r + dr)
+				local bld = HexGetBuilding(object_hex_grid, my_q + dq, my_r + dr)
 
 				if bld and bld:IsKindOf("Carwash") then
 					local bld_angle = 180 * 60 + dir * 60 * 60
@@ -330,8 +332,8 @@ function OnMsg.ClassesPostprocess()
 		"Id", "Carwash",
 		"template_class", "Carwash",
 		"dome_forbidden", true,
-		"display_name", T(302535920011106, [[Martian Carwash]]),
-		"display_name_pl", T(302535920011107, [[Martian Carwashes]]),
+		"display_name", T(302535920011106, "Martian Carwash"),
+		"display_name_pl", T(302535920011107, "Martian Carwashing"),
 		"description", description_text,
 		"build_category", "ChoGGi",
 		"Group", "ChoGGi",

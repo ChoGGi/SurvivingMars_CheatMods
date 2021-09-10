@@ -7,6 +7,8 @@
 local table = table
 local type, rawget = type, rawget
 local Sleep = Sleep
+local CreateRealTimeThread = CreateRealTimeThread
+local DeleteThread = DeleteThread
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Translate = ChoGGi.ComFuncs.Translate
@@ -15,6 +17,7 @@ local SetDlgTrans = ChoGGi.ComFuncs.SetDlgTrans
 local RetName = ChoGGi.ComFuncs.RetName
 local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
+local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
 local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 local UserSettings = ChoGGi.UserSettings
@@ -327,7 +330,6 @@ function OnMsg.ClassesGenerate()
 
 	-- using the CheatUpgrade func in the cheats pane with Silva's Modular Apartments == inf loop
 	do -- Building:CheatUpgrade*()
-		local CreateRealTimeThread = CreateRealTimeThread
 		local Building = Building
 		for i = 1, 3 do
 			local name = "CheatUpgrade" .. i
@@ -1040,9 +1042,6 @@ function OnMsg.ClassesBuilt()
 
 	-- add height limits to certain panels (cheats/traits/colonists) till mouseover, and convert workers to vertical list on mouseover if over 14 (visible limit)
 	do -- InfopanelDlg:Open
-		local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
-		local CreateRealTimeThread = CreateRealTimeThread
-		local DeleteThread = DeleteThread
 		local function ToggleVis(idx, content, v, h)
 			for i = 6, idx do
 				local con = content[i]

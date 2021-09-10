@@ -1,3 +1,6 @@
+v1.1
+Picard update.
+
 v1.0
 Merged checking for all nurseries into one (removed option for Ultimate Nursery).
 This mod will do nothing on Incubator enabled domes.

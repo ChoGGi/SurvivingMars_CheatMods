@@ -1,2 +1,5 @@
+v0.3
+Added 4/5 = *5/*10
+
 v0.2
 Picard update.
