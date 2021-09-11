@@ -20,14 +20,14 @@ end
 
 -- Insert into existing saves
 function OnMsg.LoadGame()
-	local UICity = UICity
+	local UIColony = UIColony
 
 	-- already added
-	if UICity.tech_status.ChoGGi_ExampleTech then
+	if UIColony.tech_status.ChoGGi_ExampleTech then
 		return
 	end
 
-	UICity.tech_status.ChoGGi_ExampleTech = {
+	UIColony.tech_status.ChoGGi_ExampleTech = {
 		field = "Engineering",
 		-- any points researched yet?
 		points = 0,
@@ -35,5 +35,5 @@ function OnMsg.LoadGame()
 		cost = 1000,
 	}
 	-- where in the list to add it (for existing games)
-	table.insert(UICity.tech_field.Engineering, 3, "ChoGGi_ExampleTech")
+	table.insert(UIColony.tech_field.Engineering, 3, "ChoGGi_ExampleTech")
 end

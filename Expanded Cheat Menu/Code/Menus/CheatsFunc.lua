@@ -1073,32 +1073,32 @@ end
 
 do -- StartMystery
 	local function StartMystery(mystery_id, instant)
-		local UICity = UICity
+		local UIColony = UIColony
 
 		-- Inform people of actions, so they don't add a bunch of them
 		ChoGGi.UserSettings.ShowMysteryMsgs = true
 
-		UICity.mystery_id = mystery_id
+		UIColony.mystery_id = mystery_id
 
 		local TechDef = TechDef
 		for tech_id, tech in pairs(TechDef) do
 			if tech.mystery == mystery_id then
-				if not UICity.tech_status[tech_id] then
-					UICity.tech_status[tech_id] = {points = 0, field = tech.group}
-					tech:EffectsInit(UICity)
+				if not UIColony.tech_status[tech_id] then
+					UIColony.tech_status[tech_id] = {points = 0, field = tech.group}
+					tech:EffectsInit(UIColony)
 				end
 			end
 		end
-		UICity:InitMystery()
+		UIColony:InitMystery()
 
 		-- might help
-		if UICity.mystery then
-			UICity.mystery:ApplyMysteryResourceProperties()
+		if UIColony.mystery then
+			UIColony.mystery:ApplyMysteryResourceProperties()
 		end
 
 		-- Instant start
 		if instant then
-			local seqs = UICity.mystery.seq_player.seq_list[1]
+			local seqs = UIColony.mystery.seq_player.seq_list[1]
 			for i = 1, #seqs do
 				local seq = seqs[i]
 				if seq:IsKindOf("SA_WaitExpression") then
@@ -1114,7 +1114,7 @@ do -- StartMystery
 
 
 		-- needed to start mystery
-		UICity.mystery.seq_player:AutostartSequences()
+		UIColony.mystery.seq_player:AutostartSequences()
 	end
 
 	function ChoGGi.MenuFuncs.ShowMysteryList()
@@ -1525,7 +1525,7 @@ function ChoGGi.MenuFuncs.AddResearchPoints()
 
 		local value = choice.value
 		if type(value) == "number" then
-			UICity:AddResearchPoints(value)
+			UIColony:AddResearchPoints(value)
 		elseif value == "Reset" then
 			local reset = GetMissionSponsor().research_points or 100
 			g_Consts.SponsorResearch = reset
@@ -1560,13 +1560,13 @@ end
 
 function ChoGGi.MenuFuncs.BreakThroughsOmegaTelescope_Set()
 	local default_setting = ChoGGi.Consts.OmegaTelescopeBreakthroughsCount
-	local MaxAmount = #UICity.tech_field.Breakthroughs
+	local MaxAmount = #UIColony.tech_field.Breakthroughs
 	local item_list = {
 		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 6, value = 6},
 		{text = 12, value = 12},
 		{text = 24, value = 24},
-		{text = MaxAmount, value = MaxAmount, hint = Strings[302535920000298--[[Max amount in UICity.tech_field list, you could make the amount larger if you want (an update/mod can add more).]]]},
+		{text = MaxAmount, value = MaxAmount, hint = Strings[302535920000298--[[Max amount in UIColony.tech_field list, you could make the amount larger if you want (an update/mod can add more).]]]},
 	}
 
 	local hint = default_setting
@@ -1602,11 +1602,11 @@ end
 
 function ChoGGi.MenuFuncs.BreakThroughsAllowed_Set()
 	local default_setting = ChoGGi.Consts.BreakThroughTechsPerGame
-	local MaxAmount = #UICity.tech_field.Breakthroughs
+	local MaxAmount = #UIColony.tech_field.Breakthroughs
 	local item_list = {
 		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 26, value = 26, hint = Strings[302535920000301--[[Doubled the base amount.]]]},
-		{text = MaxAmount, value = MaxAmount, hint = Strings[302535920000298--[[Max amount in UICity.tech_field list, you could make the amount larger if you want (an update/mod can add more).]]]},
+		{text = MaxAmount, value = MaxAmount, hint = Strings[302535920000298--[[Max amount in UIColony.tech_field list, you could make the amount larger if you want (an update/mod can add more).]]]},
 	}
 
 	local hint = default_setting
@@ -1761,10 +1761,11 @@ do -- ResearchRemove
 		local c = 0
 
 		local g = _G
+		local UIColony = g.UIColony
 		local UICity = g.UICity
 		local TechDef = g.TechDef
 
-		local tech_status = UICity.tech_status or ""
+		local tech_status = UIColony.tech_status or ""
 		for id, status in pairs(tech_status) do
 			if status.researched then
 				local tech = TechDef[id]
@@ -1801,7 +1802,7 @@ do -- ResearchRemove
 					end
 				end
 				-- the entry needed to reset it in the research screen
-				local tech_status = UICity.tech_status[tech_id]
+				local tech_status = UIColony.tech_status[tech_id]
 				if tech_status then
 					tech_status.researched = nil
 					tech_status.new = nil
@@ -1854,31 +1855,31 @@ do -- ResearchTech
 		IonStormPrediction = 5000,
 	}
 	-- needed to be able to unlock/research some mystery tech
-	local function AllowMysteryTech(id, city)
+	local function AllowMysteryTech(id, colony)
 		-- add tech_status if it's a mystery tech from a different mystery
-		if not city.tech_status[id] then
-			city.tech_status[id] = {
+		if not colony.tech_status[id] then
+			colony.tech_status[id] = {
 				field = "Mysteries",
 				points = 0,
 			}
 			-- Instead of incrementing costs
 			if mystery_costs[id] then
-				city.tech_status[id].cost = mystery_costs[id]
+				colony.tech_status[id].cost = mystery_costs[id]
 			end
 		end
-		if not table.find(city.tech_field.Mysteries, id) then
-			city.tech_field.Mysteries[#city.tech_field.Mysteries+1] = id
+		if not table.find(colony.tech_field.Mysteries, id) then
+			colony.tech_field.Mysteries[#colony.tech_field.Mysteries+1] = id
 		end
 	end
 
 	-- tech_func = DiscoverTech_Old/GrantTech
 	local function ResearchTechGroup(tech_func, group)
 		local TechDef = TechDef
-		local UICity = UICity
+		local UIColony = UIColony
 		for tech_id, tech in pairs(TechDef) do
 			if tech.group == group then
 				if tech.group == "Mysteries" then
-					AllowMysteryTech(tech_id, UICity)
+					AllowMysteryTech(tech_id, UIColony)
 				end
 				_G[tech_func](tech_id)
 			end
@@ -1976,7 +1977,7 @@ do -- ResearchTech
 			local count = 0
 
 			local g = _G
-			local UICity = g.UICity
+			local UIColony = g.UIColony
 			local TechDef = g.TechDef
 			for i = 1, #choice do
 				if choice[i].list_selected then
@@ -2003,7 +2004,7 @@ do -- ResearchTech
 							local tech = TechDef[value]
 							if tech then
 								if tech.group == "Mysteries" then
-									AllowMysteryTech(value, UICity)
+									AllowMysteryTech(value, UIColony)
 								end
 								g[func](value)
 							end

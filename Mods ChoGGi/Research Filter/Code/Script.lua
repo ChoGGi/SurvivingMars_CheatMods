@@ -99,7 +99,7 @@ local function EditDlg(dlg)
 
 	count = 0
 	-- If it's the first time opening research then build a list of name/desc to search
-	local new_count = UICity:DiscoveredTechCount()
+	local new_count = UIColony:DiscoveredTechCount()
 	local needs_update = current_count ~= new_count or current_count == 0
 
 	if needs_update then

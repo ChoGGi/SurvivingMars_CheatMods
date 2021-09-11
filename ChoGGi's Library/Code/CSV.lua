@@ -530,7 +530,7 @@ do -- Graphs
 		}
 		local UICity = UICity
 		local labels = UICity.labels
-		local ResourceOverviewObj = ResourceOverviewObj
+		local ResourceOverviewCity = g_ResourceOverviewCity[UICity.map_id]
 
 		-- the rest are sols
 		local csv_columns = {
@@ -583,7 +583,7 @@ do -- Graphs
 				export_data,
 				c,
 				list.name,
-				ResourceOverviewObj[list.func](ResourceOverviewObj),
+				ResourceOverviewCity[list.func](ResourceOverviewCity),
 				UICity[list.data1][list.data2][list.data3]
 			)
 		end
@@ -599,7 +599,7 @@ do -- Graphs
 				export_data,
 				c,
 				Translate(692--[[Resources]]) .. " " .. name .. " " .. Strings[302535920001454--[[Stockpiled]]],
-				ResourceOverviewObj["GetAvailable" .. id](ResourceOverviewObj),
+				ResourceOverviewCity["GetAvailable" .. id](ResourceOverviewCity),
 				res.stockpile
 			)
 			c = c + 1
@@ -607,7 +607,7 @@ do -- Graphs
 				export_data,
 				c,
 				Translate(692--[[Resources]]) .. " " .. name .. " " .. Strings[302535920001455--[[Produced]]],
-				ResourceOverviewObj["Get" .. id .. "ProducedYesterday"](ResourceOverviewObj),
+				ResourceOverviewCity["Get" .. id .. "ProducedYesterday"](ResourceOverviewCity),
 				res.produced
 			)
 			c = c + 1
@@ -615,7 +615,7 @@ do -- Graphs
 				export_data,
 				c,
 				Translate(692--[[Resources]]) .. " " .. name .. " " .. Strings[302535920001456--[[Consumed]]],
-				ResourceOverviewObj["Get" .. id .. "ConsumedByConsumptionYesterday"](ResourceOverviewObj),
+				ResourceOverviewCity["Get" .. id .. "ConsumedByConsumptionYesterday"](ResourceOverviewCity),
 				res.consumed
 			)
 		end

@@ -102,11 +102,12 @@ function OnMsg.ApplyModOptions(id)
 end
 
 function OnMsg.AddResearchRolloverTexts(text, city)
-	if not mod_EnableMod then
+	local UICity = city or UICity
+
+	if not mod_EnableMod or not UICity then
 		return
 	end
 
-	local UICity = city or UICity
 	local res_points = g_ResourceOverviewCity[UICity.map_id]:GetEstimatedRP() + 0.0
 
 	-- research per sol
@@ -116,7 +117,7 @@ function OnMsg.AddResearchRolloverTexts(text, city)
 	}
 
 	-- time left of current res
-	local id, points, max_points = UICity:GetResearchInfo()
+	local id, points, max_points = UIColony:GetResearchInfo()
 	if id then
 		local time_str = T{12265, "Remaining Time<right><time(time)>",
 			time = floatfloor(((max_points - points) / res_points) * scale_sols)
@@ -125,7 +126,7 @@ function OnMsg.AddResearchRolloverTexts(text, city)
 	end
 
 	-- time left on outsourcing
-	local orders = UICity.OutsourceResearchOrders
+	local orders = UIColony.OutsourceResearchOrders
 	if #orders > 0 then
 		local time_str = T{12265, "Remaining Time<right><time(time)>",
 			time = #orders * scale_hours
@@ -134,10 +135,10 @@ function OnMsg.AddResearchRolloverTexts(text, city)
 	end
 
 	-- show default research when nothing is queued up
-	local cheapest = UICity:GetCheapestTech()
-	if not UICity:GetResearchInfo() and cheapest then
+	local cheapest = UIColony:GetCheapestTech()
+	if not UIColony:GetResearchInfo() and cheapest then
 		local points, max_points
-		cheapest, points, max_points = UICity:GetResearchInfo(cheapest)
+		cheapest, points, max_points = UIColony:GetResearchInfo(cheapest)
 
 		text[#text+1] = T({12475, "Researching <em><name></em> (<percent(progress)>)",
       name = function()
@@ -713,7 +714,6 @@ function ResourceOverview:GetColonistsRollover(...)
 --~ 	ex(list)
 
 	-- biorobots count
-	local UICity = UICity
 	if IsTechResearched("ThePositronicBrain") then
 		-- get android count in each dome (maybe faster than counting each colonist?)
 		local ac = 0

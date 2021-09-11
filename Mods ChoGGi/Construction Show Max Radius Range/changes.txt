@@ -1,3 +1,6 @@
+v1.4
+range is updated when moving slider again.
+
 v1.3
 Picard update.
 

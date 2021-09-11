@@ -1421,6 +1421,8 @@ Don't forget to send me your res and margin, so I can add them to the list."
 302535920012047, "Threshold for a new Water deposit."
 302535920012048, "Concrete Threshold"
 302535920012049, "Threshold for a new Concrete deposit."
+302535920012054, "Surface Only"
+302535920012055, "You only get deposits on the surface colony."
 [[UNUSED]]
 
 
@@ -1433,8 +1435,6 @@ Don't forget to send me your res and margin, so I can add them to the list."
 
 
 [[UNUSED]]
-302535920012054,
-302535920012055,
 302535920012056,
 302535920012057,
 302535920012058,

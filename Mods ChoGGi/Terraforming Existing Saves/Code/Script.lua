@@ -23,13 +23,13 @@ local function EnableTerra()
 	local UICity = UICity
 
 	-- backup some tables before we call InitResearch
-	local research_queue = UICity.research_queue
-	local tech_status = UICity.tech_status
-	local tech_field = UICity.tech_field
-	local TechBoostPerField = UICity.TechBoostPerField
-	local TechBoostPerTech = UICity.TechBoostPerTech
-	local OutsourceResearchPoints = UICity.OutsourceResearchPoints
-	local OutsourceResearchOrders = UICity.OutsourceResearchOrders
+	local research_queue = UIColony.research_queue
+	local tech_status = UIColony.tech_status
+	local tech_field = UIColony.tech_field
+	local TechBoostPerField = UIColony.TechBoostPerField
+	local TechBoostPerTech = UIColony.TechBoostPerTech
+	local OutsourceResearchPoints = UIColony.OutsourceResearchPoints
+	local OutsourceResearchOrders = UIColony.OutsourceResearchOrders
 
 	-- we want this func to just return the new field so it skips the other ones
 	local orig_GetAvailablePresets = GetAvailablePresets
@@ -37,26 +37,26 @@ local function EnableTerra()
 		return {TechFields.Terraforming}
 	end
 
-	UICity:InitResearch()
+	UIColony:InitResearch()
 
 	-- restore old func
 	GetAvailablePresets = orig_GetAvailablePresets
 
 	-- and restore tables
-	UICity.research_queue = research_queue
-	UICity.OutsourceResearchPoints = OutsourceResearchPoints
-	UICity.OutsourceResearchOrders = OutsourceResearchOrders
+	UIColony.research_queue = research_queue
+	UIColony.OutsourceResearchPoints = OutsourceResearchPoints
+	UIColony.OutsourceResearchOrders = OutsourceResearchOrders
 
-	RestoreMissingTableValues(tech_status, UICity.tech_status)
-	RestoreMissingTableValues(tech_field, UICity.tech_field)
-	RestoreMissingTableValues(TechBoostPerField, UICity.TechBoostPerField)
-	RestoreMissingTableValues(TechBoostPerTech, UICity.TechBoostPerTech)
+	RestoreMissingTableValues(tech_status, UIColony.tech_status)
+	RestoreMissingTableValues(tech_field, UIColony.tech_field)
+	RestoreMissingTableValues(TechBoostPerField, UIColony.TechBoostPerField)
+	RestoreMissingTableValues(TechBoostPerTech, UIColony.TechBoostPerTech)
 
 	-- City:GameInitResearch copy pasta
 	-- we're already in a thread, but since it's a realtime one there might be some issues so gametime it is
 	local thread = CreateGameTimeThread(function()
 		local TechDef = TechDef
-		for id, status in pairs(UICity.tech_status) do
+		for id, status in pairs(UIColony.tech_status) do
 			if status.field == "Terraforming" then
 				TechDef[id]:EffectsInit(UICity)
 			end

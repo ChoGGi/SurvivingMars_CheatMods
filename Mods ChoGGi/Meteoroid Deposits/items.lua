@@ -8,6 +8,12 @@ return {
 		"DefaultValue", true,
 	}),
 	PlaceObj("ModItemOptionToggle", {
+		"name", "SurfaceOnly",
+		"DisplayName", T(302535920012054, "Surface Only"),
+		"Help", T(302535920012055, "You only get deposits on the surface colony."),
+		"DefaultValue", true,
+	}),
+	PlaceObj("ModItemOptionToggle", {
 		"name", "SafeLanding",
 		"DisplayName", T(302535920012040, "Safe Landing"),
 		"Help", T(302535920012041, "Buildings won't be hit by falling rocks."),

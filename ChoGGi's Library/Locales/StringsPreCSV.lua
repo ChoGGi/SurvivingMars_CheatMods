@@ -1048,7 +1048,7 @@ Skip it?"
 302535920000296, "If you need a little boost (or a lotta boost) in research."
 302535920000297, "%s:
 Best hope you picked India as your Mars sponsor..."
-302535920000298, "Max amount in UICity.tech_field list, you could make the amount larger if you want (an update/mod can add more)."
+302535920000298, "Max amount in UIColony.tech_field list, you could make the amount larger if you want (an update/mod can add more)."
 302535920000299, "%s: Research is what I'm doing when I don't know what I'm doing."
 302535920000301, "Doubled the base amount."
 302535920000302, "%s: S M R T"

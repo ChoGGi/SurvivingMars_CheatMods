@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1522200776",
 	"pops_any_uuid", "f11ce232-278a-422e-b12d-476f9a148d1c",
 	"lua_revision", 1007000, -- Picard
-	"version", 13,
+	"version", 14,
 	"version_major", 1,
-	"version_minor", 3,
+	"version_minor", 4,
 	"code", {
 		"Code/Script.lua",
 	},

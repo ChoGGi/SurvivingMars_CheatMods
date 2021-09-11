@@ -65,8 +65,8 @@ function ReopenSelectionXInfopanel(obj, slide_in)
 	if obj == nil then
 		obj = SelectedObj
 		if (not obj and ShowResourceOverview) then
-			obj = ResourceOverviewObj
-			mode = ResourceOverviewObj:GetIPMode()
+			obj = g_ResourceOverviewCity[UICity.map_id]
+			mode = g_ResourceOverviewCity[UICity.map_id]:GetIPMode()
 			template = "ipResourceOverview"
 		end
 	end

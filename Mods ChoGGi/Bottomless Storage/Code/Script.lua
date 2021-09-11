@@ -44,6 +44,8 @@ function BottomlessStorage:GameInit()
 
 	-- make sure it isn't mistaken for a regular depot
 	self:SetColorModifier(0)
+
+	self.placement_offset = point30
 end
 
 -- om nom nom nom nom
@@ -52,7 +54,7 @@ function BottomlessStorage:DroneUnloadResource(drone, request, resource, ...)
 	UniversalStorageDepot.DroneUnloadResource(self, drone, request, resource, ...)
 	if self.working then
 		-- check and clear each resource that can be cleared
-		if ResourceOverviewObj:GetAvailable(resource) > mod_options[resource] * ResourceScale then
+		if g_ResourceOverviewCity[UICity.map_id]:GetAvailable(resource) > mod_options[resource] * ResourceScale then
 			-- function UniversalStorageDepot:ClearAllResources()
 			if self.supply and self.supply[resource] then
 				self.supply[resource]:SetAmount(0)

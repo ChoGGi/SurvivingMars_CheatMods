@@ -2418,7 +2418,7 @@ do -- DisplayMonitorList
 			info = {
 				title = Translate(311--[[Research]]),
 				listtype = "all",
-				tables = {UICity.tech_status},
+				tables = {UIColony.tech_status},
 				values = {
 					researched = true
 				}

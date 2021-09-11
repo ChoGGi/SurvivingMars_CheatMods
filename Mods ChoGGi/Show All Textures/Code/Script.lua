@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local terrain = terrain
 local TerrainTextures = TerrainTextures
 local point = point
 
@@ -42,8 +41,6 @@ local function StartupCode()
 		local terrain = ActiveGameMap.terrain
 
 		terrain:SetHeightCircle(point(447000, 467000), 100000, 100000, 5000)
-
-
 
 		for i = 1, #TerrainTextures do
 			row = row + 1

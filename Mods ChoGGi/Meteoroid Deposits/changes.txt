@@ -1,2 +1,5 @@
 v0.2
+Mod option to only land on surface.
+
+v0.2
 Fixed multiple deposits at the same area.

@@ -3,7 +3,6 @@
 local table = table
 local AsyncRand = AsyncRand
 local CreateRand = CreateRand
-local InitSector = InitSector
 
 local mod_MinimumSurfaceDeposits
 local mod_MinimumSubsurfaceDeposits

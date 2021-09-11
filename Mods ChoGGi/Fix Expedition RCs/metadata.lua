@@ -16,6 +16,10 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"TagGameplay", true,
 	"description", [[
+DOES NOT WORK IN PICARD
+
+
+
 Expeditions that require an RC will work with faction specific rovers (Seeker, Generator, etc).
 You'll need to restart existing expeditions waiting for an RC for this to take effect.
 

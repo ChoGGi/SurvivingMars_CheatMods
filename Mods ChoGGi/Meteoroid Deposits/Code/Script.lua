@@ -1,8 +1,6 @@
 -- See LICENSE for terms
 
 local WaitMsg = WaitMsg
-local GetRandomPassablePoint = GetRandomPassablePoint
-local IsBuildableZone = IsBuildableZone
 local IsPointNearBuilding = IsPointNearBuilding
 local Random = ChoGGi.ComFuncs.Random
 local CopyTable = ChoGGi.ComFuncs.CopyTable
@@ -82,6 +80,7 @@ local function DisasterTriggerMeteor(pos, spawn_type)
 end
 
 local mod_EnableMod
+local mod_SurfaceOnly
 local mod_SafeLanding
 local mod_MetalsThreshold
 local mod_RareMetalsThreshold
@@ -96,6 +95,7 @@ local function ModOptions(id)
 	end
 
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+	mod_SurfaceOnly = CurrentModOptions:GetProperty("SurfaceOnly")
 	mod_SafeLanding = CurrentModOptions:GetProperty("SafeLanding")
 	mod_MetalsThreshold = CurrentModOptions:GetProperty("MetalsThreshold")
 	mod_RareMetalsThreshold = CurrentModOptions:GetProperty("RareMetalsThreshold")
@@ -114,6 +114,10 @@ function OnMsg.NewHour()
 	end
 
 	local city = UICity
+	if mod_SurfaceOnly and city ~= MainCity then
+		return
+	end
+
 	local buildable_grid = GetBuildableGrid(city)
 	local object_hex_grid = GetObjectHexGrid(city)
 	local realm = GetRealm(city)

@@ -43,8 +43,8 @@ local function StartupCode()
 	SetTemplate("PowerDecoy", true)
 
 	-- needed to capture spheres/show them in build menu
-	UICity.tech_status["Purpose of the Spheres"] = {field = "Mysteries", points = 0}
-	UICity.tech_status["Xeno-Terraforming"] = {field = "Mysteries", points = 0}
+	UIColony.tech_status["Purpose of the Spheres"] = {field = "Mysteries", points = 0}
+	UIColony.tech_status["Xeno-Terraforming"] = {field = "Mysteries", points = 0}
 	UICity:SetTechResearched("Purpose of the Spheres")
 	UICity:SetTechResearched("Xeno-Terraforming")
 end

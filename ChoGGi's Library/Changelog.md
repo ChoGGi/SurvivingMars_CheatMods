@@ -1,7 +1,10 @@
 ## Library Changelog
 
-## v10.3 (Unreleased)
+## v10.4 (Unreleased)
+
+## v10.3 (11 Sep 2021)
 - Fixed some log spam from research text in main menu.
+- Picard update (more fixes).
 
 ## v10.2 (7 Sep 2021)
 - Picard update

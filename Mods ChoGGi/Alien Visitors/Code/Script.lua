@@ -1,8 +1,6 @@
 -- See LICENSE for terms
 
 local point = point
-local IsPlayablePoint = IsPlayablePoint
-local GetDomeAtPoint = GetDomeAtPoint
 local GetObjectHexGrid = GetObjectHexGrid
 
 local mod_MaxSpawn

@@ -109,14 +109,14 @@ function MarsCompanion:MainLoop()
 	local Sleep = Sleep
 
 	local cameraRTS = cameraRTS
-	local terrain = terrain
 
 --~ 	local current_cam_pos = cameraRTS.GetPos()
 --~ 	local same_pos_count = 0
 
 	local max_dist = 12000
 	local max_dist_neg = -12000
-
+  
+  local ActiveGameMap = ActiveGameMap
 	while IsValid(self) do
 		local cam = cameraRTS.GetLookAt()
 		if not ActiveGameMap.terrain:IsPointInBounds(cam) then

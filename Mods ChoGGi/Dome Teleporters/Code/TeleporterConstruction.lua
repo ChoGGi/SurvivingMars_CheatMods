@@ -1,5 +1,22 @@
 -- See LICENSE for terms
 
+--~ function TunnelConstructionController:UpdateCursor(pt)
+--~   ShowNearbyHexGrid(pt)
+--~   if IsValid(self.cursor_obj) then
+--~ 	ex(self)
+--~     local terrain = GetTerrain(self.city)
+--~     self.cursor_obj:SetPos(FixConstructPos(terrain, pt))
+--~   end
+--~   ObjModified(self)
+--~   if not self.template_obj or not self.cursor_obj then
+--~     return
+--~   end
+--~   self:UpdateConstructionObstructors()
+--~   self:UpdateConstructionStatuses(pt)
+--~   self:UpdateShortConstructionStatus()
+--~ end
+
+
 local mod_BuildDist
 
 -- fired when settings are changed/init
@@ -36,12 +53,19 @@ end
 
 -- add our custom construction controller
 function OnMsg.NewMap()
-	if UICity then
-		CityDomeTeleporterConstruction[UICity] = DomeTeleporterConstructionController:new()
+	local city = UICity
+	if city then
+		CityDomeTeleporterConstruction[city] = DomeTeleporterConstructionController:new()
+		-- why city is false on it...?
+		CityDomeTeleporterConstruction[city].city = CityDomeTeleporterConstruction[city].city or city
 	end
 end
 function OnMsg.LoadGame()
-	CityDomeTeleporterConstruction[UICity] = DomeTeleporterConstructionController:new()
+	local city = UICity
+	CityDomeTeleporterConstruction[city] = DomeTeleporterConstructionController:new()
+	-- why city is false on it...?
+	CityDomeTeleporterConstruction[city].city = CityDomeTeleporterConstruction[city].city or city
+
 --~ 	-- dbg
 --~ 	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(CityDomeTeleporterConstruction[UICity])
 --~ 	dlg:EnableAutoRefresh()

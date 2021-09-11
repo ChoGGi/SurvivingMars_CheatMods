@@ -1,8 +1,11 @@
 ## ECM Changelog
 
-## v17.3 (Unreleased)
+## v17.4 (Unreleased)
+
+## v17.3 (11 Sep 2021)
 ### Fixed:
 - Help>Mod Upload will correctly upload first mod when uploading a bunch.
+- Picard update (more fixes).
 
 ## v17.2 (7 Sep 2021)
 ### Changed:

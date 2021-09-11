@@ -71,6 +71,7 @@ function CursorBuilding:GameInit(...)
 		elseif cls.template_class and cls.template_class ~= "" then
 			cls = cls.template_class
 		end
+		-- okay I should make stuff less confusing
 		cls = g_Classes[cls]
 
 		if cls and cls.GetHeatRange then
@@ -113,9 +114,9 @@ function OnMsg.BuildingInit(obj)
 	-- set it
 
 --~ 	obj.GetSelectionRadiusScale = uirange
-	obj.GetSelectionRadiusScale = function()
-		return uirange
-	end
+--~ 	obj.GetSelectionRadiusScale = function()
+--~ 		return uirange
+--~ 	end
 
 	obj.UIRange = uirange
 end

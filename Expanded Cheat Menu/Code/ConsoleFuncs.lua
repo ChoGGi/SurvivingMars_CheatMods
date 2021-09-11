@@ -305,7 +305,7 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 	AddSubmenu("g_Classes", nil, "ClassTemplates", "Attaches", "FXRules", "FXLists")
 	AddSubmenu("g_CObjectFuncs", nil, "hr", "pf", "terrain", "UIL", "DTM", "lpeg", "srp", "camera", "camera3p", "cameraMax", "cameraRTS", "string", "table", "package", "debug", "lfs")
 	AddSubmenu("StoryBits", Translate(948928900281--[[Story Bits]]), "StoryBitCategories", "StoryBitTriggersCombo", "g_StoryBitStates", "g_StoryBitCategoryStates")
-	AddSubmenu("UICity", nil, "UICity.tech_status", "BuildMenuPrerequisiteOverrides", "BuildingTechRequirements", "g_ApplicantPool", "g_CurrentMissionParams", "UICity.MapSectors", "RivalAIs", "TaskRequesters", "LRManagerInstance")
+	AddSubmenu("UICity", nil, "UIColony.tech_status", "BuildMenuPrerequisiteOverrides", "BuildingTechRequirements", "g_ApplicantPool", "g_CurrentMissionParams", "UICity.MapSectors", "RivalAIs", "TaskRequesters", "LRManagerInstance")
 	AddSubmenu("Mods", nil, "ModsLoaded", "ModsList")
 
 	-- bonus addition at the top
