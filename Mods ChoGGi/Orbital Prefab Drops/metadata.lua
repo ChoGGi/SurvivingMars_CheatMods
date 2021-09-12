@@ -4,16 +4,17 @@ return PlaceObj("ModDef", {
 	"steam_id", "1545818603",
 	"pops_any_uuid", "20be6c5b-b62d-41c5-af97-de631190ea8a",
 	"lua_revision", 1007000, -- Picard
-	"version", 8,
+	"version", 9,
 	"version_major", 0,
-	"version_minor", 8,
+	"version_minor", 9,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Prefabs are now stored on a space station that will launch them down to the build site.
+	"description", [[
+Prefabs are now stored on a space station that will launch them down to the build site.
 
 Something like this was removed from the beta builds? For shame ;)
 
@@ -28,5 +29,6 @@ Defaults are PrefabOnly = true, Outside = true, Inside = false, DomeCrack = true
 
 
 Known Issues:
-Hills can intercept drops and make stuff weird.]],
+Hills can intercept drops and make stuff weird (if you have a save that you can reproduce it on I might be able to fix it).
+]],
 })

@@ -248,6 +248,8 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 
 	local meta = getmetatable(obj)
 	local build_category = meta.build_category
+
+	-- update?
 	local wonder = meta.wonder
 
 	local labels = UICity.labels

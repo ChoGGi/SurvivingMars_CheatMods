@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.contentpack1 then
-	print("Build Philosopher Stones needs Mysteries DLC installed.")
+	print("Build Mystery Rewards needs Mysteries DLC installed.")
 	return
 end
 
@@ -45,8 +45,8 @@ local function StartupCode()
 	-- needed to capture spheres/show them in build menu
 	UIColony.tech_status["Purpose of the Spheres"] = {field = "Mysteries", points = 0}
 	UIColony.tech_status["Xeno-Terraforming"] = {field = "Mysteries", points = 0}
-	UICity:SetTechResearched("Purpose of the Spheres")
-	UICity:SetTechResearched("Xeno-Terraforming")
+	UIColony:SetTechResearched("Purpose of the Spheres")
+	UIColony:SetTechResearched("Xeno-Terraforming")
 end
 
 OnMsg.CityStart = StartupCode
@@ -62,6 +62,7 @@ function OnMsg.BuildingInit(obj)
 		obj:CheatAllowExploration()
 	elseif obj:IsKindOf("Sinkhole") then
 		obj.can_demolish = true
+		obj.max_firefly_number = 999
 	end
 
 end
@@ -153,8 +154,29 @@ function OnMsg.ClassesPostprocess()
 	--
 	xtemplate = XTemplates.ipSinkhole[1]
 
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Remove", true)
+	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Spawn", true)
 	table.insert(xtemplate, 2,
+		PlaceObj("XTemplateTemplate", {
+			"Id" , "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Spawn",
+			"ChoGGi_Template_BuildPhilosopherStonesSinkhole_Spawn", true,
+			"__context_of_kind", "Sinkhole",
+			"__template", "InfopanelButton",
+			"__condition", function()
+				return mod_EnableMod
+			end,
+
+			"RolloverTitle", T(302535920012056, "Spawn"),
+			"RolloverText", T(302535920012057, "Spawn a Wisp."),
+			"Icon", "UI/Icons/ColonyControlCenter/wasterock_on.tga",
+
+			"OnPress", function(self)
+				self.context:CheatSpawnFirefly()
+			end,
+		})
+	)
+
+	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Remove", true)
+	table.insert(xtemplate, 3,
 		PlaceObj("XTemplateTemplate", {
 			"Id" , "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Remove",
 			"ChoGGi_Template_BuildPhilosopherStonesSinkhole_Remove", true,
@@ -179,7 +201,7 @@ function OnMsg.ClassesPostprocess()
 	)
 
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Demolish", true)
-	table.insert(xtemplate, 3,
+	table.insert(xtemplate, 4,
 		PlaceObj("XTemplateTemplate", {
 			"Id" , "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Demolish",
 			"ChoGGi_Template_BuildPhilosopherStonesSinkhole_Demolish", true,

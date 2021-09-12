@@ -137,7 +137,8 @@ local function YamatoHasshin(site)
 		Sleep(quarter*3)
 		PlayFX("RocketLand", "hit-ground", pod, false, spawn_pos)
 		if mod_DomeCrack then
-			local dome = GetDomeAtHex(WorldToHex(spawn_pos))
+			local object_hex_grid = GetObjectHexGrid(city)
+			local dome = GetDomeAtHex(object_hex_grid, WorldToHex(spawn_pos))
 			if dome then
 				local bm = BaseMeteor
 				local _, dome_pt, dome_normal = bm.HitsDome(dome, spawn_pos)

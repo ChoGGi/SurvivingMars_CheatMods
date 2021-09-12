@@ -1,14 +1,42 @@
 -- See LICENSE for terms
 
+local point = point
 local IsValidThread = IsValidThread
 local IsValid = IsValid
 local Sleep = Sleep
-
 local MulDivRound = MulDivRound
 local SetLen = SetLen
 local Cross = Cross
 local asin = asin
 
+
+local mod_ToggleRain
+local mod_RaiseTemps
+--~ local mod_RainType
+
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_ToggleRain = CurrentModOptions:GetProperty("ToggleRain")
+	mod_RaiseTemps = CurrentModOptions:GetProperty("RaiseTemps")
+
+	if not g_AvailableDlc.armstrong then
+		mod_ToggleRain = false
+		mod_RaiseTemps = false
+	end
+
+--~ 	local rain_type = CurrentModOptions:GetProperty("RainType")
+--~ 	mod_RainType = rain_type = 1 and "normal" or rain_type = 1 and "toxic" or "gamestate"
+end
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
+
+-- probably shouldn't bother using GlobalVar, but I'll leave since I'm too lazy to test
 GlobalVar("FireworksLauncher_targetobj", false)
 function OnMsg.SaveGame()
 	if IsValid(FireworksLauncher_targetobj) then
@@ -109,7 +137,8 @@ end
 function FireworksLauncher:RocketMove()
 	local tick = 50
 	local dir = SetLen(self.move_dir, self.start_speed)
-	local max_height = ActiveGameMap.terrain:GetMaxHeight()
+	-- half height so it doesn't take too long for rains
+	local max_height = ActiveGameMap.terrain:GetMapHeight() / 4
 	local target = self.target
 	local max_travel = MulDivRound(self.max_speed, tick, 1000)
 
@@ -156,6 +185,7 @@ function FireworksLauncher:LaunchFireworks(visual_only)
 		return
 	end
 
+
 	TriggerFireworks()
 
 	self.waiting_thread = CreateGameTimeThread(function()
@@ -169,58 +199,68 @@ function FireworksLauncher:LaunchFireworks(visual_only)
 		return
 	end
 
-	if not self.parent_dome then
-		-- fire?
-		self.landing_thread = CreateGameTimeThread(function()
-			PlayFX("RocketLand", "start", self)
-			Sleep(const.HourDuration / 8)
-			PlayFX("RocketLand", "end", self)
-		end)
+	-- fire?
+	self.landing_thread = CreateGameTimeThread(function()
+		PlayFX("RocketLand", "start", self)
+		Sleep(const.HourDuration / 8)
+		PlayFX("RocketLand", "end", self)
+	end)
 
-		-- shoot off a rocket, because
-		local rocket = RocketProjectile:new()
-		local rocket_pos = self.rocket_attach:GetPos()
-		rocket:SetPos(rocket_pos)
-		rocket:SetScale(400)
-		rocket.move_dir = axis_z
-		rocket.shooter = self
-		local x, y = ActiveGameMap.terrain:GetMapSize()
-		local target
-		if IsValid(FireworksLauncher_targetobj) then
-			target = FireworksLauncher_targetobj
-		else
-			target = InvisibleObject:new()
-			FireworksLauncher_targetobj = target
-		end
-
-		local target_pos = point(self:Random(0, x), self:Random(0, y), ActiveGameMap.terrain:GetMaxHeight())
-		target:SetPos(target_pos)
-		rocket.target = target
-		rocket.Move = self.RocketMove
-		rocket:StartMoving()
-
-		PlayFX("MissileFired", "start", self.rocket_attach, nil, rocket_pos, axis_z)
-		self.explode_thread = CreateGameTimeThread(function()
-			while rocket.move_thread do
-				Sleep(500)
-			end
-			PlayFX("GroundExplosion", "start", target, nil, target_pos)
-		end)
+	-- shoot off a rocket, because
+	local rocket = RocketProjectile:new()
+	local rocket_pos = self.rocket_attach:GetPos()
+	rocket:SetPos(rocket_pos)
+	rocket:SetScale(400)
+	rocket.move_dir = axis_z
+	rocket.shooter = self
+	local x, y = ActiveGameMap.terrain:GetMapSize()
+	local target
+	if IsValid(FireworksLauncher_targetobj) then
+		target = FireworksLauncher_targetobj
+	else
+		target = InvisibleObject:new()
+		FireworksLauncher_targetobj = target
 	end
+
+	local target_pos = point(self:Random(0, x), self:Random(0, y), ActiveGameMap.terrain:GetMapHeight() / 4)
+	target:SetPos(target_pos)
+	rocket.target = target
+	rocket.Move = self.RocketMove
+	rocket:StartMoving()
+
+	PlayFX("MissileFired", "start", self.rocket_attach, nil, rocket_pos, axis_z)
+	self.explode_thread = CreateGameTimeThread(function()
+		if IsValid(self.parent_dome) then
+			local dome, dome_pt = BaseMeteor.HitsDome(
+				{start = self.parent_dome:GetPos()}, self:GetPos()
+			)
+			self.parent_dome:AddFracture("Small", dome_pt)
+		end
+		while rocket.move_thread do
+			Sleep(500)
+		end
+		PlayFX("GroundExplosion", "start", self)
+		if mod_ToggleRain then
+			if RainsDisasterThreads[g_RainDisaster] then
+				StopRainsDisaster(g_RainDisaster)
+			else
+				CheatRainsDisaster("Normal_High")
+			end
+		end
+	end)
 
 	-- got enough to raise the temps?
-	if UIColony.funds.funding < (100 * 1000000) then
-		return
-	end
-	ChangeFunding(-100)
+	if mod_RaiseTemps and UIColony.funds.funding > (100 * 1000000) then
+		ChangeFunding(-100)
 
-	local name = "Temperature"
-	local temp = Terraforming[name] or 0
-	temp = temp + 10
-	Terraforming[name] = temp
-	-- UpdateTerraformEffects() is local, so ...
-	temp = GetTerraformParam(name)
-	SetTerraformParam(name, temp)
+		local name = "Temperature"
+		local temp = Terraforming[name] or 0
+		temp = temp + 10
+		Terraforming[name] = temp
+		-- UpdateTerraformEffects() is local, so ...
+		temp = GetTerraformParam(name)
+		SetTerraformParam(name, temp)
+	end
 end
 
 function OnMsg.ClassesPostprocess()
@@ -254,34 +294,34 @@ function OnMsg.ClassesPostprocess()
 	-- check for and remove existing template
 	ChoGGi.ComFuncs.RemoveXTemplateSections(building, "ChoGGi_Template_FireworksLauncher_DoStuff", true)
 
-	building[#building+1] = PlaceObj('XTemplateTemplate', {
-		"ChoGGi_Template_FireworksLauncher_DoStuff", true,
-		"Id", "ChoGGi_FireworksLauncher_DoStuff",
-		"comment", "something something",
-		"__context_of_kind", "FireworksLauncher",
-		"__template", "InfopanelButton",
-
-		"RolloverText", T(302535920011421, [[Fire off some fireworks (Costs 100 million to use).
+	table.insert(building, 1,
+		PlaceObj('XTemplateTemplate', {
+			"ChoGGi_Template_FireworksLauncher_DoStuff", true,
+			"Id", "ChoGGi_FireworksLauncher_DoStuff",
+			"comment", "something something",
+			"__context_of_kind", "FireworksLauncher",
+			"__template", "InfopanelButton",
+			"RolloverText", T(302535920011421, [[Fire off some fireworks (Costs 100 million to use).
 Right-click to skip cost/temperature increase (also happens if you don't have enough cash).]]),
-		"RolloverTitle", T(302535920000944, [[Yamato Hasshin!]]),
-		"RolloverHint", T(302535920011422, [[<left_click> Hot Fireworks <right_click> Visual Fireworks]]),
-		"Icon", "UI/Icons/IPButtons/drill.tga",
-
-		"OnPress", function (self, gamepad)
-			-- left click action (arg is if ctrl is being held down)
-			self.context:LaunchFireworks(false, not gamepad and IsMassUIModifierPressed())
-			ObjModified(self.context)
-		end,
-		"AltPress", true,
-		"OnAltPress", function (self, gamepad)
-			-- right click action
-			if gamepad then
-				self.context:LaunchFireworks(true, true)
-			else
-				self.context:LaunchFireworks(true, IsMassUIModifierPressed())
-			end
-			ObjModified(self.context)
-		end,
-	})
+			"RolloverTitle", T(302535920000944, [[Yamato Hasshin!]]),
+			"RolloverHint", T(302535920011422, [[<left_click> Hot Fireworks <right_click> Visual Fireworks]]),
+			"Icon", "UI/Icons/IPButtons/drill.tga",
+			"OnPress", function(self, gamepad)
+				-- left click action (arg is if ctrl is being held down)
+				self.context:LaunchFireworks(false, not gamepad and IsMassUIModifierPressed())
+				ObjModified(self.context)
+			end,
+			"AltPress", true,
+			"OnAltPress", function(self, gamepad)
+				-- right click action
+				if gamepad then
+					self.context:LaunchFireworks(true, true)
+				else
+					self.context:LaunchFireworks(true, IsMassUIModifierPressed())
+				end
+				ObjModified(self.context)
+			end,
+		})
+	)
 
 end

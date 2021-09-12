@@ -3741,7 +3741,8 @@ do -- Editor toggle
 				Dialogs.TerrainBrushesDlg:delete()
 			end
 			-- update flight grid so shuttles don't fly into newly added mountains
-			Flight_OnHeightChanged()
+			FlightCaches[UICity.map_id]:OnHeightChanged()
+
 		end
 	end
 
@@ -7654,6 +7655,18 @@ function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
 		return textures
 	end
 	ChoGGi.ComFuncs.OpenInExamineDlg(textures, nil, Strings[302535920001181--[[Used Terrain Textures]]])
+end
+
+function ChoGGi.ComFuncs.RetMapType()
+	local map_id = UICity.map_id
+
+	if map_id == UIColony.underground_map_id then
+		return "underground"
+	elseif map_id == UIColony.surface_map_id then
+		return "surface"
+	else
+		return "asteroid"
+	end
 end
 
 --

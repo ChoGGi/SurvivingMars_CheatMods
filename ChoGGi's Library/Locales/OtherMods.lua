@@ -650,6 +650,10 @@ Breakthroughs will be random as well.
 302535920011421, "Fire off some fireworks (Costs 100 million to use).
 Right-click to skip cost/temperature increase (also happens if you don't have enough cash)."
 302535920011422, "<left_click> Hot Fireworks <right_click> Visual Fireworks"
+302535920012058, "Toggle Rain"
+302535920012059, "Firing a rocket turns rainfall on and off."
+302535920012060, "Raise Temps"
+302535920012061, "Raise the temperature after firing a rocket."
 [[Game Rules Breakthroughs/Unlock Breakthroughs]]
 302535920011423, "Breakthroughs Researched"
 302535920011597, "Enable to research instead of unlock breakthroughs.
@@ -1292,6 +1296,8 @@ Leave blank to skip search box."
 302535920011971, "Detach Sphere from excavation site."
 302535920011972, "Delete Excavation Site"
 302535920011973, "You'll need to flatten the ground afterwards."
+302535920012056, "Spawn"
+302535920012057, "Spawn a Wisp."
 [[Drone Hub Range]]
 302535920011949, "Update Existing Hubs"
 302535920011950, "Existing drone hub ranges will be updated to the new default range."
@@ -1435,12 +1441,6 @@ Don't forget to send me your res and margin, so I can add them to the list."
 
 
 [[UNUSED]]
-302535920012056,
-302535920012057,
-302535920012058,
-302535920012059,
-302535920012060,
-302535920012061,
 302535920012062,
 302535920012063,
 302535920012064,

@@ -746,6 +746,8 @@ do !Skipped Line! [[ResourcesMenu.lua" "ResourcesFunc.lua]] !Skipped Line!
 Fix with: %s"
 end	!Skipped Line!
 do !Skipped Line! [[BuildingsMenu.lua" "BuildingsFunc.lua]] !Skipped Line!
+302535920000159, "Unlimited Wonders"
+302535920000223, "Unlimited wonder build limit (blocks the <yellow>build a wonder</yellow> achievement)."
 302535920000423, "Unlock Crops"
 302535920000444, "Shows list of locked crops."
 302535920001407, "Rotate During Placement"
@@ -830,7 +832,6 @@ We were all feeling a bit shagged and fagged and fashed,
 it having been an evening of some small energy expenditure, O my brothers.
 So we got rid of the auto and stopped off at the Korova for a nightcap."
 302535920000156, "%s: Aliens? We gotta deal with aliens too?"
-302535920000159, "Unlimited Wonders"
 302535920000160, "%s: Freedom for spires!"
 302535920000161, "%s: Buildings Instant Build"
 302535920001241, "Instant Build"
@@ -889,7 +890,6 @@ Works on any building that produces."
 302535920000216, "Building Damage Crime"
 302535920000217, "Disable damage from renegedes to buildings."
 302535920000218, "No Break"
-302535920000223, "Unlimited wonder build limit (blocks the <yellow>build a wonder</yellow> achievement)."
 302535920000224, "Show Hidden Buildings"
 302535920000225, "Show hidden buildings in build menu."
 302535920000226, "Remove Spire Point Limit"

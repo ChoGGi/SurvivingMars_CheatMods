@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v17.4 (Unreleased)
+### Fixed:
+- Terrain Editor wasn't updating flight grid (Thanks SkiRich).
 
 ## v17.3 (11 Sep 2021)
 ### Fixed:

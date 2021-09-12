@@ -143,7 +143,7 @@ do -- non-class obj funcs
 		return UserSettings.StorageShuttle or ChoGGi_OrigFuncs.GetMaxCargoShuttleCapacity(...)
 	end
 
-	-- SkipMissingDLC and no mystery dlc installed means the buildmenu tries to add missing buildings, and call a func that doesn't exist
+
 	-- report building as not-a-wonder to the func that checks for wonders
 	SaveOrigFunc("UIGetBuildingPrerequisites")
 	function UIGetBuildingPrerequisites(cat_id, template, ...)
@@ -151,18 +151,18 @@ do -- non-class obj funcs
 		if BuildingTemplates[template.id] then
 
 			-- save orig boolean
-			local orig_wonder = template.wonder
+			local orig_wonder = template.build_once
 
 			if UserSettings.Building_wonder then
 				-- always false so there's no build limit
-				template.wonder = false
+				template.build_once = false
 			end
 
 			-- store ret values as a table since there's more than one, and an update may change the amount
 			local ret = {ChoGGi_OrigFuncs.UIGetBuildingPrerequisites(cat_id, template, ...)}
 
 			-- make sure to restore orig value after func fires
-			template.wonder = orig_wonder
+			template.build_once = orig_wonder
 
 			return table.unpack(ret)
 		end

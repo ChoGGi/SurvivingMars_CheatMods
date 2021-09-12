@@ -2672,7 +2672,7 @@ do -- UnpublishParadoxMod
 
 	-- platform = "any" for pc/xbox, "windows" for only pc
 	-- mod_title = name of mod on paradox platform
---~ ChoGGi.ComFuncs.UnpublishParadoxMod("Lakes Toggle Visibility")
+--~ ChoGGi.ComFuncs.UnpublishParadoxMod("Fix Food Depot Centipede")
 	function ChoGGi.ComFuncs.UnpublishParadoxMod(mod_title, platform)
 		if blacklist then
 			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.UnpublishParadoxMod")

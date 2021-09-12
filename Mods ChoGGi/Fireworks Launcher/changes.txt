@@ -1,3 +1,7 @@
+v0.4
+Provides a minimal boost to terraforming heat (0.01) for a cost (100M), mod option to disable.
+Also an option to toggle rainfall.
+
 v0.3
 Picard update.
 

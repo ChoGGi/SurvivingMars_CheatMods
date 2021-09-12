@@ -1,1 +1,2 @@
 v0.2
+Mod option to reveal darkness.
