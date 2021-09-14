@@ -25,7 +25,7 @@ local function StartupCode()
 	SuspendPassEdits("ChoGGi.FixStuckMirrorSphereDevices.Startup")
 
 	local DoneObject = DoneObject
-	local objs = ActiveGameMap.realm:MapGet("map", "ParSystem", function(o)
+	local objs = MapGet("map", "ParSystem", function(o)
 		if o.polyline and o:GetParticlesName() == "PowerDecoy_Capture" then
 			return true
 		end

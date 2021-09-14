@@ -8,10 +8,10 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Passenger Rocket Tweaks",
-	"version", 12,
+	"version", 14,
 	"version_major", 1,
-	"version_minor", 2,
-	"image", "Preview.png",
+	"version_minor", 4,
+	"image", "Preview.jpg",
 	"id", "ChoGGi_PassengerRocketTweaks",
 	"steam_id", "1641796120",
 	"pops_any_uuid", "e27f8c05-6999-4737-8615-5c9820b083ff",
@@ -21,12 +21,14 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Adds an "Are you sure?" question box to the back button to stop you from losing your applicant list (just the button, pressing ESC still works as usual).
+	"description", [[
+Adds an "Are you sure?" question box to the back button to stop you from losing your applicant list (just the button, pressing ESC still works as usual).
+Shows age of colonist in popup info.
 
 Mod Options:
-More Spec Info: Add a specialisation count section to the passenger rocket screen (selected applicants / specialists needed by workplaces / specialists already in colony).
 Hide Background: Shows a black background so you can see the text easier.
-Position Pass List: Enable changing position of passenger list.
-PosX/PosY: Margins to use for list.
 ]],
 })
+--~ More Spec Info: Add a specialisation count section to the passenger rocket screen (selected applicants / specialists needed by workplaces / specialists already in colony).
+--~ Position Pass List: Enable changing position of passenger list.
+--~ PosX/PosY: Margins to use for list.

@@ -139,7 +139,7 @@ function OnMsg.ClassesBuilt()
 				local mouse_pt = GetCursorWorldPos()
 				local cls = selected.class
 
-				local objs = ActiveGameMap.realm:MapGet("map", "attached", false, selected.class, function(o)
+				local objs = GetRealm(self):MapGet("map", "attached", false, selected.class, function(o)
 					return o.class == cls and mouse_pt:Dist2D(o:GetVisualPos()) <= temp_radius
 				end)
 
@@ -167,7 +167,7 @@ function OnMsg.ClassesBuilt()
 			end
 
 			SelectionRemove(Selection)
-			local units = ActiveGameMap.realm:MapGet(orig_pos, radius, "attached", false, "DroneBase"--[[, "Colonist"]])
+			local units = GetRealm(self):MapGet(orig_pos, radius, "attached", false, "DroneBase"--[[, "Colonist"]])
 			if #units < 1000 then
 				SelectionAdd(units)
 			end

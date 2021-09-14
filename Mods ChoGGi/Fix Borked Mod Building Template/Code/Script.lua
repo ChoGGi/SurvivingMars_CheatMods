@@ -3,23 +3,30 @@
 local mod_EnableMod
 
 -- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
 -- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	-- I'm sure it wouldn't be that hard to only call this msg for the mod being applied, but...
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+OnMsg.ApplyModOptions = ModOptions
 
+-- they don't have a template_class
+local skips = {
+	OutsideMonumentLarge = true,
+	OutsideMonumentSmall = true,
+	OutsideStatueLarge = true,
+	OutsideStatueSmall = true,
+	OutsideStatue = true,
+	OutsideObelisk = true,
+}
 function OnMsg.GatherUIBuildingPrerequisites(template)
-	if not mod_EnableMod then
+	if not mod_EnableMod or skips[template.id] then
 		return
 	end
 
@@ -29,12 +36,7 @@ function OnMsg.GatherUIBuildingPrerequisites(template)
 
 		CreateMessageBox(
 			"Borked Mod Building Template:",
-			"See log for more info:" .. template.id,
-			nil,
-			nil,
-			nil,
-			ChoGGi.library_path .. "UI/message_picture_01.png"
-		)
+			"See log for more info:" .. template.id)
 	end
 
 end

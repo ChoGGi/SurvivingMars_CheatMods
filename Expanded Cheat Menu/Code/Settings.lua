@@ -160,6 +160,8 @@ if testing then
 	Defaults.FlushLog = true
 	-- ECM and Lib make a lot of these :)
 	Defaults.ConsoleSkipUndefinedGlobals = true
+	-- zoom out in asteroids
+	Defaults.UnlockOverview = true
 end
 
 -- set game values to saved values

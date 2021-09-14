@@ -91,14 +91,16 @@ function OnMsg.NewDay(sol) -- NewSol...
 		-- only workplaces with my table
 		if work.ChoGGi_SpecByExp then
 			for handle, c_table in pairs(work.ChoGGi_SpecByExp) do
-
+				local obj = c_table.obj
 				-- just in case
-				if IsValid(c_table.obj) or not c_table.obj.dying then
+				if IsValid(obj) or not obj.dying then
 					-- only allow spec=none or if mod option then any spec, then check if worked long enough
-					if (c_table.obj.specialist == "none" or mod_IgnoreSpec) and (sol - c_table.started_on) >= mod_SolsToTrain then
-						c_table.obj:SetSpecialization(work.specialist)
+					if (obj.specialist == "none" or mod_IgnoreSpec) and (sol - c_table.started_on) >= mod_SolsToTrain then
+						obj:SetSpecialization(work.specialist)
+						-- "fix" for picard
+						obj:SetSpecialization(work.specialist)
 						-- needed to remove NonSpecialistPerformancePenalty
-						c_table.obj:ChangeWorkplacePerformance()
+						obj:ChangeWorkplacePerformance()
 					end
 				else
 					-- If not valid then might as well remove it

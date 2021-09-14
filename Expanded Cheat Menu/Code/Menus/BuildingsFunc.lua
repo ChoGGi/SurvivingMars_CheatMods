@@ -180,7 +180,7 @@ function ChoGGi.MenuFuncs.SetTrainingPoints()
 		local value = choice[1].value
 
 		if type(value) == "number" then
-			local objs = ActiveGameMap.realm:MapGet("map", obj.class)
+			local objs = MapGet("map", obj.class)
 
 			if value == default_setting then
 				setting.evaluation_points = nil
@@ -295,7 +295,7 @@ function ChoGGi.MenuFuncs.SetServiceBuildingStats()
 			end
 
 			-- reset existing to defaults
-			local objs = ActiveGameMap.realm:MapGet("map", id)
+			local objs = MapGet("map", id)
 			for i = 1, #objs do
 				local obj = objs[i]
 				obj:SetBase("health_change", temp.health_change)
@@ -330,7 +330,7 @@ function ChoGGi.MenuFuncs.SetServiceBuildingStats()
 				end
 			end
 			-- update existing buildings
-			local objs = ActiveGameMap.realm:MapGet("map", id)
+			local objs = MapGet("map", id)
 			local UpdateServiceComfortBld = ChoGGi.ComFuncs.UpdateServiceComfortBld
 			for i = 1, #objs do
 				UpdateServiceComfortBld(objs[i], bs_setting.service_stats)
@@ -1260,7 +1260,7 @@ end
 do -- SchoolTrainAll_Toggle/SanatoriumCureAll_Toggle
 	-- used to add or remove traits from schools/sanitariums
 	local function BuildingsSetAll_Traits(cls, traits, bool)
-		local objs = ActiveGameMap.realm:MapGet("map", cls)
+		local objs = MapGet("map", cls)
 		for i = 1, #objs do
 			local obj = objs[i]
 			for j = 1, #traits do

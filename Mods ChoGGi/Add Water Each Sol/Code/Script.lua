@@ -27,5 +27,5 @@ local function EachDeposit(obj)
 end
 
 function OnMsg.NewDay()
-	ActiveGameMap.realm:MapForEach("map", "SubsurfaceDepositWater", EachDeposit)
+	MapForEach("map", "SubsurfaceDepositWater", EachDeposit)
 end

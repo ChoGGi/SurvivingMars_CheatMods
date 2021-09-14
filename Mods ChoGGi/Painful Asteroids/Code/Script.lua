@@ -69,7 +69,7 @@ function BaseMeteor:CrackDome(dome, ...)
 		end
 
 		-- Zardoz comes for you
-		local units = ActiveGameMap.realm:MapGet(dome, (HexShapeRadius(dome:GetBuildShape()) * const_HexHeight), "Unit")
+		local units = GetRealm(self):MapGet(dome, (HexShapeRadius(dome:GetBuildShape()) * const_HexHeight), "Unit")
 		for i = 1, #units do
 			local unit = units[i]
 			-- drones/rovers (don't park your rovers right next to your domes)

@@ -60,14 +60,13 @@ return PlaceObj("ModDef", {
 		-- Mod Options
 		"Code/ModOptions.lua",
 	},
-	"description", [[Contains stuff needed by most of my mods.
-
-I got tired of copying and pasting functions between different mods to update them, now I just update this mod for those functions.
-
+	"description", [[
+Contains stuff needed by most of my mods.
 
 Also available at:
 https://www.nexusmods.com/survivingmars/mods/89?tab=files
 https://steamcommunity.com/workshop/filedetails/?id=1504386374
 https://mods.paradoxplaza.com/mods/7528/Any
-https://github.com/ChoGGi/SurvivingMars_CheatMods]],
+https://github.com/ChoGGi/SurvivingMars_CheatMods
+]],
 })

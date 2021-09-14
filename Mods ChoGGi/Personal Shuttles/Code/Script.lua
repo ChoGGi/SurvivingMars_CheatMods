@@ -308,7 +308,7 @@ function PersonalShuttle:SelectedObject(obj, pos, dest)
 	-- Anomaly scanning
 	if obj:IsKindOf("SubsurfaceAnomaly") then
 		-- scan nearby SubsurfaceAnomaly
-		local anomaly = NearestObject(pos, ActiveGameMap.realm:MapGet("map", "SubsurfaceAnomaly"), 2000)
+		local anomaly = NearestObject(pos, GetRealm(self):MapGet("map", "SubsurfaceAnomaly"), 2000)
 		-- make sure it's the right one, and not already being scanned by another
 		if anomaly and obj == anomaly and not UICity.PersonalShuttles.shuttle_scanning_anomaly[anomaly.handle] then
 			PlayFX("ArtificialSunCharge", "start", anomaly)

@@ -1798,7 +1798,7 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(action)
 		end
 
 		if check1 then
-			ActiveGameMap.realm:MapForEach("map", obj.class, function(workplace)
+			MapForEach("map", obj.class, function(workplace)
 				-- all three shifts
 				for j = 1, #workplace.workers do
 					-- workers in shifts (go through table backwards for when someone gets fired)

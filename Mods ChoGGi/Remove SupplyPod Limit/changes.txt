@@ -1,2 +1,5 @@
+v0.3
+Removed limits for rockets.
+
 v0.2
 Any drones over 10 were ignored.

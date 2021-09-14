@@ -19,7 +19,7 @@ function OnMsg.ClassesPostprocess()
 
 end
 
-function RocketExpedition:UILaunch(...)
+function RocketBase:UILaunch()
 	if self:IsDemolishing() then
 		self:ToggleDemolish()
 	end

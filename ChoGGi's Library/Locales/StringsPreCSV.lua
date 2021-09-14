@@ -3,8 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! green: <green>%s</green>
 !Skipped Line! yellow: <yellow>%s</yellow>
 "ID", " Text"
-302535920001651, ""
-302535920001652, ""
 302535920001653, ""
 302535920001654, ""
 302535920001655, ""
@@ -1623,6 +1621,8 @@ Takes less then a second on a map with 3616 buildings and 54 drone hubs."
 302535920000622, "If you have any buildings that aren't aligned to the hex grids use this."
 end end end end end !Skipped Line!
 do !Skipped Line! [[GameMenu.lua" "GameFunc.lua]] !Skipped Line!
+302535920001651, "Unlock Overview"
+302535920001652, "Overview works on all maps."
 302535920001645, "May cause crashing!"
 302535920001627, "This is only visual; this won't affect the game state (unless something uses the list to check)."
 302535920001623, "List Normal"

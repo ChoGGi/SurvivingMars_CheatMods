@@ -12,13 +12,14 @@ local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
 do -- ModUpload
-	-- redo this someday...
+	-- refactor this someday...
 
 	-- since they use the title as the folder name you can't use the same name as other mods, or mods that got blocked and I'm supposed to re-upload
 	-- CopyToClipboard([[	"pops_any_uuid", "]] .. GetUUID() .. [[",]])
 	local diff_mod_titles_paradox = {
-		[ChoGGi.id_lib] = "ChoGGi's Library (upload 2)",
-		[ChoGGi.id] = "Expanded Cheat Menu (upload 2)",
+		-- extra spaces intentional (thank you paradox mods)
+		[ChoGGi.id_lib] = "ChoGGi's Library ",
+		[ChoGGi.id] = "Expanded Cheat Menu ",
 		ChoGGi_DeepResourcesNeverRunOut = "Deep Resources Never Run Out (upload 2)",
 		ChoGGi_DronesCarryAmountFix = "Drones Carry Amount (upload 2)",
 		ChoGGi_FixMirrorGraphics = "Fix Mirror Graphics (upload 2)",

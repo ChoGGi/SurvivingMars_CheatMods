@@ -32,11 +32,11 @@ local function StartupCode()
 		return par:GetParticlesName() == "Rocket_Landing_Pos_02"
 	end
 
-	local markers = ActiveGameMap.realm:MapGet("map", "AlienDiggerMarker")
+	local markers = MapGet("map", "AlienDiggerMarker")
 	for i = 1, #markers do
 		local marker = markers[i]
 
-		local rocket_mark = ActiveGameMap.realm:MapGet(marker:GetPos(), 0, "ParSystem", HasParticles)
+		local rocket_mark = MapGet(marker:GetPos(), 0, "ParSystem", HasParticles)
 		if rocket_mark[1] then
 			rocket_mark[1]:delete()
 		end

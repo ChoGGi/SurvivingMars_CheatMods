@@ -1,3 +1,9 @@
+v0.4
+Actually tested this time...
+
+v0.3
+Picard update.
+
 v0.2
 Added override for colonist picking function.
 Mod options to pick overrides.

@@ -1239,6 +1239,13 @@ function OnMsg.ChangeMap()
 	if testing or ChoGGi.UserSettings.ShowStartupTicks then
 		ChoGGi.Temp.StartupTicks = GetPreciseTicks()
 	end
+
+end
+
+function OnMsg.ChangeMapDone()
+	if ChoGGi.UserSettings.UnlockOverview then
+		ActiveMapData.IsAllowedToEnterOverview = true
+	end
 end
 
 do -- LoadGame/CityStart

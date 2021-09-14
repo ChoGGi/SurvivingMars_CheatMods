@@ -46,7 +46,7 @@ local function ToggleLines(obj)
 		dust_range = obj.dust_range
 	end
 
-	local objs = ActiveGameMap.realm:MapGet(obj, "hex", dust_range, "DustGridElement", "Building", function(o)
+	local objs = GetRealm(obj):MapGet(obj, "hex", dust_range, "DustGridElement", "Building", function(o)
 		-- skip self, cables, n pipes
 		if o == obj or o:IsKindOfClasses(skips)
 			or (o:IsKindOf("ConstructionSite") and o.building_class_proto

@@ -80,7 +80,7 @@ local function RemoveSectors()
 		end
 	end
 
-	ActiveGameMap.realm:MapForEach("map", "SectorUnexplored", RemoveStuckSectors)
+	MapForEach("map", "SectorUnexplored", RemoveStuckSectors)
 end
 
 -- can't hurt

@@ -4,16 +4,17 @@ return PlaceObj("ModDef", {
 	"steam_id", "1461190633",
 	"pops_any_uuid", "16aa5fa7-f019-4772-92a5-7dd977a35322",
 	"lua_revision", 1007000, -- Picard
-	"version", 8,
+	"version", 9,
 	"version_major", 0,
-	"version_minor", 8,
+	"version_minor", 9,
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
 	"image", "Preview.png",
-	"description", [[Colonists without a spec that work at the same job for 25 Sols will automagically get the specialisation needed for that workplace.
+	"description", [[
+Colonists without a spec that work at the same job for 25 Sols will automagically get the specialisation needed for that workplace.
 
 Mod Options:
 Override Existing Spec: If colonist is already a specialist it will be replaced.
@@ -23,5 +24,6 @@ Known Issues:
 For saved games this obviously doesn't have a count of how long colonists have previously worked (got a feeling I'd be answering this question eventually).
 
 
-Idea by Dragonmystic.]],
+Idea by Dragonmystic.
+]],
 })

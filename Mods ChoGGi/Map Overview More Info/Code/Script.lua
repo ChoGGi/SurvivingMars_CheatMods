@@ -103,7 +103,7 @@ local function AddIcons()
 
 	table.clear(sector_piles)
 	if mod_ShowDropped then
-		ActiveGameMap.realm:MapGet("map", "ResourceStockpile", function(pile)
+		MapGet("map", "ResourceStockpile", function(pile)
 			if not IsValid(pile.parent) and #(pile.command_centers or "") == 0 then
 				-- maybe I'll add something to mark different stuff someday...
 --~ 				sector_piles[GetMapSectorXY(pile:GetVisualPosXYZ()).id] = true

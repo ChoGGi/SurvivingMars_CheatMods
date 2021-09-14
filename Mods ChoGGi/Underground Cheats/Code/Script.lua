@@ -7,6 +7,10 @@ end
 
 --~ local RetMapType = ChoGGi.ComFuncs.RetMapType
 local function RetMapType()
+	local UIColony = UIColony
+	if not UIColony then
+		return
+	end
 	local map_id = UICity.map_id
 
 	if map_id == UIColony.underground_map_id then
@@ -30,6 +34,7 @@ local function UpdateObjs()
 
 	-- lights
 	BuildingTemplates.LightTripod.reveal_range = mod_LightTripodRadius
+	ClassTemplates.Building.LightTripod.reveal_range = mod_LightTripodRadius
 	local UpdateRevealObject = UnitRevealDarkness.UpdateRevealObject
 	local objs = UICity.labels.LightTripod or ""
 	for i = 1, #objs do

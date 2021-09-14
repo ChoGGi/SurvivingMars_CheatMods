@@ -12,17 +12,18 @@ return PlaceObj("ModDef", {
 	"steam_id", "1775006723",
 	"pops_any_uuid", "34ead2f4-80f9-4200-b73c-12e441babbe9",
 	"lua_revision", 1007000, -- Picard
-	"version", 27,
+	"version", 28,
 	"version_major", 2,
-	"version_minor", 7,
-	"image", "Preview.png",
+	"version_minor", 8,
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 	"TagInterface", true,
 	"has_options", true,
-	"description", [[Want to know if your battery storage will last the night? See how many resources are remaining in occupied deposits. Curious why you keep getting a "not enough power" warning even though capacity is full?
+	"description", [[
+Want to know if your battery storage will last the night? See how many resources are remaining in occupied deposits. Curious why you keep getting a "not enough power" warning even though capacity is full?
 
 
 Resource tooltips:

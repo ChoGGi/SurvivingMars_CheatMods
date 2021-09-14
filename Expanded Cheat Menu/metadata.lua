@@ -107,7 +107,8 @@ return PlaceObj("ModDef", {
 		"Code/Testing.lua",
 	},
 
-	"description", [[and Modding Tools. Enables cheat menu, cheat info pane, console, examine object, adds a few hundred menu items.
+	"description", [[
+and Modding Tools. Enables cheat menu, cheat info pane, console, examine object, adds a few hundred menu items.
 The mod for modding Surviving Mars.
 
 Requests are welcome.
@@ -125,5 +126,6 @@ Available From:
 https://steamcommunity.com/sharedfiles/filedetails/?id=1411157810
 https://www.nexusmods.com/survivingmars/mods/7
 https://mods.paradoxplaza.com/mods/21536/Windows
-https://github.com/ChoGGi/SurvivingMars_CheatMods]],
+https://github.com/ChoGGi/SurvivingMars_CheatMods
+]],
 })

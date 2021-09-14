@@ -712,6 +712,20 @@ Attention: If you get yellow ground areas; just load it again or try %s.]]]:form
 }
 
 c = c + 1
+Actions[c] = {ActionName = Strings[302535920001651--[[Unlock Overview]]],
+	ActionMenubar = "ECM.Game.Map",
+	ActionId = ".Unlock Overview",
+	ActionIcon = "CommonAssets/UI/Menu/load_city.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.UnlockOverview,
+			Strings[302535920001652--[[Overview works on all maps.]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.UnlockOverview_Toggle,
+}
+
+c = c + 1
 Actions[c] = {ActionName = Strings[302535920001487--[[Reload Map]]],
 	ActionMenubar = "ECM.Game.Map",
 	ActionId = ".ReloadMap",

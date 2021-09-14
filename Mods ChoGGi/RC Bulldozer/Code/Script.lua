@@ -262,7 +262,7 @@ function RCBulldozer:StartDozer()
 					-- speed and needed for my ugly hack
 					SuspendPassEdits("ChoGGi.RCBulldozer.flattening")
 					-- remove any pebbles in the way
-					ActiveGameMap.realm:MapDelete(pos, self.radius, efRemoveUnderConstruction)
+					GetRealm(self):MapDelete(pos, self.radius, efRemoveUnderConstruction)
 					-- add some dust
 --~ 					PlayFX("Dust", "start", self)
 --~ PlayFX(actionFXClass, actionFXMoment, actor, target, action_pos, action_dir)

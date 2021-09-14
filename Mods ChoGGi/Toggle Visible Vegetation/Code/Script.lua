@@ -13,8 +13,8 @@ end
 
 local function ToggleTrees()
 	-- get list of veg
-	local veg = mod_ToggleBushes and ActiveGameMap.realm:MapGet("map", "VegetationBillboardObject")
-		or ActiveGameMap.realm:MapGet("map", "VegetationTree_01", "VegetationTree_02", "VegetationTree_03", "VegetationTree_04")
+	local veg = mod_ToggleBushes and MapGet("map", "VegetationBillboardObject")
+		or MapGet("map", "VegetationTree_01", "VegetationTree_02", "VegetationTree_03", "VegetationTree_04")
 	if #veg == 0 then
 		return
 	end

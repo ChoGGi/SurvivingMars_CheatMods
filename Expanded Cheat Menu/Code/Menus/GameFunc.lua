@@ -14,6 +14,17 @@ local RetHint = ChoGGi.ComFuncs.RetHint
 local Random = ChoGGi.ComFuncs.Random
 local Translate = ChoGGi.ComFuncs.Translate
 
+function ChoGGi.MenuFuncs.UnlockOverview_Toggle()
+	ChoGGi.UserSettings.UnlockOverview = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.UnlockOverview)
+
+	ActiveMapData.IsAllowedToEnterOverview = ChoGGi.UserSettings.UnlockOverview
+
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.UnlockOverview),
+		Strings[302535920001651--[[Unlock Overview]]]
+	)
+end
 
 function ChoGGi.MenuFuncs.SetTimeFactor()
 	local item_list = {
@@ -439,7 +450,7 @@ function ChoGGi.MenuFuncs.WhiterRocks()
 	-- less brown rocks
 	SuspendPassEdits("ChoGGi.MenuFuncs.WhiterRocks")
 	local white = white
-	ActiveGameMap.realm:MapForEach("map", {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor", "StoneSmall"}, function(o)
+	MapForEach("map", {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor", "StoneSmall"}, function(o)
 		if o.class:find("Dark") then
 			o:SetColorModifier(white)
 --~ 			else

@@ -66,7 +66,7 @@ local function ModOptions()
 
 	-- this will remove any lines no matter what
 	if options:GetProperty("ForceClearLines") then
-		ActiveGameMap.realm:MapDelete("map", "ChoGGi_OPolyline")
+		MapDelete("map", "ChoGGi_OPolyline")
 	end
 
 	ClearUnitInfo()

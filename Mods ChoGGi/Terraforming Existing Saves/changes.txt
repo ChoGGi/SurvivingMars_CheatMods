@@ -1,3 +1,6 @@
+v0.4
+Picard update.
+
 v0.3
 Mod is no longer needed once you save the game.
 

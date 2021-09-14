@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local Max = Max
+local GetRealm = GetRealm
 
 local mod_GlobalDomeCount
 local mod_BypassNoNurseries
@@ -34,9 +35,9 @@ function Community:SpawnChild(...)
 
 	-- check all nurseries or per-dome
 	if mod_GlobalDomeCount then
-		objs = ActiveGameMap.realm:MapGet("map", "Nursery")
+		objs = GetRealm(self):MapGet("map", "Nursery")
 	else
-		objs = ActiveGameMap.realm:MapGet("map", "Nursery", function(obj)
+		objs = GetRealm(self):MapGet("map", "Nursery", function(obj)
 			if obj.parent_dome == self then
 				return true
 			end

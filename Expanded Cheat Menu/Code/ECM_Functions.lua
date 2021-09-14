@@ -1657,7 +1657,7 @@ end -- do
 
 do -- ChangeSurfaceSignsToMaterials
 	local function ChangeEntity(cls, entity, random)
-		ActiveGameMap.realm:MapForEach("map", cls, function(o)
+		MapForEach("map", cls, function(o)
 			if random then
 				o:ChangeEntity(entity .. Random(1, random))
 			else
@@ -1667,7 +1667,7 @@ do -- ChangeSurfaceSignsToMaterials
 	end
 	local function ResetEntity(cls)
 		local entity = g_Classes[cls]:GetDefaultPropertyValue("entity")
-		ActiveGameMap.realm:MapForEach("map", cls, function(o)
+		MapForEach("map", cls, function(o)
 			o:ChangeEntity(entity)
 		end)
 	end

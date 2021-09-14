@@ -26,7 +26,7 @@ function OnMsg.LoadGame()
 	SuspendPassEdits("ChoGGi.RemoveBlueYellowGridMarks.LoadGame")
 
 	-- blue/yellow markers
-	local objs = ActiveGameMap.realm:MapGet(true, "GridTile", "GridTileWater", "RangeHexRadius", function(o)
+	local objs = MapGet(true, "GridTile", "GridTileWater", "RangeHexRadius", function(o)
 		-- SkiRich's Toggle Work Zone
 		if not o.ToggleWorkZone then
 			return true
@@ -37,7 +37,7 @@ function OnMsg.LoadGame()
 	end
 
 	-- remove the rover outlines added from https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-persistent-transport-route-blueprint-on-map.1121333/
-	objs = ActiveGameMap.realm:MapGet(true, "WireFramedPrettification", function(o)
+	objs = MapGet(true, "WireFramedPrettification", function(o)
 		if o:GetEntity() == "RoverTransport" then
 			return true
 		end

@@ -628,7 +628,7 @@ end
 
 -- crash fix for lastest update (probably, guessing it was tracking people out of bounds)
 function OnMsg.LoadGame()
-	local objs = ActiveGameMap.realm:MapGet("map", "MurderPod")
+	local objs = MapGet("map", "MurderPod")
 	for i = 1, #objs do
 		local obj = objs[i]
 		-- actually 33325, but it'll do

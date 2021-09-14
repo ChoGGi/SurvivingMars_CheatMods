@@ -24,7 +24,7 @@ function OnMsg.LoadGame()
 		return
 	end
 
-	local objs = ActiveGameMap.realm:MapGet("map", "BaseMeteor")
+	local objs = MapGet("map", "BaseMeteor")
 	for i = #objs, 1, -1 do
 		local obj = objs[i]
 

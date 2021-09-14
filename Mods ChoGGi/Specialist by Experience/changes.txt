@@ -1,3 +1,6 @@
+v0.9
+Possible Picard fix.
+
 v0.8
 Works for existing workers in saved games.
 

@@ -182,7 +182,7 @@ do -- non-class obj funcs
 	SaveOrigFunc("IsDlcAvailable")
 	function IsDlcAvailable(dlc, ...)
 		-- stuff added for future dlc is showing up and erroring out
-		if dlc == "picard" or not dlc or dlc == "" then
+		if not dlc or dlc == "" then
 			return ChoGGi_OrigFuncs.IsDlcAvailable(dlc, ...)
 		end
 		-- returns true if the setting is true, or return the orig func

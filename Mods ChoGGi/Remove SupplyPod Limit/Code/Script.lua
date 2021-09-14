@@ -1,4 +1,4 @@
--- See LICENSE for terms (one-liner mods show an error in the log after being packed in an hpk archive)
+-- See LICENSE for terms
 
 LaunchModeCargoExceeded = empty_func
 
@@ -28,3 +28,14 @@ function SupplyPod:Unload(...)
 
 	return orig_SupplyPod_Unload(self, ...)
 end
+
+local function StartupCode()
+	local max_int = max_int
+	local defs = ResupplyItemDefinitions
+	for i = 1, #defs do
+		defs[i].max = max_int
+	end
+end
+
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode

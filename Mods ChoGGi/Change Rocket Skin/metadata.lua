@@ -15,7 +15,7 @@ return PlaceObj("ModDef", {
 --~ 	"has_options", true,
 	"TagCosmetics", true,
 	"description", [[
-Makes the Change Skin button mean something.
+Makes the Change Skin button mean something. Some skins are from DLC.
 
 The skin may not "stick" the first time it comes back from earth.
 ]],

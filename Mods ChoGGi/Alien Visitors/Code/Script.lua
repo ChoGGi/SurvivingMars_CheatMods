@@ -181,7 +181,7 @@ end
 --~ function ChoGGi_Alien:GetElecBldNearby(rad) --within charge range
 --~ 	rad = rad or self.electricity_radius
 
---~ 	local lst = ActiveGameMap.realm:MapGet(self, "hex", rad + 1, "ElectricityConsumer", function(o) return o:GetGameFlags(gofUnderConstruction) == 0 end	)
+--~ 	local lst = GetRealm(self):MapGet(self, "hex", rad + 1, "ElectricityConsumer", function(o) return o:GetGameFlags(gofUnderConstruction) == 0 end	)
 --~ 	local c = FindNearestObject(lst, self)
 --~ 	return c and HexAxialDistance(c, self) <= rad and c or false
 --~ end

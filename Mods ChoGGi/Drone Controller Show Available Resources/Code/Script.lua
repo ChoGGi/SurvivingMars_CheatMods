@@ -210,7 +210,7 @@ function CursorBuilding:UpdateShapeHexes(...)
 
 	if txt_ctrl and self.ChoGGi_UpdateAvailableResources then
 		-- build list of objs within distance to cursor placing thingy
-		local objs = ActiveGameMap.realm:MapGet(self, "hex", self.ChoGGi_UpdateAvailableResources,
+		local objs = GetRealm(self):MapGet(self, "hex", self.ChoGGi_UpdateAvailableResources,
 			"MechanizedDepot", "StorageDepot", "ResourceStockpile", "SurfaceDeposit"
 		)
 		if objs[1] then

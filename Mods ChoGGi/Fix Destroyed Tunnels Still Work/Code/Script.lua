@@ -36,7 +36,7 @@ function OnMsg.LoadGame()
 	end
 
 	-- update pf tunnels to stop rovers from using them
-  ActiveGameMap.realm:MapForEach("map", "Tunnel", function(t)
+  MapForEach("map", "Tunnel", function(t)
 		t:RemovePFTunnel()
 		t:AddPFTunnel()
 	end)

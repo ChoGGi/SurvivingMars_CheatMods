@@ -133,7 +133,7 @@ do -- SetEntity
 				if check2 then
 					SetEntity(obj, value)
 				else
-					ActiveGameMap.realm:MapForEach("map", obj.class, function(o)
+					MapForEach("map", obj.class, function(o)
 						if dome then
 							if o.dome and o.dome.handle == dome.handle then
 								SetEntity(o, value)
@@ -236,7 +236,7 @@ do -- SetEntityScale
 				if check2 then
 					SetScale(obj, value)
 				else
-					ActiveGameMap.realm:MapForEach("map", obj.class, function(o)
+					MapForEach("map", obj.class, function(o)
 						if dome then
 							if o.dome and o.dome.handle == dome.handle then
 								SetScale(o, value)
@@ -424,7 +424,7 @@ end
 
 function ChoGGi.MenuFuncs.ListVisibleObjects()
 	local frame = (GetFrameMark() / 1024 - 1) * 1024
-	local visible = ActiveGameMap.realm:MapGet("map", "attached", false, function(obj)
+	local visible = MapGet("map", "attached", false, function(obj)
 		return obj:GetFrameMark() - frame > 0
 	end)
 	ChoGGi.ComFuncs.OpenInExamineDlg(visible, nil, Strings[302535920001547--[[Visible Objects]]])
@@ -929,13 +929,13 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects()
 			return
 		end
 		SuspendPassEdits("ChoGGi.MenuFuncs.DeleteAllSelectedObjects")
-		ActiveGameMap.realm:MapDelete(true, obj.class)
+		MapDelete(true, obj.class)
 		ResumePassEdits("ChoGGi.MenuFuncs.DeleteAllSelectedObjects")
 	end
 
 	ChoGGi.ComFuncs.QuestionBox(
 		Translate(6779--[[Warning]]) .. "!\n"
-			.. Strings[302535920000852--[[This will delete all %s of %s]]]:format(ActiveGameMap.realm:MapCount("map", obj.class), obj.class),
+			.. Strings[302535920000852--[[This will delete all %s of %s]]]:format(MapCount("map", obj.class), obj.class),
 		CallBackFunc,
 		Translate(6779--[[Warning]]) .. ": " .. Strings[302535920000855--[[Last chance before deletion!]]],
 		Strings[302535920000856--[[Yes, I want to delete all: %s]]]:format(obj.class),
@@ -1178,12 +1178,12 @@ function ChoGGi.MenuFuncs.SetPathMarkers()
 			elseif g_Classes[value] then
 				CreateGameTimeThread(function()
 					local labels = UICity.labels
-					local table1 = labels[value] or ActiveGameMap.realm:MapGet("map", value)
+					local table1 = labels[value] or MapGet("map", value)
 					-- +1 to make it fire the first time
 					local current = #table1+1
 
 					while temp.PathMarkers_new_objs_loop do
-						table1 = labels[value] or ActiveGameMap.realm:MapGet("map", value)
+						table1 = labels[value] or MapGet("map", value)
 						if current ~= #table1 then
 							-- update list when
 							Pathing_StopAndRemoveAll(true)

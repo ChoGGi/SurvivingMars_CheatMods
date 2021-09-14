@@ -103,7 +103,7 @@ function OnMsg.SaveGame()
 	if g_ColdWave then
 		return
 	end
-	local markers = ActiveGameMap.realm:MapGet("map", "WayPointBig")
+	local markers = MapGet("map", "WayPointBig")
 	for i = 1, #markers do
 		DoneObject(markers[i])
 	end

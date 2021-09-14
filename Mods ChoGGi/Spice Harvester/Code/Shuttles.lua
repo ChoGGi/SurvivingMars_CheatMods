@@ -22,7 +22,7 @@ local GetCursorWorldPos = GetCursorWorldPos
 function SpiceHarvester.SpawnShuttle(hub)
 	local sh = SpiceHarvester
 	for _, s_i in pairs(hub.shuttle_infos) do
-		if ActiveGameMap.realm:MapCount("map", "CargoShuttle") >= (sh.Max_Shuttles or 50) then
+		if GetRealm(hub):MapCount("map", "CargoShuttle") >= (sh.Max_Shuttles or 50) then
 			return
 		end
 
@@ -139,7 +139,7 @@ function SpiceHarvester_CargoShuttle:SpiceHarvester_FollowHarvester()
 			count_before_attack = 0
 
 			local pos = self:GetVisualPos()
-			local worm = ActiveGameMap.realm:MapGet("map", "WasteRockObstructorSmall", function(o)
+			local worm = GetRealm(self):MapGet("map", "WasteRockObstructorSmall", function(o)
 				return pos:Dist2D(o:GetPos()) <= self.attack_radius
 			end)
 			if worm[1] then

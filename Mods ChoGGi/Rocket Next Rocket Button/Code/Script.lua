@@ -6,7 +6,7 @@ local table = table
 
 local function CycleRockets(context)
 	local list = (context.city or UICity).labels.SupplyRocket or empty_table
-	list = ActiveGameMap.realm:MapFilter(list, function(rocket)
+	list = GetRealm(context):MapFilter(list, function(rocket)
 		return rocket:IsRocketLanded()
 	end)
 	local count = #list

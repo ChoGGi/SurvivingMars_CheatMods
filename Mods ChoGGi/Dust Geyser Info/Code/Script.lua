@@ -44,7 +44,7 @@ end
 
 function DontBuildHere:OnSelected()
 	local geysers = {}
-	ActiveGameMap.realm:MapGet("map", "GeyserWarmup", function(warmup)
+	GetRealm(self):MapGet("map", "GeyserWarmup", function(warmup)
 		local geyser = warmup:GetMarker()
 		if not geysers[geyser] then
 			geysers[#geysers+1] = geyser

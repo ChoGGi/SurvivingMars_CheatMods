@@ -24,11 +24,11 @@ function OnMsg.LoadGame()
 
 	local type = type
 	-- get all the marks then check pos of each for the parsystem and remove it as well
-	local marks = ActiveGameMap.realm:MapGet("map", "AlienDiggerMarker")
+	local marks = MapGet("map", "AlienDiggerMarker")
 	for i = 1, #marks do
 		local mark = marks[i]
 		-- get all pars at the same pos
-		local pars = ActiveGameMap.realm:MapGet(mark:GetPos(), 0, "ParSystem")
+		local pars = MapGet(mark:GetPos(), 0, "ParSystem")
 		for j = 1, #pars do
 			local par = pars[j]
 			-- check that it's the right particle

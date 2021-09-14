@@ -1,6 +1,9 @@
 ## ECM Changelog
 
 ## v17.4 (Unreleased)
+### Added:
+- Menu>Game>Map>Unlock Overview: Overview works on all maps.
+
 ### Fixed:
 - Terrain Editor wasn't updating flight grid (Thanks SkiRich).
 
@@ -10,11 +13,11 @@
 - Picard update (more fixes).
 
 ## v17.2 (7 Sep 2021)
-### Changed:
-- Picard update
-
 ### Added:
 - ECM.Debug.Toggles>Toggle Interface (Ctrl-Alt-I).
+
+### Changed:
+- Picard update
 
 ## v17.1 (1 Aug 2021)
 ### Added:

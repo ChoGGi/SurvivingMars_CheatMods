@@ -84,7 +84,7 @@ local function MarkUnits()
 	local text_background = mod_TextBackground and black or XText.Background
 
 	-- get sights that give Satisfaction
-	local objs = ActiveGameMap.realm:MapGet("map", "SafariSight", function(sight)
+	local objs = MapGet("map", "SafariSight", function(sight)
 		if sight:IsActive() then
 			return true
 		end

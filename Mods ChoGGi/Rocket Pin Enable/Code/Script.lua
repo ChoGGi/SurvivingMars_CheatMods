@@ -3,7 +3,7 @@
 -- fired when settings are changed/init
 local function ModOptions()
 	if CurrentModOptions:GetProperty("PinAllRockets") and UICity then
-		ActiveGameMap.realm:MapForEach(true, "RocketBase", function(o)
+		MapForEach(true, "RocketBase", function(o)
 			if o.command ~= "OnEarth" then
 				o:SetPinned(true)
 			end
@@ -30,7 +30,7 @@ end
 RocketBase.show_pin_toggle = true
 
 local function StartupCode()
-	ActiveGameMap.realm:MapForEach(true, "RocketBase", function(o)
+	MapForEach(true, "RocketBase", function(o)
 		o.show_pin_toggle = true
 	end)
 end

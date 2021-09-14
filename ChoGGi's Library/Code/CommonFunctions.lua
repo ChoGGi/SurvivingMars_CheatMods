@@ -1497,7 +1497,7 @@ function ChoGGi.ComFuncs.FilterFromTable(list, exclude_list, include_list, name)
 	if type(list) ~= "table" then
 		return {}
 	end
-	return ActiveGameMap.realm:MapFilter(list, function(o)
+	return MapFilter(list, function(o)
 		if exclude_list or include_list then
 			if exclude_list and include_list then
 				if not exclude_list[o[name]] then
@@ -1528,7 +1528,7 @@ function ChoGGi.ComFuncs.FilterFromTableFunc(list, func, value, is_bool)
 	if type(list) ~= "table" then
 		return {}
 	end
-	return ActiveGameMap.realm:MapFilter(list, function(o)
+	return MapFilter(list, function(o)
 		if is_bool then
 			if _G[func](o) then
 				return true
@@ -1574,7 +1574,7 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius, sort, pt)
 	pt = pt or GetCursorWorldPos()
 
 	-- get all objects within radius
-	local list = ActiveGameMap.realm:MapGet(pt, radius)
+	local list = MapGet(pt, radius)
 
 	-- sort list custom
 	if sort then
@@ -1882,7 +1882,7 @@ do -- SelObject/SelObjects
 		else
 			-- radius selection
 			pt = pt or GetCursorWorldPos()
-			obj = ActiveGameMap.realm:MapFindNearest(pt, pt, radius or radius4h)
+			obj = MapFindNearest(pt, pt, radius or radius4h)
 		end
 
 		return obj
@@ -1904,7 +1904,7 @@ do -- SelObject/SelObjects
 		end
 
 		pt = pt or GetCursorWorldPos()
-		return ActiveGameMap.realm:MapGet(pt, radius or radius4h, "attached", false)
+		return MapGet(pt, radius or radius4h, "attached", false)
 	end
 end
 local SelObject = ChoGGi.ComFuncs.SelObject
@@ -2177,7 +2177,7 @@ do -- AttachToNearestDome
 		end
 
 		-- find the nearest working dome
-		local working_domes = ActiveGameMap.realm:MapFilter(UICity.labels.Dome, CanWork)
+		local working_domes = MapFilter(UICity.labels.Dome, CanWork)
 		local dome = FindNearestObject(working_domes, obj)
 
 		-- remove from old dome (assuming it's a different dome), or the dome is invalid
@@ -2642,7 +2642,7 @@ local function MapGet_ChoGGi(label, area, ...)
 		-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything* (think gary oldman in professional)
 		if g_cls and g_cls:IsKindOf("CObject") then
 			-- area can be: true, "map", "detached", "outsiders" (see Surviving Mars/ModTools/Docs/LuaMapEnumeration.md.html)
-			return ActiveGameMap.realm:MapGet(area or true, label, ...)
+			return MapGet(area or true, label, ...)
 			-- use obj:SetPos(pos) to move objs to map (and away with pos = InvalidPos())
 		end
 	end
@@ -3303,7 +3303,7 @@ do -- RetNearestResource/FindNearestResource
 		else
 			-- attached stockpiles/stockpiles left from removed objects
 			if skip_stocks then
-				stockpiles = ActiveGameMap.realm:MapGet("map", "ResourceStockpile", "ResourceStockpileLR")
+				stockpiles = MapGet("map", "ResourceStockpile", "ResourceStockpileLR")
 			else
 				table.iclear(stockpiles_table)
 				stockpiles = stockpiles_table
@@ -3533,7 +3533,7 @@ function ChoGGi.ComFuncs.ToggleCollisions(cls)
 	local CollisionsObject_Toggle = ChoGGi.ComFuncs.CollisionsObject_Toggle
 	-- hopefully give it a bit more speed
 	SuspendPassEdits("ChoGGi.ComFuncs.ToggleCollisions")
-	ActiveGameMap.realm:MapForEach("map", cls, function(o)
+	MapForEach("map", cls, function(o)
 		CollisionsObject_Toggle(o, true)
 	end)
 	ResumePassEdits("ChoGGi.ComFuncs.ToggleCollisions")
@@ -3912,7 +3912,7 @@ function ChoGGi.ComFuncs.DeleteLargeRocks()
 	local function CallBackFunc(answer)
 		if answer then
 			SuspendPassEdits("ChoGGi.ComFuncs.DeleteLargeRocks")
-			ActiveGameMap.realm:MapDelete(true, {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor"})
+			MapDelete(true, {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor"})
 			ResumePassEdits("ChoGGi.ComFuncs.DeleteLargeRocks")
 		end
 	end
@@ -3927,7 +3927,7 @@ function ChoGGi.ComFuncs.DeleteSmallRocks()
 	local function CallBackFunc(answer)
 		if answer then
 			SuspendPassEdits("ChoGGi.ComFuncs.DeleteSmallRocks")
-			ActiveGameMap.realm:MapDelete(true, "StoneSmall")
+			MapDelete(true, "StoneSmall")
 			ResumePassEdits("ChoGGi.ComFuncs.DeleteSmallRocks")
 		end
 	end
@@ -4101,12 +4101,12 @@ function ChoGGi.ComFuncs.RemoveObjs(class, reason)
 		for _ = 1, #class do
 			-- If it isn't a valid class then Map* will return all objects :(
 			if g_Classes[class] then
-				ActiveGameMap.realm:MapDelete(true, class)
+				MapDelete(true, class)
 			end
 		end
 	else
 		if g_Classes[class] then
-			ActiveGameMap.realm:MapDelete(true, class)
+			MapDelete(true, class)
 		end
 	end
 
@@ -5854,7 +5854,7 @@ function ChoGGi.ComFuncs.MapDelete(class)
 		end
 	-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything*
 	elseif IsKindOf(g_Classes[class], "CObject") then
-		ActiveGameMap.realm:MapDelete(true, class)
+		MapDelete(true, class)
 	end
 
 	ResumePassEdits("ChoGGi.ComFuncs.MapDelete")

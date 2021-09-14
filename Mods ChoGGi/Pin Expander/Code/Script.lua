@@ -266,7 +266,7 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 		else
 			-- get all in dome or all without a dome
 			objs = obj.dome and obj.dome.labels.Colonist
-				or ActiveGameMap.realm:MapGet("map", "Colonist", function(o)
+				or GetRealm(pins_obj):MapGet("map", "Colonist", function(o)
 					if not o.dome then
 						return true
 					end
@@ -277,11 +277,11 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 	end
 
 	if not objs then
-		objs = ActiveGameMap.realm:MapGet("map", obj.class)
+		objs = GetRealm(pins_obj):MapGet("map", obj.class)
 	end
 
 	if #objs == 0 then
-		objs = ActiveGameMap.realm:MapGet("map", meta.class)
+		objs = GetRealm(pins_obj):MapGet("map", meta.class)
 	end
 
 	local str_dome = T(1234, "Dome")

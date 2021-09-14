@@ -1,5 +1,8 @@
+v2.8
+Picard update again.
+
 v2.7
-Picard
+Picard update.
 
 v2.6
 Fixed remaining resource msg.

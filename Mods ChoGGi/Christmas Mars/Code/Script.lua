@@ -82,7 +82,7 @@ function OnMsg.CityStart()
 
 		-- less brown rocks
 		SuspendPassEdits("ChoGGi.ChristmasMars.CityStart")
-		ActiveGameMap.realm:MapForEach("map", {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor", "StoneSmall"}, function(o)
+		MapForEach("map", {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor", "StoneSmall"}, function(o)
 			if o.class:find("Dark") then
 				o:SetColorModifier(white)
 			else

@@ -101,20 +101,18 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-function OnMsg.AddResearchRolloverTexts(text, city)
-	local UICity = city or UICity
-
-	if not mod_EnableMod or not UICity then
+function OnMsg.AddResearchRolloverTexts(text, colony)
+	if not mod_EnableMod then
 		return
 	end
 
 	local res_points = g_ResourceOverviewCity[UICity.map_id]:GetEstimatedRP() + 0.0
 
-	-- research per sol
-	text[#text+1] = "<newline>" .. T{445070088246,
-		"Research per Sol<right><research(EstimatedDailyProduction)>",
-		EstimatedDailyProduction = res_points,
-	}
+--~ 	-- research per sol
+--~ 	text[#text+1] = "<newline>" .. T{445070088246,
+--~ 		"Research per Sol<right><research(EstimatedDailyProduction)>",
+--~ 		EstimatedDailyProduction = res_points,
+--~ 	}
 
 	-- time left of current res
 	local id, points, max_points = UIColony:GetResearchInfo()
@@ -235,7 +233,7 @@ local function CountConcrete(city)
 
 	-- local what we can
 	local MaxTerrainDepositRadius = MaxTerrainDepositRadius
-	local realm = ActiveGameMap.realm
+	local realm = GetRealm(city)
 
 	local objs = (city or UICity).labels.ResourceExploiter or ""
 	for i = 1, #objs do
@@ -518,29 +516,29 @@ local function BuildRollover(ret, grid_info, grid)
 	return ret
 end
 
-local ResourceOverview = ResourceOverview
+--~ local ResourceOverview = ResourceOverview
+local InfobarObj = InfobarObj
 
-local orig_ResourceOverview_GetElectricityGridRollover = ResourceOverview.GetElectricityGridRollover
-function ResourceOverview.GetElectricityGridRollover(...)
+local orig_InfobarObj_GetElectricityGridRollover = InfobarObj.GetElectricityGridRollover
+function InfobarObj.GetElectricityGridRollover(...)
 	if not mod_EnableMod then
-		return orig_ResourceOverview_GetElectricityGridRollover(...)
+		return orig_InfobarObj_GetElectricityGridRollover(...)
 	end
 
 	local ret = BuildRollover(nil, elec_grid_info, UICity.electricity or "")
 
 	-- no grids so return orig func
-	return not ret and orig_ResourceOverview_GetElectricityGridRollover(...)
+	return not ret and orig_InfobarObj_GetElectricityGridRollover(...)
 		or table.concat(ret)
---~ 			.. "\n\n\n" .. orig_ResourceOverview_GetElectricityGridRollover(...)
 end
 
 local infobar_cache
 local terminal_GetMousePos = terminal.GetMousePos
 
-local orig_ResourceOverview_GetLifesupportGridRollover = ResourceOverview.GetLifesupportGridRollover
-function ResourceOverview.GetLifesupportGridRollover(...)
+local orig_InfobarObj_GetLifesupportGridRollover = InfobarObj.GetLifesupportGridRollover
+function InfobarObj.GetLifesupportGridRollover(...)
 	if not mod_EnableMod then
-		return orig_ResourceOverview_GetLifesupportGridRollover(...)
+		return orig_InfobarObj_GetLifesupportGridRollover(...)
 	end
 
 	-- get infobar
@@ -573,20 +571,23 @@ function ResourceOverview.GetLifesupportGridRollover(...)
 	end
 
 	-- no grids so return orig func
-	return not ret and orig_ResourceOverview_GetLifesupportGridRollover(...)
+	return not ret and orig_InfobarObj_GetLifesupportGridRollover(...)
 		or table.concat(ret)
 end
 
 -- calc n return time left
 local fake_grid = table.copy(default_grid)
-local function ResRemaining(self, res_name, ret)
+local function ResRemaining(self, res_name, ret, res_info)
 --~ ex(ret)
 	local list = ret[1]
 
-	fake_grid.stored = self["GetAvailable" .. res_name](self)
-	fake_grid.production = self["Get" .. res_name .. "ProducedYesterday"](self)
-	fake_grid.consumption = self["Get" .. res_name .. "ConsumedByConsumptionYesterday"](self)
-		+ self["Get" .. res_name .. "ConsumedByMaintenanceYesterday"](self)
+	fake_grid.stored = res_info:GetAvailable(res_name)
+	fake_grid.production = res_info:GetProducedYesterday(res_name)
+	fake_grid.consumption = res_info:GetConsumedByConsumptionYesterday(res_name)
+		+ res_info:GetConsumedByMaintenanceYesterday(res_name)
+
+--~ 	fake_grid.consumption = self["Get" .. res_name .. "ConsumedByConsumptionYesterday"](self)
+--~ 		+ self["Get" .. res_name .. "ConsumedByMaintenanceYesterday"](self)
 
 	-- 3 is "production"
 	table.insert(list.table, 3, T(359672804540, "Stored Resources") .. " "
@@ -627,6 +628,7 @@ end
 -- could be an indexed table if the devs made up their minds between rare and precious...
 local resources = {
 	RareMetals = "PreciousMetals",
+	RareMinerals = "PreciousMinerals",
 
 	Metals = "Metals",
 	Concrete = "Concrete",
@@ -641,15 +643,17 @@ local resources = {
 
 local deposit_info = {
 	PreciousMetals = true,
+	PreciousMinerals = true,
 	Metals = true,
 	Concrete = true,
 }
 
 for func, res_name in pairs(resources) do
 	local func_name = "Get" .. func .. "Rollover"
-	local orig_func = ResourceOverview[func_name]
-	ResourceOverview[func_name] = function(self, ...)
-		local ret = ResRemaining(self, res_name, orig_func(self, ...))
+	local orig_func = InfobarObj[func_name]
+	InfobarObj[func_name] = function(self, ...)
+		local res_info = g_ResourceOverviewCity[UICity.map_id]
+		local ret = ResRemaining(self, res_name, orig_func(self, ...), res_info)
 		-- deposit remaining info
 		if deposit_info[res_name] then
 			ret = DepositRemaining(self, res_name, ret)
@@ -677,27 +681,29 @@ local colonist_age_data = {
 	martianborn = 0,
 	earthborn = 0,
 }
-local orig_ResourceOverview_GetColonistsRollover = ResourceOverview.GetColonistsRollover
-function ResourceOverview:GetColonistsRollover(...)
+local orig_InfobarObj_GetColonistsRollover = InfobarObj.GetColonistsRollover
+function InfobarObj:GetColonistsRollover(...)
 	if not mod_EnableMod then
-		return orig_ResourceOverview_GetColonistsRollover(self, ...)
+		return orig_InfobarObj_GetColonistsRollover(self, ...)
 	end
 
-	local ret = orig_ResourceOverview_GetColonistsRollover(self, ...)
+	local ret = orig_InfobarObj_GetColonistsRollover(self, ...)
 	local list = ret[1]
 	local c = list.j
 
+	local res_info = g_ResourceOverviewCity[UICity.map_id]
 	-- add percent count to colonists
 	-- 0.0 needed for maths (try 10/100 in console)
-	local total = self:GetColonistCount() + 0.0
+	local total = res_info:GetColonistCount() + 0.0
+
 	-- floatfloor to cleanup numbers
-	colonist_age_data.children = floatfloor((self.data.children / total) * 100)
-	colonist_age_data.youths = floatfloor((self.data.youths / total) * 100)
-	colonist_age_data.adults = floatfloor((self.data.adults / total) * 100)
-	colonist_age_data.middleageds = floatfloor((self.data.middleageds / total) * 100)
-	colonist_age_data.seniors = floatfloor((self.data.seniors / total) * 100)
-	colonist_age_data.martianborn = floatfloor((self.data.martianborn / total) * 100)
-	colonist_age_data.earthborn = floatfloor((self.data.earthborn / total) * 100)
+	colonist_age_data.children = floatfloor((res_info.data.children / total) * 100)
+	colonist_age_data.youths = floatfloor((res_info.data.youths / total) * 100)
+	colonist_age_data.adults = floatfloor((res_info.data.adults / total) * 100)
+	colonist_age_data.middleageds = floatfloor((res_info.data.middleageds / total) * 100)
+	colonist_age_data.seniors = floatfloor((res_info.data.seniors / total) * 100)
+	colonist_age_data.martianborn = floatfloor((res_info.data.martianborn / total) * 100)
+	colonist_age_data.earthborn = floatfloor((res_info.data.earthborn / total) * 100)
 
 	for i = 1, c do
 		local item = list.table[i]
@@ -762,7 +768,7 @@ function InfobarObj:ChoGGi_GetBrokenDrones()
 	table.iclear(borked_drones_list)
 	local c = 0
 	-- gotta use mapget instead of labels since dead drones aren't included
-	local objs = ActiveGameMap.realm:MapGet("map", "Drone")
+	local objs = GetRealm(self):MapGet("map", "Drone")
 	for i = 1, #objs do
 		local obj = objs[i]
 		if obj:IsDisabled() then
@@ -786,10 +792,10 @@ function InfobarObj:GetDronesRollover(...)
 	local _, count = self:ChoGGi_GetBrokenDrones()
 	local c = list.j
 	c = c + 1
-	list.table[c] = T("<left>") .. T(65, "Malfunctioned") ..  " "
+	table.insert(list.table, 5, T("<left>") .. T(65, "Malfunctioned") ..  " "
 		.. T(517, "Drones") .. T{"<right><drone(number)>",
 			number = count,
-		}
+	})
 
 	-- shuttle count
 	local max, total, current = 0, 0, 0
@@ -808,7 +814,7 @@ function InfobarObj:GetDronesRollover(...)
 		shuttlehubcount_str.max = max
 		shuttlehubcount_str.total = total
 		shuttlehubcount_str.current = current
-		list.table[c] = T(shuttlehubcount_str)
+		table.insert(list.table, 6, T(shuttlehubcount_str))
 	end
 
 	-- add count of all new strings
@@ -875,6 +881,14 @@ local str_id_to_spec = {
 
 local orig_InfobarObj_GetJobsRollover = InfobarObj.GetJobsRollover
 function InfobarObj.GetJobsRollover(...)
+
+
+	-- fix me?
+	do	return orig_InfobarObj_GetJobsRollover(...) end
+
+
+
+
 	if not mod_EnableMod then
 		return orig_InfobarObj_GetJobsRollover(...)
 	end
@@ -938,7 +952,7 @@ function RequiresMaintenance:GetDailyMaintenance(...)
 	-- so mods can change and have it reflect in infobar
 	tribby_range = tribby_range or TriboelectricScrubber.UIRange
 	-- only add main amount if we're not in range of a tribby
-	if not ActiveGameMap.realm:MapGet(self, "hex", tribby_range, "TriboelectricScrubber", ReturnWorking)[1] then
+	if not GetRealm(self):MapGet(self, "hex", tribby_range, "TriboelectricScrubber", ReturnWorking)[1] then
 		return orig_RequiresMaintenance_GetDailyMaintenance(self, ...)
 	end
 end

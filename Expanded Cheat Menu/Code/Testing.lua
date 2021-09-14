@@ -573,7 +573,7 @@ function ChoGGi.testing.TableSortVsLoop()
 end
 
 function ChoGGi.testing.TableCountVsFirst()
-	local list = ActiveGameMap.realm:MapGet(true)
+	local list = MapGet(true)
 
 	ChoGGi.ComFuncs.TickStart("TableCountVsFirst.1.Tick")
 	for _ = 1, 1000000 do
@@ -804,7 +804,7 @@ end
 function ChoGGi.testing.TextExamine()
 	local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 	local WaitMsg = WaitMsg
-	local list = ActiveGameMap.realm:MapGet(true)
+	local list = MapGet(true)
 
 	CreateRealTimeThread(function()
 		ChoGGi.ComFuncs.TickStart("TextExamine.Tick")
@@ -823,7 +823,7 @@ end
 function ChoGGi.testing.TableIterate()
 	-- not ipairs (of course)
 
-	local list = ActiveGameMap.realm:MapGet(true)
+	local list = MapGet(true)
 
 	--faster
 	ChoGGi.ComFuncs.TickStart("TableIterate.1.Tick")

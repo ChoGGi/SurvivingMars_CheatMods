@@ -23,7 +23,7 @@ local function UpdateTextures()
 	if not mod_EnableMod then
 		-- show spiders again
 		if mod_DustGeysers then
-			local objs = ActiveGameMap.realm:MapGet("map", "DecSpider")
+			local objs = MapGet("map", "DecSpider")
 			for i = 1, #objs do
 				objs[i]:SetVisible(true)
 			end
@@ -52,7 +52,7 @@ local function UpdateTextures()
 
 	if mod_DustGeysers then
 		AddMap("Spider", "RockDark")
-		local objs = ActiveGameMap.realm:MapGet("map", "DecSpider")
+		local objs = MapGet("map", "DecSpider")
 		for i = 1, #objs do
 			objs[i]:SetVisible(false)
 		end

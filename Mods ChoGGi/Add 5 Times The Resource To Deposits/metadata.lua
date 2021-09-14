@@ -15,12 +15,14 @@ return PlaceObj("ModDef", {
 	"version", 6,
 	"version_major", 0,
 	"version_minor", 6,
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua"
 	},
-	"image", "Preview.png",
-	"description", [[Adds a button to water/metal/concrete deposits to multiple the amount of all deposits of the same resource by 5.
+	"description", [[
+Adds a button to water/metal/concrete deposits to multiple the amount of all deposits of the same resource by 5.
 
-Requested by Peacemaker.]],
+Requested by Peacemaker.
+]],
 })

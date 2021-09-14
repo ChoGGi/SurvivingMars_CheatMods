@@ -1429,6 +1429,13 @@ Don't forget to send me your res and margin, so I can add them to the list."
 302535920012049, "Threshold for a new Concrete deposit."
 302535920012054, "Surface Only"
 302535920012055, "You only get deposits on the surface colony."
+[[RC Driller Cheats]]
+302535920012062, "Allow Deep"
+302535920012063, "Can exploit deep deposits."
+302535920012064, "Loss Amount"
+302535920012065, "How much is lost when using driller (0 = all, 100 = none)."
+302535920012066, "Production Per Day"
+302535920012067, "Change how much it produces each Sol."
 [[UNUSED]]
 
 
@@ -1441,12 +1448,6 @@ Don't forget to send me your res and margin, so I can add them to the list."
 
 
 [[UNUSED]]
-302535920012062,
-302535920012063,
-302535920012064,
-302535920012065,
-302535920012066,
-302535920012067,
 302535920012068,
 302535920012069,
 302535920012070,

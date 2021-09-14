@@ -54,13 +54,13 @@ function ChoGGi.MenuFuncs.UnlockBreakthroughs()
 		anomaly:ScanCompleted(false)
 		DoneObject(anomaly)
 	end
-	ActiveGameMap.realm:MapForEach("map", "SubsurfaceAnomalyMarker", function(marker)
+	MapForEach("map", "SubsurfaceAnomalyMarker", function(marker)
 		if marker.tech_action == "breakthrough" then
 			reveal(marker:PlaceDeposit())
 			DoneObject(marker)
 		end
 	end)
-	ActiveGameMap.realm:MapForEach("map", "SubsurfaceAnomaly", reveal)
+	MapForEach("map", "SubsurfaceAnomaly", reveal)
 end
 
 function ChoGGi.MenuFuncs.MeteorStrike(_, _, input)
@@ -103,7 +103,7 @@ function ChoGGi.MenuFuncs.LightningStrike(_, _, input)
 	local IsObjInDome = IsObjInDome
 	local IsCloser2D = IsCloser2D
 	local FuelExplosion = FuelExplosion
-	ActiveGameMap.realm:MapForEach(strike_pos, strike_radius + GetEntityMaxSurfacesRadius(),
+	MapForEach(strike_pos, strike_radius + GetEntityMaxSurfacesRadius(),
 			"Colonist", "Building", "Drone", "RCRover", "ResourceStockpileBase", function(obj)
 		if not IsCloser2D(obj, strike_pos, strike_radius) or IsObjInDome(obj) then
 			return
@@ -571,7 +571,7 @@ do -- DisasterTriggerLightningStrike
 				strike_pos = GetRandomPassable()
 				PlayFX("ElectrostaticStormArea", "start", nil, nil, strike_pos)
 				PlayFX("ElectrostaticStorm", "hit-moment" .. Random(1, 5), nil, nil, strike_pos)
-				ActiveGameMap.realm:MapForEach(strike_pos, strike_radius + GetEntityMaxSurfacesRadius(), "Colonist", "Building", "Drone", "RCRover", "ResourceStockpileBase", MapForEachObjStrike)
+				MapForEach(strike_pos, strike_radius + GetEntityMaxSurfacesRadius(), "Colonist", "Building", "Drone", "RCRover", "ResourceStockpileBase", MapForEachObjStrike)
 				local exp = fuel_explosions or ""
 				for i = 1, #exp do
 					if IsValid(exp[i]) then
@@ -1715,7 +1715,7 @@ do -- ResearchRemove
 		end,
 		NanoRefinement = function()
 			local IsKindOf = IsKindOf
-			ActiveGameMap.realm:MapForEach("map", "DepositExploiter", function(obj)
+			MapForEach("map", "DepositExploiter", function(obj)
 				if IsKindOf(obj, "BaseBuilding") then
 					obj:UpdateConsumption()
 					if obj:HasMember("DepositChanged") then

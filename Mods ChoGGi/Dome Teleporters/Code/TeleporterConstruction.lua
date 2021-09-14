@@ -74,7 +74,7 @@ function OnMsg.LoadGame()
 --~ 	-- dbg
 
 	local AddPFTunnel = Tunnel.AddPFTunnel
-	ActiveGameMap.realm:MapForEach("map", "DomeTeleporter", AddPFTunnel)
+	MapForEach("map", "DomeTeleporter", AddPFTunnel)
 end
 
 -- backup the CityTunnelConstruction obj
