@@ -8,19 +8,19 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Empty Mech Depot",
+	"id", "ChoGGi_EmptyMechDepot",
+	"pops_any_uuid", "c3b2ae57-aaf6-4dd1-a5ad-2bd33afd0505",
+	"steam_id", "1411108310",
+	"lua_revision", 1007000, -- Picard
 	"version", 10,
 	"version_major", 1,
 	"version_minor", 0,
 	"image", "Preview.jpg",
-	"id", "ChoGGi_EmptyMechDepot",
-	"steam_id", "1411108310",
-	"pops_any_uuid", "c3b2ae57-aaf6-4dd1-a5ad-2bd33afd0505",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"lua_revision", 1007000, -- Picard
 	"description", [[
 Adds a button to mech depots to empty them out into a small depot in front of them.
 

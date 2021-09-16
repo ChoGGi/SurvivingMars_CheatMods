@@ -130,7 +130,7 @@ function DomeTeleporter:GameInit()
 		self:MoveInside(self.parent_dome)
 	end
 
-	CreateRealTimeThread(function()
+	self.rotating_thread = CreateRealTimeThread(function()
 		self:ForEachAttach("RechargeStationPlatform", function(a)
 			-- we don't want it looking too much like a drone thing
 			a:SetColorizationMaterial(1, -16777216, -128, 120)
@@ -156,6 +156,10 @@ function DomeTeleporter:GameInit()
 end
 
 function DomeTeleporter:Done()
+	if IsValidThread(self.rotating_thread) then
+		DeleteThread(self.rotating_thread)
+	end
+
 	-- Passage
 	Passage.Done(self)
 

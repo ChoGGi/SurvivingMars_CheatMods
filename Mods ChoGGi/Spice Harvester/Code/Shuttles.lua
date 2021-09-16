@@ -104,7 +104,7 @@ function SpiceHarvester_CargoShuttle:SpiceHarvester_FollowHarvester()
 	-- dust thread
 	self.dust_thread = CreateGameTimeThread(function()
 		-- we're done if the host harvester is gone
-		local terrain = ActiveGameMap.terrain
+		local terrain = GetGameMap(self).terrain
 
 		while self.dust_thread do
 			-- check if our height is low enough for some dust kickup

@@ -441,7 +441,7 @@ function MurderPod:Leave(leave_height)
 		self.max_pos_radius,
 		self.min_pos_radius
 	)
-	leave_height = (ActiveGameMap.terrain:GetHeight(current_pos) + leave_height) * 2
+	leave_height = (GetGameMap(self).terrain:GetHeight(current_pos) + leave_height) * 2
 	self.hover_height = leave_height / 4
 
 	self.fx_actor_class = "SupplyRocket"

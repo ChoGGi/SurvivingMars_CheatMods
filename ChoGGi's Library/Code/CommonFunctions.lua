@@ -44,6 +44,10 @@ local Sleep = Sleep
 local CreateGameTimeThread = CreateGameTimeThread
 local IsInMapPlayableArea = IsInMapPlayableArea
 local GetMapSectorXY = GetMapSectorXY
+local GetRandomPassablePoint = GetRandomPassablePoint
+local IsPointNearBuilding = IsPointNearBuilding
+local GetObjectHexGrid = GetObjectHexGrid
+local GetBuildableGrid = GetBuildableGrid
 local DoneObject = DoneObject
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
@@ -1600,14 +1604,14 @@ do -- RetObjectAtPos/RetObjectsAtPos
 		if not r then
 			q, r = WorldToHex(q)
 		end
-		return HexGridGetObject(ObjectGrid, q, r)
+		return HexGridGetObject(ActiveGameMap.object_hex_grid.grid, q, r)
 	end
 
 	function ChoGGi.ComFuncs.RetObjectsAtPos(q, r)
 		if not r then
 			q, r = WorldToHex(q)
 		end
-		return HexGridGetObjects(ObjectGrid, q, r)
+		return HexGridGetObjects(ActiveGameMap.object_hex_grid.grid, q, r)
 	end
 end -- do
 
@@ -3093,10 +3097,12 @@ do -- DeleteObject
 
 --~ 		procall(ExecFunc, obj, "RecursiveCall", true, "Done")
 
+		local gamemap = GetGameMap(self)
+
 		-- remove leftover water
 		if is_water then
 			if IsValid(obj.water_obj) then
-				ActiveGameMap.terrain:UpdateWaterGridFromObject(obj.water_obj)
+				gamemap.terrain:UpdateWaterGridFromObject(obj.water_obj)
 			end
 			ApplyAllWaterObjects()
 		end
@@ -3124,7 +3130,7 @@ do -- DeleteObject
 			local shape = obj:GetFlattenShape()
 			if shape ~= FallbackOutline then
 				if HasAnySurfaces(obj, EntitySurfaces_Height, true)
-				and not ActiveGameMap.terrain:HasRestoreHeight() then
+				and not gamemap.terrain:HasRestoreHeight() then
 					FlattenTerrainInBuildShape(shape, obj)
 				end
 			end
@@ -4899,7 +4905,6 @@ do -- BuildableHexGrid
 --~ 				local g_BuildableZ = g_BuildableZ
 
 				local terrain = ActiveGameMap.terrain
-				local IsPassable = terrain.IsPassable
 
 
 				local VegetationGrid = VegetationGrid
@@ -4973,7 +4978,7 @@ do -- BuildableHexGrid
 													if build_z == UnbuildableZ or IsTerrainNotFlatForPlacement(buildable_z_grid, q_i, r_i) or HexSlope(q_i, r_i) > 1024 then
 														hex:SetColorModifier(red)
 													-- stuff that can be pathed? (or dump sites which IsPassable returns false for)
-													elseif IsPassable(terrain, pos) or obj and obj.class == "WasteRockDumpSite" then
+													elseif terrain:IsPassable(pos) or obj and obj.class == "WasteRockDumpSite" then
 														if build_z ~= UnbuildableZ and not obj then
 															hex:SetColorModifier(green)
 
@@ -5053,11 +5058,13 @@ function ChoGGi.ComFuncs.PlantRandomVegetation(amount)
 	local CanVegetationGrowAt = CanVegetationGrowAt
 	local PlaceVegetation = PlaceVegetation
 
-	local ObjectGrid = ObjectGrid
-	local LandscapeGrid = LandscapeGrid
+  local map_id = UICity.map_id
+  local ActiveGameMap = ActiveGameMap
+	local object_hex_grid = ActiveGameMap.object_hex_grid.grid
+  local landscape_grid = ActiveGameMap.landscape_grid
+  local twidth, theight = ActiveGameMap.terrain:GetMapSize()
 	local VegetationGrid = VegetationGrid
 	local HexMapWidth = HexMapWidth
-  local twidth, theight = ActiveGameMap.terrain:GetMapSize()
   local total_elements = HexMapWidth * HexMapHeight
 
 	-- stored placed
@@ -5076,9 +5083,9 @@ function ChoGGi.ComFuncs.PlantRandomVegetation(amount)
 				local p = presets[Random(presets_c) + 1]
 				local data = VegetationGrid:get(x, y)
 				if not DoesContainVegetation(data)
-						and CanVegGrowAt_C and CanVegGrowAt_C(ObjectGrid, LandscapeGrid, data, q, r)
-						or CanVegetationGrowAt(data, q, r) then
-					PlaceVegetation(q, r, p)
+						and CanVegGrowAt_C and CanVegGrowAt_C(ObjectGrid, landscape_grid, data, q, r)
+						or CanVegetationGrowAt(map_id, data, q, r) then
+					PlaceVegetation(map_id, q, r, p)
 					exists[x..y] = true
 				else
 					i = i - 1
@@ -7667,6 +7674,29 @@ function ChoGGi.ComFuncs.RetMapType()
 	else
 		return "asteroid"
 	end
+end
+
+function ChoGGi.ComFuncs.RotateBuilding(obj, toggle, multiple)
+	if multiple then
+		for i = 1, #objs do
+			local obj = objs[i]
+			obj:SetAngle((obj:GetAngle() or 0) + (toggle and 1 or -1)*60*60)
+		end
+		return
+	end
+
+	objs:SetAngle((objs:GetAngle() or 0) + (toggle and 1 or -1)*60*60)
+end
+
+function ChoGGi.ComFuncs.SetPosRandomBuildablePos(obj, city)
+  local pfClass = 0
+  city = city or UICity
+  local object_hex_grid = GetObjectHexGrid(city)
+  local buildable_grid = GetBuildableGrid(city)
+
+	obj:SetPos(GetRandomPassablePoint(city:Random(), pfClass, function(x, y)
+		return buildable_grid:IsBuildableZone(x, y) and not IsPointNearBuilding(object_hex_grid, x, y)
+	end))
 end
 
 --

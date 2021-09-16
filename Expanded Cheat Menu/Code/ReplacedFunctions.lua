@@ -982,7 +982,7 @@ function OnMsg.ClassesBuilt()
 			then
 				self.spireless_dome = false
 				local hex_world_pos = HexGetNearestCenter(pos)
-				local game_map = ActiveGameMap
+				local game_map = GetGameMap(self)
 --~ 				local build_z = g_BuildableZ and GetBuildableZ(WorldToHex(hex_world_pos)) or UnbuildableZ
 				local build_z = game_map.buildable:GetZ(WorldToHex(hex_world_pos)) or UnbuildableZ
 				local terrain = game_map.terrain

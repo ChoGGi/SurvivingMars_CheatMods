@@ -2,6 +2,27 @@
 
 local point = point
 local GetObjectHexGrid = GetObjectHexGrid
+local GetDomeAtPoint = GetDomeAtPoint
+local DomeCollisionCheck = DomeCollisionCheck
+local WorldToHex = WorldToHex
+local GetBuildableZ = GetBuildableZ
+local AsyncRand = AsyncRand
+
+local InvalidPos = ChoGGi.Consts.InvalidPos
+
+--~ local SetPosRandomBuildablePos = ChoGGi.ComFuncs.SetPosRandomBuildablePos
+local function SetPosRandomBuildablePos(obj, city)
+  local pfClass = 0
+  city = city or UICity
+  local object_hex_grid = GetObjectHexGrid(city)
+  local buildable_grid = GetBuildableGrid(city)
+
+	obj:SetPos(GetRandomPassablePoint(city:Random(), pfClass, function(x, y)
+		return buildable_grid:IsBuildableZone(x, y) and not IsPointNearBuilding(object_hex_grid, x, y)
+	end))
+end
+
+
 
 local mod_MaxSpawn
 
@@ -21,12 +42,6 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local image_pin = CurrentModPath .. "UI/Alien_Pin.png"
-
-local GetDomeAtPoint = GetDomeAtPoint
-local DomeCollisionCheck = DomeCollisionCheck
-local WorldToHex = WorldToHex
-local GetBuildableZ = GetBuildableZ
-local AsyncRand = AsyncRand
 
 DefineClass.ChoGGi_Alien = {
 --~ 	__parents = { "Unit", "CityObject", "PinnableObject", "Shapeshifter", "InfopanelObj", "CycleMember" },
@@ -235,8 +250,18 @@ function ChoGGi_Alien:Roam()
 end
 
 local function StartupCode()
+
 	-- we don't need that many
-	if #(UICity.labels.ChoGGi_Alien or "") > 0 then
+	local aliens = UICity.labels.ChoGGi_Alien or ""
+	if #aliens > 0 then
+		-- check for invalid pos and stick on surface
+		for i = 1, #aliens do
+			local alien = aliens[i]
+			if alien:GetPos() == InvalidPos then
+				SetPosRandomBuildablePos(alien)
+			end
+		end
+		-- no need to spawn more
 		return
 	end
 
@@ -247,14 +272,18 @@ local function StartupCode()
 	if count < 4 then
 		count = 4
 	end
+
+
 	for _ = 1, count do
-		ChoGGi_Alien:new()
+		local obj = ChoGGi_Alien:new()
+		SetPosRandomBuildablePos(obj)
 	end
 
 	-- testing
 	if false then
 		for _ = 1, 600 do
-			ChoGGi_Alien:new()
+			local obj = ChoGGi_Alien:new()
+			SetPosRandomBuildablePos(obj)
 		end
 --~ local pt = c()
 --~ alien:SetPos(pt:SetTerrainZ())

@@ -1,18 +1,22 @@
 return PlaceObj("ModDef", {
 	"title", "Rotate All Buildings",
-	"version", 1,
-	"version_major", 0,
-	"version_minor", 1,
-
-	"image", "Preview.png",
 	"id", "ChoGGi_RotateAllBuildings",
-	"steam_id", "1566471085",
 	"pops_any_uuid", "e22c2a8a-60a1-4736-9c11-b4ecbe14dce0",
-	"author", "ChoGGi",
+	"steam_id", "1566471085",
 	"lua_revision", 1007000, -- Picard
+	"version", 2,
+	"version_major", 0,
+	"version_minor", 2,
+	"image", "Preview.jpg",
+	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Removes rotate limit imposed on certain buildings (large wind turbine).
+	"has_options", true,
+	"TagGameplay", true,
+	"TagInterface", true,
+	"description", [[
+Removes rotate limit imposed on certain buildings.
+Lets you rotate the Underground Entrance to pick where the elevator entrance goes (objs too close may interfere when rotating).
 ]],
 })

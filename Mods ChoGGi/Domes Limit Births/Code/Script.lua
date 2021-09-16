@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
-local orig_CalcBirth = Dome.CalcBirth
-function Dome:CalcBirth(...)
+local orig_CalcBirth = Community.CalcBirth
+function Community:CalcBirth(...)
 	local amount = #(self.labels.Child or "")
 	local limit = self.ChoGGi_DomeLimitBirths
 

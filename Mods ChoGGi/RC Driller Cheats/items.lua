@@ -13,6 +13,12 @@ return {
 		"Help", T(302535920012063, "Can exploit deep deposits."),
 		"DefaultValue", false,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "RemoveSponsorLock",
+		"DisplayName", T(302535920012068, "Remove Sponsor Lock"),
+		"Help", T(302535920012069, "No need to play as Russia to use it (Rover printing is still needed)."),
+		"DefaultValue", false,
+	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "LossAmount",
 		"DisplayName", T(302535920012064, "Loss Amount"),

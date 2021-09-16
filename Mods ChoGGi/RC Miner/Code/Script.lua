@@ -651,7 +651,7 @@ function PortableMiner:DigErUp()
 
 	-- visual cues
 	if pms.visual_cues then
-		ActiveGameMap.terrain:SetTypeCircle(GetRandomPassableAround(self, 5000), guim, paint)
+		GetGameMap(self).terrain:SetTypeCircle(GetRandomPassableAround(self, 5000), guim, paint)
 	end
 
 	return extracted

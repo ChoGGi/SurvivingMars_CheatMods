@@ -1436,6 +1436,8 @@ Don't forget to send me your res and margin, so I can add them to the list."
 302535920012065, "How much is lost when using driller (0 = all, 100 = none)."
 302535920012066, "Production Per Day"
 302535920012067, "Change how much it produces each Sol."
+302535920012068, "Remove Sponsor Lock"
+302535920012069, "No need to play as Russia to use it (Rover printing is still needed)."
 [[UNUSED]]
 
 

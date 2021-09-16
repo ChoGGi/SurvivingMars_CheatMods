@@ -424,7 +424,7 @@ function ChoGGi_XMapControl:OnMousePos(pt)
 	)
 --~ 	pt = HexGetNearestCenter(pt) or pt
 
-	self.sphere:SetPos(pt:SetZ(ActiveGameMap.terrain:GetSurfaceHeight(pt)))
+	self.sphere:SetPos(pt:SetZ(GetGameMap(self.sphere).terrain:GetSurfaceHeight(pt)))
 
 	-- off we go
 	ViewObjectMars(pt)

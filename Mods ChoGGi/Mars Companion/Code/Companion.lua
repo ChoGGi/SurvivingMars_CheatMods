@@ -49,7 +49,7 @@ function MarsCompanion:GameInit()
 		-- If we local in the thread it isn't caught by debug.getupvalue
 		local Sleep = Sleep
 		local GetTimeFactor = GetTimeFactor
-		local terrain = ActiveGameMap.terrain
+		local terrain = GetGameMap(self).terrain
 
 		while self.dust_thread do
 			-- check if our height is low enough for some dust kickup
@@ -115,16 +115,16 @@ function MarsCompanion:MainLoop()
 
 	local max_dist = 12000
 	local max_dist_neg = -12000
-  
-  local ActiveGameMap = ActiveGameMap
+
+  local gamemap = GetGameMap(self)
 	while IsValid(self) do
 		local cam = cameraRTS.GetLookAt()
-		if not ActiveGameMap.terrain:IsPointInBounds(cam) then
+		if not gamemap.terrain:IsPointInBounds(cam) then
 			cam = self.last_good_pos
 		end
 		local x, y = cam:x(), cam:y()
 
-		local height = ActiveGameMap.terrain:GetHeight(x, y)
+		local height = gamemap.terrain:GetHeight(x, y)
 		if not height then
 			height = self.Random(11000, 15000)
 		end

@@ -9,10 +9,17 @@ local mod_EnableMod
 local mod_AllowDeep
 local mod_LossAmount
 local mod_ProductionPerDay
+local mod_RemoveSponsorLock
 
 local function UpdateRovers()
 	if not UICity then
 		return
+	end
+
+	if mod_RemoveSponsorLock then
+		BuildingTemplates.RCDrillerBuilding.sponsor_status1 = false
+	else
+		BuildingTemplates.RCDrillerBuilding.sponsor_status1 = "required"
 	end
 
 	RCDriller.deposit_lost_pct = mod_LossAmount
@@ -41,6 +48,7 @@ local function ModOptions(id)
 	mod_AllowDeep = CurrentModOptions:GetProperty("AllowDeep")
 	mod_LossAmount = CurrentModOptions:GetProperty("LossAmount")
 	mod_ProductionPerDay = CurrentModOptions:GetProperty("ProductionPerDay") * const.ResourceScale
+	mod_RemoveSponsorLock = CurrentModOptions:GetProperty("RemoveSponsorLock")
 
 	UpdateRovers()
 end

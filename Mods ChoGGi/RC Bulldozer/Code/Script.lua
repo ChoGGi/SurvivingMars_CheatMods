@@ -144,7 +144,7 @@ function RCBulldozer:UpdateBuildable()
 	-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
 	ToggleCollisions()
 	-- update uneven terrain checker thingy
-	ActiveGameMap:RefreshBuildableGrid()
+	GetGameMap(self):RefreshBuildableGrid()
 	-- and back on when we're done
 	ToggleCollisions()
 end
@@ -227,7 +227,7 @@ function RCBulldozer:StartDozer()
 		self:SetMoveAnim("workIdle")
 	end
 
-	local terrain = ActiveGameMap.terrain
+	local terrain = GetGameMap(self).terrain
 	-- It shouldn't already be running, but screw it
 	if not IsValidThread(self.flatten_thread) then
 		-- store this thread so we can stop it

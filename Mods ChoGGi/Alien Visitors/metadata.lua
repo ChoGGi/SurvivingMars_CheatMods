@@ -1,12 +1,20 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library",
+			"version_major", 10,
+			"version_minor", 3,
+		}),
+	},
 	"title", "Alien Visitors",
 	"id", "ChoGGi_AlienVisitors",
 	"steam_id", "1569952407",
 	"pops_any_uuid", "9be66a96-5731-4b56-8176-1af851ce18c4",
 	"lua_revision", 1007000, -- Picard
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {

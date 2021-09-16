@@ -142,7 +142,7 @@ local grids_visible
 local function ShowGrids()
 	SuspendPassEdits("ChoGGi.CursorBuilding.GameInit.Construction Show Dust Grid")
 
-	local ObjectGrid = ObjectGrid
+	local ObjectGrid = ActiveGameMap.object_hex_grid.grid
 	local labels = UICity.labels
 	for i = 1, classes_c do
 		local objs = labels[classes[i]] or ""

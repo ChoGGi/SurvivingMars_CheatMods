@@ -9,14 +9,14 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Dome Show Connected Objects",
 	"id", "ChoGGi_ShowDomeConnectedObjects",
+	"pops_any_uuid", "42e8c2ef-c183-4488-bce1-0b8b0223c7ba",
+	"steam_id", "2038895989",
+	"lua_revision", 1007000, -- Picard
 	"version", 4,
 	"version_major", 0,
 	"version_minor", 4,
 	"image", "Preview.jpg",
-	"steam_id", "2038895989",
-	"pops_any_uuid", "42e8c2ef-c183-4488-bce1-0b8b0223c7ba",
 	"author", "ChoGGi",
-	"lua_revision", 1007000, -- Picard
 	"code", {
 		"Code/Script.lua",
 	},
@@ -30,6 +30,6 @@ Mod Options:
 [b]Move Invalid Position[/b]: Move any objects at an invalid position to the dome when you press the toggle connected objs button (default disabled).
 [b]Clean Up Invalid Objects[/b]: Remove any invalid objects stuck in the dome when you press the toggle connected objs button (default disabled).
 
-If you see a white line going off to nothing, it's an invalid object (probably).
+If you see a white line going off to nothing, it's an invalid object.
 ]],
 })

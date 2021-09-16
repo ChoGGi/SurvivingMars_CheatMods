@@ -11,7 +11,11 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Omega Telescope will unlock all breakthroughs instead of three.
+	"description", [[
+Omega Telescope will unlock all breakthroughs instead of three.
 
-Requested by Griffdy04.]],
+See also: Omega Unlocks All Slowly
+
+Requested by Griffdy04.
+]],
 })
