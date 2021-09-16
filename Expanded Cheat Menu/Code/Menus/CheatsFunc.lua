@@ -1073,28 +1073,35 @@ end
 
 do -- StartMystery
 	local function StartMystery(mystery_id, instant)
-		local UIColony = UIColony
+--~ 		local UIColony = UIColony
 
 		-- Inform people of actions, so they don't add a bunch of them
 		ChoGGi.UserSettings.ShowMysteryMsgs = true
 
-		UIColony.mystery_id = mystery_id
+--~ 		UIColony.mystery_id = mystery_id
 
-		local TechDef = TechDef
-		for tech_id, tech in pairs(TechDef) do
-			if tech.mystery == mystery_id then
-				if not UIColony.tech_status[tech_id] then
-					UIColony.tech_status[tech_id] = {points = 0, field = tech.group}
-					tech:EffectsInit(UIColony)
-				end
-			end
-		end
-		UIColony:InitMystery()
+--~ 		local TechDef = TechDef
+--~ 		for tech_id, tech in pairs(TechDef) do
+--~ 			if tech.mystery == mystery_id then
+--~ 				if not UIColony.tech_status[tech_id] then
+--~ 					UIColony.tech_status[tech_id] = {points = 0, field = tech.group}
+--~ 					tech:EffectsInit(UIColony)
+--~ 				end
+--~ 			end
+--~ 		end
 
-		-- might help
-		if UIColony.mystery then
-			UIColony.mystery:ApplyMysteryResourceProperties()
+		-- I guess they updated it for picard
+		local orig_CheatsEnabled = CheatsEnabled
+		CheatsEnabled = function()
+			return true
 		end
+		CheatStartMystery(mystery_id)
+		CheatsEnabled = orig_CheatsEnabled
+
+--~ 		-- might help
+--~ 		if UIColony.mystery then
+--~ 			UIColony.mystery:ApplyMysteryResourceProperties()
+--~ 		end
 
 		-- Instant start
 		if instant then
@@ -1113,8 +1120,8 @@ do -- StartMystery
 		end
 
 
-		-- needed to start mystery
-		UIColony.mystery.seq_player:AutostartSequences()
+--~ 		-- needed to start mystery
+--~ 		UIColony.mystery.seq_player:AutostartSequences()
 	end
 
 	function ChoGGi.MenuFuncs.ShowMysteryList()

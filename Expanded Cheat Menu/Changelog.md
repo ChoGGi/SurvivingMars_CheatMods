@@ -5,6 +5,7 @@
 - Menu>Game>Map>Unlock Overview: Overview works on all maps.
 
 ### Fixed:
+- Starting multiple mysteries.
 - Terrain Editor wasn't updating flight grid (Thanks SkiRich).
 
 ## v17.3 (11 Sep 2021)
