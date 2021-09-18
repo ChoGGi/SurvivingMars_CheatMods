@@ -142,7 +142,7 @@ local grids_visible
 local function ShowGrids()
 	SuspendPassEdits("ChoGGi.CursorBuilding.GameInit.Construction Show Dust Grid")
 
-	local ObjectGrid = ActiveGameMap.object_hex_grid.grid
+	local object_hex_grid = ActiveGameMap.object_hex_grid.grid
 	local labels = UICity.labels
 	for i = 1, classes_c do
 		local objs = labels[classes[i]] or ""
@@ -161,7 +161,7 @@ local function ShowGrids()
 					local landing_site
 					if is_rocket then
 						local q, r = WorldToHex(obj:GetPos())
-						local objs = HexGridGetObjects(ObjectGrid, q, r)
+						local objs = HexGridGetObjects(object_hex_grid, q, r)
 						-- only actual rockets have a .landing_site so we need to check the obj grid for a pad
 						for k = 1, #objs do
 							if objs[k]:IsKindOf("LandingPad") then

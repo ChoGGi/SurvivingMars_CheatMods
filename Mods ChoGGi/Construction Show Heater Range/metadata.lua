@@ -11,7 +11,7 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ConstructionShowHeaterRange",
 	"pops_any_uuid", "eb644519-c6fa-425c-ad9c-bf46ca98e656",
 	"steam_id", "2433762531",
-	"lua_revision", 249143,
+	"lua_revision", 1007000,
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,

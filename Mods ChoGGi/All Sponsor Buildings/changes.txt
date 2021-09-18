@@ -1,3 +1,6 @@
+v0.7
+Locked Mega Mall behind Gravity Engineering.
+
 v0.6
 Locked behind appropriate tech.
 

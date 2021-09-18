@@ -30,18 +30,24 @@ function OnMsg.ClassesPostprocess()
 				end
 
 				-- green soil
-				Soil_AddAmbient(SoilGrid, 100 * const.SoilGridScale, -1000)
+				SoilAddAmbient(100 * const.SoilGridScale, -1000)
+				local objs = MainCity.labels.SoilRemove or ""
+				for i = 1, #objs do
+					objs[i]:ClearSoilUnderneath()
+				end
 				OnSoilGridChanged()
 
-				-- spawn a bunch of trees
+				--
 				SuspendPassEdits("ChoGGi.FullyTerraformed.spawning some trees")
+
+				-- spawn a bunch of trees
 				if rawget(_G,"ChoGGi") and ChoGGi.ComFuncs.PlantRandomVegetation then
 					ChoGGi.ComFuncs.PlantRandomVegetation(2500)
 				elseif rawget(_G,"dbg_PlantRandomVegetation") then
 					dbg_PlantRandomVegetation(1500)
 				end
 				-- eh... close enough for now
-				for _=1,20 do
+				for _ = 1, 20 do
 					PlaceObject("VegFocusTask", {
 						min_foci = 10,
 						max_foci = 20,
@@ -57,6 +63,8 @@ function OnMsg.ClassesPostprocess()
 						},
 					})
 				end
+
+				--
 				ResumePassEdits("ChoGGi.FullyTerraformed.spawning some trees")
 			end,
 		}),

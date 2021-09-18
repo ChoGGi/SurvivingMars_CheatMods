@@ -68,10 +68,9 @@ end
 -- halve spawn delay for more animals
 local orig_SpawnPets = SpawnPets
 function SpawnPets(...)
-	local spawn_delay = orig_SpawnPets(...)
-
-	if mod_EnableMod then
-		return spawn_delay * mod_SpawnDelayPercent
+	if not mod_EnableMod then
+		return orig_SpawnPets(...)
 	end
-	return spawn_delay
+
+	return orig_SpawnPets(...) * mod_SpawnDelayPercent
 end

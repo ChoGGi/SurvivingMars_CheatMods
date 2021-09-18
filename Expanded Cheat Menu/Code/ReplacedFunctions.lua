@@ -969,7 +969,7 @@ function OnMsg.ClassesBuilt()
 
 	-- remove spire spot limit
 	do -- ConstructionController:UpdateCursor
-	-- last checked source: Tito Hotfix2
+	-- last checked source: Picard 1007933
 		local IsValid = IsValid
 		local FixConstructPos = FixConstructPos
 		local UnbuildableZ = buildUnbuildableZ()

@@ -12,11 +12,9 @@ return PlaceObj("ModDef", {
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/ChoGGi's%20Library/Changelog.md#library-changelog",
-	"TagGameplay", true,
 	"TagInterface", true,
 	"TagTools", true,
 	"TagOther", true,
-	"TagCheats", true,
 	"has_options", true,
 	"ignore_files", {
 		"*.bat",
@@ -61,7 +59,12 @@ return PlaceObj("ModDef", {
 		"Code/ModOptions.lua",
 	},
 	"description", [[
-Contains stuff needed by most of my mods.
+Contains stuff needed by most of my mods: Mod options, UI elements, and other stuff.
+
+
+Translation(s):
+Chinese (Simplified) by aiawar.
+
 
 Also available at:
 https://www.nexusmods.com/survivingmars/mods/89?tab=files

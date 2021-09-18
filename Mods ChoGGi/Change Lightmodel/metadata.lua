@@ -14,7 +14,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagLightmodels", true,
-	"description", [[If you don't want the oversaturated look to the map when you terraform far enough (or if you always want it).
+	"description", [[
+If you don't want the oversaturated look to the map when you terraform far enough (or if you always want it).
 There's only the two lightmodels.
 
 This won't override certain mysteries/dust storms/cold waves/rain (I'll add them as options next time).

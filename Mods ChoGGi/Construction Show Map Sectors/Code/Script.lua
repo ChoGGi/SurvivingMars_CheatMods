@@ -53,16 +53,16 @@ local function AddSectors()
 	end
 end
 
-local sectors = {}
+local sector_objs = {}
 local function RemoveStuckSectors(obj)
 	-- remove any that shouldn't be there
-	if not sectors[obj] then
+	if not sector_objs[obj] then
 		DoneObject(obj)
 	end
 end
 
 local function RemoveSectors()
-	table.clear(sectors)
+	table.clear(sector_objs)
 
 	local sectors = UICity.MapSectors
 	for sector in pairs(sectors) do
@@ -74,7 +74,7 @@ local function RemoveSectors()
 			end
 			-- hide any white sectors
 			if IsValid(sector.decal) then
-				sectors[sector.decal] = true
+				sector_objs[sector.decal] = true
 				sector.decal:SetVisible(false)
 			end
 		end

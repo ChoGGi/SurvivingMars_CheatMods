@@ -2,6 +2,7 @@
 
 ## v10.4 (Unreleased)
 - Added RotateBuilding, SetPosRandomBuildablePos
+- Fixed issue with spawning veg.
 
 ## v10.3 (11 Sep 2021)
 - Fixed some log spam from research text in main menu.

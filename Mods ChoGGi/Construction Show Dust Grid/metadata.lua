@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 			"version_minor", 3,
 		}),
 	},
-	"title", "Construction Show Dust Grid (Obsolete)",
+	"title", "Construction Show Dust Grid",
 	"id", "ChoGGi_ConstructionShowDustGrid",
 	"steam_id", "1566670588",
 	"pops_any_uuid", "b53b9bb2-60ca-44da-a36e-72b7d062b8f9",

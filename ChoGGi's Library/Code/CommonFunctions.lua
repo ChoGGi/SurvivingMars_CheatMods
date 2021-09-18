@@ -5083,7 +5083,7 @@ function ChoGGi.ComFuncs.PlantRandomVegetation(amount)
 				local p = presets[Random(presets_c) + 1]
 				local data = VegetationGrid:get(x, y)
 				if not DoesContainVegetation(data)
-						and CanVegGrowAt_C and CanVegGrowAt_C(ObjectGrid, landscape_grid, data, q, r)
+						and CanVegGrowAt_C and CanVegGrowAt_C(object_hex_grid, landscape_grid, data, q, r)
 						or CanVegetationGrowAt(map_id, data, q, r) then
 					PlaceVegetation(map_id, q, r, p)
 					exists[x..y] = true

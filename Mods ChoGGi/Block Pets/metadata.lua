@@ -14,9 +14,11 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagOther", true,
-	"description", [[Pets will no longer spawn from service/residence buildings.
+	"description", [[
+Pets will no longer spawn from service/residence buildings.
 Mod options to choose allowed pets. Less pets will spawn, but there's also a mod option to increase spawn rate.
 
 
-Requested by paladinBoyd.]],
+Requested by paladinBoyd.
+]],
 })
