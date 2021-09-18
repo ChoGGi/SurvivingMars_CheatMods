@@ -3097,7 +3097,7 @@ do -- DeleteObject
 
 --~ 		procall(ExecFunc, obj, "RecursiveCall", true, "Done")
 
-		local gamemap = GetGameMap(self)
+		local gamemap = GetGameMap(obj)
 
 		-- remove leftover water
 		if is_water then
