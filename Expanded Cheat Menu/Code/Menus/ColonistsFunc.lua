@@ -211,18 +211,18 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 			elseif text:find(Translate(4357--[[Birthplace]]):gsub("<right><UIBirthplace>", "")) and Tables.ColonistBirthplaces[value] then
 				Cull(value, "birthplace")
 --~ 				-- bonus round
---~ 				if not UICity.ChoGGi.DaddysLittleHitler then
+--~ 				if not UIColony.ChoGGi.DaddysLittleHitler then
 --~ 					Msg("ChoGGi_DaddysLittleHitler")
---~ 					UICity.ChoGGi.DaddysLittleHitler = true
+--~ 					UIColony.ChoGGi.DaddysLittleHitler = true
 --~ 				end
 			elseif text:find(Translate(4356--[[Sex]]):gsub("<right><Gender>", "")) and Tables.ColonistGenders[value] then
 				CullTrait(value)
 			elseif text:find(Strings[302535920000741--[[Race]]]) and Tables.ColonistRaces[value] then
 				Cull(value, "race", choice[1].idx)
 --~ 				-- bonus round
---~ 				if not UICity.ChoGGi.DaddysLittleHitler then
+--~ 				if not UIColony.ChoGGi.DaddysLittleHitler then
 --~ 					Msg("ChoGGi_DaddysLittleHitler")
---~ 					UICity.ChoGGi.DaddysLittleHitler = true
+--~ 					UIColony.ChoGGi.DaddysLittleHitler = true
 --~ 				end
 			end
 
@@ -238,9 +238,9 @@ I think somebody has been playing too much Fallout...]]],
 					Strings[302535920000743--[[Childkiller]]],
 					{image = "UI/Icons/Logos/logo_09.tga"}
 				)
-				if not UICity.ChoGGi.Childkiller then
+				if not UIColony.ChoGGi.Childkiller then
 					Msg("ChoGGi_Childkiller")
-					UICity.ChoGGi.Childkiller = true
+					UIColony.ChoGGi.Childkiller = true
 				end
 			end
 		end
@@ -1282,11 +1282,11 @@ function ChoGGi.MenuFuncs.SetColonistsRace(action)
 --~ 		-- remove if random
 --~ 		if value == Translate(3490--[[Random]]) then
 --~ 			MilestoneCompleted.DaddysLittleHitler = nil
---~ 			UICity.ChoGGi.DaddysLittleHitler = nil
+--~ 			UIColony.ChoGGi.DaddysLittleHitler = nil
 --~ 		-- If only changing one colonists then you aren't hitler :)
---~ 		elseif not choice.check2 and not UICity.ChoGGi.DaddysLittleHitler then
+--~ 		elseif not choice.check2 and not UIColony.ChoGGi.DaddysLittleHitler then
 --~ 			Msg("ChoGGi_DaddysLittleHitler")
---~ 			UICity.ChoGGi.DaddysLittleHitler = true
+--~ 			UIColony.ChoGGi.DaddysLittleHitler = true
 --~ 		end
 
 		MsgPopup(

@@ -1281,16 +1281,6 @@ do -- LoadGame/CityStart
 		local ChoGGi = ChoGGi
 		local UserSettings = ChoGGi.UserSettings
 
-		-- a place to store per-game values... that i'll use one of these days (tm)
-		if not UICity.ChoGGi then
-			UICity.ChoGGi = {}
-			UICity.ChoGGi.version_init_ECM = ChoGGi.def.version
-			UICity.ChoGGi.version_init_LIB = ChoGGi.def_lib.version
-		end
-		UICity.ChoGGi.version_current_ECM = ChoGGi.def.version
-		UICity.ChoGGi.version_current_LIB = ChoGGi.def_lib.version
-		UICity.ChoGGi.current_settings = UserSettings
-
 		local g_Classes = g_Classes
 		local const = const
 		local BuildMenuPrerequisiteOverrides = BuildMenuPrerequisiteOverrides
@@ -1447,7 +1437,7 @@ do -- LoadGame/CityStart
 		end
 
 --~ 		-- show completed hidden milestones
---~ 		if UICity.ChoGGi.DaddysLittleHitler then
+--~ 		if UIColony.ChoGGi.DaddysLittleHitler then
 --~ 			PlaceObj("Milestone", {
 --~ 				base_score = 0,
 --~ 				display_name = Strings[302535920000731--[[Deutsche Gesellschaft für Rassenhygiene]]],
@@ -1458,7 +1448,7 @@ do -- LoadGame/CityStart
 --~ 				MilestoneCompleted.DaddysLittleHitler = 3025359200000 -- hitler's birthday
 --~ 			end
 --~ 		end
-		if UICity.ChoGGi.Childkiller then
+		if UIColony.ChoGGi and UIColony.ChoGGi.Childkiller then
 			PlaceObj("Milestone", {
 				base_score = 0,
 				display_name = Strings[302535920000732--[[Childkiller (You evil, evil person.)]]],

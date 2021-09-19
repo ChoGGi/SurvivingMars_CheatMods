@@ -2,6 +2,16 @@
 
 local Actions = ChoGGi.Temp.Actions
 
+Actions[#Actions+1] = {ActionName = T(302535920012068, "Toggle Interface"),
+	ActionId = "ChoGGi.RebindHardcodedKeys.ToggleInterface",
+	ActionShortcut = "Ctrl-Alt-I",
+	replace_matching_id = true,
+	OnAction = function()
+		hr.RenderUIL = hr.RenderUIL == 0 and 1 or 0
+	end,
+	ActionBindable = true,
+}
+
 Actions[#Actions+1] = {ActionName = T(302535920011968, "Photo Mode Toggle"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.PhotoMode",
 	ActionShortcut = "Shift-F12",

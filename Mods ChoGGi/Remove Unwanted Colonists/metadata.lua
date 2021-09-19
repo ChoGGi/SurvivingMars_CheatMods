@@ -26,23 +26,22 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"description", [[
 Adds a button to the colonist selection menu to send them back to Earth.
+Use mod options to automagically suck up colonists of certain traits/ages.
+
 A pod will come down and hover around the colonist till they make the mistake of going outside.
-If you change your mind; you can toggle it before they get sucked up.
-
 Once they go outside it'll suck them up and take them back to Earth (truthfully just outside the atmosphere before spacing them).
-
-
-This mod adds a buildable [b]monument[/b] to idiots; for those [b]colonists[/b] less inclined to go [b]outside[/b].
+If you change your mind; you can toggle it before they get sucked up.
 
 
 Unfortunately frozen bodies don't have any propulsion systems. They'll come back as human shaped meteors (in a few Sols). You wouldn't want to experience the Kessler syndrome around your shiny new planet after all.
 On the bright side there won't be much left on impact, so other colonists won't be affected (no hit to applicants).
+
+This mod adds a buildable [b]monument[/b] to idiots; for those [b]colonists[/b] less inclined to go [b]outside[/b].
 
 Mod Options:
 [b]Skip Tourists[/b]: Never remove tourists.
 [b]Ignore Domes[/b]: Remove colonists inside domes.
 [b]Less Takeoff Dust[/b]: Pods have less dust when taking off (for the mass murderers).
 [b]Hide Button[/b]: Don't show the Remove Colonist button.
-See mod options to automagically remove colonists of certain traits.
 ]],
 })

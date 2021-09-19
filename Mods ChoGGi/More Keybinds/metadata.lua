@@ -11,12 +11,11 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RebindHardcodedKeys",
 	"steam_id", "2163750555",
 	"pops_any_uuid", "0876037c-42bf-4f8a-8939-36638ba10a62",
---~ 	"lua_revision", 1007000, -- Picard
-	"lua_revision", 1007000, -- ?
-	"version", 4,
+	"lua_revision", 1007000, -- Picard
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 4,
-	"image", "Preview.png",
+	"version_minor", 5,
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
@@ -32,7 +31,7 @@ Construction cancel: Escape (you'll need to reset your keybinds to restore this 
 Salvage Cursor: Ctrl-Delete (You may need to reload your save when changing this)
 Photo Mode Toggle: Shift-F12
 Place Multiple Buildings: Shift
-
+Toggle Interface: Ctrl-Alt-I
 
 More key suggestions welcome
 ]],

@@ -1,10 +1,12 @@
 -- See LICENSE for terms
 
+local table = table
+
 -- we need to store the list of sponsor locked buildings
 local sponsor_buildings = CurrentModDef.sponsor_buildings or {}
 
 local mod_options = {}
-local mod_LockBehindTech
+--~ local mod_LockBehindTech
 
 -- build options list
 local BuildingTemplates = BuildingTemplates
@@ -12,6 +14,7 @@ for id, bld in pairs(BuildingTemplates) do
 	for i = 1, 3 do
 		if sponsor_buildings[id] or bld["sponsor_status" .. i] ~= false then
 			mod_options["ChoGGi_" .. id] = false
+			mod_options["ChoGGi_Tech_" .. id] = false
 			sponsor_buildings[id] = true
 			break
 		end
@@ -19,17 +22,21 @@ for id, bld in pairs(BuildingTemplates) do
 end
 
 -- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	local options = CurrentModOptions
 	for id in pairs(mod_options) do
 		mod_options[id] = options:GetProperty(id)
 	end
 
-	mod_LockBehindTech = options:GetProperty("LockBehindTech")
+--~ 	mod_LockBehindTech = options:GetProperty("LockBehindTech")
 
 --~ ex(mod_options)
 	local BuildingTechRequirements = BuildingTechRequirements
-	local table = table
 
 	local BuildingTemplates = BuildingTemplates
 	for id, bld in pairs(BuildingTemplates) do
@@ -59,37 +66,31 @@ local function ModOptions()
 	end
 
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- gotta list them manually
 local techs = {
 	AdvancedStirlingGenerator = "StirlingGenerator",
 --~ 	AutomaticMetalsExtractor = "",
 --~ 	ConcretePlant = "",
---~ 	CorporateOffice = "",
---~ 	GameDeveloper = "",
+	CorporateOffice = "BehavioralShaping",
+	GameDeveloper = "CreativeRealities",
 	JumperShuttleHub = "CO2JetPropulsion",
 	LowGLab = "MartianInstituteOfScience",
 	MegaMall = "GravityEngineering",
 --~ 	MetalsRefinery = "",
 --~ 	RareMetalsRefinery = "",
---~ 	RCConstructorBuilding = "",
---~ 	RCDrillerBuilding = "",
---~ 	RCHarvesterBuilding = "",
---~ 	RCSensorBuilding = "",
---~ 	RCSolarBuilding = "",
---~ 	SolarArray = "",
+	RCConstructorBuilding = "DronePrinting",
+	RCDrillerBuilding = "DronePrinting",
+	RCHarvesterBuilding = "DronePrinting",
+	RCSensorBuilding = "DronePrinting",
+	RCSolarBuilding = "DronePrinting",
+	SolarArray = "DustRepulsion",
 --~ 	TaiChiGarden = "",
---~ 	Temple = "",
+	Temple = "Arcology",
 }
 
 local function LockTech(bld_id, tech_id)
@@ -106,11 +107,13 @@ local function LockTech(bld_id, tech_id)
 end
 
 local function LockTechs()
-	if mod_LockBehindTech then
-		for bld_id, tech_id in pairs(techs) do
+--~ 	if mod_LockBehindTech then
+	for bld_id, tech_id in pairs(techs) do
+		if mod_options["ChoGGi_Tech_" .. bld_id] then
 			LockTech(bld_id, tech_id)
 		end
 	end
+--~ 	end
 end
 
 OnMsg.CityStart = LockTechs

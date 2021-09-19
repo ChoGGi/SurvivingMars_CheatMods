@@ -1,3 +1,9 @@
+v3.0
+Fixed colonist count when there's no colonists.
+
+v2.9
+Picard update again again (thanks ella).
+
 v2.8
 Picard update again.
 

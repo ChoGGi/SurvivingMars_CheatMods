@@ -414,6 +414,34 @@ Actions[c] = {ActionName = Strings[302535920001412--[[GUI Dock Side]]],
 	OnAction = ChoGGi.MenuFuncs.GUIDockSide_Toggle,
 }
 
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920001653--[[Toggle Selection Panel Resize]]],
+	ActionMenubar = "ECM.Game.Interface",
+	ActionId = ".Selection Panel Resize",
+	ActionIcon = "CommonAssets/UI/Menu/XXXXXXXXX.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.StopSelectionPanelResize,
+			Strings[302535920001654--[[Stops selection panel from shrinking (eg: dome).]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.SelectionPanelResize_Toggle,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920001655--[[Toggle Scroll Selection Panel]]],
+	ActionMenubar = "ECM.Game.Interface",
+	ActionId = ".Scroll Selection Panel",
+	ActionIcon = "CommonAssets/UI/Menu/XXXXXXXXX.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.ScrollSelectionPanel,
+			Strings[302535920001656--[[Add a scrollbar to larger selection panels (buildings, domes, etc).]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.ScrollSelectionPanel_Toggle,
+}
+
 -- menu
 c = c + 1
 Actions[c] = {ActionName = Translate(911432559058--[[Light model]]),

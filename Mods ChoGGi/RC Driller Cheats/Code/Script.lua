@@ -18,8 +18,19 @@ local function UpdateRovers()
 
 	if mod_RemoveSponsorLock then
 		BuildingTemplates.RCDrillerBuilding.sponsor_status1 = false
+
+		local reqs = BuildingTechRequirements.RCDrillerBuilding
+		local idx = table.find(reqs, "check_supply", "RCDriller")
+		if idx then
+			table.remove(reqs, idx)
+		end
 	else
 		BuildingTemplates.RCDrillerBuilding.sponsor_status1 = "required"
+		BuildingTechRequirements.RCDrillerBuilding[1] = {
+			hide = true,
+			tech = "RoverPrinting",
+			check_supply = "RCDriller",
+		}
 	end
 
 	RCDriller.deposit_lost_pct = mod_LossAmount

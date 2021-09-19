@@ -87,6 +87,8 @@ ChoGGi.Defaults = {
 	FlushLogHourly = false,
 	-- show Cheats section in the selection panel
 	InfopanelCheats = true,
+	-- Add scrollbar to larger panel elements
+	ScrollSelectionPanel = true,
 	-- maybe you don't want to see the interface in screenshots
 	ShowInterfaceInScreenshots = true,
 	-- This savegame was loaded in the past without required mods or with an incompatible game version.
@@ -94,7 +96,7 @@ ChoGGi.Defaults = {
 	-- Mod Editor shows the help page every single time you open it.
 	SkipModHelpPage = true,
 	-- stops panel from shrinking
-	StopSelectionPanelResize = false,
+	StopSelectionPanelResize = true,
 	-- remove any objects above the height limit (or game will delete save and crash).
 	-- takes under a second to run, so best to enable by default
 	RemoveHeightLimitObjs = true,
@@ -128,7 +130,6 @@ ChoGGi.Defaults = {
 	SkipMissingMods = false,
 	SkipMissingDLC = false,
 	MapEdgeLimit = false,
-	StopSelectionPanelResize = false,
 	ShowStartupTicks = false,
 	FixMissingModBuildings = false,
 }
@@ -152,8 +153,6 @@ if testing then
 	Defaults.SkipMissingDLC = true
 	-- camera lets you get closer to the edge
 	Defaults.MapEdgeLimit = true
-	-- sizing off please n thanks
-	Defaults.StopSelectionPanelResize = true
 	-- the only good text editor
 	Defaults.ExternalEditorCmd = [[scite "%s"]]
 	-- dumps the log to disk on startup, and every new Sol (good for some crashes)

@@ -47,9 +47,16 @@ local function UpdateRockets()
 		obj.max_export_storage = mod_MaxExportStorage
 	end
 end
+OnMsg.CityStart = UpdateRockets
+OnMsg.LoadGame = UpdateRockets
 
 -- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	local options = CurrentModOptions
 	mod_LaunchFuel = options:GetProperty("LaunchFuel") * const.ResourceScale
 	mod_MaxExportStorage = options:GetProperty("MaxExportStorage") * const.ResourceScale
@@ -67,16 +74,7 @@ local function ModOptions()
 	end
 	UpdateRockets()
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
 -- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-OnMsg.CityStart = UpdateRockets
-OnMsg.LoadGame = UpdateRockets
+OnMsg.ApplyModOptions = ModOptions

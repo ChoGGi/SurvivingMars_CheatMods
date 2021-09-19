@@ -1043,6 +1043,7 @@ This will override all Meteors!"
 302535920011968, "Photo Mode Toggle"
 302535920011969, "Salvage Cursor"
 302535920011974, "Place Multiple Buildings"
+302535920012068, "Toggle Interface"
 [[Get More Tourists]]
 302535920011701, "Applicant Amount"
 302535920011702, "How many more tourist applicants to add per each successful tourist."
@@ -1438,6 +1439,12 @@ Don't forget to send me your res and margin, so I can add them to the list."
 302535920012067, "Change how much it produces each Sol."
 302535920012068, "Remove Sponsor Lock"
 302535920012069, "No need to play as Russia to use it (Rover printing is still needed)."
+[[Play All Mysteries]]
+302535920012069, "Started Mystery"
+302535920012070, "Switch Mystery"
+302535920012071, "Turn this on to pick a new random mystery when you press Apply."
+302535920012072, "Show Mystery"
+302535920012073, "The popup msg will show the name of the new mystery."
 [[UNUSED]]
 
 
@@ -1450,12 +1457,6 @@ Don't forget to send me your res and margin, so I can add them to the list."
 
 
 [[UNUSED]]
-302535920012068,
-302535920012069,
-302535920012070,
-302535920012071,
-302535920012072,
-302535920012073,
 302535920012074,
 302535920012075,
 302535920012076,

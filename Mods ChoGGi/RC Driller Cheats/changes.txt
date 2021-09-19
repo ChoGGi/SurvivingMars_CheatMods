@@ -1,2 +1,6 @@
+v0.3
+Forgot to add my lib as a dependency.
+Fixed sponsor lock.
+
 v0.2
 mod option: Remove Sponsor Lock.

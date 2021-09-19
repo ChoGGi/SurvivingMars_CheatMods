@@ -3362,7 +3362,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				else
 					table.insert(data_meta, 1, "\nsize() w, h: " .. self:ConvertValueToInfo(size))
 				end
-				if center:InBox2D(self.ChoGGi.ComFuncs.ConstructableArea()) then
+				if UICity and center:InBox2D(self.ChoGGi.ComFuncs.ConstructableArea()) then
 					table.insert(data_meta, 1, self:HyperLink(obj, self.ToggleBBox, Strings[302535920001550--[[Toggle viewing BBox.]]]) .. Strings[302535920001549--[[View BBox]]] .. self.hyperlink_end)
 				end
 

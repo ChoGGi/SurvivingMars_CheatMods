@@ -30,6 +30,13 @@ for id, bld in pairs(BuildingTemplates) do
 				"Help", table.concat(T(bld.description) .. image),
 				"DefaultValue", true,
 			})
+			c = c + 1
+			properties[c] = PlaceObj("ModItemOptionToggle", {
+				"name", "ChoGGi_Tech_" .. id,
+				"DisplayName", T(bld.display_name) .. " " .. T(3734, "Tech"),
+				"Help", T(0000, "Lock behind tech unlock."),
+				"DefaultValue", true,
+			})
 			break
 		end
 	end
@@ -46,12 +53,12 @@ table.sort(properties, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
-table.insert(properties, 1, PlaceObj("ModItemOptionToggle", {
-		"name", "LockBehindTech",
-		"DisplayName", T(302535920011937, "Lock Behind Tech"),
-		"Help", T(302535920011938, "You need to research tech to unlock certain buildings (reload save to take effect)."),
-		"DefaultValue", true,
-	})
-)
+--~ table.insert(properties, 1, PlaceObj("ModItemOptionToggle", {
+--~ 		"name", "LockBehindTech",
+--~ 		"DisplayName", T(302535920011937, "Lock Behind Tech"),
+--~ 		"Help", T(302535920011938, "You need to research tech to unlock certain buildings (reload save to take effect)."),
+--~ 		"DefaultValue", true,
+--~ 	})
+--~ )
 
 return properties

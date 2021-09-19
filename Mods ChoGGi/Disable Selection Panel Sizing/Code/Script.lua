@@ -104,20 +104,28 @@ local function AddScrollDialogXTemplates(obj)
 --~ ex(obj)
 end
 
-local Sleep = Sleep
+local WaitMsg = WaitMsg
 local Infopanel_DlgOpen = InfopanelDlg.Open
 function InfopanelDlg:Open(...)
 	CreateRealTimeThread(function()
 		repeat
-			Sleep(10)
+			WaitMsg("OnRender")
 		until self.visible
 
 		-- give me the scroll. goddamn it blinky
 		if mod_ScrollSelection and infopanel_list[self.XTemplate] then
 			self.idActionButtons.parent:SetZOrder(2)
 			AddScrollDialogXTemplates(self)
+
+			-- add height limit for infopanel
+			local height = terminal.desktop.box:sizey()
+			local HUD = Dialogs.HUD
+			local extra_margin = 32
+			local offset = HUD.idRight.box:sizey() + HUD.idMapSwitch.box:sizey()
+			self:SetMaxHeight(height - offset - extra_margin)
 		end
 	end)
+
 
 	return Infopanel_DlgOpen(self, ...)
 end

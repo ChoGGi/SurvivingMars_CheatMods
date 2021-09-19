@@ -3,10 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! green: <green>%s</green>
 !Skipped Line! yellow: <yellow>%s</yellow>
 "ID", " Text"
-302535920001653, ""
-302535920001654, ""
-302535920001655, ""
-302535920001656, ""
 302535920001657, ""
 302535920001658, ""
 302535920001659, ""
@@ -1621,6 +1617,10 @@ Takes less then a second on a map with 3616 buildings and 54 drone hubs."
 302535920000622, "If you have any buildings that aren't aligned to the hex grids use this."
 end end end end end !Skipped Line!
 do !Skipped Line! [[GameMenu.lua" "GameFunc.lua]] !Skipped Line!
+302535920001653, "Toggle Selection Panel Resize"
+302535920001654, "Stops selection panel from shrinking (eg: dome)."
+302535920001655, "Toggle Scroll Selection Panel"
+302535920001656, "Add a scrollbar to larger selection panels (buildings, domes, etc)."
 302535920001651, "Unlock Overview"
 302535920001652, "Overview works on all maps."
 302535920001645, "May cause crashing!"
@@ -1785,7 +1785,7 @@ do !Skipped Line! [[HelpMenu.lua" "HelpFunc.lua]] !Skipped Line!
 
 If you have any issues with this mod then please send me a bug report instead of reporting the mod.
 https://github.com/ChoGGi/SurvivingMars_CheatMods
-https://discord.gg/bkdjEZU
+https://discord.gg/ZXXYaExThy
 https://steamcommunity.com/id/ChoGGi/
 SurvivingMarsMods@choggi.org"
 302535920000221, "See log for any batch errors."

@@ -1,12 +1,20 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library",
+			"version_major", 10,
+			"version_minor", 3,
+		}),
+	},
 	"title", "Rocket Cheats",
 	"id", "ChoGGi_RocketCheats",
 	"steam_id", "2429782883",
 	"pops_any_uuid", "1e254009-499e-4e01-a948-81e98fc661e3",
 	"lua_revision", 1007000, -- Picard
-	"version", 4,
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 5,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {

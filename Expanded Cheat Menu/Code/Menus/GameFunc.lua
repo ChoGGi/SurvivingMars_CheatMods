@@ -14,6 +14,26 @@ local RetHint = ChoGGi.ComFuncs.RetHint
 local Random = ChoGGi.ComFuncs.Random
 local Translate = ChoGGi.ComFuncs.Translate
 
+function ChoGGi.MenuFuncs.SelectionPanelResize_Toggle()
+	ChoGGi.UserSettings.SelectionPanelResize = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.SelectionPanelResize)
+
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SelectionPanelResize),
+		Strings[302535920001653--[[Toggle Selection Panel Resize]]]
+	)
+end
+
+function ChoGGi.MenuFuncs.ScrollSelectionPanel_Toggle()
+	ChoGGi.UserSettings.ScrollSelectionPanel = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.ScrollSelectionPanel)
+
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ScrollSelectionPanel),
+		Strings[302535920001655--[[Toggle Scroll Selection Panel]]]
+	)
+end
+
 function ChoGGi.MenuFuncs.UnlockOverview_Toggle()
 	ChoGGi.UserSettings.UnlockOverview = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.UnlockOverview)
 

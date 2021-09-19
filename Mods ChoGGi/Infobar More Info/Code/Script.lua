@@ -228,6 +228,8 @@ local function CountDepositRemaining(remaining, deposits)
 end
 
 local function CountConcrete(city)
+	city = city or UICity
+
 	local remaining_res = 0
 	-- get all concrete deposits around miners
 
@@ -235,7 +237,7 @@ local function CountConcrete(city)
 	local MaxTerrainDepositRadius = MaxTerrainDepositRadius
 	local realm = GetRealm(city)
 
-	local objs = (city or UICity).labels.ResourceExploiter or ""
+	local objs = city.labels.ResourceExploiter or ""
 	for i = 1, #objs do
 		-- kinda copy pasta from TerrainDepositExtractor:FindClosestDeposit()
 		local obj = objs[i]
@@ -682,19 +684,24 @@ local colonist_age_data = {
 	earthborn = 0,
 }
 local orig_InfobarObj_GetColonistsRollover = InfobarObj.GetColonistsRollover
-function InfobarObj:GetColonistsRollover(...)
-	if not mod_EnableMod then
-		return orig_InfobarObj_GetColonistsRollover(self, ...)
-	end
+function InfobarObj.GetColonistsRollover(...)
+	local ret = orig_InfobarObj_GetColonistsRollover(...)
 
-	local ret = orig_InfobarObj_GetColonistsRollover(self, ...)
-	local list = ret[1]
-	local c = list.j
+	if not mod_EnableMod then
+		return ret
+	end
 
 	local res_info = g_ResourceOverviewCity[UICity.map_id]
 	-- add percent count to colonists
 	-- 0.0 needed for maths (try 10/100 in console)
 	local total = res_info:GetColonistCount() + 0.0
+
+	if total == 0.0 then
+		return ret
+	end
+
+	local list = ret[1]
+	local c = list.j
 
 	-- floatfloor to cleanup numbers
 	colonist_age_data.children = floatfloor((res_info.data.children / total) * 100)
@@ -768,7 +775,7 @@ function InfobarObj:ChoGGi_GetBrokenDrones()
 	table.iclear(borked_drones_list)
 	local c = 0
 	-- gotta use mapget instead of labels since dead drones aren't included
-	local objs = GetRealm(self):MapGet("map", "Drone")
+	local objs = GetRealm(UICity):MapGet("map", "Drone")
 	for i = 1, #objs do
 		local obj = objs[i]
 		if obj:IsDisabled() then

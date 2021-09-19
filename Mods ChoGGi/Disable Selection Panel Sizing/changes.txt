@@ -1,3 +1,7 @@
+v0.5
+Added height limit for infopanel.
+Enabled scrollbar by default (flickering was fixed by devs sometime).
+
 v0.4
 Evans update.
 

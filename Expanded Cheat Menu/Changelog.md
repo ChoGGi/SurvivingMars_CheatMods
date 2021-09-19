@@ -3,6 +3,8 @@
 ## v17.4 (Unreleased)
 ### Added:
 - Menu>Game>Map>Unlock Overview: Overview works on all maps.
+- Menu>Interface>Selection Panel Resize: Stops selection panel from shrinking (eg: dome).
+- Menu>Interface>Scroll Selection Panel: Add a scrollbar to larger selection panels (buildings, domes, etc).
 
 ### Fixed:
 - Starting multiple mysteries.

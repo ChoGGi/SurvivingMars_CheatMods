@@ -1,12 +1,20 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library",
+			"version_major", 10,
+			"version_minor", 3,
+		}),
+	},
 	"title", "RC Driller Cheats",
 	"id", "ChoGGi_RCDrillerCheats",
 	"steam_id", "2600754488",
 	"pops_any_uuid", "33a06b7a-9429-4773-b5a2-7416f53a0649",
 	"lua_revision", 1007000, -- Picard
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {

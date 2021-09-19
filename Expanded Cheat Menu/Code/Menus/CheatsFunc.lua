@@ -1075,7 +1075,7 @@ do -- StartMystery
 	local function StartMystery(mystery_id, instant)
 --~ 		local UIColony = UIColony
 
-		-- Inform people of actions, so they don't add a bunch of them
+		-- Inform people of actions
 		ChoGGi.UserSettings.ShowMysteryMsgs = true
 
 --~ 		UIColony.mystery_id = mystery_id
@@ -1090,7 +1090,11 @@ do -- StartMystery
 --~ 			end
 --~ 		end
 
-		-- I guess they updated it for picard
+		-- else CheatStartMystery will mark the current one as finished
+		UIColony.mystery = false
+		UIColony.mystery_id = ""
+
+		-- CheatStartMystery checks for cheats enabled...
 		local orig_CheatsEnabled = CheatsEnabled
 		CheatsEnabled = function()
 			return true

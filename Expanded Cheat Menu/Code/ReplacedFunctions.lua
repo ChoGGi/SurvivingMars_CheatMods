@@ -953,18 +953,18 @@ function OnMsg.ClassesBuilt()
 
 	-- toggle trans on mouseover
 	SaveOrigFunc("XWindow", "OnMouseEnter")
-	function XWindow:OnMouseEnter(pt, child, ...)
+	function XWindow:OnMouseEnter(...)
 		if UserSettings.TransparencyToggle then
 			self:SetTransparency(0)
 		end
-		return ChoGGi_OrigFuncs.XWindow_OnMouseEnter(self, pt, child, ...)
+		return ChoGGi_OrigFuncs.XWindow_OnMouseEnter(self, ...)
 	end
 	SaveOrigFunc("XWindow", "OnMouseLeft")
-	function XWindow:OnMouseLeft(pt, child, ...)
+	function XWindow:OnMouseLeft(...)
 		if UserSettings.TransparencyToggle then
 			SetDlgTrans(self)
 		end
-		return ChoGGi_OrigFuncs.XWindow_OnMouseLeft(self, pt, child, ...)
+		return ChoGGi_OrigFuncs.XWindow_OnMouseLeft(self, ...)
 	end
 
 	-- remove spire spot limit
@@ -1052,12 +1052,80 @@ function OnMsg.ClassesBuilt()
 			end
 		end
 		local cls_training = {"Sanatorium", "School"}
---~ 		local infopanel_list = {
---~ 			ipBuilding = true,
---~ 			ipColonist = true,
---~ 			ipDrone = true,
---~ 			ipRover = true,
---~ 		}
+		local infopanel_list = {
+			ipBuilding = true,
+			ipColonist = true,
+			ipDrone = true,
+			ipRover = true,
+		}
+
+		-- show scroll on hover
+		SaveOrigFunc("InfopanelDlg", "OnMouseEnter")
+		function InfopanelDlg:OnMouseEnter(...)
+			-- show scrollbar
+			if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate] then
+				self.idChoGGi_Scrollbar_thumb:SetVisible(true)
+			end
+
+			return ChoGGi_OrigFuncs.InfopanelDlg_OnMouseEnter(self, ...)
+		end
+
+		SaveOrigFunc("InfopanelDlg", "OnMouseLeft")
+		function InfopanelDlg:OnMouseLeft(...)
+			-- hide scrollbar
+			if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate] then
+				self.idChoGGi_Scrollbar_thumb:SetVisible(false)
+			end
+			-- no clue, it doesn't save and I can't be bothered to find out why
+--~ 			return ChoGGi_OrigFuncs.InfopanelDlg_OnMouseLeft(self, ...)
+			return ChoGGi_OrigFuncs.XWindow_OnMouseLeft(self, ...)
+		end
+
+		-- get around to finishing this (scrollable selection panel)
+		local zerobox = box(0,0,0,0)
+		local margin_offset = 0
+		local scrollbar_margin_top = 8
+		local function AddScrollDialogXTemplates(obj)
+			local g_Classes = g_Classes
+
+			local dlg = obj[1]
+
+			-- attach our scroll area to the XSizeConstrainedWindow
+			obj.idChoGGi_ScrollArea = g_Classes.XWindow:new({
+				Id = "idChoGGi_ScrollArea",
+			}, dlg)
+
+			obj.idChoGGi_ScrollV = g_Classes.XSleekScroll:new({
+				Id = "idChoGGi_ScrollV",
+				Target = "idChoGGi_ScrollBox",
+				Dock = "left",
+				MinThumbSize = 30,
+				AutoHide = true,
+				Background = 0,
+			}, obj.idChoGGi_ScrollArea)
+
+			obj.idChoGGi_Scrollbar_thumb = obj.idChoGGi_ScrollV.idThumb
+			obj.idChoGGi_ScrollV.idThumb:SetVisible(false)
+
+			obj.idChoGGi_ScrollBox = g_Classes.XScrollArea:new({
+				Id = "idChoGGi_ScrollBox",
+				VScroll = "idChoGGi_ScrollV",
+				LayoutMethod = "VList",
+			}, obj.idChoGGi_ScrollArea)
+
+			-- move content list to scrollarea
+			obj.idContent:SetParent(obj.idChoGGi_ScrollBox)
+
+--~ 			-- height of rightside hud button area
+--~ 			local hud = Dialogs.HUD.idRight.box:sizey()
+
+			-- offset from the top
+--~ 			local y_offset = obj.Margins:miny()
+
+--~ 			margin_offset = hud + y_offset + scrollbar_margin_top
+			obj:RecalculateMargins()
+
+		end
 
 		local function SetToolbar(section, cls, toggle)
 			local toolbar = table.find(section.idContent, "class", cls)
@@ -1107,6 +1175,19 @@ function OnMsg.ClassesBuilt()
 			local hud = Dialogs.HUD
 			if hud then
 				self:SetZOrder(hud.ZOrder+1 or 1)
+			end
+
+			-- give me the scroll. goddamn it blinky
+			if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate] then
+				self.idActionButtons.parent:SetZOrder(2)
+				AddScrollDialogXTemplates(self)
+				-- add height limit for infopanel
+				local height = terminal.desktop.box:sizey()
+				local HUD = Dialogs.HUD
+				local offset = HUD.idRight.box:sizey() + HUD.idMapSwitch.box:sizey()
+				local added_margin = 27
+				self:SetMaxHeight(height - offset + added_margin)
+				self:SetMargins(zerobox)
 			end
 
 			-- add toggle to main buttons area

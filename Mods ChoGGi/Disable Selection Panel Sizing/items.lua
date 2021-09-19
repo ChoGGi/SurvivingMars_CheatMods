@@ -8,7 +8,7 @@ return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "ScrollSelection",
 		"DisplayName", T(302535920011409, "Scroll Sections"),
-		"Help", T(302535920011490, "Adds scrollbars to certain panels (buggy, has flickering)."),
-		"DefaultValue", false,
+		"Help", T(302535920011490, "Adds scrollbars to certain panels"),
+		"DefaultValue", true,
 	}),
 }

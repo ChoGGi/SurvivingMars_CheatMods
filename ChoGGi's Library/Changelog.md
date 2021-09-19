@@ -1,6 +1,8 @@
 ## Library Changelog
 
 ## v10.4 (Unreleased)
+- Forgot to check for UICity when examining a box().
+- Added Chinese (Simplified) translation by aiawar.
 - Added RotateBuilding, SetPosRandomBuildablePos
 - Fixed issue with spawning veg.
 

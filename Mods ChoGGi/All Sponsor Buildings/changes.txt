@@ -1,3 +1,11 @@
+v0.9
+Removed Lock Behind Tech option.
+Fixed individual tech lock.
+
+v0.8
+Locked a bunch more behind tech.
+Added mod options to skip tech for certain buildings.
+
 v0.7
 Locked Mega Mall behind Gravity Engineering.
 
