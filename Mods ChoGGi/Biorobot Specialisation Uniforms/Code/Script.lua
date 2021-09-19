@@ -38,11 +38,11 @@ function Colonist:GetSpecializationIcons(...)
 		"UI/Icons/Colonists/Pin/" .. spec .. "_" .. self.entity_gender .. ".tga"
 end
 
+GlobalVar("ChoGGi_AndroidSpecUniforms", false)
 
 -- do we update on load?
 function OnMsg.LoadGame()
-	-- _2 so we change pin/ip icons on existing saves with v0.1 of mod
-	if UICity.ChoGGi_AndroidSpecUniforms_2 then
+	if ChoGGi_AndroidSpecUniforms then
 		return
 	end
 
@@ -58,5 +58,5 @@ function OnMsg.LoadGame()
 		end
 	end
 
-	UICity.ChoGGi_AndroidSpecUniforms_2 = true
+	ChoGGi_AndroidSpecUniforms = true
 end

@@ -41,10 +41,10 @@ local function PickRandomMystery()
 	local new_myst = false
 	-- build a list of mysteries player has finished and use those as a filter
 	local finished_mysteries = {}
+
 	-- hack? what hack?
 	-- there's no mod access to AccountStorage, so we get mysteries by sending fake data to a func that can
 	-- Lua\XTemplates\MysteryItem.lua: function(self, parent, context) -> parent:SetVisible(AccountStorage and AccountStorage.FinishedMysteries and AccountStorage.FinishedMysteries[context.value])
-
 	local mystery_played = false
 	local fake_parent = {
 		SetVisible = function(_, toggle)
@@ -52,7 +52,7 @@ local function PickRandomMystery()
 		end,
 	}
 	local fake_context = {
-		value = "",
+		value = "some_myst_id",
 	}
 
 	-- [1]XTextButton[2]XImage[1]XTemplateCode
@@ -64,6 +64,7 @@ local function PickRandomMystery()
 	for i = 1, mysteries_c do
 		local id = mysteries[i].class
 		fake_context.value = id
+		-- self is ignored, fake_parent gives us the finished state, fake_context sends the myst id
 		CheckMystFinished(nil, fake_parent, fake_context)
 		if mystery_played then
 			finished_mysteries[id] = true
@@ -136,7 +137,6 @@ OnMsg.ModsReloaded = ModOptions
 -- fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
-
 -- update per save list
 function OnMsg.MysteryEnd()
   local mystery_id = UIColony.mystery_id
@@ -144,4 +144,6 @@ function OnMsg.MysteryEnd()
 
 	list[mystery_id] = true
 	list[#list+1] = mystery_id
+
+	PickRandomMystery()
 end

@@ -111,7 +111,7 @@ do -- UpdateStringsList (fired below, and whenever lang is changed)
 						print("ChoGGi Lib: *bad string id?", id)
 						if testing then
 							-- this will error out, but I'll know where it comes from at least.
-							ex(errorsout)
+							OpenExamine(errorsout)
 						end
 						return missing_text
 					end

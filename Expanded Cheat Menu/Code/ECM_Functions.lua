@@ -2267,7 +2267,7 @@ do -- SetLibraryToolTips
 
 		local tip = ChoGGi.UserSettings.EnableToolTips and "Rollover" or ""
 		for i = 1, #dlgs do
-			g[dlgs[i]] = tip
+			g[dlgs[i]].RolloverTemplate = tip
 		end
 	end
 end -- do

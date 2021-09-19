@@ -9,6 +9,7 @@
 ### Fixed:
 - Starting multiple mysteries.
 - Terrain Editor wasn't updating flight grid (Thanks SkiRich).
+- Menu>Help>ECM>Enable Tooltips.
 
 ## v17.3 (11 Sep 2021)
 ### Fixed:

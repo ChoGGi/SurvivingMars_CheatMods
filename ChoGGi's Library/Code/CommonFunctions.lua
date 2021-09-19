@@ -4733,49 +4733,16 @@ do -- BuildableHexGrid
 			local q, r = shape_data[i]:xy()
 			q, r = q_i+q, r_i+r
 
-
---~ 			local z = buildable:GetZ(q + r / 2, r)
---~ 			if not original_z then
---~ 				original_z = z
---~ 			end
 			local z = buildable_z_grid:get(q+r/2, r)
 			if not original_z then
 				original_z = z
 			end
-
 
 			if z == UnbuildableZ or z ~= original_z then
 				return true
 			end
 		end
 	end
-
---~ 	local l_UnbuildableZ, l_g_BuildableZ
---~ 	local function IsTerrainNotFlatForPlacement(q_i, r_i)
---~ 		local original_z = false
-
---~ 		if not l_UnbuildableZ then
---~ 			l_UnbuildableZ = buildUnbuildableZ()
---~ 			l_g_BuildableZ = g_BuildableZ
---~ 			if not l_g_BuildableZ then
---~ 				CalcBuildableGrid()
---~ 				l_g_BuildableZ = g_BuildableZ
---~ 			end
---~ 		end
-
---~ 		for i = 1, shape_data_c do
---~ 			local q, r = shape_data[i]:xy()
---~ 			q, r = q_i+q, r_i+r
-
---~ 			local z = buildable_z_grid:get(q+r/2, r)
---~ 			if not original_z then
---~ 				original_z = z
---~ 			end
---~ 			if z == l_UnbuildableZ or z ~= original_z then
---~ 				return true
---~ 			end
---~ 		end
---~ 	end
 
 	local function CleanUp()
 		-- kill off thread
@@ -4897,12 +4864,11 @@ do -- BuildableHexGrid
 			-- off we go
 			Temp.grid_thread = CreateRealTimeThread(function()
 				local ActiveGameMap = ActiveGameMap
+				-- update uneven terrain checker thingy
 				ActiveGameMap:RefreshBuildableGrid()
---~ 				CalcBuildableGrid()
 
 				-- local all the globals we use more than once for some speed
 				local buildable_z_grid = ActiveGameMap.buildable.z_grid
---~ 				local g_BuildableZ = g_BuildableZ
 
 				local terrain = ActiveGameMap.terrain
 
@@ -4915,12 +4881,6 @@ do -- BuildableHexGrid
 				local blue = blue
 				local yellow = yellow
 				local white = white
---~ 	local rand_colours = {
---~ 		green, yellow, cyan, white,
---~ 		-46777, -- lighter red than "red"
---~ 		-65369, -- pink
---~ 		-39680, -- slightly darker orange (don't want it blending in to the ground as much as -23296)
---~ 	}
 
 				local object_hex_grid = ActiveGameMap.object_hex_grid.grid
 				local const_HexSize = const.HexSize

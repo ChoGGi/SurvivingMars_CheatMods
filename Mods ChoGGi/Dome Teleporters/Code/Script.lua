@@ -56,6 +56,10 @@ function OnMsg.ClassesPostprocess()
 
 		"construction_mode", "dome_teleporter_construction",
 		"ip_template", "ipBuilding",
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
 	})
 end
 

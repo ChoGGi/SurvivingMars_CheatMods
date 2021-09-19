@@ -862,6 +862,8 @@ This will override all Meteors!"
 302535920011874, "Electrostatic gets chosen before Great, so if it's high enough than Great won't happen."
 302535920011875, "Give "
 302535920011876, "Start game with Subsurface Heaters unlocked."
+302535920012074, "Unlock building MDS Lasers from the get-go."
+302535920012075, "Unlock building Defensive Turrets from the get-go."
 [[RC Miner]]
 302535920011196, "Visual Cues"
 302535920011630, "Paint ground around mine with different texture."
@@ -1457,8 +1459,6 @@ Don't forget to send me your res and margin, so I can add them to the list."
 
 
 [[UNUSED]]
-302535920012074,
-302535920012075,
 302535920012076,
 302535920012077,
 302535920012078,

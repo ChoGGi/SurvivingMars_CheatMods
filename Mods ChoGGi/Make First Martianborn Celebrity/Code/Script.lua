@@ -1,8 +1,10 @@
 -- See LICENSE for terms
 
+GlobalVar("ChoGGi_MakeFirstMartianbornCelebrity", false)
+
 function OnMsg.ColonistBorn(obj)
-	if not UICity.ChoGGi_MakeFirstMartianbornCelebrity then
+	if not ChoGGi_MakeFirstMartianbornCelebrity then
 		obj:AddTrait("Celebrity", true)
-		UICity.ChoGGi_MakeFirstMartianbornCelebrity = obj.handle
+		ChoGGi_MakeFirstMartianbornCelebrity = obj.handle
 	end
 end

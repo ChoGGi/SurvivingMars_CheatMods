@@ -12,10 +12,10 @@ return PlaceObj("ModDef", {
 	"steam_id", "2060296355",
 	"pops_any_uuid", "09c4df72-ad70-43c3-aa81-558431221377",
 	"lua_revision", 1007000, -- Picard
-	"version", 7,
+	"version", 8,
 	"version_major", 0,
-	"version_minor", 7,
-	"image", "Preview.png",
+	"version_minor", 8,
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
@@ -28,6 +28,7 @@ return PlaceObj("ModDef", {
 Mod Options:
 Overkill: For those that want extra pain.
 No Deposits: No goodies from the meteors.
+MDS Lasers/Defensive Turrets: Unlock building them from the get-go.
 
 [b]Winter Wonderland[/b]: The ground will always be icy everywhere.
 Give Subsurface Heaters: Start game with Subsurface Heaters unlocked.

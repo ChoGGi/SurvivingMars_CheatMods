@@ -1184,8 +1184,9 @@ function OnMsg.ClassesBuilt()
 				-- add height limit for infopanel
 				local height = terminal.desktop.box:sizey()
 				local HUD = Dialogs.HUD
-				local offset = HUD.idRight.box:sizey() + HUD.idMapSwitch.box:sizey()
-				local added_margin = 27
+				local bb = HUD.idMapSwitch
+				local offset = HUD.idRight.box:sizey() + (bb and bb.box:sizey() or 0)
+				local added_margin = bb and 27 or 0
 				self:SetMaxHeight(height - offset + added_margin)
 				self:SetMargins(zerobox)
 			end

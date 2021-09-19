@@ -14,6 +14,9 @@ local testing = ChoGGi.testing
 do -- ModUpload
 	-- refactor this someday...
 
+	-- boost timeout for busy server (default 10000)
+--~ 	PopsAsyncOpTimeout = 20000
+
 	-- since they use the title as the folder name you can't use the same name as other mods, or mods that got blocked and I'm supposed to re-upload
 	-- CopyToClipboard([[	"pops_any_uuid", "]] .. GetUUID() .. [[",]])
 	local diff_mod_titles_paradox = {

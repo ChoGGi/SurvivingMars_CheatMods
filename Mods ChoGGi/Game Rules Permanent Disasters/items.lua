@@ -17,6 +17,18 @@ local properties = {
 		"Help", T(302535920011609, "Enable this option to not have any goodies dropped off.\nThis will override all Meteors!"),
 		"DefaultValue", false,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "MeteorsMDSLasers",
+		"DisplayName", table.concat(T(4146, "Meteors") .. ": " .. T(5123, "MDS Lasers")),
+		"Help", T(302535920012074, "Unlock building MDS Lasers from the get-go."),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "MeteorsDefensiveTurrets",
+		"DisplayName", table.concat(T(4146, "Meteors") .. ": " .. T(6985, "Defensive Turrets")),
+		"Help", T(302535920012075, "Unlock building Defensive Turrets from the get-go."),
+		"DefaultValue", false,
+	}),
 	-- Dust Storms
 	PlaceObj("ModItemOptionToggle", {
 		"name", "DustStormsUnbreakableCP",

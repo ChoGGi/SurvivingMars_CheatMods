@@ -32,20 +32,23 @@ local function Startup()
 	CreateRealTimeThread(function()
 		Sleep(1000)
 		ChoGGi.ComFuncs.RetName_Update()
+
+		local UIColony = UIColony
+		if not UIColony.ChoGGi then
+			-- a place to store per-game values... that i'll use one of these days (tm)
+			UIColony.ChoGGi = {}
+		end
+		if not UIColony.ChoGGi.version_init_LIB then
+			UIColony.ChoGGi.version_init_ECM = ChoGGi.def.version
+			UIColony.ChoGGi.version_init_LIB = ChoGGi.def_lib.version
+			UIColony.ChoGGi.version_init_LuaRevision = LuaRevision
+		end
+		UIColony.ChoGGi.version_current_ECM = ChoGGi.def.version
+		UIColony.ChoGGi.version_current_LIB = ChoGGi.def_lib.version
+		UIColony.ChoGGi.version_current_LuaRevision = LuaRevision
+		UIColony.ChoGGi.current_settings = table.copy(ChoGGi.UserSettings)
 	end)
 
-	local UIColony = UIColony
-	-- a place to store per-game values... that i'll use one of these days (tm)
-	if not UIColony.ChoGGi then
-		UIColony.ChoGGi = {}
-		UIColony.ChoGGi.version_init_ECM = ChoGGi.def.version
-		UIColony.ChoGGi.version_init_LIB = ChoGGi.def_lib.version
-		UIColony.ChoGGi.version_init_LuaRevision = LuaRevision
-	end
-	UIColony.ChoGGi.version_current_ECM = ChoGGi.def.version
-	UIColony.ChoGGi.version_current_LIB = ChoGGi.def_lib.version
-	UIColony.ChoGGi.version_current_LuaRevision = LuaRevision
-	UIColony.ChoGGi.current_settings = ChoGGi.UserSettings
 end
 
 OnMsg.CityStart = Startup

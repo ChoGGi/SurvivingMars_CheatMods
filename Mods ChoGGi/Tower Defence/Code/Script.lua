@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+GlobalVar("ChoGGi_TowerDefense_mapsectors", false)
+
 local mod_EnableMod
 
 local function ModOptions(id)
@@ -79,7 +81,7 @@ local function LoadMapSectorsStats()
 	end
 
 	-- store amounts per save here
-	if not UICity.ChoGGi_TowerDefense then
+	if not ChoGGi_TowerDefense_mapsectors then
 		-- build list of out map sectors (all of 1 and 10, and the top/bottom from the rest
 		local sectors = UICity.MapSectors
 		local sector_table = {}
@@ -102,7 +104,7 @@ local function LoadMapSectorsStats()
 			sector_table[c] = sector[10]
 		end
 
-		UICity.ChoGGi_TowerDefense = {
+		ChoGGi_TowerDefense_mapsectors = {
 			-- rovers to spawn next sol
 			rovers_next = 5,
 			-- ammo to give each rover
@@ -155,11 +157,11 @@ function OnMsg.NewDay(sol)
 		RemoveOldRovers(UICity.labels.Rover, sol)
 
 		-- just in case
-		if not UICity.ChoGGi_TowerDefense then
+		if not ChoGGi_TowerDefense_mapsectors then
 			LoadMapSectorsStats()
 		end
 
-		local stats = UICity.ChoGGi_TowerDefense
+		local stats = ChoGGi_TowerDefense_mapsectors
 		for _ = 1, stats.rovers_next do
 			-- add a bit of a random delay
 			Sleep(Random(2500, 10000))

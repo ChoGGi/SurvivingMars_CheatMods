@@ -1,1 +1,2 @@
 v0.2
+Forgot to make it call the func when previous mystery ends... (thanks Lilianne_Blaze)

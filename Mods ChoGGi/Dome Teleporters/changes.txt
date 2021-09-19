@@ -1,3 +1,6 @@
+v1.3
+Unlocked underground/asteroid limits.
+
 v1.2
 Picard update.
 

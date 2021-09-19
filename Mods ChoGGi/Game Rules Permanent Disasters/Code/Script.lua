@@ -25,6 +25,8 @@ local MinuteDuration = const.MinuteDuration
 -- mod options
 local mod_MeteorsOverkill
 local mod_MeteorsNoDeposits
+local mod_MeteorsMDSLasers
+local mod_MeteorsDefensiveTurrets
 local mod_DustStormsUnbreakableCP
 local mod_DustStormsAllowRockets
 local mod_DustStormsMOXIEPerformance
@@ -41,6 +43,8 @@ local function ModOptions()
 	options = CurrentModOptions
 	mod_MeteorsOverkill = options:GetProperty("MeteorsOverkill")
 	mod_MeteorsNoDeposits = options:GetProperty("MeteorsNoDeposits")
+	mod_MeteorsMDSLasers = options:GetProperty("MeteorsMDSLasers")
+	mod_MeteorsDefensiveTurrets = options:GetProperty("MeteorsDefensiveTurrets")
 	mod_DustStormsUnbreakableCP = options:GetProperty("DustStormsUnbreakableCP")
 	mod_DustStormsAllowRockets = options:GetProperty("DustStormsAllowRockets")
 	mod_DustStormsMOXIEPerformance = options:GetProperty("DustStormsMOXIEPerformance")
@@ -370,6 +374,14 @@ local function StartupCode()
 
 	if mod_ColdAreaGiveSubsurfaceHeaters then
 		GrantTech("SubsurfaceHeating")
+	end
+
+	if mod_MeteorsMDSLasers then
+		GrantTech("MeteorDefenseSystem")
+	end
+
+	if mod_MeteorsDefensiveTurrets then
+		GrantTech("DefenseTower")
 	end
 end
 

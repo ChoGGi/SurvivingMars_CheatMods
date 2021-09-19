@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2605762368",
 	"pops_any_uuid", "998e20b3-1f2b-45cd-9895-b896aac26cbb",
 	"lua_revision", 1007000, -- Picard
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -27,7 +27,7 @@ After finishing your current mystery a random one will start.
 
 Picks first from the list of finished mysteries (see new game>mysteries checkmarks).
 Second pick is from a per-save list of finished mysteries.
-After that it's just random.
+After that the per-save is reset and it randomly picks again.
 
 You'll get a popup msg when a new one is starting.
 
