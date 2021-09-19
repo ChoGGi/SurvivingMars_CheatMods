@@ -1179,7 +1179,9 @@ function OnMsg.ClassesBuilt()
 
 			-- give me the scroll. goddamn it blinky
 			if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate] then
-				self.idActionButtons.parent:SetZOrder(2)
+				if self.idActionButtons then
+					self.idActionButtons.parent:SetZOrder(2)
+				end
 				AddScrollDialogXTemplates(self)
 				-- add height limit for infopanel
 				local height = terminal.desktop.box:sizey()
