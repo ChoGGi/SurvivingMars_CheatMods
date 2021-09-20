@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v10.4 (Unreleased)
+- Removed the margins from buildable grid (it hid a couple areas of the grid numebrs).
 - Forgot to check for UICity when examining a box().
 - Added Chinese (Simplified) translation by aiawar.
 - Added RotateBuilding, SetPosRandomBuildablePos

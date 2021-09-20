@@ -1094,6 +1094,7 @@ function OnMsg.ClassesBuilt()
 			obj.idChoGGi_ScrollArea = g_Classes.XWindow:new({
 				Id = "idChoGGi_ScrollArea",
 			}, dlg)
+			obj.idChoGGi_ScrollArea.idContent = obj.idContent
 
 			obj.idChoGGi_ScrollV = g_Classes.XSleekScroll:new({
 				Id = "idChoGGi_ScrollV",
@@ -1188,7 +1189,7 @@ function OnMsg.ClassesBuilt()
 				local HUD = Dialogs.HUD
 				local bb = HUD.idMapSwitch
 				local offset = HUD.idRight.box:sizey() + (bb and bb.box:sizey() or 0)
-				local added_margin = bb and 27 or 0
+				local added_margin = bb and 27 or 106
 				self:SetMaxHeight(height - offset + added_margin)
 				self:SetMargins(zerobox)
 			end

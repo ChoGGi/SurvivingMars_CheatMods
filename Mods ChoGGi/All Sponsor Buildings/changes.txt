@@ -1,3 +1,6 @@
+v1.0
+Removed rovers from tech lock option.
+
 v0.9
 Removed Lock Behind Tech option.
 Fixed individual tech lock.
