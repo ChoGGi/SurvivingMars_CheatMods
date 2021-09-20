@@ -4834,8 +4834,7 @@ do -- BuildableHexGrid
 			local z = -q - r
 			SuspendPassEdits("ChoGGi.ComFuncs.BuildableHexGrid")
 			local colour = RandomColourLimited()
-			-- try to centre the text a bit more
-			local margin_box = box(-25, -15, 0, 0)
+			-- margins don't work great with the grids (or at least the ones I used)
 			for q_i = q - grid_size, q + grid_size do
 				for r_i = r - grid_size, r + grid_size do
 					for z_i = z - grid_size, z + grid_size do
@@ -4843,13 +4842,11 @@ do -- BuildableHexGrid
 							local hex = OHexSpot:new()
 							hex:SetOpacity(grid_opacity)
 --~ 							hex:SetNoDepthTest(true)
-
 							grid_objs_c = grid_objs_c + 1
 							grid_objs[grid_objs_c] = hex
 							-- add text_obj
 							if grid_pos then
 								local text_obj = XText:new(nil, parent)
-								text_obj:SetMargins(margin_box)
 								text_obj:SetTextColor(colour)
 								text_obj:FollowObj(hex)
 								-- easy access

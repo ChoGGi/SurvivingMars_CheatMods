@@ -1436,6 +1436,11 @@ do -- LoadGame/CityStart
 			HintsEnabled = false
 		end
 
+
+		-- some stuff needs a delay (like UIColony)
+		CreateRealTimeThread(function()
+			Sleep(1000)
+
 --~ 		-- show completed hidden milestones
 --~ 		if UIColony.ChoGGi.DaddysLittleHitler then
 --~ 			PlaceObj("Milestone", {
@@ -1448,6 +1453,7 @@ do -- LoadGame/CityStart
 --~ 				MilestoneCompleted.DaddysLittleHitler = 3025359200000 -- hitler's birthday
 --~ 			end
 --~ 		end
+
 		if UIColony.ChoGGi and UIColony.ChoGGi.Childkiller then
 			PlaceObj("Milestone", {
 				base_score = 0,
@@ -1460,6 +1466,7 @@ do -- LoadGame/CityStart
 				MilestoneCompleted.Childkiller = 479000000 -- 666
 			end
 		end
+	end)
 
 		-- If there's a lightmodel name saved
 		if UserSettings.Lightmodel then
