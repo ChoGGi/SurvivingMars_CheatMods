@@ -15,17 +15,17 @@ local Random = ChoGGi.ComFuncs.Random
 local Translate = ChoGGi.ComFuncs.Translate
 
 function ChoGGi.MenuFuncs.SelectionPanelResize_Toggle()
-	ChoGGi.UserSettings.SelectionPanelResize = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.SelectionPanelResize)
+	ChoGGi.UserSettings.StopSelectionPanelResize = not ChoGGi.UserSettings.StopSelectionPanelResize
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SelectionPanelResize),
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.StopSelectionPanelResize),
 		Strings[302535920001653--[[Toggle Selection Panel Resize]]]
 	)
 end
 
 function ChoGGi.MenuFuncs.ScrollSelectionPanel_Toggle()
-	ChoGGi.UserSettings.ScrollSelectionPanel = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.ScrollSelectionPanel)
+	ChoGGi.UserSettings.ScrollSelectionPanel = not ChoGGi.UserSettings.ScrollSelectionPanel
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
@@ -35,7 +35,7 @@ function ChoGGi.MenuFuncs.ScrollSelectionPanel_Toggle()
 end
 
 function ChoGGi.MenuFuncs.UnlockOverview_Toggle()
-	ChoGGi.UserSettings.UnlockOverview = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.UnlockOverview)
+	ChoGGi.UserSettings.UnlockOverview = not ChoGGi.UserSettings.UnlockOverview
 
 	ActiveMapData.IsAllowedToEnterOverview = ChoGGi.UserSettings.UnlockOverview
 
@@ -363,7 +363,7 @@ function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
 	local mapdata = ActiveMapData
 
 	if ChoGGi.UserSettings.DisableHints then
-		ChoGGi.UserSettings.DisableHints = nil
+		ChoGGi.UserSettings.DisableHints = false
 		mapdata.DisableHints = false
 		HintsEnabled = true
 	else
@@ -443,7 +443,7 @@ end
 
 function ChoGGi.MenuFuncs.MapEdgeLimit_Toggle()
 	if ChoGGi.UserSettings.MapEdgeLimit then
-		ChoGGi.UserSettings.MapEdgeLimit = nil
+		ChoGGi.UserSettings.MapEdgeLimit = false
 		hr.CameraRTSBorderAtMinZoom = -1000
 		hr.CameraRTSBorderAtMaxZoom = -1000
 	else
@@ -1025,7 +1025,7 @@ function ChoGGi.MenuFuncs.ChangeMap()
 end
 
 function ChoGGi.MenuFuncs.PulsatingPins_Toggle()
-	ChoGGi.UserSettings.DisablePulsatingPinsMotion = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.DisablePulsatingPinsMotion)
+	ChoGGi.UserSettings.DisablePulsatingPinsMotion = not ChoGGi.UserSettings.DisablePulsatingPinsMotion
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
@@ -1270,7 +1270,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel()
 end
 
 function ChoGGi.MenuFuncs.TransparencyUI_Toggle()
-	ChoGGi.UserSettings.TransparencyToggle = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.TransparencyToggle)
+	ChoGGi.UserSettings.TransparencyToggle = not ChoGGi.UserSettings.TransparencyToggle
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
@@ -1557,7 +1557,7 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
 end
 
 function ChoGGi.MenuFuncs.HigherShadowDist_Toggle()
-	ChoGGi.UserSettings.HigherShadowDist = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.HigherShadowDist)
+	ChoGGi.UserSettings.HigherShadowDist = not ChoGGi.UserSettings.HigherShadowDist
 
 	hr.ShadowRangeOverride = ChoGGi.ComFuncs.ValueRetOpp(hr.ShadowRangeOverride, 0, 1000000)
 	hr.ShadowFadeOutRangePercent = ChoGGi.ComFuncs.ValueRetOpp(hr.ShadowFadeOutRangePercent, 30, 0)

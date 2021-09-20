@@ -1094,7 +1094,6 @@ function OnMsg.ClassesBuilt()
 			obj.idChoGGi_ScrollArea = g_Classes.XWindow:new({
 				Id = "idChoGGi_ScrollArea",
 			}, dlg)
-			obj.idChoGGi_ScrollArea.idContent = obj.idContent
 
 			obj.idChoGGi_ScrollV = g_Classes.XSleekScroll:new({
 				Id = "idChoGGi_ScrollV",
@@ -1116,6 +1115,8 @@ function OnMsg.ClassesBuilt()
 
 			-- move content list to scrollarea
 			obj.idContent:SetParent(obj.idChoGGi_ScrollBox)
+			-- add ref back
+			obj.idContent = obj.idChoGGi_ScrollBox.idContent
 
 --~ 			-- height of rightside hud button area
 --~ 			local hud = Dialogs.HUD.idRight.box:sizey()

@@ -23,7 +23,7 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagGameplay", true,
 	"description", [[
-Adds automated mode, and mod options.
+Adds automated mode support, and mod options.
 
 Mod Options:
 Loss Amount: How much is lost when using driller (0 = all, 100 = none).
