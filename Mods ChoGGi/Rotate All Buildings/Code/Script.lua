@@ -1,13 +1,19 @@
 -- See LICENSE for terms
 
-function OnMsg.ModsReloaded()
+local RotateBuilding = ChoGGi.ComFuncs.RotateBuilding
+
+local mod_EnableMod
+
+local function UpdateRotate()
+	if not mod_EnableMod then
+		return
+	end
+
 	local buildings = ClassTemplates.Building
 	for _, bld in pairs(buildings) do
 		bld.can_rotate_during_placement = true
 	end
 end
-
-local mod_EnableMod
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -16,26 +22,13 @@ local function ModOptions(id)
 	end
 
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+
+	UpdateRotate()
 end
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
 -- fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
-
---~ REMOVE 10.4
---~ local RotateBuilding = ChoGGi.ComFuncs.RotateBuilding
-local function RotateBuilding(objs, toggle, multiple)
-	if multiple then
-		for i = 1, #objs do
-			local obj = objs[i]
-			obj:SetAngle((obj:GetAngle() or 0) + (toggle and 1 or -1)*60*60)
-		end
-		return
-	end
-
-	objs:SetAngle((objs:GetAngle() or 0) + (toggle and 1 or -1)*60*60)
-end
---~ REMOVE 10.4
 
 function OnMsg.ClassesPostprocess()
 
@@ -49,6 +42,9 @@ function OnMsg.ClassesPostprocess()
 		"ChoGGi_Template_RotateAllBuildings_Rotate", true,
 		"__template", "InfopanelButton",
 		"__context_of_kind", "UndergroundPassage",
+		"__condition", function()
+			return mod_EnableMod
+		end,
 		"Icon", "UI/Icons/IPButtons/automated_mode_on.tga",
 		"RolloverTitle", T(1000077, "Rotate"),
 		"RolloverText", T(7519, "<left_click>") .. " "

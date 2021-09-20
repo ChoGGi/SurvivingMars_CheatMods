@@ -10,19 +10,7 @@ local AsyncRand = AsyncRand
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
 
---~ local SetPosRandomBuildablePos = ChoGGi.ComFuncs.SetPosRandomBuildablePos
-local function SetPosRandomBuildablePos(obj, city)
-  local pfClass = 0
-  city = city or UICity
-  local object_hex_grid = GetObjectHexGrid(city)
-  local buildable_grid = GetBuildableGrid(city)
-
-	obj:SetPos(GetRandomPassablePoint(city:Random(), pfClass, function(x, y)
-		return buildable_grid:IsBuildableZone(x, y) and not IsPointNearBuilding(object_hex_grid, x, y)
-	end))
-end
-
-
+local SetPosRandomBuildablePos = ChoGGi.ComFuncs.SetPosRandomBuildablePos
 
 local mod_MaxSpawn
 

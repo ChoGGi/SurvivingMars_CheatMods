@@ -34,7 +34,7 @@ end
 local orig_OverviewModeDialog_ScaleSmallObjects = OverviewModeDialog.ScaleSmallObjects
 function OverviewModeDialog:ScaleSmallObjects(time, direction, ...)
 	local ret = orig_OverviewModeDialog_ScaleSmallObjects(self, time, direction, ...)
-	CreateRealTimeThread(UpdateIcons, time, direction, GetRealm(self):MapGet("map", "BaseRover"))
+	CreateRealTimeThread(UpdateIcons, time, direction, MapGet("map", "BaseRover"))
 	return ret
 end
 
