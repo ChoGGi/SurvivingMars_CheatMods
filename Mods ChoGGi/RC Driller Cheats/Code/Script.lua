@@ -172,7 +172,7 @@ function OnMsg.ClassesPostprocess()
 				end
 			end,
 
-			"OnPress", function (self, gamepad)
+			"OnPress", function(self)
 				local c = self.context
 				c.auto_mode_on = not c.auto_mode_on
 				ObjModified(c)

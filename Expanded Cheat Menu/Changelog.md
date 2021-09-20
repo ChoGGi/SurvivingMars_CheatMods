@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v17.4 (Unreleased)
+## v17.5 (Unreleased)
+
+## v17.4 (20 Sep 2021)
 ### Added:
 - Menu>Game>Map>Unlock Overview: Overview works on all maps.
 - Menu>Interface>Selection Panel Resize: Stops selection panel from shrinking (eg: dome).

@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v10.4 (Unreleased)
+## v10.5 (Unreleased)
+
+## v10.4 (20 Sep 2021)
 - Removed the margins from buildable grid (it hid a couple areas of the grid numebrs).
 - Forgot to check for UICity when examining a box().
 - Added Chinese (Simplified) translation by aiawar.

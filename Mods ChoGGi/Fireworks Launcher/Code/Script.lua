@@ -231,7 +231,7 @@ function FireworksLauncher:LaunchFireworks(visual_only)
 	PlayFX("MissileFired", "start", self.rocket_attach, nil, rocket_pos, axis_z)
 	self.explode_thread = CreateGameTimeThread(function()
 		if IsValid(self.parent_dome) then
-			local dome, dome_pt = BaseMeteor.HitsDome(
+			local _, dome_pt = BaseMeteor.HitsDome(
 				{start = self.parent_dome:GetPos()}, self:GetPos()
 			)
 			self.parent_dome:AddFracture("Small", dome_pt)

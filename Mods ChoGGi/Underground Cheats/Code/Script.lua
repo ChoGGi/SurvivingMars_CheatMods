@@ -45,7 +45,7 @@ local function UpdateObjs()
 
 	-- struts
 	SupportStruts.work_radius = mod_SupportStrutRadius
-	local objs = UICity.labels.SupportStruts or ""
+	objs = UICity.labels.SupportStruts or ""
 	for i = 1, #objs do
 		objs[i].work_radius = mod_SupportStrutRadius
 	end

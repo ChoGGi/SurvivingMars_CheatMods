@@ -7633,7 +7633,7 @@ function ChoGGi.ComFuncs.RetMapType()
 	end
 end
 
-function ChoGGi.ComFuncs.RotateBuilding(obj, toggle, multiple)
+function ChoGGi.ComFuncs.RotateBuilding(objs, toggle, multiple)
 	if multiple then
 		for i = 1, #objs do
 			local obj = objs[i]

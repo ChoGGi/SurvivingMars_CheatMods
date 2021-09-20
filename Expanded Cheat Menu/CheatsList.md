@@ -567,6 +567,8 @@ Game.Game Speed>Time Factor: 1000: Change the time factor (not permanently); for
 Game.Interface>GUI Dock Side: Left: Change which side (most) GUI menus are on.
 Game.Interface>Never Show Hints: No more hints ever.
 Game.Interface>Reset on-screen hints: Just in case you wanted to see them again.
+Game.Interface>Toggle Scroll Selection Panel: Add a scrollbar to larger selection panels (buildings, domes, etc).
+Game.Interface>Toggle Selection Panel Resize: Stops selection panel from shrinking (eg: dome).
 Game.Interface>Toggle Signs: Concrete, metal deposits, not working, etc...
 Game.Interface>Toggle on-screen hints: Don't show hints for this game.
 Game.Lightmodel>Light model: Changes the lighting mode (temporary or permanent).
@@ -575,6 +577,7 @@ Game.Lightmodel>List Normal: Changes the list of lightmodels to use (night/day/e
 Game.Map>Change Map: Change map (options to pick commander, sponsor, etc...
 Attention: If you get yellow ground areas; just load it again or try Reload Map.
 Game.Map>Reload Map: Reloads map as new game.
+Game.Map>Unlock Overview: Overview works on all maps.
 Game.Object>Auto Unpin Objects: Will automagically stop any of these objects from being added to the pinned list.
 Game.Object>Change Surface Signs To Materials: Changes all the ugly immersion breaking signs to materials (reversible).
 Game.Object>Color Modifier: Select/mouse over an object to change the colours

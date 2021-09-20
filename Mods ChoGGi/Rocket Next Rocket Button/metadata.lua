@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 10,
-			"version_minor", 3,
+			"version_minor", 4,
 		}),
 	},
 	"title", "Rocket Next Rocket Button",
@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 	"pops_any_uuid", "0869b5fc-d5c6-47e5-ab09-fcc3b319d943",
 	"version", 2,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 4,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {

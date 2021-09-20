@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 10,
-			"version_minor", 3,
+			"version_minor", 4,
 		}),
 	},
 	"title", "Disable Dust Storm Maintenance",
@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 	"lua_revision", 1007000, -- Picard
 	"version", 2,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 4,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {

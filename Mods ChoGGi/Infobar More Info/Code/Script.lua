@@ -101,7 +101,7 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-function OnMsg.AddResearchRolloverTexts(text, colony)
+function OnMsg.AddResearchRolloverTexts(text)
 	if not mod_EnableMod then
 		return
 	end

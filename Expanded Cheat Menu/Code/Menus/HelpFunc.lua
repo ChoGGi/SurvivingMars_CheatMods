@@ -76,9 +76,6 @@ do -- ModUpload
 	local image_paradox = "UI/ParadoxLogo.tga"
 
 	local function UploadMod(answer, batch)
-
-
-
 		if not answer or not mod or mod and not mod.steam_id then
 			return
 		end

@@ -22,7 +22,7 @@ end
 local table = table
 local ObjModified = ObjModified
 local Sleep = Sleep
-local SelectObj = SelectObj
+-- local SelectObj = SelectObj
 local InteractionRand = InteractionRand
 
 local sort_obj

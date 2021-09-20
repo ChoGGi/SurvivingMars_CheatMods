@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 9,
-			"version_minor", 3,
+			"version_minor", 4,
 		}),
 	},
 	"title", "Construction Show Heater Range",
@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 	"lua_revision", 1007000,
 	"version", 2,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 4,
 	"author", "ChoGGi",
 	"image", "Preview.jpg",
 	"code", {

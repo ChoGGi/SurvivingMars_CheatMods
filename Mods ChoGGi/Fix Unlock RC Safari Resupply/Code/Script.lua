@@ -30,7 +30,7 @@ function OnMsg.LoadGame()
 	end
 
 	-- insert after rc transport
-	local transport_idx = table.find(ResupplyItemDefinitions, "id", "RCTransport")
+--~ 	local transport_idx = table.find(ResupplyItemDefinitions, "id", "RCTransport")
 
 --~ 	-- function RocketPayload_Init() (last copied Tito-Hotfix)
 --~   local sponsor = g_CurrentMissionParams and g_CurrentMissionParams.idMissionSponsor or ""
