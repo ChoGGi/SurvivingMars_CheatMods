@@ -1447,6 +1447,11 @@ Don't forget to send me your res and margin, so I can add them to the list."
 302535920012071, "Turn this on to pick a new random mystery when you press Apply."
 302535920012072, "Show Mystery"
 302535920012073, "The popup msg will show the name of the new mystery."
+302535920012076, "<color ChoGGi_yellow>Show Popup</color>"
+302535920012077, "Show a popup msg when starting next mystery."
+302535920012078, "<color ChoGGi_yellow>Min Sols</color>"
+302535920012079, "<color ChoGGi_yellow>Max Sols</color>"
+302535920012080, "How many Sols to wait before starting next mystery."
 [[UNUSED]]
 
 
@@ -1459,11 +1464,6 @@ Don't forget to send me your res and margin, so I can add them to the list."
 
 
 [[UNUSED]]
-302535920012076,
-302535920012077,
-302535920012078,
-302535920012079,
-302535920012080,
 302535920012081,
 302535920012082,
 302535920012083,

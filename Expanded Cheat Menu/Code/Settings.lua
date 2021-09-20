@@ -88,7 +88,7 @@ ChoGGi.Defaults = {
 	-- show Cheats section in the selection panel
 	InfopanelCheats = true,
 	-- Add scrollbar to larger panel elements
-	ScrollSelectionPanel = true,
+	ScrollSelectionPanel = false,
 	-- maybe you don't want to see the interface in screenshots
 	ShowInterfaceInScreenshots = true,
 	-- This savegame was loaded in the past without required mods or with an incompatible game version.
@@ -96,7 +96,7 @@ ChoGGi.Defaults = {
 	-- Mod Editor shows the help page every single time you open it.
 	SkipModHelpPage = true,
 	-- stops panel from shrinking
-	StopSelectionPanelResize = true,
+	StopSelectionPanelResize = false,
 	-- remove any objects above the height limit (or game will delete save and crash).
 	-- takes under a second to run, so best to enable by default
 	RemoveHeightLimitObjs = true,
@@ -161,6 +161,10 @@ if testing then
 	Defaults.ConsoleSkipUndefinedGlobals = true
 	-- zoom out in asteroids
 	Defaults.UnlockOverview = true
+	-- Add scrollbar to larger panel elements
+	Defaults.ScrollSelectionPanel = true
+	-- stops panel from shrinking
+	Defaults.StopSelectionPanelResize = true
 end
 
 -- set game values to saved values

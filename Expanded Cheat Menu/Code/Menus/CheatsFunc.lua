@@ -417,6 +417,14 @@ Buildings are still unlocked.]]],
 	)
 end
 
+function ChoGGi.MenuFuncs.DisasterTriggerUndergroundMarsquake()
+	if not IsDlcAccessible("picard") then
+		return
+	end
+	if ChoGGi.ComFuncs.RetMapType() == "underground" then
+		CheatTriggerUndergroundMarsquake()
+	end
+end
 function ChoGGi.MenuFuncs.DisasterTriggerMissle(amount)
 	amount = amount or 1
 	if amount == 1 then
@@ -593,6 +601,7 @@ do -- DisastersTrigger
 		Meteor = ChoGGi.MenuFuncs.DisasterTriggerMeteor,
 		MetatronIonStorm = ChoGGi.MenuFuncs.DisasterTriggerMetatronIonStorm,
 		DustDevils = ChoGGi.MenuFuncs.DisasterTriggerDustDevils,
+		UndergroundMarsquake = ChoGGi.MenuFuncs.DisasterTriggerUndergroundMarsquake,
 
 		DustDevilsMajor = function()
 			ChoGGi.MenuFuncs.DisasterTriggerDustDevils(nil, "major")
@@ -678,7 +687,8 @@ do -- DisastersTrigger
 		local item_list = {
 			{text = " " .. Strings[302535920000240--[[Stop]]] .. " " .. Translate(3983--[[Disasters]]), value = "Stop", hint = Strings[302535920000123--[[Stops most disasters]]]},
 
-			{text = Translate(4149--[[Cold Wave]]), value = "ColdWave", hint = default_mapdata_type},
+			{text = Translate(4149, "Cold Wave"), value = "ColdWave", hint = default_mapdata_type},
+			{text = Translate(13683, "Underground Marsquakes"), value = "UndergroundMarsquake"},
 
 			{text = Translate(4142--[[Dust Devils]]), value = "DustDevils", hint = default_mapdata_type},
 			{text = Translate(4142--[[Dust Devils]]) .. " " .. Strings[302535920000241--[[Major]]], value = "DustDevilsMajor", hint = default_mapdata_type},

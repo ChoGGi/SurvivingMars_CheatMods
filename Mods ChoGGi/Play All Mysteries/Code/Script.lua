@@ -1,12 +1,17 @@
 -- See LICENSE for terms
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local Random = ChoGGi.ComFuncs.Random
 
 GlobalVar("g_ChoGGi_PlayAllMysteries_Finished", {})
 
 local mod_EnableMod
 local mod_SwitchMystery
 local mod_ShowMystery
+local mod_ShowPopup
+local mod_MinSols
+local mod_MaxSols
+local mod_skips = {}
 
 local function CheckFinished(new_myst, mysteries_c, list)
 	local g_CurrentMissionParams = g_CurrentMissionParams
@@ -18,7 +23,7 @@ local function CheckFinished(new_myst, mysteries_c, list)
 		g_CurrentMissionParams.idMystery = "random"
 		UIColony:SelectMystery()
 		local id = UIColony.mystery_id
-		if not list[id] then
+		if not list[id] and not mod_skips[id] then
 			-- found one
 			new_myst = id
 			break
@@ -33,7 +38,7 @@ local function CheckFinished(new_myst, mysteries_c, list)
 	return new_myst
 end
 
-local function PickRandomMystery()
+local function PickRandomMystery(delay)
 	if not mod_EnableMod or not UIColony then
 		return
 	end
@@ -76,44 +81,50 @@ local function PickRandomMystery()
 
 	-- next pick a random one and check against per save file finished
 	if not new_myst then
-		new_myst = CheckFinished(new_myst, mysteries_c, g_ChoGGi_PlayAllMysteries_Finished, true)
+		new_myst = CheckFinished(new_myst, mysteries_c, g_ChoGGi_PlayAllMysteries_Finished)
 	end
 
-	-- clear and restart when all finished (there's always one of them)
+	-- clear and restart the list when all finished (there's always one of them)
 	if not new_myst and #g_ChoGGi_PlayAllMysteries_Finished == mysteries_c then
 		g_ChoGGi_PlayAllMysteries_Finished = {}
-		g_CurrentMissionParams.idMystery = "random"
-		UIColony:SelectMystery()
-		new_myst = UIColony.mystery_id
+		new_myst = CheckFinished(new_myst, mysteries_c, g_ChoGGi_PlayAllMysteries_Finished)
 	end
 
 	-- doesn't hurt to check
 	if new_myst then
 
-		-- else CheatStartMystery will mark the current one as finished
-		UIColony.mystery = false
-		UIColony.mystery_id = ""
 
-		-- CheatStartMystery checks for cheats enabled...
-		local orig_CheatsEnabled = CheatsEnabled
-		CheatsEnabled = function()
-			return true
-		end
-		CheatStartMystery(new_myst)
-		CheatsEnabled = orig_CheatsEnabled
+		CreateGameTimeThread(function()
+			Sleep(delay or 0)
 
-		-- let user know
-		if mod_ShowMystery then
-			MsgPopup(
-				mysteries[new_myst].name,
-				T(302535920012069, "Started Mystery")
-			)
-		else
-			MsgPopup(
-				T(302535920012069, "Started Mystery"),
-				T(3486, "Mystery")
-			)
-		end
+			-- else CheatStartMystery will mark the current one as finished
+			UIColony.mystery = false
+			UIColony.mystery_id = ""
+
+			-- CheatStartMystery checks for cheats enabled...
+			local orig_CheatsEnabled = CheatsEnabled
+			CheatsEnabled = function()
+				return true
+			end
+			CheatStartMystery(new_myst)
+			CheatsEnabled = orig_CheatsEnabled
+
+			-- let user know
+			if mod_ShowPopup then
+				if mod_ShowMystery then
+					MsgPopup(
+						mysteries[new_myst].name,
+						T(302535920012069, "Started Mystery")
+					)
+				else
+					MsgPopup(
+						T(302535920012069, "Started Mystery"),
+						T(3486, "Mystery")
+					)
+				end
+			end
+		end)
+
 	end
 
 end
@@ -124,9 +135,19 @@ local function ModOptions(id)
 		return
 	end
 
-	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
-	mod_SwitchMystery = CurrentModOptions:GetProperty("SwitchMystery")
-	mod_ShowMystery = CurrentModOptions:GetProperty("ShowMystery")
+	local options = CurrentModOptions
+	mod_EnableMod = options:GetProperty("EnableMod")
+	mod_SwitchMystery = options:GetProperty("SwitchMystery")
+	mod_ShowMystery = options:GetProperty("ShowMystery")
+	mod_ShowPopup = options:GetProperty("ShowPopup")
+	mod_MinSols = options:GetProperty("MinSols") * const.Scale.sols
+	mod_MaxSols = options:GetProperty("MaxSols") * const.Scale.sols
+
+	local mysteries = ChoGGi.Tables.Mystery
+	for i = 1, #mysteries do
+		local myst = mysteries[i]
+		mod_skips[myst.class] = not options:GetProperty("MysteryClass_" .. myst.class)
+	end
 
 	if mod_SwitchMystery then
 		PickRandomMystery()
@@ -145,5 +166,6 @@ function OnMsg.MysteryEnd()
 	list[mystery_id] = true
 	list[#list+1] = mystery_id
 
-	PickRandomMystery()
+
+	PickRandomMystery(Random(mod_MinSols, mod_MaxSols))
 end
