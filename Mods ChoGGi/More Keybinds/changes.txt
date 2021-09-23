@@ -1,3 +1,6 @@
+v0.7
+Radius didn't work.
+
 v0.6
 Examine Object/Examine Object Radius
 

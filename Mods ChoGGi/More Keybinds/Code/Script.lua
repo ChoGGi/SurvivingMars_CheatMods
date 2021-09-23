@@ -46,7 +46,7 @@ Actions[#Actions+1] = {ActionName = T(302535920000491, "Examine Object"),
 	ActionBindable = true,
 }
 
-Actions[#Actions+1] = {ActionName = Strings[302535920000069--[[Examine]]] .. " " .. Strings[302535920001103--[[Objects]]] .. " " .. Strings[302535920000163--[[Radius]]],
+Actions[#Actions+1] = {ActionName = T(0000, "Examine Objects"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.ExamineObjectRadius",
 	ActionShortcut = "Shift-F4",
 	replace_matching_id = true,
@@ -55,22 +55,20 @@ Actions[#Actions+1] = {ActionName = Strings[302535920000069--[[Examine]]] .. " "
 		local function SortDist(a, b)
 			return a:GetDist2D(pt) < b:GetDist2D(pt)
 		end
-		function ChoGGi.MenuFuncs.ExamineObjectRadius()
-			local radius = ChoGGi.UserSettings.ExamineObjectRadius or 2500
-			local objs = SelObjects(radius)
-			if objs[1] then
-				pt = GetCursorWorldPos()
-				-- sort by nearest
-				table.sort(objs, SortDist)
+		local radius = ChoGGi.UserSettings.ExamineObjectRadius or 2500
+		local objs = SelObjects(radius)
+		if objs[1] then
+			pt = GetCursorWorldPos()
+			-- sort by nearest
+			table.sort(objs, SortDist)
 
-				OpenInExamineDlg(objs, {
-					has_params = true,
-					override_title = true,
-					title = Strings[302535920000069--[[Examine]]] .. " "
-						.. Strings[302535920001103--[[Objects]]] .. " "
-						.. Strings[302535920000163--[[Radius]]] .. ": " .. radius,
-				})
-			end
+			OpenInExamineDlg(objs, {
+				has_params = true,
+				override_title = true,
+				title = Strings[302535920000069--[[Examine]]] .. " "
+					.. Strings[302535920001103--[[Objects]]] .. " "
+					.. Strings[302535920000163--[[Radius]]] .. ": " .. radius,
+			})
 		end
 	end,
 	ActionBindable = true,
