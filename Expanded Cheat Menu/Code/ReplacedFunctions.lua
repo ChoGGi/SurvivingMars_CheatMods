@@ -1085,50 +1085,6 @@ function OnMsg.ClassesBuilt()
 		local zerobox = box(0,0,0,0)
 		local margin_offset = 0
 		local scrollbar_margin_top = 8
-		local function AddScrollDialogXTemplates(obj)
-			local g_Classes = g_Classes
-
-			local dlg = obj[1]
-
-			-- attach our scroll area to the XSizeConstrainedWindow
-			obj.idChoGGi_ScrollArea = g_Classes.XWindow:new({
-				Id = "idChoGGi_ScrollArea",
-			}, dlg)
-
-			obj.idChoGGi_ScrollV = g_Classes.XSleekScroll:new({
-				Id = "idChoGGi_ScrollV",
-				Target = "idChoGGi_ScrollBox",
-				Dock = "left",
-				MinThumbSize = 30,
-				AutoHide = true,
-				Background = 0,
-			}, obj.idChoGGi_ScrollArea)
-
-			obj.idChoGGi_Scrollbar_thumb = obj.idChoGGi_ScrollV.idThumb
-			obj.idChoGGi_ScrollV.idThumb:SetVisible(false)
-
-			obj.idChoGGi_ScrollBox = g_Classes.XScrollArea:new({
-				Id = "idChoGGi_ScrollBox",
-				VScroll = "idChoGGi_ScrollV",
-				LayoutMethod = "VList",
-			}, obj.idChoGGi_ScrollArea)
-
-			-- move content list to scrollarea
-			obj.idContent:SetParent(obj.idChoGGi_ScrollBox)
-			-- add ref back
-			obj.idContent = obj.idChoGGi_ScrollBox.idContent
-
---~ 			-- height of rightside hud button area
---~ 			local hud = Dialogs.HUD.idRight.box:sizey()
-
-			-- offset from the top
---~ 			local y_offset = obj.Margins:miny()
-
---~ 			margin_offset = hud + y_offset + scrollbar_margin_top
-			obj:RecalculateMargins()
-
-		end
-
 		local function SetToolbar(section, cls, toggle)
 			local toolbar = table.find(section.idContent, "class", cls)
 			if toolbar then
@@ -1184,14 +1140,55 @@ function OnMsg.ClassesBuilt()
 				if self.idActionButtons then
 					self.idActionButtons.parent:SetZOrder(2)
 				end
-				AddScrollDialogXTemplates(self)
+				local g_Classes = g_Classes
+
+				local dlg = self[1]
+
+				-- attach our scroll area to the XSizeConstrainedWindow
+				self.idChoGGi_ScrollArea = g_Classes.XWindow:new({
+					Id = "idChoGGi_ScrollArea",
+				}, dlg)
+
+				self.idChoGGi_ScrollV = g_Classes.XSleekScroll:new({
+					Id = "idChoGGi_ScrollV",
+					Target = "idChoGGi_ScrollBox",
+					Dock = "left",
+					MinThumbSize = 30,
+					AutoHide = true,
+					Background = 0,
+				}, self.idChoGGi_ScrollArea)
+
+				self.idChoGGi_Scrollbar_thumb = self.idChoGGi_ScrollV.idThumb
+				self.idChoGGi_ScrollV.idThumb:SetVisible(false)
+
+				self.idChoGGi_ScrollBox = g_Classes.XScrollArea:new({
+					Id = "idChoGGi_ScrollBox",
+					VScroll = "idChoGGi_ScrollV",
+					LayoutMethod = "VList",
+				}, self.idChoGGi_ScrollArea)
+
+				-- move content list to scrollarea
+				self.idContent:SetParent(self.idChoGGi_ScrollBox)
+				-- add ref back
+				self.idContent = self.idChoGGi_ScrollBox.idContent
+
+--~ 				-- height of rightside hud button area
+--~ 				local hud = Dialogs.HUD.idRight.box:sizey()
+
+--~ 				-- offset from the top
+--~ 				local y_offset = self.Margins:miny()
+
+--~ 				margin_offset = hud + y_offset + scrollbar_margin_top
+				self:RecalculateMargins()
+
 				-- add height limit for infopanel
 				local height = terminal.desktop.box:sizey()
 				local HUD = Dialogs.HUD
 				local bb = HUD.idMapSwitch
 				local offset = HUD.idRight.box:sizey() + (bb and bb.box:sizey() or 0)
-				local added_margin = bb and 27 or 106
-				self:SetMaxHeight(height - offset + added_margin)
+				local added_margin = bb and 48 or 101
+--~ 				1029
+				self.idChoGGi_ScrollArea:SetMaxHeight(height - offset + added_margin)
 				self:SetMargins(zerobox)
 			end
 

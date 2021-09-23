@@ -1,45 +1,63 @@
 -- See LICENSE for terms
 
+local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
+
 local mod_CropsNeverFail
 local mod_ConstantSoilQuality
+local mod_MechFarming
+local mod_MechPerformance
 
-local function UpdateSoilQuality()
-	if mod_ConstantSoilQuality > 0 then
-		local objs = UICity.labels.Farm or ""
-		for i = 1, #objs do
-			local obj = objs[i]
-			if not obj.hydroponic then
-				obj:SetSoilQuality(0)
-			end
+local function UpdateFarms()
+	local objs = UICity.labels.Farm or ""
+	for i = 1, #objs do
+		local obj = objs[i]
+
+		if mod_ConstantSoilQuality > 0 and not obj.hydroponic then
+			-- 0 because it doesn't matter (see func below)
+			obj:SetSoilQuality(0)
 		end
+
+		if mod_MechFarming then
+			obj.max_workers = 0
+			obj.automation = 1
+			obj.auto_performance = mod_MechPerformance or 100
+			ToggleWorking(obj)
+		else
+			obj.max_workers = nil
+			obj.automation = nil
+			obj.auto_performance = nil
+		end
+
+		ToggleWorking(obj)
 	end
 end
 
 -- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_CropsNeverFail = CurrentModOptions:GetProperty("CropsNeverFail")
 	mod_ConstantSoilQuality = CurrentModOptions:GetProperty("ConstantSoilQuality") * const.SoilQualityScale
+	mod_MechFarming = CurrentModOptions:GetProperty("MechFarming")
+	mod_MechPerformance = CurrentModOptions:GetProperty("MechPerformance")
 
 	-- make sure we're in-game
 	if not UICity then
 		return
 	end
 
-	UpdateSoilQuality()
+	UpdateFarms()
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
 -- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+OnMsg.ApplyModOptions = ModOptions
 
-OnMsg.CityStart = UpdateSoilQuality
-OnMsg.LoadGame = UpdateSoilQuality
+OnMsg.CityStart = UpdateFarms
+OnMsg.LoadGame = UpdateFarms
 
 local orig_Farm_CalcExpectedProduction = Farm.CalcExpectedProduction
 function Farm:CalcExpectedProduction(idx, ...)

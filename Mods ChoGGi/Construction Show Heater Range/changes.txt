@@ -1,2 +1,5 @@
+v0.3
+version bump
+
 v0.2
 Mod option to change colour of hexes.

@@ -42,6 +42,12 @@ local properties = {
 		"Help", T(302535920011613, "Allow rockets to take off and land."),
 		"DefaultValue", false,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "DustStormsAllowMOXIEs",
+		"DisplayName", table.concat(T(4144, "Dust Storms") .. ": " .. T(302535920012085, "Allow MOXIEs")),
+		"Help", T(302535920012086, "You can build/use MOXIEs."),
+		"DefaultValue", true,
+	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "DustStormsMOXIEPerformance",
 		"DisplayName", table.concat(T(4144, "Dust Storms") .. ": " .. T(302535920011614, "MOXIE Performance")),

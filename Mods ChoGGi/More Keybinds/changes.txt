@@ -1,3 +1,6 @@
+v0.6
+Examine Object/Examine Object Radius
+
 v0.5
 Toggle Interface
 

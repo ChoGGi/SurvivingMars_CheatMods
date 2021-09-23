@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2163750555",
 	"pops_any_uuid", "0876037c-42bf-4f8a-8939-36638ba10a62",
 	"lua_revision", 1007000, -- Picard
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -32,6 +32,7 @@ Salvage Cursor: Ctrl-Delete (You may need to reload your save when changing this
 Photo Mode Toggle: Shift-F12
 Place Multiple Buildings: Shift
 Toggle Interface: Ctrl-Alt-I
+Examine Object/Examine Object Radius: F4/Shift-F4
 
 More key suggestions welcome
 ]],

@@ -29,6 +29,7 @@ local mod_MeteorsMDSLasers
 local mod_MeteorsDefensiveTurrets
 local mod_DustStormsUnbreakableCP
 local mod_DustStormsAllowRockets
+local mod_DustStormsAllowMOXIEs
 local mod_DustStormsMOXIEPerformance
 local mod_DustStormsElectrostatic
 local mod_DustStormsGreatStorm
@@ -36,17 +37,17 @@ local mod_DustDevilsTwisterAmount
 local mod_DustDevilsTwisterMaxAmount
 local mod_DustDevilsElectrostatic
 local mod_ColdAreaGiveSubsurfaceHeaters
-local options
 
 -- fired when settings are changed/init
 local function ModOptions()
-	options = CurrentModOptions
+	local options = CurrentModOptions
 	mod_MeteorsOverkill = options:GetProperty("MeteorsOverkill")
 	mod_MeteorsNoDeposits = options:GetProperty("MeteorsNoDeposits")
 	mod_MeteorsMDSLasers = options:GetProperty("MeteorsMDSLasers")
 	mod_MeteorsDefensiveTurrets = options:GetProperty("MeteorsDefensiveTurrets")
 	mod_DustStormsUnbreakableCP = options:GetProperty("DustStormsUnbreakableCP")
 	mod_DustStormsAllowRockets = options:GetProperty("DustStormsAllowRockets")
+	mod_DustStormsAllowMOXIEs = options:GetProperty("DustStormsAllowMOXIEs")
 	mod_DustStormsMOXIEPerformance = options:GetProperty("DustStormsMOXIEPerformance")
 	mod_DustStormsElectrostatic = options:GetProperty("DustStormsElectrostatic")
 	mod_DustStormsGreatStorm = options:GetProperty("DustStormsGreatStorm")
@@ -363,7 +364,7 @@ function RandomMapGenerator:OnGenerateLogic(env, ...)
 end
 
 local function StartupCode()
-	if IsGameRuleActive("ChoGGi_GreatBakersfield") then
+	if mod_DustStormsAllowMOXIEs and IsGameRuleActive("ChoGGi_GreatBakersfield") then
 		RemoveSuspend(g_SuspendLabels, "MOXIE")
 		RemoveSuspend(const.DustStormSuspendBuildings, "MOXIE")
 

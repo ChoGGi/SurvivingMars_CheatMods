@@ -395,6 +395,10 @@ function ChoGGi.MenuFuncs.ExamineObject()
 		return
 	end
 
+	if UseGamepadUI() then
+		return
+	end
+
 	local terminal = terminal
 
 	-- next we check if there's a ui element under the cursor and return that

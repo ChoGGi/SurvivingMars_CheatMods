@@ -37,6 +37,11 @@ Show during construction: If you don't want grids showing up during construction
 Grid Size: Set the size of the grid area.
 Grid Opacity: Set opacity of grid icons.
 
+
+Known Issues:
+Turn off "Show during construction" when building the geoscape dome, or spires will give an uneven terrain error.
+
+
 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1479851929]Show Hex Grid[/url]
 ]],
 })

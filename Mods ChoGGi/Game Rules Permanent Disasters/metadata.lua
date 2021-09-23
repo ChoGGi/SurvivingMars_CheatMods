@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2060296355",
 	"pops_any_uuid", "09c4df72-ad70-43c3-aa81-558431221377",
 	"lua_revision", 1007000, -- Picard
-	"version", 8,
+	"version", 9,
 	"version_major", 0,
-	"version_minor", 8,
+	"version_minor", 9,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -34,10 +34,11 @@ MDS Lasers/Defensive Turrets: Unlock building them from the get-go.
 Give Subsurface Heaters: Start game with Subsurface Heaters unlocked.
 
 [b]Great Bakersfield Dust Storm[/b]: Permanent dust storm.
-This will allow MOXIEs (since you can't play without them) operating at a reduced capacity.
+This will allow MOXIEs operating at a reduced capacity, see mod options to disable.
 Mod Options:
 Allow Rockets: Allow rockets to take off and land.
 Unbreakable Cables/Pipes: Cables/Pipes won't break (same as breakthrough tech, but no free construction).
+Allow MOXIEs: You can build/use MOXIEs.
 MOXIE Performance: Set the negative performance of MOXIEs during dust storms (higher = worse for you).
 Electrostatic Storm: Chance of an electrostatic storm (lightning strikes).
 Great Storm: Chance of a great storm (turbines spin faster?).

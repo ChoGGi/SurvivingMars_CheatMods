@@ -1,3 +1,6 @@
+v0.7
+Hopefully fixes them from stopping after awhile.
+
 v0.6
 Issue with missing panels? (Thanks SkiRich)
 

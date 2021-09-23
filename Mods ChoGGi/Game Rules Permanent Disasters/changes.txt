@@ -1,3 +1,6 @@
+v0.9
+Added mod options Allow MOXIEs: You can build/use MOXIEs.
+
 v0.8
 Mod options to unlock MDS Lasers / Defensive Turrets from the get-go.
 

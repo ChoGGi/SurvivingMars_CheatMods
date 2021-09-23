@@ -15,4 +15,18 @@ return {
 		"MinValue", 0,
 		"MaxValue", 1000,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "MechFarming",
+		"DisplayName", T(302535920012081, "Mech Farming"),
+		"Help", T(302535920012082, "Workers not needed."),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionNumber", {
+		"name", "MechPerformance",
+		"DisplayName", T(302535920012083, "Mech Performance"),
+		"Help", T(302535920012084, "How much performance each farm does without fleshbags."),
+		"DefaultValue", 100,
+		"MinValue", 1,
+		"MaxValue", 1000,
+	}),
 }

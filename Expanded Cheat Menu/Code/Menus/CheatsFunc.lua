@@ -1903,6 +1903,9 @@ do -- ResearchTech
 					AllowMysteryTech(tech_id, UIColony)
 				end
 				_G[tech_func](tech_id)
+				if tech_id == "ResilientArchitecture" then
+					print("ECM: ^^^ ResilientArchitecture is giving the error, can't be bothered to find out why.")
+				end
 			end
 		end
 	end

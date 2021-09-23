@@ -1,1 +1,4 @@
 v0.2
+Added mod options:
+Mech Farming: Workers not needed.
+Mech Performance: How much performance each farm does.

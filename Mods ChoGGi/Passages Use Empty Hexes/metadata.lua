@@ -15,7 +15,7 @@ return PlaceObj("ModDef", {
 	"version", 9,
 	"version_major", 0,
 	"version_minor", 9,
-	"image", "Preview.png",
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
@@ -25,7 +25,7 @@ return PlaceObj("ModDef", {
 	"TagBuildings", true,
 	"description", [[
 You can place passages at hexes you normally can't build on.
-Check the selection panel after placing a passage construction site, if it says "Dome Connection Established" then it'll work, if it says "Connection Failed!" then remove the site and try elsewhere (white highlighted hexes only).
+Check the selection panel after placing a passage construction site, if it says "[b]Dome Connection Established[/b]" then it'll work, if it says "[b]Connection Failed![/b]" then remove the site and try elsewhere (white highlighted hexes only).
 
 Press Numpad 6 to toggle showing usable hexes.
 

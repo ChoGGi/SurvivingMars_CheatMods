@@ -864,6 +864,8 @@ This will override all Meteors!"
 302535920011876, "Start game with Subsurface Heaters unlocked."
 302535920012074, "Unlock building MDS Lasers from the get-go."
 302535920012075, "Unlock building Defensive Turrets from the get-go."
+302535920012085, "Allow MOXIEs"
+302535920012086, "You can build/use MOXIEs."
 [[RC Miner]]
 302535920011196, "Visual Cues"
 302535920011630, "Paint ground around mine with different texture."
@@ -1213,6 +1215,10 @@ The Nearest forestation plant is <ChoGGi_NearForestPlant>.
 302535920011852, "Crops will never fail no matter the conditions (you'll get a random yield amount instead of failing)."
 302535920011853, "Constant Soil Quality"
 302535920011854, "Soil quality will always be this amount (0 to disable)."
+302535920012081, "Mech Farming"
+302535920012082, "Workers not needed."
+302535920012083, "Mech Performance"
+302535920012084, "How much performance each farm does without fleshbags."
 [[Unlock Research]]
 302535920011857, "Tech Researched"
 302535920011858, "Turn on to research instead of unlock tech."
@@ -1464,12 +1470,6 @@ Don't forget to send me your res and margin, so I can add them to the list."
 
 
 [[UNUSED]]
-302535920012081,
-302535920012082,
-302535920012083,
-302535920012084,
-302535920012085,
-302535920012086,
 302535920012087,
 302535920012088,
 302535920012089,

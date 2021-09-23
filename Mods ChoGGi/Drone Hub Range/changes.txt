@@ -1,3 +1,6 @@
+v0.7
+Picard update.
+
 v0.6
 Removed the extra "end" (whoopise).
 

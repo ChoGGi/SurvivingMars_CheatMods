@@ -148,10 +148,6 @@ local cheats_lookup = {
 		des = Strings[302535920001204--[[Reset %s's performance to default.]]],
 		des_name = true,
 	},
-	RandomSpecialization = {
-		des = Strings[302535920001205--[[Randomly set %s's specialization.]]],
-		des_name = true,
-	},
 	ReneagadeCapDbl = {
 		des = Strings[302535920001236--[[Double amount of reneagades this station can negate (currently: %s) < Reselect to update amount.]]],
 		des_name = "negated_renegades",
@@ -737,7 +733,11 @@ end
 function Colonist:CheatRandomSpec()
 	-- skip children, or they'll be a black cube
 	if not self:GetEntity():find("Child") then
-		self:SetSpecialization(ChoGGi.Tables.ColonistSpecializations[Random(1, #ChoGGi.Tables.ColonistSpecializations)], "init")
+--~ 		self:SetSpecialization(ChoGGi.Tables.ColonistSpecializations[Random(1, #ChoGGi.Tables.ColonistSpecializations)], "init")
+		local spec = ChoGGi.Tables.ColonistSpecializations[Random(1, #ChoGGi.Tables.ColonistSpecializations)]
+		self:SetSpecialization(spec)
+		-- "fix" for picard
+		self:SetSpecialization(spec)
 	end
 end
 function Colonist:CheatPrefDbl()

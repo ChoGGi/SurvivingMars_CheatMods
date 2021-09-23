@@ -1,6 +1,80 @@
 -- See LICENSE for terms
 
+local SelObjects = ChoGGi.ComFuncs.SelObjects
+local GetCursorWorldPos = GetCursorWorldPos
+local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
+local Strings = ChoGGi.Strings
+
 local Actions = ChoGGi.Temp.Actions
+
+Actions[#Actions+1] = {ActionName = T(302535920000491, "Examine Object"),
+	ActionId = "ChoGGi.RebindHardcodedKeys.ExamineObject",
+	ActionShortcut = "F4",
+	replace_matching_id = true,
+	OnAction = function()
+		-- try to get object in-game first
+		local objs = SelObjects()
+		local c = #objs
+		if c > 0 then
+			-- If it's a single obj then examine that, otherwise the whole list
+			OpenInExamineDlg(c == 1 and objs[1] or objs)
+			return
+		end
+
+		if UseGamepadUI() then
+			return
+		end
+
+		local terminal = terminal
+
+		-- next we check if there's a ui element under the cursor and return that
+		local target = terminal.desktop:GetMouseTarget(terminal.GetMousePos())
+		-- everywhere is covered in xdialogs so skip them
+		if target and not target:IsKindOf("XDialog") then
+			return OpenInExamineDlg(target)
+		end
+
+		-- If in main menu then open examine and console
+		if not Dialogs.HUD then
+			local dlg = OpenInExamineDlg(terminal.desktop)
+--~ 			-- off centre of central monitor
+--~ 			local width = (terminal.desktop.measure_width or 1920) - (dlg.dialog_width_scaled + 100)
+--~ 			dlg:SetPos(point(width, 100))
+--~ 			ChoGGi.ComFuncs.ToggleConsole(true)
+		end
+	end,
+	ActionBindable = true,
+}
+
+Actions[#Actions+1] = {ActionName = Strings[302535920000069--[[Examine]]] .. " " .. Strings[302535920001103--[[Objects]]] .. " " .. Strings[302535920000163--[[Radius]]],
+	ActionId = "ChoGGi.RebindHardcodedKeys.ExamineObjectRadius",
+	ActionShortcut = "Shift-F4",
+	replace_matching_id = true,
+	OnAction = function()
+		local pt
+		local function SortDist(a, b)
+			return a:GetDist2D(pt) < b:GetDist2D(pt)
+		end
+		function ChoGGi.MenuFuncs.ExamineObjectRadius()
+			local radius = ChoGGi.UserSettings.ExamineObjectRadius or 2500
+			local objs = SelObjects(radius)
+			if objs[1] then
+				pt = GetCursorWorldPos()
+				-- sort by nearest
+				table.sort(objs, SortDist)
+
+				OpenInExamineDlg(objs, {
+					has_params = true,
+					override_title = true,
+					title = Strings[302535920000069--[[Examine]]] .. " "
+						.. Strings[302535920001103--[[Objects]]] .. " "
+						.. Strings[302535920000163--[[Radius]]] .. ": " .. radius,
+				})
+			end
+		end
+	end,
+	ActionBindable = true,
+}
 
 Actions[#Actions+1] = {ActionName = T(302535920012068, "Toggle Interface"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.ToggleInterface",

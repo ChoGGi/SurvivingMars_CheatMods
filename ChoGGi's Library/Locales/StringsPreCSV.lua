@@ -3,7 +3,8 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! green: <green>%s</green>
 !Skipped Line! yellow: <yellow>%s</yellow>
 "ID", "Text", "Translation"
-302535920001657, "DLC"
+302535920001205, ""
+302535920001657, ""
 302535920001658, ""
 302535920001659, ""
 302535920001660, ""
@@ -267,7 +268,6 @@ It don't matter if you're black or white"
 302535920001202, "Fill all stat bars."
 302535920001203, "Double <green>%s</green>'s performance."
 302535920001204, "Reset <green>%s</green>'s performance to default."
-302535920001205, "Randomly set <green>%s</green>'s specialization."
 302535920001207, "Add: <yellow>%s</yellow> to this building.
 
 <green>%s</green>"

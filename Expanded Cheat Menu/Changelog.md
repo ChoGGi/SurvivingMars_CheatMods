@@ -1,6 +1,9 @@
 ## ECM Changelog
 
 ## v17.5 (Unreleased)
+### Fixed:
+- Issue with Tourist in CheatRandomSpec (thanks LukeH).
+- Scroll Selection Panel wouldn't let you click the bottom area.
 
 ## v17.4 (20 Sep 2021)
 ### Added:

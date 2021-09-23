@@ -1802,7 +1802,7 @@ do -- UpdateDataTables
 				c5 = c5 + 1
 				Tables.ColonistGenders[c5] = id
 				Tables.ColonistGenders[id] = true
-			elseif t.group == "Specialization" and id ~= "none" then
+			elseif t.group == "Specialization" and id ~= "none" and id ~= "Tourist" then
 				c6 = c6 + 1
 				Tables.ColonistSpecializations[c6] = id
 				Tables.ColonistSpecializations[id] = true

@@ -68,6 +68,7 @@ ChoGGi.Defaults = {
 	ExternalEditorPath = "AppData/EditorPlugin/",
 	-- examine errors (useful when it contains a thread).
 	ExamineErrors = false,
+	-- how far to examine the group
 	ExamineObjectRadius = 2500,
 	-- welcome msg
 	FirstRun = true,

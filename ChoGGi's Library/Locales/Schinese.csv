@@ -1,4 +1,5 @@
 ID,text,Translation,,,,,
+302535920001205, ,,,,,,
 302535920001657, ,,,,,,
 302535920001658, ,,,,,,
 302535920001659, ,,,,,,
@@ -242,7 +243,6 @@ It don't matter if you're black or white""", 我说如果你想成为我的孩�
 302535920001202, Fill all stat bars., 填满所有状态栏。,,,,,
 302535920001203, Double <green>%s</green>'s performance., 将 <green>%s</green> 的性能提高一倍。,,,,,
 302535920001204, Reset <green>%s</green>'s performance to default., 将 <green>%s</green> 的性能重置为默认。,,,,,
-302535920001205, Randomly set <green>%s</green>'s specialization., 随机设置 <green>%s</green> 的专业。,,,,,
 302535920001207," Add: <yellow>%s</yellow> to this building.<green>%s</green>""", 添加: <yellow>%s</yellow> 到这个建筑。,,,,,
 302535920001209, Make this <green>%s</green> not need workers (performance: <yellow>%s</yellow>)., 让这个<green>%s</green>不需要工人（性能: <yellow>%s</yellow>）。),,,,,
 302535920001210, Make this <green>%s</green> need workers., 让这个<green>%s</green>需要工人。,,,,,
