@@ -1,3 +1,6 @@
+v1.1
+Turning off tech lock options were ignored (thanks Tilyene).
+
 v1.0
 Removed rovers from tech lock option.
 

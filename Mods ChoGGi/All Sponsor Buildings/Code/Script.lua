@@ -93,24 +93,23 @@ local techs = {
 	Temple = "Arcology",
 }
 
-local function LockTech(bld_id, tech_id)
-	-- build menu
-	BuildingTechRequirements[bld_id] = {{ tech = tech_id, hide = false, }}
-	-- add an entry to unlock it with the tech
-	local tech = TechDef[tech_id]
-	if not table.find(tech, "Building", bld_id) then
-		tech[#tech+1] = PlaceObj("Effect_TechUnlockBuilding", {
-			Building = bld_id,
-		})
-	end
-
-end
-
 local function LockTechs()
 --~ 	if mod_LockBehindTech then
 	for bld_id, tech_id in pairs(techs) do
 		if mod_options["ChoGGi_Tech_" .. bld_id] then
-			LockTech(bld_id, tech_id)
+				-- build menu
+			BuildingTechRequirements[bld_id] = {{ tech = tech_id, hide = false, }}
+			-- add an entry to unlock it with the tech
+			local tech = TechDef[tech_id]
+			if not table.find(tech, "Building", bld_id) then
+				tech[#tech+1] = PlaceObj("Effect_TechUnlockBuilding", {
+					Building = bld_id,
+				})
+			end
+		else
+			if BuildingTechRequirements[bld_id] then
+				BuildingTechRequirements[bld_id] = nil
+			end
 		end
 	end
 --~ 	end
