@@ -17,10 +17,10 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local orig_Activate = LayoutConstructionController.Activate
+local ChoOrig_Activate = LayoutConstructionController.Activate
 function LayoutConstructionController:Activate(...)
 	-- fire first so it builds the tables/etc
-	local ret = orig_Activate(self, ...)
+	local ret = ChoOrig_Activate(self, ...)
 
 	if not mod_EnableMod then
 		return ret

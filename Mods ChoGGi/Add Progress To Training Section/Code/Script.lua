@@ -52,27 +52,27 @@ local function GetPoints(self, text, skip, school)
 	return table.concat(text, "<newline><left>")
 end
 
-local orig_MartianUniversity_GetTrainedRollover = MartianUniversity.GetTrainedRollover
+local ChoOrig_MartianUniversity_GetTrainedRollover = MartianUniversity.GetTrainedRollover
 function MartianUniversity:GetTrainedRollover(...)
-	local text = {orig_MartianUniversity_GetTrainedRollover(self, ...)}
+	local text = {ChoOrig_MartianUniversity_GetTrainedRollover(self, ...)}
 	return GetPoints(self, text)
 end
 
-local orig_Sanatorium_GetTrainedRollover = Sanatorium.GetTrainedRollover
+local ChoOrig_Sanatorium_GetTrainedRollover = Sanatorium.GetTrainedRollover
 function Sanatorium:GetTrainedRollover(...)
 	-- just in case the devs add rollovers to them
-	if orig_Sanatorium_GetTrainedRollover then
-		local text = {orig_Sanatorium_GetTrainedRollover(self, ...)}
+	if ChoOrig_Sanatorium_GetTrainedRollover then
+		local text = {ChoOrig_Sanatorium_GetTrainedRollover(self, ...)}
 		return GetPoints(self, text)
 	end
 	return GetPoints(self, {}, true)
 end
 
-local orig_School_GetTrainedRollover = School.GetTrainedRollover
+local ChoOrig_School_GetTrainedRollover = School.GetTrainedRollover
 function School:GetTrainedRollover(...)
 	-- just in case the devs add rollovers to them
-	if orig_School_GetTrainedRollover then
-		local text = {orig_School_GetTrainedRollover(self, ...)}
+	if ChoOrig_School_GetTrainedRollover then
+		local text = {ChoOrig_School_GetTrainedRollover(self, ...)}
 		return GetPoints(self, text)
 	end
 	return GetPoints(self, {}, true, true)

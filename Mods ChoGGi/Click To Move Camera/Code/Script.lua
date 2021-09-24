@@ -35,12 +35,12 @@ end
 -- override SelectionModeDialog clicking if it's our shortcut
 local CreateRealTimeThread = CreateRealTimeThread
 local MouseShortcut = MouseShortcut
-local orig_SelectionModeDialog_OnMouseButtonDown = SelectionModeDialog.OnMouseButtonDown
+local ChoOrig_SelectionModeDialog_OnMouseButtonDown = SelectionModeDialog.OnMouseButtonDown
 function SelectionModeDialog:OnMouseButtonDown(pt, button, ...)
 	if MouseShortcut(button) == shortcut then
 		return CreateRealTimeThread(go_to_cursor)
 	end
-	return orig_SelectionModeDialog_OnMouseButtonDown(self, pt, button, ...)
+	return ChoOrig_SelectionModeDialog_OnMouseButtonDown(self, pt, button, ...)
 end
 
 local edge_scrolling = true

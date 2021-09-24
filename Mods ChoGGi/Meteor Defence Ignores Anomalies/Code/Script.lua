@@ -73,12 +73,12 @@ local function AbortDefence(func, self, meteor, ...)
 	return func(self, meteor, ...)
 end
 
-local orig_MDSLaser_Track = MDSLaser.Track
+local ChoOrig_MDSLaser_Track = MDSLaser.Track
 function MDSLaser:Track(meteor, ...)
-	return AbortDefence(orig_MDSLaser_Track, self, meteor, ...)
+	return AbortDefence(ChoOrig_MDSLaser_Track, self, meteor, ...)
 end
 
-local orig_DefenceTower_Track = DefenceTower.Track
+local ChoOrig_DefenceTower_Track = DefenceTower.Track
 function DefenceTower:Track(meteor, ...)
-	return AbortDefence(orig_DefenceTower_Track, self, meteor, ...)
+	return AbortDefence(ChoOrig_DefenceTower_Track, self, meteor, ...)
 end

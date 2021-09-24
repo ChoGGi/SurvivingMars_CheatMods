@@ -20,14 +20,14 @@ end
 local type = type
 local table = table
 
-local orig_LoadCustomOnScreenNotification = LoadCustomOnScreenNotification
+local ChoOrig_LoadCustomOnScreenNotification = LoadCustomOnScreenNotification
 function LoadCustomOnScreenNotification(notification, ...)
 	if not mod_EnableMod then
-		return orig_LoadCustomOnScreenNotification(notification, ...)
+		return ChoOrig_LoadCustomOnScreenNotification(notification, ...)
 	end
 
 	-- the first return is id, and some mods (cough Ambassadors cough) send a nil id, which breaks the func
 	if type(notification) == "table" and table.unpack(notification) then
-		return orig_LoadCustomOnScreenNotification(notification, ...)
+		return ChoOrig_LoadCustomOnScreenNotification(notification, ...)
 	end
 end

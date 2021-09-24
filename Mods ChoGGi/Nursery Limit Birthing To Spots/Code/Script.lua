@@ -24,11 +24,11 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local orig_SpawnChild = Community.SpawnChild
+local ChoOrig_SpawnChild = Community.SpawnChild
 function Community:SpawnChild(...)
 	-- hi Ski
 	if self.IncubatorReloc then
-		return orig_SpawnChild(self, ...)
+		return ChoOrig_SpawnChild(self, ...)
 	end
 
 	local objs
@@ -50,7 +50,7 @@ function Community:SpawnChild(...)
 	if objs_count == 0 then
 		-- If there's no nurseries then send back orig func so births still work
 		if mod_BypassNoNurseries then
-			return orig_SpawnChild(self, ...)
+			return ChoOrig_SpawnChild(self, ...)
 		end
 		return
 	end
@@ -69,6 +69,6 @@ function Community:SpawnChild(...)
 
 	-- fire up the babby factory
 	if free_space > 0 then
-		return orig_SpawnChild(self, ...)
+		return ChoOrig_SpawnChild(self, ...)
 	end
 end

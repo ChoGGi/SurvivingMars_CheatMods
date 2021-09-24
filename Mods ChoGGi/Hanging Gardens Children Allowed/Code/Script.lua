@@ -25,11 +25,11 @@ end
 OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode
 
-local orig_Service = Service.Service
+local ChoOrig_Service = Service.Service
 function Service:Service(unit, ...)
 	if mod_PlaygroundPerk and unit.age_trait == "Child" then
 		unit.playground_visit = true
 	end
-	return orig_Service(self, unit, ...)
+	return ChoOrig_Service(self, unit, ...)
 end
 

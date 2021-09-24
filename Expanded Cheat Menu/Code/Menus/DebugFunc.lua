@@ -10,6 +10,26 @@ local Translate = ChoGGi.ComFuncs.Translate
 local RandomColour = ChoGGi.ComFuncs.RandomColour
 local Strings = ChoGGi.Strings
 
+function ChoGGi.MenuFuncs.SkipMissingMods_Toggle()
+	ChoGGi.UserSettings.SkipMissingMods = not ChoGGi.UserSettings.SkipMissingMods
+
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SkipMissingMods),
+		Strings[302535920001205--[[Skip Missing Mods]]]
+	)
+end
+
+function ChoGGi.MenuFuncs.SkipMissingDLC_Toggle()
+	ChoGGi.UserSettings.SkipMissingDLC = not ChoGGi.UserSettings.SkipMissingDLC
+
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SkipMissingDLC),
+		Strings[302535920001658--[[Skip Missing DLC]]]
+	)
+end
+
 function ChoGGi.MenuFuncs.Interface_Toggle()
 	hr.RenderUIL = hr.RenderUIL == 0 and 1 or 0
 end

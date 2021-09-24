@@ -47,16 +47,16 @@ function OnMsg.ClassesPostprocess()
 
 end
 
-local orig_MechanizedDepot_ToggleDemolish = MechanizedDepot.ToggleDemolish
+local ChoOrig_MechanizedDepot_ToggleDemolish = MechanizedDepot.ToggleDemolish
 function MechanizedDepot:ToggleDemolish(...)
-	local orig_GetStored = self["GetStored_" .. self.resource]
+	local ChoOrig_GetStored = self["GetStored_" .. self.resource]
 
 	-- always "empty"
 	self["GetStored_" .. self.resource] = function()
 		return 0
 	end
 
-	orig_MechanizedDepot_ToggleDemolish(self, ...)
+	ChoOrig_MechanizedDepot_ToggleDemolish(self, ...)
 
 	-- if user cancels demo then restore orig func
 	CreateGameTimeThread(function()
@@ -70,7 +70,7 @@ function MechanizedDepot:ToggleDemolish(...)
 		end
 		-- eh doesn't hurt to check...
     if IsValid(self) then
-      self["GetStored_" .. self.resource] = orig_GetStored
+      self["GetStored_" .. self.resource] = ChoOrig_GetStored
     end
 	end)
 

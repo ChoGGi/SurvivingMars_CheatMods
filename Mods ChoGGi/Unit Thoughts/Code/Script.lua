@@ -104,7 +104,7 @@ local style_lookup = {
 	"LandingPosNameAlt",
 }
 
-local function UpdateText(obj, text_dlg, orig_text, orig_target)
+local function UpdateText(obj, text_dlg, ChoOrig_text, ChoOrig_target)
 	if not obj then
 		return
 	end
@@ -114,7 +114,7 @@ local function UpdateText(obj, text_dlg, orig_text, orig_target)
 
 	local target = GetTarget(obj)
 	-- same text abort update
-	if command == orig_text and target == orig_target then
+	if command == ChoOrig_text and target == ChoOrig_target then
 		return command, target, obj
 	end
 
@@ -165,7 +165,7 @@ local function AddTextInfo(obj, parent, text_style, text_background)
 		HandleMouse = false,
 	}, parent)
 
-	local orig_text, orig_target = UpdateText(obj, text_dlg)
+	local ChoOrig_text, ChoOrig_target = UpdateText(obj, text_dlg)
 
 	text_dlg:AddDynamicPosModifier{
 		id = "obj_info",
@@ -176,7 +176,7 @@ local function AddTextInfo(obj, parent, text_style, text_background)
 	-- update text
 	while IsValid(obj) do
 		WaitMsg("OnRender")
-		orig_text, orig_target, obj = UpdateText(obj, text_dlg, orig_text, orig_target)
+		ChoOrig_text, ChoOrig_target, obj = UpdateText(obj, text_dlg, ChoOrig_text, ChoOrig_target)
 	end
 end
 

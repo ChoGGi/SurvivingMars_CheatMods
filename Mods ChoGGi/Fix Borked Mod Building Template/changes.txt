@@ -1,2 +1,5 @@
+v0.3
+Picard more.
+
 v0.2
 Picard update.

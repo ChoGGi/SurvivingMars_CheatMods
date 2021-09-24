@@ -29,13 +29,13 @@ end
 function OnMsg.ClassesBuilt()
 	RotatyThing_l = RotatyThing_l or RotatyThing
 
-	local orig_UpdateHeavyLoadNotification = DroneHub.UpdateHeavyLoadNotification
+	local ChoOrig_UpdateHeavyLoadNotification = DroneHub.UpdateHeavyLoadNotification
 	function DroneHub:UpdateHeavyLoadNotification(...)
 
 		self:ChoGGi_ToggleStrobe(self.working and self.drones
 			and self:CalcLapTime() > DroneLoadMediumThreshold
 		)
 
-		return orig_UpdateHeavyLoadNotification(self, ...)
+		return ChoOrig_UpdateHeavyLoadNotification(self, ...)
 	end
 end

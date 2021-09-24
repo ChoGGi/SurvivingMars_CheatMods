@@ -17,14 +17,14 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local orig_RCTransport_TransferResources = RCTransport.TransferResources
+local ChoOrig_RCTransport_TransferResources = RCTransport.TransferResources
 function RCTransport:TransferResources(...)
 	if not mod_EnableMod then
-		return orig_RCTransport_TransferResources(self, ...)
+		return ChoOrig_RCTransport_TransferResources(self, ...)
 	end
 
 	if not self.unreachable_objects then
 		self.unreachable_objects = {}
 	end
-	return orig_RCTransport_TransferResources(self, ...)
+	return ChoOrig_RCTransport_TransferResources(self, ...)
 end

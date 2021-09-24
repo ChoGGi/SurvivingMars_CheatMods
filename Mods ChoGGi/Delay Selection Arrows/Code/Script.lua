@@ -20,10 +20,10 @@ end
 local efSelectable = const.efSelectable
 local IsKindOf = IsKindOf
 
-local orig_SelectionArrowAdd = SelectionArrowAdd
+local ChoOrig_SelectionArrowAdd = SelectionArrowAdd
 function SelectionArrowAdd(obj, ...)
 	if mod_DisableSelect then
-		orig_SelectionArrowAdd(obj, ...)
+		ChoOrig_SelectionArrowAdd(obj, ...)
 		if IsKindOf(obj, "Drone") or IsKindOf(obj, "Colonist") then
 			local arrow = obj:GetAttach("SelectionArrow")
 			if arrow then
@@ -34,7 +34,7 @@ function SelectionArrowAdd(obj, ...)
 		local varargs = ...
 		CreateRealTimeThread(function()
 			WaitMsg("OnRender")
-			orig_SelectionArrowAdd(obj, varargs)
+			ChoOrig_SelectionArrowAdd(obj, varargs)
 		end)
 	end
 end

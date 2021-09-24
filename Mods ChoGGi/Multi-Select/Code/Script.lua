@@ -26,7 +26,7 @@ local guim7 = 7 * guim
 local white = white
 
 -- store where initial mdown is
-orig_pos = false
+ChoOrig_pos = false
 radius = 0
 -- our circle object
 circle = false
@@ -42,11 +42,11 @@ local points = objlist:new()
 local function UpdateCircle()
 	points:Clear()
 
-	radius = orig_pos:Dist2D(GetCursorWorldPos()) or 100
+	radius = ChoOrig_pos:Dist2D(GetCursorWorldPos()) or 100
 	local steps = Min(Max(12, 44 * radius / (guim7)), 360)
 
 	for i = 1, steps do
-		local x, y = RotateRadius(radius, MulDivRound(21600, i, steps), orig_pos, true)
+		local x, y = RotateRadius(radius, MulDivRound(21600, i, steps), ChoOrig_pos, true)
 		points[i] = point(
 			x, y
 		):SetTerrainZ(30)
@@ -115,11 +115,11 @@ function OnMsg.ClassesBuilt()
 				if circle and IsValid(circle) then
 					DoneObject(circle)
 				end
-				orig_pos = GetCursorWorldPos()
+				ChoOrig_pos = GetCursorWorldPos()
 
 				-- PlaceTerrainCircle(center, radius, color, step, offset, max_steps)
-				radius = orig_pos and orig_pos:Dist2D(GetCursorWorldPos()) or 10
-				circle = PlaceTerrainCircle(orig_pos, radius)
+				radius = ChoOrig_pos and ChoOrig_pos:Dist2D(GetCursorWorldPos()) or 10
+				circle = PlaceTerrainCircle(ChoOrig_pos, radius)
 				circle:SetDepthTest(false)
 
 				circle_enabled = true
@@ -167,14 +167,14 @@ function OnMsg.ClassesBuilt()
 			end
 
 			SelectionRemove(Selection)
-			local units = GetRealm(self):MapGet(orig_pos, radius, "attached", false, "DroneBase"--[[, "Colonist"]])
+			local units = GetRealm(self):MapGet(ChoOrig_pos, radius, "attached", false, "DroneBase"--[[, "Colonist"]])
 			if #units < 1000 then
 				SelectionAdd(units)
 			end
 
 			circle_enabled = false
 			circle = false
-			orig_pos = false
+			ChoOrig_pos = false
 			if radius > 100 then
 				saved_radius = radius
 			end

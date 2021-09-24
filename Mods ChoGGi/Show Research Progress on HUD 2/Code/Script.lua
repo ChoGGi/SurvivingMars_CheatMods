@@ -195,9 +195,9 @@ OnMsg.ResearchQueueChange = UpdateResearchProgressBar
 OnMsg.AnomalyAnalyzed = UpdateResearchProgressBar
 
 -- add ui elements when the HUD is opened
-local orig_OpenDialog = OpenDialog
+local ChoOrig_OpenDialog = OpenDialog
 function OpenDialog(dlg_str, ...)
-	local dlg = orig_OpenDialog(dlg_str, ...)
+	local dlg = ChoOrig_OpenDialog(dlg_str, ...)
 	if dlg_str == "HUD" then
 		AddResearchProgressBar2(mod_QueueCount, dlg)
 		ModOptions()

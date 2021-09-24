@@ -60,12 +60,12 @@ local function AddButton(self, func, ...)
 	return ret
 end
 
-local orig_SetUIAnomalyParams = LandingSiteObject.SetUIAnomalyParams
+local ChoOrig_SetUIAnomalyParams = LandingSiteObject.SetUIAnomalyParams
 function LandingSiteObject:SetUIAnomalyParams(...)
-	return AddButton(self, orig_SetUIAnomalyParams, ...)
+	return AddButton(self, ChoOrig_SetUIAnomalyParams, ...)
 end
 
-local orig_SetUIProjectParams = LandingSiteObject.SetUIProjectParams
+local ChoOrig_SetUIProjectParams = LandingSiteObject.SetUIProjectParams
 function LandingSiteObject:SetUIProjectParams(...)
-	return AddButton(self, orig_SetUIProjectParams, ...)
+	return AddButton(self, ChoOrig_SetUIProjectParams, ...)
 end

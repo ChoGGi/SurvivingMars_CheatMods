@@ -83,7 +83,7 @@ function OnMsg.ClassesPostprocess()
 
 	-- ignore persist errors
 	-- this is in pp so it overrides ECM overriding the func
-	local orig_ReportPersistErrors = ReportPersistErrors
+	local ChoOrig_ReportPersistErrors = ReportPersistErrors
 	function ReportPersistErrors(...)
 		-- be useful for restarting threads, see if devs will add it
 		Msg("PostSaveGame")
@@ -92,7 +92,7 @@ function OnMsg.ClassesPostprocess()
 			return 0, 0
 		end
 
-		return orig_ReportPersistErrors(...)
+		return ChoOrig_ReportPersistErrors(...)
 	end
 
 	-- Mod Options Expanded
@@ -172,11 +172,11 @@ local function sort_mods(a, b)
 	return CmpLower(a.title, b.title)
 end
 
-local orig_XTemplateForEach_map = XTemplateForEach.map
+local ChoOrig_XTemplateForEach_map = XTemplateForEach.map
 function XTemplateForEach.map(parent, context, array, i)
 	if array == ModsLoaded then
 		array = table.icopy(array)
 		table.sort(array, sort_mods)
 	end
-	return orig_XTemplateForEach_map(parent, context, array, i)
+	return ChoOrig_XTemplateForEach_map(parent, context, array, i)
 end

@@ -13,14 +13,14 @@ end
 
 AddBaseheater(StirlingGenerator, 3 * const.MaxHeat, 10)
 
-local orig_StirlingGenerator_OnChangeState = StirlingGenerator.OnChangeState
+local ChoOrig_StirlingGenerator_OnChangeState = StirlingGenerator.OnChangeState
 function StirlingGenerator:OnChangeState(...)
-	return PassthroughHeatUpdate(orig_StirlingGenerator_OnChangeState, self, ...)
+	return PassthroughHeatUpdate(ChoOrig_StirlingGenerator_OnChangeState, self, ...)
 end
 
-local orig_StirlingGenerator_OnSetWorking = StirlingGenerator.OnSetWorking
+local ChoOrig_StirlingGenerator_OnSetWorking = StirlingGenerator.OnSetWorking
 function StirlingGenerator:OnSetWorking(...)
-	return PassthroughHeatUpdate(orig_StirlingGenerator_OnSetWorking, self, ...)
+	return PassthroughHeatUpdate(ChoOrig_StirlingGenerator_OnSetWorking, self, ...)
 end
 
 function StirlingGenerator:ChoGGi_34Heating()
@@ -55,14 +55,14 @@ AddBaseheater(WaterExtractor, 2 * const.MaxHeat, 5)
 
 
 local function AddFueledExtractorHeat(_, cls)
-	local orig_class_OnUpgradeToggled = cls.OnUpgradeToggled
+	local ChoOrig_class_OnUpgradeToggled = cls.OnUpgradeToggled
 	function cls:OnUpgradeToggled(...)
-		return PassthroughHeatUpdate(orig_class_OnUpgradeToggled, self, ...)
+		return PassthroughHeatUpdate(ChoOrig_class_OnUpgradeToggled, self, ...)
 	end
 
-	local orig_class_OnSetWorking = cls.OnSetWorking
+	local ChoOrig_class_OnSetWorking = cls.OnSetWorking
 	function cls:OnSetWorking(...)
-		return PassthroughHeatUpdate(orig_class_OnSetWorking, self, ...)
+		return PassthroughHeatUpdate(ChoOrig_class_OnSetWorking, self, ...)
 	end
 
 	function cls:UpdateHeat()

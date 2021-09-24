@@ -24,10 +24,10 @@ function OnMsg.ClassesPostprocess()
 	})
 end
 
-local orig_Dome_UpdateOpenCloseState = Dome.UpdateOpenCloseState
+local ChoOrig_Dome_UpdateOpenCloseState = Dome.UpdateOpenCloseState
 function Dome:UpdateOpenCloseState(...)
 	local orig = OpenAirBuildings
 	OpenAirBuildings = false
-	orig_Dome_UpdateOpenCloseState(self, ...)
+	ChoOrig_Dome_UpdateOpenCloseState(self, ...)
 	OpenAirBuildings = orig
 end

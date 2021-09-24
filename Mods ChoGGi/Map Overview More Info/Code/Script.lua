@@ -201,10 +201,10 @@ local function AddIcons()
 
 end
 
-local orig_OverviewModeDialog_Init = OverviewModeDialog.Init
+local ChoOrig_OverviewModeDialog_Init = OverviewModeDialog.Init
 function OverviewModeDialog.Init(...)
 	AddIcons()
-	return orig_OverviewModeDialog_Init(...)
+	return ChoOrig_OverviewModeDialog_Init(...)
 end
 
 local function ClearIcons()
@@ -218,18 +218,18 @@ local function ClearIcons()
 	end
 end
 
-local orig_OverviewModeDialog_Close = OverviewModeDialog.Close
+local ChoOrig_OverviewModeDialog_Close = OverviewModeDialog.Close
 function OverviewModeDialog.Close(...)
 	ClearIcons()
-	return orig_OverviewModeDialog_Close(...)
+	return ChoOrig_OverviewModeDialog_Close(...)
 end
 
 -- We don't want them around for saves (I should check that they get saved I suppose...)
 OnMsg.SaveGame = ClearIcons
 
-local orig_GenerateSectorRolloverContext = OverviewModeDialog.GenerateSectorRolloverContext
+local ChoOrig_GenerateSectorRolloverContext = OverviewModeDialog.GenerateSectorRolloverContext
 function OverviewModeDialog:GenerateSectorRolloverContext(sector, ...)
-	local ret1, ret2 = orig_GenerateSectorRolloverContext(self, sector, ...)
+	local ret1, ret2 = ChoOrig_GenerateSectorRolloverContext(self, sector, ...)
 
 	-- append counts to sector tooltip
 	local pile = sector_piles[sector.id]

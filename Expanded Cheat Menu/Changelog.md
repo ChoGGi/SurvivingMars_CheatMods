@@ -1,6 +1,9 @@
 ## ECM Changelog
 
 ## v17.5 (Unreleased)
+### Added:
+- Menu>ECM>Debug>Toggles>Skip Missing Mods/Skip Missing DLC: Stops confirmation dialog about missing mods/DLC when loading saved games.
+
 ### Fixed:
 - Issue with Tourist in CheatRandomSpec (thanks LukeH).
 - Scroll Selection Panel wouldn't let you click the bottom area.

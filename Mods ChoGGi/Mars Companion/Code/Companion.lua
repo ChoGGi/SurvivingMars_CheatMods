@@ -230,9 +230,9 @@ function MarsCompanion:BoredFriend()
 end
 
 function OnMsg.ClassesBuilt()
-	local orig_Attach = MarsCompanion.Attach
+	local ChoOrig_Attach = MarsCompanion.Attach
 	function MarsCompanion:Attach(obj, ...)
-		orig_Attach(self, obj, ...)
+		ChoOrig_Attach(self, obj, ...)
 
 		local valid = IsValid(obj)
 		if not valid or valid and obj.class ~= "ParSystem" then

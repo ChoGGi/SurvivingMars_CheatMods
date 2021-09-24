@@ -113,16 +113,16 @@ function OnMsg.SubsurfaceDepositRevealed(d)
 	end
 end
 
-local orig_TerrainDepositMarker_SpawnDeposit = TerrainDepositMarker.SpawnDeposit
+local ChoOrig_TerrainDepositMarker_SpawnDeposit = TerrainDepositMarker.SpawnDeposit
 function TerrainDepositMarker:SpawnDeposit(...)
-	local d = orig_TerrainDepositMarker_SpawnDeposit(self, ...)
+	local d = ChoOrig_TerrainDepositMarker_SpawnDeposit(self, ...)
 	d:SetOpacity(mod_HideSigns and 0 or 100)
 	return d
 end
 
-local orig_SubsurfaceAnomalyMarker_SpawnDeposit = SubsurfaceAnomalyMarker.SpawnDeposit
+local ChoOrig_SubsurfaceAnomalyMarker_SpawnDeposit = SubsurfaceAnomalyMarker.SpawnDeposit
 function SubsurfaceAnomalyMarker:SpawnDeposit(...)
-	local a = orig_SubsurfaceAnomalyMarker_SpawnDeposit(self, ...)
+	local a = ChoOrig_SubsurfaceAnomalyMarker_SpawnDeposit(self, ...)
 	if mod_AlienAnomaly then
 		-- needs a delay for some reason
 		CreateRealTimeThread(function()
@@ -212,22 +212,22 @@ UpdateOptions = function()
 	end
 end
 
-local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
+local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding.GameInit(...)
 	if mod_ShowConstruct and mod_HideSigns then
 		UpdateOpacity("SubsurfaceDeposit", false)
 		UpdateOpacity("EffectDeposit", false)
 		UpdateOpacity("TerrainDeposit", false)
 	end
-	return orig_CursorBuilding_GameInit(...)
+	return ChoOrig_CursorBuilding_GameInit(...)
 end
 
-local orig_CursorBuilding_Done = CursorBuilding.Done
+local ChoOrig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding.Done(...)
 	if mod_ShowConstruct and mod_HideSigns then
 		UpdateOpacity("SubsurfaceDeposit", true)
 		UpdateOpacity("EffectDeposit", true)
 		UpdateOpacity("TerrainDeposit", true)
 	end
-	return orig_CursorBuilding_Done(...)
+	return ChoOrig_CursorBuilding_Done(...)
 end

@@ -21,9 +21,9 @@ local function UpdateMax(self)
 	end
 end
 
-local orig_GetWaterProductionText = WaterProducer.GetWaterProductionText
+local ChoOrig_GetWaterProductionText = WaterProducer.GetWaterProductionText
 function WaterProducer:GetWaterProductionText(...)
-	local ret = orig_GetWaterProductionText(self, ...)
+	local ret = ChoOrig_GetWaterProductionText(self, ...)
 
 	if not self:IsKindOf("MoistureVaporator") then
 		return ret
@@ -43,8 +43,8 @@ function WaterProducer:GetWaterProductionText(...)
 
 end
 
-local orig_UpdateNearbyVaporatorsCount = MoistureVaporator.UpdateNearbyVaporatorsCount
+local ChoOrig_UpdateNearbyVaporatorsCount = MoistureVaporator.UpdateNearbyVaporatorsCount
 function MoistureVaporator:UpdateNearbyVaporatorsCount(...)
 	UpdateMax(self)
-	return orig_UpdateNearbyVaporatorsCount(self, ...)
+	return ChoOrig_UpdateNearbyVaporatorsCount(self, ...)
 end

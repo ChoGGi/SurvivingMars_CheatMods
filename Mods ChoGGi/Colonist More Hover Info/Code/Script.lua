@@ -19,7 +19,7 @@ local function UpdateColour(amount)
 	end
 end
 
-local orig_XRecreateRolloverWindow = XRecreateRolloverWindow
+local ChoOrig_XRecreateRolloverWindow = XRecreateRolloverWindow
 function XRecreateRolloverWindow(win, ...)
 	local context = win.context
 	if IsKindOf(context, "Colonist") and SelectedObj == context.workplace then
@@ -50,5 +50,5 @@ function XRecreateRolloverWindow(win, ...)
 		win.RolloverText = safe_data or win.RolloverText
 	end
 
-	return orig_XRecreateRolloverWindow(win, ...)
+	return ChoOrig_XRecreateRolloverWindow(win, ...)
 end

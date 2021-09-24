@@ -21,6 +21,7 @@ local function EnableTerra()
 	g_NoTerraforming = false
 
 	local UICity = UICity
+	local UIColony = UIColony
 
 	-- backup some tables before we call InitResearch
 	local research_queue = UIColony.research_queue
@@ -32,7 +33,7 @@ local function EnableTerra()
 	local OutsourceResearchOrders = UIColony.OutsourceResearchOrders
 
 	-- we want this func to just return the new field so it skips the other ones
-	local orig_GetAvailablePresets = GetAvailablePresets
+	local ChoOrig_GetAvailablePresets = GetAvailablePresets
 	GetAvailablePresets = function()
 		return {TechFields.Terraforming}
 	end
@@ -40,7 +41,7 @@ local function EnableTerra()
 	UIColony:InitResearch()
 
 	-- restore old func
-	GetAvailablePresets = orig_GetAvailablePresets
+	GetAvailablePresets = ChoOrig_GetAvailablePresets
 
 	-- and restore tables
 	UIColony.research_queue = research_queue

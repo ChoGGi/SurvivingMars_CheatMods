@@ -19,10 +19,10 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local orig_CalcWasteRockAmount = CalcWasteRockAmount
+local ChoOrig_CalcWasteRockAmount = CalcWasteRockAmount
 function CalcWasteRockAmount(...)
 	if mod_MultiplyDivide then
-		return orig_CalcWasteRockAmount(...) / mod_Amount
+		return ChoOrig_CalcWasteRockAmount(...) / mod_Amount
 	end
-	return orig_CalcWasteRockAmount(...) * mod_Amount
+	return ChoOrig_CalcWasteRockAmount(...) * mod_Amount
 end

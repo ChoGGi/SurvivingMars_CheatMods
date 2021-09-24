@@ -2,9 +2,9 @@
 
 local mod_EnableMod
 
-local orig_Open
+local ChoOrig_Open
 local function new_Open(...)
-	orig_Open(...)
+	ChoOrig_Open(...)
 
 	if not mod_EnableMod then
 		return
@@ -38,8 +38,8 @@ function OnMsg.ClassesPostprocess()
 		xtemplate = xtemplate[idx]
 
 		-- don't want to save my new func as orig
-		if type(orig_Open) ~= "function" then
-			orig_Open = xtemplate.func
+		if type(ChoOrig_Open) ~= "function" then
+			ChoOrig_Open = xtemplate.func
 		end
 
 		xtemplate.func = new_Open

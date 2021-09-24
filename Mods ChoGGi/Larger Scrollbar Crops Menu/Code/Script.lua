@@ -1,8 +1,8 @@
 -- See LICENSE for terms
 
-local orig_ItemMenuBase_InitButtonsUI = ItemMenuBase.InitButtonsUI
+local ChoOrig_ItemMenuBase_InitButtonsUI = ItemMenuBase.InitButtonsUI
 function ItemMenuBase:InitButtonsUI(...)
-	local ret = orig_ItemMenuBase_InitButtonsUI(self, ...)
+	local ret = ChoOrig_ItemMenuBase_InitButtonsUI(self, ...)
 	local contain = self.idContainer
 	if contain.parent and contain.parent.class == "InfopanelItems" then
 		for i = 1, #contain do

@@ -24,6 +24,8 @@ local skips = {
 	OutsideStatueSmall = true,
 	OutsideStatue = true,
 	OutsideObelisk = true,
+	OutsideObelisk = true,
+	LightTripod = true,
 }
 function OnMsg.GatherUIBuildingPrerequisites(template)
 	if not mod_EnableMod or skips[template.id] then
@@ -31,7 +33,8 @@ function OnMsg.GatherUIBuildingPrerequisites(template)
 	end
 
 	local class = g_Classes[template.template_class]
-	if not class then
+	-- they added a bunch of stuff in picard that uses "false"...
+	if not class and template.template_class ~= "false" then
 		print("Borked Mod Building Template:", ValueToLuaCode(template))
 
 		CreateMessageBox(

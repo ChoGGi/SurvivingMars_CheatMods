@@ -21,7 +21,7 @@ end
 
 function OnMsg.ClassesPostprocess()
 	--
-	local orig_Colonist_EnterBuilding = Colonist.EnterBuilding
+	local ChoOrig_Colonist_EnterBuilding = Colonist.EnterBuilding
 	function Colonist:EnterBuilding(building, ...)
 		if mod_EnableMod and self.daily_interest ~= "" and IsValid(building)
 			and building:HasMember("IsOneOfInterests") and building:IsOneOfInterests(self.daily_interest)
@@ -31,7 +31,7 @@ function OnMsg.ClassesPostprocess()
 			self.daily_interest_fail = 0
 		end
 
-		return orig_Colonist_EnterBuilding(self, building, ...)
+		return ChoOrig_Colonist_EnterBuilding(self, building, ...)
 	end
 	--
 end

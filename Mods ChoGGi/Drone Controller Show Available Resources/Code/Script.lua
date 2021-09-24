@@ -163,9 +163,9 @@ local function ClearOldText()
 end
 
 -- add text info to building placement
-local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
+local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit(...)
-	local ret = orig_CursorBuilding_GameInit(self, ...)
+	local ret = ChoOrig_CursorBuilding_GameInit(self, ...)
 
 	-- self-suff domes will fire CursorBuilding:GameInit more than once, so we get whatever is last?
 	ClearOldText()
@@ -204,9 +204,9 @@ function CursorBuilding:GameInit(...)
 	return ret
 end
 
-local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
+local ChoOrig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
 function CursorBuilding:UpdateShapeHexes(...)
-	local ret = orig_CursorBuilding_UpdateShapeHexes(self, ...)
+	local ret = ChoOrig_CursorBuilding_UpdateShapeHexes(self, ...)
 
 	if txt_ctrl and self.ChoGGi_UpdateAvailableResources then
 		-- build list of objs within distance to cursor placing thingy
@@ -223,8 +223,8 @@ function CursorBuilding:UpdateShapeHexes(...)
 	return ret
 end
 
-local orig_CursorBuilding_Done = CursorBuilding.Done
+local ChoOrig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding.Done(...)
 	ClearOldText()
-	return orig_CursorBuilding_Done(...)
+	return ChoOrig_CursorBuilding_Done(...)
 end

@@ -27,17 +27,17 @@ local function CanInteractWithObject_local(interact, obj)
 	end
 end
 
-local orig_BaseRover_CanInteractWithObject = BaseRover.CanInteractWithObject
+local ChoOrig_BaseRover_CanInteractWithObject = BaseRover.CanInteractWithObject
 function BaseRover:CanInteractWithObject(obj, interaction_mode, ...)
 	local ret1, ret2 = CanInteractWithObject_local(self.interaction_mode, obj, interaction_mode)
 	if ret1 then
 		return ret1, ret2
 	end
 
-	return orig_BaseRover_CanInteractWithObject(self, obj, interaction_mode, ...)
+	return ChoOrig_BaseRover_CanInteractWithObject(self, obj, interaction_mode, ...)
 end
 
-local orig_BaseRover_InteractWithObject = BaseRover.InteractWithObject
+local ChoOrig_BaseRover_InteractWithObject = BaseRover.InteractWithObject
 function BaseRover:InteractWithObject(obj, interaction_mode, ...)
 	local garage = g_ChoGGi_RCGarages
 	if (self.interaction_mode == false or self.interaction_mode == "default" or self.interaction_mode == "move")
@@ -48,27 +48,27 @@ function BaseRover:InteractWithObject(obj, interaction_mode, ...)
 		SetUnitControlInteractionMode(self, false) --toggle button
 	end
 
-	return orig_BaseRover_InteractWithObject(self, obj, interaction_mode, ...)
+	return ChoOrig_BaseRover_InteractWithObject(self, obj, interaction_mode, ...)
 end
 
 -- there isn't a BaseRover:GotoFromUser, or use Unit as fallback (just in case it gets added)
-local orig_BaseRover_GotoFromUser = BaseRover.GotoFromUser or Unit.GotoFromUser
+local ChoOrig_BaseRover_GotoFromUser = BaseRover.GotoFromUser or Unit.GotoFromUser
 function BaseRover:GotoFromUser(...)
 	-- block rover from goto when in garage
 	if self.ChoGGi_InGarage then
 		return
 	end
-	return orig_BaseRover_GotoFromUser(self, ...)
+	return ChoOrig_BaseRover_GotoFromUser(self, ...)
 end
 -- maybe add SetCommand
 
 -- block RCRover from dropping the poor little drones in the void
-local orig_RCRover_Siege = RCRover.Siege
+local ChoOrig_RCRover_Siege = RCRover.Siege
 function RCRover:Siege(...)
 	if self.ChoGGi_InGarage then
 		Sleep(1000)
 	else
-		return orig_RCRover_Siege(self, ...)
+		return ChoOrig_RCRover_Siege(self, ...)
 	end
 end
 
@@ -94,12 +94,12 @@ function OnMsg.LoadGame()
 	end
 end
 
-local orig_BaseRover_Appear = BaseRover.Appear or Unit.Appear
+local ChoOrig_BaseRover_Appear = BaseRover.Appear or Unit.Appear
 function BaseRover:Appear(...)
 	if self.ChoGGi_InGarage then
 		RestoreMissingRover(self)
 	end
-	return orig_BaseRover_Appear(self, ...)
+	return ChoOrig_BaseRover_Appear(self, ...)
 end
 
 function BaseRover:ChoGGi_UseGarage(garage)
@@ -127,24 +127,24 @@ end
 function OnMsg.ClassesBuilt()
 
 	if rawget(g_Classes, "PMSAttackRover") then
-		local orig_PMSAttackRover_CanInteractWithObject = PMSAttackRover.CanInteractWithObject
+		local ChoOrig_PMSAttackRover_CanInteractWithObject = PMSAttackRover.CanInteractWithObject
 		function PMSAttackRover:CanInteractWithObject(obj, interaction_mode, ...)
 			local ret1, ret2 = CanInteractWithObject_local(self, obj, interaction_mode)
 			if ret1 then
 				return ret1, ret2
 			end
-			return orig_PMSAttackRover_CanInteractWithObject(self, obj, interaction_mode, ...)
+			return ChoOrig_PMSAttackRover_CanInteractWithObject(self, obj, interaction_mode, ...)
 		end
 	end
 
 	if rawget(g_Classes, "NASAAttackRover") then
-		local orig_NASAAttackRover_CanInteractWithObject = NASAAttackRover.CanInteractWithObject
+		local ChoOrig_NASAAttackRover_CanInteractWithObject = NASAAttackRover.CanInteractWithObject
 		function NASAAttackRover:CanInteractWithObject(obj, interaction_mode, ...)
 			local ret1, ret2 = CanInteractWithObject_local(self, obj, interaction_mode)
 			if ret1 then
 				return ret1, ret2
 			end
-			return orig_NASAAttackRover_CanInteractWithObject(self, obj, interaction_mode, ...)
+			return ChoOrig_NASAAttackRover_CanInteractWithObject(self, obj, interaction_mode, ...)
 		end
 	end
 

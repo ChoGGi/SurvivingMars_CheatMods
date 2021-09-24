@@ -21,7 +21,7 @@ end
 
 local IsValidThread = IsValidThread
 
-local orig_ToggleDemolish = Demolishable.ToggleDemolish
+local ChoOrig_ToggleDemolish = Demolishable.ToggleDemolish
 function Demolishable:ToggleDemolish(...)
 	-- add a slight delay to make it more reliable?
 	CreateGameTimeThread(function()
@@ -30,5 +30,5 @@ function Demolishable:ToggleDemolish(...)
 	end)
 
 	-- there's no return, but if a modder adds one
-	return orig_ToggleDemolish(self, ...)
+	return ChoOrig_ToggleDemolish(self, ...)
 end

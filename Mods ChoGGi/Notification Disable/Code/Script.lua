@@ -31,12 +31,12 @@ local function SkipNot(func, id, ...)
 end
 
 -- pause when new notif happens
-local orig_AddOnScreenNotification = AddOnScreenNotification
+local ChoOrig_AddOnScreenNotification = AddOnScreenNotification
 function AddOnScreenNotification(id, ...)
-	return SkipNot(orig_AddOnScreenNotification, id, ...)
+	return SkipNot(ChoOrig_AddOnScreenNotification, id, ...)
 end
 
-local orig_AddCustomOnScreenNotification = AddCustomOnScreenNotification
+local ChoOrig_AddCustomOnScreenNotification = AddCustomOnScreenNotification
 function AddCustomOnScreenNotification(id, ...)
-	return SkipNot(orig_AddCustomOnScreenNotification, id, ...)
+	return SkipNot(ChoOrig_AddCustomOnScreenNotification, id, ...)
 end

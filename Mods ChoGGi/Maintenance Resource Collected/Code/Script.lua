@@ -4,7 +4,7 @@ local r = const.ResourceScale
 local tag = const.TagLookupTable
 local type = type
 
-local orig_GetMaintenanceRolloverText = RequiresMaintenance.GetMaintenanceRolloverText
+local ChoOrig_GetMaintenanceRolloverText = RequiresMaintenance.GetMaintenanceRolloverText
 function RequiresMaintenance:GetMaintenanceRolloverText(...)
 	local text = ""
 	local req = self.maintenance_resource_request
@@ -18,5 +18,5 @@ function RequiresMaintenance:GetMaintenanceRolloverText(...)
 		}
 	end
 
-	return orig_GetMaintenanceRolloverText(self, ...) .. text
+	return ChoOrig_GetMaintenanceRolloverText(self, ...) .. text
 end

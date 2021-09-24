@@ -53,22 +53,22 @@ local function ChangeRemove(obj, toggle)
 	ChangeColour(obj, toggle)
 end
 
-local orig_ToggleDemolish = Demolishable.ToggleDemolish
+local ChoOrig_ToggleDemolish = Demolishable.ToggleDemolish
 function Demolishable:ToggleDemolish(...)
 	CreateRealTimeThread(ChangeDemo, self)
-	return orig_ToggleDemolish(self, ...)
+	return ChoOrig_ToggleDemolish(self, ...)
 end
 
-local orig_DestroyedClear = Building.DestroyedClear
+local ChoOrig_DestroyedClear = Building.DestroyedClear
 function Building:DestroyedClear(...)
 	CreateRealTimeThread(ChangeRemove, self, true)
-	return orig_DestroyedClear(self, ...)
+	return ChoOrig_DestroyedClear(self, ...)
 end
 
-local orig_CancelDestroyedClear = Building.CancelDestroyedClear
+local ChoOrig_CancelDestroyedClear = Building.CancelDestroyedClear
 function Building:CancelDestroyedClear(...)
 	CreateRealTimeThread(ChangeRemove, self, false)
-	return orig_CancelDestroyedClear(self, ...)
+	return ChoOrig_CancelDestroyedClear(self, ...)
 end
 
 

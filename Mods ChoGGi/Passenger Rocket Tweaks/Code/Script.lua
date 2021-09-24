@@ -334,12 +334,12 @@ local function AddUIStuff(content)
 	content.idScrollRight:SetMinWidth(24)
 
 	-- back button
-	local orig_back = content.idToolBar.idback.OnPress
+	local ChoOrig_back = content.idToolBar.idback.OnPress
 	content.idToolBar.idback.OnPress = function(...)
 		local varargs = ...
 		local function CallBackFunc(answer)
 			if answer then
-				orig_back(varargs)
+				ChoOrig_back(varargs)
 			end
 		end
 		ChoGGi.ComFuncs.QuestionBox(
@@ -363,9 +363,9 @@ local function ResDlg(dlg)
 	BuildSpecialistLists()
 
 	-- replace old func with our piggyback
-	local orig_SetMode = dlg.SetMode
+	local ChoOrig_SetMode = dlg.SetMode
 	function dlg:SetMode(mode, ...)
-		orig_SetMode(self, mode, ...)
+		ChoOrig_SetMode(self, mode, ...)
 		if mode == "passengers" then
 			local content = self.idTemplate.idPassengers
 
@@ -376,9 +376,9 @@ local function ResDlg(dlg)
 			pass_thread = CreateRealTimeThread(AddUIStuff, content)
 
 			-- when we switch back from filter mode
-			local orig_SetMode2 = content.SetMode
+			local ChoOrig_SetMode2 = content.SetMode
 			function content:SetMode(mode, ...)
-				orig_SetMode2(self, mode, ...)
+				ChoOrig_SetMode2(self, mode, ...)
 				if mode == "review" then
 					if IsValidThread(pass_thread) then
 						DeleteThread(pass_thread)
@@ -391,9 +391,9 @@ local function ResDlg(dlg)
 	end
 end
 
-local orig_OpenDialog = OpenDialog
+local ChoOrig_OpenDialog = OpenDialog
 function OpenDialog(dlg_str, ...)
-	local dlg = orig_OpenDialog(dlg_str, ...)
+	local dlg = ChoOrig_OpenDialog(dlg_str, ...)
 	if dlg_str == "Resupply" then
 		ResDlg(dlg)
 	end

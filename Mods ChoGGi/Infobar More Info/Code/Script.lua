@@ -521,26 +521,26 @@ end
 --~ local ResourceOverview = ResourceOverview
 local InfobarObj = InfobarObj
 
-local orig_InfobarObj_GetElectricityGridRollover = InfobarObj.GetElectricityGridRollover
+local ChoOrig_InfobarObj_GetElectricityGridRollover = InfobarObj.GetElectricityGridRollover
 function InfobarObj.GetElectricityGridRollover(...)
 	if not mod_EnableMod then
-		return orig_InfobarObj_GetElectricityGridRollover(...)
+		return ChoOrig_InfobarObj_GetElectricityGridRollover(...)
 	end
 
 	local ret = BuildRollover(nil, elec_grid_info, UICity.electricity or "")
 
 	-- no grids so return orig func
-	return not ret and orig_InfobarObj_GetElectricityGridRollover(...)
+	return not ret and ChoOrig_InfobarObj_GetElectricityGridRollover(...)
 		or table.concat(ret)
 end
 
 local infobar_cache
 local terminal_GetMousePos = terminal.GetMousePos
 
-local orig_InfobarObj_GetLifesupportGridRollover = InfobarObj.GetLifesupportGridRollover
+local ChoOrig_InfobarObj_GetLifesupportGridRollover = InfobarObj.GetLifesupportGridRollover
 function InfobarObj.GetLifesupportGridRollover(...)
 	if not mod_EnableMod then
-		return orig_InfobarObj_GetLifesupportGridRollover(...)
+		return ChoOrig_InfobarObj_GetLifesupportGridRollover(...)
 	end
 
 	-- get infobar
@@ -573,7 +573,7 @@ function InfobarObj.GetLifesupportGridRollover(...)
 	end
 
 	-- no grids so return orig func
-	return not ret and orig_InfobarObj_GetLifesupportGridRollover(...)
+	return not ret and ChoOrig_InfobarObj_GetLifesupportGridRollover(...)
 		or table.concat(ret)
 end
 
@@ -652,10 +652,10 @@ local deposit_info = {
 
 for func, res_name in pairs(resources) do
 	local func_name = "Get" .. func .. "Rollover"
-	local orig_func = InfobarObj[func_name]
+	local ChoOrig_func = InfobarObj[func_name]
 	InfobarObj[func_name] = function(self, ...)
 		local res_info = g_ResourceOverviewCity[UICity.map_id]
-		local ret = ResRemaining(self, res_name, orig_func(self, ...), res_info)
+		local ret = ResRemaining(self, res_name, ChoOrig_func(self, ...), res_info)
 		-- deposit remaining info
 		if deposit_info[res_name] then
 			ret = DepositRemaining(self, res_name, ret)
@@ -683,9 +683,9 @@ local colonist_age_data = {
 	martianborn = 0,
 	earthborn = 0,
 }
-local orig_InfobarObj_GetColonistsRollover = InfobarObj.GetColonistsRollover
+local ChoOrig_InfobarObj_GetColonistsRollover = InfobarObj.GetColonistsRollover
 function InfobarObj.GetColonistsRollover(...)
-	local ret = orig_InfobarObj_GetColonistsRollover(...)
+	local ret = ChoOrig_InfobarObj_GetColonistsRollover(...)
 
 	if not mod_EnableMod then
 		return ret
@@ -787,13 +787,13 @@ function InfobarObj:ChoGGi_GetBrokenDrones()
 end
 
 local shuttlehubcount_str = {302535920011373, "<left>Shuttles Max/Total/Current<right><max>/<total>/<current>"}
-local orig_InfobarObj_GetDronesRollover = InfobarObj.GetDronesRollover
+local ChoOrig_InfobarObj_GetDronesRollover = InfobarObj.GetDronesRollover
 function InfobarObj:GetDronesRollover(...)
 	if not mod_EnableMod then
-		return orig_InfobarObj_GetDronesRollover(self, ...)
+		return ChoOrig_InfobarObj_GetDronesRollover(self, ...)
 	end
 
-	local ret = orig_InfobarObj_GetDronesRollover(self, ...)
+	local ret = ChoOrig_InfobarObj_GetDronesRollover(self, ...)
 	local list = ret[1]
 
 	local _, count = self:ChoGGi_GetBrokenDrones()
@@ -846,13 +846,13 @@ end
 
 -- max food consumption
 local foodcon_str = {3644, "Food consumption<right><food(FoodConsumedByConsumptionYesterday)>"}
-local orig_InfobarObj_GetFoodRollover = InfobarObj.GetFoodRollover
+local ChoOrig_InfobarObj_GetFoodRollover = InfobarObj.GetFoodRollover
 function InfobarObj.GetFoodRollover(...)
 	if not mod_EnableMod then
-		return orig_InfobarObj_GetFoodRollover(...)
+		return ChoOrig_InfobarObj_GetFoodRollover(...)
 	end
 
-	local ret = orig_InfobarObj_GetFoodRollover(...)
+	local ret = ChoOrig_InfobarObj_GetFoodRollover(...)
 	local list = ret[1]
 
 	local eat_food_per_visit = g_Consts.eat_food_per_visit
@@ -886,21 +886,21 @@ local str_id_to_spec = {
 	[3857] = "security",
 }
 
-local orig_InfobarObj_GetJobsRollover = InfobarObj.GetJobsRollover
+local ChoOrig_InfobarObj_GetJobsRollover = InfobarObj.GetJobsRollover
 function InfobarObj.GetJobsRollover(...)
 
 
 	-- fix me?
-	do	return orig_InfobarObj_GetJobsRollover(...) end
+	do	return ChoOrig_InfobarObj_GetJobsRollover(...) end
 
 
 
 
 	if not mod_EnableMod then
-		return orig_InfobarObj_GetJobsRollover(...)
+		return ChoOrig_InfobarObj_GetJobsRollover(...)
 	end
 
-	local ret = orig_InfobarObj_GetJobsRollover(...)
+	local ret = ChoOrig_InfobarObj_GetJobsRollover(...)
 	local list = ret[1]
 
 	-- reset or add counts
@@ -950,16 +950,16 @@ local function ReturnWorking(obj)
 	return obj.working
 end
 
-local orig_RequiresMaintenance_GetDailyMaintenance = RequiresMaintenance.GetDailyMaintenance
+local ChoOrig_RequiresMaintenance_GetDailyMaintenance = RequiresMaintenance.GetDailyMaintenance
 function RequiresMaintenance:GetDailyMaintenance(...)
 	if not mod_EnableMod then
-		return orig_RequiresMaintenance_GetDailyMaintenance(self, ...)
+		return ChoOrig_RequiresMaintenance_GetDailyMaintenance(self, ...)
 	end
 
 	-- so mods can change and have it reflect in infobar
 	tribby_range = tribby_range or TriboelectricScrubber.UIRange
 	-- only add main amount if we're not in range of a tribby
 	if not GetRealm(self):MapGet(self, "hex", tribby_range, "TriboelectricScrubber", ReturnWorking)[1] then
-		return orig_RequiresMaintenance_GetDailyMaintenance(self, ...)
+		return ChoOrig_RequiresMaintenance_GetDailyMaintenance(self, ...)
 	end
 end

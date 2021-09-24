@@ -30,10 +30,10 @@ local function SortByDist(a, b)
 	return a:GetVisualDist2D(sort_obj) < b:GetVisualDist2D(sort_obj)
 end
 
-local orig_CargoTransporter_ExpeditionFindDrones = CargoTransporter.ExpeditionFindDrones
+local ChoOrig_CargoTransporter_ExpeditionFindDrones = CargoTransporter.ExpeditionFindDrones
 function CargoTransporter:ExpeditionFindDrones(num_drones, ...)
 	if not mod_EnableDrones then
-		return orig_CargoTransporter_ExpeditionFindDrones(self, num_drones, ...)
+		return ChoOrig_CargoTransporter_ExpeditionFindDrones(self, num_drones, ...)
 	end
 
 	-- wait to have enough drones
@@ -93,10 +93,10 @@ end
 local function adult_filter(_, colonist)
 	return not colonist.traits.Child
 end
-local orig_CargoTransporter_ExpeditionGatherCrew = CargoTransporter.ExpeditionGatherCrew
+local ChoOrig_CargoTransporter_ExpeditionGatherCrew = CargoTransporter.ExpeditionGatherCrew
 function CargoTransporter:ExpeditionGatherCrew(num_crew, label, quick_load, ...)
 	if not mod_EnableColonists then
-		return orig_CargoTransporter_ExpeditionGatherCrew(self, num_crew, label, quick_load, ...)
+		return ChoOrig_CargoTransporter_ExpeditionGatherCrew(self, num_crew, label, quick_load, ...)
 	end
 
 	-- instead of going through UICity.label, we'll go through each dome in order of distance to rocket

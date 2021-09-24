@@ -105,9 +105,9 @@ OnMsg.WaterDepositRevealed = DepositRevealed
 OnMsg.SubsurfaceDepositRevealed = DepositRevealed
 
 -- needed till they add a Msg like above
-local orig_SpawnDeposit = TerrainDepositMarker.SpawnDeposit
+local ChoOrig_SpawnDeposit = TerrainDepositMarker.SpawnDeposit
 function TerrainDepositMarker.SpawnDeposit(...)
-	local deposit = orig_SpawnDeposit(...)
+	local deposit = ChoOrig_SpawnDeposit(...)
 	DepositRevealed(deposit)
 	return deposit
 end

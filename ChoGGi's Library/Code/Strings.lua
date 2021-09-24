@@ -45,12 +45,12 @@ ChoGGi.ComFuncs.Translate = Translate
 
 do -- fix missing tech defs/tourist description in main menu/new game (expectations of UICity)
 
-	local orig_TFormat_has_researched = TFormat.has_researched
+	local ChoOrig_TFormat_has_researched = TFormat.has_researched
 	function TFormat.has_researched(...)
 		if not UICity then
 			return false
 		end
-		return orig_TFormat_has_researched(...)
+		return ChoOrig_TFormat_has_researched(...)
 	end
 
 	local fake_city = {
@@ -58,7 +58,7 @@ do -- fix missing tech defs/tourist description in main menu/new game (expectati
 		label_modifiers = {},
 	}
 
-	local orig_BuildingInfoLine = BuildingInfoLine
+	local ChoOrig_BuildingInfoLine = BuildingInfoLine
 	local procall = procall
 
 	function BuildingInfoLine(...)
@@ -69,7 +69,7 @@ do -- fix missing tech defs/tourist description in main menu/new game (expectati
 		end
 
 		-- just to on the safe side (procall)
-		local _, ret = procall(orig_BuildingInfoLine, ...)
+		local _, ret = procall(ChoOrig_BuildingInfoLine, ...)
 
 		if UICity == fake_city then
 			UICity = false
@@ -81,8 +81,8 @@ do -- fix missing tech defs/tourist description in main menu/new game (expectati
 
 	-- we don't need to fake them after UICity is created
 	local function ResetFunc()
-		BuildingInfoLine = orig_BuildingInfoLine
-		TFormat.has_researched = orig_TFormat_has_researched
+		BuildingInfoLine = ChoOrig_BuildingInfoLine
+		TFormat.has_researched = ChoOrig_TFormat_has_researched
 	end
 	OnMsg.CityStart = ResetFunc
 	OnMsg.LoadGame = ResetFunc

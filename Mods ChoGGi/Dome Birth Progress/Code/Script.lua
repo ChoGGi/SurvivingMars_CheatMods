@@ -1,8 +1,8 @@
 -- See LICENSE for terms
 
-local orig_Community_GetBirthText = Community.GetBirthText
+local ChoOrig_Community_GetBirthText = Community.GetBirthText
 function Community:GetBirthText(...)
-	local info = orig_Community_GetBirthText(self, ...)
+	local info = ChoOrig_Community_GetBirthText(self, ...)
 
 	local list = info[1]
 	list.j = list.j + 1

@@ -32,16 +32,16 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local orig_Building_CalcRefundAmount = Building.CalcRefundAmount
+local ChoOrig_Building_CalcRefundAmount = Building.CalcRefundAmount
 function Building:CalcRefundAmount(total_amount, ...)
 	if mod_EnableMod then
 		-- CalcRefundAmount does a /2, just we just do a *2 and call it a day
 		total_amount = floatfloor((total_amount * 2) * mod_PercentDrop)
 	end
-	return orig_Building_CalcRefundAmount(self, total_amount, ...)
+	return ChoOrig_Building_CalcRefundAmount(self, total_amount, ...)
 end
 
-local orig_BaseRover_GetRefundResources = BaseRover.GetRefundResources
+local ChoOrig_BaseRover_GetRefundResources = BaseRover.GetRefundResources
 function BaseRover:GetRefundResources(...)
 	if mod_EnableMod then
 		if not self.on_demolish_resource_refund_ChoGGi then
@@ -54,5 +54,5 @@ function BaseRover:GetRefundResources(...)
 			self.on_demolish_resource_refund_ChoGGi = nil
 		end
 	end
-	return orig_BaseRover_GetRefundResources(self, ...)
+	return ChoOrig_BaseRover_GetRefundResources(self, ...)
 end

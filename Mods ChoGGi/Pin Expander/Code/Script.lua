@@ -440,19 +440,19 @@ local skip_menu_classes = {
 	"OrbitalProbe",
 }
 
-local orig_PinsDlg_InitPinButton = PinsDlg.InitPinButton
+local ChoOrig_PinsDlg_InitPinButton = PinsDlg.InitPinButton
 function PinsDlg:InitPinButton(button, ...)
 	-- fire off the orig func so we have a button to work with
-	orig_PinsDlg_InitPinButton(self, button, ...)
+	ChoOrig_PinsDlg_InitPinButton(self, button, ...)
 
 	-- block orig func unless ctrl
-	local orig_button_OnPress = button.OnPress
+	local ChoOrig_button_OnPress = button.OnPress
 	function button.OnPress(button_obj, gamepad, ...)
 		-- If pressing ctrl then abort
 		if IsControlPressed() or button_obj:IsKindOfClasses(skip_menu_classes) then
-			return orig_button_OnPress(button_obj, gamepad, ...)
+			return ChoOrig_button_OnPress(button_obj, gamepad, ...)
 		end
-		return OnPress(self, orig_button_OnPress, button_obj, gamepad, ...)
+		return OnPress(self, ChoOrig_button_OnPress, button_obj, gamepad, ...)
 	end
 
 end

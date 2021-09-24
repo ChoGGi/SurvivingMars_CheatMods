@@ -120,20 +120,20 @@ function OnMsg.ClassesPostprocess()
 end
 
 -- add modifier to each dome for colonist oxygen use
-local orig_Dome_Init = Dome.Init
+local ChoOrig_Dome_Init = Dome.Init
 function Dome:Init(...)
   self.ChoGGi_OxygenManagement_oxygen_modifier = (ObjectModifier:new({
     target = self,
     prop = "air_consumption"
   }))
-	return orig_Dome_Init(self, ...)
+	return ChoOrig_Dome_Init(self, ...)
 end
 
 local function AirCount(dome, label)
 	return #(dome.labels[label] or "") * oxygen_mod_options[label]
 end
 
-local orig_Dome_BuildingUpdate = Dome.BuildingUpdate
+local ChoOrig_Dome_BuildingUpdate = Dome.BuildingUpdate
 function Dome:BuildingUpdate(...)
 	-- I have a mod to toggle opened domes (someone could make one for individual domes)
 	if self:IsOpen() then
@@ -146,5 +146,5 @@ function Dome:BuildingUpdate(...)
 		self.ChoGGi_OxygenManagement_oxygen_modifier:Change(count, 0)
 	end
 
-	return orig_Dome_BuildingUpdate(self, ...)
+	return ChoOrig_Dome_BuildingUpdate(self, ...)
 end

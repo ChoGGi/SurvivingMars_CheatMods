@@ -295,12 +295,12 @@ function Solaria:StartWorkCycle(unit)
 	end
 end
 
-local orig_Workplace_OnDestroyed = Workplace.OnDestroyed
+local ChoOrig_Workplace_OnDestroyed = Workplace.OnDestroyed
 function Workplace:OnDestroyed()
 	if self.SolariaTelepresence_Remote_Controlled then
 		self:RemoveBuilding()
 	end
-	orig_Workplace_OnDestroyed(self)
+	ChoOrig_Workplace_OnDestroyed(self)
 end
 
 function OnMsg.ClassesPostprocess()
@@ -407,9 +407,9 @@ Right click in list to view (closes menu).]]))
 
 	-- so we can build without NoNearbyWorkers limit
 	local NoNearbyWorkers = ConstructionStatus.NoNearbyWorkers
-	local orig_ConstructionController_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
+	local ChoOrig_ConstructionController_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
 	function ConstructionController:UpdateConstructionStatuses(...)
-		local ret = orig_ConstructionController_UpdateConstructionStatuses(self, ...)
+		local ret = ChoOrig_ConstructionController_UpdateConstructionStatuses(self, ...)
 
 		local statuses = self.construction_statuses or ""
 		for i = 1, #statuses do

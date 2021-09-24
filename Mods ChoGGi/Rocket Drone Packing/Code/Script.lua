@@ -87,7 +87,7 @@ end
 
 -- UseDronePrefab() needs a return to remove from city.drone_prefabs count
 -- and the Embark command keeps them stuck inside the rocket forever
-local orig_RocketBase_SpawnDrone = RocketBase.SpawnDrone
+local ChoOrig_RocketBase_SpawnDrone = RocketBase.SpawnDrone
 local function mine_RocketBase_SpawnDrone(self)
 	if #self.drones >= self:GetMaxDrones() then
 		return
@@ -105,10 +105,10 @@ local function mine_RocketBase_SpawnDrone(self)
 end
 RocketBase.SpawnDrone = mine_RocketBase_SpawnDrone
 
-local orig_RocketBase_SpawnDronesFromEarth = RocketBase.SpawnDronesFromEarth
+local ChoOrig_RocketBase_SpawnDronesFromEarth = RocketBase.SpawnDronesFromEarth
 function RocketBase.SpawnDronesFromEarth(...)
-	RocketBase.SpawnDrone = orig_RocketBase_SpawnDrone
-	orig_RocketBase_SpawnDronesFromEarth(...)
+	RocketBase.SpawnDrone = ChoOrig_RocketBase_SpawnDrone
+	ChoOrig_RocketBase_SpawnDronesFromEarth(...)
 	RocketBase.SpawnDrone = mine_RocketBase_SpawnDrone
 end
 

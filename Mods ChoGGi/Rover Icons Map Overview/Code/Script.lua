@@ -31,9 +31,9 @@ local function UpdateIcons(time, direction, rovers)
 	ResumePassEdits("ChoGGi.RoverIconsMapOverview.Update")
 end
 
-local orig_OverviewModeDialog_ScaleSmallObjects = OverviewModeDialog.ScaleSmallObjects
+local ChoOrig_OverviewModeDialog_ScaleSmallObjects = OverviewModeDialog.ScaleSmallObjects
 function OverviewModeDialog:ScaleSmallObjects(time, direction, ...)
-	local ret = orig_OverviewModeDialog_ScaleSmallObjects(self, time, direction, ...)
+	local ret = ChoOrig_OverviewModeDialog_ScaleSmallObjects(self, time, direction, ...)
 	CreateRealTimeThread(UpdateIcons, time, direction, MapGet("map", "BaseRover"))
 	return ret
 end

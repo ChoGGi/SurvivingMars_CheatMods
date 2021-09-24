@@ -24,10 +24,10 @@ end
 local table = table
 local rawget = rawget
 
-local orig_SupplyRocket_UIOpenTouristOverview = SupplyRocket.UIOpenTouristOverview
+local ChoOrig_SupplyRocket_UIOpenTouristOverview = SupplyRocket.UIOpenTouristOverview
 function SupplyRocket:UIOpenTouristOverview(...)
 	if not mod_EnableMod or rawget(_G, "g_AT_Options") then
-		return orig_SupplyRocket_UIOpenTouristOverview(self, ...)
+		return ChoOrig_SupplyRocket_UIOpenTouristOverview(self, ...)
 	end
 
 	local tourists = {}

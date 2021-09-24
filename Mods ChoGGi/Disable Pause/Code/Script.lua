@@ -1,12 +1,12 @@
 -- See LICENSE for terms
 
 -- speed up/down actions
-local orig_SetGameSpeedState = SetGameSpeedState
+local ChoOrig_SetGameSpeedState = SetGameSpeedState
 function SetGameSpeedState(speed, ...)
 	if speed == "pause" then
 		speed = "play"
 	end
-	orig_SetGameSpeedState(speed, ...)
+	ChoOrig_SetGameSpeedState(speed, ...)
 end
 
 local function NeverPause()

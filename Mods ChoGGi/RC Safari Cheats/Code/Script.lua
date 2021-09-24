@@ -68,7 +68,7 @@ end
 OnMsg.CityStart = UpdateRovers
 OnMsg.LoadGame = UpdateRovers
 
-local orig_CreateWaypointLabel = CreateWaypointLabel
+local ChoOrig_CreateWaypointLabel = CreateWaypointLabel
 function CreateWaypointLabel(index, ...)
 
 	-- cycle the models...
@@ -79,5 +79,5 @@ function CreateWaypointLabel(index, ...)
 		end
 	end
 
-	return orig_CreateWaypointLabel(index, ...)
+	return ChoOrig_CreateWaypointLabel(index, ...)
 end

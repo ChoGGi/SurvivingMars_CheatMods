@@ -163,10 +163,10 @@ local function BuildRules()
 end
 
 -- block breakthroughs
-local orig_City_TechAvailableCondition = City.TechAvailableCondition
+local ChoOrig_City_TechAvailableCondition = City.TechAvailableCondition
 function City:TechAvailableCondition(tech, ...)
 	if not mod_ExcludeBreakthroughs then
-		return orig_City_TechAvailableCondition(self, tech, ...)
+		return ChoOrig_City_TechAvailableCondition(self, tech, ...)
 	end
 
 	if not lookup_rules then
@@ -180,10 +180,10 @@ function City:TechAvailableCondition(tech, ...)
 		tech = City_GetUnregisteredBreakthrough(self)
 	end
 
-	return orig_City_TechAvailableCondition(self, tech, ...)
+	return ChoOrig_City_TechAvailableCondition(self, tech, ...)
 end
 
-local orig_SubsurfaceAnomaly_ScanCompleted = SubsurfaceAnomaly.ScanCompleted
+local ChoOrig_SubsurfaceAnomaly_ScanCompleted = SubsurfaceAnomaly.ScanCompleted
 function SubsurfaceAnomaly:ScanCompleted(scanner, ...)
   if self.tech_action == "breakthrough" then
 		if not lookup_rules then
@@ -201,5 +201,5 @@ function SubsurfaceAnomaly:ScanCompleted(scanner, ...)
 
   end
 
-	return orig_SubsurfaceAnomaly_ScanCompleted(self, scanner, ...)
+	return ChoOrig_SubsurfaceAnomaly_ScanCompleted(self, scanner, ...)
 end

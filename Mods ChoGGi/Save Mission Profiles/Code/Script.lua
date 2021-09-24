@@ -215,7 +215,7 @@ local function AddProfilesButton(pgmission, toolbar)
 end
 
 -- add settings button
-local orig_SetPlanetCamera = SetPlanetCamera
+local ChoOrig_SetPlanetCamera = SetPlanetCamera
 function SetPlanetCamera(planet, state, ...)
 	-- fire only in mission setup menu
 	if not state then
@@ -227,14 +227,14 @@ function SetPlanetCamera(planet, state, ...)
 					local toolbar = pgmission[1][1].idToolBar
 					AddProfilesButton(pgmission, toolbar)
 					-- hook into toolbar button area so we can keep adding the button
-					local orig_RebuildActions = toolbar.RebuildActions
+					local ChoOrig_RebuildActions = toolbar.RebuildActions
 					toolbar.RebuildActions = function(self, context, ...)
-						orig_RebuildActions(self, context, ...)
+						ChoOrig_RebuildActions(self, context, ...)
 						AddProfilesButton(pgmission, toolbar)
 					end
 				end
 			end
 		end)
 	end
-	return orig_SetPlanetCamera(planet, state, ...)
+	return ChoOrig_SetPlanetCamera(planet, state, ...)
 end

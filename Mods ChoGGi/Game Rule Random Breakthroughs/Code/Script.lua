@@ -16,29 +16,29 @@ end
 
 -- change func to always use rand number instead of supplied num
 local AsyncRand = AsyncRand
-local orig_StableShuffle = StableShuffle
+local ChoOrig_StableShuffle = StableShuffle
 local function fake_StableShuffle(tbl, _, max, ...)
-	return orig_StableShuffle(tbl, AsyncRand, max, ...)
+	return ChoOrig_StableShuffle(tbl, AsyncRand, max, ...)
 end
 
 -- anomalies for ground/planetary
-local orig_City_InitBreakThroughAnomalies = City.InitBreakThroughAnomalies
+local ChoOrig_City_InitBreakThroughAnomalies = City.InitBreakThroughAnomalies
 function City.InitBreakThroughAnomalies(...)
 	if g_CurrentMissionParams.idGameRules.ChoGGi_RandomBreakthroughs then
 		StableShuffle = fake_StableShuffle
 	end
-	local ret = orig_City_InitBreakThroughAnomalies(...)
-	StableShuffle = orig_StableShuffle
+	local ret = ChoOrig_City_InitBreakThroughAnomalies(...)
+	StableShuffle = ChoOrig_StableShuffle
 	return ret
 end
 
 -- make omega true random (well truer)
-local orig_OmegaTelescope_UnlockBreakthroughs = OmegaTelescope.UnlockBreakthroughs
+local ChoOrig_OmegaTelescope_UnlockBreakthroughs = OmegaTelescope.UnlockBreakthroughs
 function OmegaTelescope.UnlockBreakthroughs(...)
 	if g_CurrentMissionParams.idGameRules.ChoGGi_RandomBreakthroughs then
 		StableShuffle = fake_StableShuffle
 	end
-	local ret = orig_OmegaTelescope_UnlockBreakthroughs(...)
-	StableShuffle = orig_StableShuffle
+	local ret = ChoOrig_OmegaTelescope_UnlockBreakthroughs(...)
+	StableShuffle = ChoOrig_StableShuffle
 	return ret
 end

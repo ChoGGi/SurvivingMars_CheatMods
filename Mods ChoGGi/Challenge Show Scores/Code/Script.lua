@@ -13,10 +13,10 @@ end
 OnMsg.ModsReloaded = ModOptions
 OnMsg.ApplyModOptions = ModOptions
 
-local orig_Challenge_GetCompletedText = Challenge.GetCompletedText
+local ChoOrig_Challenge_GetCompletedText = Challenge.GetCompletedText
 function Challenge:GetCompletedText(...)
 	if not mod_EnableMod then
-		return orig_Challenge_GetCompletedText(self, ...)
+		return ChoOrig_Challenge_GetCompletedText(self, ...)
 	end
 
   local completed = self:Completed()

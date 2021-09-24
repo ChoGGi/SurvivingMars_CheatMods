@@ -17,10 +17,10 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local orig_Drone_Idle = Drone.Idle
+local ChoOrig_Drone_Idle = Drone.Idle
 function Drone:Idle(...)
 	-- call orig first
-	local ret = orig_Drone_Idle(self, ...)
+	local ret = ChoOrig_Drone_Idle(self, ...)
 	-- needs 0.0 or it'll always be 0
 	local battery_percent = ((self.battery + 0.0) / (self.battery_max + 0.0)) * 100
 	if (battery_percent or 0) <= (mod_RechargeLimit or 0) then

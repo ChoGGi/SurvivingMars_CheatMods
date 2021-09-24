@@ -990,7 +990,7 @@ Deep items will unlock the ability to exploit those resources."]]],
 end
 
 function ChoGGi.MenuFuncs.SpawnColonists()
-	local orig_GenerateColonistData = GenerateColonistData
+	local ChoOrig_GenerateColonistData = GenerateColonistData
 
 	local title = Strings[302535920000266--[[Spawn]]] .. " " .. Translate(547--[[Colonists]])
 	local item_list = {
@@ -1035,14 +1035,14 @@ function ChoGGi.MenuFuncs.SpawnColonists()
 			-- override func CheatSpawnNColonists uses
 			if age_check then
 				function GenerateColonistData(city, _, ...)
-					return orig_GenerateColonistData(city, age_check, ...)
+					return ChoOrig_GenerateColonistData(city, age_check, ...)
 				end
 			end
 
 			CheatSpawnNColonists(value)
 
 			-- always restore func
-			GenerateColonistData = orig_GenerateColonistData
+			GenerateColonistData = ChoOrig_GenerateColonistData
 
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.text, Strings[302535920000014--[[Spawned]]]),
@@ -1105,12 +1105,12 @@ do -- StartMystery
 		UIColony.mystery_id = ""
 
 		-- CheatStartMystery checks for cheats enabled...
-		local orig_CheatsEnabled = CheatsEnabled
+		local ChoOrig_CheatsEnabled = CheatsEnabled
 		CheatsEnabled = function()
 			return true
 		end
 		CheatStartMystery(mystery_id)
-		CheatsEnabled = orig_CheatsEnabled
+		CheatsEnabled = ChoOrig_CheatsEnabled
 
 --~ 		-- might help
 --~ 		if UIColony.mystery then

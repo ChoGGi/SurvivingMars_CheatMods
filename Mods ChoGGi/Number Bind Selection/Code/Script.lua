@@ -187,7 +187,7 @@ function MultiSelectionWrapper:CheckAny(method, ...)
 	return false
 end
 
-local orig_MultiSelectionWrapper_Broadcast = MultiSelectionWrapper.Broadcast
+local ChoOrig_MultiSelectionWrapper_Broadcast = MultiSelectionWrapper.Broadcast
 function MultiSelectionWrapper:Broadcast(method, ...)
 	if type(method) == "string" then
 --~ 		assert(g_Classes[self.selection_class]:HasMember(method),
@@ -200,7 +200,7 @@ function MultiSelectionWrapper:Broadcast(method, ...)
 			end
 		end
 	else
-		return orig_MultiSelectionWrapper_Broadcast(self, method, ...)
+		return ChoOrig_MultiSelectionWrapper_Broadcast(self, method, ...)
 	end
 end
 

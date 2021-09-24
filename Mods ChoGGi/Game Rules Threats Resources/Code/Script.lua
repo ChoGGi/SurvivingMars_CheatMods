@@ -4,7 +4,7 @@
 -- 0S111W devil/storm max
 -- 18N35W meteor/cold max
 
-local orig_FillRandomMapProps = FillRandomMapProps
+local ChoOrig_FillRandomMapProps = FillRandomMapProps
 function FillRandomMapProps(gen, params, ...)
 	if gen then
 		local rules = g_CurrentMissionParams.idGameRules or empty_table
@@ -25,7 +25,7 @@ function FillRandomMapProps(gen, params, ...)
 		end
 	end
 
-	return orig_FillRandomMapProps(gen, params, ...)
+	return ChoOrig_FillRandomMapProps(gen, params, ...)
 end
 
 function OnMsg.ClassesPostprocess()

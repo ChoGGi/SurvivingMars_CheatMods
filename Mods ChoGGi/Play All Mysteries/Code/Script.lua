@@ -102,12 +102,12 @@ local function PickRandomMystery(delay)
 			UIColony.mystery_id = ""
 
 			-- CheatStartMystery checks for cheats enabled...
-			local orig_CheatsEnabled = CheatsEnabled
+			local ChoOrig_CheatsEnabled = CheatsEnabled
 			CheatsEnabled = function()
 				return true
 			end
 			CheatStartMystery(new_myst)
-			CheatsEnabled = orig_CheatsEnabled
+			CheatsEnabled = ChoOrig_CheatsEnabled
 
 			-- let user know
 			if mod_ShowPopup then

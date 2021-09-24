@@ -7,13 +7,13 @@ local IsTraitAvailable = IsTraitAvailable
 local IsValid = IsValid
 local IsMassUIModifierPressed = IsMassUIModifierPressed
 
-local orig_FillTraitSelectorItems = FillTraitSelectorItems
+local ChoOrig_FillTraitSelectorItems = FillTraitSelectorItems
 function FillTraitSelectorItems(object, items, traits, align, list, ...)
 	local traits_c = #traits
 
 	-- If there's only 9 then return orig func instead of my possibly out of date func
 	if traits_c < 10 then
-		return orig_FillTraitSelectorItems(object, items, traits, align, list, ...)
+		return ChoOrig_FillTraitSelectorItems(object, items, traits, align, list, ...)
 	end
 
 	local path_str = CurrentModPath .. "UI/numbers_"

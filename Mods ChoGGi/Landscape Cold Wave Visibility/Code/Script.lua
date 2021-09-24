@@ -78,7 +78,7 @@ end
 GlobalVar("g_ChoGGi_ColdWaveLandscapeConstructionSite", false)
 
 -- add remove lines depending on coldwaves
-local orig_BuildingUpdate = LandscapeConstructionSite.BuildingUpdate
+local ChoOrig_BuildingUpdate = LandscapeConstructionSite.BuildingUpdate
 function LandscapeConstructionSite:BuildingUpdate(...)
 	local is_coldwave = g_ColdWave
 	local flags_enabled = g_ChoGGi_ColdWaveLandscapeConstructionSite
@@ -89,13 +89,13 @@ function LandscapeConstructionSite:BuildingUpdate(...)
 		DisableMarker(self)
 		g_ChoGGi_ColdWaveLandscapeConstructionSite = false
 	end
-	return orig_BuildingUpdate(self, ...)
+	return ChoOrig_BuildingUpdate(self, ...)
 end
 
-local orig_Done = LandscapeConstructionSite.Done
+local ChoOrig_Done = LandscapeConstructionSite.Done
 function LandscapeConstructionSite:Done(...)
 	DisableMarker(self)
-	return orig_Done(self, ...)
+	return ChoOrig_Done(self, ...)
 end
 
 -- make sure there's no markers left around

@@ -39,20 +39,20 @@ local function SetDust(self, dust, func, ...)
 end
 
 -- buildings
-local orig_BuildingVisualDustComponent_SetDustVisuals = BuildingVisualDustComponent.SetDustVisuals
+local ChoOrig_BuildingVisualDustComponent_SetDustVisuals = BuildingVisualDustComponent.SetDustVisuals
 function BuildingVisualDustComponent:SetDustVisuals(dust, ...)
-	return SetDust(self, dust, orig_BuildingVisualDustComponent_SetDustVisuals, ...)
+	return SetDust(self, dust, ChoOrig_BuildingVisualDustComponent_SetDustVisuals, ...)
 end
 -- domes
-local orig_Building_SetDustVisuals = Building.SetDustVisuals
+local ChoOrig_Building_SetDustVisuals = Building.SetDustVisuals
 function Building:SetDustVisuals(dust, ...)
-	return SetDust(self, dust, orig_Building_SetDustVisuals, ...)
+	return SetDust(self, dust, ChoOrig_Building_SetDustVisuals, ...)
 end
 -- pipes/cables
-local orig_DustGridElement_AddDust = DustGridElement.AddDust
+local ChoOrig_DustGridElement_AddDust = DustGridElement.AddDust
 function DustGridElement:AddDust(dust, ...)
 	if mod_SkipCablesPipes then
-		return orig_DustGridElement_AddDust(self, dust, ...)
+		return ChoOrig_DustGridElement_AddDust(self, dust, ...)
 	end
-	return SetDust(self, dust, orig_DustGridElement_AddDust, ...)
+	return SetDust(self, dust, ChoOrig_DustGridElement_AddDust, ...)
 end

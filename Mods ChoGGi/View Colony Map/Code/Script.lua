@@ -49,9 +49,9 @@ local function ShowDialogs(map, gen)
 end
 
 -- create/update image when landing spot changes
-local orig_GetOverlayValues = GetOverlayValues
+local ChoOrig_GetOverlayValues = GetOverlayValues
 function GetOverlayValues(lat, long, overlay_grids, params, ...)
-	orig_GetOverlayValues(lat, long, overlay_grids, params, ...)
+	ChoOrig_GetOverlayValues(lat, long, overlay_grids, params, ...)
 
 	local PGMainMenu = Dialogs.PGMainMenu
 	local chall

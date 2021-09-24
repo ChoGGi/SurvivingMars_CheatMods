@@ -19,10 +19,10 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local orig_Colonist_ProjectPhoenixEffect = Colonist.ProjectPhoenixEffect
+local ChoOrig_Colonist_ProjectPhoenixEffect = Colonist.ProjectPhoenixEffect
 function Colonist:ProjectPhoenixEffect(...)
 	if not mod_EnableMod then
-		return orig_Colonist_ProjectPhoenixEffect(self, ...)
+		return ChoOrig_Colonist_ProjectPhoenixEffect(self, ...)
 	end
 
 	local traits = self.traits
@@ -41,5 +41,5 @@ function Colonist:ProjectPhoenixEffect(...)
     end
 	end
 
-	return orig_Colonist_ProjectPhoenixEffect(self, ...)
+	return ChoOrig_Colonist_ProjectPhoenixEffect(self, ...)
 end

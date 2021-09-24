@@ -31,9 +31,9 @@ function OnMsg.ClassesPostprocess()
 end
 
 -- also add it to build menu
-local orig_GetConstructionDescription = GetConstructionDescription
+local ChoOrig_GetConstructionDescription = GetConstructionDescription
 function GetConstructionDescription(class, ...)
-	local ret = orig_GetConstructionDescription(class, ...)
+	local ret = ChoOrig_GetConstructionDescription(class, ...)
 	if ret ~= "" and class.comfort_increase then
 		local tmeta = ret[1]
 		for i = tmeta.i, tmeta.j do

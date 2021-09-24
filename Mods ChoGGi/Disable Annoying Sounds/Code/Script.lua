@@ -195,12 +195,12 @@ OnMsg.LoadGame = DisableSounds
 
 -- disable voiced text
 local complete = T(7058, "Research complete")
-local orig_Voice_Play = Voice.Play
+local ChoOrig_Voice_Play = Voice.Play
 function Voice:Play(text, ...)
 	if mod_ResearchComplete and text == complete then
 		return
 	end
-	return orig_Voice_Play(self, text, ...)
+	return ChoOrig_Voice_Play(self, text, ...)
 end
 
 --~ -- Data\SoundPreset.lua, and Lua\Config\__SoundTypes.lua

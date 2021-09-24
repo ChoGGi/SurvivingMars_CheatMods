@@ -6,10 +6,10 @@ function OnMsg.ClassesBuilt()
 	local g_Classes = g_Classes
 
 	local function PaintItBlack(name)
-		local orig_func = g_Classes[name].StartFX
+		local ChoOrig_func = g_Classes[name].StartFX
 
 		g_Classes[name].StartFX = function(self)
-			orig_func(self)
+			ChoOrig_func(self)
 			self:GetAttaches()[1]:SetColorModifier(0)
 
 			local minions = self.minions

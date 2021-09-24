@@ -1,8 +1,8 @@
 -- See LICENSE for terms
 
-local orig_ConstructionSite_GetResourceProgress = ConstructionSite.GetResourceProgress
+local ChoOrig_ConstructionSite_GetResourceProgress = ConstructionSite.GetResourceProgress
 function ConstructionSite:GetResourceProgress(...)
-	local ret = orig_ConstructionSite_GetResourceProgress(self, ...)
+	local ret = ChoOrig_ConstructionSite_GetResourceProgress(self, ...)
 --~ 	ex(ret)
 	for i = 1, ret[1].j do
 		local res = ret[1].table[i]

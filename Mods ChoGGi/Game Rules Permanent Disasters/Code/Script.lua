@@ -99,9 +99,9 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local orig_GenerateMeteor = GenerateMeteor
+local ChoOrig_GenerateMeteor = GenerateMeteor
 function GenerateMeteor(...)
-	local meteor = orig_GenerateMeteor(...)
+	local meteor = ChoOrig_GenerateMeteor(...)
 	if mod_MeteorsNoDeposits then
 		meteor.deposit_type = "Rocks"
 	end
@@ -212,14 +212,14 @@ local function RemoveSuspend(list, name)
 	end
 end
 
-local orig_RocketBase_IsFlightPermitted = RocketBase.IsFlightPermitted
+local ChoOrig_RocketBase_IsFlightPermitted = RocketBase.IsFlightPermitted
 function RocketBase:IsFlightPermitted(...)
-	return mod_DustStormsAllowRockets or orig_RocketBase_IsFlightPermitted(self, ...)
+	return mod_DustStormsAllowRockets or ChoOrig_RocketBase_IsFlightPermitted(self, ...)
 end
 
-local orig_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
+local ChoOrig_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
 function ConstructionController:UpdateConstructionStatuses(_, ...)
-	local ret = orig_UpdateConstructionStatuses(self, ...)
+	local ret = ChoOrig_UpdateConstructionStatuses(self, ...)
 	if mod_DustStormsAllowRockets then
 		local statuses = self.construction_statuses
 		for i = 1, #statuses do
@@ -345,7 +345,7 @@ for i = 1, #classes do
 end
 
 -- cold areas
-local orig_RandomMapGenerator_OnGenerateLogic = RandomMapGenerator.OnGenerateLogic
+local ChoOrig_RandomMapGenerator_OnGenerateLogic = RandomMapGenerator.OnGenerateLogic
 function RandomMapGenerator:OnGenerateLogic(env, ...)
 	if IsGameRuleActive("ChoGGi_WinterWonderland") then
 		self.ColdFeatureRadius = 100
@@ -360,7 +360,7 @@ function RandomMapGenerator:OnGenerateLogic(env, ...)
 --~ 		local marker = env.GenMarkerObj(PrefabFeatureMarker, point(0,0), {FeatureRadius = 607200, FeatureType = "Cold Area"})
 --~ 		env.prefab_features[#env.prefab_features + 1] = marker
 --~ 	end
-	orig_RandomMapGenerator_OnGenerateLogic(self, env, ...)
+	ChoOrig_RandomMapGenerator_OnGenerateLogic(self, env, ...)
 end
 
 local function StartupCode()
@@ -399,9 +399,9 @@ end
 
 function OnMsg.ClassesPostprocess()
 	-- trand func from City.lua>function CreateRand(stable, ...) doesn't like < 2 (or maybe < 1, but whatever safety first)
-	local orig_MapSector_new = MapSector.new
+	local ChoOrig_MapSector_new = MapSector.new
 	function MapSector.new(...)
-		local sector = orig_MapSector_new(...)
+		local sector = ChoOrig_MapSector_new(...)
 		-- good thing avg_heat is added when the sector is created
 		if sector.avg_heat < 2 and IsGameRuleActive("ChoGGi_WinterWonderland") then
 			sector.avg_heat = 2

@@ -31,7 +31,7 @@ local saved_cargo = {
 -- set from LaunchCargoRocket to stop ResetCargo from updating cargo
 local launch_skip = false
 
-local orig_ResetCargo = ResetCargo
+local ChoOrig_ResetCargo = ResetCargo
 function ResetCargo(...)
 	if not launch_skip then
 		local g_RocketCargo = g_RocketCargo
@@ -56,7 +56,7 @@ function ResetCargo(...)
 		end
 	end
 	launch_skip = false
-	return orig_ResetCargo(...)
+	return ChoOrig_ResetCargo(...)
 end
 
 local function ClearCargo()
@@ -66,9 +66,9 @@ local function ClearCargo()
 end
 
 local fivers
-local orig_ClearRocketCargo = ClearRocketCargo
+local ChoOrig_ClearRocketCargo = ClearRocketCargo
 function ClearRocketCargo(...)
-	local ret = orig_ClearRocketCargo(...)
+	local ret = ChoOrig_ClearRocketCargo(...)
 
 	-- build list of resources to use for / 5
 	if not fivers then
@@ -134,12 +134,12 @@ My list not the game list (reopen dialog to see changes).]]),
 	return ret
 end
 
-local orig_LaunchCargoRocket = LaunchCargoRocket
+local ChoOrig_LaunchCargoRocket = LaunchCargoRocket
 function LaunchCargoRocket(...)
 	if mod_ClearOnLaunch then
 		local mode = UICity and UICity.launch_mode or "rocket"
 		table.iclear(saved_cargo[mode])
 		launch_skip = true
 	end
-	return orig_LaunchCargoRocket(...)
+	return ChoOrig_LaunchCargoRocket(...)
 end

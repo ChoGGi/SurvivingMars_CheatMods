@@ -2,12 +2,12 @@
 
 -- override for wasps
 if g_AvailableDlc.gagarin then
-	local orig_FlyingDrone_Goto = FlyingDrone.Goto
+	local ChoOrig_FlyingDrone_Goto = FlyingDrone.Goto
 	function FlyingDrone.Goto(...)
-		local orig_storm = g_DustStorm
+		local ChoOrig_storm = g_DustStorm
 		g_DustStorm = false
-		local ret = orig_FlyingDrone_Goto(...)
-		g_DustStorm = orig_storm
+		local ret = ChoOrig_FlyingDrone_Goto(...)
+		g_DustStorm = ChoOrig_storm
 		return ret
 	end
 end

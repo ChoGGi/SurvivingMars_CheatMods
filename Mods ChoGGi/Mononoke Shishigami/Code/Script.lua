@@ -153,28 +153,28 @@ function OnMsg.InGameInterfaceCreated(igi)
 	end
 
 	-- we remove this hook once selection dialog is good
-	local orig_OnMousePos_igi = igi.OnMousePos
+	local ChoOrig_OnMousePos_igi = igi.OnMousePos
 	function igi:OnMousePos(...)
 		OnMousePos()
-		return orig_OnMousePos_igi(self,...)
+		return ChoOrig_OnMousePos_igi(self,...)
 	end
 
 	-- override OnMousePos for the SelectionModeDialog (works in both regular and selected, but not build menu)
-	local orig_OpenDialog = OpenDialog
+	local ChoOrig_OpenDialog = OpenDialog
 	function OpenDialog(cls,...)
-		local dlg = orig_OpenDialog(cls,...)
+		local dlg = ChoOrig_OpenDialog(cls,...)
 		if cls == "SelectionModeDialog" then
 			CreateRealTimeThread(function()
-				if orig_OnMousePos_igi then
+				if ChoOrig_OnMousePos_igi then
 					-- stop igi from doing it, since we can stick with this one
-					igi.OnMousePos = orig_OnMousePos_igi
-					orig_OnMousePos_igi = nil
+					igi.OnMousePos = ChoOrig_OnMousePos_igi
+					ChoOrig_OnMousePos_igi = nil
 				end
 				WaitMsg("OnRender")
-				local orig_OnMousePos = dlg.OnMousePos
+				local ChoOrig_OnMousePos = dlg.OnMousePos
 				function dlg.OnMousePos(...)
 					OnMousePos()
-					return orig_OnMousePos(...)
+					return ChoOrig_OnMousePos(...)
 				end
 			end)
 		end

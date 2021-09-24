@@ -22,15 +22,15 @@ local function BlockRivalMileStones(func, ...)
 	end
 end
 
-local orig_AIContestMilestone = AIContestMilestone
+local ChoOrig_AIContestMilestone = AIContestMilestone
 function AIContestMilestone(...)
-	return BlockRivalMileStones(orig_AIContestMilestone, ...)
+	return BlockRivalMileStones(ChoOrig_AIContestMilestone, ...)
 end
-local orig_AIContestAnomaly = AIContestAnomaly
+local ChoOrig_AIContestAnomaly = AIContestAnomaly
 function AIContestAnomaly(...)
-	return BlockRivalMileStones(orig_AIContestAnomaly, ...)
+	return BlockRivalMileStones(ChoOrig_AIContestAnomaly, ...)
 end
-local orig_UpdateCompetitionItems = UpdateCompetitionItems
+local ChoOrig_UpdateCompetitionItems = UpdateCompetitionItems
 function UpdateCompetitionItems(...)
-	return BlockRivalMileStones(orig_UpdateCompetitionItems, ...)
+	return BlockRivalMileStones(ChoOrig_UpdateCompetitionItems, ...)
 end

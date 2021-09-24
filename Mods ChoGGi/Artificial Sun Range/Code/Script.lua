@@ -83,35 +83,35 @@ OnMsg.LoadGame = UpdateArtificialSunRange
 
 -- I;m lazy so copy and paste
 
-local orig_SolarPanelBuilding_OnSetWorking = SolarPanelBuilding.OnSetWorking
+local ChoOrig_SolarPanelBuilding_OnSetWorking = SolarPanelBuilding.OnSetWorking
 function SolarPanelBuilding:OnSetWorking(...)
 	UpdateArtificialSunRange(self)
-	return orig_SolarPanelBuilding_OnSetWorking(self, ...)
+	return ChoOrig_SolarPanelBuilding_OnSetWorking(self, ...)
 end
 
-local orig_SolarPanelBase_OnSetWorking = SolarPanelBase.OnSetWorking
+local ChoOrig_SolarPanelBase_OnSetWorking = SolarPanelBase.OnSetWorking
 function SolarPanelBase:OnSetWorking(...)
 	UpdateArtificialSunRange(self)
-	return orig_SolarPanelBase_OnSetWorking(self, ...)
+	return ChoOrig_SolarPanelBase_OnSetWorking(self, ...)
 end
 
-local orig_SolarPanelBase_GameInit = SolarPanelBase.GameInit
+local ChoOrig_SolarPanelBase_GameInit = SolarPanelBase.GameInit
 function SolarPanelBase:GameInit(...)
 	UpdateArtificialSunRange(self)
-	return orig_SolarPanelBase_GameInit(self, ...)
+	return ChoOrig_SolarPanelBase_GameInit(self, ...)
 end
 
-local orig_ArtificialSun_GameInit = ArtificialSun.GameInit
+local ChoOrig_ArtificialSun_GameInit = ArtificialSun.GameInit
 function ArtificialSun:GameInit(...)
 	UpdateArtificialSunRange(self)
-	return orig_ArtificialSun_GameInit(self, ...)
+	return ChoOrig_ArtificialSun_GameInit(self, ...)
 end
 
 --~ -- add ArtificialSun to ServiceArea section (without messing with other buildings/mods)
 --~ function OnMsg.ClassesPostprocess()
 --~ 	local xt = XTemplates.sectionServiceArea[1]
---~ 	local orig_con = xt.__condition
+--~ 	local ChoOrig_con = xt.__condition
 --~ 	xt.__condition = function(parent, context)
---~ 		return context:IsKindOf("ArtificialSun") or orig_con(parent, context)
+--~ 		return context:IsKindOf("ArtificialSun") or ChoOrig_con(parent, context)
 --~ 	end
 --~ end

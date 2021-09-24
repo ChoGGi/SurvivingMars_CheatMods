@@ -8,8 +8,8 @@ local function ChangeColour(self)
 	ObjectColourRandom(self)
 end
 
-local orig_BaseBuilding_GameInit = BaseBuilding.GameInit
+local ChoOrig_BaseBuilding_GameInit = BaseBuilding.GameInit
 function BaseBuilding:GameInit(...)
-	orig_BaseBuilding_GameInit(self, ...)
+	ChoOrig_BaseBuilding_GameInit(self, ...)
 	CreateRealTimeThread(ChangeColour, self)
 end

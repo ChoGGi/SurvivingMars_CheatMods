@@ -36,18 +36,18 @@ local function HideGrids()
 	grids_visible = false
 end
 
-local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
+local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding.GameInit(...)
 	if mod_Option1 then
 		ShowGrids()
 	end
-	return orig_CursorBuilding_GameInit(...)
+	return ChoOrig_CursorBuilding_GameInit(...)
 end
 
-local orig_CursorBuilding_Done = CursorBuilding.Done
+local ChoOrig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding.Done(...)
 	HideGrids()
-	return orig_CursorBuilding_Done(...)
+	return ChoOrig_CursorBuilding_Done(...)
 end
 
 -- add keybind for toggle

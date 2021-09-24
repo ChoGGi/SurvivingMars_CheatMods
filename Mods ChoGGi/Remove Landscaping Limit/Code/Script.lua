@@ -30,12 +30,12 @@ function OnMsg.ApplyModOptions(id)
 end
 
 -- no more limit to R+T keys (enlarge/shrink)
-local orig_Activate = LandscapeConstructionController.Activate
+local ChoOrig_Activate = LandscapeConstructionController.Activate
 function LandscapeConstructionController:Activate(...)
 	if mod_RemoveLandScapingLimits then
 		self.brush_radius_step = mod_StepSize or 10 * guim
 		self.brush_radius_max = max_int
 		self.brush_radius_min = 100
 	end
-	return orig_Activate(self, ...)
+	return ChoOrig_Activate(self, ...)
 end

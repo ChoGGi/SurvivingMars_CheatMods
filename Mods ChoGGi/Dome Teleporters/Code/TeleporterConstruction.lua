@@ -45,10 +45,10 @@ GlobalVar("CityDomeTeleporterConstruction", {})
 local table = table
 
 -- chooses which construct mode to start
-local orig_GetConstructionController = GetConstructionController
+local ChoOrig_GetConstructionController = GetConstructionController
 function GetConstructionController(mode, ...)
   mode = mode or InGameInterfaceMode
-	return mode == "dome_teleporter_construction" and CityDomeTeleporterConstruction[UICity] or orig_GetConstructionController(mode, ...)
+	return mode == "dome_teleporter_construction" and CityDomeTeleporterConstruction[UICity] or ChoOrig_GetConstructionController(mode, ...)
 end
 
 -- add our custom construction controller
@@ -78,12 +78,12 @@ function OnMsg.LoadGame()
 end
 
 -- backup the CityTunnelConstruction obj
-local orig_CityTunnelConstruction
+local ChoOrig_CityTunnelConstruction
 local function GetCityTunnelConstruction()
-	if not orig_CityTunnelConstruction or not orig_CityTunnelConstruction[UICity] then
-		orig_CityTunnelConstruction = CityTunnelConstruction
+	if not ChoOrig_CityTunnelConstruction or not ChoOrig_CityTunnelConstruction[UICity] then
+		ChoOrig_CityTunnelConstruction = CityTunnelConstruction
 	end
-	return orig_CityTunnelConstruction
+	return ChoOrig_CityTunnelConstruction
 end
 
 -- this is called by some func in TunnelConstructionDialog
@@ -95,12 +95,12 @@ local function CallTunnelFunc(func, ...)
 	return table.unpack(ret)
 end
 
-local orig_OpenTunnelConstructionInfopanel = OpenTunnelConstructionInfopanel
+local ChoOrig_OpenTunnelConstructionInfopanel = OpenTunnelConstructionInfopanel
 function OpenTunnelConstructionInfopanel(template, ...)
 	if template == "DomeTeleporter" then
-		return CallTunnelFunc(orig_OpenTunnelConstructionInfopanel, template, ...)
+		return CallTunnelFunc(ChoOrig_OpenTunnelConstructionInfopanel, template, ...)
 	end
-	return orig_OpenTunnelConstructionInfopanel(template, ...)
+	return ChoOrig_OpenTunnelConstructionInfopanel(template, ...)
 end
 
 DefineClass.DomeTeleporterConstructionDialog = {
@@ -146,19 +146,19 @@ DefineClass.DomeTeleporterConstructionController = {
 	max_hex_distance_to_allow_build = mod_BuildDist,
 }
 
-local orig_CreateConstructionGroup = CreateConstructionGroup
+local ChoOrig_CreateConstructionGroup = CreateConstructionGroup
 function DomeTeleporterConstructionController.Activate(...)
 	-- replace func so it returns our template
 	function CreateConstructionGroup(template, ...)
 		if template == "Tunnel" then
 			template = "DomeTeleporter"
 		end
-		return orig_CreateConstructionGroup(template, ...)
+		return ChoOrig_CreateConstructionGroup(template, ...)
 	end
 	-- get obj
 	local ret = {TunnelConstructionController_cls.Activate(...)}
 	-- restore func
-	CreateConstructionGroup = orig_CreateConstructionGroup
+	CreateConstructionGroup = ChoOrig_CreateConstructionGroup
 	-- and done
 	return table.unpack(ret)
 end

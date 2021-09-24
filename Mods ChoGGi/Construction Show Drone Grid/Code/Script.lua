@@ -48,7 +48,7 @@ end
 
 local classes = {"RocketBase", "DroneHub", "RCRover", "ConstructionSite"}
 
-local orig_ShowBuildingHexes = ShowBuildingHexes
+local ChoOrig_ShowBuildingHexes = ShowBuildingHexes
 function ShowBuildingHexes(bld, hex_range_class, bind_func, ...)
   if bld and bld:IsKindOf("RCRover") and bld:IsValidPos() and not bld.destroyed then
 		CleanupHexRanges(bld, bind_func)
@@ -63,7 +63,7 @@ function ShowBuildingHexes(bld, hex_range_class, bind_func, ...)
 		obj:SetScale(bld[bind_func](bld))
 		return
 	end
-	return orig_ShowBuildingHexes(bld, hex_range_class, bind_func, ...)
+	return ChoOrig_ShowBuildingHexes(bld, hex_range_class, bind_func, ...)
 end
 
 -- GetSelectionRadiusScale normally returns 0 unless you have that rover selected
@@ -129,18 +129,18 @@ local function HideGrids()
 	grids_visible = false
 end
 
-local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
+local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding.GameInit(...)
-	orig_CursorBuilding_GameInit(...)
+	ChoOrig_CursorBuilding_GameInit(...)
 	if mod_EnableGrid then
 		ShowGrids()
 	end
 end
 
-local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
+local ChoOrig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
 function CursorBuilding:UpdateShapeHexes(...)
 	if not mod_EnableGrid then
-		return orig_CursorBuilding_UpdateShapeHexes(self, ...)
+		return ChoOrig_CursorBuilding_UpdateShapeHexes(self, ...)
 	end
 
 	local range_limit = mod_DistFromCursor > 0 and mod_DistFromCursor
@@ -169,13 +169,13 @@ function CursorBuilding:UpdateShapeHexes(...)
 	end
 	ResumePassEdits("ChoGGi.CursorBuilding.UpdateShapeHexes.Construction Show Drone Grid")
 
-	return orig_CursorBuilding_UpdateShapeHexes(self, ...)
+	return ChoOrig_CursorBuilding_UpdateShapeHexes(self, ...)
 end
 
-local orig_CursorBuilding_Done = CursorBuilding.Done
+local ChoOrig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding.Done(...)
 	HideGrids()
-	return orig_CursorBuilding_Done(...)
+	return ChoOrig_CursorBuilding_Done(...)
 end
 
 local function CleanList(list)

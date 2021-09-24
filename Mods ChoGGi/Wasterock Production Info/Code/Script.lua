@@ -91,7 +91,7 @@ function Building:ChoGGi_GetPredictedDailyConsumption_WasteRock()
 	return consumption_daily
 end
 
-local orig_UpdateUISectionConsumption = Building.UpdateUISectionConsumption
+local ChoOrig_UpdateUISectionConsumption = Building.UpdateUISectionConsumption
 function Building:UpdateUISectionConsumption(win, ...)
 	win.idWasteRock:SetText("")
 	if self.consumption_resource_type == "WasteRock"
@@ -103,13 +103,13 @@ function Building:UpdateUISectionConsumption(win, ...)
 		)
 	end
 
-	return orig_UpdateUISectionConsumption(self, win, ...)
+	return ChoOrig_UpdateUISectionConsumption(self, win, ...)
 end
 
 local grade_str = {787, "Grade<right><grade_name>"}
-local orig_AvailableDeposits = AvailableDeposits
+local ChoOrig_AvailableDeposits = AvailableDeposits
 function AvailableDeposits(bld, items, ...)
-	local ret = orig_AvailableDeposits(bld, items, ...)
+	local ret = ChoOrig_AvailableDeposits(bld, items, ...)
 	if items then
 		local count = #items
 		-- append grade of deposit to rollover text

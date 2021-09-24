@@ -270,7 +270,7 @@ local function UpdateMarkers(self, current_pos)
 	ResumePassEdits("ChoGGi.CursorBuilding.UpdateCursor.UpdateMarkers")
 end
 
-local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
+local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit(...)
 	if mod_Enable then
 		if self.template:IsKindOf("Dome") then
@@ -282,7 +282,7 @@ function CursorBuilding:GameInit(...)
 		end
 	end
 
-	return orig_CursorBuilding_GameInit(self, ...)
+	return ChoOrig_CursorBuilding_GameInit(self, ...)
 end
 
 -- remove removed domes from dome_list
@@ -293,7 +293,7 @@ local function ListCleanup(dome, item)
 	dome_list[dome] = nil
 end
 
-local orig_CursorBuilding_Done = CursorBuilding.Done
+local ChoOrig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding:Done(...)
 	-- we're done construction hide all the markers
 	SuspendPassEdits("ChoGGi.CursorBuilding.Done.CleanupOldMarkers")
@@ -305,27 +305,27 @@ function CursorBuilding:Done(...)
 		end
 	end
 	ResumePassEdits("ChoGGi.CursorBuilding.Done.CleanupOldMarkers")
-	return orig_CursorBuilding_Done(self, ...)
+	return ChoOrig_CursorBuilding_Done(self, ...)
 end
 
-local orig_ConstructionController_Rotate = ConstructionController.Rotate
+local ChoOrig_ConstructionController_Rotate = ConstructionController.Rotate
 function ConstructionController:Rotate(...)
 	if mod_Enable then
 		-- It needs to fire first so we can get updated angle
-		local ret = orig_ConstructionController_Rotate(self, ...)
+		local ret = ChoOrig_ConstructionController_Rotate(self, ...)
 		UpdateMarkers(self)
 		return ret
 	end
 
-	return orig_ConstructionController_Rotate(self, ...)
+	return ChoOrig_ConstructionController_Rotate(self, ...)
 end
 
-local orig_ConstructionController_UpdateCursor = ConstructionController.UpdateCursor
+local ChoOrig_ConstructionController_UpdateCursor = ConstructionController.UpdateCursor
 function ConstructionController:UpdateCursor(pos, ...)
 	if mod_Enable then
 		UpdateMarkers(self, pos)
 	end
-	return orig_ConstructionController_UpdateCursor(self, pos, ...)
+	return ChoOrig_ConstructionController_UpdateCursor(self, pos, ...)
 end
 
 -- they should get removed when the cursor building is removed, but just in case

@@ -1,3 +1,6 @@
+v0.4
+Mod option to stop camera from moving to rocket when clicking notification for new trade offer.
+
 v0.3
 Picard update.
 

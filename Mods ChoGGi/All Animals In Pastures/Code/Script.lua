@@ -387,14 +387,14 @@ local animals = {
 }
 
 -- make drones smaller
-local orig_PastureAnimal_Spawn = PastureAnimal.Spawn
+local ChoOrig_PastureAnimal_Spawn = PastureAnimal.Spawn
 function PastureAnimal:Spawn(...)
-	orig_PastureAnimal_Spawn(self, ...)
+	ChoOrig_PastureAnimal_Spawn(self, ...)
 	if self.animal_type == "ChoGGi_PastureAnimal_Drone" then
 		self:SetScale(50)
 	end
 end
-local orig_Pasture_ScaleAnimals = Pasture.ScaleAnimals
+local ChoOrig_Pasture_ScaleAnimals = Pasture.ScaleAnimals
 function Pasture:ScaleAnimals(...)
 	local herd = self.current_herd
 	if herd[1] and herd[1].animal_type == "ChoGGi_PastureAnimal_Drone" then
@@ -405,17 +405,17 @@ function Pasture:ScaleAnimals(...)
 			end
 		end
 	else
-		orig_Pasture_ScaleAnimals(self, ...)
+		ChoOrig_Pasture_ScaleAnimals(self, ...)
 	end
 end
 
 -- set anim when grazing
 local graze_rand1 = {"pee", "jump"}
 local graze_rand2 = {"playGround1", "playGround2"}
-local orig_PastureAnimal_SetGrazingState = PastureAnimal.SetGrazingState
+local ChoOrig_PastureAnimal_SetGrazingState = PastureAnimal.SetGrazingState
 function PastureAnimal:SetGrazingState(duration, ...)
 	if not self.ChoGGi_animal then
-		return orig_PastureAnimal_SetGrazingState(self, duration, ...)
+		return ChoOrig_PastureAnimal_SetGrazingState(self, duration, ...)
 	end
 
 	local states = self:GetStates()
@@ -461,11 +461,11 @@ function PastureAnimal:SetGrazingState(duration, ...)
 		self:SetState("idle","ChoGGi_skip")
 	end
 
-	return orig_PastureAnimal_SetGrazingState(self, duration, ...)
+	return ChoOrig_PastureAnimal_SetGrazingState(self, duration, ...)
 end
 
 -- Inf loop if the grazing spot is missing (hello fallback...)
-local orig_PastureAnimal_Graze = PastureAnimal.Graze
+local ChoOrig_PastureAnimal_Graze = PastureAnimal.Graze
 function PastureAnimal:Graze(...)
 	local item
 	if self.ChoGGi_animal then
@@ -481,7 +481,7 @@ function PastureAnimal:Graze(...)
 		pasture_animals[self.animal_type].grazing_spot = item.grazing_spot_out
 	end
 
-	return orig_PastureAnimal_Graze(self, ...)
+	return ChoOrig_PastureAnimal_Graze(self, ...)
 end
 
 local roam_rand1 = {"layGrassIdle", "standIdle", "standPanicIdle",
@@ -499,16 +499,16 @@ local roam_rand3 = {"breakDownIdle", "chargingStationIdle", "cleanBuildingIdle",
 function OnMsg.ClassesPostprocess()
 
 	-- mark "my" animals
-	local orig_PastureAnimal_GameInit = PastureAnimal.GameInit
+	local ChoOrig_PastureAnimal_GameInit = PastureAnimal.GameInit
 	function PastureAnimal:GameInit(...)
 		if self.animal_type:sub(1, 21) == "ChoGGi_PastureAnimal_" then
 			self.ChoGGi_animal = true
 		end
-		return orig_PastureAnimal_GameInit(self, ...)
+		return ChoOrig_PastureAnimal_GameInit(self, ...)
 	end
 
 	-- set idle anim
-	local orig_PastureAnimal_SetState = PastureAnimal.SetState
+	local ChoOrig_PastureAnimal_SetState = PastureAnimal.SetState
 	function PastureAnimal:SetState(state, skip, ...)
 		if skip ~= "ChoGGi_skip" and self.ChoGGi_animal then
 			local states = self:GetStates()
@@ -526,7 +526,7 @@ function OnMsg.ClassesPostprocess()
 			if skip == "ChoGGi_skip" then
 				skip = nil
 			end
-			local anim_time = orig_PastureAnimal_SetState(self, state, skip, ...)
+			local anim_time = ChoOrig_PastureAnimal_SetState(self, state, skip, ...)
 			if anim_time < 6000 then
 				anim_time = 6000
 			end
@@ -537,7 +537,7 @@ function OnMsg.ClassesPostprocess()
 			skip = nil
 		end
 
-		return orig_PastureAnimal_SetState(self, state, skip, ...)
+		return ChoOrig_PastureAnimal_SetState(self, state, skip, ...)
 	end
 
 	if Animals.ChoGGi_PastureAnimal_Cat then
@@ -572,12 +572,12 @@ function OnMsg.ClassesPostprocess()
 end
 
 -- change to opened when selected
-local orig_OpenPasture_OnSelected = OpenPasture.OnSelected
+local ChoOrig_OpenPasture_OnSelected = OpenPasture.OnSelected
 function OpenPasture:OnSelected(...)
 	if mod_OpenOnSelect and self.entity == "OpenPasture" then
 		self:ChangeEntity("OpenPasture_Open")
 	end
-  return orig_OpenPasture_OnSelected(self, ...)
+  return ChoOrig_OpenPasture_OnSelected(self, ...)
 end
 -- revert back when unselected
 function OnMsg.SelectionRemoved(obj)
@@ -593,8 +593,8 @@ function OnMsg.SystemSize()
 	width = GetScreenSize():x() - 100
 end
 
-local orig_InfopanelItems_Open = InfopanelItems.Open
+local ChoOrig_InfopanelItems_Open = InfopanelItems.Open
 function InfopanelItems:Open(...)
 	self:SetMaxWidth(width - Dialogs.Infopanel.box:sizex())
-	return orig_InfopanelItems_Open(self, ...)
+	return ChoOrig_InfopanelItems_Open(self, ...)
 end

@@ -5,16 +5,16 @@ local ResumePassEdits = ResumePassEdits
 local default_passage_palette = {"none", "none", "none", "none"}
 
 -- add our "skin"
-local orig_Passage_GetSkins = Passage.GetSkins
+local ChoOrig_Passage_GetSkins = Passage.GetSkins
 function Passage:GetSkins(...)
-	local skins, palettes = orig_Passage_GetSkins(self,...)
+	local skins, palettes = ChoOrig_Passage_GetSkins(self,...)
 	skins[#skins+1] = "ChoGGi_MinimalPassageSkin"
 	palettes[#palettes+1] = default_passage_palette
 	return skins, palettes
 end
 
 --	happens when our "skin" is choosen
-local orig_Passage_ChangeSkin = Passage.ChangeSkin
+local ChoOrig_Passage_ChangeSkin = Passage.ChangeSkin
 function Passage:ChangeSkin(skin, ...)
 	self.skin_id = skin
 	if skin == "ChoGGi_MinimalPassageSkin" then
@@ -27,6 +27,6 @@ function Passage:ChangeSkin(skin, ...)
 		end
 		ResumePassEdits("ChoGGi.MinimalPassageSkin.ChangeSkin")
 	else
-		return orig_Passage_ChangeSkin(self, skin, ...)
+		return ChoOrig_Passage_ChangeSkin(self, skin, ...)
 	end
 end

@@ -58,13 +58,13 @@ GridConstructionController.CanCompletePassage = IsDomePoint
 
 -- Domes? DOMES!@!!!!
 local clrNoModifier = const.clrNoModifier
-local orig_Activate = GridConstructionController.Activate
+local ChoOrig_Activate = GridConstructionController.Activate
 function GridConstructionController:Activate(pt,...)
 	-- override passage placement func to always be true for any dome spots (Activate happens when start of passage is placed)
 	if self.mode == "passage_grid" and IsDomePoint(self) then
 		self.current_status = clrNoModifier
 	end
-	return orig_Activate(self, pt,...)
+	return ChoOrig_Activate(self, pt,...)
 end
 
 local skip_reasons = {
@@ -74,20 +74,20 @@ local skip_reasons = {
 	roads = true,
 }
 -- this combined with the skip block reasons allows us to place in the life-support pipe area
-local orig_block = SupplyGridElementHexStatus.blocked
-local orig_PlacePassageLine = PlacePassageLine
+local ChoOrig_block = SupplyGridElementHexStatus.blocked
+local ChoOrig_PlacePassageLine = PlacePassageLine
 function PlacePassageLine(...)
 	-- 1 == clear
 	SupplyGridElementHexStatus.blocked = 1
-	local ret = {orig_PlacePassageLine(...)}
-	SupplyGridElementHexStatus.blocked = orig_block
+	local ret = {ChoOrig_PlacePassageLine(...)}
+	SupplyGridElementHexStatus.blocked = ChoOrig_block
 	return table.unpack(ret)
 end
 
 -- extend your massive passage from a DOME (or road)?
-local orig_CanExtendFrom = GridConstructionController.CanExtendFrom
+local ChoOrig_CanExtendFrom = GridConstructionController.CanExtendFrom
 function GridConstructionController:CanExtendFrom(...)
-	local res, reason, obj = orig_CanExtendFrom(self, ...)
+	local res, reason, obj = ChoOrig_CanExtendFrom(self, ...)
 
 	if self.mode == "passage_grid" and not res and skip_reasons[reason] then
 		return true
@@ -172,9 +172,9 @@ function OnMsg.ClassesPostprocess()
 	table.insert(XTemplates.sectionConstructionSite[1][1], 1, section)
 end
 
-local orig_ConnectDomesWithPassage = ConnectDomesWithPassage
+local ChoOrig_ConnectDomesWithPassage = ConnectDomesWithPassage
 function ConnectDomesWithPassage(d1, d2, ...)
-	return d1 and d2 and orig_ConnectDomesWithPassage(d1, d2, ...)
+	return d1 and d2 and ChoOrig_ConnectDomesWithPassage(d1, d2, ...)
 end
 
 local grids_visible
@@ -218,20 +218,20 @@ local function HideGrids()
 	grids_visible = false
 end
 
-local orig_GridConstructionDialog_Open = GridConstructionDialog.Open
+local ChoOrig_GridConstructionDialog_Open = GridConstructionDialog.Open
 function GridConstructionDialog:Open(...)
 	if mod_ShowUseableGrids and self.mode_name == "passage_grid" then
 		ShowGrids()
 	end
-	return orig_GridConstructionDialog_Open(self, ...)
+	return ChoOrig_GridConstructionDialog_Open(self, ...)
 end
 
-local orig_GridConstructionDialog_Close = GridConstructionDialog.Close
+local ChoOrig_GridConstructionDialog_Close = GridConstructionDialog.Close
 function GridConstructionDialog:Close(...)
 	if self.mode_name == "passage_grid" then
 		HideGrids()
 	end
-	return orig_GridConstructionDialog_Close(self, ...)
+	return ChoOrig_GridConstructionDialog_Close(self, ...)
 end
 
 function OnMsg.LoadGame()

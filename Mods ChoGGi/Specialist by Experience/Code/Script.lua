@@ -21,7 +21,7 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local orig_Workplace_AddWorker = Workplace.AddWorker
+local ChoOrig_Workplace_AddWorker = Workplace.AddWorker
 function Workplace:AddWorker(worker, shift)
 	-- Ignore workplaces without a spec
 	if self.specialist ~= "none" then
@@ -38,7 +38,7 @@ function Workplace:AddWorker(worker, shift)
 			}
 		end
 	end
-	return orig_Workplace_AddWorker(self, worker, shift)
+	return ChoOrig_Workplace_AddWorker(self, worker, shift)
 end
 
 -- checks for table then clears out worker table
@@ -56,24 +56,24 @@ local function FiredWorker(workplace, worker)
 	end
 end
 
-local orig_Workplace_RemoveWorker = Workplace.RemoveWorker
+local ChoOrig_Workplace_RemoveWorker = Workplace.RemoveWorker
 function Workplace:RemoveWorker(worker)
 	FiredWorker(self, worker)
-	return orig_Workplace_RemoveWorker(self, worker)
+	return ChoOrig_Workplace_RemoveWorker(self, worker)
 end
-local orig_Workplace_FireWorker = Workplace.FireWorker
+local ChoOrig_Workplace_FireWorker = Workplace.FireWorker
 function Workplace:FireWorker(worker)
 	FiredWorker(self, worker)
-	return orig_Workplace_FireWorker(self, worker)
+	return ChoOrig_Workplace_FireWorker(self, worker)
 end
 
 -- everyone is fired so empty table
-local orig_Workplace_KickAllWorkers = Workplace.KickAllWorkers
+local ChoOrig_Workplace_KickAllWorkers = Workplace.KickAllWorkers
 function Workplace:KickAllWorkers()
 	if self.specialist ~= "none" then
 		self.ChoGGi_SpecByExp = {}
 	end
-	return orig_Workplace_KickAllWorkers(self)
+	return ChoOrig_Workplace_KickAllWorkers(self)
 end
 
 -- loop through all the workplaces, and check for anyone who worked over 24 Sols

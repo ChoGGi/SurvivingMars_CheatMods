@@ -88,9 +88,9 @@ function OnMsg.ResearchQueueChange()
 	end
 end
 
-local orig_OpenDialog = OpenDialog
+local ChoOrig_OpenDialog = OpenDialog
 function OpenDialog(dlg_str, ...)
-	local dlg = orig_OpenDialog(dlg_str, ...)
+	local dlg = ChoOrig_OpenDialog(dlg_str, ...)
 
 	if dlg_str == "ResearchDlg" then
 		CreateRealTimeThread(EditDlg, dlg.idResearchQueueList)

@@ -541,7 +541,7 @@ local function AddProfilesButton(toolbar)
 end
 
 -- add settings button
-local orig_SetPlanetCamera = SetPlanetCamera
+local ChoOrig_SetPlanetCamera = SetPlanetCamera
 function SetPlanetCamera(planet, state, ...)
 	-- fire only in mission setup menu
 	if not state then
@@ -557,9 +557,9 @@ function SetPlanetCamera(planet, state, ...)
 						AddProfilesButton(toolbar)
 					end
 					-- hook into toolbar button area so we can keep adding the button
-					local orig_RebuildActions = toolbar.RebuildActions
+					local ChoOrig_RebuildActions = toolbar.RebuildActions
 					toolbar.RebuildActions = function(self, context, ...)
-						orig_RebuildActions(self, context, ...)
+						ChoOrig_RebuildActions(self, context, ...)
 						if table.find(toolbar, "Id", "idrandom") then
 							AddProfilesButton(toolbar)
 						end
@@ -568,5 +568,5 @@ function SetPlanetCamera(planet, state, ...)
 			end
 		end)
 	end
-	return orig_SetPlanetCamera(planet, state, ...)
+	return ChoOrig_SetPlanetCamera(planet, state, ...)
 end

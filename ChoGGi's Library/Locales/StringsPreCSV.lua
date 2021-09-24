@@ -3,10 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! green: <green>%s</green>
 !Skipped Line! yellow: <yellow>%s</yellow>
 "ID", "Text", "Translation"
-302535920001205, ""
-302535920001657, ""
-302535920001658, ""
-302535920001659, ""
 302535920001660, ""
 302535920001661, ""
 302535920001662, ""
@@ -1242,6 +1238,10 @@ Not permanent."
 302535920000448, "I'm afraid it could be 9/11 times 1,000."
 end !Skipped Line!
 do do !Skipped Line! [[DebugMenu.lua" "DebugFunc.lua]] !Skipped Line!
+302535920001205, "Skip Missing Mods"
+302535920001657, "Stops confirmation dialog about missing mods when loading saved games."
+302535920001658, "Skip Missing DLC"
+302535920001659, "Stops confirmation dialog about missing DLC when loading saved games."
 302535920001649, "Toggle Interface"
 302535920001650, "Toggle all interface elements for screenshots/etc."
 302535920001637, "Absolute"

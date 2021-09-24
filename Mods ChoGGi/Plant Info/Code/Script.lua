@@ -61,7 +61,7 @@ function VegetationSelectionObject:GetChoGGi_NearestSeeder()
 	end
 end
 
-local orig_text
+local ChoOrig_text
 local my_text = T(302535920011719, [[Soil quality is <yellow><ChoGGi_SoilQuality></yellow>.
 The nearest seeder is <yellow><ChoGGi_NearestSeeder></yellow>.
 <SeedStatusStr>]])
@@ -69,7 +69,7 @@ function VegetationSelectionObject:GetChoGGi_ReplaceText()
 	if entity_lookup[self.entity] then
 		return my_text
 	else
-		return orig_text
+		return ChoOrig_text
 	end
 end
 
@@ -90,7 +90,7 @@ function OnMsg.ClassesPostprocess()
 	xtemplate[idx].Icon = "UI/Icons/Sections/terraforming.tga"
 
 --~ 	ex(xtemplate[idx][1].Text)
-	orig_text = xtemplate[idx][1].Text
+	ChoOrig_text = xtemplate[idx][1].Text
 
 	xtemplate[idx][1].Text = T("<ChoGGi_ReplaceText>")
 

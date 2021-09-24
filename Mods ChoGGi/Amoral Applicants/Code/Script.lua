@@ -34,7 +34,7 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local orig_WaitInOrbit = RocketBase.WaitInOrbit
+local ChoOrig_WaitInOrbit = RocketBase.WaitInOrbit
 function RocketBase:WaitInOrbit(arrive_time, ...)
 
 	-- check for passengers and abort if not
@@ -42,7 +42,7 @@ function RocketBase:WaitInOrbit(arrive_time, ...)
 	if self.cargo then
 		pass_table = table.find(self.cargo, "class", "Passengers")
 		if not pass_table then
-			return orig_WaitInOrbit(self, arrive_time, ...)
+			return ChoOrig_WaitInOrbit(self, arrive_time, ...)
 		end
 	end
 
@@ -149,7 +149,7 @@ function RocketBase:WaitInOrbit(arrive_time, ...)
 	self:SetCommand("LandOnMars", self.landing_site)
 end
 
-local orig_LandOnMars = RocketBase.LandOnMars
+local ChoOrig_LandOnMars = RocketBase.LandOnMars
 function RocketBase:LandOnMars(...)
 	-- longpig Lūʻau?
 	if self.ChoGGi_cann_a_snack then
@@ -163,7 +163,7 @@ function RocketBase:LandOnMars(...)
 		end
 		-- just in case
 		if not pass_table then
-			return orig_LandOnMars(self, ...)
+			return ChoOrig_LandOnMars(self, ...)
 		end
 		pass_table = cargo[pass_table]
 
@@ -173,7 +173,7 @@ function RocketBase:LandOnMars(...)
 		end
 	end
 
-	return orig_LandOnMars(self, ...)
+	return ChoOrig_LandOnMars(self, ...)
 end
 
 function OnMsg.ClassesPostprocess()

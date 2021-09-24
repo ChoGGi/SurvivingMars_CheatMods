@@ -125,14 +125,14 @@ local function RouteMsgs(func, msg, ...)
 	return func(...)
 end
 
-local orig_RCSafari_EnterCreateRouteMode = RCSafari.EnterCreateRouteMode
+local ChoOrig_RCSafari_EnterCreateRouteMode = RCSafari.EnterCreateRouteMode
 function RCSafari:EnterCreateRouteMode(...)
-	return RouteMsgs(orig_RCSafari_EnterCreateRouteMode, "ChoGGi_RCSafari_EnterCreateRouteMode", self, ...)
+	return RouteMsgs(ChoOrig_RCSafari_EnterCreateRouteMode, "ChoGGi_RCSafari_EnterCreateRouteMode", self, ...)
 end
 
-local orig_DestroySafariRouteVisuals = DestroySafariRouteVisuals
+local ChoOrig_DestroySafariRouteVisuals = DestroySafariRouteVisuals
 function DestroySafariRouteVisuals(...)
-	return RouteMsgs(orig_DestroySafariRouteVisuals, "ChoGGi_DestroySafariRouteVisuals", ...)
+	return RouteMsgs(ChoOrig_DestroySafariRouteVisuals, "ChoGGi_DestroySafariRouteVisuals", ...)
 end
 
 -- add info

@@ -42,14 +42,14 @@ end
 
 -- add our "skin"
 if g_AvailableDlc.armstrong then
-	local orig_OpenAirBuilding_GetSkins = OpenAirBuilding.GetSkins
+	local ChoOrig_OpenAirBuilding_GetSkins = OpenAirBuilding.GetSkins
 	function OpenAirBuilding:GetSkins(...)
-		return GetSkins(orig_OpenAirBuilding_GetSkins, self, ...)
+		return GetSkins(ChoOrig_OpenAirBuilding_GetSkins, self, ...)
 	end
 else
-	local orig_GetSkins = Building.GetSkins
+	local ChoOrig_GetSkins = Building.GetSkins
 	function Dome:GetSkins(...)
-		return GetSkins(orig_GetSkins, self, ...)
+		return GetSkins(ChoOrig_GetSkins, self, ...)
 	end
 end
 

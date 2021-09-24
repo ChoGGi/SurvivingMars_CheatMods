@@ -31,7 +31,7 @@ end
 
 local table = table
 
-local orig_Drone_GoHome = Drone.GoHome
+local ChoOrig_Drone_GoHome = Drone.GoHome
 function Drone:GoHome(...)
 	if mod_PinDrone and not table.find(g_PinnedObjs, self) then
 		self:TogglePin()
@@ -41,10 +41,10 @@ function Drone:GoHome(...)
 		UISpeedState = "pause"
 	end
 
-	return orig_Drone_GoHome(self, ...)
+	return ChoOrig_Drone_GoHome(self, ...)
 end
 
-local orig_Drone_Idle = Drone.Idle
+local ChoOrig_Drone_Idle = Drone.Idle
 function Drone:Idle(...)
 	if mod_PinDroneIdle and not table.find(g_PinnedObjs, self) then
 		self:TogglePin()
@@ -54,14 +54,14 @@ function Drone:Idle(...)
 		UISpeedState = "pause"
 	end
 
-	return orig_Drone_Idle(self, ...)
+	return ChoOrig_Drone_Idle(self, ...)
 end
 
-local orig_Drone_OnSelected = Drone.OnSelected
+local ChoOrig_Drone_OnSelected = Drone.OnSelected
 function Drone:OnSelected(...)
 	if mod_UnpinSelectedDrone and table.find(g_PinnedObjs, self) then
 		self:TogglePin()
 	end
 
-	return orig_Drone_OnSelected(self, ...)
+	return ChoOrig_Drone_OnSelected(self, ...)
 end

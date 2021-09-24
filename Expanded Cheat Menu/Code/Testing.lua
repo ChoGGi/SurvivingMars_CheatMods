@@ -939,13 +939,13 @@ end
 --~ 	-- centred hud
 --~ 	local GetScreenSize = UIL.GetScreenSize
 --~ 	local margins = box(2560, 0, 2560, 0)
---~ 	local orig_GetSafeMargins = GetSafeMargins
+--~ 	local ChoOrig_GetSafeMargins = GetSafeMargins
 --~ 	function GetSafeMargins(win_box)
 --~ 		if win_box then
---~ 			return orig_GetSafeMargins(win_box)
+--~ 			return ChoOrig_GetSafeMargins(win_box)
 --~ 		end
 --~ 		-- If lookup table doesn't have width we fire orginal func
---~ 		return GetScreenSize():x() == 5760 and margins or orig_GetSafeMargins()
+--~ 		return GetScreenSize():x() == 5760 and margins or ChoOrig_GetSafeMargins()
 --~ 	end
 --~ end
 --~ do -- TraceCall/Trace (commented out in CommonLua\PropertyObject.lua)
@@ -965,10 +965,10 @@ end
 
 --~ 	function PropertyObject:TraceCall(member)
 --~ 		print("PropertyObject:TraceCall", self.class)
---~ 		local orig_member_fn = self[member]
+--~ 		local ChoOrig_member_fn = self[member]
 --~ 		self[member] = function(self, ...)
 --~ 			self:Trace("[Call]", member, GetStack(2), ...)
---~ 			return orig_member_fn(self, ...)
+--~ 			return ChoOrig_member_fn(self, ...)
 --~ 		end
 --~ 	end
 --~ 	function PropertyObject:Trace(...)
@@ -1039,7 +1039,7 @@ end
 --~ 			return ret
 --~ 		end
 
---~ 		local orig_XImage_DrawContent = XImage.DrawContent
+--~ 		local ChoOrig_XImage_DrawContent = XImage.DrawContent
 --~ 		local RetName = ChoGGi.ComFuncs.RetName
 --~ 		local FileExists = ChoGGi.ComFuncs.FileExists
 --~ 		function XImage:DrawContent(...)
@@ -1048,7 +1048,7 @@ end
 --~ 			if image ~= "" and not image:find("memorysavegame") and not FileExists(image) then
 --~ 				print(RetName(self.parent), image, "DC")
 --~ 			end
---~ 			return orig_XImage_DrawContent(self, ...)
+--~ 			return ChoOrig_XImage_DrawContent(self, ...)
 --~ 		end
 
 --~ 		-- stop welcome to mars msg for LoadMapForScreenShot

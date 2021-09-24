@@ -63,9 +63,9 @@ function OnMsg.ApplyModOptions(id)
 end
 
 -- remove power from newly planted plants
-local orig_ForestationPlant_Init = ForestationPlant.Init
+local ChoOrig_ForestationPlant_Init = ForestationPlant.Init
 function ForestationPlant:Init(...)
-	orig_ForestationPlant_Init(self, ...)
+	ChoOrig_ForestationPlant_Init(self, ...)
 
 	if mod_RemovePower then
 		RemoveBuildingElecConsump(self)

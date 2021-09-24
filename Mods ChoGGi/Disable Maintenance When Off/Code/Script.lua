@@ -16,7 +16,7 @@ OnMsg.ModsReloaded = ModOptions
 -- fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
-local orig_RequiresMaintenance_AccumulateMaintenancePoints = RequiresMaintenance.AccumulateMaintenancePoints
+local ChoOrig_RequiresMaintenance_AccumulateMaintenancePoints = RequiresMaintenance.AccumulateMaintenancePoints
 function RequiresMaintenance:AccumulateMaintenancePoints(new_points, ...)
 	if not self.ui_working then
 		if mod_QuarterPoints then
@@ -28,5 +28,5 @@ function RequiresMaintenance:AccumulateMaintenancePoints(new_points, ...)
 			new_points = 0
 		end
 	end
-	return orig_RequiresMaintenance_AccumulateMaintenancePoints(self, new_points, ...)
+	return ChoOrig_RequiresMaintenance_AccumulateMaintenancePoints(self, new_points, ...)
 end

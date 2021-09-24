@@ -7,8 +7,8 @@ end
 
 PassageGridElement.CreateElectricityElement = ElectricityGridElement.CreateElectricityElement
 
-local orig_OnDestroyed = PassageGridElement.OnDestroyed
+local ChoOrig_OnDestroyed = PassageGridElement.OnDestroyed
 function PassageGridElement:OnDestroyed(...)
 	ElectricityGridObject.OnDestroyed(self)
-	return orig_OnDestroyed(self, ...)
+	return ChoOrig_OnDestroyed(self, ...)
 end

@@ -28,10 +28,10 @@ local classes = {
 	AdvancedStirlingGenerator = true,
 }
 
-local orig_RequiresMaintenance_AccumulateMaintenancePoints = RequiresMaintenance.AccumulateMaintenancePoints
+local ChoOrig_RequiresMaintenance_AccumulateMaintenancePoints = RequiresMaintenance.AccumulateMaintenancePoints
 function RequiresMaintenance:AccumulateMaintenancePoints(new_points, ...)
 	if not mod_EnableMod then
-		return orig_RequiresMaintenance_AccumulateMaintenancePoints(self, new_points, ...)
+		return ChoOrig_RequiresMaintenance_AccumulateMaintenancePoints(self, new_points, ...)
 	end
 
 	if classes[self.class] and IsValid(self.parent_dome) then
@@ -42,5 +42,5 @@ function RequiresMaintenance:AccumulateMaintenancePoints(new_points, ...)
 		end
 	end
 
-	return orig_RequiresMaintenance_AccumulateMaintenancePoints(self, new_points, ...)
+	return ChoOrig_RequiresMaintenance_AccumulateMaintenancePoints(self, new_points, ...)
 end

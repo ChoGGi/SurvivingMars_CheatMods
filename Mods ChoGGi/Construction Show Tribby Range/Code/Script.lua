@@ -71,18 +71,18 @@ local function HideGrids()
 	grids_visible = false
 end
 
-local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
+local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding.GameInit(...)
-	orig_CursorBuilding_GameInit(...)
+	ChoOrig_CursorBuilding_GameInit(...)
 	if mod_EnableGrid then
 		ShowGrids()
 	end
 end
 
-local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
+local ChoOrig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
 function CursorBuilding:UpdateShapeHexes(...)
 	if not mod_EnableGrid then
-		return orig_CursorBuilding_UpdateShapeHexes(self, ...)
+		return ChoOrig_CursorBuilding_UpdateShapeHexes(self, ...)
 	end
 
 	local range_limit = mod_DistFromCursor > 0 and mod_DistFromCursor
@@ -108,13 +108,13 @@ function CursorBuilding:UpdateShapeHexes(...)
 	end
 	ResumePassEdits("ChoGGi.CursorBuilding.UpdateShapeHexes.Construction Show Tribby Range")
 
-	return orig_CursorBuilding_UpdateShapeHexes(self, ...)
+	return ChoOrig_CursorBuilding_UpdateShapeHexes(self, ...)
 end
 
-local orig_CursorBuilding_Done = CursorBuilding.Done
+local ChoOrig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding.Done(...)
 	HideGrids()
-	return orig_CursorBuilding_Done(...)
+	return ChoOrig_CursorBuilding_Done(...)
 end
 
 -- add keybind for toggle

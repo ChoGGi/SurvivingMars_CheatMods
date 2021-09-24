@@ -6,9 +6,9 @@ local function IsMoistureVaporatorSite(obj)
 	end
 end
 
-local orig_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
+local ChoOrig_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
 function ConstructionController:UpdateConstructionStatuses(...)
-	orig_UpdateConstructionStatuses(self, ...)
+	ChoOrig_UpdateConstructionStatuses(self, ...)
 
 	if self.template_obj:IsKindOf("MoistureVaporator") then
 		if GetRealm(self):MapCount(self.cursor_obj, "hex", const.MoistureVaporatorRange, "ConstructionSite", IsMoistureVaporatorSite) > 0 then

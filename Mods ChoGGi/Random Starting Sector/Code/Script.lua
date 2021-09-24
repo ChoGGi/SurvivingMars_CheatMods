@@ -23,19 +23,19 @@ OnMsg.ModsReloaded = ModOptions
 OnMsg.ApplyModOptions = ModOptions
 
 -- only needed for mod_MinimumDeposits == 0; we ignore this if mod option > 0, but this is (probably slightly) faster then orig func so no need to bother checking
-local orig_City_CreateMapRand = City.CreateMapRand
+local ChoOrig_City_CreateMapRand = City.CreateMapRand
 function City:CreateMapRand(which, ...)
 	-- we don't want to mess with CreateResearchRand
 	if which == "Exploration" then
 		return CreateRand(true, AsyncRand(), ...)
 	end
-	return orig_City_CreateMapRand(self, which, ...)
+	return ChoOrig_City_CreateMapRand(self, which, ...)
 end
 
-local orig_InitialReveal = InitialReveal
+local ChoOrig_InitialReveal = InitialReveal
 function InitialReveal(eligible, ...)
 	if mod_MinimumSurfaceDeposits == 0 and mod_MinimumSubsurfaceDeposits == 0 then
-		return orig_InitialReveal(eligible, ...)
+		return ChoOrig_InitialReveal(eligible, ...)
 	end
 
 	-- get any sectors with min amount of deposits

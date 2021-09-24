@@ -14,10 +14,10 @@ ConstructionStatus.ChoGGi_OnTopOfDustDevil = ChoGGi_OnTopOfDustDevil
 
 local mod_EnableMod
 
-local orig_FinalizeStatusGathering = ConstructionController.FinalizeStatusGathering
+local ChoOrig_FinalizeStatusGathering = ConstructionController.FinalizeStatusGathering
 function ConstructionController:FinalizeStatusGathering(...)
 	if not mod_EnableMod then
-		return orig_FinalizeStatusGathering(self, ...)
+		return ChoOrig_FinalizeStatusGathering(self, ...)
 	end
 
 	-- shameless copy pasta of function ConstructionController:HasDepositUnderneath()
@@ -30,7 +30,7 @@ function ConstructionController:FinalizeStatusGathering(...)
 		self.construction_statuses[#self.construction_statuses + 1] = ChoGGi_OnTopOfDustDevil
   end
 
-	return orig_FinalizeStatusGathering(self, ...)
+	return ChoOrig_FinalizeStatusGathering(self, ...)
 end
 
 local function ModOptions(id)

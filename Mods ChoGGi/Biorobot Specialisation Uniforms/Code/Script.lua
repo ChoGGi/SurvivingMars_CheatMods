@@ -9,10 +9,10 @@ local function GetSpec(specialist)
 	return spec
 end
 
-local orig_GetSpecialistEntity = GetSpecialistEntity
+local ChoOrig_GetSpecialistEntity = GetSpecialistEntity
 function GetSpecialistEntity(specialist, gender, race, age_trait, traits, ...)
 	if not (specialist ~= "none" and traits and traits.Android) then
-		return orig_GetSpecialistEntity(specialist, gender, race, age_trait, traits, ...)
+		return ChoOrig_GetSpecialistEntity(specialist, gender, race, age_trait, traits, ...)
 	end
 
 	local spec = GetSpec(specialist)
@@ -26,10 +26,10 @@ function GetSpecialistEntity(specialist, gender, race, age_trait, traits, ...)
 end
 
 
-local orig_GetSpecializationIcons = Colonist.GetSpecializationIcons
+local ChoOrig_GetSpecializationIcons = Colonist.GetSpecializationIcons
 function Colonist:GetSpecializationIcons(...)
 	if not (self.specialist ~= "none" and self.traits and self.traits.Android) then
-		return orig_GetSpecializationIcons(self, ...)
+		return ChoOrig_GetSpecializationIcons(self, ...)
 	end
 
 	local spec = GetSpec(self.specialist)

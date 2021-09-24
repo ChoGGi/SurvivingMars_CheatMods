@@ -29,9 +29,9 @@ function OnMsg.ClassesPostprocess()
 		return
 	end
 
-	local orig_text = template.RolloverText
-	template.RolloverText = T{"<orig_text><newline><newline><playing>: <track>",
-		orig_text = orig_text,
+	local ChoOrig_text = template.RolloverText
+	template.RolloverText = T{"<ChoOrig_text><newline><newline><playing>: <track>",
+		ChoOrig_text = ChoOrig_text,
 		playing = T(1020, "Playing"),
 		track = function()
 			local path = Music.Track and Music.Track.path

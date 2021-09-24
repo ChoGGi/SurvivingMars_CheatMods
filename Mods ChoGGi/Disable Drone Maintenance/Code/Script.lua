@@ -1,10 +1,10 @@
 -- See LICENSE for terms
 
-local orig_RequiresMaintenance_RequestMaintenance = RequiresMaintenance.RequestMaintenance
+local ChoOrig_RequiresMaintenance_RequestMaintenance = RequiresMaintenance.RequestMaintenance
 -- only allow main if disable isn't
 function RequiresMaintenance:RequestMaintenance(...)
 	if not self.ChoGGi_DisableMaintenance then
-		orig_RequiresMaintenance_RequestMaintenance(self, ...)
+		ChoOrig_RequiresMaintenance_RequestMaintenance(self, ...)
 	end
 end
 

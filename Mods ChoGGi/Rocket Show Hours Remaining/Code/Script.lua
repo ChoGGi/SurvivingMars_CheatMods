@@ -46,14 +46,14 @@ local function AppendTime(self)
 	self.pin_rollover = self.pin_rollover .. "\n" .. T(708, "<ArrivalTimePercent>%")
 end
 
-local orig_UIStatusMissionReturn = RocketExpedition.UIStatusMissionReturn
+local ChoOrig_UIStatusMissionReturn = RocketExpedition.UIStatusMissionReturn
 function RocketExpedition:UIStatusMissionReturn(...)
-	orig_UIStatusMissionReturn(self, ...)
+	ChoOrig_UIStatusMissionReturn(self, ...)
 	AppendTime(self)
 end
 
-local orig_UIStatusFlyToColony = ForeignTradeRocket.UIStatusFlyToColony
+local ChoOrig_UIStatusFlyToColony = ForeignTradeRocket.UIStatusFlyToColony
 function ForeignTradeRocket:UIStatusFlyToColony(...)
-	orig_UIStatusFlyToColony(self, ...)
+	ChoOrig_UIStatusFlyToColony(self, ...)
 	AppendTime(self)
 end

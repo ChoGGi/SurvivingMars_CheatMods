@@ -110,10 +110,10 @@ OnMsg.CityStart = ModOptions
 OnMsg.LoadGame = ModOptions
 
 -- needed for UpdateResidence
-local orig_Residence_IsSuitable = Residence.IsSuitable
+local ChoOrig_Residence_IsSuitable = Residence.IsSuitable
 function Residence:IsSuitable(colonist, ...)
 	if mod_MrBumble and colonist.age_trait == "Child" then
 		return false
 	end
-	return orig_Residence_IsSuitable(self, colonist, ...)
+	return ChoOrig_Residence_IsSuitable(self, colonist, ...)
 end

@@ -33,19 +33,19 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local orig_BaseMeteor_GetQuery = BaseMeteor.GetQuery
+local ChoOrig_BaseMeteor_GetQuery = BaseMeteor.GetQuery
 function BaseMeteor:GetQuery(...)
-	local orig_range = self.range
+	local ChoOrig_range = self.range
 	self.range = self.range * mod_ImpactRange
-	local ret = {orig_BaseMeteor_GetQuery(self, ...)}
-	self.range = orig_range
+	local ret = {ChoOrig_BaseMeteor_GetQuery(self, ...)}
+	self.range = ChoOrig_range
 	return table.unpack(ret)
 end
 
-local orig_BaseMeteor_CrackDome = BaseMeteor.CrackDome
+local ChoOrig_BaseMeteor_CrackDome = BaseMeteor.CrackDome
 function BaseMeteor:CrackDome(dome, ...)
 	for _ = 1, mod_ExtraFractures do
-		orig_BaseMeteor_CrackDome(self, dome)
+		ChoOrig_BaseMeteor_CrackDome(self, dome)
 	end
 
 	local objs = dome.labels.Buildings

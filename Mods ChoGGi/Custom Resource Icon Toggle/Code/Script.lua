@@ -85,11 +85,11 @@ OnMsg.CityStart = ToggleIcons
 OnMsg.LoadGame = ToggleIcons
 
 -- zooming in from map overview
-local orig_OverviewModeDialog_Close = OverviewModeDialog.Close
+local ChoOrig_OverviewModeDialog_Close = OverviewModeDialog.Close
 function OverviewModeDialog.Close(...)
 	CreateRealTimeThread(function()
 		WaitMsg("CameraTransitionEnd")
 		ToggleIcons()
 	end)
-	return orig_OverviewModeDialog_Close(...)
+	return ChoOrig_OverviewModeDialog_Close(...)
 end

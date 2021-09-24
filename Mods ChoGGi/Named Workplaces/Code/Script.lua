@@ -2,11 +2,11 @@
 
 local RetName = ChoGGi.ComFuncs.RetName
 
-local orig_Workplace_AddWorker = Workplace.AddWorker
+local ChoOrig_Workplace_AddWorker = Workplace.AddWorker
 function Workplace:AddWorker(worker, ...)
 	-- already named, so abort
 	if self.ChoGGi_AddedNamedWorkplace then
-		return orig_Workplace_AddWorker(self, worker, ...)
+		return ChoOrig_Workplace_AddWorker(self, worker, ...)
 	end
 
 	local name = worker.name
@@ -23,5 +23,5 @@ function Workplace:AddWorker(worker, ...)
 
 	self.ChoGGi_AddedNamedWorkplace = true
 
-	return orig_Workplace_AddWorker(self, worker, ...)
+	return ChoOrig_Workplace_AddWorker(self, worker, ...)
 end

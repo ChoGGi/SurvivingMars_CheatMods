@@ -70,14 +70,14 @@ local skips = {
 	Concrete = true,
 }
 
-local orig_UniversalStorageDepot_GameInit = UniversalStorageDepot.GameInit
+local ChoOrig_UniversalStorageDepot_GameInit = UniversalStorageDepot.GameInit
 function UniversalStorageDepot:GameInit(...)
 	-- we only want the uni depot, not the res-specfic ones
 	if self.template_name ~= "UniversalStorageDepot" then
-		return orig_UniversalStorageDepot_GameInit(self, ...)
+		return ChoOrig_UniversalStorageDepot_GameInit(self, ...)
 	end
 
-	orig_UniversalStorageDepot_GameInit(self, ...)
+	ChoOrig_UniversalStorageDepot_GameInit(self, ...)
 
 	for i = 1, #self.storable_resources do
 		local name = self.storable_resources[i]
@@ -127,22 +127,22 @@ if gp_dlc then
 
 	function OnMsg.ClassesBuilt()
 		-- prevent log spam from seeds
-		local orig_GetSpotBeginIndex = UniversalStorageDepot.GetSpotBeginIndex
+		local ChoOrig_GetSpotBeginIndex = UniversalStorageDepot.GetSpotBeginIndex
 		function UniversalStorageDepot:GetSpotBeginIndex(spot_name, ...)
 			if spot_name:sub(1, 3) == "Box" and not safe_spots[spot_name] then
 				spot_name = "Box8"
 			end
-			return orig_GetSpotBeginIndex(self, spot_name, ...)
+			return ChoOrig_GetSpotBeginIndex(self, spot_name, ...)
 		end
 	end
 
 end
 
 -- needed for SetDesiredAmount in depots
-local orig_ResourceStockpileBase_GetMax = ResourceStockpileBase.GetMax
+local ChoOrig_ResourceStockpileBase_GetMax = ResourceStockpileBase.GetMax
 function ResourceStockpileBase:GetMax(...)
 	if self.template_name == "UniversalStorageDepot" and mod_StoredAmount > 30 then
 		return mod_StoredAmount / ResourceScale
 	end
-	return orig_ResourceStockpileBase_GetMax(self, ...)
+	return ChoOrig_ResourceStockpileBase_GetMax(self, ...)
 end

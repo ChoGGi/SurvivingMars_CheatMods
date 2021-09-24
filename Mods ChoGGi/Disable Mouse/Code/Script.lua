@@ -4,7 +4,7 @@ local mod_EnableMod
 local mod_DisableHUD
 local SetMouse
 
-local orig_pin_margins
+local ChoOrig_pin_margins
 
 -- fired when settings are changed/init
 local function ModOptions()
@@ -14,21 +14,21 @@ local function ModOptions()
 	SetMouse(mod_EnableMod)
 
 	local d = Dialogs
-	if not orig_pin_margins then
-		orig_pin_margins = d.PinsDlg:GetMargins()
+	if not ChoOrig_pin_margins then
+		ChoOrig_pin_margins = d.PinsDlg:GetMargins()
 	end
 
 	if mod_DisableHUD then
 		d.HUD.idMiddle:SetVisible(false)
 		d.HUD.idRight:SetVisible(false)
 --~ 		d.PinsDlg:SetMargins(box(100, 0, 100, 20))
-		local a, b = orig_pin_margins:minxyz()
-		local x = orig_pin_margins:maxxyz()
+		local a, b = ChoOrig_pin_margins:minxyz()
+		local x = ChoOrig_pin_margins:maxxyz()
 		d.PinsDlg:SetMargins(box(a, b, x, 20))
 	else
 		d.HUD.idMiddle:SetVisible(true)
 		d.HUD.idRight:SetVisible(true)
-		d.PinsDlg:SetMargins(orig_pin_margins)
+		d.PinsDlg:SetMargins(ChoOrig_pin_margins)
 	end
 end
 
@@ -62,15 +62,15 @@ local function StartupCode()
 end
 local function StartupCodeHUD()
 	local d = Dialogs
-	if not orig_pin_margins then
-		orig_pin_margins = d.PinsDlg:GetMargins()
+	if not ChoOrig_pin_margins then
+		ChoOrig_pin_margins = d.PinsDlg:GetMargins()
 	end
 
 	if mod_DisableHUD then
 		d.HUD.idMiddle:SetVisible(false)
 		d.HUD.idRight:SetVisible(false)
-		local a, b = orig_pin_margins:minxyz()
-		local x = orig_pin_margins:maxxyz()
+		local a, b = ChoOrig_pin_margins:minxyz()
+		local x = ChoOrig_pin_margins:maxxyz()
 		d.PinsDlg:SetMargins(box(a, b, x, 20))
 --~ 		d.PinsDlg:SetMargins(box(100, 0, 100, 20))
 	end
@@ -102,12 +102,12 @@ local function ToggleMouse()
 end
 OnMsg.NewHour = ToggleMouse
 
-local orig_XDesktop_OnShortcut = XDesktop.OnShortcut
+local ChoOrig_XDesktop_OnShortcut = XDesktop.OnShortcut
 function XDesktop:OnShortcut(shortcut, source, ...)
   if source == "mouse" and mod_EnableMod then
 		return
 	end
-	return orig_XDesktop_OnShortcut(self, shortcut, source, ...)
+	return ChoOrig_XDesktop_OnShortcut(self, shortcut, source, ...)
 end
 
 local functions = {

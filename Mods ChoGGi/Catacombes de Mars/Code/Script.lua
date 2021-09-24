@@ -40,18 +40,18 @@ OnMsg.CityStart = ReloadTunnels
 OnMsg.LoadGame = ReloadTunnels
 
 -- add newly placed tunnel to all existing tunnels instead of just linked
---~ local orig_AddPFTunnel = Tunnel.AddPFTunnel
+--~ local ChoOrig_AddPFTunnel = Tunnel.AddPFTunnel
 function Tunnel:AddPFTunnel()
 	ReloadTunnels()
 end
 
 -- change .linked_obj to end_point tunnel (otherwise rover just goes in n out on a loop)
-local orig_Tunnel_TraverseTunnel = Tunnel.TraverseTunnel
+local ChoOrig_Tunnel_TraverseTunnel = Tunnel.TraverseTunnel
 function Tunnel:TraverseTunnel(unit, start_point, end_point, ...)
 	-- just in case...
 	if start_point and end_point then
 		self.linked_obj = pf_GetTunnel(end_point, start_point)
 	end
 
-	return orig_Tunnel_TraverseTunnel(self, unit, start_point, end_point, ...)
+	return ChoOrig_Tunnel_TraverseTunnel(self, unit, start_point, end_point, ...)
 end

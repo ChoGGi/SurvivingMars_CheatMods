@@ -8,8 +8,8 @@ function OnMsg.ConstructionSitePlaced(site)
 end
 
 -- "Somebody" missed a Msg...
-local orig_GameInit = LandscapeConstructionSiteBase.GameInit
+local ChoOrig_GameInit = LandscapeConstructionSiteBase.GameInit
 function LandscapeConstructionSiteBase:GameInit(...)
 	self:SetPriority(1)
-	return orig_GameInit(self, ...)
+	return ChoOrig_GameInit(self, ...)
 end

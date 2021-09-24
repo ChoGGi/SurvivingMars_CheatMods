@@ -112,7 +112,7 @@ function OnMsg.SelectionAdded(obj)
 end
 
 -- make sure the text stays on the screen
-local orig_UpdateCursorText = UnitDirectionModeDialog.UpdateCursorText
+local ChoOrig_UpdateCursorText = UnitDirectionModeDialog.UpdateCursorText
 function UnitDirectionModeDialog:UpdateCursorText(...)
 	if self.unit and self.unit:IsKindOf("RCTransport") then
 		local route = self.unit.transport_route
@@ -120,5 +120,5 @@ function UnitDirectionModeDialog:UpdateCursorText(...)
 			return
 		end
 	end
-	return orig_UpdateCursorText(self, ...)
+	return ChoOrig_UpdateCursorText(self, ...)
 end

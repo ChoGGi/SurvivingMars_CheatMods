@@ -44,11 +44,11 @@ local Sleep = Sleep
 local devils = {}
 
 -- replace orig func with mine
-local orig_DefenceTower_DefenceTick = DefenceTower.DefenceTick
+local ChoOrig_DefenceTower_DefenceTick = DefenceTower.DefenceTick
 function DefenceTower:DefenceTick(...)
 
 	-- place at end of function to have it protect dustdevils before meteors
-	orig_DefenceTower_DefenceTick(self, ...)
+	ChoOrig_DefenceTower_DefenceTick(self, ...)
 
 	if not mod_EnableMod then
 		return

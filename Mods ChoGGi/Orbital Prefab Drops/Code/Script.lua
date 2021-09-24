@@ -50,7 +50,7 @@ local function DecalRemoval(land_decal)
 	DoneObject(land_decal)
 end
 
-local orig_ConstructionSite_GameInit = ConstructionSite.GameInit
+local ChoOrig_ConstructionSite_GameInit = ConstructionSite.GameInit
 
 -- the rocket drop func (everything in one basket)
 local function YamatoHasshin(site)
@@ -173,7 +173,7 @@ local function YamatoHasshin(site)
 			site:SetPos(spawn_pos, 3000)
 
 			-- fire off the usual stuff so the drones make with the building
-			orig_ConstructionSite_GameInit(site)
+			ChoOrig_ConstructionSite_GameInit(site)
 		end
 		PlayFX("ShuttleUnload", "end", pod, false, spawn_pos)
 
@@ -227,6 +227,6 @@ function ConstructionSite:GameInit()
 	elseif not grid and not mod_PrefabOnly and (outside and mod_Outside or inside and mod_Inside) then
 		YamatoHasshin(self)
 	else
-		orig_ConstructionSite_GameInit(self)
+		ChoOrig_ConstructionSite_GameInit(self)
 	end
 end

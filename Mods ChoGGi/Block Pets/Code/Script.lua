@@ -55,22 +55,22 @@ local spawn_classes = {
 for i = 1, #spawn_classes do
 	local class = _G[spawn_classes[i]]
 
-	local orig_func = class.Spawn
+	local ChoOrig_func = class.Spawn
 	class.Spawn = function(self, ...)
 		if mod_EnableMod and mod_options[self.animal_type] then
 			DoneObject(self)
 			return
 		end
-		return orig_func(self, ...)
+		return ChoOrig_func(self, ...)
 	end
 end
 
 -- halve spawn delay for more animals
-local orig_SpawnPets = SpawnPets
+local ChoOrig_SpawnPets = SpawnPets
 function SpawnPets(...)
 	if not mod_EnableMod then
-		return orig_SpawnPets(...)
+		return ChoOrig_SpawnPets(...)
 	end
 
-	return orig_SpawnPets(...) * mod_SpawnDelayPercent
+	return ChoOrig_SpawnPets(...) * mod_SpawnDelayPercent
 end

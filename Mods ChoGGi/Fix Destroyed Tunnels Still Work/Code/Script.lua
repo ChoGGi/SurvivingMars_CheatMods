@@ -17,17 +17,17 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local orig_Tunnel_AddPFTunnel = Tunnel.AddPFTunnel
+local ChoOrig_Tunnel_AddPFTunnel = Tunnel.AddPFTunnel
 function Tunnel:AddPFTunnel(...)
 	if not mod_EnableMod then
-		return orig_Tunnel_AddPFTunnel(self, ...)
+		return ChoOrig_Tunnel_AddPFTunnel(self, ...)
 	end
 
 	if not self.working and not self:CanDemolish() and not self:IsDemolishing() then
 		return
 	end
 
-	return orig_Tunnel_AddPFTunnel(self, ...)
+	return ChoOrig_Tunnel_AddPFTunnel(self, ...)
 end
 
 function OnMsg.LoadGame()

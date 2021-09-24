@@ -43,9 +43,9 @@ local green = green
 local InvalidPos = InvalidPos()
 
 -- change beam size in overview mode
-local orig_OverviewModeDialog_ScaleSmallObjects = OverviewModeDialog.ScaleSmallObjects
+local ChoOrig_OverviewModeDialog_ScaleSmallObjects = OverviewModeDialog.ScaleSmallObjects
 function OverviewModeDialog:ScaleSmallObjects(time, direction, ...)
-	orig_OverviewModeDialog_ScaleSmallObjects(self, time, direction, ...)
+	ChoOrig_OverviewModeDialog_ScaleSmallObjects(self, time, direction, ...)
 
 	local c = #beams
 	if c > 0 then

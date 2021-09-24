@@ -472,6 +472,34 @@ Actions[c] = {ActionName = Strings[302535920001367--[[Toggles]]],
 }
 
 c = c + 1
+Actions[c] = {ActionName = Strings[302535920001205--[[Skip Missing Mods]]],
+	ActionMenubar = "ECM.Debug.Toggles",
+	ActionId = ".Skip Missing Mods",
+	ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.SkipMissingMods,
+			Strings[302535920001657--[[Stops confirmation dialog about missing mods when loading saved games.]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.SkipMissingMods_Toggle,
+}
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920001658--[[Skip Missing DLC]]],
+	ActionMenubar = "ECM.Debug.Toggles",
+	ActionId = ".Skip Missing DLC",
+	ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.SkipMissingDLC,
+			Strings[302535920001659--[[Stops confirmation dialog about missing DLC when loading saved games.]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.SkipMissingDLC_Toggle,
+}
+
+c = c + 1
 Actions[c] = {ActionName = Strings[302535920001066--[[InfoPanel Dialog]]],
 	ActionMenubar = "ECM.Debug.Toggles",
 	ActionId = ".InfoPanel Dialog",

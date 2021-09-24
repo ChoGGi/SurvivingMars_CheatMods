@@ -3,7 +3,7 @@
 local mod_EnableMod
 
 function OnMsg.ModsReloaded()
-	local orig_Dome_HasAir = Dome.HasAir
+	local ChoOrig_Dome_HasAir = Dome.HasAir
 	local function HasAir(self, ...)
 		local consump_added = self.city.label_modifiers.Dome and self.city.label_modifiers.Dome.ChoGGi_NightlyShutdowns_AirConsumption
 
@@ -12,7 +12,7 @@ function OnMsg.ModsReloaded()
 			if consump_added then
 				self.city:SetLabelModifier("Dome", "ChoGGi_NightlyShutdowns_AirConsumption")
 			end
-			return orig_Dome_HasAir(self, ...)
+			return ChoOrig_Dome_HasAir(self, ...)
 		end
 
 
@@ -22,7 +22,7 @@ function OnMsg.ModsReloaded()
 				self.city:SetLabelModifier("Dome", "ChoGGi_NightlyShutdowns_AirConsumption")
 			end
 
-			return orig_Dome_HasAir(self, ...)
+			return ChoOrig_Dome_HasAir(self, ...)
 		else
 			if not consump_added then
 				-- turn off grid consumption of air by domes
@@ -42,7 +42,7 @@ function OnMsg.ModsReloaded()
 	-- hook into each dome class obj
 	ClassDescendantsList("Dome", function(_, class)
 		-- skip open cities
-		if orig_Dome_HasAir == class.HasAir then
+		if ChoOrig_Dome_HasAir == class.HasAir then
 			class.HasAir = HasAir
 		end
 	end)

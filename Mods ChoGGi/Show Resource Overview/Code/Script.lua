@@ -83,9 +83,9 @@ function ReopenSelectionXInfopanel(obj, slide_in)
 	end
 end
 
-local orig_GetBasicResourcesHeading = ResourceOverview.GetBasicResourcesHeading
-local orig_GetAdvancedResourcesHeading = ResourceOverview.GetAdvancedResourcesHeading
-local orig_GetOtherResourcesHeading = ResourceOverview.GetOtherResourcesHeading
+local ChoOrig_GetBasicResourcesHeading = ResourceOverview.GetBasicResourcesHeading
+local ChoOrig_GetAdvancedResourcesHeading = ResourceOverview.GetAdvancedResourcesHeading
+local ChoOrig_GetOtherResourcesHeading = ResourceOverview.GetOtherResourcesHeading
 local function BlankText()
 	return ""
 end
@@ -111,8 +111,8 @@ function ResourceOverview:GetBasicResourcesRollover()
 		T(self:GetWasteRockRollover()),
 	}
 
-	ResourceOverview.GetBasicResourcesHeading = orig_GetBasicResourcesHeading
-	ResourceOverview.GetOtherResourcesHeading = orig_GetOtherResourcesHeading
+	ResourceOverview.GetBasicResourcesHeading = ChoOrig_GetBasicResourcesHeading
+	ResourceOverview.GetOtherResourcesHeading = ChoOrig_GetOtherResourcesHeading
 	return table.concat(text, "<newline><left>")
 end
 
@@ -138,7 +138,7 @@ function ResourceOverview:GetAdvancedResourcesRollover()
 		text[#text+1] = T(self:GetSeedsRollover())
 	end
 
-	ResourceOverview.GetAdvancedResourcesHeading = orig_GetAdvancedResourcesHeading
-	ResourceOverview.GetOtherResourcesHeading = orig_GetOtherResourcesHeading
+	ResourceOverview.GetAdvancedResourcesHeading = ChoOrig_GetAdvancedResourcesHeading
+	ResourceOverview.GetOtherResourcesHeading = ChoOrig_GetOtherResourcesHeading
 	return table.concat(text, "<newline><left>")
 end

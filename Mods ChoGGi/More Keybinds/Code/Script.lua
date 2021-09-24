@@ -157,7 +157,7 @@ local function RetShortcuts(id)
 		keys[31] and VKStrNamesInverse[keys[3]]
 end
 
-local orig_ConstructionModeDialog_OnKbdKeyDown = ConstructionModeDialog.OnKbdKeyDown
+local ChoOrig_ConstructionModeDialog_OnKbdKeyDown = ConstructionModeDialog.OnKbdKeyDown
 function ConstructionModeDialog:OnKbdKeyDown(virtual_key, ...)
 	-- check if input is key set in binds
 	local back1, back2, back3 = RetShortcuts("ChoGGi.RebindHardcodedKeys.CycleVisualVariantBackward")
@@ -166,11 +166,11 @@ function ConstructionModeDialog:OnKbdKeyDown(virtual_key, ...)
 
 	-- fire off orig func with default key sent
 	if virtual_key == cancel1 or virtual_key == cancel2 or virtual_key == cancel3 then
-		return orig_ConstructionModeDialog_OnKbdKeyDown(self, const.vkEsc, ...)
+		return ChoOrig_ConstructionModeDialog_OnKbdKeyDown(self, const.vkEsc, ...)
 	elseif virtual_key == for1 or virtual_key == for2 or virtual_key == for3 then
-		return orig_ConstructionModeDialog_OnKbdKeyDown(self, const.vkClosesq, ...)
+		return ChoOrig_ConstructionModeDialog_OnKbdKeyDown(self, const.vkClosesq, ...)
 	elseif virtual_key == back1 or virtual_key == back2 or virtual_key == back3 then
-		return orig_ConstructionModeDialog_OnKbdKeyDown(self, const.vkOpensq, ...)
+		return ChoOrig_ConstructionModeDialog_OnKbdKeyDown(self, const.vkOpensq, ...)
 	end
 
 	return "continue"
@@ -185,14 +185,14 @@ Actions[#Actions+1] = {ActionName = T(302535920011974, "Place Multiple Buildings
 
 local IsKeyPressed = terminal.IsKeyPressed
 
-local orig_IsPlacingMultipleConstructions = IsPlacingMultipleConstructions
+local ChoOrig_IsPlacingMultipleConstructions = IsPlacingMultipleConstructions
 function IsPlacingMultipleConstructions(...)
 	local shift1, shift2, shift3 = RetShortcuts("ChoGGi.RebindHardcodedKeys.PlaceMultipleBuildings")
 	if IsKeyPressed(shift1) or IsKeyPressed(shift2) or IsKeyPressed(shift3) then
     return true
 	end
 
-	return orig_IsPlacingMultipleConstructions(...)
+	return ChoOrig_IsPlacingMultipleConstructions(...)
 end
 
 --~ -- Camera panning

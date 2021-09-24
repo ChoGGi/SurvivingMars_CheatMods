@@ -1,9 +1,9 @@
 -- See LICENSE for terms
 
 -- we need to return our new infopanel (if it isn"t another panel)
-local orig_ElectricityGridElement_GetInfopanelTemplate = ElectricityGridElement.GetInfopanelTemplate
+local ChoOrig_ElectricityGridElement_GetInfopanelTemplate = ElectricityGridElement.GetInfopanelTemplate
 function ElectricityGridElement.GetInfopanelTemplate(...)
-	local ret = orig_ElectricityGridElement_GetInfopanelTemplate(...)
+	local ret = ChoOrig_ElectricityGridElement_GetInfopanelTemplate(...)
 	if not ret or ret == "ipLeak" then
 		return "ipCable"
 	end
@@ -14,9 +14,9 @@ function ElectricityGridElement.ShowUISectionElectricityGrid()
 	return true
 end
 
-local orig_LifeSupportGridElement_GetInfopanelTemplate = LifeSupportGridElement.GetInfopanelTemplate
+local ChoOrig_LifeSupportGridElement_GetInfopanelTemplate = LifeSupportGridElement.GetInfopanelTemplate
 function LifeSupportGridElement:GetInfopanelTemplate(...)
-	local ret = orig_LifeSupportGridElement_GetInfopanelTemplate(self, ...)
+	local ret = ChoOrig_LifeSupportGridElement_GetInfopanelTemplate(self, ...)
 	if self.is_switch or self.auto_connect or self.pillar
 		or self:IsKindOf("ConstructionSite")
 	then

@@ -34,26 +34,26 @@ OnMsg.LoadGame = ModOptions
 local Sleep = Sleep
 local CreateGameTimeThread = CreateGameTimeThread
 
-local orig_TraverseTunnel = Passage.TraverseTunnel
+local ChoOrig_TraverseTunnel = Passage.TraverseTunnel
 function Passage:TraverseTunnel(unit, ...)
 	-- reset if still here
-	if unit.ChoGGi_ConstructionExtendLength_orig_speed then
-		unit.move_speed = unit.ChoGGi_ConstructionExtendLength_orig_speed
+	if unit.ChoGGi_ConstructionExtendLength_ChoOrig_speed then
+		unit.move_speed = unit.ChoGGi_ConstructionExtendLength_ChoOrig_speed
 	end
 
 	-- backup orig speed and boost move_speed
-	unit.ChoGGi_ConstructionExtendLength_orig_speed = unit.move_speed or unit:GetMoveSpeed()
+	unit.ChoGGi_ConstructionExtendLength_ChoOrig_speed = unit.move_speed or unit:GetMoveSpeed()
 	unit.move_speed = unit.move_speed * mod_PassageWalkSpeed
 	-- fire off orig func
-	local ret = orig_TraverseTunnel(self, unit, ...)
+	local ret = ChoOrig_TraverseTunnel(self, unit, ...)
 
 	CreateGameTimeThread(function()
 		while unit.holder do
 			Sleep(500)
 		end
 		-- restore old speed
-		unit.move_speed = unit.ChoGGi_ConstructionExtendLength_orig_speed
-		unit.ChoGGi_ConstructionExtendLength_orig_speed = nil
+		unit.move_speed = unit.ChoGGi_ConstructionExtendLength_ChoOrig_speed
+		unit.ChoGGi_ConstructionExtendLength_ChoOrig_speed = nil
 		unit:SetMoveSpeed(unit.move_speed)
 	end)
 

@@ -35,10 +35,10 @@ end
 local cls_saved_settings = {"ChoGGi_TriboelectricSensorTower", "TriboelectricScrubber", "SubsurfaceHeater", "CoreHeatConvector", "ForestationPlant"}
 local cls_heaters = {"SubsurfaceHeater", "CoreHeatConvector"}
 
-local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
+local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit(...)
 	if not mod_ShowConstruct then
-		return orig_CursorBuilding_GameInit(self, ...)
+		return ChoOrig_CursorBuilding_GameInit(self, ...)
 	end
 
 	local uirange
@@ -80,7 +80,7 @@ function CursorBuilding:GameInit(...)
 	end
 
 --~ 	ex(self)
-	return orig_CursorBuilding_GameInit(self, ...)
+	return ChoOrig_CursorBuilding_GameInit(self, ...)
 end
 
 -- since the circle gets attached to the CursorBuilding it'll be removed when it's removed, no need to fiddle with :Done()

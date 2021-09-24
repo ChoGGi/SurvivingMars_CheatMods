@@ -43,12 +43,12 @@ local function PauseGame(id, func, ...)
 end
 
 -- pause when new notif happens
-local orig_AddOnScreenNotification = AddOnScreenNotification
+local ChoOrig_AddOnScreenNotification = AddOnScreenNotification
 function AddOnScreenNotification(id, ...)
-	return PauseGame(id, orig_AddOnScreenNotification, ...)
+	return PauseGame(id, ChoOrig_AddOnScreenNotification, ...)
 end
 
-local orig_AddCustomOnScreenNotification = AddCustomOnScreenNotification
+local ChoOrig_AddCustomOnScreenNotification = AddCustomOnScreenNotification
 function AddCustomOnScreenNotification(id, ...)
-	return PauseGame(id, orig_AddCustomOnScreenNotification, ...)
+	return PauseGame(id, ChoOrig_AddCustomOnScreenNotification, ...)
 end

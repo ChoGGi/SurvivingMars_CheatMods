@@ -478,7 +478,7 @@ function OnMsg.ClassesPostprocess()
 
 end
 
-local orig_LayoutConstructionController_Activate = LayoutConstructionController.Activate
+local ChoOrig_LayoutConstructionController_Activate = LayoutConstructionController.Activate
 function LayoutConstructionController:Activate(template, params, ...)
   local template_obj = ClassTemplates.Building[template] or g_Classes[template] or empty_table
   local layout_preset = Presets.LayoutConstruction.Default[template_obj.LayoutList] or params.layout_preset or empty_table
@@ -499,5 +499,5 @@ function LayoutConstructionController:Activate(template, params, ...)
 		layout_preset[4].entity = dec3[Random(2, #dec3)]
 	end
 
-	return orig_LayoutConstructionController_Activate(self, template, params, ...)
+	return ChoOrig_LayoutConstructionController_Activate(self, template, params, ...)
 end

@@ -3,17 +3,17 @@
 local IsValid = IsValid
 local FindNearestObject = FindNearestObject
 
-local orig_TaskRequestHub_FindDemandRequest = TaskRequestHub.FindDemandRequest
+local ChoOrig_TaskRequestHub_FindDemandRequest = TaskRequestHub.FindDemandRequest
 function TaskRequestHub:FindDemandRequest(obj, resource, amount, ...)
 	-- we only care about WasteRock
 	if resource ~= "WasteRock" then
-		return orig_TaskRequestHub_FindDemandRequest(self, obj, resource, amount, ...)
+		return ChoOrig_TaskRequestHub_FindDemandRequest(self, obj, resource, amount, ...)
 	end
 
 	-- If it isn't a dumpsite abort
 	local dropoff = obj.d_request and obj.d_request:GetBuilding()
 	if IsValid(dropoff) and not dropoff:IsKindOf("WasteRockDumpSite") then
-		return orig_TaskRequestHub_FindDemandRequest(self, obj, resource, amount, ...)
+		return ChoOrig_TaskRequestHub_FindDemandRequest(self, obj, resource, amount, ...)
 	end
 
 	-- Ignore picked up from same obj
@@ -32,7 +32,7 @@ function TaskRequestHub:FindDemandRequest(obj, resource, amount, ...)
 
 	-- no site means abort
 	if #sites == 0 then
-		return orig_TaskRequestHub_FindDemandRequest(self, obj, resource, amount, ...)
+		return ChoOrig_TaskRequestHub_FindDemandRequest(self, obj, resource, amount, ...)
 	end
 
 	return FindNearestObject(sites, obj).demand.WasteRock

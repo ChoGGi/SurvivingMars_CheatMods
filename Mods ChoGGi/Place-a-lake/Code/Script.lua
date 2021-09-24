@@ -124,9 +124,9 @@ function OnMsg.ClassesPostprocess()
 end
 
 -- remove UnevenTerrain error
-local orig_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
+local ChoOrig_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
 function ConstructionController:UpdateConstructionStatuses(...)
-	local ret = orig_UpdateConstructionStatuses(self, ...)
+	local ret = ChoOrig_UpdateConstructionStatuses(self, ...)
 
 	if self.template_obj:IsKindOf("InstantLake") then
 		local statuses = self.construction_statuses or ""

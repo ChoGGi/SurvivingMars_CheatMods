@@ -86,17 +86,17 @@ end
 -- can't hurt
 OnMsg.SaveGame = RemoveSectors
 
-local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
+local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding.GameInit(...)
 	if mod_Option1 then
 		AddSectors()
 	end
-	return orig_CursorBuilding_GameInit(...)
+	return ChoOrig_CursorBuilding_GameInit(...)
 end
 
-local orig_CursorBuilding_Done = CursorBuilding.Done
+local ChoOrig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding.Done(...)
 	RemoveSectors()
-	return orig_CursorBuilding_Done(...)
+	return ChoOrig_CursorBuilding_Done(...)
 end
 

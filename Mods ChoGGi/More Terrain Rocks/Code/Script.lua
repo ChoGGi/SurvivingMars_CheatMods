@@ -63,12 +63,12 @@ end
 
 local IsKindOf = IsKindOf
 -- we don't specifiy a PrefabMarkers to use, so we skip this to skip the error msg
-local orig_PlacePrefab = LevelPrefabController.PlacePrefab
+local ChoOrig_PlacePrefab = LevelPrefabController.PlacePrefab
 function LevelPrefabController:PlacePrefab(...)
 	if IsKindOf(self.template_obj, "ChoGGi_LevelPrefabBuilding") then
 		return
 	end
-	return orig_PlacePrefab(self, ...)
+	return ChoOrig_PlacePrefab(self, ...)
 end
 
 DefineClass.ChoGGi_LevelPrefabBuilding = {
@@ -118,15 +118,15 @@ end
 
 -- skip the Missing spot 'Top' in 'ConstructionSite' state 'idle' msg
 -- remove ' or "Origin"' to just skip (it'll default to -1 i think?)
-local orig_AttachToObject = AttachToObject
+local ChoOrig_AttachToObject = AttachToObject
 function AttachToObject(to, childclass, spot_type, ...)
-	return orig_AttachToObject(to, childclass,
+	return ChoOrig_AttachToObject(to, childclass,
 		to:HasSpot(spot_type) and spot_type or "Origin", ...
 	)
 end
-local orig_AttachPartToObject = AttachPartToObject
+local ChoOrig_AttachPartToObject = AttachPartToObject
 function AttachPartToObject(to, part, spot_type, ...)
-	return orig_AttachPartToObject(to, part,
+	return ChoOrig_AttachPartToObject(to, part,
 		to:HasSpot(spot_type) and spot_type or "Origin", ...
 	)
 end

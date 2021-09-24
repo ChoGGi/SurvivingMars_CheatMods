@@ -13,9 +13,9 @@ local function CheckObjs(obj)
 	end
 end
 
-local orig_SpawnObject = SA_SpawnAnomaly.SpawnObject
+local ChoOrig_SpawnObject = SA_SpawnAnomaly.SpawnObject
 function SA_SpawnAnomaly.SpawnObject(...)
-	local anomaly = orig_SpawnObject(...)
+	local anomaly = ChoOrig_SpawnObject(...)
 	CheckObjs(anomaly)
 	return anomaly
 end

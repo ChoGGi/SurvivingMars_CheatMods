@@ -10,14 +10,14 @@ local FuckingDrones = ChoGGi.ComFuncs.FuckingDrones
 
 function OnMsg.ClassesPostprocess()
 
-	local orig_SingleResourceProducer_Produce = SingleResourceProducer.Produce
+	local ChoOrig_SingleResourceProducer_Produce = SingleResourceProducer.Produce
 	function SingleResourceProducer:Produce(...)
 		-- get them lazy drones working
 		if self:GetStoredAmount() > 1000 then
 			FuckingDrones(self,"single")
 		end
 		-- be on your way
-		return orig_SingleResourceProducer_Produce(self, ...)
+		return ChoOrig_SingleResourceProducer_Produce(self, ...)
 	end
 
 end

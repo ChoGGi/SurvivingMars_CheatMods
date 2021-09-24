@@ -26,7 +26,7 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local orig_PlayTrack = PlayTrack
+local ChoOrig_PlayTrack = PlayTrack
 function PlayTrack(track_list, index, silence, ...)
 	-- skip the non-music track lists
 	local track = track_list[1]
@@ -46,6 +46,6 @@ function PlayTrack(track_list, index, silence, ...)
 	end
 
 	-- It's all good
-	return orig_PlayTrack(track_list, index, silence, ...)
+	return ChoOrig_PlayTrack(track_list, index, silence, ...)
 end
 

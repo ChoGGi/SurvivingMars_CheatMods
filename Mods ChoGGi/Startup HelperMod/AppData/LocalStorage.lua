@@ -17,22 +17,22 @@ dofolder_files("AppData/BinAssets/Code")
 -- local some globals
 local setmetatable, pairs, rawget = setmetatable, pairs, rawget
 -- a less restrictive env (okay, not at all restrictive)
-local orig_G = _G
+local ChoOrig_G = _G
 local mod_env = {
 	__index = function(_, key)
-		return orig_G[key]
+		return ChoOrig_G[key]
 	end,
 	__newindex = function(_, key, value)
-		orig_G[key] = value
+		ChoOrig_G[key] = value
 	end,
 }
-local orig_OnMsg = getmetatable(orig_G.OnMsg)
+local ChoOrig_OnMsg = getmetatable(ChoOrig_G.OnMsg)
 local function LuaModEnv(env)
 	env = env or {}
-	env._G = orig_G
+	env._G = ChoOrig_G
 	setmetatable(env, mod_env)
 	if env.OnMsg then
-		env.OnMsg.__newindex = orig_OnMsg.__newindex
+		env.OnMsg.__newindex = ChoOrig_OnMsg.__newindex
 	end
 	return env
 end
@@ -73,7 +73,7 @@ CreateRealTimeThread(function()
 				for key in pairs(env) do
 					-- we need to use the original __newindex from OnMsg instead of replacing it, or mod OnMsgs don't work
 					if key ~= "OnMsg" then
-						local g_key = rawget(orig_G,key)
+						local g_key = rawget(ChoOrig_G,key)
 						-- skip CurrentMod*
 						if g_key then
 							env[key] = g_key

@@ -3,7 +3,7 @@
 LaunchModeCargoExceeded = empty_func
 
 -- override the drone spawning part of the func
-local orig_SupplyPod_Unload = SupplyPod.Unload
+local ChoOrig_SupplyPod_Unload = SupplyPod.Unload
 function SupplyPod:Unload(...)
 	-- get drone cargo item
 	local cargo = table.find(self.cargo, "class", "Drone")
@@ -26,7 +26,7 @@ function SupplyPod:Unload(...)
 		cargo.amount = 0
 	end
 
-	return orig_SupplyPod_Unload(self, ...)
+	return ChoOrig_SupplyPod_Unload(self, ...)
 end
 
 local function StartupCode()

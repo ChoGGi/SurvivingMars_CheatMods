@@ -177,9 +177,9 @@ function Melanger:CreateSelectionArrow()
 end
 
 function OnMsg.ClassesPostprocess()
-	local orig_Attach = Melanger.Attach
+	local ChoOrig_Attach = Melanger.Attach
 	function Melanger:Attach(obj, ...)
-		local ret = orig_Attach(self, obj, ...)
+		local ret = ChoOrig_Attach(self, obj, ...)
 
 		if self.city then
 			local valid = IsValid(obj)

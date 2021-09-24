@@ -59,9 +59,9 @@ OnMsg.ApplyModOptions = ModOptions
 OnMsg.CityStart = UpdateFarms
 OnMsg.LoadGame = UpdateFarms
 
-local orig_Farm_CalcExpectedProduction = Farm.CalcExpectedProduction
+local ChoOrig_Farm_CalcExpectedProduction = Farm.CalcExpectedProduction
 function Farm:CalcExpectedProduction(idx, ...)
-	local amount = orig_Farm_CalcExpectedProduction(self, idx, ...)
+	local amount = ChoOrig_Farm_CalcExpectedProduction(self, idx, ...)
 
 	if mod_CropsNeverFail and amount == 0 then
 		-- check if there's a crop and abort if not
@@ -83,7 +83,7 @@ function Farm:CalcExpectedProduction(idx, ...)
 	return amount
 end
 
-local orig_Farm_SetSoilQuality = Farm.SetSoilQuality
+local ChoOrig_Farm_SetSoilQuality = Farm.SetSoilQuality
 function Farm:SetSoilQuality(value, ...)
 	if self.hydroponic then
 		return
@@ -92,7 +92,7 @@ function Farm:SetSoilQuality(value, ...)
 	if mod_ConstantSoilQuality > 0 then
 		value = mod_ConstantSoilQuality
 	end
-	return orig_Farm_SetSoilQuality(self, value, ...)
+	return ChoOrig_Farm_SetSoilQuality(self, value, ...)
 end
 
 function OnMsg.ClassesPostprocess()

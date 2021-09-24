@@ -2,13 +2,13 @@
 
 local rule_id = "replace with gamerule id"
 
-local orig_Mysteries_InitMystery = Mysteries.InitMystery
+local ChoOrig_Mysteries_InitMystery = Mysteries.InitMystery
 function Mysteries:InitMystery(...)
 
 	-- abort if gamerule isn't active
 	local active_rules = GetActiveGameRules()
 	if not table.find(active_rules, rule_id) then
-		return orig_Mysteries_InitMystery(self, ...)
+		return ChoOrig_Mysteries_InitMystery(self, ...)
 	end
 
 	if self.mystery_id ~= "" then

@@ -2,10 +2,10 @@
 
 local mod_RainType
 
-local orig_GetTerraformParamPct = GetTerraformParamPct
+local ChoOrig_GetTerraformParamPct = GetTerraformParamPct
 local function fake_GetTerraformParamPct(param, ...)
 	if not mod_RainType then
-		return orig_GetTerraformParamPct(param, ...)
+		return ChoOrig_GetTerraformParamPct(param, ...)
 	end
 
 	if mod_RainType == "normal" and (param == "Atmosphere" or param == "Temperature" or param == "Water") then
@@ -17,15 +17,15 @@ local function fake_GetTerraformParamPct(param, ...)
 	end
 
 	-- otherwise return whatever
-	return orig_GetTerraformParamPct(param, ...)
+	return ChoOrig_GetTerraformParamPct(param, ...)
 end
 
 
-local orig_UpdateRainsThreads = UpdateRainsThreads
+local ChoOrig_UpdateRainsThreads = UpdateRainsThreads
 function UpdateRainsThreads(...)
 	GetTerraformParamPct = fake_GetTerraformParamPct
-	orig_UpdateRainsThreads(...)
-	GetTerraformParamPct = orig_GetTerraformParamPct
+	ChoOrig_UpdateRainsThreads(...)
+	GetTerraformParamPct = ChoOrig_GetTerraformParamPct
 end
 
 local lookup_rain = {
@@ -61,13 +61,13 @@ end
 --~ OnMsg.CityStart = UpdateRainsThreads
 --~ OnMsg.LoadGame = UpdateRainsThreads
 
-local orig_RainProcedure = RainProcedure
+local ChoOrig_RainProcedure = RainProcedure
 function RainProcedure(settings, ...)
 	if not mod_RainType then
-		return orig_RainProcedure(settings, ...)
+		return ChoOrig_RainProcedure(settings, ...)
 	end
 
 	settings.type = mod_RainType
 
-	return orig_RainProcedure(settings, ...)
+	return ChoOrig_RainProcedure(settings, ...)
 end

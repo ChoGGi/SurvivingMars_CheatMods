@@ -22,7 +22,7 @@ function OnMsg.ApplyModOptions(id)
 	ModOptions()
 end
 
-local orig_RCTransport_TransportRouteLoad = RCTransport.TransportRouteLoad
+local ChoOrig_RCTransport_TransportRouteLoad = RCTransport.TransportRouteLoad
 function RCTransport:TransportRouteLoad(...)
 	-- [LUA ERROR] Mars/Lua/Units/RCTransport.lua:1018: attempt to index a boolean value (field 'unreachable_objects')
 	if not self.unreachable_objects then
@@ -32,7 +32,7 @@ function RCTransport:TransportRouteLoad(...)
 	-- save supply obj
 	local supply = self.transport_route.from
 	-- fire off orig
-	orig_RCTransport_TransportRouteLoad(self, ...)
+	ChoOrig_RCTransport_TransportRouteLoad(self, ...)
 
 	-- If this is false then TransportRouteLoad removed it
 	if self.transport_route.from then
@@ -82,7 +82,7 @@ function RCTransport:TransportRouteLoad(...)
 	end	 -- while
 end
 
-local orig_RCTransport_TransportRouteUnload = RCTransport.TransportRouteUnload
+local ChoOrig_RCTransport_TransportRouteUnload = RCTransport.TransportRouteUnload
 function RCTransport:TransportRouteUnload(...)
 	-- If amount > storage then that's bad
 	if mod_Amount > self.max_shared_storage then
@@ -96,5 +96,5 @@ function RCTransport:TransportRouteUnload(...)
 		return
 	end
 
-	return orig_RCTransport_TransportRouteUnload(self, ...)
+	return ChoOrig_RCTransport_TransportRouteUnload(self, ...)
 end

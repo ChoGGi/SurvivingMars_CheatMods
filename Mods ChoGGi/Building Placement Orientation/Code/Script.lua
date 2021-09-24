@@ -45,14 +45,14 @@ OnMsg.SelectionAdded = UpdateLast
 local function StartupCode()
 
 	-- set orientation to same as last object
-	local orig_ConstructionController_CreateCursorObj = ConstructionController.CreateCursorObj
+	local ChoOrig_ConstructionController_CreateCursorObj = ConstructionController.CreateCursorObj
 	function ConstructionController:CreateCursorObj(...)
 
 		if not mod_EnableMod then
-			return orig_ConstructionController_CreateCursorObj(self, ...)
+			return ChoOrig_ConstructionController_CreateCursorObj(self, ...)
 		end
 
-		local ret = {orig_ConstructionController_CreateCursorObj(self, ...)}
+		local ret = {ChoOrig_ConstructionController_CreateCursorObj(self, ...)}
 		local last = ChoGGi.Temp.LastPlacedObject
 		if self.template_obj and self.template_obj.can_rotate_during_placement and IsValid(last) then
 			ret[1]:SetAngle(last:GetAngle() or 0)

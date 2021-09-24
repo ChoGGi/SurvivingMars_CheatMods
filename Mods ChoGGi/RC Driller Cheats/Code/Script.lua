@@ -110,10 +110,10 @@ function RCDriller:ProcAutomation()
   Sleep(2500)
 end
 
-local orig_RCDriller_Idle = RCDriller.Idle
+local ChoOrig_RCDriller_Idle = RCDriller.Idle
 function RCDriller:Idle(...)
 	if not mod_EnableMod then
-		return orig_RCDriller_Idle(self, ...)
+		return ChoOrig_RCDriller_Idle(self, ...)
 	end
 
   self:Gossip("Idle")
@@ -130,10 +130,10 @@ local allowed_res = {
 	PreciousMetals = true,
 	PreciousMinerals = true,
 }
-local orig_RCDriller_CanExploit = RCDriller.CanExploit
+local ChoOrig_RCDriller_CanExploit = RCDriller.CanExploit
 function RCDriller:CanExploit(deposit, ...)
 	if not mod_AllowDeep then
-		return orig_RCDriller_CanExploit(self, deposit, ...)
+		return ChoOrig_RCDriller_CanExploit(self, deposit, ...)
 	end
 
 	return allowed_res[deposit.resource]

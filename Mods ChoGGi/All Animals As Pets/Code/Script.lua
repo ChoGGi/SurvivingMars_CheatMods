@@ -130,15 +130,15 @@ function OnMsg.ClassesPostprocess()
 end
 
 -- remove sponsor limit for Platypus
-local orig_GetMissionSponsor = GetMissionSponsor
+local ChoOrig_GetMissionSponsor = GetMissionSponsor
 local function fake_GetMissionSponsor(...)
-	local sponsor = orig_GetMissionSponsor(...)
+	local sponsor = ChoOrig_GetMissionSponsor(...)
 	sponsor.id = "paradox"
 	return sponsor
 end
-local orig_SpawnAnimal = SpawnAnimal
+local ChoOrig_SpawnAnimal = SpawnAnimal
 function SpawnAnimal(...)
 	GetMissionSponsor = fake_GetMissionSponsor
-	orig_SpawnAnimal(...)
-	GetMissionSponsor = orig_GetMissionSponsor
+	ChoOrig_SpawnAnimal(...)
+	GetMissionSponsor = ChoOrig_GetMissionSponsor
 end

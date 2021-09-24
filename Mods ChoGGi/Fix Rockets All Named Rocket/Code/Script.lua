@@ -23,10 +23,10 @@ end
 
 local Untranslated = Untranslated
 
-local orig_RocketBase_GetDisplayName = RocketBase.GetDisplayName
+local ChoOrig_RocketBase_GetDisplayName = RocketBase.GetDisplayName
 function RocketBase:GetDisplayName(...)
 	if mod_EnableMod and self.name then
 		return Untranslated(self.name)
 	end
-	return orig_RocketBase_GetDisplayName(self, ...)
+	return ChoOrig_RocketBase_GetDisplayName(self, ...)
 end

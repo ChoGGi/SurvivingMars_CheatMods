@@ -52,12 +52,12 @@ function OnMsg.ApplyModOptions(id)
 end
 
 -- always return false if last ark is active (enables in rocket menu)
-local orig_IsGameRuleActive = IsGameRuleActive
+local ChoOrig_IsGameRuleActive = IsGameRuleActive
 local function fake_IsGameRuleActive(rule, ...)
 	if rule == "TheLastArk" then
 		return false
 	end
-	return orig_IsGameRuleActive(rule, ...)
+	return ChoOrig_IsGameRuleActive(rule, ...)
 end
 
 local function ReplaceRule(func, ...)
@@ -65,23 +65,23 @@ local function ReplaceRule(func, ...)
 		IsGameRuleActive = fake_IsGameRuleActive
 	end
 	local ret = func(...)
-	IsGameRuleActive = orig_IsGameRuleActive
+	IsGameRuleActive = ChoOrig_IsGameRuleActive
 	return ret
 end
 
-local orig_PassengerRocketDisabledRolloverTitle = RocketPayloadObject.PassengerRocketDisabledRolloverTitle
+local ChoOrig_PassengerRocketDisabledRolloverTitle = RocketPayloadObject.PassengerRocketDisabledRolloverTitle
 function RocketPayloadObject.PassengerRocketDisabledRolloverTitle(...)
-	return ReplaceRule(orig_PassengerRocketDisabledRolloverTitle, ...)
+	return ReplaceRule(ChoOrig_PassengerRocketDisabledRolloverTitle, ...)
 end
 
-local orig_PassengerRocketDisabledRolloverText = RocketPayloadObject.PassengerRocketDisabledRolloverText
+local ChoOrig_PassengerRocketDisabledRolloverText = RocketPayloadObject.PassengerRocketDisabledRolloverText
 function RocketPayloadObject.PassengerRocketDisabledRolloverText(...)
-	return ReplaceRule(orig_PassengerRocketDisabledRolloverText, ...)
+	return ReplaceRule(ChoOrig_PassengerRocketDisabledRolloverText, ...)
 end
 
-local orig_AreNewColonistsAccepted = AreNewColonistsAccepted
+local ChoOrig_AreNewColonistsAccepted = AreNewColonistsAccepted
 function AreNewColonistsAccepted(...)
-	return ReplaceRule(orig_AreNewColonistsAccepted, ...)
+	return ReplaceRule(ChoOrig_AreNewColonistsAccepted, ...)
 end
 
 -- remove non-tourists from rocket and fire them
@@ -95,7 +95,7 @@ function OnMsg.RocketLaunchFromEarth(rocket)
 	end
 
 	-- probably not good to do this one non-ark games
-	if not orig_IsGameRuleActive("TheLastArk") then
+	if not ChoOrig_IsGameRuleActive("TheLastArk") then
 		return
 	end
 

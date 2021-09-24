@@ -31,10 +31,10 @@ OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode
 
 
-local orig_CObject_new = CObject.new
+local ChoOrig_CObject_new = CObject.new
 --~ function CObject.new(class, luaobj, components)
 function CObject.new(...)
-	local new_obj = orig_CObject_new(...)
+	local new_obj = ChoOrig_CObject_new(...)
 
 	c = c + 1
 	obj_list[c] = new_obj

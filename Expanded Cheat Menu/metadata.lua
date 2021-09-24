@@ -114,6 +114,7 @@ The mod for modding Surviving Mars.
 Requests are welcome.
 
 If you don't know where a menu item is; Menu>Help>List All Menu Items (use "Filter Items" at the bottom).
+How to enable mod(s): Subscribe to the mod, then in-game open the mod manager to enable (make sure mod is downloaded in steam first).
 
 [url=https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/README.md]README[/url]
 [url=https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog]Changelog[/url]

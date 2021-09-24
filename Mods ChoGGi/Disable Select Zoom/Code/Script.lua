@@ -25,36 +25,36 @@ function OnMsg.ApplyModOptions(id)
 	end
 end
 
-local orig_ViewObjectMars = ViewObjectMars
+local ChoOrig_ViewObjectMars = ViewObjectMars
 local fake_ViewObjectMars = function(...)
 --~ 	if not mod_EnableMod or IsCtrlPressed() or IsGamepadButtonPressed("RightThumbClick") then
 	if not mod_EnableMod or IsCtrlPressed()
 		-- xbox (maybe not thumb?)
 		or XInput_IsCtrlButtonPressed(XInput_IsControllerConnected(s_XInputControllersConnected-1), "LeftShoulder")
 	then
-		return orig_ViewObjectMars(...)
+		return ChoOrig_ViewObjectMars(...)
 	end
 end
 
 local function Override(func, ...)
 	ViewObjectMars = fake_ViewObjectMars
 	func(...)
-	ViewObjectMars = orig_ViewObjectMars
+	ViewObjectMars = ChoOrig_ViewObjectMars
 end
 
-local orig_Colonist_Select = Colonist.Select
+local ChoOrig_Colonist_Select = Colonist.Select
 function Colonist.Select(...)
-	Override(orig_Colonist_Select, ...)
+	Override(ChoOrig_Colonist_Select, ...)
 end
-local orig_InfobarObj_CycleLabel = InfobarObj.CycleLabel
+local ChoOrig_InfobarObj_CycleLabel = InfobarObj.CycleLabel
 function InfobarObj.CycleLabel(...)
-	Override(orig_InfobarObj_CycleLabel, ...)
+	Override(ChoOrig_InfobarObj_CycleLabel, ...)
 end
-local orig_InfobarObj_CycleResources = InfobarObj.CycleResources
+local ChoOrig_InfobarObj_CycleResources = InfobarObj.CycleResources
 function InfobarObj.CycleResources(...)
-	Override(orig_InfobarObj_CycleResources, ...)
+	Override(ChoOrig_InfobarObj_CycleResources, ...)
 end
-local orig_InfobarObj_CycleDroneControl = InfobarObj.CycleDroneControl
+local ChoOrig_InfobarObj_CycleDroneControl = InfobarObj.CycleDroneControl
 function InfobarObj.CycleDroneControl(...)
-	Override(orig_InfobarObj_CycleDroneControl, ...)
+	Override(ChoOrig_InfobarObj_CycleDroneControl, ...)
 end

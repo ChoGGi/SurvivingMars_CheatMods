@@ -73,18 +73,18 @@ local function ShowHexes()
 	hexes_visible = true
 end
 
-local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
+local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding.GameInit(...)
-	orig_CursorBuilding_GameInit(...)
+	ChoOrig_CursorBuilding_GameInit(...)
 	if mod_EnableMod then
 		ShowHexes()
 	end
 end
 
-local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
+local ChoOrig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
 function CursorBuilding:UpdateShapeHexes(...)
 	if not mod_EnableMod then
-		return orig_CursorBuilding_UpdateShapeHexes(self, ...)
+		return ChoOrig_CursorBuilding_UpdateShapeHexes(self, ...)
 	end
 
 	local range_limit = mod_DistFromCursor > 0 and mod_DistFromCursor
@@ -108,13 +108,13 @@ function CursorBuilding:UpdateShapeHexes(...)
 
 	ResumePassEdits("ChoGGi.CursorBuilding.UpdateShapeHexes.Construction Show Life Support")
 
-	return orig_CursorBuilding_UpdateShapeHexes(self, ...)
+	return ChoOrig_CursorBuilding_UpdateShapeHexes(self, ...)
 end
 
-local orig_CursorBuilding_Done = CursorBuilding.Done
+local ChoOrig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding.Done(...)
 	HideHexes()
-	return orig_CursorBuilding_Done(...)
+	return ChoOrig_CursorBuilding_Done(...)
 end
 
 -- add keybind for toggle

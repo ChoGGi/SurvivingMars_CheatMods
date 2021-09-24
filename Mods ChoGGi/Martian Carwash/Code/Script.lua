@@ -226,9 +226,9 @@ function Carwash:AddFakeMarkers(list)
 end
 
 -- fake the pipe hookups
-local orig_SetObjWaterMarkers = SetObjWaterMarkers
+local ChoOrig_SetObjWaterMarkers = SetObjWaterMarkers
 function SetObjWaterMarkers(obj, show, list, ...)
-	local marked = orig_SetObjWaterMarkers(obj, show, list, ...)
+	local marked = ChoOrig_SetObjWaterMarkers(obj, show, list, ...)
 	-- means it found n added markers then made them invis since they're "touching" the building
 	if marked and show == true and obj:IsKindOf("Carwash") then
 		obj:AddFakeMarkers(list)
@@ -237,21 +237,21 @@ function SetObjWaterMarkers(obj, show, list, ...)
 end
 
 -- needed by SetObjWaterMarkers() in construction.lua
-local orig_HasSpot = g_CObjectFuncs.HasSpot
+local ChoOrig_HasSpot = g_CObjectFuncs.HasSpot
 function Carwash:HasSpot(name, ...)
 	if name == "Lifesupportgrid" then
 		return true
 	end
-	return orig_HasSpot(self, name, ...)
+	return ChoOrig_HasSpot(self, name, ...)
 end
 --
-local orig_GetSpotRange = g_CObjectFuncs.GetSpotRange
+local ChoOrig_GetSpotRange = g_CObjectFuncs.GetSpotRange
 function Carwash:GetSpotRange(name, ...)
 	if name == "Lifesupportgrid" then
 		-- the lamp spots work for my needs
 		return 4, 6
 	end
-	return orig_GetSpotRange(self, name, ...)
+	return ChoOrig_GetSpotRange(self, name, ...)
 end
 
 local GetPipeConnections = {
@@ -285,9 +285,9 @@ function Carwash.GetPipeConnections()
 end
 
 -- change the plugs to seams to hide our lack of tube
-local orig_LifeSupportGridElement_UpdateVisuals = LifeSupportGridElement.UpdateVisuals
+local ChoOrig_LifeSupportGridElement_UpdateVisuals = LifeSupportGridElement.UpdateVisuals
 function LifeSupportGridElement:UpdateVisuals(supply_resource, ...)
-	local result = orig_LifeSupportGridElement_UpdateVisuals(self, supply_resource, ...)
+	local result = ChoOrig_LifeSupportGridElement_UpdateVisuals(self, supply_resource, ...)
 
 	-- check for connections to a carwash and make it the seam entity
 	if result then

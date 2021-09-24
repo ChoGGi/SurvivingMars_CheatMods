@@ -21,9 +21,9 @@ local function AddStrings(self, str, idx1, idx2)
 	})
 end
 
-local orig_GetUISectionResourceProducerRollover = ResourceProducer.GetUISectionResourceProducerRollover
+local ChoOrig_GetUISectionResourceProducerRollover = ResourceProducer.GetUISectionResourceProducerRollover
 function ResourceProducer:GetUISectionResourceProducerRollover(...)
-	local ret = orig_GetUISectionResourceProducerRollover(self, ...)
+	local ret = ChoOrig_GetUISectionResourceProducerRollover(self, ...)
 
 	if not self.consumption_amount or not self.SumOfAllProducers then
 		return ret
@@ -45,9 +45,9 @@ function ResourceProducer:GetUISectionResourceProducerRollover(...)
 	return ret
 end
 
-local orig_GetUISectionConsumptionRollover = Building.GetUISectionConsumptionRollover
+local ChoOrig_GetUISectionConsumptionRollover = Building.GetUISectionConsumptionRollover
 function Building:GetUISectionConsumptionRollover(...)
-	local ret = orig_GetUISectionConsumptionRollover(self, ...)
+	local ret = ChoOrig_GetUISectionConsumptionRollover(self, ...)
 
 	if not self.consumption_amount or not self.SumOfAllProducers then
 		return ret

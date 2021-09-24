@@ -47,7 +47,7 @@ end
 local l_DontBuildHere
 
 -- allows you to build on geysers
-local orig_ConstructionController_IsObstructed = ConstructionController.IsObstructed
+local ChoOrig_ConstructionController_IsObstructed = ConstructionController.IsObstructed
 function ConstructionController:IsObstructed(...)
 	if mod_EnableMod then
 		if not l_DontBuildHere then
@@ -60,25 +60,25 @@ function ConstructionController:IsObstructed(...)
 			return false
 		end
 	end
-	return orig_ConstructionController_IsObstructed(self, ...)
+	return ChoOrig_ConstructionController_IsObstructed(self, ...)
 end
 
-local orig_DontBuildHere_Check = DontBuildHere.Check
+local ChoOrig_DontBuildHere_Check = DontBuildHere.Check
 function DontBuildHere.Check(...)
 	if mod_EnableMod then
 		return false
 	end
-	return orig_DontBuildHere_Check(...)
+	return ChoOrig_DontBuildHere_Check(...)
 end
 
 --~ -- allows you to build on geysers (grid objs)
---~ local orig_HexGetBuilding = HexGetBuilding
+--~ local ChoOrig_HexGetBuilding = HexGetBuilding
 --~ local function fake_HexGetBuilding(q, r)
---~ 	local obj = orig_HexGetBuilding(q, r)
+--~ 	local obj = ChoOrig_HexGetBuilding(q, r)
 --~ 	return obj ~= l_DontBuildHere and obj
 --~ end
 
---~ local orig_CanExtendFrom = GridConstructionController.CanExtendFrom
+--~ local ChoOrig_CanExtendFrom = GridConstructionController.CanExtendFrom
 --~ function GridConstructionController:CanExtendFrom(...)
 --~ 	if mod_EnableMod then
 --~ 		if not l_DontBuildHere then
@@ -88,17 +88,17 @@ end
 --~ 		HexGetBuilding = fake_HexGetBuilding
 --~ 	end
 
---~ 	local result, reason, obj = orig_CanExtendFrom(self, ...)
---~ 	HexGetBuilding = orig_HexGetBuilding
+--~ 	local result, reason, obj = ChoOrig_CanExtendFrom(self, ...)
+--~ 	HexGetBuilding = ChoOrig_HexGetBuilding
 --~ 	return result, reason, obj
 --~ end
 
 
 
 
---~ local orig_HexGetBuilding = HexGetBuilding
+--~ local ChoOrig_HexGetBuilding = HexGetBuilding
 --~ function HexGetBuilding(...)
---~ 	local obj = orig_HexGetBuilding(...)
+--~ 	local obj = ChoOrig_HexGetBuilding(...)
 
 --~ 	if mod_EnableMod then
 --~ 		if not l_DontBuildHere then

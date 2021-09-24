@@ -28,15 +28,15 @@ local function GetNationName()
 	return table.rand(Nations).value
 end
 
-local orig_GenerateColonistData = GenerateColonistData
+local ChoOrig_GenerateColonistData = GenerateColonistData
 function GenerateColonistData(...)
 	if mod_RandomBirthplace then
-		local c = orig_GenerateColonistData(...)
+		local c = ChoOrig_GenerateColonistData(...)
 		c.birthplace = GetNationName()
 		NameUnit(c)
 		return c
 	else
-		return orig_GenerateColonistData(...)
+		return ChoOrig_GenerateColonistData(...)
 	end
 end
 
@@ -58,9 +58,9 @@ local function AddExisting(name, flag_name, Nations, c)
 	return c
 end
 
-local orig_Colonist_GetUIInfo = Colonist.GetUIInfo
+local ChoOrig_Colonist_GetUIInfo = Colonist.GetUIInfo
 function Colonist:GetUIInfo(...)
-	local ret = orig_Colonist_GetUIInfo(self, ...)
+	local ret = ChoOrig_Colonist_GetUIInfo(self, ...)
 
 	local Nations = Nations
 	local idx = table.find(Nations, "value", self.birthplace)

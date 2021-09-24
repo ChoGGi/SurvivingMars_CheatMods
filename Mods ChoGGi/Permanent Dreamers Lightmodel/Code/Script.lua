@@ -32,8 +32,8 @@ function OnMsg.AfterLightmodelChange()
 	end)
 end
 
-local orig_ClosePlanetCamera = ClosePlanetCamera
+local ChoOrig_ClosePlanetCamera = ClosePlanetCamera
 function ClosePlanetCamera(...)
 	OverrideIt()
-	return orig_ClosePlanetCamera(...)
+	return ChoOrig_ClosePlanetCamera(...)
 end

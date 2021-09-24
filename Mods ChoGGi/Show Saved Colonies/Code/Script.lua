@@ -65,7 +65,7 @@ local function BuildMySpots()
 	landing_dlg.idtxtCoord:SetMaxWidth(800)
 
 	local template = landing_dlg.idSpotTemplate
-	local orig_template_DrawContent = template.DrawContent
+	local ChoOrig_template_DrawContent = template.DrawContent
 	template.DrawContent = DrawSpot
 
 	-- needs to be removed for now
@@ -153,7 +153,7 @@ local function BuildMySpots()
 
 	template:SetId("idSpotTemplate")
 	template:SetVisible(false)
-	template.DrawContent = orig_template_DrawContent
+	template.DrawContent = ChoOrig_template_DrawContent
 end
 
 function OnMsg.ClassesPostprocess()
@@ -164,9 +164,9 @@ function OnMsg.ClassesPostprocess()
 	})
 end
 
-local orig_LandingSiteObject_AttachPredefinedSpots = LandingSiteObject.AttachPredefinedSpots
+local ChoOrig_LandingSiteObject_AttachPredefinedSpots = LandingSiteObject.AttachPredefinedSpots
 function LandingSiteObject:AttachPredefinedSpots(...)
-	orig_LandingSiteObject_AttachPredefinedSpots(self, ...)
+	ChoOrig_LandingSiteObject_AttachPredefinedSpots(self, ...)
 	-- we only want it to happen during the new game planet
 	if UICity then
 		return
@@ -179,11 +179,11 @@ function LandingSiteObject:AttachPredefinedSpots(...)
 end
 
 -- are our icons vis?
-local orig_LandingSiteObject_CalcMarkersVisibility = LandingSiteObject.CalcMarkersVisibility
+local ChoOrig_LandingSiteObject_CalcMarkersVisibility = LandingSiteObject.CalcMarkersVisibility
 function LandingSiteObject:CalcMarkersVisibility(...)
 	-- we only want it to happen during the new game planet
 	if UICity then
-		return orig_LandingSiteObject_CalcMarkersVisibility(self, ...)
+		return ChoOrig_LandingSiteObject_CalcMarkersVisibility(self, ...)
 	end
 
 	local cur_phase = PlanetRotationObj:GetAnimPhase()
@@ -193,12 +193,12 @@ function LandingSiteObject:CalcMarkersVisibility(...)
 		self.dialog[obj.id]:SetVisible(dist <= 2400)
 	end
 
-	return orig_LandingSiteObject_CalcMarkersVisibility(self, ...)
+	return ChoOrig_LandingSiteObject_CalcMarkersVisibility(self, ...)
 end
 
-local orig_LandingSiteObject_DisplayCoord = LandingSiteObject.DisplayCoord
+local ChoOrig_LandingSiteObject_DisplayCoord = LandingSiteObject.DisplayCoord
 function LandingSiteObject:DisplayCoord(...)
-	orig_LandingSiteObject_DisplayCoord(self, ...)
+	ChoOrig_LandingSiteObject_DisplayCoord(self, ...)
 	-- we only want it to happen during the new game planet
 	if UICity then
 		return

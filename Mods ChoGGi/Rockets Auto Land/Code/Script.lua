@@ -103,24 +103,24 @@ function OnMsg.ClassesPostprocess()
 	})
 end
 
-local orig_RocketBase_WaitInOrbit = RocketBase.WaitInOrbit
+local ChoOrig_RocketBase_WaitInOrbit = RocketBase.WaitInOrbit
 function RocketBase:WaitInOrbit(...)
 	-- abort if not autoland or duststorm
 	if not mod_EnableMod
 		or not self.ChoGGi_RocketsAutoLand_Allow
 		or not self:IsFlightPermitted()
 	then
-		return orig_RocketBase_WaitInOrbit(self, ...)
+		return ChoOrig_RocketBase_WaitInOrbit(self, ...)
 	end
 
 	local objs = UICity.labels.LandingPad or ""
 	-- no pads, so wait in orbit?
 	if #objs == 0 then
-		return orig_RocketBase_WaitInOrbit(self, ...)
+		return ChoOrig_RocketBase_WaitInOrbit(self, ...)
 	end
 
 	-- fire off what it needs to (or it tries to find BuildingTemplates.OrbitalProbe)
-	CreateGameTimeThread(orig_RocketBase_WaitInOrbit, self, ...)
+	CreateGameTimeThread(ChoOrig_RocketBase_WaitInOrbit, self, ...)
 
 	-- change order of landing pads to match names of pads, so user has some sort of order to follow.
 	table.sort(objs, function(a, b)
@@ -132,7 +132,7 @@ function RocketBase:WaitInOrbit(...)
 	end)
 	-- no free pads so wait in orbit for user
 	if #objs == 0 then
-		return orig_RocketBase_WaitInOrbit(self, ...)
+		return ChoOrig_RocketBase_WaitInOrbit(self, ...)
 	end
 	-- land rocket on landing site
 	local landing_pad = objs[1]

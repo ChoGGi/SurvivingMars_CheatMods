@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local orig_CalcBirth = Community.CalcBirth
+local ChoOrig_CalcBirth = Community.CalcBirth
 function Community:CalcBirth(...)
 	local amount = #(self.labels.Child or "")
 	local limit = self.ChoGGi_DomeLimitBirths
@@ -9,7 +9,7 @@ function Community:CalcBirth(...)
 	if limit and limit > 0 and amount >= limit then
 		return
 	end
-	return orig_CalcBirth(self, ...)
+	return ChoOrig_CalcBirth(self, ...)
 end
 
 local apply_to_all = false

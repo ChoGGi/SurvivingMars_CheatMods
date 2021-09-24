@@ -979,12 +979,12 @@ Actions[c] = {ActionName = "BaseWalls: " .. Translate(694856081085, "Rotate Buil
 }
 
 local shortcuts_mode
-local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
+local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit(...)
 	local id = self.template and self.template.template_name
 	-- skip not ours
 	if not (wall_types[id] or corner_types[id]) then
-		return orig_CursorBuilding_GameInit(self, ...)
+		return ChoOrig_CursorBuilding_GameInit(self, ...)
 	end
 
 	local bs = ChoGGi_BaseWall
@@ -1015,10 +1015,10 @@ function CursorBuilding:GameInit(...)
 		bs:SpawnCornerAttaches(self)
 	end
 
-	return orig_CursorBuilding_GameInit(self, ...)
+	return ChoOrig_CursorBuilding_GameInit(self, ...)
 end
 
-local orig_CursorBuilding_Done = CursorBuilding.Done
+local ChoOrig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding:Done(...)
 	cursor_building = false
 	if shortcuts_mode then
@@ -1026,19 +1026,19 @@ function CursorBuilding:Done(...)
 		shortcuts_mode = false
 	end
 --~ 	self.ChoGGi_bs_mode = nil
-	return orig_CursorBuilding_Done(self, ...)
+	return ChoOrig_CursorBuilding_Done(self, ...)
 end
 
 -- skip the Missing spot 'Top' in 'ConstructionSite' state 'idle' msg
-local orig_AttachToObject = AttachToObject
+local ChoOrig_AttachToObject = AttachToObject
 function AttachToObject(to, childclass, spot_type, ...)
-	return orig_AttachToObject(
+	return ChoOrig_AttachToObject(
 		to, childclass, to:HasSpot(spot_type) and spot_type, ...
 	)
 end
-local orig_AttachPartToObject = AttachPartToObject
+local ChoOrig_AttachPartToObject = AttachPartToObject
 function AttachPartToObject(to, part, spot_type, ...)
-	return orig_AttachPartToObject(
+	return ChoOrig_AttachPartToObject(
 		to, part, to:HasSpot(spot_type) and spot_type, ...
 	)
 end

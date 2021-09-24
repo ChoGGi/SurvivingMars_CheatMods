@@ -20,13 +20,13 @@ function OnMsg.ApplyModOptions(id)
 end
 
 -- make the value the below buttons set actually do something
-local orig_Colonist_SetWorkplace = Colonist.SetWorkplace
+local ChoOrig_Colonist_SetWorkplace = Colonist.SetWorkplace
 function Colonist:SetWorkplace(building, shift, ...)
 	if self.ChoGGi_Lockworkplace and (building or mod_NeverChange) then
 		return
 	end
 	-- we only fire the func if the lock isn't there, yeah i'm sure this won't cause any issues :)
-	return orig_Colonist_SetWorkplace(self, building, shift, ...)
+	return ChoOrig_Colonist_SetWorkplace(self, building, shift, ...)
 end
 
 function OnMsg.ClassesPostprocess()

@@ -8,7 +8,7 @@ local function OverrideBackButton(toolbar, something)
 	end
 
 	local back = toolbar.idback
-	local orig_OnPress = back.OnPress
+	local ChoOrig_OnPress = back.OnPress
 	function back:OnPress(...)
 		CreateRealTimeThread(function(...)
 			if WaitMarsQuestion(
@@ -16,14 +16,14 @@ local function OverrideBackButton(toolbar, something)
 				T(4165, "Back"),
 				T(1010, "Main Menu")
 			) == "ok" then
-				orig_OnPress(self, ...)
+				ChoOrig_OnPress(self, ...)
 			end
 		end)
 	end
 end
 
 -- add settings button
-local orig_SetPlanetCamera = SetPlanetCamera
+local ChoOrig_SetPlanetCamera = SetPlanetCamera
 function SetPlanetCamera(planet, state, ...)
 	-- fire only in mission setup menu
 	if not state and not UICity then
@@ -38,14 +38,14 @@ function SetPlanetCamera(planet, state, ...)
 					OverrideBackButton(toolbar, something)
 
 					-- hook into toolbar button area so we can keep adding the button
-					local orig_RebuildActions = toolbar.RebuildActions
+					local ChoOrig_RebuildActions = toolbar.RebuildActions
 					toolbar.RebuildActions = function(self, context, ...)
-						orig_RebuildActions(self, context, ...)
+						ChoOrig_RebuildActions(self, context, ...)
 						OverrideBackButton(toolbar, something)
 					end
 				end
 			end
 		end)
 	end
-	return orig_SetPlanetCamera(planet, state, ...)
+	return ChoOrig_SetPlanetCamera(planet, state, ...)
 end

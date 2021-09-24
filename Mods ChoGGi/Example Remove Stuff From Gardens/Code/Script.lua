@@ -31,7 +31,7 @@ local classes_to_remove = {
 	"DecorInt_03", "DecorInt_04",
 }
 
-local orig_Service_GameInit = Service.GameInit
+local ChoOrig_Service_GameInit = Service.GameInit
 function Service:GameInit()
 
 
@@ -41,5 +41,5 @@ function Service:GameInit()
 	end
 
 	-- send the orig func on it's way
-	return orig_Service_GameInit(self)
+	return ChoOrig_Service_GameInit(self)
 end

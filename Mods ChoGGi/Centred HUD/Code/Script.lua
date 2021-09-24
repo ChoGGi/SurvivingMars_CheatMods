@@ -64,13 +64,13 @@ function OnMsg.SystemSize(pt)
 end
 
 -- what the hud elements use to position
-local orig_GetSafeMargins = GetSafeMargins
+local ChoOrig_GetSafeMargins = GetSafeMargins
 function GetSafeMargins(win_box)
 	if win_box then
-		return orig_GetSafeMargins(win_box)
+		return ChoOrig_GetSafeMargins(win_box)
 	end
 	-- If lookup table doesn't have width we fire orginal func
-	return current_margin or orig_GetSafeMargins()
+	return current_margin or ChoOrig_GetSafeMargins()
 end
 
 function OnMsg.ModsReloaded()
@@ -114,9 +114,9 @@ Don't forget to send me your res and margin, so I can add them to the list.]]),
 end
 
 -- they don't bother with registering right-clicks on the hud buttons
-local orig_HUDButton_Open = HUDButton.Open
+local ChoOrig_HUDButton_Open = HUDButton.Open
 function HUDButton:Open()
-	orig_HUDButton_Open(self)
+	ChoOrig_HUDButton_Open(self)
 
 	local btn = self[1]
 	if btn.Id == "idSetupMargins" then

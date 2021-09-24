@@ -105,12 +105,12 @@ function OnMsg.CityStart()
 end
 
 -- change Welcome to Mars audio
-local orig_ShowStartGamePopup = ShowStartGamePopup
+local ChoOrig_ShowStartGamePopup = ShowStartGamePopup
 function ShowStartGamePopup(...)
 	if GetMissionSponsor().id == "ChoGGi_CanadianSpaceAgency" then
 		PopupNotificationPresets.WelcomeGameInfo.title = T(302535920011902, "Welcome to Mars, Eh!")
 	end
-	return orig_ShowStartGamePopup(...)
+	return ChoOrig_ShowStartGamePopup(...)
 end
 
 function OnMsg.ClassesPostprocess()
@@ -128,11 +128,11 @@ function OnMsg.ClassesPostprocess()
 
 end
 
-local orig_VoiceSampleByText = VoiceSampleByText
+local ChoOrig_VoiceSampleByText = VoiceSampleByText
 function VoiceSampleByText(text, ...)
 	if TGetID(text) == 7155 and GetMissionSponsor().id == "ChoGGi_CanadianSpaceAgency" then
 		return "ChoGGi_TakeOffEh"
 	end
 
-	return orig_VoiceSampleByText(text, ...)
+	return ChoOrig_VoiceSampleByText(text, ...)
 end

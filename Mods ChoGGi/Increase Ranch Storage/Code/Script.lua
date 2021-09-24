@@ -63,9 +63,9 @@ function OnMsg.ClassesPostprocess()
 		return
 	end
 
-	local orig_Pasture_GameInit = Pasture.GameInit
+	local ChoOrig_Pasture_GameInit = Pasture.GameInit
 	function Pasture.GameInit(...)
-		orig_Pasture_GameInit(self, ...)
+		ChoOrig_Pasture_GameInit(self, ...)
 		ProdUpdate(self:GetProducerObj())
 	end
 	changed = true

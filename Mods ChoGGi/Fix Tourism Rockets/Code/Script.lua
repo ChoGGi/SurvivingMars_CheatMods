@@ -19,10 +19,10 @@ function OnMsg.ApplyModOptions(id)
 end
 
 
-local orig_RocketExpedition_OnDemolish = RocketExpedition.OnDemolish
+local ChoOrig_RocketExpedition_OnDemolish = RocketExpedition.OnDemolish
 function RocketExpedition:OnDemolish(...)
 	if not mod_EnableMod then
-		return orig_RocketExpedition_OnDemolish(self, ...)
+		return ChoOrig_RocketExpedition_OnDemolish(self, ...)
 	end
 
   ClearDestroyedExpeditionRocketSpot(self)
@@ -30,10 +30,10 @@ function RocketExpedition:OnDemolish(...)
   RocketBase.OnDemolish(self)
 end
 
-local orig_ForeignTradeRocket_OnModifiableValueChanged = ForeignTradeRocket.OnModifiableValueChanged
+local ChoOrig_ForeignTradeRocket_OnModifiableValueChanged = ForeignTradeRocket.OnModifiableValueChanged
 function ForeignTradeRocket:OnModifiableValueChanged(prop, ...)
 	if not mod_EnableMod then
-		return orig_ForeignTradeRocket_OnModifiableValueChanged(self, prop, ...)
+		return ChoOrig_ForeignTradeRocket_OnModifiableValueChanged(self, prop, ...)
 	end
 
   if prop ~= "max_export_storage" and prop ~= "launch_fuel" then
@@ -42,10 +42,10 @@ function ForeignTradeRocket:OnModifiableValueChanged(prop, ...)
   end
 end
 
-local orig_TradeRocket_OnModifiableValueChanged = TradeRocket.OnModifiableValueChanged
+local ChoOrig_TradeRocket_OnModifiableValueChanged = TradeRocket.OnModifiableValueChanged
 function TradeRocket:OnModifiableValueChanged(prop, ...)
 	if not mod_EnableMod then
-		return orig_TradeRocket_OnModifiableValueChanged(self, prop, ...)
+		return ChoOrig_TradeRocket_OnModifiableValueChanged(self, prop, ...)
 	end
 
   if prop ~= "max_export_storage" then

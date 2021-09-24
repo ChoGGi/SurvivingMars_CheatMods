@@ -3,9 +3,9 @@
 local table = table
 
 -- add marker to any prefab building
-local orig_ConstructionSite_Complete = ConstructionSite.Complete
+local ChoOrig_ConstructionSite_Complete = ConstructionSite.Complete
 function ConstructionSite:Complete(...)
-	local ret = {orig_ConstructionSite_Complete(self, ...)}
+	local ret = {ChoOrig_ConstructionSite_Complete(self, ...)}
 
 	if self.prefab then
 		ret[1].ChoGGi_PrefabSafety = true
@@ -40,17 +40,17 @@ local function Refund(self)
 end
 
 -- add back prefab only after BaseBuilding is completely removed
-local orig_BaseBuilding_delete = BaseBuilding.delete or Object.delete
+local ChoOrig_BaseBuilding_delete = BaseBuilding.delete or Object.delete
 function BaseBuilding:delete(...)
 	Refund(self)
-	return orig_BaseBuilding_delete(self, ...)
+	return ChoOrig_BaseBuilding_delete(self, ...)
 end
 
 -- of course rovers have to be different
-local orig_BaseRoverBuilding_GameInit = BaseRoverBuilding.GameInit
+local ChoOrig_BaseRoverBuilding_GameInit = BaseRoverBuilding.GameInit
 function BaseRoverBuilding:GameInit(...)
 	if not self.ChoGGi_PrefabSafety then
-		return orig_BaseRoverBuilding_GameInit(self, ...)
+		return ChoOrig_BaseRoverBuilding_GameInit(self, ...)
 	end
 
 	CreateGameTimeThread(function()

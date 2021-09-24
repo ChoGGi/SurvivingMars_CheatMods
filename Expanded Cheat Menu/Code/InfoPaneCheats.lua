@@ -1071,10 +1071,10 @@ function BaseRover:CheatCleanAndFix()
 		self:Repair()
  end)
 end
-local orig_Building_CheatCleanAndFix = Building.CheatCleanAndFix
+local ChoOrig_Building_CheatCleanAndFix = Building.CheatCleanAndFix
 function Building:CheatCleanAndFix()
 	self:ResetDust()
-	orig_Building_CheatCleanAndFix(self)
+	ChoOrig_Building_CheatCleanAndFix(self)
 end
 
 -- misc
@@ -1273,13 +1273,13 @@ if LandscapeLake then
 end
 
 -- CheatEmpty only empties the production depot, not the consumption one.
-local orig_ResourceProducer_CheatEmpty = ResourceProducer.CheatEmpty
+local ChoOrig_ResourceProducer_CheatEmpty = ResourceProducer.CheatEmpty
 function ResourceProducer:CheatEmpty(...)
 	-- An IsValid won't hurt
 	if IsValid(self.consumption_resource_stockpile) then
 		self:Consume_Internal(self.consumption_stored_resources)
 	end
-	return orig_ResourceProducer_CheatEmpty(self, ...)
+	return ChoOrig_ResourceProducer_CheatEmpty(self, ...)
 end
 
 function ArtificialSun:CheatFillWater()

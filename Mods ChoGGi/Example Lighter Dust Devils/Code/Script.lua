@@ -11,10 +11,10 @@ function OnMsg.ClassesBuilt()
 		if not cls then
 			return
 		end
-		local orig_func = cls.StartFX
+		local ChoOrig_func = cls.StartFX
 
 		cls.StartFX = function(self)
-			orig_func(self)
+			ChoOrig_func(self)
 			self:GetAttaches()[1]:SetColorModifier(-1)
 
 			local minions = self.minions

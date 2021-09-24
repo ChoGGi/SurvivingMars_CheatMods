@@ -1,5 +1,11 @@
 -- See LICENSE for terms
 
+local CalcOrientation = CalcOrientation
+local GetSunPos = GetSunPos
+local SunToSolarPanelAngle = SunToSolarPanelAngle
+local Sleep = Sleep
+local update_interval = 3 * const.MinuteDuration
+
 local function AddPanels(bld)
 	bld.ChoGGi_panels = {}
 	local c = 0
@@ -37,15 +43,12 @@ function OnMsg.CityStart()
 end
 
 GlobalGameTimeThread("SolarArrayOrientation", function()
-	local CalcOrientation = CalcOrientation
-	local GetSunPos = GetSunPos
-	local SunToSolarPanelAngle = SunToSolarPanelAngle
-	local Sleep = Sleep
-	local update_interval = 3*const.MinuteDuration
 	while true do
 		Sleep(update_interval)
-		-- 18250 matches them up with the other panels (I assume they rotate on a diff angle or something)
-		local azi = SunToSolarPanelAngle(GetSunPos()) + 18250
+		-- 18250 matches them up with the other solar panel buildingss
+		-- I assume they rotate on a diff angle or something?
+		local panel_offset = 18250
+		local azi = SunToSolarPanelAngle(GetSunPos()) + panel_offset
 		local arrays = UICity.labels.SolarArray or ""
 		for i = 1, #arrays do
 			local array = arrays[i]
@@ -55,6 +58,7 @@ GlobalGameTimeThread("SolarArrayOrientation", function()
 
 				if array:IsAffectedByArtificialSun() then
 					local angle = CalcOrientation(panel_obj:GetPos(), art_sun)
+					-- 21600 / 360 = 60, not sure what 90 is for...
 					panel_obj:SetAngle(angle+90*60, update_interval)
 				else
 					panel_obj:SetAngle(azi, update_interval)

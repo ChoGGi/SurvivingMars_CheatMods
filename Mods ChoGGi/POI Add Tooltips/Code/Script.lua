@@ -123,10 +123,10 @@ local function UpdateList(dlg)
 	end
 end
 
-local orig_GetSortedMarsPointsOfInterest = GetSortedMarsPointsOfInterest
+local ChoOrig_GetSortedMarsPointsOfInterest = GetSortedMarsPointsOfInterest
 function GetSortedMarsPointsOfInterest(...)
 	if Dialogs.PlanetaryView then
 		CreateRealTimeThread(UpdateList, Dialogs.PlanetaryView)
 	end
-	return orig_GetSortedMarsPointsOfInterest(...)
+	return ChoOrig_GetSortedMarsPointsOfInterest(...)
 end

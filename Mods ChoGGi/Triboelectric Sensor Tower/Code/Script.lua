@@ -10,7 +10,7 @@ local function ToggleTech()
 		end
 		-- add an entry to unlock it with the tech
 		local tech = TechDef.TriboelectricScrubbing
-		if not table.find(tech, "Building", "TriboelectricScrubber") then
+		if not table.find(tech, "Building", "ChoGGi_TriboelectricSensorTower") then
 			tech[#tech+1] = PlaceObj('Effect_TechUnlockBuilding', {
 				Building = "ChoGGi_TriboelectricSensorTower",
 			})
@@ -222,9 +222,9 @@ local GameTime = GameTime
 local Max = Max
 local SensorTowerPredictionAddTime = const.SensorTowerPredictionAddTime
 
-local orig_GetNumberOfSensorTowers = GetNumberOfSensorTowers
+local ChoOrig_GetNumberOfSensorTowers = GetNumberOfSensorTowers
 function GetNumberOfSensorTowers(...)
-	local count = orig_GetNumberOfSensorTowers(...)
+	local count = ChoOrig_GetNumberOfSensorTowers(...)
 
 	local prediction_add_time_ago = Max(GameTime() - SensorTowerPredictionAddTime, 0)
 	local objs = UICity.labels.ChoGGi_TriboelectricSensorTower or ""
@@ -238,12 +238,12 @@ function GetNumberOfSensorTowers(...)
 	return count
 end
 
-local orig_GetWorkingSensorTowersCount = SensorTowerBase.GetWorkingSensorTowersCount
+local ChoOrig_GetWorkingSensorTowersCount = SensorTowerBase.GetWorkingSensorTowersCount
 function SensorTowerBase.GetWorkingSensorTowersCount(...)
 	local text
 	-- orig func doesn't check if towers exist
 	if UICity.labels.SensorTower then
-		text = orig_GetWorkingSensorTowersCount(...)
+		text = ChoOrig_GetWorkingSensorTowersCount(...)
 	else
 		text = T{11231, "Working Sensor Towers:<right><count>", count = 0}
 	end
