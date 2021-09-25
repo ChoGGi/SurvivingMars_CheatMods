@@ -723,12 +723,24 @@ function OnMsg.ClassesGenerate()
 
 end -- ClassesGenerate
 
---~ function OnMsg.ClassesPreprocess()
---~ end -- ClassesPreprocess
---~ function OnMsg.ClassesPostprocess()
---~ end -- ClassesPostprocess
+-- function OnMsg.ClassesBuilt()
+function OnMsg.ClassesPostprocess()
 
-function OnMsg.ClassesBuilt()
+	-- align popups to rightside when using vertical cheat menu
+	SaveOrigFunc("XMenuBar", "PopupAction")
+	function XMenuBar:PopupAction(action_id, ...)
+		if not ChoGGi.UserSettings.VerticalCheatMenu then
+			return ChoGGi_OrigFuncs.XMenuBar_PopupAction(self, action_id, ...)
+		end
+		-- orig func doesn't return anything anyways
+		ChoGGi_OrigFuncs.XMenuBar_PopupAction(self, action_id, ...)
+		local idx = table.find(terminal.desktop, "MenuEntries", action_id)
+		if not idx then
+			print("no idx VerticalCheatMenu_Toggle XMenuBar:PopupAction")
+			return
+		end
+		terminal.desktop[idx]:SetAnchorType("smart")
+	end
 
 	SaveOrigFunc("SpaceElevator", "DroneUnloadResource")
 	function SpaceElevator:DroneUnloadResource(...)

@@ -2379,7 +2379,13 @@ function ChoGGi.ComFuncs.ColonistUpdateSpecialization(c, spec)
 		if spec == Translate(3490--[[Random]]) then
 			spec = ChoGGi.Tables.ColonistSpecializations[Random(1, 6)]
 		end
-		c:SetSpecialization(spec)
+		if c.specialist ~= "none" then
+			c:RemoveTrait(c.specialist)
+		end
+		c:AddTrait(spec)
+--~ 		c:SetSpecialization(spec)
+
+		c:ChangeWorkplacePerformance()
 		c:UpdateWorkplace()
 		--randomly fails on colonists from rockets
 		--c:TryToEmigrate()
@@ -4157,7 +4163,11 @@ do -- SpawnColonist
 
 		-- can't fire till after :new()
 		if old_c then
-			colonist:SetSpecialization(old_c.specialist)
+			if old_c.specialist ~= "none" then
+				old_c:RemoveTrait(old_c.specialist)
+			end
+			old_c:AddTrait(old_c.specialist)
+--~ 			colonist:SetSpecialization(old_c.specialist)
 		end
 		colonist:SetPos((pos
 			or building and GetPassablePointNearby(building:GetPos())

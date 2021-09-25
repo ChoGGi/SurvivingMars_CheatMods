@@ -3,8 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! green: <green>%s</green>
 !Skipped Line! yellow: <yellow>%s</yellow>
 "ID", "Text", "Translation"
-302535920001660, ""
-302535920001661, ""
 302535920001662, ""
 302535920001663, ""
 302535920001664, ""
@@ -1617,6 +1615,8 @@ Takes less then a second on a map with 3616 buildings and 54 drone hubs."
 302535920000622, "If you have any buildings that aren't aligned to the hex grids use this."
 end end end end end !Skipped Line!
 do !Skipped Line! [[GameMenu.lua" "GameFunc.lua]] !Skipped Line!
+302535920001660, "Toggle Vertical Cheat Menu"
+302535920001661, "Puts the menu down the side of the screen to save horizontal space for the info bar."
 302535920001653, "Toggle Selection Panel Resize"
 302535920001654, "Stops selection panel from shrinking (eg: dome)."
 302535920001655, "Toggle Scroll Selection Panel"

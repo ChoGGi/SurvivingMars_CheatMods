@@ -322,7 +322,6 @@ local function ModOptions(id)
 end
 OnMsg.ApplyModOptions = ModOptions
 
-
 function OnMsg.ModsReloaded()
 	-- load default/saved settings
 	ModOptions()
@@ -330,6 +329,10 @@ function OnMsg.ModsReloaded()
 	local ChoGGi = ChoGGi
 	local UserSettings = ChoGGi.UserSettings
 
+	CreateRealTimeThread(function()
+		WaitMsg("OnRender")
+		ChoGGi.ComFuncs.ToggleVerticalCheatMenu(UserSettings.VerticalCheatMenu)
+	end)
 	if UserSettings.FlushLogConstantly then
 		print(Strings[302535920001349--[[Flush Log Constantly]]], Strings[302535920001414--[[Call FlushLogFile() every render update!]]])
 	end
@@ -959,15 +962,26 @@ function OnMsg.SelectionAdded(obj)
 	end
 end
 
--- remove selected obj when nothing selected
 function OnMsg.SelectionRemoved()
+	-- remove selected obj when nothing selected
 	s = false
 end
 
+function OnMsg.ChangeMap()
+	-- show how long loading takes
+	if testing or ChoGGi.UserSettings.ShowStartupTicks then
+		ChoGGi.Temp.StartupTicks = GetPreciseTicks()
+	end
+
+end
+
 function OnMsg.ChangeMapDone(map)
+	if ChoGGi.UserSettings.UnlockOverview then
+		ActiveMapData.IsAllowedToEnterOverview = true
+	end
+
 	-- first time run info
 	if map == "PreGame" and ChoGGi.UserSettings.FirstRun ~= false then
-	print("ChangeMapDone")
 		ChoGGi.UserSettings.FirstRun = false
 		DestroyConsoleLog()
 		ChoGGi.SettingFuncs.WriteSettings()
@@ -1234,20 +1248,6 @@ function OnMsg.ChoGGi_Childkiller()
 	end
 end
 
--- show how long loading takes
-function OnMsg.ChangeMap()
-	if testing or ChoGGi.UserSettings.ShowStartupTicks then
-		ChoGGi.Temp.StartupTicks = GetPreciseTicks()
-	end
-
-end
-
-function OnMsg.ChangeMapDone()
-	if ChoGGi.UserSettings.UnlockOverview then
-		ActiveMapData.IsAllowedToEnterOverview = true
-	end
-end
-
 do -- LoadGame/CityStart
 --~ 	local function SetMissionBonuses(UserSettings, Presets, preset, which, Func)
 --~ 		local list = Presets[preset].Default or ""
@@ -1320,8 +1320,10 @@ do -- LoadGame/CityStart
 
 ---------------------do the above stuff before the below stuff
 
-
-
+		-- vertical menu
+		if UserSettings.VerticalCheatMenu then
+			ChoGGi.ComFuncs.ToggleVerticalCheatMenu(UserSettings.VerticalCheatMenu)
+		end
 		-- update pod price
 		if type(UserSettings.PodPrice) == "number" then
 			sponsor.pod_price = UserSettings.PodPrice

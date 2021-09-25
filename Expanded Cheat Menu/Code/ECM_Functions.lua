@@ -2708,3 +2708,47 @@ do -- UnpublishParadoxMod
 		)
 	end
 end -- do
+
+function ChoGGi.ComFuncs.ToggleVerticalCheatMenu(toggle)
+	local idx = table.find(terminal.desktop, "class", "XShortcutsHost")
+
+	if not idx then
+		if testing then
+			print("no idx VerticalCheatMenu_Toggle")
+			ex(terminal.desktop)
+		end
+		return
+	end
+
+	local cheat_menu = terminal.desktop[idx]
+
+	-- menu
+	idx = table.find(cheat_menu, "class", "XMenuBar")
+	local menubar = cheat_menu[idx]
+	-- menu buttons, there's no id so this'll hopefully work if someone else adds something here.
+	local menubuttons
+	for i = 1, #cheat_menu do
+		local item = cheat_menu[i]
+		if item[1] and item[1].ButtonTemplate == "EditorToolbarButton" then
+			menubuttons = item[1]
+			break
+		end
+	end
+
+	idx = table.find(cheat_menu, "class", "XMenuBar")
+	local menubar = cheat_menu[idx]
+
+	if toggle then
+		menubar:SetLayoutMethod("VList")
+		menubuttons:SetLayoutMethod("VList")
+	else
+		menubar:SetLayoutMethod("HList")
+		menubuttons:SetLayoutMethod("HList")
+	end
+
+	-- force update the menu
+	menubar:SetUniformColumnWidth(true)
+	menubar:SetUniformColumnWidth(false)
+	menubuttons:SetUniformColumnWidth(true)
+	menubuttons:SetUniformColumnWidth(false)
+end

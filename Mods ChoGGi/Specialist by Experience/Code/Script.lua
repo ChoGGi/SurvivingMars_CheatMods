@@ -94,11 +94,17 @@ function OnMsg.NewDay(sol) -- NewSol...
 				local obj = c_table.obj
 				-- just in case
 				if IsValid(obj) or not obj.dying then
-					-- only allow spec=none or if mod option then any spec, then check if worked long enough
-					if (obj.specialist == "none" or mod_IgnoreSpec) and (sol - c_table.started_on) >= mod_SolsToTrain then
-						obj:SetSpecialization(work.specialist)
-						-- "fix" for picard
-						obj:SetSpecialization(work.specialist)
+					-- skip units that already have the spec, only allow spec=none or if mod option then any spec, then check if worked long enough
+					if obj.specialist ~= work.specialist and (obj.specialist == "none" or mod_IgnoreSpec)
+						and (sol - c_table.started_on) >= mod_SolsToTrain
+					then
+						if obj.specialist ~= "none" then
+							obj:RemoveTrait(obj.specialist)
+						end
+						obj:AddTrait(work.specialist)
+--~ 						obj:SetSpecialization(work.specialist)
+--~ 						-- "fix" for picard
+--~ 						obj:SetSpecialization(work.specialist)
 						-- needed to remove NonSpecialistPerformancePenalty
 						obj:ChangeWorkplacePerformance()
 					end

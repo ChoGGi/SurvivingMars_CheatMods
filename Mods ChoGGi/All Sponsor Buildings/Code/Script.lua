@@ -6,7 +6,6 @@ local table = table
 local sponsor_buildings = CurrentModDef.sponsor_buildings or {}
 
 local mod_options = {}
---~ local mod_LockBehindTech
 
 -- build options list
 local BuildingTemplates = BuildingTemplates
@@ -33,9 +32,6 @@ local function ModOptions(id)
 		mod_options[id] = options:GetProperty(id)
 	end
 
---~ 	mod_LockBehindTech = options:GetProperty("LockBehindTech")
-
---~ ex(mod_options)
 	local BuildingTechRequirements = BuildingTechRequirements
 
 	local BuildingTemplates = BuildingTemplates
@@ -94,7 +90,6 @@ local techs = {
 }
 
 local function LockTechs()
---~ 	if mod_LockBehindTech then
 	for bld_id, tech_id in pairs(techs) do
 		if mod_options["ChoGGi_Tech_" .. bld_id] then
 				-- build menu
@@ -112,7 +107,6 @@ local function LockTechs()
 			end
 		end
 	end
---~ 	end
 end
 
 OnMsg.CityStart = LockTechs

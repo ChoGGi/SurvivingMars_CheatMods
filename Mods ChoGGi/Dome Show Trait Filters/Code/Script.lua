@@ -32,7 +32,7 @@ function Dome:ChoGGi_GetDomeTraitsRollover()
 
 	local TraitPresets = TraitPresets
 	for id, filter in pairs(self.traits_filter) do
-		if filter then
+		if filter == 1 then
 			ac = ac + 1
 			approve[ac] = T(TraitPresets[id].display_name)
 		else

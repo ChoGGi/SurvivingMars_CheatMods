@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local next, type, tostring = next, type, tostring
+local next, type, tostring, table = next, type, tostring, table
 local GetCursorWorldPos = GetCursorWorldPos
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
@@ -13,6 +13,20 @@ local RetIcon = ChoGGi.ComFuncs.RetIcon
 local RetHint = ChoGGi.ComFuncs.RetHint
 local Random = ChoGGi.ComFuncs.Random
 local Translate = ChoGGi.ComFuncs.Translate
+
+function ChoGGi.MenuFuncs.VerticalCheatMenu_Toggle()
+print("VerticalCheatMenu_ToggleVerticalCheatMenu_ToggleVerticalCheatMenu_ToggleVerticalCheatMenu_Toggle")
+	local setting = not ChoGGi.UserSettings.VerticalCheatMenu
+	ChoGGi.UserSettings.VerticalCheatMenu = setting
+
+	ChoGGi.ComFuncs.ToggleVerticalCheatMenu(setting)
+
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(setting),
+		Strings[302535920001660--[[Toggle Vertical Cheat Menu]]]
+	)
+end
 
 function ChoGGi.MenuFuncs.SelectionPanelResize_Toggle()
 	ChoGGi.UserSettings.StopSelectionPanelResize = not ChoGGi.UserSettings.StopSelectionPanelResize

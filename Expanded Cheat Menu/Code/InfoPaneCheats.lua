@@ -733,11 +733,15 @@ end
 function Colonist:CheatRandomSpec()
 	-- skip children, or they'll be a black cube
 	if not self:GetEntity():find("Child") then
---~ 		self:SetSpecialization(ChoGGi.Tables.ColonistSpecializations[Random(1, #ChoGGi.Tables.ColonistSpecializations)], "init")
 		local spec = ChoGGi.Tables.ColonistSpecializations[Random(1, #ChoGGi.Tables.ColonistSpecializations)]
-		self:SetSpecialization(spec)
-		-- "fix" for picard
-		self:SetSpecialization(spec)
+
+		if self.specialist ~= "none" then
+			self:RemoveTrait(self.specialist)
+		end
+		self:AddTrait(spec)
+--~ 		self:SetSpecialization(spec)
+--~ 		-- "fix" for picard
+--~ 		self:SetSpecialization(spec)
 	end
 end
 function Colonist:CheatPrefDbl()

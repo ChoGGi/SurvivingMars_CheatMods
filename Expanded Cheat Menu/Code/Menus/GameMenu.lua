@@ -352,6 +352,20 @@ Actions[c] = {ActionName = Strings[302535920000893--[[Interface]]],
 }
 
 c = c + 1
+Actions[c] = {ActionName = Strings[302535920001660--[[Toggle Vertical Cheat Menu]]],
+	ActionMenubar = "ECM.Game.Interface",
+	ActionId = ".Toggle Vertical Cheat Menu",
+	ActionIcon = "CommonAssets/UI/Menu/HideUnselected.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.VerticalCheatMenu,
+			Strings[302535920001661--[[Puts the menu down the side of the screen to save horizontal space for the info bar.]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.VerticalCheatMenu_Toggle,
+}
+
+c = c + 1
 Actions[c] = {ActionName = Strings[302535920001387--[[Toggle Signs]]],
 	ActionMenubar = "ECM.Game.Interface",
 	ActionId = ".Toggle Signs",

@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v10.5 (Unreleased)
+- Re-fangled how specs are set.
 
 ## v10.4 (20 Sep 2021)
 - Removed the margins from buildable grid (it hid a couple areas of the grid numebrs).

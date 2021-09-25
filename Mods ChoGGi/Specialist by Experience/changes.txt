@@ -1,3 +1,6 @@
+v1.0
+Re-fangled setting spec.
+
 v0.9
 Possible Picard fix.
 

@@ -2,7 +2,11 @@
 
 ## v17.5 (Unreleased)
 ### Added:
+- Menu>Game>Interface>Toggle Vertical Cheat Menu: Puts the menu down the side of the screen to save horizontal space for the info bar.
 - Menu>ECM>Debug>Toggles>Skip Missing Mods/Skip Missing DLC: Stops confirmation dialog about missing mods/DLC when loading saved games.
+
+### Changed:
+- ReplacedFunctions.lua changed ClassesBuilt to use ClassesPostprocess.
 
 ### Fixed:
 - Issue with Tourist in CheatRandomSpec (thanks LukeH).
