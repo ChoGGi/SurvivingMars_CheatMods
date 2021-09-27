@@ -42,23 +42,12 @@ c = c + 1
 Actions[c] = {ActionName = Strings[302535920000367--[[Mod Upload]]],
 	ActionMenubar = "ECM.Help",
 	ActionId = ".Mod Upload",
-	ActionIcon = "CommonAssets/UI/Menu/gear.tga",
+--~ 	ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
+	ActionIcon = ChoGGi.library_path .. "UI/Steam.png",
 	RolloverText = Strings[302535920001264--[[Show list of mods to upload to Steam Workshop.]]],
 	OnAction = ChoGGi.MenuFuncs.ModUpload,
 	ActionSortKey = "95.Mod Upload",
 }
-
---~ c = c + 1
---~ Actions[c] = {ActionName = Strings[302535920001380--[[Report Bug]]],
---~ 	ActionMenubar = "ECM.Help",
---~ 	ActionId = ".Report Bug",
---~ 	ActionIcon = "CommonAssets/UI/Menu/ReportBug.tga",
---~ 	RolloverText = Strings[302535920001381--[[Opens the bug report dialog (this will add a screenshot to AppData\BugReport).]]],
---~ 	OnAction = ChoGGi.MenuFuncs.CreateBugReportDlg,
---~ 	ActionShortcut = "Ctrl-F1",
---~ 	ActionBindable = true,
---~ 	ActionSortKey = "99.Report Bug",
---~ }
 
 -- menu
 c = c + 1

@@ -50,15 +50,15 @@ You will lose all progress in current mystery and it may cause unexpected issues
 }
 local c = 6
 
-local mysteries = ChoGGi.Tables.Mystery
-	for i = 1, #mysteries do
-	local myst = mysteries[i]
+local mysteries = ClassDescendantsList("MysteryBase")
+local g_Classes = g_Classes
+for i = 1, #mysteries do
+	local myst = g_Classes[mysteries[i]]
 
 	c = c + 1
 	properties[c] = PlaceObj("ModItemOptionToggle", {
 		"name", "MysteryClass_" .. myst.class,
-		"DisplayName", table.concat(T(3486, "Mystery") .. ": " .. myst.name),
---~ 		"Help", myst.description .. "\n\n<image " .. myst.image .. ">",
+		"DisplayName", table.concat(T(3486, "Mystery") .. ": " .. myst.display_name),
 		"Help", myst.description,
 		"DefaultValue", true,
 	})
@@ -70,8 +70,5 @@ local _InternalTranslate = _InternalTranslate
 table.sort(properties, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
-
---~ -- insert at top
---~ table.insert(properties, 1, {})
 
 return properties

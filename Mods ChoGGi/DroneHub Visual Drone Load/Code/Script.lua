@@ -7,17 +7,17 @@ local DroneLoadMediumThreshold = const.DroneLoadMediumThreshold
 local white, purple, green, orange, red, gray = white, purple, green, orange, red, const.clrGray
 
 local mod_ColouredRovers
-local mod_ChangePinnedRoverIcons
+--~ local mod_ChangePinnedRoverIcons
 
 -- fired when settings are changed/init
 local function ModOptions()
 	mod_ColouredRovers = CurrentModOptions:GetProperty("ColouredRovers")
-	mod_ChangePinnedRoverIcons = CurrentModOptions:GetProperty("ChangePinnedRoverIcons")
+--~ 	mod_ChangePinnedRoverIcons = CurrentModOptions:GetProperty("ChangePinnedRoverIcons")
 
 	-- make sure we're not in menus
 	if not UICity
-		-- reset pin bg (below)
-		or mod_ChangePinnedRoverIcons
+--~ 		-- reset pin bg (below)
+--~ 		or mod_ChangePinnedRoverIcons
 	then
 		return
 	end
@@ -74,7 +74,8 @@ end
 
 local function RoverUpdate(func, self, ...)
 	local colour
-	if mod_ColouredRovers or mod_ChangePinnedRoverIcons then
+--~ 	if mod_ColouredRovers or mod_ChangePinnedRoverIcons then
+	if mod_ColouredRovers then
 		colour = UpdateColour(self)
 	end
 
@@ -98,14 +99,17 @@ local function RoverUpdate(func, self, ...)
 		end
 	end
 
-	-- update pin icon
-	if mod_ChangePinnedRoverIcons then
-		local pins_dlg = OpenDialog("PinsDlg", GetInGameInterface())
-		if pins_dlg and self:IsPinned() then
-			-- get button and update
-			pins_dlg[table.find(pins_dlg, "context", self)].idCondition:SetBackground(colour)
-		end
-	end
+--~ 	-- update pin icon
+--~ 	if mod_ChangePinnedRoverIcons then
+--~ 		local pins_dlg = Dialogs.PinsDlg
+--~ 		if pins_dlg and self:IsPinned() then
+--~ 			-- get button and update
+--~ 			local idx = table.find(pins_dlg, "context", self)
+--~ 			if idx and pins_dlg[idx].idCondition then
+--~ 				pins_dlg[idx].idCondition:SetBackground(colour)
+--~ 			end
+--~ 		end
+--~ 	end
 
 	return func(self, ...)
 end
@@ -113,26 +117,21 @@ end
 function OnMsg.ClassesPostprocess()
 	-- UpdateHeavyLoadNotification is the same func for all, but just in case someone changes one of them
 
---~ 	if ChoGGi.def_lib.version > 83 then
---~ 		ChoGGi.ComFuncs.ReplaceClassFunc("BaseRover", "UpdateHeavyLoadNotification", RoverUpdate, "DroneBase")
---~ 	else
-		local classes = ClassDescendantsList("BaseRover")
-		local g = _G
-		local ChoOrig_funcs = {}
-		for i = 1, #classes do
-			local cls_obj = g[classes[i]]
-			local ChoOrig_func = cls_obj.UpdateHeavyLoadNotification
-			-- skip dupes / add any rovers that control drones
-			if ChoOrig_func and not ChoOrig_funcs[ChoOrig_func] and cls_obj:IsKindOf("DroneBase") then
-				ChoOrig_funcs[ChoOrig_func] = true
-				function cls_obj:UpdateHeavyLoadNotification(...)
-					return RoverUpdate(ChoOrig_func, self, ...)
-				end
+--~ 	ChoGGi.ComFuncs.ReplaceClassFunc("BaseRover", "UpdateHeavyLoadNotification", RoverUpdate, "DroneBase")
+	local classes = ClassDescendantsList("BaseRover")
+	local g = _G
+	local ChoOrig_funcs = {}
+	for i = 1, #classes do
+		local cls_obj = g[classes[i]]
+		local ChoOrig_func = cls_obj.UpdateHeavyLoadNotification
+		-- skip dupes / add any rovers that control drones
+		if ChoOrig_func and not ChoOrig_funcs[ChoOrig_func] and cls_obj:IsKindOf("DroneBase") then
+			ChoOrig_funcs[ChoOrig_func] = true
+			function cls_obj:UpdateHeavyLoadNotification(...)
+				return RoverUpdate(ChoOrig_func, self, ...)
 			end
 		end
---~ 	end
-
-
+	end
 
 	local ChoOrig_DroneHub_UpdateHeavyLoadNotification = DroneHub.UpdateHeavyLoadNotification
 	function DroneHub:UpdateHeavyLoadNotification(...)

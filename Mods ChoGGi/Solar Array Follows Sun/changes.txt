@@ -1,3 +1,6 @@
+v0.8
+Array panels sink into ground at night.
+
 v0.7
 Hopefully fixes them from stopping after awhile.
 

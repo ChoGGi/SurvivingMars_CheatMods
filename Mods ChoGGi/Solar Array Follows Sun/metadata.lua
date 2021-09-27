@@ -12,18 +12,16 @@ return PlaceObj("ModDef", {
 	"steam_id", "1570918489",
 	"pops_any_uuid", "105b752a-e526-4055-9009-c253bbe0e3fa",
 	"lua_revision", 1007000, -- Picard
-	"version", 7,
+	"version", 8,
 	"version_major", 0,
-	"version_minor", 7,
+	"version_minor", 8,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 	"description", [[
-The panels do it, why not the array panels?
-
-This is a purely visual mod, it just makes the panels rotate to follow the sun.
+The panels do it, why not the array panels? The arrays will sink into the ground during nightfall.
 
 Requested by tresslessone.
 ]],

@@ -1,2 +1,5 @@
+v0.3
+Added green icon filter to list.
+
 v0.2
 Picard update.

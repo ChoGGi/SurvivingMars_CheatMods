@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local ClassDescendantsList = ClassDescendantsList
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Random = ChoGGi.ComFuncs.Random
 
@@ -63,8 +64,14 @@ local function PickRandomMystery(delay)
 	-- [1]XTextButton[2]XImage[1]XTemplateCode
 	local CheckMystFinished = XTemplates.MysteryItem[1][2][1].run
 
-	local mysteries = ChoGGi.Tables.Mystery
-	local mysteries_c = #mysteries
+	local mystery_names = ClassDescendantsList("MysteryBase")
+	local mysteries_c = #mystery_names
+	local mysteries = {}
+
+	local g_Classes = g_Classes
+	for i = 1, mysteries_c do
+		mysteries[i] = g_Classes[mystery_names[i]]
+	end
 
 	for i = 1, mysteries_c do
 		local id = mysteries[i].class
@@ -90,42 +97,43 @@ local function PickRandomMystery(delay)
 		new_myst = CheckFinished(new_myst, mysteries_c, g_ChoGGi_PlayAllMysteries_Finished)
 	end
 
+
 	-- doesn't hurt to check
 	if new_myst then
-
-
-		CreateGameTimeThread(function()
-			Sleep(delay or 0)
-
-			-- else CheatStartMystery will mark the current one as finished
-			UIColony.mystery = false
-			UIColony.mystery_id = ""
-
-			-- CheatStartMystery checks for cheats enabled...
-			local ChoOrig_CheatsEnabled = CheatsEnabled
-			CheatsEnabled = function()
-				return true
-			end
-			CheatStartMystery(new_myst)
-			CheatsEnabled = ChoOrig_CheatsEnabled
-
-			-- let user know
-			if mod_ShowPopup then
-				if mod_ShowMystery then
-					MsgPopup(
-						mysteries[new_myst].name,
-						T(302535920012069, "Started Mystery")
-					)
-				else
-					MsgPopup(
-						T(302535920012069, "Started Mystery"),
-						T(3486, "Mystery")
-					)
-				end
-			end
-		end)
-
+		return
 	end
+
+
+	CreateGameTimeThread(function()
+		Sleep(delay or 0)
+
+		-- else CheatStartMystery will mark the current one as finished
+		UIColony.mystery = false
+		UIColony.mystery_id = ""
+
+		-- CheatStartMystery checks for cheats enabled...
+		local ChoOrig_CheatsEnabled = CheatsEnabled
+		CheatsEnabled = function()
+			return true
+		end
+		CheatStartMystery(new_myst)
+		CheatsEnabled = ChoOrig_CheatsEnabled
+
+		-- let user know
+		if mod_ShowPopup then
+			if mod_ShowMystery then
+				MsgPopup(
+					mysteries[table.find(mysteries, "class", new_myst)].display_name,
+					T(302535920012069, "Started Mystery")
+				)
+			else
+				MsgPopup(
+					T(302535920012069, "Started Mystery"),
+					T(3486, "Mystery")
+				)
+			end
+		end
+	end)
 
 end
 
@@ -143,10 +151,10 @@ local function ModOptions(id)
 	mod_MinSols = options:GetProperty("MinSols") * const.Scale.sols
 	mod_MaxSols = options:GetProperty("MaxSols") * const.Scale.sols
 
-	local mysteries = ChoGGi.Tables.Mystery
-	for i = 1, #mysteries do
-		local myst = mysteries[i]
-		mod_skips[myst.class] = not options:GetProperty("MysteryClass_" .. myst.class)
+	local mystery_names = ClassDescendantsList("MysteryBase")
+	for i = 1, #mystery_names do
+		local myst_id = mystery_names[i]
+		mod_skips[myst_id] = not options:GetProperty("MysteryClass_" .. myst_id)
 	end
 
 	if mod_SwitchMystery then

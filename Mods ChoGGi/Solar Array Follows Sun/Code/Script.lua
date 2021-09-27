@@ -1,9 +1,16 @@
 -- See LICENSE for terms
 
+if not g_AvailableDlc.gagarin then
+	print("Solar Array needs Space Race DLC!")
+	return
+end
+
 local CalcOrientation = CalcOrientation
 local GetSunPos = GetSunPos
 local SunToSolarPanelAngle = SunToSolarPanelAngle
 local Sleep = Sleep
+
+-- GlobalGameTimeThread("SolarPanelOrientation", function()
 local update_interval = 3 * const.MinuteDuration
 
 local function AddPanels(bld)
@@ -16,10 +23,11 @@ local function AddPanels(bld)
 end
 
 function OnMsg.BuildingInit(bld)
-	-- add panels into table for ease of looping
-	if bld:IsKindOf("SolarArray") then
-		AddPanels(bld)
+	if not bld:IsKindOf("SolarArray") then
+		return
 	end
+	-- add panels into table for ease of looping
+	AddPanels(bld)
 end
 
 function OnMsg.LoadGame()
@@ -68,6 +76,43 @@ GlobalGameTimeThread("SolarArrayOrientation", function()
 		end
 	end
 end)
+
+
+-- sink into ground when no sun.
+SolarArray.open_close_thread = false
+SolarArray.interaction_state = false
+function OnMsg.ClassesPostprocess()
+
+	SolarArray.IsOpened = SolarPanel.IsOpened
+	SolarArray.UpdateProduction = SolarPanel.UpdateProduction
+
+	function SolarArray:SetInteractionState(state)
+		if self.ChoGGi_PanelGround == nil then
+			self.ChoGGi_PanelGround = true
+		end
+
+		if state == self.interaction_state then
+			return
+		end
+		self.interaction_state = state
+		self:OnChangeState()
+		DeleteThread(self.open_close_thread)
+		self.open_close_thread = CreateGameTimeThread(function()
+			if state then
+			end
+
+			if self:CanBeOpened() and not self.ChoGGi_PanelGround then
+				self:SetPos(self:GetPos():AddZ(300), 2000)
+				self.ChoGGi_PanelGround = true
+			elseif not self:CanBeOpened() and self.ChoGGi_PanelGround then
+				self:SetPos(self:GetPos():AddZ(-300), 2000)
+				self.ChoGGi_PanelGround = false
+			end
+
+		end)
+	end
+
+end
 
 -- the below is for removing the persist warnings from the log
 

@@ -1,5 +1,8 @@
+v1.2
+Picard update.
+
 v1.1
-Tito.
+Tito update.
 
 v1.0
 Fixed issue with menu not going to correct obj (thanks Funky.Bigodon).

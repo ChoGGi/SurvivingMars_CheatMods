@@ -18,7 +18,7 @@ Removes sponsor limit placed on certain buildings/vehicles.
 Some buildings are locked behind tech: Advanced Stirling Generator, Jumper ShuttleHub, and Low-G Lab.
 
 Mod Options:
-You need to research tech to unlock certain buildings (reload save to take effect).
+You need to research tech to unlock certain buildings (reload game to take effect).
 See mod options to disable any buildings you find cheaty (or if you just want one or two unlocked).
 
 You need to research Robotics>Rover Printing to build rovers.

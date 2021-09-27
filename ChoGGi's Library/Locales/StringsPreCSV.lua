@@ -3,6 +3,8 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! green: <green>%s</green>
 !Skipped Line! yellow: <yellow>%s</yellow>
 "ID", "Text", "Translation"
+302535920001380, ""
+302535920001381, ""
 302535920001662, ""
 302535920001663, ""
 302535920001664, ""
@@ -2014,8 +2016,6 @@ Restart to set disabled."
 302535920000718, "Set Bonuses Commander"
 end end !Skipped Line!
 do !Skipped Line! [[Keys.lua]] !Skipped Line!
-302535920001380, "Report Bug"
-302535920001381, "Opens the bug report dialog (this will add a screenshot to AppData\BugReport)."
 302535920001346, "Random Colour"
 302535920001347, "Show Console"
 302535920001348, "Restart"

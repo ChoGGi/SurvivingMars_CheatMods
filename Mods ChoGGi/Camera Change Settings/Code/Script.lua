@@ -20,12 +20,17 @@ local function UpdateCamera()
 
 	cameraRTS.SetProperties(1, params)
 end
-
-local options
+OnMsg.CityStart = UpdateCamera
+OnMsg.LoadGame = UpdateCamera
 
 -- fired when settings are changed/init
-local function ModOptions()
-	options = CurrentModOptions
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	local options = CurrentModOptions
 
 	mod_RotateSpeed = options:GetProperty("RotateSpeed")
 	mod_UpDownSpeed = options:GetProperty("UpDownSpeed")
@@ -40,16 +45,7 @@ local function ModOptions()
 	end
 	UpdateCamera()
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-OnMsg.CityStart = UpdateCamera
-OnMsg.LoadGame = UpdateCamera
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions

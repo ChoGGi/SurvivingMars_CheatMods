@@ -1,0 +1,1 @@
+s:GetSpotLoc(s:GetSpotBeginIndex("ElevatorSurfaceCabin"))

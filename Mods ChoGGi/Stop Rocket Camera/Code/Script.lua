@@ -33,9 +33,9 @@ local fake_ViewAndSelectObject = empty_func
 
 local ChoOrig_SendRocketToMarsPoint = SendRocketToMarsPoint
 function SendRocketToMarsPoint(obj, spot, ...)
-	if spot.spot_type == "project" then
-		return ChoOrig_SendRocketToMarsPoint(obj, spot, ...)
-	end
+--~ 	if spot and spot.spot_type == "project" then
+--~ 		return ChoOrig_SendRocketToMarsPoint(obj, spot, ...)
+--~ 	end
 
 	ViewAndSelectObject = fake_ViewAndSelectObject
 
