@@ -60,37 +60,43 @@ function OnMsg.SelectionAdded(obj)
 	if not obj:IsKindOf("Tunnel") then
 		return
 	end
-	SuspendPassEdits("ChoGGi.ShowTunnelLines.SpawnTunnels")
-	CleanUp(true)
 
-	if not OPolyline then
-		OPolyline = ChoGGi_OPolyline
-	end
+	-- add a delay if unit thoughts is enabled (Pathing_StopAndRemoveAll() removes lines)
+	CreateRealTimeThread(function()
+		WaitMsg("OnRender")
 
-	local objs = UICity.labels.Tunnel or ""
-	for i = 1, #objs do
-		-- get tunnel n linked one so we only have one of each in table
-		local t1 = objs[i]
-		local t2 = t1.linked_obj
-		-- see if we already added a table for paired tunnel
-		if not (tunnels[t1] or tunnels[t2]) then
-			-- no dupes
-			tunnels[t1] = true
-			tunnels[t2] = true
-			-- spawn a line and draw it with a parabolic arc
-			local line = OPolyline:new()
-			line:SetParabola(t1:GetPos(), t2:GetPos())
-			if mod_RandomColours then
-				line:SetColors(RandomColourLimited())
-			end
-			-- store line obj for delete
-			lines_c = lines_c + 1
-			lines[lines_c] = line
+		SuspendPassEdits("ChoGGi.ShowTunnelLines.SpawnTunnels")
+		CleanUp(true)
+
+		if not OPolyline then
+			OPolyline = ChoGGi_OPolyline
 		end
-	end
---~ 	ex{tunnels,lines}
 
-	ResumePassEdits("ChoGGi.ShowTunnelLines.SpawnTunnels")
+		local objs = UICity.labels.Tunnel or ""
+		for i = 1, #objs do
+			-- get tunnel n linked one so we only have one of each in table
+			local t1 = objs[i]
+			local t2 = t1.linked_obj
+			-- see if we already added a table for paired tunnel
+			if not (tunnels[t1] or tunnels[t2]) then
+				-- no dupes
+				tunnels[t1] = true
+				tunnels[t2] = true
+				-- spawn a line and draw it with a parabolic arc
+				local line = OPolyline:new()
+				line:SetParabola(t1:GetPos(), t2:GetPos())
+				if mod_RandomColours then
+					line:SetColors(RandomColourLimited())
+				end
+				-- store line obj for delete
+				lines_c = lines_c + 1
+				lines[lines_c] = line
+			end
+		end
+--~ 		ex{tunnels,lines}
+
+		ResumePassEdits("ChoGGi.ShowTunnelLines.SpawnTunnels")
+	end)
 end
 
 OnMsg.SaveGame = CleanUp

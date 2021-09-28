@@ -1171,6 +1171,9 @@ function OnMsg.ClassesPostprocess()
 				}, self.idChoGGi_ScrollArea)
 
 				self.idChoGGi_Scrollbar_thumb = self.idChoGGi_ScrollV.idThumb
+
+				-- [LUA ERROR] attempt to index a boolean value (local 'desktop')
+				self.idChoGGi_ScrollV.idThumb.desktop = terminal.desktop
 				self.idChoGGi_ScrollV.idThumb:SetVisible(false)
 
 				self.idChoGGi_ScrollBox = g_Classes.XScrollArea:new({
