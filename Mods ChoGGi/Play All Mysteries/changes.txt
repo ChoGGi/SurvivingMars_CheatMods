@@ -1,3 +1,7 @@
+v0.5
+Fixed for last update.
+Msg popup happens when mystery is picked instead of when it's started.
+
 v0.4
 Fixed for non-eng.
 

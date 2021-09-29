@@ -33,7 +33,7 @@ for id, bld in pairs(BuildingTemplates) do
 			c = c + 1
 			properties[c] = PlaceObj("ModItemOptionToggle", {
 				"name", "ChoGGi_Tech_" .. id,
-				"DisplayName", T(bld.display_name) .. " " .. T(3734, "Tech"),
+				"DisplayName", table.concat(T(bld.display_name) .. " " .. T(3734, "Tech")),
 				"Help", T(0000, "Lock behind tech unlock."),
 				"DefaultValue", true,
 			})

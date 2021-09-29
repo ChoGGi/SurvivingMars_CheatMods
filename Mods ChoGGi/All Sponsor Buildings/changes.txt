@@ -1,3 +1,6 @@
+v1.2
+Forgot to concat.
+
 v1.1
 Turning off tech lock options were ignored (thanks Tilyene).
 

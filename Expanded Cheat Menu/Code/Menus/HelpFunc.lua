@@ -69,7 +69,7 @@ do -- ModUpload
 	local hpk_path_working
 
 	-- It's fine...
-	local copy_files, blank_mod, clipboard, test, steam_upload, para_platform
+	local blank_mod, clipboard, test, steam_upload, para_platform
 	local mod, mod_path, upload_image, diff_author, result, choices_len, uploading, msg_popup_id
 	local result_msg, result_title, upload_msg = {}, {}, {}
 	local image_steam = "UI/Common/mod_steam_workshop.tga"
@@ -138,7 +138,7 @@ do -- ModUpload
 
 			-- tell paradox users if it needs my library
 			local needs_lib = table.find(mod.dependencies, "id", ChoGGi.id_lib)
-				and Strings[302535920001634--[["This mod requires my lib mod (ChoGGi's Library)."]]] .. "\n\n"
+				and Strings[302535920001634--[["This mod requires my library mod (ChoGGi's Library ) < use space on the end when searching for it."]]] .. "\n\n"
 				or ""
 
 			-- add some text to ECM description to hopefully reduce people reporting the mod.
@@ -178,7 +178,7 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 		end
 
 		-- update mod, and copy files to ModUpload
-		if copy_files and not blank_mod and not err then
+		if not blank_mod and not err then
 			mod:SaveItems()
 			AsyncDeletePath(dest_path)
 			AsyncCreatePath(dest_path)
@@ -401,12 +401,11 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 
 		CreateRealTimeThread(function()
 			local choice = choices[1]
-			copy_files = choice.check1
-			blank_mod = choice.check2
-			clipboard = choice.check3
-			test = choice.check4
-			steam_upload = choice.check5
-			para_platform = choice.check6
+			blank_mod = choice.check1
+			clipboard = choice.check2
+			test = choice.check3
+			steam_upload = choice.check4
+			para_platform = choice.check5
 
 			choices_len = #choices
 
@@ -469,15 +468,6 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 						upload_msg[m_c] = Strings[302535920001572--[["<color ChoGGi_red>Pack Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually to workaround it.
 You can also stick the executable in the profile folder to use it instead (<green>no crashing</green>):
 <yellow>%s</yellow>."]]]:format(ConvertToOSPath(hpk_path))
-
-						if not copy_files then
-							m_c = m_c + 1
-							upload_msg[m_c] = "\n\n<color 203 120 30>"
-							m_c = m_c + 1
-							upload_msg[m_c] = Strings[302535920001262--[[%sModUpload folder is empty and waiting for files.]]]:format(ConvertToOSPath("AppData/"))
-							m_c = m_c + 1
-							upload_msg[m_c] = "</color>"
-						end
 
 						-- show diff author warning unless it's me
 						if diff_author and not testing then
@@ -654,15 +644,11 @@ Move archive to ""Mod folder/Pack/ModContent.hpk"""]]] .. "\n\n" .. Strings[3025
 			height = 800.0,
 			multisel = true,
 			checkboxes = {
-				{title = Strings[302535920001258--[[Copy Files]]],
-					hint = Strings[302535920001259--[["Copies all mod files to %sModUpload, uncheck to copy files manually."]]]:format(ConvertToOSPath("AppData/")),
-					checked = true,
-				},
 				{title = Strings[302535920001260--[[Blank]]],
 					hint = Strings[302535920001261--[["Uploads a blank mod, and prints id in log."]]],
 				},
 				{title = Strings[302535920000664--[[Clipboard]]],
-					hint = Strings[302535920000665--[[If uploading a mod this copies steam id or uuid to clipboard.]]],
+					hint = Strings[302535920000665--[[If uploading a mod this copies the mod's steam id clipboard.]]],
 					checked = true,
 				},
 				{title = T(186760604064, "Test"),
@@ -676,13 +662,13 @@ Move archive to ""Mod folder/Pack/ModContent.hpk"""]]] .. "\n\n" .. Strings[3025
 					func = function(dlg, check)
 						upload_to_who = check
 						if check then
-							dlg.idCheckBox5:SetText(Strings[302535920001506--[[Steam]]])
-							dlg.idCheckBox6:SetVisible()
+							dlg.idCheckBox4:SetText(Strings[302535920001506--[[Steam]]])
+							dlg.idCheckBox5:SetVisible()
 							dlg.idBackgroundFrame:SetImage(image_steam)
 							dlg.idBackgroundFrame:SetMinHeight(image_steam_y)
 						else
-							dlg.idCheckBox5:SetText(T(5482, "Paradox"))
-							dlg.idCheckBox6:SetVisible(true)
+							dlg.idCheckBox4:SetText(T(5482, "Paradox"))
+							dlg.idCheckBox5:SetVisible(true)
 							dlg.idBackgroundFrame:SetImage(image_paradox)
 							dlg.idBackgroundFrame:SetMinHeight(image_paradox_y)
 						end

@@ -97,12 +97,25 @@ local function PickRandomMystery(delay)
 		new_myst = CheckFinished(new_myst, mysteries_c, g_ChoGGi_PlayAllMysteries_Finished)
 	end
 
-
 	-- doesn't hurt to check
-	if new_myst then
+	if not new_myst then
 		return
 	end
 
+	-- let user know
+	if mod_ShowPopup then
+		if mod_ShowMystery then
+			MsgPopup(
+				mysteries[table.find(mysteries, "class", new_myst)].display_name,
+				T(302535920012069, "Started Mystery")
+			)
+		else
+			MsgPopup(
+				T(302535920012069, "Started Mystery"),
+				T(3486, "Mystery")
+			)
+		end
+	end
 
 	CreateGameTimeThread(function()
 		Sleep(delay or 0)
@@ -118,21 +131,6 @@ local function PickRandomMystery(delay)
 		end
 		CheatStartMystery(new_myst)
 		CheatsEnabled = ChoOrig_CheatsEnabled
-
-		-- let user know
-		if mod_ShowPopup then
-			if mod_ShowMystery then
-				MsgPopup(
-					mysteries[table.find(mysteries, "class", new_myst)].display_name,
-					T(302535920012069, "Started Mystery")
-				)
-			else
-				MsgPopup(
-					T(302535920012069, "Started Mystery"),
-					T(3486, "Mystery")
-				)
-			end
-		end
 	end)
 
 end
@@ -173,7 +171,6 @@ function OnMsg.MysteryEnd()
 
 	list[mystery_id] = true
 	list[#list+1] = mystery_id
-
 
 	PickRandomMystery(Random(mod_MinSols, mod_MaxSols))
 end

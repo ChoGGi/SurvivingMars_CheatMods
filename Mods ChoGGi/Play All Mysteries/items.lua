@@ -34,7 +34,7 @@ You will lose all progress in current mystery and it may cause unexpected issues
 	PlaceObj("ModItemOptionNumber", {
 		"name", "MinSols",
 		"DisplayName", T(302535920012078, "<color ChoGGi_yellow>Min Sols</color>"),
-		"Help", T(302535920012077, "How many Sols to wait before starting next mystery."),
+		"Help", T(302535920012077, "How many Sols to wait before starting next mystery. Doesn't apply when using Switch Mystery."),
 		"DefaultValue", 5,
 		"MinValue", 0,
 		"MaxValue", 100,
@@ -42,7 +42,7 @@ You will lose all progress in current mystery and it may cause unexpected issues
 	PlaceObj("ModItemOptionNumber", {
 		"name", "MaxSols",
 		"DisplayName", T(302535920012079, "<color ChoGGi_yellow>Max Sols</color>"),
-		"Help", T(302535920012080, "How many Sols to wait before starting next mystery."),
+		"Help", T(302535920012080, "How many Sols to wait before starting next mystery. Doesn't apply when using Switch Mystery."),
 		"DefaultValue", 15,
 		"MinValue", 0,
 		"MaxValue", 100,
