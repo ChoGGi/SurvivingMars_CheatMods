@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 10,
-			"version_minor", 4,
+			"version_minor", 5,
 		}),
 	},
 	"title", "Construction Show Hex Grid",
@@ -21,11 +21,13 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Show Hex Grid during construction.
+	"description", [[
+Show Hex Grid during construction.
 Press Numpad 5 to toggle grid anytime (rebind in game options).
 
 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1743031290]Show Hex Buildable Grid[/url]
 
 
-Toggle in-game with mod options.]],
+Toggle in-game with mod options.
+]],
 })

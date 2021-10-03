@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 10,
-			"version_minor", 4,
+			"version_minor", 5,
 		}),
 	},
 	"title", "Plant Info",
@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 	"lua_revision", 1007000, -- Picard
 	"version", 2,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 2,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
@@ -23,8 +23,10 @@ return PlaceObj("ModDef", {
 --~ 	"has_options", true,
 	"TagVegetation", true,
 	"TagInterface", true,
-	"description", [[Show info when selecting plants (soil quality, type of veg, seed production, seeder).
+	"description", [[
+Show info when selecting plants (soil quality, type of veg, seed production, seeder).
 
 
-Requested by Lesandrina.]],
+Requested by Lesandrina.
+]],
 })

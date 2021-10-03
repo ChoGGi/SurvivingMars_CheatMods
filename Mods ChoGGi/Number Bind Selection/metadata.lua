@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 10,
-			"version_minor", 4,
+			"version_minor", 5,
 		}),
 	},
 	"title", "Number Bind Selection",
@@ -23,7 +23,8 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagInterface", true,
 	"TagOther", true,
-	"description", [[You can use this to press a number to snap to a rover (or whatever you want).
+	"description", [[
+You can use this to press a number to snap to a rover (or whatever you want).
 
 
 Ctrl-Num to add selected obj(s), and Shift-Num to remove.
@@ -33,5 +34,6 @@ You can have more than one type of obj in a group, but beware that multi-select 
 
 Mod Options:
 Select & View: Instead of just selecting.
-Show Centre: Show a centre marker when view option enabled.]],
+Show Centre: Show a centre marker when view option enabled.
+]],
 })

@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 10,
-			"version_minor", 4,
+			"version_minor", 5,
 		}),
 	},
 	"title", "Wide Area Forestation",
@@ -25,7 +25,8 @@ return PlaceObj("ModDef", {
 	"TagGameplay", true,
 	"TagBuildings", true,
 	"TagTerraforming", true,
-	"description", [[Set a larger grid size for the Forestation Plant (or smaller if you want to write something).
+	"description", [[
+Set a larger grid size for the Forestation Plant (or smaller if you want to write something).
 Adds a button to change all plants to use grid size of selected plant.
 
 

@@ -4,32 +4,24 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 10,
-			"version_minor", 4,
+			"version_minor", 5,
 		}),
---~ 		PlaceObj("ModDependency", {
---~ 			"id", "ChoGGi_CheatMenu",
---~ 			"title", "ECM",
---~ 			"version_major", 16,
---~ 			"version_minor", 4,
---~ 		}),
 	},
 	"title", "Example View TextStyles",
-	"version", 1,
-	"version_major", 0,
-	"version_minor", 1,
-
-	"image", "Preview.png",
 	"id", "ChoGGi_ExampleViewTextStyles",
 --~ 	"steam_id", "000000000",
 --~ CopyToClipboard([[	"pops_any_uuid", "]] .. GetUUID() .. [[",]])
-	"author", "ChoGGi",
 	"lua_revision", 1007000, -- Picard
+	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
+	"image", "Preview.png",
+	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
---~ 	"has_options", true,
---~ 	"TagInterface", true,
-	"description", [[dialog to display all the text styles
+	"description", [[
+dialog to display all the text styles
 
 local dlg = ChoGGi_DlgViewTextStyles:new({}, terminal.desktop, {})
 ]],

@@ -4,13 +4,13 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 10,
-			"version_minor", 4,
+			"version_minor", 5,
 		}),
 	},
 	"title", "Named Workplaces",
 	"version", 2,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 2,
 	"image", "Preview.png",
 	"id", "ChoGGi_NamedWorkplaces",
 	"steam_id", "1822631100",
@@ -22,9 +22,11 @@ return PlaceObj("ModDef", {
 	},
 	"TagCosmetics", true,
 	"TagOther", true,
-	"description", [[Workplaces are named after the first person to work in it.
+	"description", [[
+Workplaces are named after the first person to work in it.
 Translations would be nice, the string I use is: "<name>'s <workplace>, est. <sol>"
 
 
-You can thank mrudat for the idea.]],
+You can thank mrudat for the idea.
+]],
 })

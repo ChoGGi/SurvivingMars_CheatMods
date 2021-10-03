@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 10,
-			"version_minor", 4,
+			"version_minor", 5,
 		}),
 	},
 	"title", "List Created Objects",
@@ -14,12 +14,14 @@ return PlaceObj("ModDef", {
 --~ CopyToClipboard([[	"pops_any_uuid", "]] .. GetUUID() .. [[",]])
 	"version", 2,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 2,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 --~ 	"has_options", true,
-	"description", [[Shows an examine list of newly created game objects]],
+	"description", [[
+Shows an examine list of newly created game objects.
+]],
 })

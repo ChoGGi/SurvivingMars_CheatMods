@@ -4,25 +4,26 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 10,
-			"version_minor", 4,
+			"version_minor", 5,
 		}),
 	},
 	"title", "Personal Shuttles",
-	"version", 12,
-	"version_major", 1,
-	"version_minor", 4,
 	"id", "ChoGGi_PersonalShuttles",
 	"steam_id", "1410892053",
 	"pops_any_uuid", "b434660b-9a9a-4057-90d7-91bcb815402a",
+	"lua_revision", 1007000, -- Picard
+	"version", 12,
+	"version_major", 1,
+	"version_minor", 2,
 	"author", "ChoGGi",
-	"TagOther", true,
 	"image", "Preview.png",
+	"TagOther", true,
 	"code", {
 		"Code/Script.lua",
 		"Code/OnMsgs.lua",
 	},
-	"lua_revision", 1007000, -- Picard
-	"description", [[Adds buttons to Shuttle Hubs to spawn personal shuttles.
+	"description", [[
+Adds buttons to Shuttle Hubs to spawn personal shuttles.
 Personal shuttles can pick up certain items (rovers, drones, resource piles, and waste rock), scan nearby selected anomalies, and attack nearby dust devils.
 
 If you have an object in un-reachable spaces you can use this to move them.
@@ -45,5 +46,6 @@ Select it, and wait for a shuttle to come by (takes the same time as an explorer
 
 Known Issues:
 Limited to 50 shuttles, too high and crash goes your game.
-Shuttles will jump up sometimes when flying, just assume it's martian cocaine.]],
+Shuttles will jump up sometimes when flying, just assume it's martian cocaine.
+]],
 })

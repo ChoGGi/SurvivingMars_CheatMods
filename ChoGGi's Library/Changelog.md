@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v10.5 (Unreleased)
+## v10.6 (Unreleased)
+
+## v10.5 (03 Oct 2021)
 - Re-fangled how specs are set.
 
 ### Examine:

@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 10,
-			"version_minor", 4,
+			"version_minor", 5,
 		}),
 	},
 	"title", "Click To Move Camera",
@@ -20,10 +20,12 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Hold down Shift and click to move the view.
+	"description", [[
+Hold down Shift and click to move the view.
 Includes mod option to disable mouse edge scrolling.
 
 You can change the shortcut in Options>Key Bindings.
 
-Kinda requested by Pops.]],
+Kinda requested by Pops.
+]],
 })

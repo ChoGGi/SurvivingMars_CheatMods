@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 10,
-			"version_minor", 4,
+			"version_minor", 5,
 		}),
 	},
 	"title", "Random Object Colour",
@@ -14,15 +14,17 @@ return PlaceObj("ModDef", {
 	"lua_revision", 1007000, -- Picard
 	"version", 2,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 2,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Changes the colours of objects to random colours when placed.
+	"description", [[
+Changes the colours of objects to random colours when placed.
 
 If someone wants the colours reset, let me know and I'll add something to Expanded Cheat Menu or this (whatever is easier).
 
-Requested by McKaby]],
+Requested by McKaby.
+]],
 })
