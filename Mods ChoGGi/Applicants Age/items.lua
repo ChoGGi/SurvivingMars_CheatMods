@@ -7,4 +7,12 @@ return {
 		"Help", T(302535920011793, "Disable mod without having to see missing mod msg."),
 		"DefaultValue", true,
 	}),
+	PlaceObj("ModItemOptionNumber", {
+		"name", "MaxAge",
+		"DisplayName", T(0000, "Max Age"),
+		"Help", T(0000, "Applicants over this age are removed from the applicant pool."),
+		"DefaultValue", 0,
+		"MinValue", 0,
+		"MaxValue", 150,
+	}),
 }

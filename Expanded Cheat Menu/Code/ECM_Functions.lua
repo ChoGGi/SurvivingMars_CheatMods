@@ -2724,7 +2724,7 @@ function ChoGGi.ComFuncs.ToggleVerticalCheatMenu(toggle)
 
 	-- menu
 	idx = table.find(cheat_menu, "class", "XMenuBar")
-	local menubar = cheat_menu[idx]
+
 	-- menu buttons, there's no id so this'll hopefully work if someone else adds something here.
 	local menubuttons
 	for i = 1, #cheat_menu do

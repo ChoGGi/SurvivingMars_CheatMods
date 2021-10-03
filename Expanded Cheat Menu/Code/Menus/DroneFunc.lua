@@ -134,12 +134,14 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 			-- we need to set this so the hex grid during placement is enlarged
 			const.RCRoverMaxRadius = value
 			ChoGGi.ComFuncs.SetSavedConstSetting("RCRoverMaxRadius")
+			RCRover.service_area_max = value
 
 			local objs = UICity.labels.RCRover or ""
 			for i = 1, #objs do
 				local obj = objs[i]
 				SetProperty(obj, "UIWorkRadius", "max", value)
 				obj:SetWorkRadius(value)
+				obj.service_area_max = value
 			end
 
 			ChoGGi.SettingFuncs.WriteSettings()
@@ -186,12 +188,14 @@ function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
 			-- we need to set this so the hex grid during placement is enlarged
 			const.CommandCenterMaxRadius = value
 			ChoGGi.ComFuncs.SetSavedConstSetting("CommandCenterMaxRadius")
+			DroneHub.service_area_max = value
 
 			local objs = UICity.labels.DroneHub or ""
 			for i = 1, #objs do
 				local obj = objs[i]
 				SetProperty(obj, "UIWorkRadius", "max", value)
 				obj:SetWorkRadius(value)
+				obj.service_area_max = value
 			end
 
 			ChoGGi.SettingFuncs.WriteSettings()

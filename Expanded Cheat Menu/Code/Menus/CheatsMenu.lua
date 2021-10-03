@@ -23,7 +23,6 @@ Actions[c] = {ActionName = Translate(5661--[[Mystery Log]]),
 	RolloverText = Strings[302535920000330--[[Advance to next part, show what part you're on, or remove mysteries.]]],
 	OnAction = ChoGGi.MenuFuncs.MysteryLog,
 }
-
 c = c + 1
 Actions[c] = {ActionName = Strings[302535920000331--[[Mystery Start]]],
 	ActionMenubar = "ECM.Cheats",

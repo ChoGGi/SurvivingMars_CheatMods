@@ -36,7 +36,8 @@ Actions[#Actions+1] = {ActionName = T(302535920000491, "Examine Object"),
 
 		-- If in main menu then open examine and console
 		if not Dialogs.HUD then
-			local dlg = OpenInExamineDlg(terminal.desktop)
+      OpenInExamineDlg(terminal.desktop)
+--~ 			local dlg = OpenInExamineDlg(terminal.desktop)
 --~ 			-- off centre of central monitor
 --~ 			local width = (terminal.desktop.measure_width or 1920) - (dlg.dialog_width_scaled + 100)
 --~ 			dlg:SetPos(point(width, 100))

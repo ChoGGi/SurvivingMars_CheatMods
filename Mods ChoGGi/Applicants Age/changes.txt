@@ -1,2 +1,5 @@
+v0.3
+Mod option to remove applicants over a certain age (default none).
+
 v0.2
 Bumps age trait when applicant hits min age of next age group.

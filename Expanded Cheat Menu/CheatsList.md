@@ -119,6 +119,7 @@ Cheats.Consts.Gameplay>IsDeepWaterExploitable Exploitable Deep Water: Deep Water
 Cheats.Consts.Gameplay>MarsquakeRandomTime Random extra hours before the next underground Marsquake: Minimum + random = hours until next Underground Marsquake
 Cheats.Consts.Gameplay>MarsquakeSpawnTime Minimum time in hours before the next underground Marsquake: Minimum + random = hours until next Underground Marsquake
 Cheats.Consts.Gameplay>MaxAsteroids Max Asteroids: MaxAsteroids Max Asteroids
+Cheats.Consts.Gameplay>MaxColonistsPerElevator Colonists per Elevator: Maximum number of Colonists that can use the Elevator
 Cheats.Consts.Gameplay>MaxColonistsPerPod Colonists per Pod: Maximum number of Colonists that can arrive on Mars in a single Pod
 Cheats.Consts.Gameplay>MaxColonistsPerRocket Colonists per Rocket: Maximum number of Colonists that can arrive on Mars in a single Rocket
 Cheats.Consts.Gameplay>MaxGameDevelopmentCollaborationLoss Max Game Development Collaboration Loss (%): MaxGameDevelopmentCollaborationLoss Max Game Development Collaboration Loss (%)
@@ -333,6 +334,8 @@ Warning: Leave "Welcome to Mars" msg onscreen till map is loaded.
 Debug.Toggles>Measure Tool: Measures stuff (press again to remove the lines).
 Debug.Toggles>Override Condition Prereqs: All storybit/negotiation/etc options are enabled.
 Debug.Toggles>Place Objects: Opens editor mode with the place objects dialog.
+Debug.Toggles>Skip Missing DLC: Stops confirmation dialog about missing DLC when loading saved games.
+Debug.Toggles>Skip Missing Mods: Stops confirmation dialog about missing mods when loading saved games.
 Debug.Toggles>Toggle Editor: Some sort of editor the devs left buried in code.
 Select object(s) then hold ctrl/shift/alt and drag mouse.
 click+drag for multiple selection.
@@ -570,6 +573,7 @@ Game.Interface>Reset on-screen hints: Just in case you wanted to see them again.
 Game.Interface>Toggle Scroll Selection Panel: Add a scrollbar to larger selection panels (buildings, domes, etc).
 Game.Interface>Toggle Selection Panel Resize: Stops selection panel from shrinking (eg: dome).
 Game.Interface>Toggle Signs: Concrete, metal deposits, not working, etc...
+Game.Interface>Toggle Vertical Cheat Menu: Puts the menu down the side of the screen to save horizontal space for the info bar.
 Game.Interface>Toggle on-screen hints: Don't show hints for this game.
 Game.Lightmodel>Light model: Changes the lighting mode (temporary or permanent).
 Game.Lightmodel>List Disaster: Overrides List Normal.

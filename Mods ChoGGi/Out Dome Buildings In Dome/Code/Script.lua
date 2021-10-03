@@ -20,12 +20,12 @@ local function StartupCode()
 		return
 	end
 
- local templates = BuildingTemplates
- for _, template in pairs(templates) do
+ local bt = BuildingTemplates
+ for _, template in pairs(bt) do
 		template.dome_forbidden = false
  end
- local templates = ClassTemplates.Building
- for _, template in pairs(templates) do
+ local ct = ClassTemplates.Building
+ for _, template in pairs(ct) do
 		template.dome_forbidden = false
  end
 end

@@ -1180,309 +1180,314 @@ See Cheats>%s to remove."]]]:format(Translate(5661--[[Mystery Log]])),
 	end
 end -- do
 
--- loops through all the sequences and adds the logs we've already seen
-local function ShowMysteryLog(choice)
-	local myst_id
-	if type(choice) == "string" then
-		myst_id = choice
-	else
-		myst_id = choice[1].value
-	end
+do -- Mystery Log
+	-- loops through all the sequences and adds the logs we've already seen
+	local function ShowMysteryLog(choice)
+		local myst_id
+		if type(choice) == "string" then
+			myst_id = choice
+		else
+			myst_id = choice[1].value
+		end
 
-	local msgs = {myst_id .. "\n\n" .. Strings[302535920000272--[["To play back speech press the ""%s"" checkbox and type in
-g_Voice:Play(o.speech)"]]]:format(Strings[302535920000040--[[Exec Code]]]) .. "\n"}
-	local c = #msgs
-	local s_SeqListPlayers = s_SeqListPlayers
-	-- 1 is some default map thing
-	if #s_SeqListPlayers < 2 then
-		return
-	end
-	for i = 1, #s_SeqListPlayers do
-		if i > 1 then
-			local seq_list = s_SeqListPlayers[i].seq_list
-			if seq_list.name == myst_id then
-				for j = 1, #seq_list do
-					local scenarios = seq_list[j]
-					local state = s_SeqListPlayers[i].seq_states[scenarios.name]
-					-- have we started this seq yet?
-					if state then
-						for k = 1, #scenarios do
-							local seq = scenarios[k]
-							if seq:IsKindOf("SA_WaitMessage") then
-								-- add to msg list
-								c = c + 1
-								msgs[c] = {
-									[" "] = Strings[302535920000273--[[Speech]]] .. ": "
-										.. Translate(seq.voiced_text) .. "\n\n\n\n"
-										.. Strings[302535920000274--[[Message]]] .. ": "
-										.. Translate(seq.text),
-									speech = seq.voiced_text,
-									class = Translate(seq.title)
-								}
+		local msgs = {myst_id .. "\n\n" .. Strings[302535920000272--[["To play back speech press the ""%s"" checkbox and type in
+	g_Voice:Play(o.speech)"]]]:format(Strings[302535920000040--[[Exec Code]]]) .. "\n"}
+		local c = #msgs
+		local s_SeqListPlayers = s_SeqListPlayers
+		-- 1 is some default map thing
+		if #s_SeqListPlayers < 2 then
+			return
+		end
+		for i = 1, #s_SeqListPlayers do
+			if i > 1 then
+				local seq_list = s_SeqListPlayers[i].seq_list
+				if seq_list.name == myst_id then
+					for j = 1, #seq_list do
+						local scenarios = seq_list[j]
+						local state = s_SeqListPlayers[i].seq_states[scenarios.name]
+						-- have we started this seq yet?
+						if state then
+							for k = 1, #scenarios do
+								local seq = scenarios[k]
+								if seq:IsKindOf("SA_WaitMessage") then
+									-- add to msg list
+									c = c + 1
+									msgs[c] = {
+										[" "] = Strings[302535920000273--[[Speech]]] .. ": "
+											.. Translate(seq.voiced_text) .. "\n\n\n\n"
+											.. Strings[302535920000274--[[Message]]] .. ": "
+											.. Translate(seq.text),
+										speech = seq.voiced_text,
+										class = Translate(seq.title)
+									}
+								end
 							end
 						end
 					end
 				end
 			end
 		end
-	end
-	-- display to user
-	ChoGGi.ComFuncs.OpenInExamineDlg(msgs, point(550, 100))
-end
-
-function ChoGGi.MenuFuncs.MysteryLog()
-	local s_SeqListPlayers = s_SeqListPlayers
-	if not s_SeqListPlayers then
-		return
-	end
-	if #s_SeqListPlayers == 1 then
-		MsgPopup(
-			"0",
-			T(5661, "Mystery Log")
-		)
-		return
+		-- display to user
+		ChoGGi.ComFuncs.OpenInExamineDlg(msgs, point(550, 100))
 	end
 
-	local item_list = {}
-	local c = 0
-	local mysteries = ChoGGi.Tables.Mystery
-	for i = 1, #s_SeqListPlayers do
-		-- 1 is always there from map loading
-		if i > 1 then
-			local seq_list = s_SeqListPlayers[i].seq_list
-			local totalparts = #seq_list[1]
-			local id = seq_list.name
-			local ip = s_SeqListPlayers[i].seq_states[seq_list[1].name].ip
-
-			s_SeqListPlayers[i].mystery_idx = i
-			c = c + 1
-			item_list[c] = {
-				text = id .. ": " .. mysteries[id].name,
-				value = id,
-				func = id,
-				mystery_idx = i,
-				hint = "<image " .. mysteries[id].image .. ">\n\n\n<color 255 75 75>"
-					.. Strings[302535920000275--[[Total parts]]] .. "</color>: " .. totalparts
-					.. " <color 255 75 75>" .. Strings[302535920000289--[[Current part]]]
-					.. "</color>: " .. (ip or Strings[302535920000276--[[done?]]])
-					.. "\n\n" .. mysteries[id].description,
-			}
-		end
-	end
-
-	local function CallBackFunc(choice)
-		if choice.nothing_selected then
+	function ChoGGi.MenuFuncs.MysteryLog()
+		local s_SeqListPlayers = s_SeqListPlayers
+		if not s_SeqListPlayers then
 			return
 		end
-		choice = choice[1]
-
-		local value = choice.value
-		local mystery_idx = choice.mystery_idx
-		local ThreadsMessageToThreads = ThreadsMessageToThreads
-
-		if choice.check2 then
-			-- remove all
-			for i = #s_SeqListPlayers, 1, -1 do
-				if i > 1 then
-					s_SeqListPlayers[i]:delete()
-				end
-			end
-			for t in pairs(ThreadsMessageToThreads) do
-				if t.player and t.player.seq_list.file_name then
-					DeleteThread(t.thread)
-					t = nil
-				end
-			end
+		if #s_SeqListPlayers == 1 then
 			MsgPopup(
-				Strings[302535920000277--[[Removed all!]]],
+				"0",
 				T(5661, "Mystery Log")
 			)
-		elseif choice.check1 then
-			-- remove mystery
-			for i = #s_SeqListPlayers, 1, -1 do
-				if s_SeqListPlayers[i].mystery_idx == mystery_idx then
-					s_SeqListPlayers[i]:delete()
-					break
-				end
-			end
-			for t in pairs(ThreadsMessageToThreads) do
-				if t.player and t.player.mystery_idx == mystery_idx then
-					DeleteThread(t.thread)
-					t = nil
-				end
-			end
-			MsgPopup(
-				choice.text .. ": " .. Translate(3486--[[Mystery]]) .. " " .. Strings[302535920000278--[[Removed]]] .. "!",
-				T(5661, "Mystery Log")
-			)
-		elseif value then
-			-- next step
-			ChoGGi.MenuFuncs.NextMysterySeq(value, mystery_idx)
+			return
 		end
 
-	end
+		local item_list = {}
+		local c = 0
+		local mysteries = ChoGGi.Tables.Mystery
+		for i = 1, #s_SeqListPlayers do
+			-- 1 is always there from map loading
+			if i > 1 then
+				local seq_list = s_SeqListPlayers[i].seq_list
+				if not seq_list[1] then
+					MsgPopup(
+						"0",
+						T(5661, "Mystery Log")
+					)
+					return
+				end
+				local totalparts = #seq_list[1]
+				local id = seq_list.name
+				local ip = s_SeqListPlayers[i].seq_states[seq_list[1].name].ip
 
-	ChoGGi.ComFuncs.OpenInListChoice{
-		callback = CallBackFunc,
-		items = item_list,
-		custom_type = 6,
-		custom_func = ShowMysteryLog,
-		title = Translate(5661--[[Mystery Log]]),
-		hint = Strings[302535920000280--[[Skip the timer delay, and optionally skip the requirements (applies to all mysteries that are the same type).
+				s_SeqListPlayers[i].mystery_idx = i
+				c = c + 1
+				item_list[c] = {
+					text = id .. ": " .. mysteries[id].name,
+					value = id,
+					func = id,
+					mystery_idx = i,
+					hint = "<image " .. mysteries[id].image .. ">\n\n\n<color 255 75 75>"
+						.. Strings[302535920000275--[[Total parts]]] .. "</color>: " .. totalparts
+						.. " <color 255 75 75>" .. Strings[302535920000289--[[Current part]]]
+						.. "</color>: " .. (ip or Strings[302535920000276--[[done?]]])
+						.. "\n\n" .. mysteries[id].description,
+				}
+			end
+		end
 
-Sequence part may have more then one check, you may have to skip twice or more.
+		local function CallBackFunc(choice)
+			if choice.nothing_selected then
+				return
+			end
+			choice = choice[1]
 
-Double right-click selected mystery to review past messages.]]],
-		checkboxes = {
-			{
-				title = Strings[302535920000281--[[Remove]]],
-				hint = Translate(6779--[[Warning]]) .. ": " .. Strings[302535920000282--[[This will remove the mystery, if you start it again; it'll be back to the start.]]],
-			},
-			{
-				title = Strings[302535920000283--[[Remove All]]],
-				hint = Translate(6779--[[Warning]]) .. ": " .. Strings[302535920000284--[[This will remove all the mysteries!]]],
-			},
-		},
-	}
-end
+			local value = choice.value
+			local mystery_idx = choice.mystery_idx
+			local ThreadsMessageToThreads = ThreadsMessageToThreads
 
-function ChoGGi.MenuFuncs.NextMysterySeq(mystery, mystery_idx)
-	local g_Classes = g_Classes
-
-	local wait_classes = {"SA_WaitMarsTime", "SA_WaitTime"}
-	local thread_classes = {"SA_WaitMarsTime", "SA_WaitTime", "SA_RunSequence"}
-	local warning = "\n\n" .. Strings[302535920000285--[["Click ""Ok"" to skip requirements (Warning: may cause issues later on, untested)."]]]
-	local name = Translate(3486--[[Mystery]]) .. ": " .. ChoGGi.Tables.Mystery[mystery].name
-
-	local ThreadsMessageToThreads = ThreadsMessageToThreads
-	for t in pairs(ThreadsMessageToThreads) do
-		if t.player and t.player.mystery_idx == mystery_idx then
-
-			-- only remove finished waittime threads, can cause issues removing other threads
-			if t.finished == true and t.action:IsKindOfClasses(thread_classes) then
-				DeleteThread(t.thread)
+			if choice.check2 then
+				-- remove all
+				for i = #s_SeqListPlayers, 1, -1 do
+					if i > 1 then
+						s_SeqListPlayers[i]:delete()
+					end
+				end
+				for t in pairs(ThreadsMessageToThreads) do
+					if t.player and t.player.seq_list.file_name then
+						DeleteThread(t.thread)
+						t = nil
+					end
+				end
+				MsgPopup(
+					Strings[302535920000277--[[Removed all!]]],
+					T(5661, "Mystery Log")
+				)
+			elseif choice.check1 then
+				-- remove mystery
+				for i = #s_SeqListPlayers, 1, -1 do
+					if s_SeqListPlayers[i].mystery_idx == mystery_idx then
+						s_SeqListPlayers[i]:delete()
+						break
+					end
+				end
+				for t in pairs(ThreadsMessageToThreads) do
+					if t.player and t.player.mystery_idx == mystery_idx then
+						DeleteThread(t.thread)
+						t = nil
+					end
+				end
+				MsgPopup(
+					choice.text .. ": " .. Translate(3486--[[Mystery]]) .. " " .. Strings[302535920000278--[[Removed]]] .. "!",
+					T(5661, "Mystery Log")
+				)
+			elseif value then
+				-- next step
+				ChoGGi.MenuFuncs.NextMysterySeq(value, mystery_idx)
 			end
 
-			local Player = t.player
-			local seq_list = t.sequence
-			local state = Player.seq_states
-			local ip = state[seq_list.name].ip
+		end
+
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = item_list,
+			custom_type = 6,
+			custom_func = ShowMysteryLog,
+			title = Translate(5661--[[Mystery Log]]),
+			hint = Strings[302535920000280--[[Skip the timer delay, and optionally skip the requirements (applies to all mysteries that are the same type).
+	Sequence part may have more then one check, you may have to skip twice or more.
+	Double right-click selected mystery to review past messages.]]],
+			checkboxes = {
+				{
+					title = Strings[302535920000281--[[Remove]]],
+					hint = Translate(6779--[[Warning]]) .. ": " .. Strings[302535920000282--[[This will remove the mystery, if you start it again; it'll be back to the start.]]],
+				},
+				{
+					title = Strings[302535920000283--[[Remove All]]],
+					hint = Translate(6779--[[Warning]]) .. ": " .. Strings[302535920000284--[[This will remove all the mysteries!]]],
+				},
+			},
+		}
+	end
+
+	function ChoGGi.MenuFuncs.NextMysterySeq(mystery, mystery_idx)
+		local g_Classes = g_Classes
+
+		local wait_classes = {"SA_WaitMarsTime", "SA_WaitTime"}
+		local thread_classes = {"SA_WaitMarsTime", "SA_WaitTime", "SA_RunSequence"}
+		local warning = "\n\n" .. Strings[302535920000285--[["Click ""Ok"" to skip requirements (Warning: may cause issues later on, untested)."]]]
+		local name = Translate(3486--[[Mystery]]) .. ": " .. ChoGGi.Tables.Mystery[mystery].name
+
+		local ThreadsMessageToThreads = ThreadsMessageToThreads
+		for t in pairs(ThreadsMessageToThreads) do
+			if t.player and t.player.mystery_idx == mystery_idx then
+
+				-- only remove finished waittime threads, can cause issues removing other threads
+				if t.finished == true and t.action:IsKindOfClasses(thread_classes) then
+					DeleteThread(t.thread)
+				end
+
+				local Player = t.player
+				local seq_list = t.sequence
+				local state = Player.seq_states
+				local ip = state[seq_list.name].ip
 
 
-			for i = 1, #seq_list do
-				-- skip older seqs
-				if i >= ip then
-					local seq = seq_list[i]
-					local title = name .. " " .. Strings[302535920000286--[[Part]]] .. ": " .. ip
+				for i = 1, #seq_list do
+					-- skip older seqs
+					if i >= ip then
+						local seq = seq_list[i]
+						local title = name .. " " .. Strings[302535920000286--[[Part]]] .. ": " .. ip
 
-					-- seqs that add delays/tasks
-					if seq:IsKindOfClasses(wait_classes) then
-						ChoGGi.Temp.SA_WaitMarsTime_StopWait = {mystery_idx = mystery_idx}
-						--we don't want to wait
-						seq.wait_type = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("wait_type")
-						seq.wait_subtype = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("wait_subtype")
-						seq.loops = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("loops")
-						seq.duration = 1
-						seq.rand_duration = 1
-						local wait = t.action
-						wait.wait_type = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("wait_type")
-						wait.wait_subtype = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("wait_subtype")
-						wait.loops = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("loops")
-						wait.duration = 1
-						wait.rand_duration = 1
+						-- seqs that add delays/tasks
+						if seq:IsKindOfClasses(wait_classes) then
+							ChoGGi.Temp.SA_WaitMarsTime_StopWait = {mystery_idx = mystery_idx}
+							--we don't want to wait
+							seq.wait_type = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("wait_type")
+							seq.wait_subtype = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("wait_subtype")
+							seq.loops = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("loops")
+							seq.duration = 1
+							seq.rand_duration = 1
+							local wait = t.action
+							wait.wait_type = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("wait_type")
+							wait.wait_subtype = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("wait_subtype")
+							wait.loops = g_Classes.SA_WaitMarsTime:GetDefaultPropertyValue("loops")
+							wait.duration = 1
+							wait.rand_duration = 1
 
-						t.finished = true
-						-- may not be needed
-						Player:UpdateCurrentIP(seq_list)
-						-- let them know
-						MsgPopup(
-							Strings[302535920000287--[[Timer delay removed (may take upto a Sol).]]],
-							title
-						)
-						break
+							t.finished = true
+							-- may not be needed
+							Player:UpdateCurrentIP(seq_list)
+							-- let them know
+							MsgPopup(
+								Strings[302535920000287--[[Timer delay removed (may take upto a Sol).]]],
+								title
+							)
+							break
 
-					elseif seq:IsKindOf("SA_WaitExpression") then
-						seq.duration = 1
-						local function CallBackFunc(answer)
-							if answer then
-								seq.expression = nil
-								--the first SA_WaitExpression always has a SA_WaitMarsTime, if they're skipping the first then i doubt they want this
-								if i == 1 or i == 2 then
-									ChoGGi.Temp.SA_WaitMarsTime_StopWait = {mystery_idx = mystery_idx, again = true}
-								else
-									ChoGGi.Temp.SA_WaitMarsTime_StopWait = {mystery_idx = mystery_idx}
+						elseif seq:IsKindOf("SA_WaitExpression") then
+							seq.duration = 1
+							local function CallBackFunc(answer)
+								if answer then
+									seq.expression = nil
+									--the first SA_WaitExpression always has a SA_WaitMarsTime, if they're skipping the first then i doubt they want this
+									if i == 1 or i == 2 then
+										ChoGGi.Temp.SA_WaitMarsTime_StopWait = {mystery_idx = mystery_idx, again = true}
+									else
+										ChoGGi.Temp.SA_WaitMarsTime_StopWait = {mystery_idx = mystery_idx}
+									end
+
+									t.finished = true
+									Player:UpdateCurrentIP(seq_list)
 								end
-
-								t.finished = true
-								Player:UpdateCurrentIP(seq_list)
 							end
-						end
-						ChoGGi.ComFuncs.QuestionBox(
-							Strings[302535920000288--[[Advancement requires]]] .. ": "
-								.. seq.expression .. "\n\n"
-								.. Strings[302535920000290--[[Time duration has been set to 0 (you still need to complete the requirements).
+							ChoGGi.ComFuncs.QuestionBox(
+								Strings[302535920000288--[[Advancement requires]]] .. ": "
+									.. seq.expression .. "\n\n"
+									.. Strings[302535920000290--[[Time duration has been set to 0 (you still need to complete the requirements).
+	Wait for a Sol or two for it to update (should give a popup msg).]]] .. warning,
+								CallBackFunc,
+								title
+							)
+							break
 
-Wait for a Sol or two for it to update (should give a popup msg).]]] .. warning,
-							CallBackFunc,
-							title
-						)
-						break
-
-					elseif seq:IsKindOf("SA_WaitMsg") then
-						local function CallBackFunc(answer)
-							if answer then
-								ChoGGi.Temp.SA_WaitMarsTime_StopWait = {mystery_idx = mystery_idx, again = true}
-								-- send fake msg (ok it's real, but it hasn't happened)
-								Msg(seq.msg)
-								Player:UpdateCurrentIP(seq_list)
+						elseif seq:IsKindOf("SA_WaitMsg") then
+							local function CallBackFunc(answer)
+								if answer then
+									ChoGGi.Temp.SA_WaitMarsTime_StopWait = {mystery_idx = mystery_idx, again = true}
+									-- send fake msg (ok it's real, but it hasn't happened)
+									Msg(seq.msg)
+									Player:UpdateCurrentIP(seq_list)
+								end
 							end
-						end
-						ChoGGi.ComFuncs.QuestionBox(
-							Strings[302535920000288--[[Advancement requires]]] .. ": " .. seq.msg .. warning,
-							CallBackFunc,
-							title
-						)
-						break
+							ChoGGi.ComFuncs.QuestionBox(
+								Strings[302535920000288--[[Advancement requires]]] .. ": " .. seq.msg .. warning,
+								CallBackFunc,
+								title
+							)
+							break
 
-					elseif seq:IsKindOf("SA_WaitResearch") then
-						local function CallBackFunc(answer)
-							if answer then
-								GrantTech(seq.Research)
-								t.finished = true
-								Player:UpdateCurrentIP(seq_list)
+						elseif seq:IsKindOf("SA_WaitResearch") then
+							local function CallBackFunc(answer)
+								if answer then
+									GrantTech(seq.Research)
+									t.finished = true
+									Player:UpdateCurrentIP(seq_list)
+								end
 							end
-						end
-						ChoGGi.ComFuncs.QuestionBox(
-							Strings[302535920000288--[[Advancement requires]]] .. ": " .. seq.Research .. warning,
-							CallBackFunc,
-							title
-						)
+							ChoGGi.ComFuncs.QuestionBox(
+								Strings[302535920000288--[[Advancement requires]]] .. ": " .. seq.Research .. warning,
+								CallBackFunc,
+								title
+							)
 
-					elseif seq:IsKindOf("SA_RunSequence") then
-						local function CallBackFunc(answer)
-							if answer then
-								seq.wait = false
-								t.finished = true
-								Player:UpdateCurrentIP(seq_list)
+						elseif seq:IsKindOf("SA_RunSequence") then
+							local function CallBackFunc(answer)
+								if answer then
+									seq.wait = false
+									t.finished = true
+									Player:UpdateCurrentIP(seq_list)
+								end
 							end
-						end
-						ChoGGi.ComFuncs.QuestionBox(
-							Strings[302535920000291--[[Waiting for %s to finish.
+							ChoGGi.ComFuncs.QuestionBox(
+								Strings[302535920000291--[[Waiting for %s to finish.
+	Skip it?]]]:format(seq.sequence),
+								CallBackFunc,
+								title
+							)
 
-Skip it?]]]:format(seq.sequence),
-							CallBackFunc,
-							title
-						)
+						end -- If seq type
 
-					end -- If seq type
+					end --if i >= ip
+				end --for seq_list
 
-				end --if i >= ip
-			end --for seq_list
+			end --if mystery thread
+		end --for t
 
-		end --if mystery thread
-	end --for t
-
-end
+	end
+end -- do
 
 function ChoGGi.MenuFuncs.UnlockAllBuildings_Toggle()
 	local item_list = {

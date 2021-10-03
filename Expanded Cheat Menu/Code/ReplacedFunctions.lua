@@ -1095,8 +1095,6 @@ function OnMsg.ClassesPostprocess()
 
 		-- get around to finishing this (scrollable selection panel)
 		local zerobox = box(0,0,0,0)
-		local margin_offset = 0
-		local scrollbar_margin_top = 8
 		local function SetToolbar(section, cls, toggle)
 			local toolbar = table.find(section.idContent, "class", cls)
 			if toolbar then

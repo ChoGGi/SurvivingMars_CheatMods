@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2427034032",
 	"pops_any_uuid", "94298e32-b112-4fbb-98c0-47005af1f4b6",
 	"lua_revision", 1007000, -- Picard
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -14,8 +14,10 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagGameplay", true,
-	"description", [[Applicants will age while waiting for their chance to set foot on the red planet.
+	"description", [[
+Applicants will age while waiting for their chance to set foot on the red planet.
+Mod option to remove applicants over a certain age (default none).
 
-
-Requested by bloodnok.]],
+Requested by bloodnok.
+]],
 })
