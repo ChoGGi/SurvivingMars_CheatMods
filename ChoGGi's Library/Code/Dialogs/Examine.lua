@@ -848,8 +848,16 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 				c = c + 1
 				roll_text[c] = "\n\n"
 
+			elseif IsValid(obj) then
+				c = c + 1
+				roll_text[c] = "Realm: "
+				c = c + 1
+				roll_text[c] = obj.city.map_id
+				c = c + 1
+				roll_text[c] = "\n\n"
+
 			else
-				-- display tables
+				-- ...
 
 			end
 		elseif hovered_obj_type == "function" then

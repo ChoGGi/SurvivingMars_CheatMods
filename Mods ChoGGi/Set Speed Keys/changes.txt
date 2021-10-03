@@ -1,3 +1,6 @@
+v0.4
+Change 4/5 speeds in mod options.
+
 v0.3
 Added 4/5 = *5/*10
 

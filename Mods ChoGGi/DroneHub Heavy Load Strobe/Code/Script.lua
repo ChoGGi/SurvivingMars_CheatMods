@@ -4,12 +4,11 @@ local DroneLoadMediumThreshold = const.DroneLoadMediumThreshold
 local IsValid = IsValid
 local DoneObject = DoneObject
 
-local RotatyThing_l
 function DroneHub:ChoGGi_ToggleStrobe(enable)
 	if enable then
 		-- add if it isn't already added
 		if not IsValid(self.ChoGGi_HeavyStrobeLight) then
-			local blinky_obj = RotatyThing_l:new()
+			local blinky_obj = RotatyThing:new()
 			self.ChoGGi_HeavyStrobeLight = blinky_obj
 			blinky_obj.parent_obj = self
 			-- stick it on the top
@@ -26,9 +25,7 @@ function DroneHub:ChoGGi_ToggleStrobe(enable)
 	end
 end
 
-function OnMsg.ClassesBuilt()
-	RotatyThing_l = RotatyThing_l or RotatyThing
-
+function OnMsg.ClassesPostprocess()
 	local ChoOrig_UpdateHeavyLoadNotification = DroneHub.UpdateHeavyLoadNotification
 	function DroneHub:UpdateHeavyLoadNotification(...)
 

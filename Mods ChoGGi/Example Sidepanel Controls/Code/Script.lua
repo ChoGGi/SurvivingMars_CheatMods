@@ -179,7 +179,7 @@ function OnMsg.ClassesPostprocess()
 		"RolloverHint",	"",
 --~ 	(self, context)
 		"OnContextUpdate", function(self)
-			if UICity.hour >= 10 then
+			if UIColony.hour >= 10 then
 				self:SetVisible(true)
 				self:SetMaxHeight()
 			else

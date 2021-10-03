@@ -450,6 +450,11 @@ do -- RetName
 			return tostring(obj)
 
 		elseif obj_type == "table" then
+			-- cities
+			if IsKindOf(obj, "City") and obj.map_id ~= "" then
+				return "City: " .. obj.map_id
+			end
+
 			-- we check in order of less generic "names"
 			local name_type = PropObjGetProperty(obj, "name") and type(obj.name)
 
@@ -5952,31 +5957,31 @@ function ChoGGi.ComFuncs.FisherYates_Shuffle(list, min)
     list[i], list[j] = list[j], list[i]
   end
 end
-do -- RGBtoColour
+
+-- input as text "0,0,0"
+function ChoGGi.ComFuncs.RGBtoColour(text)
+	if not text then
+		return 0
+	end
+
+	-- remove any spaces/newlines etc
+	text = text:gsub("[%s%c]", "")
+	-- grab the values
 	local values = {}
 	local c = 0
 
-	-- input as text "0,0,0"
-	function ChoGGi.ComFuncs.RGBtoColour(text)
-		-- remove any spaces/newlines etc
-		text = text:gsub("[%s%c]", "")
-		-- grab the values
-		values = {}
-		c = 0
+	-- loop through all the numbers
+	for d in text:gmatch("%d+") do
+		c = c + 1
+		values[c] = tonumber(d)
+	end
 
-		-- loop through all the numbers
-		for d in text:gmatch("%d+") do
-			c = c + 1
-			values[c] = tonumber(d)
-		end
-
-		local colour, obj_type = RetProperType(RGB(values[1], values[2], values[3]))
-		if obj_type == "number" then
-			return colour
-		else
-			-- fallback
-			return 0
-		end
+	local colour, obj_type = RetProperType(RGB(values[1], values[2], values[3]))
+	if obj_type == "number" then
+		return colour
+	else
+		-- fallback
+		return 0
 	end
 end
 

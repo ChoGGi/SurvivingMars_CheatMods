@@ -31,12 +31,12 @@ local function ModOptions()
 		options.properties = nil
 	end
 
-	if not UICity then
+	if not UIColony then
 		return
 	end
 
 	-- update spawn times
-	local day = UICity.day
+	local day = UIColony.day
 	local CalcNextSpawnProject = CalcNextSpawnProject
 	local g_SpecialProjectNextSpawn = g_SpecialProjectNextSpawn
 	for id, item in pairs(g_SpecialProjectNextSpawn) do

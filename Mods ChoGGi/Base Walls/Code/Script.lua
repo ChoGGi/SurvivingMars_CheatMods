@@ -1,5 +1,20 @@
 -- See LICENSE for terms
 
+local mod_RememberLastSkin
+
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_RememberLastSkin = CurrentModOptions:GetProperty("RememberLastSkin")
+end
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
+
 -- I use the mirror ball thingy to hide my shame
 if not g_AvailableDlc.contentpack1 then
 	print("Base Walls Needs DLC Installed: Mysteries Resupply Pack (it's free)!")
@@ -121,6 +136,7 @@ local offsets = {}
 do -- offset points
 	local c_m = -1
 	local c_p = 0
+	-- magic numbers :(
 	for i = 500, 200500, 1000 do
 		c_p = c_p + 2
 		offsets[c_p] = point(i, 0, 0)
@@ -176,6 +192,12 @@ DefineClass.ChoGGi_BaseWalls = {
 }
 function ChoGGi_BaseWalls:GameInit()
 	self.attached_objs = {}
+
+	if mod_RememberLastSkin and g_ChoGGi_BaseWalls_savedskin then
+		CreateRealTimeThread(function()
+			self:ChangeSkin(g_ChoGGi_BaseWalls_savedskin)
+		end)
+	end
 end
 
 -- default to reg pass
@@ -546,6 +568,7 @@ local pass_skins = {
 	"Geoscape",
 	"Pack",
 }
+local pass_skins_c = #pass_skins
 -- dlc skin
 if IsValidEntity("PassageCoveredStar") then
 	lookup_skins.Star = {
@@ -554,9 +577,11 @@ if IsValidEntity("PassageCoveredStar") then
 		enter = "PassageEntranceStar",
 		ramp = "PassageRampStar",
 	}
-	pass_skins[#pass_skins+1] = "Star"
+	pass_skins_c = pass_skins_c + 1
+	pass_skins[pass_skins_c] = "Star"
 end
-local pass_skins_c = #pass_skins
+
+GlobalVar("g_ChoGGi_BaseWalls_savedskin", "Passage")
 
 function ChoGGi_BaseWalls:ChangeSkin(skin)
 	local lookup = lookup_skins[skin]
@@ -573,6 +598,8 @@ function ChoGGi_BaseWalls:ChangeSkin(skin)
 		idx = 1
 	end
 	self.entity = pass_skins[idx]
+	-- update saved skin for mod_RememberLastSkin
+	g_ChoGGi_BaseWalls_savedskin = skin
 end
 
 function ChoGGi_BaseWalls:GetSkins()

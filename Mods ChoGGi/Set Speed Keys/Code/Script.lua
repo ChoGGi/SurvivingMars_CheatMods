@@ -1,5 +1,23 @@
 -- See LICENSE for terms
 
+local mod_SpeedFour
+local mod_SpeedFive
+
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_SpeedFour = CurrentModOptions:GetProperty("SpeedFour")
+	mod_SpeedFive = CurrentModOptions:GetProperty("SpeedFive")
+end
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
+
+
 local Actions = ChoGGi.Temp.Actions
 
 Actions[#Actions+1] = {ActionName = T(302535920011668, "Set Speed 1"),
@@ -38,7 +56,7 @@ Actions[#Actions+1] = {ActionName = T(302535920011670, "Set Speed 3"),
 Actions[#Actions+1] = {ActionName = T(302535920012050, "Set Speed 4"),
 	ActionId = "ChoGGi.SetSpeedKeys.SetSpeed4",
 	OnAction = function()
-		UIColony:SetGameSpeed(const.fastGameSpeed*5)
+		UIColony:SetGameSpeed(const.fastGameSpeed * mod_SpeedFour)
 		UISpeedState = "faster"
 	end,
 	ActionShortcut = "4",
@@ -49,7 +67,7 @@ Actions[#Actions+1] = {ActionName = T(302535920012050, "Set Speed 4"),
 Actions[#Actions+1] = {ActionName = T(302535920012051, "Set Speed 5"),
 	ActionId = "ChoGGi.SetSpeedKeys.SetSpeed5",
 	OnAction = function()
-		UIColony:SetGameSpeed(const.fastGameSpeed*10)
+		UIColony:SetGameSpeed(const.fastGameSpeed * mod_SpeedFive)
 		UISpeedState = "fastest"
 	end,
 	ActionShortcut = "5",

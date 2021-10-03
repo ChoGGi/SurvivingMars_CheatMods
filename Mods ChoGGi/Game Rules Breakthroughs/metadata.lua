@@ -4,16 +4,17 @@ return PlaceObj("ModDef", {
 	"steam_id", "1753933193",
 	"pops_any_uuid", "6729224c-c34e-46fb-9355-400a0cdc5402",
 	"lua_revision", 1007000, -- Picard
-	"version", 17,
+	"version", 18,
 	"version_major", 1,
-	"version_minor", 7,
+	"version_minor", 8,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Adds all breakthroughs to game rules (selected rules will be unlocked).
+	"description", [[
+Adds all breakthroughs to game rules (selected rules will be unlocked).
 
 Related mods: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2324443848]Unlock Breakthroughs[/url]
 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2429688365]Unlock Research Tech[/url]

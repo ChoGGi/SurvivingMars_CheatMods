@@ -1,2 +1,5 @@
 v0.2
+Picard update.
+
+v0.2
 Added challenge rating.

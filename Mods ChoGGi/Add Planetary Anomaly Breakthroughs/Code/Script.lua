@@ -16,13 +16,13 @@ local function ModOptions(id)
 	end
 
 	-- make sure we're in-game
-	if not UICity then
+	if not UIColony then
 		return
 	end
 
 	local BreakthroughOrder = BreakthroughOrder
 	local c = #BreakthroughOrder
-	local unregs = UICity:GetUnregisteredBreakthroughs()
+	local unregs = UIColony:GetUnregisteredBreakthroughs()
 	for i = 1, mod_AddPlanetaryAnomalyBreakthroughs do
 		local unreg = unregs[i]
 		if unreg then

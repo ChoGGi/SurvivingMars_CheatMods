@@ -6,8 +6,11 @@ local skip_rockets = {
 	TradeRocket = true,
 }
 
-function OnMsg.RocketLandAttempt(rocket)
-	if skip_rockets[rocket.class]
+local function TurnOffRares(rocket)
+	-- only want rockets from buildinginit
+	if not rocket:IsKindOf("RocketBase")
+		-- ignore these rockets...
+		or skip_rockets[rocket.class]
 		-- It's an export rocket, abort!
 		or rocket.name:sub(-6) == "Export"
 	then
@@ -16,9 +19,13 @@ function OnMsg.RocketLandAttempt(rocket)
 
 	CreateGameTimeThread(function()
 		-- needs a delay or CTD
-		Sleep(1000)
+		WaitMsg("OnRender")
+
 		if rocket.allow_export then
 			rocket:ToggleAllowExport()
 		end
 	end)
 end
+
+OnMsg.BuildingInit = TurnOffRares
+OnMsg.RocketLandAttempt = TurnOffRares

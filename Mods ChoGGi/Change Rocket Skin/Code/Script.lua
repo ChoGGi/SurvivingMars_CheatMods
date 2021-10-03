@@ -11,6 +11,9 @@ end
 -- replace the default getskins function with ours
 RocketBase.GetSkins = GetSkins
 SupplyPod.GetSkins = GetSkins
+-- override needed for Coloured Depots mod
+RocketBase.ChangeSkin = Building.ChangeSkin
+SupplyPod.ChangeSkin = Building.ChangeSkin
 
 -- start with base game rockets
 rockets = {

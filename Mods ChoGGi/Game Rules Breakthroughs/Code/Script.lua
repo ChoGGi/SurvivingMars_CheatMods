@@ -138,11 +138,13 @@ function OnMsg.ClassesPostprocess()
 
 end
 
-local function City_GetUnregisteredBreakthrough(self)
+-- last checked picard 1008224: function Colony:GetUnregisteredBreakthroughs()
+local function Colony_GetUnregisteredBreakthrough(self)
 	local BreakthroughOrder = BreakthroughOrder
 	local objs = Presets.TechPreset.Breakthroughs
 	for i = 1, #objs do
 		local tech = objs[i]
+		-- we call this from TechAvailableCondition (inf loops are bad)
     if not table.find(BreakthroughOrder, tech.id) and not self:IsTechDiscovered(tech.id) then
 			return tech
     end
@@ -163,10 +165,10 @@ local function BuildRules()
 end
 
 -- block breakthroughs
-local ChoOrig_City_TechAvailableCondition = City.TechAvailableCondition
-function City:TechAvailableCondition(tech, ...)
+local ChoOrig_Research_TechAvailableCondition = Research.TechAvailableCondition
+function Research:TechAvailableCondition(tech, ...)
 	if not mod_ExcludeBreakthroughs then
-		return ChoOrig_City_TechAvailableCondition(self, tech, ...)
+		return ChoOrig_Research_TechAvailableCondition(self, tech, ...)
 	end
 
 	if not lookup_rules then
@@ -177,10 +179,10 @@ function City:TechAvailableCondition(tech, ...)
 --~ 		-- return false to skip it
 --~ 		return false
 		-- not checking again if tech is in lookup_rules
-		tech = City_GetUnregisteredBreakthrough(self)
+		tech = Colony_GetUnregisteredBreakthrough(self)
 	end
 
-	return ChoOrig_City_TechAvailableCondition(self, tech, ...)
+	return ChoOrig_Research_TechAvailableCondition(self, tech, ...)
 end
 
 local ChoOrig_SubsurfaceAnomaly_ScanCompleted = SubsurfaceAnomaly.ScanCompleted
@@ -192,7 +194,7 @@ function SubsurfaceAnomaly:ScanCompleted(scanner, ...)
 
 		-- blocked breakthrough
 		if lookup_rules[self.breakthrough_tech] then
-			local tech = City_GetUnregisteredBreakthrough(scanner and scanner.city or UICity)
+			local tech = Colony_GetUnregisteredBreakthrough(scanner and scanner.city.colony or UIColony)
 			-- not checking again if tech is in lookup_rules
 			if tech then
 				self.breakthrough_tech = tech.id

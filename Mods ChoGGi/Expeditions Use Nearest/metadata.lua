@@ -1,12 +1,12 @@
 return PlaceObj("ModDef", {
 	"title", "Expeditions Use Nearest",
 	"id", "ChoGGi_ExpeditionsUseNearestDrones",
-	"lua_revision", 1007000, -- Picard
 	"steam_id", "2287155002",
 	"pops_any_uuid", "1e399bf5-1fe9-4329-871e-adb6a10a331d",
-	"version", 4,
+	"lua_revision", 1007000, -- Picard
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 5,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {

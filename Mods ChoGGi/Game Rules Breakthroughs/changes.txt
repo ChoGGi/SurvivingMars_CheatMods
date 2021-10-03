@@ -1,3 +1,6 @@
+v1.8
+Picard update.
+
 v1.7
 Added challenge rating.
 

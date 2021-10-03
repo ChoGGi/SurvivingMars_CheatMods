@@ -1,3 +1,6 @@
+v0.5
+Added mod option to remember skin.
+
 v0.4
 Added Change skin for ramps.
 Changing length of wall doesn't reset skin anymore.

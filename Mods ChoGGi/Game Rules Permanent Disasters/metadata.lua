@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2060296355",
 	"pops_any_uuid", "09c4df72-ad70-43c3-aa81-558431221377",
 	"lua_revision", 1007000, -- Picard
-	"version", 9,
-	"version_major", 0,
-	"version_minor", 9,
+	"version", 11,
+	"version_major", 1,
+	"version_minor", 1,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -22,7 +22,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagGameplay", true,
-	"description", [[Add four new game rules for each of the disasters:
+	"description", [[
+Add four new game rules for each of the disasters:
 
 [b]Meteor Threat[/b]: Constantly raining meteors (this doesn't change the occurrence of regular meteors or storms).
 Mod Options:

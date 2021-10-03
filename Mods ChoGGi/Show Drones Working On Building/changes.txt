@@ -1,3 +1,6 @@
+v0.5
+Highlights drones going to a depot of a building.
+
 v0.4
 Fixed no highlighted drones for drone hubs (thanks pidgey6).
 

@@ -938,6 +938,9 @@ This will override all Meteors!"
 302535920011670, "Set Speed 3"
 302535920012050, "Set Speed 4"
 302535920012051, "Set Speed 5"
+302535920012087, "Speed 4"
+302535920012088, "Multiply speed of fastest speed by this."
+302535920012089, "Speed 5"
 [[Custom Quality Settings]]
 302535920011675, "LightsRadiusModifier"
 302535920011676, "Low is 90, Medium is 95, High is 100
@@ -1470,9 +1473,6 @@ Don't forget to send me your res and margin, so I can add them to the list."
 
 
 [[UNUSED]]
-302535920012087,
-302535920012088,
-302535920012089,
 302535920012090,
 302535920012091,
 302535920012092,

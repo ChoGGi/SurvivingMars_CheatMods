@@ -8,23 +8,23 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Base Walls",
-	"version", 4,
-	"version_major", 0,
-	"version_minor", 4,
-
-	"image", "Preview.png",
 	"id", "ChoGGi_BaseWalls",
 	"steam_id", "1762913666",
 	"pops_any_uuid", "74e00a2d-11ef-43a7-9443-cdfe7513e787",
-	"author", "ChoGGi",
 	"lua_revision", 1007000, -- Picard
+	"version", 5,
+	"version_major", 0,
+	"version_minor", 5,
+	"image", "Preview.jpg",
+	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
---~ 	"has_options", true,
+	"has_options", true,
 	"TagBuildings", true,
 	"TagOther", true,
-	"description", [[Same basic idea as ErrantSword's mod, with a few changes:
+	"description", [[
+Same basic idea as ErrantSword's mod, with a few changes:
 There's no electrical grid added to them.
 I used mini dome passages (sorry no fancypants dragging), and some other entities (for "corner" hubs).
 They will block drones from pathing through them.
@@ -37,6 +37,7 @@ There are buttons you can use to rotate/adjust length once placed (gamepads do w
 
 You may need to use [url=https://steamcommunity.com/sharedfiles/filedetails/1763802580]Remove Building Limits[/url] when adding more than one to a single hex area.
 
+Mod option to save skin colour when building.
 
 Known Issues:
 Holding shift to place multiples doesn't work yet.

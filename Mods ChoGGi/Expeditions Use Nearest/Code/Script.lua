@@ -29,6 +29,10 @@ local sort_obj
 local function SortByDist(a, b)
 	return a:GetVisualDist2D(sort_obj) < b:GetVisualDist2D(sort_obj)
 end
+-- filter for ExpeditionPickDroneFrom (thanks SkiRich)
+local function FilterOutsideDrones(drone)
+	return not drone.holder
+end
 
 local ChoOrig_CargoTransporter_ExpeditionFindDrones = CargoTransporter.ExpeditionFindDrones
 function CargoTransporter:ExpeditionFindDrones(num_drones, ...)
@@ -36,23 +40,28 @@ function CargoTransporter:ExpeditionFindDrones(num_drones, ...)
 		return ChoOrig_CargoTransporter_ExpeditionFindDrones(self, num_drones, ...)
 	end
 
-	-- wait to have enough drones
-	while true do
+	local Cities = Cities
+
+	-- wait to have enough drones, load if we are a go, stop if not (thanks SkiRich)
+	while self:HasDestination() do
 		local found_drones = {}
 
 		-- prefer own drones first
 		while #found_drones < num_drones and #(self.drones or empty_table) > 0 do
-			local drone = ExpeditionPickDroneFrom(self, found_drones)
+			local drone = ExpeditionPickDroneFrom(self, found_drones, FilterOutsideDrones)
 			if not drone then
 				break
 			end
 			table.insert(found_drones, drone)
 		end
 
+		-- thanks Ski
+		local city = self.city or (Cities[self:GetMapID()]) or empty_table
 		-- sort drone controller list to be closest to rocket
-		local list = table.copy((self.city or UICity).labels.DroneControl or empty_table)
+		local list = table.copy(city.labels.DroneControl or empty_table)
 		sort_obj = self
 		table.sort(list, SortByDist)
+
 		-- pick from other drone controllers
 		local idx = 1
 		while #found_drones < num_drones and #list > 0 do
@@ -101,6 +110,7 @@ function CargoTransporter:ExpeditionGatherCrew(num_crew, label, quick_load, ...)
 
 	-- instead of going through UICity.label, we'll go through each dome in order of distance to rocket
 	label = label or "Colonist"
+	local count = 0
 	while true do
 		local domes = table.copy((self.city or UICity).labels.Dome or empty_table)
 		sort_obj = self
@@ -128,6 +138,7 @@ function CargoTransporter:ExpeditionGatherCrew(num_crew, label, quick_load, ...)
 
 		self.colonist_summon_fail = num_crew > #new_crew
 		ObjModified(self)
+
 		if num_crew <= #new_crew or quick_load then
 			local crew = {}
 			while 0 < #new_crew and num_crew > #crew do
@@ -136,10 +147,13 @@ function CargoTransporter:ExpeditionGatherCrew(num_crew, label, quick_load, ...)
 				table.insert(crew, unit)
 			end
 			return crew
-		else
+		end
+
+		if count> 10 then
 			return {}
 		end
 
+		count = count + 1
 		Sleep(1000)
 	end
 end

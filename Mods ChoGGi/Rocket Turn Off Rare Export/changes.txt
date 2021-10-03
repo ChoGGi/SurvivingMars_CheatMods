@@ -1,2 +1,5 @@
+v0.3
+Added built rockets (thanks strudo76).
+
 v0.2
 Append "Export" to the end of the rocket name to have this mod ignore it.

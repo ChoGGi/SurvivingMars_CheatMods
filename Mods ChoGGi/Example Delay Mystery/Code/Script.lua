@@ -22,7 +22,9 @@ function Mysteries:InitMystery(...)
 				local sa = scenario[i]
 				if sa:IsKindOf("SA_WaitExpression") then
 					-- since the expression is a string we can just prefix what we want to check
-					sa.expression = "UICity.day >= 100 and" .. sa.expression
+--~ 					sa.expression = "UICity.day >= 100 and" .. sa.expression
+-- picard?
+					sa.expression = "UIColony.day >= 100 and" .. sa.expression
 					-- got what we wanted so kill the loop (don't want to replace all the expressions)
 					break
 				end

@@ -14,7 +14,6 @@ local Min = Min
 local Max = Max
 
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
-local Random = ChoGGi.ComFuncs.Random
 
 local SolDuration = const.Scale.sols
 local SolDuration9 = SolDuration * 999
@@ -123,13 +122,13 @@ GlobalGameTimeThread("ChoGGi_MeteorThreat_Thread", function()
 		end
 		if meteor and IsGameRuleActive("ChoGGi_MeteorThreat") then
 	--~ 		local spawn_time = Random(meteor.spawntime, meteor.spawntime + meteor.spawntime_random)
-			local spawn_time = Random(mod_MeteorsOverkill and MinuteDuration or HourDurationHalf)
+			local spawn_time = UICity:Random(mod_MeteorsOverkill and MinuteDuration or HourDurationHalf)
 			local warning_time = GetDisasterWarningTime(meteor)
 			local start_time = GameTime()
 			if GameTime() - start_time > spawn_time - warning_time then
 				Sleep(5000)
 			end
-			local chance = Random(100)
+			local chance = UICity:Random(100)
 			local meteors_type
 			if mod_MeteorsOverkill or chance < meteor.multispawn_chance then
 				meteors_type = "multispawn"
@@ -167,13 +166,13 @@ GlobalGameTimeThread("ChoGGi_Twister_Thread", function()
 		if dustdevil and IsGameRuleActive("ChoGGi_Twister") then
 			dustdevil.electro_chance = mod_DustDevilsElectrostatic
 
-			local spawn_time = Random(HourDurationHalf)
+			local spawn_time = UICity:Random(HourDurationHalf)
 			local warning_time = dustdevil.warning_time
 			Sleep(Max(spawn_time - warning_time, 1000))
 
 			local a = mod_DustDevilsTwisterAmount
 			local max = mod_DustDevilsTwisterMaxAmount > 0
-				and mod_DustDevilsTwisterMaxAmount or a + Random(a+1)
+				and mod_DustDevilsTwisterMaxAmount or a + UICity:Random(a+1)
 			-- skip if none allowed or on-map amount is at max already
 			if a > 0 and #g_DustDevils < max then
 				-- spawn just add enough to be at max amount
@@ -185,7 +184,7 @@ GlobalGameTimeThread("ChoGGi_Twister_Thread", function()
 						break
 					end
 					GenerateDustDevil(pos, dustdevil):Start()
-					Sleep(Random(
+					Sleep(UICity:Random(
 						-- 500/1500 default in dustdevil props
 						dustdevil.spawn_delay_min or 500,
 						dustdevil.spawn_delay_max or 1500
@@ -272,10 +271,10 @@ GlobalGameTimeThread("ChoGGi_Bakersfield_Thread", function()
 			dust_storm.min_duration = SolDuration9
 			dust_storm.max_duration = SolDuration9
 
-			wait_time = Random(HourDurationHalf)
+			wait_time = UICity:Random(HourDurationHalf)
 
 			if not g_DustStormType then
-				local rand = Random(101)
+				local rand = UICity:Random(101)
 				if rand < dust_storm.electrostatic then
 					g_DustStormType = "electrostatic"
 				elseif rand < dust_storm.electrostatic + dust_storm.great then
@@ -453,3 +452,11 @@ function OnMsg.ClassesPostprocess()
 		challenge_mod = 100,
 	})
 end
+
+-- restart threads
+function SavegameFixups.ChoGGi_GameRulesPermanentDisasters_1()
+  RestartGlobalGameTimeThread("ChoGGi_MeteorThreat_Thread")
+  RestartGlobalGameTimeThread("ChoGGi_Twister_Thread")
+  RestartGlobalGameTimeThread("ChoGGi_Bakersfield_Thread")
+end
+

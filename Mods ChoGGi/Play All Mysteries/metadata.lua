@@ -24,6 +24,7 @@ return PlaceObj("ModDef", {
 	"TagGameplay", true,
 	"description", [[
 After finishing your current mystery a random one will start.
+Mod options shows list of mysteries to enable (can be changed anytime).
 
 Picks first from the list of finished mysteries (see new game>mysteries checkmarks).
 Second pick is from a per-save list of finished mysteries.

@@ -3,6 +3,10 @@
 ## v10.5 (Unreleased)
 - Re-fangled how specs are set.
 
+### Examine:
+- Examine shows map_id for cities.
+- Tooltips show map_id object is in.
+
 ## v10.4 (20 Sep 2021)
 - Removed the margins from buildable grid (it hid a couple areas of the grid numebrs).
 - Forgot to check for UICity when examining a box().

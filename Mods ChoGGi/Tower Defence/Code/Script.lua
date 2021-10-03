@@ -31,7 +31,7 @@ DefineClass.TowerDefense_Rover = {
 
 -- sometimes they get stuck in the mountains so we blow them up after a Sol
 function TowerDefense_Rover:GameInit(...)
-	self.TowerDefense_spawned_sol = UICity.day
+	self.TowerDefense_spawned_sol = UIColony.day
 	return AttackRover.GameInit(self,...)
 end
 

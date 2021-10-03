@@ -21,7 +21,7 @@ local function fake_StableShuffle(tbl, _, max, ...)
 	return ChoOrig_StableShuffle(tbl, AsyncRand, max, ...)
 end
 
--- anomalies for ground/planetary
+-- anomalies for ground/planetary (last checked class picard 1008224)
 local ChoOrig_City_InitBreakThroughAnomalies = City.InitBreakThroughAnomalies
 function City.InitBreakThroughAnomalies(...)
 	if g_CurrentMissionParams.idGameRules.ChoGGi_RandomBreakthroughs then

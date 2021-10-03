@@ -25,6 +25,11 @@ local ChoOrig_GetUISectionResourceProducerRollover = ResourceProducer.GetUISecti
 function ResourceProducer:GetUISectionResourceProducerRollover(...)
 	local ret = ChoOrig_GetUISectionResourceProducerRollover(self, ...)
 
+	-- no icon for them
+	if self.consumption_resource_type == "no_consumption" then
+		return ret
+	end
+
 	if not self.consumption_amount or not self.SumOfAllProducers then
 		return ret
 	end

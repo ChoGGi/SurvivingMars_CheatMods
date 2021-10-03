@@ -73,153 +73,141 @@ function OnMsg.ClassesPostprocess()
 	-- check for and remove existing template
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStones_Liftoff", true)
 
-	table.insert(xtemplate, 1,
-		PlaceObj("XTemplateTemplate", {
-			"Id" , "ChoGGi_Template_BuildPhilosopherStones_Liftoff",
-			"ChoGGi_Template_BuildPhilosopherStones_Liftoff", true,
-			"__context_of_kind", "CrystalsBuilding",
-			"__template", "InfopanelButton",
-			"__condition", function()
-				return mod_EnableMod
-			end,
+	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
+		"Id" , "ChoGGi_Template_BuildPhilosopherStones_Liftoff",
+		"ChoGGi_Template_BuildPhilosopherStones_Liftoff", true,
+		"__context_of_kind", "CrystalsBuilding",
+		"__template", "InfopanelButton",
+		"__condition", function()
+			return mod_EnableMod
+		end,
 
-			"RolloverTitle", T(4253, "LAUNCH"),
-			"RolloverText", T(302535920011946, "Starts takeoff animation, planting more stones and doing this again will spam the log. Doesn't seem to hurt anything though."),
-			"Icon", "UI/Icons/IPButtons/drill.tga",
+		"RolloverTitle", T(4253, "LAUNCH"),
+		"RolloverText", T(302535920011946, "Starts takeoff animation, planting more stones and doing this again will spam the log. Doesn't seem to hurt anything though."),
+		"Icon", "UI/Icons/IPButtons/drill.tga",
 
-			"OnPress", function(self)
-				local context = self.context
+		"OnPress", function(self)
+			local context = self.context
 
-				-- might help log spam
-				context.city:SetTechResearched("CrystallineFrequencyJamming")
-				-- Yamato Hasshin!
-				context:CheatStartLiftoff()
+			-- might help log spam
+			context.city:SetTechResearched("CrystallineFrequencyJamming")
+			-- Yamato Hasshin!
+			context:CheatStartLiftoff()
 
-				ObjModified(context)
-			end,
-		})
-	)
+			ObjModified(context)
+		end,
+	})
 
 	--
 	xtemplate = XTemplates.ipMirrorSphereBuilding[1]
 
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStones_SphereEscavate", true)
-	table.insert(xtemplate, 1,
-		PlaceObj("XTemplateTemplate", {
-			"Id" , "ChoGGi_Template_BuildPhilosopherStones_SphereEscavate",
-			"ChoGGi_Template_BuildPhilosopherStones_SphereEscavate", true,
-			"__context_of_kind", "MirrorSphereBuilding",
-			"__template", "InfopanelButton",
-			"__condition", function()
-				return mod_EnableMod
-			end,
+	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
+		"Id" , "ChoGGi_Template_BuildPhilosopherStones_SphereEscavate",
+		"ChoGGi_Template_BuildPhilosopherStones_SphereEscavate", true,
+		"__context_of_kind", "MirrorSphereBuilding",
+		"__template", "InfopanelButton",
+		"__condition", function()
+			return mod_EnableMod
+		end,
 
-			"RolloverTitle", T(302535920011970, "Escavate"),
-			"RolloverText", T(302535920011971, "Detach Sphere from excavation site."),
-			"Icon", "UI/Icons/IPButtons/force_launch.tga",
+		"RolloverTitle", T(302535920011970, "Escavate"),
+		"RolloverText", T(302535920011971, "Detach Sphere from excavation site."),
+		"Icon", "UI/Icons/IPButtons/force_launch.tga",
 
-			"OnPress", function(self)
-				self.context:SetProgressPct(100)
-				ObjModified(self.context)
-			end,
-		})
-	)
+		"OnPress", function(self)
+			self.context:SetProgressPct(100)
+			ObjModified(self.context)
+		end,
+	})
 
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStones_DeleteSite", true)
-	table.insert(xtemplate, 2,
-		PlaceObj("XTemplateTemplate", {
-			"Id" , "ChoGGi_Template_BuildPhilosopherStones_DeleteSite",
-			"ChoGGi_Template_BuildPhilosopherStones_DeleteSite", true,
-			"__context_of_kind", "MirrorSphereBuilding",
-			"__template", "InfopanelButton",
-			"__condition", function()
-				return mod_EnableMod
-			end,
+	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
+		"Id" , "ChoGGi_Template_BuildPhilosopherStones_DeleteSite",
+		"ChoGGi_Template_BuildPhilosopherStones_DeleteSite", true,
+		"__context_of_kind", "MirrorSphereBuilding",
+		"__template", "InfopanelButton",
+		"__condition", function()
+			return mod_EnableMod
+		end,
 
-			"RolloverTitle", T(302535920011972, "Delete Excavation Site"),
-			"RolloverText", T(302535920011973, "You'll need to flatten the ground afterwards."),
-			"Icon", "UI/Icons/IPButtons/stop.tga",
+		"RolloverTitle", T(302535920011972, "Delete Excavation Site"),
+		"RolloverText", T(302535920011973, "You'll need to flatten the ground afterwards."),
+		"Icon", "UI/Icons/IPButtons/stop.tga",
 
-			"OnPress", function(self)
-				local context = self.context
-				if IsValid(context.sphere) then
-					ChoGGi.ComFuncs.DeleteObject(context.sphere)
-				end
-				ChoGGi.ComFuncs.DeleteObject(context)
-				ObjModified(context)
-			end,
-		})
-	)
+		"OnPress", function(self)
+			local context = self.context
+			if IsValid(context.sphere) then
+				ChoGGi.ComFuncs.DeleteObject(context.sphere)
+			end
+			ChoGGi.ComFuncs.DeleteObject(context)
+			ObjModified(context)
+		end,
+	})
 
 	--
 	xtemplate = XTemplates.ipSinkhole[1]
 
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Spawn", true)
-	table.insert(xtemplate, 2,
-		PlaceObj("XTemplateTemplate", {
-			"Id" , "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Spawn",
-			"ChoGGi_Template_BuildPhilosopherStonesSinkhole_Spawn", true,
-			"__context_of_kind", "Sinkhole",
-			"__template", "InfopanelButton",
-			"__condition", function()
-				return mod_EnableMod
-			end,
+	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
+		"Id" , "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Spawn",
+		"ChoGGi_Template_BuildPhilosopherStonesSinkhole_Spawn", true,
+		"__context_of_kind", "Sinkhole",
+		"__template", "InfopanelButton",
+		"__condition", function()
+			return mod_EnableMod
+		end,
 
-			"RolloverTitle", T(302535920012056, "Spawn"),
-			"RolloverText", T(302535920012057, "Spawn a Wisp."),
-			"Icon", "UI/Icons/ColonyControlCenter/wasterock_on.tga",
+		"RolloverTitle", T(302535920012056, "Spawn"),
+		"RolloverText", T(302535920012057, "Spawn a Wisp."),
+		"Icon", "UI/Icons/ColonyControlCenter/wasterock_on.tga",
 
-			"OnPress", function(self)
-				self.context:CheatSpawnFirefly()
-			end,
-		})
-	)
+		"OnPress", function(self)
+			self.context:CheatSpawnFirefly()
+		end,
+	})
 
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Remove", true)
-	table.insert(xtemplate, 3,
-		PlaceObj("XTemplateTemplate", {
-			"Id" , "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Remove",
-			"ChoGGi_Template_BuildPhilosopherStonesSinkhole_Remove", true,
-			"__context_of_kind", "Sinkhole",
-			"__template", "InfopanelButton",
-			"__condition", function()
-				return mod_EnableMod
-			end,
+	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
+		"Id" , "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Remove",
+		"ChoGGi_Template_BuildPhilosopherStonesSinkhole_Remove", true,
+		"__context_of_kind", "Sinkhole",
+		"__template", "InfopanelButton",
+		"__condition", function()
+			return mod_EnableMod
+		end,
 
-			"RolloverTitle", T(8940, "Wisp"),
-			"RolloverText", T(302535920011948, "Remove all wisps."),
-			"Icon", "UI/Icons/IPButtons/stop.tga",
+		"RolloverTitle", T(8940, "Wisp"),
+		"RolloverText", T(302535920011948, "Remove all wisps."),
+		"Icon", "UI/Icons/IPButtons/stop.tga",
 
-			"OnPress", function(self)
-				local context = self.context
+		"OnPress", function(self)
+			local context = self.context
 
-				GetRealm(context):MapDelete("map", "Firefly")
+			GetRealm(context):MapDelete("map", "Firefly")
 
-				ObjModified(context)
-			end,
-		})
-	)
+			ObjModified(context)
+		end,
+	})
 
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Demolish", true)
-	table.insert(xtemplate, 4,
-		PlaceObj("XTemplateTemplate", {
-			"Id" , "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Demolish",
-			"ChoGGi_Template_BuildPhilosopherStonesSinkhole_Demolish", true,
-			"__context_of_kind", "Sinkhole",
-			"__template", "InfopanelButton",
-			"__condition", function()
-				return mod_EnableMod
-			end,
+	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
+		"Id" , "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Demolish",
+		"ChoGGi_Template_BuildPhilosopherStonesSinkhole_Demolish", true,
+		"__context_of_kind", "Sinkhole",
+		"__template", "InfopanelButton",
+		"__condition", function()
+			return mod_EnableMod
+		end,
 
-			"RolloverTitle", T(3973, "Salvage"),
-			"RolloverText", T(7822, "Destroy this building."),
-			"Icon", "UI/Icons/IPButtons/salvage_1.tga",
+		"RolloverTitle", T(3973, "Salvage"),
+		"RolloverText", T(7822, "Destroy this building."),
+		"Icon", "UI/Icons/IPButtons/salvage_1.tga",
 
-			"OnPress", function(self)
-				self.context:ToggleDemolish()
-				ObjModified(self.context)
-			end,
-		})
-	)
+		"OnPress", function(self)
+			self.context:ToggleDemolish()
+			ObjModified(self.context)
+		end,
+	})
 
 end

@@ -1,20 +1,29 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library",
+			"version_major", 10,
+			"version_minor", 4,
+		}),
+	},
 	"title", "Real Time Clock",
-	"version", 8,
-	"version_major", 0,
-	"version_minor", 8,
-	"image", "Preview.png",
 	"id", "ChoGGi_RealTimeClock",
 	"steam_id", "1791902061",
 	"pops_any_uuid", "22f725e4-1137-47fe-b6de-f92b75fff6f3",
-	"author", "ChoGGi",
 	"lua_revision", 1007000, -- Picard
+	"version", 9,
+	"version_major", 0,
+	"version_minor", 9,
+	"image", "Preview.png",
+	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
 	"TagInterface", true,
-	"description", [[Shows a clock at the top-right with actual hours/minutes (only updated when game isn't paused).
+	"description", [[
+Shows a clock at the top-right with actual hours/minutes (only updated when game isn't paused).
 
 Mod Options:
 12/24 time format.
@@ -23,5 +32,6 @@ Text Styles.
 Text Background.
 Text Opacity.
 
-Requested by Khyinn.]],
+Requested by Khyinn.
+]],
 })

@@ -1,4 +1,7 @@
 v1.0
+Picard city time update.
+
+v1.0
 Re-fangled setting spec.
 
 v0.9

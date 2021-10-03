@@ -1,5 +1,5 @@
 -- See LICENSE for terms
 
 function OnMsg.ColonistBorn(colonist)
-	colonist.name = colonist:GetDisplayName() .. " " .. UICity.day
+	colonist.name = colonist:GetDisplayName() .. " " .. UIColony.day
 end

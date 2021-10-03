@@ -33,7 +33,7 @@ function Workplace:AddWorker(worker, shift)
 		-- and add every worker even if they have a spec, since we have the option for any spec
 		if not self.ChoGGi_SpecByExp[worker.handle] then
 			self.ChoGGi_SpecByExp[worker.handle] = {
-				started_on = UICity.day,
+				started_on = UIColony.day,
 				obj = worker,
 			}
 		end
@@ -82,7 +82,7 @@ local pairs, IsValid = pairs, IsValid
 -- for testing
 --~ function OnMsg.NewHour()
 --~ 	mod_SolsToTrain = 1
---~ 	local sol = UICity.day
+--~ 	local sol = UIColony.day
 
 function OnMsg.NewDay(sol) -- NewSol...
 	local workplaces = UICity.labels.Workplace or ""
@@ -128,6 +128,7 @@ function OnMsg.LoadGame()
 		return
 	end
 
+	local UIColony = UIColony
 	-- update any buildings with existing workers
 	local workplaces = UICity.labels.Workplace or ""
 	for i = 1, #workplaces do
@@ -140,7 +141,7 @@ function OnMsg.LoadGame()
 					local worker = workers[k]
 					if not workplace.ChoGGi_SpecByExp[worker.handle] then
 						workplace.ChoGGi_SpecByExp[worker.handle] = {
-							started_on = UICity.day,
+							started_on = UIColony.day,
 							obj = worker,
 						}
 					end

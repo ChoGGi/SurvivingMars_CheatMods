@@ -20,7 +20,7 @@ end
 
 local ChoOrig_MilestoneRestartThreads = MilestoneRestartThreads
 function MilestoneRestartThreads()
-	if not mod_EnableMod or UICity and UICity.day > 1 then
+	if not mod_EnableMod or UIColony and UIColony.day > 1 then
 		return ChoOrig_MilestoneRestartThreads()
 	else
 		CreateGameTimeThread(function()

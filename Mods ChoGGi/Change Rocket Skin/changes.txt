@@ -1,3 +1,6 @@
+v0.9
+Compatible with Coloured Depots.
+
 v0.8
 Added Picard landers.
 Fixed skin colour of trail blazer rocket.
