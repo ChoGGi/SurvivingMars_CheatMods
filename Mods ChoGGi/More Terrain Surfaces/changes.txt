@@ -1,2 +1,5 @@
+v0.3
+Fixed issue when loading mid-game (thanks requiemfang).
+
 v0.2
 Build menu issue when certain mods are installed.

@@ -7671,6 +7671,19 @@ function ChoGGi.ComFuncs.SetPosRandomBuildablePos(obj, city)
 	end))
 end
 
+function ChoGGi.ComFuncs.CycleObjs(list)
+	local count = #list
+	if count > 0 then
+		-- dunno why they localed it, instead of making it InfobarObj:CycleObjects()...
+		local idx = SelectedObj and table.find(list, SelectedObj) or 0
+		idx = (idx % count) + 1
+		local next_obj = list[idx]
+
+		ViewAndSelectObject(next_obj)
+--~ 		XDestroyRolloverWindow()
+	end
+	return count
+end
 --
 -- bugged
 --~ function ChoGGi.ComFuncs.SendDroneToCC(drone, new_hub)

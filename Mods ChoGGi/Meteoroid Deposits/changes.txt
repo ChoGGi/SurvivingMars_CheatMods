@@ -1,4 +1,7 @@
-v0.2
+v0.4
+Changed defaults to 1 for each type.
+
+v0.3
 Mod option to only land on surface.
 
 v0.2

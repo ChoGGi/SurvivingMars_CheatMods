@@ -336,7 +336,7 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 				print(Translate("<color ChoGGi_red>" .. msg .. "\n" .. tostring(log_error) .. "</color>"))
 			end
 			if log_error then
-				result_title[#result_title+1] = "\n" .. T(1000592, "Error")
+				result_title[#result_title+1] = "\n<color ChoGGi_red>" .. T(1000592, "Error") .. "</color>"
 				result_msg[#result_msg+1] = log_error
 			end
 		else
@@ -347,7 +347,7 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 				result_msg[#result_msg+1] = T{1000014, "Mod <ModLabel> was successfully uploaded!",
 					ModLabel = mod.title,
 				}
-				result_title[#result_title+1] = T(1000015, "Success")
+				result_title[#result_title+1] = Translate("<color ChoGGi_green>" .. T(1000015, "Success") .. "</color>")
 			else
 				result_title[#result_title+1] = mod.title
 			end
@@ -369,7 +369,7 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 				end
 			end
 
-			print(mod.title, ":<color ChoGGi_red>", Translate(id_str), "</color>:", item_id)
+			print(mod.title, ":<color ChoGGi_orange>", Translate(id_str), "</color>:", item_id)
 		end
 
 		if not test and not err then

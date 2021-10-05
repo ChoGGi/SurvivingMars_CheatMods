@@ -1,5 +1,12 @@
 -- See LICENSE for terms
 
+local IsKindOf = IsKindOf
+local SuspendPassEdits = SuspendPassEdits
+local ResumePassEdits = ResumePassEdits
+local PlaceObj = PlaceObj
+local GetMaterialProperties = GetMaterialProperties
+local GetStateMaterial = GetStateMaterial
+
 -- manual list of rocks, maybe we'll do a sub EntityData ?
 local rocks = {
 	{"Rocks_01", "Rocks_02", "Rocks_03", "Rocks_04"},
@@ -26,8 +33,12 @@ local r = const.ResourceScale
 
 local mod_LargeRocksCost
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_LargeRocksCost = CurrentModOptions:GetProperty("LargeRocksCost") * r
 
 	-- update rocks
@@ -48,20 +59,11 @@ local function ModOptions()
 	end
 
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
-
-local IsKindOf = IsKindOf
 -- we don't specifiy a PrefabMarkers to use, so we skip this to skip the error msg
 local ChoOrig_PlacePrefab = LevelPrefabController.PlacePrefab
 function LevelPrefabController:PlacePrefab(...)
@@ -76,12 +78,6 @@ DefineClass.ChoGGi_LevelPrefabBuilding = {
 	ip_template = "ipChoGGi_LevelPrefabBuilding",
 }
 
-local SuspendPassEdits = SuspendPassEdits
-local ResumePassEdits = ResumePassEdits
-local PlaceObj = PlaceObj
-
-local GetMaterialProperties = GetMaterialProperties
-local GetStateMaterial = GetStateMaterial
 
 local function AddToMenu(bt, cat, entity, desc, index)
 	local id = "ChoGGi_LandscapeRock_" .. entity
@@ -133,97 +129,99 @@ end
 
 
 function OnMsg.ClassesPostprocess()
-	-- If entities aren't loaded then wait it out
-	if not GetMaterialProperties(GetStateMaterial("Rocks_01", 0, 0), 0) or Presets.BuildMenuSubcategory.Default.LandscapeRockBuildingsRocks then
+	-- If entities aren't loaded abort
+	if not GetMaterialProperties(GetStateMaterial("Rocks_01", 0, 0), 0) then
 		return
 	end
 
 	local desc = T(622475429978, "A stylish composition made of native Martian rocks.")
 
-	PlaceObj("BuildMenuSubcategory", {
-		build_pos = 1,
-		category = "RockFormations_ChoGGi",
-		description = desc,
-		display_name = T(302535920011436, "Rocks"),
-		group = "Default",
-		icon = "UI/Icons/Buildings/numbers_01.tga",
-		category_name = "LandscapeRockBuildingsRocks",
-		id = "LandscapeRockBuildingsRocks"
-	})
-	PlaceObj("BuildMenuSubcategory", {
-		build_pos = 2,
-		category = "RockFormations_ChoGGi",
-		description = desc,
-		display_name = T(302535920011437, "Dark"),
-		group = "Default",
-		icon = "UI/Icons/Buildings/numbers_02.tga",
-		category_name = "LandscapeRockBuildingsDark",
-		id = "LandscapeRockBuildingsDark"
-	})
-	PlaceObj("BuildMenuSubcategory", {
-		build_pos = 3,
-		category = "RockFormations_ChoGGi",
-		description = desc,
-		display_name = T(302535920011438, "Light"),
-		group = "Default",
-		icon = "UI/Icons/Buildings/numbers_03.tga",
-		category_name = "LandscapeRockBuildingsLight",
-		id = "LandscapeRockBuildingsLight"
-	})
-	PlaceObj("BuildMenuSubcategory", {
-		build_pos = 4,
-		category = "RockFormations_ChoGGi",
-		description = T(544067769859, "Small stylish composition made of native Martian rocks."),
-		display_name = T(302535920011439, "Light Small"),
-		group = "Default",
-		icon = "UI/Icons/Buildings/numbers_04.tga",
-		category_name = "LandscapeRockBuildingsLightSmall",
-		id = "LandscapeRockBuildingsLightSmall"
-	})
-	PlaceObj("BuildMenuSubcategory", {
-		build_pos = 5,
-		category = "RockFormations_ChoGGi",
-		description = desc,
-		display_name = T(302535920011440, "Slate"),
-		group = "Default",
-		icon = "UI/Icons/Buildings/numbers_05.tga",
-		category_name = "LandscapeRockBuildingsSlate",
-		id = "LandscapeRockBuildingsSlate"
-	})
+	if not Presets.BuildMenuSubcategory.Default.LandscapeRockBuildingsRocks then
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 1,
+			category = "RockFormations_ChoGGi",
+			description = desc,
+			display_name = T(302535920011436, "Rocks"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_01.tga",
+			category_name = "LandscapeRockBuildingsRocks",
+			id = "LandscapeRockBuildingsRocks"
+		})
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 2,
+			category = "RockFormations_ChoGGi",
+			description = desc,
+			display_name = T(302535920011437, "Dark"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_02.tga",
+			category_name = "LandscapeRockBuildingsDark",
+			id = "LandscapeRockBuildingsDark"
+		})
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 3,
+			category = "RockFormations_ChoGGi",
+			description = desc,
+			display_name = T(302535920011438, "Light"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_03.tga",
+			category_name = "LandscapeRockBuildingsLight",
+			id = "LandscapeRockBuildingsLight"
+		})
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 4,
+			category = "RockFormations_ChoGGi",
+			description = T(544067769859, "Small stylish composition made of native Martian rocks."),
+			display_name = T(302535920011439, "Light Small"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_04.tga",
+			category_name = "LandscapeRockBuildingsLightSmall",
+			id = "LandscapeRockBuildingsLightSmall"
+		})
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 5,
+			category = "RockFormations_ChoGGi",
+			description = desc,
+			display_name = T(302535920011440, "Slate"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_05.tga",
+			category_name = "LandscapeRockBuildingsSlate",
+			id = "LandscapeRockBuildingsSlate"
+		})
 
-	PlaceObj("BuildMenuSubcategory", {
-		build_pos = 6,
-		category = "RockFormations_ChoGGi",
-		description = desc,
-		display_name = T(302535920011441, "Cliff"),
-		group = "Default",
-		icon = "UI/Icons/Buildings/numbers_06.tga",
-		category_name = "LandscapeRockBuildingsCliff",
-		id = "LandscapeRockBuildingsCliff"
-	})
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 6,
+			category = "RockFormations_ChoGGi",
+			description = desc,
+			display_name = T(302535920011441, "Cliff"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_06.tga",
+			category_name = "LandscapeRockBuildingsCliff",
+			id = "LandscapeRockBuildingsCliff"
+		})
 
-	PlaceObj("BuildMenuSubcategory", {
-		build_pos = 7,
-		category = "RockFormations_ChoGGi",
-		description = desc,
-		display_name = T(302535920011442, "Cliff Dark"),
-		group = "Default",
-		icon = "UI/Icons/Buildings/numbers_07.tga",
-		category_name = "LandscapeRockBuildingsCliffDark",
-		id = "LandscapeRockBuildingsCliffDark"
-	})
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 7,
+			category = "RockFormations_ChoGGi",
+			description = desc,
+			display_name = T(302535920011442, "Cliff Dark"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_07.tga",
+			category_name = "LandscapeRockBuildingsCliffDark",
+			id = "LandscapeRockBuildingsCliffDark"
+		})
 
-	PlaceObj("BuildMenuSubcategory", {
-		build_pos = 8,
-		category = "RockFormations_ChoGGi",
-		description = desc,
-		display_name = T(302535920011443, "Cliff Ice"),
-		group = "Default",
-		icon = "UI/Icons/Buildings/numbers_08.tga",
-		category_name = "LandscapeRockBuildingsCliffIce",
-		id = "LandscapeRockBuildingsCliffIce"
-	})
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 8,
+			category = "RockFormations_ChoGGi",
+			description = desc,
+			display_name = T(302535920011443, "Cliff Ice"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_08.tga",
+			category_name = "LandscapeRockBuildingsCliffIce",
+			id = "LandscapeRockBuildingsCliffIce"
+		})
 
+	end
 	desc = T(544067769859, "Small stylish composition made of native Martian rocks.")
 	local bt = BuildingTemplates
 	for i = 1, #rocks do

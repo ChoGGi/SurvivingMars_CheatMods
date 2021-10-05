@@ -42,7 +42,7 @@ function OnMsg.ClassesPostprocess()
 	local TerrainTextures = TerrainTextures
 
 	-- only do stuff when textures have been loaded
-	if not TerrainTextures[0].texture or Presets.BuildMenuSubcategory.Default.LandscapeTextureBuildingsTerra then
+	if not TerrainTextures[0].texture then
 		return
 	end
 
@@ -57,67 +57,69 @@ function OnMsg.ClassesPostprocess()
 
 	local cs = T(12400, "Change Surface")
 	local desc = T(12445, "Mark the top layer of a surface to be rearranged by Drones. The marked ground will gradually change towards the desired texture.<if(has_dlc('armstrong'))><newline><newline><em>Degrades local Soil Quality.</em></if>")
+	if not Presets.BuildMenuSubcategory.Default.LandscapeTextureBuildingsTerra then
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 1,
+			category = "LandscapeTextures_ChoGGi",
+			description = desc,
+			display_name = cs .. " " .. T(302535920011447, "Terra"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_01.tga",
+			category_name = "LandscapeTextureBuildingsTerra",
+			id = "LandscapeTextureBuildingsTerra"
+		})
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 2,
+			category = "LandscapeTextures_ChoGGi",
+			description = desc,
+			display_name = cs .. " " .. T(302535920011448, "Sand"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_02.tga",
+			category_name = "LandscapeTextureBuildingsSand",
+			id = "LandscapeTextureBuildingsSand"
+		})
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 3,
+			category = "LandscapeTextures_ChoGGi",
+			description = desc,
+			display_name = cs .. " " .. T(302535920011449, "Chaos"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_03.tga",
+			category_name = "LandscapeTextureBuildingsChaos",
+			id = "LandscapeTextureBuildingsChaos"
+		})
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 4,
+			category = "LandscapeTextures_ChoGGi",
+			description = desc,
+			display_name = cs .. " " .. T(302535920011450, "Rock"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_04.tga",
+			category_name = "LandscapeTextureBuildingsRock",
+			id = "LandscapeTextureBuildingsRock"
+		})
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 5,
+			category = "LandscapeTextures_ChoGGi",
+			description = desc,
+			display_name = cs .. " " .. T(302535920011451, "Misc"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_05.tga",
+			category_name = "LandscapeTextureBuildingsMisc",
+			id = "LandscapeTextureBuildingsMisc"
+		})
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 6,
+			category = "LandscapeTextures_ChoGGi",
+			description = desc,
+			display_name = cs .. " " .. T(302535920011452, "Prefab"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_08.tga",
+			category_name = "LandscapeTextureBuildingsPrefab",
+			id = "LandscapeTextureBuildingsPrefab"
+		})
+	end
 
-	PlaceObj("BuildMenuSubcategory", {
-		build_pos = 1,
-		category = "LandscapeTextures_ChoGGi",
-		description = desc,
-		display_name = cs .. " " .. T(302535920011447, "Terra"),
-		group = "Default",
-		icon = "UI/Icons/Buildings/numbers_01.tga",
-		category_name = "LandscapeTextureBuildingsTerra",
-		id = "LandscapeTextureBuildingsTerra"
-	})
-	PlaceObj("BuildMenuSubcategory", {
-		build_pos = 2,
-		category = "LandscapeTextures_ChoGGi",
-		description = desc,
-		display_name = cs .. " " .. T(302535920011448, "Sand"),
-		group = "Default",
-		icon = "UI/Icons/Buildings/numbers_02.tga",
-		category_name = "LandscapeTextureBuildingsSand",
-		id = "LandscapeTextureBuildingsSand"
-	})
-	PlaceObj("BuildMenuSubcategory", {
-		build_pos = 3,
-		category = "LandscapeTextures_ChoGGi",
-		description = desc,
-		display_name = cs .. " " .. T(302535920011449, "Chaos"),
-		group = "Default",
-		icon = "UI/Icons/Buildings/numbers_03.tga",
-		category_name = "LandscapeTextureBuildingsChaos",
-		id = "LandscapeTextureBuildingsChaos"
-	})
-	PlaceObj("BuildMenuSubcategory", {
-		build_pos = 4,
-		category = "LandscapeTextures_ChoGGi",
-		description = desc,
-		display_name = cs .. " " .. T(302535920011450, "Rock"),
-		group = "Default",
-		icon = "UI/Icons/Buildings/numbers_04.tga",
-		category_name = "LandscapeTextureBuildingsRock",
-		id = "LandscapeTextureBuildingsRock"
-	})
-	PlaceObj("BuildMenuSubcategory", {
-		build_pos = 5,
-		category = "LandscapeTextures_ChoGGi",
-		description = desc,
-		display_name = cs .. " " .. T(302535920011451, "Misc"),
-		group = "Default",
-		icon = "UI/Icons/Buildings/numbers_05.tga",
-		category_name = "LandscapeTextureBuildingsMisc",
-		id = "LandscapeTextureBuildingsMisc"
-	})
-	PlaceObj("BuildMenuSubcategory", {
-		build_pos = 6,
-		category = "LandscapeTextures_ChoGGi",
-		description = desc,
-		display_name = cs .. " " .. T(302535920011452, "Prefab"),
-		group = "Default",
-		icon = "UI/Icons/Buildings/numbers_08.tga",
-		category_name = "LandscapeTextureBuildingsPrefab",
-		id = "LandscapeTextureBuildingsPrefab"
-	})
 
 	local lookup = {
 		Terr = "LandscapeTextureBuildingsTerra",

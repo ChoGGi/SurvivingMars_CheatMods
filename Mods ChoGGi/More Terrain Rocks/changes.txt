@@ -1,3 +1,6 @@
+v0.5
+Fixed issue when loading mid-game (thanks requiemfang).
+
 v0.4
 Evans update.
 

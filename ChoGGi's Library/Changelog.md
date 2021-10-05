@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v10.6 (Unreleased)
+- Fixed "attempt to index a nil value (field 'def') (42)"
 
 ## v10.5 (03 Oct 2021)
 - Re-fangled how specs are set.

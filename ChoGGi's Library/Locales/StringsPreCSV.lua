@@ -1,7 +1,7 @@
 do !Skipped Line! [[BLANKS]]
-!Skipped Line! red: <color ChoGGi_red>%s</color>
-!Skipped Line! green: <green>%s</green>
-!Skipped Line! yellow: <yellow>%s</yellow>
+!Skipped Line! <color ChoGGi_red>%s</color>
+!Skipped Line! <color ChoGGi_green>%s</color>
+!Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
 302535920001258, ""
 302535920001259, ""

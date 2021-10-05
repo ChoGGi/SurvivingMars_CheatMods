@@ -163,7 +163,7 @@ function OnMsg.ClassesPostprocess()
 		"Icon", "UI/Icons/ColonyControlCenter/wasterock_on.tga",
 
 		"OnPress", function(self)
-			self.context:CheatSpawnFirefly()
+			self.context:TestSpawnFireflyAndGo()
 		end,
 	})
 

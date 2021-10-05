@@ -26,7 +26,7 @@ function OnMsg.ApplyModOptions(id)
 end
 
 local ChoOrig_ViewObjectMars = ViewObjectMars
-local fake_ViewObjectMars = function(...)
+local function ChoFake_ViewObjectMars(...)
 --~ 	if not mod_EnableMod or IsCtrlPressed() or IsGamepadButtonPressed("RightThumbClick") then
 	if not mod_EnableMod or IsCtrlPressed()
 		-- xbox (maybe not thumb?)
@@ -37,7 +37,7 @@ local fake_ViewObjectMars = function(...)
 end
 
 local function Override(func, ...)
-	ViewObjectMars = fake_ViewObjectMars
+	ViewObjectMars = ChoFake_ViewObjectMars
 	func(...)
 	ViewObjectMars = ChoOrig_ViewObjectMars
 end

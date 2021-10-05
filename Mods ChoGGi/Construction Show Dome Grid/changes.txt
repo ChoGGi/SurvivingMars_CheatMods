@@ -1,3 +1,6 @@
+v0.8
+Nothing...
+
 v0.7
 Mod option to change colour of hexes.
 
