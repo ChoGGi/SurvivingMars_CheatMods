@@ -4,7 +4,7 @@ local table = table
 local type = type
 local T = T
 
-function StatsChange:GetChoGGi_EffectiveComfortIncrease()
+function StatsChangeBase:GetChoGGi_EffectiveComfortIncrease()
 	return self.comfort_increase
 end
 

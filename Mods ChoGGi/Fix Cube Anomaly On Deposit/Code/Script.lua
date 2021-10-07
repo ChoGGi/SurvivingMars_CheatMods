@@ -1,9 +1,12 @@
 -- See LICENSE for terms
 
+local GetRandomPassableAround = GetRandomPassableAround
+
 local function CheckObjs(obj)
 	-- check if there's a deposit below it
 	local pos = obj:GetPos()
 	local objs = GetRealm(obj):MapGet(pos, 100)
+	local UICity = UICity
 	for i = 1, #objs do
 		-- found one
 		if objs[i]:IsKindOf("SubsurfaceDeposit") then

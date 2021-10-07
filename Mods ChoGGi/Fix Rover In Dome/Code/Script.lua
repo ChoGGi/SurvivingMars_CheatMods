@@ -9,10 +9,9 @@ local box = box
 -- end to end for the diamond dome (plus some extra)
 local largest = 30000
 
-
 local function MoveRovers()
 	-- no point in checking if domes have been opened
-	if not mod_EnableMod or GetOpenAirBuildings(ActiveMapID) then
+	if not mod_EnableMod or GetOpenAirBuildings(MainCity.map_id) then
 		return
 	end
 
@@ -29,9 +28,14 @@ local function MoveRovers()
 	end
 
 end
+OnMsg.CityStart = MoveRovers
+OnMsg.LoadGame = MoveRovers
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 
 	if not UICity then
@@ -40,16 +44,8 @@ local function ModOptions()
 
 	MoveRovers()
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-OnMsg.CityStart = MoveRovers
-OnMsg.LoadGame = MoveRovers

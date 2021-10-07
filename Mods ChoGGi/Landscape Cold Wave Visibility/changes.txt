@@ -1,3 +1,6 @@
+v0.4
+Fixed issue with LandscapeConstructionSite (thanks rondogboy).
+
 v0.3
 Evans update.
 

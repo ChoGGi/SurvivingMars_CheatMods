@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1829688193",
 	"pops_any_uuid", "050f06ea-99ba-4697-b1dd-a514eef86da5",
 	"lua_revision", 1007000, -- Picard
-	"version", 4,
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 5,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
@@ -15,7 +15,8 @@ return PlaceObj("ModDef", {
 	"TagGameplay", true,
 	"TagOther", true,
 	"has_options", true,
-	"description", [[Checks on load (or when mod options are applied) for rovers stuck in domes (not open air ones).
+	"description", [[
+Checks on load (or when mod options are applied) for rovers stuck in domes (not open air ones).
 
 Includes mod option to disable fix.
 ]],

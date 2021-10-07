@@ -1,1 +1,2 @@
 v0.2
+Error when selecting a safari (thanks Deadly_Shadow).

@@ -77,27 +77,30 @@ end
 
 GlobalVar("g_ChoGGi_ColdWaveLandscapeConstructionSite", false)
 
--- add remove lines depending on coldwaves
-local ChoOrig_BuildingUpdate = LandscapeConstructionSite.BuildingUpdate
-function LandscapeConstructionSite:BuildingUpdate(...)
-	local is_coldwave = g_ColdWave
-	local flags_enabled = g_ChoGGi_ColdWaveLandscapeConstructionSite
-	if is_coldwave and not (flags_enabled and self.ChoGGi_ColdLines) then
-		EnableMarker(self)
-		g_ChoGGi_ColdWaveLandscapeConstructionSite = true
-	elseif not is_coldwave and flags_enabled and self.ChoGGi_ColdLines then
-		DisableMarker(self)
-		g_ChoGGi_ColdWaveLandscapeConstructionSite = false
+function OnMsg.ClassesPostprocess()
+
+	-- add remove lines depending on coldwaves
+	local ChoOrig_BuildingUpdate = LandscapeConstructionSite.BuildingUpdate
+	function LandscapeConstructionSite:BuildingUpdate(...)
+		local is_coldwave = g_ColdWave
+		local flags_enabled = g_ChoGGi_ColdWaveLandscapeConstructionSite
+		if is_coldwave and not (flags_enabled and self.ChoGGi_ColdLines) then
+			EnableMarker(self)
+			g_ChoGGi_ColdWaveLandscapeConstructionSite = true
+		elseif not is_coldwave and flags_enabled and self.ChoGGi_ColdLines then
+			DisableMarker(self)
+			g_ChoGGi_ColdWaveLandscapeConstructionSite = false
+		end
+		return ChoOrig_BuildingUpdate(self, ...)
 	end
-	return ChoOrig_BuildingUpdate(self, ...)
-end
 
-local ChoOrig_Done = LandscapeConstructionSite.Done
-function LandscapeConstructionSite:Done(...)
-	DisableMarker(self)
-	return ChoOrig_Done(self, ...)
-end
+	local ChoOrig_Done = LandscapeConstructionSite.Done
+	function LandscapeConstructionSite:Done(...)
+		DisableMarker(self)
+		return ChoOrig_Done(self, ...)
+	end
 
+end
 -- make sure there's no markers left around
 function OnMsg.SaveGame()
 	if g_ColdWave then

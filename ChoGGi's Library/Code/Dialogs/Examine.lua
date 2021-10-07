@@ -73,6 +73,7 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local Translate = ChoGGi.ComFuncs.Translate
 local IsObjlist = ChoGGi.ComFuncs.IsObjlist
 local SetWinObjectVis = ChoGGi.ComFuncs.SetWinObjectVis
+local RetMapType = ChoGGi.ComFuncs.RetMapType
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
 local Strings = ChoGGi.Strings
@@ -2707,7 +2708,7 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 		if IsValid(obj) and obj.GetVisualPos then
 			return self:HyperLink(obj, Examine_ConvertValueToInfo)
 				.. RetName(obj) .. self.hyperlink_end .. "@"
-				.. self:ConvertValueToInfo(obj:GetVisualPos())
+				.. self:ConvertValueToInfo(obj:GetVisualPos()) .. " " .. RetMapType(obj.city)
 		else
 			local len = #obj
 			local obj_metatable = getmetatable(obj)
@@ -3139,7 +3140,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				})
 			end)
 			.. obj.class .. self.hyperlink_end .. "@"
-			.. self:ConvertValueToInfo(obj:GetVisualPos()) .. "--"
+			.. self:ConvertValueToInfo(obj:GetVisualPos()) .. " " .. RetMapType(obj.city) .. " --"
 		)
 		-- add the particle name
 		if obj:IsKindOf("ParSystem") then

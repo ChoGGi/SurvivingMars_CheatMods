@@ -7636,8 +7636,8 @@ function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
 	ChoGGi.ComFuncs.OpenInExamineDlg(textures, nil, Strings[302535920001181--[[Used Terrain Textures]]])
 end
 
-function ChoGGi.ComFuncs.RetMapType()
-	local map_id = UICity.map_id
+function ChoGGi.ComFuncs.RetMapType(city)
+	local map_id = (city or UICity).map_id
 
 	if map_id == UIColony.underground_map_id then
 		return "underground"

@@ -1,3 +1,6 @@
+v0.5
+Log spam.
+
 v0.4
 Changed around code, so it should work better...
 
