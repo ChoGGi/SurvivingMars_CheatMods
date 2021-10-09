@@ -47,34 +47,36 @@ local function DisasterTriggerMeteor(pos, spawn_type)
 			break_count = break_count + 1
 		end
 
-		meteor:SetScale(500)
---~ 		ex(meteor)
+		if meteor then
+			meteor:SetScale(500)
+--~ 			ex(meteor)
 
-		-- wait for it to land
-		while IsValid(meteor) do
-			Sleep(100)
+			-- wait for it to land
+			while IsValid(meteor) do
+				Sleep(100)
+			end
+
+			local marker
+			if spawn_type == "Concrete" then
+				marker = PlaceObjectIn("TerrainDepositMarker", ActiveMapID)
+			else
+				marker = PlaceObjectIn("SubsurfaceDepositMarker", ActiveMapID)
+			end
+
+			marker.resource = spawn_type
+			marker:SetPos(meteor.dest)
+			marker.grade = table.rand(DepositGradesTable)
+--~ 			marker.max_amount = 15000 * const.ResourceScale
+			local counts = ranges[marker.grade]
+			marker.max_amount = Random(counts.from, counts.to)
+
+			marker.depth_layer = 1
+			marker.revealed = true
+			local deposit = marker:PlaceDeposit()
+			if deposit and deposit.PickVisibilityState then
+				deposit:PickVisibilityState()
+			end
 		end
-
-    local marker
-		if spawn_type == "Concrete" then
-			marker = PlaceObjectIn("TerrainDepositMarker", ActiveMapID)
-		else
-			marker = PlaceObjectIn("SubsurfaceDepositMarker", ActiveMapID)
-		end
-
-    marker.resource = spawn_type
-    marker:SetPos(meteor.dest)
-    marker.grade = table.rand(DepositGradesTable)
---~     marker.max_amount = 15000 * const.ResourceScale
-		local counts = ranges[marker.grade]
-    marker.max_amount = Random(counts.from, counts.to)
-
-    marker.depth_layer = 1
-    marker.revealed = true
-    local deposit = marker:PlaceDeposit()
-    if deposit and deposit.PickVisibilityState then
-      deposit:PickVisibilityState()
-    end
 
 	end)
 end
@@ -86,6 +88,8 @@ local mod_MetalsThreshold
 local mod_RareMetalsThreshold
 local mod_WaterThreshold
 local mod_ConcreteThreshold
+local mod_ExoticMinerals
+local mod_ExoticMineralsThreshold
 
 
 local function ModOptions(id)
@@ -101,6 +105,8 @@ local function ModOptions(id)
 	mod_RareMetalsThreshold = CurrentModOptions:GetProperty("RareMetalsThreshold")
 	mod_WaterThreshold = CurrentModOptions:GetProperty("WaterThreshold")
 	mod_ConcreteThreshold = CurrentModOptions:GetProperty("ConcreteThreshold")
+	mod_ExoticMinerals = CurrentModOptions:GetProperty("ExoticMinerals")
+	mod_ExoticMineralsThreshold = CurrentModOptions:GetProperty("ExoticMineralsThreshold")
 end
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -129,6 +135,10 @@ function OnMsg.NewHour()
 		SubsurfaceDepositMetals = mod_MetalsThreshold,
 		SubsurfaceDepositPreciousMetals = mod_RareMetalsThreshold,
 	}
+	if mod_ExoticMinerals then
+		deposits.SubsurfaceDepositPreciousMinerals = mod_ExoticMineralsThreshold
+	end
+
 	local spawn_type = "Concrete"
 	for cls, option in pairs(deposits) do
 
@@ -143,6 +153,7 @@ function OnMsg.NewHour()
 			spawn_type = cls == "SubsurfaceDepositWater" and "Water"
 				or cls == "SubsurfaceDepositMetals" and "Metals"
 				or cls == "SubsurfaceDepositPreciousMetals" and "PreciousMetals"
+				or cls == "SubsurfaceDepositPreciousMinerals" and "PreciousMinerals"
 
 			count = realm:MapCount("map", cls) + realm:MapCount("map", "SubsurfaceDepositMarker", function(o)
 				return not o.is_placed and o.resource == spawn_type

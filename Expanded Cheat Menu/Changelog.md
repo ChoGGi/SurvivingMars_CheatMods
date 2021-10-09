@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v17.6 (Unreleased)
+### Changed:
+- Console>Examine: Changed UICity to Cities, and updated UICity.labels on map change (also added UIColony.city_labels.labels).
 
 ## v17.5 (03 Oct 2021)
 ### Added:

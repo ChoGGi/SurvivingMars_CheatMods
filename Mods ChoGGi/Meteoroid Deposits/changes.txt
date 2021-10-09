@@ -1,3 +1,6 @@
+v0.5
+Added mod option for exotic minerals.
+
 v0.4
 Changed defaults to 1 for each type.
 

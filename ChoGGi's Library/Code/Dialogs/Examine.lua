@@ -843,17 +843,22 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 				roll_text[c] = "\n"
 				c = c + 1
 				roll_text[c] = TableConcat(values)
-
 				c = c + 1
-				roll_text[c] = "\n\n<image " .. self.tooltip_info(obj, self) .. ">"
+				roll_text[c] = "\n\n<image "
 				c = c + 1
-				roll_text[c] = "\n\n"
+				roll_text[c] = self.tooltip_info(obj, self)
+				c = c + 1
+				roll_text[c] = ">\n\n"
 
 			elseif IsValid(obj) then
 				c = c + 1
-				roll_text[c] = "Realm: "
+				roll_text[c] = Translate(13659, "Map")
 				c = c + 1
-				roll_text[c] = obj.city.map_id
+				roll_text[c] = ": "
+				c = c + 1
+				roll_text[c] = obj.city and obj.city.map_id
+					or obj.GetMapID and obj:GetMapID()
+					or "unknown"
 				c = c + 1
 				roll_text[c] = "\n\n"
 
@@ -2708,7 +2713,8 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 		if IsValid(obj) and obj.GetVisualPos then
 			return self:HyperLink(obj, Examine_ConvertValueToInfo)
 				.. RetName(obj) .. self.hyperlink_end .. "@"
-				.. self:ConvertValueToInfo(obj:GetVisualPos()) .. " " .. RetMapType(obj.city)
+				.. self:ConvertValueToInfo(obj:GetVisualPos())
+				.. " <color ChoGGi_palegreen>" .. RetMapType(obj.city) .. "</color>"
 		else
 			local len = #obj
 			local obj_metatable = getmetatable(obj)
@@ -3140,7 +3146,8 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				})
 			end)
 			.. obj.class .. self.hyperlink_end .. "@"
-			.. self:ConvertValueToInfo(obj:GetVisualPos()) .. " " .. RetMapType(obj.city) .. " --"
+			.. self:ConvertValueToInfo(obj:GetVisualPos()) .. " "
+			.. " <color ChoGGi_palegreen>" .. RetMapType(obj.city) .. "</color> --"
 		)
 		-- add the particle name
 		if obj:IsKindOf("ParSystem") then

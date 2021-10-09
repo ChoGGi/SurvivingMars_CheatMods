@@ -452,7 +452,7 @@ do -- RetName
 		elseif obj_type == "table" then
 			-- cities
 			if IsKindOf(obj, "City") and obj.map_id ~= "" then
-				return "City: " .. obj.map_id
+				return Translate(13659, "Map") .. ": " .. obj.map_id
 			end
 
 			-- we check in order of less generic "names"

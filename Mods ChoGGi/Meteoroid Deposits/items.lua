@@ -51,4 +51,19 @@ return {
 		"MinValue", 1,
 		"MaxValue", 50,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "ExoticMinerals",
+		"DisplayName", T(608869515243, "Exotic Minerals"),
+		"Help", T(302535920012090, "Drop mineral deposits."),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionNumber", {
+		"name", "ExoticMineralsThreshold",
+		"DisplayName", T(302535920012091, "Exotic Minerals Threshold"),
+		"Help", T(302535920012092, "Threshold for a new Exotic Minerals deposit."),
+		"DefaultValue", 1,
+		"MinValue", 1,
+		"MaxValue", 50,
+	}),
+
 }

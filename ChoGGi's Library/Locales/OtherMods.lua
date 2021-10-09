@@ -1441,6 +1441,9 @@ Don't forget to send me your res and margin, so I can add them to the list."
 302535920012049, "Threshold for a new Concrete deposit."
 302535920012054, "Surface Only"
 302535920012055, "You only get deposits on the surface colony."
+302535920012090, "Drop mineral deposits."
+302535920012091, "Exotic Minerals Threshold"
+302535920012092, "Threshold for a new Exotic Minerals deposit."
 [[RC Driller Cheats]]
 302535920012062, "Allow Deep"
 302535920012063, "Can exploit deep deposits."
@@ -1473,9 +1476,6 @@ Don't forget to send me your res and margin, so I can add them to the list."
 
 
 [[UNUSED]]
-302535920012090,
-302535920012091,
-302535920012092,
 302535920012093,
 302535920012094,
 302535920012095,

@@ -125,7 +125,7 @@ ChoGGi.Defaults = {
 		"Presets",
 		"StoryBits",
 		"ThreadsRegister",
-		"UICity",
+		"Cities",
 	},
 	-- default off, but add entries to the settings file
 	SkipMissingMods = false,

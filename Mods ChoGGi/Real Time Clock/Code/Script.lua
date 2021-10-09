@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local tonumber = tonumber
 local floatfloor = floatfloor
 local GetDate = GetDate
 local T = T
@@ -8,13 +9,41 @@ local clock = {302535920011360, "<hour>:<min>"}
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 local Infobar
 
-local options
 local mod_ShowClock
 local mod_TimeFormat
 local mod_TextStyle
 local mod_Background
 local mod_TextOpacity
 --~ local mod_PosChoices = "Infobar"
+
+local function SetClock()
+	local strproc = GetDate():gmatch("%d+")
+--~ 	print(strproc())
+--~ 	print(strproc())
+--~ 	print(strproc())
+
+--~ 	local day = strproc()
+	-- to the ether with you
+	strproc()
+
+	clock.hour = strproc()
+	clock.min = strproc()
+--~ 	local sec = strproc()
+
+	if not mod_TimeFormat and tonumber(clock.hour) > 12 then
+		-- why 13-12 somehow equals 1.0 I haven't a clue...
+		clock.hour = floatfloor(clock.hour - 12)
+	end
+
+	if not IsValidXWin(Infobar) then
+		Infobar = Dialogs.Infobar
+	end
+
+	if Infobar and Infobar.idRealTimeClockArea then
+		Infobar.idRealTimeClock:SetText(T(clock))
+	end
+end
+
 
 local AddTime
 local RemoveTime
@@ -32,9 +61,13 @@ local style_lookup = {
 	"EncyclopediaArticleTitle",
 }
 
--- fired when settings are changed/init
-local function ModOptions()
-	options = CurrentModOptions
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	local options = CurrentModOptions
 	mod_ShowClock = options:GetProperty("ShowClock")
 	mod_TimeFormat = options:GetProperty("TimeFormat")
 	mod_TextStyle = options:GetProperty("TextStyle")
@@ -55,54 +88,25 @@ local function ModOptions()
 			Infobar.idRealTimeClock:SetBackground(mod_Background and -1825019475 or 0)
 			-- see through
 			Infobar.idRealTimeClockArea:SetTransparency(mod_TextOpacity)
+
+			SetClock()
 		end
 	else
 		RemoveTime()
 	end
-end
 
+end
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 function OnMsg.NewHour()
 	if not mod_ShowClock then
 		return
 	end
 
-	local strproc = GetDate():gmatch("%d+")
---~ 	print(strproc())
---~ 	print(strproc())
---~ 	print(strproc())
-
---~ 	local day = strproc()
-	-- to the ether with you
-	strproc()
-
-	clock.hour = strproc()
-	clock.min = strproc()
---~ 	local sec = strproc()
-
-	if not mod_TimeFormat and clock.hour > 12 then
-		-- why 13-12 somehow equals 1.0 I haven't a clue...
-		clock.hour = floatfloor(clock.hour - 12)
-	end
-
-	if not IsValidXWin(Infobar) then
-		Infobar = Dialogs.Infobar
-	end
-
-	if Infobar and Infobar.idRealTimeClockArea then
-		Infobar.idRealTimeClock:SetText(T(clock))
-	end
+	SetClock()
 end
 
 AddTime = function(dlg)
@@ -128,11 +132,12 @@ AddTime = function(dlg)
 		TextStyle = style_lookup[mod_TextStyle],
 		Background = mod_Background and -1825019475 or 0,
 	}, area)
-
 	area:SetTransparency(mod_TextOpacity)
 
 	-- attach to dialog
 	area:SetParent(dlg)
+
+	SetClock()
 end
 
 RemoveTime = function()

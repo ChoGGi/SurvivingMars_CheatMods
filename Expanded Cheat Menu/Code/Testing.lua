@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
--- go away... (mostly just benchmarking funcs, though there is the func i use for "Map Images Pack" to make them)
+-- go away... (mostly just benchmarking funcs, though there is the func i use for "Map Images Pack" to make them, probably should put it in ComFuncs)
 
 --~ ChoGGi.ComFuncs.ChoGGi.ComFuncs.TickStart("Tick.1")
 --~ ChoGGi.ComFuncs.ChoGGi.ComFuncs.TickEnd("Tick.1")
@@ -533,6 +533,24 @@ end)
 
 
 -- benchmarking stuff
+function ChoGGi.testing.ConcatingTables()
+	local TableConcat = ChoGGi.ComFuncs.TableConcat
+
+	ChoGGi.ComFuncs.TickStart("ConcatingTables.1.Tick")
+	for _ = 1, 50000 do
+		local str = "AAAA" .. "BBBB" .. "CCCCC" .. "DDDDD" .. "EEEEEE" .. "FFFFFFF" .. "GGGGGGGG" .. "EEEEEEEEE" .. "JJJJJJJJJJ"
+	end
+	ChoGGi.ComFuncs.TickEnd("ConcatingTables.1.Tick")
+
+	ChoGGi.ComFuncs.TickStart("ConcatingTables.2.Tick")
+	for _ = 1, 50000 do
+		local str = TableConcat{
+			"AAAA", "BBBB", "CCCCC", "DDDDD", "EEEEEE", "FFFFFFF", "GGGGGGGG", "EEEEEEEEE", "JJJJJJJJJJ"
+		}
+	end
+	ChoGGi.ComFuncs.TickEnd("ConcatingTables.2.Tick")
+end
+
 function ChoGGi.testing.NearestObjFromList()
 	if #(UICity.labels.Building or "") == 0 then
 		print("NearestObjFromList: NO BUILDINGS ABORT")

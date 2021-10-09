@@ -8,6 +8,8 @@ local print, type, rawget = print, type, rawget
 
 -- rebuild list of objects to examine when user changes settings
 OnMsg.ChoGGi_SettingsUpdated = ChoGGi.ConsoleFuncs.BuildExamineMenu
+-- update UICity list
+OnMsg.ChangeMapDone = ChoGGi.ConsoleFuncs.BuildExamineMenu
 
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
@@ -254,8 +256,8 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 		-- and done
 		ExamineMenuToggle_list[submenu].submenu = submenu_table
 	end
-	--
-	submenu = table.find(list, "UICity")
+	-- do this for UIColony.city_labels.labels as well
+	submenu = table.find(list, "Cities")
 	if submenu then
 		local labels_name = "UICity.labels"
 		table.insert(ExamineMenuToggle_list, submenu+1, {
@@ -305,7 +307,7 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 	AddSubmenu("g_Classes", nil, "ClassTemplates", "Attaches", "FXRules", "FXLists")
 	AddSubmenu("g_CObjectFuncs", nil, "hr", "pf", "terrain", "UIL", "DTM", "lpeg", "srp", "camera", "camera3p", "cameraMax", "cameraRTS", "string", "table", "package", "debug", "lfs")
 	AddSubmenu("StoryBits", Translate(948928900281--[[Story Bits]]), "StoryBitCategories", "StoryBitTriggersCombo", "g_StoryBitActive", "g_StoryBitStates", "g_StoryBitCategoryStates")
-	AddSubmenu("UICity", nil, "UIColony.tech_status", "BuildMenuPrerequisiteOverrides", "BuildingTechRequirements", "g_ApplicantPool", "g_CurrentMissionParams", "UICity.MapSectors", "RivalAIs", "TaskRequesters", "LRManagerInstance")
+	AddSubmenu("Cities", nil, "UICity", "MainCity", "UIColony.city_labels.labels", "UIColony.tech_status", "BuildMenuPrerequisiteOverrides", "BuildingTechRequirements", "g_ApplicantPool", "g_CurrentMissionParams", "UICity.MapSectors", "RivalAIs", "TaskRequesters", "LRManagerInstance")
 	AddSubmenu("Mods", nil, "ModsLoaded", "ModsList")
 
 	-- bonus addition at the top
