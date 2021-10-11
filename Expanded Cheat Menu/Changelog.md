@@ -3,6 +3,10 @@
 ## v17.6 (Unreleased)
 ### Changed:
 - Console>Examine: Changed UICity to Cities, and updated UICity.labels on map change (also added UIColony.city_labels.labels).
+- Moved Menu>Debug>Toggles>Override Condition Prereqs to Debug>Story Bits.
+
+### Removed:
+- Hide Set Commander/Sponsor Bonuses till I get around to fixing it.
 
 ## v17.5 (03 Oct 2021)
 ### Added:

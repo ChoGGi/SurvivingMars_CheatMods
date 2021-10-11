@@ -71,18 +71,18 @@ Actions[c] = {ActionName = Strings[302535920000712--[[Set Sponsor]]],
 	ActionSortKey = "21",
 }
 
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000714--[[Set Bonuses Sponsor]]],
-	ActionMenubar = "ECM.ECM.Mission",
-	ActionId = ".Set Bonuses Sponsor",
-	ActionIcon = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
-	RolloverText = Strings[302535920000715--[[Applies the good effects only (no drawbacks).
+--~ c = c + 1
+--~ Actions[c] = {ActionName = Strings[302535920000714--[[Set Bonuses Sponsor]]],
+--~ 	ActionMenubar = "ECM.ECM.Mission",
+--~ 	ActionId = ".Set Bonuses Sponsor",
+--~ 	ActionIcon = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
+--~ 	RolloverText = Strings[302535920000715--[[Applies the good effects only (no drawbacks).
 
-(if value already exists; set to larger amount).
-restart to set disabled.]]],
-	OnAction = ChoGGi.MenuFuncs.SetSponsorBonus,
-	ActionSortKey = "22",
-}
+--~ (if value already exists; set to larger amount).
+--~ restart to set disabled.]]],
+--~ 	OnAction = ChoGGi.MenuFuncs.SetSponsorBonus,
+--~ 	ActionSortKey = "22",
+--~ }
 
 c = c + 1
 Actions[c] = {ActionName = Strings[302535920000716--[[Set Commander]]],
@@ -99,18 +99,18 @@ Actions[c] = {ActionName = Strings[302535920000716--[[Set Commander]]],
 	ActionSortKey = "23",
 }
 
-c = c + 1
-Actions[c] = {ActionName = Strings[302535920000718--[[Set Bonuses Commander]]],
-	ActionMenubar = "ECM.ECM.Mission",
-	ActionId = ".Set Bonuses Commander",
-	ActionIcon = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
-	RolloverText = Strings[302535920000715--[[Applies the good effects only (no drawbacks).
+--~ c = c + 1
+--~ Actions[c] = {ActionName = Strings[302535920000718--[[Set Bonuses Commander]]],
+--~ 	ActionMenubar = "ECM.ECM.Mission",
+--~ 	ActionId = ".Set Bonuses Commander",
+--~ 	ActionIcon = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
+--~ 	RolloverText = Strings[302535920000715--[[Applies the good effects only (no drawbacks).
 
-(if value already exists; set to larger amount).
-restart to set disabled.]]],
-	OnAction = ChoGGi.MenuFuncs.SetCommanderBonus,
-	ActionSortKey = "24",
-}
+--~ (if value already exists; set to larger amount).
+--~ restart to set disabled.]]],
+--~ 	OnAction = ChoGGi.MenuFuncs.SetCommanderBonus,
+--~ 	ActionSortKey = "24",
+--~ }
 
 c = c + 1
 Actions[c] = {ActionName = Translate(8800--[[Game Rules]]),

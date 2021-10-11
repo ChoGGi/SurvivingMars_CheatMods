@@ -2652,6 +2652,7 @@ local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
 
 local function MapGet_ChoGGi(label, area, ...)
 	local objs = UICity.labels[label] or {}
+--~ 	local objs = UIColony.city_labels.labels[label] or {}
 	if #objs == 0 then
 		local g_cls = g_Classes[label]
 		-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything* (think gary oldman in professional)
@@ -2664,6 +2665,15 @@ local function MapGet_ChoGGi(label, area, ...)
 	return objs
 end
 ChoGGi.ComFuncs.MapGet = MapGet_ChoGGi
+-- just the "fix" no labels
+function ChoGGi.ComFuncs.MapGet_fixed(area, class, ...)
+	local g_cls = g_Classes[class]
+	-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything* (think gary oldman in professional)
+	if g_cls and g_cls:IsKindOf("CObject") then
+		return MapGet(area, class, ...)
+	end
+	return {}
+end
 
 do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRandom/ObjectColourDefault/ChangeObjectColour
 	local color_ass = {}
@@ -4304,6 +4314,7 @@ end -- do
 
 -- this only adds a parent, no ___BuildingUpdate/__Init or anything
 -- ChoGGi.ComFuncs.AddParentToClass(DontBuildHere, "InfopanelObj")
+--~ ChoGGi.ComFuncs.AddParentToClass(Electrolyzer, "LifeSupportConsumer")
 function ChoGGi.ComFuncs.AddParentToClass(class_obj, parent_name)
 	local p = class_obj.__parents
 	if p and not table.find(p, parent_name) then

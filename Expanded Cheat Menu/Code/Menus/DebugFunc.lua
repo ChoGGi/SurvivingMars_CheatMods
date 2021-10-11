@@ -11,6 +11,10 @@ local RandomColour = ChoGGi.ComFuncs.RandomColour
 local Strings = ChoGGi.Strings
 
 function ChoGGi.MenuFuncs.SkipMissingMods_Toggle()
+	if blacklist then
+		ChoGGi.ComFuncs.BlacklistMsg(Strings[302535920001205--[[Skip Missing Mods]]])
+	end
+
 	ChoGGi.UserSettings.SkipMissingMods = not ChoGGi.UserSettings.SkipMissingMods
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -21,6 +25,10 @@ function ChoGGi.MenuFuncs.SkipMissingMods_Toggle()
 end
 
 function ChoGGi.MenuFuncs.SkipMissingDLC_Toggle()
+	if blacklist then
+		ChoGGi.ComFuncs.BlacklistMsg(Strings[302535920001658--[[Skip Missing DLC]]])
+	end
+
 	ChoGGi.UserSettings.SkipMissingDLC = not ChoGGi.UserSettings.SkipMissingDLC
 
 	ChoGGi.SettingFuncs.WriteSettings()

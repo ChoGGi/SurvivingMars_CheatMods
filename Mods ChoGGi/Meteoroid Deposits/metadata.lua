@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2595725692",
 	"pops_any_uuid", "f732d166-c37c-4ad0-9998-c01e1f72e9c1",
 	"lua_revision", 1007000, -- Picard
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -24,7 +24,7 @@ return PlaceObj("ModDef", {
 	"TagGameplay", true,
 	"description", [[
 Once you get below the threshold (see mod options), a new deposit will come sailing in on a large rock (random pos or away from domes).
-Mod option to spawn exotic mineral deposits.
+Mod option to spawn exotic mineral deposits (if you disable option you need to restart to disable extractors in build menu).
 
 Threshold defaults to 1 for each type of deposit.
 ]],

@@ -91,6 +91,21 @@ local mod_ConcreteThreshold
 local mod_ExoticMinerals
 local mod_ExoticMineralsThreshold
 
+local function UnlockBuildings()
+	if not mod_EnableMod or not mod_ExoticMinerals or not g_AccessibleDlc.picard then
+		return
+	end
+
+	local bt = BuildingTemplates
+	bt.MicroGAutoExtractor.disabled_in_environment1 = ""
+	bt.MicroGAutoExtractor.disabled_in_environment2 = ""
+	bt.MicroGAutoExtractor.disabled_in_environment3 = ""
+	bt.MicroGAutoExtractor.disabled_in_environment4 = ""
+	bt.MicroGExtractor.disabled_in_environment1 = ""
+	bt.MicroGExtractor.disabled_in_environment2 = ""
+	bt.MicroGExtractor.disabled_in_environment3 = ""
+	bt.MicroGExtractor.disabled_in_environment4 = ""
+end
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -112,7 +127,6 @@ end
 OnMsg.ModsReloaded = ModOptions
 -- fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
-
 
 function OnMsg.NewHour()
 	if not mod_EnableMod then

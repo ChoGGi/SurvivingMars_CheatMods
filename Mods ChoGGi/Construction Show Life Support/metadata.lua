@@ -9,11 +9,11 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Construction Show Life Support",
 	"id", "ChoGGi_ConstructionShowLifeSupport",
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"author", "ChoGGi",
-	"image", "Preview.png",
+	"image", "Preview.jpg",
 	"steam_id", "2206032033",
 	"pops_any_uuid", "2e8a30ad-627c-4b37-985b-ad6f5ca3b43f",
 	"lua_revision", 1007000, -- Picard
@@ -21,7 +21,8 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Shows life-support hexes when you're in construction mode.
+	"description", [[
+Shows life-support hexes when you're in construction mode.
 Press Numpad 9 to toggle hexes anytime (rebind in game options).
 
 Mod Options:

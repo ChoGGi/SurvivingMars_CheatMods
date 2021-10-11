@@ -1,3 +1,6 @@
+v0.6
+Added extractors to build menu.
+
 v0.5
 Added mod option for exotic minerals.
 

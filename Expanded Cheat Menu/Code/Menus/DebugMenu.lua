@@ -522,20 +522,6 @@ Actions[c] = {ActionName = Strings[302535920001649--[[Toggle Interface]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000421--[[Override Condition Prereqs]]],
-	ActionMenubar = "ECM.Debug.Toggles",
-	ActionId = ".Override Condition Prereqs",
-	ActionIcon = "CommonAssets/UI/Menu/CountPointLights.tga",
-	RolloverText = function()
-		return SettingState(
-			ChoGGi.UserSettings.OverrideConditionPrereqs,
-			Strings[302535920000919--[[All storybit/negotiation/etc options are enabled.]]]
-		)
-	end,
-	OnAction = ChoGGi.MenuFuncs.OverrideConditionPrereqs_Toggle,
-}
-
-c = c + 1
 Actions[c] = {ActionName = Strings[302535920000049--[[Loading Screen Log]]],
 	ActionMenubar = "ECM.Debug.Toggles",
 	ActionId = ".Loading Screen Log",
@@ -765,7 +751,7 @@ Actions[c] = {ActionName = Translate(186760604064--[[Test]]) .. " " .. Translate
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000978--[["Skip Story Bits"]]],
+Actions[c] = {ActionName = Strings[302535920000978--[[Skip Story Bits]]],
 	ActionMenubar = "ECM.Debug.Story Bits",
 	ActionId = ".Skip Story Bits",
 	ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
@@ -777,3 +763,18 @@ Actions[c] = {ActionName = Strings[302535920000978--[["Skip Story Bits"]]],
 	end,
 	OnAction = ChoGGi.MenuFuncs.SkipStoryBitsDialogs_Toggle,
 }
+
+c = c + 1
+Actions[c] = {ActionName = Strings[302535920000421--[[Override Condition Prereqs]]],
+	ActionMenubar = "ECM.Debug.Story Bits",
+	ActionId = ".Override Condition Prereqs",
+	ActionIcon = "CommonAssets/UI/Menu/CountPointLights.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.OverrideConditionPrereqs,
+			Strings[302535920000919--[[All storybit/negotiation/etc options are enabled.]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.OverrideConditionPrereqs_Toggle,
+}
+

@@ -81,6 +81,13 @@ local function ShowGrids()
 	ShowHexRanges(UICity, "DroneHub")
 	-- function ShowHexRanges(city, class, cursor_obj, bind_func, single_obj)
 	ShowHexRanges(UICity, "RCRover", nil, "GetSelectionRadiusScale_OverrideChoGGi")
+	-- so far space race is only dlc that adds more commander rovers
+	if g_AvailableDlc.gagarin then
+		-- seekers/etc
+		ClassDescendantsList("RCRover", function(name)
+			ShowHexRanges(UICity, name, nil, "GetSelectionRadiusScale_OverrideChoGGi")
+		end)
+	end
 
 	-- edit grids
 	local g_HexRanges = g_HexRanges
@@ -125,6 +132,13 @@ local function HideGrids()
 	HideHexRanges(UICity, "SupplyRocket")
 	HideHexRanges(UICity, "DroneHub")
 	HideHexRanges(UICity, "RCRover")
+	-- so far space race is only dlc that adds more commander rovers
+	if g_AvailableDlc.gagarin then
+		-- seekers/etc
+		ClassDescendantsList("RCRover", function(name)
+			HideHexRanges(UICity, name)
+		end)
+	end
 	ResumePassEdits("ChoGGi.CursorBuilding.Done.Construction Show Drone Grid")
 	grids_visible = false
 end

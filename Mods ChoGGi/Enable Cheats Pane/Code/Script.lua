@@ -11,10 +11,10 @@ local function TogglePane()
 
 	ReopenSelectionXInfopanel()
 end
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
+OnMsg.CityStart = TogglePane
+OnMsg.LoadGame = TogglePane
 -- switch between different maps (happens before UICity)
-OnMsg.ChangeMapDone = StartupCode
+OnMsg.ChangeMapDone = TogglePane
 
 
 local function ModOptions(id)

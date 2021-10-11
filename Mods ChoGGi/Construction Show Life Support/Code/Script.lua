@@ -1,45 +1,42 @@
 -- See LICENSE for terms
 
-
--- local whatever globals we call
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local SetObjWaterMarkers = SetObjWaterMarkers
+local MapGet = MapGet
+local table = table
 
 local hexes_visible
-local temp_list
-local temp_list_c = 0
+local life_support
+local life_support_c = 0
 
-local options
 local mod_EnableMod
 local mod_DistFromCursor
 local mod_HexOpacity
 
--- fired when settings are changed/init
-local function ModOptions()
-	options = CurrentModOptions
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	local options = CurrentModOptions
 	mod_EnableMod = options:GetProperty("EnableMod")
 	mod_DistFromCursor = options:GetProperty("DistFromCursor") * 1000
 	mod_HexOpacity = options:GetProperty("HexOpacity")
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local function HideHexes(skip)
 	if not skip then
 		SuspendPassEdits("ChoGGi.CursorBuilding.Done.Construction Show Life Support")
 	end
 
-	for i = 1, temp_list_c do
-		SetObjWaterMarkers(temp_list[i], false)
+	for i = 1, life_support_c do
+		SetObjWaterMarkers(life_support[i], false)
 	end
 
 	if not skip then
@@ -52,15 +49,23 @@ local function ShowHexes()
 	SuspendPassEdits("ChoGGi.CursorBuilding.GameInit.Construction Show Life Support")
 
 	-- skip pipes and any buildings in domes
-	temp_list = MapGet("map", "LifeSupportGridObject", function(o)
+	life_support = MapGet("map", "LifeSupportGridObject", function(o)
 		if not o:IsKindOf("LifeSupportGridElement") and not o.parent_dome then
 			return true
 		end
 	end)
+	local temp_list = MapGet("map", "ConstructionSite", function(o)
+		if o.building_class_proto and not o.parent_dome
+			and o.building_class_proto:IsKindOf("LifeSupportGridObject")
+		then
+			return true
+		end
+	end)
+	table.append(life_support, temp_list)
 
-	temp_list_c = #temp_list
-	for i = 1, temp_list_c do
-		local building = temp_list[i]
+	life_support_c = #life_support
+	for i = 1, life_support_c do
+		local building = life_support[i]
 		-- show hexes
 		SetObjWaterMarkers(building, true)
 		-- set opacity
@@ -93,8 +98,8 @@ function CursorBuilding:UpdateShapeHexes(...)
 	SuspendPassEdits("ChoGGi.CursorBuilding.UpdateShapeHexes.Construction Show Life Support")
 
 	-- set visible
-	for i = 1, temp_list_c do
-		local building = temp_list[i]
+	for i = 1, life_support_c do
+		local building = life_support[i]
 		local visible = true
 		if range_limit and cursor_pos:Dist2D(building:GetPos()) > range_limit then
 			visible = false

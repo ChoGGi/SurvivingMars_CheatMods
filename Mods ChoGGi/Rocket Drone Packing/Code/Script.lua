@@ -78,6 +78,7 @@ function OnMsg.ClassesPostprocess()
 
 	AddTemplate(XTemplates.customSupplyRocket[1], template1, template2)
 	AddTemplate(XTemplates.customRocketExpedition[1], template1, template2)
+	AddTemplate(XTemplates.customLanderRocket[1], template1, template2)
 end
 
 -- don't mind me, just fixing a bug: https://github.com/HaemimontGames/SurvivingMars/blob/master/Lua/Buildings/Rocket.lua#L1698

@@ -1180,29 +1180,31 @@ function OnMsg.ClassesPostprocess()
 					LayoutMethod = "VList",
 				}, self.idChoGGi_ScrollArea)
 
-				-- move content list to scrollarea
-				self.idContent:SetParent(self.idChoGGi_ScrollBox)
-				-- add ref back
-				self.idContent = self.idChoGGi_ScrollBox.idContent
+				if self.idContent then
+					-- move content list to scrollarea
+					self.idContent:SetParent(self.idChoGGi_ScrollBox)
+					-- add ref back
+					self.idContent = self.idChoGGi_ScrollBox.idContent
 
---~ 				-- height of rightside hud button area
---~ 				local hud = Dialogs.HUD.idRight.box:sizey()
+	--~ 				-- height of rightside hud button area
+	--~ 				local hud = Dialogs.HUD.idRight.box:sizey()
 
---~ 				-- offset from the top
---~ 				local y_offset = self.Margins:miny()
+	--~ 				-- offset from the top
+	--~ 				local y_offset = self.Margins:miny()
 
---~ 				margin_offset = hud + y_offset + scrollbar_margin_top
-				self:RecalculateMargins()
+	--~ 				margin_offset = hud + y_offset + scrollbar_margin_top
+					self:RecalculateMargins()
 
-				-- add height limit for infopanel
-				local height = terminal.desktop.box:sizey()
-				local HUD = Dialogs.HUD
-				local bb = HUD.idMapSwitch
-				local offset = HUD.idRight.box:sizey() + (bb and bb.box:sizey() or 0)
-				local added_margin = bb and 48 or 101
---~ 				1029
-				self.idChoGGi_ScrollArea:SetMaxHeight(height - offset + added_margin)
-				self:SetMargins(zerobox)
+					-- add height limit for infopanel
+					local height = terminal.desktop.box:sizey()
+					local HUD = Dialogs.HUD
+					local bb = HUD.idMapSwitch
+					local offset = HUD.idRight.box:sizey() + (bb and bb.box:sizey() or 0)
+					local added_margin = bb and 48 or 101
+	--~ 				1029
+					self.idChoGGi_ScrollArea:SetMaxHeight(height - offset + added_margin)
+					self:SetMargins(zerobox)
+				end
 			end
 
 			-- add toggle to main buttons area
@@ -1224,11 +1226,11 @@ function OnMsg.ClassesPostprocess()
 				ToggleVisSection(title, toolbar, toggle, "InfopanelMainButVis")
 			end
 
-			local c = self.idContent
-			if not c then
-				c = self.idChoGGi_ScrollBox and self.idChoGGi_ScrollBox.idContent
+			local content = self.idContent
+			if not content then
+				content = self.idChoGGi_ScrollBox and self.idChoGGi_ScrollBox.idContent
 			end
-			if not c then
+			if not content then
 				return
 			end
 
@@ -1244,24 +1246,24 @@ function OnMsg.ClassesPostprocess()
 				end
 
 				-- Initially set to hidden
-				ToggleVis(idx, c, false, 0)
+				ToggleVis(idx, content, false, 0)
 
 				local visthread
 				self.OnMouseEnter = function()
 					DeleteThread(visthread)
-					ToggleVis(idx, c, true)
+					ToggleVis(idx, content, true)
 				end
 				self.OnMouseLeft = function()
 					visthread = CreateRealTimeThread(function()
 						Sleep(1000)
-						ToggleVis(idx, c, false, 0)
+						ToggleVis(idx, content, false, 0)
 					end)
 				end
 
 			end
 			--
 
-			local section = table.find_value(c, "Id", "idsectionCheats_ChoGGi")
+			local section = table.find_value(content, "Id", "idsectionCheats_ChoGGi")
 			if section then
 				section.idIcon.FXMouseIn = "ActionButtonHover"
 				section.idSectionTitle.MouseCursor = "UI/Cursors/Rollover.tga"
@@ -1281,7 +1283,7 @@ function OnMsg.ClassesPostprocess()
 				end
 			end
 
-			section = table.find_value(c, "Id", "idsectionResidence_ChoGGi")
+			section = table.find_value(content, "Id", "idsectionResidence_ChoGGi")
 			if section then
 				local toggle = true
 				if self.context.capacity > 100 then
@@ -1292,14 +1294,14 @@ function OnMsg.ClassesPostprocess()
 
 			-- add limit to shifts sections
 			local worker_count = 0
-			for i = 1, #c do
+			for i = 1, #content do
 
 				-- three shifts max
 				if worker_count > 2 then
 					break
 				end
 
-				local section = c[i]
+				local section = content[i]
 				local content = section.idContent and section.idContent[2]
 
 				-- enlarge worker section if over the max amount visible
