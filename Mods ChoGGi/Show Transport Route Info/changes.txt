@@ -1,3 +1,6 @@
+v0.6
+Picard update.
+
 v0.5
 Evans update.
 

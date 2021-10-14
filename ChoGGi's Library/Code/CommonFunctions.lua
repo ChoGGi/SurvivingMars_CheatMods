@@ -7695,6 +7695,28 @@ function ChoGGi.ComFuncs.CycleObjs(list)
 	end
 	return count
 end
+
+function ChoGGi.ComFuncs.GetUnitsSamePlace(city)
+	city = city or UICity
+	local places = {}
+	local objs = GetRealmByID(city.map_id):MapGet("map", "Unit")
+	for i = 1, #objs do
+		local obj = objs[i]
+		local pos = tostring(obj:GetVisualPos())
+		if places[pos] then
+			places[pos][#places[pos]+1] = obj
+		else
+			places[pos] = {obj}
+		end
+	end
+	local filtered = table.ifilter(places, function(list)
+		if #list == 1 then
+			return true
+		end
+	end)
+	ChoGGi.ComFuncs.OpenInExamineDlg(filtered)
+end
+
 --
 -- bugged
 --~ function ChoGGi.ComFuncs.SendDroneToCC(drone, new_hub)

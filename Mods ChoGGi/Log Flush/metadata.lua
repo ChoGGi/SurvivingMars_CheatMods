@@ -11,14 +11,15 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"image", "Preview.jpg",
+	"image", "Preview.png",
 	"has_options", true,
 	"TagTools", true,
 	"TagOther", true,
-	"description", [[This calls the FlushLogFile() function as soon as the game loads, as well as each new Sol.
+	"description", [[
+This calls the FlushLogFile() function as soon as the game loads, as well as each new Sol.
 Now if SM crashes a certain way (that doesn't create the log), you still have a log to look at (unless you're on Xbox).
 
-Also included are mod options to flush more often (probably shouldn't leave them on normally).
+Also included are mod options to flush more often.
 
 Logs can be found in the logs folder in your game profile:
 https://steamcommunity.com/sharedfiles/filedetails/?id=1777493789

@@ -6,21 +6,18 @@ local Sleep = Sleep
 local mod_Amount
 
 -- fired when settings are changed/init
-local function ModOptions()
-	mod_Amount = CurrentModOptions:GetProperty("Amount") * const.ResourceScale
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
 		return
 	end
 
-	ModOptions()
+	mod_Amount = CurrentModOptions:GetProperty("Amount") * const.ResourceScale
 end
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local ChoOrig_RCTransport_TransportRouteLoad = RCTransport.TransportRouteLoad
 function RCTransport:TransportRouteLoad(...)

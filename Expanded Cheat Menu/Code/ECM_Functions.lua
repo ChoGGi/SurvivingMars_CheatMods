@@ -344,7 +344,7 @@ do -- DumpTableFunc
 	end
 end --do
 
--- write logs funcs
+-- write logs funcs (removed in 14.6)
 do -- WriteLogs_Toggle
 	local Dump = ChoGGi.ComFuncs.Dump
 	local newline = ChoGGi.newline

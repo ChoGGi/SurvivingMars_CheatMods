@@ -3,24 +3,19 @@
 local mod_EnableText
 local mod_EnableIcon
 
--- fired when settings are changed/init
-local function ModOptions()
-	mod_EnableText = CurrentModOptions:GetProperty("EnableText")
-	mod_EnableIcon = CurrentModOptions:GetProperty("EnableIcon")
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
 		return
 	end
 
-	ModOptions()
+	mod_EnableText = CurrentModOptions:GetProperty("EnableText")
+	mod_EnableIcon = CurrentModOptions:GetProperty("EnableIcon")
 end
-
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- local some globals
 local type = type
@@ -68,13 +63,15 @@ function OnMsg.SelectionAdded(obj)
 
 	local route = obj.transport_route
 	-- just in case
-	if not (IsPoint(route.from) and IsPoint(route.to)) then
+	if not IsPoint(route.from) or not IsPoint(route.to) then
 		return
 	end
 
+	local terrain = GetTerrain(obj.city or UICity)
+
 	line = OPolyline:new()
 	-- FixConstructPos sets z to ground height
-	PolylineSetParabola(line, FixConstructPos(route.from), FixConstructPos(route.to))
+	PolylineSetParabola(line, FixConstructPos(terrain, route.from), FixConstructPos(terrain, route.to))
 	local avg = AveragePoint2D(line.vertices)
 	line:SetPos(avg)
 
@@ -105,7 +102,7 @@ function OnMsg.SelectionAdded(obj)
 		ctrl:SetText(name)
 
 		ctrl:AddDynamicPosModifier{id = "transport_info",
-			target = FixConstructPos(avg) + pt_1500,
+			target = FixConstructPos(terrain, avg) + pt_1500,
 		}
 	end
 

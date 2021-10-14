@@ -520,21 +520,6 @@ The number is a count of stored msgs, right-click to view the list."]]],
 			ChoGGi.SettingFuncs.WriteSettings()
 		end,
 	},
-	{name = Strings[302535920000483--[[Write Console Log]]],
-		hint = Strings[302535920000484--[[Write console log to %slogs/ConsoleLog.log (updated every 5 seconds).]]]:format(ConvertToOSPath("AppData/")),
-		class = "ChoGGi_XCheckButtonMenu",
-		value = "ChoGGi.UserSettings.WriteLogs",
-		clicked = function()
-			if ChoGGi.UserSettings.WriteLogs then
-				ChoGGi.UserSettings.WriteLogs = false
-				ChoGGi.ComFuncs.WriteLogs_Toggle(false)
-			else
-				ChoGGi.UserSettings.WriteLogs = true
-				ChoGGi.ComFuncs.WriteLogs_Toggle(true)
-			end
-			ChoGGi.SettingFuncs.WriteSettings()
-		end,
-	},
 	{name = Strings[302535920001576--[[Show Log When Console Active]]],
 		hint = Strings[302535920001575--[[Show console log text when console is active (needs %s enabled).]]]:format(Strings[302535920001112--[[Console Log]]]),
 		class = "ChoGGi_XCheckButtonMenu",
@@ -545,7 +530,7 @@ The number is a count of stored msgs, right-click to view the list."]]],
 		end,
 	},
 	{name = Strings[302535920001120--[[Console Window]]],
-		hint = Strings[302535920001133--[[Show the console log text in an independant window.]]],
+		hint = Strings[302535920001133--[[Show the console text in an independant window.]]],
 		class = "ChoGGi_XCheckButtonMenu",
 		value = "dlgChoGGi_DlgConsoleLogWin",
 		clicked = function()
