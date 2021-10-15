@@ -1,5 +1,0 @@
-v0.3
-Disabled when rev 1001586 or newer installed.
-
-v0.2
-Checks for Automated Tourism

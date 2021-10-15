@@ -216,6 +216,7 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
 		{text = Strings[302535920001130--[[Sexdecuple]]], value = 16, hint = hint_str:format(16)},
 		{text = Strings[302535920001131--[[Duotriguple]]], value = 32, hint = hint_str:format(32)},
 		{text = Strings[302535920001132--[[Quattuorsexaguple]]], value = 64, hint = hint_str:format(64)},
+		{text = Strings[302535920000483--[[Centuple]]], value = 100, hint = hint_str:format(100)},
 	}
 
 	local function CallBackFunc(choice)

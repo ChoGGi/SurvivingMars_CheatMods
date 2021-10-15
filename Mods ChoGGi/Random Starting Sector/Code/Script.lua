@@ -34,9 +34,9 @@ end
 
 local ChoOrig_InitialReveal = InitialReveal
 function InitialReveal(eligible, ...)
-	if mod_MinimumSurfaceDeposits == 0 and mod_MinimumSubsurfaceDeposits == 0 then
-		return ChoOrig_InitialReveal(eligible, ...)
-	end
+--~ 	if mod_MinimumSurfaceDeposits == 0 and mod_MinimumSubsurfaceDeposits == 0 then
+--~ 		return ChoOrig_InitialReveal(eligible, ...)
+--~ 	end
 
 	-- get any sectors with min amount of deposits
 	local found_mins = table.ifilter(eligible, function(_, deposit)

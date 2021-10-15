@@ -105,7 +105,20 @@ local function UnlockBuildings()
 	bt.MicroGExtractor.disabled_in_environment2 = ""
 	bt.MicroGExtractor.disabled_in_environment3 = ""
 	bt.MicroGExtractor.disabled_in_environment4 = ""
+	local ct = ClassTemplates.Building
+	ct.MicroGAutoExtractor.disabled_in_environment1 = ""
+	ct.MicroGAutoExtractor.disabled_in_environment2 = ""
+	ct.MicroGAutoExtractor.disabled_in_environment3 = ""
+	ct.MicroGAutoExtractor.disabled_in_environment4 = ""
+	ct.MicroGExtractor.disabled_in_environment1 = ""
+	ct.MicroGExtractor.disabled_in_environment2 = ""
+	ct.MicroGExtractor.disabled_in_environment3 = ""
+	ct.MicroGExtractor.disabled_in_environment4 = ""
 end
+OnMsg.CityStart = UnlockBuildings
+OnMsg.LoadGame = UnlockBuildings
+-- switch between different maps (happens before UICity)
+OnMsg.ChangeMapDone = UnlockBuildings
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -122,6 +135,13 @@ local function ModOptions(id)
 	mod_ConcreteThreshold = CurrentModOptions:GetProperty("ConcreteThreshold")
 	mod_ExoticMinerals = CurrentModOptions:GetProperty("ExoticMinerals")
 	mod_ExoticMineralsThreshold = CurrentModOptions:GetProperty("ExoticMineralsThreshold")
+
+	-- make sure we're in-game UIColony
+	if not UICity then
+		return
+	end
+
+	UnlockBuildings()
 end
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
