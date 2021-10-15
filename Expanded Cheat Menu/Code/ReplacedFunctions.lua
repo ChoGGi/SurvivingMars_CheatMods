@@ -328,7 +328,8 @@ function OnMsg.ClassesGenerate()
 		end
 	end -- do
 
-	-- using the CheatUpgrade func in the cheats pane with Silva's Modular Apartments == inf loop
+	-- using the CheatUpgrade func in the cheats pane with some mods == inf loop
+	-- InfoPaneCheats.lua
 	do -- Building:CheatUpgrade*()
 		local Building = Building
 		for i = 1, 3 do

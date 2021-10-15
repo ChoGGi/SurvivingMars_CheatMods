@@ -1,2 +1,5 @@
+v0.3
+inf loop with certain cheats.
+
 v0.2
 Whoops (thanks Daulken).

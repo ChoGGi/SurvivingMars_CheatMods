@@ -1,5 +1,15 @@
 -- See LICENSE for terms
 
+-- using the CheatUpgrade func in the cheats pane with some mods == inf loop
+local Building = Building
+for i = 1, 3 do
+	local name = "CheatUpgrade" .. i
+	local orig_func = Building[name]
+	Building[name] = function(...)
+		CreateRealTimeThread(orig_func, ...)
+	end
+end
+
 local mod_EnableMod
 
 local function TogglePane()

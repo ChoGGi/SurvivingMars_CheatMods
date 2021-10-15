@@ -1,1 +1,3 @@
 add open farms
+
+set growth time (add each as mod option?)

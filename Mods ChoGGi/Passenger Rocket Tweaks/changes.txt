@@ -1,3 +1,6 @@
+v1.5
+Fixed ages not showing up.
+
 v1.4
 Removed spec info (it's been added for awhile now by base game).
 

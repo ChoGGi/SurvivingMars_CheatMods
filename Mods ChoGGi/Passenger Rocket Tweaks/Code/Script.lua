@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local Translate = ChoGGi.ComFuncs.Translate
+
 local table = table
 local T = T
 local procall = procall
@@ -72,7 +74,8 @@ end
 local filter_table = {}
 local function GetMatchingColonistsCount(self, spec)
 	table.clear(filter_table)
-	filter_table[spec] = true
+	-- picard uses numbers instead of bool for for traits and TraitFilterColonist was updated for that
+	filter_table[spec] = 1
 
 	local colonists = self.approved_applicants
 	local count = 0
@@ -80,6 +83,7 @@ local function GetMatchingColonistsCount(self, spec)
 	local label = not not self.dome
 	for i = 1, #colonists do
 		local colonist = label and colonists[i] or colonists[i][1]
+
 		if TraitFilterColonist(filter_table, colonist.traits) > 0 then
 			count = count + 1
 		end
@@ -127,7 +131,7 @@ ToggleSpecInfo = function()
 			"Margins", box(55, 0, 0, 0),
 			"RolloverTemplate", "Rollover",
 			"RolloverTitle", T(11531, "Specialists"),
-			"RolloverText", T(302535920011132, [[Selected Applicants / Needed Specialists / Colony Amount]]),
+			"RolloverText", T(302535920011132, "Selected Applicants / Needed Specialists / Colony Amount"),
 		}, {
 			PlaceObj("XTemplateWindow", {
 				"__class", "XText",
@@ -402,8 +406,8 @@ end
 
 local function SafeChangeAge(self)
 	local descr = self.prop_meta.rollover.descr[1]
-	if type(descr.Age) == "string" and not descr.Age:find(": ", 1, true) then
-		descr.Age = descr.Age .. ": " .. self.prop_meta.applicant[1].age
+	if TGetID(descr.Age) > 0 and type(descr.Age) ~= "string" then
+		descr.Age = Translate(descr.Age .. ": " ..self.prop_meta.applicant[1].age)
 	end
 end
 
@@ -421,7 +425,7 @@ local function AddExtraInfo(xtemplate)
 
 	local orig = xtemplate.func
 	xtemplate.func = function(self, ...)
-		-- by safe I mean log spam instead of failing
+		-- by safe I mean log spam instead of failing on a bad apple
 		procall(SafeChangeAge, self)
 		return orig(self, ...)
 	end
