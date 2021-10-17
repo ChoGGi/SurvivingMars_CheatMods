@@ -1,6 +1,9 @@
 ## ECM Changelog
 
 ## v17.6 (Unreleased)
+### Fixed:
+- Terrain Flatten Toggle log spam (thanks Ski).
+
 ### Changed:
 - Console>Examine: Changed UICity to Cities, and updated UICity.labels on map change (also added UIColony.city_labels.labels).
 - Moved Menu>Debug>Toggles>Override Condition Prereqs to Debug>Story Bits.

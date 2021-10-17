@@ -838,7 +838,7 @@ do -- FlattenGround
 			visual_circle:SetColor(white)
 
 			local terrain = ActiveGameMap.terrain
-			local terrain_type_idx = GetTerrainTextureIndex("Grass_03")
+--~ 			local terrain_type_idx = GetTerrainTextureIndex("Grass_02")
 			are_we_flattening = CreateRealTimeThread(function()
 				-- thread gets deleted, but just in case
 				while are_we_flattening do
@@ -848,8 +848,9 @@ do -- FlattenGround
 					if square == true then
 						outer = radius / 2
 					end
-					terrain:SetHeightCircle(cursor, radius, outer or radius, flatten_height)
-					terrain:SetTypeCircle(cursor, radius, terrain_type_idx)
+
+					terrain:SetHeightCircle(cursor, radius, outer or radius, flatten_height, const.hsMin)
+--~ 					terrain:SetTypeCircle(cursor, radius, terrain_type_idx)
 					-- used to set terrain type (see above)
 					Sleep(10)
 				end
