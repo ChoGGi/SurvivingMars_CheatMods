@@ -2,10 +2,10 @@
 
 local mod_EnableMod
 
-local orig_SA_Exec_Exec = SA_Exec.Exec
+local ChoOrig_SA_Exec_Exec = SA_Exec.Exec
 function SA_Exec:Exec(sequence_player, ip, seq, ...)
 	if not mod_EnableMod then
-		return orig_SA_Exec_Exec(self, sequence_player, ip, seq, ...)
+		return ChoOrig_SA_Exec_Exec(self, sequence_player, ip, seq, ...)
 	end
 
 	if seq and seq[111] and seq[111].expression == "UICity.mystery.can_shoot_rovers = true" then
@@ -18,7 +18,7 @@ function SA_Exec:Exec(sequence_player, ip, seq, ...)
 		end
 	end
 
-	return orig_SA_Exec_Exec(self, sequence_player, ip, seq, ...)
+	return ChoOrig_SA_Exec_Exec(self, sequence_player, ip, seq, ...)
 end
 
 local function ModOptions(id)

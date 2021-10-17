@@ -106,6 +106,12 @@ local properties = {
 		"Help", T(302535920011876, "Start game with Subsurface Heaters unlocked."),
 		"DefaultValue", false,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "ColdAreaUnlockSubsurfaceHeaters",
+		"DisplayName", table.concat(T(12824, "Cold Area") .. ": " .. T(0000, "Unlock ") .. T(5294,"Subsurface Heaters")),
+		"Help", T(0000, "Subsurface Heaters can be built underground/asteroids."),
+		"DefaultValue", false,
+	}),
 
 }
 

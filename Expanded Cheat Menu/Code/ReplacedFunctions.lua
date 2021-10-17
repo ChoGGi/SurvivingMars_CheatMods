@@ -179,14 +179,36 @@ do -- non-class obj funcs
 	end
 
 	-- lets you load saved games that have dlc
-	SaveOrigFunc("IsDlcAvailable")
-	function IsDlcAvailable(dlc, ...)
+	do -- IsDlcAvailable/IsDlcRequired
+		local dlc_funcs = {
+			"IsDlcAvailable",
+--~ 			"IsDlcAccessible",
+			"IsDlcRequired",
+		}
+		for i = 1, #dlc_funcs do
+			local name = dlc_funcs[i]
+
+			SaveOrigFunc(name)
+			_G[name] = function(dlc, ...)
+				-- stuff added for future dlc is showing up and erroring out
+				if not dlc or dlc == "" then
+					return ChoGGi_OrigFuncs[name](dlc, ...)
+				end
+				-- returns true if the setting is true, or return the orig func
+				return UserSettings.SkipMissingDLC or ChoGGi_OrigFuncs[name](dlc, ...)
+			end
+		end
+	end -- do
+
+	-- lets you load saved games that have dlc
+	SaveOrigFunc("IsDlcRequired")
+	function IsDlcRequired(dlc, ...)
 		-- stuff added for future dlc is showing up and erroring out
 		if not dlc or dlc == "" then
-			return ChoGGi_OrigFuncs.IsDlcAvailable(dlc, ...)
+			return ChoGGi_OrigFuncs.IsDlcRequired(dlc, ...)
 		end
 		-- returns true if the setting is true, or return the orig func
-		return UserSettings.SkipMissingDLC or ChoGGi_OrigFuncs.IsDlcAvailable(dlc, ...)
+		return UserSettings.SkipMissingDLC or ChoGGi_OrigFuncs.IsDlcRequired(dlc, ...)
 	end
 
 	-- always able to show console
@@ -1076,7 +1098,9 @@ function OnMsg.ClassesPostprocess()
 		SaveOrigFunc("InfopanelDlg", "OnMouseEnter")
 		function InfopanelDlg:OnMouseEnter(...)
 			-- show scrollbar
-			if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate] then
+			if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate]
+				 and IsValidXWin(self.idChoGGi_Scrollbar_thumb)
+			then
 				self.idChoGGi_Scrollbar_thumb:SetVisible(true)
 			end
 
@@ -1086,7 +1110,9 @@ function OnMsg.ClassesPostprocess()
 		SaveOrigFunc("InfopanelDlg", "OnMouseLeft")
 		function InfopanelDlg:OnMouseLeft(...)
 			-- hide scrollbar
-			if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate] then
+			if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate]
+				 and IsValidXWin(self.idChoGGi_Scrollbar_thumb)
+			then
 				self.idChoGGi_Scrollbar_thumb:SetVisible(false)
 			end
 			-- no clue, it doesn't save and I can't be bothered to find out why

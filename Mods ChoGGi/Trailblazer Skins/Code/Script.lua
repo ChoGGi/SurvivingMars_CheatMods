@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local skins = {
+local trailblazer_skins = {
 	Drone = "Drone_Trailblazer",
 	RCRover = "Rover_Trailblazer",
 	RCTransport = "RoverTransport_Trailblazer",
@@ -8,11 +8,11 @@ local skins = {
 	SupplyRocket = "Rocket_Trailblazer",
 }
 
-g_TrailblazerSkins = skins
+g_TrailblazerSkins = trailblazer_skins
 
 function OnMsg.PopsOwnedProductsChanged()
 	CreateRealTimeThread(function()
 		Sleep(1000)
-		g_TrailblazerSkins = skins
+		g_TrailblazerSkins = trailblazer_skins
 	end)
 end

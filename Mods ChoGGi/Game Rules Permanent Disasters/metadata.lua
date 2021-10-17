@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2060296355",
 	"pops_any_uuid", "09c4df72-ad70-43c3-aa81-558431221377",
 	"lua_revision", 1007000, -- Picard
-	"version", 11,
+	"version", 12,
 	"version_major", 1,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -50,12 +50,5 @@ Mod Options:
 Twister Amount: Minimum amount of twisters on the map (max is 2 * amount).
 Twister Max Amount: If you want to set the max (0 to ignore).
 Electrostatic Dust Devils: Chance of electrostatic dust devil (drains drone batteries).
-
-
-
-
-This mod obsoletes two of my other mods:
-Game Rule Meteor Threat
-Game Rule Winter Wonderland
 ]],
 })

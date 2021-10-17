@@ -12,6 +12,67 @@ local IsObjInDome = IsObjInDome
 local SetState = g_CObjectFuncs.SetState
 local IsKindOf = IsKindOf
 
+function OnMsg.ConstructionSitePlaced(site, class_name)
+	if class_name ~= "DomeTeleporter" then
+		return
+	end
+
+	-- remove tunnel costs (thanks picard?)
+	CreateRealTimeThread(function()
+		WaitMsg("OnRender")
+
+		local tunnel = site.construction_group[1]
+		-- check for metals we remove as it'll send both teleporters to this msg
+		if tunnel.building_class == "Tunnel" and tunnel.construction_resources.Metals then
+			tunnel.construction_costs_at_start = {Concrete = 2000}
+			tunnel.construction_resources.Concrete:SetAmount(2000)
+			tunnel.construction_resources.Metals:SetAmount(0)
+			tunnel.construction_resources.Metals = nil
+			tunnel.construction_resources.MachineParts:SetAmount(0)
+			tunnel.construction_resources.MachineParts = nil
+		end
+	end)
+end
+
+-- build menu button
+function OnMsg.ClassesPostprocess()
+	if not BuildingTemplates.DomeTeleporter then
+		PlaceObj("BuildingTemplate", {
+			"Id", "DomeTeleporter",
+			"template_class", "DomeTeleporter",
+			"can_rotate_during_placement", true,
+
+			"construction_cost_Concrete", 2000,
+			"build_points", 1000,
+			"palette_color1", "mining_base",
+			"palette_color2", "life_base",
+			"palette_color3", "outside_base",
+
+			"electricity_consumption", 500,
+
+			"dome_required", true,
+			"display_name", T(302535920011080, "Dome Teleporter"),
+			"description", T(302535920011081, "It's a teleporter for your domes that acts like a passage."),
+			"build_category", "ChoGGi",
+			"Group", "ChoGGi",
+			"display_icon", CurrentModPath .. "UI/orbital_drop.png",
+			"encyclopedia_exclude", true,
+			"on_off_button", true,
+			"prio_button", true,
+			"entity", "RechargeStation",
+			"demolish_sinking", range(0, 0),
+
+			"construction_mode", "dome_teleporter_construction",
+			"ip_template", "ipBuilding",
+			"disabled_in_environment1", "",
+			"disabled_in_environment2", "",
+			"disabled_in_environment3", "",
+			"disabled_in_environment4", "",
+		})
+	end
+
+end
+
 local function RemoveTableItem(list, name, value)
 	local idx = table.find(list, name, value)
 	if idx then
@@ -21,46 +82,6 @@ local function RemoveTableItem(list, name, value)
 		end
 		table.remove(list, idx)
 	end
-end
-
--- build menu button
-function OnMsg.ClassesPostprocess()
-	if BuildingTemplates.DomeTeleporter then
-		return
-	end
-
-	PlaceObj("BuildingTemplate", {
-		"Id", "DomeTeleporter",
-		"template_class", "DomeTeleporter",
-		"can_rotate_during_placement", true,
-
-		"construction_cost_Concrete", 2000,
-		"build_points", 1000,
-		"palette_color1", "mining_base",
-		"palette_color2", "life_base",
-		"palette_color3", "outside_base",
-
-		"electricity_consumption", 500,
-
-		"dome_required", true,
-		"display_name", T(302535920011080, "Dome Teleporter"),
-		"description", T(302535920011081, "It's a teleporter for your domes that acts like a passage."),
-		"build_category", "ChoGGi",
-		"Group", "ChoGGi",
-		"display_icon", CurrentModPath .. "UI/orbital_drop.png",
-		"encyclopedia_exclude", true,
-		"on_off_button", true,
-		"prio_button", true,
-		"entity", "RechargeStation",
-		"demolish_sinking", range(0, 0),
-
-		"construction_mode", "dome_teleporter_construction",
-		"ip_template", "ipBuilding",
-		"disabled_in_environment1", "",
-		"disabled_in_environment2", "",
-		"disabled_in_environment3", "",
-		"disabled_in_environment4", "",
-	})
 end
 
 -- we fire our own modified GameInit, so we don't want the one from tunnel (not sure how else to remove it)
@@ -111,6 +132,7 @@ local function StartStopSpinner(obj, working)
 end
 
 function DomeTeleporter:GameInit()
+
 	RechargeStation.GameInit(self)
 	self.fx_actor_class = "RechargeStation"
 

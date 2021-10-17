@@ -1,3 +1,6 @@
+v1.4
+Picard update costs (thanks arrjik).
+
 v1.3
 Unlocked underground/asteroid limits.
 

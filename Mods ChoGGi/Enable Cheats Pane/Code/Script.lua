@@ -4,9 +4,9 @@
 local Building = Building
 for i = 1, 3 do
 	local name = "CheatUpgrade" .. i
-	local orig_func = Building[name]
+	local ChoOrig_func = Building[name]
 	Building[name] = function(...)
-		CreateRealTimeThread(orig_func, ...)
+		CreateRealTimeThread(ChoOrig_func, ...)
 	end
 end
 

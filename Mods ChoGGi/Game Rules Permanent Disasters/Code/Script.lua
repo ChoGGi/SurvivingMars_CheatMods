@@ -36,6 +36,7 @@ local mod_DustDevilsTwisterAmount
 local mod_DustDevilsTwisterMaxAmount
 local mod_DustDevilsElectrostatic
 local mod_ColdAreaGiveSubsurfaceHeaters
+local mod_ColdAreaUnlockSubsurfaceHeaters
 
 -- fired when settings are changed/init
 local function ModOptions()
@@ -54,6 +55,7 @@ local function ModOptions()
 	mod_DustDevilsTwisterMaxAmount = options:GetProperty("DustDevilsTwisterMaxAmount")
 	mod_DustDevilsElectrostatic = options:GetProperty("DustDevilsElectrostatic")
 	mod_ColdAreaGiveSubsurfaceHeaters = options:GetProperty("ColdAreaGiveSubsurfaceHeaters")
+	mod_ColdAreaUnlockSubsurfaceHeaters = options:GetProperty("ColdAreaUnlockSubsurfaceHeaters")
 end
 
 -- load default/saved settings
@@ -382,6 +384,13 @@ local function StartupCode()
 
 	if mod_MeteorsDefensiveTurrets then
 		GrantTech("DefenseTower")
+	end
+
+	if mod_ColdAreaUnlockSubsurfaceHeaters then
+		BuildingTemplates.SubsurfaceHeater.disabled_in_environment1 = ""
+		BuildingTemplates.SubsurfaceHeater.disabled_in_environment2 = ""
+		ClassTemplates.Building.SubsurfaceHeater.disabled_in_environment1 = ""
+		ClassTemplates.Building.SubsurfaceHeater.disabled_in_environment2 = ""
 	end
 end
 

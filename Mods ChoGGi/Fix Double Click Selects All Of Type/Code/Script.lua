@@ -2,10 +2,10 @@
 
 local mod_EnableMod
 
-local orig_OnMouseButtonDoubleClick = SelectionModeDialog.OnMouseButtonDoubleClick
+local ChoOrig_OnMouseButtonDoubleClick = SelectionModeDialog.OnMouseButtonDoubleClick
 function SelectionModeDialog:OnMouseButtonDoubleClick(pt, button, ...)
 	if button ~= "L" or not mod_EnableMod then
-		return orig_OnMouseButtonDoubleClick(self, pt, button, ...)
+		return ChoOrig_OnMouseButtonDoubleClick(self, pt, button, ...)
 	end
 
 	-- from orig func:

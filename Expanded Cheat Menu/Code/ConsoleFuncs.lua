@@ -752,7 +752,7 @@ function ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(dlg)
 	if RetFilesInFolder(ChoGGi.scripts, ".lua") then
 		BuildSciptButton(dlg, {
 			Text = Strings[302535920000353--[[Scripts]]],
-			RolloverText = Strings[302535920000881--[["Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create sub-folders for sorting)."]]]:format(ChoGGi.scripts),
+			RolloverText = Strings[302535920000881--[[Place .lua files in <green>%s</green> to have them show up in the ""Scripts"" list. You can also create sub-folders for sorting.]]]:format(ChoGGi.scripts),
 			id = "idScriptsMenuPopup",
 			script_path = ChoGGi.scripts,
 		})

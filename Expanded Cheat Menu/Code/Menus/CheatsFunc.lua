@@ -1902,12 +1902,14 @@ do -- ResearchTech
 	local function ResearchTechGroup(tech_func, group)
 		local TechDef = TechDef
 		local UIColony = UIColony
+		tech_func = _G[tech_func]
+
 		for tech_id, tech in pairs(TechDef) do
 			if tech.group == group then
 				if tech.group == "Mysteries" then
 					AllowMysteryTech(tech_id, UIColony)
 				end
-				_G[tech_func](tech_id)
+				tech_func(tech_id)
 			end
 		end
 	end
@@ -1925,6 +1927,7 @@ do -- ResearchTech
 			end
 		end
 	end
+	ChoGGi.MenuFuncs.AllRegularTechs = AllRegularTechs
 
 	function ChoGGi.MenuFuncs.ResearchTech()
 		local title = T(311, "Research") .. " / " .. Strings[302535920000318--[[Unlock]]] .. " " .. T(373, "Tech")

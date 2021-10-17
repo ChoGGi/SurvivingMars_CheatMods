@@ -1,11 +1,10 @@
 -- See LICENSE for terms
 
-local options
 local lookup_disable = {}
 
 -- fired when settings are changed/init
 local function ModOptions()
-	options = CurrentModOptions
+	local options = CurrentModOptions
 	local OnScreenNotificationPresets = OnScreenNotificationPresets
 	for id in pairs(OnScreenNotificationPresets) do
 		lookup_disable[id] = options:GetProperty(id)
