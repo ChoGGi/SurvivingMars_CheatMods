@@ -46,15 +46,13 @@ end
 
 
 -- Extractors
-
-
-
 AddBaseheater(Mine, 2 * const.MaxHeat, 5)
 AddBaseheater(WaterExtractor, 2 * const.MaxHeat, 5)
+-- terraforming stuff
+AddBaseheater(CarbonateProcessor, 4 * const.MaxHeat, 5)
+AddBaseheater(GHGFactory, 6 * const.MaxHeat, 15)
 
-
-
-local function AddFueledExtractorHeat(_, cls)
+local function AddFueledExtractorHeat(_, cls, upgrade)
 	local ChoOrig_class_OnUpgradeToggled = cls.OnUpgradeToggled
 	function cls:OnUpgradeToggled(...)
 		return PassthroughHeatUpdate(ChoOrig_class_OnUpgradeToggled, self, ...)
@@ -66,7 +64,7 @@ local function AddFueledExtractorHeat(_, cls)
 	end
 
 	function cls:UpdateHeat()
-		self:ApplyHeat(self.working and self:IsUpgradeOn(self.template_name .. "_FueledExtractor"))
+		return self:ApplyHeat(self.working and self:IsUpgradeOn(self.template_name .. (upgrade or "_FueledExtractor")))
 	end
 	function cls:GetHeatRange()
 		return const.AdvancedStirlingGeneratorHeatRadius * 10 * guim
@@ -84,4 +82,13 @@ end
 function OnMsg.ClassesPostprocess()
 	AddFueledExtractorHeat(nil, WaterExtractor)
 	ClassDescendantsList("Mine", AddFueledExtractorHeat)
+
+	-- only works with upgrade enabled
+	AddFueledExtractorHeat(nil, CarbonateProcessor, "_Amplify")
+	AddFueledExtractorHeat(nil, GHGFactory)
+	-- always works
+	function GHGFactory:UpdateHeat()
+		return self:ApplyHeat(self.working)
+	end
+
 end

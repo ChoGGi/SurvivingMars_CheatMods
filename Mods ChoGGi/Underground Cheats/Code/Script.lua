@@ -5,23 +5,7 @@ if not g_AvailableDlc.picard then
 	return
 end
 
---~ local RetMapType = ChoGGi.ComFuncs.RetMapType
-local function RetMapType()
-	local UIColony = UIColony
-	if not UIColony then
-		return
-	end
-	local map_id = UICity.map_id
-
-	if map_id == UIColony.underground_map_id then
-		return "underground"
-	elseif map_id == UIColony.surface_map_id then
-		return "surface"
-	else
-		return "asteroid"
-	end
-end
-
+local RetMapType = ChoGGi.ComFuncs.RetMapType
 
 local mod_EnableMod
 local mod_LightTripodRadius

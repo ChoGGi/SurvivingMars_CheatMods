@@ -4,32 +4,34 @@ local mod_BuildDist
 local mod_PassChunks
 local mod_PassageWalkSpeed
 
--- fired when settings are changed/init
-local function ModOptions()
-	mod_BuildDist = CurrentModOptions:GetProperty("BuildDist")
-	mod_PassChunks = CurrentModOptions:GetProperty("PassChunks")
-	mod_PassageWalkSpeed = CurrentModOptions:GetProperty("PassageWalkSpeed")
-
+local function StartupCode()
 	if UICity then
-		CityGridConstruction[UICity].max_hex_distance_to_allow_build = mod_BuildDist
+		GetGridConstructionController(UICity).max_hex_distance_to_allow_build = mod_BuildDist
 	end
 	GridConstructionController.max_hex_distance_to_allow_build = mod_BuildDist
 	const.PassageConstructionGroupMaxSize = mod_PassChunks
 end
 
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_BuildDist = CurrentModOptions:GetProperty("BuildDist")
+	mod_PassChunks = CurrentModOptions:GetProperty("PassChunks")
+	mod_PassageWalkSpeed = CurrentModOptions:GetProperty("PassageWalkSpeed")
+
+	StartupCode()
+end
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- set options on new/load game
-OnMsg.CityStart = ModOptions
-OnMsg.LoadGame = ModOptions
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
 
 local Sleep = Sleep
 local CreateGameTimeThread = CreateGameTimeThread

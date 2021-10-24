@@ -109,6 +109,12 @@ local function ToggleLines(dome)
 		end
 	end
 
+	-- dome stuck in the table and the above doesn't clear it out
+	if mod_CleanUpInvalid then
+		table.clear(dome.connected_domes)
+	end
+
+
 --~ 	if ChoGGi.testing then
 --~ 		local line = ChoGGi_OPolyline:new()
 --~ 		line:SetParabola(dome_pos, ChoGGi.Consts.InvalidPos)

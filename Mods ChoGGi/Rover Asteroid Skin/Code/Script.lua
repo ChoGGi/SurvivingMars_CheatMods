@@ -36,7 +36,7 @@ function BaseRover:GetSkins(...)
 	end
 end
 
-local function UpdateEnv(func, name, self, skin, ...)
+local function UpdateEnv(func, self, skin, ...)
 	if mod_EnableMod and g_AvailableDlc.picard then
 		-- function DroneBase:TransformToEnvironment(environment)
 		if skin:find("Flying", 1, true) then
@@ -50,12 +50,12 @@ end
 --
 local ChoOrig_RCRover_OnSkinChanged = RCRover.OnSkinChanged
 function RCRover.OnSkinChanged(...)
-	return UpdateEnv(ChoOrig_RCRover_OnSkinChanged, "ChoOrig_RCRover_OnSkinChanged", ...)
+	return UpdateEnv(ChoOrig_RCRover_OnSkinChanged, ...)
 end
 function OnMsg.ClassesPostprocess()
 	local ChoOrig_BaseRover_OnSkinChanged = BaseRover.OnSkinChanged
 	function BaseRover.OnSkinChanged(...)
-		return UpdateEnv(ChoOrig_BaseRover_OnSkinChanged, "ChoOrig_BaseRover_OnSkinChanged", ...)
+		return UpdateEnv(ChoOrig_BaseRover_OnSkinChanged, ...)
 	end
 end
 

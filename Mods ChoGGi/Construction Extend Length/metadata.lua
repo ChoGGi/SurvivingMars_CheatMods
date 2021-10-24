@@ -3,17 +3,18 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ConstructionExtendLength",
 	"steam_id", "1498826528",
 	"pops_any_uuid", "955d31b1-f4a8-4b2b-b7ad-2d7a5556e934",
-	"version", 6,
+	"lua_revision", 1007000, -- Picard
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 7,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
-	"lua_revision", 1007000, -- Picard
 	"code", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Extend length of pipes/cables/passages from 20 to 250.
+	"description", [[
+Extend length of pipes/cables/passages from 20 to 250.
 
 Mod Options:
 Build Distance: How many hexes you can build.

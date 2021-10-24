@@ -60,13 +60,13 @@ for i = 1, #classes do
 	local class_obj = g[class]
 	-- skip dlc needed ones
 	if class_obj then
-		local ChoOrig_func = class_obj.GetHeatRange
+		local ChoOrig_GetHeatRange = class_obj.GetHeatRange
 		function class_obj.GetHeatRange(...)
 			if not mod_EnableMod then
-				return ChoOrig_func(...)
+				return ChoOrig_GetHeatRange(...)
 			end
 
-			local range = ChoOrig_func(...)
+			local range = ChoOrig_GetHeatRange(...)
 			if g_ColdWave then
 				return range + const_HexHeight
 			end

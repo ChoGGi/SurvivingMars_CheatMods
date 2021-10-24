@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1809321641",
 	"pops_any_uuid", "6285e6a7-f89a-47a3-a3ee-0b22e470e600",
 	"lua_revision", 1007000, -- Picard
-	"version", 9,
-	"version_major", 0,
-	"version_minor", 9,
+	"version", 10,
+	"version_major", 1,
+	"version_minor", 0,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -34,6 +34,7 @@ Show usable hexes: Show hexes that can connect domes when placing passages.
 
 
 Known Issues:
+If something is acting funky, save then reload the game.
 Doesn't seem to work on xbox?
 Ramps will be ignored till you reload the save.
 You will get warning messages when trying to place passages in "wrong" places (just ignore them).

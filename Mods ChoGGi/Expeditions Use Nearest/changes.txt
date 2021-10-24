@@ -1,3 +1,6 @@
+v0.6
+Still working on it.
+
 v0.5
 Added some fixes from SkiRich.
 

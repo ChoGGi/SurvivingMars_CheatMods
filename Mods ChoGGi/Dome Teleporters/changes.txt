@@ -1,3 +1,6 @@
+v1.5
+Underground distance fix.
+
 v1.4
 Picard update costs (thanks arrjik).
 

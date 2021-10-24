@@ -841,6 +841,7 @@ do -- FlattenGround
 --~ 			local terrain_type_idx = GetTerrainTextureIndex("Grass_02")
 			are_we_flattening = CreateRealTimeThread(function()
 				-- thread gets deleted, but just in case
+				local hsMin = const.hsMin
 				while are_we_flattening do
 					local cursor = GetCursorWorldPos()
 					visual_circle:SetPos(cursor)
@@ -849,7 +850,7 @@ do -- FlattenGround
 						outer = radius / 2
 					end
 
-					terrain:SetHeightCircle(cursor, radius, outer or radius, flatten_height, const.hsMin)
+					terrain:SetHeightCircle(cursor, radius, outer or radius, flatten_height, hsMin)
 --~ 					terrain:SetTypeCircle(cursor, radius, terrain_type_idx)
 					-- used to set terrain type (see above)
 					Sleep(10)

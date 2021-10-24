@@ -43,14 +43,9 @@ local function IsDomePoint(obj)
 	-- from construct controller or point
 	obj = obj.current_points and obj.current_points[#obj.current_points] or obj
 	-- If it's a point and a dome we're good (enough)
-	if IsPoint(obj) and IsValid(GetDomeAtPoint(GetObjectHexGrid(UICity), obj)) then
+	if IsPoint(obj) and IsValid(GetDomeAtPoint(GetObjectHexGrid(obj.city or UICity), obj)) then
 		return true
 	end
-end
-
-function GetObjectHexGrid(object)
-  local map_id = object:GetMapID()
-  return GameMaps[map_id].object_hex_grid
 end
 
 -- like I said, if it's a dome then I'm happy

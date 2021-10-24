@@ -1,29 +1,27 @@
 -- See LICENSE for terms
 
-local mod_EnableDrones
-local mod_EnableColonists
-
--- fired when settings are changed/init
-local function ModOptions()
-	mod_EnableDrones = CurrentModOptions:GetProperty("EnableDrones")
-	mod_EnableColonists = CurrentModOptions:GetProperty("EnableColonists")
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
+local IsValid = IsValid
 local table = table
 local ObjModified = ObjModified
 local Sleep = Sleep
--- local SelectObj = SelectObj
 local InteractionRand = InteractionRand
+
+local mod_EnableDrones
+local mod_EnableColonists
+
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_EnableDrones = CurrentModOptions:GetProperty("EnableDrones")
+	mod_EnableColonists = CurrentModOptions:GetProperty("EnableColonists")
+end
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local sort_obj
 local function SortByDist(a, b)
@@ -43,7 +41,7 @@ function CargoTransporter:ExpeditionFindDrones(num_drones, ...)
 	local Cities = Cities
 
 	-- wait to have enough drones, load if we are a go, stop if not (thanks SkiRich)
-	while self:HasDestination() do
+	while IsValid(self) do
 		local found_drones = {}
 
 		-- prefer own drones first

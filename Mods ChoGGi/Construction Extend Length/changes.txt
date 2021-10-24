@@ -1,3 +1,6 @@
+v0.7
+Picard update.
+
 v0.6
 Added mod option to change walking speed in passages.
 

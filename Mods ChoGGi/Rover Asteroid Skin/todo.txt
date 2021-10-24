@@ -1,0 +1,1 @@
+keep skin when changing map

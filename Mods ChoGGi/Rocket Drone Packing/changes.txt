@@ -1,3 +1,6 @@
+v0.5
+Log spam (didn't check for bb dlc).
+
 v0.4
 Added to landers.
 

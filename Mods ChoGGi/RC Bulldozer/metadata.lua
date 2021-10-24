@@ -11,16 +11,21 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RCBulldozer",
 	"steam_id", "1538213471",
 	"pops_any_uuid", "c4cbd03c-5dc3-4953-9e13-fbea09273916",
-	"version", 7,
+	"lua_revision", 1007000, -- Picard
+	"version", 8,
 	"version_major", 0,
-	"version_minor", 7,
+	"version_minor", 8,
 	"author", "ChoGGi",
 	"image", "Preview.jpg",
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 1007000, -- Picard
-	"description", [[Flattens the ground in front of it.
+	"description", [[
+Obsolete: Use landscaping tools.
+
+
+
+Flattens the ground in front of it.
 
 Options to change the radius, show a circle where it flattens, and change the ground texture (or turn it off).
 The buildable area won't be updated till you turn off Dozer Toggle (expensive function call).

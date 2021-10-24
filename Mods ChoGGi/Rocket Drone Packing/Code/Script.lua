@@ -78,10 +78,13 @@ function OnMsg.ClassesPostprocess()
 
 	AddTemplate(XTemplates.customSupplyRocket[1], template1, template2)
 	AddTemplate(XTemplates.customRocketExpedition[1], template1, template2)
-	AddTemplate(XTemplates.customLanderRocket[1], template1, template2)
+	if g_AccessibleDlc.picard then
+		AddTemplate(XTemplates.customLanderRocket[1], template1, template2)
+	end
 end
 
--- don't mind me, just fixing a bug: https://github.com/HaemimontGames/SurvivingMars/blob/master/Lua/Buildings/Rocket.lua#L1698
+-- Don't mind me, just fixing a bug: https://github.com/surviving-mars/SurvivingMars/blob/master/Lua/Buildings/RocketBase.lua#L1470
+-- It's been around awhile: https://github.com/HaemimontGames/SurvivingMars/blob/master/Lua/Buildings/Rocket.lua#L1698
 function RocketBase:GetEntrancePoints(entrance_type, spot_name, ...)
 	return WaypointsObj.GetEntrancePoints(self, entrance_type or "rocket_entrance", spot_name, ...)
 end
@@ -89,7 +92,7 @@ end
 -- UseDronePrefab() needs a return to remove from city.drone_prefabs count
 -- and the Embark command keeps them stuck inside the rocket forever
 local ChoOrig_RocketBase_SpawnDrone = RocketBase.SpawnDrone
-local function mine_RocketBase_SpawnDrone(self)
+local function ChoFake_RocketBase_SpawnDrone(self)
 	if #self.drones >= self:GetMaxDrones() then
 		return
 	end
@@ -104,12 +107,12 @@ local function mine_RocketBase_SpawnDrone(self)
 	drone:SetCommand("Idle")
 	return drone
 end
-RocketBase.SpawnDrone = mine_RocketBase_SpawnDrone
+RocketBase.SpawnDrone = ChoFake_RocketBase_SpawnDrone
 
 local ChoOrig_RocketBase_SpawnDronesFromEarth = RocketBase.SpawnDronesFromEarth
 function RocketBase.SpawnDronesFromEarth(...)
 	RocketBase.SpawnDrone = ChoOrig_RocketBase_SpawnDrone
 	ChoOrig_RocketBase_SpawnDronesFromEarth(...)
-	RocketBase.SpawnDrone = mine_RocketBase_SpawnDrone
+	RocketBase.SpawnDrone = ChoFake_RocketBase_SpawnDrone
 end
 

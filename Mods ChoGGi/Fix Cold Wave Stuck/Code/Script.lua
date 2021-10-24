@@ -3,12 +3,12 @@
 local mod_EnableMod
 
 local function StartupCode()
-	if not mod_EnableMod or not UICity then
+	if not mod_EnableMod or not UICity or not g_ColdWave then
 		return
 	end
 
 	-- it's always a missing map id isn't it?
-	if not g_ColdWave:GetMapID() then
+	if not g_ColdWave.GetMapID then
 		g_ColdWave.GetMapID = function()
 			return MainCity.map_id
 		end

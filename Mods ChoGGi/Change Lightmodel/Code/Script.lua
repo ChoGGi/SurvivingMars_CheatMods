@@ -24,13 +24,15 @@ local function SetLight(msg, timeout)
 		if lightmodel == "" then
 			lightmodel = "TheMartian"
 		end
-		local postfix = CurrentLightmodel[1].id
+		local map_id = MainCity.map_id
+
+		local postfix = CurrentLightmodel[map_id][1].id
 		-- returns 12,12 which doesn't work for what we want :sub for
 		local underscore_count = postfix:find("_")
 		if not skip_lightmodels[postfix:sub(1, underscore_count - 1)] then
 			postfix = postfix:sub(underscore_count)
 			local new = lightmodel .. postfix
-			if new ~= CurrentLightmodel[1].id then
+			if new ~= CurrentLightmodel[map_id][1].id then
 				SetLightmodel(1, new)
 --~ 				SetLightmodelOverride(1, new)
 			end
@@ -41,6 +43,8 @@ end
 local function OverrideIt()
 	SetLight("AfterLightmodelChange", 10000)
 end
+OnMsg.CityStart = OverrideIt
+OnMsg.LoadGame = OverrideIt
 
 function OnMsg.AfterLightmodelChange()
 	SetLight("OnRender")
@@ -63,8 +67,12 @@ for i = 1, #lightmodels do
 	mod_options["mod_" .. lightmodels[i]] = false
 end
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	local options = CurrentModOptions
 	mod_EnableMod = options:GetProperty("EnableMod")
 
@@ -86,16 +94,7 @@ local function ModOptions()
 
 	OverrideIt()
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
 -- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-OnMsg.CityStart = OverrideIt
-OnMsg.LoadGame = OverrideIt
+OnMsg.ApplyModOptions = ModOptions

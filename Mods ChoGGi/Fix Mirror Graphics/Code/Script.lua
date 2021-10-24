@@ -86,7 +86,7 @@ local function UpdateTextures()
 
 	if next(mapped_textures) then
 		SuspendPassEdits("ChoGGi_FixMirrorGraphics")
-		ActiveGameMap.terrain:RemapType(mapped_textures)
+		GetActiveTerrain():RemapType(mapped_textures)
 		ResumePassEdits("ChoGGi_FixMirrorGraphics")
 	end
 end

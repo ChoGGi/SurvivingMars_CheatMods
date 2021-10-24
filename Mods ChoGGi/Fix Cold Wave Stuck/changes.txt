@@ -1,1 +1,5 @@
+v0.3
+Log spam.
+
 v0.2
+Possible bug fix.

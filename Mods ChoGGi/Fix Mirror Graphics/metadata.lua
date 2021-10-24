@@ -5,9 +5,9 @@ return PlaceObj("ModDef", {
 --~ 	"pops_any_uuid", "bc22317d-d723-4a4c-9814-919eefe38f02",
 	"pops_any_uuid", "dd12bda4-8092-44c9-8f25-b17a34e4ec6e",
 	"lua_revision", 1007000, -- Picard
-	"version", 6,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 7,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {

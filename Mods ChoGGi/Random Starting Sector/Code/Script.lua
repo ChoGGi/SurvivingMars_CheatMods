@@ -32,7 +32,7 @@ function Colony:CreateMapRand(which, ...)
 	return ChoOrig_Colony_CreateMapRand(self, which, ...)
 end
 
-local ChoOrig_InitialReveal = InitialReveal
+--~ local ChoOrig_InitialReveal = InitialReveal
 function InitialReveal(eligible, ...)
 --~ 	if mod_MinimumSurfaceDeposits == 0 and mod_MinimumSubsurfaceDeposits == 0 then
 --~ 		return ChoOrig_InitialReveal(eligible, ...)

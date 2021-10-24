@@ -39,14 +39,15 @@ local function StartupCode()
 		local row = 0
 
 		local terrain = ActiveGameMap.terrain
+		local hsMin = const.hsMin
 
-		terrain:SetHeightCircle(point(447000, 467000), 100000, 100000, 5000)
+		terrain:SetHeightCircle(point(447000, 467000), 100000, 100000, 5000, hsMin)
 
 		for i = 1, #TerrainTextures do
 			row = row + 1
 			offset_x = offset_x + -5000
 			local pos = start_pos:AddX(offset_x):AddY(offset_y)
-			terrain:SetHeightCircle(pos, 2500, 1000, 10000)
+			terrain:SetHeightCircle(pos, 2500, 1000, 10000, hsMin)
 			terrain:SetTypeCircle(pos, 2600, i)
 
 			local text_dlg = XText:new({

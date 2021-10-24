@@ -1,2 +1,5 @@
+v0.3
+Added Carbonate Processor and GHG Factory.
+
 v0.2
 Picard update.

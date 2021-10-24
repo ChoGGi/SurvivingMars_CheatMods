@@ -6,7 +6,7 @@ local mod_EnableMod
 local mod_ClearAll
 
 local function StartupCode()
-	if not mod_EnableMod then
+	if not mod_EnableMod or not UICity then
 		return
 	end
 

@@ -52,18 +52,19 @@ function GetConstructionController(mode, ...)
 end
 
 -- add our custom construction controller
-function OnMsg.NewMap()
+local function AddController()
 	local city = UICity
 	if city then
 		CityDomeTeleporterConstruction[city] = DomeTeleporterConstructionController:new()
-		-- why city is false on it...?
 		CityDomeTeleporterConstruction[city].city = CityDomeTeleporterConstruction[city].city or city
 	end
 end
+OnMsg.NewMap = AddController
+OnMsg.ChangeMapDone = AddController
+
 function OnMsg.LoadGame()
 	local city = UICity
 	CityDomeTeleporterConstruction[city] = DomeTeleporterConstructionController:new()
-	-- why city is false on it...?
 	CityDomeTeleporterConstruction[city].city = CityDomeTeleporterConstruction[city].city or city
 
 --~ 	-- dbg

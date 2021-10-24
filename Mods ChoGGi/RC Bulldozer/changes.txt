@@ -1,3 +1,6 @@
+v0.8
+Log spam.
+
 v0.7
 Now it actually uses Harvester model if you have Space Race.
 Sounds.

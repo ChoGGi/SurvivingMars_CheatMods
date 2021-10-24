@@ -530,7 +530,7 @@ function PortableMiner:Load()
 					self.stockpile = false
 				end
 
-				local infoamount = g_ResourceOverviewCity[UICity.map_id].data[self.resource]
+				local infoamount = g_ResourceOverviewCity[(self.city or UICity).map_id].data[self.resource]
 				infoamount = infoamount + 1
 				-- per res
 				self.lifetime_table[self.resource] = self.lifetime_table[self.resource] + mined

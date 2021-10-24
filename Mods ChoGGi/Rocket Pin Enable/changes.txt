@@ -1,5 +1,8 @@
+v0.5
+Picard update.
+
 v0.4
-Tito.
+Tito update.
 
 v0.3
 Added mod option to re-pin all rockets (if you unpinned an orbiting rocket).
