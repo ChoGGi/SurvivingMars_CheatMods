@@ -355,7 +355,9 @@ do -- ToggleLogErrors
 			local stack_trace2
 			if not blacklist then
 				stack_trace2 = debug_traceback(nil, 2)
-				print("\ndebug.traceback():\n", stack_trace2)
+				if stack_trace2 and stack_trace2 ~= "" then
+					print("\ndebug.traceback():\n", stack_trace2)
+				end
 			end
 
 			if UserSettings.ExamineErrors then

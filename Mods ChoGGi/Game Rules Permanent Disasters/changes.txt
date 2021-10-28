@@ -1,3 +1,6 @@
+v1.3
+Log spam (hopefully all of it).
+
 v1.2
 Mod option to unlock subsurface heaters underground/asteroids for winter wonderland.
 

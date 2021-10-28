@@ -5,13 +5,12 @@ local function PassthroughHeatUpdate(func, self, ...)
   self:UpdateHeat()
 end
 
-local function AddBaseheater(class, heat, max_neighbors)
+local function AddBaseheater(class, heat)
 	ChoGGi.ComFuncs.AddParentToClass(class, "BaseHeater")
 	class.heat = heat
-	class.max_neighbors = max_neighbors
 end
 
-AddBaseheater(StirlingGenerator, 3 * const.MaxHeat, 10)
+AddBaseheater(StirlingGenerator, 3 * const.MaxHeat)
 
 local ChoOrig_StirlingGenerator_OnChangeState = StirlingGenerator.OnChangeState
 function StirlingGenerator:OnChangeState(...)
@@ -46,13 +45,15 @@ end
 
 
 -- Extractors
-AddBaseheater(Mine, 2 * const.MaxHeat, 5)
-AddBaseheater(WaterExtractor, 2 * const.MaxHeat, 5)
+AddBaseheater(Mine, 2 * const.MaxHeat)
+AddBaseheater(WaterExtractor, 2 * const.MaxHeat)
 -- terraforming stuff
-AddBaseheater(CarbonateProcessor, 4 * const.MaxHeat, 5)
-AddBaseheater(GHGFactory, 6 * const.MaxHeat, 15)
+AddBaseheater(CarbonateProcessor, 4 * const.MaxHeat)
+AddBaseheater(GHGFactory, 5 * const.MaxHeat)
+-- nuclar powar!
+AddBaseheater(FusionReactor, 16 * const.MaxHeat)
 
-local function AddFueledExtractorHeat(_, cls, upgrade)
+local function AddFueledExtractorHeat(_, cls, upgrade, radius)
 	local ChoOrig_class_OnUpgradeToggled = cls.OnUpgradeToggled
 	function cls:OnUpgradeToggled(...)
 		return PassthroughHeatUpdate(ChoOrig_class_OnUpgradeToggled, self, ...)
@@ -64,10 +65,12 @@ local function AddFueledExtractorHeat(_, cls, upgrade)
 	end
 
 	function cls:UpdateHeat()
-		return self:ApplyHeat(self.working and self:IsUpgradeOn(self.template_name .. (upgrade or "_FueledExtractor")))
+		return self:ApplyHeat(
+			self.working and self:IsUpgradeOn(self.template_name .. (upgrade or "_FueledExtractor"))
+		)
 	end
 	function cls:GetHeatRange()
-		return const.AdvancedStirlingGeneratorHeatRadius * 10 * guim
+		return const.AdvancedStirlingGeneratorHeatRadius * (radius or 8) * guim
 	end
 	function cls:GetHeatBorder()
 		return const.SubsurfaceHeaterFrameRange
@@ -78,17 +81,26 @@ local function AddFueledExtractorHeat(_, cls, upgrade)
 		end
 	end
 end
+-- Don't check for upgrade
+local function UpdateHeat_Working(self)
+	return self:ApplyHeat(self.working)
+end
 
 function OnMsg.ClassesPostprocess()
 	AddFueledExtractorHeat(nil, WaterExtractor)
 	ClassDescendantsList("Mine", AddFueledExtractorHeat)
 
-	-- only works with upgrade enabled
-	AddFueledExtractorHeat(nil, CarbonateProcessor, "_Amplify")
-	AddFueledExtractorHeat(nil, GHGFactory)
-	-- always works
-	function GHGFactory:UpdateHeat()
-		return self:ApplyHeat(self.working)
-	end
+	-- Only works with upgrade enabled
+	AddFueledExtractorHeat(nil, CarbonateProcessor, "_Amplify", 10)
+	-- override updateheat
+	AddFueledExtractorHeat(nil, GHGFactory, nil, 12)
+	AddFueledExtractorHeat(nil, FusionReactor, nil, 14)
+	-- override updateheat 2
+	GHGFactory.UpdateHeat = UpdateHeat_Working
+	FusionReactor.UpdateHeat = UpdateHeat_Working
 
+end
+
+function OnMsg.LoadGame()
+-- looip through all buildings and :UpdateBuilding()
 end

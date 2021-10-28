@@ -1,1 +1,2 @@
 v0.2
+Added mod option to auto-queue up drone prefabs when city prefabs are low.

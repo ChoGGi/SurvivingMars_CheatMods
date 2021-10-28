@@ -1,12 +1,27 @@
 
-local StringIdBase = 499093306 --randomly generated to avoid conflicts
+local StringIdBase = 499093306
 
 local table = table
 local T = T
 
 GlobalVar("DistributedDroneAssembly", false)
 
-local function DdaReinit() --force reinitialization of vars -- this will wipe out the queue
+local mod_AutoPrefabDrones
+
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_AutoPrefabDrones = CurrentModOptions:GetProperty("AutoPrefabDrones")
+end
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
+
+local function DdaReinit() -- force reinitialization of vars -- this will wipe out the queue
 	DistributedDroneAssembly = {
 		LocalConstrLimit = 2,
 		Queue = {},
@@ -16,7 +31,6 @@ local function DdaReinit() --force reinitialization of vars -- this will wipe ou
 end
 
 local function DdaInstall()
-	-- ERprint("DdaInstallControls")
 	local xtemplate = XTemplates.customDroneFactory[1]
 
 	-- Uninstall any preexisting controls
@@ -51,7 +65,6 @@ local function DdaInstall()
 			if v.OnPressParam == "ConstructDrone"
 				or v.OnPressParam == "DdaConstructDrone"
 			then
-				-- ERprint("Found ConstructDrone")
 				v.OnPressParam = "DdaConstructDrone"
 				v.OnPress = function(self, gamepad)
 					self.context:DdaConstructDrone(1 * (not gamepad and IsMassUIModifierPressed() and 5 or 1))
@@ -63,7 +76,6 @@ local function DdaInstall()
 			if v.OnPressParam == "ConstructAndroid"
 				or v.OnPressParam == "DdaConstructAndroid"
 			then
-				-- ERprint("Found ConstructAndroid")
 				v.OnPressParam = "DdaConstructAndroid"
 				v.OnPress = function(self, gamepad)
 					self.context:DdaConstructAndroid(1 * (not gamepad and IsMassUIModifierPressed() and 5 or 1))
@@ -99,7 +111,6 @@ local function DdaRecalcQueueAmounts()
 end
 
 local function DdaAdjustQueue(amount, kind)
-	-- ERprint("DdaAdjustQueue -- %s -- %s", amount, kind)
 	local dda = DistributedDroneAssembly
 	if amount >= 0 then
 		-- positive change
@@ -128,9 +139,25 @@ local function DdaAdjustQueue(amount, kind)
 end
 
 function OnMsg.NewHour()
-	-- ERprint("DdaHandler")
-
 	local dda = DistributedDroneAssembly
+
+	-- won't work for mods that add it underground/asteroids
+	local objs = MainCity.labels.DroneFactory or ""
+
+	-- queue up prefabs
+	if mod_AutoPrefabDrones > 0 and #objs > 0 then
+
+		-- -1 for drone being built
+		local add_amount = mod_AutoPrefabDrones - MainCity.drone_prefabs - dda.DronesInQueue - 1
+--~ 		print("add_amount",add_amount,mod_AutoPrefabDrones,MainCity.drone_prefabs,dda.DronesInQueue)
+
+		if add_amount > 0 then
+			dda.DronesInQueue = dda.DronesInQueue + add_amount
+			for _ = 1, add_amount do
+				dda.Queue[#dda.Queue+1] = "Drone"
+			end
+		end
+	end
 
 	-- smaller vars don't make shit faster, just more annoying to figure out what's up
 	local df = {}
@@ -140,9 +167,6 @@ function OnMsg.NewHour()
 	if #dda.Queue == 0 then
 		return
 	end
-
-	-- won't work for mods that add it underground/asteroids
-	local objs = MainCity.labels.DroneFactory or ""
 
 	for i = 1, #objs do
 		local obj = objs[i]
@@ -240,7 +264,6 @@ function DroneFactory:GetDdaSectionUI()
 end
 
 function DroneFactory:DdaConstructDrone(change, requestor)
-	-- ERprint("DroneFactory:DdaConstructDrone -- %s", change)
 	local dda = DistributedDroneAssembly
 	local count = abs(change)
 	while count > 0 do
@@ -260,7 +283,6 @@ function DroneFactory:DdaConstructDrone(change, requestor)
 end
 
 function DroneFactory:DdaConstructAndroid(change, requestor)
-	-- ERprint("DroneFactory:DdaConstructAndroid -- %s", change)
 	local dda = DistributedDroneAssembly
 	local count = abs(change)
 	while count > 0 do

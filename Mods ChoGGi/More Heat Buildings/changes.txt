@@ -1,3 +1,7 @@
+v0.4
+Added Fusion Reactor.
+Adjusted heat range radiuses.
+
 v0.3
 Added Carbonate Processor and GHG Factory.
 

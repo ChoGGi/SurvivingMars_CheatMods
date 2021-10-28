@@ -18,7 +18,7 @@ return PlaceObj("ModDef", {
 Low Resources:
 Resources will always be the lowest level.
 Max Threats:
-Disasters will always be the highest level (excluding Dust Devils).
+Disasters will always be the highest level (excluding Dust Devils/Active Plate Tectonics).
 
 These don't change the challenge rating/resource display.
 
