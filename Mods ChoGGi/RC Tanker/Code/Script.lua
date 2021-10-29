@@ -145,6 +145,11 @@ Tank will always refer to the storage on the ground, not the tank on the RC.]]),
 
 	-- needed for pinned icon
 	display_icon = display_icon,
+
+	-- picard dlc
+  environment_entity = {
+    base = "entity_rc",
+  },
 }
 
 function RCTanker:Init()

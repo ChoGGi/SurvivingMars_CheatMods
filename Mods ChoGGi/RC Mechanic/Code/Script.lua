@@ -1,5 +1,20 @@
 -- See LICENSE for terms
 
+local mod_iddqd
+
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_iddqd = CurrentModOptions:GetProperty("iddqd")
+end
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
+
 GlobalVar("g_RCMechanicRepairing", {})
 
 local display_icon = CurrentModPath .. "UI/rover_combat.png"
@@ -27,12 +42,27 @@ The wretched refuse of your teeming shore.]]),
 	pin_rollover = T(51, "<ui_command>"),
 	-- needed for pinned icon
 	display_icon = display_icon,
+	-- picard dlc
+  environment_entity = {
+    base = "CombatRover",
+  },
 }
 
 DefineClass.RCMechanicBuilding = {
 	__parents = {"BaseRoverBuilding"},
 	rover_class = "RCMechanic",
 }
+
+local skip_cmds = {
+	Dead = true,
+	Malfunction = true,
+}
+function RCMechanic:SetCommand(command, ...)
+  if mod_iddqd and skip_cmds[command] then
+    return
+  end
+	return BaseRover.SetCommand(self, command, ...)
+end
 
 function RCMechanic:AddBlinky()
 	if IsValid(self.blinky) then
@@ -209,8 +239,8 @@ function OnMsg.ClassesPostprocess()
 		"palettes", AttackRover.palette,
 
 		"dome_forbidden", true,
-		"display_name", T(302535920011193, [[RC Mechanic]]),
-		"display_name_pl", T(302535920011193, [[RC Mechanic]]),
+		"display_name", T(302535920011193, "RC Mechanic"),
+		"display_name_pl", T(302535920011193, "RC Mechanic"),
 		"description", T(302535920011194, [[Give me your tired, your poor,
 Your huddled masses yearning to breathe free,
 The wretched refuse of your teeming shore.]]),

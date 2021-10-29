@@ -11,19 +11,22 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RCMechanic",
 	"steam_id", "1528832147",
 	"pops_any_uuid", "8437a4f7-7f3f-4eb1-bb14-7d09c724178c",
-	"version", 11,
+	"lua_revision", 1007000, -- Picard
+	"version", 12,
 	"version_major", 1,
-	"version_minor", 1,
+	"version_minor", 2,
 	"author", "ChoGGi",
 	"image", "Preview.jpg",
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 1007000, -- Picard
-	"description", [[Autonomous repair of Drones/RCs that have broken down due to driving into a dust devil or something equally smart.
+	"has_options", true,
+	"description", [[
+Autonomous repair of Drones/RCs that have broken down due to driving into a dust devil or something equally smart.
 
 This is only for malfunctioned drones.
 Ignores any that are within distance of working drone hubs/rockets.
+Mod option for god mode.
 
 
 
@@ -32,5 +35,6 @@ Ignores requirements and just repairs instantly. I'll see about slowing the repa
 
 
 
-Affectionately known as the candy striper.]],
+Affectionately known as the candy striper.
+]],
 })

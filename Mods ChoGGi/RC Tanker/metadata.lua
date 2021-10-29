@@ -12,19 +12,21 @@ return PlaceObj("ModDef", {
 	"steam_id", "1653353483",
 	"pops_any_uuid", "aaa0130c-0757-4938-8b57-0d5cded4e892",
 	"lua_revision", 1007000, -- Picard
-	"version", 9,
-	"version_major", 0,
-	"version_minor", 9,
+	"version", 10,
+	"version_major", 1,
+	"version_minor", 0,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Allows you to drain an oxygen or water tank then use it to fill another tank.
+	"description", [[
+Allows you to drain an oxygen or water tank then use it to fill another tank.
 Adds two buttons to the selection panel: One to switch between draining and filling, and one to switch between oxygen/water (will empty tank of current resource).
 
 By default it can hold an unlimited amount, includes a mod option to limit it to X units (if you feel it's too cheap).
 
-Depending on DLC installed RC and tank will use different models.]],
+Depending on DLC installed RC and tank will use different models.
+]],
 })

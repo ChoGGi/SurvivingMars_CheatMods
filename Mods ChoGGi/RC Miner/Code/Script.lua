@@ -176,6 +176,11 @@ DefineClass.PortableMiner = {
 
 	-- needed for pinned icon
 	display_icon = display_icon,
+
+	-- picard dlc
+  environment_entity = {
+    base = "CombatRover",
+  },
 }
 
 DefineClass.PortableMinerBuilding = {

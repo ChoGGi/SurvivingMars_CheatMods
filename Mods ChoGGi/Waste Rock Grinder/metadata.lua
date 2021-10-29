@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2544246919",
 	"pops_any_uuid", "53a56418-38cd-4b05-bc06-144a517292b7",
 	"lua_revision", 1007000, -- Picard
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -25,6 +25,10 @@ return PlaceObj("ModDef", {
 	"description", [[
 Automated waste rock extractor that produces waste rock (and dust).
 Produces 24 per Sol.
+
+Known Issues:
+Shows double waste rock storage.
+Prod numbers are off.
 
 
 Requested by Rejected Spawn.

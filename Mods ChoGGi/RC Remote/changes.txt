@@ -1,3 +1,6 @@
+v0.7
+Picard BB dlc update.
+
 v0.6
 Now uses either mouse or gamepad for positions.
 

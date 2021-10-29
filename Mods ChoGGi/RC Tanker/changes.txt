@@ -1,3 +1,6 @@
+v1.0
+Picard BB dlc update.
+
 v0.9
 Checks for Extra Large Water Tank.
 

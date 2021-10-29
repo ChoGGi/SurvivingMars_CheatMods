@@ -1464,6 +1464,8 @@ Don't forget to send me your res and margin, so I can add them to the list."
 302535920012078, "<color ChoGGi_yellow>Min Sols</color>"
 302535920012079, "<color ChoGGi_yellow>Max Sols</color>"
 302535920012080, "How many Sols to wait before starting next mystery."
+[[Disable Story Bits]]
+302535920012093, "Stop this storybit from happening:<newline><newline><storybit><newline><newline><image "
 [[UNUSED]]
 
 
@@ -1476,7 +1478,6 @@ Don't forget to send me your res and margin, so I can add them to the list."
 
 
 [[UNUSED]]
-302535920012093,
 302535920012094,
 302535920012095,
 302535920012096,

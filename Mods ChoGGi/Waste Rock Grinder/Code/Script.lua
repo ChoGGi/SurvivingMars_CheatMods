@@ -18,15 +18,15 @@ DefineClass.ChoGGi_WasteRockGrinder = {
   },
 
 	dust_range = 4,
+	waste_produced = 1 * const.ResourceScale,
 }
 
-local produced = 1 * const.ResourceScale
+local waste_produced = 1 * const.ResourceScale
 
 function ChoGGi_WasteRockGrinder:BuildingUpdate()
---~ 	self:ProduceWasteRock(produced, "Very Low")
 
-  if self.wasterock_producer then
-    self.wasterock_producer:Produce(produced)
+  if self.wasterock_producer and self.working then
+    self.wasterock_producer:Produce(self.waste_produced or waste_produced)
     return self.wasterock_producer:IsStorageFull()
   end
 
@@ -41,6 +41,13 @@ function ChoGGi_WasteRockGrinder:GameInit()
 	self:SetColorizationMaterial(2, -5987164, 120, 20)
 	self:SetColorizationMaterial(3, -5694693, -128, 48)
 
+	-- show prod info
+	self.producers[1] = self.wasterock_producer
+end
+
+function ChoGGi_WasteRockGrinder:GetResourceProduced()
+	local producer = self.wasterock_producer
+	return producer and producer:GetResourceProduced()
 end
 
 function OnMsg.ClassesPostprocess()
@@ -51,7 +58,7 @@ function OnMsg.ClassesPostprocess()
 --~ 			"consumption_max_storage", 20000,
 --~ 			"consumption_amount", 0,
 			"resource_produced1", "WasteRock",
---~ 			"production_per_day1", 25 * const.ResourceScale,
+			"production_per_day1", 24 * const.ResourceScale,
 
 			"stockpile_class1", "WasteRockStockpile",
 

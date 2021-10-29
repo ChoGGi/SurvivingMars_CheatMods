@@ -1,3 +1,6 @@
+v1.2
+Added mod option for god mode.
+
 v1.1
 Fixed pin icon.
 

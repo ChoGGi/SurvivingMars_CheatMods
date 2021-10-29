@@ -23,7 +23,9 @@ function BaseRover:GetSkins(...)
 	local entity = g_Classes[self.class].entity
 	local asteroid
 
-	if g_AvailableDlc.picard and IsValidEntity(self.environment_entity.Asteroid) then
+	if g_AvailableDlc.picard
+		and self.environment_entity and IsValidEntity(self.environment_entity.Asteroid)
+	then
 		asteroid = self.environment_entity.Asteroid
 	end
 

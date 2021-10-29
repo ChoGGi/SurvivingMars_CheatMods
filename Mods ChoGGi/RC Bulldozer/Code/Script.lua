@@ -77,6 +77,10 @@ DefineClass.RCBulldozer = {
 	texture_terrain = GetTerrainTextureIndex("Dig"),
 	-- used to place the circle
 	away_spot = false,
+	-- picard dlc
+  environment_entity = {
+    base = "CombatRover",
+  },
 }
 
 DefineClass.RCBulldozerBuilding = {
