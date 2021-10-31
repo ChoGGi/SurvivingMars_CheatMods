@@ -2,6 +2,7 @@
 
 function OnMsg.TechResearched(tech_id)
 	local UIColony = UIColony
+
 	-- TechResearched fires on new game (sometimes), so use this to skip an error in the log
 	if not UIColony then
 		return

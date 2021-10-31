@@ -38,6 +38,7 @@ function OnMsg.ApplyModOptions(id)
 		UnlockBreaks()
 	end
 end
+
 function OnMsg.CityStart()
 	ModOptions(true)
 end

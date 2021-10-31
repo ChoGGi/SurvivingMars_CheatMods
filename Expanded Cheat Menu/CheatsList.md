@@ -323,6 +323,7 @@ Debug.Object>Visible Objects: Shows list of objects rendered in the current fram
 Debug.Path Markers>Building Path Markers: Show inside waypoints colonists take to move around (not all buildings).
 Debug.Path Markers>Path Markers Game Time: Maps paths in real time (see Path Markers to mark more than one at a time).
 Debug.Path Markers>Path Markers: Shows the selected unit path or show a list to add/remove paths for rovers, drones, colonists, or shuttles.
+Debug.Story Bits>Override Condition Prereqs: All storybit/negotiation/etc options are enabled.
 Debug.Story Bits>Skip Story Bits: When a story bit appears; always select first option after slight delay.
 Debug.Story Bits>Test Story Bits: Test activate a story bit.
 Debug.Toggles>Anim Debug Toggle: Attaches text to each object showing animation info (or just to selected object).
@@ -332,7 +333,6 @@ Debug.Toggles>InfoPanel Dialog: Center the InfoPanel dialog (selection panel).
 Debug.Toggles>Loading Screen Log: Be able to see the console log (and other dialogs) during the loading screen.
 Warning: Leave "Welcome to Mars" msg onscreen till map is loaded.
 Debug.Toggles>Measure Tool: Measures stuff (press again to remove the lines).
-Debug.Toggles>Override Condition Prereqs: All storybit/negotiation/etc options are enabled.
 Debug.Toggles>Place Objects: Opens editor mode with the place objects dialog.
 Debug.Toggles>Skip Missing DLC: Stops confirmation dialog about missing DLC when loading saved games.
 Debug.Toggles>Skip Missing Mods: Stops confirmation dialog about missing mods when loading saved games.
@@ -495,12 +495,6 @@ ECM.Mission>Game Rules: Change the "Game Rules".
 ECM.Mission>Instant Colony Approval: Make your colony instantly approved (can be called before you summon your first victims).
 ECM.Mission>Instant Mission Goals: Shows list of mission goals and allows you to pass any of them.
 ECM.Mission>Rival Colonies: Add/remove rival colonies.
-ECM.Mission>Set Bonuses Commander: Applies the good effects only (no drawbacks).
-(if value already exists; set to larger amount).
-Restart to set disabled.
-ECM.Mission>Set Bonuses Sponsor: Applies the good effects only (no drawbacks).
-(if value already exists; set to larger amount).
-Restart to set disabled.
 ECM.Mission>Set Commander: Switch to a different commander.
 ECM.Mission>Set Sponsor: Switch to a different sponsor.
 ECM.Mission>Start Challenge: Shows a list of challenges you can start (replaces current).

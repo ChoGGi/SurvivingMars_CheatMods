@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v10.6 (Unreleased)
+## v10.7 (Unreleased)
+
+## v10.6 (30 Oct 2021)
 - Objects in examine show which map their on (see tooltip for map id).
 - Fixed "attempt to index a nil value (field 'def') (42)"
 

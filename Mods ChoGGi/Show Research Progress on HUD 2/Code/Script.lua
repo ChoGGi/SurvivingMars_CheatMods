@@ -6,28 +6,25 @@ local mod_HideWhenEmpty
 -- declared here, so we can use the func declared after ModOptions is declared
 local UpdateResearchProgressBar
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_QueueCount = CurrentModOptions:GetProperty("QueueCount")
 	mod_HideWhenEmpty = CurrentModOptions:GetProperty("HideWhenEmpty")
 
 	if not UIColony then
 		return
 	end
+
 	UpdateResearchProgressBar()
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- local some globals
 local T = T

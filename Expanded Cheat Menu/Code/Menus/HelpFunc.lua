@@ -37,7 +37,6 @@ do -- ModUpload
 		ChoGGi_WideAreaForestation = "Wide Area Forestation (upload 2)",
 	}
 
-
 	-- this keeps the check saved per session (true = steam, false = paradox)
 	local upload_to_who = true
 	-- true = desktop, false = desktop/console

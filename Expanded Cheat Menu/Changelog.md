@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v17.6 (Unreleased)
+## v17.7 (Unreleased)
+
+## v17.6 (30 Oct 2021)
 ### Fixed:
 - Terrain Flatten Toggle log spam (thanks Ski).
 

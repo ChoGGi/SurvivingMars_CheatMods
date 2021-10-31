@@ -147,8 +147,8 @@ end
 function RCBulldozer:UpdateBuildable()
 	-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
 	ToggleCollisions()
-	-- update uneven terrain checker thingy
-	GetGameMap(self):RefreshBuildableGrid()
+--~ 	-- update uneven terrain checker thingy
+--~ 	GetGameMap(self):RefreshBuildableGrid()
 	-- and back on when we're done
 	ToggleCollisions()
 end

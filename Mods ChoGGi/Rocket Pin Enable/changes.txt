@@ -1,3 +1,6 @@
+v0.6
+Unpinned status should be kept on landing.
+
 v0.5
 Picard update.
 

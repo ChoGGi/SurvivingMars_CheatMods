@@ -3,23 +3,19 @@
 local mod_IgnoreSpec
 local mod_SolsToTrain
 
--- fired when settings are changed/init
-local function ModOptions()
-	mod_IgnoreSpec = CurrentModOptions:GetProperty("IgnoreSpec")
-	mod_SolsToTrain = CurrentModOptions:GetProperty("SolsToTrain")
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
 		return
 	end
 
-	ModOptions()
+	mod_IgnoreSpec = CurrentModOptions:GetProperty("IgnoreSpec")
+	mod_SolsToTrain = CurrentModOptions:GetProperty("SolsToTrain")
 end
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local ChoOrig_Workplace_AddWorker = Workplace.AddWorker
 function Workplace:AddWorker(worker, shift)

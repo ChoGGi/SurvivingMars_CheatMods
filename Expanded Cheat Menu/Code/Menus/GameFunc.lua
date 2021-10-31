@@ -817,8 +817,8 @@ do -- FlattenGround
 			)
 			-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
 			ToggleCollisions(ChoGGi)
-			-- update uneven terrain checker thingy
-			ActiveGameMap:RefreshBuildableGrid()
+--~ 			-- update uneven terrain checker thingy
+--~ 			ActiveGameMap:RefreshBuildableGrid()
 			-- and back on when we're done
 			ToggleCollisions(ChoGGi)
 

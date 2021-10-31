@@ -3759,8 +3759,8 @@ do -- Editor toggle
 		else
 			-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
 			ToggleCollisions()
-			-- update uneven terrain checker thingy
-			ActiveGameMap:RefreshBuildableGrid()
+--~ 			-- update uneven terrain checker thingy
+--~ 			ActiveGameMap:RefreshBuildableGrid()
 			-- and back on when we're done
 			ToggleCollisions()
 			-- close dialog
@@ -4887,8 +4887,8 @@ do -- BuildableHexGrid
 			-- off we go
 			Temp.grid_thread = CreateRealTimeThread(function()
 				local ActiveGameMap = ActiveGameMap
-				-- update uneven terrain checker thingy
-				ActiveGameMap:RefreshBuildableGrid()
+--~ 				-- update uneven terrain checker thingy
+--~ 				ActiveGameMap:RefreshBuildableGrid()
 
 				-- local all the globals we use more than once for some speed
 				local buildable_z_grid = ActiveGameMap.buildable.z_grid

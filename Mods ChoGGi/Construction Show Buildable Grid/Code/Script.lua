@@ -1,29 +1,26 @@
 -- See LICENSE for terms
 
-local options
 local mod_Option1
 
--- fired when settings are changed/init
-local function ModOptions()
-	options = CurrentModOptions
-	mod_Option1 = options:GetProperty("Option1")
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_Option1 = CurrentModOptions:GetProperty("Option1")
+
 	local u = ChoGGi.UserSettings
-	u.DebugGridOpacity = options:GetProperty("DebugGridOpacity")
-	u.DebugGridSize = options:GetProperty("DebugGridSize")
+	u.DebugGridOpacity = CurrentModOptions:GetProperty("DebugGridOpacity")
+	u.DebugGridSize = CurrentModOptions:GetProperty("DebugGridSize")
 	if ChoGGi.SettingFuncs.WriteSettings then
 		ChoGGi.SettingFuncs.WriteSettings()
 	end
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local grids_visible
 
