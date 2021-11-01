@@ -986,9 +986,15 @@ function ChoGGi.MenuFuncs.ObjectCloner(flat)
 		return
 	end
 
+	local concrete = obj:IsKindOf("TerrainDepositConcrete")
+
 	local clone
+	-- make regolith work with Harvester
+	if concrete then
+		clone = TerrainDepositMarker:new()
+		clone:CopyProperties(obj)
 	-- clone dome = crashy
-	if obj:IsKindOf("Dome") then
+	elseif obj:IsKindOf("Dome") then
 		clone = g_Classes[obj.class]:new()
 		clone:CopyProperties(obj)
 	else
@@ -1017,6 +1023,10 @@ function ChoGGi.MenuFuncs.ObjectCloner(flat)
 		clone:SetPos(pos:SetTerrainZ())
 	else
 		clone:SetPos(pos)
+	end
+
+	if concrete then
+		clone:SpawnDeposit()
 	end
 
 end

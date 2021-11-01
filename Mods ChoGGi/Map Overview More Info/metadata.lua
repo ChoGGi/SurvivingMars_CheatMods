@@ -7,14 +7,15 @@ return PlaceObj("ModDef", {
 	"version", 7,
 	"version_major", 0,
 	"version_minor", 7,
-	"image", "Preview.png",
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
 	"TagInterface", true,
-	"description", [[Count of surface resources (metal/polymer) added to each sector in the map overview.
+	"description", [[
+Count of surface resources (metal/polymer) added to each sector in the map overview.
 Scan progress as overlay text to map sectors.
 
 Mod Options:
@@ -29,5 +30,6 @@ Known Issues:
 The info doesn't update in map overview (zoom in and out to update it).
 
 
-Requested by: Nobody... Though you can thank Skye Storme, since I noticed how often he had to mouse over sectors looking for them.]],
+Requested by: Nobody... Though you can thank Skye Storme, since I noticed how often he had to mouse over sectors looking for them.
+]],
 })

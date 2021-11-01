@@ -13,7 +13,7 @@ return {
 		"Help", T(302535920011953, [[-1: Disable mouse border scrolling, WASD works fine.
 0-2: Down scrolling may not work (dependant on aspect ratio?).
 3+ activation size of border.]]),
-		"DefaultValue", const.DefaultCameraRTS.ScrollBorder or 5,
+		"DefaultValue", const.DefaultCameraRTS and const.DefaultCameraRTS.ScrollBorder or 5,
 		"MinValue", -1,
 		"MaxValue", 50,
 	}),

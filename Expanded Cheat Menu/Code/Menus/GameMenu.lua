@@ -432,7 +432,7 @@ c = c + 1
 Actions[c] = {ActionName = Strings[302535920001653--[[Toggle Selection Panel Resize]]],
 	ActionMenubar = "ECM.Game.Interface",
 	ActionId = ".Selection Panel Resize",
-	ActionIcon = "CommonAssets/UI/Menu/XXXXXXXXX.tga",
+	ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.StopSelectionPanelResize,
@@ -446,7 +446,7 @@ c = c + 1
 Actions[c] = {ActionName = Strings[302535920001655--[[Toggle Scroll Selection Panel]]],
 	ActionMenubar = "ECM.Game.Interface",
 	ActionId = ".Scroll Selection Panel",
-	ActionIcon = "CommonAssets/UI/Menu/XXXXXXXXX.tga",
+	ActionIcon = "CommonAssets/UI/Menu/ListCollections.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.ScrollSelectionPanel,

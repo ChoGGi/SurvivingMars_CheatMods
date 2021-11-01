@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v17.7 (Unreleased)
+### Changed:
+- Cloning a regolith deposit now works with Harvester/etc (Thanks SkiRich).
 
 ## v17.6 (30 Oct 2021)
 ### Fixed:
