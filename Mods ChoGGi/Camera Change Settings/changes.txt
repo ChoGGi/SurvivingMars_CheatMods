@@ -1,1 +1,5 @@
+v0.3
+Underground/asteroid camera settings.
+
 v0.2
+Scroll speeds didn't work.

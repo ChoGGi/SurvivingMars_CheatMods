@@ -3080,7 +3080,6 @@ do -- DeleteObject
 						table.remove_entry(connected_domes[bad_obj], "handle", bad_obj.handle)
 					-- obj stuck outside the map area ("holding area" for off planet rockets and so on)
 					elseif (bad_obj:GetPos() or point20) == InvalidPos and not (bad_obj:IsKindOf("Colonist") and IsValid(bad_obj.holder)) then
-						-- stick in dome for user to remove
 						DeleteObject(bad_obj)
 					end
 				end

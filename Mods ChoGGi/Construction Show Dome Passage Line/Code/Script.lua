@@ -217,6 +217,14 @@ local function UpdateVisibleShow(item)
 	end
 end
 
+-- remove removed domes from dome_list
+local function ListCleanup(dome, item)
+	item.line:delete()
+	item.hex1:delete()
+	item.hex2:delete()
+	dome_list[dome] = nil
+end
+
 local HexSize = const.HexSize
 --~ local cursor_length = max_int
 local cursor_pos = point20
@@ -283,14 +291,6 @@ function CursorBuilding:GameInit(...)
 	end
 
 	return ChoOrig_CursorBuilding_GameInit(self, ...)
-end
-
--- remove removed domes from dome_list
-local function ListCleanup(dome, item)
-	item.line:delete()
-	item.hex1:delete()
-	item.hex2:delete()
-	dome_list[dome] = nil
 end
 
 local ChoOrig_CursorBuilding_Done = CursorBuilding.Done

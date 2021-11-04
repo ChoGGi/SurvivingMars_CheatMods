@@ -8,6 +8,11 @@ local mod_MaxHeight
 local mod_MoveSpeed
 
 local function UpdateCamera()
+	-- make sure we're in-game
+	if not UICity then
+		return
+	end
+
 	local params = cameraRTS.GetProperties(1)
 
 	params.RotateSpeed = mod_RotateSpeed
@@ -15,13 +20,14 @@ local function UpdateCamera()
 	params.MaxZoom = mod_MaxZoom
 	params.ScrollBorder = mod_ScrollBorder
 	params.MaxHeight = mod_MaxHeight
-	params.mod_MoveSpeedNormal = mod_MoveSpeed
-	params.mod_MoveSpeedFast = mod_MoveSpeed * 2
+	params.MoveSpeedNormal = mod_MoveSpeed
+	params.MoveSpeedFast = mod_MoveSpeed * 2
 
 	cameraRTS.SetProperties(1, params)
 end
 OnMsg.CityStart = UpdateCamera
 OnMsg.LoadGame = UpdateCamera
+OnMsg.ChangeMapDone = UpdateCamera
 
 -- fired when settings are changed/init
 local function ModOptions(id)
@@ -39,10 +45,6 @@ local function ModOptions(id)
 	mod_MaxHeight = options:GetProperty("MaxHeight")
 	mod_MoveSpeed = options:GetProperty("MoveSpeed")
 
-	-- make sure we're in-game
-	if not UICity then
-		return
-	end
 	UpdateCamera()
 end
 -- load default/saved settings
