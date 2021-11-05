@@ -31,7 +31,8 @@ end
 local function UpdateBuildings()
 	if not mod_EnableMod then
 		-- enable main if duststorm
-		DisableMain(label, false)
+		DisableMain("MOXIE", false)
+		DisableMain("MoistureVaporator", false)
 		return
 	end
 
@@ -45,8 +46,12 @@ local function UpdateBuildings()
 
 end
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 
 	-- make sure we're in-game
@@ -56,17 +61,10 @@ local function ModOptions()
 
 	UpdateBuildings()
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
 -- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	-- I'm sure it wouldn't be that hard to only call this msg for the mod being applied, but...
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+OnMsg.ApplyModOptions = ModOptions
 
 OnMsg.CityStart = UpdateBuildings
 OnMsg.LoadGame = UpdateBuildings

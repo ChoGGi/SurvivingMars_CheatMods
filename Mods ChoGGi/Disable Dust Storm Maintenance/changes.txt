@@ -1,2 +1,5 @@
+v0.3
+Disabling it didn't work.
+
 v0.2
 Forgot to add req for my library.

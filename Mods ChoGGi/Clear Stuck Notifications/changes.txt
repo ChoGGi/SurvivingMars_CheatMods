@@ -1,2 +1,5 @@
+v0.3
+Added mod options.
+
 v0.2
 Log spam (thanks Ski).

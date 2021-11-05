@@ -2,22 +2,30 @@
 
 local RemoveOnScreenNotification = RemoveOnScreenNotification
 
-local mod_EnableMod
+local mod_ClearMysteries
 local mod_ClearAll
+local mod_ClearMysteryLog
 
 local function StartupCode()
-	if not mod_EnableMod or not UICity then
+	if not UICity then
 		return
 	end
 
 	local OnScreenNotificationPresets = OnScreenNotificationPresets
 	for id in pairs(OnScreenNotificationPresets) do
-		if mod_ClearAll then
-			RemoveOnScreenNotification(id, UICity.map_id)
-			RemoveOnScreenNotification(id)
-		elseif id ~= "MysteryLog" and id:sub(1, 7) == "Mystery" then
-			RemoveOnScreenNotification(id, UICity.map_id)
-			RemoveOnScreenNotification(id)
+		if id == "MysteryLog" then
+			if mod_ClearMysteryLog then
+				RemoveOnScreenNotification("MysteryLog", UICity.map_id)
+				RemoveOnScreenNotification("MysteryLog")
+			end
+		else
+			if mod_ClearAll then
+				RemoveOnScreenNotification(id, UICity.map_id)
+				RemoveOnScreenNotification(id)
+			elseif mod_ClearMysteries and id:sub(1, 7) == "Mystery" then
+				RemoveOnScreenNotification(id, UICity.map_id)
+				RemoveOnScreenNotification(id)
+			end
 		end
 	end
 end
@@ -33,8 +41,9 @@ local function ModOptions(id)
 		return
 	end
 
-	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+	mod_ClearMysteries = CurrentModOptions:GetProperty("ClearMysteries")
 	mod_ClearAll = CurrentModOptions:GetProperty("ClearAll")
+	mod_ClearMysteryLog = CurrentModOptions:GetProperty("ClearMysteryLog")
 
 	-- make sure we're in-game UIColony
 	if not UICity then

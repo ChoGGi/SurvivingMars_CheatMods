@@ -20,7 +20,6 @@ DefineClass.MarsCompanion = {
 function MarsCompanion:GameInit()
 	self.boredom_count = 0
 
-	-- label stuff
 	self.city = self.hub.city or UICity
 	self.city:AddToLabel("MarsCompanion", self)
 

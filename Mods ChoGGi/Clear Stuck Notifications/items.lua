@@ -2,15 +2,25 @@
 
 return {
 	PlaceObj("ModItemOptionToggle", {
-		"name", "EnableMod",
-		"DisplayName", T(302535920011303, "<color ChoGGi_yellow>Enable Mod</color>"),
-		"Help", T(302535920011793, "Disable mod without having to see missing mod msg."),
+		"name", "ClearMysteries",
+		"DisplayName", T(0000, "Clear Mysteries"),
+		"Help", T(0000, [[This will remove any mystery ones.
+
+(excludes Mystery Log)]]),
 		"DefaultValue", true,
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "ClearAll",
 		"DisplayName", T(0000, "Clear All!"),
-		"Help", T(0000, "This will clear ALL notifications!"),
+		"Help", T(0000, [[This will clear ALL notifications!
+
+(excludes Mystery Log)]]),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "ClearMysteryLog",
+		"DisplayName", T(0000, "Clear Mystery Log"),
+		"Help", T(0000, "This will remove the Mystery Log!"),
 		"DefaultValue", false,
 	}),
 }
