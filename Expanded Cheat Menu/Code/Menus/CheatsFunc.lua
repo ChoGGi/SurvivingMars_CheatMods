@@ -10,6 +10,23 @@ local SelObject = ChoGGi.ComFuncs.SelObject
 local Strings = ChoGGi.Strings
 local GetCursorWorldPos = GetCursorWorldPos
 
+function ChoGGi.MenuFuncs.CaveIn()
+	local TriggerCaveIn = TriggerCaveIn
+	local IsValid = IsValid
+	local ActiveMapID = ActiveMapID
+
+	-- disable any struts around
+	for _ = 1, 25 do
+		local strut = TriggerCaveIn(ActiveMapID, GetCursorWorldPos())
+		if IsValid(strut) and strut:IsKindOf("SupportStruts") then
+			strut:CheatMalfunction()
+		else
+			break
+		end
+	end
+
+end
+
 function ChoGGi.MenuFuncs.SpawnPOIs()
 	local item_list = {}
 	local c = 0

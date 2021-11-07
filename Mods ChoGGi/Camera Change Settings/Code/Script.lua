@@ -13,17 +13,17 @@ local function UpdateCamera()
 		return
 	end
 
-	local params = cameraRTS.GetProperties(1)
+	local properties = cameraRTS.GetProperties(1)
 
-	params.RotateSpeed = mod_RotateSpeed
-	params.UpDownSpeed = mod_UpDownSpeed
-	params.MaxZoom = mod_MaxZoom
-	params.ScrollBorder = mod_ScrollBorder
-	params.MaxHeight = mod_MaxHeight
-	params.MoveSpeedNormal = mod_MoveSpeed
-	params.MoveSpeedFast = mod_MoveSpeed * 2
+	properties.RotateSpeed = mod_RotateSpeed
+	properties.UpDownSpeed = mod_UpDownSpeed
+	properties.MaxZoom = mod_MaxZoom
+	properties.ScrollBorder = mod_ScrollBorder
+	properties.MaxHeight = mod_MaxHeight
+	properties.MoveSpeedNormal = mod_MoveSpeed
+	properties.MoveSpeedFast = mod_MoveSpeed * 2
 
-	cameraRTS.SetProperties(1, params)
+	cameraRTS.SetProperties(1, properties)
 end
 OnMsg.CityStart = UpdateCamera
 OnMsg.LoadGame = UpdateCamera

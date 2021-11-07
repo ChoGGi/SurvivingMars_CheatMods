@@ -20,6 +20,10 @@ return PlaceObj("ModDef", {
 Adjust camera settings: Rotation/move speed, zoom level, border scroll size.
 
 
+Known Issues:
+Games will be saved zoomed in from max zoom.
+
+
 Partially requested by Arthurdubya.
 ]],
 })

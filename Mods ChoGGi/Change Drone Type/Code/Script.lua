@@ -8,21 +8,19 @@ end
 local mod_Aerodynamics
 local mod_AlwaysWasp
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_Aerodynamics = CurrentModOptions:GetProperty("Aerodynamics")
 	mod_AlwaysWasp = CurrentModOptions:GetProperty("AlwaysWasp")
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- function called when a drone is created
 function City:CreateDrone()
@@ -112,13 +110,12 @@ function OnMsg.ClassesPostprocess()
 end
 
 -- set default drone type
-local GetMissionSponsor = GetMissionSponsor
 local function StartupCode()
-	local city = UICity
+	local UICity = UICity
 	if mod_AlwaysWasp then
-		city.drone_class = "FlyingDrone"
+		UICity.drone_class = "FlyingDrone"
 	else
-		city.drone_class = city.drone_class or GetMissionSponsor().drone_class or "Drone"
+		UICity.drone_class = UICity.drone_class or GetMissionSponsor().drone_class or "Drone"
 	end
 end
 

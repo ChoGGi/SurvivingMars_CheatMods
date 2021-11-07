@@ -1,6 +1,9 @@
 ## ECM Changelog
 
 ## v17.7 (Unreleased)
+### Added:
+- Menu>Cheats>Disasters>Cave-in: Triggers cave-in at location (and disables any nearby struts).
+
 ### Changed:
 - Cloning a regolith deposit now works with Harvester/etc (Thanks SkiRich).
 

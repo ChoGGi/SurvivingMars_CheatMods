@@ -1,3 +1,7 @@
+-- See LICENSE for terms (for my code only, not sure what Crysm used)
+
+
+--~ AutomaticDronePlant
 
 local StringIdBase = 499093306
 

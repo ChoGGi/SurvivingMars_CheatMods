@@ -7,7 +7,7 @@ local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920001355--[[Map]]] .. " " .. Translate(5422--[[Exploration]]),
+Actions[c] = {ActionName = Strings[302535920001355--[[Map]]] .. " " .. Translate(5422, "Exploration"),
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Map Exploration",
 	ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
@@ -16,7 +16,7 @@ Actions[c] = {ActionName = Strings[302535920001355--[[Map]]] .. " " .. Translate
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(5661--[[Mystery Log]]),
+Actions[c] = {ActionName = Translate(5661, "Mystery Log"),
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Mystery Log",
 	ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
@@ -34,7 +34,7 @@ Certain mysteries need certain objects which get placed when the map is generate
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(11412--[[Trigger fireworks]]),
+Actions[c] = {ActionName = Translate(11412, "Trigger fireworks"),
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Trigger fireworks",
 	ActionIcon = "CommonAssets/UI/Menu/DisableRMMaps.tga",
@@ -43,7 +43,7 @@ Actions[c] = {ActionName = Translate(11412--[[Trigger fireworks]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000318--[[Unlock]]] .. " " .. Translate(697482021580--[[Achievements]]),
+Actions[c] = {ActionName = Strings[302535920000318--[[Unlock]]] .. " " .. Translate(697482021580, "Achievements"),
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Unlock Achievements",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
@@ -52,7 +52,7 @@ Actions[c] = {ActionName = Strings[302535920000318--[[Unlock]]] .. " " .. Transl
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000266--[[Spawn]]] .. " " .. Translate(547--[[Colonists]]),
+Actions[c] = {ActionName = Strings[302535920000266--[[Spawn]]] .. " " .. Translate(547, "Colonists"),
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Spawn Colonists",
 	ActionIcon = "CommonAssets/UI/Menu/UncollectObjects.tga",
@@ -111,7 +111,7 @@ Actions[c] = {ActionName = Strings[302535920000236--[[Mod Editor]]],
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(311--[[Research]]),
+Actions[c] = {ActionName = Translate(311, "Research"),
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Research",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -120,7 +120,7 @@ Actions[c] = {ActionName = Translate(311--[[Research]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(311--[[Research]]) .. " / " .. Strings[302535920000318--[[Unlock]]] .. " " .. Translate(3734--[[Tech]]),
+Actions[c] = {ActionName = Translate(311, "Research") .. " / " .. Strings[302535920000318--[[Unlock]]] .. " " .. Translate(3734, "Tech"),
 	ActionMenubar = "ECM.Cheats.Research",
 	ActionId = ".Research / Unlock Tech",
 	ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
@@ -130,7 +130,7 @@ Actions[c] = {ActionName = Translate(311--[[Research]]) .. " / " .. Strings[3025
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(311--[[Research]]) .. " " .. Strings[302535920000281--[[Remove]]],
+Actions[c] = {ActionName = Translate(311, "Research") .. " " .. Strings[302535920000281--[[Remove]]],
 	ActionMenubar = "ECM.Cheats.Research",
 	ActionId = ".Research Remove",
 	ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
@@ -177,7 +177,7 @@ Actions[c] = {ActionName = Strings[302535920000349--[[Reset All Research]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(7790--[[Research Current Tech]]),
+Actions[c] = {ActionName = Translate(7790, "Research Current Tech"),
 	ActionMenubar = "ECM.Cheats.Research",
 	ActionId = ".Research Current Tec",
 	ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
@@ -209,7 +209,7 @@ Actions[c] = {ActionName = Strings[302535920000355--[[Outsourcing For Free]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(970197122036--[[Maximum Outsource Orders]]),
+Actions[c] = {ActionName = Translate(970197122036, "Maximum Outsource Orders"),
 	ActionMenubar = "ECM.Cheats.Research",
 	ActionId = ".Maximum Outsource Orders",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
@@ -254,7 +254,7 @@ Actions[c] = {ActionName = Strings[302535920000359--[[Breakthroughs From Omega T
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(1000162--[[Menu]]),
+Actions[c] = {ActionName = Translate(1000162, "Menu"),
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Menu",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -337,7 +337,7 @@ AddMaintenancePnts, MakeSphereTarget, SpawnWorker, SpawnVisitor]]]
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(948928900281--[[Story Bits]]),
+Actions[c] = {ActionName = Translate(948928900281, "Story Bits"),
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".StoryBits",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -383,7 +383,7 @@ Actions[c] = {ActionName = Strings[302535920001584--[[Testing Delete Backlog]]],
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(3984--[[Anomalies]]),
+Actions[c] = {ActionName = Translate(3984, "Anomalies"),
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Anomalies",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -392,7 +392,7 @@ Actions[c] = {ActionName = Translate(3984--[[Anomalies]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(25--[[Anomaly Scanning]]),
+Actions[c] = {ActionName = Translate(25, "Anomaly Scanning"),
 	ActionMenubar = "ECM.Cheats.Anomalies",
 	ActionId = ".Anomaly Scanning",
 	ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
@@ -429,7 +429,7 @@ Actions[c] = {ActionName = Strings[302535920000931--[[Spawn POIs]]],
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(3983--[[Disasters]]),
+Actions[c] = {ActionName = Translate(3983, "Disasters"),
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Disasters",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -438,7 +438,7 @@ Actions[c] = {ActionName = Translate(3983--[[Disasters]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(3983--[[Disasters]]),
+Actions[c] = {ActionName = Translate(3983, "Disasters"),
 	ActionMenubar = "ECM.Cheats.Disasters",
 	ActionId = ".Disasters",
 	ActionIcon = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
@@ -477,6 +477,16 @@ Actions[c] = {ActionName = Strings[302535920001087--[[Missile Strike]]],
 	RolloverText = Strings[302535920001588--[[Strike a random pos or at mouse cursor if using shortcut.]]],
 	OnAction = ChoGGi.MenuFuncs.MissileStrike,
 	ActionShortcut = "Ctrl-Shift-M",
+	ActionBindable = true,
+}
+c = c + 1
+Actions[c] = {ActionName = Translate(13066, "Cave-in"),
+	ActionMenubar = "ECM.Cheats.Disasters",
+	ActionId = ".Cave-in",
+	ActionIcon = "CommonAssets/UI/Menu/smooth_terrain.tga",
+	RolloverText = Strings[302535920000484--[[Triggers cave-in at location (and disables any nearby struts).]]],
+	OnAction = ChoGGi.MenuFuncs.CaveIn,
+	ActionShortcut = "Ctrl-Shift-G",
 	ActionBindable = true,
 }
 

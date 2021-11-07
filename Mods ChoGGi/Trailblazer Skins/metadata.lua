@@ -8,10 +8,10 @@ return PlaceObj("ModDef", {
 	"version_major", 0,
 	"version_minor", 1,
 	"author", "ChoGGi",
+	"image", "Preview.jpg",
 	"code", {
 		"Code/Script.lua",
 	},
-	"image", "Preview.png",
 	"description", [[
 Enable Trailblazer Skins.
 ]],

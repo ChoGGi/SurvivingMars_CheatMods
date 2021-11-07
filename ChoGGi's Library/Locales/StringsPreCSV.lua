@@ -3,7 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
-302535920000484, ""
 302535920001258, ""
 302535920001259, ""
 302535920001262, ""
@@ -893,6 +892,7 @@ Use with <green>%s</green> to fill up a dome with spires."
 See also %s."
 end end end !Skipped Line!
 do !Skipped Line! [[CheatsMenu.lua" "CheatsFunc.lua]] !Skipped Line!
+302535920000484, "Triggers cave-in at location (and disables any nearby struts)."
 302535920001087, "Missile Strike"
 302535920001086, "Meteor Strike"
 302535920000840, "All colonists spawn as this age."
