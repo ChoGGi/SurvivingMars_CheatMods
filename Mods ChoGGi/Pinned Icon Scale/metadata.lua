@@ -1,0 +1,24 @@
+return PlaceObj("ModDef", {
+	"title", "Pinned Icon Scale",
+	"id", "ChoGGi_PinnedIconScale",
+	"steam_id", "2653690138",
+	"pops_any_uuid", "1123bd0b-e4aa-462c-af83-be5d18ee2bef",
+	"lua_revision", 1007000, -- Picard
+	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
+	"image", "Preview.png",
+	"author", "ChoGGi",
+	"code", {
+		"Code/Script.lua",
+	},
+	"has_options", true,
+	"TagInterface", true,
+	"description", [[
+If you have the UI Scale set high, but want smaller pinned icons (or just smaller).
+See mod options to set amount.
+
+
+Requested by TrickyNick77.
+]],
+})

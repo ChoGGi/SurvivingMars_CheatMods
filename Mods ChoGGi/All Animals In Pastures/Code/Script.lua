@@ -473,12 +473,15 @@ function PastureAnimal:Graze(...)
 	else
 		item = animals[self.animal_type]
 	end
-	if self.pasture:IsKindOf("InsidePasture") then
-		self.grazing_spot = item.grazing_spot_in
-		pasture_animals[self.animal_type].grazing_spot = item.grazing_spot_in
-	else
-		self.grazing_spot = item.grazing_spot_out
-		pasture_animals[self.animal_type].grazing_spot = item.grazing_spot_out
+
+	if item then
+		if self.pasture:IsKindOf("InsidePasture") then
+			self.grazing_spot = item.grazing_spot_in
+			pasture_animals[self.animal_type].grazing_spot = item.grazing_spot_in
+		else
+			self.grazing_spot = item.grazing_spot_out
+			pasture_animals[self.animal_type].grazing_spot = item.grazing_spot_out
+		end
 	end
 
 	return ChoOrig_PastureAnimal_Graze(self, ...)
@@ -497,6 +500,14 @@ local roam_rand3 = {"breakDownIdle", "chargingStationIdle", "cleanBuildingIdle",
 
 -- add new non-pasture animal objects
 function OnMsg.ClassesPostprocess()
+	-- change to opened when selected
+	local ChoOrig_OpenPasture_OnSelected = OpenPasture.OnSelected
+	function OpenPasture:OnSelected(...)
+		if mod_OpenOnSelect and self.entity == "OpenPasture" then
+			self:ChangeEntity("OpenPasture_Open")
+		end
+		return ChoOrig_OpenPasture_OnSelected(self, ...)
+	end
 
 	-- mark "my" animals
 	local ChoOrig_PastureAnimal_GameInit = PastureAnimal.GameInit
@@ -571,14 +582,6 @@ function OnMsg.ClassesPostprocess()
 
 end
 
--- change to opened when selected
-local ChoOrig_OpenPasture_OnSelected = OpenPasture.OnSelected
-function OpenPasture:OnSelected(...)
-	if mod_OpenOnSelect and self.entity == "OpenPasture" then
-		self:ChangeEntity("OpenPasture_Open")
-	end
-  return ChoOrig_OpenPasture_OnSelected(self, ...)
-end
 -- revert back when unselected
 function OnMsg.SelectionRemoved(obj)
 	if obj.entity == "OpenPasture_Open" and obj:IsKindOf("OpenPasture") and not GetOpenAirBuildings(ActiveMapID) then

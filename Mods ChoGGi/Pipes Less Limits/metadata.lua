@@ -1,19 +1,20 @@
 return PlaceObj("ModDef", {
 	"title", "Pipes Less Limits",
-	"version", 1,
-	"version_major", 0,
-	"version_minor", 1,
-	"image", "Preview.png",
 	"id", "ChoGGi_PipesLessLimits",
 	"steam_id", "1819506189",
 	"pops_any_uuid", "0fb8383a-6320-4a1f-864e-21b962291424",
-	"author", "ChoGGi",
 	"lua_revision", 1007000, -- Picard
+	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
+	"image", "Preview.jpg",
+	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 	"TagGameplay", true,
-	"description", [[Allows more buildings to be built under pipes.
+	"description", [[
+Allows more buildings to be built under pipes.
 Subsurface Heater, Tunnel, Landing/Trade Pad
 
 Some won't stick through depending on angle, up to you to make it not stupid looking:

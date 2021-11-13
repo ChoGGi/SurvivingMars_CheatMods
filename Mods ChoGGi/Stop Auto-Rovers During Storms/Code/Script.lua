@@ -38,8 +38,11 @@ local function IsWorking(obj)
 	return obj.working
 end
 
+-- for rovers without automode
+local IsAutoModeEnabled = AutoMode.IsAutoModeEnabled
+
 local function WaitItOut(idle_func, self, ...)
-	if self.auto_mode_on and g_MeteorStorm then
+	if IsAutoModeEnabled(self) and g_MeteorStorm then
 		if (mod_NearestLaser or mod_NearestHub) and not self.ChoGGi_AutoRoversDuringStorms then
 			local valid_obj, working_objs
 

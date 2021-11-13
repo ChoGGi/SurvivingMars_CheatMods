@@ -31,12 +31,15 @@ local pms = {
 	},
 }
 
-local options
 local mod_ShowRocket
 
--- fired when settings are changed
-local function ModOptions()
-	options = CurrentModOptions
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	local options = CurrentModOptions
 
 	pms.mine_amount = options:GetProperty("mine_amount") * r
 	pms.max_res_amount_man = options:GetProperty("max_res_amount_man") * r
@@ -51,42 +54,40 @@ local function ModOptions()
 	pms.mine_time_anim.PreciousMetals = options:GetProperty("mine_time_animPreciousMetals")
 	pms.mine_time_idle.PreciousMetals = options:GetProperty("mine_time_idlePreciousMetals")
 	pms.visual_cues = options:GetProperty("visual_cues")
+
 	mod_ShowRocket = options:GetProperty("ShowRocket")
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local function StartupCode()
-	-- reset the prod count (for overview or something)
-	local miners = UICity.labels.PortableMiner or ""
-	for i = 1, #miners do
-		local miner = miners[i]
-		miner.city = UICity
-		miner:SpawnThumper()
-		if miner.lifetime_table then
-			break
+	local Cities = Cities or ""
+	for i = 1, #Cities do
+		local city = Cities[i]
+		-- reset the prod count (for overview or something)
+		local miners = city.labels.PortableMiner or ""
+		for j = 1, #miners do
+			local miner = miners[j]
+			miner.city = city
+			miner:SpawnThumper()
+			if miner.lifetime_table then
+				break
+			end
+			miner.lifetime_table = {
+				All = 0,
+				Concrete = 0,
+				Metals = 0,
+				PreciousMetals = 0,
+				-- lukes
+				Radioactive = 0,
+				Hydrocarbon = 0,
+				Crystals = 0,
+			}
 		end
-		miner.lifetime_table = {
-			All = 0,
-			Concrete = 0,
-			Metals = 0,
-			PreciousMetals = 0,
-			-- lukes
-			Radioactive = 0,
-			Hydrocarbon = 0,
-			Crystals = 0,
-		}
 	end
+
 end
 
 OnMsg.CityStart = StartupCode
@@ -110,6 +111,8 @@ DefineClass.PortableMiner = {
 		"TerrainDepositExtractor",
 		-- not needed for metals, but to show prod info...
 		"BuildingDepositExploiterComponent",
+		-- use AutoMode funcs for future compat
+		"AutoMode",
 	},
 	-- these are all set above
 --~ 	name = T(302535920011207, [[RC Miner]]),
@@ -132,8 +135,6 @@ DefineClass.PortableMiner = {
 	lifetime_table = false,
 	lifetime_production = 0,
 	production_per_day = 0,
-
-	has_auto_mode = true,
 
 	malfunction_start_state = "malfunction",
 	malfunction_idle_state = "malfunctionIdle",
@@ -370,7 +371,7 @@ function PortableMiner:ProcAutomation()
 		local miners = self.city.labels.PortableMiner or ""
 		for i = 1, #miners do
 			local miner = miners[i]
-			miner.auto_mode_on = false
+			miner:SetAutoMode(false)
 			miner:ShowNotWorkingSign(true)
 			miner:SetCommand("Idle")
 		end
@@ -382,7 +383,7 @@ end
 function PortableMiner:ToggleAutoMode(broadcast)
 	-- If it's on it's about to be turned off
 	if IsValid(self.stockpile) then
-		self.stockpile.max_z = self.auto_mode_on and pms.max_z_stack_man or pms.max_z_stack_auto
+		self.stockpile.max_z = self:IsAutoModeEnabled() and pms.max_z_stack_man or pms.max_z_stack_auto
 	end
 	return BaseRover.ToggleAutoMode(self, broadcast)
 end
@@ -394,12 +395,12 @@ function PortableMiner:Idle()
 		--	get to work
 		self:SetCommand("Load")
 	-- we in auto-mode?
-	elseif g_RoverAIResearched and self.auto_mode_on then
+	elseif g_RoverAIResearched and self:IsAutoModeEnabled() then
 		self:ProcAutomation()
 	-- check if stockpile is existing and full
 	elseif not self.notworking_sign and IsValid(self.stockpile)
 			and (self:GetVisualDist(self.stockpile) >= 5000 or
-			self.stockpile:GetStoredAmount() < (self.auto_mode_on
+			self.stockpile:GetStoredAmount() < (self:IsAutoModeEnabled()
 			and pms.max_res_amount_auto or pms.max_res_amount_man)) then
 		self:ShowNotWorkingSign(false)
 	end
@@ -483,7 +484,7 @@ function PortableMiner:GetStockpile()
 			stockpile.resource = self.resource
 		end
 		stockpile.miner_handle = self.handle
-		stockpile.max_z = self.auto_mode_on and pms.max_z_stack_auto or pms.max_z_stack_man
+		stockpile.max_z = self:IsAutoModeEnabled() and pms.max_z_stack_auto or pms.max_z_stack_man
 		-- assign it to the miner
 		self.stockpile = stockpile
 	end
@@ -507,7 +508,7 @@ function PortableMiner:Load()
 		-- create or use existing
 		self:GetStockpile()
 		--	stop at max_res_amount per stockpile
-		if self.stockpile:GetStoredAmount() < (self.auto_mode_on and pms.max_res_amount_auto or pms.max_res_amount_man) then
+		if self.stockpile:GetStoredAmount() < (self:IsAutoModeEnabled() and pms.max_res_amount_auto or pms.max_res_amount_man) then
 			-- remove the sign
 			self:ShowNotWorkingSign(false)
 			-- up n down n up n down

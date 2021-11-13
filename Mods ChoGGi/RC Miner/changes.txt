@@ -1,3 +1,6 @@
+v3.0
+AutoMode compat update.
+
 v2.9
 Picard BB dlc update.
 

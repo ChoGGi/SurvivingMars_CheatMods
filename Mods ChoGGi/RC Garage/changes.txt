@@ -1,3 +1,6 @@
+v1.1
+AutoMode compat update.
+
 v1.0
 Added a collect idle rovers toggle to garage.
 This will ignore rovers with deployed drones or with auto mode on.

@@ -1,2 +1,5 @@
+v0.3
+Didn't check mod option for reveal darkness.
+
 v0.2
 Mod option to reveal darkness.

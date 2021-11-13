@@ -14,20 +14,21 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "View Colony Map",
-	"version", 16,
-	"version_major", 1,
-	"version_minor", 6,
-	"image", "Preview.png",
 	"id", "ChoGGi_ViewColonyMap",
 	"steam_id", "1491973763",
 	"pops_any_uuid", "28b23a4f-7e8f-49b0-965a-3c14a8e4b919",
+	"lua_revision", 1007000, -- Picard
+	"version", 16,
+	"version_major", 1,
+	"version_minor", 6,
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
-	"lua_revision", 1007000, -- Picard
 	"has_options", true,
-	"description", [[Shows the map before you load it in the select colony screen.
+	"description", [[
+Shows the map before you load it in the select colony screen.
 
 Includes a checkbox to show anomaly breakthroughs for each location.
 If you use a rule that changes the breakthrough list, then ignore the breakthrough list shown as it isn't accurate anymore.

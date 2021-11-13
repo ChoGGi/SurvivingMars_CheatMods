@@ -1,12 +1,20 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library",
+			"version_major", 10,
+			"version_minor", 6,
+		}),
+	},
 	"title", "Rotate All Buildings",
 	"id", "ChoGGi_RotateAllBuildings",
 	"pops_any_uuid", "e22c2a8a-60a1-4736-9c11-b4ecbe14dce0",
 	"steam_id", "1566471085",
 	"lua_revision", 1007000, -- Picard
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {

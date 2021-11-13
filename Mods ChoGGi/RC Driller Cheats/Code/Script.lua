@@ -1,9 +1,16 @@
 -- See LICENSE for terms
 
+local MapsForEach = MapsForEach
+local IsKindOf = IsKindOf
+local GetRealm = GetRealm
+local GetRandomPassableAround = GetRandomPassableAround
+
 if not g_AvailableDlc.gagarin then
 	print("RC Driller Cheats: Missing Space Race DLC!")
 	return
 end
+
+ChoGGi.ComFuncs.AddParentToClass(RCDriller, "AutoMode")
 
 local mod_EnableMod
 local mod_AllowDeep
@@ -94,7 +101,7 @@ function RCDriller:Automation_Gather()
 			if self:GetDist2D(pos) > 15000 then
 				self:ReleaseStockpile()
 			end
-      self:SetCommand("Drill", deposit, GetRandomPassableAround(pos, 500, 500, UICity))
+      self:SetCommand("Drill", deposit, GetRandomPassableAround(pos, 500, 500, self.city or UICity))
     else
       unreachable_objects[deposit] = true
     end
@@ -118,7 +125,7 @@ function RCDriller:Idle(...)
 
   self:Gossip("Idle")
   self:SetState("idle")
-  if g_RoverAIResearched and self.auto_mode_on then
+  if g_RoverAIResearched and self:IsAutoModeEnabled() then
     self:ProcAutomation()
 	else
 		Halt()
@@ -132,11 +139,11 @@ local allowed_res = {
 }
 local ChoOrig_RCDriller_CanExploit = RCDriller.CanExploit
 function RCDriller:CanExploit(deposit, ...)
-	if not mod_AllowDeep then
-		return ChoOrig_RCDriller_CanExploit(self, deposit, ...)
+	if mod_AllowDeep then
+		return allowed_res[deposit and deposit.resource]
 	end
 
-	return allowed_res[deposit.resource]
+	return ChoOrig_RCDriller_CanExploit(self, deposit, ...)
 end
 
 RCDriller.ToggleAutoMode_Update = RCTransport.ToggleAutoMode_Update
@@ -165,7 +172,7 @@ function OnMsg.ClassesPostprocess()
 			"Icon", "UI/Icons/IPButtons/automated_mode_off.tga",
 
 			"OnContextUpdate", function(self, context)
-				if context.auto_mode_on then
+				if context:IsAutoModeEnabled() then
 					self:SetIcon("UI/Icons/IPButtons/automated_mode_on.tga")
 				else
 					self:SetIcon("UI/Icons/IPButtons/automated_mode_off.tga")
@@ -174,8 +181,11 @@ function OnMsg.ClassesPostprocess()
 
 			"OnPress", function(self)
 				local c = self.context
-				c.auto_mode_on = not c.auto_mode_on
+				-- toggle
+				c:SetAutoMode(not c:IsAutoModeEnabled())
+				--
 				ObjModified(c)
+				-- force auto procing
 				if c then
 					c:SetCommand("Idle")
 				end
@@ -183,4 +193,19 @@ function OnMsg.ClassesPostprocess()
 		})
 	)
 
+end
+
+-- update driller when rubble cleared underground (I could check if it already happens, but it won't hurt much to fire twice)
+local ChoOrig_RubbleBase_OnClear = RubbleBase.OnClear
+function RubbleBase.OnClear(...)
+	if mod_EnableMod then
+		-- Lua\Units\BaseRover.lua > local InvalidateAllRoverUnreachables = function()
+		MapsForEach("map", "BaseRover", function(r)
+			if IsKindOf(r, "AutoMode") then
+				r:Notify("UnreachableObjectsInvalidated")
+			end
+		end)
+	end
+
+	return ChoOrig_RubbleBase_OnClear(...)
 end

@@ -348,6 +348,9 @@ function RCGarage:OnDemolish(...)
 	self:RemoveGarage()
 end
 
+-- for rovers without automode
+local IsAutoModeEnabled = AutoMode.IsAutoModeEnabled
+
 function RCGarage:ToggleCollectIdleRovers()
 	-- toggle saved setting
 	self.garages.collect_idle_rovers = not self.garages.collect_idle_rovers
@@ -358,7 +361,7 @@ function RCGarage:ToggleCollectIdleRovers()
 		for i = 1, #objs do
 			local obj = objs[i]
 			-- ignore deployIdle rovers
-			if not obj.ChoGGi_InGarage and not obj.auto_mode_on and obj:GetStateText() == "idle" then
+			if not obj.ChoGGi_InGarage and not IsAutoModeEnabled(obj) and obj:GetStateText() == "idle" then
 				obj:SetCommand("ChoGGi_UseGarage", obj:ChoGGi_GetNearestGarage())
 				SetUnitControlInteractionMode(obj, false) --toggle button
 			end

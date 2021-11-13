@@ -11,9 +11,9 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_RCGarage",
 	"steam_id", "1557866331",
 	"pops_any_uuid", "fd81692a-a91f-4f22-94f9-ad24a9442e01",
-	"version", 10,
+	"version", 11,
 	"version_major", 1,
-	"version_minor", 0,
+	"version_minor", 1,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"lua_revision", 1007000, -- Picard
@@ -23,7 +23,8 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"has_options", true,
 	"TagBuildings", true,
-	"description", [[Massive underground connected parking garage for idle rovers, so you don't need to go looking for them.
+	"description", [[
+Massive underground connected parking garage for idle rovers, so you don't need to go looking for them.
 The more stored the more electricity it uses (0.5 per), and you can't remove any rovers if the main garage isn't working.
 
 The first placed garage is the main one that uses power the rest will draw from it.
@@ -39,5 +40,6 @@ It will ignore rovers with deployed drones or with auto mode on (even if sitting
 Known Issues:
 The build menu doesn't show that it uses electricity.
 
-Requested by Valkyrie115.]],
+Requested by Valkyrie115.
+]],
 })

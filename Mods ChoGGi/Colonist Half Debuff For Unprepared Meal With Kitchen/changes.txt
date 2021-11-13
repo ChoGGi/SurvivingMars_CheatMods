@@ -1,3 +1,6 @@
+v0.4
+Didn't check for residence existence (log spam).
+
 v0.3
 Log spam (didn't check if the colonist is valid).
 

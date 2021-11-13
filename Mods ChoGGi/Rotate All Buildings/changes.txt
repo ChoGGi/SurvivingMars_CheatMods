@@ -1,3 +1,6 @@
+v0.4
+Forgot to add dependency for my lib mod.
+
 v0.3
 enable option was ignored.
 

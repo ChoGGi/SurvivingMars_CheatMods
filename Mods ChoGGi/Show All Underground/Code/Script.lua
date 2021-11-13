@@ -13,7 +13,9 @@ local function StartupCode()
 	else
 		hr.RenderRevealDarkness = 1
 	end
-	UIColony:RevealUndergroundDarkness()
+	if UIColony and mod_RevealDarkness then
+		UIColony:RevealUndergroundDarkness()
+	end
 end
 
 
@@ -25,11 +27,6 @@ local function ModOptions(id)
 
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_RevealDarkness = CurrentModOptions:GetProperty("RevealDarkness")
-
-	-- make sure we're in-game
-	if not UIColony then
-		return
-	end
 
 	StartupCode()
 end

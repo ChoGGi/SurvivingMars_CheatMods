@@ -150,10 +150,13 @@ function OnMsg.ClassesBuilt()
 
 end
 
+-- for rovers without automode
+local IsAutoModeEnabled = AutoMode.IsAutoModeEnabled
+
 -- collect idle funcs
 local function CollectIdle(idle_func, self, ...)
 
-	if not self.ChoGGi_InGarage and not self.auto_mode_on and g_ChoGGi_RCGarages.collect_idle_rovers then
+	if not self.ChoGGi_InGarage and not IsAutoModeEnabled(self) and g_ChoGGi_RCGarages.collect_idle_rovers then
 		self:SetCommand("ChoGGi_UseGarage", self:ChoGGi_GetNearestGarage())
 		SetUnitControlInteractionMode(self, false) --toggle button
 		return

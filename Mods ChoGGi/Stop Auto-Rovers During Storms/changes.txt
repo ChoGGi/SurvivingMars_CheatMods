@@ -1,3 +1,6 @@
+v0.6
+AutoMode compat update.
+
 v0.5
 Evans update.
 
