@@ -276,7 +276,7 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 
 				local list = {}
 				local c = 0
-				local labels = UICity.labels
+				local labels = DotPathToObject(labels_name)
 				for key, value in pairs(labels) do
 					if value[1] then
 						c = c + 1

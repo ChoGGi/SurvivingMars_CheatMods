@@ -1,2 +1,8 @@
+v0.3
+Removed button and changed to mod option (0 to use internal lookup table or none).
+3840x1080, 7680x1378, 7680x1411
+Workaround with my Map Overview More Info mod.
+
+
 v0.2
 7680x1440

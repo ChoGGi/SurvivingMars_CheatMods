@@ -1,0 +1,1 @@
+mod option list of mysteries to pick the next mystery on apply

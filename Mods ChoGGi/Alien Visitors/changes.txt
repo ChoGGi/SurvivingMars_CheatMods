@@ -1,3 +1,6 @@
+v0.5
+Log spam (Picard update x3).
+
 v0.4
 Picard update x2.
 

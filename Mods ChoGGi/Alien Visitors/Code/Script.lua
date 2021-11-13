@@ -14,20 +14,18 @@ local SetPosRandomBuildablePos = ChoGGi.ComFuncs.SetPosRandomBuildablePos
 
 local mod_MaxSpawn
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_MaxSpawn = CurrentModOptions:GetProperty("MaxSpawn")
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local image_pin = CurrentModPath .. "UI/Alien_Pin.png"
 
@@ -131,7 +129,7 @@ function ChoGGi_Alien:Spawn()
 
 		if IsPlayablePoint(pt) and not GetDomeAtPoint(GetObjectHexGrid(city), pt) then
 			pt = pt:SetStepZ()
-			if not DomeCollisionCheck(pt, pt) then
+			if not DomeCollisionCheck(city, pt, pt) then
 				spawn_pos = pt
 				break
 			end

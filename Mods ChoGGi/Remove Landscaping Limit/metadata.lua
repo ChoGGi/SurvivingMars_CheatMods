@@ -8,15 +8,15 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Remove Landscaping Limit",
-	"version", 6 + 10, -- stupid mod msg
-	"version_major", 0,
-	"version_minor", 6,
-	"image", "Preview.png",
 	"id", "ChoGGi_AdjustLandscapingSize",
 	"steam_id", "1743029792",
 	"pops_any_uuid", "a4ef5012-a7d1-4f13-8b09-2e82809cf428",
-	"author", "ChoGGi",
 	"lua_revision", 1007000, -- Picard
+	"version", 6 + 10, -- stupid mod msg
+	"version_major", 0,
+	"version_minor", 6,
+	"image", "Preview.jpg",
+	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},

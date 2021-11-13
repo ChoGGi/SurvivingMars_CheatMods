@@ -489,4 +489,3 @@ Actions[c] = {ActionName = Translate(13066, "Cave-in"),
 	ActionShortcut = "Ctrl-Shift-G",
 	ActionBindable = true,
 }
-

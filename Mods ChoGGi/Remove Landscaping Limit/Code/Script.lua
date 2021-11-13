@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local max_int = max_int
 local guim = guim
 local SetLandScapingLimits = ChoGGi.ComFuncs.SetLandScapingLimits
 
@@ -8,26 +9,23 @@ local mod_StepSize
 local mod_BlockObjects
 local mod_AllowOutOfBounds
 
--- fired when settings are changed/init
-local function ModOptions()
-	local options = CurrentModOptions
-	mod_RemoveLandScapingLimits = options:GetProperty("RemoveLandScapingLimits")
-	mod_StepSize = options:GetProperty("StepSize") * guim
-	mod_BlockObjects = options:GetProperty("BlockObjects")
-	mod_AllowOutOfBounds = options:GetProperty("AllowOutOfBounds")
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_RemoveLandScapingLimits = CurrentModOptions:GetProperty("RemoveLandScapingLimits")
+	mod_StepSize = CurrentModOptions:GetProperty("StepSize") * guim
+	mod_BlockObjects = CurrentModOptions:GetProperty("BlockObjects")
+	mod_AllowOutOfBounds = CurrentModOptions:GetProperty("AllowOutOfBounds")
 
 	SetLandScapingLimits(mod_RemoveLandScapingLimits, mod_BlockObjects, mod_AllowOutOfBounds)
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- no more limit to R+T keys (enlarge/shrink)
 local ChoOrig_Activate = LandscapeConstructionController.Activate

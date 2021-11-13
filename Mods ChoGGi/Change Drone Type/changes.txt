@@ -1,5 +1,8 @@
+v0.7
+Added override for Supply Pod and Always Wasp.
+
 v0.6
-Enabling Always wasp option will hide the button.
+Enabling Always Wasp option will hide the drone hub button.
 
 v0.5
 Evans update.

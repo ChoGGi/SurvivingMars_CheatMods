@@ -121,3 +121,20 @@ end
 
 OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode
+
+local ChoOrig_SupplyPod_Unload = SupplyPod.Unload
+function SupplyPod:Unload(...)
+	if not mod_AlwaysWasp then
+		return ChoOrig_SupplyPod_Unload(self, ...)
+	end
+
+	for i = 1, #(self.cargo or "") do
+		local cargo = self.cargo[i]
+		if cargo.class == "Drone" then
+			cargo.class = "FlyingDrone"
+			break
+		end
+	end
+
+	return ChoOrig_SupplyPod_Unload(self, ...)
+end

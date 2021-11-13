@@ -21,6 +21,10 @@ function OnMsg.ClassesPostprocess()
 		"entity", "WasteRockDepotBig",
 		"build_category", "ChoGGi",
 		"Group", "ChoGGi",
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
 
 		"max_amount_WasteRock", 99000 * const.ResourceScale,
 		"build_points", 0,

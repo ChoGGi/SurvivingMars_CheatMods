@@ -3,34 +3,34 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_CentredHUD",
 	"steam_id", "1594140397",
 	"pops_any_uuid", "55b08156-3710-4274-afdf-4e8d046da0b8",
-	"version", 2,
+	"lua_revision", 1007000, -- Picard
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
-	"lua_revision", 1007000, -- Picard
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Centres HUD for ultrawide resolutions.
+	"has_options", true,
+	"TagInterface", true,
+	"description", [[
+Centres HUD for ultrawide resolutions.
 
-This adds a button to the HUD (bottom right), to test/save/clear a saved margin.
-When you find one that works for your resolution then please send me your res width and margin, so I can add it to the mod.
+Use mod option to set screen margin, when you find one that works for your resolution then please send me your res and margin, so I can add it to the lookup table.
+Setting the mod option will override the lookup table.
 
-Options in HUD button:
-Test Margin: Enter a margin value without it being saved (right-click button to open directly).
-Save Margin: Same as test, but also saves it (use 0 to never have any margin).
-Clear Saved Setting: Removes saved setting (this will still check mod margin setting next time).
-Use Mod Setting: Tries to use mod margin setting (also happens when game is started, saved setting overrides).
-
-
-Currently included settings:
+Currently included in lookup:
 5760x1080 (48:9): 2560
+3840x1080 (32:9): 960
 7680x1440: 1802
+7680x1378: 1600
+7680x1411: 1600
 
 
 Known Issues:
-This only works with the lowest UI Scale.
 This just fixes the in-game HUD, I didn't bother with anything else.
-Some stuff isn't centred: blue pause overlay, console, console log, and cheat menu.]],
+Some stuff isn't centred: blue pause overlay, console, console log, and cheat menu.
+Messes with my Map Overview More Info, so this is disabled when zoomed into map overview with that mod enabled.
+]],
 })

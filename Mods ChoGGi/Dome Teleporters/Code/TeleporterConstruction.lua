@@ -19,8 +19,12 @@
 
 local mod_BuildDist
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_BuildDist = CurrentModOptions:GetProperty("BuildDist")
 
 	DomeTeleporterConstructionController.max_hex_distance_to_allow_build = mod_BuildDist
@@ -30,15 +34,10 @@ local function ModOptions()
 		CityDomeTeleporterConstruction[UICity].max_range = mod_BuildDist < 100 and 100 or mod_BuildDist
 	end
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 GlobalVar("CityDomeTeleporterConstruction", {})
 
@@ -76,6 +75,7 @@ function OnMsg.LoadGame()
 
 	local AddPFTunnel = Tunnel.AddPFTunnel
 	MapForEach("map", "DomeTeleporter", AddPFTunnel)
+end
 end
 
 -- backup the CityTunnelConstruction obj
@@ -144,7 +144,8 @@ end
 -- controller->
 DefineClass.DomeTeleporterConstructionController = {
 	__parents = {"TunnelConstructionController"},
-	max_hex_distance_to_allow_build = mod_BuildDist,
+	-- default it to max
+	max_hex_distance_to_allow_build = 1000,
 }
 
 local ChoOrig_CreateConstructionGroup = CreateConstructionGroup

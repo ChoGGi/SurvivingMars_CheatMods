@@ -1,3 +1,6 @@
+v0.6
+Log spam.
+
 v0.5
 Should only clear for manually demolished buildings.
 

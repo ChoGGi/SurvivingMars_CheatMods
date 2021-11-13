@@ -1,1 +1,2 @@
 v0.2
+Fix for the weird screen bug.

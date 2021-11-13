@@ -9,12 +9,12 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Waste Rock Dump Site",
 	"id", "ChoGGi_WasteRockDumpSite",
-	"lua_revision", 1007000, -- Picard
 	"steam_id", "2313588593",
 	"pops_any_uuid", "8672b8b5-64ff-4965-a668-58f35c224421",
-	"version", 1,
+	"lua_revision", 1007000, -- Picard
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
@@ -22,8 +22,10 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"has_options", true,
 	"TagBuildings", true,
-	"description", [[It's a dump site for waste rock (99k).
+	"description", [[
+It's a dump site for waste rock (99k).
 
 
-Requested by bloodnok/Norbe]],
+Requested by bloodnok/Norbe
+]],
 })

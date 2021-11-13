@@ -26,13 +26,14 @@ F4: Open object examiner (Shift/Ctrl-F4 for area examine).
 F5: Open object manipulator (or use Tools>Edit obj in Examine).
 F6: Change building colour (Shift-F6 or Ctrl-F6 to apply random/default).
 F7: Toggle using last building orientation.
-F9: Clear the console log.
+F9: Clear the console log (See console settings to turn off log).
 Ctrl+F: Fill resource of object.
 Ctrl-Alt-Shift-R: Opens console and places "restart" in it.
 Ctrl-Space: Opens placement mode with selected object/last built object.
 Ctrl-Alt-Shift-D: Delete object (select multiple objects in editor and use this to delete them all).
 Shift-Q: Clone selected object to mouse position.
 Ctrl-Shift-T: Terrain Editor Mode (manipulate/paint ground).
+Ctrl-Shift-E: Editor Mode (Buggy! I wouldn't save with it).
 
 More shortcut keys are available; see cheat menu items.
 You can edit the shortcut keys; see in-game keybindings.

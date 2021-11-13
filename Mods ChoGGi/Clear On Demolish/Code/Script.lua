@@ -16,7 +16,9 @@ function OnMsg.Demolished(obj)
 	end
 	obj.ChoGGi_ManualDemo = nil
 
-	obj:DestroyedClear()
+	if obj.DestroyedClear then
+		obj:DestroyedClear()
+	end
 end
 
 local IsValidThread = IsValidThread

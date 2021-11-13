@@ -8,21 +8,12 @@ local mod_TextBackground
 local mod_TextStyle
 local mod_ShowDropped
 
-local style_lookup = {
-	"EncyclopediaArticleTitle",
-	"BugReportScreenshot",
-	"CategoryTitle",
-	"ConsoleLog",
-	"DomeName",
-	"GizmoText",
-	"InfopanelResourceNoAccept",
-	"ListItem1",
-	"ModsUIItemStatusWarningBrawseConsole",
-	"LandingPosNameAlt",
-}
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
 
--- fired when settings are changed/init
-local function ModOptions()
 	local options = CurrentModOptions
 	mod_ShowPolymers = options:GetProperty("ShowPolymers")
 	mod_ShowMetals = options:GetProperty("ShowMetals")
@@ -32,18 +23,10 @@ local function ModOptions()
 	mod_TextStyle = options:GetProperty("TextStyle")
 	mod_ShowDropped = options:GetProperty("ShowDropped")
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local pairs = pairs
 local table = table
@@ -62,6 +45,18 @@ local margin_box_dbl = box(-25, -30, 0, 0)
 local margin_box_trp = box(-25, -50, 0, 0)
 -- box(left/x, top/y, right/w, bottom/h)
 
+local style_lookup = {
+	"EncyclopediaArticleTitle",
+	"BugReportScreenshot",
+	"CategoryTitle",
+	"ConsoleLog",
+	"DomeName",
+	"GizmoText",
+	"InfopanelResourceNoAccept",
+	"ListItem1",
+	"ModsUIItemStatusWarningBrawseConsole",
+	"LandingPosNameAlt",
+}
 
 local text_table = {}
 local sector_piles = {}
@@ -203,6 +198,7 @@ end
 
 local ChoOrig_OverviewModeDialog_Init = OverviewModeDialog.Init
 function OverviewModeDialog.Init(...)
+	Msg("ChoGGi_CentredHUD_SetMargin", false)
 	AddIcons()
 	return ChoOrig_OverviewModeDialog_Init(...)
 end
@@ -220,6 +216,7 @@ end
 
 local ChoOrig_OverviewModeDialog_Close = OverviewModeDialog.Close
 function OverviewModeDialog.Close(...)
+	Msg("ChoGGi_CentredHUD_SetMargin", true)
 	ClearIcons()
 	return ChoOrig_OverviewModeDialog_Close(...)
 end

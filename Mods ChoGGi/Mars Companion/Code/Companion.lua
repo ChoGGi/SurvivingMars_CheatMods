@@ -129,7 +129,10 @@ function MarsCompanion:MainLoop()
 		end
 
 		local max = (cameraRTS.GetPos():z() - height) - 10000
-		self.hover_height = self.Random(self.min_hover_height, max > self.min_hover_height and max or self.min_hover_height+1)
+		self.hover_height = self.Random(
+			self.min_hover_height,
+			max > self.min_hover_height and max or self.min_hover_height + 1
+		)
 
 		if self.hover_height > cameraRTS.GetProperties(1).MaxZoom then
 			self.hover_height = 1000
