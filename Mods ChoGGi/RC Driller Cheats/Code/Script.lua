@@ -149,50 +149,7 @@ end
 RCDriller.ToggleAutoMode_Update = RCTransport.ToggleAutoMode_Update
 
 function OnMsg.ClassesPostprocess()
-	local xtemplate = XTemplates.ipRover[1]
-
-	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_RCDrillerCheats_ToggleAuto", true)
-
-	table.insert(xtemplate, 1,
-		PlaceObj("XTemplateTemplate", {
-			"Id" , "ChoGGi_Template_RCDrillerCheats_ToggleAuto",
-			"ChoGGi_Template_RCDrillerCheats_ToggleAuto", true,
-			"__context_of_kind", "RCDriller",
-			-- main button
-			"__template", "InfopanelButton",
-			-- section button
-			"__condition", function()
-				return mod_EnableMod and g_RoverAIResearched
-			end,
-
-			"Title", T(370544347739, "Automated Mode"),
-			"RolloverTitle", T(370544347739, "Automated Mode"),
-			"RolloverText", T(7656, "<left_click> Toggle Automated Mode"),
-			"Icon", "UI/Icons/IPButtons/automated_mode_off.tga",
-
-			"OnContextUpdate", function(self, context)
-				if context:IsAutoModeEnabled() then
-					self:SetIcon("UI/Icons/IPButtons/automated_mode_on.tga")
-				else
-					self:SetIcon("UI/Icons/IPButtons/automated_mode_off.tga")
-				end
-			end,
-
-			"OnPress", function(self)
-				local c = self.context
-				-- toggle
-				c:SetAutoMode(not c:IsAutoModeEnabled())
-				--
-				ObjModified(c)
-				-- force auto procing
-				if c then
-					c:SetCommand("Idle")
-				end
-			end,
-		})
-	)
-
+	ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipRover[1], "ChoGGi_Template_RCDrillerCheats_ToggleAuto", true)
 end
 
 -- update driller when rubble cleared underground (I could check if it already happens, but it won't hurt much to fire twice)
