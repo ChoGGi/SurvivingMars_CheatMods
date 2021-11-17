@@ -2,8 +2,8 @@
 
 -- fired when settings are changed/init
 local function UnlockBreaks(newgame)
-	local colony = UIColony
-	if not colony then
+	local UIColony = UIColony
+	if not UIColony then
 		return
 	end
 
@@ -14,12 +14,14 @@ local function UnlockBreaks(newgame)
 		end
 
 		local options = CurrentModOptions
-		local func = options:GetProperty("BreakthroughsResearched") and colony.SetTechResearched or colony.SetTechDiscovered
+		local func = options:GetProperty("BreakthroughsResearched") and UIColony.SetTechResearched or UIColony.SetTechDiscovered
+
 		local bt = Presets.TechPreset.Breakthroughs
-		for i = 1, #bt do
-			local id = bt[i].id
-			if options:GetProperty(id) then
-				func(colony, id)
+		for key, value in pairs(bt) do
+			if type(key) == "string" then
+				if options:GetProperty(key) then
+					func(UIColony, key)
+				end
 			end
 		end
 	end)

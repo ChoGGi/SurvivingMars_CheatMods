@@ -1,3 +1,6 @@
+v0.6
+Breakthroughs are added to research list randomly.
+
 v0.5
 Issue with applying mod options manually.
 
