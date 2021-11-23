@@ -710,6 +710,7 @@ function OnMsg.ClassesGenerate()
 
 		SaveOrigFunc("XMenuBar", "RebuildActions")
 		function XMenuBar:RebuildActions(...)
+
 			ChoGGi_OrigFuncs.XMenuBar_RebuildActions(self, ...)
 			-- we only care for the cheats menu thanks (not that there's any other menu toolbars)
 			if self.MenuEntries ~= "DevMenu" then

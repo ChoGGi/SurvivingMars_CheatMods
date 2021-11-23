@@ -288,6 +288,13 @@ function OnMsg.ClassesPostprocess()
 		ChoGGi.ComFuncs.ExpandModOptions(XTemplates)
 	end
 
+	-- Sometime in between picard content update 1 and rev 1009657 they hid the toobar buttons from cheat menu
+	local function true_return()
+		return true
+	end
+	XTemplates.EditorToolbarButton[1].__condition = true_return
+	XTemplates.EditorToolbarToggleButton[1].__condition = true_return
+
 	if UserSettings.FlushLog then
 		FlushLogFile()
 	end

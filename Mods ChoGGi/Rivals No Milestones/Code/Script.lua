@@ -15,7 +15,6 @@ OnMsg.ModsReloaded = ModOptions
 -- fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
-
 local function BlockRivalMileStones(func, ...)
 	if not mod_EnableMod then
 		return func(...)

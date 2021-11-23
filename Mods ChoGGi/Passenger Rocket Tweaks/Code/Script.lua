@@ -406,8 +406,8 @@ end
 
 local function SafeChangeAge(self)
 	local descr = self.prop_meta.rollover.descr[1]
-	if TGetID(descr.Age) > 0 and type(descr.Age) ~= "string" then
-		descr.Age = Translate(descr.Age .. ": " ..self.prop_meta.applicant[1].age)
+	if type(descr.Age) == "userdata" and TGetID(descr.Age) > 0 then
+		descr.Age = Translate(descr.Age .. ": " .. self.prop_meta.applicant[1].age)
 	end
 end
 

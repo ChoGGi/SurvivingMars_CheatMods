@@ -5,6 +5,7 @@
 - Menu>Cheats>Disasters>Cave-in: Triggers cave-in at location (and disables any nearby struts).
 
 ### Changed:
+- Toolbar buttons were hid by devs.
 - Cloning a regolith deposit now works with Harvester/etc (Thanks SkiRich).
 
 ## v17.6 (30 Oct 2021)
