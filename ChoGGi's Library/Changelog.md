@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v10.7 (Unreleased)
+- Changed table.append to table.iappend (thanks for the heads up devs).
 
 ## v10.6 (30 Oct 2021)
 - Objects in examine show which map their on (see tooltip for map id).

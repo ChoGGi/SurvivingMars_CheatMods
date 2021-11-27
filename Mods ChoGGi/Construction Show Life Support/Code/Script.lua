@@ -61,7 +61,7 @@ local function ShowHexes()
 			return true
 		end
 	end)
-	table.append(life_support, temp_list)
+	table.iappend(life_support, temp_list)
 
 	life_support_c = #life_support
 	for i = 1, life_support_c do

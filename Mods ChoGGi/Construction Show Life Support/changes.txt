@@ -1,2 +1,5 @@
+v0.3
+table.append > table.iappend (thanks for the heads up devs).
+
 v0.2
 Added construction sites.

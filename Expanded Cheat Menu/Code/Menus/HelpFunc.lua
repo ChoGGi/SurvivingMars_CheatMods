@@ -905,10 +905,10 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 		ModsReloadDefs()
 
 		if Platform.steam and IsSteamAvailable() then
-			table.append(mod_folders, SteamWorkshopItems())
+			table.iappend(mod_folders, SteamWorkshopItems())
 		end
 		if Platform.pops then
-			table.append(mod_folders, io.listfiles(PopsModsDownloadPath, "*", "folders, non recursive"))
+			table.iappend(mod_folders, io.listfiles(PopsModsDownloadPath, "*", "folders, non recursive"))
 		end
 
 		-- loop through each mod and make a table of ids, so we don't have to loop for each mod below

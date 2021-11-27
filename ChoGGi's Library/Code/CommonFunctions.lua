@@ -3338,17 +3338,17 @@ do -- RetNearestResource/FindNearestResource
 
 			local labels = UICity.labels
 			-- every resource has a mech depot
-			table.append(stockpiles, labels[res_mechdepot[resource] or "MechanizedDepot" .. resource])
+			table.iappend(stockpiles, labels[res_mechdepot[resource] or "MechanizedDepot" .. resource])
 
 			-- labels.UniversalStorageDepot includes the "other" depots, but not the below three
 			if resource == "BlackCube" then
-				table.append(stockpiles, labels.BlackCubeDumpSite)
+				table.iappend(stockpiles, labels.BlackCubeDumpSite)
 			elseif resource == "MysteryResource" then
-				table.append(stockpiles, labels.MysteryDepot)
+				table.iappend(stockpiles, labels.MysteryDepot)
 			elseif resource == "WasteRock" then
-				table.append(stockpiles, labels.WasteRockDumpSite)
+				table.iappend(stockpiles, labels.WasteRockDumpSite)
 			else
-				table.append(stockpiles, labels.UniversalStorageDepot)
+				table.iappend(stockpiles, labels.UniversalStorageDepot)
 			end
 		end
 

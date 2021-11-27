@@ -238,7 +238,7 @@ function ChoGGi_VLI_MapInfoDlg:ShowInfoDialog()
 	table.sort(temp_data)
 	c = c + 1
 	temp_data[c] = "\n"
-	table.append(text, temp_data)
+	table.iappend(text, temp_data)
 
 	-- map names
 	temp_data = {}
@@ -253,7 +253,7 @@ function ChoGGi_VLI_MapInfoDlg:ShowInfoDialog()
 	table.sort(temp_data)
 	c = c + 1
 	temp_data[c] = "\n"
-	table.append(text, temp_data)
+	table.iappend(text, temp_data)
 
 	-- named locations
 	temp_data = {}
@@ -263,7 +263,7 @@ function ChoGGi_VLI_MapInfoDlg:ShowInfoDialog()
 		temp_data[c] = Translate(location)
 	end
 	table.sort(temp_data)
-	table.append(text, temp_data)
+	table.iappend(text, temp_data)
 
 	ChoGGi.ComFuncs.OpenInMultiLineTextDlg(TableConcat(text, "\n"), {
 		has_params = true,

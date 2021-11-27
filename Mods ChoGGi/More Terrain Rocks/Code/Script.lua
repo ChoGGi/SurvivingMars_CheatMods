@@ -9,14 +9,14 @@ local GetStateMaterial = GetStateMaterial
 
 -- manual list of rocks, maybe we'll do a sub EntityData ?
 local rocks = {
-	{"Rocks_01", "Rocks_02", "Rocks_03", "Rocks_04"},
-	{"RocksDark_01", "RocksDark_02", "RocksDark_03", "RocksDark_04", "RocksDark_05"},
-	{"RocksLight_01", "RocksLight_02", "RocksLight_03", "RocksLight_04", "RocksLight_05", "RocksLight_06"},
-	{"RocksLightSmall_01", "RocksLightSmall_02", "RocksLightSmall_03", "RocksLightSmall_04", "RocksLightSmall_05", "RocksLightSmall_06", "RocksLightSmall_07", "RocksLightSmall_08"},
-	{"RocksSlate_01", "RocksSlate_02", "RocksSlate_03", "RocksSlate_04", "RocksSlate_05", "RocksSlate_06", "RocksSlate_07"},
-	{"Cliff_01", "Cliff_02", "Cliff_03"},
-	{"CliffDark_01", "CliffDark_02", "CliffDark_03"},
-	{"Ice_Cliff_01", "Ice_Cliff_02", "Ice_Cliff_03", "Ice_Cliff_04", "Ice_Cliff_05", "Ice_Cliff_06"},
+	{"Rocks_01", "Rocks_02", "Rocks_03", "Rocks_04", },
+	{"RocksDark_01", "RocksDark_02", "RocksDark_03", "RocksDark_04", "RocksDark_05", },
+	{"RocksLight_01", "RocksLight_02", "RocksLight_03", "RocksLight_04", "RocksLight_05", "RocksLight_06", },
+	{"RocksLightSmall_01", "RocksLightSmall_02", "RocksLightSmall_03", "RocksLightSmall_04", "RocksLightSmall_05", "RocksLightSmall_06", "RocksLightSmall_07", "RocksLightSmall_08", },
+	{"RocksSlate_01", "RocksSlate_02", "RocksSlate_03", "RocksSlate_04", "RocksSlate_05", "RocksSlate_06", "RocksSlate_07", },
+	{"Cliff_01", "Cliff_02", "Cliff_03", },
+	{"CliffDark_01", "CliffDark_02", "CliffDark_03", },
+	{"Ice_Cliff_01", "Ice_Cliff_02", "Ice_Cliff_03", "Ice_Cliff_04", "Ice_Cliff_05", "Ice_Cliff_06", },
 }
 local cats = {
 	"LandscapeRockBuildingsRocks",
@@ -28,6 +28,23 @@ local cats = {
 	"LandscapeRockBuildingsCliffDark",
 	"LandscapeRockBuildingsCliffIce",
 }
+if g_AvailableDlc.picard then
+	rocks[#rocks+1] = {"VeinRocks_Iron_Cliff_01", "VeinRocks_Iron_Cliff_02", "VeinRocks_Iron_Cliff_03", "VeinRocks_Iron_Cliff_04", "VeinRocks_Iron_Cliff_05", }
+	rocks[#rocks+1] = {"VeinRocks_Iron_Spikey_01", "VeinRocks_Iron_Spikey_02", "VeinRocks_Iron_Spikey_03", "VeinRocks_Iron_Spikey_04", "VeinRocks_Iron_Spikey_05", }
+	rocks[#rocks+1] = {"VeinRocks_Metal_Sharp_01", "VeinRocks_Metal_Sharp_02", "VeinRocks_Metal_Sharp_03", "VeinRocks_Metal_Sharp_04", "VeinRocks_Metal_Sharp_05", "VeinRocks_Metal_Sharp_06", "VeinRocks_Metal_Sharp_07v", }
+	rocks[#rocks+1] = {"VeinRocks_Metal_Spoty_01", "VeinRocks_Metal_Spoty_02", "VeinRocks_Metal_Spoty_03", "VeinRocks_Metal_Spoty_04", "VeinRocks_Metal_Spoty_05", "VeinRocks_Metal_Spoty_06", }
+	rocks[#rocks+1] = {"Underground_Arch_01", "Underground_Arch_02", "Underground_Arch_03", "Underground_Arch_04", "Underground_Arch_05", "Underground_Arch_06", "Underground_Arch_07", "Underground_Arch_08", }
+	rocks[#rocks+1] = {"CaveIn_Buildings", "CaveIn_Preplaced_1", "CaveIn_Preplaced_2", "CaveIn_Tunnel", "CaveIn_UndergroundDome", "CaveIn_UndergroundMediumDome", "CaveIn_UndergroundMicroDome", }
+	rocks[#rocks+1] = {"CaveIn_TunnelBlocker_1", "CaveIn_TunnelBlocker_2", "CaveIn_TunnelBlocker_3", "CaveIn_TunnelBlocker_4", "CaveIn_TunnelBlocker_5", }
+
+	cats[#cats+1] = "LandscapeRockBuildingsIronCliff"
+	cats[#cats+1] = "LandscapeRockBuildingsIronSpikey"
+	cats[#cats+1] = "LandscapeRockBuildingsMetalSharp"
+	cats[#cats+1] = "LandscapeRockBuildingsMetalSpoty"
+	cats[#cats+1] = "LandscapeRockBuildingsArch"
+	cats[#cats+1] = "LandscapeRockBuildingsCaveIn"
+	cats[#cats+1] = "LandscapeRockBuildingsCaveInBlocker"
+end
 
 local r = const.ResourceScale
 
@@ -221,6 +238,84 @@ function OnMsg.ClassesPostprocess()
 			id = "LandscapeRockBuildingsCliffIce"
 		})
 
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 9,
+			category = "RockFormations_ChoGGi",
+			description = desc,
+			display_name = T(0000, "Iron Cliff"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_09.tga",
+			category_name = "LandscapeRockBuildingsIronCliff",
+			id = "LandscapeRockBuildingsIronCliff"
+		})
+
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 10,
+			category = "RockFormations_ChoGGi",
+			description = desc,
+			display_name = T(0000, "Iron Spikey"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_10.tga",
+			category_name = "LandscapeRockBuildingsIronSpikey",
+			id = "LandscapeRockBuildingsIronSpikey"
+		})
+
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 11,
+			category = "RockFormations_ChoGGi",
+			description = desc,
+			display_name = T(0000, "Metal Sharp"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_11.tga",
+			category_name = "LandscapeRockBuildingsMetalSharp",
+			id = "LandscapeRockBuildingsMetalSharp"
+		})
+
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 12,
+			category = "RockFormations_ChoGGi",
+			description = desc,
+			display_name = T(0000, "Metal Spoty"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_12.tga",
+			category_name = "LandscapeRockBuildingsMetalSpoty",
+			id = "LandscapeRockBuildingsMetalSpoty"
+		})
+
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 13,
+			category = "RockFormations_ChoGGi",
+			description = desc,
+			display_name = T(0000, "Arch"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_13.tga",
+			category_name = "LandscapeRockBuildingsArch",
+			id = "LandscapeRockBuildingsArch"
+		})
+
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 14,
+			category = "RockFormations_ChoGGi",
+			description = desc,
+			display_name = T(0000, "Cave In"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_14.tga",
+			category_name = "LandscapeRockBuildingsCaveIn",
+			id = "LandscapeRockBuildingsCaveIn"
+		})
+
+		PlaceObj("BuildMenuSubcategory", {
+			build_pos = 15,
+			category = "RockFormations_ChoGGi",
+			description = desc,
+			display_name = T(0000, "Cave In Blocker"),
+			group = "Default",
+			icon = "UI/Icons/Buildings/numbers_15.tga",
+			category_name = "LandscapeRockBuildingsCaveInBlocker",
+			id = "LandscapeRockBuildingsCaveInBlocker"
+		})
+
+
 	end
 	desc = T(544067769859, "Small stylish composition made of native Martian rocks.")
 	local bt = BuildingTemplates
@@ -302,6 +397,26 @@ You can build this if you want it won't hurt anything.]]),
 					ResumePassEdits("ChoGGi.LevelPrefabBuilding.Rotate")
 				end,
 				"Icon", "UI/Icons/IPButtons/automated_mode_on.tga",
+			}),
+
+
+			PlaceObj("XTemplateTemplate", {
+				"__template", "InfopanelButton",
+				"RolloverTitle", T(302535920000968, "Collisions"),
+				"RolloverText", T(302535920000581, "Toggle Object Collision"),
+				"RolloverHint", T(608042494285, "<left_click> Activate"),
+				"OnContextUpdate", function(self, context)
+					if context.ChoGGi_CollisionsDisabled then
+						self:SetIcon("UI/Icons/IPButtons/open.tga")
+					else
+						self:SetIcon("UI/Icons/IPButtons/close.tga")
+					end
+				end,
+				"OnPress", function(self)
+					ChoGGi.ComFuncs.CollisionsObject_Toggle(self.context)
+					ObjModified(self.context)
+				end,
+				"Icon", "UI/Icons/IPButtons/close.tga",
 			}),
 
 			PlaceObj("XTemplateTemplate", {

@@ -1,3 +1,7 @@
+v0.6
+Added more rocks.
+Added collision toggle button.
+
 v0.5
 Fixed issue when loading mid-game (thanks requiemfang).
 
