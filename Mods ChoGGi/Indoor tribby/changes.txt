@@ -1,3 +1,6 @@
+v0.7
+Can build underground.
+
 v0.6
 Works with Silva's Wastewater (though that mod is buggy, so you shouldn't use it).
 

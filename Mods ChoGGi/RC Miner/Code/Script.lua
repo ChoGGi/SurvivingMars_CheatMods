@@ -681,6 +681,13 @@ end
 function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.PortableMinerBuilding then
 		PlaceObj("BuildingTemplate", {
+
+		-- added, not uploaded
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
+
 			"Id", "PortableMinerBuilding",
 			"template_class", "PortableMinerBuilding",
 			-- pricey?

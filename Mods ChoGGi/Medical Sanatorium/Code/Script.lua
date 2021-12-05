@@ -22,6 +22,12 @@ function OnMsg.ClassesPostprocess()
 		"template_class", "MedicalSanatorium",
 		"dome_required", true,
 
+		-- added, not uploaded
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
+
 		"construction_cost_Concrete", 30000,
 		"construction_cost_Metals", 20000,
 		"construction_cost_Polymers", 10000,

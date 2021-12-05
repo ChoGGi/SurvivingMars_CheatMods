@@ -207,6 +207,13 @@ local three_hex_decorations = {
 
 local function BuildLayouts(params)
 	PlaceObj("BuildingTemplate", {
+
+		-- added, not uploaded
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
+
 		"Id", params.id,
 		"LayoutList", params.id,
 		"Group", params.build_category,

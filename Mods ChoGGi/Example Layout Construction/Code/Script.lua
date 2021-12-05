@@ -7,6 +7,13 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	PlaceObj("BuildingTemplate", {
+
+		-- added, not uploaded
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
+
 		-- keep it unique folks
 		"Id", "ChoGGi_LayoutConstruction_Example",
 		-- LayoutList corresponds to the LayoutConstruction id below

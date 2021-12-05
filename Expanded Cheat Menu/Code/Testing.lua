@@ -9,7 +9,6 @@ if not ChoGGi.testing then
 	return
 end
 
-
 -- override till they fix double click select all of type
 local orig_OnMouseButtonDoubleClick = SelectionModeDialog.OnMouseButtonDoubleClick
 function SelectionModeDialog:OnMouseButtonDoubleClick(pt, button, ...)

@@ -97,6 +97,13 @@ function OnMsg.ClassesPostprocess()
 
 	if not BuildingTemplates.BottomlessStorage then
 		PlaceObj("BuildingTemplate", {
+
+		-- added, not uploaded
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
+
 			"Id", "BottomlessStorage",
 			"template_class", "BottomlessStorage",
 			"instant_build", true,

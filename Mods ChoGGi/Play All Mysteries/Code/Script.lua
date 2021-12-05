@@ -112,7 +112,7 @@ local function PickRandomMystery(delay)
 		else
 			MsgPopup(
 				T(302535920012069, "Started Mystery"),
-				T(3486, "Mystery")
+				T(0000, "Play All Mysteries Mod")
 			)
 		end
 	end
@@ -166,6 +166,14 @@ OnMsg.ApplyModOptions = ModOptions
 
 -- update per save list
 function OnMsg.MysteryEnd()
+	-- let user know
+	if mod_ShowPopup then
+		MsgPopup(
+			T(0000, "Ended Mystery"),
+			T(0000, "Play All Mysteries Mod")
+		)
+	end
+
   local mystery_id = UIColony.mystery_id
 	local list = g_ChoGGi_PlayAllMysteries_Finished
 

@@ -142,6 +142,13 @@ function OnMsg.ClassesPostprocess()
 			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
 
+		-- added, not uploaded
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
+
+
 			"construction_cost_Metals", trib.construction_cost_Metals + sens.construction_cost_Metals,
 			"construction_cost_Electronics", trib.construction_cost_Electronics + sens.construction_cost_Electronics,
 			"electricity_consumption", trib.electricity_consumption + sens.electricity_consumption,

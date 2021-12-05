@@ -102,6 +102,13 @@ local function AddToMenu(bt, cat, entity, desc, index)
 		local mat = GetMaterialProperties(GetStateMaterial(entity, 0, 0), 0)
 		if mat and mat.BaseColor and mat.BaseColor ~= "" then
 			PlaceObj("BuildingTemplate", {
+
+		-- added, not uploaded
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
+
 				"Group", cat,
 				"build_category", cat,
 				"Id", id,
@@ -330,6 +337,13 @@ function OnMsg.ClassesPostprocess()
 	if not bt.RockFormations_ChoGGi_Ignore then
 		-- fake item to make build menu show up
 		PlaceObj("BuildingTemplate", {
+
+		-- added, not uploaded
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
+
 			"Group", "RockFormations_ChoGGi",
 			"build_category", "RockFormations_ChoGGi",
 			"Id", "RockFormations_ChoGGi_Ignore",

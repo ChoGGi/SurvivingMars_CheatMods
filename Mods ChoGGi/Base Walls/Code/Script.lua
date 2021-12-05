@@ -867,6 +867,13 @@ function OnMsg.ClassesPostprocess()
 --~ 			"construction_cost_Concrete", 1000,
 			"instant_build", true,
 
+		-- added, not uploaded
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
+
+
 --~ 			"dome_forbidden", true,
 			"display_name", item.display_name,
 			"display_name_pl", item.display_name_pl,

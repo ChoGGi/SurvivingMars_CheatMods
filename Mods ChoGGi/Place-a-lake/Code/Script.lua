@@ -99,6 +99,13 @@ function OnMsg.ClassesPostprocess()
 		return
 	end
 	PlaceObj("BuildingTemplate", {
+
+		-- added, not uploaded
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
+
 		"Id", "InstantLake",
 		"template_class", "InstantLake",
 		"construction_cost_Concrete", 1000,

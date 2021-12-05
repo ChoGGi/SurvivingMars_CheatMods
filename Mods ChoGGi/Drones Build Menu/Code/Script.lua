@@ -19,6 +19,13 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	PlaceObj("BuildingTemplate", {
+
+		-- added, not uploaded
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
+
 		"Id", "ChoGGi_DroneBuilding",
 		"template_class", "ChoGGi_DroneBuilding",
 		"construction_cost_Electronics", 2500,

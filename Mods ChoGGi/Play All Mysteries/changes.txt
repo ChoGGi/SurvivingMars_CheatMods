@@ -1,3 +1,6 @@
+v0.6
+Shows popup when mystery ends.
+
 v0.5
 Fixed for last update.
 Msg popup happens when mystery is picked instead of when it's started.

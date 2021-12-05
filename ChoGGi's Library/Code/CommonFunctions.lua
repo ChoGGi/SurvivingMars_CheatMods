@@ -706,7 +706,9 @@ do -- ShowObj
 		-39680, -- slightly darker orange (don't want it blending in to the ground as much as -23296)
 	}
 	local function rand_c()
-		return table.rand(rand_colours)
+		-- local it to skip rand sending back the idx
+		local colour = table.rand(rand_colours)
+		return colour
 	end
 	ChoGGi.ComFuncs.RandomColourLimited = rand_c
 

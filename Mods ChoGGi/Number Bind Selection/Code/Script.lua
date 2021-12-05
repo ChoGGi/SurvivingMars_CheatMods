@@ -1,34 +1,32 @@
 -- See LICENSE for terms
 
+local table = table
+local ipairs = ipairs
+local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+
+
 local mod_SelectView
 local mod_ShowCentre
 
--- fired when settings are changed/init
-local function ModOptions()
-	mod_SelectView = CurrentModOptions:GetProperty("SelectView")
-	mod_ShowCentre = CurrentModOptions:GetProperty("ShowCentre")
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
 		return
 	end
 
-	ModOptions()
+	mod_SelectView = CurrentModOptions:GetProperty("SelectView")
+	mod_ShowCentre = CurrentModOptions:GetProperty("ShowCentre")
 end
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- selection groups (the actions need a string, so we might as well just store these as strings)
 GlobalVar("g_ChoGGi_CtrlNumBinds", {
 	["1"] = {},["2"] = {},["3"] = {}, ["4"] = {}, ["5"] = {},
 	["6"] = {}, ["7"] = {},["8"] = {}, ["9"] = {}, ["0"] = {},
 })
-
-local table = table
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
 local function ShowMsg(msg, objs)
 	MsgPopup(
@@ -156,19 +154,19 @@ end
 -- copy pasta from Lua\MultiSelection.lua
 -- we add objs of different classes so we need to check for methods
 
-
-
+-- last checked picard 1010391
 function MultiSelectionWrapper:ResolveObjAt(...)
 	if not self:IsClassSupported("Unit") then return end
 	--return the first result found
 	for _,subobj in ipairs(self.objects) do
 		-- the "fix", I suppose I could also add an empty_func to the objs, but that feels ugly
 		if subobj.ResolveObjAt then
-
+		--
 			local result = subobj:ResolveObjAt(...)
 			if result then
 				return result
 			end
+		--
 		end
 	end
 end
@@ -179,28 +177,36 @@ function MultiSelectionWrapper:CheckAny(method, ...)
 	for _,subobj in ipairs(self.objects) do
 		-- the "fix"
 		if subobj[method] then
-
+		--
 			local result, r2, r3, r4, r5 = subobj[method](subobj, ...)
 			if result then return result, r2, r3, r4, r5 end
+		--
 		end
 	end
 	return false
 end
 
-local ChoOrig_MultiSelectionWrapper_Broadcast = MultiSelectionWrapper.Broadcast
 function MultiSelectionWrapper:Broadcast(method, ...)
 	if type(method) == "string" then
 --~ 		assert(g_Classes[self.selection_class]:HasMember(method),
 --~ 			string.format("Base class %s doesn't have the member %s", self.selection_class, method))
-		for _,subobj in ipairs(self.objects) do
+		for i,subobj in ipairs(self.objects) do
 			-- the "fix"
 			if subobj[method] then
-
+			--
 				subobj[method](subobj, ...)
+			--
 			end
 		end
 	else
-		return ChoOrig_MultiSelectionWrapper_Broadcast(self, method, ...)
+		for i,subobj in ipairs(self.objects) do
+			-- the "fix"
+			if subobj[method] then
+			--
+				method(subobj, ...)
+			--
+			end
+		end
 	end
 end
 
@@ -208,13 +214,13 @@ function MultiSelectionWrapper:Union(method, comparison_key, ...)
 --~ 	assert(g_Classes[self.selection_class]:HasMember(method),
 --~ 		string.format("Base class %s doesn't have the member %s", self.selection_class, method))
 	local values = { }
-	for _,subobj in ipairs(self.objects) do
+	for i,subobj in ipairs(self.objects) do
 		-- the "fix"
 		if subobj[method] then
-
+		--
 			local result = subobj[method](subobj, ...)
 			if result then
-				for _,v in ipairs(result) do
+				for i,v in ipairs(result) do
 					if comparison_key then
 						if not table.find(values, comparison_key, v[comparison_key]) then
 							table.insert(values, v)
@@ -225,6 +231,7 @@ function MultiSelectionWrapper:Union(method, comparison_key, ...)
 					end
 				end
 			end
+		--
 		end
 	end
 

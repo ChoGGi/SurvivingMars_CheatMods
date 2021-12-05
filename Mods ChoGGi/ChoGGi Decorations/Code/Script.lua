@@ -44,6 +44,13 @@ function OnMsg.ClassesPostprocess()
 		local entity = decorations[i]
 		if IsValidEntity(entity) then
 			PlaceObj("BuildingTemplate", {
+
+		-- added, not uploaded
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
+
 				"Id", "ChoGGi_" .. entity,
 				"entity", entity,
 

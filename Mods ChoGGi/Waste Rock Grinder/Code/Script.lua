@@ -77,6 +77,11 @@ function OnMsg.ClassesPostprocess()
 			"Group", "ChoGGi",
 			"encyclopedia_exclude", true,
 
+			-- added, not uploaded
+			"disabled_in_environment1", "",
+			"disabled_in_environment2", "",
+			"disabled_in_environment3", "",
+			"disabled_in_environment4", "",
 
 			"construction_cost_Metals", 12000,
 			"construction_cost_MachineParts", 2000,

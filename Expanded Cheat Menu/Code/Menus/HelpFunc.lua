@@ -36,6 +36,11 @@ do -- ModUpload
 		ChoGGi_UnitThoughts = "Unit Thoughts (upload 3)",
 		ChoGGi_WideAreaForestation = "Wide Area Forestation (upload 2)",
 	}
+	-- green ecm/lib so I don't accidentally upload them
+	local coloured_titles = {
+		[ChoGGi.id_lib] = true,
+		[ChoGGi.id] = true,
+	}
 
 	-- this keeps the check saved per session (true = steam, false = paradox)
 	local upload_to_who = true
@@ -613,7 +618,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 				end
 				-- colour mine so I don't clicky
 				local title = mod.title
-				if id == ChoGGi.id_lib or id == ChoGGi.id then
+				if coloured_titles[id] then
 					title = "<color ChoGGi_green>" .. title .. "</color>"
 				end
 				c = c + 1

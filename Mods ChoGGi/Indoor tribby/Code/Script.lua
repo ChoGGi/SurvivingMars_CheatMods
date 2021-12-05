@@ -83,6 +83,11 @@ function OnMsg.ClassesPostprocess()
 			"dome_forbidden", false,
 			"dome_required", true,
 
+			"disabled_in_environment1", "",
+			"disabled_in_environment2", "",
+			"disabled_in_environment3", "",
+			"disabled_in_environment4", "",
+
 			"display_name", T(302535920011748, "Indoor") .. " " .. T(4818,  "Triboelectric Scrubber"),
 			"display_name_pl", T(302535920011748, "Indoor") .. " " .. T(5299, "Triboelectric Scrubbers"),
 			"description", T(5300, "Emits pulses which reduce the Dust accumulated on buildings in its range."),

@@ -4,6 +4,13 @@ local function AddToMenu(bt, t, desc, index)
 	local id = "LandscapeTexture" .. t.name
 	if not bt[id] then
 		PlaceObj("BuildingTemplate", {
+
+		-- added, not uploaded
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
+
 			"Group", t.cat,
 			"build_category", t.cat,
 			"Id", id,
@@ -190,6 +197,13 @@ function OnMsg.ClassesPostprocess()
 	if not bt.LandscapeTextures_ChoGGi_Ignore then
 		-- fake item to make build menu show up
 		PlaceObj("BuildingTemplate", {
+
+		-- added, not uploaded
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
+
 			"Group", "LandscapeTextures_ChoGGi",
 			"build_category", "LandscapeTextures_ChoGGi",
 			"Id", "LandscapeTextures_ChoGGi_Ignore",
