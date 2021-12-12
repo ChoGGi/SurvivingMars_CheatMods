@@ -113,10 +113,10 @@ ChoGGi = {
 		-- a list of menuitems and shortcut keys for Msg("ShortcutsReloaded")
 		Actions = {},
 		-- rememeber transparency for some of my dialogs (ex and console log)
-		transp_mode = false,
+		Dlg_transp_mode = false,
 		-- stores a table of my dialogs
 		Dialogs = {},
-		-- they changed it once, they can change it again (trans func returns this for fail)
+		-- they changed it once, they can change it again (trans func returns this for fail, and posb something else)
 		missing_text = "Missing text",
 	},
 	-- settings that are saved to settings_file
@@ -141,10 +141,7 @@ end -- do
 -- fake mod used to tell if it's my comp, if you want some extra msgs and .testing funcs have at it
 if Mods.ChoGGi_testing then
 	ChoGGi.testing = {}
-	local print = print
-	function printC(...)
-		print(...)
-	end
+	printC = print
 else
 	printC = empty_func
 end

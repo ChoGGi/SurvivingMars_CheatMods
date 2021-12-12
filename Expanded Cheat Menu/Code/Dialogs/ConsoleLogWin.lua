@@ -119,10 +119,10 @@ $123 or $EffectDeposit.display_name prints translated string.
 !UICity.labels.TerrainDeposit[1] move camera and select obj.
 
 s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"]]]
-	self.idTextInput.Hint = Strings[302535920001439--[["~obj, @func, @@type, $id, %image, *r/*g/*m threads. Hover mouse for more info."]]]
+	self.idTextInput.Hint = Strings[302535920001439--[["~obj, @func, @@type, %image, *r/*g/*m threads. Hover mouse for more info."]]]
 
 	-- look at them sexy internals
-	self.transp_mode = ChoGGi.Temp.transp_mode
+	self.transp_mode = ChoGGi.Temp.Dlg_transp_mode
 	self:SetTranspMode(self.transp_mode)
 
 	self:PostInit()
@@ -205,7 +205,7 @@ function ChoGGi_DlgConsoleLogWin:SetTranspMode(toggle)
 		}
 	end
 	-- update global value (for new windows)
-	ChoGGi.Temp.transp_mode = toggle
+	ChoGGi.Temp.Dlg_transp_mode = toggle
 end
 
 function ChoGGi_DlgConsoleLogWin:UpdateText(text)

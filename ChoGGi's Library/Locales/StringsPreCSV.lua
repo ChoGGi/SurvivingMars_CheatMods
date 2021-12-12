@@ -368,7 +368,7 @@ do !Skipped Line! [[OnMsgs.lua]] !Skipped Line!
 If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""To import your old settings""."
 302535920000030, "To show the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked."
 302535920001441, "<left_click> Activate MenuItem <right_click> Add/Remove Quickbar"
-302535920001439, "~obj, @func, @@type, $id, %img, ^str, *r/*g/*m threads. Hover mouse for more info."
+302535920001439, "~obj, @func, @@type, %img, ^str, *r/*g/*m threads. Hover mouse for more info."
 302535920001440, "<green>~</green><yellow>obj</yellow> opens object in examine dlg, use <color ChoGGi_red>ex(obj)</color> in lua code.
 <green>~!</green><yellow>obj</yellow> opens object's attachments in examine dlg.
 

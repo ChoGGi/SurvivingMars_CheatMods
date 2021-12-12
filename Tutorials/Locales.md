@@ -1,4 +1,4 @@
-### Add locale support to your mod (wtf is up with all this StringBase + 1 I see...)
+### Add locale support to your mod
 ```lua
 If you're translating for XWindows, and you need to use a table value use:
 T{123, "string<context_value>", context_value = some_obj}
@@ -19,7 +19,7 @@ ID,Text,Translation,Old Translation,Gender
 new lines in them"
 11111111110001005,"some text with commas, included"
 
-CHANGE 11111111 to some random arsed number, or use whatever you already use in your mod.
+CHANGE 11111111 to some random number, or use whatever you already use in your mod.
 
 In items.lua add:
 PlaceObj("ModItemLocTable", {
@@ -28,6 +28,7 @@ PlaceObj("ModItemLocTable", {
 }),
 
 Now you can use _InternalTranslate(T(11111111110001029--[[optionally showing a string for your %s.--]])):format("sanity")
+or T(11111111110001029, some text <custom_text>") like usual
 All a translator needs to do is make a copy of English.csv, rename it to their lang: OpenExamine(AllLanguages),
 start changing strings, and then send you the file.
 Of course this doesn't stop you from using <values> as well (just use T{} and call it a day).

@@ -4,24 +4,20 @@ local mod_SolsBetweenUnlock
 local mod_ShowNotification
 local mod_RandomChance
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_SolsBetweenUnlock = CurrentModOptions:GetProperty("SolsBetweenUnlock")
 	mod_ShowNotification = CurrentModOptions:GetProperty("ShowNotification")
 	mod_RandomChance = CurrentModOptions:GetProperty("RandomChance")
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 GlobalVar("ChoGGi_OmegaUnlocksAllSlowly_Sols", 0)
 

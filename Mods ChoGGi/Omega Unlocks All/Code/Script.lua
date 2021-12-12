@@ -1,8 +1,8 @@
 -- See LICENSE for terms
 
-local orig = OmegaTelescope.UnlockBreakthroughs
-function OmegaTelescope:UnlockBreakthroughs(...)
-	orig(self, ...)
+local ChoOrig_UnlockBreakthroughs = Research.UnlockBreakthroughs
+function Research.UnlockBreakthroughs(...)
+	ChoOrig_UnlockBreakthroughs(...)
 
 	local UIColony = UIColony
 	local breakthroughs = UIColony:GetUnregisteredBreakthroughs()

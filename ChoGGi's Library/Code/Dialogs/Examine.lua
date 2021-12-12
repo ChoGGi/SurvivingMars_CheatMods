@@ -590,7 +590,7 @@ If it's an associative table then o = value."]]],
 		self.idText.OnHyperLinkRollover = self.idText_OnHyperLinkRollover
 
 		-- look at them sexy internals
-		self.transp_mode = self.ChoGGi.Temp.transp_mode
+		self.transp_mode = self.ChoGGi.Temp.Dlg_transp_mode
 		self:SetTranspMode(self.transp_mode)
 
 		-- no need to have it fire one than once per dialog
@@ -2401,7 +2401,7 @@ function ChoGGi_DlgExamine:SetTranspMode(toggle)
 		}
 	end
 	-- update global value (for new windows)
-	self.ChoGGi.Temp.transp_mode = toggle
+	self.ChoGGi.Temp.Dlg_transp_mode = toggle
 end
 --
 local function Show_ConvertValueToInfo(self, button, obj)
