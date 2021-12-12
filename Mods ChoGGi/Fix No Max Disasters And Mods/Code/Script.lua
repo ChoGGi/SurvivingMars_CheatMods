@@ -3,15 +3,16 @@
 local mod_EnableMod
 
 local function RestartDisaster(disaster, rule_name, rule_id, thread_name)
+	local amd = ActiveMapData
 	-- only restart if it should be maxed out and it isn't
-	if ActiveMapData[disaster] ~= rule_id and IsGameRuleActive(rule_name) then
-		ActiveMapData[disaster] = rule_id
+	if amd[disaster] ~= "disabled" and amd[disaster] ~= rule_id and IsGameRuleActive(rule_name) then
+		amd[disaster] = rule_id
 		RestartGlobalGameTimeThread(thread_name)
 	end
 end
 
 local function UpdateDisasters()
-	if not mod_EnableMod then
+	if not mod_EnableMod or UICity.map_id ~= MainCity.map_id then
 		return
 	end
 
