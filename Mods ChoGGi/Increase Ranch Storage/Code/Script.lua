@@ -23,7 +23,8 @@ local function UpdateRanchesLoop(label)
 	local objs = UICity.labels[label] or ""
 	for i = 1, #objs do
 		local obj = objs[i]
-		obj.max_storage1 = mod_StockMax
+--~ 		obj.max_storage1 = mod_StockMax
+		obj.max_storage = mod_StockMax
 		ProdUpdate(obj:GetProducerObj())
 	end
 end
@@ -33,8 +34,12 @@ local function UpdateRanches()
 	UpdateRanchesLoop("OpenPasture")
 end
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_StockMax = CurrentModOptions:GetProperty("StockMax") * 1000
 
 	ChoGGi.ComFuncs.SetBuildingTemplates("OpenPasture", "max_storage1", mod_StockMax)
@@ -46,16 +51,10 @@ local function ModOptions()
 
 	UpdateRanches()
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local changed
 function OnMsg.ClassesPostprocess()
@@ -66,6 +65,8 @@ function OnMsg.ClassesPostprocess()
 	local ChoOrig_Pasture_GameInit = Pasture.GameInit
 	function Pasture.GameInit(...)
 		ChoOrig_Pasture_GameInit(self, ...)
+--~ 		self.max_storage1 = mod_StockMax
+		self.max_storage = mod_StockMax
 		ProdUpdate(self:GetProducerObj())
 	end
 	changed = true

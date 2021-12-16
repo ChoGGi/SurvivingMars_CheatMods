@@ -20,13 +20,16 @@ local mod_TextBackground
 local mod_TextOpacity
 local mod_TextStyle
 
--- fired when settings are changed/init
-local function ModOptions()
-	local options = CurrentModOptions
-	mod_EnableMod = options:GetProperty("EnableMod")
-	mod_TextBackground = options:GetProperty("TextBackground")
-	mod_TextOpacity = options:GetProperty("TextOpacity")
-	mod_TextStyle = options:GetProperty("TextStyle")
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+	mod_TextBackground = CurrentModOptions:GetProperty("TextBackground")
+	mod_TextOpacity = CurrentModOptions:GetProperty("TextOpacity")
+	mod_TextStyle = CurrentModOptions:GetProperty("TextStyle")
 
 	-- make sure we're in-game
 	if not UICity then
@@ -35,18 +38,10 @@ local function ModOptions()
 
 	ClearUnitInfo()
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local style_lookup = {
 	"EncyclopediaArticleTitle",

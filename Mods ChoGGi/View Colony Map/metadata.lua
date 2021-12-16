@@ -18,9 +18,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1491973763",
 	"pops_any_uuid", "28b23a4f-7e8f-49b0-965a-3c14a8e4b919",
 	"lua_revision", 1007000, -- Picard
-	"version", 16,
+	"version", 17,
 	"version_major", 1,
-	"version_minor", 6,
+	"version_minor", 7,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -30,7 +30,7 @@ return PlaceObj("ModDef", {
 	"description", [[
 Shows the map before you load it in the select colony screen.
 
-Includes a checkbox to show anomaly breakthroughs for each location.
+Includes a checkbox to show anomaly breakthroughs/buried wonder for each location.
 If you use a rule that changes the breakthrough list, then ignore the breakthrough list shown as it isn't accurate anymore.
 
 Also shows map for challenges (mod option to turn it off).

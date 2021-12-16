@@ -1,23 +1,21 @@
 -- See LICENSE for terms
 
 local mod_EnableChallenges
+local mod_AlwaysBreakthroughs
 
--- fired when settings are changed/init
-local function ModOptions()
-	mod_EnableChallenges = CurrentModOptions:GetProperty("EnableChallenges")
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
 		return
 	end
 
-	ModOptions()
+	mod_EnableChallenges = CurrentModOptions:GetProperty("EnableChallenges")
+	mod_AlwaysBreakthroughs = CurrentModOptions:GetProperty("AlwaysBreakthroughs")
 end
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local table = table
 local Translate = ChoGGi.ComFuncs.Translate
@@ -111,8 +109,8 @@ end
 
 DefineClass.ChoGGi_VCM_MapImageDlg = {
 	__parents = {"ChoGGi_XWindow"},
-	dialog_width = 525.0,
-	dialog_height = 525.0,
+	dialog_width = 600.0,
+	dialog_height = 600.0,
 
 	-- If random tech rule active
 	random_warning = false,
@@ -165,6 +163,11 @@ Breakthroughs will be random as well.
 		WaitMsg("OnRender")
 		self:PostInit(nil, self:SetDefaultPos())
 
+		if mod_AlwaysBreakthroughs then
+			extra_info_dlg = ChoGGi_VCM_ExtraInfoDlg:new({}, terminal.desktop, {})
+			self.idShowExtra:SetCheck(true)
+		end
+
 		GamepadFocus()
 	end)
 end
@@ -214,14 +217,17 @@ end
 DefineClass.ChoGGi_VCM_ExtraInfoDlg = {
 	__parents = {"ChoGGi_XWindow"},
 	dialog_width = 400.0,
-	dialog_height = 525.0,
+	dialog_height = 600.0,
 
 	translated_tech = false,
-	omega_msg = false,
-	show_omegas = false,
+--~ 	omega_msg = false,
+--~ 	show_omegas = false,
 	planet_msg_count = 0,
 	planet_msg = false,
 	breakthrough_msg = false,
+	undergound_msg = false,
+	-- B&B dlc
+	is_picard = false,
 
 	onclick_count = false,
 	onclick_desc = false,
@@ -230,19 +236,21 @@ DefineClass.ChoGGi_VCM_ExtraInfoDlg = {
 
 function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 
-	-- remove once we get them sorted
-	self.show_omegas = false
+--~ 	-- remove once we get them sorted
+--~ 	self.show_omegas = false
 
-	if self.show_omegas then
-		self.dialog_height = 650.0
-		self.omega_msg = "\n\n<color 200 200 256>"
-			.. Translate(5182, "Omega Telescope") .. ":</color>"
-	end
+--~ 	if self.show_omegas then
+--~ 		self.dialog_height = 650.0
+--~ 		self.omega_msg = "\n\n<color 200 200 256>"
+--~ 			.. Translate(5182, "Omega Telescope") .. ":</color>"
+--~ 	end
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
 	-- text box with obj info in it
 	self:AddScrollText()
+
+	self.is_picard = g_AvailableDlc.picard
 
 	-- make it clearer when randoms are go
 	local title_text = T(11451, "Breakthrough")
@@ -278,11 +286,27 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 		end
 	end
 
+	if self.is_picard then
+		local BuildingTemplates = BuildingTemplates
+		for i = 1, #const.BuriedWonders do
+			local id = const.BuriedWonders[i]
+			local bt = BuildingTemplates[id]
+			local name = Translate(bt.display_name)
+
+			self.translated_tech[id] = self:HyperLink(Translate(bt.description) .. "\n\n<image " .. bt.display_icon .. " 1500>", name)
+				.. name .. "</h></color>"
+		end
+
+		self.undergound_msg = "<color 200 200 256>"
+			.. Translate(203070175929, "Buried Wonders") .. ":</color>"
+	end
+
 	self.planet_msg_count = Consts.PlanetaryBreakthroughCount + 1
 
 	self.breakthrough_msg = "\n\n<color 200 200 256>" .. Translate(title_text)
 		.. ":</color>"
-	self.planet_msg = "<color 200 200 256>"
+
+	self.planet_msg = (self.is_picard and "\n\n" or "") .. "<color 200 200 256>"
 		.. Translate(11234, "Planetary Anomaly") .. ":</color>"
 
 	CreateRealTimeThread(function()
@@ -337,12 +361,17 @@ function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(gen)
 		return
 	end
 
-	local display_list
-	if self.show_omegas then
-		display_list = RetMapBreakthroughs(gen, true)
-	else
-		display_list = RetMapBreakthroughs(gen)
-	end
+	local display_list = RetMapBreakthroughs(gen)
+--~ 	local display_list
+--~ 	if self.show_omegas then
+--~ 		display_list = RetMapBreakthroughs(gen, true)
+--~ 	else
+--~ 		display_list = RetMapBreakthroughs(gen)
+--~ 	end
+
+--~ 	ex(gen)
+--~   local function CreateRandHelpers_rand(state, min, max)
+--~   end
 
 --~ 	ex{display_list, gen}
 
@@ -356,9 +385,30 @@ function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(gen)
 	-- first four are POI breaks
 	table.insert(display_list, 1, self.planet_msg)
 
-	if self.show_omegas then
-		-- 3 from the end
-		table.insert(display_list, #display_list - 2, self.omega_msg)
+--~ 	if self.show_omegas then
+--~ 		-- 3 from the end
+--~ 		table.insert(display_list, #display_list - 2, self.omega_msg)
+--~ 	end
+
+	-- add buried wonder
+	if self.is_picard then
+		local rand_state = gen.rand_state
+		-- probably not needed
+		if not rand_state then
+			rand_state = RandState(gen.Seed)
+		end
+
+		-- CommonLua\RandomMap\RandomMapGenerator.lua
+		local function rand(min, max)
+			return rand_state:GetStable(min, max)
+		end
+		local shuffled_wonders = table.copy(const.BuriedWonders)
+--~ 		local num_wonders = #shuffled_wonders
+		table.shuffle(shuffled_wonders, rand)
+		table.insert(display_list, 1, self.translated_tech[shuffled_wonders[1]])
+
+		-- add bt text after the first four (POIs)
+		table.insert(display_list, 1, self.undergound_msg)
 	end
 
 	self.idText:SetText(table.concat(display_list, "\n"))

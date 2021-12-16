@@ -22,7 +22,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagInterface", true,
-	"description", [[When you open a safari route this will mark attractions and show satisfaction amount.
+	"description", [[
+When you open a safari route this will mark attractions and show satisfaction amount.
 See mod options to change text style.
 ]],
 })

@@ -1,3 +1,7 @@
+v1.7
+Shows the buried wonder if you have B&B (are there maps with more than one?).
+Added mod option to show list by default.
+
 v1.6
 Evans update.
 

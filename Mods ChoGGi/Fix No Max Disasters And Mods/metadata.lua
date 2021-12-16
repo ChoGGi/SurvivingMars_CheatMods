@@ -15,10 +15,8 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagOther", true,
 	"description", [[
-Starting a game with any mod and max disaster rules? causes the disasters to default to default?
-This restarts disaster threads to use max rule threat levels (dependant on rules).
+Starting a game with any mod and max disaster rules causes the disasters to be map default.
 
-
-Requested by... quite a few people.
+This is ONLY needed for saved games with the issue, new games are fine on latest update.
 ]],
 })

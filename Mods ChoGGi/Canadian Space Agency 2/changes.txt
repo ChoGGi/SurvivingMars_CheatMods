@@ -1,3 +1,6 @@
+v0.6
+Fixed drones not showing up in resupply (The name only shows Drones not Flying Drones...).
+
 v0.5
 Updated logo, and added logo with transparent letters.
 

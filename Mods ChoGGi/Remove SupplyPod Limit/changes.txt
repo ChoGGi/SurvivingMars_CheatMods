@@ -1,3 +1,6 @@
+v0.4
+Rovers > 1 didn't work.
+
 v0.3
 Removed limits for rockets.
 

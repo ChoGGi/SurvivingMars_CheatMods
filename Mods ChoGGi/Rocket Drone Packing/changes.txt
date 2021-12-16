@@ -1,3 +1,6 @@
+v0.6
+Updated for B&B CU2.
+
 v0.5
 Log spam (didn't check for bb dlc).
 
