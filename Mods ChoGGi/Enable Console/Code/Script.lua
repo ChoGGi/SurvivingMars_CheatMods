@@ -3,24 +3,22 @@
 local mod_EnableLog
 local mod_EnableConsole
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_EnableLog = CurrentModOptions:GetProperty("EnableLog")
 	mod_EnableConsole = CurrentModOptions:GetProperty("EnableConsole")
 
 	ConsoleEnabled = mod_EnableConsole
 	ShowConsoleLog(mod_EnableLog)
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local function ShowConsole()
 	if not mod_EnableConsole or table.find(ModsLoaded, "id", "ChoGGi_CheatMenu") then

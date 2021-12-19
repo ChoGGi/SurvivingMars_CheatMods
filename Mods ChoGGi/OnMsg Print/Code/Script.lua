@@ -1029,6 +1029,9 @@ end
 function OnMsg.ReconDiscovery(...)
 	print("Msg.ReconDiscovery",...)
 end
+function OnMsg.Refabricated(...)
+	print("Msg.Refabricated",...)
+end
 function OnMsg.RefugeeRocketTimeout(...)
 	print("Msg.RefugeeRocketTimeout",...)
 end
@@ -1121,6 +1124,9 @@ function OnMsg.RocketRefueledInADay(...)
 end
 function OnMsg.RocketStatusUpdate(...)
 	print("Msg.RocketStatusUpdate",...)
+end
+function OnMsg.RocketUnloaded(...)
+	print("Msg.RocketUnloaded",...)
 end
 function OnMsg.sa_event_(...)
 	print("Msg.sa_event_",...)

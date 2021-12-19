@@ -1,3 +1,8 @@
+v0.8
+Picard added Msg:
+Refabricated
+RocketUnloaded
+
 v0.7
 Tito added Msg:
 DomeDestroyed

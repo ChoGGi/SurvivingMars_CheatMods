@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,
-	"image", "Preview.png",
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"description", [[
 These images are used in more than one of my mods; no sense in having dupes.

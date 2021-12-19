@@ -248,10 +248,11 @@ do -- RetName
 
 	local values_lookup = {
 		"title",
+		"Title",
+		"ActionName",
 		"encyclopedia_id",
 		"id",
 		"Id",
-		"ActionName",
 		"ActionId",
 		"template_name",
 		"template_class",
@@ -428,6 +429,7 @@ do -- RetName
 
 	-- try to return a decent name for the obj, failing that return a string
 	function ChoGGi.ComFuncs.RetName(obj)
+
 		-- booleans and nil are easy enough
 		if not obj then
 			return obj == false and "false" or "nil"

@@ -1,0 +1,2 @@
+v0.2
+Added more storybits and mod options for storybits.
