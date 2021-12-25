@@ -199,6 +199,9 @@ local function RetNearestSpot(dome, pos)
 end
 
 local function UpdateVisibleHide(item)
+	if not IsValid(item.line) then
+		return
+	end
 	if item.line:GetVisible() then
 		item.line:SetVisible(false)
 		if not dome_over_count then
@@ -208,6 +211,9 @@ local function UpdateVisibleHide(item)
 	end
 end
 local function UpdateVisibleShow(item)
+	if not IsValid(item.line) then
+		return
+	end
 	if not item.line:GetVisible() then
 		item.line:SetVisible(true)
 		if not dome_over_count then

@@ -133,7 +133,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		Id = "idWrapLines",
 		Dock = "left",
 		Text = Strings[302535920001288--[[Wrap Lines]]],
-		RolloverText = Strings[302535920001289--[[Wrap lines or show horizontal scrollbar.]]],
+		RolloverText = Strings[302535920001289--[[Wrap lines or show horizontal scrollbar (updates after closing window).]]],
 		Margins = box(10, 0, 0, 0),
 		OnChange = self.idWrapLines_OnChange,
 	}, self.idButtonContainer)

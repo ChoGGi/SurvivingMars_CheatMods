@@ -97,7 +97,7 @@
 302535920000723, "Lua"
 302535920001257, "Auto-refresh list every second."
 302535920001288, "Wrap Lines"
-302535920001289, "Wrap lines or show horizontal scrollbar."
+302535920001289, "Wrap lines or show horizontal scrollbar (updates after closing window)."
 302535920000069, "Examine"
 302535920000491, "Examine Object"
 302535920001073, "Console"

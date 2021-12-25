@@ -1,6 +1,9 @@
 ## ECM Changelog
 
 ## v17.7 (Unreleased)
+### Fixed:
+- Mystery Log not opening (thanks Alex_X1).
+
 ### Added:
 - Menu>Cheats>Disasters>Cave-in: Triggers cave-in at location (and disables any nearby struts).
 

@@ -422,10 +422,22 @@ do -- ToggleLogErrors
 					if name == "error" then
 						_G.error = function(msg, ...)
 							-- skip the one annoying "error"
-							if type(msg) == "string" and msg:sub(1, 36) == "Attempt to use an undefined global '" then
-								UndefinedGlobalUpdate(msg, GetStack(2, false, "\t") or "")
-								return
+--~ 							if type(msg) == "string" and msg:sub(1, 36) == "Attempt to use an undefined global '" then
+--~ 								UndefinedGlobalUpdate(msg, GetStack(2, false, "\t") or "")
+--~ 								return
+--~ 							end
+--~ 							--
+							if type(msg) == "string" then
+								if msg:sub(1, 36) == "Attempt to use an undefined global '" then
+									UndefinedGlobalUpdate(msg, GetStack(2, false, "\t") or "")
+									return
+								end
+								if testing and msg:sub(1, 30) == "Attempt to create a new global" then
+									UndefinedGlobalUpdate(msg, GetStack(2, false, "\t") or "")
+									return
+								end
 							end
+							--
 							return ChoGGi_OrigFuncs[name](msg, ...)
 						end
 					else
@@ -474,6 +486,10 @@ The number is a count of stored msgs, right-click to view the list."]]],
 				OpenInExamineDlg(ChoGGi.Temp.UndefinedGlobals, nil, Strings[302535920000310--[[Skip Undefined Globals]]])
 			else
 				ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals = not ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals
+				-- clear when re-enabled, not if disabled accidentally
+				if ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals then
+					table.iclear(ChoGGi.Temp.UndefinedGlobals)
+				end
 				ChoGGi.SettingFuncs.WriteSettings()
 			end
 		end,
@@ -614,7 +630,11 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 		OnPress = function()
 			-- update value
 			local idx = table.find(ConsoleMenuPopupToggle_list, "value", "ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals")
-			ConsoleMenuPopupToggle_list[idx].name = Strings[302535920000310--[[Skip Undefined Globals]]] .. " (" .. #ChoGGi.Temp.UndefinedGlobals .. ")"
+			if #ChoGGi.Temp.UndefinedGlobals > 0 then
+				ConsoleMenuPopupToggle_list[idx].name = Strings[302535920000310--[[Skip Undefined Globals]]] .. " (" .. #ChoGGi.Temp.UndefinedGlobals .. ")"
+			else
+				ConsoleMenuPopupToggle_list[idx].name = Strings[302535920000310--[[Skip Undefined Globals]]]
+			end
 			PopupToggle(dlgConsole.idConsoleMenu, "idConsoleMenuPopup", ConsoleMenuPopupToggle_list, "top")
 		end,
 	}, dlgConsole.idContainer)

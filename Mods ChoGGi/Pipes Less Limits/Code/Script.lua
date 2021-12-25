@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local shorties = {
+	"SolarArray",
 	"SubsurfaceHeater",
 	"Tunnel",
 	"LandingPad", "TradePad",
@@ -29,9 +30,11 @@ local shorties = {
 	"MechanizedDepotRareMetals",
 	"MechanizedDepotSeeds",
 }
+local shorties_c = #shorties
+
 function OnMsg.ClassesPostprocess()
 	local bt = BuildingTemplates
-	for i = 1, #shorties do
+	for i = 1, shorties_c do
 		local template = bt[shorties[i]]
 		-- some are from DLC
 		if template then

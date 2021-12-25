@@ -1277,21 +1277,23 @@ do -- Mystery Log
 				end
 				local totalparts = #seq_list[1]
 				local id = seq_list.name
-				local ip = s_SeqListPlayers[i].seq_states[seq_list[1].name].ip
+				if mysteries[id] then
+					local ip = s_SeqListPlayers[i].seq_states[seq_list[1].name].ip
 
-				s_SeqListPlayers[i].mystery_idx = i
-				c = c + 1
-				item_list[c] = {
-					text = id .. ": " .. mysteries[id].name,
-					value = id,
-					func = id,
-					mystery_idx = i,
-					hint = "<image " .. mysteries[id].image .. ">\n\n\n<color 255 75 75>"
-						.. Strings[302535920000275--[[Total parts]]] .. "</color>: " .. totalparts
-						.. " <color 255 75 75>" .. Strings[302535920000289--[[Current part]]]
-						.. "</color>: " .. (ip or Strings[302535920000276--[[done?]]])
-						.. "\n\n" .. mysteries[id].description,
-				}
+					s_SeqListPlayers[i].mystery_idx = i
+					c = c + 1
+					item_list[c] = {
+						text = id .. ": " .. mysteries[id].name,
+						value = id,
+						func = id,
+						mystery_idx = i,
+						hint = "<image " .. mysteries[id].image .. ">\n\n\n<color 255 75 75>"
+							.. Strings[302535920000275--[[Total parts]]] .. "</color>: " .. totalparts
+							.. " <color 255 75 75>" .. Strings[302535920000289--[[Current part]]]
+							.. "</color>: " .. (ip or Strings[302535920000276--[[done?]]])
+							.. "\n\n" .. mysteries[id].description,
+					}
+				end
 			end
 		end
 

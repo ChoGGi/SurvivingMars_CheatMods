@@ -3806,7 +3806,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 		local obj_ref = self.ChoGGi.ComFuncs.DotPathToObject(obj)
 		-- If it is then we use that as the obj to examine
 		if type(obj_ref) == "function" then
-			obj = obj_ref(self.varargs)
+			obj = {obj_ref(self.varargs)}
 		else
 			obj = obj_ref
 		end

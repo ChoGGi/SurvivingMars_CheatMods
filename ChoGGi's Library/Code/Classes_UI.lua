@@ -384,6 +384,9 @@ DefineClass.ChoGGi_XExternalTextEditorPlugin = {
 		"ChoGGi_XDefaults",
 		"XExternalTextEditorPlugin",
 	},
+	-- ambiguously inherited log spam
+	OnShortcut = TerminalTarget.OnShortcut,
+	OnKbdKeyDown = TerminalTarget.OnKbdKeyDown,
 }
 
 function ChoGGi_XExternalTextEditorPlugin:OpenEditor(edit)
@@ -423,6 +426,9 @@ DefineClass.ChoGGi_XCodeEditorPlugin = {
 	},
 	SelectionColor = -11364918,
 	KeywordColor = -7421793,
+	-- ambiguously inherited log spam
+	OnShortcut = TerminalTarget.OnShortcut,
+	OnKbdKeyDown = TerminalTarget.OnKbdKeyDown,
 }
 
 DefineClass.ChoGGi_XList = {
@@ -1176,15 +1182,23 @@ function ChoGGi_XInputContextMenu:RetContextList()
 end
 
 DefineClass.ChoGGi_XTextInput = {
-	__parents = {"ChoGGi_XInputContextMenu", "XEdit"},
---~ 	AllowTabs = false,
-	RolloverTitle = T(126095410863--[[Info]]),
+	__parents = {
+		"ChoGGi_XInputContextMenu",
+		"XEdit",
+	},
+	RolloverTitle = T(126095410863, "Info"),
 	Background = light_gray,
 	TextStyle = "ChoGGi_TextInput",
+	-- ambiguously inherited log spam
+	OnMouseButtonDown = ChoGGi_XInputContextMenu.OnMouseButtonDown,
+	OnKillFocus = ChoGGi_XInputContextMenu.OnKillFocus,
 }
 
 DefineClass.ChoGGi_XMultiLineEdit = {
-	__parents = {"ChoGGi_XInputContextMenu", "XMultiLineEdit"},
+	__parents = {
+		"ChoGGi_XInputContextMenu",
+		"XMultiLineEdit",
+	},
 	TextStyle = "ChoGGi_MultiLineEdit",
 	-- default
 	Background = dark_gray,
@@ -1196,6 +1210,10 @@ DefineClass.ChoGGi_XMultiLineEdit = {
 	-- It'll be fine
 	MaxLen = max_int,
 	MaxLines = max_int,
+	-- ambiguously inherited log spam
+	OnMouseButtonDown = ChoGGi_XInputContextMenu.OnMouseButtonDown,
+	WordWrap = ChoGGi_XInputContextMenu.WordWrap,
+	OnKillFocus = ChoGGi_XInputContextMenu.OnKillFocus,
 }
 
 -- when some padding/margin is needed

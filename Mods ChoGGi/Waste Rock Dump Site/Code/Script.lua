@@ -8,7 +8,6 @@ function OnMsg.ClassesPostprocess()
 	PlaceObj("BuildingTemplate", {
 		"Id", "ChoGGi_WasteRockDumpTower",
 		"template_class", "WasteRockDumpSite",
-		"construction_cost_Concrete", 40000,
 		"palette_color1", "outside_base",
 		"palette_color2", "inside_base",
 		"palette_color3", "rover_base",

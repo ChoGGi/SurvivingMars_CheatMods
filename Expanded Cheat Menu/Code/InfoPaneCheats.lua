@@ -479,7 +479,8 @@ local cheats_lookup2 = {
 }
 
 local skip_CleanAndFix_AddDust = {"UniversalStorageDepot", "WasteRockDumpSite", "BaseRover"}
-local skip_ToggleSigns = {"TerrainDeposit", "SubsurfaceDeposit", "SurfaceDeposit", "WasteRockDumpSite"}
+--~ local skip_ToggleSigns = {"TerrainDeposit", "SubsurfaceDeposit", "SurfaceDeposit", "WasteRockDumpSite"}
+local skip_ToggleSigns = {"TerrainDeposit", "SubsurfaceDeposit", "SurfaceDeposit"}
 local skip_Empty = {"SubsurfaceDeposit", "TerrainDeposit"}
 
 -- check for any cheat funcs missing the tooltip description

@@ -12,16 +12,17 @@ return PlaceObj("ModDef", {
 	"steam_id", "1428027914",
 	"pops_any_uuid", "64d161e9-828a-41c9-bdfc-61b9790405e8",
 	"lua_revision", 1007000, -- Picard
-	"version", 16,
+	"version", 17,
 	"version_major", 1,
-	"version_minor", 6,
+	"version_minor", 7,
 	"author", "ChoGGi",
 	"image", "Preview.jpg",
 	"code", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Shows lines between domes when they're close enough for passages to connect.
+	"description", [[
+Shows lines between domes when they're close enough for passages to connect.
 
 I use straight lines, instead of the angled passages, so it isn't perfect.
 There is a chance that you'll be able to connect a dome that's another 1-5 hexes further away (dependant on the angle).

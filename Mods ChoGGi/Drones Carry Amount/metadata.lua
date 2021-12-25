@@ -26,6 +26,6 @@ Drones normally only pick up resources from buildings when the amount stored is 
 Example: if there's 1 res cube and you have the 2x carry upgrade they'll wait for another res cube before picking up.
 This mod forces them to pick up whenever there's at least 1 res cube.
 
-Includes mod option to choose the amount of res to carry.
+Includes mod option to choose the amount to carry.
 ]],
 })
