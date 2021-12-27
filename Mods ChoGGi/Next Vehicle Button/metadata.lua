@@ -7,14 +7,14 @@ return PlaceObj("ModDef", {
 			"version_minor", 6,
 		}),
 	},
-	"title", "Rocket Next Rocket Button",
+	"title", "Next Vehicle Button",
 	"id", "ChoGGi_RocketNextRocketButton",
 	"steam_id", "2293455455",
 	"pops_any_uuid", "0869b5fc-d5c6-47e5-ab09-fcc3b319d943",
 	"lua_revision", 1007000, -- Picard
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -23,7 +23,7 @@ return PlaceObj("ModDef", {
 --~ 	"has_options", true,
 	"TagInterface", true,
 	"description", [[
-A button to quickly loop through your rockets.
+A button to quickly loop through your rockets (or rovers).
 
 
 Requested by isntit2017.

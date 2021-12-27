@@ -2,6 +2,7 @@
 
 ## v17.7 (Unreleased)
 ### Fixed:
+- View All Entities didn't load models.
 - Mystery Log not opening (thanks Alex_X1).
 
 ### Added:

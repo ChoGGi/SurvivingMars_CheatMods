@@ -1,0 +1,5 @@
+v0.3
+Updated for picard/etc.
+
+v0.2
+Uses an ice/water texture to show the level now (less ugly/noticeable).

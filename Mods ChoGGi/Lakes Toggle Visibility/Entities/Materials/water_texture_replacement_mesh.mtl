@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Materials>
+<Material>
+	<BaseColorMap Name="water_texture_replacement.dds" mc="0"/>
+	<SIMap Name="BackLight.dds" mc="0"/>
+	<Property Special="None"/>
+	<Property AlphaBlend="Blend"/>
+</Material>
+</Materials>

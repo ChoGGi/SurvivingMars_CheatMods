@@ -10,7 +10,9 @@ local function ModOptions(id)
 
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 end
+-- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 local ChoOrig_Challenge_GetCompletedText = Challenge.GetCompletedText
@@ -20,19 +22,17 @@ function Challenge:GetCompletedText(...)
 	end
 
   local completed = self:Completed()
+	if completed then
+		local text = T{0, "<chal_text>: <time(time)>",
+			chal_text = "",
+			time = completed.time,
+		}
+		if completed.time < self.time_perfected then
+			text.chal_text = T(10325, "Challenge Perfected")
+		elseif completed then
+			text.chal_text = T(10321, "Challenge Completed")
+		end
 
-	local text
-  if completed and completed.time < self.time_perfected then
-    text = T{10919, "<newline>Perfected in <sols> Sols",
-      sols = 1 + completed.time / const.DayDuration,
-    }
-  elseif completed then
-    text = T{10920, "<newline>Completed in <sols> Sols",
-      sols = 1 + completed.time / const.DayDuration,
-    }
-  end
-	-- append score to completed text
-	if text then
 		return text .. T{302535920012039, "\nScore: <score>",
 			score = completed.score
 		}

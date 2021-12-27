@@ -14,7 +14,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagOther", true,
-	"description", [[This will check on load game for certain rockets stuck on the ground unable to do jack.
+	"description", [[
+This will check on load game for certain rockets stuck on the ground unable to do jack.
 So far:
 Unloading colonists.
 Unloading colonist crew from expedition.

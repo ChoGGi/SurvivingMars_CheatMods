@@ -1,25 +1,19 @@
 -- See LICENSE for terms
 
-local TerrainTextures = TerrainTextures
-local point = point
-
 local mod_EnableMod
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
 -- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	-- I'm sure it wouldn't be that hard to only call this msg for the mod being applied, but...
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+OnMsg.ApplyModOptions = ModOptions
 
 local function StartupCode()
 	if not mod_EnableMod then
@@ -30,6 +24,7 @@ local function StartupCode()
 		-- wait for igi so we can add text boxes
 		WaitMsg("InGameInterfaceCreated")
 
+		local point = point
 		local XText = XText
 		local igi = Dialogs.InGameInterface
 
@@ -43,6 +38,7 @@ local function StartupCode()
 
 		terrain:SetHeightCircle(point(447000, 467000), 100000, 100000, 5000, hsMin)
 
+		local TerrainTextures = TerrainTextures
 		for i = 1, #TerrainTextures do
 			row = row + 1
 			offset_x = offset_x + -5000

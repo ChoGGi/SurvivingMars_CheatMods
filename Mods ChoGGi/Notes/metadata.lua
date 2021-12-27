@@ -23,8 +23,8 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagTools", true,
 	"description", [[
-Places "note" buildings you can use to store text.
-Notepad opens when you select it, toggle in building menu.
+Places big/small "note" buildings you can use to store text.
+Notepad opens on building selection (there's a button to toggle in building menu).
 Mod options for width/height of notepad.
 
 Requested by samirahope.

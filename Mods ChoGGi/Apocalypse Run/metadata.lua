@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"description", [[
 Disable as much Earth related stuff as can be.
 
-No Outsourcing or Resupply (resupply disables after 13 Sols or first pass rocket launches).
+No Outsourcing or Resupply (resupply disables after 13 Sols or first passenger rocket launches).
 Disabled Expeditions:
 High-speed Comm Satellite, Launch SETI Satellite, Contact Exploration Access.
 Disabled Story bits (mod options to enable):

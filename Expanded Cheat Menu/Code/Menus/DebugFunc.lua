@@ -572,7 +572,8 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 		gen:Generate()
 		CreateRealTimeThread(function()
 			-- don't fire the rest till map is good n loaded
-			WaitMsg("MessageBoxOpened")
+--~ 			WaitMsg("MessageBoxOpened")
+			WaitMsg("MapGenerated")
 
 			-- wait a bit till we're sure the map is around
 --~ 			local GameState = GameState
@@ -621,6 +622,8 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 			height = height / 1000
 
 			SuspendPassEdits("ChoGGi.MenuFuncs.ViewAllEntities")
+
+			MapDelete(true, "UndergroundPassage")
 			-- reset for a new count
 			c = 0
 			for x = 100, width do
@@ -638,6 +641,7 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 						-- add more space for certain objs
 						local sub8 = plusone:sub(1, 8)
 						local sub5 = plusone:sub(1, 5)
+
 						if plusone:find("Dome") and sub8 ~= "DomeRoad"
 								and sub8 ~= "DomeDoor" and not plusone:find("Entrance") then
 							mod = 16
@@ -646,6 +650,10 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 							mod = 1
 						elseif plusone:find("Cliff") then
 							mod = 8
+						elseif plusone:sub(1, 6) == "Wonder" or plusone == "DummyUndergroundWonderRoom_placeholder" then
+							mod = 32
+						elseif plusone:sub(1, 13) == "AsteroidSkirt" then
+							mod = 128
 						end
 
 						local x1000, y1000 = x * 1000, y * 1000

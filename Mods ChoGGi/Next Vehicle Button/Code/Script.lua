@@ -4,11 +4,14 @@ local ViewAndSelectObject = ViewAndSelectObject
 local XDestroyRolloverWindow = XDestroyRolloverWindow
 local table = table
 
-local function CycleRockets(context)
-	local list = (context.city or UICity).labels.SupplyRocket or empty_table
-	list = GetRealm(context):MapFilter(list, function(rocket)
-		return rocket:IsRocketLanded()
-	end)
+local function CycleObjects(context, class)
+	local list = (context.city or UICity).labels[class] or empty_table
+
+	if class == "SupplyRocket" then
+		list = GetRealm(context):MapFilter(list, function(vehicle)
+			return vehicle:IsRocketLanded()
+		end)
+	end
 	local count = #list
 
 	if count > 0 then
@@ -31,7 +34,17 @@ function OnMsg.ClassesPostprocess()
 		RolloverText = T(302535920012026, "Loop between your rockets quickly."),
 		Icon = "UI/Icons/Research/plasma_rocket.tga",
 		func = function(self, context)
-			CycleRockets(context)
+			CycleObjects(context, "SupplyRocket")
+		end,
+	})
+	ChoGGi.ComFuncs.AddXTemplate(XTemplates.ipRover[1], "RoverNextButton", nil, {
+		__context_of_kind = "BaseRover",
+		Title = T(0000, "Next Rover"),
+		RolloverTitle = T(0000, "Next Rover"),
+		RolloverText = T(302535920012026, "Loop between your rovers quickly."),
+		Icon = "UI/Icons/Research/plasma_rocket.tga",
+		func = function(self, context)
+			CycleObjects(context, "Rover")
 		end,
 	})
 
