@@ -30,6 +30,7 @@ m = SelectionMouseObj
 c = GetTerrainCursor -- cursor position on map
 cs = terminal.GetMousePos -- cursor pos on screen
 s = false -- used to store SelectedObj
+FlushLog = FlushLogFile -- easier to remember
 
 function toboolean(str)
 	if str == "true" then

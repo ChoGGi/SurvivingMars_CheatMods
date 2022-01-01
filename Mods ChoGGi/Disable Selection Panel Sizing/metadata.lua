@@ -1,12 +1,12 @@
 return PlaceObj("ModDef", {
 	"title", "Disable Selection Panel Sizing",
 	"id", "ChoGGi_DisableSelectionPanelSizing",
-	"steam_id", "1573994315",
 	"pops_any_uuid", "9d26158c-97e7-4f28-af71-506a588730f1",
+	"steam_id", "1573994315",
 	"lua_revision", 1007000, -- Picard
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -16,6 +16,6 @@ return PlaceObj("ModDef", {
 	"description", [[
 In Gagarin update someone thought shrinking the selection panel was a good idea, and now the panel is too scared to use the bottom half of the screen.
 
-Mod options to toggle re-sizing and scrollbar.
+Mod options to toggle re-sizing and adding a scrollbar for larger panels.
 ]],
 })

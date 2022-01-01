@@ -1122,7 +1122,7 @@ function OnMsg.ClassesPostprocess()
 		end
 
 		-- get around to finishing this (scrollable selection panel)
-		local zerobox = box(0,0,0,0)
+		local zerobox = box(0, 0, 0, 0)
 		local function SetToolbar(section, cls, toggle)
 			local toolbar = table.find(section.idContent, "class", cls)
 			if toolbar then
@@ -1192,8 +1192,8 @@ function OnMsg.ClassesPostprocess()
 					Target = "idChoGGi_ScrollBox",
 					Dock = "left",
 					MinThumbSize = 30,
-					AutoHide = true,
 					Background = 0,
+					AutoHide = true,
 				}, self.idChoGGi_ScrollArea)
 
 				self.idChoGGi_Scrollbar_thumb = self.idChoGGi_ScrollV.idThumb

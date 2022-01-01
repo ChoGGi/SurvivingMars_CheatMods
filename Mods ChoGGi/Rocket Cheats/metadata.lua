@@ -34,5 +34,10 @@ Colonists per Rocket: Maximum number of Colonists that can arrive on Mars in a s
 Rocket Travel Time (Earth to Mars): Time it takes for a Rocket to travel from Earth to Mars
 Rocket Travel Time (Mars to Earth): Time it takes for a Rocket to travel from Mars to Earth
 Rocket Price: In Millions.
+
+
+Known Issues:
+It doesn't affect first rocket launch.
+When you research cargo extension tech changes are reset (apply options again or reload save).
 ]],
 })

@@ -1,3 +1,6 @@
+v1.3
+Ignore single shift buildings (crash fix).
+
 v1.2
 Evans update.
 

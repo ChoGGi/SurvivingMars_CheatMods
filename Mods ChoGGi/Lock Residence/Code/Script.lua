@@ -1,23 +1,29 @@
 -- See LICENSE for terms
 
-local mod_NeverChange
+local IsValid = IsValid
+local ObjModified = ObjModified
+local RetName = ChoGGi.ComFuncs.RetName
 
--- fired when settings are changed/init
-local function ModOptions()
-	mod_NeverChange = CurrentModOptions:GetProperty("NeverChange")
+local function LoopResidence(context, which)
+	for i = 1, #context.colonists do
+		context.colonists[i].ChoGGi_LockResidence = which
+	end
 end
 
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
+local mod_NeverChange
 
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
 		return
 	end
 
-	ModOptions()
+	mod_NeverChange = CurrentModOptions:GetProperty("NeverChange")
 end
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- make the value the below buttons set actually do something
 local ChoOrig_Colonist_SetResidence = Colonist.SetResidence
@@ -30,16 +36,6 @@ function Colonist:SetResidence(home, ...)
 end
 
 function OnMsg.ClassesPostprocess()
-	local IsValid = IsValid
-	local ObjModified = ObjModified
-
-	local RetName = ChoGGi.ComFuncs.RetName
-
-	local function LoopResidence(context, which)
-		for i = 1, #context.colonists do
-			context.colonists[i].ChoGGi_LockResidence = which
-		end
-	end
 
 	-- add button to colonists
 	ChoGGi.ComFuncs.AddXTemplate(XTemplates.ipColonist[1], "LockResidenceColonist", nil, {

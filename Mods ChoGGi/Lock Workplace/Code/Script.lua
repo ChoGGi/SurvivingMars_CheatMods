@@ -1,47 +1,48 @@
 -- See LICENSE for terms
 
-local mod_NeverChange
+local IsValid = IsValid
+local ObjModified = ObjModified
+local RetName = ChoGGi.ComFuncs.RetName
 
--- fired when settings are changed/init
-local function ModOptions()
-	mod_NeverChange = CurrentModOptions:GetProperty("NeverChange")
+local function LoopWorkplace(context, which)
+	for i = 1, #context.workers do
+		local workers = context.workers[i]
+		for j = 1, #workers do
+			workers[j].ChoGGi_Lockworkplace = which
+		end
+	end
 end
 
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
+local mod_NeverChange
 
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
 		return
 	end
 
-	ModOptions()
+	mod_NeverChange = CurrentModOptions:GetProperty("NeverChange")
 end
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- make the value the below buttons set actually do something
 local ChoOrig_Colonist_SetWorkplace = Colonist.SetWorkplace
-function Colonist:SetWorkplace(building, shift, ...)
+function Colonist:SetWorkplace(building, ...)
 	if self.ChoGGi_Lockworkplace and (building or mod_NeverChange) then
-		return
+		-- single shift building (farm) == crash
+		-- active_shift > 0 ~= single shift
+		if building and building.active_shift == 0 then
+			return
+		end
 	end
 	-- we only fire the func if the lock isn't there, yeah i'm sure this won't cause any issues :)
-	return ChoOrig_Colonist_SetWorkplace(self, building, shift, ...)
+	return ChoOrig_Colonist_SetWorkplace(self, building, ...)
 end
 
 function OnMsg.ClassesPostprocess()
-	local IsValid = IsValid
-	local ObjModified = ObjModified
-	local RetName = ChoGGi.ComFuncs.RetName
-
-	local function LoopWorkplace(context, which)
-		for i = 1, #context.workers do
-			local workers = context.workers[i]
-			for j = 1, #workers do
-				workers[j].ChoGGi_Lockworkplace = which
-			end
-		end
-	end
 
 	-- add button to colonists
 	ChoGGi.ComFuncs.AddXTemplate(XTemplates.ipColonist[1], "LockworkplaceColonist", nil, {
@@ -59,12 +60,12 @@ function OnMsg.ClassesPostprocess()
 			end
 
 			if context.ChoGGi_Lockworkplace then
-				self:SetRolloverText(T(302535920011097, [[Remove the lock on this colonist.]]))
-				self:SetTitle(T(302535920011098, [[Unlock Workplace]]))
+				self:SetRolloverText(T(302535920011097, "Remove the lock on this colonist."))
+				self:SetTitle(T(302535920011098, "Unlock Workplace"))
 				self:SetIcon("UI/Icons/traits_approve.tga")
 			else
-				self:SetRolloverText(T{302535920011099, [[Lock this colonist to always work at <name>.]], name = RetName(context.workplace)})
-				self:SetTitle(T(302535920011100, [[Lock Workplace]]))
+				self:SetRolloverText(T{302535920011099, "Lock this colonist to always work at <name>.", name = RetName(context.workplace)})
+				self:SetTitle(T(302535920011100, "Lock Workplace"))
 				self:SetIcon("UI/Icons/traits_disapprove.tga")
 			end
 			---
@@ -86,12 +87,12 @@ function OnMsg.ClassesPostprocess()
 		OnContextUpdate = function(self, context)
 			---
 			if context.ChoGGi_Lockworkplace then
-				self:SetRolloverText(T(302535920011101, [[Remove the lock on this workplace.]]))
-				self:SetTitle(T(302535920011102, [[Unlock Workers]]))
+				self:SetRolloverText(T(302535920011101, "Remove the lock on this workplace."))
+				self:SetTitle(T(302535920011102, "Unlock Workers"))
 				self:SetIcon("UI/Icons/traits_approve.tga")
 			else
-				self:SetRolloverText(T(302535920011103, [[Lock all workers to this workplace (if more workers are added you'll need to toggle this or lock each of them).]]))
-				self:SetTitle(T(302535920011104, [[Lock Workers]]))
+				self:SetRolloverText(T(302535920011103, "Lock all workers to this workplace (if more workers are added you'll need to toggle this or lock each of them)."))
+				self:SetTitle(T(302535920011104, "Lock Workers"))
 				self:SetIcon("UI/Icons/traits_disapprove.tga")
 			end
 			---

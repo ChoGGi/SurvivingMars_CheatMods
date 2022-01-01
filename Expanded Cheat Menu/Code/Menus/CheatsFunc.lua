@@ -422,7 +422,7 @@ end
 function ChoGGi.MenuFuncs.ResetAllResearch()
 	local function CallBackFunc(answer)
 		if answer then
-			UICity:InitResearch()
+			UIColony:InitResearch()
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(

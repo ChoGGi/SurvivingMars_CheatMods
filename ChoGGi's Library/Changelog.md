@@ -1,6 +1,8 @@
 ## Library Changelog
 
 ## v10.7 (Unreleased)
+- Stopped using .entity for RetName().
+- Added FlushLog = FlushLogFile.
 - Changed table.append to table.iappend (thanks for the heads up devs).
 
 ## v10.6 (30 Oct 2021)

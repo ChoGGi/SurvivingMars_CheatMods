@@ -1,45 +1,31 @@
 -- See LICENSE for terms
 
+local AsyncRand = AsyncRand
+local table = table
+local TerrainTextures = TerrainTextures
+
 local UpdateOptions
-local options
 local mod_AlienAnomaly
 local mod_HideSigns
 local mod_ShowConstruct
 
--- fired when settings are changed/init
-local function ModOptions()
-	options = CurrentModOptions
-
-	mod_AlienAnomaly = options:GetProperty("AlienAnomaly")
-	mod_HideSigns = options:GetProperty("HideSigns")
-	mod_ShowConstruct = options:GetProperty("ShowConstruct")
-end
-
--- load default/saved settings
-function OnMsg.ModsReloaded()
-	ModOptions()
-	UpdateOptions()
-end
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
 		return
 	end
 
-	ModOptions()
+	mod_AlienAnomaly = CurrentModOptions:GetProperty("AlienAnomaly")
+	mod_HideSigns = CurrentModOptions:GetProperty("HideSigns")
+	mod_ShowConstruct = CurrentModOptions:GetProperty("ShowConstruct")
+
 	UpdateOptions()
 end
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
-local AsyncRand = AsyncRand
-local GridOpFree = GridOpFree
-local AsyncSetTypeGrid = AsyncSetTypeGrid
-local sqrt = sqrt
-local MulDivRound = MulDivRound
-
-local TerrainTextures = TerrainTextures
-
-local table = table
 local texture_metal = table.find(TerrainTextures, "name", "RockDark") + 1
 local texture_mpres = table.find(TerrainTextures, "name", "GravelDark") + 1
 local texture_water = table.find(TerrainTextures, "name", "Spider") + 1
@@ -81,13 +67,13 @@ local function UpdateDeposit(d)
 
 	scale = scale + 20
 
-	AsyncSetTypeGrid{
+	GetActiveTerrain():SetTypeGrid({
 		type_grid = pattern,
 		pos = d:GetPos(),
 		scale = scale,
 		centered = true,
 		invalid_type = -1,
-	}
+	}, empty_box)
 
 	-- we only want it to fire once per deposit
 	d.ground_is_marked = true
@@ -95,7 +81,7 @@ end
 
 local function UpdateOpacity(label, value)
 	value = value and 0 or 100
-	local deposits = UICity.labels[label] or ""
+	local deposits = MainCity.labels[label] or ""
 	for i = 1, #deposits do
 		local d = deposits[i]
 		d:SetOpacity(value)
@@ -147,14 +133,14 @@ local function HideSigns()
 		UpdateOpacity("SubsurfaceDeposit", value)
 		UpdateOpacity("EffectDeposit", value)
 
-		local deposits = UICity.labels.TerrainDeposit or ""
+		local deposits = MainCity.labels.TerrainDeposit or ""
 		for i = 1, #deposits do
 			deposits[i]:SetOpacity(value)
 		end
 	end
 
 	if mod_AlienAnomaly then
-		deposits = UICity.labels.EffectDeposit or ""
+		deposits = MainCity.labels.EffectDeposit or ""
 		for i = 1, #deposits do
 			local d = deposits[i]
 			if d.ChoGGi_alien then
@@ -173,7 +159,8 @@ OnMsg.CityStart = HideSigns
 OnMsg.LoadGame = HideSigns
 
 local function ChangeMarks(label, entity, value)
-	local anomalies = UICity.labels[label] or ""
+	local anomalies = MainCity.labels[label] or ""
+
 	if value then
 		for i = 1, #anomalies do
 			local a = anomalies[i]
@@ -198,13 +185,13 @@ end
 
 UpdateOptions = function()
 	-- update signs
-	if UICity then
-		if mod_AlienAnomaly ~= options:GetProperty("AlienAnomaly") then
-			mod_AlienAnomaly = options:GetProperty("AlienAnomaly")
+	if MainCity then
+		if mod_AlienAnomaly ~= CurrentModOptions:GetProperty("AlienAnomaly") then
+			mod_AlienAnomaly = CurrentModOptions:GetProperty("AlienAnomaly")
 			ChangeMarks("Anomaly", "GreenMan", mod_AlienAnomaly)
 		end
-		if mod_HideSigns ~= options:GetProperty("HideSigns") then
-			mod_HideSigns = options:GetProperty("HideSigns")
+		if mod_HideSigns ~= CurrentModOptions:GetProperty("HideSigns") then
+			mod_HideSigns = CurrentModOptions:GetProperty("HideSigns")
 			UpdateOpacity("SubsurfaceDeposit", mod_HideSigns)
 			UpdateOpacity("EffectDeposit", mod_HideSigns)
 			UpdateOpacity("TerrainDeposit", mod_HideSigns)

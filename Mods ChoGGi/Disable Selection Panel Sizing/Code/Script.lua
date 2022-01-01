@@ -1,44 +1,44 @@
 -- See LICENSE for terms
 
-local mod_Enabled
-local mod_ScrollSelection
-
--- fired when settings are changed/init
-local function ModOptions()
-	mod_Enabled = CurrentModOptions:GetProperty("Enabled")
-	mod_ScrollSelection = CurrentModOptions:GetProperty("ScrollSelection")
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-local XSizeConstrained_WindowUpdateMeasure = XSizeConstrainedWindow.UpdateMeasure
-local XWindow_UpdateMeasure = XWindow.UpdateMeasure
-
-function XSizeConstrainedWindow:UpdateMeasure(...)
-	if mod_Enabled then
-		return XWindow_UpdateMeasure(self, ...)
-	else
-		return XSizeConstrained_WindowUpdateMeasure(self, ...)
-	end
-end
-
-local margin_offset = 0
-local margin_top = 32
-
+local WaitMsg = WaitMsg
 local GetSafeMargins = GetSafeMargins
 local GetInGameInterface = GetInGameInterface
 local box = box
 
--- the ClassesBuilt is so it overrides the one I added to ECM
+local mod_Enabled
+local mod_ScrollSelection
+
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_Enabled = CurrentModOptions:GetProperty("Enabled")
+	mod_ScrollSelection = CurrentModOptions:GetProperty("ScrollSelection")
+end
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
+
+local ChoOrig_XSizeConstrained_WindowUpdateMeasure = XSizeConstrainedWindow.UpdateMeasure
+local ChoOrig_XWindow_UpdateMeasure = XWindow.UpdateMeasure
+
+function XSizeConstrainedWindow:UpdateMeasure(...)
+	if mod_Enabled then
+		return ChoOrig_XWindow_UpdateMeasure(self, ...)
+	else
+		return ChoOrig_XSizeConstrained_WindowUpdateMeasure(self, ...)
+	end
+end
+
+
+-- ClassesBuilt is so it overrides the func I added to ECM
 function OnMsg.ClassesBuilt()
+	local margin_offset = 0
+	local margin_top = 32
+
 	function InfopanelDlg:RecalculateMargins()
 		local margins = GetSafeMargins()
 		local bottom_margin = 0
@@ -63,49 +63,9 @@ local infopanel_list = {
 	ipRover = true,
 }
 
--- get around to finishing this (scrollable selection panel)
-local function AddScrollDialogXTemplates(obj)
-	local g_Classes = g_Classes
+local zerobox = box(0, 0, 0, 0)
 
-	local dlg = obj[1]
-
-	-- attach our scroll area to the XSizeConstrainedWindow
-	obj.idChoGGi_ScrollArea = g_Classes.XWindow:new({
-		Id = "idChoGGi_ScrollArea",
-	}, dlg)
-
-	obj.idChoGGi_ScrollV = g_Classes.XSleekScroll:new({
-		Id = "idChoGGi_ScrollV",
-		Target = "idChoGGi_ScrollBox",
-		Dock = "left",
-		MinThumbSize = 30,
-		AutoHide = true,
-		Background = 0,
-	}, obj.idChoGGi_ScrollArea)
-
-	obj.idChoGGi_ScrollBox = g_Classes.XScrollArea:new({
-		Id = "idChoGGi_ScrollBox",
-		VScroll = "idChoGGi_ScrollV",
-		LayoutMethod = "VList",
-	}, obj.idChoGGi_ScrollArea)
-
-	-- move content list to scrollarea
-	obj.idContent:SetParent(obj.idChoGGi_ScrollBox)
-
-	-- height of rightside hud button area
-	local hud = Dialogs.HUD.idRight.box:sizey()
-
-	-- offset from the top
-	local y_offset = obj.Margins:miny()
-
-	margin_offset = hud + y_offset + margin_top
-	obj:RecalculateMargins()
-
---~ ex(obj)
-end
-
-local WaitMsg = WaitMsg
-local Infopanel_DlgOpen = InfopanelDlg.Open
+local ChoOrig_Infopanel_DlgOpen = InfopanelDlg.Open
 function InfopanelDlg:Open(...)
 	CreateRealTimeThread(function()
 		repeat
@@ -115,17 +75,57 @@ function InfopanelDlg:Open(...)
 		-- give me the scroll. goddamn it blinky
 		if mod_ScrollSelection and infopanel_list[self.XTemplate] then
 			self.idActionButtons.parent:SetZOrder(2)
-			AddScrollDialogXTemplates(self)
 
-			-- add height limit for infopanel
-			local height = terminal.desktop.box:sizey()
-			local HUD = Dialogs.HUD
-			local extra_margin = 32
-			local offset = HUD.idRight.box:sizey() + HUD.idMapSwitch.box:sizey()
-			self:SetMaxHeight(height - offset - extra_margin)
+			local g_Classes = g_Classes
+			local dlg = self[1]
+
+			-- attach our scroll area to the XSizeConstrainedWindow
+			self.idChoGGi_ScrollArea = g_Classes.XWindow:new({
+				Id = "idChoGGi_ScrollArea",
+			}, dlg)
+
+			self.idChoGGi_ScrollV = g_Classes.XSleekScroll:new({
+				Id = "idChoGGi_ScrollV",
+				Target = "idChoGGi_ScrollBox",
+				Dock = "left",
+				MinThumbSize = 30,
+				Background = 0,
+				AutoHide = true,
+			}, self.idChoGGi_ScrollArea)
+
+			self.idChoGGi_Scrollbar_thumb = self.idChoGGi_ScrollV.idThumb
+
+			-- [LUA ERROR] attempt to index a boolean value (local 'desktop')
+			self.idChoGGi_ScrollV.idThumb.desktop = terminal.desktop
+			self.idChoGGi_ScrollV.idThumb:SetVisible(false)
+
+			self.idChoGGi_ScrollBox = g_Classes.XScrollArea:new({
+				Id = "idChoGGi_ScrollBox",
+				VScroll = "idChoGGi_ScrollV",
+				LayoutMethod = "VList",
+			}, self.idChoGGi_ScrollArea)
+
+			if self.idContent then
+				-- move content list to scrollarea
+				self.idContent:SetParent(self.idChoGGi_ScrollBox)
+				-- add ref back
+				self.idContent = self.idChoGGi_ScrollBox.idContent
+
+				self:RecalculateMargins()
+
+				-- add height limit for infopanel
+				local height = terminal.desktop.box:sizey()
+				local HUD = Dialogs.HUD
+				local bb = HUD.idMapSwitch
+				local offset = HUD.idRight.box:sizey() + (bb and bb.box:sizey() or 0)
+				local added_margin = bb and 48 or 101
+				self.idChoGGi_ScrollArea:SetMaxHeight(height - offset + added_margin)
+				self:SetMargins(zerobox)
+			end
+		--~ ex(self)
+
 		end
 	end)
 
-
-	return Infopanel_DlgOpen(self, ...)
+	return ChoOrig_Infopanel_DlgOpen(self, ...)
 end

@@ -474,9 +474,11 @@ do -- RetName
 				else
 					name = Translate(obj.display_name)
 				end
-			-- entity
-			elseif PropObjGetProperty(obj, "entity") and obj.entity ~= "" then
-				name = obj.entity
+
+-- I'd like to fire this after values_lookup, but for now comment it
+--~ 			-- entity
+--~ 			elseif PropObjGetProperty(obj, "entity") and obj.entity ~= "" then
+--~ 				name = obj.entity
 
 			-- objlist
 			elseif IsObjlist(obj) then
@@ -7719,6 +7721,33 @@ function ChoGGi.ComFuncs.GetUnitsSamePlace(city)
 	end)
 	ChoGGi.ComFuncs.OpenInExamineDlg(filtered)
 end
+
+function ChoGGi.ComFuncs.RetObjMapId(obj)
+	if obj then
+		return obj.city and obj.city.map_id or obj.GetMapID and obj:GetMapID()
+	end
+end
+
+-- loop through all map sectors and fire this func
+--~ function ChoGGi.ComFuncs.LoopMapSectors(map_id, func)
+--~ end
+--~ local sector_nums = {
+--~  [1] = true,
+--~  [2] = true,
+--~  [3] = true,
+--~  [4] = true,
+--~  [5] = true,
+--~  [6] = true,
+--~  [7] = true,
+--~  [8] = true,
+--~  [9] = true,
+--~  [10] = true,
+--~ }
+--~ }
+--~ local sectors = MainCity.MapSectors
+--~ for sector in pairs(sectors) do
+--~ 	if not sector_nums[sector] then
+
 
 --
 -- bugged
