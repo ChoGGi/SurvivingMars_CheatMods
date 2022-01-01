@@ -31,7 +31,7 @@ function CargoTransporter:ListAvailableRovers(class, quick_load, ...)
 --~   local rovers_list = self.city.labels[class] or empty_table
   local rovers_list = self.city.labels[class .. "AndChildren"] or empty_table
 
-  local filter = function(index, unit)
+  local filter = function(_, unit)
 --~     return unit.class == class and unit:CanBeControlled() and not unit.holder and (quick_load or unit:IsIdle())
     return unit:IsKindOf(class) and unit:CanBeControlled() and not unit.holder and (quick_load or unit:IsIdle())
   end

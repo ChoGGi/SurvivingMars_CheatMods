@@ -38,7 +38,6 @@ Cheats.Consts.Colonist>TouristSolsOnMarsMax TouristSolsOnMarsMax: The maximum nu
 Cheats.Consts.Colonist>TouristSolsOnMarsMin TouristSolsOnMarsMin: The number of sols that tourists stay on Mars.
 Cheats.Consts.Colonist>VisitFailPenalty Comfort penalty when failing to satisfy a need via a visit: VisitFailPenalty Comfort penalty when failing to satisfy a need via a visit
 Cheats.Consts.Colonist>botanist_arrival_chance Arrival chance (Botanist): botanist_arrival_chance Arrival chance (Botanist)
-Cheats.Consts.Colonist>cloning_points Cloning points: Cloning points at full performance per hour
 Cheats.Consts.Colonist>eat_food_per_visit Food used per visit: Food eaten per visit to building, Farm or stockpile
 Cheats.Consts.Colonist>engineer_arrival_chance Arrival chance (Engineer): engineer_arrival_chance Arrival chance (Engineer)
 Cheats.Consts.Colonist>geologist_arrival_chance Arrival chance (Geologist): geologist_arrival_chance Arrival chance (Geologist)
@@ -90,14 +89,19 @@ Cheats.Consts.Drone>DroneTimeToWorkOnLandscapeMultiplier Time To Work On Landsca
 Cheats.Consts.Drone>DroneTransformWasteRockObstructorToStockpileAmount Drone transform Waste Rock obstruction to stockpile amount: Drones generate 'transform_to_waste_rock' points (per second) when removing Waste Rock obstructions
 Cheats.Consts.Drone>DroneTransformWasteRockObstructorToStockpileBatteryUse Drone transform Waste Rock obstruction to stockpile battery use: Battery usage when Drone is removing Waste Rock obstructions (per second)
 Cheats.Consts.Drone>RechargeCleansDrones Recharging cleans Drones: Drones will be cleaned of dust when being recharged if this value is bigger than 0
+Cheats.Consts.Gameplay>AdvancedResourcesWeightModifierPercent Cargo weight modifier percent for advanced resources: AdvancedResourcesWeightModifierPercent Cargo weight modifier percent for advanced resources
 Cheats.Consts.Gameplay>ApplicantGenerationInterval Applicant Generation Period: How long it takes to generate a new Applicant in the Applicant Pool
 Cheats.Consts.Gameplay>ApplicantSuspendGenerate Applicant Generation Suspended: Determines whether the applicant pool gains new entries.
 Cheats.Consts.Gameplay>AsteroidLanderPrice Asteroid Lander Price: The price of the Asteroid Lander
 Cheats.Consts.Gameplay>AsteroidOutOfRangeWarningInSols Number of Sols before popup shows that Asteroid will go out of range: AsteroidOutOfRangeWarningInSols Number of Sols before popup shows that Asteroid will go out of range
+Cheats.Consts.Gameplay>BaseReconRate Base Recon Rate: Ensures a minimum discovery rate, regardless of the amount of recon centers or their performance.
+Cheats.Consts.Gameplay>BasicResourcesWeightModifierPercent Cargo weight modifier percent for basic resources: BasicResourcesWeightModifierPercent Cargo weight modifier percent for basic resources
 Cheats.Consts.Gameplay>CargoCapacity Payload Capacity: Maximum payload (in kg) of a resupply Rocket
+Cheats.Consts.Gameplay>CargoRequestDroneAmount Cargo request drone amount: Amount of drones that work per resource request
 Cheats.Consts.Gameplay>CaveInDamage Amount of maintenance points a cave-in adds to buildings: Amount of maintenance points a cave-in adds to buildings
 Cheats.Consts.Gameplay>CrimeEventDestroyedBuildingsCount CrimeEventDestroyedBuildingsCount: CrimeEvent -  the number of destroyed buildings from single crime event
 Cheats.Consts.Gameplay>CrimeEventSabotageBuildingsCount CrimeEventSabotageBuildingsCount: CrimeEvent -  the number of sabotaged buildings from single crime event
+Cheats.Consts.Gameplay>CrystalStatueMoraleBoost Morale Boost given by the Crystal Statue: CrystalStatueMoraleBoost Morale Boost given by the Crystal Statue
 Cheats.Consts.Gameplay>DeepScanAvailable Can perform deep scan: Deep scanning is available when this is not 0
 Cheats.Consts.Gameplay>DistressCallFundingThreshold Distress call funding threshold amount in millions: DistressCallFundingThreshold Distress call funding threshold amount in millions
 Cheats.Consts.Gameplay>DistressCallMaxFundingAmount Maximum amount of funding given as aid by a rival AI: DistressCallMaxFundingAmount Maximum amount of funding given as aid by a rival AI
@@ -119,13 +123,13 @@ Cheats.Consts.Gameplay>IsDeepWaterExploitable Exploitable Deep Water: Deep Water
 Cheats.Consts.Gameplay>MarsquakeRandomTime Random extra hours before the next underground Marsquake: Minimum + random = hours until next Underground Marsquake
 Cheats.Consts.Gameplay>MarsquakeSpawnTime Minimum time in hours before the next underground Marsquake: Minimum + random = hours until next Underground Marsquake
 Cheats.Consts.Gameplay>MaxAsteroids Max Asteroids: MaxAsteroids Max Asteroids
-Cheats.Consts.Gameplay>MaxColonistsPerElevator Colonists per Elevator: Maximum number of Colonists that can use the Elevator
 Cheats.Consts.Gameplay>MaxColonistsPerPod Colonists per Pod: Maximum number of Colonists that can arrive on Mars in a single Pod
 Cheats.Consts.Gameplay>MaxColonistsPerRocket Colonists per Rocket: Maximum number of Colonists that can arrive on Mars in a single Rocket
 Cheats.Consts.Gameplay>MaxGameDevelopmentCollaborationLoss Max Game Development Collaboration Loss (%): MaxGameDevelopmentCollaborationLoss Max Game Development Collaboration Loss (%)
 Cheats.Consts.Gameplay>MaxReconCollaborationLoss Max Recon Collaboration Loss (%): MaxReconCollaborationLoss Max Recon Collaboration Loss (%)
 Cheats.Consts.Gameplay>MaxResearchCollaborationLoss Max Research Collaboration Loss (%): MaxResearchCollaborationLoss Max Research Collaboration Loss (%)
 Cheats.Consts.Gameplay>MaxTVShowDevelopmentCollaborationLoss Max TV Show Development Collaboration Loss (%): MaxTVShowDevelopmentCollaborationLoss Max TV Show Development Collaboration Loss (%)
+Cheats.Consts.Gameplay>OtherResourcesWeightModifierPercent Cargo weight modifier percent for other resources: OtherResourcesWeightModifierPercent Cargo weight modifier percent for other resources
 Cheats.Consts.Gameplay>OutsourceDisabled Outsource Disabled: Determines whether the player can buy research points via outsourcing.
 Cheats.Consts.Gameplay>OutsourceMaxOrderCount Maximum Outsource Orders: OutsourceMaxOrderCount Maximum Outsource Orders
 Cheats.Consts.Gameplay>OutsourceResearch Outsource Research Points: OutsourceResearch Outsource Research Points
@@ -143,6 +147,7 @@ Cheats.Consts.Gameplay>RivalStandingHelpReduction Rival's standing reduction whe
 Cheats.Consts.Gameplay>RivalStandingHostile Threshold for RIval AI hostile standing: RivalStandingHostile Threshold for RIval AI hostile standing
 Cheats.Consts.Gameplay>RivalStandingNeutral Threshold for RIval AI neutral standing: RivalStandingNeutral Threshold for RIval AI neutral standing
 Cheats.Consts.Gameplay>RivalStandingNoHelpReduction Rival's standing reduction when not sending aid: RivalStandingNoHelpReduction Rival's standing reduction when not sending aid
+Cheats.Consts.Gameplay>RoversWeightModifierPercent Cargo weight modifier percent for drones and RC: RoversWeightModifierPercent Cargo weight modifier percent for drones and RC
 Cheats.Consts.Gameplay>SponsorFundingInterval Funding Interval (Sols): Period (in Sols) of additional periodical Funding from mission sponsors
 Cheats.Consts.Gameplay>SponsorFundingPerInterval Additional Funding (M): Amount of additional Funding (in millions) received periodically from mission sponsor
 Cheats.Consts.Gameplay>SponsorGoalsCount Number of sponsor goals: Number of sponsor goals
@@ -182,6 +187,7 @@ Cheats.Consts.Stat>GameRuleRebelYellRenegadeCreation Renegade creation point whe
 Cheats.Consts.Stat>HighStatLevel High Stat Threshold: Stats above this level are considered high
 Cheats.Consts.Stat>HighStatMoraleEffect High Stat Morale Effect: High Health, Sanity and Comfort increase the Colonist's morale by this much
 Cheats.Consts.Stat>LackOfLight Lack of Light: Colonist Sanity decreases when a Colonist is living Underground
+Cheats.Consts.Stat>LackOfLight_Morale Lack of Light (Morale): Colonist Morale decreases when a Colonist is living Underground
 Cheats.Consts.Stat>LowSanityNegativeTraitChance Chance for getting a flaw when experiencing a Sanity breakdown: Chance of getting a negative trait when Sanity reaches zero, in %
 Cheats.Consts.Stat>LowSanitySuicideChance Chance of Suicide: Chance of suicide when Sanity reaches zero, in %
 Cheats.Consts.Stat>LowStatLevel Low Stat Threshold: Stats below this level are considered low
@@ -242,6 +248,7 @@ Cheats.Consts.Workplace>AvoidWorkplaceSols Avoid Workplace Sols: After being fir
 Cheats.Consts.Workplace>DefaultOutsideWorkplacesRadius Default outside Workplaces radius: Colonists search this far (in hexes) outside their Dome when looking for a Workplace
 Cheats.Consts.Workplace>OvertimedShiftPerformance Heavy workload Shift Performance: Heavy workload Shift Performance change
 Cheats.Consts.Workplace>WorkingHours Working hours: Normal shift duration
+Cheats.Disasters>Cave-in: Triggers cave-in at location (and disables any nearby struts).
 Cheats.Disasters>Disasters: Show the disasters list and optionally start one.
 Cheats.Disasters>Lightning Strike: Strike a random pos or at mouse cursor if using shortcut.
 Cheats.Disasters>Meteor Strike: Strike a random pos or at mouse cursor if using shortcut.
@@ -299,8 +306,8 @@ This is temporary, use Options>Video>Framerate Counter to permanently save it.
 Debug.Framerate Counter>Up Left
 Debug.Framerate Counter>Up Right: Default
 Debug.Grids>Follow Mouse Grid Position: Type of positioning to show (relative or absolute).
-Debug.Grids>Follow Mouse Grid Size: 25: Sets the size of the Building/Flight grid.
-Debug.Grids>Follow Mouse Grid Trans: 15: How transparent the Building/Flight grid is.
+Debug.Grids>Follow Mouse Grid Size: Sets the size of the Building/Flight grid.
+Debug.Grids>Follow Mouse Grid Trans: How transparent the Building/Flight grid is.
 Debug.Grids>Show Grid 45 Square: Square 45 (use Disable to hide).
 Debug.Grids>Show Grid Disable: Hide the white ground grids.
 Debug.Grids>Show Grid Hex: Hex (use Disable to hide).

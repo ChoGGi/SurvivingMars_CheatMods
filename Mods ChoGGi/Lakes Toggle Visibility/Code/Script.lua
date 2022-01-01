@@ -9,7 +9,6 @@ local DoneObject = DoneObject
 local ApplyAllWaterObjects = ApplyAllWaterObjects
 local sqrt = sqrt
 local MulDivRound = MulDivRound
-local GameState = GameState
 
 local mod_EnableLakes
 local mod_EnableGridView

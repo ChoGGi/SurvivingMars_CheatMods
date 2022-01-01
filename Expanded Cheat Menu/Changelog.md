@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v17.7 (Unreleased)
+## v17.8 (Unreleased)
+
+## v17.7 (1 Jan 2022)
 ### Fixed:
 - Reset All Research (Picard).
 - View All Entities didn't load models.

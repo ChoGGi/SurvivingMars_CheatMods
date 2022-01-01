@@ -13,7 +13,7 @@ local function UpdateStorybit()
 		bit.Enabled = true
 	end
 
-	local bit = StoryBits.BadRocketLanding
+	bit = StoryBits.BadRocketLanding
 	if mod_RocketMalfunction then
 		bit.Enabled = false
 	else

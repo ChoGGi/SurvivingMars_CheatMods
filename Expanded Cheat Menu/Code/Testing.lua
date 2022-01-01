@@ -538,6 +538,8 @@ function ChoGGi.testing.ConcatingTables()
 	ChoGGi.ComFuncs.TickStart("ConcatingTables.1.Tick")
 	for _ = 1, 50000 do
 		local str = "AAAA" .. "BBBB" .. "CCCCC" .. "DDDDD" .. "EEEEEE" .. "FFFFFFF" .. "GGGGGGGG" .. "EEEEEEEEE" .. "JJJJJJJJJJ"
+    if str then
+    end
 	end
 	ChoGGi.ComFuncs.TickEnd("ConcatingTables.1.Tick")
 
@@ -546,7 +548,9 @@ function ChoGGi.testing.ConcatingTables()
 		local str = TableConcat{
 			"AAAA", "BBBB", "CCCCC", "DDDDD", "EEEEEE", "FFFFFFF", "GGGGGGGG", "EEEEEEEEE", "JJJJJJJJJJ"
 		}
-	end
+    if str then
+    end
+  end
 	ChoGGi.ComFuncs.TickEnd("ConcatingTables.2.Tick")
 end
 

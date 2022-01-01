@@ -141,7 +141,6 @@ function OnMsg.ClassesPostprocess()
 			"__context_of_kind", "ChoGGi_NotePadBuilding",
 			"__template", "InfopanelButton",
 			"OnContextUpdate", function(self, context)
-				local name = RetName(context)
 				if context.always_show_notepad then
 					self:SetIcon("UI/Icons/traits_approve.tga")
 				else

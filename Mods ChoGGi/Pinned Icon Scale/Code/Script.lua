@@ -44,5 +44,5 @@ OnMsg.ApplyModOptions = ModOptions
 local ChoOrig_UpdatePinsDlgMargins = UpdatePinsDlgMargins
 function UpdatePinsDlgMargins(...)
 	UpdatePins()
-	return UpdatePinsDlgMargins(...)
+	return ChoOrig_UpdatePinsDlgMargins(...)
 end

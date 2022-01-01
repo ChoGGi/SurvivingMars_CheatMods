@@ -17,7 +17,7 @@ local function UnlockBreaks(newgame)
 		local func = options:GetProperty("BreakthroughsResearched") and UIColony.SetTechResearched or UIColony.SetTechDiscovered
 
 		local bt = Presets.TechPreset.Breakthroughs
-		for key, value in pairs(bt) do
+		for key in pairs(bt) do
 			if type(key) == "string" then
 				if options:GetProperty(key) then
 					func(UIColony, key)

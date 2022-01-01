@@ -76,7 +76,6 @@ function OnMsg.LoadGame()
 	local AddPFTunnel = Tunnel.AddPFTunnel
 	MapForEach("map", "DomeTeleporter", AddPFTunnel)
 end
-end
 
 -- backup the CityTunnelConstruction obj
 local ChoOrig_CityTunnelConstruction

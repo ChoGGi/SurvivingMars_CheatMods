@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local CreateGameThread = CreateGameThread
 local PlaceObjectIn = PlaceObjectIn
 local GetRandomPassableAround = GetRandomPassableAround
 
@@ -51,7 +50,7 @@ function SupplyPod:Unload(...)
 		if rovers[cargo.class] then
 			local amt = cargo.amount
 			if amt > 1 then
-				for i = 1, amt-1 do
+				for _ = 1, amt-1 do
 					local pos, angle = self:GetSpotLoc(self:GetSpotBeginIndex("Rover"))
 					local obj = PlaceObjectIn(cargo.class, map_id, {
 						city = self.city

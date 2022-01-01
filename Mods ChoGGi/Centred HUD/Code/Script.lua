@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local empty_box = empty_box
 local IsBox = IsBox
 
 -- res collection
