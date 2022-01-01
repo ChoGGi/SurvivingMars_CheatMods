@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"description", [[
 If you scan a surface sector that has a concrete deposit while underground then the deposit will appear underground.
-This will check on load for borked ones and move them to the surface.
+This will check on load for borked ones and move them to the surface (you can also apply mod options while playing to move new ones).
 
 https://forum.paradoxplaza.com/forum/threads/surviving-mars-surface-concrete-deposit-has-no-icon-and-is-not-minable.1496572/
 ]],

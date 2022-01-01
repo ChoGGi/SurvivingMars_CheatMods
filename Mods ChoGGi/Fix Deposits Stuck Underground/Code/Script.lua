@@ -14,7 +14,7 @@ end
 
 local mod_EnableMod
 
--- skip the indexed sector tables since we're using pairs()
+-- Skip the indexed sector tables since we're using pairs()
 local sector_nums = {
  [1] = true,
  [2] = true,
@@ -40,12 +40,13 @@ local function UpdateDeposits()
 			local deposits = sector.markers.surface
 			for i = 1, #deposits do
 				local deposit = deposits[i].deposit
-				-- no point in moving something already there
+				-- No point in moving something already there
 				if deposit and RetObjMapId(deposit) ~= MainMapID then
-					-- move d to surface map (preserves position)
+					-- Move deposit to surface map (preserves position)
 					deposit:TransferToMap(MainMapID)
-					-- z is still set to z from underground
+					-- z is still set to z from underground (got me)
 					local pos = deposit:GetPos()
+					-- Used surface.terrain:GetHeight instead of just :SetTerrainZ() since that seems to be the active terrain
 					deposit:SetPos(pos:SetZ(GameMaps[MainMapID].terrain:GetHeight(pos)))
 				end
 			end
@@ -70,7 +71,7 @@ local function ModOptions(id)
 
 	UpdateDeposits()
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
