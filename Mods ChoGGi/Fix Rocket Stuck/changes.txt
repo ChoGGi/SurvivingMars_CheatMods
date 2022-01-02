@@ -1,3 +1,6 @@
+v2.0
+Trade rocket ready for takeoff stuck on pad only showing priority button.
+
 v1.9
 Previous expedition rocket shows msg it isn't landed when trying to launch.
 

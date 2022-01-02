@@ -1,8 +1,5 @@
 -- See LICENSE for terms
 
-local table = table
-local Sleep = Sleep
-
 local mod_Amount
 
 -- fired when settings are changed/init
@@ -21,6 +18,10 @@ OnMsg.ApplyModOptions = ModOptions
 
 local ChoOrig_RCTransport_TransportRouteLoad = RCTransport.TransportRouteLoad
 function RCTransport:TransportRouteLoad(...)
+  if not self.transport_route then
+    return
+  end
+
 	-- [LUA ERROR] Mars/Lua/Units/RCTransport.lua:1018: attempt to index a boolean value (field 'unreachable_objects')
 	if not self.unreachable_objects then
 		self.unreachable_objects = {}
@@ -81,6 +82,10 @@ end
 
 local ChoOrig_RCTransport_TransportRouteUnload = RCTransport.TransportRouteUnload
 function RCTransport:TransportRouteUnload(...)
+  if not self.transport_route then
+    return
+  end
+
 	-- If amount > storage then that's bad
 	if mod_Amount > self.max_shared_storage then
 		mod_Amount = self.max_shared_storage

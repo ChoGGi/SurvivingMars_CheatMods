@@ -1,31 +1,27 @@
 -- See LICENSE for terms
 
-local mod_EnableMod
-
--- fired when settings are changed/init
-local function ModOptions()
-	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-local table = table
-local type = type
-local pairs = pairs
+local table, type, pairs = table, type, pairs
 local IsValid = IsValid
 local Msg = Msg
 local GenerateColonistData = GenerateColonistData
 local GetRandomPassablePoint = GetRandomPassablePoint
 local GetPassablePointNearby = GetPassablePointNearby
 local InvalidPos = InvalidPos()
+
+local mod_EnableMod
+
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local function RemoveInvalid(count, list)
 	for i = #list, 1, -1 do
@@ -217,6 +213,12 @@ function OnMsg.LoadGame()
 							table.remove(r.drones_exiting, j)
 						end
 					end
+				end
+				-- bugged rocket trying to do a trade (only has priority button)
+				if r.command == "Takeoff" and r.expedition and r.expedition.route_id
+					and r.refuel_request:GetActualAmount() == 0 and not r:IsRefueling()
+				then
+					r:CheatLaunch()
 				end
 
 			-- seems easiest to just ignore it

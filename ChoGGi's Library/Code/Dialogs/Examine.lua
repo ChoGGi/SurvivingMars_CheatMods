@@ -263,6 +263,8 @@ function ChoGGi_DlgExamine:Init(parent, context)
 		if context.parent == "str" then
 			self.str_object = context.parent == "str" and true
 			context.parent = nil
+			-- on by default for it seems good
+			context.auto_refresh = true
 		elseif not blacklist then
 			local err, files = g.AsyncListFiles(self.obj)
 			if not err and #files > 0 then
@@ -3804,6 +3806,9 @@ function ChoGGi_DlgExamine:SetObj(startup)
 	if self.str_object then
 		-- Get whatever the obj leads to (if anything)
 		local obj_ref = self.ChoGGi.ComFuncs.DotPathToObject(obj)
+		-- set title
+		self.override_title = true
+		self.title = "str: " .. obj
 		-- If it is then we use that as the obj to examine
 		if type(obj_ref) == "function" then
 			obj = {obj_ref(self.varargs)}

@@ -4118,14 +4118,13 @@ do -- PadNumWithZeros
 	end
 end -- do
 
+--~ ChoGGi.ComFuncs.RemoveObjs("VegetationAnimator")
 function ChoGGi.ComFuncs.RemoveObjs(class, reason)
-	-- If there's a reason then check if it's suspending
-	local not_sus = reason and not s_SuspendPassEditsReasons[reason]
-	-- If it isn't then suspend it
-	if not_sus then
-		-- suspending pass edits makes deleting much faster
-		SuspendPassEdits(reason)
+	if not reason then
+		reason = "ChoGGi.ComFuncs.RemoveObjs"
 	end
+	-- suspending pass edits makes deleting much faster
+	SuspendPassEdits(reason)
 
 	if type(class) == "table" then
 		local g_Classes = g_Classes
@@ -4142,9 +4141,7 @@ function ChoGGi.ComFuncs.RemoveObjs(class, reason)
 		end
 	end
 
-	if not_sus then
-		ResumePassEdits(reason)
-	end
+	ResumePassEdits(reason)
 end
 
 do -- SpawnColonist
@@ -4888,6 +4885,10 @@ do -- BuildableHexGrid
 				end
 			end
 			ResumePassEdits("ChoGGi.ComFuncs.BuildableHexGrid")
+
+			if testing then
+				print("BuildableHexGrid count", grid_objs_c)
+			end
 
 			-- off we go
 			Temp.grid_thread = CreateRealTimeThread(function()

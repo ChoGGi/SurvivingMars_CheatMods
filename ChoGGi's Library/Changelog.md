@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v10.8 (Unreleased)
+- str examine now adds a title and turns autorefresh on.
 
 ## v10.7 (1 Jan 2022)
 - Stopped using .entity for RetName().
