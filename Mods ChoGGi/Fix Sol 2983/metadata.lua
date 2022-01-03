@@ -15,8 +15,14 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagOther", true,
 	"description", [[
-Stuff gets weird after Sol 2983 hour 20 min 20.
+Stuff gets weird after about Sol 2983 hour 20 min 20.
 https://en.wikipedia.org/wiki/2,147,483,647#In_video_games
+
+
+
+[b]This is replacing a core C func with a lua one, so I would leave this disabled till your playthrough reaches Sol 2981+.[/b]
+
+
 
 https://forum.paradoxplaza.com/forum/threads/surviving-mars-lag-and-unplayable-after-a-certain-sol.1490083/
 https://forum.paradoxplaza.com/forum/threads/surviving-mars-all-drones-stops-after-2983-sol-and-integer-oveflow-food-and-fuel.1505366/

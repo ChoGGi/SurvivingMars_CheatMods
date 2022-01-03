@@ -1,5 +1,13 @@
 -- See LICENSE for terms
 
+-- 2147483647 is 2982 Sols 14h, but for some reason GameTime() doesn't reach it till 2983 20h
+-- can't be bothered to find out why...
+
+-- used below to check for rollover
+local min_time = 2980 * const.Scale.sols
+-- 2147483647
+local max_int = max_int
+
 local mod_EnableMod
 
 local function ModOptions(id)
@@ -15,33 +23,26 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
+-- when true add max_int time
 local add_time
 
--- could do newday, but that'll take a few hours to update, and this won't intruduce much of any lag
-function OnMsg.NewHour(hour)
-	if hour > 19 and UIColony.day > 2982 then
-		add_time = true
-	end
-end
--- update on load
-function OnMsg.LoadGame()
-	if UIColony.day > 2982 and UIColony.hour > 19 then
-		add_time = true
-	end
-end
-
--- There's other stuff to fix, but for now this will fix some of it
+-- There's other stuff to fix, but for now this will fix most of it
 local ChoOrig_GameTime = GameTime
 function GameTime()
-	if not mod_EnableMod then
+	if not mod_EnableMod or not add_time then
 		return ChoOrig_GameTime()
 	end
-
-	local time = ChoOrig_GameTime()
-	if add_time then
-		-- 32bit signed int...
-		time = time + 2147483647
-	end
-
-	return time
+	return ChoOrig_GameTime() + max_int
 end
+
+
+local function TestTime()
+	if UIColony.day > 2981 and min_time > ChoOrig_GameTime() then
+		add_time = true
+	end
+end
+
+-- could do NewDay, but that'll take a few hours to update, and this won't take any noticeable cpu
+OnMsg.NewHour = TestTime
+-- update on load instead of waiting for NewHour
+OnMsg.LoadGame = TestTime
