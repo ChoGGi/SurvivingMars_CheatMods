@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2705335465",
 	"pops_any_uuid", "fbf40e78-a290-47fd-9ebb-f2dcd4b25c0d",
 	"lua_revision", 1007000, -- Picard
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -21,6 +21,8 @@ https://en.wikipedia.org/wiki/2,147,483,647#In_video_games
 
 
 [b]This is replacing a core C func with a lua one, so I would leave this disabled till your playthrough reaches Sol 2981+.[/b]
+
+The var seems to be saved between sessions, so if switching between your 2983 and other saves: [b]You should restart the game![/b]
 
 
 

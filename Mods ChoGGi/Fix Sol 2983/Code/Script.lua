@@ -35,16 +35,16 @@ function GameTime()
 	return ChoOrig_GameTime()
 end
 
--- when min_time is larger than GameTime then we've overflowed
-local function TestTime()
-	if not add_time then
-		if UIColony.day > 2981 and min_time > ChoOrig_GameTime() then
-			add_time = true
-		end
+-- could do NewDay, but that'll take a few hours to update, and this won't take any noticeable cpu
+function OnMsg.NewHour()
+	if not add_time and UIColony.day > 2981 and min_time > ChoOrig_GameTime() then
+		add_time = true
 	end
 end
 
--- could do NewDay, but that'll take a few hours to update, and this won't take any noticeable cpu
-OnMsg.NewHour = TestTime
 -- update on load instead of waiting for NewHour
-OnMsg.LoadGame = TestTime
+function OnMsg.LoadGame()
+	if UIColony.day > 2981 and min_time > ChoOrig_GameTime() then
+		add_time = true
+	end
+end
