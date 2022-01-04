@@ -4,15 +4,15 @@ return PlaceObj("ModDef", {
 	"steam_id", "2705335465",
 	"pops_any_uuid", "fbf40e78-a290-47fd-9ebb-f2dcd4b25c0d",
 	"lua_revision", 1007000, -- Picard
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
-	"has_options", true,
+--~ 	"has_options", true,
 	"TagOther", true,
 	"description", [[
 Stuff gets weird after about Sol 2983 hour 20 min 20.

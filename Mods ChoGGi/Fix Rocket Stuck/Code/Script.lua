@@ -218,6 +218,7 @@ function OnMsg.LoadGame()
 				if r.command == "Takeoff" and r.expedition and r.expedition.route_id
 					and r.refuel_request:GetActualAmount() == 0 and not r:IsRefueling()
 				then
+					r.boarded = false
 					r:CheatLaunch()
 				end
 

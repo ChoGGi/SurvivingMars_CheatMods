@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v17.8 (Unreleased)
+### Removed:
+- AddFuel cheat (game added a Refuel cheat).
 
 ## v17.7 (1 Jan 2022)
 ### Fixed:

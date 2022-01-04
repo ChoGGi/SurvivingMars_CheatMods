@@ -8,28 +8,15 @@ local min_time = 2980 * const.Scale.sols
 -- 2147483647 * 2
 local max_int2 = max_int * 2
 
-local mod_EnableMod
-
-local function ModOptions(id)
-	-- id is from ApplyModOptions
-	if id and id ~= CurrentModId then
-		return
-	end
-
-	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
-end
--- Load default/saved settings
-OnMsg.ModsReloaded = ModOptions
--- Fired when Mod Options>Apply button is clicked
-OnMsg.ApplyModOptions = ModOptions
-
 -- when true add max_int2 time
 local add_time
 
 -- There's other stuff to fix, but for now this will fix most of it
 local ChoOrig_GameTime = GameTime
 function GameTime()
-	if mod_EnableMod and add_time then
+	-- considering how much this func is called I'd like to keep this simple
+	-- might remove the mod option for whatever speed it'll give...
+	if add_time then
 		return ChoOrig_GameTime() + max_int2
 	end
 	return ChoOrig_GameTime()

@@ -1,2 +1,5 @@
+v0.3
+Removed mod option as it's one less thing to check for during func call.
+
 v0.2
 Made it a little safer.

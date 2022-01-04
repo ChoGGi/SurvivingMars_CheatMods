@@ -362,6 +362,13 @@ It don't matter if you're black or white"]]],
 	MaxShuttles = {
 		des = Strings[302535920001416--[[Max out shuttles for this hub.]]],
 	},
+--~ 	Refuel = {
+--~ 		des = Strings[302535920001416--[[Max out shuttles for this hub.]]],
+--~ 	},
+	Refuel = {
+		des = Strings[302535920001053--[[Fill up rocket with fuel.]]],
+		icon = "UI/Icons/res_fuel.tga",
+	},
 
 -- Units
 	Breadcrumbs = {
@@ -403,11 +410,11 @@ It don't matter if you're black or white"]]],
 		des_name = true,
 		icon = ChoGGi.library_path .. "UI/incal_egg.png",
 	},
-	AddFuel = {
-		des = Strings[302535920001053--[[Fill up %s with fuel.]]],
-		des_name = true,
-		icon = "UI/Icons/res_fuel.tga",
-	},
+--~ 	AddFuel = {
+--~ 		des = Strings[302535920001053--[[Fill up %s with fuel.]]],
+--~ 		des_name = true,
+--~ 		icon = "UI/Icons/res_fuel.tga",
+--~ 	},
 	DeleteObject = {
 		des = Strings[302535920000414--[[Are you sure you wish to delete %s?]]],
 		des_name = true,
@@ -1183,25 +1190,25 @@ function RocketBase:CheatCapDef()
 	ChoGGi.ComFuncs.SetTaskReqAmount(self, self:GetClassValue("max_export_storage"), "export_requests", "max_export_storage")
 end
 
-function RocketBase:CheatAddFuel()
-	-- skip if we're full/over full
-	local actual = self.refuel_request:GetActualAmount()
-	if actual == 0 then
-		return
-	end
+--~ function RocketBase:CheatAddFuel()
+--~ 	-- skip if we're full/over full
+--~ 	local actual = self.refuel_request:GetActualAmount()
+--~ 	if actual == 0 then
+--~ 		return
+--~ 	end
 
-	local target = self.refuel_request:GetTargetAmount()
-	self.accumulated_fuel = self.accumulated_fuel + target
-	self.refuel_request:SetAmount(target)
-	-- make sure it always shows the correct amount
-	self.refuel_request:SetAmount(0)
-	Msg("RocketRefueled", self)
-	-- update selection panel
-	local sel = SelectedObj
-	if sel and sel.handle == self.handle then
-		RebuildInfopanel(self)
-	end
-end
+--~ 	local target = self.refuel_request:GetTargetAmount()
+--~ 	self.accumulated_fuel = self.accumulated_fuel + target
+--~ 	self.refuel_request:SetAmount(target)
+--~ 	-- make sure it always shows the correct amount
+--~ 	self.refuel_request:SetAmount(0)
+--~ 	Msg("RocketRefueled", self)
+--~ 	-- update selection panel
+--~ 	local sel = SelectedObj
+--~ 	if sel and sel.handle == self.handle then
+--~ 		RebuildInfopanel(self)
+--~ 	end
+--~ end
 function RocketBase:CheatAddDust2()
 	self:SetDust(600, 0)
 	ApplyToObjAndAttaches(self, SetObjDust, 600)
