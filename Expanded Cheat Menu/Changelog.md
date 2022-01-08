@@ -1,6 +1,9 @@
 ## ECM Changelog
 
 ## v17.8 (Unreleased)
+### Changed:
+- devs fixed inf loop in GenerateMarsScreenPoI, so Spawn Planetary Anomalies limit is removed.
+
 ### Removed:
 - AddFuel cheat (game added a Refuel cheat).
 

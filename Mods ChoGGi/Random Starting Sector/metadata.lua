@@ -15,9 +15,6 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagGameplay", true,
 	"description", [[
-NEEDS UPDATE PICARD (devs localed the func I used)
-
-
 Picks a random square instead of same each time.
 
 Mod Options:

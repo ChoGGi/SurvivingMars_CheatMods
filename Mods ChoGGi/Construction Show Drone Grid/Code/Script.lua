@@ -22,9 +22,15 @@ local mod_GridScale
 local mod_HexColourDroneHub
 local mod_HexColourRCRover
 local mod_HexColourSupplyRocket
+local mod_HexColourElevator
+local mod_HexColourDroneHubExtender
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	local options = CurrentModOptions
 	mod_EnableGrid = options:GetProperty("Option1")
 	mod_DistFromCursor = options:GetProperty("DistFromCursor") * 1000
@@ -34,19 +40,32 @@ local function ModOptions()
 	mod_HexColourDroneHub = RGBtoColour(options:GetProperty("HexColourDroneHub"))
 	mod_HexColourRCRover = RGBtoColour(options:GetProperty("HexColourRCRover"))
 	mod_HexColourSupplyRocket = RGBtoColour(options:GetProperty("HexColourSupplyRocket"))
+	mod_HexColourElevator = RGBtoColour(options:GetProperty("HexColourElevator"))
+	mod_HexColourDroneHubExtender = RGBtoColour(options:GetProperty("HexColourDroneHubExtender"))
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-local classes = {"RocketBase", "DroneHub", "RCRover", "ConstructionSite"}
+local classes
+local classes_o = {
+	"ConstructionSite",
+	"DroneHub",
+	"RCRover",
+	"RocketBase",
+}
+classes = classes_o
+local classes_p = {
+	"ConstructionSite",
+	"DroneHub",
+	"DroneHubExtender",
+	"Elevator",
+	"RCRover",
+	"RocketBase",
+}
+local picard_active
+local grids_visible
 
 local ChoOrig_ShowBuildingHexes = ShowBuildingHexes
 function ShowBuildingHexes(bld, hex_range_class, bind_func, ...)
@@ -71,14 +90,26 @@ function RCRover:GetSelectionRadiusScale_OverrideChoGGi()
 	return self.work_radius
 end
 
-local grids_visible
-
 local function ShowGrids()
+	if picard_active ~= false and picard_active ~= true then
+		picard_active = g_AccessibleDlc.picard
+	end
+
+	if picard_active then
+		classes = classes_p
+	else
+		classes = classes_o
+	end
+
 	SuspendPassEdits("ChoGGi.CursorBuilding.GameInit.Construction Show Drone Grid")
 
 	local UICity = UICity
 	ShowHexRanges(UICity, "SupplyRocket")
 	ShowHexRanges(UICity, "DroneHub")
+	if picard_active then
+		ShowHexRanges(UICity, "Elevator")
+		ShowHexRanges(UICity, "DroneHubExtender")
+	end
 	-- function ShowHexRanges(city, class, cursor_obj, bind_func, single_obj)
 	ShowHexRanges(UICity, "RCRover", nil, "GetSelectionRadiusScale_OverrideChoGGi")
 	-- so far space race is only dlc that adds more commander rovers
@@ -100,6 +131,7 @@ local function ShowGrids()
 					range.ChoGGi_visible = true
 				end
 
+				--
 				if obj:IsKindOf("DroneHub") then
 					for i = 1, #range.decals do
 						local decal = range.decals[i]
@@ -118,7 +150,20 @@ local function ShowGrids()
 						decal:SetColorModifier(mod_HexColourSupplyRocket)
 						decal:SetScale(mod_GridScale)
 					end
+				elseif obj:IsKindOf("DroneHubExtender") then
+					for i = 1, #range.decals do
+						local decal = range.decals[i]
+						decal:SetColorModifier(mod_HexColourDroneHubExtender)
+						decal:SetScale(mod_GridScale)
+					end
+				elseif obj:IsKindOf("Elevator") then
+					for i = 1, #range.decals do
+						local decal = range.decals[i]
+						decal:SetColorModifier(mod_HexColourElevator)
+						decal:SetScale(mod_GridScale)
+					end
 				end
+				--
 			end
 		end
 	end
@@ -132,6 +177,10 @@ local function HideGrids()
 	HideHexRanges(UICity, "SupplyRocket")
 	HideHexRanges(UICity, "DroneHub")
 	HideHexRanges(UICity, "RCRover")
+	if picard_active then
+		HideHexRanges(UICity, "Elevator")
+		HideHexRanges(UICity, "DroneHubExtender")
+	end
 	-- so far space race is only dlc that adds more commander rovers
 	if g_AvailableDlc.gagarin then
 		-- seekers/etc

@@ -251,13 +251,8 @@ function ChoGGi.MenuFuncs.UnlockAchievements()
 end
 
 function ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies()
-	-- GenerateMarsScreenPoI has an inf loop in it that happens when it runs out of spots to place POIs
-	-- might be had now, I think they fixed it
-	local max = #PlanetaryAnomaly.anomaly_names
-
-	local spots = MarsScreenLandingSpots
-
 	-- for "current" hint
+	local spots = MarsScreenLandingSpots
 	local count = 0
 	for i = 1, #spots do
 		if spots[i]:IsKindOf("PlanetaryAnomaly") then
@@ -271,7 +266,9 @@ function ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies()
 		{text = 10, value = 10},
 		{text = 15, value = 15},
 		{text = 25, value = 25},
-		{text = max, value = max},
+		{text = 50, value = 50},
+		{text = 100, value = 100},
+		{text = 250, value = 250},
 	}
 
 	local function CallBackFunc(choice)
@@ -280,32 +277,14 @@ function ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies()
 		end
 		local value = choice[1].value
 		if type(value) == "number" then
-			local safe_count = 0
-			-- naughty naughty
-			if value > max then
-				value = max
-			end
 
-			-- just in case it's changed
-			count = 0
-			for i = 1, #spots do
-				if spots[i]:IsKindOf("PlanetaryAnomaly") then
-					count = count + 1
-				end
-			end
-
-			safe_count = value - count
-
-			if safe_count < 1 then
-				safe_count = 0
-			end
-
-			-- CheatSpawnPlanetaryAnomalies() but with a limit so GenerateMarsScreenPoI doesn't screw us
-			for _ = 1, safe_count do
-				local lat, long = GenerateMarsScreenPoI("anomaly")
+			-- CheatBatchSpawnPlanetaryAnomalies() Batch Spawn Planetary Anomalies with at least 1 Breakthrough
+			local lat, long
+			for _ = 1, value do
+				lat, long = GenerateMarsScreenPoI("anomaly")
 				-- I assume they'll fix it so there isn't an inf loop
 				if lat and long then
-					PlaceObject("PlanetaryAnomaly", {
+					PlaceObjectIn("PlanetaryAnomaly", MainMapID, {
 						display_name = T(11234, "Planetary Anomaly"),
 						longitude = long,
 						latitude = lat,
@@ -314,8 +293,7 @@ function ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies()
 			end
 
 			MsgPopup(
-				Strings[302535920000014--[[Spawned]]] .. ": " .. safe_count .. ", "
-					.. Strings[302535920000834--[[Max]]] .. ": " .. max,
+				Strings[302535920000014--[[Spawned]]] .. ": " .. value,
 				Strings[302535920001394--[[Spawn Planetary Anomalies]]]
 			)
 		end
@@ -325,8 +303,7 @@ function ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies()
 		callback = CallBackFunc,
 		items = item_list,
 		title = Strings[302535920001394--[[Spawn Planetary Anomalies]]],
-		hint = Strings[302535920000106--[[Current]]] .. ": " .. count .. ", "
-			.. Strings[302535920000834--[[Max]]] .. ": " .. max,
+		hint = Strings[302535920000106--[[Current]]] .. ": " .. count,
 		skip_sort = true,
 	}
 end

@@ -1,3 +1,6 @@
+v2.0
+Added Drone Hub Extender and Elevator (thanks zinfinion).
+
 v1.9
 Added space race commanders (thanks NotThatHarkness).
 
