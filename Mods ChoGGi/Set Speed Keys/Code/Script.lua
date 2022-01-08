@@ -17,7 +17,6 @@ OnMsg.ModsReloaded = ModOptions
 -- fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
-
 local Actions = ChoGGi.Temp.Actions
 
 Actions[#Actions+1] = {ActionName = T(302535920011668, "Set Speed 1"),

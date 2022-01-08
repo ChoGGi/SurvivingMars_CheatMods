@@ -1,2 +1,6 @@
+v0.3
+Slower light changes.
+Only change light on surface.
+
 v0.2
 Picard update.

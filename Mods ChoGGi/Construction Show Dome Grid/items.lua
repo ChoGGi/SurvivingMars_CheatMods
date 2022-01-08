@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 return {
 	PlaceObj("ModItemOptionInputBox", {
 		"name", "HexColour",

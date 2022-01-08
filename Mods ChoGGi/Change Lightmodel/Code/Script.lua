@@ -14,7 +14,8 @@ local skip_lightmodels = {
 local lightmodel = "TheMartian"
 
 local function SetLight(msg, timeout)
-	if not mod_EnableMod then
+	-- we only want to change lightmodel on surface
+	if not mod_EnableMod or UICity ~= MainCity then
 		return
 	end
 
@@ -26,15 +27,18 @@ local function SetLight(msg, timeout)
 		end
 		local map_id = MainCity.map_id
 
-		local postfix = CurrentLightmodel[map_id][1].id
+		local lm = CurrentLightmodel[map_id][1]
+		local postfix = lm.id
 		-- returns 12,12 which doesn't work for what we want :sub for
 		local underscore_count = postfix:find("_")
 		if not skip_lightmodels[postfix:sub(1, underscore_count - 1)] then
 			postfix = postfix:sub(underscore_count)
 			local new = lightmodel .. postfix
 			if new ~= CurrentLightmodel[map_id][1].id then
-				SetLightmodel(1, new)
---~ 				SetLightmodelOverride(1, new)
+
+				local blend_time = MulDivRound(lm.blend_time * 2, const.HourDuration, 60)
+				SetLightmodel(1, new, blend_time)
+--~ 				SetLightmodelOverride(1, new,  blend_time)
 			end
 		end
 	end)

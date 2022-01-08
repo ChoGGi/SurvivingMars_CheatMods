@@ -1,3 +1,9 @@
+v1.1
+double stopped it.
+
+v1.0
+Stopped it from marking underground for surface deposits (zinfinion).
+
 v0.9
 Picard update.
 

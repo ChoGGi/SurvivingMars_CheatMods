@@ -5380,7 +5380,9 @@ end
 
 function ChoGGi.ComFuncs.UpdateDepotCapacity(obj, max_store, storable)
 	max_store = max_store or obj.max_storage_per_resource
+	obj.max_storage_per_resource = max_store
 	storable = storable or obj.storable_resources
+	obj.storable_resources = storable
 
 	for i = 1, #storable do
 		local resource_name = storable[i]

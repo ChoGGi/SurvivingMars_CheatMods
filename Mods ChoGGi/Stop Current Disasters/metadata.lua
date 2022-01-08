@@ -21,7 +21,8 @@ return PlaceObj("ModDef", {
 	},
 	"image", "Preview.png",
 	"has_options", true,
-	"description", [[Stops any running disasters when you load a save.
+	"description", [[
+Stops any running disasters when you load a save.
 
 Includes mod option to disable mod (to leave it installed without that missing mod msg each load).
 ]],

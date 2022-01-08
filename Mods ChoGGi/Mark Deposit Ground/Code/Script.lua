@@ -67,7 +67,7 @@ local function UpdateDeposit(d)
 
 	scale = scale + 20
 
-	GetActiveTerrain():SetTypeGrid({
+	GetTerrain(d):SetTypeGrid({
 		type_grid = pattern,
 		pos = d:GetPos(),
 		scale = scale,

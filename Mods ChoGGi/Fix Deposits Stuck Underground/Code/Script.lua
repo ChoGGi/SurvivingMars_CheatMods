@@ -28,33 +28,39 @@ local sector_nums = {
  [10] = true,
 }
 
-local function UpdateDeposits()
-	if not mod_EnableMod then
-		return
-	end
-
-	local MainMapID = MainMapID
-	local sectors = MainCity.MapSectors
+local function UpdateDeposits(map_id)
+	local sectors = Cities[map_id].MapSectors
 	for sector in pairs(sectors) do
 		if not sector_nums[sector] and #sector.markers.surface > 0 then
 			local deposits = sector.markers.surface
 			for i = 1, #deposits do
 				local deposit = deposits[i].deposit
 				-- No point in moving something already there
-				if deposit and RetObjMapId(deposit) ~= MainMapID then
+				if deposit and RetObjMapId(deposit) ~= map_id then
 					-- Move deposit to surface map (preserves position)
-					deposit:TransferToMap(MainMapID)
+					deposit:TransferToMap(map_id)
 					-- z is still set to z from underground (got me)
 					local pos = deposit:GetPos()
 					-- Used surface.terrain:GetHeight instead of just :SetTerrainZ() since that seems to be the active terrain
-					deposit:SetPos(pos:SetZ(GameMaps[MainMapID].terrain:GetHeight(pos)))
+					deposit:SetPos(pos:SetZ(GameMaps[map_id].terrain:GetHeight(pos)))
 				end
 			end
 		end
 	end
 end
---~ OnMsg.CityStart = UpdateDeposits
-OnMsg.LoadGame = UpdateDeposits
+
+
+
+local function UpdateMaps()
+	if not mod_EnableMod then
+		return
+	end
+
+	UpdateDeposits(MainMapID)
+	UpdateDeposits(UIColony.underground_map_id)
+end
+--~ OnMsg.CityStart = UpdateMaps
+OnMsg.LoadGame = UpdateMaps
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -69,7 +75,7 @@ local function ModOptions(id)
 		return
 	end
 
-	UpdateDeposits()
+	UpdateMaps()
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions

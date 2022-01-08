@@ -22,9 +22,10 @@ local function ModOptions(id)
 
 	local BreakthroughOrder = BreakthroughOrder
 	local c = #BreakthroughOrder
-	local unregs = UIColony:GetUnregisteredBreakthroughs()
+
+	local unregistered = UIColony:GetUnregisteredBreakthroughs()
 	for i = 1, mod_AddPlanetaryAnomalyBreakthroughs do
-		local unreg = unregs[i]
+		local unreg = unregistered[i]
 		if unreg then
 			c = c + 1
 			BreakthroughOrder[c] = unreg

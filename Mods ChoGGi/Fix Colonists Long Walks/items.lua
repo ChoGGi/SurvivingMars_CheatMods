@@ -1,3 +1,5 @@
+-- See LICENSE for terms
+
 return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "EnableMod",

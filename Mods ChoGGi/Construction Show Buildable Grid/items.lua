@@ -1,3 +1,4 @@
+-- See LICENSE for terms
 
 -- get defaults from ECM if enabled
 local ChoGGi = rawget(_G, "ChoGGi")

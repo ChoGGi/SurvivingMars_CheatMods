@@ -749,7 +749,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 			obj:SetBase("move_speed", UserSettings.SpeedShuttle)
 		end
 
-	elseif UserSettings.StorageUniversalDepot and obj:GetEntity() == "StorageDepot"
+	elseif UserSettings.StorageUniversalDepot and obj:GetEntity() == "StorageDepotAIO"
 			and obj:IsKindOf("UniversalStorageDepot") then
 		obj.max_storage_per_resource = UserSettings.StorageUniversalDepot
 		ChoGGi.ComFuncs.UpdateDepotCapacity(obj)
