@@ -1,3 +1,6 @@
+v1.0
+Made sure it flattens properly.
+
 v0.9
 Picard BB dlc update.
 

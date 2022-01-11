@@ -1,0 +1,5 @@
+v0.3
+Found where the bug happens, so no more need to apply mod option to move them.
+
+v0.2
+Fixes underground ones stuck on surface.

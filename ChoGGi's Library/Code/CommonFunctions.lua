@@ -3561,7 +3561,9 @@ end
 
 function ChoGGi.ComFuncs.ToggleCollisions(cls)
 	-- pretty much the only thing I use it for, but just in case
-	cls = cls or "LifeSupportGridElement"
+	if not cls then
+		cls = "LifeSupportGridElement"
+	end
 	local CollisionsObject_Toggle = ChoGGi.ComFuncs.CollisionsObject_Toggle
 	-- hopefully give it a bit more speed
 	SuspendPassEdits("ChoGGi.ComFuncs.ToggleCollisions")
@@ -5381,9 +5383,10 @@ end
 function ChoGGi.ComFuncs.UpdateDepotCapacity(obj, max_store, storable)
 	max_store = max_store or obj.max_storage_per_resource
 	obj.max_storage_per_resource = max_store
-	storable = storable or obj.storable_resources
-	obj.storable_resources = storable
 
+	if not storable then
+		storable = obj.storable_resources
+	end
 	for i = 1, #storable do
 		local resource_name = storable[i]
 		local demand = obj.demand
@@ -5392,6 +5395,10 @@ function ChoGGi.ComFuncs.UpdateDepotCapacity(obj, max_store, storable)
 			demand[resource_name]:SetAmount(max_store)
 		end
 	end
+end
+
+function ChoGGi.ComFuncs.IsUniversalStorageDepot(obj)
+	return obj and obj:GetEntity() == "StorageDepotAIO"
 end
 
 function ChoGGi.ComFuncs.GetModEnabled(mod_id)

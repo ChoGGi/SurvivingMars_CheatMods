@@ -262,7 +262,7 @@ function RCBulldozer:StartDozer()
 					end
 
 					-- flatten func
-					terrain:SetHeightCircle(pos, self.radius, self.radius, terrain:GetHeight(self:GetVisualPos()), const.hsMin)
+					terrain:SetHeightCircle(pos, self.radius, self.radius, terrain:GetHeight(self:GetVisualPos()), const.hsDefault)
 					-- speed and needed for my ugly hack
 					SuspendPassEdits("ChoGGi.RCBulldozer.flattening")
 					-- remove any pebbles in the way

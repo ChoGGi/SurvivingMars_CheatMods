@@ -30,8 +30,12 @@ local function UpdateBuildings(objs)
 	end
 end
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_MrBumble = CurrentModOptions:GetProperty("MrBumble")
 
 --~	local ct = ClassTemplates.Building
@@ -60,7 +64,7 @@ local function ModOptions()
 	end
 
 	if UICity then
-		local labels = UICity.labels
+		local labels = UIColony.city_labels.labels
 		UpdateBuildings(labels.TrainingBuilding or "")
 		UpdateBuildings(labels.Residence or "")
 
@@ -92,18 +96,10 @@ local function ModOptions()
 		end
 	end
 end
-
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- update templates on load
 OnMsg.CityStart = ModOptions

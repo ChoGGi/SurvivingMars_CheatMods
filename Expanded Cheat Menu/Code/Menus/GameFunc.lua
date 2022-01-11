@@ -756,7 +756,7 @@ do -- FlattenGround
 				ActionId = "ChoGGi_FlattenGround_RaiseHeight",
 				OnAction = function()
 					temp_height = flatten_height + us.FlattenGround_HeightDiff or 100
-					--guess i found the ceiling limit
+					-- guess i found the ceiling limit
 					if temp_height > 65535 then
 						temp_height = 65535
 					end
@@ -768,7 +768,7 @@ do -- FlattenGround
 				ActionId = "ChoGGi_FlattenGround_LowerHeight",
 				OnAction = function()
 					temp_height = flatten_height - (us.FlattenGround_HeightDiff or 100)
-					--and the floor limit (oh look 0 go figure)
+					-- and the floor limit (oh look 0 go figure)
 					if temp_height < 0 then
 						temp_height = 0
 					end
@@ -816,11 +816,11 @@ do -- FlattenGround
 				Strings[302535920000485--[[Terrain Flatten Toggle]]]
 			)
 			-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
-			ToggleCollisions(ChoGGi)
+			ToggleCollisions("LifeSupportGridElement")
 --~ 			-- update uneven terrain checker thingy
 --~ 			ActiveGameMap:RefreshBuildableGrid()
 			-- and back on when we're done
-			ToggleCollisions(ChoGGi)
+			ToggleCollisions("LifeSupportGridElement")
 
 		else
 			-- have to set it here after settings are loaded or it'll be default radius till user adjusts it
@@ -841,7 +841,7 @@ do -- FlattenGround
 --~ 			local terrain_type_idx = GetTerrainTextureIndex("Grass_02")
 			are_we_flattening = CreateRealTimeThread(function()
 				-- thread gets deleted, but just in case
-				local hsMin = const.hsMin
+				local hsDefault = const.hsDefault
 				while are_we_flattening do
 					local cursor = GetCursorWorldPos()
 					visual_circle:SetPos(cursor)
@@ -850,7 +850,7 @@ do -- FlattenGround
 						outer = radius / 2
 					end
 
-					terrain:SetHeightCircle(cursor, radius, outer or radius, flatten_height, hsMin)
+					terrain:SetHeightCircle(cursor, radius, outer or radius, flatten_height, hsDefault)
 --~ 					terrain:SetTypeCircle(cursor, radius, terrain_type_idx)
 					-- used to set terrain type (see above)
 					Sleep(10)

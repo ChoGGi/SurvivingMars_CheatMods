@@ -1,6 +1,10 @@
 ## ECM Changelog
 
 ## v17.8 (Unreleased)
+### Fixed:
+- Depot Capacity not updating depots.
+- Flatten Terrain/shift-f (thanks ElenaRoan).
+
 ### Changed:
 - devs fixed inf loop in GenerateMarsScreenPoI, so Spawn Planetary Anomalies limit is removed.
 

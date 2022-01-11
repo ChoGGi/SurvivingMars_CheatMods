@@ -1,3 +1,10 @@
+v0.8
+Fixed crash from last update.
+
+v0.7
+Added some cleanup game should've been doing (or I thought it was, maybe changed).
+Made St. Elmo's Fire start properly.
+
 v0.6
 Shows popup when mystery ends.
 

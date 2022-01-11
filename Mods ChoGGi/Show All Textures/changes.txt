@@ -1,2 +1,5 @@
+v0.3
+Made sure it works properly.
+
 v0.2
 Log spam.

@@ -1,3 +1,6 @@
+v0.7
+Cleaning.
+
 v0.6
 Cleaned up the code a tad.
 

@@ -45,7 +45,6 @@ local str = {
 	floor = t(302535920010024, "floor"),
 	modf = t(302535920010025, "modf"),
 	rad = t(302535920010026, "rad"),
-	tointeger = t(302535920010027, "tointeger"),
 	type = t(302535920010028, "type"),
 	cos = t(302535920010029, "cos"),
 	RoundDown = t(302535920010030, "RoundDown"),
@@ -278,8 +277,8 @@ function math.random(m, n)
 
 		return AsyncRand(m)
 	else
-		-- so it'll never return 1, close enough
-		return tonumber("0." .. AsyncRand())
+		-- so it'll never return 1 (ugly but it works)
+		return tonumber(0. .. AsyncRand())
 	end
 
 end
@@ -301,14 +300,17 @@ end
 
 -- If the value x is convertible to an integer, returns that integer. Otherwise, returns nil.
 function math.tointeger(x)
-	x = CheckNum(x, str.tointeger)
+	x = tonumber(x)
+	if not x then
+		return
+	end
 
-	return math.floor(x)
+	-- https://stackoverflow.com/questions/10962085/lua-string-to-int/10962118
+	return x < 0 and math.ceil(x) or math.floor(x)
 end
 
 -- Returns "integer" if x is an integer, "float" if it is a float, or nil if x is not a number.
 function math.type(x)
-	-- nil
 	if not tonumber(x) then
 		return
 	end
@@ -399,7 +401,9 @@ end
 function math.RoundDown(x, g)
 	x = CheckNum(x, str.RoundDown)
 	g = CheckNum(g, str.RoundDown, 2)
-	g = g or 1000
+	if not g then
+		g = 1000
+	end
 	return (x - x % g) / g * g
 end
 
@@ -478,7 +482,7 @@ function math.test()
 	print(str.test_start)
 
 	local getinfo = format_value
---~ 	local	= debug.getinfo
+--~ 	local getinfo = debug.getinfo
 	local script_name = CurrentModPath .. "Script.lua"
 
 	local function Test(line, func, n1, n2)
@@ -492,6 +496,9 @@ function math.test()
 	local function eq(a, b, limit)
 		return math.abs(a-b) <= (limit or 10E-10)
 	end
+
+	-- function()end so getinfo returns correct line number?
+
 
 	Test(getinfo(function()end), "huge", math.huge > 10e30)
 	Test(getinfo(function()end), "huge", -math.huge < -10e30)

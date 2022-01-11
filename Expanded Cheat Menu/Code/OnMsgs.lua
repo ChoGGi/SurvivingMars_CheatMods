@@ -17,6 +17,9 @@ local RetName = ChoGGi.ComFuncs.RetName
 local Translate = ChoGGi.ComFuncs.Translate
 local AttachToNearestDome = ChoGGi.ComFuncs.AttachToNearestDome
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
+local UpdateDepotCapacity = ChoGGi.ComFuncs.UpdateDepotCapacity
+local IsUniversalStorageDepot = ChoGGi.ComFuncs.IsUniversalStorageDepot
+
 local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
@@ -749,18 +752,24 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 			obj:SetBase("move_speed", UserSettings.SpeedShuttle)
 		end
 
-	elseif UserSettings.StorageUniversalDepot and obj:GetEntity() == "StorageDepotAIO"
-			and obj:IsKindOf("UniversalStorageDepot") then
-		obj.max_storage_per_resource = UserSettings.StorageUniversalDepot
-		ChoGGi.ComFuncs.UpdateDepotCapacity(obj)
+	elseif obj:IsKindOf("UniversalStorageDepot") then
+		local uni_depot = IsUniversalStorageDepot(obi)
+		if UserSettings.StorageUniversalDepot and uni_depot then
+			obj.max_storage_per_resource = UserSettings.StorageUniversalDepot
+			UpdateDepotCapacity(obj)
+		elseif UserSettings.StorageOtherDepot and not uni_depot then
+			obj.max_storage_per_resource = UserSettings.StorageOtherDepot
+			UpdateDepotCapacity(obj)
+		end
 
 	elseif UserSettings.StorageMechanizedDepot and obj:IsKindOf("MechanizedDepot") then
 		obj.max_storage_per_resource = UserSettings.StorageMechanizedDepot
-		ChoGGi.ComFuncs.UpdateDepotCapacity(obj)
+		UpdateDepotCapacity(obj)
 
 	elseif UserSettings.StorageWasteDepot and obj:IsKindOf("WasteRockDumpSite") then
 		obj.max_amount_WasteRock = UserSettings.StorageWasteDepot
-		ChoGGi.ComFuncs.UpdateDepotCapacity(obj)
+		obj:CheatEmpty()
+--~ 		UpdateDepotCapacity(obj)
 
 	elseif UserSettings.ShuttleHubFuelStorage and obj:IsKindOf("ShuttleHub") then
 		obj.consumption_max_storage = UserSettings.ShuttleHubFuelStorage
@@ -808,15 +817,6 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 				AttachToNearestDome(obj)
 			end
 		end)
-	end
-
-	if UserSettings.StorageOtherDepot then
-		if (obj:GetEntity() ~= "StorageDepot"
-				and (obj:IsKindOf("UniversalStorageDepot")) or obj:IsKindOf("MysteryDepot")) then
-			obj.max_storage_per_resource = UserSettings.StorageOtherDepot
-		elseif UserSettings.StorageOtherDepot and obj:IsKindOf("BlackCubeDumpSite") then
-			obj.max_amount_BlackCube = UserSettings.StorageOtherDepot
-		end
 	end
 
 	if UserSettings.InsideBuildingsNoMaintenance and obj:IsKindOf("Constructable") then

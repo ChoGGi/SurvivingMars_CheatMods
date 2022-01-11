@@ -15,6 +15,6 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagGameplay", true,
 	"description", [[
-Certain game rules will no longer disable achievements.
+Game rules that disabled achievements will no longer disable achievements.
 ]],
 })

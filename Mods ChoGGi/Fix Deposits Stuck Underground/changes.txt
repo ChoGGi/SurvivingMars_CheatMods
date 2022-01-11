@@ -1,2 +1,0 @@
-v0.2
-Fixes underground ones stuck on surface.

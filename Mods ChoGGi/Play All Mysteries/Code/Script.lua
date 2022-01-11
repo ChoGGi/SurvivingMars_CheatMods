@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local ClassDescendantsList = ClassDescendantsList
+local tostring = tostring
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Random = ChoGGi.ComFuncs.Random
 
@@ -117,6 +118,16 @@ local function PickRandomMystery(delay)
 		end
 	end
 
+	-- clear out old mysteries from s_SeqListPlayers (figured it would do it, guess not)
+	local s_SeqListPlayers = s_SeqListPlayers
+	for i = #s_SeqListPlayers, 1, -1 do
+		local player = s_SeqListPlayers[i]
+		if player.seq_list and tostring(player.seq_list.file_name):find("Mystery_", 1, true) then
+			player:CleanUp()
+			player:Done()
+		end
+	end
+
 	CreateGameTimeThread(function()
 		Sleep(delay or 0)
 
@@ -126,11 +137,17 @@ local function PickRandomMystery(delay)
 
 		-- CheatStartMystery checks for cheats enabled...
 		local ChoOrig_CheatsEnabled = CheatsEnabled
-		CheatsEnabled = function()
+		function CheatsEnabled()
 			return true
 		end
 		CheatStartMystery(new_myst)
 		CheatsEnabled = ChoOrig_CheatsEnabled
+
+		-- force skip waitmsg from St. Elmo's Fire
+		if new_myst == "LightsMystery" and g_ColonyNotViableUntil == -1 then
+			Msg("ColonyApprovalPassed")
+		end
+
 	end)
 
 end

@@ -3,16 +3,17 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_AddMathFunctions",
 	"steam_id", "1443143020",
 	"pops_any_uuid", "c632be42-2a13-414c-a293-4ed7174211c0",
-	"version", 6,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 7,
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 	"image", "Preview.png",
 	"lua_revision", 1007000, -- Picard
-	"description", [[Modders only (unless it's a mod that uses these functions).
+	"description", [[
+Modders only (unless it's a mod that uses these functions).
 
 For some reason SM doesn't have any of lua "math." functions.
 Functions are either from SM (math.min = Min()), or pure lua.
@@ -33,5 +34,6 @@ I'm only implementing the ones listed in the manual, if you have some to add: fe
 Functions should return values according to:
 https://www.lua.org/manual/5.3/manual.html#6.7
 You can test results with a copy of lua.exe: https://github.com/HazeProductions/Lua-x64.
-If the result it gives is different then my func: Please let me know.]],
+If the result it gives is different then my func: Please let me know.
+]],
 })

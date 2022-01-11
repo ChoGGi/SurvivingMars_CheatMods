@@ -98,6 +98,15 @@ function ChoGGi_TriboelectricSensorTower:GameInit()
 	TriboelectricScrubber.GameInit(self)
 
 	self:UpdateSphereRotation()
+
+
+  self.city:AddToLabel("SensorTower", self)
+end
+
+function ChoGGi_TriboelectricSensorTower:Done()
+  self.city:RemoveFromLabel("SensorTower", self)
+	TriboelectricScrubber.Done(self)
+	SensorTower.Done(self)
 end
 
 function ChoGGi_TriboelectricSensorTower:OnSetWorking(working, ...)
@@ -117,6 +126,10 @@ end
 
 -- we don"t want it moved
 ChoGGi_TriboelectricSensorTower.MoveSphere = empty_func
+-- sensor tower will hide it
+ChoGGi_TriboelectricSensorTower.ShowUISectionConsumption = Building.ShowUISectionConsumption
+-- log spam
+ChoGGi_TriboelectricSensorTower.GetSelectionRadiusScale = SensorTower.GetSelectionRadiusScale
 
 ChoGGi_TriboelectricSensorTower.ChargedClean = TriboelectricScrubber.ChargedClean
 ChoGGi_TriboelectricSensorTower.UpdateSphereRotation = TriboelectricScrubber.UpdateSphereRotation
@@ -127,7 +140,6 @@ ChoGGi_TriboelectricSensorTower.StopCharging = TriboelectricScrubber.StopChargin
 ChoGGi_TriboelectricSensorTower.ResetCharging = TriboelectricScrubber.ResetCharging
 ChoGGi_TriboelectricSensorTower.SetDust = TriboelectricScrubber.SetDust
 ChoGGi_TriboelectricSensorTower.GetChargeTime = TriboelectricScrubber.GetChargeTime
-ChoGGi_TriboelectricSensorTower.Done = TriboelectricScrubber.Done
 
 function OnMsg.ClassesPostprocess()
 
@@ -141,17 +153,15 @@ function OnMsg.ClassesPostprocess()
 			"template_class", "ChoGGi_TriboelectricSensorTower",
 			"build_category", "ChoGGi",
 			"Group", "ChoGGi",
-
-		-- added, not uploaded
-		"disabled_in_environment1", "",
-		"disabled_in_environment2", "",
-		"disabled_in_environment3", "",
-		"disabled_in_environment4", "",
-
+			-- build anywhere
+			"disabled_in_environment1", "",
+			"disabled_in_environment2", "",
+			"disabled_in_environment3", "",
+			"disabled_in_environment4", "",
 
 			"construction_cost_Metals", trib.construction_cost_Metals + sens.construction_cost_Metals,
 			"construction_cost_Electronics", trib.construction_cost_Electronics + sens.construction_cost_Electronics,
-			"electricity_consumption", trib.electricity_consumption + sens.electricity_consumption,
+			"electricity_consumption", sens.electricity_consumption,
 			"build_points", trib.build_points + sens.build_points,
 			"maintenance_resource_type", trib.maintenance_resource_type,
 			"maintenance_threshold_base", trib.maintenance_threshold_base,

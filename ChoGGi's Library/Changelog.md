@@ -4,6 +4,7 @@
 - str examine now adds a title and turns autorefresh on.
 
 ## v10.7 (1 Jan 2022)
+- Added RetObjMapId.
 - Stopped using .entity for RetName().
 - Added FlushLog = FlushLogFile.
 - Changed table.append to table.iappend (thanks for the heads up devs).

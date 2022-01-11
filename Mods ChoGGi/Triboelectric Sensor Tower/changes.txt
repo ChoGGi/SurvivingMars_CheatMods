@@ -1,3 +1,8 @@
+v0.9
+Added scanning boost for sectors (whoops).
+Lowered power cost.
+Shows power consumption.
+
 v0.8
 Added a cargo payload for it.
 

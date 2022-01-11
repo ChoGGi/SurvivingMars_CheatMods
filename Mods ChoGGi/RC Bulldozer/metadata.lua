@@ -12,16 +12,16 @@ return PlaceObj("ModDef", {
 	"steam_id", "1538213471",
 	"pops_any_uuid", "c4cbd03c-5dc3-4953-9e13-fbea09273916",
 	"lua_revision", 1007000, -- Picard
-	"version", 9,
-	"version_major", 0,
-	"version_minor", 9,
+	"version", 10,
+	"version_major", 1,
+	"version_minor", 0,
 	"author", "ChoGGi",
 	"image", "Preview.jpg",
 	"code", {
 		"Code/Script.lua",
 	},
 	"description", [[
-Obsolete: Use landscaping tools.
+Obsolete: Use landscaping tools (still being updated for bugs).
 
 
 
