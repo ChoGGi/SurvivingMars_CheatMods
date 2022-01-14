@@ -978,9 +978,15 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 		end
 		for i = 1, #choices do
 			local choice = choices[i]
-			local path = "AppData/Mods/" .. choice.id
-			printC(choice.value, path)
-			AsyncUnpack(choice.value, path)
+			local path
+			if testing then
+				path = "AppData/Mods/" .. choice.text
+				print(choice.value, path)
+				AsyncUnpack(choice.value, path)
+			else
+				path = "AppData/Mods/" .. choice.id
+				AsyncUnpack(choice.value, path)
+			end
 			-- add a note telling people not to be assholes
 			AsyncStringToFile(
 				path .. "/This is not your mod.txt",

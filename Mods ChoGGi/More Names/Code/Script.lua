@@ -1,7 +1,11 @@
 -- See LICENSE for terms
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	if CurrentModOptions:GetProperty("DisableMartianNames") then
 		-- I doubt any game will last 99999 sols
 		const.FullTransitionToMarsNames = 99999
@@ -10,15 +14,11 @@ local function ModOptions()
 		const.FullTransitionToMarsNames = 20
 	end
 end
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
+-- called below instead
+--~ -- Load default/saved settings
+--~ OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local name_table_Unique = {
 	Female = {

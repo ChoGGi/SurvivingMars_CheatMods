@@ -20,8 +20,6 @@ They're all the same for each, so you might get von Braun as a Chinese botanist.
 If you have more names you think should be added; let me know.
 [url=https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Mods%20ChoGGi/More%20Names/Code/Script.lua#L23]Current Names[/url]
 
-
-Names are a list of male/female/family or unique (first + last).
 A new game is required to see new unique names.
 
 Includes mod option to disable the transition to only Martian names.
