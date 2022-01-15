@@ -337,7 +337,7 @@ function RCRemote:FireRocket(target)
 
 	local pos, _, axis = self:GetSpotLoc(self:GetSpotBeginIndex("Drone"))
 
-	local rocket = PlaceObject("RocketProjectile", {
+	local rocket = PlaceObjectIn("RocketProjectile", self:GetMapID(), {
 		shooter = self,
 		target = target,
 	})

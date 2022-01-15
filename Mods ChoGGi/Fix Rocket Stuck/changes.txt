@@ -1,3 +1,6 @@
+v2.1
+Made it always use MainCity instead of UICity.
+
 v2.0
 Trade rocket ready for takeoff stuck on pad only showing priority button.
 

@@ -114,7 +114,7 @@ function ChoGGi.MenuFuncs.PlantRandomLichen()
 
 			local PlaceObject = PlaceObject
 			SuspendPassEdits("ChoGGi.MenuFuncs.PlantRandomLichen")
-			PlaceObject("VegFocusTask", {
+			PlaceObjectIn("VegFocusTask", MainMapID, {
 				min_foci = 10,
 				max_foci = 20,
 				max_sq = 100 * const.SoilGridScale,

@@ -1,3 +1,9 @@
+v0.5
+Nevermind.
+
+v0.4
+Forgot a func from my lib (thanks ve2dmn).
+
 v0.3
 Found where the bug happens, so no more need to apply mod option to move them.
 

@@ -358,6 +358,7 @@ DefineClass.MurderPod = {
 		"CameraFollowObject",
 		"PinnableObject",
 		"SkinChangeable",
+		"CityObject",
 	},
 	palette = {
 		"outside_accent_1",
@@ -395,8 +396,8 @@ DefineClass.MurderPod = {
 }
 
 function MurderPod:GameInit()
-	if self.city ~= UICity then
-		self.city = UICity
+	if self.city ~= MainCity then
+		self.city = MainCity
 	end
 
 	self:SetColorizationMaterial(1, -9169900, -50, 0)

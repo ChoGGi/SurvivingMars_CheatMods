@@ -156,7 +156,7 @@ function RCTanker:Init()
 	self.tank_type = "AirStorage"
 	self.storage_amount = 0
 
-	local tank = PlaceObject("RCTankerTank")
+	local tank = PlaceObjectIn("RCTankerTank", self:GetMapID())
 	self.tank_obj = tank
 
 	-- slight delay needed or Attach() creates a phantom tank...

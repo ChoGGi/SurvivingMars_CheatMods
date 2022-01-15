@@ -1,24 +1,26 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.picard then
-	print("MicroG Extractor Resource: B&B DLC not installed!")
+	print(CurrentModDef.title , ": Below & Beyond DLC not installed!")
 	return
 end
 
+local table = table
+
 local orig_list = BuildingTemplates.MicroGAutoExtractor.expected_exploitation_resources
-local list = table.icopy(orig_list)
-local count = #list
+local custom_list = table.icopy(orig_list)
+local count = #custom_list
 
 -- cycles through the list of resources
 local function NextResource(current_res)
-	if list[1] ~= "Default" then
-		table.insert(list, 1, "Default")
-		count = #list
+	if custom_list[1] ~= "Default" then
+		table.insert(custom_list, 1, "Default")
+		count = #custom_list
 	end
 
-	local idx = table.find(list, current_res) or 0
+	local idx = table.find(custom_list, current_res) or 0
 	idx = (idx % count) + 1
-	return list[idx]
+	return custom_list[idx]
 end
 
 local icons = {
@@ -29,8 +31,22 @@ local icons = {
 }
 
 function OnMsg.ClassesPostprocess()
-	local xtemplate = XTemplates.ipBuilding[1]
 
+	-- if no deposit of selected resource, then change to any resource
+	local ChoOrig_AutomaticMicroGExtractor_OnDepositDepleted = AutomaticMicroGExtractor.OnDepositDepleted
+	function AutomaticMicroGExtractor:OnDepositDepleted(...)
+		--
+		if not self:ConnectToDeposit() then
+			self.ChoGGi_Resource = "Default"
+			self.expected_exploitation_resources = orig_list
+			self:ConnectToDeposit()
+		end
+		return ChoOrig_AutomaticMicroGExtractor_OnDepositDepleted(self, ...)
+	end
+
+	-- add toggle button to selection panel
+
+	local xtemplate = XTemplates.ipBuilding[1]
 	-- check for and remove existing template
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_MicroGExtractorResource_ResourceToggle", true)
 

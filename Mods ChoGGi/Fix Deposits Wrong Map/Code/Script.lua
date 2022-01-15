@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.picard then
-	print("Fix Deposits Stuck Underground: Below and Beyond DLC NOT INSTALLED!")
+	print(CurrentModDef.title , ": Below & Beyond DLC not installed!")
 	return
 end
 

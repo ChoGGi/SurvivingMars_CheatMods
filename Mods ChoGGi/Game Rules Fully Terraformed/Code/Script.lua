@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.armstrong then
-	print("Game Rules Fully Terraformed needs DLC Installed: Green Planet!")
+	print(CurrentModDef.title , ": Green Planet DLC not installed!")
 	return
 end
 
@@ -50,7 +50,7 @@ function OnMsg.ClassesPostprocess()
 				end
 				-- eh... close enough for now
 				for _ = 1, 20 do
-					PlaceObject("VegFocusTask", {
+					PlaceObjectIn("VegFocusTask", self:GetMapID(), {
 						min_foci = 10,
 						max_foci = 20,
 						max_sq = 100 * const.SoilGridScale,

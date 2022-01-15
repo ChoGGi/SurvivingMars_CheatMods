@@ -42,11 +42,11 @@ local points = objlist:new()
 local function UpdateCircle()
 	points:Clear()
 
-	radius = ChoOrig_pos:Dist2D(GetCursorWorldPos()) or 100
+	radius = orig_pos:Dist2D(GetCursorWorldPos()) or 100
 	local steps = Min(Max(12, 44 * radius / (guim7)), 360)
 
 	for i = 1, steps do
-		local x, y = RotateRadius(radius, MulDivRound(21600, i, steps), ChoOrig_pos, true)
+		local x, y = RotateRadius(radius, MulDivRound(21600, i, steps), orig_pos, true)
 		points[i] = point(
 			x, y
 		):SetTerrainZ(30)
@@ -56,14 +56,14 @@ local function UpdateCircle()
 
 	-- If more/less points we need to delete old polyline and spawn a new one
 	if #points > circle.max_vertices then
-		local new_line = PlaceObject("Polyline", {
-			max_vertices = #points
+		local new_line = PlaceObjectIn("Polyline", circle:GetMapID(), {
+			max_vertices = #points,
 		})
 		new_line:SetPos(circle:GetPos())
 		DoneObject(circle)
 		circle = new_line
 		-- add radius text to circle for when people set radius in hud button
-		local text_obj = PlaceObject("Text")
+		local text_obj = PlaceObjectIn("Text", circle:GetMapID())
 		text_obj:SetText(radius)
 		circle:Attach(text_obj)
 	end

@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.gagarin then
-	print("All Rivals needs DLC Installed: Space Race!")
+	print(CurrentModDef.title , ": Space Race DLC not installed!")
 	return
 end
 

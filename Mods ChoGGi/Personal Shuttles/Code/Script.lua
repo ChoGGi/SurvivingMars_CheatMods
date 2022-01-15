@@ -369,7 +369,7 @@ end
 function PersonalShuttle:FireRocket(target)
 	local pos = self:GetSpotPos(1)
 	local angle, axis = self:GetSpotRotation(1)
-	local rocket = PlaceObject("RocketProjectile", {
+	local rocket = PlaceObjectIn("RocketProjectile", self:GetMapID(), {
 		shooter = self,
 		target = target,
 	})

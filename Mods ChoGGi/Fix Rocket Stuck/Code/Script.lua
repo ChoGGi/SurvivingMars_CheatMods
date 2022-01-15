@@ -49,7 +49,7 @@ function OnMsg.LoadGame()
 	if not mod_EnableMod then
 		return
 	end
-	local UICity = UICity
+	local MainCity = MainCity
 
 	-- If my lib mod is installed use my copy of this function
 	if not SpawnColonist then
@@ -59,7 +59,7 @@ function OnMsg.LoadGame()
 		SpawnColonist = type(SpawnColonist) == "function"
 			and SpawnColonist or function(old_c, building, pos, city)
 			if not city then
-				city = UICity
+				city = MainCity
 			end
 
 			local colonist
@@ -95,7 +95,7 @@ function OnMsg.LoadGame()
 		end
 	end
 
-	local rockets = UICity.labels.AllRockets or ""
+	local rockets = MainCity.labels.AllRockets or ""
 	for i = 1, #rockets do
 		local r = rockets[i]
 		local r_pos = r:GetPos()
@@ -130,7 +130,7 @@ function OnMsg.LoadGame()
 							end)
 						else
 							-- more invalid colonists...
-							SpawnColonist(c, r, nil, UICity)
+							SpawnColonist(c, r, nil, MainCity)
 							table.remove(crew, j)
 						end
 					end
@@ -147,13 +147,13 @@ function OnMsg.LoadGame()
 									-- something screws them up, so take the easy way out
 									if not d.command then
 										d:delete()
-										UICity.drone_prefabs = UICity.drone_prefabs + 1
+										MainCity.drone_prefabs = MainCity.drone_prefabs + 1
 									end
 								end)
 								table.remove(drones, j)
 							end
 						else
-							UICity.drone_prefabs = UICity.drone_prefabs + 1
+							MainCity.drone_prefabs = MainCity.drone_prefabs + 1
 							table.remove(drones, j)
 						end
 					end
@@ -168,7 +168,7 @@ function OnMsg.LoadGame()
 				invalid = RemoveInvalid(invalid, r.drones_entering or "")
 				invalid = RemoveInvalid(invalid, r.drones_in_queue_to_charge or "")
 				invalid = RemoveInvalid(invalid, r.drones or "")
-				UICity.drone_prefabs = UICity.drone_prefabs + invalid
+				MainCity.drone_prefabs = MainCity.drone_prefabs + invalid
 
 				-- fix for my screwup with the main reqs
 				if not r.expedition and #r.task_requests ~= 8 then
@@ -206,7 +206,7 @@ function OnMsg.LoadGame()
 						if r.command == "Takeoff" and drone:GetPos() == InvalidPos then
 							table.remove(r.drones_exiting, j)
 							drone:delete()
-							UICity.drone_prefabs = UICity.drone_prefabs + 1
+							MainCity.drone_prefabs = MainCity.drone_prefabs + 1
 						-- not moving or outside the rocket
 						elseif r.command == "Countdown" and (drone.moving == false
 								or r_pos:Dist2D(drone:GetVisualPos()) > 1500) then
@@ -303,7 +303,7 @@ function OnMsg.LoadGame()
 	end
 
 	-- expedition rocket never lands on pad
-	local pads = UICity.labels.LandingPad or ""
+	local pads = MainCity.labels.LandingPad or ""
 	for i = 1, #pads do
 		local pad = pads[i]
 		local has, rocket = pad:HasRocket()
@@ -314,7 +314,7 @@ function OnMsg.LoadGame()
 	end
 
 	-- could be me? but he said dust storms...
-	pads = UICity.labels.TradePad or ""
+	pads = MainCity.labels.TradePad or ""
 	for i = 1, #pads do
 		local pad = pads[i]
 		if IsValid(pad.trade_rocket) and pad.trade_rocket.command == "OnEarth"

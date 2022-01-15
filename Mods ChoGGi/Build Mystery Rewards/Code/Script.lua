@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.contentpack1 then
-	print("Build Mystery Rewards needs Mysteries DLC installed.")
+	print(CurrentModDef.title , ": Mysteries Resupply Pack DLC (it's free) not installed!")
 	return
 end
 

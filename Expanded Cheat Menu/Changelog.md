@@ -2,6 +2,7 @@
 
 ## v17.8 (Unreleased)
 ### Fixed:
+- Possibly fixing AddOrbitalProbes.
 - Depot Capacity not updating depots.
 - Flatten Terrain/shift-f (thanks ElenaRoan).
 

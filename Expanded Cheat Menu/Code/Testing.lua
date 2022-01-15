@@ -1155,7 +1155,7 @@ function OnMsg.ClassesPreprocess()
 --~ 		function SpireBase:GameInit()
 --~ 			local dome = IsObjInDome(self)
 --~ 			if self.spire_frame_entity ~= "none" and IsValidEntity(self.spire_frame_entity) then
---~ 				local frame = PlaceObject("Shapeshifter")
+--~ 				local frame = PlaceObjectIn("Shapeshifter", MainMapID)
 --~ 				frame:ChangeEntity(self.spire_frame_entity)
 --~ 				local spot = dome:GetNearestSpot("idle", "Spireframe", self)
 

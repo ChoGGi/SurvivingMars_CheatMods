@@ -195,7 +195,7 @@ local efSelectable = const.efSelectable
 -- a very ugly hack to update driveable area
 function RCBulldozer:AddDriveable()
 	SuspendPassEdits("ChoGGi.RCBulldozer.AddDriveable")
-	self.site = PlaceObject("ConstructionSite", {})
+	self.site = PlaceObjectIn("ConstructionSite", self:GetMapID())
 --~ 	self.site:SetBuildingClass("DomeBasic")
 	self.site:SetBuildingClass("DomeMega")
 	self.site:SetVisible()

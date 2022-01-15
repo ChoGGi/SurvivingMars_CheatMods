@@ -2,8 +2,7 @@
 
 -- local some globals
 local table = table
-local pairs = pairs
-local type = type
+local pairs, type = pairs, type
 local IsT = IsT
 local T = T
 local IsValid = IsValid
@@ -15,7 +14,6 @@ local MulDivRound = MulDivRound
 
 local scale_hours = const.HourDuration
 local scale_sols = const.DayDuration
-
 
 -- mod options
 local mod_EnableMod
@@ -60,8 +58,12 @@ end
 
 OnMsg.InGameInterfaceCreated = UpdateTrans
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	local options = CurrentModOptions
 	mod_EnableMod = options:GetProperty("EnableMod")
 	mod_SkipGrid0 = options:GetProperty("SkipGrid0")
@@ -91,15 +93,10 @@ local function ModOptions()
 		UpdateTrans()
 	end
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 function OnMsg.AddResearchRolloverTexts(text)
 	if not mod_EnableMod then

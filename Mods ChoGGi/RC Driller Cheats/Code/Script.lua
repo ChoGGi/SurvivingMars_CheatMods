@@ -6,7 +6,7 @@ local GetRealm = GetRealm
 local GetRandomPassableAround = GetRandomPassableAround
 
 if not g_AvailableDlc.gagarin then
-	print("RC Driller Cheats: Missing Space Race DLC!")
+	print(CurrentModDef.title , ": Space Race DLC not installed!")
 	return
 end
 

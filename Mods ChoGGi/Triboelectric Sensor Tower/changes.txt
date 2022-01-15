@@ -1,3 +1,6 @@
+v1.0
+Fixed tower not showing up in cargo on saved games without the mod.
+
 v0.9
 Added scanning boost for sectors (whoops).
 Lowered power cost.

@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.armstrong then
+	print(CurrentModDef.title , ": Green Planet DLC not installed!")
 	return
 end
 

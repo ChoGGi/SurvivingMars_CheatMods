@@ -59,7 +59,7 @@ local function DroneRemoveRock(rock)
 			-- only add one
 			if not rock:GetAttaches("RotatyThing") then
 				-- let user know
-				local rotate = PlaceObject("RotatyThing")
+				local rotate = PlaceObjectIn("RotatyThing", drone:GetMapID())
 				rock:Attach(rotate)
 --~ 				rock:SetAttachOffset(point(0, 0, rock:GetPos():SetTerrainZ(5000):z()))
 			end

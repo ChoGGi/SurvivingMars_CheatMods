@@ -54,7 +54,7 @@ function TowerDefense_Rover:FireRocket(luaobj, rocket_class, byebye)
 	Sleep(self:TimeToAnimEnd())
 	self:SetAnim(1, "attackIdle")
 	Sleep(500)
-	local rocket = PlaceObject(rocket_class, luaobj)
+	local rocket = PlaceObjectIn(rocket_class, self:GetMapID(), luaobj)
 	local spot = self:GetSpotBeginIndex("Rocket")
 	local pos = self:GetSpotLoc(spot)
 	rocket.shooter = self

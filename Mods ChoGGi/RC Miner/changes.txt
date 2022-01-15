@@ -1,3 +1,7 @@
+v3.1
+Added minerals to UI.
+Locked rover behind printing tech.
+
 v3.0
 AutoMode compat update.
 

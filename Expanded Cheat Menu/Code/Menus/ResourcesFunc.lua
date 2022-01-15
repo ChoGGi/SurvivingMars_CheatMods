@@ -72,7 +72,7 @@ function ChoGGi.MenuFuncs.AddOrbitalProbes()
 		end
 
 		local value = choice[1].value
-		local UICity = UICity
+		local MainCity = MainCity
 		local PlaceObject = PlaceObject
 		if type(value) == "number" then
 			local cls = "OrbitalProbe"
@@ -80,7 +80,7 @@ function ChoGGi.MenuFuncs.AddOrbitalProbes()
 				cls = "AdvancedOrbitalProbe"
 			end
 			for _ = 1, value do
-				PlaceObject(cls, {city = UICity})
+				PlaceObjectIn(cls, MainMapID)
 			end
 		end
 	end

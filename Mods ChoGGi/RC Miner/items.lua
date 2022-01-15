@@ -41,7 +41,7 @@ return {
 	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "mine_time_animConcrete",
-		"DisplayName", T(302535920011201, "Time to mine concrete anim"),
+		"DisplayName", T(302535920011201, "Time to mine Concrete anim"),
 		"Help", T(302535920011529, "Time it takes to complete animation cycle."),
 		"DefaultValue", 1000,
 		"MinValue", 1,
@@ -50,7 +50,7 @@ return {
 	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "mine_time_idleConcrete",
-		"DisplayName", T(302535920011202, "Time to mine concrete idle"),
+		"DisplayName", T(302535920011202, "Time to mine Concrete idle"),
 		"Help", T(302535920011529, "Time it takes to complete animation cycle."),
 		"DefaultValue", 1500,
 		"MinValue", 1,
@@ -59,7 +59,7 @@ return {
 	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "mine_time_animMetals",
-		"DisplayName", T(302535920011203, "Time to mine metal anim"),
+		"DisplayName", T(302535920011203, "Time to mine Metal anim"),
 		"Help", T(302535920011529, "Time it takes to complete animation cycle."),
 		"DefaultValue", 2000,
 		"MinValue", 1,
@@ -68,7 +68,7 @@ return {
 	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "mine_time_idleMetals",
-		"DisplayName", T(302535920011204, "Time to mine metal idle"),
+		"DisplayName", T(302535920011204, "Time to mine Metal idle"),
 		"Help", T(302535920011529, "Time it takes to complete animation cycle."),
 		"DefaultValue", 3000,
 		"MinValue", 1,
@@ -77,7 +77,7 @@ return {
 	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "mine_time_animPreciousMetals",
-		"DisplayName", T(302535920011205, "Time to mine precious metal anim"),
+		"DisplayName", T(302535920011205, "Time to mine Precious Metal anim"),
 		"Help", T(302535920011529, "Time it takes to complete animation cycle."),
 		"DefaultValue", 10000,
 		"MinValue", 1,
@@ -86,7 +86,25 @@ return {
 	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "mine_time_idlePreciousMetals",
-		"DisplayName", T(302535920011206, "Time to mine precious metal idle"),
+		"DisplayName", T(302535920011206, "Time to mine Precious Metal idle"),
+		"Help", T(302535920011529, "Time it takes to complete animation cycle."),
+		"DefaultValue", 15000,
+		"MinValue", 1,
+		"MaxValue", 100000,
+		"StepSize", 100,
+	}),
+	PlaceObj("ModItemOptionNumber", {
+		"name", "mine_time_animPreciousMetals",
+		"DisplayName", T(0000, "Time to mine Precious Minerals anim"),
+		"Help", T(302535920011529, "Time it takes to complete animation cycle."),
+		"DefaultValue", 10000,
+		"MinValue", 1,
+		"MaxValue", 100000,
+		"StepSize", 100,
+	}),
+	PlaceObj("ModItemOptionNumber", {
+		"name", "mine_time_idlePreciousMetals",
+		"DisplayName", T(0000, "Time to mine Precious Minerals idle"),
 		"Help", T(302535920011529, "Time it takes to complete animation cycle."),
 		"DefaultValue", 15000,
 		"MinValue", 1,

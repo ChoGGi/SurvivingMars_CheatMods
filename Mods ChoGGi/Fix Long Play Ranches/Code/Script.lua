@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.shepard then
-	print("Fix Long Play Ranches: Missing Project Laika DLC!")
+	print(CurrentModDef.title , ": Project Laika DLC not installed!")
 	return
 end
 

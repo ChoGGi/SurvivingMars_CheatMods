@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.shepard then
-	print("Shepard DLC is missing, Increase Ranch Storage aborting!")
+	print(CurrentModDef.title , ": Project Laika DLC not installed!")
 	return
 end
 

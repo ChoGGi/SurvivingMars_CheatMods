@@ -1,12 +1,20 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library",
+			"version_major", 10,
+			"version_minor", 7,
+		}),
+	},
 	"title", "Fix Deposits Wrong Map",
 	"id", "ChoGGi_FixDepositsStuckUnderground",
 	"steam_id", "2703206312",
 	"pops_any_uuid", "fea16dcd-215d-4c73-bddc-00ed0977986d",
 	"lua_revision", 1007000, -- Picard
-	"version", 3,
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 5,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {

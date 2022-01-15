@@ -205,7 +205,8 @@ function Carwash:AddFakeMarkers(list)
 
 		-- add 3 extra markers to each spot (SetObjWaterMarkers adds one to each spot)
 		for i = 1, 3 do
-			local marker = PlaceObject("GridTileWater", nil, const.cfComponentAttach)
+--~ 			local marker = PlaceObject("GridTileWater", nil, const.cfComponentAttach)
+			local marker = PlaceObjectIn("GridTileWater", self:GetMapID(), nil, const.cfComponentAttach)
 			self:Attach(marker, num)
 			marker:SetAttachAngle(- marker:GetAngle())
 			marker:SetAttachOffset(0, 0, offset:z())

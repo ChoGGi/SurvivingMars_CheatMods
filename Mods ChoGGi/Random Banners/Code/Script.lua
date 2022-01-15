@@ -4,15 +4,17 @@
 
 -- not much point without it
 if not g_AvailableDlc.gagarin then
-	print("Random Banners needs DLC Installed: Space Race!")
+	print(CurrentModDef.title , ": Space Race DLC not installed!")
 	return
 end
 
+local entity = "Hex1_Placeholder"
+
 -- GetEntity seems to be called a little too early (for my setup only probably)
 local lookup_table = {
-	Flag_01_ = {"Hex1_Placeholder"},
-	Flag_02_ = {"Hex1_Placeholder"},
-	Flag_03_ = {"Hex1_Placeholder"},
+	Flag_01_ = {entity},
+	Flag_02_ = {entity},
+	Flag_03_ = {entity},
 }
 
 -- If any mods add flags
@@ -40,7 +42,7 @@ end
 
 -- Load a random flag when banner is placed
 function SponsorBannerBase:GetEntity()
-	if self.entity == "Hex1_Placeholder" then
+	if self.entity == entity then
 		-- default entity = return a random flag
 		return table.rand(lookup_table[self.banner])
 	else

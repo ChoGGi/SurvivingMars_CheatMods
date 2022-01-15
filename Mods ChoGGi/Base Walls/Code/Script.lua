@@ -1,5 +1,11 @@
 -- See LICENSE for terms
 
+-- I use the mirror ball thingy to hide my shame
+if not g_AvailableDlc.contentpack1 then
+	print(CurrentModDef.title , ": Mysteries Resupply Pack DLC (it's free) not installed!")
+	return
+end
+
 local mod_RememberLastSkin
 
 local function ModOptions(id)
@@ -14,12 +20,6 @@ end
 OnMsg.ModsReloaded = ModOptions
 -- fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
-
--- I use the mirror ball thingy to hide my shame
-if not g_AvailableDlc.contentpack1 then
-	print("Base Walls Needs DLC Installed: Mysteries Resupply Pack (it's free)!")
-	return
-end
 
 local table = table
 local point = point

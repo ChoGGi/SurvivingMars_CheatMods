@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.gagarin then
-	print("Change Drone Type requires Space Race DLC installed!")
+	print(CurrentModDef.title , ": Space Race DLC not installed!")
 	return
 end
 

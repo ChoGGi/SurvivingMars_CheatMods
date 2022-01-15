@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.picard then
-	print("Underground Cheats: B&B DLC is missing!")
+	print(CurrentModDef.title , ": Below & Beyond DLC not installed!")
 	return
 end
 

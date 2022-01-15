@@ -61,7 +61,7 @@ function RocketBase:WaitInOrbit(arrive_time, ...)
 --~ 		local item = cargo[i]
 --~ 		if IsKindOf(g_Classes[item.class], "OrbitalProbe") then
 --~ 			for j = 1, item.amount do
---~ 				PlaceObject(item.class, {city = self.city})
+--~ 				PlaceObjectIn(item.class, self:GetMapID())
 --~ 			end
 --~ 			table.remove(cargo, i)
 --~ 		elseif item.class == "Passengers" then

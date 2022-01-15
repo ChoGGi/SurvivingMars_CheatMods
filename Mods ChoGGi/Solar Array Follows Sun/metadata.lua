@@ -21,7 +21,8 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"description", [[
-The panels do it, why not the array panels? The arrays will sink into the ground during nightfall.
+The panels do it, why not the array panels?
+I also made the arrays sink into the ground at night.
 
 Requested by tresslessone.
 ]],

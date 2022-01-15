@@ -147,7 +147,7 @@ local function YamatoHasshin(site)
 		end
 		Sleep(quarter)
 
-		local land_decal = PlaceObject(ar.land_decal_name)
+		local land_decal = PlaceObjectIn(ar.land_decal_name, MainMapID)
 		land_decal:SetPos(spawn_pos)
 		land_decal:SetAngle(AsyncRand((360*60)+1))
 		land_decal:SetScale(40 + AsyncRand(50))

@@ -332,7 +332,7 @@ function DomeTeleporter:TraverseTunnel(unit)
 			if IsValid(linked_obj) then
 				unit:SetHolder(linked_obj)
 				if camera3p.IsActive() and unit == CameraFollowObj then
-					dummy_obj = PlaceObject("Movable");
+					dummy_obj = PlaceObjectIn("Movable", unit:GetMapID())
 					dummy_obj:SetPos(unit_pos)
 					camera3p.DetachObject(unit)
 					camera3p.AttachObject(dummy_obj)

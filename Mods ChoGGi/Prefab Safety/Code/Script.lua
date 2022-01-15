@@ -55,7 +55,7 @@ function BaseRoverBuilding:GameInit(...)
 
 	CreateGameTimeThread(function()
 		if self.rover_class then
-			local rover = PlaceObject(self.rover_class)
+			local rover = PlaceObjectIn(self.rover_class, self:GetMapID())
 			local spot = self:GetSpotBeginIndex("Rover")
 			local pos, angle = self:GetSpotLoc(spot)
 			rover:SetPos(pos)

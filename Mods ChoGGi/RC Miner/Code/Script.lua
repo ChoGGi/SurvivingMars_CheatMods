@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local table = table
 local Sleep = Sleep
 local IsTechResearched = IsTechResearched
 local GetModEnabled = ChoGGi.ComFuncs.GetModEnabled
@@ -23,11 +24,13 @@ local pms = {
 		Concrete = 1000,
 		Metals = 2000,
 		PreciousMetals = 10000,
+		PreciousMinerals = 15000,
 	},
 	mine_time_idle = {
 		Concrete = 1500,
 		Metals = 3000,
 		PreciousMetals = 15000,
+		PreciousMinerals = 20000,
 	},
 }
 
@@ -53,6 +56,8 @@ local function ModOptions(id)
 	pms.mine_time_idle.Metals = options:GetProperty("mine_time_idleMetals")
 	pms.mine_time_anim.PreciousMetals = options:GetProperty("mine_time_animPreciousMetals")
 	pms.mine_time_idle.PreciousMetals = options:GetProperty("mine_time_idlePreciousMetals")
+	pms.mine_time_anim.PreciousMinerals = options:GetProperty("mine_time_animPreciousMinerals")
+	pms.mine_time_idle.PreciousMinerals = options:GetProperty("mine_time_idlePreciousMinerals")
 	pms.visual_cues = options:GetProperty("visual_cues")
 
 	mod_ShowRocket = options:GetProperty("ShowRocket")
@@ -62,30 +67,45 @@ OnMsg.ModsReloaded = ModOptions
 -- fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
+local lifetime_table = {
+	All = 0,
+	Concrete = 0,
+	Metals = 0,
+	PreciousMetals = 0,
+	PreciousMinerals = 0,
+	-- lukes
+	Radioactive = 0,
+	Hydrocarbon = 0,
+	Crystals = 0,
+}
+
 local function StartupCode()
+
+	-- add production table if we haven't already
 	local Cities = Cities or ""
 	for i = 1, #Cities do
 		local city = Cities[i]
-		-- reset the prod count (for overview or something)
 		local miners = city.labels.PortableMiner or ""
 		for j = 1, #miners do
 			local miner = miners[j]
 			miner.city = city
 			miner:SpawnThumper()
-			if miner.lifetime_table then
-				break
+			if not miner.lifetime_table then
+				miner.lifetime_table = lifetime_table
 			end
-			miner.lifetime_table = {
-				All = 0,
-				Concrete = 0,
-				Metals = 0,
-				PreciousMetals = 0,
-				-- lukes
-				Radioactive = 0,
-				Hydrocarbon = 0,
-				Crystals = 0,
-			}
 		end
+	end
+
+	-- add tech lock
+	if not BuildingTechRequirements.PortableMinerBuilding then
+		BuildingTechRequirements.PortableMinerBuilding = {{ tech = "RoverPrinting", hide = false, }}
+	end
+	-- add an entry to unlock it with the tech
+	local tech = TechDef.RoverPrinting
+	if not table.find(tech, "Building", "PortableMinerBuilding") then
+		tech[#tech+1] = PlaceObj('Effect_TechUnlockBuilding', {
+			Building = "PortableMinerBuilding",
+		})
 	end
 
 end
@@ -113,6 +133,8 @@ DefineClass.PortableMiner = {
 		"BuildingDepositExploiterComponent",
 		-- use AutoMode funcs for future compat
 		"AutoMode",
+		-- add self.city
+		"CityObject",
 	},
 	-- these are all set above
 --~ 	name = T(302535920011207, [[RC Miner]]),
@@ -153,8 +175,6 @@ DefineClass.PortableMiner = {
 	-- nearby_deposits name is needed for metal extractor func
 	nearby_deposits = false,
 	accumulate_dust = true,
-	-- changed below
-	notworking_sign = false,
 	-- refund res
 	on_demolish_resource_refund = { Metals = 20 * const.ResourceScale, MachineParts = 20 * const.ResourceScale , Electronics = 10 * const.ResourceScale },
 
@@ -162,6 +182,7 @@ DefineClass.PortableMiner = {
 		"TerrainDepositConcrete",
 		-- metals
 		"SubsurfaceDepositPreciousMetals", "SubsurfaceDepositMetals",
+		"SubsurfaceDepositPreciousMinerals",
 		-- LukeH's Resources
 		"SubsurfaceDepositCrystals", "SubsurfaceDepositRadioactive", --[["SubsurfaceDepositHydrocarbon",]]
 	},
@@ -170,7 +191,7 @@ DefineClass.PortableMiner = {
 	city = false,
 
 	-- show the pin info
-	pin_rollover = T(51, "<ui_command>"),
+	pin_rollover = T(51--[[<ui_command>]]),
 
 	-- add a missile to "grows" while mining
 	thumper = false,
@@ -183,6 +204,14 @@ DefineClass.PortableMiner = {
     base = "CombatRover",
   },
 }
+
+-- ambiguously inherited log spam
+PortableMiner.IsIdle = Unit.IsIdle
+PortableMiner.OnDepositDepleted = TerrainDepositExtractor.OnDepositDepleted
+PortableMiner.GetDepositGrade = TerrainDepositExtractor.GetDepositGrade
+PortableMiner.HasNearbyDeposits = TerrainDepositExtractor.HasNearbyDeposits
+PortableMiner.ExtractResource = TerrainDepositExtractor.ExtractResource
+PortableMiner.GetCurrentDepositQualityMultiplier = TerrainDepositExtractor.GetCurrentDepositQualityMultiplier
 
 DefineClass.PortableMinerBuilding = {
 	__parents = {"BaseRoverBuilding"},
@@ -203,19 +232,12 @@ end
 
 function PortableMiner:GameInit()
 
-	self.city = UICity
+	if not self.city then
+		self.city = Cities[ChoGGi.ComFuncs.RetObjMapId(self)] or MainCity
+	end
 	self.nearby_deposits = {}
 
-	self.lifetime_table = {
-		All = 0,
-		Concrete = 0,
-		Metals = 0,
-		PreciousMetals = 0,
-		-- lukes
-		Radioactive = 0,
-		Hydrocarbon = 0,
-		Crystals = 0,
-	}
+	self.lifetime_table = lifetime_table
 
 	-- select sounds
 	self.fx_actor_class = "AttackRover"
@@ -242,6 +264,7 @@ function PortableMiner:BuildFilterList()
 			Metals = true,
 			Concrete = true,
 			PreciousMetals = true,
+			PreciousMinerals = true,
 			Radioactive = true,
 			Hydrocarbon = true,
 			Crystals = true,
@@ -261,15 +284,11 @@ function PortableMiner:BuildProdInfo(list, res_name)
 end
 
 -- retrieves prod info
+
 function PortableMiner:GetChoGGi_ui_production()
 	local info = {}
-	if self.resource == "Concrete" then
-		self:BuildProdInfo(info, "Concrete")
-	elseif self.resource == "Metals" then
-		self:BuildProdInfo(info, "Metals")
-	else
-		self:BuildProdInfo(info, "PreciousMetals")
-	end
+	self:BuildProdInfo(info, self.resource)
+
 	-- change lifetime to lifetime of that res
 	self.lifetime_production = self.lifetime_table[self.resource]
 	info[#info+1] = ResourceProducer.GetUISectionResourceProducerRollover(self)
@@ -338,7 +357,7 @@ function PortableMiner:Goto(...)
 	self.found_deposit = false
 	-- hide my shame
 	self.thumper:SetVisible(false)
-	self:ShowNotWorkingSign(false)
+	self:AttachSign(false, "SignNotWorking")
 	return Unit.Goto(self, ...)
 end
 
@@ -361,7 +380,7 @@ function PortableMiner:ProcAutomation()
 		local deposit_pos = GetPassablePointNearby(deposit:GetPos())
 		if self:HasPath(deposit_pos, "Origin") then
 			-- If leaving an empty site then this sign should be turned off
-			self:ShowNotWorkingSign(false)
+			self:AttachSign(false, "SignNotWorking")
 			self:SetCommand("Goto", deposit_pos)
 		else
 			unreachable_objects[deposit] = true
@@ -372,7 +391,7 @@ function PortableMiner:ProcAutomation()
 		for i = 1, #miners do
 			local miner = miners[i]
 			miner:SetAutoMode(false)
-			miner:ShowNotWorkingSign(true)
+			self:AttachSign(true, "SignNotWorking")
 			miner:SetCommand("Idle")
 		end
 	end
@@ -391,18 +410,19 @@ end
 function PortableMiner:Idle()
 	-- If there's one near then mine that bugger
 	if self:DepositNearby() then
-		self:ShowNotWorkingSign(false)
+		self:AttachSign(false, "SignNotWorking")
 		--	get to work
 		self:SetCommand("Load")
 	-- we in auto-mode?
 	elseif g_RoverAIResearched and self:IsAutoModeEnabled() then
 		self:ProcAutomation()
 	-- check if stockpile is existing and full
-	elseif not self.notworking_sign and IsValid(self.stockpile)
-			and (self:GetVisualDist(self.stockpile) >= 5000 or
-			self.stockpile:GetStoredAmount() < (self:IsAutoModeEnabled()
-			and pms.max_res_amount_auto or pms.max_res_amount_man)) then
-		self:ShowNotWorkingSign(false)
+	elseif not self:GetAttach("SignNotWorking") and IsValid(self.stockpile)
+		and (self:GetVisualDist(self.stockpile) >= 5000 or
+		self.stockpile:GetStoredAmount() < (self:IsAutoModeEnabled()
+		and pms.max_res_amount_auto or pms.max_res_amount_man))
+	then
+		self:AttachSign(false, "SignNotWorking")
 	end
 
 	-- freezing issue with flatten ground?
@@ -439,16 +459,6 @@ function PortableMiner:DepositNearby()
 	table.iclear(self.nearby_deposits)
 	self.found_deposit = false
 	return false
-end
-
-function PortableMiner:ShowNotWorkingSign(work)
-	if work then
-		self.notworking_sign = true
-		self:AttachSign(self.notworking_sign, "SignNotWorking")
-	else
-		self.notworking_sign = false
-		self:AttachSign(self.notworking_sign, "SignNotWorking")
-	end
 end
 
 -- get rid of it showing up in the buildings not working OnScreenNotificationPreset
@@ -510,7 +520,7 @@ function PortableMiner:Load()
 		--	stop at max_res_amount per stockpile
 		if self.stockpile:GetStoredAmount() < (self:IsAutoModeEnabled() and pms.max_res_amount_auto or pms.max_res_amount_man) then
 			-- remove the sign
-			self:ShowNotWorkingSign(false)
+			self:AttachSign(false, "SignNotWorking")
 			-- up n down n up n down
 			self:SetStateText(self.default_anim)
 
@@ -553,8 +563,8 @@ function PortableMiner:Load()
 			end
 		else
 			-- no need to keep on re-showing sign (assuming there isn't a check for this, but an if bool is quicker then whatever it does)
-			if not self.notworking_sign then
-				self:ShowNotWorkingSign(true)
+			if not self:GetAttach("SignNotWorking") then
+				self:AttachSign(true, "SignNotWorking")
 			end
 		end
 	end
@@ -598,7 +608,7 @@ function PortableMiner:MineIsEmpty()
 	-- omg it's isn't doing anythings @!@!#!?
 	table.insert_unique(g_IdleExtractors, self)
 	-- hey look at me!
-	self:ShowNotWorkingSign(true)
+	self:AttachSign(true, "SignNotWorking")
 end
 
 function PortableMiner:DigErUp()
@@ -746,9 +756,43 @@ function OnMsg.ClassesPostprocess()
 			"Icon", "UI/Icons/Sections/facility.tga",
 		}, {
 
+
+		-- yeah I need to loop this
+
+
 		PlaceObj("XTemplateTemplate", {
 			"__template", "InfopanelActiveSection",
-			"Title", T(4139, "Rare Metals"),
+			"Title", T(229258768953--[[Exotic Minerals]]),
+			"__condition", function(_, context)
+				return g_AccessibleDlc.picard
+			end,
+			"OnContextUpdate", function(self, context)
+				if context.miner_filter.PreciousMinerals then
+					self:SetIcon("UI/Icons/Sections/resource_accept.tga")
+				else
+					self:SetIcon("UI/Icons/Sections/resource_no_accept.tga")
+				end
+			end,
+		}, {
+			PlaceObj("XTemplateFunc", {
+				"name", "OnActivate(self, context)",
+				"parent", function(self)
+					return self.parent
+				end,
+				"func", function(self, context)
+					---
+					context:BuildFilterList()
+					context.miner_filter.PreciousMinerals = not context.miner_filter.PreciousMinerals
+					context:SetCommand("Idle")
+					ObjModified(context)
+					---
+				end
+			}),
+		}),
+
+		PlaceObj("XTemplateTemplate", {
+			"__template", "InfopanelActiveSection",
+			"Title", T(4139--[[Rare Metals]]),
 			"OnContextUpdate", function(self, context)
 				if context.miner_filter.PreciousMetals then
 					self:SetIcon("UI/Icons/Sections/resource_accept.tga")
@@ -775,7 +819,7 @@ function OnMsg.ClassesPostprocess()
 
 		PlaceObj("XTemplateTemplate", {
 			"__template", "InfopanelActiveSection",
-			"Title", T(3514, "Metals"),
+			"Title", T(3514--[[Metals]]),
 			"OnContextUpdate", function(self, context)
 				if context.miner_filter.Metals then
 					self:SetIcon("UI/Icons/Sections/resource_accept.tga")
@@ -802,7 +846,7 @@ function OnMsg.ClassesPostprocess()
 
 		PlaceObj("XTemplateTemplate", {
 			"__template", "InfopanelActiveSection",
-			"Title", T(3513, "Concrete"),
+			"Title", T(3513--[[Concrete]]),
 			"OnContextUpdate", function(self, context)
 				if context.miner_filter.Concrete then
 					self:SetIcon("UI/Icons/Sections/resource_accept.tga")
@@ -829,7 +873,7 @@ function OnMsg.ClassesPostprocess()
 
 		PlaceObj("XTemplateTemplate", {
 			"__template", "InfopanelActiveSection",
-			"Title", T(1107010705, "Radioactive Materials"),
+			"Title", T(1107010705--[[Radioactive Materials]]),
 			"__condition", function ()
 				return lukeh_newres
 			end,
@@ -859,7 +903,7 @@ function OnMsg.ClassesPostprocess()
 
 		PlaceObj("XTemplateTemplate", {
 			"__template", "InfopanelActiveSection",
-			"Title", T(1107012118, "Hydrocarbon"),
+			"Title", T(1107012118--[[Hydrocarbon]]),
 			"__condition", function ()
 				return lukeh_newres
 			end,
@@ -889,7 +933,7 @@ function OnMsg.ClassesPostprocess()
 
 		PlaceObj("XTemplateTemplate", {
 			"__template", "InfopanelActiveSection",
-			"Title", T(1107010505, "Crystals"),
+			"Title", T(1107010505--[[Crystals]]),
 			"__condition", function ()
 				return lukeh_newres
 			end,

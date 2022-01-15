@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.shepard then
-	print("All Animals In Pastures needs DLC Installed: Project Laika!")
+	print(CurrentModDef.title , ": Project Laika DLC not installed!")
 	return
 end
 

@@ -23,7 +23,7 @@ local function ToggleTech()
 
 
 	-- add cargo entry for saved games
-	if not table.find(ResupplyItemDefinitions, "id", "RCSensor") then
+	if not table.find(ResupplyItemDefinitions, "id", "ChoGGi_TriboelectricSensorTower") then
 		RocketPayload_Init()
 	end
 end
@@ -84,7 +84,7 @@ function ChoGGi_TriboelectricSensorTower:GameInit()
 	self:SetColorizationMaterial(3, 5675720, 50, 0)
 
 	-- add sphere to "scrubber"
-	local sphere = PlaceObject("TriboelectricScrubberSphere")
+	local sphere = PlaceObjectIn("TriboelectricScrubberSphere", self:GetMapID())
 	self.sphere = sphere
 
 	self:Attach(sphere, self:GetSpotBeginIndex("Top"))
@@ -128,7 +128,7 @@ end
 ChoGGi_TriboelectricSensorTower.MoveSphere = empty_func
 -- sensor tower will hide it
 ChoGGi_TriboelectricSensorTower.ShowUISectionConsumption = Building.ShowUISectionConsumption
--- log spam
+-- ambiguously inherited log spam
 ChoGGi_TriboelectricSensorTower.GetSelectionRadiusScale = SensorTower.GetSelectionRadiusScale
 
 ChoGGi_TriboelectricSensorTower.ChargedClean = TriboelectricScrubber.ChargedClean
@@ -255,16 +255,10 @@ function GetNumberOfSensorTowers(...)
 	return count
 end
 
+-- override the string the user sees
 local ChoOrig_GetWorkingSensorTowersCount = SensorTowerBase.GetWorkingSensorTowersCount
 function SensorTowerBase.GetWorkingSensorTowersCount(...)
-	local text
-	-- orig func doesn't check if towers exist
-	if UICity.labels.SensorTower then
-		text = ChoOrig_GetWorkingSensorTowersCount(...)
-	else
-		text = T{11231, "Working Sensor Towers:<right><count>", count = 0}
-	end
-
+	local text = ChoOrig_GetWorkingSensorTowersCount(...)
 	local count = text.count
 
 	local objs = UICity.labels.ChoGGi_TriboelectricSensorTower or ""

@@ -4,7 +4,7 @@
 
 -- not much point without it
 if not g_AvailableDlc.gagarin then
-	print("Random Banners needs DLC Installed: Space Race!")
+	print(CurrentModDef.title , ": Space Race DLC not installed!")
 	return
 end
 
