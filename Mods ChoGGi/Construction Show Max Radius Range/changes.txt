@@ -1,3 +1,6 @@
+v1.5
+Added drone hub range.
+
 v1.4
 range is updated when moving slider again.
 

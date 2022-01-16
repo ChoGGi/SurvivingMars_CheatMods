@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v10.8 (Unreleased)
+- An old picard fix for log spam was skipping some Path Markers underground.
 - str examine now adds a title and turns autorefresh on.
 
 ## v10.7 (1 Jan 2022)

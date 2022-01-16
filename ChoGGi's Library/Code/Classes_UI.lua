@@ -815,7 +815,6 @@ function ChoGGi_XWindow:SetHeight(h, dialog)
 	self:SetSize((self[dialog or "idDialog"] or dialog or self).box:sizex(), h)
 end
 function ChoGGi_XWindow:GetSize(dialog)
---~ 	return (self[dialog or "idDialog"] or dialog):size()
 	return (self[dialog or "idDialog"] or dialog or self).box:size()
 end
 function ChoGGi_XWindow:GetHeight(dialog)

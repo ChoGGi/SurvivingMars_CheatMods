@@ -7,7 +7,8 @@
 - Flatten Terrain/shift-f (thanks ElenaRoan).
 
 ### Changed:
-- devs fixed inf loop in GenerateMarsScreenPoI, so Spawn Planetary Anomalies limit is removed.
+- FlushLogConstantly is is slightly faster.
+- Devs fixed inf loop in GenerateMarsScreenPoI, so Spawn Planetary Anomalies limit is removed.
 
 ### Removed:
 - AddFuel cheat (game added a Refuel cheat).

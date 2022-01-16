@@ -454,6 +454,14 @@ do -- ToggleLogErrors
 	ChoGGi.ConsoleFuncs.ToggleLogErrors(UserSettings.ConsoleErrors)
 end -- do
 
+-- The one OnMsg outside my Msgs file for speed
+local FlushLogConstantly = ChoGGi.UserSettings.FlushLogConstantly
+function OnMsg.OnRender()
+	if FlushLogConstantly then
+		FlushLogFile()
+	end
+end
+
 local ConsoleMenuPopupToggle_list = {
 	{name = Strings[302535920001479--[[Errors In Console]]],
 		hint = Strings[302535920001480--[[Print (some) lua errors in the console (needs %s enabled).]]]:format(Strings[302535920001112--[[Console Log]]]),
@@ -526,6 +534,7 @@ The number is a count of stored msgs, right-click to view the list."]]],
 		value = "ChoGGi.UserSettings.FlushLogConstantly",
 		clicked = function()
 			ChoGGi.UserSettings.FlushLogConstantly = not ChoGGi.UserSettings.FlushLogConstantly
+			FlushLogConstantly = ChoGGi.UserSettings.FlushLogConstantly
 			ChoGGi.SettingFuncs.WriteSettings()
 		end,
 	},

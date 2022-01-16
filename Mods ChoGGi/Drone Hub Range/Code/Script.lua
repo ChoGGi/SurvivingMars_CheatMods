@@ -42,6 +42,8 @@ local function SetHubRange()
 		end
 	end
 end
+OnMsg.CityStart = SetHubRange
+OnMsg.LoadGame = SetHubRange
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -65,11 +67,14 @@ OnMsg.ModsReloaded = ModOptions
 -- fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
+-- update newly built
 function OnMsg.BuildingInit(obj)
-	if IsKindOf(obj, "DroneHub") then
-		SetHubRange()
+	if not IsKindOf(obj, "DroneHub") then
+		return
 	end
-end
 
-OnMsg.CityStart = SetHubRange
-OnMsg.LoadGame = SetHubRange
+	SetPropertyProp(obj, "UIWorkRadius", "max", mod_DroneHubRange)
+	obj.service_area_max = mod_DroneHubRange
+	obj:SetWorkRadius(mod_DroneHubRange)
+	obj.UIWorkRadius = mod_DroneHubRange
+end

@@ -118,15 +118,15 @@ local function PickRandomMystery(delay)
 		end
 	end
 
-	-- clear out old mysteries from s_SeqListPlayers (figured it would do it, guess not)
-	local s_SeqListPlayers = s_SeqListPlayers
-	for i = #s_SeqListPlayers, 1, -1 do
-		local player = s_SeqListPlayers[i]
-		if player.seq_list and tostring(player.seq_list.file_name):find("Mystery_", 1, true) then
-			player:CleanUp()
-			player:Done()
-		end
-	end
+--~ 	-- clear out old mysteries from s_SeqListPlayers (figured it would do it, guess not)
+--~ 	local s_SeqListPlayers = s_SeqListPlayers
+--~ 	for i = #s_SeqListPlayers, 1, -1 do
+--~ 		local player = s_SeqListPlayers[i]
+--~ 		if player.seq_list and tostring(player.seq_list.file_name):find("Mystery_", 1, true) then
+--~ 			player:CleanUp()
+--~ 			player:Done()
+--~ 		end
+--~ 	end
 
 	CreateGameTimeThread(function()
 		Sleep(delay or 0)

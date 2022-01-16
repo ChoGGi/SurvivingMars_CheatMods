@@ -332,6 +332,17 @@ local function ModOptions(id)
 end
 OnMsg.ApplyModOptions = ModOptions
 
+function OnMsg.ReloadLua()
+	local size = ChoGGi.UserSettings.ConsoleLogWin_Size
+	if size then
+		local dlg = dlgChoGGi_DlgConsoleLogWin
+		if dlg then
+			dlg:SetSize(size)
+		end
+	end
+
+end
+
 function OnMsg.ModsReloaded()
 	-- load default/saved settings
 	ModOptions()
@@ -1108,12 +1119,6 @@ end
 --~ -- const.MinuteDuration is 500 ticks (GameTime)
 --~ function OnMsg.NewMinute()
 --~ end
-
-function OnMsg.OnRender()
-	if ChoGGi.UserSettings.FlushLogConstantly then
-		FlushLogFile()
-	end
-end
 
 function OnMsg.AfterLightmodelChange()
 	if ChoGGi.UserSettings.Lightmodel then

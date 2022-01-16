@@ -1,3 +1,6 @@
+v0.9
+Commented out code that is probably causing crash (hopefully it isn't something else...).
+
 v0.8
 Fixed crash from last update.
 

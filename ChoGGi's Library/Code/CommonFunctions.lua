@@ -4862,7 +4862,7 @@ do -- BuildableHexGrid
 
 			local q, r = 1, 1
 			local z = -q - r
-			SuspendPassEdits("ChoGGi.ComFuncs.BuildableHexGrid")
+			SuspendPassEdits("ChoGGi.ComFuncs.BuildHexGrid")
 			local colour = RandomColourLimited()
 			-- margins don't work great with the grids (or at least the ones I used)
 			for q_i = q - grid_size, q + grid_size do
@@ -4886,10 +4886,10 @@ do -- BuildableHexGrid
 					end
 				end
 			end
-			ResumePassEdits("ChoGGi.ComFuncs.BuildableHexGrid")
+			ResumePassEdits("ChoGGi.ComFuncs.BuildHexGrid")
 
 			if testing then
-				print("BuildableHexGrid count", grid_objs_c)
+				print("BuildHexGrid count", grid_objs_c)
 			end
 
 			-- off we go
@@ -5436,15 +5436,17 @@ do -- path markers
 	local randcolours = {}
 	local colourcount = 0
 	local dupewppos = {}
-	-- default height of waypoints (maybe flag_height isn't the best name as i stopped using them)
-	local flag_height = 50
+	-- default height of waypoints
+	local line_height = 50
 	local OPolyline
+
+local temp = {}
 
 	local function ShowWaypoints(waypoints, colour, obj, skip_height, obj_pos)
 		colour = tonumber(colour) or RandomColourLimited()
 		-- also used for line height
 		if not skip_height then
-			flag_height = flag_height + 4
+			line_height = line_height + 4
 		end
 
 		obj_pos = obj_pos or obj:GetVisualPos()
@@ -5466,30 +5468,35 @@ do -- path markers
 			local wp = waypoints[i]
 			local z = wp:z()
 			if not z or z and z < obj_terrain then
-				waypoints[i] = wp:SetTerrainZ(obj_height + flag_height)
+				waypoints[i] = wp:SetTerrainZ(obj_height + line_height)
 			end
 		end
 
-		-- HGE::l_SetPos error hopeful fix
-		local avg_pos = AveragePoint2D(waypoints)
-		if IsInMapPlayableArea(ActiveMapID, avg_pos) then
+--~ 		-- HGE::l_SetPos error hopeful fix
+
+-- or not...?
+
+
+--~ 		local avg_pos = AveragePoint2D(waypoints)
+--~ 		if UIColony.underground_map_id ~= ActiveMapID and IsInMapPlayableArea(ActiveMapID, avg_pos:xy()) then
 			-- and spawn the line
 			local spawnline = OPolyline:new()
 			spawnline:SetMesh(waypoints, colour)
-			-- HGE::l_SetPos error
-			spawnline:SetPos(avg_pos)
+--~ 			-- HGE::l_SetPos error
+			spawnline:SetPos(AveragePoint2D(waypoints))
 
 			obj.ChoGGi_Stored_Waypoints[#obj.ChoGGi_Stored_Waypoints+1] = spawnline
-		end
+--~ 		end
 
 	end -- end of ShowWaypoints
 
 	local function SetWaypoint(obj, setcolour, skip_height)
-		local path = {}
+		local path
 
 		-- we need to build a path for shuttles (and figure out a way to get their dest properly...)
 		local is_shuttle = obj:IsKindOf("CargoShuttle")
 		if is_shuttle then
+			path = {}
 
 			-- going to pickup colonist
 			if obj.command == "GoHome" then
@@ -5526,6 +5533,20 @@ do -- path markers
 			-- rovers/drones/colonists
 			if obj.GetPath then
 				path = obj:GetPath()
+
+				-- add pathing table
+				local going_to = obj:GetVisualPos() + obj:GetStepVector() * obj:TimeToAnimEnd() / obj:GetAnimDuration()
+				if path then
+
+					local path_c = #path
+--~ 					for i = 1, path_c do
+--~ 						path[i] = path[i]:SetTerrainZ()
+--~ 					end
+					path[path_c+1] = going_to
+				else
+					path = {going_to}
+				end
+
 			else
 				ChoGGi.ComFuncs.OpenInExamineDlg(obj, nil, Strings[302535920000467--[[Path Markers]]])
 				print(Translate(6779--[[Warning]]), ":", Strings[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.]]]:format(RetName(obj)))
@@ -5777,7 +5798,7 @@ do -- path markers
 		ResumePassEdits("ChoGGi.ComFuncs.Pathing_StopAndRemoveAll")
 
 		-- reset stuff
-		flag_height = 50
+		line_height = 50
 		randcolours = {}
 		colourcount = 0
 		dupewppos = {}

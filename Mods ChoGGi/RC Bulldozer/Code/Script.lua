@@ -143,7 +143,7 @@ function RCBulldozer:UpdateCircle()
 	end
 end
 
--- RecalcBuildableGrid is an expensive cmd so we don't want to fire often
+-- RefreshBuildableGrid is an expensive cmd so we don't want to fire often
 function RCBulldozer:UpdateBuildable()
 	-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
 	ToggleCollisions()

@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1522200776",
 	"pops_any_uuid", "f11ce232-278a-422e-b12d-476f9a148d1c",
 	"lua_revision", 1007000, -- Picard
-	"version", 14,
+	"version", 15,
 	"version_major", 1,
-	"version_minor", 4,
+	"version_minor", 5,
 	"code", {
 		"Code/Script.lua",
 	},
@@ -20,6 +20,7 @@ Triboelectric Scrubber / Triboelectric Sensor Tower
 Subsurface Heater
 Core Heat Convector
 Forestation Plant
+Drone Hub
 
 This also shows a circle for any heater buildings (since they heat a circle).
 

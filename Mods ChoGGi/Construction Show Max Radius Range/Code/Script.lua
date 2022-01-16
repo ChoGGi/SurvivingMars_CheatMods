@@ -3,21 +3,19 @@
 local mod_ShowConstruct
 local mod_SetMaxRadius
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_ShowConstruct = CurrentModOptions:GetProperty("ShowConstruct")
 	mod_SetMaxRadius = CurrentModOptions:GetProperty("SetMaxRadius")
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local white = white
 local GridSpacing = const.GridSpacing
@@ -74,8 +72,14 @@ function CursorBuilding:GameInit(...)
 		-- okay I should make stuff less confusing
 		cls = g_Classes[cls]
 
-		if cls and cls.GetHeatRange then
-			AddRadius(self, cls.GetHeatRange(self.template))
+		if cls then
+			if cls.GetHeatRange then
+				AddRadius(self, cls.GetHeatRange(self.template))
+			elseif cls.GetSelectionRadiusScale then
+				-- drone hubs
+				self.GetSelectionRadiusScale = const.CommandCenterMaxRadius
+				ShowHexRanges(UICity, false, self, "GetSelectionRadiusScale")
+			end
 		end
 	end
 

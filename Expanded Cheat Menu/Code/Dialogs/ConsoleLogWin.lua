@@ -230,10 +230,11 @@ function ChoGGi_DlgConsoleLogWin:Done()
 	-- closing means user doesn't want to see it next time (probably)
 	ChoGGi.UserSettings.ConsoleHistoryWin = false
 	dlgChoGGi_DlgConsoleLogWin = false
-	ChoGGi.SettingFuncs.WriteSettings()
 	-- save the dimensions
 	ChoGGi.UserSettings.ConsoleLogWin_Pos = self:GetPos()
 	ChoGGi.UserSettings.ConsoleLogWin_Size = self:GetSize()
+
+	ChoGGi.SettingFuncs.WriteSettings()
 end
 
 dlgChoGGi_DlgConsoleLogWin = rawget(_G, "dlgChoGGi_DlgConsoleLogWin") or false
@@ -252,4 +253,6 @@ function OnMsg.ConsoleLine(text, bNewLine)
 	end
 
 	dlg:UpdateText(text)
+
+	ChoGGi.UserSettings.ConsoleLogWin_Size = self:GetSize()
 end

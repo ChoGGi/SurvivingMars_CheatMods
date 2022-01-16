@@ -1,14 +1,14 @@
 -- See LICENSE for terms
 
-local MapsForEach = MapsForEach
-local IsKindOf = IsKindOf
-local GetRealm = GetRealm
-local GetRandomPassableAround = GetRandomPassableAround
-
 if not g_AvailableDlc.gagarin then
 	print(CurrentModDef.title , ": Space Race DLC not installed!")
 	return
 end
+
+local MapsForEach = MapsForEach
+local IsKindOf = IsKindOf
+local GetRealm = GetRealm
+local GetRandomPassableAround = GetRandomPassableAround
 
 ChoGGi.ComFuncs.AddParentToClass(RCDriller, "AutoMode")
 
