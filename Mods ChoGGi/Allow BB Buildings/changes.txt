@@ -1,2 +1,5 @@
+v0.3
+Forgot about class templates?
+
 v0.2
 Allows all buildings.
