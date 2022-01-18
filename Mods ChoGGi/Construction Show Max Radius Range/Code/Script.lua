@@ -33,6 +33,10 @@ end
 local cls_saved_settings = {"ChoGGi_TriboelectricSensorTower", "TriboelectricScrubber", "SubsurfaceHeater", "CoreHeatConvector", "ForestationPlant"}
 local cls_heaters = {"SubsurfaceHeater", "CoreHeatConvector"}
 
+local safe_rangers = {
+	DroneHub = true,
+}
+
 local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit(...)
 	if not mod_ShowConstruct then
@@ -70,12 +74,13 @@ function CursorBuilding:GameInit(...)
 			cls = cls.template_class
 		end
 		-- okay I should make stuff less confusing
+		local safe = safe_rangers[cls]
 		cls = g_Classes[cls]
 
 		if cls then
 			if cls.GetHeatRange then
 				AddRadius(self, cls.GetHeatRange(self.template))
-			elseif cls.GetSelectionRadiusScale then
+			elseif cls.GetSelectionRadiusScale and safe then
 				-- drone hubs
 				self.GetSelectionRadiusScale = const.CommandCenterMaxRadius
 				ShowHexRanges(UICity, false, self, "GetSelectionRadiusScale")

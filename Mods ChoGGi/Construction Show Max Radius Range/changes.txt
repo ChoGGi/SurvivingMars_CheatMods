@@ -1,3 +1,6 @@
+v1.6
+Whitelist for certain range buildings.
+
 v1.5
 Added drone hub range.
 

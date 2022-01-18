@@ -1,0 +1,5 @@
+v0.3
+Fixed Planetary Anomaly fix (might've blocked underground from having ground anomaly breakthroughs).
+
+v0.2
+Underground dozers and cave-ins.

@@ -17,6 +17,9 @@ return PlaceObj("ModDef", {
 	"description", [[
 Enable auto mode to make dozers clear rubble underground.
 
+If your game freezes from this mod (or from manually sending rovers to cave-ins), then use this mod: https://steamcommunity.com/sharedfiles/filedetails/?id=2721921772
+
+
 Requested by TheNosferatu.
 ]],
 })

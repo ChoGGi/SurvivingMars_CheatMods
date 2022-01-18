@@ -99,6 +99,29 @@ do -- UpdateStringsList (fired below, and whenever lang is changed)
 	function ChoGGi.ComFuncs.UpdateStringsList()
 		local lang = GetLanguage()
 		ChoGGi.lang = lang
+
+		-- devs didn't bother changing droid font to one that supports unicode, so we do this when it isn't eng
+		if lang ~= "English" then
+			-- first get the unicode font name
+			local f = Translate(997--[[*fontname*, 15, aa]])
+			-- Index of first , then crop out the rest
+			f = f:sub(1, f:find(", ")-1)
+			-- might use it for something else?
+			ChoGGi.font = f
+
+			-- these four don't get to use non-eng fonts, cause screw you is why
+			-- ok it's these aren't expected to be exposed to end users, but console is in mod editor so...?
+			local TextStyles = TextStyles
+			TextStyles.Console.TextFont = f .. ", 18, bold, aa"
+			TextStyles.ConsoleLog.TextFont = f .. ", 13, bold, aa"
+			TextStyles.DevMenuBar.TextFont = f .. ", 18, aa"
+			TextStyles.GizmoText.TextFont = f .. ", 32, bold, aa"
+
+		end
+
+
+
+
 		-- a table of translated strings (includes <> stuff unlike TranslationTable)
 		local strings = ChoGGi.Strings
 		-- blank table from modload
@@ -111,7 +134,7 @@ do -- UpdateStringsList (fired below, and whenever lang is changed)
 						print("ChoGGi Lib: *bad string id?", id)
 						if testing then
 							-- this will error out, but I'll know where it comes from at least.
-							OpenExamine(errorsout)
+							print(errorsout)
 						end
 						return missing_text
 					end
@@ -133,24 +156,6 @@ do -- UpdateStringsList (fired below, and whenever lang is changed)
 		-- and update my global ref
 		ChoGGi.Strings = strings
 
-		-- devs didn't bother changing droid font to one that supports unicode, so we do this when it isn't eng
-		if lang ~= "English" then
-			-- first get the unicode font name
-			local f = Translate(997--[[*font*, 15, aa]])
-			-- Index of first , then crop out the rest
-			f = f:sub(1, f:find(", ")-1)
-			-- might use it for something?
-			ChoGGi.font = f
-
-			-- these four don't get to use non-eng fonts, cause screw you is why
-			-- ok it's these aren't expected to be exposed to end users, but console is in mod editor so...?
-			local TextStyles = TextStyles
-			TextStyles.Console.TextFont = f .. ", 18, bold, aa"
-			TextStyles.ConsoleLog.TextFont = f .. ", 13, bold, aa"
-			TextStyles.DevMenuBar.TextFont = f .. ", 18, aa"
-			TextStyles.GizmoText.TextFont = f .. ", 32, bold, aa"
-
-		end
 	end
 end -- do
 

@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local Strings = ChoGGi.Strings
 local AveragePoint2D = AveragePoint2D
 local PolylineSetParabola = ChoGGi.ComFuncs.PolylineSetParabola
 
@@ -77,7 +76,7 @@ ChoGGi_OBuildingEntityClassAttach.GameInit = AutoAttachObject.Init
 -- add some info/functionality to spawned entity objects
 ChoGGi_OBuildingEntityClass.GetDisplayName = CObject.GetEntity
 function ChoGGi_OBuildingEntityClass.GetIPDescription()
-	return Strings[302535920001110--[[Spawned entity object]]]
+	return T(302535920001110--[[Spawned entity object]])
 end
 -- circle or hex thingy?
 ChoGGi_OBuildingEntityClass.OnSelected = AddSelectionParticlesToObj

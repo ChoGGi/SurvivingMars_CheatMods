@@ -7758,6 +7758,14 @@ function ChoGGi.ComFuncs.RetObjMapId(obj)
 		return obj.city and obj.city.map_id or obj.GetMapID and obj:GetMapID()
 	end
 end
+function ChoGGi.ComFuncs.CountAllObjs()
+	local count = 0
+	local GameMaps = GameMaps
+	for _, map in pairs(GameMaps) do
+		count = count + map.realm:MapCount(true)
+	end
+	return count
+end
 
 -- loop through all map sectors and fire this func
 --~ function ChoGGi.ComFuncs.LoopMapSectors(map_id, func)
