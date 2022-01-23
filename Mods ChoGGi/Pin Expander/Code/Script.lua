@@ -460,3 +460,11 @@ function PinsDlg:InitPinButton(button, ...)
 
 end
 
+-- clear green obj(s)
+function OnMsg.SaveGame()
+	ChoGGi.ComFuncs.ClearShowObj(true)
+end
+-- probably doesn't help...
+function OnMsg.LoadGame()
+	ChoGGi.ComFuncs.ClearShowObj(true)
+end

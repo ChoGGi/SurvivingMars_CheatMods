@@ -14,8 +14,31 @@ local RetHint = ChoGGi.ComFuncs.RetHint
 local Random = ChoGGi.ComFuncs.Random
 local Translate = ChoGGi.ComFuncs.Translate
 
+function ChoGGi.MenuFuncs.DeleteGrassBushesTrees()
+	local function CallBackFunc(answer)
+		if answer then
+			SuspendPassEdits("ChoGGi.ComFuncs.DeleteGrassBushesTrees")
+			MapDelete("map", {
+				"VegetationGrass_01",
+				"VegetationGrass_02",
+				"VegetationTree",
+				"VegetationBush_01",
+				"VegetationBush_02",
+				"VegetationBush_03",
+				"VegetationBush_04",
+			})
+			ChoGGi.ComFuncs.UpdateGrowthThreads()
+			ResumePassEdits("ChoGGi.ComFuncs.DeleteGrassBushesTrees")
+		end
+	end
+	ChoGGi.ComFuncs.QuestionBox(
+		Translate(6779--[[Warning]]) .. "!\n" .. Strings[302535920001258--[[Removes Grass Bushes Trees for that smooth map feel.]]],
+		CallBackFunc,
+		Translate(6779--[[Warning]]) .. ": " .. Strings[302535920000855--[[Last chance before deletion!]]]
+	)
+end
+
 function ChoGGi.MenuFuncs.VerticalCheatMenu_Toggle()
-print("VerticalCheatMenu_ToggleVerticalCheatMenu_ToggleVerticalCheatMenu_ToggleVerticalCheatMenu_Toggle")
 	local setting = not ChoGGi.UserSettings.VerticalCheatMenu
 	ChoGGi.UserSettings.VerticalCheatMenu = setting
 

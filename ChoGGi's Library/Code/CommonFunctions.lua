@@ -3972,6 +3972,35 @@ function ChoGGi.ComFuncs.DeleteSmallRocks()
 	)
 end
 
+do -- UpdateGrowthThreads
+	-- clean up any invalid veg objs with just deleted objs in the animator thread obj lists
+	local lists = {
+		"managed_beautification_objects",
+		"managed_objects",
+	}
+	function ChoGGi.ComFuncs.UpdateGrowthThreads()
+		local objs = MapGet(true, "VegetationAnimator")
+
+		for i = 1, #objs do
+			local obj = objs[i]
+
+			for j = 1, #lists do
+				local threads = obj[lists[j]]
+				for i = #threads, 1, -1 do
+					if not IsValid(threads[i]) then
+						table.remove(threads, i)
+					end
+				end
+			end
+
+			if #obj.managed_beautification_objects + #obj.managed_objects == 0 then
+				DoneObject(obj)
+			end
+
+		end
+	end
+end
+
 -- build and show a list of attachments for changing their colours
 function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 	-- If fired from action menu
@@ -7684,7 +7713,10 @@ function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
 end
 
 function ChoGGi.ComFuncs.RetMapType(city)
-	local map_id = (city or UICity).map_id
+	local map_id
+	if city then
+		map_id = city.map_id
+	end
 
 	if map_id == UIColony.underground_map_id then
 		return "underground"
@@ -7693,6 +7725,7 @@ function ChoGGi.ComFuncs.RetMapType(city)
 	else
 		return "asteroid"
 	end
+	return ""
 end
 
 function ChoGGi.ComFuncs.RotateBuilding(objs, toggle, multiple)

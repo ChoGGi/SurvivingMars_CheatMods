@@ -35,6 +35,8 @@ local cls_heaters = {"SubsurfaceHeater", "CoreHeatConvector"}
 
 local safe_rangers = {
 	DroneHub = true,
+	-- IsKindOfClasses
+	"DroneHub",
 }
 
 local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
@@ -82,7 +84,7 @@ function CursorBuilding:GameInit(...)
 				AddRadius(self, cls.GetHeatRange(self.template))
 			elseif cls.GetSelectionRadiusScale and safe then
 				-- drone hubs
-				self.GetSelectionRadiusScale = const.CommandCenterMaxRadius
+ 				self.GetSelectionRadiusScale = const.CommandCenterMaxRadius
 				ShowHexRanges(UICity, false, self, "GetSelectionRadiusScale")
 			end
 		end
@@ -121,11 +123,11 @@ function OnMsg.BuildingInit(obj)
 	uirange = uirange or prop and prop.max
 
 	-- set it
-
---~ 	obj.GetSelectionRadiusScale = uirange
---~ 	obj.GetSelectionRadiusScale = function()
---~ 		return uirange
---~ 	end
-
 	obj.UIRange = uirange
 end
+
+--function OnMsg.ConstructionSitePlaced(obj)
+--	if obj.building_class_proto:IsKindOfClasses(safe_rangers) then
+--		obj.building_class_proto.work_radius = const.CommandCenterMaxRadius
+--	end
+--end

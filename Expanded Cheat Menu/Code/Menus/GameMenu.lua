@@ -582,6 +582,15 @@ Actions[c] = {ActionName = Strings[302535920001366--[[Delete Small Rocks]]],
 }
 
 c = c + 1
+Actions[c] = {ActionName = Strings[302535920001259--[[Delete Grass Bushes Trees]]],
+	ActionMenubar = "ECM.Game.Terrain",
+	ActionId = ".Delete Grass Bushes Trees",
+	ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
+	RolloverText = Strings[302535920001258--[[Removes Grass Bushes Trees for that smooth map feel.]]],
+	OnAction = ChoGGi.MenuFuncs.DeleteGrassBushesTrees,
+}
+
+c = c + 1
 Actions[c] = {ActionName = Strings[302535920001111--[[Whiter Rocks]]],
 	ActionMenubar = "ECM.Game.Terrain",
 	ActionId = ".Whiter Rocks",

@@ -29,6 +29,12 @@ local icons = {
 	PreciousMinerals = "UI/Icons/res_precious_minerals.tga",
 	PreciousMetals = "UI/Icons/res_precious_metals.tga",
 }
+local text = {
+	Default = 1000121--[[Default]],
+	Metals = 3514--[[Metals]],
+	PreciousMinerals = 229258768953--[[Exotic Minerals]],
+	PreciousMetals = 4139--[[Rare Metals]],
+}
 
 function OnMsg.ClassesPostprocess()
 
@@ -67,11 +73,12 @@ function OnMsg.ClassesPostprocess()
 				if self.idIcon.ScaleModifier:x() ~= 2000 then
 					self.idIcon:SetScaleModifier(point(2000, 2000))
 				end
+
+				self:SetRolloverText(T(0000, "Select resource to exploit: ") .. T(text[context.ChoGGi_Resource] or text.Default))
 			end,
 
-			"Title", T(0000, "Select Resource"),
 			"RolloverTitle", T(0000, "Select Resource"),
-			"RolloverText", T(0000, "Select resource to exploit."),
+			"RolloverText", T(0000, "Select resource to exploit: "),
 			"RolloverHint", T(0000, "<left_click> Select"),
 			"Icon", icons.Default,
 

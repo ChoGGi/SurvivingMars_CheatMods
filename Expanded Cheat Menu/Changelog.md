@@ -1,6 +1,10 @@
 ## ECM Changelog
 
 ## v17.8 (Unreleased)
+### Added:
+- Menu>Game>Terrain>Delete Grass Bushes Trees.
+- Cheats pane>MoveRealm (Move object to new realm).
+
 ### Fixed:
 - Possibly fixing AddOrbitalProbes.
 - Depot Capacity not updating depots.

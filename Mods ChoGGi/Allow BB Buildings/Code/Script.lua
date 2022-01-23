@@ -13,13 +13,13 @@ local function UnlockBuildings()
 		return
 	end
 
-	local ClassTemplates_Building = ClassTemplates.Building
-	local BuildingTemplates = BuildingTemplates
-	for _, template in pairs(BuildingTemplates) do
-		SetBuildingTemplates(template, "disabled_in_environment1", "", BuildingTemplates, ClassTemplates_Building)
-		SetBuildingTemplates(template, "disabled_in_environment2", "", BuildingTemplates, ClassTemplates_Building)
-		SetBuildingTemplates(template, "disabled_in_environment3", "", BuildingTemplates, ClassTemplates_Building)
-		SetBuildingTemplates(template, "disabled_in_environment4", "", BuildingTemplates, ClassTemplates_Building)
+	local ct = ClassTemplates.Building
+	local bt = BuildingTemplates
+	for _, template in pairs(bt) do
+		SetBuildingTemplates(template, "disabled_in_environment1", "", bt, ct)
+		SetBuildingTemplates(template, "disabled_in_environment2", "", bt, ct)
+		SetBuildingTemplates(template, "disabled_in_environment3", "", bt, ct)
+		SetBuildingTemplates(template, "disabled_in_environment4", "", bt, ct)
 	end
 
 end

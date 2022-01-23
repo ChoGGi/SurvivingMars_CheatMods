@@ -1,3 +1,6 @@
+v0.9
+Exotics.
+
 v0.8
 Fixed wonky offset from Tito update.
 

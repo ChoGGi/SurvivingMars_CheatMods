@@ -1,5 +1,9 @@
 -- See LICENSE for terms
 
+local table = table
+local PlaceObj = PlaceObj
+local T = T
+
 local properties = {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "ShuttleAccess",
@@ -28,8 +32,9 @@ local storable_resources = {"Concrete", "Electronics", "Food", "Fuel", "MachineP
 if g_AvailableDlc.armstrong then
 	storable_resources[#storable_resources+1] = "Seeds"
 end
-
-local table = table
+if g_AvailableDlc.picard then
+	storable_resources[#storable_resources+1] = "PreciousMinerals"
+end
 
 -- get display_name and add to list
 local Resources = Resources

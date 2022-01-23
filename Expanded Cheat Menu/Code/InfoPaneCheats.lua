@@ -11,12 +11,14 @@ local ComFuncs = ChoGGi.ComFuncs
 local RetName = ComFuncs.RetName
 local Random = ComFuncs.Random
 local Translate = ComFuncs.Translate
+local RetMapType = ComFuncs.RetMapType
 local Strings = ChoGGi.Strings
 local ResourceScale = const.ResourceScale
 
-Object.CheatExamine = ComFuncs.OpenInExamineDlg
-Object.CheatToggleCollision = ComFuncs.CollisionsObject_Toggle
-Object.CheatDeleteObject = ComFuncs.DeleteObjectQuestion
+local CObject = CObject
+CObject.CheatExamine = ComFuncs.OpenInExamineDlg
+CObject.CheatToggleCollision = ComFuncs.CollisionsObject_Toggle
+CObject.CheatDeleteObject = ComFuncs.DeleteObjectQuestion
 Drone.CheatFindResource = ComFuncs.FindNearestResource
 Drone.CheatDestroy = ComFuncs.RuinObjectQuestion
 RCTransport.CheatFindResource = ComFuncs.FindNearestResource
@@ -399,8 +401,11 @@ It don't matter if you're black or white"]]],
 		des = Strings[302535920001632--[[Spawn an animal.]]],
 	},
 
-
 -- Misc
+	MoveRealm = {
+		des = Strings[302535920001380--[[Move object to new realm]]],
+		des_name = true,
+	},
 	FindResource = {
 		des = Strings[302535920001218--[[Selects nearest storage containing specified resource (shows list of resources).]]],
 		icon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
@@ -685,7 +690,7 @@ end
 local Colonist = Colonist
 local Workplace = Workplace
 
-function Object:CheatToggleSigns()
+function CObject:CheatToggleSigns()
 	if self:CountAttaches("BuildingSign") > 0 then
 		self:DestroyAttaches("BuildingSign")
 	else
@@ -697,6 +702,66 @@ function Object:CheatToggleSigns()
 	end
 end
 
+function CObject:CheatMoveRealm()
+	-- shows list of realms
+	-- zheight on nearest passable pos
+	local item_list = {}
+	local c = 0
+
+	local ActiveMapID = ActiveMapID
+	local UIColony = UIColony
+	local GameMaps = GameMaps
+
+	local maps = MapSwitch:GetEntries()
+	for i = 1, #maps do
+		local map = maps[i]
+		-- Skip unloaded maps/current map
+		if GameMaps[map.Map] and ActiveMapID ~= map.Map then
+			c = c + 1
+			if map.Map == UIColony.surface_map_id then
+				item_list[c] = {text = map.RolloverTitle, map_id = map.Map}
+			elseif map.Map == UIColony.underground_map_id then
+				item_list[c] = {text = map.RolloverTitle, map_id = map.Map}
+			else
+				item_list[c] = {text = map.RolloverTitle, map_id = map.Map}
+			end
+		end
+	end
+
+	local function CallBackFunc(choice)
+		if choice.nothing_selected then
+			return
+		end
+
+		local map = GameMaps[choice[1].map_id]
+		-- Skip removed asteroids
+		if map then
+			-- move obj
+			self:TransferToMap(map.map_id)
+			-- find some place with passable ground.
+			local deposit = FindNearestObject(Cities[map.map_id].labels.SubsurfaceDeposit, self)
+			local pos
+			if deposit then
+				pos = GetRandomPassableAroundOnMap(map.map_id, deposit:GetPos(), 10000, 1000)
+			else
+				local rand_rock = table.rand(map.realm:MapGet("map", "WasteRockObstructor"))
+				pos = GetRandomPassableAroundOnMap(map.map_id, rand_rock, 10000, 1000)
+			end
+			if pos then
+				-- Used surface.terrain:GetHeight instead of just :SetTerrainZ() since that seems to be the active terrain
+				self:SetPos(pos:SetZ(map.terrain:GetHeight(pos)))
+			end
+		end
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = item_list,
+		title = Strings[302535920001262--[[Move To Realm]]],
+		hint = Strings[302535920001380--[[Move object to new realm]]],
+	}
+end
+
 function ColdSensitive:CheatToggleFreeze()
 	if self.frozen then
 		self:SetFrozen(false)
@@ -705,7 +770,7 @@ function ColdSensitive:CheatToggleFreeze()
 	end
 end
 
---colonists
+-- colonists
 function Colonist:CheatFillMorale()
 	self.stat_morale = 100 * ResourceScale
 end

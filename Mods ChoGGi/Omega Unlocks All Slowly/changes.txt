@@ -1,3 +1,6 @@
+v0.8
+Changed it to every 10 Sols instead of each Sol.
+
 v0.7
 Picard update.
 

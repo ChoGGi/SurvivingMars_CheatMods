@@ -2,23 +2,38 @@
 
 local ResourceScale = const.ResourceScale
 
-local gp_dlc = g_AvailableDlc.armstrong
+local dlc_gp = g_AvailableDlc.armstrong
+local dlc_bb = g_AvailableDlc.picard
 local table = table
 
-local options
 local mod_ShuttleAccess
 local mod_StoredAmount
 local mod_options = {}
 
-local storable_resources = {"Concrete", "Electronics", "Food", "Fuel", "MachineParts", "Metals", "Polymers", "PreciousMetals"}
+-- Easier to just make my own list then figure out a table to get them from
+local storable_resources = {
+	"Concrete",
+	"Electronics",
+	"Food",
+	"Fuel",
+	"MachineParts",
+	"Metals",
+	"Polymers",
+	"PreciousMetals",
+}
 local c = #storable_resources
--- no seeds if no green planet
-if gp_dlc then
+-- No seeds if no green planet
+if dlc_gp then
 	c = c + 1
 	storable_resources[c] = "Seeds"
 end
+-- etc
+if dlc_bb then
+	c = c + 1
+	storable_resources[c] = "PreciousMinerals"
+end
 
--- build mod options
+-- Build mod options (doesn't hurt to make sure it's a valid resource)
 local Resources = Resources
 for id in pairs(Resources) do
 	if table.find(storable_resources, id) then
@@ -28,9 +43,13 @@ end
 
 local IsLukeHNewResActive
 
--- fired when settings are changed/init
-local function ModOptions()
-	options = CurrentModOptions
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	local options = CurrentModOptions
 	mod_ShuttleAccess = options:GetProperty("ShuttleAccess")
 	mod_StoredAmount = options:GetProperty("StoredAmount")
 
@@ -41,33 +60,38 @@ local function ModOptions()
 
 	IsLukeHNewResActive = table.find(ModsLoaded, "id", "LH_Resources")
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
-
--- all offset by 34 (even spacing between them with seeds)
-local seed_offsets = {
--- Fuel/Concrete are unchanged
-	MachineParts = point(651, -231, 30),
-	Electronics = point(415, -231, 30),
-	Polymers = point(179, -231, 30),
-	PreciousMetals = point(-57, -231, 30),
-	Metals = point(-293, -231, 30),
-	Food = point(-529, -231, 30),
-	Seeds = point(-765, -231, 30),
+-- all offset by 247 (even spacing between them with seeds)
+--~ o:GetSpotName(0)
+--~ o:GetSpotPos(0)
+-- always skip Concrete (it's first)
+-- 256 is dist between spot 1 & 2
+res_offsets_combo = {
+	Fuel = point(720, -231, 30),
+	MachineParts = point(464, -231, 30),
+	Electronics = point(208, -231, 30),
+	Polymers = point(-48, -231, 30),
+	PreciousMetals = point(-304, -231, 30),
+	Metals = point(-560, -231, 30),
+	Food = point(-816, -231, 30),
+	Seeds = point(-1072, -231, 30),
+	PreciousMinerals = point(-1072, -231, 30),
 }
-local skips = {
-	Fuel = true,
-	Concrete = true,
+-- 247
+local res_offsets_aio = {
+	Fuel = point(820, -231, 30),
+	MachineParts = point(573, -231, 30),
+	Electronics = point(326, -231, 30),
+	Polymers = point(79, -231, 30),
+	PreciousMetals = point(-168, -231, 30),
+	Metals = point(-415, -231, 30),
+	Food = point(-662, -231, 30),
+	Seeds = point(-909, -231, 30),
+	PreciousMinerals = point(-1156, -231, 30),
 }
 
 local ChoOrig_UniversalStorageDepot_GameInit = UniversalStorageDepot.GameInit
@@ -79,6 +103,16 @@ function UniversalStorageDepot:GameInit(...)
 
 	ChoOrig_UniversalStorageDepot_GameInit(self, ...)
 
+	dlc_gp = g_AccessibleDlc.armstrong
+	dlc_bb = g_AccessibleDlc.picard
+
+	local res_offsets
+	if dlc_bb and dlc_gp then
+		res_offsets = res_offsets_aio
+	elseif dlc_gp or dlc_bb then
+		res_offsets = res_offsets_combo
+	end
+
 	for i = 1, #self.storable_resources do
 		local name = self.storable_resources[i]
 		-- turn off any resources that are disabled
@@ -87,17 +121,16 @@ function UniversalStorageDepot:GameInit(...)
 		end
 
 		-- and change res cube offsets (thanks LukeH for the gappage)
-		if gp_dlc and not IsLukeHNewResActive and not skips[name] then
-			self.placement_offset[name] = seed_offsets[name]
+		if (dlc_gp or dlc_bb)
+			and not IsLukeHNewResActive and res_offsets[name]
+		then
+			self.placement_offset[name] = res_offsets[name]
 		end
 
 	end
 
-	-- desired slider setting (needs a slight delay to set the "correct" amount)
+	-- desired slider setting (needs a slight delay to set the "correct" amount: last checked picard)
 	CreateRealTimeThread(function()
-		self:SetDesiredAmount(mod_StoredAmount * ResourceScale)
-		-- ... don't look at me (without this 270 in mod options == 267 in depots)
-		Sleep(1000)
 		self:SetDesiredAmount(mod_StoredAmount * ResourceScale)
 	end)
 
@@ -107,35 +140,14 @@ function UniversalStorageDepot:GameInit(...)
 	end
 end
 
-
-if gp_dlc then
-
-	function OnMsg.ClassesPostprocess()
-		table.insert_unique(BuildingTemplates.UniversalStorageDepot.storable_resources, "Seeds")
+function OnMsg.ClassesPostprocess()
+	local store = BuildingTemplates.UniversalStorageDepot.storable_resources
+	if dlc_gp then
+		table.insert_unique(store, "Seeds")
 	end
-
-	local safe_spots = {
-		Box1 = true,
-		Box2 = true,
-		Box3 = true,
-		Box4 = true,
-		Box5 = true,
-		Box6 = true,
-		Box7 = true,
-		Box8 = true,
-	}
-
-	function OnMsg.ClassesBuilt()
-		-- prevent log spam from seeds
-		local ChoOrig_GetSpotBeginIndex = UniversalStorageDepot.GetSpotBeginIndex
-		function UniversalStorageDepot:GetSpotBeginIndex(spot_name, ...)
-			if spot_name:sub(1, 3) == "Box" and not safe_spots[spot_name] then
-				spot_name = "Box8"
-			end
-			return ChoOrig_GetSpotBeginIndex(self, spot_name, ...)
-		end
+	if dlc_bb then
+		table.insert_unique(store, "PreciousMinerals")
 	end
-
 end
 
 -- needed for SetDesiredAmount in depots

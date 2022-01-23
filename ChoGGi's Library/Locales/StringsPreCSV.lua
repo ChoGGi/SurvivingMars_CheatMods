@@ -3,10 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
-302535920001258, ""
-302535920001259, ""
-302535920001262, ""
-302535920001380, ""
 302535920001381, ""
 302535920001662, ""
 302535920001663, ""
@@ -195,6 +191,8 @@ do !Skipped Line! [[ImageViewer.lua]] !Skipped Line!
 302535920000109, "Invalid Image"
 end !Skipped Line!
 do !Skipped Line! [[InfoPaneCheats.lua]] !Skipped Line!
+302535920001262, "Move To Realm"
+302535920001380, "Move object to new realm"
 302535920000064, "Add Earthsick status to Colonist."
 302535920000065, "Colonist will no longer enjoy life."
 302535920000244, "Age will increase by 1 year."
@@ -1617,8 +1615,10 @@ Takes less then a second on a map with 3616 buildings and 54 drone hubs."
 302535920000620, "If any colonists are black cubes click this."
 302535920000621, "Align All Buildings To Hex Grid"
 302535920000622, "If you have any buildings that aren't aligned to the hex grids use this."
-end end end end end !Skipped Line!
+end end end end end end end !Skipped Line!
 do !Skipped Line! [[GameMenu.lua" "GameFunc.lua]] !Skipped Line!
+302535920001258, "Removes Grass Bushes Trees for that smooth map feel."
+302535920001259, "Delete Grass Bushes Trees"
 302535920000483, "Centuple"
 302535920001660, "Toggle Vertical Cheat Menu"
 302535920001661, "Puts the menu down the side of the screen to save horizontal space for the info bar."
