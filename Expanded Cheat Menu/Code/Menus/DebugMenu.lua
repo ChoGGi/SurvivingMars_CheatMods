@@ -13,6 +13,7 @@ Actions[c] = {ActionName = Strings[302535920000453--[[Reload LUA]]],
 	ActionIcon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 	RolloverText = Strings[302535920000454--[[Reloads code from any enabled mods (excluding ECM/Lib).]]],
 	OnAction = ChoGGi.ComFuncs.ReloadLua,
+	ActionBindable = true,
 }
 
 c = c + 1
