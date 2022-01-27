@@ -1,3 +1,6 @@
+v1.0
+Properly working Exotics.
+
 v0.9
 Exotics.
 

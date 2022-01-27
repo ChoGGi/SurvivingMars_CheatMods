@@ -27,9 +27,15 @@ local function ToggleTech()
 		RocketPayload_Init()
 	end
 end
+OnMsg.CityStart = ToggleTech
+OnMsg.LoadGame = ToggleTech
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_LockBehindTech = CurrentModOptions:GetProperty("LockBehindTech")
 
 	-- make sure we're in-game
@@ -39,19 +45,10 @@ local function ModOptions()
 
 	ToggleTech()
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-OnMsg.CityStart = ToggleTech
-OnMsg.LoadGame = ToggleTech
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 DefineClass.ChoGGi_TriboelectricSensorTower = {
 	__parents = {
@@ -99,7 +96,6 @@ function ChoGGi_TriboelectricSensorTower:GameInit()
 
 	self:UpdateSphereRotation()
 
-
   self.city:AddToLabel("SensorTower", self)
 end
 
@@ -143,6 +139,7 @@ ChoGGi_TriboelectricSensorTower.GetChargeTime = TriboelectricScrubber.GetChargeT
 
 function OnMsg.ClassesPostprocess()
 
+	-- add to build menu
 	local bt = BuildingTemplates
 	if not bt.ChoGGi_TriboelectricSensorTower then
 		local trib = bt.TriboelectricScrubber
@@ -202,6 +199,7 @@ function OnMsg.ClassesPostprocess()
 		})
 	end
 
+	-- Add slider for range
 	local xtemplate = XTemplates.ipBuilding[1]
 
 	if not table.find(xtemplate[1], "Id", "ChoGGi_Template_TriboelectricSensorTower") then

@@ -916,7 +916,7 @@ end
 
 -- Any png files in AppData/Logos folder will be added to mod as converted logo files.
 -- They have to be min of 8bit, and will be resized to power of 2.
--- This doesn't add anything to metadata/items, it only converts files.
+-- This doesn't add anything to metadata/items lua, it only converts files.
 --~ 	ChoGGi.ComFuncs.ConvertImagesToLogoFiles("MOD_ID")
 --~ 	ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.MOD_ID, ".tga")
 --~ ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.ChoGGi_)
@@ -944,6 +944,13 @@ function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod, ext)
 		local ModItemDecalEntity = ModItemDecalEntity
 		local Import = ModItemDecalEntity.Import
 		local ConvertToOSPath = ConvertToOSPath
+
+		local ChoOrig_g_HgimgcvtPath = g_HgimgcvtPath
+		if testing then
+			-- help will return true under windows (if someone cares, I'll make it a saved setting).
+			g_HgimgcvtPath = "help"
+		end
+
 		for i = 1, #images do
 			local filename = ConvertToOSPath(images[i].path)
 			Import(nil,
@@ -958,6 +965,8 @@ function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod, ext)
 			)
 			print(filename)
 		end
+		--
+		g_HgimgcvtPath = ChoOrig_g_HgimgcvtPath
 	end
 end
 

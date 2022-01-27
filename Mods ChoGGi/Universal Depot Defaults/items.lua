@@ -27,7 +27,16 @@ local properties = {
 -- add any valid res
 local c = #properties
 
-local storable_resources = {"Concrete", "Electronics", "Food", "Fuel", "MachineParts", "Metals", "Polymers", "PreciousMetals"}
+local storable_resources = {
+	"Concrete",
+	"Electronics",
+	"Food",
+	"Fuel",
+	"MachineParts",
+	"Metals",
+	"Polymers",
+	"PreciousMetals",
+}
 -- no seeds if no green planet
 if g_AvailableDlc.armstrong then
 	storable_resources[#storable_resources+1] = "Seeds"

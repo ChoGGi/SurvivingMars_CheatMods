@@ -11,6 +11,7 @@ local pairs, tonumber, type, tostring = pairs, tonumber, type, tostring
 local table = table
 local AsyncRand = AsyncRand
 local AveragePoint2D = AveragePoint2D
+local box = box
 local FindNearestObject = FindNearestObject -- (list,obj) or (list,pos,filterfunc)
 local UseGamepadUI = UseGamepadUI
 local SelectionGamepadObj = SelectionGamepadObj
@@ -1378,8 +1379,6 @@ ChoGGi.ComFuncs.RetProperType = RetProperType
 
 do -- RetType
 	-- used to check for some SM objects (Points/Boxes)
-	local IsBox = IsBox
-	local IsPoint = IsPoint
 	local IsQuaternion = IsQuaternion
 	local IsRandState = IsRandState
 	local IsGrid = IsGrid
@@ -5427,7 +5426,7 @@ function ChoGGi.ComFuncs.UpdateDepotCapacity(obj, max_store, storable)
 end
 
 function ChoGGi.ComFuncs.IsUniversalStorageDepot(obj)
-	return obj and obj:GetEntity() == "StorageDepotAIO"
+	return obj and obj.template_name == "UniversalStorageDepot"
 end
 
 function ChoGGi.ComFuncs.GetModEnabled(mod_id)
@@ -6059,6 +6058,27 @@ function ChoGGi.ComFuncs.RGBtoColour(text)
 		-- fallback
 		return 0
 	end
+end
+
+-- input as text "0,0,0,0"
+function ChoGGi.ComFuncs.StrToBox(text)
+	if not text then
+		return box(0,0,0,0)
+	end
+
+	-- remove any spaces/newlines etc
+	text = text:gsub("[%s%c]", "")
+	-- grab the values
+	local values = {}
+	local c = 0
+
+	-- loop through all the numbers
+	for d in text:gmatch("%d+") do
+		c = c + 1
+		values[c] = tonumber(d)
+	end
+
+	return box(values[1], values[2], values[3], values[4])
 end
 
 function ChoGGi.ComFuncs.ResetHumanCentipedes()
