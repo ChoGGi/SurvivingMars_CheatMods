@@ -56,9 +56,15 @@ local function UpdateArtificialSunRange(obj)
 		end
 	end
 end
+OnMsg.CityStart = UpdateArtificialSunRange
+OnMsg.LoadGame = UpdateArtificialSunRange
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_Range = CurrentModOptions:GetProperty("Range")
 
 	-- make sure we're in-game
@@ -67,19 +73,11 @@ local function ModOptions()
 	end
 	UpdateArtificialSunRange()
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-OnMsg.CityStart = UpdateArtificialSunRange
-OnMsg.LoadGame = UpdateArtificialSunRange
 
 -- I;m lazy so copy and paste
 

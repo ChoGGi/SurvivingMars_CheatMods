@@ -4,22 +4,20 @@ local mod_EmptyDumpSites
 local mod_EmptyNewSol
 local mod_EmptyNewHour
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_EmptyDumpSites = CurrentModOptions:GetProperty("EmptyDumpSites")
 	mod_EmptyNewSol = CurrentModOptions:GetProperty("EmptyNewSol")
 	mod_EmptyNewHour = CurrentModOptions:GetProperty("EmptyNewHour")
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local function EmptyAll()
 	local objs = UICity.labels.WasteRockDumpSite or ""

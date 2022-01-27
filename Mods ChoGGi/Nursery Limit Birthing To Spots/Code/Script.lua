@@ -6,23 +6,19 @@ local GetRealm = GetRealm
 local mod_GlobalDomeCount
 local mod_BypassNoNurseries
 
--- fired when settings are changed/init
-local function ModOptions()
-	mod_GlobalDomeCount = CurrentModOptions:GetProperty("GlobalDomeCount")
-	mod_BypassNoNurseries = CurrentModOptions:GetProperty("BypassNoNurseries")
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
 		return
 	end
 
-	ModOptions()
+	mod_GlobalDomeCount = CurrentModOptions:GetProperty("GlobalDomeCount")
+	mod_BypassNoNurseries = CurrentModOptions:GetProperty("BypassNoNurseries")
 end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local ChoOrig_SpawnChild = Community.SpawnChild
 function Community:SpawnChild(...)

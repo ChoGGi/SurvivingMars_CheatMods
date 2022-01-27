@@ -7,8 +7,12 @@ local mod_BreakthroughsResearched
 local mod_SortBreakthroughs
 local mod_ExcludeBreakthroughs
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	local options = CurrentModOptions
 
 	mod_BreakthroughsResearched = options:GetProperty("BreakthroughsResearched")
@@ -21,16 +25,10 @@ local function ModOptions()
 	end
 
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 function OnMsg.ClassesPostprocess()
 	if GameRulesMap.ChoGGi_AdvancedDroneDrive then

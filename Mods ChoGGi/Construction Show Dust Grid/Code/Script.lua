@@ -37,7 +37,12 @@ local function CleanList(list)
 	end
 end
 
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	options = CurrentModOptions
 	mod_EnableGrid = options:GetProperty("Option1")
 	mod_DistFromCursor = options:GetProperty("DistFromCursor") * 1000
@@ -59,7 +64,7 @@ end
 
 local RangeHexMultiSelectRadius_cls
 
--- load default/saved settings
+-- Load default/saved settings
 function OnMsg.ModsReloaded()
 	ModOptions()
 
@@ -92,13 +97,9 @@ function OnMsg.ModsReloaded()
 		classes[classes_c] = "SupplyRocketBuilding"
 	end
 end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
 
 local function ShowBuildingHexesSite(bld, is_rocket)
 	if not bld.destroyed then

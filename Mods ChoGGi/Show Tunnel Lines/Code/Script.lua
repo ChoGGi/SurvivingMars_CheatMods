@@ -1,31 +1,26 @@
 -- See LICENSE for terms
 
-local mod_RemoveOnSelect
-local mod_RandomColours
-
--- fired when settings are changed/init
-local function ModOptions()
-	mod_RemoveOnSelect = CurrentModOptions:GetProperty("RemoveOnSelect")
-	mod_RandomColours = CurrentModOptions:GetProperty("RandomColours")
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
-
--- local some globals
 local IsValid = IsValid
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
+
+local mod_RemoveOnSelect
+local mod_RandomColours
+
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_RemoveOnSelect = CurrentModOptions:GetProperty("RemoveOnSelect")
+	mod_RandomColours = CurrentModOptions:GetProperty("RandomColours")
+end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local lines = {}
 local lines_c = 0

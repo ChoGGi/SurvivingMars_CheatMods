@@ -1,32 +1,30 @@
 -- See LICENSE for terms
 
-local mod_EnableMod
-local mod_CleanUpInvalid
-local mod_MoveInvalidPosition
-
--- fired when settings are changed/init
-local function ModOptions()
-	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
-	mod_CleanUpInvalid = CurrentModOptions:GetProperty("CleanUpInvalid")
-	mod_MoveInvalidPosition = CurrentModOptions:GetProperty("MoveInvalidPosition")
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
 local table = table
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local IsValid = IsValid
 local InvalidPos = ChoGGi.Consts.InvalidPos
 local RetName = ChoGGi.ComFuncs.RetName
+
+local mod_EnableMod
+local mod_CleanUpInvalid
+local mod_MoveInvalidPosition
+
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+	mod_CleanUpInvalid = CurrentModOptions:GetProperty("CleanUpInvalid")
+	mod_MoveInvalidPosition = CurrentModOptions:GetProperty("MoveInvalidPosition")
+end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local lines = {}
 local lines_c = 0

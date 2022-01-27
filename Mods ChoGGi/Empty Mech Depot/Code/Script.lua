@@ -6,21 +6,19 @@ local Sleep = Sleep
 local mod_SkipDelete
 local mod_SalvageFullDepots
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_SkipDelete = CurrentModOptions:GetProperty("SkipDelete")
 	mod_SalvageFullDepots = CurrentModOptions:GetProperty("SalvageFullDepots")
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 function OnMsg.ClassesPostprocess()
 

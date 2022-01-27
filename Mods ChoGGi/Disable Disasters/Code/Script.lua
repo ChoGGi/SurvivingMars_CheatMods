@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local options
 local disasters = {
 	"ColdWave",
 	"DustDevils",
@@ -58,14 +57,18 @@ local kill_current = {
 --~ 	end,
 }
 
--- fired when settings are changed/init
-local function ModOptions(skip_disabled)
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	-- make sure we're in-game
 	if not UICity then
 		return
 	end
 
-	options = CurrentModOptions
+	local options = CurrentModOptions
 
 	for i = 1, c do
 		local id = disasters[i]
@@ -91,16 +94,10 @@ local function ModOptions(skip_disabled)
 	end
 
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 OnMsg.CityStart = ModOptions
 -- we don't want to reset current disasters if option is disabled

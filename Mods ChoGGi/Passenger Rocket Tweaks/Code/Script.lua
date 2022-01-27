@@ -13,9 +13,13 @@ local mod_HideRocket
 local mod_PosX
 local mod_PosY
 
--- fired when settings are changed/init
 local ToggleSpecInfo
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	options = CurrentModOptions
 	mod_MoreSpecInfo = options:GetProperty("MoreSpecInfo")
 	mod_PosPassList = options:GetProperty("PosPassList")
@@ -25,18 +29,10 @@ local function ModOptions()
 
 	ToggleSpecInfo()
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local needed_specialist = {}
 local all_specialist = {}

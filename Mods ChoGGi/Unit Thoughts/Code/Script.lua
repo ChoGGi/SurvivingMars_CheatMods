@@ -45,8 +45,12 @@ local mod_EnableLines
 local mod_ShowNames
 local mod_ForceClearLines
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	local options = CurrentModOptions
 	mod_EnableMod = options:GetProperty("EnableMod")
 	mod_EnableText = options:GetProperty("EnableText")
@@ -71,18 +75,10 @@ local function ModOptions()
 
 	ClearUnitInfo()
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local function GetBatteryInfo(obj, space)
 	if space then

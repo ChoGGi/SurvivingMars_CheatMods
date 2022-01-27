@@ -1,34 +1,30 @@
 -- See LICENSE for terms
 
+local OnMsg = OnMsg
+local FlushLogFile = FlushLogFile
+
 local options
 local mod_NewDay
 local mod_NewHour
 local mod_NewMinute
 local mod_NewRender
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	options = CurrentModOptions
 	mod_NewDay = options:GetProperty("NewDay")
 	mod_NewHour = options:GetProperty("NewHour")
 	mod_NewMinute = options:GetProperty("NewMinute")
 	mod_NewRender = options:GetProperty("NewRender")
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
-
-local OnMsg = OnMsg
-local FlushLogFile = FlushLogFile
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- early as possible
 FlushLogFile()

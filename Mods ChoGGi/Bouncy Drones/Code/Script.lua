@@ -4,22 +4,20 @@ local mod_Gravity
 local mod_GravityRC
 local mod_GravityColonist
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_Gravity = CurrentModOptions:GetProperty("Gravity") * 100
 	mod_GravityRC = CurrentModOptions:GetProperty("GravityRC") * 100
 	mod_GravityColonist = CurrentModOptions:GetProperty("GravityColonist") * 10
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local function UpdateGravity(objs, value)
 	for i = 1, #(objs or "") do

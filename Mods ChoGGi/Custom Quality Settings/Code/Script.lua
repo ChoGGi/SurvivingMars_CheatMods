@@ -101,8 +101,6 @@ local mod_DTM_VideoMemory
 local mod_ShadowmapSize
 local mod_LODDistanceModifier
 local mod_ShadowRangeOverride
-local options
-
 
 local function UpdateHR()
 	local hr = hr
@@ -126,10 +124,16 @@ local function UpdateHR()
 		hr.ShadowRangeOverride = lookup_settings.ShadowRangeOverride[mod_ShadowRangeOverride]
 	end
 end
+OnMsg.CityStart = UpdateHR
+OnMsg.LoadGame = UpdateHR
 
--- fired when settings are changed/init
-local function ModOptions()
-	options = CurrentModOptions
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	local options = CurrentModOptions
 
 	mod_LightsRadiusModifier = options:GetProperty("LightsRadiusModifier")
 	mod_TR_MaxChunks = options:GetProperty("TR_MaxChunks")
@@ -140,16 +144,7 @@ local function ModOptions()
 
 	UpdateHR()
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-OnMsg.CityStart = UpdateHR
-OnMsg.LoadGame = UpdateHR
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions

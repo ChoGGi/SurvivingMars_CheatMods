@@ -1,25 +1,21 @@
 -- See LICENSE for terms
 
+local WaitMsg = WaitMsg
+
 local mod_ClearOnLaunch
 
--- fired when settings are changed/init
-local function ModOptions()
-	mod_ClearOnLaunch = CurrentModOptions:GetProperty("ClearOnLaunch")
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
 		return
 	end
 
-	ModOptions()
+	mod_ClearOnLaunch = CurrentModOptions:GetProperty("ClearOnLaunch")
 end
-
-local WaitMsg = WaitMsg
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- temp cargo stored here
 local saved_cargo = {

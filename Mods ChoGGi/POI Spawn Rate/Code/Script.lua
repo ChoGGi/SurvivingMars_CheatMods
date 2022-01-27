@@ -1,12 +1,12 @@
 -- See LICENSE for terms
 
--- fired when settings are changed/init
-local function ModOptions()
-	local options = CurrentModOptions
-	-- ClassesPostprocess fires earlier than ModsReloaded (well probably just for me)
-	if not options then
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
 		return
 	end
+
+	local options = CurrentModOptions
 
 	local POIPresets = POIPresets
 	for id, poi in pairs(POIPresets) do
@@ -26,11 +26,6 @@ local function ModOptions()
 
 	end
 
-	-- stop options from blanking out from ClassesPostprocess
-	if #options.properties == 0 then
-		options.properties = nil
-	end
-
 	if not UIColony then
 		return
 	end
@@ -46,15 +41,7 @@ local function ModOptions()
 		end
 	end
 end
-
--- load default/saved settings
-OnMsg.ClassesPostprocess = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions

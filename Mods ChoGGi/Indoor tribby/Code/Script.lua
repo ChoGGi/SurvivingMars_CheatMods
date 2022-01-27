@@ -5,21 +5,19 @@ local IsValid = IsValid
 local mod_CleanDomes
 local mod_WaitForIt
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_CleanDomes = CurrentModOptions:GetProperty("CleanDomes")
 	mod_WaitForIt = CurrentModOptions:GetProperty("WaitForIt")
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 DefineClass.ChoGGi_IndoorTribby = {
 	__parents = {

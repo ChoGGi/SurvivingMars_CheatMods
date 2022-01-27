@@ -15,6 +15,8 @@ end
 local function SetBuildingSigns1()
 	SetSignsVisible(not mod_EnableMod)
 end
+OnMsg.CityStart = SetBuildingSigns1
+OnMsg.LoadGame = SetBuildingSigns1
 
 local temp_vis = false
 local function SetBuildingSigns2()
@@ -22,28 +24,25 @@ local function SetBuildingSigns2()
 	SetSignsVisible(temp_vis)
 end
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 
 	-- make sure we're in-game
-	if UICity then
-		SetBuildingSigns1()
+	if not UICity then
+		return
 	end
-end
 
--- load default/saved settings
+	SetBuildingSigns1()
+end
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-OnMsg.CityStart = SetBuildingSigns1
-OnMsg.LoadGame = SetBuildingSigns1
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- add keybind for toggle
 local Actions = ChoGGi.Temp.Actions

@@ -4,23 +4,21 @@ local mod_RemovePerks
 local mod_RemoveFlaws
 local mod_RemoveMartianborn
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	local options = CurrentModOptions
 	mod_RemovePerks = options:GetProperty("RemovePerks")
 	mod_RemoveFlaws = options:GetProperty("RemoveFlaws")
 	mod_RemoveMartianborn = options:GetProperty("RemoveMartianborn")
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 function OnMsg.ColonistBorn(colonist, event)
 	if event ~= "android" then

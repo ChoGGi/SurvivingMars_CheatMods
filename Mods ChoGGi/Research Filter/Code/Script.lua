@@ -2,22 +2,18 @@
 
 local mod_HideCompleted
 
--- fired when settings are changed/init
-local function ModOptions()
-	mod_HideCompleted = CurrentModOptions:GetProperty("HideCompleted")
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
 		return
 	end
 
-	ModOptions()
+	mod_HideCompleted = CurrentModOptions:GetProperty("HideCompleted")
 end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- stores list of tech dialog ui hexy things
 local tech_list = {}

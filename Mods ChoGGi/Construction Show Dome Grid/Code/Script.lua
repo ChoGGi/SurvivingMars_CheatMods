@@ -17,8 +17,12 @@ local mod_SelectOutside
 local mod_GridScale
 local mod_HexColour
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	local options = CurrentModOptions
 	mod_EnableGrid = options:GetProperty("Option1")
 	mod_DistFromCursor = options:GetProperty("DistFromCursor") * 1000
@@ -29,16 +33,10 @@ local function ModOptions()
 
 	mod_HexColour = RGBtoColour(options:GetProperty("HexColour"))
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local grids_visible
 

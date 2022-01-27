@@ -2,22 +2,18 @@
 
 local mod_SkipDefault
 
--- fired when settings are changed/init
-local function ModOptions()
-	mod_SkipDefault = CurrentModOptions:GetProperty("SkipDefault")
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
 		return
 	end
 
-	ModOptions()
+	mod_SkipDefault = CurrentModOptions:GetProperty("SkipDefault")
 end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local default_logos = {
 	Android = true,

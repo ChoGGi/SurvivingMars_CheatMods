@@ -1,30 +1,28 @@
 -- See LICENSE for terms
 
+local table = table
+local string_lower = string.lower
+local floatfloor = floatfloor
+
 local mod_TextScale
 local mod_ShowText
 local mod_CompactText
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	local scale = CurrentModOptions:GetProperty("TextScale") * guim
 	mod_TextScale = point(scale, scale)
 	mod_ShowText = CurrentModOptions:GetProperty("ShowText")
 	mod_CompactText = CurrentModOptions:GetProperty("CompactText")
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-local table = table
-local string_lower = string.lower
-local floatfloor = floatfloor
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local res_count_orig, res_count = {}
 local added_objs = {}

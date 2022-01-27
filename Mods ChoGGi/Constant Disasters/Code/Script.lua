@@ -12,7 +12,6 @@ local disasters = {
 }
 local disasters_c = #disasters
 
-local options
 local mod = {}
 -- load up blanks
 for i = 1, disasters_c do
@@ -24,9 +23,13 @@ end
 -- see below
 local hours_passed = {}
 
--- fired when settings are changed/init
-local function ModOptions()
-	options = CurrentModOptions
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	local options = CurrentModOptions
 	for i = 1, disasters_c do
 		local disaster = disasters[i]
 		local enable = "Constant_" .. disaster
@@ -39,16 +42,10 @@ local function ModOptions()
 		end
 	end
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local disaster_lookup = {
 	ColdWaves = {

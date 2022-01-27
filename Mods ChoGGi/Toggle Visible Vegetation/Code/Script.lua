@@ -26,9 +26,15 @@ local function ToggleTrees()
 		ToggleFunc(veg)
 	end
 end
+OnMsg.CityStart = ToggleTrees
+OnMsg.LoadGame = ToggleTrees
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_ToggleBushes = CurrentModOptions:GetProperty("ToggleBushes")
 	mod_EnableVegetation = CurrentModOptions:GetProperty("EnableVegetation")
 
@@ -39,18 +45,7 @@ local function ModOptions()
 
 	ToggleTrees()
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
-
-OnMsg.CityStart = ToggleTrees
-OnMsg.LoadGame = ToggleTrees
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions

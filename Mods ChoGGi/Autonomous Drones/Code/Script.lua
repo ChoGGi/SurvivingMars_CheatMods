@@ -21,8 +21,12 @@ local mod_IgnoreUnusedHubs
 local mod_DroneWorkDelay
 local mod_UsePrefabs
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	local options = CurrentModOptions
 	mod_AddHeavy = options:GetProperty("AddHeavy")
 	mod_AddMedium = options:GetProperty("AddMedium")
@@ -39,16 +43,10 @@ local function ModOptions()
 	mod_DroneWorkDelay = options:GetProperty("DroneWorkDelay")
 	mod_UsePrefabs = options:GetProperty("UsePrefabs")
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local table = table
 local CreateGameTimeThread = CreateGameTimeThread

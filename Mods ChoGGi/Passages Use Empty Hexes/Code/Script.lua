@@ -2,25 +2,6 @@
 
 -- TEST WITH NO ECM
 
-local mod_ShowUseableGrids
-
--- fired when settings are changed/init
-local function ModOptions()
-	mod_ShowUseableGrids = CurrentModOptions:GetProperty("ShowUseableGrids")
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
-
 local table = table
 local IsValid = IsValid
 local IsPoint = IsPoint
@@ -34,6 +15,21 @@ local ObjHexShape_Clear = ChoGGi.ComFuncs.ObjHexShape_Clear
 local ObjHexShape_Toggle = ChoGGi.ComFuncs.ObjHexShape_Toggle
 local DeleteObject = ChoGGi.ComFuncs.DeleteObject
 local CollisionsObject_Toggle = ChoGGi.ComFuncs.CollisionsObject_Toggle
+
+local mod_ShowUseableGrids
+
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_ShowUseableGrids = CurrentModOptions:GetProperty("ShowUseableGrids")
+end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- the only thing I care about is that a dome is at the current pos, the rest is up to the user
 local function IsDomePoint(obj)

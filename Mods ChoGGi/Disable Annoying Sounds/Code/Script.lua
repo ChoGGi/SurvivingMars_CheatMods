@@ -20,8 +20,12 @@ local mod_DustGeyserBurst
 
 local DisableSounds
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	local options = CurrentModOptions
 	mod_SensorSensorTowerBeeping = options:GetProperty("SensorSensorTowerBeeping")
 	mod_RCCommanderDronesDeployed = options:GetProperty("RCCommanderDronesDeployed")
@@ -40,16 +44,10 @@ local function ModOptions()
 		DisableSounds()
 	end
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local function BldStopSounds(label)
 	local objs = UICity.labels[label] or ""

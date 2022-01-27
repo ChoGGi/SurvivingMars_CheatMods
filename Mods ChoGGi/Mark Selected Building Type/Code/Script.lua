@@ -1,5 +1,13 @@
 -- See LICENSE for terms
 
+local table = table
+local IsValid = IsValid
+local DoneObject = DoneObject
+local SuspendPassEdits = SuspendPassEdits
+local ResumePassEdits = ResumePassEdits
+local CreateRealTimeThread = CreateRealTimeThread
+local WaitMsg = WaitMsg
+
 local mod_Mark
 local mod_MaxObjects
 local mod_HideSigns
@@ -7,8 +15,12 @@ local mod_HideSigns
 -- func added below
 local ClearObjects
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_Mark = CurrentModOptions:GetProperty("Mark")
 	mod_MaxObjects = CurrentModOptions:GetProperty("MaxObjects")
 	mod_HideSigns = CurrentModOptions:GetProperty("HideSigns")
@@ -17,26 +29,10 @@ local function ModOptions()
 		ClearObjects()
 	end
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
-
-local table = table
-local IsValid = IsValid
-local DoneObject = DoneObject
-local SuspendPassEdits = SuspendPassEdits
-local ResumePassEdits = ResumePassEdits
-local CreateRealTimeThread = CreateRealTimeThread
-local WaitMsg = WaitMsg
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local beams = {}
 local green = green

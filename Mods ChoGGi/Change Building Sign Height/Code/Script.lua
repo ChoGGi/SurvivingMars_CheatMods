@@ -30,9 +30,15 @@ local function UpdateSigns()
 		end
 	end
 end
+OnMsg.CityStart = UpdateSigns
+OnMsg.LoadGame = UpdateSigns
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_SignHeight = CurrentModOptions:GetProperty("SignHeight")
 	mod_LowerHigher = CurrentModOptions:GetProperty("LowerHigher")
 
@@ -42,19 +48,10 @@ local function ModOptions()
 	end
 	UpdateSigns()
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-OnMsg.CityStart = UpdateSigns
-OnMsg.LoadGame = UpdateSigns
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 function OnMsg.BuildingInit(obj)
 	obj.sign_offset = GetHeight()

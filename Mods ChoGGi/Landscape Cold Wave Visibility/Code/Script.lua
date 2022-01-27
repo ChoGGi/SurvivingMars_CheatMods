@@ -1,10 +1,17 @@
 -- See LICENSE for terms
 
+local DoneObject = DoneObject
+local type = type
+
 local mod_SpaceCount
 local EnableMarker
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_SpaceCount = CurrentModOptions:GetProperty("SpaceCount")
 
 	-- no sense in updating unless it's a cold wave
@@ -15,21 +22,10 @@ local function ModOptions()
 		end
 	end
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
-		return
-	end
-
-	ModOptions()
-end
-
-local DoneObject = DoneObject
-local type = type
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local function DisableMarker(obj)
 	if obj.ChoGGi_ColdLines then

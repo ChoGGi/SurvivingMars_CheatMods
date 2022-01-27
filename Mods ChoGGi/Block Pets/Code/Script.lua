@@ -24,8 +24,12 @@ for id, def in pairs(Animals) do
 	end
 end
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	local options = CurrentModOptions
 
 	mod_EnableMod = options:GetProperty("EnableMod")
@@ -35,16 +39,10 @@ local function ModOptions()
 	end
 
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- override spawn funcs for the pets
 local spawn_classes = {

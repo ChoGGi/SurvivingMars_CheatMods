@@ -10,23 +10,19 @@ local empty_table = empty_table
 local mod_NearestLaser
 local mod_NearestHub
 
--- fired when settings are changed/init
-local function ModOptions()
-	mod_NearestLaser = CurrentModOptions:GetProperty("NearestLaser")
-	mod_NearestHub = CurrentModOptions:GetProperty("NearestHub")
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when option is changed
-function OnMsg.ApplyModOptions(id)
-	if id ~= CurrentModId then
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
 		return
 	end
 
-	ModOptions()
+	mod_NearestLaser = CurrentModOptions:GetProperty("NearestLaser")
+	mod_NearestHub = CurrentModOptions:GetProperty("NearestHub")
 end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local function IdleTime(self)
 	self:SetState("idle")
