@@ -9,9 +9,8 @@ local function ModOptions(id)
 		return
 	end
 
-	local options = CurrentModOptions
-	mod_ColdCapacity = options:GetProperty("ColdCapacity")
-	mod_PenaltyPercent = -options:GetProperty("PenaltyPercent")
+	mod_ColdCapacity = CurrentModOptions:GetProperty("ColdCapacity")
+	mod_PenaltyPercent = CurrentModOptions:GetProperty("PenaltyPercent")
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions

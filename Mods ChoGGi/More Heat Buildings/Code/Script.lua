@@ -101,6 +101,6 @@ function OnMsg.ClassesPostprocess()
 
 end
 
-function OnMsg.LoadGame()
--- looip through all buildings and :UpdateBuilding()
-end
+--~ function OnMsg.LoadGame()
+-- loop through all buildings and :UpdateBuilding()
+--~ end

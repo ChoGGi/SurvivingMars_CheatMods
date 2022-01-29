@@ -1,3 +1,6 @@
+v0.4
+Left a - I didn't mean to.
+
 v0.3
 Mod option to set percent.
 

@@ -15,7 +15,7 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagGameplay", true,
 	"description", [[
-You can place them anywhere in a dome.
+You can place them anywhere in a dome (as many as you like).
 
 
 Not requested by 3punkt1415?
