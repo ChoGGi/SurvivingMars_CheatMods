@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v10.8 (Unreleased)
+## v10.9 (Unreleased)
+
+## v10.8 (29 Jan 2022)
 - Examine may have shown an obj as on an asteroid when it wasn't.
 - Added MoveRealm (send objs to another realm).
 - Added UpdateGrowthThreads (remove deleted obj animator threads).

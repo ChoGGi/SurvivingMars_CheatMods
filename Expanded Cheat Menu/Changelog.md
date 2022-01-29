@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v17.8 (Unreleased)
+## v17.9 (Unreleased)
+
+## v17.8 (29 Jan 2022)
 ### Added:
 - Menu>Game>Terrain>Delete Grass Bushes Trees.
 - Cheats pane>MoveRealm (Move object to new realm).
