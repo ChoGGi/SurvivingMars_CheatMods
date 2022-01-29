@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 local ClassDescendantsList = ClassDescendantsList
-local tostring = tostring
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Random = ChoGGi.ComFuncs.Random
 

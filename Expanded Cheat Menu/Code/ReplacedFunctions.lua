@@ -63,6 +63,15 @@ do -- non-class obj funcs
 		GedOpHelpMod = empty_func
 	end
 
+	-- stops mod editor itself
+	SaveOrigFunc("OpenGedApp")
+	function OpenGedApp(template, ...)
+		if template == "ModsEditor" and (testing or UserSettings.SkipModEditorDialog) then
+			return
+		end
+		return ChoGGi_OrigFuncs.OpenGedApp(template, ...)
+	end
+
 	-- get rid of "This savegame was loaded in the past without required mods or with an incompatible game version."
 	SaveOrigFunc("WaitMarsMessage")
 	function WaitMarsMessage(parent, title, msg, ...)

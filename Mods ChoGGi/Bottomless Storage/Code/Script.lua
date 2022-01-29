@@ -49,7 +49,7 @@ function BottomlessStorage:DroneUnloadResource(drone, request, resource, ...)
 	UniversalStorageDepot.DroneUnloadResource(self, drone, request, resource, ...)
 	if self.working then
 		-- check and clear each resource that can be cleared
-		if g_ResourceOverviewCity[UICity.map_id]:GetAvailable(resource) > mod_options[resource] * ResourceScale then
+		if g_ResourceOverviewCity[GetMapID(self)]:GetAvailable(resource) > mod_options[resource] * ResourceScale then
 			-- function UniversalStorageDepot:ClearAllResources()
 			if self.supply and self.supply[resource] then
 				self.supply[resource]:SetAmount(0)

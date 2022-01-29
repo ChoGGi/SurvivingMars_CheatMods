@@ -112,7 +112,6 @@ function ChoGGi.MenuFuncs.PlantRandomLichen()
 
 		if type(choice.value) == "number" then
 
-			local PlaceObject = PlaceObject
 			SuspendPassEdits("ChoGGi.MenuFuncs.PlantRandomLichen")
 			PlaceObjectIn("VegFocusTask", MainMapID, {
 				min_foci = 10,

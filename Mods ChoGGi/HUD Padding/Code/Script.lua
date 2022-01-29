@@ -2,7 +2,6 @@
 
 local box = box
 local tonumber = tonumber
-local RetType = ChoGGi.ComFuncs.RetType
 
 -- input as text "0,0,0,0"
 --~ local StrToBox = ChoGGi.ComFuncs.StrToBox

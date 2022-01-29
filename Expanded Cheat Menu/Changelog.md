@@ -4,6 +4,7 @@
 ### Added:
 - Menu>Game>Terrain>Delete Grass Bushes Trees.
 - Cheats pane>MoveRealm (Move object to new realm).
+- Setting to skip showing mod editor in mod editor mode (SkipModEditorDialog).
 
 ### Fixed:
 - Possibly fixing AddOrbitalProbes.
@@ -15,6 +16,7 @@
 - Devs fixed inf loop in GenerateMarsScreenPoI, so Spawn Planetary Anomalies limit is removed.
 
 ### Removed:
+- My "If you get a disabled content restrictions" msg from other people uploading mods (Hi Silva).
 - AddFuel cheat (game added a Refuel cheat).
 
 ## v17.7 (1 Jan 2022)

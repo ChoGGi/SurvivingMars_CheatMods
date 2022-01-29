@@ -605,6 +605,7 @@ Game.Render>Video Memory: Sets hr.DTM_VideoMemory (Menu>Options>Video>Textures),
 Game.Screenshot>Screenshot Upsampled: Write screenshot upsampled
 Game.Screenshot>Screenshot: Write screenshot
 Game.Screenshot>Show Interface in Screenshots: Do you want to see the interface in screenshots?
+Game.Terrain>Delete Grass Bushes Trees: Removes Grass Bushes Trees for that smooth map feel.
 Game.Terrain>Delete Large Rocks: Removes rocks for that smooth map feel.
 Game.Terrain>Delete Small Rocks: Removes rocks for that smooth map feel.
 Game.Terrain>Terrain Editor Toggle: Opens up the map editor with the brush tool visible.

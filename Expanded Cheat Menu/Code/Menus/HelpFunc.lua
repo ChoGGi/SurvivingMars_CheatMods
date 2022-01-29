@@ -146,6 +146,8 @@ do -- ModUpload
 				or ""
 
 			-- add some text to ECM description to hopefully reduce people reporting the mod.
+			if testing then
+
 			if mod.id == ChoGGi.id then
 				mod.description = Strings[302535920000990--[["You need to have a mouse to use this mod."]]] .. "\n"
 					.. needs_lib .. Strings[302535920000887--[["If you get a disabled content restrictions error: It's on Paradox to review/restore it (bug them not me).
@@ -164,6 +166,8 @@ https://discord.gg/bkdjEZU
 https://steamcommunity.com/id/ChoGGi/
 SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 			end
+			end
+
 		end
 
 		-- Issue with mod platform (workshop/paradox mods)

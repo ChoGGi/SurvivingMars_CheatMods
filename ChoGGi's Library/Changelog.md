@@ -1,6 +1,8 @@
 ## Library Changelog
 
 ## v10.8 (Unreleased)
+- Examine may have shown an obj as on an asteroid when it wasn't.
+- Added MoveRealm (send objs to another realm).
 - Added UpdateGrowthThreads (remove deleted obj animator threads).
 - An old picard fix for log spam was skipping some Path Markers underground.
 - str examine now adds a title and turns autorefresh on.

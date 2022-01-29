@@ -33,6 +33,7 @@ local ViewAndSelectObject = ViewAndSelectObject
 local XDestroyRolloverWindow = XDestroyRolloverWindow
 local Max = Max
 local GameTime = GameTime
+local GetMapID = GetMapID
 local guic = guic
 local ViewObjectMars = ViewObjectMars
 local RGB = RGB
@@ -3985,9 +3986,9 @@ do -- UpdateGrowthThreads
 
 			for j = 1, #lists do
 				local threads = obj[lists[j]]
-				for i = #threads, 1, -1 do
-					if not IsValid(threads[i]) then
-						table.remove(threads, i)
+				for k = #threads, 1, -1 do
+					if not IsValid(threads[k]) then
+						table.remove(threads, k)
 					end
 				end
 			end
@@ -5467,8 +5468,6 @@ do -- path markers
 	-- default height of waypoints
 	local line_height = 50
 	local OPolyline
-
-local temp = {}
 
 	local function ShowWaypoints(waypoints, colour, obj, skip_height, obj_pos)
 		colour = tonumber(colour) or RandomColourLimited()
@@ -7732,8 +7731,7 @@ function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
 	ChoGGi.ComFuncs.OpenInExamineDlg(textures, nil, Strings[302535920001181--[[Used Terrain Textures]]])
 end
 
-function ChoGGi.ComFuncs.RetMapType(city)
-	local map_id
+function ChoGGi.ComFuncs.RetMapType(city, map_id)
 	if city then
 		map_id = city.map_id
 	end
@@ -7805,10 +7803,9 @@ function ChoGGi.ComFuncs.GetUnitsSamePlace(city)
 	end)
 	ChoGGi.ComFuncs.OpenInExamineDlg(filtered)
 end
-
 function ChoGGi.ComFuncs.RetObjMapId(obj)
 	if obj then
-		return obj.city and obj.city.map_id or obj.GetMapID and obj:GetMapID()
+		return obj.city and obj.city.map_id or obj.GetMapID and obj:GetMapID() or GetMapID(obj)
 	end
 end
 function ChoGGi.ComFuncs.CountAllObjs()
@@ -7819,7 +7816,37 @@ function ChoGGi.ComFuncs.CountAllObjs()
 	end
 	return count
 end
+function ChoGGi.ComFuncs.MoveRealm(obj, map_id)
+	local map = GameMaps[map_id]
+	-- Skip removed asteroids
+	if not map then
+		return
+	end
 
+	local is_asteroid = ChoGGi.ComFuncs.RetMapType(nil, map_id) == "asteroid"
+	local pos
+	if not is_asteroid then
+		pos = obj:GetPos()
+	end
+	-- Move obj
+	obj:TransferToMap(map_id)
+	--
+	if is_asteroid then
+		-- Find some place with passable ground (if moving to asteroid).
+		local deposit = FindNearestObject(Cities[map_id].labels.SubsurfaceDeposit, obj)
+		if deposit then
+			pos = GetRandomPassableAroundOnMap(map_id, deposit:GetPos(), 10000, 1000)
+		else
+			local rand_rock = table.rand(map.realm:MapGet("map", "WasteRockObstructor"))
+			pos = GetRandomPassableAroundOnMap(map_id, rand_rock, 10000, 1000)
+		end
+	end
+	--
+	if pos then
+		-- Used surface.terrain:GetHeight instead of just :SetTerrainZ() since that seems to be the active terrain
+		obj:SetPos(pos:SetZ(map.terrain:GetHeight(pos)))
+	end
+end
 -- loop through all map sectors and fire this func
 --~ function ChoGGi.ComFuncs.LoopMapSectors(map_id, func)
 --~ end

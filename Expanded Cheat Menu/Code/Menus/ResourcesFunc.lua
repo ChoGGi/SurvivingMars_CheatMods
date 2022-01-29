@@ -72,8 +72,8 @@ function ChoGGi.MenuFuncs.AddOrbitalProbes()
 		end
 
 		local value = choice[1].value
-		local MainCity = MainCity
-		local PlaceObject = PlaceObject
+		local MainMapID = MainMapID
+		local PlaceObjectIn = PlaceObjectIn
 		if type(value) == "number" then
 			local cls = "OrbitalProbe"
 			if choice[1].check1 then

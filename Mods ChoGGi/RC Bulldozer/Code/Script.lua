@@ -10,7 +10,7 @@ local CreateRealTimeThread = CreateRealTimeThread
 local IsValid = IsValid
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
-local PlaceObject = PlaceObject
+local PlaceObjectIn = PlaceObjectIn
 
 local ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
 local MovePointAwayXY = ChoGGi.ComFuncs.MovePointAwayXY

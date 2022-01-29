@@ -24,6 +24,7 @@ function OnMsg.ClassesPostprocess()
 
 		-- added to the workplace panel, for more see OpenExamine(somebuilding) > click the class at the top till you get to metatable Building > then either __ancestors or __parents
 		"__context_of_kind", "Workplace", --change this to say SecurityStation to only show up for them, but you can just use OnContextUpdate to hide it
+		-- see Source\Lua\XTemplates\Infopanel*.lua for more examples
 		"__template", "InfopanelActiveSection",
 
 		-- you can set these here or in OnContextUpdate below

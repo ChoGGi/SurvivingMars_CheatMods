@@ -62,6 +62,7 @@ local PropObjGetProperty = PropObjGetProperty
 local Sleep = Sleep
 local XCreateRolloverWindow = XCreateRolloverWindow
 local XDestroyRolloverWindow = XDestroyRolloverWindow
+local GetMapID = GetMapID
 
 local TMeta = TMeta
 local TConcatMeta = TConcatMeta
@@ -860,6 +861,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 				c = c + 1
 				roll_text[c] = obj.city and obj.city.map_id
 					or obj.GetMapID and obj:GetMapID()
+					or GetMapID(obj)
 					or "unknown"
 				c = c + 1
 				roll_text[c] = "\n\n"
@@ -2716,7 +2718,7 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 			return self:HyperLink(obj, Examine_ConvertValueToInfo)
 				.. RetName(obj) .. self.hyperlink_end .. "@"
 				.. self:ConvertValueToInfo(obj:GetVisualPos())
-				.. " <color ChoGGi_palegreen>" .. RetMapType(obj.city) .. "</color>"
+				.. " <color ChoGGi_palegreen>" .. RetMapType(nil, GetMapID(obj)) .. "</color>"
 		else
 			local len = #obj
 			local obj_metatable = getmetatable(obj)
@@ -3149,7 +3151,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 			end)
 			.. obj.class .. self.hyperlink_end .. "@"
 			.. self:ConvertValueToInfo(obj:GetVisualPos()) .. " "
-			.. " <color ChoGGi_palegreen>" .. RetMapType(obj.city) .. "</color> --"
+			.. " <color ChoGGi_palegreen>" .. RetMapType(nil, GetMapID(obj)) .. "</color> --"
 		)
 		-- add the particle name
 		if obj:IsKindOf("ParSystem") then

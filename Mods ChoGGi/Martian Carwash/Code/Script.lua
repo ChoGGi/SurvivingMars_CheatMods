@@ -18,7 +18,7 @@ local testbit = testbit
 local HexNeighbours = HexNeighbours
 local HexGetBuilding = HexGetBuilding
 local WorldToHex = WorldToHex
-local PlaceObject = PlaceObject
+local PlaceObjectIn = PlaceObjectIn
 
 DefineClass.Carwash = {
 	__parents = {

@@ -11,7 +11,6 @@ local ComFuncs = ChoGGi.ComFuncs
 local RetName = ComFuncs.RetName
 local Random = ComFuncs.Random
 local Translate = ComFuncs.Translate
-local RetMapType = ComFuncs.RetMapType
 local Strings = ChoGGi.Strings
 local ResourceScale = const.ResourceScale
 
@@ -702,14 +701,18 @@ function CObject:CheatToggleSigns()
 	end
 end
 
-function CObject:CheatMoveRealm()
+function CObject:CheatMoveRealm(map_id)
+	if map_id then
+		ChoGGi.ComFuncs.MoveRealm(self, map_id)
+		return
+	end
+
 	-- shows list of realms
 	-- zheight on nearest passable pos
 	local item_list = {}
 	local c = 0
 
 	local ActiveMapID = ActiveMapID
-	local UIColony = UIColony
 	local GameMaps = GameMaps
 
 	local maps = MapSwitch:GetEntries()
@@ -718,13 +721,7 @@ function CObject:CheatMoveRealm()
 		-- Skip unloaded maps/current map
 		if GameMaps[map.Map] and ActiveMapID ~= map.Map then
 			c = c + 1
-			if map.Map == UIColony.surface_map_id then
-				item_list[c] = {text = map.RolloverTitle, map_id = map.Map}
-			elseif map.Map == UIColony.underground_map_id then
-				item_list[c] = {text = map.RolloverTitle, map_id = map.Map}
-			else
-				item_list[c] = {text = map.RolloverTitle, map_id = map.Map}
-			end
+			item_list[c] = {text = map.RolloverTitle, map_id = map.Map, hint = map.RolloverText}
 		end
 	end
 
@@ -733,25 +730,7 @@ function CObject:CheatMoveRealm()
 			return
 		end
 
-		local map = GameMaps[choice[1].map_id]
-		-- Skip removed asteroids
-		if map then
-			-- move obj
-			self:TransferToMap(map.map_id)
-			-- find some place with passable ground.
-			local deposit = FindNearestObject(Cities[map.map_id].labels.SubsurfaceDeposit, self)
-			local pos
-			if deposit then
-				pos = GetRandomPassableAroundOnMap(map.map_id, deposit:GetPos(), 10000, 1000)
-			else
-				local rand_rock = table.rand(map.realm:MapGet("map", "WasteRockObstructor"))
-				pos = GetRandomPassableAroundOnMap(map.map_id, rand_rock, 10000, 1000)
-			end
-			if pos then
-				-- Used surface.terrain:GetHeight instead of just :SetTerrainZ() since that seems to be the active terrain
-				self:SetPos(pos:SetZ(map.terrain:GetHeight(pos)))
-			end
-		end
+		ChoGGi.ComFuncs.MoveRealm(self, choice[1].map_id)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{

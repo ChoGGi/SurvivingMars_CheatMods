@@ -546,7 +546,7 @@ function PortableMiner:Load()
 					self.stockpile = false
 				end
 
-				local infoamount = g_ResourceOverviewCity[(self.city or UICity).map_id].data[self.resource]
+				local infoamount = g_ResourceOverviewCity[GetMapID(self)].data[self.resource]
 				infoamount = infoamount + 1
 				-- per res
 				self.lifetime_table[self.resource] = self.lifetime_table[self.resource] + mined
@@ -763,7 +763,7 @@ function OnMsg.ClassesPostprocess()
 		PlaceObj("XTemplateTemplate", {
 			"__template", "InfopanelActiveSection",
 			"Title", T(229258768953--[[Exotic Minerals]]),
-			"__condition", function(_, context)
+			"__condition", function()
 				return g_AccessibleDlc.picard
 			end,
 			"OnContextUpdate", function(self, context)

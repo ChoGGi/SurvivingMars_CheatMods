@@ -96,6 +96,8 @@ ChoGGi.Defaults = {
 	SkipIncompatibleModsMsg = true,
 	-- Mod Editor shows the help page every single time you open it.
 	SkipModHelpPage = true,
+	--  Mod editor itself
+	SkipModEditorDialog = true,
 	-- stops panel from shrinking
 	StopSelectionPanelResize = false,
 	-- remove any objects above the height limit (or game will delete save and crash).
