@@ -764,7 +764,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 		end
 
 	elseif obj:IsKindOf("UniversalStorageDepot") then
-		local uni_depot = IsUniversalStorageDepot(obi)
+		local uni_depot = IsUniversalStorageDepot(obj)
 		if UserSettings.StorageUniversalDepot and uni_depot then
 			obj.max_storage_per_resource = UserSettings.StorageUniversalDepot
 			UpdateDepotCapacity(obj)

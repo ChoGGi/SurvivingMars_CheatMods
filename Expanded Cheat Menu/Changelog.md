@@ -18,7 +18,7 @@
 - Devs fixed inf loop in GenerateMarsScreenPoI, so Spawn Planetary Anomalies limit is removed.
 
 ### Removed:
-- My "If you get a disabled content restrictions" msg from other people uploading mods (Hi Silva).
+- My "If you get a disabled content restrictions" msg from other people uploading mods to paradox (Hi Silva, congrats on rls).
 - AddFuel cheat (game added a Refuel cheat).
 
 ## v17.7 (1 Jan 2022)

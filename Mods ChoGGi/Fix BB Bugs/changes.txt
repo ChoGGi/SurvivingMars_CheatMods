@@ -1,3 +1,13 @@
+v0.4
+Stuck notifications for last war.
+Find Water milestone.
+Underground rubble.
+Explorer disappearing when going underground.
+Mystery Log stuck on screen from mini mysteries.
+Drone hub extender range updates.
+Drones and underground wonders.
+Underground passage cleanup.
+
 v0.3
 Fixed Planetary Anomaly fix (might've blocked underground from having ground anomaly breakthroughs).
 

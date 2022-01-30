@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -18,6 +18,15 @@ return PlaceObj("ModDef", {
 List of bugs fixed:
 No Planetary Anomaly Breakthroughs when B&B is installed.
 Underground dozers and cave-ins.
+Stuck notifications for last war.
+Find Water milestone.
+Underground rubble.
+Explorer disappearing when going underground.
+Mystery Log stuck on screen from mini mysteries.
+Drone hub extender range updates.
+Drones and underground wonders.
+Underground passage cleanup.
+
 
 "This space intentionally left blank"
 ]],
