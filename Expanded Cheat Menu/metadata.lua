@@ -10,8 +10,8 @@ return PlaceObj("ModDef", {
 	"title", "Expanded Cheat Menu Test",
 	"id", "ChoGGi_CheatMenu",
 	"steam_id", "1411157810",
-	"pops_desktop_uuid", "1b0ff48e-b493-4d34-b7be-9e6416e75827",
---~ 	"pops_any_uuid", "e2018d89-5b38-4068-b4fe-cb67352ee86a",
+--~ 	"pops_desktop_uuid", "1b0ff48e-b493-4d34-b7be-9e6416e75827",
+	"pops_any_uuid", "dbb57a5c-b79b-427a-8f1c-d9b4a64d16ec",
 	"lua_revision", 1007000, -- Picard
 	"version", 179,
 	"version_major", 17,

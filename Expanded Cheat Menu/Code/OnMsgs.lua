@@ -336,7 +336,7 @@ function OnMsg.ReloadLua()
 	local size = ChoGGi.UserSettings.ConsoleLogWin_Size
 	if size then
 		local dlg = dlgChoGGi_DlgConsoleLogWin
-		if dlg then
+		if IsValidXWin(dlg) then
 			dlg:SetSize(size)
 		end
 	end

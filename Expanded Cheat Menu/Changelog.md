@@ -9,6 +9,7 @@
 - Setting to skip showing mod editor in mod editor mode (SkipModEditorDialog).
 
 ### Fixed:
+- Console log window (thanks Fizzle_Fuzz).
 - Possibly fixing AddOrbitalProbes.
 - Depot Capacity not updating depots.
 - Flatten Terrain/shift-f (thanks ElenaRoan).

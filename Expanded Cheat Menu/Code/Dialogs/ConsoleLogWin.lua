@@ -4,6 +4,7 @@
 
 local Translate = ChoGGi.ComFuncs.Translate
 local TableConcat = ChoGGi.ComFuncs.TableConcat
+local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 local Strings = ChoGGi.Strings
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
@@ -240,7 +241,7 @@ end
 dlgChoGGi_DlgConsoleLogWin = rawget(_G, "dlgChoGGi_DlgConsoleLogWin") or false
 function OnMsg.ConsoleLine(text, bNewLine)
 	local dlg = dlgChoGGi_DlgConsoleLogWin
-	if not dlg then
+	if not IsValidXWin(dlg) then
 		return
 	end
 
@@ -254,5 +255,5 @@ function OnMsg.ConsoleLine(text, bNewLine)
 
 	dlg:UpdateText(text)
 
-	ChoGGi.UserSettings.ConsoleLogWin_Size = self:GetSize()
+	ChoGGi.UserSettings.ConsoleLogWin_Size = dlg:GetSize()
 end
