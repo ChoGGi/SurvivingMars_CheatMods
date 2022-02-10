@@ -59,12 +59,12 @@ return PlaceObj("ModDef", {
 		"Code/ModOptions.lua",
 	},
 	"description", [[
-Contains stuff needed by most of my mods: Mod options, UI elements, and other stuff.
-
+Contains stuff needed by most of my mods: Mod options, UI elements, and other stuff (funcs lots of funcs).
 
 Translation(s):
 Chinese (Simplified) by aiawar.
 
+Modders: You can use OpenExamine(obj) in your mods if you need to do some debugging and this mod is installed.
 
 Also available at:
 https://www.nexusmods.com/survivingmars/mods/89?tab=files

@@ -1,5 +1,10 @@
-v0.4
+v0.5
+Removed some fixes from mod added to Below & Beyond Content Update #2 - Hotfix 3:
 Stuck notifications for last war.
+Explorer disappearing when going underground.
+Mystery Log stuck on screen from mini mysteries.
+
+v0.4
 Find Water milestone.
 Underground rubble.
 Explorer disappearing when going underground.

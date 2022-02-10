@@ -3,7 +3,7 @@
 local AveragePoint2D = AveragePoint2D
 local PolylineSetParabola = ChoGGi.ComFuncs.PolylineSetParabola
 
--- blank CObject class we add to all the objects below for easier deleting
+-- blank CObject (could use Object, but has more parents) class we add to all the objects below for easier deleting
 DefineClass.ChoGGi_ODeleteObjs = {
 	__parents = {"CObject"},
 }

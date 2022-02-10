@@ -46,10 +46,15 @@ local function UpdateAges()
 		end
 	end
 end
+OnMsg.CityStart = UpdateAges
+OnMsg.LoadGame = UpdateAges
 
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
 
--- fired when settings are changed/init
-local function ModOptions()
 	local options = CurrentModOptions
 
 	for id in pairs(mod_options) do
@@ -68,18 +73,8 @@ local function ModOptions()
 
 	UpdateAges()
 end
-
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
--- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	-- I'm sure it wouldn't be that hard to only call this msg for the mod being applied, but...
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-OnMsg.CityStart = UpdateAges
-OnMsg.LoadGame = UpdateAges

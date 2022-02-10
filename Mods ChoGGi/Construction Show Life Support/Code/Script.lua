@@ -20,14 +20,13 @@ local function ModOptions(id)
 		return
 	end
 
-	local options = CurrentModOptions
-	mod_EnableMod = options:GetProperty("EnableMod")
-	mod_DistFromCursor = options:GetProperty("DistFromCursor") * 1000
-	mod_HexOpacity = options:GetProperty("HexOpacity")
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+	mod_DistFromCursor = CurrentModOptions:GetProperty("DistFromCursor") * 1000
+	mod_HexOpacity = CurrentModOptions:GetProperty("HexOpacity")
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 local function HideHexes(skip)

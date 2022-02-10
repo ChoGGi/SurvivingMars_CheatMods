@@ -17,9 +17,9 @@ local function ModOptions(id)
 	mod_MinimumSurfaceDeposits = CurrentModOptions:GetProperty("MinimumSurfaceDeposits")
 	mod_MinimumSubsurfaceDeposits = CurrentModOptions:GetProperty("MinimumSubsurfaceDeposits")
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 -- only needed for mod_MinimumDeposits == 0; we ignore this if mod option > 0, but this is (probably slightly) faster then orig func so no need to bother checking

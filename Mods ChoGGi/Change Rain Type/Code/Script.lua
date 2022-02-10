@@ -34,8 +34,12 @@ local lookup_rain = {
 	[2] = "normal",
 }
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_RainType = lookup_rain[CurrentModOptions:GetProperty("RainType")]
 
 	-- make sure we're in-game
@@ -45,17 +49,10 @@ local function ModOptions()
 
 	UpdateRainsThreads()
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	-- I'm sure it wouldn't be that hard to only call this msg for the mod being applied, but...
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- probably called?
 --~ OnMsg.CityStart = UpdateRainsThreads

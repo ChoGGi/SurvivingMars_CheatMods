@@ -208,6 +208,22 @@ function RocketBase:IsFlightPermitted(...)
 	return mod_DustStormsAllowRockets or ChoOrig_RocketBase_IsFlightPermitted(self, ...)
 end
 
+local ChoOrig_RocketBase_GetLaunchIssue = RocketBase.GetLaunchIssue
+function RocketBase:GetLaunchIssue(...)
+	-- save orig value
+	if mod_DustStormsAllowRockets and self.affected_by_dust_storm then
+		self.ChoGGi_Orig_affected_by_dust_storm = self.affected_by_dust_storm
+		self.affected_by_dust_storm = false
+	-- restore orig value
+	elseif not mod_DustStormsAllowRockets and self.ChoGGi_Orig_affected_by_dust_storm then
+		self.affected_by_dust_storm = self.ChoGGi_Orig_affected_by_dust_storm
+		self.ChoGGi_Orig_affected_by_dust_storm = nil
+	end
+
+	return ChoOrig_RocketBase_GetLaunchIssue(self, ...)
+end
+
+
 local ChoOrig_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
 function ConstructionController:UpdateConstructionStatuses(_, ...)
 	local ret = ChoOrig_UpdateConstructionStatuses(self, ...)

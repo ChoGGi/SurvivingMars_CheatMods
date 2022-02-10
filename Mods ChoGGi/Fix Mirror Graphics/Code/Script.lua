@@ -92,8 +92,12 @@ local function UpdateTextures()
 end
 
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	local options = CurrentModOptions
 	mod_EnableMod = options:GetProperty("EnableMod")
 	mod_DumpingSites = options:GetProperty("DumpingSites")
@@ -114,17 +118,10 @@ local function ModOptions()
 
 	UpdateTextures()
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	-- I'm sure it wouldn't be that hard to only call this msg for the mod being applied, but...
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- fire when a building is built
 OnMsg.BuildingInit = UpdateTextures

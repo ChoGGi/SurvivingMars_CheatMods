@@ -45,6 +45,10 @@ local function UpdateBuildings()
 	end
 
 end
+OnMsg.CityStart = UpdateBuildings
+OnMsg.LoadGame = UpdateBuildings
+OnMsg.DustStorm = UpdateBuildings
+OnMsg.DustStormEnded = UpdateBuildings
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -61,12 +65,7 @@ local function ModOptions(id)
 
 	UpdateBuildings()
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
-
-OnMsg.CityStart = UpdateBuildings
-OnMsg.LoadGame = UpdateBuildings
-OnMsg.DustStorm = UpdateBuildings
-OnMsg.DustStormEnded = UpdateBuildings

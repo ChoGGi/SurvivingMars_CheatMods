@@ -14,8 +14,8 @@ local function ModOptions(id)
 		end)
 	end
 end
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
+--~ -- load default/saved settings
+--~ OnMsg.ModsReloaded = ModOptions
 -- fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 

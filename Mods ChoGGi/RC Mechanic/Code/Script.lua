@@ -10,9 +10,9 @@ local function ModOptions(id)
 
 	mod_iddqd = CurrentModOptions:GetProperty("iddqd")
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 GlobalVar("g_RCMechanicRepairing", {})

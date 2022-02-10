@@ -9,7 +9,6 @@ local SetLen = SetLen
 local Cross = Cross
 local asin = asin
 
-
 local mod_ToggleRain
 local mod_RaiseTemps
 --~ local mod_RainType
@@ -31,9 +30,9 @@ local function ModOptions(id)
 --~ 	local rain_type = CurrentModOptions:GetProperty("RainType")
 --~ 	mod_RainType = rain_type = 1 and "normal" or rain_type = 1 and "toxic" or "gamestate"
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 -- probably shouldn't bother using GlobalVar, but I'll leave since I'm too lazy to test

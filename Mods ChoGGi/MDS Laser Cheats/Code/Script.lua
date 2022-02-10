@@ -19,10 +19,15 @@ local function UpdateLasers()
 		obj.beam_time = mod_BeamTime
 	end
 end
+OnMsg.CityStart = UpdateLasers
+OnMsg.LoadGame = UpdateLasers
 
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
 
--- fired when settings are changed/init
-local function ModOptions()
 	local options = CurrentModOptions
 	mod_HitChance = options:GetProperty("HitChance")
 	mod_FireRate = options:GetProperty("FireRate")
@@ -37,16 +42,7 @@ local function ModOptions()
 	end
 	UpdateLasers()
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-OnMsg.CityStart = UpdateLasers
-OnMsg.LoadGame = UpdateLasers
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions

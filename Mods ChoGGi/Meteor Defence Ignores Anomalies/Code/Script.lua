@@ -38,8 +38,12 @@ end
 OnMsg.CityStart = CheckMeteors
 OnMsg.LoadGame = CheckMeteors
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	local options = CurrentModOptions
 
 	mod_EnableMod = options:GetProperty("EnableMod")
@@ -54,16 +58,10 @@ local function ModOptions()
 
 	CheckMeteors()
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local function AbortDefence(func, self, meteor, ...)
 	if mod_EnableMod and not TestRemoveMeteor(meteor.deposit_type) then

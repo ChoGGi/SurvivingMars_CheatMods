@@ -33,9 +33,9 @@ local function ModOptions(id)
 	-- update hud margins
 	Msg("SafeAreaMarginsChanged")
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 -- update based on lookup (only if mod option not set, add another option to always override?)

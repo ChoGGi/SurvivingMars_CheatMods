@@ -10,7 +10,8 @@ return PlaceObj("ModDef", {
 	"title", "RC Miner",
 	"id", "ChoGGi_PortableMiner",
 	"steam_id", "1411113412",
-	"pops_any_uuid", "e2ee819f-0e82-4d30-8784-1ba9acbfd2f1",
+	"pops_any_uuid", "77ce8f23-dd20-4d38-9161-19c958ff9878",
+--~ 	"pops_any_uuid", "e2ee819f-0e82-4d30-8784-1ba9acbfd2f1",
 	"lua_revision", 1007000, -- Picard
 	"version", 31,
 	"version_major", 3,

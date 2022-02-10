@@ -17,9 +17,9 @@ local function ModOptions(id)
 	mod_SelectView = CurrentModOptions:GetProperty("SelectView")
 	mod_ShowCentre = CurrentModOptions:GetProperty("ShowCentre")
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 -- selection groups (the actions need a string, so we might as well just store these as strings)

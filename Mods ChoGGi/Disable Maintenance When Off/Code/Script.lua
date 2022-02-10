@@ -11,9 +11,9 @@ local function ModOptions(id)
 
 	mod_QuarterPoints = CurrentModOptions:GetProperty("QuarterPoints")
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 local ChoOrig_RequiresMaintenance_AccumulateMaintenancePoints = RequiresMaintenance.AccumulateMaintenancePoints

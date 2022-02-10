@@ -1,14 +1,14 @@
 -- See LICENSE for terms
 
 local ChoOrig_RocketBase_UILaunch = RocketBase.UILaunch
-function RocketBase:UILaunch()
+function RocketBase:UILaunch(...)
 	if self:IsDemolishing() then
 		self:ToggleDemolish()
 	end
 
 	-- we only care about no issues
 	if self:GetLaunchIssue() then
-		ChoOrig_RocketBase_UILaunch(self)
+		ChoOrig_RocketBase_UILaunch(self, ...)
 	else
 		-- no issues so show the msg
 		CreateRealTimeThread(function()

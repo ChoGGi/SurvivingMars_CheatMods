@@ -3749,8 +3749,9 @@ function ChoGGi_DlgExamine:SetToolbarVis(obj, obj_metatable)
 
 end
 
-do -- BuildParentsMenu
-	local function ParentClicked(item, _, _, button)
+--~ do -- BuildParentsMenu
+	function ChoGGi_DlgExamine.ParentClicked(item, _, _, button)
+--~ 	local function ParentClicked(item, _, _, button)
 		if button == "R" then
 			CopyToClipboard(item.name)
 		else
@@ -3787,7 +3788,7 @@ do -- BuildParentsMenu
 							.. ": <color 100 255 100>" .. item .. "</color>\n"
 							.. Strings[302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]]:format(self.string_Classname),
 						hint_bottom = Strings[302535920000589--[[<left_click> Examine <right_click> Clipboard]]],
-						mouseup = ParentClicked,
+						mouseup = self.ParentClicked,
 						dlg = self,
 					}
 				end
@@ -3795,7 +3796,7 @@ do -- BuildParentsMenu
 			end
 		end
 	end
-end -- do
+--~ end -- do
 
 function ChoGGi_DlgExamine:SetObj(startup)
 	local obj = self.obj
@@ -3850,6 +3851,23 @@ function ChoGGi_DlgExamine:SetObj(startup)
 			-- build menu list
 			self:BuildParentsMenu(obj.__parents, "parents", Strings[302535920000520--[[Parents]]])
 			self:BuildParentsMenu(obj.__ancestors, "ancestors", Strings[302535920000525--[[Ancestors]]], true)
+
+			table.insert(self.parents_menu_popup, 1, {
+				name = "-- " .. Translate(3696--[[Class]]) .. " --",
+				disable = true,
+				centred = true,
+			})
+			table.insert(self.parents_menu_popup, 2, {
+				name = obj.class,
+				hint = T("<left_click> ") .. Strings[302535920000069--[[Examine]]] .. " "
+					.. self.string_Class .. " " .. self.string_Object
+					.. ": <color 100 255 100>" .. obj.class .. "</color>\n"
+					.. Strings[302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]]:format(self.string_Classname),
+				hint_bottom = Strings[302535920000589--[[<left_click> Examine <right_click> Clipboard]]],
+				mouseup = self.ParentClicked,
+				dlg = self,
+			})
+
 			-- If anything was added to the list then add to the menu
 			if self.parents_menu_popup[1] then
 				SetWinObjectVis(self.idParents, true)

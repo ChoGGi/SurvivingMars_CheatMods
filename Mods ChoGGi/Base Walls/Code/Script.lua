@@ -16,9 +16,9 @@ local function ModOptions(id)
 
 	mod_RememberLastSkin = CurrentModOptions:GetProperty("RememberLastSkin")
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 local table = table

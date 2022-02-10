@@ -70,9 +70,9 @@ local function ModOptions(id)
 
 	UpdateRovers()
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 -- bit of copy pasta from transport code

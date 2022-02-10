@@ -1,3 +1,5 @@
+v0.3
+Made sure it only happens when omega is unlocked (incase func used for other stuff).
+
 v0.2
 Update for Picard content update 2.
-

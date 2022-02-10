@@ -5,7 +5,7 @@ local ChoOrig_ElectricityGridElement_GetInfopanelTemplate = ElectricityGridEleme
 function ElectricityGridElement.GetInfopanelTemplate(...)
 	local ret = ChoOrig_ElectricityGridElement_GetInfopanelTemplate(...)
 	if not ret or ret == "ipLeak" then
-		return "ipCable"
+		return "ChoGGi_ipCable"
 	end
 	return ret
 end
@@ -29,10 +29,10 @@ function LifeSupportGridElement:GetInfopanelTemplate(...)
 end
 
 -- so we know something is selected
-local function OnSelected(self)
+local function OnSelected(obj)
 	-- not construction site and not a switch (they already have a parsystem added)
-	if not self.building_class_proto and not self.is_switch then
-		AddSelectionParticlesToObj(self)
+	if not obj.building_class_proto and not obj.is_switch then
+		AddSelectionParticlesToObj(obj)
 	end
 end
 ElectricityGridElement.OnSelected = OnSelected
@@ -40,34 +40,34 @@ LifeSupportGridElement.OnSelected = OnSelected
 
 function OnMsg.ClassesPostprocess()
 	-- clear old if existing
-	if XTemplates.ipCable then
-		XTemplates.ipCable:delete()
+	if XTemplates.ChoGGi_ipCable then
+		XTemplates.ChoGGi_ipCable:delete()
 	end
 
-	XTemplates.ipCable = PlaceObj("XTemplate", {
+	XTemplates.ChoGGi_ipCable = PlaceObj("XTemplate", {
 		group = "Infopanel Sections",
-		id = "ipCable",
+		id = "ChoGGi_ipCable",
 		PlaceObj("XTemplateTemplate", {
 			"__context_of_kind", "ElectricityGridElement",
-			"__condition", function (_, context)
+			"__condition", function(_, context)
 				return context.is_hub or not context.is_switch
 			end,
 			"__template", "Infopanel",
-			"Description", T(313911890683, "<description>"),
+			"Description", T(313911890683--[[<description>]]),
 		}, {
 			PlaceObj("XTemplateTemplate", {
 				"comment", "salvage",
 				"__template", "InfopanelButton",
-				"RolloverText", T(640016954592, "Remove this switch or valve."),
-				"RolloverTitle", T(3973, "Salvage"),
-				"RolloverHintGamepad", T(7657, "<ButtonY> Activate"),
+				"RolloverText", T(640016954592--[[Remove this switch or valve.]]),
+				"RolloverTitle", T(3973--[[Salvage]]),
+				"RolloverHintGamepad", T(7657--[[<ButtonY> Activate]]),
 				"ContextUpdateOnOpen", false,
 				"OnPressParam", "Demolish",
 				"Icon", "UI/Icons/IPButtons/salvage_1.tga",
 			}, {
 				PlaceObj("XTemplateFunc", {
 					"name", "OnXButtonDown(self, button)",
-					"func", function (self, button)
+					"func", function(self, button)
 						if button == "ButtonY" then
 							return self:OnButtonDown(false)
 						elseif button == "ButtonX" then
@@ -78,7 +78,7 @@ function OnMsg.ClassesPostprocess()
 				}),
 				PlaceObj("XTemplateFunc", {
 					"name", "OnXButtonUp(self, button)",
-					"func", function (self, button)
+					"func", function(self, button)
 						if button == "ButtonY" then
 							return self:OnButtonUp(false)
 						elseif button == "ButtonX" then
@@ -90,6 +90,9 @@ function OnMsg.ClassesPostprocess()
 			}),
 			PlaceObj('XTemplateTemplate', {
 				'__template', "sectionPowerGrid",
+			}),
+			PlaceObj('XTemplateTemplate', {
+				'__template', "sectionCheats",
 			}),
 		}),
 	})

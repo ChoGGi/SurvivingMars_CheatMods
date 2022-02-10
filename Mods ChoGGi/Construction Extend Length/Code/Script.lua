@@ -11,6 +11,9 @@ local function StartupCode()
 	GridConstructionController.max_hex_distance_to_allow_build = mod_BuildDist
 	const.PassageConstructionGroupMaxSize = mod_PassChunks
 end
+-- Set options on new/load game
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -24,14 +27,10 @@ local function ModOptions(id)
 
 	StartupCode()
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
-
--- set options on new/load game
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
 
 local Sleep = Sleep
 local CreateGameTimeThread = CreateGameTimeThread

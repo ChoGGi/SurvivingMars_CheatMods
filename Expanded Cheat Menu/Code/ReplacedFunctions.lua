@@ -1130,7 +1130,6 @@ function OnMsg.ClassesPostprocess()
 			return ChoGGi_OrigFuncs.XWindow_OnMouseLeft(self, ...)
 		end
 
-		-- get around to finishing this (scrollable selection panel)
 		local zerobox = box(0, 0, 0, 0)
 		local function SetToolbar(section, cls, toggle)
 			local toolbar = table.find(section.idContent, "class", cls)

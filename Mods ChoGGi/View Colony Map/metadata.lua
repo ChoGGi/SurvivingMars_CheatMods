@@ -18,9 +18,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1491973763",
 	"pops_any_uuid", "28b23a4f-7e8f-49b0-965a-3c14a8e4b919",
 	"lua_revision", 1007000, -- Picard
-	"version", 17,
+	"version", 18,
 	"version_major", 1,
-	"version_minor", 7,
+	"version_minor", 8,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -32,6 +32,7 @@ Shows the map before you load it in the select colony screen.
 
 Includes a checkbox to show anomaly breakthroughs/buried wonder for each location.
 If you use a rule that changes the breakthrough list, then ignore the breakthrough list shown as it isn't accurate anymore.
+The first 12 breakthroughs are guaranteed (4 from planetary anomalies, and 8 from ground anomalies). The rest are dependant on story bits/etc.
 
 Also shows map for challenges (mod option to turn it off).
 

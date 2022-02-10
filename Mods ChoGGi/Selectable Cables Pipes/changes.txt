@@ -1,3 +1,6 @@
+v0.6
+Added cheats pane (for when cheats are enabled).
+
 v0.5
 Pipes as well.
 Added grid info to cables/pipes.

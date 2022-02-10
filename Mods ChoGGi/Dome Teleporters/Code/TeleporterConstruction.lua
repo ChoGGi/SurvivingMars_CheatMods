@@ -34,9 +34,9 @@ local function ModOptions(id)
 		CityDomeTeleporterConstruction[UICity].max_range = mod_BuildDist < 100 and 100 or mod_BuildDist
 	end
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 GlobalVar("CityDomeTeleporterConstruction", {})

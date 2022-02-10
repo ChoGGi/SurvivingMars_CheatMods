@@ -17,9 +17,9 @@ local function ModOptions(id)
 	mod_Enabled = CurrentModOptions:GetProperty("Enabled")
 	mod_ScrollSelection = CurrentModOptions:GetProperty("ScrollSelection")
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 local ChoOrig_XSizeConstrained_WindowUpdateMeasure = XSizeConstrainedWindow.UpdateMeasure
@@ -32,7 +32,6 @@ function XSizeConstrainedWindow:UpdateMeasure(...)
 		return ChoOrig_XSizeConstrained_WindowUpdateMeasure(self, ...)
 	end
 end
-
 
 -- ClassesBuilt is so it overrides the func I added to ECM
 function OnMsg.ClassesBuilt()

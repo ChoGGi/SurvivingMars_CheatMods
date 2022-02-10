@@ -14,9 +14,9 @@ local function ModOptions(id)
 	mod_ShowNotification = CurrentModOptions:GetProperty("ShowNotification")
 	mod_RandomChance = CurrentModOptions:GetProperty("RandomChance")
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 GlobalVar("ChoGGi_OmegaUnlocksAllSlowly_Sols", 0)

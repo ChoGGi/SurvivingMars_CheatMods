@@ -33,7 +33,7 @@ function City:InitBreakThroughAnomalies(...)
 	ChoOrig_City_InitBreakThroughAnomalies(self, ...)
 	BreakthroughOrder = orig_BreakthroughOrder
 end
-
+--
 function OnMsg.ClassesPostprocess()
 
 	-- dozers and cave-in pathing (the game will freeze if you send dozers to certain cave-ins or certain paths? this is why I should keep save files around...).
@@ -118,7 +118,7 @@ function OnMsg.ClassesPostprocess()
 	end
 
 end
-
+--
 do -- I dunno, maybe paradox should push an update?
 	if Platform.linux then
 		local ChoOrig_UIL_RequestImage = UIL.RequestImage
@@ -135,25 +135,7 @@ do -- I dunno, maybe paradox should push an update?
 		end
 	end
 end
-
-do -- stuck notifications for last war
-	local myst = DataInstances.Scenario["Mystery 7"]
-	local function UpdateNotif(name)
-		local idx = table.find(myst, "name", name)
-		if idx then
-			local bit = myst[idx]
-			idx = table.find(bit, "expression", 'RemoveOnScreenNotification("Mystery7WarTension", MainMapID)')
-			if idx then
-				bit[idx].expression = 'RemoveOnScreenNotification("Mystery7WarTension")'
-			end
-		end
-	end
-	--
-	UpdateNotif("Tension Game Over")
-	UpdateNotif("Timeout")
-	UpdateNotif("Victory")
-end
-
+--
 do -- fix FindWater milestone
 	Presets.Milestone.Default.FindWater.Complete = function (self)
 --~     if GetRealmByID(MainMapID):MapContains("map", "SubsurfaceDeposit", function(o)
@@ -168,13 +150,6 @@ do -- fix FindWater milestone
 				return true
 			end
 		end
-	end
-end
---
-if not SavegameFixups.ClearRubbleTables2 then
-	function SavegameFixups.ClearRubbleTables2_ChoGGi()
-		FixupNightlightState()
-		SavegameFixups.ClearRubbleTables()
 	end
 end
 --
@@ -197,16 +172,7 @@ do -- landscaping
 		UpdateRenderLandscape()
 	end
 end
-
-do -- RC Explorer disappears after transporting to the Underground using the Cargo UI
-	function ExplorerRover:TransferToMap(map_id)
-		if self.command == "Analyze" then
-			self:SetCommand("Idle")
-		end
-		BaseRover.TransferToMap(self, map_id)
-	end
-end
-
+--
 do -- fixup map id
 	local ChoOrig_AddCustomOnScreenNotification = AddCustomOnScreenNotification
 	function AddCustomOnScreenNotification(id, title, text, image, callback, params, map_id, ...)
@@ -219,48 +185,6 @@ do -- fixup map id
 		return ChoOrig_AddCustomOnScreenNotification(id, title, text, image, callback, params, map_id, ...)
 	end
 end
-
-do -- The Mystery Log cannot be dismissed on the Asteroid after completing the "Asteroid from outer space" mini-mystery
-	function MiniMysteries:FilterPresets(presets, require_mini_mystery)
-		if require_mini_mystery and not self.has_mini_mystery then
-			self.previous_mini_mysteries = self.previous_mini_mysteries or {}
-			local PresetFilter = function(_, preset)
-				local available_sequences = table.subtraction(preset.sequences, self.previous_mini_mysteries)
-				return 0 < #available_sequences
-			end
-			return table.ifilter(presets, PresetFilter)
-		else
-			return presets
-		end
-	end
-
-	local myst = DataInstances.Scenario["Mini_Mystery 1"]
-	if myst then
-		local idx = table.find(myst, "name", "End Mystery Log")
-		if idx then
-			myst[idx][1].id = "MysteryLog"
-		end
-	end
-
-	if not SavegameFixups.RemoveMiniMysteryFinishedLog then
-		function SavegameFixups.RemoveMiniMysteryFinishedLog_ChoGGi()
-			local previous_mini_mysteries = UIColony.previous_mini_mysteries or empty_table
-			if table.has_value(previous_mini_mysteries, "Mini_Mystery 1") then
-				for _, notification in ipairs(g_ActiveOnScreenNotifications) do
-					local notification_map_id = notification[5] or ""
-					local map_data = ActiveMaps[notification_map_id]
-					if map_data and map_data:HasMember("mini_mystery_name") and map_data.mini_mystery_name and map_data.mini_mystery_name == "Mini_Mystery 1" then
-						local notification_id = notification[1] or ""
-						if string.find(notification_id, "MysteryLog") then
-							notification[3].dismissable = true
-						end
-					end
-				end
-			end
-		end
-	end
-end
-
 --
 function Workforce:ChooseTraining(colonist)
   local training_centers = self.labels.TrainingBuilding or empty_table
@@ -275,6 +199,7 @@ function Workforce:HasFreeWorkplacesAround(colonist)
   end
   return false
 end
+--
 do -- Check if selected before updating hex range on drone hub extenders
 	function DroneHub:OnModifiableValueChanged(prop, old_val, new_val)
 		if prop == "service_area_max" and IsObjectSelected(self) then
@@ -302,20 +227,21 @@ end
 if not g_AvailableDlc.picard then
 	return
 end
-
+--
 function UndergroundPassage:SnappedObjectPlaced(building)
 	if IsKindOf(building, "ConstructionSite") then
 		self.elevator_construction = building
 		self.other.elevator_construction = building.linked_obj
 	end
 end
-
+--
 function SurfacePassage:SnappedObjectPlaced(building)
   if IsKindOf(building, "ConstructionSite") then
     self.elevator_construction = building
     self.other.elevator_construction = building.linked_obj
   end
 end
+--
 function OnMsg.ConstructionSiteRemoved(construction_site)
   if construction_site and IsKindOf(construction_site.building_class_proto, "Elevator") then
     local passage = construction_site.snapped_to
@@ -325,7 +251,7 @@ function OnMsg.ConstructionSiteRemoved(construction_site)
     end
   end
 end
-
+--
 function BaseMicroGExtractor:GatherConstructionStatuses(statuses)
   BuildingDepositExploiterComponent.GatherConstructionStatuses(self, statuses)
   if #self.nearby_deposits > 0 then
@@ -354,19 +280,11 @@ function BaseMicroGExtractor:GatherConstructionStatuses(statuses)
     end
   end
 end
-
+--
 function Elevator:IsShroudedInRubble()
   return not Shroudable.IsShroudedInRubble(self) and self.other and Shroudable.IsShroudedInRubble(self.other)
 end
-
-local old_Building_SetDome = Building.SetDome
-function Building:SetDome(dome)
-  old_Building_SetDome(self, dome)
-  if dome and dome.refab_work_request then
-    dome:ToggleRefab()
-  end
-end
-
+--
 if not SavegameFixups.BottomlessPitSwapResources then
 	function SavegameFixups.BottomlessPitSwapResources_ChoGGi()
 		local pits = UIColony:GetCityLabels("BottomlessPitResearchCenter")
@@ -383,7 +301,6 @@ if not SavegameFixups.BottomlessPitSwapResources then
 	end
 
 end
-
 function BottomlessPitResearchCenter:DroneUnloadResource(drone, request, resource, amount)
   drone:PushDestructor(function(drone)
     local target = drone:IsValidPos() and drone or RotateRadius(100 * guim, AsyncRand(21600), self:GetPos())
@@ -399,10 +316,13 @@ function BottomlessPitResearchCenter:DroneUnloadResource(drone, request, resourc
   Building.DroneUnloadResource(self, drone, request, resource, amount)
   drone:PopAndCallDestructor()
 end
-
-function AncientArtifactInterface:GetEntrance(target, entrance_type, spot_name)
-  return {
-    self:GetPos(),
-    GetRandomPassableAround(self:GetPos(), 2 * const.HexSize, const.HexSize)
-  }
+--
+if not AncientArtifactInterface.GetEntrance then
+	function AncientArtifactInterface:GetEntrance(target, entrance_type, spot_name)
+		return {
+			self:GetPos(),
+			GetRandomPassableAround(self:GetPos(), 2 * const.HexSize, const.HexSize)
+		}
+	end
 end
+--

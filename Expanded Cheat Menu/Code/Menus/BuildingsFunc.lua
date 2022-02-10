@@ -487,8 +487,8 @@ function ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount(action)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[title],
-		hint = Strings[302535920000106--[[Current]]] .. ": " .. hint,
+		title = title,
+		hint = Translate(302535920000106--[[Current]]) .. ": " .. hint,
 		skip_sort = true,
 	}
 end
@@ -1651,7 +1651,7 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(action)
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				choice[1].text .. ":\n" .. msgpopup,
+				choice[1].text .. ":\n" .. Translate(msgpopup),
 				id
 			)
 		end
@@ -1660,8 +1660,8 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(action)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000129--[[Set]]] .. " " .. id .. " " .. Strings[302535920000163--[[Radius]]],
-		hint = Strings[302535920000106--[[Current]]] .. ": " .. hint,
+		title = Translate(302535920000129--[[Set]]) .. " " .. id .. " " .. Translate(302535920000163--[[Radius]]),
+		hint = Translate(302535920000106--[[Current]]) .. ": " .. hint,
 		skip_sort = true,
 	}
 end

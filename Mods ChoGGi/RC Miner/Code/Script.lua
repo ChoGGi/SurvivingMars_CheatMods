@@ -62,9 +62,9 @@ local function ModOptions(id)
 
 	mod_ShowRocket = options:GetProperty("ShowRocket")
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 local lifetime_table = {
@@ -91,7 +91,7 @@ local function StartupCode()
 			miner.city = city
 			miner:SpawnThumper()
 			if not miner.lifetime_table then
-				miner.lifetime_table = lifetime_table
+				miner.lifetime_table = table.copy(lifetime_table)
 			end
 		end
 	end
@@ -237,7 +237,7 @@ function PortableMiner:GameInit()
 	end
 	self.nearby_deposits = {}
 
-	self.lifetime_table = lifetime_table
+	self.lifetime_table = table.copy(lifetime_table)
 
 	-- select sounds
 	self.fx_actor_class = "AttackRover"

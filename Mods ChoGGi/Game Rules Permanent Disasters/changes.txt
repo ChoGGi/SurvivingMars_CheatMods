@@ -1,3 +1,6 @@
+v1.4
+Fixed rockets not launching (thanks Xorn).
+
 v1.3
 Log spam (hopefully all of it).
 

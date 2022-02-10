@@ -22,27 +22,25 @@ local function RemoveGeysers()
 	ResumePassEdits("ChoGGi.DustGeyserAllowBuilding.DeleteGeysers")
 end
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_DeleteGeysers = CurrentModOptions:GetProperty("DeleteGeysers")
 
-	-- make sure we're in-game
+	-- Make sure we're in-game
 	if not UICity then
 		return
 	end
 	RemoveGeysers()
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local l_DontBuildHere
 

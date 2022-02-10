@@ -4149,13 +4149,10 @@ do -- PadNumWithZeros
 	end
 end -- do
 
---~ ChoGGi.ComFuncs.RemoveObjs("VegetationAnimator")
-function ChoGGi.ComFuncs.RemoveObjs(class, reason)
-	if not reason then
-		reason = "ChoGGi.ComFuncs.RemoveObjs"
-	end
+-- ChoGGi.ComFuncs.RemoveObjs("VegetationAnimator")
+function ChoGGi.ComFuncs.RemoveObjs(class)
 	-- suspending pass edits makes deleting much faster
-	SuspendPassEdits(reason)
+	SuspendPassEdits("ChoGGi.ComFuncs.RemoveObjs")
 
 	if type(class) == "table" then
 		local g_Classes = g_Classes
@@ -4172,8 +4169,9 @@ function ChoGGi.ComFuncs.RemoveObjs(class, reason)
 		end
 	end
 
-	ResumePassEdits(reason)
+	ResumePassEdits("ChoGGi.ComFuncs.RemoveObjs")
 end
+ChoGGi.ComFuncs.MapDelete = ChoGGi.ComFuncs.RemoveObjs
 
 do -- SpawnColonist
 	local Msg = Msg
@@ -4458,11 +4456,11 @@ function ChoGGi.ComFuncs.DeleteObjectQuestion(obj)
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		T(6779, "Warning") .. "!\n" .. Strings[302535920000414--[[Are you sure you wish to delete %s?]]]:format(name) .. "?",
+		T(6779--[[Warning]]) .. "!\n" .. Translate(302535920000414--[[Are you sure you wish to delete %s?]]):format(name) .. "?",
 		CallBackFunc,
-		T(6779, "Warning") .. ": " .. Strings[302535920000855--[[Last chance before deletion!]]],
-		T(5451, "DELETE") .. ": " .. name,
-		T(6879, "Cancel") .. " " .. T(502364928914, "Delete")
+		T(6779--[[Warning]]) .. ": " .. T(302535920000855--[[Last chance before deletion!]]),
+		T(5451--[[DELETE]]) .. ": " .. name,
+		T(6879--[[Cancel]]) .. " " .. T(502364928914--[[Delete]])
 	)
 end
 
@@ -4470,19 +4468,19 @@ function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
 	local name = RetName(obj)
 	local obj_type
 	if obj:IsKindOf("BaseRover") then
-		obj_type = T(7825, "Destroy this Rover.")
+		obj_type = T(7825--[[Destroy this Rover.]])
 	elseif obj:IsKindOf("Drone") then
-		obj_type = T(7824, "Destroy this Drone.")
+		obj_type = T(7824--[[Destroy this Drone.]])
 	else
-		obj_type = T(7822, "Destroy this building.")
+		obj_type = T(7822--[[Destroy this building.]])
 	end
 
 	local function CallBackFunc(answer)
 		if answer then
 			if obj:IsKindOf("Dome") and not obj:CanDemolish() then
 				MsgPopup(
-					Strings[302535920001354--[["<green>%s</green> is a Dome with stuff still in it (crash if deleted)."]]]:format(name),
-					Strings[302535920000489--[[Delete Object(s)]]]
+					Translate(302535920001354--[["<green>%s</green> is a Dome with stuff still in it (crash if deleted)."]]):format(name),
+					T(302535920000489--[[Delete Object(s)]])
 				)
 				return
 			end
@@ -4498,11 +4496,11 @@ function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		T(6779, "Warning") .. "!\n" .. obj_type .. "\n" .. name,
+		T(6779--[[Warning]]) .. "!\n" .. obj_type .. "\n" .. name,
 		CallBackFunc,
-		T(6779, "Warning") .. ": " .. obj_type,
+		T(6779--[[Warning]]) .. ": " .. obj_type,
 		obj_type .. " " .. name,
-		T(1176, "Cancel Destroy")
+		T(1176--[[Cancel Destroy]])
 	)
 end
 
@@ -4624,7 +4622,7 @@ do -- RetMapBreakthroughs
 	local remove_added = {}
 	local translated_tech
 
-	function ChoGGi.ComFuncs.RetMapBreakthroughs(gen)
+	function ChoGGi.ComFuncs.RetMapBreakthroughs(gen, limit_count)
 		-- build list of names once
 		if not translated_tech then
 			translated_tech = {}
@@ -4642,11 +4640,14 @@ do -- RetMapBreakthroughs
 		-- + const.OmegaTelescopeBreakthroughsCount, it's seed based but it shuffles the list of unregistered breakthroughs
 		+ (g_Consts and g_Consts.PlanetaryBreakthroughCount or Consts.PlanetaryBreakthroughCount)
 		-- g_ is the in-game object
+		if limit_count and type(limit_count) == "number" then
+			breakthrough_count = limit_count
+		end
 
 		-- start with a clean copy of breaks
 		local break_order = table.copy(orig_break_list)
 		StableShuffle(break_order, CreateRand(true, gen.Seed, "ShuffleBreakThroughTech"), 100)
-
+		--
 		while #break_order > breakthrough_count do
 			break_order[#break_order] = nil
 		end
@@ -5434,10 +5435,22 @@ function ChoGGi.ComFuncs.GetModEnabled(mod_id)
 	return table.find(ModsLoaded, "id", mod_id)
 end
 
-function ChoGGi.ComFuncs.SetBuildingTemplates(template, key, value)
-	BuildingTemplates[template][key] = value
-	ClassTemplates.Building[template][key] = value
-end
+do -- SetBuildingTemplates
+	local bt, ct
+	function ChoGGi.ComFuncs.SetBuildingTemplates(template, key, value)
+		if not bt then
+			bt = BuildingTemplates
+			ct = ClassTemplates.Building
+		end
+
+		if bt[template] then
+			bt[template][key] = value
+		end
+		if ct[template] then
+			ct[template][key] = value
+		end
+	end
+end -- do
 
 function ChoGGi.ComFuncs.ReplaceClassFunc(class, func_name, func_to_call)
 	-- ClassDescendantsList("BaseRover")
@@ -5895,22 +5908,6 @@ function ChoGGi.ComFuncs.GetNearestObj(obj, list)
 
 	-- and done
 	return nearest
-end
-
---~ ChoGGi.ComFuncs.MapDelete("ShuttleHub")
-function ChoGGi.ComFuncs.MapDelete(class)
-	SuspendPassEdits("ChoGGi.ComFuncs.MapDelete")
-	local objs = UICity.labels[class] or ""
-	if #objs > 0 then
-		for i = #objs, 1, -1 do
-			DeleteObject(objs[i])
-		end
-	-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything*
-	elseif IsKindOf(g_Classes[class], "CObject") then
-		MapDelete(true, class)
-	end
-
-	ResumePassEdits("ChoGGi.ComFuncs.MapDelete")
 end
 
 function ChoGGi.ComFuncs.ReloadLua()
@@ -7198,7 +7195,7 @@ function ChoGGi.ComFuncs.RetSurfaceMasks(obj)
 	return list
 end
 
-do -- EntitySpots_Toggle
+do -- EntitySpots_Toggle Entity Spots Toggle
 	local GetSpotNameByType = GetSpotNameByType
 	local old_remove_table = {"ChoGGi_OText", "ChoGGi_OOrientation"}
 	local OText, OPolyline
@@ -7266,6 +7263,8 @@ do -- EntitySpots_Toggle
 		local obj_pos = obj:GetVisualPos()
 		local start_id, id_end = obj:GetAllSpots(obj:GetState())
 		for i = start_id, id_end do
+--~ 			local type = o:GetSpotsType(i)
+--~ 			local name = GetSpotNameByType(type)
 			local spot_name = GetSpotNameByType(obj:GetSpotsType(i)) or ""
 			if not spot_type or spot_name == spot_type then
 				local spot_annot = obj:GetSpotAnnotation(i) or ""

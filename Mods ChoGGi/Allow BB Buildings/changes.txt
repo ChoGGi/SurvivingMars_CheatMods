@@ -1,3 +1,9 @@
+v0.5
+Updated for some picard update (Thanks McKaby).
+
+v0.4
+Log spam.
+
 v0.3
 Forgot about class templates?
 

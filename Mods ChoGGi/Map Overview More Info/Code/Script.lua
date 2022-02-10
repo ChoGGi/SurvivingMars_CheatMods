@@ -23,9 +23,9 @@ local function ModOptions(id)
 	mod_TextStyle = options:GetProperty("TextStyle")
 	mod_ShowDropped = options:GetProperty("ShowDropped")
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 local pairs = pairs

@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local CreateGameTimeThread = CreateGameTimeThread
 local PlaceObjectIn = PlaceObjectIn
 local GetRandomPassableAround = GetRandomPassableAround
 
@@ -21,7 +22,7 @@ local rovers = {
 -- override the drone spawning part of the func
 local ChoOrig_SupplyPod_Unload = SupplyPod.Unload
 function SupplyPod:Unload(...)
-  local map_id = self:GetMapID()
+  local map_id = self:GetMapID() or UICity.map_id
 
 	-- get drone cargo item
 	local cargo = self.cargo[table.find(self.cargo, "class", "Drone")]
@@ -76,6 +77,5 @@ local function StartupCode()
 		defs[i].max = max_int
 	end
 end
-
 OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode

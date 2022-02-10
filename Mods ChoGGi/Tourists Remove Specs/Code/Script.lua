@@ -1,24 +1,23 @@
 -- See LICENSE for terms
 
-local mod_EnableMod
-
--- fired when settings are changed/init
-local function ModOptions()
-	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
 local pairs = pairs
 local ColonistSpecializationList = ColonistSpecializationList
+
+local mod_EnableMod
+
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
+
 local function UpdateColonist(obj)
 	local traits = obj.traits
 	if traits and traits.Tourist then

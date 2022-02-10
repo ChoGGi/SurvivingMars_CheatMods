@@ -34,8 +34,12 @@ local function UpdateRovers()
 	end
 end
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	local options = CurrentModOptions
 	MaxRouteLength = options:GetProperty("MaxSafariLength")
 
@@ -52,18 +56,13 @@ local function ModOptions()
 	if not UICity then
 		return
 	end
+
 	UpdateRovers()
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 OnMsg.CityStart = UpdateRovers
 OnMsg.LoadGame = UpdateRovers

@@ -2,22 +2,6 @@
 
 local mod_EnableMod
 
--- fired when settings are changed/init
-local function ModOptions()
-	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	-- I'm sure it wouldn't be that hard to only call this msg for the mod being applied, but...
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
 local function StartupCode()
 	if not mod_EnableMod then
 		return
@@ -26,6 +10,18 @@ local function StartupCode()
 	Msg("ColonyApprovalPassed")
 	g_ColonyNotViableUntil = -1
 end
-
 OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode
+
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions

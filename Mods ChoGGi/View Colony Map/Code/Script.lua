@@ -2,6 +2,7 @@
 
 local mod_EnableChallenges
 local mod_AlwaysBreakthroughs
+local mod_BreakthroughCount
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -11,6 +12,7 @@ local function ModOptions(id)
 
 	mod_EnableChallenges = CurrentModOptions:GetProperty("EnableChallenges")
 	mod_AlwaysBreakthroughs = CurrentModOptions:GetProperty("AlwaysBreakthroughs")
+	mod_BreakthroughCount = CurrentModOptions:GetProperty("BreakthroughCount")
 end
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -21,7 +23,6 @@ local table = table
 local Translate = ChoGGi.ComFuncs.Translate
 local ValidateImage = ChoGGi.ComFuncs.ValidateImage
 local RetMapSettings = ChoGGi.ComFuncs.RetMapSettings
-local RetMapBreakthroughs = ChoGGi.ComFuncs.RetMapBreakthroughs
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 
 local image_str = Mods.ChoGGi_MapImagesPack.env.CurrentModPath .. "Maps/"
@@ -361,18 +362,7 @@ function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(gen)
 		return
 	end
 
-	local display_list = RetMapBreakthroughs(gen)
---~ 	local display_list
---~ 	if self.show_omegas then
---~ 		display_list = RetMapBreakthroughs(gen, true)
---~ 	else
---~ 		display_list = RetMapBreakthroughs(gen)
---~ 	end
-
---~ 	ex(gen)
---~   local function CreateRandHelpers_rand(state, min, max)
---~   end
-
+	local display_list = ChoGGi.ComFuncs.RetMapBreakthroughs(gen, mod_BreakthroughCount)
 --~ 	ex{display_list, gen}
 
 	-- tech descriptions

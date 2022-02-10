@@ -8,7 +8,7 @@ local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 SaveOrigFunc("ReportPersistErrors")
 function ReportPersistErrors(...)
 	local errors, warnings = ChoGGi_OrigFuncs.ReportPersistErrors(...)
-	-- be useful for restarting threads, see if devs will add it
+	-- be useful for restarting threads, see if devs will add it (yeah I think that isn't happening after two dev teams are gone)
 	Msg("PostSaveGame")
 	-- the assert in PersistGame() attempts to concat a nil value
 	return errors, warnings

@@ -13,8 +13,12 @@ local mod_DomeAsteroidDeath
 local mod_DestructionPercent
 local mod_ExtraFractures
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	local options = CurrentModOptions
 	mod_EnableMod = options:GetProperty("EnableMod")
 	mod_ImpactRange = options:GetProperty("ImpactRange")
@@ -22,16 +26,10 @@ local function ModOptions()
 	mod_DestructionPercent = options:GetProperty("DestructionPercent") / 100.0
 	mod_ExtraFractures = options:GetProperty("ExtraFractures")
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 local ChoOrig_BaseMeteor_GetQuery = BaseMeteor.GetQuery
 function BaseMeteor:GetQuery(...)

@@ -52,9 +52,15 @@ local function ToggleIcons()
 	end
 
 end
+OnMsg.CityStart = ToggleIcons
+OnMsg.LoadGame = ToggleIcons
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	local options = CurrentModOptions
 
 	for id in pairs(mod_options) do
@@ -64,25 +70,16 @@ local function ModOptions()
 	mod_EnableMod = options:GetProperty("EnableMod")
 	mod_ShowIcons = options:GetProperty("ShowIcons")
 
-	-- make sure we're in-game
+	-- Make sure we're in-game
 	if not UICity then
 		return
 	end
 	ToggleIcons()
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-OnMsg.CityStart = ToggleIcons
-OnMsg.LoadGame = ToggleIcons
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- zooming in from map overview
 local ChoOrig_OverviewModeDialog_Close = OverviewModeDialog.Close

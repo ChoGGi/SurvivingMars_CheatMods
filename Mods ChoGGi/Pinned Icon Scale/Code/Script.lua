@@ -36,9 +36,9 @@ local function ModOptions(id)
 
 	UpdatePins()
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 local ChoOrig_UpdatePinsDlgMargins = UpdatePinsDlgMargins

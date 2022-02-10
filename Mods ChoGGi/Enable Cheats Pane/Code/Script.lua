@@ -35,14 +35,14 @@ local function ModOptions(id)
 
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 
-	-- make sure we're in-game UIColony
+	-- Make sure we're in-game UIColony
 	if not UICity then
 		return
 	end
 
 	TogglePane()
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions

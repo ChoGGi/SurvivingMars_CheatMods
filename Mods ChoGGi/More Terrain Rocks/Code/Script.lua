@@ -76,9 +76,9 @@ local function ModOptions(id)
 	end
 
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 -- we don't specifiy a PrefabMarkers to use, so we skip this to skip the error msg

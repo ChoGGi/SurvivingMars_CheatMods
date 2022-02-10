@@ -1,18 +1,21 @@
 ## Library Changelog
 
 ## v10.9 (Unreleased)
+- Added class name to examine>parents for ease of copying name.
+- Added limit count to RetMapBreakthroughs().
+- Fixed issue examining certain strings.
 
 ## v10.8 (29 Jan 2022)
 - Examine may have shown an obj as on an asteroid when it wasn't.
-- Added MoveRealm (send objs to another realm).
-- Added UpdateGrowthThreads (remove deleted obj animator threads).
+- Added MoveRealm() (send objs to another realm).
+- Added UpdateGrowthThreads() (remove deleted obj animator threads).
 - An old picard fix for log spam was skipping some Path Markers underground.
 - str examine now adds a title and turns autorefresh on.
 
 ## v10.7 (1 Jan 2022)
-- Added RetObjMapId.
+- Added RetObjMapId().
 - Stopped using .entity for RetName().
-- Added FlushLog = FlushLogFile.
+- Added FlushLog() (same as FlushLogFile).
 - Changed table.append to table.iappend (thanks for the heads up devs).
 
 ## v10.6 (30 Oct 2021)
@@ -30,7 +33,7 @@
 - Removed the margins from buildable grid (it hid a couple areas of the grid numebrs).
 - Forgot to check for UICity when examining a box().
 - Added Chinese (Simplified) translation by aiawar.
-- Added RotateBuilding, SetPosRandomBuildablePos
+- Added RotateBuilding(), SetPosRandomBuildablePos().
 - Fixed issue with spawning veg.
 
 ## v10.3 (11 Sep 2021)

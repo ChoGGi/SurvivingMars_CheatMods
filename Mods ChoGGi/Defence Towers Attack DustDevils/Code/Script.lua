@@ -1,5 +1,10 @@
 -- See LICENSE for terms
 
+local next = next
+local pairs = pairs
+local Sleep = Sleep
+local IsValidThread = IsValidThread
+
 local mod_EnableMod
 local mod_UnlockDefenseTowers
 
@@ -9,9 +14,15 @@ local function UnlockTowers()
 		UnlockBuilding("DefenceTower")
 	end
 end
+OnMsg.CityStart = UnlockTowers
+OnMsg.LoadGame = UnlockTowers
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_UnlockDefenseTowers = CurrentModOptions:GetProperty("UnlockDefenseTowers")
 
@@ -22,23 +33,10 @@ local function ModOptions()
 
 	UnlockTowers()
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	-- I'm sure it wouldn't be that hard to only call this msg for the mod being applied, but...
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-OnMsg.CityStart = UnlockTowers
-OnMsg.LoadGame = UnlockTowers
-
-local IsValidThread = IsValidThread
-local Sleep = Sleep
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- list of devil handles we're attacking
 local devils = {}

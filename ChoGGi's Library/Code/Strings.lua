@@ -14,6 +14,7 @@ local missing_text = ChoGGi.Temp.missing_text
 -- local some globals
 local type, tostring, print = type, tostring, print
 local _InternalTranslate, T, IsT = _InternalTranslate, T, IsT
+local pcall = pcall
 
 -- translate func that always returns a string (string id, {id,value}, nil)
 local function Translate(t, context, ...)
@@ -23,23 +24,29 @@ local function Translate(t, context, ...)
 		return t
 	end
 
-	local str = _InternalTranslate(
-		(context and T(t, context, ...) or T{t, context, ...})
+--~ 	local str = _InternalTranslate(
+--~ 		context and T(t, context, ...) or T{t, context, ...}
+--~ 	)
+	local result, str = pcall(
+		_InternalTranslate, context and T(t, context, ...) or T{t, context, ...}
 	)
+	if result then
+		-- "Missing text" means the string id wasn't found
+		if str == missing_text then
+			-- try to return the string id (if we can)
+			return tostring(IsT(t) or missing_text)
+		-- something didn't work
+		elseif type(str) ~= "string" then
+			-- try to return the string id, if we can
+			print("ChoGGi Lib Sez: Translate Failed:", t, context, ...)
+			return tostring(IsT(t) or missing_text)
+		end
 
-	-- "Missing text" means the string id wasn't found
-	if str == missing_text then
-		-- try to return the string id (if we can)
-		return tostring(IsT(t) or missing_text)
-	-- something didn't work
-	elseif type(str) ~= "string" then
-		-- try to return the string id, if we can
-		print("ChoGGi Lib Sez: Translate Failed:", t, context, ...)
-		return tostring(IsT(t) or missing_text)
+		-- and done
+		return str
 	end
 
-	-- and done
-	return str
+	return tostring(str)
 end
 ChoGGi.ComFuncs.Translate = Translate
 

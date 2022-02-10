@@ -1,4 +1,3 @@
-
 -- See LICENSE for terms
 
 local pairs, tostring, type, table, tonumber = pairs, tostring, type, table, tonumber
@@ -10,6 +9,21 @@ local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 
 local Strings = ChoGGi.Strings
 
+local mod_BreakthroughCount
+
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_BreakthroughCount = CurrentModOptions:GetProperty("BreakthroughCount")
+end
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
+
 local image_str = Mods.ChoGGi_MapImagesPack.env.CurrentModPath .. "Maps/"
 
 local dlg_locations
@@ -19,7 +33,11 @@ local landsiteobj
 local function ShowDialogs()
 	-- we only need to build once, not as if it'll change anytime soon (save as csv?, see if it's shorter to load)
 	if not map_data then
-		map_data = ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{setting_breakthroughs = true, setting_skip_csv = true})
+		map_data = ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
+			setting_breakthroughs = true,
+			setting_limit_count = mod_BreakthroughCount,
+			setting_skip_csv = true,
+		})
 
 		local map_info = ChoGGi_VLI_MapInfoDlg.RetMapLocation
 		for i = 1, #map_data do

@@ -1784,7 +1784,7 @@ end end end end !Skipped Line!
 do !Skipped Line! [[HelpMenu.lua" "HelpFunc.lua]] !Skipped Line!
 302535920001647, "Window Title"
 302535920001648, "If you don't want ECM to change the window title than disable this (restart to take effect)."
-302535920001634, "This mod requires my library mod (ChoGGi's Library ) < use space on the end when searching for it."
+302535920001634, "This mod requires my library mod (ChoGGi's Library) < use space on the end when searching for it."
 302535920000990, "You need to have a mouse to use this mod."
 302535920000887, "If you get a disabled content restrictions error: It's on Paradox to review/restore it (bug them not me).
 

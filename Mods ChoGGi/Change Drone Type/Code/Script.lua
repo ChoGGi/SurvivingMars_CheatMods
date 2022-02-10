@@ -17,9 +17,9 @@ local function ModOptions(id)
 	mod_Aerodynamics = CurrentModOptions:GetProperty("Aerodynamics")
 	mod_AlwaysWasp = CurrentModOptions:GetProperty("AlwaysWasp")
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 -- function called when a drone is created

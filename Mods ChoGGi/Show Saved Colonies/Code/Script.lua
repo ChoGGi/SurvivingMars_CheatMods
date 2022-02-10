@@ -1,22 +1,5 @@
 -- See LICENSE for terms
 
-local mod_AmountOfSaves
-
--- fired when settings are changed/init
-local function ModOptions()
-	mod_AmountOfSaves = CurrentModOptions:GetProperty("AmountOfSaves")
-end
-
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
-
--- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
 local type = type
 local pairs = pairs
 local table = table
@@ -28,6 +11,21 @@ local MulDivRound = MulDivRound
 local PlaceObject = PlaceObject
 local RotateAxis = RotateAxis
 local DrawImage = UIL.DrawImage
+
+local mod_AmountOfSaves
+
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_AmountOfSaves = CurrentModOptions:GetProperty("AmountOfSaves")
+end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- stores saved game spots
 local new_markers = {}

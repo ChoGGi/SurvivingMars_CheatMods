@@ -298,7 +298,7 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 		})
 	end
 	--
-	AddSubmenu("_G", nil, "AccountStorage", "__cobjectToCObject", "FlagsByBits", "HandleToObject", "TranslationTable", "DeletedCObjects", "Flight_MarkedObjs", "PropertySetMethod", "debug.getregistry")
+	AddSubmenu("_G", nil, "AccountStorage", "__cobjectToCObject", "FlagsByBits", "HandleToObject", "TranslationTable", "DeletedCObjects", "Flight_MarkedObjs", "debug.getregistry")
 	AddSubmenu("ThreadsRegister", nil, "ThreadsMessageToThreads", "ThreadsThreadToMessage", "s_SeqListPlayers", "GameInitThreads")
 	AddSubmenu("Consts", nil, "g_Consts", "const", "ModifiablePropScale", "const.TagLookupTable", "const.Scale")
 	AddSubmenu("Dialogs", nil, "terminal.desktop", "GetInGameInterface", "XShortcutsTarget")

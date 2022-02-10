@@ -23,9 +23,9 @@ local function ModOptions(id)
 
 	mod_NeverChange = CurrentModOptions:GetProperty("NeverChange")
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 -- make the value the below buttons set actually do something

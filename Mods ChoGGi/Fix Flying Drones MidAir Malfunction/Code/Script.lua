@@ -25,26 +25,25 @@ local function ResetFlyingDrones()
 end
 
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 
-	-- make sure we're in-game
+	-- Make sure we're in-game
 	if not UICity then
 		return
 	end
+
 	ResetFlyingDrones()
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 GlobalVar("g_ChoGGi_FixFlyingDronesMidAirMalfunction", false)
 

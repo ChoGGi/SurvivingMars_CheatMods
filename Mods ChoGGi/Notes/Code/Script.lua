@@ -20,9 +20,9 @@ local function ModOptions(id)
 	mod_NotepadWidth = CurrentModOptions:GetProperty("NotepadWidth")
 	mod_NotepadHeight = CurrentModOptions:GetProperty("NotepadHeight")
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 DefineClass.ChoGGi_NotePadBuilding = {

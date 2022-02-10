@@ -31,6 +31,8 @@ local function UpdateFarms()
 		ToggleWorking(obj)
 	end
 end
+OnMsg.CityStart = UpdateFarms
+OnMsg.LoadGame = UpdateFarms
 
 -- fired when settings are changed/init
 local function ModOptions(id)
@@ -51,13 +53,10 @@ local function ModOptions(id)
 
 	UpdateFarms()
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
-
-OnMsg.CityStart = UpdateFarms
-OnMsg.LoadGame = UpdateFarms
 
 local ChoOrig_Farm_CalcExpectedProduction = Farm.CalcExpectedProduction
 function Farm:CalcExpectedProduction(idx, ...)

@@ -24,16 +24,17 @@ local function ModOptions(id)
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_ForcedByUserLockTimeout = CurrentModOptions:GetProperty("ForcedByUserLockTimeout") * const.Scale.sols
 
-	-- make sure we're in-game
+	-- Make sure we're in-game
 	if not UICity then
 		return
 	end
 
 	StartupCode()
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
--- switch between different maps (happens before UICity)
+
+-- Switch between different maps (happens before UICity)
 OnMsg.ChangeMapDone = StartupCode

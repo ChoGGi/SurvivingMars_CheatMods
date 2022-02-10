@@ -14,9 +14,9 @@ local function ModOptions(id)
 	mod_PercentAllowed = (CurrentModOptions:GetProperty("PercentAllowed") + 0.0) / 100
 
 end
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
+-- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
 --~ SolarPanel.entity == "SolarPanelBig"

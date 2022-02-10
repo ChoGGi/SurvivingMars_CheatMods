@@ -18,9 +18,15 @@ local function UpdateTransports()
 		end
 	end
 end
+OnMsg.CityStart = UpdateTransports
+OnMsg.LoadGame = UpdateTransports
 
--- fired when settings are changed/init
-local function ModOptions()
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 
 	-- make sure we're in-game
@@ -30,17 +36,7 @@ local function ModOptions()
 
 	UpdateTransports()
 end
-
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
-
--- fired when Mod Options>Apply button is clicked
-function OnMsg.ApplyModOptions(id)
-	-- I'm sure it wouldn't be that hard to only call this msg for the mod being applied, but...
-	if id == CurrentModId then
-		ModOptions()
-	end
-end
-
-OnMsg.CityStart = UpdateTransports
-OnMsg.LoadGame = UpdateTransports
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions

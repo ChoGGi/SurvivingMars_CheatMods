@@ -1,3 +1,6 @@
+v1.8
+Added limit to number of breakthroughs (needs lib v10.9).
+
 v1.7
 Shows the buried wonder if you have B&B (are there maps with more than one?).
 Added mod option to show list by default.

@@ -168,8 +168,8 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
 			local rc_con_value = ChoGGi.ComFuncs.GetResearchedTechValue("RCTransportStorageCapacity", "RCConstructor")
 
 			-- loop through and set all
-			if UICity then
-				local label = UICity.labels.RCTransport or ""
+			if UIColony then
+				local label = UIColony:GetCityLabels("RCTransportAndChildren")
 				for i = 1, #label do
 					local rc = label[i]
 					if default and rc:IsKindOf("RCConstructor") then
