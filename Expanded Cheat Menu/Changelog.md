@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v17.9 (Unreleased)
+### Fixed:
+- SetRoverWorkRadius/SetDroneHubWorkRadius.
 
 ## v17.8 (29 Jan 2022)
 ### Added:

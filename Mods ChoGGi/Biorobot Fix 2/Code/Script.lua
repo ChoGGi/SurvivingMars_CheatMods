@@ -25,9 +25,8 @@ function OnMsg.ColonistBorn(colonist, event)
 		return
 	end
 
-	-- remove traits
-	local TraitPresets = TraitPresets
 	if mod_RemoveFlaws or mod_RemovePerks then
+		local TraitPresets = TraitPresets
 		for trait in pairs(colonist.traits) do
 			local trait_group = TraitPresets[trait]
 			trait_group = trait_group and trait_group.group

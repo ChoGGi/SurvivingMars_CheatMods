@@ -23,8 +23,8 @@ local function UpdateTransports()
 		end
 	end
 end
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
+OnMsg.CityStart = UpdateTransports
+OnMsg.LoadGame = UpdateTransports
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions

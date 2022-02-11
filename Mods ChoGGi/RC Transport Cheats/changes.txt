@@ -1,1 +1,2 @@
 v0.2
+Fixed it not updating rovers on load.
