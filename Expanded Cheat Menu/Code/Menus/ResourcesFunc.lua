@@ -5,12 +5,12 @@ local type = type
 local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
-local Strings = ChoGGi.Strings
+
 
 function ChoGGi.MenuFuncs.SetFundingPerRareMetalExport()
 	local default_setting = ChoGGi.Consts.ExportPricePreciousMetals
 	local item_list = {
-		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 5, value = 5},
 		{text = 10, value = 10},
 		{text = 15, value = 15},
@@ -51,7 +51,7 @@ function ChoGGi.MenuFuncs.SetFundingPerRareMetalExport()
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(4604, "Rare Metals Price (M)"),
-		hint = Strings[302535920000106--[[Current]]] .. ": " .. hint,
+		hint = T(302535920000106--[[Current]]) .. ": " .. hint,
 		skip_sort = true,
 	}
 end
@@ -88,12 +88,12 @@ function ChoGGi.MenuFuncs.AddOrbitalProbes()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920001187--[[Add Probes]]],
+		title = T(302535920001187--[[Add Probes]]),
 		skip_sort = true,
 		checkboxes = {
 			{
-				title = Translate(10087--[[Advanced Orbital Probe]]),
-				hint = Strings[302535920000266--[[Spawn]]] .. " " .. Translate(10087--[[Advanced Orbital Probe]]),
+				title = T(10087--[[Advanced Orbital Probe]]),
+				hint = T(302535920000266--[[Spawn]]) .. " " .. T(10087--[[Advanced Orbital Probe]]),
 				checked = GetMissionSponsor().id == "NASA"
 			},
 		},
@@ -104,7 +104,7 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.FoodPerRocketPassenger / r
 	local item_list = {
-		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
 		{text = 75, value = 75},
@@ -133,7 +133,7 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Strings[302535920001188--[[%s: om nom nom nom nom]]]:format(choice[1].text),
+				Translate(302535920001188--[[%s: om nom nom nom nom]]):format(choice[1].text),
 				T(4616, "Food Per Rocket Passenger")
 			)
 		end
@@ -142,8 +142,8 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920001190--[[Set Food Per Rocket Passenger]]],
-		hint = Strings[302535920000106--[[Current]]] .. ": " .. hint,
+		title = T(302535920001190--[[Set Food Per Rocket Passenger]]),
+		hint = T(302535920000106--[[Current]]) .. ": " .. hint,
 		skip_sort = true,
 	}
 end
@@ -174,7 +174,7 @@ do -- AddPrefabs
 			{
 				text = drone_str,
 				value = 10,
-				hint = Strings[302535920000106--[[Current]]] .. ": " .. UICity.drone_prefabs,
+				hint = T(302535920000106--[[Current]]) .. ": " .. UICity.drone_prefabs,
 				icon = Drone.display_icon,
 			},
 		}
@@ -187,9 +187,9 @@ do -- AddPrefabs
 			if not skip_prefabs[id] and not cargo.instant_build and (cargo.group ~= "Hidden" or cargo.group == "Hidden" and show_hidden) then
 				c = c + 1
 				item_list[c] = {
-					text = Translate(cargo.display_name),
+					text = T(cargo.display_name),
 					value = 10,
-					hint = Strings[302535920000106--[[Current]]] .. ": " .. UICity:GetPrefabs(id),
+					hint = T(302535920000106--[[Current]]) .. ": " .. UICity:GetPrefabs(id),
 					icon = cargo.display_icon,
 					id = id,
 				}
@@ -213,7 +213,7 @@ do -- AddPrefabs
 				end
 			end
 			MsgPopup(
-				Strings[302535920001191--[[Added prefabs to %s buildings.]]]:format(#choice),
+				Translate(302535920001191--[[Added prefabs to %s buildings.]]):format(#choice),
 				T(1110, "Prefab Buildings")
 			)
 			-- If the build menu is opened and they add some prefabs it won't use them till it's toggled, so we do this instead
@@ -223,8 +223,8 @@ do -- AddPrefabs
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = Translate(1110--[[Prefab Buildings]]),
-			hint = Strings[302535920001194--[[Use edit box to enter amount of prefabs to add.]]],
+			title = T(1110--[[Prefab Buildings]]),
+			hint = T(302535920001194--[[Use edit box to enter amount of prefabs to add.]]),
 			custom_type = 3,
 			multisel = true,
 		}
@@ -232,10 +232,10 @@ do -- AddPrefabs
 end -- do
 
 function ChoGGi.MenuFuncs.SetFunding()
-	local default_setting = Strings[302535920001195--[[Reset to 500 M]]]
-	local hint = Strings[302535920001196--[[If your funds are a negative value, then you added too much.
+	local default_setting = T(302535920001195--[[Reset to 500 M]])
+	local hint = Translate(302535920001196--[[If your funds are a negative value, then you added too much.
 
-Fix with: %s]]]:format(default_setting)
+Fix with: %s]]):format(default_setting)
 	local item_list = {
 		{text = default_setting, value = 500},
 		{text = "100 M", value = 100, hint = hint},
@@ -269,7 +269,7 @@ Fix with: %s]]]:format(default_setting)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Translate(3613--[[Funding]]),
+		title = T(3613--[[Funding]]),
 		hint = hint,
 		skip_sort = true,
 	}
@@ -280,8 +280,8 @@ function ChoGGi.MenuFuncs.FillResource()
 	local is_valid = IsValid(obj)
 	if not is_valid or is_valid and not obj.CheatFill and not obj.CheatRefill and not obj.CheatFillDepot then
 		MsgPopup(
-			Strings[302535920001526--[[Not a valid object]]],
-			Strings[302535920000727--[[Fill Selected Resource]]]
+			T(302535920001526--[[Not a valid object]]),
+			T(302535920000727--[[Fill Selected Resource]])
 		)
 		return
 	end
@@ -298,6 +298,6 @@ function ChoGGi.MenuFuncs.FillResource()
 
 	MsgPopup(
 		RetName(obj),
-		Strings[302535920000727--[[Fill Selected Resource]]]
+		T(302535920000727--[[Fill Selected Resource]])
 	)
 end

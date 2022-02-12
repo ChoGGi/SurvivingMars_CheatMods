@@ -1762,8 +1762,8 @@ function ChoGGi.ComFuncs.UpdateServiceComfortBld(obj, service_stats)
 end
 
 function ChoGGi.ComFuncs.BlacklistMsg(msg)
-	msg = Translate(302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.]]):format(msg)
-	MsgPopup(msg,T(302535920000000--[[Expanded Cheat Menu]]))
+	msg = Translate(302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.]]):format(Translate(msg))
+	MsgPopup(msg, T(302535920000000--[[Expanded Cheat Menu]]))
 	print(msg)
 end
 

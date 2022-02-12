@@ -1,11 +1,11 @@
 -- See LICENSE for terms
 
 local type = type
+local table = table
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Translate = ChoGGi.ComFuncs.Translate
 local TableConcat = ChoGGi.ComFuncs.TableConcat
-local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 
 function ChoGGi.MenuFuncs.SetDisasterOccurrence_Toggle(action)
@@ -66,7 +66,7 @@ function ChoGGi.MenuFuncs.ChangeRivalColonies()
 
 			c = c + 1
 			item_list[c] = {
-				text = existing and (name .. " (" .. Strings[302535920000201--[[Active]]] .. ")") or name,
+				text = existing and (name .. " (" .. T(302535920000201--[[Active]]) .. ")") or name,
 				value = rival.id,
 				rival = rival,
 				existing = existing,
@@ -135,21 +135,21 @@ function ChoGGi.MenuFuncs.ChangeRivalColonies()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Translate(11034--[[Rival Colonies]]),
-		hint = Strings[302535920001460--[[Add/remove rival colonies.]]],
+		title = T(11034--[[Rival Colonies]]),
+		hint = T(302535920001460--[[Add/remove rival colonies.]]),
 		multisel = true,
 		custom_type = 3,
 		checkboxes = {
 			only_one = true,
 			at_least_one = true,
 			{
-				title = Strings[302535920001183--[[Add]]],
-				hint = Strings[302535920001462--[[%s rival colonies.]]]:format(Strings[302535920001183--[[Add]]]),
+				title = T(302535920001183--[[Add]]),
+				hint = Translate(302535920001462--[[%s rival colonies.]]):format(T(302535920001183--[[Add]])),
 				checked = true,
 			},
 			{
-				title = Strings[302535920000281--[[Remove]]],
-				hint = Strings[302535920001462--[[%s rival colonies.]]]:format(Strings[302535920000281--[[Remove]]]),
+				title = T(302535920000281--[[Remove]]),
+				hint = Translate(302535920001462--[[%s rival colonies.]]):format(T(302535920000281--[[Remove]])),
 			},
 		},
 
@@ -168,13 +168,13 @@ function ChoGGi.MenuFuncs.StartChallenge()
 			current = true
 		end
 		item_list[i] = {
-			text = Translate(c.title),
+			text = T(c.title),
 			value = c.id,
-			hint = Translate(c.description) .. "\n\n"
-				.. Strings[302535920001415--[[Sols to Complete: %s]]]:format(c.time_completed / DayDuration)
+			hint = T(c.description) .. "\n\n"
+				.. Translate(302535920001415--[[Sols to Complete: %s]]):format(c.time_completed / DayDuration)
 				.. "\n"
 				.. Translate(10489--[[<newline>Perfect time: <countdown2>]]):gsub("<countdown2>", c.time_perfected / DayDuration)
-				.. (current and "\n\n" .. Strings[302535920000106--[[Current]]] or ""),
+				.. (current and "\n\n" .. T(302535920000106--[[Current]]) or ""),
 		}
 	end
 
@@ -190,7 +190,7 @@ function ChoGGi.MenuFuncs.StartChallenge()
 
 		MsgPopup(
 			choice[1].text,
-			Strings[302535920001247--[[Start Challenge]]]
+			T(302535920001247--[[Start Challenge]])
 		)
 	end
 
@@ -198,13 +198,13 @@ function ChoGGi.MenuFuncs.StartChallenge()
 	local thread = UICity.challenge_thread
 	if not blacklist and IsValidThread(thread) then
 		local _, c = debug.getlocal(thread, 1, 1)
-		hint = Strings[302535920000106--[[Current]]] .. ": " .. Translate(c.title) .. ", " .. c.id
+		hint = T(302535920000106--[[Current]]) .. ": " .. T(c.title) .. ", " .. c.id
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920001247--[[Start Challenge]]],
+		title = T(302535920001247--[[Start Challenge]]),
 		hint = hint,
 	}
 end
@@ -228,10 +228,10 @@ function ChoGGi.MenuFuncs.InstantMissionGoals()
 				text = i .. " " .. sponsor["sponsor_goal_" .. i],
 				value = i,
 				hint = "<image " .. sponsor["goal_image_" .. i] .. ">\n\n"
-					.. Strings[302535920001409--[[Goal]]] .. ": "
-					.. Translate(GetGoalDescription(sponsor, i)) .. "\n"
-					.. Translate(128569337702--[[Reward:]]) .. " "
-					.. Translate(T{reward.Description, reward}),
+					.. T(302535920001409--[[Goal]]) .. ": "
+					.. T(GetGoalDescription(sponsor, i)) .. "\n"
+					.. T(128569337702--[[Reward:]]) .. " "
+					.. T(T{reward.Description, reward}),
 				reward = reward,
 				goal = SponsorGoalsMap[sponsor["sponsor_goal_" .. i]],
 			}
@@ -263,7 +263,7 @@ function ChoGGi.MenuFuncs.InstantMissionGoals()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000704--[[Instant Mission Goals]]],
+		title = T(302535920000704--[[Instant Mission Goals]]),
 		multisel = true,
 	}
 end
@@ -289,11 +289,11 @@ function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
-		Strings[302535920001160--[["%s
+		Translate(302535920001160--[["%s
 Damage? Total, sir.
 It's what we call a global killer.
-The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria."]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.MeteorHealthDamage)),
-		Strings[302535920000708--[[Meteor Damage]]]
+The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria."]]):format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.MeteorHealthDamage)),
+		T(302535920000708--[[Meteor Damage]])
 	)
 end
 
@@ -351,8 +351,8 @@ function ChoGGi.MenuFuncs.SetSponsor()
 				UICity:InitMissionBonuses()
 
 				MsgPopup(
-					Strings[302535920001161--[[Sponsor for this save is now %s]]]:format(choice[1].text),
-					Strings[302535920000712--[[Set Sponsor]]]
+					Translate(302535920001161--[[Sponsor for this save is now %s]]):format(choice[1].text),
+					T(302535920000712--[[Set Sponsor]])
 				)
 				break
 			end
@@ -362,8 +362,8 @@ function ChoGGi.MenuFuncs.SetSponsor()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000712--[[Set Sponsor]]],
-		hint = Strings[302535920000106--[[Current]]] .. ": " .. Translate(GetMissionSponsor().display_name),
+		title = T(302535920000712--[[Set Sponsor]]),
+		hint = T(302535920000106--[[Current]]) .. ": " .. T(GetMissionSponsor().display_name),
 	}
 end
 
@@ -403,7 +403,7 @@ end
 --~ 				text = Translate(spon.display_name),
 --~ 				value = spon.id,
 --~ 				hint = Translate(T{spon.effect, stats[2]}) .. "\n\n"
---~ 					.. Strings[302535920001165--[[Enabled Status]]] .. user_set .. save_in,
+--~ 					.. T(302535920001165--[[Enabled Status]]) .. user_set .. save_in,
 --~ 			}
 --~ 		end
 --~ 	end
@@ -443,24 +443,24 @@ end
 --~ 		ChoGGi.SettingFuncs.WriteSettings()
 --~ 		MsgPopup(
 --~ 			ChoGGi.ComFuncs.SettingState(#choice),
---~ 			Strings[302535920000714--[[Set Bonuses Sponsor]]]
+--~ 			T(302535920000714--[[Set Bonuses Sponsor]])
 --~ 		)
 --~ 	end
 
 --~ 	ChoGGi.ComFuncs.OpenInListChoice{
 --~ 		callback = CallBackFunc,
 --~ 		items = item_list,
---~ 		title = Strings[302535920000714--[[Set Bonuses Sponsor]]],
---~ 		hint = Strings[302535920000106--[[Current]]] .. ": " .. Translate(GetMissionSponsor().display_name) .. "\n\n" .. Strings[302535920001168--[[Modded ones are mostly ignored for now (just cargo space/research points).]]],
+--~ 		title = T(302535920000714--[[Set Bonuses Sponsor]]),
+--~ 		hint = T(302535920000106--[[Current]]) .. ": " .. T(GetMissionSponsor().display_name) .. "\n\n" .. T(302535920001168--[[Modded ones are mostly ignored for now (just cargo space/research points).]]),
 --~ 		multisel = true,
 --~ 		checkboxes = {
 --~ 			{
---~ 				title = Strings[302535920001169--[[Turn Off]]],
---~ 				hint = Strings[302535920001170--[[Turn off selected bonuses (defaults to turning on).]]],
+--~ 				title = T(302535920001169--[[Turn Off]]),
+--~ 				hint = T(302535920001170--[[Turn off selected bonuses (defaults to turning on).]]),
 --~ 			},
 --~ 			{
---~ 				title = Strings[302535920001171--[[Turn All Off]]],
---~ 				hint = Strings[302535920001172--[[Turns off all bonuses.]]],
+--~ 				title = T(302535920001171--[[Turn All Off]]),
+--~ 				hint = T(302535920001172--[[Turns off all bonuses.]]),
 --~ 			},
 --~ 		},
 --~ 	}
@@ -479,9 +479,9 @@ function ChoGGi.MenuFuncs.SetCommander()
 		if comm.id ~= "random" and comm.id ~= "None" then
 			c = c + 1
 			item_list[c] = {
-				text = Translate(comm.display_name),
+				text = T(comm.display_name),
 				value = comm.id,
-				hint = Translate(comm.effect)
+				hint = T(comm.effect)
 			}
 		end
 	end
@@ -508,8 +508,8 @@ function ChoGGi.MenuFuncs.SetCommander()
 				UICity:InitMissionBonuses()
 
 				MsgPopup(
-					Strings[302535920001173--[[Commander for this save is now %s.]]]:format(choice[1].text),
-					Strings[302535920000716--[[Set Commander]]]
+					Translate(302535920001173--[[Commander for this save is now %s.]]):format(choice[1].text),
+					T(302535920000716--[[Set Commander]])
 				)
 				break
 			end
@@ -519,8 +519,8 @@ function ChoGGi.MenuFuncs.SetCommander()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000716--[[Set Commander]]],
-		hint = Strings[302535920000106--[[Current]]] .. ": " .. Translate(GetCommanderProfile().display_name),
+		title = T(302535920000716--[[Set Commander]]),
+		hint = T(302535920000106--[[Current]]) .. ": " .. T(GetCommanderProfile().display_name),
 	}
 end
 
@@ -541,7 +541,7 @@ end
 --~ 				text = Translate(comm.display_name),
 --~ 				value = comm.id,
 --~ 				hint = Translate(comm.effect) .. "\n\n"
---~ 					.. Strings[302535920001165--[[Enabled Status]]]
+--~ 					.. T(302535920001165--[[Enabled Status]])
 --~ 					.. (user_set and ": " .. comm.id or " false"),
 --~ 			}
 --~ 		end
@@ -583,24 +583,24 @@ end
 --~ 		ChoGGi.SettingFuncs.WriteSettings()
 --~ 		MsgPopup(
 --~ 			ChoGGi.ComFuncs.SettingState(#choice),
---~ 			Strings[302535920000718--[[Set Bonuses Commander]]]
+--~ 			T(302535920000718--[[Set Bonuses Commander]])
 --~ 		)
 --~ 	end
 
 --~ 	ChoGGi.ComFuncs.OpenInListChoice{
 --~ 		callback = CallBackFunc,
 --~ 		items = item_list,
---~ 		title = Strings[302535920000718--[[Set Bonuses Commander]]],
---~ 		hint = Strings[302535920000106--[[Current]]] .. ": " .. Translate(GetCommanderProfile().display_name),
+--~ 		title = T(302535920000718--[[Set Bonuses Commander]]),
+--~ 		hint = T(302535920000106--[[Current]]) .. ": " .. T(GetCommanderProfile().display_name),
 --~ 		multisel = true,
 --~ 		checkboxes = {
 --~ 			{
---~ 				title = Strings[302535920001169--[[Turn Off]]],
---~ 				hint = Strings[302535920001170--[[Turn off selected bonuses (defaults to turning on).]]],
+--~ 				title = T(302535920001169--[[Turn Off]]),
+--~ 				hint = T(302535920001170--[[Turn off selected bonuses (defaults to turning on).]]),
 --~ 			},
 --~ 			{
---~ 				title = Strings[302535920001171--[[Turn All Off]]],
---~ 				hint = Strings[302535920001172--[[Turns off all bonuses.]]],
+--~ 				title = T(302535920001171--[[Turn All Off]]),
+--~ 				hint = T(302535920001172--[[Turns off all bonuses.]]),
 --~ 			},
 --~ 		},
 --~ 	}
@@ -660,7 +660,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
 
 			MsgPopup(
 				choice[1].text,
-				Strings[302535920000710--[[Change Logo]]]
+				T(302535920000710--[[Change Logo]])
 			)
 		end
 	end
@@ -668,8 +668,8 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920001178--[[Set New Logo]]],
-		hint = Strings[302535920000106--[[Current]]] .. ": " .. Translate(MissionLogoPresetMap[g_CurrentMissionParams.idMissionLogo].display_name),
+		title = T(302535920001178--[[Set New Logo]]),
+		hint = T(302535920000106--[[Current]]) .. ": " .. T(MissionLogoPresetMap[g_CurrentMissionParams.idMissionLogo].display_name),
 		height = 800.0,
 		custom_type = 7,
 	}
@@ -682,7 +682,7 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(action)
 
 	local item_list = {
 		{
-		text = " " .. Translate(847439380056--[[Disabled]]),
+		text = " " .. T(847439380056--[[Disabled]]),
 		value = "disabled",
 		}
 	}
@@ -725,16 +725,16 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(action)
 		end
 
 		MsgPopup(
-			Strings[302535920001179--[[%s occurrence is now: %s]]]:format(setting_id, value),
-			T(3983, "Disasters")
+			Translate(302535920001179--[[%s occurrence is now: %s]]):format(setting_id, value),
+			T(3983--[[Disasters]])
 		)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000129--[[Set]]] .. " " .. setting_id .. " " .. Strings[302535920001180--[[Disaster Occurrences]]],
-		hint = Strings[302535920000106--[[Current]]] .. ": " .. (mapdata[set_name] or ""),
+		title = T(302535920000129--[[Set]]) .. " " .. setting_id .. " " .. T(302535920001180--[[Disaster Occurrences]]),
+		hint = T(302535920000106--[[Current]]) .. ": " .. (mapdata[set_name] or ""),
 	}
 end
 
@@ -749,13 +749,13 @@ function ChoGGi.MenuFuncs.ChangeRules()
 		local enabled = IsGameRuleActive(id)
 		c = c + 1
 		item_list[c] = {
-			text = Translate(def.display_name) .. (enabled and " *" or ""),
+			text = T(def.display_name) .. (enabled and " *" or ""),
 			value = id,
-			hint = (enabled and "<green>" .. Translate(12227--[[Enabled]]) .. "</green>\n" or "")
-				.. Translate(def.description) .. "\n"
-				.. Translate(3491--[[Challenge Mod (%)]]) .. ": " .. def.challenge_mod .. "\n\n"
-				.. (def.exclusionlist and Strings[302535920001357--[[Exclusion List]]] .. ": " .. def.exclusionlist or "")
-				.. "\n".. Translate(def.flavor),
+			hint = (enabled and "<green>" .. T(12227--[[Enabled]]) .. "</green>\n" or "")
+				.. T(def.description) .. "\n"
+				.. T(3491--[[Challenge Mod (%)]]) .. ": " .. def.challenge_mod .. "\n\n"
+				.. (def.exclusionlist and T(302535920001357--[[Exclusion List]]) .. ": " .. def.exclusionlist or "")
+				.. "\n".. T(def.flavor),
 		}
 	end
 
@@ -795,8 +795,8 @@ function ChoGGi.MenuFuncs.ChangeRules()
 		end
 
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(#choice, Strings[302535920000129--[[Set]]]),
-			T(8800, "Game Rules")
+			ChoGGi.ComFuncs.SettingState(#choice, T(302535920000129--[[Set]])),
+			T(8800--[[Game Rules]])
 		)
 	end
 
@@ -805,37 +805,37 @@ function ChoGGi.MenuFuncs.ChangeRules()
 	if type(rules) == "table" and next(rules) then
 		hint = {}
 		local c = #hint
-		hint[c] = Strings[302535920000106--[[Current]]]
+		hint[c] = T(302535920000106--[[Current]])
 		c = c + 1
 		hint[c] = ":"
 		for key in pairs(rules) do
 			c = c + 1
 			hint[c] = " "
 			c = c + 1
-			hint[c] = Translate(GameRulesMap[key].display_name)
+			hint[c] = T(GameRulesMap[key].display_name)
 		end
 	end
 	if hint then
-		hint = TableConcat(hint)
+		hint = table.concat(hint)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920001182--[[Set Game Rules]]],
+		title = T(302535920001182--[[Set Game Rules]]),
 		hint = hint,
 		multisel = true,
 		checkboxes = {
 			only_one = true,
 			at_least_one = true,
 			{
-				title = Strings[302535920001183--[[Add]]],
-				hint = Strings[302535920001185--[[Add selected rules]]],
+				title = T(302535920001183--[[Add]]),
+				hint = T(302535920001185--[[Add selected rules]]),
 				checked = true,
 			},
 			{
-				title = Strings[302535920000281--[[Remove]]],
-				hint = Strings[302535920001186--[[Remove selected rules]]],
+				title = T(302535920000281--[[Remove]]),
+				hint = T(302535920001186--[[Remove selected rules]]),
 			},
 		},
 	}

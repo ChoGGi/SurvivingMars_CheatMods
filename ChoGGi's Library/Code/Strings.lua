@@ -32,19 +32,15 @@ local function Translate(t, context, ...)
 	)
 	if result then
 		-- "Missing text" means the string id wasn't found
-		if str == missing_text then
+		if str == missing_text or type(str) ~= "string" then
 			-- try to return the string id (if we can)
-			return tostring(IsT(t) or missing_text)
-		-- something didn't work
-		elseif type(str) ~= "string" then
-			-- try to return the string id, if we can
-			print("ChoGGi Lib Sez: Translate Failed:", t, context, ...)
 			return tostring(IsT(t) or missing_text)
 		end
 
 		-- and done
 		return str
 	end
+	-- false result means _InternalTranslate failed
 
 	return tostring(str)
 end
@@ -127,7 +123,7 @@ do -- UpdateStringsList (fired below, and whenever lang is changed)
 		end
 
 
-
+-- OBSOLETE
 
 		-- a table of translated strings (includes <> stuff unlike TranslationTable)
 		local strings = ChoGGi.Strings
@@ -162,6 +158,8 @@ do -- UpdateStringsList (fired below, and whenever lang is changed)
 
 		-- and update my global ref
 		ChoGGi.Strings = strings
+
+-- OBSOLETE
 
 	end
 end -- do

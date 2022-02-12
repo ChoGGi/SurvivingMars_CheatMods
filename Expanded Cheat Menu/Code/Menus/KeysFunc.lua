@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 local table = table
-local Strings = ChoGGi.Strings
 
 function ChoGGi.MenuFuncs.ConsoleRestart()
 	local dlgConsole = dlgConsole
@@ -34,9 +33,9 @@ do -- ExamineObjectRadius
 			OpenInExamineDlg(objs, {
 				has_params = true,
 				override_title = true,
-				title = Strings[302535920000069--[[Examine]]] .. " "
-					.. Strings[302535920001103--[[Objects]]] .. " "
-					.. Strings[302535920000163--[[Radius]]] .. ": " .. radius,
+				title = T(302535920000069--[[Examine]]) .. " "
+					.. T(302535920001103--[[Objects]]) .. " "
+					.. T(302535920000163--[[Radius]]) .. ": " .. radius,
 			})
 		end
 	end
