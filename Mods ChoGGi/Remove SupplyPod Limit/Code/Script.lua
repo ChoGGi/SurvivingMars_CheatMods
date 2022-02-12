@@ -27,7 +27,7 @@ function SupplyPod:Unload(...)
 	-- get drone cargo item
 	local cargo = self.cargo[table.find(self.cargo, "class", "Drone")]
 	-- there's 10 drone spots for pods, if over than it'll skip the rest (orig func)
-	if cargo.amount > 10 then
+	if cargo and cargo.amount > 10 then
 		local first, last = self:GetSpotRange("Drone")
 		local city = self.city
 		local Random = city.Random
@@ -46,9 +46,9 @@ function SupplyPod:Unload(...)
 	end
 
 	-- rovers
-	for i = 1, #self.cargo do
+	for i = 1, #(self.cargo or "") do
 		cargo = self.cargo[i]
-		if rovers[cargo.class] then
+		if cargo and rovers[cargo.class] then
 			local amt = cargo.amount
 			if amt > 1 then
 				for _ = 1, amt-1 do

@@ -22,7 +22,6 @@ local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 local PlacePolyline = ChoGGi.ComFuncs.PlacePolyline
 local InvalidPos = ChoGGi.Consts.InvalidPos
-local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
@@ -196,7 +195,7 @@ function ChoGGi.ComFuncs.Dump(obj, overwrite, file, ext, skip_msg, gen_name)
 
 	-- let user know
 	if not skip_msg then
-		local msg = Strings[302535920000039--[[Dumped]]] .. ": " .. RetName(obj)
+		local msg = Translate(302535920000039--[[Dumped]]) .. ": " .. RetName(obj)
 		print(filename,"\n",msg:sub(1,msg:find("\n")))
 		MsgPopup(
 			msg,
@@ -305,8 +304,8 @@ do -- DumpTableFunc
 		end
 		if type(obj) ~= "table" then
 			MsgPopup(
-				Strings[302535920000003--[[Can't dump nothing]]],
-				Strings[302535920000004--[[Dump]]]
+				T(302535920000003--[[Can't dump nothing]]),
+				T(302535920000004--[[Dump]])
 			)
 			return
 		end
@@ -323,7 +322,7 @@ do -- DumpTableFunc
 			local filename = "AppData/logs/DumpedTable.txt"
 			AsyncStringToFile(filename, TableConcat(output_list), mode or "-1")
 
-			local msg = Strings[302535920000039--[[Dumped]]] .. ": " .. name
+			local msg = Translate(302535920000039--[[Dumped]]) .. ": " .. name
 			-- print msg to first newline
 			print(filename,"\n",msg:sub(1,msg:find("\n")))
 			MsgPopup(
@@ -334,11 +333,11 @@ do -- DumpTableFunc
 			return
 		end
 
-		local msg = Strings[302535920000003--[[Can't dump nothing]]] .. ": " .. name .. "\n" .. ValueToLuaCode(obj)
+		local msg = Translate(302535920000003--[[Can't dump nothing]]) .. ": " .. name .. "\n" .. ValueToLuaCode(obj)
 		print(msg)
 		MsgPopup(
 			msg,
-			Strings[302535920000004--[[Dump]]]
+			T(302535920000004--[[Dump]])
 		)
 
 	end
@@ -549,8 +548,8 @@ function ChoGGi.ComFuncs.EntitySpawner(obj, params)
 
 	local const = const
 
-	local title = params.planning and Strings[302535920000862--[[Object Planner]]] or Strings[302535920000475--[[Entity Spawner]]]
-	local hint = params.planning and Strings[302535920000863--[[Places fake construction site objects at mouse cursor (collision disabled).]]] or Strings[302535920000476--[["Shows list of objects, and spawns at mouse cursor."]]]
+	local title = params.planning and T(302535920000862--[[Object Planner]]) or T(302535920000475--[[Entity Spawner]])
+	local hint = params.planning and T(302535920000863--[[Places fake construction site objects at mouse cursor (collision disabled).]]) or T(302535920000476--[["Shows list of objects, and spawns at mouse cursor."]])
 
 	local default
 	local item_list = {}
@@ -632,7 +631,7 @@ function ChoGGi.ComFuncs.EntitySpawner(obj, params)
 
 		if not params.skip_msg then
 			MsgPopup(
-				choice.text .. ": " .. Strings[302535920000014--[[Spawned]]],
+				choice.text .. ": " .. T(302535920000014--[[Spawned]]),
 				title
 			)
 		end
@@ -642,8 +641,8 @@ function ChoGGi.ComFuncs.EntitySpawner(obj, params)
 	if params.list_type ~= 7 then
 		checkboxes = {
 			{
-				title = Strings[302535920001578--[[Auto-Attach]]],
-				hint = Strings[302535920001579--[[Activate any auto-attach spots this entity has.]]],
+				title = T(302535920001578--[[Auto-Attach]]),
+				hint = T(302535920001579--[[Activate any auto-attach spots this entity has.]]),
 			},
 		}
 	end
@@ -667,7 +666,7 @@ function ChoGGi.ComFuncs.MonitorThreads()
 	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list, {
 		has_params = true,
 		auto_refresh = true,
-		title = Strings[302535920000853--[[Monitor]]] .. ": ThreadsRegister",
+		title = T(302535920000853--[[Monitor]]) .. ": ThreadsRegister",
 	})
 
 	local RetThreadInfo = ChoGGi.ComFuncs.RetThreadInfo
@@ -760,10 +759,10 @@ function ChoGGi.ComFuncs.SetParticles(obj)
 		obj = obj or ChoGGi.ComFuncs.SelObject()
 	end
 
-	local name = Strings[302535920000129--[[Set]]] .. " " .. Strings[302535920001184--[[Particles]]]
+	local name = T(302535920000129--[[Set]]) .. " " .. T(302535920001184--[[Particles]])
 	if not obj or obj and not obj:IsKindOf("FXObject") then
 		MsgPopup(
-			Strings[302535920000027--[[Nothing selected]]] .. ": " .. "FXObject",
+			T(302535920000027--[[Nothing selected]]) .. ": " .. "FXObject",
 			name
 		)
 		return
@@ -852,7 +851,7 @@ function ChoGGi.ComFuncs.SetParticles(obj)
 		callback = CallBackFunc,
 		items = item_list,
 		title = name,
-		hint = Strings[302535920001421--[[Shows list of particles to quickly test out on objects.]]],
+		hint = T(302535920001421--[[Shows list of particles to quickly test out on objects.]]),
 		custom_type = 7,
 		skip_icons = true,
 	}
@@ -1170,7 +1169,7 @@ do -- RetThreadInfo/FindThreadFunc
 				break
 			end
 			list[idx] = {
-				name = name ~= "" and name or Strings[302535920000723--[[Lua]]],
+				name = name ~= "" and name or T(302535920000723--[[Lua]]),
 				value = value,
 				level = level,
 			}
@@ -1189,7 +1188,7 @@ do -- RetThreadInfo/FindThreadFunc
 				break
 			end
 			list[idx] = {
-				name = name ~= "" and name or Strings[302535920000723--[[Lua]]],
+				name = name ~= "" and name or T(302535920000723--[[Lua]]),
 				value = value,
 			}
 			idx = idx + 1
@@ -1231,7 +1230,7 @@ do -- RetThreadInfo/FindThreadFunc
 						temp.func = value:sub(2, space)
 						-- change unknown to Lua
 						local n = value:sub(space + 2, -2)
-						temp.name = n ~= "unknown name" and n or Strings[302535920000723--[[Lua]]]
+						temp.name = n ~= "unknown name" and n or T(302535920000723--[[Lua]])
 					end
 				end
 
@@ -1251,7 +1250,7 @@ do -- RetThreadInfo/FindThreadFunc
 					for i = 0, nups do
 						local info_got = debug_getinfo(thread, i)
 						if info_got then
-							local name = info_got.name or info_got.what or Strings[302535920000723--[[Lua]]]
+							local name = info_got.name or info_got.what or T(302535920000723--[[Lua]])
 							funcs[i] = {
 								name = name,
 								func = info_got.func,
@@ -1684,8 +1683,8 @@ do -- ChangeSurfaceSignsToMaterials
 	function ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials()
 
 		local item_list = {
-			{text = Translate(754117323318--[[Enable]]), value = true, hint = Strings[302535920001081--[[Changes signs to materials.]]]},
-			{text = Translate(251103844022--[[Disable]]), value = false, hint = Strings[302535920001082--[[Changes materials to signs.]]]},
+			{text = T(754117323318--[[Enable]]), value = true, hint = T(302535920001081--[[Changes signs to materials.]])},
+			{text = T(251103844022--[[Disable]]), value = false, hint = T(302535920001082--[[Changes materials to signs.]])},
 		}
 
 		local function CallBackFunc(choice)
@@ -1718,7 +1717,7 @@ do -- ChangeSurfaceSignsToMaterials
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = Strings[302535920001083--[[Change Surface Signs]]],
+			title = T(302535920001083--[[Change Surface Signs]]),
 		}
 	end
 end -- do
@@ -1763,8 +1762,8 @@ function ChoGGi.ComFuncs.UpdateServiceComfortBld(obj, service_stats)
 end
 
 function ChoGGi.ComFuncs.BlacklistMsg(msg)
-	msg = Strings[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.]]]:format(msg)
-	MsgPopup(msg,Strings[302535920000000--[[Expanded Cheat Menu]]])
+	msg = Translate(302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.]]):format(msg)
+	MsgPopup(msg,T(302535920000000--[[Expanded Cheat Menu]]))
 	print(msg)
 end
 
@@ -1785,8 +1784,8 @@ do -- ToggleFuncHook
 			path = path or "@AppData/Mods/"
 			local str_len = #path
 
-			print(Strings[302535920000497--[[Hook Started]]], path, line, mask, count)
-			MsgPopup(Strings[302535920000497--[[Hook Started]]], T(1000113, "Debug"))
+			print(Translate(302535920000497--[[Hook Started]]), path, line, mask, count)
+			MsgPopup(T(302535920000497--[[Hook Started]]), T(1000113, "Debug"))
 
 			collectgarbage()
 			local function hook_func(event)
@@ -1814,8 +1813,8 @@ do -- ToggleFuncHook
 			-- start capture (c = func call, r = func ret, l = enters new line of code)
 			debug.sethook(hook_func, mask or "c", count)
 		else
-			print(Strings[302535920000498--[[Hook Stopped]]], path, line, mask, count)
-			MsgPopup(Strings[302535920000498--[[Hook Stopped]]], T(1000113, "Debug"))
+			print(Translate(302535920000498--[[Hook Stopped]]), path, line, mask, count)
+			MsgPopup(T(302535920000498--[[Hook Stopped]]), T(1000113, "Debug"))
 			ChoGGi.Temp.FunctionsHooked = false
 
 			-- stop capture
@@ -1937,7 +1936,7 @@ do -- TestLocaleFile
 
 		local prev_str = Translate(1000231--[[Previous]])
 		local next_str = Translate(1000232--[[Next]])
-		local cur_str = Strings[302535920000106--[[Current]]]
+		local cur_str = Translate(302535920000106--[[Current]])
 
 		for i = 1, #loaded_csv do
 			local entry = loaded_csv[i]
@@ -1999,7 +1998,7 @@ do -- TestLocaleFile
 		local omit_captions = "omit_captions"
 		local err, str = AsyncFileToString(filepath)
 		if err then
-			print(Strings[302535920001125--[[Test Locale File]]], "ERROR:", err, "FILEPATH:", filepath)
+			print(Translate(302535920001125--[[Test Locale File]]), "ERROR:", err, "FILEPATH:", filepath)
 			return
 		end
 
@@ -2089,7 +2088,7 @@ do -- TestLocaleFile
 					filepath = my_locale
 				end
 			else
-				print(Strings[302535920001125--[[Test Locale File]]], "FILEPATH ERROR:", filepath)
+				print(Translate(302535920001125--[[Test Locale File]]), "FILEPATH ERROR:", filepath)
 				return
 			end
 		end
@@ -2121,8 +2120,8 @@ do -- TestLocaleFile
 		strings_failed = {}
 
 		if test_csv then
-			strings_failed[-1] = Strings[302535920001571--[["The way I test the CSV file means there might be some ""non-error"" errors added here.
-It's a tradeoff between erroneous errors and the game locking up."]]]
+			strings_failed[-1] = Translate(302535920001571--[["The way I test the CSV file means there might be some ""non-error"" errors added here.
+It's a tradeoff between erroneous errors and the game locking up."]])
 		end
 
 		strings_count = 0
@@ -2139,9 +2138,9 @@ It's a tradeoff between erroneous errors and the game locking up."]]]
 
 		local title
 		if strings_count > 0 or csv_count > 0 then
-			title = Strings[302535920001125--[[Test Locale File]]] .. ": " .. Translate(951--[[Failed to complete operation.]])
+			title = Translate(302535920001125--[[Test Locale File]]) .. ": " .. Translate(951--[[Failed to complete operation.]])
 		else
-			title = Strings[302535920001125--[[Test Locale File]]] .. ": " .. Translate(1000015--[[Success]])
+			title = Translate(302535920001125--[[Test Locale File]]) .. ": " .. Translate(1000015--[[Success]])
 		end
 		local results = {
 			loaded_csv = loaded_csv,
@@ -2317,7 +2316,7 @@ function ChoGGi.ComFuncs.MonitorFunctionResults(func, ...)
 	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(results_list, {
 		has_params = true,
 		auto_refresh = true,
-		title = Strings[302535920000853--[[Monitor]]] .. " " .. Strings[302535920000110--[[Function Results]]],
+		title = T(302535920000853--[[Monitor]]) .. " " .. T(302535920000110--[[Function Results]]),
 	})
 
 	CreateRealTimeThread(function()
@@ -2357,8 +2356,8 @@ function ChoGGi.ComFuncs.CheckForBorkedTransportPath(obj, list)
 			list[obj] = true
 			obj:InterruptCommand()
 			MsgPopup(
-				Strings[302535920001267--[[%s at position: %s was stopped.]]]:format(RetName(obj), obj:GetVisualPos()),
-				Strings[302535920001266--[[Borked Transport Pathing]]],
+				Translate(302535920001267--[[%s at position: %s was stopped.]]):format(RetName(obj), obj:GetVisualPos()),
+				T(302535920001266--[[Borked Transport Pathing]]),
 				{objects = obj, image = "UI/Icons/IPButtons/transport_route.tga"}
 			)
 		end
@@ -2377,8 +2376,8 @@ do -- DisplayMonitorList
 	function ChoGGi.ComFuncs.DisplayMonitorList(value, parent)
 		if value == "New" then
 			ChoGGi.ComFuncs.MsgWait(
-				Strings[302535920000033--[[Post a request on Nexus or Github or send an email to: %s]]]:format(ChoGGi.email),
-				Strings[302535920000034--[[Request]]]
+				Translate(302535920000033--[[Post a request on Nexus or Github or send an email to: %s]]):format(ChoGGi.email),
+				T(302535920000034--[[Request]])
 			)
 			return
 		end
@@ -2407,7 +2406,7 @@ do -- DisplayMonitorList
 		}
 		if value == "Grids" then
 			info = info_grid
-			info_grid.title = Strings[302535920000035--[[Grids]]]
+			info_grid.title = Translate(302535920000035--[[Grids]])
 			AddGrid(UICity, "air", info)
 			AddGrid(UICity, "electricity", info)
 			AddGrid(UICity, "water", info)
@@ -2479,7 +2478,7 @@ do -- DisplayMonitorList
 			}
 		elseif value == "City" then
 			info = {
-				title = Strings[302535920000042--[[City]]],
+				title = Translate(302535920000042--[[City]]),
 				tables = {UICity},
 				values = {
 					{name="rand_state", kind=0},

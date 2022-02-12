@@ -205,9 +205,9 @@ function ChoGGi_BaseWalls:SpawnBaseObj(cls, parent)
 	local obj = OBaseWallClass:new()
 	obj:ChangeEntity(cls or "PassageCovered")
 
-	if cursor_building then
+	if IsValid(cursor_building) then
 		cursor_building:Attach(obj)
-	else
+	elseif IsValid(parent or self) then
 		(parent or self):Attach(obj)
 	end
 

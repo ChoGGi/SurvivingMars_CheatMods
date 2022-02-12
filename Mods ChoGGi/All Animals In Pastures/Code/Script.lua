@@ -5,6 +5,7 @@ if not g_AvailableDlc.shepard then
 	return
 end
 
+local CurrentModPath = CurrentModPath
 local table = table
 
 local mod_OpenOnSelect
@@ -57,8 +58,12 @@ if g_AvailableDlc.gagarin then
 	c = c + 1
 	drone_entities[c] = "DroneJapanFlying_03"
 end
+if g_AvailableDlc.picard then
+	local c = #drone_entities
+	c = c + 1
+	drone_entities[c] = "DroneAsteroid"
+end
 
-local CurrentModPath = CurrentModPath
 local animals = {
 	-- spots are needed (for out vs in)
 	Cow = {
@@ -445,11 +450,11 @@ function PastureAnimal:SetGrazingState(duration, ...)
 	elseif state == "standEnjoySurface"
 			or state == "playGround1" or state == "playGround2"
 			or state == "gather" then
-		local anim_time = self:SetState(state .. "Start","ChoGGi_skip")
+		local anim_time = self:SetState(state .. "Start", "ChoGGi_skip")
 		Sleep(anim_time)
-		self:SetState(state .. "Idle","ChoGGi_skip")
+		self:SetState(state .. "Idle", "ChoGGi_skip")
 		Sleep(duration)
-		anim_time = self:SetState(state .. "End","ChoGGi_skip")
+		anim_time = self:SetState(state .. "End", "ChoGGi_skip")
 		Sleep(anim_time)
 
 		self:SetState("idle","ChoGGi_skip")

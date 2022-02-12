@@ -1,3 +1,6 @@
+v0.4
+Changed default mod options to make the sector proper random.
+
 v0.3
 Fixed issue with no rockets/probes (thanks nights99).
 

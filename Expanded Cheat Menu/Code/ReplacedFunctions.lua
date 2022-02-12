@@ -21,11 +21,8 @@ local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 
 local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 local UserSettings = ChoGGi.UserSettings
-local Strings = ChoGGi.Strings
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
-
-
 
 do -- non-class obj funcs
 
@@ -735,20 +732,20 @@ function OnMsg.ClassesGenerate()
 			for i = 1, #self do
 				local entry = self[i]
 
-				if entry.Text == Strings[302535920000002--[[ECM]]] then
+				if entry.Text == Translate(302535920000002--[[ECM]]) then
 					SetVis(entry, options, "HideECMMenu")
-				-- Cheats
-				elseif TGetID(entry.Text) == 27 then
-					SetVis(entry, options, "HideCheatsMenu")
-				-- Game
-				elseif TGetID(entry.Text) == 283142739680 then
-					SetVis(entry, options, "HideGameMenu")
-				-- Debug
-				elseif TGetID(entry.Text) == 1000113 then
-					SetVis(entry, options, "HideDebugMenu")
-				-- Help
-				elseif TGetID(entry.Text) == 487939677892 then
-					SetVis(entry, options, "HideHelpMenu")
+				else
+					local id = TGetID(entry.Text)
+					if id == 27--[[Cheats]] then
+						SetVis(entry, options, "HideCheatsMenu")
+					elseif id == 283142739680--[[Game]] then
+						SetVis(entry, options, "HideGameMenu")
+					elseif id == 1000113--[[Debug]] then
+						SetVis(entry, options, "HideDebugMenu")
+					elseif id == 487939677892--[[Help]] then
+						SetVis(entry, options, "HideHelpMenu")
+					end
+
 				end
 			end
 		end
@@ -906,8 +903,8 @@ function OnMsg.ClassesPostprocess()
 					StopWait.skipmsg = nil
 				else
 					MsgPopup(
-						Strings[302535920000735--[[Timer delay skipped]]],
-						T(3486, "Mystery")
+						T(302535920000735--[[Timer delay skipped]]),
+						T(3486--[[Mystery]])
 					)
 				end
 
@@ -1250,9 +1247,9 @@ function OnMsg.ClassesPostprocess()
 				title.FXMouseIn = "ActionButtonHover"
 				title.HandleMouse = true
 				title.RolloverTemplate = "Rollover"
-				title.RolloverTitle = Strings[302535920001367--[[Toggles]]]
-				title.RolloverText = Strings[302535920001410--[[Toggle Visibility]]]
-				title.RolloverHint = Translate(608042494285--[[<left_click> Activate]])
+				title.RolloverTitle = T(302535920001367--[[Toggles]])
+				title.RolloverText = T(302535920001410--[[Toggle Visibility]])
+				title.RolloverHint = T(608042494285--[[<left_click> Activate]])
 
 				local toggle = not ChoGGi.Temp.InfopanelMainButVis
 				local toolbar = main_buts[2]
@@ -1303,8 +1300,8 @@ function OnMsg.ClassesPostprocess()
 			if section then
 				section.idIcon.FXMouseIn = "ActionButtonHover"
 				section.idSectionTitle.MouseCursor = "UI/Cursors/Rollover.tga"
-				section.RolloverText = Strings[302535920001410--[[Toggle Visibility]]]
-				section.RolloverHint = Translate(608042494285--[[<left_click> Activate]])
+				section.RolloverText = T(302535920001410--[[Toggle Visibility]])
+				section.RolloverHint = T(608042494285--[[<left_click> Activate]])
 
 				local toggle = not ChoGGi.Temp.InfopanelCheatsVis
 				local toolbar = SetToolbar(section, "XToolBar", toggle)
@@ -1569,7 +1566,7 @@ else
 	OpenExamine(params, {
 		has_params = true,
 		override_title = true,
-		title = ChoGGi.Strings[302535920000069] .. " " .. ChoGGi.Strings[302535920001073]
+		title = T(302535920000069] .. " " .. T(302535920001073]
 			.. ": " .. ChoGGi.ComFuncs.RetName(params[1]),
 	})
 end]] -- title strings: Examine Console

@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local Strings = ChoGGi.Strings
 local testing = ChoGGi.testing
 -- Init.lua
 local TableConcat = ChoGGi.ComFuncs.TableConcat
@@ -1770,9 +1769,9 @@ do -- UpdateDataTables
 		local g_Classes = g_Classes
 		ClassDescendantsList("MysteryBase", function(class)
 			local cls_obj = g_Classes[class]
-			local scenario_name = cls_obj.scenario_name or Strings[302535920000009--[[Missing Scenario Name]]]
-			local display_name = Translate(cls_obj.display_name) or Strings[302535920000010--[[Missing Name]]]
-			local description = Translate(cls_obj.rollover_text) or Strings[302535920000011--[[Missing Description]]]
+			local scenario_name = cls_obj.scenario_name or T(302535920000009--[[Missing Scenario Name]])
+			local display_name = Translate(cls_obj.display_name) or T(302535920000010--[[Missing Name]])
+			local description = Translate(cls_obj.rollover_text) or T(302535920000011--[[Missing Description]])
 
 			local temptable = {
 				class = class,
@@ -2140,25 +2139,25 @@ do -- Rebuildshortcuts
 
 		if DisableECM then
 		-- add a key binding to options to re-enable ECM
-			local name = Translate(754117323318--[[Enable]]) .. " " .. Strings[302535920000002--[[ECM]]]
+			local name = Translate(754117323318--[[Enable]]) .. " " .. Translate(302535920000002--[[ECM]])
 			XShortcutsTarget:AddAction(XAction:new{
 				ActionName = name,
 				ActionId = name,
 				OnAction = function()
 					ChoGGi.UserSettings.DisableECM = false
 					ChoGGi.SettingFuncs.WriteSettings()
-					print(name, ":", Strings[302535920001070--[[Restart to take effect.]]])
+					print(name, ":", Translate(302535920001070--[[Restart to take effect.]]))
 					ChoGGi.ComFuncs.MsgWait(
-						Strings[302535920001070--[[Restart to take effect.]]],
+						T(302535920001070--[[Restart to take effect.]]),
 						name
 					)
 				end,
 				ActionShortcut = "Ctrl-Shift-0",
 				ActionBindable = true,
 			})
-			print(Strings[302535920001411--[["ECM has been disabled.
+			print(Translate(302535920001411--[["ECM has been disabled.
 Use %s to enable it, or change DisableECM to false in %s.
-See the bottom of Gameplay>Controls if you've changed the key binding."]]]
+See the bottom of Gameplay>Controls if you've changed the key binding."]])
 				:format("Ctrl-Shift-0", ConvertToOSPath("AppData/LocalStorage.lua"))
 			)
 		end
@@ -2358,7 +2357,7 @@ function ChoGGi.ComFuncs.ColonistUpdateGender(c, gender)
 
 	if gender == Translate(3490--[[Random]]) then
 		gender = genders[Random(1, 3)]
-	elseif gender == Strings[302535920000800--[[MaleOrFemale]]] then
+	elseif gender == Translate(302535920000800--[[MaleOrFemale]]) then
 		gender = genders[Random(1, 2)]
 	end
 	-- remove all gender traits
@@ -2899,8 +2898,8 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 	function ChoGGi.ComFuncs.ChangeObjectColour(obj, parent, dialog)
 		if not obj or obj and not obj:IsKindOf("ColorizableObject") then
 			MsgPopup(
-				Strings[302535920000015--[[Can't colour %s.]]]:format(RetName(obj)),
-				T(3595, "Color")
+				Translate(302535920000015--[[Can't colour %s.]]):format(RetName(obj)),
+				T(3595--[[Color]])
 			)
 			return
 		end
@@ -2914,21 +2913,21 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 			item_list[c] = {
 				text = text,
 				value = pal[text],
-				hint = Strings[302535920000017--[[Use the colour picker (dbl right-click for instant change).]]],
+				hint = T(302535920000017--[[Use the colour picker (dbl right-click for instant change).]]),
 			}
 			text = "Roughness" .. i
 			c = c + 1
 			item_list[c] = {
 				text = text,
 				value = pal[text],
-				hint = Strings[302535920000018--[[Don't use the colour picker: Numbers range from -128 to 127.]]],
+				hint = T(302535920000018--[[Don't use the colour picker: Numbers range from -128 to 127.]]),
 			}
 			text = "Metallic" .. i
 			c = c + 1
 			item_list[c] = {
 				text = text,
 				value = pal[text],
-				hint = Strings[302535920000018--[[Don't use the colour picker: Numbers range from -128 to 127.]]],
+				hint = T(302535920000018--[[Don't use the colour picker: Numbers range from -128 to 127.]]),
 			}
 		end
 		c = c + 1
@@ -2936,8 +2935,8 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 			text = "X_BaseColor",
 			value = 6579300,
 			obj = obj,
-			hint = Strings[302535920000019--[["Single colour for object (this colour will interact with the other colours).
-	If you want to change the colour of an object you can't with 1-4."]]],
+			hint = T(302535920000019--[["Single colour for object (this colour will interact with the other colours).
+	If you want to change the colour of an object you can't with 1-4."]]),
 		}
 
 		local function CallBackFunc(choice)
@@ -2997,8 +2996,8 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 				end
 
 				MsgPopup(
-					Strings[302535920000020--[[Colour is set on %s]]]:format(RetName(obj)),
-					T(3595, "Color"),
+					Translate(302535920000020--[[Colour is set on %s]]):format(RetName(obj)),
+					T(3595--[[Color]]),
 					{objects = obj}
 				)
 			end
@@ -3007,20 +3006,20 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = Translate(174--[[Color Modifier]]) .. ": " .. RetName(obj),
-			hint = Strings[302535920000022--[["If number is 8421504 then you probably can't change that colour.
+			title = T(174--[[Color Modifier]]) .. ": " .. RetName(obj),
+			hint = T(302535920000022--[["If number is 8421504 then you probably can't change that colour.
 
-You can copy and paste numbers if you want."]]],
+You can copy and paste numbers if you want."]]),
 			parent = dialog,
 			custom_type = 2,
 			checkboxes = {
 				{
-					title = Strings[302535920000023--[[All of type]]],
-					hint = Strings[302535920000024--[[Change all objects of the same type.]]],
+					title = T(302535920000023--[[All of type]]),
+					hint = T(302535920000024--[[Change all objects of the same type.]]),
 				},
 				{
-					title = Strings[302535920000025--[[Default Colour]]],
-					hint = Strings[302535920000026--[[if they're there; resets to default colours.]]],
+					title = T(302535920000025--[[Default Colour]]),
+					hint = T(302535920000026--[[if they're there; resets to default colours.]]),
 				},
 			},
 		}
@@ -3095,8 +3094,8 @@ do -- DeleteObject
 
 			if not obj:CanDemolish() then
 				MsgPopup(
-					Strings[302535920001354--[["<green>%s</green> is a Dome with stuff still in it (crash if deleted)."]]]:format(RetName(obj)),
-					Strings[302535920000489--[["Delete Object(s)"]]]
+					Translate(302535920001354--[["<green>%s</green> is a Dome with stuff still in it (crash if deleted)."]]):format(RetName(obj)),
+					T(302535920000489--[["Delete Object(s)"]])
 				)
 				return
 			end
@@ -3372,8 +3371,8 @@ do -- RetNearestResource/FindNearestResource
 
 		if not IsValid(obj) then
 			MsgPopup(
-				Strings[302535920000027--[[Nothing selected]]],
-				Strings[302535920000028--[[Find Resource]]]
+				T(302535920000027--[[Nothing selected]]),
+				T(302535920000028--[[Find Resource]])
 			)
 			return
 		end
@@ -3406,8 +3405,8 @@ do -- RetNearestResource/FindNearestResource
 					ChoGGi.ComFuncs.AddBlinkyToObj(nearest)
 				else
 					MsgPopup(
-						Strings[302535920000029--[[Error: Cannot find any %s.]]]:format(choice[1].text),
-						T(15, "Resource")
+						Translate(302535920000029--[[Error: Cannot find any %s.]]):format(choice[1].text),
+						T(15--[[Resource]])
 					)
 				end
 
@@ -3417,8 +3416,8 @@ do -- RetNearestResource/FindNearestResource
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = Strings[302535920000031--[[Find Nearest Resource]]] .. ": " .. RetName(obj),
-			hint = Strings[302535920000032--[[Select a resource to find]]],
+			title = T(302535920000031--[[Find Nearest Resource]]) .. ": " .. RetName(obj),
+			hint = T(302535920000032--[[Select a resource to find]]),
 			skip_sort = true,
 			custom_type = 7,
 		}
@@ -3515,8 +3514,8 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj, skip_msg)
 	if not IsValid(obj) then
 		if not skip_msg then
 			MsgPopup(
-				Strings[302535920000027--[[Nothing selected]]],
-				Strings[302535920000968--[[Collisions]]]
+				T(302535920000027--[[Nothing selected]]),
+				T(302535920000968--[[Collisions]])
 			)
 		end
 		return
@@ -3552,8 +3551,8 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj, skip_msg)
 
 	if not skip_msg then
 		MsgPopup(
-			Strings[302535920000969--[[Collisions %s on %s]]]:format(which, RetName(obj)),
-			Strings[302535920000968--[[Collisions]]],
+			Translate(302535920000969--[[Collisions %s on %s]]):format(which, RetName(obj)),
+			T(302535920000968--[[Collisions]]),
 			{objects = obj}
 		)
 	end
@@ -3601,7 +3600,7 @@ do -- AddXTemplate/RemoveXTemplateSections
 	local function AddTemplate(xt, name, pos, list)
 		if not xt or not name or not list then
 			local f = ObjPropertyListToLuaCode
-			print(Strings[302535920001383--[[AddXTemplate borked template name: %s template: %s list: %s]]]:format(name and f(name), template and f(template), list and f(list)))
+			print(Translate(302535920001383--[[AddXTemplate borked template name: %s template: %s list: %s]]):format(name and f(name), template and f(template), list and f(list)))
 			return
 		end
 		local stored_name = "ChoGGi_Template_" .. name
@@ -3709,8 +3708,9 @@ do -- Editor toggle
 
 	function ChoGGi.ComFuncs.Editor_Toggle()
 		if Platform.durango then
-			print(Strings[302535920001574--[[Crashes on XBOX!]]])
-			MsgPopup(Strings[302535920001574--[[Crashes on XBOX!]]])
+			local str = Translate(302535920001574--[[Crashes on XBOX!]])
+			print(str)
+			MsgPopup(str)
 			return
 		end
 
@@ -3753,8 +3753,9 @@ do -- Editor toggle
 
 	function ChoGGi.ComFuncs.TerrainEditor_Toggle()
 		if Platform.durango then
-			print(Strings[302535920001574--[[Crashes on XBOX!]]])
-			MsgPopup(Strings[302535920001574--[[Crashes on XBOX!]]])
+			local str = Translate(302535920001574--[[Crashes on XBOX!]])
+			print(str)
+			MsgPopup(str)
 			return
 		end
 		ChoGGi.ComFuncs.Editor_Toggle()
@@ -3782,8 +3783,9 @@ do -- Editor toggle
 
 	function ChoGGi.ComFuncs.PlaceObjects_Toggle()
 		if Platform.durango then
-			print(Strings[302535920001574--[[Crashes on XBOX!]]])
-			MsgPopup(Strings[302535920001574--[[Crashes on XBOX!]]])
+			local str = Translate(302535920001574--[[Crashes on XBOX!]])
+			print(str)
+			MsgPopup(str)
 			return
 		end
 		ChoGGi.ComFuncs.Editor_Toggle()
@@ -3951,9 +3953,9 @@ function ChoGGi.ComFuncs.DeleteLargeRocks()
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		Translate(6779--[[Warning]]) .. "!\n" .. Strings[302535920001238--[[Removes rocks for that smooth map feel.]]],
+		T(6779--[[Warning]]) .. "!\n" .. T(302535920001238--[[Removes rocks for that smooth map feel.]]),
 		CallBackFunc,
-		Translate(6779--[[Warning]]) .. ": " .. Strings[302535920000855--[[Last chance before deletion!]]]
+		T(6779--[[Warning]]) .. ": " .. T(302535920000855--[[Last chance before deletion!]])
 	)
 end
 
@@ -3966,9 +3968,9 @@ function ChoGGi.ComFuncs.DeleteSmallRocks()
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		Translate(6779--[[Warning]]) .. "!\n" .. Strings[302535920001238--[[Removes rocks for that smooth map feel.]]],
+		T(6779--[[Warning]]) .. "!\n" .. T(302535920001238--[[Removes rocks for that smooth map feel.]]),
 		CallBackFunc,
-		Translate(6779--[[Warning]]) .. ": " ..Strings[302535920000855--[[Last chance before deletion!]]]
+		T(6779--[[Warning]]) .. ": " ..T(302535920000855--[[Last chance before deletion!]])
 	)
 end
 
@@ -4012,8 +4014,8 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 
 	if not obj or obj and not obj:IsKindOf("ColorizableObject") then
 		MsgPopup(
-			Strings[302535920001105--[[Select/mouse over an object (buildings, vehicles, signs, rocky outcrops).]]],
-			T(3595, "Color")
+			T(302535920001105--[[Select/mouse over an object (buildings, vehicles, signs, rocky outcrops).]]),
+			T(3595--[[Color]])
 		)
 		return
 	end
@@ -4031,7 +4033,7 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 			text = " " .. obj.class,
 			value = obj.class,
 			obj = obj,
-			hint = Strings[302535920001106--[[Change main object colours.]]],
+			hint = T(302535920001106--[[Change main object colours.]]),
 		}
 
 		local attaches = GetAllAttaches(obj)
@@ -4044,8 +4046,8 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 					value = a.class,
 					parentobj = obj,
 					obj = a,
-					hint = Strings[302535920001107--[[Change colours of an attached object.]]] .. "\n"
-						.. Strings[302535920000955--[[Handle]]] .. ": " .. (a.handle or ""),
+					hint = T(302535920001107--[[Change colours of an attached object.]]) .. "\n"
+						.. T(302535920000955--[[Handle]]) .. ": " .. (a.handle or ""),
 				}
 			end
 		end
@@ -4053,8 +4055,8 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		items = item_list,
-		title = Translate(174--[[Color Modifier]]) .. ": " .. RetName(obj),
-		hint = Strings[302535920001108--[[Double click to open object/attachment to edit (select to flash object).]]],
+		title = T(174--[[Color Modifier]]) .. ": " .. RetName(obj),
+		hint = T(302535920001108--[[Double click to open object/attachment to edit (select to flash object).]]),
 		custom_type = 1,
 		custom_func = function(sel, dialog)
 			ChoGGi.ComFuncs.ChangeObjectColour(sel[1].obj, sel[1].parentobj, dialog)
@@ -5590,8 +5592,8 @@ do -- path markers
 				end
 
 			else
-				ChoGGi.ComFuncs.OpenInExamineDlg(obj, nil, Strings[302535920000467--[[Path Markers]]])
-				print(Translate(6779--[[Warning]]), ":", Strings[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.]]]:format(RetName(obj)))
+				ChoGGi.ComFuncs.OpenInExamineDlg(obj, nil, T(302535920000467--[[Path Markers]]))
+				print(Translate(6779--[[Warning]]), ":", Translate(302535920000869--[[This %s doesn't have GetPath function, something is probably borked.]]):format(RetName(obj)))
 			end
 		end
 
@@ -5738,8 +5740,8 @@ do -- path markers
 
 		if menu_fired then
 			MsgPopup(
-				Strings[302535920000871--[[Doesn't seem to be an object that moves.]]],
-				Strings[302535920000872--[[Pathing]]],
+				T(302535920000871--[[Doesn't seem to be an object that moves.]]),
+				T(302535920000872--[[Pathing]]),
 				{objects = obj}
 			)
 		end
@@ -5916,21 +5918,26 @@ function ChoGGi.ComFuncs.ReloadLua()
 	if not ModsLoaded then
 		return
 	end
-	-- get list of enabled mods
-	local enabled = table.icopy(ModsLoaded)
-	-- turn off all mods
-	AllModsOff()
-	-- re-enable ecm/lib (or we get black screen of nadda)
-	TurnModOn(ChoGGi.id)
-	TurnModOn(ChoGGi.id_lib)
-	-- reload lua code
-	ModsReloadItems()
-	-- enable disabled mods
-	for i = 1, #enabled do
-		TurnModOn(enabled[i].id)
-	end
-	-- reload lua code
-	ModsReloadItems()
+	CreateRealTimeThread(function()
+		-- get list of enabled mods
+		local enabled = table.icopy(ModsLoaded)
+		-- turn off all mods
+		AllModsOff()
+		-- re-enable ecm/lib (or we get black screen of nadda)
+		TurnModOn(ChoGGi.id)
+		TurnModOn(ChoGGi.id_lib)
+		-- wait for it?
+		WaitDisableAllPDXMods()
+		g_ParadoxModsContextObj = false
+		-- reload lua code
+		ModsReloadItems()
+		-- enable disabled mods
+		for i = 1, #enabled do
+			TurnModOn(enabled[i].id)
+		end
+		-- reload lua code
+		ModsReloadItems()
+	end)
 end
 
 -- needs an indexed list or a label
@@ -6358,7 +6365,7 @@ function ChoGGi.ComFuncs.OpenInListChoice(list)
 	local items_table = type(list_table and list.items) == "table"
 	if not list_table or list_table and not items_table or items_table and #list.items < 1 then
 		print(
-		Strings[302535920001324--[[ECM: OpenInListChoice(list) is blank... This shouldn't happen.]]], "\n", list, "\n",
+		Translate(302535920001324--[[ECM: OpenInListChoice(list) is blank... This shouldn't happen.]]), "\n", list, "\n",
 			list and ValueToLuaCode(list)
 		)
 		return
@@ -6663,9 +6670,9 @@ do -- ExamineEntSpots (Object>Entity Spots)
 		c = BuildSurf(c, list, obj, "collision", 0)
 
 		-- opener
-		table.insert(list, 1, Strings[302535920001068--[["The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one).
+		table.insert(list, 1, Translate(302535920001068--[["The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one).
 Attachment bspheres are off (x and y are; z and rotate aren't).
-Some of the file names are guesses. <anim> is a guess, try removing it."]]]
+Some of the file names are guesses. <anim> is a guess, try removing it."]])
 			.. [[
 
 
@@ -6682,7 +6689,7 @@ Some of the file names are guesses. <anim> is a guess, try removing it."]]]
 			ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 				parent = parent_or_ret,
 				text = TableConcat(list, "\n"),
-				title = Strings[302535920000235--[[Entity Spots]]] .. ": " .. RetName(obj),
+				title = T(302535920000235--[[Entity Spots]]) .. ": " .. RetName(obj),
 			}
 		end
 
@@ -6870,7 +6877,7 @@ do -- GetMaterialProperties
 		ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 			parent = ex_dlg,
 			text = RetEntityMTLFile(mat),
-			title = Strings[302535920001458--[[Material Properties]]] .. ": " .. mat.__mtl,
+			title = T(302535920001458--[[Material Properties]]) .. ": " .. mat.__mtl,
 		}
 	end
 
@@ -6905,8 +6912,8 @@ do -- GetMaterialProperties
 				mat.__lod = li
 				mat[1] = {
 					ChoGGi_AddHyperLink = true,
-					hint = Strings[302535920001174--[[Show an example .mtl file for this material (not complete).]]],
-					name = Strings[302535920001177--[[Generate .mtl]]],
+					hint = T(302535920001174--[[Show an example .mtl file for this material (not complete).]]),
+					name = T(302535920001177--[[Generate .mtl]]),
 					func = function(ex_dlg)
 						ExamineExportMat(ex_dlg, mat)
 					end,
@@ -6954,7 +6961,7 @@ do -- GetMaterialProperties
 		if parent_or_ret == true then
 			return materials
 		else
-			ChoGGi.ComFuncs.OpenInExamineDlg(materials, parent_or_ret, Strings[302535920001458--[[Material Properties]]])
+			ChoGGi.ComFuncs.OpenInExamineDlg(materials, parent_or_ret, T(302535920001458--[[Material Properties]]))
 		end
 
 	end
@@ -7466,7 +7473,7 @@ do -- ObjFlagsList
 				else
 					flags_table[f .. " (" .. mask .. ")"] = {
 						ChoGGi_AddHyperLink = true,
-						hint = Strings[302535920001069--[[Toggle Boolean]]],
+						hint = T(302535920001069--[[Toggle Boolean]]),
 						name = tostring(flagged),
 						colour = flagged and us.ExamineColourBool or us.ExamineColourBoolFalse,
 						func = function(ex_dlg, _, list_obj)
@@ -7559,7 +7566,7 @@ function ChoGGi.ComFuncs.SetAnimState(obj)
 		local state = states_str[i]
 		local idx = states_num[i]
 		item_list[i] = {
-			text = Translate(1000037--[[Name]]) .. ": " .. state .. ", " .. Strings[302535920000858--[[Index]]] .. ": " .. idx,
+			text = T(1000037--[[Name]]) .. ": " .. state .. ", " .. T(302535920000858--[[Index]]) .. ": " .. idx,
 			value = state,
 		}
 	end
@@ -7578,7 +7585,7 @@ function ChoGGi.ComFuncs.SetAnimState(obj)
 			obj:SetState(value)
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.text),
-				Strings[302535920000859--[[Anim State]]]
+				Translate(302535920000859--[[Anim State]])
 			)
 		end
 	end
@@ -7586,8 +7593,8 @@ function ChoGGi.ComFuncs.SetAnimState(obj)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = Strings[302535920000860--[[Set Anim State]]],
-		hint = Strings[302535920000861--[[Current State: %s]]]:format(obj:GetState()),
+		title = Translate(302535920000860--[[Set Anim State]]),
+		hint = Translate(302535920000861--[[Current State: %s]]):format(obj:GetState()),
 		custom_type = 7,
 	}
 end
@@ -7729,7 +7736,7 @@ function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
 	if ret then
 		return textures
 	end
-	ChoGGi.ComFuncs.OpenInExamineDlg(textures, nil, Strings[302535920001181--[[Used Terrain Textures]]])
+	ChoGGi.ComFuncs.OpenInExamineDlg(textures, nil, T(302535920001181--[[Used Terrain Textures]]))
 end
 
 function ChoGGi.ComFuncs.RetMapType(city, map_id)

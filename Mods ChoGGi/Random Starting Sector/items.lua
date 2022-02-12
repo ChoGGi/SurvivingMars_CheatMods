@@ -9,7 +9,7 @@ return {
 If no sector has enough than return the one with the most.
 Set both to 0 for random (how it used to work).
 ]]),
-		"DefaultValue", 4,
+		"DefaultValue", 0,
 		"MinValue", 0,
 		"MaxValue", 50,
 	}),
@@ -21,7 +21,7 @@ Set both to 0 for random (how it used to work).
 If no sector has enough than return the one with the most.
 Set both to 0 for random (how it used to work).
 ]]),
-		"DefaultValue", 2,
+		"DefaultValue", 0,
 		"MinValue", 0,
 		"MaxValue", 10,
 	}),

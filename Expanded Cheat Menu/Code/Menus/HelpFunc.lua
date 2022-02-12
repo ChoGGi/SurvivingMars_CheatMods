@@ -275,7 +275,7 @@ do -- ModUpload
 				end
 			end
 
-			-- needed for something?
+			-- needed for paradox upload? (or both?)
 			if not mod.saved then
 				mod.saved = 0
 			end
@@ -284,6 +284,9 @@ do -- ModUpload
 			if not test then
 				if steam_upload then
 					result, err = Steam_Upload(nil, mod, mod_params)
+					if testing then
+						print("Steam upload", mod.title)
+					end
 				end
 
 				local org_mod_description = mod.description
@@ -324,10 +327,12 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 					mod.description = mod.description:gsub("\n", "<br>"):gsub("%[b%]", ""):gsub("%[%/b%]", "")
 
 					result, err = PDX_Upload(nil, mod, mod_params)
-				end
-
+					if testing then
+						print("Paradox upload", mod.title)
+					end
+				end -- para upload
 				mod.description = org_mod_description
-			end
+			end -- not test
 		end
 
 		-- uploaded or failed?
@@ -385,7 +390,7 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 			end
 
 			if steam_upload and para_upload then
-				print(mod.title, ":<color ChoGGi_orange>",
+				print(mod.title, ":\n<color ChoGGi_orange>",
 					Translate(1000021--[[Steam ID]]), "</color>:", steam_item_id,
 					"\n<color ChoGGi_orange>", Translate(id_str), "</color>:", para_item_id
 				)

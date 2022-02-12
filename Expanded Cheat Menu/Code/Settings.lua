@@ -10,24 +10,23 @@ local SaveLocalStorage = SaveLocalStorage
 local ThreadLockKey = ThreadLockKey
 local ThreadUnlockKey = ThreadUnlockKey
 
--- used for loading/saving settings
-local function PrintError(err)
-	local err_str = Strings[302535920000000--[[Expanded Cheat Menu]]] .. ": " .. Strings[302535920000243--[[Problem saving settings! Error: %s]]]:format(err)
-	if ChoGGi.Temp.GameLoaded then
-		print(err_str)
-	else
-		ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = err_str
-	end
-end
-
---~ local Translate = ChoGGi.ComFuncs.Translate
-local Strings = ChoGGi.Strings
+local Translate = ChoGGi.ComFuncs.Translate
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
 local AsyncFileToString = not blacklist and AsyncFileToString
 local AsyncCopyFile = not blacklist and AsyncCopyFile
 local AsyncStringToFile = not blacklist and AsyncStringToFile
+
+-- used for loading/saving settings
+local function PrintError(err)
+	local err_str = T(302535920000000--[[Expanded Cheat Menu]]) .. ": " .. Translate(302535920000243--[[Problem saving settings! Error: %s]]):format(err)
+	if ChoGGi.Temp.GameLoaded then
+		print(err_str)
+	else
+		ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = err_str
+	end
+end
 
 -- stores defaults
 ChoGGi.Defaults = {
@@ -212,7 +211,7 @@ function ChoGGi.SettingFuncs.WriteSettingsAdmin(settings)
 	ThreadUnlockKey(ChoGGi.settings_file)
 
 	if err then
-		print(Strings[302535920000006--[[Failed to save settings to %s : %s]]]:format(
+		print(Translate(302535920000006--[[Failed to save settings to %s : %s]]):format(
 			ChoGGi.settings_file and ConvertToOSPath(ChoGGi.settings_file) or ChoGGi.settings_file,
 			err
 		))

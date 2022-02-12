@@ -11,7 +11,6 @@ end
 local Random = ChoGGi.ComFuncs.Random
 --~ local RetName = ChoGGi.ComFuncs.RetName
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
-local Strings = ChoGGi.Strings
 
 local T = T
 local box, point = box, point
@@ -272,7 +271,7 @@ DefineClass.ChoGGi_XCloseButton = {
 	HAlign = "right",
 	Margins = box(0, 0, 2, 0),
 	RolloverTitle = T(1011--[[Close]]),
-	RolloverText = Strings[302535920000074--[[Cancel without changing anything.]]],
+	RolloverText = T(302535920000074--[[Cancel without changing anything.]]),
 }
 
 DefineClass.ChoGGi_XConsoleButton = {
@@ -671,8 +670,8 @@ function ChoGGi_XWindow:AddImageButton(UIScale)
 		self.idCaptionImage = ChoGGi_XImage:new({
 			Id = "idCaptionImage",
 			Dock = "left",
-			RolloverTitle = Strings[302535920000093--[[Go to Obj]]],
-			RolloverText = Strings[302535920000094--[[View/select object on map.]]],
+			RolloverTitle = T(302535920000093--[[Go to Obj]]),
+			RolloverText = T(302535920000094--[[View/select object on map.]]),
 			RolloverHint = T(608042494285--[[<left_click> Activate]]),
 			OnMouseButtonDown = self.idCaptionImageOnMouseButtonDown,
 			HandleMouse = true,
@@ -907,9 +906,9 @@ function ChoGGi_XWindow:PostInit(parent, pt, title_skip)
 		local ok = ""
 		-- 1 hides the ok/cancel buttons, and it just looks weird for the colour Modifier
 		if is_list and self.custom_type ~= 1 then
-			ok = Strings[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, and probably double left-clicking <left_click>)."]]] .. "\n\n"
+			ok = T(302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, and probably double left-clicking <left_click>)."]]) .. "\n\n"
 		end
-		local str = Strings[302535920001518--[[Double-click <left_click> title to rollup into the title bar.]]]
+		local str = T(302535920001518--[[Double-click <left_click> title to rollup into the title bar.]])
 		if move.RolloverText == "" then
 			move.RolloverText = ok .. str
 		else

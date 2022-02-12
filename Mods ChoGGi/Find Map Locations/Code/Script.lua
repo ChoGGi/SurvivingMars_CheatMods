@@ -7,8 +7,6 @@ local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 
-local Strings = ChoGGi.Strings
-
 local mod_BreakthroughCount
 
 local function ModOptions(id)
@@ -134,8 +132,8 @@ function ChoGGi_VLI_MapInfoDlg:Init(parent, context)
 		Dock = "left",
 		Text = T(10123, "Search"),
 		Background = g_Classes.ChoGGi_XButton.bg_green,
-		RolloverText = Strings[302535920001303--[[Search for text within %s.
-Leave blank to skip search box.]]]:format(Translate(self.title)),
+		RolloverText = Translate(302535920001303--[[Search for text within %s.
+Leave blank to skip search box.]]):format(Translate(self.title)),
 		Margins = box(6, 0, 0, 0),
 		OnPress = self.FindText,
 	}, self.idTopArea)
@@ -299,7 +297,7 @@ function ChoGGi_VLI_MapInfoDlg:AddSearchBox(input_type)
 		id = "idSearch"
 		str_roll = T(302535920011932, [[Search for text in map data.
 Leave blank to skip search box.]])
-		str_hint = Strings[302535920001306--[[Enter text to find]]]
+		str_hint = T(302535920001306--[[Enter text to find]])
 	elseif input_type == "rem" then
 		area = "idRemTextArea"
 		count = "input_box_count_rem"

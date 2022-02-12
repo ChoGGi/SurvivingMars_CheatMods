@@ -1,3 +1,6 @@
+v0.6
+Hopeful log spam.
+
 v0.5
 Added mod option to remember skin.
 
