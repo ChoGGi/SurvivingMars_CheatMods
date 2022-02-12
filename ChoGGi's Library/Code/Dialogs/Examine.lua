@@ -565,8 +565,8 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 			Id = "idExecCode",
 			RolloverText = Translate(302535920001515--[["Press <green>%s</green> to execute code.
 Use <green>%s</green>/<green>%s</green> to browse console history."]]):format(
-				Translate(1000447--[[Enter]]), Translate(1000458--[[Up]]),
-				Translate(1000460--[[Down]])
+				T(1000447--[[Enter]]), T(1000458--[[Up]]),
+				T(1000460--[[Down]])
 			)
 				.. "\n" .. T(302535920001517--[[Use <green>o</green> as a reference to the examined object: <yellow>IsValid(</yellow><green>o</green><yellow>)</yellow>.]]),
 			Hint = T(302535920001516--[[o = examined object]]),

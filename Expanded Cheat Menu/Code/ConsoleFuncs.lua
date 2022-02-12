@@ -791,7 +791,7 @@ function ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(dlg)
 	-- check for any folders with lua files in ECM Scripts
 	local folders = ChoGGi.ComFuncs.RetFoldersInFolder(ChoGGi.scripts)
 	if folders then
-		local hint_str = T(302535920001159--[[Any .lua files in %s.]])
+		local hint_str = Translate(302535920001159--[[Any .lua files in %s.]])
 		for i = 1, #folders do
 			local folder = folders[i]
 			if RetFilesInFolder(folder.path, ".lua") then
