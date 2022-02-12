@@ -284,7 +284,7 @@ do -- ModUpload
 				if steam_upload then
 					result, err = Steam_Upload(nil, mod, mod_params)
 					if testing then
-						print("Steam upload", mod.title)
+						print("<color ChoGGi_yellow>Steam upload</color>", mod.title)
 					end
 				end
 
@@ -294,15 +294,15 @@ do -- ModUpload
 					-- DESC FOR PARA
 					-- tell paradox users if it needs my library
 					local needs_lib = table.find(mod.dependencies, "id", ChoGGi.id_lib)
-						and T(302535920001634--[["This mod requires my library mod (ChoGGi's Library) < use space on the end when searching for it."]]) .. "\n\n"
+						and Translate(302535920001634--[["This mod requires my library mod (ChoGGi's Library) < use space on the end when searching for it."]]) .. "\n\n"
 						or ""
 
 					-- add some text to ECM description to hopefully reduce people reporting the mod.
 					if testing then
 
 						if mod.id == ChoGGi.id then
-							mod.description = T(302535920000990--[["You need to have a mouse to use this mod."]]) .. "\n"
-								.. needs_lib .. T(302535920000887--[["If you get a disabled content restrictions error: It's on Paradox to review/restore it (bug them not me).
+							mod.description = Translate(302535920000990--[["You need to have a mouse to use this mod."]]) .. "\n"
+								.. needs_lib .. Translate(302535920000887--[["If you get a disabled content restrictions error: It's on Paradox to review/restore it (bug them not me).
 
 If you have any issues with this mod then please send me a bug report instead of reporting the mod.
 https://github.com/ChoGGi/SurvivingMars_CheatMods
@@ -310,7 +310,7 @@ https://discord.gg/bkdjEZU
 https://steamcommunity.com/id/ChoGGi/
 SurvivingMarsMods@choggi.org"]]) .. "\n\n\n" .. mod.description
 						else
-							mod.description = needs_lib .. T(302535920000887--[["If you get a disabled content restrictions error: It's on Paradox to review/restore it (bug them not me).
+							mod.description = needs_lib .. Translate(302535920000887--[["If you get a disabled content restrictions error: It's on Paradox to review/restore it (bug them not me).
 
 If you have any issues with this mod then please send me a bug report instead of reporting the mod.
 https://github.com/ChoGGi/SurvivingMars_CheatMods
@@ -327,7 +327,7 @@ SurvivingMarsMods@choggi.org"]]) .. "\n\n\n" .. mod.description
 
 					result, err = PDX_Upload(nil, mod, mod_params)
 					if testing then
-						print("Paradox upload", mod.title)
+						print("<color ChoGGi_yellow>Paradox upload</color>", mod.title)
 					end
 				end -- para upload
 				mod.description = org_mod_description
