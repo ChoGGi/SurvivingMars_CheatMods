@@ -1,6 +1,11 @@
 ## ECM Changelog
 
 ## v17.9 (Unreleased)
+### Changed:
+- Limited Export CSV>Map Data (Breakthroughs) to 12 (safe number).
+- Mod Upload will upload to steam/paradox.
+- Holding down Entity Spawner key will only open one dialog.
+
 ### Fixed:
 - SetRoverWorkRadius/SetDroneHubWorkRadius.
 

@@ -5,6 +5,8 @@ if not g_AvailableDlc.gagarin then
 	return
 end
 
+local has_picard = g_AvailableDlc.picard
+
 local MapsForEach = MapsForEach
 local IsKindOf = IsKindOf
 local GetRealm = GetRealm
@@ -77,11 +79,18 @@ OnMsg.ApplyModOptions = ModOptions
 
 -- bit of copy pasta from transport code
 function RCDriller:GetAutoGatherDeposits()
-  return {
-    "SubsurfaceDepositPreciousMinerals",
-    "SubsurfaceDepositPreciousMetals",
-    "SubsurfaceDepositMetals",
-  }
+	if has_picard then
+		return {
+			"SubsurfaceDepositPreciousMinerals",
+			"SubsurfaceDepositPreciousMetals",
+			"SubsurfaceDepositMetals",
+		}
+	else
+		return {
+			"SubsurfaceDepositPreciousMetals",
+			"SubsurfaceDepositMetals",
+		}
+	end
 end
 
 function RCDriller:Automation_Gather()

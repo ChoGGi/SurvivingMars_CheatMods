@@ -1,1 +1,4 @@
 add asteroid drones
+function s:GetSkins()
+		return {  s.environment_entity.base,s.environment_entity.Asteroid,}, { self.palette, self.palette, }
+end

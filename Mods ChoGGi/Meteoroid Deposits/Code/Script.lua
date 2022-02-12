@@ -169,7 +169,7 @@ function OnMsg.NewHour()
 		SubsurfaceDepositMetals = mod_MetalsThreshold,
 		SubsurfaceDepositPreciousMetals = mod_RareMetalsThreshold,
 	}
-	if mod_ExoticMinerals then
+	if mod_ExoticMinerals and g_AccessibleDlc.picard then
 		deposits.SubsurfaceDepositPreciousMinerals = mod_ExoticMineralsThreshold
 	end
 

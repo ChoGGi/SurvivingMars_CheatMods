@@ -1,3 +1,6 @@
+v0.8
+Log spam.
+
 v0.7
 Fixed extractors not showing up in build menu...
 

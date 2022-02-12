@@ -419,6 +419,7 @@ Actions[c] = {ActionName = Strings[302535920000475--[[Entity Spawner]]],
 	OnAction = ChoGGi.ComFuncs.EntitySpawner,
 	ActionShortcut = "Ctrl-Shift-S",
 	ActionBindable = true,
+	IgnoreRepeated = true,
 }
 
 c = c + 1

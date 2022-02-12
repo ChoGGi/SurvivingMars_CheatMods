@@ -158,20 +158,22 @@ do -- MapData
 	ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
 		setting_breakthroughs = true,
 		setting_skip_csv = true,
+		setting_limit_count = 12,
 	})
 	]]
 
 	function ChoGGi.ComFuncs.ExportMapDataToCSV(action)
-		local breakthroughs
-		local limit_count
-		local skip_csv = action.setting_skip_csv
+		local limit_count, skip_csv, breakthroughs
 		-- fired from action menu
 		if action and IsKindOf(action, "XAction") then
 			if action.setting_breakthroughs then
 				breakthroughs = true
 			end
 			if action.setting_limit_count then
-				limit_count = setting_limit_count
+				limit_count = action.setting_limit_count
+			end
+			if action.setting_skip_csv then
+				skip_csv = action.setting_skip_csv
 			end
 		end
 
@@ -271,7 +273,8 @@ do -- MapData
 			if breakthroughs then
 				local b_str = Translate(11451--[[Breakthrough]])
 				local c = #csv_columns
-				for i = 1, (const.BreakThroughTechsPerGame + Consts.PlanetaryBreakthroughCount) do
+--~ 				for i = 1, (const.BreakThroughTechsPerGame + Consts.PlanetaryBreakthroughCount) do
+				for i = 1, 12 do
 					c = c + 1
 					csv_columns[c] = {"break" .. i, b_str .. " " .. i}
 				end
