@@ -205,7 +205,7 @@ function ChoGGi_DlgListChoice:Init(parent, context)
 			RolloverText = T(302535920000806--[["Only show items containing this text.
 
 	Press Enter to show all items."]]),
-			Hint = T(302535920000068--[[Filter Items]]),
+			Hint = Translate(302535920000068--[[Filter Items]]),
 			OnTextChanged = self.FilterText,
 			OnKbdKeyDown = self.idFilter_OnKbdKeyDown
 		}, self.idFilterArea)
@@ -226,7 +226,7 @@ The listitem <color 0 200 0>must</color> be selected for this to take effect (it
 It won't be visible unless the ""%s"" checkbox is enabled.
 
 Warning: Entering the wrong value may crash the game or otherwise cause issues."]]):format(T(302535920000078--[[Custom Value]])),
-			Hint = T(302535920000078--[[Custom Value]]),
+			Hint = Translate(302535920000078--[[Custom Value]]),
 			OnKbdKeyDown = self.idEditValue_OnKbdKeyDown
 		}, self.idEditArea)
 
@@ -260,7 +260,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		Id = "idOK",
 		Dock = "left",
 		MinWidth = 50,
-		Text = T(6878, "OK"),
+		Text = T(6878--[[OK]]),
 		Background = g_Classes.ChoGGi_XButton.bg_green,
 		RolloverText = T(302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, or <left_click>*2 a list item)."]]),
 		OnPress = self.BuildReturnList
@@ -270,7 +270,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		Id = "idCancel",
 		Dock = "right",
 		MinWidth = 70,
-		Text = T(6879, "Cancel"),
+		Text = T(6879--[[Cancel]]),
 		Background = g_Classes.ChoGGi_XButton.bg_red,
 		RolloverText = T(302535920000074--[[Cancel without changing anything.]]),
 		OnPress = self.idCloseX.OnPress,
@@ -378,9 +378,9 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	if self.list.multisel then
 		-- If it's a multiselect then add a hint
 		if self.list.hint then
-			self.list.hint = self.list.hint .. "\n\n" .. T(302535920001167--[[Use Ctrl/Shift for multiple selection.]])
+			self.list.hint = self.list.hint .. "\n\n" .. Translate(302535920001167--[[Use Ctrl/Shift for multiple selection.]])
 		else
-			self.list.hint = T(302535920001167--[[Use Ctrl/Shift for multiple selection.]])
+			self.list.hint = Translate(302535920001167--[[Use Ctrl/Shift for multiple selection.]])
 		end
 
 		self.idList.MultipleSelection = true
@@ -394,15 +394,15 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 
 	if self.custom_type == 7 or self.custom_type == 9 then
 		if self.list.hint then
-			self.list.hint = self.list.hint .. "\n\n" .. T(302535920001341--[[Double-click to apply without closing list.]])
+			self.list.hint = self.list.hint .. "\n\n" .. Translate(302535920001341--[[Double-click to apply without closing list.]])
 		else
-			self.list.hint = T(302535920001341--[[Double-click to apply without closing list.]])
+			self.list.hint = Translate(302535920001341--[[Double-click to apply without closing list.]])
 		end
 	elseif self.custom_type == 8 then
 		if self.list.hint then
-			self.list.hint = self.list.hint .. "\n\n" .. T(302535920001371--[["Double-click to apply and close list, double right-click to apply without closing list."]])
+			self.list.hint = self.list.hint .. "\n\n" .. Translate(302535920001371--[["Double-click to apply and close list, double right-click to apply without closing list."]])
 		else
-			self.list.hint = T(302535920001371--[["Double-click to apply and close list, double right-click to apply without closing list."]])
+			self.list.hint = Translate(302535920001371--[["Double-click to apply and close list, double right-click to apply without closing list."]])
 		end
 	end
 
@@ -588,7 +588,7 @@ function ChoGGi_DlgListChoice:idEditValueOnTextChanged()
 			local item = self.items[#self.items]
 			item.text = name_str
 			item.value = value
-			item.hint = T(302535920000079--[[* Use this custom value]])
+			item.hint = Translate(302535920000079--[[* Use this custom value]])
 			local listitem = self.idList[#self.idList]
 			listitem.RolloverText = T(302535920000079--[[* Use this custom value]])
 			listitem.RolloverTitle = item.text

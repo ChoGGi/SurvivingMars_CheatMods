@@ -357,7 +357,7 @@ Press once to clear this examine, again to clear all."]]),
 		self.idButDeleteObj = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButDeleteObj",
 			Image = "CommonAssets/UI/Menu/delete_objects.tga",
-			RolloverTitle = T(502364928914, "Delete"),
+			RolloverTitle = T(502364928914--[[Delete]]),
 			RolloverText = Translate(302535920000414--[[Are you sure you wish to delete <color ChoGGi_red>%s</color>?]]):format(self.name),
 			OnPress = self.idButDeleteObj_OnPress,
 		}, self.idToolbarButtons)
@@ -389,7 +389,7 @@ Press once to clear this examine, again to clear all."]]),
 		self.idButDeleteAll = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButDeleteAll",
 			Image = "CommonAssets/UI/Menu/UnlockCollection.tga",
-			RolloverTitle = T(3768, "Destroy all?"),
+			RolloverTitle = T(3768--[[Destroy all?]]),
 			RolloverText = T(302535920000059--[[Destroy all objects in objlist!]]),
 			OnPress = self.idButDeleteAll_OnPress,
 		}, self.idToolbarButtons)
@@ -449,23 +449,23 @@ Press once to clear this examine, again to clear all."]]),
 		self.idShowAllValues = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idShowAllValues",
 			MinWidth = 0,
-			Text = T(4493, "All"),
+			Text = T(4493--[[All]]),
 			RolloverText = T(302535920001391--[[Show all values: getmetatable(obj).]]),
 			OnChange = self.idShowAllValues_OnChange,
 		}, self.idToolbarButtonsRight)
 		--
 		self.idSortDir = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idSortDir",
-			Text = T(10124, "Sort"),
+			Text = T(10124--[[Sort]]),
 			RolloverText = T(302535920001248--[[Sort normally or backwards.]]),
 			OnChange = self.idSortDir_OnChange,
 		}, self.idToolbarButtonsRight)
 		--
 		self.idChildLock = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idChildLock",
-			Text = T(4775, "Child"),
-			RolloverTitle = T(4775, "Child") .. " " .. T(254324150154, "Lock"),
-			RolloverText = Translate(302535920000920--[[Examining objs from this dlg will <color ChoGGi_red>%s</color>examine them all in a single dlg.]]):format(Translate(3695, "NOT") .. " "),
+			Text = T(4775--[[Child]]),
+			RolloverTitle = T(4775--[[Child]]) .. " " .. T(254324150154--[[Lock]]),
+			RolloverText = Translate(302535920000920--[[Examining objs from this dlg will <color ChoGGi_red>%s</color>examine them all in a single dlg.]]):format(T(3695--[[NOT]]) .. " "),
 			OnChange = self.idChildLock_OnChange,
 		}, self.idToolbarButtonsRight)
 		--
@@ -481,13 +481,13 @@ Press once to clear this examine, again to clear all."]]),
 		self.idSearchText = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idSearchText",
 			RolloverText = T(302535920000043--[["Press <color 0 200 0>Enter</color> to scroll to next found text, <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text, <color 0 200 0>Arrow Keys</color> to scroll to each end."]]),
-			Hint = Translate(10123, "Search"),
+			Hint = Translate(10123--[[Search]]),
 			OnKbdKeyDown = self.idSearchText_OnKbdKeyDown,
 		}, self.idSearchArea)
 		--
 		self.idSearch = g_Classes.ChoGGi_XButton:new({
 			Id = "idSearch",
-			Text = T(10123, "Search"),
+			Text = T(10123--[[Search]]),
 			Dock = "right",
 			RolloverAnchor = "right",
 			RolloverHint = T(302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"]]),
@@ -567,9 +567,9 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 Use <green>%s</green>/<green>%s</green> to browse console history."]]):format(
 				T(1000447--[[Enter]]), T(1000458--[[Up]]),
 				T(1000460--[[Down]])
-			)
-				.. "\n" .. T(302535920001517--[[Use <green>o</green> as a reference to the examined object: <yellow>IsValid(</yellow><green>o</green><yellow>)</yellow>.]]),
-			Hint = T(302535920001516--[[o = examined object]]),
+			) .. "\n" ..
+				T(302535920001517--[[Use <green>o</green> as a reference to the examined object: <yellow>IsValid(</yellow><green>o</green><yellow>)</yellow>.]]),
+			Hint = Translate(302535920001516--[[o = examined object]]),
 			OnKbdKeyDown = self.idExecCode_OnKbdKeyDown,
 		}, self.idExecCodeArea)
 		--

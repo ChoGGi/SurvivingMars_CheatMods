@@ -21,11 +21,12 @@ local function StartupCode()
 	local objs = UIColony:GetCityLabels("TerrainDepositMarker")
 	for i = 1, #objs do
 		local obj = objs[i]
+		local city = Cities[GetMapID(obj)]
 
 		for j = 1, mod_MaxDeposits do
 			local pos = GetRandomPassableAround(
 				obj,
-				8000, 500, obj.city or Cities[GetMapID(obj)]
+				8000, 500, city
 			)
 
 			local deposit = SurfaceDepositConcrete:new()
@@ -35,10 +36,15 @@ local function StartupCode()
 
 	end
 
-
 	g_ChoGGi_SurfaceConcrete_Spawned = true
 end
-OnMsg.CityStart = StartupCode
+function OnMsg.CityStart()
+	CreateRealTimeThread(function()
+		WaitMsg("DepositsSpawned")
+		StartupCode()
+	end)
+end
+
 OnMsg.LoadGame = StartupCode
 
 local function ModOptions(id)

@@ -627,7 +627,7 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 				if obj.destroyed or obj.is_malfunctioned then
 					action.ActionId = ""
 				else
-					SetHint(action, Translate(8039--[[Trait: Idiot (can cause a malfunction)]]) .. "...\n" .. Translate(53--[[Malfunction]]) .. "?")
+					SetHint(action, T(8039--[[Trait: Idiot (can cause a malfunction)]]) .. "...\n" .. T(53--[[Malfunction]]) .. "?")
 				end
 
 			elseif aid == "Unfreeze" then
@@ -652,15 +652,15 @@ If this isn't a dumping site then waste rock will not be emptied.]]))
 
 			elseif aid == "Break" then
 				if obj:IsKindOf("ElectricityGridElement") then
-					SetHint(action, Translate(3890--[[Cable Fault]]))
+					SetHint(action, T(3890--[[Cable Fault]]))
 				else
-					SetHint(action, Translate(3891--[[Pipe Leak]]))
+					SetHint(action, T(3891--[[Pipe Leak]]))
 				end
 			elseif aid == "Repair" then
 				if obj:IsKindOf("ElectricityGridElement") then
-					SetHint(action, Translate(6924--[[Repair]]) .. " " .. Translate(3890--[[Cable Fault]]))
+					SetHint(action, T(6924--[[Repair]]) .. " " .. T(3890--[[Cable Fault]]))
 				else
-					SetHint(action, Translate(6924--[[Repair]]) .. " " .. Translate(3891--[[Pipe Leak]]))
+					SetHint(action, T(6924--[[Repair]]) .. " " .. T(3891--[[Pipe Leak]]))
 				end
 			-- no more elseif
 			end

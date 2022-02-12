@@ -1566,7 +1566,7 @@ else
 	OpenExamine(params, {
 		has_params = true,
 		override_title = true,
-		title = T(302535920000069] .. " " .. T(302535920001073]
+		title = T(302535920000069) .. " " .. T(302535920001073)
 			.. ": " .. ChoGGi.ComFuncs.RetName(params[1]),
 	})
 end]] -- title strings: Examine Console

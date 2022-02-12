@@ -1,1 +1,2 @@
 v0.2
+Fired too soon on new game (thanks McKaby).

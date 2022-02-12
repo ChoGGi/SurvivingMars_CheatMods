@@ -143,7 +143,7 @@ function ChoGGi_Dlg3DManipulator:Init(parent, context)
 		self.idAmount = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idAmount",
 			RolloverText = Translate(302535920000389--[[The amount used when a button is pressed (default: %s).]]):format(self.default_amount),
-			Hint = T(1000100--[[Amount]]),
+			Hint = Translate(1000100--[[Amount]]),
 			HAlign = "right",
 			MinWidth = 200,
 			Margins = box(0, 0, 4, 0),
@@ -294,7 +294,7 @@ function ChoGGi_Dlg3DManipulator:Init(parent, context)
 --~ 	self.idEditValue = g_Classes.ChoGGi_XTextInput:new({
 --~ 		Id = "idEditValue",
 --~ 		RolloverText = T(302535920000102--[[Use to change values of selected list item.]]),
---~ 		Hint = T(302535920000103--[[Edit Value]]),
+--~ 		Hint = Translate(302535920000103--[[Edit Value]]),
 --~ 		OnTextChanged = self.idEditValue_OnTextChanged,
 --~ 	}, self.idEditArea)
 
