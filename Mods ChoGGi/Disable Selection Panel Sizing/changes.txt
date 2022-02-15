@@ -1,3 +1,6 @@
+v0.7
+Hopefully fixed it hiding map switch/hud icons.
+
 v0.6
 Updated code to match ECM.
 

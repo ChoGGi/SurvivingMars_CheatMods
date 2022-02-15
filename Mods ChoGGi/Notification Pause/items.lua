@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local table = table
+local PlaceObj = PlaceObj
 local T = T
 
 -- build sorted list of all notifications

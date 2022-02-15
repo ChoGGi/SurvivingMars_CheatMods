@@ -21,30 +21,33 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
--- causes issues with loading new game (freeze)
+-- Causes issues with loading new game (freeze)
 local disable_pause = true
 local function StartupCode()
-	disable_pause = nil
+	disable_pause = false
 end
-
 OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode
 
-local function PauseGame(id, func, ...)
-	if not disable_pause and lookup_pauses[id] and not table.find(g_ActiveOnScreenNotifications, 1, id) then
+local function PauseGame(id, callback, params, func, ...)
+	if not disable_pause and lookup_pauses[id]
+		-- Don't pause for "0" notifications (eg: Buildings Not Working 0)
+		and (not params or params and params.count > 0)
+		and not table.find(g_ActiveOnScreenNotifications, 1, id)
+	then
 		UIColony:SetGameSpeed(0)
 		UISpeedState = "pause"
 	end
-	return func(id, ...)
+	return func(id, callback, params, ...)
 end
 
--- pause when new notif happens
+-- Pause when new notif happens
 local ChoOrig_AddOnScreenNotification = AddOnScreenNotification
-function AddOnScreenNotification(id, ...)
-	return PauseGame(id, ChoOrig_AddOnScreenNotification, ...)
+function AddOnScreenNotification(id, callback, params, ...)
+	return PauseGame(id, callback, params, ChoOrig_AddOnScreenNotification, ...)
 end
 
 local ChoOrig_AddCustomOnScreenNotification = AddCustomOnScreenNotification
-function AddCustomOnScreenNotification(id, ...)
-	return PauseGame(id, ChoOrig_AddCustomOnScreenNotification, ...)
+function AddCustomOnScreenNotification(id, callback, params, ...)
+	return PauseGame(id, callback, params, ChoOrig_AddCustomOnScreenNotification, ...)
 end

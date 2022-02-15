@@ -5,7 +5,7 @@ if LuaRevision > 1001586 then
 end
 
 if not g_AvailableDlc.kerwin then
-	print(CurrentModDef.title , ": In-Dome Buildings Pack DLC not installed!")
+	print(CurrentModDef.title, ": In-Dome Buildings Pack DLC not installed!")
 	return
 end
 

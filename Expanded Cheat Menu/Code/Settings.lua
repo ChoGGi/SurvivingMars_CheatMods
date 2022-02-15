@@ -20,7 +20,7 @@ local AsyncStringToFile = not blacklist and AsyncStringToFile
 
 -- used for loading/saving settings
 local function PrintError(err)
-	local err_str = T(302535920000000--[[Expanded Cheat Menu]]) .. ": " .. Translate(302535920000243--[[Problem saving settings! Error: %s]]):format(err)
+	local err_str = Translate(302535920000000--[[Expanded Cheat Menu]]) .. ": " .. Translate(302535920000243--[[Problem saving settings! Error: %s]]):format(err)
 	if ChoGGi.Temp.GameLoaded then
 		print(err_str)
 	else
@@ -96,7 +96,7 @@ ChoGGi.Defaults = {
 	-- Mod Editor shows the help page every single time you open it.
 	SkipModHelpPage = true,
 	--  Mod editor itself
-	SkipModEditorDialog = true,
+	SkipModEditorDialog = false,
 	-- stops panel from shrinking
 	StopSelectionPanelResize = false,
 	-- remove any objects above the height limit (or game will delete save and crash).
@@ -135,6 +135,7 @@ ChoGGi.Defaults = {
 	ShowStartupTicks = false,
 	FixMissingModBuildings = false,
 }
+
 -- my defaults
 if testing then
 	local Defaults = ChoGGi.Defaults
@@ -167,6 +168,8 @@ if testing then
 	Defaults.ScrollSelectionPanel = true
 	-- stops panel from shrinking
 	Defaults.StopSelectionPanelResize = true
+	--  Mod editor itself
+	Defaults.SkipModEditorDialog = true
 end
 
 -- set game values to saved values

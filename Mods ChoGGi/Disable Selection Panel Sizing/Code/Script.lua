@@ -109,17 +109,19 @@ function InfopanelDlg:Open(...)
 				self.idContent:SetParent(self.idChoGGi_ScrollBox)
 				-- add ref back
 				self.idContent = self.idChoGGi_ScrollBox.idContent
-
-				self:RecalculateMargins()
+				-- move panel to top of screen (maybe space for infobar?)
+				self:SetMargins(zerobox)
 
 				-- add height limit for infopanel
-				local height = terminal.desktop.box:sizey()
-				local HUD = Dialogs.HUD
-				local bb = HUD.idMapSwitch
-				local offset = HUD.idRight.box:sizey() + (bb and bb.box:sizey() or 0)
-				local added_margin = bb and 48 or 101
-				self.idChoGGi_ScrollArea:SetMaxHeight(height - offset + added_margin)
-				self:SetMargins(zerobox)
+				local height = (terminal.desktop.box:sizey()
+					- self.idMainButtons.parent.parent.box:sizey()
+				)
+				local bb = hud.idMapSwitch
+				if not bb then
+					height = height + self.idActionButtons.box:sizey()
+				end
+
+				self.idChoGGi_ScrollArea:SetMaxHeight(height)
 			end
 		--~ ex(self)
 

@@ -18,6 +18,7 @@ local function StartupCode()
 	local Cities = Cities
 	local SurfaceDepositConcrete = SurfaceDepositConcrete
 
+	SuspendPassEdits("ChoGGi_SurfaceConcrete_Spawned")
 	local objs = UIColony:GetCityLabels("TerrainDepositMarker")
 	for i = 1, #objs do
 		local obj = objs[i]
@@ -35,6 +36,7 @@ local function StartupCode()
 		end
 
 	end
+	ResumePassEdits("ChoGGi_SurfaceConcrete_Spawned")
 
 	g_ChoGGi_SurfaceConcrete_Spawned = true
 end

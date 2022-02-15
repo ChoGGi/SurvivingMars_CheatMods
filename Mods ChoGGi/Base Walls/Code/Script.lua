@@ -2,7 +2,7 @@
 
 -- I use the mirror ball thingy to hide my shame
 if not g_AvailableDlc.contentpack1 then
-	print(CurrentModDef.title , ": Mysteries Resupply Pack DLC (it's free) not installed!")
+	print(CurrentModDef.title, ": Mysteries Resupply Pack DLC (it's free) not installed!")
 	return
 end
 

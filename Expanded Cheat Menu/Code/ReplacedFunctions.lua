@@ -1082,297 +1082,6 @@ function OnMsg.ClassesPostprocess()
 		end
 	end -- do
 
-	-- add height limits to certain panels (cheats/traits/colonists) till mouseover, and convert workers to vertical list on mouseover if over 14 (visible limit)
-	do -- InfopanelDlg:Open
-		local function ToggleVis(idx, content, v, h)
-			for i = 6, idx do
-				local con = content[i]
-				if con then
-					con:SetVisible(v)
-					con:SetMaxHeight(h)
-				end
-			end
-		end
-		local cls_training = {"Sanatorium", "School"}
-		local infopanel_list = {
-			ipBuilding = true,
-			ipColonist = true,
-			ipDrone = true,
-			ipRover = true,
-		}
-
-		-- show scroll on hover
-		SaveOrigFunc("InfopanelDlg", "OnMouseEnter")
-		function InfopanelDlg:OnMouseEnter(...)
-			-- show scrollbar
-			if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate]
-				 and IsValidXWin(self.idChoGGi_Scrollbar_thumb)
-			then
-				self.idChoGGi_Scrollbar_thumb:SetVisible(true)
-			end
-
-			return ChoGGi_OrigFuncs.InfopanelDlg_OnMouseEnter(self, ...)
-		end
-
-		SaveOrigFunc("InfopanelDlg", "OnMouseLeft")
-		function InfopanelDlg:OnMouseLeft(...)
-			-- hide scrollbar
-			if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate]
-				 and IsValidXWin(self.idChoGGi_Scrollbar_thumb)
-			then
-				self.idChoGGi_Scrollbar_thumb:SetVisible(false)
-			end
-			-- no clue, it doesn't save and I can't be bothered to find out why
---~ 			return ChoGGi_OrigFuncs.InfopanelDlg_OnMouseLeft(self, ...)
-			return ChoGGi_OrigFuncs.XWindow_OnMouseLeft(self, ...)
-		end
-
-		local zerobox = box(0, 0, 0, 0)
-		local function SetToolbar(section, cls, toggle)
-			local toolbar = table.find(section.idContent, "class", cls)
-			if toolbar then
-				toolbar = section.idContent[toolbar]
-				toolbar.FoldWhenHidden = true
-				toolbar:SetVisible(toggle)
-				return toolbar
-			end
-		end
-
-		local function ToggleVisSection(section, toolbar, toggle, setting)
-			local title = section.idHighlight
-
-			if setting == "InfopanelCheatsVis" then
-				section = section.idSectionTitle
-			end
-			--
-			if setting ~= "InfopanelMainButVis" then
-				section.OnMouseEnter = function()
-					title:SetVisible(true)
-				end
-				section.OnMouseLeft = function()
-					title:SetVisible()
-				end
-			end
-			--
-			if toolbar and IsValidXWin(toolbar) then
-				section.OnMouseButtonDown = function()
-					if toggle then
-						toolbar:SetVisible()
-						toggle = false
-					else
-						toolbar:SetVisible(true)
-						toggle = true
-					end
-					if setting then
-						ChoGGi.Temp[setting] = not toggle
-					end
-				end
-			end
-			--
-		end
-
-		local function InfopanelDlgOpen(self)
-			-- make sure infopanel is above hud (and pins)
-			local hud = Dialogs.HUD
-			if hud then
-				self:SetZOrder(hud.ZOrder+1 or 1)
-			end
-
-			-- give me the scroll. goddamn it blinky
-			if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate] then
-				if self.idActionButtons then
-					self.idActionButtons.parent:SetZOrder(2)
-				end
-				local g_Classes = g_Classes
-
-				local dlg = self[1]
-
-				-- attach our scroll area to the XSizeConstrainedWindow
-				self.idChoGGi_ScrollArea = g_Classes.XWindow:new({
-					Id = "idChoGGi_ScrollArea",
-				}, dlg)
-
-				self.idChoGGi_ScrollV = g_Classes.XSleekScroll:new({
-					Id = "idChoGGi_ScrollV",
-					Target = "idChoGGi_ScrollBox",
-					Dock = "left",
-					MinThumbSize = 30,
-					Background = 0,
-					AutoHide = true,
-				}, self.idChoGGi_ScrollArea)
-
-				self.idChoGGi_Scrollbar_thumb = self.idChoGGi_ScrollV.idThumb
-
-				-- [LUA ERROR] attempt to index a boolean value (local 'desktop')
-				self.idChoGGi_ScrollV.idThumb.desktop = terminal.desktop
-				self.idChoGGi_ScrollV.idThumb:SetVisible(false)
-
-				self.idChoGGi_ScrollBox = g_Classes.XScrollArea:new({
-					Id = "idChoGGi_ScrollBox",
-					VScroll = "idChoGGi_ScrollV",
-					LayoutMethod = "VList",
-				}, self.idChoGGi_ScrollArea)
-
-				if self.idContent then
-					-- move content list to scrollarea
-					self.idContent:SetParent(self.idChoGGi_ScrollBox)
-					-- add ref back
-					self.idContent = self.idChoGGi_ScrollBox.idContent
-
-	--~ 				-- height of rightside hud button area
-	--~ 				local hud = Dialogs.HUD.idRight.box:sizey()
-
-	--~ 				-- offset from the top
-	--~ 				local y_offset = self.Margins:miny()
-
-	--~ 				margin_offset = hud + y_offset + scrollbar_margin_top
-					self:RecalculateMargins()
-
-					-- add height limit for infopanel
-					local height = terminal.desktop.box:sizey()
-					local HUD = Dialogs.HUD
-					local bb = HUD.idMapSwitch
-					local offset = HUD.idRight.box:sizey() + (bb and bb.box:sizey() or 0)
-					local added_margin = bb and 48 or 101
-	--~ 				1029
-					self.idChoGGi_ScrollArea:SetMaxHeight(height - offset + added_margin)
-					self:SetMargins(zerobox)
-				end
-			end
-
-			-- add toggle to main buttons area
-			local main_buts = GetParentOfKind(self.idMainButtons, "XFrame")
-			if main_buts then
-				local title = self.idTitle.parent
-				title.FXMouseIn = "ActionButtonHover"
-				title.HandleMouse = true
-				title.RolloverTemplate = "Rollover"
-				title.RolloverTitle = T(302535920001367--[[Toggles]])
-				title.RolloverText = T(302535920001410--[[Toggle Visibility]])
-				title.RolloverHint = T(608042494285--[[<left_click> Activate]])
-
-				local toggle = not ChoGGi.Temp.InfopanelMainButVis
-				local toolbar = main_buts[2]
-				toolbar.FoldWhenHidden = true
-				toolbar:SetVisible(toggle)
-
-				ToggleVisSection(title, toolbar, toggle, "InfopanelMainButVis")
-			end
-
-			local content = self.idContent
-			if not content then
-				content = self.idChoGGi_ScrollBox and self.idChoGGi_ScrollBox.idContent
-			end
-			if not content then
-				return
-			end
-
-			-- this limits height of traits you can choose to 3 till mouse over
-			if UserSettings.SanatoriumSchoolShowAll and self.context:IsKindOfClasses(cls_training) then
-
-				local idx
-				if self.context:IsKindOf("School") then
-					idx = 20
-				else
-					-- Sanitarium
-					idx = 18
-				end
-
-				-- Initially set to hidden
-				ToggleVis(idx, content, false, 0)
-
-				local visthread
-				self.OnMouseEnter = function()
-					DeleteThread(visthread)
-					ToggleVis(idx, content, true)
-				end
-				self.OnMouseLeft = function()
-					visthread = CreateRealTimeThread(function()
-						Sleep(1000)
-						ToggleVis(idx, content, false, 0)
-					end)
-				end
-
-			end
-			--
-
-			local section = table.find_value(content, "Id", "idsectionCheats_ChoGGi")
-			if section then
-				section.idIcon.FXMouseIn = "ActionButtonHover"
-				section.idSectionTitle.MouseCursor = "UI/Cursors/Rollover.tga"
-				section.RolloverText = T(302535920001410--[[Toggle Visibility]])
-				section.RolloverHint = T(608042494285--[[<left_click> Activate]])
-
-				local toggle = not ChoGGi.Temp.InfopanelCheatsVis
-				local toolbar = SetToolbar(section, "XToolBar", toggle)
-
-				ToggleVisSection(section, toolbar, toggle, "InfopanelCheatsVis")
-				-- sets the scale of the cheats icons
-				for j = 1, #toolbar do
-					local icon = toolbar[j].idIcon
-					icon:SetMaxHeight(27)
-					icon:SetMaxWidth(27)
-					icon:SetImageFit("largest")
-				end
-			end
-
-			section = table.find_value(content, "Id", "idsectionResidence_ChoGGi")
-			if section then
-				local toggle = true
-				if self.context.capacity > 100 then
-					toggle = false
-				end
-				ToggleVisSection(section, SetToolbar(section, "XContextControl", toggle), toggle)
-			end
-
-			-- add limit to shifts sections
-			local worker_count = 0
-			for i = 1, #content do
-
-				-- three shifts max
-				if worker_count > 2 then
-					break
-				end
-
-				local section = content[i]
-				local content = section.idContent and section.idContent[2]
-
-				-- enlarge worker section if over the max amount visible
-				if content and section.idWorkers and #section.idWorkers > 14 then
-					worker_count = worker_count + 1
-					-- set height to default height
-					content:SetMaxHeight(32)
-
-					local expandthread
-					section.OnMouseEnter = function()
-						DeleteThread(expandthread)
-						content:SetLayoutMethod("HWrap")
-						content:SetMaxHeight()
-					end
-					section.OnMouseLeft = function()
-						expandthread = CreateRealTimeThread(function()
-							Sleep(500)
-							content:SetLayoutMethod("HList")
-							content:SetMaxHeight(32)
-						end)
-					end
-				end
-			end
-
-		end -- InfopanelDlgOpen
-
-		-- the actual function
-		SaveOrigFunc("InfopanelDlg", "Open")
-		function InfopanelDlg:Open(...)
-			CreateRealTimeThread(function()
-				WaitMsg("OnRender")
-				InfopanelDlgOpen(self)
-			end)
-
-			return ChoGGi_OrigFuncs.InfopanelDlg_Open(self, ...)
-		end
-	end -- do
-
 	-- make the background hide when console not visible (instead of after a second or two)
 	do -- ConsoleLog:ShowBackground
 	-- last checked source: Tito Hotfix2
@@ -1509,6 +1218,290 @@ function OnMsg.ClassesPostprocess()
 			return ChoGGi_OrigFuncs.TunnelConstructionController_UpdateConstructionStatuses(self, ...)
 		end
 	end
+
+	-- add height limits to certain panels (cheats/traits/colonists) till mouseover, and convert workers to vertical list on mouseover if over 14 (visible limit)
+	do -- InfopanelDlg:Open
+		local function ToggleVis(idx, content, v, h)
+			for i = 6, idx do
+				local con = content[i]
+				if con then
+					con:SetVisible(v)
+					con:SetMaxHeight(h)
+				end
+			end
+		end
+		local cls_training = {"Sanatorium", "School"}
+		local infopanel_list = {
+			ipBuilding = true,
+			ipColonist = true,
+			ipDrone = true,
+			ipRover = true,
+		}
+
+		-- show scroll on hover
+		SaveOrigFunc("InfopanelDlg", "OnMouseEnter")
+		function InfopanelDlg:OnMouseEnter(...)
+			-- show scrollbar
+			if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate]
+				 and IsValidXWin(self.idChoGGi_Scrollbar_thumb)
+			then
+				self.idChoGGi_Scrollbar_thumb:SetVisible(true)
+			end
+
+			return ChoGGi_OrigFuncs.InfopanelDlg_OnMouseEnter(self, ...)
+		end
+
+		SaveOrigFunc("InfopanelDlg", "OnMouseLeft")
+		function InfopanelDlg:OnMouseLeft(...)
+			-- hide scrollbar
+			if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate]
+				 and IsValidXWin(self.idChoGGi_Scrollbar_thumb)
+			then
+				self.idChoGGi_Scrollbar_thumb:SetVisible(false)
+			end
+			-- no clue, it doesn't save and I can't be bothered to find out why
+--~ 			return ChoGGi_OrigFuncs.InfopanelDlg_OnMouseLeft(self, ...)
+			return ChoGGi_OrigFuncs.XWindow_OnMouseLeft(self, ...)
+		end
+
+		local zerobox = box(0, 0, 0, 0)
+		local function SetToolbar(section, cls, toggle)
+			local toolbar = table.find(section.idContent, "class", cls)
+			if toolbar then
+				toolbar = section.idContent[toolbar]
+				toolbar.FoldWhenHidden = true
+				toolbar:SetVisible(toggle)
+				return toolbar
+			end
+		end
+
+		local function ToggleVisSection(section, toolbar, toggle, setting)
+			local title = section.idHighlight
+
+			if setting == "InfopanelCheatsVis" then
+				section = section.idSectionTitle
+			end
+			--
+			if setting ~= "InfopanelMainButVis" then
+				section.OnMouseEnter = function()
+					title:SetVisible(true)
+				end
+				section.OnMouseLeft = function()
+					title:SetVisible()
+				end
+			end
+			--
+			if toolbar and IsValidXWin(toolbar) then
+				section.OnMouseButtonDown = function()
+					if toggle then
+						toolbar:SetVisible()
+						toggle = false
+					else
+						toolbar:SetVisible(true)
+						toggle = true
+					end
+					if setting then
+						ChoGGi.Temp[setting] = not toggle
+					end
+				end
+			end
+			--
+		end
+
+		local function InfopanelDlgOpen(self)
+			-- make sure infopanel is above hud (and pins)
+			local hud = Dialogs.HUD
+			if hud then
+				self:SetZOrder(hud.ZOrder+1 or 1)
+			end
+
+			-- give me the scroll. goddamn it blinky
+			if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate] then
+				if self.idActionButtons then
+					self.idActionButtons.parent:SetZOrder(2)
+				end
+				local g_Classes = g_Classes
+
+				local dlg = self[1]
+
+				-- attach our scroll area to the XSizeConstrainedWindow
+				self.idChoGGi_ScrollArea = g_Classes.XWindow:new({
+					Id = "idChoGGi_ScrollArea",
+				}, dlg)
+
+				self.idChoGGi_ScrollV = g_Classes.XSleekScroll:new({
+					Id = "idChoGGi_ScrollV",
+					Target = "idChoGGi_ScrollBox",
+					Dock = "left",
+					MinThumbSize = 30,
+					Background = 0,
+					AutoHide = true,
+				}, self.idChoGGi_ScrollArea)
+
+				self.idChoGGi_Scrollbar_thumb = self.idChoGGi_ScrollV.idThumb
+
+				-- [LUA ERROR] attempt to index a boolean value (local 'desktop')
+				self.idChoGGi_ScrollV.idThumb.desktop = terminal.desktop
+				self.idChoGGi_ScrollV.idThumb:SetVisible(false)
+
+				self.idChoGGi_ScrollBox = g_Classes.XScrollArea:new({
+					Id = "idChoGGi_ScrollBox",
+					VScroll = "idChoGGi_ScrollV",
+					LayoutMethod = "VList",
+				}, self.idChoGGi_ScrollArea)
+
+				if self.idContent then
+					-- move content list to scrollarea
+					self.idContent:SetParent(self.idChoGGi_ScrollBox)
+					-- add ref back
+					self.idContent = self.idChoGGi_ScrollBox.idContent
+					-- move panel to top of screen (maybe space for infobar?)
+					self:SetMargins(zerobox)
+
+					-- add height limit for infopanel
+					local height = (terminal.desktop.box:sizey()
+						- self.idMainButtons.parent.parent.box:sizey()
+					)
+					local bb = hud.idMapSwitch
+					if not bb then
+						height = height + self.idActionButtons.box:sizey()
+					end
+
+					self.idChoGGi_ScrollArea:SetMaxHeight(height)
+				end
+			end
+
+			-- add toggle to main buttons area
+			local main_buts = GetParentOfKind(self.idMainButtons, "XFrame")
+			if main_buts then
+				local title = self.idTitle.parent
+				title.FXMouseIn = "ActionButtonHover"
+				title.HandleMouse = true
+				title.RolloverTemplate = "Rollover"
+				title.RolloverTitle = T(302535920001367--[[Toggles]])
+				title.RolloverText = T(302535920001410--[[Toggle Visibility]])
+				title.RolloverHint = T(608042494285--[[<left_click> Activate]])
+
+				local toggle = not ChoGGi.Temp.InfopanelMainButVis
+				local toolbar = main_buts[2]
+				toolbar.FoldWhenHidden = true
+				toolbar:SetVisible(toggle)
+
+				ToggleVisSection(title, toolbar, toggle, "InfopanelMainButVis")
+			end
+
+			local content = self.idContent
+			if not content then
+				content = self.idChoGGi_ScrollBox and self.idChoGGi_ScrollBox.idContent
+			end
+			if not content then
+				return
+			end
+
+			-- this limits height of traits you can choose to 3 till mouse over
+			if UserSettings.SanatoriumSchoolShowAll and self.context:IsKindOfClasses(cls_training) then
+
+				local idx
+				if self.context:IsKindOf("School") then
+					idx = 20
+				else
+					-- Sanitarium
+					idx = 18
+				end
+
+				-- Initially set to hidden
+				ToggleVis(idx, content, false, 0)
+
+				local visthread
+				self.OnMouseEnter = function()
+					DeleteThread(visthread)
+					ToggleVis(idx, content, true)
+				end
+				self.OnMouseLeft = function()
+					visthread = CreateRealTimeThread(function()
+						Sleep(1000)
+						ToggleVis(idx, content, false, 0)
+					end)
+				end
+
+			end
+			--
+			local section = table.find_value(content, "Id", "idsectionCheats_ChoGGi")
+			if section then
+				section.idIcon.FXMouseIn = "ActionButtonHover"
+				section.idSectionTitle.MouseCursor = "UI/Cursors/Rollover.tga"
+				section.RolloverText = T(302535920001410--[[Toggle Visibility]])
+				section.RolloverHint = T(608042494285--[[<left_click> Activate]])
+
+				local toggle = not ChoGGi.Temp.InfopanelCheatsVis
+				local toolbar = SetToolbar(section, "XToolBar", toggle)
+
+				ToggleVisSection(section, toolbar, toggle, "InfopanelCheatsVis")
+				-- sets the scale of the cheats icons
+				for j = 1, #toolbar do
+					local icon = toolbar[j].idIcon
+					icon:SetMaxHeight(27)
+					icon:SetMaxWidth(27)
+					icon:SetImageFit("largest")
+				end
+			end
+
+			section = table.find_value(content, "Id", "idsectionResidence_ChoGGi")
+			if section then
+				local toggle = true
+				if self.context.capacity > 100 then
+					toggle = false
+				end
+				ToggleVisSection(section, SetToolbar(section, "XContextControl", toggle), toggle)
+			end
+
+			-- add limit to shifts sections
+			local worker_count = 0
+			for i = 1, #content do
+
+				-- three shifts max
+				if worker_count > 2 then
+					break
+				end
+
+				local section = content[i]
+				local content = section.idContent and section.idContent[2]
+
+				-- enlarge worker section if over the max amount visible
+				if content and section.idWorkers and #section.idWorkers > 14 then
+					worker_count = worker_count + 1
+					-- set height to default height
+					content:SetMaxHeight(32)
+
+					local expandthread
+					section.OnMouseEnter = function()
+						DeleteThread(expandthread)
+						content:SetLayoutMethod("HWrap")
+						content:SetMaxHeight()
+					end
+					section.OnMouseLeft = function()
+						expandthread = CreateRealTimeThread(function()
+							Sleep(500)
+							content:SetLayoutMethod("HList")
+							content:SetMaxHeight(32)
+						end)
+					end
+				end
+			end
+
+		end -- InfopanelDlgOpen
+
+		-- the actual function
+		SaveOrigFunc("InfopanelDlg", "Open")
+		function InfopanelDlg:Open(...)
+			CreateRealTimeThread(function()
+				WaitMsg("OnRender")
+				InfopanelDlgOpen(self)
+			end)
+
+			return ChoGGi_OrigFuncs.InfopanelDlg_Open(self, ...)
+		end
+	end -- do
 
 	do -- Console:Exec
 		-- override orig console rules with mine (thanks devs for making it a global var)
@@ -1662,4 +1655,4 @@ end]]
 
 	end -- do
 
-end -- ClassesBuilt
+end -- ClassesPP

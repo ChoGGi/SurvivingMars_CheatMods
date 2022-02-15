@@ -2,11 +2,13 @@
 
 ## v17.9 (Unreleased)
 ### Changed:
+- SkipModEditorDialog now defaults to false.
 - Limited Export CSV>Map Data (Breakthroughs) to 12 (safe number).
 - Mod Upload will upload to steam/paradox.
 - Holding down Entity Spawner key will only open one dialog.
 
 ### Fixed:
+- Disable Selection Panel Sizing: Hopefully fixed it hiding map switch/hud icons.
 - SetRoverWorkRadius/SetDroneHubWorkRadius.
 
 ## v17.8 (29 Jan 2022)

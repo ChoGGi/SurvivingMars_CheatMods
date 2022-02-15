@@ -1,3 +1,6 @@
+v1.4
+Mod option to reverse Ctrl.
+
 v1.3
 Possible fix for green objs on load (thanks mthor).
 

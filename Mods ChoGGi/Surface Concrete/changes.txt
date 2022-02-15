@@ -1,2 +1,5 @@
+v0.3
+Suspend pass edits (speed up creating deposits).
+
 v0.2
 Fired too soon on new game (thanks McKaby).

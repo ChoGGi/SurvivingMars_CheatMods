@@ -283,9 +283,7 @@ do -- ModUpload
 			if not test then
 				if steam_upload then
 					result, err = Steam_Upload(nil, mod, mod_params)
-					if testing then
-						print("<color ChoGGi_yellow>Steam upload</color>", mod.title)
-					end
+					print("<color ChoGGi_yellow>Steam upload</color>", mod.title)
 				end
 
 				local org_mod_description = mod.description
@@ -326,9 +324,7 @@ SurvivingMarsMods@choggi.org"]]) .. "\n\n\n" .. mod.description
 					mod.description = mod.description:gsub("\n", "<br>"):gsub("%[b%]", ""):gsub("%[%/b%]", "")
 
 					result, err = PDX_Upload(nil, mod, mod_params)
-					if testing then
-						print("<color ChoGGi_yellow>Paradox upload</color>", mod.title)
-					end
+					print("<color ChoGGi_yellow>Paradox upload</color>", mod.title)
 				end -- para upload
 				mod.description = org_mod_description
 			end -- not test

@@ -7,11 +7,13 @@ local function ModOptions(id)
 	end
 
 	if UICity and CurrentModOptions:GetProperty("PinAllRockets") then
-		MapForEach(true, "RocketBase", function(rocket)
+		local objs = UIColony:GetCityLabels("RocketBase")
+		for i = 1, #objs do
+			local rocket = objs[i]
 			if rocket.command ~= "OnEarth" then
 				rocket:SetPinned(true)
 			end
-		end)
+		end
 	end
 end
 --~ -- load default/saved settings
@@ -26,9 +28,10 @@ end
 RocketBase.show_pin_toggle = true
 
 local function StartupCode()
-	MapForEach(true, "RocketBase", function(rocket)
-		rocket.show_pin_toggle = true
-	end)
+	local objs = UIColony:GetCityLabels("RocketBase")
+	for i = 1, #objs do
+		objs[i].show_pin_toggle = true
+	end
 end
 
 OnMsg.CityStart = StartupCode

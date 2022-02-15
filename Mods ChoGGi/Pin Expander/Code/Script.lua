@@ -11,6 +11,21 @@ local CmpLower = CmpLower
 local type = type
 local table = table
 
+local mod_ReverseCtrl
+
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_ReverseCtrl = CurrentModOptions:GetProperty("ReverseCtrl")
+end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
+
 local pin_state_table = {
 	["UI/Icons/pin_attack.tga"] = "pin_attack",
 	["UI/Icons/pin_drone.tga"] = "pin_drone",
@@ -450,7 +465,8 @@ function PinsDlg:InitPinButton(button, ...)
 	local ChoOrig_button_OnPress = button.OnPress
 	function button.OnPress(button_obj, gamepad, ...)
 		-- If pressing ctrl then abort
-		if IsControlPressed()
+		if mod_ReverseCtrl and not IsControlPressed()
+			or not mod_ReverseCtrl and IsControlPressed()
 			or button_obj and button_obj.context:IsKindOfClasses(skip_menu_classes)
 		then
 			return ChoOrig_button_OnPress(button_obj, gamepad, ...)

@@ -4,18 +4,18 @@ return PlaceObj("ModDef", {
 	"steam_id", "1411111982",
 	"pops_any_uuid", "21a83d51-419f-45fe-810f-2e520b174fb1",
 	"lua_revision", 1007000, -- Picard
-	"version", 14,
+	"version", 15,
 	"version_major", 1,
-	"version_minor", 4,
+	"version_minor", 5,
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
-	"image", "Preview.png",
+	"image", "Preview.jpg",
 	"has_options", true,
 	"description", [[
 Pauses the game on new notifications (defaults to only Critical/Important).
-Doesn't pause if notification is already on-screen.
+Doesn't pause if notification is already on-screen, or "0" count.
 
 Includes all notifications in Mod Options if you want to pick 'n choose.
 Red for Critical, and Blue for Important.

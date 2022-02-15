@@ -1416,7 +1416,7 @@ function ChoGGi.MenuFuncs.CropFailThreshold_Toggle()
 		Translate(302535920000153--[["%s:
 So, er, we the crew of the Eagle 5, if we do encounter, make first contact with alien beings,
 it is a friendship greeting from the children of our small but great planet of Potatoho."]]):format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CropFailThreshold)),
-		T(4711, "Crop Fail Threshold")
+		T(4711--[[Crop Fail Threshold]])
 	)
 end
 

@@ -1,3 +1,6 @@
+v1.5
+Don't pause for "0" notifications (eg: Buildings Not Working 0).
+
 v1.4
 Picard update.
 
