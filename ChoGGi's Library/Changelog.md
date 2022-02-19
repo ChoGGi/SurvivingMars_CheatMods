@@ -3,6 +3,9 @@
 ## v10.9 (Unreleased)
 - Added class name to examine>parents for ease of copying name.
 - Added limit count to RetMapBreakthroughs().
+
+### Examine:
+- When selecting ui objects the flashing visiblity is now the flashing rectangle from xwin inspect.
 - Fixed issue examining certain strings.
 
 ## v10.8 (29 Jan 2022)

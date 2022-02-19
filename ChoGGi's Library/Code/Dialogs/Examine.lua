@@ -63,7 +63,7 @@ local Sleep = Sleep
 local XCreateRolloverWindow = XCreateRolloverWindow
 local XDestroyRolloverWindow = XDestroyRolloverWindow
 local GetMapID = GetMapID
-
+local XFlashWindow = XFlashWindow
 local TMeta = TMeta
 local TConcatMeta = TConcatMeta
 
@@ -75,6 +75,7 @@ local Translate = ChoGGi.ComFuncs.Translate
 local IsObjlist = ChoGGi.ComFuncs.IsObjlist
 local SetWinObjectVis = ChoGGi.ComFuncs.SetWinObjectVis
 local RetMapType = ChoGGi.ComFuncs.RetMapType
+local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
 local testing = ChoGGi.testing
@@ -157,8 +158,18 @@ DefineClass.ChoGGi_DlgExamine = {
 
 	-- only chinese goes slow as molasses for some reason (whatever text rendering they do?)
 	-- I added this to stop the game from freezing till obj is examined
-	-- that way you can at least close the dlg if it's taking too long
+	-- that way you can at least close the dlg if it's taking too long (There's also a warning after 25K?)
 	is_chinese = false,
+
+	-- if someone wants the old toggle visible then we can use this.
+	flash_rect = true,
+
+	-- change default leftclick action for tables
+	exec_tables = false,
+	-- show image in some tooltips
+	tooltip_info = false,
+
+	idAutoRefresh_update_str = false,
 
 	dialog_width = 666.0,
 	dialog_height = 850.0,
@@ -186,12 +197,6 @@ DefineClass.ChoGGi_DlgExamine = {
 	onclick_objs = false,
 	onclick_count = false,
 	hex_shape_tables = false,
-	-- change default leftclick action for tables
-	exec_tables = false,
-	-- show image in some tooltips
-	tooltip_info = false,
-
-	idAutoRefresh_update_str = false,
 }
 
 function ChoGGi_DlgExamine:Init(parent, context)
@@ -1957,6 +1962,12 @@ function ChoGGi_DlgExamine:FlashWindow()
 		return
 	end
 
+	-- white rectangle
+	if self.flash_rect then
+		XFlashWindow(self.obj_ref)
+		return
+	end
+
 	-- always kill off old thread first
 	DeleteThread(self.flashing_thread)
 
@@ -1971,15 +1982,15 @@ function ChoGGi_DlgExamine:FlashWindow()
 
 		local vis
 		for _ = 1, 5 do
-			if not self.ChoGGi.ComFuncs.IsValidXWin(self.obj_ref) then
+			if not IsValidXWin(self.obj_ref) then
 				break
 			end
 			self.obj_ref:SetVisible(vis)
-			Sleep(175)
+			Sleep(125)
 			vis = not vis
 		end
 
-		if self.ChoGGi.ComFuncs.IsValidXWin(self.obj_ref) then
+		if IsValidXWin(self.obj_ref) then
 			self.obj_ref:SetVisible(self.orig_vis_flash)
 		end
 

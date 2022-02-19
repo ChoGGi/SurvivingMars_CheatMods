@@ -537,8 +537,8 @@ end -- do
 local RetName = ChoGGi.ComFuncs.RetName
 
 local function IsValidXWin(win)
-	win = win and win.window_state
-	if win and win ~= "destroying" then
+	-- function XFlashWindow(obj) (last checked rev 1011030)
+	if (win.window_state ~= "destroying" and (win.interaction_box or win.box)) then
 		return true
 	end
 end
