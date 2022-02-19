@@ -1,8 +1,9 @@
 -- See LICENSE for terms
 
-local mod_TurnOff
+local mod_EnableMod
 local mod_SkipGrids
 local mod_SkipPassages
+local mod_TurnOffBuildings
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -10,9 +11,10 @@ local function ModOptions(id)
 		return
 	end
 
-	mod_TurnOff = CurrentModOptions:GetProperty("TurnOff")
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_SkipGrids = CurrentModOptions:GetProperty("SkipGrids")
 	mod_SkipPassages = CurrentModOptions:GetProperty("SkipPassages")
+	mod_TurnOffBuildings = CurrentModOptions:GetProperty("TurnOffBuildings")
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -31,10 +33,20 @@ local skips = {
 	"Sinkhole",
 }
 
-function OnMsg.ConstructionSitePlaced(site)
-	if not mod_TurnOff then
+function OnMsg.BuildingInit(bld)
+	if not mod_EnableMod or not mod_TurnOffBuildings then
 		return
 	end
+
+	RebuildInfopanel(bld)
+	bld:SetUIWorking(false)
+end
+
+function OnMsg.ConstructionSitePlaced(site)
+	if not mod_EnableMod then
+		return
+	end
+
 	if site.building_class_proto:IsKindOfClasses(skips)
 		or (mod_SkipPassages and site:IsKindOf("PassageConstructionSite"))
 		or (mod_SkipGrids and site:IsKindOfClasses(skip_grid))

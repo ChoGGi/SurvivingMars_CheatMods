@@ -2,9 +2,9 @@
 
 return {
 	PlaceObj("ModItemOptionToggle", {
-		"name", "TurnOff",
-		"DisplayName", T(302535920011666, "Turn Off"),
-		"Help", T(302535920011667, "Disable this to place buildings normally."),
+		"name", "EnableMod",
+		"DisplayName", T(302535920011303, "<color ChoGGi_yellow>Enable Mod</color>"),
+		"Help", T(302535920011793, "Disable mod without having to see missing mod msg."),
 		"DefaultValue", true,
 	}),
 	PlaceObj("ModItemOptionToggle", {
@@ -17,6 +17,12 @@ return {
 		"name", "SkipPassages",
 		"DisplayName", T(302535920011673, "Skip Passages"),
 		"Help", T(302535920011674, "Don't turn off passages."),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "TurnOffBuildings",
+		"DisplayName", T(0000, "Turn Off Buildings"),
+		"Help", T(0000, "Turn off newly placed buildings."),
 		"DefaultValue", false,
 	}),
 }

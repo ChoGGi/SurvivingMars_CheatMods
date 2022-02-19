@@ -926,8 +926,6 @@ This will override all Meteors!"
 302535920011664, "Pause Game Idle"
 302535920011665, "Pause game when drone is idle."
 [[Construction Sites Start Off]]
-302535920011666, "Turn Off"
-302535920011667, "Disable this to place buildings normally."
 302535920011671, "Skip Grids"
 302535920011672, "Don't turn off cables and pipes."
 302535920011673, "Skip Passages"
@@ -1478,6 +1476,8 @@ Don't forget to send me your res and margin, so I can add them to the list."
 
 
 [[UNUSED]]
+302535920011666,
+302535920011667,
 302535920012094,
 302535920012095,
 302535920012096,

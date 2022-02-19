@@ -34,6 +34,32 @@ do -- custom msgs
 	AddMsgToFunc("ElectricityProducer", "CreateElectricityElement", "ChoGGi_SpawnedProducer", nil, "electricity_production")
 	AddMsgToFunc("WaterProducer", "CreateLifeSupportElements", "ChoGGi_SpawnedProducer", nil, "water_production")
 	AddMsgToFunc("SingleResourceProducer", "Init", "ChoGGi_SpawnedProducer", nil, "production_per_day")
+
+	-- make sure they use with our new values
+	function OnMsg.ChoGGi_SpawnedProducer(obj, prod_type)
+		local prod = ChoGGi.UserSettings.BuildingSettings[obj.template_name]
+		if prod and prod.production then
+			obj[prod_type] = prod.production
+		end
+	end
+
+	function OnMsg.ChoGGi_SpawnedDrone(obj)
+		local UserSettings = ChoGGi.UserSettings
+		if UserSettings.SpeedDrone then
+			if obj:IsKindOf("FlyingDrone") then
+				if UserSettings.SpeedWaspDrone then
+					obj:SetBase("move_speed", UserSettings.SpeedWaspDrone)
+				end
+			else
+				obj:SetBase("move_speed", UserSettings.SpeedDrone)
+			end
+		end
+
+		if UserSettings.DroneBatteryMax then
+			obj.battery_max = UserSettings.DroneBatteryMax
+		end
+	end
+
 end -- do
 
 -- stops crashing with certain missing pinned objects
@@ -672,33 +698,6 @@ do -- ConstructionSitePlaced/ConstructionPrefabPlaced
 	OnMsg.ConstructionSitePlaced = SitePlaced
 	OnMsg.ConstructionPrefabPlaced = SitePlaced
 end -- do
-
--- make sure they use with our new values
-function OnMsg.ChoGGi_SpawnedProducer(obj, prod_type)
-	local prod = ChoGGi.UserSettings.BuildingSettings[obj.template_name]
-	if prod and prod.production then
-		obj[prod_type] = prod.production
-	end
-end
-
-function OnMsg.ChoGGi_SpawnedDrone(obj)
-	local UserSettings = ChoGGi.UserSettings
-	if UserSettings.SpeedDrone then
-		if obj:IsKindOf("FlyingDrone") then
-			if UserSettings.SpeedWaspDrone then
-				obj:SetBase("move_speed", UserSettings.SpeedWaspDrone)
-			end
-		else
-			obj:SetBase("move_speed", UserSettings.SpeedDrone)
-		end
-	end
-
-	if UserSettings.DroneBatteryMax then
-		obj.battery_max = UserSettings.DroneBatteryMax
-	end
-
-end
-
 
 -- some upgrades change amounts, so reset them to ours
 function OnMsg.BuildingUpgraded(obj)

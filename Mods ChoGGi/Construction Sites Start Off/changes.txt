@@ -1,3 +1,6 @@
+v0.4
+Buildings start off (mod option).
+
 v0.3
 Skipped a bunch of mystery buildings.
 

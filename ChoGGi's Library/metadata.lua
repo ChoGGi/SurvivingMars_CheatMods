@@ -59,7 +59,7 @@ return PlaceObj("ModDef", {
 		"Code/ModOptions.lua",
 	},
 	"description", [[
-Contains stuff needed by most of my mods: Mod options, UI elements, and other stuff (funcs lots of funcs).
+Contains stuff needed by some of my mods: Mod options, UI elements, and other stuff (functions lots of functions).
 
 Translation(s):
 Chinese (Simplified) by aiawar.

@@ -223,6 +223,33 @@ function DoesAnyDroneControlServiceAtPoint(map_id, pt)
   end)
 end
 
+
+-- Resupply items
+local GetResupplyItem = GetResupplyItem
+local ChoOrig_ModifyResupplyParam = ModifyResupplyParam
+function ModifyResupplyParam(id, ...)
+	return GetResupplyItem(id) and ChoOrig_ModifyResupplyParam(id, ...)
+end
+local ChoOrig_IsResupplyItemAvailable = IsResupplyItemAvailable
+function IsResupplyItemAvailable(name, ...)
+  local item = GetResupplyItem(name)
+	if item then
+		return ChoOrig_IsResupplyItemAvailable(name, ...)
+	end
+  return false
+end
+
+-- Clearing waste rock
+local ChoOrig_ClearWasteRockConstructionSite_InitBlockPass = ClearWasteRockConstructionSite.InitBlockPass
+function ClearWasteRockConstructionSite:InitBlockPass(ls, ...)
+	if not ls then
+		ls = Landscapes[self.mark]
+	end
+  if ls and ls.pass_bbox then
+    return ChoOrig_ClearWasteRockConstructionSite_InitBlockPass(self, ls, ...)
+  end
+end
+
 -- B&B fixes
 if not g_AvailableDlc.picard then
 	return
@@ -324,5 +351,13 @@ if not AncientArtifactInterface.GetEntrance then
 			GetRandomPassableAround(self:GetPos(), 2 * const.HexSize, const.HexSize)
 		}
 	end
+end
+-- Elevator prefabs
+local ChoOrig_Elevator_Arrive = Elevator.Arrive
+function Elevator:Arrive(rovers, drones, crew, prefabs, ...)
+  for _, entry in pairs(prefabs) do
+    self.city:AddPrefabs(entry.class, entry.amount, false)
+  end
+	return ChoOrig_Elevator_Arrive(self, rovers, drones, crew, prefabs, ...)
 end
 --

@@ -17,7 +17,7 @@ local mod_MaxAsteroidsPlusTwo
 -- populated below
 local OnContextUpdate_ChoOrig
 local function OnContextUpdate_ChoFake(self, context, ...)
-	if not mod_EnableMod then
+	if not mod_EnableMod or not g_AccessibleDlc.picard then
 		return OnContextUpdate_ChoOrig(self, context, ...)
 	end
 
@@ -32,11 +32,13 @@ local function OnContextUpdate_ChoFake(self, context, ...)
 			button:SetVisible(false)
 		end
 	end
+
+--~ 	return OnContextUpdate_ChoOrig(self, context, ...)
 end
 
 local array_ChoOrig
 local function array_ChoFake(...)
-	if not mod_EnableMod then
+	if not mod_EnableMod or not g_AccessibleDlc.picard then
 		return array_ChoOrig(...)
 	end
 
