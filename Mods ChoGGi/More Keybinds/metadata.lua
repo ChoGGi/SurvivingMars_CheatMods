@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2163750555",
 	"pops_any_uuid", "0876037c-42bf-4f8a-8939-36638ba10a62",
 	"lua_revision", 1007000, -- Picard
-	"version", 7,
+	"version", 8,
 	"version_major", 0,
-	"version_minor", 7,
+	"version_minor", 8,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -33,6 +33,7 @@ Photo Mode Toggle: Shift-F12
 Place Multiple Buildings: Shift
 Toggle Interface: Ctrl-Alt-I
 Examine Object/Examine Object Radius: F4/Shift-F4
+Refab Building (selected or hovered): Ctrl-R
 
 More key suggestions welcome
 ]],

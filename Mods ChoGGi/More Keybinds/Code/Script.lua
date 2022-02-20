@@ -6,6 +6,22 @@ local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 
 local Actions = ChoGGi.Temp.Actions
 
+Actions[#Actions+1] = {ActionName = T(0000, "Refab Building"),
+	ActionId = "ChoGGi.RebindHardcodedKeys.RefabBuilding",
+	ActionShortcut = "Ctrl-R",
+	replace_matching_id = true,
+	OnAction = function()
+		local objs = SelObjects()
+		if #objs == 1 then
+			local sel = objs[1]
+			if sel and sel:IsKindOf("Refabable") and sel:CanRefab() then
+				sel:ToggleRefab()
+			end
+		end
+	end,
+	ActionBindable = true,
+}
+
 Actions[#Actions+1] = {ActionName = T(302535920000491, "Examine Object"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.ExamineObject",
 	ActionShortcut = "F4",
@@ -44,6 +60,7 @@ Actions[#Actions+1] = {ActionName = T(302535920000491, "Examine Object"),
 		end
 	end,
 	ActionBindable = true,
+	IgnoreRepeated = true,
 }
 
 Actions[#Actions+1] = {ActionName = T(0000, "Examine Objects"),
@@ -72,6 +89,7 @@ Actions[#Actions+1] = {ActionName = T(0000, "Examine Objects"),
 		end
 	end,
 	ActionBindable = true,
+	IgnoreRepeated = true,
 }
 
 Actions[#Actions+1] = {ActionName = T(302535920012068, "Toggle Interface"),

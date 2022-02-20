@@ -7,13 +7,14 @@ return PlaceObj("ModDef", {
 	"version", 4,
 	"version_major", 0,
 	"version_minor", 4,
-	"image", "Preview.png",
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 	"TagGameplay", true,
-	"description", [[Adds new game rules.
+	"description", [[
+Adds new game rules.
 
 Low Resources:
 Resources will always be the lowest level.
@@ -23,5 +24,6 @@ Disasters will always be the highest level (excluding Dust Devils/Active Plate T
 These don't change the challenge rating/resource display.
 
 
-NEW GAMES ONLY.]],
+NEW GAMES ONLY.
+]],
 })

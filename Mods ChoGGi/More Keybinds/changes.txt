@@ -1,3 +1,6 @@
+v0.8
+Added refab building key.
+
 v0.7
 Radius didn't work.
 
