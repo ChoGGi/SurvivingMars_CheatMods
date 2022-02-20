@@ -3074,8 +3074,8 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				list_sort_obj[str_tmp] = sort:gsub("<.->", "")
 			end
 		end
-		-- faster if it is, otherwise a waste of 180~ ms for 300K objects
-		if self.ChoGGi.ComFuncs.IsArray(obj) then
+		-- faster if it is (an array), otherwise a waste of 180~ ms for 300K objects (I can live with that)
+		if self.name ~= "_G" and self.ChoGGi.ComFuncs.IsArray(obj) then
 			-- wrap it so we can ask a question and be able to answer
 			local limit_check
 			local thread = CurrentThread()
@@ -3851,7 +3851,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 		obj_class = g_Classes[obj.class]
 
 		-- add table length to title
-		if obj[1] then
+		if name ~= "_G" and obj[1] then
 			name = name .. " " .. " (" .. #obj .. ")"
 		end
 

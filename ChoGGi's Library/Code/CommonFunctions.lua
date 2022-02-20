@@ -538,7 +538,7 @@ local RetName = ChoGGi.ComFuncs.RetName
 
 local function IsValidXWin(win)
 	-- function XFlashWindow(obj) (last checked rev 1011030)
-	if (win.window_state ~= "destroying" and (win.interaction_box or win.box)) then
+	if win and (win.window_state ~= "destroying" and (win.interaction_box or win.box)) then
 		return true
 	end
 end
@@ -6128,7 +6128,6 @@ end
 
 -- https://stackoverflow.com/questions/6077006/how-can-i-check-if-a-lua-table-contains-only-sequential-numeric-indices#answer-6080274
 function ChoGGi.ComFuncs.IsArray(list)
---~ 	do return false end
 	local i = 0
 	for _ in pairs(list) do
 		i = i + 1

@@ -10,12 +10,9 @@ return PlaceObj("ModDef", {
 	"title", "List Created Objects",
 	"id", "ChoGGi_ListCreatedObjects",
 	"lua_revision", 1007000, -- Picard
---~ 	"steam_id", "000000000",
---~ CopyToClipboard([[	"pops_any_uuid", "]] .. GetUUID() .. [[",]])
 	"version", 2,
 	"version_major", 0,
 	"version_minor", 2,
-	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",

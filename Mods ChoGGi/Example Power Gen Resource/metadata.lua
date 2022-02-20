@@ -1,17 +1,15 @@
 return PlaceObj("ModDef", {
 	"title", "Example Power Gen Resource",
+	"id", "ChoGGi_ExamplePowerGenResource",
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-
-	"image", "Preview.png",
-	"id", "ChoGGi_ExamplePowerGenResource",
---~ 	"steam_id", "000000000",
---~ CopyToClipboard([[	"pops_any_uuid", "]] .. GetUUID() .. [[",]])
 	"author", "ChoGGi",
-	"lua_revision", 1007000, -- Picard
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Uses WasteRock to generate power.]],
+	"description", [[
+Uses WasteRock to generate power.
+]],
 })

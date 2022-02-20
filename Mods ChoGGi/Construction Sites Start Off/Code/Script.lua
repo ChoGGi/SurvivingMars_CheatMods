@@ -33,15 +33,6 @@ local skips = {
 	"Sinkhole",
 }
 
-function OnMsg.BuildingInit(bld)
-	if not mod_EnableMod or not mod_TurnOffBuildings then
-		return
-	end
-
-	RebuildInfopanel(bld)
-	bld:SetUIWorking(false)
-end
-
 function OnMsg.ConstructionSitePlaced(site)
 	if not mod_EnableMod then
 		return
@@ -56,4 +47,39 @@ function OnMsg.ConstructionSitePlaced(site)
 
 	RebuildInfopanel(site)
 	site:SetUIWorking(false)
+end
+
+-- Turn off new buildings (if they have on/off button)
+function OnMsg.BuildingInit(bld)
+	if not mod_EnableMod or not mod_TurnOffBuildings then
+		return
+	end
+
+	local bt = BuildingTemplates[bld.template_name]
+	if bt and bt.on_off_button then
+		RebuildInfopanel(bld)
+		bld:SetUIWorking(false)
+	end
+end
+
+-- Only need to run once
+GlobalVar("g_ChoGGi_ConstructionSitesStartOff_FixOffStuff", false)
+
+function OnMsg.LoadGame()
+	if not mod_EnableMod or g_ChoGGi_ConstructionSitesStartOff_FixOffStuff then
+		return
+	end
+
+	local BuildingTemplates = BuildingTemplates
+	local objs = UIColony:GetCityLabels("Building")
+	for i = 1, #objs do
+		local obj = objs[i]
+
+		local bt = BuildingTemplates[obj.template_name]
+		if bt and not bt.on_off_button then
+			obj:SetUIWorking(true)
+		end
+	end
+
+	g_ChoGGi_ConstructionSitesStartOff_FixOffStuff = true
 end

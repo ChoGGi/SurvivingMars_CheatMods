@@ -1,3 +1,6 @@
+v0.5
+Skipped stuff without on/off button.
+
 v0.4
 Buildings start off (mod option).
 
