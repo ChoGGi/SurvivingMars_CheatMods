@@ -61,7 +61,7 @@ Actions[c] = {ActionName = T(302535920000180--[[Unlock Locked Buildings]]),
 	ActionId = ".Unlock Locked Buildings",
 	ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 	RolloverText = Strings[302535920000181--[["Shows a list of buildings you can unlock.
-This doesn't apply to sponsor limited ones; see Toggles\%s."]]]:format(T(302535920001398--[[Remove Sponsor Limits]])),
+This doesn't apply to sponsor limited ones; see Toggles\%s."]]]:format(Translate(302535920001398--[[Remove Sponsor Limits]])),
 	OnAction = ChoGGi.MenuFuncs.UnlockLockedBuildings,
 }
 
@@ -208,7 +208,7 @@ Actions[c] = {ActionName = T(302535920000218--[[No Break]]),
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.CablesAndPipesNoBreak,
-			Strings[302535920000157--[[Cables & Pipes]]] .. " " .. Strings[302535920000218--[[No Break]]]
+			T(302535920000157--[[Cables & Pipes]]) .. " " .. T(302535920000218--[[No Break]])
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.CablesAndPipesNoBreak_Toggle,
@@ -222,7 +222,7 @@ Actions[c] = {ActionName = T(134--[[Instant Build]]),
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.InstantCables,
-			Translate(302535920000157--[[Cables & Pipes]]) .. " " .. Translate(134--[[Instant Build]])
+			T(302535920000157--[[Cables & Pipes]]) .. " " .. T(134--[[Instant Build]])
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.CablesAndPipesInstant_Toggle,
@@ -662,7 +662,7 @@ Actions[c] = {ActionName = T(4818--[[Triboelectric Scrubber]]),
 		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".uirange",
 			Strings[302535920000170--[[Change the range of the %s.]]]:format(RetName(obj))
-		) or Strings[302535920000170]:format(T(4818--[[Triboelectric Scrubber]]))
+		) or Strings[302535920000170--[[Change the range of the %s.]]]:format(Translate(4818--[[Triboelectric Scrubber]]))
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
 	bld_id = "TriboelectricScrubber",
@@ -681,7 +681,7 @@ Actions[c] = {ActionName = T(5293--[[Subsurface Heater]]),
 		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".uirange",
 			Strings[302535920000170--[[Change the range of the %s.]]]:format(RetName(obj))
-		) or Strings[302535920000170]:format(T(5293--[[Subsurface Heater]]))
+		) or Strings[302535920000170--[[Change the range of the %s.]]]:format(Translate(5293--[[Subsurface Heater]]))
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
 	bld_id = "SubsurfaceHeater",
@@ -698,7 +698,7 @@ Actions[c] = {ActionName = T(357216170041--[[Forestation Plant]]),
 		return obj and ChoGGi.ComFuncs.SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".uirange",
 			Strings[302535920000170--[[Change the range of the %s.]]]:format(RetName(obj))
-		) or Strings[302535920000170]:format(T(357216170041--[[Forestation Plant]]))
+		) or Strings[302535920000170--[[Change the range of the %s.]]]:format(Translate(357216170041--[[Forestation Plant]]))
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
 	bld_id = "ForestationPlant",
@@ -715,7 +715,7 @@ Actions[c] = {ActionName = T(11933--[[Core Heat Convector]]),
 		return obj and ChoGGi.ComFuncs.SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".uirange",
 			Strings[302535920000170--[[Change the range of the %s.]]]:format(RetName(obj))
-		) or Strings[302535920000170]:format(T(11933--[[Core Heat Convector]]))
+		) or Strings[302535920000170--[[Change the range of the %s.]]]:format(Translate(11933--[[Core Heat Convector]]))
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
 	bld_id = "CoreHeatConvector",
@@ -732,7 +732,7 @@ Actions[c] = {ActionName = T(302535920000178--[[Protection Radius]]),
 		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".protect_range",
 			T(302535920000179--[[Change threat protection coverage distance (MDSLaser/DefenceTower).]])
-		) or T(302535920000179)
+		) or T(302535920000179--[[Change threat protection coverage distance (MDSLaser/DefenceTower).]])
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetProtectionRadius,
 }

@@ -52,7 +52,6 @@ do -- ModUpload
 	local AsyncCreatePath = AsyncCreatePath
 	local AsyncCopyFile = AsyncCopyFile
 	local Sleep = Sleep
-	local MeasureImage = UIL.MeasureImage
 
 	local mod_params = {}
 

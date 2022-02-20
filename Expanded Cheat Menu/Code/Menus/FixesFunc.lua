@@ -6,7 +6,7 @@ local Sleep = Sleep
 local IsValid = IsValid
 local DoneObject = DoneObject
 
-local Translate = ChoGGi.ComFuncs.Translate
+--~ local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local DeleteObject = ChoGGi.ComFuncs.DeleteObject
 local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking

@@ -567,7 +567,7 @@ See survivingmaps.com for a filtered list.
 Don't use in start new game screens (rating/topo will be messed up).
 Difficulty Challenge/Named Location may not work on some saves (best to start a new game, or run from main menu).
 Game.Game Speed>Game Speed: Change the game speed (only for medium/fast, normal is normal).
-Game.Game Speed>Time Factor: 1000: Change the time factor (not permanently); for ease of screenshots or something.
+Game.Game Speed>Time Factor: Change the time factor (not permanently); for ease of screenshots or something.
 Game.Interface>GUI Dock Side: Left: Change which side (most) GUI menus are on.
 Game.Interface>Never Show Hints: No more hints ever.
 Game.Interface>Reset on-screen hints: Just in case you wanted to see them again.

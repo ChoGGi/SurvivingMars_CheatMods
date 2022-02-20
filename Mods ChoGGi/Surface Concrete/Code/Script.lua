@@ -24,7 +24,7 @@ local function StartupCode()
 		local obj = objs[i]
 		local city = Cities[GetMapID(obj)]
 
-		for j = 1, mod_MaxDeposits do
+		for _ = 1, mod_MaxDeposits do
 			local pos = GetRandomPassableAround(
 				obj,
 				8000, 500, city

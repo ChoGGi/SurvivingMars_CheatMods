@@ -5,7 +5,6 @@ local pairs, type = pairs, type
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Translate = ChoGGi.ComFuncs.Translate
 local Random = ChoGGi.ComFuncs.Random
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 local SelObject = ChoGGi.ComFuncs.SelObject
 local GetCursorWorldPos = GetCursorWorldPos
 

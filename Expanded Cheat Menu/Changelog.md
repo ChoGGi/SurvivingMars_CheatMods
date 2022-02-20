@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v17.9 (Unreleased)
+## v18.0 (Unreleased)
+
+## v17.9 (20 Feb 2022)
 ### Changed:
 - SkipModEditorDialog now defaults to false.
 - Limited Export CSV>Map Data (Breakthroughs) to 12 (safe number).
