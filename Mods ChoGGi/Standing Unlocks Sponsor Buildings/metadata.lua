@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 10,
-			"version_minor", 8,
+			"version_minor", 9,
 		}),
 	},
 	"title", "Standing Unlocks Sponsor Buildings",
