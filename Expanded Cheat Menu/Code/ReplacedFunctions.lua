@@ -713,6 +713,14 @@ function OnMsg.ClassesGenerate()
 				entry:SetVisible(true)
 			end
 		end
+		--
+		local lookup_id = {
+			[27--[[Cheats]]] = "HideCheatsMenu",
+			[302535920000002--[[ECM]]] = "HideECMMenu",
+			[283142739680--[[Game]]] = "HideGameMenu",
+			[1000113--[[Debug]]] = "HideDebugMenu",
+			[487939677892--[[Help]]] = "HideHelpMenu",
+		}
 
 		SaveOrigFunc("XMenuBar", "RebuildActions")
 		function XMenuBar:RebuildActions(...)
@@ -722,6 +730,7 @@ function OnMsg.ClassesGenerate()
 			if self.MenuEntries ~= "DevMenu" then
 				return
 			end
+
 			local TGetID = TGetID
 			local options = CurrentModOptions
 			-- not built yet (calling options:GetProperty(X) would give us blank options)
@@ -731,22 +740,7 @@ function OnMsg.ClassesGenerate()
 
 			for i = 1, #self do
 				local entry = self[i]
-
-				if entry.Text == Translate(302535920000002--[[ECM]]) then
-					SetVis(entry, options, "HideECMMenu")
-				else
-					local id = TGetID(entry.Text)
-					if id == 27--[[Cheats]] then
-						SetVis(entry, options, "HideCheatsMenu")
-					elseif id == 283142739680--[[Game]] then
-						SetVis(entry, options, "HideGameMenu")
-					elseif id == 1000113--[[Debug]] then
-						SetVis(entry, options, "HideDebugMenu")
-					elseif id == 487939677892--[[Help]] then
-						SetVis(entry, options, "HideHelpMenu")
-					end
-
-				end
+				SetVis(entry, options, lookup_id[TGetID(entry.Text)])
 			end
 		end
 	end -- do
@@ -766,7 +760,7 @@ function OnMsg.ClassesPostprocess()
 		ChoGGi_OrigFuncs.XMenuBar_PopupAction(self, action_id, ...)
 		local idx = table.find(terminal.desktop, "MenuEntries", action_id)
 		if not idx then
-			print("no idx VerticalCheatMenu_Toggle XMenuBar:PopupAction")
+			print("ECM Sez: no idx VerticalCheatMenu_Toggle XMenuBar:PopupAction")
 			return
 		end
 		terminal.desktop[idx]:SetAnchorType("smart")

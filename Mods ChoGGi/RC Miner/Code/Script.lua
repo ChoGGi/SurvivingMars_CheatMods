@@ -131,7 +131,7 @@ DefineClass.PortableMiner = {
 		"TerrainDepositExtractor",
 		-- not needed for metals, but to show prod info...
 		"BuildingDepositExploiterComponent",
-		-- use AutoMode funcs for future compat
+		-- ToggleAutoMode() etc
 		"AutoMode",
 		-- add self.city
 		"CityObject",
@@ -399,12 +399,12 @@ function PortableMiner:ProcAutomation()
 end
 
 -- If we're in auto-mode then make the stockpile take more
-function PortableMiner:ToggleAutoMode(broadcast)
+function PortableMiner:ToggleAutoMode(broadcast, ...)
 	-- If it's on it's about to be turned off
 	if IsValid(self.stockpile) then
 		self.stockpile.max_z = self:IsAutoModeEnabled() and pms.max_z_stack_man or pms.max_z_stack_auto
 	end
-	return BaseRover.ToggleAutoMode(self, broadcast)
+	return AutoMode.ToggleAutoMode(self, broadcast, ...)
 end
 
 function PortableMiner:Idle()

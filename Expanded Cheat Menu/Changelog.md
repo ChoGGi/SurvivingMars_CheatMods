@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v18.0 (Unreleased)
+### Fixed:
+- Mod option didn't hide ECM menu (thanks Fizzle_Fuzz).
 
 ## v17.9 (20 Feb 2022)
 ### Changed:

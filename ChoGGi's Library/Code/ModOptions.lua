@@ -133,7 +133,7 @@ function OnMsg.ClassesPostprocess()
 		if xtemplate.Id == "idList" then
 			table.insert(xtemplate, 5, PlaceObj("XTemplateAction", {
 				"ActionId", "idModOptions",
-				"ActionName", T(1000867, "Mod Options"),
+				"ActionName", T(1000867--[[Mod Options]]),
 				"ActionToolbar", "mainmenu",
 				"__condition", function()
 					if CurrentModOptions.GetProperty then

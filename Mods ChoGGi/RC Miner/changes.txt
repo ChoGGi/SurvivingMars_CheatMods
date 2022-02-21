@@ -1,3 +1,6 @@
+v3.2
+More automode compat.
+
 v3.1
 Added minerals to UI.
 Locked rover behind printing tech.
