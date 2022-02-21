@@ -1,0 +1,49 @@
+v0.7
+Changed name.
+Fixed newly constructed domes birth rate (thanks Athenium):
+https://forum.paradoxplaza.com/forum/threads/surviving-mars-newly-constructed-domes-have-4x-fertility-rate-for-a-predictable-time.1478372/
+Fixed issues with missing dlc.
+
+Added my mods:
+Fix Blank Mission Profile
+Fix Buildings Broken Down And No Repair
+Fix Colonists Suffocating Inside Domes
+Fix Double Click Selects All Of Type
+Fix Farm Oxygen
+Fix Landscaping Freeze
+Fix Layout Construction Tech Lock
+Fix Locked Wind Turbine
+Fix Meteor Stuck On Map
+Fix Mods With Nil Notifications
+Fix Projector Lamp
+Fix RC Commander Drone Freeze
+Fix Resupply Menu Not Opening
+Fix Transport Negative Amounts
+Fix Transports Dont Move After Route Set
+(more to come later)
+
+v0.6
+Resupply items.
+Clearing waste rock.
+Elevator prefabs.
+
+v0.5
+Removed some fixes from mod added to Below & Beyond Content Update #2 - Hotfix 3:
+Stuck notifications for last war.
+Explorer disappearing when going underground.
+Mystery Log stuck on screen from mini mysteries.
+
+v0.4
+Find Water milestone.
+Underground rubble.
+Explorer disappearing when going underground.
+Mystery Log stuck on screen from mini mysteries.
+Drone hub extender range updates.
+Drones and underground wonders.
+Underground passage cleanup.
+
+v0.3
+Fixed Planetary Anomaly fix (might've blocked underground from having ground anomaly breakthroughs).
+
+v0.2
+Underground dozers and cave-ins.

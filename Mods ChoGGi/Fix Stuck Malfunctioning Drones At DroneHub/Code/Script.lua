@@ -28,7 +28,7 @@ function OnMsg.LoadGame()
 
 	local positions = {}
 
-	local objs = UICity.labels.DroneHub or ""
+	local objs = MainCity.labels.DroneHub or ""
 	for i = 1, #objs do
 		local hub = objs[i]
 		table.clear(positions)

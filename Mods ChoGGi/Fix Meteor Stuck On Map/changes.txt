@@ -1,5 +1,0 @@
-v0.3
-Meteoroid or Meteorite stuck on dome.
-
-v0.2
-Added mod option to disable mod.

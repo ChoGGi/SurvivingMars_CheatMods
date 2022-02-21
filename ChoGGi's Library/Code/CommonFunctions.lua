@@ -3075,10 +3075,11 @@ do -- DeleteObject
 
 		-- buildings, colonists, and passages need to be removed first
 		if obj:IsKindOf("Dome") and not obj:CanDemolish() then
-			DeleteLabelObjs(obj, "Building")
-			DeleteLabelObjs(obj, "Colonist")
-			local connected_domes = obj.connected_domes
-			if connected_domes then
+			local connected_domes = obj.connected_domes or ""
+
+			if #connected_domes == 0 then
+				DeleteLabelObjs(obj, "Building")
+				DeleteLabelObjs(obj, "Colonist")
 				for bad_obj in pairs(connected_domes) do
 					if not IsValid(bad_obj) then
 						-- remove invalid obj from dome list
@@ -3088,13 +3089,11 @@ do -- DeleteObject
 						DeleteObject(bad_obj)
 					end
 				end
-			end
-			-- try deleting again
-			DeleteObject(obj)
-
-			if not obj:CanDemolish() then
+				-- try deleting again
+				DeleteObject(obj)
+			else
 				MsgPopup(
-					Translate(302535920001354--[["<green>%s</green> is a Dome with stuff still in it (crash if deleted)."]]):format(RetName(obj)),
+					Translate(302535920001354--[["<green>%s</green> is a dome with passages (crash if deleted)."]]):format(RetName(obj)),
 					T(302535920000489--[["Delete Object(s)"]])
 				)
 				return
@@ -4479,9 +4478,9 @@ function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
 
 	local function CallBackFunc(answer)
 		if answer then
-			if obj:IsKindOf("Dome") and not obj:CanDemolish() then
+			if obj:IsKindOf("Dome") and #(obj.connected_domes or "") > 0 and not obj:CanDemolish() then
 				MsgPopup(
-					Translate(302535920001354--[["<green>%s</green> is a Dome with stuff still in it (crash if deleted)."]]):format(name),
+					Translate(302535920001354--[["<green>%s</green> is a dome with passages (crash if deleted)."]]):format(name),
 					T(302535920000489--[[Delete Object(s)]])
 				)
 				return

@@ -6,7 +6,7 @@
 ### Changed:
 - SkipModEditorDialog now defaults to false.
 - Limited Export CSV>Map Data (Breakthroughs) to 12 (safe number).
-- Mod Upload will upload to steam/paradox.
+- Mod Upload will upload to steam/paradox in one go.
 - Holding down Entity Spawner key will only open one dialog.
 
 ### Fixed:

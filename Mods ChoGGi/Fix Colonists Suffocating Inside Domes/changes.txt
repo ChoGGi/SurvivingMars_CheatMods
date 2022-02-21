@@ -1,5 +1,0 @@
-v0.3
-Picard update.
-
-v0.2
-Added mod option to disable mod.

@@ -87,7 +87,7 @@
 302535920000864, "Delete Large Rocks"
 302535920001356, "New"
 302535920001355, "Map"
-302535920001354, "<green>%s</green> is a Dome with stuff still in it (crash if deleted)."
+302535920001354, "<green>%s</green> is a dome with passages (crash if deleted)."
 302535920000723, "Lua"
 302535920001257, "Auto-refresh list every second."
 302535920001288, "Wrap Lines"

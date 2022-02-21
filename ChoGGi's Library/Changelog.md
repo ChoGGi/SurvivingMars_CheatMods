@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v11.0 (Unreleased)
+- Another issue with deleting domes.
 
 ## v10.9 (20 Feb 2022)
 - Added class name to examine>parents for ease of copying name.

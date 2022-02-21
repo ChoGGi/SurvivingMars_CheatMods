@@ -306,10 +306,16 @@ function OnMsg.LoadGame()
 	local pads = MainCity.labels.LandingPad or ""
 	for i = 1, #pads do
 		local pad = pads[i]
-		local has, rocket = pad:HasRocket()
-		-- InvalidPos means it's not on mars
-		if has and rocket:GetPos() == InvalidPos and IsValid(rocket.landing_site) then
-			rocket:SetCommand("LandOnMars", rocket.landing_site)
+		-- stuck tradepad
+		if pad.rocket_construction and not IsValid(pad.rocket_construction) then
+			pad.rocket_construction = nil
+		else
+			-- bool, obj
+			local has, rocket = pad:HasRocket()
+			-- InvalidPos means it's not on mars
+			if has and rocket:GetPos() == InvalidPos and IsValid(rocket.landing_site) then
+				rocket:SetCommand("LandOnMars", rocket.landing_site)
+			end
 		end
 	end
 

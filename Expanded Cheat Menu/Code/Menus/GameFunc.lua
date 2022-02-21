@@ -228,7 +228,7 @@ end
 --~ 	SetTimeFactor(1000) = normal speed
 -- use GetTimeFactor() to check time for changing it so it can be paused?
 function ChoGGi.MenuFuncs.SetGameSpeed()
-	local hint_str = T(302535920000523--[[How many to multiple the default speed by: <color 0 200 0>%s</color>]])
+	local hint_str = Translate(302535920000523--[[How many to multiple the default speed by: <color 0 200 0>%s</color>]])
 	local item_list = {
 		{text = T(1000121--[[Default]]), value = 1, hint = hint_str:format(1)},
 		{text = T(302535920001126--[[Double]]), value = 2, hint = hint_str:format(2)},
@@ -274,8 +274,8 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Translate(302535920001135--[[%s: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.]]):format(choice[1].text),
-				T(5505, "Game Speed")
+				Translate(302535920001135--[[%s: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.]]):format(Translate(choice[1].text)),
+				T(5505--[[Game Speed]])
 			)
 		end
 	end
