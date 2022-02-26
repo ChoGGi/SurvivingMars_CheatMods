@@ -2,7 +2,7 @@
 
 local Translate = ChoGGi.ComFuncs.Translate
 local SettingState = ChoGGi.ComFuncs.SettingState
-local Strings = ChoGGi.Strings
+local TranslationTable = TranslationTable
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 local iconD = "CommonAssets/UI/Menu/ShowAll.tga"
@@ -16,81 +16,81 @@ Actions[c] = {ActionName = Translate(517--[[Drones]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000505--[[Work Radius RC Rover]]],
+Actions[c] = {ActionName = TranslationTable[302535920000505--[[Work Radius RC Rover]]],
 	ActionMenubar = "ECM.ECM.Drones",
 	ActionId = ".Work Radius RC Rover",
 	ActionIcon = "CommonAssets/UI/Menu/DisableRMMaps.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.RCRoverMaxRadius,
-			Strings[302535920000506--[[Change RC Rover drone radius (this ignores slider).]]]
+			TranslationTable[302535920000506--[[Change RC Rover drone radius (this ignores slider).]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetRoverWorkRadius,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000507--[[Work Radius DroneHub]]],
+Actions[c] = {ActionName = TranslationTable[302535920000507--[[Work Radius DroneHub]]],
 	ActionMenubar = "ECM.ECM.Drones",
 	ActionId = ".Work Radius DroneHub",
 	ActionIcon = "CommonAssets/UI/Menu/DisableRMMaps.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.CommandCenterMaxRadius,
-			Strings[302535920000508--[[Change DroneHub drone radius (this ignores slider).]]]
+			TranslationTable[302535920000508--[[Change DroneHub drone radius (this ignores slider).]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDroneHubWorkRadius,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000509--[[Drone Rock To Concrete Speed]]],
+Actions[c] = {ActionName = TranslationTable[302535920000509--[[Drone Rock To Concrete Speed]]],
 	ActionMenubar = "ECM.ECM.Drones",
 	ActionId = ".Drone Rock To Concrete Speed",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.DroneTransformWasteRockObstructorToStockpileAmount,
-			Strings[302535920000510--[[How long it takes drones to convert rock to concrete.]]]
+			TranslationTable[302535920000510--[[How long it takes drones to convert rock to concrete.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000511--[[Drone Move Speed]]],
+Actions[c] = {ActionName = TranslationTable[302535920000511--[[Drone Move Speed]]],
 	ActionMenubar = "ECM.ECM.Drones",
 	ActionId = ".Drone Move Speed",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.SpeedDrone,
-			Strings[302535920000512--[[How fast drones will move.]]]
+			TranslationTable[302535920000512--[[How fast drones will move.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDroneMoveSpeed,
 	setting_speed = "SpeedDrone",
-	setting_title = Strings[302535920000511--[[Drone Move Speed]]],
+	setting_title = TranslationTable[302535920000511--[[Drone Move Speed]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000702--[[Drone Wasp Move Speed]]],
+Actions[c] = {ActionName = TranslationTable[302535920000702--[[Drone Wasp Move Speed]]],
 	ActionMenubar = "ECM.ECM.Drones",
 	ActionId = ".Drone Wasp Move Speed",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.SpeedWaspDrone,
-			Strings[302535920000512--[[How fast drones will move.]]]
+			TranslationTable[302535920000512--[[How fast drones will move.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDroneMoveSpeed,
 	setting_speed = "SpeedWaspDrone",
-	setting_title = Strings[302535920000702--[[Drone Wasp Move Speed]]],
+	setting_title = TranslationTable[302535920000702--[[Drone Wasp Move Speed]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000513--[[Change Amount Of Drones In Hub]]],
+Actions[c] = {ActionName = TranslationTable[302535920000513--[[Change Amount Of Drones In Hub]]],
 	ActionMenubar = "ECM.ECM.Drones",
 	ActionId = ".Change Amount Of Drones In Hub",
 	ActionIcon = iconD,
@@ -98,8 +98,8 @@ Actions[c] = {ActionName = Strings[302535920000513--[[Change Amount Of Drones In
 		local obj = SelectedObj
 		return obj and obj:IsKindOf("DroneHub") and SettingState(
 			obj:GetDronesCount(),
-			Strings[302535920000514--[[Select a DroneHub then change the amount of drones in said hub (dependent on prefab amount).]]]
-		) or Strings[302535920000514]
+			TranslationTable[302535920000514--[[Select a DroneHub then change the amount of drones in said hub (dependent on prefab amount).]]]
+		) or TranslationTable[302535920000514]
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDroneAmountDroneHub,
 	ActionShortcut = "Shift-D",
@@ -107,42 +107,42 @@ Actions[c] = {ActionName = Strings[302535920000513--[[Change Amount Of Drones In
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000515--[[DroneFactory Build Speed]]],
+Actions[c] = {ActionName = TranslationTable[302535920000515--[[DroneFactory Build Speed]]],
 	ActionMenubar = "ECM.ECM.Drones",
 	ActionId = ".DroneFactory Build Speed",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return SettingState(
 			"ChoGGi.UserSettings.BuildingSettings.DroneFactory.performance_notauto",
-			Strings[302535920000516--[[Change how fast drone factories build drones.]]]
+			TranslationTable[302535920000516--[[Change how fast drone factories build drones.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000519--[[Drone Battery Infinite]]],
+Actions[c] = {ActionName = TranslationTable[302535920000519--[[Drone Battery Infinite]]],
 	ActionMenubar = "ECM.ECM.Drones",
 	ActionId = ".Drone Battery Infinite",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.DroneMoveBatteryUse,
-			Strings[302535920000519--[[Drone Battery Infinite]]]
+			TranslationTable[302535920000519--[[Drone Battery Infinite]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.DroneBatteryInfinite_Toggle,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000521--[[Drone Build Speed]]],
+Actions[c] = {ActionName = TranslationTable[302535920000521--[[Drone Build Speed]]],
 	ActionMenubar = "ECM.ECM.Drones",
 	ActionId = ".Drone Build Speed",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.DroneConstructAmount,
-			Strings[302535920000522--[[Instant build/repair when resources are ready.]]]
+			TranslationTable[302535920000522--[[Instant build/repair when resources are ready.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.DroneBuildSpeed_Toggle,
@@ -163,7 +163,7 @@ Actions[c] = {ActionName = Translate(4645--[[Drone Recharge Time]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000527--[[Drone Repair Supply Leak Speed]]],
+Actions[c] = {ActionName = TranslationTable[302535920000527--[[Drone Repair Supply Leak Speed]]],
 	ActionMenubar = "ECM.ECM.Drones",
 	ActionId = ".Drone Repair Supply Leak Speed",
 	ActionIcon = iconD,
@@ -184,7 +184,7 @@ Actions[c] = {ActionName = Translate(6980--[[Drone resource carry amount]]),
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.DroneResourceCarryAmount,
-			Strings[302535920000530--[[Change amount drones can carry.]]]
+			TranslationTable[302535920000530--[[Change amount drones can carry.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDroneCarryAmount,
@@ -219,28 +219,28 @@ Actions[c] = {ActionName = Translate(4633--[[RC Commander max Drones]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920001403--[[Drone Type]]],
+Actions[c] = {ActionName = TranslationTable[302535920001403--[[Drone Type]]],
 	ActionMenubar = "ECM.ECM.Drones",
 	ActionId = ".Drone Type",
 	ActionIcon = "CommonAssets/UI/Menu/UncollectObjects.tga",
 	RolloverText = function()
 		return SettingState(
 			GetMissionSponsor().drone_class or "Drone",
-			Strings[302535920001404--[[Change what type of drones will spawn (doesn't effect existing).]]]
+			TranslationTable[302535920001404--[[Change what type of drones will spawn (doesn't effect existing).]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDroneType,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000051--[[Drone Battery Cap]]],
+Actions[c] = {ActionName = TranslationTable[302535920000051--[[Drone Battery Cap]]],
 	ActionMenubar = "ECM.ECM.Drones",
 	ActionId = ".Drone Battery Cap",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.DroneBatteryMax,
-			Strings[302535920000945--[[Change the capacity of drone batteries.]]]
+			TranslationTable[302535920000945--[[Change the capacity of drone batteries.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDroneBatteryCap,

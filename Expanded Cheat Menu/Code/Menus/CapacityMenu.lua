@@ -3,7 +3,7 @@
 local Translate = ChoGGi.ComFuncs.Translate
 local SettingState = ChoGGi.ComFuncs.SettingState
 local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
-local Strings = ChoGGi.Strings
+local TranslationTable = TranslationTable
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
@@ -19,21 +19,21 @@ Actions[c] = {ActionName = Translate(109035890389--[[Capacity]]),
 
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000565--[[Storage Mechanized Depots Temp]]],
+Actions[c] = {ActionName = TranslationTable[302535920000565--[[Storage Mechanized Depots Temp]]],
 	ActionMenubar = "ECM.ECM.Buildings.Capacity",
 	ActionId = ".Storage Mechanized Depots Temp",
 	ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.StorageMechanizedDepotsTemp,
-			Strings[302535920000566--[[Allow the temporary storage to hold 100 instead of 50 cubes.]]]
+			TranslationTable[302535920000566--[[Allow the temporary storage to hold 100 instead of 50 cubes.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000567--[[Worker Capacity]]],
+Actions[c] = {ActionName = TranslationTable[302535920000567--[[Worker Capacity]]],
 	ActionMenubar = "ECM.ECM.Buildings.Capacity",
 	ActionId = ".Worker Capacity",
 	ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
@@ -41,8 +41,8 @@ Actions[c] = {ActionName = Strings[302535920000567--[[Worker Capacity]]],
 		local obj = ChoGGi.ComFuncs.SelObject()
 		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".workers",
-			Strings[302535920000568--[["Set worker capacity of buildings of selected type, also applies to newly placed ones."]]]
-		) or Strings[302535920000568]
+			TranslationTable[302535920000568--[["Set worker capacity of buildings of selected type, also applies to newly placed ones."]]]
+		) or TranslationTable[302535920000568]
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetWorkerCapacity,
 	ActionShortcut = "Ctrl-Shift-W",
@@ -50,7 +50,7 @@ Actions[c] = {ActionName = Strings[302535920000567--[[Worker Capacity]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000569--[[Building Capacity]]],
+Actions[c] = {ActionName = TranslationTable[302535920000569--[[Building Capacity]]],
 	ActionMenubar = "ECM.ECM.Buildings.Capacity",
 	ActionId = ".Building Capacity",
 	ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
@@ -58,8 +58,8 @@ Actions[c] = {ActionName = Strings[302535920000569--[[Building Capacity]]],
 		local obj = ChoGGi.ComFuncs.SelObject()
 		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".capacity",
-			Strings[302535920000570--[[Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).]]]
-		) or Strings[302535920000570]
+			TranslationTable[302535920000570--[[Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).]]]
+		) or TranslationTable[302535920000570]
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetBuildingCapacity,
 	ActionShortcut = "Ctrl-Shift-C",
@@ -67,7 +67,7 @@ Actions[c] = {ActionName = Strings[302535920000569--[[Building Capacity]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000571--[[Building Visitor Capacity]]],
+Actions[c] = {ActionName = TranslationTable[302535920000571--[[Building Visitor Capacity]]],
 	ActionMenubar = "ECM.ECM.Buildings.Capacity",
 	ActionId = ".Building Visitor Capacity",
 	ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
@@ -75,8 +75,8 @@ Actions[c] = {ActionName = Strings[302535920000571--[[Building Visitor Capacity]
 		local obj = ChoGGi.ComFuncs.SelObject()
 		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".visitors",
-			Strings[302535920000572--[[Set visitors capacity of all buildings of selected type, also applies to newly placed ones.]]]
-		) or Strings[302535920000572]
+			TranslationTable[302535920000572--[[Set visitors capacity of all buildings of selected type, also applies to newly placed ones.]]]
+		) or TranslationTable[302535920000572]
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetVisitorCapacity,
 	ActionShortcut = "Ctrl-Shift-V",
@@ -84,14 +84,14 @@ Actions[c] = {ActionName = Strings[302535920000571--[[Building Visitor Capacity]
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000573--[[Storage Universal Depot]]],
+Actions[c] = {ActionName = TranslationTable[302535920000573--[[Storage Universal Depot]]],
 	ActionMenubar = "ECM.ECM.Buildings.Capacity",
 	ActionId = ".Storage Universal Depot",
 	ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.StorageUniversalDepot,
-			Strings[302535920000574--[[Change universal storage depot capacity.]]]
+			TranslationTable[302535920000574--[[Change universal storage depot capacity.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetStorageDepotSize,
@@ -99,14 +99,14 @@ Actions[c] = {ActionName = Strings[302535920000573--[[Storage Universal Depot]]]
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000575--[[Storage Other Depot]]],
+Actions[c] = {ActionName = TranslationTable[302535920000575--[[Storage Other Depot]]],
 	ActionMenubar = "ECM.ECM.Buildings.Capacity",
 	ActionId = ".Storage Other Depot",
 	ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.StorageOtherDepot,
-			Strings[302535920000576--[[Change other storage depot capacity.]]]
+			TranslationTable[302535920000576--[[Change other storage depot capacity.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetStorageDepotSize,
@@ -114,14 +114,14 @@ Actions[c] = {ActionName = Strings[302535920000575--[[Storage Other Depot]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000577--[[Storage Waste Depot]]],
+Actions[c] = {ActionName = TranslationTable[302535920000577--[[Storage Waste Depot]]],
 	ActionMenubar = "ECM.ECM.Buildings.Capacity",
 	ActionId = ".Storage Waste Depot",
 	ActionIcon = "CommonAssets/UI/Menu/MeasureTool.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.StorageWasteDepot,
-			Strings[302535920000578--[[Change waste storage depot capacity.]]]
+			TranslationTable[302535920000578--[[Change waste storage depot capacity.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetStorageDepotSize,
@@ -129,14 +129,14 @@ Actions[c] = {ActionName = Strings[302535920000577--[[Storage Waste Depot]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000579--[[Storage Mechanized Depots]]],
+Actions[c] = {ActionName = TranslationTable[302535920000579--[[Storage Mechanized Depots]]],
 	ActionMenubar = "ECM.ECM.Buildings.Capacity",
 	ActionId = ".Storage Mechanized Depots",
 	ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.StorageMechanizedDepot,
-			Strings[302535920000580--[[Change mechanized depot storage capacity.]]]
+			TranslationTable[302535920000580--[[Change mechanized depot storage capacity.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetStorageDepotSize,

@@ -1,8 +1,8 @@
 -- See LICENSE for terms
 
+local TranslationTable = TranslationTable
 local Translate = ChoGGi.ComFuncs.Translate
 local SettingState = ChoGGi.ComFuncs.SettingState
-local Strings = ChoGGi.Strings
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
@@ -15,90 +15,90 @@ Actions[c] = {ActionName = Translate(5238--[[Rockets]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000975--[[Pod Price]]],
+Actions[c] = {ActionName = TranslationTable[302535920000975--[[Pod Price]]],
 	ActionMenubar = "ECM.ECM.Rockets",
 	ActionId = ".Pod Price",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.PodPrice,
-			Strings[302535920000976--[[Change the price per pod (applies to both supply/passenger).]]]
+			TranslationTable[302535920000976--[[Change the price per pod (applies to both supply/passenger).]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetPodPrice,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000941--[[Passenger Ark Pod]]],
+Actions[c] = {ActionName = TranslationTable[302535920000941--[[Passenger Ark Pod]]],
 	ActionMenubar = "ECM.ECM.Rockets",
 	ActionId = ".Passenger Ark Pod",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleTerrainHeight.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.PassengerArkPod,
-			Strings[302535920000962--[[Allows you to use Ark Pod with any sponsor.]]]
+			TranslationTable[302535920000962--[[Allows you to use Ark Pod with any sponsor.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.PassengerArkPod_Toggle,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920001291--[[Max Export Amount]]],
+Actions[c] = {ActionName = TranslationTable[302535920001291--[[Max Export Amount]]],
 	ActionMenubar = "ECM.ECM.Rockets",
 	ActionId = ".Max Export Amount",
 	ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.RocketMaxExportAmount,
-			Strings[302535920001290--[[Change how many rares per rocket you can export.]]]
+			TranslationTable[302535920001290--[[Change how many rares per rocket you can export.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetRocketMaxExportAmount,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920001317--[[Launch Fuel Per Rocket]]],
+Actions[c] = {ActionName = TranslationTable[302535920001317--[[Launch Fuel Per Rocket]]],
 	ActionMenubar = "ECM.ECM.Rockets",
 	ActionId = ".Launch Fuel Per Rocket",
 	ActionIcon = "CommonAssets/UI/Menu/DisableNormalMaps.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.LaunchFuelPerRocket,
-			Strings[302535920001318--[[Change how much fuel rockets need to launch.]]]
+			TranslationTable[302535920001318--[[Change how much fuel rockets need to launch.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetLaunchFuelPerRocket,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920001319--[[Rockets Ignore Fuel]]],
+Actions[c] = {ActionName = TranslationTable[302535920001319--[[Rockets Ignore Fuel]]],
 	ActionMenubar = "ECM.ECM.Rockets",
 	ActionId = ".Launch Fuel Per Rocket",
 	ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.RocketsIgnoreFuel,
-			Strings[302535920001320--[[Rockets don't need fuel to launch.]]]
+			TranslationTable[302535920001320--[[Rockets don't need fuel to launch.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.RocketsIgnoreFuel_Toggle,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000850--[[Change Resupply Settings]]],
+Actions[c] = {ActionName = TranslationTable[302535920000850--[[Change Resupply Settings]]],
 	ActionMenubar = "ECM.ECM.Rockets",
 	ActionId = ".Change Resupply Settings",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_down.tga",
-	RolloverText = Strings[302535920001094--[["Shows a list of all cargo and allows you to change the price, weight taken up, if it's locked from view, and how many per click."]]],
+	RolloverText = TranslationTable[302535920001094--[["Shows a list of all cargo and allows you to change the price, weight taken up, if it's locked from view, and how many per click."]]],
 	OnAction = ChoGGi.MenuFuncs.ChangeResupplySettings,
 }
 
 --~ 	c = c + 1
---~ 	Actions[c] = {ActionName = Strings[302535920000557--[[Launch Empty Rocket]]],
+--~ 	Actions[c] = {ActionName = TranslationTable[302535920000557--[[Launch Empty Rocket]]],
 --~ 		ActionMenubar = "ECM.ECM.Rockets",
 --~ 		ActionId = ".Launch Empty Rocket",
 --~ 		ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
---~ 		RolloverText = Strings[302535920000558--[[Launches an empty rocket to Mars.]]],
+--~ 		RolloverText = TranslationTable[302535920000558--[[Launches an empty rocket to Mars.]]],
 --~ 		OnAction = ChoGGi.MenuFuncs.LaunchEmptyRocket,
 --~ 	}
 
@@ -117,7 +117,7 @@ Actions[c] = {ActionName = Translate(4598--[[Payload Capacity]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000561--[[Travel Time]]],
+Actions[c] = {ActionName = TranslationTable[302535920000561--[[Travel Time]]],
 	ActionMenubar = "ECM.ECM.Rockets",
 	ActionId = ".Travel Time",
 	ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",

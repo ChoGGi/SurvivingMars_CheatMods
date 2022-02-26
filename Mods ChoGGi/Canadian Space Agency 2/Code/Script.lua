@@ -68,7 +68,7 @@ end
 -- used below
 local comm_id = "ChoGGi_CanadianSpaceAgency_Commander"
 
--- swap any politician storyibts to CSA
+-- swap any politician storybits
 local function UpdateStoryBits(profile_id)
 	if profile_id ~= comm_id or GetCommanderProfile().id ~= comm_id then
 		return
@@ -77,9 +77,9 @@ local function UpdateStoryBits(profile_id)
 	local StoryBits = StoryBits
 	for _, storybit in pairs(StoryBits) do
 		for i = 1, #storybit do
-			local subitem = storybit[i]
-			if subitem.Prerequisite and subitem.Prerequisite.CommanderProfile == "politician" then
-				subitem.Prerequisite.CommanderProfile = "ChoGGi_CanadianSpaceAgency_Commander"
+			local item = storybit[i]
+			if item.Prerequisite and item.Prerequisite.CommanderProfile == "politician" then
+				item.Prerequisite.CommanderProfile = comm_id
 			end
 		end
 	end
@@ -93,6 +93,9 @@ function OnMsg.CityStart()
 		return
 	end
 
+	-- politician story to CSA
+	UpdateStoryBits(profile_id)
+
 	-- change standing to Good
 	local RivalAIs = RivalAIs
 	for _, rival in pairs(RivalAIs) do
@@ -101,7 +104,6 @@ function OnMsg.CityStart()
 		end
 	end
 
-	UpdateStoryBits(profile_id)
 end
 
 -- change Welcome to Mars audio

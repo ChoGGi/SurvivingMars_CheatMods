@@ -10,8 +10,9 @@ local Sleep = Sleep
 local CreateRealTimeThread = CreateRealTimeThread
 local DeleteThread = DeleteThread
 
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local TranslationTable = TranslationTable
 local Translate = ChoGGi.ComFuncs.Translate
+local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local SetDlgTrans = ChoGGi.ComFuncs.SetDlgTrans
 local RetName = ChoGGi.ComFuncs.RetName
@@ -897,7 +898,7 @@ function OnMsg.ClassesPostprocess()
 					StopWait.skipmsg = nil
 				else
 					MsgPopup(
-						T(302535920000735--[[Timer delay skipped]]),
+						TranslationTable[302535920000735--[[Timer delay skipped]]],
 						T(3486--[[Mystery]])
 					)
 				end
@@ -1424,7 +1425,7 @@ function OnMsg.ClassesPostprocess()
 			if section then
 				section.idIcon.FXMouseIn = "ActionButtonHover"
 				section.idSectionTitle.MouseCursor = "UI/Cursors/Rollover.tga"
-				section.RolloverText = T(302535920001410--[[Toggle Visibility]])
+				section.RolloverText = TranslationTable[302535920001410--[[Toggle Visibility]]]
 				section.RolloverHint = T(608042494285--[[<left_click> Activate]])
 
 				local toggle = not ChoGGi.Temp.InfopanelCheatsVis
@@ -1553,7 +1554,7 @@ else
 	OpenExamine(params, {
 		has_params = true,
 		override_title = true,
-		title = T(302535920000069) .. " " .. T(302535920001073)
+		title = TranslationTable[302535920000069] .. " " .. TranslationTable[302535920001073]
 			.. ": " .. ChoGGi.ComFuncs.RetName(params[1]),
 	})
 end]] -- title strings: Examine Console

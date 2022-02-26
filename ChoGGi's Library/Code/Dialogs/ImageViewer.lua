@@ -5,6 +5,7 @@
 local MeasureImage = UIL.MeasureImage
 local T = T
 
+local TranslationTable = TranslationTable
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local Random = ChoGGi.ComFuncs.Random
 
@@ -47,7 +48,7 @@ function ChoGGi_DlgImageViewer:Init(parent, context)
 	end
 
 	self.idImageMenu = Random()
-	self.title = T(302535920001469--[[Image Viewer]])
+	self.title = TranslationTable[302535920001469--[[Image Viewer]]]
 	self.prefix = self.title
 
 	-- By the Power of Grayskull!
@@ -90,9 +91,9 @@ function ChoGGi_DlgImageViewer:Init(parent, context)
 
 	-- only one image and it's not a valid image so close dlg
 	if wh == 0 and #self.images == 1 then
-		print(Translate(302535920000109--[[Invalid Image]]))
+		print(TranslationTable[302535920000109--[[Invalid Image]]])
 		ChoGGi.ComFuncs.MsgPopup(
-			T(302535920000109--[[Invalid Image]]),
+			TranslationTable[302535920000109--[[Invalid Image]]],
 			self.title
 		)
 		self:Close()
@@ -120,7 +121,7 @@ function ChoGGi_DlgImageViewer:ExportImage()
 		print(msg)
 		ChoGGi.ComFuncs.MsgPopup(
 			msg,
-			T(302535920001449--[[Export]])
+			TranslationTable[302535920001449--[[Export]]]
 		)
 	end
 end
@@ -138,8 +139,8 @@ function ChoGGi_DlgImageViewer:BuildImageMenuPopup()
 	end
 	images[#images+1] = {is_spacer = true}
 	images[#images+1] = {
-		name = T(302535920001449--[[Export]]),
-		hint = Translate(302535920000219--[[Export viewed image to %s.]]):format(ConvertToOSPath("AppData")),
+		name = TranslationTable[302535920001449--[[Export]]],
+		hint = TranslationTable[302535920000219--[[Export viewed image to %s.]]]:format(ConvertToOSPath("AppData")),
 		clicked = function()
 			self:ExportImage()
 		end,

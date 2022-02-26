@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local table = table
+local TranslationTable = TranslationTable
 
 function ChoGGi.MenuFuncs.ConsoleRestart()
 	local dlgConsole = dlgConsole
@@ -33,9 +34,9 @@ do -- ExamineObjectRadius
 			OpenInExamineDlg(objs, {
 				has_params = true,
 				override_title = true,
-				title = T(302535920000069--[[Examine]]) .. " "
-					.. T(302535920001103--[[Objects]]) .. " "
-					.. T(302535920000163--[[Radius]]) .. ": " .. radius,
+				title = TranslationTable[302535920000069--[[Examine]]] .. " "
+					.. TranslationTable[302535920001103--[[Objects]]] .. " "
+					.. TranslationTable[302535920000163--[[Radius]]] .. ": " .. radius,
 			})
 		end
 	end

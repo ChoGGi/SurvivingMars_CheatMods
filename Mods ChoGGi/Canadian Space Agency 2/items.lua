@@ -176,7 +176,7 @@ return {
 		effect = T(302535920011991, [[- Reduce chance of Renegades by 20% (inc. Rebel Yell)
 - Additional starting standing with rival colonies (trade tech from start)
 - Bonus tech: Supportive community (colonists are less likely to gain flaws after sanity breakdown)
-- Acts as Politician for story bits]]),
+- Acts as <color em>Politician</color> for story bits]]),
 		group = "Default",
 		id = "ChoGGi_CanadianSpaceAgency_Commander",
 		PlaceObj("Effect_ModifyLabel", {

@@ -3,9 +3,9 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ShowDronesConstructionSite",
 	"steam_id", "2089814937",
 	"pops_any_uuid", "afc6fa70-2f05-4fb6-b345-756316ac9f02",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"lua_revision", 1007000, -- Picard
 	"image", "Preview.jpg",
 	"author", "ChoGGi",

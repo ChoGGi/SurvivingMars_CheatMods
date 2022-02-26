@@ -6,6 +6,7 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 local RetObjectCapAndGrid = ChoGGi.ComFuncs.RetObjectCapAndGrid
+local TranslationTable = TranslationTable
 local Translate = ChoGGi.ComFuncs.Translate
 
 function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
@@ -24,7 +25,7 @@ function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.StorageMechanizedDepotsTemp),
-		T(302535920000565--[[Storage Mechanized Depots Temp]])
+		TranslationTable[302535920000565--[[Storage Mechanized Depots Temp]]]
 	)
 end
 
@@ -34,17 +35,17 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 
 	if not capacity then
 		MsgPopup(
-			T(302535920000954--[[You need to select a building that has workers.]]),
-			T(302535920000567--[[Worker Capacity]])
+			TranslationTable[302535920000954--[[You need to select a building that has workers.]]],
+			TranslationTable[302535920000567--[[Worker Capacity]]]
 		)
 		return
 	end
 
 	local default_setting = capacity
-	local hint_toolarge = T(6779--[[Warning]]) .. " " .. T(302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).]])
+	local hint_toolarge = Translate(6779--[[Warning]]) .. " " .. TranslationTable[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).]]]
 
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
 		{text = 10, value = 10},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
@@ -96,8 +97,8 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Translate(302535920000957--[[%s capacity is now %s.]]):format(RetName(obj), choice[1].text),
-				T(302535920000567--[[Worker Capacity]])
+				TranslationTable[302535920000957--[[%s capacity is now %s.]]]:format(RetName(obj), choice[1].text),
+				TranslationTable[302535920000567--[[Worker Capacity]]]
 			)
 		end
 	end
@@ -105,8 +106,8 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000129--[[Set]]) .. " " .. RetName(obj) .. " " .. T(302535920000567--[[Worker Capacity]]),
-		hint = T(302535920000914--[[Current capacity]]) .. ": " .. hint .. "\n\n" .. hint_toolarge,
+		title = TranslationTable[302535920000129--[[Set]]] .. " " .. RetName(obj) .. " " .. TranslationTable[302535920000567--[[Worker Capacity]]],
+		hint = TranslationTable[302535920000914--[[Current capacity]]] .. ": " .. hint .. "\n\n" .. hint_toolarge,
 		skip_sort = true,
 	}
 end
@@ -117,13 +118,13 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 
 	if not cap_type then
 		MsgPopup(
-			T(302535920000958--[[You need to select a building that has capacity (colonists/air/water/elec).]]),
-			T(302535920000569--[[Building Capacity]])
+			TranslationTable[302535920000958--[[You need to select a building that has capacity (colonists/air/water/elec).]]],
+			TranslationTable[302535920000569--[[Building Capacity]]]
 		)
 		return
 	end
 	local r = const.ResourceScale
-	local hint_toolarge = T(6779--[[Warning]]) .. " " .. T(302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).]])
+	local hint_toolarge = Translate(6779--[[Warning]]) .. " " .. TranslationTable[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).]]]
 
 	local default_setting = capacity
 
@@ -133,7 +134,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 	end
 
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
 		{text = 10, value = 10},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
@@ -244,8 +245,8 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Translate(302535920000957--[[%s capacity is now %s.]]):format(RetName(obj), choice[1].text),
-				T(302535920000569--[[Building Capacity]])
+				TranslationTable[302535920000957--[[%s capacity is now %s.]]]:format(RetName(obj), choice[1].text),
+				TranslationTable[302535920000569--[[Building Capacity]]]
 			)
 		end
 
@@ -254,8 +255,8 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000129--[[Set]]) .. " " .. RetName(obj) .. " " .. T(109035890389--[[Capacity]]),
-		hint = T(302535920000914--[[Current capacity]]) .. ": " .. hint .. "\n\n" .. hint_toolarge,
+		title = TranslationTable[302535920000129--[[Set]]] .. " " .. RetName(obj) .. " " .. Translate(109035890389--[[Capacity]]),
+		hint = TranslationTable[302535920000914--[[Current capacity]]] .. ": " .. hint .. "\n\n" .. hint_toolarge,
 		skip_sort = true,
 	}
 end
@@ -266,14 +267,14 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 
 	if not capacity then
 		MsgPopup(
-			T(302535920000959--[[You need to select something that has space for visitors (services/trainingbuildings).]]),
-			T(302535920000571--[[Building Visitor Capacity]])
+			TranslationTable[302535920000959--[[You need to select something that has space for visitors (services/trainingbuildings).]]],
+			TranslationTable[302535920000571--[[Building Visitor Capacity]]]
 		)
 		return
 	end
 	local default_setting = capacity
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
 		{text = 10, value = 10},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
@@ -318,8 +319,8 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Translate(302535920000960--[[%s visitor capacity is now %s.]]):format(RetName(obj), choice[1].text),
-				T(302535920000571--[[Building Visitor Capacity]])
+				TranslationTable[302535920000960--[[%s visitor capacity is now %s.]]]:format(RetName(obj), choice[1].text),
+				TranslationTable[302535920000571--[[Building Visitor Capacity]]]
 			)
 		end
 	end
@@ -327,8 +328,8 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000129--[[Set]]) .. " " .. RetName(obj) .. " " .. T(302535920000961--[[Visitor Capacity]]),
-		hint = T(302535920000914--[[Current capacity]]) .. ": " .. hint,
+		title = TranslationTable[302535920000129--[[Set]]] .. " " .. RetName(obj) .. " " .. TranslationTable[302535920000961--[[Visitor Capacity]]],
+		hint = TranslationTable[302535920000914--[[Current capacity]]] .. ": " .. hint,
 		skip_sort = true,
 	}
 end
@@ -339,7 +340,7 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts[bld_type] / r
 	local item_list = {
-		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
 		{text = 50, value = 50},
 		{text = 100, value = 100},
 		{text = 250, value = 250},
@@ -425,7 +426,7 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				choice[1].text .. ": " .. bld_type,
-				T(302535920000573--[[Storage Universal Depot]])
+				TranslationTable[302535920000573--[[Storage Universal Depot]]]
 			)
 		end
 	end
@@ -433,8 +434,8 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000129--[[Set]]) .. ": " .. bld_type .. " " .. T(302535920000963--[[Size]]),
-		hint = T(302535920000914--[[Current capacity]]) .. ": " .. hint,
+		title = TranslationTable[302535920000129--[[Set]]] .. ": " .. bld_type .. " " .. TranslationTable[302535920000963--[[Size]]],
+		hint = TranslationTable[302535920000914--[[Current capacity]]] .. ": " .. hint,
 		skip_sort = true,
 	}
 end

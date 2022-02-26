@@ -10,6 +10,7 @@ local point = point
 local IsPoint = IsPoint
 local IsValid = IsValid
 
+local TranslationTable = TranslationTable
 local RetName = ChoGGi.ComFuncs.RetName
 local Translate = ChoGGi.ComFuncs.Translate
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
@@ -84,7 +85,7 @@ function ChoGGi_Dlg3DManipulator:Init(parent, context)
 --~ 		self.func_axis_set = obj.SetAxis
 	end
 
-	self.title = T(327465361219--[[Edit]]) .. " " .. T(298035641454--[[Object]]) .. " " .. T(302535920001432--[[3D]]) .. ": " .. self.obj_name
+	self.title = TranslationTable[327465361219--[[Edit]]] .. " " .. TranslationTable[298035641454--[[Object]]] .. " " .. TranslationTable[302535920001432--[[3D]]] .. ": " .. self.obj_name
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
@@ -104,8 +105,8 @@ function ChoGGi_Dlg3DManipulator:Init(parent, context)
 
 		self.idPosSave = g_Classes.ChoGGi_XButton:new({
 			Id = "idPosSave",
-			Text = T(5467--[[SAVE]]),
-			RolloverText = T(302535920000396--[["Store the position, roll, pitch, and yaw."]]),
+			Text = TranslationTable[5467--[[SAVE]]],
+			RolloverText = TranslationTable[302535920000396--[["Store the position, roll, pitch, and yaw."]]],
 			OnPress = self.idPosSave_OnPress,
 			-- updaterollover when clicked?
 			Dock = "left",
@@ -115,16 +116,16 @@ function ChoGGi_Dlg3DManipulator:Init(parent, context)
 
 		self.idPosRestore = g_Classes.ChoGGi_XButton:new({
 			Id = "idPosRestore",
-			Text = T(5469--[[RESET]]),
-			RolloverText = T(302535920000398--[["Restore the position, roll, pitch, and yaw (hold Shift to restore the original instead of saved)."]]),
+			Text = TranslationTable[5469--[[RESET]]],
+			RolloverText = TranslationTable[302535920000398--[["Restore the position, roll, pitch, and yaw (hold Shift to restore the original instead of saved)."]]],
 			OnPress = self.idPosRestore_OnPress,
 			Dock = "left",
 		}, self.idPosAreaTop)
 
 		self.idPosClear = g_Classes.ChoGGi_XButton:new({
 			Id = "idPosClear",
-			Text = T(5448--[[CLEAR]]),
-			RolloverText = T(302535920000404--[["Clear the position, roll, pitch, and yaw (hold Shift to also clear the originals, also cleared when you close the dialog)."]]),
+			Text = TranslationTable[5448--[[CLEAR]]],
+			RolloverText = TranslationTable[302535920000404--[["Clear the position, roll, pitch, and yaw (hold Shift to also clear the originals, also cleared when you close the dialog)."]]],
 			OnPress = self.idPosClear_OnPress,
 			Dock = "left",
 		}, self.idPosAreaTop)
@@ -133,7 +134,7 @@ function ChoGGi_Dlg3DManipulator:Init(parent, context)
 			self.idMousePos = g_Classes.ChoGGi_XButton:new({
 				Id = "idMousePos",
 				Text = "",
-				RolloverText = T(302535920000908--[[Move obj to mouse pos.]]),
+				RolloverText = TranslationTable[302535920000908--[[Move obj to mouse pos.]]],
 				OnPress = self.idMousePos_OnPress,
 				Dock = "left",
 			}, self.idPosAreaTop)
@@ -142,7 +143,7 @@ function ChoGGi_Dlg3DManipulator:Init(parent, context)
 
 		self.idAmount = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idAmount",
-			RolloverText = Translate(302535920000389--[[The amount used when a button is pressed (default: %s).]]):format(self.default_amount),
+			RolloverText = TranslationTable[302535920000389--[[The amount used when a button is pressed (default: %s).]]]:format(self.default_amount),
 			Hint = Translate(1000100--[[Amount]]),
 			HAlign = "right",
 			MinWidth = 200,
@@ -162,13 +163,13 @@ function ChoGGi_Dlg3DManipulator:Init(parent, context)
 		}, self.idPosAreaBot)
 
 		local pos_xyz_list = {
-			T(1000497--[[X]]) .. T(1000541--[[+]]),
-			T(1000498--[[Y]]) .. T(1000541--[[+]]),
-			T(1000499--[[Z]]) .. T(1000541--[[+]]),
+			TranslationTable[1000497--[[X]]] .. TranslationTable[1000541--[[+]]],
+			TranslationTable[1000498--[[Y]]] .. TranslationTable[1000541--[[+]]],
+			TranslationTable[1000499--[[Z]]] .. TranslationTable[1000541--[[+]]],
 
-			T(1000497--[[X]]) .. T(1000540--[[-]]),
-			T(1000498--[[Y]]) .. T(1000540--[[-]]),
-			T(1000499--[[Z]]) .. T(1000540--[[-]]),
+			TranslationTable[1000497--[[X]]] .. TranslationTable[1000540--[[-]]],
+			TranslationTable[1000498--[[Y]]] .. TranslationTable[1000540--[[-]]],
+			TranslationTable[1000499--[[Z]]] .. TranslationTable[1000540--[[-]]],
 		}
 
 		for i = 1, 3 do
@@ -179,7 +180,7 @@ function ChoGGi_Dlg3DManipulator:Init(parent, context)
 				Text = name,
 				text_lookup = self.pos_xyz_list[i],
 				Dock = "left",
-				ChoGGi_RolloverText = Translate(302535920000528--[[Move %s by %s.]]),
+				ChoGGi_RolloverText = TranslationTable[302535920000528--[[Move %s by %s.]]],
 				GetRolloverText = self.GetCtrlRolloverText,
 				OnPress = self.idPosButtons_OnPress,
 			}, self.idPosAreaBotPlus)
@@ -198,7 +199,7 @@ function ChoGGi_Dlg3DManipulator:Init(parent, context)
 				Text = name,
 				text_lookup = self.pos_xyz_list[i],
 				Dock = "left",
-				ChoGGi_RolloverText = Translate(302535920000528--[[Move %s by %s.]]),
+				ChoGGi_RolloverText = TranslationTable[302535920000528--[[Move %s by %s.]]],
 				GetRolloverText = self.GetCtrlRolloverText,
 				OnPress = self.idPosButtons_OnPress,
 			}, self.idPosAreaBotMinus)
@@ -218,13 +219,13 @@ function ChoGGi_Dlg3DManipulator:Init(parent, context)
 		}, self.idRollPitchYawArea)
 
 		local rpy_list = {
-			T(302535920000391--[[Roll]]) .. T(1000541--[[+]]),
-			T(302535920000392--[[Pitch]]) .. T(1000541--[[+]]),
-			T(302535920000395--[[Yaw]]) .. T(1000541--[[+]]),
+			TranslationTable[302535920000391--[[Roll]]] .. TranslationTable[1000541--[[+]]],
+			TranslationTable[302535920000392--[[Pitch]]] .. TranslationTable[1000541--[[+]]],
+			TranslationTable[302535920000395--[[Yaw]]] .. TranslationTable[1000541--[[+]]],
 
-			T(302535920000391--[[Roll]]) .. T(1000540--[[-]]),
-			T(302535920000392--[[Pitch]]) .. T(1000540--[[-]]),
-			T(302535920000395--[[Yaw]]) .. T(1000540--[[-]]),
+			TranslationTable[302535920000391--[[Roll]]] .. TranslationTable[1000540--[[-]]],
+			TranslationTable[302535920000392--[[Pitch]]] .. TranslationTable[1000540--[[-]]],
+			TranslationTable[302535920000395--[[Yaw]]] .. TranslationTable[1000540--[[-]]],
 		}
 
 		for i = 1, 3 do
@@ -293,8 +294,8 @@ function ChoGGi_Dlg3DManipulator:Init(parent, context)
 
 --~ 	self.idEditValue = g_Classes.ChoGGi_XTextInput:new({
 --~ 		Id = "idEditValue",
---~ 		RolloverText = T(302535920000102--[[Use to change values of selected list item.]]),
---~ 		Hint = Translate(302535920000103--[[Edit Value]]),
+--~ 		RolloverText = TranslationTable[302535920000102--[[Use to change values of selected list item.]]],
+--~ 		Hint = TranslationTable[302535920000103--[[Edit Value]]],
 --~ 		OnTextChanged = self.idEditValue_OnTextChanged,
 --~ 	}, self.idEditArea)
 

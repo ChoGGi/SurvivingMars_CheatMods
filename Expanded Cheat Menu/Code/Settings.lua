@@ -10,6 +10,7 @@ local SaveLocalStorage = SaveLocalStorage
 local ThreadLockKey = ThreadLockKey
 local ThreadUnlockKey = ThreadUnlockKey
 
+local TranslationTable = TranslationTable
 local Translate = ChoGGi.ComFuncs.Translate
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
@@ -20,7 +21,7 @@ local AsyncStringToFile = not blacklist and AsyncStringToFile
 
 -- used for loading/saving settings
 local function PrintError(err)
-	local err_str = Translate(302535920000000--[[Expanded Cheat Menu]]) .. ": " .. Translate(302535920000243--[[Problem saving settings! Error: %s]]):format(err)
+	local err_str = TranslationTable[302535920000000--[[Expanded Cheat Menu]]] .. ": " .. TranslationTable[302535920000243--[[Problem saving settings! Error: %s]]]:format(err)
 	if ChoGGi.Temp.GameLoaded then
 		print(err_str)
 	else
@@ -33,7 +34,7 @@ ChoGGi.Defaults = {
 	-- updated when saved
 	_SAVED = 0,
 	-- okay, maybe some people don't want a mod to change the title of their game
-	ChangeWindowTitle = true,
+	ChangeWindowTitle = false,
 	-- removes some useless crap from the Cheats section (unless you're doing the tutorial then not as useless it seems)
 	CleanupCheatsInfoPane = true,
 	-- dark background for the console log
@@ -214,7 +215,7 @@ function ChoGGi.SettingFuncs.WriteSettingsAdmin(settings)
 	ThreadUnlockKey(ChoGGi.settings_file)
 
 	if err then
-		print(Translate(302535920000006--[[Failed to save settings to %s : %s]]):format(
+		print(TranslationTable[302535920000006--[[Failed to save settings to %s : %s]]]:format(
 			ChoGGi.settings_file and ConvertToOSPath(ChoGGi.settings_file) or ChoGGi.settings_file,
 			err
 		))

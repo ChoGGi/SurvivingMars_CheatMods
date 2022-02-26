@@ -17,7 +17,7 @@ function OnMsg.ClassesBuilt()
 	if not table.find(bc, "id", "ChoGGi") then
 		bc[#bc+1] = {
 			id = "ChoGGi",
-			name = T(302535920000001--[[ChoGGi]]),
+			name = TranslationTable[302535920000001--[[ChoGGi]]],
 			image = ChoGGi.library_path .. "UI/bmc_incal_resources.png",
 		}
 	end

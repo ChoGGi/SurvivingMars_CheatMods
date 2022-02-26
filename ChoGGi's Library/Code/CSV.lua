@@ -4,8 +4,9 @@
 local table = table
 local CmpLower = CmpLower
 
-local RetName = ChoGGi.ComFuncs.RetName
+local TranslationTable = TranslationTable
 local Translate = ChoGGi.ComFuncs.Translate
+local RetName = ChoGGi.ComFuncs.RetName
 local RetMapSettings = ChoGGi.ComFuncs.RetMapSettings
 local RetMapBreakthroughs = ChoGGi.ComFuncs.RetMapBreakthroughs
 local TableConcat = ChoGGi.ComFuncs.TableConcat
@@ -543,7 +544,7 @@ do -- Graphs
 		-- the rest are sols
 		local csv_columns = {
 			{"category", Translate(1000097--[[Category]])},
-			{"current", Translate(302535920000106--[[Current]]) .. " " .. Translate(4031--[[Sol <day>]]):gsub(" <day>", "")},
+			{"current", TranslationTable[302535920000106--[[Current]]] .. " " .. Translate(4031--[[Sol <day>]]):gsub(" <day>", "")},
 		}
 		local c = #csv_columns
 

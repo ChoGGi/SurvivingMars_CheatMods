@@ -3,10 +3,11 @@
 local print = print
 local table = table
 
+local TranslationTable = TranslationTable
+local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local FileExists = ChoGGi.ComFuncs.FileExists
-local Translate = ChoGGi.ComFuncs.Translate
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
@@ -291,29 +292,29 @@ do -- ModUpload
 					-- DESC FOR PARA
 					-- tell paradox users if it needs my library
 					local needs_lib = table.find(mod.dependencies, "id", ChoGGi.id_lib)
-						and Translate(302535920001634--[["This mod requires my library mod (ChoGGi's Library) < use space on the end when searching for it."]]) .. "\n\n"
+						and TranslationTable[302535920001634--[["This mod requires my library mod (ChoGGi's Library) < use space on the end when searching for it."]]] .. "\n\n"
 						or ""
 
 					-- add some text to ECM description to hopefully reduce people reporting the mod.
 					if testing then
 
 						if mod.id == ChoGGi.id then
-							mod.description = Translate(302535920000990--[["You need to have a mouse to use this mod."]]) .. "\n"
-								.. needs_lib .. Translate(302535920000887--[["If you get a disabled content restrictions error: It's on Paradox to review/restore it (bug them not me).
+							mod.description = TranslationTable[302535920000990--[["You need to have a mouse to use this mod."]]] .. "\n"
+								.. needs_lib .. TranslationTable[302535920000887--[["If you get a disabled content restrictions error: It's on Paradox to review/restore it (bug them not me).
 
 If you have any issues with this mod then please send me a bug report instead of reporting the mod.
 https://github.com/ChoGGi/SurvivingMars_CheatMods
 https://discord.gg/bkdjEZU
 https://steamcommunity.com/id/ChoGGi/
-SurvivingMarsMods@choggi.org"]]) .. "\n\n\n" .. mod.description
+SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 						else
-							mod.description = needs_lib .. Translate(302535920000887--[["If you get a disabled content restrictions error: It's on Paradox to review/restore it (bug them not me).
+							mod.description = needs_lib .. TranslationTable[302535920000887--[["If you get a disabled content restrictions error: It's on Paradox to review/restore it (bug them not me).
 
 If you have any issues with this mod then please send me a bug report instead of reporting the mod.
 https://github.com/ChoGGi/SurvivingMars_CheatMods
 https://discord.gg/bkdjEZU
 https://steamcommunity.com/id/ChoGGi/
-SurvivingMarsMods@choggi.org"]]) .. "\n\n\n" .. mod.description
+SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 						end
 					end
 					-- DESC FOR PARA
@@ -695,7 +696,7 @@ Move archive to ""Mod folder/Pack/ModContent.hpk"""]]) .. "\n\n" .. Translate(30
 --~ 					func = function(dlg, check)
 --~ 						upload_to_who = check
 --~ 						if check then
---~ 							dlg.idCheckBox4:SetText(T(302535920001506--[[Steam]]))
+--~ 							dlg.idCheckBox4:SetText(TranslationTable[302535920001506--[[Steam]]])
 --~ 							dlg.idCheckBox5:SetVisible()
 --~ 							dlg.idBackgroundFrame:SetImage(image_steam)
 --~ 							dlg.idBackgroundFrame:SetMinHeight(image_steam_y)
@@ -840,7 +841,7 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 
 			hint = Translate(4274--[[Playtime : <playtime>]]):gsub("<playtime>", Translate(playtime)) .. "\n"
 				.. Translate(4273--[[Saved on : <save_date>]]):gsub("<save_date>", save_date) .. "\n\n"
-				.. T(302535920001274--[[This is permanent!]]),
+				.. TranslationTable[302535920001274--[[This is permanent!]]],
 		}
 	end
 
@@ -852,8 +853,8 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 
 		if not choice[1].check1 then
 			MsgPopup(
-				T(302535920000038--[[Pick a checkbox next time...]]),
-				T(302535920000146--[[Delete Saved Games]])
+				TranslationTable[302535920000038--[[Pick a checkbox next time...]]],
+				TranslationTable[302535920000146--[[Delete Saved Games]]]
 			)
 			return
 		end
@@ -878,8 +879,8 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 		games_amt = games_amt - #SavegamesList
 		if games_amt > 0 then
 			MsgPopup(
-				Translate(302535920001275--[[Deleted %s saved games.]]):format(games_amt),
-				T(302535920000146--[[Delete Saved Games]])
+				TranslationTable[302535920001275--[[Deleted %s saved games.]]]:format(games_amt),
+				TranslationTable[302535920000146--[[Delete Saved Games]]]
 			)
 		end
 	end
@@ -887,14 +888,14 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000146--[[Delete Saved Games]]) .. ": " .. #item_list,
-		hint = T(6779--[[Warning]]) .. ": " .. T(302535920001274--[[This is permanent!]]),
+		title = TranslationTable[302535920000146--[[Delete Saved Games]]] .. ": " .. #item_list,
+		hint = T(6779--[[Warning]]) .. ": " .. TranslationTable[302535920001274--[[This is permanent!]]],
 		multisel = true,
 		skip_sort = true,
 		checkboxes = {
 			{
 				title = T(1000009--[[Confirmation]]),
-				hint = T(302535920001276--[[Nothing is deleted unless you check this.]]),
+				hint = TranslationTable[302535920001276--[[Nothing is deleted unless you check this.]]],
 			},
 		},
 	}
@@ -905,7 +906,7 @@ function ChoGGi.MenuFuncs.StartupTicks_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ShowStartupTicks),
-		T(302535920001481--[[Show Startup Ticks]])
+		TranslationTable[302535920001481--[[Show Startup Ticks]]]
 	)
 end
 
@@ -916,7 +917,7 @@ function ChoGGi.MenuFuncs.ToolTips_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.EnableToolTips),
-		T(302535920001014--[[Toggle ToolTips]])
+		TranslationTable[302535920001014--[[Toggle ToolTips]]]
 	)
 end
 
@@ -926,7 +927,7 @@ function ChoGGi.MenuFuncs.ChangeWindowTitle_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ChangeWindowTitle),
-		T(302535920001647--[[Window Title]])
+		TranslationTable[302535920001647--[[Window Title]]]
 	)
 end
 
@@ -985,7 +986,7 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 					text = mod.title,
 					value = hpk,
 					hint = "\n"
-						.. Translate(302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.]]):format(mod.author)
+						.. TranslationTable[302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.]]]:format(mod.author)
 						.. mod.image,
 					id = id,
 				}
@@ -995,7 +996,7 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 	else
 		MsgPopup(
 			T(1000760--[[Not Steam]]) .. "/" .. T(1000759--[[Not Paradox]]),
-			T(302535920001362--[[Extract HPKs]])
+			TranslationTable[302535920001362--[[Extract HPKs]]]
 		)
 		return
 	end
@@ -1003,8 +1004,8 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 	if #item_list == 0 then
 		-- good enough msg, probably...
 		MsgPopup(
-			T(302535920000004--[[Dump]]) .. ": " .. #item_list,
-			T(302535920001362--[[Extract HPKs]])
+			TranslationTable[302535920000004--[[Dump]]] .. ": " .. #item_list,
+			TranslationTable[302535920001362--[[Extract HPKs]]]
 		)
 		return
 	end
@@ -1027,20 +1028,20 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 			-- add a note telling people not to be assholes
 			AsyncStringToFile(
 				path .. "/This is not your mod.txt",
-				Translate(302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.]]):format(choice.author)
+				TranslationTable[302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.]]]:format(choice.author)
 			)
 		end
 		MsgPopup(
-			T(302535920000004--[[Dump]]) .. ": " .. #choices,
-			T(302535920001362--[[Extract HPKs]])
+			TranslationTable[302535920000004--[[Dump]]] .. ": " .. #choices,
+			TranslationTable[302535920001362--[[Extract HPKs]]]
 		)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920001362--[[Extract HPKs]]),
-		hint = T(302535920001365--[[HPK files will be unpacked into AppData/Mods/ModSteamId]]),
+		title = TranslationTable[302535920001362--[[Extract HPKs]]],
+		hint = TranslationTable[302535920001365--[[HPK files will be unpacked into AppData/Mods/ModSteamId]]],
 		multisel = true,
 	}
 end
@@ -1085,7 +1086,7 @@ function ChoGGi.MenuFuncs.ListAllMenuItems()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000504--[[List All Menu Items]]),
+		title = TranslationTable[302535920000504--[[List All Menu Items]]],
 		custom_type = 7,
 		height = 800.0,
 	}
@@ -1097,7 +1098,7 @@ function ChoGGi.MenuFuncs.RetMapInfo()
 	end
 	local data = HashLogToTable()
 	data[1] = data[1]:gsub("\n\n", "")
-	ChoGGi.ComFuncs.OpenInExamineDlg(TableConcat(data, "\n"), nil, T(283142739680--[[Game]]) .. " & " .. T(302535920001355--[[Map]]) .. " " .. T(126095410863--[[Info]]))
+	ChoGGi.ComFuncs.OpenInExamineDlg(TableConcat(data, "\n"), nil, T(283142739680--[[Game]]) .. " & " .. TranslationTable[302535920001355--[[Map]]] .. " " .. T(126095410863--[[Info]]))
 end
 
 function ChoGGi.MenuFuncs.EditECMSettings()
@@ -1105,10 +1106,10 @@ function ChoGGi.MenuFuncs.EditECMSettings()
 	-- load up settings file in the editor
 	ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 		code = true,
-		title = T(302535920001242--[[Edit ECM Settings]]),
+		title = TranslationTable[302535920001242--[[Edit ECM Settings]]],
 		text = TableToLuaCode(UserSettings),
-		hint_ok = T(302535920001244--[["Saves settings to file, and applies any changes."]]),
-		hint_cancel = T(302535920001245--[[Abort without touching anything.]]),
+		hint_ok = TranslationTable[302535920001244--[["Saves settings to file, and applies any changes."]]],
+		hint_cancel = TranslationTable[302535920001245--[[Abort without touching anything.]]],
 		update_func = function()
 			return TableToLuaCode(UserSettings)
 		end,
@@ -1128,7 +1129,7 @@ function ChoGGi.MenuFuncs.EditECMSettings()
 					local msg = Translate(4273--[[Saved on <save_date>]]):gsub("<save_date>", ": " .. d .. ":" .. m .. ":" .. h)
 					MsgPopup(
 						msg,
-						T(302535920001242--[[Edit ECM Settings]])
+						TranslationTable[302535920001242--[[Edit ECM Settings]]]
 					)
 				end
 			end
@@ -1137,21 +1138,21 @@ function ChoGGi.MenuFuncs.EditECMSettings()
 end
 
 function ChoGGi.MenuFuncs.DisableECM()
-	local title = T(251103844022--[[Disable]]) .. " " .. T(302535920000002--[[ECM]])
+	local title = T(251103844022--[[Disable]]) .. " " .. TranslationTable[302535920000002--[[ECM]]]
 	local function CallBackFunc(answer)
 		if answer then
 			ChoGGi.UserSettings.DisableECM = not ChoGGi.UserSettings.DisableECM
 			ChoGGi.SettingFuncs.WriteSettings()
 
 			MsgPopup(
-				T(302535920001070--[[Restart to take effect.]]),
+				TranslationTable[302535920001070--[[Restart to take effect.]]],
 				title
 			)
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		T(302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
-Change DisableECM to false in settings file to re-enable them."]]) .. "\n\n" .. T(302535920001070--[[Restart to take effect.]]),
+		TranslationTable[302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
+Change DisableECM to false in settings file to re-enable them."]]] .. "\n\n" .. TranslationTable[302535920001070--[[Restart to take effect.]]],
 		CallBackFunc,
 		title
 	)
@@ -1179,17 +1180,17 @@ function ChoGGi.MenuFuncs.ResetECMSettings()
 			ChoGGi.SettingFuncs.WriteSettings()
 
 			MsgPopup(
-				T(302535920001070--[[Restart to take effect.]]),
-				T(302535920000676--[[Reset ECM Settings]])
+				TranslationTable[302535920001070--[[Restart to take effect.]]],
+				TranslationTable[302535920000676--[[Reset ECM Settings]]]
 			)
 		end
 	end
 
 	ChoGGi.ComFuncs.QuestionBox(
-		Translate(302535920001072--[[Are you sure you want to reset ECM settings?
-Old settings are saved as %s (or not saved if you don't use the HelperMod)]]):format(old) .. "\n\n" .. T(302535920001070--[[Restart to take effect.]]),
+		TranslationTable[302535920001072--[[Are you sure you want to reset ECM settings?
+Old settings are saved as %s (or not saved if you don't use the HelperMod)]]]:format(old) .. "\n\n" .. TranslationTable[302535920001070--[[Restart to take effect.]]],
 		CallBackFunc,
-		T(302535920001084--[[Reset]]) .. "!"
+		TranslationTable[302535920001084--[[Reset]]] .. "!"
 	)
 end
 
@@ -1206,10 +1207,10 @@ end
 
 function ChoGGi.MenuFuncs.AboutECM()
 	ChoGGi.ComFuncs.MsgWait(
-		Translate(302535920001078--[["Hover mouse over menu item to get description and enabled status
+		TranslationTable[302535920001078--[["Hover mouse over menu item to get description and enabled status
 If there isn't a status then it's likely a list of options to choose from
 
-For any issues; please report them to my Github/Steam/NexusMods page, or email %s"]]):format(ChoGGi.email),
+For any issues; please report them to my Github/Steam/NexusMods page, or email %s"]]]:format(ChoGGi.email),
 		T(487939677892--[[Help]])
 	)
 end

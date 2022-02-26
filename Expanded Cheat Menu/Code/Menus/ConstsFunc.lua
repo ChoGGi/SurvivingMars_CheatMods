@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local TranslationTable = TranslationTable
 
 function ChoGGi.MenuFuncs.SetConstMenu(action)
 	local ConstsUS = ChoGGi.UserSettings.Consts
@@ -16,7 +17,7 @@ function ChoGGi.MenuFuncs.SetConstMenu(action)
 	local default_setting = action.setting_value
 
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
 		{text = 15, value = 15},
 		{text = 20, value = 20},
 		{text = 25, value = 25},
@@ -34,7 +35,7 @@ function ChoGGi.MenuFuncs.SetConstMenu(action)
 		table.insert(item_list, 2, {
 			text = T(1000231--[[Previous]]) .. ": " .. previous,
 			value = previous,
-			hint = T(302535920000213--[[Previously set in an ECM menu (meaning it's active and the setting here will override this value).]])
+			hint = TranslationTable[302535920000213--[[Previously set in an ECM menu (meaning it's active and the setting here will override this value).]]]
 		})
 	end
 
@@ -67,11 +68,11 @@ function ChoGGi.MenuFuncs.SetConstMenu(action)
 		end
 	end
 
-	hint = T(302535920000106--[[Current]]) .. ": " .. hint .. "\n\n" .. setting_desc
+	hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. hint .. "\n\n" .. setting_desc
 	if setting_scale then
-		hint = hint .. "\n" .. T(1000081--[[Scale]]) .. ": "
+		hint = hint .. "\n" .. Translate(1000081--[[Scale]]) .. ": "
 			.. Presets.ConstDef.Scale[setting_scale].value .. "("
-			.. T(302535920000182--[[The scale this amount will be multipled by when used.]]) .. ")"
+			.. TranslationTable[302535920000182--[[The scale this amount will be multipled by when used.]]] .. ")"
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{

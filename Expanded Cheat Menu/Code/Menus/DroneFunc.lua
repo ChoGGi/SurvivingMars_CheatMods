@@ -12,7 +12,7 @@ function ChoGGi.MenuFuncs.SetDroneBatteryCap()
 	local r = const.ResourceScale
 
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting},
+		{text = TranslationTable[1000121--[[Default]]] .. ": " .. (default_setting / r), value = default_setting},
 		{text = 10, value = 10 * r},
 		{text = 25, value = 25 * r},
 		{text = 50, value = 50 * r},
@@ -53,7 +53,7 @@ function ChoGGi.MenuFuncs.SetDroneBatteryCap()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneBatteryMax),
-				T(302535920000051--[[Drone Battery Cap]])
+				TranslationTable[302535920000051--[[Drone Battery Cap]]]
 			)
 		end
 	end
@@ -61,8 +61,8 @@ function ChoGGi.MenuFuncs.SetDroneBatteryCap()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000051--[[Drone Battery Cap]]),
-		hint = T(302535920000106--[[Current]]) .. ": " .. hint,
+		title = TranslationTable[302535920000051--[[Drone Battery Cap]]],
+		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. hint,
 		skip_sort = true,
 	}
 end
@@ -89,8 +89,8 @@ function ChoGGi.MenuFuncs.SetDroneType()
 		end
 		sponsor.drone_class = choice[1].value
 		MsgPopup(
-			Translate(302535920001405--[[Drones will now spawn as: %s]]):format(choice[1].text),
-			T(302535920001403--[[Drone Type]])
+			TranslationTable[302535920001405--[[Drones will now spawn as: %s]]]:format(choice[1].text),
+			TranslationTable[302535920001403--[[Drone Type]]]
 		)
 	end
 
@@ -101,21 +101,21 @@ function ChoGGi.MenuFuncs.SetDroneType()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920001403--[[Drone Type]]),
-		hint = T(302535920000106--[[Current]]) .. ": " .. T(name) .. "\n"
-			.. Translate(302535920001406--[["Hubs can only have one type of drone, so you'll need pack/unpack all drones for each hub you wish to change (or use Drones>%s)."]]):format(T(302535920000513--[[Change Amount of Drones in Hub]])),
+		title = TranslationTable[302535920001403--[[Drone Type]]],
+		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. Translate(name) .. "\n"
+			.. TranslationTable[302535920001406--[["Hubs can only have one type of drone, so you'll need pack/unpack all drones for each hub you wish to change (or use Drones>%s)."]]]:format(TranslationTable[302535920000513--[[Change Amount of Drones in Hub]]]),
 	}
 end
 
 function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 	local default_setting = ChoGGi.Consts.RCRoverMaxRadius
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
 		{text = 40, value = 40},
 		{text = 80, value = 80},
 		{text = 160, value = 160},
-		{text = 320, value = 320, hint = T(302535920000111--[[Cover the entire map from the centre.]])},
-		{text = 640, value = 640, hint = T(302535920000112--[[Cover the entire map from a corner.]])},
+		{text = 320, value = 320, hint = TranslationTable[302535920000111--[[Cover the entire map from the centre.]]]},
+		{text = 640, value = 640, hint = TranslationTable[302535920000112--[[Cover the entire map from a corner.]]]},
 	}
 
 	local hint = default_setting
@@ -146,7 +146,7 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RCRoverMaxRadius),
-				T(302535920000505--[[Work Radius RC Rover]])
+				TranslationTable[302535920000505--[[Work Radius RC Rover]]]
 			)
 		end
 	end
@@ -154,9 +154,9 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000884--[[Set Rover Work Radius]]),
-		hint = T(302535920000106--[[Current]]) .. ": " .. hint .. "\n\n"
-			.. T(302535920000115--[[Toggle selection to update visible hex grid.]]),
+		title = TranslationTable[302535920000884--[[Set Rover Work Radius]]],
+		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. hint .. "\n\n"
+			.. TranslationTable[302535920000115--[[Toggle selection to update visible hex grid.]]],
 		skip_sort = true,
 	}
 end
@@ -164,12 +164,12 @@ end
 function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
 	local default_setting = ChoGGi.Consts.CommandCenterMaxRadius
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
 		{text = 40, value = 40},
 		{text = 80, value = 80},
 		{text = 160, value = 160},
-		{text = 320, value = 320, hint = T(302535920000111--[[Cover the entire map from the centre.]])},
-		{text = 640, value = 640, hint = T(302535920000112--[[Cover the entire map from a corner.]])},
+		{text = 320, value = 320, hint = TranslationTable[302535920000111--[[Cover the entire map from the centre.]]]},
+		{text = 640, value = 640, hint = TranslationTable[302535920000112--[[Cover the entire map from a corner.]]]},
 	}
 
 	local hint = default_setting
@@ -200,7 +200,7 @@ function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CommandCenterMaxRadius),
-				T(302535920000507--[[Work Radius DroneHub]])
+				TranslationTable[302535920000507--[[Work Radius DroneHub]]]
 			)
 		end
 	end
@@ -208,9 +208,9 @@ function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000886--[[Set DroneHub Work Radius]]),
-		hint = T(302535920000106--[[Current]]) .. ": " .. hint .. "\n\n"
-			.. T(302535920000115--[[Toggle selection to update visible hex grid.]]),
+		title = TranslationTable[302535920000886--[[Set DroneHub Work Radius]]],
+		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. hint .. "\n\n"
+			.. TranslationTable[302535920000115--[[Toggle selection to update visible hex grid.]]],
 		skip_sort = true,
 	}
 end
@@ -218,7 +218,7 @@ end
 function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
 	local default_setting = ChoGGi.Consts.DroneTransformWasteRockObstructorToStockpileAmount
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
 		{text = 0, value = 0},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
@@ -246,7 +246,7 @@ function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
 
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.text),
-				T(302535920000509--[[Drone Rock To Concrete Speed]])
+				TranslationTable[302535920000509--[[Drone Rock To Concrete Speed]]]
 			)
 		end
 	end
@@ -254,8 +254,8 @@ function ChoGGi.MenuFuncs.SetDroneRockToConcreteSpeed()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000509--[[Drone Rock To Concrete Speed]]),
-		hint = T(302535920000106--[[Current]]) .. ": " .. hint,
+		title = TranslationTable[302535920000509--[[Drone Rock To Concrete Speed]]],
+		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. hint,
 		skip_sort = true,
 	}
 end
@@ -271,7 +271,7 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed(action)
 		UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("SpeedDrone")
 	end
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting, hint = T(302535920000889--[[base speed]])},
+		{text = TranslationTable[1000121--[[Default]]] .. ": " .. (default_setting / r), value = default_setting, hint = TranslationTable[302535920000889--[[base speed]]]},
 		{text = 5, value = 5 * r},
 		{text = 10, value = 10 * r},
 		{text = 15, value = 15 * r},
@@ -284,7 +284,7 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed(action)
 
 	-- only reg drones have upgraded speed tech (i think)
 	if UpgradedSetting and default_setting ~= UpgradedSetting then
-		table.insert(item_list, 2, {text = T(302535920000890--[[Upgraded]]) .. ": " .. (UpgradedSetting / r), value = UpgradedSetting, hint = T(302535920000891--[[apply tech unlocks]])})
+		table.insert(item_list, 2, {text = TranslationTable[302535920000890--[[Upgraded]]] .. ": " .. (UpgradedSetting / r), value = UpgradedSetting, hint = TranslationTable[302535920000891--[[apply tech unlocks]]]})
 	end
 
 	local hint = UpgradedSetting or default_setting
@@ -338,8 +338,8 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed(action)
 		callback = CallBackFunc,
 		items = item_list,
 		title = title,
-		hint = T(302535920000106--[[Current]]) .. ": " .. hint .. "\n\n"
-			.. T(302535920001085--[[Setting speed to a non integer (e.g 2.5) crashes the game!]]),
+		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. hint .. "\n\n"
+			.. TranslationTable[302535920001085--[[Setting speed to a non integer (e.g 2.5) crashes the game!]]],
 		skip_sort = true,
 	}
 end
@@ -352,7 +352,7 @@ function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
 
 	local CurrentAmount = obj:GetDronesCount()
 	local item_list = {
-		{text = T(302535920000894--[[Current amount]]) .. ": " .. CurrentAmount, value = CurrentAmount},
+		{text = TranslationTable[302535920000894--[[Current amount]]] .. ": " .. CurrentAmount, value = CurrentAmount},
 		{text = 1, value = 1},
 		{text = 5, value = 5},
 		{text = 10, value = 10},
@@ -369,9 +369,9 @@ function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
 		local value = choice[1].value
 		if type(value) == "number" then
 
-			local change = T(302535920000746--[[added]])
+			local change = TranslationTable[302535920000746--[[added]]]
 			if choice[1].check1 then
-				change = T(302535920000917--[[packed]])
+				change = TranslationTable[302535920000917--[[packed]]]
 				for _ = 1, value do
 					obj:ConvertDroneToPrefab()
 				end
@@ -383,7 +383,7 @@ function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
 
 			MsgPopup(
 				choice[1].text .. ": " .. T(517, "Drones") .. " " .. change,
-				T(302535920000513--[[Change Amount Of Drones In Hub]])
+				TranslationTable[302535920000513--[[Change Amount Of Drones In Hub]]]
 			)
 		end
 	end
@@ -391,14 +391,14 @@ function ChoGGi.MenuFuncs.SetDroneAmountDroneHub()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000895--[[Change Amount Of Drones]]),
-		hint = T(302535920000896--[[Drones in hub]]) .. ": " .. CurrentAmount .. " "
-			.. T(302535920000897--[[Drone prefabs]]) .. ": " .. UICity.drone_prefabs,
+		title = TranslationTable[302535920000895--[[Change Amount Of Drones]]],
+		hint = TranslationTable[302535920000896--[[Drones in hub]]] .. ": " .. CurrentAmount .. " "
+			.. TranslationTable[302535920000897--[[Drone prefabs]]] .. ": " .. UICity.drone_prefabs,
 		skip_sort = true,
 		checkboxes = {
 			{
-				title = T(302535920000898--[[Pack Drones]]),
-				hint = T(302535920000899--[[Check this to pack drone(s) into prefabs (number can be higher than attached drones).]]),
+				title = TranslationTable[302535920000898--[[Pack Drones]]],
+				hint = TranslationTable[302535920000899--[[Check this to pack drone(s) into prefabs (number can be higher than attached drones).]]],
 			},
 		},
 	}
@@ -407,7 +407,7 @@ end
 function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
 	local default_setting = ChoGGi.Consts.DroneFactoryBuildSpeed
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
 		{text = 75, value = 75},
@@ -456,15 +456,15 @@ function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(choice.text),
-			T(302535920000515--[[DroneFactory Build Speed]])
+			TranslationTable[302535920000515--[[DroneFactory Build Speed]]]
 		)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000901--[[Set Drone Factory Build Speed]]),
-		hint = T(302535920000106--[[Current]]) .. ": " .. hint,
+		title = TranslationTable[302535920000901--[[Set Drone Factory Build Speed]]],
+		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. hint,
 		skip_sort = true,
 	}
 end
@@ -493,7 +493,7 @@ function ChoGGi.MenuFuncs.DroneBatteryInfinite_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneMoveBatteryUse),
-		T(302535920000519--[[Drone Battery Infinite]])
+		TranslationTable[302535920000519--[[Drone Battery Infinite]]]
 	)
 end
 
@@ -508,7 +508,7 @@ function ChoGGi.MenuFuncs.DroneBuildSpeed_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneConstructAmount),
-		T(302535920000521--[[Drone Build Speed]])
+		TranslationTable[302535920000521--[[Drone Build Speed]]]
 	)
 end
 
@@ -518,7 +518,7 @@ function ChoGGi.MenuFuncs.DroneRechargeTime_Toggle()
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
-		Translate(302535920000907--[[%s: Well, if jacking on'll make strangers think I'm cool, I'll do it!]]):format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneRechargeTime)),
+		TranslationTable[302535920000907--[[%s: Well, if jacking on'll make strangers think I'm cool, I'll do it!]]]:format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneRechargeTime)),
 		T(4645, "Drone Recharge Time")
 	)
 end
@@ -530,15 +530,15 @@ function ChoGGi.MenuFuncs.DroneRepairSupplyLeak_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneRepairSupplyLeak),
-		T(302535920000527--[[Drone Repair Supply Leak Speed]])
+		TranslationTable[302535920000527--[[Drone Repair Supply Leak Speed]]]
 	)
 end
 
 function ChoGGi.MenuFuncs.SetDroneCarryAmount()
 	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("DroneResourceCarryAmount")
-	local hinttoolarge = Translate(302535920000909--[["If you set this amount larger then a building's ""Storage"" amount then the drones will NOT pick up storage (See: Fixes>%s)."]]):format(T(302535920000613--[[Drone Carry Amount]]))
+	local hinttoolarge = TranslationTable[302535920000909--[["If you set this amount larger then a building's ""Storage"" amount then the drones will NOT pick up storage (See: Fixes>%s)."]]]:format(TranslationTable[302535920000613--[[Drone Carry Amount]]])
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
 		{text = 5, value = 5},
 		{text = 10, value = 10},
 		{text = 25, value = 25, hint = hinttoolarge},
@@ -547,7 +547,7 @@ function ChoGGi.MenuFuncs.SetDroneCarryAmount()
 		{text = 100, value = 100, hint = hinttoolarge},
 		{text = 250, value = 250, hint = hinttoolarge},
 		{text = 500, value = 500, hint = hinttoolarge},
-		{text = 1000, value = 1000, hint = hinttoolarge .. "\n\n" .. T(302535920000910--[[Somewhere above 1000 will delete the save (when it's full)]])},
+		{text = 1000, value = 1000, hint = hinttoolarge .. "\n\n" .. TranslationTable[302535920000910--[[Somewhere above 1000 will delete the save (when it's full)]]]},
 	}
 
 	local hint = default_setting
@@ -578,7 +578,7 @@ function ChoGGi.MenuFuncs.SetDroneCarryAmount()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Translate(302535920000911--[[Drones can carry %s items.]]):format(choice[1].text),
+				TranslationTable[302535920000911--[[Drones can carry %s items.]]]:format(choice[1].text),
 				T(6980, "Drone resource carry amount")
 			)
 		end
@@ -587,9 +587,9 @@ function ChoGGi.MenuFuncs.SetDroneCarryAmount()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000913--[[Set Drone Carry Capacity]]),
-		hint = T(302535920000914--[[Current capacity]]) .. ": " .. hint
-			.. "\n\n" .. hinttoolarge .. "\n\n" .. T(302535920000834--[[Max]])
+		title = TranslationTable[302535920000913--[[Set Drone Carry Capacity]]],
+		hint = TranslationTable[302535920000914--[[Current capacity]]] .. ": " .. hint
+			.. "\n\n" .. hinttoolarge .. "\n\n" .. TranslationTable[302535920000834--[[Max]]]
 			.. ": 1000.",
 		skip_sort = true,
 	}
@@ -598,7 +598,7 @@ end
 function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
 	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("CommandCenterMaxDrones")
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
 		{text = 5, value = 5},
 		{text = 10, value = 10},
 		{text = 25, value = 25},
@@ -626,7 +626,7 @@ function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Translate(302535920000916--[[DroneHubs can control %s drones.]]):format(choice[1].text),
+				TranslationTable[302535920000916--[[DroneHubs can control %s drones.]]]:format(choice[1].text),
 				T(4707, "Command center max Drones")
 			)
 		end
@@ -635,8 +635,8 @@ function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000918--[[Set DroneHub Drone Capacity]]),
-		hint = T(302535920000914--[[Current capacity]]) .. ": " .. hint,
+		title = TranslationTable[302535920000918--[[Set DroneHub Drone Capacity]]],
+		hint = TranslationTable[302535920000914--[[Current capacity]]] .. ": " .. hint,
 		skip_sort = true,
 	}
 end
@@ -644,7 +644,7 @@ end
 function ChoGGi.MenuFuncs.SetDronesPerRCRover()
 	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("RCRoverMaxDrones")
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
 		{text = 5, value = 5},
 		{text = 10, value = 10},
 		{text = 25, value = 25},
@@ -672,7 +672,7 @@ function ChoGGi.MenuFuncs.SetDronesPerRCRover()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Translate(302535920000921--[[RC Rovers can control %s drones.]]):format(choice[1].text),
+				TranslationTable[302535920000921--[[RC Rovers can control %s drones.]]]:format(choice[1].text),
 				T(4633, "RC Commander max Drones")
 			)
 		end
@@ -681,8 +681,8 @@ function ChoGGi.MenuFuncs.SetDronesPerRCRover()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000924--[[Set RC Rover Drone Capacity]]),
-		hint = T(302535920000914--[[Current capacity]]) .. ": " .. hint,
+		title = TranslationTable[302535920000924--[[Set RC Rover Drone Capacity]]],
+		hint = TranslationTable[302535920000914--[[Current capacity]]] .. ": " .. hint,
 		skip_sort = true,
 	}
 end

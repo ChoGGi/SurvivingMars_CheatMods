@@ -93,11 +93,12 @@ end -- do
 
 do -- UpdateStringsList (fired below, and whenever lang is changed)
 	-- we need to pad some zeros
-	local locId_sig = shift(255, 56)
-	local LightUserData = LightUserData
-	local bor = bor
-	local GetLanguage = GetLanguage
-	local setmetatable, next = setmetatable, next
+--~ 	local locId_sig = shift(255, 56)
+--~ 	local LightUserData = LightUserData
+--~ 	local bor = bor
+--~ 	local GetLanguage = GetLanguage
+--~ 	local setmetatable, next = setmetatable, next
+--~ 			local str = _InternalTranslate(LightUserData(bor(i, locId_sig)))
 
 	function ChoGGi.ComFuncs.UpdateStringsList()
 		local lang = GetLanguage()
@@ -106,7 +107,7 @@ do -- UpdateStringsList (fired below, and whenever lang is changed)
 		-- devs didn't bother changing droid font to one that supports unicode, so we do this when it isn't eng
 		if lang ~= "English" then
 			-- first get the unicode font name
-			local f = Translate(997--[[*fontname*, 15, aa]])
+			local f = TranslationTable[997--[[*fontname*, 15, aa]]]
 			-- Index of first , then crop out the rest
 			f = f:sub(1, f:find(", ")-1)
 			-- might use it for something else?
@@ -121,45 +122,6 @@ do -- UpdateStringsList (fired below, and whenever lang is changed)
 			TextStyles.GizmoText.TextFont = f .. ", 32, bold, aa"
 
 		end
-
-
--- OBSOLETE
-
-		-- a table of translated strings (includes <> stuff unlike TranslationTable)
-		local strings = ChoGGi.Strings
-		-- blank table from modload
-		if not next(strings) then
-			-- If there's a missing id print/return a warning
-			setmetatable(strings, {
-				__index = function(errorsout, id)
-					-- we only want numbers, so if anything else is requested then ignore
-					if type(id) == "number" then
-						print("ChoGGi Lib: *bad string id?", id)
-						if testing then
-							-- this will error out, but I'll know where it comes from at least.
-							print(errorsout)
-						end
-						return missing_text
-					end
-				end,
-			})
-		end
-
-		-- translate all my strings
-		local iter = 302535920000000 + string_limit
-		for i = 302535920000000, iter do
-			local str = _InternalTranslate(LightUserData(bor(i, locId_sig)))
-			-- If the missing text is within the last 50 then we can safely break
-			if (iter - 50) < i and str == missing_text then
-				break
-			end
-			strings[i] = str
-		end
-
-		-- and update my global ref
-		ChoGGi.Strings = strings
-
--- OBSOLETE
 
 	end
 end -- do

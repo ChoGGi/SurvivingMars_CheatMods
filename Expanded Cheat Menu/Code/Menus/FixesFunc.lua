@@ -10,6 +10,7 @@ local DoneObject = DoneObject
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local DeleteObject = ChoGGi.ComFuncs.DeleteObject
 local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
+local TranslationTable = TranslationTable
 local testing = ChoGGi.testing
 
 function ChoGGi.MenuFuncs.RemoveInvalidLabelObjects()
@@ -25,7 +26,7 @@ function ChoGGi.MenuFuncs.RemoveInvalidLabelObjects()
 	end
 	MsgPopup(
 		T(4493--[[All]]),
-		T(302535920001533--[[Remove Invalid Label Objects]])
+		TranslationTable[302535920001533--[[Remove Invalid Label Objects]]]
 	)
 end
 
@@ -40,7 +41,7 @@ function ChoGGi.MenuFuncs.RocketCrashesGameOnLanding()
 	end
 	MsgPopup(
 		T(4493--[[All]]),
-		T(302535920001351--[[Rocket Crashes Game On Landing]])
+		TranslationTable[302535920001351--[[Rocket Crashes Game On Landing]]]
 	)
 end
 
@@ -54,7 +55,7 @@ function ChoGGi.MenuFuncs.ToggleWorkingAll()
 
 	MsgPopup(
 		T(4493--[[All]]),
-		T(302535920001299--[[Toggle Working On All Buildings]])
+		TranslationTable[302535920001299--[[Toggle Working On All Buildings]]]
 	)
 end
 
@@ -65,7 +66,7 @@ do -- DronesNotRepairingDome
 		local Sleep = Sleep
 		MsgPopup(
 			T(83--[[Domes]]),
-			T(302535920001295--[[Drones Not Repairing Domes]])
+			TranslationTable[302535920001295--[[Drones Not Repairing Domes]]]
 		)
 		-- just in case someone decides to click it more than once...
 		if looping_thread then
@@ -104,7 +105,7 @@ do -- DronesNotRepairingDome
 			end
 			MsgPopup(
 				T(1157--[[Complete thread]]),
-				T(302535920001295--[[Drones Not Repairing Domes]])
+				TranslationTable[302535920001295--[[Drones Not Repairing Domes]]]
 			)
 		end)
 	end
@@ -153,7 +154,7 @@ do -- ResetCommanders
 			-- let user know something is happening
 			MsgPopup(
 				T(5438--[[Rovers]]),
-				T(302535920000464--[[Updating Rovers]])
+				TranslationTable[302535920000464--[[Updating Rovers]]]
 			)
 			--wait awhile just to be sure
 			Sleep(5000)
@@ -191,10 +192,10 @@ do -- Colonist stuff
 		end
 
 		ChoGGi.ComFuncs.QuestionBox(
-			T(6779--[[Warning]]) .. "!\n" .. T(302535920000055--[[Reset All Colonists]])
-				.. "\n" .. T(302535920000939--[["Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20."]]),
+			Translate(6779--[[Warning]]) .. "!\n" .. TranslationTable[302535920000055--[[Reset All Colonists]]]
+				.. "\n" .. TranslationTable[302535920000939--[["Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20."]]],
 			CallBackFunc,
-			T(6779--[[Warning]]) .. ": " .. T(302535920000055--[[Reset All Colonists]])
+			Translate(6779--[[Warning]]) .. ": " .. TranslationTable[302535920000055--[[Reset All Colonists]]]
 		)
 	end
 
@@ -214,7 +215,7 @@ do -- Colonist stuff
 
 		MsgPopup(
 			T(4493--[[All]]),
-			T(302535920000591--[[Colonists Trying To Board Rocket Freezes Game]])
+			TranslationTable[302535920000591--[[Colonists Trying To Board Rocket Freezes Game]]]
 		)
 	end
 
@@ -241,7 +242,7 @@ do -- Colonist stuff
 		end
 		MsgPopup(
 			T(5238--[[Rockets]]),
-			T(302535920000585--[[Colonists Stuck Outside Rocket]])
+			TranslationTable[302535920000585--[[Colonists Stuck Outside Rocket]]]
 		)
 	end
 
@@ -261,7 +262,7 @@ function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
 
 	MsgPopup(
 		T(4493--[[All]]),
-		T(302535920000593--[[Remove Particles With Null Polylines]])
+		TranslationTable[302535920000593--[[Remove Particles With Null Polylines]]]
 	)
 end
 
@@ -273,16 +274,16 @@ function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
 			ResumePassEdits("ChoGGi.MenuFuncs.RemoveMissingClassObjects")
 			MsgPopup(
 				T(4493--[[All]]),
-				T(302535920000587--[[Remove Missing Class Objects]])
+				TranslationTable[302535920000587--[[Remove Missing Class Objects]]]
 			)
 		end
 	end
 
 	ChoGGi.ComFuncs.QuestionBox(
-		T(6779--[[Warning]]) .. "!\n"
-			.. T(302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).]]),
+		Translate(6779--[[Warning]]) .. "!\n"
+			.. TranslationTable[302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).]]],
 		CallBackFunc,
-		T(6779--[[Warning]]) .. ": " .. T(302535920000587--[[Remove Missing Class Objects]])
+		Translate(6779--[[Warning]]) .. ": " .. TranslationTable[302535920000587--[[Remove Missing Class Objects]]]
 	)
 end
 
@@ -310,7 +311,7 @@ function ChoGGi.MenuFuncs.MirrorSphereStuck()
 
 	MsgPopup(
 		T(4493--[[All]]),
-		T(302535920000595--[[Mirror Sphere Stuck]])
+		TranslationTable[302535920000595--[[Mirror Sphere Stuck]]]
 	)
 end
 
@@ -328,7 +329,7 @@ function ChoGGi.MenuFuncs.StutterWithHighFPS()
 	ChoGGi.ComFuncs.ResetHumanCentipedes()
 	MsgPopup(
 		T(4493--[[All]]),
-		T(302535920000597--[[Stutter With High FPS]])
+		TranslationTable[302535920000597--[[Stutter With High FPS]]]
 	)
 end
 
@@ -352,7 +353,7 @@ do -- DronesKeepTryingBlockedAreas
 		MapForEach("map", "ConstructionSite", ToggleWorking)
 		MsgPopup(
 			T(4493--[[All]]),
-			T(302535920000599--[[Drones Keep Trying Blocked Areas]])
+			TranslationTable[302535920000599--[[Drones Keep Trying Blocked Areas]]]
 		)
 	end
 end -- do
@@ -364,7 +365,7 @@ function ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid()
 	end)
 	MsgPopup(
 		T(4493--[[All]]),
-		T(302535920000621--[[Align All Buildings To Hex Grid]])
+		TranslationTable[302535920000621--[[Align All Buildings To Hex Grid]]]
 	)
 end
 
@@ -392,8 +393,8 @@ do -- RemoveUnreachableConstructionSites
 		RemoveUnreachable("SupplyRocket")
 
 		MsgPopup(
-			T(302535920000971--[[Sites]]),
-			T(302535920000601--[[Idle Drones Won't Build When Resources Available]])
+			TranslationTable[302535920000971--[[Sites]]],
+			TranslationTable[302535920000601--[[Idle Drones Won't Build When Resources Available]]]
 		)
 	end
 end -- do
@@ -405,7 +406,7 @@ function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
 	ResumePassEdits("ChoGGi.MenuFuncs.RemoveYellowGridMarks")
 	MsgPopup(
 		T(4493--[[All]]),
-		T(302535920000603--[[Remove Yellow Grid Marks]])
+		TranslationTable[302535920000603--[[Remove Yellow Grid Marks]]]
 	)
 end
 
@@ -433,7 +434,7 @@ function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
 
 	MsgPopup(
 		T(4493--[[All]]),
-		T(302535920001193--[[Remove Blue Grid Marks]])
+		TranslationTable[302535920001193--[[Remove Blue Grid Marks]]]
 	)
 end
 
@@ -445,7 +446,7 @@ function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
 	end
 	MsgPopup(
 		T(4493--[[All]]),
-		T(302535920000605--[[Project Morpheus Radar Fell Down]])
+		TranslationTable[302535920000605--[[Project Morpheus Radar Fell Down]]]
 	)
 end
 
@@ -456,7 +457,7 @@ function ChoGGi.MenuFuncs.RebuildWalkablePointsInDomes()
 	end)
 	MsgPopup(
 		T(4493--[[All]]),
-		T(302535920000583--[[Rebuild Walkable Points In Domes]])
+		TranslationTable[302535920000583--[[Rebuild Walkable Points In Domes]]]
 	)
 end
 
@@ -469,7 +470,7 @@ function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
 
 	MsgPopup(
 		T(3980--[[Buildings]]),
-		T(302535920000609--[[Attach Buildings To Nearest Working Dome]])
+		TranslationTable[302535920000609--[[Attach Buildings To Nearest Working Dome]]]
 	)
 end
 
@@ -496,7 +497,7 @@ function ChoGGi.MenuFuncs.ColonistsFixBlackCube()
 	end
 	MsgPopup(
 		T(4493--[[All]]),
-		T(302535920000619--[[Fix Black Cube Colonists]])
+		TranslationTable[302535920000619--[[Fix Black Cube Colonists]]]
 	)
 end
 
@@ -527,7 +528,7 @@ do -- CablesAndPipesRepair
 
 		MsgPopup(
 			T(4493--[[All]]),
-			T(302535920000157--[[Cables & Pipes]]) .. ": " .. T(302535920000607--[[Instant Repair]])
+			TranslationTable[302535920000157--[[Cables & Pipes]]] .. ": " .. TranslationTable[302535920000607--[[Instant Repair]]]
 		)
 	end
 end -- do
@@ -572,7 +573,7 @@ function ChoGGi.MenuFuncs.FixMissingModBuildings_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.FixMissingModBuildings),
-		T(302535920001483--[[Missing Mod Buildings]])
+		TranslationTable[302535920001483--[[Missing Mod Buildings]]]
 	)
 end
 
@@ -588,7 +589,7 @@ function ChoGGi.MenuFuncs.ColonistsStuckOutsideServiceBuildings_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings),
-		T(302535920000248--[[Colonists Stuck Outside Service Buildings]])
+		TranslationTable[302535920000248--[[Colonists Stuck Outside Service Buildings]]]
 	)
 end
 
@@ -598,7 +599,7 @@ function ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneResourceCarryAmountFix),
-		T(302535920000613--[[Drone Carry Amount]])
+		TranslationTable[302535920000613--[[Drone Carry Amount]]]
 	)
 end
 
@@ -608,7 +609,7 @@ function ChoGGi.MenuFuncs.SortCommandCenterDist_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SortCommandCenterDist),
-		T(302535920000615--[[Sort Command Center Dist]])
+		TranslationTable[302535920000615--[[Sort Command Center Dist]]]
 	)
 end
 

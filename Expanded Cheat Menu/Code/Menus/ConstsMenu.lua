@@ -2,19 +2,19 @@
 
 local Translate = ChoGGi.ComFuncs.Translate
 local SettingState = ChoGGi.ComFuncs.SettingState
-local Strings = ChoGGi.Strings
+local TranslationTable = TranslationTable
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Strings[302535920000158--[[Consts]]],
+Actions[c] = {ActionName = TranslationTable[302535920000158--[[Consts]]],
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Consts",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 	OnActionEffect = "popup",
 	ActionSortKey = "1Consts",
-	RolloverText = Strings[302535920000526--[[Any cheats changed here will override ones from a non-Consts menu.
+	RolloverText = TranslationTable[302535920000526--[[Any cheats changed here will override ones from a non-Consts menu.
 
  <color ChoGGi_red>Warning</color>: Changing these settings may cause crashing!]]],
 }
@@ -56,7 +56,7 @@ for i = 1, #ConstDef do
 		ActionId = "." .. group_name,
 		ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 		OnActionEffect = "popup",
-		RolloverText = Strings[302535920000526--[[Any cheats changed here will override ones from a non-Consts menu.
+		RolloverText = TranslationTable[302535920000526--[[Any cheats changed here will override ones from a non-Consts menu.
 
 <color ChoGGi_red>Warning</color>: Changing these settings may cause crashing!]]],
 	}

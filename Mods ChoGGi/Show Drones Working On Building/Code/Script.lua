@@ -1,11 +1,16 @@
 -- See LICENSE for terms
 
+local IsKindOf = IsKindOf
 local IsValid = IsValid
 local SelectionArrowAdd = SelectionArrowAdd
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 
 function OnMsg.SelectionAdded(obj)
+	if IsKindOf(obj, "DroneControl") then
+		return
+	end
+
 	local drones = {}
 	local c = 0
 	local cc = obj.command_centers or ""

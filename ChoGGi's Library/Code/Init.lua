@@ -51,8 +51,6 @@ ChoGGi = {
 	lang = GetLanguage(),
 	-- path to this mods' folder
 	library_path = CurrentModPath,
-	-- stores my strings, and edited sm ones OBSOLETE
-	Strings = {},
 	-- easier access to some data
 	Tables = {
 		Cargo = {},

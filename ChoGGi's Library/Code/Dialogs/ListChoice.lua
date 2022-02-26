@@ -58,6 +58,7 @@ local RetProperType = ChoGGi.ComFuncs.RetProperType
 local Translate = ChoGGi.ComFuncs.Translate
 local DotPathToObject = ChoGGi.ComFuncs.DotPathToObject
 local ValidateImage = ChoGGi.ComFuncs.ValidateImage
+local TranslationTable = TranslationTable
 
 local type, tostring = type, tostring
 local table = table
@@ -202,10 +203,10 @@ function ChoGGi_DlgListChoice:Init(parent, context)
 
 		self.idFilter = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idFilter",
-			RolloverText = T(302535920000806--[["Only show items containing this text.
+			RolloverText = TranslationTable[302535920000806--[["Only show items containing this text.
 
-	Press Enter to show all items."]]),
-			Hint = Translate(302535920000068--[[Filter Items]]),
+	Press Enter to show all items."]]],
+			Hint = TranslationTable[302535920000068--[[Filter Items]]],
 			OnTextChanged = self.FilterText,
 			OnKbdKeyDown = self.idFilter_OnKbdKeyDown
 		}, self.idFilterArea)
@@ -221,12 +222,12 @@ function ChoGGi_DlgListChoice:Init(parent, context)
 
 		self.idEditValue = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idEditValue",
-			RolloverText = Translate(302535920000077--[["Enter a custom value to be applied.
+			RolloverText = TranslationTable[302535920000077--[["Enter a custom value to be applied.
 The listitem <color 0 200 0>must</color> be selected for this to take effect (it's the last listitem).
 It won't be visible unless the ""%s"" checkbox is enabled.
 
-Warning: Entering the wrong value may crash the game or otherwise cause issues."]]):format(T(302535920000078--[[Custom Value]])),
-			Hint = Translate(302535920000078--[[Custom Value]]),
+Warning: Entering the wrong value may crash the game or otherwise cause issues."]]]:format(TranslationTable[302535920000078--[[Custom Value]]]),
+			Hint = TranslationTable[302535920000078--[[Custom Value]]],
 			OnKbdKeyDown = self.idEditValue_OnKbdKeyDown
 		}, self.idEditArea)
 
@@ -234,8 +235,8 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 			Id = "idShowCustomVal",
 			Dock = "left",
 			Margins = box(4, 0, 0, 0),
-			Text = T(302535920000078--[[Custom Value]]),
-			RolloverText = Translate(302535920000077--[[blah%s]]):format(T(302535920000078--[[Custom Value]])),
+			Text = TranslationTable[302535920000078--[[Custom Value]]],
+			RolloverText = TranslationTable[302535920000077]:format(TranslationTable[302535920000078]),
 			OnChange = self.idShowCustomVal_OnChange,
 		}, self.idEditArea)
 
@@ -262,7 +263,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		MinWidth = 50,
 		Text = T(6878--[[OK]]),
 		Background = g_Classes.ChoGGi_XButton.bg_green,
-		RolloverText = T(302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, or <left_click>*2 a list item)."]]),
+		RolloverText = TranslationTable[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, or <left_click>*2 a list item)."]]],
 		OnPress = self.BuildReturnList
 	}, self.idButtonContainer)
 
@@ -272,7 +273,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		MinWidth = 70,
 		Text = T(6879--[[Cancel]]),
 		Background = g_Classes.ChoGGi_XButton.bg_red,
-		RolloverText = T(302535920000074--[[Cancel without changing anything.]]),
+		RolloverText = TranslationTable[302535920000074--[[Cancel without changing anything.]]],
 		OnPress = self.idCloseX.OnPress,
 	}, self.idButtonContainer)
 
@@ -338,22 +339,22 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 
 		self.idColorCheckElec = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idColorCheckElec",
-			Text = T(79--[[Power]]),
-			RolloverText = T(302535920000082--[["Check this for ""All of type"" to only apply to connected grid."]]),
+			Text = TranslationTable[79--[[Power]]],
+			RolloverText = TranslationTable[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."]]],
 			Dock = "left",
 		}, self.idColorCheckArea)
 
 		self.idColorCheckAir = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idColorCheckAir",
-			Text = T(891--[[Air]]),
-			RolloverText = T(302535920000082--[["Check this for ""All of type"" to only apply to connected grid."]]),
+			Text = TranslationTable[891--[[Air]]],
+			RolloverText = TranslationTable[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."]]],
 			Dock = "left",
 		}, self.idColorCheckArea)
 
 		self.idColorCheckWater = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idColorCheckWater",
-			Text = T(681--[[Water]]),
-			RolloverText = T(302535920000082--[["Check this for ""All of type"" to only apply to connected grid."]]),
+			Text = TranslationTable[681--[[Water]]],
+			RolloverText = TranslationTable[302535920000082--[["Check this for ""All of type"" to only apply to connected grid."]]],
 			Dock = "left",
 		}, self.idColorCheckArea)
 		--
@@ -378,9 +379,9 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 	if self.list.multisel then
 		-- If it's a multiselect then add a hint
 		if self.list.hint then
-			self.list.hint = self.list.hint .. "\n\n" .. Translate(302535920001167--[[Use Ctrl/Shift for multiple selection.]])
+			self.list.hint = self.list.hint .. "\n\n" .. TranslationTable[302535920001167--[[Use Ctrl/Shift for multiple selection.]]]
 		else
-			self.list.hint = Translate(302535920001167--[[Use Ctrl/Shift for multiple selection.]])
+			self.list.hint = TranslationTable[302535920001167]
 		end
 
 		self.idList.MultipleSelection = true
@@ -394,15 +395,15 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 
 	if self.custom_type == 7 or self.custom_type == 9 then
 		if self.list.hint then
-			self.list.hint = self.list.hint .. "\n\n" .. Translate(302535920001341--[[Double-click to apply without closing list.]])
+			self.list.hint = self.list.hint .. "\n\n" .. TranslationTable[302535920001341--[[Double-click to apply without closing list.]]]
 		else
-			self.list.hint = Translate(302535920001341--[[Double-click to apply without closing list.]])
+			self.list.hint = TranslationTable[302535920001341]
 		end
 	elseif self.custom_type == 8 then
 		if self.list.hint then
-			self.list.hint = self.list.hint .. "\n\n" .. Translate(302535920001371--[["Double-click to apply and close list, double right-click to apply without closing list."]])
+			self.list.hint = self.list.hint .. "\n\n" .. TranslationTable[302535920001371--[["Double-click to apply and close list, double right-click to apply without closing list."]]]
 		else
-			self.list.hint = Translate(302535920001371--[["Double-click to apply and close list, double right-click to apply without closing list."]])
+			self.list.hint = TranslationTable[302535920001371]
 		end
 	end
 
@@ -441,10 +442,10 @@ function ChoGGi_DlgListChoice:idShowCustomVal_OnChange(check)
 		item:SetFocused(true)
 
 		self.idList:ScrollIntoView(item)
-		self.idShowCustomVal:SetText(T(302535920000104--[[Show]]))
+		self.idShowCustomVal:SetText(TranslationTable[302535920000104--[[Show]]])
 		self.idEditValue:SetVisible(true)
 	else
-		self.idShowCustomVal:SetText(T(302535920000078--[[Custom Value]]))
+		self.idShowCustomVal:SetText(TranslationTable[302535920000078--[[Custom Value]]])
 		self.idEditValue:SetVisible(false)
 	end
 end
@@ -588,9 +589,9 @@ function ChoGGi_DlgListChoice:idEditValueOnTextChanged()
 			local item = self.items[#self.items]
 			item.text = name_str
 			item.value = value
-			item.hint = Translate(302535920000079--[[* Use this custom value]])
+			item.hint = TranslationTable[302535920000079--[[* Use this custom value]]]
 			local listitem = self.idList[#self.idList]
-			listitem.RolloverText = T(302535920000079--[[* Use this custom value]])
+			listitem.RolloverText = TranslationTable[302535920000079]
 			listitem.RolloverTitle = item.text
 			listitem.idText:SetText(item.text)
 			listitem.item = item
@@ -679,7 +680,7 @@ function ChoGGi_DlgListChoice:BuildList(save_pos)
 		end
 
 		if self.custom_type > 4 and self.custom_type ~= 5 then
-			listitem.RolloverHint = T(302535920001444--[["<left_click> Activate, <right_click> Alt Activate"]])
+			listitem.RolloverHint = TranslationTable[302535920001444--[["<left_click> Activate, <right_click> Alt Activate"]]]
 		end
 
 		-- easier access

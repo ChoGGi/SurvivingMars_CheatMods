@@ -4,6 +4,7 @@ local next, type, tostring, table = next, type, tostring, table
 local GetCursorWorldPos = GetCursorWorldPos
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
+local TranslationTable = TranslationTable
 
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
@@ -31,9 +32,9 @@ function ChoGGi.MenuFuncs.DeleteGrassBushesTrees()
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		T(6779--[[Warning]]) .. "!\n" .. T(302535920001258--[[Removes Grass Bushes Trees for that smooth map feel.]]),
+		T(6779--[[Warning]]) .. "!\n" .. TranslationTable[302535920001258--[[Removes Grass Bushes Trees for that smooth map feel.]]],
 		CallBackFunc,
-		T(6779--[[Warning]]) .. ": " .. T(302535920000855--[[Last chance before deletion!]])
+		T(6779--[[Warning]]) .. ": " .. TranslationTable[302535920000855--[[Last chance before deletion!]]]
 	)
 end
 
@@ -46,7 +47,7 @@ function ChoGGi.MenuFuncs.VerticalCheatMenu_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(setting),
-		T(302535920001660--[[Toggle Vertical Cheat Menu]])
+		TranslationTable[302535920001660--[[Toggle Vertical Cheat Menu]]]
 	)
 end
 
@@ -56,7 +57,7 @@ function ChoGGi.MenuFuncs.SelectionPanelResize_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.StopSelectionPanelResize),
-		T(302535920001653--[[Toggle Selection Panel Resize]])
+		TranslationTable[302535920001653--[[Toggle Selection Panel Resize]]]
 	)
 end
 
@@ -66,7 +67,7 @@ function ChoGGi.MenuFuncs.ScrollSelectionPanel_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ScrollSelectionPanel),
-		T(302535920001655--[[Toggle Scroll Selection Panel]])
+		TranslationTable[302535920001655--[[Toggle Scroll Selection Panel]]]
 	)
 end
 
@@ -78,13 +79,13 @@ function ChoGGi.MenuFuncs.UnlockOverview_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.UnlockOverview),
-		T(302535920001651--[[Unlock Overview]])
+		TranslationTable[302535920001651--[[Unlock Overview]]]
 	)
 end
 
 function ChoGGi.MenuFuncs.SetTimeFactor()
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. 1000, value = 1000},
+		{text = TranslationTable[1000121--[[Default]]] .. ": " .. 1000, value = 1000},
 		{text = 0, value = 0, hint = T(6869--[[Pause]])},
 		{text = 100, value = 100},
 		{text = 150, value = 150},
@@ -113,7 +114,7 @@ function ChoGGi.MenuFuncs.SetTimeFactor()
 
 			MsgPopup(
 				choice.text,
-				T(302535920000356--[[Time Factor]])
+				TranslationTable[302535920000356--[[Time Factor]]]
 			)
 		end
 	end
@@ -121,8 +122,8 @@ function ChoGGi.MenuFuncs.SetTimeFactor()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000356--[[Time Factor]]),
-		hint = T(302535920000106--[[Current]]) .. ": " .. GetTimeFactor(),
+		title = TranslationTable[302535920000356--[[Time Factor]]],
+		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. GetTimeFactor(),
 		skip_sort = true,
 	}
 end
@@ -144,8 +145,8 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
 		{text = T(9003--[[Trigon Dome]]), value = "DomeTrigon"},
 		{text = T(9009--[[Mega Trigon Dome]]), value = "DomeMegaTrigon"},
 		{text = T(9012--[[Diamond Dome]]), value = "DomeDiamond"},
-		{text = T(302535920000347--[[Star Dome]]), value = "DomeStar"},
-		{text = T(302535920000351--[[Hexa Dome]]), value = "DomeHexa"},
+		{text = TranslationTable[302535920000347--[[Star Dome]]], value = "DomeStar"},
+		{text = TranslationTable[302535920000351--[[Hexa Dome]]], value = "DomeHexa"},
 	}
 	local c = #item_list
 
@@ -197,29 +198,29 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
 		end
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
-			Translate(302535920001093--[[Toggled: %s pinnable objects.]]):format(#choices),
-			T(302535920000686--[[Auto Unpin Objects]])
+			TranslationTable[302535920001093--[[Toggled: %s pinnable objects.]]]:format(#choices),
+			TranslationTable[302535920000686--[[Auto Unpin Objects]]]
 		)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000686--[[Auto Unpin Objects]]),
-		hint = T(302535920001097--[[Enter a class name (SelectedObj.class) to add a custom entry.]]),
+		title = TranslationTable[302535920000686--[[Auto Unpin Objects]]],
+		hint = TranslationTable[302535920001097--[[Enter a class name (SelectedObj.class) to add a custom entry.]]],
 		multisel = true,
 		sortby = "value",
 		checkboxes = {
 			at_least_one = true,
 			only_one = true,
 			{
-				title = T(302535920001098--[[Add to list]]),
-				hint = T(302535920001099--[[Add these items to the unpin list.]]),
+				title = TranslationTable[302535920001098--[[Add to list]]],
+				hint = TranslationTable[302535920001099--[[Add these items to the unpin list.]]],
 				checked = true,
 			},
 			{
-				title = T(302535920001100--[[Remove from list]]),
-				hint = T(302535920001101--[[Remove these items from the unpin list.]]),
+				title = TranslationTable[302535920001100--[[Remove from list]]],
+				hint = TranslationTable[302535920001101--[[Remove these items from the unpin list.]]],
 			},
 		},
 	}
@@ -228,17 +229,17 @@ end
 --~ 	SetTimeFactor(1000) = normal speed
 -- use GetTimeFactor() to check time for changing it so it can be paused?
 function ChoGGi.MenuFuncs.SetGameSpeed()
-	local hint_str = Translate(302535920000523--[[How many to multiple the default speed by: <color 0 200 0>%s</color>]])
+	local hint_str = TranslationTable[302535920000523--[[How many to multiple the default speed by: <color 0 200 0>%s</color>]]]
 	local item_list = {
-		{text = T(1000121--[[Default]]), value = 1, hint = hint_str:format(1)},
-		{text = T(302535920001126--[[Double]]), value = 2, hint = hint_str:format(2)},
-		{text = T(302535920001127--[[Triple]]), value = 3, hint = hint_str:format(3)},
-		{text = T(302535920001128--[[Quadruple]]), value = 4, hint = hint_str:format(4)},
-		{text = T(302535920001129--[[Octuple]]), value = 8, hint = hint_str:format(8)},
-		{text = T(302535920001130--[[Sexdecuple]]), value = 16, hint = hint_str:format(16)},
-		{text = T(302535920001131--[[Duotriguple]]), value = 32, hint = hint_str:format(32)},
-		{text = T(302535920001132--[[Quattuorsexaguple]]), value = 64, hint = hint_str:format(64)},
-		{text = T(302535920000483--[[Centuple]]), value = 100, hint = hint_str:format(100)},
+		{text = Translate(1000121--[[Default]]), value = 1, hint = hint_str:format(1)},
+		{text = TranslationTable[302535920001126--[[Double]]], value = 2, hint = hint_str:format(2)},
+		{text = TranslationTable[302535920001127--[[Triple]]], value = 3, hint = hint_str:format(3)},
+		{text = TranslationTable[302535920001128--[[Quadruple]]], value = 4, hint = hint_str:format(4)},
+		{text = TranslationTable[302535920001129--[[Octuple]]], value = 8, hint = hint_str:format(8)},
+		{text = TranslationTable[302535920001130--[[Sexdecuple]]], value = 16, hint = hint_str:format(16)},
+		{text = TranslationTable[302535920001131--[[Duotriguple]]], value = 32, hint = hint_str:format(32)},
+		{text = TranslationTable[302535920001132--[[Quattuorsexaguple]]], value = 64, hint = hint_str:format(64)},
+		{text = TranslationTable[302535920000483--[[Centuple]]], value = 100, hint = hint_str:format(100)},
 	}
 
 	local function CallBackFunc(choice)
@@ -274,29 +275,29 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				Translate(302535920001135--[[%s: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.]]):format(Translate(choice[1].text)),
+				TranslationTable[302535920001135--[[%s: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.]]]:format(choice[1].text),
 				T(5505--[[Game Speed]])
 			)
 		end
 	end
 
 	local speeds = {
-		[3] = T(1000121--[[Default]]),
-		[6] = T(302535920001126--[[Double]]),
-		[9] = T(302535920001127--[[Triple]]),
-		[12] = T(302535920001128--[[Quadruple]]),
-		[24] = T(302535920001129--[[Octuple]]),
-		[48] = T(302535920001130--[[Sexdecuple]]),
-		[96] = T(302535920001131--[[Duotriguple]]),
-		[192] = T(302535920001132--[[Quattuorsexaguple]]),
+		[3] = TranslationTable[1000121--[[Default]]],
+		[6] = TranslationTable[302535920001126--[[Double]]],
+		[9] = TranslationTable[302535920001127--[[Triple]]],
+		[12] = TranslationTable[302535920001128--[[Quadruple]]],
+		[24] = TranslationTable[302535920001129--[[Octuple]]],
+		[48] = TranslationTable[302535920001130--[[Sexdecuple]]],
+		[96] = TranslationTable[302535920001131--[[Duotriguple]]],
+		[192] = TranslationTable[302535920001132--[[Quattuorsexaguple]]],
 	}
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(5505--[[Game Speed]]),
-		hint = Translate(302535920000933--[[Current speed: %s]]):format(speeds[const.mediumGameSpeed])
-			.. "\n" .. Translate(302535920001134--[[%s = base number %s multipled by custom value amount.]]):format(T(302535920000078--[[Custom Value]]), const.mediumGameSpeed),
+		hint = TranslationTable[302535920000933--[[Current speed: %s]]]:format(speeds[const.mediumGameSpeed])
+			.. "\n" .. TranslationTable[302535920001134--[[%s = base number %s multipled by custom value amount.]]]:format(TranslationTable[302535920000078--[[Custom Value]]], const.mediumGameSpeed),
 		skip_sort = true,
 	}
 end
@@ -312,16 +313,16 @@ function ChoGGi.MenuFuncs.ChangeLightmodelList(action)
 	for key in pairs(LightmodelLists) do
 		if key == "TheMartian" then
 			c = c + 1
-			item_list[c] = {text = " " .. key, value = key, hint = T(1000121--[[Default]])}
+			item_list[c] = {text = " " .. key, value = key, hint = TranslationTable[1000121--[[Default]]]}
 		elseif key ~= "*" then
 			c = c + 1
 			item_list[c] = {text = key, value = key}
 		end
 	end
 	-- only disaster can be false
-	if setting_title == T(302535920001625--[[List Disaster]]) then
+	if setting_title == TranslationTable[302535920001625--[[List Disaster]]] then
 		c = c + 1
-		item_list[c] = {text = " " .. T(302535920001084--[[Reset]]), value = false}
+		item_list[c] = {text = " " .. TranslationTable[302535920001084--[[Reset]]], value = false}
 	end
 
 	local function CallBackFunc(choice)
@@ -344,8 +345,8 @@ function ChoGGi.MenuFuncs.ChangeLightmodelList(action)
 		callback = CallBackFunc,
 		items = item_list,
 		title = setting_title,
-		hint = T(302535920001627--[[This is only visual; this won't affect the game state (unless something uses the list to check).]])
-			.. "\n\n" .. T(302535920000106--[[Current]]) .. ": " .. tostring(GetCurrentLightmodelList()),
+		hint = TranslationTable[302535920001627--[[This is only visual; this won't affect the game state (unless something uses the list to check).]]]
+			.. "\n\n" .. TranslationTable[302535920000106--[[Current]]] .. ": " .. tostring(GetCurrentLightmodelList()),
 		custom_type = 6,
 		custom_func = function(value)
 			if type(value) == "string" then
@@ -363,9 +364,9 @@ function ChoGGi.MenuFuncs.ReloadMap()
 	end
 
 	ChoGGi.ComFuncs.QuestionBox(
-		T(6779--[[Warning]]) .. ": " .. T(302535920001488--[[Reloads map as new game.]]),
+		T(6779--[[Warning]]) .. ": " .. TranslationTable[302535920001488--[[Reloads map as new game.]]],
 		CallBackFunc,
-		T(302535920001487--[[Reload Map]])
+		TranslationTable[302535920001487--[[Reload Map]]]
 	)
 end
 
@@ -392,7 +393,7 @@ function ChoGGi.MenuFuncs.GUIDockSide_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.UserSettings.GUIDockSide and T(1000459--[[Right]]) or T(1000457--[[Left]]),
-		T(302535920001412--[[GUI Dock Side]])
+		TranslationTable[302535920001412--[[GUI Dock Side]]]
 	)
 end
 
@@ -412,7 +413,7 @@ function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisableHints),
-		T(302535920000670--[[Never Show Hints]])
+		TranslationTable[302535920000670--[[Never Show Hints]]]
 	)
 end
 
@@ -421,7 +422,7 @@ function ChoGGi.MenuFuncs.OnScreenHints_Reset()
 	UpdateOnScreenHintDlg()
 	MsgPopup(
 		"true",
-		T(302535920000668--[[Reset on-screen hints]])
+		TranslationTable[302535920000668--[[Reset on-screen hints]]]
 	)
 end
 
@@ -432,7 +433,7 @@ function ChoGGi.MenuFuncs.OnScreenHints_Toggle()
 	UpdateOnScreenHintDlg()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(HintsEnabled),
-		T(302535920000666--[[Toggle on-screen hints]])
+		TranslationTable[302535920000666--[[Toggle on-screen hints]]]
 	)
 end
 
@@ -444,7 +445,7 @@ function ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ShowInterfaceInScreenshots),
-		T(302535920000661--[[Show Interface in Screenshots]])
+		TranslationTable[302535920000661--[[Show Interface in Screenshots]]]
 	)
 end
 
@@ -472,7 +473,7 @@ function ChoGGi.MenuFuncs.TakeScreenshot(action)
 			print("TakeScreenshot:", msg)
 			MsgPopup(
 				msg,
-				T(302535920000657--[[Screenshot]])
+				TranslationTable[302535920000657--[[Screenshot]]]
 			)
 		end
 	end)
@@ -492,7 +493,7 @@ function ChoGGi.MenuFuncs.MapEdgeLimit_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.MapEdgeLimit),
-		T(302535920001489--[[Toggle Map Edge Limit]])
+		TranslationTable[302535920001489--[[Toggle Map Edge Limit]]]
 	)
 end
 
@@ -524,15 +525,15 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
 	end
 
 	local obj = ChoGGi.ComFuncs.SelObject()
-	local hint_loop = Translate(302535920001109--[[Loops though and makes all %s visible.]])
+	local hint_loop = TranslationTable[302535920001109--[[Loops though and makes all %s visible.]]]
 
 	local item_list = {
-		{text = T(302535920001084--[[Reset]]) .. ": " .. T(3984--[[Anomalies]]), value = "Anomaly", hint = hint_loop:format(T(3984--[[Anomalies]]))},
-		{text = T(302535920001084--[[Reset]]) .. ": " .. T(3980--[[Buildings]]), value = "Building", hint = hint_loop:format(T(3980--[[Buildings]]))},
-		{text = T(302535920001084--[[Reset]]) .. ": " .. T(302535920000157--[[Cables & Pipes]]), value = "GridElements", hint = hint_loop:format(T(302535920000157--[[Cables & Pipes]]))},
-		{text = T(302535920001084--[[Reset]]) .. ": " .. T(547--[[Colonists]]), value = "Colonists", hint = hint_loop:format(T(547--[[Colonists]]))},
-		{text = T(302535920001084--[[Reset]]) .. ": " .. T(5438--[[Rovers]]) .. " & " .. T(517--[[Drones]]), value = "Unit", hint = hint_loop:format(T(5438--[[Rovers]]) .. " & " .. T(517--[[Drones]]))},
-		{text = T(302535920001084--[[Reset]]) .. ": " .. T(3982--[[Deposits]]), value = "SurfaceDeposit", hint = hint_loop:format(T(3982--[[Deposits]]))},
+		{text = TranslationTable[302535920001084--[[Reset]]] .. ": " .. T(3984--[[Anomalies]]), value = "Anomaly", hint = hint_loop:format(Translate(3984--[[Anomalies]]))},
+		{text = TranslationTable[302535920001084--[[Reset]]] .. ": " .. T(3980--[[Buildings]]), value = "Building", hint = hint_loop:format(Translate(3980--[[Buildings]]))},
+		{text = TranslationTable[302535920001084--[[Reset]]] .. ": " .. TranslationTable[302535920000157--[[Cables & Pipes]]], value = "GridElements", hint = hint_loop:format(TranslationTable[302535920000157--[[Cables & Pipes]]])},
+		{text = TranslationTable[302535920001084--[[Reset]]] .. ": " .. T(547--[[Colonists]]), value = "Colonists", hint = hint_loop:format(Translate(547--[[Colonists]]))},
+		{text = TranslationTable[302535920001084--[[Reset]]] .. ": " .. T(5438--[[Rovers]]) .. " & " .. Translate(517--[[Drones]]), value = "Unit", hint = hint_loop:format(Translate(5438--[[Rovers]]) .. " & " .. Translate(517--[[Drones]]))},
+		{text = TranslationTable[302535920001084--[[Reset]]] .. ": " .. T(3982--[[Deposits]]), value = "SurfaceDeposit", hint = hint_loop:format(Translate(3982--[[Deposits]]))},
 	}
 	local c = #item_list
 	if obj then
@@ -575,19 +576,19 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
 		end
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(choice.text),
-			T(302535920000694--[[Set Opacity]])
+			TranslationTable[302535920000694--[[Set Opacity]]]
 		)
 	end
-	local hint = T(302535920001118--[[You can still select items after making them invisible (0), but it may take some effort :).]])
+	local hint = TranslationTable[302535920001118--[[You can still select items after making them invisible (0), but it may take some effort :).]]]
 	if obj then
-		hint = T(302535920000106--[[Current]]) .. ": " .. obj:GetOpacity() .. "\n\n" .. hint
+		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. obj:GetOpacity() .. "\n\n" .. hint
 	end
 
 	local name = RetName(obj)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000694--[[Set Opacity]]) .. (name ~= "nil" and ": " .. name or ""),
+		title = TranslationTable[302535920000694--[[Set Opacity]]] .. (name ~= "nil" and ": " .. name or ""),
 		hint = hint,
 		skip_sort = true,
 		skip_icons = true,
@@ -609,7 +610,7 @@ do -- ListAllObjects
 		local handles = {}
 
 		-- build our list of objects (we use an ass table of handles to skip dupes)
-		if value == T(302535920000306--[[Everything]]) then
+		if value == TranslationTable[302535920000306--[[Everything]]] then
 			local labels = UICity.labels or empty_table
 			for id, label in pairs(labels) do
 				if id ~= "Consts" then
@@ -666,12 +667,12 @@ do -- ListAllObjects
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = ViewAndSelectObject,
 			items = item_list,
-			title = T(302535920001292--[[List All Objects]]) .. ": " .. value,
+			title = TranslationTable[302535920001292--[[List All Objects]]] .. ": " .. value,
 			custom_type = 1,
 			checkboxes = {
 				{
 					title = T(1000220--[[Refresh]]),
-					hint = T(302535920000548--[[List is updated each time you click this.]]),
+					hint = TranslationTable[302535920000548--[[List is updated each time you click this.]]],
 					func = function(dlg)
 						item_list = BuildItemList_Class(value)
 						table.sort(item_list, function(a, b)
@@ -689,8 +690,8 @@ do -- ListAllObjects
 	local function BuildItemList_All()
 		local item_list = {
 			{
-			text = " " .. T(302535920000306--[[Everything]]),
-			value = T(302535920000306--[[Everything]]), hint = T(302535920001294--[[Laggy]]),
+			text = " " .. TranslationTable[302535920000306--[[Everything]]],
+			value = TranslationTable[302535920000306--[[Everything]]], hint = TranslationTable[302535920001294--[[Laggy]]],
 			},
 		}
 		local c = #item_list
@@ -722,13 +723,13 @@ do -- ListAllObjects
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc_List,
 			items = item_list,
-			title = T(302535920001292--[[List All Objects]]),
+			title = TranslationTable[302535920001292--[[List All Objects]]],
 			custom_type = 1,
 			height = 800,
 			checkboxes = {
 				{
 					title = T(1000220--[[Refresh]]),
-					hint = T(302535920000548--[[List is updated each time you click this.]]),
+					hint = TranslationTable[302535920000548--[[List is updated each time you click this.]]],
 					func = function(dlg)
 						item_list = BuildItemList_All()
 						table.sort(item_list, function(a, b)
@@ -751,7 +752,7 @@ function ChoGGi.MenuFuncs.DisableTextureCompression_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisableTextureCompression),
-		T(302535920000641--[[Disable Texture Compression]])
+		TranslationTable[302535920000641--[[Disable Texture Compression]]]
 	)
 end
 
@@ -834,8 +835,8 @@ do -- FlattenGround
 			ChoGGi.SettingFuncs.WriteSettings()
 
 			MsgPopup(
-				T(302535920001164--[[Flattening has been stopped, now updating buildable.]]),
-				T(302535920000485--[[Terrain Flatten Toggle]])
+				TranslationTable[302535920001164--[[Flattening has been stopped, now updating buildable.]]],
+				TranslationTable[302535920000485--[[Terrain Flatten Toggle]]]
 			)
 			-- disable collisions on pipes beforehand, so they don't get marked as uneven terrain
 			ToggleCollisions("LifeSupportGridElement")
@@ -852,8 +853,8 @@ do -- FlattenGround
 			ToggleHotkeys(true)
 			flatten_height = ActiveGameMap.terrain:GetHeight(GetCursorWorldPos())
 			MsgPopup(
-				Translate(302535920001163--[[Flatten height has been choosen %s, press shortcut again to update buildable.]]):format(flatten_height),
-				T(302535920000485--[[Terrain Flatten Toggle]])
+				TranslationTable[302535920001163--[[Flatten height has been choosen %s, press shortcut again to update buildable.]]]:format(flatten_height),
+				TranslationTable[302535920000485--[[Terrain Flatten Toggle]]]
 			)
 			visual_circle = Circle:new()
 			visual_circle:SetRadius(size)
@@ -888,10 +889,10 @@ end
 --~ ActiveGameMap.terrain:SetTypeCircle(GetCursorWorldPos(), 5000, terrain_type_idx)
 function ChoGGi.MenuFuncs.ChangeMap()
 	local lookup_table = {
-		[Translate(3474--[[Mission Sponsor]])] = "idMissionSponsor",
-		[Translate(3478--[[Commander Profile]])] = "idCommanderProfile",
-		[Translate(3486--[[Mystery]])] = "idMystery",
-		[Translate(3482--[[Colony Logo]])] = "idMissionLogo",
+		[TranslationTable[3474--[[Mission Sponsor]]]] = "idMissionSponsor",
+		[TranslationTable[3478--[[Commander Profile]]]] = "idCommanderProfile",
+		[TranslationTable[3486--[[Mystery]]]] = "idMystery",
+		[TranslationTable[3482--[[Colony Logo]]]] = "idMissionLogo",
 		ResPreset_Concrete = "ResPreset_Concrete",
 		ResPreset_Metals = "ResPreset_Metals",
 		ResPreset_Polymers = "ResPreset_Polymers",
@@ -907,16 +908,16 @@ function ChoGGi.MenuFuncs.ChangeMap()
 	local custom_params = {
 		idGameRules = {},
 	}
-	local str_hint_rules = T(302535920000803--[[For rules separate with spaces: Hunger ColonyPrefab (or leave blank for none).]])
+	local str_hint_rules = TranslationTable[302535920000803--[[For rules separate with spaces: Hunger ColonyPrefab (or leave blank for none).]]]
 
 	-- open a list dialog to set g_CurrentMissionParams
 	local itemlist = {
 		{text = "Map", value = "BlankBig_01"},
-		{text = Translate(3474--[[Mission Sponsor]]), value = "IMM", hint = Translate(302535920001386--[[Can be changed after in %s>%s>%s.]]):format(T(302535920000002--[[ECM]]), T(1635--[[Mission]]), T(302535920000712--[[Set Sponsor]]))},
-		{text = Translate(3478--[[Commander Profile]]), value = "rocketscientist", hint = Translate(302535920001386--[[Can be changed after in %s>%s>%s.]]):format(T(302535920000002--[[ECM]]), T(1635--[[Mission]]), T(302535920000716--[[Set Commander]]))},
-		{text = Translate(3486--[[Mystery]]), value = "random", hint = Translate(302535920001386--[[Can be changed after in %s>%s>%s.]]):format(T(27--[[Cheats]]), T(302535920000331--[[Mystery Start]]), "")},
-		{text = Translate(3482--[[Colony Logo]]), value = "MarsExpress", hint = Translate(302535920001386--[[Can be changed after in %s>%s>%s.]]):format(T(302535920000002--[[ECM]]), T(1635--[[Mission]]), T(302535920000710--[[Change Logo]]))},
-		{text = Translate(8800--[[Game Rules]]), value = "", hint = str_hint_rules},
+		{text = TranslationTable[3474--[[Mission Sponsor]]], value = "IMM", hint = TranslationTable[302535920001386--[[Can be changed after in %s>%s>%s.]]]:format(T(302535920000002--[[ECM]]), T(1635--[[Mission]]), T(302535920000712--[[Set Sponsor]]))},
+		{text = TranslationTable[3478--[[Commander Profile]]], value = "rocketscientist", hint = TranslationTable[302535920001386--[[Can be changed after in %s>%s>%s.]]]:format(T(302535920000002--[[ECM]]), T(1635--[[Mission]]), T(302535920000716--[[Set Commander]]))},
+		{text = TranslationTable[3486--[[Mystery]]], value = "random", hint = TranslationTable[302535920001386--[[Can be changed after in %s>%s>%s.]]]:format(T(27--[[Cheats]]), T(302535920000331--[[Mystery Start]]), "")},
+		{text = TranslationTable[3482--[[Colony Logo]]], value = "MarsExpress", hint = TranslationTable[302535920001386--[[Can be changed after in %s>%s>%s.]]]:format(T(302535920000002--[[ECM]]), T(1635--[[Mission]]), T(302535920000710--[[Change Logo]]))},
+		{text = TranslationTable[8800--[[Game Rules]]], value = "", hint = str_hint_rules},
 		{text = "ResPreset_Concrete", value = ""},
 		{text = "ResPreset_Metals", value = ""},
 		{text = "ResPreset_Polymers", value = ""},
@@ -935,7 +936,7 @@ function ChoGGi.MenuFuncs.ChangeMap()
 	local MapData = MapDataPresets
 
 	local info_lists = {
-		[-1] = T(302535920001385--[[Use these lists to find the correct ids.]]),
+		[-1] = TranslationTable[302535920001385--[[Use these lists to find the correct ids.]]],
 		table.icopy(MissionParams.idCommanderProfile.items),
 		table.icopy(MissionParams.idMissionSponsor.items),
 		table.icopy(MissionParams.idMissionLogo.items),
@@ -944,18 +945,18 @@ function ChoGGi.MenuFuncs.ChangeMap()
 		table.icopy(DataInstances.ResourcePreset),
 		MapData,
 	}
-	info_lists[1].name = Translate(3478--[[Commander Profile]])
-	info_lists[2].name = Translate(3474--[[Mission Sponsor]])
-	info_lists[3].name = Translate(3482--[[Colony Logo]])
-	info_lists[4].name = Translate(8800--[[Game Rules]])
-	info_lists[5].name = Translate(3486--[[Mystery]])
-	info_lists[6].name = Translate(692--[[Resources]])
-	info_lists[6].name = Translate(3996--[[Map Overview]])
+	info_lists[1].name = TranslationTable[3478--[[Commander Profile]]]
+	info_lists[2].name = TranslationTable[3474--[[Mission Sponsor]]]
+	info_lists[3].name = TranslationTable[3482--[[Colony Logo]]]
+	info_lists[4].name = TranslationTable[8800--[[Game Rules]]]
+	info_lists[5].name = TranslationTable[3486--[[Mystery]]]
+	info_lists[6].name = TranslationTable[692--[[Resources]]]
+	info_lists[6].name = TranslationTable[3996--[[Map Overview]]]
 
 	local dlg_has_params = ChoGGi.ComFuncs.OpenInExamineDlg(info_lists, {
 		has_params = true,
 		override_title = true,
-		title = Translate(126095410863--[[Info]]) .. ": " .. Translate(10892--[[MISSION PARAMETERS]]),
+		title = TranslationTable[126095410863--[[Info]]] .. ": " .. TranslationTable[10892--[[MISSION PARAMETERS]]],
 	})
 
 	local function CallBackFunc(choice)
@@ -967,7 +968,7 @@ function ChoGGi.MenuFuncs.ChangeMap()
 			local value = choice[i].value
 
 			-- only game rules needs something something, the rest can use the lookup_table
-			if text == Translate(8800--[[Game Rules]]) then
+			if text == TranslationTable[8800--[[Game Rules]]] then
 				-- If more than one entry
 				if value:find(" ") then
 					for i in value:gmatch("%S+") do
@@ -1055,7 +1056,7 @@ function ChoGGi.MenuFuncs.ChangeMap()
 	local dlg_list_MissionParams = ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = itemlist,
-		title = T(302535920000868--[[Choose Map]]),
+		title = TranslationTable[302535920000868--[[Choose Map]]],
 		custom_type = 4,
 	}
 
@@ -1069,15 +1070,15 @@ function ChoGGi.MenuFuncs.PulsatingPins_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisablePulsatingPinsMotion),
-		T(302535920000265--[[Pulsating Pins]])
+		TranslationTable[302535920000265--[[Pulsating Pins]]]
 	)
 end
 
 function ChoGGi.MenuFuncs.TerrainTextureRemap()
 	local TerrainTextures = TerrainTextures
 	local GetTerrainTextureIndex = GetTerrainTextureIndex
-	local hint = Translate(302535920000973--[["Change the value (-1) to an index number from Terrain Textures.
-Open %s to see all the textures, the tooltips show the texture index."]]):format(T(302535920000623--[[Terrain Texture Change]]))
+	local hint = TranslationTable[302535920000973--[["Change the value (-1) to an index number from Terrain Textures.
+Open %s to see all the textures, the tooltips show the texture index."]]]:format(TranslationTable[302535920000623--[[Terrain Texture Change]]])
 
 	local item_list = {}
 	local c = 0
@@ -1094,7 +1095,7 @@ Open %s to see all the textures, the tooltips show the texture index."]]):format
 			count = count,
 			index = index,
 			icon = "<image " .. terrain.texture .. " 100>",
-			hint = Translate(302535920001313--[[Amount used on map: %s]]):format(count)
+			hint = TranslationTable[302535920001313--[[Amount used on map: %s]]]:format(count)
 				.. "\n" .. hint .. "\n\n\n<image " .. terrain.texture .. ">\n\n",
 		}
 	end
@@ -1118,7 +1119,7 @@ Open %s to see all the textures, the tooltips show the texture index."]]):format
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920001237--[[Terrain Texture Remap]]),
+		title = TranslationTable[302535920001237--[[Terrain Texture Remap]]],
 		sortby = "count",
 		hint = hint,
 
@@ -1225,8 +1226,8 @@ function ChoGGi.MenuFuncs.TerrainTextureChange()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000623--[[Terrain Texture Change]]),
-		hint = Translate(302535920000974--[[Map default: %s]]):format(ActiveMapData.BaseLayer),
+		title = TranslationTable[302535920000623--[[Terrain Texture Change]]],
+		hint = TranslationTable[302535920000974--[[Map default: %s]]]:format(ActiveMapData.BaseLayer),
 		custom_type = 7,
 	}
 end
@@ -1274,18 +1275,18 @@ function ChoGGi.MenuFuncs.ChangeLightmodel()
 	end
 
 	local hint = {
-		T(302535920000987--[[If you used Permanent; you must choose default to remove the setting (or it'll set the lightmodel next time you start the game).]]),
+		TranslationTable[302535920000987--[[If you used Permanent; you must choose default to remove the setting (or it'll set the lightmodel next time you start the game).]]],
 	}
 	c = #hint
 
 	local lightmodel = ChoGGi.UserSettings.Lightmodel
 	if lightmodel then
 		c = c + 1
-		hint[c] = T(302535920000988--[[Permanent]]) .. ": " .. lightmodel
+		hint[c] = TranslationTable[302535920000988--[[Permanent]]] .. ": " .. lightmodel
 	end
 
 	c = c + 1
-	hint[c] = T(302535920000991--[[Double right-click to preview lightmodel without closing dialog.]])
+	hint[c] = TranslationTable[302535920000991--[[Double right-click to preview lightmodel without closing dialog.]]]
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
@@ -1301,8 +1302,8 @@ function ChoGGi.MenuFuncs.ChangeLightmodel()
 		end,
 		checkboxes = {
 			{
-				title = T(302535920000988--[[Permanent]]),
-				hint = T(302535920000989--[[Make it stay at selected light model all the time (including reboots).]]),
+				title = TranslationTable[302535920000988--[[Permanent]]],
+				hint = TranslationTable[302535920000989--[[Make it stay at selected light model all the time (including reboots).]]],
 			},
 		},
 	}
@@ -1314,7 +1315,7 @@ function ChoGGi.MenuFuncs.TransparencyUI_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.TransparencyToggle),
-		T(302535920000631--[[UI Transparency Mouseover]])
+		TranslationTable[302535920000631--[[UI Transparency Mouseover]]]
 	)
 end
 
@@ -1352,14 +1353,14 @@ do -- SetTransparencyUI
 		local igi = Dialogs.InGameInterface
 
 		local item_list = {
-			{text = "ConsoleLog", value = GetSetTrans(1, "ConsoleLog", desk, igi), hint = T(302535920000994--[[Console logging text]])},
-			{text = "Console", value = GetSetTrans(1, "Console", desk, igi), hint = T(302535920000996--[[Console text input]])},
-			{text = "XShortcutsHost", value = GetSetTrans(1, "XShortcutsHost", desk, igi), hint = T(302535920000998--[[Cheat Menu]])},
+			{text = "ConsoleLog", value = GetSetTrans(1, "ConsoleLog", desk, igi), hint = TranslationTable[302535920000994--[[Console logging text]]]},
+			{text = "Console", value = GetSetTrans(1, "Console", desk, igi), hint = TranslationTable[302535920000996--[[Console text input]]]},
+			{text = "XShortcutsHost", value = GetSetTrans(1, "XShortcutsHost", desk, igi), hint = TranslationTable[302535920000998--[[Cheat Menu]]]},
 
-			{text = "HUD", value = GetSetTrans(2, "HUD", desk, igi), hint = T(302535920001000--[[Buttons at bottom]])},
-			{text = "XBuildMenu", value = GetSetTrans(2, "XBuildMenu", desk, igi), hint = T(302535920000993--[[Build menu]])},
-			{text = "InfopanelDlg", value = GetSetTrans(2, "InfopanelDlg", desk, igi), hint = T(302535920000995--[[Infopanel (selection)]])},
-			{text = "PinsDlg", value = GetSetTrans(2, "PinsDlg", desk, igi), hint = T(302535920000997--[[Pins menu]])},
+			{text = "HUD", value = GetSetTrans(2, "HUD", desk, igi), hint = TranslationTable[302535920001000--[[Buttons at bottom]]]},
+			{text = "XBuildMenu", value = GetSetTrans(2, "XBuildMenu", desk, igi), hint = TranslationTable[302535920000993--[[Build menu]]]},
+			{text = "InfopanelDlg", value = GetSetTrans(2, "InfopanelDlg", desk, igi), hint = TranslationTable[302535920000995--[[Infopanel (selection)]]]},
+			{text = "PinsDlg", value = GetSetTrans(2, "PinsDlg", desk, igi), hint = TranslationTable[302535920000997--[[Pins menu]]]},
 		}
 
 		local function CallBackFunc(choice)
@@ -1389,17 +1390,17 @@ do -- SetTransparencyUI
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				T(302535920000999--[[Transparency has been updated.]]),
-				T(302535920000629--[[UI Transparency]])
+				TranslationTable[302535920000999--[[Transparency has been updated.]]],
+				TranslationTable[302535920000629--[[UI Transparency]]]
 			)
 		end
 
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = T(302535920000629--[[Set UI Transparency]]),
-			hint = T(302535920001002--[["For some reason they went opposite day with this one: 255 is invisible and 0 is visible.
-Set value to 0 to remove setting."]]),
+			title = TranslationTable[302535920000629--[[Set UI Transparency]]],
+			hint = TranslationTable[302535920001002--[["For some reason they went opposite day with this one: 255 is invisible and 0 is visible.
+Set value to 0 to remove setting."]]],
 			custom_type = 4,
 		}
 	end
@@ -1408,17 +1409,17 @@ end -- do
 function ChoGGi.MenuFuncs.SetLightsRadius()
 	local hr = hr
 	local item_list = {
-		{text = T(1000121--[[Default]]), value = T(1000121--[[Default]]), hint = T(302535920001003--[[restart to enable]])},
-		{text = T(302535920001004--[[01 Lowest (25)]]), value = 25},
-		{text = T(302535920001005--[[02 Lower (50)]]), value = 50},
-		{text = T(302535920001006--[[03 Low (90)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 90},
-		{text = T(302535920001007--[[04 Medium (95)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 95},
-		{text = T(302535920001008--[[05 High (100)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 100},
-		{text = T(302535920001009--[[06 Ultra (200)]]), value = 200},
-		{text = T(302535920001010--[[07 Ultra-er (400)]]), value = 400},
-		{text = T(302535920001011--[[08 Ultra-er (600)]]), value = 600},
-		{text = T(302535920001012--[[09 Ultra-er (1000)]]), value = 1000},
-		{text = T(302535920001013--[[10 Laggy (10000)]]), value = 10000},
+		{text = TranslationTable[1000121--[[Default]]], value = TranslationTable[1000121--[[Default]]], hint = T(302535920001003--[[restart to enable]])},
+		{text = TranslationTable[302535920001004--[[01 Lowest (25)]]], value = 25},
+		{text = TranslationTable[302535920001005--[[02 Lower (50)]]], value = 50},
+		{text = TranslationTable[302535920001006--[[03 Low (90)]]] .. " < " .. TranslationTable[302535920001065--[[Menu Option]]], value = 90},
+		{text = TranslationTable[302535920001007--[[04 Medium (95)]]] .. " < " .. TranslationTable[302535920001065--[[Menu Option]]], value = 95},
+		{text = TranslationTable[302535920001008--[[05 High (100)]]] .. " < " .. TranslationTable[302535920001065--[[Menu Option]]], value = 100},
+		{text = TranslationTable[302535920001009--[[06 Ultra (200)]]], value = 200},
+		{text = TranslationTable[302535920001010--[[07 Ultra-er (400)]]], value = 400},
+		{text = TranslationTable[302535920001011--[[08 Ultra-er (600)]]], value = 600},
+		{text = TranslationTable[302535920001012--[[09 Ultra-er (1000)]]], value = 1000},
+		{text = TranslationTable[302535920001013--[[10 Laggy (10000)]]], value = 10000},
 	}
 
 	local function CallBackFunc(choice)
@@ -1441,32 +1442,32 @@ function ChoGGi.MenuFuncs.SetLightsRadius()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(choice.text),
-			T(302535920000633--[[Lights Radius]])
+			TranslationTable[302535920000633--[[Lights Radius]]]
 		)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920001016--[[Set Lights Radius]]),
-		hint = T(302535920000106--[[Current]]) .. ": " .. hr.LightsRadiusModifier
-			.. "\n\n" .. T(302535920001017--[[Turns up the radius for light bleedout, doesn't seem to hurt FPS much.]]),
+		title = TranslationTable[302535920001016--[[Set Lights Radius]]],
+		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. hr.LightsRadiusModifier
+			.. "\n\n" .. TranslationTable[302535920001017--[[Turns up the radius for light bleedout, doesn't seem to hurt FPS much.]]],
 		skip_sort = true,
 	}
 end
 
 function ChoGGi.MenuFuncs.SetTerrainDetail()
 	local item_list = {
-		{text = T(1000121--[[Default]]), value = T(1000121--[[Default]]), hint = T(302535920001003--[[restart to enable]])},
-		{text = T(302535920001004--[[01 Lowest (25)]]), value = 25},
-		{text = T(302535920001005--[[02 Lower (50)]]), value = 50},
-		{text = T(302535920001021--[[03 Low (100)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 100},
-		{text = T(302535920001022--[[04 Medium (150)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 150},
-		{text = T(302535920001008--[[05 High (100)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 100},
-		{text = T(302535920001024--[[06 Ultra (200)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 200},
-		{text = T(302535920001010--[[07 Ultra-er (400)]]), value = 400},
-		{text = T(302535920001011--[[08 Ultra-er (600)]]), value = 600},
-		{text = T(302535920001012--[[09 Ultraist (1000)]]), value = 1000, hint = "\n" .. T(302535920001018--[[Above 1000 will add a long delay to loading (and might crash).]])},
+		{text = TranslationTable[1000121--[[Default]]], value = TranslationTable[1000121--[[Default]]], hint = T(302535920001003--[[restart to enable]])},
+		{text = TranslationTable[302535920001004--[[01 Lowest (25)]]], value = 25},
+		{text = TranslationTable[302535920001005--[[02 Lower (50)]]], value = 50},
+		{text = TranslationTable[302535920001021--[[03 Low (100)]]] .. " < " .. TranslationTable[302535920001065--[[Menu Option]]], value = 100},
+		{text = TranslationTable[302535920001022--[[04 Medium (150)]]] .. " < " .. TranslationTable[302535920001065--[[Menu Option]]], value = 150},
+		{text = TranslationTable[302535920001008--[[05 High (100)]]] .. " < " .. TranslationTable[302535920001065--[[Menu Option]]], value = 100},
+		{text = TranslationTable[302535920001024--[[06 Ultra (200)]]] .. " < " .. TranslationTable[302535920001065--[[Menu Option]]], value = 200},
+		{text = TranslationTable[302535920001010--[[07 Ultra-er (400)]]], value = 400},
+		{text = TranslationTable[302535920001011--[[08 Ultra-er (600)]]], value = 600},
+		{text = TranslationTable[302535920001012--[[09 Ultraist (1000)]]], value = 1000, hint = "\n" .. TranslationTable[302535920001018--[[Above 1000 will add a long delay to loading (and might crash).]]]},
 	}
 
 	local function CallBackFunc(choice)
@@ -1489,33 +1490,33 @@ function ChoGGi.MenuFuncs.SetTerrainDetail()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(choice.text),
-			T(302535920000635--[[Terrain Detail]])
+			TranslationTable[302535920000635--[[Terrain Detail]]]
 		)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000129--[[Set]]) .. " " .. T(302535920000635--[[Terrain Detail]]),
-		hint = T(302535920000106--[[Current]]) .. ": " .. hr.TR_MaxChunks .. "\n" .. T(302535920001030--[["Doesn't seem to use much CPU, but load times will probably increase. I've limited max to 1000, if you've got a Nvidia Volta and want to use more memory then do it through the settings file.
+		title = TranslationTable[302535920000129--[[Set]]] .. " " .. TranslationTable[302535920000635--[[Terrain Detail]]],
+		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. hr.TR_MaxChunks .. "\n" .. TranslationTable[302535920001030--[["Doesn't seem to use much CPU, but load times will probably increase. I've limited max to 1000, if you've got a Nvidia Volta and want to use more memory then do it through the settings file.
 
-And yes Medium is using a higher setting than High..."]]),
+And yes Medium is using a higher setting than High..."]]],
 		skip_sort = true,
 	}
 end
 
 function ChoGGi.MenuFuncs.SetVideoMemory()
 	local item_list = {
-		{text = T(1000121--[[Default]]), value = T(1000121--[[Default]]), hint = T(302535920001003--[[restart to enable]])},
-		{text = T(302535920001031--[[1 Crap (32)]]), value = 32},
-		{text = T(302535920001032--[[2 Crap (64)]]), value = 64},
-		{text = T(302535920001033--[[3 Crap (128)]]), value = 128},
-		{text = T(302535920001034--[[4 Low (256)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 256},
-		{text = T(302535920001035--[[5 Medium (512)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 512},
-		{text = T(302535920001036--[[6 High (1024)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 1024},
-		{text = T(302535920001037--[[7 Ultra (2048)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 2048},
-		{text = T(302535920001038--[[8 Ultra-er (4096)]]), value = 4096},
-		{text = T(302535920001039--[[9 Ultra-er-er (8192)]]), value = 8192},
+		{text = TranslationTable[1000121--[[Default]]], value = TranslationTable[1000121--[[Default]]], hint = T(302535920001003--[[restart to enable]])},
+		{text = TranslationTable[302535920001031--[[1 Crap (32)]]], value = 32},
+		{text = TranslationTable[302535920001032--[[2 Crap (64)]]], value = 64},
+		{text = TranslationTable[302535920001033--[[3 Crap (128)]]], value = 128},
+		{text = TranslationTable[302535920001034--[[4 Low (256)]]] .. " < " .. TranslationTable[302535920001065--[[Menu Option]]], value = 256},
+		{text = TranslationTable[302535920001035--[[5 Medium (512)]]] .. " < " .. TranslationTable[302535920001065--[[Menu Option]]], value = 512},
+		{text = TranslationTable[302535920001036--[[6 High (1024)]]] .. " < " .. TranslationTable[302535920001065--[[Menu Option]]], value = 1024},
+		{text = TranslationTable[302535920001037--[[7 Ultra (2048)]]] .. " < " .. TranslationTable[302535920001065--[[Menu Option]]], value = 2048},
+		{text = TranslationTable[302535920001038--[[8 Ultra-er (4096)]]], value = 4096},
+		{text = TranslationTable[302535920001039--[[9 Ultra-er-er (8192)]]], value = 8192},
 	}
 
 	local function CallBackFunc(choice)
@@ -1535,30 +1536,30 @@ function ChoGGi.MenuFuncs.SetVideoMemory()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(choice.text),
-			T(302535920000637--[[Video Memory]])
+			TranslationTable[302535920000637--[[Video Memory]]]
 		)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920001041--[[Set Video Memory Use]]),
-		hint = T(302535920000106--[[Current]]) .. ": " .. hr.DTM_VideoMemory,
+		title = TranslationTable[302535920001041--[[Set Video Memory Use]]],
+		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. hr.DTM_VideoMemory,
 		skip_sort = true,
 	}
 end
 
 function ChoGGi.MenuFuncs.SetShadowmapSize()
-	local hint_highest = T(6779--[[Warning]]) .. ": " .. T(302535920001042--[[Highest uses vram (one gig for starter base, a couple for large base).]])
+	local hint_highest = TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920001042--[[Highest uses vram (one gig for starter base, a couple for large base).]]]
 	local item_list = {
-		{text = T(1000121--[[Default]]), value = T(1000121--[[Default]]), hint = T(302535920001003--[[restart to enable]])},
-		{text = T(302535920001043--[[1 Crap (256)]]), value = 256},
-		{text = T(302535920001044--[[2 Lower (512)]]), value = 512},
-		{text = T(302535920001045--[[3 Low (1536)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 1536},
-		{text = T(302535920001046--[[4 Medium (2048)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 2048},
-		{text = T(302535920001047--[[5 High (4096)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 4096},
-		{text = T(302535920001048--[[6 Higher (8192)]]), value = 8192, hint = T(302535920001645--[[May cause crashing!]])},
-		{text = T(302535920001049--[[7 Highest (16384)]]), value = 16384, hint = hint_highest .. "\n\n" .. T(302535920001645--[[May cause crashing!]])},
+		{text = TranslationTable[1000121--[[Default]]], value = TranslationTable[1000121--[[Default]]], hint = TranslationTable[302535920001003--[[restart to enable]]]},
+		{text = TranslationTable[302535920001043--[[1 Crap (256)]]], value = 256},
+		{text = TranslationTable[302535920001044--[[2 Lower (512)]]], value = 512},
+		{text = TranslationTable[302535920001045--[[3 Low (1536)]]] .. " < " .. TranslationTable[302535920001065--[[Menu Option]]], value = 1536},
+		{text = TranslationTable[302535920001046--[[4 Medium (2048)]]] .. " < " .. TranslationTable[302535920001065--[[Menu Option]]], value = 2048},
+		{text = TranslationTable[302535920001047--[[5 High (4096)]]] .. " < " .. TranslationTable[302535920001065--[[Menu Option]]], value = 4096},
+		{text = TranslationTable[302535920001048--[[6 Higher (8192)]]], value = 8192, hint = T(302535920001645, "May cause crashing!")},
+		{text = TranslationTable[302535920001049--[[7 Highest (16384)]]], value = 16384, hint = hint_highest .. "\n\n" .. T(302535920001645, "May cause crashing!")},
 	}
 
 	local function CallBackFunc(choice)
@@ -1582,15 +1583,15 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(choice.text),
-			T(302535920000639--[[Shadow Map]])
+			TranslationTable[302535920000639--[[Shadow Map]]]
 		)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920001051--[[Set Shadowmap Size]]),
-		hint = T(302535920000106--[[Current]]) .. ": " .. hr.ShadowmapSize .. "\n\n" .. hint_highest .. "\n\n" .. T(302535920001052--[[Max limited to 16384 (or crashing).]]),
+		title = TranslationTable[302535920001051--[[Set Shadowmap Size]]],
+		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. hr.ShadowmapSize .. "\n\n" .. hint_highest .. "\n\n" .. TranslationTable[302535920001052--[[Max limited to 16384 (or crashing).]]],
 		skip_sort = true,
 	}
 end
@@ -1604,17 +1605,17 @@ function ChoGGi.MenuFuncs.HigherShadowDist_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.HigherShadowDist),
-		T(302535920000645--[[Higher Shadow Distance]])
+		TranslationTable[302535920000645--[[Higher Shadow Distance]]]
 	)
 end
 
 function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
 	local default_setting = ChoGGi.Consts.HigherRenderDist or ChoGGi.UserSettings.HigherRenderDist or 120
-	local hint_min = T(302535920001054--[[Minimal FPS hit on large base]])
-	local hint_small = T(302535920001055--[[Small FPS hit on large base]])
-	local hint_fps = T(302535920001056--[[FPS hit]])
+	local hint_min = TranslationTable[302535920001054--[[Minimal FPS hit on large base]]]
+	local hint_small = TranslationTable[302535920001055--[[Small FPS hit on large base]]]
+	local hint_fps = TranslationTable[302535920001056--[[FPS hit]]]
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
 		{text = 240, value = 240, hint = hint_min},
 		{text = 360, value = 360, hint = hint_min},
 		{text = 480, value = 480, hint = hint_min},
@@ -1644,7 +1645,7 @@ function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.HigherRenderDist),
-				T(302535920000643--[[Higher Render Distance]])
+				TranslationTable[302535920000643--[[Higher Render Distance]]]
 			)
 		end
 	end
@@ -1652,8 +1653,8 @@ function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000643--[[Higher Render Distance]]),
-		hint = T(302535920000106--[[Current]]) .. ": " .. hint,
+		title = TranslationTable[302535920000643--[[Higher Render Distance]]],
+		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. hint,
 		skip_sort = true,
 	}
 end
@@ -1677,8 +1678,8 @@ do -- CameraFree_Toggle
 			-- make sure camera uses our settings after fly is done
 			ChoGGi.ComFuncs.SetCameraSettings()
 			MsgPopup(
-				T(302535920001059--[[RTS]]),
-				T(302535920000651--[[Toggle Free Camera]])
+				TranslationTable[302535920001059--[[RTS]]],
+				TranslationTable[302535920000651--[[Toggle Free Camera]]]
 			)
 		else
 			cur_pos, cur_la = cameraRTS.GetPosLookAt()
@@ -1688,8 +1689,8 @@ do -- CameraFree_Toggle
 			-- IsMouseCursorHidden works by checking whatever this sets
 			engineHideMouseCursor()
 			MsgPopup(
-				T(302535920001060--[[Fly]]),
-				T(302535920000651--[[Toggle Free Camera]])
+				TranslationTable[302535920001060--[[Fly]]],
+				TranslationTable[302535920000651--[[Toggle Free Camera]]]
 			)
 		end
 		-- resets zoom so...
@@ -1732,8 +1733,8 @@ do -- CameraFree_Toggle
 
 			-- let user know the camera mode
 			MsgPopup(
-				T(302535920001061--[[Follow]]),
-				T(302535920000651--[[Toggle Free Camera]])
+				TranslationTable[302535920001061--[[Follow]]],
+				TranslationTable[302535920000651--[[Toggle Free Camera]]]
 			)
 
 			-- save pos/zoom
@@ -1792,10 +1793,10 @@ end
 
 function ChoGGi.MenuFuncs.SetBorderScrolling()
 	local default_setting = 5
-	local hint_down = T(302535920001062--[[Down scrolling may not work (dependant on aspect ratio?).]])
+	local hint_down = TranslationTable[302535920001062--[[Down scrolling may not work (dependant on aspect ratio?).]]]
 	local item_list = {
-		{text = T(1000121--[[Default]]), value = default_setting, hint = T(1000121--[[Default]]) .. ": " .. default_setting},
-		{text = -1, value = -1, hint = T(302535920001063--[[disable mouse border scrolling, WASD still works fine.]])},
+		{text = TranslationTable[1000121--[[Default]]], value = default_setting, hint = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting},
+		{text = -1, value = -1, hint = TranslationTable[302535920001063--[[disable mouse border scrolling, WASD still works fine.]]]},
 		{text = 0, value = 0, hint = hint_down},
 		{text = 1, value = 1, hint = hint_down},
 		{text = 2, value = 2, hint = hint_down},
@@ -1823,7 +1824,7 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.value),
-				T(302535920000647--[[Border Scrolling]])
+				TranslationTable[302535920000647--[[Border Scrolling]]]
 			)
 		end
 	end
@@ -1831,8 +1832,8 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000129--[[Set]]) .. " " .. T(302535920000647--[[Border Scrolling]]),
-		hint = T(302535920000106--[[Current]]) .. ": " .. hint,
+		title = TranslationTable[302535920000129--[[Set]]] .. " " .. TranslationTable[302535920000647--[[Border Scrolling]]],
+		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. hint,
 		skip_sort = true,
 	}
 end
@@ -1840,7 +1841,7 @@ end
 function ChoGGi.MenuFuncs.SetCameraLookatDist()
 	local default_setting = ChoGGi.Consts.CameraLookatDist or ChoGGi.UserSettings.CameraLookatDist or 0
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
 		{text = 10, value = 10},
 		{text = 20, value = 20},
 		{text = 30, value = 30},
@@ -1870,7 +1871,7 @@ function ChoGGi.MenuFuncs.SetCameraLookatDist()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.text),
-				T(302535920001375--[[Bird's Eye]])
+				TranslationTable[302535920001375--[[Bird's Eye]]]
 			)
 		end
 	end
@@ -1878,8 +1879,8 @@ function ChoGGi.MenuFuncs.SetCameraLookatDist()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920001375--[[Bird's Eye]]),
-		hint = T(302535920000106--[[Current]]) .. ": " .. hint,
+		title = TranslationTable[302535920001375--[[Bird's Eye]]],
+		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. hint,
 		skip_sort = true,
 	}
 end
@@ -1887,10 +1888,10 @@ end
 function ChoGGi.MenuFuncs.SetCameraZoom()
 	local default_setting = ChoGGi.Consts.CameraZoomToggle or ChoGGi.UserSettings.CameraZoomToggle or 24000
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
 		{text = 16000, value = 16000},
 		{text = 20000, value = 20000},
-		{text = 24000, value = 24000, hint = T(1000121--[[Default]])},
+		{text = 24000, value = 24000, hint = TranslationTable[1000121--[[Default]]]},
 		{text = 32000, value = 32000},
 		{text = 64000, value = 64000},
 		{text = 128000, value = 128000},
@@ -1913,7 +1914,7 @@ function ChoGGi.MenuFuncs.SetCameraZoom()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				choice[1].text,
-				T(302535920000649--[[Zoom Distance]])
+				TranslationTable[302535920000649--[[Zoom Distance]]]
 			)
 		end
 	end
@@ -1921,8 +1922,8 @@ function ChoGGi.MenuFuncs.SetCameraZoom()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(302535920000649--[[Zoom Distance]]),
-		hint = T(302535920000106--[[Current]]) .. ": " .. hint,
+		title = TranslationTable[302535920000649--[[Zoom Distance]]],
+		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. hint,
 		skip_sort = true,
 	}
 end
