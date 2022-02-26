@@ -3,6 +3,9 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
+302535920001470, ""
+302535920001471, ""
+302535920001633, ""
 302535920001663, ""
 302535920001664, ""
 302535920001665, ""
@@ -497,7 +500,6 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"
 302535920000477, "Clear out the windowed console log."
 end !Skipped Line!
 do do !Skipped Line! [[Examine.lua]] !Skipped Line!
-302535920001633, "Reached %s objects, abort?"
 302535920000986, "Translated"
 302535920000920, "Examining objs from this dlg will <color ChoGGi_red>%s</color>examine them all in a single dlg."
 302535920000590, "Batch"
@@ -583,8 +585,6 @@ Use <color ChoGGi_green>%s</color>/<color ChoGGi_green>%s</color> to browse cons
 302535920001500, "userdata object probably needs UICity to translate."
 302535920001472, "BBox Toggle"
 302535920001473, "Toggle showing object's bbox (changes depending on movement)."
-302535920001471, "No images found."
-302535920001470, "Open a dialog with a list of images from object (.dds, .tga, .png)."
 302535920001467, "Append Dump"
 302535920001468, "Append text to same file, or create a new file each time."
 302535920001442, "Enum"

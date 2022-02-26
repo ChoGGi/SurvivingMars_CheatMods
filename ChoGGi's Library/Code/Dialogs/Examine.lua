@@ -257,12 +257,12 @@ function ChoGGi_DlgExamine:Init(parent, context)
 	self.tooltip_info = context.tooltip_info
 
 	-- these are used during SetObj, so we trans once to speed up autorefresh
-	self.string_Loadingresources = Translate(67--[[Loading resources]])
-	self.string_Classname = Translate(3746--[[Class name]])
-	self.string_Entity = Translate(155--[[Entity]])
-	self.string_Class = Translate(3696--[[Class]])
-	self.string_Object = Translate(298035641454--[[Object]])
-	self.string_State = Translate(3722--[[State]])
+	self.string_Loadingresources = TranslationTable[67--[[Loading resources]]]
+	self.string_Classname = TranslationTable[3746--[[Class name]]]
+	self.string_Entity = TranslationTable[155--[[Entity]]]
+	self.string_Class = TranslationTable[3696--[[Class]]]
+	self.string_Object = TranslationTable[298035641454--[[Object]]]
+	self.string_State = TranslationTable[3722--[[State]]]
 
 	-- If we're examining a string we want to convert to an object
 	if type(self.obj) == "string" then
@@ -571,8 +571,8 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 			Id = "idExecCode",
 			RolloverText = TranslationTable[302535920001515--[["Press <green>%s</green> to execute code.
 Use <green>%s</green>/<green>%s</green> to browse console history."]]]:format(
-				Translate(1000447--[[Enter]]), Translate(1000458--[[Up]]),
-				Translate(1000460--[[Down]])
+				TranslationTable[1000447--[[Enter]]], TranslationTable[1000458--[[Up]]],
+				TranslationTable[1000460--[[Down]]]
 			)
 				.. "\n" .. TranslationTable[302535920001517--[[Use <green>o</green> as a reference to the examined object: <yellow>IsValid(</yellow><green>o</green><yellow>)</yellow>.]]],
 			Hint = TranslationTable[302535920001516--[[o = examined object]]],
@@ -800,7 +800,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 			-- display any text in tooltip
 			if obj.text and obj.text ~= "" then
 				c = c + 1
-				roll_text[c] = self.ChoGGi.ComFuncs.Translate(obj.text)
+				roll_text[c] = Translate(obj.text)
 				c = c + 1
 				roll_text[c] = "\n\n"
 
@@ -815,7 +815,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 					obj_type = "LocId"
 				end
 				c = c + 1
-				roll_text[c] = self.ChoGGi.ComFuncs.Translate(obj)
+				roll_text[c] = Translate(obj)
 				c = c + 1
 				roll_text[c] = "\n\n"
 
@@ -895,7 +895,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 	end
 
 	if self.onclick_funcs[link] == self.OpenListMenu then
-		title = obj_name .. " " .. T(1000162, "Menu") .. " (" .. obj_type .. ")"
+		title = obj_name .. " " .. TranslationTable[1000162--[[Menu]]] .. " (" .. obj_type .. ")"
 
 		-- stick info at the top of list
 		table.insert(roll_text, 1, TranslationTable[302535920001540--[[Show context menu for <green>%s</green>.]]]:format(obj_name)
@@ -1074,7 +1074,7 @@ function ChoGGi_DlgExamine:idChildLock_OnChange(visible)
 	if visible then
 		visible = ""
 	else
-		visible = Translate(3695, "NOT") .. " "
+		visible = TranslationTable[3695--[[NOT]]] .. " "
 	end
 
 	self.idChildLock:SetRolloverText(TranslationTable[302535920000920--[[Examining objs from this dlg will <color ChoGGi_red>%s</color>examine them all in a single dlg.]]]:format(visible))
@@ -1166,7 +1166,7 @@ function ChoGGi_DlgExamine:idButDeleteAll_OnPress()
 				self:SetObj()
 			end
 		end,
-		T(697, "Destroy")
+		TranslationTable[697--[[Destroy]]]
 	)
 end
 function ChoGGi_DlgExamine:idViewEnum_OnChange()
@@ -1428,7 +1428,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 			class = "ChoGGi_XCheckButtonMenu",
 		},
 
-		{name = self.ChoGGi.UserSettings.ExamineTextType and T(1000145, "Text") or self.string_Object,
+		{name = self.ChoGGi.UserSettings.ExamineTextType and TranslationTable[1000145--[[Text]]] or self.string_Object,
 			hint = TranslationTable[302535920001620--[["Click to toggle between Text or Object (View/Dump).
 <green>Text</green> is what you see, <green>Object</green> is the text created from ValueToLuaCode(obj)."]]],
 			clicked = function(item)
@@ -1437,7 +1437,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 
 				-- change this item name
 				if self.ChoGGi.UserSettings.ExamineTextType then
-					item.name = T(1000145, "Text")
+					item.name = TranslationTable[1000145--[[Text]]]
 				else
 					item.name = self.string_Object
 				end
@@ -1468,7 +1468,6 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 			image = "CommonAssets/UI/Menu/change_height_up.tga",
 			clicked = function()
 				-- pure text string
---~ 				local str = self.idText:GetText()
 				local str, name, scrolled_text, title
 				if self.ChoGGi.UserSettings.ExamineTextType then
 					str, scrolled_text = self:GetCleanText(true)
@@ -1530,20 +1529,20 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 						title = TranslationTable[302535920001239--[[Functions]]] .. ": " .. self.name,
 					})
 				else
-					local msg = T(9763--[[No objects matching current filters.]])
-					self.ChoGGi.ComFuncs.MsgPopup(msg, T(6774, "Error"))
+					local msg = TranslationTable[9763--[[No objects matching current filters.]]]
+					self.ChoGGi.ComFuncs.MsgPopup(msg, TranslationTable[6774--[[Error]]])
 					print(msg)
 				end
 			end,
 		},
-		{name = T(327465361219, "Edit") .. " " .. self.string_Object,
+		{name = TranslationTable[327465361219--[[Edit]]] .. " " .. self.string_Object,
 			hint = TranslationTable[302535920000050--[[Opens object in Object Manipulator.]]],
 			image = "CommonAssets/UI/Menu/AreaProperties.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.OpenInObjectEditorDlg(self.obj_ref, self)
 			end,
 		},
-		{name = T(174, "Color Modifier"),
+		{name = TranslationTable[174--[[Color Modifier]]],
 			hint = TranslationTable[302535920000693--[[Select/mouse over an object to change the colours
 Use Shift- or Ctrl- for random colours/reset colours.]]],
 			image = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
@@ -1551,31 +1550,6 @@ Use Shift- or Ctrl- for random colours/reset colours.]]],
 				self.ChoGGi.ComFuncs.ChangeObjectColour(self.obj_ref)
 			end,
 		},
---~ 		{name = TranslationTable[302535920001469--[[Image Viewer]]],
---~ 			hint = TranslationTable[302535920001470--[["Open a dialog with a list of images from object (.dds, .tga, .png)."]]],
---~ 			image = "CommonAssets/UI/Menu/light_model.tga",
---~ 			clicked = function()
---~ 				-- check for loaded entity textures
---~ 				local textures = self.obj_ref.UsedTextures and self.obj_ref:UsedTextures() or ""
---~ 				local images_table = {
---~ 					dupes = {},
---~ 				}
---~ 				for i = 1, #textures do
---~ 					images_table[i] = {
---~ 						name = textures[i] .. " *obj:UsedTextures()",
---~ 						path = DTM.TexName(textures[i]),
---~ 					}
---~ 					images_table.dupes[images_table[i].name .. images_table[i].path] = true
---~ 				end
---~ 				-- checks for image in obj and metatable
---~ 				if not self.ChoGGi.ComFuncs.DisplayObjectImages(self.obj_ref, self, images_table) then
---~ 					self.ChoGGi.ComFuncs.MsgPopup(
---~ 						TranslationTable[302535920001471--[[No images found.]]],
---~ 						TranslationTable[302535920001469--[[Image Viewer]]]
---~ 					)
---~ 				end
---~ 			end,
---~ 		},
 		{name = TranslationTable[302535920001305--[[Find Within]]],
 			hint = TranslationTable[302535920001303--[[Search for text within %s.]]]:format(self.name),
 			image = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
@@ -1592,7 +1566,7 @@ Which you can then mess around with some more in the console."]]],
 			end,
 		},
 		{is_spacer = true},
-		{name = T(931, "Modified property"),
+		{name = TranslationTable[931--[[Modified property]]],
 			hint = TranslationTable[302535920001384--[[Get properties different from base/parent object?]]],
 			image = "CommonAssets/UI/Menu/SelectByClass.tga",
 			clicked = function()
@@ -1600,7 +1574,7 @@ Which you can then mess around with some more in the console."]]],
 					self.ChoGGi.ComFuncs.OpenInExamineDlg(GetModifiedProperties(self.obj_ref), {
 						has_params = true,
 						parent = self,
-						title = Translate(931, "Modified property") .. ": " .. self.name,
+						title = TranslationTable[931--[[Modified property]]] .. ": " .. self.name,
 						override_title = true,
 					})
 				else
@@ -1676,7 +1650,7 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 	if testing then
 
 		-- maybe i'll finish this one day :)
-		table.insert(list, 8, {name = T(327465361219, "Edit") .. " "
+		table.insert(list, 8, {name = TranslationTable[327465361219--[[Edit]]] .. " "
 				.. self.string_Object .. " " .. TranslationTable[302535920001432--[[3D]]],
 			hint = TranslationTable[302535920001433--[[Fiddle with object angle/axis/pos and so forth.]]],
 			image = "CommonAssets/UI/Menu/Axis.tga",
@@ -1925,7 +1899,6 @@ function ChoGGi_DlgExamine:FindNext(text, previous)
 	local text_table = {}
 	local cache = self.idText.draw_cache or {}
 	-- see about getting previous working better
---~ 	local prev_y = 0
 	for y, list_draw_info in pairs(cache) do
 		table.iclear(text_table)
 		for i = 1, #list_draw_info do
@@ -1938,7 +1911,6 @@ function ChoGGi_DlgExamine:FindNext(text, previous)
 			end
 
 			if previous then
---~ 				print(prev_y, y, current_y)
 				if y < current_y and (not closest_match or y > closest_match) then
 					closest_match = y
 				end
@@ -1948,7 +1920,6 @@ function ChoGGi_DlgExamine:FindNext(text, previous)
 				end
 			end
 		end
---~ 		prev_y = y
 	end
 
 	local match = closest_match or min_match
@@ -2023,7 +1994,7 @@ function ChoGGi_DlgExamine:ShowHexShapeList()
 
 	local item_list = {
 		{
-			text = " " .. T(594, "Clear"),
+			text = " " .. TranslationTable[594--[[Clear]]],
 			value = "Clear",
 		},
 		{
@@ -2170,7 +2141,7 @@ function ChoGGi_DlgExamine:ShowBBoxList()
 	self.ChoGGi.ComFuncs.BBoxLines_Clear(obj)
 
 	local item_list = {
-		{text = " " .. T(594, "Clear"), value = "Clear"},
+		{text = " " .. TranslationTable[594--[[Clear]]], value = "Clear"},
 		-- relative
 --~ 		{text = "GetEntityBBox", bbox = s:GetEntityBBox()},
 --~ 		{text = "GetEntitySurfacesBBox", bbox = HexStoreToWorld(obj:GetEntitySurfacesBBox())},
@@ -2188,7 +2159,7 @@ function ChoGGi_DlgExamine:ShowBBoxList()
 	local landscape = Landscapes[obj.mark]
 	if landscape and IsBox(landscape.bbox) then
 		item_list[#item_list+1] = {
-			text = T(12019, "Landscape") .. " bbox",
+			text = TranslationTable[12019--[[Landscape]]] .. " bbox",
 			bbox = HexStoreToWorld(landscape.bbox),
 		}
 	end
@@ -2238,8 +2209,8 @@ function ChoGGi_DlgExamine:ShowEntitySpotsList()
 	end
 
 	local item_list = {
-		{text = " " .. T(4493, "All"), value = "All"},
-		{text = " " .. T(594, "Clear"), value = "Clear"},
+		{text = " " .. TranslationTable[4493--[[All]]], value = "All"},
+		{text = " " .. TranslationTable[594--[[Clear]]], value = "Clear"},
 	}
 	local c = #item_list
 
@@ -2334,7 +2305,7 @@ function ChoGGi_DlgExamine:ShowSurfacesList()
 	end
 
 	local item_list = {
-		{text = " " .. T(594, "Clear"), value = "Clear"},
+		{text = " " .. TranslationTable[594--[[Clear]]], value = "Clear"},
 		{
 			text = "0: " .. TranslationTable[302535920000968--[[Collisions]]],
 			value = 0,
@@ -2490,7 +2461,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 			end,
 		},
 		{is_spacer = true},
-		{name = T(833734167742, "Delete Item"),
+		{name = TranslationTable[833734167742--[[Delete Item]]],
 			hint = TranslationTable[302535920001536--[["Remove the ""%s"" key from %s."]]]:format(obj_name, self.name),
 			image = "CommonAssets/UI/Menu/DeleteArea.tga",
 			clicked = function()
@@ -3057,7 +3028,6 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 			local sort = name
 			-- append context menu link
 			name = self:HyperLink(k, self.OpenListMenu, nil, true) .. "* " .. self.hyperlink_end .. name
---~ 			local hyper_c = self.onclick_count
 
 			-- store the names if we're doing all props
 			if show_all_values then
@@ -3066,8 +3036,6 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 			c = c + 1
 			local str_tmp = name .. " <color ChoGGi_orange>=</color> " .. self:ConvertValueToInfo(v)
 			list_obj_str[c] = str_tmp
---~ 			-- so we can copy the actual line of text
---~ 			self.onclick_linetext[hyper_c] = str_tmp
 
 			if type(k) == "number" then
 				list_sort_num[str_tmp] = k
@@ -3075,32 +3043,9 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				list_sort_obj[str_tmp] = sort:gsub("<.->", "")
 			end
 		end
-		-- faster if it is (an array), otherwise a waste of 180~ ms for 300K objects (I can live with that)
-		if self.name ~= "_G" and self.ChoGGi.ComFuncs.IsArray(obj) then
-			-- wrap it so we can ask a question and be able to answer
-			local limit_check
-			local thread = CurrentThread()
-			for i = 1, #obj do
-				BuildObjTable(i, obj[i])
-				--
-				if not limit_check and thread and i > 25001 then
-					if WaitMarsQuestion(
-						nil, TranslationTable[718--[[Abort]]],
-						TranslationTable[302535920001633--[[Reached %s objects, abort?]]]:format("25 000"),
-						TranslationTable[718--[[Abort]]], TranslationTable[7317--[[Continue]]],
-						ChoGGi.library_path .. "UI/message_picture_01.png"
-					) == "ok" then
-						break
-					else
-						limit_check = true
-					end
-				end
-				--
-			end
-		else
-			for k, v in pairs(obj) do
-				BuildObjTable(k, v)
-			end
+		--
+		for k, v in pairs(obj) do
+			BuildObjTable(k, v)
 		end
 
 		-- keep looping through metatables till we run out
@@ -3350,7 +3295,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				table.insert(data_meta, 1, "size(): " .. self:ConvertValueToInfo(obj:size()))
 				table.insert(data_meta, 1, "packing(): " .. self:ConvertValueToInfo(obj:packing()))
 				-- crashing tendencies
---~ 				table.insert(data_meta, 1, "histogram(): " .. self:ConvertValueToInfo({obj:histogram()}))
+-- 				table.insert(data_meta, 1, "histogram(): " .. self:ConvertValueToInfo({obj:histogram()}))
 				-- freeze screen with render error in log ex(Flight_Height:GetBinData())
 				table.insert(data_meta, 1, "\nCenterOfMass(): " .. self:ConvertValueToInfo(obj:CenterOfMass()))
 
@@ -3755,13 +3700,11 @@ function ChoGGi_DlgExamine:SetToolbarVis(obj, obj_metatable)
 
 	elseif self.obj_type == "thread" then
 		SetWinObjectVis(self.idButDeleteObj, true)
---~ 	else
---~ 		SetWinObjectVis(self.idButDeleteObj)
 	end
 
 end
 
---~ do -- BuildParentsMenu
+do -- BuildParentsMenu
 	function ChoGGi_DlgExamine.ParentClicked(item, _, _, button)
 --~ 	local function ParentClicked(item, _, _, button)
 		if button == "R" then
@@ -3808,7 +3751,7 @@ end
 			end
 		end
 	end
---~ end -- do
+end -- do
 
 function ChoGGi_DlgExamine:SetObj(startup)
 	local obj = self.obj
@@ -3865,7 +3808,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 			self:BuildParentsMenu(obj.__ancestors, "ancestors", TranslationTable[302535920000525--[[Ancestors]]], true)
 
 			table.insert(self.parents_menu_popup, 1, {
-				name = "-- " .. Translate(3696--[[Class]]) .. " --",
+				name = "-- " .. TranslationTable[3696--[[Class]]] .. " --",
 				disable = true,
 				centred = true,
 			})

@@ -91,6 +91,26 @@ do -- fix missing tech defs/tourist description in main menu/new game (expectati
 	OnMsg.LoadGame = ResetFunc
 end -- do
 
+do -- when examine examines TranslationTable
+	local ChoOrig_FormatScale = FormatScale
+	function FormatScale(value, scale, round, ...)
+		-- used in TFormat, errors out when calling a blank value/scale
+		if not value or not round then
+			return 0
+		end
+		return ChoOrig_FormatScale(value, scale, round, ...)
+	end
+	--
+	local ChoOrig_TFormat_Stat = TFormat.Stat
+	function TFormat.Stat(context_obj, value, ...)
+		if not value then
+			return 0
+		end
+		return ChoOrig_TFormat_Stat(context_obj, value, ...)
+	end
+
+end -- do
+
 do -- UpdateStringsList (fired below, and whenever lang is changed)
 	-- we need to pad some zeros
 --~ 	local locId_sig = shift(255, 56)
