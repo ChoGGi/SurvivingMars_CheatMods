@@ -9,6 +9,11 @@ if not ChoGGi.testing then
 	return
 end
 
+local g_env, debug
+function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
+	g_env, debug = env, env.debug
+end
+
 -- override till they fix double click select all of type
 local orig_OnMouseButtonDoubleClick = SelectionModeDialog.OnMouseButtonDoubleClick
 function SelectionModeDialog:OnMouseButtonDoubleClick(pt, button, ...)
@@ -482,8 +487,8 @@ function ChoGGi.testing.ExportSave(name)
 		name = name .. ".savegame.sav"
 
 		-- make sure the folder exists
-		AsyncDeletePath("AppData/ExportedSave")
-		AsyncCreatePath("AppData/ExportedSave")
+		g_env.AsyncDeletePath("AppData/ExportedSave")
+		g_env.AsyncCreatePath("AppData/ExportedSave")
 
 		local err = MountPack("exported", "AppData/ExportedSave/" .. name, "create, compress")
 		if err then
@@ -491,14 +496,14 @@ function ChoGGi.testing.ExportSave(name)
 			return
 		end
 		Savegame.LoadWithBackup(name, function(folder)
-			local err, files = AsyncListFiles(folder, "*", "relative")
+			local err, files = g_env.AsyncListFiles(folder, "*", "relative")
 			if err then
 				print(err)
 				return
 			end
 			for i = 1, #files do
 				local file = files[i]
-				AsyncCopyFile(folder .. file, "AppData/ExportedSave/" .. file, "raw")
+				g_env.AsyncCopyFile(folder .. file, "AppData/ExportedSave/" .. file, "raw")
 			end
 		end)
 
@@ -1097,11 +1102,10 @@ end
 
 --~ 		local ChoOrig_XImage_DrawContent = XImage.DrawContent
 --~ 		local RetName = ChoGGi.ComFuncs.RetName
---~ 		local FileExists = ChoGGi.ComFuncs.FileExists
 --~ 		function XImage:DrawContent(...)
 --~ 			local image = self:GetImage()
 --~ 			-- unless it is bitching about memorysavegame :)
---~ 			if image ~= "" and not image:find("memorysavegame") and not FileExists(image) then
+--~ 			if image ~= "" and not image:find("memorysavegame") and not ChoGGi.ComFuncs.FileExists(image) then
 --~ 				print(RetName(self.parent), image, "DC")
 --~ 			end
 --~ 			return ChoOrig_XImage_DrawContent(self, ...)
@@ -1151,7 +1155,7 @@ function OnMsg.ClassesPreprocess()
 --~ 	umc.GetFreeWorkSlots = empty_func
 
 --~ 		-- fix the arcology dome spot
---~ 		SaveOrigFunc("SpireBase", "GameInit")
+--~ 		OrigFunc("SpireBase", "GameInit")
 --~ 		function SpireBase:GameInit()
 --~ 			local dome = IsObjInDome(self)
 --~ 			if self.spire_frame_entity ~= "none" and IsValidEntity(self.spire_frame_entity) then
@@ -1176,7 +1180,7 @@ end -- ClassesPreprocess
 --~ function OnMsg.ClassesBuilt()
 
 --~ 		-- add an overlay for dead rover
---~ 		SaveOrigFunc("PinsDlg", "GetPinConditionImage")
+--~ 		OrigFunc("PinsDlg", "GetPinConditionImage")
 --~ 		function PinsDlg:GetPinConditionImage(obj)
 --~ 			local ret = ChoGGi.OrigFuncs.PinsDlg_GetPinConditionImage(self, obj)
 --~ 			if obj.command == "Dead" and not obj.working then

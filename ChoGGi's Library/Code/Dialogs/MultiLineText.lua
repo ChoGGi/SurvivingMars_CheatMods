@@ -8,10 +8,10 @@ local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local TranslationTable = TranslationTable
 
-local blacklist, g = ChoGGi.blacklist
+local blacklist, g_env = ChoGGi.blacklist
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
-	g = env
-	blacklist = env.ChoGGi.blacklist
+	blacklist = false
+	g_env = env
 end
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
@@ -308,7 +308,7 @@ function ChoGGi_DlgMultiLineText:idOpenFile_OnPress()
 	if blacklist or not self.file_path then
 		return
 	end
-	g.AsyncExec("cmd /c \"" .. self.file_path .. "\"", true, true)
+	g_env.AsyncExec("cmd /c \"" .. self.file_path .. "\"", true, true)
 end
 --
 function ChoGGi_DlgMultiLineText:idUpdateText_OnPress()

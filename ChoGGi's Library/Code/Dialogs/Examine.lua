@@ -79,22 +79,14 @@ local RetMapType = ChoGGi.ComFuncs.RetMapType
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
-local testing = ChoGGi.testing
 local missing_text = ChoGGi.Temp.missing_text
+local testing = ChoGGi.testing
+local blacklist = ChoGGi.blacklist
 
--- We can't get anything till ECM is loaded (without the blacklist)
-local debug_getinfo, debug_getupvalue = empty_func, empty_func
-local debug_getlocal, debug_getmetatable = empty_func, empty_func
-
-local blacklist, g = ChoGGi.blacklist
+local g_env, debug
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
-	g = env
-	blacklist = env.ChoGGi.blacklist
-	local debug = g.debug
-	debug_getupvalue = debug.getupvalue
-	debug_getinfo = debug.getinfo
-	debug_getlocal = debug.getlocal
-	debug_getmetatable = debug.getmetatable
+	blacklist = false
+	g_env, debug = env, env.debug
 end
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
@@ -272,7 +264,7 @@ function ChoGGi_DlgExamine:Init(parent, context)
 			-- on by default for it seems good
 			context.auto_refresh = true
 		elseif not blacklist then
-			local err, files = g.AsyncListFiles(self.obj)
+			local err, files = g_env.AsyncListFiles(self.obj)
 			if not err and #files > 0 then
 				self.obj = files
 			end
@@ -644,10 +636,8 @@ end
 do -- SafeExamine
 	-- some funcs don't check for an existing value (or something)
 	-- so we replace those while we're examining
-	local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
-	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 	-- backup any funcs we replace (while dialog(s) are opened)
-	SaveOrigFunc("TFormat", "Stat")
+	local ChoOrig_TFormat_Stat = TFormat.Stat
 
 	local function Enable(self, replaced, name)
 		if replaced[name] then
@@ -660,7 +650,7 @@ do -- SafeExamine
 			-- TFormat.Stat doesn't check if value is a number, or not nil
 			function TFormat.Stat(context_obj, value, ...)
 				value = value or 0
-				return ChoGGi_OrigFuncs.TFormat_Stat(context_obj, value, ...)
+				return ChoOrig_TFormat_Stat(context_obj, value, ...)
 			end
 		end
 
@@ -673,7 +663,7 @@ do -- SafeExamine
 				-- don't need this table anymore
 				replaced[name] = nil
 				-- no more dlgs left in table, so we can unreplace the func
-				TFormat.Stat = ChoGGi_OrigFuncs.TFormat_Stat
+				TFormat.Stat = ChoOrig_TFormat_Stat
 			end
 		else
 			-- should never happen (tm)
@@ -700,8 +690,8 @@ end -- do
 function ChoGGi_DlgExamine:ViewSourceCode()
 	self = GetRootDialog(self)
 	-- add link to view lua source
-	local info = debug_getinfo(self.obj_ref, "S")
-	-- =[C] is 4 chars
+	local info = debug.getinfo(self.obj_ref, "S")
+	-- =[C] is 4 chars (huh?)
 	local str, path = self.ChoGGi.ComFuncs.RetSourceFile(info.source)
 	path = ConvertToOSPath(path)
 	if not str then
@@ -2040,10 +2030,9 @@ function ChoGGi_DlgExamine:ShowHexShapeList()
 		end
 	end
 
-	local g = _G
 	for i = 1, #self.hex_shape_tables do
 		local shape_list = self.hex_shape_tables[i]
-		local shape = g[shape_list][self.obj_entity]
+		local shape = g_env[shape_list][self.obj_entity]
 		if shape and #shape > 0 then
 			c = c + 1
 			item_list[c] = {
@@ -2732,7 +2721,7 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 				c = c + 1
 				res[c] = "}"
 				-- remove last ,
-				return TableConcat(res):gsub(", }", "}")
+				return table.concat(res):gsub(", }", "}")
 
 			elseif rawget(obj, "ChoGGi_AddHyperLink") and obj.ChoGGi_AddHyperLink then
 				if obj.colour then
@@ -2744,6 +2733,7 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 				end
 
 			else
+
 				-- regular table
 				local table_data
 				local is_next = type(next(obj)) ~= "nil"
@@ -2761,7 +2751,10 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 				end
 
 				local name_cln = RetName(obj)
-				local name = "<tags off>" .. name_cln .. "<tags on>"
+
+				local name = trans(name_cln):gsub(">",""):gsub("<",""):gsub("/","")
+--~ 				local name = "<tags off>" .. name_cln .. "<tags on>"
+
 				if obj.class and name_cln ~= obj.class then
 					name = obj.class .. " (len: " .. table_data .. ", " .. name .. ")"
 				else
@@ -2850,7 +2843,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function ChoGGi_DlgExamine:RetDebugUpValue(obj, list, c, nups)
 	for i = 1, nups do
-		local name, value = debug_getupvalue(obj, i)
+		local name, value = debug.getupvalue(obj, i)
 		if name then
 			c = c + 1
 			name = name ~= "" and name or TranslationTable[302535920000723--[[Lua]]]
@@ -2868,7 +2861,7 @@ function ChoGGi_DlgExamine:RetDebugGetInfo(obj)
 	temp:Destroy()
 
 	local c = 0
-	local info = debug_getinfo(obj, "Slfunt")
+	local info = debug.getinfo(obj, "Slfunt")
 	for key, value in pairs(info) do
 		c = c + 1
 		temp[c] = key .. ": " .. self:ConvertValueToInfo(value)
@@ -2887,10 +2880,10 @@ function ChoGGi_DlgExamine:RetFuncArgs(obj)
 	local temp = self.RetDebugInfo_table
 	temp:Destroy()
 
-	local info = debug_getinfo(obj, "u")
+	local info = debug.getinfo(obj, "u")
 	if info.nparams > 0 then
 		for i = 1, info.nparams do
-			temp[i] = debug_getlocal(obj, i)
+			temp[i] = debug.getlocal(obj, i)
 		end
 
 		table.insert(temp, 1, "params: ")
@@ -3074,7 +3067,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 
 		-- the regular getmetatable will use __metatable if it exists, so we check this as well
 		if testing and not blacklist then
-			local dbg_metatable = debug_getmetatable(obj)
+			local dbg_metatable = debug.getmetatable(obj)
 			if dbg_metatable and dbg_metatable ~= obj_metatable then
 				print("ECM Sez DIFFERENT METATABLE", self.name, "\nmeta:", obj_metatable, "\ndbg:", dbg_metatable, "")
 			end
@@ -3423,7 +3416,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 			c = c + 1
 			list_obj_str[c] = "\n"
 
-			local info = debug_getinfo(obj, "Su")
+			local info = debug.getinfo(obj, "Su")
 
 			-- link to source code
 			if info.what == "Lua" then

@@ -7,9 +7,14 @@ local TranslationTable = TranslationTable
 local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local TableConcat = ChoGGi.ComFuncs.TableConcat
-local FileExists = ChoGGi.ComFuncs.FileExists
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
+
+local g_env, debug
+function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
+	blacklist = false
+	g_env, debug = env, env.debug
+end
 
 do -- ModUpload
 	-- refactor this someday...
@@ -50,8 +55,6 @@ do -- ModUpload
 	local ConvertToOSPath = ConvertToOSPath
 	local MatchWildcard = MatchWildcard
 	local SplitPath = SplitPath
-	local AsyncCreatePath = AsyncCreatePath
-	local AsyncCopyFile = AsyncCopyFile
 	local Sleep = Sleep
 
 	local mod_params = {}
@@ -100,7 +103,7 @@ do -- ModUpload
 				existing_mod = true
 			end
 			-- get needed info for mod
-			prepare_worked, prepare_results = Steam_PrepareForUpload(nil, mod, mod_params)
+			prepare_worked, prepare_results = g_env.Steam_PrepareForUpload(nil, mod, mod_params)
 			-- mod id for clipboard
 			steam_item_id = mod.steam_id
 
@@ -137,7 +140,7 @@ do -- ModUpload
 				para_platform = true
 			end
 
-			prepare_worked, prepare_results = PDX_PrepareForUpload(nil, mod, mod_params)
+			prepare_worked, prepare_results = g_env.PDX_PrepareForUpload(nil, mod, mod_params)
 
 			para_item_id = mod[mod_params.uuid_property]
 
@@ -161,10 +164,10 @@ do -- ModUpload
 		-- update mod, and copy files to ModUpload
 		if not blank_mod and not err then
 			mod:SaveItems()
-			AsyncDeletePath(dest_path)
-			AsyncCreatePath(dest_path)
+			g_env.AsyncDeletePath(dest_path)
+			g_env.AsyncCreatePath(dest_path)
 
-			local err, all_files = AsyncListFiles(mod_path, "*", "recursive, relative")
+			local err, all_files = g_env.AsyncListFiles(mod_path, "*", "recursive, relative")
 			for i = 1, #all_files do
 				local file = all_files[i]
 				local ignore
@@ -177,8 +180,8 @@ do -- ModUpload
 				if not ignore then
 					local dest_file = dest_path .. file
 					local dir = SplitPath(dest_file)
-					AsyncCreatePath(dir)
-					err = AsyncCopyFile(mod_path .. file, dest_file, "raw")
+					g_env.AsyncCreatePath(dir)
+					err = g_env.AsyncCopyFile(mod_path .. file, dest_file, "raw")
 				end
 			end
 
@@ -186,15 +189,15 @@ do -- ModUpload
 
 		do -- screenshots
 			local shots_path = mod_upload_path .. "/Screenshots/"
-			AsyncCreatePath(shots_path)
+			g_env.AsyncCreatePath(shots_path)
 			mod_params.screenshots = {}
 			for i = 1, 5 do
 				local screenshot = mod["screenshot" .. i]
-				if io.exists(screenshot) then
+				if ChoGGi.ComFuncs.FileExists(screenshot) then
 					local _, name, ext = SplitPath(screenshot)
 					local new_name = ModsScreenshotPrefix .. name .. ext
 					local new_path = shots_path .. new_name
-					local err = AsyncCopyFile(screenshot, new_path)
+					local err = g_env.AsyncCopyFile(screenshot, new_path)
 					if not err then
 						local os_path = ConvertToOSPath(new_path)
 						table.insert(mod_params.screenshots, os_path)
@@ -207,12 +210,12 @@ do -- ModUpload
 		local files_to_pack = {}
 		local substring_begin = #dest_path + 1
     local all_files
-		err, all_files = AsyncListFiles(dest_path, nil, "recursive")
+		err, all_files = g_env.AsyncListFiles(dest_path, nil, "recursive")
 		if err then
 			err = T{1000753--[[Failed creating content package file (<err>)]], err = err}
 		else
 			-- do this after listfiles so it doesn't include it
-			AsyncCreatePath(pack_path)
+			g_env.AsyncCreatePath(pack_path)
 
 			for i = 1, #all_files do
 				local file = all_files[i]
@@ -234,18 +237,18 @@ do -- ModUpload
 			-- try to use hpk exe instead of buggy ass AsyncPack
 			if hpk_path_working then
 				-- not sure if it matters, but delete ModContent.hpk first
-				local output = mods_path .. ModsPackFileName
-				AsyncFileDelete(output)
+				local output = mods_path .. g_env.ModsPackFileName
+				g_env.AsyncFileDelete(output)
 				local exec = hpk_path_working .. [[ create --cripple-lua-files "]]
-					.. ConvertToOSPath(mod_upload_path) .. [[" ]] .. ModsPackFileName
+					.. ConvertToOSPath(mod_upload_path) .. [[" ]] .. g_env.ModsPackFileName
 				-- AsyncExec(cmd, working_dir, hidden, capture_output, priority)
-				if not AsyncExec(exec, ConvertToOSPath(mods_path), true, false) then
+				if not g_env.AsyncExec(exec, ConvertToOSPath(mods_path), true, false) then
 					-- hpk.exe is a little limited in where it places the output, so we need to move it over
-					AsyncCopyFile(output, pack_path .. ModsPackFileName, "raw")
-					AsyncFileDelete(output)
+					g_env.AsyncCopyFile(output, pack_path .. g_env.ModsPackFileName, "raw")
+					g_env.AsyncFileDelete(output)
 				end
 			else
-				err = AsyncPack(pack_path .. ModsPackFileName, dest_path, files_to_pack)
+				err = g_env.AsyncPack(pack_path .. g_env.ModsPackFileName, dest_path, files_to_pack)
 			end
 
 		end
@@ -255,7 +258,7 @@ do -- ModUpload
 
 			-- check if .hpk exists, and use it if so
 			local os_dest = dest_path .. "Pack/ModContent.hpk"
-			if FileExists(os_dest) then
+			if ChoGGi.ComFuncs.FileExists(os_dest) then
 				os_dest = ConvertToOSPath(os_dest)
 			else
 				os_dest = ConvertToOSPath(dest_path)
@@ -282,7 +285,7 @@ do -- ModUpload
 			-- skip it for testing
 			if not test then
 				if steam_upload then
-					result, err = Steam_Upload(nil, mod, mod_params)
+					result, err = g_env.Steam_Upload(nil, mod, mod_params)
 					print("<color ChoGGi_yellow>Steam upload</color>", mod.title)
 				end
 
@@ -323,7 +326,7 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 					-- not bold (what's bold on paradox?)
 					mod.description = mod.description:gsub("\n", "<br>"):gsub("%[b%]", ""):gsub("%[%/b%]", "")
 
-					result, err = PDX_Upload(nil, mod, mod_params)
+					result, err = g_env.PDX_Upload(nil, mod, mod_params)
 					print("<color ChoGGi_yellow>Paradox upload</color>", mod.title)
 				end -- para upload
 				mod.description = org_mod_description
@@ -397,7 +400,7 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 
 		if not test and not err then
 			-- remove upload folder
-			AsyncDeletePath(dest_path)
+			g_env.AsyncDeletePath(dest_path)
 		end
 
 		if choices_len == 1 then
@@ -454,7 +457,7 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 						upload_image = image_paradox
 					end
 
-					diff_author = mod.author ~= SteamGetPersonaName()
+					diff_author = mod.author ~= g_env.SteamGetPersonaName()
 					result = nil
 
 					-- remove blacklist warning from title (added in helpermod)
@@ -510,8 +513,8 @@ You can also stick the executable in the profile folder to use it instead (<gree
 					end
 
 					-- clear out and create upload folder
-					AsyncDeletePath(dest_path)
-					AsyncCreatePath(dest_path)
+					g_env.AsyncDeletePath(dest_path)
+					g_env.AsyncCreatePath(dest_path)
 
 					if choices_len == 1 then
 						if ChoGGi.ComFuncs.QuestionBox(
@@ -629,7 +632,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 
 		-- If user copied a mod over after game started
 		print("ECM ModUpload ModsReloadDefs():")
-		ModsReloadDefs()
+		g_env.ModsReloadDefs()
 
 		local item_list = {}
 		local c = 0
@@ -863,15 +866,14 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 		for i = 1, #choice do
 			value = choice[i].value
 			if type(value) == "string" then
-				AsyncFileDelete(save_folder .. value)
+				g_env.AsyncFileDelete(save_folder .. value)
 			end
 		end
 
 		-- remove any saves we deleted
-		local FileExists = ChoGGi.ComFuncs.FileExists
 		local games_amt = #SavegamesList
 		for i = #SavegamesList, 1, -1 do
-			if not FileExists(save_folder .. SavegamesList[i].savename) then
+			if not ChoGGi.ComFuncs.FileExists(save_folder .. SavegamesList[i].savename) then
 				table.remove(SavegamesList, i)
 			end
 		end
@@ -945,13 +947,13 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 
 		-- If user installed mod while game is running
 		print("ECM ExtractHPKs ModsReloadDefs():")
-		ModsReloadDefs()
+		g_env.ModsReloadDefs()
 
 		if Platform.steam and IsSteamAvailable() then
 			table.iappend(mod_folders, SteamWorkshopItems())
 		end
 		if Platform.pops then
-			table.iappend(mod_folders, io.listfiles(PopsModsDownloadPath, "*", "folders, non recursive"))
+			table.iappend(mod_folders, g_env.io.listfiles(PopsModsDownloadPath, "*", "folders, non recursive"))
 		end
 
 		-- loop through each mod and make a table of ids, so we don't have to loop for each mod below
@@ -973,7 +975,7 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 			local hpk = folder:gsub("\\", "/") .. "/ModContent.hpk"
 			-- skip any mods that aren't packed (uploaded by ECM, or just old)
 			local mod = mod_table[id]
-			if mod and FileExists(hpk) then
+			if mod and ChoGGi.ComFuncs.FileExists(hpk) then
 				-- yeah lets make our image parsing use spaces... I'm sure nobody uses those in file paths.
 				if mod.image:find(" ") or mod.path:find(" ") then
 					mod.image = ""
@@ -1020,13 +1022,13 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 			if testing then
 				path = "AppData/Mods/" .. choice.text
 				print(choice.value, path)
-				AsyncUnpack(choice.value, path)
+				g_env.AsyncUnpack(choice.value, path)
 			else
 				path = "AppData/Mods/" .. choice.id
-				AsyncUnpack(choice.value, path)
+				g_env.AsyncUnpack(choice.value, path)
 			end
 			-- add a note telling people not to be assholes
-			AsyncStringToFile(
+			g_env.AsyncStringToFile(
 				path .. "/This is not your mod.txt",
 				TranslationTable[302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.]]]:format(choice.author)
 			)
@@ -1168,11 +1170,11 @@ function ChoGGi.MenuFuncs.ResetECMSettings()
 				ChoGGi.UserSettings = ChoGGi.Defaults
 			else
 				ThreadLockKey(old)
-				AsyncCopyFile(file, old)
+				g_env.AsyncCopyFile(file, old)
 				ThreadUnlockKey(old)
 
 				ThreadLockKey(file)
-				AsyncFileDelete(ChoGGi.settings_file)
+				g_env.AsyncFileDelete(ChoGGi.settings_file)
 				ThreadUnlockKey(file)
 			end
 

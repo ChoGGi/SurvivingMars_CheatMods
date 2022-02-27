@@ -507,9 +507,8 @@ do -- BuildingPathMarkers_Toggle
 			data:Clear()
 		end
 	end
-	ChoGGi.ComFuncs.SaveOrigFunc("FollowWaypointPath")
-	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
 
+	local ChoOrig_FollowWaypointPath = FollowWaypointPath
 	function ChoGGi.MenuFuncs.BuildingPathMarkers_Toggle()
 		if not OPolyline then
 			OPolyline = ChoGGi_OPolyline
@@ -519,7 +518,7 @@ do -- BuildingPathMarkers_Toggle
 		end
 		if ChoGGi.Temp.BuildingPathMarkers_Toggle then
 			ChoGGi.Temp.BuildingPathMarkers_Toggle = nil
-			FollowWaypointPath = ChoGGi_OrigFuncs.FollowWaypointPath
+			FollowWaypointPath = ChoOrig_FollowWaypointPath
 		else
 			ChoGGi.Temp.BuildingPathMarkers_Toggle = true
 			function FollowWaypointPath(unit, path, first, last, ...)
@@ -527,12 +526,12 @@ do -- BuildingPathMarkers_Toggle
 					return
 				end
 
-				local debug_line = ShowWaypoints(
+				local debugging_line = ShowWaypoints(
 					path,
 					path.door and (first <= last and path.openInside or path.openOutside)
 				)
-				ChoGGi_OrigFuncs.FollowWaypointPath(unit, path, first, last, ...)
-				HideWaypoints(debug_line)
+				ChoOrig_FollowWaypointPath(unit, path, first, last, ...)
+				HideWaypoints(debugging_line)
 			end
 		end
 

@@ -67,7 +67,7 @@ table.insert(properties, 1, PlaceObj("ModItemOptionToggle", {
 table.insert(properties, 1, PlaceObj("ModItemOptionToggle", {
 	"name", "AlwaysApplyOptions",
 	"DisplayName", "<yellow>" .. SafeTrans(T(302535920011859, "Always Apply Options")),
-	"Help", T(302535920011860, "Unlock/Research techs whenever you load a game/start a new game/apply options."),
+	"Help", T(302535920011860, "Unlock/Research techs whenever you load a game/start a new game (otherwise you need to press Apply in mod options)."),
 	"DefaultValue", false,
 }))
 

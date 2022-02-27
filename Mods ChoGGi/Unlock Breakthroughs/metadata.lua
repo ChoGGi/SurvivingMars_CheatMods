@@ -15,7 +15,8 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagGameplay", true,
 	"TagOther", true,
-	"description", [[Unlock breakthroughs in mod options.
+	"description", [[
+Unlock breakthroughs in mod options.
 
 Related mods: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2429688365]Unlock Research Tech[/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1753933193]Game Rules Breakthroughs[/url]
 
@@ -23,6 +24,6 @@ Related mods: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=242968
 
 Other Mod Options:
 Breakthroughs Researched: Turn on to research instead of unlock breakthroughs.
-Always Apply Options: Unlock/Research Breakthroughs whenever you load a game/start a new game.
+Always Apply Options: Unlock/Research Breakthroughs whenever you load a game/start a new game (otherwise you need to press Apply in mod options).
 ]],
 })

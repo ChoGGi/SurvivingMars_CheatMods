@@ -9,10 +9,10 @@ local TranslationTable = TranslationTable
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local Random = ChoGGi.ComFuncs.Random
 
-local blacklist, g = ChoGGi.blacklist
+local blacklist, g_env = ChoGGi.blacklist
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
-	g = env
-	blacklist = env.ChoGGi.blacklist
+	blacklist = false
+	g_env = env
 end
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
@@ -114,8 +114,8 @@ function ChoGGi_DlgImageViewer:ExportImage()
 		local name = self.image_path:sub(-slash + 1)
 		local dest_path = "AppData/" .. name
 		-- If error (devs swapped all? the images from .tga to .dds, but ref them as .tga)
-		if g.AsyncCopyFile(self.image_path, dest_path) then
-			g.AsyncCopyFile(self.image_path:gsub(".tga", ".dds"), dest_path)
+		if g_env.AsyncCopyFile(self.image_path, dest_path) then
+			g_env.AsyncCopyFile(self.image_path:gsub(".tga", ".dds"), dest_path)
 		end
 		local msg = ConvertToOSPath(dest_path)
 		print(msg)

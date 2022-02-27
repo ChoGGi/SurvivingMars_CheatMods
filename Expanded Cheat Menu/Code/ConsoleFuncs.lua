@@ -21,6 +21,12 @@ local TranslationTable = TranslationTable
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
+local g_env, debug
+function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
+	blacklist = false
+	g_env, debug = env, env.debug
+end
+
 -- store list of undefined globals
 ChoGGi.Temp.UndefinedGlobals = {}
 
@@ -310,24 +316,23 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 	AddSubmenu("Cities", nil, "UICity", "MainCity", "UIColony.city_labels.labels", "UIColony.tech_status", "BuildMenuPrerequisiteOverrides", "BuildingTechRequirements", "g_ApplicantPool", "g_CurrentMissionParams", "UICity.MapSectors", "RivalAIs", "TaskRequesters", "LRManagerInstance")
 	AddSubmenu("Mods", nil, "ModsLoaded", "ModsList")
 
-	-- bonus addition at the top
-	table.insert(ExamineMenuToggle_list, 1, {
-		name = TranslationTable[302535920001376--[[Auto Update List]]],
-		hint = TranslationTable[302535920001377--[[Update this list when ECM updates it.]]],
-		class = "ChoGGi_XCheckButtonMenu",
-		value = "ChoGGi.UserSettings.ConsoleExamineListUpdate",
-		clicked = function()
-			ChoGGi.UserSettings.ConsoleExamineListUpdate = not ChoGGi.UserSettings.ConsoleExamineListUpdate
-			ChoGGi.SettingFuncs.WriteSettings()
-		end,
-	})
+--~ 	-- bonus addition at the top
+--~ 	table.insert(ExamineMenuToggle_list, 1, {
+--~ 		name = TranslationTable[302535920001376--[[Auto Update List]]],
+--~ 		hint = TranslationTable[302535920001377--[[Update this list when ECM updates it.]]],
+--~ 		class = "ChoGGi_XCheckButtonMenu",
+--~ 		value = "ChoGGi.UserSettings.ConsoleExamineListUpdate",
+--~ 		clicked = function()
+--~ 			ChoGGi.UserSettings.ConsoleExamineListUpdate = not ChoGGi.UserSettings.ConsoleExamineListUpdate
+--~ 			ChoGGi.SettingFuncs.WriteSettings()
+--~ 		end,
+--~ 	})
 end
 
 do -- ToggleLogErrors
 	local GetStack = GetStack
 	local UserSettings = ChoGGi.UserSettings
-	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-	local debug_traceback = not blacklist and debug.traceback
+	local Temp_OrigFuncs = {}
 
 	local UndefinedGlobals = ChoGGi.Temp.UndefinedGlobals
 	local UndefinedGlobals_c = #UndefinedGlobals
@@ -338,6 +343,11 @@ do -- ToggleLogErrors
 			print(msg, "\n", stack)
 		end
 	end
+
+	local funcs = {"error", "OutputDebugString", "ThreadErrorHandler", "DlcErrorHandler", "syntax_error", "RecordError", "StoreErrorSource"}
+--~ 	local funcs = {}
+--~ 	local funcs = {"error", "OutputDebugString", "DlcErrorHandler", "syntax_error", "RecordError", "StoreErrorSource"}
+
 
 	local function UpdateLogErrors(name)
 		-- replace the error reporting funcs with our own
@@ -354,7 +364,7 @@ do -- ToggleLogErrors
 
 			local stack_trace2
 			if not blacklist then
-				stack_trace2 = debug_traceback(nil, 2)
+				stack_trace2 = debug.traceback(nil, 2)
 				if stack_trace2 and stack_trace2 ~= "" then
 					print("\ndebug.traceback():\n", stack_trace2)
 				end
@@ -380,24 +390,19 @@ do -- ToggleLogErrors
 			end
 
 			-- send back the orig func
-			return ChoGGi_OrigFuncs[name](msg, ...)
+			return Temp_OrigFuncs[name](msg, ...)
 		end
 
 	end
 
-	local funcs = {"error", "OutputDebugString", "ThreadErrorHandler", "DlcErrorHandler", "syntax_error", "RecordError", "StoreErrorSource"}
---~ 	local funcs = {}
---~ 	local funcs = {"error", "OutputDebugString", "DlcErrorHandler", "syntax_error", "RecordError", "StoreErrorSource"}
-
 	-- save orig funcs (if toggling happens)
-	local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	local lookup_table = ChoGGi_lookup_names
 	for i = 1, #funcs do
 		local name = funcs[i]
 		if rawget(_G, name) then
-			SaveOrigFunc(name)
 			local func = _G[name]
+			Temp_OrigFuncs[name] = func
 			if not lookup_table[func] then
 				if DebugGetInfo(func) == "[C](-1)" then
 					lookup_table[func] = name .. " *C"
@@ -410,7 +415,7 @@ do -- ToggleLogErrors
 
 	function ChoGGi.ConsoleFuncs.ToggleLogErrors(enable)
 		-- stop "Attempt to create a new global " errors, though I'm not sure why they happen since they're not "new"
-		local orig_Loading = Loading
+		local ChoOrig_Loading = Loading
 		Loading = true
 
 		for i = 1, #funcs do
@@ -438,16 +443,16 @@ do -- ToggleLogErrors
 								end
 							end
 							--
-							return ChoGGi_OrigFuncs[name](msg, ...)
+							return Temp_OrigFuncs[name](msg, ...)
 						end
 					else
-						_G[name] = ChoGGi_OrigFuncs[name]
+						_G[name] = Temp_OrigFuncs[name]
 					end
 				end
 			end
 		end
 
-		Loading = orig_Loading
+		Loading = ChoOrig_Loading
 	end
 
 	-- print logged errors to console/skip annoying "error"
@@ -694,7 +699,7 @@ local function BuildSciptButton(console, folder)
 			local files = RetFilesInFolder(folder.script_path, ".lua")
 			if files then
 				for i = 1, #files do
-					local err, script = AsyncFileToString(files[i].path)
+					local err, script = g_env.AsyncFileToString(files[i].path)
 					if not err then
 						items[i] = {
 							name = files[i].name,
@@ -811,13 +816,13 @@ function ChoGGi.ConsoleFuncs.BuildScriptFiles()
 	local script_path = ChoGGi.scripts
 	-- create folder and some example scripts if folder doesn't exist
 	if not ChoGGi.ComFuncs.FileExists(script_path .. "/readme.txt") then
-		AsyncCreatePath(script_path .. "/Functions")
+		g_env.AsyncCreatePath(script_path .. "/Functions")
 		-- print some info
 		print(TranslationTable[302535920000881--[["Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create sub-folders for sorting)."]]]:format(ConvertToOSPath(script_path)))
 		-- add some example files and a readme
-		AsyncStringToFile(script_path .. "/readme.txt", TranslationTable[302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.]]])
-		AsyncStringToFile(script_path .. "/Read Me.lua", [[ChoGGi.ComFuncs.MsgWait(TranslationTable[302535920000881]:format(ChoGGi.scripts))]])
-		AsyncStringToFile(script_path .. "/Functions/Amount of colonists.lua", [[#(UICity.labels.Colonist or "")]])
-		AsyncStringToFile(script_path .. "/Functions/Toggle Working SelectedObj.lua", [[SelectedObj:ToggleWorking()]])
+		g_env.AsyncStringToFile(script_path .. "/readme.txt", TranslationTable[302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.]]])
+		g_env.AsyncStringToFile(script_path .. "/Read Me.lua", [[ChoGGi.ComFuncs.MsgWait(TranslationTable[302535920000881]:format(ChoGGi.scripts))]])
+		g_env.AsyncStringToFile(script_path .. "/Functions/Amount of colonists.lua", [[#(UICity.labels.Colonist or "")]])
+		g_env.AsyncStringToFile(script_path .. "/Functions/Toggle Working SelectedObj.lua", [[SelectedObj:ToggleWorking()]])
 	end
 end

@@ -1,13 +1,9 @@
 -- See LICENSE for terms
 
--- add/replace functions
-local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
-local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-
 -- add PostSaveGame to be a companion for SaveGame
-SaveOrigFunc("ReportPersistErrors")
+local ChoOrig_ReportPersistErrors = ReportPersistErrors
 function ReportPersistErrors(...)
-	local errors, warnings = ChoGGi_OrigFuncs.ReportPersistErrors(...)
+	local errors, warnings = ChoOrig_ReportPersistErrors(...)
 	-- be useful for restarting threads, see if devs will add it (yeah I think that isn't happening after two dev teams are gone)
 	Msg("PostSaveGame")
 	-- the assert in PersistGame() attempts to concat a nil value
@@ -18,9 +14,9 @@ end
 local pairs = pairs
 local GetSafeAreaBox = GetSafeAreaBox
 
-SaveOrigFunc("SetUserUIScale")
+local ChoOrig_SetUserUIScale = SetUserUIScale
 function SetUserUIScale(val, ...)
-	ChoGGi_OrigFuncs.SetUserUIScale(val, ...)
+	ChoOrig_SetUserUIScale(val, ...)
 
 	local UIScale = (val + 0.0) / 100
 	-- update existing dialogs

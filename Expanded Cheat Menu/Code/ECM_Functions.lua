@@ -19,25 +19,16 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local TableConcat = ChoGGi.ComFuncs.TableConcat
 local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
-local SaveOrigFunc = ChoGGi.ComFuncs.SaveOrigFunc
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 local PlacePolyline = ChoGGi.ComFuncs.PlacePolyline
 local InvalidPos = ChoGGi.Consts.InvalidPos
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
-local debug_getinfo, debug_getlocal, debug_getupvalue, debug_gethook
-local debug = blacklist and false or debug
-if debug then
-	debug_getinfo = debug.getinfo
-	debug_getlocal = debug.getlocal
-	debug_getupvalue = debug.getupvalue
-	debug_gethook = debug.gethook
-end
-
--- Ease of access to _G for my lib mod (when HelperMod is installed for ECM)
-function ChoGGi.ComFuncs.RetUnrestricedG()
-	return _G
+local g_env, debug
+function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
+	blacklist = false
+	g_env, debug = env, env.debug
 end
 
 local function SetCheatsMenuPos(pos)
@@ -191,7 +182,7 @@ function ChoGGi.ComFuncs.Dump(obj, overwrite, file, ext, skip_msg, gen_name)
 	end
 
 	ThreadLockKey(filename)
-	AsyncStringToFile(filename, obj, overwrite)
+	g_env.AsyncStringToFile(filename, obj, overwrite)
 	ThreadUnlockKey(filename)
 
 	-- let user know
@@ -321,7 +312,7 @@ do -- DumpTableFunc
 
 		if output_list[1] then
 			local filename = "AppData/logs/DumpedTable.txt"
-			AsyncStringToFile(filename, TableConcat(output_list), mode or "-1")
+			g_env.AsyncStringToFile(filename, TableConcat(output_list), mode or "-1")
 
 			local msg = TranslationTable[302535920000039--[[Dumped]]] .. ": " .. name
 			-- print msg to first newline
@@ -344,108 +335,9 @@ do -- DumpTableFunc
 	end
 end --do
 
--- write logs funcs (removed in 14.6)
-do -- WriteLogs_Toggle
-	local Dump = ChoGGi.ComFuncs.Dump
-	local newline = ChoGGi.newline
-	local func_names = {
-		"DebugPrintNL",
---~ 		"DebugPrint", -- causes an error and stops games from loading
-		"OutputDebugString",
-		"AddConsoleLog", -- also does print()
---~ 		"printf",
-		"assert",
-		"error",
-	}
-
-	for i = 1, #func_names do
-		SaveOrigFunc(func_names[i])
-	end
-	local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-
-	-- every 5s check buffer and print if anything
-	local timer = testing and 2500 or 5000
-	-- we always start off with a newline so the first line or so isn't merged
-	local buffer_table = {newline}
-	local buffer_cnt = 1
-
-	if rawget(_G, "ChoGGi_thread_print_buffer") then
-		DeleteThread(ChoGGi_thread_print_buffer)
-	end
-	ChoGGi_thread_print_buffer = CreateRealTimeThread(function()
-		while true do
-			Sleep(timer)
-			if buffer_cnt > 1 then
-				Dump(TableConcat(buffer_table, newline), nil, "Console", "log", true)
-				table.iclear(buffer_table)
-				buffer_table[1] = newline
-				buffer_cnt = 1
-			end
-		end
-	end)
-
-	local function ReplaceFunc(funcname)
-		local mask = funcname == "error" and 1
-		_G[funcname] = function(...)
-
-			-- table.concat don't work with non strings/numbers
-			local args = {...}
-			for i = 1, #args do
-				local arg = args[i]
-				local arg_type = type(arg)
-				if arg_type ~= "string" and arg_type ~= "number" then
-					args[i] = tostring(arg)
-				end
-			end
-			args = TableConcat(args, " ")
-
-			if buffer_table[buffer_cnt] ~= args then
-				buffer_cnt = buffer_cnt + 1
-				buffer_table[buffer_cnt] = funcname .. ": " .. args
-			end
-
-			-- I have no idea why the devs consider this an error?
-			if mask == 1 and ... == "Attempt to use an undefined global '" then
-				return
-			end
-			-- fire off orig func...
-			ChoGGi_OrigFuncs[funcname](...)
-		end
-
-	end
-
-	local function ResetFunc(funcname)
-		if ChoGGi_OrigFuncs[funcname] then
-			_G[funcname] = ChoGGi_OrigFuncs[funcname]
-		end
-	end
-
-	function ChoGGi.ComFuncs.WriteLogs_Toggle(which)
-		if blacklist then
-			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.WriteLogs_Toggle")
-			return
-		end
-
-		if which then
-			-- move old log to previous and add a blank log
-			AsyncCopyFile("AppData/logs/Console.log", "AppData/logs/Console.previous.log", "raw")
-			AsyncStringToFile("AppData/logs/Console.log", " ")
-
-			-- redirect functions
-			for i = 1, #func_names do
-				ReplaceFunc(func_names[i])
-			end
-		else
-			for i = 1, #func_names do
-				ResetFunc(func_names[i])
-			end
-		end
-	end
-end -- do
-
 -- returns table with list of files without path or ext and path, or exclude ext to return all files
 function ChoGGi.ComFuncs.RetFilesInFolder(folder, ext)
-	local err, files = AsyncListFiles(folder, ext and "*" .. ext or "*")
+	local err, files = g_env.AsyncListFiles(folder, ext and "*" .. ext or "*")
 	if not err and #files > 0 then
 		local table_path = {}
 		local path = folder:sub(-1) == "/" and folder or folder .. "/"
@@ -467,7 +359,7 @@ function ChoGGi.ComFuncs.RetFilesInFolder(folder, ext)
 end
 
 function ChoGGi.ComFuncs.RetFoldersInFolder(folder)
-	local err, folders = AsyncListFiles(folder, "*", "folders")
+	local err, folders = g_env.AsyncListFiles(folder, "*", "folders")
 	if not err and #folders > 0 then
 		local table_path = {}
 		local path = folder .. "/"
@@ -691,7 +583,7 @@ function ChoGGi.ComFuncs.MonitorThreads()
 							table_list[info.func .. "<tags on " .. c .. ">"] = thread
 						end
 					else
-						local info = debug_getinfo(thread, 1, "S")
+						local info = debug.getinfo(thread, 1, "S")
 						if info then
 							c = c + 1
 							table_list[info.source .. "(" .. info.linedefined .. ")<tags on " .. c .. ">"] = thread
@@ -992,24 +884,24 @@ do -- ConvertImagesToResEntities
 		local fallback_dir = texture_dir .. "Fallbacks/"
 		local fallback_output = fallback_dir .. name .. ".dds"
 
-		local err = AsyncCreatePath(ent_dir)
+		local err = g_env.AsyncCreatePath(ent_dir)
 		if err then
 			return err
 		end
-		err = AsyncCreatePath(mtl_dir)
+		err = g_env.AsyncCreatePath(mtl_dir)
 		if err then
 			return err
 		end
-		err = AsyncCreatePath(texture_dir)
+		err = g_env.AsyncCreatePath(texture_dir)
 		if err then
 			return err
 		end
-		err = AsyncCreatePath(fallback_dir)
+		err = g_env.AsyncCreatePath(fallback_dir)
 		if err then
 			return err
 		end
 
-		err = AsyncStringToFile(ent_output, [[<?xml version="1.0" encoding="UTF-8"?>
+		err = g_env.AsyncStringToFile(ent_output, [[<?xml version="1.0" encoding="UTF-8"?>
 <entity path="">
 	<state id="idle">
 		<mesh_ref ref="mesh"/>
@@ -1029,22 +921,22 @@ do -- ConvertImagesToResEntities
 		end
 
 		local cmdline = [["]] .. ConvertToOSPath(g_HgnvCompressPath) .. [[" -dds10 -24 bc1 -32 bc3 -srgb "]] .. filename .. [[" "]] .. texture_output .. [["]]
-		err = AsyncExec(cmdline, "", true, false)
+		err = g_env.AsyncExec(cmdline, "", true, false)
 		if err then
 			return err
 		end
 		cmdline = [["]] .. ConvertToOSPath(g_DdsTruncPath) .. [[" "]] .. texture_output .. [[" "]] .. fallback_output .. [[" "]] .. const.FallbackSize .. [["]]
-		err = AsyncExec(cmdline, "", true, false)
+		err = g_env.AsyncExec(cmdline, "", true, false)
 		if err then
 			return err
 		end
 --~ 			cmdline = [["]] .. ConvertToOSPath(g_HgimgcvtPath) .. [[" "]] .. texture_output .. [[" "]] .. ui_output .. [["]]
---~ 			err = AsyncExec(cmdline, "", true, false)
+--~ 			err = g_env.AsyncExec(cmdline, "", true, false)
 --~ 			if err then
 --~ 				return err
 --~ 			end
 
-		err = AsyncStringToFile(mtl_output, [[<?xml version="1.0" encoding="UTF-8"?>
+		err = g_env.AsyncStringToFile(mtl_output, [[<?xml version="1.0" encoding="UTF-8"?>
 <Materials>
 <Material>
 	<BaseColorMap Name="]] .. name .. [[.dds" mc="0"/>
@@ -1165,7 +1057,7 @@ do -- RetThreadInfo/FindThreadFunc
 		local list = {}
 		local idx = 1
 		while true do
-			local name, value = debug_getlocal(thread, level, idx)
+			local name, value = debug.getlocal(thread, level, idx)
 			if name == nil then
 				break
 			end
@@ -1184,7 +1076,7 @@ do -- RetThreadInfo/FindThreadFunc
 		local list = {}
 		local idx = 1
 		while true do
-			local name, value = debug_getupvalue(info.func, idx)
+			local name, value = debug.getupvalue(info.func, idx)
 			if name == nil then
 				break
 			end
@@ -1239,9 +1131,9 @@ do -- RetThreadInfo/FindThreadFunc
 			end
 
 		else
-			funcs.gethook = debug_gethook(thread)
+			funcs.gethook = debug.gethook(thread)
 
-			local info = debug_getinfo(thread, 0, "Slfunt")
+			local info = debug.getinfo(thread, 0, "Slfunt")
 			if info then
 				local nups = info.nups
 				if nups > 0 then
@@ -1249,7 +1141,7 @@ do -- RetThreadInfo/FindThreadFunc
 					nups = nups + 1
 
 					for i = 0, nups do
-						local info_got = debug_getinfo(thread, i)
+						local info_got = debug.getinfo(thread, i)
 						if info_got then
 							local name = info_got.name or info_got.what or TranslationTable[302535920000723--[[Lua]]]
 							funcs[i] = {
@@ -1293,7 +1185,7 @@ do -- DebugGetInfo
 		if blacklist then
 			return format_value(obj)
 		else
-			local info = debug_getinfo(obj)
+			local info = debug.getinfo(obj)
 			-- sub(2): removes @, Mars is ingame files, mods is mods...
 			local src = info.source ~= "" and info.source or info.short_src
 			return src:sub(2):gsub("Mars/", ""):gsub("AppData/Mods/", "")
@@ -1303,8 +1195,6 @@ do -- DebugGetInfo
 end -- do
 
 do -- RetSourceFile
-	local FileExists = ChoGGi.ComFuncs.FileExists
-	local AsyncFileToString = AsyncFileToString
 	local source_path = "AppData/Source/"
 
 	function ChoGGi.ComFuncs.RetSourceFile(path)
@@ -1331,8 +1221,8 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		local err, code
 		-- mods (we need to skip CommonLua else it'll open the luac file)
 		local comlua = path:sub(1, 10)
-		if comlua ~= "CommonLua/" and FileExists(path) then
-			err, code = AsyncFileToString(path)
+		if comlua ~= "CommonLua/" and ChoGGi.ComFuncs.FileExists(path) then
+			err, code = g_env.AsyncFileToString(path)
 			if not err then
 				return code, path
 			end
@@ -1341,13 +1231,13 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		-- might as well return commonlua/dlc files...
 		if path:sub(1, 5) == "Mars/" then
 			path = source_path .. path:sub(6)
-			err, code = AsyncFileToString(path)
+			err, code = g_env.AsyncFileToString(path)
 			if not err then
 				return code, path
 			end
 		elseif comlua == "CommonLua/" then
 			path = source_path .. path
-			err, code = AsyncFileToString(path)
+			err, code = g_env.AsyncFileToString(path)
 			if not err then
 				return code, path
 			end
@@ -1793,9 +1683,9 @@ do -- ToggleFuncHook
 
 				local i
 				if event == "call" then
-					i = debug_getinfo(2, "Sf")
+					i = debug.getinfo(2, "Sf")
 				else
-					i = debug_getinfo(2, "S")
+					i = debug.getinfo(2, "S")
 				end
 
 				if i.source:sub(1, str_len) == path and (not line or line and i.linedefined == line) then
@@ -1997,7 +1887,7 @@ do -- TestLocaleFile
 
 		-- this is the LoadCSV func from CommonLua/Core/ParseCSV.lua with some DebugPrint added
 		local omit_captions = "omit_captions"
-		local err, str = AsyncFileToString(filepath)
+		local err, str = g_env.AsyncFileToString(filepath)
 		if err then
 			print(TranslationTable[302535920001125--[[Test Locale File]]], "ERROR:", err, "FILEPATH:", filepath)
 			return
@@ -2281,33 +2171,36 @@ do -- SetLibraryToolTips
 	end
 end -- do
 
-function ChoGGi.ComFuncs.SetLoadingScreenLog()
-	SaveOrigFunc("WaitLoadingScreenClose")
+do -- SetLoadingScreenLog
+	local ChoOrig_WaitLoadingScreenClose = WaitLoadingScreenClose
 
-	-- screws up speed buttons (and maybe other stuff)
-	-- LoadingScreenOpen = empty_func
-	-- LoadingScreenClose = empty_func
-	if ChoGGi.UserSettings.LoadingScreenLog then
-		WaitLoadingScreenClose = empty_func
+	function ChoGGi.ComFuncs.SetLoadingScreenLog()
 
-		local cls = BaseLoadingScreen
-		cls.HandleMouse = false
-		cls.transparent = true
-		cls.ZOrder = 0
-	else
-		WaitLoadingScreenClose = ChoGGi.OrigFuncs.WaitLoadingScreenClose
+		-- screws up speed buttons (and maybe other stuff)
+		-- LoadingScreenOpen = empty_func
+		-- LoadingScreenClose = empty_func
+		if ChoGGi.UserSettings.LoadingScreenLog then
+			WaitLoadingScreenClose = empty_func
 
-		local cls = BaseLoadingScreen
-		cls.HandleMouse = true
-		cls.transparent = false
-		cls.ZOrder = 1000000000
+			local cls = BaseLoadingScreen
+			cls.HandleMouse = false
+			cls.transparent = true
+			cls.ZOrder = 0
+		else
+			WaitLoadingScreenClose = ChoOrig_WaitLoadingScreenClose
 
-		cls = BaseSavingScreen
-		cls.HandleMouse = true
-		cls.transparent = true
-		cls.ZOrder = 1000000000
+			local cls = BaseLoadingScreen
+			cls.HandleMouse = true
+			cls.transparent = false
+			cls.ZOrder = 1000000000
+
+			cls = BaseSavingScreen
+			cls.HandleMouse = true
+			cls.transparent = true
+			cls.ZOrder = 1000000000
+		end
 	end
-end
+end -- do
 
 -- MonitorFunc (shortcut name in AddedFunctions)
 function ChoGGi.ComFuncs.MonitorFunctionResults(func, ...)
@@ -2665,7 +2558,7 @@ do -- UnpublishParadoxMod
 			OrderBy = "asc",
 			OSType = os_type
 		}
-		local err, results = AsyncOpWait(PopsAsyncOpTimeout, nil, "AsyncPopsModsSearch", query)
+		local err, results = g_env.AsyncOpWait(g_env.PopsAsyncOpTimeout, nil, "AsyncPopsModsSearch", query)
 		if err then
 			return err
 		end
@@ -2700,7 +2593,7 @@ do -- UnpublishParadoxMod
 				local result = PDX_GetModDetails(mod_title, platform)
 
 				if type(result) == "table" then
-					result = AsyncOpWait(PopsAsyncOpTimeout, nil, "AsyncPopsModsDeleteMod", result.ModID)
+					result = g_env.AsyncOpWait(g_env.PopsAsyncOpTimeout, nil, "AsyncPopsModsDeleteMod", result.ModID)
 				end
 
 				if type(result) == "string" then

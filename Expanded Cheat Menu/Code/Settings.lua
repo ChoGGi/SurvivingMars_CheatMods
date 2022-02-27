@@ -15,9 +15,10 @@ local Translate = ChoGGi.ComFuncs.Translate
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
-local AsyncFileToString = not blacklist and AsyncFileToString
-local AsyncCopyFile = not blacklist and AsyncCopyFile
-local AsyncStringToFile = not blacklist and AsyncStringToFile
+local g_env, debug
+function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
+	g_env, debug = env, env.debug
+end
 
 -- used for loading/saving settings
 local function PrintError(err)
@@ -142,7 +143,6 @@ if testing then
 	local Defaults = ChoGGi.Defaults
 	-- add extra debugging defaults for me
 	Defaults.ShowStartupTicks = true
---~ 	Defaults.WriteLogs = true
 	Defaults.FixMissingModBuildings = true
 	Defaults.FixMissingModBuildingsLog = false
 	Defaults.ExamineErrors = true
@@ -205,13 +205,13 @@ function ChoGGi.SettingFuncs.WriteSettingsAdmin(settings)
 	local bak = ChoGGi.settings_file .. ".bak"
 	--locks the file while we write (i mean it says thread, ah well can't hurt)?
 	ThreadLockKey(bak)
-	AsyncCopyFile(ChoGGi.settings_file, bak)
+	g_env.AsyncCopyFile(ChoGGi.settings_file, bak)
 	ThreadUnlockKey(bak)
 
 	ThreadLockKey(ChoGGi.settings_file)
 	table.sort(settings)
 	-- and write it to disk
-	local err = AsyncStringToFile(ChoGGi.settings_file, TableToLuaCode(settings))
+	local err = g_env.AsyncStringToFile(ChoGGi.settings_file, TableToLuaCode(settings))
 	ThreadUnlockKey(ChoGGi.settings_file)
 
 	if err then
@@ -231,11 +231,11 @@ function ChoGGi.SettingFuncs.ReadSettingsAdmin(settings)
 
 	-- try to read settings
 	if not settings then
-		err, settings = AsyncFileToString(ChoGGi.settings_file)
+		err, settings = g_env.AsyncFileToString(ChoGGi.settings_file)
 		if err then
 			-- no settings file so make a new one and read it
 			ChoGGi.SettingFuncs.WriteSettings(ChoGGi.Defaults)
-			err, settings = AsyncFileToString(ChoGGi.settings_file)
+			err, settings = g_env.AsyncFileToString(ChoGGi.settings_file)
 			-- something is definitely wrong so just abort, and let user know
 			if err then
 				PrintError(err)
@@ -354,12 +354,12 @@ function OnMsg.ModsReloaded()
 	RemoveEmpty(ChoGGi.UserSettings.CargoSettings or empty_table)
 end
 
--- we can local this now
+-- We can local this now
 local ChoGGi = ChoGGi
 
--- saving settings to a file or to local storage
+-- Saving settings to a file or to local storage
 if blacklist then
-	-- check if settings are in AccountStorage and migrate them to LocalStorage
+	-- Check if settings are in AccountStorage and migrate them to LocalStorage
 	local err, old_settings = ReadModPersistentData()
 	if not err and old_settings and old_settings ~= "" then
 		err, old_settings = AsyncDecompress(old_settings)
@@ -373,7 +373,7 @@ if blacklist then
 		end
 	end
 
-	-- where we store data in LocalStorage (i don't want to to have to check each time i save settings)
+	-- Ehere we store data in LocalStorage (I don't want to to have to check each time i save settings)
 	if type(LocalStorage.ModPersistentData) ~= "table" then
 		LocalStorage.ModPersistentData = {}
 	end
@@ -411,9 +411,4 @@ if UserSettings.DisableHints then
 		mapdata.DisableHints = true
 	end
 	HintsEnabled = false
-end
-
--- write logs to file (in-game instead of when quitting)
-if not blacklist and UserSettings.WriteLogs then
-	ChoGGi.ComFuncs.WriteLogs_Toggle(UserSettings.WriteLogs)
 end

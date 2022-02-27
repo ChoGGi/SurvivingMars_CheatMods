@@ -39,7 +39,7 @@ local kill_current = {
 	end,
 --~ 	Marsquake = function()
 --~ 		-- don't trigger quakes if setting is enabled
---~ 		SaveOrigFunc("TriggerMarsquake")
+--~ 		OrigFunc("TriggerMarsquake")
 --~ 		function TriggerMarsquake(...)
 --~ 			if not UserSettings.DisasterQuakeDisable then
 --~ 				return ChoGGi_OrigFuncs.TriggerMarsquake(...)
@@ -48,7 +48,7 @@ local kill_current = {
 --~ 	end,
 --~ 	RainsDisaster = function()
 --~ 		-- don't trigger toxic rains if setting is enabled
---~ 		SaveOrigFunc("RainProcedure")
+--~ 		OrigFunc("RainProcedure")
 --~ 		function RainProcedure(settings, ...)
 --~ 			if settings.type == "normal" or not UserSettings.DisasterRainsDisable then
 --~ 				return ChoGGi_OrigFuncs.RainProcedure(settings, ...)

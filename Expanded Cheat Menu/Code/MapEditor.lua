@@ -1,8 +1,7 @@
 -- See LICENSE for terms
 
-local p = Platform
-local d_before = p.developer
-p.developer = true
+local d_before = Platform.developer
+Platform.developer = true
 
 editor.ObjClassList = ""
 const.SelectionFilters = {
@@ -64,4 +63,4 @@ g_revision_map = {}
 UpdateMapRevision = rawget(_G, "UpdateMapRevision") or empty_func
 AsyncGetSourceInfo = rawget(_G, "AsyncGetSourceInfo") or empty_func
 
-p.developer = d_before
+Platform.developer = d_before

@@ -62,6 +62,11 @@ function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	getmetatable = env.getmetatable
 end
 
+-- Ease of access to _G for my lib mod (when HelperMod is installed for ECM)
+function ChoGGi.ComFuncs.RetUnrestricedG()
+	return g_ConsoleFENV or _G
+end
+
 -- backup orginal function for later use (checks if we already have a backup, or else inf problems)
 local function SaveOrigFunc(class_or_func, func_name)
 	local OrigFuncs = ChoGGi.OrigFuncs
@@ -131,7 +136,7 @@ ChoGGi.ComFuncs.IsObjlist = IsObjlist
 -- root is where we start looking (defaults to _G).
 -- create is a boolean to add a table if the "name" is absent.
 local function DotPathToObject(str, root, create)
-	local _G = _G
+	local _G = ChoGGi.ComFuncs.RetUnrestricedG()
 
 	-- parent always starts out as "root"
 	local parent = root or _G
@@ -182,11 +187,12 @@ do -- RetName
 	local TConcatMeta = TConcatMeta
 
 	-- we use this table to display names of objects for RetName
-	local g = _G
-	if not rawget(g, "ChoGGi_lookup_names") then
-		g.ChoGGi_lookup_names = {[g.empty_func] = "empty_func"}
+	local g_env = _G
+
+	if not rawget(g_env, "ChoGGi_lookup_names") then
+		g_env.ChoGGi_lookup_names = {[g_env.empty_func] = "empty_func"}
 	end
-	local lookup_table = g.ChoGGi_lookup_names
+	local lookup_table = g_env.ChoGGi_lookup_names
 
 	local function AddFuncToList(key, value, name)
 		if not lookup_table[value] then
@@ -230,7 +236,7 @@ do -- RetName
 		if name:find("%.") then
 			list = DotPathToObject(name)
 		else
-			list = g[name]
+			list = g_env[name]
 		end
 		if not list then
 			return
@@ -272,7 +278,7 @@ do -- RetName
 
 	do -- stuff we need to be in-game for
 		local function AddFuncsChoGGi(name, skip)
-			local list = g.ChoGGi[name]
+			local list = g_env.ChoGGi[name]
 			for key, value in pairs(list) do
 				if not lookup_table[value] then
 					if skip then
@@ -287,8 +293,10 @@ do -- RetName
 		local function BuildNameList(update_trans)
 			lookup_table = ChoGGi_lookup_names or {}
 			-- If env._G was updated from ECM HelperMod
-			g = _G
-			lookup_table[g.terminal.desktop] = "terminal.desktop"
+--~ 			g_env = _G
+			g_env = ChoGGi.ComFuncs.RetUnrestricedG()
+
+			lookup_table[g_env.terminal.desktop] = "terminal.desktop"
 
 			AddFuncs("lfs")
 			AddFuncs("debug")
@@ -297,7 +305,7 @@ do -- RetName
 			AddFuncs("package")
 			AddFuncs("package.searchers")
 			if not ChoGGi.blacklist then
-				local registry = g.debug.getregistry()
+				local registry = ChoGGi.ComFuncs.RetUnrestricedG().debug.getregistry()
 				local name = "debug.getregistry()"
 				for key, value in pairs(registry) do
 					local t = type(value)
@@ -305,7 +313,7 @@ do -- RetName
 						AddFuncToList(key, value, name)
 					elseif t == "table" then
 						-- we get _G later
-						if value ~= g then
+						if value ~= g_env then
 							for key2, value2 in pairs(value) do
 								AddFuncToList(key, value2, "dbg_reg()."..key2)
 							end
@@ -322,7 +330,7 @@ do -- RetName
 			AddFuncsChoGGi("SettingFuncs")
 			AddFuncsChoGGi("OrigFuncs", true)
 
-			for key, value in pairs(g.ChoGGi) do
+			for key, value in pairs(g_env.ChoGGi) do
 				if not lookup_table[value] then
 					if type(value) == "table" then
 						lookup_table[value] = "ChoGGi." .. key
@@ -331,7 +339,7 @@ do -- RetName
 			end
 
 			-- any tables/funcs in _G
-			for key, value in pairs(g) do
+			for key, value in pairs(g_env) do
 				-- no need to add tables already added
 				if not lookup_table[value] then
 					local t = type(value)
@@ -347,12 +355,12 @@ do -- RetName
 				end
 			end
 
-			local blacklist = g.ChoGGi.blacklist
+			local blacklist = g_env.ChoGGi.blacklist
 
 			-- and any g_Classes funcs
-			for id, class in pairs(g.g_Classes) do
+			for id, class in pairs(g_env.g_Classes) do
 				if blacklist then
-					local g_value = rawget(g, id)
+					local g_value = rawget(g_env, id)
 					if g_value then
 						lookup_table[g_value] = id
 					end
@@ -380,9 +388,9 @@ do -- RetName
 				end
 			end
 
-			g.ClassDescendantsList("Preset", function(_, cls)
+			g_env.ClassDescendantsList("Preset", function(_, cls)
 				if cls.GlobalMap and cls.GlobalMap ~= "" then
-					local g_value = rawget(g, cls.GlobalMap)
+					local g_value = rawget(g_env, cls.GlobalMap)
 					if g_value then
 						-- only needed for blacklist, but whatever it's quick
 						lookup_table[g_value] = cls.GlobalMap
@@ -405,10 +413,10 @@ do -- RetName
 
 			-- grab what we can from gimped _G
 			if blacklist then
-				lookup_table[g.g_Classes] = "g_Classes"
-				for i = 1, #g.GlobalVars do
-					local var = g.GlobalVars[i]
-					local obj = g[var]
+				lookup_table[g_env.g_Classes] = "g_Classes"
+				for i = 1, #g_env.GlobalVars do
+					local var = g_env.GlobalVars[i]
+					local obj = g_env[var]
 					if not lookup_table[obj] then
 						lookup_table[obj] = var
 					end
@@ -5460,12 +5468,12 @@ end -- do
 function ChoGGi.ComFuncs.ReplaceClassFunc(class, func_name, func_to_call)
 	-- ClassDescendantsList("BaseRover")
 	class = ClassDescendantsList(class)
-	local g = _G
+	local g_env = ChoGGi.ComFuncs.RetUnrestricedG()
 	-- shouldn't be any dupes?
 	local orig_funcs = {}
 	for i = 1, #class do
 		-- get cls obj and backup the func we're hitchhiking on
-		local cls_obj = g[class[i]]
+		local cls_obj = g_env[class[i]]
 		local orig_func = cls_obj[func_name]
 		if not orig_funcs[orig_func] then
 			orig_funcs[orig_func] = true
