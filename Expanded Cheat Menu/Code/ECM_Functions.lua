@@ -1574,8 +1574,8 @@ do -- ChangeSurfaceSignsToMaterials
 	function ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials()
 
 		local item_list = {
-			{text = T(754117323318--[[Enable]]), value = true, hint = TranslationTable[302535920001081--[[Changes signs to materials.]]]},
-			{text = T(251103844022--[[Disable]]), value = false, hint = TranslationTable[302535920001082--[[Changes materials to signs.]]]},
+			{text = TranslationTable[754117323318--[[Enable]]], value = true, hint = TranslationTable[302535920001081--[[Changes signs to materials.]]]},
+			{text = TranslationTable[251103844022--[[Disable]]], value = false, hint = TranslationTable[302535920001082--[[Changes materials to signs.]]]},
 		}
 
 		local function CallBackFunc(choice)
@@ -1676,7 +1676,10 @@ do -- ToggleFuncHook
 			local str_len = #path
 
 			print(TranslationTable[302535920000497--[[Hook Started]]], path, line, mask, count)
-			MsgPopup(TranslationTable[302535920000497--[[Hook Started]]], T(1000113, "Debug"))
+			MsgPopup(
+				TranslationTable[302535920000497--[[Hook Started]]],
+				TranslationTable[1000113--[[Debug]]]
+			)
 
 			collectgarbage()
 			local function hook_func(event)
@@ -1705,7 +1708,7 @@ do -- ToggleFuncHook
 			debug.sethook(hook_func, mask or "c", count)
 		else
 			print(TranslationTable[302535920000498--[[Hook Stopped]]], path, line, mask, count)
-			MsgPopup(TranslationTable[302535920000498--[[Hook Stopped]]], T(1000113, "Debug"))
+			MsgPopup(TranslationTable[302535920000498--[[Hook Stopped]]], TranslationTable[1000113--[[Debug]]])
 			ChoGGi.Temp.FunctionsHooked = false
 
 			-- stop capture
@@ -1825,8 +1828,8 @@ do -- TestLocaleFile
 			order = {"translated_new", "translated", "text"}
 		end
 
-		local prev_str = Translate(1000231--[[Previous]])
-		local next_str = Translate(1000232--[[Next]])
+		local prev_str = TranslationTable[1000231--[[Previous]]]
+		local next_str = TranslationTable[1000232--[[Next]]]
 		local cur_str = TranslationTable[302535920000106--[[Current]]]
 
 		for i = 1, #loaded_csv do
@@ -2029,9 +2032,9 @@ It's a tradeoff between erroneous errors and the game locking up."]]]
 
 		local title
 		if strings_count > 0 or csv_count > 0 then
-			title = TranslationTable[302535920001125--[[Test Locale File]]] .. ": " .. Translate(951--[[Failed to complete operation.]])
+			title = TranslationTable[302535920001125--[[Test Locale File]]] .. ": " .. TranslationTable[951--[[Failed to complete operation.]]]
 		else
-			title = TranslationTable[302535920001125--[[Test Locale File]]] .. ": " .. Translate(1000015--[[Success]])
+			title = TranslationTable[302535920001125--[[Test Locale File]]] .. ": " .. TranslationTable[1000015--[[Success]]]
 		end
 		local results = {
 			loaded_csv = loaded_csv,
@@ -2306,19 +2309,19 @@ do -- DisplayMonitorList
 			AddGrid(UICity, "water", info)
 		elseif value == "Air" then
 			info = info_grid
-			info_grid.title = Translate(891--[[Air]])
+			info_grid.title = TranslationTable[891--[[Air]]]
 			AddGrid(UICity, "air", info)
 		elseif value == "Power" then
 			info = info_grid
-			info_grid.title = Translate(79--[[Power]])
+			info_grid.title = TranslationTable[79--[[Power]]]
 			AddGrid(UICity, "electricity", info)
 		elseif value == "Water" then
 			info = info_grid
-			info_grid.title = Translate(681--[[Water]])
+			info_grid.title = TranslationTable[681--[[Water]]]
 			AddGrid(UICity, "water", info)
 		elseif value == "Research" then
 			info = {
-				title = Translate(311--[[Research]]),
+				title = TranslationTable[311--[[Research]]],
 				listtype = "all",
 				tables = {UIColony.tech_status},
 				values = {
@@ -2327,7 +2330,7 @@ do -- DisplayMonitorList
 			}
 		elseif value == "Colonists" then
 			info = {
-				title = Translate(547--[[Colonists]]),
+				title = TranslationTable[547--[[Colonists]]],
 				tables = UICity.labels.Colonist or "",
 				values = {
 					{name="handle", kind=0},
@@ -2353,7 +2356,7 @@ do -- DisplayMonitorList
 			}
 		elseif value == "Rockets" then
 			info = {
-				title = Translate(5238--[[Rockets]]),
+				title = TranslationTable[5238--[[Rockets]]],
 				tables = UICity.labels.AllRockets,
 				values = {
 					{name="name", kind=0},
@@ -2599,12 +2602,12 @@ do -- UnpublishParadoxMod
 				if type(result) == "string" then
 					print("UnpublishParadoxMod<color ChoGGi_red> ERROR", result, "</color>", mod_title)
 				else
-					print("UnpublishParadoxMod<color ChoGGi_green>", Translate(1000015--[[Success]]), "</color>", mod_title)
+					print("UnpublishParadoxMod<color ChoGGi_green>", TranslationTable[1000015--[[Success]]], "</color>", mod_title)
 				end
 			end
 		end
 		ChoGGi.ComFuncs.QuestionBox(
-			Translate(6779--[[Warning]]) .. "!\n" .. Translate(672683736395--[[Unpublish from Paradox]]),
+			TranslationTable[6779--[[Warning]]] .. "!\n" .. TranslationTable[672683736395--[[Unpublish from Paradox]]],
 			CallBackFunc,
 			mod_title
 		)

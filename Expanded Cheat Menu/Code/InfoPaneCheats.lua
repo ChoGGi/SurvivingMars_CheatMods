@@ -51,7 +51,7 @@ local function SetHint(action, hint)
 	-- name has to be set to make the hint show up
 	action.ActionName = action.ActionId
 	action.RolloverText = hint
-	action.RolloverHint = T(608042494285--[[<left_click> Activate]])
+	action.RolloverHint = TranslationTable[608042494285--[[<left_click> Activate]]]
 end
 local function SetIcon(action, name, icon)
 	-- we're changing the name so we'll set the hint title to the orig name
@@ -80,8 +80,8 @@ local resetc = TranslationTable[302535920001200--[[Reset the capacity of colonis
 local grid_lookup = {
 	OxygenFree = {
 		icon = "UI/Icons/res_oxygen.tga",
-		name = T(682--[[Oxygen]]),
-		text1 = T(4325--[[Free]]),
+		name = TranslationTable[682--[[Oxygen]]],
+		text1 = TranslationTable[4325--[[Free]]],
 		text2 = TranslationTable[302535920001220--[[Change this %s so it doesn't need a %s source.]]],
 		con = "air_consumption",
 	},
@@ -809,13 +809,13 @@ function Colonist:CheatRandomAge()
 end
 function Colonist:CheatDie()
 	ChoGGi.ComFuncs.QuestionBox(
-		T(6779--[[Warning]]) .. "!\n" .. TranslationTable[302535920001430--[[Kill colonist-]]] .. "?",
+		TranslationTable[6779--[[Warning]]] .. "!\n" .. TranslationTable[302535920001430--[[Kill colonist-]]] .. "?",
 		function(answer)
 			if answer then
 				self:SetCommand("Die")
 			end
 		end,
-		T(6779--[[Warning]]) .. ": " .. TranslationTable[302535920000855--[[Last chance before deletion!]]]
+		TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000855--[[Last chance before deletion!]]]
 	)
 end
 

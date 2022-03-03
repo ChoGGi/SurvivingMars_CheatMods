@@ -26,7 +26,7 @@ Under "Idiocracy" all colonists have the Idiot trait, there is no Sponsor resear
 
 [b]Sponsor[/b]
 - Research per Sol: 0
-- All colonists are <em>Idiots</em>
+- All colonists are Idiots
 - No research technologies unlocked
 - No sponsored research
 [b]Commander[/b]

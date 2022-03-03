@@ -76,7 +76,7 @@ Actions[c] = {ActionName = T(5443--[[Training Buildings]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(5245--[[Sanatoriums]]) .. " " .. Translate(302535920000198--[[Cure All]]),
+Actions[c] = {ActionName = T(5245--[[Sanatoriums]]) .. " " .. T(302535920000198--[[Cure All]]),
 	ActionMenubar = "ECM.ECM.Buildings.Training Buildings",
 	ActionId = ".Sanatoriums Cure All",
 	ActionIcon = icon,
@@ -90,7 +90,7 @@ Actions[c] = {ActionName = Translate(5245--[[Sanatoriums]]) .. " " .. Translate(
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(5248--[[Schools]]) .. " " .. Translate(302535920000200--[[Train All]]),
+Actions[c] = {ActionName = T(5248--[[Schools]]) .. " " .. T(302535920000200--[[Train All]]),
 	ActionMenubar = "ECM.ECM.Buildings.Training Buildings",
 	ActionId = ".Schools Train All",
 	ActionIcon = icon,
@@ -103,7 +103,7 @@ Actions[c] = {ActionName = Translate(5248--[[Schools]]) .. " " .. Translate(3025
 	OnAction = ChoGGi.MenuFuncs.SchoolTrainAll_Toggle,
 }
 
-local SandS = Translate(5245--[[Sanatoriums]]) .. " & " .. Translate(5248--[[Schools]])
+local SandS = T(5245--[[Sanatoriums]]) .. " & " .. T(5248--[[Schools]])
 
 c = c + 1
 Actions[c] = {ActionName = SandS .. ": " .. T(302535920000202--[[Show All Traits]]),

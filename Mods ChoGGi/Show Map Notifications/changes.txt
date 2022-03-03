@@ -1,1 +1,2 @@
 v0.2
+Less likely to hide map buttons.

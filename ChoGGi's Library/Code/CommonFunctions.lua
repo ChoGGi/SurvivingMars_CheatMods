@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local TranslationTable = TranslationTable
 local testing = ChoGGi.testing
 -- Init.lua
 local TableConcat = ChoGGi.ComFuncs.TableConcat
@@ -465,7 +464,7 @@ do -- RetName
 		elseif obj_type == "table" then
 			-- cities
 			if IsKindOf(obj, "City") and obj.map_id ~= "" then
-				return Translate(13659, "Map") .. ": " .. obj.map_id
+				return TranslationTable[13659--[[Map]]] .. ": " .. obj.map_id
 			end
 
 			-- we check in order of less generic "names"
@@ -578,7 +577,7 @@ function ChoGGi.ComFuncs.RetHint(obj)
 
 	else
 		-- eh
-		return Translate(3718--[[NONE]])
+		return TranslationTable[3718--[[NONE]]]
 	end
 end
 
@@ -664,7 +663,7 @@ do -- MsgPopup
 		local preset = {
 			id = "popup" .. AsyncRand() .. ActiveMapID,
 			title = type(title) == "number" and tostring(title) or title or "",
-			text = type(text) == "number" and tostring(text) or text or T(3718, "NONE"),
+			text = type(text) == "number" and tostring(text) or text or TranslationTable[3718--[[NONE]]],
 			image = params.image and ValidateImage(params.image) or ChoGGi.library_path .. "UI/TheIncal.png",
 		}
 
@@ -938,9 +937,9 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items, popup)
 		-- "ChoGGi_XCheckButtonMenu"
 		local cls = g_Classes[item.class or "ChoGGi_XButtonMenu"]
 		local button = cls:new({
-			RolloverTitle = item.hint_title and item.hint_title or item.obj and RetName(item.obj) or Translate(126095410863--[[Info]]),
+			RolloverTitle = item.hint_title and item.hint_title or item.obj and RetName(item.obj) or TranslationTable[126095410863--[[Info]]],
 			RolloverText = item.hint or "",
-			RolloverHint = item.hint_bottom or Translate(608042494285--[[<left_click> Activate]]),
+			RolloverHint = item.hint_bottom or TranslationTable[608042494285--[[<left_click> Activate]]],
 			Text = item.name,
 			Background = items.Background,
 			PressedBackground = items.PressedBackground,
@@ -1195,8 +1194,8 @@ function ChoGGi.ComFuncs.MsgWait(text, title, image, ok_text, context, parent, t
 
 --~ 	WaitMessage(
 	CreateMessageBox(
-		type(title) == "number" and tostring(title) or title or T(1000016, "Title"),
-		type(text) == "number" and tostring(text) or text or T(3718, "NONE"),
+		type(title) == "number" and tostring(title) or title or TranslationTable[1000016--[[Title]]],
+		type(text) == "number" and tostring(text) or text or TranslationTable[3718--[[NONE]]],
 		type(ok_text) == "number" and tostring(ok_text) or ok_text,
 		nil,
 		parent,
@@ -1228,8 +1227,8 @@ function ChoGGi.ComFuncs.QuestionBox(text, func, title, ok_text, cancel_text, im
 
 	if WaitMarsQuestion(
 		parent,
-		type(title) == "number" and tostring(title) or title or T(1000016, "Title"),
-		type(text) == "number" and tostring(text) or text or T(3718, "NONE"),
+		type(title) == "number" and tostring(title) or title or TranslationTable[1000016--[[Title]]],
+		type(text) == "number" and tostring(text) or text or TranslationTable[3718--[[NONE]]],
 		type(ok_text) == "number" and tostring(ok_text) or ok_text,
 		type(cancel_text) == "number" and tostring(cancel_text) or cancel_text,
 		image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
@@ -2137,9 +2136,13 @@ do -- Rebuildshortcuts
 			local a = Actions[i]
 			-- added by ECM
 			if a.ChoGGi_ECM then
-				-- can we enable ECM actions?
+				-- Can we enable ECM actions?
 				if not DisableECM then
-					-- and add to the actual actions
+					-- [LUA ERROR] CommonLua/X/XShortcuts.lua:136: attempt to compare string with table
+					-- Chinese does odd translate and any T()s? will error out
+					if type(a.ActionName) ~= "string" then
+						a.ActionName = Translate(a.ActionName)
+					end
 					XShortcutsTarget:AddAction(XAction:new(a))
 				end
 			else
@@ -2149,7 +2152,7 @@ do -- Rebuildshortcuts
 
 		if DisableECM then
 		-- add a key binding to options to re-enable ECM
-			local name = Translate(754117323318--[[Enable]]) .. " " .. TranslationTable[302535920000002--[[ECM]]]
+			local name = TranslationTable[754117323318--[[Enable]]] .. " " .. TranslationTable[302535920000002--[[ECM]]]
 			XShortcutsTarget:AddAction(XAction:new{
 				ActionName = name,
 				ActionId = name,
@@ -2315,7 +2318,7 @@ function ChoGGi.ComFuncs.ColonistUpdateAge(c, age)
 	end
 
 	local ages = ChoGGi.Tables.ColonistAges
-	if age == Translate(3490--[[Random]]) then
+	if age == TranslationTable[3490--[[Random]]] then
 		age = ages[Random(1, 6)]
 	end
 	-- remove all age traits
@@ -2365,7 +2368,7 @@ function ChoGGi.ComFuncs.ColonistUpdateGender(c, gender)
 
 	local genders = ChoGGi.Tables.ColonistGenders
 
-	if gender == Translate(3490--[[Random]]) then
+	if gender == TranslationTable[3490--[[Random]]] then
 		gender = genders[Random(1, 3)]
 	elseif gender == TranslationTable[302535920000800--[[MaleOrFemale]]] then
 		gender = genders[Random(1, 2)]
@@ -2396,7 +2399,7 @@ function ChoGGi.ComFuncs.ColonistUpdateSpecialization(c, spec)
 
 	-- children don't have spec models so they get black cubed
 	if c.age_trait ~= "Child" then
-		if spec == Translate(3490--[[Random]]) then
+		if spec == TranslationTable[3490--[[Random]]] then
 			spec = ChoGGi.Tables.ColonistSpecializations[Random(1, 6)]
 		end
 		if c.specialist ~= "none" then
@@ -2434,7 +2437,7 @@ function ChoGGi.ComFuncs.ColonistUpdateRace(c, race)
 		return
 	end
 
-	if race == Translate(3490--[[Random]]) then
+	if race == TranslationTable[3490--[[Random]]] then
 		race = Random(1, 5) -- max amount of races
 	end
 	c.race = race
@@ -3545,7 +3548,7 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj, skip_msg)
 			end)
 		end
 		obj.ChoGGi_CollisionsDisabled = nil
-		which = Translate(12227--[[Enabled]])
+		which = TranslationTable[12227--[[Enabled]]]
 	else
 		obj:ClearEnumFlags(collision)
 		if obj.ForEachAttach then
@@ -3554,7 +3557,7 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj, skip_msg)
 			end)
 		end
 		obj.ChoGGi_CollisionsDisabled = true
-		which = Translate(847439380056--[[Disabled]])
+		which = TranslationTable[847439380056--[[Disabled]]]
 	end
 	ResumePassEdits("ChoGGi.ComFuncs.CollisionsObject_Toggle")
 
@@ -3627,10 +3630,10 @@ do -- AddXTemplate/RemoveXTemplateSections
 			"__condition", list.__condition or RetTrue,
 			"__context_of_kind", list.__context_of_kind or "",
 			"__template", list.__template or "InfopanelActiveSection",
-			"Title", list.Title or Translate(1000016--[[Title]]),
+			"Title", list.Title or TranslationTable[1000016--[[Title]]],
 			"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
-			"RolloverTitle", list.RolloverTitle or Translate(126095410863--[[Info]]),
-			"RolloverText", list.RolloverText or Translate(126095410863--[[Info]]),
+			"RolloverTitle", list.RolloverTitle or TranslationTable[126095410863--[[Info]]],
+			"RolloverText", list.RolloverText or TranslationTable[126095410863--[[Info]]],
 			"RolloverHint", list.RolloverHint or "",
 			"OnContextUpdate", list.OnContextUpdate or empty_func,
 		}, {
@@ -4479,11 +4482,11 @@ function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
 	local name = RetName(obj)
 	local obj_type
 	if obj:IsKindOf("BaseRover") then
-		obj_type = T(7825--[[Destroy this Rover.]])
+		obj_type = TranslationTable[7825--[[Destroy this Rover.]]]
 	elseif obj:IsKindOf("Drone") then
-		obj_type = T(7824--[[Destroy this Drone.]])
+		obj_type = TranslationTable[7824--[[Destroy this Drone.]]]
 	else
-		obj_type = T(7822--[[Destroy this building.]])
+		obj_type = TranslationTable[7822--[[Destroy this building.]]]
 	end
 
 	local function CallBackFunc(answer)
@@ -4507,11 +4510,11 @@ function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		T(6779--[[Warning]]) .. "!\n" .. obj_type .. "\n" .. name,
+		TranslationTable[6779--[[Warning]]] .. "!\n" .. obj_type .. "\n" .. name,
 		CallBackFunc,
-		T(6779--[[Warning]]) .. ": " .. obj_type,
+		TranslationTable[6779--[[Warning]]] .. ": " .. obj_type,
 		obj_type .. " " .. name,
-		T(1176--[[Cancel Destroy]])
+		TranslationTable[1176--[[Cancel Destroy]]]
 	)
 end
 
@@ -5204,7 +5207,7 @@ end
 function ChoGGi.ComFuncs.RetToolbarButton(params)
 	return XTextButton:new({
 		Id = params.id,
-		Text = params.text or T(126095410863, "Info"),
+		Text = params.text or TranslationTable[126095410863--[[Info]]],
 		FXMouseIn = "ActionButtonHover",
 		FXPress = "ActionButtonClick",
 		FXPressDisabled = "UIDisabledButtonPressed",
@@ -5602,7 +5605,11 @@ do -- path markers
 
 			else
 				ChoGGi.ComFuncs.OpenInExamineDlg(obj, nil, TranslationTable[302535920000467--[[Path Markers]]])
-				print(Translate(6779--[[Warning]]), ":", TranslationTable[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.]]]:format(RetName(obj)))
+				print(
+					TranslationTable[6779--[[Warning]]],
+					":",
+					TranslationTable[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.]]]:format(RetName(obj))
+				)
 			end
 		end
 
