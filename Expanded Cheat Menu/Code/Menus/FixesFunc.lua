@@ -25,7 +25,7 @@ function ChoGGi.MenuFuncs.RemoveInvalidLabelObjects()
 		end
 	end
 	MsgPopup(
-		T(4493--[[All]]),
+		TranslationTable[4493--[[All]]],
 		TranslationTable[302535920001533--[[Remove Invalid Label Objects]]]
 	)
 end
@@ -40,7 +40,7 @@ function ChoGGi.MenuFuncs.RocketCrashesGameOnLanding()
 		end)
 	end
 	MsgPopup(
-		T(4493--[[All]]),
+		TranslationTable[4493--[[All]]],
 		TranslationTable[302535920001351--[[Rocket Crashes Game On Landing]]]
 	)
 end
@@ -54,7 +54,7 @@ function ChoGGi.MenuFuncs.ToggleWorkingAll()
 	end)
 
 	MsgPopup(
-		T(4493--[[All]]),
+		TranslationTable[4493--[[All]]],
 		TranslationTable[302535920001299--[[Toggle Working On All Buildings]]]
 	)
 end
@@ -65,7 +65,7 @@ do -- DronesNotRepairingDome
 	function ChoGGi.MenuFuncs.DronesNotRepairingDomes()
 		local Sleep = Sleep
 		MsgPopup(
-			T(83--[[Domes]]),
+			TranslationTable[83--[[Domes]]],
 			TranslationTable[302535920001295--[[Drones Not Repairing Domes]]]
 		)
 		-- just in case someone decides to click it more than once...
@@ -104,7 +104,7 @@ do -- DronesNotRepairingDome
 				Sleep(1000)
 			end
 			MsgPopup(
-				T(1157--[[Complete thread]]),
+				TranslationTable[1157--[[Complete thread]]],
 				TranslationTable[302535920001295--[[Drones Not Repairing Domes]]]
 			)
 		end)

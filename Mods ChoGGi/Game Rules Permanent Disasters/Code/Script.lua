@@ -403,15 +403,16 @@ end
 OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode
 
--- we need to update MOXIEs when they're built
-ChoGGi.ComFuncs.AddMsgToFunc("MOXIE", "GameInit", "ChoGGi_GreatBakersfield_Msg", true)
-function OnMsg.ChoGGi_GreatBakersfield_Msg(obj)
-	if IsGameRuleActive("ChoGGi_GreatBakersfield") then
-		UpdateMOXIE(obj)
-	end
-end
-
 function OnMsg.ClassesPostprocess()
+		-- we need to update MOXIEs when they're built
+		local ChoOrig_MOXIE_GameInit = MOXIE.GameInit
+		function MOXIE:GameInit(...)
+			ChoOrig_MOXIE_GameInit(self, ...)
+			if IsGameRuleActive("ChoGGi_GreatBakersfield") then
+				UpdateMOXIE(self)
+			end
+		end
+
 	-- trand func from City.lua>function CreateRand(stable, ...) doesn't like < 2 (or maybe < 1, but whatever safety first)
 	local ChoOrig_MapSector_new = MapSector.new
 	function MapSector.new(...)

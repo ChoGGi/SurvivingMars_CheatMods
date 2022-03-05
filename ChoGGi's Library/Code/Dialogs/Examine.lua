@@ -2735,9 +2735,9 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 			else
 
 				-- regular table
-				local table_data
 				local is_next = type(next(obj)) ~= "nil"
 
+				local table_data
 				-- not sure how to check if it's an index non-ass table
 				if len > 0 and is_next then
 					-- next works for both
@@ -2747,16 +2747,23 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 					table_data = TranslationTable[302535920001057--[[Data]]]
 				else
 					-- blank table
-					table_data = 0
+					table_data = len
 				end
 
-				local name_cln = RetName(obj)
+				local name_orig = RetName(obj)
 
-				local name = trans(name_cln):gsub(">",""):gsub("<",""):gsub("/","")
---~ 				local name = "<tags off>" .. name_cln .. "<tags on>"
+				local name = trans(name_orig):gsub(">",""):gsub("<",""):gsub("/","")
 
-				if obj.class and name_cln ~= obj.class then
-					name = obj.class .. " (len: " .. table_data .. ", " .. name .. ")"
+				--
+				local name = "<tags off>" .. name .. "<tags on>"
+
+				if obj.class and name_orig ~= obj.class then
+					-- I can't seem to translate an obj.displayname if it's a T(0, "str")... (RetName)
+					if name:find("table: ") then
+						name = obj.class .. " (len: " .. table_data .. ")"
+					else
+						name = obj.class .. " (len: " .. table_data .. ", " .. name .. ")"
+					end
 				else
 					name = name .. " (len: " .. table_data .. ")"
 				end

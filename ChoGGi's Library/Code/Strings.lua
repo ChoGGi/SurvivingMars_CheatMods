@@ -41,8 +41,8 @@ local function Translate(t, context, ...)
 		return str
 	end
 	-- false result means _InternalTranslate failed
-
-	return tostring(str)
+	local result, str = pcall(_InternalTranslate, t, context, ...)
+	return result and str or tostring(str)
 end
 ChoGGi.ComFuncs.Translate = Translate
 
@@ -62,7 +62,6 @@ do -- fix missing tech defs/tourist description in main menu/new game (expectati
 	}
 
 	local ChoOrig_BuildingInfoLine = BuildingInfoLine
-	local procall = procall
 
 	function BuildingInfoLine(...)
 		-- add fake city so BuildingInfoLine doesn't fail
@@ -72,7 +71,7 @@ do -- fix missing tech defs/tourist description in main menu/new game (expectati
 		end
 
 		-- just to on the safe side (procall)
-		local _, ret = procall(ChoOrig_BuildingInfoLine, ...)
+		local _, ret = pcall(ChoOrig_BuildingInfoLine, ...)
 
 		if UICity == fake_city then
 			UICity = false

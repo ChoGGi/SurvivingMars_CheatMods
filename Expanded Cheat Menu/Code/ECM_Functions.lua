@@ -21,6 +21,7 @@ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 local PlacePolyline = ChoGGi.ComFuncs.PlacePolyline
+
 local InvalidPos = ChoGGi.Consts.InvalidPos
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
@@ -600,7 +601,7 @@ end
 -- skip_under: don't show any tables under this length (default 25)
 --~ 	ChoGGi.ComFuncs.MonitorTableLength(_G)
 function ChoGGi.ComFuncs.MonitorTableLength(obj, skip_under, sortby, title)
-	obj = obj or _G
+	obj = obj or g_env
 	title = title or RetName(obj)
 	skip_under = skip_under or 25
 	local table_list = {}
@@ -807,7 +808,7 @@ function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
 end
 
 -- Any png files in AppData/Logos folder will be added to mod as converted logo files.
--- They have to be min of 8bit, and will be resized to power of 2.
+-- They have to be min of 8bit, and be resized to power of 2 (add transparent space).
 -- This doesn't add anything to metadata/items lua, it only converts files.
 --~ 	ChoGGi.ComFuncs.ConvertImagesToLogoFiles("MOD_ID")
 --~ 	ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.MOD_ID, ".tga")
@@ -817,16 +818,20 @@ function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod, ext)
 		ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.ConvertImagesToLogoFiles")
 		return
 	end
-	mod = mod or Mods.ChoGGi_
+	--
+	if not mod then
+		mod = Mods.ChoGGi_
+	end
 	if type(mod) == "string" then
 		mod = Mods[mod]
 	end
+	--
 	local images = ChoGGi.ComFuncs.RetFilesInFolder("AppData/Logos", ext or ".png")
 	if images then
 		-- returns error msgs and prints in console
 		local TGetID = TGetID
 		local fake_ged_socket = {
-			ShowMessage = function(title, msg)
+			ShowMessage = function(msg, title)
 				if TGetID(title) == 12061 then
 					print("ShowMessage", Translate(title), Translate(msg))
 				end
@@ -844,12 +849,17 @@ function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod, ext)
 		end
 
 		for i = 1, #images do
-			local filename = ConvertToOSPath(images[i].path)
+			local image = images[i]
+
+			local filename = ConvertToOSPath(image.path)
+			-- ModItemDecalEntity:Import(obj, prop_id, ged_socket)
+			-- self/prop_id not used
 			Import(nil,
 				ModItemDecalEntity:new{
-					entity_name = images[i].name,
-					name = images[i].name,
-					filename = filename:gsub("\\", "/"),
+					entity_name = image.name,
+					name = image.name,
+--~ 					filename = filename:gsub("\\", "/"),
+					filename = filename,
 					mod = mod,
 				},
 				nil,
@@ -1740,7 +1750,7 @@ do -- PrintToFunc_Add/PrintToFunc_Remove
 
 		-- move orig to saved name (if it hasn't already been)
 		local saved
-		if parent == _G then
+		if parent == g_env then
 			-- SM error spams console if you have the affront to try _G.NonExistingKey... (thanks autorun.lua)
 			-- It works prefectly fine of course, but i like a clean log.
 			-- In other words a workaround for "Attempt to use an undefined global '"
@@ -2165,7 +2175,7 @@ do -- SetLibraryToolTips
 		"ChoGGi_XWindow",
 	}
 	function ChoGGi.ComFuncs.SetLibraryToolTips()
-		local g = _G
+		local g = g_env
 
 		local tip = ChoGGi.UserSettings.EnableToolTips and "Rollover" or ""
 		for i = 1, #dlgs do

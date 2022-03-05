@@ -2,6 +2,7 @@
 
 ## v18.0 (Unreleased)
 ### Fixed:
+- Menu doesn't start hidden with no dlc (still not sure why that happened).
 - Fixed Chinese lang and ECM menu.
 - Mod option didn't hide ECM menu (thanks Fizzle_Fuzz).
 

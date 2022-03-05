@@ -261,8 +261,58 @@ do -- non-class obj funcs
 	end
 
 end -- do
+--
+do -- func exists before classes
 
+	-- update production (OnMsgs.lua)
+	local ChoOrig_SingleResourceProducer_Init = SingleResourceProducer.Init
+	function SingleResourceProducer:Init(...)
+		ChoOrig_SingleResourceProducer_Init(self, ...)
+		Msg("ChoGGi_SpawnedProducer", self, "production_per_day")
+	end
+	local ChoOrig_AirProducer_CreateLifeSupportElements = AirProducer.CreateLifeSupportElements
+	function AirProducer:CreateLifeSupportElements(...)
+		ChoOrig_AirProducer_CreateLifeSupportElements(self, ...)
+		Msg("ChoGGi_SpawnedProducer", self, "air_production")
+	end
+	local ChoOrig_WaterProducer_CreateLifeSupportElements = WaterProducer.CreateLifeSupportElements
+	function WaterProducer:CreateLifeSupportElements(...)
+		ChoOrig_WaterProducer_CreateLifeSupportElements(self, ...)
+		Msg("ChoGGi_SpawnedProducer", self, "water_production")
+	end
+	local ChoOrig_ElectricityProducer_CreateElectricityElement = ElectricityProducer.CreateElectricityElement
+	function ElectricityProducer:CreateElectricityElement(...)
+		ChoOrig_ElectricityProducer_CreateElectricityElement(self, ...)
+		Msg("ChoGGi_SpawnedProducer", self, "electricity_production")
+	end
+	local ChoOrig_PinnableObject_TogglePin = PinnableObject.TogglePin
+	function PinnableObject:TogglePin(...)
+		ChoOrig_PinnableObject_TogglePin(self, ...)
+		Msg("ChoGGi_TogglePinnableObject", self)
+	end
+	local ChoOrig_Drone_GameInit = Drone.GameInit
+	function Drone:GameInit(...)
+		ChoOrig_Drone_GameInit(self, ...)
+		-- slight delay
+		CreateRealTimeThread(Msg, "ChoGGi_SpawnedDrone", self)
+	end
+	local ChoOrig_BaseBuilding_GameInit = BaseBuilding.GameInit
+	function BaseBuilding:GameInit(...)
+		ChoOrig_BaseBuilding_GameInit(self, ...)
+		-- slight delay
+		CreateRealTimeThread(Msg, "ChoGGi_SpawnedBaseBuilding", self)
+	end
+
+end -- do
+--
 function OnMsg.ClassesGenerate()
+
+
+
+	-- check which can go in before classes
+
+
+
 
 	-- needed for SetDesiredAmount in depots
 	local ChoOrig_ResourceStockpileBase_GetMax = ResourceStockpileBase.GetMax

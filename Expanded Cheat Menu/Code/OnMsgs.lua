@@ -25,16 +25,6 @@ local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
 do -- custom msgs
-	local AddMsgToFunc = ChoGGi.ComFuncs.AddMsgToFunc
-	-- true fires msg in a thread to delay it
-	AddMsgToFunc("BaseBuilding", "GameInit", "ChoGGi_SpawnedBaseBuilding", true)
-	AddMsgToFunc("Drone", "GameInit", "ChoGGi_SpawnedDrone", true)
-	AddMsgToFunc("PinnableObject", "TogglePin", "ChoGGi_TogglePinnableObject")
-
-	AddMsgToFunc("AirProducer", "CreateLifeSupportElements", "ChoGGi_SpawnedProducer", nil, "air_production")
-	AddMsgToFunc("ElectricityProducer", "CreateElectricityElement", "ChoGGi_SpawnedProducer", nil, "electricity_production")
-	AddMsgToFunc("WaterProducer", "CreateLifeSupportElements", "ChoGGi_SpawnedProducer", nil, "water_production")
-	AddMsgToFunc("SingleResourceProducer", "Init", "ChoGGi_SpawnedProducer", nil, "production_per_day")
 
 	-- make sure they use with our new values
 	function OnMsg.ChoGGi_SpawnedProducer(obj, prod_type)
@@ -383,11 +373,6 @@ function OnMsg.ModsReloaded()
 	local ChoGGi = ChoGGi
 	local UserSettings = ChoGGi.UserSettings
 
-	CreateRealTimeThread(function()
-		WaitMsg("OnRender")
-		ChoGGi.ComFuncs.ToggleVerticalCheatMenu(UserSettings.VerticalCheatMenu)
-	end)
-
 	if UserSettings.FlushLogConstantly then
 		print(TranslationTable[302535920001349--[[Flush Log Constantly]]], TranslationTable[302535920001414--[[Call FlushLogFile() every render update!]]])
 	end
@@ -508,9 +493,10 @@ $123 or $EffectDeposit.display_name prints translated string.
 s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"]]]
 			edit.Hint = TranslationTable[302535920001439--[["~obj, @func, @@type, %image, *r/*g/*m threads. Hover mouse for more info."]]]
 
-			dlgConsole.ChoGGi_MenuAdded = true
 			-- and buttons
 			ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
+
+			dlgConsole.ChoGGi_MenuAdded = true
 		end
 
 		-- show cheat pane in selection panel
@@ -552,6 +538,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"]]]
 
 			-- always show menu
 			XShortcutsTarget:SetVisible(true)
+
 			if UserSettings.KeepCheatsMenuPosition then
 				XShortcutsTarget:SetPos(UserSettings.KeepCheatsMenuPosition)
 			end
@@ -624,6 +611,17 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"]]]
 			end
 		end
 	end
+
+	-- slight delay for vertical menu
+	CreateRealTimeThread(function()
+		WaitMsg("OnRender")
+		ChoGGi.ComFuncs.ToggleVerticalCheatMenu(UserSettings.VerticalCheatMenu)
+
+		-- no dlc and the menu flickers on then turns off (for some reason)
+		Sleep(1000)
+		XShortcutsTarget:SetVisible(true)
+	end)
+
 end -- ModsReloaded
 
 function OnMsg.PersistPostLoad()

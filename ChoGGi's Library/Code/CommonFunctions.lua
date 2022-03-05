@@ -55,17 +55,13 @@ local DoneObject = DoneObject
 local InvalidPos = ChoGGi.Consts.InvalidPos
 
 local rawget, getmetatable = rawget, getmetatable
+local g_env = _G
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	-- make sure we use the actual funcs if we can
 	rawget = env.rawget
 	getmetatable = env.getmetatable
+	g_env = env
 end
-
--- Ease of access to _G for my lib mod (when HelperMod is installed for ECM)
-function ChoGGi.ComFuncs.RetUnrestricedG()
-	return g_ConsoleFENV or _G
-end
-
 -- backup orginal function for later use (checks if we already have a backup, or else inf problems)
 local function SaveOrigFunc(class_or_func, func_name)
 	local OrigFuncs = ChoGGi.OrigFuncs
@@ -117,7 +113,7 @@ do -- AddMsgToFunc
 --~ 				print("Function Error: ", class_name .. "_" .. func_name)
 --~ 				ChoGGi.ComFuncs.OpenInExamineDlg({params}, nil, "AddMsgToFunc")
 --~ 			end
-
+--~ 			--
 			return ChoGGi_OrigFuncs[newname](obj, ...)
 		end
 	end
@@ -135,7 +131,7 @@ ChoGGi.ComFuncs.IsObjlist = IsObjlist
 -- root is where we start looking (defaults to _G).
 -- create is a boolean to add a table if the "name" is absent.
 local function DotPathToObject(str, root, create)
-	local _G = ChoGGi.ComFuncs.RetUnrestricedG()
+	local _G = g_env
 
 	-- parent always starts out as "root"
 	local parent = root or _G
@@ -186,8 +182,6 @@ do -- RetName
 	local TConcatMeta = TConcatMeta
 
 	-- we use this table to display names of objects for RetName
-	local g_env = _G
-
 	if not rawget(g_env, "ChoGGi_lookup_names") then
 		g_env.ChoGGi_lookup_names = {[g_env.empty_func] = "empty_func"}
 	end
@@ -292,8 +286,7 @@ do -- RetName
 		local function BuildNameList(update_trans)
 			lookup_table = ChoGGi_lookup_names or {}
 			-- If env._G was updated from ECM HelperMod
---~ 			g_env = _G
-			g_env = ChoGGi.ComFuncs.RetUnrestricedG()
+			g_env = g_env
 
 			lookup_table[g_env.terminal.desktop] = "terminal.desktop"
 
@@ -304,7 +297,7 @@ do -- RetName
 			AddFuncs("package")
 			AddFuncs("package.searchers")
 			if not ChoGGi.blacklist then
-				local registry = ChoGGi.ComFuncs.RetUnrestricedG().debug.getregistry()
+				local registry = g_env.debug.getregistry()
 				local name = "debug.getregistry()"
 				for key, value in pairs(registry) do
 					local t = type(value)
@@ -357,14 +350,14 @@ do -- RetName
 			local blacklist = g_env.ChoGGi.blacklist
 
 			-- and any g_Classes funcs
-			for id, class in pairs(g_env.g_Classes) do
+			for class_id, class_obj in pairs(g_env.g_Classes) do
 				if blacklist then
-					local g_value = rawget(g_env, id)
+					local g_value = rawget(g_env, class_id)
 					if g_value then
-						lookup_table[g_value] = id
+						lookup_table[g_value] = class_id
 					end
 				end
-				for key, value in pairs(class) do
+				for key, value in pairs(class_obj) do
 					-- why it has a false is beyond me (something to do with that object[true] = userdata?)
 					if key ~= false and not lookup_table[value] then
 						if type(value) == "function" then
@@ -372,15 +365,18 @@ do -- RetName
 							if name == "[C](-1)" then
 								lookup_table[value] = key .. " *C"
 							else
-								-- Unit.lua(75):MoveSleep
 								-- need to reverse string so it finds the last /, since find looks ltr
 								local slash = name:reverse():find("/")
 								if slash then
-									lookup_table[value] = name:sub(-slash + 1) .. ":" .. key
+									-- Unit.lua(75),Unit:MoveSleep()
+--~ 									lookup_table[value] = name:sub(-slash + 1) .. "," .. class_id .. ":" .. key .. "()"
+									-- Unit.lua(75),MoveSleep()
+									lookup_table[value] = name:sub(-slash + 1) .. "," .. key .. "()"
 								else
 									-- the name'll be [string ""](8):
 									lookup_table[value] = "string():" .. key
 								end
+
 							end
 						end
 					end
@@ -468,7 +464,7 @@ do -- RetName
 			end
 
 			-- we check in order of less generic "names"
-			local name_type = PropObjGetProperty(obj, "name") and type(obj.name)
+			local name_type = rawget(obj, "name") and type(obj.name)
 
 			-- custom name from user (probably)
 			if name_type == "string" and obj.name ~= "" then
@@ -478,7 +474,7 @@ do -- RetName
 				name = Translate(obj.name)
 
 			-- display
-			elseif PropObjGetProperty(obj, "display_name") and obj.display_name ~= "" then
+			elseif rawget(obj, "display_name") and obj.display_name ~= "" then
 				if IsT(obj.display_name) == 9 --[[Anomaly]] then
 					name = obj.class
 				else
@@ -487,7 +483,7 @@ do -- RetName
 
 -- I'd like to fire this after values_lookup, but for now comment it
 --~ 			-- entity
---~ 			elseif PropObjGetProperty(obj, "entity") and obj.entity ~= "" then
+--~ 			elseif rawget(obj, "entity") and obj.entity ~= "" then
 --~ 				name = obj.entity
 
 			-- objlist
@@ -495,13 +491,13 @@ do -- RetName
 				return obj[1] and ChoGGi.ComFuncs.RetName(obj[1]) or "objlist"
 
 			else
-				-- we need to use PropObjGetProperty to check (seems more consistent then rawget), as some stuff like mod.env uses the metatable from _G.__index and causes sm to log an error msg
+				-- we need to use rawget to check (seems more consistent then rawget), as some stuff like mod.env uses the metatable from _G.__index and causes sm to log an error msg
 				local index = getmetatable(obj)
 				index = index and index.__index
 
 				for i = 1, #values_lookup do
 					local value_name = values_lookup[i]
-					if index and PropObjGetProperty(obj, value_name) or not index and obj[value_name] then
+					if index and rawget(obj, value_name) or not index and obj[value_name] then
 						local value = obj[value_name]
 						if value ~= "" then
 							name = value
@@ -510,13 +506,12 @@ do -- RetName
 					end
 				end
 				--
+
 				local meta = getmetatable(name)
-				if meta == TMeta or meta == TConcatMeta then
-					name = Translate(name)
-				elseif type(name) == "userdata" then
+				if meta == TMeta or meta == TConcatMeta or type(name) == "userdata" then
 					name = Translate(name)
 				end
-				if not name and PropObjGetProperty(obj, "GetDisplayName") then
+				if not name and rawget(obj, "GetDisplayName") then
 					name = Translate(obj:GetDisplayName())
 				end
 
@@ -1553,7 +1548,7 @@ function ChoGGi.ComFuncs.FilterFromTableFunc(list, func, value, is_bool)
 	end
 	return MapFilter(list, function(o)
 		if is_bool then
-			if _G[func](o) then
+			if g_env[func](o) then
 				return true
 			end
 		elseif o[func](o, value) then
@@ -1934,6 +1929,8 @@ local SelObject = ChoGGi.ComFuncs.SelObject
 local SelObjects = ChoGGi.ComFuncs.SelObjects
 
 do -- Rebuildshortcuts
+	local _InternalTranslate = _InternalTranslate
+
 	-- we want to only remove certain actions from the actual game, not ones added by modders, so list building time...
 	local remove_lookup = {
 		ChangeMapEmpty = true,
@@ -2083,6 +2080,9 @@ do -- Rebuildshortcuts
 		local ass = XShortcutsTarget.actions
 		for i = #ass, 1, -1 do
 			local a = ass[i]
+			-- [LUA ERROR] CommonLua/X/XShortcuts.lua:136: attempt to compare string with table
+			a.ActionName = _InternalTranslate(a.ActionName)
+
 			if a.ChoGGi_ECM or remove_lookup[a.ActionId] then
 				a:delete()
 				table.remove(XShortcutsTarget.actions, i)
@@ -2094,6 +2094,9 @@ do -- Rebuildshortcuts
 				a.ActionShortcut = nil
 				a.ActionShortcut2 = nil
 			end
+
+
+
 		end
 
 		if testing then
@@ -2134,15 +2137,14 @@ do -- Rebuildshortcuts
 		local DisableECM = ChoGGi.UserSettings.DisableECM
 		for i = 1, #Actions do
 			local a = Actions[i]
+
+			-- [LUA ERROR] CommonLua/X/XShortcuts.lua:136: attempt to compare string with table
+			a.ActionName = _InternalTranslate(a.ActionName)
+
 			-- added by ECM
 			if a.ChoGGi_ECM then
 				-- Can we enable ECM actions?
 				if not DisableECM then
-					-- [LUA ERROR] CommonLua/X/XShortcuts.lua:136: attempt to compare string with table
-					-- Chinese does odd translate and any T()s? will error out
-					if type(a.ActionName) ~= "string" then
-						a.ActionName = Translate(a.ActionName)
-					end
 					XShortcutsTarget:AddAction(XAction:new(a))
 				end
 			else
@@ -5091,7 +5093,7 @@ function ChoGGi.ComFuncs.PlantRandomVegetation(amount)
 
 	local HexToWorld = HexToWorld
 	local DoesContainVegetation = DoesContainVegetation
-	local CanVegGrowAt_C = rawget(_G,"Vegetation_CanVegetationGrowAt_C")
+	local CanVegGrowAt_C = rawget(g_env, "Vegetation_CanVegetationGrowAt_C")
 	local CanVegetationGrowAt = CanVegetationGrowAt
 	local PlaceVegetation = PlaceVegetation
 
@@ -5471,7 +5473,6 @@ end -- do
 function ChoGGi.ComFuncs.ReplaceClassFunc(class, func_name, func_to_call)
 	-- ClassDescendantsList("BaseRover")
 	class = ClassDescendantsList(class)
-	local g_env = ChoGGi.ComFuncs.RetUnrestricedG()
 	-- shouldn't be any dupes?
 	local orig_funcs = {}
 	for i = 1, #class do
