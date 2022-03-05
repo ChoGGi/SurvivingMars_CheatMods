@@ -9,7 +9,7 @@ local c = #Actions
 local iconRC = "CommonAssets/UI/Menu/HostGame.tga"
 
 c = c + 1
-Actions[c] = {ActionName = Translate(5438--[[Rovers]]),
+Actions[c] = {ActionName = TranslationTable[5438--[[Rovers]]],
 	ActionMenubar = "ECM.ECM",
 	ActionId = ".Rovers",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",

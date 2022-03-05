@@ -721,7 +721,7 @@ local function BuildSciptButton(console, folder)
 				end
 				PopupToggle(self, folder.id, items, "top")
 			else
-				print(Translate(591853191640--[[Empty list]]))
+				print(TranslationTable[591853191640--[[Empty list]]])
 			end
 		end,
 	}, console.idScripts)

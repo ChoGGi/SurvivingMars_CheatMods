@@ -86,7 +86,7 @@ Actions[c] = {ActionName = TranslationTable[302535920001029--[[Changelog]]],
 	ActionMenubar = "ECM.Help.Expanded Cheat Menu",
 	ActionId = ".Changelog",
 	ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
-	RolloverText = Translate(4915--[[Good News, Everyone!"]]),
+	RolloverText = TranslationTable[4915--[[Good News, Everyone!"]]],
 	OnAction = ChoGGi.MenuFuncs.OpenUrl,
 	setting_url = str_url .. "Expanded Cheat Menu/Changelog.md#ecm-changelog",
 	ActionSortKey = "003",
@@ -121,7 +121,7 @@ Actions[c] = {ActionName = TranslationTable[302535920001481--[[Show Startup Tick
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(251103844022--[[Disable]]) .. " " .. TranslationTable[302535920000002--[[ECM]]],
+Actions[c] = {ActionName = TranslationTable[251103844022--[[Disable]]] .. " " .. TranslationTable[302535920000002--[[ECM]]],
 	ActionMenubar = "ECM.Help.Expanded Cheat Menu",
 	ActionId = ".Disable ECM",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
@@ -166,7 +166,7 @@ Actions[c] = {ActionName = TranslationTable[302535920001647--[[Window Title]]],
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = TranslationTable[302535920000323--[[Modding]]] .. " " .. Translate(8982--[[Tutorial]]),
+Actions[c] = {ActionName = TranslationTable[302535920000323--[[Modding]]] .. " " .. TranslationTable[8982--[[Tutorial]]],
 	ActionMenubar = "ECM.Help",
 	ActionId = ".Modding Tutorial",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -175,7 +175,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000323--[[Modding]]] .. " "
 }
 
 c = c + 1
-Actions[c] = {ActionName = "*" .. Translate(126095410863--[[Info]]) .. "*",
+Actions[c] = {ActionName = "*" .. TranslationTable[126095410863--[[Info]]] .. "*",
 	ActionMenubar = "ECM.Help.Modding Tutorial",
 	ActionId = ".*Info*",
 	ActionIcon = "CommonAssets/UI/Menu/help.tga",
@@ -185,7 +185,7 @@ Actions[c] = {ActionName = "*" .. Translate(126095410863--[[Info]]) .. "*",
 }
 
 c = c + 1
-Actions[c] = {ActionName = "*" .. Translate(283142739680--[[Game]]) .. " & " .. TranslationTable[302535920001355--[[Map]]] .. " " .. Translate(126095410863--[[Info]]) .. "*",
+Actions[c] = {ActionName = "*" .. TranslationTable[283142739680--[[Game]]] .. " & " .. TranslationTable[302535920001355--[[Map]]] .. " " .. TranslationTable[126095410863--[[Info]]] .. "*",
 	ActionMenubar = "ECM.Help.Modding Tutorial",
 	ActionId = ".*Game & Map Info*",
 	ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
@@ -195,13 +195,13 @@ Actions[c] = {ActionName = "*" .. Translate(283142739680--[[Game]]) .. " & " .. 
 }
 
 c = c + 1
-Actions[c] = {ActionName = "*" .. Translate(5568--[[Stats]]) .. "*",
+Actions[c] = {ActionName = "*" .. TranslationTable[5568--[[Stats]]] .. "*",
 	ActionMenubar = "ECM.Help.Modding Tutorial",
 	ActionId = ".*Stats*",
 	ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
 	RolloverText = TranslationTable[302535920001281--[[Information about your computer (as seen by SM).]]],
 	OnAction = function()
-		ChoGGi.ComFuncs.OpenInExamineDlg(ChoGGi.MenuFuncs.RetHardwareInfo(), nil, Translate(5568--[[Stats]]))
+		ChoGGi.ComFuncs.OpenInExamineDlg(ChoGGi.MenuFuncs.RetHardwareInfo(), nil, TranslationTable[5568--[[Stats]]])
 	end,
 	ActionSortKey = "-2*Stats*",
 }

@@ -13,14 +13,14 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence_Toggle(action)
 	local us = ChoGGi.UserSettings
 
 	local setting
-	if setting_name == Translate(369748345658--[[Toxic Rain]]) then
+	if setting_name == TranslationTable[369748345658--[[Toxic Rain]]] then
 		if us.DisasterRainsDisable then
 			us.DisasterRainsDisable = nil
 		else
 			us.DisasterRainsDisable = true
 		end
 		setting = us.DisasterRainsDisable
-	elseif setting_name == Translate(382404446864--[[Marsquake]]) then
+	elseif setting_name == TranslationTable[382404446864--[[Marsquake]]] then
 		if us.DisasterQuakeDisable then
 			us.DisasterQuakeDisable = nil
 		else
@@ -127,7 +127,7 @@ function ChoGGi.MenuFuncs.ChangeRivalColonies()
 
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(#choices),
-			T(11034, "Rival Colonies")
+			TranslationTable[11034--[[Rival Colonies]]]
 		)
 
 	end
@@ -135,7 +135,7 @@ function ChoGGi.MenuFuncs.ChangeRivalColonies()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = T(11034--[[Rival Colonies]]),
+		title = TranslationTable[11034--[[Rival Colonies]]],
 		hint = TranslationTable[302535920001460--[[Add/remove rival colonies.]]],
 		multisel = true,
 		custom_type = 3,
@@ -173,7 +173,7 @@ function ChoGGi.MenuFuncs.StartChallenge()
 			hint = T(c.description) .. "\n\n"
 				.. TranslationTable[302535920001415--[[Sols to Complete: %s]]]:format(c.time_completed / DayDuration)
 				.. "\n"
-				.. Translate(10489--[[<newline>Perfect time: <countdown2>]]):gsub("<countdown2>", c.time_perfected / DayDuration)
+				.. TranslationTable[10489--[[<newline>Perfect time: <countdown2>]]]:gsub("<countdown2>", c.time_perfected / DayDuration)
 				.. (current and "\n\n" .. TranslationTable[302535920000106--[[Current]]] or ""),
 		}
 	end
@@ -230,8 +230,8 @@ function ChoGGi.MenuFuncs.InstantMissionGoals()
 				hint = "<image " .. sponsor["goal_image_" .. i] .. ">\n\n"
 					.. TranslationTable[302535920001409--[[Goal]]] .. ": "
 					.. T(GetGoalDescription(sponsor, i)) .. "\n"
-					.. T(128569337702--[[Reward:]]) .. " "
-					.. T(T{reward.Description, reward}),
+					.. TranslationTable[128569337702--[[Reward:]]] .. " "
+					.. T{reward.Description, reward},
 				reward = reward,
 				goal = SponsorGoalsMap[sponsor["sponsor_goal_" .. i]],
 			}
@@ -252,7 +252,7 @@ function ChoGGi.MenuFuncs.InstantMissionGoals()
 			local goal = choice[i].goal
 			-- stuff from City:SetGoals()
 			reward:Execute()
-			AddOnScreenNotification("GoalCompleted", OpenMissionProfileDlg, {reward_description = T(reward.Description, reward), context = context, rollover_title = T(4773, "<em>Goal:</em> "), rollover_text = goal.description})
+			AddOnScreenNotification("GoalCompleted", OpenMissionProfileDlg, {reward_description = T(reward.Description, reward), context = context, rollover_title = TranslationTable[4773--[[<em>Goal:</em> ]]], rollover_text = goal.description})
 			Msg("GoalComplete", goal)
 			if AreAllSponsorGoalsCompleted() then
 				Msg("MissionEvaluationDone")
@@ -682,7 +682,7 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(action)
 
 	local item_list = {
 		{
-		text = " " .. T(847439380056--[[Disabled]]),
+		text = " " .. TranslationTable[847439380056--[[Disabled]]],
 		value = "disabled",
 		}
 	}
@@ -726,7 +726,7 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(action)
 
 		MsgPopup(
 			TranslationTable[302535920001179--[[%s occurrence is now: %s]]]:format(setting_id, value),
-			T(3983--[[Disasters]])
+			TranslationTable[3983--[[Disasters]]]
 		)
 	end
 
@@ -751,9 +751,9 @@ function ChoGGi.MenuFuncs.ChangeRules()
 		item_list[c] = {
 			text = T(def.display_name) .. (enabled and " *" or ""),
 			value = id,
-			hint = (enabled and "<green>" .. T(12227--[[Enabled]]) .. "</green>\n" or "")
+			hint = (enabled and "<green>" .. TranslationTable[12227--[[Enabled]]] .. "</green>\n" or "")
 				.. T(def.description) .. "\n"
-				.. T(3491--[[Challenge Mod (%)]]) .. ": " .. def.challenge_mod .. "\n\n"
+				.. TranslationTable[3491--[[Challenge Mod (%)]]] .. ": " .. def.challenge_mod .. "\n\n"
 				.. (def.exclusionlist and TranslationTable[302535920001357--[[Exclusion List]]] .. ": " .. def.exclusionlist or "")
 				.. "\n".. T(def.flavor),
 		}

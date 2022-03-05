@@ -7,7 +7,7 @@ local c = #Actions
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(12476--[[Terraforming]]),
+Actions[c] = {ActionName = TranslationTable[12476--[[Terraforming]]],
 	ActionMenubar = "ECM.ECM",
 	ActionId = ".Terraforming",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -33,47 +33,47 @@ Actions[c] = {ActionName = TranslationTable[302535920000534--[[Plant Random Lich
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(3949--[[Parameter]]) .. " " .. Translate(12480--[[Atmosphere]]),
+Actions[c] = {ActionName = TranslationTable[3949--[[Parameter]]] .. " " .. TranslationTable[12480--[[Atmosphere]]],
 	ActionMenubar = "ECM.ECM.Terraforming",
 	ActionId = ".Parameter Atmosphere",
 	ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
-	RolloverText = TranslationTable[302535920000839--[[Set %s Params]]]:format(Translate(12480--[[Atmosphere]])),
+	RolloverText = TranslationTable[302535920000839--[[Set %s Params]]]:format(TranslationTable[12480--[[Atmosphere]]]),
 	OnAction = ChoGGi.MenuFuncs.SetTerraformingParams,
 	setting_id = "Atmosphere",
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(3949--[[Parameter]]) .. " " .. Translate(4141--[[Temperature]]),
+Actions[c] = {ActionName = TranslationTable[3949--[[Parameter]]] .. " " .. TranslationTable[4141--[[Temperature]]],
 	ActionMenubar = "ECM.ECM.Terraforming",
 	ActionId = ".Parameter Temperature",
 	ActionIcon = "CommonAssets/UI/Menu/ShowOcclusion.tga",
-	RolloverText = TranslationTable[302535920000839--[[Set %s Params]]]:format(Translate(4141--[[Temperature]])),
+	RolloverText = TranslationTable[302535920000839--[[Set %s Params]]]:format(TranslationTable[4141--[[Temperature]]]),
 	OnAction = ChoGGi.MenuFuncs.SetTerraformingParams,
 	setting_id = "Temperature",
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(3949--[[Parameter]]) .. " " .. Translate(449433367242--[[Vegetation]]),
+Actions[c] = {ActionName = TranslationTable[3949--[[Parameter]]] .. " " .. TranslationTable[449433367242--[[Vegetation]]],
 	ActionMenubar = "ECM.ECM.Terraforming",
 	ActionId = ".Parameter Vegetation",
 	ActionIcon = "CommonAssets/UI/Menu/place_single_object.tga",
-	RolloverText = TranslationTable[302535920000839--[[Set %s Params]]]:format(Translate(449433367242--[[Vegetation]])),
+	RolloverText = TranslationTable[302535920000839--[[Set %s Params]]]:format(TranslationTable[449433367242--[[Vegetation]]]),
 	OnAction = ChoGGi.MenuFuncs.SetTerraformingParams,
 	setting_id = "Vegetation",
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(3949--[[Parameter]]) .. " " .. Translate(681--[[Water]]),
+Actions[c] = {ActionName = TranslationTable[3949--[[Parameter]]] .. " " .. TranslationTable[681--[[Water]]],
 	ActionMenubar = "ECM.ECM.Terraforming",
 	ActionId = ".Parameter Water",
 	ActionIcon = "CommonAssets/UI/Menu/FixUndrwaterEges.tga",
-	RolloverText = TranslationTable[302535920000839--[[Set %s Params]]]:format(Translate(681--[[Water]])),
+	RolloverText = TranslationTable[302535920000839--[[Set %s Params]]]:format(TranslationTable[681--[[Water]]]),
 	OnAction = ChoGGi.MenuFuncs.SetTerraformingParams,
 	setting_id = "Water",
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(3949--[[Parameter]]) .. " " .. TranslationTable[302535920000532--[[All Max]]],
+Actions[c] = {ActionName = TranslationTable[3949--[[Parameter]]] .. " " .. TranslationTable[302535920000532--[[All Max]]],
 	ActionMenubar = "ECM.ECM.Terraforming",
 	ActionId = ".Parameter All Max",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
@@ -83,7 +83,7 @@ Actions[c] = {ActionName = Translate(3949--[[Parameter]]) .. " " .. TranslationT
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(3949--[[Parameter]]) .. " " .. TranslationTable[302535920000533--[[All Min]]],
+Actions[c] = {ActionName = TranslationTable[3949--[[Parameter]]] .. " " .. TranslationTable[302535920000533--[[All Min]]],
 	ActionMenubar = "ECM.ECM.Terraforming",
 	ActionId = ".Parameter All Min",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_down.tga",
@@ -93,7 +93,7 @@ Actions[c] = {ActionName = Translate(3949--[[Parameter]]) .. " " .. TranslationT
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(776100024488--[[Soil Quality]]),
+Actions[c] = {ActionName = TranslationTable[776100024488--[[Soil Quality]]],
 	ActionMenubar = "ECM.ECM.Terraforming",
 	ActionId = ".Soil Quality",
 	ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
@@ -130,7 +130,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000559--[[Open Air Domes To
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(12026--[[Toxic Pools]]) .. " " .. TranslationTable[302535920000834--[[Max]]],
+Actions[c] = {ActionName = TranslationTable[12026--[[Toxic Pools]]] .. " " .. TranslationTable[302535920000834--[[Max]]],
 	ActionMenubar = "ECM.ECM.Terraforming",
 	ActionId = ".Toxic Pools Max",
 	ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",

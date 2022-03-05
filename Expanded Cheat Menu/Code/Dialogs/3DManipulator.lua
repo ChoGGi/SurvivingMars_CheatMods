@@ -144,7 +144,7 @@ function ChoGGi_Dlg3DManipulator:Init(parent, context)
 		self.idAmount = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idAmount",
 			RolloverText = TranslationTable[302535920000389--[[The amount used when a button is pressed (default: %s).]]]:format(self.default_amount),
-			Hint = Translate(1000100--[[Amount]]),
+			Hint = TranslationTable[1000100--[[Amount]]],
 			HAlign = "right",
 			MinWidth = 200,
 			Margins = box(0, 0, 4, 0),

@@ -8,7 +8,7 @@ local c = #Actions
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(1635--[[Mission]]),
+Actions[c] = {ActionName = TranslationTable[1635--[[Mission]]],
 	ActionMenubar = "ECM.ECM",
 	ActionId = ".Mission",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -16,7 +16,7 @@ Actions[c] = {ActionName = Translate(1635--[[Mission]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(11034--[[Rival Colonies]]),
+Actions[c] = {ActionName = TranslationTable[11034--[[Rival Colonies]]],
 	ActionMenubar = "ECM.ECM.Mission",
 	ActionId = ".Rival Colonies",
 	ActionIcon = "CommonAssets/UI/Menu/add_water.tga",
@@ -113,7 +113,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000716--[[Set Commander]]],
 --~ }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(8800--[[Game Rules]]),
+Actions[c] = {ActionName = TranslationTable[8800--[[Game Rules]]],
 	ActionMenubar = "ECM.ECM.Mission",
 	ActionId = ".Game Rules",
 	ActionIcon = "CommonAssets/UI/Menu/ListCollections.tga",
@@ -132,7 +132,7 @@ Actions[c] = {ActionName = TranslationTable[302535920001247--[[Start Challenge]]
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(3983--[[Disasters]]),
+Actions[c] = {ActionName = TranslationTable[3983--[[Disasters]]],
 	ActionMenubar = "ECM.ECM.Mission",
 	ActionId = ".Disasters",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -148,14 +148,14 @@ Actions[c] = {ActionName = TranslationTable[302535920000708--[[Meteor Damage]]],
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.MeteorHealthDamage,
-			Translate(7563--[[Health damage from small meteor (one-time on impact)]])
+			TranslationTable[7563--[[Health damage from small meteor (one-time on impact)]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(4142--[[Dust Devils]]),
+Actions[c] = {ActionName = TranslationTable[4142--[[Dust Devils]]],
 	ActionMenubar = "ECM.ECM.Mission.Disasters",
 	ActionId = ".Dust Devils",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
@@ -163,7 +163,7 @@ Actions[c] = {ActionName = Translate(4142--[[Dust Devils]]),
 		return SettingState(
 			ActiveMapData.MapSettings_DustDevils,
 			TranslationTable[302535920000966--[[Set the occurrence level of %s disasters.]]]:format(
-				Translate(4142--[[Dust Devils]])
+				TranslationTable[4142--[[Dust Devils]]]
 			)
 		)
 	end,
@@ -172,7 +172,7 @@ Actions[c] = {ActionName = Translate(4142--[[Dust Devils]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(4148--[[Cold Waves]]),
+Actions[c] = {ActionName = TranslationTable[4148--[[Cold Waves]]],
 	ActionMenubar = "ECM.ECM.Mission.Disasters",
 	ActionId = ".Cold Waves",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
@@ -180,7 +180,7 @@ Actions[c] = {ActionName = Translate(4148--[[Cold Waves]]),
 		return SettingState(
 			ActiveMapData.MapSettings_ColdWave,
 			TranslationTable[302535920000966--[[Set the occurrence level of %s disasters.]]]:format(
-				Translate(4149--[[Cold Wave]])
+				TranslationTable[4149--[[Cold Wave]]]
 			)
 		)
 	end,
@@ -189,7 +189,7 @@ Actions[c] = {ActionName = Translate(4148--[[Cold Waves]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(4144--[[Dust Storms]]),
+Actions[c] = {ActionName = TranslationTable[4144--[[Dust Storms]]],
 	ActionMenubar = "ECM.ECM.Mission.Disasters",
 	ActionId = ".Dust Storms",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
@@ -197,7 +197,7 @@ Actions[c] = {ActionName = Translate(4144--[[Dust Storms]]),
 		return SettingState(
 			ActiveMapData.MapSettings_DustStorm,
 			TranslationTable[302535920000966--[[Set the occurrence level of %s disasters.]]]:format(
-				Translate(4250--[[Dust Storm]])
+				TranslationTable[4250--[[Dust Storm]]]
 			)
 		)
 	end,
@@ -206,7 +206,7 @@ Actions[c] = {ActionName = Translate(4144--[[Dust Storms]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(4146--[[Meteors]]),
+Actions[c] = {ActionName = TranslationTable[4146--[[Meteors]]],
 	ActionMenubar = "ECM.ECM.Mission.Disasters",
 	ActionId = ".Meteors",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
@@ -214,7 +214,7 @@ Actions[c] = {ActionName = Translate(4146--[[Meteors]]),
 		return SettingState(
 			ActiveMapData.MapSettings_Meteor,
 			TranslationTable[302535920000966--[[Set the occurrence level of %s disasters.]]]:format(
-				Translate(4146--[[Meteors]])
+				TranslationTable[4146--[[Meteors]]]
 			)
 		)
 	end,
@@ -224,43 +224,43 @@ Actions[c] = {ActionName = Translate(4146--[[Meteors]]),
 
 -- rains and quakes act diff
 c = c + 1
-Actions[c] = {ActionName = Translate(558613651480--[[Toxic Rains]]),
+Actions[c] = {ActionName = TranslationTable[558613651480--[[Toxic Rains]]],
 	ActionMenubar = "ECM.ECM.Mission.Disasters",
 	ActionId = ".Toxic Rains",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = function()
 		local set = false
 		if not ChoGGi.UserSettings.DisasterRainsDisable then
-			set = Translate(12259--[[Automated]])
+			set = TranslationTable[12259--[[Automated]]]
 		end
 		return SettingState(
 			set,
 			TranslationTable[302535920000867--[[Toggle occurrence of %s disasters.]]]:format(
-				Translate(369748345658--[[Toxic Rain]])
+				TranslationTable[369748345658--[[Toxic Rain]]]
 			)
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence_Toggle,
-	setting_name = Translate(369748345658--[[Toxic Rain]]),
+	setting_name = TranslationTable[369748345658--[[Toxic Rain]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(382404446864--[[Marsquake]]),
+Actions[c] = {ActionName = TranslationTable[382404446864--[[Marsquake]]],
 	ActionMenubar = "ECM.ECM.Mission.Disasters",
 	ActionId = ".Marsquake",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = function()
 		local set = false
 		if not ChoGGi.UserSettings.DisasterQuakeDisable then
-			set = Translate(12259--[[Automated]])
+			set = TranslationTable[12259--[[Automated]]]
 		end
 		return SettingState(
 			set,
 			TranslationTable[302535920000867--[[Toggle occurrence of %s disasters.]]]:format(
-				Translate(382404446864--[[Marsquake]])
+				TranslationTable[382404446864--[[Marsquake]]]
 			)
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence_Toggle,
-	setting_name = Translate(382404446864--[[Marsquake]]),
+	setting_name = TranslationTable[382404446864--[[Marsquake]]],
 }

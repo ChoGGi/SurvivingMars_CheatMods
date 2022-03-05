@@ -169,7 +169,7 @@ function OnMsg.ClassesPostprocess()
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
 				"RolloverTitle", TranslationTable[302535920000682--[[Change Entity]]],
-				"RolloverHint", T(608042494285--[[<left_click> Activate]]),
+				"RolloverHint", TranslationTable[608042494285--[[<left_click> Activate]]],
 				"ContextUpdateOnOpen", true,
 				"OnContextUpdate", function(self)
 					self:SetRolloverText(TranslationTable[302535920001151--[[Set Entity For %s]]]:format(RetName(self.context)))
@@ -188,15 +188,15 @@ function OnMsg.ClassesPostprocess()
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
 				"Icon", "UI/Icons/IPButtons/automated_mode_on.tga",
-				"RolloverTitle", T(1000077--[[Rotate]]),
-				"RolloverText", T(7519--[[<left_click>]]) .. " "
-					.. T(312752058553--[[Rotate Building Left]]).. "\n"
-					.. T(7366--[[<right_click>]]) .. " "
-					.. T(306325555448--[[Rotate Building Right]]),
+				"RolloverTitle", TranslationTable[1000077--[[Rotate]]],
+				"RolloverText", T(0000, "<left_click>") .. " "
+					.. TranslationTable[312752058553--[[Rotate Building Left]]].. "\n"
+					.. T(0000, "<right_click>") .. " "
+					.. TranslationTable[694856081085--[[Rotate Building Right]]],
 				"RolloverHint", "",
-				"RolloverHintGamepad", T(7518--[[ButtonA]]) .. " "
-					.. T(312752058553--[[Rotate Building Left]]) .. " "
-					.. T(7618--[[ButtonX]]) .. " " .. T(306325555448--[[Rotate Building Right]]),
+				"RolloverHintGamepad", TranslationTable[7518--[[ButtonA]]] .. " "
+					.. TranslationTable[312752058553--[[Rotate Building Left]]] .. " "
+					.. TranslationTable[7618--[[ButtonX]]] .. " " .. TranslationTable[694856081085--[[Rotate Building Right]]],
 				"OnPress", function (self, gamepad)
 					self.context:Rotate(not gamepad and IsMassUIModifierPressed())
 					ObjModified(self.context)
@@ -215,7 +215,7 @@ function OnMsg.ClassesPostprocess()
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
 				"RolloverTitle", TranslationTable[302535920000457--[[Anim State Set]]],
-				"RolloverHint", T(608042494285--[[<left_click> Activate]]),
+				"RolloverHint", TranslationTable[608042494285--[[<left_click> Activate]]],
 				"RolloverText", TranslationTable[302535920000458--[[Make object dance on command.]]],
 				"OnPress", function(self)
 					ChoGGi.ComFuncs.SetAnimState(self.context)
@@ -226,7 +226,7 @@ function OnMsg.ClassesPostprocess()
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
 				"RolloverTitle", TranslationTable[302535920000129--[[Set]]] .. " " .. TranslationTable[302535920001184--[[Particles]]],
-				"RolloverHint", T(608042494285--[[<left_click> Activate]]),
+				"RolloverHint", TranslationTable[608042494285--[[<left_click> Activate]]],
 				"RolloverText", TranslationTable[302535920001421--[[Shows a list of particles you can use on the selected obj.]]],
 				"OnPress", function(self)
 					ChoGGi.ComFuncs.SetParticles(self.context)
@@ -240,18 +240,17 @@ function OnMsg.ClassesPostprocess()
 			'__context_of_kind', "Demolishable",
 			'__condition', function (_, context) return context:ShouldShowDemolishButton() end,
 			'__template', "InfopanelButton",
-			'RolloverTitle', T(3973, --[[XTemplate ipBuilding RolloverTitle]] "Salvage"),
-			'RolloverHintGamepad', T(7657, --[[XTemplate ipBuilding RolloverHintGamepad]] "<ButtonY> Activate"),
-			'Id', "idSalvage",
+			'RolloverTitle', TranslationTable[3973--[[Salvage]]],
+			'RolloverHintGamepad', TranslationTable[7657--[[<ButtonY> Activate]]],
 			'OnContextUpdate', function (self, context, ...)
 				local refund = context:GetRefundResources() or empty_table
-				local rollover = T(7822, "Destroy this building.")
+				local rollover = TranslationTable[7822--[[Destroy this building.]]]
 				if IsKindOf(context, "LandscapeConstructionSiteBase") then
-					self:SetRolloverTitle(T(12171, "Cancel Landscaping"))
-					rollover = T(12172, "Cancel this landscaping project. The terrain will remain in its current state")
+					self:SetRolloverTitle(TranslationTable[12171--[[Cancel Landscaping]]])
+					rollover = TranslationTable[12172--[[Cancel this landscaping project. The terrain will remain in its current state]]]
 				end
 				if refund[1] then
-					rollover = rollover .. "<newline><newline>" .. T(7823, "<UIRefundRes> will be refunded upon salvage.")
+					rollover = rollover .. "<newline><newline>" .. TranslationTable[7823--[[<UIRefundRes> will be refunded upon salvage."]]]
 				end
 				self:SetRolloverText(rollover)
 				context:ToggleDemolish_Update(self)
@@ -296,7 +295,7 @@ function OnMsg.ClassesPostprocess()
 	if UserSettings.Building_hide_from_build_menu and not table.find(bc, "id", "HiddenX") then
 		bc[#bc+1] = {
 			id = "HiddenX",
-			name = T(1000155--[[Hidden]]),
+			name = TranslationTable[1000155--[[Hidden]]],
 			image = "UI/Icons/bmc_placeholder.tga",
 			highlight = "UI/Icons/bmc_placeholder_shine.tga",
 		}
@@ -471,7 +470,7 @@ function OnMsg.ModsReloaded()
 			end
 
 			edit.RolloverTemplate = "Rollover"
-			edit.RolloverTitle = TranslationTable[302535920001073--[[Console]]] .. " " .. T(487939677892--[[Help]])
+			edit.RolloverTitle = TranslationTable[302535920001073--[[Console]]] .. " " .. TranslationTable[487939677892--[[Help]]]
 			-- add tooltip
 			edit.RolloverText = TranslationTable[302535920001440--[["~obj opens object in examine dlg.
 ~~obj opens object's attachments in examine dlg.
@@ -531,7 +530,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"]]]
 			if UserSettings.EnableToolTips then
 				local toolbar = XShortcutsTarget.idMenuBar
 				toolbar:SetRolloverTemplate("Rollover")
-				toolbar:SetRolloverTitle(T(126095410863--[[Info]]))
+				toolbar:SetRolloverTitle(TranslationTable[126095410863--[[Info]]])
 				toolbar:SetRolloverText(TranslationTable[302535920000503--[[Right-click an item/submenu to add/remove it from the quickbar.]]])
 				toolbar:SetRolloverHint(TranslationTable[302535920001441--[["<left_click> Activate MenuItem <right_click> Add/Remove"]]])
 			end
@@ -1013,7 +1012,7 @@ function OnMsg.ChangeMapDone(map)
 			TranslationTable[302535920001400--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
 If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."]]]
 				.. "\n\n" .. TranslationTable[302535920000030--[["To show the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked."]]]:format(TranslationTable[302535920001308--[[Settings]]], TranslationTable[302535920001112--[[Console Log]]]),
-			T(10126--[[Installed Mods]]) .. ": " .. TranslationTable[302535920000000--[[Expanded Cheat Menu]]],
+			TranslationTable[10126--[[Installed Mods]]] .. ": " .. TranslationTable[302535920000000--[[Expanded Cheat Menu]]],
 			ChoGGi.mod_path .. "Preview.png",
 			TranslationTable[302535920001465--[[Stop talking and start cheating!]]]
 		)
@@ -1151,7 +1150,7 @@ function OnMsg.MysteryBegin()
 		MsgPopup(
 			ChoGGi.Tables.Mystery[UICity.mystery_id].name .. ": "
 				.. TranslationTable[302535920000729--[[You've started a mystery!]]],
-			T(3486--[[Mystery]])
+			TranslationTable[3486--[[Mystery]]]
 		)
 	end
 end
@@ -1160,7 +1159,7 @@ function OnMsg.MysteryChosen()
 		MsgPopup(
 			ChoGGi.Tables.Mystery[UICity.mystery_id].name .. ": "
 				.. TranslationTable[302535920000730--[[You've chosen a mystery!]]],
-			T(3486--[[Mystery]])
+			TranslationTable[3486--[[Mystery]]]
 		)
 	end
 end
@@ -1169,7 +1168,7 @@ function OnMsg.MysteryEnd(outcome)
 		MsgPopup(
 			ChoGGi.Tables.Mystery[UICity.mystery_id].name .. ": "
 				.. tostring(outcome),
-			T(3486--[[Mystery]])
+			TranslationTable[3486--[[Mystery]]]
 		)
 	end
 end
@@ -1585,7 +1584,7 @@ do -- LoadGame/CityStart
 
 		-- everyone loves a new titlebar, unless they don't
 		if UserSettings.ChangeWindowTitle then
-			terminal.SetOSWindowTitle(Translate(1079--[[Surviving Mars]]) .. ": " .. TranslationTable[302535920000002--[[ECM]]] .. " " .. ChoGGi._VERSION)
+			terminal.SetOSWindowTitle(TranslationTable[1079--[[Surviving Mars]]] .. ": " .. TranslationTable[302535920000002--[[ECM]]] .. " " .. ChoGGi._VERSION)
 		end
 
 		-- first time run info
@@ -1597,7 +1596,7 @@ do -- LoadGame/CityStart
 				TranslationTable[302535920001400--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
 If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."]]]
 					.. "\n\n" .. TranslationTable[302535920000030--[["To show the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked."]]]:format(TranslationTable[302535920001308--[[Settings]]], TranslationTable[302535920001112--[[Console Log]]]),
-				T(10126--[[Installed Mods]]) .. ": " .. TranslationTable[302535920000000--[[Expanded Cheat Menu]]],
+				TranslationTable[10126--[[Installed Mods]]] .. ": " .. TranslationTable[302535920000000--[[Expanded Cheat Menu]]],
 				ChoGGi.mod_path .. "Preview.png",
 				TranslationTable[302535920001465--[[Stop talking and start cheating!]]]
 			)

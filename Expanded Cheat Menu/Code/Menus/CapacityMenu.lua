@@ -9,7 +9,7 @@ local c = #Actions
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(109035890389--[[Capacity]]),
+Actions[c] = {ActionName = TranslationTable[109035890389--[[Capacity]]],
 	ActionMenubar = "ECM.ECM.Buildings",
 	ActionId = ".Capacity",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",

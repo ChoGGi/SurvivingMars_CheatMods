@@ -10,7 +10,7 @@ local StarkFistOfRemoval = "CommonAssets/UI/Menu/AlignSel.tga"
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(547--[[Colonists]]),
+Actions[c] = {ActionName = TranslationTable[547--[[Colonists]]],
 	ActionMenubar = "ECM.ECM",
 	ActionId = ".Colonists",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -103,14 +103,14 @@ Actions[c] = {ActionName = TranslationTable[302535920000379--[[Add Or Remove App
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(4565--[[Oxygen max outside time]]),
+Actions[c] = {ActionName = TranslationTable[4565--[[Oxygen max outside time]]],
 	ActionMenubar = "ECM.ECM.Colonists",
 	ActionId = ".Oxygen max outside time",
 	ActionIcon = StarkFistOfRemoval,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.OxygenMaxOutsideTime,
-			Translate(4564--[[This is the time it takes for Colonists outside of Domes to start losing health]])
+			TranslationTable[4564--[[This is the time it takes for Colonists outside of Domes to start losing health]]]
 				.. "\n" .. TranslationTable[302535920000405--[[Works after in-game hour.]]]
 		)
 	end,
@@ -125,7 +125,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000418--[[Colonists Starve]
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.TimeBeforeStarving,
-			Translate(4760--[[Time before starting to starve]])
+			TranslationTable[4760--[[Time before starting to starve]]]
 				.. "\n" .. TranslationTable[302535920000388--[[Works after colonist idle.]]]
 		)
 	end,
@@ -284,7 +284,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000446--[[Colonist Death Ag
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(5444--[[Workplaces]]),
+Actions[c] = {ActionName = TranslationTable[5444--[[Workplaces]]],
 	ActionMenubar = "ECM.ECM.Colonists",
 	ActionId = ".Workplaces",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -311,14 +311,14 @@ Actions[c] = {ActionName = TranslationTable[302535920000385--[[Set All Work Shif
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(4689--[[Avoid Workplace Sols]]),
+Actions[c] = {ActionName = TranslationTable[4689--[[Avoid Workplace Sols]]],
 	ActionMenubar = "ECM.ECM.Colonists.Workplaces",
 	ActionId = ".Avoid Workplace Sols",
 	ActionIcon = StarkFistOfRemoval,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.AvoidWorkplaceSols,
-			Translate(4688--[[After being fired, Colonists will avoid that Workplace for this many days when searching for a Workplace]])
+			TranslationTable[4688--[[After being fired, Colonists will avoid that Workplace for this many days when searching for a Workplace]]]
 				.. "\n" .. TranslationTable[302535920000388--[[Works after colonist idle.]]]
 		)
 	end,
@@ -326,14 +326,14 @@ Actions[c] = {ActionName = Translate(4689--[[Avoid Workplace Sols]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(4741--[[Non-specialist performance penalty]]),
+Actions[c] = {ActionName = TranslationTable[4741--[[Non-specialist performance penalty]]],
 	ActionMenubar = "ECM.ECM.Colonists.Workplaces",
 	ActionId = ".Non-specialist performance penalty",
 	ActionIcon = StarkFistOfRemoval,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.NonSpecialistPerformancePenalty,
-			Translate(4740--[[Performance penalty for non-Specialists assigned to a specialized work position]])
+			TranslationTable[4740--[[Performance penalty for non-Specialists assigned to a specialized work position]]]
 				.. "\n" .. TranslationTable[302535920000390--[[Activated when colonist changes job.]]]
 		)
 	end,
@@ -341,14 +341,14 @@ Actions[c] = {ActionName = Translate(4741--[[Non-specialist performance penalty]
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(8806--[[Connected dome performance penalty]]),
+Actions[c] = {ActionName = TranslationTable[8806--[[Connected dome performance penalty]]],
 	ActionMenubar = "ECM.ECM.Colonists.Workplaces",
 	ActionId = ".Connected dome performance penalty",
 	ActionIcon = StarkFistOfRemoval,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.NonHomeDomePerformancePenalty,
-			Translate(8805--[[TPerformance penalty for colonists working in another connected dome]])
+			TranslationTable[8805--[[TPerformance penalty for colonists working in another connected dome]]]
 				.. "\n" .. TranslationTable[302535920000390--[[Activated when colonist changes job.]]]
 		)
 	end,
@@ -356,7 +356,7 @@ Actions[c] = {ActionName = Translate(8806--[[Connected dome performance penalty]
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(4572--[[Outside Workplace Sanity Penalty]]),
+Actions[c] = {ActionName = TranslationTable[4572--[[Outside Workplace Sanity Penalty]]],
 	ActionMenubar = "ECM.ECM.Colonists.Workplaces",
 	ActionId = ".Outside Workplace Sanity Penalty",
 	ActionIcon = StarkFistOfRemoval,
@@ -370,14 +370,14 @@ Actions[c] = {ActionName = Translate(4572--[[Outside Workplace Sanity Penalty]])
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(4691--[[Default outside Workplaces radius]]),
+Actions[c] = {ActionName = TranslationTable[4691--[[Default outside Workplaces radius]]],
 	ActionMenubar = "ECM.ECM.Colonists.Workplaces",
 	ActionId = ".Default outside Workplaces radius",
 	ActionIcon = StarkFistOfRemoval,
 	RolloverText = function()
 		return SettingState(
 				ChoGGi.UserSettings.DefaultOutsideWorkplacesRadius,
-				Translate(4690--[[Colonists search this far (in hexes) outisde their Dome when looking for a Workplace]])
+				TranslationTable[4690--[[Colonists search this far (in hexes) outisde their Dome when looking for a Workplace]]]
 			)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius,
@@ -421,7 +421,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000343--[[Clear Forced Work
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(5568--[[Stats]]),
+Actions[c] = {ActionName = TranslationTable[5568--[[Stats]]],
 	ActionMenubar = "ECM.ECM.Colonists",
 	ActionId = ".Stats",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -430,14 +430,14 @@ Actions[c] = {ActionName = Translate(5568--[[Stats]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(7425--[[Minimum Colonist Comfort for Birth]]),
+Actions[c] = {ActionName = TranslationTable[7425--[[Minimum Colonist Comfort for Birth]]],
 	ActionMenubar = "ECM.ECM.Colonists.Stats",
 	ActionId = ".Minimum Colonist Comfort for Birth",
 	ActionIcon = StarkFistOfRemoval,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.MinComfortBirth,
-			Translate(7424--[[Minimum Colonist Comfort for Birth]])
+			TranslationTable[7424--[[Minimum Colonist Comfort for Birth]]]
 				.. "\n" .. TranslationTable[302535920000400--[[Works after daily update.]]]
 		)
 	end,
@@ -452,7 +452,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000397--[[Visit Fail Penalt
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.VisitFailPenalty,
-			Translate(4763--[[Comfort penalty when failing to satisfy a need via a visit]])
+			TranslationTable[4763--[[Comfort penalty when failing to satisfy a need via a visit]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.VisitFailPenalty_Toggle,
@@ -498,14 +498,14 @@ Only works on colonists that have yet to spawn (maybe)."]]]
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(4561--[[Seeing Death]]),
+Actions[c] = {ActionName = TranslationTable[4561--[[Seeing Death]]],
 	ActionMenubar = "ECM.ECM.Colonists.Stats",
 	ActionId = ".Seeing Death",
 	ActionIcon = StarkFistOfRemoval,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.SeeDeadSanity,
-			Translate(4560--[[Colonist Sanity decreases when a Colonist from the same Residence dies from non-natural causes]])
+			TranslationTable[4560--[[Colonist Sanity decreases when a Colonist from the same Residence dies from non-natural causes]]]
 				.. "\n" .. TranslationTable[302535920000405--[[Works after in-game hour.]]]
 		)
 	end,
@@ -513,14 +513,14 @@ Actions[c] = {ActionName = Translate(4561--[[Seeing Death]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(4559--[[Homeless Comfort Penalty]]),
+Actions[c] = {ActionName = TranslationTable[4559--[[Homeless Comfort Penalty]]],
 	ActionMenubar = "ECM.ECM.Colonists.Stats",
 	ActionId = ".Homeless Comfort Penalty",
 	ActionIcon = StarkFistOfRemoval,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.NoHomeComfort,
-			Translate(4558--[[Colonist Comfort decreases when homeless]])
+			TranslationTable[4558--[[Colonist Comfort decreases when homeless]]]
 				.. "\n" .. TranslationTable[302535920000405--[[Works after in-game hour.]]]
 		)
 	end,
@@ -543,14 +543,14 @@ Actions[c] = {ActionName = TranslationTable[302535920000408--[[Chance Of Sanity 
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(4576--[[Chance Of Suicide]]),
+Actions[c] = {ActionName = TranslationTable[4576--[[Chance Of Suicide]]],
 	ActionMenubar = "ECM.ECM.Colonists.Stats",
 	ActionId = ".Chance Of Suicide",
 	ActionIcon = StarkFistOfRemoval,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.LowSanitySuicideChance,
-			Translate(4575--[[Chance of suicide when Sanity reaches zero, in %]])
+			TranslationTable[4575--[[Chance of suicide when Sanity reaches zero, in %]]]
 				.. "\n" .. TranslationTable[302535920000388--[[Works after colonist idle.]]]
 		)
 	end,
@@ -559,7 +559,7 @@ Actions[c] = {ActionName = Translate(4576--[[Chance Of Suicide]]),
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(235--[[Traits]]),
+Actions[c] = {ActionName = TranslationTable[235--[[Traits]]],
 	ActionMenubar = "ECM.ECM.Colonists",
 	ActionId = ".Traits",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -589,7 +589,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000412--[[Chance Of Negativ
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.LowSanityNegativeTraitChance,
-			Translate(4577--[[Chance of getting a negative trait when Sanity reaches zero, in %]])
+			TranslationTable[4577--[[Chance of getting a negative trait when Sanity reaches zero, in %]]]
 				.. "\n" .. TranslationTable[302535920000388--[[Works after colonist idle.]]]
 		)
 	end,
@@ -604,21 +604,21 @@ Actions[c] = {ActionName = TranslationTable[302535920000420--[[Positive Playgrou
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.positive_playground_chance,
-			Translate(4754--[[Colonist's chance to get a Perk when grown if they\226\128\153ve visited a playground as a child]])
+			TranslationTable[4754--[[Colonist's chance to get a Perk when grown if they\226\128\153ve visited a playground as a child]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.PositivePlayground_Toggle,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(580388115170--[[ProjectMorpheusPositiveTraitChance]]),
+Actions[c] = {ActionName = TranslationTable[580388115170--[[ProjectMorpheusPositiveTraitChance]]],
 	ActionMenubar = "ECM.ECM.Colonists.Traits",
 	ActionId = ".ProjectMorpheusPositiveTraitChance",
 	ActionIcon = StarkFistOfRemoval,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.ProjectMorphiousPositiveTraitChance,
-			Translate(603743631388--[[Chance to get positive trait when Resting and ProjectMorpheus is active]])
+			TranslationTable[603743631388--[[Chance to get positive trait when Resting and ProjectMorpheus is active]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.ProjectMorpheusPositiveTrait_Toggle,

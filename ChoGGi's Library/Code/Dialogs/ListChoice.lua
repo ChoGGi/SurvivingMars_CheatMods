@@ -140,7 +140,7 @@ function ChoGGi_DlgListChoice:Init(parent, context)
 			self[name] = g_Classes.ChoGGi_XCheckButton:new({
 				Id = name,
 				Dock = "left",
-				Text = T(588, "Empty"),
+				Text = TranslationTable[588--[[Empty]]],
 			}, self[area_id])
 			local check = self[name]
 
@@ -260,7 +260,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		Id = "idOK",
 		Dock = "left",
 		MinWidth = 50,
-		Text = T(6878--[[OK]]),
+		Text = TranslationTable[6878--[[OK]]],
 		Background = g_Classes.ChoGGi_XButton.bg_green,
 		RolloverText = TranslationTable[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, or <left_click>*2 a list item)."]]],
 		OnPress = self.BuildReturnList
@@ -270,7 +270,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		Id = "idCancel",
 		Dock = "right",
 		MinWidth = 70,
-		Text = T(6879--[[Cancel]]),
+		Text = TranslationTable[6879--[[Cancel]]],
 		Background = g_Classes.ChoGGi_XButton.bg_red,
 		RolloverText = TranslationTable[302535920000074--[[Cancel without changing anything.]]],
 		OnPress = self.idCloseX.OnPress,

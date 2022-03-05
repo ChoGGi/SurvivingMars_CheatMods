@@ -177,7 +177,7 @@ Press again to toggle updating."]]],
 	self.idCancel = g_Classes.ChoGGi_XButton:new({
 		Id = "idCancel",
 		Dock = "right",
-		Text = Translate(6879--[[Cancel]]),
+		Text = TranslationTable[6879--[[Cancel]]],
 		Background = g_Classes.ChoGGi_XButton.bg_red,
 		RolloverText = TranslationTable[302535920000074--[[Cancel without changing anything.]]],
 		Margins = box(0, 0, 10, 0),

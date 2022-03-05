@@ -422,7 +422,7 @@ Actions[c] = {ActionName = TranslationTable[302535920001412--[[GUI Dock Side]]],
 	ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
 	RolloverText = function()
 		return SettingState(
-			ChoGGi.UserSettings.GUIDockSide and Translate(1000459--[[Right]]) or Translate(1000457--[[Left]]),
+			ChoGGi.UserSettings.GUIDockSide and TranslationTable[1000459--[[Right]]] or TranslationTable[1000457--[[Left]]],
 			TranslationTable[302535920001413--[[Change which side (most) GUI menus are on.]]]
 
 		)
@@ -460,7 +460,7 @@ Actions[c] = {ActionName = TranslationTable[302535920001655--[[Toggle Scroll Sel
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(911432559058--[[Light model]]),
+Actions[c] = {ActionName = TranslationTable[911432559058--[[Light model]]],
 	ActionMenubar = "ECM.Game",
 	ActionId = ".Lightmodel",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -468,7 +468,7 @@ Actions[c] = {ActionName = Translate(911432559058--[[Light model]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(911432559058--[[Light model]]),
+Actions[c] = {ActionName = TranslationTable[911432559058--[[Light model]]],
 	ActionMenubar = "ECM.Game.Lightmodel",
 	ActionId = ".Light Model",
 	ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
@@ -515,7 +515,7 @@ Actions[c] = {ActionName = TranslationTable[302535920001625--[[List Disaster]]],
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(904--[[Terrain]]),
+Actions[c] = {ActionName = TranslationTable[904--[[Terrain]]],
 	ActionMenubar = "ECM.Game",
 	ActionId = ".Terrain",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -603,7 +603,7 @@ Actions[c] = {ActionName = TranslationTable[302535920001111--[[Whiter Rocks]]],
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(4820--[[UI]]),
+Actions[c] = {ActionName = TranslationTable[4820--[[UI]]],
 	ActionMenubar = "ECM.Game",
 	ActionId = ".UI",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -651,7 +651,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000265--[[Pulsating Pins]]]
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(298035641454--[[Object]]),
+Actions[c] = {ActionName = TranslationTable[298035641454--[[Object]]],
 	ActionMenubar = "ECM.Game",
 	ActionId = ".Object",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -703,7 +703,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000694--[[Set Opacity]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(174--[[Color Modifier]]),
+Actions[c] = {ActionName = TranslationTable[174--[[Color Modifier]]],
 	ActionMenubar = "ECM.Game.Object",
 	ActionId = ".Color Modifier",
 	ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
@@ -789,7 +789,7 @@ Actions[c] = {ActionName = TranslationTable[302535920001487--[[Reload Map]]],
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(5505--[[Game Speed]]),
+Actions[c] = {ActionName = TranslationTable[5505--[[Game Speed]]],
 	ActionMenubar = "ECM.Game",
 	ActionId = ".Game Speed",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -797,7 +797,7 @@ Actions[c] = {ActionName = Translate(5505--[[Game Speed]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(5505--[[Game Speed]]),
+Actions[c] = {ActionName = TranslationTable[5505--[[Game Speed]]],
 	ActionMenubar = "ECM.Game.Game Speed",
 	ActionId = ".Game Speed",
 	ActionIcon = "CommonAssets/UI/Menu/SelectionToTemplates.tga",

@@ -65,7 +65,7 @@ function ChoGGi_DlgMultiLineText:Init(parent, context)
 		self.idSearchText = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idSearchText",
 			RolloverText = TranslationTable[302535920001529--[["Press <color 0 200 0>Enter</color> to select next found text, and <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text."]]],
-			Hint = Translate(10123--[[Search]]),
+			Hint = TranslationTable[10123--[[Search]]],
 			OnKbdKeyDown = self.idSearchText_OnKbdKeyDown,
 		}, self.idSearchArea)
 		--

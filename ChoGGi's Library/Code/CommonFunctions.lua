@@ -67,7 +67,8 @@ local function SaveOrigFunc(class_or_func, func_name)
 	if func_name then
 		local newname = class_or_func .. "_" .. func_name
 		if not OrigFuncs[newname] then
-			local class_obj = rawget(_G, class_or_func)
+--~ 			local class_obj = rawget(_G, class_or_func)
+			local class_obj = g_env.class_or_func
 			if class_obj then
 				OrigFuncs[newname] = rawget(class_obj, func_name)
 			end
@@ -75,7 +76,8 @@ local function SaveOrigFunc(class_or_func, func_name)
 	-- regular func
 	else
 		if not OrigFuncs[class_or_func] then
-			OrigFuncs[class_or_func] = rawget(_G, class_or_func)
+--~ 			OrigFuncs[class_or_func] = rawget(_G, class_or_func)
+			OrigFuncs[class_or_func] = g_env.class_or_func
 		end
 	end
 end
@@ -129,10 +131,10 @@ ChoGGi.ComFuncs.IsObjlist = IsObjlist
 -- root is where we start looking (defaults to _G).
 -- create is a boolean to add a table if the "name" is absent.
 local function DotPathToObject(str, root, create)
-	local _G = g_env
+--~ 	local g_env = _G
 
 	-- parent always starts out as "root"
-	local parent = root or _G
+	local parent = root or g_env
 
 	-- https://www.lua.org/pil/14.1.html
 	-- [] () + ? . act like regexp ones
@@ -146,13 +148,13 @@ local function DotPathToObject(str, root, create)
 			name = num
 		end
 
-		local obj_child
-		-- workaround for "Attempt to use an undefined global" msg the devs added
-		if parent == _G then
-			obj_child = rawget(parent, name)
-		else
-			obj_child = parent[name]
-		end
+		local obj_child = parent[name]
+--~ 		-- workaround for "Attempt to use an undefined global" msg the devs added
+--~ 		if parent == g_env then
+--~ 			obj_child = rawget(parent, name)
+--~ 		else
+--~ 			obj_child = parent[name]
+--~ 		end
 
 		-- . means we're not at the end yet
 		if match == "." then
@@ -179,11 +181,12 @@ do -- RetName
 	local TMeta = TMeta
 	local TConcatMeta = TConcatMeta
 
+	local g = _G
 	-- we use this table to display names of objects for RetName
-	if not rawget(g_env, "ChoGGi_lookup_names") then
-		g_env.ChoGGi_lookup_names = {[g_env.empty_func] = "empty_func"}
+	if not rawget(g, "ChoGGi_lookup_names") then
+		g.ChoGGi_lookup_names = {[g.empty_func] = "empty_func"}
 	end
-	local lookup_table = g_env.ChoGGi_lookup_names
+	local lookup_table = g.ChoGGi_lookup_names
 
 	local function AddFuncToList(key, value, name)
 		if not lookup_table[value] then
@@ -348,9 +351,10 @@ do -- RetName
 			local blacklist = g_env.ChoGGi.blacklist
 
 			-- and any g_Classes funcs
+			local g = _G
 			for class_id, class_obj in pairs(g_env.g_Classes) do
 				if blacklist then
-					local g_value = rawget(g_env, class_id)
+					local g_value = rawget(g, class_id)
 					if g_value then
 						lookup_table[g_value] = class_id
 					end
@@ -383,7 +387,8 @@ do -- RetName
 
 			g_env.ClassDescendantsList("Preset", function(_, cls)
 				if cls.GlobalMap and cls.GlobalMap ~= "" then
-					local g_value = rawget(g_env, cls.GlobalMap)
+--~ 					local g_value = rawget(g_env, cls.GlobalMap)
+					local g_value = g_env[cls.GlobalMap]
 					if g_value then
 						-- only needed for blacklist, but whatever it's quick
 						lookup_table[g_value] = cls.GlobalMap
@@ -462,7 +467,8 @@ do -- RetName
 			end
 
 			-- we check in order of less generic "names"
-			local name_type = rawget(obj, "name") and type(obj.name)
+--~ 			local name_type = rawget(obj, "name") and type(obj.name)
+			local name_type = type(obj.name)
 
 			-- custom name from user (probably)
 			if name_type == "string" and obj.name ~= "" then
@@ -472,7 +478,8 @@ do -- RetName
 				name = Translate(obj.name)
 
 			-- display
-			elseif rawget(obj, "display_name") and obj.display_name ~= "" then
+--~ 			elseif rawget(obj, "display_name") and obj.display_name ~= "" then
+			elseif obj.display_name and obj.display_name ~= "" then
 				if IsT(obj.display_name) == 9 --[[Anomaly]] then
 					name = obj.class
 				else
@@ -495,7 +502,8 @@ do -- RetName
 
 				for i = 1, #values_lookup do
 					local value_name = values_lookup[i]
-					if index and rawget(obj, value_name) or not index and obj[value_name] then
+--~ 					if index and rawget(obj, value_name) or not index and obj[value_name] then
+					if index and obj.value_name or not index and obj[value_name] then
 						local value = obj[value_name]
 						if value ~= "" then
 							name = value
@@ -509,7 +517,8 @@ do -- RetName
 				if meta == TMeta or meta == TConcatMeta or type(name) == "userdata" then
 					name = Translate(name)
 				end
-				if not name and rawget(obj, "GetDisplayName") then
+--~ 				if not name and rawget(obj, "GetDisplayName") then
+				if not name and obj.GetDisplayName then
 					name = Translate(obj:GetDisplayName())
 				end
 
@@ -4775,7 +4784,8 @@ function ChoGGi.ComFuncs.RetTableValue(obj, key)
 			-- PropObjGetProperty works better on class funcs, but it can mess up on some tables so only use it for strings)
 			return PropObjGetProperty(obj, key)
 		else
-			return rawget(obj, key)
+--~ 			return rawget(obj, key)
+			return obj.key
 		end
 	else
 		return obj[key]
@@ -5091,7 +5101,8 @@ function ChoGGi.ComFuncs.PlantRandomVegetation(amount)
 
 	local HexToWorld = HexToWorld
 	local DoesContainVegetation = DoesContainVegetation
-	local CanVegGrowAt_C = rawget(g_env, "Vegetation_CanVegetationGrowAt_C")
+--~ 	local CanVegGrowAt_C = rawget(g_env, "Vegetation_CanVegetationGrowAt_C")
+	local CanVegGrowAt_C = g_env.Vegetation_CanVegetationGrowAt_C
 	local CanVegetationGrowAt = CanVegetationGrowAt
 	local PlaceVegetation = PlaceVegetation
 

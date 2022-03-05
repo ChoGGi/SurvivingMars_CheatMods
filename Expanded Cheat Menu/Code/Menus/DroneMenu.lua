@@ -8,7 +8,7 @@ local c = #Actions
 local iconD = "CommonAssets/UI/Menu/ShowAll.tga"
 
 c = c + 1
-Actions[c] = {ActionName = Translate(517--[[Drones]]),
+Actions[c] = {ActionName = TranslationTable[517--[[Drones]]],
 	ActionMenubar = "ECM.ECM",
 	ActionId = ".Drones",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -99,7 +99,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000513--[[Change Amount Of 
 		return obj and obj:IsKindOf("DroneHub") and SettingState(
 			obj:GetDronesCount(),
 			TranslationTable[302535920000514--[[Select a DroneHub then change the amount of drones in said hub (dependent on prefab amount).]]]
-		) or TranslationTable[302535920000514]
+		) or TranslationTable[302535920000514--[[Select a DroneHub then change the amount of drones in said hub (dependent on prefab amount).]]]
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDroneAmountDroneHub,
 	ActionShortcut = "Shift-D",
@@ -149,14 +149,14 @@ Actions[c] = {ActionName = TranslationTable[302535920000521--[[Drone Build Speed
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(4645--[[Drone Recharge Time]]),
+Actions[c] = {ActionName = TranslationTable[4645--[[Drone Recharge Time]]],
 	ActionMenubar = "ECM.ECM.Drones",
 	ActionId = ".Drone Recharge Time",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.DroneRechargeTime,
-			Translate(4644--[[The time it takes for a Drone to be fully recharged]])
+			TranslationTable[4644--[[The time it takes for a Drone to be fully recharged]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.DroneRechargeTime_Toggle,
@@ -170,14 +170,14 @@ Actions[c] = {ActionName = TranslationTable[302535920000527--[[Drone Repair Supp
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.DroneRepairSupplyLeak,
-			Translate(960116597482--[[The amount of time in seconds it takes a Drone to fix a supply leak]])
+			TranslationTable[960116597482--[[The amount of time in seconds it takes a Drone to fix a supply leak]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.DroneRepairSupplyLeak_Toggle,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(6980--[[Drone resource carry amount]]),
+Actions[c] = {ActionName = TranslationTable[6980--[[Drone resource carry amount]]],
 	ActionMenubar = "ECM.ECM.Drones",
 	ActionId = ".Drone resource carry amount",
 	ActionIcon = iconD,
@@ -191,28 +191,28 @@ Actions[c] = {ActionName = Translate(6980--[[Drone resource carry amount]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(4707--[[Command center max Drones]]),
+Actions[c] = {ActionName = TranslationTable[4707--[[Command center max Drones]]],
 	ActionMenubar = "ECM.ECM.Drones",
 	ActionId = ".Command center max Drones",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.CommandCenterMaxDrones,
-			Translate(4706--[[Maximum number of Drones a Drone Hub can control]])
+			TranslationTable[4706--[[Maximum number of Drones a Drone Hub can control]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDronesPerDroneHub,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(4633--[[RC Commander max Drones]]),
+Actions[c] = {ActionName = TranslationTable[4633--[[RC Commander max Drones]]],
 	ActionMenubar = "ECM.ECM.Drones",
 	ActionId = ".RC Commander max Drones",
 	ActionIcon = iconD,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.RCRoverMaxDrones,
-			Translate(4632--[[Maximum Drones an RC Commander can control]])
+			TranslationTable[4632--[[Maximum Drones an RC Commander can control]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetDronesPerRCRover,

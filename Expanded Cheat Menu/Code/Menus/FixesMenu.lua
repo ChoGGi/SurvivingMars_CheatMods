@@ -46,7 +46,7 @@ Actions[c] = {ActionName = TranslationTable[302535920001295--[[Drones Not Repair
 }
 
 c = c + 1
-Actions[c] = {ActionName = TranslationTable[302535920001084--[[Reset]]] .. " " .. Translate(5221--[[RC Commanders]]),
+Actions[c] = {ActionName = TranslationTable[302535920001084--[[Reset]]] .. " " .. TranslationTable[5221--[[RC Commanders]]],
 	ActionMenubar = "ECM.ECM.Fixes",
 	ActionId = ".Reset RC Commanders",
 	ActionIcon = icon,
@@ -90,7 +90,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000587--[[Remove Missing Cl
 	ActionMenubar = "ECM.ECM.Fixes",
 	ActionId = ".Remove Missing Class Objects",
 	ActionIcon = icon,
-	RolloverText = Translate(6779--[[Warning]]) .. ": " .. TranslationTable[302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).]]],
+	RolloverText = TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).]]],
 	OnAction = ChoGGi.MenuFuncs.RemoveMissingClassObjects,
 }
 

@@ -11,7 +11,7 @@ local icon = "CommonAssets/UI/Menu/Cube.tga"
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = T(3980--[[Buildings]]),
+Actions[c] = {ActionName = TranslationTable[3980--[[Buildings]]],
 	ActionMenubar = "ECM.ECM",
 	ActionId = ".Buildings",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -19,55 +19,55 @@ Actions[c] = {ActionName = T(3980--[[Buildings]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(302535920000164--[[Storage Amount Of Diner & Grocery]]),
+Actions[c] = {ActionName = TranslationTable[302535920000164--[[Storage Amount Of Diner & Grocery]]],
 	ActionMenubar = "ECM.ECM.Buildings",
 	ActionId = ".Storage Amount Of Diner & Grocery",
 	ActionIcon = icon,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.ServiceWorkplaceFoodStorage,
-			T(302535920000167--[[Change how much food is stored in them (less chance of starving colonists when busy).]])
+			TranslationTable[302535920000167--[[Change how much food is stored in them (less chance of starving colonists when busy).]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery,
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(302535920000176--[[Empty Mech Depot]]),
+Actions[c] = {ActionName = TranslationTable[302535920000176--[[Empty Mech Depot]]],
 	ActionMenubar = "ECM.ECM.Buildings",
 	ActionId = ".Empty Mech Depot",
 	ActionIcon = icon,
-	RolloverText = T(302535920000177--[[Empties out selected/moused over mech depot into a small depot in front of it.]]),
+	RolloverText = TranslationTable[302535920000177--[[Empties out selected/moused over mech depot into a small depot in front of it.]]],
 	OnAction = ChoGGi.ComFuncs.EmptyMechDepot,
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(302535920000210--[[Moisture Vaporator Penalty]]),
+Actions[c] = {ActionName = TranslationTable[302535920000210--[[Moisture Vaporator Penalty]]],
 	ActionMenubar = "ECM.ECM.Buildings",
 	ActionId = ".Moisture Vaporator Penalty",
 	ActionIcon = icon,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.MoistureVaporatorRange,
-			T(302535920000211--[[Disable penalty when Moisture Vaporators are close to each other.]])
+			TranslationTable[302535920000211--[[Disable penalty when Moisture Vaporators are close to each other.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.MoistureVaporatorPenalty_Toggle,
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(302535920000180--[[Unlock Locked Buildings]]),
+Actions[c] = {ActionName = TranslationTable[302535920000180--[[Unlock Locked Buildings]]],
 	ActionMenubar = "ECM.ECM.Buildings",
 	ActionId = ".Unlock Locked Buildings",
 	ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 	RolloverText = TranslationTable[302535920000181--[["Shows a list of buildings you can unlock.
-This doesn't apply to sponsor limited ones; see Toggles\%s."]]]:format(Translate(302535920001398--[[Remove Sponsor Limits]])),
+This doesn't apply to sponsor limited ones; see Toggles\%s."]]]:format(TranslationTable[302535920001398--[[Remove Sponsor Limits]]]),
 	OnAction = ChoGGi.MenuFuncs.UnlockLockedBuildings,
 }
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = T(5443--[[Training Buildings]]),
+Actions[c] = {ActionName = TranslationTable[5443--[[Training Buildings]]],
 	ActionMenubar = "ECM.ECM.Buildings",
 	ActionId = ".Training Buildings",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -76,44 +76,44 @@ Actions[c] = {ActionName = T(5443--[[Training Buildings]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(5245--[[Sanatoriums]]) .. " " .. T(302535920000198--[[Cure All]]),
+Actions[c] = {ActionName = TranslationTable[5245--[[Sanatoriums]]] .. " " .. TranslationTable[302535920000198--[[Cure All]]],
 	ActionMenubar = "ECM.ECM.Buildings.Training Buildings",
 	ActionId = ".Sanatoriums Cure All",
 	ActionIcon = icon,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.SanatoriumCureAll,
-			T(302535920000199--[[Toggle curing all traits (use "Show All Traits" & "Show Full List" to manually set).]])
+			TranslationTable[302535920000199--[[Toggle curing all traits (use "Show All Traits" & "Show Full List" to manually set).]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SanatoriumCureAll_Toggle,
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(5248--[[Schools]]) .. " " .. T(302535920000200--[[Train All]]),
+Actions[c] = {ActionName = TranslationTable[5248--[[Schools]]] .. " " .. TranslationTable[302535920000200--[[Train All]]],
 	ActionMenubar = "ECM.ECM.Buildings.Training Buildings",
 	ActionId = ".Schools Train All",
 	ActionIcon = icon,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.SchoolTrainAll,
-			T(302535920000199--[[Toggle curing all traits (use "Show All Traits" & "Show Full List" to manually set).]])
+			TranslationTable[302535920000199--[[Toggle curing all traits (use "Show All Traits" & "Show Full List" to manually set).]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SchoolTrainAll_Toggle,
 }
 
-local SandS = T(5245--[[Sanatoriums]]) .. " & " .. T(5248--[[Schools]])
+local SandS = TranslationTable[5245--[[Sanatoriums]]] .. " & " .. TranslationTable[5248--[[Schools]]]
 
 c = c + 1
-Actions[c] = {ActionName = SandS .. ": " .. T(302535920000202--[[Show All Traits]]),
+Actions[c] = {ActionName = SandS .. ": " .. TranslationTable[302535920000202--[[Show All Traits]]],
 	ActionMenubar = "ECM.ECM.Buildings.Training Buildings",
 	ActionId = ".Sanatoriums & Schools: Show All Traits",
 	ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.SanatoriumSchoolShowAllTraits,
-			T(302535920000203--[[Shows all appropriate traits in Sanatoriums/Schools side panel popup menu.]])
+			TranslationTable[302535920000203--[[Shows all appropriate traits in Sanatoriums/Schools side panel popup menu.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.ShowAllTraits_Toggle,
@@ -127,14 +127,14 @@ Actions[c] = {ActionName = SandS .. ": " .. TranslationTable[302535920000204--[[
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.SanatoriumSchoolShowAll,
-			T(302535920000205--[[Toggle showing full list of trait selectors in side pane.]])
+			TranslationTable[302535920000205--[[Toggle showing full list of trait selectors in side pane.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SanatoriumSchoolShowAll,
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(302535920001344--[[Points To Train]]),
+Actions[c] = {ActionName = TranslationTable[302535920001344--[[Points To Train]]],
 	ActionMenubar = "ECM.ECM.Buildings.Training Buildings",
 	ActionId = ".Points To Train",
 	ActionIcon = "CommonAssets/UI/Menu/ramp.tga",
@@ -142,15 +142,15 @@ Actions[c] = {ActionName = T(302535920001344--[[Points To Train]]),
 		local obj = SelectedObj
 		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".evaluation_points",
-			T(302535920001345--[[How many points are needed to finish training.]])
-		) or T(302535920001345)
+			TranslationTable[302535920001345--[[How many points are needed to finish training.]]]
+		) or TranslationTable[302535920001345--[[How many points are needed to finish training.]]]
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetTrainingPoints,
 }
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = T(5068--[[Farms]]),
+Actions[c] = {ActionName = TranslationTable[5068--[[Farms]]],
 	ActionMenubar = "ECM.ECM.Buildings",
 	ActionId = ".Farms",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -159,40 +159,40 @@ Actions[c] = {ActionName = T(5068--[[Farms]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(302535920000192--[[Farm Shifts All On]]),
+Actions[c] = {ActionName = TranslationTable[302535920000192--[[Farm Shifts All On]]],
 	ActionMenubar = "ECM.ECM.Buildings.Farms",
 	ActionId = ".Farm Shifts All On",
 	ActionIcon = icon,
-	RolloverText = T(302535920000193--[[Turns on all the farm shifts.]]),
+	RolloverText = TranslationTable[302535920000193--[[Turns on all the farm shifts.]]],
 	OnAction = ChoGGi.MenuFuncs.FarmShiftsAllOn,
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(4711--[[Crop Fail Threshold]]),
+Actions[c] = {ActionName = TranslationTable[4711--[[Crop Fail Threshold]]],
 	ActionMenubar = "ECM.ECM.Buildings.Farms",
 	ActionId = ".Crop Fail Threshold",
 	ActionIcon = icon,
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.CropFailThreshold,
-			T(4710--[[Average performance of Farms required for Crops to succeed]])
+			TranslationTable[4710--[[Average performance of Farms required for Crops to succeed]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.CropFailThreshold_Toggle,
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(302535920000423--[[Unlock Crops]]),
+Actions[c] = {ActionName = TranslationTable[302535920000423--[[Unlock Crops]]],
 	ActionMenubar = "ECM.ECM.Buildings.Farms",
 	ActionId = ".Unlock Crops",
 	ActionIcon = icon,
-	RolloverText = T(302535920000444--[[Shows list of locked crops.]]),
+	RolloverText = TranslationTable[302535920000444--[[Shows list of locked crops.]]],
 	OnAction = ChoGGi.MenuFuncs.UnlockCrops,
 }
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = T(302535920000157--[[Cables & Pipes]]),
+Actions[c] = {ActionName = TranslationTable[302535920000157--[[Cables & Pipes]]],
 	ActionMenubar = "ECM.ECM.Buildings",
 	ActionId = ".Cables & Pipes",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -201,28 +201,28 @@ Actions[c] = {ActionName = T(302535920000157--[[Cables & Pipes]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(302535920000218--[[No Break]]),
+Actions[c] = {ActionName = TranslationTable[302535920000218--[[No Break]]],
 	ActionMenubar = "ECM.ECM.Buildings.Cables & Pipes",
 	ActionId = ".No Break",
 	ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.CablesAndPipesNoBreak,
-			T(302535920000157--[[Cables & Pipes]]) .. " " .. T(302535920000218--[[No Break]])
+			TranslationTable[302535920000157--[[Cables & Pipes]]] .. " " .. TranslationTable[302535920000218--[[No Break]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.CablesAndPipesNoBreak_Toggle,
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(134--[[Instant Build]]),
+Actions[c] = {ActionName = TranslationTable[134--[[Instant Build]]],
 	ActionMenubar = "ECM.ECM.Buildings.Cables & Pipes",
 	ActionId = ".Instant Build",
 	ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.InstantCables,
-			T(302535920000157--[[Cables & Pipes]]) .. " " .. T(134--[[Instant Build]])
+			TranslationTable[302535920000157--[[Cables & Pipes]]] .. " " .. TranslationTable[134--[[Instant Build]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.CablesAndPipesInstant_Toggle,
@@ -230,7 +230,7 @@ Actions[c] = {ActionName = T(134--[[Instant Build]]),
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = T(3980--[[Buildings]]),
+Actions[c] = {ActionName = TranslationTable[3980--[[Buildings]]],
 	ActionMenubar = "ECM.ECM.Buildings",
 	ActionId = ".Buildings",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -515,7 +515,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000037--[[Always Clean]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(4713--[[Pipes pillar spacing]]),
+Actions[c] = {ActionName = TranslationTable[4713--[[Pipes pillar spacing]]],
 	ActionMenubar = "ECM.ECM.Buildings.Toggles",
 	ActionId = ".Pipes pillar spacing",
 	ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
@@ -574,7 +574,7 @@ Actions[c] = {ActionName = TranslationTable[302535920001407--[[Rotate During Pla
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = T(1120--[[Space Elevator]]),
+Actions[c] = {ActionName = TranslationTable[1120--[[Space Elevator]]],
 	ActionMenubar = "ECM.ECM.Buildings",
 	ActionId = ".Space Elevator",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -618,33 +618,33 @@ Actions[c] = {ActionName = TranslationTable[302535920001332--[[Export Amount Per
 	RolloverText = function()
 		return SettingState(
 			"ChoGGi.UserSettings.BuildingSettings.SpaceElevator.max_export_storage",
-			T(302535920001333--[[How many rare metals you can export per trip.]])
+			TranslationTable[302535920001333--[[How many rare metals you can export per trip.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount,
 	setting_name = "max_export_storage",
-	setting_msg = T(302535920001332),
+	setting_msg = TranslationTable[302535920001332--[[Export Amount Per Trip]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(302535920001334--[[Import Amount Per Trip]]),
+Actions[c] = {ActionName = TranslationTable[302535920001334--[[Import Amount Per Trip]]],
 	ActionMenubar = "ECM.ECM.Buildings.Space Elevator",
 	ActionId = ".Import Amount Per Trip",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_down.tga",
 	RolloverText = function()
 		return SettingState(
 			"ChoGGi.UserSettings.BuildingSettings.SpaceElevator.cargo_capacity",
-			T(302535920001335--[[How much storage for import you can use.]])
+			TranslationTable[302535920001335--[[How much storage for import you can use.]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount,
 	setting_name = "cargo_capacity",
-	setting_msg = T(302535920001334),
+	setting_msg = TranslationTable[302535920001334--[[Import Amount Per Trip]]],
 }
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = T(302535920000163--[[Radius]]),
+Actions[c] = {ActionName = TranslationTable[302535920000163--[[Radius]]],
 	ActionMenubar = "ECM.ECM.Buildings",
 	ActionId = ".Radius",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -653,7 +653,7 @@ Actions[c] = {ActionName = T(302535920000163--[[Radius]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(4818--[[Triboelectric Scrubber]]),
+Actions[c] = {ActionName = TranslationTable[4818--[[Triboelectric Scrubber]]],
 	ActionMenubar = "ECM.ECM.Buildings.Radius",
 	ActionId = ".Triboelectric Scrubber",
 	ActionIcon = icon,
@@ -662,17 +662,17 @@ Actions[c] = {ActionName = T(4818--[[Triboelectric Scrubber]]),
 		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".uirange",
 			TranslationTable[302535920000170--[[Change the range of the %s.]]]:format(RetName(obj))
-		) or TranslationTable[302535920000170--[[Change the range of the %s.]]]:format(Translate(4818--[[Triboelectric Scrubber]]))
+		) or TranslationTable[302535920000170--[[Change the range of the %s.]]]:format(TranslationTable[4818--[[Triboelectric Scrubber]]])
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
 	bld_id = "TriboelectricScrubber",
-	bld_msg = T(302535920000169--[["Ladies and gentlemen, this is your captain speaking. We have a small problem.
+	bld_msg = TranslationTable[302535920000169--[["Ladies and gentlemen, this is your captain speaking. We have a small problem.
 All four engines have stopped. We are doing our damnedest to get them going again.
-I trust you are not in too much distress."]]),
+I trust you are not in too much distress."]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(5293--[[Subsurface Heater]]),
+Actions[c] = {ActionName = TranslationTable[5293--[[Subsurface Heater]]],
 	ActionMenubar = "ECM.ECM.Buildings.Radius",
 	ActionId = ".Subsurface Heater",
 	ActionIcon = icon,
@@ -681,15 +681,15 @@ Actions[c] = {ActionName = T(5293--[[Subsurface Heater]]),
 		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".uirange",
 			TranslationTable[302535920000170--[[Change the range of the %s.]]]:format(RetName(obj))
-		) or TranslationTable[302535920000170--[[Change the range of the %s.]]]:format(Translate(5293--[[Subsurface Heater]]))
+		) or TranslationTable[302535920000170--[[Change the range of the %s.]]]:format(TranslationTable[5293--[[Subsurface Heater]]])
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
 	bld_id = "SubsurfaceHeater",
-	bld_msg = T(302535920000172--[[Some smart quip about heating?]]),
+	bld_msg = TranslationTable[302535920000172--[[Some smart quip about heating?]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(357216170041--[[Forestation Plant]]),
+Actions[c] = {ActionName = TranslationTable[357216170041--[[Forestation Plant]]],
 	ActionMenubar = "ECM.ECM.Buildings.Radius",
 	ActionId = ".Forestation Plant",
 	ActionIcon = icon,
@@ -698,15 +698,15 @@ Actions[c] = {ActionName = T(357216170041--[[Forestation Plant]]),
 		return obj and ChoGGi.ComFuncs.SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".uirange",
 			TranslationTable[302535920000170--[[Change the range of the %s.]]]:format(RetName(obj))
-		) or TranslationTable[302535920000170--[[Change the range of the %s.]]]:format(Translate(357216170041--[[Forestation Plant]]))
+		) or TranslationTable[302535920000170--[[Change the range of the %s.]]]:format(TranslationTable[357216170041--[[Forestation Plant]]])
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
 	bld_id = "ForestationPlant",
-	bld_msg = T(302535920000788--[[New building radius.]]),
+	bld_msg = TranslationTable[302535920000788--[[New building radius.]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(11933--[[Core Heat Convector]]),
+Actions[c] = {ActionName = TranslationTable[11933--[[Core Heat Convector]]],
 	ActionMenubar = "ECM.ECM.Buildings.Radius",
 	ActionId = ".Core Heat Convector",
 	ActionIcon = icon,
@@ -715,15 +715,15 @@ Actions[c] = {ActionName = T(11933--[[Core Heat Convector]]),
 		return obj and ChoGGi.ComFuncs.SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".uirange",
 			TranslationTable[302535920000170--[[Change the range of the %s.]]]:format(RetName(obj))
-		) or TranslationTable[302535920000170--[[Change the range of the %s.]]]:format(Translate(11933--[[Core Heat Convector]]))
+		) or TranslationTable[302535920000170--[[Change the range of the %s.]]]:format(TranslationTable[11933--[[Core Heat Convector]]])
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
 	bld_id = "CoreHeatConvector",
-	bld_msg = T(302535920000788--[[New building radius.]]),
+	bld_msg = TranslationTable[302535920000788--[[New building radius.]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(302535920000178--[[Protection Radius]]),
+Actions[c] = {ActionName = TranslationTable[302535920000178--[[Protection Radius]]],
 	ActionMenubar = "ECM.ECM.Buildings.Radius",
 	ActionId = ".Protection Radius",
 	ActionIcon = icon,
@@ -731,8 +731,8 @@ Actions[c] = {ActionName = T(302535920000178--[[Protection Radius]]),
 		local obj = SelectedObj
 		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".protect_range",
-			T(302535920000179--[[Change threat protection coverage distance (MDSLaser/DefenceTower).]])
-		) or T(302535920000179--[[Change threat protection coverage distance (MDSLaser/DefenceTower).]])
+			TranslationTable[302535920000179--[[Change threat protection coverage distance (MDSLaser/DefenceTower).]]]
+		) or TranslationTable[302535920000179--[[Change threat protection coverage distance (MDSLaser/DefenceTower).]]]
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetProtectionRadius,
 }

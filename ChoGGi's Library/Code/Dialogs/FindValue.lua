@@ -68,7 +68,7 @@ function ChoGGi_DlgFindValue:Init(parent, context)
 	self.idSearch = g_Classes.ChoGGi_XButton:new({
 		Id = "idSearch",
 		Dock = "left",
-		Text = T(10123, "Search"),
+		Text = TranslationTable[10123--[[Search]]],
 		Background = g_Classes.ChoGGi_XButton.bg_green,
 		RolloverText = TranslationTable[302535920001303--[[Search for text within %s.]]]:format(self.obj_name),
 		Margins = box(10, 0, 0, 0),
@@ -95,7 +95,7 @@ function ChoGGi_DlgFindValue:Init(parent, context)
 		Id = "idCancel",
 		Dock = "right",
 		MinWidth = 80,
-		Text = Translate(6879--[[Cancel]]),
+		Text = TranslationTable[6879--[[Cancel]]],
 		Background = g_Classes.ChoGGi_XButton.bg_red,
 		RolloverText = TranslationTable[302535920000074--[[Cancel without changing anything.]]],
 		Margins = box(0, 0, 10, 0),

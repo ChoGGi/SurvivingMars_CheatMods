@@ -26,7 +26,7 @@ local function AddSliderButtons(xtemplate)
 		local template_left = PlaceObj("XTemplateWindow", {
 				"Id", "idButtonLower_ChoGGi",
 				"__class", "XTextButton",
-				"Text", T("[-]"),
+				"Text", T(0000, "[-]"),
 				"FXMouseIn", "ActionButtonHover",
 				"FXPress", "ActionButtonClick",
 				"FXPressDisabled", "UIDisabledButtonPressed",
@@ -47,7 +47,7 @@ local function AddSliderButtons(xtemplate)
 				"__template", "PropName",
 				"__class", "XTextButton",
 				"Id", "idButtonHigher_ChoGGi",
-				"Text", T("[+]"),
+				"Text", T(0000, "[+]"),
 				"FXMouseIn", "ActionButtonHover",
 				"FXPress", "ActionButtonClick",
 				"FXPressDisabled", "UIDisabledButtonPressed",

@@ -7,7 +7,7 @@ local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
 c = c + 1
-Actions[c] = {ActionName = Translate(5238--[[Rockets]]),
+Actions[c] = {ActionName = TranslationTable[5238--[[Rockets]]],
 	ActionMenubar = "ECM.ECM",
 	ActionId = ".Rockets",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -103,14 +103,14 @@ Actions[c] = {ActionName = TranslationTable[302535920000850--[[Change Resupply S
 --~ 	}
 
 c = c + 1
-Actions[c] = {ActionName = Translate(4598--[[Payload Capacity]]),
+Actions[c] = {ActionName = TranslationTable[4598--[[Payload Capacity]]],
 	ActionMenubar = "ECM.ECM.Rockets",
 	ActionId = ".Payload Capacity",
 	ActionIcon = "CommonAssets/UI/Menu/scale_gizmo.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.CargoCapacity,
-			Translate(4597--[[Maximum payload (in kg) of a resupply Rocket]])
+			TranslationTable[4597--[[Maximum payload (in kg) of a resupply Rocket]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetRocketCargoCapacity,
@@ -124,21 +124,21 @@ Actions[c] = {ActionName = TranslationTable[302535920000561--[[Travel Time]]],
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.TravelTimeEarthMars,
-			Translate(4591--[[Time it takes for a Rocket to travel from Mars to Earth]])
+			TranslationTable[4591--[[Time it takes for a Rocket to travel from Mars to Earth]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetRocketTravelTime,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(4594--[[Colonists Per Rocket]]),
+Actions[c] = {ActionName = TranslationTable[4594--[[Colonists Per Rocket]]],
 	ActionMenubar = "ECM.ECM.Rockets",
 	ActionId = ".Colonists Per Rocket",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleMarkers.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.MaxColonistsPerRocket,
-			Translate(4593--[[Maximum number of Colonists that can arrive on Mars in a single Rocket]])
+			TranslationTable[4593--[[Maximum number of Colonists that can arrive on Mars in a single Rocket]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetColonistsPerRocket,

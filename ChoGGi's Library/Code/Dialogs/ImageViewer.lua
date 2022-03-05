@@ -64,7 +64,7 @@ function ChoGGi_DlgImageViewer:Init(parent, context)
 	self:BuildImageMenuPopup()
 	self.idImages = g_Classes.ChoGGi_XComboButton:new({
 		Id = "idImages",
-		Text = T(3794, "Image"),
+		Text = TranslationTable[3794--[[Image]]],
 		OnMouseButtonDown = self.idImages_OnMouseButtonDown,
 		Dock = "left",
 	}, self.idButtonContainer)

@@ -7,7 +7,7 @@ local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
 c = c + 1
-Actions[c] = {ActionName = TranslationTable[302535920001355--[[Map]]] .. " " .. Translate(5422, "Exploration"),
+Actions[c] = {ActionName = TranslationTable[302535920001355--[[Map]]] .. " " .. TranslationTable[5422--[[Exploration]]],
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Map Exploration",
 	ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
@@ -16,7 +16,7 @@ Actions[c] = {ActionName = TranslationTable[302535920001355--[[Map]]] .. " " .. 
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(5661, "Mystery Log"),
+Actions[c] = {ActionName = TranslationTable[5661--[[Mystery Log]]],
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Mystery Log",
 	ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
@@ -34,7 +34,7 @@ Certain mysteries need certain objects which get placed when the map is generate
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(11412, "Trigger fireworks"),
+Actions[c] = {ActionName = TranslationTable[11412--[[Trigger fireworks]]],
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Trigger fireworks",
 	ActionIcon = "CommonAssets/UI/Menu/DisableRMMaps.tga",
@@ -43,7 +43,7 @@ Actions[c] = {ActionName = Translate(11412, "Trigger fireworks"),
 }
 
 c = c + 1
-Actions[c] = {ActionName = TranslationTable[302535920000318--[[Unlock]]] .. " " .. Translate(697482021580, "Achievements"),
+Actions[c] = {ActionName = TranslationTable[302535920000318--[[Unlock]]] .. " " .. TranslationTable[697482021580--[[Achievements]]],
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Unlock Achievements",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
@@ -52,7 +52,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000318--[[Unlock]]] .. " " 
 }
 
 c = c + 1
-Actions[c] = {ActionName = TranslationTable[302535920000266--[[Spawn]]] .. " " .. Translate(547, "Colonists"),
+Actions[c] = {ActionName = TranslationTable[302535920000266--[[Spawn]]] .. " " .. TranslationTable[547--[[Colonists]]],
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Spawn Colonists",
 	ActionIcon = "CommonAssets/UI/Menu/UncollectObjects.tga",
@@ -111,7 +111,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000236--[[Mod Editor]]],
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(311, "Research"),
+Actions[c] = {ActionName = TranslationTable[311--[[Research]]],
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Research",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -120,7 +120,7 @@ Actions[c] = {ActionName = Translate(311, "Research"),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(311, "Research") .. " / " .. TranslationTable[302535920000318--[[Unlock]]] .. " " .. Translate(3734, "Tech"),
+Actions[c] = {ActionName = TranslationTable[311--[[Research]]] .. " / " .. TranslationTable[302535920000318--[[Unlock]]] .. " " .. TranslationTable[3734--[[Tech]]],
 	ActionMenubar = "ECM.Cheats.Research",
 	ActionId = ".Research / Unlock Tech",
 	ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
@@ -130,7 +130,7 @@ Actions[c] = {ActionName = Translate(311, "Research") .. " / " .. TranslationTab
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(311, "Research") .. " " .. TranslationTable[302535920000281--[[Remove]]],
+Actions[c] = {ActionName = TranslationTable[311--[[Research]]] .. " " .. TranslationTable[302535920000281--[[Remove]]],
 	ActionMenubar = "ECM.Cheats.Research",
 	ActionId = ".Research Remove",
 	ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
@@ -177,7 +177,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000349--[[Reset All Researc
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(7790, "Research Current Tech"),
+Actions[c] = {ActionName = TranslationTable[7790--[[Research Current Tech]]],
 	ActionMenubar = "ECM.Cheats.Research",
 	ActionId = ".Research Current Tec",
 	ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
@@ -202,14 +202,14 @@ Actions[c] = {ActionName = TranslationTable[302535920000355--[[Outsourcing For F
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.OutsourceResearchCost,
-			Translate(839458405314--[[Outsource Research Cost (in millions)]])
+			TranslationTable[839458405314--[[Outsource Research Cost (in millions)]]]
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.OutsourcingFree_Toggle,
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(970197122036, "Maximum Outsource Orders"),
+Actions[c] = {ActionName = TranslationTable[970197122036--[[Maximum Outsource Orders]]],
 	ActionMenubar = "ECM.Cheats.Research",
 	ActionId = ".Maximum Outsource Orders",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
@@ -254,7 +254,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000359--[[Breakthroughs Fro
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(1000162, "Menu"),
+Actions[c] = {ActionName = TranslationTable[1000162--[[Menu]]],
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Menu",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -337,7 +337,7 @@ AddMaintenancePnts, MakeSphereTarget, SpawnWorker, SpawnVisitor]]]
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(948928900281, "Story Bits"),
+Actions[c] = {ActionName = TranslationTable[948928900281--[[Story Bits]]],
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".StoryBits",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -383,7 +383,7 @@ Actions[c] = {ActionName = TranslationTable[302535920001584--[[Testing Delete Ba
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(3984, "Anomalies"),
+Actions[c] = {ActionName = TranslationTable[3984--[[Anomalies]]],
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Anomalies",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -392,7 +392,7 @@ Actions[c] = {ActionName = Translate(3984, "Anomalies"),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(25, "Anomaly Scanning"),
+Actions[c] = {ActionName = TranslationTable[25--[[Anomaly Scanning]]],
 	ActionMenubar = "ECM.Cheats.Anomalies",
 	ActionId = ".Anomaly Scanning",
 	ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
@@ -414,7 +414,7 @@ Actions[c] = {ActionName = TranslationTable[302535920001394--[[Spawn Planetary A
 	ActionMenubar = "ECM.Cheats.Anomalies",
 	ActionId = ".Spawn Planetary Anomalies",
 	ActionIcon = "CommonAssets/UI/Menu/LowerTerrainToLevel.tga",
-	RolloverText = TranslationTable[302535920001395--[[Adds %s locations to Planetary View.]]]:format(Translate(9--[[Anomaly]])),
+	RolloverText = TranslationTable[302535920001395--[[Adds %s locations to Planetary View.]]]:format(TranslationTable[9--[[Anomaly]]]),
 	OnAction = ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies,
 }
 
@@ -429,7 +429,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000931--[[Spawn POIs]]],
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(3983, "Disasters"),
+Actions[c] = {ActionName = TranslationTable[3983--[[Disasters]]],
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Disasters",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -438,7 +438,7 @@ Actions[c] = {ActionName = Translate(3983, "Disasters"),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(3983, "Disasters"),
+Actions[c] = {ActionName = TranslationTable[3983--[[Disasters]]],
 	ActionMenubar = "ECM.Cheats.Disasters",
 	ActionId = ".Disasters",
 	ActionIcon = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
@@ -480,7 +480,7 @@ Actions[c] = {ActionName = TranslationTable[302535920001087--[[Missile Strike]]]
 	ActionBindable = true,
 }
 c = c + 1
-Actions[c] = {ActionName = Translate(13066, "Cave-in"),
+Actions[c] = {ActionName = TranslationTable[13066--[[Cave-in]]],
 	ActionMenubar = "ECM.Cheats.Disasters",
 	ActionId = ".Cave-in",
 	ActionIcon = "CommonAssets/UI/Menu/smooth_terrain.tga",

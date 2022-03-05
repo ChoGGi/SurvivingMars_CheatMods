@@ -65,7 +65,7 @@ if not rawget(_G, "DiscoverTech") then
 end
 
 -- seems like a useful func to have
-if not rawget(Colonist, "HasTrait") then
+if not Colonist.HasTrait then
 	function Colonist:HasTrait(trait)
 		if self.traits[trait] then
 			return true

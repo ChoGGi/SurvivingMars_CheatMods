@@ -727,11 +727,11 @@ function OnMsg.ClassesPostprocess()
 				"RolloverText", T(7519, "<left_click>") .. " "
 					.. T(312752058553, "Rotate Building Left").. "\n"
 					.. T(7366, "<right_click>") .. " "
-					.. T(306325555448, "Rotate Building Right"),
+					.. T(694856081085, "Rotate Building Right"),
 				"RolloverHint", "",
 				"RolloverHintGamepad", T(7518, "ButtonA") .. " "
 					.. T(312752058553, "Rotate Building Left") .. " "
-					.. T(7618, "ButtonX") .. " " .. T(306325555448, "Rotate Building Right"),
+					.. T(7618, "ButtonX") .. " " .. T(694856081085, "Rotate Building Right"),
 				"OnPress", function (self, gamepad)
 					self.context:Rotate(not gamepad and IsMassUIModifierPressed())
 					ObjModified(self.context)

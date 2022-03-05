@@ -7,7 +7,7 @@ local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
 c = c + 1
-Actions[c] = {ActionName = Translate(745--[[Shuttles]]),
+Actions[c] = {ActionName = TranslationTable[745--[[Shuttles]]],
 	ActionMenubar = "ECM.ECM",
 	ActionId = ".Shuttles",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",

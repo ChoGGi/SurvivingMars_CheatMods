@@ -308,7 +308,7 @@ Actions[c] = {ActionName = TranslationTable[302535920001527--[[Building Path Mar
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(3578--[[Framerate Counter]]),
+Actions[c] = {ActionName = TranslationTable[3578--[[Framerate Counter]]],
 	ActionMenubar = "ECM.Debug",
 	ActionId = ".Framerate Counter",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -323,9 +323,9 @@ Actions[c] = {ActionName = TranslationTable[302535920000926--[[Toggle]]],
 	RolloverText = function()
 		local c = hr.FpsCounter
 		return SettingState(
-			c == 0 and Translate(847439380056--[[Disabled]])
-				or c == 1 and Translate(3558--[[FPS]])
-				or c == 2 and Translate(3559--[[ms]]),
+			c == 0 and TranslationTable[847439380056--[[Disabled]]]
+				or c == 1 and TranslationTable[3558--[[FPS]]]
+				or c == 2 and TranslationTable[3559--[[ms]]],
 			TranslationTable[302535920000905--[["Switch between FPS, ms, and off.
 This is temporary, use Options>Video>Framerate Counter to permanently save it."]]]
 		)
@@ -335,7 +335,7 @@ This is temporary, use Options>Video>Framerate Counter to permanently save it."]
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(1000458--[[Up]]) .. " " .. Translate(1000457--[[Left]]),
+Actions[c] = {ActionName = TranslationTable[1000458--[[Up]]] .. " " .. TranslationTable[1000457--[[Left]]],
 	ActionMenubar = "ECM.Debug.Framerate Counter",
 	ActionId = ".Up Left",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
@@ -343,7 +343,7 @@ Actions[c] = {ActionName = Translate(1000458--[[Up]]) .. " " .. Translate(100045
 	setting_mask = 0,
 }
 c = c + 1
-Actions[c] = {ActionName = Translate(1000458--[[Up]]) .. " " .. Translate(1000459--[[Right]]),
+Actions[c] = {ActionName = TranslationTable[1000458--[[Up]]] .. " " .. TranslationTable[1000459--[[Right]]],
 	ActionMenubar = "ECM.Debug.Framerate Counter",
 	ActionId = ".Up Left",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
@@ -352,7 +352,7 @@ Actions[c] = {ActionName = Translate(1000458--[[Up]]) .. " " .. Translate(100045
 	RolloverText = TranslationTable[1000121--[[Default]]],
 }
 c = c + 1
-Actions[c] = {ActionName = Translate(1000460--[[Down]]) .. " " .. Translate(1000457--[[Left]]),
+Actions[c] = {ActionName = TranslationTable[1000460--[[Down]]] .. " " .. TranslationTable[1000457--[[Left]]],
 	ActionMenubar = "ECM.Debug.Framerate Counter",
 	ActionId = ".Up Left",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_down.tga",
@@ -360,7 +360,7 @@ Actions[c] = {ActionName = Translate(1000460--[[Down]]) .. " " .. Translate(1000
 	setting_mask = 2,
 }
 c = c + 1
-Actions[c] = {ActionName = Translate(1000460--[[Down]]) .. " " .. Translate(1000459--[[Right]]),
+Actions[c] = {ActionName = TranslationTable[1000460--[[Down]]] .. " " .. TranslationTable[1000459--[[Right]]],
 	ActionMenubar = "ECM.Debug.Framerate Counter",
 	ActionId = ".Up Left",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_down.tga",
@@ -370,7 +370,7 @@ Actions[c] = {ActionName = Translate(1000460--[[Down]]) .. " " .. Translate(1000
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(155--[[Entity]]),
+Actions[c] = {ActionName = TranslationTable[155--[[Entity]]],
 	ActionMenubar = "ECM.Debug",
 	ActionId = ".Entity",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -639,7 +639,7 @@ Actions[c] = {ActionName = TranslationTable[302535920001310--[[DTM Slots Display
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(298035641454--[[Object]]),
+Actions[c] = {ActionName = TranslationTable[298035641454--[[Object]]],
 	ActionMenubar = "ECM.Debug",
 	ActionId = ".Object",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -676,7 +676,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000457--[[Anim State Set]]]
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(327465361219--[[Edit]]) .. " " .. Translate(298035641454--[[Object]]),
+Actions[c] = {ActionName = TranslationTable[327465361219--[[Edit]]] .. " " .. TranslationTable[298035641454--[[Object]]],
 	ActionMenubar = "ECM.Debug.Object",
 	ActionId = ".Object Manipulator",
 	ActionIcon = "CommonAssets/UI/Menu/SaveMapEntityList.tga",
@@ -696,7 +696,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000481--[[Open In Ged Objec
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(298035641454--[[Object]]) .. " " .. TranslationTable[302535920001476--[[Edit Flags]]],
+Actions[c] = {ActionName = TranslationTable[298035641454--[[Object]]] .. " " .. TranslationTable[302535920001476--[[Edit Flags]]],
 	ActionMenubar = "ECM.Debug.Object",
 	ActionId = ".Object Edit Flags",
 	ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
@@ -735,7 +735,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000489--[[Delete Object(s)]
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = Translate(948928900281--[[Story Bits]]),
+Actions[c] = {ActionName = TranslationTable[948928900281--[[Story Bits]]],
 	ActionMenubar = "ECM.Debug",
 	ActionId = ".Story Bits",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -744,7 +744,7 @@ Actions[c] = {ActionName = Translate(948928900281--[[Story Bits]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = Translate(186760604064--[[Test]]) .. " " .. Translate(948928900281--[[Story Bits]]),
+Actions[c] = {ActionName = TranslationTable[186760604064--[[Test]]] .. " " .. TranslationTable[948928900281--[[Story Bits]]],
 	ActionMenubar = "ECM.Debug.Story Bits",
 	ActionId = ".Test Story Bits",
 	ActionIcon = "CommonAssets/UI/Menu/Voice.tga",

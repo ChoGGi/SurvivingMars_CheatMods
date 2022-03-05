@@ -87,35 +87,35 @@ local grid_lookup = {
 	},
 	OxygenNeed = {
 		icon = "UI/Icons/res_oxygen.tga",
-		name = T(682--[[Oxygen]]),
+		name = TranslationTable[682--[[Oxygen]]],
 		text1 = TranslationTable[302535920000162--[[Need]]],
 		text2 = TranslationTable[302535920001221--[[Change this %s so it needs a %s source.]]],
 		con = "air_consumption",
 	},
 	WaterFree = {
 		icon = "UI/Icons/res_water.tga",
-		name = T(681--[[Water]]),
-		text1 = T(4325--[[Free]]),
+		name = TranslationTable[681--[[Water]]],
+		text1 = TranslationTable[4325--[[Free]]],
 		text2 = TranslationTable[302535920001220--[[Change this %s so it doesn't need a %s source.]]],
 		con = "water_consumption",
 	},
 	WaterNeed = {
 		icon = "UI/Icons/res_water.tga",
-		name = T(681--[[Water]]),
+		name = TranslationTable[681--[[Water]]],
 		text1 = TranslationTable[302535920000162--[[Need]]],
 		text2 = TranslationTable[302535920001221--[[Change this %s so it needs a %s source.]]],
 		con = "water_consumption",
 	},
 	PowerFree = {
 		icon = "UI/Icons/res_electricity.tga",
-		name = T(11683--[[Electricity]]),
-		text1 = T(4325--[[Free]]),
+		name = TranslationTable[11683--[[Electricity]]],
+		text1 = TranslationTable[4325--[[Free]]],
 		text2 = TranslationTable[302535920001220--[[Change this %s so it doesn't need a %s source.]]],
 		con = "electricity_consumption",
 	},
 	PowerNeed = {
 		icon = "UI/Icons/res_electricity.tga",
-		name = T(11683--[[Electricity]]),
+		name = TranslationTable[11683--[[Electricity]]],
 		text1 = TranslationTable[302535920000162--[[Need]]],
 		text2 = TranslationTable[302535920001221--[[Change this %s so it needs a %s source.]]],
 		con = "electricity_consumption",
@@ -169,28 +169,28 @@ local cheats_lookup = {
 		des = TranslationTable[302535920001541--[[Start a Crime Event]]],
 	},
 	FillComfort = {
-		des = TranslationTable[302535920001606--[[Max the <green>%s</green> value for this colonist.]]]:format(Translate(4295--[[Comfort]]))
-			.. "\n\n" .. Translate(4296--[[Residences and visited buildings improve Comfort up to their Service Comfort value, but Colonists will try to visit only buildings that correspond to their interests. Colonists are more inclined to have children at higher Comfort. Earthborn Colonists whose Comfort is depleted will quit their job and leave the Colony at first opportunity.]]),
+		des = TranslationTable[302535920001606--[[Max the <green>%s</green> value for this colonist.]]]:format(TranslationTable[4295--[[Comfort]]])
+			.. "\n\n" .. TranslationTable[4296--[[Residences and visited buildings improve Comfort up to their Service Comfort value, but Colonists will try to visit only buildings that correspond to their interests. Colonists are more inclined to have children at higher Comfort. Earthborn Colonists whose Comfort is depleted will quit their job and leave the Colony at first opportunity.]]],
 	},
 	FillHealth = {
-		des = TranslationTable[302535920001606--[[Max the <green>%s</green> value for this colonist.]]]:format(Translate(4291--[[Health]]))
-			.. "\n\n" .. Translate(4292--[[Represents physical injury, illness and exhaustion. Lowered by working on a heavy workload, having no functional home, shock when deprived from vital resources or when the Colonist is injured. Colonists can be healed in Medical Buildings in a powered Dome, but only if they are provided with Food, Water and Oxygen. Colonists can't work at low health unless they're Fit.]]),
+		des = TranslationTable[302535920001606--[[Max the <green>%s</green> value for this colonist.]]]:format(TranslationTable[4291--[[Health]]])
+			.. "\n\n" .. TranslationTable[4292--[[Represents physical injury, illness and exhaustion. Lowered by working on a heavy workload, having no functional home, shock when deprived from vital resources or when the Colonist is injured. Colonists can be healed in Medical Buildings in a powered Dome, but only if they are provided with Food, Water and Oxygen. Colonists can't work at low health unless they're Fit.]]],
 	},
 	FillMorale = {
-		des = TranslationTable[302535920001606--[[Max the <green>%s</green> value for this colonist.]]]:format(Translate(4297--[[Morale]]))
-			.. "\n\n" .. Translate(4298--[[Represents overall happiness, optimism and loyalty. All other stats affect Morale. Influences the Colonist’s job performance. Colonists with low Morale may become Renegades.]]),
+		des = TranslationTable[302535920001606--[[Max the <green>%s</green> value for this colonist.]]]:format(TranslationTable[4297--[[Morale]]])
+			.. "\n\n" .. TranslationTable[4298--[[Represents overall happiness, optimism and loyalty. All other stats affect Morale. Influences the Colonist’s job performance. Colonists with low Morale may become Renegades.]]],
 	},
 	FillSanity = {
-		des = TranslationTable[302535920001606--[[Max the <green>%s</green> value for this colonist.]]]:format(Translate(4293--[[Sanity]]))
-			.. "\n\n" .. Translate(4294--[[Represents mental condition. Lowered by working on a heavy workload, in outside buildings and during dark hours, witnessing the death of a Colonist living in the same Residence or various Martian disasters. Recovered when resting at home and by visiting certain Service Buildings.]]),
+		des = TranslationTable[302535920001606--[[Max the <green>%s</green> value for this colonist.]]]:format(TranslationTable[4293--[[Sanity]]])
+			.. "\n\n" .. TranslationTable[4294--[[Represents mental condition. Lowered by working on a heavy workload, in outside buildings and during dark hours, witnessing the death of a Colonist living in the same Residence or various Martian disasters. Recovered when resting at home and by visiting certain Service Buildings.]]],
 	},
 	RandomAge = {
-		des = TranslationTable[302535920001607--[[Set a random <green>%s</green> for this colonist.]]]:format(Translate(11607--[[Age Group]]))
-			.. "\n\n" .. Translate(3930--[[Colonists are divided into five Age Groups. Children and seniors cannot work.]]),
+		des = TranslationTable[302535920001607--[[Set a random <green>%s</green> for this colonist.]]]:format(TranslationTable[11607--[[Age Group]]])
+			.. "\n\n" .. TranslationTable[3930--[[Colonists are divided into five Age Groups. Children and seniors cannot work.]]],
 	},
 	RandomGender = {
-		des = TranslationTable[302535920001607--[[Set a random <green>%s</green> for this colonist.]]]:format(Translate(3932--[[Sex]]))
-			.. "\n\n" .. Translate(3933--[[The sex of the Colonist. The birth rate in any Dome is determined by the number of Male/Female couples at high Comfort.]]),
+		des = TranslationTable[302535920001607--[[Set a random <green>%s</green> for this colonist.]]]:format(TranslationTable[3932--[[Sex]]])
+			.. "\n\n" .. TranslationTable[3933--[[The sex of the Colonist. The birth rate in any Dome is determined by the number of Male/Female couples at high Comfort.]]],
 	},
 	RandomRace = {
 		des = TranslationTable[302535920001607--[[Set a random <green>%s</green> for this colonist.]]]:format(TranslationTable[302535920000741--[[Race]]])
@@ -201,8 +201,8 @@ I said if you're thinkin' of being my brother
 It don't matter if you're black or white"]]],
 	},
 	RandomSpec = {
-		des = TranslationTable[302535920001607--[[Set a random <green>%s</green> for this colonist.]]]:format(Translate(11609--[[Specialization]]))
-			.. "\n\n" .. Translate(3931--[[Specialized Colonists perform better at certain workplaces.]]),
+		des = TranslationTable[302535920001607--[[Set a random <green>%s</green> for this colonist.]]]:format(TranslationTable[11609--[[Specialization]]])
+			.. "\n\n" .. TranslationTable[3931--[[Specialized Colonists perform better at certain workplaces.]]],
 	},
 	Renegade = {
 		des = TranslationTable[302535920001609--[[Turn this colonist into a renegade.]]],
@@ -306,7 +306,7 @@ It don't matter if you're black or white"]]],
 		des = TranslationTable[302535920001216--[[Double the battery capacity.]]],
 	},
 	Scan = {
-		des = Translate(979029137252--[[Scanned an Anomaly]]),
+		des = TranslationTable[979029137252--[[Scanned an Anomaly]]],
 		icon = "UI/Icons/pin_scan.tga",
 	},
 	BattCapDef = {
@@ -319,7 +319,7 @@ It don't matter if you're black or white"]]],
 		des = TranslationTable[302535920001613--[[Refill the battery to max.]]],
 	},
 	Despawn = {
-		des = Translate(833734167742--[[Delete Item]]),
+		des = TranslationTable[833734167742--[[Delete Item]]],
 	},
 	MoveSpeedDbl = {
 		des = TranslationTable[302535920001614--[[Doubles the move speed.]]],
@@ -348,7 +348,7 @@ It don't matter if you're black or white"]]],
 		name = "CleanAndFix",
 	},
 	Launch = {
-		des = Translate(6779--[[Warning]]) .. ": " .. TranslationTable[302535920001233--[[Launches rocket without asking.]]],
+		des = TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920001233--[[Launches rocket without asking.]]],
 		icon = "UI/Icons/ColonyControlCenter/rocket_r.tga",
 	},
 	ShowFlights = {
@@ -628,7 +628,7 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 				if obj.destroyed or obj.is_malfunctioned then
 					action.ActionId = ""
 				else
-					SetHint(action, T(8039--[[Trait: Idiot (can cause a malfunction)]]) .. "...\n" .. T(53--[[Malfunction]]) .. "?")
+					SetHint(action, TranslationTable[8039--[[Trait: Idiot (can cause a malfunction)]]] .. "...\n" .. TranslationTable[53--[[Malfunction]]] .. "?")
 				end
 
 			elseif aid == "Unfreeze" then
@@ -653,15 +653,15 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 
 			elseif aid == "Break" then
 				if obj:IsKindOf("ElectricityGridElement") then
-					SetHint(action, T(3890--[[Cable Fault]]))
+					SetHint(action, TranslationTable[3890--[[Cable Fault]]])
 				else
-					SetHint(action, T(3891--[[Pipe Leak]]))
+					SetHint(action, TranslationTable[3891--[[Pipe Leak]]])
 				end
 			elseif aid == "Repair" then
 				if obj:IsKindOf("ElectricityGridElement") then
-					SetHint(action, T(6924--[[Repair]]) .. " " .. T(3890--[[Cable Fault]]))
+					SetHint(action, TranslationTable[6924--[[Repair]]] .. " " .. TranslationTable[3890--[[Cable Fault]]])
 				else
-					SetHint(action, T(6924--[[Repair]]) .. " " .. T(3891--[[Pipe Leak]]))
+					SetHint(action, TranslationTable[6924--[[Repair]]] .. " " .. TranslationTable[3891--[[Pipe Leak]]])
 				end
 			-- no more elseif
 			end
@@ -1261,7 +1261,7 @@ function RocketBase:CheatCleanAndFix2()
 	ApplyToObjAndAttaches(self, SetObjDust, 0)
 end
 
-if rawget(_G, "Sinkhole") then
+if Sinkhole then
 	Sinkhole.CheatSpawnFirefly = Sinkhole.TestSpawnFireflyAndGo
 end
 

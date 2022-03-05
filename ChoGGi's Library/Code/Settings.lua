@@ -11,7 +11,7 @@ do -- stored tables stuff
 		-- display names only!
 		Tables.ColonistRaces = {
 			-- caucasian
-			Translate(1859--[[White]]), [Translate(1859--[[White]])] = true,
+			TranslationTable[1859--[[White]]], [TranslationTable[1859--[[White]]]] = true,
 			-- african
 			TranslationTable[302535920000739--[[Black]]], [TranslationTable[302535920000739--[[Black]]]] = true,
 			-- asian
@@ -23,22 +23,22 @@ do -- stored tables stuff
 		}
 		-- go with what you know (guess i could make it randomly pick one of each to be fairer?)
 		Tables.ColonistRacesImages = {
-			[Translate(1859--[[White]])] = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Adult_01.tga",
+			[TranslationTable[1859--[[White]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Ca_Adult_01.tga",
 			[TranslationTable[302535920000739--[[Black]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Af_Adult_01.tga",
 			[TranslationTable[302535920000740--[[Asian]]]] = "UI/Icons/Colonists/Pin/Unit_Male_As_Adult_01.tga",
 			[TranslationTable[302535920001283--[[Indian]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Ar_Adult_01.tga",
 			[TranslationTable[302535920001284--[[Hispanic]]]] = "UI/Icons/Colonists/Pin/Unit_Male_Hs_Adult_01.tga",
 			-- android
-			[Translate(3490--[[Random]])] = "UI/Icons/Colonists/Pin/Unit_Male_An_Adult_01.tga",
+			[TranslationTable[3490--[[Random]]]] = "UI/Icons/Colonists/Pin/Unit_Male_An_Adult_01.tga",
 			[TranslationTable[1000121--[[Default]]]] = "UI/Icons/Colonists/Pin/Unit_Male_An_Adult_01.tga",
 		}
 		--~ Tables.ColonistRacesImagesFemale = {
-		--~ 	[Translate(1859--[[White]])] = "UI/Icons/Colonists/Pin/Unit_Female_Ca_Adult_01.tga",
+		--~ 	[TranslationTable[1859--[[White]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Ca_Adult_01.tga",
 		--~ 	[TranslationTable[302535920000739--[[Black]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Af_Adult_01.tga",
 		--~ 	[TranslationTable[302535920000740--[[Asian]]]] = "UI/Icons/Colonists/Pin/Unit_Female_As_Adult_01.tga",
 		--~ 	[TranslationTable[302535920001283--[[Indian]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Ar_Adult_01.tga",
 		--~ 	[TranslationTable[302535920001284--[[Hispanic]]]] = "UI/Icons/Colonists/Pin/Unit_Female_Hs_Adult_01.tga",
-		--~ 	[Translate(3490--[[Random]])] = "UI/Icons/Colonists/Pin/Unit_Female_An_Adult_01.tga",
+		--~ 	[TranslationTable[3490--[[Random]]]] = "UI/Icons/Colonists/Pin/Unit_Female_An_Adult_01.tga",
 		--~ 	[TranslationTable[1000121--[[Default]]]] = "UI/Icons/Colonists/Pin/Unit_Female_An_Adult_01.tga",
 		--~ }
 	end
