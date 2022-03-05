@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v11.0 (Unreleased)
+## v11.1 (Unreleased)
+
+## v11.0 (5 Mar 2022)
 - Another issue with deleting domes.
 
 ## v10.9 (20 Feb 2022)
