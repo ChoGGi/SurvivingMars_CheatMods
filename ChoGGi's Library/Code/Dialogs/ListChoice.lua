@@ -53,7 +53,6 @@ ChoGGi.ComFuncs.OpenInListChoice{
 }
 ]]
 
---~ local TableConcat = ChoGGi.ComFuncs.TableConcat
 local RetProperType = ChoGGi.ComFuncs.RetProperType
 local Translate = ChoGGi.ComFuncs.Translate
 local DotPathToObject = ChoGGi.ComFuncs.DotPathToObject

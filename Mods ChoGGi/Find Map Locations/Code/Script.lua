@@ -4,7 +4,6 @@ local pairs, tostring, type, table, tonumber = pairs, tostring, type, table, ton
 
 local Translate = ChoGGi.ComFuncs.Translate
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 
 local mod_BreakthroughCount
@@ -281,7 +280,7 @@ function ChoGGi_VLI_MapInfoDlg:ShowInfoDialog()
 	table.sort(temp_data)
 	table.iappend(text, temp_data)
 
-	ChoGGi.ComFuncs.OpenInMultiLineTextDlg(TableConcat(text, "\n"), {
+	ChoGGi.ComFuncs.OpenInMultiLineTextDlg(table.concat(text, "\n"), {
 		has_params = true,
 		title = T(302535920011926, "Show Info"),
 	})
@@ -422,12 +421,12 @@ function ChoGGi_VLI_MapInfoDlg:RetMapLocation(map, merged)
 		loc_key[4] = map.longitude_degree
 		loc_key[5] = map.longitude
 	end
-	return TableConcat(loc_key)
+	return table.concat(loc_key)
 end
 
 function ChoGGi_VLI_MapInfoDlg:SetExamineTitle()
 	local title = T(3732, "Count") .. " " .. table.count(self.found_objs) .. ": + "
-		.. TableConcat(self.input_boxs_add, " ") .. ", - " .. TableConcat(self.input_boxs_rem, " ")
+		.. table.concat(self.input_boxs_add, " ") .. ", - " .. table.concat(self.input_boxs_rem, " ")
 
 	self.current_examine_dlg.override_title = true
 	self.current_examine_dlg.idCaption:SetTitle(self.current_examine_dlg, title)

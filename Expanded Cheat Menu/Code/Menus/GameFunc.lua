@@ -6,7 +6,6 @@ local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local TranslationTable = TranslationTable
 
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local RetIcon = ChoGGi.ComFuncs.RetIcon
@@ -1292,7 +1291,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel()
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(911432559058--[[Light model]]),
-		hint = TableConcat(hint, "\n\n"),
+		hint = table.concat(hint, "\n\n"),
 		custom_type = 6,
 		custom_func = function(choice_value)
 			SetLightmodelOverride(1)

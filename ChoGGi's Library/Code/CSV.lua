@@ -9,7 +9,6 @@ local Translate = ChoGGi.ComFuncs.Translate
 local RetName = ChoGGi.ComFuncs.RetName
 local RetMapSettings = ChoGGi.ComFuncs.RetMapSettings
 local RetMapBreakthroughs = ChoGGi.ComFuncs.RetMapBreakthroughs
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 
 local testing = ChoGGi.testing
 
@@ -54,7 +53,7 @@ do -- MapData
 		loc_table[2] = lat
 		loc_table[3] = long_name
 		loc_table[4] = long
-		local location = TableConcat(loc_table)
+		local location = table.concat(loc_table)
 --~ 		local location = lat_name .. lat .. long_name .. long
 
 		if export_data_dupes[location] then

@@ -6,7 +6,6 @@ local table = table
 local TranslationTable = TranslationTable
 local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 local blacklist = ChoGGi.blacklist
 
 function ChoGGi.MenuFuncs.SetDisasterOccurrence_Toggle(action)
@@ -72,7 +71,7 @@ function ChoGGi.MenuFuncs.ChangeRivalColonies()
 				rival = rival,
 				existing = existing,
 				hint = name .. "\n\n"
-					.. Translate(rival.description) .. "\n\n" .. TableConcat(initial_res),
+					.. Translate(rival.description) .. "\n\n" .. table.concat(initial_res),
 			}
 		end
 	end
@@ -707,7 +706,7 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(action)
 		item_list[c] = {
 			text = rule.name,
 			value = rule.name,
-			hint = TableConcat(hint, "\n"),
+			hint = table.concat(hint, "\n"),
 		}
 	end
 
@@ -797,7 +796,7 @@ function ChoGGi.MenuFuncs.ChangeRules()
 
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(#choice, TranslationTable[302535920000129--[[Set]]]),
-			T(8800--[[Game Rules]])
+			TranslationTable[8800--[[Game Rules]]]
 		)
 	end
 
@@ -805,7 +804,9 @@ function ChoGGi.MenuFuncs.ChangeRules()
 	local rules = g_CurrentMissionParams.idGameRules
 	if type(rules) == "table" and next(rules) then
 		hint = {}
-		local c = #hint
+		local c = 0
+
+		-- needs to be a T() for concat
 		hint[c] = TranslationTable[302535920000106--[[Current]]]
 		c = c + 1
 		hint[c] = ":"
@@ -813,7 +814,8 @@ function ChoGGi.MenuFuncs.ChangeRules()
 			c = c + 1
 			hint[c] = " "
 			c = c + 1
-			hint[c] = T(GameRulesMap[key].display_name)
+--~ 			hint[c] = T(GameRulesMap[key].display_name)
+			hint[c] = TranslationTable[TGetID(GameRulesMap[key].display_name)]
 		end
 	end
 	if hint then

@@ -3,7 +3,6 @@
 -- displays the console in a dialog
 
 local Translate = ChoGGi.ComFuncs.Translate
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 local TranslationTable = TranslationTable
 
@@ -182,7 +181,7 @@ function ChoGGi_DlgConsoleLogWin:idShowModsLog_OnPress()
 
 	self:UpdateText(
 		self.idEdit:GetText() .. "\n\nModMessageLog:\n"
-			.. TableConcat(ModMessageLog, "\n")
+			.. table.concat(ModMessageLog, "\n")
 	)
 end
 function ChoGGi_DlgConsoleLogWin:idClearLog_OnPress()

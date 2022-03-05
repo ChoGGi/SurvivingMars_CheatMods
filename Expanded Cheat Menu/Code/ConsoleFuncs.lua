@@ -16,8 +16,6 @@ local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 local DotPathToObject = ChoGGi.ComFuncs.DotPathToObject
 local RetFilesInFolder = ChoGGi.ComFuncs.RetFilesInFolder
 local Translate = ChoGGi.ComFuncs.Translate
-local TableConcat = ChoGGi.ComFuncs.TableConcat
-local TranslationTable = TranslationTable
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
@@ -75,7 +73,7 @@ local ToolsMenuPopupToggle_list = {
 		hint = TranslationTable[302535920001123--[[Shows any mod msgs in the log.]]],
 		clicked = function()
 			ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
-				text = TableConcat(ModMessageLog, "\n"),
+				text = table.concat(ModMessageLog, "\n"),
 				title = TranslationTable[302535920000071],
 				update_func = ModMessageLog,
 			}

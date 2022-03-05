@@ -2,10 +2,10 @@
 
 -- displays text in an editable text box
 
+local table = table
 local CreateRealTimeThread = CreateRealTimeThread
 local Translate = ChoGGi.ComFuncs.Translate
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 local TranslationTable = TranslationTable
 
 local blacklist, g_env = ChoGGi.blacklist
@@ -319,7 +319,7 @@ function ChoGGi_DlgMultiLineText:idUpdateText_OnPress()
 	if text_type == "string" then
 		self.idEdit:SetText(text)
 	elseif text_type == "table" then
-		self.idEdit:SetText(TableConcat(text, "\n"))
+		self.idEdit:SetText(table.concat(text, "\n"))
 	else
 		self.idEdit:SetText(tostring(text))
 	end

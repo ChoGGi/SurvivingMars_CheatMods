@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 local table = table
-local type, pairs, next, print = type, pairs, next, print
+local type, pairs, next, print, string = type, pairs, next, print, string
 local tostring, tonumber, rawget, rawset = tostring, tonumber, rawget, rawset
 local AveragePoint2D = AveragePoint2D
 local IsValid = IsValid
@@ -12,12 +12,12 @@ local WaitMsg = WaitMsg
 local IsPoint = IsPoint
 local IsBox = IsBox
 local DoneObject = DoneObject
+local Max = Max
 
 local TranslationTable = TranslationTable
 local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 local PlacePolyline = ChoGGi.ComFuncs.PlacePolyline
@@ -26,10 +26,11 @@ local InvalidPos = ChoGGi.Consts.InvalidPos
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
-local g_env, debug
+local g_env = _G
+local debug, io
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	blacklist = false
-	g_env, debug = env, env.debug
+	g_env, debug, io = env, env.debug, env.io
 end
 
 local function SetCheatsMenuPos(pos)
@@ -141,19 +142,16 @@ function ChoGGi.ComFuncs.GenerateScreenshotFilename(prefix, folder, ext, just_na
 	if blacklist then
 		return GenerateScreenshotFilename(prefix, folder, ext, just_name, ...)
 	end
-	local match = string.match
-	local Max = Max
-
 	prefix = prefix or ""
 	ext = ext or "png"
 	folder = folder or "AppData/"
-	if not match(folder, "/$") and #folder > 0 then
+	if not string.match(folder, "/$") and #folder > 0 then
 		folder = folder .. "/"
 	end
 	local existing_files = io.listfiles(folder, prefix .. "*." .. ext)
 	local index = 0
 	for i = 1, #existing_files do
-		index = Max(index, tonumber(match(existing_files[i], prefix .. "(%d+)" or 0)))
+		index = Max(index, tonumber(string.match(existing_files[i], prefix .. "(%d+)" or 0)))
 	end
 	if just_name then
 		return string.format("%s%04d", prefix, index + 1)
@@ -313,7 +311,7 @@ do -- DumpTableFunc
 
 		if output_list[1] then
 			local filename = "AppData/logs/DumpedTable.txt"
-			g_env.AsyncStringToFile(filename, TableConcat(output_list), mode or "-1")
+			g_env.AsyncStringToFile(filename, table.concat(output_list), mode or "-1")
 
 			local msg = TranslationTable[302535920000039--[[Dumped]]] .. ": " .. name
 			-- print msg to first newline
@@ -1804,7 +1802,7 @@ do -- PrintToFunc_Add/PrintToFunc_Remove
 					c = c + 1
 					text_table[c] = "\n "
 				end
-				print(func_name, "\n", TableConcat(text_table))
+				print(func_name, "\n", table.concat(text_table))
 			else
 				-- no params
 				print(func_name)

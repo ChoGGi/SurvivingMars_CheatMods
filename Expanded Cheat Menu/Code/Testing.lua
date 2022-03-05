@@ -538,8 +538,6 @@ end)
 
 -- benchmarking stuff
 function ChoGGi.testing.ConcatingTables()
-	local TableConcat = ChoGGi.ComFuncs.TableConcat
-
 	ChoGGi.ComFuncs.TickStart("ConcatingTables.1.Tick")
 	for i = 1, 100000 do
 		local str = "AAAA" .. "BBBB" .. "CCCCC" .. "DDDDD" .. i .. "FFFFFFF" .. "GGGGGGGG" .. "EEEEEEEEE" .. "JJJJJJJJJJ"
@@ -552,7 +550,7 @@ function ChoGGi.testing.ConcatingTables()
 	local text_table = {"AAAA","BBBB","CCCCC","","DDDDD","FFFFFFF","GGGGGGGG","EEEEEEEEE","JJJJJJJJJJ",}
 	for i = 1, 100000 do
 		text_table[5] = i
-		local str = TableConcat(text_table)
+		local str = table.concat(text_table)
     if str then
     end
   end
@@ -1532,6 +1530,6 @@ function OnMsg.ModsReloaded()
 			startup[c] = msg
 		end
 	end
-	print(ChoGGi.ComFuncs.TableConcat(ChoGGi.Temp.StartupMsgs))
+	print(table.concat(ChoGGi.Temp.StartupMsgs))
 	table.iclear(ChoGGi.Temp.StartupMsgs)
 end

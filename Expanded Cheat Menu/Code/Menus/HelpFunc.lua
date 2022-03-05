@@ -6,7 +6,6 @@ local table = table
 local TranslationTable = TranslationTable
 local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
@@ -788,11 +787,11 @@ GetComputerName(): %s
 
 ]],
 		Translate(5568--[[Stats]]),
-		TableConcat(hw),
-		TableConcat(mem),
-		TableConcat({GetAdapterMode(0)}, " "),
+		table.concat(hw),
+		table.concat(mem),
+		table.concat({GetAdapterMode(0)}, " "),
 		GetMachineID(),
-		TableConcat(GetSupportedMSAAModes(), " "):gsub("HR::", ""),
+		table.concat(GetSupportedMSAAModes(), " "):gsub("HR::", ""),
 		GetSupportedShaderModel(),
 		GetMaxStrIDMemoryStats(),
 		GameObjectStats(),
@@ -1100,7 +1099,7 @@ function ChoGGi.MenuFuncs.RetMapInfo()
 	end
 	local data = HashLogToTable()
 	data[1] = data[1]:gsub("\n\n", "")
-	ChoGGi.ComFuncs.OpenInExamineDlg(TableConcat(data, "\n"), nil, T(283142739680--[[Game]]) .. " & " .. TranslationTable[302535920001355--[[Map]]] .. " " .. T(126095410863--[[Info]]))
+	ChoGGi.ComFuncs.OpenInExamineDlg(table.concat(data, "\n"), nil, T(283142739680--[[Game]]) .. " & " .. TranslationTable[302535920001355--[[Map]]] .. " " .. T(126095410863--[[Info]]))
 end
 
 function ChoGGi.MenuFuncs.EditECMSettings()

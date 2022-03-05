@@ -3,7 +3,6 @@
 local type, tostring = type, tostring
 local table = table
 
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 local RetName = ChoGGi.ComFuncs.RetName
 local TranslationTable = TranslationTable
 local Translate = ChoGGi.ComFuncs.Translate
@@ -180,7 +179,7 @@ do -- ViewObjInfo_Toggle
 				predprod = prod:GetPredictedProduction() / r
 			end
 
-			return TableConcat({"- " .. RetName(obj) .. " -\n" .. Translate(80--[[Production]])
+			return table.concat({"- " .. RetName(obj) .. " -\n" .. Translate(80--[[Production]])
 				.. ": " .. prefix .. predprod .. ", "
 				.. Translate(6729--[[Daily Production <n>]]):gsub("<n>", ": " .. (prod:GetPredictedDailyProduction() / r))
 				.. ", "

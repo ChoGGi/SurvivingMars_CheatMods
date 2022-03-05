@@ -28,9 +28,6 @@ ex(obj, {
 })
 ]]
 
-local pairs, type, tostring, tonumber = pairs, type, tostring, tonumber
-local getmetatable, rawget, next = getmetatable, rawget, next
-
 -- store opened examine dialogs
 if not rawget(_G, "ChoGGi_dlgs_examine") then
 	ChoGGi_dlgs_examine = {}
@@ -44,7 +41,8 @@ end
 local width, height
 
 -- local some globals
-local table = table
+local pairs, type, tostring, tonumber = pairs, type, tostring, tonumber
+local getmetatable, rawget, next, table = getmetatable, rawget, next, table
 local CmpLower = CmpLower
 local CreateRealTimeThread = CreateRealTimeThread
 local DeleteThread = DeleteThread
@@ -72,7 +70,6 @@ local Translate = ChoGGi.ComFuncs.Translate
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 local RetName = ChoGGi.ComFuncs.RetName
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 local IsObjlist = ChoGGi.ComFuncs.IsObjlist
 local SetWinObjectVis = ChoGGi.ComFuncs.SetWinObjectVis
 local RetMapType = ChoGGi.ComFuncs.RetMapType
@@ -834,14 +831,14 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 						values_temp[2] = self:ConvertValueToInfo(key):gsub("'", "")
 						values_temp[4] = self:ConvertValueToInfo(value):gsub("'", "")
 						values_c = values_c + 1
-						values[values_c] = TableConcat(values_temp)
+						values[values_c] = table.concat(values_temp)
 					end
 				end
 				table.sort(values)
 				c = c + 1
 				roll_text[c] = "\n"
 				c = c + 1
-				roll_text[c] = TableConcat(values)
+				roll_text[c] = table.concat(values)
 				c = c + 1
 				roll_text[c] = "\n\n<image "
 				c = c + 1
@@ -913,7 +910,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 
 	XCreateRolloverWindow(self.idDialog, RolloverGamepad, true, {
 		RolloverTitle = title,
-		RolloverText = self.onclick_name[link] or TableConcat(roll_text),
+		RolloverText = self.onclick_name[link] or table.concat(roll_text),
 		RolloverHint = TranslationTable[302535920001079--[[<left_click> Default Action <right_click> Examine]]],
 	})
 end
@@ -1860,7 +1857,7 @@ function ChoGGi_DlgExamine:GetCleanText(scrolled_text, skip_ast)
 		c = c + 1
 		cache_temp[c] = {
 			line = line,
-			text = TableConcat(text_temp),
+			text = table.concat(text_temp),
 		}
 	end
 
@@ -1878,7 +1875,7 @@ function ChoGGi_DlgExamine:GetCleanText(scrolled_text, skip_ast)
 		cache_temp[i] = item.text
 	end
 
-	return TableConcat(cache_temp, "\n"), scrolled_text
+	return table.concat(cache_temp, "\n"), scrolled_text
 end
 
 function ChoGGi_DlgExamine:FindNext(text, previous)
@@ -1895,7 +1892,7 @@ function ChoGGi_DlgExamine:FindNext(text, previous)
 			text_table[i] = list_draw_info[i].text or ""
 		end
 
-		if TableConcat(text_table):find_lower(text) or text == "" then
+		if table.concat(text_table):find_lower(text) or text == "" then
 			if not min_match or y < min_match then
 				min_match = y
 			end
@@ -2877,7 +2874,7 @@ function ChoGGi_DlgExamine:RetDebugGetInfo(obj)
 	table.sort(temp)
 
 	table.insert(temp, 1, "\ngetinfo(): ")
-	return TableConcat(temp, "\n")
+	return table.concat(temp, "\n")
 end
 function ChoGGi_DlgExamine:RetFuncArgs(obj)
 	if blacklist then
@@ -2894,7 +2891,7 @@ function ChoGGi_DlgExamine:RetFuncArgs(obj)
 		end
 
 		table.insert(temp, 1, "params: ")
-		local args = TableConcat(temp, ", ")
+		local args = table.concat(temp, ", ")
 
 		-- remove extra , from concat and add ... if it has a vararg
 		return args:gsub(": , ", ": (") .. (info.isvararg and ", ...)" or ")")
@@ -3613,7 +3610,7 @@ do -- BuildAttachesPopup
 
 			self.attaches_menu_popup[i] = {
 				name = name,
-				hint = TableConcat(self.attaches_menu_popup_hint, "\n"),
+				hint = table.concat(self.attaches_menu_popup_hint, "\n"),
 				-- used for ref above as well
 				showobj = a,
 				hint_bottom = TranslationTable[302535920000589--[[<left_click> Examine <right_click> Clipboard]]],

@@ -13,7 +13,6 @@ local DeleteThread = DeleteThread
 local TranslationTable = TranslationTable
 local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 local SetDlgTrans = ChoGGi.ComFuncs.SetDlgTrans
 local RetName = ChoGGi.ComFuncs.RetName
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
@@ -242,8 +241,7 @@ do -- non-class obj funcs
 	-- skips story bit dialogs
 	local ChoOrig_PopupNotificationBegin = PopupNotificationBegin
 	function PopupNotificationBegin(dlg, ...)
-		if UserSettings.SkipStoryBitsDialogs
-			and (testing or dlg.context and dlg.context.is_storybit)
+		if UserSettings.SkipStoryBitsDialogs and dlg.context and dlg.context.is_storybit
 		then
 			CreateRealTimeThread(function()
 				if testing then

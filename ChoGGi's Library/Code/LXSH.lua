@@ -85,7 +85,7 @@ local function lexer(input)
 end
 
 -- strip interface
-local TableConcat = ChoGGi.ComFuncs.TableConcat
+local table = table
 local line_c = objlist:new()
 function ChoGGi.ComFuncs.StripComments(s)
 	line_c:Destroy()
@@ -114,5 +114,5 @@ function ChoGGi.ComFuncs.StripComments(s)
 			line_head = false
 		end
 	end
-	return TableConcat(line_c)
+	return table.concat(line_c)
 end

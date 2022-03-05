@@ -1,8 +1,6 @@
 -- See LICENSE for terms
 
 local testing = ChoGGi.testing
--- Init.lua
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 -- Strings.lua
 local TranslationTable = TranslationTable
 local Translate = ChoGGi.ComFuncs.Translate
@@ -4161,7 +4159,7 @@ do -- PadNumWithZeros
 		end
 		pads[diff+1] = num
 
-		return TableConcat(pads)
+		return table.concat(pads)
 	end
 end -- do
 
@@ -6531,13 +6529,13 @@ do -- ExamineEntSpots (Object>Entity Spots)
 				end
 			end
 			c = c + 1
-			list[c] = prefix .. TableConcat(pts_tmp) .. suffix
+			list[c] = prefix .. table.concat(pts_tmp) .. suffix
 		end
 		return c
 	end
 
 --~ local list = ChoGGi.ComFuncs.ExamineEntSpots(s, true)
---~ list = ChoGGi.ComFuncs.TableConcat(list, "\n")
+--~ list = table.concat(list, "\n")
 --~ ChoGGi.ComFuncs.Dump(list, nil, nil, "ent")
 	function ChoGGi.ComFuncs.ExamineEntSpots(obj, parent_or_ret)
 		-- If fired from action menu
@@ -6701,11 +6699,11 @@ Some of the file names are guesses. <anim> is a guess, try removing it."]]]
 </entity>]]
 
 		if parent_or_ret == true then
-			return TableConcat(list, "\n")
+			return table.concat(list, "\n")
 		else
 			ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 				parent = parent_or_ret,
-				text = TableConcat(list, "\n"),
+				text = table.concat(list, "\n"),
 				title = TranslationTable[302535920000235--[[Entity Spots]]] .. ": " .. RetName(obj),
 			}
 		end
@@ -6886,7 +6884,7 @@ do -- GetMaterialProperties
 		c = c + 1
 		list[c] = [[</Materials>]]
 
-		return TableConcat(list, "\n")
+		return table.concat(list, "\n")
 	end
 	ChoGGi.ComFuncs.RetEntityMTLFile = RetEntityMTLFile
 

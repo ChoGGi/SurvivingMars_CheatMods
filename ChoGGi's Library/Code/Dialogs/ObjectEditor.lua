@@ -10,7 +10,6 @@ local CmpLower = CmpLower
 
 local TranslationTable = TranslationTable
 local Translate = ChoGGi.ComFuncs.Translate
-local TableConcat = ChoGGi.ComFuncs.TableConcat
 local RetName = ChoGGi.ComFuncs.RetName
 local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 local RetProperType = ChoGGi.ComFuncs.RetProperType
@@ -343,7 +342,7 @@ function ChoGGi_DlgObjectEditor:CreateProp(obj)
 			if obj[4] then
 				res[#res+1] = "..."
 			end
-			return "objlist{" .. TableConcat(res, ", ") .. "}"
+			return "objlist{" .. table.concat(res, ", ") .. "}"
 		end
 
 		if IsT(obj) then

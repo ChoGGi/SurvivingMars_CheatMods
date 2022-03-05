@@ -1848,7 +1848,7 @@ function ChoGGi.MenuFuncs.SetBuildingTraits(action)
 		callback = CallBackFunc,
 		items = item_list,
 		title = TranslationTable[302535920000129--[[Set]]] .. " " .. TranslationTable[302535920000992--[[Building Traits]]] .. " " .. TranslationTable[302535920000846--[[For]]] .. " " .. name,
-		hint = ChoGGi.ComFuncs.TableConcat(hint),
+		hint = table.concat(hint),
 		multisel = true,
 		checkboxes = {
 			{
