@@ -1,18 +1,10 @@
 -- See LICENSE for terms
 
--- I translate all the strings at startup, so it's a table lookup instead of a func call (okay it wasn't worth it)
--- ~ ChoGGi.Strings[27]
-
--- amount of entries in the CSV file
-local string_limit = 1700
-
-local testing = ChoGGi.testing
-
 -- what _InternalTranslate returns on failure
 local missing_text = ChoGGi.Temp.missing_text
 
 -- local some globals
-local type, tostring, print = type, tostring, print
+local type, tostring = type, tostring
 local _InternalTranslate, T, IsT = _InternalTranslate, T, IsT
 local pcall = pcall
 
@@ -41,7 +33,7 @@ local function Translate(t, context, ...)
 		return str
 	end
 	-- false result means _InternalTranslate failed
-	local result, str = pcall(_InternalTranslate, t, context, ...)
+	result, str = pcall(_InternalTranslate, t, context, ...)
 	return result and str or tostring(str)
 end
 ChoGGi.ComFuncs.Translate = Translate
@@ -110,40 +102,30 @@ do -- when examine examines TranslationTable
 
 end -- do
 
-do -- UpdateStringsList (fired below, and whenever lang is changed)
-	-- we need to pad some zeros
---~ 	local locId_sig = shift(255, 56)
---~ 	local LightUserData = LightUserData
---~ 	local bor = bor
---~ 	local GetLanguage = GetLanguage
---~ 	local setmetatable, next = setmetatable, next
---~ 			local str = _InternalTranslate(LightUserData(bor(i, locId_sig)))
+function ChoGGi.ComFuncs.UpdateStringsList()
+  local lang = GetLanguage()
+  ChoGGi.lang = lang
 
-	function ChoGGi.ComFuncs.UpdateStringsList()
-		local lang = GetLanguage()
-		ChoGGi.lang = lang
+  -- devs didn't bother changing droid font to one that supports unicode, so we do this when it isn't eng
+  if lang ~= "English" then
+    -- first get the unicode font name
+    local f = TranslationTable[997--[[*fontname*, 15, aa]]]
+    -- Index of first , then crop out the rest
+    f = f:sub(1, f:find(", ")-1)
+    -- might use it for something else?
+    ChoGGi.font = f
 
-		-- devs didn't bother changing droid font to one that supports unicode, so we do this when it isn't eng
-		if lang ~= "English" then
-			-- first get the unicode font name
-			local f = TranslationTable[997--[[*fontname*, 15, aa]]]
-			-- Index of first , then crop out the rest
-			f = f:sub(1, f:find(", ")-1)
-			-- might use it for something else?
-			ChoGGi.font = f
+    -- these four don't get to use non-eng fonts, cause screw you is why
+    -- ok it's these aren't expected to be exposed to end users, but console is in mod editor so...?
+    local TextStyles = TextStyles
+    TextStyles.Console.TextFont = f .. ", 18, bold, aa"
+    TextStyles.ConsoleLog.TextFont = f .. ", 13, bold, aa"
+    TextStyles.DevMenuBar.TextFont = f .. ", 18, aa"
+    TextStyles.GizmoText.TextFont = f .. ", 32, bold, aa"
 
-			-- these four don't get to use non-eng fonts, cause screw you is why
-			-- ok it's these aren't expected to be exposed to end users, but console is in mod editor so...?
-			local TextStyles = TextStyles
-			TextStyles.Console.TextFont = f .. ", 18, bold, aa"
-			TextStyles.ConsoleLog.TextFont = f .. ", 13, bold, aa"
-			TextStyles.DevMenuBar.TextFont = f .. ", 18, aa"
-			TextStyles.GizmoText.TextFont = f .. ", 32, bold, aa"
+  end
 
-		end
-
-	end
-end -- do
+end
 
 -- always fire on startup
 ChoGGi.ComFuncs.UpdateStringsList()

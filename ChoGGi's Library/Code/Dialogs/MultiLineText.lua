@@ -4,7 +4,6 @@
 
 local table = table
 local CreateRealTimeThread = CreateRealTimeThread
-local Translate = ChoGGi.ComFuncs.Translate
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local TranslationTable = TranslationTable
 

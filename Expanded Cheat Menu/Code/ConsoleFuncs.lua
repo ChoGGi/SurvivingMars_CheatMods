@@ -15,7 +15,6 @@ local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 local DotPathToObject = ChoGGi.ComFuncs.DotPathToObject
 local RetFilesInFolder = ChoGGi.ComFuncs.RetFilesInFolder
-local Translate = ChoGGi.ComFuncs.Translate
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 

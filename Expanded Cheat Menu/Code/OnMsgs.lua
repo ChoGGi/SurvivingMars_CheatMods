@@ -9,11 +9,10 @@ local Msg = Msg
 local OnMsg = OnMsg
 local CreateRealTimeThread = CreateRealTimeThread
 local T = T
+local TranslationTable = TranslationTable
 -- no sense in localing it, but I keep forgetting the name...
 local ClassDescendantsList = ClassDescendantsList
 
-local TranslationTable = TranslationTable
-local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local AttachToNearestDome = ChoGGi.ComFuncs.AttachToNearestDome

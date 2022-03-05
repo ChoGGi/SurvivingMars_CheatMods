@@ -13,7 +13,6 @@ local Random = ChoGGi.ComFuncs.Random
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 local TranslationTable = TranslationTable
 
-local T = T
 local box, point = box, point
 local IsValid = IsValid
 local PropObjGetProperty = PropObjGetProperty

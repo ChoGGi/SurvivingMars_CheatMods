@@ -27,14 +27,14 @@ return {
 - All colonists are <em>Idiots</em>
 - No research technologies unlocked
 - No sponsored research]]),
-		game_apply = function(self, city)
+		game_apply = function(self)
 			CreateGameTimeThread(function()
 				Sleep(100) -- Wait until applicants generation has completed
 				g_ApplicantPoolFilter.Idiot = nil
 			end)
 			-- Overwrite discovered (but not researched, possibly from the commander profile) techs to achieve the 'no techs unlocked' effect
-			local status = UIColony.tech_status
-			for _, status in pairs(status) do
+			local statuses = UIColony.tech_status
+			for _, status in pairs(statuses) do
 				if status.discovered and not status.researched then
 					status.discovered = false
 				end

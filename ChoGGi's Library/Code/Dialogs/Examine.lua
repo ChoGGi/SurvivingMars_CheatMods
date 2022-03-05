@@ -2752,7 +2752,7 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 				local name = trans(name_orig):gsub(">",""):gsub("<",""):gsub("/","")
 
 				--
-				local name = "<tags off>" .. name .. "<tags on>"
+				name = "<tags off>" .. name .. "<tags on>"
 
 				if obj.class and name_orig ~= obj.class then
 					-- I can't seem to translate an obj.displayname if it's a T(0, "str")... (RetName)

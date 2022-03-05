@@ -9,9 +9,8 @@ local TableToLuaCode = TableToLuaCode
 local SaveLocalStorage = SaveLocalStorage
 local ThreadLockKey = ThreadLockKey
 local ThreadUnlockKey = ThreadUnlockKey
-
 local TranslationTable = TranslationTable
-local Translate = ChoGGi.ComFuncs.Translate
+
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 

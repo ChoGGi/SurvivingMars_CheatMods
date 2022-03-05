@@ -2,7 +2,6 @@
 
 -- displays the console in a dialog
 
-local Translate = ChoGGi.ComFuncs.Translate
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 local TranslationTable = TranslationTable
 

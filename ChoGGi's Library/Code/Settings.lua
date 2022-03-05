@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local Translate = ChoGGi.ComFuncs.Translate
 local TranslationTable = TranslationTable
 
 do -- stored tables stuff

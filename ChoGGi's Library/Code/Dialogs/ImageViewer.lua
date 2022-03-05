@@ -1,9 +1,7 @@
 -- See LICENSE for terms
 
 -- displays images
-
 local MeasureImage = UIL.MeasureImage
-local T = T
 
 local TranslationTable = TranslationTable
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle

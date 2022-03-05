@@ -2,14 +2,12 @@
 
 -- not sure where to put this stuff
 
-local T = T
-
 -- defaults to 20 items
 const.nConsoleHistoryMaxSize = 100
 
 -- bugfix?
 -- got me, MapTools shouldn't be doing anything
-if not rawget(_G, "DroneDebug") then
+if not DroneDebug then
 	DroneDebug = {ShowInfo = empty_func}
 end
 

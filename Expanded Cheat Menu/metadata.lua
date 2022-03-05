@@ -100,6 +100,7 @@ return PlaceObj("ModDef", {
 		"Code/Menus/ShuttleMenu.lua",
 		"Code/Menus/TerraformingFunc.lua",
 		"Code/Menus/TerraformingMenu.lua",
+		-- make sure KeysFunc is above Keys
 		"Code/Menus/KeysFunc.lua",
 		"Code/Menus/Keys.lua",
 

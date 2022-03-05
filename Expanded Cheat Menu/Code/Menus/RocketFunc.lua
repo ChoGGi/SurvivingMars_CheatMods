@@ -3,7 +3,6 @@
 local type = type
 
 local TranslationTable = TranslationTable
-local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
 function ChoGGi.MenuFuncs.SetPodPrice()

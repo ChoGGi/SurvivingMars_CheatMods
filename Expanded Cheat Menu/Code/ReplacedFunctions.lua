@@ -11,7 +11,6 @@ local CreateRealTimeThread = CreateRealTimeThread
 local DeleteThread = DeleteThread
 
 local TranslationTable = TranslationTable
-local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local SetDlgTrans = ChoGGi.ComFuncs.SetDlgTrans
 local RetName = ChoGGi.ComFuncs.RetName

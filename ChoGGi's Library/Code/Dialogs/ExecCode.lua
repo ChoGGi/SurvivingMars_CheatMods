@@ -3,7 +3,6 @@
 -- shows a dialog with to execute code in
 
 local TranslationTable = TranslationTable
-local Translate = ChoGGi.ComFuncs.Translate
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 

@@ -7,7 +7,6 @@ local pairs, type = pairs, type
 local TranslationTable = TranslationTable
 local RetName = ChoGGi.ComFuncs.RetName
 local FindThreadFunc = ChoGGi.ComFuncs.FindThreadFunc
-local Translate = ChoGGi.ComFuncs.Translate
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)

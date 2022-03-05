@@ -12,7 +12,6 @@ local IsValid = IsValid
 
 local TranslationTable = TranslationTable
 local RetName = ChoGGi.ComFuncs.RetName
-local Translate = ChoGGi.ComFuncs.Translate
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
