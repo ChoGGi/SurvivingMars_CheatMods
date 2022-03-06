@@ -11,7 +11,30 @@ OnMsg.ShortcutsReloaded = ChoGGi.ComFuncs.Rebuildshortcuts
 -- So we have shortcuts when LUA reloads
 OnMsg.ReloadLua = ChoGGi.ComFuncs.Rebuildshortcuts
 
--- Use this message to perform post-built actions on the final classes
+function OnMsg.ClassesPostprocess()
+
+	-- the first time you open a ModItemOptionInputBox the text will be blank when it's the default text.
+	-- opening a second time fixes it or appending the "default" text like so:
+	local template = XTemplates.PropTextInput[1]
+	local idx = table.find(template, "name", "OnMouseButtonDown(self, pos, button)")
+	if idx then
+		template[idx] = function(self, pos, button)
+			XPropControl.OnMouseButtonDown(self, pos, button)
+			if self.enabled then
+				local prop_meta = self.prop_meta
+				local obj = ResolvePropObj(self.context)
+--~ 				CreateMarsRenameControl(GetDialog(self), prop_meta.name, obj[prop_meta.id],
+				CreateMarsRenameControl(GetDialog(self), prop_meta.name, obj[prop_meta.id] or prop_meta.default,
+					function(name)
+						name = name:trim_spaces()
+						obj:SetProperty(prop_meta.id, name)
+						self:OnPropUpdate(self.context, prop_meta, name)
+					end, nil, self.context, prop_meta)
+			end
+		end
+	end
+end
+
 function OnMsg.ClassesBuilt()
 	-- Add build cat for my items
 	local bc = BuildCategories

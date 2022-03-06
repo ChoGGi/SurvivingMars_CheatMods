@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v11.1 (Unreleased)
+- Added a fix for ModItemOptionInputBox not showing option the first time you open it.
 
 ## v11.0 (5 Mar 2022)
 - Another issue with deleting domes.

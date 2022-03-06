@@ -1,4 +1,12 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library",
+			"version_major", 11,
+			"version_minor", 0,
+		}),
+	},
 	"title", "Centred HUD",
 	"id", "ChoGGi_CentredHUD",
 	"steam_id", "1594140397",

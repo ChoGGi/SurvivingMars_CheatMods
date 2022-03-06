@@ -1,4 +1,12 @@
 return PlaceObj("ModDef", {
+	"dependencies", {
+		PlaceObj("ModDependency", {
+			"id", "ChoGGi_Library",
+			"title", "ChoGGi's Library",
+			"version_major", 11,
+			"version_minor", 0,
+		}),
+	},
 	"title", "Pinned Icon Scale",
 	"id", "ChoGGi_PinnedIconScale",
 	"steam_id", "2653690138",
