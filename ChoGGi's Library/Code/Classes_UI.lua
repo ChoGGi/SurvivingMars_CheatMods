@@ -3,6 +3,8 @@
 --~ box(left/x, top/y, right/w, bottom/h) :minx() :miny() :sizex() :sizey()
 --~ box() or sizebox()
 
+local TranslationTable = TranslationTable
+
 -- store opened dialogs (make sure any refs to this table are only used in this mod)
 if not rawget(_G, "ChoGGi_dlgs_opened") then
 	ChoGGi_dlgs_opened = {}
@@ -11,7 +13,7 @@ end
 local Random = ChoGGi.ComFuncs.Random
 --~ local RetName = ChoGGi.ComFuncs.RetName
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
-local TranslationTable = TranslationTable
+
 
 local box, point = box, point
 local IsValid = IsValid

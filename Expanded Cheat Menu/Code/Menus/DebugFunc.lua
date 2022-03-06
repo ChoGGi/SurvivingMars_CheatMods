@@ -3,12 +3,12 @@
 local pairs, type, tostring, table = pairs, type, tostring, table
 local IsValid = IsValid
 local GetCursorWorldPos = GetCursorWorldPos
-
+local TranslationTable = TranslationTable
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local Translate = ChoGGi.ComFuncs.Translate
 local RandomColour = ChoGGi.ComFuncs.RandomColour
-local TranslationTable = TranslationTable
+
 
 function ChoGGi.MenuFuncs.SkipMissingMods_Toggle()
 	if blacklist then

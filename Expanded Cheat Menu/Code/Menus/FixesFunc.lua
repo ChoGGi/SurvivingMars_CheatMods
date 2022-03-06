@@ -5,12 +5,12 @@ local pairs, type = pairs, type
 local Sleep = Sleep
 local IsValid = IsValid
 local DoneObject = DoneObject
-
+local TranslationTable = TranslationTable
 --~ local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local DeleteObject = ChoGGi.ComFuncs.DeleteObject
 local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
-local TranslationTable = TranslationTable
+
 local testing = ChoGGi.testing
 
 function ChoGGi.MenuFuncs.RemoveInvalidLabelObjects()

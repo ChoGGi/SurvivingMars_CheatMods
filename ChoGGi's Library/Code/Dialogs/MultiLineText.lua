@@ -5,8 +5,8 @@
 local table = table
 local CreateRealTimeThread = CreateRealTimeThread
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
-local TranslationTable = TranslationTable
 
+local TranslationTable = TranslationTable
 local blacklist, g_env = ChoGGi.blacklist
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	blacklist = false

@@ -567,6 +567,11 @@ You can access a default value with obj:GetDefaultPropertyValue(""""NAME"""")	",
 302535920001324, ECM: OpenInListChoice(list) is blank... This shouldn't happen., ECM。 OpenInListChoice(list)为空白... 这不应该发生。,,,,,
 302535920000068, Filter Items, 过滤项目,,,,,
 302535920000806, Only show items containing this text., 只显示包含此文本的项目。,,,,,
+302535920000077, "Enter a custom value to be applied.
+The listitem <color ChoGGi_green>must</color> be selected for this to take effect (it's the last listitem).
+It won't be visible unless the ""%s"" checkbox is enabled.
+
+Warning: Entering the wrong type of value may crash the game or otherwise cause issues."
 302535920000078, Custom Value, 自定义值,,,,,
 302535920000079, * Use this custom value, * 使用此自定义值,,,,,
 302535920000080, Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used or <left_click>*2 a list item)., 按OK键应用并关闭对话框（也可使用方向键和Enter/Esc键,,,,,

@@ -2,6 +2,7 @@
 
 local DoneObject = DoneObject
 local OnMsg = OnMsg
+local TranslationTable = TranslationTable
 
 local RemoveAttachAboveHeightLimit = ChoGGi.ComFuncs.RemoveAttachAboveHeightLimit
 

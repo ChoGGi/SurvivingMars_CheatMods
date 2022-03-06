@@ -3,6 +3,7 @@
 local table = table
 local type = type
 local HasModsWithOptions = HasModsWithOptions
+local TranslationTable = TranslationTable
 
 local function UpdateProp(xtemplate)
 	local idx = table.find(xtemplate, "MaxWidth", 400)
@@ -133,7 +134,7 @@ function OnMsg.ClassesPostprocess()
 		if xtemplate.Id == "idList" then
 			table.insert(xtemplate, 5, PlaceObj("XTemplateAction", {
 				"ActionId", "idModOptions",
-				"ActionName", T(1000867--[[Mod Options]]),
+				"ActionName", TranslationTable[1000867--[[Mod Options]]],
 				"ActionToolbar", "mainmenu",
 				"__condition", function()
 					if CurrentModOptions.GetProperty then

@@ -1,11 +1,11 @@
 -- See LICENSE for terms
 
 local tostring, type = tostring, type
+local TranslationTable = TranslationTable
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Translate = ChoGGi.ComFuncs.Translate
 local SetPropertyProp = ChoGGi.ComFuncs.SetPropertyProp
---~	local RetName = ChoGGi.ComFuncs.RetName
 
 function ChoGGi.MenuFuncs.SetDroneBatteryCap()
 	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("DroneBatteryMax")

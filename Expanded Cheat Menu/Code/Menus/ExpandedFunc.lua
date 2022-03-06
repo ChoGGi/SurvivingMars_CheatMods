@@ -2,16 +2,16 @@
 
 local type, tostring = type, tostring
 local table = table
+local TranslationTable = TranslationTable
 
 local RetName = ChoGGi.ComFuncs.RetName
-local TranslationTable = TranslationTable
 local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
 do -- BuildGridList
 	local IsValid = IsValid
 	local function BuildGrid(grid, list)
-		local g_str = Translate(11629--[[GRID <i>]])
+		local g_str = TranslationTable[11629--[[GRID <i>]]]
 		for i = 1, #grid do
 			for j = 1, #grid[i].elements do
 				local bld = grid[i].elements[j].building

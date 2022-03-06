@@ -9,8 +9,8 @@ local type, rawget = type, rawget
 local Sleep = Sleep
 local CreateRealTimeThread = CreateRealTimeThread
 local DeleteThread = DeleteThread
-
 local TranslationTable = TranslationTable
+
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local SetDlgTrans = ChoGGi.ComFuncs.SetDlgTrans
 local RetName = ChoGGi.ComFuncs.RetName
@@ -475,7 +475,15 @@ function OnMsg.ClassesGenerate()
 	function UIRangeBuilding:SetUIRange(radius, ...)
 		local bs = UserSettings.BuildingSettings[self.template_name]
 		if bs and bs.uirange then
-			radius = bs.uirange
+			if self:IsKindOf("TriboelectricScrubber") then
+				local props = self:GetProperties()
+				local idx = table.find(props, "id", "UIRange")
+				if idx then
+					props[idx].max = bs.uirange
+				end
+			else
+				radius = bs.uirange
+			end
 		end
 		return ChoOrig_UIRangeBuilding_SetUIRange(self, radius, ...)
 	end

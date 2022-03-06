@@ -64,8 +64,8 @@ local GetMapID = GetMapID
 local XFlashWindow = XFlashWindow
 local TMeta = TMeta
 local TConcatMeta = TConcatMeta
-
 local TranslationTable = TranslationTable
+
 local Translate = ChoGGi.ComFuncs.Translate
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed

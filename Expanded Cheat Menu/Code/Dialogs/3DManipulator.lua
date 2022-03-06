@@ -9,8 +9,8 @@ local tonumber = tonumber
 local point = point
 local IsPoint = IsPoint
 local IsValid = IsValid
-
 local TranslationTable = TranslationTable
+
 local RetName = ChoGGi.ComFuncs.RetName
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 

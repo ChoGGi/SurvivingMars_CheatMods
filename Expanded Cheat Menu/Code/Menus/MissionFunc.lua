@@ -2,8 +2,8 @@
 
 local type = type
 local table = table
-
 local TranslationTable = TranslationTable
+
 local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local blacklist = ChoGGi.blacklist

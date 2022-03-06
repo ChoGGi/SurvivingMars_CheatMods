@@ -10,6 +10,7 @@ local OnMsg = OnMsg
 local CreateRealTimeThread = CreateRealTimeThread
 local T = T
 local TranslationTable = TranslationTable
+
 -- no sense in localing it, but I keep forgetting the name...
 local ClassDescendantsList = ClassDescendantsList
 

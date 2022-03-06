@@ -1,12 +1,11 @@
 -- See LICENSE for terms
 
 local pairs, type = pairs, type
-
+local TranslationTable = TranslationTable
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Translate = ChoGGi.ComFuncs.Translate
 local Random = ChoGGi.ComFuncs.Random
 local SelObject = ChoGGi.ComFuncs.SelObject
-local TranslationTable = TranslationTable
 local GetCursorWorldPos = GetCursorWorldPos
 
 function ChoGGi.MenuFuncs.CaveIn()
@@ -1771,7 +1770,7 @@ do -- ResearchRemove
 	}
 
 	function ChoGGi.MenuFuncs.ResearchRemove()
-		local title = T(311--[[Research]]) .. " " .. TranslationTable[302535920000281--[[Remove]]]
+		local title = TranslationTable[311--[[Research]]] .. " " .. TranslationTable[302535920000281--[[Remove]]]
 		local item_list = {}
 		local c = 0
 
@@ -1794,7 +1793,7 @@ do -- ResearchRemove
 					text = text,
 					value = id,
 					icon = "<image " .. tech.icon .. " 250>",
-					hint = Translate(T{tech.description, tech}) .. "\n\n" .. Translate(1000097--[[Category]]) .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
+					hint = Translate(T{tech.description, tech}) .. "\n\n" .. TranslationTable[1000097--[[Category]]] .. ": " .. tech.group .. "\n\n<image " .. tech.icon .. " 1500>",
 				}
 			end
 		end
@@ -1919,7 +1918,7 @@ do -- ResearchTech
 	ChoGGi.MenuFuncs.AllRegularTechs = AllRegularTechs
 
 	function ChoGGi.MenuFuncs.ResearchTech()
-		local title = T(311, "Research") .. " / " .. TranslationTable[302535920000318--[[Unlock]]] .. " " .. T(373, "Tech")
+		local title = TranslationTable[311--[[Research]]] .. " / " .. TranslationTable[302535920000318--[[Unlock]]] .. " " .. TranslationTable[3734--[[Tech]]]
 		local item_list = {
 			{
 				text = "	" .. TranslationTable[302535920000306--[[Everything]]],
@@ -1964,10 +1963,11 @@ do -- ResearchTech
 					text = text,
 					value = tech_id,
 					icon = icon1,
-					hint = T{tech.description, tech} .. "\n\n" .. T(1000097, "Category") .. ": " .. tech.group .. icon2,
+					hint = T{tech.description, tech} .. "\n\n" .. TranslationTable[1000097--[[Category]]] .. ": " .. tech.group .. icon2,
 				}
 			end
 		end
+--~ 		ex(item_list)
 
 		local function CallBackFunc(choice)
 			if choice.nothing_selected then
@@ -1985,12 +1985,12 @@ do -- ResearchTech
 			local text
 			if check1 then
 				func = "DiscoverTech_Old"
-				text = Translate(2--[[Unlock Tech]])
+				text = TranslationTable[2--[[Unlock Tech]]]
 			end
 			-- override if both checked
 			if check2 then
 				func = "GrantTech"
-				text = Translate(3--[[Grant Research]])
+				text = TranslationTable[3--[[Grant Research]]]
 			end
 			local count = 0
 
@@ -2050,12 +2050,12 @@ do -- ResearchTech
 			height = 800,
 			checkboxes = {
 				{
-					title = T(2, "Unlock Tech"),
+					title = TranslationTable[2--[[Unlock Tech]]],
 					hint = TranslationTable[302535920000319--[[Just unlocks in the research tree.]]],
 					checked = true,
 				},
 				{
-					title = T(311, "Research"),
+					title = TranslationTable[311--[[Research]]],
 					hint = TranslationTable[302535920000320--[[Unlocks and researchs.]]],
 					checked = research_checked,
 					func = function(_, check)
@@ -2075,10 +2075,10 @@ function ChoGGi.MenuFuncs.OpenModEditor()
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		Translate(6779--[[Warning]]) .. "!\n" .. TranslationTable[302535920001508--[[Save your game.
+		TranslationTable[6779--[[Warning]]] .. "!\n" .. TranslationTable[302535920001508--[[Save your game.
 This will switch to a new map.]]],
 		CallBackFunc,
-		Translate(6779--[[Warning]]) .. ": " .. TranslationTable[302535920000236--[[Mod Editor]]]
+		TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000236--[[Mod Editor]]]
 		)
 end
 

@@ -3,8 +3,8 @@
 -- local some globals
 local table = table
 local CmpLower = CmpLower
-
 local TranslationTable = TranslationTable
+
 local Translate = ChoGGi.ComFuncs.Translate
 local RetName = ChoGGi.ComFuncs.RetName
 local RetMapSettings = ChoGGi.ComFuncs.RetMapSettings

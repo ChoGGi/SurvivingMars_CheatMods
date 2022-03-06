@@ -1,8 +1,8 @@
 -- See LICENSE for terms
 
 local type = type
-
 local TranslationTable = TranslationTable
+
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
 function ChoGGi.MenuFuncs.SetPodPrice()

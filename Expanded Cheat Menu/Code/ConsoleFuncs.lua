@@ -1,10 +1,10 @@
 -- See LICENSE for terms
 
 -- menus/buttons added to the Console
-
 local table = table
 local CmpLower = CmpLower
 local print, type, rawget = print, type, rawget
+local TranslationTable = TranslationTable
 
 -- rebuild list of objects to examine when user changes settings
 OnMsg.ChoGGi_SettingsUpdated = ChoGGi.ConsoleFuncs.BuildExamineMenu

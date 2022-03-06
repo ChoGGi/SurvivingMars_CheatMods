@@ -1642,11 +1642,22 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(action)
 				local objs = ChoGGi.ComFuncs.MapGet(id)
 				for i = 1, #objs do
 					local o = objs[i]
-					o:SetUIRange(value)
+					if id == "TriboelectricScrubber" then
+						local props = o:GetProperties()
+						local idx = table.find(props, "id", "UIRange")
+						if idx then
+							props[idx].max = value
+						end
+--~ 						o:SetUIRange(value)
+					else
+						o:SetUIRange(value)
+					end
 					SelectObj(o)
 					WaitMsg("OnRender")
 				end
-				SelectObj(obj)
+				if obj then
+					SelectObj(obj)
+				end
 			end)
 
 			ChoGGi.SettingFuncs.WriteSettings()

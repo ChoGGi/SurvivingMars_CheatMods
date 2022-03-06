@@ -1,10 +1,11 @@
 -- See LICENSE for terms
 
 local testing = ChoGGi.testing
+
 -- Strings.lua
-local TranslationTable = TranslationTable
 local Translate = ChoGGi.ComFuncs.Translate
 
+local TranslationTable = TranslationTable
 local pairs, tonumber, type, tostring = pairs, tonumber, type, tostring
 local table = table
 local AsyncRand = AsyncRand

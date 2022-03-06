@@ -1,9 +1,10 @@
 -- See LICENSE for terms
 
+local TranslationTable = TranslationTable
 local Translate = ChoGGi.ComFuncs.Translate
 local SettingState = ChoGGi.ComFuncs.SettingState
 local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
-local TranslationTable = TranslationTable
+
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
@@ -42,7 +43,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000567--[[Worker Capacity]]
 		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".workers",
 			TranslationTable[302535920000568--[["Set worker capacity of buildings of selected type, also applies to newly placed ones."]]]
-		) or TranslationTable[302535920000568]
+		) or TranslationTable[302535920000568--[["Set worker capacity of buildings of selected type, also applies to newly placed ones."]]]
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetWorkerCapacity,
 	ActionShortcut = "Ctrl-Shift-W",
@@ -59,7 +60,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000569--[[Building Capacity
 		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".capacity",
 			TranslationTable[302535920000570--[[Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).]]]
-		) or TranslationTable[302535920000570]
+		) or TranslationTable[302535920000570--[[Set capacity of buildings of selected type, also applies to newly placed ones (colonists/air/water/elec).]]]
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetBuildingCapacity,
 	ActionShortcut = "Ctrl-Shift-C",
@@ -76,7 +77,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000571--[[Building Visitor 
 		return obj and SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".visitors",
 			TranslationTable[302535920000572--[[Set visitors capacity of all buildings of selected type, also applies to newly placed ones.]]]
-		) or TranslationTable[302535920000572]
+		) or TranslationTable[302535920000572--[[Set visitors capacity of all buildings of selected type, also applies to newly placed ones.]]]
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetVisitorCapacity,
 	ActionShortcut = "Ctrl-Shift-V",

@@ -1,12 +1,12 @@
 -- See LICENSE for terms
 
 local type, table = type, table
-
+local TranslationTable = TranslationTable
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local Random = ChoGGi.ComFuncs.Random
 local Translate = ChoGGi.ComFuncs.Translate
 local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
-local TranslationTable = TranslationTable
+
 
 function ChoGGi.MenuFuncs.OutsideWorkplaceSanityDecrease_Toggle()
 	ChoGGi.ComFuncs.SetConstsG("OutsideWorkplaceSanityDecrease", ChoGGi.ComFuncs.NumRetBool(Consts.OutsideWorkplaceSanityDecrease, 0, ChoGGi.Consts.OutsideWorkplaceSanityDecrease))

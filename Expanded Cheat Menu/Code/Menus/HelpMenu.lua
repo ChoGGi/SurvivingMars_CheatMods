@@ -3,7 +3,7 @@
 local TranslationTable = TranslationTable
 local Translate = ChoGGi.ComFuncs.Translate
 local SettingState = ChoGGi.ComFuncs.SettingState
-local TranslationTable = TranslationTable
+
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 local str_url = "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/"

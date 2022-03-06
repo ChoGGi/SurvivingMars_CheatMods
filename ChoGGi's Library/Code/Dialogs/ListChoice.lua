@@ -57,8 +57,8 @@ local RetProperType = ChoGGi.ComFuncs.RetProperType
 local Translate = ChoGGi.ComFuncs.Translate
 local DotPathToObject = ChoGGi.ComFuncs.DotPathToObject
 local ValidateImage = ChoGGi.ComFuncs.ValidateImage
-local TranslationTable = TranslationTable
 
+local TranslationTable = TranslationTable
 local type, tostring = type, tostring
 local table = table
 local point = point

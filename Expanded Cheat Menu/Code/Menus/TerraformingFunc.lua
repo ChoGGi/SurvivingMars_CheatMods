@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 local pairs, type = pairs, type
-
+local TranslationTable = TranslationTable
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
 function ChoGGi.MenuFuncs.SetToxicPoolsMax()

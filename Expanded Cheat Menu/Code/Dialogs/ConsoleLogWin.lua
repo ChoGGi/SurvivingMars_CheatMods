@@ -2,8 +2,8 @@
 
 -- displays the console in a dialog
 
-local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 local TranslationTable = TranslationTable
+local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)

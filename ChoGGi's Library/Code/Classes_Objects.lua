@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local TranslationTable = TranslationTable
 local AveragePoint2D = AveragePoint2D
 local PolylineSetParabola = ChoGGi.ComFuncs.PolylineSetParabola
 

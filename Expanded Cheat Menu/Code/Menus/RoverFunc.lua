@@ -1,9 +1,9 @@
 -- See LICENSE for terms
 
 local type = type
-
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local TranslationTable = TranslationTable
+local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+
 --~	local Translate = ChoGGi.ComFuncs.Translate
 --~	local RetName = ChoGGi.ComFuncs.RetName
 

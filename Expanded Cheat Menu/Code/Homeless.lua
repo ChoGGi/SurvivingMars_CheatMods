@@ -2,6 +2,8 @@
 
 -- not sure where to put this stuff
 
+local TranslationTable = TranslationTable
+
 -- defaults to 20 items
 const.nConsoleHistoryMaxSize = 100
 
