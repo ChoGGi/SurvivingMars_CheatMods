@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 7,
+	"version", 8,
 	"version_major", 0,
-	"version_minor", 7,
+	"version_minor", 8,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -24,6 +24,11 @@ Drone hub extender range updates.
 Drones and underground wonders.
 Underground passage cleanup.
 Newly constructed domes birth rate (thanks Athenium).
+Problem updating supply grid.
+Colonist residences checking wrong city.
+CanReachBuilding checking the wrong building.
+Storybit notification issue.
+GridSwitch (pipes/cables) construction not checking for domes as blocking objs.
 etc...
 
 

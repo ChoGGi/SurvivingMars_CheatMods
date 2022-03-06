@@ -2,6 +2,7 @@
 
 local table = table
 local type = type
+local ipairs = ipairs
 local GetDomeAtPoint = GetDomeAtPoint
 local IsValidThread = IsValidThread
 local IsValid = IsValid
@@ -133,14 +134,17 @@ Resources can be moved from one map to the other by using the <em>Edit Payload</
 
 end
 --
-do -- I dunno, maybe paradox should push an update?
+do -- I dunno, maybe paradox should push another update?
 	if Platform.linux then
-		local ChoOrig_UIL_RequestImage = UIL.RequestImage
+		local UIL = UIL
 		local ui_images = {}
+
+		local ChoOrig_UIL_RequestImage = UIL.RequestImage
 		function UIL.RequestImage(image)
 			table.insert_unique(ui_images, image)
 			ChoOrig_UIL_RequestImage(image)
 		end
+		--
 		function OnMsg.SystemActivate()
 			hr.TR_ForceReload = 1
 			for _, image in ipairs(ui_images) do
@@ -200,6 +204,22 @@ do -- fixup map id
 	end
 end
 --
+do -- SA_Gameplay.lua SA_CustomNotification:Exec
+	local ChoOrig_GetOnScreenNotification = GetOnScreenNotification
+	local function fake_GetOnScreenNotification(id, ...)
+		return table.find(g_ActiveOnScreenNotifications, 1, id)
+			and ChoOrig_GetOnScreenNotification(id, ...)
+	end
+
+	local ChoOrig_SA_CustomNotification_Exec = SA_CustomNotification.Exec
+	function SA_CustomNotification.Exec(...)
+		GetOnScreenNotification = fake_GetOnScreenNotification
+		ChoOrig_SA_CustomNotification_Exec(...)
+		GetOnScreenNotification = ChoOrig_GetOnScreenNotification
+	end
+end
+--
+local ChooseTraining = ChooseTraining
 function Workforce:ChooseTraining(colonist)
   local training_centers = self.labels.TrainingBuilding or empty_table
   local workplace, shift = ChooseTraining(colonist, training_centers)
@@ -236,23 +256,22 @@ function DoesAnyDroneControlServiceAtPoint(map_id, pt)
     return (IsKindOfClasses(center, "DroneHub") or center.working) and HexAxialDistance(center, pt) <= center.work_radius
   end)
 end
-
-
--- Resupply items
-local GetResupplyItem = GetResupplyItem
-local ChoOrig_ModifyResupplyParam = ModifyResupplyParam
-function ModifyResupplyParam(id, ...)
-	return GetResupplyItem(id) and ChoOrig_ModifyResupplyParam(id, ...)
-end
-local ChoOrig_IsResupplyItemAvailable = IsResupplyItemAvailable
-function IsResupplyItemAvailable(name, ...)
-  local item = GetResupplyItem(name)
-	if item then
-		return ChoOrig_IsResupplyItemAvailable(name, ...)
+--
+do -- ResupplyItems.lua
+	local GetResupplyItem = GetResupplyItem
+	local ChoOrig_ModifyResupplyParam = ModifyResupplyParam
+	function ModifyResupplyParam(id, ...)
+		return GetResupplyItem(id) and ChoOrig_ModifyResupplyParam(id, ...)
 	end
-  return false
+	local ChoOrig_IsResupplyItemAvailable = IsResupplyItemAvailable
+	function IsResupplyItemAvailable(name, ...)
+		local item = GetResupplyItem(name)
+		if item then
+			return ChoOrig_IsResupplyItemAvailable(name, ...)
+		end
+		return false
+	end
 end
-
 -- Clearing waste rock
 local ChoOrig_ClearWasteRockConstructionSite_InitBlockPass = ClearWasteRockConstructionSite.InitBlockPass
 function ClearWasteRockConstructionSite:InitBlockPass(ls, ...)
@@ -270,7 +289,7 @@ function Community:GameInit(...)
   self.next_birth_check_time = GameTime()
 	return ChoOrig_Community_GameInit(self, ...)
 end
-
+--
 function OnMsg.LoadGame()
 	if not mod_EnableMod then
 		return
@@ -472,10 +491,10 @@ function LoadCustomOnScreenNotification(notification, ...)
 end
 
 -- Layout construction allows building buildings that should be locked by tech (Triboelectric Scrubber).
-local ChoOrig_Activate = LayoutConstructionController.Activate
+local ChoOrig_LayoutConstructionController_Activate = LayoutConstructionController.Activate
 function LayoutConstructionController:Activate(...)
 	-- fire first so it builds the tables/etc
-	local ret = ChoOrig_Activate(self, ...)
+	local ret = ChoOrig_LayoutConstructionController_Activate(self, ...)
 
 	if not mod_EnableMod then
 		return ret
@@ -519,10 +538,10 @@ function Farm:Done(...)
 end
 
 -- The devs broke this in Tito update and haven't fixed it yet.
-local ChoOrig_OnMouseButtonDoubleClick = SelectionModeDialog.OnMouseButtonDoubleClick
+local ChoOrig_SelectionModeDialog_OnMouseButtonDoubleClick = SelectionModeDialog.OnMouseButtonDoubleClick
 function SelectionModeDialog:OnMouseButtonDoubleClick(pt, button, ...)
 	if button ~= "L" or not mod_EnableMod then
-		return ChoOrig_OnMouseButtonDoubleClick(self, pt, button, ...)
+		return ChoOrig_SelectionModeDialog_OnMouseButtonDoubleClick(self, pt, button, ...)
 	end
 
 	-- from orig func:
@@ -550,7 +569,76 @@ function SelectionModeDialog:OnMouseButtonDoubleClick(pt, button, ...)
 	SelectObj(obj)
 	return "break"
 end
+--
+do -- SupplyGrid.lua SupplyGridFragment:UpdateGrid
+	local GetRealmByID = GetRealmByID
 
+	local ChoOrig_GetRealm = GetRealm
+	local function fake_GetRealm(obj)
+		return GetRealmByID(obj.city.map_id)
+	end
+	local ChoOrig_SupplyGridFragment_UpdateGrid = SupplyGridFragment.UpdateGrid
+	function SupplyGridFragment.UpdateGrid(...)
+		GetRealm = fake_GetRealm
+		ChoOrig_SupplyGridFragment_UpdateGrid(...)
+		GetRealm = ChoOrig_GetRealm
+	end
+end
+--
+do -- _GameUtils.lua GetAvailableResidences/GetDomesInWalkableDistance
+	local function ReturnCity(func, city, ...)
+		if not city then
+			city = MainCity
+		end
+		return func(city, ...)
+	end
+
+	local ChoOrig_GetAvailableResidences = GetAvailableResidences
+	function GetAvailableResidences(city, ...)
+		return ReturnCity(ChoOrig_GetAvailableResidences, city, ...)
+	end
+	local ChoOrig_GetDomesInWalkableDistance = GetDomesInWalkableDistance
+	function GetDomesInWalkableDistance(city, ...)
+		return ReturnCity(ChoOrig_GetDomesInWalkableDistance, city, ...)
+	end
+end
+--
+do -- Colonist:CanReachBuilding
+	local bld_from_canreach
+	local ChoOrig_FindNearestObject = FindNearestObject
+	local function fake_FindNearestObject(list, obj, ...)
+		return ChoOrig_FindNearestObject(list, bld_from_canreach, ...)
+	end
+
+	local ChoOrig_Colonist_CanReachBuilding = Colonist.CanReachBuilding
+	function Colonist:CanReachBuilding(bld, ...)
+		FindNearestObject = fake_FindNearestObject
+		bld_from_canreach = bld
+		local ret = ChoOrig_Colonist_CanReachBuilding(self, bld, ...)
+		FindNearestObject = ChoOrig_FindNearestObject
+		return ret
+	end
+end
+--
+do -- GridSwitchConstruction.lua GridSwitchConstructionController:UpdateConstructionStatuses
+	local HexGetBuildingNoDome = HexGetBuildingNoDome
+
+	local ChoOrig_HexGetBuilding = HexGetBuilding
+	local function fake_HexGetBuilding(...)
+		return HexGetBuildingNoDome(...)
+	end
+	local ChoOrig_GridSwitchConstructionController_UpdateConstructionStatuses = GridSwitchConstructionController.UpdateConstructionStatuses
+	function GridSwitchConstructionController.UpdateConstructionStatuses(...)
+		HexGetBuilding = fake_HexGetBuilding
+		ChoOrig_GridSwitchConstructionController_UpdateConstructionStatuses(...)
+		HexGetBuilding = ChoOrig_HexGetBuilding
+	end
+end
+--
+--
+--
+--
+--
 -- B&B fixes
 if not g_AvailableDlc.picard then
 	return

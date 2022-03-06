@@ -1,3 +1,10 @@
+v0.8
+Problem updating supply grid.
+Colonist residences checking wrong city.
+CanReachBuilding checking the wrong building.
+Storybit notification issue.
+GridSwitch (pipes/cables) construction not checking for domes as blocking objs.
+
 v0.7
 Changed name.
 Fixed newly constructed domes birth rate (thanks Athenium):

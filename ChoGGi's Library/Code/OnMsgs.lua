@@ -12,13 +12,12 @@ OnMsg.ShortcutsReloaded = ChoGGi.ComFuncs.Rebuildshortcuts
 OnMsg.ReloadLua = ChoGGi.ComFuncs.Rebuildshortcuts
 
 function OnMsg.ClassesPostprocess()
-
 	-- the first time you open a ModItemOptionInputBox the text will be blank when it's the default text.
 	-- opening a second time fixes it or appending the "default" text like so:
 	local template = XTemplates.PropTextInput[1]
 	local idx = table.find(template, "name", "OnMouseButtonDown(self, pos, button)")
 	if idx then
-		template[idx] = function(self, pos, button)
+		template[idx].func = function(self, pos, button)
 			XPropControl.OnMouseButtonDown(self, pos, button)
 			if self.enabled then
 				local prop_meta = self.prop_meta
