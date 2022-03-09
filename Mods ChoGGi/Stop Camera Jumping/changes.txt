@@ -1,3 +1,7 @@
+v0.7
+When a dome fracture happens.
+Changed name to Stop Camera Jumping.
+
 v0.6
 No clue...
 

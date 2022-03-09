@@ -13,4 +13,10 @@ return {
 		"Help", T(0000, "Stop camera from moving to rocket when clicking notification for new trade offer."),
 		"DefaultValue", true,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "StopDomeFracture",
+		"DisplayName", T(0000, "Stop Dome Fracture"),
+		"Help", T(0000, "Stop camera from moving to dome with a fracture."),
+		"DefaultValue", true,
+	}),
 }

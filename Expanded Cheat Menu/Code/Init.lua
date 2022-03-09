@@ -85,6 +85,9 @@ CreateRealTimeThread(function()
 	lib_env.os = env.os
 
 	ChoGGi.ComFuncs.FileExists = env.io.exists
+	if ChoGGi.testing then
+		ChoGGi.env = env
+	end
 end)
 
 -- I should really split ChoGGi into funcs and settings... one of these days

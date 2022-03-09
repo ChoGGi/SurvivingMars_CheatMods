@@ -1,24 +1,24 @@
 return PlaceObj("ModDef", {
-	"title", "Stop Rocket Camera",
+	"title", "Stop Camera Jumping",
 	"id", "ChoGGi_StopTradeCamera",
 	"steam_id", "1796377374",
 	"pops_any_uuid", "7af8a51c-f8ea-4528-aee9-e42368fee80d",
 	"lua_revision", 1007000, -- Picard
-	"version", 6,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 7,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
-	"has_options", true,
 	"TagInterface", true,
 	"TagOther", true,
+	"has_options", true,
 	"description", [[
-Stop the camera from moving to the rocket:
+The camera likes to jump elsewhere when certain things happen (see mod options to customize).
 
-Accepted a trade.
-Selected an expedition.
+Stop the camera from moving to the rocket on: accepted a trade/selected an expedition.
+When a dome fracture happens.
 ]],
 })

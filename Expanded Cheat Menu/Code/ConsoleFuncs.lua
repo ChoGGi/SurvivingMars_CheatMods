@@ -11,6 +11,7 @@ OnMsg.ChoGGi_SettingsUpdated = ChoGGi.ConsoleFuncs.BuildExamineMenu
 -- update UICity list
 OnMsg.ChangeMapDone = ChoGGi.ConsoleFuncs.BuildExamineMenu
 
+local Translate = ChoGGi.ComFuncs.Translate
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 local DotPathToObject = ChoGGi.ComFuncs.DotPathToObject
