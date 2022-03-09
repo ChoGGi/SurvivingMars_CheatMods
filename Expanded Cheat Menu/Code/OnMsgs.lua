@@ -532,7 +532,7 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"]]]
 				toolbar:SetRolloverTemplate("Rollover")
 				toolbar:SetRolloverTitle(TranslationTable[126095410863--[[Info]]])
 				toolbar:SetRolloverText(TranslationTable[302535920000503--[[Right-click an item/submenu to add/remove it from the quickbar.]]])
-				toolbar:SetRolloverHint(TranslationTable[302535920001441--[["<left_click> Activate MenuItem <right_click> Add/Remove"]]])
+				toolbar:SetRolloverHint(T(302535920001441--[["<left_click> Activate MenuItem <right_click> Add/Remove"]]))
 			end
 
 			-- always show menu

@@ -3,13 +3,14 @@
 -- not sure where to put this stuff
 
 local TranslationTable = TranslationTable
+local T = T
 
 -- defaults to 20 items
 const.nConsoleHistoryMaxSize = 100
 
 -- bugfix?
 -- got me, MapTools shouldn't be doing anything
-if not DroneDebug then
+if not rawget(_G, "DroneDebug") then
 	DroneDebug = {ShowInfo = empty_func}
 end
 
@@ -21,9 +22,9 @@ ChoGGi.ComFuncs.SetLibraryToolTips()
 
 -- be too annoying to add templates to all of these manually
 XMenuEntry.RolloverTemplate = "Rollover"
-XMenuEntry.RolloverHint = TranslationTable[608042494285--[[<left_click> Activate]]]
+XMenuEntry.RolloverHint = T(608042494285--[[<left_click> Activate]])
 XListItem.RolloverTemplate = "Rollover"
-XListItem.RolloverHint = TranslationTable[608042494285--[[<left_click> Activate]]]
+XListItem.RolloverHint = T(608042494285--[[<left_click> Activate]])
 
 -- sure, lets have them appear under certain items (though i think mostly just happens from console, and I've changed that so I could remove this?)
 XRolloverWindow.ZOrder = max_int
@@ -36,9 +37,9 @@ XShortcutsHost.ZOrder = 4
 -- make cheats menu look like older one (more gray, less white)
 local dark_gray = -9868951
 XMenuBar.Background = dark_gray
-XMenuBar.RolloverHint = TranslationTable[608042494285--[[<left_click> Activate]]]
+XMenuBar.RolloverHint = T(608042494285--[[<left_click> Activate]])
 XPopupMenu.Background = dark_gray
-XPopupMenu.RolloverHint = TranslationTable[608042494285--[[<left_click> Activate]]]
+XPopupMenu.RolloverHint = T(608042494285--[[<left_click> Activate]])
 -- It sometimes does a jarring white background
 XPopupMenu.DisabledBackground = dark_gray
 -- darker gray

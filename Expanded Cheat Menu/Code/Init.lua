@@ -67,7 +67,7 @@ CreateRealTimeThread(function()
 	-- Might as well reset it
 	Platform.cmdline = orig_cmdline
 
-	local env = g_ConsoleFENV
+	local env = g_ConsoleFENV._G
 	ChoGGi.blacklist = false
 	Msg("ChoGGi_UpdateBlacklistFuncs", env)
 

@@ -53,13 +53,13 @@ local DoneObject = DoneObject
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
 
-local rawget, getmetatable = rawget, getmetatable
 local g_env = _G
+local rawget, getmetatable = rawget, getmetatable
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
-	-- make sure we use the actual funcs if we can
---~ 	rawget = env.rawget
-	getmetatable = env.getmetatable
 	g_env = env
+	-- make sure we use the actual funcs if we can
+	rawget = env.rawget
+	getmetatable = env.getmetatable
 end
 -- backup orginal function for later use (checks if we already have a backup, or else inf problems)
 local function SaveOrigFunc(class_or_func, func_name)
@@ -68,7 +68,6 @@ local function SaveOrigFunc(class_or_func, func_name)
 	if func_name then
 		local newname = class_or_func .. "_" .. func_name
 		if not OrigFuncs[newname] then
---~ 			local class_obj = rawget(_G, class_or_func)
 			local class_obj = g_env.class_or_func
 			if class_obj then
 				OrigFuncs[newname] = rawget(class_obj, func_name)
@@ -77,7 +76,6 @@ local function SaveOrigFunc(class_or_func, func_name)
 	-- regular func
 	else
 		if not OrigFuncs[class_or_func] then
---~ 			OrigFuncs[class_or_func] = rawget(_G, class_or_func)
 			OrigFuncs[class_or_func] = g_env.class_or_func
 		end
 	end
@@ -231,8 +229,7 @@ do -- RetName
 		if name:find("%.") then
 			list = DotPathToObject(name)
 		else
---~ 			list = g_env[name]
-			list = rawget(g, name)
+			list = g_env[name]
 		end
 		if not list then
 			return
@@ -274,7 +271,6 @@ do -- RetName
 
 	do -- stuff we need to be in-game for
 		local function AddFuncsChoGGi(name, skip)
---~ 			local list = g_env.ChoGGi[name]
 			local list = g.ChoGGi[name]
 			for key, value in pairs(list) do
 				if not lookup_table[value] then
@@ -289,9 +285,6 @@ do -- RetName
 
 		local function BuildNameList(update_trans)
 			lookup_table = ChoGGi_lookup_names or {}
-			-- If env._G was updated from ECM HelperMod
---~ 			g_env = g_env
-
 			lookup_table[g.terminal.desktop] = "terminal.desktop"
 
 			AddFuncs("lfs")
@@ -309,7 +302,6 @@ do -- RetName
 						AddFuncToList(key, value, name)
 					elseif t == "table" then
 						-- we get _G later
---~ 						if value ~= g_env then
 						if value ~= g then
 							for key2, value2 in pairs(value) do
 								AddFuncToList(key, value2, "dbg_reg()."..key2)
