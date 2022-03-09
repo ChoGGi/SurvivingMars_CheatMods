@@ -353,7 +353,7 @@ Press once to clear this examine, again to clear all."]]],
 			Id = "idButDeleteObj",
 			Image = "CommonAssets/UI/Menu/delete_objects.tga",
 			RolloverTitle = TranslationTable[502364928914--[[Delete]]],
-			RolloverText = TranslationTable[302535920000414--[[Are you sure you wish to delete <color ChoGGi_red>%s</color>?]]]:format(self.name),
+			RolloverText = Translate(302535920000414--[[Are you sure you wish to delete <color ChoGGi_red>%s</color>?]]):format(self.name),
 			OnPress = self.idButDeleteObj_OnPress,
 		}, self.idToolbarButtons)
 		--
@@ -398,7 +398,7 @@ Press once to clear this examine, again to clear all."]]],
 		}, self.idToolbarArea)
 
 		self.idAutoRefresh_update_str = TranslationTable[302535920001257--[[Auto-refresh list every second.]]]
-			.. "\n" .. TranslationTable[302535920001422--[[Right-click to change refresh delay.]]]
+			.. "\n" .. Translate(302535920001422--[[<right_click> to change refresh delay.]])
 			.. "\n" .. TranslationTable[302535920000106--[[Current]]] .. ": <color 100 255 100>%s</color>"
 
 		self.idAutoRefresh = g_Classes.ChoGGi_XCheckButton:new({
@@ -406,7 +406,7 @@ Press once to clear this examine, again to clear all."]]],
 			Dock = "right",
 			Text = TranslationTable[302535920000084--[[Auto-Refresh]]],
 			RolloverText = self.idAutoRefresh_update_str:format(self.autorefresh_delay),
-			RolloverHint = TranslationTable[302535920001425--[["<left_click> Toggle, <right_click> Set Delay"]]],
+			RolloverHint = T(302535920001425--[["<left_click> Toggle, <right_click> Set Delay"]]),
 			OnChange = self.idAutoRefresh_OnChange,
 			OnMouseButtonDown = self.idAutoRefresh_OnMouseButtonDown,
 		}, self.idToolbarButtonsRightRefresh)
@@ -460,7 +460,7 @@ Press once to clear this examine, again to clear all."]]],
 			Id = "idChildLock",
 			Text = TranslationTable[4775--[[Child]]],
 			RolloverTitle = TranslationTable[4775--[[Child]]] .. " " .. TranslationTable[302535920000547--[[Lock]]],
-			RolloverText = TranslationTable[302535920000920--[[Examining objs from this dlg will <color ChoGGi_red>%s</color>examine them all in a single dlg.]]]:format(TranslationTable[3695--[[NOT]]] .. " "),
+			RolloverText = Translate(302535920000920--[[Examining objs from this dlg will <color ChoGGi_red>%s</color>examine them all in a single dlg.]]):format(TranslationTable[3695--[[NOT]]] .. " "),
 			OnChange = self.idChildLock_OnChange,
 		}, self.idToolbarButtonsRight)
 		--
@@ -485,9 +485,9 @@ Press once to clear this examine, again to clear all."]]],
 			Text = TranslationTable[10123--[[Search]]],
 			Dock = "right",
 			RolloverAnchor = "right",
-			RolloverHint = TranslationTable[302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"]]],
-			RolloverText = TranslationTable[302535920000045--[["Scrolls down one line or scrolls between text in "Search".
-Right-click <right_click> to go up, middle-click <middle_click> to scroll to the top."]]],
+			RolloverHint = T(302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"]]),
+			RolloverText = T(302535920000045--[["Scrolls down one line or scrolls between text in "Search".
+Right-click <right_click> to go up, middle-click <middle_click> to scroll to the top."]]),
 			OnMouseButtonDown = self.idSearch_OnMouseButtonDown,
 		}, self.idSearchArea)
 	end
@@ -543,7 +543,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 			Dock = "right",
 			Text = TranslationTable[302535920000040--[[Exec Code]]],
 			RolloverText = TranslationTable[302535920001514--[[Toggle visibility of an input box for executing code.]]]
-				.. "\n" .. TranslationTable[302535920001517--[[Use <green>o</green> as a reference to the examined object: <yellow>IsValid(</yellow><green>o</green><yellow>)</yellow>.]]],
+				.. "\n" .. T(302535920001517--[[Use <green>o</green> as a reference to the examined object: <yellow>IsValid(</yellow><green>o</green><yellow>)</yellow>.]]),
 			OnChange = self.idToggleExecCode_OnChange,
 		}, self.idMenuArea)
 		--
@@ -558,12 +558,12 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		--
 		self.idExecCode = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idExecCode",
-			RolloverText = TranslationTable[302535920001515--[["Press <green>%s</green> to execute code.
-Use <green>%s</green>/<green>%s</green> to browse console history."]]]:format(
+			RolloverText = Translate(302535920001515--[["Press <green>%s</green> to execute code.
+Use <green>%s</green>/<green>%s</green> to browse console history."]]):format(
 				TranslationTable[1000447--[[Enter]]], TranslationTable[1000458--[[Up]]],
 				TranslationTable[1000460--[[Down]]]
-			)
-				.. "\n" .. TranslationTable[302535920001517--[[Use <green>o</green> as a reference to the examined object: <yellow>IsValid(</yellow><green>o</green><yellow>)</yellow>.]]],
+			) .. "\n"
+				.. T(302535920001517--[[Use <green>o</green> as a reference to the examined object: <yellow>IsValid(</yellow><green>o</green><yellow>)</yellow>.]]),
 			Hint = TranslationTable[302535920001516--[[o = examined object]]],
 			OnKbdKeyDown = self.idExecCode_OnKbdKeyDown,
 		}, self.idExecCodeArea)
@@ -708,7 +708,7 @@ function ChoGGi_DlgExamine:ViewSourceCode()
 		code = true,
 		scrollto = info.linedefined,
 		title = TranslationTable[302535920001519--[[View Source]]] .. " " .. info.source,
-		hint_ok = TranslationTable[302535920000047--[["View Text/Object, and optionally dumps text to <green>%slogs\DumpedExamine.lua</green> (may take awhile for large text)."]]]:format(ConvertToOSPath("AppData/")),
+		hint_ok = Translate(302535920000047--[["View Text/Object, and optionally dumps text to <green>%slogs\DumpedExamine.lua</green> (may take awhile for large text)."]]):format(ConvertToOSPath("AppData/")),
 		file_path = path,
 		_G = _G,
 		custom_func = function(answer, overwrite)
@@ -885,7 +885,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 		title = obj_name .. " " .. TranslationTable[1000162--[[Menu]]] .. " (" .. obj_type .. ")"
 
 		-- stick info at the top of list
-		table.insert(roll_text, 1, TranslationTable[302535920001540--[[Show context menu for <green>%s</green>.]]]:format(obj_name)
+		table.insert(roll_text, 1, Translate(302535920001540--[[Show context menu for <green>%s</green>.]]):format(obj_name)
 			.. "\n"
 		)
 		-- add the value to the key tooltip
@@ -911,7 +911,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 	XCreateRolloverWindow(self.idDialog, RolloverGamepad, true, {
 		RolloverTitle = title,
 		RolloverText = self.onclick_name[link] or table.concat(roll_text),
-		RolloverHint = TranslationTable[302535920001079--[[<left_click> Default Action <right_click> Examine]]],
+		RolloverHint = T(302535920001079--[[<left_click> Default Action <right_click> Examine]]),
 	})
 end
 
@@ -1064,7 +1064,7 @@ function ChoGGi_DlgExamine:idChildLock_OnChange(visible)
 		visible = TranslationTable[3695--[[NOT]]] .. " "
 	end
 
-	self.idChildLock:SetRolloverText(TranslationTable[302535920000920--[[Examining objs from this dlg will <color ChoGGi_red>%s</color>examine them all in a single dlg.]]]:format(visible))
+	self.idChildLock:SetRolloverText(Translate(302535920000920--[[Examining objs from this dlg will <color ChoGGi_red>%s</color>examine them all in a single dlg.]]):format(visible))
 end
 -- stable name for external use
 function ChoGGi_DlgExamine:RefreshExamine()
@@ -1416,8 +1416,8 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 		},
 
 		{name = self.ChoGGi.UserSettings.ExamineTextType and TranslationTable[1000145--[[Text]]] or self.string_Object,
-			hint = TranslationTable[302535920001620--[["Click to toggle between Text or Object (View/Dump).
-<green>Text</green> is what you see, <green>Object</green> is the text created from ValueToLuaCode(obj)."]]],
+			hint = T(302535920001620--[["Click to toggle between Text or Object (View/Dump).
+<green>Text</green> is what you see, <green>Object</green> is the text created from ValueToLuaCode(obj)."]]),
 			clicked = function(item)
 				self.ChoGGi.UserSettings.ExamineTextType = not self.ChoGGi.UserSettings.ExamineTextType
 				self.ChoGGi.SettingFuncs.WriteSettings()
@@ -1434,7 +1434,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 		},
 
 		{name = TranslationTable[302535920000004--[[Dump]]],
-			hint = TranslationTable[302535920000046--[[Dumps Text/Object to <green>%slogs\DumpedExamine.lua</green>.]]]:format(ConvertToOSPath("AppData/"))
+			hint = Translate(302535920000046--[[Dumps Text/Object to <green>%slogs\DumpedExamine.lua</green>.]]):format(ConvertToOSPath("AppData/"))
 				.. "\n\n" .. TranslationTable[302535920001027--[[Object can take time on something like the ""Building"" class object.]]],
 			image = "CommonAssets/UI/Menu/change_height_down.tga",
 			clicked = function()
@@ -1450,7 +1450,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 			end,
 		},
 		{name = TranslationTable[302535920000048--[[View]]],
-			hint = TranslationTable[302535920000047--[["View Text/Object, and optionally dumps text to <green>%slogs\DumpedExamine.lua</green> (may take awhile for large text)."]]]:format(ConvertToOSPath("AppData/"))
+			hint = Translate(302535920000047--[["View Text/Object, and optionally dumps text to <green>%slogs\DumpedExamine.lua</green> (may take awhile for large text)."]]):format(ConvertToOSPath("AppData/"))
 				.. "\n\n" .. TranslationTable[302535920001027--[[Object can take time on something like the ""Building"" class object.]]],
 			image = "CommonAssets/UI/Menu/change_height_up.tga",
 			clicked = function()
@@ -2527,7 +2527,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 	if obj_value_type == "number" then
 		c = c + 1
 		list[c] = {name = TranslationTable[302535920001564--[[Double Number]]],
-			hint = TranslationTable[302535920001563--[[Set amount to <color 100 255 100>%s</color>.]]]:format(obj_value * 2),
+			hint = Translate(302535920001563--[[Set amount to <color 100 255 100>%s</color>.]]):format(obj_value * 2),
 			image = "CommonAssets/UI/Menu/change_height_up.tga",
 			clicked = function()
 				self:ShowExecCodeWithCode("o." .. obj_name .. " = " .. (obj_value * 2))
@@ -2535,7 +2535,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 		}
 		c = c + 1
 		list[c] = {name = TranslationTable[302535920001565--[[Halve Number]]],
-			hint = TranslationTable[302535920001563--[[Set amount to <color 100 255 100>%s</color>.]]]:format(obj_value / 2),
+			hint = Translate(302535920001563--[[Set amount to <color 100 255 100>%s</color>.]]):format(obj_value / 2),
 			image = "CommonAssets/UI/Menu/change_height_down.tga",
 			clicked = function()
 				self:ShowExecCodeWithCode("o." .. obj_name .. " = " .. (obj_value / 2))
@@ -2781,7 +2781,7 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 						.. "point" .. tostring(InvalidPos) .. self.hyperlink_end
 				else
 					return self:HyperLink(obj, Show_ConvertValueToInfo)
-						.. TranslationTable[302535920000066--[[<color 203 120 30>Off-Map</color>]]] .. self.hyperlink_end
+						.. t(302535920000066--[[<color 203 120 30>Off-Map</color>]]) .. self.hyperlink_end
 				end
 			else
 				return self:HyperLink(obj, Show_ConvertValueToInfo)

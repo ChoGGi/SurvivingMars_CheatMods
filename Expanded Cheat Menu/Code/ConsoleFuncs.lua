@@ -123,7 +123,7 @@ local function BuildExamineItem(name, title)
 	return {
 		name = disp,
 		hint = TranslationTable[302535920000491--[[Examine Object]]] .. ": " .. name,
-		hint_bottom = TranslationTable[302535920000407--[[<left_click> Execute <right_click> Paste]]],
+		hint_bottom = T(302535920000407--[[<left_click> Execute <right_click> Paste]]),
 		mouseup = function(_, _, _, button)
 			if button == "R" then
 				dlgConsole.idEdit:SetFocus()
@@ -488,7 +488,7 @@ local ConsoleMenuPopupToggle_list = {
 		hint = TranslationTable[302535920000311--[["Stop the ""Attempt to use an undefined global"" msgs.
 
 The number is a count of stored msgs, right-click to view the list."]]],
-		hint_bottom = TranslationTable[302535920001444--[[<left_click> Activate <right_click> Alt Activate]]],
+		hint_bottom = T(302535920001444--[[<left_click> Activate <right_click> Alt Activate]]),
 		class = "ChoGGi_XCheckButtonMenu",
 		value = "ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals",
 		mouseup = function(_, _, _, button)
@@ -581,8 +581,8 @@ function ChoGGi.ConsoleFuncs.HistoryPopup(self)
 			items[i] = {
 				-- these can get long so keep 'em short
 				name = text:sub(1, ConsoleHistoryMenuLength),
-				hint = TranslationTable[302535920001138--[["Execute this command in the console, Right-click to paste code in console."]]] .. "\n\n" .. text,
-				hint_bottom = TranslationTable[302535920000407--[[<left_click> Execute <right_click> Paste]]],
+				hint = TranslationTable[302535920001138--[["Execute this command in the console, Right-click to paste code in console."]]] .. "\n\n<left>" .. text,
+				hint_bottom = T(302535920000407--[[<left_click> Execute <right_click> Paste]]),
 				mouseup = function(_, _, _, button)
 					if button == "R" then
 						dlgConsole.idEdit:SetFocus()
@@ -701,7 +701,7 @@ local function BuildSciptButton(console, folder)
 						items[i] = {
 							name = files[i].name,
 							hint = TranslationTable[302535920001138--[["Execute this command in the console, Right-click to paste code in console."]]] .. "\n\n" .. script,
-							hint_bottom = TranslationTable[302535920000407--[[<left_click> Execute <right_click> Paste]]],
+							hint_bottom = T(302535920000407--[[<left_click> Execute <right_click> Paste]]),
 							mouseup = function(_, _, _, button)
 								if button == "R" then
 									dlgConsole.idEdit:SetFocus()
@@ -769,7 +769,7 @@ function ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(dlg)
 					items[c] = {
 						name = id,
 						hint = TranslationTable[302535920001138--[["Execute this command in the console, Right-click to paste code in console."]]],
-						hint_bottom = TranslationTable[302535920000407--[[<left_click> Execute <right_click> Paste]]],
+						hint_bottom = T(302535920000407--[[<left_click> Execute <right_click> Paste]]),
 						mouseup = func,
 					}
 				end
@@ -785,7 +785,7 @@ function ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(dlg)
 	if RetFilesInFolder(ChoGGi.scripts, ".lua") then
 		BuildSciptButton(dlg, {
 			Text = TranslationTable[302535920000353--[[Scripts]]],
-			RolloverText = TranslationTable[302535920000881--[[Place .lua files in <green>%s</green> to have them show up in the ""Scripts"" list. You can also create sub-folders for sorting.]]]:format(ChoGGi.scripts),
+			RolloverText = Translate(302535920000881--[[Place .lua files in <green>%s</green> to have them show up in the ""Scripts"" list. You can also create sub-folders for sorting.]]):format(ChoGGi.scripts),
 			id = "idScriptsMenuPopup",
 			script_path = ChoGGi.scripts,
 		})

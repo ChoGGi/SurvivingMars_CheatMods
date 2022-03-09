@@ -71,14 +71,14 @@ function ChoGGi.MenuFuncs.SetDroneType()
 	local icons = Presets.EncyclopediaArticle.Vehicles
 	local item_list = {
 		{
-			text = Translate(10278--[[Wasp Drone]]),
+			text = T(10278--[[Wasp Drone]]),
 			value = "FlyingDrone",
-			hint = "<image " .. icons.FlyingDrone.image .. ">\n\n" .. Translate(10278--[[Wasp Drone]]),
+			hint = "<image " .. icons.FlyingDrone.image .. ">\n\n" .. T(10278--[[Wasp Drone]]),
 		},
 		{
-			text = Translate(1681--[[Drone]]),
+			text = T(1681--[[Drone]]),
 			value = "Drone",
-			hint = "<image " .. icons.Drone.image .. ">\n\n" .. Translate(1681--[[Drone]]),
+			hint = "<image " .. icons.Drone.image .. ">\n\n" .. T(1681--[[Drone]]),
 		},
 	}
 	local sponsor = GetMissionSponsor()

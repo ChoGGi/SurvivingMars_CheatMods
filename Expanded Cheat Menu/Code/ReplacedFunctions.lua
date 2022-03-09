@@ -1396,7 +1396,7 @@ function OnMsg.ClassesPostprocess()
 				title.RolloverTemplate = "Rollover"
 				title.RolloverTitle = TranslationTable[302535920001367--[[Toggles]]]
 				title.RolloverText = TranslationTable[302535920001410--[[Toggle Visibility]]]
-				title.RolloverHint = TranslationTable[608042494285--[[<left_click> Activate]]]
+				title.RolloverHint = T(608042494285--[[<left_click> Activate]])
 
 				local toggle = not ChoGGi.Temp.InfopanelMainButVis
 				local toolbar = main_buts[2]
@@ -1447,7 +1447,7 @@ function OnMsg.ClassesPostprocess()
 				section.idIcon.FXMouseIn = "ActionButtonHover"
 				section.idSectionTitle.MouseCursor = "UI/Cursors/Rollover.tga"
 				section.RolloverText = TranslationTable[302535920001410--[[Toggle Visibility]]]
-				section.RolloverHint = TranslationTable[608042494285--[[<left_click> Activate]]]
+				section.RolloverHint = T(608042494285--[[<left_click> Activate]])
 
 				local toggle = not ChoGGi.Temp.InfopanelCheatsVis
 				local toolbar = SetToolbar(section, "XToolBar", toggle)

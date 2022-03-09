@@ -53,7 +53,7 @@ function ChoGGi_DlgFindValue:Init(parent, context)
 		Id = "idLimit",
 		Dock = "right",
 		MinWidth = 50,
-		RolloverText = TranslationTable[302535920001304--[[Set how many levels within this table we search. <color ChoGGi_red>Warning</color>: O(n).]]],
+		RolloverText = T(302535920001304--[[Set how many levels within this table we search. <color ChoGGi_red>Warning</color>: O(n).]]),
 		OnKbdKeyDown = self.Input_OnKbdKeyDown,
 	}, self.idTextArea)
 	self.idLimit:SetText("1")

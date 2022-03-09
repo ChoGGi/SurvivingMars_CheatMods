@@ -221,11 +221,11 @@ function ChoGGi_DlgListChoice:Init(parent, context)
 
 		self.idEditValue = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idEditValue",
-			RolloverText = TranslationTable[302535920000077--[["Enter a custom value to be applied.
+			RolloverText = Translate(302535920000077--[["Enter a custom value to be applied.
 The listitem <color 0 200 0>must</color> be selected for this to take effect (it's the last listitem).
 It won't be visible unless the ""%s"" checkbox is enabled.
 
-Warning: Entering the wrong value may crash the game or otherwise cause issues."]]]:format(TranslationTable[302535920000078--[[Custom Value]]]),
+Warning: Entering the wrong value may crash the game or otherwise cause issues."]]):format(TranslationTable[302535920000078--[[Custom Value]]]),
 			Hint = TranslationTable[302535920000078--[[Custom Value]]],
 			OnKbdKeyDown = self.idEditValue_OnKbdKeyDown
 		}, self.idEditArea)
@@ -262,7 +262,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		MinWidth = 50,
 		Text = TranslationTable[6878--[[OK]]],
 		Background = g_Classes.ChoGGi_XButton.bg_green,
-		RolloverText = TranslationTable[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, or <left_click>*2 a list item)."]]],
+		RolloverText = Translate(302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, or <left_click>*2 a list item)."]]),
 		OnPress = self.BuildReturnList
 	}, self.idButtonContainer)
 
@@ -679,7 +679,7 @@ function ChoGGi_DlgListChoice:BuildList(save_pos)
 		end
 
 		if self.custom_type > 4 and self.custom_type ~= 5 then
-			listitem.RolloverHint = TranslationTable[302535920001444--[["<left_click> Activate, <right_click> Alt Activate"]]]
+			listitem.RolloverHint = Translate(302535920001444--[["<left_click> Activate, <right_click> Alt Activate"]])
 		end
 
 		-- easier access

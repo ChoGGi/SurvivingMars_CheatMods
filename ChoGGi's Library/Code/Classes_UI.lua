@@ -233,7 +233,7 @@ DefineClass.ChoGGi_XButtons = {
 	},
 	TextStyle = "ChoGGi_Buttons",
 	RolloverTitle = TranslationTable[126095410863--[[Info]]],
-	RolloverHint = TranslationTable[608042494285--[[<left_click> Activate]]],
+	RolloverHint = T(608042494285--[[<left_click> Activate]]),
 	RolloverTemplate = "Rollover",
 	RolloverBackground = rollover_blue,
 	Margins = box(4, 4, 4, 4),
@@ -301,7 +301,7 @@ DefineClass.ChoGGi_XComboButton = {
 	Background = light_gray,
 	RolloverBackground = rollover_blue,
 	RolloverTitle = TranslationTable[126095410863--[[Info]]],
-	RolloverHint = TranslationTable[608042494285--[[<left_click> Activate]]],
+	RolloverHint = T(608042494285--[[<left_click> Activate]]),
 	RolloverTemplate = "Rollover",
 	PressedBackground = medium_gray,
 	PressedTextColor = white,
@@ -334,7 +334,7 @@ DefineClass.ChoGGi_XCheckButton = {
 	},
 	TextStyle = "ChoGGi_CheckButton",
 	RolloverTitle = TranslationTable[126095410863--[[Info]]],
-	RolloverHint = TranslationTable[608042494285--[[<left_click> Activate]]],
+	RolloverHint = T(608042494285--[[<left_click> Activate]]),
 	RolloverTemplate = "Rollover",
 	MinWidth = 60,
 	Text = TranslationTable[6878--[[OK]]],
@@ -674,7 +674,7 @@ function ChoGGi_XWindow:AddImageButton(UIScale)
 			Dock = "left",
 			RolloverTitle = TranslationTable[302535920000093--[[Go to Obj]]],
 			RolloverText = TranslationTable[302535920000094--[[View/select object on map.]]],
-			RolloverHint = TranslationTable[608042494285--[[<left_click> Activate]]],
+			RolloverHint = T(608042494285--[[<left_click> Activate]]),
 			OnMouseButtonDown = self.idCaptionImageOnMouseButtonDown,
 			HandleMouse = true,
 			MaxWidth = 32 * UIScale,
@@ -908,9 +908,9 @@ function ChoGGi_XWindow:PostInit(parent, pt, title_skip)
 		local ok = ""
 		-- 1 hides the ok/cancel buttons, and it just looks weird for the colour Modifier
 		if is_list and self.custom_type ~= 1 then
-			ok = TranslationTable[302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, and probably double left-clicking <left_click>)."]]] .. "\n\n"
+			ok = T(302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, and probably double left-clicking <left_click>)."]]) .. "\n\n"
 		end
-		local str = TranslationTable[302535920001518--[[Double-click <left_click> title to rollup into the title bar.]]]
+		local str = T(302535920001518--[[Double-click <left_click> title to rollup into the title bar.]])
 		if move.RolloverText == "" then
 			move.RolloverText = ok .. str
 		else

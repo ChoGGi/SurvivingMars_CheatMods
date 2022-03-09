@@ -228,7 +228,7 @@ end
 --~ 	SetTimeFactor(1000) = normal speed
 -- use GetTimeFactor() to check time for changing it so it can be paused?
 function ChoGGi.MenuFuncs.SetGameSpeed()
-	local hint_str = TranslationTable[302535920000523--[[How many to multiple the default speed by: <color 0 200 0>%s</color>]]]
+	local hint_str = Translate(302535920000523--[[How many to multiple the default speed by: <color 0 200 0>%s</color>]])
 	local item_list = {
 		{text = Translate(1000121--[[Default]]), value = 1, hint = hint_str:format(1)},
 		{text = TranslationTable[302535920001126--[[Double]]], value = 2, hint = hint_str:format(2)},

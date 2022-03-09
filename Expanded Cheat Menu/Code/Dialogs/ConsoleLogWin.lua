@@ -100,7 +100,7 @@ function ChoGGi_DlgConsoleLogWin:Init(parent, context)
 	}, self.idTextInputArea)
 
 	-- add tooltip
-	self.idTextInput.RolloverText = TranslationTable[302535920001440--[["~obj opens object in examine dlg.
+	self.idTextInput.RolloverText = T(302535920001440--[["~obj opens object in examine dlg.
 ~~obj opens object's attachments in examine dlg.
 
 <green>&</green><yellow>handle</yellow> examine object using handle id.
@@ -117,7 +117,7 @@ $123 or $EffectDeposit.display_name prints translated string.
 
 !UICity.labels.TerrainDeposit[1] move camera and select obj.
 
-s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"]]]
+s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"]])
 	self.idTextInput.Hint = TranslationTable[302535920001439--[["~obj, @func, @@type, %image, *r/*g/*m threads. Hover mouse for more info."]]]
 
 	-- look at them sexy internals

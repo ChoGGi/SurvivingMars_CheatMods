@@ -169,7 +169,7 @@ function OnMsg.ClassesPostprocess()
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
 				"RolloverTitle", TranslationTable[302535920000682--[[Change Entity]]],
-				"RolloverHint", TranslationTable[608042494285--[[<left_click> Activate]]],
+				"RolloverHint", T(608042494285--[[<left_click> Activate]]),
 				"ContextUpdateOnOpen", true,
 				"OnContextUpdate", function(self)
 					self:SetRolloverText(TranslationTable[302535920001151--[[Set Entity For %s]]]:format(RetName(self.context)))
@@ -189,9 +189,9 @@ function OnMsg.ClassesPostprocess()
 				"__template", "InfopanelButton",
 				"Icon", "UI/Icons/IPButtons/automated_mode_on.tga",
 				"RolloverTitle", TranslationTable[1000077--[[Rotate]]],
-				"RolloverText", T(0000, "<left_click>") .. " "
+				"RolloverText", T("<left_click>") .. " "
 					.. TranslationTable[312752058553--[[Rotate Building Left]]].. "\n"
-					.. T(0000, "<right_click>") .. " "
+					.. T("<right_click>") .. " "
 					.. TranslationTable[694856081085--[[Rotate Building Right]]],
 				"RolloverHint", "",
 				"RolloverHintGamepad", TranslationTable[7518--[[ButtonA]]] .. " "
@@ -215,7 +215,7 @@ function OnMsg.ClassesPostprocess()
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
 				"RolloverTitle", TranslationTable[302535920000457--[[Anim State Set]]],
-				"RolloverHint", TranslationTable[608042494285--[[<left_click> Activate]]],
+				"RolloverHint", T(608042494285--[[<left_click> Activate]]),
 				"RolloverText", TranslationTable[302535920000458--[[Make object dance on command.]]],
 				"OnPress", function(self)
 					ChoGGi.ComFuncs.SetAnimState(self.context)
@@ -226,7 +226,7 @@ function OnMsg.ClassesPostprocess()
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
 				"RolloverTitle", TranslationTable[302535920000129--[[Set]]] .. " " .. TranslationTable[302535920001184--[[Particles]]],
-				"RolloverHint", TranslationTable[608042494285--[[<left_click> Activate]]],
+				"RolloverHint", T(608042494285--[[<left_click> Activate]]),
 				"RolloverText", TranslationTable[302535920001421--[[Shows a list of particles you can use on the selected obj.]]],
 				"OnPress", function(self)
 					ChoGGi.ComFuncs.SetParticles(self.context)
@@ -241,7 +241,7 @@ function OnMsg.ClassesPostprocess()
 			'__condition', function (_, context) return context:ShouldShowDemolishButton() end,
 			'__template', "InfopanelButton",
 			'RolloverTitle', TranslationTable[3973--[[Salvage]]],
-			'RolloverHintGamepad', TranslationTable[7657--[[<ButtonY> Activate]]],
+			'RolloverHintGamepad', T(7657--[[<ButtonY> Activate]]),
 			'OnContextUpdate', function (self, context, ...)
 				local refund = context:GetRefundResources() or empty_table
 				local rollover = TranslationTable[7822--[[Destroy this building.]]]
@@ -250,7 +250,7 @@ function OnMsg.ClassesPostprocess()
 					rollover = TranslationTable[12172--[[Cancel this landscaping project. The terrain will remain in its current state]]]
 				end
 				if refund[1] then
-					rollover = rollover .. "<newline><newline>" .. TranslationTable[7823--[[<UIRefundRes> will be refunded upon salvage."]]]
+					rollover = rollover .. "<newline><newline>" .. T(7823--[[<UIRefundRes> will be refunded upon salvage."]])
 				end
 				self:SetRolloverText(rollover)
 				context:ToggleDemolish_Update(self)
@@ -472,7 +472,7 @@ function OnMsg.ModsReloaded()
 			edit.RolloverTemplate = "Rollover"
 			edit.RolloverTitle = TranslationTable[302535920001073--[[Console]]] .. " " .. TranslationTable[487939677892--[[Help]]]
 			-- add tooltip
-			edit.RolloverText = TranslationTable[302535920001440--[["~obj opens object in examine dlg.
+			edit.RolloverText = T(302535920001440--[["~obj opens object in examine dlg.
 ~~obj opens object's attachments in examine dlg.
 
 <green>&</green><yellow>handle</yellow> examine object using handle id.
@@ -489,7 +489,7 @@ $123 or $EffectDeposit.display_name prints translated string.
 
 !UICity.labels.TerrainDeposit[1] move camera and select obj.
 
-s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"]]]
+s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"]])
 			edit.Hint = TranslationTable[302535920001439--[["~obj, @func, @@type, %image, *r/*g/*m threads. Hover mouse for more info."]]]
 
 			-- and buttons

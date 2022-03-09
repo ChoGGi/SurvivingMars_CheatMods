@@ -127,10 +127,10 @@ Actions[c] = {ActionName = TranslationTable[302535920000597--[[Stutter With High
 	ActionMenubar = "ECM.ECM.Fixes",
 	ActionId = ".Stutter With High FPS",
 	ActionIcon = icon,
-	RolloverText = TranslationTable[302535920000598--[[If your units are doing stutter movement, but your FPS is fine then you likely have a unit with borked pathing (or there's one of those magical invisible walls in it's way).
+	RolloverText = T(302535920000598--[[If your units are doing stutter movement, but your FPS is fine then you likely have a unit with borked pathing (or there's one of those magical invisible walls in it's way).
 <color red>This can cause your save to be corrupted and not load (likely with a bunch of mods), be very careful about using it.</color>
 
-This also works for colonists practicing the human centipede.]]],
+This also works for colonists practicing the human centipede.]]),
 	OnAction = ChoGGi.MenuFuncs.StutterWithHighFPS,
 }
 

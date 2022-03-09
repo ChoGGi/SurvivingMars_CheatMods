@@ -103,10 +103,10 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 
 	-- culling the herd
 	local item_list = {
-		{text = " " .. Translate(7553--[[Homeless]]), value = "Homeless"},
-		{text = " " .. Translate(6859--[[Unemployed]]), value = "Unemployed"},
-		{text = " " .. Translate(7031--[[Renegades]]), value = "Renegade"},
-		{text = " " .. Translate(240--[[Specialization]]) .. ": " .. Translate(6761--[[None]]), value = "none"},
+		{text = " " .. T(7553--[[Homeless]]), value = "Homeless"},
+		{text = " " .. T(6859--[[Unemployed]]), value = "Unemployed"},
+		{text = " " .. T(7031--[[Renegades]]), value = "Renegade"},
+		{text = " " .. T(240--[[Specialization]]) .. ": " .. T(6761--[[None]]), value = "none"},
 	}
 	local c = #item_list
 

@@ -51,7 +51,7 @@ local function SetHint(action, hint)
 	-- name has to be set to make the hint show up
 	action.ActionName = action.ActionId
 	action.RolloverText = hint
-	action.RolloverHint = TranslationTable[608042494285--[[<left_click> Activate]]]
+	action.RolloverHint = T(608042494285--[[<left_click> Activate]])
 end
 local function SetIcon(action, name, icon)
 	-- we're changing the name so we'll set the hint title to the orig name
@@ -169,31 +169,31 @@ local cheats_lookup = {
 		des = TranslationTable[302535920001541--[[Start a Crime Event]]],
 	},
 	FillComfort = {
-		des = TranslationTable[302535920001606--[[Max the <green>%s</green> value for this colonist.]]]:format(TranslationTable[4295--[[Comfort]]])
+		des = Translate(302535920001606--[[Max the <green>%s</green> value for this colonist.]]):format(TranslationTable[4295--[[Comfort]]])
 			.. "\n\n" .. TranslationTable[4296--[[Residences and visited buildings improve Comfort up to their Service Comfort value, but Colonists will try to visit only buildings that correspond to their interests. Colonists are more inclined to have children at higher Comfort. Earthborn Colonists whose Comfort is depleted will quit their job and leave the Colony at first opportunity.]]],
 	},
 	FillHealth = {
-		des = TranslationTable[302535920001606--[[Max the <green>%s</green> value for this colonist.]]]:format(TranslationTable[4291--[[Health]]])
+		des = Translate(302535920001606--[[Max the <green>%s</green> value for this colonist.]]):format(TranslationTable[4291--[[Health]]])
 			.. "\n\n" .. TranslationTable[4292--[[Represents physical injury, illness and exhaustion. Lowered by working on a heavy workload, having no functional home, shock when deprived from vital resources or when the Colonist is injured. Colonists can be healed in Medical Buildings in a powered Dome, but only if they are provided with Food, Water and Oxygen. Colonists can't work at low health unless they're Fit.]]],
 	},
 	FillMorale = {
-		des = TranslationTable[302535920001606--[[Max the <green>%s</green> value for this colonist.]]]:format(TranslationTable[4297--[[Morale]]])
+		des = Translate(302535920001606--[[Max the <green>%s</green> value for this colonist.]]):format(TranslationTable[4297--[[Morale]]])
 			.. "\n\n" .. TranslationTable[4298--[[Represents overall happiness, optimism and loyalty. All other stats affect Morale. Influences the Colonist’s job performance. Colonists with low Morale may become Renegades.]]],
 	},
 	FillSanity = {
-		des = TranslationTable[302535920001606--[[Max the <green>%s</green> value for this colonist.]]]:format(TranslationTable[4293--[[Sanity]]])
+		des = Translate(302535920001606--[[Max the <green>%s</green> value for this colonist.]]):format(TranslationTable[4293--[[Sanity]]])
 			.. "\n\n" .. TranslationTable[4294--[[Represents mental condition. Lowered by working on a heavy workload, in outside buildings and during dark hours, witnessing the death of a Colonist living in the same Residence or various Martian disasters. Recovered when resting at home and by visiting certain Service Buildings.]]],
 	},
 	RandomAge = {
-		des = TranslationTable[302535920001607--[[Set a random <green>%s</green> for this colonist.]]]:format(TranslationTable[11607--[[Age Group]]])
+		des = Translate(302535920001607--[[Set a random <green>%s</green> for this colonist.]]):format(TranslationTable[11607--[[Age Group]]])
 			.. "\n\n" .. TranslationTable[3930--[[Colonists are divided into five Age Groups. Children and seniors cannot work.]]],
 	},
 	RandomGender = {
-		des = TranslationTable[302535920001607--[[Set a random <green>%s</green> for this colonist.]]]:format(TranslationTable[3932--[[Sex]]])
+		des = Translate(302535920001607--[[Set a random <green>%s</green> for this colonist.]]):format(TranslationTable[3932--[[Sex]]])
 			.. "\n\n" .. TranslationTable[3933--[[The sex of the Colonist. The birth rate in any Dome is determined by the number of Male/Female couples at high Comfort.]]],
 	},
 	RandomRace = {
-		des = TranslationTable[302535920001607--[[Set a random <green>%s</green> for this colonist.]]]:format(TranslationTable[302535920000741--[[Race]]])
+		des = Translate(302535920001607--[[Set a random <green>%s</green> for this colonist.]]):format(TranslationTable[302535920000741--[[Race]]])
 			.. "\n\n" .. TranslationTable[302535920001608--[["I said if you're thinkin' of being my baby
 It don't matter if you're black or white
 
@@ -201,7 +201,7 @@ I said if you're thinkin' of being my brother
 It don't matter if you're black or white"]]],
 	},
 	RandomSpec = {
-		des = TranslationTable[302535920001607--[[Set a random <green>%s</green> for this colonist.]]]:format(TranslationTable[11609--[[Specialization]]])
+		des = Translate(302535920001607--[[Set a random <green>%s</green> for this colonist.]]):format(TranslationTable[11609--[[Specialization]]])
 			.. "\n\n" .. TranslationTable[3931--[[Specialized Colonists perform better at certain workplaces.]]],
 	},
 	Renegade = {

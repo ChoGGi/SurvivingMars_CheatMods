@@ -939,7 +939,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items, popup)
 		local button = cls:new({
 			RolloverTitle = item.hint_title and item.hint_title or item.obj and RetName(item.obj) or TranslationTable[126095410863--[[Info]]],
 			RolloverText = item.hint or "",
-			RolloverHint = item.hint_bottom or TranslationTable[608042494285--[[<left_click> Activate]]],
+			RolloverHint = item.hint_bottom or T(608042494285--[[<left_click> Activate]]),
 			Text = item.name,
 			Background = items.Background,
 			PressedBackground = items.PressedBackground,
@@ -3113,7 +3113,7 @@ do -- DeleteObject
 				DeleteObject(obj)
 			else
 				MsgPopup(
-					TranslationTable[302535920001354--[["<green>%s</green> is a Dome with stuff still in it (crash if deleted)."]]]:format(RetName(obj)),
+					Translate(302535920001354--[["<green>%s</green> is a Dome with stuff still in it (crash if deleted)."]]):format(RetName(obj)),
 					TranslationTable[302535920000489--[["Delete Object(s)"]]]
 				)
 				return
@@ -4500,7 +4500,7 @@ function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
 		if answer then
 			if obj:IsKindOf("Dome") and #(obj.connected_domes or "") > 0 and not obj:CanDemolish() then
 				MsgPopup(
-					TranslationTable[302535920001354--[["<green>%s</green> is a dome with passages (crash if deleted)."]]]:format(name),
+					Translate(302535920001354--[["<green>%s</green> is a dome with passages (crash if deleted)."]]):format(name),
 					TranslationTable[302535920000489--[[Delete Object(s)]]]
 				)
 				return

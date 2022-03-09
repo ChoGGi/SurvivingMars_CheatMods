@@ -64,7 +64,7 @@ function Colonist:GetUIInfo(...)
 	local idx = table.find(Nations, "value", self.birthplace)
 	-- ret[1].table[4] = T{4357, "Birthplace<right><UIBirthplace>", self}
 	-- when you hover over the colonist section of a selected colonist
-	ret[1].table[4] = T{0000, "<orig><newline><right><birthplace>",
+	ret[1].table[4] = T{"<orig><newline><right><birthplace>",
 		orig = ret[1].table[4],
 		birthplace = Nations[idx].text,
 	}
@@ -4155,7 +4155,7 @@ function OnMsg.ModsReloaded()
 		}
 		c = c + 1
 		Nations[c] = {
-			value = "kuban_people's_republic",
+			value = "kuban_peoples_republic",
 			text = "Kuban People's Republic",
 			flag = path .. "kuban_peoples_republic.png",
 		}

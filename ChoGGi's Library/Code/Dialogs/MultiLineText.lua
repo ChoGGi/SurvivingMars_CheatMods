@@ -63,7 +63,7 @@ function ChoGGi_DlgMultiLineText:Init(parent, context)
 		--
 		self.idSearchText = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idSearchText",
-			RolloverText = TranslationTable[302535920001529--[["Press <color 0 200 0>Enter</color> to select next found text, and <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text."]]],
+			RolloverText = T(302535920001529--[["Press <color 0 200 0>Enter</color> to select next found text, and <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text."]]),
 			Hint = TranslationTable[10123--[[Search]]],
 			OnKbdKeyDown = self.idSearchText_OnKbdKeyDown,
 		}, self.idSearchArea)
@@ -73,9 +73,9 @@ function ChoGGi_DlgMultiLineText:Init(parent, context)
 			Text = TranslationTable[10123--[[Search]]],
 			Dock = "right",
 			RolloverAnchor = "right",
-			RolloverHint = TranslationTable[302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"]]],
-			RolloverText = TranslationTable[302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
-Right-click <right_click> to go up, middle-click <middle_click> to scroll to the top."]]],
+			RolloverHint = T(302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"]]),
+			RolloverText = T(302535920000045--[["Scrolls down one line or scrolls between text in ""Go to text"".
+Right-click <right_click> to go up, middle-click <middle_click> to scroll to the top."]]),
 			OnMouseButtonDown = self.idSearch_OnMouseButtonDown,
 		}, self.idSearchArea)
 	end

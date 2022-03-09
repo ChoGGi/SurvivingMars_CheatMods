@@ -789,14 +789,14 @@ function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
 
 	local item_list = {
 		{
-			text = " " .. Translate(4493--[[All]]),
+			text = " " .. T(4493--[[All]]),
 			value = "All",
 			hint = TranslationTable[302535920000329--[[Scan all anomalies.]]],
 		},
 		{
-			text = Translate(9--[[Anomaly]]),
+			text = T(9--[[Anomaly]]),
 			value = "SubsurfaceAnomaly",
-			hint = Translate(22--[[Our scans have found some interesting readings in this Sector. Further analysis is needed.<newline><newline>Send an RC Explorer to analyze the Anomaly.]]),
+			hint = T(22--[[Our scans have found some interesting readings in this Sector. Further analysis is needed.<newline><newline>Send an RC Explorer to analyze the Anomaly.]]),
 			icon = "<image UI/Icons/Anomaly_Custom.tga 750>",
 		},
 	}
@@ -804,35 +804,35 @@ function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
 
 	local names_lookup = {
 		SubsurfaceAnomaly_aliens = {
-			title = Translate(5616--[[Alien Artifact Analyzed]]),
+			title = T(5616--[[Alien Artifact Analyzed]]),
 			icon = "UI/Icons/Anomaly_Event.tga",
 		},
 		SubsurfaceAnomaly_breakthrough = {
-			title = Translate(8--[[Breakthrough Tech]]),
+			title = T(8--[[Breakthrough Tech]]),
 			icon = "UI/Icons/Anomaly_Breakthrough.tga",
 		},
 		SubsurfaceAnomaly_complete = {
-			title = Translate(3--[[Grant Research]]),
+			title = T(3--[[Grant Research]]),
 			icon = "UI/Icons/Anomaly_Research.tga",
 		},
 		SubsurfaceAnomaly_unlock = {
-			title = Translate(2--[[Unlock Tech]]),
+			title = T(2--[[Unlock Tech]]),
 			icon = "UI/Icons/Anomaly_Tech.tga",
 		},
 		MetatronAnomaly = {
-			title = Translate(9818--[[Metatron's Challenge]]),
+			title = T(9818--[[Metatron's Challenge]]),
 		},
 		MirrorSphereAnomaly = {
-			title = Translate(1182--[[Mirror Sphere]]),
+			title = T(1182--[[Mirror Sphere]]),
 		},
 	}
 
 	ClassDescendantsList("SubsurfaceAnomaly", function(name, class)
 		c = c + 1
 		item_list[c] = 		{
-			text = names_lookup[name].title or Translate(class.display_name),
+			text = names_lookup[name].title or T(class.display_name),
 			value = name,
-			hint = Translate(class.description or 25--[[Anomaly Scanning]]),
+			hint = T(class.description or 25--[[Anomaly Scanning]]),
 			icon = "<image " .. (names_lookup[name].icon or "UI/Icons/Anomaly_Custom.tga") .. " 750>",
 		}
 	end)
@@ -1749,7 +1749,7 @@ do -- ResearchRemove
 				amount = 0
 			end
 
-			local display_text = T(7587, "<green>Martianborn Ingenuity <amount></color>")
+			local display_text = T(7587--[[<green>Martianborn Ingenuity <amount></color>]])
 			local domes = city.labels.Dome or ""
 			for i = 1, #domes do
 				local colonists = domes[i].labels.Martianborn or ""

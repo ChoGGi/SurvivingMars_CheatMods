@@ -482,7 +482,7 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 						m_c = m_c + 1
 
 						if steam_upload and para_upload then
-							upload_msg[m_c] = T{302535920001381, "Mod <ModLabel> will be uploaded to Steam/Paradox",
+							upload_msg[m_c] = T{302535920001381--[[Mod <ModLabel> will be uploaded to Steam/Paradox]],
 								ModLabel = mod.title,
 							}
 						elseif steam_upload then
@@ -825,8 +825,7 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 		local playtime = T(77, "Unknown")
 		if data.playtime then
 			local h, m, _ = FormatElapsedTime(data.playtime, "hms")
-			playtime = T{
-				7549, "<hours>:<minutes>",
+			playtime = T{7549--[[<hours>:<minutes>]],
 				hours = string.format("%02d", h),
 				minutes = string.format("%02d", m)
 			}
