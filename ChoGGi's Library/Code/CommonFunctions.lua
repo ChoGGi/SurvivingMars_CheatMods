@@ -57,7 +57,7 @@ local rawget, getmetatable = rawget, getmetatable
 local g_env = _G
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	-- make sure we use the actual funcs if we can
-	rawget = env.rawget
+--~ 	rawget = env.rawget
 	getmetatable = env.getmetatable
 	g_env = env
 end
@@ -231,7 +231,8 @@ do -- RetName
 		if name:find("%.") then
 			list = DotPathToObject(name)
 		else
-			list = g_env[name]
+--~ 			list = g_env[name]
+			list = rawget(g, name)
 		end
 		if not list then
 			return
@@ -273,7 +274,8 @@ do -- RetName
 
 	do -- stuff we need to be in-game for
 		local function AddFuncsChoGGi(name, skip)
-			local list = g_env.ChoGGi[name]
+--~ 			local list = g_env.ChoGGi[name]
+			local list = g.ChoGGi[name]
 			for key, value in pairs(list) do
 				if not lookup_table[value] then
 					if skip then
@@ -288,9 +290,9 @@ do -- RetName
 		local function BuildNameList(update_trans)
 			lookup_table = ChoGGi_lookup_names or {}
 			-- If env._G was updated from ECM HelperMod
-			g_env = g_env
+--~ 			g_env = g_env
 
-			lookup_table[g_env.terminal.desktop] = "terminal.desktop"
+			lookup_table[g.terminal.desktop] = "terminal.desktop"
 
 			AddFuncs("lfs")
 			AddFuncs("debug")
@@ -307,7 +309,8 @@ do -- RetName
 						AddFuncToList(key, value, name)
 					elseif t == "table" then
 						-- we get _G later
-						if value ~= g_env then
+--~ 						if value ~= g_env then
+						if value ~= g then
 							for key2, value2 in pairs(value) do
 								AddFuncToList(key, value2, "dbg_reg()."..key2)
 							end
@@ -324,7 +327,7 @@ do -- RetName
 			AddFuncsChoGGi("SettingFuncs")
 			AddFuncsChoGGi("OrigFuncs", true)
 
-			for key, value in pairs(g_env.ChoGGi) do
+			for key, value in pairs(g.ChoGGi) do
 				if not lookup_table[value] then
 					if type(value) == "table" then
 						lookup_table[value] = "ChoGGi." .. key
@@ -333,7 +336,7 @@ do -- RetName
 			end
 
 			-- any tables/funcs in _G
-			for key, value in pairs(g_env) do
+			for key, value in pairs(g) do
 				-- no need to add tables already added
 				if not lookup_table[value] then
 					local t = type(value)
@@ -349,17 +352,18 @@ do -- RetName
 				end
 			end
 
-			local blacklist = g_env.ChoGGi.blacklist
+--~ 			local blacklist = g.ChoGGi.blacklist
 
 			-- and any g_Classes funcs
 			local g = _G
-			for class_id, class_obj in pairs(g_env.g_Classes) do
-				if blacklist then
+			for class_id, class_obj in pairs(g.g_Classes) do
+--~ 				if blacklist then
 					local g_value = rawget(g, class_id)
+--~ 					local g_value = g_env[class_id]
 					if g_value then
 						lookup_table[g_value] = class_id
 					end
-				end
+--~ 				end
 				for key, value in pairs(class_obj) do
 					-- why it has a false is beyond me (something to do with that object[true] = userdata?)
 					if key ~= false and not lookup_table[value] then
@@ -386,10 +390,10 @@ do -- RetName
 				end
 			end
 
-			g_env.ClassDescendantsList("Preset", function(_, cls)
+			g.ClassDescendantsList("Preset", function(_, cls)
 				if cls.GlobalMap and cls.GlobalMap ~= "" then
---~ 					local g_value = rawget(g_env, cls.GlobalMap)
-					local g_value = g_env[cls.GlobalMap]
+					local g_value = rawget(g, cls.GlobalMap)
+--~ 					local g_value = g_env[cls.GlobalMap]
 					if g_value then
 						-- only needed for blacklist, but whatever it's quick
 						lookup_table[g_value] = cls.GlobalMap
@@ -411,15 +415,16 @@ do -- RetName
 			end)
 
 			-- grab what we can from gimped _G
-			if blacklist then
-				lookup_table[g_env.g_Classes] = "g_Classes"
-				for i = 1, #g_env.GlobalVars do
-					local var = g_env.GlobalVars[i]
+--~ 			if blacklist then
+				lookup_table[g.g_Classes] = "g_Classes"
+				for i = 1, #g.GlobalVars do
+					local var = g.GlobalVars[i]
 					local obj = g_env[var]
+--~ 					local obj = rawget(g, var)
 					if not lookup_table[obj] then
 						lookup_table[obj] = var
 					end
-				end
+--~ 				end
 			end
 
 		end -- BuildNameList
@@ -504,7 +509,7 @@ do -- RetName
 				for i = 1, #values_lookup do
 					local value_name = values_lookup[i]
 --~ 					if index and rawget(obj, value_name) or not index and obj[value_name] then
-					if index and obj.value_name or not index and obj[value_name] then
+					if index and obj[value_name] or not index and obj[value_name] then
 						local value = obj[value_name]
 						if value ~= "" then
 							name = value

@@ -3579,7 +3579,7 @@ do -- BuildAttachesPopup
 			local c = 1
 			self.attaches_menu_popup_hint[c] = self.string_Classname .. ": " .. a.class
 			c = c + 1
-			self.attaches_menu_popup_hint[c] = TranslationTable[302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]]:format(self.string_Classname)
+			self.attaches_menu_popup_hint[c] = Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(self.string_Classname)
 
 			-- attached to name
 			if a.ChoGGi_Marked_Attach then
@@ -3613,7 +3613,7 @@ do -- BuildAttachesPopup
 				hint = table.concat(self.attaches_menu_popup_hint, "\n"),
 				-- used for ref above as well
 				showobj = a,
-				hint_bottom = TranslationTable[302535920000589--[[<left_click> Examine <right_click> Clipboard]]],
+				hint_bottom = T(302535920000589--[[<left_click> Examine <right_click> Clipboard]]),
 				mouseup = ParentClicked,
 				dlg = self,
 			}
@@ -3738,8 +3738,8 @@ do -- BuildParentsMenu
 						hint = T("<left_click> ") .. TranslationTable[302535920000069--[[Examine]]] .. " "
 							.. self.string_Class .. " " .. self.string_Object
 							.. ": <color 100 255 100>" .. item .. "</color>\n"
-							.. TranslationTable[302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]]:format(self.string_Classname),
-						hint_bottom = TranslationTable[302535920000589--[[<left_click> Examine <right_click> Clipboard]]],
+							.. Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(self.string_Classname),
+						hint_bottom = T(302535920000589--[[<left_click> Examine <right_click> Clipboard]]),
 						mouseup = self.ParentClicked,
 						dlg = self,
 					}
@@ -3814,8 +3814,8 @@ function ChoGGi_DlgExamine:SetObj(startup)
 				hint = T("<left_click> ") .. TranslationTable[302535920000069--[[Examine]]] .. " "
 					.. self.string_Class .. " " .. self.string_Object
 					.. ": <color 100 255 100>" .. obj.class .. "</color>\n"
-					.. TranslationTable[302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]]:format(self.string_Classname),
-				hint_bottom = TranslationTable[302535920000589--[[<left_click> Examine <right_click> Clipboard]]],
+					.. Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(self.string_Classname),
+				hint_bottom = T(302535920000589--[[<left_click> Examine <right_click> Clipboard]]),
 				mouseup = self.ParentClicked,
 				dlg = self,
 			})
