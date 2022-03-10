@@ -2781,7 +2781,7 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 						.. "point" .. tostring(InvalidPos) .. self.hyperlink_end
 				else
 					return self:HyperLink(obj, Show_ConvertValueToInfo)
-						.. t(302535920000066--[[<color 203 120 30>Off-Map</color>]]) .. self.hyperlink_end
+						.. Translate(302535920000066--[[<color 203 120 30>Off-Map</color>]]) .. self.hyperlink_end
 				end
 			else
 				return self:HyperLink(obj, Show_ConvertValueToInfo)
