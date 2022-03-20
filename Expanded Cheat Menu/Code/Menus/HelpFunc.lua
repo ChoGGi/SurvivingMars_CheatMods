@@ -948,10 +948,10 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 		g_env.ModsReloadDefs()
 
 		if Platform.steam and IsSteamAvailable() then
-			table.iappend(mod_folders, SteamWorkshopItems())
+			table.iappend(mod_folders, g_env.SteamWorkshopItems())
 		end
 		if Platform.pops then
-			table.iappend(mod_folders, g_env.io.listfiles(PopsModsDownloadPath, "*", "folders, non recursive"))
+			table.iappend(mod_folders, g_env.io.listfiles(g_env.PopsModsDownloadPath, "*", "folders, non recursive"))
 		end
 
 		-- loop through each mod and make a table of ids, so we don't have to loop for each mod below
@@ -995,7 +995,7 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 
 	else
 		MsgPopup(
-			T(1000760--[[Not Steam]]) .. "/" .. T(1000759--[[Not Paradox]]),
+			TranslationTable[1000760--[[Not Steam]]] .. "/" .. TranslationTable[1000759--[[Not Paradox]]],
 			TranslationTable[302535920001362--[[Extract HPKs]]]
 		)
 		return

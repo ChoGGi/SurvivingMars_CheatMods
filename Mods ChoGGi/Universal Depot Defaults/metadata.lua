@@ -16,7 +16,7 @@ return PlaceObj("ModDef", {
 	"TagGameplay", true,
 	"TagBuildings", true,
 	"description", [[
-Set default settings for newly placed Universal Depots (also adds a space for seeds if GP dlc installed).
+Set default settings for newly placed Universal Depots.
 
 
 Requested by Maul.

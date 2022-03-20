@@ -99,13 +99,10 @@ end
 
 -- set max radius
 function OnMsg.BuildingInit(obj)
---~ 	if not mod_SetMaxRadius or not obj:IsKindOfClasses(cls_saved_settings) then
---~ 		return
---~ 	end
 	if not mod_SetMaxRadius then
 		return
 	end
-	if obj:IsKindOf("CoreHeatConvector") then
+	if obj:IsKindOfClasses("CoreHeatConvector", "TriboelectricScrubber") then
 		return
 	end
 
@@ -126,8 +123,12 @@ function OnMsg.BuildingInit(obj)
 	obj.UIRange = uirange
 end
 
---function OnMsg.ConstructionSitePlaced(obj)
---	if obj.building_class_proto:IsKindOfClasses(safe_rangers) then
---		obj.building_class_proto.work_radius = const.CommandCenterMaxRadius
---	end
---end
+function OnMsg.ConstructionSitePlaced(obj)
+	if obj.building_class_proto:IsKindOf("TriboelectricScrubber") then
+		local props = TriboelectricScrubber:GetProperties()
+		local idx = table.find(props, "id", "UIRange")
+		if idx then
+			obj.building_class_proto.UIRange = props[idx].max
+		end
+	end
+end

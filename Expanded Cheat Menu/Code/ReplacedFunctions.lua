@@ -474,16 +474,8 @@ function OnMsg.ClassesGenerate()
 	local ChoOrig_UIRangeBuilding_SetUIRange = UIRangeBuilding.SetUIRange
 	function UIRangeBuilding:SetUIRange(radius, ...)
 		local bs = UserSettings.BuildingSettings[self.template_name]
-		if bs and bs.uirange then
-			if self:IsKindOf("TriboelectricScrubber") then
-				local props = self:GetProperties()
-				local idx = table.find(props, "id", "UIRange")
-				if idx then
-					props[idx].max = bs.uirange
-				end
-			else
-				radius = bs.uirange
-			end
+		if bs and bs.uirange and not self:IsKindOf("TriboelectricScrubber") then
+			radius = bs.uirange
 		end
 		return ChoOrig_UIRangeBuilding_SetUIRange(self, radius, ...)
 	end
@@ -566,19 +558,15 @@ function OnMsg.ClassesGenerate()
 		return ChoOrig_BaseRover_GetCableNearby(self, rad, ...)
 	end
 
-	do -- InfopanelObj:CreateCheatActions
-		local SetInfoPanelCheatHints = ChoGGi.InfoFuncs.SetInfoPanelCheatHints
-		local GetActionsHost = GetActionsHost
-
-		local ChoOrig_InfopanelObj_CreateCheatActions = InfopanelObj.CreateCheatActions
-		function InfopanelObj:CreateCheatActions(win, ...)
-			-- fire orig func to build cheats
-			if ChoOrig_InfopanelObj_CreateCheatActions(self, win, ...) then
-				-- then we can add some hints to the cheats
-				return SetInfoPanelCheatHints(GetActionsHost(win))
-			end
+	-- add my cheats to the cheats pane
+	local ChoOrig_InfopanelObj_CreateCheatActions = InfopanelObj.CreateCheatActions
+	function InfopanelObj:CreateCheatActions(win, ...)
+		-- fire orig func to build cheats
+		if ChoOrig_InfopanelObj_CreateCheatActions(self, win, ...) then
+			-- then we can add some hints to the cheats
+			return ChoGGi.InfoFuncs.SetInfoPanelCheatHints(GetActionsHost(win))
 		end
-	end -- do
+	end
 
 	do -- XWindow:SetModal
 		-- I fucking hate modal windows
@@ -1226,16 +1214,32 @@ function OnMsg.ClassesPostprocess()
 		end
 	end -- do
 
-	-- so we can do long spaced tunnels
-	local ChoOrig_TunnelConstructionController_UpdateConstructionStatuses = TunnelConstructionController.UpdateConstructionStatuses
-	function TunnelConstructionController:UpdateConstructionStatuses(...)
-		if UserSettings.RemoveBuildingLimits then
-			local old_t = ConstructionController.UpdateConstructionStatuses(self, "dont_finalize")
-			self:FinalizeStatusGathering(old_t)
-		else
-			return ChoOrig_TunnelConstructionController_UpdateConstructionStatuses(self, ...)
+	do -- TunnelConstructionController:UpdateConstructionStatuses()
+		 -- so we can do long spaced tunnels
+		local TooFarFromTunnelEntrance = ConstructionStatus.TooFarFromTunnelEntrance
+		local UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
+
+		local ChoOrig_TunnelConstructionController_UpdateConstructionStatuses = TunnelConstructionController.UpdateConstructionStatuses
+		function TunnelConstructionController:UpdateConstructionStatuses(...)
+			local skip
+			if UserSettings.RemoveBuildingLimits then
+				skip = true
+			elseif UserSettings.UnlimitedConnectionLength then
+				local idx = table.find(self.construction_statuses, TooFarFromTunnelEntrance)
+				if idx then
+					table.remove(self.construction_statuses, idx)
+					skip = true
+				end
+			end
+			--
+			if skip then
+				local old_t = UpdateConstructionStatuses(self, "dont_finalize")
+				self:FinalizeStatusGathering(old_t)
+			else
+				return ChoOrig_TunnelConstructionController_UpdateConstructionStatuses(self, ...)
+			end
 		end
-	end
+	end -- do
 
 	-- add height limits to certain panels (cheats/traits/colonists) till mouseover, and convert workers to vertical list on mouseover if over 14 (visible limit)
 	do -- InfopanelDlg:Open

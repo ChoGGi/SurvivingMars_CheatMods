@@ -122,8 +122,10 @@ end
 
 -- we don"t want it moved
 ChoGGi_TriboelectricSensorTower.MoveSphere = empty_func
--- sensor tower will hide it
+--~ -- sensor tower will hide it
 ChoGGi_TriboelectricSensorTower.ShowUISectionConsumption = Building.ShowUISectionConsumption
+--~ o:OnApplyEffect(UIColony, TechDef.AutonomousSensors)
+--~ ChoGGi_TriboelectricSensorTower.ShowUISectionConsumption = SensorTower.ShowUISectionConsumption
 -- ambiguously inherited log spam
 ChoGGi_TriboelectricSensorTower.GetSelectionRadiusScale = SensorTower.GetSelectionRadiusScale
 

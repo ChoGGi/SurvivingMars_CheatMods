@@ -1,12 +1,12 @@
 return PlaceObj("ModDef", {
-	"title", "Meteor Defence Ignores Anomalies",
+	"title", "Ignorant Meteor Defence",
 	"id", "ChoGGi_MeteorDefenceIgnoresAnomalies",
 	"steam_id", "2438415420",
 	"pops_any_uuid", "fb227e70-2835-4b02-a203-56bd61d78c9b",
 	"lua_revision", 1007000, -- Picard
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -19,6 +19,7 @@ MDS Lasers and Defensive Turrets won't shoot down meteors with anomalies or othe
 
 Includes mod option to temp disable if one is going to hit a bad spot.
 Mod Options: Ignore Anomalies, Ignore Metals, Ignore Polymers
+Ignore No Buildings: Meteors that land away from buildings are ignored (units are a dice roll).
 
 
 Not exactly requested by TheMegaMario.

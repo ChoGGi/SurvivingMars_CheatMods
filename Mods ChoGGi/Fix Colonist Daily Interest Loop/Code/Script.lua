@@ -17,7 +17,7 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
--- last checked picard 1010999 Colonist:Idle()
+-- last checked picard 1010999 Colonist:EnterBuilding()
 -- https://forum.paradoxplaza.com/forum/threads/surviving-mars-colonists-repeatedly-satisfy-daily-interests.1464969/
 function OnMsg.ClassesPostprocess()
 	--

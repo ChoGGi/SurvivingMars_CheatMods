@@ -58,7 +58,7 @@ for id, item in pairs(Resources) do
 		c = c + 1
 		properties[c] = PlaceObj("ModItemOptionToggle", {
 			"name", id,
-			"DisplayName", table.concat(image .. T(754117323318, "Enable") .. " " .. T(item.display_name)),
+			"DisplayName", table.concat(image .. T(754117323318--[[Enable]]) .. " " .. T(item.display_name)),
 			"DefaultValue", true,
 		})
 	end

@@ -1,0 +1,6 @@
+v0.3
+Ignore No Buildings: Meteors that land away from buildings are ignored (units are a dice roll).
+Mod name changed to Ignorant Meteor Defence.
+
+v0.2
+Apply will update the list for meteors to shoot.

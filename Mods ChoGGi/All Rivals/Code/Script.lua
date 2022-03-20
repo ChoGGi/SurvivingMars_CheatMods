@@ -26,6 +26,12 @@ local function StartupCode()
 		return
 	end
 
+	-- we only add more if there's three rivals already
+	local count = table.count(RivalAIs)
+	if count ~= 3 then
+		return
+	end
+
 	-- The devs added a check for non-existant keys in the hr table (and _G, but that's another story)
 	-- using rawset bypasses the check and prevents log spam (Trying to create new value hr.PlanetColony5Longitude)
 	if not hr.PlanetColony5Longitude then
@@ -37,15 +43,10 @@ local function StartupCode()
 		end
 	end
 
-	-- we only add more if there's three rivals already
-	local count = table.count(RivalAIs)
-	if count ~= 3 then
-		return
-	end
-
 	-- spawn all the rest
 	local SpawnRivalAI = SpawnRivalAI
-	for _ = 1, (#Presets.DumbAIDef.MissionSponsors - 2) do
+	local limit = #Presets.DumbAIDef.MissionSponsors
+	for _ = 1, limit do
 		-- stop spawning when we're maxed out
 		if count >= mod_MaxRivals then
 			break

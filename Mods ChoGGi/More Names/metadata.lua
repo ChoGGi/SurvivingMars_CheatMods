@@ -1,14 +1,14 @@
 return PlaceObj("ModDef", {
 	"title", "More Names",
+	"id", "ChoGGi_MoreNames",
+	"steam_id", "1968507022",
+	"pops_any_uuid", "f0196c9b-a2ac-4a8f-a3f5-84c93e805e57",
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
 	"image", "Preview.jpg",
-	"id", "ChoGGi_MoreNames",
-	"steam_id", "1968507022",
-	"pops_any_uuid", "f0196c9b-a2ac-4a8f-a3f5-84c93e805e57",
 	"author", "ChoGGi",
-	"lua_revision", 1007000, -- Picard
 	"code", {
 		"Code/Script.lua",
 	},

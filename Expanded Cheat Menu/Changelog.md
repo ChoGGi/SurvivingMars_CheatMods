@@ -4,6 +4,7 @@
 ### Fixed:
 - Missing menu icons/some messed up strings.
 - Buildings>Radius>Triboelectric Scrubber.
+- Unlimited Connection Length ignored tunnels (Thanks McKaby).
 
 ## v18.0 (5 Mar 2022)
 ### Fixed:

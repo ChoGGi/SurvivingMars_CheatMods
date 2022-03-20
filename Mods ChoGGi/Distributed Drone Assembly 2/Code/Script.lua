@@ -3,8 +3,6 @@
 
 --~ AutomaticDronePlant
 
-local StringIdBase = 499093306
-
 local table = table
 local T = T
 
@@ -25,23 +23,43 @@ OnMsg.ModsReloaded = ModOptions
 -- fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
-local function DdaReinit() -- force reinitialization of vars -- this will wipe out the queue
-	DistributedDroneAssembly = {
-		LocalConstrLimit = 2,
-		Queue = {},
-		AndroidsInQueue = 0,
-		DronesInQueue = 0,
-	}
+local function DdaInstall()
+	if not DistributedDroneAssembly then
+		DistributedDroneAssembly = {
+			LocalConstrLimit = 2,
+			Queue = {},
+			AndroidsInQueue = 0,
+			DronesInQueue = 0,
+		}
+	end
+end
+OnMsg.CityStart = DdaInstall
+OnMsg.LoadGame = DdaInstall
+
+local function AddNewConstructs(xtemplate, id)
+	local idx = table.find(xtemplate, "OnPressParam", id)
+	if not idx then
+		return
+	end
+	local button = xtemplate[idx]
+	--
+	local new_id = "Dda" .. id
+	button.OnPressParam = new_id
+	button.OnPress = function(self, gamepad)
+		self.context[new_id](self, 1 * (not gamepad and IsMassUIModifierPressed() and 5 or 1))
+	end
+	button.OnAltPress = function(self, gamepad)
+		self.context[new_id](self, -1 * (not gamepad and IsMassUIModifierPressed() and 5 or 1))
+	end
 end
 
-local function DdaInstall()
+function OnMsg.ClassesPostprocess()
 	local xtemplate = XTemplates.customDroneFactory[1]
 
-	-- Uninstall any preexisting controls
-	for i = #xtemplate, 1, -1 do
-		if xtemplate[i].group == "DistributedDroneAssembly" then
-			table.remove(xtemplate, i)
-		end
+	-- Uninstall any preexisting control
+	local idx = table.find(xtemplate, "group", "DistributedDroneAssembly")
+	if idx then
+		table.remove(xtemplate, idx)
 	end
 
 	-- add the infopanel section
@@ -49,12 +67,12 @@ local function DdaInstall()
 		"group", "DistributedDroneAssembly",
 		"id", "DdaIpSection",
 		"__template", "InfopanelSection",
-		"RolloverText", T(StringIdBase + 1, [[<left>"Scheduled" drones have been removed from the global queue and assigned to a particular Drone Assembler.
+		"RolloverText", T(499093307, [[<left>"Scheduled" drones have been removed from the global queue and assigned to a particular Drone Assembler.
 
 "Queued" drones are still in the global queue, and have not yet been assigned to a Drone Assembler.]]),
-		"RolloverTitle", T(StringIdBase + 2, "Distributed Drone Assembly"),
+		"RolloverTitle", T(499093308, "Distributed Drone Assembly"),
 		"Icon", "UI/Icons/IPButtons/drone.tga",
-		"Title", T(StringIdBase + 4, "Distributed Drone Assembly"),
+		"Title", T(499093310, "Distributed Drone Assembly"),
 		}, {
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelText",
@@ -63,42 +81,11 @@ local function DdaInstall()
 	})
 
 	-- try to find the controls to wrap
-	for i = 1, #xtemplate do
-		local v = xtemplate[i]
-		if v.__template == "InfopanelButton" then
-			if v.OnPressParam == "ConstructDrone"
-				or v.OnPressParam == "DdaConstructDrone"
-			then
-				v.OnPressParam = "DdaConstructDrone"
-				v.OnPress = function(self, gamepad)
-					self.context:DdaConstructDrone(1 * (not gamepad and IsMassUIModifierPressed() and 5 or 1))
-				end
-				v.OnAltPress = function(self, gamepad)
-					self.context:DdaConstructDrone(-1 * (not gamepad and IsMassUIModifierPressed() and 5 or 1))
-				end
-			end
-			if v.OnPressParam == "ConstructAndroid"
-				or v.OnPressParam == "DdaConstructAndroid"
-			then
-				v.OnPressParam = "DdaConstructAndroid"
-				v.OnPress = function(self, gamepad)
-					self.context:DdaConstructAndroid(1 * (not gamepad and IsMassUIModifierPressed() and 5 or 1))
-				end
-				v.OnAltPress = function(self, gamepad)
-					self.context:DdaConstructAndroid(-1 * (not gamepad and IsMassUIModifierPressed() and 5 or 1))
-				end
-			end
-		end
-	end
-
-	if not DistributedDroneAssembly then
-		DdaReinit()
-	end
+	AddNewConstructs(xtemplate, "ConstructDrone")
+	AddNewConstructs(xtemplate, "ConstructAndroid")
+	--
 end
-
-OnMsg.CityStart = DdaInstall
-OnMsg.LoadGame = DdaInstall
-
+--
 local function DdaRecalcQueueAmounts()
 	local dda = DistributedDroneAssembly
 
@@ -146,13 +133,19 @@ function OnMsg.NewHour()
 	local dda = DistributedDroneAssembly
 
 	-- won't work for mods that add it underground/asteroids
-	local objs = MainCity.labels.DroneFactory or ""
+	local objs = UIColony:GetCityLabels("DroneFactory")
 
 	-- queue up prefabs
 	if mod_AutoPrefabDrones > 0 and #objs > 0 then
 
+		local drone_prefabs_count = 0
+		local Cities = Cities
+		for i = 1, #Cities do
+			drone_prefabs_count = drone_prefabs_count + (Cities[i].drone_prefabs or 0)
+		end
+
 		-- -1 for drone being built
-		local add_amount = mod_AutoPrefabDrones - MainCity.drone_prefabs - dda.DronesInQueue - 1
+		local add_amount = mod_AutoPrefabDrones - drone_prefabs_count - dda.DronesInQueue - 1
 --~ 		print("add_amount",add_amount,mod_AutoPrefabDrones,MainCity.drone_prefabs,dda.DronesInQueue)
 
 		if add_amount > 0 then
@@ -231,7 +224,7 @@ function DroneFactory:GetDdaSectionUI()
 	end
 
 	local str_list = {
-		T(StringIdBase + 6, "<left>Scheduled Drone (Global)<right>"),
+		T(499093312, "<left>Scheduled Drone (Global)<right>"),
 		assigned_drones,
 		T("<icon_Drone>"),
 	}
@@ -241,7 +234,7 @@ function DroneFactory:GetDdaSectionUI()
 
 	if brain then
 		c = c + 1
-		str_list[c] = T(StringIdBase + 7, "\n<left>Scheduled Biorobots (Global)<right>")
+		str_list[c] = T(499093313, "\n<left>Scheduled Biorobots (Global)<right>")
 		c = c + 1
 		str_list[c] = assigned_androids
 		c = c + 1
@@ -249,7 +242,7 @@ function DroneFactory:GetDdaSectionUI()
 	end
 
 	c = c + 1
-	str_list[c] = T(StringIdBase + 8, "\n<left>Queued Drone (Global)<right>")
+	str_list[c] = T(499093314, "\n<left>Queued Drone (Global)<right>")
 	c = c + 1
 	str_list[c] = DistributedDroneAssembly.DronesInQueue
 	c = c + 1
@@ -257,7 +250,7 @@ function DroneFactory:GetDdaSectionUI()
 
 	if brain then
 		c = c + 1
-		str_list[c] = T(StringIdBase + 9, "\n<left>Queued Biorobots (Global)<right>")
+		str_list[c] = T(499093315, "\n<left>Queued Biorobots (Global)<right>")
 		c = c + 1
 		str_list[c] = DistributedDroneAssembly.AndroidsInQueue
 		c = c + 1

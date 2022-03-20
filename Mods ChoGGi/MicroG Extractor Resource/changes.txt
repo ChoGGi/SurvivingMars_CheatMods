@@ -1,2 +1,5 @@
+v0.3
+No Power: Newly placed Micro-G Extractors don't need power (default off).
+
 v0.2
 If no deposit of selected resource, then change to any resource.

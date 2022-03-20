@@ -1,3 +1,7 @@
+v0.9
+Changed a UICity to self.city.
+Cleaned up comments.
+
 v0.8
 Problem updating supply grid.
 Colonist residences checking wrong city.

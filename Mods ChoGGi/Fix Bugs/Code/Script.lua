@@ -23,27 +23,8 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
-local ChoOrig_City_InitBreakThroughAnomalies = City.InitBreakThroughAnomalies
-function City:InitBreakThroughAnomalies(...)
-	if not mod_EnableMod then
-		return ChoOrig_City_InitBreakThroughAnomalies(self, ...)
-	end
-
-	-- This func is called for each new city (surface/underground/asteroids)
-	-- Calling it more than once removes the BreakthroughOrder list
-	-- That list is used to spawn planetary anomalies
-	if self.map_id == MainMapID then
-		return ChoOrig_City_InitBreakThroughAnomalies(self, ...)
-	end
-
-	-- underground or asteroid city
-	local orig_BreakthroughOrder = BreakthroughOrder
-	ChoOrig_City_InitBreakThroughAnomalies(self, ...)
-	BreakthroughOrder = orig_BreakthroughOrder
-end
 --
 function OnMsg.ClassesPostprocess()
-
 	-- dozers and cave-in pathing (the game will freeze if you send dozers to certain cave-ins or certain paths? this is why I should keep save files around...).
 	if g_AvailableDlc.armstrong then
 		-- all of them use the same func
@@ -68,9 +49,7 @@ function OnMsg.ClassesPostprocess()
 
 		end
 	end
-
 	--
-
 	if g_AvailableDlc.picard then
 		local bt = BuildingTemplates
 
@@ -296,7 +275,6 @@ function OnMsg.LoadGame()
 	end
 	local bt = BuildingTemplates
 
-
 	-- If you removed modded rules from your current save then the Mission Profile dialog will be blank.
 	local rules = g_CurrentMissionParams.idGameRules
 	if rules then
@@ -330,11 +308,11 @@ function OnMsg.LoadGame()
 			end
 		end
 
-		-- buildings hit with lightning during a cold wave
+		-- Buildings hit with lightning during a cold wave
 		if bld.is_malfunctioned and bld.accumulated_maintenance_points == 0 then
 			bld:AccumulateMaintenancePoints(bld.maintenance_threshold_base * 2)
 
-		-- exceptional circumstance buildings
+		-- Exceptional circumstance buildings
 		elseif not bld.maintenance_resource_request and bld:DoesMaintenanceRequireResources() then
 			-- restore main res request
 			local resource_unit_count = 1 + (bld.maintenance_resource_amount / (ResourceScale * 10)) --1 per 10
@@ -352,11 +330,11 @@ function OnMsg.LoadGame()
 	for i = 1, #colonists do
 		local colonist = colonists[i]
 		local dome_at_pt = GetDomeAtPoint(GetObjectHexGrid(colonist.city), colonist:GetVisualPos())
-		-- check if lemming is currently in a dome while wearing a suit
+		-- Check if lemming is currently in a dome while wearing a suit
 		if colonist:GetEntity():find("Unit_Astronaut") and dome_at_pt then
-			-- normally called when they go through the airlock
+			-- Normally called when they go through the airlock
 			colonist:OnEnterDome(dome_at_pt)
-			-- the colonist will wait around for a bit till they start moving, this forces them to do something
+			-- The colonist will wait around for a bit till they start moving, this forces them to do something
 			colonist:SetCommand("Idle")
 		end
 	end
@@ -371,7 +349,7 @@ function OnMsg.LoadGame()
 			for j = #mods, 1, -1 do
 				local mod_item = mods[j]
 				local idx = table.find(farms, "farm_id", mod_item.id)
-				-- can't find farm id, so it's a removed farm
+				-- Can't find farm id, so it's a removed farm
 				if not idx then
 					dome:SetModifier("air_consumption", mod_item.id, 0, 0)
 				end
@@ -413,9 +391,9 @@ function OnMsg.LoadGame()
 	for i = #objs, 1, -1 do
 		local obj = objs[i]
 
-		-- same pt as the dest means stuck on ground
+		-- Same pt as the dest means stuck on ground
 		if obj:GetPos() == obj.dest
-		-- stuck on roof of dome
+		-- Stuck on roof of dome
 			or not IsValidThread(obj.fall_thread)
 		then
 			DoneObject(obj)
@@ -502,7 +480,7 @@ function LayoutConstructionController:Activate(...)
 
 	-- now remove what shouldn't be there
 	local GetBuildingTechsStatus = GetBuildingTechsStatus
-	local UICity = UICity
+	local city = self.city or UICity
 	local BuildingTemplates = BuildingTemplates
 
 	local controllers = self.controllers or empty_table
@@ -512,7 +490,7 @@ function LayoutConstructionController:Activate(...)
 			local _, tech_enabled = GetBuildingTechsStatus(template.id, template.build_category)
 
 			-- If it isn't unlocked and there's no prefabs then remove it
-			if not tech_enabled and UICity:GetPrefabs(template.id) == 0 then
+			if not tech_enabled and city:GetPrefabs(template.id) == 0 then
 				self.skip_items[entry] = true
 				controllers[entry]:Deactivate()
 				controllers[entry] = nil
@@ -635,28 +613,39 @@ do -- GridSwitchConstruction.lua GridSwitchConstructionController:UpdateConstruc
 	end
 end
 --
---
---
---
---
+
 -- B&B fixes
 if not g_AvailableDlc.picard then
 	return
 end
+-- No Planetary Anomaly Breakthroughs when B&B is installed.
+local ChoOrig_City_InitBreakThroughAnomalies = City.InitBreakThroughAnomalies
+function City:InitBreakThroughAnomalies(...)
+	if not mod_EnableMod then
+		return ChoOrig_City_InitBreakThroughAnomalies(self, ...)
+	end
+
+	-- This func is called for each new city (surface/underground/asteroids)
+	-- Calling it more than once removes the BreakthroughOrder list
+	-- That list is used to spawn planetary anomalies
+	if self.map_id == MainMapID then
+		return ChoOrig_City_InitBreakThroughAnomalies(self, ...)
+	end
+
+	-- underground or asteroid city
+	local ChoOrig_BreakthroughOrder = BreakthroughOrder
+	ChoOrig_City_InitBreakThroughAnomalies(self, ...)
+	BreakthroughOrder = ChoOrig_BreakthroughOrder
+end
 --
-function UndergroundPassage:SnappedObjectPlaced(building)
+local function SnappedObjectPlaced(self, building)
 	if IsKindOf(building, "ConstructionSite") then
 		self.elevator_construction = building
 		self.other.elevator_construction = building.linked_obj
 	end
 end
---
-function SurfacePassage:SnappedObjectPlaced(building)
-  if IsKindOf(building, "ConstructionSite") then
-    self.elevator_construction = building
-    self.other.elevator_construction = building.linked_obj
-  end
-end
+UndergroundPassage.SnappedObjectPlaced = SnappedObjectPlaced
+SurfacePassage.SnappedObjectPlaced = SnappedObjectPlaced
 --
 function OnMsg.ConstructionSiteRemoved(construction_site)
   if construction_site and IsKindOf(construction_site.building_class_proto, "Elevator") then

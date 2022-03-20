@@ -1634,6 +1634,14 @@ function ChoGGi.MenuFuncs.SetUIRangeBuildingRadius(action)
 				UserSettings.BuildingSettings[id].uirange = value
 			end
 
+			if id == "TriboelectricScrubber" then
+				local props = TriboelectricScrubber:GetProperties()
+				local idx = table.find(props, "id", "UIRange")
+				if idx then
+					props[idx].max = value
+				end
+			end
+
 			-- find a better way to update radius...
 			local obj = SelectedObj
 			CreateRealTimeThread(function()

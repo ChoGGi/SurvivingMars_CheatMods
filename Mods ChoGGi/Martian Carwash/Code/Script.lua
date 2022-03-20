@@ -113,11 +113,6 @@ function Carwash:StartAnimThread(sprinkler)
 				sprinkler:SetAnim(1, "workingStart")
 				Sleep(sprinkler:TimeToAnimEnd())
 				PlayFX("FarmWater", "start", sprinkler)
-
---~ 				sprinkler.fx_actor_class = "AlienDigger"
---~ 				PlayFX("Deconstruct", "start", sprinkler)
---~ 				sprinkler.fx_actor_class = false
-
 				self.is_up = true
 
 				-- larger spray
@@ -129,15 +124,9 @@ function Carwash:StartAnimThread(sprinkler)
 
 			elseif not working and self.is_up then
 				PlayFX("FarmWater", "end", sprinkler)
-
---~ 				sprinkler.fx_actor_class = "AlienDigger"
---~ 				PlayFX("Deconstruct", "end", sprinkler)
---~ 				sprinkler.fx_actor_class = false
-
 				sprinkler:SetAnim(1, "workingEnd")
 				Sleep(sprinkler:TimeToAnimEnd())
 				self.is_up = false
-
 			end
 
 			-- If working state changed start over, otherwise set appropritate idle state, fire fx and wait
@@ -184,14 +173,12 @@ function Carwash:OnDestroyed()
 
 	-- make sure sprinkler is stopped
 	if self.sprinkler then
---~ 		self.sprinkler.fx_actor_class = "AlienDigger"
---~ 		PlayFX("Deconstruct", "end", self.sprinkler)
---~ 		self.sprinkler.fx_actor_class = false
 		PlayFX("FarmWater", "end", self.sprinkler)
 		self.sprinkler:SetAnim(1, "workingEnd")
 	end
 end
 
+-- Start of adding fake life support spots
 function Carwash:AddFakeMarkers(list)
 	-- we need to add extra marker and move them to the correct places
 	self:ForEachAttach("GridTileWater", function(a)
@@ -205,7 +192,6 @@ function Carwash:AddFakeMarkers(list)
 
 		-- add 3 extra markers to each spot (SetObjWaterMarkers adds one to each spot)
 		for i = 1, 3 do
---~ 			local marker = PlaceObject("GridTileWater", nil, const.cfComponentAttach)
 			local marker = PlaceObjectIn("GridTileWater", self:GetMapID(), nil, const.cfComponentAttach)
 			self:Attach(marker, num)
 			marker:SetAttachAngle(- marker:GetAngle())
@@ -322,6 +308,8 @@ function LifeSupportGridElement:UpdateVisuals(supply_resource, ...)
 
 	return result
 end
+-- End of adding fake life support spots
+
 
 -- add building to building template list
 function OnMsg.ClassesPostprocess()

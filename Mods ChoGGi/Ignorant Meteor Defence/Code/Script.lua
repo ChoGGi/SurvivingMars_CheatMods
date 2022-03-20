@@ -1,11 +1,36 @@
 -- See LICENSE for terms
 
+local table = table
+local GetRealm = GetRealm
+
 local mod_EnableMod
 local mod_IgnoreAnomalies
 local mod_IgnoreMetals
 local mod_IgnorePolymers
 
-local function TestRemoveMeteor(deposit_type)
+local function TestRemoveMeteor(meteor)
+	if mod_IgnoreNoBuildings then
+		local q = {meteor:GetQuery()}
+		-- Remove Units from the query since they move around so it's a waste to bother checking
+		-- close enough, lua rev 1010999
+		if q[3] == "Drone" then
+			table.remove(q, 3)
+		end
+		if q[3] == "Colonist" then
+			table.remove(q, 3)
+		end
+		-- an idle rover could be considered worth more than a meteor
+--~ 		if q[4] == "BaseRover" then
+--~ 			table.remove(q, 4)
+--~ 		end
+
+		local objs = GetRealm(meteor):MapGet(table.unpack(q))
+		if #objs < 1 then
+			return false
+		end
+	end
+
+	local deposit_type = meteor.deposit_type
 	-- it's usually rocks
 	if deposit_type == "Rocks" then
 		return true
@@ -28,7 +53,7 @@ local function CheckMeteors()
 	local meteors = g_MeteorsPredicted or ""
 	for i = #meteors, 1, -1 do
 		local meteor = meteors[i]
-		if TestRemoveMeteor(meteor.deposit_type) then
+		if TestRemoveMeteor(meteor) then
 			-- refire the msg that we blocked in :Track()
 			Msg("Meteor", meteor)
 		end
@@ -50,9 +75,10 @@ local function ModOptions(id)
 	mod_IgnoreAnomalies = options:GetProperty("IgnoreAnomalies")
 	mod_IgnoreMetals = options:GetProperty("IgnoreMetals")
 	mod_IgnorePolymers = options:GetProperty("IgnorePolymers")
+	mod_IgnoreNoBuildings = options:GetProperty("IgnoreNoBuildings")
 
 	-- make sure we're in-game
-	if not UICity then
+	if not UIColony then
 		return
 	end
 
@@ -64,7 +90,7 @@ OnMsg.ModsReloaded = ModOptions
 OnMsg.ApplyModOptions = ModOptions
 
 local function AbortDefence(func, self, meteor, ...)
-	if mod_EnableMod and not TestRemoveMeteor(meteor.deposit_type) then
+	if mod_EnableMod and not TestRemoveMeteor(meteor) then
 		return
 	end
 

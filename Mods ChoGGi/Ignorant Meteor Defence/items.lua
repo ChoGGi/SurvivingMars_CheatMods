@@ -25,4 +25,10 @@ return {
 		"Help", T(302535920011915, "Don't shoot down meteors containing polymers."),
 		"DefaultValue", true,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "IgnoreNoBuildings",
+		"DisplayName", T(0000, "Ignore No Buildings"),
+		"Help", T(0000, "Meteors that land away from buildings are ignored (units are a dice roll)."),
+		"DefaultValue", true,
+	}),
 }

@@ -1,2 +1,5 @@
+v0.3
+Underground should be working now.
+
 v0.2
 Added mod option to auto-queue up drone prefabs when city prefabs are low.

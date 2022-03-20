@@ -7,6 +7,23 @@ end
 
 local table = table
 
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	if CurrentModOptions:GetProperty("NoPower") then
+		ClassTemplates.Building.MicroGAutoExtractor.disable_electricity_consumption = 1
+	else
+		ClassTemplates.Building.MicroGAutoExtractor.disable_electricity_consumption = 0
+	end
+end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
+
 local orig_list = BuildingTemplates.MicroGAutoExtractor.expected_exploitation_resources
 local custom_list = table.icopy(orig_list)
 local count = #custom_list
@@ -19,8 +36,7 @@ local function NextResource(current_res)
 	end
 
 	local idx = table.find(custom_list, current_res) or 0
-	idx = (idx % count) + 1
-	return custom_list[idx]
+	return custom_list[(idx % count) + 1]
 end
 
 local icons = {

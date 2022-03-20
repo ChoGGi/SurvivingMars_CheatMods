@@ -14,6 +14,8 @@ end
 -- Set options on new/load game
 OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode
+-- Switch between different maps (can happen before UICity)
+OnMsg.ChangeMapDone = StartupCode
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
