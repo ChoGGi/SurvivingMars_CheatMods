@@ -32,12 +32,13 @@ OnMsg.LoadGame = StartupCode
 local function PauseGame(id, callback, params, func, ...)
 	if not disable_pause and lookup_pauses[id]
 		-- Don't pause for "0" notifications (eg: Buildings Not Working 0)
-		and (not params or params and params.count > 0)
+		and not params or params and (params.count or 0) > 0
 		and not table.find(g_ActiveOnScreenNotifications, 1, id)
 	then
 		UIColony:SetGameSpeed(0)
 		UISpeedState = "pause"
 	end
+
 	return func(id, callback, params, ...)
 end
 

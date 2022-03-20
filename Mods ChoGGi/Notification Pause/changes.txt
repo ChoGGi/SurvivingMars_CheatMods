@@ -1,3 +1,6 @@
+v1.6
+Fixed bug with 1.5 (thanks SoftwareSimian).
+
 v1.5
 Don't pause for "0" notifications (eg: Buildings Not Working 0).
 

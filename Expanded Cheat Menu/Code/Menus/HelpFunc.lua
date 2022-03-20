@@ -46,8 +46,6 @@ do -- ModUpload
 		[ChoGGi.id] = true,
 	}
 
---~ 	-- this keeps the check saved per session (true = steam, false = paradox)
---~ 	local upload_to_who = true
 	-- true = desktop, false = desktop/console
 	local upload_to_whichplatform = false
 
@@ -88,8 +86,8 @@ do -- ModUpload
 		local orig_title
 
 		msg_popup_id = MsgPopup(
-			T(5452--[[START]]),
-			T(302535920000367--[[Mod Upload]])
+			TranslationTable[5452--[[START]]],
+			TranslationTable[302535920000367--[[Mod Upload]]]
 		)
 
 		-- always start with fresh table
@@ -352,18 +350,18 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 				print(Translate("<color ChoGGi_red>" .. msg .. "\n" .. tostring(log_error) .. "</color>"))
 			end
 			if log_error then
-				result_title[#result_title+1] = "\n<color ChoGGi_red>" .. T(1000592--[[Error]]) .. "</color>"
+				result_title[#result_title+1] = "\n<color ChoGGi_red>" .. TranslationTable[1000592--[[Error]]] .. "</color>"
 				result_msg[#result_msg+1] = log_error
 			end
 		else
 			if batch then
-				print(Translate("<color ChoGGi_green>" .. T(1000015--[[Success]]) .. " " .. mod.title .. "</color>"))
+				print(Translate("<color ChoGGi_green>" .. TranslationTable[1000015--[[Success]]] .. " " .. mod.title .. "</color>"))
 			end
 			if choices_len == 1 then
 				result_msg[#result_msg+1] = T{1000014--[[Mod <ModLabel> was successfully uploaded!]],
 					ModLabel = mod.title,
 				}
-				result_title[#result_title+1] = Translate("<color ChoGGi_green>" .. T(1000015--[[Success]]) .. "</color>")
+				result_title[#result_title+1] = Translate("<color ChoGGi_green>" .. TranslationTable[1000015--[[Success]]] .. "</color>")
 			else
 				result_title[#result_title+1] = mod.title
 			end
@@ -498,16 +496,16 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 						m_c = m_c + 1
 						upload_msg[m_c] = "\n\n"
 						m_c = m_c + 1
-						upload_msg[m_c] = Translate(302535920001572--[["<color ChoGGi_red>Pack Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually to workaround it.
+						upload_msg[m_c] = TranslationTable[302535920001572--[["<color ChoGGi_red>Pack Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually to workaround it.
 You can also stick the executable in the profile folder to use it instead (<green>no crashing</green>):
-<yellow>%s</yellow>."]]):format(ConvertToOSPath(hpk_path))
+<yellow>%s</yellow>."]]]:format(ConvertToOSPath(hpk_path))
 
 						-- show diff author warning unless it's me
 						if diff_author and not testing then
 							m_c = m_c + 1
 							upload_msg[m_c] = "\n\n"
 							m_c = m_c + 1
-							upload_msg[m_c] = Translate(302535920001263--[["%s is different from your name, do you have permission to upload it?"]]):format(mod.author)
+							upload_msg[m_c] = TranslationTable[302535920001263--[["%s is different from your name, do you have permission to upload it?"]]]:format(mod.author)
 						end
 					end
 
@@ -553,10 +551,10 @@ You can also stick the executable in the profile folder to use it instead (<gree
 						end
 						-- and show msg
 						if ChoGGi.ComFuncs.QuestionBox(
-							T(302535920000221--[[Batch Upload mods?]]) .. "\n\n"
+							TranslationTable[302535920000221--[[Batch Upload mods?]]] .. "\n\n"
 								.. table.concat(titles, ", "),
 							CallBackFunc_BQ,
-							T(302535920000221--[[Batch Upload!]]),
+							TranslationTable[302535920000221--[[Batch Upload!]]],
 							nil,
 							nil,
 							upload_image,
@@ -584,7 +582,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			local popups = ChoGGi.Temp.MsgPopups
 			local idx = table.find(popups, "notification_id", msg_popup_id)
 			if idx and ChoGGi.ComFuncs.IsValidXWin(popups[idx]) then
-				popups[idx].idText:SetText(T(302535920001453--[[Completed]]))
+				popups[idx].idText:SetText(TranslationTable[302535920001453--[[Completed]]])
 			end
 
 			local error_msgs = {}
@@ -595,7 +593,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			end
 			error_msgs = table.concat(error_msgs)
 
-			local error_text = T(302535920000221--[[See log for any batch errors.]])
+			local error_text = TranslationTable[302535920000221--[[See log for any batch errors.]]]
 			-- only add error msg if single mod
 			if choices_len == 1 then
 				error_text = error_text .. "\n\n" .. error_msgs
@@ -605,7 +603,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			print(Translate(error_msgs))
 			ChoGGi.ComFuncs.MsgWait(
 				error_text,
-				T(302535920001586--[[All Done!]]),
+				TranslationTable[302535920001586--[[All Done!]]],
 				upload_image
 			)
 
@@ -619,12 +617,12 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			return
 		end
 		if not (Platform.steam or Platform.pops) then
-			local msg = Translate(1000760--[[Not Steam]]) .. "/"
-				.. Translate(1000759--[[Not Paradox]])
-			print(Translate(302535920000367--[[Mod Upload]]), ":", msg)
+			local msg = TranslationTable[1000760--[[Not Steam]]] .. "/"
+				.. TranslationTable[1000759--[[Not Paradox]]]
+			print(TranslationTable[302535920000367--[[Mod Upload]]], ":", msg)
 			MsgPopup(
 				msg,
-				T(302535920000367--[[Mod Upload]])
+				TranslationTable[302535920000367--[[Mod Upload]]]
 			)
 			return
 		end
@@ -665,71 +663,49 @@ You can also stick the executable in the profile folder to use it instead (<gree
 --~ 		local _, image_paradox_y = MeasureImage(image_paradox)
 
 		ChoGGi.ComFuncs.OpenInListChoice{
---~ 			background_image = upload_to_who and image_steam or image_paradox,
 			callback = CallBackFunc,
 			items = item_list,
-			title = T(302535920000367--[[Mod Upload]]),
-			hint = T(302535920001511--[["AsyncPack will CTD the second time you call it, you can use hpk to pack mods ahead of time.
+			title = TranslationTable[302535920000367--[[Mod Upload]]],
+			hint = TranslationTable[302535920001511--[["AsyncPack will CTD the second time you call it, you can use hpk to pack mods ahead of time.
 
 https://github.com/nickelc/hpk
 <green>hpk create ""Mod folder"" ModContent.hpk</green>
-Move archive to ""Mod folder/Pack/ModContent.hpk"""]]) .. "\n\n" .. Translate(302535920001572--[[<color ChoGGi_red>Pack Warning</color>: Will instantly crash SM when calling it a second time, pa]]):format(ConvertToOSPath(hpk_path)),
+Move archive to ""Mod folder/Pack/ModContent.hpk"""]]] .. "\n\n" .. Translate(302535920001572--[[<color ChoGGi_red>Pack Warning</color>: Will instantly crash SM when calling it a second time, pa]]):format(ConvertToOSPath(hpk_path)),
 			height = 800.0,
 			multisel = true,
 			checkboxes = {
-				{title = T(302535920001260--[[Blank]]),
-					hint = T(302535920001261--[["Uploads a blank mod, and prints id in log."]]),
+				{title = TranslationTable[302535920001260--[[Blank]]],
+					hint = TranslationTable[302535920001261--[["Uploads a blank mod, and prints id in log."]]],
 				},
-				{title = T(302535920000664--[[Clipboard]]),
-					hint = T(302535920000665--[[If uploading a mod this copies the mod's steam id clipboard.]]),
+				{title = TranslationTable[302535920000664--[[Clipboard]]],
+					hint = TranslationTable[302535920000665--[[If uploading a mod this copies the mod's steam id clipboard.]]],
 					checked = true,
 				},
-				{title = T(186760604064, "Test"),
-					level = 2,
-					hint = T(302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).]]),
+				{title = TranslationTable[186760604064--[[Test]]],
+					hint = TranslationTable[302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).]]],
 				},
-
-
-				{title = T(302535920001506--[[Steam]]),
+				--
+				{title = TranslationTable[302535920001506--[[Steam]]],
 					level = 2,
-					hint = T(302535920001507--[[Upload to Steam Workshop]]),
+					hint = TranslationTable[302535920001507--[[Upload to Steam Workshop.]]],
 					checked = true,
---~ 					checked = upload_to_who,
---~ 					func = function(dlg, check)
---~ 						upload_to_who = check
---~ 						if check then
---~ 							dlg.idCheckBox4:SetText(TranslationTable[302535920001506--[[Steam]]])
---~ 							dlg.idCheckBox5:SetVisible()
---~ 							dlg.idBackgroundFrame:SetImage(image_steam)
---~ 							dlg.idBackgroundFrame:SetMinHeight(image_steam_y)
---~ 						else
---~ 							dlg.idCheckBox4:SetText(T(5482, "Paradox"))
---~ 							dlg.idCheckBox5:SetVisible(true)
---~ 							dlg.idBackgroundFrame:SetImage(image_paradox)
---~ 							dlg.idBackgroundFrame:SetMinHeight(image_paradox_y)
---~ 						end
---~ 					end,
---~ 					-- no pops means no sense in showing this
---~ 					visible = Platform.pops,
 				},
 
-				{title = T(5482--[[Paradox]]),
+				{title = TranslationTable[5482--[[Paradox]]],
 					level = 2,
-					hint = T(302535920001662--[[Upload to Paradox Mods]]),
+					hint = TranslationTable[302535920001662--[[Upload to Paradox Mods.]]],
 					checked = true,
 				},
 
 
-				{title = T(302535920001509--[[Platform]]),
+				{title = TranslationTable[302535920001509--[[Platform]]],
 					level = 2,
-					hint = T(302535920001510--[["Paradox mods platform: Leave checked to upload to Desktop only or uncheck to upload to Desktop and Console.
-If you have a uuid in your metadata.lua this checkbox is ignored and it'll try the any uuid then the desktop uuid."]]),
+					hint = TranslationTable[302535920001510--[["Paradox mods platform: Leave checked to upload to Desktop only or uncheck to upload to Desktop and Console.
+If you have a uuid in your metadata.lua this checkbox is ignored and it'll try the any uuid then the desktop uuid."]]],
 					checked = upload_to_whichplatform,
 					func = function(_, check)
 						upload_to_whichplatform = check
 					end,
---~ 					-- It defaults to hidden, so if it's paradox then we change it to visible
---~ 					visible = not upload_to_who,
 				},
 			},
 		}
@@ -822,7 +798,7 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 		local data = SavegamesList[i]
 
 		-- build played time
-		local playtime = T(77, "Unknown")
+		local playtime = TranslationTable[77--[[Unknown]]]
 		if data.playtime then
 			local h, m, _ = FormatElapsedTime(data.playtime, "hms")
 			playtime = T{7549--[[<hours>:<minutes>]],

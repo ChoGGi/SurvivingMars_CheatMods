@@ -2,6 +2,7 @@
 
 ## v18.1 (Unreleased)
 ### Fixed:
+- Fixed issue when using Chinese lang.
 - Missing menu icons/some messed up strings.
 - Buildings>Radius>Triboelectric Scrubber.
 - Unlimited Connection Length ignored tunnels (Thanks McKaby).

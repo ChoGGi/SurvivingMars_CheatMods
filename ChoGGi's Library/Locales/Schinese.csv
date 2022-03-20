@@ -321,9 +321,6 @@ Some of the file names are guesses. <anim> is a guess", 我用于spot_rot的func
 302535920000030, To show the console log text; press Tilde or Enter and click the %s button then make sure %s is checked., 要显示控制台的日志文本。 按Tilde或Enter键并点击%s。 按钮，然后确保%s 被检查。,,,,,
 302535920001441, <left_click> Activate MenuItem <right_click> Add/Remove Quickbar, <左键>激活菜单项<右键>添加/删除快速栏,,,,,
 302535920001439, ~obj @func @@type $id %img ^str, ~obj,,,,,
-302535920001440," <green>~</green><yellow>obj</yellow> opens object in examine dlg use <color ChoGGi_red>ex(obj)</color> in lua code.<green>~!</green><yellow>obj</yellow> opens object's attachments in examine dlg.
-
-<green>&</green><yellow>handle</yellow> examine object using handle id.", <green>~</green><yellow>obj</yellow>在检查dlg中打开对象。,,,,,
 302535920001401, Removed missing mod building from %s: %s entity: %s handle: %s, 从%s中删除了缺失的mod构建。 %s,,,,,
 302535920001074, Ged Presets, Ged预设,,,,,
 302535920000503, <right_click> an item/submenu to add/remove it from the quickbar., <右键>一个项目/子菜单，从快速栏中添加/删除它。,,,,,

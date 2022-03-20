@@ -212,7 +212,6 @@ function ChoGGi_DlgListChoice:Init(parent, context)
 	end
 
 	if self.custom_type ~= 7 then
-
 		self.idEditArea = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idEditArea",
 			Dock = "bottom",
@@ -235,7 +234,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 			Dock = "left",
 			Margins = box(4, 0, 0, 0),
 			Text = TranslationTable[302535920000078--[[Custom Value]]],
-			RolloverText = TranslationTable[302535920000077]:format(TranslationTable[302535920000078]),
+			RolloverText = TranslationTable[302535920000077--[[BLAH]]]:format(TranslationTable[302535920000078--[[Custom Value]]]),
 			OnChange = self.idShowCustomVal_OnChange,
 		}, self.idEditArea)
 
