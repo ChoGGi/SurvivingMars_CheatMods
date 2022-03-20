@@ -142,7 +142,7 @@ do -- fix FindWater milestone
       return true
     end
 		while true do
-			local ok, deposit = WaitMsg("WaterDepositRevealed")
+			local _, deposit = WaitMsg("WaterDepositRevealed")
 			if deposit:GetMapID() == MainMapID then
 				return true
 			end
@@ -153,7 +153,7 @@ end
 do -- landscaping
 	local function UpdateRenderLandscape()
 		local landscape_found = false
-		for mark, landscape in pairs(Landscapes) do
+		for _, landscape in pairs(Landscapes) do
 			if landscape and landscape.map_id == ActiveMapID then
 				landscape_found = true
 				break
@@ -214,13 +214,13 @@ function Workforce:HasFreeWorkplacesAround(colonist)
 end
 --
 do -- Check if selected before updating hex range on drone hub extenders
-	function DroneHub:OnModifiableValueChanged(prop, old_val, new_val)
+	function DroneHub:OnModifiableValueChanged(prop)
 		if prop == "service_area_max" and IsObjectSelected(self) then
 			ChangeHexRanges(self)
 		end
 	end
 	if g_AvailableDlc.picard then
-		function DroneHubExtender:OnModifiableValueChanged(prop, old_val, new_val)
+		function DroneHubExtender:OnModifiableValueChanged(prop)
 			if prop == "work_radius" and IsObjectSelected(self) then
 				ChangeHexRanges(self)
 			end
@@ -406,9 +406,9 @@ function OnMsg.LoadGame()
 	bt.LampProjector.label1 = ""
 
 	-- https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-game-freezes-when-deploying-drones-from-rc-commander-after-one-was-destroyed.1168779/
-	local objs = UIColony:GetCityLabels("RCRoverAndChildren")
-	for i = 1, #objs do
-		local attached_drones = objs[i].attached_drones
+	local rovers = UIColony:GetCityLabels("RCRoverAndChildren")
+	for i = 1, #rovers do
+		local attached_drones = rovers[i].attached_drones
 		for j = #attached_drones, 1, -1 do
 			local drone = attached_drones[j]
 			if not IsValid(drone) then
@@ -428,13 +428,13 @@ function OnMsg.LoadGame()
 	end
 
 	-- Check for transport rovers with negative amounts of resources carried.
-	local rovers = UIColony:GetCityLabels("RCTransportAndChildren")
-	for i = 1, #rovers do
-		local rover = rovers[i]
-		for j = 1, #(rover.storable_resources or "") do
-			local res = rover.storable_resources[j]
-			if rover.resource_storage[res] < 0 then
-				rover.resource_storage[res] = 0
+	local trans = UIColony:GetCityLabels("RCTransportAndChildren")
+	for i = 1, #trans do
+		local obj = trans[i]
+		for j = 1, #(obj.storable_resources or "") do
+			local res = obj.storable_resources[j]
+			if obj.resource_storage[res] < 0 then
+				obj.resource_storage[res] = 0
 			end
 		end
 	end
@@ -584,7 +584,7 @@ end
 do -- Colonist:CanReachBuilding
 	local bld_from_canreach
 	local ChoOrig_FindNearestObject = FindNearestObject
-	local function fake_FindNearestObject(list, obj, ...)
+	local function fake_FindNearestObject(list, _, ...)
 		return ChoOrig_FindNearestObject(list, bld_from_canreach, ...)
 	end
 
@@ -723,7 +723,7 @@ function BottomlessPitResearchCenter:DroneUnloadResource(drone, request, resourc
 end
 --
 if not AncientArtifactInterface.GetEntrance then
-	function AncientArtifactInterface:GetEntrance(target, entrance_type, spot_name)
+	function AncientArtifactInterface:GetEntrance()
 		return {
 			self:GetPos(),
 			GetRandomPassableAround(self:GetPos(), 2 * const.HexSize, const.HexSize)

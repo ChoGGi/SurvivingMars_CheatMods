@@ -58,7 +58,7 @@ function StoryBitState:OpenPopup(...)
 	if not mod_StopDomeFracture then
 		return ChoOrig_StoryBitState_OpenPopup(self, ...)
 	end
-  local storybit = StoryBits[self.id]
+--~  local storybit = StoryBits[self.id]
 
 	if self.id == "DomeLeaks" or self.id:find("DomeLeaks_") then
 		ViewAndSelectObject = fake_ViewAndSelectObject

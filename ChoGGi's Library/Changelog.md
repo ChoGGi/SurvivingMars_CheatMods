@@ -1,6 +1,9 @@
 ## Library Changelog
 
-## v11.1 (Unreleased)
+## v11.2 (Unreleased)
+
+## v11.1 (20 Mar 2022)
+- Fixed issue when using Chinese lang.
 - Added a fix for ModItemOptionInputBox not showing option the first time you open it.
 
 ## v11.0 (5 Mar 2022)

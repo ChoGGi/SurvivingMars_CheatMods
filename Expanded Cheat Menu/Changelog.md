@@ -1,8 +1,9 @@
 ## ECM Changelog
 
-## v18.1 (Unreleased)
+## v18.2 (Unreleased)
+
+## v18.1 (20 Mar 2022)
 ### Fixed:
-- Fixed issue when using Chinese lang.
 - Missing menu icons/some messed up strings.
 - Buildings>Radius>Triboelectric Scrubber.
 - Unlimited Connection Length ignored tunnels (Thanks McKaby).
