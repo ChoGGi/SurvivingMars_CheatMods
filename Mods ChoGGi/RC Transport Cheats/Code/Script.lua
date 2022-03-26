@@ -8,6 +8,7 @@ local IsValid = IsValid
 local mod_EnableMod
 local mod_StorageAmount
 local mod_WorkTime
+local mod_WasteRock
 
 local function UpdateTransports()
 	if not mod_EnableMod then
@@ -35,6 +36,7 @@ local function ModOptions(id)
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_StorageAmount = CurrentModOptions:GetProperty("StorageAmount") * const.ResourceScale
 	mod_WorkTime = CurrentModOptions:GetProperty("WorkTime") * const.ResourceScale
+	mod_WasteRock = CurrentModOptions:GetProperty("WasteRock")
 
 	-- Make sure we're in-game
 	if not UIColony then
@@ -54,8 +56,11 @@ function RCTransport:Automation_Gather(...)
 		return ChoOrig_RCTransport_Automation_Gather(self, ...)
 	end
 
+	-- check for waste rock or just regular res
+	local wasterock_cls = mod_WasteRock and "WasteRockStockpileUngrided" or "ResourceStockpile"
+
 	local unreachable_objects = self:GetUnreachableObjectsTable()
-	local depot = GetRealm(self):MapFindNearest(self, "map", "ResourceStockpile",
+	local depot = GetRealm(self):MapFindNearest(self, "map", "ResourceStockpile", wasterock_cls,
 		function(d)
 		-- skip anything in range of drones
 		local depot = #(d.command_centers or "") == 0
@@ -67,6 +72,7 @@ function RCTransport:Automation_Gather(...)
 		end
 		return depot and not unreachable_objects[depot]
 	end)
+
 	--  no stockpiles around, so nothing to do
 	if not depot then
 		return ChoOrig_RCTransport_Automation_Gather(self, ...)

@@ -1,3 +1,6 @@
+v1.0
+Updated to parity with my Lib mod.
+
 v0.9
 Added limit to number of breakthroughs (needs lib v10.9).
 

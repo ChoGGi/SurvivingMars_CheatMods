@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v11.2 (Unreleased)
+- Changed RetName() for less dbg_reg().* showing up for names.
 
 ## v11.1 (20 Mar 2022)
 - Fixed issue when using Chinese lang.

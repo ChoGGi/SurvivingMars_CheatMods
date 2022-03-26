@@ -7,11 +7,12 @@ return PlaceObj("ModDef", {
 			"version_minor", 1,
 		}),
 	},
-	"title", "Dome Teleporters",
+--~ 	"title", "Dome Teleporters",
+	"title", "CRASHES GAME NEEDS COMPLETE REBUILD",
 	"id", "ChoGGi_DomeTeleporters",
-	"steam_id", "1572847416",
-	"pops_any_uuid", "9d8cb03c-6e7b-440e-b8d5-9542d12fd003",
-	"lua_revision", 1007000, -- Picard
+--~ 	"steam_id", "1572847416",
+--~ 	"pops_any_uuid", "9d8cb03c-6e7b-440e-b8d5-9542d12fd003",
+	"lua_revision", 0, -- Picard
 	"version", 15,
 	"version_major", 1,
 	"version_minor", 5,
@@ -19,10 +20,19 @@ return PlaceObj("ModDef", {
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
-		"Code/TeleporterConstruction.lua",
 	},
 	"has_options", true,
 	"description", [[
+CRASHES GAME NEEDS COMPLETE REBUILD
+
+
+
+
+
+
+
+
+
 In-dome teleporters that act like passages (also shows connected lines when you select one).
 This will allow you to have pure resident domes that connect to the work/leisure domes.
 You can set shifts that colonists are allowed to use the teleporter.

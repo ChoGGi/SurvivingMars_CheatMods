@@ -61,76 +61,16 @@ function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	rawget = env.rawget
 	getmetatable = env.getmetatable
 end
--- backup orginal function for later use (checks if we already have a backup, or else inf problems)
-local function SaveOrigFunc(class_or_func, func_name)
-	local OrigFuncs = ChoGGi.OrigFuncs
-	-- If it's a class func
-	if func_name then
-		local newname = class_or_func .. "_" .. func_name
-		if not OrigFuncs[newname] then
-			local class_obj = g_env.class_or_func
-			if class_obj then
-				OrigFuncs[newname] = rawget(class_obj, func_name)
-			end
-		end
-	-- regular func
-	else
-		if not OrigFuncs[class_or_func] then
-			OrigFuncs[class_or_func] = g_env.class_or_func
-		end
-	end
-end
-ChoGGi.ComFuncs.SaveOrigFunc = SaveOrigFunc
 
-do -- AddMsgToFunc
-	local Msg = Msg
-	-- changes a function to also post a Msg for use with OnMsg
-	function ChoGGi.ComFuncs.AddMsgToFunc(class_name, func_name, msg_str, thread, ...)
-		-- anything i want to pass onto the msg
-		local varargs = ...
-		-- save orig
-		SaveOrigFunc(class_name, func_name)
-		-- we want to local this after SaveOrigFunc just in case
-		local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
-		-- redefine it
-		local newname = class_name .. "_" .. func_name
-		_G[class_name][func_name] = function(obj, ...)
-			-- send obj along with any extra args i added
-			if thread then
-				-- calling it from a thread creates a slight delay
-				CreateRealTimeThread(Msg, msg_str, obj, varargs)
-			else
-				Msg(msg_str, obj, varargs)
-			end
-
---~ 			-- use to debug if getting an error
---~ 			local params = {...}
---~ 			-- pass on args to orig func
---~ 			if not pcall(function()
---~ 				return ChoGGi_OrigFuncs[class_name .. "_" .. func_name](table.unpack(params))
---~ 			end) then
---~ 				print("Function Error: ", class_name .. "_" .. func_name)
---~ 				ChoGGi.ComFuncs.OpenInExamineDlg({params}, nil, "AddMsgToFunc")
---~ 			end
---~ 			--
-			return ChoGGi_OrigFuncs[newname](obj, ...)
-		end
-	end
-end -- do
-
-local function IsObjlist(o)
-	if type(o) == "table" then
-		return getmetatable(o) == objlist
-	end
-end
-ChoGGi.ComFuncs.IsObjlist = IsObjlist
-
--- "table.table.table.etc" = returns etc as object
--- use .number for index based tables ("terminal.desktop.1.box")
+-- "table.table.table.etc" try to find and return "etc" as actual object (default starts from _G)
+-- Use .number for index based tables ("terminal.desktop.1.box")
 -- root is where we start looking (defaults to _G).
--- create is a boolean to add a table if the "name" is absent.
-local function DotPathToObject(str, root, create)
---~ 	local g_env = _G
+-- create is a boolean to add tables if the path .name is absent.
+--[[
+DotPathToObject("terminal.desktop")
+DotPathToObject("SnapToTarget", TunnelConstructionController)
+]]
+local function DotPathToObject(dot_path, root, create)
 
 	-- parent always starts out as "root"
 	local parent = root or g_env
@@ -139,33 +79,28 @@ local function DotPathToObject(str, root, create)
 	-- [] () + ? . act like regexp ones
 	-- % escape special chars
 	-- ^ complement of the match (the "opposite" of the match)
-	local matches = str:gmatch("([^%.]+)(.?)")
+	local matches = dot_path:gmatch("([^%.]+)(.?)")
 	for name, match in matches do
-		-- If str included .number we need to make it a number or [name] won't work
+		-- If dot_path included .number we need to make it a number or [name] won't work
 		local num = tonumber(name)
 		if num then
 			name = num
 		end
 
-		local obj_child = parent[name]
---~ 		-- workaround for "Attempt to use an undefined global" msg the devs added
---~ 		if parent == g_env then
---~ 			obj_child = rawget(parent, name)
---~ 		else
---~ 			obj_child = parent[name]
---~ 		end
+		-- rawget == Workaround for "Attempt to use an undefined global" msg the devs added
+		local obj_child = parent == g_env and rawget(parent, name) or parent[name]
 
 		-- . means we're not at the end yet
 		if match == "." then
-			-- create is for adding new settings in non-existent tables
+			-- We're not adding a new table, and there's no match
 			if not obj_child and not create then
-				-- our treasure hunt is cut short, so return nadda
+				-- Our treasure hunt is cut short, so return nadda
 				return false
 			end
-			-- change the parent to the child (create table if absent, this'll only fire when create)
+			-- Change the parent to the child (create table if absent, this'll only fire when create)
 			parent = obj_child or {}
 		else
-			-- no more . so we return as conquering heroes with the obj
+			-- No more . so we return as conquering heroes with the obj
 			return obj_child
 		end
 
@@ -173,6 +108,7 @@ local function DotPathToObject(str, root, create)
 end
 ChoGGi.ComFuncs.DotPathToObject = DotPathToObject
 
+-- ChoGGi.ComFuncs.RetName_lookup_table()
 do -- RetName
 	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 	local IsT = IsT
@@ -284,6 +220,8 @@ do -- RetName
 		end
 
 		local function BuildNameList(update_trans)
+			local g = _G
+
 			lookup_table = ChoGGi_lookup_names or {}
 			lookup_table[g.terminal.desktop] = "terminal.desktop"
 
@@ -293,24 +231,6 @@ do -- RetName
 			AddFuncs("os")
 			AddFuncs("package")
 			AddFuncs("package.searchers")
-			if not ChoGGi.blacklist then
-				local registry = g_env.debug.getregistry()
-				local name = "debug.getregistry()"
-				for key, value in pairs(registry) do
-					local t = type(value)
-					if t == "function" then
-						AddFuncToList(key, value, name)
-					elseif t == "table" then
-						-- we get _G later
-						if value ~= g then
-							for key2, value2 in pairs(value) do
-								AddFuncToList(key, value2, "dbg_reg()."..key2)
-							end
-						end
-					end
-				end
-			end
-
 			-- ECM func names (some are added by ecm, so we want to update list when it's called again)
 			AddFuncsChoGGi("ComFuncs")
 			AddFuncsChoGGi("ConsoleFuncs")
@@ -344,10 +264,9 @@ do -- RetName
 				end
 			end
 
---~ 			local blacklist = g.ChoGGi.blacklist
+			local blacklist = g.ChoGGi.blacklist
 
 			-- and any g_Classes funcs
-			local g = _G
 			for class_id, class_obj in pairs(g.g_Classes) do
 --~ 				if blacklist then
 					local g_value = rawget(g, class_id)
@@ -417,6 +336,24 @@ do -- RetName
 						lookup_table[obj] = var
 					end
 --~ 				end
+			end
+
+			if not blacklist then
+				local registry = g_env.debug.getregistry()
+				local name = "debug.getregistry()"
+				for key, value in pairs(registry) do
+					local t = type(value)
+					if t == "function" then
+						AddFuncToList(key, value, name)
+					elseif t == "table" then
+						-- we get _G later
+						if value ~= g then
+							for key2, value2 in pairs(value) do
+								AddFuncToList(key, value2, "dbg_reg()."..key2)
+							end
+						end
+					end
+				end
 			end
 
 		end -- BuildNameList
@@ -4171,9 +4108,11 @@ do -- PadNumWithZeros
 end -- do
 
 -- ChoGGi.ComFuncs.RemoveObjs("VegetationAnimator")
-function ChoGGi.ComFuncs.RemoveObjs(class)
-	-- suspending pass edits makes deleting much faster
-	SuspendPassEdits("ChoGGi.ComFuncs.RemoveObjs")
+function ChoGGi.ComFuncs.RemoveObjs(class, skip_suspend)
+	if not skip_suspend then
+		-- suspending pass edits makes deleting much faster
+		SuspendPassEdits("ChoGGi.ComFuncs.RemoveObjs")
+	end
 
 	if type(class) == "table" then
 		local g_Classes = g_Classes
@@ -4190,7 +4129,9 @@ function ChoGGi.ComFuncs.RemoveObjs(class)
 		end
 	end
 
-	ResumePassEdits("ChoGGi.ComFuncs.RemoveObjs")
+	if not skip_suspend then
+		ResumePassEdits("ChoGGi.ComFuncs.RemoveObjs")
+	end
 end
 ChoGGi.ComFuncs.MapDelete = ChoGGi.ComFuncs.RemoveObjs
 
@@ -5861,7 +5802,7 @@ do -- path markers
 		end
 
 		-- remove any extra lines
-		ChoGGi.ComFuncs.RemoveObjs("ChoGGi_OPolyline")
+		ChoGGi.ComFuncs.RemoveObjs("ChoGGi_OPolyline", true)
 
 		ResumePassEdits("ChoGGi.ComFuncs.Pathing_StopAndRemoveAll")
 
@@ -7879,6 +7820,14 @@ function ChoGGi.ComFuncs.MoveRealm(obj, map_id)
 		obj:SetPos(pos:SetZ(map.terrain:GetHeight(pos)))
 	end
 end
+
+local function IsObjlist(o)
+	if type(o) == "table" then
+		return getmetatable(o) == objlist
+	end
+end
+ChoGGi.ComFuncs.IsObjlist = IsObjlist
+
 -- loop through all map sectors and fire this func
 --~ function ChoGGi.ComFuncs.LoopMapSectors(map_id, func)
 --~ end
@@ -7935,3 +7884,65 @@ end
 --~ 		drone:SetCommandCenter(hub)
 --~ 	end
 --~ end
+
+
+-- DEPRECATE (someday)
+
+
+-- remove after next mass mod upload
+-- backup orginal function for later use (checks if we already have a backup, or else inf problems)
+local function SaveOrigFunc(class_or_func, func_name)
+	local OrigFuncs = ChoGGi.OrigFuncs
+	-- If it's a class func
+	if func_name then
+		local newname = class_or_func .. "_" .. func_name
+		if not OrigFuncs[newname] then
+			local class_obj = g_env[class_or_func]
+			if class_obj then
+				OrigFuncs[newname] = class_obj[func_name]
+			end
+		end
+	-- regular func
+	else
+		if not OrigFuncs[class_or_func] then
+			OrigFuncs[class_or_func] = g_env[class_or_func]
+		end
+	end
+end
+ChoGGi.ComFuncs.SaveOrigFunc = SaveOrigFunc
+
+do -- AddMsgToFunc
+	local Msg = Msg
+	-- changes a function to also post a Msg for use with OnMsg
+	function ChoGGi.ComFuncs.AddMsgToFunc(class_name, func_name, msg_str, thread, ...)
+		-- anything i want to pass onto the msg
+		local varargs = ...
+		-- save orig
+		SaveOrigFunc(class_name, func_name)
+		-- we want to local this after SaveOrigFunc just in case
+		local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+		-- redefine it
+		local newname = class_name .. "_" .. func_name
+		_G[class_name][func_name] = function(obj, ...)
+			-- send obj along with any extra args i added
+			if thread then
+				-- calling it from a thread creates a slight delay
+				CreateRealTimeThread(Msg, msg_str, obj, varargs)
+			else
+				Msg(msg_str, obj, varargs)
+			end
+
+--~ 			-- use to debug if getting an error
+--~ 			local params = {...}
+--~ 			-- pass on args to orig func
+--~ 			if not pcall(function()
+--~ 				return ChoGGi_OrigFuncs[class_name .. "_" .. func_name](table.unpack(params))
+--~ 			end) then
+--~ 				print("Function Error: ", class_name .. "_" .. func_name)
+--~ 				ChoGGi.ComFuncs.OpenInExamineDlg({params}, nil, "AddMsgToFunc")
+--~ 			end
+--~ 			--
+			return ChoGGi_OrigFuncs[newname](obj, ...)
+		end
+	end
+end -- do

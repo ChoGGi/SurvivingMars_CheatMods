@@ -1,8 +1,6 @@
 -- See LICENSE for terms
 
-local table = table
-local pairs = pairs
-local next = next
+local table, pairs, next = table, pairs, next
 local IsValid = IsValid
 local Sleep = Sleep
 local PlayFX = PlayFX
@@ -11,6 +9,80 @@ local ConnectDomesWithPassage = ConnectDomesWithPassage
 local IsObjInDome = IsObjInDome
 local SetState = g_CObjectFuncs.SetState
 local IsKindOf = IsKindOf
+
+-- backup the CityTunnelConstruction obj
+local ChoOrig_CityTunnelConstruction
+local function GetCityTunnelConstruction()
+	if not ChoOrig_CityTunnelConstruction or not ChoOrig_CityTunnelConstruction[UICity] then
+		ChoOrig_CityTunnelConstruction = CityTunnelConstruction
+	end
+	return ChoOrig_CityTunnelConstruction
+end
+
+-- this is called by some func in TunnelConstructionDialog
+local function CallTunnelFunc(func, ...)
+	GetCityTunnelConstruction()
+	CityTunnelConstruction = CityDomeTeleporterConstruction
+	local ret = {func(...)}
+	CityTunnelConstruction = GetCityTunnelConstruction()
+	return table.unpack(ret)
+end
+
+DefineClass.DomeTeleporter = {
+	__parents = {
+		"Tunnel",
+		"ElectricityConsumer",
+		-- let people shut down shifts
+--~ 		"OutsideBuildingWithShifts",
+		"ShiftsBuilding",
+	},
+--~ 	construction_mode = "dome_teleporter_construction",
+	spinner_toggle_thread = false,
+
+	-- passage stuff
+	domes_connected = false,
+}
+-- we don't want to carry water
+DomeTeleporter.CreateLifeSupportElements = empty_func
+DomeTeleporter.MergeGrids = empty_func
+DomeTeleporter.CleanTunnelMask = empty_func
+DomeTeleporter.CreateElectricityElement = ElectricityConsumer.CreateElectricityElement
+-- passage stuff
+DomeTeleporter.DisconnectDomes = Passage.DisconnectDomes
+DomeTeleporter.CleanHackedPotentials = Passage.CleanHackedPotentials
+-- ambiguously inherited
+DomeTeleporter.ShouldShowNotConnectedToPowerGridSign = Tunnel.ShouldShowNotConnectedToPowerGridSign
+
+DefineClass.DomeTeleporterConstructionDialog = {
+	__parents = {"TunnelConstructionDialog"},
+	mode_name = "dome_teleporter_construction",
+}
+
+-- controller->
+DefineClass.DomeTeleporterConstructionController = {
+	__parents = {"TunnelConstructionController"},
+	-- default it to max
+	max_hex_distance_to_allow_build = 1000,
+}
+
+local ChoOrig_CreateConstructionGroup = CreateConstructionGroup
+local function ChoFake_CreateConstructionGroup(input_building_class, ...)
+	if input_building_class == "Tunnel" then
+		input_building_class = "DomeTeleporter"
+	end
+	return ChoOrig_CreateConstructionGroup(input_building_class, ...)
+end
+
+function DomeTeleporterConstructionController.Activate(...)
+	-- replace func so it returns our template
+	CreateConstructionGroup = ChoFake_CreateConstructionGroup
+	-- get obj
+	local ret = TunnelConstructionController.Activate(...)
+	-- restore func
+	CreateConstructionGroup = ChoOrig_CreateConstructionGroup
+	-- and done
+	return ret
+end
 
 function OnMsg.ConstructionSitePlaced(site, class_name)
 	if class_name ~= "DomeTeleporter" then
@@ -34,6 +106,20 @@ function OnMsg.ConstructionSitePlaced(site, class_name)
 	end)
 end
 
+local function RemoveTableItem(list, name, value)
+	local idx = table.find(list, name, value)
+	if idx then
+		local obj = list[idx]
+		if not type(obj) == "function" then
+			obj:delete()
+		end
+		table.remove(list, idx)
+	end
+end
+
+function OnMsg.ClassesPreprocess()
+	RemoveTableItem(DomeTeleporter.__parents, "LifeSupportGridObject")
+end
 -- build menu button
 function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.DomeTeleporter then
@@ -73,62 +159,35 @@ function OnMsg.ClassesPostprocess()
 
 end
 
-local function RemoveTableItem(list, name, value)
-	local idx = table.find(list, name, value)
-	if idx then
-		local obj = list[idx]
-		if not type(obj) == "function" then
-			obj:delete()
-		end
-		table.remove(list, idx)
-	end
-end
-
--- we fire our own modified GameInit, so we don't want the one from tunnel (not sure how else to remove it)
 function OnMsg.ClassesBuilt()
+	-- we need to swap out the CityTunnelConstruction obj for these funcs
+	local funcs = {
+		"Init",
+		"Open",
+		"Close",
+		"TryPlace",
+		"OnKbdKeyDown",
+		"OnMouseButtonDown",
+		"OnMouseButtonDoubleClick",
+		"OnMousePos",
+		"OnShortcut",
+
+		"OnSystemVirtualKeyboard",
+		"OnXButtonRepeat",
+		"OnXNewPacket",
+	}
+
+	-- we fire our own modified GameInit, so we don't want the one from tunnel (not sure how else to remove it)
 	RemoveTableItem(DomeTeleporter.___GameInit, Tunnel.GameInit)
-end
-function OnMsg.ClassesPreprocess()
-	RemoveTableItem(DomeTeleporter.__parents, "LifeSupportGridObject")
-end
 
-DefineClass.DomeTeleporter = {
-	__parents = {
-		"Tunnel",
-		"ElectricityConsumer",
-		-- let people shut down shifts
---~ 		"OutsideBuildingWithShifts",
-		"ShiftsBuilding",
-	},
---~ 	construction_mode = "dome_teleporter_construction",
-	spinner_toggle_thread = false,
-
-	-- passage stuff
-	domes_connected = false,
-}
--- we don't want to carry water
-DomeTeleporter.CreateLifeSupportElements = empty_func
-DomeTeleporter.MergeGrids = empty_func
-DomeTeleporter.CleanTunnelMask = empty_func
-DomeTeleporter.CreateElectricityElement = ElectricityConsumer.CreateElectricityElement
--- passage stuff
-DomeTeleporter.DisconnectDomes = Passage.DisconnectDomes
-DomeTeleporter.CleanHackedPotentials = Passage.CleanHackedPotentials
-
-local function StartStopSpinner(obj, working)
-	DeleteThread(obj.spinner_toggle_thread)
-	obj.spinner_toggle_thread = CreateGameTimeThread(function()
-		if not IsValid(obj.rotating_thing) then
-			return
+	local TunnelConstructionDialog = TunnelConstructionDialog
+	local DomeTeleporterConstructionDialog = DomeTeleporterConstructionDialog
+	for i = 1, #funcs do
+		local func_name = funcs[i]
+		DomeTeleporterConstructionDialog[func_name] = function(...)
+			return CallTunnelFunc(TunnelConstructionDialog[func_name], ...)
 		end
-		if working then
-			obj.rotating_thing:SetState("workingStart")
-			Sleep(obj.rotating_thing:TimeToAnimEnd())
-			obj.rotating_thing:SetState("workingIdle")
-		else
-			obj.rotating_thing:SetState("workingEnd")
-		end
-	end)
+	end
 end
 
 function DomeTeleporter:GameInit()
@@ -171,7 +230,7 @@ function DomeTeleporter:GameInit()
 				a2:SetColorizationMaterial(3, -11436131, -128, 48)
 				self.rotating_thing = a2
 			end)
-			StartStopSpinner(self, self.working)
+			self:StartStopSpinner()
 --~ DefenceLaserBeam 10
 --~ DefenceTurretPlatform 50
 --~ DroneHubRobots 80
@@ -210,42 +269,63 @@ end
 function DomeTeleporter:OnSetWorking(working, ...)
 	BaseBuilding.OnSetWorking(self, working, ...)
 	-- maybe make it look a little cleaner when somebody toggles it a bunch
-	StartStopSpinner(self, working)
+	self:StartStopSpinner(working)
 
 	if working then
 		PlayFX("DroneRechargePulse", "start", self)
 	end
 end
 
-function DomeTeleporter:TryConnectDomes()
-	-- check if passage is constructed
-	if self.domes_connected or not IsValid(self.parent_dome) then
-		return
+function DomeTeleporter:StartStopSpinner(working)
+	if not working then
+		working = self.working
 	end
 
-	self:UpdateWorking()
-	if IsGameRuleActive("FreeConstruction") then
-		self.construction_cost_at_completion = {
-			Concrete = self.city:GetConstructionCost(self, "Concrete"),
-		}
-	end
-
-	self.elements_under_construction = {}
-	self.traversing_colonists = {}
-	self.elements = {
-		{dome = self.parent_dome},
-		{dome = self.linked_obj.parent_dome},
-	}
-
-	--first and last element should have the domes we need to connect
-	local d1 = self.elements[1] and self.elements[1].dome
-	local d2 = self.elements[#self.elements] and self.elements[#self.elements].dome
-
-	ConnectDomesWithPassage(d1, d2)
-	self.domes_connected = {d1, d2}
-	CreateDomeNetworks(self.city or UICity)
-	self:Notify("AddPFTunnel")
+	DeleteThread(self.spinner_toggle_thread)
+	self.spinner_toggle_thread = CreateGameTimeThread(function()
+		if not IsValid(self.rotating_thing) then
+			return
+		end
+		if working then
+			self.rotating_thing:SetState("workingStart")
+			Sleep(self.rotating_thing:TimeToAnimEnd())
+			self.rotating_thing:SetState("workingIdle")
+		else
+			self.rotating_thing:SetState("workingEnd")
+		end
+	end)
 end
+
+DomeTeleporter.TryConnectDomes = Passage.TryConnectDomes
+--~ function DomeTeleporter:TryConnectDomes()
+--~ 	-- check if passage is constructed
+--~ 	if self.domes_connected or not IsValid(self.parent_dome) then
+--~ 		return
+--~ 	end
+
+--~ 	self:UpdateWorking()
+--~ 	if IsGameRuleActive("FreeConstruction") then
+--~ 		self.construction_cost_at_completion = {
+--~ 			Concrete = UIColony.construction_cost:GetConstructionCost(self, "Concrete"),
+--~ 		}
+--~ 	end
+
+--~ 	self.elements_under_construction = {}
+--~ 	self.traversing_colonists = {}
+--~ 	self.elements = {
+--~ 		{dome = self.parent_dome},
+--~ 		{dome = self.linked_obj.parent_dome},
+--~ 	}
+
+--~ 	--first and last element should have the domes we need to connect
+--~ 	local d1 = self.elements[1] and self.elements[1].dome
+--~ 	local d2 = self.elements[#self.elements] and self.elements[#self.elements].dome
+
+--~ 	ConnectDomesWithPassage(d1, d2)
+--~ 	self.domes_connected = {d1, d2}
+--~ 	CreateDomeNetworks(self.city or UICity)
+--~ 	self:Notify("AddPFTunnel")
+--~ end
 
 -- match up workshifts with each other
 function DomeTeleporter:ToggleShift(shift, ...)
@@ -430,4 +510,89 @@ function OnMsg.SelectionRemoved()
 		end
 	end
 	table.clear(teleporter_lines)
+end
+
+--~ function TunnelConstructionController:UpdateCursor(pt)
+--~   ShowNearbyHexGrid(pt)
+--~   if IsValid(self.cursor_obj) then
+--~ 	ex(self)
+--~     local terrain = GetTerrain(self.city)
+--~     self.cursor_obj:SetPos(FixConstructPos(terrain, pt))
+--~   end
+--~   ObjModified(self)
+--~   if not self.template_obj or not self.cursor_obj then
+--~     return
+--~   end
+--~   self:UpdateConstructionObstructors()
+--~   self:UpdateConstructionStatuses(pt)
+--~   self:UpdateShortConstructionStatus()
+--~ end
+
+
+local mod_BuildDist
+
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_BuildDist = CurrentModOptions:GetProperty("BuildDist")
+
+	DomeTeleporterConstructionController.max_hex_distance_to_allow_build = mod_BuildDist
+	DomeTeleporterConstructionController.max_range = mod_BuildDist < 100 and 100 or mod_BuildDist
+	if UICity then
+		CityDomeTeleporterConstruction[UICity].max_hex_distance_to_allow_build = mod_BuildDist
+		CityDomeTeleporterConstruction[UICity].max_range = mod_BuildDist < 100 and 100 or mod_BuildDist
+	end
+end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
+
+GlobalVar("CityDomeTeleporterConstruction", {})
+
+local table = table
+
+-- chooses which construct mode to start
+local ChoOrig_GetConstructionController = GetConstructionController
+function GetConstructionController(mode, ...)
+  mode = mode or InGameInterfaceMode
+	return mode == "dome_teleporter_construction" and CityDomeTeleporterConstruction[UICity] or ChoOrig_GetConstructionController(mode, ...)
+end
+
+-- add our custom construction controller
+local function AddController()
+	local city = UICity
+	if city then
+		CityDomeTeleporterConstruction[city] = DomeTeleporterConstructionController:new()
+		CityDomeTeleporterConstruction[city].city = CityDomeTeleporterConstruction[city].city or city
+	end
+end
+OnMsg.NewMap = AddController
+OnMsg.ChangeMapDone = AddController
+
+function OnMsg.LoadGame()
+	local city = UICity
+	CityDomeTeleporterConstruction[city] = DomeTeleporterConstructionController:new()
+	CityDomeTeleporterConstruction[city].city = CityDomeTeleporterConstruction[city].city or city
+
+--~ 	-- dbg
+--~ 	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(CityDomeTeleporterConstruction[UICity])
+--~ 	dlg:EnableAutoRefresh()
+--~ 	dlg = ChoGGi.ComFuncs.OpenInExamineDlg(CityTunnelConstruction[UICity])
+--~ 	dlg:EnableAutoRefresh()
+--~ 	-- dbg
+
+	local AddPFTunnel = Tunnel.AddPFTunnel
+	MapForEach("map", "DomeTeleporter", AddPFTunnel)
+end
+
+local ChoOrig_OpenTunnelConstructionInfopanel = OpenTunnelConstructionInfopanel
+function OpenTunnelConstructionInfopanel(template, ...)
+	if template == "DomeTeleporter" then
+		return CallTunnelFunc(ChoOrig_OpenTunnelConstructionInfopanel, template, ...)
+	end
+	return ChoOrig_OpenTunnelConstructionInfopanel(template, ...)
 end

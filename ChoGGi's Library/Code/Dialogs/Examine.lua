@@ -3073,7 +3073,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 		if testing and not blacklist then
 			local dbg_metatable = debug.getmetatable(obj)
 			if dbg_metatable and dbg_metatable ~= obj_metatable then
-				print("ECM Sez DIFFERENT METATABLE", self.name, "\nmeta:", obj_metatable, "\ndbg:", dbg_metatable, "")
+				print("'testing' ECM Sez DIFFERENT METATABLE", self.name, "\nmeta:", obj_metatable, "\ndbg:", dbg_metatable, "")
 			end
 		end
 

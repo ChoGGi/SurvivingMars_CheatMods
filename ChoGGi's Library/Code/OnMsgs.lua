@@ -4,7 +4,8 @@ local DoneObject = DoneObject
 local OnMsg = OnMsg
 local TranslationTable = TranslationTable
 
-local RemoveAttachAboveHeightLimit = ChoGGi.ComFuncs.RemoveAttachAboveHeightLimit
+	-- think they fixed this, test it
+--~ local RemoveAttachAboveHeightLimit = ChoGGi.ComFuncs.RemoveAttachAboveHeightLimit
 
 -- We don't add shortcuts and ain't supposed to drink no booze
 OnMsg.ShortcutsReloaded = ChoGGi.ComFuncs.Rebuildshortcuts
@@ -111,15 +112,16 @@ local function RemoveChoGGiObjects(skip_height)
 	-- MapDelete doesn't seem to work with func filtering?
 	MapForEach(true, "RotatyThing", RemoveMyBlinky)
 
-	-- any of my objs added in Classes_Objects.lua
-	ChoGGi.ComFuncs.RemoveObjs("ChoGGi_ODeleteObjs")
+	-- any of my Classes_Objects.lua that are still in the save
+	ChoGGi.ComFuncs.RemoveObjs("ChoGGi_ODeleteObjs", true)
 	-- stop any units with pathing being shown (it'll error out either way)
 	ChoGGi.ComFuncs.Pathing_StopAndRemoveAll()
 
-	-- remove any origin points above 65535 (or bad things happen)
-	if not skip_height and ChoGGi.UserSettings.RemoveHeightLimitObjs then
-		MapForEach("map", RemoveAttachAboveHeightLimit)
-	end
+	-- think they fixed this, test it
+--~ 	-- remove any origin points above 65535 (or bad things happen)
+--~ 	if not skip_height and ChoGGi.UserSettings.RemoveHeightLimitObjs then
+--~ 		MapForEach("map", RemoveAttachAboveHeightLimit)
+--~ 	end
 
 	ResumePassEdits("ChoGGi_Library.OnMsgs.RemoveChoGGiObjects")
 end

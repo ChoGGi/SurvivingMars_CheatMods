@@ -125,6 +125,8 @@ ChoGGi = {
 		Consts = {},
 	},
 }
+--
+local ChoGGi = ChoGGi
 
 do -- translate (todo update code to not need this, maybe use T() for menus)
 	local locale_path = ChoGGi.library_path .. "Locales/"
@@ -136,10 +138,69 @@ do -- translate (todo update code to not need this, maybe use T() for menus)
 	Msg("TranslationChanged")
 end -- do
 
--- fake mod used to tell if it's my comp, if you want some extra msgs and .testing funcs have at it
+-- fake mod used to tell if it's my comp, if you want some extra msgs and .testing funcs have at it (Testing.lua)
 if Mods.ChoGGi_testing then
 	ChoGGi.testing = {}
 	printC = print
 else
 	printC = empty_func
 end
+
+-- Maybe they'll update the game again?
+--~ -- Is ECM shanghaied by the blacklist?
+--~ if def.no_blacklist then
+--~ 	ChoGGi.blacklist = false
+--~ 	local env = def.env
+--~ 	Msg("ChoGGi_UpdateBlacklistFuncs", env)
+--~ 	-- make lib mod have access as well
+--~ 	local lib_env = ChoGGi.def_lib.env
+--~ 	lib_env._G = env._G
+--~ 	lib_env.rawget = env.rawget
+--~ 	lib_env.getmetatable = env.getmetatable
+--~ 	lib_env.os = env.os
+--~ end
+
+-- I didn't get a harumph outta that guy!
+ModEnvBlacklist = {--[[Harumph!]]}
+
+-- Used to bypass blacklist
+local ChoOrig_cmdline = Platform.cmdline
+Platform.cmdline = true
+
+-- Wait for g_ConsoleFENV
+local Sleep = Sleep
+CreateRealTimeThread(function()
+	if not g_ConsoleFENV then
+		WaitMsg("Autorun")
+	end
+	while not g_ConsoleFENV do
+		Sleep(250)
+	end
+	-- Might as well reset it
+	Platform.cmdline = ChoOrig_cmdline
+	--
+	local env = g_ConsoleFENV._G
+	ChoGGi.blacklist = false
+	Msg("ChoGGi_UpdateBlacklistFuncs", env)
+
+	-- Make my mods have access
+	local lib_env = ChoGGi.def_lib.env
+	lib_env._G = env
+	lib_env.rawget = env.rawget
+	lib_env.getmetatable = env.getmetatable
+	lib_env.os = env.os
+	--
+	if ChoGGi.def then
+		lib_env = ChoGGi.def.env
+		lib_env._G = env
+		lib_env.rawget = env.rawget
+		lib_env.getmetatable = env.getmetatable
+		lib_env.os = env.os
+	end
+
+	ChoGGi.ComFuncs.FileExists = env.io.exists
+	if ChoGGi.testing then
+		ChoGGi.env = env
+	end
+
+end)

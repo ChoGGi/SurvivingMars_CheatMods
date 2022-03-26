@@ -720,7 +720,11 @@ function CObject:CheatMoveRealm(map_id)
 		-- Skip unloaded maps/current map
 		if GameMaps[map.Map] and ActiveMapID ~= map.Map then
 			c = c + 1
-			item_list[c] = {text = map.RolloverTitle, map_id = map.Map, hint = map.RolloverText}
+			item_list[c] = {
+				text = map.RolloverTitle,
+				map_id = map.Map,
+				hint = map.RolloverText,
+			}
 		end
 	end
 

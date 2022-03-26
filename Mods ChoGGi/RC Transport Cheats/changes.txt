@@ -1,2 +1,5 @@
+v0.3
+Auto mode to get waste rock.
+
 v0.2
 Fixed it not updating rovers on load.

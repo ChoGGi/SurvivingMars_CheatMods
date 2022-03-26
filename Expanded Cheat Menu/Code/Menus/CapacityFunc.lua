@@ -42,7 +42,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 	end
 
 	local default_setting = capacity
-	local hint_toolarge = Translate(6779--[[Warning]]) .. " " .. TranslationTable[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).]]]
+	local hint_toolarge = TranslationTable[6779--[[Warning]]] .. " " .. TranslationTable[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).]]]
 
 	local item_list = {
 		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
@@ -124,7 +124,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 		return
 	end
 	local r = const.ResourceScale
-	local hint_toolarge = Translate(6779--[[Warning]]) .. " " .. TranslationTable[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).]]]
+	local hint_toolarge = TranslationTable[6779--[[Warning]]] .. " " .. TranslationTable[302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).]]]
 
 	local default_setting = capacity
 
@@ -255,7 +255,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = TranslationTable[302535920000129--[[Set]]] .. " " .. RetName(obj) .. " " .. Translate(109035890389--[[Capacity]]),
+		title = TranslationTable[302535920000129--[[Set]]] .. " " .. RetName(obj) .. " " .. TranslationTable[109035890389--[[Capacity]]],
 		hint = TranslationTable[302535920000914--[[Current capacity]]] .. ": " .. hint .. "\n\n" .. hint_toolarge,
 		skip_sort = true,
 	}

@@ -16,19 +16,19 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"description", [[
 [b]List of bugs fixed:[/b]
-No Planetary Anomaly Breakthroughs when B&B is installed.
-Underground dozers and cave-ins.
-Find Water milestone.
-Underground rubble.
+CanReachBuilding checking the wrong building.
+Colonist residences checking wrong city.
 Drone hub extender range updates.
 Drones and underground wonders.
-Underground passage cleanup.
-Newly constructed domes birth rate (thanks Athenium).
-Problem updating supply grid.
-Colonist residences checking wrong city.
-CanReachBuilding checking the wrong building.
-Storybit notification issue.
+Find Water milestone.
 GridSwitch (pipes/cables) construction not checking for domes as blocking objs.
+Newly constructed domes birth rate (thanks Athenium).
+No Planetary Anomaly Breakthroughs when B&B is installed.
+Problem updating supply grid.
+Storybit notification issue.
+Underground dozers and cave-ins.
+Underground passage cleanup.
+Underground rubble.
 etc...
 
 
@@ -48,5 +48,8 @@ Fix RC Commander Drone Freeze
 Fix Resupply Menu Not Opening
 Fix Transport Negative Amounts
 Fix Transports Dont Move After Route Set
+
+
+If you have B&B I'd recommend SkiRich's [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2619013940]Better Lander Rockets[/url]
 ]],
 })

@@ -24,7 +24,7 @@ return PlaceObj("ModDef", {
 	"description", [[
 It's a rover that mines, tell it where to go and if there's a resource (Metals/Concrete/Minerals) close by it'll start mining it.
 Supports the Auto-mode added in Sagan (boosts the amount stored per stockpile when enabled).
-Use mod options to tweak the settings.
+Use mod options to tweak the settings. You need to research rover printing to build it.
 
 
 

@@ -23,7 +23,7 @@ OnMsg.ModsReloaded = ModOptions
 -- fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
-local function DdaInstall()
+local function StartupCode()
 	if not DistributedDroneAssembly then
 		DistributedDroneAssembly = {
 			LocalConstrLimit = 2,
@@ -33,8 +33,8 @@ local function DdaInstall()
 		}
 	end
 end
-OnMsg.CityStart = DdaInstall
-OnMsg.LoadGame = DdaInstall
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
 
 local function AddNewConstructs(xtemplate, id)
 	local idx = table.find(xtemplate, "OnPressParam", id)
@@ -46,10 +46,12 @@ local function AddNewConstructs(xtemplate, id)
 	local new_id = "Dda" .. id
 	button.OnPressParam = new_id
 	button.OnPress = function(self, gamepad)
-		self.context[new_id](self, 1 * (not gamepad and IsMassUIModifierPressed() and 5 or 1))
+		local c = self.context
+		c[new_id](c, 1 * (not gamepad and IsMassUIModifierPressed() and 5 or 1))
 	end
 	button.OnAltPress = function(self, gamepad)
-		self.context[new_id](self, -1 * (not gamepad and IsMassUIModifierPressed() and 5 or 1))
+		local c = self.context
+		c[new_id](c, -1 * (not gamepad and IsMassUIModifierPressed() and 5 or 1))
 	end
 end
 

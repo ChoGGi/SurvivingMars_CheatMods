@@ -3,7 +3,6 @@
 local table = table
 local type = type
 local ipairs = ipairs
-local GetDomeAtPoint = GetDomeAtPoint
 local IsValidThread = IsValidThread
 local IsValid = IsValid
 local DoneObject = DoneObject
@@ -327,15 +326,21 @@ function OnMsg.LoadGame()
 
 	-- Some colonists are allergic to doors and suffocate inside a dome with their suit still on.
 	local colonists = UIColony:GetCityLabels("Colonist")
+	local GameMaps = GameMaps
+	local GetDomeAtPoint = GetDomeAtPoint
 	for i = 1, #colonists do
 		local colonist = colonists[i]
-		local dome_at_pt = GetDomeAtPoint(GetObjectHexGrid(colonist.city), colonist:GetVisualPos())
 		-- Check if lemming is currently in a dome while wearing a suit
-		if colonist:GetEntity():find("Unit_Astronaut") and dome_at_pt then
-			-- Normally called when they go through the airlock
-			colonist:OnEnterDome(dome_at_pt)
-			-- The colonist will wait around for a bit till they start moving, this forces them to do something
-			colonist:SetCommand("Idle")
+		if colonist.entity:sub(1, 15) == "Unit_Astronaut_" then
+			local dome_at_pt = GetDomeAtPoint(
+				GameMaps[colonist.city.map_id].object_hex_grid, colonist:GetVisualPos()
+			)
+			if dome_at_pt then
+				-- Normally called when they go through the airlock
+				colonist:OnEnterDome(dome_at_pt)
+				-- The colonist will wait around for a bit till they start moving, this forces them to do something
+				colonist:SetCommand("Idle")
+			end
 		end
 	end
 

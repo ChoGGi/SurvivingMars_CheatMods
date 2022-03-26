@@ -145,13 +145,13 @@ do -- ModUpload
 
 		-- Issue with mod platform (workshop/paradox mods)
 		if not prepare_worked then
-			local msg = Translate(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>]]):gsub("<ModLabel>", mod.title):gsub("<err>", Translate(prepare_results))
+			local msg = TranslationTable[1000013--[[Mod <ModLabel> was not uploaded! Error: <err>]]]:gsub("<ModLabel>", mod.title):gsub("<err>", Translate(prepare_results))
 			if batch then
 				print(msg)
 			else
 				ChoGGi.ComFuncs.MsgWait(
 					msg,
-					Translate(1000592--[[Error]]) .. ": " .. mod.title,
+					TranslationTable[1000592--[[Error]]] .. ": " .. mod.title,
 					upload_image
 				)
 			end
@@ -337,7 +337,7 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 			}
 			result_msg[#result_msg+1] = msg
 			if choices_len == 1 then
-				result_title[#result_title+1] = Translate(1000592--[[Error]])
+				result_title[#result_title+1] = TranslationTable[1000592--[[Error]]]
 			else
 				result_title[#result_title+1] = mod.title
 			end
@@ -386,7 +386,7 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 
 			if steam_upload and para_upload then
 				print(mod.title, ":\n<color ChoGGi_orange>",
-					Translate(1000021--[[Steam ID]]), "</color>:", steam_item_id,
+					TranslationTable[1000021--[[Steam ID]]], "</color>:", steam_item_id,
 					"\n<color ChoGGi_orange>", Translate(id_str), "</color>:", para_item_id
 				)
 			else
@@ -496,9 +496,9 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 						m_c = m_c + 1
 						upload_msg[m_c] = "\n\n"
 						m_c = m_c + 1
-						upload_msg[m_c] = TranslationTable[302535920001572--[["<color ChoGGi_red>Pack Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually to workaround it.
+						upload_msg[m_c] = Translate(302535920001572--[["<color ChoGGi_red>Pack Warning</color>: Will instantly crash SM when calling it a second time, pack the mod manually to workaround it.
 You can also stick the executable in the profile folder to use it instead (<green>no crashing</green>):
-<yellow>%s</yellow>."]]]:format(ConvertToOSPath(hpk_path))
+<yellow>%s</yellow>."]]):format(ConvertToOSPath(hpk_path))
 
 						-- show diff author warning unless it's me
 						if diff_author and not testing then
@@ -666,11 +666,11 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			callback = CallBackFunc,
 			items = item_list,
 			title = TranslationTable[302535920000367--[[Mod Upload]]],
-			hint = TranslationTable[302535920001511--[["AsyncPack will CTD the second time you call it, you can use hpk to pack mods ahead of time.
+			hint = Translate(302535920001511--[["AsyncPack will CTD the second time you call it, you can use hpk to pack mods ahead of time.
 
 https://github.com/nickelc/hpk
 <green>hpk create ""Mod folder"" ModContent.hpk</green>
-Move archive to ""Mod folder/Pack/ModContent.hpk"""]]] .. "\n\n" .. Translate(302535920001572--[[<color ChoGGi_red>Pack Warning</color>: Will instantly crash SM when calling it a second time, pa]]):format(ConvertToOSPath(hpk_path)),
+Move archive to ""Mod folder/Pack/ModContent.hpk"""]]) .. "\n\n" .. Translate(302535920001572--[[<color ChoGGi_red>Pack Warning</color>: Will instantly crash SM when calling it a second time, pa]]):format(ConvertToOSPath(hpk_path)),
 			height = 800.0,
 			multisel = true,
 			checkboxes = {
@@ -762,7 +762,7 @@ GetComputerName(): %s
 
 
 ]],
-		Translate(5568--[[Stats]]),
+		TranslationTable[5568--[[Stats]]],
 		table.concat(hw),
 		table.concat(mem),
 		table.concat({GetAdapterMode(0)}, " "),
@@ -816,8 +816,8 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 			text = data.displayname,
 			value = data.savename,
 
-			hint = Translate(4274--[[Playtime : <playtime>]]):gsub("<playtime>", Translate(playtime)) .. "\n"
-				.. Translate(4273--[[Saved on : <save_date>]]):gsub("<save_date>", save_date) .. "\n\n"
+			hint = TranslationTable[4274--[[Playtime : <playtime>]]]:gsub("<playtime>", Translate(playtime)) .. "\n"
+				.. TranslationTable[4273--[[Saved on : <save_date>]]]:gsub("<save_date>", save_date) .. "\n\n"
 				.. TranslationTable[302535920001274--[[This is permanent!]]],
 		}
 	end
@@ -1102,7 +1102,7 @@ function ChoGGi.MenuFuncs.EditECMSettings()
 					-- for now just updates console examine list
 					Msg("ChoGGi_SettingsUpdated", settings)
 					local d, m, h = FormatElapsedTime(os.time(), "dhm")
-					local msg = Translate(4273--[[Saved on <save_date>]]):gsub("<save_date>", ": " .. d .. ":" .. m .. ":" .. h)
+					local msg = TranslationTable[4273--[[Saved on <save_date>]]]:gsub("<save_date>", ": " .. d .. ":" .. m .. ":" .. h)
 					MsgPopup(
 						msg,
 						TranslationTable[302535920001242--[[Edit ECM Settings]]]

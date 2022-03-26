@@ -19,7 +19,7 @@ function MapSwitch.GetEntries(...)
 	local realms = ChoOrig_MapSwitch_GetEntries(...)
 
 	-- some of them fail, so if they do we can still show map buttons instead of hiding them
-	pcall(function()
+	local status, result = pcall(function()
 		local g_ActiveOnScreenNotifications = g_ActiveOnScreenNotifications
 		local OnScreenNotificationPresets = OnScreenNotificationPresets
 
@@ -40,19 +40,28 @@ function MapSwitch.GetEntries(...)
 					if notif.rollover_title then
 						notifs_text[j] = notif.rollover_title .. (notif.count and ": " .. notif.count or "")
 					else
-						notifs_text[j] =  T{OnScreenNotificationPresets[notif.preset_id].text,
-							count = notif.count or 0,
-						}
+						local preset = OnScreenNotificationPresets[notif.preset_id] or map_notifications[j].custom_preset
+						if preset then
+							notifs_text[j] = T{preset.text,
+								count = notif.count or 0,
+							}
+						else
+							-- fallback
+							notifs_text[j] = tostring(map_notifications[j][1])
+						end
 					end
 
 				end
-
 				realm.RolloverText = realm.RolloverText .. T("\n\n<green>") .. T(7582--[[Notifications]])
 					.. T(":</green>\n") .. table.concat(notifs_text, "\n")
 			end
 
 		end
 	end)
+	-- errored out
+	if not status then
+		print("Show Map Notifications ERROR:", result)
+	end
 
 	return realms
 end

@@ -234,7 +234,7 @@ function ChoGGi.MenuFuncs.UnlockAchievements()
 
 			MsgPopup(
 				#choice,
-				TranslationTable[302535920000318--[[Unlock]]] .. " " .. Translate(697482021580--[[Achievements]])
+				TranslationTable[302535920000318--[[Unlock]]] .. " " .. TranslationTable[697482021580--[[Achievements]]]
 			)
 		end)
 	end
@@ -242,7 +242,7 @@ function ChoGGi.MenuFuncs.UnlockAchievements()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = TranslationTable[302535920000318--[[Unlock]]] .. " " .. Translate(697482021580--[[Achievements]]),
+		title = TranslationTable[302535920000318--[[Unlock]]] .. " " .. TranslationTable[697482021580--[[Achievements]]],
 		hint = title,
 		multisel = true,
 	}
@@ -401,7 +401,7 @@ function ChoGGi.MenuFuncs.ResetAllResearch()
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		Translate(6779--[[Warning]]) .. "!\n" .. TranslationTable[302535920000238--[[Are you sure you want to reset all research (includes breakthrough tech)?
+		TranslationTable[6779--[[Warning]]] .. "!\n" .. TranslationTable[302535920000238--[[Are you sure you want to reset all research (includes breakthrough tech)?
 
 Buildings are still unlocked.]]],
 		CallBackFunc,
@@ -677,21 +677,21 @@ do -- DisastersTrigger
 		local default_mapdata_type = TranslationTable[302535920000250--[[Default mapdata type]]]
 
 		local item_list = {
-			{text = " " .. TranslationTable[302535920000240--[[Stop]]] .. " " .. Translate(3983--[[Disasters]]), value = "Stop", hint = TranslationTable[302535920000123--[[Stops most disasters]]]},
+			{text = " " .. TranslationTable[302535920000240--[[Stop]]] .. " " .. TranslationTable[3983--[[Disasters]]], value = "Stop", hint = TranslationTable[302535920000123--[[Stops most disasters]]]},
 
 			{text = T(4149--[[Cold Wave]]), value = "ColdWave", hint = default_mapdata_type},
 			{text = T(13683--[[Underground Marsquakes]]), value = "UndergroundMarsquake"},
 
-			{text = Translate(4142--[[Dust Devils]]), value = "DustDevils", hint = default_mapdata_type},
-			{text = Translate(4142--[[Dust Devils]]) .. " " .. TranslationTable[302535920000241--[[Major]]], value = "DustDevilsMajor", hint = default_mapdata_type},
+			{text = TranslationTable[4142--[[Dust Devils]]], value = "DustDevils", hint = default_mapdata_type},
+			{text = TranslationTable[4142--[[Dust Devils]]] .. " " .. TranslationTable[302535920000241--[[Major]]], value = "DustDevilsMajor", hint = default_mapdata_type},
 
-			{text = Translate(4250--[[Dust Storm]]), value = "DustStorm", hint = default_mapdata_type},
-			{text = Translate(5627--[[Great Dust Storm]]), value = "DustStormGreat", hint = default_mapdata_type},
-			{text = Translate(5628--[[Electrostatic Dust Storm]]), value = "DustStormElectrostatic", hint = default_mapdata_type},
+			{text = TranslationTable[4250--[[Dust Storm]]], value = "DustStorm", hint = default_mapdata_type},
+			{text = TranslationTable[5627--[[Great Dust Storm]]], value = "DustStormGreat", hint = default_mapdata_type},
+			{text = TranslationTable[5628--[[Electrostatic Dust Storm]]], value = "DustStormElectrostatic", hint = default_mapdata_type},
 
-			{text = Translate(4146--[[Meteors]]), value = "Meteor", hint = default_mapdata_type},
-			{text = Translate(4146--[[Meteors]]) .. " " .. TranslationTable[302535920000245--[[Multi-Spawn]]], value = "MeteorMultiSpawn", hint = default_mapdata_type},
-			{text = Translate(5620--[[Meteor Storm]]), value = "MeteorStorm", hint = default_mapdata_type},
+			{text = TranslationTable[4146--[[Meteors]]], value = "Meteor", hint = default_mapdata_type},
+			{text = TranslationTable[4146--[[Meteors]]] .. " " .. TranslationTable[302535920000245--[[Multi-Spawn]]], value = "MeteorMultiSpawn", hint = default_mapdata_type},
+			{text = TranslationTable[5620--[[Meteor Storm]]], value = "MeteorStorm", hint = default_mapdata_type},
 
 			{text = TranslationTable[302535920000251--[[Metatron Ion Storm]]], value = "MetatronIonStorm"},
 
@@ -712,25 +712,25 @@ do -- DisastersTrigger
 		-- add any disaster map settings in DataInstances
 		local name_lookup = {
 			ColdWave = {
-				display = Translate(4149--[[Cold Wave]]),
+				display = TranslationTable[4149--[[Cold Wave]]],
 			},
 			DustStorm = {
-				display = Translate(4250--[[Dust Storm]]),
+				display = TranslationTable[4250--[[Dust Storm]]],
 				types = {"major"},
 			},
 			DustDevils = {
-				display = Translate(4142--[[Dust Devils]]),
+				display = TranslationTable[4142--[[Dust Devils]]],
 				types = {"electrostatic", "great"},
 			},
 			Meteor = {
-				display = Translate(4146--[[Meteors]]),
+				display = TranslationTable[4146--[[Meteors]]],
 				types = {"storm", "multispawn"},
 			},
 			Marsquake = {
-				display = Translate(382404446864--[[Marsquake]]),
+				display = TranslationTable[382404446864--[[Marsquake]]],
 			},
 			RainsDisaster = {
-				display = Translate(553301803055--[[Rain!]]),
+				display = TranslationTable[553301803055--[[Rain!]]],
 			},
 		}
 		for key, value in pairs(DataInstances) do
@@ -876,7 +876,7 @@ end
 
 function ChoGGi.MenuFuncs.MapExploration()
 	local UICity = UICity
-	local title = TranslationTable[302535920001355--[[Map]]] .. " " .. Translate(5422--[[Exploration]])
+	local title = TranslationTable[302535920001355--[[Map]]] .. " " .. TranslationTable[5422--[[Exploration]]]
 	local hint_core = TranslationTable[302535920000253--[[Core: Repeatable, exploit core resources.]]]
 	local hint_deep = TranslationTable[302535920000254--[[Deep: unlock tech to exploit deep resources.]]]
 	local item_list = {
@@ -887,7 +887,7 @@ function ChoGGi.MenuFuncs.MapExploration()
 		{text = TranslationTable[302535920000255--[[Deep]]], value = 2, hint = hint_deep},
 		{text = TranslationTable[302535920000256--[[Core]]], value = 3, hint = hint_core},
 
-		{text = TranslationTable[302535920000257--[[Deep Scan]]], value = 4, hint = hint_deep .. "\n" .. Translate(12227--[[Enabled]]) .. ": " .. g_Consts.DeepScanAvailable},
+		{text = TranslationTable[302535920000257--[[Deep Scan]]], value = 4, hint = hint_deep .. "\n" .. TranslationTable[12227--[[Enabled]]] .. ": " .. g_Consts.DeepScanAvailable},
 		{text = T(797--[[Deep Water]]), value = 5, hint = hint_deep .. "\n" .. T(12227--[[Enabled]]) .. ": " .. g_Consts.IsDeepWaterExploitable},
 		{text = T(793--[[Deep Metals]]), value = 6, hint = hint_deep .. "\n" .. T(12227--[[Enabled]]) .. ": " .. g_Consts.IsDeepMetalsExploitable},
 		{text = T(801--[[Deep Rare Metals]]), value = 7, hint = hint_deep .. "\n" .. T(12227--[[Enabled]]) .. ": " .. g_Consts.IsDeepPreciousMetalsExploitable},
@@ -978,7 +978,7 @@ end
 function ChoGGi.MenuFuncs.SpawnColonists()
 	local ChoOrig_GenerateColonistData = GenerateColonistData
 
-	local title = TranslationTable[302535920000266--[[Spawn]]] .. " " .. Translate(547--[[Colonists]])
+	local title = TranslationTable[302535920000266--[[Spawn]]] .. " " .. TranslationTable[547--[[Colonists]]]
 	local item_list = {
 		{text = 1, value = 1},
 		{text = 10, value = 10},
@@ -1152,9 +1152,9 @@ do -- StartMystery
 			callback = CallBackFunc,
 			items = item_list,
 			title = TranslationTable[302535920000268--[[Start A Mystery]]],
-			hint = Translate(6779--[[Warning]]) .. ": " .. TranslationTable[302535920000269--[["Adding a mystery is cumulative, this will NOT replace existing mysteries.
+			hint = TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000269--[["Adding a mystery is cumulative, this will NOT replace existing mysteries.
 
-See Cheats>%s to remove."]]]:format(Translate(5661--[[Mystery Log]])),
+See Cheats>%s to remove."]]]:format(TranslationTable[5661--[[Mystery Log]]]),
 			skip_sort = true,
 			checkboxes = {
 				{
@@ -1308,7 +1308,7 @@ do -- Mystery Log
 					end
 				end
 				MsgPopup(
-					choice.text .. ": " .. Translate(3486--[[Mystery]]) .. " " .. TranslationTable[302535920000278--[[Removed]]] .. "!",
+					choice.text .. ": " .. TranslationTable[3486--[[Mystery]]] .. " " .. TranslationTable[302535920000278--[[Removed]]] .. "!",
 					T(5661--[[Mystery Log]])
 				)
 			elseif value then
@@ -1330,11 +1330,11 @@ do -- Mystery Log
 			checkboxes = {
 				{
 					title = TranslationTable[302535920000281--[[Remove]]],
-					hint = Translate(6779--[[Warning]]) .. ": " .. TranslationTable[302535920000282--[[This will remove the mystery, if you start it again; it'll be back to the start.]]],
+					hint = TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000282--[[This will remove the mystery, if you start it again; it'll be back to the start.]]],
 				},
 				{
 					title = TranslationTable[302535920000283--[[Remove All]]],
-					hint = Translate(6779--[[Warning]]) .. ": " .. TranslationTable[302535920000284--[[This will remove all the mysteries!]]],
+					hint = TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000284--[[This will remove all the mysteries!]]],
 				},
 			},
 		}
@@ -1346,7 +1346,7 @@ do -- Mystery Log
 		local wait_classes = {"SA_WaitMarsTime", "SA_WaitTime"}
 		local thread_classes = {"SA_WaitMarsTime", "SA_WaitTime", "SA_RunSequence"}
 		local warning = "\n\n" .. TranslationTable[302535920000285--[["Click ""Ok"" to skip requirements (Warning: may cause issues later on, untested)."]]]
-		local name = Translate(3486--[[Mystery]]) .. ": " .. ChoGGi.Tables.Mystery[mystery].name
+		local name = TranslationTable[3486--[[Mystery]]] .. ": " .. ChoGGi.Tables.Mystery[mystery].name
 
 		local ThreadsMessageToThreads = ThreadsMessageToThreads
 		for t in pairs(ThreadsMessageToThreads) do
@@ -1490,10 +1490,10 @@ function ChoGGi.MenuFuncs.UnlockAllBuildings_Toggle()
 
 		if choice[1].value == "Lock" then
 			-- reverse what the unlock cheat does
-			local bmpv = BuildMenuPrerequisiteOverrides
-			for id, value in pairs(bmpv) do
+			local bmpo = BuildMenuPrerequisiteOverrides
+			for id, value in pairs(bmpo) do
 				if value == true then
-					bmpv[id] = nil
+					bmpo[id] = nil
 				end
 			end
 		else
@@ -1618,7 +1618,7 @@ function ChoGGi.MenuFuncs.BreakThroughsAllowed_Set()
 	local default_setting = ChoGGi.Consts.BreakThroughTechsPerGame
 	local MaxAmount = #UIColony.tech_field.Breakthroughs
 	local item_list = {
-		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
 		{text = 26, value = 26, hint = TranslationTable[302535920000301--[[Doubled the base amount.]]]},
 		{text = MaxAmount, value = MaxAmount, hint = TranslationTable[302535920000298--[[Max amount in UIColony.tech_field list, you could make the amount larger if you want (an update/mod can add more).]]]},
 	}

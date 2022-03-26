@@ -7,6 +7,7 @@ local mod_EnableMod
 local mod_IgnoreAnomalies
 local mod_IgnoreMetals
 local mod_IgnorePolymers
+local mod_IgnoreNoBuildings
 
 local function TestRemoveMeteor(meteor)
 	if mod_IgnoreNoBuildings then

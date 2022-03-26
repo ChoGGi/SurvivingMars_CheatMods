@@ -1,2 +1,5 @@
+v0.3
+Compatible with Sherlock (thanks lyssabet).
+
 v0.2
 Less likely to hide map buttons.

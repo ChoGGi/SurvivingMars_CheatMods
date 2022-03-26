@@ -216,7 +216,7 @@ function ChoGGi.MenuFuncs.SetServiceBuildingStats()
 	local obj = ChoGGi.ComFuncs.SelObject()
 	if not obj or not IsKindOf(obj, "StatsChange") then
 		MsgPopup(
-			TranslationTable[302535920001116--[[Select a %s.]]]:format(Translate(5439--[[Service Buildings]])),
+			TranslationTable[302535920001116--[[Select a %s.]]]:format(TranslationTable[5439--[[Service Buildings]]]),
 			TranslationTable[4810--[[Service]]]
 		)
 		return
@@ -1160,7 +1160,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 	local id = RetTemplateOrClass(obj)
 
 	local item_list = {
-		{text = Translate(251103844022--[[Disable]]), value = "Disable"},
+		{text = TranslationTable[251103844022--[[Disable]]], value = "Disable"},
 		{text = 100, value = 100},
 		{text = 150, value = 150},
 		{text = 250, value = 250},
@@ -1547,7 +1547,7 @@ function ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle()
 	if not table.find(bc, "id", "HiddenX") then
 		bc[#bc+1] = {
 			id = "HiddenX",
-			name = Translate(1000155--[[Hidden]]),
+			name = TranslationTable[1000155--[[Hidden]]],
 			image = "UI/Icons/bmc_placeholder.tga",
 			highlight = "UI/Icons/bmc_placeholder_shine.tga",
 		}
@@ -1566,13 +1566,14 @@ function ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle()
 		end
 	else
 		ChoGGi.UserSettings.Building_hide_from_build_menu = true
-		for _, value in pairs(BuildMenuPrerequisiteOverrides) do
+		local bmpo = BuildMenuPrerequisiteOverrides
+		for _, value in pairs(bmpo) do
 			if value == "hide" then
 				value = true
 			end
 		end
-		BuildMenuPrerequisiteOverrides.StorageMysteryResource = true
-		BuildMenuPrerequisiteOverrides.MechanizedDepotMysteryResource = true
+		bmpo.StorageMysteryResource = true
+		bmpo.MechanizedDepotMysteryResource = true
 		for _, bld in pairs(BuildingTemplates) do
 			if bld.id ~= "LifesupportSwitch" and bld.id ~= "ElectricitySwitch" then
 				bld.hide_from_build_menu_ChoGGi = bld.hide_from_build_menu
