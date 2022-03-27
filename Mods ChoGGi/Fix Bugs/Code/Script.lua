@@ -6,6 +6,9 @@ local ipairs = ipairs
 local IsValidThread = IsValidThread
 local IsValid = IsValid
 local DoneObject = DoneObject
+local AveragePoint2D = AveragePoint2D
+local GetRealmByID = GetRealmByID
+local GetRandomPassableAround = GetRandomPassableAround
 
 local mod_EnableMod
 
@@ -24,6 +27,29 @@ OnMsg.ApplyModOptions = ModOptions
 
 --
 function OnMsg.ClassesPostprocess()
+
+	--[[
+	https://forum.paradoxplaza.com/forum/threads/surviving-mars-colonists-repeatedly-satisfy-daily-interests.1464969/
+	A colonist will repeatedly use a daily interest building to satisfy a daily interest already satisfied.
+	Repeating a daily interest will gain a comfort boost "if" colonist comfort is below the service comfort threshold, but a resource will always be consumed each visit.
+
+	This mod will block the colonist from having a visit, instead: An unemployed scientist will wander around outside till the Sol is over instead of chewing up 0.6 electronics.
+	]]
+	-- lua rev 1011030 Colonist:EnterBuilding()
+	local ChoOrig_Colonist_EnterBuilding = Colonist.EnterBuilding
+	function Colonist:EnterBuilding(building, ...)
+		if mod_EnableMod and self.daily_interest ~= "" and IsValid(building)
+			and building:HasMember("IsOneOfInterests") and building:IsOneOfInterests(self.daily_interest)
+		then
+--~ 			printC("daily_interest CLEARED", self.daily_interest)
+			self.daily_interest = ""
+			self.daily_interest_fail = 0
+		end
+
+		return ChoOrig_Colonist_EnterBuilding(self, building, ...)
+	end
+	--
+
 	-- dozers and cave-in pathing (the game will freeze if you send dozers to certain cave-ins or certain paths? this is why I should keep save files around...).
 	if g_AvailableDlc.armstrong then
 		-- all of them use the same func
@@ -111,6 +137,260 @@ Resources can be moved from one map to the other by using the <em>Edit Payload</
 	end
 
 end
+--
+-- populated below (needed for CityStart/LoadGame)
+local FixCubeAnomalyOnDeposit_CheckObjs
+GlobalVar("g_ChoGGi_FixCubeAnomalyOnDeposit", false)
+do -- CityStart/LoadGame
+	local function StartupCode()
+		if not mod_EnableMod then
+			return
+		end
+
+		local UIColony = UIColony
+		local MainCity = MainCity
+		local main_realm = GetRealmByID(MainMapID)
+		local GameMaps = GameMaps
+		local bt = BuildingTemplates
+
+		-- If you removed modded rules from your current save then the Mission Profile dialog will be blank.
+		local rules = g_CurrentMissionParams.idGameRules
+		if rules then
+			local GameRulesMap = GameRulesMap
+			for rule_id in pairs(rules) do
+				-- If it isn't in the map then it isn't a valid rule
+				if not GameRulesMap[rule_id] then
+					rules[rule_id] = nil
+				end
+			end
+		end
+
+		--[[
+		If you have broken down buildings the drones won't repair. This will check for them on load game.
+		The affected buildings will say something about exceptional circumstances.
+		Any buildings affected by this issue will need to be repaired with 000.1 resource after the fix happens.
+
+		This also has a fix for buildings hit with lightning during a cold wave.
+		]]
+		local ResourceScale = const.ResourceScale
+		local blds = UIColony:GetCityLabels("Building")
+		for i = 1, #blds do
+			local bld = blds[i]
+
+			-- clear out non-task requests in task_requests
+			local task_requests = bld.task_requests or ""
+			for j = #task_requests, 1, -1 do
+				local req = task_requests[j]
+				if type(req) ~= "userdata" then
+					table.remove(task_requests, j)
+				end
+			end
+
+			-- Buildings hit with lightning during a cold wave
+			if bld.is_malfunctioned and bld.accumulated_maintenance_points == 0 then
+				bld:AccumulateMaintenancePoints(bld.maintenance_threshold_base * 2)
+
+			-- Exceptional circumstance buildings
+			elseif not bld.maintenance_resource_request and bld:DoesMaintenanceRequireResources() then
+				-- restore main res request
+				local resource_unit_count = 1 + (bld.maintenance_resource_amount / (ResourceScale * 10)) --1 per 10
+				local r_req = bld:AddDemandRequest(bld.maintenance_resource_type, 0, 0, resource_unit_count)
+				bld.maintenance_resource_request = r_req
+				bld.maintenance_request_lookup[r_req] = true
+				-- needs to be fired off to complete the reset?
+				bld:SetExceptionalCircumstancesMaintenance(bld.maintenance_resource_type, 1)
+				bld:Setexceptional_circumstances(false)
+			end
+		end
+
+		-- Some colonists are allergic to doors and suffocate inside a dome with their suit still on.
+		local colonists = UIColony:GetCityLabels("Colonist")
+		local GetDomeAtPoint = GetDomeAtPoint
+		for i = 1, #colonists do
+			local colonist = colonists[i]
+			-- Check if lemming is currently in a dome while wearing a suit
+			if colonist.entity:sub(1, 15) == "Unit_Astronaut_" then
+				local dome_at_pt = GetDomeAtPoint(
+					GameMaps[colonist.city.map_id].object_hex_grid, colonist:GetVisualPos()
+				)
+				if dome_at_pt then
+					-- Normally called when they go through the airlock
+					colonist:OnEnterDome(dome_at_pt)
+					-- The colonist will wait around for a bit till they start moving, this forces them to do something
+					colonist:SetCommand("Idle")
+				end
+			end
+		end
+
+		-- Fix Farm Oxygen 1
+		local domes = UIColony:GetCityLabels("Dome")
+		for i = 1, #domes do
+			local dome = domes[i]
+			local mods = dome:GetPropertyModifiers("air_consumption")
+			if mods then
+				local farms = dome.labels.Farm or empty_table
+				for j = #mods, 1, -1 do
+					local mod_item = mods[j]
+					local idx = table.find(farms, "farm_id", mod_item.id)
+					-- Can't find farm id, so it's a removed farm
+					if not idx then
+						dome:SetModifier("air_consumption", mod_item.id, 0, 0)
+					end
+				end
+				dome:UpdateWorking()
+			end
+		end
+
+		-- For some reason LandscapeLastMark gets set to around 4090, when LandscapeMark hits 4095 bad things happen.
+		-- This resets LandscapeLastMark to whatever is the highest number in Landscapes when a save is loaded (assuming it's under 3000, otherwise 0).
+		-- If there's placed landscapes grab the largest number
+		local Landscapes = Landscapes
+		if Landscapes and next(Landscapes) then
+			local largest = 0
+			for idx in pairs(Landscapes) do
+				if idx > largest then
+					largest = idx
+				end
+			end
+			-- If over 3K then reset to 0
+			if largest > 3000 then
+				LandscapeLastMark = 0
+			else
+				LandscapeLastMark = largest + 1
+			end
+		else
+			-- no landscapes so 0 it is
+			LandscapeLastMark = 0
+		end
+
+		-- Wind turbine gets locked by a game event.
+		local bmpo = BuildMenuPrerequisiteOverrides
+		if bmpo.WindTurbine and TGetID(bmpo.WindTurbine) == 401896326435--[[You can't construct this building at this time]] then
+			bmpo.WindTurbine = nil
+		end
+
+		-- Removes any meteorites stuck on the map when you load a save.
+		local objs = main_realm:MapGet("map", "BaseMeteor")
+		for i = #objs, 1, -1 do
+			local obj = objs[i]
+
+			-- Same pt as the dest means stuck on ground
+			if obj:GetPos() == obj.dest
+			-- Stuck on roof of dome
+				or not IsValidThread(obj.fall_thread)
+			then
+				DoneObject(obj)
+			end
+		end
+
+		-- For some reason the devs put it in the Decorations instead of the Outside Decorations category.
+		bt.LampProjector.build_category = "Outside Decorations"
+		bt.LampProjector.group = "Outside Decorations"
+		bt.LampProjector.label1 = ""
+
+		-- https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-game-freezes-when-deploying-drones-from-rc-commander-after-one-was-destroyed.1168779/
+		local rovers = UIColony:GetCityLabels("RCRoverAndChildren")
+		for i = 1, #rovers do
+			local attached_drones = rovers[i].attached_drones
+			for j = #attached_drones, 1, -1 do
+				local drone = attached_drones[j]
+				if not IsValid(drone) then
+					table.remove(attached_drones, j)
+				end
+			end
+		end
+
+		-- Probably caused by a mod badly adding cargo.
+		local defs = ResupplyItemDefinitions
+		for i = #defs, 1, -1 do
+			local def = defs[i]
+			if not def.pack then
+				print("Fix Resupply Menu Not Opening Borked cargo:", def.id)
+				table.remove(defs, i)
+			end
+		end
+
+		-- Check for transport rovers with negative amounts of resources carried.
+		local trans = UIColony:GetCityLabels("RCTransportAndChildren")
+		for i = 1, #trans do
+			local obj = trans[i]
+			for j = 1, #(obj.storable_resources or "") do
+				local res = obj.storable_resources[j]
+				if obj.resource_storage[res] < 0 then
+					obj.resource_storage[res] = 0
+				end
+			end
+		end
+
+		--	Move any floating underground rubble to within reach of drones (might have to "push" drones to make them go for it).
+		if UIColony.underground_map_unlocked then
+			local map = GameMaps[UIColony.underground_map_id]
+
+			local objs = map.realm:MapGet("map", "CaveInRubble")
+			for i = 1, #objs do
+				local obj = objs[i]
+
+				local points = {}
+				local c = 0
+
+				-- average pos of work spots to lower to ground
+				local start_id, id_end = obj:GetAllSpots(obj:GetState())
+				for j = start_id, id_end do
+					local text_str = obj:GetSpotName(j)
+					if text_str == "Workdrone" then
+						c = c + 1
+						points[c] = obj:GetSpotPos(j)
+					end
+				end
+				local avg_pos = AveragePoint2D(points)
+				obj:SetPos(avg_pos:SetZ(map.terrain:GetHeight(avg_pos)))
+			end
+		end
+		--
+	end
+
+	-- Fix Cube Anomaly On Deposit
+	local function StartupCode()
+		if g_ChoGGi_FixCubeAnomalyOnDeposit then
+			return
+		end
+		local objs = main_realm:MapGet("map", "SubsurfaceAnomaly")
+		for i = 1, #objs do
+			FixCubeAnomalyOnDeposit_CheckObjs(objs[i], MainCity, main_realm)
+		end
+
+		g_ChoGGi_FixCubeAnomalyOnDeposit = true
+	end
+
+	OnMsg.CityStart = FloatingRubble
+	OnMsg.LoadGame = FloatingRubble
+end -- do
+--
+do -- The first Black Cube anomaly can sometimes spawn on a deposit, this'll move it off to a side. (Fix Cube Anomaly On Deposit)
+	FixCubeAnomalyOnDeposit_CheckObjs = function(obj, city, realm)
+		-- check if there's a deposit below it
+		local pos = obj:GetPos()
+		local objs = (realm or GetRealm(obj)):MapGet(pos, 100)
+		if not city then
+			city = GetCity(obj)
+		end
+		for i = 1, #objs do
+			-- found one
+			if objs[i]:IsKindOf("SubsurfaceDeposit") then
+				obj:SetPos(GetRandomPassableAround(pos, 1000, 999, city):SetTerrainZ())
+				break
+			end
+		end
+		-- if we don't find one then nothing to fix
+	end
+
+	local ChoOrig_SpawnObject = SA_SpawnAnomaly.SpawnObject
+	function SA_SpawnAnomaly.SpawnObject(...)
+		local anomaly = ChoOrig_SpawnObject(...)
+		FixCubeAnomalyOnDeposit_CheckObjs(anomaly)
+		return anomaly
+	end
+end -- do
 --
 do -- I dunno, maybe paradox should push another update?
 	if Platform.linux then
@@ -267,186 +547,6 @@ function Community:GameInit(...)
   self.next_birth_check_time = GameTime()
 	return ChoOrig_Community_GameInit(self, ...)
 end
---
-function OnMsg.LoadGame()
-	if not mod_EnableMod then
-		return
-	end
-	local bt = BuildingTemplates
-
-	-- If you removed modded rules from your current save then the Mission Profile dialog will be blank.
-	local rules = g_CurrentMissionParams.idGameRules
-	if rules then
-		local GameRulesMap = GameRulesMap
-		for rule_id in pairs(rules) do
-			-- If it isn't in the map then it isn't a valid rule
-			if not GameRulesMap[rule_id] then
-				rules[rule_id] = nil
-			end
-		end
-	end
-
-	--[[
-	If you have broken down buildings the drones won't repair. This will check for them on load game.
-	The affected buildings will say something about exceptional circumstances.
-	Any buildings affected by this issue will need to be repaired with 000.1 resource after the fix happens.
-
-	This also has a fix for buildings hit with lightning during a cold wave.
-	]]
-	local ResourceScale = const.ResourceScale
-	local blds = UIColony:GetCityLabels("Building")
-	for i = 1, #blds do
-		local bld = blds[i]
-
-		-- clear out non-task requests in task_requests
-		local task_requests = bld.task_requests or ""
-		for j = #task_requests, 1, -1 do
-			local req = task_requests[j]
-			if type(req) ~= "userdata" then
-				table.remove(task_requests, j)
-			end
-		end
-
-		-- Buildings hit with lightning during a cold wave
-		if bld.is_malfunctioned and bld.accumulated_maintenance_points == 0 then
-			bld:AccumulateMaintenancePoints(bld.maintenance_threshold_base * 2)
-
-		-- Exceptional circumstance buildings
-		elseif not bld.maintenance_resource_request and bld:DoesMaintenanceRequireResources() then
-			-- restore main res request
-			local resource_unit_count = 1 + (bld.maintenance_resource_amount / (ResourceScale * 10)) --1 per 10
-			local r_req = bld:AddDemandRequest(bld.maintenance_resource_type, 0, 0, resource_unit_count)
-			bld.maintenance_resource_request = r_req
-			bld.maintenance_request_lookup[r_req] = true
-			-- needs to be fired off to complete the reset?
-			bld:SetExceptionalCircumstancesMaintenance(bld.maintenance_resource_type, 1)
-			bld:Setexceptional_circumstances(false)
-		end
-	end
-
-	-- Some colonists are allergic to doors and suffocate inside a dome with their suit still on.
-	local colonists = UIColony:GetCityLabels("Colonist")
-	local GameMaps = GameMaps
-	local GetDomeAtPoint = GetDomeAtPoint
-	for i = 1, #colonists do
-		local colonist = colonists[i]
-		-- Check if lemming is currently in a dome while wearing a suit
-		if colonist.entity:sub(1, 15) == "Unit_Astronaut_" then
-			local dome_at_pt = GetDomeAtPoint(
-				GameMaps[colonist.city.map_id].object_hex_grid, colonist:GetVisualPos()
-			)
-			if dome_at_pt then
-				-- Normally called when they go through the airlock
-				colonist:OnEnterDome(dome_at_pt)
-				-- The colonist will wait around for a bit till they start moving, this forces them to do something
-				colonist:SetCommand("Idle")
-			end
-		end
-	end
-
-	-- Fix Farm Oxygen 1
-	local domes = UIColony:GetCityLabels("Dome")
-	for i = 1, #domes do
-		local dome = domes[i]
-		local mods = dome:GetPropertyModifiers("air_consumption")
-		if mods then
-			local farms = dome.labels.Farm or empty_table
-			for j = #mods, 1, -1 do
-				local mod_item = mods[j]
-				local idx = table.find(farms, "farm_id", mod_item.id)
-				-- Can't find farm id, so it's a removed farm
-				if not idx then
-					dome:SetModifier("air_consumption", mod_item.id, 0, 0)
-				end
-			end
-			dome:UpdateWorking()
-		end
-	end
-
-	-- For some reason LandscapeLastMark gets set to around 4090, when LandscapeMark hits 4095 bad things happen.
-	-- This resets LandscapeLastMark to whatever is the highest number in Landscapes when a save is loaded (assuming it's under 3000, otherwise 0).
-	-- If there's placed landscapes grab the largest number
-	local Landscapes = Landscapes
-	if Landscapes and next(Landscapes) then
-		local largest = 0
-		for idx in pairs(Landscapes) do
-			if idx > largest then
-				largest = idx
-			end
-		end
-		-- If over 3K then reset to 0
-		if largest > 3000 then
-			LandscapeLastMark = 0
-		else
-			LandscapeLastMark = largest + 1
-		end
-	else
-		-- no landscapes so 0 it is
-		LandscapeLastMark = 0
-	end
-
-	-- Wind turbine gets locked by a game event.
-	local bmpo = BuildMenuPrerequisiteOverrides
-	if bmpo.WindTurbine and TGetID(bmpo.WindTurbine) == 401896326435--[[You can't construct this building at this time]] then
-		bmpo.WindTurbine = nil
-	end
-
-	-- Removes any meteorites stuck on the map when you load a save.
-	local objs = GetRealmByID(MainMapID):MapGet("map", "BaseMeteor")
-	for i = #objs, 1, -1 do
-		local obj = objs[i]
-
-		-- Same pt as the dest means stuck on ground
-		if obj:GetPos() == obj.dest
-		-- Stuck on roof of dome
-			or not IsValidThread(obj.fall_thread)
-		then
-			DoneObject(obj)
-		end
-	end
-
-	-- For some reason the devs put it in the Decorations instead of the Outside Decorations category.
-	bt.LampProjector.build_category = "Outside Decorations"
-	bt.LampProjector.group = "Outside Decorations"
-	bt.LampProjector.label1 = ""
-
-	-- https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-game-freezes-when-deploying-drones-from-rc-commander-after-one-was-destroyed.1168779/
-	local rovers = UIColony:GetCityLabels("RCRoverAndChildren")
-	for i = 1, #rovers do
-		local attached_drones = rovers[i].attached_drones
-		for j = #attached_drones, 1, -1 do
-			local drone = attached_drones[j]
-			if not IsValid(drone) then
-				table.remove(attached_drones, j)
-			end
-		end
-	end
-
-	-- Probably caused by a mod badly adding cargo.
-	local defs = ResupplyItemDefinitions
-	for i = #defs, 1, -1 do
-		local def = defs[i]
-		if not def.pack then
-			print("Fix Resupply Menu Not Opening Borked cargo:", def.id)
-			table.remove(defs, i)
-		end
-	end
-
-	-- Check for transport rovers with negative amounts of resources carried.
-	local trans = UIColony:GetCityLabels("RCTransportAndChildren")
-	for i = 1, #trans do
-		local obj = trans[i]
-		for j = 1, #(obj.storable_resources or "") do
-			local res = obj.storable_resources[j]
-			if obj.resource_storage[res] < 0 then
-				obj.resource_storage[res] = 0
-			end
-		end
-	end
-
-	--
-end
-
 -- If you set a transport route between two resources/stockpiles/etc and the transport just sits there like an idiot...
 local ChoOrig_RCTransport_TransferResources = RCTransport.TransferResources
 function RCTransport:TransferResources(...)
@@ -554,8 +654,6 @@ function SelectionModeDialog:OnMouseButtonDoubleClick(pt, button, ...)
 end
 --
 do -- SupplyGrid.lua SupplyGridFragment:UpdateGrid
-	local GetRealmByID = GetRealmByID
-
 	local ChoOrig_GetRealm = GetRealm
 	local function fake_GetRealm(obj)
 		return GetRealmByID(obj.city.map_id)
@@ -618,7 +716,52 @@ do -- GridSwitchConstruction.lua GridSwitchConstructionController:UpdateConstruc
 	end
 end
 --
+do -- AreDomesConnectedWithPassage (Fix Colonists Long Walks)
+	--[[
+	Changes the AreDomesConnectedWithPassage func to also check the walking distance instead of assuming passages == walkable.
+	This [i]should[/i] stop the random colonist has died from dehydration events we know and love.
+	]]
+	local dome_walk_dist = const.ColonistMaxDomeWalkDist
+	local ChoOrig_AreDomesConnectedWithPassage = AreDomesConnectedWithPassage
+	function AreDomesConnectedWithPassage(d1, d2, ...)
+		if not mod_EnableMod then
+			return ChoOrig_AreDomesConnectedWithPassage(d1, d2, ...)
+		end
 
+		return ChoOrig_AreDomesConnectedWithPassage(d1, d2, ...)
+			-- If orig func returns true then check if domes are within walking dist
+			-- "d1 == d2" is from orig func (no need to check dist if both domes are the same)
+			and (d1 == d2 or d1:GetDist2D(d2) <= dome_walk_dist)
+	end
+end -- do
+-- Fix Defence Towers Not Firing At Rovers
+--[[
+It's from a mystery (trying to keep spoilers to a minimum).
+If you're starting a new game than this is fixed, but for older saves on this mystery you'll need this mod.
+]]
+local ChoOrig_SA_Exec_Exec = SA_Exec.Exec
+function SA_Exec:Exec(sequence_player, ip, seq, ...)
+	if not mod_EnableMod then
+		return ChoOrig_SA_Exec_Exec(self, sequence_player, ip, seq, ...)
+	end
+
+	if seq and seq[111] and seq[111].expression == "UICity.mystery.can_shoot_rovers = true" then
+		-- loop through the seqs and replace any UICity.mystery with UIColony.mystery
+		for i = 1, #seq do
+			local seq_idx = seq[i]
+			if seq_idx:IsKindOf("SA_Exec") then
+				seq_idx.expression = seq_idx.expression:gsub("UICity.mystery", "UIColony.mystery")
+			end
+		end
+	end
+
+	return ChoOrig_SA_Exec_Exec(self, sequence_player, ip, seq, ...)
+end
+--
+--
+--
+--
+--
 -- B&B fixes
 if not g_AvailableDlc.picard then
 	return

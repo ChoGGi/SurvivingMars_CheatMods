@@ -50,6 +50,7 @@ DomeTeleporter.CreateElectricityElement = ElectricityConsumer.CreateElectricityE
 -- passage stuff
 DomeTeleporter.DisconnectDomes = Passage.DisconnectDomes
 DomeTeleporter.CleanHackedPotentials = Passage.CleanHackedPotentials
+DomeTeleporter.RebuildIndexes = Passage.RebuildIndexes
 -- ambiguously inherited
 DomeTeleporter.ShouldShowNotConnectedToPowerGridSign = Tunnel.ShouldShowNotConnectedToPowerGridSign
 
@@ -296,36 +297,38 @@ function DomeTeleporter:StartStopSpinner(working)
 	end)
 end
 
-DomeTeleporter.TryConnectDomes = Passage.TryConnectDomes
---~ function DomeTeleporter:TryConnectDomes()
---~ 	-- check if passage is constructed
---~ 	if self.domes_connected or not IsValid(self.parent_dome) then
---~ 		return
---~ 	end
 
---~ 	self:UpdateWorking()
---~ 	if IsGameRuleActive("FreeConstruction") then
---~ 		self.construction_cost_at_completion = {
---~ 			Concrete = UIColony.construction_cost:GetConstructionCost(self, "Concrete"),
---~ 		}
---~ 	end
+function DomeTeleporter:TryConnectDomes()
+	-- check if passage is constructed
+	if self.domes_connected or not IsValid(self.parent_dome) then
+		return
+	end
 
---~ 	self.elements_under_construction = {}
---~ 	self.traversing_colonists = {}
---~ 	self.elements = {
---~ 		{dome = self.parent_dome},
---~ 		{dome = self.linked_obj.parent_dome},
---~ 	}
+	self:UpdateWorking()
+	if IsGameRuleActive("FreeConstruction") then
+		-- MINE
+		self.construction_cost_at_completion = {
+			Concrete = UIColony.construction_cost:GetConstructionCost(self, "Concrete"),
+		}
+		-- MINE
+	end
 
---~ 	--first and last element should have the domes we need to connect
---~ 	local d1 = self.elements[1] and self.elements[1].dome
---~ 	local d2 = self.elements[#self.elements] and self.elements[#self.elements].dome
+	self.elements_under_construction = {}
+	self.traversing_colonists = {}
+	self.elements = {
+		{dome = self.parent_dome},
+		{dome = self.linked_obj.parent_dome},
+	}
 
---~ 	ConnectDomesWithPassage(d1, d2)
---~ 	self.domes_connected = {d1, d2}
---~ 	CreateDomeNetworks(self.city or UICity)
---~ 	self:Notify("AddPFTunnel")
---~ end
+	--first and last element should have the domes we need to connect
+	local d1 = self.elements[1] and self.elements[1].dome
+	local d2 = self.elements[#self.elements] and self.elements[#self.elements].dome
+
+	ConnectDomesWithPassage(d1, d2)
+	self.domes_connected = {d1, d2}
+	CreateDomeNetworks(self.city or UICity)
+	self:Notify("AddPFTunnel")
+end
 
 -- match up workshifts with each other
 function DomeTeleporter:ToggleShift(shift, ...)

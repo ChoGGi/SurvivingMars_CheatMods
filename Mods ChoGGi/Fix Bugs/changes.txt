@@ -1,3 +1,11 @@
+v1.0
+Added my mods:
+Fix Colonist Daily Interest Loop
+Fix Colonists Long Walks
+Fix Cube Anomaly On Deposit
+Fix Defence Towers Not Firing At Rovers
+Fix Floating Rubble
+
 v0.9
 Changed a UICity to self.city.
 Cleaned up comments.

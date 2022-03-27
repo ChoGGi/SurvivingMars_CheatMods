@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 9,
-	"version_major", 0,
-	"version_minor", 9,
+	"version", 10,
+	"version_major", 1,
+	"version_minor", 0,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -35,9 +35,14 @@ etc...
 [b]Incorporated mods:[/b] (so far)
 Fix Blank Mission Profile
 Fix Buildings Broken Down And No Repair
+Fix Colonist Daily Interest Loop
+Fix Colonists Long Walks
 Fix Colonists Suffocating Inside Domes
+Fix Cube Anomaly On Deposit
+Fix Defence Towers Not Firing At Rovers
 Fix Double Click Select All Of Type
 Fix Farm Oxygen
+Fix Floating Rubble
 Fix Landscaping Freeze
 Fix Layout Construction Tech Lock
 Fix Locked Wind Turbine

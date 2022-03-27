@@ -1,5 +1,0 @@
-v0.3
-Hopefully fixed diner stick.
-
-v0.2
-Zeroed out daily_interest_fail as well.

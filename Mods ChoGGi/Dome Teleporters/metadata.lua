@@ -7,15 +7,14 @@ return PlaceObj("ModDef", {
 			"version_minor", 1,
 		}),
 	},
---~ 	"title", "Dome Teleporters",
-	"title", "CRASHES GAME NEEDS COMPLETE REBUILD",
+	"title", "Dome Teleporters",
 	"id", "ChoGGi_DomeTeleporters",
---~ 	"steam_id", "1572847416",
---~ 	"pops_any_uuid", "9d8cb03c-6e7b-440e-b8d5-9542d12fd003",
-	"lua_revision", 0, -- Picard
-	"version", 15,
+	"steam_id", "2785527541",
+	"pops_any_uuid", "115ac1c8-5e7d-4204-b7b0-4a7fd0baec0f",
+	"lua_revision", 1007000, -- Picard
+	"version", 16,
 	"version_major", 1,
-	"version_minor", 5,
+	"version_minor", 6,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -23,12 +22,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"description", [[
-CRASHES GAME NEEDS COMPLETE REBUILD
-
-
-
-
-
+Possible game crashing issue.
+I did some work on it, but I can't make it crash...
 
 
 
