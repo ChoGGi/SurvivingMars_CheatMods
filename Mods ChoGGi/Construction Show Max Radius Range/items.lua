@@ -10,4 +10,10 @@ return {
 		"Help", T(302535920011712, "Set radius for newly placed buildings to max radius."),
 		"DefaultValue", false,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "ShowMaxDroneHubRadius",
+		"DisplayName", T(0000, "Show Max Drone Hub Radius"),
+		"Help", T(0000, "Toggle between 35/50 hexes (B&B DLC)."),
+		"DefaultValue", false,
+	}),
 }

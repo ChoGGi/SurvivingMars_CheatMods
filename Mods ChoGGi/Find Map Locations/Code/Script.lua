@@ -1,6 +1,8 @@
 -- See LICENSE for terms
 
 local pairs, tostring, type, table, tonumber = pairs, tostring, type, table, tonumber
+-- every litte bit helps
+local table_concat = table.concat
 
 local Translate = ChoGGi.ComFuncs.Translate
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
@@ -40,8 +42,8 @@ local function ShowDialogs()
 		for i = 1, #map_data do
 			local data = map_data[i]
 
-			data.coordinates = map_info(nil, data, true):lower()
 			-- change all strings to lowercase here instead of while searching
+			data.coordinates = map_info(nil, data, true):lower()
 			-- breakthroughs
 			for j = 1, #data do
 				data[j] = data[j]:lower()
@@ -56,7 +58,6 @@ local function ShowDialogs()
 
 	end
 --~ 	map_data = {}
-
 --~ 	ex(map_data)
 
 	-- check if we already created finder, and make one if not
@@ -113,7 +114,7 @@ DefineClass.ChoGGi_VLI_MapInfoDlg = {
 function ChoGGi_VLI_MapInfoDlg:Init(parent, context)
 	local g_Classes = g_Classes
 
-	self.title = T(7396, "Location")
+	self.title = T(7396--[[Location]])
 	self.title_image = "CommonAssets/UI/Menu/EV_OpenFirst.tga"
 	self.title_image_single = true
 
@@ -129,7 +130,7 @@ function ChoGGi_VLI_MapInfoDlg:Init(parent, context)
 	self.idSearch = g_Classes.ChoGGi_XButton:new({
 		Id = "idSearch",
 		Dock = "left",
-		Text = T(10123, "Search"),
+		Text = T(10123--[[Search]]),
 		Background = g_Classes.ChoGGi_XButton.bg_green,
 		RolloverText = Translate(302535920001303--[[Search for text within %s.
 Leave blank to skip search box.]]):format(Translate(self.title)),
@@ -140,7 +141,7 @@ Leave blank to skip search box.]]):format(Translate(self.title)),
 	self.idShowInfo = g_Classes.ChoGGi_XButton:new({
 		Id = "idShowInfo",
 		Dock = "left",
-		Text = T(126095410863, "Info"),
+		Text = T(126095410863--[[Info]]),
 		RolloverText = T(302535920011927, "Show a list of breakthroughs/map names/etc to use."),
 		Margins = box(6, 0, 0, 0),
 		OnPress = self.ShowInfoDialog,
@@ -280,7 +281,7 @@ function ChoGGi_VLI_MapInfoDlg:ShowInfoDialog()
 	table.sort(temp_data)
 	table.iappend(text, temp_data)
 
-	ChoGGi.ComFuncs.OpenInMultiLineTextDlg(table.concat(text, "\n"), {
+	ChoGGi.ComFuncs.OpenInMultiLineTextDlg(table_concat(text, "\n"), {
 		has_params = true,
 		title = T(302535920011926, "Show Info"),
 	})
@@ -296,7 +297,7 @@ function ChoGGi_VLI_MapInfoDlg:AddSearchBox(input_type)
 		id = "idSearch"
 		str_roll = T(302535920011932, [[Search for text in map data.
 Leave blank to skip search box.]])
-		str_hint = T(302535920001306--[[Enter text to find]])
+		str_hint = TranslationTable[302535920001306--[[Enter text to find]]]
 	elseif input_type == "rem" then
 		area = "idRemTextArea"
 		count = "input_box_count_rem"
@@ -345,7 +346,7 @@ function ChoGGi_VLI_MapInfoDlg:FindText()
 					landsiteobj:MoveToSelection(lat, long, nil, true)
 					landsiteobj:CalcMarkersVisibility()
 				else
-					CreateMarsMessageBox(T(6885, "Error"), T(4093, "Invalid coordinates.") .. ": " .. key_location, T(1000136, "OK"))
+					CreateMarsMessageBox(T(6885--[[Error]]), T(4093--[[Invalid coordinates.]]) .. ": " .. key_location, T(1000136--[[OK]]))
 				end
 			end,
 		})
@@ -421,12 +422,12 @@ function ChoGGi_VLI_MapInfoDlg:RetMapLocation(map, merged)
 		loc_key[4] = map.longitude_degree
 		loc_key[5] = map.longitude
 	end
-	return table.concat(loc_key)
+	return table_concat(loc_key)
 end
 
 function ChoGGi_VLI_MapInfoDlg:SetExamineTitle()
-	local title = T(3732, "Count") .. " " .. table.count(self.found_objs) .. ": + "
-		.. table.concat(self.input_boxs_add, " ") .. ", - " .. table.concat(self.input_boxs_rem, " ")
+	local title = T(3732--[[Count]]) .. " " .. table.count(self.found_objs) .. ": + "
+		.. table_concat(self.input_boxs_add, " ") .. ", - " .. table_concat(self.input_boxs_rem, " ")
 
 	self.current_examine_dlg.override_title = true
 	self.current_examine_dlg.idCaption:SetTitle(self.current_examine_dlg, title)
@@ -543,7 +544,7 @@ local function AddProfilesButton(toolbar)
 	toolbar.idChoGGi_FindMaps = ChoGGi.ComFuncs.RetToolbarButton{
 		parent = toolbar,
 		id = "idChoGGi_FindMaps",
-		roll_title = T(126095410863, "Info"),
+		roll_title = T(126095410863--[[Info]]),
 		text = T(302535920011924, "Find Maps"),
 		roll_text = T(302535920011925, [[Find maps with specific breakthroughs etc.
 

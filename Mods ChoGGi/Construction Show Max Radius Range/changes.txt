@@ -1,3 +1,6 @@
+v1.8
+Show Max Drone Hub Radius: Toggle between 35/50 hexes (B&B DLC).
+
 v1.7
 Shows maxed range for tribby when changed with ECM.
 

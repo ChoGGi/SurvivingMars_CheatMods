@@ -42,6 +42,7 @@ do -- MapData
 
 	local loc_table = {"","","",""}
 	local MapData = MapDataPresets
+	local temp_g_SelectedSpotChallengeMods = {}
 
 	local function AddLandingSpot(lat, long, breakthroughs, limit_count, skip_csv)
 		-- coord names in csv
@@ -203,10 +204,11 @@ do -- MapData
 
 
 		-- needed for RecalcThreatResourceLevels func
-		local orig_GameState = GameState.gameplay
+		local ChoOrig_GameState = GameState.gameplay
 		GameState.gameplay = false
-		local orig_spotchall = g_SelectedSpotChallengeMods
-		g_SelectedSpotChallengeMods = {}
+		local ChoOrig_spotchall = g_SelectedSpotChallengeMods
+		table.clear(temp_g_SelectedSpotChallengeMods)
+		g_SelectedSpotChallengeMods = temp_g_SelectedSpotChallengeMods
 
 --~ ChoGGi.ComFuncs.TickStart("ExportMapDataToCSV")
 		-- loop through all the spots, update landing spot and stick in export list
@@ -228,9 +230,8 @@ do -- MapData
 --~ ChoGGi.ComFuncs.TickEnd("ExportMapDataToCSV")
 
 		-- not needed anymore so restore back to orig
-		GameState.gameplay = orig_GameState
-		g_SelectedSpotChallengeMods = orig_spotchall
-
+		GameState.gameplay = ChoOrig_GameState
+		g_SelectedSpotChallengeMods = ChoOrig_spotchall
 
 		-- remove landing spot obj (not needed anymore)
 		landing:delete()

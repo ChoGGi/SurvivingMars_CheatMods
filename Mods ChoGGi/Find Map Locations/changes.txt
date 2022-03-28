@@ -1,3 +1,6 @@
+v1.1
+It didn't find anything (thanks Inertial Mage).
+
 v1.0
 Updated to parity with my Lib mod.
 

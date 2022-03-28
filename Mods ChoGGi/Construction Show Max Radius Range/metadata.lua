@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1522200776",
 	"pops_any_uuid", "f11ce232-278a-422e-b12d-476f9a148d1c",
 	"lua_revision", 1007000, -- Picard
-	"version", 17,
+	"version", 18,
 	"version_major", 1,
-	"version_minor", 7,
+	"version_minor", 8,
 	"code", {
 		"Code/Script.lua",
 	},
@@ -27,6 +27,7 @@ This also shows a circle for any heater buildings (since they heat a circle).
 Mod Options:
 Show during construction: Toggle in-game.
 Set Max Radius: Set radius for newly placed buildings to max radius.
+Show Max Drone Hub Radius: Toggle between 35/50 hexes (B&B DLC).
 
 
 Not exactly requested by MGoods.

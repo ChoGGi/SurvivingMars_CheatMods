@@ -2,6 +2,7 @@
 
 local mod_ShowConstruct
 local mod_SetMaxRadius
+local mod_ShowMaxDroneHubRadius
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -11,6 +12,7 @@ local function ModOptions(id)
 
 	mod_ShowConstruct = CurrentModOptions:GetProperty("ShowConstruct")
 	mod_SetMaxRadius = CurrentModOptions:GetProperty("SetMaxRadius")
+	mod_ShowMaxDroneHubRadius = CurrentModOptions:GetProperty("ShowMaxDroneHubRadius")
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -47,6 +49,7 @@ function CursorBuilding:GameInit(...)
 
 	local uirange
 	if self.template and self.template:IsKindOfClasses(cls_saved_settings) then
+
 		-- If ecm is active we check for custom range, otherwise use default
 		local idx = table.find(ModsLoaded, "id", "ChoGGi_Library")
 		if idx then
@@ -84,7 +87,13 @@ function CursorBuilding:GameInit(...)
 				AddRadius(self, cls.GetHeatRange(self.template))
 			elseif cls.GetSelectionRadiusScale and safe then
 				-- drone hubs
- 				self.GetSelectionRadiusScale = const.CommandCenterMaxRadius
+				if mod_ShowMaxDroneHubRadius then
+					-- 50
+					self.GetSelectionRadiusScale = const.CommandCenterMaxRadius
+				else
+					-- 35
+					self.GetSelectionRadiusScale = const.CommandCenterDefaultRadius
+				end
 				ShowHexRanges(UICity, false, self, "GetSelectionRadiusScale")
 			end
 		end
