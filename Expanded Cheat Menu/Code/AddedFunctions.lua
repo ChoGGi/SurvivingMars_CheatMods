@@ -4,20 +4,8 @@
 dump = ChoGGi.ComFuncs.Dump
 dumplua = ChoGGi.ComFuncs.DumpLua
 dumptable = ChoGGi.ComFuncs.DumpTable
-trans = ChoGGi.ComFuncs.Translate
-so = ChoGGi.ComFuncs.SelObject
 MonitorFunc = ChoGGi.ComFuncs.MonitorFunctionResults
-MapGetC = ChoGGi.ComFuncs.MapGet
--- used for console rules, so we can get around it spamming the log
-local OpenInImageViewerDlg = ChoGGi.ComFuncs.OpenInImageViewerDlg
-function OpenImageViewer(...)
-	OpenInImageViewerDlg(...)
-end
-local OpenInMultiLineTextDlg = ChoGGi.ComFuncs.OpenInMultiLineTextDlg
-function OpenTextViewer(...)
-	OpenInMultiLineTextDlg(...)
-end
-
+--
 function restart()
 	quit("restart")
 end

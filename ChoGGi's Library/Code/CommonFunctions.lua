@@ -301,6 +301,14 @@ do -- RetName
 				end
 			end
 
+			-- Presets
+			for preset_id, preset in pairs(g.Presets) do
+				lookup_table[preset] = "Presets." .. preset_id
+				for id, item in pairs(preset) do
+					lookup_table[item] = "Presets." .. preset_id .. "." .. id
+				end
+			end
+			-- eh?
 			g.ClassDescendantsList("Preset", function(_, cls)
 				if cls.GlobalMap and cls.GlobalMap ~= "" then
 					local g_value = rawget(g, cls.GlobalMap)

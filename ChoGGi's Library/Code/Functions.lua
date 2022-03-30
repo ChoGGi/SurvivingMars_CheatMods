@@ -107,3 +107,16 @@ end
 -- short n sweet
 ex = OpenExamine
 exr = OpenExamineRet
+-- add some shortened func names
+MapGetC = ChoGGi.ComFuncs.MapGet
+so = ChoGGi.ComFuncs.SelObject
+trans = ChoGGi.ComFuncs.Translate
+-- used for console rules, so they don't spam the log
+local OpenInImageViewerDlg = ChoGGi.ComFuncs.OpenInImageViewerDlg
+function OpenImageViewer(...)
+	OpenInImageViewerDlg(...)
+end
+local OpenInMultiLineTextDlg = ChoGGi.ComFuncs.OpenInMultiLineTextDlg
+function OpenTextViewer(...)
+	OpenInMultiLineTextDlg(...)
+end

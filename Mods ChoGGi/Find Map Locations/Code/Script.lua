@@ -11,6 +11,14 @@ local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 local mod_BreakthroughCount
 
 local function ModOptions(id)
+
+	-- REMOVE LIB 11.2
+	if not rawget(_G, "trans") then
+		_G.trans = Translate
+	end
+	-- REMOVE LIB 11.2
+
+
 	-- id is from ApplyModOptions
 	if id and id ~= CurrentModId then
 		return

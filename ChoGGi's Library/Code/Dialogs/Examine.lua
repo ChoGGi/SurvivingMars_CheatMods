@@ -1813,6 +1813,7 @@ end
 
 --~ function ChoGGi_DlgExamine:CleanTextForView(str)
 --~ 	-- remove html tags (any </*> closing tags, <left>, <color *>, <h *>, and * added by the context menus)
+-- merge gsubs if I ever use this for something else
 --~ 	return str:gsub("</[%s%a%d]*>", ""):gsub("<left>", ""):gsub("<color [%s%a%d]*>", ""):gsub("<h [%s%a%d]*>", ""):gsub("%* '", "'")
 --~ end
 -- scrolled_text is modified from a boolean to the scrolled text and sent back
@@ -2746,16 +2747,14 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 					-- blank table
 					table_data = len
 				end
-
+				--
 				local name_orig = RetName(obj)
-
-				local name = trans(name_orig):gsub(">",""):gsub("<",""):gsub("/","")
-
+				local name = Translate(name_orig):gsub("[<>/]", "")
 				--
 				name = "<tags off>" .. name .. "<tags on>"
 
 				if obj.class and name_orig ~= obj.class then
-					-- I can't seem to translate an obj.displayname if it's a T(0, "str")... (RetName)
+					-- I can't seem to translate an obj.displayname if it's a T(0, "str")... (RetName)?
 					if name:find("table: ") then
 						name = obj.class .. " (len: " .. table_data .. ")"
 					else
