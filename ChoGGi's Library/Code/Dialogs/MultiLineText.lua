@@ -49,6 +49,13 @@ function ChoGGi_DlgMultiLineText:Init(parent, context)
 	self:AddElements(parent, context)
 
 	self:AddScrollEdit()
+
+	-- if string isn't a string
+	if type(context.text) ~= "string" then
+		context.text = tostring(context.text)
+		print("ChoGGi_DlgMultiLineText NOT A STRING OBJ")
+	end
+
 	self.idEdit:SetText(context.text)
 
 	if context.file_path then
@@ -335,8 +342,9 @@ end
 
 -- goodbye everybody
 function ChoGGi_DlgMultiLineText:Done(result)
-	-- for dumping text from examine
-	if self.retfunc then
-		self.retfunc(result, self.overwrite, self)
+	-- for dumping text from examine (or whatever uses a .custom_func)
+	if result and self.retfunc then
+		self.retfunc(self.overwrite, self)
+		-- self.idEdit:GetText()
 	end
 end

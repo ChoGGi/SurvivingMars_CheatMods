@@ -1,3 +1,9 @@
+v1.2
+Made it lower rubble more aggressively.
+
+v1.1
+Fixed a bug in Fix Bugs where it didn't fix some bugs.
+
 v1.0
 Added my mods:
 Fix Colonist Daily Interest Loop

@@ -1,3 +1,6 @@
+v0.4
+Added other rover ents to the ghosts list.
+
 v0.3
 Added mod option to disable mod.
 

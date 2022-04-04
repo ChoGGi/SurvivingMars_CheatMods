@@ -65,10 +65,8 @@ function ChoGGi_NotePadBuilding:OnSelected()
 		text = self.notepad_text,
 		hint_ok = T(0000, "Save text to notepad"),
 		hint_cancel = T(0000, "Abort without saving text!"),
-		custom_func = function(answer, _, obj)
-			if answer then
-				self.notepad_text = obj.idEdit:GetText()
-			end
+		custom_func = function(_, obj)
+			self.notepad_text = obj.idEdit:GetText()
 		end,
 	}
 

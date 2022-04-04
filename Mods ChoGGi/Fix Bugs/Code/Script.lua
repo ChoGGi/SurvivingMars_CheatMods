@@ -6,9 +6,8 @@ local ipairs = ipairs
 local IsValidThread = IsValidThread
 local IsValid = IsValid
 local DoneObject = DoneObject
-local AveragePoint2D = AveragePoint2D
 local GetRealmByID = GetRealmByID
-local GetRandomPassableAround = GetRandomPassableAround
+local GetRandomPassableAroundOnMap = GetRandomPassableAroundOnMap
 
 local mod_EnableMod
 
@@ -147,11 +146,28 @@ do -- CityStart/LoadGame
 			return
 		end
 
+		-- speed up deleting/etc objs
+		SuspendPassEdits("ChoGGi_FixBBBugs_loading")
+
 		local UIColony = UIColony
 		local MainCity = MainCity
 		local main_realm = GetRealmByID(MainMapID)
 		local GameMaps = GameMaps
 		local bt = BuildingTemplates
+		local ResourceScale = const.ResourceScale
+		local GetDomeAtPoint = GetDomeAtPoint
+		local Landscapes = Landscapes
+		local bmpo = BuildMenuPrerequisiteOverrides
+		local ResupplyItemDefinitions = ResupplyItemDefinitions
+
+		-- Fix Cube Anomaly On Deposit
+		if not g_ChoGGi_FixCubeAnomalyOnDeposit then
+			local objs = main_realm:MapGet("map", "SubsurfaceAnomaly")
+			for i = 1, #objs do
+				FixCubeAnomalyOnDeposit_CheckObjs(objs[i], MainCity, GameMaps)
+			end
+			g_ChoGGi_FixCubeAnomalyOnDeposit = true
+		end
 
 		-- If you removed modded rules from your current save then the Mission Profile dialog will be blank.
 		local rules = g_CurrentMissionParams.idGameRules
@@ -172,7 +188,6 @@ do -- CityStart/LoadGame
 
 		This also has a fix for buildings hit with lightning during a cold wave.
 		]]
-		local ResourceScale = const.ResourceScale
 		local blds = UIColony:GetCityLabels("Building")
 		for i = 1, #blds do
 			local bld = blds[i]
@@ -205,7 +220,6 @@ do -- CityStart/LoadGame
 
 		-- Some colonists are allergic to doors and suffocate inside a dome with their suit still on.
 		local colonists = UIColony:GetCityLabels("Colonist")
-		local GetDomeAtPoint = GetDomeAtPoint
 		for i = 1, #colonists do
 			local colonist = colonists[i]
 			-- Check if lemming is currently in a dome while wearing a suit
@@ -244,7 +258,6 @@ do -- CityStart/LoadGame
 		-- For some reason LandscapeLastMark gets set to around 4090, when LandscapeMark hits 4095 bad things happen.
 		-- This resets LandscapeLastMark to whatever is the highest number in Landscapes when a save is loaded (assuming it's under 3000, otherwise 0).
 		-- If there's placed landscapes grab the largest number
-		local Landscapes = Landscapes
 		if Landscapes and next(Landscapes) then
 			local largest = 0
 			for idx in pairs(Landscapes) do
@@ -264,15 +277,14 @@ do -- CityStart/LoadGame
 		end
 
 		-- Wind turbine gets locked by a game event.
-		local bmpo = BuildMenuPrerequisiteOverrides
 		if bmpo.WindTurbine and TGetID(bmpo.WindTurbine) == 401896326435--[[You can't construct this building at this time]] then
 			bmpo.WindTurbine = nil
 		end
 
 		-- Removes any meteorites stuck on the map when you load a save.
-		local objs = main_realm:MapGet("map", "BaseMeteor")
-		for i = #objs, 1, -1 do
-			local obj = objs[i]
+		local meteors = main_realm:MapGet("map", "BaseMeteor")
+		for i = #meteors, 1, -1 do
+			local obj = meteors[i]
 
 			-- Same pt as the dest means stuck on ground
 			if obj:GetPos() == obj.dest
@@ -301,12 +313,11 @@ do -- CityStart/LoadGame
 		end
 
 		-- Probably caused by a mod badly adding cargo.
-		local defs = ResupplyItemDefinitions
-		for i = #defs, 1, -1 do
-			local def = defs[i]
+		for i = #ResupplyItemDefinitions, 1, -1 do
+			local def = ResupplyItemDefinitions[i]
 			if not def.pack then
 				print("Fix Resupply Menu Not Opening Borked cargo:", def.id)
-				table.remove(defs, i)
+				table.remove(ResupplyItemDefinitions, i)
 			end
 		end
 
@@ -325,59 +336,41 @@ do -- CityStart/LoadGame
 		--	Move any floating underground rubble to within reach of drones (might have to "push" drones to make them go for it).
 		if UIColony.underground_map_unlocked then
 			local map = GameMaps[UIColony.underground_map_id]
-
-			local objs = map.realm:MapGet("map", "CaveInRubble")
-			for i = 1, #objs do
-				local obj = objs[i]
-
-				local points = {}
-				local c = 0
-
-				-- average pos of work spots to lower to ground
-				local start_id, id_end = obj:GetAllSpots(obj:GetState())
-				for j = start_id, id_end do
-					local text_str = obj:GetSpotName(j)
-					if text_str == "Workdrone" then
-						c = c + 1
-						points[c] = obj:GetSpotPos(j)
-					end
+			map.realm:MapForEach("map", "CaveInRubble", function(obj)
+				local pos = obj:GetVisualPos()
+				if pos:z() > 0 then
+					-- Likely the ground floor is 0, so I can just move it, instead of having to check height.
+					obj:SetPos(pos:SetZ(0))
 				end
-				local avg_pos = AveragePoint2D(points)
-				obj:SetPos(avg_pos:SetZ(map.terrain:GetHeight(avg_pos)))
-			end
+			end)
 		end
 		--
+
+		ResumePassEdits("ChoGGi_FixBBBugs_loading")
 	end
 
-	-- Fix Cube Anomaly On Deposit
-	local function StartupCode()
-		if g_ChoGGi_FixCubeAnomalyOnDeposit then
-			return
-		end
-		local objs = main_realm:MapGet("map", "SubsurfaceAnomaly")
-		for i = 1, #objs do
-			FixCubeAnomalyOnDeposit_CheckObjs(objs[i], MainCity, main_realm)
-		end
-
-		g_ChoGGi_FixCubeAnomalyOnDeposit = true
-	end
-
-	OnMsg.CityStart = FloatingRubble
-	OnMsg.LoadGame = FloatingRubble
+	OnMsg.CityStart = StartupCode
+	OnMsg.LoadGame = StartupCode
 end -- do
 --
 do -- The first Black Cube anomaly can sometimes spawn on a deposit, this'll move it off to a side. (Fix Cube Anomaly On Deposit)
-	FixCubeAnomalyOnDeposit_CheckObjs = function(obj, city, realm)
+	FixCubeAnomalyOnDeposit_CheckObjs = function(obj, city, maps)
 		-- check if there's a deposit below it
 		local pos = obj:GetPos()
-		local objs = (realm or GetRealm(obj)):MapGet(pos, 100)
 		if not city then
-			city = GetCity(obj)
+			city = Cities[obj:GetMapID()]
+			maps = GameMaps
 		end
+		local map = maps[city.map_id]
+		local objs = map.realm:MapGet(pos, 100)
+		-- anything "directly" below it
 		for i = 1, #objs do
-			-- found one
-			if objs[i]:IsKindOf("SubsurfaceDeposit") then
-				obj:SetPos(GetRandomPassableAround(pos, 1000, 999, city):SetTerrainZ())
+			local temp_obj = objs[i]
+			-- anomalies are also deposits
+			if temp_obj ~= obj and temp_obj:IsKindOf("SubsurfaceDeposit") then
+				local rand_pos = GetRandomPassableAroundOnMap(city.map_id, pos, 1000)
+				-- pretty sure SetTerrainZ doesn't work if active map is diff, so
+				obj:SetPos(rand_pos:SetZ(map.terrain:GetHeight(pos)))
 				break
 			end
 		end
@@ -874,7 +867,8 @@ if not AncientArtifactInterface.GetEntrance then
 	function AncientArtifactInterface:GetEntrance()
 		return {
 			self:GetPos(),
-			GetRandomPassableAround(self:GetPos(), 2 * const.HexSize, const.HexSize)
+			GetRandomPassableAroundOnMap(Cities[self:GetMapID()].map_id, self:GetPos(), 2 * const.HexSize, const.HexSize)
+--~ 			GetRandomPassableAround(self:GetPos(), 2 * const.HexSize, const.HexSize)
 		}
 	end
 end

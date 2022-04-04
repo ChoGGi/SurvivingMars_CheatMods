@@ -711,10 +711,8 @@ function ChoGGi_DlgExamine:ViewSourceCode()
 		hint_ok = Translate(302535920000047--[["View Text/Object, and optionally dumps text to <green>%slogs\DumpedExamine.lua</green> (may take awhile for large text)."]]):format(ConvertToOSPath("AppData/")),
 		file_path = path,
 		_G = _G,
-		custom_func = function(answer, overwrite)
-			if answer then
-				self.ChoGGi.ComFuncs.Dump("\n" .. str, overwrite, "DumpedSource", "lua")
-			end
+		custom_func = function(overwrite)
+			self.ChoGGi.ComFuncs.Dump("\n" .. str, overwrite, "DumpedSource", "lua")
 		end,
 	}
 end
@@ -1480,10 +1478,8 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 					scrollto = scrolled_text,
 					title = title,
 					hint_ok = TranslationTable[302535920000047]:format(ConvertToOSPath("AppData/")),
-					custom_func = function(answer, overwrite)
-						if answer then
-							self:DumpExamineText(str, name, overwrite and "w")
-						end
+					custom_func = function(overwrite)
+						self:DumpExamineText(str, name, overwrite and "w")
 					end,
 				}
 			end,
@@ -1663,10 +1659,8 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 					title = TranslationTable[302535920000048--[[View]]] .. "/"
 							.. TranslationTable[302535920000004--[[Dump]]] .. " "
 							.. TranslationTable[1000145--[[Text]]],
-					custom_func = function(answer, overwrite)
-						if answer then
-							self:DumpExamineText(str, "DumpedExamine", overwrite and "w")
-						end
+					custom_func = function(overwrite)
+						self:DumpExamineText(str, "DumpedExamine", overwrite and "w")
 					end,
 				}
 			end,
@@ -2755,11 +2749,12 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 
 				if obj.class and name_orig ~= obj.class then
 					-- I can't seem to translate an obj.displayname if it's a T(0, "str")... (RetName)?
-					if name:find("table: ") then
+--~ 					if name:find("table: ") then
+--~ 						name = obj.class .. " (len: " .. table_data .. ")"
+--~ 					else
+--~ 						name = obj.class .. " (len: " .. table_data .. ", " .. name .. ")"
 						name = obj.class .. " (len: " .. table_data .. ")"
-					else
-						name = obj.class .. " (len: " .. table_data .. ", " .. name .. ")"
-					end
+--~ 					end
 				else
 					name = name .. " (len: " .. table_data .. ")"
 				end

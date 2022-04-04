@@ -415,6 +415,17 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 			return
 		end
 
+		local wait_count = 0
+		while not g_ParadoxAccountDetails do
+			Sleep(250)
+			wait_count = wait_count + 1
+
+			if wait_count > 10 then
+				print("ECM ModUpload: Paradox account not logging in!")
+				break
+			end
+		end
+
 		-- we update this now, so the tooltip doesn't show nil
 		if ChoGGi.ComFuncs.FileExists(hpk_path) then
 			hpk_path_working = ConvertToOSPath(hpk_path)
@@ -1089,25 +1100,23 @@ function ChoGGi.MenuFuncs.EditECMSettings()
 		update_func = function()
 			return TableToLuaCode(UserSettings)
 		end,
-		custom_func = function(answer, _, obj)
-			if answer then
-				-- get text and update settings file
-				local err, settings = LuaCodeToTuple(obj.idEdit:GetText())
-				if not err then
-					settings = ChoGGi.SettingFuncs.WriteSettings(settings)
-					for key, value in pairs(settings) do
-						UserSettings[key] = value
-					end
-
-					-- for now just updates console examine list
-					Msg("ChoGGi_SettingsUpdated", settings)
-					local d, m, h = FormatElapsedTime(os.time(), "dhm")
-					local msg = TranslationTable[4273--[[Saved on <save_date>]]]:gsub("<save_date>", ": " .. d .. ":" .. m .. ":" .. h)
-					MsgPopup(
-						msg,
-						TranslationTable[302535920001242--[[Edit ECM Settings]]]
-					)
+		custom_func = function(_, obj)
+			-- get text and update settings file
+			local err, settings = LuaCodeToTuple(obj.idEdit:GetText())
+			if not err then
+				settings = ChoGGi.SettingFuncs.WriteSettings(settings)
+				for key, value in pairs(settings) do
+					UserSettings[key] = value
 				end
+
+				-- for now just updates console examine list
+				Msg("ChoGGi_SettingsUpdated", settings)
+				local d, m, h = FormatElapsedTime(os.time(), "dhm")
+				local msg = TranslationTable[4273--[[Saved on <save_date>]]]:gsub("<save_date>", ": " .. d .. ":" .. m .. ":" .. h)
+				MsgPopup(
+					msg,
+					TranslationTable[302535920001242--[[Edit ECM Settings]]]
+				)
 			end
 		end,
 	}

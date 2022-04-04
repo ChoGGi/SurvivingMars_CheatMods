@@ -625,6 +625,10 @@ function ChoGGi.MenuFuncs.SetProtectionRadius()
 	end
 	local id = RetTemplateOrClass(obj)
 	local cls_obj = g_Classes[id]
+	if not cls_obj then
+		return
+	end
+
 	local default_setting = cls_obj.protect_range or cls_obj:GetClassValue("protect_range")
 	local item_list = {
 		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},

@@ -60,7 +60,7 @@ local ToolsMenuPopupToggle_list = {
 				width = 1600,
 				height = 1000,
 				text = LoadLogfile(),
-				title = TranslationTable[302535920000563],
+				title = TranslationTable[302535920000563--[[View Log Text]]],
 				update_func = LoadLogfile,
 			}
 		end,
@@ -74,7 +74,7 @@ local ToolsMenuPopupToggle_list = {
 		clicked = function()
 			ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 				text = table.concat(ModMessageLog, "\n"),
-				title = TranslationTable[302535920000071],
+				title = TranslationTable[302535920000071--[[Show Mods Log]]],
 				update_func = ModMessageLog,
 			}
 		end,
@@ -608,7 +608,7 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 
 	-- IdBottomContainer isn't added when i normally setup the console stuff (ModsReloaded)
 	local bottom = XShortcutsTarget.idBottomContainer
-	if bottom.HAlign ~= "left" then
+	if bottom and bottom.HAlign ~= "left" then
 		bottom:SetHAlign("left")
 	end
 

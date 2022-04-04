@@ -434,9 +434,9 @@ do -- RetName
 --~ 			elseif rawget(obj, "entity") and obj.entity ~= "" then
 --~ 				name = obj.entity
 
-			-- objlist
-			elseif IsObjlist(obj) then
-				return obj[1] and ChoGGi.ComFuncs.RetName(obj[1]) or "objlist"
+--~ 			-- objlist
+--~ 			elseif IsObjlist(obj) then
+--~ 				return obj[1] and ChoGGi.ComFuncs.RetName(obj[1]) or "objlist"
 
 			else
 				-- we need to use rawget to check (seems more consistent then rawget), as some stuff like mod.env uses the metatable from _G.__index and causes sm to log an error msg

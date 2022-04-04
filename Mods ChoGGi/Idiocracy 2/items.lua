@@ -53,7 +53,7 @@ return {
 	}),
 
 	PlaceObj("ModItemCommanderProfilePreset", {
-		display_name = T(0000, "Pte Bauers"),
+		display_name = T(0000, "Pvt Bauers"),
 		effect = T(0000, [[- Reduce chance of Idiots breaking things by 25%
 - Increased water requirements for farm crops by 0.6
 - Acts as <color em>Politician</color> for story bits]]),

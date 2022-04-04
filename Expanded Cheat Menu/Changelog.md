@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v18.2 (Unreleased)
+### Fixed:
+- ModUpload waits till paradox account is ready before trying to upload.
 
 ## v18.1 (20 Mar 2022)
 ### Fixed:
