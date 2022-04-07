@@ -137,6 +137,24 @@ do -- ModUpload
 				para_platform = true
 			end
 
+			if not g_ParadoxAccountDetails then
+				-- wait for paradox to login
+				local wait_count = 0
+				while true do
+					if g_ParadoxAccountDetails then
+						break
+					end
+					Sleep(1000)
+
+					wait_count = wait_count + 1
+
+					if wait_count > 10 then
+--~ 						print("ECM ModUpload: Paradox account not logging in...")
+						break
+					end
+				end
+			end
+
 			prepare_worked, prepare_results = g_env.PDX_PrepareForUpload(nil, mod, mod_params)
 
 			para_item_id = mod[mod_params.uuid_property]
@@ -415,17 +433,6 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 			return
 		end
 
-		local wait_count = 0
-		while not g_ParadoxAccountDetails do
-			Sleep(250)
-			wait_count = wait_count + 1
-
-			if wait_count > 10 then
-				print("ECM ModUpload: Paradox account not logging in!")
-				break
-			end
-		end
-
 		-- we update this now, so the tooltip doesn't show nil
 		if ChoGGi.ComFuncs.FileExists(hpk_path) then
 			hpk_path_working = ConvertToOSPath(hpk_path)
@@ -434,6 +441,7 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 		end
 
 		CreateRealTimeThread(function()
+
 			local choice = choices[1]
 			blank_mod = choice.check1
 			clipboard = choice.check2

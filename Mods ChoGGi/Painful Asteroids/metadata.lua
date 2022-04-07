@@ -18,9 +18,9 @@ return PlaceObj("ModDef", {
 This also increases the damage area when landing outside domes.
 
 Mod Options:
-Dome + Asteroid = Death: Death of those in the dome, and any buildings inside are destroyed (also I wouldn't park rovers too close to domes).
-Impact Range: When landing outside of domes; how large of an area is affected by asteroid.
-Destruction Percent: What percentage of buildings are malfunctioned/destroyed on hit.
-Extra Fractures: More dome cracks.
+[b]Dome + Asteroid = Death[/b]: Death of those in the dome, and any buildings inside are destroyed (I wouldn't park rovers too close to domes).
+[b]Impact Range[/b]: When landing outside of domes; how large of an area is affected by asteroid.
+[b]Destruction Percent[/b]: What percentage of buildings are malfunctioned/destroyed on hit.
+[b]Extra Fractures[/b]: More dome cracks.
 ]],
 })

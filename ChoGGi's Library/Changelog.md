@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v11.2 (Unreleased)
+## v11.3 (Unreleased)
+
+## v11.2 (7 Apr 2022)
 - Changed RetName() for less dbg_reg().* showing up for names.
 
 ## v11.1 (20 Mar 2022)
@@ -15,7 +17,7 @@
 - Added limit count to RetMapBreakthroughs().
 
 ### Examine:
-- Log spam when examining _G.
+- Log spam when examining `_G`.
 - When selecting ui objects the flashing visiblity is now the flashing rectangle from xwin inspect.
 - Fixed issue examining certain strings.
 

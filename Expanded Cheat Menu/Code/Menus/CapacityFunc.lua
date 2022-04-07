@@ -7,7 +7,7 @@ local RetName = ChoGGi.ComFuncs.RetName
 local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 local RetObjectCapAndGrid = ChoGGi.ComFuncs.RetObjectCapAndGrid
 local TranslationTable = TranslationTable
-local Translate = ChoGGi.ComFuncs.Translate
+--~ local Translate = ChoGGi.ComFuncs.Translate
 
 function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
 	ChoGGi.UserSettings.StorageMechanizedDepotsTemp = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.StorageMechanizedDepotsTemp)

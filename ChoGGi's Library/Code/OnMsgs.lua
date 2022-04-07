@@ -106,7 +106,8 @@ local function RemoveMyBlinky(o)
 	end
 end
 -- obj cleanup if mod is removed from saved game
-local function RemoveChoGGiObjects(skip_height)
+local function RemoveChoGGiObjects()
+--~ local function RemoveChoGGiObjects(skip_height)
 	SuspendPassEdits("ChoGGi_Library.OnMsgs.RemoveChoGGiObjects")
 
 	-- MapDelete doesn't seem to work with func filtering?

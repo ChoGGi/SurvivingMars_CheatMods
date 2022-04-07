@@ -556,8 +556,6 @@ OnMsg.ApplyModOptions = ModOptions
 
 GlobalVar("CityDomeTeleporterConstruction", {})
 
-local table = table
-
 -- chooses which construct mode to start
 local ChoOrig_GetConstructionController = GetConstructionController
 function GetConstructionController(mode, ...)

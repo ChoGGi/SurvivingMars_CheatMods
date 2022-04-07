@@ -12,7 +12,7 @@ local function FixBuildings()
 
 	local GameMaps = GameMaps
 	for _, map in pairs(GameMaps) do
-		local objs = realm:MapGet("map", "ElectricityGridObject")
+		local objs = map.realm:MapGet("map", "ElectricityGridObject")
 		for i = 1, #objs do
 			local obj = objs[i]
 			-- should be good enough to not get false positives?

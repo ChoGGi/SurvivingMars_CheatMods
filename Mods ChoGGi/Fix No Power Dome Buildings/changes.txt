@@ -1,2 +1,5 @@
+v0.3
+Missed a map.
+
 v0.2
 Updated for picard.
