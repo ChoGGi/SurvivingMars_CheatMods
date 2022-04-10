@@ -77,7 +77,7 @@ for id,bld in pairs(BuildingTemplates) do
 	print(id,bld.max_workers)
 end
 
-Create an "AppData/ECM Scripts" folder and any .lua files will show up in the Console menu (needs HelperMod).
+Create an "AppData/ECM Scripts" folder and any .lua files will show up in the Console menu.
 ```
 
 
@@ -110,7 +110,7 @@ OpenExamine(obj, nil, "Custom Title")
 -- Loop the results of a function in an examine dialog
 -- Set auto-refresh to how often you want the func fired
 ChoGGi.ComFuncs.MonitorFunctionResults(func, arg1, arg2, etc args)
--- Get some info about a thread (more info if HelperMod installed)
+-- Get some info about a thread
 ChoGGi.ComFuncs.RetThreadInfo(thread)
 -- Checks a thread for a func name
 ChoGGi.ComFuncs.FindThreadFunc(thread, str)
@@ -139,13 +139,6 @@ I can't help if I don't know what's wrong.
 The steps you take to recreate the issue would also be useful, and maybe a save game depending on the issue.
 ```
 
-
-
-##### Access to missing functionality
-```
-Da Vinci update added a blacklist of functions, you can use my HelperMod to bypass them (only really useful for modders).
-HelperMod: https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Startup%20HelperMod
-```
 
 ##### Thank You
 ```

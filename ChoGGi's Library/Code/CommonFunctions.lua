@@ -50,6 +50,7 @@ local IsPointNearBuilding = IsPointNearBuilding
 local GetObjectHexGrid = GetObjectHexGrid
 local GetBuildableGrid = GetBuildableGrid
 local DoneObject = DoneObject
+local objlist = objlist
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
 
@@ -497,6 +498,11 @@ local function IsValidXWin(win)
 	end
 end
 ChoGGi.ComFuncs.IsValidXWin = IsValidXWin
+
+local function IsObjlist(list)
+	return type(list) == "table" and getmetatable(list) == objlist
+end
+ChoGGi.ComFuncs.IsObjlist = IsObjlist
 
 function ChoGGi.ComFuncs.RetIcon(obj)
 	-- most icons
@@ -7829,12 +7835,12 @@ function ChoGGi.ComFuncs.MoveRealm(obj, map_id)
 	end
 end
 
-local function IsObjlist(o)
-	if type(o) == "table" then
-		return getmetatable(o) == objlist
+function ChoGGi.ComFuncs.GetNextTable(list, key, value)
+	local idx = table.find(list, key, value)
+	if idx then
+		return list[idx]
 	end
 end
-ChoGGi.ComFuncs.IsObjlist = IsObjlist
 
 -- loop through all map sectors and fire this func
 --~ function ChoGGi.ComFuncs.LoopMapSectors(map_id, func)

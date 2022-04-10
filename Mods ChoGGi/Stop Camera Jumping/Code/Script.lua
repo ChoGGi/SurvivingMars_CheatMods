@@ -42,7 +42,7 @@ function SendRocketToMarsPoint(obj, spot, ...)
 
 	ViewAndSelectObject = fake_ViewAndSelectObject
 
-	ChoOrig_SendRocketToMarsPoint(obj, spot, ...)
+	pcall(ChoOrig_SendRocketToMarsPoint, obj, spot, ...)
 
 	-- we need the WaitMsg since the orig func does it as well
 	CreateRealTimeThread(function()
@@ -64,7 +64,7 @@ function StoryBitState:OpenPopup(...)
 		ViewAndSelectObject = fake_ViewAndSelectObject
 	end
 
-	ChoOrig_StoryBitState_OpenPopup(self, ...)
+	pcall(ChoOrig_StoryBitState_OpenPopup, self, ...)
 
 	ViewAndSelectObject = ChoOrig_ViewAndSelectObject
 end

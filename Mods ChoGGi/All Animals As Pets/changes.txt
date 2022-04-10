@@ -1,2 +1,5 @@
+v0.3
+pcall replaced function.
+
 v0.2
 Removed sponsor limit for Platypus.

@@ -15,7 +15,7 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
-local function fake_SingleResourceProducer_Produce()
+local function ChoFake_SingleResourceProducer_Produce()
 	return 0
 end
 
@@ -28,7 +28,7 @@ function MoholeMine:ChoGGi_ToggleProductionResource(res)
 		return true
 	else
 		prod.ChoGGi_ChoOrig_Produce = prod.Produce
-		prod.Produce = fake_SingleResourceProducer_Produce
+		prod.Produce = ChoFake_SingleResourceProducer_Produce
 		return false
 	end
 

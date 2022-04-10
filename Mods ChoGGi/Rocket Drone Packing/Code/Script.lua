@@ -106,8 +106,13 @@ RocketBase.SpawnDrone = ChoFake_RocketBase_SpawnDrone
 local ChoOrig_RocketBase_SpawnDronesFromEarth = RocketBase.SpawnDronesFromEarth
 function RocketBase.SpawnDronesFromEarth(...)
 	RocketBase.SpawnDrone = ChoOrig_RocketBase_SpawnDrone
-	local spawned_drones = ChoOrig_RocketBase_SpawnDronesFromEarth(...)
+	local result, ret = pcall(ChoOrig_RocketBase_SpawnDronesFromEarth, ...)
 	RocketBase.SpawnDrone = ChoFake_RocketBase_SpawnDrone
-  return spawned_drones
+
+	if result then
+		return ret
+	else
+		print("ChoOrig_RocketBase_SpawnDronesFromEarth failed!", ret)
+	end
 end
 

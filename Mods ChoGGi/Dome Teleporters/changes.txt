@@ -1,3 +1,6 @@
+v1.7
+pcall replaced function.
+
 v1.6
 Hopefully doesn't crash?
 

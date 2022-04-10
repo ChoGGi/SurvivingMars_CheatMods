@@ -78,11 +78,15 @@ function DomeTeleporterConstructionController.Activate(...)
 	-- replace func so it returns our template
 	CreateConstructionGroup = ChoFake_CreateConstructionGroup
 	-- get obj
-	local ret = TunnelConstructionController.Activate(...)
+	local result, ret = pcall(TunnelConstructionController.Activate, ...)
 	-- restore func
 	CreateConstructionGroup = ChoOrig_CreateConstructionGroup
 	-- and done
-	return ret
+	if result then
+		return ret
+	else
+		print("TunnelConstructionController.Activate failed!", ret)
+	end
 end
 
 function OnMsg.ConstructionSitePlaced(site, class_name)

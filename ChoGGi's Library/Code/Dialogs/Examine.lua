@@ -880,7 +880,11 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 	end
 
 	if self.onclick_funcs[link] == self.OpenListMenu then
-		title = obj_name .. " " .. TranslationTable[1000162--[[Menu]]] .. " (" .. obj_type .. ")"
+		if obj_type then
+			title = obj_name .. " " .. TranslationTable[1000162--[[Menu]]] .. " (" .. obj_type .. ")"
+		else
+			title = obj_name .. " " .. TranslationTable[1000162--[[Menu]]]
+		end
 
 		-- stick info at the top of list
 		table.insert(roll_text, 1, Translate(302535920001540--[[Show context menu for <green>%s</green>.]]):format(obj_name)

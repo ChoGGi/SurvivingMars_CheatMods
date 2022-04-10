@@ -16,7 +16,7 @@ function PinsDlg:SetVisible(visible, instant, ...)
 		-- closing menu
 		instant = true
 	end
-	ChoOrig_PinsDlg_SetVisible(self, visible, instant, ...)
+	pcall(ChoOrig_PinsDlg_SetVisible, self, visible, instant, ...)
 	GetPreciseTicks = ChoOrig_GetPreciseTicks
 end
 --

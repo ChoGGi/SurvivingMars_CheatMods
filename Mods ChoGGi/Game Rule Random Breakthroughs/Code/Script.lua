@@ -17,7 +17,7 @@ end
 -- change func to always use rand number instead of supplied num
 local AsyncRand = AsyncRand
 local ChoOrig_StableShuffle = StableShuffle
-local function fake_StableShuffle(tbl, _, max, ...)
+local function ChoFake_StableShuffle(tbl, _, max, ...)
 	return ChoOrig_StableShuffle(tbl, AsyncRand, max, ...)
 end
 
@@ -25,20 +25,28 @@ end
 local ChoOrig_City_InitBreakThroughAnomalies = City.InitBreakThroughAnomalies
 function City.InitBreakThroughAnomalies(...)
 	if g_CurrentMissionParams.idGameRules.ChoGGi_RandomBreakthroughs then
-		StableShuffle = fake_StableShuffle
+		StableShuffle = ChoFake_StableShuffle
 	end
-	local ret = ChoOrig_City_InitBreakThroughAnomalies(...)
+	local result, ret = pcall(ChoOrig_City_InitBreakThroughAnomalies, ...)
 	StableShuffle = ChoOrig_StableShuffle
-	return ret
+	if result then
+		return ret
+	else
+		print("ChoOrig_City_InitBreakThroughAnomalies failed!:", ret)
+	end
 end
 
 -- make omega true random (well truer)
 local ChoOrig_OmegaTelescope_UnlockBreakthroughs = OmegaTelescope.UnlockBreakthroughs
 function OmegaTelescope.UnlockBreakthroughs(...)
 	if g_CurrentMissionParams.idGameRules.ChoGGi_RandomBreakthroughs then
-		StableShuffle = fake_StableShuffle
+		StableShuffle = ChoFake_StableShuffle
 	end
-	local ret = ChoOrig_OmegaTelescope_UnlockBreakthroughs(...)
+	local result, ret = pcall(ChoOrig_OmegaTelescope_UnlockBreakthroughs, ...)
 	StableShuffle = ChoOrig_StableShuffle
-	return ret
+	if result then
+		return ret
+	else
+		print("ChoOrig_OmegaTelescope_UnlockBreakthroughs failed!:", ret)
+	end
 end

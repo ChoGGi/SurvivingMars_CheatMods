@@ -50,7 +50,7 @@ OnMsg.ApplyModOptions = ModOptions
 
 -- always return false if last ark is active (enables in rocket menu)
 local ChoOrig_IsGameRuleActive = IsGameRuleActive
-local function fake_IsGameRuleActive(rule, ...)
+local function ChoFake_IsGameRuleActive(rule, ...)
 	if rule == "TheLastArk" then
 		return false
 	end
@@ -59,11 +59,15 @@ end
 
 local function ReplaceRule(func, ...)
 	if mod_EnableMod then
-		IsGameRuleActive = fake_IsGameRuleActive
+		IsGameRuleActive = ChoFake_IsGameRuleActive
 	end
-	local ret = func(...)
+	local result, ret = pcall(func, ...)
 	IsGameRuleActive = ChoOrig_IsGameRuleActive
-	return ret
+	if result then
+		return ret
+	else
+		print("ChoOrig_IsGameRuleActive failed!", ret)
+	end
 end
 
 local ChoOrig_PassengerRocketDisabledRolloverTitle = RocketPayloadObject.PassengerRocketDisabledRolloverTitle

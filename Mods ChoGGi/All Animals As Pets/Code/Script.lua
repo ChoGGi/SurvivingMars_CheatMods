@@ -131,14 +131,14 @@ end
 
 -- remove sponsor limit for Platypus
 local ChoOrig_GetMissionSponsor = GetMissionSponsor
-local function fake_GetMissionSponsor(...)
+local function ChoFake_GetMissionSponsor(...)
 	local sponsor = ChoOrig_GetMissionSponsor(...)
 	sponsor.id = "paradox"
 	return sponsor
 end
 local ChoOrig_SpawnAnimal = SpawnAnimal
 function SpawnAnimal(...)
-	GetMissionSponsor = fake_GetMissionSponsor
-	ChoOrig_SpawnAnimal(...)
+	GetMissionSponsor = ChoFake_GetMissionSponsor
+	pcall(ChoOrig_SpawnAnimal, ...)
 	GetMissionSponsor = ChoOrig_GetMissionSponsor
 end

@@ -457,15 +457,15 @@ end
 --
 do -- SA_Gameplay.lua SA_CustomNotification:Exec
 	local ChoOrig_GetOnScreenNotification = GetOnScreenNotification
-	local function fake_GetOnScreenNotification(id, ...)
+	local function ChoFake_GetOnScreenNotification(id, ...)
 		return table.find(g_ActiveOnScreenNotifications, 1, id)
 			and ChoOrig_GetOnScreenNotification(id, ...)
 	end
 
 	local ChoOrig_SA_CustomNotification_Exec = SA_CustomNotification.Exec
 	function SA_CustomNotification.Exec(...)
-		GetOnScreenNotification = fake_GetOnScreenNotification
-		ChoOrig_SA_CustomNotification_Exec(...)
+		GetOnScreenNotification = ChoFake_GetOnScreenNotification
+		pcall(ChoOrig_SA_CustomNotification_Exec, ...)
 		GetOnScreenNotification = ChoOrig_GetOnScreenNotification
 	end
 end
@@ -648,13 +648,15 @@ end
 --
 do -- SupplyGrid.lua SupplyGridFragment:UpdateGrid
 	local ChoOrig_GetRealm = GetRealm
-	local function fake_GetRealm(obj)
-		return GetRealmByID(obj.city.map_id)
+	local function ChoFake_GetRealm(obj)
+		-- if no .city then it's bugged
+		return GetRealmByID(obj.city and obj.city.map_id or MainMapID)
 	end
 	local ChoOrig_SupplyGridFragment_UpdateGrid = SupplyGridFragment.UpdateGrid
 	function SupplyGridFragment.UpdateGrid(...)
-		GetRealm = fake_GetRealm
-		ChoOrig_SupplyGridFragment_UpdateGrid(...)
+		GetRealm = ChoFake_GetRealm
+		pcall(ChoOrig_SupplyGridFragment_UpdateGrid, ...)
+--~ 		ChoOrig_SupplyGridFragment_UpdateGrid(...)
 		GetRealm = ChoOrig_GetRealm
 	end
 end
@@ -680,17 +682,21 @@ end
 do -- Colonist:CanReachBuilding
 	local bld_from_canreach
 	local ChoOrig_FindNearestObject = FindNearestObject
-	local function fake_FindNearestObject(list, _, ...)
+	local function ChoFake_FindNearestObject(list, _, ...)
 		return ChoOrig_FindNearestObject(list, bld_from_canreach, ...)
 	end
 
 	local ChoOrig_Colonist_CanReachBuilding = Colonist.CanReachBuilding
 	function Colonist:CanReachBuilding(bld, ...)
-		FindNearestObject = fake_FindNearestObject
+		FindNearestObject = ChoFake_FindNearestObject
 		bld_from_canreach = bld
-		local ret = ChoOrig_Colonist_CanReachBuilding(self, bld, ...)
+		local result, ret = pcall(ChoOrig_Colonist_CanReachBuilding, self, bld, ...)
 		FindNearestObject = ChoOrig_FindNearestObject
-		return ret
+		if result then
+			return ret
+		else
+			print("ChoOrig_Colonist_CanReachBuilding failed!: ", ret)
+		end
 	end
 end
 --
@@ -698,13 +704,13 @@ do -- GridSwitchConstruction.lua GridSwitchConstructionController:UpdateConstruc
 	local HexGetBuildingNoDome = HexGetBuildingNoDome
 
 	local ChoOrig_HexGetBuilding = HexGetBuilding
-	local function fake_HexGetBuilding(...)
+	local function ChoFake_HexGetBuilding(...)
 		return HexGetBuildingNoDome(...)
 	end
 	local ChoOrig_GridSwitchConstructionController_UpdateConstructionStatuses = GridSwitchConstructionController.UpdateConstructionStatuses
 	function GridSwitchConstructionController.UpdateConstructionStatuses(...)
-		HexGetBuilding = fake_HexGetBuilding
-		ChoOrig_GridSwitchConstructionController_UpdateConstructionStatuses(...)
+		HexGetBuilding = ChoFake_HexGetBuilding
+		pcall(ChoOrig_GridSwitchConstructionController_UpdateConstructionStatuses, ...)
 		HexGetBuilding = ChoOrig_HexGetBuilding
 	end
 end

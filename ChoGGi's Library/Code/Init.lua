@@ -176,7 +176,7 @@ CreateRealTimeThread(function()
 	while not g_ConsoleFENV do
 		Sleep(250)
 	end
-	-- Might as well reset it
+	-- Might as well reset it?
 	Platform.cmdline = ChoOrig_cmdline
 	--
 	local env = g_ConsoleFENV._G

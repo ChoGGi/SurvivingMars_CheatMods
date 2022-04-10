@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v11.3 (Unreleased)
+- Some tables were giving examine a hard time.
 
 ## v11.2 (7 Apr 2022)
 - Changed RetName() for less dbg_reg().* showing up for names.

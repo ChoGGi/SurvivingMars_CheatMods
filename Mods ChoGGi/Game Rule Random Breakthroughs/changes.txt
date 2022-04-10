@@ -1,4 +1,7 @@
-v0.2
+v0.4
+pcall replaced function.
+
+v0.3
 Picard update.
 
 v0.2

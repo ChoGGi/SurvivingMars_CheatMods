@@ -36,7 +36,7 @@ end
 
 local function Override(func, ...)
 	ViewObjectMars = ChoFake_ViewObjectMars
-	func(...)
+	pcall(func, ...)
 	ViewObjectMars = ChoOrig_ViewObjectMars
 end
 

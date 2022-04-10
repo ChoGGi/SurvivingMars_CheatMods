@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2431723963",
 	"pops_any_uuid", "54dd7f54-1ab4-42d3-abcf-88fba81ff734",
 	"lua_revision", 1007000, -- Picard
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -22,7 +22,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagInterface", true,
-	"description", [[Normally when you select something it'll zoom the camera to that location (ex: from infobar or workplace).
+	"description", [[
+Normally when you select something it'll zoom the camera to that location (ex: from infobar or workplace).
 This will disable that; hold down Ctrl when you want to zoom.
 
 

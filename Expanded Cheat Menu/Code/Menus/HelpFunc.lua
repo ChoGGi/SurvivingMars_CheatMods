@@ -60,6 +60,7 @@ do -- ModUpload
 	local skip_mods = {
 		ChoGGi_ = true,
 		ChoGGi_testing = true,
+		TESTING = true,
 	}
 	local mods_path = "AppData/Mods/"
 	local mod_upload_path = "AppData/ModUpload"
@@ -144,7 +145,7 @@ do -- ModUpload
 					if g_ParadoxAccountDetails then
 						break
 					end
-					Sleep(1000)
+					Sleep(250)
 
 					wait_count = wait_count + 1
 

@@ -3,7 +3,7 @@
 local mod_RainType
 
 local ChoOrig_GetTerraformParamPct = GetTerraformParamPct
-local function fake_GetTerraformParamPct(param, ...)
+local function ChoFake_GetTerraformParamPct(param, ...)
 	if not mod_RainType then
 		return ChoOrig_GetTerraformParamPct(param, ...)
 	end
@@ -23,8 +23,8 @@ end
 
 local ChoOrig_UpdateRainsThreads = UpdateRainsThreads
 function UpdateRainsThreads(...)
-	GetTerraformParamPct = fake_GetTerraformParamPct
-	ChoOrig_UpdateRainsThreads(...)
+	GetTerraformParamPct = ChoFake_GetTerraformParamPct
+	pcall(ChoOrig_UpdateRainsThreads, ...)
 	GetTerraformParamPct = ChoOrig_GetTerraformParamPct
 end
 
