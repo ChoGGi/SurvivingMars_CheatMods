@@ -174,6 +174,8 @@ do -- ModUpload
 					upload_image
 				)
 			end
+
+			-- abort upload
 			return
 		end
 

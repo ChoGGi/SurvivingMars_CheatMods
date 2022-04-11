@@ -7,14 +7,15 @@ return PlaceObj("ModDef", {
 	"version", 13,
 	"version_major", 1,
 	"version_minor", 3,
-	"image", "Preview.png",
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
 	"TagInterface", true,
-	"description", [[Show a dome marker for areas with a saved game, also shows the names of the saves next to the marker.
+	"description", [[
+Show a dome marker for areas with a saved game, also shows the names of the saves next to the marker.
 
 Mod Options:
 Amount Of Saves: Limit visible amount of saved games (default 5).

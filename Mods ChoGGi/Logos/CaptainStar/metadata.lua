@@ -1,17 +1,18 @@
 return PlaceObj("ModDef", {
 	"title", "Captain Star (Logo)",
+	"id", "ChoGGi_Logos_CaptainStar",
+	"steam_id", "1520843337",
+	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-
-	"image", "Preview.png",
-	"id", "ChoGGi_Logos_CaptainStar",
-	"steam_id", "1520843337",
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
-	"lua_revision", 1007000, -- Picard
 	"TagColonyLogos", true,
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[It's Captain Star...]],
+	"description", [[
+It's Captain Star...
+]],
 })

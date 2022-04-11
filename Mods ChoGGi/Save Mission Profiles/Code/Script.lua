@@ -4,11 +4,12 @@
 g_SaveMissionProfiles = {}
 
 local function CleanGameRules(profile)
-	local GameRulesMap = GameRulesMap
-	local idGameRules = profile.idGameRules or empty_table
-	for id in pairs(idGameRules) do
-		if GameRulesMap[id].mod then
-			idGameRules[id] = nil
+	if profile.idGameRules then
+		local GameRulesMap = GameRulesMap
+		for id in pairs(profile.idGameRules) do
+			if GameRulesMap[id].mod then
+				profile.idGameRules[id] = nil
+			end
 		end
 	end
 end
@@ -118,7 +119,7 @@ local function LoadProfile(name, settings, pgmission)
 	ChoGGi.ComFuncs.QuestionBox(
 		T{302535920011255, [[Load profile: <name>
 You'll have to change the "page" to visually update settings.]],
-		name = name,
+			name = name,
 		},
 		CallBackFunc
 	)
@@ -133,12 +134,11 @@ local function DeleteProfile(name, settings_list)
 	end
 
 	ChoGGi.ComFuncs.QuestionBox(
-		T{302535920011256,
-			"Delete profile: <name>",
+		T{302535920011256, "Delete profile: <name>",
 			name = name,
 		},
 		CallBackFunc,
-		T(6779, "Warning") .. ": " .. T(302535920000855, "Last chance before deletion!")
+		T(6779--[[Warning]]) .. ": " .. T(302535920000855, "Last chance before deletion!")
 	)
 end
 
@@ -203,10 +203,10 @@ local function AddProfilesButton(pgmission, toolbar)
 	toolbar.idChoGGi_ProfileButton = ChoGGi.ComFuncs.RetToolbarButton{
 		parent = toolbar,
 		id = "idChoGGi_ProfileButton",
-		text = T(302535920011263, [[PROFILES]]),
+		text = T(302535920011263, "PROFILES"),
 
-		roll_title = T(126095410863, "Info"),
-		roll_text = T(302535920011264, [[Save/Load save profiles.]]),
+		roll_title = T(126095410863--[[Info]]),
+		roll_text = T(302535920011264, "Save/Load save profiles."),
 		onpress = function()
 			ProfileButtonPressed(pgmission, toolbar)
 		end,

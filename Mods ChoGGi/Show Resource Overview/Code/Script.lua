@@ -2,6 +2,29 @@
 
 local T = T
 
+-- yeah, nice one AG (what self?)
+function OpenResourceOverviewInfopanel(parent)
+	if not IsColonyOverviewOpened() then
+		local city = UICity
+		local dlg = OpenXInfopanel(parent, GetCityResourceOverview(city), "ipResourceOverview")
+		local mode = GetCityResourceOverview(city):GetIPMode()
+		if mode and dlg.Mode ~= mode then
+			dlg:SetMode(mode)
+		end
+	end
+end
+
+function SetResourceOverviewDlgMode(mode)
+	local city = UICity
+	InfopanelSlideIn = false
+	GetCityResourceOverview(city).overview = mode
+	local dlg = GetColonyOverviewDlg()
+	if dlg and dlg.Mode ~= mode then
+		dlg:SetMode(mode)
+	end
+	ObjModified(GetCityResourceOverview(city))
+end
+
 -- add action to GameShortcuts
 function OnMsg.ClassesPostprocess()
 	-- If action exists then replace it, otherwise add to the end
@@ -92,22 +115,21 @@ end
 
 -- removed from Sagan
 function ResourceOverview:GetBasicResourcesRollover()
-	local nl = T(316, "<newline>")
 	local header = self:GetBasicResourcesHeading()
 	ResourceOverview.GetBasicResourcesHeading = BlankText
 	ResourceOverview.GetOtherResourcesHeading = BlankText
 
 	local text = {
 		T(header),
-		nl,
+		"<newline>",
 		T(self:GetMetalsRollover()),
-		nl,
+		"<newline>",
 		T(self:GetConcreteRollover()),
-		nl,
+		"<newline>",
 		T(self:GetFoodRollover()),
-		nl,
+		"<newline>",
 		T(self:GetRareMetalsRollover()),
-		nl,
+		"<newline>",
 		T(self:GetWasteRockRollover()),
 	}
 
@@ -117,24 +139,23 @@ function ResourceOverview:GetBasicResourcesRollover()
 end
 
 function ResourceOverview:GetAdvancedResourcesRollover()
-	local nl = T(316, "<newline>")
 	local header = self:GetAdvancedResourcesHeading()
 	ResourceOverview.GetAdvancedResourcesHeading = BlankText
 	ResourceOverview.GetOtherResourcesHeading = BlankText
 
 	local text = {
 		T(header),
-		nl,
+		"<newline>",
 		T(self:GetPolymersRollover()),
-		nl,
+		"<newline>",
 		T(self:GetElectronicsRollover()),
-		nl,
+		"<newline>",
 		T(self:GetMachinePartsRollover()),
-		nl,
+		"<newline>",
 		T(self:GetFuelRollover()),
 	}
 	if not g_NoTerraforming then
-		text[#text+1] = nl
+		text[#text+1] = "<newline>"
 		text[#text+1] = T(self:GetSeedsRollover())
 	end
 
