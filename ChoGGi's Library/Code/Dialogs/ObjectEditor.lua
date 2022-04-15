@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
--- used to do minimal editing of objects (or all of same type)
+-- Used to do minimal editing of objects (or all of same type)
 
 local tostring, type, table = tostring, type, table
 
@@ -13,6 +13,7 @@ local Translate = ChoGGi.ComFuncs.Translate
 local RetName = ChoGGi.ComFuncs.RetName
 local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
 local RetProperType = ChoGGi.ComFuncs.RetProperType
+local RetParamsParents = ChoGGi.ComFuncs.RetParamsParents
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
@@ -427,3 +428,33 @@ end
 function ChoGGi_DlgObjectEditor:Done()
 	DeleteThread(self.autorefresh_thread)
 end
+
+-- Use to open a dialog
+function ChoGGi.ComFuncs.OpenInObjectEditorDlg(obj, parent, title, ...)
+	-- If fired from action menu
+	if IsKindOf(obj, "XAction") then
+		obj = ChoGGi.ComFuncs.SelObject()
+		parent = nil
+		title = nil
+	else
+		obj = obj or ChoGGi.ComFuncs.SelObject()
+	end
+
+	if not obj then
+		return
+	end
+
+	local params, parent_type
+	params, parent, parent_type = RetParamsParents(parent, params, ...)
+
+	if not IsKindOf(parent, "XWindow") then
+		parent = nil
+	end
+
+	params.obj = obj
+	params.parent = parent
+	params.title = title
+
+	return ChoGGi_DlgObjectEditor:new({}, terminal.desktop, params)
+end
+

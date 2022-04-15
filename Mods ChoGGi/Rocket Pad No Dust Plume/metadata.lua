@@ -22,7 +22,7 @@ Less Dust: Some dust not as much as the usual.
 
 
 Known Issues:
-It does it pad or no pad, but this way there's still the landing noise (when I can get sound and no dust I'll upddate it).
+Dust is removed pad or no pad, but this way there's still the landing noise (when I can get noise and no dust I'll update it).
 
 Requested by catloverjerrygarcia.
 ]],

@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1524654007",
 	"pops_any_uuid", "100abb6d-36f4-4e1c-9600-882a52b95c55",
 	"lua_revision", 1007000, -- Picard
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -32,6 +32,7 @@ You can use the hud button to toggle it, which also stops it from showing up on 
 
 Known Issues:
 HUD button: For new games it'll be last, for loaded games it'll be in the correct position.
+Colonists panel is a bit messed up, not sure what goes there though?
 
 Discussion: https://steamcommunity.com/app/464920/discussions/0/1733214357976953662/
 ]],

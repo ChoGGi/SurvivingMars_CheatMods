@@ -1,11 +1,13 @@
 -- See LICENSE for terms
 
--- displays images
+-- Displays images
+
 local MeasureImage = UIL.MeasureImage
 
 local TranslationTable = TranslationTable
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local Random = ChoGGi.ComFuncs.Random
+local RetParamsParents = ChoGGi.ComFuncs.RetParamsParents
 
 local blacklist, g_env = ChoGGi.blacklist
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
@@ -166,3 +168,28 @@ function ChoGGi_DlgImageViewer:idImages_OnMouseButtonDown()
 	local dlg = GetRootDialog(self)
 	PopupToggle(self, dlg.idImageMenu, dlg.image_menu_popup, "left")
 end
+
+-- Use to open a dialog
+function ChoGGi.ComFuncs.OpenInImageViewerDlg(obj, parent, ...)
+	if not obj then
+		return
+	end
+
+	local params, parent_type
+	params, parent, parent_type = RetParamsParents(parent, params, ...)
+
+	if not IsKindOf(parent, "XWindow") then
+		parent = nil
+	end
+
+	params.obj = obj
+	params.parent = parent
+
+	return ChoGGi_DlgImageViewer:new({}, terminal.desktop, params)
+end
+-- used for console rules, so they don't spam the log
+local OpenInImageViewerDlg = ChoGGi.ComFuncs.OpenInImageViewerDlg
+function OpenImageViewer(...)
+	OpenInImageViewerDlg(...)
+end
+

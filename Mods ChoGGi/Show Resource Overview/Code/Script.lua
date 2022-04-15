@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+ChoGGi.ComFuncs.AddParentToClass(ResourceOverview, "InfobarObj")
+
 local T = T
 
 -- yeah, nice one AG (what self?)

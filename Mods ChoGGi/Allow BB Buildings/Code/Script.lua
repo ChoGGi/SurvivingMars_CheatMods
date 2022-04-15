@@ -3,12 +3,18 @@
 local mod_EnableMod
 
 --~ function ChoGGi.ComFuncs.SetBuildingTemplates(template, key, value)
-local function SetBuildingTemplates(template, key, value, bt, ct)
-	if bt[template] then
-		bt[template][key] = value
-	end
-	if ct[template] then
-		ct[template][key] = value
+local function SetBuildingTemplates(template, bt, ct)
+	bt = bt[template]
+	if bt then
+		bt.disabled_in_environment1 = ""
+		bt.disabled_in_environment2 = ""
+		bt.disabled_in_environment3 = ""
+		bt.disabled_in_environment4 = ""
+		ct = ct[template]
+		ct.disabled_in_environment1 = ""
+		ct.disabled_in_environment2 = ""
+		ct.disabled_in_environment3 = ""
+		ct.disabled_in_environment4 = ""
 	end
 end
 
@@ -17,22 +23,14 @@ local function UnlockBuildings()
 		return
 	end
 
+	local die = DisabledInEnvironment
+	local blank_die = {"","","",""}
 
 	local ct = ClassTemplates.Building
 	local bt = BuildingTemplates
 	for id in pairs(bt) do
-		SetBuildingTemplates(id, "disabled_in_environment1", "", bt, ct)
-		SetBuildingTemplates(id, "disabled_in_environment2", "", bt, ct)
-		SetBuildingTemplates(id, "disabled_in_environment3", "", bt, ct)
-		SetBuildingTemplates(id, "disabled_in_environment4", "", bt, ct)
-	end
-
-	-- sigh
-	local DisabledInEnvironment = DisabledInEnvironment
-	for _, item in pairs(DisabledInEnvironment) do
-		for i = 1, 4 do
-			item[i] = ""
-		end
+		SetBuildingTemplates(id, bt, ct)
+		die[id] = blank_die
 	end
 
 end
@@ -48,7 +46,7 @@ local function ModOptions(id)
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 
 	-- Make sure we're in-game
-	if not UICity then
+	if not UIColony then
 		return
 	end
 

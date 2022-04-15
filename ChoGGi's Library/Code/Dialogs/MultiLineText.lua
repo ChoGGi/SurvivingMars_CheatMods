@@ -5,6 +5,7 @@
 local table = table
 local CreateRealTimeThread = CreateRealTimeThread
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
+local RetParamsParents = ChoGGi.ComFuncs.RetParamsParents
 
 local TranslationTable = TranslationTable
 local blacklist, g_env = ChoGGi.blacklist
@@ -95,7 +96,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self.idOkay = g_Classes.ChoGGi_XButton:new({
 		Id = "idOkay",
 		Dock = "left",
-		Text = TranslationTable[6878--[[OK]]],
+		Text = context.button_ok or TranslationTable[6878--[[OK]]],
 		Background = g_Classes.ChoGGi_XButton.bg_green,
 		RolloverText = context.hint_ok or TranslationTable[302535920000382--[[Closes dialogs and sends positive return value.]]],
 		OnPress = self.idOkay_OnPress,
@@ -157,7 +158,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self.idCancel = g_Classes.ChoGGi_XButton:new({
 		Id = "idCancel",
 		Dock = "right",
-		Text = TranslationTable[6879--[[Cancel]]],
+		Text = context.button_cancel or TranslationTable[6879--[[Cancel]]],
 		Background = g_Classes.ChoGGi_XButton.bg_red,
 		RolloverText = context.hint_cancel or TranslationTable[302535920001423--[[Close without doing anything.]]],
 		OnPress = self.idCancel_OnPress,
@@ -314,6 +315,7 @@ function ChoGGi_DlgMultiLineText:idOpenFile_OnPress()
 	if blacklist or not self.file_path then
 		return
 	end
+	-- yeah, it needs some linux love
 	g_env.AsyncExec("cmd /c \"" .. self.file_path .. "\"", true, true)
 end
 --
@@ -347,4 +349,31 @@ function ChoGGi_DlgMultiLineText:Done(result)
 		self.retfunc(self.overwrite, self)
 		-- self.idEdit:GetText()
 	end
+end
+
+-- use this func to open it
+function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(obj, parent, ...)
+	if not obj then
+		return
+	end
+
+	local params, parent_type
+	params, parent, parent_type = RetParamsParents(parent, params, ...)
+
+	if obj.text then
+		return ChoGGi_DlgMultiLineText:new({}, terminal.desktop, obj)
+	end
+
+	if not IsKindOf(parent, "XWindow") then
+		parent = nil
+	end
+
+	params.text = obj
+	params.parent = parent
+
+	return ChoGGi_DlgMultiLineText:new({}, terminal.desktop, params)
+end
+local OpenInMultiLineTextDlg = ChoGGi.ComFuncs.OpenInMultiLineTextDlg
+function OpenTextViewer(...)
+	OpenInMultiLineTextDlg(...)
 end

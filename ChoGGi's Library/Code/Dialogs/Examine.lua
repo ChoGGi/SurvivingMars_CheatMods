@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
--- used to examine objects
+-- Used to examine objects
 
 --[[
 -- to add a clickable link use:
@@ -49,9 +49,9 @@ local DeleteThread = DeleteThread
 local EnumVars = EnumVars
 local GetStateName = GetStateName
 local IsKindOf = IsKindOf
-local IsPoint = IsPoint
 local IsT = IsT
 local T = T
+local IsPoint = IsPoint
 local IsValid = IsValid
 local IsValidEntity = IsValidEntity
 local IsValidThread = IsValidThread
@@ -74,6 +74,7 @@ local IsObjlist = ChoGGi.ComFuncs.IsObjlist
 local SetWinObjectVis = ChoGGi.ComFuncs.SetWinObjectVis
 local RetMapType = ChoGGi.ComFuncs.RetMapType
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
+local RetParamsParents = ChoGGi.ComFuncs.RetParamsParents
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
 local missing_text = ChoGGi.Temp.missing_text
@@ -3014,7 +3015,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 
 		local function BuildObjTable(k, v)
 			-- sorely needed delay for chinese (or it "freezes" the game when loading something like _G)
-			-- I assume text rendering is slower for the chars, 'cause examine is "really" slow with them.
+			-- I assume unicode/text rendering is slower for the chars, 'cause examine is "really" slow with them.
 			if is_chinese then
 				Sleep(1)
 			end
@@ -3041,6 +3042,10 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 		--
 		for k, v in pairs(obj) do
 			BuildObjTable(k, v)
+		end
+		-- show _something_ for Cargo objs
+		if IsKindOf(obj, "Cargo") then
+			BuildObjTable("id", obj.id)
 		end
 
 		-- keep looping through metatables till we run out
@@ -3954,3 +3959,105 @@ function ChoGGi_DlgExamine:Done()
 	dlgs[obj] = nil
 end
 
+-- Used to open a dialog
+local red = red
+local function FlashTitlebar(title)
+	title:SetBackground(red)
+	Sleep(500)
+	title:SetBackground(g_Classes.ChoGGi_XMoveControl.Background)
+end
+
+function ChoGGi.ComFuncs.OpenInExamineDlg(obj, parent, title, ...)
+	local params, parent_type
+	params, parent, parent_type = RetParamsParents(parent, params, ...)
+
+	-- preserve the orig params
+	params.obj = obj
+	if parent then
+		params.parent = parent
+	end
+	if title then
+		params.title = title
+		params.override_title = true
+	end
+
+	-- check if the parent has an id and use it
+	if params.parent and parent_type == "table" and params.parent.parent_id then
+		params.parent_id = params.parent.parent_id
+	end
+
+	-- workaround for ChoGGi_dlgs_examine
+	if type(params.obj) == "nil" then
+		params.obj = "nil"
+	end
+
+	-- already examining? if so focus and return ( :new() doesn't return the opened dialog).
+	local opened = ChoGGi_dlgs_examine[params.obj]
+
+	if opened then
+		-- dialog was closed, but ref remains
+		if not IsValidXWin(opened) then
+			ChoGGi_dlgs_examine[params.obj] = nil
+		-- examine gets confused with children (first examined one that is)
+		elseif not params.parent
+			or params.parent and not (params.parent.child_lock and params.parent.child_lock_dlg)
+		then
+			-- hit refresh, cause i'm that kinda guy
+			opened:RefreshExamine()
+			-- and flash the titlebar
+			CreateRealTimeThread(FlashTitlebar, opened.idMoveControl)
+			return opened
+		end
+	end
+
+	if params.parent ~= "str" and not (IsKindOf(params.parent, "XWindow") or IsPoint(params.parent)) then
+		params.parent = nil
+	end
+	if type(params.title) ~= "string" then
+		params.title = nil
+	end
+
+	-- are we using child lock?
+	local new_child_lock_dlg
+	if not params.skip_child then
+		parent = params.parent
+		if parent and IsKindOf(parent, "ChoGGi_DlgExamine") and parent.child_lock then
+			local child = parent.child_lock_dlg
+			if child then
+				if not IsValidXWin(child) then
+					parent.child_lock_dlg = false
+				else
+					-- It's valid so update with new obj
+					child.obj = params.obj
+					child:SetObj()
+					-- no need for a new window
+					return
+				end
+			end
+
+			-- child_lock_dlg is invalid or not opened yet
+			new_child_lock_dlg = true
+		end
+	end
+
+	local dlg = ChoGGi_DlgExamine:new({}, terminal.desktop, params)
+
+	-- update parent examine with new child
+	if new_child_lock_dlg then
+		parent.child_lock_dlg = dlg
+	end
+
+	return dlg
+end
+
+local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
+-- legacy (and used for console rules, so we can get around it spamming the log)
+function OpenExamine(...)
+	OpenInExamineDlg(...)
+end
+function OpenExamineRet(...)
+	return OpenInExamineDlg(...)
+end
+-- short n sweet
+ex = OpenExamine
+exr = OpenExamineRet

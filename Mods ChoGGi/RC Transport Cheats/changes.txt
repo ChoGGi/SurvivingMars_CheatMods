@@ -1,3 +1,6 @@
+v0.4
+Disabled waste rock for now.
+
 v0.3
 Auto mode to get waste rock.
 

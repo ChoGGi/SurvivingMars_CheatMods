@@ -1,10 +1,11 @@
 -- See LICENSE for terms
 
--- shows a dialog with to execute code in
+-- Shows a dialog with to execute code in
 
 local TranslationTable = TranslationTable
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
+local RetParamsParents = ChoGGi.ComFuncs.RetParamsParents
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
@@ -279,3 +280,19 @@ function ChoGGi_DlgExecCode:Done()
 		g_ExternalTextEditorActiveCtrl = false
 	end
 end
+
+-- Use to open a dialog
+function ChoGGi.ComFuncs.OpenInExecCodeDlg(obj, parent, ...)
+	local params, parent_type
+	params, parent, parent_type = RetParamsParents(parent, params, ...)
+
+	if not IsKindOf(parent, "XWindow") then
+		parent = nil
+	end
+
+	params.obj = obj
+	params.parent = parent
+
+	return ChoGGi_DlgExecCode:new({}, terminal.desktop, params)
+end
+

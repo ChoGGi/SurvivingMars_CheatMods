@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
--- all purpose items list
+-- All purpose items list
 
 --[[
 -- build an update items list func for use with ChoGGi.MenuFuncs.TerrainTextureRemap()
@@ -997,4 +997,25 @@ function ChoGGi_DlgListChoice:GetListItems(which)
 	end
 
 	self:UpdateReturnedItem(self.choices)
+end
+
+-- Use to open a dialog
+function ChoGGi.ComFuncs.OpenInListChoice(list)
+	-- If list isn't a table or it has zero items or it doesn't have items/callback func
+	local list_table = type(list) == "table"
+	local items_table = type(list_table and list.items) == "table"
+	if not list_table or list_table and not items_table or items_table and #list.items < 1 then
+		print(
+		TranslationTable[302535920001324--[[ECM: OpenInListChoice(list) is blank... This shouldn't happen.]]], "\n", list, "\n",
+			list and ValueToLuaCode(list)
+		)
+		return
+	end
+	if not IsKindOf(list.parent, "XWindow") then
+		list.parent = nil
+	end
+
+	return ChoGGi_DlgListChoice:new({}, terminal.desktop, {
+		list = list,
+	})
 end

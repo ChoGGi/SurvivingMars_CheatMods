@@ -1,12 +1,13 @@
 -- See LICENSE for terms
 
--- search through tables for values and display them in an examine dialog
+-- Search through tables for values and display them in an examine dialog
 
 local pairs, type = pairs, type
 
 local TranslationTable = TranslationTable
 local RetName = ChoGGi.ComFuncs.RetName
 local FindThreadFunc = ChoGGi.ComFuncs.FindThreadFunc
+local RetParamsParents = ChoGGi.ComFuncs.RetParamsParents
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
 local function GetRootDialog(dlg)
@@ -225,3 +226,23 @@ function ChoGGi_DlgFindValue:Input_OnKbdKeyDown(vk)
 
 	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self.idEdit, vk)
 end
+
+-- Use to open a dialog
+function ChoGGi.ComFuncs.OpenInFindValueDlg(obj, parent, ...)
+	if not obj then
+		return
+	end
+
+	local params, parent_type
+	params, parent, parent_type = RetParamsParents(parent, params, ...)
+
+	if not IsKindOf(parent, "XWindow") then
+		parent = nil
+	end
+
+	params.obj = obj
+	params.parent = parent
+
+	return ChoGGi_DlgFindValue:new({}, terminal.desktop, params)
+end
+

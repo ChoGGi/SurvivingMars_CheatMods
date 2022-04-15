@@ -138,21 +138,21 @@ do -- ModUpload
 				para_platform = true
 			end
 
-			if not g_ParadoxAccountDetails then
+			if not g_env.g_ParadoxAccountDetails then
 				-- wait for paradox to login
 				local wait_count = 0
 				while true do
-					if g_ParadoxAccountDetails then
+					if g_env.g_ParadoxAccountDetails then
 						break
 					end
 					Sleep(250)
 
 					wait_count = wait_count + 1
-
-					if wait_count > 10 then
---~ 						print("ECM ModUpload: Paradox account not logging in...")
+					if wait_count > 100 then
+						print("ECM ModUpload: Paradox account not logging in...")
 						break
 					end
+					--
 				end
 			end
 

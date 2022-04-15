@@ -1,3 +1,6 @@
+v0.6
+Fixed stuck popup window.
+
 v0.5
 B&B update.
 

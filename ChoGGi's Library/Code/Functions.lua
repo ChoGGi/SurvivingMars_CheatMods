@@ -96,27 +96,7 @@ if not rawget(_G, "CreateNumberEditor") then
 	end
 end
 
-local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
--- legacy (and used for console rules, so we can get around it spamming the log)
-function OpenExamine(...)
-	OpenInExamineDlg(...)
-end
-function OpenExamineRet(...)
-	return OpenInExamineDlg(...)
-end
--- short n sweet
-ex = OpenExamine
-exr = OpenExamineRet
 -- add some shortened func names
 MapGetC = ChoGGi.ComFuncs.MapGet
 so = ChoGGi.ComFuncs.SelObject
 trans = ChoGGi.ComFuncs.Translate
--- used for console rules, so they don't spam the log
-local OpenInImageViewerDlg = ChoGGi.ComFuncs.OpenInImageViewerDlg
-function OpenImageViewer(...)
-	OpenInImageViewerDlg(...)
-end
-local OpenInMultiLineTextDlg = ChoGGi.ComFuncs.OpenInMultiLineTextDlg
-function OpenTextViewer(...)
-	OpenInMultiLineTextDlg(...)
-end

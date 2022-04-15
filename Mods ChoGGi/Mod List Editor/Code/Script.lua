@@ -11,15 +11,6 @@ local mod_id = "ChoGGi_ModListEditor"
 ChoGGi_ModListEditor_ModData = false
 
 local function SaveModData(data)
-	-- we want it stored as a table in LocalStorage, not a string (sometimes i send it as a string so)
-	if type(data) == "string" then
-		local err
-		err, data = LuaCodeToTuple(data)
-		if err then
-			return PrintError(err)
-		end
-	end
-
 	if not data then
 		data = ChoGGi_ModListEditor_ModData or {}
 	end
@@ -75,9 +66,10 @@ local OnAction = function()
 	ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 		text = TableToLuaCode(LoadModData()),
 		title = T(0000, "Mod List Editor"),
-		code = true,
+		button_ok = TranslationTable[161964752558--[[Save]]],
 		hint_ok = TranslationTable[302535920001244--[["Saves settings to file, and applies any changes."]]],
 		hint_cancel = TranslationTable[302535920001245--[[Abort without touching anything.]]],
+		code = true,
 		custom_func = function(_, dialog)
 			local text = dialog.idEdit:GetText()
 
@@ -85,11 +77,16 @@ local OnAction = function()
 			if err then
 				return PrintError(err)
 			end
+			-- Make sure this mod is always enabled
+			if not table.find(data._LoadMods, mod_id) then
+				data._LoadMods[#data._LoadMods+1] = mod_id
+			end
+
 			as.LoadMods = data._LoadMods
 			g_env.SaveAccountStorage()
 
 			-- update saved setting file
-			SaveModData(text)
+			SaveModData(data)
 
 --~ 			print("TEXT", text)
 		end,

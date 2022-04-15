@@ -8,7 +8,7 @@ local IsValid = IsValid
 local mod_EnableMod
 local mod_StorageAmount
 local mod_WorkTime
-local mod_WasteRock
+--~ local mod_WasteRock
 
 local function UpdateTransports()
 	if not mod_EnableMod then
@@ -36,7 +36,7 @@ local function ModOptions(id)
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_StorageAmount = CurrentModOptions:GetProperty("StorageAmount") * const.ResourceScale
 	mod_WorkTime = CurrentModOptions:GetProperty("WorkTime") * const.ResourceScale
-	mod_WasteRock = CurrentModOptions:GetProperty("WasteRock")
+--~ 	mod_WasteRock = CurrentModOptions:GetProperty("WasteRock")
 
 	-- Make sure we're in-game
 	if not UIColony then
@@ -57,21 +57,23 @@ function RCTransport:Automation_Gather(...)
 	end
 
 	-- check for waste rock or just regular res
-	local wasterock_cls = mod_WasteRock and "WasteRockStockpileUngrided" or "ResourceStockpile"
+--~ 	local wasterock_cls = mod_WasteRock and "WasteRockStockpileUngrided"
 
 	local unreachable_objects = self:GetUnreachableObjectsTable()
-	local depot = GetRealm(self):MapFindNearest(self, "map", "ResourceStockpile", wasterock_cls,
-		function(d)
-		-- skip anything in range of drones
-		local depot = #(d.command_centers or "") == 0
-			-- and don't grab from depots connected to building
-			and not IsValid(d:GetParent()) and d
+	local depot = GetRealm(self):MapFindNearest(
+--~ 		self, "map", "ResourceStockpile", wasterock_cls, function(stockpile)
+		self, "map", "ResourceStockpile", function(stockpile)
+			-- skip anything in range of drones
+			local depot_temp = #(stockpile.command_centers or "") == 0
+				-- and don't grab from depots connected to building
+				and not IsValid(stockpile:GetParent()) and stockpile
 
-		if depot and (depot.auto_rovers or 0) >= max_auto_rovers_per_pickup then
-			return false
+			if depot_temp and (depot_temp.auto_rovers or 0) >= max_auto_rovers_per_pickup then
+				return false
+			end
+			return depot_temp and not unreachable_objects[depot_temp]
 		end
-		return depot and not unreachable_objects[depot]
-	end)
+	)
 
 	--  no stockpiles around, so nothing to do
 	if not depot then
@@ -84,9 +86,11 @@ function RCTransport:Automation_Gather(...)
 			self:PushDestructor(function(self)
 				depot.auto_rovers = depot.auto_rovers - 1
 			end)
+			Sleep(250)
 			self:SetCommand("PickupResource", depot.task_requests[#depot.task_requests], nil, "goto_loading_complete")
 		else
 			unreachable_objects[depot] = true
 		end
 	end
+
 end
