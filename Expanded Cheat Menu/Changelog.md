@@ -1,6 +1,9 @@
 ## ECM Changelog
 
 ## v18.3 (Unreleased)
+### Fixed:
+- I was using GetMapID(obj), but it doesn't actually take a param...
+- ModUpload properly waits till paradox account is ready before trying to upload.
 
 ## v18.2 (7 Apr 2022)
 ### Fixed:

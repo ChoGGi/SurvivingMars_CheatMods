@@ -51,6 +51,7 @@ local GetObjectHexGrid = GetObjectHexGrid
 local GetBuildableGrid = GetBuildableGrid
 local DoneObject = DoneObject
 local objlist = objlist
+local g_CObjectFuncs = g_CObjectFuncs
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
 
@@ -4737,8 +4738,8 @@ function ChoGGi.ComFuncs.RetTableValue(obj, key)
 			-- PropObjGetProperty works better on class funcs, but it can mess up on some tables so only use it for strings)
 			return PropObjGetProperty(obj, key)
 		else
---~ 			return rawget(obj, key)
-			return obj.key
+			return rawget(obj, key)
+--~ 			return obj.key
 		end
 	else
 		return obj[key]
@@ -7505,9 +7506,27 @@ function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
 	ChoGGi.ComFuncs.OpenInExamineDlg(textures, nil, TranslationTable[302535920001181--[[Used Terrain Textures]]])
 end
 
-function ChoGGi.ComFuncs.RetMapType(city, map_id)
-	if city then
-		map_id = city.map_id
+local function RetObjMapId(obj, text)
+	if obj then
+		return obj.city and obj.city.map_id
+			or obj.GetMapID and obj:GetMapID()
+			or g_CObjectFuncs.GetMapID(obj)
+			or text and "unknown" or ""
+	end
+end
+ChoGGi.ComFuncs.RetObjMapId = RetObjMapId
+
+function ChoGGi.ComFuncs.RetMapType(obj, map_id, city)
+	if not map_id then
+		if city then
+			map_id = city.map_id
+		end
+		if not map_id then
+			map_id = RetObjMapId(obj)
+			if not map_id then
+				map_id = ActiveMapID
+			end
+		end
 	end
 
 	if map_id == UIColony.underground_map_id then
@@ -7517,7 +7536,6 @@ function ChoGGi.ComFuncs.RetMapType(city, map_id)
 	else
 		return "asteroid"
 	end
-	return ""
 end
 
 function ChoGGi.ComFuncs.RotateBuilding(objs, toggle, multiple)
@@ -7576,11 +7594,6 @@ function ChoGGi.ComFuncs.GetUnitsSamePlace(city)
 		end
 	end)
 	ChoGGi.ComFuncs.OpenInExamineDlg(filtered)
-end
-function ChoGGi.ComFuncs.RetObjMapId(obj)
-	if obj then
-		return obj.city and obj.city.map_id or obj.GetMapID and obj:GetMapID() or GetMapID(obj)
-	end
 end
 function ChoGGi.ComFuncs.CountAllObjs()
 	local count = 0

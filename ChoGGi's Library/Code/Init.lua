@@ -139,7 +139,7 @@ do -- translate (todo update code to not need this, maybe use T() for menus)
 end -- do
 
 -- fake mod used to tell if it's my comp, if you want some extra msgs and .testing funcs have at it (Testing.lua)
-if Mods.ChoGGi_testing then
+if Mods.ChoGGi_testing or Mods.TESTING then
 	ChoGGi.testing = {}
 	printC = print
 else

@@ -60,11 +60,11 @@ local PropObjGetProperty = PropObjGetProperty
 local Sleep = Sleep
 local XCreateRolloverWindow = XCreateRolloverWindow
 local XDestroyRolloverWindow = XDestroyRolloverWindow
-local GetMapID = GetMapID
 local XFlashWindow = XFlashWindow
 local TMeta = TMeta
 local TConcatMeta = TConcatMeta
 local TranslationTable = TranslationTable
+local g_CObjectFuncs = g_CObjectFuncs
 
 local Translate = ChoGGi.ComFuncs.Translate
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
@@ -75,6 +75,7 @@ local SetWinObjectVis = ChoGGi.ComFuncs.SetWinObjectVis
 local RetMapType = ChoGGi.ComFuncs.RetMapType
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 local RetParamsParents = ChoGGi.ComFuncs.RetParamsParents
+local RetObjMapId = ChoGGi.ComFuncs.RetObjMapId
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
 local missing_text = ChoGGi.Temp.missing_text
@@ -851,10 +852,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 				c = c + 1
 				roll_text[c] = ": "
 				c = c + 1
-				roll_text[c] = obj.city and obj.city.map_id
-					or obj.GetMapID and obj:GetMapID()
-					or GetMapID(obj)
-					or "unknown"
+				roll_text[c] = RetObjMapId(obj, true)
 				c = c + 1
 				roll_text[c] = "\n\n"
 
@@ -2687,7 +2685,7 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 			return self:HyperLink(obj, Examine_ConvertValueToInfo)
 				.. RetName(obj) .. self.hyperlink_end .. "@"
 				.. self:ConvertValueToInfo(obj:GetVisualPos())
-				.. " <color ChoGGi_palegreen>" .. RetMapType(nil, GetMapID(obj)) .. "</color>"
+				.. " <color ChoGGi_palegreen>" .. RetMapType(obj) .. "</color>"
 		else
 			local len = #obj
 			local obj_metatable = getmetatable(obj)
@@ -3108,7 +3106,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 			end)
 			.. obj.class .. self.hyperlink_end .. "@"
 			.. self:ConvertValueToInfo(obj:GetVisualPos()) .. " "
-			.. " <color ChoGGi_palegreen>" .. RetMapType(nil, GetMapID(obj)) .. "</color> --"
+			.. " <color ChoGGi_palegreen>" .. RetMapType(obj) .. "</color> --"
 		)
 		-- add the particle name
 		if obj:IsKindOf("ParSystem") then
@@ -3664,7 +3662,7 @@ function ChoGGi_DlgExamine:SetToolbarVis(obj, obj_metatable)
 			self.is_valid_obj = IsValid(obj)
 
 			-- can't mark if it isn't an object, and no sense in marking something off the map
-			if obj.GetPos then
+			if obj ~= _G and obj.GetPos then
 				SetWinObjectVis(self.idButMarkObject, self.is_valid_obj and obj:GetPos() ~= InvalidPos)
 			end
 
@@ -3795,7 +3793,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 		obj_class = g_Classes[obj.class]
 
 		-- add table length to title
-		if name ~= "_G" and obj[1] then
+		if obj ~= _G and obj[1] then
 			name = name .. " " .. " (" .. #obj .. ")"
 		end
 

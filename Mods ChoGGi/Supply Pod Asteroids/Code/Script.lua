@@ -26,7 +26,7 @@ function SupplyPod:GameInit(...)
 
 	local GameMaps = GameMaps
 	for _, map in pairs(GameMaps) do
-		if RetMapType(map) == "asteroid" then
+		if RetMapType(nil, map.map_id) == "asteroid" then
 			map.pinnables.pins[#map.pinnables.pins+1] = self
 		end
 	end

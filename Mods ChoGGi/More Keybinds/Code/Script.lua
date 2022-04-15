@@ -4,9 +4,95 @@ local SelObjects = ChoGGi.ComFuncs.SelObjects
 local GetCursorWorldPos = GetCursorWorldPos
 local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 
+local mod_SpeedFour
+local mod_SpeedFive
+
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_SpeedFour = CurrentModOptions:GetProperty("SpeedFour")
+	mod_SpeedFive = CurrentModOptions:GetProperty("SpeedFive")
+end
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
+
+--
+local GetShortcuts = GetShortcuts
+local VKStrNamesInverse = VKStrNamesInverse
+local function RetShortcuts(id)
+	local keys = GetShortcuts(id)
+
+	return keys[1] and VKStrNamesInverse[keys[1]],
+		keys[2] and VKStrNamesInverse[keys[2]],
+		-- third key is gamepad "key"
+		keys[3] and VKStrNamesInverse[keys[3]]
+end
+local terminal_IsKeyPressed = terminal.IsKeyPressed
+--
+
 local Actions = ChoGGi.Temp.Actions
 
-Actions[#Actions+1] = {ActionName = T(0000, "Refab Building"),
+Actions[#Actions+1] = {ActionName = T(302535920011668, "Set Speed 1"),
+	ActionId = "ChoGGi.RebindHardcodedKeys.SetSpeed1",
+	OnAction = function()
+		UIColony:SetGameSpeed(1)
+		UISpeedState = "play"
+	end,
+	ActionShortcut = "1",
+	replace_matching_id = true,
+	ActionBindable = true,
+}
+
+Actions[#Actions+1] = {ActionName = T(302535920011669, "Set Speed 2"),
+	ActionId = "ChoGGi.RebindHardcodedKeys.SetSpeed2",
+	OnAction = function()
+		UIColony:SetGameSpeed(const.mediumGameSpeed)
+		UISpeedState = "medium"
+	end,
+	ActionShortcut = "2",
+	replace_matching_id = true,
+	ActionBindable = true,
+}
+
+Actions[#Actions+1] = {ActionName = T(302535920011670, "Set Speed 3"),
+	ActionId = "ChoGGi.RebindHardcodedKeys.SetSpeed3",
+	OnAction = function()
+		UIColony:SetGameSpeed(const.fastGameSpeed)
+		UISpeedState = "fast"
+	end,
+	ActionShortcut = "3",
+	replace_matching_id = true,
+	ActionBindable = true,
+}
+
+Actions[#Actions+1] = {ActionName = T(302535920012050, "Set Speed 4"),
+	ActionId = "ChoGGi.RebindHardcodedKeys.SetSpeed4",
+	OnAction = function()
+		UIColony:SetGameSpeed(const.fastGameSpeed * mod_SpeedFour)
+		UISpeedState = "faster"
+	end,
+	ActionShortcut = "4",
+	replace_matching_id = true,
+	ActionBindable = true,
+}
+
+Actions[#Actions+1] = {ActionName = T(302535920012051, "Set Speed 5"),
+	ActionId = "ChoGGi.RebindHardcodedKeys.SetSpeed5",
+	OnAction = function()
+		UIColony:SetGameSpeed(const.fastGameSpeed * mod_SpeedFive)
+		UISpeedState = "fastest"
+	end,
+	ActionShortcut = "5",
+	replace_matching_id = true,
+	ActionBindable = true,
+}
+
+Actions[#Actions+1] = {ActionName = T(302535920011666, "Refab Building"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.RefabBuilding",
 	ActionShortcut = "Ctrl-R",
 	replace_matching_id = true,
@@ -63,7 +149,7 @@ Actions[#Actions+1] = {ActionName = T(302535920000491, "Examine Object"),
 	IgnoreRepeated = true,
 }
 
-Actions[#Actions+1] = {ActionName = T(0000, "Examine Objects"),
+Actions[#Actions+1] = {ActionName = T(302535920011667, "Examine Objects"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.ExamineObjectRadius",
 	ActionShortcut = "Shift-F4",
 	replace_matching_id = true,
@@ -165,16 +251,6 @@ Actions[#Actions+1] = {ActionName = T(302535920011700, "Construction Cancel"),
 }
 
 -- Cycle Visual Variant/Construction Cancel
-local GetShortcuts = GetShortcuts
-local VKStrNamesInverse = VKStrNamesInverse
-local function RetShortcuts(id)
-	local keys = GetShortcuts(id)
-
-	return keys[1] and VKStrNamesInverse[keys[1]],
-		keys[2] and VKStrNamesInverse[keys[2]],
-		keys[31] and VKStrNamesInverse[keys[3]]
-end
-
 local ChoOrig_ConstructionModeDialog_OnKbdKeyDown = ConstructionModeDialog.OnKbdKeyDown
 function ConstructionModeDialog:OnKbdKeyDown(virtual_key, ...)
 	-- check if input is key set in binds
@@ -201,17 +277,75 @@ Actions[#Actions+1] = {ActionName = T(302535920011974, "Place Multiple Buildings
 	ActionBindable = true,
 }
 
-local IsKeyPressed = terminal.IsKeyPressed
-
 local ChoOrig_IsPlacingMultipleConstructions = IsPlacingMultipleConstructions
 function IsPlacingMultipleConstructions(...)
-	local shift1, shift2, shift3 = RetShortcuts("ChoGGi.RebindHardcodedKeys.PlaceMultipleBuildings")
-	if IsKeyPressed(shift1) or IsKeyPressed(shift2) or IsKeyPressed(shift3) then
+	local key1, key2, key3 = RetShortcuts("ChoGGi.RebindHardcodedKeys.PlaceMultipleBuildings")
+	if terminal_IsKeyPressed(key1) or terminal_IsKeyPressed(key2) or terminal_IsKeyPressed(key3) then
     return true
 	end
 
 	return ChoOrig_IsPlacingMultipleConstructions(...)
 end
+--
+Actions[#Actions+1] = {ActionName = T(302535920012094, "Dialog Shortcut 1"),
+	ActionId = "ChoGGi.RebindHardcodedKeys.DialogShortcut1",
+	replace_matching_id = true,
+	ActionBindable = true,
+}
+
+Actions[#Actions+1] = {ActionName = T(302535920012095, "Dialog Shortcut 2"),
+	ActionId = "ChoGGi.RebindHardcodedKeys.DialogShortcut2",
+	replace_matching_id = true,
+	ActionBindable = true,
+}
+
+Actions[#Actions+1] = {ActionName = T(302535920012096, "Dialog Shortcut 3"),
+	ActionId = "ChoGGi.RebindHardcodedKeys.DialogShortcut3",
+	replace_matching_id = true,
+	ActionBindable = true,
+}
+
+Actions[#Actions+1] = {ActionName = T(302535920012097, "Dialog Shortcut 4"),
+	ActionId = "ChoGGi.RebindHardcodedKeys.DialogShortcut4",
+	replace_matching_id = true,
+	ActionBindable = true,
+}
+
+local num_overrides = {
+	["idChoice1"] = "DialogShortcut1",
+	["idChoice2"] = "DialogShortcut2",
+	["idChoice3"] = "DialogShortcut3",
+	["idChoice4"] = "DialogShortcut4",
+}
+--~ ForceActivateStoryBit("Boost5_LeapForward", ActiveMapID, nil, true)
+local function OverrideActionNew()
+	local ChoOrig_XAction_new = XAction.new
+	function XAction.new(obj, context, ...)
+		if not context then
+			return ChoOrig_XAction_new(obj, context, ...)
+		end
+
+		local override = num_overrides[context.ActionId]
+		if override then
+			local keys = GetShortcuts("ChoGGi.RebindHardcodedKeys." .. num_overrides[context.ActionId])
+			if keys[1] then
+				context.ActionShortcut = keys[1]
+			elseif keys[2] then
+				context.ActionShortcut = keys[2]
+			elseif keys[3] then
+				context.ActionShortcut = keys[3]
+			end
+		end
+
+		return ChoOrig_XAction_new(obj, context, ...)
+	end
+end
+
+OnMsg.LoadGame = OverrideActionNew
+OnMsg.NewCity = OverrideActionNew
+--
+
+
 
 --~ -- Camera panning
 --~ local cameraRTS = cameraRTS

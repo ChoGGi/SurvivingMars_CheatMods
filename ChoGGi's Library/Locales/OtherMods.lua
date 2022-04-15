@@ -1049,6 +1049,12 @@ This will override all Meteors!"
 302535920011969, "Salvage Cursor"
 302535920011974, "Place Multiple Buildings"
 302535920012068, "Toggle Interface"
+302535920011666, "Refab Building"
+302535920011667, "Examine Objects"
+302535920012094, "Dialog Shortcut 1"
+302535920012095, "Dialog Shortcut 2"
+302535920012096, "Dialog Shortcut 3"
+302535920012097, "Dialog Shortcut 4"
 [[Get More Tourists]]
 302535920011701, "Applicant Amount"
 302535920011702, "How many more tourist applicants to add per each successful tourist."
@@ -1476,12 +1482,6 @@ Don't forget to send me your res and margin, so I can add them to the list."
 
 
 [[UNUSED]]
-302535920011666,
-302535920011667,
-302535920012094,
-302535920012095,
-302535920012096,
-302535920012097,
 302535920012098,
 302535920012099,
 302535920012100,

@@ -1,3 +1,7 @@
+v0.9
+Added binds for speed keys.
+Added binds for changing 1,2,3,4 in storybits/etc?
+
 v0.8
 Added refab building key.
 

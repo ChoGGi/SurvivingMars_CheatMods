@@ -1,8 +1,6 @@
 -- See LICENSE for terms
 
-local table = table
-local type = type
-local ipairs = ipairs
+local table, type, ipairs, pairs = table, type, ipairs, pairs
 local IsValidThread = IsValidThread
 local IsValid = IsValid
 local DoneObject = DoneObject
@@ -764,6 +762,48 @@ end
 -- B&B fixes
 if not g_AvailableDlc.picard then
 	return
+end
+--
+--
+--
+--
+--
+do -- Elevator prefabs
+	local function UpdatePrefabs(self, req, city, other_city)
+		for id, item in pairs(req) do
+			if item.type == "Prefab" then
+				local other_count = other_city:GetPrefabs(id)
+				if other_count >= item.amount then
+					-- There's enough to fulfill req
+					city:AddPrefabs(id, item.amount)
+				elseif other_count > 0 then
+					-- Not enough, send what there is
+					city:AddPrefabs(id, other_count)
+				end
+			end
+		end
+	end
+
+	local ChoOrig_Elevator_UISetCargoRequest = Elevator.UISetCargoRequest
+	function Elevator:UISetCargoRequest(cargo_loading, ...)
+		-- I stopped caring why it doesn't transfer prefabs and just stuck something here to add them as it has no issue removing them.
+		UpdatePrefabs(self, cargo_loading:GetDestinationCargoList(), self.city, self.other.city)
+		UpdatePrefabs(self, cargo_loading:GetOriginCargoList(), self.other.city, self.city)
+
+		return ChoOrig_Elevator_UISetCargoRequest(self, cargo_loading, ...)
+	end
+end -- do
+--
+local ChoOrig_Building_SetDome = Building.SetDome
+function Building:SetDome(dome, ...)
+	if not mod_EnableMod then
+		return ChoOrig_Building_SetDome(self, dome, ...)
+	end
+
+  ChoOrig_Building_SetDome(self, dome, ...)
+  if dome and dome.refab_work_request then
+    dome:ToggleRefab()
+  end
 end
 -- No Planetary Anomaly Breakthroughs when B&B is installed.
 local ChoOrig_City_InitBreakThroughAnomalies = City.InitBreakThroughAnomalies

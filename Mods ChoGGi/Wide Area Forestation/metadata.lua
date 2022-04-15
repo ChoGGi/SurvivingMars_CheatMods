@@ -10,12 +10,11 @@ return PlaceObj("ModDef", {
 	"title", "Wide Area Forestation",
 	"id", "ChoGGi_WideAreaForestation",
 	"steam_id", "2072656358",
---~ 	"pops_any_uuid", "8cb80dc5-846e-4042-8f04-28f46488d8a0", old upload
 	"pops_any_uuid", "542a9ecf-a195-48ea-8f52-6e716ea4f1be",
 	"lua_revision", 1007000, -- Picard
-	"version", 4,
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 5,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {

@@ -23,7 +23,7 @@ function OnScreenNotification:CycleObjs(cycle_objs, ...)
 		return ChoOrig_OnScreenNotification_CycleObjs(self, cycle_objs, ...)
 	end
 
-	if cycle_objs and self.notification_id == ("NewTradeOffer" .. GetMapID(self)) then
+	if cycle_objs and self.notification_id == ("NewTradeOffer" .. g_CObjectFuncs.GetMapID(self)) then
 		return cycle_objs[1]
 	end
 	return ChoOrig_OnScreenNotification_CycleObjs(self, cycle_objs, ...)

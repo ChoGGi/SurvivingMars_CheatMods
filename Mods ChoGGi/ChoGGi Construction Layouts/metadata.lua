@@ -28,14 +28,13 @@ Repeatable large Solar Panels (Power).
 Repeatable small Wind Turbines (Power).
 Service slice of Infirmary, Diner, and Grocer (Dome Services).
 Park slice: Three parks/ponds, and one single in middle (Decorations).
+
 [b]DLC layouts[/b]
 Green Planet:
 Drone Hub, Universal Depot, Seed Depot, and Forestation Plant (Terraforming)
 Colony Design Set:
 Repeatable large Wind Turbines (Power).
 
-
-Requests are welcome.
 
 Known Issues:
 The game will lag a bit when placing large layouts.

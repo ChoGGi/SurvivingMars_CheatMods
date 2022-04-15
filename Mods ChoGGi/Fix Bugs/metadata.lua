@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 13,
+	"version", 14,
 	"version_major", 1,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -16,6 +16,7 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"description", [[
 [b]List of bugs fixed:[/b]
+Elevator prefabs pulling a Houdini.
 CanReachBuilding checking the wrong building.
 Colonist residences checking wrong city.
 Drone hub extender range updates.
@@ -36,7 +37,7 @@ etc...
 Fix Blank Mission Profile
 Fix Buildings Broken Down And No Repair
 Fix Colonist Daily Interest Loop
-Fix Colonists Long Walks
+Fix Colonists Long Walks (better solution: No More Outside Suffocation mod)
 Fix Colonists Suffocating Inside Domes
 Fix Cube Anomaly On Deposit
 Fix Defence Towers Not Firing At Rovers

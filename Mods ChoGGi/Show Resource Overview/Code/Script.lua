@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local RetObjMapId = ChoGGi.ComFuncs.RetObjMapId
+
 ChoGGi.ComFuncs.AddParentToClass(ResourceOverview, "InfobarObj")
 
 local T = T
@@ -90,8 +92,8 @@ function ReopenSelectionXInfopanel(obj, slide_in)
 	if obj == nil then
 		obj = SelectedObj
 		if (not obj and ShowResourceOverview) then
-			obj = g_ResourceOverviewCity[GetMapID(obj)]
-			mode = g_ResourceOverviewCity[GetMapID(obj)]:GetIPMode()
+			obj = g_ResourceOverviewCity[RetObjMapId(obj)]
+			mode = g_ResourceOverviewCity[RetObjMapId(obj)]:GetIPMode()
 			template = "ipResourceOverview"
 		end
 	end

@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local GetMapID = GetMapID
+local g_CObjectFuncs = g_CObjectFuncs
 local AsyncRand = AsyncRand
 local GetRandomPassableAround = GetRandomPassableAround
 
@@ -22,7 +22,7 @@ local function StartupCode()
 	local objs = UIColony:GetCityLabels("TerrainDepositMarker")
 	for i = 1, #objs do
 		local obj = objs[i]
-		local city = Cities[GetMapID(obj)]
+		local city = Cities[g_CObjectFuncs.GetMapID(obj)]
 
 		for _ = 1, mod_MaxDeposits do
 			local pos = GetRandomPassableAround(

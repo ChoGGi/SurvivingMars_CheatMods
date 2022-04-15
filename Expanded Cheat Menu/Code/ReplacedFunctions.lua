@@ -568,19 +568,11 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
-	do -- XWindow:SetModal
-		-- I fucking hate modal windows
-		if testing then
-			local ChoOrig_XWindow_SetModal = XWindow.SetModal
-			function XWindow:SetModal(set, ...)
-				if set then
-					return
-				end
-				return ChoOrig_XWindow_SetModal(self, set, ...)
-			end
-
-		end
-	end -- do
+	-- I fucking hate modal windows
+	if testing then
+		-- Make this an option for other people?
+		XWindow.SetModal = empty_func
+	end
 
 	do -- InfopanelDlg:RecalculateMargins
 	-- last checked source: Tito Hotfix2

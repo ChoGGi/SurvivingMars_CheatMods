@@ -6,8 +6,8 @@ return {
 		"DisplayName", T(302535920011643, "Max Size"),
 		"Help", T(302535920011644, [[Set the max size of the forestation area.
 
-Warning: Setting this above 200 can cause crashing, save before raising.]]),
-		"DefaultValue", 200,
+Warning: Setting this above 150 can cause crashing, save before raising.]]),
+		"DefaultValue", 150,
 		"MinValue", 10,
 		"MaxValue", 500,
 		"StepSize", 10,
