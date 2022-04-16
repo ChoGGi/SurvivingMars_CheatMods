@@ -17,12 +17,13 @@ OnMsg.ApplyModOptions = ModOptions
 
 local ChoOrig_MilestoneRestartThreads = MilestoneRestartThreads
 function MilestoneRestartThreads(...)
+	local varargs = ...
 	if not mod_EnableMod or UIColony and UIColony.day > 1 then
-		return ChoOrig_MilestoneRestartThreads(...)
+		return ChoOrig_MilestoneRestartThreads(varargs)
 	else
 		CreateGameTimeThread(function()
 			WaitMsg("NewDay")
-			return ChoOrig_MilestoneRestartThreads(...)
+			return ChoOrig_MilestoneRestartThreads(varargs)
 		end)
 	end
 end

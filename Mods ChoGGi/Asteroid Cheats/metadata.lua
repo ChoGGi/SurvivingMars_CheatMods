@@ -18,6 +18,6 @@ return PlaceObj("ModDef", {
 For now you can spawn, unlock, and reset timers (add time) on asteroids.
 Set mod options then press apply (otherwise nothing will change).
 
-The visible limit in the hud is limited to three asteroids, but you can see the rest in the planetary view (see about fix later).
+The visible limit in the hud is limited to three asteroids, but you can see the rest in the planetary view (or use my More Asteroids mod).
 ]],
 })

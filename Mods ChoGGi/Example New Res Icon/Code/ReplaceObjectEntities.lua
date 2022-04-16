@@ -31,13 +31,8 @@ local function StartupCode()
 end
 
 -- for any added in the revealed map sector
-function OnMsg.CityStart()
-	StartupCode()
-end
--- for saved games
-function OnMsg.LoadGame()
-	StartupCode()
-end
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode
 
 --[[
 testing
