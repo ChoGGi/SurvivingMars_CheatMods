@@ -1,3 +1,6 @@
+v0.9
+GetMapID "fix" and actual fix.
+
 v0.8
 pcall replaced function.
 

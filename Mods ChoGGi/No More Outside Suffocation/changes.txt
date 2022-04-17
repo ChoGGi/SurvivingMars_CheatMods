@@ -1,1 +1,2 @@
 v0.2
+Changes dehydration outside as well (thanks Tremualin).

@@ -1,3 +1,6 @@
+v0.3
+Doesn't check for rubble if not underground.
+
 v0.2
 Fixed unreachable rubble.
 locked tunnels behind tech.

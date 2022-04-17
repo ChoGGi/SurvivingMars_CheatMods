@@ -5,8 +5,13 @@ local mod_EnableMod
 local SetConstsG = ChoGGi.ComFuncs.SetConstsG
 
 local function StartupCode()
-	local time = mod_EnableMod and const.Scale.sols * 100 or 120000
+	local lotta_sols = const.Scale.sols * 100
+
+	local time = mod_EnableMod and lotta_sols or 120000
 	SetConstsG("OxygenMaxOutsideTime", time)
+
+	time = mod_EnableMod and lotta_sols or 180000
+	SetConstsG("WaterMaxOutsideTime", time)
 end
 OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode

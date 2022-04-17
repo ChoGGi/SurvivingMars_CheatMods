@@ -25,7 +25,7 @@ OnMsg.ApplyModOptions = ModOptions
 
 local ChoOrig_RCTerraformer_ProcAutomation = RCTerraformer.ProcAutomation
 function RCTerraformer:ProcAutomation(...)
-	if not mod_EnableMod then
+	if not mod_EnableMod or self:GetMapID() ~= UIColony.underground_map_id then
 		return ChoOrig_RCTerraformer_ProcAutomation(self, ...)
 	end
 

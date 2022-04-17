@@ -1,3 +1,6 @@
+v1.5
+Prefabs being duped in automode.
+
 v1.4
 Elevator prefabs pulling a Houdini (stinking renegades!).
 

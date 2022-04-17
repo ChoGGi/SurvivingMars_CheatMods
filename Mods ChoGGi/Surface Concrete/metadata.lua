@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2749575462",
 	"pops_any_uuid", "a38801b2-f3a7-4dbe-a660-f5523c465114",
 	"lua_revision", 1007000, -- Picard
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -17,9 +17,7 @@ return PlaceObj("ModDef", {
 	"description", [[
 Surface deposits of concrete spawn around actual deposits for some quick concrete without mining.
 
-This will let you see where concrete is before scanning for it.
 
-
-These have been in since release, and apparently never used.
+These models have been in since release and never used?
 ]],
 })

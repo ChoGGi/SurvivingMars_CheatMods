@@ -12,7 +12,7 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagOther", true,
 	"description", [[
-Example of a mod you can use to translate my mods.
+Example of a mod you can use to translate strings.
 You could also use loc tables in the mod editor.
 
 This doesn't work for my ECM mod (yet), for that you'll need to send me a CSV file (see SChinese.csv on my git).

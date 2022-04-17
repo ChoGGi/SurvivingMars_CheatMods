@@ -786,10 +786,12 @@ do -- Elevator prefabs
 
 	local ChoOrig_Elevator_UISetCargoRequest = Elevator.UISetCargoRequest
 	function Elevator:UISetCargoRequest(cargo_loading, ...)
-		-- I stopped caring why it doesn't transfer prefabs and just stuck something here to add them as it has no issue removing them.
-		UpdatePrefabs(self, cargo_loading:GetDestinationCargoList(), self.city, self.other.city)
-		UpdatePrefabs(self, cargo_loading:GetOriginCargoList(), self.other.city, self.city)
-
+		-- automode doesn't need the fix
+		if not self:IsAutoModeEnabled() then
+			-- I stopped caring why it doesn't transfer prefabs and just stuck something here to add them as it has no issue removing them.
+			UpdatePrefabs(self, cargo_loading:GetDestinationCargoList(), self.city, self.other.city)
+			UpdatePrefabs(self, cargo_loading:GetOriginCargoList(), self.other.city, self.city)
+		end
 		return ChoOrig_Elevator_UISetCargoRequest(self, cargo_loading, ...)
 	end
 end -- do

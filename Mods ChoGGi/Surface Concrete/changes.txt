@@ -1,3 +1,6 @@
+v0.4
+Concrete deposits don't spawn till sector is scanned.
+
 v0.3
 Suspend pass edits (speed up creating deposits).
 

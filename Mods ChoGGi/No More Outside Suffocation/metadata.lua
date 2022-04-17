@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2794807829",
 	"pops_any_uuid", "634b1bed-c718-48ce-ab95-4f8de6325421",
 	"lua_revision", 1007000, -- Picard
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -27,7 +27,7 @@ return PlaceObj("ModDef", {
 Colonists like to walk from a dome on one side of the map to the other and keel over on the way.
 I've had no luck getting them to stop doing that, so...
 This changes the amount of oxygen time they have (from 4 hours to 100 Sols).
-
+Changes dehydration outside as well.
 
 This won't stop them from dying from lack of oxygen inside a dome/building.
 ]],

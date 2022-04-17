@@ -1,0 +1,6 @@
+mission goals:
+produce 1,000 machine parts" with no reward. 
+
+build 10 drones: break one rover
+farm x amount food: water tank drained
+explode fuel
