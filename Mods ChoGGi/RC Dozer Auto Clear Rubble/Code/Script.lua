@@ -55,3 +55,14 @@ function RCTerraformer:ProcAutomation(...)
 
   Sleep(2500)
 end
+
+-- gc help?
+local ChoOrig_RubbleBase_OnClear = RubbleBase.OnClear
+function RubbleBase:OnClear(...)
+	if mod_EnableMod then
+		-- baserover.lua -> this calls 	local function InvalidateAllRoverUnreachables()
+		Msg("PFTunnelChanged")
+	end
+
+	return ChoOrig_RubbleBase_OnClear(self, ...)
+end

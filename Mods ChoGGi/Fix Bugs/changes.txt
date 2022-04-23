@@ -1,3 +1,6 @@
+v1.6
+Drone log spam from elevators (could be mod related, thanks April13).
+
 v1.5
 Prefabs being duped in automode.
 

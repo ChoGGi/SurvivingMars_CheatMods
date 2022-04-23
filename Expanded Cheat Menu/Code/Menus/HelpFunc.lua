@@ -442,8 +442,9 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 		else
 			hpk_path_working = nil
 		end
-
+		--
 		CreateRealTimeThread(function()
+			local UserSettings = ChoGGi.UserSettings
 
 			local choice = choices[1]
 			blank_mod = choice.check1
@@ -536,15 +537,19 @@ You can also stick the executable in the profile folder to use it instead (<gree
 					g_env.AsyncCreatePath(dest_path)
 
 					if choices_len == 1 then
-						if ChoGGi.ComFuncs.QuestionBox(
-							table.concat(upload_msg),
-							UploadMod,
-							mod.title,
-							nil,
-							nil,
-							upload_image
-						) == "cancel" then
-							return
+						if not UserSettings.SkipModUploadConfirmDoneMsgs then
+							if ChoGGi.ComFuncs.QuestionBox(
+								table.concat(upload_msg),
+								UploadMod,
+								mod.title,
+								nil,
+								nil,
+								upload_image
+							) == "cancel" then
+								return
+							end
+						else
+							UploadMod(true)
 						end
 					elseif asked_batch then
 						-- no more need to ask
@@ -572,18 +577,22 @@ You can also stick the executable in the profile folder to use it instead (<gree
 							end
 						end
 						-- and show msg
-						if ChoGGi.ComFuncs.QuestionBox(
-							TranslationTable[302535920000221--[[Batch Upload mods?]]] .. "\n\n"
-								.. table.concat(titles, ", "),
-							CallBackFunc_BQ,
-							TranslationTable[302535920000221--[[Batch Upload!]]],
-							nil,
-							nil,
-							upload_image,
-							nil, nil, nil,
-							CurrentThread()
-						) == "cancel" then
-							return
+						if not UserSettings.SkipModUploadConfirmDoneMsgs then
+							if ChoGGi.ComFuncs.QuestionBox(
+								TranslationTable[302535920000221--[[Batch Upload mods?]]] .. "\n\n"
+									.. table.concat(titles, ", "),
+								CallBackFunc_BQ,
+								TranslationTable[302535920000221--[[Batch Upload!]]],
+								nil,
+								nil,
+								upload_image,
+								nil, nil, nil,
+								CurrentThread()
+							) == "cancel" then
+								return
+							end
+						else
+							CallBackFunc_BQ(true)
 						end
 						asked_batch = true
 					end
@@ -595,18 +604,19 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			if choices_len > 1 then
 				uploading = false
 			end
-			-- wait for it
+			-- Wait for it
 			while uploading do
 				Sleep(1000)
 			end
 
-			-- update popup msg if it's still opened
+			-- Update popup msg if it's still opened
 			local popups = ChoGGi.Temp.MsgPopups
 			local idx = table.find(popups, "notification_id", msg_popup_id)
 			if idx and ChoGGi.ComFuncs.IsValidXWin(popups[idx]) then
 				popups[idx].idText:SetText(TranslationTable[302535920001453--[[Completed]]])
 			end
 
+			-- Build list of errors
 			local error_msgs = {}
 			local c = 0
 			for i = 1, #result_msg do
@@ -615,22 +625,26 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			end
 			error_msgs = table.concat(error_msgs)
 
+
 			local error_text = TranslationTable[302535920000221--[[See log for any batch errors.]]]
-			-- only add error msg if single mod
+			-- Only add error msg if single mod
 			if choices_len == 1 then
 				error_text = error_text .. "\n\n" .. error_msgs
 			end
 
-			-- let user know if we're good or not
+			-- Let user know if we're good or not
 			print(Translate(error_msgs))
-			ChoGGi.ComFuncs.MsgWait(
-				error_text,
-				TranslationTable[302535920001586--[[All Done!]]],
-				upload_image
-			)
-
+			--
+			if not UserSettings.SkipModUploadConfirmDoneMsgs then
+				ChoGGi.ComFuncs.MsgWait(
+					error_text,
+					TranslationTable[302535920001586--[[All Done!]]],
+					upload_image
+				)
+			end
+			--
 		end)
-
+		--
 	end
 
 	function ChoGGi.MenuFuncs.ModUpload()

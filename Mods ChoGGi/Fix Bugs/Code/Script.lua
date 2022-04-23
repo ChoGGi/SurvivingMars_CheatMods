@@ -754,6 +754,18 @@ function SA_Exec:Exec(sequence_player, ip, seq, ...)
 
 	return ChoOrig_SA_Exec_Exec(self, sequence_player, ip, seq, ...)
 end
+-- log spam April13 found
+-- [LUA ERROR] Mars/Lua/Buildings/CargoTransporter.lua:1062: attempt to index a nil value (field '?')
+local ChoOrig_CargoTransporter_DroneLoadResource = CargoTransporter.DroneLoadResource
+function CargoTransporter:DroneLoadResource(drone, request, resource, ...)
+	if not mod_EnableMod then
+		return ChoOrig_CargoTransporter_DroneLoadResource(self, drone, request, resource, ...)
+	end
+
+	if self.cargo[resource] then
+		return ChoOrig_CargoTransporter_DroneLoadResource(self, drone, request, resource, ...)
+	end
+end
 --
 --
 --

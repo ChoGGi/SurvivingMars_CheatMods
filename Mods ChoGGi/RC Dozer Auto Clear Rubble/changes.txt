@@ -1,3 +1,6 @@
+v0.4
+Help with gc.
+
 v0.3
 Doesn't check for rubble if not underground.
 

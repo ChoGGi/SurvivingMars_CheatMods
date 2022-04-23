@@ -1,3 +1,6 @@
+v1.0
+Fixed notifications not working (Thanks YertyL).
+
 v0.9
 Added binds for speed keys.
 Added binds for changing 1,2,3,4 in storybits/etc?

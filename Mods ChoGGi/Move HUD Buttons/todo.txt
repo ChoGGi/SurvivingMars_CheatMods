@@ -1,0 +1,1 @@
+add option for vertical asteroids list (bump over selectio panel)/

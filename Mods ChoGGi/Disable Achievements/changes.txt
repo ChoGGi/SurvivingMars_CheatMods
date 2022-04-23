@@ -1,2 +1,5 @@
+v0.3
+Packed bug fix.
+
 v0.2
 Da Vinci

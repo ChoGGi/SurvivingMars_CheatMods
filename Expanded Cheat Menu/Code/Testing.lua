@@ -726,8 +726,9 @@ end
 
 function ChoGGi.testing.LocalLoops()
 
-	-- faster
 	local AsyncRand = AsyncRand
+
+	-- faster
 	ChoGGi.ComFuncs.TickStart("LocalLoops.Tick.1")
 	for _ = 1, 100000000 do
 		local x = AsyncRand()

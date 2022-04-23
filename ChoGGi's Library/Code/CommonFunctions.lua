@@ -32,7 +32,6 @@ local ViewAndSelectObject = ViewAndSelectObject
 local XDestroyRolloverWindow = XDestroyRolloverWindow
 local Max = Max
 local GameTime = GameTime
-local GetMapID = GetMapID
 local guic = guic
 local ViewObjectMars = ViewObjectMars
 local RGB = RGB

@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 15,
+	"version", 16,
 	"version_major", 1,
-	"version_minor", 5,
+	"version_minor", 6,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -20,6 +20,7 @@ Elevator prefabs pulling a Houdini.
 CanReachBuilding checking the wrong building.
 Colonist residences checking wrong city.
 Drone hub extender range updates.
+Drone log spam from elevators.
 Drones and underground wonders.
 Find Water milestone.
 GridSwitch (pipes/cables) construction not checking for domes as blocking objs.

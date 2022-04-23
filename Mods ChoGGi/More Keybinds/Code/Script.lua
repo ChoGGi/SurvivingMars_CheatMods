@@ -27,10 +27,12 @@ local VKStrNamesInverse = VKStrNamesInverse
 local function RetShortcuts(id)
 	local keys = GetShortcuts(id)
 
-	return keys[1] and VKStrNamesInverse[keys[1]],
-		keys[2] and VKStrNamesInverse[keys[2]],
-		-- third key is gamepad "key"
-		keys[3] and VKStrNamesInverse[keys[3]]
+	if keys then
+		return keys[1] and VKStrNamesInverse[keys[1]],
+			keys[2] and VKStrNamesInverse[keys[2]],
+			-- third key is gamepad "key"
+			keys[3] and VKStrNamesInverse[keys[3]]
+	end
 end
 local terminal_IsKeyPressed = terminal.IsKeyPressed
 --
@@ -328,12 +330,14 @@ local function OverrideActionNew()
 		local override = num_overrides[context.ActionId]
 		if override then
 			local keys = GetShortcuts("ChoGGi.RebindHardcodedKeys." .. num_overrides[context.ActionId])
-			if keys[1] then
-				context.ActionShortcut = keys[1]
-			elseif keys[2] then
-				context.ActionShortcut = keys[2]
-			elseif keys[3] then
-				context.ActionShortcut = keys[3]
+			if keys then
+				if keys[1] then
+					context.ActionShortcut = keys[1]
+				elseif keys[2] then
+					context.ActionShortcut = keys[2]
+				elseif keys[3] then
+					context.ActionShortcut = keys[3]
+				end
 			end
 		end
 

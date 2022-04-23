@@ -1,5 +1,3 @@
---~ print("LIBRARY REMOVE TEMP FUNCTION")
-
 -- See LICENSE for terms
 
 local LICENSE = [[
