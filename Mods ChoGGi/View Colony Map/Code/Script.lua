@@ -396,6 +396,7 @@ function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(gen)
 --~ 		local num_wonders = #shuffled_wonders
 		table.shuffle(shuffled_wonders, rand)
 		table.insert(display_list, 1, self.translated_tech[shuffled_wonders[1]])
+		table.insert(display_list, 2, self.translated_tech[shuffled_wonders[2]])
 
 		-- add bt text after the first four (POIs)
 		table.insert(display_list, 1, self.undergound_msg)

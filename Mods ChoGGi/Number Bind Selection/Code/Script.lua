@@ -125,6 +125,7 @@ for i = 0, 9 do
 		ActionShortcut = "Ctrl-" .. i,
 		replace_matching_id = true,
 		IgnoreRepeated = true,
+		ActionMode = "Game",
 	}
 	-- remove
 	c = c + 1
@@ -135,6 +136,7 @@ for i = 0, 9 do
 		ActionShortcut = "Shift-" .. i,
 		replace_matching_id = true,
 		IgnoreRepeated = true,
+		ActionMode = "Game",
 	}
 	-- activate
 	c = c + 1
@@ -146,6 +148,7 @@ for i = 0, 9 do
 		ActionShortcut = i .. "",
 		replace_matching_id = true,
 		IgnoreRepeated = true,
+		ActionMode = "Game",
 	}
 end
 

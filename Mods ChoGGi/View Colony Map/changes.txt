@@ -1,3 +1,6 @@
+v1.9
+Made it show two underground wonders.
+
 v1.8
 Added limit to number of breakthroughs (needs lib v10.9).
 

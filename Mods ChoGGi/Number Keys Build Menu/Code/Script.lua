@@ -48,6 +48,7 @@ local function AddMenuKey(num, key, name)
 		end,
 		ActionShortcut = key,
 		ActionBindable = true,
+		ActionMode = "Game",
 	}
 end
 

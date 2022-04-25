@@ -434,21 +434,6 @@ local function Screenie(map)
 		end
 	end
 
-	-- lightmodel
-	LightmodelPresets.TheMartian1_Night.exterior_envmap = nil
-	SetLightmodelOverride(1, "TheMartian1_Night")
-
---~ 	if not cam_params then
---~ 	print("cam_params",cam_params)
-		-- larger render dist (we zoom out a fair bit)
-		hr.FarZ = 7000000
-		-- zoom out for the whole map (more purple)
---~ 		cam_params = {GetCamera()}
-		local cam_params = {GetCamera()}
-		cam_params[4] = 10500
-		SetCamera(table.unpack(cam_params))
---~ 	end
-
 	-- remove black curtains on the sides
 	table.remove_entry(terminal.desktop, XTemplate, "OverviewMapCurtains")
 	-- and the rest of the ui
@@ -459,9 +444,33 @@ local function Screenie(map)
 		end
 	end
 
+	-- lightmodel
+	LightmodelPresets.TheMartian1_Night.exterior_envmap = nil
+	SetLightmodelOverride(1, "TheMartian1_Night")
+	-- underground
+	hr.RenderRevealDarkness = 0
+
+--~ 	if not cam_params then
+--~ 	print("cam_params",cam_params)
+		-- larger render dist (we zoom out a fair bit)
+		hr.FarZ = 7000000
+		-- zoom out for the whole map (more purple)
+--~ 		cam_params = {GetCamera()}
+		local cam_params = {GetCamera()}
+		cam_params[4] = 10500
+		-- manually load map, zoom in then use these
+--~ 		-- asteroids
+--~ 		cam_params[4] = 96000
+--~ 		cam_params[5].MaxZoom = 96000
+--~ 		-- undergound
+--~ 		cam_params[4] = 128000
+--~ 		cam_params[5].MaxZoom = 128000
+		SetCamera(table.unpack(cam_params))
+--~ 	end
+
 	ChoGGi.ComFuncs.CloseDialogsECM()
 	-- and a bit more delay
-	Sleep(250)
+	Sleep(1000)
 	WaitMsg("OnRender")
 
 	local name = "AppData/" .. map .. ".tga"

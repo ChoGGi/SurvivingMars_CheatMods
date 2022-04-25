@@ -89,7 +89,7 @@ local function DotPathToObject(dot_path, root, create)
 		end
 
 		-- rawget == Workaround for "Attempt to use an undefined global" msg the devs added
-		local obj_child = parent == g_env and rawget(parent, name) or parent[name]
+		local obj_child = root and parent[name] or rawget(parent, name)
 
 		-- . means we're not at the end yet
 		if match == "." then
@@ -2028,6 +2028,7 @@ do -- Rebuildshortcuts
 	function ChoGGi.ComFuncs.Rebuildshortcuts()
 		local XShortcutsTarget = XShortcutsTarget
 
+		-- too soon?
 		if type(XShortcutsTarget.UpdateToolbar) ~= "function" then
 			return
 		end

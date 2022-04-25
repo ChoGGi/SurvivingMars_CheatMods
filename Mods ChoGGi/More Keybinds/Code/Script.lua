@@ -48,6 +48,7 @@ Actions[#Actions+1] = {ActionName = T(302535920011668, "Set Speed 1"),
 	ActionShortcut = "1",
 	replace_matching_id = true,
 	ActionBindable = true,
+	ActionMode = "Game",
 }
 
 Actions[#Actions+1] = {ActionName = T(302535920011669, "Set Speed 2"),
@@ -59,6 +60,7 @@ Actions[#Actions+1] = {ActionName = T(302535920011669, "Set Speed 2"),
 	ActionShortcut = "2",
 	replace_matching_id = true,
 	ActionBindable = true,
+	ActionMode = "Game",
 }
 
 Actions[#Actions+1] = {ActionName = T(302535920011670, "Set Speed 3"),
@@ -70,6 +72,7 @@ Actions[#Actions+1] = {ActionName = T(302535920011670, "Set Speed 3"),
 	ActionShortcut = "3",
 	replace_matching_id = true,
 	ActionBindable = true,
+	ActionMode = "Game",
 }
 
 Actions[#Actions+1] = {ActionName = T(302535920012050, "Set Speed 4"),
@@ -81,6 +84,7 @@ Actions[#Actions+1] = {ActionName = T(302535920012050, "Set Speed 4"),
 	ActionShortcut = "4",
 	replace_matching_id = true,
 	ActionBindable = true,
+	ActionMode = "Game",
 }
 
 Actions[#Actions+1] = {ActionName = T(302535920012051, "Set Speed 5"),
@@ -92,6 +96,7 @@ Actions[#Actions+1] = {ActionName = T(302535920012051, "Set Speed 5"),
 	ActionShortcut = "5",
 	replace_matching_id = true,
 	ActionBindable = true,
+	ActionMode = "Game",
 }
 
 Actions[#Actions+1] = {ActionName = T(302535920011666, "Refab Building"),
@@ -108,6 +113,7 @@ Actions[#Actions+1] = {ActionName = T(302535920011666, "Refab Building"),
 		end
 	end,
 	ActionBindable = true,
+	ActionMode = "Game",
 }
 
 Actions[#Actions+1] = {ActionName = T(302535920000491, "Examine Object"),
@@ -178,6 +184,7 @@ Actions[#Actions+1] = {ActionName = T(302535920011667, "Examine Objects"),
 	end,
 	ActionBindable = true,
 	IgnoreRepeated = true,
+	ActionMode = "Game",
 }
 
 Actions[#Actions+1] = {ActionName = T(302535920012068, "Toggle Interface"),
@@ -211,6 +218,7 @@ Actions[#Actions+1] = {ActionName = T(302535920011968, "Photo Mode Toggle"),
 		end
 	end,
 	ActionBindable = true,
+	ActionMode = "Game",
 }
 
 Actions[#Actions+1] = {ActionName = T(302535920011969, "Salvage Cursor"),
@@ -230,6 +238,7 @@ Actions[#Actions+1] = {ActionName = T(302535920011969, "Salvage Cursor"),
 		end
 	end,
 	ActionBindable = true,
+	ActionMode = "Game",
 }
 
 Actions[#Actions+1] = {ActionName = T(302535920011698, "Cycle Visual Variant Backward"),
@@ -237,12 +246,14 @@ Actions[#Actions+1] = {ActionName = T(302535920011698, "Cycle Visual Variant Bac
 	ActionShortcut = "[",
 	replace_matching_id = true,
 	ActionBindable = true,
+	ActionMode = "Game",
 }
 Actions[#Actions+1] = {ActionName = T(302535920011699, "Cycle Visual Variant Forward"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.CycleVisualVariantForward",
 	ActionShortcut = "]",
 	replace_matching_id = true,
 	ActionBindable = true,
+	ActionMode = "Game",
 }
 
 Actions[#Actions+1] = {ActionName = T(302535920011700, "Construction Cancel"),
@@ -250,6 +261,7 @@ Actions[#Actions+1] = {ActionName = T(302535920011700, "Construction Cancel"),
 	ActionShortcut = "Escape",
 	replace_matching_id = true,
 	ActionBindable = true,
+	ActionMode = "Game",
 }
 
 -- Cycle Visual Variant/Construction Cancel
@@ -277,6 +289,7 @@ Actions[#Actions+1] = {ActionName = T(302535920011974, "Place Multiple Buildings
 	ActionShortcut = "Shift",
 	replace_matching_id = true,
 	ActionBindable = true,
+	ActionMode = "Game",
 }
 
 local ChoOrig_IsPlacingMultipleConstructions = IsPlacingMultipleConstructions
