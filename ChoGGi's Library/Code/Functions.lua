@@ -2,6 +2,7 @@
 
 -- add PostSaveGame to be a companion for SaveGame
 local ChoOrig_ReportPersistErrors = ReportPersistErrors
+ChoGGi.ComFuncs.AddToOrigFuncs("ReportPersistErrors")
 function ReportPersistErrors(...)
 	local errors, warnings = ChoOrig_ReportPersistErrors(...)
 	-- be useful for restarting threads, see if devs will add it (yeah I think that isn't happening after two dev teams are gone)
@@ -15,6 +16,7 @@ local pairs = pairs
 local GetSafeAreaBox = GetSafeAreaBox
 
 local ChoOrig_SetUserUIScale = SetUserUIScale
+ChoGGi.ComFuncs.AddToOrigFuncs("SetUserUIScale")
 function SetUserUIScale(val, ...)
 	ChoOrig_SetUserUIScale(val, ...)
 
@@ -100,3 +102,6 @@ end
 MapGetC = ChoGGi.ComFuncs.MapGet
 so = ChoGGi.ComFuncs.SelObject
 trans = ChoGGi.ComFuncs.Translate
+
+
+-- change bool mod option to single click to toggle

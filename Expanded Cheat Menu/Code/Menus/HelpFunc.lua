@@ -1169,22 +1169,22 @@ Change DisableECM to false in settings file to re-enable them."]]] .. "\n\n" .. 
 end
 
 function ChoGGi.MenuFuncs.ResetECMSettings()
-	local file = ChoGGi.settings_file
-	local old = file .. ".old"
+--~ 	local file = ChoGGi.settings_file
+--~ 	local old = file .. ".old"
 
 	local function CallBackFunc(answer)
 		if answer then
-			if blacklist then
+--~ 			if blacklist then
 				ChoGGi.UserSettings = ChoGGi.Defaults
-			else
-				ThreadLockKey(old)
-				g_env.AsyncCopyFile(file, old)
-				ThreadUnlockKey(old)
+--~ 			else
+--~ 				ThreadLockKey(old)
+--~ 				g_env.AsyncCopyFile(file, old)
+--~ 				ThreadUnlockKey(old)
 
-				ThreadLockKey(file)
-				g_env.AsyncFileDelete(ChoGGi.settings_file)
-				ThreadUnlockKey(file)
-			end
+--~ 				ThreadLockKey(file)
+--~ 				g_env.AsyncFileDelete(ChoGGi.settings_file)
+--~ 				ThreadUnlockKey(file)
+--~ 			end
 
 			ChoGGi.Temp.ResetECMSettings = true
 			ChoGGi.SettingFuncs.WriteSettings()

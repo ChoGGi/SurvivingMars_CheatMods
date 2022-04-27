@@ -7642,6 +7642,16 @@ function ChoGGi.ComFuncs.GetNextTable(list, key, value)
 	end
 end
 
+do -- AddToOrigFuncs
+	local OrigFuncs = ChoGGi.OrigFuncs
+
+	function ChoGGi.ComFuncs.AddToOrigFuncs(name)
+		if not OrigFuncs[name] then
+			OrigFuncs[name] = DotPathToObject(name)
+		end
+	end
+end -- do
+
 -- loop through all map sectors and fire this func
 --~ function ChoGGi.ComFuncs.LoopMapSectors(map_id, func)
 --~ end

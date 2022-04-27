@@ -197,77 +197,77 @@ function ChoGGi.SettingFuncs.SetConstsToSaved()
 
 end
 
--- called everytime we set a setting in menu
-function ChoGGi.SettingFuncs.WriteSettingsAdmin(settings)
-	local ChoGGi = ChoGGi
-	settings = settings or ChoGGi.UserSettings
-	settings._SAVED = os.time()
+--~ -- called everytime we set a setting in menu
+--~ function ChoGGi.SettingFuncs.WriteSettingsAdmin(settings)
+--~ 	local ChoGGi = ChoGGi
+--~ 	settings = settings or ChoGGi.UserSettings
+--~ 	settings._SAVED = os.time()
 
-	local bak = ChoGGi.settings_file .. ".bak"
-	--locks the file while we write (i mean it says thread, ah well can't hurt)?
-	ThreadLockKey(bak)
-	g_env.AsyncCopyFile(ChoGGi.settings_file, bak)
-	ThreadUnlockKey(bak)
+--~ 	local bak = ChoGGi.settings_file .. ".bak"
+--~ 	--locks the file while we write (i mean it says thread, ah well can't hurt)?
+--~ 	ThreadLockKey(bak)
+--~ 	g_env.AsyncCopyFile(ChoGGi.settings_file, bak)
+--~ 	ThreadUnlockKey(bak)
 
-	ThreadLockKey(ChoGGi.settings_file)
-	table.sort(settings)
-	-- and write it to disk
-	local err = g_env.AsyncStringToFile(ChoGGi.settings_file, TableToLuaCode(settings))
-	ThreadUnlockKey(ChoGGi.settings_file)
+--~ 	ThreadLockKey(ChoGGi.settings_file)
+--~ 	table.sort(settings)
+--~ 	-- and write it to disk
+--~ 	local err = g_env.AsyncStringToFile(ChoGGi.settings_file, TableToLuaCode(settings))
+--~ 	ThreadUnlockKey(ChoGGi.settings_file)
 
-	if err then
-		print(TranslationTable[302535920000006--[[Failed to save settings to %s : %s]]]:format(
-			ChoGGi.settings_file and ConvertToOSPath(ChoGGi.settings_file) or ChoGGi.settings_file,
-			err
-		))
-		return false, err
-	end
-	return settings
-end
+--~ 	if err then
+--~ 		print(TranslationTable[302535920000006--[[Failed to save settings to %s : %s]]]:format(
+--~ 			ChoGGi.settings_file and ConvertToOSPath(ChoGGi.settings_file) or ChoGGi.settings_file,
+--~ 			err
+--~ 		))
+--~ 		return false, err
+--~ 	end
+--~ 	return settings
+--~ end
 
--- read saved settings from file
-function ChoGGi.SettingFuncs.ReadSettingsAdmin(settings)
-	local ChoGGi = ChoGGi
-	local err
+--~ -- read saved settings from file
+--~ function ChoGGi.SettingFuncs.ReadSettingsAdmin(settings)
+--~ 	local ChoGGi = ChoGGi
+--~ 	local err
 
-	-- try to read settings
-	if not settings then
-		err, settings = g_env.AsyncFileToString(ChoGGi.settings_file)
-		if err then
-			-- no settings file so make a new one and read it
-			ChoGGi.SettingFuncs.WriteSettings(ChoGGi.Defaults)
-			err, settings = g_env.AsyncFileToString(ChoGGi.settings_file)
-			-- something is definitely wrong so just abort, and let user know
-			if err then
-				PrintError(err)
-				return
-			end
-		end
-	end
+--~ 	-- try to read settings
+--~ 	if not settings then
+--~ 		err, settings = g_env.AsyncFileToString(ChoGGi.settings_file)
+--~ 		if err then
+--~ 			-- no settings file so make a new one and read it
+--~ 			ChoGGi.SettingFuncs.WriteSettings(ChoGGi.Defaults)
+--~ 			err, settings = g_env.AsyncFileToString(ChoGGi.settings_file)
+--~ 			-- something is definitely wrong so just abort, and let user know
+--~ 			if err then
+--~ 				PrintError(err)
+--~ 				return
+--~ 			end
+--~ 		end
+--~ 	end
 
-	-- and convert it to lua / update in-game settings
-	err, settings = LuaCodeToTuple(settings)
-	if err then
-		PrintError(err)
-	end
+--~ 	-- and convert it to lua / update in-game settings
+--~ 	err, settings = LuaCodeToTuple(settings)
+--~ 	if err then
+--~ 		PrintError(err)
+--~ 	end
 
-	local UserSettings = ChoGGi.UserSettings
-	-- update in-game settings, but keep the table the same for any locals I did
-	for key, value in pairs(settings) do
-		UserSettings[key] = value
-	end
+--~ 	local UserSettings = ChoGGi.UserSettings
+--~ 	-- update in-game settings, but keep the table the same for any locals I did
+--~ 	for key, value in pairs(settings) do
+--~ 		UserSettings[key] = value
+--~ 	end
 
-	if err or type(UserSettings) ~= "table" then
-		-- so now at least the game will start
-		settings = ChoGGi.Defaults
-		for key, value in pairs(settings) do
-			UserSettings[key] = value
-		end
-	end
+--~ 	if err or type(UserSettings) ~= "table" then
+--~ 		-- so now at least the game will start
+--~ 		settings = ChoGGi.Defaults
+--~ 		for key, value in pairs(settings) do
+--~ 			UserSettings[key] = value
+--~ 		end
+--~ 	end
 
-	-- all is well (we return it for EditECMSettings)
-	return settings
-end
+--~ 	-- all is well (we return it for EditECMSettings)
+--~ 	return settings
+--~ end
 
 function ChoGGi.SettingFuncs.WriteSettingsLocal(settings)
 	settings = settings or ChoGGi.UserSettings

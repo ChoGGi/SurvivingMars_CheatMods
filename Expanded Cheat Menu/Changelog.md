@@ -5,6 +5,7 @@
 - Added manual setting: SkipModUploadConfirmDoneMsgs: Stops mod upload from asking are you sure and done msgs.
 
 ### Fixed:
+- Reset ECM Settings didn't reset (praise be to Black Jesus).
 - Mod options didn't hide menu items (thanks Stryth).
 - Enable ECM shortcut didn't work (thanks Stryth).
 - I was using GetMapID(obj), but it doesn't actually take a param...

@@ -42,7 +42,7 @@ ChoGGi.mod_path = def.env.CurrentModPath or def.content_path or def.path
 -- Console>Scripts folder
 ChoGGi.scripts = "AppData/ECM Scripts"
 -- You can pry my settings FILE from my cold dead (and not modding SM anymore) hands.
-ChoGGi.settings_file = "AppData/CheatMenuModSettings.lua"
+--~ ChoGGi.settings_file = "AppData/CheatMenuModSettings.lua"
 
 --~ if ChoGGi.blacklist then
 --~ 	ChoGGi.ComFuncs.FileExists = empty_func

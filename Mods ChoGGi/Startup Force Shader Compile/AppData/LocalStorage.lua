@@ -1,3 +1,4 @@
+
 -- load settings before anything else (for anything in /Code that uses them)
 local new_settings_file = "AppData/LocalStorage_Settings.lua"
 local settings = dofile(new_settings_file)
@@ -64,7 +65,7 @@ CreateRealTimeThread(function()
 
 		-- remove blacklist for any mods in "Mod Ids"
 		local Mods = Mods
-		for id,mod in pairs(Mods) do
+		for id, mod in pairs(Mods) do
 			if mod_ids[mod.steam_id] then
 				-- mods can see if funcs are blacklisted or not
 				mod.no_blacklist = true
@@ -73,7 +74,7 @@ CreateRealTimeThread(function()
 				for key in pairs(env) do
 					-- we need to use the original __newindex from OnMsg instead of replacing it, or mod OnMsgs don't work
 					if key ~= "OnMsg" then
-						local g_key = rawget(ChoOrig_G,key)
+						local g_key = rawget(ChoOrig_G, key)
 						-- skip CurrentMod*
 						if g_key then
 							env[key] = g_key
@@ -82,12 +83,14 @@ CreateRealTimeThread(function()
 				end
 				-- and a few others (_G, OnMsg)
 				mod.env = LuaModEnv(env)
-				-- add a warning to any mods without a blacklist, so user knows something is up
-				mod.title = mod.title .. " (Warning)"
-				if id == "ChoGGi_CheatMenu" and Mods.ChoGGi_testing then
-					-- I toggle it a fair bit, so make sure it's at the top
-					mod.title = " " .. mod.title
+				if id == "ChoGGi_CheatMenu" and Mods.ChoGGi_testing
+					or id == "ChoGGi_Library" and Mods.ChoGGi_testing
+				then
+--~ 					-- I toggle it a fair bit, so make sure it's at the top
+--~ 					mod.title = " " .. mod.title
 				else
+					-- add a warning to any mods without a blacklist, so user knows something is up
+					mod.title = mod.title .. " (Warning)"
 					mod.description = warning_msg .. mod.description
 				end
 			end
