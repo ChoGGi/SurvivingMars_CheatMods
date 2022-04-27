@@ -127,7 +127,7 @@ Actions[c] = {ActionName = TranslationTable[251103844022--[[Disable]]] .. " " ..
 	ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
 	RolloverText = TranslationTable[302535920000465--[["Disables menu, cheat panel, and hotkeys, but leaves settings intact. You'll need to manually re-enable in settings file, or check key bindings for Disable ECM.
 
-Ctrl-Shift-0 to re-enable, or see Game options>Key bindings for the re-enable key."]]],
+Ctrl-Alt-0 to re-enable, or see Game options>Key bindings for the re-enable key."]]],
 	OnAction = ChoGGi.MenuFuncs.DisableECM,
 }
 

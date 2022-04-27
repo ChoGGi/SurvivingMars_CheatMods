@@ -5,6 +5,8 @@
 - Added manual setting: SkipModUploadConfirmDoneMsgs: Stops mod upload from asking are you sure and done msgs.
 
 ### Fixed:
+- Mod options didn't hide menu items (thanks Stryth).
+- Enable ECM shortcut didn't work (thanks Stryth).
 - I was using GetMapID(obj), but it doesn't actually take a param...
 - ModUpload properly waits till paradox account is ready before trying to upload.
 

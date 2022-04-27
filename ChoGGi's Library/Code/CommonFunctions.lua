@@ -2109,8 +2109,8 @@ do -- Rebuildshortcuts
 			end
 		end
 
+		-- Add a key binding to options to re-enable ECM
 		if DisableECM then
-		-- add a key binding to options to re-enable ECM
 			local name = TranslationTable[754117323318--[[Enable]]] .. " " .. TranslationTable[302535920000002--[[ECM]]]
 			XShortcutsTarget:AddAction(XAction:new{
 				ActionName = name,
@@ -2124,23 +2124,23 @@ do -- Rebuildshortcuts
 						name
 					)
 				end,
-				ActionShortcut = "Ctrl-Shift-0",
+				ActionShortcut = "Ctrl-Alt-0",
 				ActionBindable = true,
 			})
 			print(TranslationTable[302535920001411--[["ECM has been disabled.
 Use %s to enable it, or change DisableECM to false in %s.
 See the bottom of Gameplay>Controls if you've changed the key binding."]]]
-				:format("Ctrl-Shift-0", ConvertToOSPath("AppData/LocalStorage.lua"))
+				:format("Ctrl-Alt-0", ConvertToOSPath("AppData/LocalStorage.lua"))
 			)
 		end
 
-		-- add rightclick action to menuitems
+		-- Add rightclick action to menuitems
 		XShortcutsTarget:UpdateToolbar()
 		-- got me
 		XShortcutsThread = false
 
 		if DisableECM == false then
-			-- I forget why i'm toggling this...
+			-- I forget why I'm toggling this...
 			local dlgConsole = dlgConsole
 			if dlgConsole then
 				ShowConsole(not dlgConsole:GetVisible())
@@ -4036,11 +4036,11 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 	}
 end
 
-function ChoGGi.ComFuncs.OpenGedApp(name)
-	if type(name) ~= "string" then
-		name = "XWindowInspector"
+function ChoGGi.ComFuncs.OpenGedApp(template, root, context, id)
+	if type(template) ~= "string" then
+		template = "XWindowInspector"
 	end
-	OpenGedApp(name, terminal.desktop)
+	(ChoGGi.OrigFuncs.OpenGedApp or OpenGedApp)(template, root or terminal.desktop, context, id)
 end
 
 do -- MovePointAwayXY

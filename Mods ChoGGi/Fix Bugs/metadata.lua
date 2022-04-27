@@ -15,6 +15,9 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagOther", true,
 	"description", [[
+Last Updated: 1,010,838 https://survivingmars.paradoxwikis.com/Patches
+
+
 [b]List of bugs fixed:[/b]
 Elevator prefabs pulling a Houdini.
 CanReachBuilding checking the wrong building.

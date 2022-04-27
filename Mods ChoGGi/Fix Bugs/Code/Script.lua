@@ -314,7 +314,7 @@ do -- CityStart/LoadGame
 		for i = #ResupplyItemDefinitions, 1, -1 do
 			local def = ResupplyItemDefinitions[i]
 			if not def.pack then
-				print("Fix Resupply Menu Not Opening Borked cargo:", def.id)
+				print("Fix Resupply Dialog Not Opening Borked cargo:", def.id)
 				table.remove(ResupplyItemDefinitions, i)
 			end
 		end
