@@ -229,9 +229,8 @@ function ChoGGi_DlgConsoleLogWin:Done()
 	-- closing means user doesn't want to see it next time (probably)
 	ChoGGi.UserSettings.ConsoleHistoryWin = false
 	dlgChoGGi_DlgConsoleLogWin = false
-	-- save the dimensions
-	ChoGGi.UserSettings.ConsoleLogWin_Pos = self:GetPos()
-	ChoGGi.UserSettings.ConsoleLogWin_Size = self:GetSize()
+
+	Msg("ChoGGi_DlgConsoleLogWin_SizePos", self)
 
 	ChoGGi.SettingFuncs.WriteSettings()
 end
@@ -254,4 +253,37 @@ function OnMsg.ConsoleLine(text, bNewLine)
 	dlg:UpdateText(text)
 
 	ChoGGi.UserSettings.ConsoleLogWin_Size = dlg:GetSize()
+end
+
+function OnMsg.ChoGGi_DlgConsoleLogWin_SizePos(dlg)
+	-- don't save size when rolled up
+	if not dlg.dialog_rolled_up then
+		ChoGGi.UserSettings.ConsoleLogWin_Size = dlg:GetSize()
+	end
+	ChoGGi.UserSettings.ConsoleLogWin_Pos = dlg:GetPos()
+	-- ChoGGi.SettingFuncs.WriteSettings() is called after each time this msg is called
+end
+
+function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
+	if visible and not dlgChoGGi_DlgConsoleLogWin then
+		dlgChoGGi_DlgConsoleLogWin = ChoGGi_DlgConsoleLogWin:new({}, terminal.desktop, {})
+		dlgChoGGi_DlgConsoleLogWin:UpdateText(LoadLogfile())
+	end
+
+	local dlg = dlgChoGGi_DlgConsoleLogWin
+	if dlg then
+		dlg:SetVisible(visible)
+
+		local size = ChoGGi.UserSettings.ConsoleLogWin_Size
+		if size then
+			dlg:SetSize(size)
+		end
+		local pos = ChoGGi.UserSettings.ConsoleLogWin_Pos
+		if pos then
+			dlg:SetPos(pos)
+		else
+			dlg:SetPos(point(100, 100))
+		end
+
+	end
 end

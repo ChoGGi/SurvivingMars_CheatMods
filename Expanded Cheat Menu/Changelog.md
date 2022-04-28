@@ -2,6 +2,7 @@
 
 ## v18.3 (Unreleased)
 ### Changed:
+- Console Window doesn't save size when rolled up.
 - Added manual setting: SkipModUploadConfirmDoneMsgs: Stops mod upload from asking are you sure and done msgs.
 
 ### Fixed:

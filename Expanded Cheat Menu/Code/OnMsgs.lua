@@ -1193,9 +1193,9 @@ function OnMsg.ApplicationQuit()
 	-- from GedSocket.lua
 	local desktop = terminal.desktop
 	for i = #desktop, 1, -1 do
-		local d = desktop[i]
-		if d:IsKindOf("GedApp") then
-			d:Close()
+		local window = desktop[i]
+		if window:IsKindOf("GedApp") then
+			window:Close()
 		end
 	end
 
@@ -1209,8 +1209,7 @@ function OnMsg.ApplicationQuit()
 	-- console window settings
 	local dlg = dlgChoGGi_DlgConsoleLogWin
 	if dlg then
-		ChoGGi.UserSettings.ConsoleLogWin_Pos = dlg:GetPos()
-		ChoGGi.UserSettings.ConsoleLogWin_Size = dlg:GetSize()
+		Msg("ChoGGi_DlgConsoleLogWin_SizePos", dlg)
 	end
 
 	-- save menu pos

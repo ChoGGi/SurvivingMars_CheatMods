@@ -595,13 +595,13 @@ function ChoGGi_XWindow:AddElements(_, context)
 	ChoGGi_dlgs_opened[self] = self.class
 	self:SetZorderHigher()
 
-	-- scale to UI (See OnMsgs.lua for UIScale)
+	-- Scale to UI (See OnMsgs.lua for UIScale)
 	local UIScale = ChoGGi.Temp.UIScale
 	self.dialog_width_scaled = self.dialog_width * UIScale
 	self.dialog_height_scaled = self.dialog_height * UIScale
 	self.header_scaled = self.header * UIScale
 
-	-- make sure the size i use is below the res w/h
+	-- make sure the size i use is below the game res w/h
 	local _, _, x, y = GetSafeAreaBox():xyxy()
 	if self.dialog_width_scaled > x then
 		self.dialog_width_scaled = x - 50

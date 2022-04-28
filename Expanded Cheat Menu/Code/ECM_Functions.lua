@@ -781,30 +781,6 @@ function ChoGGi.ComFuncs.ToggleConsoleLog()
 	end
 end
 
-function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
-	if visible and not dlgChoGGi_DlgConsoleLogWin then
-		dlgChoGGi_DlgConsoleLogWin = ChoGGi_DlgConsoleLogWin:new({}, terminal.desktop, {})
-		dlgChoGGi_DlgConsoleLogWin:UpdateText(LoadLogfile())
-	end
-
-	local dlg = dlgChoGGi_DlgConsoleLogWin
-	if dlg then
-		dlg:SetVisible(visible)
-
-		local size = ChoGGi.UserSettings.ConsoleLogWin_Size
-		if size then
-			dlg:SetSize(size)
-		end
-		local pos = ChoGGi.UserSettings.ConsoleLogWin_Pos
-		if pos then
-			dlg:SetPos(pos)
-		else
-			dlg:SetPos(point(100, 100))
-		end
-
-	end
-end
-
 -- Any png files in AppData/Logos folder will be added to mod as converted logo files.
 -- They have to be min of 8bit, and be resized to power of 2 (add transparent space).
 -- This doesn't add anything to metadata/items lua, it only converts files.
@@ -1190,6 +1166,9 @@ do -- DebugGetInfo
 
 	-- this replaces the func added in my library mod (which is just a straight format_value)
 	function ChoGGi.ComFuncs.DebugGetInfo(obj)
+		if not obj then
+			return
+		end
 		if blacklist then
 			return format_value(obj)
 		else
