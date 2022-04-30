@@ -1,11 +1,11 @@
 -- See LICENSE for terms
 
 -- set below
-local rockets, palettes
+local skins, palettes
 
 -- override skin funcs
 local function GetSkins(self)
-	return rockets, palettes
+	return skins, palettes
 end
 
 -- replace the default getskins function with ours
@@ -15,8 +15,8 @@ SupplyPod.GetSkins = GetSkins
 RocketBase.ChangeSkin = Building.ChangeSkin
 SupplyPod.ChangeSkin = Building.ChangeSkin
 
--- start with base game rockets
-rockets = {
+-- start with base game skins
+skins = {
 	"Rocket",
 	"Rocket_Trailblazer",
 	"CombatRover",
@@ -40,10 +40,10 @@ tb.SupplyRocket = "Rocket_Trailblazer"
 
 -- add space race entities
 if g_AvailableDlc.gagarin then
-	rockets[#rockets+1] = "DropPod"
-	rockets[#rockets+1] = "ArcPod"
-	rockets[#rockets+1] = "ZeusRocket"
-	rockets[#rockets+1] = "SpaceYDragonRocket"
+	skins[#skins+1] = "DropPod"
+	skins[#skins+1] = "ArcPod"
+	skins[#skins+1] = "ZeusRocket"
+	skins[#skins+1] = "SpaceYDragonRocket"
 	palettes[#palettes+1] = DropPod.rocket_palette
 	palettes[#palettes+1] = ArkPod.rocket_palette
 	palettes[#palettes+1] = ZeusRocket.rocket_palette
@@ -56,8 +56,8 @@ end
 
 -- landers
 if g_AvailableDlc.picard then
-	rockets[#rockets+1] = "LanderRocket"
-	rockets[#rockets+1] = "LanderRocket_Asteroid"
+	skins[#skins+1] = "LanderRocket"
+	skins[#skins+1] = "LanderRocket_Asteroid"
 	palettes[#palettes+1] = LanderRocketBase.rocket_palette
 	palettes[#palettes+1] = LanderRocketBase.rocket_palette
 	LanderRocketBase.GetSkins = GetSkins
@@ -67,11 +67,11 @@ end
 -- Silva - Orion Heavy Rocket
 function OnMsg.ModsReloaded()
 	-- check if the mod is loaded and if it was already added to the list
-	if not table.find(rockets, "RDM_OrionRocket")
+	if not table.find(skins, "RDM_OrionRocket")
 		and table.find(ModsLoaded, "id", "Ucv4buQ")
 	then
 		-- If not then add to the list
-		rockets[#rockets+1] = "RDM_OrionRocket"
+		skins[#skins+1] = "RDM_OrionRocket"
 		palettes[#palettes+1] = RDM_OrionRocket.rocket_palette
 		RDM_OrionRocket.GetSkins = GetSkins
 --~ 		RDM_OrionRocket.GetCurrentSkin = GetCurrentSkin

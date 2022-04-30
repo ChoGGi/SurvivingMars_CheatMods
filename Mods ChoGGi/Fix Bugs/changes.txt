@@ -1,3 +1,19 @@
+v1.7
+Removed fixes:
+Elevator prefabs pulling a Houdini.
+Cube Anomaly On Deposit.
+Find Water milestone.
+Drone hub extender range updates.
+Underground dozers and cave-ins.
+Underground passage cleanup.
+Underground rubble.
+CanReachBuilding checking the wrong building.
+Colonist residences checking wrong city.
+Drone log spam from elevators.
+Drones and underground wonders.
+GridSwitch (pipes/cables) construction not checking for domes as blocking objs.
+And some not mentioned in readme.
+
 v1.6
 Drone log spam from elevators (could be mod related, thanks April13).
 

@@ -5,6 +5,7 @@ local table = table
 local CmpLower = CmpLower
 local print, type, rawget = print, type, rawget
 local TranslationTable = TranslationTable
+local FlushLogFile = FlushLogFile
 
 -- rebuild list of objects to examine when user changes settings
 OnMsg.ChoGGi_SettingsUpdated = ChoGGi.ConsoleFuncs.BuildExamineMenu
@@ -311,7 +312,7 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 	AddSubmenu("g_Classes", nil, "ClassTemplates", "Attaches", "FXRules", "FXLists")
 	AddSubmenu("g_CObjectFuncs", nil, "hr", "pf", "terrain", "UIL", "DTM", "lpeg", "srp", "camera", "camera3p", "cameraMax", "cameraRTS", "string", "table", "package", "debug", "lfs")
 	AddSubmenu("StoryBits", "Story Bits", "StoryBitCategories", "StoryBitTriggersCombo", "g_StoryBitActive", "g_StoryBitStates", "g_StoryBitCategoryStates")
-	AddSubmenu("Cities", nil, "UICity", "MainCity", "UIColony.city_labels.labels", "UIColony.tech_status", "BuildMenuPrerequisiteOverrides", "BuildingTechRequirements", "g_ApplicantPool", "g_CurrentMissionParams", "UICity.MapSectors", "RivalAIs", "TaskRequesters", "LRManagerInstance")
+	AddSubmenu("Cities", nil, "UICity", "MainCity", "UIColony", "UIColony.city_labels.labels", "UIColony.tech_status", "BuildMenuPrerequisiteOverrides", "BuildingTechRequirements", "g_ApplicantPool", "g_CurrentMissionParams", "UICity.MapSectors", "RivalAIs", "TaskRequesters", "LRManagerInstance")
 	AddSubmenu("Mods", nil, "ModsLoaded", "ModsList")
 
 --~ 	-- bonus addition at the top
@@ -537,8 +538,9 @@ The number is a count of stored msgs, right-click to view the list."]]],
 		value = "ChoGGi.UserSettings.FlushLogConstantly",
 		clicked = function()
 			ChoGGi.UserSettings.FlushLogConstantly = not ChoGGi.UserSettings.FlushLogConstantly
-			FlushLogConstantly = ChoGGi.UserSettings.FlushLogConstantly
 			ChoGGi.SettingFuncs.WriteSettings()
+			-- update local var
+			FlushLogConstantly = ChoGGi.UserSettings.FlushLogConstantly
 		end,
 	},
 	{name = TranslationTable[302535920001635--[[Flush Log Hourly]]],

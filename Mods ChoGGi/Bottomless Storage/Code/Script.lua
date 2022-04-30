@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local RetObjMapId = RetObjMapId
+local RetObjMapId = ChoGGi.ComFuncs.RetObjMapId
 
 local ResourceScale = const.ResourceScale
 local resources

@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 16,
+	"version", 17,
 	"version_major", 1,
-	"version_minor", 6,
+	"version_minor", 7,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -19,21 +19,10 @@ Last Updated: 1,010,838 https://survivingmars.paradoxwikis.com/Patches
 
 
 [b]List of bugs fixed:[/b]
-Elevator prefabs pulling a Houdini.
-CanReachBuilding checking the wrong building.
-Colonist residences checking wrong city.
-Drone hub extender range updates.
-Drone log spam from elevators.
-Drones and underground wonders.
-Find Water milestone.
-GridSwitch (pipes/cables) construction not checking for domes as blocking objs.
 Newly constructed domes birth rate (thanks Athenium).
 No Planetary Anomaly Breakthroughs when B&B is installed.
 Problem updating supply grid.
 Storybit notification issue.
-Underground dozers and cave-ins.
-Underground passage cleanup.
-Underground rubble.
 etc...
 
 
@@ -43,7 +32,6 @@ Fix Buildings Broken Down And No Repair
 Fix Colonist Daily Interest Loop
 Fix Colonists Long Walks (better solution: No More Outside Suffocation mod)
 Fix Colonists Suffocating Inside Domes
-Fix Cube Anomaly On Deposit
 Fix Defence Towers Not Firing At Rovers
 Fix Double Click Select All Of Type
 Fix Farm Oxygen

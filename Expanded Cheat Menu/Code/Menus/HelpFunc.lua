@@ -84,6 +84,11 @@ do -- ModUpload
 			return
 		end
 
+		if testing and mod.author ~= "ChoGGi" then
+			print("Just in case... <color 255 100 100>UPLOADING MOD DIFF NAME!</color>")
+			return
+		end
+
 		local orig_title
 
 		msg_popup_id = MsgPopup(

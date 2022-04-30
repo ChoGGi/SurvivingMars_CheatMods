@@ -373,7 +373,7 @@ function OnMsg.ModsReloaded()
 	local UserSettings = ChoGGi.UserSettings
 
 	if UserSettings.FlushLogConstantly then
-		print(TranslationTable[302535920001349--[[Flush Log Constantly]]], TranslationTable[302535920001414--[[Call FlushLogFile() every render update!]]])
+		print("<color 255 75 75>", TranslationTable[302535920001349--[[Flush Log Constantly]]], "</color>", TranslationTable[302535920001414--[[Call FlushLogFile() every render update!]]])
 	end
 
 	-- added this here, as it's early enough to load during the New Game Menu
