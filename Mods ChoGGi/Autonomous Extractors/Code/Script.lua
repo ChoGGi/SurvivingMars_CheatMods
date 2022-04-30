@@ -71,3 +71,35 @@ end
 OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
+
+local space_race = g_AvailableDlc.gagarin
+local skin  = "AutomaticMetalsExtractor"
+local palette
+
+local function GetSkins(self, func, ...)
+	if not space_race then
+		return func(self, ...)
+	end
+
+	if not palette then
+		local bt = BuildingTemplates.AutomaticMetalsExtractor
+		palette = { bt.palette_color1, bt.palette_color2, bt.palette_color3, bt.palette_color4 }
+	end
+
+	local skins, palettes = func(self, ...)
+	skins[#skins+1] = skin
+	palettes[#palettes+1] = palette
+	return skins, palettes
+end
+
+
+function OnMsg.ClassesPostprocess()
+	local ChoOrig_MetalsExtractor_GetSkins = MetalsExtractor.GetSkins
+	function MetalsExtractor:GetSkins(...)
+		return GetSkins(self, ChoOrig_MetalsExtractor_GetSkins, ...)
+	end
+	local ChoOrig_PreciousMetalsExtractor_GetSkins = PreciousMetalsExtractor.GetSkins
+	function PreciousMetalsExtractor:GetSkins(...)
+		return GetSkins(self, ChoOrig_PreciousMetalsExtractor_GetSkins, ...)
+	end
+end

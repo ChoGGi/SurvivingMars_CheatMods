@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v18.3 (Unreleased)
+## v18.4 (Unreleased)
+
+## v18.3 (30 Apr 2022)
 ### Changed:
 - Console Window doesn't save size when rolled up.
 - Added manual setting: SkipModUploadConfirmDoneMsgs: Stops mod upload from asking are you sure and done msgs.

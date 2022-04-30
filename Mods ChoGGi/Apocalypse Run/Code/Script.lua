@@ -105,6 +105,7 @@ local skip_poi = {
 	SETISatellite = true,
 	StoryBit_ContractExplorationAccess = true,
 }
+
 local ChoOrig_TrytoSpawnSpecialProject = TrytoSpawnSpecialProject
 function TrytoSpawnSpecialProject(poi, ...)
 	if poi and skip_poi[poi.id] then

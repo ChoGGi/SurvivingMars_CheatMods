@@ -792,7 +792,6 @@ function OnMsg.ClassesGenerate()
 				return
 			end
 
-			local TGetID = TGetID
 			local options = CurrentModOptions
 			-- not built yet (calling options:GetProperty(X) would give us blank options)
 			if #options.properties == 0 then
@@ -801,7 +800,6 @@ function OnMsg.ClassesGenerate()
 
 			for i = 1, #self do
 				local entry = self[i]
-
 				SetVis(entry, options, lookup_id[entry.Text])
 			end
 		end

@@ -1614,9 +1614,9 @@ Takes less then a second on a map with 3616 buildings and 54 drone hubs."
 302535920000621, "Align All Buildings To Hex Grid"
 302535920000622, "If you have any buildings that aren't aligned to the hex grids use this."
 end end end end end end end !Skipped Line!
-do !Skipped Line! [[GameMenu.lua" "GameFunc.lua]] !Skipped Line!
-302535920001258, "Removes Grass Bushes Trees for that smooth map feel."
-302535920001259, "Delete Grass Bushes Trees"
+do do !Skipped Line! [[GameMenu.lua" "GameFunc.lua]] !Skipped Line!
+302535920001258, "Cleans your Mars of alien shrubbery."
+302535920001259, "Delete Bushes Trees"
 302535920000483, "Centuple"
 302535920001660, "Toggle Vertical Cheat Menu"
 302535920001661, "Puts the menu down the side of the screen to save horizontal space for the info bar."
@@ -1778,8 +1778,8 @@ Not noticeable unless using higher zoom."
 302535920000654, "Select (or mouse over) an object to follow."
 302535920000655, "Toggle Cursor"
 302535920000656, "Toggle between moving camera and selecting objects."
-end end end end !Skipped Line!
-do !Skipped Line! [[HelpMenu.lua" "HelpFunc.lua]] !Skipped Line!
+end end end !Skipped Line!
+do do do do !Skipped Line! [[HelpMenu.lua" "HelpFunc.lua]] !Skipped Line!
 302535920001647, "Window Title"
 302535920001648, "If you don't want ECM to change the window title than disable this (restart to take effect)."
 302535920001634, "This mod requires my library mod (ChoGGi's Library) < use space on the end when searching for it."
@@ -1878,7 +1878,7 @@ For any issues; please report them to my Github/Steam/NexusMods page, or email <
 302535920000673, "info dialog."
 302535920000676, "Reset ECM Settings"
 302535920000677, "Reset all ECM settings to default (restart to enable)."
-end end end !Skipped Line!
+end end end end end end !Skipped Line!
 do !Skipped Line! [[MiscMenu.lua" "MiscFunc.lua]] !Skipped Line!
 302535920000356, "Time Factor"
 302535920000387, "Change the time factor (not permanently); for ease of screenshots or something."

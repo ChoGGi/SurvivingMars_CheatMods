@@ -1,11 +1,10 @@
 -- See LICENSE for terms
 
-local table, type, ipairs, pairs = table, type, ipairs, pairs
+local table, type, pairs = table, type, pairs
 local IsValidThread = IsValidThread
 local IsValid = IsValid
 local DoneObject = DoneObject
 local GetRealmByID = GetRealmByID
-local GetRandomPassableAroundOnMap = GetRandomPassableAroundOnMap
 
 local mod_EnableMod
 
@@ -58,7 +57,6 @@ do -- CityStart/LoadGame
 		SuspendPassEdits("ChoGGi_FixBBBugs_loading")
 
 		local UIColony = UIColony
-		local MainCity = MainCity
 		local main_realm = GetRealmByID(MainMapID)
 		local GameMaps = GameMaps
 		local bt = BuildingTemplates

@@ -89,6 +89,9 @@ Cheats.Consts.Drone>DroneTimeToWorkOnLandscapeMultiplier Time To Work On Landsca
 Cheats.Consts.Drone>DroneTransformWasteRockObstructorToStockpileAmount Drone transform Waste Rock obstruction to stockpile amount: Drones generate 'transform_to_waste_rock' points (per second) when removing Waste Rock obstructions
 Cheats.Consts.Drone>DroneTransformWasteRockObstructorToStockpileBatteryUse Drone transform Waste Rock obstruction to stockpile battery use: Battery usage when Drone is removing Waste Rock obstructions (per second)
 Cheats.Consts.Drone>RechargeCleansDrones Recharging cleans Drones: Drones will be cleaned of dust when being recharged if this value is bigger than 0
+Cheats.Consts.Drone>TrainConstructionTime Train construction time: Train construction time
+Cheats.Consts.Drone>TrainMPCost Train Machine Parts cost: Price for constructing a Train
+Cheats.Consts.Drone>TrainMetalCost Train Metal cost: Price for constructing a Train
 Cheats.Consts.Gameplay>AdvancedResourcesWeightModifierPercent Cargo weight modifier percent for advanced resources: AdvancedResourcesWeightModifierPercent Cargo weight modifier percent for advanced resources
 Cheats.Consts.Gameplay>ApplicantGenerationInterval Applicant Generation Period: How long it takes to generate a new Applicant in the Applicant Pool
 Cheats.Consts.Gameplay>ApplicantSuspendGenerate Applicant Generation Suspended: Determines whether the applicant pool gains new entries.

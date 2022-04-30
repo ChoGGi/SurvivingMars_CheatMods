@@ -13,27 +13,19 @@ local RetHint = ChoGGi.ComFuncs.RetHint
 local Random = ChoGGi.ComFuncs.Random
 local Translate = ChoGGi.ComFuncs.Translate
 
-function ChoGGi.MenuFuncs.DeleteGrassBushesTrees()
+function ChoGGi.MenuFuncs.DeleteBushesTrees()
 	local function CallBackFunc(answer)
 		if answer then
-			SuspendPassEdits("ChoGGi.ComFuncs.DeleteGrassBushesTrees")
-			MapDelete("map", {
-				"VegetationGrass_01",
-				"VegetationGrass_02",
-				"VegetationTree",
-				"VegetationBush_01",
-				"VegetationBush_02",
-				"VegetationBush_03",
-				"VegetationBush_04",
-			})
+			SuspendPassEdits("ChoGGi.MenuFuncs.DeleteBushesTrees")
+			MapDelete("map", "VegetationBillboardObject")
 			ChoGGi.ComFuncs.UpdateGrowthThreads()
-			ResumePassEdits("ChoGGi.ComFuncs.DeleteGrassBushesTrees")
+			ResumePassEdits("ChoGGi.MenuFuncs.DeleteBushesTrees")
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		T(6779--[[Warning]]) .. "!\n" .. TranslationTable[302535920001258--[[Removes Grass Bushes Trees for that smooth map feel.]]],
+		TranslationTable[6779--[[Warning]]] .. "!\n" .. TranslationTable[302535920001258--[[Cleans your Mars of alien shrubbery.]]],
 		CallBackFunc,
-		T(6779--[[Warning]]) .. ": " .. TranslationTable[302535920000855--[[Last chance before deletion!]]]
+		TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000855--[[Last chance before deletion!]]]
 	)
 end
 

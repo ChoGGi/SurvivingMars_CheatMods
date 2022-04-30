@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v11.3 (Unreleased)
+## v11.4 (Unreleased)
+
+## v11.3 (30 Apr 2022)
 - I was using GetMapID(obj), but it doesn't actually take a param...
 - Some tables were giving examine a hard time.
 

@@ -134,7 +134,7 @@ function RCDriller:Idle(...)
 
   self:Gossip("Idle")
   self:SetState("idle")
-  if g_RoverAIResearched and self:IsAutoModeEnabled() then
+  if self:IsAutoModeEnabled() then
     self:ProcAutomation()
 	else
 		Halt()

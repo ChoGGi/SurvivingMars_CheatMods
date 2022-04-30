@@ -584,12 +584,12 @@ Actions[c] = {ActionName = TranslationTable[302535920001366--[[Delete Small Rock
 }
 
 c = c + 1
-Actions[c] = {ActionName = TranslationTable[302535920001259--[[Delete Grass Bushes Trees]]],
+Actions[c] = {ActionName = TranslationTable[302535920001259--[[Delete Bushes Trees]]],
 	ActionMenubar = "ECM.Game.Terrain",
-	ActionId = ".Delete Grass Bushes Trees",
+	ActionId = ".Delete Bushes Trees",
 	ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
-	RolloverText = TranslationTable[302535920001258--[[Removes Grass Bushes Trees for that smooth map feel.]]],
-	OnAction = ChoGGi.MenuFuncs.DeleteGrassBushesTrees,
+	RolloverText = TranslationTable[302535920001258--[[Cleans your Mars of alien shrubbery.]]],
+	OnAction = ChoGGi.MenuFuncs.DeleteBushesTrees,
 }
 
 c = c + 1

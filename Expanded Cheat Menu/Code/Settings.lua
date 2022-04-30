@@ -2,13 +2,13 @@
 
 -- stores default values and some tables
 
-local next, pairs, type, table, os = next, pairs, type, table, os
+local next, pairs, type, os = next, pairs, type, os
 
 local LuaCodeToTuple = LuaCodeToTuple
-local TableToLuaCode = TableToLuaCode
+-- local TableToLuaCode = TableToLuaCode
 local SaveLocalStorage = SaveLocalStorage
-local ThreadLockKey = ThreadLockKey
-local ThreadUnlockKey = ThreadUnlockKey
+-- local ThreadLockKey = ThreadLockKey
+-- local ThreadUnlockKey = ThreadUnlockKey
 local TranslationTable = TranslationTable
 
 local blacklist = ChoGGi.blacklist

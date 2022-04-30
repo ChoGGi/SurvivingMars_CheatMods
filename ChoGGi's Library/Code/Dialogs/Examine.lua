@@ -64,7 +64,6 @@ local XFlashWindow = XFlashWindow
 local TMeta = TMeta
 local TConcatMeta = TConcatMeta
 local TranslationTable = TranslationTable
-local g_CObjectFuncs = g_CObjectFuncs
 
 local Translate = ChoGGi.ComFuncs.Translate
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
