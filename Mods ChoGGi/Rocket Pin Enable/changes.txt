@@ -1,3 +1,6 @@
+v0.8
+Hopefully keeps the pin button showing.
+
 v0.7
 Picard v2.
 

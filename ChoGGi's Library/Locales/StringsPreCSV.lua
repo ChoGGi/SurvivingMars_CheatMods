@@ -3,7 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
-302535920001470, ""
 302535920001471, ""
 302535920001633, ""
 302535920001663, ""
@@ -192,6 +191,7 @@ do !Skipped Line! [[ImageViewer.lua]] !Skipped Line!
 302535920000109, "Invalid Image"
 end !Skipped Line!
 do !Skipped Line! [[InfoPaneCheats.lua]] !Skipped Line!
+302535920001470, "Try to spawn all prefabs at this dronehub."
 302535920001262, "Move To Realm"
 302535920001380, "Move object to new realm"
 302535920000064, "Add Earthsick status to Colonist."

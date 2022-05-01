@@ -6,7 +6,7 @@ local function ModOptions(id)
 		return
 	end
 
-	if UICity and CurrentModOptions:GetProperty("PinAllRockets") then
+	if UIColony and CurrentModOptions:GetProperty("PinAllRockets") then
 		local objs = UIColony:GetCityLabels("RocketBase")
 		for i = 1, #objs do
 			local rocket = objs[i]
@@ -27,18 +27,25 @@ end
 
 RocketBase.show_pin_toggle = true
 
-local function StartupCode()
+local function ShowPins()
 	local objs = UIColony:GetCityLabels("RocketBase")
 	for i = 1, #objs do
 		objs[i].show_pin_toggle = true
 	end
 end
 
-OnMsg.CityStart = StartupCode
-OnMsg.LoadGame = StartupCode
+OnMsg.CityStart = ShowPins
+OnMsg.LoadGame = ShowPins
+OnMsg.NewDay = ShowPins
 
+-- They all use the same func, I'll leave the code incase something does a mod with it
 local ChoOrig_RocketBase_SetPinned = RocketBase.SetPinned
-local ChoOrig_SetPinned
+--~ local ChoOrig_SetPinned
+local function fake_SetPinned(rocket)
+	-- might help keep pin around?
+	rocket.show_pin_toggle = true
+end
+
 local empty_func = empty_func
 
 local ChoOrig_RocketBase_UpdateStatus = RocketBase.UpdateStatus
@@ -47,10 +54,12 @@ function RocketBase:UpdateStatus(status, ...)
 		return ChoOrig_RocketBase_UpdateStatus(self, status, ...)
 	end
 
-	-- okay a bit overkill
-	ChoOrig_SetPinned = self.SetPinned
-	self.SetPinned = empty_func
+--~ 	-- okay a bit overkill
+--~ 	ChoOrig_SetPinned = self.SetPinned
+	self.SetPinned = fake_SetPinned
+
 	ChoOrig_RocketBase_UpdateStatus(self, status, ...)
-	self.SetPinned = ChoOrig_SetPinned or ChoOrig_RocketBase_SetPinned
-	ChoOrig_SetPinned = nil
+
+	self.SetPinned = ChoOrig_RocketBase_SetPinned
+--~ 	ChoOrig_SetPinned = nil
 end

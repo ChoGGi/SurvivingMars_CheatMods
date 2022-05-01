@@ -1,2 +1,5 @@
+v0.3
+Picard.
+
 v0.2
 Added mod option to disable mod.

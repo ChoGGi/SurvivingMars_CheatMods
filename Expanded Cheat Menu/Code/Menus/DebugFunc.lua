@@ -614,7 +614,7 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 			local IsBuildableZoneQR = IsBuildableZoneQR
 			local WorldToHex = WorldToHex
 			local point = point
-			local OBuildingEntityClass = ChoGGi_OBuildingEntityClass
+			local OBuildingEntityClass = ChoGGi_OBuildingEntityClass_Perm
 
 			local width, height = ConstructableArea:sizexyz()
 			width = width / 1000
@@ -706,7 +706,6 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 					dlg:RemoveNotification(notes[i][1])
 				end
 			end
-
 		end)
 	end
 

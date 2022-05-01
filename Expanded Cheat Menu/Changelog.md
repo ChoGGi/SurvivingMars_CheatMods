@@ -1,6 +1,11 @@
 ## ECM Changelog
 
 ## v18.4 (Unreleased)
+### Added:
+- Infopanel Cheats>SpawnAllDrones: Try to spawn all prefabs at this dronehub.
+
+### Changed:
+- View All Entities: Doesn't remove all objects when map is saved.
 
 ## v18.3 (30 Apr 2022)
 ### Changed:

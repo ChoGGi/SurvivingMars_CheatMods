@@ -162,7 +162,7 @@ function OnMsg.ClassesPostprocess()
 		group = "Infopanel Sections",
 		id = "ipChoGGi_Entity",
 		PlaceObj("XTemplateTemplate", {
-			"__context_of_kind", "ChoGGi_OBuildingEntityClass",
+			"__context_of_kind", "ChoGGi_OBuildingEntityClass_Generic",
 			"__template", "Infopanel",
 		}, {
 

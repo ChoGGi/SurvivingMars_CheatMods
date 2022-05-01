@@ -1,5 +1,4 @@
 "ID", "Text", "Translation"
-302535920001470, ""
 302535920001471, ""
 302535920001633, ""
 302535920001663, ""
@@ -168,6 +167,7 @@
 302535920000854, "Results Found"
 302535920000219, "Export viewed image to <color ChoGGi_green>%s</color>."
 302535920000109, "Invalid Image"
+302535920001470, "Try to spawn all prefabs at this dronehub."
 302535920001262, "Move To Realm"
 302535920001380, "Move object to new realm"
 302535920000064, "Add Earthsick status to Colonist."

@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local GetNextTable = ChoGGi.ComFuncs.GetNextTable
+
 local as, g_env
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	g_env = env
@@ -93,16 +95,6 @@ local OnAction = function()
 
 	}
 end
-
---~ local GetNextTable = ChoGGi.ComFuncs.GetNextTable
--- REMOVE Lib 11.3
-local function GetNextTable(list, key, value)
-	local idx = table.find(list, key, value)
-	if idx then
-		return list[idx]
-	end
-end
--- REMOVE Lib 11.3
 
 function OnMsg.ClassesPostprocess()
 	local id = "idModListEditorButton"

@@ -51,10 +51,8 @@ DefineClass.ChoGGi_OCircle = {
 	__parents = {"ChoGGi_ODeleteObjs","Circle"},
 }
 
-DefineClass.ChoGGi_OBuildingEntityClass = {
+DefineClass.ChoGGi_OBuildingEntityClass_Generic = {
 	__parents = {
-		"ChoGGi_ODeleteObjs",
-
 		"Demolishable",
 		"BaseBuilding",
 		"BuildingEntityClass",
@@ -64,24 +62,38 @@ DefineClass.ChoGGi_OBuildingEntityClass = {
 	-- defined in ECM OnMsgs
 	ip_template = "ipChoGGi_Entity",
 }
+-- add some info/functionality to spawned entity objects
+ChoGGi_OBuildingEntityClass_Generic.GetDisplayName = CObject.GetEntity
+function ChoGGi_OBuildingEntityClass_Generic.GetIPDescription()
+	return TranslationTable[302535920001110--[[Spawned entity object]]]
+end
+-- circle or hex thingy?
+ChoGGi_OBuildingEntityClass_Generic.OnSelected = AddSelectionParticlesToObj
+-- prevent an error msg in log
+ChoGGi_OBuildingEntityClass_Generic.BuildWaypointChains = empty_func
+-- round and round she goes, and where she stops BOB knows
+ChoGGi_OBuildingEntityClass_Generic.Rotate = ChoGGi.ComFuncs.RotateBuilding
+
+DefineClass.ChoGGi_OBuildingEntityClass = {
+	__parents = {
+		"ChoGGi_OBuildingEntityClass_Generic",
+		"ChoGGi_ODeleteObjs",
+	},
+}
+
+DefineClass.ChoGGi_OBuildingEntityClass_Perm = {
+	__parents = {
+		"ChoGGi_OBuildingEntityClass_Generic",
+	},
+}
+
 -- add any auto-attach items
 DefineClass.ChoGGi_OBuildingEntityClassAttach = {
 	__parents = {
-		"ChoGGi_OBuildingEntityClass",
+		"ChoGGi_OBuildingEntityClass_Generic",
+		"ChoGGi_ODeleteObjs",
 		"AutoAttachObject",
 	},
 	auto_attach_at_init = true,
 }
 ChoGGi_OBuildingEntityClassAttach.GameInit = AutoAttachObject.Init
-
--- add some info/functionality to spawned entity objects
-ChoGGi_OBuildingEntityClass.GetDisplayName = CObject.GetEntity
-function ChoGGi_OBuildingEntityClass.GetIPDescription()
-	return TranslationTable[302535920001110--[[Spawned entity object]]]
-end
--- circle or hex thingy?
-ChoGGi_OBuildingEntityClass.OnSelected = AddSelectionParticlesToObj
--- prevent an error msg in log
-ChoGGi_OBuildingEntityClass.BuildWaypointChains = empty_func
--- round and round she goes, and where she stops BOB knows
-ChoGGi_OBuildingEntityClass.Rotate = ChoGGi.ComFuncs.RotateBuilding

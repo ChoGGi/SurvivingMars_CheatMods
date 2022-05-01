@@ -333,6 +333,9 @@ It don't matter if you're black or white"]]],
 	RemoveDustRC = {
 		des = TranslationTable[302535920001631--[[Remove dust covering Rover.]]],
 	},
+	SpawnAllDrones = {
+		des = TranslationTable[302535920001470--[[Try to spawn all prefabs at this dronehub.]]],
+	},
 
 -- Rocket/Shuttles
 	-- when i added a "working" AddDust to rockets it showed up twice, so i'm lazy
@@ -1092,6 +1095,20 @@ local function CheatSpawnDrone(self)
 end
 DroneControl.CheatSpawnDrone = CheatSpawnDrone
 DroneFactory.CheatSpawnDrone = CheatSpawnDrone
+
+function DroneHub:CheatSpawnAllDrones()
+	local city = self.city
+	local free_slots = self:GetFreeConstructionSlotsForDrones()
+
+	for i = 1, free_slots do
+		if city.drone_prefabs == 0 then
+			break
+		end
+		if self:SpawnDrone() then
+			city.drone_prefabs = city.drone_prefabs - 1
+		end
+	end
+end
 
 function Drone:CheatGoHome()
 	self:SetCommand("GoHome", nil, nil, nil, "ReturningToController")

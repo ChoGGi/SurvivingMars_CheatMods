@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
-local MapGet = MapGet
 local DoneObject = DoneObject
+
 local function HasParticles(par)
 	return par:GetParticlesName() == "Rocket_Landing_Pos_02"
 end
@@ -11,17 +11,23 @@ local function StartupCode()
 		return
 	end
 
-	local markers = MapGet("map", "AlienDiggerMarker")
-	for i = 1, #markers do
-		local marker = markers[i]
+	local GameMaps = GameMaps
+	for i = 1, #GameMaps do
+		local realm = GameMaps[i].realm
 
-		local rocket_mark = MapGet(marker:GetPos(), 0, "ParSystem", HasParticles)
-		if rocket_mark[1] then
-			DoneObject(rocket_mark[1])
-			DoneObject(marker)
+		local markers = realm:MapGet("map", "AlienDiggerMarker")
+		for j = 1, #markers do
+			local marker = markers[j]
+
+			local rocket_mark = realm:MapGet(marker:GetPos(), 0, "ParSystem", HasParticles)
+			if rocket_mark[1] then
+				DoneObject(rocket_mark[1])
+				DoneObject(marker)
+			end
 		end
 
 	end
+
 
 end
 
