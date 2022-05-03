@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2431086875",
 	"pops_any_uuid", "0b91167f-84d4-4856-b763-f2f841af93bd",
 	"lua_revision", 1007000, -- Picard
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -15,7 +15,8 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagGameplay", true,
 	"TagOther", true,
-	"description", [[Any dust geysers on your map will be treated as regular ground (mostly), cables/pipes/passages are still blocked.
+	"description", [[
+Any dust geysers on your map will be treated as regular ground (mostly), cables/pipes/passages are still blocked.
 
 Mod Options:
 Enable Mod: Disable mod without having to see missing mod msg.

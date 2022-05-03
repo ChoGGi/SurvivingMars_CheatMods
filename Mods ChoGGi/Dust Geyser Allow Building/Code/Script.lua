@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local DoneObject = DoneObject
+
 local mod_EnableMod
 local mod_DeleteGeysers
 
@@ -9,16 +11,21 @@ local function RemoveGeysers()
 	end
 
 	SuspendPassEdits("ChoGGi.DustGeyserAllowBuilding.DeleteGeysers")
-	-- I can't get MapDelete and func filter working...
-	local objs = MapGet("map", "PrefabFeatureMarker", function(obj)
-		if obj.FeatureType == "CO2 Jets" then
-			return true
+	--
+	local GameMaps = GameMaps
+	for _, map in pairs(GameMaps) do
+ 		local objs = map.realm:MapGet("map", "PrefabFeatureMarker", function(obj)
+			if obj.FeatureType == "CO2 Jets" or obj.FeatureType == "Flat Lands" then
+				return true
+			end
+		end)
+		for i = #objs, 1, -1 do
+			DoneObject(objs[i])
 		end
-	end)
-	for i = #objs, 1, -1 do
-		objs[i]:delete()
+		map.realm:MapDelete("map", "GeyserObject")
+
 	end
-	MapDelete("map", "GeyserObject")
+	--
 	ResumePassEdits("ChoGGi.DustGeyserAllowBuilding.DeleteGeysers")
 end
 

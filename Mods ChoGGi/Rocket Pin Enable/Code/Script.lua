@@ -45,12 +45,12 @@ local function fake_SetPinned(rocket)
 	-- might help keep pin around?
 	rocket.show_pin_toggle = true
 end
-
-local empty_func = empty_func
+--~ local empty_func = empty_func
 
 local ChoOrig_RocketBase_UpdateStatus = RocketBase.UpdateStatus
 function RocketBase:UpdateStatus(status, ...)
-	if status ~= "landing" or status ~= "landed" then
+	-- it still needs to be pinned for other stuff (countdown is for  Ski's auto tourism mod)
+	if status ~= "landing" or status ~= "landed" or status ~= "countdown" then
 		return ChoOrig_RocketBase_UpdateStatus(self, status, ...)
 	end
 
@@ -58,8 +58,9 @@ function RocketBase:UpdateStatus(status, ...)
 --~ 	ChoOrig_SetPinned = self.SetPinned
 	self.SetPinned = fake_SetPinned
 
-	ChoOrig_RocketBase_UpdateStatus(self, status, ...)
+	pcall(ChoOrig_RocketBase_UpdateStatus, self, status, ...)
 
 	self.SetPinned = ChoOrig_RocketBase_SetPinned
+--~ 	self.SetPinned = ChoOrig_SetPinned or ChoOrig_RocketBase_SetPinned
 --~ 	ChoOrig_SetPinned = nil
 end

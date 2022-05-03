@@ -48,21 +48,6 @@ local function LoadModData()
 	return data
 end
 
-local mod_EnableMod
-
-local function ModOptions(id)
-	-- id is from ApplyModOptions
-	if id and id ~= CurrentModId then
-		return
-	end
-
-	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
-end
--- Load default/saved settings
-OnMsg.ModsReloaded = ModOptions
--- Fired when Mod Options>Apply button is clicked
-OnMsg.ApplyModOptions = ModOptions
-
 local OnAction = function()
 	-- Open list of mods in text editor
 	ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
