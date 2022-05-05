@@ -3,7 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
-302535920001471, ""
 302535920001633, ""
 302535920001663, ""
 302535920001664, ""
@@ -363,6 +362,7 @@ You can copy and paste numbers if you want."
 302535920000032, "Select a resource to find"
 end end end end !Skipped Line!
 do !Skipped Line! [[OnMsgs.lua]] !Skipped Line!
+302535920001471, "Not signed into Paradox account, mods from Paradox Platform might be out of date!"
 302535920001400, "F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
 If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""To import your old settings""."
 302535920000030, "To show the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked."

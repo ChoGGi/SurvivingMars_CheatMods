@@ -36,11 +36,12 @@ end
 
 OnMsg.CityStart = ShowPins
 OnMsg.LoadGame = ShowPins
+-- something may reset it?
 OnMsg.NewDay = ShowPins
 
 -- They all use the same func, I'll leave the code incase something does a mod with it
 local ChoOrig_RocketBase_SetPinned = RocketBase.SetPinned
---~ local ChoOrig_SetPinned
+local ChoOrig_SetPinned
 local function fake_SetPinned(rocket)
 	-- might help keep pin around?
 	rocket.show_pin_toggle = true
@@ -51,16 +52,17 @@ local ChoOrig_RocketBase_UpdateStatus = RocketBase.UpdateStatus
 function RocketBase:UpdateStatus(status, ...)
 	-- it still needs to be pinned for other stuff (countdown is for  Ski's auto tourism mod)
 	if status ~= "landing" or status ~= "landed" or status ~= "countdown" then
+--~ 	if status ~= "landing" or status ~= "landed" then
 		return ChoOrig_RocketBase_UpdateStatus(self, status, ...)
 	end
 
---~ 	-- okay a bit overkill
---~ 	ChoOrig_SetPinned = self.SetPinned
+	-- okay a bit overkill
+	ChoOrig_SetPinned = self.SetPinned
 	self.SetPinned = fake_SetPinned
 
 	pcall(ChoOrig_RocketBase_UpdateStatus, self, status, ...)
 
 	self.SetPinned = ChoOrig_RocketBase_SetPinned
---~ 	self.SetPinned = ChoOrig_SetPinned or ChoOrig_RocketBase_SetPinned
---~ 	ChoOrig_SetPinned = nil
+	self.SetPinned = ChoOrig_SetPinned or ChoOrig_RocketBase_SetPinned
+	ChoOrig_SetPinned = nil
 end

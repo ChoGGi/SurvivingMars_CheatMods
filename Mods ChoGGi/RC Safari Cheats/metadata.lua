@@ -17,6 +17,14 @@ return PlaceObj("ModDef", {
 	"description", [[
 Vroom vroom
 
-See mod options for cheats.
+
+Mod Options:
+Max Safari Length: Change the max safari route limit.
+RC Safari Max Waypoints: How many waypoints a safari can have.
+Sight Range: How far the tourists can see sights from the rover.
+Max passengers: How many tourists per safari.
+Satisfaction/health/sanity change on visit: Add * for visit.
+Service Comfort: Comfort threshold for increase.
+Comfort increase on visit: How much comfort is added per visit.
 ]],
 })

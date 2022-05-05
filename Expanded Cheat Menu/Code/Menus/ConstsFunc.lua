@@ -70,7 +70,7 @@ function ChoGGi.MenuFuncs.SetConstMenu(action)
 
 	hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. hint .. "\n\n" .. setting_desc
 	if setting_scale then
-		hint = hint .. "\n" .. Translate(1000081--[[Scale]]) .. ": "
+		hint = hint .. "\n" .. T(1000081--[[Scale]]) .. ": "
 			.. Presets.ConstDef.Scale[setting_scale].value .. "("
 			.. TranslationTable[302535920000182--[[The scale this amount will be multipled by when used.]]] .. ")"
 	end

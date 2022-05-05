@@ -52,6 +52,12 @@ OnMsg.NewMapLoaded = ChoGGi.ComFuncs.UpdateDataTablesCargo
 
 -- Needed for UICity and some others that aren't created till around then
 local function Startup()
+	if g_ParadoxAccountLoggedIn then
+		printC("Paradox account signed in.")
+	else
+		print(TranslationTable[302535920001471--[[Not signed into Paradox account, mods from Paradox Platform might be out of date!]]])
+	end
+
 	CreateRealTimeThread(function()
 		-- Needs a delay to get GlobalVar names
 		Sleep(1000)

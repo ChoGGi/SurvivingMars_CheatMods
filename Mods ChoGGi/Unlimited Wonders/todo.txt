@@ -1,2 +1,7 @@
  Be interesting if the cost went up for each additional wonder. 
-  Oafsalot 
+Oafsalot 
+
+hey, on that note, i did notice, the Morpheus wonder, only the first one you place works...  are there any other wonders that only teh first works if you place more than one?
+
+mod option to make omega discount stack
+.20% discount on research.

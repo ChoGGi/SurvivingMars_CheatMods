@@ -29,7 +29,7 @@ return {
 	PlaceObj("ModItemOptionNumber", {
 		"name", "MaxPassengers",
 		"DisplayName", T(12764, "Max passengers"),
-		"Help", T(302535920011881, "How tourists per safari."),
+		"Help", T(302535920011881, "How many tourists per safari."),
 		"DefaultValue", RCSafari.max_visitors,
 		"MinValue", 1,
 		"MaxValue", 250,

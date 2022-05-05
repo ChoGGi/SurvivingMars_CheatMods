@@ -3282,22 +3282,13 @@ do -- RetNearestResource/FindNearestResource
 		res_funcs[res] = "GetStored_" .. res
 		res_mechdepot[res] = "MechanizedDepot" .. res
 	end
-	local GetStored, res_amount, res_resource
-	local function FilterTable(depot)
-		-- check if depot has the resource
-		if (depot.resource == res_resource or table.find(depot.resource, res_resource))
-			-- check if depot has resource amount
-			and depot[GetStored] and depot[GetStored](depot) >= res_amount
-		then
-			return true
-		end
-	end
 
 	local stockpiles_table = {}
 	local stockpiles
 	local function RetNearestResourceDepot(resource, obj, list, amount, skip_stocks)
-		GetStored = res_funcs[resource] or "GetStored_" .. resource
-		res_resource = resource
+		local GetStored = res_funcs[resource] or "GetStored_" .. resource
+		local res_resource = resource
+		local res_amount
 
 		if list then
 			stockpiles = list
@@ -3312,7 +3303,7 @@ do -- RetNearestResource/FindNearestResource
 			end
 			res_amount = amount or 1000
 
-			local labels = UICity.labels
+			local labels = (obj.city or UICity).labels
 			-- every resource has a mech depot
 			table.iappend(stockpiles, labels[res_mechdepot[resource] or "MechanizedDepot" .. resource])
 
@@ -3328,7 +3319,15 @@ do -- RetNearestResource/FindNearestResource
 			end
 		end
 
-		return FindNearestObject(stockpiles, obj:GetPos():SetInvalidZ(), FilterTable)
+		return FindNearestObject(stockpiles, obj:GetPos():SetInvalidZ(), function(depot)
+			-- check if depot has the resource
+			if (depot.resource == res_resource or table.find(depot.resource, res_resource))
+				-- check if depot has resource amount
+				and depot[GetStored] and depot[GetStored](depot) >= res_amount
+			then
+				return true
+			end
+		end)
 	end
 	ChoGGi.ComFuncs.RetNearestResourceDepot = RetNearestResourceDepot
 

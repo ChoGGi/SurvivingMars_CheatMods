@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v11.4 (Unreleased)
+- Prints a warning if paradox account isn't signed in (mods won't update).
 
 ## v11.3 (30 Apr 2022)
 - I was using GetMapID(obj), but it doesn't actually take a param...
