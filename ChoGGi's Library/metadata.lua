@@ -1,14 +1,14 @@
 return PlaceObj("ModDef", {
-	"title", "<color 135 212 155>ChoGGi's Library</color>",
+	"title", "<color 135 212 155>ChoGGi's Library</color> Test",
 	"id", "ChoGGi_Library",
 	"steam_id", "1504386374",
 --~ 	"pops_any_uuid", "d8b39692-93b4-4446-9149-2e1addd28ac4",
 	"pops_any_uuid", "bbeae1a3-fa60-48d3-8bf4-bbfe7d5e018b",
 	"pops_desktop_uuid", "36c014ce-1fcd-4cef-9621-a4bd631d3ee0",
 	"lua_revision", 1007000, -- Picard
-	"version", 114,
+	"version", 115,
 	"version_major", 11,
-	"version_minor", 4,
+	"version_minor", 5,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/ChoGGi's%20Library/Changelog.md#library-changelog",
