@@ -66,6 +66,11 @@ do -- CityStart/LoadGame
 		local bmpo = BuildMenuPrerequisiteOverrides
 		local ResupplyItemDefinitions = ResupplyItemDefinitions
 
+		-- Probably from a mod (a *badly* done mod)
+		if type(g_ActiveOnScreenNotifications) ~= "table" then
+			g_ActiveOnScreenNotifications = {}
+		end
+
 		-- If you removed modded rules from your current save then the Mission Profile dialog will be blank.
 		local rules = g_CurrentMissionParams.idGameRules
 		if rules then
@@ -424,6 +429,22 @@ function CargoTransporter:DroneLoadResource(drone, request, resource, ...)
 	end
 end
 --
+-- Mars/Lua/Buildings/RocketBase.lua:319: attempt to get length of a boolean value (local 'cargo')
+-- Guessing a mod?
+local ChoOrig_RocketBase_RemovePassengers = RocketBase.RemovePassengers
+function RocketBase:RemovePassengers(...)
+	if not mod_EnableMod then
+		return ChoOrig_RocketBase_RemovePassengers(self, ...)
+	end
+
+	if not self.cargo then
+		-- something went horribly wrong...
+		self.cargo = {}
+	end
+
+	return ChoOrig_RocketBase_RemovePassengers(self, ...)
+end
+
 --
 --
 --

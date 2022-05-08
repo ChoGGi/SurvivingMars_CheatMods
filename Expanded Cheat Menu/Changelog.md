@@ -1,7 +1,11 @@
 ## ECM Changelog
 
-## v18.4 (Unreleased)
+## v18.5 (Unreleased)
+
+## v18.4 (7 May 2022)
 ### Added:
+- Menu>Buildings>Toggles>Remove Realm Limits: Buildings from Asteroid/Underground/Surface can be built in any of the others.
+- Infopanel Cheats>DeleteAllObjects: Delete all of the same type of object from the map.
 - Infopanel Cheats>SpawnAllDrones: Try to spawn all prefabs at this dronehub.
 
 ### Changed:

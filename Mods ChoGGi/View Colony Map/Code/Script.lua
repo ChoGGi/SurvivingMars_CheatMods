@@ -47,8 +47,6 @@ local function ShowDialogs(map, gen)
 	end
 end
 
-local temp_params
-
 -- create/update image when landing spot changes
 local ChoOrig_GetOverlayValues = GetOverlayValues
 function GetOverlayValues(lat, long, overlay_grids, params, ...)

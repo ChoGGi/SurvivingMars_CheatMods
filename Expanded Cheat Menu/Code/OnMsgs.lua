@@ -1334,6 +1334,10 @@ do -- LoadGame/CityStart
 
 ---------------------do the above stuff before the below stuff
 
+		-- build whatever realmever
+		if ChoGGi.UserSettings.RemoveRealmLimits then
+			ChoGGi.ComFuncs.DisableBuildingsDie()
+		end
 		-- vertical menu
 		if UserSettings.VerticalCheatMenu then
 			ChoGGi.ComFuncs.ToggleVerticalCheatMenu(UserSettings.VerticalCheatMenu)

@@ -11,44 +11,46 @@ local table = table
 local AsyncRand = AsyncRand
 local AveragePoint2D = AveragePoint2D
 local box = box
-local FindNearestObject = FindNearestObject -- (list,obj) or (list,pos,filterfunc)
-local UseGamepadUI = UseGamepadUI
-local SelectionGamepadObj = SelectionGamepadObj
-local SelectionMouseObj = SelectionMouseObj
-local GetCursorWorldPos = GetCursorWorldPos
-local IsValid = IsValid
-local IsKindOf = IsKindOf
-local IsPoint = IsPoint
-local IsBox = IsBox
-local IsT = IsT
-local PropObjGetProperty = PropObjGetProperty
-local CreateRealTimeThread = CreateRealTimeThread
-local SuspendPassEdits = SuspendPassEdits
-local ResumePassEdits = ResumePassEdits
 local ClassDescendantsList = ClassDescendantsList
-local WorldToHex = WorldToHex
-local OpenDialog = OpenDialog
-local ViewAndSelectObject = ViewAndSelectObject
-local XDestroyRolloverWindow = XDestroyRolloverWindow
-local Max = Max
+local CreateGameTimeThread = CreateGameTimeThread
+local CreateRealTimeThread = CreateRealTimeThread
+local DoneObject = DoneObject
+local FindNearestObject = FindNearestObject -- (list,obj) or (list,pos,filterfunc)
 local GameTime = GameTime
+local GetBuildableGrid = GetBuildableGrid
+local GetCursorWorldPos = GetCursorWorldPos
+local GetMapSectorXY = GetMapSectorXY
+local GetObjectHexGrid = GetObjectHexGrid
+local GetRandomPassablePoint = GetRandomPassablePoint
 local guic = guic
-local ViewObjectMars = ViewObjectMars
-local RGB = RGB
 local HexGridGetObject = HexGridGetObject
 local HexToWorld = HexToWorld
+local IsBox = IsBox
+local IsInMapPlayableArea = IsInMapPlayableArea
+local IsKindOf = IsKindOf
+local IsPoint = IsPoint
+local IsPointNearBuilding = IsPointNearBuilding
+local IsT = IsT
+local IsValid = IsValid
+local MapGet = MapGet
+local Max = Max
+local OpenDialog = OpenDialog
 local point = point
 local point20 = point20
-local WaitMsg = WaitMsg
+local PropObjGetProperty = PropObjGetProperty
+local ResumePassEdits = ResumePassEdits
+local RGB = RGB
+local SelectionGamepadObj = SelectionGamepadObj
+local SelectionMouseObj = SelectionMouseObj
 local Sleep = Sleep
-local CreateGameTimeThread = CreateGameTimeThread
-local IsInMapPlayableArea = IsInMapPlayableArea
-local GetMapSectorXY = GetMapSectorXY
-local GetRandomPassablePoint = GetRandomPassablePoint
-local IsPointNearBuilding = IsPointNearBuilding
-local GetObjectHexGrid = GetObjectHexGrid
-local GetBuildableGrid = GetBuildableGrid
-local DoneObject = DoneObject
+local SuspendPassEdits = SuspendPassEdits
+local UseGamepadUI = UseGamepadUI
+local ViewAndSelectObject = ViewAndSelectObject
+local ViewObjectMars = ViewObjectMars
+local WaitMsg = WaitMsg
+local WorldToHex = WorldToHex
+local XDestroyRolloverWindow = XDestroyRolloverWindow
+
 local objlist = objlist
 local g_CObjectFuncs = g_CObjectFuncs
 
@@ -2629,7 +2631,7 @@ do -- GetAllAttaches
 	end
 end -- do
 local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
-
+-- I've seen better func names
 local function MapGet_ChoGGi(label, area, ...)
 	local objs = UICity.labels[label] or {}
 --~ 	local objs = UIColony.city_labels.labels[label] or {}
@@ -3043,6 +3045,7 @@ do -- DeleteObject
 		end
 	end
 
+	-- skip_demo == dust plume resource drop
 	local function DeleteFunc(obj, skip_demo)
 		if not IsValid(obj) then
 			return
@@ -3154,6 +3157,7 @@ do -- DeleteObject
 		end
 	end
 
+	-- skip_demo == dust plume resource drop
 	function ChoGGi.ComFuncs.DeleteObject(objs, skip_demo)
 		if not DeleteObject then
 			DeleteObject = ChoGGi.ComFuncs.DeleteObject

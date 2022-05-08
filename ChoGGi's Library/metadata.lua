@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "<color 135 212 155>ChoGGi's Library</color> Test",
+	"title", "<color 135 212 155>ChoGGi's Library</color>",
 	"id", "ChoGGi_Library",
 	"steam_id", "1504386374",
 --~ 	"pops_any_uuid", "d8b39692-93b4-4446-9149-2e1addd28ac4",

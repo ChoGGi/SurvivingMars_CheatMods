@@ -4,23 +4,23 @@ local table = table
 local type, pairs, next, print, string = type, pairs, next, print, string
 local tostring, tonumber, rawget, rawset = tostring, tonumber, rawget, rawset
 local AveragePoint2D = AveragePoint2D
-local IsValid = IsValid
+local DoneObject = DoneObject
+local IsBox = IsBox
 local IsKindOf = IsKindOf
+local IsPoint = IsPoint
+local IsValid = IsValid
 local IsValidEntity = IsValidEntity
+local Max = Max
 local Sleep = Sleep
 local WaitMsg = WaitMsg
-local IsPoint = IsPoint
-local IsBox = IsBox
-local DoneObject = DoneObject
-local Max = Max
 
-local TranslationTable = TranslationTable
-local Translate = ChoGGi.ComFuncs.Translate
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local RetName = ChoGGi.ComFuncs.RetName
-local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
+local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local PlacePolyline = ChoGGi.ComFuncs.PlacePolyline
+local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
+local RetName = ChoGGi.ComFuncs.RetName
+local Translate = ChoGGi.ComFuncs.Translate
+local TranslationTable = TranslationTable
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
 local blacklist = ChoGGi.blacklist
@@ -2643,4 +2643,27 @@ function ChoGGi.ComFuncs.ToggleVerticalCheatMenu(toggle)
 	menubar:SetUniformColumnWidth(false)
 	menubuttons:SetUniformColumnWidth(true)
 	menubuttons:SetUniformColumnWidth(false)
+end
+
+function ChoGGi.ComFuncs.DisableBuildingsDie()
+	local die = DisabledInEnvironment
+	local blank_die = {"","","",""}
+	local ct = ClassTemplates.Building
+	local bt = BuildingTemplates
+	for id, item in pairs(bt) do
+		if die then
+			die[id] = blank_die
+		end
+		item.disabled_in_environment1 = ""
+		item.disabled_in_environment2 = ""
+		item.disabled_in_environment3 = ""
+		item.disabled_in_environment4 = ""
+		item = ct[id]
+		item.disabled_in_environment1 = ""
+		item.disabled_in_environment2 = ""
+		item.disabled_in_environment3 = ""
+		item.disabled_in_environment4 = ""
+	end
+
+	ChoGGi.ComFuncs.UpdateBuildMenu()
 end

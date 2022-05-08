@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 17,
+	"version", 18,
 	"version_major", 1,
-	"version_minor", 7,
+	"version_minor", 8,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -15,7 +15,7 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagOther", true,
 	"description", [[
-Last Updated: 1,010,838 https://survivingmars.paradoxwikis.com/Patches
+Last Updated: 1,011,140 https://survivingmars.paradoxwikis.com/Patches
 
 
 [b]List of bugs fixed:[/b]
@@ -23,7 +23,9 @@ Newly constructed domes birth rate (thanks Athenium).
 No Planetary Anomaly Breakthroughs when B&B is installed.
 Problem updating supply grid.
 Storybit notification issue.
-etc...
+Probably mod related:
+A rocket missing the cargo table.
+g_ActiveOnScreenNotifications isn't a table.
 
 
 [b]Incorporated mods:[/b] (so far)

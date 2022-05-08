@@ -1,7 +1,4 @@
 "ID", "Text", "Translation"
-302535920001633, ""
-302535920001663, ""
-302535920001664, ""
 302535920001665, ""
 302535920001666, ""
 302535920001667, ""
@@ -166,6 +163,7 @@
 302535920000854, "Results Found"
 302535920000219, "Export viewed image to <color ChoGGi_green>%s</color>."
 302535920000109, "Invalid Image"
+302535920001664, "Do you want to delete all objects that are the same as this object from the map?"
 302535920001470, "Try to spawn all prefabs at this dronehub."
 302535920001262, "Move To Realm"
 302535920001380, "Move object to new realm"
@@ -674,6 +672,10 @@ Press Enter to refresh list (update names).
 302535920001195, "Reset to 500 M"
 302535920001196, "If your funds are a negative value, then you added too much.
 Fix with: %s"
+302535920001633, "Remove Realm Limits"
+302535920001663, "Buildings from Asteroid/Underground/Surface can be built in any of the others.
+
+Restart is needed when disabling this option!"
 302535920000159, "Unlimited Wonders"
 302535920000223, "Unlimited wonder build limit (blocks the <color ChoGGi_yellow>build a wonder</color> achievement)."
 302535920000423, "Unlock Crops"

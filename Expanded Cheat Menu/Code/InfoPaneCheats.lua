@@ -226,6 +226,10 @@ It don't matter if you're black or white"]]],
 		des = TranslationTable[302535920000981--[[Bump the time they've spent on Mars.]]],
 	},
 
+
+
+
+
 -- Building
 	VisitorsDbl = {des = doublec},
 	VisitorsDef = {des = resetc},
@@ -301,6 +305,11 @@ It don't matter if you're black or white"]]],
 		des = TranslationTable[302535920001630--[[Decrease lake volume by 5.]]],
 	},
 
+
+
+
+
+
 -- Rover/Drone
 	BattCapDbl = {
 		des = TranslationTable[302535920001216--[[Double the battery capacity.]]],
@@ -336,6 +345,11 @@ It don't matter if you're black or white"]]],
 	SpawnAllDrones = {
 		des = TranslationTable[302535920001470--[[Try to spawn all prefabs at this dronehub.]]],
 	},
+
+
+
+
+
 
 -- Rocket/Shuttles
 	-- when i added a "working" AddDust to rockets it showed up twice, so i'm lazy
@@ -374,6 +388,11 @@ It don't matter if you're black or white"]]],
 		icon = "UI/Icons/res_fuel.tga",
 	},
 
+
+
+
+
+
 -- Units
 	Breadcrumbs = {
 		des = TranslationTable[302535920001464--[[Leave a trail of rudimentary orbs.]]],
@@ -402,6 +421,11 @@ It don't matter if you're black or white"]]],
 	SpawnLlama = {
 		des = TranslationTable[302535920001632--[[Spawn an animal.]]],
 	},
+
+
+
+
+
 
 -- Misc
 	MoveRealm = {
@@ -446,6 +470,19 @@ It don't matter if you're black or white"]]],
 	SpawnFirefly = {
 		des = TranslationTable[302535920001616--[[Spawn a firefly.]]],
 	},
+	ChangeGrade = {
+		des = TranslationTable[302535920000977--[[Change grade of a deposit.]]],
+	},
+	FillWater = {
+		des = TranslationTable[302535920001646--[[Max out the stored water to fire it up immediately.]]],
+	},
+	DeleteAllObjects = {
+		des = TranslationTable[302535920001664--[[Do you want to delete all objects that are the same as this object from the map?]]],
+	},
+
+
+
+
 
 -- crystal myst
 	SpawnDustDevil = {
@@ -462,12 +499,6 @@ It don't matter if you're black or white"]]],
 	},
 	StartLiftoff = {
 		des = TranslationTable[302535920001597--[[Makes all crystals liftoff and head to the centre.]]],
-	},
-	ChangeGrade = {
-		des = TranslationTable[302535920000977--[[Change grade of a deposit.]]],
-	},
-	FillWater = {
-		des = TranslationTable[302535920001646--[[Max out the stored water to fire it up immediately.]]],
 	},
 }
 -- stuff checked in the SetInfoPanelCheatHints func
@@ -521,7 +552,7 @@ function ChoGGi.InfoFuncs.CheckForMissingCheatDes()
 		end
 	end
 	if next(missing) then
-		ChoGGi.ComFuncs.OpenInExamineDlg(missing)
+		ComFuncs.OpenInExamineDlg(missing)
 	else
 		print("No missing cheat descriptions.")
 	end
@@ -703,9 +734,30 @@ function CObject:CheatToggleSigns()
 	end
 end
 
+function CObject:CheatDeleteAllObjects()
+	local id = ComFuncs.RetTemplateOrClass(self)
+
+	local function CallBackFunc(answer)
+		if answer then
+			local objs = ComFuncs.MapGet(id)
+			for i = 1, #objs do
+				ComFuncs.DeleteObject(objs[i], true)
+			end
+		end
+	end
+
+	ComFuncs.QuestionBox(
+		TranslationTable[6779--[[Warning]]] .. "!\n" .. TranslationTable[697--[[Destroy]]] .. " " .. TranslationTable[4493--[[All]]] .. ": " .. id,
+		CallBackFunc,
+		TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[697--[[Destroy]]],
+		TranslationTable[697--[[Destroy]]] .. " " .. TranslationTable[4493--[[All]]] .. " " .. id,
+		TranslationTable[1176--[[Cancel Destroy]]]
+	)
+end
+
 function CObject:CheatMoveRealm(map_id)
 	if map_id then
-		ChoGGi.ComFuncs.MoveRealm(self, map_id)
+		ComFuncs.MoveRealm(self, map_id)
 		return
 	end
 
@@ -736,10 +788,10 @@ function CObject:CheatMoveRealm(map_id)
 			return
 		end
 
-		ChoGGi.ComFuncs.MoveRealm(self, choice[1].map_id)
+		ComFuncs.MoveRealm(self, choice[1].map_id)
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = TranslationTable[302535920001262--[[Move To Realm]]],
@@ -809,13 +861,13 @@ function Colonist:CheatPrefDef()
 	self.performance = self:GetClassValue("performance")
 end
 function Colonist:CheatRandomGender()
-	ChoGGi.ComFuncs.ColonistUpdateGender(self, ChoGGi.Tables.ColonistGenders[Random(1, #ChoGGi.Tables.ColonistGenders)])
+	ComFuncs.ColonistUpdateGender(self, ChoGGi.Tables.ColonistGenders[Random(1, #ChoGGi.Tables.ColonistGenders)])
 end
 function Colonist:CheatRandomAge()
-	ChoGGi.ComFuncs.ColonistUpdateAge(self, ChoGGi.Tables.ColonistAges[Random(1, #ChoGGi.Tables.ColonistAges)])
+	ComFuncs.ColonistUpdateAge(self, ChoGGi.Tables.ColonistAges[Random(1, #ChoGGi.Tables.ColonistAges)])
 end
 function Colonist:CheatDie()
-	ChoGGi.ComFuncs.QuestionBox(
+	ComFuncs.QuestionBox(
 		TranslationTable[6779--[[Warning]]] .. "!\n" .. TranslationTable[302535920001430--[[Kill colonist-]]] .. "?",
 		function(answer)
 			if answer then
@@ -827,7 +879,7 @@ function Colonist:CheatDie()
 end
 
 function Unit:CheatBreadcrumbs()
-	return ChoGGi.ComFuncs.ToggleBreadcrumbs(self)
+	return ComFuncs.ToggleBreadcrumbs(self)
 end
 
 -- CheatAllShifts
@@ -857,13 +909,13 @@ function Workplace:CheatWorkAuto()
 	else
 		self.auto_performance = 100
 	end
-	ChoGGi.ComFuncs.ToggleWorking(self)
+	ComFuncs.ToggleWorking(self)
 end
 function Workplace:CheatWorkManual()
 	self.max_workers = nil
 	self.automation = nil
 	self.auto_performance = nil
-	ChoGGi.ComFuncs.ToggleWorking(self)
+	ComFuncs.ToggleWorking(self)
 end
 
 -- Deposits
@@ -889,7 +941,7 @@ local function CheatChangeGrade(self)
 		self.grade = choice[1].value
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = TranslationTable[302535920000977--[[Change grade of a deposit.]]],
@@ -961,7 +1013,7 @@ local function CheatChargeDbl(obj)
 
 	grid.max_charge = c_new
 	grid.max_discharge = d_new
-	ChoGGi.ComFuncs.ToggleWorking(obj)
+	ComFuncs.ToggleWorking(obj)
 end
 local function CheatCapDbl(obj)
 	local cap_key, grid = RetGridValues(obj)
@@ -969,7 +1021,7 @@ local function CheatCapDbl(obj)
 	obj[cap_key] = new
 	grid.storage_capacity = new
 	grid.storage_mode = "charging"
-	ChoGGi.ComFuncs.ToggleWorking(obj)
+	ComFuncs.ToggleWorking(obj)
 end
 local function CheatChargeDef(obj)
 	local c_key, d_key, grid = RetGridCharValues(obj)
@@ -979,7 +1031,7 @@ local function CheatChargeDef(obj)
 	obj[d_key] = d_new
 	grid.max_charge = c_new
 	grid.max_discharge = d_new
-	ChoGGi.ComFuncs.ToggleWorking(obj)
+	ComFuncs.ToggleWorking(obj)
 end
 local function CheatCapDef(obj)
 	local cap_key, grid = RetGridValues(obj)
@@ -987,7 +1039,7 @@ local function CheatCapDef(obj)
 	obj[cap_key] = new
 	grid.storage_capacity = new
 	grid.storage_mode = "full"
-	ChoGGi.ComFuncs.ToggleWorking(obj)
+	ComFuncs.ToggleWorking(obj)
 end
 ElectricityStorage.CheatCapDbl = CheatCapDbl
 ElectricityStorage.CheatCapDef = CheatCapDef
@@ -1041,7 +1093,7 @@ function Drone:CheatBattCapDbl()
 	self.battery_max = self.battery_max * 2
 end
 function Drone:CheatBattCapDef()
-	self.battery_max = ChoGGi.ComFuncs.GetResearchedTechValue("DroneBatteryMax")
+	self.battery_max = ComFuncs.GetResearchedTechValue("DroneBatteryMax")
 end
 
 -- CheatMoveSpeedDbl
@@ -1100,7 +1152,7 @@ function DroneHub:CheatSpawnAllDrones()
 	local city = self.city
 	local free_slots = self:GetFreeConstructionSlotsForDrones()
 
-	for i = 1, free_slots do
+	for _ = 1, free_slots do
 		if city.drone_prefabs == 0 then
 			break
 		end
@@ -1248,10 +1300,10 @@ function SecurityStation:CheatReneagadeCapDef()
 end
 
 function RocketBase:CheatCapDbl()
-	ChoGGi.ComFuncs.SetTaskReqAmount(self, self.max_export_storage * 2, "export_requests", "max_export_storage")
+	ComFuncs.SetTaskReqAmount(self, self.max_export_storage * 2, "export_requests", "max_export_storage")
 end
 function RocketBase:CheatCapDef()
-	ChoGGi.ComFuncs.SetTaskReqAmount(self, self:GetClassValue("max_export_storage"), "export_requests", "max_export_storage")
+	ComFuncs.SetTaskReqAmount(self, self:GetClassValue("max_export_storage"), "export_requests", "max_export_storage")
 end
 
 --~ function RocketBase:CheatAddFuel()
@@ -1325,7 +1377,7 @@ function Dome:CheatCrimeEvent()
 		choice[1].value(self)
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = TranslationTable[302535920001541--[[Start a Crime Event]]],

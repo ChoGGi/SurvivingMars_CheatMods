@@ -9,6 +9,20 @@ local Translate = ChoGGi.ComFuncs.Translate
 local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 local TranslationTable = TranslationTable
 
+function ChoGGi.MenuFuncs.RemoveRealmLimits_Toggle()
+	ChoGGi.UserSettings.RemoveRealmLimits = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.RemoveRealmLimits)
+
+	if ChoGGi.UserSettings.RemoveRealmLimits then
+		ChoGGi.ComFuncs.DisableBuildingsDie()
+	end
+
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RemoveRealmLimits),
+		TranslationTable[302535920001633--[[Remove Realm Limits]]]
+	)
+end
+
 function ChoGGi.MenuFuncs.UnlockCrops()
 	local item_list = {}
 	local c = 0

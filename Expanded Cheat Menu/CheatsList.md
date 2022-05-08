@@ -402,6 +402,8 @@ ECM.Buildings.Toggles>Maintenance Free: Building maintenance points reverse (tak
 ECM.Buildings.Toggles>Pipes pillar spacing: 1000: Only place Pillars at start and end.
 ECM.Buildings.Toggles>Remove Building Limits: Buildings can be placed almost anywhere.
 See also Remove Spire Point Limit.
+ECM.Buildings.Toggles>Remove Realm Limits: Buildings from Asteroid/Underground/Surface can be built in any of the others.
+Restart is needed when disabling this option!
 ECM.Buildings.Toggles>Remove Spire Point Limit: Build spires anywhere in domes.
 Use with Remove Building Limits to fill up a dome with spires.
 ECM.Buildings.Toggles>Remove Sponsor Limits: Allow you to build all buildings no matter your sponsor.
@@ -608,7 +610,7 @@ Game.Render>Video Memory: Sets hr.DTM_VideoMemory (Menu>Options>Video>Textures),
 Game.Screenshot>Screenshot Upsampled: Write screenshot upsampled
 Game.Screenshot>Screenshot: Write screenshot
 Game.Screenshot>Show Interface in Screenshots: Do you want to see the interface in screenshots?
-Game.Terrain>Delete Grass Bushes Trees: Removes Grass Bushes Trees for that smooth map feel.
+Game.Terrain>Delete Bushes Trees: Cleans your Mars of alien shrubbery.
 Game.Terrain>Delete Large Rocks: Removes rocks for that smooth map feel.
 Game.Terrain>Delete Small Rocks: Removes rocks for that smooth map feel.
 Game.Terrain>Terrain Editor Toggle: Opens up the map editor with the brush tool visible.

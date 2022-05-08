@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v11.4 (Unreleased)
+## v11.5 (Unreleased)
+
+## v11.4 (7 May 2022)
 - Fixed Emergency Lua GC (from this mod at least, thanks Tremualin).
 - FindNearestResource counts resources stored in building depots.
 - Prints a warning if paradox account isn't signed in (mods won't update).

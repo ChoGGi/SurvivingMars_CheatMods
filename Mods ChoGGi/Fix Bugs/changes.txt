@@ -1,3 +1,8 @@
+v1.8
+Probably mod related:
+A rocket missing the cargo table.
+g_ActiveOnScreenNotifications isn't a table.
+
 v1.7
 Removed fixes:
 Elevator prefabs pulling a Houdini.

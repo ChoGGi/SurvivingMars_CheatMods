@@ -3,9 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
-302535920001633, ""
-302535920001663, ""
-302535920001664, ""
 302535920001665, ""
 302535920001666, ""
 302535920001667, ""
@@ -190,6 +187,7 @@ do !Skipped Line! [[ImageViewer.lua]] !Skipped Line!
 302535920000109, "Invalid Image"
 end !Skipped Line!
 do !Skipped Line! [[InfoPaneCheats.lua]] !Skipped Line!
+302535920001664, "Do you want to delete all objects that are the same as this object from the map?"
 302535920001470, "Try to spawn all prefabs at this dronehub."
 302535920001262, "Move To Realm"
 302535920001380, "Move object to new realm"
@@ -734,6 +732,10 @@ do !Skipped Line! [[ResourcesMenu.lua" "ResourcesFunc.lua]] !Skipped Line!
 Fix with: %s"
 end	!Skipped Line!
 do !Skipped Line! [[BuildingsMenu.lua" "BuildingsFunc.lua]] !Skipped Line!
+302535920001633, "Remove Realm Limits"
+302535920001663, "Buildings from Asteroid/Underground/Surface can be built in any of the others.
+
+Restart is needed when disabling this option!"
 302535920000159, "Unlimited Wonders"
 302535920000223, "Unlimited wonder build limit (blocks the <color ChoGGi_yellow>build a wonder</color> achievement)."
 302535920000423, "Unlock Crops"

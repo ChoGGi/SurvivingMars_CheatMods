@@ -542,6 +542,24 @@ Actions[c] = {ActionName = TranslationTable[302535920000184--[[Unlimited Connect
 	OnAction = ChoGGi.MenuFuncs.UnlimitedConnectionLength_Toggle,
 }
 
+if g_AvailableDlc.picard then
+	c = c + 1
+	Actions[c] = {ActionName = TranslationTable[302535920001633--[[Remove Realm Limits]]],
+		ActionMenubar = "ECM.ECM.Buildings.Toggles",
+		ActionId = ".Remove Realm Limits",
+		ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
+		RolloverText = function()
+			return SettingState(
+				ChoGGi.UserSettings.RemoveRealmLimits,
+				TranslationTable[302535920001663--[["Buildings from Asteroid/Underground/Surface can be built in any of the others.
+
+Restart is needed when disabling this option!"]]]
+			)
+		end,
+		OnAction = ChoGGi.MenuFuncs.RemoveRealmLimits_Toggle,
+	}
+end
+
 if g_AvailableDlc.gagarin then
 	c = c + 1
 	Actions[c] = {ActionName = TranslationTable[302535920001398--[[Remove Sponsor Limits]]],
