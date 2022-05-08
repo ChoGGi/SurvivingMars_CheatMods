@@ -21,7 +21,8 @@ do -- ModUpload
 	-- boost timeout for busy server (default 10000)
 --~ 	PopsAsyncOpTimeout = 20000
 
-	-- since they use the title as the folder name you can't use the same name as other mods, or mods that got blocked and I'm supposed to re-upload
+	-- Since paradox uses the title as the folder name you can't use the same name as other mods, or mods that got blocked and I'm supposed to re-upload
+	-- If you delete a mod, the name of it is stuck in the paradox ether
 	-- CopyToClipboard([[	"pops_any_uuid", "]] .. GetUUID() .. [[",]])
 	local diff_mod_titles_paradox = {
 		-- extra spaces intentional (thank you paradox mods)
@@ -40,11 +41,11 @@ do -- ModUpload
 		ChoGGi_UnitThoughts = "Unit Thoughts (upload 3)",
 		ChoGGi_WideAreaForestation = "Wide Area Forestation (upload 2)",
 	}
-	-- green ecm/lib so I don't accidentally upload them
-	local coloured_titles = {
-		[ChoGGi.id_lib] = true,
-		[ChoGGi.id] = true,
-	}
+--~ 	-- green ecm/lib so I don't accidentally upload them
+--~ 	local coloured_titles = {
+--~ 		[ChoGGi.id_lib] = true,
+--~ 		[ChoGGi.id] = true,
+--~ 	}
 
 	-- true = desktop, false = desktop/console
 	local upload_to_whichplatform = false
@@ -686,9 +687,9 @@ You can also stick the executable in the profile folder to use it instead (<gree
 				end
 				-- colour mine so I don't clicky
 				local title = mod.title
-				if coloured_titles[id] then
-					title = "<color ChoGGi_green>" .. title .. "</color>"
-				end
+--~ 				if coloured_titles[id] then
+--~ 					title = "<color ChoGGi_green>" .. title .. "</color>"
+--~ 				end
 				c = c + 1
 				item_list[c] = {
 					text = title,

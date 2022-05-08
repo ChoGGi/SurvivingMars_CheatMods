@@ -1,3 +1,6 @@
+v0.4
+Now properly shows title: text.
+
 v0.3
 Compatible with Sherlock (thanks lyssabet).
 

@@ -15,7 +15,8 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagGameplay", true,
 	"TagBuildings", true,
-	"description", [[Salvaging a Building/Rover will drop the full amount of resources instead of the paltry sum tossed your way.
+	"description", [[
+Salvaging a Building/Rover will drop the full amount of resources instead of the paltry sum tossed your way.
 
 Mod Options:
 Percent Drop: How much of full amount to drop.

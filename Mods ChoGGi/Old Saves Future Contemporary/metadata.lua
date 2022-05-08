@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Older Saves Future Contemporary",
+	"title", "Old Saves Future Contemporary",
 	"id", "ChoGGi_OlderSavesFutureContemporary",
 	"steam_id", "2801529145",
 	"pops_any_uuid", "1cb89802-593a-46e7-b0e1-cfe8a75cf9ac",

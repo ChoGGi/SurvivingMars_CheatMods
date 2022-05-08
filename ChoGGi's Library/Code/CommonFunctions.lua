@@ -3294,9 +3294,9 @@ do -- RetNearestResource/FindNearestResource
 			stockpiles = list
 			res_amount = amount
 		else
-			-- attached stockpiles/stockpiles left from removed objects
+			-- all stockpiles (attached to building, abandoned, and regular depots)
 			if skip_stocks then
-				stockpiles = MapGet("map", "ResourceStockpile", "ResourceStockpileLR")
+				stockpiles = MapGet("map", "ResourceStockpileBase")
 			else
 				table.iclear(stockpiles_table)
 				stockpiles = stockpiles_table
@@ -3323,7 +3323,10 @@ do -- RetNearestResource/FindNearestResource
 			-- check if depot has the resource
 			if (depot.resource == res_resource or table.find(depot.resource, res_resource))
 				-- check if depot has resource amount
-				and depot[GetStored] and depot[GetStored](depot) >= res_amount
+				and (
+					depot[GetStored] and depot[GetStored](depot) >= res_amount or
+					depot[resource] and depot[resource] >= res_amount
+				)
 			then
 				return true
 			end
@@ -3333,10 +3336,8 @@ do -- RetNearestResource/FindNearestResource
 
 	function ChoGGi.ComFuncs.FindNearestResource(obj)
 		-- If fired from action menu
-		if IsKindOf(obj, "XAction") then
+		if IsKindOf(obj, "XAction") or not obj then
 			obj = SelObject()
-		else
-			obj = obj or SelObject()
 		end
 
 		if not IsValid(obj) then

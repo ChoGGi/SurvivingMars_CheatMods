@@ -1,3 +1,6 @@
+v2.0
+Disabled underground wonders till I figure out why my seed isn't the right seed.
+
 v1.9
 Made it show two underground wonders.
 

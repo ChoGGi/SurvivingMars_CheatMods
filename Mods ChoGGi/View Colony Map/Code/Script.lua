@@ -47,6 +47,8 @@ local function ShowDialogs(map, gen)
 	end
 end
 
+local temp_params
+
 -- create/update image when landing spot changes
 local ChoOrig_GetOverlayValues = GetOverlayValues
 function GetOverlayValues(lat, long, overlay_grids, params, ...)
@@ -69,8 +71,11 @@ end
 
 -- kill off image dialogs
 function OnMsg.ChangeMapDone()
--- keep dialog opened after
---~ 	do return end
+	-- keep dialog opened after
+	if ChoGGi.testing then
+		return
+	end
+
 	local dlgs = terminal.desktop
 	for i = #dlgs, 1, -1 do
 		local dlg = dlgs[i]
@@ -223,10 +228,10 @@ DefineClass.ChoGGi_VCM_ExtraInfoDlg = {
 	translated_tech = false,
 --~ 	omega_msg = false,
 --~ 	show_omegas = false,
-	planet_msg_count = 0,
-	planet_msg = false,
-	breakthrough_msg = false,
-	undergound_msg = false,
+	planet_title_count = 0,
+	planet_title = false,
+	breakthrough_title = false,
+	undergound_title = false,
 	-- B&B dlc
 	is_picard = false,
 
@@ -251,7 +256,8 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 	-- text box with obj info in it
 	self:AddScrollText()
 
-	self.is_picard = g_AvailableDlc.picard
+--~ 	self.is_picard = g_AvailableDlc.picard
+	self.is_picard = false
 
 	-- make it clearer when randoms are go
 	local title_text = T(11451, "Breakthrough")
@@ -298,16 +304,16 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 				.. name .. "</h></color>"
 		end
 
-		self.undergound_msg = "<color 200 200 256>"
+		self.undergound_title = "<color 200 200 256>"
 			.. Translate(203070175929, "Buried Wonders") .. ":</color>"
 	end
 
-	self.planet_msg_count = Consts.PlanetaryBreakthroughCount + 1
+	self.planet_title_count = Consts.PlanetaryBreakthroughCount + 1
 
-	self.breakthrough_msg = "\n\n<color 200 200 256>" .. Translate(title_text)
+	self.breakthrough_title = "\n\n<color 200 200 256>" .. Translate(9, "Anomaly")
 		.. ":</color>"
 
-	self.planet_msg = (self.is_picard and "\n\n" or "") .. "<color 200 200 256>"
+	self.planet_title = (self.is_picard and "\n\n" or "") .. "<color 200 200 256>"
 		.. Translate(11234, "Planetary Anomaly") .. ":</color>"
 
 	CreateRealTimeThread(function()
@@ -371,9 +377,9 @@ function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(gen)
 	end
 
 	-- add bt text after the first four (POIs)
-	table.insert(display_list, self.planet_msg_count, self.breakthrough_msg)
+	table.insert(display_list, self.planet_title_count, self.breakthrough_title)
 	-- first four are POI breaks
-	table.insert(display_list, 1, self.planet_msg)
+	table.insert(display_list, 1, self.planet_title)
 
 --~ 	if self.show_omegas then
 --~ 		-- 3 from the end
@@ -383,23 +389,22 @@ function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(gen)
 	-- add buried wonder
 	if self.is_picard then
 		local rand_state = gen.rand_state
-		-- probably not needed
 		if not rand_state then
 			rand_state = RandState(gen.Seed)
 		end
-
+--~   local rand, rrand, trand, crand, grand = table.unpack(env.rhelpers)
+--~ 		print("CXCCCCCCCCCC",rand, rrand, trand, crand, grand)
 		-- CommonLua\RandomMap\RandomMapGenerator.lua
 		local function rand(min, max)
 			return rand_state:GetStable(min, max)
 		end
 		local shuffled_wonders = table.copy(const.BuriedWonders)
---~ 		local num_wonders = #shuffled_wonders
 		table.shuffle(shuffled_wonders, rand)
 		table.insert(display_list, 1, self.translated_tech[shuffled_wonders[1]])
 		table.insert(display_list, 2, self.translated_tech[shuffled_wonders[2]])
 
 		-- add bt text after the first four (POIs)
-		table.insert(display_list, 1, self.undergound_msg)
+		table.insert(display_list, 1, self.undergound_title)
 	end
 
 	self.idText:SetText(table.concat(display_list, "\n"))

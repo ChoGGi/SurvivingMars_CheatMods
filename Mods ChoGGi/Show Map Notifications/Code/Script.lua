@@ -34,22 +34,26 @@ function MapSwitch.GetEntries(...)
 				local notifs_text = {}
 
 				for j = 1, #map_notifications do
-					local notif = map_notifications[j][3]
+					local params = map_notifications[j][3]
 
-					-- ugly but good enough
-					if notif.rollover_title then
-						notifs_text[j] = notif.rollover_title .. (notif.count and ": " .. notif.count or "")
-					else
-						local preset = OnScreenNotificationPresets[notif.preset_id] or map_notifications[j].custom_preset
+						local preset = OnScreenNotificationPresets[params.preset_id] or map_notifications[j].custom_preset
 						if preset then
-							notifs_text[j] = T{preset.text,
-								count = notif.count or 0,
-							}
+							local text_list = {}
+							text_list[1] = T{preset.title, params}
+
+							-- function OnScreenNotification:SetTexts(preset, params)
+							local text = params and params.override_text or preset.text
+							text = T{text, params}
+							if params.additional_text then
+								text = text .. T{params.additional_text, params}
+							end
+							text_list[2] = T{text, params}
+							-- merge it
+							notifs_text[j] = table.concat(text_list, ": ")
 						else
 							-- fallback
 							notifs_text[j] = tostring(map_notifications[j][1])
 						end
-					end
 
 				end
 				realm.RolloverText = realm.RolloverText .. T("\n\n<green>") .. T(7582--[[Notifications]])
