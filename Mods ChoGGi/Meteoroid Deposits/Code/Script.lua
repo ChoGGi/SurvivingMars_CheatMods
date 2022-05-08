@@ -96,6 +96,11 @@ local function UnlockBuildings()
 		return
 	end
 
+	local empty = {"","","",""}
+	local die = DisabledInEnvironment
+	die.MicroGAutoExtractor = empty
+	die.MicroGExtractor = empty
+
 	local bt = BuildingTemplates
 	bt.MicroGAutoExtractor.disabled_in_environment1 = ""
 	bt.MicroGAutoExtractor.disabled_in_environment2 = ""

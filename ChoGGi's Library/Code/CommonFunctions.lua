@@ -224,6 +224,9 @@ do -- RetName
 			local g = _G
 
 			lookup_table = ChoGGi_lookup_names or {}
+			-- Emergency Lua GC fix (thanks Tremualin)
+			table.clear(lookup_table)
+
 			lookup_table[g.terminal.desktop] = "terminal.desktop"
 
 			AddFuncs("lfs")
