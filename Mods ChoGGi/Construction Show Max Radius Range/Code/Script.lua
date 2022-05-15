@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 local mod_ShowConstruct
-local mod_SetMaxRadius
+--~ local mod_SetMaxRadius
 local mod_ShowMaxDroneHubRadius
 
 local function ModOptions(id)
@@ -11,7 +11,7 @@ local function ModOptions(id)
 	end
 
 	mod_ShowConstruct = CurrentModOptions:GetProperty("ShowConstruct")
-	mod_SetMaxRadius = CurrentModOptions:GetProperty("SetMaxRadius")
+--~ 	mod_SetMaxRadius = CurrentModOptions:GetProperty("SetMaxRadius")
 	mod_ShowMaxDroneHubRadius = CurrentModOptions:GetProperty("ShowMaxDroneHubRadius")
 end
 -- Load default/saved settings
@@ -106,31 +106,31 @@ end
 -- since the circle gets attached to the CursorBuilding it'll be removed when it's removed, no need to fiddle with :Done()
 
 
--- set max radius
-function OnMsg.BuildingInit(obj)
-	if not mod_SetMaxRadius then
-		return
-	end
-	if obj:IsKindOfClasses("CoreHeatConvector", "TriboelectricScrubber") then
-		return
-	end
+--~ -- set max radius
+--~ function OnMsg.BuildingInit(obj)
+--~ 	if not mod_SetMaxRadius then
+--~ 		return
+--~ 	end
+--~ 	if obj:IsKindOfClasses("CoreHeatConvector", "TriboelectricScrubber") then
+--~ 		return
+--~ 	end
 
-	-- If ECM is active we check for custom range, otherwise use default
-	local uirange
-	local idx = table.find(ModsLoaded, "id", "ChoGGi_Library")
-	if idx then
-		local bs = ChoGGi.UserSettings.BuildingSettings[obj.template_name]
-		if bs and bs.uirange then
-			uirange = bs.uirange
-		end
-	end
-	-- don't call func if we have a range from ECM
-	local prop = not uirange and obj:GetPropertyMetadata("UIRange")
-	uirange = uirange or prop and prop.max
+--~ 	-- If ECM is active we check for custom range, otherwise use default
+--~ 	local uirange
+--~ 	local idx = table.find(ModsLoaded, "id", "ChoGGi_Library")
+--~ 	if idx then
+--~ 		local bs = ChoGGi.UserSettings.BuildingSettings[obj.template_name]
+--~ 		if bs and bs.uirange then
+--~ 			uirange = bs.uirange
+--~ 		end
+--~ 	end
+--~ 	-- don't call func if we have a range from ECM
+--~ 	local prop = not uirange and obj:GetPropertyMetadata("UIRange")
+--~ 	uirange = uirange or prop and prop.max
 
-	-- set it
-	obj.UIRange = uirange
-end
+--~ 	-- set it
+--~ 	obj.UIRange = uirange
+--~ end
 
 function OnMsg.ConstructionSitePlaced(obj)
 	if obj.building_class_proto:IsKindOf("TriboelectricScrubber") then

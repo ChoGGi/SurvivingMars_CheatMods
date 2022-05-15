@@ -736,7 +736,7 @@ do !Skipped Line! [[BuildingsMenu.lua" "BuildingsFunc.lua]] !Skipped Line!
 302535920001663, "Buildings from Asteroid/Underground/Surface can be built in any of the others.
 
 Restart is needed when disabling this option!"
-302535920000159, "Unlimited Wonders"
+302535920000159, "Remove Wonder Limit"
 302535920000223, "Unlimited wonder build limit (blocks the <color ChoGGi_yellow>build a wonder</color> achievement)."
 302535920000423, "Unlock Crops"
 302535920000444, "Shows list of locked crops."

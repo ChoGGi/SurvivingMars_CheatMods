@@ -1,3 +1,6 @@
+v0.4
+Fixed inf loop from age traits (thanks Tremualin).
+
 v0.3
 Mod option to remove applicants over a certain age (default none).
 

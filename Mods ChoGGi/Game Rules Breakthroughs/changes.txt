@@ -1,3 +1,6 @@
+v1.9
+Exclude Breakthroughs should properly return a random tech.
+
 v1.8
 Picard update.
 

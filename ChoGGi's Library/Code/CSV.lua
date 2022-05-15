@@ -254,7 +254,7 @@ do -- MapData
 				{"longitude_degree", TranslationTable[6892--[[Longitude]]] .. " " .. TranslationTable[302535920001505--[[°]]]},
 				{"longitude", TranslationTable[6892--[[Longitude]]]},
 				{"topography", TranslationTable[284813068603--[[Topography]]]},
-				{"diff_chall", TranslationTable[774720837511--[[Difficulty Challenge ]]]:gsub(" <percentage>%%", "")},
+				{"diff_chall", TranslationTable[774720837511]:gsub(" <percent%(DifficultyBonus%)>", ""):gsub(" <percentage>%%", "")},
 				{"altitude", TranslationTable[4135--[[Altitude]]]},
 				{"temperature", TranslationTable[4141--[[Temperature]]]},
 

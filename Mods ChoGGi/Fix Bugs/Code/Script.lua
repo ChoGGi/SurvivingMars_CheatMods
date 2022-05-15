@@ -66,6 +66,13 @@ do -- CityStart/LoadGame
 		local bmpo = BuildMenuPrerequisiteOverrides
 		local ResupplyItemDefinitions = ResupplyItemDefinitions
 
+
+		-- Fix Defence Towers Not Firing At Rovers (x2)
+		local hostile = MainCity.labels.HostileAttackRovers or ""
+		if #hostile > 0 then
+			UIColony.mystery.can_shoot_rovers = true
+		end
+
 		-- Probably from a mod (a *badly* done mod)
 		if type(g_ActiveOnScreenNotifications) ~= "table" then
 			g_ActiveOnScreenNotifications = {}

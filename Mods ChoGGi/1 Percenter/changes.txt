@@ -1,3 +1,6 @@
+v0.7
+Added enable mod option.
+
 v0.6
 Picard update.
 

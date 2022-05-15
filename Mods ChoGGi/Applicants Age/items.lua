@@ -10,7 +10,7 @@ return {
 	PlaceObj("ModItemOptionNumber", {
 		"name", "MaxAge",
 		"DisplayName", T(0000, "Max Age"),
-		"Help", T(0000, "Applicants over this age are removed from the applicant pool."),
+		"Help", T(0000, "Applicants over this age are removed from the applicant pool (Mid aged are 31, Senior are 61)."),
 		"DefaultValue", 0,
 		"MinValue", 0,
 		"MaxValue", 150,

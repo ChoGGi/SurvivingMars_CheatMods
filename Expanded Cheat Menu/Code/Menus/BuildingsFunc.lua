@@ -1534,7 +1534,7 @@ function ChoGGi.MenuFuncs.Building_wonder_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.Building_wonder),
-		TranslationTable[302535920000159--[[Unlimited Wonders]]]
+		TranslationTable[302535920000159--[[Remove Wonder Limit]]]
 	)
 end
 

@@ -6,9 +6,9 @@ if g_AvailableDlc.gagarin then
 	function FlyingDrone.Goto(...)
 		local ChoOrig_storm = g_DustStorm
 		g_DustStorm = false
-		local ret = ChoOrig_FlyingDrone_Goto(...)
+		local result, ret = pcall(ChoOrig_FlyingDrone_Goto, ...)
 		g_DustStorm = ChoOrig_storm
-		return ret
+		return result and ret
 	end
 end
 

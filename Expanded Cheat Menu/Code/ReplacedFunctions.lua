@@ -1411,7 +1411,7 @@ function OnMsg.ClassesPostprocess()
 			-- make sure infopanel is above hud (and pins)
 			local hud = Dialogs.HUD
 			if hud then
-				self:SetZOrder(hud.ZOrder+1 or 1)
+				self:SetZOrder(hud.ZOrder + 1)
 			end
 
 			-- give me the scroll. goddamn it blinky

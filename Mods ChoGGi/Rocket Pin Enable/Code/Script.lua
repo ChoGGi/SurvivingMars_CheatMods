@@ -62,7 +62,6 @@ function RocketBase:UpdateStatus(status, ...)
 
 	pcall(ChoOrig_RocketBase_UpdateStatus, self, status, ...)
 
-	self.SetPinned = ChoOrig_RocketBase_SetPinned
 	self.SetPinned = ChoOrig_SetPinned or ChoOrig_RocketBase_SetPinned
 	ChoOrig_SetPinned = nil
 end

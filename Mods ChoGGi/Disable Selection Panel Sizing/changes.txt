@@ -1,3 +1,6 @@
+v0.8
+Missed a local...
+
 v0.7
 Hopefully fixed it hiding map switch/hud icons.
 

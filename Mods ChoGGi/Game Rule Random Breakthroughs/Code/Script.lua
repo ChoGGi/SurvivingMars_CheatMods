@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+local pcall = pcall
+local IsGameRuleActive = IsGameRuleActive
+
 function OnMsg.ClassesPostprocess()
 	if GameRulesMap.ChoGGi_RandomBreakthroughs then
 		return
@@ -24,7 +27,7 @@ end
 -- anomalies for ground/planetary (last checked class picard 1008224)
 local ChoOrig_City_InitBreakThroughAnomalies = City.InitBreakThroughAnomalies
 function City.InitBreakThroughAnomalies(...)
-	if g_CurrentMissionParams.idGameRules.ChoGGi_RandomBreakthroughs then
+	if IsGameRuleActive("ChoGGi_RandomBreakthroughs") then
 		StableShuffle = ChoFake_StableShuffle
 	end
 	local result, ret = pcall(ChoOrig_City_InitBreakThroughAnomalies, ...)
@@ -39,7 +42,7 @@ end
 -- make omega true random (well truer)
 local ChoOrig_OmegaTelescope_UnlockBreakthroughs = OmegaTelescope.UnlockBreakthroughs
 function OmegaTelescope.UnlockBreakthroughs(...)
-	if g_CurrentMissionParams.idGameRules.ChoGGi_RandomBreakthroughs then
+	if IsGameRuleActive("ChoGGi_RandomBreakthroughs") then
 		StableShuffle = ChoFake_StableShuffle
 	end
 	local result, ret = pcall(ChoOrig_OmegaTelescope_UnlockBreakthroughs, ...)

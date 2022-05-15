@@ -358,9 +358,9 @@ Actions[c] = {ActionName = TranslationTable[302535920001367--[[Toggles]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = TranslationTable[302535920000159--[[Unlimited Wonders]]],
+Actions[c] = {ActionName = TranslationTable[302535920000159--[[Remove Wonder Limit]]],
 	ActionMenubar = "ECM.ECM.Buildings.Toggles",
-	ActionId = ".Unlimited Wonders",
+	ActionId = ".Remove Wonder Limit",
 	ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 	RolloverText = function()
 		return SettingState(
@@ -389,7 +389,7 @@ c = c + 1
 Actions[c] = {ActionName = TranslationTable[302535920001241--[[Instant Build]]],
 	ActionMenubar = "ECM.ECM.Buildings.Toggles",
 	ActionId = ".Instant Build",
-	ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
+	ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.Building_instant_build,
@@ -565,7 +565,7 @@ if g_AvailableDlc.gagarin then
 	Actions[c] = {ActionName = TranslationTable[302535920001398--[[Remove Sponsor Limits]]],
 		ActionMenubar = "ECM.ECM.Buildings.Toggles",
 		ActionId = ".Remove Sponsor Limits",
-		ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
+		ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 		RolloverText = function()
 			return SettingState(
 				ChoGGi.UserSettings.SponsorBuildingLimits,

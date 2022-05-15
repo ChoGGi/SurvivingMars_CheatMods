@@ -136,17 +136,19 @@ function OnMsg.ClassesPostprocess()
 
 end
 
--- last checked picard 1008224: function Colony:GetUnregisteredBreakthroughs()
 local function Colony_GetUnregisteredBreakthrough(self)
 	local BreakthroughOrder = BreakthroughOrder
 	local objs = Presets.TechPreset.Breakthroughs
-	for i = 1, #objs do
-		local tech = objs[i]
+
+	local filtered_objs = table.ifilter(objs, function(_, tech)
+		-- last checked picard 1008224: function Colony:GetUnregisteredBreakthroughs()
 		-- we call this from TechAvailableCondition (inf loops are bad)
     if not table.find(BreakthroughOrder, tech.id) and not self:IsTechDiscovered(tech.id) then
-			return tech
+			return true
     end
-  end
+	end)
+
+	return table.rand(filtered_objs)
 end
 
 local lookup_rules

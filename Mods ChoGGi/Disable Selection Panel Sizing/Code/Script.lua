@@ -71,6 +71,12 @@ function InfopanelDlg:Open(...)
 			WaitMsg("OnRender")
 		until self.visible
 
+		-- make sure infopanel is above hud (and pins)
+		local hud = Dialogs.HUD
+		if hud then
+			self:SetZOrder(hud.ZOrder + 1)
+		end
+
 		-- give me the scroll. goddamn it blinky
 		if mod_ScrollSelection and infopanel_list[self.XTemplate] then
 			self.idActionButtons.parent:SetZOrder(2)

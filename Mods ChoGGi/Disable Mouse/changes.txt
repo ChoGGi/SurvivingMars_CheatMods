@@ -1,3 +1,6 @@
+v0.6
+PinDlg error msg.
+
 v0.5
 Every in-game hour set the mouse to mod option.
 

@@ -4,7 +4,7 @@
 local ChoOrig_ReportPersistErrors = ReportPersistErrors
 ChoGGi.ComFuncs.AddToOrigFuncs("ReportPersistErrors")
 function ReportPersistErrors(...)
-	local errors, warnings = ChoOrig_ReportPersistErrors(...)
+	local _, errors, warnings = pcall(ChoOrig_ReportPersistErrors, ...)
 	-- be useful for restarting threads, see if devs will add it (yeah I think that isn't happening after two dev teams are gone)
 	Msg("PostSaveGame")
 	-- the assert in PersistGame() attempts to concat a nil value

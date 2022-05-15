@@ -1,3 +1,6 @@
+v1.9
+Fix Defence Towers Not Firing At Rovers (x2).
+
 v1.8
 Probably mod related:
 A rocket missing the cargo table.

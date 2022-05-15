@@ -82,3 +82,11 @@ end
 OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
+
+
+--~ AddDisasterNotification("ColdWave2", {
+--~ 	start_time = GameTime(),
+--~ 	expiration = const.DayDuration * 6 + 432223,
+--~ 	early_warning = GetEarlyWarningText(const.DayDuration * 3 + 343432),
+--~ 	num_of_sensors = T{10979, "<tower_number> Sensor Towers", tower_number = 7}},
+--~ nil, UICity.map_id)

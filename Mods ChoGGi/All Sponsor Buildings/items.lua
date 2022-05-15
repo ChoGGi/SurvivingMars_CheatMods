@@ -11,6 +11,19 @@ local table = table
 local properties = {}
 local c = 0
 
+-- shown ame of tech
+local techs = {
+	AdvancedStirlingGenerator = "StirlingGenerator",
+	CorporateOffice = "BehavioralShaping",
+	GameDeveloper = "CreativeRealities",
+	JumperShuttleHub = "CO2JetPropulsion",
+	LowGLab = "MartianInstituteOfScience",
+	MegaMall = "GravityEngineering",
+	SolarArray = "DustRepulsion",
+	Temple = "Arcology",
+}
+local TechDef = TechDef
+
 local BuildingTemplates = BuildingTemplates
 for id, bld in pairs(BuildingTemplates) do
 	for i = 1, 3 do
@@ -30,13 +43,20 @@ for id, bld in pairs(BuildingTemplates) do
 				"Help", table.concat(T(bld.description) .. image),
 				"DefaultValue", true,
 			})
-			c = c + 1
-			properties[c] = PlaceObj("ModItemOptionToggle", {
-				"name", "ChoGGi_Tech_" .. id,
-				"DisplayName", table.concat(T(bld.display_name) .. " " .. T(3734, "Tech")),
-				"Help", T(0000, "Lock behind tech unlock."),
-				"DefaultValue", true,
-			})
+			local tech_lock = techs[id]
+			if tech_lock then
+				local def = TechDef[tech_lock]
+				c = c + 1
+				properties[c] = PlaceObj("ModItemOptionToggle", {
+					"name", "ChoGGi_Tech_" .. id,
+					"DisplayName", table.concat(T(bld.display_name) .. " " .. T(3734, "Tech")),
+					"Help", table.concat(T(0000, "Lock behind tech unlock.") ..
+						"\n\n" .. def.display_name ..
+						"\n\n<image " .. def.icon .. ">"
+					),
+					"DefaultValue", true,
+				})
+			end
 			break
 		end
 	end

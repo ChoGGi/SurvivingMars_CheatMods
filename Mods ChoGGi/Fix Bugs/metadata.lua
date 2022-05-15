@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 18,
+	"version", 19,
 	"version_major", 1,
-	"version_minor", 8,
+	"version_minor", 9,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -37,7 +37,6 @@ Fix Colonists Suffocating Inside Domes
 Fix Defence Towers Not Firing At Rovers
 Fix Double Click Select All Of Type
 Fix Farm Oxygen
-Fix Floating Rubble
 Fix Landscaping Freeze
 Fix Layout Construction Tech Lock
 Fix Locked Wind Turbine
