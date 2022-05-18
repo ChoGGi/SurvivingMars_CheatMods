@@ -117,7 +117,9 @@ do -- MapData
 			temperature = params.Temperature,
 
 			metals = threat.Metals,
-			metals_rare = threat.PreciousMetals,
+--~ 			metals_rare = threat.PreciousMetals,
+			-- last checked prunariu lua rev 1011140
+			metals_rare = threat.Metals,
 			concrete = threat.Concrete,
 			water = threat.Water,
 			dust_devils = threat.DustDevils,

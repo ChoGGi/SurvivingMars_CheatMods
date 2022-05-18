@@ -6,6 +6,7 @@ local g_AvailableDlc = g_AvailableDlc
 
 -- there's no list of all the dlc, so...
 local dlc = {
+	"ariane",
 	"armstrong",
 	"contentpack1",
 	"contentpack3",
@@ -13,14 +14,13 @@ local dlc = {
 	"gagarin",
 	"kerwin",
 	"marsvision",
+	"ockels",
 	"picard",
 	"preorder",
+	"prunariu",
 	"shepard",
 	"wubbo",
-	"ariane",
-	"ockels",
 	"zubrin",
-	"prunariu",
 }
 local dlc_names = {
 	armstrong = T(429022939682, "Green Planet"),
@@ -38,16 +38,12 @@ local dlc_names = {
 	ariane = T(392597027369, "The Future Contemporary Asset Pack"),
 	ockels = T(930916719229, "Revelation Radio"),
 	zubrin = T(990970539163, "Zubrin"),
-	prunariu = T(0000, "Prunariu"),
+	prunariu = T(168219966957, "Prunariu"),
 }
 
--- add an "arr" warning (it only came out with the pirated release)
 -- remove when released
 local unreleased = {
-	ariane = true,
-	ockels = true,
 	zubrin = true,
-	prunariu = true,
 }
 -- remove when released
 

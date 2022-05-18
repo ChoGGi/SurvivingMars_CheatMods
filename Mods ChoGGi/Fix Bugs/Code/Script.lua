@@ -67,6 +67,22 @@ do -- CityStart/LoadGame
 		local ResupplyItemDefinitions = ResupplyItemDefinitions
 
 
+		-- Fix No Power Dome Buildings
+		local ElectricityGridObject_GameInit = ElectricityGridObject.GameInit
+		for _, map in pairs(GameMaps) do
+			local objs = map.realm:MapGet("map", "ElectricityGridObject")
+			for i = 1, #objs do
+				local obj = objs[i]
+				-- should be good enough to not get false positives?
+				if obj.working == false and obj.signs.SignNoPower and IsValid(obj.parent_dome)
+					and obj.electricity and not obj.electricity.parent_dome
+				then
+					obj:DeleteElectricity()
+					ElectricityGridObject_GameInit(obj)
+				end
+			end
+		end
+
 		-- Fix Defence Towers Not Firing At Rovers (x2)
 		local hostile = MainCity.labels.HostileAttackRovers or ""
 		if #hostile > 0 then

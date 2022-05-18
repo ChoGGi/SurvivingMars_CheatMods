@@ -1,3 +1,6 @@
+v0.7
+Picard.
+
 v0.6
 AutoMode compat update.
 

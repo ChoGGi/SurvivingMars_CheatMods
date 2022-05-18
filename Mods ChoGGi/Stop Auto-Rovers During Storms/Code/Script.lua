@@ -38,11 +38,17 @@ end
 local IsAutoModeEnabled = AutoMode.IsAutoModeEnabled
 
 local function WaitItOut(idle_func, self, ...)
+	-- ignore underground/asteroids
+	if self.city.map_id ~= MainMapID then
+		return idle_func(self, ...)
+	end
+
 	if IsAutoModeEnabled(self) and g_MeteorStorm then
 		if (mod_NearestLaser or mod_NearestHub) and not self.ChoGGi_AutoRoversDuringStorms then
 			local valid_obj, working_objs
 
-			local labels = UICity.labels
+--~ 			local labels = UICity.labels
+			local labels = self.city.labels
 
 			if mod_NearestLaser then
 				-- try lasers first since towers are from mystery (usually)

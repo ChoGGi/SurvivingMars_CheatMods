@@ -1,3 +1,6 @@
+v2.0
+Added my mod Fix No Power Dome Buildings
+
 v1.9
 Fix Defence Towers Not Firing At Rovers (x2).
 
