@@ -26,6 +26,11 @@ return PlaceObj("ModDef", {
 Adds a button to forcefully delete the selected object.
 Mod option to turn off the button.
 
+
+[b]Deleting Domes[/b]: You must remove objects in it and connected to it. Use this mod to see them:
+https://steamcommunity.com/workshop/filedetails/?id=2038895989
+
+
 Relatively requested by Ericus1
 ]],
 })

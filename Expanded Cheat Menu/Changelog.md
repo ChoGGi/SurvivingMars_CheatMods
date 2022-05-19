@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v18.5 (Unreleased)
+### Removed:
+- Mystery Log: Use SkiRich's Sherlock mod instead (it's nicer anyways).
 
 ## v18.4 (7 May 2022)
 ### Added:

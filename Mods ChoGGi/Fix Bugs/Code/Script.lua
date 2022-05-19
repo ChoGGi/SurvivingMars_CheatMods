@@ -74,7 +74,7 @@ do -- CityStart/LoadGame
 			for i = 1, #objs do
 				local obj = objs[i]
 				-- should be good enough to not get false positives?
-				if obj.working == false and obj.signs.SignNoPower and IsValid(obj.parent_dome)
+				if obj.working == false and obj.signs and obj.signs.SignNoPower and IsValid(obj.parent_dome)
 					and obj.electricity and not obj.electricity.parent_dome
 				then
 					obj:DeleteElectricity()
@@ -286,12 +286,6 @@ function ClearWasteRockConstructionSite:InitBlockPass(ls, ...)
   end
 end
 
--- Newly constructed domes birth rate (thanks Athenium).
-local ChoOrig_Community_GameInit = Community.GameInit
-function Community:GameInit(...)
-  self.next_birth_check_time = GameTime()
-	return ChoOrig_Community_GameInit(self, ...)
-end
 -- If you set a transport route between two resources/stockpiles/etc and the transport just sits there like an idiot...
 local ChoOrig_RCTransport_TransferResources = RCTransport.TransferResources
 function RCTransport:TransferResources(...)

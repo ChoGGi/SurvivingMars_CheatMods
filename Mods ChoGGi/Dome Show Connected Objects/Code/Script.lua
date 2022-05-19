@@ -96,7 +96,7 @@ local function ToggleLines(dome)
 		elseif mod_MoveInvalidPosition and (bad_obj:GetVisualPos() or point20) == InvalidPos and not (bad_obj:IsKindOf("Colonist") and IsValid(bad_obj.holder)) then
 			-- stick in dome for user to remove
 			print("Dome Show Connected Objects: Moved object", RetName(bad_obj), "from invalid position to in-dome position!", dome_name)
-			bad_obj:SetPos(table.rand(dome.walkable_points or empty_table))
+			bad_obj:SetPos(table.rand(dome.walkable_points or dome:GetPos()))
 		else
 			local line = ChoGGi_OPolyline:new()
 			-- FixConstructPos sets z to ground height

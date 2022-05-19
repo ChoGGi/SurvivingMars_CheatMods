@@ -1,3 +1,10 @@
+v2.2
+Log spam (thanks Tremualin).
+
+v2.1
+Removed fix:
+Newly constructed domes birth rate (thanks Athenium).
+
 v2.0
 Added my mod Fix No Power Dome Buildings
 
