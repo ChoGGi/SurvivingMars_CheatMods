@@ -1,3 +1,6 @@
+v0.7
+Made martian born sponsor goal easier.
+
 v0.6
 Fixed drones not showing up in resupply (The name only shows Drones not Flying Drones...).
 

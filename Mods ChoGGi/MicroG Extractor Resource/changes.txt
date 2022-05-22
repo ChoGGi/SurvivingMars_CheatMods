@@ -1,3 +1,6 @@
+v0.4
+Log spam.
+
 v0.3
 No Power: Newly placed Micro-G Extractors don't need power (default off).
 

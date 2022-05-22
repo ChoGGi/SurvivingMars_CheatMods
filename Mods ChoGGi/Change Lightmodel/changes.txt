@@ -1,3 +1,6 @@
+v0.4
+Added logging for weird lightmodel?
+
 v0.3
 Slower light changes.
 Only change light on surface.

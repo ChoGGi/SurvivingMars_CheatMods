@@ -24,8 +24,7 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
-local orig_list = BuildingTemplates.MicroGAutoExtractor.expected_exploitation_resources
-local custom_list = table.icopy(orig_list)
+local orig_list, custom_list
 local count = #custom_list
 
 -- cycles through the list of resources
@@ -53,7 +52,10 @@ local text = {
 }
 
 function OnMsg.ClassesPostprocess()
-
+	if not orig_list then
+		orig_list = BuildingTemplates.MicroGAutoExtractor.expected_exploitation_resources
+		custom_list = table.icopy(orig_list)
+	end
 	-- if no deposit of selected resource, then change to any resource
 	local ChoOrig_AutomaticMicroGExtractor_OnDepositDepleted = AutomaticMicroGExtractor.OnDepositDepleted
 	function AutomaticMicroGExtractor:OnDepositDepleted(...)

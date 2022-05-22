@@ -5,6 +5,7 @@ local IsValidThread = IsValidThread
 local IsValid = IsValid
 local DoneObject = DoneObject
 local GetRealmByID = GetRealmByID
+local GetDomeAtPoint = GetDomeAtPoint
 
 local mod_EnableMod
 
@@ -37,7 +38,6 @@ function OnMsg.ClassesPostprocess()
 		if mod_EnableMod and self.daily_interest ~= "" and IsValid(building)
 			and building:HasMember("IsOneOfInterests") and building:IsOneOfInterests(self.daily_interest)
 		then
---~ 			printC("daily_interest CLEARED", self.daily_interest)
 			self.daily_interest = ""
 			self.daily_interest_fail = 0
 		end
@@ -57,14 +57,13 @@ do -- CityStart/LoadGame
 		SuspendPassEdits("ChoGGi_FixBBBugs_loading")
 
 		local UIColony = UIColony
-		local main_realm = GetRealmByID(MainMapID)
+		local const = const
 		local GameMaps = GameMaps
-		local bt = BuildingTemplates
-		local ResourceScale = const.ResourceScale
-		local GetDomeAtPoint = GetDomeAtPoint
 		local Landscapes = Landscapes
-		local bmpo = BuildMenuPrerequisiteOverrides
 		local ResupplyItemDefinitions = ResupplyItemDefinitions
+		local bt = BuildingTemplates
+		local bmpo = BuildMenuPrerequisiteOverrides
+		local main_realm = GetRealmByID(MainMapID)
 
 
 		-- Fix No Power Dome Buildings
@@ -133,7 +132,7 @@ do -- CityStart/LoadGame
 			-- Exceptional circumstance buildings
 			elseif not bld.maintenance_resource_request and bld:DoesMaintenanceRequireResources() then
 				-- restore main res request
-				local resource_unit_count = 1 + (bld.maintenance_resource_amount / (ResourceScale * 10)) --1 per 10
+				local resource_unit_count = 1 + (bld.maintenance_resource_amount / (const.ResourceScale * 10)) --1 per 10
 				local r_req = bld:AddDemandRequest(bld.maintenance_resource_type, 0, 0, resource_unit_count)
 				bld.maintenance_resource_request = r_req
 				bld.maintenance_request_lookup[r_req] = true
@@ -230,8 +229,7 @@ do -- CityStart/LoadGame
 		for i = 1, #rovers do
 			local attached_drones = rovers[i].attached_drones
 			for j = #attached_drones, 1, -1 do
-				local drone = attached_drones[j]
-				if not IsValid(drone) then
+				if not IsValid(attached_drones[j]) then
 					table.remove(attached_drones, j)
 				end
 			end
@@ -241,7 +239,7 @@ do -- CityStart/LoadGame
 		for i = #ResupplyItemDefinitions, 1, -1 do
 			local def = ResupplyItemDefinitions[i]
 			if not def.pack then
-				print("Fix Resupply Dialog Not Opening Borked cargo:", def.id)
+				print("Fix Bugs: Resupply Dialog Not Opening Borked cargo", def.id)
 				table.remove(ResupplyItemDefinitions, i)
 			end
 		end

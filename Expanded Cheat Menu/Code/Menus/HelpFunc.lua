@@ -41,6 +41,13 @@ do -- ModUpload
 		ChoGGi_UnitThoughts = "Unit Thoughts (upload 3)",
 		ChoGGi_WideAreaForestation = "Wide Area Forestation (upload 2)",
 	}
+	-- mods I have with diff authors (only matters for me)
+	local ignore_authors = {
+		-- Canadian Space Agency 2
+		faN8Rlm = true,
+		-- A Tubular Glass House 2
+		ChoGGi_ATubularGlassHouse = true,
+	}
 --~ 	-- green ecm/lib so I don't accidentally upload them
 --~ 	local coloured_titles = {
 --~ 		[ChoGGi.id_lib] = true,
@@ -85,8 +92,8 @@ do -- ModUpload
 			return
 		end
 
-		if testing and mod.author ~= "ChoGGi" then
-			print("Just in case... <color 255 100 100>UPLOADING MOD DIFF NAME!</color>")
+		if testing and mod.author ~= "ChoGGi" and not ignore_authors[mod.id] then
+			print("<color 255 100 100>MOD UPLOADING DIFF NAME! Abortion!</color>")
 			return
 		end
 
@@ -144,23 +151,7 @@ do -- ModUpload
 				para_platform = true
 			end
 
-			if not g_env.g_ParadoxAccountDetails then
-				-- wait for paradox to login
-				local wait_count = 0
-				while true do
-					if g_env.g_ParadoxAccountDetails then
-						break
-					end
-					Sleep(250)
-
-					wait_count = wait_count + 1
-					if wait_count > 100 then
-						print("ECM ModUpload: Paradox account not logging in...")
-						break
-					end
-					--
-				end
-			end
+			ChoGGi.ComFuncs.WaitForParadoxLogin()
 
 			prepare_worked, prepare_results = g_env.PDX_PrepareForUpload(nil, mod, mod_params)
 
@@ -310,7 +301,7 @@ do -- ModUpload
 			if not test then
 				if steam_upload then
 					result, err = g_env.Steam_Upload(nil, mod, mod_params)
-					print("<color ChoGGi_yellow>Steam upload</color>", mod.title)
+					print("<color ChoGGi_yellow>Steam uploaded</color>", mod.title)
 				end
 
 				local org_mod_description = mod.description
@@ -351,7 +342,7 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 					mod.description = mod.description:gsub("\n", "<br>"):gsub("%[b%]", ""):gsub("%[%/b%]", "")
 
 					result, err = g_env.PDX_Upload(nil, mod, mod_params)
-					print("<color ChoGGi_yellow>Paradox upload</color>", mod.title)
+					print("<color ChoGGi_yellow>Paradox uploaded</color>", mod.title)
 				end -- para upload
 				mod.description = org_mod_description
 			end -- not test

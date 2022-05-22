@@ -1,3 +1,6 @@
+v0.5
+Hopefully fixed looping waste rocks...
+
 v0.4
 Disabled waste rock for now.
 

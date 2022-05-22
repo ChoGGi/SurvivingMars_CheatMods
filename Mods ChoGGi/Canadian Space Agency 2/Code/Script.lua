@@ -69,8 +69,8 @@ end
 local comm_id = "ChoGGi_CanadianSpaceAgency_Commander"
 
 -- swap any politician storybits
-local function UpdateStoryBits(profile_id)
-	if profile_id ~= comm_id or GetCommanderProfile().id ~= comm_id then
+local function UpdateStoryBits()
+	if GetCommanderProfile().id ~= comm_id then
 		return
 	end
 
@@ -94,7 +94,7 @@ function OnMsg.CityStart()
 	end
 
 	-- politician story to CSA
-	UpdateStoryBits(profile_id)
+	UpdateStoryBits()
 
 	-- change standing to Good
 	local RivalAIs = RivalAIs

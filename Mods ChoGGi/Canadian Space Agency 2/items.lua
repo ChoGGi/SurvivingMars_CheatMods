@@ -72,7 +72,7 @@ return {
 		sponsor_goal_2 = "ProduceUndergroundResource",
 
 		goal_3_param_1 = "25",
-		goal_3_param_2 = "60",
+		goal_3_param_2 = "85",
 		goal_image_3 = "UI/Messages/Goals/mission_goal_06.tga",
 		goal_pin_image_3 = "UI/Icons/Colonists/Malenone.tga",
 		reward_effect_3 = PlaceObj("RewardApplicants", {

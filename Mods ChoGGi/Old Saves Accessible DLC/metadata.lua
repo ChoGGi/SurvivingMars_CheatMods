@@ -19,6 +19,7 @@ The game has two tables, g_AvailableDlc and g_AccessibleDlc. ava means it's inst
 This takes anything in ava and sticks it acc, allowing you to partially use dlc on existing saves (This will NOT work for terraforming).
 
 
+TLDR:
 If you want to build space race stuff with an older save then use this mod.
 
 

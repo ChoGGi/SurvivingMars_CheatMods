@@ -25,7 +25,6 @@ Storybit notification issue.
 Probably mod related:
 A rocket missing the cargo table.
 g_ActiveOnScreenNotifications isn't a table.
-Underground floating rubble.
 
 
 [b]Incorporated mods:[/b] (so far)
@@ -51,5 +50,22 @@ Fix Transports Dont Move After Route Set
 
 
 If you have B&B I'd recommend SkiRich's [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2619013940]Better Lander Rockets[/url]
+
+
+
+Info from Incorporated mods:
+
+[b]Fix Buildings Broken Down And No Repair[/b]:
+If you have broken down buildings the drones won't repair. This will check for them on load game.
+The affected buildings will say something about exceptional circumstances.
+Any buildings affected by this issue will need to be repaired with 000.1 resource after the fix happens.
+[b]Fix Floating Rubble[/b]:
+Move any floating underground rubble to within reach of drones (might have to "push" drones to make them go for it).
+[b]Fix Colonist Daily Interest Loop[/b]:
+https://forum.paradoxplaza.com/forum/threads/surviving-mars-colonists-repeatedly-satisfy-daily-interests.1464969/
+A colonist will repeatedly use a daily interest building to satisfy a daily interest already satisfied.
+Repeating a daily interest will gain a comfort boost "if" colonist comfort is below the service comfort threshold, but a resource will always be consumed each visit.
+This mod will block the colonist from having a visit, instead: An unemployed scientist will wander around outside till the Sol is over instead of chewing up 0.6 electronics.
+
 ]],
 })

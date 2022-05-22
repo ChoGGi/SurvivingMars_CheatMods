@@ -31,14 +31,17 @@ local function SetLight(msg, timeout)
 		local postfix = lm.id
 		-- returns 12,12 which doesn't work for what we want :sub for
 		local underscore_count = postfix:find("_")
-		if not skip_lightmodels[postfix:sub(1, underscore_count - 1)] then
-			postfix = postfix:sub(underscore_count)
-			local new = lightmodel .. postfix
-			if new ~= CurrentLightmodel[map_id][1].id then
+		if not underscore_count then
+			print("Change Lightmodel lightmodel id issue:", postfix, map_id, lm)
+		else
+			if not skip_lightmodels[postfix:sub(1, underscore_count - 1)] then
+				postfix = postfix:sub(underscore_count)
+				local new = lightmodel .. postfix
+				if new ~= CurrentLightmodel[map_id][1].id then
 
-				local blend_time = MulDivRound(lm.blend_time * 2, const.HourDuration, 60)
-				SetLightmodel(1, new, blend_time)
---~ 				SetLightmodelOverride(1, new,  blend_time)
+					local blend_time = MulDivRound(lm.blend_time * 2, const.HourDuration, 60)
+					SetLightmodel(1, new, blend_time)
+				end
 			end
 		end
 	end)

@@ -44,7 +44,7 @@ function OnMsg.ClassesPostprocess()
 		-- https://github.com/HaemimontGames/SurvivingMars/blob/master/Data/BuildingTemplate.lua
 		-- for DLC use my Expanded Cheat Menu mod, and in the console type in ~BuildingTemplates
 
-		-- they usually have the same entity name, but not always (check the building template with ECM).
+		-- they usually have the same entity name, but not always (check the building template with ECM Examine cmd).
 
 		PlaceObj("LayoutConstructionEntry", {
 			"template", "DomeBasic",

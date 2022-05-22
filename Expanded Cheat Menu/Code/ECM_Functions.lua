@@ -2570,12 +2570,18 @@ do -- UnpublishParadoxMod
 			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.UnpublishParadoxMod")
 			return
 		end
+
+		-- wait for paradox login
+
+
+
 		if not mod_title then
 			return
 		end
 
 		local function CallBackFunc(answer)
 			if answer then
+				ChoGGi.ComFuncs.WaitForParadoxLogin()
 
 				if not platform then
 					platform = "any"
@@ -2666,4 +2672,24 @@ function ChoGGi.ComFuncs.DisableBuildingsDie()
 	end
 
 	ChoGGi.ComFuncs.UpdateBuildMenu()
+end
+
+function ChoGGi.ComFuncs.WaitForParadoxLogin()
+	-- wait for paradox to login
+	if not g_env.g_ParadoxAccountDetails then
+		local wait_count = 0
+		while true do
+			if g_env.g_ParadoxAccountDetails then
+				break
+			end
+			Sleep(250)
+
+			wait_count = wait_count + 1
+			if wait_count > 100 then
+				print("ECM: Paradox account not logging in...")
+				break
+			end
+			--
+		end
+	end
 end
