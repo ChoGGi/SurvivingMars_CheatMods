@@ -1,4 +1,5 @@
 v0.5
+When in auto mode fills up storage before trying to offload it.
 Hopefully fixed looping waste rocks...
 
 v0.4

@@ -50,17 +50,32 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
-local ChoOrig_RCTransport_Automation_Gather = RCTransport.Automation_Gather
-function RCTransport:Automation_Gather(...)
+
+-- the orig heads back to dump if you have any space used up, I think filling up first is better
+local ChoOrig_RCTransport_ProcAutomation = RCTransport.ProcAutomation
+function RCTransport:ProcAutomation(...)
 	if not mod_EnableMod then
-		return ChoOrig_RCTransport_Automation_Gather(self, ...)
+		return ChoOrig_RCTransport_ProcAutomation(self, ...)
 	end
 
+--~ 	if self:GetStoredAmount() <= 0 then
+
+	-- if there's room and there's something to pickup then grab it
+	if self:GetStoredAmount() < self.max_shared_storage and self:ChoGGi_GetNearestStockpile() then
+		self:Automation_Gather()
+	else
+		self:Automation_Unload()
+	end
+
+	Sleep(2500)
+end
+
+function RCTransport:ChoGGi_GetNearestStockpile()
 	-- check for waste rock or only regular res
-	local wasterock_cls = mod_WasteRock and "WasteRockStockpileUngrided" or "ResourceStockpile"
+	local wasterock_cls = mod_WasteRock and "WasteRockStockpileUngrided"
 
 	local unreachable_objects = self:GetUnreachableObjectsTable()
-	local depot = GetRealm(self):MapFindNearest(
+	return GetRealm(self):MapFindNearest(
 		self, "map", "ResourceStockpile", wasterock_cls, function(stockpile)
 --~ 		self, "map", "ResourceStockpile", function(stockpile)
 			-- skip anything in range of drones
@@ -71,17 +86,29 @@ function RCTransport:Automation_Gather(...)
 			if depot_temp and (depot_temp.auto_rovers or 0) >= max_auto_rovers_per_pickup then
 				return false
 			end
-			return depot_temp and not unreachable_objects[depot_temp]
+			return depot_temp and not unreachable_objects[depot_temp] and not depot_temp:GetParent()
 		end
 	)
+
+end
+
+local ChoOrig_RCTransport_Automation_Gather = RCTransport.Automation_Gather
+function RCTransport:Automation_Gather(...)
+	if not mod_EnableMod then
+		return ChoOrig_RCTransport_Automation_Gather(self, ...)
+	end
+
+	local depot = self:ChoGGi_GetNearestStockpile()
 
 	--  no stockpiles around, so nothing to do
 	if not depot then
 		return ChoOrig_RCTransport_Automation_Gather(self, ...)
 	end
 
+
 	if depot then
-		if self:HasPath(depot, self.work_spot_deposit) then
+		local path_pos = self:HasPath(depot, self.work_spot_deposit)
+		if path_pos then
 			depot.auto_rovers = (depot.auto_rovers or 0) + 1
 			self:PushDestructor(function(self)
 				depot.auto_rovers = depot.auto_rovers - 1
@@ -90,8 +117,11 @@ function RCTransport:Automation_Gather(...)
 				end
 			end)
 			Sleep(250)
-			self:SetCommand("PickupResource", depot.task_requests[#depot.task_requests], nil, "goto_loading_complete")
+
+			local commandf = GetCommandFunc(self)
+			commandf(self, "PickupResource", depot.supply_request, nil, "goto_loading_complete")
 		else
+			local unreachable_objects = self:GetUnreachableObjectsTable()
 			unreachable_objects[depot] = true
 		end
 	end
@@ -106,6 +136,8 @@ function RCTransport:DumpCargo(pos, resource, ...)
 	if IsValid(stockpile) then
 		local unreachable_objects = self:GetUnreachableObjectsTable()
 		unreachable_objects[stockpile] = true
+
+
 	end
 
 	return stockpile
