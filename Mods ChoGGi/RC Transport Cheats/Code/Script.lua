@@ -50,26 +50,6 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
-
--- the orig heads back to dump if you have any space used up, I think filling up first is better
-local ChoOrig_RCTransport_ProcAutomation = RCTransport.ProcAutomation
-function RCTransport:ProcAutomation(...)
-	if not mod_EnableMod then
-		return ChoOrig_RCTransport_ProcAutomation(self, ...)
-	end
-
---~ 	if self:GetStoredAmount() <= 0 then
-
-	-- if there's room and there's something to pickup then grab it
-	if self:GetStoredAmount() < self.max_shared_storage and self:ChoGGi_GetNearestStockpile() then
-		self:Automation_Gather()
-	else
-		self:Automation_Unload()
-	end
-
-	Sleep(2500)
-end
-
 function RCTransport:ChoGGi_GetNearestStockpile()
 	-- check for waste rock or only regular res
 	local wasterock_cls = mod_WasteRock and "WasteRockStockpileUngrided"
@@ -77,7 +57,6 @@ function RCTransport:ChoGGi_GetNearestStockpile()
 	local unreachable_objects = self:GetUnreachableObjectsTable()
 	return GetRealm(self):MapFindNearest(
 		self, "map", "ResourceStockpile", wasterock_cls, function(stockpile)
---~ 		self, "map", "ResourceStockpile", function(stockpile)
 			if unreachable_objects[stockpile] then
 				return false
 			end
@@ -95,7 +74,6 @@ function RCTransport:ChoGGi_GetNearestStockpile()
 			return depot_temp
 		end
 	)
-
 end
 
 local ChoOrig_RCTransport_Automation_Gather = RCTransport.Automation_Gather
@@ -142,7 +120,30 @@ function RCTransport:DumpCargo(pos, resource, ...)
 		local unreachable_objects = self:GetUnreachableObjectsTable()
 		unreachable_objects[stockpile] = true
 	end
+	Sleep(250)
 
 	return stockpile
 end
 -- onmsg new day clear any depot auto_rovers/invalid task_requests?
+-- and one to clear out the fake wasterock now...
+
+-- loopy loop
+if false then
+	-- the orig heads back to dump if you have any space used up, I think filling up first is better
+	local ChoOrig_RCTransport_ProcAutomation = RCTransport.ProcAutomation
+	function RCTransport:ProcAutomation(...)
+		if not mod_EnableMod then
+			return ChoOrig_RCTransport_ProcAutomation(self, ...)
+		end
+
+		-- if there's room and there's something to pickup then grab it
+		if self:GetStoredAmount() <= 0 then
+	--~ 	if self:GetStoredAmount() < self.max_shared_storage and self:ChoGGi_GetNearestStockpile() then
+			self:Automation_Gather()
+		else
+			self:Automation_Unload()
+		end
+
+		Sleep(2500)
+	end
+end

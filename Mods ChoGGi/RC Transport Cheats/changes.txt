@@ -1,3 +1,6 @@
+v0.6
+Loop is gone, but now there's fake resources left in transports.
+
 v0.5
 When in auto mode fills up storage before trying to offload it.
 Hopefully fixed looping waste rocks...
