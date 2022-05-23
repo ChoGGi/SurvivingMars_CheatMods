@@ -1,19 +1,39 @@
 -- See LICENSE for terms
 
-local SetConstsG = ChoGGi.ComFuncs.SetConstsG
+--~ do return end
 
 local GetRealm = GetRealm
 local IsValid = IsValid
+local FindNearestObject = FindNearestObject
+
+local Random = ChoGGi.ComFuncs.Random
+local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
+local SetConstsG = ChoGGi.ComFuncs.SetConstsG
+local testing = ChoGGi.testing
 
 local mod_EnableMod
 local mod_StorageAmount
 local mod_WorkTime
 local mod_WasteRock
 
+-- transport is going for this stockpile
+GlobalVar("g_ChoGGi_RCTransportCheats_usedstocks", false)
+
+-- ergh
+local function ClearUsedStocks()
+	table.clear(g_ChoGGi_RCTransportCheats_usedstocks)
+end
+
 local function UpdateTransports()
 	if not mod_EnableMod then
 		return
 	end
+
+	if not g_ChoGGi_RCTransportCheats_usedstocks then
+		g_ChoGGi_RCTransportCheats_usedstocks = {}
+	end
+
+	ClearUsedStocks()
 
 	SetConstsG("RCTransportGatherResourceWorkTime", mod_WorkTime)
 
@@ -50,100 +70,102 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
-function RCTransport:ChoGGi_GetNearestStockpile()
-	-- check for waste rock or only regular res
-	local wasterock_cls = mod_WasteRock and "WasteRockStockpileUngrided"
-
+function RCTransport:ChoGGi_GetStockpile(res_type)
+	local g_ChoGGi_RCTransportCheats_usedstocks = g_ChoGGi_RCTransportCheats_usedstocks
 	local unreachable_objects = self:GetUnreachableObjectsTable()
+
 	return GetRealm(self):MapFindNearest(
-		self, "map", "ResourceStockpile", wasterock_cls, function(stockpile)
-			if unreachable_objects[stockpile] then
+		self, "map", res_type, function(stockpile)
+			-- can't get there
+			if unreachable_objects[stockpile]
+				-- in range of drone controller
+				or #(stockpile.command_centers or "") > 0
+				-- someone else is going for it
+				or g_ChoGGi_RCTransportCheats_usedstocks[stockpile]
+				-- attached to a building
+				or stockpile:GetParent()
+			then
 				return false
 			end
 
-			-- skip anything in range of drones
-			local depot_temp = #(stockpile.command_centers or "") == 0
-				-- and don't grab from depots connected to building
-				and not stockpile:GetParent() and stockpile
-
-			-- max_auto_rovers_per_pickup is a global var
-			if depot_temp and (depot_temp.auto_rovers or 0) >= max_auto_rovers_per_pickup then
-				return false
-			end
-
-			return depot_temp
+			return stockpile
 		end
 	)
 end
 
+function RCTransport:ChoGGi_GetNearestStockpile()
+	local stocks = {}
+
+	stocks[1] = self:ChoGGi_GetStockpile("ResourceStockpile")
+	-- Check for waste rock or only regular res
+	if mod_WasteRock then
+		stocks[2] = self:ChoGGi_GetStockpile("WasteRockStockpileUngrided")
+	end
+
+	if stocks[2] then
+		return FindNearestObject(stocks, self)
+	else
+		return stocks[1]
+	end
+
+	return false
+end
+
+-- Look for depots to use
 local ChoOrig_RCTransport_Automation_Gather = RCTransport.Automation_Gather
 function RCTransport:Automation_Gather(...)
 	if not mod_EnableMod then
 		return ChoOrig_RCTransport_Automation_Gather(self, ...)
 	end
 
+	-- More natural hopefully
+	Sleep(Random(4000))
+
 	local depot = self:ChoGGi_GetNearestStockpile()
 
-	--  no stockpiles around, so nothing to do
+	--  No stockpiles around, so nothing to do
 	if not depot then
 		return ChoOrig_RCTransport_Automation_Gather(self, ...)
 	end
 
 	if depot then
-		local path_pos = self:HasPath(depot, self.work_spot_deposit)
-		if path_pos then
-			depot.auto_rovers = (depot.auto_rovers or 0) + 1
-			self:PushDestructor(function(self)
-				depot.auto_rovers = depot.auto_rovers - 1
-				if depot.auto_rovers < 0 then
-					depot.auto_rovers = 0
-				end
-			end)
-			Sleep(250)
+		-- Can rc get to depot
+		if self:HasPath(depot, self.work_spot_deposit) then
+			-- Try to get other transports ignore it for awhile
+			g_ChoGGi_RCTransportCheats_usedstocks[depot] = self
 
-			local commandf = GetCommandFunc(self)
-			commandf(self, "PickupResource", depot.supply_request, nil, "goto_loading_complete")
+			self:SetCommand("PickupResource", depot.supply_request, nil, "goto_loading_complete")
 		else
-			local unreachable_objects = self:GetUnreachableObjectsTable()
-			unreachable_objects[depot] = true
+			self:GetUnreachableObjectsTable()[depot] = true
 		end
 	end
 
 end
 
+-- Reset the storage override list (I only have it so they all don't spam rush the first one)
 local ChoOrig_RCTransport_DumpCargo = RCTransport.DumpCargo
-function RCTransport:DumpCargo(pos, resource, ...)
-	local stockpile = ChoOrig_RCTransport_DumpCargo(self, pos, resource, ...)
-
-	-- hopefully this fixes the loopy
-	if IsValid(stockpile) then
-		local unreachable_objects = self:GetUnreachableObjectsTable()
-		unreachable_objects[stockpile] = true
+function RCTransport.DumpCargo(...)
+	if not mod_EnableMod then
+		return ChoOrig_RCTransport_DumpCargo(...)
 	end
-	Sleep(250)
 
-	return stockpile
+	ClearUsedStocks()
+	return ChoOrig_RCTransport_DumpCargo(...)
 end
--- onmsg new day clear any depot auto_rovers/invalid task_requests?
--- and one to clear out the fake wasterock now...
 
--- loopy loop
-if false then
-	-- the orig heads back to dump if you have any space used up, I think filling up first is better
-	local ChoOrig_RCTransport_ProcAutomation = RCTransport.ProcAutomation
-	function RCTransport:ProcAutomation(...)
-		if not mod_EnableMod then
-			return ChoOrig_RCTransport_ProcAutomation(self, ...)
-		end
-
-		-- if there's room and there's something to pickup then grab it
-		if self:GetStoredAmount() <= 0 then
-	--~ 	if self:GetStoredAmount() < self.max_shared_storage and self:ChoGGi_GetNearestStockpile() then
-			self:Automation_Gather()
-		else
-			self:Automation_Unload()
-		end
-
-		Sleep(2500)
+-- Clear rover storages with ghost resources
+--~ function OnMsg.NewHour()
+function OnMsg.LightmodelChange()
+	if not mod_EnableMod then
+		return
 	end
+
+	local objs = UIColony:GetCityLabels("RCTransportAndChildren")
+	for i = 1, #objs do
+		local obj = objs[i]
+		if obj:GetAttaches("ResourceStockpileBox") and obj:GetStoredAmount() == 0 then
+			obj:DestroyAttaches("ResourceStockpileBox")
+		end
+	end
+
 end

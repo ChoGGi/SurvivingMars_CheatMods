@@ -16,7 +16,7 @@ return {
 	PlaceObj("ModItemOptionNumber", {
 		"name", "StorageAmount",
 		"DisplayName", T(0000, "Storage Amount"),
-		"Help", T(0000, "How much transports can store (0 to disable)."),
+		"Help", T(0000, "How much transports can store (0 = use default)."),
 		"DefaultValue", 0,
 		"MinValue", 0,
 		"MaxValue", 500,

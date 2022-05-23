@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2744688978",
 	"pops_any_uuid", "648aa047-e33b-4074-9574-513fbd4eec3a",
 	"lua_revision", 1007000, -- Picard
-	"version", 6,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 7,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -25,5 +25,9 @@ return PlaceObj("ModDef", {
 	"description", [[
 Transports in auto mode will pick up any loose resources (excluding those within range of drone hubs/commanders).
 Mod option to change storage amount / speed it takes to harvest from surface, and option to auto mode wasterock.
+
+
+Known Issues:
+If you have a few dozen rovers then weird things may happen (though that might just be the game).
 ]],
 })

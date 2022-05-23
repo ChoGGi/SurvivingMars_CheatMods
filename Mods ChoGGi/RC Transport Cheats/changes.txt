@@ -1,3 +1,6 @@
+v0.7
+I think it's as good as it's going to be.
+
 v0.6
 Loop is gone, but now there's fake resources left in transports.
 
