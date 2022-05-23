@@ -2,7 +2,9 @@
 
 -- local any funcs used below (more than once)
 local tonumber, tostring, pcall = tonumber, tostring, pcall
-local AsyncRand, _InternalTranslate, T = AsyncRand, _InternalTranslate, T
+local _InternalTranslate = _InternalTranslate
+local AsyncRand = AsyncRand
+local T = T
 
 do -- translate
 	local locale_path = CurrentModPath .. "Locales/"
@@ -13,45 +15,45 @@ do -- translate
 end
 
 -- locale id to string
-local function t(str)
-	return _InternalTranslate(T(str))
+local function TT(id, str)
+	return _InternalTranslate(T(id, str))
 end
 
 local str = {
-	not_implemented = t(302535920010000, "math.%s not implemented yet."),
-	error = t(302535920010001, "bad argument #%s to 'math.%s' (%s)"),
-	zero = t(302535920010002, "zero"),
-	less_than_or_equals_zero = t(302535920010003, "less than or equals zero"),
-	less_than_zero = t(302535920010004, "less than zero"),
-	arg2_arg1_less_than_zero = t(302535920010005, "arg#2 - arg#1 == less than zero"),
-	test_start = t(302535920010006, "Testing math: Start"),
-	test_end = t(302535920010007, "Testing math: End"),
-	test_error = t(302535920010008, "Testing math: Error file: (%s) line number: (%s) val1: (%s) val2: (%s) func: (math.%s)"),
-	nan = t(302535920010009, "nan"),
-	fmod = t(302535920010010, "fmod"),
-	log = t(302535920010011, "log"),
-	oneortwo = t(302535920010012, "1 or #2"),
-	random = t(302535920010013, "random"),
-	sqrt = t(302535920010014, "sqrt"),
-	sin = t(302535920010015, "sin"),
-	tan = t(302535920010016, "tan"),
-	acos = t(302535920010017, "acos"),
-	asin = t(302535920010018, "asin"),
-	atan = t(302535920010019, "atan"),
-	abs = t(302535920010020, "abs"),
-	ceil = t(302535920010021, "ceil"),
-	deg = t(302535920010022, "deg"),
-	exp = t(302535920010023, "exp"),
-	floor = t(302535920010024, "floor"),
-	modf = t(302535920010025, "modf"),
-	rad = t(302535920010026, "rad"),
-	type = t(302535920010028, "type"),
-	cos = t(302535920010029, "cos"),
-	RoundDown = t(302535920010030, "RoundDown"),
-	pow = t(302535920010031, "pow"),
-	log10 = t(302535920010032, "log10"),
-	ldexp = t(302535920010033, "ldexp"),
-	frexp = t(302535920010034, "frexp"),
+	not_implemented = TT(302535920010000, "math.%s not implemented yet."),
+	error = TT(302535920010001, "bad argument #%s to 'math.%s' (%s)"),
+	zero = TT(302535920010002, "zero"),
+	less_than_or_equals_zero = TT(302535920010003, "less than or equals zero"),
+	less_than_zero = TT(302535920010004, "less than zero"),
+	arg2_arg1_less_than_zero = TT(302535920010005, "arg#2 - arg#1 == less than zero"),
+	test_start = TT(302535920010006, "Testing math: Start"),
+	test_end = TT(302535920010007, "Testing math: End"),
+	test_error = TT(302535920010008, "Testing math: Error file: (%s) line number: (%s) val1: (%s) val2: (%s) func: (math.%s)"),
+	nan = TT(302535920010009, "nan"),
+	fmod = TT(302535920010010, "fmod"),
+	log = TT(302535920010011, "log"),
+	oneortwo = TT(302535920010012, "1 or #2"),
+	random = TT(302535920010013, "random"),
+	sqrt = TT(302535920010014, "sqrt"),
+	sin = TT(302535920010015, "sin"),
+	tan = TT(302535920010016, "tan"),
+	acos = TT(302535920010017, "acos"),
+	asin = TT(302535920010018, "asin"),
+	atan = TT(302535920010019, "atan"),
+	abs = TT(302535920010020, "abs"),
+	ceil = TT(302535920010021, "ceil"),
+	deg = TT(302535920010022, "deg"),
+	exp = TT(302535920010023, "exp"),
+	floor = TT(302535920010024, "floor"),
+	modf = TT(302535920010025, "modf"),
+	rad = TT(302535920010026, "rad"),
+	type = TT(302535920010028, "type"),
+	cos = TT(302535920010029, "cos"),
+	RoundDown = TT(302535920010030, "RoundDown"),
+	pow = TT(302535920010031, "pow"),
+	log10 = TT(302535920010032, "log10"),
+	ldexp = TT(302535920010033, "ldexp"),
+	frexp = TT(302535920010034, "frexp"),
 }
 
 local function CheckNum(x, name, arg)

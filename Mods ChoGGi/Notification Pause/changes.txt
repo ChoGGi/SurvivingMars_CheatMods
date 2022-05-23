@@ -1,3 +1,6 @@
+v1.7
+Too much pausing.
+
 v1.6
 Fixed bug with 1.5 (thanks SoftwareSimian).
 

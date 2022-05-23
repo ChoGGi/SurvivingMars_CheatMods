@@ -1,6 +1,8 @@
 -- See LICENSE for terms
 
 local comm_id = "ChoGGi_Idiocracy2_Commander"
+local storybit_id = "politician"
+
 local function UpdateStoryBits()
 	-- make sure it's our commander
 	if GetCommanderProfile().id ~= comm_id then
@@ -12,7 +14,7 @@ local function UpdateStoryBits()
 	for _, storybit in pairs(StoryBits) do
 		for i = 1, #storybit do
 			local item = storybit[i]
-			if item.Prerequisite and item.Prerequisite.CommanderProfile == "politician" then
+			if item.Prerequisite and item.Prerequisite.CommanderProfile == storybit_id then
 				item.Prerequisite.CommanderProfile = comm_id
 			end
 		end

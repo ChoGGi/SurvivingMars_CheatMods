@@ -78,15 +78,21 @@ function RCTransport:ChoGGi_GetNearestStockpile()
 	return GetRealm(self):MapFindNearest(
 		self, "map", "ResourceStockpile", wasterock_cls, function(stockpile)
 --~ 		self, "map", "ResourceStockpile", function(stockpile)
+			if unreachable_objects[stockpile] then
+				return false
+			end
+
 			-- skip anything in range of drones
 			local depot_temp = #(stockpile.command_centers or "") == 0
 				-- and don't grab from depots connected to building
-				and not IsValid(stockpile:GetParent()) and stockpile
+				and not stockpile:GetParent() and stockpile
 
+			-- max_auto_rovers_per_pickup is a global var
 			if depot_temp and (depot_temp.auto_rovers or 0) >= max_auto_rovers_per_pickup then
 				return false
 			end
-			return depot_temp and not unreachable_objects[depot_temp] and not depot_temp:GetParent()
+
+			return depot_temp
 		end
 	)
 
@@ -104,7 +110,6 @@ function RCTransport:Automation_Gather(...)
 	if not depot then
 		return ChoOrig_RCTransport_Automation_Gather(self, ...)
 	end
-
 
 	if depot then
 		local path_pos = self:HasPath(depot, self.work_spot_deposit)
@@ -136,8 +141,6 @@ function RCTransport:DumpCargo(pos, resource, ...)
 	if IsValid(stockpile) then
 		local unreachable_objects = self:GetUnreachableObjectsTable()
 		unreachable_objects[stockpile] = true
-
-
 	end
 
 	return stockpile
