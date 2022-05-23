@@ -13,6 +13,19 @@ local RetHint = ChoGGi.ComFuncs.RetHint
 local Random = ChoGGi.ComFuncs.Random
 local Translate = ChoGGi.ComFuncs.Translate
 
+function ChoGGi.MenuFuncs.InfopanelToolbarConstrain_Toggle()
+	local setting = not ChoGGi.UserSettings.InfopanelToolbarConstrain
+	ChoGGi.UserSettings.InfopanelToolbarConstrain = setting
+
+	ChoGGi.ComFuncs.InfopanelToolbarConstrain_Toggle(setting)
+
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(setting),
+		TranslationTable[302535920001665--[[Infopanel Toolbar Constrain]]]
+	)
+end
+
 function ChoGGi.MenuFuncs.DeleteBushesTrees()
 	local function CallBackFunc(answer)
 		if answer then
@@ -33,7 +46,7 @@ function ChoGGi.MenuFuncs.VerticalCheatMenu_Toggle()
 	local setting = not ChoGGi.UserSettings.VerticalCheatMenu
 	ChoGGi.UserSettings.VerticalCheatMenu = setting
 
-	ChoGGi.ComFuncs.ToggleVerticalCheatMenu(setting)
+	ChoGGi.ComFuncs.VerticalCheatMenu_Toggle(setting)
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(

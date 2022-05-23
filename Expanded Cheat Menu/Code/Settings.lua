@@ -86,11 +86,13 @@ ChoGGi.Defaults = {
 	FlushLogConstantly = false,
 	-- every hour
 	FlushLogHourly = false,
-	-- show Cheats section in the selection panel
+	-- Show Cheats section in the selection panel
 	InfopanelCheats = true,
+	-- Limits width of toolbar buttons to prevent overflow
+	InfopanelToolbarConstrain = true,
 	-- Add scrollbar to larger panel elements
 	ScrollSelectionPanel = false,
-	-- maybe you don't want to see the interface in screenshots
+	-- Maybe you don't want to see the interface in screenshots
 	ShowInterfaceInScreenshots = true,
 	-- This savegame was loaded in the past without required mods or with an incompatible game version.
 	SkipIncompatibleModsMsg = true,

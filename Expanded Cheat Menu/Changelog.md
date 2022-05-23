@@ -1,6 +1,9 @@
 ## ECM Changelog
 
 ## v18.5 (Unreleased)
+### Added:
+- Menu>Game>UI>Infopanel Toolbar Constrain: Limits size of infopanel toolbar buttons for those that have too many buttons (and they go off panel).
+
 ### Removed:
 - Mystery Log: Use SkiRich's Sherlock mod instead (it's nicer anyways).
 

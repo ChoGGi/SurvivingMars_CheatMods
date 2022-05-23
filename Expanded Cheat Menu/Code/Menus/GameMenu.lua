@@ -649,6 +649,21 @@ Actions[c] = {ActionName = TranslationTable[302535920000265--[[Pulsating Pins]]]
 	OnAction = ChoGGi.MenuFuncs.PulsatingPins_Toggle,
 }
 
+
+c = c + 1
+Actions[c] = {ActionName = TranslationTable[302535920001665--[[Infopanel Toolbar Constrain]]],
+	ActionMenubar = "ECM.Game.UI",
+	ActionId = ".Infopanel Toolbar Constrain",
+	ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.InfopanelToolbarConstrain,
+			TranslationTable[302535920001666--[[Limits max width of infopanel toolbar buttons for those that have too many buttons (and they go off panel).]]]
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.InfopanelToolbarConstrain_Toggle,
+}
+
 -- menu
 c = c + 1
 Actions[c] = {ActionName = TranslationTable[298035641454--[[Object]]],

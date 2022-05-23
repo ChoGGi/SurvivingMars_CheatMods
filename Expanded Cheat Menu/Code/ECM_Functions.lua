@@ -2607,7 +2607,7 @@ do -- UnpublishParadoxMod
 	end
 end -- do
 
-function ChoGGi.ComFuncs.ToggleVerticalCheatMenu(toggle)
+function ChoGGi.ComFuncs.VerticalCheatMenu_Toggle(toggle)
 	local idx = table.find(terminal.desktop, "class", "XShortcutsHost")
 
 	if not idx then
@@ -2691,5 +2691,16 @@ function ChoGGi.ComFuncs.WaitForParadoxLogin()
 			end
 			--
 		end
+	end
+end
+
+function ChoGGi.ComFuncs.InfopanelToolbarConstrain_Toggle(toggle)
+	--[1][1][1]>[2]XFrame Image = "UI/CommonNew/ip.tga">[2]XWindow Padding = box(18, 4, 18, 23)
+	local template = XTemplates.Infopanel[1][1][1][2][2]
+	if toggle then
+		-- HWrap moves overlap down to "next row"
+		template.LayoutMethod = "HOverlappingList"
+	else
+		template.LayoutMethod = "HList"
 	end
 end

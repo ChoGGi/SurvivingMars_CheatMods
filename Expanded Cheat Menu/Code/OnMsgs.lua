@@ -611,10 +611,13 @@ s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"]])
 		end
 	end
 
+	-- limit width of infopanel toolbar buttons
+	ChoGGi.ComFuncs.InfopanelToolbarConstrain_Toggle(UserSettings.InfopanelToolbarConstrain)
+
 	-- slight delay for vertical menu
 	CreateRealTimeThread(function()
 		WaitMsg("OnRender")
-		ChoGGi.ComFuncs.ToggleVerticalCheatMenu(UserSettings.VerticalCheatMenu)
+		ChoGGi.ComFuncs.VerticalCheatMenu_Toggle(UserSettings.VerticalCheatMenu)
 
 		-- no dlc and the menu flickers on then turns off (for some reason)
 		Sleep(1000)
@@ -1340,7 +1343,7 @@ do -- LoadGame/CityStart
 		end
 		-- vertical menu
 		if UserSettings.VerticalCheatMenu then
-			ChoGGi.ComFuncs.ToggleVerticalCheatMenu(UserSettings.VerticalCheatMenu)
+			ChoGGi.ComFuncs.VerticalCheatMenu_Toggle(UserSettings.VerticalCheatMenu)
 		end
 		-- update pod price
 		if type(UserSettings.PodPrice) == "number" then
