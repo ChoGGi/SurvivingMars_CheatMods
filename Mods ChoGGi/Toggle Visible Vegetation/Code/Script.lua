@@ -1,5 +1,11 @@
 -- See LICENSE for terms
 
+if not g_AvailableDlc.armstrong then
+	print(CurrentModDef.title, ": Green Planet DLC not installed!")
+	return
+end
+
+
 local mod_ToggleBushes
 local mod_EnableVegetation
 
@@ -12,9 +18,12 @@ local function ToggleFunc(veg)
 end
 
 local function ToggleTrees()
+	local realm = GameMaps[MainMapID].realm
+
+
 	-- get list of veg
-	local veg = mod_ToggleBushes and MapGet("map", "VegetationBillboardObject")
-		or MapGet("map", "VegetationTree_01", "VegetationTree_02", "VegetationTree_03", "VegetationTree_04")
+	local veg = mod_ToggleBushes and realm:MapGet("map", "VegetationBillboardObject")
+		or realm:MapGet("map", "VegetationTree_01", "VegetationTree_02", "VegetationTree_03", "VegetationTree_04")
 	if #veg == 0 then
 		return
 	end
@@ -39,7 +48,7 @@ local function ModOptions(id)
 	mod_EnableVegetation = CurrentModOptions:GetProperty("EnableVegetation")
 
 	-- make sure we're in-game
-	if not UICity then
+	if not UIColony then
 		return
 	end
 

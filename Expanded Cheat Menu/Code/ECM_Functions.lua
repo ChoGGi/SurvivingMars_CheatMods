@@ -1648,6 +1648,9 @@ end
 do -- ToggleFuncHook
 	-- counts funcs calls, and keeps a table of func|line num
 	local func_table = {}
+	local func_str_c = 0
+	local func_str = {}
+
 	function ChoGGi.ComFuncs.ToggleFuncHook(path, line, mask, count)
 		if blacklist then
 			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.ToggleFuncHook")
@@ -1658,6 +1661,9 @@ do -- ToggleFuncHook
 			ChoGGi.Temp.FunctionsHooked = true
 			-- always start fresh
 			table.clear(func_table)
+			table.iclear(func_str)
+			func_str_c = 0
+
 			-- setup path
 			path = path or "@AppData/Mods/"
 			local str_len = #path
@@ -1668,7 +1674,7 @@ do -- ToggleFuncHook
 				TranslationTable[1000113--[[Debug]]]
 			)
 
-			collectgarbage()
+			g_env.collectgarbage()
 			local function hook_func(event)
 
 				local i
@@ -1687,6 +1693,9 @@ do -- ToggleFuncHook
 						lua_obj = i.source .. "|" .. i.linedefined
 					end
 
+					func_str_c = func_str_c + 1
+					func_str[func_str_c] = lua_obj
+
 					local c = func_table[lua_obj] or 1
 					func_table[lua_obj] = c + 1
 				end
@@ -1700,8 +1709,20 @@ do -- ToggleFuncHook
 
 			-- stop capture
 			debug.sethook()
+
+			-- add stringed funcs call order text
+			func_table.__order = {
+				ChoGGi_AddHyperLink = true,
+				name = TranslationTable[302535920000234--[[Monitor Func Calls]]],
+				hint = "Shows list of func calls in order of called.",
+				func = function(self, button, obj, argument, hyperlink_box, pos)
+					ChoGGi.ComFuncs.OpenInExamineDlg(func_str, nil, TranslationTable[302535920000234--[[Monitor Func Calls]]])
+				end,
+			}
+
 			-- view the results
 			ChoGGi.ComFuncs.OpenInExamineDlg(func_table, nil, "Func call count (" .. #func_table .. ")")
+
 		end
 	end
 end -- do

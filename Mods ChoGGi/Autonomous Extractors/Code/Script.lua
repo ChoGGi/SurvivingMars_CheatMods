@@ -29,7 +29,7 @@ local function StartupCode()
 	-- update existing buildings
 	local objs = UIColony:GetCityLabels("MetalsExtractor")
 	-- no need to update again
-	if objs[1].max_workers ~= 0 then
+	if objs[1] and objs[1].max_workers ~= 0 then
 		table.iappend(objs, UIColony:GetCityLabels("PreciousMetalsExtractor"))
 		for i = 1, #objs do
 			local obj = objs[i]

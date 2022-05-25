@@ -1301,6 +1301,13 @@ end
 
 function ChoGGi_DlgExamine:BuildObjectMenuPopup()
 	return {
+		{name = TranslationTable[7972--[[Select Target]]],
+			hint = TranslationTable[302535920001667--[[Selects examine object]]],
+			image = "CommonAssets/UI/Menu/select_objects.tga",
+			clicked = function()
+        SelectObj(self.obj_ref)
+			end,
+		},
 		{name = TranslationTable[302535920000457--[[Anim State Set]]],
 			hint = TranslationTable[302535920000458--[[Make object dance on command.]]],
 			image = "CommonAssets/UI/Menu/UnlockCamera.tga",

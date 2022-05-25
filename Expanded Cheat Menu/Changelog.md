@@ -4,6 +4,12 @@
 ### Added:
 - Menu>Game>UI>Infopanel Toolbar Constrain: Limits size of infopanel toolbar buttons for those that have too many buttons (and they go off panel).
 
+### Fixed:
+- Monitor Func Calls didn't work (thanks Tremualin).
+
+### Changed:
+- Monitor Func Calls shows list of funcs in order called.
+
 ### Removed:
 - Mystery Log: Use SkiRich's Sherlock mod instead (it's nicer anyways).
 

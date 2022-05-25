@@ -1,2 +1,5 @@
+v0.3
+Checks for actual list.
+
 v0.2
 Added auto extractor skin if you have space race.
