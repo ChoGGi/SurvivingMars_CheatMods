@@ -17,6 +17,6 @@ return PlaceObj("ModDef", {
 	"description", [[
 Unlock the whole underground area (without needing lights).
 
-[url=https://steamcommunity.com/workshop/filedetails/?id=2597097630]Show All Underground[/url]
+[url=https://steamcommunity.com/workshop/filedetails/?id=2599642948]Underground Cheats[/url]
 ]],
 })

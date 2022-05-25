@@ -105,6 +105,13 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"]]],
 		end,
 	},
 	{is_spacer = true},
+	{name = TranslationTable[302535920001321--[[UI Click To Examine]]],
+		hint = TranslationTable[302535920001322--[[Examine UI controls by clicking them.]]],
+--~ 		image = "CommonAssets/UI/Menu/select_objects.tga",
+		clicked = function()
+			ChoGGi.ComFuncs.TerminalRolloverMode(true)
+		end,
+	},
 	{name = TranslationTable[302535920001378--[[XWindow Inspector]]],
 		hint = TranslationTable[302535920001379--[[Opens up the window inspector with terminal.desktop.]]],
 		clicked = function()
