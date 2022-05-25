@@ -1,2 +1,5 @@
+v0.3
+Mod option for vertical buttons.
+
 v0.2
 Probable fix for HUD issue.

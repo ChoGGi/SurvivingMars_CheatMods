@@ -11,8 +11,34 @@ local SetConstsG = ChoGGi.ComFuncs.SetConstsG
 
 local mod_EnableMod
 local mod_MaxAsteroids
+local mod_VerticalList
 -- the funcs below need a +2 count (surface/underground)
 local mod_MaxAsteroidsPlusTwo
+
+local function UpdateHUD()
+--~ 	if not mod_VerticalList then
+--~ 		return
+--~ 	end
+
+	local hud = Dialogs.HUD
+	if not hud then
+		return
+	end
+
+	local mapswitch = hud.idMapSwitch
+	-- move to left side
+--~ 	mapswitch:SetHAlign("left")
+	mapswitch:SetHAlign(mod_VerticalList and "left" or "right")
+	-- vertical!
+	mapswitch.idContent:SetLayoutMethod(mod_VerticalList and "VList" or "HList")
+	-- [1]XFrame
+	-- has a minwidth of 350
+	mapswitch[1]:SetMinWidth(mod_VerticalList and 0 or 350)
+	-- frame background is off now
+	mapswitch[1]:SetFrameBox(mod_VerticalList and empty_box or box(0, 0, 190, 0))
+	-- don't ask about the not
+	mapswitch[1]:SetFlipX(not mod_VerticalList and true or false)
+end
 
 -- populated below
 local OnContextUpdate_ChoOrig
@@ -80,6 +106,7 @@ local function ModOptions(id)
 
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_MaxAsteroids = CurrentModOptions:GetProperty("MaxAsteroids")
+	mod_VerticalList = CurrentModOptions:GetProperty("VerticalList")
 
 	mod_MaxAsteroidsPlusTwo = mod_MaxAsteroids + 2
 
@@ -89,8 +116,14 @@ local function ModOptions(id)
 	end
 
 	StartupCode()
+	UpdateHUD()
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
+
+-- Switch between different maps (can happen before UICity)
+OnMsg.ChangeMapDone = UpdateHUD
+
+OnMsg.InGameInterfaceCreated = UpdateHUD

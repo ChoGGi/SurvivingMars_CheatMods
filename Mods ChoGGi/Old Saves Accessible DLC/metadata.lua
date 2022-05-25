@@ -20,7 +20,7 @@ This takes anything in ava and sticks it acc, allowing you to partially use dlc 
 
 
 TLDR:
-If you want to build space race stuff with an older save then use this mod.
+If you want to build space race (or any dlc) stuff with an older save then use this mod.
 
 
 Requested by Kkat.

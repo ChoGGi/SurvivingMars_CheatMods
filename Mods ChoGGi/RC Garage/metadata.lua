@@ -39,6 +39,7 @@ It will ignore rovers with deployed drones or with auto mode on (even if sitting
 
 Known Issues:
 The build menu doesn't show that it uses electricity.
+Make sure rovers are outside the garage before using them with rockets.
 
 Requested by Valkyrie115.
 ]],

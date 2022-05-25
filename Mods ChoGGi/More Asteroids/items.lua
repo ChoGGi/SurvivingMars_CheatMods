@@ -14,4 +14,10 @@ return {
 		"MinValue", 1,
 		"MaxValue", 50,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "VerticalList",
+		"DisplayName", T(0000, "Vertical List"),
+		"Help", T(0000, "Displays buttons in vertical format on the left side of screen."),
+		"DefaultValue", false,
+	}),
 }
