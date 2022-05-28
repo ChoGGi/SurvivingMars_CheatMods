@@ -24,7 +24,7 @@ return PlaceObj("ModDef", {
 	"TagGameplay", true,
 	"TagInterface", true,
 	"description", [[
-Adds a button for moving stuff to (almost) anything you can select.
+Adds a button for moving stuff to anything you can select.
 Press the button to activate placement mode, then click somewhere on the map to move it.
 
 This places at the centre of the hex (like buildings), if you want freeform then I'll make it a mod option.

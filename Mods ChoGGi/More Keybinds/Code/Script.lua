@@ -3,6 +3,8 @@
 local SelObjects = ChoGGi.ComFuncs.SelObjects
 local GetCursorWorldPos = GetCursorWorldPos
 local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
+local terminal = terminal
+
 
 local mod_SpeedFour
 local mod_SpeedFive
@@ -34,7 +36,6 @@ local function RetShortcuts(id)
 			keys[3] and VKStrNamesInverse[keys[3]]
 	end
 end
-local terminal_IsKeyPressed = terminal.IsKeyPressed
 --
 
 local Actions = ChoGGi.Temp.Actions
@@ -133,8 +134,6 @@ Actions[#Actions+1] = {ActionName = T(302535920000491, "Examine Object"),
 		if UseGamepadUI() then
 			return
 		end
-
-		local terminal = terminal
 
 		-- next we check if there's a ui element under the cursor and return that
 		local target = terminal.desktop:GetMouseTarget(terminal.GetMousePos())
@@ -281,7 +280,8 @@ function ConstructionModeDialog:OnKbdKeyDown(virtual_key, ...)
 		return ChoOrig_ConstructionModeDialog_OnKbdKeyDown(self, const.vkOpensq, ...)
 	end
 
-	return "continue"
+	return ChoOrig_ConstructionModeDialog_OnKbdKeyDown(self, virtual_key, ...)
+--~ 	return "continue"
 end
 --
 Actions[#Actions+1] = {ActionName = T(302535920011974, "Place Multiple Buildings"),
@@ -295,7 +295,10 @@ Actions[#Actions+1] = {ActionName = T(302535920011974, "Place Multiple Buildings
 local ChoOrig_IsPlacingMultipleConstructions = IsPlacingMultipleConstructions
 function IsPlacingMultipleConstructions(...)
 	local key1, key2, key3 = RetShortcuts("ChoGGi.RebindHardcodedKeys.PlaceMultipleBuildings")
-	if terminal_IsKeyPressed(key1) or terminal_IsKeyPressed(key2) or terminal_IsKeyPressed(key3) then
+	if (key1 and terminal.IsKeyPressed(key1))
+		or (key2 and terminal.IsKeyPressed(key2))
+		or (key3 and terminal.IsKeyPressed(key3))
+	then
     return true
 	end
 
@@ -333,6 +336,7 @@ local num_overrides = {
 	["idChoice4"] = "DialogShortcut4",
 }
 --~ ForceActivateStoryBit("Boost5_LeapForward", ActiveMapID, nil, true)
+
 local function OverrideActionNew()
 	local ChoOrig_XAction_new = XAction.new
 	function XAction.new(obj, context, ...)
@@ -360,7 +364,7 @@ end
 
 OnMsg.LoadGame = OverrideActionNew
 OnMsg.NewCity = OverrideActionNew
---
+--~ --
 
 
 

@@ -1,5 +1,20 @@
 -- See LICENSE for terms
 
+local mod_options = {}
+
+-- build options list
+local BuildingTemplates = BuildingTemplates
+for id, item in pairs(BuildingTemplates) do
+	if item.display_icon ~= ""
+		and (item.disabled_in_environment1 ~= ""
+		or item.disabled_in_environment2 ~= ""
+		or item.disabled_in_environment3 ~= ""
+		or item.disabled_in_environment4 ~= "")
+	then
+		mod_options["ChoGGi_" .. id] = id
+	end
+end
+
 local mod_EnableMod
 
 --~ function ChoGGi.ComFuncs.SetBuildingTemplates(template, key, value)
@@ -23,14 +38,19 @@ local function UnlockBuildings()
 		return
 	end
 
+	local ct = ClassTemplates.Building
+	local bt = BuildingTemplates
 	local die = DisabledInEnvironment
 	local blank_die = {"","","",""}
 
-	local ct = ClassTemplates.Building
-	local bt = BuildingTemplates
-	for id in pairs(bt) do
-		SetBuildingTemplates(id, bt, ct)
-		die[id] = blank_die
+	local options = CurrentModOptions
+	for id in pairs(mod_options) do
+		if options:GetProperty(id) then
+			-- get proper id from list
+			id = mod_options[id]
+			SetBuildingTemplates(id, bt, ct)
+			die[id] = blank_die
+		end
 	end
 
 end

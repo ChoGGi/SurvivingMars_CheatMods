@@ -1,3 +1,6 @@
+v0.6
+Add mod options to selectively unlock buildings.
+
 v0.5
 Updated for some picard update (Thanks McKaby).
 

@@ -1,3 +1,6 @@
+v1.1
+Holding Ctrl during construction works now (thanks lolic_lol).
+
 v1.0
 Fixed notifications not working (Thanks YertyL).
 
