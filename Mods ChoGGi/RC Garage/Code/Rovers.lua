@@ -83,12 +83,12 @@ local function RestoreMissingRover(obj)
 	nearest:RemoveFromGarage(obj)
 end
 
-local InvalidPos = InvalidPos()
 function OnMsg.LoadGame()
+	local invalid_pos = InvalidPos()
 	local rovers = MapGet("map", "BaseRover")
 	for i = 1, #rovers do
 		local r = rovers[i]
-		if r.ChoGGi_InGarage and r:GetPos() ~= InvalidPos then
+		if r.ChoGGi_InGarage and r:GetPos() ~= invalid_pos then
 			RestoreMissingRover(r)
 		end
 	end
@@ -103,6 +103,14 @@ function BaseRover:Appear(...)
 end
 
 function BaseRover:ChoGGi_UseGarage(garage)
+	if not IsValid(garage) then
+		garage = self:ChoGGi_GetNearestGarage() or self.garages.main
+	end
+	if not garage then
+		print("RC Garage: Error 1! No garage can be found!")
+		return
+	end
+
 	-- maybe not needed?
 	self:ExitHolder(garage)
 
@@ -112,6 +120,15 @@ function BaseRover:ChoGGi_UseGarage(garage)
 		self:Unsiege()
 		self.siege_state_name = "UnSiege"
 		self.sieged_state = false
+	end
+
+	-- maybe?
+	if not IsValid(garage) then
+		garage = self:ChoGGi_GetNearestGarage() or self.garages.main
+	end
+	if not garage then
+		print("RC Garage: Error 2! No garage can be found!")
+		return
 	end
 
 	local pos = select(2, garage:GetEntrance(self, "tunnel_entrance"))

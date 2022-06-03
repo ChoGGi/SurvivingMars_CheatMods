@@ -8,6 +8,22 @@ local Random = ChoGGi.ComFuncs.Random
 local SelObject = ChoGGi.ComFuncs.SelObject
 local GetCursorWorldPos = GetCursorWorldPos
 
+function ChoGGi.MenuFuncs.TriggerFireworks()
+	local city = Cities[UICity.map_id]
+	local domes = city.labels.Domes
+	if #domes < 11 then
+		for i = 1, #domes do
+			Dome.TriggerFireworks(domes[i], const.HourDuration, 15)
+		end
+	else
+		local domes_copy = table.copy(domes)
+		table.shuffle(domes_copy)
+		for i = 1, 10 do
+			Dome.TriggerFireworks(domes_copy[i], const.HourDuration, 15)
+		end
+	end
+end
+
 function ChoGGi.MenuFuncs.CaveIn()
 	local TriggerCaveIn = TriggerCaveIn
 	local IsValid = IsValid

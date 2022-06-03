@@ -919,7 +919,7 @@ function ChoGGi.MenuFuncs.Render_Toggle()
 	}
 end
 
-function ChoGGi.MenuFuncs.DebugFX_Toggle()
+function ChoGGi.MenuFuncs.DebugFX_Toggle(action)
 	local name = action.setting_name
 	local trans_str = action.setting_msg
 

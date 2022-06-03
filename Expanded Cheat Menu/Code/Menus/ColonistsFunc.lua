@@ -921,7 +921,7 @@ function ChoGGi.MenuFuncs.SetColonistsAge(action)
 		end
 
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice.text, setting_type),
+			ChoGGi.ComFuncs.SettingState(Translate(choice.text), setting_type),
 			TranslationTable[302535920000807--[[Colonist Age]]]
 		)
 	end

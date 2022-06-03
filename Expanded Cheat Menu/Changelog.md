@@ -9,6 +9,7 @@
 - Monitor Func Calls didn't work (thanks Tremualin).
 
 ### Changed:
+- Cheats>Trigger fireworks now works on all maps.
 - Monitor Func Calls shows list of funcs in order called.
 
 ### Removed:

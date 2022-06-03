@@ -156,7 +156,7 @@ end
 -- Clear rover storages with ghost resources
 --~ function OnMsg.NewHour()
 function OnMsg.LightmodelChange()
-	if not mod_EnableMod then
+	if not mod_EnableMod or not UIColony then
 		return
 	end
 

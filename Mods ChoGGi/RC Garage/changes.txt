@@ -1,3 +1,6 @@
+v1.2
+Possible crash issue? (Thanks McKaby).
+
 v1.1
 AutoMode compat update.
 

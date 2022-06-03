@@ -41,7 +41,8 @@ function OnMsg.LoadGame()
 			return {TechFields.Terraforming}
 		end
 
-		UIColony:InitResearch()
+--~ 		UIColony:InitResearch()
+		pcall(Research.InitResearch, UIColony)
 
 		-- restore old func
 		GetAvailablePresets = ChoOrig_GetAvailablePresets

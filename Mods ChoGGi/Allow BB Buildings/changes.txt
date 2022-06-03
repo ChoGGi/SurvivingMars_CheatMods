@@ -1,3 +1,9 @@
+v0.8
+Fixed issue with Russian lang.
+
+v0.7
+Hopefully good for modded buildings now.
+
 v0.6
 Add mod options to selectively unlock buildings.
 

@@ -40,5 +40,9 @@ Colour levels: Purple = mountainous, other colours = buildable.
 
 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1748327771]View all maps[/url]
 [url=http://www.survivingmaps.com/]Filtered list of all locations[/url]
+
+
+Known Issues:
+If you have B&B DLC then the planetary anomalies don't work at all. Either ignore the first four, or use my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2721921772]Fix Bugs[/url] mod.
 ]],
 })

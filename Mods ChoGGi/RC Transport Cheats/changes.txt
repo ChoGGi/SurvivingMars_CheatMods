@@ -1,3 +1,6 @@
+v0.8
+Log spam.
+
 v0.7
 I think it's as good as it's going to be.
 

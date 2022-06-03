@@ -21,11 +21,12 @@ for id, item in pairs(BuildingTemplates) do
 		or item.disabled_in_environment3 ~= ""
 		or item.disabled_in_environment4 ~= "")
 	then
+		local icon = item.display_icon and "\n\n<image " .. item.display_icon .. ">" or ""
 		c = c + 1
 		properties[c] = PlaceObj("ModItemOptionToggle", {
 			"name", "ChoGGi_" .. id,
 			"DisplayName", T(item.display_name),
-			"Help", table.concat(T(item.description) .. "\n\n" .. id .. "\n\n<image " .. item.display_icon .. ">"),
+			"Help", table.concat(T(item.description) .. T("\n\n") .. T(id) .. T(icon)),
 			"DefaultValue", false,
 		})
 	end
