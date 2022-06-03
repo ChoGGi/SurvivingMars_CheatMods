@@ -23,7 +23,7 @@ function OnMsg.LoadGame()
 		end
 		g_NoTerraforming = false
 
-		local UICity = UICity
+		local MainCity = MainCity
 		local UIColony = UIColony
 
 		-- backup some tables before we call InitResearch
@@ -63,7 +63,7 @@ function OnMsg.LoadGame()
 			local TechDef = TechDef
 			for id, status in pairs(UIColony.tech_status) do
 				if status.field == "Terraforming" then
-					TechDef[id]:EffectsInit(UICity)
+					TechDef[id]:EffectsInit(UIColony)
 				end
 			end
 		end)
@@ -123,7 +123,7 @@ function OnMsg.LoadGame()
 		SavegameFixups.StopInfiniteRains()
 
 		-- make sure any existing rockets have seed funcs (pods seem fine without this)
-		local rockets = UICity.labels.SupplyRocket or ""
+		local rockets = UIColony:GetCityLabels("SupplyRocket")
 		for i = 1, #rockets do
 			local r = rockets[i]
 			if r.demand and not r.demand.Seeds then
