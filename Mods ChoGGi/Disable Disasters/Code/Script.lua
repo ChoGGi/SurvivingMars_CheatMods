@@ -8,7 +8,7 @@ local disasters = {
 --~ 	"Marsquake",
 --~ 	"RainsDisaster",
 }
-local c = #disasters
+local disasters_c = #disasters
 
 local kill_current = {
 	ColdWave = function()
@@ -57,20 +57,20 @@ local kill_current = {
 --~ 	end,
 }
 
-local function ModOptions(id)
+local function ModOptions(id, skip_disabled)
 	-- id is from ApplyModOptions
 	if id and id ~= CurrentModId then
 		return
 	end
 
 	-- make sure we're in-game
-	if not UICity then
+	if not UIColony then
 		return
 	end
 
 	local options = CurrentModOptions
 
-	for i = 1, c do
+	for i = 1, disasters_c do
 		local id = disasters[i]
 		-- stop disaster threads
 		if options:GetProperty(id) then
@@ -102,5 +102,5 @@ OnMsg.ApplyModOptions = ModOptions
 OnMsg.CityStart = ModOptions
 -- we don't want to reset current disasters if option is disabled
 function OnMsg.LoadGame()
-	ModOptions(true)
+	ModOptions(nil, true)
 end

@@ -1,1 +1,2 @@
 v0.2
+Wasn't stopping on load (Thanks n3mes1s).

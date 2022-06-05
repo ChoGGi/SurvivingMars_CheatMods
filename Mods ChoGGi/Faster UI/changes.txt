@@ -1,2 +1,5 @@
+v0.3
+Fixed issue on load game by changing to a safer method of fast pins (Thanks McKaby).
+
 v0.2
 pcall replaced function.

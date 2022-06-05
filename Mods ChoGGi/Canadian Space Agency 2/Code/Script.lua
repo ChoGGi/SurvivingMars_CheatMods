@@ -67,6 +67,7 @@ end
 
 -- used below
 local comm_id = "ChoGGi_CanadianSpaceAgency_Commander"
+local storybit_id = "politician"
 
 -- swap any politician storybits
 local function UpdateStoryBits()
@@ -78,7 +79,7 @@ local function UpdateStoryBits()
 	for _, storybit in pairs(StoryBits) do
 		for i = 1, #storybit do
 			local item = storybit[i]
-			if item.Prerequisite and item.Prerequisite.CommanderProfile == "politician" then
+			if item.Prerequisite and item.Prerequisite.CommanderProfile == storybit_id then
 				item.Prerequisite.CommanderProfile = comm_id
 			end
 		end
@@ -88,18 +89,18 @@ end
 OnMsg.LoadGame = UpdateStoryBits
 
 function OnMsg.CityStart()
-	local profile_id = GetCommanderProfile().id
-	if profile_id ~= comm_id then
-		return
-	end
-
 	-- politician story to CSA
 	UpdateStoryBits()
+
+	if GetCommanderProfile().id ~= comm_id then
+		return
+	end
 
 	-- change standing to Good
 	local RivalAIs = RivalAIs
 	for _, rival in pairs(RivalAIs) do
 		if rival.resources.standing < 22 then
+			-- Oh hey, hows it going eh?
 			rival.resources.standing = 21
 		end
 	end

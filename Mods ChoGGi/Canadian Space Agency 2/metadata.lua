@@ -28,7 +28,7 @@ Added some vehicle names (suggestions welcome)
 Changed the rocket to the Dragon one, and drones to flying (if you have space race).
 Transparent letters logo.
 Changed welcome to mars audio.
-Diplomat commander courtesy of [url=https://steamcommunity.com/id/pwnersmanual]Pwner's Manual[/url].
+Diplomat commander courtesy of [url=https://steamcommunity.com/id/pwnersmanual]Pwner's Manual[/url] (commander acts as politician in storybits).
 etc.
 ]],
 })

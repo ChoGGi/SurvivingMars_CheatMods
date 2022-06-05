@@ -921,30 +921,36 @@ function OnMsg.ClassesPostprocess()
 	local ChoOrig_Colonist_ChangeComfort = Colonist.ChangeComfort
 	AddToOrigFuncs("Colonist.ChangeComfort")
 	function Colonist:ChangeComfort(...)
-		ChoOrig_Colonist_ChangeComfort(self, ...)
+		local ret = ChoOrig_Colonist_ChangeComfort(self, ...)
 		if UserSettings.NoMoreEarthsick and self.status_effects.StatusEffect_Earthsick then
 			self:Affect("StatusEffect_Earthsick", false)
 		end
+		-- there isn't a return, but in case a mod/dev adds one
+		return ret
 	end
 
 	-- make sure heater keeps the powerless setting
 	local ChoOrig_SubsurfaceHeater_UpdateElectricityConsumption = SubsurfaceHeater.UpdateElectricityConsumption
 	AddToOrigFuncs("SubsurfaceHeater.UpdateElectricityConsumption")
 	function SubsurfaceHeater:UpdateElectricityConsumption(...)
-		ChoOrig_SubsurfaceHeater_UpdateElectricityConsumption(self, ...)
+		local ret = ChoOrig_SubsurfaceHeater_UpdateElectricityConsumption(self, ...)
 		if self.ChoGGi_mod_electricity_consumption then
 			ChoGGi.ComFuncs.RemoveBuildingElecConsump(self)
 		end
+		-- there isn't a return, but in case a mod/dev adds one
+		return ret
 	end
 
 	-- same for tribby
 	local ChoOrig_TriboelectricScrubber_OnPostChangeRange = TriboelectricScrubber.OnPostChangeRange
 	AddToOrigFuncs("TriboelectricScrubber.OnPostChangeRange")
 	function TriboelectricScrubber:OnPostChangeRange(...)
-		ChoOrig_TriboelectricScrubber_OnPostChangeRange(self, ...)
+		local ret = ChoOrig_TriboelectricScrubber_OnPostChangeRange(self, ...)
 		if self.ChoGGi_mod_electricity_consumption then
 			ChoGGi.ComFuncs.RemoveBuildingElecConsump(self)
 		end
+		-- there isn't a return, but in case a mod/dev adds one
+		return ret
 	end
 
 	-- remove idiot trait from uni grads (hah!)
@@ -954,7 +960,7 @@ function OnMsg.ClassesPostprocess()
 		if UserSettings.UniversityGradRemoveIdiotTrait then
 			unit:RemoveTrait("Idiot")
 		end
-		ChoOrig_MartianUniversity_OnTrainingCompleted(self, unit, ...)
+		return ChoOrig_MartianUniversity_OnTrainingCompleted(self, unit, ...)
 	end
 
 	-- used to skip mystery sequences

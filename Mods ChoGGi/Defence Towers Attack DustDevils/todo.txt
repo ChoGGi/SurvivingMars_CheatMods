@@ -1,0 +1,5 @@
+
+The Mime 3 hours ago 
+Hey ChoGGi, so one thing I observed when using this mod is that, in a "Steep" Map, lets say the turret is in a lower elevation and if a dust devil comes up in a higher elevation, and if there is like a mountain range in between, the rocket cant seem hit the devil and hits the mountain range instead and it fails to stop it.
+
+Any chance you make the trajectory more parabolic?

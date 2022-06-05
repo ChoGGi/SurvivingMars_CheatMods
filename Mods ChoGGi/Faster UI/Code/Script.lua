@@ -4,23 +4,16 @@ local pcall = pcall
 
 local mod_EnableMod
 
--- Fake funcs
-local ChoOrig_GetPreciseTicks = GetPreciseTicks
-local function ChoFake_GetPreciseTicks()
-	return 0
-end
--- Faster pins
+-- Faster pins 1/2
 local ChoOrig_PinsDlg_SetVisible = PinsDlg.SetVisible
 function PinsDlg:SetVisible(visible, instant, ...)
 	if mod_EnableMod then
-		-- opening menu
-		GetPreciseTicks = ChoFake_GetPreciseTicks
 		-- closing menu
 		instant = true
 	end
-	pcall(ChoOrig_PinsDlg_SetVisible, self, visible, instant, ...)
-	GetPreciseTicks = ChoOrig_GetPreciseTicks
+	return ChoOrig_PinsDlg_SetVisible(self, visible, instant, ...)
 end
+
 -- Open build menu
 local ChoOrig_XBuildMenu_EaseInButton = XBuildMenu.EaseInButton
 function XBuildMenu:EaseInButton(button, start_time, ...)
@@ -29,6 +22,7 @@ function XBuildMenu:EaseInButton(button, start_time, ...)
 	end
 	return ChoOrig_XBuildMenu_EaseInButton(self, button, start_time, ...)
 end
+
 -- Switch to map overview
 local ChoOrig_OverviewModeDialog_GetCameraTransitionTime = OverviewModeDialog.GetCameraTransitionTime
 function OverviewModeDialog.GetCameraTransitionTime(...)
@@ -45,8 +39,21 @@ function OnMsg.ClassesPostprocess()
 	local template = XTemplates.FadeToBlackDlg[1]
 	template.FadeInTime = 0
 	template.FadeOutTime = 0
+
+	-- Faster pins 2/2
+	local ChoOrig_XBlinkingButtonWithRMB_AddInterpolation = XBlinkingButtonWithRMB.AddInterpolation
+	function XBlinkingButtonWithRMB:AddInterpolation(int, ...)
+		if int and mod_EnableMod then
+			int.start = 0
+			int.duration = 0
+			int.easing = 0
+		end
+
+		return ChoOrig_XBlinkingButtonWithRMB_AddInterpolation(self, int, ...)
+	end
 end
 
+-- update fade time after game is loaded
 local function UpdateFade(time)
 	if mod_EnableMod then
 		time = 0

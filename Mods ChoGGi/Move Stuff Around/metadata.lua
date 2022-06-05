@@ -30,6 +30,7 @@ Press the button to activate placement mode, then click somewhere on the map to 
 This places at the centre of the hex (like buildings), if you want freeform then I'll make it a mod option.
 
 Known issues:
+Keyboard + Mouse required! (may change at some period)
 May not work great with some stuff (air/water/elec/passages/domes).
 ]],
 })
