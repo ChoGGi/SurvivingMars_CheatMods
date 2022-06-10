@@ -27,6 +27,7 @@ F5: Open object manipulator (or use Tools>Edit obj in Examine).
 F6: Change building colour (Shift-F6 or Ctrl-F6 to apply random/default).
 F7: Toggle using last building orientation.
 F9: Clear the console log (See console settings to turn off log).
+Ctrl+F2: Toggle Cheats pane in Selection panel.
 Ctrl+F: Fill resource of object.
 Ctrl-Alt-Shift-R: Opens console and places "restart" in it.
 Ctrl-Space: Opens placement mode with selected object/last built object.
@@ -42,7 +43,7 @@ If you want to be able to bind a menu item: msg me and I'll add a keybinding.
 When I say object that means either the selected object or the object under the mouse cursor.
 
 There's a cheats section in most selection panels on the right side of the screen.
-Menu>ECM>Misc>Infopanel Cheats (on by default)
+Menu>ECM>Misc>Infopanel Cheats (on by default, Ctrl+F2 to toggle)
 Hover over menu items for a description (will say if enabled or disabled).
 
 Settings are saved at %APPDATA%\Surviving Mars\CheatMenuModSettings.lua, or in LocalStorage.lua when the blacklist is enabled.

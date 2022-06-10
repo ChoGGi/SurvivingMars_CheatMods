@@ -661,7 +661,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000455--[[Object Cloner]]],
 	ActionId = ".Object Cloner",
 	ActionIcon = "CommonAssets/UI/Menu/EnrichTerrainEditor.tga",
 	RolloverText = TranslationTable[302535920000456--[[Clones selected/moused over object to current mouse position (should probably use the shortcut key rather than this menu item).]]],
-	OnAction = ChoGGi.MenuFuncs.ObjectCloner,
+	OnAction = ChoGGi.ComFuncs.ObjectCloner,
 	ActionShortcut = "Shift-Q",
 	ActionBindable = true,
 }

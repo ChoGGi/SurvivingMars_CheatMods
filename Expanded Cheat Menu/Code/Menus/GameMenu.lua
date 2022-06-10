@@ -275,7 +275,6 @@ Actions[c] = {ActionName = TranslationTable[302535920001501--[[Map Data]]],
 	ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
 	RolloverText = TranslationTable[302535920001502--[["Export map location data to %sMapData.csv (will take awhile).
 
-See survivingmaps.com for a filtered list.
 Don't use in start new game screens (rating/topo will be messed up).
 Difficulty Challenge/Named Location may not work on some saves (best to start a new game, or run from main menu)."]]]:format(ConvertToOSPath("AppData/")),
 	OnAction = ChoGGi.ComFuncs.ExportMapDataToCSV,
@@ -288,7 +287,6 @@ Actions[c] = {ActionName = TranslationTable[302535920001618--[[Map Data (Breakth
 	ActionIcon = "CommonAssets/UI/Menu/LowerTerrainToLevel.tga",
 	RolloverText = TranslationTable[302535920001502--[["Export map location data to %sMapData.csv (will take awhile).
 
-See survivingmaps.com for a filtered list.
 Don't use in start new game screens (rating/topo will be messed up).
 Difficulty Challenge/Named Location may not work on some saves (best to start a new game, or run from main menu)."]]]:format(ConvertToOSPath("AppData/"))
 	.. "\n\n" .. T(302535920001619--[[This will take <color ChoGGi_red>longer</color> (about 15s).]]),

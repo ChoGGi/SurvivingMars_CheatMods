@@ -1,3 +1,6 @@
+v0.4
+Added mod title to msg.
+
 v0.3
 Picard more.
 

@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v11.5 (Unreleased)
+- Added ObjectCloner().
 
 ## v11.4 (7 May 2022)
 - Fixed Emergency Lua GC (from this mod at least, thanks Tremualin).

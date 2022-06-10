@@ -48,19 +48,21 @@ end
 
 -- set fuel to whatever was stored (if it's one of ours)
 function OnMsg.RocketLanded(obj)
-	if obj.ChoGGi_RepositionRocket then
-		local target = obj.ChoGGi_RepositionRocket
-		obj.ChoGGi_RepositionRocket = nil
+	if not obj.ChoGGi_RepositionRocket then
+		return
+	end
 
-		obj.accumulated_fuel = target
-		obj.refuel_request:SetAmount(target)
-		-- make sure it always shows the correct amount
-		obj.refuel_request:SetAmount(0)
-		-- update selection panel
-		local sel = SelectedObj
-		if sel and sel.handle == obj.handle then
-			RebuildInfopanel(obj)
-		end
+	local target = obj.ChoGGi_RepositionRocket
+	obj.ChoGGi_RepositionRocket = nil
+
+	obj.accumulated_fuel = target
+	obj.refuel_request:SetAmount(target)
+	-- make sure it always shows the correct amount
+	obj.refuel_request:SetAmount(0)
+	-- update selection panel
+	local sel = SelectedObj
+	if sel and sel.handle == obj.handle then
+		RebuildInfopanel(obj)
 	end
 end
 

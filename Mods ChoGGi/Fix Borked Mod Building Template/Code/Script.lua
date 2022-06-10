@@ -37,9 +37,10 @@ function OnMsg.GatherUIBuildingPrerequisites(template)
 	if not class and template.template_class ~= "false" then
 		print("Borked Mod Building Template:", ValueToLuaCode(template))
 
+		local title = template.mod and template.mod.title or ""
 		CreateMessageBox(
 			"Borked Mod Building Template:",
-			"See log for more info:" .. template.id)
+			"See log for more info:" .. template.id .. "\n" .. title)
 	end
 
 end

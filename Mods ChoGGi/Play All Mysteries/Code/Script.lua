@@ -139,7 +139,7 @@ local function PickRandomMystery(delay)
 		function CheatsEnabled()
 			return true
 		end
-		CheatStartMystery(new_myst)
+		pcall(CheatStartMystery, new_myst)
 		CheatsEnabled = ChoOrig_CheatsEnabled
 
 		-- force skip waitmsg from St. Elmo's Fire
@@ -147,6 +147,15 @@ local function PickRandomMystery(delay)
 			Msg("ColonyApprovalPassed")
 		end
 
+		-- from Mysteries.lua\OnMsg.PostLoadGame()
+		-- last checked lua rev 1011166
+		if UIColony and UIColony.mystery then
+			UIColony.mystery_id = UIColony.mystery.class
+			--reload resource pretty desc/name
+			UIColony.mystery:ApplyMysteryResourceProperties()
+		end
+
+		Msg("MysteryChosen")
 	end)
 
 end

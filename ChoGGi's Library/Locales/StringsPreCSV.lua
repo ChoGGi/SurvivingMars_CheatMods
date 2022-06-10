@@ -1644,7 +1644,6 @@ Open <color ChoGGi_green>%s</color> to see all the textures, the tooltips show t
 302535920001501, "Map Data"
 302535920001502, "Export map location data to <color ChoGGi_green>%sMapData.csv</color> (will take awhile).
 
-See survivingmaps.com for a filtered list.
 Don't use in start new game screens (rating/topo will be messed up).
 Difficulty Challenge/Named Location may not work on some saves (best to start a new game, or run from main menu)."
 302535920001489, "Toggle Map Edge Limit"

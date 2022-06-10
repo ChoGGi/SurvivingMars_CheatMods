@@ -30,10 +30,12 @@ return PlaceObj("ModDef", {
 	"TagTools", true,
 	"description", [[
 Find landing spots with/without a combination of breakthroughs (Extractor AI), resources (metals2), threats(dust_devils4), etc.
+Left click an item to move the globe to it.
 
 The first 12 breakthroughs are guaranteed (4 from planetary anomalies, and 8 from ground anomalies). The rest are dependant on story bits/etc.
 
-Left click an item to move the globe to it.
-For something easier to use: [url=https://survivingmaps.com/]Surviving Maps[/url] (if the devs add new breakthroughs, then you'll have to use this mod till it gets updated).
+
+Known Issues:
+If you have B&B DLC then the planetary anomalies don't work at all. Either ignore the first four, or use my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2721921772]Fix Bugs[/url] mod.
 ]],
 })

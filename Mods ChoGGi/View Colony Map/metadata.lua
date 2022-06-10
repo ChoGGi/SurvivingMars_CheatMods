@@ -39,7 +39,6 @@ Also shows map for challenges (mod option to turn it off).
 Colour levels: Purple = mountainous, other colours = buildable.
 
 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1748327771]View all maps[/url]
-[url=http://www.survivingmaps.com/]Filtered list of all locations[/url]
 
 
 Known Issues:

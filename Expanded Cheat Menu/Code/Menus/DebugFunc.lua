@@ -981,62 +981,6 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects()
 	)
 end
 
-function ChoGGi.MenuFuncs.ObjectCloner(flat)
-	local obj = ChoGGi.ComFuncs.SelObject()
-	if not IsValid(obj) then
-		return
-	end
-
-	if obj:IsKindOf("Colonist") then
-		ChoGGi.ComFuncs.SpawnColonist(obj, nil, GetCursorWorldPos())
-		return
-	end
-
-	local concrete = obj:IsKindOf("TerrainDepositConcrete")
-
-	local clone
-	-- make regolith work with Harvester
-	if concrete then
-		clone = TerrainDepositMarker:new()
-		clone:CopyProperties(obj)
-	-- clone dome = crashy
-	elseif obj:IsKindOf("Dome") then
-		clone = g_Classes[obj.class]:new()
-		clone:CopyProperties(obj)
-	else
-		clone = obj:Clone()
-	end
-
-	if obj.GetEntity then
-		clone.entity = obj:GetEntity()
-	end
-
-	-- got me banners are weird like that
-	if obj:IsKindOf("Banner") then
-		clone:ChangeEntity(obj:GetEntity())
-	end
-
-	-- we're already cheating by cloning, so fill 'er up
-	if clone:IsKindOf("SubsurfaceDeposit") then
-		if clone.CheatRefill then
-			clone:CheatRefill()
-		end
-	end
-
-	-- make sure it's hex worthy
-	local pos = GetCursorWorldPos()
-	if flat == true or flat.flatten_to_ground == true then
-		clone:SetPos(pos:SetTerrainZ())
-	else
-		clone:SetPos(pos)
-	end
-
-	if concrete then
-		clone:SpawnDeposit()
-	end
-
-end
-
 function ChoGGi.MenuFuncs.BuildableHexGridSettings(action)
 	local setting = action.setting_mask
 

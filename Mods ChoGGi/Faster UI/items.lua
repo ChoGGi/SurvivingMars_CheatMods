@@ -2,9 +2,33 @@
 
 return {
 	PlaceObj("ModItemOptionToggle", {
-		"name", "EnableMod",
-		"DisplayName", T(302535920011303, "<color ChoGGi_yellow>Enable Mod</color>"),
-		"Help", T(302535920011793, "Disable mod without having to see missing mod msg."),
+		"name", "Pins1",
+		"DisplayName", T(0000, "Pins1"),
+		"Help", T(0000, "PinsDlg:SetVisible"),
+		"DefaultValue", true,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "Pins2",
+		"DisplayName", T(0000, "Pins2"),
+		"Help", T(0000, "XBlinkingButtonWithRMB:AddInterpolation"),
+		"DefaultValue", true,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "BuildMenu",
+		"DisplayName", T(0000, "BuildMenu"),
+		"Help", T(0000, "XBuildMenu:EaseInButton"),
+		"DefaultValue", true,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "OverviewMode",
+		"DisplayName", T(0000, "OverviewTransition"),
+		"Help", T(0000, "OverviewModeDialog.GetCameraTransitionTime"),
+		"DefaultValue", true,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "FadeToBlack",
+		"DisplayName", T(0000, "FadeToBlack"),
+		"Help", T(0000, "FadeToBlackDlg"),
 		"DefaultValue", true,
 	}),
 }

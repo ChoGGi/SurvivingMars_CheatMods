@@ -23,6 +23,7 @@ local GetMapSectorXY = GetMapSectorXY
 local GetObjectHexGrid = GetObjectHexGrid
 local GetRandomPassablePoint = GetRandomPassablePoint
 local guic = guic
+local HexGetNearestCenter = HexGetNearestCenter
 local HexGridGetObject = HexGridGetObject
 local HexToWorld = HexToWorld
 local IsBox = IsBox
@@ -7658,6 +7659,75 @@ do -- AddToOrigFuncs
 		end
 	end
 end -- do
+
+function ChoGGi.ComFuncs.ObjectCloner(flat, obj, centre)
+	if not obj then
+		obj = ChoGGi.ComFuncs.SelObject()
+	end
+
+	if not IsValid(obj) then
+		return
+	end
+
+	if obj:IsKindOf("Colonist") then
+		ChoGGi.ComFuncs.SpawnColonist(obj, nil, GetCursorWorldPos())
+		return
+	end
+
+	local concrete = obj:IsKindOf("TerrainDepositConcrete")
+
+	local clone
+	-- make regolith work with Harvester
+	if concrete then
+		clone = TerrainDepositMarker:new()
+		clone:CopyProperties(obj)
+	-- clone dome = crashy
+	elseif obj:IsKindOf("Dome") then
+		clone = g_Classes[obj.class]:new()
+		clone:CopyProperties(obj)
+	else
+		clone = obj:Clone()
+	end
+
+	if obj.GetEntity then
+		clone.entity = obj:GetEntity()
+	end
+
+	-- got me banners are weird like that
+	if obj:IsKindOf("Banner") then
+		clone:ChangeEntity(obj:GetEntity())
+	end
+
+	-- we're already cheating by cloning, so fill 'er up
+	if clone:IsKindOf("SubsurfaceDeposit") then
+		if clone.CheatRefill then
+			clone:CheatRefill()
+		end
+	end
+
+	-- make sure it's hex worthy
+	local pos = GetCursorWorldPos()
+
+	if centre then
+		pos = HexGetNearestCenter(pos)
+	end
+
+	if flat == true or flat.flatten_to_ground == true then
+		pos = pos:SetTerrainZ()
+	end
+
+	clone:SetPos(pos)
+
+	if concrete then
+		clone:SpawnDeposit()
+	end
+
+	-- update flight grid for shuttles
+	FlightCaches[UICity.map_id]:OnHeightChanged()
+
+	return clone
+end
+
 
 -- loop through all map sectors and fire this func
 --~ function ChoGGi.ComFuncs.LoopMapSectors(map_id, func)

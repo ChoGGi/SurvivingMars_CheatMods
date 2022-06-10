@@ -1,13 +1,15 @@
 -- See LICENSE for terms
 
-local pcall = pcall
-
-local mod_EnableMod
+local mod_Pins1
+local mod_Pins2
+local mod_BuildMenu
+local mod_OverviewMode
+local mod_FadeToBlack
 
 -- Faster pins 1/2
 local ChoOrig_PinsDlg_SetVisible = PinsDlg.SetVisible
 function PinsDlg:SetVisible(visible, instant, ...)
-	if mod_EnableMod then
+	if mod_Pins1 then
 		-- closing menu
 		instant = true
 	end
@@ -17,8 +19,8 @@ end
 -- Open build menu
 local ChoOrig_XBuildMenu_EaseInButton = XBuildMenu.EaseInButton
 function XBuildMenu:EaseInButton(button, start_time, ...)
-	if mod_EnableMod then
-		start_time = 0
+	if mod_BuildMenu then
+		start_time = 1
 	end
 	return ChoOrig_XBuildMenu_EaseInButton(self, button, start_time, ...)
 end
@@ -26,39 +28,39 @@ end
 -- Switch to map overview
 local ChoOrig_OverviewModeDialog_GetCameraTransitionTime = OverviewModeDialog.GetCameraTransitionTime
 function OverviewModeDialog.GetCameraTransitionTime(...)
-	if mod_EnableMod then
+	if UICity and mod_OverviewMode then
+--~ 		return 1
 		return 0
 	end
 	return ChoOrig_OverviewModeDialog_GetCameraTransitionTime(...)
 end
 
--- Fade to black for map switch buttons
 
--- pp is too soon for mod options, so we default to "enabled" for it
 function OnMsg.ClassesPostprocess()
+	-- Fade to black for map switch buttons
+	-- pp is too soon for mod options, so we default to the enabled values
 	local template = XTemplates.FadeToBlackDlg[1]
-	template.FadeInTime = 0
-	template.FadeOutTime = 0
+	template.FadeInTime = 1
+	template.FadeOutTime = 1
 
 	-- Faster pins 2/2
 	local ChoOrig_XBlinkingButtonWithRMB_AddInterpolation = XBlinkingButtonWithRMB.AddInterpolation
 	function XBlinkingButtonWithRMB:AddInterpolation(int, ...)
-		if int and mod_EnableMod then
-			int.start = 0
-			int.duration = 0
-			int.easing = 0
+		if int and mod_Pins2 then
+			int.start = 1
+			int.duration = 1
+			int.easing = 1
 		end
 
 		return ChoOrig_XBlinkingButtonWithRMB_AddInterpolation(self, int, ...)
 	end
 end
 
--- update fade time after game is loaded
-local function UpdateFade(time)
-	if mod_EnableMod then
-		time = 0
-	else
-		-- default time (last checked picard rev 1010999)
+-- Update fade time after game is loaded
+local function UpdateFade()
+	local time = 1
+	if not mod_FadeToBlack then
+		-- Ddefault time (last checked picard rev 1010999)
 		time = 450
 	end
 	--
@@ -74,7 +76,11 @@ local function ModOptions(id)
 		return
 	end
 
-	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+	mod_Pins1 = CurrentModOptions:GetProperty("Pins1")
+	mod_Pins2 = CurrentModOptions:GetProperty("Pins2")
+	mod_BuildMenu = CurrentModOptions:GetProperty("BuildMenu")
+	mod_OverviewMode = CurrentModOptions:GetProperty("OverviewMode")
+	mod_FadeToBlack = CurrentModOptions:GetProperty("FadeToBlack")
 
 	UpdateFade()
 end
