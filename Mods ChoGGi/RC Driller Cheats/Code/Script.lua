@@ -45,7 +45,7 @@ local function UpdateRovers()
 	RCDriller.deposit_lost_pct = mod_LossAmount
 	RCDriller.production_per_day = mod_ProductionPerDay
 
-	local objs = UICity.labels.RCDriller or ""
+	local objs = UIColony.city_labels.labels.RCDriller or ""
 	for i = 1, #objs do
 		local obj = objs[i]
 		obj.deposit_lost_pct = mod_LossAmount

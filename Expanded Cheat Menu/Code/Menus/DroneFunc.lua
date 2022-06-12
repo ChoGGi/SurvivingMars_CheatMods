@@ -39,7 +39,7 @@ function ChoGGi.MenuFuncs.SetDroneBatteryCap()
 			-- I doubt updating this matters...
 			const.DroneBatteryMax = value
 
-			local objs = UICity.labels.Drone or ""
+			local objs = UIColony.city_labels.labels.Drone or ""
 			for i = 1, #objs do
 				objs[i].battery_max = value
 			end
@@ -135,7 +135,7 @@ function ChoGGi.MenuFuncs.SetRoverWorkRadius()
 			ChoGGi.ComFuncs.SetSavedConstSetting("RCRoverMaxRadius")
 			RCRover.service_area_max = value
 
-			local objs = UICity.labels.RCRover or ""
+			local objs = UIColony.city_labels.labels.RCRoverAndChildren or ""
 			for i = 1, #objs do
 				local obj = objs[i]
 				SetPropertyProp(obj, "UIWorkRadius", "max", value)
@@ -189,7 +189,7 @@ function ChoGGi.MenuFuncs.SetDroneHubWorkRadius()
 			ChoGGi.ComFuncs.SetSavedConstSetting("CommandCenterMaxRadius")
 			DroneHub.service_area_max = value
 
-			local objs = UICity.labels.DroneHub or ""
+			local objs = UIColony.city_labels.labels.DroneHub or ""
 			for i = 1, #objs do
 				local obj = objs[i]
 				SetPropertyProp(obj, "UIWorkRadius", "max", value)
@@ -306,7 +306,7 @@ function ChoGGi.MenuFuncs.SetDroneMoveSpeed(action)
 
 		local value = choice.value
 		if type(value) == "number" then
-			local objs = UICity.labels.Drone or ""
+			local objs = UIColony.city_labels.labels.Drone or ""
 
 			if UpgradedSetting then
 				for i = 1, #objs do
@@ -441,7 +441,7 @@ function ChoGGi.MenuFuncs.SetDroneFactoryBuildSpeed()
 
 		local value = choice.value
 		if type(value) == "number" then
-			local objs = UICity.labels.DroneFactory or ""
+			local objs = UIColony.city_labels.labels.DroneFactory or ""
 			for i = 1, #objs do
 				objs[i].performance = value
 			end

@@ -17,7 +17,7 @@ end
 
 -- update existing
 function OnMsg.LoadGame()
-	local labels = UICity.labels
+	local labels = UIColony.city_labels.labels
 	for i = 1, c do
 		local label = labels[list[i]] or ""
 		for j = 1, #label do

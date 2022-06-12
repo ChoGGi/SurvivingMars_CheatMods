@@ -354,7 +354,8 @@ do -- ColonistData
 		skipped_traits = AddSkipped(t.ColonistSpecializations, skipped_traits)
 
 		local export_data = {}
-		local colonists = UICity.labels.Colonist or ""
+--~ 		local colonists = UICity.labels.Colonist or ""
+		local colonists = UIColony:GetCityLabels("Colonist")
 
 		for i = 1, #colonists do
 			local c = colonists[i]

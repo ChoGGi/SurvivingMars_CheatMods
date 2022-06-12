@@ -29,7 +29,8 @@ function OnMsg.BuildingInit(obj)
 		CreateRealTimeThread(function()
 			if not IsValid(obj.parent_dome) then
 				-- we use this to update the parent_dome (if there's a working/closer one)
-				UICity:AddToLabel("ChoGGi_InsideForcedOutDome", obj)
+				local city = Cities[obj:GetMapID()]
+				city:AddToLabel("ChoGGi_InsideForcedOutDome", obj)
 
 				AttachToNearestDome(obj)
 			end
@@ -38,11 +39,12 @@ function OnMsg.BuildingInit(obj)
 end
 
 function OnMsg.NewDay() -- NewSol...
-	local objs = UICity.labels.ChoGGi_InsideForcedOutDome or ""
+	local objs = UIColony.city_labels.labels.ChoGGi_InsideForcedOutDome or ""
 	for i = #objs, 1, -1 do
 		local obj = objs[i]
 		if not IsValid(obj) then
-			UICity:RemoveFromLabel("ChoGGi_InsideForcedOutDome", obj)
+			local city = Cities[obj:GetMapID()]
+			city:RemoveFromLabel("ChoGGi_InsideForcedOutDome", obj)
 		else
 			AttachToNearestDome(obj)
 		end

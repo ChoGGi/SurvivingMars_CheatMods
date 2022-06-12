@@ -20,7 +20,7 @@ local function UpdateObjs()
 	BuildingTemplates.LightTripod.reveal_range = mod_LightTripodRadius
 	ClassTemplates.Building.LightTripod.reveal_range = mod_LightTripodRadius
 	local UpdateRevealObject = UnitRevealDarkness.UpdateRevealObject
-	local objs = UICity.labels.LightTripod or ""
+	local objs = UIColony.city_labels.labels.LightTripod or ""
 	for i = 1, #objs do
 		local obj = objs[i]
 		obj.reveal_range = mod_LightTripodRadius
@@ -29,7 +29,7 @@ local function UpdateObjs()
 
 	-- struts
 	SupportStruts.work_radius = mod_SupportStrutRadius
-	objs = UICity.labels.SupportStruts or ""
+	objs = UIColony.city_labels.labels.SupportStruts or ""
 	for i = 1, #objs do
 		objs[i].work_radius = mod_SupportStrutRadius
 	end

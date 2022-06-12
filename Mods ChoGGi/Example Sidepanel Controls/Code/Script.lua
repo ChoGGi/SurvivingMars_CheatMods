@@ -204,7 +204,7 @@ function OnMsg.ClassesPostprocess()
 --~ 		(self, context)
 		"OnPress", function()
 			---
-			local objs = UICity.labels.SubsurfaceDeposit or ""
+			local objs = UIColony:GetCityLabels("SubsurfaceDeposit")
 			for i = 1, #objs do
 				objs[i].max_amount = objs[i].max_amount * 5
 				objs[i]:CheatRefill()

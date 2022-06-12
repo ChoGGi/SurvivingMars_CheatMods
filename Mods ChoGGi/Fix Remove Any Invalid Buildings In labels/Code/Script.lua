@@ -23,7 +23,7 @@ function OnMsg.LoadGame()
 
 	local IsValid = IsValid
 	-- loop through all the label objects and remove any invalid ones
-	local labels = UICity.labels
+	local labels = UIColony.city_labels.labels
 	for label_id, label in pairs(labels) do
 		-- not sure why they added Consts to labels when everything else in here is a building/vehicle/colonist of some sort.
 		if label_id ~= "Consts" then

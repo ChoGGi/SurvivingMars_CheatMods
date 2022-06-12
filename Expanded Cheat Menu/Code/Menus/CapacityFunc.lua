@@ -17,7 +17,7 @@ function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
 		amount = 5
 	end
 	local SetMechanizedDepotTempAmount = ChoGGi.ComFuncs.SetMechanizedDepotTempAmount
-	local objs = UICity.labels.MechanizedDepots or ""
+	local objs = UIColony.city_labels.labels.MechanizedDepots or ""
 	for i = 1, #objs do
 		SetMechanizedDepotTempAmount(objs[i], amount)
 	end
@@ -81,7 +81,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 		local value = choice[1].value
 		if type(value) == "number" then
 
-			local objs = UICity.labels.Workplace or ""
+			local objs = UIColony.city_labels.labels.Workplace or ""
 			for i = 1, #objs do
 				local o = objs[i]
 				if RetTemplateOrClass(o) == id then
@@ -200,7 +200,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 			-- updating time
 			if cap_type == "electricity" then
 				local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
-				local objs = UICity.labels.Power or ""
+				local objs = UIColony.city_labels.labels.Power or ""
 				for i = 1, #objs do
 					local o = objs[i]
 					if RetTemplateOrClass(o) == id then
@@ -213,7 +213,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 				end
 
 			elseif cap_type == "colonist" then
-				local objs = UICity.labels.Residence or ""
+				local objs = UIColony.city_labels.labels.Residence or ""
 				for i = 1, #objs do
 					local o = objs[i]
 					if RetTemplateOrClass(o) == id then
@@ -224,7 +224,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 			else -- water and air
 				local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
 				local cap_name = cap_type .. "_capacity"
-				local objs = UICity.labels["Life-Support"] or ""
+				local objs = UIColony.city_labels.labels["Life-Support"] or ""
 				for i = 1, #objs do
 					local o = objs[i]
 					if RetTemplateOrClass(o) == id then
@@ -303,7 +303,7 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 		end
 		local value = choice[1].value
 		if type(value) == "number" then
-			local objs = UICity.labels.BuildingNoDomes or ""
+			local objs = UIColony.city_labels.labels.BuildingNoDomes or ""
 			for i = 1, #objs do
 				local o = objs[i]
 				if RetTemplateOrClass(o) == id then
@@ -370,7 +370,7 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 			if bld_type == "StorageWasteDepot" then
 				-- loop through and change all existing
 
-				local objs = UICity.labels.WasteRockDumpSite or ""
+				local objs = UIColony.city_labels.labels.WasteRockDumpSite or ""
 				for i = 1, #objs do
 					local o = objs[i]
 					o.max_amount_WasteRock = value
@@ -381,7 +381,7 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 				end
 
 			elseif bld_type == "StorageOtherDepot" then
-				local objs = UICity.labels.UniversalStorageDepot or ""
+				local objs = UIColony.city_labels.labels.UniversalStorageDepot or ""
 				for i = 1, #objs do
 					local o = objs[i]
 					if o.template_name ~= "UniversalStorageDepot" then
@@ -389,11 +389,11 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 					end
 				end
 
-				objs = UICity.labels.MysteryDepot or ""
+				objs = UIColony.city_labels.labels.MysteryDepot or ""
 				for i = 1, #objs do
 					objs[i].max_storage_per_resource = value
 				end
-				objs = UICity.labels.BlackCubeDumpSite or ""
+				objs = UIColony.city_labels.labels.BlackCubeDumpSite or ""
 				for i = 1, #objs do
 					objs[i].max_amount_BlackCube = value
 				end
@@ -402,7 +402,7 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 				end
 
 			elseif bld_type == "StorageUniversalDepot" then
-				local objs = UICity.labels.UniversalStorageDepot or ""
+				local objs = UIColony.city_labels.labels.UniversalStorageDepot or ""
 				for i = 1, #objs do
 					local o = objs[i]
 					if o.template_name == "UniversalStorageDepot" then
@@ -414,7 +414,7 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 				end
 
 			elseif bld_type == "StorageMechanizedDepot" then
-				local objs = UICity.labels.MechanizedDepots or ""
+				local objs = UIColony.city_labels.labels.MechanizedDepots or ""
 				for i = 1, #objs do
 					objs[i].max_storage_per_resource = value
 				end

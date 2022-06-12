@@ -47,7 +47,6 @@ local function WaitItOut(idle_func, self, ...)
 		if (mod_NearestLaser or mod_NearestHub) and not self.ChoGGi_AutoRoversDuringStorms then
 			local valid_obj, working_objs
 
---~ 			local labels = UICity.labels
 			local labels = self.city.labels
 
 			if mod_NearestLaser then

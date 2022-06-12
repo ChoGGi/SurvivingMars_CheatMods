@@ -279,8 +279,9 @@ local function UpdateDrones()
 		return
 	end
 
-	local UICity = UICity
-	local hubs = UICity.labels.DroneControl or ""
+--~ 	local UICity = UICity
+--~ 	local hubs = UICity.labels.DroneControl or ""
+	local hubs = UIColony:GetCityLabels("DroneControl")
 
 --~ 	ex(filtered_hubs)
 
@@ -346,7 +347,8 @@ local function UpdateDrones()
 
 	-- if there's less drones then the threshold set in mod options we evenly split drones across hubs
 	-- copied so we can table.remove from it (maybe filter out the not working drones?)
-	local drones = table.icopy(UICity.labels.Drone or empty_table)
+--~ 	local drones = table.icopy(UICity.labels.Drone or empty_table)
+	local drones = table.icopy(UIColony:GetCityLabels("Drone"))
 	if mod_EarlyGame == 0 or mod_EarlyGame > #drones then
 		-- get numbers for amount of drones split between hubs (rounded down)
 		local split_count = floatfloor(#drones / hub_count)

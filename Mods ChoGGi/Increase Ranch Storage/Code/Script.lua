@@ -20,7 +20,7 @@ local function ProdUpdate(obj)
 end
 
 local function UpdateRanchesLoop(label)
-	local objs = UICity.labels[label] or ""
+	local objs = UIColony:GetCityLabels(label)
 	for i = 1, #objs do
 		local obj = objs[i]
 --~ 		obj.max_storage1 = mod_StockMax
@@ -40,12 +40,13 @@ local function ModOptions(id)
 		return
 	end
 
-	mod_StockMax = CurrentModOptions:GetProperty("StockMax") * 1000
+	mod_StockMax = CurrentModOptions:GetProperty("StockMax") * const.ResourceScale
 
 	ChoGGi.ComFuncs.SetBuildingTemplates("OpenPasture", "max_storage1", mod_StockMax)
+	ChoGGi.ComFuncs.SetBuildingTemplates("InsidePasture", "max_storage1", mod_StockMax)
 
 	-- make sure we're in-game
-	if not UICity then
+	if not UIColony then
 		return
 	end
 

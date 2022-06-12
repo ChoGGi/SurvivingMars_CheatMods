@@ -8,7 +8,7 @@ local mod_MechFarming
 local mod_MechPerformance
 
 local function UpdateFarms()
-	local objs = UICity.labels.Farm or ""
+	local objs = UIColony.city_labels.labels.Farm or ""
 	for i = 1, #objs do
 		local obj = objs[i]
 
@@ -47,7 +47,7 @@ local function ModOptions(id)
 	mod_MechPerformance = CurrentModOptions:GetProperty("MechPerformance")
 
 	-- make sure we're in-game
-	if not UICity then
+	if not UIColony then
 		return
 	end
 

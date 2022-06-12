@@ -23,7 +23,7 @@ function OnMsg.ClassesPostprocess()
 end
 
 function OnMsg.NewHour()
-	local labels = UICity.labels
+	local labels = UIColony.city_labels.labels
 
 	-- Hey. Do I preach at you when you're lying stoned in the gutter? No!
 	local prods = labels.ResourceProducer or ""

@@ -41,7 +41,7 @@ OnMsg.ColonistBorn = UpdateTraits
 
 -- fires when game is loaded
 function OnMsg.LoadGame()
-	local colonists = UICity.labels.Colonist or ""
+	local colonists = UIColony.city_labels.labels.Colonist or ""
 	for i = 1, #colonists do
 		UpdateTraits(colonists[i])
 	end

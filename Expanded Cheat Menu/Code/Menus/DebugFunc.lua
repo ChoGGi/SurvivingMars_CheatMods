@@ -788,15 +788,15 @@ function ChoGGi.MenuFuncs.TestStoryBits()
 
 		local obj
 		if choice.check1 then
-			obj = table.rand(UICity.labels.Building or empty_table)
+			obj = table.rand(UIColony.city_labels.labels.Building or empty_table)
 		elseif choice.check2 then
-			obj = table.rand(UICity.labels.Dome or empty_table)
+			obj = table.rand(UIColony.city_labels.labels.Dome or empty_table)
 		elseif choice.check3 then
-			obj = table.rand(UICity.labels.Colonist or empty_table)
+			obj = table.rand(UIColony.city_labels.labels.Colonist or empty_table)
 		elseif choice.check4 then
-			obj = table.rand(UICity.labels.Drone or empty_table)
+			obj = table.rand(UIColony.city_labels.labels.Drone or empty_table)
 		elseif choice.check5 then
-			obj = table.rand(UICity.labels.Rover or empty_table)
+			obj = table.rand(UIColony.city_labels.labels.Rover or empty_table)
 		elseif choice.check6 then
 			obj = SelectedObj
 		end

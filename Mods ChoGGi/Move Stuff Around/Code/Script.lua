@@ -79,9 +79,14 @@ local function AddButton(xtemplate, button_id)
 						dlg:SetMouseCursor("UI/Cursors/cursor.tga")
 						-- otherwise there's a selection area left (that I'm too lazy to move as well)
 						SelectObj(false)
+						-- remove it's current pos from the object grid
+						context:RemoveFromGrids()
 						-- probably best to use hex centres
 						context:SetPos(HexGetNearestCenter(pos))
-						SelectObj(context)
+						-- update obj grid to new pos
+						context:ApplyToGrids()
+						-- re-select it
+						SelectObj(new_obj)
 					end)
 
 				end,

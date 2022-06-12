@@ -2339,7 +2339,7 @@ do -- DisplayMonitorList
 		elseif value == "Colonists" then
 			info = {
 				title = TranslationTable[547--[[Colonists]]],
-				tables = UICity.labels.Colonist or "",
+				tables = UIColony:GetCityLabels("Colonist"),
 				values = {
 					{name="handle", kind=0},
 					{name="command", kind=0},
@@ -2365,7 +2365,7 @@ do -- DisplayMonitorList
 		elseif value == "Rockets" then
 			info = {
 				title = TranslationTable[5238--[[Rockets]]],
-				tables = UICity.labels.AllRockets,
+				tables = UIColony:GetCityLabels("AllRockets"),
 				values = {
 					{name="name", kind=0},
 					{name="handle", kind=0},

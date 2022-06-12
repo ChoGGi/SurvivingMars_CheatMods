@@ -26,7 +26,7 @@ function OnMsg.LoadGame()
 	-- req has an invalid building
 	CreateRealTimeThread(function()
 		Sleep(1000)
-		local objs = UICity.labels.CargoShuttle or ""
+		local objs = UIColony.city_labels.labels.CargoShuttle or ""
 		for i = 1, #objs do
 			local obj = objs[i]
 			if obj.command == "Idle" then

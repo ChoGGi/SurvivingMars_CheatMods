@@ -44,7 +44,7 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 			ChoGGi.SettingFuncs.WriteSettings()
 
 			-- loop through and set all shuttles
-			local objs = UICity.labels.CargoShuttle or ""
+			local objs = UIColony.city_labels.labels.CargoShuttle or ""
 			for i = 1, #objs do
 				objs[i].max_shared_storage = value
 			end
@@ -97,7 +97,7 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
 		if type(value) == "number" then
 			local value = value * r
 			-- loop through and set all shuttles
-			local objs = UICity.labels.CargoShuttle or ""
+			local objs = UIColony.city_labels.labels.CargoShuttle or ""
 			for i = 1, #objs do
 				objs[i]:SetBase("move_speed", value)
 			end
@@ -153,7 +153,7 @@ function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
 		local value = choice.value
 		if type(value) == "number" then
 			-- loop through and set all shuttles
-			local objs = UICity.labels.ShuttleHub or ""
+			local objs = UIColony.city_labels.labels.ShuttleHub or ""
 			for i = 1, #objs do
 				objs[i].max_shuttles = value
 			end

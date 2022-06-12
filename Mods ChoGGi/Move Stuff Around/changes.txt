@@ -1,1 +1,2 @@
 v0.2
+Cleans up leftover shape from object grid.

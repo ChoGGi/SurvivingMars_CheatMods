@@ -238,7 +238,7 @@ end
 local function StartupCode()
 
 	-- we don't need that many
-	local aliens = UICity.labels.ChoGGi_Alien or ""
+	local aliens = MainCity.labels.ChoGGi_Alien or ""
 	if #aliens > 0 then
 		-- check for invalid pos and stick on surface
 		for i = 1, #aliens do
@@ -288,7 +288,7 @@ OnMsg.LoadGame = StartupCode
 
 -- kill off the threads (spews c func persist errors in log)
 function OnMsg.SaveGame()
-	local arghs = UICity.labels.ChoGGi_Alien or ""
+	local arghs = MainCity.labels.ChoGGi_Alien or ""
 	for i = 1, #arghs do
 		arghs[i]:SetCommand("KillThreads")
 	end

@@ -31,7 +31,7 @@ function OnMsg.LoadGame()
 		return
 	end
 
-	local objs = UICity.labels.Apartments or ""
+	local objs = UIColony:GetCityLabels("Apartments")
 	for i = 1, #objs do
 		local obj = objs[i]
 		obj.construction_cost_Concrete = construction_cost_Concrete

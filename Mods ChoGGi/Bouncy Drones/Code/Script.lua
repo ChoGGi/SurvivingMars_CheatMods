@@ -26,7 +26,7 @@ local function UpdateGravity(objs, value)
 end
 
 local function StartupCode()
-	local labels = UICity.labels
+	local labels = UIColony.city_labels.labels
 
 	UpdateGravity(labels.Drone, mod_Gravity)
 	UpdateGravity(labels.Rover, mod_GravityRC)

@@ -183,7 +183,7 @@ local function ShowGrids()
 		shape = o,
 	}
 
-	local domes = UICity.labels.Dome or ""
+	local domes = UIColony.city_labels.labels.Dome or ""
 	for i = 1, #domes do
 		local dome = domes[i]
 		local entity = dome:GetEntity()
@@ -202,7 +202,7 @@ local function ShowGrids()
 end
 
 local function HideGrids()
-	local domes = UICity.labels.Dome or ""
+	local domes = UIColony.city_labels.labels.Dome or ""
 	for i = 1, #domes do
 		ObjHexShape_Clear(domes[i])
 	end
@@ -226,9 +226,9 @@ function GridConstructionDialog:Close(...)
 end
 
 function OnMsg.LoadGame()
-	local fallback_dome = UICity.labels.Dome[1]
+	local fallback_dome = UIColony.city_labels.labels[1]
 
-	local objs = UICity.labels.Passage or ""
+	local objs = UIColony.city_labels.labels.Passage or ""
 	for i = #objs, 1, -1 do
 		local obj = objs[i]
 

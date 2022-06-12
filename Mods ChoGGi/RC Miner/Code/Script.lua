@@ -546,7 +546,7 @@ function PortableMiner:Load()
 					self.stockpile = false
 				end
 
-				local infoamount = g_ResourceOverviewCity[GetMapID(self)].data[self.resource]
+				local infoamount = g_ResourceOverviewCity[self:GetMapID()].data[self.resource]
 				infoamount = infoamount + 1
 				-- per res
 				self.lifetime_table[self.resource] = self.lifetime_table[self.resource] + mined
@@ -585,7 +585,7 @@ end
 
 function OnMsg.NewDay() -- NewSol...
 	-- reset the prod count (for overview or something)
-	local miners = UICity.labels.PortableMiner or ""
+	local miners = UIColony.city_labels.labels.PortableMiner or ""
 	for i = 1, #miners do
 		miners[i].production_per_day = 0
 	end

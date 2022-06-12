@@ -24,7 +24,7 @@ local function UpdateAges()
 		Colonist["MinAge_" .. id] = mod_options[id]
 	end
 
-	local objs = UICity.labels.Colonist or ""
+	local objs = UIColony:GetCityLabels("Colonist")
 	for i = 1, #objs do
 		local obj = objs[i]
 

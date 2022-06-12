@@ -74,7 +74,7 @@ local function ClickObj(self, obj, button, which)
 end
 
 function Solaria:ListBuildings(which, parent)
-	local list = table.copy(UICity.labels.OutsideBuildings)
+	local list = table.copy(UIColony.city_labels.labels.OutsideBuildings)
 	local hint
 	local item_list = {}
 

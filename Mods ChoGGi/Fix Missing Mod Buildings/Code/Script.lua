@@ -51,7 +51,7 @@ function OnMsg.PersistPostLoad()
 	end
 
 	-- GetFreeSpace, GetFreeLivingSpace, GetFreeWorkplaces, GetFreeWorkplacesAround
-	local labels = UICity.labels or empty_table
+	local labels = UIColony.city_labels.labels or empty_table
 	local ModLog = ModLog
 	for label_id, label in pairs(labels) do
 		for i = #label, 1, -1 do

@@ -21,12 +21,12 @@ local function ChangeEntityLabel(label, cls, new)
 end
 
 local function StartupCode()
-	-- this way it'll only fire once per save instead of every load
-	if not UICity.ChangedEntitiesExample then
-		local l = UICity.labels
+	-- this way it'll only fire once per save instead of every load (or use GlobalVar() )
+	if not UIColony.ChangedEntitiesExample then
+		local l = UIColony.city_labels.labels
 		ChangeEntityLabel(l.SubsurfaceDeposit, "SubsurfaceDepositMetals", "SignExampleMetalDeposit")
 		ChangeEntityLabel(l.TerrainDeposit, "TerrainDepositConcrete", "SignExampleConcreteDeposit")
-		UICity.ChangedEntitiesExample = true
+		UIColony.ChangedEntitiesExample = true
 	end
 end
 

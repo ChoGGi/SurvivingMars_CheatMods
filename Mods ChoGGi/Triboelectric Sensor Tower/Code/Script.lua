@@ -244,7 +244,7 @@ function GetNumberOfSensorTowers(...)
 	local count = ChoOrig_GetNumberOfSensorTowers(...)
 
 	local prediction_add_time_ago = Max(GameTime() - SensorTowerPredictionAddTime, 0)
-	local objs = UICity.labels.ChoGGi_TriboelectricSensorTower or ""
+	local objs = UIColony.city_labels.labels.ChoGGi_TriboelectricSensorTower or ""
 	for i = 1, #objs do
 		local obj = objs[i]
 		if obj.working or (obj.turn_off_time and obj.turn_off_time - prediction_add_time_ago > 0) then
@@ -261,7 +261,7 @@ function SensorTowerBase.GetWorkingSensorTowersCount(...)
 	local text = ChoOrig_GetWorkingSensorTowersCount(...)
 	local count = text.count
 
-	local objs = UICity.labels.ChoGGi_TriboelectricSensorTower or ""
+	local objs = UIColony.city_labels.labels.ChoGGi_TriboelectricSensorTower or ""
 	for i = 1, #objs do
 		if objs[i].working then
 			count = count + 1

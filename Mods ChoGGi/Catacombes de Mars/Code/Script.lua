@@ -24,7 +24,7 @@ end
 
 local function ReloadTunnels()
 	-- clear and rebuild existing tunnels
-	local tunnels = UICity.labels.Tunnel or ""
+	local tunnels = UIColony:GetCityLabels("Tunnel")
 	local tunnels_c = #tunnels
 	for i = 1, tunnels_c do
 		local tunnel = tunnels[i]

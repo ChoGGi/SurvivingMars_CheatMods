@@ -37,7 +37,7 @@ AddColonists(t.OtherTraits)
 
 -- call down the wrath of Zeus for miscreants
 local function UpdateMurderPods()
-	local objs = UICity.labels.Colonist or ""
+	local objs = UIColony.city_labels.labels.Colonist or ""
 	for i = 1, c do
 		local obj = objs[i]
 		-- If colonist already has a pod after it then skip
@@ -323,7 +323,7 @@ end
 --~ 	if not g_ChoGGi_RemoveUnwantedColonists_StuckPassageFix then
 --~ 		local remove = table.remove
 
---~ 		local objs = UICity.labels.Passage or ""
+--~ 		local objs = UIColony.city_labels.labels.Passage or ""
 --~ 		for i = 1, #objs do
 --~ 			local traversing = objs[i].traversing_colonists or ""
 --~ 			for j = #traversing, 1, -1 do
@@ -338,7 +338,7 @@ end
 --~ 	end
 
 --~ 	if not g_ChoGGi_RemoveUnwantedColonists_StuckAirColonist then
---~ 		local objs = UICity.labels.Colonist or ""
+--~ 		local objs = UIColony.city_labels.labels.Colonist or ""
 --~ 		for i = 1, #objs do
 --~ 			local obj = objs[i]
 --~ 			if obj.ChoGGi_MurderPod and not IsValid(obj.ChoGGi_MurderPod) then

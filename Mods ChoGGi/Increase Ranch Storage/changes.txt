@@ -1,2 +1,5 @@
+v0.3
+New inside ranches didn't get updated (thanks Tremualin).
+
 v0.2
 Updated for picard.

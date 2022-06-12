@@ -28,7 +28,8 @@ end
 -- loop through all suns and update any panels in range
 local function UpdateArtificialSunRange(obj)
 	local is_valid = IsValid(obj)
-	local suns = UICity.labels.ArtificialSun or ""
+--~ 	local suns = UICity.labels.ArtificialSun or ""
+	local suns = UIColony:GetCityLabels("ArtificialSun")
 
 	-- first update range for all art suns
 	if is_valid and obj:IsKindOf("ArtificialSun") then
@@ -47,7 +48,8 @@ local function UpdateArtificialSunRange(obj)
 	if is_valid and obj:IsKindOf("SolarPanelBase") then
 		UpdateSolarPanel(obj, suns)
 	else
-		local panels = UICity.labels.SolarPanelBase or ""
+--~ 		local panels = UICity.labels.SolarPanelBase or ""
+		local panels = UIColony:GetCityLabels("SolarPanelBase")
 		for i = 1, #panels do
 			local panel = panels[i]
 			if IsValid(panel) then

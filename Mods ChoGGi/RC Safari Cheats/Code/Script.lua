@@ -19,7 +19,7 @@ end
 local function UpdateRovers()
 	SetConsts("RCSafariMaxWaypoints", mod_RCSafariMaxWaypoints)
 
-	local objs =  UICity.labels.RCSafari or ""
+	local objs =  UIColony.city_labels.labels.RCSafari or ""
 	for i = 1, #objs do
 		local obj = objs[i]
 		obj.sight_range = mod_SightRange

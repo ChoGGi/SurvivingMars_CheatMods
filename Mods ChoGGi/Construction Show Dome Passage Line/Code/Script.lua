@@ -62,13 +62,13 @@ local function ModOptions()
 	max_line_len = max_hex * 10 * guim
 
 	-- make sure we're in-game
-	if not UICity then
+	if not UIColony then
 		return
 	end
 
 	if mod_LotsOfDomes == 0 then
 		dome_over_count = false
-	elseif #(UICity.labels.Dome or "") > mod_LotsOfDomes then
+	elseif #(UIColony.city_labels.labels.Dome or "") > mod_LotsOfDomes then
 		dome_over_count = true
 	else
 		dome_over_count = false
@@ -161,7 +161,7 @@ local function StartupCode()
 	ModOptions()
 
 	-- add markers for existing domes
-	local domes = UICity.labels.Dome or ""
+	local domes = UIColony.city_labels.labels.Dome or ""
 	for i = 1, #domes do
 		BuildMarkers(domes[i])
 	end
@@ -289,7 +289,7 @@ function CursorBuilding:GameInit(...)
 	if mod_Enable then
 		if self.template:IsKindOf("Dome") then
 			-- loop through all domes and attach a line
-			local domes = UICity.labels.Dome or ""
+			local domes = UIColony.city_labels.labels.Dome or ""
 			for i = 1, #domes do
 				BuildMarkers(domes[i])
 			end

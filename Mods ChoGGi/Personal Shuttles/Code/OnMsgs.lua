@@ -50,11 +50,11 @@ end
 -- which true=attack, false=friend
 local function SpawnShuttle(hub, attacker)
 	local PersonalShuttles = PersonalShuttles
-	local UICity = UICity
+	local UIColony = UIColony
 	for i = 1, #hub.shuttle_infos do
 		local s_i = hub.shuttle_infos[i]
 		if s_i:CanLaunch() and s_i.hub.has_free_landing_slots then
-			if #(UICity.labels.PersonalShuttle or "") >= (PersonalShuttles.max_shuttles or 50) then
+			if #(UIColony.city_labels.labels.PersonalShuttle or "") >= (PersonalShuttles.max_shuttles or 50) then
 				ChoGGi.ComFuncs.MsgPopup(
 					T(302535920011133, [[Max of 50 (somewhere above 50 and below 100 it crashes).]]),
 					T(745, "Shuttles")
@@ -235,7 +235,7 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 	-- add mark for pickup buttons to certain resource piles
 	local res_table = {
 		__condition = function()
-			if #(UICity.labels.PersonalShuttle or "") > 0 then
+			if #(UIColony.city_labels.labels.PersonalShuttle or "") > 0 then
 				return true
 			end
 		end,
@@ -272,7 +272,7 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 
 	res_table.__context_of_kind = "UniversalStorageDepot"
 	res_table.__condition = function(_, context)
-		if #(UICity.labels.PersonalShuttle or "") > 0 then
+		if #(UIColony.city_labels.labels.PersonalShuttle or "") > 0 then
 			-- make sure we can only pickup actual depots, not rockets or elevators...
 			return IsKindOf(context, "UniversalStorageDepot") and not context:IsKindOf("RocketBase") and not IsKindOf(context, "SpaceElevator")
 		end

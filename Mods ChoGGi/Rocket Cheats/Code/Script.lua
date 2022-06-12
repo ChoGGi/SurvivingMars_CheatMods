@@ -38,7 +38,7 @@ local function UpdateRockets()
 	SetConstsG("CargoCapacity", mod_CargoCapacity)
 	SetConstsG("FoodPerRocketPassenger", mod_FoodPerRocketPassenger)
 
-	local objs =  UICity.labels.SupplyRocket or ""
+	local objs =  UIColony.city_labels.labels.SupplyRocket or ""
 	for i = 1, #objs do
 		local obj = objs[i]
 		obj.launch_fuel = mod_LaunchFuel

@@ -64,12 +64,12 @@ if not TerrainDeposit.CheatRefill then
 end
 
 MaxFillAll = function()
-	local UICity = UICity
-	if UICity then
-		MaxDeposits(UICity.labels.SubsurfaceDeposit or "")
-		RefillAllDeposits(UICity.labels.SubsurfaceDeposit or "")
-		MaxDeposits(UICity.labels.TerrainDeposit or "")
-		RefillAllDeposits(UICity.labels.TerrainDeposit or "")
+	local UIColony = UIColony
+	if UIColony then
+		MaxDeposits(UIColony.city_labels.labels.SubsurfaceDeposit or "")
+		RefillAllDeposits(UIColony.city_labels.labels.SubsurfaceDeposit or "")
+		MaxDeposits(UIColony.city_labels.labels.TerrainDeposit or "")
+		RefillAllDeposits(UIColony.city_labels.labels.TerrainDeposit or "")
 	end
 end
 
@@ -77,8 +77,8 @@ end
 OnMsg.LoadGame = MaxFillAll
 -- new sol
 function OnMsg.NewDay()
-	RefillAllDeposits(UICity.labels.SubsurfaceDeposit or "")
-	RefillAllDeposits(UICity.labels.TerrainDeposit or "")
+	RefillAllDeposits(UIColony.city_labels.labels.SubsurfaceDeposit or "")
+	RefillAllDeposits(UIColony.city_labels.labels.TerrainDeposit or "")
 end
 
 --

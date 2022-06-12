@@ -46,7 +46,7 @@ function OnMsg.LoadGame()
 		return
 	end
 
-	local objs = UICity.labels.Colonist or ""
+	local objs = UIColony:GetCityLabels("Colonist")
 	for i = 1, #objs do
 		local obj = objs[i]
 		if obj.specialist ~= "none" and obj.traits and obj.traits.Android

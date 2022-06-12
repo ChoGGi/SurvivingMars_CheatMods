@@ -65,7 +65,8 @@ function Carwash:GameInit()
 			if self.working then
 				local obj = nil
 				-- check for anything on the "tarmac"
-				obj = NearestObject(self, UICity.labels.Unit or {}, 1000)
+				local city = Cities[self:GetMapID()]
+				obj = NearestObject(self, city.labels.Unit or {}, 1000)
 				-- If so clean them
 				if obj then
 					-- get dust amount, and convert to percentage

@@ -61,7 +61,7 @@ local function AddTemplate(template, params)
 						enable = true
 					end
 
-					local objs = UICity.labels.LandingPad or ""
+					local objs = UIColony.city_labels.labels.LandingPad or ""
 					for i = 1, #objs do
 						objs[i].ChoGGi_RocketsAutoLand_Allow = enable
 					end
@@ -113,7 +113,7 @@ function RocketBase:WaitInOrbit(...)
 		return ChoOrig_RocketBase_WaitInOrbit(self, ...)
 	end
 
-	local objs = UICity.labels.LandingPad or ""
+	local objs = UIColony.city_labels.labels.LandingPad or ""
 	-- no pads, so wait in orbit?
 	if #objs == 0 then
 		return ChoOrig_RocketBase_WaitInOrbit(self, ...)

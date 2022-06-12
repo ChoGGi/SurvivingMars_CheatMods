@@ -41,7 +41,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000719--[[Add Orbital Probe
 	RolloverText = function()
 		if UICity then
 			return SettingState(
-				#(UICity.labels.OrbitalProbe or "") + #(UICity.labels.AdvancedOrbitalProbe or ""),
+				#(MainCity.labels.OrbitalProbe or "") + #(MainCity.labels.AdvancedOrbitalProbe or ""),
 				TranslationTable[302535920000720--[[Add more probes.]]]
 			)
 		end

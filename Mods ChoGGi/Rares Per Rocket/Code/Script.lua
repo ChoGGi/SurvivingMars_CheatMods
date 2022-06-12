@@ -14,7 +14,7 @@ local function UpdateExistingRockets()
 	local value = GetModValue()
 
 	local SetTaskReqAmount = ChoGGi.ComFuncs.SetTaskReqAmount
-	local rockets = UICity.labels.AllRockets or ""
+	local rockets = UIColony.city_labels.labels.AllRockets or ""
 	for i = 1, #rockets do
 		local rocket = rockets[i]
 		if rocket.export_requests then

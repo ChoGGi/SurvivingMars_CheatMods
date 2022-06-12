@@ -35,7 +35,7 @@ function ChoGGi.MenuFuncs.NoMoreEarthsick_Toggle()
 		ChoGGi.UserSettings.NoMoreEarthsick = nil
 	else
 		ChoGGi.UserSettings.NoMoreEarthsick = true
-		local c = UICity.labels.Colonist or ""
+		local c = UIColony.city_labels.labels.Colonist or ""
 		for i = 1, #c do
 			if c[i].status_effects.StatusEffect_Earthsick then
 				c[i]:Affect("StatusEffect_Earthsick", false)
@@ -150,7 +150,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 		end
 
 		local function CullLabel(label)
-			local objs = UICity.labels[label] or ""
+			local objs = UIColony.city_labels.labels[label] or ""
 			for i = #objs, 1, -1 do
 				if dome then
 					local o = objs[i]
@@ -163,7 +163,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 			end
 		end
 		local function CullTrait(trait)
-			local objs = UICity.labels.Colonist or ""
+			local objs = UIColony.city_labels.labels.Colonist or ""
 			for i = #objs, 1, -1 do
 				local o = objs[i]
 				if o.traits[trait] then
@@ -180,7 +180,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 		local function Cull(trait, trait_type, race)
 			-- only race is stored as number (maybe there's a cock^?^?^?^?CoC around?)
 			trait = race or trait
-			local objs = UICity.labels.Colonist or ""
+			local objs = UIColony.city_labels.labels.Colonist or ""
 			for i = #objs, 1, -1 do
 				local o = objs[i]
 				if o[trait_type] == trait then
@@ -346,7 +346,7 @@ end
 function ChoGGi.MenuFuncs.FireAllColonists()
 	local function CallBackFunc(answer)
 		if answer then
-			local objs = UICity.labels.Colonist or ""
+			local objs = UIColony.city_labels.labels.Colonist or ""
 			for i = 1, #objs do
 				objs[i]:GetFired()
 			end
@@ -377,7 +377,7 @@ function ChoGGi.MenuFuncs.SetAllWorkShifts()
 			shift = {false, false, false}
 		end
 
-		local objs = UICity.labels.ShiftsBuilding or ""
+		local objs = UIColony.city_labels.labels.ShiftsBuilding or ""
 		for i = 1, #objs do
 			local o = objs[i]
 			if o.closed_shifts then
@@ -491,7 +491,7 @@ function ChoGGi.MenuFuncs.SetRenegadeStatus()
 			func = "RemoveTrait"
 		end
 
-		local objs = UICity.labels.Colonist or ""
+		local objs = UIColony.city_labels.labels.Colonist or ""
 		for i = 1, #objs do
 			local o = objs[i]
 			if dome then
@@ -773,7 +773,7 @@ do -- SetDeathAge
 			if value == default_str or type(amount) == "number" then
 				if value == default_str then
 					-- random age
-					local objs = UICity.labels.Colonist or ""
+					local objs = UIColony.city_labels.labels.Colonist or ""
 					for i = 1, #objs do
 						local o = objs[i]
 						o.death_age = RetDeathAge(o)
@@ -810,7 +810,7 @@ end -- do
 function ChoGGi.MenuFuncs.ColonistsAddSpecializationToAll()
 	local ColonistUpdateSpecialization = ChoGGi.ComFuncs.ColonistUpdateSpecialization
 	local str = Translate(3490--[[Random]])
-	local objs = UICity.labels.Colonist or ""
+	local objs = UIColony.city_labels.labels.Colonist or ""
 	for i = 1, #objs do
 		local o = objs[i]
 		if o.specialist == "none" then
@@ -905,7 +905,7 @@ function ChoGGi.MenuFuncs.SetColonistsAge(action)
 					ChoGGi.ComFuncs.ColonistUpdateAge(obj, value)
 				end
 			else
-				local objs = UICity.labels.Colonist or ""
+				local objs = UIColony.city_labels.labels.Colonist or ""
 				for i = 1, #objs do
 					if dome then
 						local o = objs[i]
@@ -1023,7 +1023,7 @@ function ChoGGi.MenuFuncs.SetColonistsGender(action)
 					ColonistUpdateGender(obj, value)
 				end
 			else
-				local objs = UICity.labels.Colonist or ""
+				local objs = UIColony.city_labels.labels.Colonist or ""
 				for i = 1, #objs do
 					local o = objs[i]
 					if dome then
@@ -1150,7 +1150,7 @@ function ChoGGi.MenuFuncs.SetColonistsSpecialization(action)
 					ChoGGi.ComFuncs.ColonistUpdateSpecialization(obj, value)
 				end
 			else
-				local objs = UICity.labels.Colonist or ""
+				local objs = UIColony.city_labels.labels.Colonist or ""
 				for i = 1, #objs do
 					if dome then
 						local o = objs[i]
@@ -1265,7 +1265,7 @@ function ChoGGi.MenuFuncs.SetColonistsRace(action)
 					ChoGGi.ComFuncs.ColonistUpdateRace(s_obj, value)
 				end
 			else
-				local objs = UICity.labels.Colonist or ""
+				local objs = UIColony.city_labels.labels.Colonist or ""
 				for i = 1, #objs do
 					if dome then
 						local obj = objs[i]
@@ -1454,7 +1454,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(action)
 						RandomTraits(obj)
 					end
 				else
-					local c = UICity.labels.Colonist or ""
+					local c = UIColony.city_labels.labels.Colonist or ""
 					for i = 1, #c do
 						if dome then
 							if c[i].dome and c[i].dome.handle == dome.handle then
@@ -1478,7 +1478,7 @@ function ChoGGi.MenuFuncs.SetColonistsTraits(action)
 						end
 					end
 				else
-					local c = UICity.labels.Colonist or ""
+					local c = UIColony.city_labels.labels.Colonist or ""
 					for i = 1, #c do
 						for j = 1, #traits_list do
 							if dome then
@@ -1573,7 +1573,7 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
 			else
 				v = fill
 			end
-			local objs = UICity.labels.Colonist or ""
+			local objs = UIColony.city_labels.labels.Colonist or ""
 			for i = 1, #objs do
 				if dome then
 					local o = objs[i]
@@ -1593,7 +1593,7 @@ function ChoGGi.MenuFuncs.SetColonistsStats()
 				value = fill
 			end
 
-			local objs = UICity.labels.Colonist or ""
+			local objs = UIColony.city_labels.labels.Colonist or ""
 			for i = 1, #objs do
 				local o = objs[i]
 				if dome then
@@ -1683,7 +1683,7 @@ function ChoGGi.MenuFuncs.SetColonistMoveSpeed()
 					obj:SetBase("move_speed", value)
 				end
 			else
-				local objs = UICity.labels.Colonist or ""
+				local objs = UIColony.city_labels.labels.Colonist or ""
 				for i = 1, #objs do
 					if dome then
 						local o = objs[i]

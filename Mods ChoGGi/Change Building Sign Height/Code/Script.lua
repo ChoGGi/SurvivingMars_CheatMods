@@ -20,7 +20,7 @@ end
 
 local function UpdateSigns()
 	local height = GetHeight()
-	local objs = UICity.labels.Building or ""
+	local objs = UIColony:GetCityLabels("Building")
 	for i = 1, #objs do
 		local obj = objs[i]
 		obj.sign_offset = height
@@ -43,7 +43,7 @@ local function ModOptions(id)
 	mod_LowerHigher = CurrentModOptions:GetProperty("LowerHigher")
 
 	-- make sure we're in-game
-	if not UICity then
+	if not UIColony then
 		return
 	end
 	UpdateSigns()

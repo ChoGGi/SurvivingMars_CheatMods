@@ -38,7 +38,7 @@ local needed_specialist = {}
 local all_specialist = {}
 
 local function BuildSpecialistLists()
-	local labels = UICity.labels
+	local labels = UIColony.city_labels.labels
 
 --~ 	table.clear(needed_specialist)
 --~ 	table.clear(all_specialist)

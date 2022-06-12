@@ -14,7 +14,7 @@ local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
 local testing = ChoGGi.testing
 
 function ChoGGi.MenuFuncs.RemoveInvalidLabelObjects()
-	local labels = UICity.labels
+	local labels = UIColony.city_labels.labels
 	for id, label in pairs(labels) do
 		if id ~= "Consts" then
 			for i = #label, 1, -1 do
@@ -31,7 +31,7 @@ function ChoGGi.MenuFuncs.RemoveInvalidLabelObjects()
 end
 
 function ChoGGi.MenuFuncs.RocketCrashesGameOnLanding()
-	local rockets = UICity.labels.SupplyRocket or ""
+	local rockets = UIColony.city_labels.labels.SupplyRocket or ""
 	for i = 1, #rockets do
 		rockets[i]:ForEachAttach("ParSystem", function(a)
 			if type(a.polyline) == "string" and a.polyline:find("\0") then
@@ -82,16 +82,19 @@ do -- DronesNotRepairingDome
 				end
 				count = count + 1
 
-				local domes = UICity.labels.Domes or ""
+				local domes = UIColony:GetCityLabels("Domes")
 				for i = 1, #domes do
+					local dome = domes[i]
 					-- get a list of all res in the center of dome
-					local pos = domes[i]:GetSpotPos(-1)
-					local objs = MapGet(pos, 1000, "ResourcePile")
+					local pos = dome:GetSpotPos(-1)
+					local realm = GameMaps[ChoGGi.ComFuncs.RetObjMapId(dome)].realm
+
+					local objs = realm:MapGet(pos, 1000, "ResourcePile")
 					-- loop through the spots till we find a Workdrone outside the dome (any spot outside will do)
-					local id_start, id_end = domes[i]:GetAllSpots(domes[i]:GetState())
+					local id_start, id_end = dome:GetAllSpots(dome:GetState())
 					for j = id_start, id_end do
-						if domes[i]:GetSpotName(j) == "Workdrone" then
-							local spot_pos = domes[i]:GetSpotPos(j)
+						if dome:GetSpotName(j) == "Workdrone" then
+							local spot_pos = dome:GetSpotPos(j)
 							-- and goodbye res
 							for k = 1, #objs do
 								objs[k]:SetPos(spot_pos)
@@ -176,14 +179,15 @@ do -- Colonist stuff
 	local GetPassablePointNearby = GetPassablePointNearby
 
 	function ChoGGi.MenuFuncs.ResetAllColonists()
-		local UICity = UICity
+--~ 		local UICity = UICity
 		local function CallBackFunc(answer)
 			if answer then
-				local objs = UICity.labels.Colonist or ""
+				local objs = UIColony:GetCityLabels("Colonist")
 				for i = 1, #objs do
 					local c = objs[i]
+					local city = Cities[ChoGGi.ComFuncs.RetObjMapId(c)]
 					local is_valid = IsValid(c)
-					SpawnColonist(c, nil, is_valid and c:GetVisualPos(), UICity)
+					SpawnColonist(c, nil, is_valid and c:GetVisualPos(), city)
 					if is_valid then
 						DoneObject(c)
 					end
@@ -200,15 +204,16 @@ do -- Colonist stuff
 	end
 
 	function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
-		local UICity = UICity
-		local objs = UICity.labels.Colonist or ""
-		local rockets = UICity.labels.SupplyRocket or {}
+--~ 		local UICity = UICity
+		local objs = UIColony:GetCityLabels("Colonist")
+		local rockets = UIColony:GetCityLabels("SupplyRocket")
 		for i = 1, #objs do
 			local c = objs[i]
 			local is_valid = IsValid(c)
 			if is_valid and c:GetStateText() == "movePlanet" then
+				local city = Cities[ChoGGi.ComFuncs.RetObjMapId(c)]
 				local rocket = FindNearestObject(rockets, c)
-				SpawnColonist(c, rocket, c:GetVisualPos(), UICity)
+				SpawnColonist(c, rocket, c:GetVisualPos(), city)
 				DeleteObject(c)
 			end
 		end
@@ -231,13 +236,13 @@ do -- Colonist stuff
 	end
 	function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
 		local InvalidPos = ChoGGi.Consts.InvalidPos
-		local UICity = UICity
-		local rockets = UICity.labels.SupplyRocket or ""
+		local rockets = UIColony:GetCityLabels("SupplyRocket")
 		for i = 1, #rockets do
 			-- SupplyRocket also returns rockets in space
 			if rockets[i]:GetPos() ~= InvalidPos then
+				local city = Cities[ChoGGi.ComFuncs.RetObjMapId(rockets[i])]
 				local pos = GetPassablePointNearby(rockets[i]:GetPos())
-				rockets[i]:ForEachAttach("Colonist", AttachedColonist, pos, rockets[i], UICity)
+				rockets[i]:ForEachAttach("Colonist", AttachedColonist, pos, rockets[i], city)
 			end
 		end
 		MsgPopup(
@@ -288,7 +293,7 @@ function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
 end
 
 function ChoGGi.MenuFuncs.MirrorSphereStuck()
-	local objs = UICity.labels.MirrorSpheres or ""
+	local objs = MainCity.labels.MirrorSpheres or ""
 	for i = 1, #objs do
 		local obj = objs[i]
 		if not IsValid(obj.target) then
@@ -297,7 +302,7 @@ function ChoGGi.MenuFuncs.MirrorSphereStuck()
 	end
 
 	SuspendPassEdits("ChoGGi.MenuFuncs.MirrorSphereStuck")
-	objs = MapGet(true, "ParSystem", function(o)
+	objs = GetRealmByID(MainMapID):MapGet(true, "ParSystem", function(o)
 		if o:GetParticlesName() == "PowerDecoy_Captured" and
 				type(o.polyline) == "string" and o.polyline:find("\0") then
 			return true
@@ -318,7 +323,7 @@ end
 function ChoGGi.MenuFuncs.StutterWithHighFPS()
 	local CheckForBorkedTransportPath = ChoGGi.ComFuncs.CheckForBorkedTransportPath
 	local bad_objs = {}
-	local objs = UICity.labels.Unit or ""
+	local objs = UIColony:GetCityLabels("Unit")
 	for i = 1, #objs do
 		CheckForBorkedTransportPath(objs[i], bad_objs)
 	end
@@ -371,8 +376,8 @@ end
 
 do -- RemoveUnreachableConstructionSites
 	local type, pairs = type, pairs
-	local function RemoveUnreachable(cls_name)
-		MapForEach("map", cls_name, function(o)
+	local function RemoveUnreachable(cls_name, realm)
+		realm:MapForEach("map", cls_name, function(o)
 			local unreach = o.unreachable_buildings or empty_table
 			for bld in pairs(unreach) do
 				if type(bld.IsKindOf) == "function" and bld:IsKindOf("ConstructionSite") then
@@ -384,13 +389,14 @@ do -- RemoveUnreachableConstructionSites
 	end
 
 	function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
-		local objs = UICity.labels.Drone or ""
+		local objs = MainCity.labels.Drone or ""
 		for i = 1, #objs do
 			objs[i]:CleanUnreachables()
 		end
-		RemoveUnreachable("DroneHub")
-		RemoveUnreachable("RCRover")
-		RemoveUnreachable("SupplyRocket")
+		local realm = GetRealmByID(MainMapID)
+		RemoveUnreachable("DroneHub", realm)
+		RemoveUnreachable("RCRover", realm)
+		RemoveUnreachable("SupplyRocket", realm)
 
 		MsgPopup(
 			TranslationTable[302535920000971--[[Sites]]],
@@ -439,7 +445,7 @@ function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
 end
 
 function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
-	local objs = UICity.labels.ProjectMorpheus or ""
+	local objs = UIColony.city_labels.labels.ProjectMorpheus or ""
 	for i = 1, #objs do
 		objs[i]:ChangeWorkingStateAnim(false)
 		objs[i]:ChangeWorkingStateAnim(true)
@@ -463,7 +469,7 @@ end
 
 function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
 	local AttachToNearestDome = ChoGGi.ComFuncs.AttachToNearestDome
-	local objs = UICity.labels.InsideBuildings or ""
+	local objs = UIColony.city_labels.labels.InsideBuildings or ""
 	for i = 1, #objs do
 		AttachToNearestDome(objs[i])
 	end
@@ -475,7 +481,7 @@ function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
 end
 
 function ChoGGi.MenuFuncs.ColonistsFixBlackCube()
-	local objs = UICity.labels.Colonist or ""
+	local objs = UIColony.city_labels.labels.Colonist or ""
 	for i = 1, #objs do
 		local c = objs[i]
 		if c:GetEntity():find("Child") and c.specialist ~= "none" then
@@ -615,7 +621,7 @@ end
 
 ---------------------------------------------------Testers
 
---~ GetDupePositions(UICity.labels.Colonist or "")
+--~ GetDupePositions(UIColony.city_labels.labels.Colonist or "")
 --~ function ChoGGi.MenuFuncs.GetDupePositions(list)
 --~	 local dupes = {}
 --~	 local positions = {}

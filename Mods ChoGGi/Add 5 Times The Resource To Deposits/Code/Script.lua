@@ -4,8 +4,7 @@ local max_int = max_int
 local function BumpAmount(self)
 
 	-- hey guys, lets just remove some labels, I'm sure no modders would ever use them
---~ 	local objs = UICity.labels[self.context.class] or ""
-	local objs = GetRealm(self):MapGet("map",self.context.class)
+	local objs = GetRealm(self):MapGet("map", self.context.class)
 	for i = 1, #objs do
 		local obj = objs[i]
 		-- bump the amounts

@@ -65,7 +65,7 @@ local function SetNewDome(old, new_dome, button, obj_type)
 end
 
 local function ListBuildings(sidepanel, input_obj, obj_type)
-	local domes = UICity.labels.Dome or ""
+	local domes = UIColony:GetCityLabels("Dome")
 
 	local item_list = {}
 	local c = 0

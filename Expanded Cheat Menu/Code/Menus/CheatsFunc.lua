@@ -863,7 +863,7 @@ function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
 
 			-- If 4 are selected that's all
 			if value == "All" or #choice > 3 then
-				local a = UICity.labels.Anomaly or ""
+				local a = UIColony.city_labels.labels.Anomaly or ""
 				-- go backwards it'll be removed once scanned
 				for j = #a, 1, -1 do
 					a[j]:CheatScan()
@@ -871,7 +871,7 @@ function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
 				-- no sense in doing other choices as we just did all
 				break
 			else
-				local a = UICity.labels.Anomaly or ""
+				local a = UIColony.city_labels.labels.Anomaly or ""
 				for j = #a, 1, -1 do
 					local anomnom = a[j]
 					if anomnom.class == value then

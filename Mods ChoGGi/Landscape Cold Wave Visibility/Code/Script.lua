@@ -16,7 +16,7 @@ local function ModOptions(id)
 
 	-- no sense in updating unless it's a cold wave
 	if g_ColdWave then
-		local objs = UICity.labels.LandscapeConstructionSite or ""
+		local objs = MainCity.labels.LandscapeConstructionSite or ""
 		for i = 1, #objs do
 			EnableMarker(objs[i])
 		end

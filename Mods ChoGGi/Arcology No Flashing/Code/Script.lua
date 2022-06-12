@@ -8,7 +8,7 @@ local function RemovePar(obj)
 end
 
 local function StartupCode()
-	local objs = UICity.labels.Arcology or ""
+	local objs = UIColony:GetCityLabels("Arcology")
 	for i = 1, #objs do
 		RemovePar(objs[i])
 	end
@@ -21,9 +21,6 @@ function OnMsg.BuildingInit(obj)
 	if obj:IsKindOf("Arcology") then
 		-- needs a delay
 		CreateRealTimeThread(function()
---~ 			while not obj:GetAttach("Arcology_Beacon") do
---~ 				Sleep(500)
---~ 			end
 			WaitMsg("OnRender")
 			RemovePar(obj)
 		end)

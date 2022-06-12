@@ -1156,7 +1156,7 @@ function ChoGGi.MenuFuncs.TerrainTextureChange()
 	end
 
 	local GridOpFree = GridOpFree
-	local AsyncSetTypeGrid = AsyncSetTypeGrid
+--~ 	local AsyncSetTypeGrid = AsyncSetTypeGrid
 	local MulDivRound = MulDivRound
 	local sqrt = sqrt
 
@@ -1183,18 +1183,19 @@ function ChoGGi.MenuFuncs.TerrainTextureChange()
 
 		if TerrainTextures[choice.value] then
 			SuspendPassEdits("ChoGGi.MenuFuncs.TerrainTextureChange")
-			ActiveGameMap.terrain:SetTerrainType{type = choice.value}
+			local terrain = GameMaps[MainMapID].terrain
+			terrain:SetTerrainType{type = choice.value}
 
 			-- add back dome grass
-			RestoreSkins(UICity.labels.Dome)
+			RestoreSkins(MainCity.labels.Dome)
 			-- restore waste piles
-			RestoreSkins(UICity.labels.WasteRockDumpSite, choice.text, choice.value)
+			RestoreSkins(MainCity.labels.WasteRockDumpSite, choice.text, choice.value)
 
 			-- re-build concrete marker textures
 			local texture_idx1 = GetTerrainTextureIndex("Regolith") + 1
 			local texture_idx2 = GetTerrainTextureIndex("Regolith_02") + 1
 
-			local deposits = UICity.labels.TerrainDeposit or ""
+			local deposits = MainCity.labels.TerrainDeposit or ""
 			for i = 1, #deposits do
 				local d = deposits[i]
 				if IsValid(d) then
@@ -1211,7 +1212,8 @@ function ChoGGi.MenuFuncs.TerrainTextureChange()
 					-- ?
 					pattern = GridOpFree(pattern, "repack", 8)
 					-- paint deposit
-					AsyncSetTypeGrid{
+					terrain:SetTypeGrid{
+--~ 					AsyncSetTypeGrid{
 						type_grid = pattern,
 						pos = d:GetPos(),
 						scale = sqrt(MulDivRound(10000, d.max_amount / guim, d.radius_max)),

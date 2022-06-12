@@ -9,7 +9,7 @@ local IsMassUIModifierPressed = IsMassUIModifierPressed
 
 local function CycleAllSkins(obj)
 	local skin, palette = obj:GetCurrentSkin()
-	local objs = UICity.labels[RetTemplateOrClass(obj)] or ""
+	local objs = UIColony.city_labels.labels[RetTemplateOrClass(obj)] or ""
 	local name = obj.template_name
 	for i = 1, #objs do
 		local all_obj = objs[i]
@@ -24,7 +24,7 @@ local function RandomSkin(obj, all_skins)
 
 	if all_skins then
 		local palette = obj.ChoGGi_origcolors
-		local objs = UICity.labels[RetTemplateOrClass(obj)] or ""
+		local objs = UIColony.city_labels.labels[RetTemplateOrClass(obj)] or ""
 		for i = 1, #objs do
 			SetChoGGiPalette(objs[i], palette)
 		end

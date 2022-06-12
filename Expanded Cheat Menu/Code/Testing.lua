@@ -567,13 +567,13 @@ function ChoGGi.testing.ConcatingTables()
 end
 
 function ChoGGi.testing.NearestObjFromList()
-	if #(UICity.labels.Building or "") == 0 then
+	if #(UIColony.city_labels.labels.Building or "") == 0 then
 		print("NearestObjFromList: NO BUILDINGS ABORT")
 		return
 	end
 
-	local objs = UICity.labels.Building
-	local base_obj = table.rand(UICity.labels.Building)
+	local objs = UIColony.city_labels.labels.Building
+	local base_obj = table.rand(UIColony.city_labels.labels.Building)
 	local obj_pos = base_obj:GetPos()
 
 	ChoGGi.ComFuncs.TickStart("NearestObjFromList.1.Tick")
@@ -609,7 +609,7 @@ end
 
 function ChoGGi.testing.TableSortVsLoop()
 	local obj_pos = GetRandomPassablePoint(AsyncRand())
-	local objs = UICity.labels.SurfaceDepositMarker or ""
+	local objs = UIColony.city_labels.labels.SurfaceDepositMarker or ""
 
 	-- faster
 	ChoGGi.ComFuncs.TickStart("TableSortVsLoop.1.Tick")
@@ -680,7 +680,7 @@ function ChoGGi.testing.NegNumber()
 end
 
 function ChoGGi.testing.LengthLocal()
-	local objs = UICity.labels.SurfaceDepositMarker or ""
+	local objs = UIColony.city_labels.labels.SurfaceDepositMarker or ""
 
 	ChoGGi.ComFuncs.TickStart("LengthLocal.Tick.1")
 	for _ = 1, 1000000 do
@@ -709,7 +709,7 @@ end
 function ChoGGi.testing.IsKindOfSub()
 
 	ChoGGi.ComFuncs.TickStart("IsKindOfSub.Tick.1")
-	local objs = UICity.labels.SurfaceDepositMarker or ""
+	local objs = UIColony.city_labels.labels.SurfaceDepositMarker or ""
 	for _ = 1, 100000 do
 		for i = #objs, 1, -1 do
 			local obj = objs[i]
@@ -721,7 +721,7 @@ function ChoGGi.testing.IsKindOfSub()
 
 	-- faster
 	ChoGGi.ComFuncs.TickStart("IsKindOfSub.Tick.2")
-	objs = UICity.labels.SurfaceDepositMarker or ""
+	objs = UIColony.city_labels.labels.SurfaceDepositMarker or ""
 	for _ = 1, 100000 do
 		for i = #objs, 1, -1 do
 			local obj = objs[i]

@@ -20,7 +20,7 @@ OnMsg.ModsReloaded = ModOptions
 OnMsg.ApplyModOptions = ModOptions
 
 local function EmptyAll()
-	local objs = UICity.labels.WasteRockDumpSite or ""
+	local objs = UIColony:GetCityLabels("WasteRockDumpSite")
 	for i = 1, #objs do
 		objs[i]:CheatEmpty()
 	end

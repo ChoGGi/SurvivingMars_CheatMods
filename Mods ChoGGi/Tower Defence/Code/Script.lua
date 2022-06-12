@@ -150,11 +150,11 @@ function OnMsg.NewDay(sol)
 			return
 		end
 
-		local UICity = UICity
+		local UIColony = UIColony
 
 		-- remove any old rovers stuck in the mountains
-		RemoveOldRovers(UICity.labels.HostileAttackRovers, sol)
-		RemoveOldRovers(UICity.labels.Rover, sol)
+		RemoveOldRovers(UIColony.city_labels.labels.HostileAttackRovers, sol)
+		RemoveOldRovers(UIColony.city_labels.labels.Rover, sol)
 
 		-- just in case
 		if not ChoGGi_TowerDefense_mapsectors then

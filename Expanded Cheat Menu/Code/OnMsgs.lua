@@ -644,7 +644,7 @@ function OnMsg.PersistPostLoad()
 		-- If there's a missing id print/return a warning
 		local printit = ChoGGi.UserSettings.FixMissingModBuildingsLog
 		-- GetFreeSpace, GetFreeLivingSpace, GetFreeWorkplaces, GetFreeWorkplacesAround
-		local labels = UICity.labels or empty_table
+		local labels = UIColony.city_labels.labels or empty_table
 		for label_id, label in pairs(labels) do
 			if label_id ~= "Consts" then
 				for i = #label, 1, -1 do
@@ -1037,7 +1037,7 @@ function OnMsg.NewDay() -- NewSol...
 
 	-- sorts cc list by dist to building
 	if ChoGGi.UserSettings.SortCommandCenterDist then
-		local objs = UICity.labels.Building or ""
+		local objs = UIColony.city_labels.labels.Building or ""
 		for i = 1, #objs do
 			local obj = objs[i]
 			-- no sense in doing it with only one center
@@ -1063,7 +1063,7 @@ function OnMsg.NewDay() -- NewSol...
 		end
 	end
 
-	local objs = UICity.labels.ChoGGi_InsideForcedOutDome or ""
+	local objs = UIColony.city_labels.labels.ChoGGi_InsideForcedOutDome or ""
 	for i = #objs, 1, -1 do
 		local obj = objs[i]
 		-- got removed or something
@@ -1087,7 +1087,7 @@ function OnMsg.NewHour()
 
 	-- make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
 	if UserSettings.DroneResourceCarryAmountFix then
-		local labels = UICity.labels
+		local labels = UIColony.city_labels.labels
 		local FuckingDrones = ChoGGi.ComFuncs.FuckingDrones
 
 		-- Hey. Do I preach at you when you're lying stoned in the gutter? No!
@@ -1302,7 +1302,7 @@ do -- LoadGame/CityStart
 		local g_Classes = g_Classes
 		local const = const
 		local hr = hr
-		local labels = UICity.labels
+		local labels = UIColony.city_labels.labels
 		local sponsor = GetMissionSponsor()
 
 		-- late enough that I can set g_Consts.
@@ -1323,9 +1323,9 @@ do -- LoadGame/CityStart
 		ChoGGi.Temp.UnitPathingHandles = {}
 
 		-- not needed, removing from old saves, so people don't notice them
-		labels.ChoGGi_GridElements = nil
-		labels.ChoGGi_LifeSupportGridElement = nil
-		labels.ChoGGi_ElectricityGridElement = nil
+		UICity.labels.ChoGGi_GridElements = nil
+		UICity.labels.ChoGGi_LifeSupportGridElement = nil
+		UICity.labels.ChoGGi_ElectricityGridElement = nil
 		-- re-binding is now an in-game thing, so keys are just defaults
 		UserSettings.KeyBindings = nil
 

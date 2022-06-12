@@ -94,7 +94,7 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 		local value = choice.value
 		if type(value) == "number" then
 			ChoGGi.ComFuncs.SetSavedConstSetting("SpeedRC", value)
-			local objs = UICity.labels.Rover or ""
+			local objs = UIColony.city_labels.labels.Rover or ""
 			for i = 1, #objs do
 				objs[i]:SetBase("move_speed", value)
 			end

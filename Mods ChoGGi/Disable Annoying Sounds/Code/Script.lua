@@ -50,14 +50,14 @@ OnMsg.ModsReloaded = ModOptions
 OnMsg.ApplyModOptions = ModOptions
 
 local function BldStopSounds(label)
-	local objs = UICity.labels[label] or ""
+	local objs = UIColony.city_labels.labels[label] or ""
 	for i = 1, #objs do
 		objs[i]:StopSound()
 	end
 end
 
 local function BldToggleSounds(label, snd)
-	local objs = UICity.labels[label] or ""
+	local objs = UIColony.city_labels.labels[label] or ""
 	for i = 1, #objs do
 		local obj = objs[i]
 		PlayFX(snd, "end", obj)
