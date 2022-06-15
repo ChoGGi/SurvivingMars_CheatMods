@@ -7515,13 +7515,15 @@ function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
 	ChoGGi.ComFuncs.OpenInExamineDlg(textures, nil, TranslationTable[302535920001181--[[Used Terrain Textures]]])
 end
 
-local function RetObjMapId(obj, text)
+local function RetObjMapId(obj, text, fallback)
 	if obj then
 		return obj.city and obj.city.map_id
 			or obj.GetMapID and obj:GetMapID()
 			or g_CObjectFuncs.GetMapID(obj)
+			or fallback and UICity.map_id
 			or text and "unknown" or ""
 	end
+	return fallback and UICity.map_id or text and "unknown" or ""
 end
 ChoGGi.ComFuncs.RetObjMapId = RetObjMapId
 
@@ -7662,7 +7664,7 @@ do -- AddToOrigFuncs
 end -- do
 
 function ChoGGi.ComFuncs.ObjectCloner(flat, obj, centre)
-	if not obj then
+	if not IsValid(obj) then
 		obj = ChoGGi.ComFuncs.SelObject()
 	end
 
@@ -7670,8 +7672,10 @@ function ChoGGi.ComFuncs.ObjectCloner(flat, obj, centre)
 		return
 	end
 
+	local pos = GetCursorWorldPos()
+
 	if obj:IsKindOf("Colonist") then
-		ChoGGi.ComFuncs.SpawnColonist(obj, nil, GetCursorWorldPos())
+		ChoGGi.ComFuncs.SpawnColonist(obj, nil, pos)
 		return
 	end
 
@@ -7706,9 +7710,6 @@ function ChoGGi.ComFuncs.ObjectCloner(flat, obj, centre)
 		end
 	end
 
-	-- make sure it's hex worthy
-	local pos = GetCursorWorldPos()
-
 	if centre then
 		pos = HexGetNearestCenter(pos)
 	end
@@ -7724,7 +7725,7 @@ function ChoGGi.ComFuncs.ObjectCloner(flat, obj, centre)
 	end
 
 	-- update flight grid for shuttles
-	FlightCaches[UICity.map_id]:OnHeightChanged()
+	FlightCaches[RetObjMapId(clone, nil, true)]:OnHeightChanged()
 
 	return clone
 end

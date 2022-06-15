@@ -84,12 +84,22 @@ function BottomlessStorage:GetSpotBeginIndex(spot_name, ...)
 	return UniversalStorageDepot.GetSpotBeginIndex(self, spot_name, ...)
 end
 
+local function AddResource(list, res)
+	if not table.find(list, res) then
+		list[#list+1] = res
+	end
+end
+
 -- add building to building template list
 function OnMsg.ClassesPostprocess()
 	resources = table.icopy(UniversalStorageDepot.storable_resources)
-	resources[#resources+1] = "WasteRock"
-	if g_AvailableDlc.armstrong and not table.find(resources, "Seeds") then
-		resources[#resources+1] = "Seeds"
+
+	AddResource(resources, "WasteRock")
+	if g_AvailableDlc.armstrong then
+		AddResource(resources, "Seeds")
+	end
+	if g_AvailableDlc.picard then
+		AddResource(resources, "PreciousMinerals")
 	end
 
 	if not BuildingTemplates.BottomlessStorage then

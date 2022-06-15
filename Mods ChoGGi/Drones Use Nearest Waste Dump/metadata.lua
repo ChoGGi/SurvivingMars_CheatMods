@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Drones Use Nearest Waste Dump",
+	"title", "BROKEN Drones Use Nearest Waste Dump",
 	"id", "ChoGGi_DronesUseNearestWasteDump",
 	"steam_id", "2065605741",
 	"pops_any_uuid", "82ce2e51-b1b4-43fd-ba74-de6a2674763b",
@@ -18,6 +18,6 @@ return PlaceObj("ModDef", {
 Drones will always use nearest wasterock dump site to drop off.
 
 Known Issues:
-See comments
+Don't use it for now...
 ]],
 })
