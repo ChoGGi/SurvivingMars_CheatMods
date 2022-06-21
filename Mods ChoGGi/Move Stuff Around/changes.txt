@@ -1,2 +1,5 @@
+v0.3
+Forgot to check if object is a grid object...
+
 v0.2
 Cleans up leftover shape from object grid.

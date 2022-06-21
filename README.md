@@ -6,7 +6,7 @@ For packaged versions of these mods see [Steam](https://steamcommunity.com/works
 ```
 Place mod folder(s) in %AppData%\Surviving Mars\Mods (Create "Mods" folder if it doesn't exist)
 
-https://steamcommunity.com/sharedfiles/filedetails/?id=1777493789 (AppData folder location)
+https://steamcommunity.com/sharedfiles/filedetails/?id=1777493789 (Game profile folder location)
 
 Enable with in-game mod manager
 ```

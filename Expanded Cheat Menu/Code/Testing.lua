@@ -118,15 +118,19 @@ OnMsg.CityStart = StartUp
 
 do -- ExportTranslatedStrings
 	local CmpLower = CmpLower
+	local TGetID = TGetID
+	local table_sort = table.sort
+
 	local function SortList(list)
-		table.sort(list, function(a, b)
+		table_sort(list, function(a, b)
 			return CmpLower(a.name_en, b.name_en)
 		end)
 		return list
 	end
 
-	local TGetID = TGetID
 	local csv_columns = {
+		-- used this to find strs in picard.csv
+--~ 		"str_id",
 		"name_en",
 		"name_br",
 		"name_fr",
@@ -135,12 +139,25 @@ do -- ExportTranslatedStrings
 		"name_ru",
 		"name_sc",
 		"name_sp",
+		"name_tr",
 	}
 	local langs
 	local Translate = ChoGGi.ComFuncs.Translate
-	local export_data = {}
+
+	local function GetStr(locale_id, str_id)
+		-- I could make this less ugly, but
+		if langs[locale_id][str_id] then
+			return langs[locale_id][str_id]
+		elseif langs[locale_id .. "_p"][str_id] then
+			return langs[locale_id .. "_p"][str_id]
+		else
+			-- in other csv file, needs to be manually copied into "main" one for each lang :(
+			print("MISSING STR ID", lang, str_id)
+		end
+	end
 
 	-- export csv files containing translated strings (csv files need to be in game profile (where saves are)
+	-- csv files can be found in game dir\Local\*.hpk
 	function ChoGGi.testing.ExportTranslatedStrings()
 		-- lists of str_id > string
 		langs = {
@@ -152,66 +169,85 @@ do -- ExportTranslatedStrings
 			ru = ChoGGi.ComFuncs.RetLangTable("AppData/Russian.csv"),
 			sc = ChoGGi.ComFuncs.RetLangTable("AppData/Schinese.csv"),
 			sp = ChoGGi.ComFuncs.RetLangTable("AppData/Spanish.csv"),
+			tr = ChoGGi.ComFuncs.RetLangTable("AppData/Turkish.csv"),
+			-- picard (B&B)
+			br_p = ChoGGi.ComFuncs.RetLangTable("AppData/Brazilian_p.csv"),
+			fr_p = ChoGGi.ComFuncs.RetLangTable("AppData/French_p.csv"),
+			ge_p = ChoGGi.ComFuncs.RetLangTable("AppData/German_p.csv"),
+			po_p = ChoGGi.ComFuncs.RetLangTable("AppData/Polish_p.csv"),
+			ru_p = ChoGGi.ComFuncs.RetLangTable("AppData/Russian_p.csv"),
+			sc_p = ChoGGi.ComFuncs.RetLangTable("AppData/Schinese_p.csv"),
+			sp_p = ChoGGi.ComFuncs.RetLangTable("AppData/Spanish_p.csv"),
+			tr_p = ChoGGi.ComFuncs.RetLangTable("AppData/Turkish_p.csv"),
 		}
 
 		local time = os.time()
 
 		-- breakthroughs
-		local export_bt_names = {}
-		table.iclear(export_data)
+		local export_bt_names, export_bt_desc = {}, {}
 		local breakthroughs = Presets.TechPreset.Breakthroughs
 		for i = 1, #breakthroughs do
 			local tech = breakthroughs[i]
 			local str_id = TGetID(tech.display_name)
 			export_bt_names[i] = {
+--~ 				str_id = str_id,
 				name_en = langs.en[str_id],
-				name_br = langs.br[str_id],
-				name_fr = langs.fr[str_id],
-				name_ge = langs.ge[str_id],
-				name_po = langs.po[str_id],
-				name_ru = langs.ru[str_id],
-				name_sc = langs.sc[str_id],
-				name_sp = langs.sp[str_id],
-			}
-			str_id = TGetID(tech.description)
-			export_data[i] = {
-				-- we need to add the tech as context to update the string params
-				name_en = Translate(langs.en[str_id],tech),
-				name_br = Translate(langs.br[str_id],tech),
-				name_fr = Translate(langs.fr[str_id],tech),
-				name_ge = Translate(langs.ge[str_id],tech),
-				name_po = Translate(langs.po[str_id],tech),
-				name_ru = Translate(langs.ru[str_id],tech),
-				name_sc = Translate(langs.sc[str_id],tech),
-				name_sp = Translate(langs.sp[str_id],tech),
+				name_br = GetStr("br", str_id),
+				name_fr = GetStr("fr", str_id),
+				name_ge = GetStr("ge", str_id),
+				name_po = GetStr("po", str_id),
+				name_ru = GetStr("ru", str_id),
+				name_sc = GetStr("sc", str_id),
+				name_sp = GetStr("sp", str_id),
+				name_tr = GetStr("tr", str_id),
 			}
 
+			str_id = TGetID(tech.description)
+			export_bt_desc[i] = {
+				-- we need to add the tech as context to update the string params
+--~ 				str_id = str_id,
+				name_en = Translate(langs.en[str_id],tech),
+				name_br = Translate(GetStr("br", str_id),tech),
+				name_fr = Translate(GetStr("fr", str_id),tech),
+				name_ge = Translate(GetStr("ge", str_id),tech),
+				name_po = Translate(GetStr("po", str_id),tech),
+				name_ru = Translate(GetStr("ru", str_id),tech),
+				name_sc = Translate(GetStr("sc", str_id),tech),
+				name_sp = Translate(GetStr("sp", str_id),tech),
+				name_tr = Translate(GetStr("tr", str_id),tech),
+			}
 		end
+--~ ex(export_bt_names)
+--~ ex(export_bt_desc)
 		SaveCSV("AppData/export_bt_names-" .. time .. ".csv", export_bt_names, csv_columns, csv_columns)
-		SaveCSV("AppData/export_bt_desc-" .. time .. ".csv", export_data, csv_columns, csv_columns)
+		SaveCSV("AppData/export_bt_desc-" .. time .. ".csv", export_bt_desc, csv_columns, csv_columns)
 
 		-- location names
-		table.iclear(export_data)
+		local export_data_locations = {}
 		local MarsLocales = MarsLocales
 		local c = 0
 		for  _, location in pairs(MarsLocales) do
 			local str_id = TGetID(location)
 			c = c + 1
-			export_data[c] = {
+			export_data_locations[c] = {
+--~ 				str_id = str_id,
 				name_en = langs.en[str_id],
-				name_br = langs.br[str_id],
-				name_fr = langs.fr[str_id],
-				name_ge = langs.ge[str_id],
-				name_po = langs.po[str_id],
-				name_ru = langs.ru[str_id],
-				name_sc = langs.sc[str_id],
-				name_sp = langs.sp[str_id],
+				name_br = GetStr("br", str_id),
+				name_fr = GetStr("fr", str_id),
+				name_ge = GetStr("ge", str_id),
+				name_po = GetStr("po", str_id),
+				name_ru = GetStr("ru", str_id),
+				name_sc = GetStr("sc", str_id),
+				name_sp = GetStr("sp", str_id),
+				name_tr = GetStr("tr", str_id),
 			}
 		end
-		SortList(export_data)
-		SaveCSV("AppData/export_locations-" .. time .. ".csv", export_data, csv_columns, csv_columns)
+		SortList(export_data_locations)
+		SaveCSV("AppData/export_locations-" .. time .. ".csv", export_data_locations, csv_columns, csv_columns)
+--~ ex(export_data_locations)
 
-		table.iclear(export_data)
+		-- location info
+		local export_data_misc = {}
 		local export_misc = {
 				-- topography
 				4154,-- Relatively Flat
@@ -242,18 +278,21 @@ do -- ExportTranslatedStrings
 		}
 		for i = 1, #export_misc do
 			local str_id = export_misc[i]
-			export_data[i] = {
+			export_data_misc[i] = {
+--~ 				str_id = str_id,
 				name_en = langs.en[str_id],
-				name_br = langs.br[str_id],
-				name_fr = langs.fr[str_id],
-				name_ge = langs.ge[str_id],
-				name_po = langs.po[str_id],
-				name_ru = langs.ru[str_id],
-				name_sc = langs.sc[str_id],
-				name_sp = langs.sp[str_id],
+				name_br = GetStr("br", str_id),
+				name_fr = GetStr("fr", str_id),
+				name_ge = GetStr("ge", str_id),
+				name_po = GetStr("po", str_id),
+				name_ru = GetStr("ru", str_id),
+				name_sc = GetStr("sc", str_id),
+				name_sp = GetStr("sp", str_id),
+				name_tr = GetStr("tr", str_id),
 			}
 		end
-		SaveCSV("AppData/export_misc-" .. time .. ".csv", export_data, csv_columns, csv_columns)
+		SaveCSV("AppData/export_misc-" .. time .. ".csv", export_data_misc, csv_columns, csv_columns)
+--~ ex(export_data_misc)
 
 	end
 end -- do

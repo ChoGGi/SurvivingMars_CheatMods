@@ -16,6 +16,25 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
+local function MoveStuff(context, pos)
+	-- otherwise there's a selection area left (that I'm too lazy to move as well)
+	SelectObj(false)
+	local grid_obj
+	if context:HasMember("RemoveFromGrids") then
+		grid_obj = true
+		-- remove it's current pos from the object grid
+		context:RemoveFromGrids()
+	end
+	-- probably best to use hex centres
+	context:SetPos(HexGetNearestCenter(pos))
+	if grid_obj then
+		-- update obj grid to new pos
+		context:ApplyToGrids()
+	end
+	-- re-select it
+	SelectObj(context)
+end
+
 local ChoOrig_SelectionModeDialog_OnMouseButtonDown = SelectionModeDialog.OnMouseButtonDown
 
 local function AddButton(xtemplate, button_id)
@@ -77,16 +96,8 @@ local function AddButton(xtemplate, button_id)
 						dlg.OnMouseButtonDown = ChoOrig_OnMouseButtonDown or ChoOrig_SelectionModeDialog_OnMouseButtonDown
 						-- and cursor
 						dlg:SetMouseCursor("UI/Cursors/cursor.tga")
-						-- otherwise there's a selection area left (that I'm too lazy to move as well)
-						SelectObj(false)
-						-- remove it's current pos from the object grid
-						context:RemoveFromGrids()
-						-- probably best to use hex centres
-						context:SetPos(HexGetNearestCenter(pos))
-						-- update obj grid to new pos
-						context:ApplyToGrids()
-						-- re-select it
-						SelectObj(new_obj)
+
+						MoveStuff(context, pos)
 					end)
 
 				end,
