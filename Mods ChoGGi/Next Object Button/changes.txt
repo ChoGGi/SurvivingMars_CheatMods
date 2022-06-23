@@ -1,3 +1,7 @@
+v0.4
+Added buildings.
+Changed name from Next Vehicle Button.
+
 v0.3
 Added rovers.
 Changed name from Rocket Next Rocket Button.

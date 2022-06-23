@@ -12,6 +12,7 @@ local function CycleObjects(context, class)
 			return vehicle:IsRocketLanded()
 		end)
 	end
+
 	local count = #list
 
 	if count > 0 then
@@ -41,10 +42,21 @@ function OnMsg.ClassesPostprocess()
 		__context_of_kind = "BaseRover",
 		Title = T(0000, "Next Rover"),
 		RolloverTitle = T(0000, "Next Rover"),
-		RolloverText = T(302535920012026, "Loop between your rovers quickly."),
+		RolloverText = T(0000, "Loop between your rovers quickly."),
 		Icon = "UI/Icons/Research/plasma_rocket.tga",
 		func = function(self, context)
 			CycleObjects(context, "Rover")
+		end,
+	})
+
+	ChoGGi.ComFuncs.AddXTemplate(XTemplates.ipBuilding[1], "BuildingNextButton", nil, {
+		__context_of_kind = "Building",
+		Title = T(0000, "Next Building"),
+		RolloverTitle = T(0000, "Next Building"),
+		RolloverText = T(0000, "Loop between your buildings quickly."),
+		Icon = "UI/Icons/Research/plasma_rocket.tga",
+		func = function(self, context)
+			CycleObjects(context, context.class)
 		end,
 	})
 

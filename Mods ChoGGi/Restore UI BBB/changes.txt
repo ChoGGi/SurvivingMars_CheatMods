@@ -1,2 +1,5 @@
+v0.3
+Security Post not showing renegades count in dome (Thanks Tremualin).
+
 v0.2
 Added other languages

@@ -40,7 +40,7 @@ do -- MapData
 	local landing
 	local north, east, south, west
 
-	local loc_table = {"","","",""}
+--~ 	local loc_table = {"","","",""}
 	local MapData = MapDataPresets
 	local temp_g_SelectedSpotChallengeMods = {}
 
@@ -50,12 +50,12 @@ do -- MapData
 		local lat_name, long_name = lat_0 and north or south, long_0 and west or east
 
 		-- no dupes
-		loc_table[1] = lat_name
-		loc_table[2] = lat
-		loc_table[3] = long_name
-		loc_table[4] = long
-		local location = table.concat(loc_table)
---~ 		local location = lat_name .. lat .. long_name .. long
+--~ 		loc_table[1] = lat_name
+--~ 		loc_table[2] = lat
+--~ 		loc_table[3] = long_name
+--~ 		loc_table[4] = long
+--~ 		local location = table.concat(loc_table)
+		local location = lat_name .. lat .. long_name .. long
 
 		if export_data_dupes[location] then
 			return
@@ -77,6 +77,8 @@ do -- MapData
 		if long_0 then
 			long = long - long * 2
 		end
+
+		local location_user = lat .. lat_name .. long .. long_name
 
 		-- updates threat/res map info
 		landing:RecalcThreatAndResourceLevels()
@@ -105,6 +107,7 @@ do -- MapData
 		-- create item in export list
 		export_count = export_count + 1
 		export_data[export_count] = {
+			coordinates = location_user,
 			seed = params.seed,
 			latitude = lat_name,
 			latitude_degree = lat,
@@ -251,6 +254,7 @@ do -- MapData
 			return export_data
 		else
 			local csv_columns = {
+				{"coordinates", TranslationTable[11457--[[Coordinates]]]},
 				{"latitude_degree", TranslationTable[6890--[[Latitude]]] .. " " .. TranslationTable[302535920001505--[[°]]]},
 				{"latitude", TranslationTable[6890--[[Latitude]]]},
 				{"longitude_degree", TranslationTable[6892--[[Longitude]]] .. " " .. TranslationTable[302535920001505--[[°]]]},

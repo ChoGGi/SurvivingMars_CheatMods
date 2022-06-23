@@ -21,9 +21,30 @@ local function UpdateLang()
 end
 
 OnMsg.TranslationChanged = UpdateLang
-OnMsg.ClassesPostprocess = UpdateLang
+
+function OnMsg.ClassesPostprocess()
+	UpdateLang()
+
+	-- this wasn't added before BB, but it's as good as any place to put it...
+	if not XTemplates.customSecurityPost then
+		XTemplates.customSecurityPost = PlaceObj('XTemplate', {
+			group = "Infopanel Sections",
+			id = "customSecurityPost",
+			PlaceObj('XTemplateTemplate', {
+				'__context_of_kind', "SecurityStation",
+				'__template', "InfopanelSection",
+				'RolloverText', T(525, --[[XTemplate customSecurityStation RolloverText]] "Unhappy Colonists may become Renegades. Renegades will often cause trouble in the Dome"),
+				'RolloverTitle', T(524, --[[XTemplate customSecurityStation RolloverTitle]] "Renegades in the Dome"),
+				'Title', T(277702433938, --[[XTemplate customSecurityStation Title]] "Renegades in the Dome <right><RenegadesCount>"),
+				'Icon', "UI/Icons/Sections/colonist.tga",
+				'TitleHAlign', "stretch",
+			}),
+		})
+	end
+end
 
 -- got removed by AG, it's not as if anyone needs to see how many drones a drone hub can support
 function DroneControl:GetMaxDronesCount()
 	return g_Consts.CommandCenterMaxDrones
 end
+

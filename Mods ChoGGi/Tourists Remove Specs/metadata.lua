@@ -14,7 +14,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagGameplay", true,
-	"description", [[Remove specializations from all tourists, so filters work a little better.
+	"description", [[
+Remove specializations from all tourists, so filters work a little better.
 Mod option to disable (only applies to new tourists, existing have specs removed).
 
 This mod does nothing if Automated Tourism is installed.
