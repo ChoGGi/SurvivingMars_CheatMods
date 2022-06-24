@@ -305,6 +305,53 @@ function IsPlacingMultipleConstructions(...)
 	return ChoOrig_IsPlacingMultipleConstructions(...)
 end
 --
+local filename
+
+Actions[#Actions+1] = {ActionName = T(302535920011641, "Quicksave"),
+	ActionId = "ChoGGi.AddQuicksaveHotkey.Quicksave",
+	OnAction = function()
+		if not UICity then
+			return
+		end
+
+		CreateRealTimeThread(function()
+			DeleteGame(filename or "Quicksave.savegame.sav")
+			local err
+			err, filename = SaveAutosaveGame("Quicksave")
+
+			if err then
+				ChoGGi.ComFuncs.MsgPopup(err, T(302535920011641, "Quicksave"))
+			else
+				ChoGGi.ComFuncs.MsgPopup(filename, T(302535920011641, "Quicksave"), {expiration = 3})
+			end
+		end)
+	end,
+	ActionShortcut = "Ctrl-F5",
+	replace_matching_id = true,
+	ActionBindable = true,
+}
+
+Actions[#Actions+1] = {ActionName = T(302535920011642, "Quickload"),
+	ActionId = "ChoGGi.AddQuicksaveHotkey.Quickload",
+	OnAction = function()
+    g_SaveLoadThread = IsValidThread(g_SaveLoadThread) and g_SaveLoadThread or CreateRealTimeThread(function()
+--~ 			LoadingScreenOpen("idLoadingScreen", "LoadSaveGame")
+			local err = LoadGame(filename or "Quicksave.savegame.sav")
+			if not err then
+				CloseMenuDialogs()
+			end
+      if err then
+				ChoGGi.ComFuncs.MsgWait(err, T(302535920011642, "Quickload"))
+      end
+--~ 			LoadingScreenClose("idLoadingScreen", "LoadSaveGame")
+    end)
+	end,
+	ActionShortcut = "Ctrl-F9",
+	replace_matching_id = true,
+	ActionBindable = true,
+}
+
+--
 Actions[#Actions+1] = {ActionName = T(302535920012094, "Dialog Shortcut 1"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.DialogShortcut1",
 	replace_matching_id = true,

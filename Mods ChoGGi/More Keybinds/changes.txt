@@ -1,3 +1,6 @@
+v1.2
+Added Quicksave/Quickload
+
 v1.1
 Holding Ctrl during construction works now (thanks lolic_lol).
 
