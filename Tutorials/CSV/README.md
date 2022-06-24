@@ -1,3 +1,7 @@
+Last tested: Prunariu/Martian Express hotfix 1 (1,011,166)
+https://survivingmars.paradoxwikis.com/Patches#Version_history
+
+
 For more info see: https://forum.paradoxplaza.com/forum/threads/surviving-mars-maps-find-your-perfect-landinglocation.1107750/page-2#post-25465232
 
 
