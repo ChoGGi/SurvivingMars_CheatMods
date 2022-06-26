@@ -14,7 +14,9 @@ local properties = {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "ChangeDeathAge",
 		"DisplayName", T(302535920011980, "Change Death Age"),
-		"Help", T(302535920011981, "Changes each colonist age to a random number between min/max ages."),
+		"Help", T(302535920011981, [[Changes each colonist age to a random number between min/max ages.
+
+Enable this option then press apply, then turn it back off again (or it'll keep changing them on load).]]),
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionNumber", {

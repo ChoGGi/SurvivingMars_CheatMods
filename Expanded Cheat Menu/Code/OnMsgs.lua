@@ -301,10 +301,10 @@ function OnMsg.ClassesPostprocess()
 		}
 	end
 
-	-- fiddle with mod options
-	if not table.find(ModsLoaded, "id", "ChoGGi_ModOptionsExpanded") then
-		ChoGGi.ComFuncs.ExpandModOptions(XTemplates)
-	end
+--~ 	-- fiddle with mod options
+--~ 	if not table.find(ModsLoaded, "id", "ChoGGi_ModOptionsExpanded") then
+--~ 		ChoGGi.ComFuncs.ExpandModOptions(XTemplates)
+--~ 	end
 
 	-- Sometime in between picard content update 1 and rev 1009657 they hid the toobar buttons from cheat menu
 	local function true_return()

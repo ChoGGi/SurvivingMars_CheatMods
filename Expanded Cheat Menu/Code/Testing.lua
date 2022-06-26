@@ -116,7 +116,7 @@ end
 OnMsg.LoadGame = StartUp
 OnMsg.CityStart = StartUp
 
-do -- ExportTranslatedStrings
+do -- ExportTranslatedStrings (CSV FILES)
 	local CmpLower = CmpLower
 	local TGetID = TGetID
 	local table_sort = table.sort
@@ -141,6 +141,10 @@ do -- ExportTranslatedStrings
 		"name_sp",
 		"name_tr",
 	}
+	local csv_columns_br = table.icopy(csv_columns)
+	table.insert(csv_columns_br, 1, "break_id")
+
+
 	local langs
 	local Translate = ChoGGi.ComFuncs.Translate
 
@@ -191,6 +195,7 @@ do -- ExportTranslatedStrings
 			local str_id = TGetID(tech.display_name)
 			export_bt_names[i] = {
 --~ 				str_id = str_id,
+				break_id = tech.id,
 				name_en = langs.en[str_id],
 				name_br = GetStr("br", str_id),
 				name_fr = GetStr("fr", str_id),
@@ -206,6 +211,7 @@ do -- ExportTranslatedStrings
 			export_bt_desc[i] = {
 				-- we need to add the tech as context to update the string params
 --~ 				str_id = str_id,
+				break_id = tech.id,
 				name_en = Translate(langs.en[str_id],tech),
 				name_br = Translate(GetStr("br", str_id),tech),
 				name_fr = Translate(GetStr("fr", str_id),tech),
@@ -219,8 +225,8 @@ do -- ExportTranslatedStrings
 		end
 --~ ex(export_bt_names)
 --~ ex(export_bt_desc)
-		SaveCSV("AppData/export_bt_names-" .. time .. ".csv", export_bt_names, csv_columns, csv_columns)
-		SaveCSV("AppData/export_bt_desc-" .. time .. ".csv", export_bt_desc, csv_columns, csv_columns)
+		SaveCSV("AppData/export_bt_names-" .. time .. ".csv", export_bt_names, csv_columns_br, csv_columns_br)
+		SaveCSV("AppData/export_bt_desc-" .. time .. ".csv", export_bt_desc, csv_columns_br, csv_columns_br)
 
 		-- location names
 		local export_data_locations = {}

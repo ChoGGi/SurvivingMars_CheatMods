@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v11.5 (Unreleased)
+- Single click to change mod toggle options.
 - Added ObjectCloner().
 
 ## v11.4 (7 May 2022)

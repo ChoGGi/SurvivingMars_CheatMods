@@ -82,6 +82,35 @@ end
 
 function OnMsg.ClassesPostprocess()
 
+	-- single click to change mod toggle options
+	local template = XTemplates.PropBool[1]
+	local idx = table.find(template, "name", "OnMouseButtonDown(self, pos, button)")
+	if idx then
+		template = template[idx]
+		if not template.ChoGGi_SingleClick then
+
+			local RealTime = RealTime
+			local ticks = 0
+
+			local ChoGGiOrig_func = template.func
+			-- for some reason this func fires twice when you press it?
+			template.func = function(self, pos, button, ...)
+				XPropControl.OnMouseButtonDown(self, pos, button, ...)
+				if button == "L" then
+					-- good thing people can't click too fast
+					local rt = RealTime()
+					if ticks == rt then
+						return
+					end
+					ticks = rt
+					-- off we go then
+					return ChoGGiOrig_func(self, pos, button, ...)
+				end
+			end
+
+		end
+	end
+
 	-- ignore persist errors
 	-- this is in pp so it overrides ECM overriding the func
 	local ChoOrig_ReportPersistErrors = ReportPersistErrors
@@ -101,7 +130,7 @@ function OnMsg.ClassesPostprocess()
 	if not xtemplate.ChoGGi_ModOptionsExpanded then
 		xtemplate.ChoGGi_ModOptionsExpanded = true
 
-		-- Change On/Off text to green/red/duct tape
+		-- Change On/Off text to red/green/duct tape
 		ChangeBoolColour(xtemplate, "idOn", "green")
 		ChangeBoolColour(xtemplate, "idOff", "red")
 
@@ -112,12 +141,9 @@ function OnMsg.ClassesPostprocess()
 		UpdateProp(xtemplate)
 		-- add buttons to number
 		AddSliderButtons(xtemplate)
-
---~ 		-- hmm
---~ 		UpdateProp(XTemplates.PropKeybinding[1])
 	end
 
-	-- Mod Options Button
+	-- Mod Options Button in Main menu instead of Options menu
 	xtemplate = XTemplates.XIGMenu[1]
 	if not xtemplate.ChoGGi_ModOptionsButton then
 		xtemplate.ChoGGi_ModOptionsButton = true
@@ -163,7 +189,7 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	-- Add check for mod options with: "Header", true, and remove On/Off text from it
-	-- If it ignores fake values then use "name" and check for prefix Header_
+	-- or add a "header" prop / make use of existing
 end
 
 -- sort list of mods for mod options

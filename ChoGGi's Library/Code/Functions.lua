@@ -103,5 +103,4 @@ MapGetC = ChoGGi.ComFuncs.MapGet
 so = ChoGGi.ComFuncs.SelObject
 trans = ChoGGi.ComFuncs.Translate
 
-
--- change bool mod option to single click to toggle
+-- change bool mod option to single click to toggle?
