@@ -35,5 +35,9 @@ You'll get a popup msg when a new one is starting.
 Mod Options:
 Switch Mystery: Turn this on to pick a new random mystery when you press Apply (may cause unexpected issues!).
 Show Mystery: The popup msg will show the name of the new mystery.
+
+
+Known "Issues":
+Mysteries almost always have a delay (1 Sol to 10). Check the [url=https://survivingmars.paradoxwikis.com/Mystery]wiki[/url] first and make sure you have everything unlocked for the mystery you started.
 ]],
 })

@@ -10,13 +10,13 @@ local max_int2 = max_int * 2
 -- When true add max_int2 time
 local add_time = false
 
--- There's other stuff to fix, but for now this will fix most of it
--- Considering how much this func is called I'd like to keep this simple
+-- Considering how much this func is called... keep it simple (stupid.gif)
 local ChoOrig_GameTime = GameTime
 function GameTime()
 	if add_time then
 		return ChoOrig_GameTime() + max_int2
 	end
+
 	return ChoOrig_GameTime()
 end
 

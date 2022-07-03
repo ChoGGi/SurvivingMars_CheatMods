@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v11.5 (Unreleased)
+- Fixed SetBuildingLimits and tracks not being able to be built.
 - Single click to change mod toggle options.
 - Added ObjectCloner().
 

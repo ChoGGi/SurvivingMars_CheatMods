@@ -5157,25 +5157,33 @@ function ChoGGi.ComFuncs.SetLandScapingLimits(force, skip_objs, out_of_bounds)
 	end
 end
 
-function ChoGGi.ComFuncs.SetBuildingLimits(force)
-	local cs = ConstructionStatus
-	-- force is from my mods (or yours), usersettings is from ECM
-	if force or ChoGGi.UserSettings.RemoveBuildingLimits then
-		for id, status in pairs(cs) do
-			if id:sub(1, 9) ~= "Landscape" and status.type == "error" then
-				status.type = "warning"
+do -- SetBuildingLimits
+	-- needed for prunariu
+	local skips = {
+		TrackRequiresTwoStations = true,
+		PassageAngleToSteep = true,
+	}
+
+	function ChoGGi.ComFuncs.SetBuildingLimits(force)
+		local cs = ConstructionStatus
+		-- force is from my mods (or yours), usersettings is from ECM
+		if force or ChoGGi.UserSettings.RemoveBuildingLimits then
+			for id, status in pairs(cs) do
+				if status.type == "error" and not skips[id] and id:sub(1, 9) ~= "Landscape" then
+					status.type = "warning"
+				end
 			end
-		end
-	else
-		-- table created in Code\Settings.lua
-		local orig_cs = ChoGGi.Tables.ConstructionStatus
-		for id, status in pairs(cs) do
-			if id:sub(1, 9) ~= "Landscape" and status.type == "warning" then
-				cs[id].type = orig_cs[id].type
+		else
+			-- table created in Code\Settings.lua
+			local orig_cs = ChoGGi.Tables.ConstructionStatus
+			for id, status in pairs(cs) do
+				if id:sub(1, 9) ~= "Landscape" and status.type == "warning" then
+					cs[id].type = orig_cs[id].type
+				end
 			end
 		end
 	end
-end
+end -- do
 
 -- bottom toolbar button in menus (new game, planetary, etc)
 function ChoGGi.ComFuncs.RetToolbarButton(params)

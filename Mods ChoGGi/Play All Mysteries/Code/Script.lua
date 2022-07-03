@@ -157,7 +157,7 @@ local function PickRandomMystery(delay)
 
 		Msg("MysteryChosen")
 
-		print("Play All Mysteries:", new_myst)
+--~ 		print("Play All Mysteries:", new_myst)
 	end)
 
 end

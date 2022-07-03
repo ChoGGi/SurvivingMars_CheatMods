@@ -6,6 +6,7 @@
 - Menu>Game>UI>Infopanel Toolbar Constrain: Limits size of infopanel toolbar buttons for those that have too many buttons (and they go off panel).
 
 ### Fixed:
+- Log spam on older saves.
 - Monitor Func Calls didn't work (thanks Tremualin).
 
 ### Changed:

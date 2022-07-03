@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 			"version_minor", 4,
 		}),
 	},
-	"title", "Defence Towers Attack DustDevils",
+	"title", "Defence Towers Attack Dust Devils",
 	"id", "ChoGGi_DefenceTowersAttackDustDevils",
 	"steam_id", "1504597628",
 	"pops_any_uuid", "957bd9ec-fb96-4c00-9065-984aae313e1f",
@@ -22,9 +22,11 @@ return PlaceObj("ModDef", {
 	"image", "Preview.jpg",
 	"has_options", true,
 	"TagGameplay", true,
-	"description", [[Defence Turrets will attack Dust Devils.
+	"description", [[
+Defence Turrets will attack Dust Devils.
 
 Requested by: rdr99 and Emmote
-https://steamcommunity.com/app/464920/discussions/0/2828702373008348129/]],
+https://steamcommunity.com/app/464920/discussions/0/2828702373008348129/
+]],
 })
 

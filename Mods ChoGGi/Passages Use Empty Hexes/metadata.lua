@@ -24,8 +24,9 @@ return PlaceObj("ModDef", {
 	"TagGameplay", true,
 	"TagBuildings", true,
 	"description", [[
-You can place passages at hexes you normally can't build on.
-Check the selection panel after placing a passage construction site, if it says "[b]Dome Connection Established[/b]" then it'll work, if it says "[b]Connection Failed![/b]" then remove the site and try elsewhere (white highlighted hexes only).
+You can place passages at hexes you normally can't build on (white highlighted hexes only).
+
+Check the selection panel after placing a passage construction site, if it says "[b]Dome Connection Established[/b]" then it'll work, if it says "[b]Connection Failed![/b]" then remove the site and try elsewhere.
 
 Press Numpad 6 to toggle showing usable hexes.
 

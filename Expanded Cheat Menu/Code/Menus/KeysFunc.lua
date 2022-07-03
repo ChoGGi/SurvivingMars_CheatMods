@@ -4,6 +4,10 @@ local table = table
 local TranslationTable = TranslationTable
 
 function ChoGGi.MenuFuncs.ConsoleRestart()
+	if ChoGGi.testing then
+		quit("restart")
+	end
+
 	local dlgConsole = dlgConsole
 	if ChoGGi.ComFuncs.IsValidXWin(dlgConsole) then
 		if not dlgConsole:GetVisible() then

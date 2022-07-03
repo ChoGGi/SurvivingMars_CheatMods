@@ -644,21 +644,27 @@ function OnMsg.PersistPostLoad()
 		-- If there's a missing id print/return a warning
 		local printit = ChoGGi.UserSettings.FixMissingModBuildingsLog
 		-- GetFreeSpace, GetFreeLivingSpace, GetFreeWorkplaces, GetFreeWorkplacesAround
-		local labels = UIColony.city_labels.labels or empty_table
-		for label_id, label in pairs(labels) do
-			if label_id ~= "Consts" then
-				for i = #label, 1, -1 do
-					local obj = label[i]
-					if obj:IsKindOf("UnpersistedMissingClass") then
-						if printit then
-							print(TranslationTable[302535920001401--[["Removed missing mod building from %s: %s, entity: %s, handle: %s"]]]:format(label_id, RetName(obj), obj:GetEntity(), obj.handle))
+		local Cities = Cities
+		-- needed for pre-picard saves
+		for i = 1, #Cities do
+			local city = Cities[i]
+			local labels = city.labels
+			for label_id, label in pairs(labels) do
+				if label_id ~= "Consts" then
+					for j = #label, 1, -1 do
+						local obj = label[j]
+						if obj:IsKindOf("UnpersistedMissingClass") then
+							if printit then
+								print(TranslationTable[302535920001401--[["Removed missing mod building from %s: %s, entity: %s, handle: %s"]]]:format(label_id, RetName(obj), obj:GetEntity(), obj.handle))
+							end
+							obj:delete()
+							table.remove(label, j)
 						end
-						obj:delete()
-						table.remove(label, i)
 					end
 				end
 			end
 		end
+
 
 	end -- If FixMissingModBuildings
 end
@@ -1295,14 +1301,16 @@ do -- LoadGame/CityStart
 	end
 
 	function OnMsg.ChoGGi_Loaded()
-		local UICity = UICity
 		local ChoGGi = ChoGGi
 		local UserSettings = ChoGGi.UserSettings
 
+		local UICity = UICity
 		local g_Classes = g_Classes
 		local const = const
 		local hr = hr
-		local labels = UIColony.city_labels.labels
+		-- needed for pre-picard saves
+		local labels = UIColony and UIColony.city_labels.labels or UICity.labels
+
 		local sponsor = GetMissionSponsor()
 
 		-- late enough that I can set g_Consts.
