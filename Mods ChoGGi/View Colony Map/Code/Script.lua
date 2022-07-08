@@ -33,6 +33,13 @@ local skip_showing_image
 local show_image_dlg
 local extra_info_dlg
 
+local underground_maps = {
+	"BlankUnderground_01",
+	"BlankUnderground_02",
+	"BlankUnderground_03",
+	"BlankUnderground_04",
+}
+
 local function ShowDialogs(map, gen)
 	-- check if we already created image viewer, and make one if not
 	if not IsValidXWin(show_image_dlg) then
@@ -40,6 +47,12 @@ local function ShowDialogs(map, gen)
 	end
 	-- pretty little image
 	show_image_dlg.idImage:SetImage(image_str .. map .. ".png")
+
+	if show_image_dlg.idImagePicard then
+		local underground = table.rand(underground_maps, gen.Seed)
+		show_image_dlg.idImagePicard:SetImage(image_str .. underground .. ".jpg")
+	end
+
 	show_image_dlg.idCaption:SetText(map)
 	-- update text info
 	if gen and extra_info_dlg then
@@ -119,18 +132,30 @@ DefineClass.ChoGGi_VCM_MapImageDlg = {
 	-- If random tech rule active
 	random_warning = false,
 	warning_str = false,
+	-- add another image if so
+	is_picard = false,
 }
 
 function ChoGGi_VCM_MapImageDlg:Init(parent, context)
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
 
+	self.is_picard = g_AvailableDlc.picard
+
 	self.idTopArea = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idTopArea",
 	}, self.idDialog)
+
 	self.idImage = XFrame:new({
 		Id = "idImage",
 	}, self.idTopArea)
+
+	if self.is_picard then
+		self.idImagePicard = XFrame:new({
+			Id = "idImagePicard",
+		}, self.idTopArea)
+		self.idImagePicard:SetVisible(false)
+	end
 
 	self.idBottomArea = g_Classes.ChoGGi_XDialogSection:new({
 		Id = "idBottomArea",
@@ -145,6 +170,7 @@ function ChoGGi_VCM_MapImageDlg:Init(parent, context)
 		Margins = box(20, 4, 2, 0),
 		Dock = "left",
 	}, self.idBottomArea)
+
 	-- add hint if random rule active
 	local tech_variety = IsGameRuleActive("TechVariety")
 		and " <yellow>" .. T(607602869305--[[Tech Variety]]) .. "</yellow>"
@@ -161,6 +187,20 @@ Breakthroughs will be random as well.
 			.. "\n\n\n" .. self.warning_str
 		self.random_warning = true
 	end
+
+	-- add checkbox to toggle image
+	if self.is_picard then
+		self.idTogglePicard = g_Classes.ChoGGi_XCheckButton:new({
+			Id = "idTogglePicard",
+			Text = T(0000, "Underground"),
+--~ 			RolloverText = T(302535920011333, "Show breakthroughs for this location."),
+			OnChange = self.idTogglePicard_OnChange,
+			Margins = box(20, 4, 2, 0),
+			Dock = "left",
+		}, self.idBottomArea)
+		self.idTogglePicard:SetCheckBox(false)
+	end
+
 
 	-- we need to wait a sec for the map info to load or y will be 0
 	CreateRealTimeThread(function()
@@ -185,6 +225,16 @@ function ChoGGi_VCM_MapImageDlg:idShowExtra_OnChange(check)
 		if extra_info_dlg then
 			extra_info_dlg:Close()
 		end
+	end
+end
+
+function ChoGGi_VCM_MapImageDlg:idTogglePicard_OnChange(check)
+	if check then
+		self.parent_dialog.idImage:SetVisible(false)
+		self.parent_dialog.idImagePicard:SetVisible(true)
+	else
+		self.parent_dialog.idImage:SetVisible(true)
+		self.parent_dialog.idImagePicard:SetVisible(false)
 	end
 end
 
@@ -224,8 +274,6 @@ DefineClass.ChoGGi_VCM_ExtraInfoDlg = {
 	dialog_height = 600.0,
 
 	translated_tech = false,
---~ 	omega_msg = false,
---~ 	show_omegas = false,
 	planet_title_count = 0,
 	planet_title = false,
 	breakthrough_title = false,
@@ -240,22 +288,13 @@ DefineClass.ChoGGi_VCM_ExtraInfoDlg = {
 
 function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 
---~ 	-- remove once we get them sorted
---~ 	self.show_omegas = false
-
---~ 	if self.show_omegas then
---~ 		self.dialog_height = 650.0
---~ 		self.omega_msg = "\n\n<color 200 200 256>"
---~ 			.. Translate(5182, "Omega Telescope") .. ":</color>"
---~ 	end
-
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
 	-- text box with obj info in it
 	self:AddScrollText()
 
---~ 	self.is_picard = g_AvailableDlc.picard
-	self.is_picard = false
+	self.is_picard = g_AvailableDlc.picard
+--~ 	self.is_picard = false
 
 	-- make it clearer when randoms are go
 	local title_text = T(11451, "Breakthrough")
@@ -291,28 +330,29 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 		end
 	end
 
-	if self.is_picard then
-		local BuildingTemplates = BuildingTemplates
-		for i = 1, #const.BuriedWonders do
-			local id = const.BuriedWonders[i]
-			local bt = BuildingTemplates[id]
-			local name = Translate(bt.display_name)
+--~ 	if self.is_picard then
+--~ 		local BuildingTemplates = BuildingTemplates
+--~ 		for i = 1, #const.BuriedWonders do
+--~ 			local id = const.BuriedWonders[i]
+--~ 			local bt = BuildingTemplates[id]
+--~ 			local name = Translate(bt.display_name)
 
-			self.translated_tech[id] = self:HyperLink(Translate(bt.description) .. "\n\n<image " .. bt.display_icon .. " 1500>", name)
-				.. name .. "</h></color>"
-		end
+--~ 			self.translated_tech[id] = self:HyperLink(Translate(bt.description) .. "\n\n<image " .. bt.display_icon .. " 1500>", name)
+--~ 				.. name .. "</h></color>"
+--~ 		end
 
-		self.undergound_title = "<color 200 200 256>"
-			.. Translate(203070175929, "Buried Wonders") .. ":</color>"
-	end
+--~ 		self.undergound_title = "<color 200 200 256>"
+--~ 			.. Translate(203070175929, "Buried Wonders") .. ":</color>"
+--~ 	end
 
 	self.planet_title_count = Consts.PlanetaryBreakthroughCount + 1
 
 	self.breakthrough_title = "\n\n<color 200 200 256>" .. Translate(9, "Anomaly")
 		.. ":</color>"
 
-	self.planet_title = (self.is_picard and "\n\n" or "") .. "<color 200 200 256>"
-		.. Translate(11234, "Planetary Anomaly") .. ":</color>"
+--~ 	self.planet_title = (self.is_picard and "\n\n" or "") .. "<color 200 200 256>"
+--~ 		.. Translate(11234, "Planetary Anomaly") .. ":</color>"
+	self.planet_title = "<color 200 200 256>" .. Translate(11234, "Planetary Anomaly") .. ":</color>"
 
 	CreateRealTimeThread(function()
 		-- place right of map
@@ -379,31 +419,24 @@ function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(gen)
 	-- first four are POI breaks
 	table.insert(display_list, 1, self.planet_title)
 
---~ 	if self.show_omegas then
---~ 		-- 3 from the end
---~ 		table.insert(display_list, #display_list - 2, self.omega_msg)
+--~ 	-- add buried wonder
+--~ 	if self.is_picard then
+--~ 		local rand_state = gen.rand_state
+--~ 		if not rand_state then
+--~ 			rand_state = RandState(gen.Seed)
+--~ 		end
+--~ 		-- CommonLua\RandomMap\RandomMapGenerator.lua
+--~ 		local function rand(min, max)
+--~ 			return rand_state:GetStable(min, max)
+--~ 		end
+--~ 		local shuffled_wonders = table.copy(const.BuriedWonders)
+--~ 		table.shuffle(shuffled_wonders, rand)
+--~ 		table.insert(display_list, 1, self.translated_tech[shuffled_wonders[1]])
+--~ 		table.insert(display_list, 2, self.translated_tech[shuffled_wonders[2]])
+
+--~ 		-- add bt text after the first four (POIs)
+--~ 		table.insert(display_list, 1, self.undergound_title)
 --~ 	end
-
-	-- add buried wonder
-	if self.is_picard then
-		local rand_state = gen.rand_state
-		if not rand_state then
-			rand_state = RandState(gen.Seed)
-		end
---~   local rand, rrand, trand, crand, grand = table.unpack(env.rhelpers)
---~ 		print("CXCCCCCCCCCC",rand, rrand, trand, crand, grand)
-		-- CommonLua\RandomMap\RandomMapGenerator.lua
-		local function rand(min, max)
-			return rand_state:GetStable(min, max)
-		end
-		local shuffled_wonders = table.copy(const.BuriedWonders)
-		table.shuffle(shuffled_wonders, rand)
-		table.insert(display_list, 1, self.translated_tech[shuffled_wonders[1]])
-		table.insert(display_list, 2, self.translated_tech[shuffled_wonders[2]])
-
-		-- add bt text after the first four (POIs)
-		table.insert(display_list, 1, self.undergound_title)
-	end
 
 	self.idText:SetText(table.concat(display_list, "\n"))
 end

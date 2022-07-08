@@ -23,7 +23,6 @@ function OnMsg.LoadGame()
 		end
 		g_NoTerraforming = false
 
-		local MainCity = MainCity
 		local UIColony = UIColony
 
 		-- backup some tables before we call InitResearch

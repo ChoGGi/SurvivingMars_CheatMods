@@ -2333,11 +2333,12 @@ function ChoGGi.ComFuncs.ColonistUpdateGender(c, gender)
 	end
 
 	local genders = ChoGGi.Tables.ColonistGenders
+	local male_female = {"Male", "Female"}
 
 	if gender == TranslationTable[3490--[[Random]]] then
 		gender = genders[Random(1, 3)]
 	elseif gender == TranslationTable[302535920000800--[[MaleOrFemale]]] then
-		gender = genders[Random(1, 2)]
+		gender = table.rand(male_female)
 	end
 	-- remove all gender traits
 	for i = 1, #genders do

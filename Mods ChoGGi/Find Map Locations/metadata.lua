@@ -10,7 +10,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_MapImagesPack",
 			"title", "Map Images Pack",
 			"version_major", 0,
-			"version_minor", 2,
+			"version_minor", 3,
 		}),
 	},
 	"title", "Find Map Locations",

@@ -63,7 +63,6 @@ end
 --~ 	DeathReasons.ChoGGi_Soylent = TranslationTable[302535920000738--[[Evil Overlord]]]
 --~ 	NaturalDeathReasons.ChoGGi_Soylent = true
 function ChoGGi.MenuFuncs.TheSoylentOption()
-	local UICity = UICity
 	local Tables = ChoGGi.Tables
 
 	-- don't drop BlackCube/MysteryResource
@@ -1038,7 +1037,7 @@ function ChoGGi.MenuFuncs.SetColonistsGender(action)
 		end
 
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice.text, setting_type),
+			ChoGGi.ComFuncs.SettingState(Translate(choice.text), setting_type),
 			TranslationTable[302535920000810--[[Colonist Gender]]]
 		)
 	end

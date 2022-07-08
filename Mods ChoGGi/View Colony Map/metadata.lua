@@ -10,7 +10,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_MapImagesPack",
 			"title", "Map Images Pack",
 			"version_major", 0,
-			"version_minor", 2,
+			"version_minor", 3,
 		}),
 	},
 	"title", "View Colony Map",
@@ -18,9 +18,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1491973763",
 	"pops_any_uuid", "28b23a4f-7e8f-49b0-965a-3c14a8e4b919",
 	"lua_revision", 1007000, -- Picard
-	"version", 20,
+	"version", 21,
 	"version_major", 2,
-	"version_minor", 0,
+	"version_minor", 1,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {

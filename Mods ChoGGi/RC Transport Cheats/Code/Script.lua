@@ -3,13 +3,10 @@
 --~ do return end
 
 local GetRealm = GetRealm
-local IsValid = IsValid
 local FindNearestObject = FindNearestObject
 
 local Random = ChoGGi.ComFuncs.Random
-local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 local SetConstsG = ChoGGi.ComFuncs.SetConstsG
-local testing = ChoGGi.testing
 
 local mod_EnableMod
 local mod_StorageAmount

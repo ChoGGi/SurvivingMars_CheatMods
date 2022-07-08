@@ -1,2 +1,5 @@
+v0.3
+Added underground images.
+
 v0.2
 Version bump for GP.
