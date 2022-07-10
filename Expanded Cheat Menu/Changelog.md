@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v18.5 (Unreleased)
+## v18.6 (Unreleased)
+
+## v18.5 (10 July 2022)
 ### Added:
 - Shortcut to UI Examine in Console>Tools.
 - Menu>Game>UI>Infopanel Toolbar Constrain: Limits size of infopanel toolbar buttons for those that have too many buttons (and they go off panel).
