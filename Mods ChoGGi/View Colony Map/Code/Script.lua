@@ -278,8 +278,6 @@ DefineClass.ChoGGi_VCM_ExtraInfoDlg = {
 	planet_title = false,
 	breakthrough_title = false,
 	undergound_title = false,
-	-- B&B dlc
-	is_picard = false,
 
 	onclick_count = false,
 	onclick_desc = false,
@@ -292,9 +290,6 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 	self:AddElements(parent, context)
 	-- text box with obj info in it
 	self:AddScrollText()
-
-	self.is_picard = g_AvailableDlc.picard
---~ 	self.is_picard = false
 
 	-- make it clearer when randoms are go
 	local title_text = T(11451, "Breakthrough")
@@ -330,28 +325,11 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 		end
 	end
 
---~ 	if self.is_picard then
---~ 		local BuildingTemplates = BuildingTemplates
---~ 		for i = 1, #const.BuriedWonders do
---~ 			local id = const.BuriedWonders[i]
---~ 			local bt = BuildingTemplates[id]
---~ 			local name = Translate(bt.display_name)
-
---~ 			self.translated_tech[id] = self:HyperLink(Translate(bt.description) .. "\n\n<image " .. bt.display_icon .. " 1500>", name)
---~ 				.. name .. "</h></color>"
---~ 		end
-
---~ 		self.undergound_title = "<color 200 200 256>"
---~ 			.. Translate(203070175929, "Buried Wonders") .. ":</color>"
---~ 	end
-
 	self.planet_title_count = Consts.PlanetaryBreakthroughCount + 1
 
 	self.breakthrough_title = "\n\n<color 200 200 256>" .. Translate(9, "Anomaly")
 		.. ":</color>"
 
---~ 	self.planet_title = (self.is_picard and "\n\n" or "") .. "<color 200 200 256>"
---~ 		.. Translate(11234, "Planetary Anomaly") .. ":</color>"
 	self.planet_title = "<color 200 200 256>" .. Translate(11234, "Planetary Anomaly") .. ":</color>"
 
 	CreateRealTimeThread(function()
@@ -418,25 +396,6 @@ function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(gen)
 	table.insert(display_list, self.planet_title_count, self.breakthrough_title)
 	-- first four are POI breaks
 	table.insert(display_list, 1, self.planet_title)
-
---~ 	-- add buried wonder
---~ 	if self.is_picard then
---~ 		local rand_state = gen.rand_state
---~ 		if not rand_state then
---~ 			rand_state = RandState(gen.Seed)
---~ 		end
---~ 		-- CommonLua\RandomMap\RandomMapGenerator.lua
---~ 		local function rand(min, max)
---~ 			return rand_state:GetStable(min, max)
---~ 		end
---~ 		local shuffled_wonders = table.copy(const.BuriedWonders)
---~ 		table.shuffle(shuffled_wonders, rand)
---~ 		table.insert(display_list, 1, self.translated_tech[shuffled_wonders[1]])
---~ 		table.insert(display_list, 2, self.translated_tech[shuffled_wonders[2]])
-
---~ 		-- add bt text after the first four (POIs)
---~ 		table.insert(display_list, 1, self.undergound_title)
---~ 	end
 
 	self.idText:SetText(table.concat(display_list, "\n"))
 end

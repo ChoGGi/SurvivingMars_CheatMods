@@ -1,2 +1,6 @@
+v0.3
+Added more song info.
+Right-click for random track.
+
 v0.2
 Popup was stuck on screen for certain things.

@@ -43,5 +43,6 @@ Colour levels: Purple = mountainous, other colours = buildable.
 
 Known Issues:
 If you have B&B DLC then the planetary anomalies don't work at all. Either ignore the first four, or use my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2721921772]Fix Bugs[/url] mod.
+Doesn't show underground wonders: They're randomly picked during new game load.
 ]],
 })
