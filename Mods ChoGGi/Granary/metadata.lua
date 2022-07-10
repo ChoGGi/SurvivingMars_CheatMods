@@ -33,5 +33,6 @@ Help Vegan Hit: When near domes with ranches, vegan comfort hit is halved.
 
 Known Issues:
 Maintenance doesn't rise.
+It's really a Gristmill, but I like calling it a Granary.
 ]],
 })

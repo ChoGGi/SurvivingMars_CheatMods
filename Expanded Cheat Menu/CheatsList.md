@@ -281,7 +281,6 @@ Cheats>Complete Constructions: Complete all constructions instantly.
 Cheats>Complete Wires & Pipes: Complete all wires and pipes instantly.
 Cheats>Map Exploration: Scanning, deep scanning, core mines, and alien imprints.
 Cheats>Mod Editor: Open the mod editor.
-Cheats>Mystery Log: Advance to next part, show what part you're on, or remove mysteries.
 Cheats>Mystery Start: Pick and start a mystery (with instant start option).
 Certain mysteries need certain objects which get placed when the map is generated on a new game (the green rocks one for instance).
 Cheats>Spawn Colonists: Spawn X amount of colonists.
@@ -407,10 +406,10 @@ Restart is needed when disabling this option!
 ECM.Buildings.Toggles>Remove Spire Point Limit: Build spires anywhere in domes.
 Use with Remove Building Limits to fill up a dome with spires.
 ECM.Buildings.Toggles>Remove Sponsor Limits: Allow you to build all buildings no matter your sponsor.
+ECM.Buildings.Toggles>Remove Wonder Limit: Unlimited wonder build limit (blocks the build a wonder achievement).
 ECM.Buildings.Toggles>Rotate During Placement: Allow you to rotate all buildings.
 ECM.Buildings.Toggles>Show Hidden Buildings: Show hidden buildings in build menu.
 ECM.Buildings.Toggles>Unlimited Connection Length: No more length limits to pipes, cables, and passages.
-ECM.Buildings.Toggles>Unlimited Wonders: Unlimited wonder build limit (blocks the build a wonder achievement).
 ECM.Buildings.Training Buildings>Points To Train: How many points are needed to finish training.
 ECM.Buildings.Training Buildings>Sanatoriums & Schools: Show All Traits: Shows all appropriate traits in Sanatoriums/Schools side panel popup menu.
 ECM.Buildings.Training Buildings>Sanatoriums & Schools: Show Full List: Toggle showing full list of trait selectors in side pane.
@@ -563,12 +562,10 @@ Game.Camera>Zoom Distance: 32000: Further zoom distance.
 Game.Export CSV>Colonist Data: Export colonist data to C:\Users\ChoGGi\AppData\Roaming\Surviving Mars\Colonists.csv.
 Game.Export CSV>Graphs Data: Export command centre graph data to C:\Users\ChoGGi\AppData\Roaming\Surviving Mars\Graphs.csv.
 Game.Export CSV>Map Data (Breakthroughs): Export map location data to C:\Users\ChoGGi\AppData\Roaming\Surviving Mars\MapData.csv (will take awhile).
-See survivingmaps.com for a filtered list.
 Don't use in start new game screens (rating/topo will be messed up).
 Difficulty Challenge/Named Location may not work on some saves (best to start a new game, or run from main menu).
 This will take longer (about 15s).
 Game.Export CSV>Map Data: Export map location data to C:\Users\ChoGGi\AppData\Roaming\Surviving Mars\MapData.csv (will take awhile).
-See survivingmaps.com for a filtered list.
 Don't use in start new game screens (rating/topo will be messed up).
 Difficulty Challenge/Named Location may not work on some saves (best to start a new game, or run from main menu).
 Game.Game Speed>Game Speed: Change the game speed (only for medium/fast, normal is normal).
@@ -620,6 +617,7 @@ Game.Terrain>Terrain Type Change: Green or Icy mars? Coming right up!
 (don't forget a light model)
 Game.Terrain>Terrain Type Remap: Instead of replacing all textures with one then re-adding stuff, this will remap existing textures.
 Game.Terrain>Whiter Rocks: Helps the rocks blend in better when using the polar ground texture.
+Game.UI>Infopanel Toolbar Constrain: Limits size of infopanel toolbar buttons for those that have too many buttons (and they go off panel).
 Game.UI>Pulsating Pins Disable: When true pins will no longer do the pulsating motion (hover over to stop).
 Game.UI>UI Transparency Mouseover: Toggle removing transparency on mouseover.
 Game.UI>UI Transparency: Change the transparency of UI items (info panel, menu, pins).

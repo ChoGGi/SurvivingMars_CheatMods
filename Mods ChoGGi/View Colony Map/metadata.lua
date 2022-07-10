@@ -30,7 +30,8 @@ return PlaceObj("ModDef", {
 	"description", [[
 Shows the map before you load it in the select colony screen.
 
-Includes a checkbox to show anomaly breakthroughs/buried wonders for each location.
+Includes a checkbox to show anomaly breakthroughs for each location, as well as one showing underground map.
+
 If you use a rule that changes the breakthrough list, then ignore the breakthrough list shown as it isn't accurate anymore.
 The first 12 breakthroughs are guaranteed (4 from planetary anomalies, and 8 from ground anomalies). The rest are dependant on story bits/etc.
 
@@ -43,6 +44,6 @@ Colour levels: Purple = mountainous, other colours = buildable.
 
 Known Issues:
 If you have B&B DLC then the planetary anomalies don't work at all. Either ignore the first four, or use my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2721921772]Fix Bugs[/url] mod.
-Doesn't show underground wonders: They're randomly picked during new game load.
+Doesn't show underground wonders: They're randomly picked during new game load. To pick wonders use my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2599642948]Underground Cheats[/url] mod.
 ]],
 })

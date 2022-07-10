@@ -18,29 +18,30 @@ local fake_BuriedWonders = {}
 local fake_BuriedWonders_c = 0
 
 local function UpdateObjs()
-	if not mod_EnableMod or RetMapType() ~= "underground" then
+	if not mod_EnableMod or not UIColony or RetMapType() ~= "underground" then
 		return
+	end
+
+	-- newly built struts
+	SupportStruts.work_radius = mod_SupportStrutRadius
+	-- UICity since we checked the active map is underground one
+	local objs = UICity.labels.SupportStruts or ""
+	for i = 1, #objs do
+		objs[i].work_radius = mod_SupportStrutRadius
 	end
 
 	-- lights
 	BuildingTemplates.LightTripod.reveal_range = mod_LightTripodRadius
 	ClassTemplates.Building.LightTripod.reveal_range = mod_LightTripodRadius
+
 	local UpdateRevealObject = UnitRevealDarkness.UpdateRevealObject
-	local objs = UIColony.city_labels.labels.LightTripod or ""
+	objs = UICity.labels.LightTripod or ""
 	for i = 1, #objs do
 		local obj = objs[i]
 		obj.reveal_range = mod_LightTripodRadius
 		UpdateRevealObject(obj)
 	end
-
-	-- struts
-	SupportStruts.work_radius = mod_SupportStrutRadius
-	objs = UIColony.city_labels.labels.SupportStruts or ""
-	for i = 1, #objs do
-		objs[i].work_radius = mod_SupportStrutRadius
-	end
 end
-
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -71,11 +72,6 @@ local function ModOptions(id)
 	mod_LightTripodRadius = options:GetProperty("LightTripodRadius")
 	mod_SupportStrutRadius = options:GetProperty("SupportStrutRadius")
 
-	-- make sure we're in-game
-	if not UIColony then
-		return
-	end
-
 	UpdateObjs()
 end
 -- load default/saved settings
@@ -98,8 +94,8 @@ function RandomMapGen_PlaceArtefacts(...)
 	-- add a random wonder (use the actual count, so we can rand each new game in a session)
 	if fake_BuriedWonders_c == 1 then
 		fake_BuriedWonders[2] = table.rand(fake_BuriedWonders_safe)
-	elseif fake_BuriedWonders_c == 0 then
-		fake_BuriedWonders = table.icopy(orig_const_BuriedWonders)
+--~ 	elseif fake_BuriedWonders_c == 0 then
+--~ 		fake_BuriedWonders = table.icopy(orig_const_BuriedWonders)
 	end
 
 	const.BuriedWonders = fake_BuriedWonders
