@@ -6,10 +6,16 @@ if not g_AvailableDlc.picard then
 end
 
 local RetMapType = ChoGGi.ComFuncs.RetMapType
+local table = table
 
 local mod_EnableMod
 local mod_LightTripodRadius
 local mod_SupportStrutRadius
+
+local orig_const_BuriedWonders = table.icopy(const.BuriedWonders)
+local fake_BuriedWonders_safe
+local fake_BuriedWonders = {}
+local fake_BuriedWonders_c = 0
 
 local function UpdateObjs()
 	if not mod_EnableMod or RetMapType() ~= "underground" then
@@ -41,13 +47,32 @@ local function ModOptions(id)
 	if id and id ~= CurrentModId then
 		return
 	end
+	local options = CurrentModOptions
 
-	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
-	mod_LightTripodRadius = CurrentModOptions:GetProperty("LightTripodRadius")
-	mod_SupportStrutRadius = CurrentModOptions:GetProperty("SupportStrutRadius")
+	fake_BuriedWonders_safe = table.icopy(orig_const_BuriedWonders)
+	table.iclear(fake_BuriedWonders)
+	fake_BuriedWonders_c = 0
+	-- build list of wonders
+	for i = 1, #orig_const_BuriedWonders do
+		local id = orig_const_BuriedWonders[i]
+
+		if options:GetProperty(id) then
+			fake_BuriedWonders_c = fake_BuriedWonders_c + 1
+			fake_BuriedWonders[fake_BuriedWonders_c] = id
+			-- fake_BuriedWonders_safe has enabled wonders removed, so there's no dupes
+			local idx = table.find(fake_BuriedWonders_safe, id)
+			if idx then
+				table.remove(fake_BuriedWonders_safe, idx)
+			end
+		end
+	end
+
+	mod_EnableMod = options:GetProperty("EnableMod")
+	mod_LightTripodRadius = options:GetProperty("LightTripodRadius")
+	mod_SupportStrutRadius = options:GetProperty("SupportStrutRadius")
 
 	-- make sure we're in-game
-	if not UICity then
+	if not UIColony then
 		return
 	end
 
@@ -62,3 +87,23 @@ OnMsg.CityStart = UpdateObjs
 OnMsg.LoadGame = UpdateObjs
 -- switch between different maps
 OnMsg.ChangeMapDone = UpdateObjs
+
+-- pick wonders
+local ChoOrig_RandomMapGen_PlaceArtefacts = RandomMapGen_PlaceArtefacts
+function RandomMapGen_PlaceArtefacts(...)
+	if not mod_EnableMod then
+		return ChoOrig_RandomMapGen_PlaceArtefacts(...)
+	end
+
+	-- add a random wonder (use the actual count, so we can rand each new game in a session)
+	if fake_BuriedWonders_c == 1 then
+		fake_BuriedWonders[2] = table.rand(fake_BuriedWonders_safe)
+	elseif fake_BuriedWonders_c == 0 then
+		fake_BuriedWonders = table.icopy(orig_const_BuriedWonders)
+	end
+
+	const.BuriedWonders = fake_BuriedWonders
+	-- I do pcalls for safety when wanting to change back a global var
+	pcall(ChoOrig_RandomMapGen_PlaceArtefacts, ...)
+	const.BuriedWonders = table.icopy(orig_const_BuriedWonders)
+end

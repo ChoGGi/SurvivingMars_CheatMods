@@ -6,6 +6,7 @@ if g_AvailableDlc.gagarin then
 	function FlyingDrone.Goto(...)
 		local ChoOrig_storm = g_DustStorm
 		g_DustStorm = false
+	-- I do pcalls for safety when wanting to change back a global var
 		local result, ret = pcall(ChoOrig_FlyingDrone_Goto, ...)
 		g_DustStorm = ChoOrig_storm
 		return result and ret

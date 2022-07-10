@@ -1,1 +1,2 @@
 v0.2
+Pick underground wonders for new games.

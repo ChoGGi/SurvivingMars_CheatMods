@@ -36,6 +36,7 @@ end
 
 local function Override(func, ...)
 	ViewObjectMars = ChoFake_ViewObjectMars
+	-- I do pcalls for safety when wanting to change back a global var
 	pcall(func, ...)
 	ViewObjectMars = ChoOrig_ViewObjectMars
 end

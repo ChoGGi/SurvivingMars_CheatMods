@@ -42,6 +42,7 @@ function SendRocketToMarsPoint(obj, spot, ...)
 
 	ViewAndSelectObject = fake_ViewAndSelectObject
 
+	-- I do pcalls for safety when wanting to change back a global var
 	pcall(ChoOrig_SendRocketToMarsPoint, obj, spot, ...)
 
 	-- we need the WaitMsg since the orig func does it as well

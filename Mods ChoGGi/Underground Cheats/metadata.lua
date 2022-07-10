@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2599642948",
 	"pops_any_uuid", "4a2eb0eb-0667-4462-9db1-5bd833a233bf",
 	"lua_revision", 1007000, -- Picard
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -24,5 +24,8 @@ return PlaceObj("ModDef", {
 	"TagGameplay", true,
 	"description", [[
 Change radius of light tripods, and support struts.
+
+Options to pick underground wonders (if you only pick one then the other will be random).
+^ New games only.
 ]],
 })

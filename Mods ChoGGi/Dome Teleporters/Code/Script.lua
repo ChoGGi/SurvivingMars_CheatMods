@@ -78,6 +78,7 @@ function DomeTeleporterConstructionController.Activate(...)
 	-- replace func so it returns our template
 	CreateConstructionGroup = ChoFake_CreateConstructionGroup
 	-- get obj
+	-- I do pcalls for safety when wanting to change back a global var
 	local result, ret = pcall(TunnelConstructionController.Activate, ...)
 	-- restore func
 	CreateConstructionGroup = ChoOrig_CreateConstructionGroup

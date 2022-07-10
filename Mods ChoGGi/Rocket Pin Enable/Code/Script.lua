@@ -59,9 +59,8 @@ function RocketBase:UpdateStatus(status, ...)
 	-- okay a bit overkill
 	ChoOrig_SetPinned = self.SetPinned
 	self.SetPinned = fake_SetPinned
-
+	-- I do pcalls for safety when wanting to change back a global var
 	pcall(ChoOrig_RocketBase_UpdateStatus, self, status, ...)
-
 	self.SetPinned = ChoOrig_SetPinned or ChoOrig_RocketBase_SetPinned
 	ChoOrig_SetPinned = nil
 end

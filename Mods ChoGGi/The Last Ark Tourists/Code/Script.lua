@@ -61,6 +61,7 @@ local function ReplaceRule(func, ...)
 	if mod_EnableMod then
 		IsGameRuleActive = ChoFake_IsGameRuleActive
 	end
+	-- I do pcalls for safety when wanting to change back a global var
 	local result, ret = pcall(func, ...)
 	IsGameRuleActive = ChoOrig_IsGameRuleActive
 	if result then

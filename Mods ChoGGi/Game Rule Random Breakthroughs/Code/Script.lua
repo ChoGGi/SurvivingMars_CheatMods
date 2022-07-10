@@ -30,6 +30,7 @@ function City.InitBreakThroughAnomalies(...)
 	if IsGameRuleActive("ChoGGi_RandomBreakthroughs") then
 		StableShuffle = ChoFake_StableShuffle
 	end
+	-- I do pcalls for safety when wanting to change back a global var
 	local result, ret = pcall(ChoOrig_City_InitBreakThroughAnomalies, ...)
 	StableShuffle = ChoOrig_StableShuffle
 	if result then

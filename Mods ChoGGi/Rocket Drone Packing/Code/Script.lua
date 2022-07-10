@@ -106,6 +106,7 @@ RocketBase.SpawnDrone = ChoFake_RocketBase_SpawnDrone
 local ChoOrig_RocketBase_SpawnDronesFromEarth = RocketBase.SpawnDronesFromEarth
 function RocketBase.SpawnDronesFromEarth(...)
 	RocketBase.SpawnDrone = ChoOrig_RocketBase_SpawnDrone
+	-- I do pcalls for safety when wanting to change back a global var
 	local result, ret = pcall(ChoOrig_RocketBase_SpawnDronesFromEarth, ...)
 	RocketBase.SpawnDrone = ChoFake_RocketBase_SpawnDrone
 

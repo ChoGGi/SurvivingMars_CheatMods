@@ -139,6 +139,7 @@ local function PickRandomMystery(delay)
 		function CheatsEnabled()
 			return true
 		end
+	-- I do pcalls for safety when wanting to change back a global var
 		pcall(CheatStartMystery, new_myst)
 		CheatsEnabled = ChoOrig_CheatsEnabled
 

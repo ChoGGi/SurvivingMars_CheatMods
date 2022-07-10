@@ -24,6 +24,7 @@ end
 local ChoOrig_UpdateRainsThreads = UpdateRainsThreads
 function UpdateRainsThreads(...)
 	GetTerraformParamPct = ChoFake_GetTerraformParamPct
+	-- I do pcalls for safety when wanting to change back a global var
 	pcall(ChoOrig_UpdateRainsThreads, ...)
 	GetTerraformParamPct = ChoOrig_GetTerraformParamPct
 end

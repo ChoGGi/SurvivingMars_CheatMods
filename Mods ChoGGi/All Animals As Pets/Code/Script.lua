@@ -139,6 +139,7 @@ end
 local ChoOrig_SpawnAnimal = SpawnAnimal
 function SpawnAnimal(...)
 	GetMissionSponsor = ChoFake_GetMissionSponsor
+	-- I do pcalls for safety when wanting to change back a global var
 	pcall(ChoOrig_SpawnAnimal, ...)
 	GetMissionSponsor = ChoOrig_GetMissionSponsor
 end

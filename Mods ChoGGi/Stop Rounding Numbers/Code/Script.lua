@@ -8,6 +8,7 @@ end
 local ChoOrig_FormatResourceValueMaxResource = FormatResourceValueMaxResource
 function FormatResourceValueMaxResource(context_obj, value, max, resource, ...)
 	MulDivRound = ChoFake_MulDivRound
+	-- I do pcalls for safety when wanting to change back a global var
 	local result, ret = pcall(ChoOrig_FormatResourceValueMaxResource, context_obj, value, max, resource, ...)
 	MulDivRound = ChoOrig_MulDivRound
 	if result then
