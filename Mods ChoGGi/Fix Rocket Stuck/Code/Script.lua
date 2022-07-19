@@ -10,46 +10,14 @@ local InvalidPos = InvalidPos()
 
 local mod_EnableMod
 
+-- we need to wait till mods are loaded to check for my mod
+local SpawnColonist
+
 local function ModOptions(id)
 	-- id is from ApplyModOptions
 	if id and id ~= CurrentModId then
 		return
 	end
-
-	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
-end
--- Load default/saved settings
-OnMsg.ModsReloaded = ModOptions
--- Fired when Mod Options>Apply button is clicked
-OnMsg.ApplyModOptions = ModOptions
-
-local function RemoveInvalid(count, list)
-	for i = #list, 1, -1 do
-		if not IsValid(list[i]) then
-			count = count + 1
-			table.remove(list, i)
-		end
-	end
-	return count
-end
-
-local function AddStockPile(res, amount, pos)
-	local stockpile = PlaceObj("ResourceStockpile", {
-		"Pos", pos,
-		"resource", res,
-		"destroy_when_empty", true,
-	})
-	stockpile:AddResourceAmount(amount)
-end
-
--- we need to wait till mods are loaded to check for my mod
-local SpawnColonist
-
-function OnMsg.LoadGame()
-	if not mod_EnableMod then
-		return
-	end
-	local MainCity = MainCity
 
 	-- If my lib mod is installed use my copy of this function
 	if not SpawnColonist then
@@ -94,6 +62,39 @@ function OnMsg.LoadGame()
 			return colonist
 		end
 	end
+
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
+
+local function RemoveInvalid(count, list)
+	for i = #list, 1, -1 do
+		if not IsValid(list[i]) then
+			count = count + 1
+			table.remove(list, i)
+		end
+	end
+	return count
+end
+
+local function AddStockPile(res, amount, pos)
+	local stockpile = PlaceObj("ResourceStockpile", {
+		"Pos", pos,
+		"resource", res,
+		"destroy_when_empty", true,
+	})
+	stockpile:AddResourceAmount(amount)
+end
+
+
+function OnMsg.LoadGame()
+	if not mod_EnableMod then
+		return
+	end
+	local MainCity = MainCity
 
 	local rockets = MainCity.labels.AllRockets or ""
 	for i = 1, #rockets do
@@ -295,6 +296,20 @@ function OnMsg.LoadGame()
 			then
 				r.expedition.canceled = false
 				r:ExpeditionCancel()
+
+			-- trade rocket from mystery 9 stuck waiting
+			elseif r.command == "WaitLaunchOrder"
+				and r:IsKindOf("TradeRocket")
+				and r.name:sub(-12) == "Trade Rocket"
+			then
+				local cur_pos = r:GetVisualPos()
+				CreateGameTimeThread(function()
+					Sleep(10000)
+					-- same pos then send on it's way
+					if r.command == "WaitLaunchOrder" and tostring(cur_pos) == tostring(r:GetVisualPos()) then
+						r:LeaveForever()
+					end
+				end)
 
 			-- rocket ifs
 			end

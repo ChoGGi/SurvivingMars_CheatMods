@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"description", [[
 Not so much a fix as changing textures to other ones that don't show the ugly mirrored textures.
-Terraforming will still look ugly, but at least there's no mirror holes in the ground.
+Terraforming will still look ugly, but at least there's no mirror ground.
 If you use my Show All Textures mod; you can see a list of textures to use. Suggestions are welcome if you think something would look better.
 
 By default this mod only changes dumping sites, see mod options to enable other textures you need changed.

@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 22,
+	"version", 23,
 	"version_major", 2,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -25,6 +25,7 @@ Storybit notification issue.
 Probably mod related:
 A rocket missing the cargo table.
 g_ActiveOnScreenNotifications isn't a table.
+Support struts malfunctioning and cave-ins.
 
 
 [b]Incorporated mods:[/b] (so far)

@@ -8,7 +8,7 @@
 - Menu>Game>UI>Infopanel Toolbar Constrain: Limits size of infopanel toolbar buttons for those that have too many buttons (and they go off panel).
 
 ### Fixed:
-- Menu>ECM>Colonist>Set Gender New didn't work.
+- Menu>ECM>Colonist>Set Gender New didn't work (thanks Helbrass).
 - Log spam on older saves.
 - Monitor Func Calls didn't work (thanks Tremualin).
 

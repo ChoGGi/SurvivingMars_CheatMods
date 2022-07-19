@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1567028510",
 	"pops_any_uuid", "cca05f79-5542-40f1-a008-e8fb4e6ecc9a",
 	"lua_revision", 1007000, -- Picard
-	"version", 22,
+	"version", 23,
 	"version_major", 2,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -30,6 +30,7 @@ Trade rockets stuck in orbit?
 Previous expedition rocket shows msg it isn't landed when trying to launch.
 Trade rocket ready for takeoff stuck on pad only showing priority button.
 Stuck landing pad from bugged rocket construction.
+Trade rocket from Beyond Earth mystery.
 
 [b]If this doesn't fix it for you, then I'll need a copy of your saved game.[/b]
 

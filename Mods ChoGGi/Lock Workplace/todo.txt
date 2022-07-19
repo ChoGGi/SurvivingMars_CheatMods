@@ -1,0 +1,9 @@
+PPQPurple
+
+I am using the latest version of Lock Workspaces from github and my workers still keep quitting.
+
+In particular I have a remotely positioned special metals mine connected to my dome via a train. And I have to reassign the workers to it every single day because they just quit and become unemployed leaving those spots empty.
+
+Mind you, it works absolutely splendidly in all other situations. So I assume it is something to do with the trains.
+
+Edit: After further experimentation I am 93% sure that it's down to the trains. For some reason workers don't always catch the train for their work shift. And when that happens they just drop out of the workplace. I am not sure if there is anything you can do about that. 

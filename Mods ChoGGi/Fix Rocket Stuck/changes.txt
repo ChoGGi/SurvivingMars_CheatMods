@@ -1,3 +1,6 @@
+v2.3
+Trade rocket from Beyond Earth mystery.
+
 v2.2
 Fixed stuck landing pad from bugged rocket construction.
 

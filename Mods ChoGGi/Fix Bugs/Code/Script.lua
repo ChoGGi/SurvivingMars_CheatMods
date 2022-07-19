@@ -473,6 +473,21 @@ end
 --
 --
 --
+local ChoOrig_SupportStruts_AccumulateMaintenancePoints = SupportStruts.AccumulateMaintenancePoints
+function SupportStruts:AccumulateMaintenancePoints(self, new_points, ...)
+	if not mod_EnableMod then
+		return ChoOrig_SupportStruts_AccumulateMaintenancePoints(self, new_points, ...)
+	end
+
+  RequiresMaintenance.AccumulateMaintenancePoints(self, new_points)
+  if self.accumulated_maintenance_points >= self.maintenance_threshold_current then
+		if IsGameRuleActive("EasyMaintenance") then
+			self:SetNeedsMaintenanceState()
+		else
+			self:SetMalfunction()
+		end
+  end
+end
 --
 local ChoOrig_Building_SetDome = Building.SetDome
 function Building:SetDome(dome, ...)
