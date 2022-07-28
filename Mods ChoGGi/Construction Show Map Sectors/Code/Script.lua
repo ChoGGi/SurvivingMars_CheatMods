@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local mod_Option1
+local mod_EnableMod
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -8,7 +8,7 @@ local function ModOptions(id)
 		return
 	end
 
-	mod_Option1 = CurrentModOptions:GetProperty("Option1")
+	mod_EnableMod = CurrentModOptions:GetProperty("Option1")
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -86,7 +86,7 @@ OnMsg.SaveGame = RemoveSectors
 
 local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding.GameInit(...)
-	if mod_Option1 then
+	if mod_EnableMod then
 		AddSectors()
 	end
 	return ChoOrig_CursorBuilding_GameInit(...)

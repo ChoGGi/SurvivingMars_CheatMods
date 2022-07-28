@@ -11,9 +11,9 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_ConstructionShowHexBuildableGrid",
 	"steam_id", "1743031290",
 	"pops_any_uuid", "79aaafdd-712c-40f8-873b-3a4d59273f1f",
-	"version", 4,
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 5,
 	"lua_revision", 1007000, -- Picard
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
@@ -40,7 +40,7 @@ Grid Opacity: Set opacity of grid icons.
 
 
 Known Issues:
-Turn off "Show during construction" when building the geoscape dome, or spires will give an uneven terrain error.
+This is disabled for geoscape domes (or spires will give an uneven terrain error).
 
 
 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1479851929]Show Hex Grid[/url]

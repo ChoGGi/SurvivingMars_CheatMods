@@ -1,5 +1,4 @@
 "ID", "Text", "Translation"
-302535920001668, ""
 302535920001669, ""
 302535920001670, ""
 302535920001671, ""
@@ -160,6 +159,7 @@
 302535920000854, "Results Found"
 302535920000219, "Export viewed image to <color ChoGGi_green>%s</color>."
 302535920000109, "Invalid Image"
+302535920001668, "Instantly harvest current crop."
 302535920001664, "Do you want to delete all objects that are the same as this object from the map?"
 302535920001470, "Try to spawn all prefabs at this dronehub."
 302535920001262, "Move To Realm"

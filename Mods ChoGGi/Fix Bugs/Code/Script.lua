@@ -479,7 +479,8 @@ function SupportStruts:AccumulateMaintenancePoints(self, new_points, ...)
 		return ChoOrig_SupportStruts_AccumulateMaintenancePoints(self, new_points, ...)
 	end
 
-  RequiresMaintenance.AccumulateMaintenancePoints(self, new_points)
+	-- lua rev 1011166
+  RequiresMaintenance.AccumulateMaintenancePoints(self, new_points, ...)
   if self.accumulated_maintenance_points >= self.maintenance_threshold_current then
 		if IsGameRuleActive("EasyMaintenance") then
 			self:SetNeedsMaintenanceState()

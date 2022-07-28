@@ -15,7 +15,7 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagOther", true,
 	"description", [[
-Last Updated: 1,011,166 https://survivingmars.paradoxwikis.com/Patches
+Last Updated: 1011166 https://survivingmars.paradoxwikis.com/Patches
 
 
 [b]List of bugs fixed:[/b]

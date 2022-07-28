@@ -304,6 +304,9 @@ It don't matter if you're black or white"]]],
 	VolPlus5 = {
 		des = TranslationTable[302535920001630--[[Decrease lake volume by 5.]]],
 	},
+	InstHarvest = {
+		des = TranslationTable[302535920001668--[[Instantly harvest current crop.]]],
+	},
 
 
 
@@ -890,6 +893,14 @@ local function CheatAllShiftsOn(self)
 end
 FungalFarm.CheatAllShiftsOn = CheatAllShiftsOn
 Farm.CheatAllShiftsOn = CheatAllShiftsOn
+function Farm:CheatInstHarvest()
+	-- change growth time to now
+	self.harvest_planted_time = 1
+	-- force an update instead of waiting
+	self:BuildingUpdate()
+	-- update info panel
+	ObjModified(self)
+end
 
 -- CheatFullyAuto
 function Workplace:CheatWorkersDbl()

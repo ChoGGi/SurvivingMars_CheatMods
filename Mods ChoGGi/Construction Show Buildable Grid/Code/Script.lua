@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local mod_Option1
+local mod_EnableMod
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -8,7 +8,7 @@ local function ModOptions(id)
 		return
 	end
 
-	mod_Option1 = CurrentModOptions:GetProperty("Option1")
+	mod_EnableMod = CurrentModOptions:GetProperty("Option1")
 
 	local u = ChoGGi.UserSettings
 	u.DebugGridOpacity = CurrentModOptions:GetProperty("DebugGridOpacity")
@@ -34,11 +34,11 @@ local function HideGrids()
 end
 
 local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
-function CursorBuilding.GameInit(...)
-	if mod_Option1 then
+function CursorBuilding:GameInit(...)
+	if mod_EnableMod and self.entity ~= "DomeGeoscape" then
 		ShowGrids()
 	end
-	return ChoOrig_CursorBuilding_GameInit(...)
+	return ChoOrig_CursorBuilding_GameInit(self, ...)
 end
 
 local ChoOrig_CursorBuilding_Done = CursorBuilding.Done

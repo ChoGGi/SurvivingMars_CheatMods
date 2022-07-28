@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v18.6 (Unreleased)
+### Added:
+- Infopanel Cheats>InstHarvest: Instantly harvest current crop.
 
 ## v18.5 (10 July 2022)
 ### Added:

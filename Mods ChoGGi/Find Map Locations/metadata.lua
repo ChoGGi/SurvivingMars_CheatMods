@@ -36,7 +36,7 @@ The first 12 breakthroughs are guaranteed (4 from planetary anomalies, and 8 fro
 
 
 Known Issues:
-If you have B&B DLC then the planetary anomalies don't work at all. Either ignore the first four, or use my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2721921772]Fix Bugs[/url] mod.
+If you have B&B DLC then the planetary anomalies don't work at all. Either ignore the first four breakthroughs, or use my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2721921772]Fix Bugs[/url] mod.
 Rare Metals and Metals are always the same count, so don't search for raremetals2 or preciousmetals2 use metals2.
 ]],
 })
