@@ -7536,6 +7536,7 @@ local function RetObjMapId(obj, text, fallback)
 end
 ChoGGi.ComFuncs.RetObjMapId = RetObjMapId
 
+--~ ChoGGi.ComFuncs.RetMapType(nil, ActiveMapID)
 function ChoGGi.ComFuncs.RetMapType(obj, map_id, city)
 	if not UIColony then
 		return

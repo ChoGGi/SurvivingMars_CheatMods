@@ -4,15 +4,15 @@ return PlaceObj("ModDef", {
 	"steam_id", "2671171494",
 	"pops_any_uuid", "fda79614-1f0f-4a57-8408-f49c2e094f43",
 	"lua_revision", 1007000, -- Picard
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"has_options", true,
 	"TagInterface", true,
 	"description", [[
-Lists installed DLC in mod options (on = installed, off = not installed).
+Lists installed DLC in mod options (* = installed, ignore on/off).
 
 
 You can also just look in your log file...

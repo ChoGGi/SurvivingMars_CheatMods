@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
-local mod_EnableLog
 local mod_EnableConsole
+local mod_EnableLog
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -9,8 +9,8 @@ local function ModOptions(id)
 		return
 	end
 
-	mod_EnableLog = CurrentModOptions:GetProperty("EnableLog")
 	mod_EnableConsole = CurrentModOptions:GetProperty("EnableConsole")
+	mod_EnableLog = CurrentModOptions:GetProperty("EnableLog")
 
 	ConsoleEnabled = mod_EnableConsole
 	ShowConsoleLog(mod_EnableLog)
@@ -34,7 +34,12 @@ local function ShowConsole()
 end
 
 function OnMsg.ClassesPostprocess()
+	if table.find(ModsLoaded, "id", "ChoGGi_CheatMenu") then
+		return
+	end
+
 	local CommonShortcuts = XTemplates.CommonShortcuts
+
 	if table.find(CommonShortcuts, "ActionId", "ChoGGi_EnableConsole") then
 		return
 	end
@@ -43,7 +48,8 @@ function OnMsg.ClassesPostprocess()
 		"ActionId", "ChoGGi_EnableConsole",
 		"ActionTranslate", false,
 		"ActionShortcut", "Enter",
-		"ActionShortcut2", "~",
+		-- for some reason works fine for ECM but not this mod...
+--~ 		"ActionShortcut2", "~",
 		"OnAction", ShowConsole,
 		"replace_matching_id", true,
 	})

@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local table = table
 local T = T
 local PlaceObj = PlaceObj
 local g_AvailableDlc = g_AvailableDlc
@@ -23,6 +24,7 @@ local dlc = {
 	"zubrin",
 }
 local dlc_names = {
+	ariane = T(392597027369, "The Future Contemporary Asset Pack"),
 	armstrong = T(429022939682, "Green Planet"),
 	contentpack1 = T(34582765515863, "Mysteries Resupply Pack"),
 	contentpack3 = T(11447, "Colony Design Set"),
@@ -30,15 +32,14 @@ local dlc_names = {
 	gagarin = T(11095, "Space Race"),
 	kerwin = T(469614409798, "In-Dome Buildings Pack"),
 	marsvision = T(11693, "Marsvision Song Contest"),
+	ockels = T(930916719229, "Revelation Radio"),
 	picard = T(850718940827, "Below and Beyond"),
 	preorder = T(8566, "Stellaris Dome Set"),
+	prunariu = T(168219966957, "Prunariu"),
 	shepard = T(750560872368, "Project Laika"),
 	wubbo = T(934036492225, "Mars Lifestyle Radio"),
-	-- arr
-	ariane = T(392597027369, "The Future Contemporary Asset Pack"),
-	ockels = T(930916719229, "Revelation Radio"),
+	-- arr?
 	zubrin = T(990970539163, "Zubrin"),
-	prunariu = T(168219966957, "Prunariu"),
 }
 
 -- remove when released
@@ -54,11 +55,12 @@ for i = 1, #dlc do
 	c = c + 1
 	local id = dlc[i]
 	local available = g_AvailableDlc[id]
+	local ava_str = available and " *" or ""
 
 	properties[c] = PlaceObj("ModItemOptionToggle", {
 		"name", id,
-		"DisplayName", dlc_names[id],
-		"DefaultValue", available,
+		"DisplayName", table.concat{dlc_names[id], ava_str},
+		"DefaultValue", true,
 	})
 
 	-- remove when released
@@ -71,5 +73,11 @@ If this DLC is offically released than ignore this text (bug me to update this m
 	end
 	-- remove when released
 end
+
+local CmpLower = CmpLower
+local _InternalTranslate = _InternalTranslate
+table.sort(properties, function(a, b)
+	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
+end)
 
 return properties

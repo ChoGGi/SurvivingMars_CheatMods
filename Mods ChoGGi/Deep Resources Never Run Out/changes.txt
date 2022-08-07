@@ -1,3 +1,7 @@
+v0.6
+Added mod option for skipping asteroids and mod option to disable mod.
+Now requires my library mod.
+
 v0.5
 Evans update.
 

@@ -1,3 +1,6 @@
+v2.4
+Stop ceiling/floating rubble (thanks clampi).
+
 v2.3
 Fix for support struts malfunctioning and cave-ins (thanks Kmoney55536322475357).
 

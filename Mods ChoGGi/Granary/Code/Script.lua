@@ -237,22 +237,22 @@ OnMsg.LoadGame = StartupCode
 -- Override for vegan ranches
 
 -- copy pasta from Animals.lua prunariu lua rev 1011140
-local CheckForPasture = function(dome)
+local CheckForGranary = function(dome)
   for _, wp in ipairs(dome.labels.ResourceStockpile or empty_table) do
     if wp.working and IsKindOf(wp, "ChoGGi_Granary") then
       return true
     end
   end
 end
-local CheckForPastureNearby = function(dome)
-  if CheckForPasture(dome) then
+local CheckForGranaryNearby = function(dome)
+  if CheckForGranary(dome) then
     return true
   end
-  for d in pairs(dome:GetConnectedDomes()) do
-    if CheckForPasture(d) then
-      return true
-    end
-  end
+--~   for d in pairs(dome:GetConnectedDomes()) do
+--~     if CheckForGranary(d) then
+--~       return true
+--~     end
+--~   end
 end
 
 local ChoOrig_UpdatePastureImpactOnVegans = UpdatePastureImpactOnVegans
@@ -261,7 +261,8 @@ function UpdatePastureImpactOnVegans(dome, ...)
 		return ChoOrig_UpdatePastureImpactOnVegans(dome, ...)
 	end
 
-	if CheckForPastureNearby(dome) then
+--~ 	if CheckForGranaryNearby(dome) then
+	if CheckForGranary(dome) then
 		const.PastureVeganMoraleImpact = 1
 	end
 	ChoOrig_UpdatePastureImpactOnVegans(dome, ...)

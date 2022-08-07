@@ -262,7 +262,7 @@ do -- CityStart/LoadGame
 			map.realm:MapForEach("map", "CaveInRubble", function(obj)
 				local pos = obj:GetVisualPos()
 				if pos:z() > 0 then
-					-- Likely the ground floor is 0, so I can just move it, instead of having to check height.
+					-- The ground floor is 0 (or close enough to not matter), so I can just move it instead of having to check height.
 					obj:SetPos(pos:SetZ(0))
 				end
 			end)
@@ -471,8 +471,24 @@ end
 --
 --
 --
---
---
+-- Stop ceiling/floating rubble
+local ChoOrig_TriggerCaveIn = TriggerCaveIn
+function TriggerCaveIn(...)
+	if not mod_EnableMod then
+		return ChoOrig_TriggerCaveIn(...)
+	end
+
+	local rubble = ChoOrig_TriggerCaveIn(...)
+
+	local pos = rubble:GetVisualPos()
+	if pos:z() > 0 then
+		-- The ground floor is 0 (or close enough to not matter), so I can just move it instead of having to check height.
+		rubble:SetPos(pos:SetZ(0))
+	end
+
+	return rubble
+end
+-- Devs didn't check for EasyMaintenance when overriding AccumulateMaintenancePoints for picard
 local ChoOrig_SupportStruts_AccumulateMaintenancePoints = SupportStruts.AccumulateMaintenancePoints
 function SupportStruts:AccumulateMaintenancePoints(self, new_points, ...)
 	if not mod_EnableMod then
@@ -489,7 +505,8 @@ function SupportStruts:AccumulateMaintenancePoints(self, new_points, ...)
 		end
   end
 end
---
+-- Added some varargs (5 bucks says if they change the base func then they forget to change the overridden func)
+-- lua rev 1011166
 local ChoOrig_Building_SetDome = Building.SetDome
 function Building:SetDome(dome, ...)
 	if not mod_EnableMod then

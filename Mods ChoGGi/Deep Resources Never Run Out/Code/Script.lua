@@ -1,5 +1,11 @@
 -- See LICENSE for terms
 
+local RetMapType = ChoGGi.ComFuncs.RetMapType
+local max_resource = 500000 * const.ResourceScale
+
+
+local mod_EnableMod
+local mod_SkipAsteroids
 local mod_UndergroundDeposits
 local mod_MaxGrade
 
@@ -11,6 +17,8 @@ local function ModOptions(id)
 		return
 	end
 
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+	mod_SkipAsteroids = CurrentModOptions:GetProperty("SkipAsteroids")
 	mod_UndergroundDeposits = CurrentModOptions:GetProperty("UndergroundDeposits")
 	mod_MaxGrade = CurrentModOptions:GetProperty("MaxGrade")
 
@@ -21,22 +29,25 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
-local max = 500000 * const.ResourceScale
-
 -- depth_layer: 2 = core, 1 = underground
 local function MaxDeposits(objs)
+
+
 	for i = 1, #objs do
 		local obj = objs[i]
-		if obj.depth_layer == 1 and mod_UndergroundDeposits then
-			obj.max_amount = max
-			if mod_MaxGrade then
-				obj.grade = "Very High"
-			end
+		-- check for ast
+		if not mod_SkipAsteroids or mod_SkipAsteroids and RetMapType(obj) ~= "asteroid" then
+			if obj.depth_layer == 1 and mod_UndergroundDeposits then
+				obj.max_amount = max_resource
+				if mod_MaxGrade then
+					obj.grade = "Very High"
+				end
 
-		elseif obj.depth_layer == 2 then
-			obj.max_amount = max
-			if mod_MaxGrade then
-				obj.grade = "Very High"
+			elseif obj.depth_layer == 2 then
+				obj.max_amount = max_resource
+				if mod_MaxGrade then
+					obj.grade = "Very High"
+				end
 			end
 		end
 	end
@@ -45,25 +56,25 @@ end
 local function RefillAllDeposits(objs)
 	for i = 1, #objs do
 		local obj = objs[i]
+		if not mod_SkipAsteroids or mod_SkipAsteroids and RetMapType(obj) ~= "asteroid" then
 
-		if obj.depth_layer == 1 and mod_UndergroundDeposits then
-			obj:CheatRefill()
+			if obj.depth_layer == 1 and mod_UndergroundDeposits then
+				obj:CheatRefill()
 
-		elseif obj.depth_layer == 2 then
-			obj:CheatRefill()
+			elseif obj.depth_layer == 2 then
+				obj:CheatRefill()
+			end
+
 		end
 
 	end
 end
 
--- needed
-if not TerrainDeposit.CheatRefill then
-	function TerrainDeposit:CheatRefill()
-		self.amount = self.max_amount
-	end
-end
-
 MaxFillAll = function()
+	if not mod_EnableMod then
+		return
+	end
+
 	local UIColony = UIColony
 	if UIColony then
 		MaxDeposits(UIColony.city_labels.labels.SubsurfaceDeposit or "")
@@ -77,21 +88,33 @@ end
 OnMsg.LoadGame = MaxFillAll
 -- new sol
 function OnMsg.NewDay()
+	if not mod_EnableMod then
+		return
+	end
+
 	RefillAllDeposits(UIColony.city_labels.labels.SubsurfaceDeposit or "")
 	RefillAllDeposits(UIColony.city_labels.labels.TerrainDeposit or "")
 end
 
 --
 local function DepositRevealed(obj)
+	if not mod_EnableMod then
+		return
+	end
+
+	if mod_SkipAsteroids and RetMapType(obj) == "asteroid" then
+		return
+	end
+
 	if obj.depth_layer == 1 and mod_UndergroundDeposits then
-		obj.max_amount = max
+		obj.max_amount = max_resource
 		if mod_MaxGrade then
 			obj.grade = "Very High"
 		end
 		obj:CheatRefill()
 
 	elseif obj.depth_layer == 2 then
-		obj.max_amount = max
+		obj.max_amount = max_resource
 		if mod_MaxGrade then
 			obj.grade = "Very High"
 		end
@@ -103,9 +126,20 @@ OnMsg.WaterDepositRevealed = DepositRevealed
 OnMsg.SubsurfaceDepositRevealed = DepositRevealed
 
 -- needed till they add a Msg like above
-local ChoOrig_SpawnDeposit = TerrainDepositMarker.SpawnDeposit
+local ChoOrig_TerrainDepositMarker_SpawnDeposit = TerrainDepositMarker.SpawnDeposit
 function TerrainDepositMarker.SpawnDeposit(...)
-	local deposit = ChoOrig_SpawnDeposit(...)
+	if not mod_EnableMod then
+		return ChoOrig_TerrainDepositMarker_SpawnDeposit(...)
+	end
+
+	local deposit = ChoOrig_TerrainDepositMarker_SpawnDeposit(...)
 	DepositRevealed(deposit)
 	return deposit
+end
+
+-- needed (the other stuff has the func, this doesn't so added for ease of use)
+if not TerrainDeposit.CheatRefill then
+	function TerrainDeposit:CheatRefill()
+		self.amount = self.max_amount
+	end
 end
