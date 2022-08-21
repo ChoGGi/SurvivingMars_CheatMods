@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2631743196",
 	"pops_any_uuid", "69cfb335-3c5b-47e8-9ae8-542dd41b9e6d",
 	"lua_revision", 1007000, -- Picard
-	"version", 4,
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 5,
 	"image", "Preview.jpg",
 	"author", "Crysm & ChoGGi",
 	"code", {
@@ -20,7 +20,11 @@ return PlaceObj("ModDef", {
 Distributed Drone Assembly is a simple mod that does one thing: spreads out drone prefab construction (and biorobot construction) across all your Drone Assemblers.
 Original mod: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1397253944]Distributed Drone Assembly[/url]
 
-Mod option to auto-queue up drone prefabs when city prefabs are low.
+
+Mod Options:
+Auto Prefab Drones: If less than this amount of prefabs, then queue up more to build (0 to disable).
+Override Ctrl Biorobot/Drone: Queue up more than five biorobots/drones when holding down Ctrl.
+
 
 Crysm isn't updating it anymore.
 All I did was update it to Picard (and cleaned up the code to match mine).

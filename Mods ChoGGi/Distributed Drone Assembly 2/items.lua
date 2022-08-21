@@ -9,4 +9,20 @@ return {
 		"MinValue", 0,
 		"MaxValue", 100,
 	}),
+	PlaceObj("ModItemOptionNumber", {
+		"name", "OverrideCtrlBiorobot",
+		"DisplayName", T(0000, "Override Ctrl Biorobot"),
+		"Help", T(0000, "Queue up more than five biorobots when holding down Ctrl."),
+		"DefaultValue", 5,
+		"MinValue", 1,
+		"MaxValue", 250,
+	}),
+	PlaceObj("ModItemOptionNumber", {
+		"name", "OverrideCtrlDrone",
+		"DisplayName", T(0000, "Override Ctrl Drone"),
+		"Help", T(0000, "Queue up more than five drones when holding down Ctrl."),
+		"DefaultValue", 5,
+		"MinValue", 1,
+		"MaxValue", 250,
+	}),
 }

@@ -1,3 +1,7 @@
+v0.8
+Fixed Large solar panels acting as small panels.
+Moved stir+trib to Power (instead of Infrastructure).
+
 v0.7
 Added large wind turbine layout, and park slice.
 

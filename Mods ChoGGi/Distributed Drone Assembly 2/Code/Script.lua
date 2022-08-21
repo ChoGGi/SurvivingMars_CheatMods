@@ -9,6 +9,8 @@ local T = T
 GlobalVar("DistributedDroneAssembly", false)
 
 local mod_AutoPrefabDrones
+local mod_OverrideCtrlBiorobot
+local mod_OverrideCtrlDrone
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -17,6 +19,8 @@ local function ModOptions(id)
 	end
 
 	mod_AutoPrefabDrones = CurrentModOptions:GetProperty("AutoPrefabDrones")
+	mod_OverrideCtrlBiorobot = CurrentModOptions:GetProperty("OverrideCtrlBiorobot")
+	mod_OverrideCtrlDrone = CurrentModOptions:GetProperty("OverrideCtrlDrone")
 end
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -263,6 +267,10 @@ function DroneFactory:GetDdaSectionUI()
 end
 
 function DroneFactory:DdaConstructDrone(change, requestor)
+	if change == 5 then
+		change = mod_OverrideCtrlDrone
+	end
+
 	local dda = DistributedDroneAssembly
 	local count = abs(change)
 	while count > 0 do
@@ -282,6 +290,10 @@ function DroneFactory:DdaConstructDrone(change, requestor)
 end
 
 function DroneFactory:DdaConstructAndroid(change, requestor)
+	if change == 5 then
+		change = mod_OverrideCtrlBiorobot
+	end
+
 	local dda = DistributedDroneAssembly
 	local count = abs(change)
 	while count > 0 do
@@ -299,6 +311,3 @@ function DroneFactory:DdaConstructAndroid(change, requestor)
 		count = count - 1
 	end
 end
-
-
--- it's never called anywhere, so commented out

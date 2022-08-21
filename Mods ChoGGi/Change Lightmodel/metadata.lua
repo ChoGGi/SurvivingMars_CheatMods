@@ -19,7 +19,7 @@ If you don't want the oversaturated look to the map when you terraform far enoug
 There's only the two lightmodels.
 
 This won't override certain mysteries/dust storms/cold waves/rain (I'll add them as options next time).
-It may take a few seconds to change over.
+It may take a few in-game hours to change over.
 
 
 Not exactly requested by brennanbilinski.

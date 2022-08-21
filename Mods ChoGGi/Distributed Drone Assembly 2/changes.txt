@@ -1,3 +1,6 @@
+v0.5
+Added mod options for Ctrl click amount.
+
 v0.4
 Fixed 0.3.
 

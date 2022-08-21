@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"lua_revision", 1007000, -- Picard
 	"steam_id", "2234863273",
 	"pops_any_uuid", "77fd2531-04b6-4e98-9968-f21253455476",
-	"version", 7,
+	"version", 8,
 	"version_major", 0,
-	"version_minor", 7,
+	"version_minor", 8,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -35,6 +35,7 @@ Drone Hub, Universal Depot, Seed Depot, and Forestation Plant (Terraforming)
 Colony Design Set:
 Repeatable large Wind Turbines (Power).
 
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=1814592067]Artificial Sun Array[/url]
 
 Known Issues:
 The game will lag a bit when placing large layouts.

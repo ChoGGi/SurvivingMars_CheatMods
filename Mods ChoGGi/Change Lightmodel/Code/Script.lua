@@ -26,7 +26,6 @@ local function SetLight(msg, timeout)
 			lightmodel = "TheMartian"
 		end
 		local map_id = MainCity.map_id
-
 		local lm = CurrentLightmodel[map_id][1]
 		local postfix = lm.id
 		-- returns 12,12 which doesn't work for what we want :sub for

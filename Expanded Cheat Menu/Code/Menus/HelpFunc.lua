@@ -47,6 +47,8 @@ do -- ModUpload
 		faN8Rlm = true,
 		-- A Tubular Glass House 2
 		ChoGGi_ATubularGlassHouse = true,
+		-- Distributed Drone Assembly 2
+		ChoGGi_DistributedDroneAssembly2 = true,
 	}
 --~ 	-- green ecm/lib so I don't accidentally upload them
 --~ 	local coloured_titles = {
@@ -157,6 +159,10 @@ do -- ModUpload
 
 			para_item_id = mod[mod_params.uuid_property]
 
+			if orig_title then
+				mod.title = orig_title
+				orig_title = nil
+			end
 		end -- para upload
 
 		-- Issue with mod platform (workshop/paradox mods)

@@ -392,7 +392,7 @@ function OnMsg.ClassesPostprocess()
 		points = stirling_points,
 		template = "StirlingGenerator",
 		entity = "StirlingGenerator",
-		build_category = "Infrastructure",
+		build_category = "Power",
 	}
 
 	BuildLayouts{
@@ -417,7 +417,7 @@ function OnMsg.ClassesPostprocess()
 		display_icon = "UI/Icons/Buildings/solar_aray.tga",
 		points = three_hex_buildings,
 		points2 = three_hex_buildings_dir2,
-		template = "SolarPanel",
+		template = "SolarPanelBig",
 		entity = "SolarPanelBig",
 		build_category = "Power",
 	}

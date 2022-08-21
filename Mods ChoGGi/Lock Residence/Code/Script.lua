@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local IsValid = IsValid
+local ValidateBuilding = ValidateBuilding
 local ObjModified = ObjModified
 local RetName = ChoGGi.ComFuncs.RetName
 
@@ -27,12 +27,14 @@ OnMsg.ApplyModOptions = ModOptions
 
 -- make the value the below buttons set actually do something
 local ChoOrig_Colonist_SetResidence = Colonist.SetResidence
-function Colonist:SetResidence(home, ...)
-	if self.ChoGGi_LockResidence and (home or mod_NeverChange) then
+function Colonist:SetResidence(...)
+	if ValidateBuilding(self.residence)
+		and (mod_NeverChange or self.ChoGGi_LockResidence)
+	then
 		return
 	end
 	-- we only fire the func if the lock isn't there, yeah i'm sure this won't cause any issues :)
-	return ChoOrig_Colonist_SetResidence(self, home, ...)
+	return ChoOrig_Colonist_SetResidence(self, ...)
 end
 
 function OnMsg.ClassesPostprocess()
@@ -43,7 +45,7 @@ function OnMsg.ClassesPostprocess()
 		OnContextUpdate = function(self, context)
 			---
 			-- hide button if not working, and make sure to remove the lock (just in case)
-			if IsValid(context.residence) then
+			if ValidateBuilding(context.residence) then
 				self:SetVisible(true)
 				self:SetMaxHeight()
 			else

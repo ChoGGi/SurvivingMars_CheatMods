@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local IsValid = IsValid
+local ValidateBuilding = ValidateBuilding
 local ObjModified = ObjModified
 local RetName = ChoGGi.ComFuncs.RetName
 
@@ -30,16 +30,16 @@ OnMsg.ApplyModOptions = ModOptions
 
 -- make the value the below buttons set actually do something
 local ChoOrig_Colonist_SetWorkplace = Colonist.SetWorkplace
-function Colonist:SetWorkplace(building, ...)
-	if self.ChoGGi_Lockworkplace and (building or mod_NeverChange) then
-		-- single shift building (farm) == crash
-		-- active_shift > 0 ~= single shift
-		if building and building.active_shift == 0 then
-			return
-		end
+function Colonist:SetWorkplace(...)
+
+	if ValidateBuilding(self.workplace)
+		and (mod_NeverChange or self.ChoGGi_Lockworkplace)
+	then
+		return
 	end
+
 	-- we only fire the func if the lock isn't there, yeah i'm sure this won't cause any issues :)
-	return ChoOrig_Colonist_SetWorkplace(self, building, ...)
+	return ChoOrig_Colonist_SetWorkplace(self, ...)
 end
 
 function OnMsg.ClassesPostprocess()
@@ -50,7 +50,7 @@ function OnMsg.ClassesPostprocess()
 		OnContextUpdate = function(self, context)
 			---
 			-- hide button if not working, and make sure to remove the lock (just in case)
-			if IsValid(context.workplace) and not context.workplace:IsKindOf("TrainingBuilding") then
+			if ValidateBuilding(context.workplace) and not context.workplace:IsKindOf("TrainingBuilding") then
 				self:SetVisible(true)
 				self:SetMaxHeight()
 			else

@@ -2,6 +2,10 @@
 
 ```lua
 function OnMsg.ClassesPostprocess()
+	if TraitPresets.UniqueName_Fitter then
+		return
+	end
+
 	PlaceObj("TraitPreset", {
 		id = "UniqueName_Fitter",
 

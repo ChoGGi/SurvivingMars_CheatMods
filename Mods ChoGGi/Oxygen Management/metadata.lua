@@ -31,13 +31,10 @@ Reduce MOXIE production to 2 oxygen, increase electrical consumption to 10.
 Increase algae oxygen production to 2, kelp to 1.
 Factories cost an additional 2 oxygen (smaller factories use 1).
 Each colonist increases dome oxygen use by 0.035 - 0.08 units (age dependant, see mod options).
-You cannot build MOXIEs till you research Magnetic Filtering (mod option; can be changed whenever (disabled by default)).
+You cannot build MOXIEs till you research Magnetic Filtering (mod option; can be changed whenever, it's disabled by default).
 
 
-Has synergy with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2435839910]Rebalanced Food Production[/url].
-
-
-https://forum.paradoxplaza.com/forum/threads/more-oxygen-consuming-buildings-and-facilities-are-needed.1175384/
 Requested by YertyL.
+https://forum.paradoxplaza.com/forum/threads/more-oxygen-consuming-buildings-and-facilities-are-needed.1175384/
 ]],
 })
