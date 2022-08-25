@@ -1,6 +1,7 @@
-Empathy. The current bug means once you have empathy sooner or later all your colonists will have 100 morale, because the stacking empathy bonus never goes away from each dome they visit, even if the empath dies.
-
-add mod option to fix "exploit" bugs, also add Fix Farm Oxygen to it
+Empathy. 
+The current bug means once you have empathy sooner or later all your colonists will have 100 morale,
+because the stacking empathy bonus never goes away from each dome they visit,
+even if the empath dies.
 
 fix uneven terrain?
 Call whatever wasterock dumps use to "flatten" land after landscaping

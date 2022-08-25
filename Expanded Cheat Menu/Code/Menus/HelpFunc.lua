@@ -328,7 +328,7 @@ do -- ModUpload
 
 If you have any issues with this mod then please send me a bug report instead of reporting the mod.
 https://github.com/ChoGGi/SurvivingMars_CheatMods
-https://discord.gg/bkdjEZU
+Discord: ChoGGi#9210
 https://steamcommunity.com/id/ChoGGi/
 SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 						else
@@ -336,7 +336,7 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 
 If you have any issues with this mod then please send me a bug report instead of reporting the mod.
 https://github.com/ChoGGi/SurvivingMars_CheatMods
-https://discord.gg/bkdjEZU
+Discord: ChoGGi#9210
 https://steamcommunity.com/id/ChoGGi/
 SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 						end

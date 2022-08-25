@@ -1789,7 +1789,7 @@ do do do do !Skipped Line! [[HelpMenu.lua" "HelpFunc.lua]] !Skipped Line!
 
 If you have any issues with this mod then please send me a bug report instead of reporting the mod.
 https://github.com/ChoGGi/SurvivingMars_CheatMods
-https://discord.gg/ZXXYaExThy
+Discord: ChoGGi#9210
 https://steamcommunity.com/id/ChoGGi/
 SurvivingMarsMods@choggi.org"
 302535920000221, "See log for any batch errors."

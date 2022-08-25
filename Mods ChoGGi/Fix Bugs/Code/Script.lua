@@ -1,13 +1,21 @@
 -- See LICENSE for terms
 
-local table, type, pairs = table, type, pairs
+local table, type, pairs, tostring = table, type, pairs, tostring
 local IsValidThread = IsValidThread
 local IsValid = IsValid
 local DoneObject = DoneObject
 local GetRealmByID = GetRealmByID
 local GetDomeAtPoint = GetDomeAtPoint
+local GetRandomPassableAroundOnMap = GetRandomPassableAroundOnMap
+local HexGetUnits = HexGetUnits
+local GetRealm = GetRealm
+local IsKindOf = IsKindOf
+
+local InvalidPos = ChoGGi.Consts.InvalidPos
 
 local mod_EnableMod
+local mod_FarmOxygen
+local mod_DustDevilsBlockBuilding
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -16,6 +24,8 @@ local function ModOptions(id)
 	end
 
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+	mod_FarmOxygen = CurrentModOptions:GetProperty("FarmOxygen")
+	mod_DustDevilsBlockBuilding = CurrentModOptions:GetProperty("DustDevilsBlockBuilding")
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -161,21 +171,23 @@ do -- CityStart/LoadGame
 		end
 
 		-- Fix Farm Oxygen 1
-		local domes = UIColony:GetCityLabels("Dome")
-		for i = 1, #domes do
-			local dome = domes[i]
-			local mods = dome:GetPropertyModifiers("air_consumption")
-			if mods then
-				local farms = dome.labels.Farm or empty_table
-				for j = #mods, 1, -1 do
-					local mod_item = mods[j]
-					local idx = table.find(farms, "farm_id", mod_item.id)
-					-- Can't find farm id, so it's a removed farm
-					if not idx then
-						dome:SetModifier("air_consumption", mod_item.id, 0, 0)
+		if mod_FarmOxygen then
+			local domes = UIColony:GetCityLabels("Dome")
+			for i = 1, #domes do
+				local dome = domes[i]
+				local mods = dome:GetPropertyModifiers("air_consumption")
+				if mods then
+					local farms = dome.labels.Farm or empty_table
+					for j = #mods, 1, -1 do
+						local mod_item = mods[j]
+						local idx = table.find(farms, "farm_id", mod_item.id)
+						-- Can't find farm id, so it's a removed farm
+						if not idx then
+							dome:SetModifier("air_consumption", mod_item.id, 0, 0)
+						end
 					end
+					dome:UpdateWorking()
 				end
-				dome:UpdateWorking()
 			end
 		end
 
@@ -267,8 +279,32 @@ do -- CityStart/LoadGame
 				end
 			end)
 		end
-		--
 
+		-- If you have malfunctioning drones at a dronehub and they never get repaired (off map).
+		-- This'll check on load each time for them (once should be enough though), and move them near the hub.
+		local positions = {}
+		local radius = 100 * guim
+
+		local hubs = UIColony:GetCityLabels("DroneHub")
+		for i = 1, #hubs do
+			table.clear(positions)
+
+			local hub = hubs[i]
+			for j = 1, #(hub.drones or "") do
+				local drone = hub.drones[j]
+				local pos = drone:GetVisualPos()
+				if pos == InvalidPos and drone.command == "Malfunction" then
+					-- don't move more than one malf drone to same pos
+					if not positions[tostring(pos)] then
+						local new_pos = GetRandomPassableAroundOnMap(hub.city.map_id, hub:GetPos(), radius)
+						drone:SetPos(new_pos:SetTerrainZ())
+						positions[tostring(new_pos)] = true
+					end
+				end
+			end
+		end
+
+		--
 		ResumePassEdits("ChoGGi_FixBBBugs_loading")
 	end
 
@@ -348,7 +384,7 @@ end
 -- If you remove a farm that has an oxygen producing crop (workers not needed) the oxygen will still count in the dome.
 local ChoOrig_Farm_Done = Farm.Done
 function Farm:Done(...)
-	if not mod_EnableMod then
+	if not mod_FarmOxygen or not mod_EnableMod then
 		return ChoOrig_Farm_Done(self, ...)
 	end
 
@@ -461,6 +497,34 @@ function RocketBase:RemovePassengers(...)
 end
 
 --
+local ChoGGi_OnTopOfDustDevil = {
+	type = "error",
+	priority = 100,
+	text = T(0000, "Dust devil rejects your futile attempt of cheese."),
+	short = T(0000, "Overlaps dust devil")
+}
+ConstructionStatus.ChoGGi_OnTopOfDustDevil = ChoGGi_OnTopOfDustDevil
+
+local ChoOrig_FinalizeStatusGathering = ConstructionController.FinalizeStatusGathering
+function ConstructionController:FinalizeStatusGathering(...)
+	if not mod_DustDevilsBlockBuilding or not mod_EnableMod then
+		return ChoOrig_FinalizeStatusGathering(self, ...)
+	end
+
+	-- shameless copy pasta of function ConstructionController:HasDepositUnderneath()
+	-- last checked lua rev 1011166
+  local force_extend_bb = self.template_obj:HasMember("force_extend_bb_during_placement_checks") and self.template_obj.force_extend_bb_during_placement_checks ~= 0 and self.template_obj.force_extend_bb_during_placement_checks or false
+  local underneath = HexGetUnits(GetRealm(self), self.cursor_obj, self.template_obj:GetEntity(), nil, nil, true, function(o)
+    return IsKindOf(o, "BaseDustDevil")
+  end, "BaseDustDevil", force_extend_bb, self.template_obj_points)
+
+  if underneath then
+		self.construction_statuses[#self.construction_statuses + 1] = ChoGGi_OnTopOfDustDevil
+  end
+
+	return ChoOrig_FinalizeStatusGathering(self, ...)
+end
+
 --
 --
 --
@@ -495,7 +559,7 @@ function SupportStruts:AccumulateMaintenancePoints(self, new_points, ...)
 		return ChoOrig_SupportStruts_AccumulateMaintenancePoints(self, new_points, ...)
 	end
 
-	-- lua rev 1011166
+	-- last checked lua rev 1011166
   RequiresMaintenance.AccumulateMaintenancePoints(self, new_points, ...)
   if self.accumulated_maintenance_points >= self.maintenance_threshold_current then
 		if IsGameRuleActive("EasyMaintenance") then
@@ -506,7 +570,7 @@ function SupportStruts:AccumulateMaintenancePoints(self, new_points, ...)
   end
 end
 -- Added some varargs (5 bucks says if they change the base func then they forget to change the overridden func)
--- lua rev 1011166
+-- last checked lua rev 1011166
 local ChoOrig_Building_SetDome = Building.SetDome
 function Building:SetDome(dome, ...)
 	if not mod_EnableMod then

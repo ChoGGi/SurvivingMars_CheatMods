@@ -4078,6 +4078,7 @@ do -- MovePointAwayXY
 end -- do
 
 -- updates buildmenu with un/locked buildings if it's opened
+-- RefreshXBuildMenu() doesn't add newly unlocked buildings
 function ChoGGi.ComFuncs.UpdateBuildMenu()
 	local dlg = GetDialog("XBuildMenu")
 	-- can't update what isn't there

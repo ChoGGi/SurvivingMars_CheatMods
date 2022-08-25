@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 24,
+	"version", 25,
 	"version_major", 2,
-	"version_minor", 4,
+	"version_minor", 5,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -37,6 +37,7 @@ Fix Colonists Long Walks (better solution: No More Outside Suffocation mod)
 Fix Colonists Suffocating Inside Domes
 Fix Defence Towers Not Firing At Rovers
 Fix Double Click Select All Of Type
+Fix Dust Devils Block Building
 Fix Farm Oxygen
 Fix Landscaping Freeze
 Fix Layout Construction Tech Lock
@@ -47,9 +48,9 @@ Fix No Power Dome Buildings
 Fix Projector Lamp
 Fix RC Commander Drone Freeze
 Fix Resupply Menu Not Opening
+Fix Stuck Malfunctioning Drones At DroneHub
 Fix Transport Negative Amounts
 Fix Transports Dont Move After Route Set
-
 
 If you have B&B I'd recommend SkiRich's [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2619013940]Better Lander Rockets[/url]
 
@@ -68,6 +69,15 @@ https://forum.paradoxplaza.com/forum/threads/surviving-mars-colonists-repeatedly
 A colonist will repeatedly use a daily interest building to satisfy a daily interest already satisfied.
 Repeating a daily interest will gain a comfort boost "if" colonist comfort is below the service comfort threshold, but a resource will always be consumed each visit.
 This mod will block the colonist from having a visit, instead: An unemployed scientist will wander around outside till the Sol is over instead of chewing up 0.6 electronics.
+[b]Fix Stuck Malfunctioning Drones At DroneHub[/b]
+If you have malfunctioning drones at a dronehub and they never get repaired (off map).
+This'll check on load each time for them (once should be enough though), and move them near the hub.
+[b]Fix Farm Oxygen[/b]
+If you remove a farm that has an oxygen producing crop (workers not needed) the oxygen will still count in the dome.
+[b]Fix Dust Devils Block Building[/b]
+No more cheesing dust devils with waste rock depots (etc).
 
+
+See mod options to disable fixes for stuff that you can cheese.
 ]],
 })
