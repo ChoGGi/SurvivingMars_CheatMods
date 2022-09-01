@@ -4,6 +4,9 @@
 ### Added:
 - Infopanel Cheats>InstHarvest: Instantly harvest current crop.
 
+### Fixed:
+- A couple instances of UICity I somehow missed.
+
 ## v18.5 (10 July 2022)
 ### Added:
 - Shortcut to UI Examine in Console>Tools.

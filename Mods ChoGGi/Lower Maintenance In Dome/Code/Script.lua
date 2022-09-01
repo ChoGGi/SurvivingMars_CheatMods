@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local floatfloor = floatfloor
+
 local mod_EnableMod
 local mod_PercentAllowed
 
@@ -19,9 +21,6 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
---~ SolarPanel.entity == "SolarPanelBig"
---~ SolarPanel.entity == "SolarPanel"
-
 local classes = {
 	SolarPanel = true,
 	StirlingGenerator = true,
@@ -30,7 +29,7 @@ local classes = {
 
 local ChoOrig_RequiresMaintenance_AccumulateMaintenancePoints = RequiresMaintenance.AccumulateMaintenancePoints
 function RequiresMaintenance:AccumulateMaintenancePoints(new_points, ...)
-	if not mod_EnableMod then
+	if not mod_EnableMod or new_points < 0 then
 		return ChoOrig_RequiresMaintenance_AccumulateMaintenancePoints(self, new_points, ...)
 	end
 

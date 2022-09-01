@@ -1,6 +1,9 @@
 ## Library Changelog
 
 ## v11.6 (Unreleased)
+- Log spam from AttachToNearestDome().
+- You can use OpenExamineDelayed()/exd() before classes process (err re-process for mods).
+- > It'll open all stored objs after ClassesPostprocess, so some stuff can change, but it's better than naught.
 
 ## v11.5 (10 July 2022)
 - Fixed SetBuildingLimits and tracks not being able to be built.

@@ -3,6 +3,7 @@
 local table, type, pairs, tostring = table, type, pairs, tostring
 local IsValidThread = IsValidThread
 local IsValid = IsValid
+local ValidateBuilding = ValidateBuilding
 local DoneObject = DoneObject
 local GetRealmByID = GetRealmByID
 local GetDomeAtPoint = GetDomeAtPoint
@@ -45,7 +46,7 @@ function OnMsg.ClassesPostprocess()
 	-- lua rev 1011030 Colonist:EnterBuilding()
 	local ChoOrig_Colonist_EnterBuilding = Colonist.EnterBuilding
 	function Colonist:EnterBuilding(building, ...)
-		if mod_EnableMod and self.daily_interest ~= "" and IsValid(building)
+		if mod_EnableMod and self.daily_interest ~= "" and ValidateBuilding(building)
 			and building:HasMember("IsOneOfInterests") and building:IsOneOfInterests(self.daily_interest)
 		then
 			self.daily_interest = ""
@@ -74,8 +75,7 @@ do -- CityStart/LoadGame
 		local bt = BuildingTemplates
 		local bmpo = BuildMenuPrerequisiteOverrides
 		local main_realm = GetRealmByID(MainMapID)
-
-
+		--
 		-- Fix No Power Dome Buildings
 		local ElectricityGridObject_GameInit = ElectricityGridObject.GameInit
 		for _, map in pairs(GameMaps) do
@@ -83,7 +83,7 @@ do -- CityStart/LoadGame
 			for i = 1, #objs do
 				local obj = objs[i]
 				-- should be good enough to not get false positives?
-				if obj.working == false and obj.signs and obj.signs.SignNoPower and IsValid(obj.parent_dome)
+				if obj.working == false and obj.signs and obj.signs.SignNoPower and ValidateBuilding(obj.parent_dome)
 					and obj.electricity and not obj.electricity.parent_dome
 				then
 					obj:DeleteElectricity()
@@ -91,18 +91,18 @@ do -- CityStart/LoadGame
 				end
 			end
 		end
-
+		--
 		-- Fix Defence Towers Not Firing At Rovers (x2)
 		local hostile = MainCity.labels.HostileAttackRovers or ""
 		if #hostile > 0 then
 			UIColony.mystery.can_shoot_rovers = true
 		end
-
+		--
 		-- Probably from a mod (a *badly* done mod)
 		if type(g_ActiveOnScreenNotifications) ~= "table" then
 			g_ActiveOnScreenNotifications = {}
 		end
-
+		--
 		-- If you removed modded rules from your current save then the Mission Profile dialog will be blank.
 		local rules = g_CurrentMissionParams.idGameRules
 		if rules then
@@ -114,7 +114,7 @@ do -- CityStart/LoadGame
 				end
 			end
 		end
-
+		--
 		--[[
 		If you have broken down buildings the drones won't repair. This will check for them on load game.
 		The affected buildings will say something about exceptional circumstances.
@@ -151,7 +151,7 @@ do -- CityStart/LoadGame
 				bld:Setexceptional_circumstances(false)
 			end
 		end
-
+		--
 		-- Some colonists are allergic to doors and suffocate inside a dome with their suit still on.
 		local colonists = UIColony:GetCityLabels("Colonist")
 		for i = 1, #colonists do
@@ -169,7 +169,7 @@ do -- CityStart/LoadGame
 				end
 			end
 		end
-
+		--
 		-- Fix Farm Oxygen 1
 		if mod_FarmOxygen then
 			local domes = UIColony:GetCityLabels("Dome")
@@ -190,7 +190,7 @@ do -- CityStart/LoadGame
 				end
 			end
 		end
-
+		--
 		-- For some reason LandscapeLastMark gets set to around 4090, when LandscapeMark hits 4095 bad things happen.
 		-- This resets LandscapeLastMark to whatever is the highest number in Landscapes when a save is loaded (assuming it's under 3000, otherwise 0).
 		-- If there's placed landscapes grab the largest number
@@ -211,12 +211,12 @@ do -- CityStart/LoadGame
 			-- no landscapes so 0 it is
 			LandscapeLastMark = 0
 		end
-
+		--
 		-- Wind turbine gets locked by a game event.
 		if bmpo.WindTurbine and TGetID(bmpo.WindTurbine) == 401896326435--[[You can't construct this building at this time]] then
 			bmpo.WindTurbine = nil
 		end
-
+		--
 		-- Removes any meteorites stuck on the map when you load a save.
 		local meteors = main_realm:MapGet("map", "BaseMeteor")
 		for i = #meteors, 1, -1 do
@@ -230,12 +230,12 @@ do -- CityStart/LoadGame
 				DoneObject(obj)
 			end
 		end
-
+		--
 		-- For some reason the devs put it in the Decorations instead of the Outside Decorations category.
 		bt.LampProjector.build_category = "Outside Decorations"
 		bt.LampProjector.group = "Outside Decorations"
 		bt.LampProjector.label1 = ""
-
+		--
 		-- https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-game-freezes-when-deploying-drones-from-rc-commander-after-one-was-destroyed.1168779/
 		local rovers = UIColony:GetCityLabels("RCRoverAndChildren")
 		for i = 1, #rovers do
@@ -246,7 +246,7 @@ do -- CityStart/LoadGame
 				end
 			end
 		end
-
+		--
 		-- Probably caused by a mod badly adding cargo.
 		for i = #ResupplyItemDefinitions, 1, -1 do
 			local def = ResupplyItemDefinitions[i]
@@ -255,7 +255,7 @@ do -- CityStart/LoadGame
 				table.remove(ResupplyItemDefinitions, i)
 			end
 		end
-
+		--
 		-- Check for transport rovers with negative amounts of resources carried.
 		local trans = UIColony:GetCityLabels("RCTransportAndChildren")
 		for i = 1, #trans do
@@ -267,7 +267,7 @@ do -- CityStart/LoadGame
 				end
 			end
 		end
-
+		--
 		--	Move any floating underground rubble to within reach of drones (might have to "push" drones to make them go for it).
 		if UIColony.underground_map_unlocked then
 			local map = GameMaps[UIColony.underground_map_id]
@@ -279,7 +279,7 @@ do -- CityStart/LoadGame
 				end
 			end)
 		end
-
+		--
 		-- If you have malfunctioning drones at a dronehub and they never get repaired (off map).
 		-- This'll check on load each time for them (once should be enough though), and move them near the hub.
 		local positions = {}
@@ -319,7 +319,7 @@ function ClearWasteRockConstructionSite:InitBlockPass(ls, ...)
     return ChoOrig_ClearWasteRockConstructionSite_InitBlockPass(self, ls, ...)
   end
 end
-
+--
 -- If you set a transport route between two resources/stockpiles/etc and the transport just sits there like an idiot...
 local ChoOrig_RCTransport_TransferResources = RCTransport.TransferResources
 function RCTransport:TransferResources(...)
@@ -332,7 +332,7 @@ function RCTransport:TransferResources(...)
 	end
 	return ChoOrig_RCTransport_TransferResources(self, ...)
 end
-
+--
 -- Some mods will try to add a notification without specifying an id for it; that makes baby Jesus cry.
 local ChoOrig_LoadCustomOnScreenNotification = LoadCustomOnScreenNotification
 function LoadCustomOnScreenNotification(notification, ...)
@@ -345,7 +345,7 @@ function LoadCustomOnScreenNotification(notification, ...)
 		return ChoOrig_LoadCustomOnScreenNotification(notification, ...)
 	end
 end
-
+--
 -- Layout construction allows building buildings that should be locked by tech (Triboelectric Scrubber).
 local ChoOrig_LayoutConstructionController_Activate = LayoutConstructionController.Activate
 function LayoutConstructionController:Activate(...)
@@ -392,7 +392,7 @@ function Farm:Done(...)
 
 	return ChoOrig_Farm_Done(self, ...)
 end
-
+--
 -- The devs broke this in Tito update and haven't fixed it yet.
 local ChoOrig_SelectionModeDialog_OnMouseButtonDoubleClick = SelectionModeDialog.OnMouseButtonDoubleClick
 function SelectionModeDialog:OnMouseButtonDoubleClick(pt, button, ...)
@@ -444,6 +444,7 @@ do -- AreDomesConnectedWithPassage (Fix Colonists Long Walks)
 			and (d1 == d2 or d1:GetDist2D(d2) <= dome_walk_dist)
 	end
 end -- do
+--
 -- Fix Defence Towers Not Firing At Rovers
 --[[
 It's from a mystery (trying to keep spoilers to a minimum).
@@ -467,6 +468,7 @@ function SA_Exec:Exec(sequence_player, ip, seq, ...)
 
 	return ChoOrig_SA_Exec_Exec(self, sequence_player, ip, seq, ...)
 end
+--
 -- log spam April13 found
 -- [LUA ERROR] Mars/Lua/Buildings/CargoTransporter.lua:1062: attempt to index a nil value (field '?')
 local ChoOrig_CargoTransporter_DroneLoadResource = CargoTransporter.DroneLoadResource
@@ -495,8 +497,8 @@ function RocketBase:RemovePassengers(...)
 
 	return ChoOrig_RocketBase_RemovePassengers(self, ...)
 end
-
 --
+-- Stop buildings placed on top of dust devils
 local ChoGGi_OnTopOfDustDevil = {
 	type = "error",
 	priority = 100,
@@ -524,7 +526,25 @@ function ConstructionController:FinalizeStatusGathering(...)
 
 	return ChoOrig_FinalizeStatusGathering(self, ...)
 end
+--
+-- Log spam if you call this with an invalid dome
+local ChoOrig_IsBuildingInDomeRange = IsBuildingInDomeRange
+function IsBuildingInDomeRange(bld, dome, ...)
+	if not mod_EnableMod then
+		return ChoOrig_IsBuildingInDomeRange(bld, dome, ...)
+	end
 
+	-- Looking at IsBuildingInDomeRange(), I don't think I need to valid the bld
+	if ValidateBuilding(dome) then
+		return ChoOrig_IsBuildingInDomeRange(bld, dome, ...)
+	end
+	return false
+end
+--
+--
+--
+--
+--
 --
 --
 --
@@ -532,6 +552,12 @@ end
 if not g_AvailableDlc.picard then
 	return
 end
+--
+--
+--
+--
+--
+--
 --
 --
 --
@@ -552,6 +578,7 @@ function TriggerCaveIn(...)
 
 	return rubble
 end
+--
 -- Devs didn't check for EasyMaintenance when overriding AccumulateMaintenancePoints for picard
 local ChoOrig_SupportStruts_AccumulateMaintenancePoints = SupportStruts.AccumulateMaintenancePoints
 function SupportStruts:AccumulateMaintenancePoints(self, new_points, ...)
@@ -569,6 +596,7 @@ function SupportStruts:AccumulateMaintenancePoints(self, new_points, ...)
 		end
   end
 end
+--
 -- Added some varargs (5 bucks says if they change the base func then they forget to change the overridden func)
 -- last checked lua rev 1011166
 local ChoOrig_Building_SetDome = Building.SetDome
@@ -582,6 +610,7 @@ function Building:SetDome(dome, ...)
     dome:ToggleRefab()
   end
 end
+--
 -- No Planetary Anomaly Breakthroughs when B&B is installed.
 local ChoOrig_City_InitBreakThroughAnomalies = City.InitBreakThroughAnomalies
 function City:InitBreakThroughAnomalies(...)

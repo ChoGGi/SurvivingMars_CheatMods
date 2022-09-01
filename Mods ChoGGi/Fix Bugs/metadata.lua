@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 25,
+	"version", 26,
 	"version_major", 2,
-	"version_minor", 5,
+	"version_minor", 6,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -27,6 +27,7 @@ A rocket missing the cargo table.
 g_ActiveOnScreenNotifications isn't a table.
 Support struts malfunctioning and cave-ins.
 Stop ceiling/floating rubble.
+Log spam from IsBuildingInDomeRange().
 
 
 [b]Incorporated mods:[/b] (so far)
@@ -75,7 +76,7 @@ This'll check on load each time for them (once should be enough though), and mov
 [b]Fix Farm Oxygen[/b]
 If you remove a farm that has an oxygen producing crop (workers not needed) the oxygen will still count in the dome.
 [b]Fix Dust Devils Block Building[/b]
-No more cheesing dust devils with waste rock depots (etc).
+No more cheesing dust devils with waste rock depots (etc), by placing them on top of said devils (not by building them to block them).
 
 
 See mod options to disable fixes for stuff that you can cheese.

@@ -23,12 +23,13 @@ OnMsg.ApplyModOptions = ModOptions
 
 local ChoOrig_RequiresMaintenance_AccumulateMaintenancePoints = RequiresMaintenance.AccumulateMaintenancePoints
 function RequiresMaintenance:AccumulateMaintenancePoints(new_points, ...)
-	if not mod_EnableMod then
+	-- We only care about points being added, not tribby removing them
+	if not mod_EnableMod or new_points < 0 then
 		return ChoOrig_RequiresMaintenance_AccumulateMaintenancePoints(self, new_points, ...)
 	end
 
 	new_points = floatfloor((new_points + 0.0) * mod_PercentAllowed)
-	-- just in case
+	-- Just in case
 	if new_points < 0 then
 		new_points = 0
 	end

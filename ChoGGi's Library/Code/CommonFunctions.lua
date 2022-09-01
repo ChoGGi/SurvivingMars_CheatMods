@@ -2169,8 +2169,9 @@ do -- AttachToNearestDome
 		end
 
 		-- find the nearest working dome
---~ 		local working_domes = MapFilter(UICity.labels.Dome, CanWork)
-		local working_domes = MapFilter(UIColony.city_labels.labels.Dome, CanWork)
+		local city = obj.city or UICity
+		local realm = GameMaps[city.map_id].realm
+		local working_domes = realm:MapFilter(city.labels.Dome, CanWork)
 		local dome = FindNearestObject(working_domes, obj)
 
 		-- remove from old dome (assuming it's a different dome), or the dome is invalid

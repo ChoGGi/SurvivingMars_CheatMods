@@ -1,3 +1,6 @@
+v2.6
+Log spam from IsBuildingInDomeRange().
+
 v2.5
 Added mod options to re-enable certain cheesing fixes.
 Added my mods:

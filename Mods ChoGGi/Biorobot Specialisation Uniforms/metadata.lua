@@ -13,8 +13,11 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"TagCosmetics", true,
-	"description", [[Biorobots/Androids use the correct uniform for their specialisation.
+	"description", [[
+Biorobots/Androids use the correct uniform for their specialisation.
 
 
-Requested by BLade.]],
+Requested by BLade.
+See also: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2264098735]Biorobot Fix 2[/url]
+]],
 })

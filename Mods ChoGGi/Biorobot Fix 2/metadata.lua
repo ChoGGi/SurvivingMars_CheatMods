@@ -14,7 +14,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagGameplay", true,
-	"description", [[This mod adjusts the Biorobot spawn code to make them come forth into the world innocent as a newborn babe, with no traits or specializations.
+	"description", [[
+This mod adjusts the Biorobot spawn code to make them come forth into the world innocent as a newborn babe, with no traits or specializations.
 
 (By default, they recieve randomly assigned perks, and flaws)
 

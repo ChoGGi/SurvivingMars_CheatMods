@@ -4059,9 +4059,24 @@ local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 function OpenExamine(...)
 	OpenInExamineDlg(...)
 end
+-- so you can call ex from outside an OnMsg
+local stored_objs = {}
+local stored_objs_c = 0
+function OnMsg.ClassesPostprocess()
+	for i = 1, stored_objs_c do
+		OpenInExamineDlg(table.unpack(stored_objs[i]))
+	end
+	table.iclear(stored_objs)
+	stored_objs_c = 0
+end
+function OpenExamineDelayed(...)
+	stored_objs_c = stored_objs_c + 1
+	stored_objs[stored_objs_c] = {...}
+end
 function OpenExamineRet(...)
 	return OpenInExamineDlg(...)
 end
 -- short n sweet
 ex = OpenExamine
 exr = OpenExamineRet
+exd = OpenExamineDelayed

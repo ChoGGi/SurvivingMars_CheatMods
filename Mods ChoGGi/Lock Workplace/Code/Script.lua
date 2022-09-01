@@ -14,6 +14,7 @@ local function LoopWorkplace(context, which)
 end
 
 local mod_NeverChange
+local mod_SeniorsOverride
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -22,6 +23,8 @@ local function ModOptions(id)
 	end
 
 	mod_NeverChange = CurrentModOptions:GetProperty("NeverChange")
+	mod_SeniorsOverride = CurrentModOptions:GetProperty("SeniorsOverride")
+
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -32,10 +35,12 @@ OnMsg.ApplyModOptions = ModOptions
 local ChoOrig_Colonist_SetWorkplace = Colonist.SetWorkplace
 function Colonist:SetWorkplace(...)
 
-	if ValidateBuilding(self.workplace)
-		and (mod_NeverChange or self.ChoGGi_Lockworkplace)
-	then
-		return
+	if mod_SeniorsOverride and self.age_trait ~= "Senior" then
+		if ValidateBuilding(self.workplace)
+			and (mod_NeverChange or self.ChoGGi_Lockworkplace)
+		then
+			return
+		end
 	end
 
 	-- we only fire the func if the lock isn't there, yeah i'm sure this won't cause any issues :)

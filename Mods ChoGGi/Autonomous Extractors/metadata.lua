@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2792357619",
 	"pops_any_uuid", "686c784c-87fd-407f-a75d-719221f75f52",
 	"lua_revision", 1007000, -- Picard
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -26,9 +26,12 @@ return PlaceObj("ModDef", {
 Makes the rare/metal extractors colonist-free for people that don't want to build domes everywhere?
 I know it's not really autonomous, but close enough...
 
-Mod option to set the Auto Performance of extractors without workers.
+Mod Options:
+Auto Performance: Performance value when no colonists.
+Enable Mod: Stop autonomous.
 
 
 Requested by a few people.
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=2854948983]Autonomous Factories[/url]
 ]],
 })

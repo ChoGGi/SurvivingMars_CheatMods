@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1422914403",
 	"pops_any_uuid", "33d9ca4d-cc48-4676-9773-7a98b8c90328",
 	"lua_revision", 1007000, -- Picard
-	"version", 14,
+	"version", 15,
 	"version_major", 1,
-	"version_minor", 4,
+	"version_minor", 5,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
@@ -25,7 +25,9 @@ return PlaceObj("ModDef", {
 Adds a "Lock Workplace" button to the selection panel for colonists, and workplaces ("Lock Workers").
 They can still be fired (if you shutdown the building/shift), they just won't change to a new workplace if they're locked.
 
-Includes mod options to force workers to never change workplace (may cause issues).
+Mod Options:
+Never Change: Workers will never change workplace (may cause issues).
+Seniors Override: Allow graceful retirement.
 
 Lock Residence: https://steamcommunity.com/sharedfiles/filedetails/?id=1635694550
 ]],

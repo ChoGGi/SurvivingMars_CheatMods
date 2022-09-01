@@ -836,7 +836,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 		CreateRealTimeThread(function()
 			if not IsValid(obj.parent_dome) then
 				-- we use this to update the parent_dome (if there's a working/closer one)
-				UICity:AddToLabel("ChoGGi_InsideForcedOutDome", obj)
+				obj.city:AddToLabel("ChoGGi_InsideForcedOutDome", obj)
 
 				AttachToNearestDome(obj)
 			end
@@ -1074,7 +1074,7 @@ function OnMsg.NewDay() -- NewSol...
 		local obj = objs[i]
 		-- got removed or something
 		if not IsValid(obj) then
-			UICity:RemoveFromLabel("ChoGGi_InsideForcedOutDome", obj)
+			obj.city:RemoveFromLabel("ChoGGi_InsideForcedOutDome", obj)
 		else
 			-- check if there's a nearer dome
 			AttachToNearestDome(obj)
@@ -1304,7 +1304,7 @@ do -- LoadGame/CityStart
 		local ChoGGi = ChoGGi
 		local UserSettings = ChoGGi.UserSettings
 
-		local UICity = UICity
+		local UIColony = UIColony
 		local g_Classes = g_Classes
 		local const = const
 		local hr = hr
@@ -1331,9 +1331,9 @@ do -- LoadGame/CityStart
 		ChoGGi.Temp.UnitPathingHandles = {}
 
 		-- not needed, removing from old saves, so people don't notice them
-		UICity.labels.ChoGGi_GridElements = nil
-		UICity.labels.ChoGGi_LifeSupportGridElement = nil
-		UICity.labels.ChoGGi_ElectricityGridElement = nil
+		MainCity.labels.ChoGGi_GridElements = nil
+		MainCity.labels.ChoGGi_LifeSupportGridElement = nil
+		MainCity.labels.ChoGGi_ElectricityGridElement = nil
 		-- re-binding is now an in-game thing, so keys are just defaults
 		UserSettings.KeyBindings = nil
 
