@@ -7,7 +7,28 @@ local Clamp = Clamp
 local MulDivRound = MulDivRound
 local HourDuration = const.HourDuration
 
-function RocketBase:GetArrivalTimePercent()
+local mod_EnableMod
+
+-- Update mod options
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
+
+local ChoOrig_RocketBase_GetArrivalTimePercent = RocketBase.GetArrivalTimePercent
+function RocketBase:GetArrivalTimePercent(...)
+	if not mod_EnableMod then
+		return ChoOrig_RocketBase_GetArrivalTimePercent(self, ...)
+	end
+
 	if not self.launch_time or (self.flight_time or 0) <= 0 then
 		return 0
 	end
@@ -22,7 +43,12 @@ function RocketBase:GetArrivalTimePercent()
 		.. Min(100, MulDivRound(start, 100, self.flight_time))
 end
 
-function RocketExpedition:GetArrivalTimePercent()
+local ChoOrig_RocketExpedition_GetArrivalTimePercent = RocketExpedition.GetArrivalTimePercent
+function RocketExpedition:GetArrivalTimePercent(...)
+	if not mod_EnableMod then
+		return ChoOrig_RocketExpedition_GetArrivalTimePercent(self, ...)
+	end
+
 	if not self.expedition_start_time or not self.expedition_return_time then
 		return 0
 	end
@@ -46,14 +72,22 @@ local function AppendTime(self)
 	self.pin_rollover = self.pin_rollover .. "\n" .. T(708, "<ArrivalTimePercent>%")
 end
 
-local ChoOrig_UIStatusMissionReturn = RocketExpedition.UIStatusMissionReturn
+local ChoOrig_RocketExpedition_UIStatusMissionReturn = RocketExpedition.UIStatusMissionReturn
 function RocketExpedition:UIStatusMissionReturn(...)
-	ChoOrig_UIStatusMissionReturn(self, ...)
+	if not mod_EnableMod then
+		return ChoOrig_RocketExpedition_UIStatusMissionReturn(self, ...)
+	end
+
+	ChoOrig_RocketExpedition_UIStatusMissionReturn(self, ...)
 	AppendTime(self)
 end
 
-local ChoOrig_UIStatusFlyToColony = ForeignTradeRocket.UIStatusFlyToColony
+local ChoOrig_ForeignTradeRocket_UIStatusFlyToColony = ForeignTradeRocket.UIStatusFlyToColony
 function ForeignTradeRocket:UIStatusFlyToColony(...)
-	ChoOrig_UIStatusFlyToColony(self, ...)
+	if not mod_EnableMod then
+		return ChoOrig_ForeignTradeRocket_UIStatusFlyToColony(self, ...)
+	end
+
+	ChoOrig_ForeignTradeRocket_UIStatusFlyToColony(self, ...)
 	AppendTime(self)
 end

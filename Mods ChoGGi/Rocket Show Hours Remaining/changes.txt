@@ -1,8 +1,15 @@
+v0.6
+Removed pin option.
+
+v0.5
+Added mod option to disable mod.
+Added mod option to disable time remaining on pins.
+
 v0.4
 Tito.
 
 v0.3
-,
+?
 
 v0.2
 Added time to expedition/trade rockets.

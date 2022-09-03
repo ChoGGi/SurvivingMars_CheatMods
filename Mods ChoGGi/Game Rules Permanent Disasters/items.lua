@@ -103,13 +103,25 @@ local properties = {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "ColdAreaGiveSubsurfaceHeaters",
 		"DisplayName", table.concat(T(12824, "Cold Area") .. ": " .. T(302535920011875, "Give ") .. T(5294,"Subsurface Heaters")),
-		"Help", T(302535920011876, "Start game with Subsurface Heaters unlocked."),
+		"Help", T(302535920011876, "Start game with Subsurface Heaters researched."),
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "ColdAreaUnlockSubsurfaceHeaters",
 		"DisplayName", table.concat(T(12824, "Cold Area") .. ": " .. T(0000, "Unlock ") .. T(5294,"Subsurface Heaters")),
 		"Help", T(0000, "Subsurface Heaters can be built underground/asteroids."),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "ColdAreaSkipUnderground",
+		"DisplayName", table.concat(T(12824, "Cold Area") .. ": " .. T(0000, "Skip Underground")),
+		"Help", T(0000, "Underground stays as is."),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "ColdAreaSkipAsteroids",
+		"DisplayName", table.concat(T(12824, "Cold Area") .. ": " .. T(0000, "Skip Asteroids")),
+		"Help", T(0000, "Asteroids stay as is."),
 		"DefaultValue", false,
 	}),
 

@@ -27,6 +27,8 @@ local mod_DustDevilsTwisterMaxAmount
 local mod_DustDevilsElectrostatic
 local mod_ColdAreaGiveSubsurfaceHeaters
 local mod_ColdAreaUnlockSubsurfaceHeaters
+local mod_ColdAreaSkipUnderground
+local mod_ColdAreaSkipAsteroids
 
 -- fired when settings are changed/init
 local function ModOptions()
@@ -46,6 +48,8 @@ local function ModOptions()
 	mod_DustDevilsElectrostatic = options:GetProperty("DustDevilsElectrostatic")
 	mod_ColdAreaGiveSubsurfaceHeaters = options:GetProperty("ColdAreaGiveSubsurfaceHeaters")
 	mod_ColdAreaUnlockSubsurfaceHeaters = options:GetProperty("ColdAreaUnlockSubsurfaceHeaters")
+	mod_ColdAreaSkipUnderground = options:GetProperty("ColdAreaSkipUnderground")
+	mod_ColdAreaSkipAsteroids = options:GetProperty("ColdAreaSkipAsteroids")
 end
 
 -- load default/saved settings
@@ -351,15 +355,31 @@ for i = 1, #classes do
 	end
 end
 
+local function ColdMapSetup(map)
+	map.ColdFeatureRadius = 100
+	map.ColdAreaChance = 100
+	map.ColdAreaCount = 1
+	-- max map size * 4 (make sure everything is covered no matter where the area is)
+	map.ColdAreaSize = range(4857600, 4857600)
+end
+
 -- cold areas
 local ChoOrig_RandomMapGenerator_OnGenerateLogic = RandomMapGenerator.OnGenerateLogic
-function RandomMapGenerator:OnGenerateLogic(env, ...)
+--~ function RandomMapGenerator:OnGenerateLogic(env, ...)
+function RandomMapGenerator:OnGenerateLogic(...)
+
 	if IsGameRuleActive("ChoGGi_WinterWonderland") then
-		self.ColdFeatureRadius = 100
-		self.ColdAreaChance = 100
-		self.ColdAreaCount = 1
-		-- max map size * 4 (make sure everything is covered no matter where the area is)
-		self.ColdAreaSize = range(4857600, 4857600)
+		if self.StyleFamily == ""--[[Surface]] then
+			ColdMapSetup(self)
+		elseif self.StyleFamily == "Underground" then
+			if not mod_ColdAreaSkipUnderground then
+				ColdMapSetup(self)
+			end
+		elseif self.StyleFamily == "Asteroid" then
+			if not mod_ColdAreaSkipAsteroids then
+				ColdMapSetup(self)
+			end
+		end
 	end
 	-- testing
 --~ 	if IsGameRuleActive("ChoGGi_WinterWonderland") then
@@ -367,7 +387,7 @@ function RandomMapGenerator:OnGenerateLogic(env, ...)
 --~ 		local marker = env.GenMarkerObj(PrefabFeatureMarker, point(0,0), {FeatureRadius = 607200, FeatureType = "Cold Area"})
 --~ 		env.prefab_features[#env.prefab_features + 1] = marker
 --~ 	end
-	ChoOrig_RandomMapGenerator_OnGenerateLogic(self, env, ...)
+	return ChoOrig_RandomMapGenerator_OnGenerateLogic(self, ...)
 end
 
 local function StartupCode()

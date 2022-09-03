@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2060296355",
 	"pops_any_uuid", "09c4df72-ad70-43c3-aa81-558431221377",
 	"lua_revision", 1007000, -- Picard
-	"version", 14,
+	"version", 15,
 	"version_major", 1,
-	"version_minor", 4,
+	"version_minor", 5,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -32,7 +32,9 @@ No Deposits: No goodies from the meteors.
 MDS Lasers/Defensive Turrets: Unlock building them from the get-go.
 
 [b]Winter Wonderland[/b]: The ground will always be icy everywhere.
-Give Subsurface Heaters: Start game with Subsurface Heaters unlocked.
+Give Subsurface Heaters: Start game with Subsurface Heaters researched.
+Unlock Subsurface Heaters: Subsurface Heaters can be built underground/asteroids.
+Skip Underground/Skip Asteroids: Leave as is.
 
 [b]Great Bakersfield Dust Storm[/b]: Permanent dust storm.
 This will allow MOXIEs operating at a reduced capacity, see mod options to disable.

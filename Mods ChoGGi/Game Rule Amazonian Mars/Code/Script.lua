@@ -130,7 +130,7 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	PlaceObj("GameRules", {
-		challenge_mod = 150,
+		challenge_mod = 301,
 		description = T(0000, [[You may only import female colonists (exception: tourists).
 Male tourists "provide" children (Snu-snu required).
 Non-female children are culled at birth (lower birth rate).

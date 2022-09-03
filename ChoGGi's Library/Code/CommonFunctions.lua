@@ -7556,10 +7556,10 @@ function ChoGGi.ComFuncs.RetMapType(obj, map_id, city)
 		end
 	end
 
-	if map_id == UIColony.underground_map_id then
-		return "underground"
-	elseif map_id == UIColony.surface_map_id then
+	if map_id == UIColony.surface_map_id then
 		return "surface"
+	elseif map_id == UIColony.underground_map_id then
+		return "underground"
 	else
 		return "asteroid"
 	end

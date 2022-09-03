@@ -1,3 +1,6 @@
+v1.5
+Mod options to disable wonderland on underground/asteroids.
+
 v1.4
 Fixed rockets not launching (thanks Xorn).
 
