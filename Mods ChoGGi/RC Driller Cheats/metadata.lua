@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2600754488",
 	"pops_any_uuid", "33a06b7a-9429-4773-b5a2-7416f53a0649",
 	"lua_revision", 1007000, -- Picard
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -30,5 +30,6 @@ Loss Amount: How much is lost when using driller (0 = all, 100 = none).
 Production Per Day: Change how much it produces each Sol.
 Allow Deep: Can exploit deep deposits.
 Remove Sponsor Lock: No need to play as Russia to use it (Rover printing is still needed).
+No Waste Rock: No waste rock generated.
 ]],
 })

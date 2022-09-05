@@ -3,9 +3,11 @@
 local IsGameRuleActive = IsGameRuleActive
 local NameUnit = NameUnit
 local IsValid = IsValid
+local table = table
 local PlaceResourcePile = PlaceResourcePile
 
 local mod_AmazonianSize
+local mod_MaleSize
 
 -- Change Male and Other to Female (excluding tourists)
 local function UpdateApplicant(app)
@@ -19,12 +21,10 @@ local function UpdateApplicant(app)
 	end
 end
 
-local function StartupCode()
+local function UpdateStuff()
 	if not IsGameRuleActive("ChoGGi_AmazonianMars") then
 		return
 	end
-
-	-- check on CityStart if delay needed
 
 	-- Clean up applicant pool
 	local g_ApplicantPool = g_ApplicantPool
@@ -32,9 +32,13 @@ local function StartupCode()
 		UpdateApplicant(g_ApplicantPool[i][1])
 	end
 
-	-- update female model size
-	SuspendPassEdits("ChoGGi_GameRuleAmazonianMars.updatefemalemodels")
-	local objs = UIColony.city_labels.labels.ColonistFemale or ""
+	local labels = UIColony.city_labels.labels
+
+	-- Speeds up entity related stuff
+	SuspendPassEdits("ChoGGi_GameRuleAmazonianMars.UpdateStuff")
+
+	-- Update female model size
+	local objs = labels.ColonistFemale or ""
 	for i = 1, #objs do
 		local obj = objs[i]
 		-- wouldn't be the first time there's an invalid colonist in labels
@@ -42,35 +46,40 @@ local function StartupCode()
 			obj:SetScale(mod_AmazonianSize)
 		end
 	end
-	ResumePassEdits("ChoGGi_GameRuleAmazonianMars.updatefemalemodels")
-
-end
--- New games
-OnMsg.CityStart = StartupCode
--- Saved ones
-OnMsg.LoadGame = StartupCode
-
-function OnMsg.NewDay()
-	if not IsGameRuleActive("ChoGGi_AmazonianMars") then
-		return
-	end
-
-	StartupCode()
-
-	-- Daily cull
-	SuspendPassEdits("ChoGGi_GameRuleAmazonianMars.soylentnon_amazonians")
-	local objs = table.icopy(UIColony.city_labels.labels.ColonistMale or empty_table)
-	table.iappend(objs, UIColony.city_labels.labels.ColonistOther or empty_table)
-
+	--
+	objs = labels.ColonistMale or ""
 	for i = 1, #objs do
 		local obj = objs[i]
-		if IsValid(obj) and not obj.dying then
+		if IsValid(obj) then
+			-- Male model size
+			if obj.traits.Tourist then
+				obj:SetScale(mod_MaleSize)
+			-- Daily cull
+			elseif obj:CanChangeCommand() then
+				PlaceResourcePile(obj:GetVisualPos(), "Food", 1000)
+				obj:Erase()
+			end
+		end
+	end
+
+	-- Daily cull
+	objs = labels.ColonistOther or ""
+	for i = 1, #objs do
+		local obj = objs[i]
+		if not obj.traits.Tourist and obj:CanChangeCommand() then
 			PlaceResourcePile(obj:GetVisualPos(), "Food", 1000)
 			obj:Erase()
 		end
 	end
-	ResumePassEdits("ChoGGi_GameRuleAmazonianMars.soylentnon_amazonians")
+
+	ResumePassEdits("ChoGGi_GameRuleAmazonianMars.UpdateStuff")
 end
+-- New games
+OnMsg.CityStart = UpdateStuff
+-- Saved ones
+OnMsg.LoadGame = UpdateStuff
+
+OnMsg.NewDay = UpdateStuff
 
 -- Update mod options
 local function ModOptions(id)
@@ -80,13 +89,14 @@ local function ModOptions(id)
 	end
 
 	mod_AmazonianSize = CurrentModOptions:GetProperty("AmazonianSize")
+	mod_MaleSize = CurrentModOptions:GetProperty("MaleSize")
 
 	-- Make sure we're in-game
 	if not UIColony then
 		return
 	end
 
-	StartupCode()
+	UpdateStuff()
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -113,12 +123,17 @@ local function CullMales(colonist)
 		return
 	end
 
-	if IsValid(colonist)
-		and colonist.gender ~= "Female"
-		and not colonist.traits.Tourist
-	then
-		colonist:Erase()
-	end
+	-- might help crash from "For No Particular Reason"?
+	CreateRealTimeThread(function()
+		Sleep(1000)
+
+		if IsValid(colonist)
+			and colonist.gender ~= "Female"
+			and not colonist.traits.Tourist
+		then
+			colonist:Erase()
+		end
+	end)
 end
 
 OnMsg.ColonistArrived = CullMales
@@ -158,62 +173,25 @@ function RocketBase:WaitInOrbit(...)
 	end
 	logo = logo.entity_name
 
---~ ex(self)
 	-- Check for a male (there shouldn't be any non-tourists, but culling happens soon anyways)
-	local change_logo
-	local cargo = self.cargo or ""
-	for i = 1, #cargo do
-		local cargo_tbl = cargo[i]
-		if cargo_tbl.class == "Passengers" then
-			for j = 1, cargo_tbl.amount do
-				if cargo_tbl.applicants_data[j].gender == "Male" then
-					change_logo = true
+	local cargo = self.cargo or empty_table
+	local pass_idx = table.find(cargo, "class", "Passengers")
+	if pass_idx then
+		local idx = table.find(cargo[pass_idx].applicants_data, "gender", "Male")
+		-- Found a male
+		if idx then
+			CreateRealTimeThread(function()
+				-- A delay is needed before changing logo from this func
+				Sleep(1000)
+
+				-- Change logo to Planet Express Logo
+				local attaches = self:GetAttaches("Logo") or ""
+				for i = 1, #attaches do
+					attaches[i]:ChangeEntity(logo)
 				end
-			end
+			end)
 		end
 	end
-
-	CreateRealTimeThread(function()
-		if not change_logo then
-			return
-		end
-		-- A delay is needed before changing logo from this func
-		Sleep(1000)
-
-		-- Change logo to Planet Express Logo
-		local attaches = self:GetAttaches("Logo") or ""
-		for i = 1, #attaches do
-			attaches[i]:ChangeEntity(logo)
-		end
-	end)
 
 	return ChoOrig_RocketBase_WaitInOrbit(self, ...)
-end
-
--- Reset logo (probably not needed)
-local ChoOrig_RocketBase_OffPlanet = RocketBase.OffPlanet
-function RocketBase:OffPlanet(...)
-	if not IsGameRuleActive("ChoGGi_AmazonianMars") then
-		return ChoOrig_RocketBase_OffPlanet(self, ...)
-	end
-
-	local old_logo = MissionLogoPresetMap.eQKD54
-	if not old_logo then
-		return ChoOrig_RocketBase_OffPlanet(self, ...)
-	end
-	old_logo = old_logo.entity_name
-
-	local new_logo = MissionLogoPresetMap[g_CurrentMissionParams.idMissionLogo or "IMM"].entity_name
-
-	-- Planet Express Colony Logo
-	local attaches = self:GetAttaches("Logo") or ""
-	for i = 1, #attaches do
-		local a = attaches[i]
-		if a.entity == old_logo then
-			a:ChangeEntity(new_logo)
-		end
-
-	end
-
-	return ChoOrig_RocketBase_OffPlanet(self, ...)
 end

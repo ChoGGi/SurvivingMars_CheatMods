@@ -1,3 +1,7 @@
+v0.6
+Added mod option No Waste Rock.
+Checks for auto-mode tech.
+
 v0.5
 Log spam.
 

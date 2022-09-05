@@ -1,3 +1,6 @@
+v0.7
+Ok, proper mod options now.
+
 v0.6
 Removed pin option.
 

@@ -3,24 +3,24 @@
 local mod_MrBumble
 
 local function IsChildBld(obj)
-	local s = obj:IsKindOf("School")
-	local cb = s or obj:IsKindOf("Playground") or obj:IsKindOf("Nursery")
-	return cb, s
+	local school = obj:IsKindOf("School")
+	local child_building = school or obj:IsKindOf("Playground") or obj:IsKindOf("Nursery")
+	return child_building, school
 end
 
 local function UpdateBuildings(objs)
 	for i = 1, #objs do
 		local obj = objs[i]
+		local child_building, school = IsChildBld(obj)
 
-		if mod_MrBumble then
-			local cb, school = IsChildBld(obj)
-			if cb then
-				obj.usable_by_children = false
-				if school then
-					obj.force_lock_workplace = false
-				end
+		if mod_MrBumble and child_building then
+			obj.usable_by_children = false
+			if school then
+				obj.force_lock_workplace = false
 			end
-		else
+		end
+
+		if not child_building then
 			obj.usable_by_children = true
 			if obj:IsKindOf("School") then
 				obj.force_lock_workplace = true
@@ -43,19 +43,18 @@ local function ModOptions(id)
 
 	local BuildingTemplates = BuildingTemplates
 	for _, template in pairs(BuildingTemplates) do
+		local cls = g_Classes[template.template_class]
+		local child_building, school = cls and IsChildBld(cls)
 
-		if mod_MrBumble then
-			local cls = g_Classes[template.template_class]
-			local cb, school = cls and IsChildBld(cls)
-			if cb then
-				template.usable_by_children = false
-				if school then
-					template.force_lock_workplace = false
-				end
+		if mod_MrBumble and child_building then
+			template.usable_by_children = false
+			if school then
+				template.force_lock_workplace = false
 			end
-		else
+		end
+
+		if not child_building then
 			template.usable_by_children = true
-			local cls = g_Classes[template.template_class]
 			if cls and cls:IsKindOf("School") then
 				template.force_lock_workplace = true
 			end
@@ -63,12 +62,12 @@ local function ModOptions(id)
 
 	end
 
-	if UICity then
+	if UIColony then
 		local labels = UIColony.city_labels.labels
 		UpdateBuildings(labels.TrainingBuilding or "")
 		UpdateBuildings(labels.Residence or "")
 
-		-- give 'em the boot from playgrounds?
+		-- give 'em the boot from playgrounds
 		local objs = labels.Service or ""
 		for i = 1, #objs do
 			local obj = objs[i]
@@ -108,7 +107,7 @@ OnMsg.LoadGame = ModOptions
 -- needed for UpdateResidence
 local ChoOrig_Residence_IsSuitable = Residence.IsSuitable
 function Residence:IsSuitable(colonist, ...)
-	if mod_MrBumble and colonist.age_trait == "Child" then
+	if mod_MrBumble and colonist.age_trait == "Child" and IsChildBld(self) then
 		return false
 	end
 	return ChoOrig_Residence_IsSuitable(self, colonist, ...)

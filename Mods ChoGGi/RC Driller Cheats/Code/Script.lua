@@ -11,6 +11,7 @@ local MapsForEach = MapsForEach
 local IsKindOf = IsKindOf
 local GetRealm = GetRealm
 local GetRandomPassableAround = GetRandomPassableAround
+local pcall = pcall
 
 ChoGGi.ComFuncs.AddParentToClass(RCDriller, "AutoMode")
 
@@ -19,6 +20,7 @@ local mod_AllowDeep
 local mod_LossAmount
 local mod_ProductionPerDay
 local mod_RemoveSponsorLock
+local mod_NoWasteRock
 
 local function UpdateRovers()
 	if not UICity then
@@ -69,6 +71,7 @@ local function ModOptions(id)
 	mod_LossAmount = CurrentModOptions:GetProperty("LossAmount")
 	mod_ProductionPerDay = CurrentModOptions:GetProperty("ProductionPerDay") * const.ResourceScale
 	mod_RemoveSponsorLock = CurrentModOptions:GetProperty("RemoveSponsorLock")
+	mod_NoWasteRock = CurrentModOptions:GetProperty("NoWasteRock")
 
 	UpdateRovers()
 end
@@ -110,7 +113,7 @@ function RCDriller:Automation_Gather()
 			if self:GetDist2D(pos) > 15000 then
 				self:ReleaseStockpile()
 			end
-      self:SetCommand("Drill", deposit, GetRandomPassableAround(pos, 500, 500, self.city or UICity))
+      self:SetCommand("Drill", deposit, GetRandomPassableAround(pos, 500, 500, self.city or MainCity))
     else
       unreachable_objects[deposit] = true
     end
@@ -118,11 +121,9 @@ function RCDriller:Automation_Gather()
 end
 
 function RCDriller:ProcAutomation()
---~   if self:GetStoredAmount() <= 0 then
+	if g_RoverAIResearched and self:IsAutoModeEnabled() then
     self:Automation_Gather()
---~   else
---~     self:Automation_Unload()
---~   end
+	end
   Sleep(2500)
 end
 
@@ -174,4 +175,34 @@ function RubbleBase.OnClear(...)
 	end
 
 	return ChoOrig_RubbleBase_OnClear(...)
+end
+
+
+local ChoOrig_CalcWasteRockAmount = CalcWasteRockAmount
+local function ChoFake_CalcWasteRockAmount()
+	return 0
+end
+
+local ChoOrig_RCDriller_DrillProc = RCDriller.DrillProc
+function RCDriller.DrillProc(...)
+	if not mod_EnableMod then
+		return ChoOrig_RCDriller_DrillProc(...)
+	end
+
+	if mod_NoWasteRock then
+		-- always return 0 waste rock
+		CalcWasteRockAmount = ChoFake_CalcWasteRockAmount
+
+		local result, ret = pcall(ChoOrig_RCDriller_DrillProc, ...)
+		-- restore func
+		CalcWasteRockAmount = ChoOrig_CalcWasteRockAmount
+		-- and done
+		if result then
+			return ret
+		else
+			print("RCDriller.DrillProc failed!", ret)
+		end
+	end
+
+	return ChoOrig_RCDriller_DrillProc(...)
 end

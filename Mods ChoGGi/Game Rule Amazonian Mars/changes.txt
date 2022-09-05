@@ -1,1 +1,11 @@
+v0.4
+More validation before culling.
+Cleaned up some code.
+
+v0.3
+Fixes rocket crash?
+
 v0.2
+Added mod option for male model size.
+Was culling too many male colonists.
+Challenge rating is 301.

@@ -19,6 +19,12 @@ return {
 		"Help", T(302535920012069, "No need to play as Russia to use it (Rover printing is still needed)."),
 		"DefaultValue", false,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "NoWasteRock",
+		"DisplayName", T(0000, "No Waste Rock"),
+		"Help", T(0000, "No waste rock generated."),
+		"DefaultValue", false,
+	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "LossAmount",
 		"DisplayName", T(302535920012064, "Loss Amount"),
