@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1796377313",
 	"pops_any_uuid", "047b4e7f-37d7-4c89-a600-598339e2d955",
 	"lua_revision", 1007000, -- Picard
-	"version", 7,
+	"version", 8,
 	"version_major", 0,
-	"version_minor", 7,
+	"version_minor", 8,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -26,10 +26,10 @@ return PlaceObj("ModDef", {
 Rovers will not do automated tasks when a meteor storm is active.
 Such as collecting the goodies that just dropped from the sky.
 
-They'll finish up whatever task they're on then stop moving till it's over, so you may need to move them out of the way.
+They'll finish up whatever task they're on then aim for the nearest working laser/missile tower/drone hub (in that order)
 
-Mod Options:
-Go to the nearest working laser/missile tower if rover is idle (default on).
-Or drone hub (laser option takes precedence).
+MDS Laser: Go to the nearest working laser/missile tower if rover is idle.
+Drone Hub: Go to the nearest working drone hub if rover is idle.
+Immediate Abort: As soon as storm starts rovers will flee/idle (default off).
 ]],
 })

@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 26,
+	"version", 28,
 	"version_major", 2,
-	"version_minor", 6,
+	"version_minor", 8,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -17,8 +17,10 @@ return PlaceObj("ModDef", {
 	"description", [[
 Last Updated: 1011166 https://survivingmars.paradoxwikis.com/Patches
 
+See mod options to toggle certain fixes.
 
 [b]List of bugs fixed:[/b]
+Uneven Terrain (see mod options to enable, more info below).
 No Planetary Anomaly Breakthroughs when B&B is installed.
 Problem updating supply grid.
 Storybit notification issue.
@@ -34,13 +36,12 @@ Log spam from IsBuildingInDomeRange().
 Fix Blank Mission Profile
 Fix Buildings Broken Down And No Repair
 Fix Colonist Daily Interest Loop
-Fix Colonists Long Walks (better solution: No More Outside Suffocation mod)
+Fix Colonists Long Walks (better solution see: No More Outside Suffocation mod)
 Fix Colonists Suffocating Inside Domes
 Fix Defence Towers Not Firing At Rovers
 Fix Double Click Select All Of Type
 Fix Dust Devils Block Building
 Fix Farm Oxygen
-Fix Landscaping Freeze
 Fix Layout Construction Tech Lock
 Fix Locked Wind Turbine
 Fix Meteor Stuck On Map
@@ -57,15 +58,22 @@ If you have B&B I'd recommend SkiRich's [url=https://steamcommunity.com/sharedfi
 
 
 
-Info from Incorporated mods:
+Info from Incorporated mods/etc:
 
-[b]Fix Buildings Broken Down And No Repair[/b]:
+[b]Uneven Terrain[/b]
+When finishing landscaping it can set some of the surrounding hexes z values (height) to 65535 (also known as UnbuildableZ).
+Calling RefreshBuildableGrid() on the map seems to get rid of them without causing any major issues:
+It can mark some hexes as okay to build when they weren't before, but nothing like a cliff side or anything.
+If you enable the mod option and notice that you can build on some places you really shouldn't be able to then please let me know :)
+If you're bored and want to dig through the funcs in LandscapeFinish() to find out exactly where it's coming from, feel free.
+[b]Fix Buildings Broken Down And No Repair[/b]
 If you have broken down buildings the drones won't repair. This will check for them on load game.
 The affected buildings will say something about exceptional circumstances.
 Any buildings affected by this issue will need to be repaired with 000.1 resource after the fix happens.
-[b]Fix Floating Rubble[/b]:
+This also has a fix for buildings hit with lightning during a cold wave.
+[b]Fix Floating Rubble[/b]
 Move any floating underground rubble to within reach of drones (might have to "push" drones to make them go for it).
-[b]Fix Colonist Daily Interest Loop[/b]:
+[b]Fix Colonist Daily Interest Loop[/b]
 https://forum.paradoxplaza.com/forum/threads/surviving-mars-colonists-repeatedly-satisfy-daily-interests.1464969/
 A colonist will repeatedly use a daily interest building to satisfy a daily interest already satisfied.
 Repeating a daily interest will gain a comfort boost "if" colonist comfort is below the service comfort threshold, but a resource will always be consumed each visit.
@@ -77,6 +85,9 @@ This'll check on load each time for them (once should be enough though), and mov
 If you remove a farm that has an oxygen producing crop (workers not needed) the oxygen will still count in the dome.
 [b]Fix Dust Devils Block Building[/b]
 No more cheesing dust devils with waste rock depots (etc), by placing them on top of said devils (not by building them to block them).
+[b]Fix Defence Towers Not Firing At Rovers[/b]
+It's from a mystery (trying to keep spoilers to a minimum).
+If you're starting a new game than this is fixed, but for older saves on this mystery you'll need this mod.
 
 
 See mod options to disable fixes for stuff that you can cheese.

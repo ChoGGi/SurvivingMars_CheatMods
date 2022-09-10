@@ -15,6 +15,7 @@ DefineClass.MarsCompanion = {
 	last_good_pos = false,
 	move_speed = 4000,
 	boredom_count = false,
+	hover_height = 1000,
 }
 
 function MarsCompanion:GameInit()

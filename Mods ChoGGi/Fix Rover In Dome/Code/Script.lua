@@ -11,7 +11,7 @@ local largest = 30000
 
 local function MoveRovers()
 	-- no point in checking if domes have been opened
-	if not UICity or not mod_EnableMod or GetOpenAirBuildings(MainCity.map_id) then
+	if not MainCity or not mod_EnableMod or GetOpenAirBuildings(MainCity.map_id) then
 		return
 	end
 

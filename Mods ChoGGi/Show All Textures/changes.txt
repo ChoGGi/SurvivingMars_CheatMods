@@ -1,3 +1,6 @@
+v0.4
+Removes rocks/vegetation.
+
 v0.3
 Made sure it works properly.
 

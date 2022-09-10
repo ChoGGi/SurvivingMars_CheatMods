@@ -19,7 +19,7 @@ local function ModOptions(id)
 --~ 	mod_ChangePinnedRoverIcons = CurrentModOptions:GetProperty("ChangePinnedRoverIcons")
 
 	-- make sure we're not in menus
-	if not UICity
+	if not MainCity
 --~ 		-- reset pin bg (below)
 --~ 		or mod_ChangePinnedRoverIcons
 	then

@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local IsGameRuleActive = IsGameRuleActive
+
 GlobalVar("g_ChoGGi_ApocalypseRun_DisableResupply", false)
 
 local bits = {
@@ -65,7 +67,7 @@ OnMsg.ModsReloaded = ModOptions
 OnMsg.ApplyModOptions = ModOptions
 
 local function UpdateLocks()
-	if not UICity then
+	if not MainCity or not IsGameRuleActive("ChoGGi_ApocalypseRun") then
 		return
 	end
 
@@ -89,10 +91,18 @@ OnMsg.ChangeMapDone = UpdateLocks
 
 -- resupply lock
 function OnMsg.PassengerRocketLaunched()
+	if not IsGameRuleActive("ChoGGi_ApocalypseRun") then
+		return
+	end
+
 	g_ChoGGi_ApocalypseRun_DisableResupply = true
 	g_Consts.SupplyMissionsEnabled = -1
 end
 function OnMsg.NewDay(sol) -- NewSol...
+	if not IsGameRuleActive("ChoGGi_ApocalypseRun") then
+		return
+	end
+
 	if sol >= mod_ResupplyLockDelay then
 		g_ChoGGi_ApocalypseRun_DisableResupply = true
 		g_Consts.SupplyMissionsEnabled = -1
@@ -108,8 +118,37 @@ local skip_poi = {
 
 local ChoOrig_TrytoSpawnSpecialProject = TrytoSpawnSpecialProject
 function TrytoSpawnSpecialProject(poi, ...)
+	if not IsGameRuleActive("ChoGGi_ApocalypseRun") then
+		return ChoOrig_TrytoSpawnSpecialProject(poi, ...)
+	end
+
 	if poi and skip_poi[poi.id] then
 		return
 	end
 	return ChoOrig_TrytoSpawnSpecialProject(poi, ...)
+end
+
+function OnMsg.ClassesPostprocess()
+	if GameRulesMap.ChoGGi_ApocalypseRun then
+		return
+	end
+
+	PlaceObj("GameRules", {
+		challenge_mod = 173,
+		description = T(0000, [[
+Disable as much Earth related stuff as can be.
+
+No Outsourcing or Resupply (resupply disables after 13 Sols or first passenger rocket launches, mod option to increase delay).
+Disabled Expeditions:
+High-speed Comm Satellite, Launch SETI Satellite, Contact Exploration Access.
+Disabled Story bits (mod options to enable, can be done after start):
+Applicants Profiling, Renegades: Evil Genius, Battle Royale, Black PR, Blank Slate, The Great Leap, Rapid Expansion, Mandatory Upgrades, Training Program, Research Cooperation, Diminishing Returns, The Martian Trail, Cold Machines, Cure For Cancer, Experimental Rocket, Splinters of Mars, Food Fight, Geological Treasure, Fickle Economics, Investment Opportunity, Jackpot, Live From Earth, Mars's Got Talent, Cydonia da Vinci, Multi-planetary Species, Mutual Interests, Refugee Crisis, Rocket Launch Failed, Survey Offer, The Door to Summer, The Fugitive, Mars or Bust!, Sanity Breakdown - Vagrancies of Fame, Water Chip
+
+
+<grey>"Well, I'd certainly say she had marvelous judgment, Albert... if not particularly good taste."
+<right>Blood</grey><left>]]),
+		display_name = T(0000, "Apocalypse Run"),
+		group = "Default",
+		id = "ChoGGi_ApocalypseRun",
+	})
 end

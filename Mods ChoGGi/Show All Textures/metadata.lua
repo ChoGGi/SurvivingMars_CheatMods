@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2550005754",
 	"pops_any_uuid", "8f700697-b83d-4120-93fb-263c0293f0c4",
 	"lua_revision", 1007000, -- Picard
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -15,8 +15,7 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagOther", true,
 	"description", [[
-This will "build" a list of textured areas on the map, it'll look weird on a save with trees and such.
-
+This will "build" a list of textured areas on the map, and remove all rocks/vegetation.
 
 I'd recommend not saving with this mod enabled (unless you like the look I suppose).
 ]],

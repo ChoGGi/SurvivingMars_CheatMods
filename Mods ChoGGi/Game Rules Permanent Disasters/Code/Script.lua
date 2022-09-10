@@ -82,7 +82,7 @@ function OnMsg.ApplyModOptions(id)
 
 	ModOptions()
 
-	if not UICity then
+	if not MainCity then
 		return
 	end
 

@@ -70,7 +70,7 @@ local function ModOptions(id)
 	mod_AddRivals = CurrentModOptions:GetProperty("AddRivals")
 
 	-- make sure we're in-game
-	if not UICity then
+	if not MainCity then
 		return
 	end
 

@@ -422,7 +422,7 @@ function ChoGGi_Dlg3DManipulator:idPosClear_OnPress()
 	self.saved_axis = false
 	self.saved_pos = false
 	if IsShiftPressed() then
-		obj.ChoGGi_3DManipulator_SavedData = nil
+		self.obj.ChoGGi_3DManipulator_SavedData = nil
 	end
 end
 
@@ -507,5 +507,5 @@ end
 
 -- remove original pos key
 function ChoGGi_Dlg3DManipulator:Done()
-	obj.ChoGGi_3DManipulator_SavedData = nil
+	self.obj.ChoGGi_3DManipulator_SavedData = nil
 end

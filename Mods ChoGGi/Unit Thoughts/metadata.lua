@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"lua_revision", 1007000, -- Picard
 	"steam_id", "2196814512",
 	"pops_any_uuid", "528635cc-5241-4303-87aa-6fa9cfef66c3",
-	"version", 6,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 7,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -22,7 +22,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagInterface", true,
-	"description", [[Select a unit (drone/rover/colonist/shuttle) to see what it's up to.
+	"description", [[
+Select a unit (drone/rover/colonist/shuttle) to see what it's up to.
 Optionally show unit name, target, map grid target area, drone battery life.
 
 Mod Options:

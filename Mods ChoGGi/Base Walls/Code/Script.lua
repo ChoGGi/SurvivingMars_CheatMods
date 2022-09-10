@@ -483,20 +483,27 @@ end
 
 -- swap between stuff for the holder corners
 function ChoGGi_BaseWalls:SwapHolder()
-	if not (self.current_holder_object or self.item_table.objects) then
+	if not self.current_holder_object or not self.item_table.objects then
 		return
 	end
 
 	-- grab the next entity
 	local idx = table.find(self.item_table.objects, self.current_holder_object.entity)
+	if not idx then
+		idx = 0
+	end
+
 	local next_ent = self.item_table.objects[idx+1]
 	if not next_ent then
 		next_ent = self.item_table.objects[1]
 	end
+
 	self.current_holder_object:ChangeEntity(next_ent)
 
-	local which_holder = self.current_holder_object:GetParent():GetEntity() ~= "DefenceTurret"
-	self:UpdateHoldee(self.current_holder_object, next_ent, which_holder)
+	local parent = self.current_holder_object:GetParent()
+	if parent then
+		self:UpdateHoldee(self.current_holder_object, next_ent, parent.entity ~= "DefenceTurret")
+	end
 end
 
 -- stop showing the no drone commander sign

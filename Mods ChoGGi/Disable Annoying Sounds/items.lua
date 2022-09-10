@@ -1,9 +1,9 @@
 -- See LICENSE for terms
 
 local T = T
-local table = table
+local PlaceObj = PlaceObj
 
-return {
+local properties = {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "DustGeyserBurst",
 		"DisplayName", T(302535920012019, "Dust Geyser Burst"),
@@ -77,3 +77,14 @@ return {
 		"DefaultValue", false,
 	}),
 }
+
+if g_AvailableDlc.picard then
+	properties[#properties+1] = PlaceObj("ModItemOptionToggle", {
+		"name", "SupportStrutGrind",
+		"DisplayName", table.concat(T(174671309714, "Support Strut") .. " " .. T(0000, "Grind")),
+		"Help", T(302535920011593, "Turn <color ChoGGi_green>On</color> to disable sound."),
+		"DefaultValue", false,
+	})
+end
+
+return properties

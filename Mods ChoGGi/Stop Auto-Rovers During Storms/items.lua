@@ -11,4 +11,10 @@ return {
 		"Help", T(302535920011542, "Go to the nearest working drone hub if rover is idle (laser option takes precedence)."),
 		"DefaultValue", true,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "ImmediateAbort",
+		"DisplayName", T(0000, "Immediate Abort"),
+		"Help", T(0000, "As soon as storm starts flee/idle rovers."),
+		"DefaultValue", false,
+	}),
 }

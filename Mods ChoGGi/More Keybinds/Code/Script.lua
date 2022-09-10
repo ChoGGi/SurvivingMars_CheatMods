@@ -310,7 +310,7 @@ local filename
 Actions[#Actions+1] = {ActionName = T(302535920011641, "Quicksave"),
 	ActionId = "ChoGGi.AddQuicksaveHotkey.Quicksave",
 	OnAction = function()
-		if not UICity then
+		if not MainCity then
 			return
 		end
 

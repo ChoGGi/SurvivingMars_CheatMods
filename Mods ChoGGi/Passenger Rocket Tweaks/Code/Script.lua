@@ -161,7 +161,7 @@ ToggleSpecInfo = function()
 					}, {
 						PlaceObj("XTemplateWindow", {-- none
 							"__condition", function()
-								return not UICity or UICity.launch_mode ~= "passenger_pod"
+								return not MainCity or MainCity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
 							"Padding", oooo,
@@ -171,7 +171,7 @@ ToggleSpecInfo = function()
 						}),
 						PlaceObj("XTemplateWindow", {-- Botanist
 							"__condition", function()
-								return not UICity or UICity.launch_mode ~= "passenger_pod"
+								return not MainCity or MainCity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
 							"Padding", oooo,
@@ -181,7 +181,7 @@ ToggleSpecInfo = function()
 						}),
 						PlaceObj("XTemplateWindow", {-- Engineer
 							"__condition", function()
-								return not UICity or UICity.launch_mode ~= "passenger_pod"
+								return not MainCity or MainCity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
 							"Padding", oooo,
@@ -191,7 +191,7 @@ ToggleSpecInfo = function()
 						}),
 						PlaceObj("XTemplateWindow", {-- Geologist
 							"__condition", function()
-								return not UICity or UICity.launch_mode ~= "passenger_pod"
+								return not MainCity or MainCity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
 							"Padding", oooo,
@@ -248,7 +248,7 @@ ToggleSpecInfo = function()
 					}, {
 						PlaceObj("XTemplateWindow", {
 							"__condition", function()
-								return not UICity or UICity.launch_mode ~= "passenger_pod"
+								return not MainCity or MainCity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
 							"Padding", oooo,
@@ -258,7 +258,7 @@ ToggleSpecInfo = function()
 						}),
 						PlaceObj("XTemplateWindow", {
 							"__condition", function()
-								return not UICity or UICity.launch_mode ~= "passenger_pod"
+								return not MainCity or MainCity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
 							"Padding", oooo,
@@ -268,7 +268,7 @@ ToggleSpecInfo = function()
 						}),
 						PlaceObj("XTemplateWindow", {
 							"__condition", function()
-								return not UICity or UICity.launch_mode ~= "passenger_pod"
+								return not MainCity or MainCity.launch_mode ~= "passenger_pod"
 							end,
 							"__class", "XText",
 							"Padding", oooo,

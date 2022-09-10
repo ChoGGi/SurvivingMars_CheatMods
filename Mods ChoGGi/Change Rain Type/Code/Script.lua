@@ -44,7 +44,7 @@ local function ModOptions(id)
 	mod_RainType = lookup_rain[CurrentModOptions:GetProperty("RainType")]
 
 	-- make sure we're in-game
-	if not UICity then
+	if not MainCity then
 		return
 	end
 

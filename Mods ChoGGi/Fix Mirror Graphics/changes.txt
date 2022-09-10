@@ -1,3 +1,6 @@
+v0.8
+Asteroids/Underground should all be sandy/rocky (probably).
+
 v0.7
 Didn't work.
 

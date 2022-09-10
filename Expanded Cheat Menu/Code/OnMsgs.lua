@@ -1289,13 +1289,20 @@ do -- LoadGame/CityStart
 		end
 	end
 
-	-- saved game is loaded
+	-- Saved game is loaded
+	-- If you see (MainCity or UICity) that's for older saves (it updates them, but later then I check in LoadGame)
 	function OnMsg.LoadGame()
 		Msg("ChoGGi_Loaded")
 	end
-	-- new game is loaded (this is before the map is loaded)
+	-- New game is loaded
+	--[[
+	This fires before the map terrain is created
+	You can use OnMsg.MapGenerated, but that fires for underground/asteroids as well
+	You'll need to check for that, maybe set a value on CityStart then check for that value on MapGenerated
+	Don't forget to nil the value
+	]]
 	function OnMsg.CityStart()
-		-- reset my mystery msgs to hidden
+		-- Reset my mystery msgs to hidden
 		ChoGGi.UserSettings.ShowMysteryMsgs = nil
 		Msg("ChoGGi_Loaded")
 	end
@@ -1330,10 +1337,6 @@ do -- LoadGame/CityStart
 		-- clear out Temp settings
 		ChoGGi.Temp.UnitPathingHandles = {}
 
-		-- not needed, removing from old saves, so people don't notice them
-		MainCity.labels.ChoGGi_GridElements = nil
-		MainCity.labels.ChoGGi_LifeSupportGridElement = nil
-		MainCity.labels.ChoGGi_ElectricityGridElement = nil
 		-- re-binding is now an in-game thing, so keys are just defaults
 		UserSettings.KeyBindings = nil
 

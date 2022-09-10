@@ -23,7 +23,7 @@ local mod_RemoveSponsorLock
 local mod_NoWasteRock
 
 local function UpdateRovers()
-	if not UICity then
+	if not MainCity then
 		return
 	end
 

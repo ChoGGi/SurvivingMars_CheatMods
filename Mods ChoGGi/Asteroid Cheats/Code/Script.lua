@@ -45,7 +45,7 @@ local function ModOptions(id)
 	mod_AddAsteroidTime = CurrentModOptions:GetProperty("AddAsteroidTime")
 
 	-- make sure we're in-game
-	if not UICity then
+	if not MainCity then
 		return
 	end
 

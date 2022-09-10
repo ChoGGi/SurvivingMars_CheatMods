@@ -11,12 +11,18 @@ local GetRandomPassableAroundOnMap = GetRandomPassableAroundOnMap
 local HexGetUnits = HexGetUnits
 local GetRealm = GetRealm
 local IsKindOf = IsKindOf
+local SuspendPassEdits = SuspendPassEdits
+local ResumePassEdits = ResumePassEdits
+local SuspendTerrainInvalidations = SuspendTerrainInvalidations
+local ResumeTerrainInvalidations = ResumeTerrainInvalidations
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
 
 local mod_EnableMod
 local mod_FarmOxygen
 local mod_DustDevilsBlockBuilding
+local mod_PlanetaryAnomalyBreakthroughs
+local mod_UnevenTerrain
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -27,6 +33,8 @@ local function ModOptions(id)
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_FarmOxygen = CurrentModOptions:GetProperty("FarmOxygen")
 	mod_DustDevilsBlockBuilding = CurrentModOptions:GetProperty("DustDevilsBlockBuilding")
+	mod_PlanetaryAnomalyBreakthroughs = CurrentModOptions:GetProperty("PlanetaryAnomalyBreakthroughs")
+	mod_UnevenTerrain = CurrentModOptions:GetProperty("UnevenTerrain")
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -36,18 +44,16 @@ OnMsg.ApplyModOptions = ModOptions
 --
 function OnMsg.ClassesPostprocess()
 
-	--[[
-	https://forum.paradoxplaza.com/forum/threads/surviving-mars-colonists-repeatedly-satisfy-daily-interests.1464969/
-	A colonist will repeatedly use a daily interest building to satisfy a daily interest already satisfied.
-	Repeating a daily interest will gain a comfort boost "if" colonist comfort is below the service comfort threshold, but a resource will always be consumed each visit.
-
-	This mod will block the colonist from having a visit, instead: An unemployed scientist will wander around outside till the Sol is over instead of chewing up 0.6 electronics.
-	]]
-	-- lua rev 1011030 Colonist:EnterBuilding()
+	-- Fix Colonist Daily Interest Loop
+	-- last checked lua rev 1011030 Colonist:EnterBuilding()
 	local ChoOrig_Colonist_EnterBuilding = Colonist.EnterBuilding
 	function Colonist:EnterBuilding(building, ...)
-		if mod_EnableMod and self.daily_interest ~= "" and ValidateBuilding(building)
-			and building:HasMember("IsOneOfInterests") and building:IsOneOfInterests(self.daily_interest)
+		if not mod_EnableMod then
+			return ChoOrig_Colonist_EnterBuilding(self, building, ...)
+		end
+
+		if self.daily_interest ~= "" and ValidateBuilding(building)
+			and building.IsOneOfInterests and building:IsOneOfInterests(self.daily_interest)
 		then
 			self.daily_interest = ""
 			self.daily_interest_fail = 0
@@ -59,6 +65,8 @@ function OnMsg.ClassesPostprocess()
 end
 --
 do -- CityStart/LoadGame
+
+	-- If you see (MainCity or UICity) that's for older saves (it does update, but after I check in LoadGame)
 	local function StartupCode()
 		if not mod_EnableMod then
 			return
@@ -70,7 +78,6 @@ do -- CityStart/LoadGame
 		local UIColony = UIColony
 		local const = const
 		local GameMaps = GameMaps
-		local Landscapes = Landscapes
 		local ResupplyItemDefinitions = ResupplyItemDefinitions
 		local bt = BuildingTemplates
 		local bmpo = BuildMenuPrerequisiteOverrides
@@ -93,7 +100,7 @@ do -- CityStart/LoadGame
 		end
 		--
 		-- Fix Defence Towers Not Firing At Rovers (x2)
-		local hostile = MainCity.labels.HostileAttackRovers or ""
+		local hostile = (MainCity or UICity).labels.HostileAttackRovers or ""
 		if #hostile > 0 then
 			UIColony.mystery.can_shoot_rovers = true
 		end
@@ -114,14 +121,7 @@ do -- CityStart/LoadGame
 				end
 			end
 		end
-		--
-		--[[
-		If you have broken down buildings the drones won't repair. This will check for them on load game.
-		The affected buildings will say something about exceptional circumstances.
-		Any buildings affected by this issue will need to be repaired with 000.1 resource after the fix happens.
-
-		This also has a fix for buildings hit with lightning during a cold wave.
-		]]
+		-- Fix Buildings Broken Down And No Repair
 		local blds = UIColony:GetCityLabels("Building")
 		for i = 1, #blds do
 			local bld = blds[i]
@@ -191,27 +191,6 @@ do -- CityStart/LoadGame
 			end
 		end
 		--
-		-- For some reason LandscapeLastMark gets set to around 4090, when LandscapeMark hits 4095 bad things happen.
-		-- This resets LandscapeLastMark to whatever is the highest number in Landscapes when a save is loaded (assuming it's under 3000, otherwise 0).
-		-- If there's placed landscapes grab the largest number
-		if Landscapes and next(Landscapes) then
-			local largest = 0
-			for idx in pairs(Landscapes) do
-				if idx > largest then
-					largest = idx
-				end
-			end
-			-- If over 3K then reset to 0
-			if largest > 3000 then
-				LandscapeLastMark = 0
-			else
-				LandscapeLastMark = largest + 1
-			end
-		else
-			-- no landscapes so 0 it is
-			LandscapeLastMark = 0
-		end
-		--
 		-- Wind turbine gets locked by a game event.
 		if bmpo.WindTurbine and TGetID(bmpo.WindTurbine) == 401896326435--[[You can't construct this building at this time]] then
 			bmpo.WindTurbine = nil
@@ -279,9 +258,7 @@ do -- CityStart/LoadGame
 				end
 			end)
 		end
-		--
-		-- If you have malfunctioning drones at a dronehub and they never get repaired (off map).
-		-- This'll check on load each time for them (once should be enough though), and move them near the hub.
+		-- Fix Stuck Malfunctioning Drones At DroneHub
 		local positions = {}
 		local radius = 100 * guim
 
@@ -446,10 +423,6 @@ do -- AreDomesConnectedWithPassage (Fix Colonists Long Walks)
 end -- do
 --
 -- Fix Defence Towers Not Firing At Rovers
---[[
-It's from a mystery (trying to keep spoilers to a minimum).
-If you're starting a new game than this is fixed, but for older saves on this mystery you'll need this mod.
-]]
 local ChoOrig_SA_Exec_Exec = SA_Exec.Exec
 function SA_Exec:Exec(sequence_player, ip, seq, ...)
 	if not mod_EnableMod then
@@ -515,7 +488,7 @@ function ConstructionController:FinalizeStatusGathering(...)
 
 	-- shameless copy pasta of function ConstructionController:HasDepositUnderneath()
 	-- last checked lua rev 1011166
-  local force_extend_bb = self.template_obj:HasMember("force_extend_bb_during_placement_checks") and self.template_obj.force_extend_bb_during_placement_checks ~= 0 and self.template_obj.force_extend_bb_during_placement_checks or false
+  local force_extend_bb = self.template_obj.force_extend_bb_during_placement_checks and self.template_obj.force_extend_bb_during_placement_checks ~= 0 and self.template_obj.force_extend_bb_during_placement_checks or false
   local underneath = HexGetUnits(GetRealm(self), self.cursor_obj, self.template_obj:GetEntity(), nil, nil, true, function(o)
     return IsKindOf(o, "BaseDustDevil")
   end, "BaseDustDevil", force_extend_bb, self.template_obj_points)
@@ -541,7 +514,37 @@ function IsBuildingInDomeRange(bld, dome, ...)
 	return false
 end
 --
---
+-- Uneven Terrain
+local ChoOrig_LandscapeFinish = LandscapeFinish
+function LandscapeFinish(mark, ...)
+	if not mod_EnableMod or not mod_UnevenTerrain then
+		return ChoOrig_LandscapeFinish(mark, ...)
+	end
+
+	local landscape = Landscapes[mark]
+	if not landscape then
+		return
+	end
+
+	-- No return value
+	-- last checked lua rev 1011166
+	ChoOrig_LandscapeFinish(mark, ...)
+
+	local map_id = landscape.map_id
+	local game_map = GameMaps[map_id]
+	if not game_map then
+		return
+	end
+
+	-- Speed up
+	SuspendPassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
+	SuspendTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
+
+	game_map:RefreshBuildableGrid()
+
+	ResumePassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
+	ResumeTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
+end
 --
 --
 --
@@ -614,7 +617,7 @@ end
 -- No Planetary Anomaly Breakthroughs when B&B is installed.
 local ChoOrig_City_InitBreakThroughAnomalies = City.InitBreakThroughAnomalies
 function City:InitBreakThroughAnomalies(...)
-	if not mod_EnableMod then
+	if not mod_EnableMod or not mod_PlanetaryAnomalyBreakthroughs then
 		return ChoOrig_City_InitBreakThroughAnomalies(self, ...)
 	end
 

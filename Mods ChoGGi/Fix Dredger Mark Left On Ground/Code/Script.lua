@@ -9,6 +9,7 @@ local function StartupCode()
 
 	SuspendPassEdits("ChoGGi.FixDredgerMarkLeftOnGround")
 	--
+	-- Yea I should probably just do the surface map, but it doesn't hurt to check them all...
 	local GameMaps = GameMaps
 	for _, map in pairs(GameMaps) do
 

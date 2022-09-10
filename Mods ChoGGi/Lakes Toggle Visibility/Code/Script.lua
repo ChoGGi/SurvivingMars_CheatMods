@@ -89,7 +89,7 @@ local function ModOptions(id)
 	mod_EnableLakes = CurrentModOptions:GetProperty("EnableLakes")
 	mod_EnableGridView = CurrentModOptions:GetProperty("EnableGridView")
 
-	if not UICity then
+	if not MainCity then
 		return
 	end
 

@@ -1,2 +1,5 @@
+v0.3
+Made into game rule, and changed title.
+
 v0.2
 Added more storybits and mod options for storybits.

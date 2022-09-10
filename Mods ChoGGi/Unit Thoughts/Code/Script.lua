@@ -64,7 +64,7 @@ local function ModOptions(id)
 	mod_ForceClearLines = options:GetProperty("ForceClearLines")
 
 	-- make sure we're in-game
-	if not UICity then
+	if not MainCity then
 		return
 	end
 
@@ -207,7 +207,7 @@ local function MarkUnits(obj)
 		for i = 1, #objs do
 			local obj2 = objs[i]
 			if mod_EnableLines then
-				SetPathMarkersGameTime(obj2, nil, delay)
+				SetPathMarkersGameTime(obj2)
 			end
 			if ValidObj(obj2) then
 				threads_c = threads_c + 1

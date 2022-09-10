@@ -1,6 +1,9 @@
 -- See LICENSE for terms
 
-return {
+local T = T
+local PlaceObj = PlaceObj
+
+local properties = {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "EnableMod",
 		"DisplayName", T(302535920011303, "<color ChoGGi_yellow>Enable Mod</color>"),
@@ -64,3 +67,18 @@ return {
 		"DefaultValue", false,
 	}),
 }
+
+if g_AvailableDlc.picard then
+	properties[#properties+1] = PlaceObj("ModItemOptionToggle", {
+		"name", "Asteroid",
+		"DisplayName", T(13859, "Asteroid"),
+		"DefaultValue", false,
+	})
+	properties[#properties+1] = PlaceObj("ModItemOptionToggle", {
+		"name", "Underground",
+		"DisplayName", T(13605, "Underground"),
+		"DefaultValue", false,
+	})
+end
+
+return properties

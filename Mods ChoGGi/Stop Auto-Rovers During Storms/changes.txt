@@ -1,3 +1,7 @@
+v0.8
+Added Immediate Abort: As soon as storm starts rovers will flee/idle (default off).
+Code cleanup.
+
 v0.7
 Picard.
 

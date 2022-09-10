@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1816633344",
 	"pops_any_uuid", "03c6b6ff-1afd-489e-b923-69f171b248eb",
 	"lua_revision", 1007000, -- Picard
-	"version", 6,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 7,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -32,5 +32,6 @@ Research Complete
 Select Building
 Sensor Tower Beeping
 Spacebar Music
+Support Struts
 ]],
 })

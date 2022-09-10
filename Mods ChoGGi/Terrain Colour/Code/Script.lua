@@ -73,7 +73,7 @@ local function ModOptions(id)
 	mod_ChangeColour4 = CurrentModOptions:GetProperty("ChangeColour4")
 
 	-- make sure we're in-game
-	if not UICity then
+	if not MainCity then
 		return
 	end
 

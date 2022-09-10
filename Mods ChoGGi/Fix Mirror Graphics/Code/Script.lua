@@ -1,7 +1,5 @@
 -- See LICENSE for terms
 
-local GetTerrainTextureIndex = GetTerrainTextureIndex
-
 local mod_EnableMod
 local mod_DumpingSites
 local mod_DomeGrass
@@ -13,13 +11,15 @@ local mod_TerraLake
 local mod_TerraLichen
 local mod_TerraMoss
 local mod_TerraSoil
-
-local mapped_textures
-local function AddMap(bad, good)
-	mapped_textures[GetTerrainTextureIndex(bad)] = GetTerrainTextureIndex(good)
-end
+local mod_Asteroid
+local mod_Underground
 
 local function UpdateTextures()
+	-- make sure we're in-game
+	if not MainCity then
+		return
+	end
+
 	if not mod_EnableMod then
 		-- show spiders again
 		if mod_DustGeysers then
@@ -32,7 +32,20 @@ local function UpdateTextures()
 		return
 	end
 
-	mapped_textures = {}
+	local mapped_textures = {}
+	local GetTerrainTextureIndex = GetTerrainTextureIndex
+	local function AddMap(bad, good)
+		mapped_textures[GetTerrainTextureIndex(bad)] = GetTerrainTextureIndex(good)
+	end
+
+	if mod_DustGeysers then
+		AddMap("Spider", "RockDark")
+
+		local objs = MapGet("map", "DecSpider")
+		for i = 1, #objs do
+			objs[i]:SetVisible(false)
+		end
+	end
 
 	if mod_DumpingSites then
 		AddMap("WasteRock", "RockLight")
@@ -48,14 +61,6 @@ local function UpdateTextures()
 	if mod_DomeRubble then
 		AddMap("DomeRubble", "ChaosSet03_02")
 		AddMap("DomeDemolish", "ChaosSet03_01")
-	end
-
-	if mod_DustGeysers then
-		AddMap("Spider", "RockDark")
-		local objs = MapGet("map", "DecSpider")
-		for i = 1, #objs do
-			objs[i]:SetVisible(false)
-		end
 	end
 
 	if mod_TerraGrass then
@@ -84,6 +89,41 @@ local function UpdateTextures()
 		AddMap("TerraSoilQuality", "SandMIX_01")
 	end
 
+	if mod_Asteroid then
+		AddMap("Asteroid_Gravel_01", "Chaos_light")
+		AddMap("Asteroid_Gravel_02", "SandDark_01")
+		AddMap("Asteroid_Gravel_03", "Sand_01")
+		AddMap("Asteroid_Gravel_04", "SandRed_1")
+		AddMap("Asteroid_Gravel_05", "SandDune_01")
+		AddMap("Asteroid_Sand_01", "SandFrozen")
+		AddMap("Asteroid_Sand_02", "RockRed_1")
+		AddMap("Asteroid_Sand_03", "RockRed_2")
+		AddMap("Asteroid_Sand_04", "Chaos_light")
+		AddMap("Asteroid_Sand_05", "ChaosSet03_01")
+		AddMap("Asteroid_Sand_06", "SandRed_stones_2")
+		AddMap("Asteroid_Sand_07", "SandDark_02")
+		AddMap("Asteroid_Sand_08", "SandRed_stones_1")
+		AddMap("Asteroid_Rocks_01", "RockDark")
+		AddMap("Asteroid_Rocks_02", "RockLight")
+		AddMap("Asteroid_Rocks_03", "SandFrozen")
+		AddMap("Asteroid_Rocks_04", "ChaosSet03_01")
+		AddMap("Asteroid_Vein_01", "Prefab_Red")
+		AddMap("Asteroid_Vein_02", "Prefab_Orange")
+		AddMap("Asteroid_Vein_03", "Prefab_Violet")
+		AddMap("DustRust_Asteroid", "RockDark")
+	end
+	if mod_Underground then
+		AddMap("Underground_Gravel_01", "Chaos_light")
+		AddMap("Underground_Gravel_02", "SandRed_1")
+		AddMap("Underground_Rocks_01", "RockDark")
+		AddMap("Underground_Rocks_02", "GravelDark")
+		AddMap("Underground_Rocks_03", "RockLight")
+		AddMap("Underground_Rocks_04", "SandFrozen")
+		AddMap("Underground_Sand_01", "SandDark_02")
+		AddMap("Underground_Sand_02", "SandDark_01")
+		AddMap("DustRust_Underground", "RockDark")
+	end
+
 	if next(mapped_textures) then
 		SuspendPassEdits("ChoGGi_FixMirrorGraphics")
 		GetActiveTerrain():RemapType(mapped_textures)
@@ -110,11 +150,8 @@ local function ModOptions(id)
 	mod_TerraLichen = options:GetProperty("TerraLichen")
 	mod_TerraMoss = options:GetProperty("TerraMoss")
 	mod_TerraSoil = options:GetProperty("TerraSoil")
-
-	-- make sure we're in-game
-	if not UICity then
-		return
-	end
+	mod_Asteroid = options:GetProperty("Asteroid")
+	mod_Underground = options:GetProperty("Underground")
 
 	UpdateTextures()
 end
@@ -128,10 +165,12 @@ OnMsg.BuildingInit = UpdateTextures
 
 OnMsg.CityStart = UpdateTextures
 OnMsg.LoadGame = UpdateTextures
+-- Switch between different maps (can happen before UICity)
+OnMsg.ChangeMapDone = UpdateTextures
 
 function OnMsg.TerrainTexturesChanged()
+	-- ?
 	if mod_TerraSoil then
---~   local soil_terrain_idx = GetTerrainTextureIndex("TerraSoilQuality")
 		local soil_terrain_idx = GetTerrainTextureIndex("SandMIX_01")
 		hr.SoilTextureIdx = soil_terrain_idx or -1
 		hr.RenderSoilGrid = soil_terrain_idx and 1 or 0

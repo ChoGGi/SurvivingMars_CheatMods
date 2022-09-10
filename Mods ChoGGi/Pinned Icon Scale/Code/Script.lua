@@ -5,7 +5,7 @@ local IsPoint = IsPoint
 local mod_PinsScale
 
 local function UpdatePins()
-	if not IsPoint(mod_PinsScale) or not UICity then
+	if not IsPoint(mod_PinsScale) or not MainCity then
 		return
 	end
 
@@ -19,7 +19,7 @@ local function UpdatePins()
 end
 OnMsg.CityStart = UpdatePins
 OnMsg.LoadGame = UpdatePins
--- switch between different maps (happens before UICity)
+-- switch between different maps (happens before MainCity)
 OnMsg.ChangeMapDone = UpdatePins
 
 local function ModOptions(id)

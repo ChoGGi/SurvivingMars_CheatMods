@@ -17,6 +17,7 @@ local mod_ResearchComplete
 local mod_ColdWaveCrackling
 local mod_ArtificialSunZapping
 local mod_DustGeyserBurst
+local mod_SupportStrutGrind
 
 local DisableSounds
 
@@ -39,6 +40,7 @@ local function ModOptions(id)
 	mod_ColdWaveCrackling = options:GetProperty("ColdWaveCrackling")
 	mod_ArtificialSunZapping = options:GetProperty("ArtificialSunZapping")
 	mod_DustGeyserBurst = options:GetProperty("DustGeyserBurst")
+	mod_SupportStrutGrind = options:GetProperty("SupportStrutGrind")
 
 	if UICity then
 		DisableSounds()
@@ -183,6 +185,12 @@ DisableSounds = function()
 				end
 			end
 		end
+	end
+
+	if mod_SupportStrutGrind then
+		table.remove(FXRules.Working.start.SupportStrut.any, 1)
+		RemoveFromRules("Building SupportStruts Loop")
+		BldStopSounds("SupportStruts")
 	end
 
 end

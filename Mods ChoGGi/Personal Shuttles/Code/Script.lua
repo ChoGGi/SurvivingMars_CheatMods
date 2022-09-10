@@ -70,7 +70,7 @@ end
 
 function PersonalShuttle:GameInit()
 
-	self.city = self.hub.city or UICity
+	self.city = self.hub.city or MainCity
 	self.city:AddToLabel("PersonalShuttle", self)
 
 	-- gagarin likes it dark
@@ -79,7 +79,7 @@ function PersonalShuttle:GameInit()
 	local ps = PersonalShuttles
 
 	-- If it's an attack shuttle
-	if UICity.PersonalShuttles.shuttle_threads[self.handle] then
+	if MainCity.PersonalShuttles.shuttle_threads[self.handle] then
 		self.defence_thread_DD = CreateGameTimeThread(function()
 			while IsValid(self) and not self.destroyed do
 				if self.working then
@@ -93,7 +93,7 @@ function PersonalShuttle:GameInit()
 end
 
 function PersonalShuttle:Done()
-	(self.city or UICity):RemoveFromLabel("PersonalShuttle", self)
+	(self.city or MainCity):RemoveFromLabel("PersonalShuttle", self)
 end
 
 -- gets rid of error in log
@@ -106,7 +106,7 @@ end
 
 -- dustdevil thread for rockets
 function PersonalShuttle:PersonalShuttles_DefenceTickD(ps)
-	if UICity.PersonalShuttles.shuttle_threads[self.handle] then
+	if MainCity.PersonalShuttles.shuttle_threads[self.handle] then
 		return self:DefenceTick(ps.shuttle_rocket_DD)
 	end
 end
@@ -296,7 +296,7 @@ function PersonalShuttle:DropCargo(obj, pos, dest)
 	-- make it able to pick up again without having to press the button
 	self.pickup_toggle = true
 
-	UICity.PersonalShuttles.shuttle_carried[carried.handle] = nil
+	MainCity.PersonalShuttles.shuttle_carried[carried.handle] = nil
 end
 
 local function IdleDroneInAir()
@@ -310,9 +310,9 @@ function PersonalShuttle:SelectedObject(obj, pos, dest)
 		-- scan nearby SubsurfaceAnomaly
 		local anomaly = NearestObject(pos, GetRealm(self):MapGet("map", "SubsurfaceAnomaly"), 2000)
 		-- make sure it's the right one, and not already being scanned by another
-		if anomaly and obj == anomaly and not UICity.PersonalShuttles.shuttle_scanning_anomaly[anomaly.handle] then
+		if anomaly and obj == anomaly and not MainCity.PersonalShuttles.shuttle_scanning_anomaly[anomaly.handle] then
 			PlayFX("ArtificialSunCharge", "start", anomaly)
-			UICity.PersonalShuttles.shuttle_scanning_anomaly[anomaly.handle] = true
+			MainCity.PersonalShuttles.shuttle_scanning_anomaly[anomaly.handle] = true
 			self:AnalyzeAnomaly(anomaly)
 			PlayFX("ArtificialSunCharge", "end", anomaly)
 		end
@@ -328,8 +328,8 @@ function PersonalShuttle:SelectedObject(obj, pos, dest)
 		-- goto item
 		self:WaitFollowPath(self:CalcPath(pos, obj:GetVisualPos()))
 
-		if not UICity.PersonalShuttles.shuttle_carried[obj.handle] then
-			UICity.PersonalShuttles.shuttle_carried[obj.handle] = true
+		if not MainCity.PersonalShuttles.shuttle_carried[obj.handle] then
+			MainCity.PersonalShuttles.shuttle_carried[obj.handle] = true
 
 			-- select shuttle instead of carried
 			SelectObj(self)
@@ -421,7 +421,7 @@ function PersonalShuttle:AnalyzeAnomaly(anomaly)
 		end
 	end
 	self:PopAndCallDestructor()
-	UICity.PersonalShuttles.shuttle_scanning_anomaly[anomaly.handle] = nil
+	MainCity.PersonalShuttles.shuttle_scanning_anomaly[anomaly.handle] = nil
 end
 
 function PersonalShuttle:GetScanAnomalyProgress()

@@ -34,7 +34,7 @@ local function ModOptions(id)
 	mod_RocketMalfunction = CurrentModOptions:GetProperty("RocketMalfunction")
 
 	-- make sure we're in-game
-	if not UICity then
+	if not MainCity then
 		return
 	end
 

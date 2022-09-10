@@ -47,7 +47,7 @@ local function ModOptions(id)
 		return
 	end
 
-	if not UICity then
+	if not MainCity then
 		return
 	end
 

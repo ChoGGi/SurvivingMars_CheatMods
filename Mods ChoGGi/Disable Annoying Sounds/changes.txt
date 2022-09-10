@@ -1,14 +1,17 @@
+v0.7
+Added Support Struts.
+
 v0.6
 No more toggling buildings to stop sounds.
 Added Artificial Sun, and Dust Geysers.
 
 v0.5
-Seeker and Sensor rovers
-Rare Metals Extractor
-Select Building Sound
-Biorobotics Workshop
-Research Complete
-Cold Wave Crackling
+Seeker and Sensor rovers.
+Rare Metals Extractor.
+Select Building Sound.
+Biorobotics Workshop.
+Research Complete.
+Cold Wave Crackling.
 
 v0.4
 Some idiot forgot to add the library mod req for this mod...

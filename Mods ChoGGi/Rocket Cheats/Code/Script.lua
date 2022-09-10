@@ -69,7 +69,7 @@ local function ModOptions(id)
 	mod_RocketPrice = options:GetProperty("RocketPrice") * const.Scale.mil
 
 	-- make sure we're in-game
-	if not UICity then
+	if not MainCity then
 		return
 	end
 	UpdateRockets()

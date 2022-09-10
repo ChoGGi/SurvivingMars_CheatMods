@@ -40,11 +40,33 @@ local function StartupCode()
 	SetTemplate("MirrorSphere", true)
 	SetTemplate("PowerDecoy", true)
 
+	local UIColony = UIColony
+
 	-- needed to capture spheres/show them in build menu
 	UIColony.tech_status["Purpose of the Spheres"] = {field = "Mysteries", points = 0}
 	UIColony.tech_status["Xeno-Terraforming"] = {field = "Mysteries", points = 0}
 	UIColony:SetTechResearched("Purpose of the Spheres")
 	UIColony:SetTechResearched("Xeno-Terraforming")
+
+	local objs = UIColony:GetCityLabels("Crystals")
+	if #objs > 0 then
+    local mystery = UIColony.mystery
+    if mystery then
+      mystery.salvaged_crystallines = 0
+    end
+
+		-- check for any that user tried to salvage and demo them
+		local DoneObject = DoneObject
+		for i = #objs, 1, -1 do
+			local obj = objs[i]
+			if obj.demolishing_countdown and obj.demolishing_countdown < 0 then
+				DoneObject(obj)
+			end
+		end
+
+	end
+
+	-- fix older saves with crystals that need to be disabled
 end
 
 OnMsg.CityStart = StartupCode
@@ -56,8 +78,16 @@ function OnMsg.BuildingInit(obj)
 	end
 
 	if obj:IsKindOf("CrystalsBuilding") then
+		-- revealed is needed for it to show up on certain saves (no idea why, save had LightsMystery)
+		obj.revealed = true
 		obj.can_demolish = true
 		obj:CheatAllowExploration()
+
+		-- needed for salvage, and it shouldn't cause any issues with other mysteries
+    local mystery = obj.city.colony.mystery
+    if mystery then
+      mystery.salvaged_crystallines = 0
+    end
 	elseif obj:IsKindOf("Sinkhole") then
 		obj.can_demolish = true
 		obj.max_firefly_number = 999
@@ -68,8 +98,12 @@ end
 function OnMsg.ClassesPostprocess()
 	local xtemplate = XTemplates.ipBuilding[1]
 
+	-- Okay got a little lazy with my template names...
+
 	-- check for and remove existing template
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStones_Liftoff", true)
+
+	-- Crystals
 
 	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
 		"Id" , "ChoGGi_Template_BuildPhilosopherStones_Liftoff",
@@ -88,7 +122,7 @@ function OnMsg.ClassesPostprocess()
 			local context = self.context
 
 			-- might help log spam
-			context.city:SetTechResearched("CrystallineFrequencyJamming")
+			context.city.colony:SetTechResearched("CrystallineFrequencyJamming")
 			-- Yamato Hasshin!
 			context:CheatStartLiftoff()
 
@@ -96,7 +130,8 @@ function OnMsg.ClassesPostprocess()
 		end,
 	})
 
-	--
+	-- Mirror Spheres
+
 	xtemplate = XTemplates.ipMirrorSphereBuilding[1]
 
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStones_SphereEscavate", true)
@@ -145,6 +180,9 @@ function OnMsg.ClassesPostprocess()
 
 	--
 	xtemplate = XTemplates.ipSinkhole[1]
+
+
+	-- Sinkholes
 
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Spawn", true)
 	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {

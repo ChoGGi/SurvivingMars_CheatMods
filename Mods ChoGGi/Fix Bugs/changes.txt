@@ -1,3 +1,11 @@
+v2.8
+Removed Fix Landscaping Freeze.
+Added mod option for No Planetary Anomaly Breakthroughs when B&B is installed.
+Added a "fix" for the Uneven Terrain bug we've come to know and love (see mod option tooltip).
+
+v2.7
+Cleaned up some code.
+
 v2.6
 Log spam from IsBuildingInDomeRange().
 

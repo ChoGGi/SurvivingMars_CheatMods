@@ -53,7 +53,7 @@ local function ModOptions(id)
 	mod_ComfortIncrease = options:GetProperty("ComfortIncrease") * const.ResourceScale
 
 	-- make sure we're in-game
-	if not UICity then
+	if not MainCity then
 		return
 	end
 

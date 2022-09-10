@@ -33,7 +33,7 @@ local function ModOptions(id)
 	SetBuildingTemplates("ForestationPlant", "vegetation_interval", mod_PlantInterval)
 
 	-- make sure we're in-game
-	if not UICity then
+	if not MainCity then
 		return
 	end
 

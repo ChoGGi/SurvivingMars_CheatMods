@@ -6,23 +6,23 @@ local IsKindOf = IsKindOf
 local IsValid = IsValid
 
 local function StartupCode()
-	local UICity = UICity
+	local MainCity = MainCity
 
 	-- place to store per-game values
-	if not UICity.PersonalShuttles then
-		UICity.PersonalShuttles = {}
+	if not MainCity.PersonalShuttles then
+		MainCity.PersonalShuttles = {}
 	end
 	-- objects carried by shuttles
-	if not UICity.PersonalShuttles.shuttle_carried then
-		UICity.PersonalShuttles.shuttle_carried = {}
+	if not MainCity.PersonalShuttles.shuttle_carried then
+		MainCity.PersonalShuttles.shuttle_carried = {}
 	end
 	-- controllable shuttle handles launched (true = attacker, false = friend)
-	if not UICity.PersonalShuttles.shuttle_threads then
-		UICity.PersonalShuttles.shuttle_threads = {}
+	if not MainCity.PersonalShuttles.shuttle_threads then
+		MainCity.PersonalShuttles.shuttle_threads = {}
 	end
 	-- we just want one shuttle scanning per anomaly (list of anomaly handles that are being scanned)
-	if not UICity.PersonalShuttles.shuttle_scanning_anomaly then
-		UICity.PersonalShuttles.shuttle_scanning_anomaly = {}
+	if not MainCity.PersonalShuttles.shuttle_scanning_anomaly then
+		MainCity.PersonalShuttles.shuttle_scanning_anomaly = {}
 	end
 
 	-- clear out Temp settings
@@ -36,7 +36,7 @@ OnMsg.LoadGame = StartupCode
 function OnMsg.NewDay() -- NewSol
 	-- clean up old handles
 	local HandleToObject = HandleToObject
-	local threads = UICity.PersonalShuttles.shuttle_threads
+	local threads = MainCity.PersonalShuttles.shuttle_threads
 	if next(threads) then
 		for h, _ in pairs(threads) do
 			if not IsValid(HandleToObject[h]) then
@@ -83,12 +83,12 @@ local function SpawnShuttle(hub, attacker)
 			end)
 			-- do we attack dustdevils?
 			if attacker then
-				UICity.PersonalShuttles.shuttle_threads[shuttle.handle] = true
+				MainCity.PersonalShuttles.shuttle_threads[shuttle.handle] = true
 				shuttle:SetColorizationMaterial(1, PersonalShuttles.attacker_color1 or -2031616, -100, 120)
 				shuttle:SetColorizationMaterial(2, PersonalShuttles.attacker_color2 or -16777216, 120, 20)
 				shuttle:SetColorizationMaterial(3, PersonalShuttles.attacker_color3 or -9043968, -128, 48)
 			else
-				UICity.PersonalShuttles.shuttle_threads[shuttle.handle] = false
+				MainCity.PersonalShuttles.shuttle_threads[shuttle.handle] = false
 				shuttle:SetColorizationMaterial(1, PersonalShuttles.friend_colour1 or -16711941, -100, 120)
 				shuttle:SetColorizationMaterial(2, PersonalShuttles.friend_colour2 or -16760065, 120, 20)
 				shuttle:SetColorizationMaterial(3, PersonalShuttles.friend_colour3 or -1, -128, 48)
@@ -158,8 +158,8 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 		RolloverText = T(302535920011142, [[Send shuttle back to hub.]]),
 		Icon = icon_str .. 3 .. ".png",
 		func = function(_, context)
-			if type(UICity.PersonalShuttles.shuttle_threads[context.handle]) == "boolean" then
-				UICity.PersonalShuttles.shuttle_threads[context.handle] = nil
+			if type(MainCity.PersonalShuttles.shuttle_threads[context.handle]) == "boolean" then
+				MainCity.PersonalShuttles.shuttle_threads[context.handle] = nil
 			end
 			-- make sure to drop off any items before
 			if context.carried_obj then
@@ -211,12 +211,12 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 		RolloverTitle = T(302535920011147, [[Recall Shuttles]]),
 		RolloverText = T(302535920011148, [[Recalls all personal shuttles you've spawned at this Shuttle Hub.]]),
 		func = function(_, context)
-			local UICity = UICity
+			local MainCity = MainCity
 			for i = 1, #context.shuttle_infos do
 				local shuttle = context.shuttle_infos[i].shuttle_obj
 				if shuttle and shuttle.class == "PersonalShuttle" then
-					if type(UICity.PersonalShuttles.shuttle_threads[shuttle.handle]) == "boolean" then
-						UICity.PersonalShuttles.shuttle_threads[shuttle.handle] = nil
+					if type(MainCity.PersonalShuttles.shuttle_threads[shuttle.handle]) == "boolean" then
+						MainCity.PersonalShuttles.shuttle_threads[shuttle.handle] = nil
 					end
 					-- make sure to drop off any items before
 					if shuttle.carried_obj then

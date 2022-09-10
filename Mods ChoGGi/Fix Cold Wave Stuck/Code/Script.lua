@@ -3,7 +3,7 @@
 local mod_EnableMod
 
 local function StartupCode()
-	if not mod_EnableMod or not UICity or not g_ColdWave then
+	if not mod_EnableMod or not MainCity or not g_ColdWave then
 		return
 	end
 

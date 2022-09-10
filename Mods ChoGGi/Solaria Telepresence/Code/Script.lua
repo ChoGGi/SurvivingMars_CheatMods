@@ -153,8 +153,7 @@ function Solaria:AttachBuilding(obj)
 	if not IsValid(obj) or obj.handle == self.handle then
 		return
 	end
-	local UICity = UICity
-	UICity.SolariaTelepresence_RemoteControlledBuildings = UICity.SolariaTelepresence_RemoteControlledBuildings + 1
+	MainCity.SolariaTelepresence_RemoteControlledBuildings = MainCity.SolariaTelepresence_RemoteControlledBuildings + 1
 
 	-- setup controller
 	self.SolariaTelepresence_Remote_Controller = {
@@ -199,8 +198,6 @@ function Solaria:RemoveBuilding(obj)
 		return
 	end
 
-	local UICity = UICity
-
 	obj = obj or self.SolariaTelepresence_Remote_Controller.building
 	-- update Solaria
 	self.SolariaTelepresence_Remote_Controller = false
@@ -234,7 +231,7 @@ function Solaria:RemoveBuilding(obj)
 			obj:SetUIWorking(false)
 		end
 
-		UICity.SolariaTelepresence_RemoteControlledBuildings = UICity.SolariaTelepresence_RemoteControlledBuildings - 1
+		MainCity.SolariaTelepresence_RemoteControlledBuildings = MainCity.SolariaTelepresence_RemoteControlledBuildings - 1
 
 		MsgPopup(
 			T{302535920011275, "Removed: <name> Pos: <pos>",
@@ -359,7 +356,7 @@ Right click in list to view (closes menu).]]))
 		RolloverHint = T(302535920011289, [[<left_click> Remove Telepresence <right_click> View Building]]),
 		RolloverText = T(302535920011290, [[Shows list of all controlled buildings (for removal of telepresence control).]]),
 		OnContextUpdate = function(self)
-			if UICity.SolariaTelepresence_RemoteControlledBuildings > 0 then
+			if MainCity.SolariaTelepresence_RemoteControlledBuildings > 0 then
 				self:SetVisible(true)
 				self:SetMaxHeight()
 			else
@@ -488,8 +485,8 @@ end
 
 local function StartupCode()
 	-- store amount of controlled buildings for toggling visiblity of "All Attached Buildings" button
-	if not UICity.SolariaTelepresence_RemoteControlledBuildings then
-		UICity.SolariaTelepresence_RemoteControlledBuildings = 0
+	if not MainCity.SolariaTelepresence_RemoteControlledBuildings then
+		MainCity.SolariaTelepresence_RemoteControlledBuildings = 0
 	end
 	if not IsTechResearched("CreativeRealitiesSolaria") then
 		LockBuilding("Solaria")

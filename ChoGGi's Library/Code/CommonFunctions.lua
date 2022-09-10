@@ -4920,6 +4920,16 @@ do -- BuildableHexGrid
 --~ 				-- update uneven terrain checker thingy
 --~ 				ActiveGameMap:RefreshBuildableGrid()
 
+-- maybe add it back?
+--~ 	-- Speed up
+--~ 	SuspendPassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
+--~ 	SuspendTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
+
+--~ 	game_map:RefreshBuildableGrid()
+
+--~ 	ResumePassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
+--~ 	ResumeTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
+
 				-- local all the globals we use more than once for some speed
 				local buildable_z_grid = ActiveGameMap.buildable.z_grid
 

@@ -7,7 +7,7 @@ local function GetModValue()
 end
 
 local function UpdateExistingRockets()
-	if not UICity then
+	if not MainCity then
 		return
 	end
 

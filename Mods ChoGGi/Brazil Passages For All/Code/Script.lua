@@ -48,7 +48,7 @@ local function ModOptions(id)
 	mod_InstantPassages = CurrentModOptions:GetProperty("InstantPassages")
 
 	-- make sure we're in-game
-	if not UICity then
+	if not MainCity then
 		return
 	end
 	SetOptions()

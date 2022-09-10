@@ -139,26 +139,6 @@ end
 OnMsg.ColonistArrived = CullMales
 OnMsg.ColonistBorn = CullMales
 
-function OnMsg.ClassesPostprocess()
-	if GameRulesMap.ChoGGi_AmazonianMars then
-		return
-	end
-
-	PlaceObj("GameRules", {
-		challenge_mod = 301,
-		description = T(0000, [[You may only import female colonists (exception: tourists).
-Male tourists "provide" children (Snu-snu required).
-Non-female children are culled at birth (lower birth rate).
-and just in case a daily cull of any non-tourist non-female colonists on Mars (mini-soylent green).
-
-<grey>"The spirit is willing, but the flesh is spongy and bruised."
-<right>25-Star General Zapp Brannigan</grey><left>]]),
-		display_name = T(0000, "Amazonian Mars"),
-		group = "Default",
-		id = "ChoGGi_AmazonianMars",
-	})
-end
-
 -- Change to correct logo
 local ChoOrig_RocketBase_WaitInOrbit = RocketBase.WaitInOrbit
 function RocketBase:WaitInOrbit(...)
@@ -194,4 +174,24 @@ function RocketBase:WaitInOrbit(...)
 	end
 
 	return ChoOrig_RocketBase_WaitInOrbit(self, ...)
+end
+
+function OnMsg.ClassesPostprocess()
+	if GameRulesMap.ChoGGi_AmazonianMars then
+		return
+	end
+
+	PlaceObj("GameRules", {
+		challenge_mod = 301,
+		description = T(0000, [[You may only import female colonists (exception: tourists).
+Male tourists "provide" children (Snu-snu required).
+Non-female children are culled at birth (lower birth rate).
+and just in case a daily cull of any non-tourist non-female colonists on Mars (mini-soylent green).
+
+<grey>"The spirit is willing, but the flesh is spongy and bruised."
+<right>25-Star General Zapp Brannigan</grey><left>]]),
+		display_name = T(0000, "Amazonian Mars"),
+		group = "Default",
+		id = "ChoGGi_AmazonianMars",
+	})
 end
