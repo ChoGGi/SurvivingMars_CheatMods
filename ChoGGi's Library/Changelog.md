@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v11.6 (Unreleased)
+## v11.7 (Unreleased)
+
+## v11.6 (11 Sep 2022)
 - Mod Option: Disable Dialog Escape: Pressing Escape won't close dialog boxes (default enabled).
 - Log spam from AttachToNearestDome().
 - You can use OpenExamineDelayed()/exd() before classes process (err re-process for mods).
