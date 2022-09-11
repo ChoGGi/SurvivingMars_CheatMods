@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 28,
+	"version", 29,
 	"version_major", 2,
-	"version_minor", 8,
+	"version_minor", 9,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -30,6 +30,7 @@ g_ActiveOnScreenNotifications isn't a table.
 Support struts malfunctioning and cave-ins.
 Stop ceiling/floating rubble.
 Log spam from IsBuildingInDomeRange().
+Clean up city labels of wrong map / invalid objs (colonists showing up on wrong map in infobar).
 
 
 [b]Incorporated mods:[/b] (so far)

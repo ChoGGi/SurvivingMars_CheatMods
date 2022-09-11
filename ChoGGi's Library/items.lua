@@ -15,4 +15,10 @@ return {
 		"Help", T(302535920001302, "This prevents persist errors from spamming the log."),
 		"DefaultValue", true,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "DisableDialogEscape",
+		"DisplayName", T(302535920001669, "Disable Dialog Escape"),
+		"Help", T(302535920001670, "Pressing Escape won't close dialog boxes."),
+		"DefaultValue", true,
+	}),
 }

@@ -1,3 +1,6 @@
+v0.7
+Hopeful bug fix.
+
 v0.6
 Added more rocks.
 Added collision toggle button.

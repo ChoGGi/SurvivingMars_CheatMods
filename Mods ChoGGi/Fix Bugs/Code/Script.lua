@@ -82,6 +82,40 @@ do -- CityStart/LoadGame
 		local bt = BuildingTemplates
 		local bmpo = BuildMenuPrerequisiteOverrides
 		local main_realm = GetRealmByID(MainMapID)
+
+		--
+		-- Clean up city labels of wrong map / invalid objs
+		local function CleanObj(obj, label, map_id, city)
+			if IsValid(obj) then
+				if obj.GetMapID and obj:GetMapID() ~= map_id then
+					city:RemoveFromLabel(label, obj)
+				end
+			else
+				city:RemoveFromLabel(label, obj)
+			end
+		end
+		--
+		local Cities = Cities
+		for i = 1, #Cities do
+			local city = Cities[i]
+			local map_id = city.map_id
+			for label, label_value in pairs(city.labels) do
+				if label ~= "Consts" then
+					local labels = city.labels[label]
+					for j = #labels, 1, -1 do
+						local obj = labels[j]
+						CleanObj(obj, label, map_id, city)
+						if label == "Dome" then
+							for label_d in pairs(label_value.labels or empty_table) do
+								for k = #label_d, 1, -1 do
+									CleanObj(label_d[k], label_d, map_id, city)
+								end
+							end
+						end
+					end
+				end
+			end
+		end
 		--
 		-- Fix No Power Dome Buildings
 		local ElectricityGridObject_GameInit = ElectricityGridObject.GameInit
@@ -105,7 +139,7 @@ do -- CityStart/LoadGame
 			UIColony.mystery.can_shoot_rovers = true
 		end
 		--
-		-- Probably from a mod (a *badly* done mod)
+		-- Probably from a mod?
 		if type(g_ActiveOnScreenNotifications) ~= "table" then
 			g_ActiveOnScreenNotifications = {}
 		end
@@ -121,6 +155,7 @@ do -- CityStart/LoadGame
 				end
 			end
 		end
+		--
 		-- Fix Buildings Broken Down And No Repair
 		local blds = UIColony:GetCityLabels("Building")
 		for i = 1, #blds do
@@ -178,6 +213,7 @@ do -- CityStart/LoadGame
 				local mods = dome:GetPropertyModifiers("air_consumption")
 				if mods then
 					local farms = dome.labels.Farm or empty_table
+					-- Backwards?
 					for j = #mods, 1, -1 do
 						local mod_item = mods[j]
 						local idx = table.find(farms, "farm_id", mod_item.id)
@@ -258,10 +294,10 @@ do -- CityStart/LoadGame
 				end
 			end)
 		end
+		--
 		-- Fix Stuck Malfunctioning Drones At DroneHub
 		local positions = {}
 		local radius = 100 * guim
-
 		local hubs = UIColony:GetCityLabels("DroneHub")
 		for i = 1, #hubs do
 			table.clear(positions)
@@ -280,6 +316,7 @@ do -- CityStart/LoadGame
 				end
 			end
 		end
+		--
 
 		--
 		ResumePassEdits("ChoGGi_FixBBBugs_loading")
@@ -584,9 +621,9 @@ end
 --
 -- Devs didn't check for EasyMaintenance when overriding AccumulateMaintenancePoints for picard
 local ChoOrig_SupportStruts_AccumulateMaintenancePoints = SupportStruts.AccumulateMaintenancePoints
-function SupportStruts:AccumulateMaintenancePoints(self, new_points, ...)
+function SupportStruts:AccumulateMaintenancePoints(new_points, ...)
 	if not mod_EnableMod then
-		return ChoOrig_SupportStruts_AccumulateMaintenancePoints(self, new_points, ...)
+		return ChoOrig_SupportStruts_AccumulateMaintenancePoints(new_points, ...)
 	end
 
 	-- last checked lua rev 1011166

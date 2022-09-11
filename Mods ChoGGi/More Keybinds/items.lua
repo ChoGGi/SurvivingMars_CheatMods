@@ -17,4 +17,12 @@ return {
 		"MinValue", 0,
 		"MaxValue", 500,
 	}),
+	PlaceObj("ModItemOptionNumber", {
+		"name", "OpacityStepSize",
+		"DisplayName", T(0000, "Opacity Step Size"),
+		"Help", T(0000, "How much to cycle through on each press."),
+		"DefaultValue", 25,
+		"MinValue", 0,
+		"MaxValue", 100,
+	}),
 }

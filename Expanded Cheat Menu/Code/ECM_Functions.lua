@@ -1715,7 +1715,8 @@ do -- ToggleFuncHook
 				ChoGGi_AddHyperLink = true,
 				name = TranslationTable[302535920000234--[[Monitor Func Calls]]],
 				hint = "Shows list of func calls in order of called.",
-				func = function(self, button, obj, argument, hyperlink_box, pos)
+--~				func = function(self, button, obj, argument, hyperlink_box, pos)
+				func = function()
 					ChoGGi.ComFuncs.OpenInExamineDlg(func_str, nil, TranslationTable[302535920000234--[[Monitor Func Calls]]])
 				end,
 			}

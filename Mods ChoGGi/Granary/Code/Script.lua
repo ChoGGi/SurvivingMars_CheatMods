@@ -244,16 +244,6 @@ local CheckForGranary = function(dome)
     end
   end
 end
-local CheckForGranaryNearby = function(dome)
-  if CheckForGranary(dome) then
-    return true
-  end
---~   for d in pairs(dome:GetConnectedDomes()) do
---~     if CheckForGranary(d) then
---~       return true
---~     end
---~   end
-end
 
 local ChoOrig_UpdatePastureImpactOnVegans = UpdatePastureImpactOnVegans
 function UpdatePastureImpactOnVegans(dome, ...)
@@ -261,7 +251,6 @@ function UpdatePastureImpactOnVegans(dome, ...)
 		return ChoOrig_UpdatePastureImpactOnVegans(dome, ...)
 	end
 
---~ 	if CheckForGranaryNearby(dome) then
 	if CheckForGranary(dome) then
 		const.PastureVeganMoraleImpact = 1
 	end

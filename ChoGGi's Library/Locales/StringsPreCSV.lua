@@ -3,8 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
-302535920001669, ""
-302535920001670, ""
 302535920001671, ""
 302535920001672, ""
 302535920001673, ""
@@ -148,6 +146,8 @@ do !Skipped Line! [[items.lua]] !Skipped Line!
 302535920001644, "Hide Help Menu"
 end !Skipped Line!
 do !Skipped Line! [[ModOptions.lua]] !Skipped Line!
+302535920001669, "Disable Dialog Escape"
+302535920001670, "Pressing Escape won't close dialog boxes."
 302535920001446, "Add Mod Options button to Game Options."
 302535920000044, "Ignore Persist Errors"
 302535920001302, "This prevents persist errors from spamming the log."

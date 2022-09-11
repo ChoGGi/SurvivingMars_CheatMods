@@ -5,6 +5,22 @@ local type = type
 local HasModsWithOptions = HasModsWithOptions
 local TranslationTable = TranslationTable
 
+local mod_DisableDialogEscape
+
+-- Update mod options
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_DisableDialogEscape = CurrentModOptions:GetProperty("DisableDialogEscape")
+end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
+
 local function UpdateProp(xtemplate)
 	local idx = table.find(xtemplate, "MaxWidth", 400)
 	if idx then
@@ -81,6 +97,33 @@ local function ChangeBoolColour(xtemplate, id, colour)
 end
 
 function OnMsg.ClassesPostprocess()
+
+	-- Disable Esc on dialogs
+	local function RemoveKey(key, params)
+		local idx = table.find(params.actions, key, "Escape")
+		if idx then
+			params.actions[idx][key] = ""
+		end
+	end
+	-- ClassDescendants sends class name as first param
+	local function AdjustEsc(_, classdef)
+		local ChoOrig_new = classdef.new
+		function classdef:new(params, ...)
+			if not mod_DisableDialogEscape then
+				return ChoOrig_new(self, params, ...)
+			end
+
+			RemoveKey("ActionShortcut", params)
+			RemoveKey("ActionShortcut2", params)
+
+			return ChoOrig_new(self, params, ...)
+		end
+	end
+	-- Main class
+	AdjustEsc(nil, XMarsMessageBox)
+	-- PopupNotification (and anything else that comes along)
+	ClassDescendants("XMarsMessageBox", AdjustEsc)
+	--
 
 	-- single click to change mod toggle options
 	local template = XTemplates.PropBool[1]

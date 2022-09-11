@@ -97,6 +97,12 @@ DefineClass.ChoGGi_LevelPrefabBuilding = {
 
 
 local function AddToMenu(bt, cat, entity, desc, index)
+	-- might fix [LUA ERROR] HR::l_GetStateMaterial:
+	if not IsValidEntity(entity) then
+		return
+	end
+
+
 	local id = "ChoGGi_LandscapeRock_" .. entity
 	if not bt[id] then
 		local mat = GetMaterialProperties(GetStateMaterial(entity, 0, 0), 0)

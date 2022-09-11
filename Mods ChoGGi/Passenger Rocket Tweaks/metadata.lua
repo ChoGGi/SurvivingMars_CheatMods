@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1641796120",
 	"pops_any_uuid", "e27f8c05-6999-4737-8615-5c9820b083ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 16,
+	"version", 17,
 	"version_major", 1,
-	"version_minor", 6,
+	"version_minor", 7,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -27,8 +27,8 @@ Shows age of colonist in popup info.
 
 Mod Options:
 Hide Background: Shows a black background so you can see the text easier.
+More Spec Info: Add a specialisation count section to the passenger rocket screen (selected applicants / specialists needed by workplaces / specialists already in colony).
+Position Pass List: Enable changing position of passenger list.
+PosX/PosY: Margins to use for list.
 ]],
 })
---~ More Spec Info: Add a specialisation count section to the passenger rocket screen (selected applicants / specialists needed by workplaces / specialists already in colony).
---~ Position Pass List: Enable changing position of passenger list.
---~ PosX/PosY: Margins to use for list.

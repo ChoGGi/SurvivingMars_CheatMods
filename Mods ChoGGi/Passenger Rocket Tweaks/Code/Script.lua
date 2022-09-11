@@ -27,7 +27,8 @@ local function ModOptions(id)
 	mod_PosX = options:GetProperty("PosX")
 	mod_PosY = options:GetProperty("PosY")
 
-	ToggleSpecInfo()
+	-- I'm lazy, sue me
+	procall(ToggleSpecInfo)
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -106,209 +107,205 @@ end
 
 -- add extra info to select colonists
 ToggleSpecInfo = function()
-	-- I'm lazy, sue me
-	procall(function()
+	local pass = XTemplates.ResupplyPassengers[1]
+	local template = pass[table.find(pass, "Id", "idContent")]
+	template = template[table.find(template, "Id", "idTop")]
+	ChoGGi.ComFuncs.RemoveXTemplateSections(template, "Id", "idPassInfo_ChoGGi")
+	if not mod_MoreSpecInfo then
+		return
+	end
 
-		local pass = XTemplates.ResupplyPassengers[1]
-		local template = pass[table.find(pass, "Id", "idContent")]
-		template = template[table.find(template, "Id", "idTop")]
-		ChoGGi.ComFuncs.RemoveXTemplateSections(template, "Id", "idPassInfo_ChoGGi")
-		if not mod_MoreSpecInfo then
-			return
-		end
+	local oooo = box(0, 0, 0, 0)
+	local T = T
 
-		local oooo = box(0, 0, 0, 0)
-		local T = T
-
-		table.insert(template, 3, PlaceObj("XTemplateWindow", {
-			"Id", "idPassInfo_ChoGGi",
-			"HAlign", "left",
+	table.insert(template, 3, PlaceObj("XTemplateWindow", {
+		"Id", "idPassInfo_ChoGGi",
+		"HAlign", "left",
+		"Dock", "top",
+		"Margins", box(55, 0, 0, 0),
+		"RolloverTemplate", "Rollover",
+		"RolloverTitle", T(11531, "Specialists"),
+		"RolloverText", T(302535920011132, "Selected Applicants / Needed Specialists / Colony Amount"),
+	}, {
+		PlaceObj("XTemplateWindow", {
+			"__class", "XText",
 			"Dock", "top",
-			"Margins", box(55, 0, 0, 0),
-			"RolloverTemplate", "Rollover",
-			"RolloverTitle", T(11531, "Specialists"),
-			"RolloverText", T(302535920011132, "Selected Applicants / Needed Specialists / Colony Amount"),
+			"TextStyle", "LandingPosName",
+			"Translate", true,
+			"Text", T(11531, "Specialists"),
+			-- stop it from going black on mouse over
+			"HandleMouse", false,
+			-- remove the margin added above
+			"Margins", box(-35, 0, 0, 0),
+		}),
+
+		PlaceObj("XTemplateWindow", {
+			"__class", "XContextWindow",
+			"Dock", "top",
+			"LayoutMethod", "HList",
+			"ContextUpdateOnOpen", true,
+			"OnContextUpdate", function (self, context, ...)
+				SetUIResupplyParams(context, self)
+			end,
 		}, {
-			PlaceObj("XTemplateWindow", {
-				"__class", "XText",
-				"Dock", "top",
-				"TextStyle", "LandingPosName",
-				"Translate", true,
-				"Text", T(11531, "Specialists"),
-				-- stop it from going black on mouse over
-				"HandleMouse", false,
-				-- remove the margin added above
-				"Margins", box(-35, 0, 0, 0),
-			}),
 
 			PlaceObj("XTemplateWindow", {
-				"__class", "XContextWindow",
-				"Dock", "top",
+				"Dock", "left",
 				"LayoutMethod", "HList",
-				"ContextUpdateOnOpen", true,
-				"OnContextUpdate", function (self, context, ...)
-					SetUIResupplyParams(context, self)
-				end,
+				"LayoutHSpacing", 50,
 			}, {
-
 				PlaceObj("XTemplateWindow", {
-					"Dock", "left",
-					"LayoutMethod", "HList",
-					"LayoutHSpacing", 50,
+					"LayoutMethod", "VList",
 				}, {
-					PlaceObj("XTemplateWindow", {
-						"LayoutMethod", "VList",
-					}, {
-						PlaceObj("XTemplateWindow", {-- none
-							"__condition", function()
-								return not MainCity or MainCity.launch_mode ~= "passenger_pod"
-							end,
-							"__class", "XText",
-							"Padding", oooo,
-							"TextStyle", "PGLandingPosDetails",
-							"Translate", true,
-							"Text", T(3848, "No specialization"),
-						}),
-						PlaceObj("XTemplateWindow", {-- Botanist
-							"__condition", function()
-								return not MainCity or MainCity.launch_mode ~= "passenger_pod"
-							end,
-							"__class", "XText",
-							"Padding", oooo,
-							"TextStyle", "PGLandingPosDetails",
-							"Translate", true,
-							"Text", T(3865, "Botanist"),
-						}),
-						PlaceObj("XTemplateWindow", {-- Engineer
-							"__condition", function()
-								return not MainCity or MainCity.launch_mode ~= "passenger_pod"
-							end,
-							"__class", "XText",
-							"Padding", oooo,
-							"TextStyle", "PGLandingPosDetails",
-							"Translate", true,
-							"Text", T(3853, "Engineer"),
-						}),
-						PlaceObj("XTemplateWindow", {-- Geologist
-							"__condition", function()
-								return not MainCity or MainCity.launch_mode ~= "passenger_pod"
-							end,
-							"__class", "XText",
-							"Padding", oooo,
-							"TextStyle", "PGLandingPosDetails",
-							"Translate", true,
-							"Text", T(3859, "Geologist"),
-						}),
-
+					PlaceObj("XTemplateWindow", {-- none
+						"__condition", function()
+							return not MainCity or MainCity.launch_mode ~= "passenger_pod"
+						end,
+						"__class", "XText",
+						"Padding", oooo,
+						"TextStyle", "PGLandingPosDetails",
+						"Translate", true,
+						"Text", T(3848, "No specialization"),
+					}),
+					PlaceObj("XTemplateWindow", {-- Botanist
+						"__condition", function()
+							return not MainCity or MainCity.launch_mode ~= "passenger_pod"
+						end,
+						"__class", "XText",
+						"Padding", oooo,
+						"TextStyle", "PGLandingPosDetails",
+						"Translate", true,
+						"Text", T(3865, "Botanist"),
+					}),
+					PlaceObj("XTemplateWindow", {-- Engineer
+						"__condition", function()
+							return not MainCity or MainCity.launch_mode ~= "passenger_pod"
+						end,
+						"__class", "XText",
+						"Padding", oooo,
+						"TextStyle", "PGLandingPosDetails",
+						"Translate", true,
+						"Text", T(3853, "Engineer"),
+					}),
+					PlaceObj("XTemplateWindow", {-- Geologist
+						"__condition", function()
+							return not MainCity or MainCity.launch_mode ~= "passenger_pod"
+						end,
+						"__class", "XText",
+						"Padding", oooo,
+						"TextStyle", "PGLandingPosDetails",
+						"Translate", true,
+						"Text", T(3859, "Geologist"),
 					}),
 
-					PlaceObj("XTemplateWindow", {
-						"LayoutMethod", "VList",
-					}, {
-						PlaceObj("XTemplateWindow", {
-							"__class", "XText",
-							"Id", "idChoGGiPassInfo_none",
-							"Padding", oooo,
-							"TextStyle", "PGChallengeDescription",
-							"Translate", true,
-						}),
-						PlaceObj("XTemplateWindow", {
-							"__class", "XText",
-							"Id", "idChoGGiPassInfo_botanist",
-							"Padding", oooo,
-							"TextStyle", "PGChallengeDescription",
-							"Translate", true,
-						}),
-						PlaceObj("XTemplateWindow", {
-							"__class", "XText",
-							"Id", "idChoGGiPassInfo_engineer",
-							"Padding", oooo,
-							"TextStyle", "PGChallengeDescription",
-							"Translate", true,
-						}),
-						PlaceObj("XTemplateWindow", {
-							"__class", "XText",
-							"Id", "idChoGGiPassInfo_geologist",
-							"Padding", oooo,
-							"TextStyle", "PGChallengeDescription",
-							"Translate", true,
-						}),
-
-					}),
 				}),
 
 				PlaceObj("XTemplateWindow", {
-					"Dock", "right",
-					"Margins", box(20, 0, 0, 0),
-					"LayoutMethod", "HList",
-					"LayoutHSpacing", 50,
+					"LayoutMethod", "VList",
 				}, {
 					PlaceObj("XTemplateWindow", {
-						"LayoutMethod", "VList",
-					}, {
-						PlaceObj("XTemplateWindow", {
-							"__condition", function()
-								return not MainCity or MainCity.launch_mode ~= "passenger_pod"
-							end,
-							"__class", "XText",
-							"Padding", oooo,
-							"TextStyle", "PGLandingPosDetails",
-							"Translate", true,
-							"Text", T(3862, "Medic"),
-						}),
-						PlaceObj("XTemplateWindow", {
-							"__condition", function()
-								return not MainCity or MainCity.launch_mode ~= "passenger_pod"
-							end,
-							"__class", "XText",
-							"Padding", oooo,
-							"TextStyle", "PGLandingPosDetails",
-							"Translate", true,
-							"Text", T(3850, "Scientist"),
-						}),
-						PlaceObj("XTemplateWindow", {
-							"__condition", function()
-								return not MainCity or MainCity.launch_mode ~= "passenger_pod"
-							end,
-							"__class", "XText",
-							"Padding", oooo,
-							"TextStyle", "PGLandingPosDetails",
-							"Translate", true,
-							"Text", T(6682, "Officer"),
-						}),
-
+						"__class", "XText",
+						"Id", "idChoGGiPassInfo_none",
+						"Padding", oooo,
+						"TextStyle", "PGChallengeDescription",
+						"Translate", true,
 					}),
-
 					PlaceObj("XTemplateWindow", {
-						"LayoutMethod", "VList",
-					}, {
-						PlaceObj("XTemplateWindow", {
-							"__class", "XText",
-							"Id", "idChoGGiPassInfo_medic",
-							"Padding", oooo,
-							"TextStyle", "PGChallengeDescription",
-							"Translate", true,
-						}),
-						PlaceObj("XTemplateWindow", {
-							"__class", "XText",
-							"Id", "idChoGGiPassInfo_scientist",
-							"Padding", oooo,
-							"TextStyle", "PGChallengeDescription",
-							"Translate", true,
-						}),
-						PlaceObj("XTemplateWindow", {
-							"__class", "XText",
-							"Id", "idChoGGiPassInfo_security",
-							"Padding", oooo,
-							"TextStyle", "PGChallengeDescription",
-							"Translate", true,
-						}),
-
+						"__class", "XText",
+						"Id", "idChoGGiPassInfo_botanist",
+						"Padding", oooo,
+						"TextStyle", "PGChallengeDescription",
+						"Translate", true,
 					}),
+					PlaceObj("XTemplateWindow", {
+						"__class", "XText",
+						"Id", "idChoGGiPassInfo_engineer",
+						"Padding", oooo,
+						"TextStyle", "PGChallengeDescription",
+						"Translate", true,
+					}),
+					PlaceObj("XTemplateWindow", {
+						"__class", "XText",
+						"Id", "idChoGGiPassInfo_geologist",
+						"Padding", oooo,
+						"TextStyle", "PGChallengeDescription",
+						"Translate", true,
+					}),
+
 				}),
 			}),
-		}))
-	end)
+
+			PlaceObj("XTemplateWindow", {
+				"Dock", "right",
+				"Margins", box(20, 0, 0, 0),
+				"LayoutMethod", "HList",
+				"LayoutHSpacing", 50,
+			}, {
+				PlaceObj("XTemplateWindow", {
+					"LayoutMethod", "VList",
+				}, {
+					PlaceObj("XTemplateWindow", {
+						"__condition", function()
+							return not MainCity or MainCity.launch_mode ~= "passenger_pod"
+						end,
+						"__class", "XText",
+						"Padding", oooo,
+						"TextStyle", "PGLandingPosDetails",
+						"Translate", true,
+						"Text", T(3862, "Medic"),
+					}),
+					PlaceObj("XTemplateWindow", {
+						"__condition", function()
+							return not MainCity or MainCity.launch_mode ~= "passenger_pod"
+						end,
+						"__class", "XText",
+						"Padding", oooo,
+						"TextStyle", "PGLandingPosDetails",
+						"Translate", true,
+						"Text", T(3850, "Scientist"),
+					}),
+					PlaceObj("XTemplateWindow", {
+						"__condition", function()
+							return not MainCity or MainCity.launch_mode ~= "passenger_pod"
+						end,
+						"__class", "XText",
+						"Padding", oooo,
+						"TextStyle", "PGLandingPosDetails",
+						"Translate", true,
+						"Text", T(6682, "Officer"),
+					}),
+
+				}),
+
+				PlaceObj("XTemplateWindow", {
+					"LayoutMethod", "VList",
+				}, {
+					PlaceObj("XTemplateWindow", {
+						"__class", "XText",
+						"Id", "idChoGGiPassInfo_medic",
+						"Padding", oooo,
+						"TextStyle", "PGChallengeDescription",
+						"Translate", true,
+					}),
+					PlaceObj("XTemplateWindow", {
+						"__class", "XText",
+						"Id", "idChoGGiPassInfo_scientist",
+						"Padding", oooo,
+						"TextStyle", "PGChallengeDescription",
+						"Translate", true,
+					}),
+					PlaceObj("XTemplateWindow", {
+						"__class", "XText",
+						"Id", "idChoGGiPassInfo_security",
+						"Padding", oooo,
+						"TextStyle", "PGChallengeDescription",
+						"Translate", true,
+					}),
+
+				}),
+			}),
+		}),
+	}))
 end
 
 local function AddUIStuff(content)

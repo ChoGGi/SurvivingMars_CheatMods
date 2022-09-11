@@ -1,3 +1,6 @@
+v0.5
+Sorted textures by name.
+
 v0.4
 Removes rocks/vegetation.
 

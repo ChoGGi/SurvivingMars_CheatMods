@@ -1,3 +1,6 @@
+v2.9
+Clean up city labels of wrong map / invalid objs.
+
 v2.8
 Removed Fix Landscaping Freeze.
 Added mod option for No Planetary Anomaly Breakthroughs when B&B is installed.

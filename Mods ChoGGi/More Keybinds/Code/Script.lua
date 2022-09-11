@@ -1,13 +1,14 @@
 -- See LICENSE for terms
 
 local SelObjects = ChoGGi.ComFuncs.SelObjects
-local GetCursorWorldPos = GetCursorWorldPos
 local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
+local GetCursorWorldPos = GetCursorWorldPos
 local terminal = terminal
 
 
 local mod_SpeedFour
 local mod_SpeedFive
+local mod_OpacityStepSize
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -17,6 +18,7 @@ local function ModOptions(id)
 
 	mod_SpeedFour = CurrentModOptions:GetProperty("SpeedFour")
 	mod_SpeedFive = CurrentModOptions:GetProperty("SpeedFive")
+	mod_OpacityStepSize = CurrentModOptions:GetProperty("OpacityStepSize")
 end
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -38,7 +40,9 @@ local function RetShortcuts(id)
 end
 --
 
+
 local Actions = ChoGGi.Temp.Actions
+
 
 Actions[#Actions+1] = {ActionName = T(302535920011668, "Set Speed 1"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.SetSpeed1",
@@ -305,8 +309,7 @@ function IsPlacingMultipleConstructions(...)
 	return ChoOrig_IsPlacingMultipleConstructions(...)
 end
 --
-local filename
-
+local savename_filename
 Actions[#Actions+1] = {ActionName = T(302535920011641, "Quicksave"),
 	ActionId = "ChoGGi.AddQuicksaveHotkey.Quicksave",
 	OnAction = function()
@@ -315,14 +318,14 @@ Actions[#Actions+1] = {ActionName = T(302535920011641, "Quicksave"),
 		end
 
 		CreateRealTimeThread(function()
-			DeleteGame(filename or "Quicksave.savegame.sav")
+			DeleteGame(savename_filename or "Quicksave.savegame.sav")
 			local err
-			err, filename = SaveAutosaveGame("Quicksave")
+			err, savename_filename = SaveAutosaveGame("Quicksave")
 
 			if err then
 				ChoGGi.ComFuncs.MsgPopup(err, T(302535920011641, "Quicksave"))
 			else
-				ChoGGi.ComFuncs.MsgPopup(filename, T(302535920011641, "Quicksave"), {expiration = 3})
+				ChoGGi.ComFuncs.MsgPopup(savename_filename, T(302535920011641, "Quicksave"), {expiration = 3})
 			end
 		end)
 	end,
@@ -335,15 +338,13 @@ Actions[#Actions+1] = {ActionName = T(302535920011642, "Quickload"),
 	ActionId = "ChoGGi.AddQuicksaveHotkey.Quickload",
 	OnAction = function()
     g_SaveLoadThread = IsValidThread(g_SaveLoadThread) and g_SaveLoadThread or CreateRealTimeThread(function()
---~ 			LoadingScreenOpen("idLoadingScreen", "LoadSaveGame")
-			local err = LoadGame(filename or "Quicksave.savegame.sav")
+			local err = LoadGame(savename_filename or "Quicksave.savegame.sav")
 			if not err then
 				CloseMenuDialogs()
 			end
       if err then
 				ChoGGi.ComFuncs.MsgWait(err, T(302535920011642, "Quickload"))
       end
---~ 			LoadingScreenClose("idLoadingScreen", "LoadSaveGame")
     end)
 	end,
 	ActionShortcut = "Ctrl-F9",
@@ -383,7 +384,6 @@ local num_overrides = {
 	["idChoice4"] = "DialogShortcut4",
 }
 --~ ForceActivateStoryBit("Boost5_LeapForward", ActiveMapID, nil, true)
-
 local function OverrideActionNew()
 	local ChoOrig_XAction_new = XAction.new
 	function XAction.new(obj, context, ...)
@@ -409,11 +409,50 @@ local function OverrideActionNew()
 	end
 end
 
-OnMsg.LoadGame = OverrideActionNew
 OnMsg.NewCity = OverrideActionNew
---~ --
+OnMsg.LoadGame = OverrideActionNew
+--
+GlobalVar("g_ChoGGi_MoreKeybinds_ResourceIconsOpacity", false)
+local function UpdateOpacity(value)
+	if not value then
+		value = g_ChoGGi_MoreKeybinds_ResourceIconsOpacity or 100
+	end
+	-- list of objs on current map
+	local objs = MapGet("map", "SubsurfaceDeposit", function(d)
+		if d.revealed then
+			return true
+		end
+	end)
+	for i = 1, #objs do
+		objs[i]:SetOpacity(value)
+	end
+end
+Actions[#Actions+1] = {ActionName = T(0000, "Resource Icons Opacity"),
+	ActionId = "ChoGGi.RebindHardcodedKeys.ResourceIconsOpacity",
+	ActionShortcut = "Ctrl-I",
+	replace_matching_id = true,
+	OnAction = function()
+		-- get new opacity to use
+		local current = g_ChoGGi_MoreKeybinds_ResourceIconsOpacity or 100
+		local new = current - mod_OpacityStepSize
+		if new < 0 then
+			new = 100
+		end
 
+		UpdateOpacity(new)
 
+		-- save current opacity
+		g_ChoGGi_MoreKeybinds_ResourceIconsOpacity = new
+	end,
+	ActionBindable = true,
+	ActionMode = "Game",
+}
+OnMsg.CityStart = UpdateOpacity
+OnMsg.LoadGame = UpdateOpacity
+OnMsg.ChangeMapDone = UpdateOpacity
+-- map overview will reset opacity
+OnMsg.CameraTransitionEnd = UpdateOpacity
+--
 
 --~ -- Camera panning
 --~ local cameraRTS = cameraRTS

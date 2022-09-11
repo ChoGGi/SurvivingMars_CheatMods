@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2163750555",
 	"pops_any_uuid", "0876037c-42bf-4f8a-8939-36638ba10a62",
 	"lua_revision", 1007000, -- Picard
-	"version", 12,
+	"version", 13,
 	"version_major", 1,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -35,9 +35,13 @@ Place Multiple Buildings: Shift
 Toggle Interface: Ctrl-Alt-I
 Examine Object/Examine Object Radius: F4 / Shift-F4
 Refab Building (selected or hovered): Ctrl-R
-Set Speed: 1 2 3 4 5 (4/5 = *5/*10). See mod options to change the speed multipliers.
-Dialog options: 1 2 3 4.
+Set Speed: 1 2 3 4 5 (4/5 = *5/*10)
+Dialog options: 1 2 3 4
+Cycle through different levels of opacity for resource icons (Ctrl-I)
 
+Mod Options:
+Speed 4/Speed 5: Multiply speed of fastest speed by this (speed multipliers for Set Speed).
+Opacity Step Size: How much to cycle through on each press (default 25%).
 
 More key suggestions welcome
 ]],

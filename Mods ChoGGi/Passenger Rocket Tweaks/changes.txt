@@ -1,3 +1,6 @@
+v1.7
+Removed some UICity.
+
 v1.6
 Fixed something (Thanks McKaby).
 

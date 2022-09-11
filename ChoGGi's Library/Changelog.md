@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v11.6 (Unreleased)
+- Mod Option: Disable Dialog Escape: Pressing Escape won't close dialog boxes (default enabled).
 - Log spam from AttachToNearestDome().
 - You can use OpenExamineDelayed()/exd() before classes process (err re-process for mods).
 	> It'll open all stored objs after ClassesPostprocess, so some stuff can change, but it's better than naught.

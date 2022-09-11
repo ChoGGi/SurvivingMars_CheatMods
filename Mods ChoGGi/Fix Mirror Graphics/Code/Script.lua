@@ -34,8 +34,8 @@ local function UpdateTextures()
 
 	local mapped_textures = {}
 	local GetTerrainTextureIndex = GetTerrainTextureIndex
-	local function AddMap(bad, good)
-		mapped_textures[GetTerrainTextureIndex(bad)] = GetTerrainTextureIndex(good)
+	local function AddMap(old, new)
+		mapped_textures[GetTerrainTextureIndex(old)] = GetTerrainTextureIndex(new)
 	end
 
 	if mod_DustGeysers then
@@ -169,10 +169,18 @@ OnMsg.LoadGame = UpdateTextures
 OnMsg.ChangeMapDone = UpdateTextures
 
 function OnMsg.TerrainTexturesChanged()
-	-- ?
+	-- Update terraformed soil
 	if mod_TerraSoil then
 		local soil_terrain_idx = GetTerrainTextureIndex("SandMIX_01")
 		hr.SoilTextureIdx = soil_terrain_idx or -1
 		hr.RenderSoilGrid = soil_terrain_idx and 1 or 0
 	end
 end
+
+-- ~TerrainTextures
+
+--[[ Sort by alpha and ex as plain table/str
+local tbl, str = ChoGGi.ComFuncs.PlainSortTable(table.icopy(TerrainTextures))
+ex(tbl)
+ex(str)
+]]

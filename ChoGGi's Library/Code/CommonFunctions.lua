@@ -7679,16 +7679,6 @@ function ChoGGi.ComFuncs.GetNextTable(list, key, value)
 	end
 end
 
-do -- AddToOrigFuncs
-	local OrigFuncs = ChoGGi.OrigFuncs
-
-	function ChoGGi.ComFuncs.AddToOrigFuncs(name)
-		if not OrigFuncs[name] then
-			OrigFuncs[name] = DotPathToObject(name)
-		end
-	end
-end -- do
-
 function ChoGGi.ComFuncs.ObjectCloner(flat, obj, centre)
 	if not IsValid(obj) then
 		obj = ChoGGi.ComFuncs.SelObject()
@@ -7756,6 +7746,21 @@ function ChoGGi.ComFuncs.ObjectCloner(flat, obj, centre)
 	return clone
 end
 
+function ChoGGi.ComFuncs.PlainSortTable(tbl, value)
+	if not value then
+	 value = "name"
+	end
+	local CmpLower = CmpLower
+	table.sort(tbl, function(a, b)
+		return CmpLower(a[value], b[value])
+	end)
+	local str = "\n"
+	for i = 1, #tbl do
+		tbl[i] = tbl[i][value]
+		str = str .. tbl[i] ..  "\n"
+	end
+	return tbl, str
+end
 
 -- loop through all map sectors and fire this func
 --~ function ChoGGi.ComFuncs.LoopMapSectors(map_id, func)
@@ -7818,6 +7823,15 @@ end
 -- DEPRECATE (someday)
 
 
+do -- AddToOrigFuncs
+	local OrigFuncs = ChoGGi.OrigFuncs
+
+	function ChoGGi.ComFuncs.AddToOrigFuncs(name)
+		if not OrigFuncs[name] then
+			OrigFuncs[name] = DotPathToObject(name)
+		end
+	end
+end -- do
 -- remove after next mass mod upload
 -- backup orginal function for later use (checks if we already have a backup, or else inf problems)
 local function SaveOrigFunc(class_or_func, func_name)

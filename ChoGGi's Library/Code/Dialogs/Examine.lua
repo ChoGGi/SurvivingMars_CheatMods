@@ -142,6 +142,7 @@ DefineClass.ChoGGi_DlgExamine = {
 	-- strings called repeatedly
 	string_Loadingresources = false,
 	string_Classname = false,
+	string_BuildingTemplate = false,
 	string_Entity = false,
 	string_Class = false,
 	string_Object = false,
@@ -249,6 +250,7 @@ function ChoGGi_DlgExamine:Init(parent, context)
 	-- these are used during SetObj, so we trans once to speed up autorefresh
 	self.string_Loadingresources = TranslationTable[67--[[Loading resources]]]
 	self.string_Classname = TranslationTable[3746--[[Class name]]]
+	self.string_BuildingTemplate = TranslationTable[5426--[[Building]]] .. "" .. TranslationTable[1000109--[[Template]]]
 	self.string_Entity = TranslationTable[155--[[Entity]]]
 	self.string_Class = TranslationTable[3696--[[Class]]]
 	self.string_Object = TranslationTable[298035641454--[[Object]]]
@@ -3343,7 +3345,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				else
 					table.insert(data_meta, 1, "\nsize() w, h: " .. self:ConvertValueToInfo(size))
 				end
-				if UICity and center:InBox2D(self.ChoGGi.ComFuncs.ConstructableArea()) then
+				if MainCity and center:InBox2D(self.ChoGGi.ComFuncs.ConstructableArea()) then
 					table.insert(data_meta, 1, self:HyperLink(obj, self.ToggleBBox, TranslationTable[302535920001550--[[Toggle viewing BBox.]]]) .. TranslationTable[302535920001549--[[View BBox]]] .. self.hyperlink_end)
 				end
 
@@ -3708,54 +3710,61 @@ function ChoGGi_DlgExamine:SetToolbarVis(obj, obj_metatable)
 
 end
 
-do -- BuildParentsMenu
-	function ChoGGi_DlgExamine.ParentClicked(item, _, _, button)
---~ 	local function ParentClicked(item, _, _, button)
-		if button == "R" then
-			CopyToClipboard(item.name)
-		else
-			item.dlg.ChoGGi.ComFuncs.OpenInExamineDlg(g_Classes[item.name], {
-				has_params = true,
-				parent = item.dlg,
-			})
-		end
+function ChoGGi_DlgExamine.ParentClicked(item, _, _, button)
+	if button == "R" then
+		CopyToClipboard(item.name)
+	else
+		item.dlg.ChoGGi.ComFuncs.OpenInExamineDlg(g_Classes[item.name], {
+			has_params = true,
+			parent = item.dlg,
+		})
 	end
+end
+function ChoGGi_DlgExamine.ParentClickedTemplate(item, _, _, button)
+	if button == "R" then
+		CopyToClipboard("BuildingTemplates." ..item.name)
+	else
+		item.dlg.ChoGGi.ComFuncs.OpenInExamineDlg(BuildingTemplates[item.name], {
+			has_params = true,
+			parent = item.dlg,
+		})
+	end
+end
 
-	function ChoGGi_DlgExamine:BuildParentsMenu(list, list_type, title, sort_type)
-		if list and next(list) then
-			list = self.ChoGGi.ComFuncs.RetSortTextAssTable(list, sort_type)
-			self[list_type] = list
-			local c = #self.parents_menu_popup
+function ChoGGi_DlgExamine:BuildParentsMenu(list, list_type, title, sort_type)
+	if list and next(list) then
+		list = self.ChoGGi.ComFuncs.RetSortTextAssTable(list, sort_type)
+		self[list_type] = list
+		local c = #self.parents_menu_popup
 
-			c = c + 1
-			self.parents_menu_popup[c] = {
-				name = "-- " .. title .. " --",
-				disable = true,
-				centred = true,
-			}
+		c = c + 1
+		self.parents_menu_popup[c] = {
+			name = "-- " .. title .. " --",
+			disable = true,
+			centred = true,
+		}
 
-			for i = 1, #list do
-				local item = list[i]
-				-- no sense in having an item in parents and ancestors
-				if not self.pmenu_skip_dupes[item] then
-					self.pmenu_skip_dupes[item] = true
-					c = c + 1
-					self.parents_menu_popup[c] = {
-						name = item,
-						hint = T("<left_click> ") .. TranslationTable[302535920000069--[[Examine]]] .. " "
-							.. self.string_Class .. " " .. self.string_Object
-							.. ": <color 100 255 100>" .. item .. "</color>\n"
-							.. Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(self.string_Classname),
-						hint_bottom = T(302535920000589--[[<left_click> Examine <right_click> Clipboard]]),
-						mouseup = self.ParentClicked,
-						dlg = self,
-					}
-				end
-
+		for i = 1, #list do
+			local item = list[i]
+			-- no sense in having an item in parents and ancestors
+			if not self.pmenu_skip_dupes[item] then
+				self.pmenu_skip_dupes[item] = true
+				c = c + 1
+				self.parents_menu_popup[c] = {
+					name = item,
+					hint = T("<left_click> ") .. TranslationTable[302535920000069--[[Examine]]] .. " "
+						.. self.string_Class .. " " .. self.string_Object
+						.. ": <color 100 255 100>" .. item .. "</color>\n"
+						.. Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(self.string_Classname),
+					hint_bottom = T(302535920000589--[[<left_click> Examine <right_click> Clipboard]]),
+					mouseup = self.ParentClicked,
+					dlg = self,
+				}
 			end
+
 		end
 	end
-end -- do
+end
 
 function ChoGGi_DlgExamine:SetObj(startup)
 	local obj = self.obj
@@ -3821,11 +3830,25 @@ function ChoGGi_DlgExamine:SetObj(startup)
 				hint = T("<left_click> ") .. TranslationTable[302535920000069--[[Examine]]] .. " "
 					.. self.string_Class .. " " .. self.string_Object
 					.. ": <color 100 255 100>" .. obj.class .. "</color>\n"
-					.. Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(self.string_Classname),
+					.. Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(obj.class),
 				hint_bottom = T(302535920000589--[[<left_click> Examine <right_click> Clipboard]]),
 				mouseup = self.ParentClicked,
 				dlg = self,
 			})
+			-- add template name so I don't need to go looking for it (mostly just depots)
+			local template_name = obj.template_name
+			if template_name and template_name ~= "" and template_name ~= obj.class then
+				table.insert(self.parents_menu_popup, 3, {
+					name = template_name,
+					hint = T("<left_click> ") .. TranslationTable[302535920000069--[[Examine]]] .. " "
+						.. self.string_BuildingTemplate .. " " .. self.string_Object
+						.. ": <color 100 255 100>" .. template_name .. "</color>\n"
+						.. Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(template_name),
+					hint_bottom = T(302535920000589--[[<left_click> Examine <right_click> Clipboard]]),
+					mouseup = self.ParentClickedTemplate,
+					dlg = self,
+				})
+			end
 
 			-- If anything was added to the list then add to the menu
 			if self.parents_menu_popup[1] then
@@ -3962,7 +3985,9 @@ function ChoGGi_DlgExamine:Done()
 	dlgs[self.obj] = nil
 	dlgs[obj] = nil
 end
-
+--
+--
+--
 -- Used to open a dialog
 local red = red
 local function FlashTitlebar(title)

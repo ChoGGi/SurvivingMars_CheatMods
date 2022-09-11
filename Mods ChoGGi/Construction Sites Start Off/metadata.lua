@@ -19,8 +19,8 @@ Newly placed construction sites will be turned off.
 
 
 Mod Options:
-Turn Off: Disable this to place buildings normally.
 Skip Grids: Don't turn off cables and pipes.
 Skip Passages: Don't turn off passages.
+Turn Off Buildings: Turn off newly placed buildings.
 ]],
 })
