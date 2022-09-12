@@ -1,45 +1,31 @@
 -- See LICENSE for terms
 
-local mod_EnableMod
-
-local ChoOrig_Open
-local function new_Open(...)
-	ChoOrig_Open(...)
-
-	if not mod_EnableMod then
-		return
-	end
-
-	-- default 96
-	hr.EnablePostProcScreenBlur = 1
-end
-
-local function ModOptions(id)
-	-- id is from ApplyModOptions
-	if id and id ~= CurrentModId then
-		return
-	end
-
-	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
-end
--- Load default/saved settings
-OnMsg.ModsReloaded = ModOptions
--- Fired when Mod Options>Apply button is clicked
-OnMsg.ApplyModOptions = ModOptions
-
--- backup orig func for easy swapping and replace with new func
 function OnMsg.ClassesPostprocess()
 
 	local xtemplate = XTemplates.ScreenBlur[1]
-	local idx = table.find(xtemplate, "name", "Open")
-	if idx then
-		xtemplate = xtemplate[idx]
+	if xtemplate.ChoGGi_MinimalBackgroundBlur_updatedfunc then
+		return
+	end
 
-		-- don't want to save my new func as orig
-		if type(ChoOrig_Open) ~= "function" then
-			ChoOrig_Open = xtemplate.func
+	local idx = table.find(xtemplate, "name", "Open")
+	if not idx then
+		return
+	end
+
+	local template_func = xtemplate[idx]
+
+	local ChoOrig_MinimalBackgroundBlur_Open = template_func.func
+	template_func.func = function(...)
+		ChoOrig_MinimalBackgroundBlur_Open(...)
+		if not CurrentModOptions:GetProperty("EnableMod") then
+			return
 		end
 
-		xtemplate.func = new_Open
+		-- Normally called when the "Close" func is called
+		table.restore(hr, "BackgroundBlur")
 	end
+
+	-- keep it from updating each lua reload
+	xtemplate.ChoGGi_MinimalBackgroundBlur_updatedfunc = true
+	--
 end

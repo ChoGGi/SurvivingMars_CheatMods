@@ -41,6 +41,12 @@ do -- ModUpload
 		ChoGGi_UnitThoughts = "Unit Thoughts (upload 3)",
 		ChoGGi_WideAreaForestation = "Wide Area Forestation (upload 2)",
 	}
+	-- What? I like coloured titles...
+	local diff_mod_titles_steam = {
+		-- extra spaces intentional (thank you paradox mods)
+		[ChoGGi.id_lib] = "ChoGGi's Library",
+		[ChoGGi.id] = "Expanded Cheat Menu",
+	}
 	-- mods I have with diff authors (only matters for me)
 	local ignore_authors = {
 		-- Canadian Space Agency 2
@@ -112,6 +118,12 @@ do -- ModUpload
 		-- add new mod
 		local err, steam_item_id, para_item_id, prepare_worked, prepare_results, existing_mod
 		if steam_upload then
+			local steam_title = diff_mod_titles_steam[mod.id]
+			if steam_title then
+				orig_title = mod.title
+				mod.title = steam_title
+			end
+
 			if mod.steam_id ~= 0 then
 				existing_mod = true
 			end
@@ -120,6 +132,10 @@ do -- ModUpload
 			-- mod id for clipboard
 			steam_item_id = mod.steam_id
 
+			if orig_title then
+				mod.title = orig_title
+				orig_title = nil
+			end
 		end -- steam upload
 
 		-- para upload

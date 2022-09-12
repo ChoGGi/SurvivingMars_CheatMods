@@ -5,7 +5,6 @@ if not g_AvailableDlc.picard then
 	return
 end
 
-local RetMapType = ChoGGi.ComFuncs.RetMapType
 local table = table
 
 local mod_EnableMod
@@ -18,16 +17,28 @@ local fake_BuriedWonders = {}
 local fake_BuriedWonders_c = 0
 
 local function UpdateObjs()
-	if not mod_EnableMod or not UIColony or RetMapType() ~= "underground" then
+	if not mod_EnableMod or not UIColony then
+		return
+	end
+
+	local labels
+	for i = 1, #Cities do
+		local city = Cities[i]
+		if city.map_id == UIColony.underground_map_id then
+			labels = city.labels
+			break
+		end
+	end
+	if not labels then
 		return
 	end
 
 	-- newly built struts
 	SupportStruts.work_radius = mod_SupportStrutRadius
 	-- UICity since we checked the active map is underground one
-	local objs = UICity.labels.SupportStruts or ""
-	for i = 1, #objs do
-		objs[i].work_radius = mod_SupportStrutRadius
+	local struts = labels.SupportStruts or ""
+	for i = 1, #struts do
+		struts[i].work_radius = mod_SupportStrutRadius
 	end
 
 	-- lights
@@ -35,9 +46,9 @@ local function UpdateObjs()
 	ClassTemplates.Building.LightTripod.reveal_range = mod_LightTripodRadius
 
 	local UpdateRevealObject = UnitRevealDarkness.UpdateRevealObject
-	objs = UICity.labels.LightTripod or ""
-	for i = 1, #objs do
-		local obj = objs[i]
+	local tripods = labels.LightTripod or ""
+	for i = 1, #tripods do
+		local obj = tripods[i]
 		obj.reveal_range = mod_LightTripodRadius
 		UpdateRevealObject(obj)
 	end

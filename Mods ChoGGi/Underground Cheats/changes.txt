@@ -1,2 +1,5 @@
+v0.3
+Removed need of my lib mod.
+
 v0.2
 Pick underground wonders for new games.

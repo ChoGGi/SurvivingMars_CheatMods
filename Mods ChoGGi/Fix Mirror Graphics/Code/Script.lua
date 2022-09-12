@@ -169,6 +169,10 @@ OnMsg.LoadGame = UpdateTextures
 OnMsg.ChangeMapDone = UpdateTextures
 
 function OnMsg.TerrainTexturesChanged()
+	if not mod_EnableMod then
+		return
+	end
+
 	-- Update terraformed soil
 	if mod_TerraSoil then
 		local soil_terrain_idx = GetTerrainTextureIndex("SandMIX_01")
