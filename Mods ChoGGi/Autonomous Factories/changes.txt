@@ -1,3 +1,6 @@
+v0.4
+Added Drone Assembler / Recon Center (default off).
+
 v0.3
 Checks for actual list.
 

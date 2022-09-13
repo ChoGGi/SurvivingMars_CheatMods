@@ -33,6 +33,24 @@ for id, item in pairs(BuildingTemplates) do
 	end
 end
 
+-- Custom buildings
+local function AddBuilding(id)
+	local item = BuildingTemplates[id]
+	c = c + 1
+	properties[c] = PlaceObj("ModItemOptionToggle", {
+		"name", id,
+		"DisplayName", T(item.display_name),
+		"Help", table.concat(T(item.description) .. "\n\n<image " .. item.display_icon .. ">"),
+		"DefaultValue", false,
+	})
+end
+--
+AddBuilding("DroneFactory")
+--
+if g_AvailableDlc.picard then
+	AddBuilding("ReconCenter")
+end
+
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
 table.sort(properties, function(a, b)

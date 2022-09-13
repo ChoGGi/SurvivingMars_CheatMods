@@ -16,6 +16,12 @@ function OnMsg.ClassesPostprocess()
 	end
 end
 
+-- Custom buildings
+mod_options.DroneFactory = false
+if g_AvailableDlc.picard then
+	mod_options.ReconCenter = false
+end
+
 local function UpdateBuildings()
 
 	-- make newly built buildings not need workers
