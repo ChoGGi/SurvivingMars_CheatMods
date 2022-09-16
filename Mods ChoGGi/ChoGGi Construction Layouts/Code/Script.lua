@@ -285,7 +285,14 @@ local function BuildLayouts(params)
 			})
 		end
 
-	elseif params.id == "ChoGGi_LayoutConstruction_ServiceSlice" then
+	elseif params.id == "ChoGGi_LayoutConstruction_ServiceSlice"
+		or params.id == "ChoGGi_LayoutConstruction_ServiceSlice2"
+	then
+		local extra = "Infirmary"
+		if params.id == "ChoGGi_LayoutConstruction_ServiceSlice2" then
+			extra = "Amphitheater"
+		end
+
 		PlaceObj("LayoutConstruction", {
 			group = "Default",
 			id = params.id,
@@ -302,8 +309,8 @@ local function BuildLayouts(params)
 				"dir", 1,
 			}),
 			PlaceObj("LayoutConstructionEntry", {
-				"template", "Infirmary",
-				"entity", "Infirmary",
+				"template", extra,
+				"entity", extra,
 				"pos", point(-1, 1),
 				"dir", 5,
 			}),
@@ -424,13 +431,19 @@ function OnMsg.ClassesPostprocess()
 	BuildLayouts{
 		id = "ChoGGi_LayoutConstruction_ServiceSlice",
 		build_pos = 1,
-		display_name = T(0000, "Service Slice"),
+		display_name = T(0000, "Service Slice Infirm"),
 		display_name_pl = T(0000, "Service Slices"),
 		description = T(0000, "Service slice of Diner, Infirmary, and Grocer."),
 		display_icon = "UI/Icons/Buildings/infirmary.tga",
---~ 		points = stirling_points,
---~ 		template = "StirlingGenerator",
---~ 		entity = "StirlingGenerator",
+		build_category = "Dome Services",
+	}
+	BuildLayouts{
+		id = "ChoGGi_LayoutConstruction_ServiceSlice2",
+		build_pos = 1,
+		display_name = T(0000, "Service Slice Amphit"),
+		display_name_pl = T(0000, "Service Slices"),
+		description = T(0000, "Service slice of Amphitheater, Infirmary, and Grocer."),
+		display_icon = "UI/Icons/Buildings/amphitheater.tga",
 		build_category = "Dome Services",
 	}
 		BuildLayouts{
@@ -490,7 +503,9 @@ function LayoutConstructionController:Activate(template, params, ...)
   local template_obj = ClassTemplates.Building[template] or g_Classes[template] or empty_table
   local layout_preset = Presets.LayoutConstruction.Default[template_obj.LayoutList] or params.layout_preset or empty_table
 	-- add random decorations
-	if layout_preset.id == "ChoGGi_LayoutConstruction_ServiceSlice" then
+	if layout_preset.id == "ChoGGi_LayoutConstruction_ServiceSlice"
+		or layout_preset.id == "ChoGGi_LayoutConstruction_ServiceSlice2"
+	then
 		local dec = table.rand(single_hex_decorations)
 		layout_preset[1].entity = dec[Random(2, #dec)]
 		layout_preset[1].dir = Random(0, 5)

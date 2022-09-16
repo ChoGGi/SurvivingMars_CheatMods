@@ -1,3 +1,6 @@
+v0.9
+Amphitheater, Diner, and Grocer service slice.
+
 v0.8
 Fixed Large solar panels acting as small panels.
 Moved stir+trib to Power (instead of Infrastructure).
