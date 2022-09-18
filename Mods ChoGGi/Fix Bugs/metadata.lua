@@ -75,10 +75,11 @@ This also has a fix for buildings hit with lightning during a cold wave.
 [b]Fix Floating Rubble[/b]
 Move any floating underground rubble to within reach of drones (might have to "push" drones to make them go for it).
 [b]Fix Colonist Daily Interest Loop[/b]
-https://forum.paradoxplaza.com/forum/threads/surviving-mars-colonists-repeatedly-satisfy-daily-interests.1464969/
 A colonist will repeatedly use a daily interest building to satisfy a daily interest already satisfied.
 Repeating a daily interest will gain a comfort boost "if" colonist comfort is below the service comfort threshold, but a resource will always be consumed each visit.
 This mod will block the colonist from having a visit, instead: An unemployed scientist will wander around outside till the Sol is over instead of chewing up 0.6 electronics.
+https://forum.paradoxplaza.com/forum/threads/surviving-mars-colonists-repeatedly-satisfy-daily-interests.1464969/
+Thanks to ThereWillBeBugsToOvercome for noticing it, finding the offending code, doing a detailed write up of it, and testing the fix.
 [b]Fix Stuck Malfunctioning Drones At DroneHub[/b]
 If you have malfunctioning drones at a dronehub and they never get repaired (off map).
 This'll check on load each time for them (once should be enough though), and move them near the hub.

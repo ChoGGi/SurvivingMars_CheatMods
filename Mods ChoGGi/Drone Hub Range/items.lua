@@ -10,6 +10,7 @@ return {
 	PlaceObj("ModItemOptionNumber", {
 		"name", "DroneHubRange",
 		"DisplayName", table.concat(T(8780,"MAX") .. " " .. T(3518,"Drone Hub") .. " " .. T(643,"Range")),
+		"Help", T(0000, "Max range of drone hubs."),
 		"DefaultValue", const.CommandCenterDefaultRadius,
 		"MinValue", const.CommandCenterMinRadius,
 		"MaxValue", 500,

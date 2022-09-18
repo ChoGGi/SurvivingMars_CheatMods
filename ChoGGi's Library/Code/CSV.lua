@@ -161,15 +161,18 @@ do -- MapData
 	end
 
 	--[[
-	ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
-		setting_breakthroughs = true,
-		setting_skip_csv = true,
-		setting_limit_count = 12,
-	})
+ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
+	setting_breakthroughs = true,
+	setting_skip_csv = false,
+	setting_limit_count = 12,
+})
 	]]
 
 	function ChoGGi.ComFuncs.ExportMapDataToCSV(action)
-		local limit_count, skip_csv, breakthroughs
+		local limit_count = 12
+		local skip_csv = false
+		local breakthroughs = false
+
 		-- fired from action menu
 		if action and IsKindOf(action, "XAction") then
 			if action.setting_breakthroughs then

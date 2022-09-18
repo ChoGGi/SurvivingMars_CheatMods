@@ -563,12 +563,20 @@ function LandscapeFinish(mark, ...)
 		return
 	end
 
+--~ 	ex(landscape)
+
+	-- This is false for Clear/Texture, and we don't care about those.
+	if not landscape.changed then
+		return ChoOrig_LandscapeFinish(mark, ...)
+	end
+
 	-- No return value
 	-- last checked lua rev 1011166
 	ChoOrig_LandscapeFinish(mark, ...)
 
 	local map_id = landscape.map_id
 	local game_map = GameMaps[map_id]
+	-- Just in case Asteroid
 	if not game_map then
 		return
 	end

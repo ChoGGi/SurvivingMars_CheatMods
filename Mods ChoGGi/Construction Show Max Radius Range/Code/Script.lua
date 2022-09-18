@@ -32,7 +32,13 @@ local function AddRadius(self, radius)
 	self:Attach(circle)
 end
 
-local cls_saved_settings = {"ChoGGi_TriboelectricSensorTower", "TriboelectricScrubber", "SubsurfaceHeater", "CoreHeatConvector", "ForestationPlant"}
+local cls_saved_settings = {
+	"ChoGGi_TriboelectricSensorTower",
+	"TriboelectricScrubber",
+	"SubsurfaceHeater",
+	"CoreHeatConvector",
+	"ForestationPlant"
+}
 local cls_heaters = {"SubsurfaceHeater", "CoreHeatConvector"}
 
 local safe_rangers = {
