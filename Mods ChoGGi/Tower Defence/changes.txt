@@ -1,3 +1,6 @@
+v0.7
+Random pos fix.
+
 v0.6
 Picard city time update.
 

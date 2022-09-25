@@ -21,7 +21,6 @@ local GetBuildableGrid = GetBuildableGrid
 local GetCursorWorldPos = GetCursorWorldPos
 local GetMapSectorXY = GetMapSectorXY
 local GetObjectHexGrid = GetObjectHexGrid
-local GetRandomPassablePoint = GetRandomPassablePoint
 local guic = guic
 local HexGetNearestCenter = HexGetNearestCenter
 local HexGridGetObject = HexGridGetObject
@@ -4165,7 +4164,6 @@ ChoGGi.ComFuncs.MapDelete = ChoGGi.ComFuncs.RemoveObjs
 do -- SpawnColonist
 	local Msg = Msg
 	local GenerateColonistData = GenerateColonistData
-	local GetRandomPassablePoint = GetRandomPassablePoint
 
 	function ChoGGi.ComFuncs.SpawnColonist(old_c, building, pos, city)
 		city = city or UICity
@@ -4204,9 +4202,10 @@ do -- SpawnColonist
 			old_c:AddTrait(old_c.specialist)
 --~ 			colonist:SetSpecialization(old_c.specialist)
 		end
+		local realm = GetRealm(colonist)
 		colonist:SetPos((pos
-			or building and GetPassablePointNearby(building:GetPos())
-			or GetRandomPassablePoint()):SetTerrainZ()
+			or building and realm:GetPassablePointNearby(building:GetPos())
+			or realm:GetRandomPassablePoint()):SetTerrainZ()
 		)
 
 		-- If age/spec is different this updates to new entity
@@ -6104,7 +6103,7 @@ function ChoGGi.ComFuncs.ResetHumanCentipedes()
 		if obj:IsValidPos() and not obj:GetPath() then
 			-- too close and they keep doing the human centipede
 			obj:SetCommand("Goto",
-				GetPassablePointNearby(obj:GetPos()+point(Random(-1000, 1000), Random(-1000, 1000)))
+				GetRealm(obj):GetPassablePointNearby(obj:GetPos()+point(Random(-1000, 1000), Random(-1000, 1000)))
 			)
 		end
 	end
@@ -7593,7 +7592,7 @@ function ChoGGi.ComFuncs.SetPosRandomBuildablePos(obj, city)
   local object_hex_grid = GetObjectHexGrid(city)
   local buildable_grid = GetBuildableGrid(city)
 
-	obj:SetPos(GetRandomPassablePoint(city:Random(), pfClass, function(x, y)
+	obj:SetPos(GetRealm(obj):GetRandomPassablePoint(city:Random(), pfClass, function(x, y)
 		return buildable_grid:IsBuildableZone(x, y) and not IsPointNearBuilding(object_hex_grid, x, y)
 	end))
 end

@@ -174,7 +174,7 @@ function RCMechanic:ProcAutomation()
 		end
 		self.repairing_list[string_pos] = true
 
-		local pos = GetPassablePointNearby(visual_pos)
+		local pos = GetRealm(rover):GetPassablePointNearby(visual_pos)
 		if self:HasPath(pos, "Workrover") then
 			self.status_text = T{302535920011195, [[Was the dark of the moon on the sixth of June
 In a <color 199 124 45><name></color> pullin' logs

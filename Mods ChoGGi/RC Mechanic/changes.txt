@@ -1,3 +1,6 @@
+v1.3
+Random pos fix.
+
 v1.2
 Added mod option for god mode.
 

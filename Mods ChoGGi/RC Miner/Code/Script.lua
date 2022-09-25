@@ -377,7 +377,7 @@ function PortableMiner:ProcAutomation()
 	end)
 
 	if deposit then
-		local deposit_pos = GetPassablePointNearby(deposit:GetPos())
+		local deposit_pos = GetRealm(self):GetPassablePointNearby(deposit:GetPos())
 		if self:HasPath(deposit_pos, "Origin") then
 			-- If leaving an empty site then this sign should be turned off
 			self:AttachSign(false, "SignNotWorking")

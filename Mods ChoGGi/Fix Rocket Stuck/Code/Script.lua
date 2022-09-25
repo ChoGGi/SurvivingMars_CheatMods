@@ -4,8 +4,6 @@ local table, type, pairs = table, type, pairs
 local IsValid = IsValid
 local Msg = Msg
 local GenerateColonistData = GenerateColonistData
-local GetRandomPassablePoint = GetRandomPassablePoint
-local GetPassablePointNearby = GetPassablePointNearby
 local InvalidPos = InvalidPos()
 
 local mod_EnableMod
@@ -54,8 +52,9 @@ local function ModOptions(id)
 			Colonist:new(colonist)
 			Msg("ColonistBorn", colonist)
 
-			colonist:SetPos(pos or building and GetPassablePointNearby(building:GetPos())
-				or GetRandomPassablePoint())
+			local realm = GetRealm(colonist)
+			colonist:SetPos(pos or building and realm:GetPassablePointNearby(building:GetPos())
+				or realm:GetRandomPassablePoint())
 
 			-- if spec is different then updates to new entity
 			colonist:ChooseEntity()

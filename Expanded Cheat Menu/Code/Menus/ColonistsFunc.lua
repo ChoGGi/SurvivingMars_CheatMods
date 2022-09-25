@@ -87,7 +87,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 			res = "Food"
 		end
 		PlaceResourcePile(
-			GetPassablePointNearby(meat_bag) or meat_bag:GetVisualPos(),
+			GetRealm(meat_bag):GetPassablePointNearby(meat_bag) or meat_bag:GetVisualPos(),
 			res, Random(1, 5) * const.ResourceScale
 		)
 		meat_bag:SetCommand("Erase")

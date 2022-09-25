@@ -3,7 +3,6 @@
 local RetSpotPos = ChoGGi.ComFuncs.RetSpotPos
 local IsValid = IsValid
 local FindNearestObject = FindNearestObject
-local GetPassablePointNearby = GetPassablePointNearby
 local GetRealm = GetRealm
 
 local mod_NearestLaser
@@ -61,7 +60,9 @@ function BaseRover:ChoGGi_WaitItOut()
 
 	-- off we go
 	if IsValid(valid_obj) then
-		local pos = GetPassablePointNearby(RetSpotPos(self, valid_obj, "Workrover"))
+		local pos = GetRealm(valid_obj):GetPassablePointNearby(
+			RetSpotPos(self, valid_obj, "Workrover")
+		)
 		self:SetCommand("GotoFromUser", pos)
 	else
 		-- something messed up, or there's no buildings to hide around

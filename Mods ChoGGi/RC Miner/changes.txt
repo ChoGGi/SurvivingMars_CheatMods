@@ -1,3 +1,6 @@
+v3.3
+Random pos fix.
+
 v3.2
 More automode compat.
 

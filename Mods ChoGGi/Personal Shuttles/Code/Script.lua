@@ -255,7 +255,8 @@ function PersonalShuttle:DropCargo(obj, pos, dest)
 	local carried = self.carried_obj
 
 	-- If fired from recall
-	dest = dest or GetPassablePointNearby(self:GetPos())
+	local realm = GetRealm(self)
+	dest = dest or realm:GetPassablePointNearby(self:GetPos())
 	pos = pos or self:GetPos()
 
 	-- drop it off nearby

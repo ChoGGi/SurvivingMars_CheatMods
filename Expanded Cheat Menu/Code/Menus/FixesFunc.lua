@@ -126,7 +126,7 @@ do -- ResetCommanders
 		local pos = rc:GetVisualPos()
 		local new = rc:Clone()
 		DoneObject(rc)
-		new:SetPos(GetPassablePointNearby(pos))
+		new:SetPos(GetRealm(new):GetPassablePointNearby(pos))
 		-- add any missing drones
 		if drones > #new.attached_drones then
 			repeat
@@ -176,7 +176,6 @@ end -- do
 do -- Colonist stuff
 	local SpawnColonist = ChoGGi.ComFuncs.SpawnColonist
 	local FindNearestObject = FindNearestObject
-	local GetPassablePointNearby = GetPassablePointNearby
 
 	function ChoGGi.MenuFuncs.ResetAllColonists()
 --~ 		local UICity = UICity
@@ -238,11 +237,12 @@ do -- Colonist stuff
 		local InvalidPos = ChoGGi.Consts.InvalidPos
 		local rockets = UIColony:GetCityLabels("SupplyRocket")
 		for i = 1, #rockets do
+			local rocket = rockets[i]
 			-- SupplyRocket also returns rockets in space
-			if rockets[i]:GetPos() ~= InvalidPos then
-				local city = Cities[ChoGGi.ComFuncs.RetObjMapId(rockets[i])]
-				local pos = GetPassablePointNearby(rockets[i]:GetPos())
-				rockets[i]:ForEachAttach("Colonist", AttachedColonist, pos, rockets[i], city)
+			if rocket:GetPos() ~= InvalidPos then
+				local city = Cities[ChoGGi.ComFuncs.RetObjMapId(rocket)]
+				local pos = GetRealm(rocket):GetPassablePointNearby(rocket:GetPos())
+				rocket:ForEachAttach("Colonist", AttachedColonist, pos, rocket, city)
 			end
 		end
 		MsgPopup(

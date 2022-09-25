@@ -1,3 +1,6 @@
+v2.4
+Random pos fix.
+
 v2.3
 Trade rocket from Beyond Earth mystery.
 

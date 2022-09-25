@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v11.7 (Unreleased)
+- GetPassablePointNearby()/GetRandomPassable()/GetRandomPassablePoint() and picard.
 
 ## v11.6 (11 Sep 2022)
 - Mod Option: Disable Dialog Escape: Pressing Escape won't close dialog boxes (default enabled).

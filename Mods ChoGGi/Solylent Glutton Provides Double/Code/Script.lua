@@ -2,7 +2,6 @@
 
 local IsTechResearched = IsTechResearched
 local PlaceResourcePile = PlaceResourcePile
-local GetPassablePointNearby = GetPassablePointNearby
 local ResourceScale = const.ResourceScale
 
 function OnMsg.ColonistDie(colonist)
@@ -10,7 +9,7 @@ function OnMsg.ColonistDie(colonist)
 		IsTechResearched("SoylentGreen")
 	then
 		PlaceResourcePile(
-			GetPassablePointNearby(colonist) or colonist:GetVisualPos(),
+			GetRealm(colonist):GetPassablePointNearby(building:GetPos()) or colonist:GetVisualPos(),
 			"Food",
 			1 * ResourceScale
 		)

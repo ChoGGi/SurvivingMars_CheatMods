@@ -18,7 +18,6 @@ OnMsg.ApplyModOptions = ModOptions
 local Sleep = Sleep
 local IsValid = IsValid
 local PlaceObject = PlaceObject
-local GetPassablePointNearby = GetPassablePointNearby
 local table = table
 
 local Random = ChoGGi.ComFuncs.Random
@@ -75,7 +74,7 @@ function TowerDefense_Rover:FireRocket(luaobj, rocket_class, byebye)
 end
 
 local function LoadMapSectorsStats()
-	local UICity = UICity
+	local MainCity = MainCity
 	if not MainCity then
 		return
 	end
@@ -83,7 +82,7 @@ local function LoadMapSectorsStats()
 	-- store amounts per save here
 	if not ChoGGi_TowerDefense_mapsectors then
 		-- build list of out map sectors (all of 1 and 10, and the top/bottom from the rest
-		local sectors = UICity.MapSectors
+		local sectors = MainCity.MapSectors
 		local sector_table = {}
 		local c = 0
 
@@ -167,7 +166,9 @@ function OnMsg.NewDay(sol)
 			Sleep(Random(2500, 10000))
 			-- muhhahahaha
 			local r = PlaceObject("TowerDefense_Rover", {
-				spawn_pos = GetPassablePointNearby(stats.sectors[Random(1, stats.count)]:GetPos()),
+				spawn_pos = GameMaps[MainCity.map_id].realm:GetPassablePointNearby(
+					stats.sectors[Random(1, stats.count)]:GetPos()
+				),
 				attacks_remaining = stats.ammo_next,
 			})
 			-- need to make 'em nasty
