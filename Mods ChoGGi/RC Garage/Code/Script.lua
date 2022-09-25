@@ -19,6 +19,7 @@ DefineClass.RCGarage = {
 		"Building",
 		"Holder",
 		"ElectricityConsumer",
+		"CityObject",
 	},
 	-- they're not "that" tall (and it was in Tunnel so screw you for questioning my authority)
 	is_tall = false,
@@ -163,7 +164,7 @@ function RCGarage:RemoveFromGarage(unit)
 		local rem = unit.ChoGGi_RemHolderPos ~= InvalidPos and unit.ChoGGi_RemHolderPos
 		-- get nearby pass area
 		unit:SetCommand("Goto", GetRandomPassableAround(pt ~= InvalidPos and pt or rem, 10000)
-			or GetRandomPassable()
+			or GetRandomPassable(unit.city or self.city)
 		)
 		Sleep(2500)
 

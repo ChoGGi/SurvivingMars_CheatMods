@@ -1,3 +1,10 @@
+v3.1
+Dependency for my library mod removed (thanks Sicarious).
+
+v3.0
+Unpassable underground rocks stuck in path (not cavein rubble, but small rocks you can't select).
+https://forum.paradoxplaza.com/forum/threads/surviving-mars-completely-blocked-tunnel-not-the-collapsed-tunnel.1541240/
+
 v2.9
 Clean up city labels of wrong map / invalid objs.
 

@@ -7,6 +7,7 @@
 - Infopanel Cheats>InstHarvest: Instantly harvest current crop.
 
 ### Fixed:
+- Possible crash.
 - A couple instances of UICity I somehow missed.
 
 ## v18.5 (10 July 2022)

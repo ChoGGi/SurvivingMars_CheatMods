@@ -7396,7 +7396,7 @@ function ChoGGi.ComFuncs.SetAnimState(obj)
 	}
 end
 
-function ChoGGi.ComFuncs.LaunchHumanMeteor(entity, min, max)
+function ChoGGi.ComFuncs.LaunchHumanMeteor(entity, min, max, city)
 	if not IsValidEntity(entity) then
 		entity = "Unit_Astronaut_All_Child_01"
 		min = 0
@@ -7404,7 +7404,7 @@ function ChoGGi.ComFuncs.LaunchHumanMeteor(entity, min, max)
 	end
 
 	if not CurrentThread() then
-		return CreateGameTimeThread(ChoGGi.ComFuncs.LaunchHumanMeteor, entity, min, max)
+		return CreateGameTimeThread(ChoGGi.ComFuncs.LaunchHumanMeteor, entity, min, max, city)
 	end
 
 	--	1 to 4 sols
@@ -7414,7 +7414,7 @@ function ChoGGi.ComFuncs.LaunchHumanMeteor(entity, min, max)
 	))
 
 	local data = DataInstances.MapSettings_Meteor.Meteor_VeryLow
-	local descr = SpawnMeteor(data, nil, nil, GetRandomPassable())
+	local descr = SpawnMeteor(data, nil, nil, GetRandomPassable(city or MainCity))
 
 	-- I got a missle once, not sure why...
 	if descr.meteor:IsKindOf("BombardMissile") then

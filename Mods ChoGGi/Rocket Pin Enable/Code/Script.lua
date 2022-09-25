@@ -46,7 +46,6 @@ local function fake_SetPinned(rocket)
 	-- might help keep pin around?
 	rocket.show_pin_toggle = true
 end
---~ local empty_func = empty_func
 
 local ChoOrig_RocketBase_UpdateStatus = RocketBase.UpdateStatus
 function RocketBase:UpdateStatus(status, ...)

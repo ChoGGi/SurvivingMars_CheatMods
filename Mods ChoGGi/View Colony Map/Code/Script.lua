@@ -378,7 +378,30 @@ function ChoGGi_VCM_ExtraInfoDlg:HyperLink(desc, name)
 	return "<color 255 255 255><h " .. c .. " 230 195 50>", c
 end
 
+
 function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(gen)
+
+	if ChoGGi.testing then
+		local state = RandState(gen.Seed)
+		local rand = function(min, max)
+			return state:GetStable(min, max)
+		end
+
+		ex(rand)
+--~ 		Seed = 977816133 < 0nw0
+--~ 		randstate == 2074321580 (CaveOfWonders/AncientArtifact)
+
+		local shuffled_wonders = table.copy(const.BuriedWonders)
+		local num_wonders = #shuffled_wonders
+		table.shuffle(shuffled_wonders, rand)
+		local spawned_wonders = {}
+		for index, marker in ipairs({1,1}) do
+			local wrapped_index = 1 + (index - 1) % num_wonders
+			print(wonder_class)
+		end
+	end
+	-- end testing if
+
 	if show_image_dlg.random_warning then
 		self.idText:SetText(show_image_dlg.warning_str)
 		return

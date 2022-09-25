@@ -1,3 +1,6 @@
+v0.4
+Picard.
+
 v0.3
 pcall replaced function.
 

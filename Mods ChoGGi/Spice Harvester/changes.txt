@@ -1,3 +1,6 @@
+v1.1
+Picard.
+
 v1.0
 Now uses either mouse or gamepad for positions.
 

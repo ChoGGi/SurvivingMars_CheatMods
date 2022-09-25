@@ -161,11 +161,13 @@ do -- MapData
 	end
 
 	--[[
+
 ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
 	setting_breakthroughs = true,
 	setting_skip_csv = false,
 	setting_limit_count = 12,
 })
+
 	]]
 
 	function ChoGGi.ComFuncs.ExportMapDataToCSV(action)

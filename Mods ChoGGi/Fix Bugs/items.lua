@@ -53,5 +53,4 @@ If you're bored and want to dig through the funcs in LandscapeFinish() to find o
 ]]),
 		"DefaultValue", false,
 	}),
-
 }

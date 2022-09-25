@@ -99,7 +99,7 @@ function ChoGGi.MenuFuncs.MeteorStrike(_, _, input)
 	if input == "keyboard" then
 		strike_pos = GetCursorWorldPos()
 	else
-		strike_pos = GetRandomPassable()
+		strike_pos = GetRandomPassable(UICity)
 	end
 
 	ChoGGi.MenuFuncs.DisasterTriggerMeteor("Meteor_High", "single", strike_pos)
@@ -110,7 +110,7 @@ function ChoGGi.MenuFuncs.MissileStrike(_, _, input)
 	if input == "keyboard" then
 		strike_pos = GetCursorWorldPos()
 	else
-		strike_pos = GetRandomPassable()
+		strike_pos = GetRandomPassable(UICity)
 	end
 
 	ChoGGi.MenuFuncs.DisasterTriggerMissle()
@@ -121,7 +121,7 @@ function ChoGGi.MenuFuncs.LightningStrike(_, _, input)
 	if input == "keyboard" then
 		strike_pos = GetCursorWorldPos()
 	else
-		strike_pos = GetRandomPassable()
+		strike_pos = GetRandomPassable(UICity)
 	end
 
 	local dust_storm = table.rand(DataInstances.MapSettings_DustStorm)
@@ -454,7 +454,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerMissle(amount)
 		CreateGameTimeThread(function()
 			for _ = 1, amount do
 				StartBombard(
-					GetRandomPassable(),
+					GetRandomPassable(UICity),
 					1000,
 					1
 				)
@@ -480,6 +480,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerDustStorm(severity, storm_type)
 		StartDustStorm(storm_type or "normal", descr)
 	end)
 end
+
 function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(severity, major)
 	local pos = SelObject() or GetCursorWorldPos()
 	if type(pos) == "table" then
@@ -584,7 +585,7 @@ do -- DisasterTriggerLightningStrike
 		-- stick it in a thread so we can sleep
 		CreateGameTimeThread(function()
 			for _ = 1, amount or 1 do
-				strike_pos = GetRandomPassable()
+				strike_pos = GetRandomPassable(UICity)
 				PlayFX("ElectrostaticStormArea", "start", nil, nil, strike_pos)
 				PlayFX("ElectrostaticStorm", "hit-moment" .. Random(1, 5), nil, nil, strike_pos)
 				MapForEach(strike_pos, strike_radius + GetEntityMaxSurfacesRadius(), "Colonist", "Building", "Drone", "RCRover", "ResourceStockpileBase", MapForEachObjStrike)

@@ -196,10 +196,10 @@ do -- Colonist stuff
 		end
 
 		ChoGGi.ComFuncs.QuestionBox(
-			Translate(6779--[[Warning]]) .. "!\n" .. TranslationTable[302535920000055--[[Reset All Colonists]]]
+			TranslationTable[6779--[[Warning]]] .. "!\n" .. TranslationTable[302535920000055--[[Reset All Colonists]]]
 				.. "\n" .. TranslationTable[302535920000939--[["Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20."]]],
 			CallBackFunc,
-			Translate(6779--[[Warning]]) .. ": " .. TranslationTable[302535920000055--[[Reset All Colonists]]]
+			TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000055--[[Reset All Colonists]]]
 		)
 	end
 
@@ -219,7 +219,7 @@ do -- Colonist stuff
 		end
 
 		MsgPopup(
-			T(4493--[[All]]),
+			TranslationTable[4493--[[All]]],
 			TranslationTable[302535920000591--[[Colonists Trying To Board Rocket Freezes Game]]]
 		)
 	end
@@ -246,7 +246,7 @@ do -- Colonist stuff
 			end
 		end
 		MsgPopup(
-			T(5238--[[Rockets]]),
+			TranslationTable[5238--[[Rockets]]],
 			TranslationTable[302535920000585--[[Colonists Stuck Outside Rocket]]]
 		)
 	end
@@ -266,7 +266,7 @@ function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
 	ResumePassEdits("ChoGGi.MenuFuncs.ParticlesWithNullPolylines")
 
 	MsgPopup(
-		T(4493--[[All]]),
+		TranslationTable[4493--[[All]]],
 		TranslationTable[302535920000593--[[Remove Particles With Null Polylines]]]
 	)
 end
@@ -285,10 +285,10 @@ function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
 	end
 
 	ChoGGi.ComFuncs.QuestionBox(
-		Translate(6779--[[Warning]]) .. "!\n"
+ 		TranslationTable[6779--[[Warning]]] .. "!\n"
 			.. TranslationTable[302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).]]],
 		CallBackFunc,
-		Translate(6779--[[Warning]]) .. ": " .. TranslationTable[302535920000587--[[Remove Missing Class Objects]]]
+		TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000587--[[Remove Missing Class Objects]]]
 	)
 end
 

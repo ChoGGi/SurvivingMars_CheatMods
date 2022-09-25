@@ -1488,7 +1488,7 @@ do -- LoadGame/CityStart
 --~ 			end
 --~ 		end
 
-		if UIColony.ChoGGi and UIColony.ChoGGi.Childkiller then
+		if UIColony and UIColony.ChoGGi and UIColony.ChoGGi.Childkiller then
 			PlaceObj("Milestone", {
 				base_score = 0,
 				display_name = TranslationTable[302535920000732--[[Childkiller (You evil, evil person.)]]],
@@ -1500,6 +1500,7 @@ do -- LoadGame/CityStart
 				MilestoneCompleted.Childkiller = 479000000 -- 666
 			end
 		end
+		--
 	end)
 
 		-- If there's a lightmodel name saved

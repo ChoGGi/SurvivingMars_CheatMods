@@ -90,7 +90,7 @@ function ChoGGi.MenuFuncs.TheSoylentOption()
 			GetPassablePointNearby(meat_bag) or meat_bag:GetVisualPos(),
 			res, Random(1, 5) * const.ResourceScale
 		)
-		meat_bag:Erase()
+		meat_bag:SetCommand("Erase")
 	end
 
 	-- one meatbag at a time

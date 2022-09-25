@@ -1,3 +1,9 @@
+v1.9
+Found some other issues left over from Picard update...
+
+v1.8
+Possible crash prevention.
+
 v1.7
 Ignore domes works now.
 Added mod option for less dust on take off, and one to hide the button.

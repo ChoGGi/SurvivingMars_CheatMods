@@ -69,7 +69,7 @@ local function SpawnShuttle(hub, attacker)
 				hub = hub,
 				transport_task = PersonalShuttles_ShuttleFollowTask:new({
 					state = "ready_to_follow",
-					dest_pos = GetCursorWorldPos() or GetRandomPassable()
+					dest_pos = GetCursorWorldPos() or GetRandomPassable(hub.city or UICity)
 				}),
 				info_obj = s_i
 			})

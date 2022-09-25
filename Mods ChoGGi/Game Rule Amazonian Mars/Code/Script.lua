@@ -57,7 +57,7 @@ local function UpdateStuff()
 			-- Daily cull
 			elseif obj:CanChangeCommand() then
 				PlaceResourcePile(obj:GetVisualPos(), "Food", 1000)
-				obj:Erase()
+				obj:SetCommand("Erase")
 			end
 		end
 	end
@@ -68,7 +68,7 @@ local function UpdateStuff()
 		local obj = objs[i]
 		if not obj.traits.Tourist and obj:CanChangeCommand() then
 			PlaceResourcePile(obj:GetVisualPos(), "Food", 1000)
-			obj:Erase()
+			obj:SetCommand("Erase")
 		end
 	end
 
@@ -131,7 +131,7 @@ local function CullMales(colonist)
 			and colonist.gender ~= "Female"
 			and not colonist.traits.Tourist
 		then
-			colonist:Erase()
+			colonist:SetCommand("Erase")
 		end
 	end)
 end

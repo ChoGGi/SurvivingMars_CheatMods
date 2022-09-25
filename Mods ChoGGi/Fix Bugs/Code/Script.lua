@@ -16,8 +16,6 @@ local ResumePassEdits = ResumePassEdits
 local SuspendTerrainInvalidations = SuspendTerrainInvalidations
 local ResumeTerrainInvalidations = ResumeTerrainInvalidations
 
-local InvalidPos = ChoGGi.Consts.InvalidPos
-
 local mod_EnableMod
 local mod_FarmOxygen
 local mod_DustDevilsBlockBuilding
@@ -283,8 +281,9 @@ do -- CityStart/LoadGame
 			end
 		end
 		--
-		--	Move any floating underground rubble to within reach of drones (might have to "push" drones to make them go for it).
 		if UIColony.underground_map_unlocked then
+			--
+			--	Move any floating underground rubble to within reach of drones (might have to "push" drones to make them go for it).
 			local map = GameMaps[UIColony.underground_map_id]
 			map.realm:MapForEach("map", "CaveInRubble", function(obj)
 				local pos = obj:GetVisualPos()
@@ -293,11 +292,20 @@ do -- CityStart/LoadGame
 					obj:SetPos(pos:SetZ(0))
 				end
 			end)
+			--
+			-- Unpassable underground rocks stuck in path (not cavein rubble, but small rocks you can't select).
+			-- https://forum.paradoxplaza.com/forum/threads/surviving-mars-completely-blocked-tunnel-not-the-collapsed-tunnel.1541240/
+			map.realm:MapForEach("map", "WasteRockObstructorSmall", function(obj)
+				obj:SetBlockPass(false)
+			end)
+			--
 		end
 		--
 		-- Fix Stuck Malfunctioning Drones At DroneHub
 		local positions = {}
 		local radius = 100 * guim
+		local InvalidPos = InvalidPos()
+
 		local hubs = UIColony:GetCityLabels("DroneHub")
 		for i = 1, #hubs do
 			table.clear(positions)

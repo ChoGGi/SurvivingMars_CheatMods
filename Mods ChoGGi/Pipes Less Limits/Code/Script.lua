@@ -1,6 +1,19 @@
 -- See LICENSE for terms
 
 local shorties = {
+	"DomeBasic",
+	"DomeDiamond",
+	"DomeHexa",
+	"DomeMedium",
+	"DomeMega",
+	"DomeMegaTrigon",
+	"DomeMicro",
+	"DomeOval",
+	"DomeTrigon",
+	"GeoscapeDome",
+	"UndergroundDome",
+	"UndergroundDomeMedium",
+	"UndergroundDomeMicro",
 	"SolarArray",
 	"SubsurfaceHeater",
 	"Tunnel",

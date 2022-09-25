@@ -3,13 +3,13 @@
 local Sleep = Sleep
 local IsValid = IsValid
 local GetRandomPassableAround = GetRandomPassableAround
-local GetRandomPassable = GetRandomPassable
 local PlaySound = PlaySound
 local IsSoundPlaying = IsSoundPlaying
 local guim = guim
 local Random = ChoGGi.ComFuncs.Random
 local RetName = ChoGGi.ComFuncs.RetName
 local LaunchHumanMeteor = ChoGGi.ComFuncs.LaunchHumanMeteor
+local RetObjMapId = ChoGGi.ComFuncs.RetObjMapId
 local InvalidPos = ChoGGi.Consts.InvalidPos
 
 -- build list of traits/mod options
@@ -37,8 +37,9 @@ AddColonists(t.OtherTraits)
 
 -- call down the wrath of Zeus for miscreants
 local function UpdateMurderPods()
-	local objs = UIColony.city_labels.labels.Colonist or ""
-	for i = 1, c do
+	local objs = UIColony:GetCityLabels("Colonist")
+--~ 	for i = 1, c do
+	for i = 1, #objs do
 		local obj = objs[i]
 		-- If colonist already has a pod after it then skip
 		if obj and not IsValid(obj.ChoGGi_MurderPod) then
@@ -180,11 +181,11 @@ function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.IdiotMonument then
 		PlaceObj("BuildingTemplate", {
 
-		-- added, not uploaded
-		"disabled_in_environment1", "",
-		"disabled_in_environment2", "",
-		"disabled_in_environment3", "",
-		"disabled_in_environment4", "",
+			-- added, not uploaded
+			"disabled_in_environment1", "",
+			"disabled_in_environment2", "",
+			"disabled_in_environment3", "",
+			"disabled_in_environment4", "",
 
 			"Id", "IdiotMonument",
 			"template_class", "IdiotMonument",
@@ -342,7 +343,7 @@ end
 --~ 		for i = 1, #objs do
 --~ 			local obj = objs[i]
 --~ 			if obj.ChoGGi_MurderPod and not IsValid(obj.ChoGGi_MurderPod) then
---~ 				obj:Erase()
+--~ 				obj:SetCommand("Erase")
 --~ 			end
 --~ 		end
 --~ 		g_ChoGGi_RemoveUnwantedColonists_StuckAirColonist = true
@@ -423,7 +424,8 @@ function MurderPod:Spawn(arrival_height)
 	local goto_pos = GetRandomPassableAround(
 		self:GetVictimPos(),
 		self.max_pos_radius,
-		self.min_pos_radius
+		self.min_pos_radius,
+		self.city
 	):SetTerrainZ(arrival_height)
 
 	Sleep(1000)
@@ -442,12 +444,14 @@ function MurderPod:Leave(leave_height)
 	self:PlayFX("RocketEngine", "start")
 
 	Sleep(5000)
-	local current_pos = self:GetPos() or GetRandomPassable()
+--~ 	local current_pos = self:GetPos() or GetRandomPassable()
+	local current_pos = self:GetPos() or GameMaps[RetObjMapId(self)].realm:GetRandomPassablePoint()
 
 	local goto_pos = GetRandomPassableAround(
 		current_pos,
 		self.max_pos_radius,
-		self.min_pos_radius
+		self.min_pos_radius,
+		self.city
 	)
 	leave_height = (GetGameMap(self).terrain:GetHeight(current_pos) + leave_height) * 2
 	self.hover_height = leave_height / 4
@@ -459,10 +463,12 @@ function MurderPod:Leave(leave_height)
 		self:PlayFX("RocketLaunch", "start")
 	end
 
-	self:FollowPathCmd(self:CalcPath(
-		current_pos,
-		goto_pos
-	))
+	if current_pos and goto_pos then
+		self:FollowPathCmd(self:CalcPath(
+			current_pos,
+			goto_pos
+		))
+	end
 
 	local amount = 4
 	-- splines are the flight path being followed
@@ -486,10 +492,9 @@ function MurderPod:GetVictimPos()
 --~ 		pos = victim:GetVisualPos()
 	elseif IsValid(victim.holder) and victim.holder:IsValidPos() then
 		pos = victim.holder:GetVisualPos()
-	else
-		pos = GetRandomPassable()
 	end
-	return pos or GetRandomPassable()
+	--
+	return pos or InvalidPos
 end
 
 function MurderPod:Abduct()
@@ -497,7 +502,7 @@ function MurderPod:Abduct()
 
 	-- stalk if in dome/building/passage
 	local inside = not victim.outside_start
-	if inside and not GetOpenAirBuildings(ActiveMapID) and not mod_IgnoreDomes then
+	if inside and not GetOpenAirBuildings(RetObjMapId(self)) and not mod_IgnoreDomes then
 		self:SetCommand("StalkerTime")
 	end
 
@@ -508,6 +513,10 @@ function MurderPod:Abduct()
 	if IsValid(victim.workplace) then
 		victim.workplace:FireWorker(victim)
 	end
+	if IsValid(victim.holder) and victim.holder:IsValidPos() then
+		victim:KickFromBuilding(victim.holder)
+	end
+
 	victim.Goto = function()
 		Sleep(10000)
 		if not IsValid(self) then
@@ -537,20 +546,25 @@ function MurderPod:Abduct()
 
 	self.fx_actor_class = "Shuttle"
 	self:PlayFX("ShuttleLoad", "start", victim)
-	victim:SetPos(self:GetPos():AddZ(500), 2500)
+
+	if victim:GetPos() ~= InvalidPos then
+		victim:SetPos(self:GetPos():AddZ(500), 2500)
+	end
+
 	Sleep(2500)
 	self:PlayFX("ShuttleLoad", "end", victim)
+	self:Attach(victim)
 
 	-- grab entity before we remove colonist (for our iceberg meteor)
 	local entity = victim.inner_entity
 	-- no need to keep colonist around now (func from storybits, used to remove colonist without affecting any stats)
-	victim:Erase()
+	victim:SetCommand("Erase")
 	-- change selection panel icon
 	self.panel_text = T(302535920011243, [[Victim going to "Earth"]])
 
 	-- human shaped meteors (bonus meteors, since murder is bad)
 	for _ = 1, Random(1, 3) do
-		CreateGameTimeThread(LaunchHumanMeteor, entity)
+		CreateGameTimeThread(LaunchHumanMeteor, entity, nil, nil, victim.city)
 	end
 
 	-- What did Mission Control ever do for us? Without it, where would we be? Free! Free to roam the universe!
@@ -576,7 +590,7 @@ function MurderPod:StalkerTime()
 
 		-- outside_start is a count of oxygen left, false if out of spacesuit
 		local outside = victim.outside_start
-		if mod_IgnoreDomes or outside or (not outside and GetOpenAirBuildings(ActiveMapID)) then
+		if mod_IgnoreDomes or outside or (not outside and GetOpenAirBuildings(RetObjMapId(self))) then
 			-- just in case, probably where the new crash is coming from?
 			if self:GetVictimPos() ~= InvalidPos then
 				self:SetCommand("Abduct")
@@ -588,7 +602,8 @@ function MurderPod:StalkerTime()
 		local goto_pos = GetRandomPassableAround(
 			self:GetVictimPos(),
 			self.max_pos_radius,
-			self.min_pos_radius
+			self.min_pos_radius,
+			self.city
 		)
 
 		self:FollowPathCmd(self:CalcPath(self:GetPos(), goto_pos))
@@ -636,12 +651,14 @@ end
 
 -- crash fix for lastest update (probably, guessing it was tracking people out of bounds)
 function OnMsg.LoadGame()
-	local objs = MapGet("map", "MurderPod")
-	for i = 1, #objs do
-		local obj = objs[i]
-		-- actually 33325, but it'll do
-		if obj:GetPos():z() > 30000 then
-			DoneObject(obj)
+	CreateRealTimeThread(function()
+		local objs = UIColony:GetCityLabels("MurderPod")
+		for i = 1, #objs do
+			local obj = objs[i]
+			-- actually 33325, but it'll do
+			if IsValid(obj) and obj:GetPos():z() > 30000 then
+				DoneObject(obj)
+			end
 		end
-	end
+	end)
 end

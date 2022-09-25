@@ -1,10 +1,7 @@
 -- See LICENSE for terms
 
-local table = table
 local sorted_pairs = sorted_pairs
-local IsKindOf = IsKindOf
 local T = T
-local pcall = pcall
 
 local stat = "<newline><name> <em><amount></em>"
 local c

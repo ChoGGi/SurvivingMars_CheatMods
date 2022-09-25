@@ -1,3 +1,6 @@
+v0.5
+Less rival (etc) crashing?
+
 v0.4
 More validation before culling.
 Cleaned up some code.

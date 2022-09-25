@@ -11,9 +11,9 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_SpiceHarvester",
 	"steam_id", "1416040484",
 	"pops_any_uuid", "a2272002-7722-4290-bf84-63afec2c1100",
-	"version", 10,
+	"version", 11,
 	"version_major", 1,
-	"version_minor", 0,
+	"version_minor", 1,
 	"lua_revision", 1007000, -- Picard
 	"image", "Preview.jpg",
 	"author", "ChoGGi",

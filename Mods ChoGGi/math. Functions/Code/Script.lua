@@ -67,7 +67,7 @@ local function CheckNum(x, name, arg)
 end
 
 -- don't overwrite math. table if it exists (maybe someone else added it)
-if type(math) ~= "table" then
+if not rawget(_G, "math") then
 	-- global table holding all the functions
 	math = {}
 end

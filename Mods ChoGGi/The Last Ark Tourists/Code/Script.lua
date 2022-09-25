@@ -6,14 +6,14 @@ local CreateGameTimeThread = CreateGameTimeThread
 local Random = ChoGGi.ComFuncs.Random
 --~ local LaunchHumanMeteor = ChoGGi.ComFuncs.LaunchHumanMeteor
 
-local LaunchHumanMeteor = ChoGGi.ComFuncs.LaunchHumanMeteor or function(entity, min, max)
+local LaunchHumanMeteor = ChoGGi.ComFuncs.LaunchHumanMeteor or function(entity, min, max, city)
 	--	1 to 4 sols
 	Sleep(Random(
 		min or const.DayDuration,
 		max or const.DayDuration * 4
 	))
 	local data = DataInstances.MapSettings_Meteor.Meteor_VeryLow
-	local descr = SpawnMeteor(data, nil, nil, GetRandomPassable())
+	local descr = SpawnMeteor(data, nil, nil, GetRandomPassable(city or MainCity))
 	-- I got a missle once, not sure why...
 	if descr.meteor:IsKindOf("BombardMissile") then
 		g_IncomingMissiles[descr.meteor] = nil
@@ -58,12 +58,14 @@ local function ChoFake_IsGameRuleActive(rule, ...)
 end
 
 local function ReplaceRule(func, ...)
+
 	if mod_EnableMod then
 		IsGameRuleActive = ChoFake_IsGameRuleActive
 	end
 	-- I do pcalls for safety when wanting to change back a global var
 	local result, ret = pcall(func, ...)
 	IsGameRuleActive = ChoOrig_IsGameRuleActive
+
 	if result then
 		return ret
 	else

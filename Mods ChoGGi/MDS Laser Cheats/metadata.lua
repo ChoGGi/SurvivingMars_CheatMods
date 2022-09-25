@@ -14,7 +14,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagGameplay", true,
-	"description", [[Pew pew pew!
+	"description", [[
+Pew pew pew!
 
 
 Mod Options:
@@ -27,5 +28,6 @@ Beam Time: For how long laser beam is visible (in ms).
 
 
 If you want super pew pew; then make fire rate 0, and rotate speed max.
-Requested by Kommi.]],
+Requested by Kommi.
+]],
 })

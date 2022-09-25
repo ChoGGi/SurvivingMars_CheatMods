@@ -1,3 +1,5 @@
+filter underground maps
+
 Combatpigeon96
 could you add a “sort by difficulty” option to it?
 It takes a long time to find a good map with low disasters.

@@ -1,7 +1,33 @@
 -- See LICENSE for terms
 
-local properties = {}
-local c = 0
+local properties = {
+	PlaceObj("ModItemOptionToggle", {
+		"name", "SkipTourists",
+		"DisplayName", T(302535920011898, "<color ChoGGi_yellow>Skip Tourists</color>"),
+		"Help", T(302535920011899, "Never remove tourists."),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "IgnoreDomes",
+		"DisplayName", T(302535920011959, "<color ChoGGi_yellow>Ignore Domes</color>"),
+		"Help", T(302535920011960, "Remove colonists inside domes."),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "LessTakeoffDust",
+		"DisplayName", T(302535920012035, "<color ChoGGi_yellow>Less Takeoff Dust</color>"),
+		"Help", T(302535920012036, "Pods have less dust when taking off (for the mass murders)."),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "HideButton",
+		"DisplayName", T(302535920012037, "<color ChoGGi_yellow>Hide Button</color>"),
+		"Help", T(302535920012038, "Don't show the Remove Colonist button."),
+		"DefaultValue", false,
+	}),
+}
+
+local c = 4
 
 local table = table
 local T = T
@@ -53,30 +79,5 @@ local _InternalTranslate = _InternalTranslate
 table.sort(properties, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
-
-table.insert(properties, 1, PlaceObj("ModItemOptionToggle", {
-	"name", "SkipTourists",
-	"DisplayName", T(302535920011898, "<color ChoGGi_yellow>Skip Tourists</color>"),
-	"Help", T(302535920011899, "Never remove tourists."),
-	"DefaultValue", false,
-}))
-table.insert(properties, 2, PlaceObj("ModItemOptionToggle", {
-	"name", "IgnoreDomes",
-	"DisplayName", T(302535920011959, "<color ChoGGi_yellow>Ignore Domes</color>"),
-	"Help", T(302535920011960, "Remove colonists inside domes."),
-	"DefaultValue", false,
-}))
-table.insert(properties, 3, PlaceObj("ModItemOptionToggle", {
-	"name", "LessTakeoffDust",
-	"DisplayName", T(302535920012035, "<color ChoGGi_yellow>Less Takeoff Dust</color>"),
-	"Help", T(302535920012036, "Pods have less dust when taking off (for the mass murders)."),
-	"DefaultValue", false,
-}))
-table.insert(properties, 4, PlaceObj("ModItemOptionToggle", {
-	"name", "HideButton",
-	"DisplayName", T(302535920012037, "<color ChoGGi_yellow>Hide Button</color>"),
-	"Help", T(302535920012038, "Don't show the Remove Colonist button."),
-	"DefaultValue", false,
-}))
 
 return properties

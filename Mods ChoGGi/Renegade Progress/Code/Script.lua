@@ -42,9 +42,9 @@ function OnMsg.ClassesPostprocess()
 	local idx = table.find(xtemplate, "Icon", "UI/Icons/Sections/morale.tga")
 	if idx then
 		xtemplate[idx].RolloverText = T(856271865233, "The average <em>Morale</em> of all Colonists living in this Dome.")
-			.. "\n\n" .. T(4368, "Renegade") .. " " .. T(7637, "Growth Sequence")
-			.. T{"<right><percent(progress)>", progress = CalcProgress}
-			.. T("\n<left>") .. T{7346, "Renegades<right><colonist(number)>",
+			.. T("\n\n") .. T(4368, "Renegade") .. " " .. T(7637, "Growth Sequence")
+			.. T{"<right><percent(progress)>\n<left>", progress = CalcProgress}
+			.. T{7346, "Renegades<right><colonist(number)>",
 				number = CalcRenegades,
 			}
 	end
@@ -58,6 +58,7 @@ function OnMsg.ClassesPostprocess()
 	xtemplate = xtemplate[idx][2][4] -- IdJobs
 
 	local rene_str = T(4368, "Renegade") .. " " .. T(83, "Domes")
+
 	xtemplate.RolloverHint = T(11708, "<left_click> Cycle unemployed citizens")
 		.. T("\n<right_click>") .. rene_str
 	xtemplate.RolloverHintGamepad = T(11717, "<ButtonA> Cycle unemployed citizens<newline><DPad> Navigate <DPadDown> Close")
