@@ -1,3 +1,7 @@
+v3.2
+Dredger tech fix (thanks Lord_Sicarious).
+Spoilers see: https://www.reddit.com/r/SurvivingMars/comments/xnprjg/
+
 v3.1
 Dependency for my library mod removed (thanks Sicarious).
 

@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 31,
+	"version", 32,
 	"version_major", 3,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -32,6 +32,7 @@ Stop ceiling/floating rubble.
 Log spam from IsBuildingInDomeRange().
 Clean up city labels of wrong map / invalid objs (colonists showing up on wrong map in infobar).
 Unpassable underground rocks stuck in path (not cavein rubble, but small rocks you can't select).
+Dredger tech fix (Spoilers see: https://www.reddit.com/r/SurvivingMars/comments/xnprjg/)
 
 
 [b]Incorporated mods:[/b] (so far)

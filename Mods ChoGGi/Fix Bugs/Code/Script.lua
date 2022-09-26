@@ -82,6 +82,42 @@ do -- CityStart/LoadGame
 		local main_realm = GetRealmByID(MainMapID)
 
 		--
+		-- Add Xeno-Extraction tech to Automatic Metals Extractor, Micro-G Extractors, RC Harvester, and RC Driller
+		local tech = TechDef.XenoExtraction
+		-- Figure it's safer to check for both dlcs then just checking the table length (incase some other mod)
+		if not table.find(tech, "Label", "AutomaticMetalsExtractor")
+			and not table.find(tech, "Label", "MicroGAutoExtractor")
+		then
+			local function AddBld(obj)
+				tech[#tech+1] = PlaceObj("Effect_ModifyLabel", {
+					Label = obj,
+					Percent = 50,
+					Prop = obj == "MicroGAutoWaterExtractor" and "water_production" or "production_per_day1",
+				})
+			end
+
+			if g_AvailableDlc.gagarin then
+				local objs = {
+					"AutomaticMetalsExtractor",
+					"RCHarvester",
+					"RCDriller",
+				}
+				for i = 1, #objs do
+					AddBld(objs[i])
+				end
+			end
+			if g_AvailableDlc.picard then
+				local objs = {
+					"MicroGAutoExtractor",
+					"MicroGExtractor",
+					"MicroGAutoWaterExtractor",
+				}
+				for i = 1, #objs do
+					AddBld(objs[i])
+				end
+			end
+		end
+		--
 		-- Clean up city labels of wrong map / invalid objs
 		local function CleanObj(obj, label, map_id, city)
 			if IsValid(obj) then

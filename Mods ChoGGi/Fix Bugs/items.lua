@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-return {
+local properties = {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "EnableMod",
 		"DisplayName", T(302535920011303, "<color ChoGGi_yellow>Enable Mod</color>"),
@@ -13,6 +13,20 @@ return {
 		"Help", T(0000, [[If you remove a farm that has an oxygen producing crop (workers not needed) the oxygen will still count in the dome.
 
 Turn off to enable cheese and disable fix.
+]]),
+		"DefaultValue", true,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "XenoExtraction",
+		"DisplayName", T(6616, "Xeno-Extraction"),
+		"Help", T(0000, [[<color ChoGGi_red>SPOILERS!!!</color>
+
+
+
+
+
+Dredger tech doesn't apply to newer added extractors, this changes it to apply to them:
+Automatic Metals Extractor, Micro-G Extractors, RC Harvester, and RC Driller.
 ]]),
 		"DefaultValue", true,
 	}),
@@ -54,3 +68,11 @@ If you're bored and want to dig through the funcs in LandscapeFinish() to find o
 		"DefaultValue", false,
 	}),
 }
+
+local CmpLower = CmpLower
+local _InternalTranslate = _InternalTranslate
+table.sort(properties, function(a, b)
+	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
+end)
+
+return properties
