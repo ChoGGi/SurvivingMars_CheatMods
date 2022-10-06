@@ -35,6 +35,9 @@ local function UpdateTransports()
 	SetConstsG("RCTransportGatherResourceWorkTime", mod_WorkTime)
 
 	if mod_StorageAmount > 0 then
+		BuildingTemplates.RCTransportBuilding.max_shared_storage = mod_StorageAmount
+		ClassTemplates.Building.RCTransportBuilding.max_shared_storage = mod_StorageAmount
+
 		local objs = UIColony:GetCityLabels("RCTransportAndChildren")
 		for i = 1, #objs do
 			objs[i].max_shared_storage = mod_StorageAmount

@@ -51,6 +51,14 @@ Turn off to disable this "fix" (and receieve less Breakthroughs).
 		"DefaultValue", true,
 	}),
 	PlaceObj("ModItemOptionToggle", {
+		"name", "TurnOffUpgrades",
+		"DisplayName", T(0000, "Turn Off Upgrades"),
+		"Help", T(0000, [[Some buildings don't properly turn off their upgrades which causes them to keep their modifiers on.
+The "fix" is turning off upgrades when a building is demolished, turned off, malfunctioned (might be annoying, mod option to keep it as is).
+]]),
+		"DefaultValue", true,
+	}),
+	PlaceObj("ModItemOptionToggle", {
 		"name", "UnevenTerrain",
 		"DisplayName", T(0000, "Uneven Terrain"),
 		"Help", T(0000, [[This calls RefreshBuildableGrid() after a landscaping project completes.

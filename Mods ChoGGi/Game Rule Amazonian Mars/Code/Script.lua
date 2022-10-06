@@ -124,20 +124,43 @@ local function CullMales(colonist)
 	end
 
 	-- might help crash from "For No Particular Reason"?
-	CreateRealTimeThread(function()
-		Sleep(1000)
+--~ 	CreateRealTimeThread(function()
+--~ 		Sleep(1000)
 
-		if IsValid(colonist)
-			and colonist.gender ~= "Female"
-			and not colonist.traits.Tourist
-		then
-			colonist:SetCommand("Erase")
-		end
-	end)
+	if IsValid(colonist)
+		and colonist.gender ~= "Female"
+		and not colonist.traits.Tourist
+	then
+		colonist:SetCommand("Erase")
+	end
+--~ 	end)
 end
 
 OnMsg.ColonistArrived = CullMales
 OnMsg.ColonistBorn = CullMales
+
+-- Cull expedition passengers instead of waiting for daily cull.
+local ChoOrig_RocketBase_LandOnMars = RocketBase.LandOnMars
+function RocketBase:LandOnMars(...)
+	if not IsGameRuleActive("ChoGGi_AmazonianMars") then
+		return ChoOrig_RocketBase_LandOnMars(self, ...)
+	end
+
+	if self.expedition and self.expedition.crew then
+		for i = #self.expedition.crew, 1, -1 do
+			local crew = self.expedition.crew[i]
+			if IsValid(crew) and crew.gender ~= "Female" then
+				-- Unlike supplyrockets from Earth these are actual colonist objs, so we need to erase them (well they could probably just float in the void memory leaking)
+				crew:SetCommand("Erase")
+				table.remove(self.expedition.crew, i)
+			end
+		end
+		-- Update UI info
+		self.expedition.num_crew = #self.expedition.crew
+	end
+
+	return ChoOrig_RocketBase_LandOnMars(self, ...)
+end
 
 -- Change to correct logo
 local ChoOrig_RocketBase_WaitInOrbit = RocketBase.WaitInOrbit

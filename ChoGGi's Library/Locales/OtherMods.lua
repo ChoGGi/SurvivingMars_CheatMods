@@ -1470,6 +1470,11 @@ Don't forget to send me your res and margin, so I can add them to the list."
 302535920012080, "How many Sols to wait before starting next mystery."
 [[Disable Story Bits]]
 302535920012093, "Stop this storybit from happening:<newline><newline><storybit><newline><newline><image "
+[[Larger Depots]]
+302535920012098, "This won't change existing depots, see mod options to change amounts (on new depots only).
+
+
+There is a height limit on map objects, so I'm sticking with a limit on the storage size (I wouldn't fill the uni depot up on higher plateaus)."
 [[UNUSED]]
 
 
@@ -1482,6 +1487,5 @@ Don't forget to send me your res and margin, so I can add them to the list."
 
 
 [[UNUSED]]
-302535920012098,
 302535920012099,
 302535920012100,

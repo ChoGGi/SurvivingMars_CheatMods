@@ -1,3 +1,6 @@
+v0.6
+Culls male colonists recruited from rivals before landing.
+
 v0.5
 Less rival (etc) crashing?
 

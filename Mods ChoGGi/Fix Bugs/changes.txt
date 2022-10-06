@@ -1,3 +1,7 @@
+v3.3
+Some buildings don't properly turn off their upgrades which causes them to keep their modifiers on (thanks Lord_Sicarious).
+The "fix" is turning off upgrades when a building is demolished, turned off, malfunctioned (might be annoying, mod option to keep it as is).
+
 v3.2
 Dredger tech fix (thanks Lord_Sicarious).
 Spoilers see: https://www.reddit.com/r/SurvivingMars/comments/xnprjg/

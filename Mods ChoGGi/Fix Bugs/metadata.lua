@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 32,
+	"version", 33,
 	"version_major", 3,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -33,6 +33,8 @@ Log spam from IsBuildingInDomeRange().
 Clean up city labels of wrong map / invalid objs (colonists showing up on wrong map in infobar).
 Unpassable underground rocks stuck in path (not cavein rubble, but small rocks you can't select).
 Dredger tech fix (Spoilers see: https://www.reddit.com/r/SurvivingMars/comments/xnprjg/)
+Water Reclamation Spire and B&B upgrade tech caused issues (spoiler free, see more info below).
+
 
 
 [b]Incorporated mods:[/b] (so far)
@@ -69,6 +71,9 @@ Calling RefreshBuildableGrid() on the map seems to get rid of them without causi
 It can mark some hexes as okay to build when they weren't before, but nothing like a cliff side or anything.
 If you enable the mod option and notice that you can build on some places you really shouldn't be able to then please let me know :)
 If you're bored and want to dig through the funcs in LandscapeFinish() to find out exactly where it's coming from, feel free.
+[b]Water Reclamation Spire and B&B[/b]
+Some buildings don't properly turn off their upgrades which causes them to keep their modifiers on.
+The "fix" is turning off upgrades when a building is demolished, turned off, malfunctioned (might be annoying, mod option to keep it as is).
 [b]Fix Buildings Broken Down And No Repair[/b]
 If you have broken down buildings the drones won't repair. This will check for them on load game.
 The affected buildings will say something about exceptional circumstances.

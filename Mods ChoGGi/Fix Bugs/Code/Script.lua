@@ -21,6 +21,14 @@ local mod_FarmOxygen
 local mod_DustDevilsBlockBuilding
 local mod_PlanetaryAnomalyBreakthroughs
 local mod_UnevenTerrain
+local mod_TurnOffUpgrades
+
+
+local function FixUnevenTerrain(game_map)
+	SuspendTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
+	(game_map or GameMaps[MainMapID]):RefreshBuildableGrid()
+	ResumeTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
+end
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -33,6 +41,11 @@ local function ModOptions(id)
 	mod_DustDevilsBlockBuilding = CurrentModOptions:GetProperty("DustDevilsBlockBuilding")
 	mod_PlanetaryAnomalyBreakthroughs = CurrentModOptions:GetProperty("PlanetaryAnomalyBreakthroughs")
 	mod_UnevenTerrain = CurrentModOptions:GetProperty("UnevenTerrain")
+	mod_TurnOffUpgrades = CurrentModOptions:GetProperty("TurnOffUpgrades")
+
+	if MainCity and mod_UnevenTerrain then
+		FixUnevenTerrain()
+	end
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -64,7 +77,7 @@ end
 --
 do -- CityStart/LoadGame
 
-	-- If you see (MainCity or UICity) that's for older saves (it does update, but after I check in LoadGame)
+	-- If you see (MainCity or UICity) that's for older saves (it does update, but after LoadGame)
 	local function StartupCode()
 		if not mod_EnableMod then
 			return
@@ -561,10 +574,10 @@ local ChoGGi_OnTopOfDustDevil = {
 }
 ConstructionStatus.ChoGGi_OnTopOfDustDevil = ChoGGi_OnTopOfDustDevil
 
-local ChoOrig_FinalizeStatusGathering = ConstructionController.FinalizeStatusGathering
+local ChoOrig_ConstructionController_FinalizeStatusGathering = ConstructionController.FinalizeStatusGathering
 function ConstructionController:FinalizeStatusGathering(...)
 	if not mod_DustDevilsBlockBuilding or not mod_EnableMod then
-		return ChoOrig_FinalizeStatusGathering(self, ...)
+		return ChoOrig_ConstructionController_FinalizeStatusGathering(self, ...)
 	end
 
 	-- shameless copy pasta of function ConstructionController:HasDepositUnderneath()
@@ -578,7 +591,7 @@ function ConstructionController:FinalizeStatusGathering(...)
 		self.construction_statuses[#self.construction_statuses + 1] = ChoGGi_OnTopOfDustDevil
   end
 
-	return ChoOrig_FinalizeStatusGathering(self, ...)
+	return ChoOrig_ConstructionController_FinalizeStatusGathering(self, ...)
 end
 --
 -- Log spam if you call this with an invalid dome
@@ -627,14 +640,45 @@ function LandscapeFinish(mark, ...)
 
 	-- Speed up
 	SuspendPassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
-	SuspendTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
-
-	game_map:RefreshBuildableGrid()
-
+	FixUnevenTerrain(game_map)
 	ResumePassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
-	ResumeTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
 end
 --
+-- Disable upgrades when demoing a building (prevents modifiers from staying modified)
+local ChoOrig_Building_Done = Building.Done
+function Building:Done(...)
+	-- Skip if not an upgradeable building
+	if not mod_EnableMod or not self.upgrade_on_off_state then
+		return ChoOrig_Building_Done(self, ...)
+	end
+
+	-- Goes through list of enabled upgrades and turns them off.
+	-- You'd figure it'd do this when demoing building?
+	for id, enabled in pairs(self.upgrade_on_off_state or empty_table) do
+		if enabled then
+			self:ToggleUpgradeOnOff(id)
+		end
+	end
+
+	return ChoOrig_Building_Done(self, ...)
+end
+-- Also do the same when turning off a building
+local ChoOrig_BaseBuilding_OnSetWorking = BaseBuilding.OnSetWorking
+function BaseBuilding:OnSetWorking(working, ...)
+	-- Skip if the building is being turned on or it's not an upgradeable building
+	if not mod_EnableMod or not mod_TurnOffUpgrades or working or not self.upgrade_on_off_state then
+		return ChoOrig_BaseBuilding_OnSetWorking(self, working, ...)
+	end
+	-- Goes through list of enabled upgrades and turns them off.
+	-- You'd figure it'd do this when demoing building?
+	for id, enabled in pairs(self.upgrade_on_off_state) do
+		if enabled then
+			self:ToggleUpgradeOnOff(id)
+		end
+	end
+
+	return ChoOrig_BaseBuilding_OnSetWorking(self, working, ...)
+end
 --
 --
 --

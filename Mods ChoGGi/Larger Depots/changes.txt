@@ -1,0 +1,4 @@
+v0.2
+
+v0.1
+Added Chinese desc (thanks 2311370179).

@@ -792,7 +792,7 @@ Where the fear has gone there will be nothing. Only I will remain."
 Going down, down.
 Working in a coal mine.
 Whew, about to slip down."
-302535920000136, "Select something that produces (air, water, electricity, other)."
+302535920000136, "Select something that produces (air, water, electricity, resources)."
 302535920000137, "<color ChoGGi_green>%s</color> production is now: <color ChoGGi_yellow>%s</color>"
 302535920000139, "Production Amount"
 302535920000140, "Current production"

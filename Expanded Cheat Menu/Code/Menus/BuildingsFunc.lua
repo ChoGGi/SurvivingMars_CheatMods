@@ -1041,7 +1041,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 	local obj = SelectedObj
 	if not obj or obj and not obj:IsKindOfClasses{"WaterProducer", "AirProducer", "ElectricityProducer", "ResourceProducer"} then
 		MsgPopup(
-			TranslationTable[302535920000136--[[Select something that produces (air, water, electricity, other).]]],
+			TranslationTable[302535920000136--[[Select something that produces (air, water, electricity, resources).]]],
 			TranslationTable[302535920000194--[[Production Amount Set]]]
 		)
 		return
@@ -1132,6 +1132,7 @@ function ChoGGi.MenuFuncs.SetProductionAmount()
 						local o = objs[i]
 						if RetTemplateOrClass(o) == id then
 							o:GetProducerObj().production_per_day = amount
+							-- not sure why I have this, maybe forces a ui update?
 							o:GetProducerObj():Produce(amount)
 						end
 					end

@@ -4,8 +4,8 @@
 -- 0S111W devil/storm max
 -- 18N35W meteor/cold max
 
-local ChoOrig_FillRandomMapProps = FillRandomMapProps
-function FillRandomMapProps(gen, params, ...)
+local ChoOrig_FillRandomMapGen = FillRandomMapGen
+function FillRandomMapGen(gen, params, ...)
 	if gen then
 		local rules = g_CurrentMissionParams.idGameRules or empty_table
 
@@ -17,6 +17,7 @@ function FillRandomMapProps(gen, params, ...)
 			params.PreciousMetals = 0
 			params.Water = 0
 		end
+
 		if rules.ChoGGi_MaxThreats then
 			local mapdata = ActiveMapData
 			mapdata.MapSettings_ColdWave = "ColdWave_VeryHigh"
@@ -25,7 +26,7 @@ function FillRandomMapProps(gen, params, ...)
 		end
 	end
 
-	return ChoOrig_FillRandomMapProps(gen, params, ...)
+	return ChoOrig_FillRandomMapGen(gen, params, ...)
 end
 
 function OnMsg.ClassesPostprocess()

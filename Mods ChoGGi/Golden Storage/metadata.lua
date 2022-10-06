@@ -24,5 +24,9 @@ return PlaceObj("ModDef", {
 	"TagGameplay", true,
 	"description", [[
 Converts Metals to Precious Metals (10 to 1 ratio).
+
+
+Known Issues:
+Don't enable shuttles on it.
 ]],
 })

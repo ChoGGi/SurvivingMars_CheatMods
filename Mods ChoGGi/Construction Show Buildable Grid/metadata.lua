@@ -41,6 +41,7 @@ Grid Opacity: Set opacity of grid icons.
 
 Known Issues:
 This is disabled for geoscape domes (or spires will give an uneven terrain error).
+To fix the issue with flattened ground and uneven terrain: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2721921772]Fix Bugs[/url]
 
 
 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1479851929]Show Hex Grid[/url]

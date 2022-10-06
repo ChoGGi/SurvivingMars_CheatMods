@@ -27,5 +27,9 @@ Anything added to this storage depot will disappear (good for excess resources).
 Be careful where you place it as drones will use it like a regular depot (defaults to no resources accepted).
 
 See mod options to set a minimum amount of resources to not remove.
+
+
+Known Issues:
+Don't enable shuttles on it.
 ]],
 })
