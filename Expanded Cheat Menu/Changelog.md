@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v18.7 (Unreleased)
+### Fixed:
+- InstHarvest didn't always InstHarvest.
 
 ## v18.6 (11 Sep 2022)
 ### Added:

@@ -1,3 +1,6 @@
+v3.4
+Changed "Turn Off Upgrades" back to on by default (it now remembers upgrade state between working states).
+
 v3.3
 Some buildings don't properly turn off their upgrades which causes them to keep their modifiers on (thanks Lord_Sicarious).
 The "fix" is turning off upgrades when a building is demolished, turned off, malfunctioned (might be annoying, mod option to keep it as is).

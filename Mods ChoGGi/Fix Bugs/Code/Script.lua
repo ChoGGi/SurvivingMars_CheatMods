@@ -13,8 +13,8 @@ local GetRealm = GetRealm
 local IsKindOf = IsKindOf
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
-local SuspendTerrainInvalidations = SuspendTerrainInvalidations
-local ResumeTerrainInvalidations = ResumeTerrainInvalidations
+
+local empty_table = empty_table
 
 local mod_EnableMod
 local mod_FarmOxygen
@@ -23,11 +23,12 @@ local mod_PlanetaryAnomalyBreakthroughs
 local mod_UnevenTerrain
 local mod_TurnOffUpgrades
 
-
 local function FixUnevenTerrain(game_map)
-	SuspendTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
-	(game_map or GameMaps[MainMapID]):RefreshBuildableGrid()
-	ResumeTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
+	if SuspendTerrainInvalidations then
+		SuspendTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
+		(game_map or GameMaps[MainMapID]):RefreshBuildableGrid()
+		ResumeTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
+	end
 end
 
 local function ModOptions(id)
@@ -666,14 +667,27 @@ end
 local ChoOrig_BaseBuilding_OnSetWorking = BaseBuilding.OnSetWorking
 function BaseBuilding:OnSetWorking(working, ...)
 	-- Skip if the building is being turned on or it's not an upgradeable building
-	if not mod_EnableMod or not mod_TurnOffUpgrades or working or not self.upgrade_on_off_state then
+	if not mod_EnableMod or not mod_TurnOffUpgrades then
 		return ChoOrig_BaseBuilding_OnSetWorking(self, working, ...)
 	end
-	-- Goes through list of enabled upgrades and turns them off.
-	-- You'd figure it'd do this when demoing building?
-	for id, enabled in pairs(self.upgrade_on_off_state) do
-		if enabled then
-			self:ToggleUpgradeOnOff(id)
+
+	if working then
+		-- Enable any upgrades I disabled
+		for id, enabled in pairs(self.upgrades_built or empty_table) do
+			if self["ChoGGi_" .. id] then
+				self:ToggleUpgradeOnOff(id)
+				self["ChoGGi_" .. id] = nil
+			end
+		end
+	else
+		-- Goes through list of enabled upgrades and turns them off.
+		-- You'd figure the game would do this?
+		for id, enabled in pairs(self.upgrade_on_off_state or empty_table) do
+			if enabled then
+				self:ToggleUpgradeOnOff(id)
+				-- Used above to re-enable
+				self["ChoGGi_" .. id] = true
+			end
 		end
 	end
 

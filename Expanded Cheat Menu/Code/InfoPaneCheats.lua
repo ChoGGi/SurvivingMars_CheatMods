@@ -894,8 +894,8 @@ end
 FungalFarm.CheatAllShiftsOn = CheatAllShiftsOn
 Farm.CheatAllShiftsOn = CheatAllShiftsOn
 function Farm:CheatInstHarvest()
-	-- change growth time to now
-	self.harvest_planted_time = 1
+	-- change harvest_planted_time to always be bigger than "duration"
+	self.harvest_planted_time = -max_int
 	-- force an update instead of waiting
 	self:BuildingUpdate()
 	-- update info panel

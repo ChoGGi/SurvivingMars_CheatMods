@@ -497,6 +497,26 @@ function MurderPod:GetVictimPos()
 	return pos or InvalidPos
 end
 
+-- There's no Colonist:IsUnemployed()
+function MurderPod.IsColonistUnemployed(colonist)
+	return not colonist.workplace
+end
+-- make it easier for my local func
+function MurderPod.IsColonistHomeless(colonist)
+	return not colonist.residence
+end
+function MurderPod:RemoveInvalidColonistLabel(victim, func_name, label)
+	if self[func_name](victim) then
+		local objs = victim.city.labels[label]
+		if objs then
+			local idx = table.find(objs, victim)
+			if idx then
+				table.remove(objs, idx)
+			end
+		end
+	end
+end
+
 function MurderPod:Abduct()
 	local victim = self.target
 
@@ -559,6 +579,9 @@ function MurderPod:Abduct()
 	local entity = victim.inner_entity
 	-- no need to keep colonist around now (func from storybits, used to remove colonist without affecting any stats)
 	victim:SetCommand("Erase")
+	-- Remove from homeless/unemployed if needed (figured erase would do it)
+	self:RemoveInvalidColonistLabel(victim, "IsColonistHomeless", "Homeless")
+	self:RemoveInvalidColonistLabel(victim, "IsColonistUnemployed", "Unemployed")
 	-- change selection panel icon
 	self.panel_text = T(302535920011243, [[Victim going to "Earth"]])
 
@@ -639,7 +662,7 @@ function MurderPod:OnSelected()
 	SelectionArrowAdd(self.target)
 end
 
--- add switch skins if dlc
+-- Add switch skins if dlc
 if g_AvailableDlc.gagarin then
 	local pods = {"SupplyPod", "DropPod", "ArcPod"}
 	local palettes = {SupplyPod.rocket_palette, DropPod.rocket_palette, ArkPod.rocket_palette}
@@ -649,15 +672,44 @@ if g_AvailableDlc.gagarin then
 	end
 end
 
--- crash fix for lastest update (probably, guessing it was tracking people out of bounds)
+local function RemoveInvalid(label)
+	for i = 1, #Cities do
+		local labels = Cities[i].labels[label]
+		for j = #labels, 1, -1 do
+			if not IsValid(labels[i]) then
+				table.remove(labels, i)
+			end
+		end
+	end
+end
+
 function OnMsg.LoadGame()
 	CreateRealTimeThread(function()
+		-- Crash fix for lastest update (probably, guessing it was tracking people out of bounds)
 		local objs = UIColony:GetCityLabels("MurderPod")
 		for i = 1, #objs do
 			local obj = objs[i]
 			-- actually 33325, but it'll do
 			if IsValid(obj) and obj:GetPos():z() > 30000 then
 				DoneObject(obj)
+			end
+		end
+		-- Clear out invalid homeless
+		RemoveInvalid("Homeless")
+		RemoveInvalid("Unemployed")
+		-- Stuck UFO animation
+		local GameMaps = GameMaps
+		local Cities = Cities
+		for i = 1, #Cities do
+			local realm = GameMaps[Cities[i].map_id].realm
+			local objs = realm:MapGet("map", "ParSystem", function(o)
+				return o:GetParticlesName() == "SpaceRocket_WarmUp"
+			end)
+			for j = 1, #objs do
+				local obj = objs[i]
+				if obj.polyline then
+					DoneObject(obj)
+				end
 			end
 		end
 	end)

@@ -3,3 +3,6 @@ evaporates water from tanks/lakes
 lowers moisture produced by moist vaps
 
 prefabs laser defense/heaters
+
+mod option
+terraforming stops dust storms

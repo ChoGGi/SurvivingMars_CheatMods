@@ -1311,6 +1311,11 @@ do -- LoadGame/CityStart
 		local ChoGGi = ChoGGi
 		local UserSettings = ChoGGi.UserSettings
 
+--~ 		if testing then
+--~ 			Platform.developer = true
+--~ 			print("Turn on Platform.developer for more log msgs maybe, check if it bugs out after loading/new game same session")
+--~ 		end
+
 		local UIColony = UIColony
 		local g_Classes = g_Classes
 		local const = const

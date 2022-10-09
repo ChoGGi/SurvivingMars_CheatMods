@@ -1,3 +1,7 @@
+v2.0
+Fixed issue with homeless count, also did unemployed for good measure (thanks sir_lancealittle).
+Checks for stuck hover animations (thanks sir_lancealittle).
+
 v1.9
 Found some other issues left over from Picard update...
 
