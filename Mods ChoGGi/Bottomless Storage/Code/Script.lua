@@ -84,16 +84,17 @@ function BottomlessStorage:GetSpotBeginIndex(spot_name, ...)
 	return UniversalStorageDepot.GetSpotBeginIndex(self, spot_name, ...)
 end
 
-local function AddResource(list, res)
-	if not table.find(list, res) then
-		list[#list+1] = res
-	end
-end
-
 -- add building to building template list
 function OnMsg.ClassesPostprocess()
 	resources = table.icopy(UniversalStorageDepot.storable_resources)
 
+	local function AddResource(list, res)
+		if not table.find(list, res) then
+			list[#list+1] = res
+		end
+	end
+
+	-- add more to list
 	AddResource(resources, "WasteRock")
 	if g_AvailableDlc.armstrong then
 		AddResource(resources, "Seeds")
@@ -104,16 +105,13 @@ function OnMsg.ClassesPostprocess()
 
 	if not BuildingTemplates.BottomlessStorage then
 		PlaceObj("BuildingTemplate", {
-
-		-- added, not uploaded
-		"disabled_in_environment1", "",
-		"disabled_in_environment2", "",
-		"disabled_in_environment3", "",
-		"disabled_in_environment4", "",
+			"disabled_in_environment1", "",
+			"disabled_in_environment2", "",
+			"disabled_in_environment3", "",
+			"disabled_in_environment4", "",
 
 			"Id", "BottomlessStorage",
 			"template_class", "BottomlessStorage",
-			"instant_build", true,
 			"display_name", T(302535920011047, "Bottomless Storage"),
 			"display_name_pl", T(302535920011048, "Bottomless Storages"),
 			"description", T(302535920011049, "Warning: Anything added to this depot will disappear."),
@@ -121,10 +119,12 @@ function OnMsg.ClassesPostprocess()
 			"Group", "ChoGGi",
 			"display_icon", CurrentModPath .. "UI/bottomless_storage.png",
 			"entity", "ResourcePlatform",
-			"count_as_building", false,
 			"storable_resources", resources,
 			"resource", resources,
 			"max_storage_per_resource", 250000,
+			"count_as_building", false,
+			"instant_build", true,
+			"prio_button", true,
 		})
 	end
 
@@ -133,7 +133,7 @@ function OnMsg.ClassesPostprocess()
 	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_WasteRockToggle", true)
 
 	-- add wasterock toggle to depot resource list
-	xtemplate[#xtemplate+1] = PlaceObj('XTemplateTemplate', {
+	table.insert(xtemplate, 2, PlaceObj('XTemplateTemplate', {
 		"Id" , "ChoGGi_Template_WasteRockToggle",
 		"ChoGGi_Template_WasteRockToggle", true,
 		"__context", function (_, context)
@@ -143,6 +143,25 @@ function OnMsg.ClassesPostprocess()
 		"Title", T(615073837286, "<resource(res)><right><resource(GetStoredAmount(res),GetMaxStorage(res),res)>"),
 		"Icon", "UI/Icons/Sections/workshifts_active.tga",
 		"TitleHAlign", "stretch",
-	})
+	}))
+
+end
+
+-- Remove shuttle button
+function OnMsg.SelectionAdded(obj)
+	if not IsKindOf(obj, "BottomlessStorage") then
+		return
+	end
+
+	-- Needs a slightl delay
+	CreateRealTimeThread(function()
+		WaitMsg("OnRender")
+
+		local info = Dialogs.Infopanel
+		if info and info.ToggleLRTServiceButton then
+			info.ToggleLRTServiceButton:delete()
+		end
+
+	end)
 
 end

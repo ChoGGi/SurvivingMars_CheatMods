@@ -19,6 +19,7 @@ local function StartupCode()
 		return
 	end
 
+	-- Speeds up obj manipulation
 	SuspendPassEdits("ChoGGi.FixStuckMirrorSphereDevices.Startup")
 
 	local DoneObject = DoneObject

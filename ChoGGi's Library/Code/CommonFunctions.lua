@@ -19,6 +19,12 @@ local FindNearestObject = FindNearestObject -- (list,obj) or (list,pos,filterfun
 local GameTime = GameTime
 local GetBuildableGrid = GetBuildableGrid
 local GetCursorWorldPos = GetCursorWorldPos
+if not GetCursorWorldPos then
+	-- BP compatibility (before picard)
+	GetCursorWorldPos = function()
+		return UseGamepadUI() and GetTerrainGamepadCursor() or GetTerrainCursor()
+	end
+end
 local GetMapSectorXY = GetMapSectorXY
 local GetObjectHexGrid = GetObjectHexGrid
 local guic = guic

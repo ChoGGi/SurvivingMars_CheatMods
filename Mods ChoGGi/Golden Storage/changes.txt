@@ -1,3 +1,7 @@
+v0.9
+Hides shuttle button.
+Shows priority button (probably works?).
+
 v0.8
 Evans update.
 

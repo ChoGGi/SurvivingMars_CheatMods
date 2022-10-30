@@ -117,7 +117,7 @@ $123 or $EffectDeposit.display_name prints translated string.
 
 !UICity.labels.TerrainDeposit[1] move camera and select obj.
 
-s = SelectedObj, c() = GetTerrainCursor(), restart() = quit(""restart"")"]])
+s = SelectedObj, c() = GetCursorWorldPos(), restart() = quit(""restart"")"]])
 	self.idTextInput.Hint = TranslationTable[302535920001439--[["~obj, @func, @@type, %image, *r/*g/*m threads. Hover mouse for more info."]]]
 
 	-- look at them sexy internals

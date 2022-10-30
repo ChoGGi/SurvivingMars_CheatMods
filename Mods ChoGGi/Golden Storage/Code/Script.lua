@@ -141,7 +141,26 @@ function OnMsg.ClassesPostprocess()
 		"display_icon", CurrentModPath .. "UI/golden_storage.png",
 		"entity", "ResourcePlatform",
 		"on_off_button", true,
-		"prio_button", false,
+		"prio_button", true,
 		"count_as_building", false,
 	})
+end
+
+-- Remove shuttle button
+function OnMsg.SelectionAdded(obj)
+	if not IsKindOf(obj, "GoldenStorage") then
+		return
+	end
+
+	-- Needs a slightl delay
+	CreateRealTimeThread(function()
+		WaitMsg("OnRender")
+
+		local info = Dialogs.Infopanel
+		if info and info.ToggleLRTServiceButton then
+			info.ToggleLRTServiceButton:delete()
+		end
+
+	end)
+
 end

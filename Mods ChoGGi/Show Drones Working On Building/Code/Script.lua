@@ -1,15 +1,11 @@
 -- See LICENSE for terms
 
-local IsKindOf = IsKindOf
-local IsValid = IsValid
-local SelectionArrowAdd = SelectionArrowAdd
-local SuspendPassEdits = SuspendPassEdits
-local ResumePassEdits = ResumePassEdits
-
 function OnMsg.SelectionAdded(obj)
 	if IsKindOf(obj, "DroneControl") then
 		return
 	end
+
+	local IsValid = IsValid
 
 	local drones = {}
 	local c = 0
@@ -18,13 +14,15 @@ function OnMsg.SelectionAdded(obj)
 		local hub_drones = cc[i].drones or ""
 		for j = 1, #hub_drones do
 			local drone = hub_drones[j]
-			if IsValid(drone.target) then
+			if drone.target and IsValid(drone.target) then
 				if drone.target.handle == obj.handle then
 					c = c + 1
 					drones[c] = drone
 				else
 					local parent = drone.target:GetParent()
-					if IsValid(parent) and parent.handle == obj.handle then
+					if parent and IsValid(parent)
+						and parent.handle == obj.handle
+					then
 						c = c + 1
 						drones[c] = drone
 					end

@@ -1,3 +1,10 @@
+v3.6
+Log spam (thanks Deadmano).
+
+v3.5
+Add rocket sound effects to SupplyPods (mod option to disable, thanks Mammoth_Comparison88).
+Force heat grid to update (if you paused game on new game load then cold areas don't update till you get a working Subsurface Heater, thanks LatterligHoldning).
+
 v3.4
 Changed "Turn Off Upgrades" back to on by default (it now remembers upgrade state between working states).
 

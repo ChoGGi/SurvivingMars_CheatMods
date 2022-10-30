@@ -1,3 +1,7 @@
+v1.0
+Moved waste rock to top of list.
+Shows priority button (probably works?).
+
 v0.9
 Wrong func name last update.
 

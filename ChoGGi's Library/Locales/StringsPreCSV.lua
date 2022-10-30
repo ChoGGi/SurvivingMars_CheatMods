@@ -382,7 +382,7 @@ If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""T
 
 <color ChoGGi_green>!</color><color ChoGGi_yellow>UICity.labels.TerrainDeposit[1]</color> move camera and select obj, use <color ChoGGi_red>ViewAndSelectObject(obj)</color> in lua code.
 
-<color ChoGGi_green>s</color> = <color ChoGGi_yellow>SelectedObj</color>, <color ChoGGi_green>c()</color> = <color ChoGGi_yellow>GetTerrainCursor()</color>, <color ChoGGi_green>restart()</color> = <color ChoGGi_yellow>quit(""restart"")</color>"
+<color ChoGGi_green>s</color> = <color ChoGGi_yellow>SelectedObj</color>, <color ChoGGi_green>c()</color> = <color ChoGGi_yellow>GetCursorWorldPos()</color>, <color ChoGGi_green>restart()</color> = <color ChoGGi_yellow>quit(""restart"")</color>"
 302535920001401, "Removed missing mod building from %s: %s, entity: %s, handle: %s"
 302535920001074, "Ged Presets"
 302535920000503, "<right_click> an item/submenu to add/remove it from the quickbar."

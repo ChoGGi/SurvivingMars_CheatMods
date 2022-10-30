@@ -51,14 +51,6 @@ Turn off to disable this "fix" (and receieve less Breakthroughs).
 		"DefaultValue", true,
 	}),
 	PlaceObj("ModItemOptionToggle", {
-		"name", "TurnOffUpgrades",
-		"DisplayName", T(0000, "Turn Off Upgrades"),
-		"Help", T(0000, [[Some buildings don't properly turn off their upgrades which causes them to keep their modifiers on.
-The "fix" is turning off upgrades when a building is demolished, turned off, malfunctioned (might be annoying, mod option to keep it as is).
-]]),
-		"DefaultValue", true,
-	}),
-	PlaceObj("ModItemOptionToggle", {
 		"name", "UnevenTerrain",
 		"DisplayName", T(0000, "Uneven Terrain"),
 		"Help", T(0000, [[This calls RefreshBuildableGrid() after a landscaping project completes.
@@ -74,6 +66,20 @@ If you enable the mod option and notice that you can build on some places you re
 If you're bored and want to dig through the funcs in LandscapeFinish() to find out exactly where it's coming from, feel free.
 ]]),
 		"DefaultValue", false,
+	}),
+--~ 	PlaceObj("ModItemOptionToggle", {
+--~ 		"name", "TurnOffUpgrades",
+--~ 		"DisplayName", T(0000, "Turn Off Upgrades"),
+--~ 		"Help", T(0000, [[Some buildings don't properly turn off their upgrades which causes them to keep their modifiers on.
+--~ The "fix" is turning off upgrades when a building is demolished, turned off, malfunctioned (might be annoying, mod option to keep it as is).
+--~ ]]),
+--~ 		"DefaultValue", false,
+--~ 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "SupplyPodSoundEffects",
+		"DisplayName", T(0000, "SupplyPod Sound Effects"),
+		"Help", T(0000, "Use the SupplyRocket sounds for the SupplyPod (since it doesn't have any)."),
+		"DefaultValue", true,
 	}),
 }
 

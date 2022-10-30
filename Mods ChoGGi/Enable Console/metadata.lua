@@ -36,7 +36,7 @@ ReconCenter:CheatTriggerAsteroidUnlocked()
 -- Unlock underground
 UIColony:UnlockUnderground()
 -- Move selected object to mouse cursor
-SelectedObj:SetPos(GetTerrainCursor())
+SelectedObj:SetPos(GetCursorWorldPos())
 -- Examine selected object (you need my library mod for this cmd)
 OpenExamine(SelectedObj)
 

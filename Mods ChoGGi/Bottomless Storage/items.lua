@@ -13,6 +13,9 @@ resources[#resources+1] = "WasteRock"
 if g_AvailableDlc.armstrong and not table.find(resources, "Seeds") then
 	resources[#resources+1] = "Seeds"
 end
+if g_AvailableDlc.picard and not table.find(resources, "PreciousMinerals") then
+	resources[#resources+1] = "PreciousMinerals"
+end
 
 for i = 1, #resources do
 	local res = resources[i]

@@ -13,6 +13,7 @@ local GetRealm = GetRealm
 local IsKindOf = IsKindOf
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
+local GetBuildingTechsStatus = GetBuildingTechsStatus
 
 local empty_table = empty_table
 
@@ -21,14 +22,18 @@ local mod_FarmOxygen
 local mod_DustDevilsBlockBuilding
 local mod_PlanetaryAnomalyBreakthroughs
 local mod_UnevenTerrain
-local mod_TurnOffUpgrades
+--~ local mod_TurnOffUpgrades
+local mod_SupplyPodSoundEffects
 
 local function FixUnevenTerrain(game_map)
-	if SuspendTerrainInvalidations then
+	pcall(function()
+		local map = game_map or GameMaps[UICity.map_id]
+		map.realm:SuspendPassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
 		SuspendTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
-		(game_map or GameMaps[MainMapID]):RefreshBuildableGrid()
+		map:RefreshBuildableGrid()
 		ResumeTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
-	end
+		map.realm:ResumePassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
+	end)
 end
 
 local function ModOptions(id)
@@ -42,9 +47,10 @@ local function ModOptions(id)
 	mod_DustDevilsBlockBuilding = CurrentModOptions:GetProperty("DustDevilsBlockBuilding")
 	mod_PlanetaryAnomalyBreakthroughs = CurrentModOptions:GetProperty("PlanetaryAnomalyBreakthroughs")
 	mod_UnevenTerrain = CurrentModOptions:GetProperty("UnevenTerrain")
-	mod_TurnOffUpgrades = CurrentModOptions:GetProperty("TurnOffUpgrades")
+--~ 	mod_TurnOffUpgrades = CurrentModOptions:GetProperty("TurnOffUpgrades")
+	mod_SupplyPodSoundEffects = CurrentModOptions:GetProperty("SupplyPodSoundEffects")
 
-	if MainCity and mod_UnevenTerrain then
+	if GameState.gameplay and mod_UnevenTerrain then
 		FixUnevenTerrain()
 	end
 end
@@ -94,6 +100,14 @@ do -- CityStart/LoadGame
 		local bt = BuildingTemplates
 		local bmpo = BuildMenuPrerequisiteOverrides
 		local main_realm = GetRealmByID(MainMapID)
+
+		--
+		-- Force heat grid to update (if you paused game on new game load then cold areas don't update till you get a working Subsurface Heater).
+		CreateGameTimeThread(function()
+			-- When game isn't paused wait 5 secs and call it for main city (no cold areas underground?, eh can always do it later).
+			Sleep(5000)
+			GetGameMapByID(MainMapID).heat_grid:WaitLerpFinish()
+		end)
 
 		--
 		-- Add Xeno-Extraction tech to Automatic Metals Extractor, Micro-G Extractors, RC Harvester, and RC Driller
@@ -325,7 +339,7 @@ do -- CityStart/LoadGame
 			local obj = trans[i]
 			for j = 1, #(obj.storable_resources or "") do
 				local res = obj.storable_resources[j]
-				if obj.resource_storage[res] < 0 then
+				if obj.resource_storage[res] and obj.resource_storage[res] < 0 then
 					obj.resource_storage[res] = 0
 				end
 			end
@@ -402,6 +416,7 @@ function RCTransport:TransferResources(...)
 	if not self.unreachable_objects then
 		self.unreachable_objects = {}
 	end
+
 	return ChoOrig_RCTransport_TransferResources(self, ...)
 end
 --
@@ -412,7 +427,7 @@ function LoadCustomOnScreenNotification(notification, ...)
 		return ChoOrig_LoadCustomOnScreenNotification(notification, ...)
 	end
 
-	-- the first return is id, and some mods (cough Ambassadors cough) send a nil id, which breaks the func
+	-- the first param is id, and some mods (cough Ambassadors cough) send a nil id, which breaks the func
 	if type(notification) == "table" and table.unpack(notification) then
 		return ChoOrig_LoadCustomOnScreenNotification(notification, ...)
 	end
@@ -428,8 +443,7 @@ function LayoutConstructionController:Activate(...)
 		return ret
 	end
 
-	-- now remove what shouldn't be there
-	local GetBuildingTechsStatus = GetBuildingTechsStatus
+	-- Remove what shouldn't be there
 	local city = self.city or UICity
 	local BuildingTemplates = BuildingTemplates
 
@@ -465,7 +479,7 @@ function Farm:Done(...)
 	return ChoOrig_Farm_Done(self, ...)
 end
 --
--- The devs broke this in Tito update and haven't fixed it yet.
+-- The devs broke this in Tito update and haven't fixed it yet (double click selects all of type on screen).
 local ChoOrig_SelectionModeDialog_OnMouseButtonDoubleClick = SelectionModeDialog.OnMouseButtonDoubleClick
 function SelectionModeDialog:OnMouseButtonDoubleClick(pt, button, ...)
 	if button ~= "L" or not mod_EnableMod then
@@ -495,6 +509,7 @@ function SelectionModeDialog:OnMouseButtonDoubleClick(pt, button, ...)
 		end
 	end
 	SelectObj(obj)
+
 	return "break"
 end
 --
@@ -566,34 +581,35 @@ function RocketBase:RemovePassengers(...)
 	return ChoOrig_RocketBase_RemovePassengers(self, ...)
 end
 --
--- Stop buildings placed on top of dust devils
-local ChoGGi_OnTopOfDustDevil = {
-	type = "error",
-	priority = 100,
-	text = T(0000, "Dust devil rejects your futile attempt of cheese."),
-	short = T(0000, "Overlaps dust devil")
-}
-ConstructionStatus.ChoGGi_OnTopOfDustDevil = ChoGGi_OnTopOfDustDevil
+do -- Stop buildings placed on top of dust devils
+	local ChoGGi_OnTopOfDustDevil = {
+		type = "error",
+		priority = 100,
+		text = T(0000, "Dust devil rejects your futile attempt of cheese."),
+		short = T(0000, "Overlaps dust devil")
+	}
+	ConstructionStatus.ChoGGi_OnTopOfDustDevil = ChoGGi_OnTopOfDustDevil
 
-local ChoOrig_ConstructionController_FinalizeStatusGathering = ConstructionController.FinalizeStatusGathering
-function ConstructionController:FinalizeStatusGathering(...)
-	if not mod_DustDevilsBlockBuilding or not mod_EnableMod then
+	local ChoOrig_ConstructionController_FinalizeStatusGathering = ConstructionController.FinalizeStatusGathering
+	function ConstructionController:FinalizeStatusGathering(...)
+		if not mod_DustDevilsBlockBuilding or not mod_EnableMod then
+			return ChoOrig_ConstructionController_FinalizeStatusGathering(self, ...)
+		end
+
+		-- shameless copy pasta of function ConstructionController:HasDepositUnderneath()
+		-- last checked lua rev 1011166
+		local force_extend_bb = self.template_obj:HasMember("force_extend_bb_during_placement_checks") and self.template_obj.force_extend_bb_during_placement_checks ~= 0 and self.template_obj.force_extend_bb_during_placement_checks or false
+		local underneath = HexGetUnits(GetRealm(self), self.cursor_obj, self.template_obj:GetEntity(), nil, nil, true, function(o)
+			return IsKindOf(o, "BaseDustDevil")
+		end, "BaseDustDevil", force_extend_bb, self.template_obj_points)
+
+		if underneath then
+			self.construction_statuses[#self.construction_statuses + 1] = ChoGGi_OnTopOfDustDevil
+		end
+
 		return ChoOrig_ConstructionController_FinalizeStatusGathering(self, ...)
 	end
-
-	-- shameless copy pasta of function ConstructionController:HasDepositUnderneath()
-	-- last checked lua rev 1011166
-  local force_extend_bb = self.template_obj.force_extend_bb_during_placement_checks and self.template_obj.force_extend_bb_during_placement_checks ~= 0 and self.template_obj.force_extend_bb_during_placement_checks or false
-  local underneath = HexGetUnits(GetRealm(self), self.cursor_obj, self.template_obj:GetEntity(), nil, nil, true, function(o)
-    return IsKindOf(o, "BaseDustDevil")
-  end, "BaseDustDevil", force_extend_bb, self.template_obj_points)
-
-  if underneath then
-		self.construction_statuses[#self.construction_statuses + 1] = ChoGGi_OnTopOfDustDevil
-  end
-
-	return ChoOrig_ConstructionController_FinalizeStatusGathering(self, ...)
-end
+end -- do
 --
 -- Log spam if you call this with an invalid dome
 local ChoOrig_IsBuildingInDomeRange = IsBuildingInDomeRange
@@ -635,14 +651,9 @@ function LandscapeFinish(mark, ...)
 	local map_id = landscape.map_id
 	local game_map = GameMaps[map_id]
 	-- Just in case Asteroid
-	if not game_map then
-		return
+	if game_map then
+		FixUnevenTerrain(game_map)
 	end
-
-	-- Speed up
-	SuspendPassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
-	FixUnevenTerrain(game_map)
-	ResumePassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
 end
 --
 -- Disable upgrades when demoing a building (prevents modifiers from staying modified)
@@ -663,37 +674,49 @@ function Building:Done(...)
 
 	return ChoOrig_Building_Done(self, ...)
 end
--- Also do the same when turning off a building
-local ChoOrig_BaseBuilding_OnSetWorking = BaseBuilding.OnSetWorking
-function BaseBuilding:OnSetWorking(working, ...)
-	-- Skip if the building is being turned on or it's not an upgradeable building
-	if not mod_EnableMod or not mod_TurnOffUpgrades then
-		return ChoOrig_BaseBuilding_OnSetWorking(self, working, ...)
-	end
+--~ -- Also do the same when turning off a building
+--~ local ChoOrig_BaseBuilding_OnSetWorking = BaseBuilding.OnSetWorking
+--~ function BaseBuilding:OnSetWorking(working, ...)
+--~ 	-- Skip if the building is being turned on or it's not an upgradeable building
+--~ 	if not mod_EnableMod or not mod_TurnOffUpgrades then
+--~ 		return ChoOrig_BaseBuilding_OnSetWorking(self, working, ...)
+--~ 	end
 
-	if working then
-		-- Enable any upgrades I disabled
-		for id, enabled in pairs(self.upgrades_built or empty_table) do
-			if self["ChoGGi_" .. id] then
-				self:ToggleUpgradeOnOff(id)
-				self["ChoGGi_" .. id] = nil
-			end
-		end
-	else
-		-- Goes through list of enabled upgrades and turns them off.
-		-- You'd figure the game would do this?
-		for id, enabled in pairs(self.upgrade_on_off_state or empty_table) do
-			if enabled then
-				self:ToggleUpgradeOnOff(id)
-				-- Used above to re-enable
-				self["ChoGGi_" .. id] = true
-			end
-		end
-	end
+--~ 	if working then
+--~ 		-- Enable any upgrades I disabled
+--~ 		for id, enabled in pairs(self.upgrades_built or empty_table) do
+--~ 			if self["ChoGGi_" .. id] then
+--~ 				self:ToggleUpgradeOnOff(id)
+--~ 				self["ChoGGi_" .. id] = nil
+--~ 			end
+--~ 		end
+--~ 	else
+--~ 		-- Goes through list of enabled upgrades and turns them off.
+--~ 		-- You'd figure the game would do this?
+--~ 		for id, enabled in pairs(self.upgrade_on_off_state or empty_table) do
+--~ 			if enabled then
+--~ 				self:ToggleUpgradeOnOff(id)
+--~ 				-- Used above to re-enable
+--~ 				self["ChoGGi_" .. id] = true
+--~ 			end
+--~ 		end
+--~ 	end
 
-	return ChoOrig_BaseBuilding_OnSetWorking(self, working, ...)
-end
+--~ 	return ChoOrig_BaseBuilding_OnSetWorking(self, working, ...)
+--~ end
 --
+-- Add sound effects to SupplyPods
+local ChoOrig_SupplyPod_GameInit = SupplyPod.GameInit
+function SupplyPod:GameInit(...)
+	-- Skip if the building is being turned on or it's not an upgradeable building
+	if not mod_EnableMod or not mod_SupplyPodSoundEffects then
+		return ChoOrig_SupplyPod_GameInit(self, ...)
+	end
+
+	-- Not sure why it updates the value from GameInit, but it makes it easy to override with a mod option I suppose.
+	ChoOrig_SupplyPod_GameInit(self, ...)
+	self.fx_actor_class = RocketBase.fx_actor_class
+end
 --
 --
 --

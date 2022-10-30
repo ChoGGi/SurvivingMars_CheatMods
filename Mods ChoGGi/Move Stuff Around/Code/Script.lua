@@ -82,7 +82,7 @@ local function AddButton(xtemplate, button_id)
 					local ChoOrig_OnMouseButtonDown = dlg.OnMouseButtonDown or ChoOrig_SelectionModeDialog_OnMouseButtonDown
 					dlg.OnMouseButtonDown = function(self, pt, button, ...)
 						if button == "L" then
-							Msg("ChoGGi_MoveStuffAround_MousePressed", GetTerrainCursor())
+							Msg("ChoGGi_MoveStuffAround_MousePressed", GetCursorWorldPos())
 							-- don't want anything else happening
 							return
 						end

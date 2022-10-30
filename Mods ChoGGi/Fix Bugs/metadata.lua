@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 34,
+	"version", 36,
 	"version_major", 3,
-	"version_minor", 4,
+	"version_minor", 6,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -34,8 +34,8 @@ Clean up city labels of wrong map / invalid objs (colonists showing up on wrong 
 Unpassable underground rocks stuck in path (not cavein rubble, but small rocks you can't select).
 Dredger tech fix (Spoilers see: https://www.reddit.com/r/SurvivingMars/comments/xnprjg/)
 Water Reclamation Spire and B&B upgrade tech caused issues (spoiler free, see more info below).
-
-
+Add rocket sound effects to SupplyPods (mod option to disable).
+Force heat grid to update (see more info below).
 
 [b]Incorporated mods:[/b] (so far)
 Fix Blank Mission Profile
@@ -65,6 +65,8 @@ If you have B&B I'd recommend SkiRich's [url=https://steamcommunity.com/sharedfi
 
 Info from Incorporated mods/etc:
 
+[b]Force heat grid to update[/b]
+If you paused game on new game load then cold areas don't update till you get a working Subsurface Heater.
 [b]Uneven Terrain[/b]
 When finishing landscaping it can set some of the surrounding hexes z values (height) to 65535 (also known as UnbuildableZ).
 Calling RefreshBuildableGrid() on the map seems to get rid of them without causing any major issues:

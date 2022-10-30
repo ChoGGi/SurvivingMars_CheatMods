@@ -11,9 +11,9 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_BottomlessStorage",
 	"steam_id", "1411102605",
 	"pops_any_uuid", "72c1a8e6-a886-4448-b726-f81f92e37faa",
-	"version", 9,
-	"version_major", 0,
-	"version_minor", 9,
+	"version", 10,
+	"version_major", 1,
+	"version_minor", 0,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {

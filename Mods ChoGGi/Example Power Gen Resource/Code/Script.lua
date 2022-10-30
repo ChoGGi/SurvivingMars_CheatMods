@@ -21,7 +21,7 @@ function OnMsg.ClassesPostprocess()
 
 	PlaceObj("BuildingTemplate", {
 
-		-- added, not uploaded
+--~ 		"Asteroid","Underground","Surface",
 		"disabled_in_environment1", "",
 		"disabled_in_environment2", "",
 		"disabled_in_environment3", "",
