@@ -19,7 +19,7 @@ Stuff gets weird after about Sol 2983 hour 20 min 20.
 https://en.wikipedia.org/wiki/2,147,483,647#In_video_games
 
 
-[b]This is replacing a core C func with a lua one, so I would leave this disabled till your playthrough reaches Sol 2981+.[/b]
+[b]Leave this disabled till your playthrough reaches Sol 2981+. This is replacing a core C func with a lua one.[/b]
 
 
 If switching between your 2983 and other saves: [b]You should restart the game![/b]

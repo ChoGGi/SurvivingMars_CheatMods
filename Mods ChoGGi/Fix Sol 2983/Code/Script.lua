@@ -29,6 +29,9 @@ end
 
 -- Update on load instead of waiting for NewHour
 function OnMsg.LoadGame()
+	-- If loading another save
+	add_time = false
+	-- Check time
 	if UIColony.day > 2981 and min_time > ChoOrig_GameTime() then
 		add_time = true
 	end

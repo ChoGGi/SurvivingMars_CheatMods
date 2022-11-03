@@ -55,10 +55,9 @@ Loop Files, *.lua, %ConvertDeep%
 	File := FileOpen(A_LoopFileLongPath, "r")
 	; Probably not needed
 	File.Seek(1)
-	; Check if it's a compiled lua
-	If (File.Read(4) = "LuaS")
-	; Omerta lua files
-	;~ If (File.Read(4) = "LuaQ")
+	; Check if it's a compiled lua (LuaS == newer, LuaQ older)
+	FileReadFour := File.Read(4)
+	If (FileReadFour = "LuaS" || FileReadFour = "LuaQ")
 		{
 		; Need to close the file before we open it again below
 		File.Close()

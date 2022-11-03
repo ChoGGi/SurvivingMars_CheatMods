@@ -1,0 +1,2 @@
+drones reset colours when Idle/etc
+thanks  Daemonjax
