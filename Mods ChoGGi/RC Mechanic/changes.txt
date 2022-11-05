@@ -1,3 +1,6 @@
+v1.4
+More Picard fixes.
+
 v1.3
 Random pos fix.
 

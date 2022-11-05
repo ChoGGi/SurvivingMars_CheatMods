@@ -231,7 +231,7 @@ function RCBulldozer:StartDozer()
 		self:SetMoveAnim("workIdle")
 	end
 
-	local terrain = GetGameMap(self).terrain
+	local map = GetGameMap(self)
 	-- It shouldn't already be running, but screw it
 	if not IsValidThread(self.flatten_thread) then
 		-- store this thread so we can stop it
@@ -262,9 +262,11 @@ function RCBulldozer:StartDozer()
 					end
 
 					-- flatten func
-					terrain:SetHeightCircle(pos, self.radius, self.radius, terrain:GetHeight(self:GetVisualPos()), const.hsDefault)
+					map.terrain:SetHeightCircle(pos, self.radius, self.radius, map.terrain:GetHeight(self:GetVisualPos()), const.hsDefault)
 					-- speed and needed for my ugly hack
-					SuspendPassEdits("ChoGGi.RCBulldozer.flattening")
+					map.realm:SuspendPassEdits("ChoGGi.RCBulldozer.flattening")
+					SuspendTerrainInvalidations("ChoGGi.RCBulldozer.flattening")
+
 					-- remove any pebbles in the way
 					GetRealm(self):MapDelete(pos, self.radius, efRemoveUnderConstruction)
 					-- add some dust
@@ -280,9 +282,10 @@ function RCBulldozer:StartDozer()
 					self.site:ClearHierarchyEnumFlags(efCollision)
 					-- are we changing ground texture
 					if type(self.texture_terrain) == "number" then
-						terrain:SetTypeCircle(pos, self.radius, self.texture_terrain)
+						map.terrain:SetTypeCircle(pos, self.radius, self.texture_terrain)
 					end
-					ResumePassEdits("ChoGGi.RCBulldozer.flattening")
+					ResumeTerrainInvalidations("ChoGGi.RCBulldozer.flattening")
+					map.realm:ResumePassEdits("ChoGGi.RCBulldozer.flattening")
 					-- rest your weary soul
 					Sleep(25)
 				end

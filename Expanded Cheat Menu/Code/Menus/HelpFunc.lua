@@ -34,6 +34,7 @@ do -- ModUpload
 		ChoGGi_IncreaseRanchStorage = "Increase Ranch Storage (upload 2)",
 		ChoGGi_MartianCarwash = "Martian Carwash (upload 2)",
 		ChoGGi_PodNoBounce = "Pod No Bounce (upload 2)",
+		ChoGGi_RCBulldozer = "RC Bulldozer (upload 2)",
 		ChoGGi_RocketProgradeOrbit = "Rocket Prograde Orbit (upload 2)",
 		ChoGGi_RocketsAutoLand = "Rockets Auto Land (upload 2)",
 		ChoGGi_SelectableCables = "Selectable Cables Pipes (upload 2)",

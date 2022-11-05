@@ -10,11 +10,11 @@ return PlaceObj("ModDef", {
 	"title", "RC Bulldozer",
 	"id", "ChoGGi_RCBulldozer",
 	"steam_id", "1538213471",
-	"pops_any_uuid", "c4cbd03c-5dc3-4953-9e13-fbea09273916",
+	"pops_any_uuid", "1fd50db9-6c10-4271-a89b-af02e369d5d8",
 	"lua_revision", 1007000, -- Picard
-	"version", 10,
+	"version", 11,
 	"version_major", 1,
-	"version_minor", 0,
+	"version_minor", 1,
 	"author", "ChoGGi",
 	"image", "Preview.jpg",
 	"code", {

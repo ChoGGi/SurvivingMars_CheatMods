@@ -70,7 +70,10 @@ function RCMechanic:AddBlinky()
 	end
 
 	-- add a blinky
-	self.blinky = RotatyThing:new()
+	self.blinky = PlaceObjectIn("RotatyThing", self:GetMapID())
+
+	GetRealm(self):
+
 	self.blinky:SetVisible()
 
 	self:Attach(self.blinky)
@@ -118,7 +121,7 @@ function RCMechanic:ProcAutomation()
 	local unreachable_objects = self:GetUnreachableObjectsTable() or {}
 	local HourDuration = const.HourDuration
 
-	local rover = MapFindNearest(self, "map", "BaseRover", "Drone" , function(o)
+	local rover = GetRealm(self):MapFindNearest(self, "map", "BaseRover", "Drone" , function(o)
 		local go_fix_it
 		-- check for rovers without a cc or if all cc nearby have no working drones
 		if o.command == "Malfunction" then

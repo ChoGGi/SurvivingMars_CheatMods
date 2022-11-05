@@ -64,7 +64,7 @@ function RCTankerTank:Init()
 	for i = id_start, id_end do
 		local spot_annotation = self:GetSpotAnnotation(i)
 		if spot_annotation and spot_annotation:find("AirTankArrow") then
-			self:Attach(AirTankArrow:new(), i)
+			self:Attach(PlaceObjectIn("AirTankArrow", self:GetMapID()), i)
 			-- attaching the tank to the rc makes all the tanks attach spots get mushed into origin (or somewhere)
 			break
 		end
