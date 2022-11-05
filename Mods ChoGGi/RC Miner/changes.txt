@@ -1,3 +1,7 @@
+v3.4
+Miners were turning off when map switched.
+Stockpiles placed when miner on another map were placed on wrong map.
+
 v3.3
 Random pos fix.
 

@@ -9,8 +9,10 @@ return PlaceObj("ModDef", {
 	},
 	"title", "Multi-Select",
 	"id", "ChoGGi_MultiSelect",
-	"steam_id", "1673928672",
-	"pops_any_uuid", "d9ea47ff-e175-416f-bcf0-fa8ce3ac4cc0",
+--~ 	"steam_id", "1673928672",
+--~ 	"pops_any_uuid", "d9ea47ff-e175-416f-bcf0-fa8ce3ac4cc0",
+	"steam_id", "12345",
+	"pops_any_uuid", "12345",
 	"lua_revision", 1007000, -- Picard
 	"version", 3,
 	"version_major", 0,

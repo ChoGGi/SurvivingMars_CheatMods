@@ -1,3 +1,6 @@
+v0.4
+Large and small (visual) variants.
+
 v0.3
 Removed concrete cost req (not sure why it was there).
 

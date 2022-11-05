@@ -13,7 +13,7 @@ return PlaceObj("ModDef", {
 	},
 	"image", "Preview.png",
 	"has_options", true,
-	"description", [[Buildings will never lose their dust. This is a visual mod, it doesn't affect maintenance.
+	"description", [[Buildings (and RCs) will never lose their dust. This is a visual mod, it doesn't affect maintenance.
 
 Mod Options:
 Always Dusty: On by default.

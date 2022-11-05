@@ -14,7 +14,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagOther", true,
-	"description", [[The area subsurface heaters/adv stirlings heat during a cold wave is reduced by one hex, but the hex area doesn't change.
+	"description", [[
+The area subsurface heaters/adv stirlings heat during a cold wave is reduced by one hex, but the hex area doesn't change.
 This mod bumps the heat range to match the hex area. The artificial sun is skipped since anything within it's hex range doesn't freeze.
 
 Requested by vonBoomslang.

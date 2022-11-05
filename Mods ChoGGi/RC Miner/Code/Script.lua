@@ -335,7 +335,7 @@ function PortableMiner:SpawnThumper()
 		return
 	end
 
-	local thumper = MeteorInterceptParabolicRocket:new()
+	local thumper = PlaceObjectIn("MeteorInterceptParabolicRocket", self:GetMapID())
 --~ 	local spot = self:GetSpotBeginIndex("Rocket")
 --~ 	self:Attach(thumper, spot)
 
@@ -364,9 +364,10 @@ end
 -- for auto mode
 function PortableMiner:ProcAutomation()
 	self:BuildFilterList()
+	local realm = GetRealm(self)
 
 	local unreachable_objects = self:GetUnreachableObjectsTable()
-	local deposit = MapFindNearest(self, "map", "SubsurfaceDeposit", "TerrainDeposit", --[["SurfaceDeposit", ]] function(d)
+	local deposit = realm:MapFindNearest(self, "map", "SubsurfaceDeposit", "TerrainDeposit", --[["SurfaceDeposit", ]] function(d)
 		if (d:IsKindOf("TerrainDepositConcrete") and d:GetDepositMarker() or
 				(d:IsKindOfClasses(self.mineable) and
 				(d.depth_layer < 2 or IsTechResearched("DeepMetalExtraction")
@@ -377,7 +378,7 @@ function PortableMiner:ProcAutomation()
 	end)
 
 	if deposit then
-		local deposit_pos = GetRealm(self):GetPassablePointNearby(deposit:GetPos())
+		local deposit_pos = realm:GetPassablePointNearby(deposit:GetPos())
 		if self:HasPath(deposit_pos, "Origin") then
 			-- If leaving an empty site then this sign should be turned off
 			self:AttachSign(false, "SignNotWorking")
@@ -386,6 +387,8 @@ function PortableMiner:ProcAutomation()
 			unreachable_objects[deposit] = true
 		end
 	else
+
+		Sleep(5000)
 		-- turn off auto for all miners if no deposits
 		local miners = self.city.labels.PortableMiner or ""
 		for i = 1, #miners do
@@ -435,7 +438,7 @@ function PortableMiner:Idle()
 end
 
 function PortableMiner:DepositNearby()
-	local d = MapFindNearest(self, "map", "SubsurfaceDeposit", "TerrainDeposit", --[["SurfaceDeposit", ]] function(o)
+	local d = GetRealm(self):MapFindNearest(self, "map", "SubsurfaceDeposit", "TerrainDeposit", --[["SurfaceDeposit", ]] function(o)
 		return self:GetVisualDist(o) < self.mine_dist
 	end)
 
@@ -481,14 +484,14 @@ function PortableMiner:GetStockpile()
 	if not self.stockpile or self:GetVisualDist(self.stockpile) > 5000 or
 				self.stockpile and (self.stockpile.resource ~= self.resource or self.stockpile.miner_handle ~= self.handle) then
 		-- try to get one close by
-		local stockpile = MapFindNearest(self, "map", "PortableStockpile", function(o)
+		local stockpile = GetRealm(self):MapFindNearest(self, "map", "PortableStockpile", function(o)
 			return self:GetVisualDist(o) < 5000
 		end)
 
 	-- add new stockpile if none
 		if not stockpile or stockpile and (stockpile.resource ~= self.resource or stockpile.miner_handle ~= self.handle) then
 			-- plunk down a new res stockpile
-			stockpile = PortableStockpile:new()
+			stockpile = PlaceObjectIn("PortableStockpile", self:GetMapID())
 			stockpile:SetPos(MovePointAway(self:GetDestination(), self:GetSpotLoc(self:GetSpotBeginIndex(self.pooper_shooter)), -800))
 			stockpile:SetAngle(self:GetAngle())
 			stockpile.resource = self.resource

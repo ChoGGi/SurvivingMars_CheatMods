@@ -15,6 +15,9 @@ return PlaceObj("ModDef", {
 Lists installed DLC in mod options (* = installed, ignore on/off).
 
 
+Installed means anything in g_AvailableDlc
+
+
 You can also just look in your log file...
 ]],
 })
