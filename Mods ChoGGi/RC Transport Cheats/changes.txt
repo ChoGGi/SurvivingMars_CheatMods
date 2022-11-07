@@ -1,3 +1,6 @@
+v1.0
+Added mod option to fill storage before unloading.
+
 v0.9
 Added Storage Amount to building template.
 

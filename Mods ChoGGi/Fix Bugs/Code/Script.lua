@@ -26,14 +26,13 @@ local mod_UnevenTerrain
 local mod_SupplyPodSoundEffects
 
 local function FixUnevenTerrain(game_map)
-	pcall(function()
-		local map = game_map or GameMaps[UICity.map_id]
-		map.realm:SuspendPassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
+	if game_map then
+		game_map.realm:SuspendPassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
 		SuspendTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
-		map:RefreshBuildableGrid()
+		game_map:RefreshBuildableGrid()
 		ResumeTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
-		map.realm:ResumePassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
-	end)
+		game_map.realm:ResumePassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
+	end
 end
 
 local function ModOptions(id)
@@ -50,8 +49,9 @@ local function ModOptions(id)
 --~ 	mod_TurnOffUpgrades = CurrentModOptions:GetProperty("TurnOffUpgrades")
 	mod_SupplyPodSoundEffects = CurrentModOptions:GetProperty("SupplyPodSoundEffects")
 
-	if GameState.gameplay and mod_UnevenTerrain then
-		FixUnevenTerrain()
+
+	if UIColony and mod_UnevenTerrain then
+		FixUnevenTerrain(GameMaps[ActiveMapID])
 	end
 end
 -- Load default/saved settings
@@ -648,12 +648,7 @@ function LandscapeFinish(mark, ...)
 	-- last checked lua rev 1011166
 	ChoOrig_LandscapeFinish(mark, ...)
 
-	local map_id = landscape.map_id
-	local game_map = GameMaps[map_id]
-	-- Just in case Asteroid
-	if game_map then
-		FixUnevenTerrain(game_map)
-	end
+	FixUnevenTerrain(GameMaps[landscape.map_id])
 end
 --
 -- Disable upgrades when demoing a building (prevents modifiers from staying modified)
@@ -718,6 +713,48 @@ function SupplyPod:GameInit(...)
 	self.fx_actor_class = RocketBase.fx_actor_class
 end
 --
+-- Personal Space storybit (and anything else that changes the resident capacity amount)
+local ChoOrig_GetConstructionDescription = GetConstructionDescription
+function GetConstructionDescription(template, ...)
+	if not mod_EnableMod then
+		return ChoOrig_GetConstructionDescription(template, ...)
+	end
+
+	-- Get modified capacity count
+	local modifier_count = 0
+	local res_modifier = UIColony.city_labels.label_modifiers.Residence
+	if res_modifier then
+		for label, modifier in pairs(res_modifier) do
+			if label.Prop == "capacity" then
+				modifier_count = modifier_count + modifier.amount
+			end
+		end
+	end
+	-- Nothing to change abort
+	if modifier_count == 0 then
+		return ChoOrig_GetConstructionDescription(template, ...)
+	end
+
+	local list = ChoOrig_GetConstructionDescription(template, ...)
+	if list[1] then
+		for i = 1, list[1].j do
+			local item = list[1].table[i]
+			if type(item) == "table" and item[1] == 3961--[[Residential space: ]] then
+				item.capacity = item.capacity + modifier_count
+				break
+			end
+		end
+	end
+
+	return list
+end
+--
+--
+--
+--
+--
+--
+--
 --
 --
 --
@@ -725,6 +762,7 @@ end
 if not g_AvailableDlc.picard then
 	return
 end
+--
 --
 --
 --

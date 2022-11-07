@@ -1,3 +1,6 @@
+v3.7
+Personal Space storybit changes capacity, but building menu doesn't show it (thanks Deadmano).
+
 v3.6
 Log spam (thanks Deadmano).
 

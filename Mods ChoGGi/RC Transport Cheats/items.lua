@@ -13,6 +13,12 @@ return {
 		"Help", T(0000, "Auto mode looks for wasterock."),
 		"DefaultValue", true,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "FillStorage",
+		"DisplayName", T(0000, "Fill Storage"),
+		"Help", T(0000, "Fill storage up before unloading."),
+		"DefaultValue", true,
+	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "StorageAmount",
 		"DisplayName", T(0000, "Storage Amount"),

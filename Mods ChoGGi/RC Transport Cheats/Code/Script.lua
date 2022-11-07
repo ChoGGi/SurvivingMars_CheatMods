@@ -12,6 +12,7 @@ local mod_EnableMod
 local mod_StorageAmount
 local mod_WorkTime
 local mod_WasteRock
+local mod_FillStorage
 
 -- transport is going for this stockpile
 GlobalVar("g_ChoGGi_RCTransportCheats_usedstocks", false)
@@ -57,6 +58,7 @@ local function ModOptions(id)
 	mod_StorageAmount = CurrentModOptions:GetProperty("StorageAmount") * const.ResourceScale
 	mod_WorkTime = CurrentModOptions:GetProperty("WorkTime") * const.ResourceScale
 	mod_WasteRock = CurrentModOptions:GetProperty("WasteRock")
+	mod_FillStorage = CurrentModOptions:GetProperty("FillStorage")
 
 	-- Make sure we're in-game
 	if not UIColony then
@@ -135,11 +137,28 @@ function RCTransport:Automation_Gather(...)
 			g_ChoGGi_RCTransportCheats_usedstocks[depot] = self
 
 			self:SetCommand("PickupResource", depot.supply_request, nil, "goto_loading_complete")
+
 		else
 			self:GetUnreachableObjectsTable()[depot] = true
 		end
 	end
 
+end
+
+local ChoOrig_RCTransport_ProcAutomation = RCTransport.ProcAutomation
+function RCTransport:ProcAutomation(...)
+	if not mod_EnableMod or not mod_FillStorage then
+		return ChoOrig_RCTransport_ProcAutomation(...)
+	end
+
+--~ 	if self:GetStoredAmount() <= 0 then
+	if not self:IsStorageFull() then
+		self:Automation_Gather()
+	else
+		self:Automation_Unload()
+	end
+
+	Sleep(2500)
 end
 
 -- Reset the storage override list (I only have it so they all don't spam rush the first one)

@@ -1,3 +1,7 @@
+v0.5
+Goes by rover type instead of all rovers.
+Sorts list of objects by name.
+
 v0.4
 Added buildings.
 Changed name from Next Vehicle Button.

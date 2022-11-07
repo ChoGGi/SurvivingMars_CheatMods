@@ -3,9 +3,15 @@
 local ViewAndSelectObject = ViewAndSelectObject
 local XDestroyRolloverWindow = XDestroyRolloverWindow
 local table = table
+local CmpLower = CmpLower
+local _InternalTranslate = _InternalTranslate
 
 local function CycleObjects(context, class)
-	local list = (context.city or UICity).labels[class] or empty_table
+	local list = table.icopy((context.city or UICity).labels[class] or empty_table)
+
+	table.sort(list, function(a, b)
+		return CmpLower(_InternalTranslate(a:GetDisplayName()), _InternalTranslate(b:GetDisplayName()))
+	end)
 
 	if class == "SupplyRocket" then
 		list = GetRealm(context):MapFilter(list, function(vehicle)
@@ -45,7 +51,8 @@ function OnMsg.ClassesPostprocess()
 		RolloverText = T(0000, "Loop between your rovers quickly."),
 		Icon = "UI/Icons/Research/plasma_rocket.tga",
 		func = function(self, context)
-			CycleObjects(context, "Rover")
+--~ 			CycleObjects(context, "Rover")
+			CycleObjects(context, context.class)
 		end,
 	})
 
