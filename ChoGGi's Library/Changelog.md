@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v11.7 (Unreleased)
+- RGBtoColour() ignored A from RGBA
 - GetPassablePointNearby()/GetRandomPassable()/GetRandomPassablePoint() and picard.
 
 ## v11.6 (11 Sep 2022)

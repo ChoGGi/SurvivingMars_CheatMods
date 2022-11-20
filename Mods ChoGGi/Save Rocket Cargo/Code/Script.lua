@@ -34,7 +34,7 @@ function ResetCargo(...)
 		local g_CargoMode = g_CargoMode
 		if g_RocketCargo and g_CargoMode then
 			-- save cargo before it's cleared
-			local list = saved_cargo[g_CargoMode]
+			local list = saved_cargo[g_CargoMode] or ""
 			for i = 1, #g_RocketCargo do
 				local cargo = g_RocketCargo[i]
 				local saved = list[i]
@@ -85,7 +85,7 @@ function ClearRocketCargo(...)
 
 		-- and add saved cargo
 		local payload = Dialogs.Resupply.context
-		local list = saved_cargo[UICity.launch_mode]
+		local list = saved_cargo[UICity.launch_mode] or ""
 		for i = 1, #list do
 			local item = list[i]
 

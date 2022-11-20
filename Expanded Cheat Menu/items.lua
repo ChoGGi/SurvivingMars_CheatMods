@@ -29,4 +29,10 @@ return {
 		"Help", T(302535920001639, "Hide a menu entry to reduce horizontal space."),
 		"DefaultValue", false,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "ResetSettings",
+		"DisplayName", T(302535920001671, "Reset ECM Settings"),
+		"Help", T(302535920001672, "Turn on and press apply to reset ECM settings (restart game afterwards)."),
+		"DefaultValue", false,
+	}),
 }

@@ -674,10 +674,10 @@ end
 
 local function RemoveInvalid(label)
 	for i = 1, #Cities do
-		local labels = Cities[i].labels[label]
+		local labels = Cities[i].labels[label] or ""
 		for j = #labels, 1, -1 do
-			if not IsValid(labels[i]) then
-				table.remove(labels, i)
+			if not IsValid(labels[j]) then
+				table.remove(labels, j)
 			end
 		end
 	end

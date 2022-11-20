@@ -127,7 +127,7 @@ local function HideSigns()
 	SuspendPassEdits("ChoGGi.MarkDepositGround.HideSigns")
 
 	if mod_HideSigns then
-		-- gotta use SetOpacity as SetVisible is set when you zoom out
+		-- gotta use SetOpacity as SetVisible is changed (signs/arrows) when you zoom out
 		local value = mod_HideSigns and 0 or 100
 
 		UpdateOpacity("SubsurfaceDeposit", value)

@@ -1,3 +1,6 @@
+v0.5
+Possible Picard fix.
+
 v0.4
 Evans update.
 

@@ -3,8 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
-302535920001671, ""
-302535920001672, ""
 302535920001673, ""
 302535920001674, ""
 302535920001675, ""
@@ -138,6 +136,8 @@ do !Skipped Line! [[Multiple locations/mods: ]] !Skipped Line!
 302535920000004, "Dump"
 end !Skipped Line!
 do !Skipped Line! [[items.lua]] !Skipped Line!
+302535920001671, "Reset ECM Settings"
+302535920001672, "Turn on and press apply to reset ECM settings (restart game afterwards)."
 302535920001639, "Hide a menu entry to reduce horizontal space."
 302535920001640, "Hide Cheats Menu"
 302535920001641, "Hide ECM Menu"

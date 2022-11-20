@@ -6,14 +6,11 @@ local mod_EnableMod
 local mod_DeleteGeysers
 
 local function RemoveGeysers()
-	if not mod_EnableMod or not mod_DeleteGeysers then
-		return
-	end
-
 	SuspendPassEdits("ChoGGi.DustGeyserAllowBuilding.DeleteGeysers")
 	--
 	local GameMaps = GameMaps
 	for _, map in pairs(GameMaps) do
+		-- Remove any jets/spider markings
  		local objs = map.realm:MapGet("map", "PrefabFeatureMarker", function(obj)
 			if obj.FeatureType == "CO2 Jets" or obj.FeatureType == "Flat Lands" then
 				return true
@@ -22,8 +19,8 @@ local function RemoveGeysers()
 		for i = #objs, 1, -1 do
 			DoneObject(objs[i])
 		end
+		-- And any "objects"
 		map.realm:MapDelete("map", "GeyserObject")
-
 	end
 	--
 	ResumePassEdits("ChoGGi.DustGeyserAllowBuilding.DeleteGeysers")
@@ -42,7 +39,10 @@ local function ModOptions(id)
 	if not MainCity then
 		return
 	end
-	RemoveGeysers()
+
+	if mod_EnableMod and mod_DeleteGeysers then
+		RemoveGeysers()
+	end
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions

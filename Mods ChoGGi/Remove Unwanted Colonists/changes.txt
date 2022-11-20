@@ -1,3 +1,6 @@
+v2.1
+Log spam from cleaning up invalid objs (thanks MasterJ94).
+
 v2.0
 Fixed issue with homeless count, also did unemployed for good measure (thanks sir_lancealittle).
 Checks for stuck hover animations (thanks sir_lancealittle).

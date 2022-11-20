@@ -1,0 +1,3 @@
+list all notes somewhere
+
+add button to open notes as well

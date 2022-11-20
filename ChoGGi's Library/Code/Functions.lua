@@ -1,5 +1,13 @@
 -- See LICENSE for terms
 
+-- To go along with empty_func
+function return_true_func()
+	return true
+end
+function return_false_func()
+	return false
+end
+
 -- add PostSaveGame to be a companion for SaveGame
 local ChoOrig_ReportPersistErrors = ReportPersistErrors
 ChoGGi.ComFuncs.AddToOrigFuncs("ReportPersistErrors")
@@ -43,7 +51,7 @@ function SetUserUIScale(val, ...)
 	ChoGGi.Temp.UIScale = UIScale
 end
 
--- copied from GedPropEditors.lua. it's normally only called when GED is loaded, but we need it for the colour picker (among others)
+-- Copied from GedPropEditors.lua. it's normally only called when GED is loaded, but we need it for the colour picker (among others)
 if not rawget(_G, "CreateNumberEditor") then
 	local IconScale = point(500, 500)
 	local IconColor = RGB(0, 0, 0)
@@ -98,9 +106,7 @@ if not rawget(_G, "CreateNumberEditor") then
 	end
 end
 
--- add some shortened func names
+-- Add some shortened func names
 MapGetC = ChoGGi.ComFuncs.MapGet
 so = ChoGGi.ComFuncs.SelObject
 trans = ChoGGi.ComFuncs.Translate
-
--- change bool mod option to single click to toggle?

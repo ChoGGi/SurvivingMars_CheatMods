@@ -332,10 +332,10 @@ local function ModOptions(id)
 		return
 	end
 
-	-- I cxheck mod options earlier than I should, so this prevents blank mod options (somwhow)
+	-- I check mod options earlier than I should, so this prevents blank mod options (somwhow)
 	CurrentModOptions:GetProperties()
 
-	-- rebuild cheats menu to hide items
+	-- Rebuild cheats menu to hide items
 	local desktop = terminal.desktop
 	for i = 1, #desktop do
 		local dlg = desktop[i].idMenuBar
@@ -345,7 +345,19 @@ local function ModOptions(id)
 	end
 
 end
-OnMsg.ApplyModOptions = ModOptions
+function OnMsg.ApplyModOptions(id)
+	ModOptions(id)
+	-- Awkward looking, but we only want to reset settings in mod options
+	if id ~= CurrentModId then
+		return
+	end
+	if CurrentModOptions:GetProperty("ResetSettings") then
+		CreateRealTimeThread(function()
+			ChoGGi.MenuFuncs.ResetECMSettings()
+		end)
+		CurrentModOptions:SetProperty("ResetSettings", false)
+	end
+end
 
 function OnMsg.ReloadLua()
 	CreateRealTimeThread(function()

@@ -1,6 +1,9 @@
 ## ECM Changelog
 
 ## v18.7 (Unreleased)
+### Added:
+- Mod option to reset ECM settings.
+
 ### Fixed:
 - InstHarvest didn't always InstHarvest.
 

@@ -10,9 +10,11 @@ return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "DeleteGeysers",
 		"DisplayName", T(302535920011870, "Delete Geysers"),
-		"Help", T(302535920011871, [[Remove all geyser activity from the map (<color 255 150 150>permanent</color> per-save).
+		"Help", T(302535920011871, [[
+Remove all geyser activity from the map (<color 255 150 150>permanent</color> per-save).
 Turn this on and apply mod options, if you load a new map you will have to apply again to delete geysers from that map.
-This mod option also needs "Enable Mod" turned on to work.]]),
+This mod option also needs "Enable Mod" turned on to work.
+]]),
 		"DefaultValue", false,
 	}),
 }

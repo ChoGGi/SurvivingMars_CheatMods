@@ -6069,7 +6069,13 @@ function ChoGGi.ComFuncs.RGBtoColour(text)
 		values[c] = tonumber(d)
 	end
 
-	local colour, obj_type = RetProperType(RGB(values[1], values[2], values[3]))
+	local colour, obj_type
+	if values[4] then
+		colour, obj_type = RetProperType(RGBA(values[1], values[2], values[3], values[4]))
+	else
+		colour, obj_type = RetProperType(RGB(values[1], values[2], values[3]))
+	end
+
 	if obj_type == "number" then
 		return colour
 	else

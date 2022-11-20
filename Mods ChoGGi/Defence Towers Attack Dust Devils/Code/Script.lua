@@ -60,26 +60,26 @@ function DefenceTower:DefenceTick(...)
 	-- list of dustdevils on map
 	local dustdevils = g_DustDevils or ""
 	for i = 1, #dustdevils do
-		local obj = dustdevils[i]
+		local devil = dustdevils[i]
 
-		-- get dist (added * 10 as it didn't see to target at the range of it's hex grid)
+		-- get dist (added * 10 as tower didn't see to target at the range of its hex grid)
 		-- It could be from me increasing protection radius, or just how it targets meteors
-		if IsValid(obj) and self:GetVisualDist(obj) <= self.shoot_range * 10 then
+		if IsValid(devil) and self:GetVisualDist(devil) <= self.shoot_range * 10 then
 			-- make sure tower is working
 			if not IsValid(self) or not self.working or self.destroyed then
 				return
 			end
 
 			-- .follow = small ones attached to majors (they go away if major is gone)
-			if not obj.follow and not devils[obj.handle] then
+			if not devil.follow and not devils[devil.handle] then
 				-- aim the tower at the dustdevil
-				self:OrientPlatform(obj:GetVisualPos(), 7200)
+				self:OrientPlatform(devil:GetVisualPos(), 7200)
 				-- fire in the hole
-				local rocket = self:FireRocket(nil, obj)
+				local rocket = self:FireRocket(nil, devil)
 				-- store handle so we only launch one per devil
-				devils[obj.handle] = obj
+				devils[devil.handle] = devil
 				-- seems like safe bets to set
-				self.meteor = obj
+				self.meteor = devil
 				self.is_firing = true
 				-- sleep till rocket explodes
 				CreateRealTimeThread(function()
@@ -87,12 +87,12 @@ function DefenceTower:DefenceTick(...)
 						Sleep(500)
 					end
 					-- make it pretty
-					if IsValid(obj) then
-						local snd = PlaySound("Mystery Bombardment ExplodeAir", "ObjectOneshot", nil, 0, false, obj)
-						PlayFX("AirExplosion", "start", obj, obj:GetAttaches()[1], obj:GetPos())
+					if IsValid(devil) then
+						local snd = PlaySound("Mystery Bombardment ExplodeAir", "ObjectOneshot", nil, 0, false, devil)
+						PlayFX("AirExplosion", "start", devil, devil:GetAttaches()[1], devil:GetPos())
 						Sleep(GetSoundDuration(snd))
 						-- kill the devil object
-						obj:delete()
+						devil:delete()
 					end
 					self.meteor = false
 					self.is_firing = false
@@ -105,11 +105,9 @@ function DefenceTower:DefenceTick(...)
 	end
 
 	-- only remove devil handles if they're actually gone
-	if next(devils) then
-		for handle, obj in pairs(devils) do
-			if not IsValid(obj) then
-				devils[handle] = nil
-			end
+	for handle, devil in pairs(devils) do
+		if not IsValid(devil) then
+			devils[handle] = nil
 		end
 	end
 
