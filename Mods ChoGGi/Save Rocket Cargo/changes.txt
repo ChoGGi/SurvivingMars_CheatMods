@@ -1,3 +1,7 @@
+v0.6
+Fixed landers not working.
+Added mod option to enable mod.
+
 v0.5
 Possible Picard fix.
 

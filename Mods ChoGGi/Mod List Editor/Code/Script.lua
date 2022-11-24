@@ -101,6 +101,12 @@ function OnMsg.ClassesPostprocess()
 					"OnAction", OnAction,
 					"ActionToolbar", "mainmenu",
 				}))
+				local template = xtemplate[i][5]
+				template:SetRolloverTemplate("Rollover")
+				template:SetRolloverTitle(T(126095410863, "Info"))
+				template:SetRolloverText(T(0000, "Open Mod List Editor"))
+
+
 				break
 			end
 		end
@@ -134,5 +140,9 @@ function OnMsg.ClassesPostprocess()
 		"ActionToolbar", "bottommenu",
 		"OnAction", OnAction,
 	})
+	local template = xtemplate[#xtemplate]
+	template:SetRolloverTemplate("Rollover")
+	template:SetRolloverTitle(T(126095410863, "Info"))
+	template:SetRolloverText(T(0000, "Open Mod List Editor"))
 
 end

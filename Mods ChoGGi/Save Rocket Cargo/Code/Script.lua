@@ -2,6 +2,7 @@
 
 local WaitMsg = WaitMsg
 
+local mod_EnableMod
 local mod_ClearOnLaunch
 
 local function ModOptions(id)
@@ -10,6 +11,7 @@ local function ModOptions(id)
 		return
 	end
 
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_ClearOnLaunch = CurrentModOptions:GetProperty("ClearOnLaunch")
 end
 -- Load default/saved settings
@@ -22,6 +24,7 @@ local saved_cargo = {
 	rocket = {},
 	pod = {},
 	elevator = {},
+	lander = {},
 }
 
 -- set from LaunchCargoRocket to stop ResetCargo from updating cargo
@@ -29,6 +32,10 @@ local launch_skip = false
 
 local ChoOrig_ResetCargo = ResetCargo
 function ResetCargo(...)
+	if not mod_EnableMod then
+		return ChoOrig_ResetCargo(...)
+	end
+
 	if not launch_skip then
 		local g_RocketCargo = g_RocketCargo
 		local g_CargoMode = g_CargoMode
@@ -64,6 +71,10 @@ end
 local fivers
 local ChoOrig_ClearRocketCargo = ClearRocketCargo
 function ClearRocketCargo(...)
+	if not mod_EnableMod then
+		return ChoOrig_ClearRocketCargo(...)
+	end
+
 	local ret = ChoOrig_ClearRocketCargo(...)
 
 	-- build list of resources to use for / 5
@@ -99,32 +110,6 @@ function ClearRocketCargo(...)
 				payload:AddItem(item.class)
 			end
 		end -- for
-
-		WaitMsg("OnRender")
-
-		-- add a clear cargo button
-		local toolbar = Dialogs.Resupply.idTemplate.idPayload.idToolBar
-		toolbar.idChoGGi_ClearButton = XTextButton:new({
-			Id = "idChoGGi_ClearButton",
-			Text = T(5448, "CLEAR"),
-			FXMouseIn = "ActionButtonHover",
-			FXPress = "ActionButtonClick",
-			FXPressDisabled = "UIDisabledButtonPressed",
-			HAlign = "center",
-			Background = 0,
-			FocusedBackground = 0,
-			RolloverBackground = 0,
-			PressedBackground = 0,
-			RolloverZoom = 1100,
-			TextStyle = "Action",
-			MouseCursor = "UI/Cursors/Rollover.tga",
-			RolloverTemplate = "Rollover",
-			RolloverTitle = T(126095410863, "Info"),
-			RolloverText = T(302535920011470,[[Clear saved cargo list.
-My list not the game list (reopen dialog to see changes).]]),
-			OnPress = ClearCargo,
-		}, toolbar)
-
 	end)
 
 	return ret
@@ -132,10 +117,46 @@ end
 
 local ChoOrig_LaunchCargoRocket = LaunchCargoRocket
 function LaunchCargoRocket(...)
+	if not mod_EnableMod then
+		return ChoOrig_LaunchCargoRocket(...)
+	end
+
 	if mod_ClearOnLaunch then
 		local mode = UICity and UICity.launch_mode or "rocket"
 		table.iclear(saved_cargo[mode])
 		launch_skip = true
 	end
 	return ChoOrig_LaunchCargoRocket(...)
+end
+
+function OnMsg.ClassesPostprocess()
+	if XTemplates.ResupplyCategories.ChoGGi_SaveRocketCargo_AddedClearButton then
+		return
+	end
+
+	-- [1] [3]Id = "idContent" [4]Margins = box(0, 25, 0, 20) [2]Id = "idList"
+	local template = XTemplates.ResupplyCategories[1][3][4][2]
+
+	template[#template+1] = PlaceObj("XTemplateAction", {
+		"ActionId", "idChoGGi_ClearButton",
+		"ActionName", T(5448, "CLEAR"),
+		"ActionToolbar", "ActionBar",
+		"ActionGamepad", "ButtonX",
+		"OnAction", function()
+			ClearCargo()
+		end,
+		"ActionState", function()
+			if not mod_EnableMod then
+				return "disabled"
+			end
+		end,
+	})
+	-- As for why you can't just add these to the XTemplateAction...
+	local template = template[#template]
+	template:SetRolloverTemplate("Rollover")
+	template:SetRolloverTitle(T(126095410863, "Info"))
+	template:SetRolloverText(T(302535920011470, [[Clear saved cargo list.
+My list not the game list (reopen dialog to see changes).]]))
+
+	XTemplates.ResupplyCategories.ChoGGi_SaveRocketCargo_AddedClearButton = true
 end

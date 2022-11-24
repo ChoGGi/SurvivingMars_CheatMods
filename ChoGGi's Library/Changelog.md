@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v11.7 (Unreleased)
+- Tooltip for Mod Options entry in game menu.
 - RGBtoColour() ignored A from RGBA
 - GetPassablePointNearby()/GetRandomPassable()/GetRandomPassablePoint() and picard.
 

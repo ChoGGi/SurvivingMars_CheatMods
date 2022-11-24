@@ -1,7 +1,4 @@
 "ID", "Text", "Translation"
-302535920001671, ""
-302535920001672, ""
-302535920001673, ""
 302535920001674, ""
 302535920001675, ""
 302535920001676, ""
@@ -126,12 +123,15 @@
 302535920000033, "Post a request on Nexus or Github or send an email to: <color ChoGGi_green>%s</color>"
 302535920001092, "Pins"
 302535920000004, "Dump"
+302535920001671, "Reset ECM Settings"
+302535920001672, "Turn on and press apply to reset ECM settings (restart game afterwards)."
 302535920001639, "Hide a menu entry to reduce horizontal space."
 302535920001640, "Hide Cheats Menu"
 302535920001641, "Hide ECM Menu"
 302535920001642, "Hide Game Menu"
 302535920001643, "Hide Debug Menu"
 302535920001644, "Hide Help Menu"
+302535920001673, "Shortcut to Options>Mod Options"
 302535920001669, "Disable Dialog Escape"
 302535920001670, "Pressing Escape won't close dialog boxes."
 302535920001446, "Add Mod Options button to Game Options."
@@ -350,7 +350,7 @@ If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""T
 
 <color ChoGGi_green>!</color><color ChoGGi_yellow>UICity.labels.TerrainDeposit[1]</color> move camera and select obj, use <color ChoGGi_red>ViewAndSelectObject(obj)</color> in lua code.
 
-<color ChoGGi_green>s</color> = <color ChoGGi_yellow>SelectedObj</color>, <color ChoGGi_green>c()</color> = <color ChoGGi_yellow>GetTerrainCursor()</color>, <color ChoGGi_green>restart()</color> = <color ChoGGi_yellow>quit(""restart"")</color>"
+<color ChoGGi_green>s</color> = <color ChoGGi_yellow>SelectedObj</color>, <color ChoGGi_green>c()</color> = <color ChoGGi_yellow>GetCursorWorldPos()</color>, <color ChoGGi_green>restart()</color> = <color ChoGGi_yellow>quit(""restart"")</color>"
 302535920001401, "Removed missing mod building from %s: %s, entity: %s, handle: %s"
 302535920001074, "Ged Presets"
 302535920000503, "<right_click> an item/submenu to add/remove it from the quickbar."
@@ -732,7 +732,7 @@ Where the fear has gone there will be nothing. Only I will remain."
 Going down, down.
 Working in a coal mine.
 Whew, about to slip down."
-302535920000136, "Select something that produces (air, water, electricity, other)."
+302535920000136, "Select something that produces (air, water, electricity, resources)."
 302535920000137, "<color ChoGGi_green>%s</color> production is now: <color ChoGGi_yellow>%s</color>"
 302535920000139, "Production Amount"
 302535920000140, "Current production"

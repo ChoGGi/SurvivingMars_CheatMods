@@ -1962,9 +1962,11 @@ do -- ResearchTech
 		end
 
 		local TechDef = TechDef
+		-- so I can list tech from main menu
+		local ingame = GameState.gameplay
 		for tech_id, tech in pairs(TechDef) do
 			-- only show stuff not yet researched
-			if not IsTechResearched(tech_id) then
+			if not ingame or ingame and not IsTechResearched(tech_id) then
 				local text = Translate(tech.display_name)
 				-- remove " from that one tech...
 				if text:find("\"") then

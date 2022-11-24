@@ -227,6 +227,12 @@ function OnMsg.ClassesPostprocess()
 					end
 				end,
 			}))
+
+			local template = xtemplate[5]
+			template:SetRolloverTemplate("Rollover")
+			template:SetRolloverTitle(T(126095410863, "Info"))
+			template:SetRolloverText(T(302535920001673, "Shortcut to Options>Mod Options"))
+
 		end
 
 	end

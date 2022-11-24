@@ -53,6 +53,12 @@ function OnMsg.ClassesPostprocess()
 		"OnAction", ShowConsole,
 		"replace_matching_id", true,
 	})
+
+	local template = CommonShortcuts[#CommonShortcuts]
+	template:SetRolloverTemplate("Rollover")
+	template:SetRolloverTitle(T(126095410863, "Info"))
+	template:SetRolloverText(T(0000, "Press Enter to show Console."))
+
 end
 
 function restart()

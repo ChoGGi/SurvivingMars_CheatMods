@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
 	"title", "Save Rocket Cargo",
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"image", "Preview.jpg",
 	"id", "ChoGGi_SaveRocketCargo",
 	"steam_id", "1681523723",
