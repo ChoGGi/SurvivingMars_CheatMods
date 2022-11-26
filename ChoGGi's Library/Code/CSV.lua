@@ -41,7 +41,7 @@ do -- MapData
 	local north, east, south, west
 
 --~ 	local loc_table = {"","","",""}
-	local MapData = MapDataPresets
+	local MapData = ChoGGi.is_gp and MapData or MapDataPresets
 	local temp_g_SelectedSpotChallengeMods = {}
 
 	local function AddLandingSpot(lat, long, breakthroughs, limit_count, skip_csv)

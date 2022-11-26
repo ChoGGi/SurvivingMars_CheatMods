@@ -102,6 +102,8 @@ ChoGGi = {
 	SettingFuncs = {},
 	-- ConsoleFuncs.lua
 	ConsoleFuncs = {},
+	-- Pre Abstraction Games
+	is_gp = LuaRevision < 1001000,
 	-- temporary... stuff
 	Temp = {
 		-- collect error msgs to be displayed in console after game is loaded

@@ -15,16 +15,7 @@ local ClassDescendantsList = ClassDescendantsList
 local DoneObject = DoneObject
 local FindNearestObject = FindNearestObject -- (list,obj) or (list,pos,filterfunc)
 local GameTime = GameTime
-local GetBuildableGrid = GetBuildableGrid
-local GetCursorWorldPos = GetCursorWorldPos
-if not GetCursorWorldPos then
-	-- BP compatibility (before picard)
-	GetCursorWorldPos = function()
-		return UseGamepadUI() and GetTerrainGamepadCursor() or GetTerrainCursor()
-	end
-end
 local GetMapSectorXY = GetMapSectorXY
-local GetObjectHexGrid = GetObjectHexGrid
 local guic = guic
 local HexGetNearestCenter = HexGetNearestCenter
 local HexGridGetObject = HexGridGetObject
@@ -54,6 +45,14 @@ local ViewObjectMars = ViewObjectMars
 local WaitMsg = WaitMsg
 local WorldToHex = WorldToHex
 local XDestroyRolloverWindow = XDestroyRolloverWindow
+
+-- Remove some log spam on older versions
+local is_gp = ChoGGi.is_gp
+local GetBuildableGrid = not is_gp and GetBuildableGrid
+local GetObjectHexGrid = not is_gp and GetObjectHexGrid
+local GetCursorWorldPos = not is_gp and GetCursorWorldPos or function()
+	return UseGamepadUI() and GetTerrainGamepadCursor() or GetTerrainCursor()
+end
 
 local objlist = objlist
 local g_CObjectFuncs = g_CObjectFuncs

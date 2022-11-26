@@ -1020,7 +1020,8 @@ end
 
 function OnMsg.ChangeMapDone(map)
 	if ChoGGi.UserSettings.UnlockOverview then
-		ActiveMapData.IsAllowedToEnterOverview = true
+		local mapdata = ChoGGi.is_gp and mapdata or ActiveMapData
+		mapdata.IsAllowedToEnterOverview = true
 	end
 
 	-- first time run info
@@ -1480,7 +1481,7 @@ do -- LoadGame/CityStart
 
 		-- bloody hint popups
 		if UserSettings.DisableHints then
-			local mapdata = ActiveMapData
+			local mapdata = ChoGGi.is_gp and mapdata or ActiveMapData
 			if mapdata.DisableHints == false then
 				mapdata.DisableHints = true
 			end

@@ -64,7 +64,7 @@ local function Startup()
 		ChoGGi.ComFuncs.RetName_Update()
 
 		local ChoGGi = ChoGGi
-		local UIColony = UIColony
+		local UIColony = ChoGGi.is_gp and UICity or UIColony
 		if not UIColony.ChoGGi then
 			-- A place to store per-game values... that i'll use one of these days (tm)
 			UIColony.ChoGGi = {}

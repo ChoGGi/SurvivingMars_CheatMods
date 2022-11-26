@@ -46,6 +46,9 @@ CheatUnlockAllTech()
 CheatResearchAll()
 -- Research current tech
 CheatResearchCurrent()
+-- Reset research costs
+UIColony:ReplaceTech("MartianCopyrithgts", "MartianCopyrithgts")
+UIColony:ReplaceTech("MartianPatents", "MartianPatents")
 -- Scan all breakthroughs on surface map
 CheatUnlockBreakthroughs()
 -- Unlock all breakthrough techs

@@ -479,29 +479,31 @@ function OnMsg.ClassesGenerate()
 		return ChoOrig_RocketExpedition_ExpeditionSleep(self, s_t, ...)
 	end
 
-	local ChoOrig_RocketBase_FlyToEarth = RocketBase.FlyToEarth
-	AddToOrigFuncs("RocketBase.FlyToEarth")
-	function RocketBase:FlyToEarth(flight_time, ...)
-		if UserSettings.TravelTimeMarsEarth then
-			flight_time = g_Consts.TravelTimeMarsEarth
+	if RocketBase then
+		local ChoOrig_RocketBase_FlyToEarth = RocketBase.FlyToEarth
+		AddToOrigFuncs("RocketBase.FlyToEarth")
+		function RocketBase:FlyToEarth(flight_time, ...)
+			if UserSettings.TravelTimeMarsEarth then
+				flight_time = g_Consts.TravelTimeMarsEarth
+			end
+			return ChoOrig_RocketBase_FlyToEarth(self, flight_time, ...)
 		end
-		return ChoOrig_RocketBase_FlyToEarth(self, flight_time, ...)
-	end
 
-	local ChoOrig_RocketBase_FlyToMars = RocketBase.FlyToMars
-	AddToOrigFuncs("RocketBase.FlyToMars")
-	function RocketBase:FlyToMars(cargo, cost, flight_time, ...)
-		if UserSettings.TravelTimeEarthMars then
-			flight_time = g_Consts.TravelTimeEarthMars
+		local ChoOrig_RocketBase_FlyToMars = RocketBase.FlyToMars
+		AddToOrigFuncs("RocketBase.FlyToMars")
+		function RocketBase:FlyToMars(cargo, cost, flight_time, ...)
+			if UserSettings.TravelTimeEarthMars then
+				flight_time = g_Consts.TravelTimeEarthMars
+			end
+			return ChoOrig_RocketBase_FlyToMars(self, cargo, cost, flight_time, ...)
 		end
-		return ChoOrig_RocketBase_FlyToMars(self, cargo, cost, flight_time, ...)
-	end
 
-	-- no need for fuel to launch rocket
-	local ChoOrig_RocketBase_HasEnoughFuelToLaunch = RocketBase.HasEnoughFuelToLaunch
-	AddToOrigFuncs("RocketBase.HasEnoughFuelToLaunch")
-	function RocketBase.HasEnoughFuelToLaunch(...)
-		return UserSettings.RocketsIgnoreFuel or ChoOrig_RocketBase_HasEnoughFuelToLaunch(...)
+		-- no need for fuel to launch rocket
+		local ChoOrig_RocketBase_HasEnoughFuelToLaunch = RocketBase.HasEnoughFuelToLaunch
+		AddToOrigFuncs("RocketBase.HasEnoughFuelToLaunch")
+		function RocketBase.HasEnoughFuelToLaunch(...)
+			return UserSettings.RocketsIgnoreFuel or ChoOrig_RocketBase_HasEnoughFuelToLaunch(...)
+		end
 	end
 
 	-- UI transparency cheats menu

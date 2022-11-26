@@ -5,6 +5,7 @@
 - Mod option to reset ECM settings.
 
 ### Fixed:
+- Log spam when using this mod on pre-Picard versions of the game.
 - InstHarvest didn't always InstHarvest.
 
 ## v18.6 (11 Sep 2022)

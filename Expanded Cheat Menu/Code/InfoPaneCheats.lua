@@ -718,8 +718,10 @@ function OnMsg.ClassesBuilt()
 	LifeSupportGridElement.CheatBreak = LifeSupportGridElement.Break
 
 	-- lazy devs... (stop using the Building class for rovers)
-	RCSafari.CheatDestroy = nil
-	RCSafari.CheatMalfunction = nil
+	if RCSafari then
+		RCSafari.CheatDestroy = nil
+		RCSafari.CheatMalfunction = nil
+	end
 end
 
 local Colonist = Colonist
@@ -1310,40 +1312,43 @@ function SecurityStation:CheatReneagadeCapDef()
 	self.negated_renegades = self.max_negated_renegades
 end
 
-function RocketBase:CheatCapDbl()
-	ComFuncs.SetTaskReqAmount(self, self.max_export_storage * 2, "export_requests", "max_export_storage")
-end
-function RocketBase:CheatCapDef()
-	ComFuncs.SetTaskReqAmount(self, self:GetClassValue("max_export_storage"), "export_requests", "max_export_storage")
+if RocketBase then
+--~ 	function RocketBase:CheatAddFuel()
+--~ 		-- skip if we're full/over full
+--~ 		local actual = self.refuel_request:GetActualAmount()
+--~ 		if actual == 0 then
+--~ 			return
+--~ 		end
+
+--~ 		local target = self.refuel_request:GetTargetAmount()
+--~ 		self.accumulated_fuel = self.accumulated_fuel + target
+--~ 		self.refuel_request:SetAmount(target)
+--~ 		-- make sure it always shows the correct amount
+--~ 		self.refuel_request:SetAmount(0)
+--~ 		Msg("RocketRefueled", self)
+--~ 		-- update selection panel
+--~ 		local sel = SelectedObj
+--~ 		if sel and sel.handle == self.handle then
+--~ 			RebuildInfopanel(self)
+--~ 		end
+--~ 	end
+	function RocketBase:CheatCapDbl()
+		ComFuncs.SetTaskReqAmount(self, self.max_export_storage * 2, "export_requests", "max_export_storage")
+	end
+	function RocketBase:CheatCapDef()
+		ComFuncs.SetTaskReqAmount(self, self:GetClassValue("max_export_storage"), "export_requests", "max_export_storage")
+	end
+
+	function RocketBase:CheatAddDust2()
+		self:SetDust(600, 0)
+		ApplyToObjAndAttaches(self, SetObjDust, 600)
+	end
+	function RocketBase:CheatCleanAndFix2()
+		self:SetDust(0, 0)
+		ApplyToObjAndAttaches(self, SetObjDust, 0)
+	end
 end
 
---~ function RocketBase:CheatAddFuel()
---~ 	-- skip if we're full/over full
---~ 	local actual = self.refuel_request:GetActualAmount()
---~ 	if actual == 0 then
---~ 		return
---~ 	end
-
---~ 	local target = self.refuel_request:GetTargetAmount()
---~ 	self.accumulated_fuel = self.accumulated_fuel + target
---~ 	self.refuel_request:SetAmount(target)
---~ 	-- make sure it always shows the correct amount
---~ 	self.refuel_request:SetAmount(0)
---~ 	Msg("RocketRefueled", self)
---~ 	-- update selection panel
---~ 	local sel = SelectedObj
---~ 	if sel and sel.handle == self.handle then
---~ 		RebuildInfopanel(self)
---~ 	end
---~ end
-function RocketBase:CheatAddDust2()
-	self:SetDust(600, 0)
-	ApplyToObjAndAttaches(self, SetObjDust, 600)
-end
-function RocketBase:CheatCleanAndFix2()
-	self:SetDust(0, 0)
-	ApplyToObjAndAttaches(self, SetObjDust, 0)
-end
 
 if Sinkhole then
 	Sinkhole.CheatSpawnFirefly = Sinkhole.TestSpawnFireflyAndGo

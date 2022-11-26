@@ -1,6 +1,5 @@
 v1.8
-Checks if there's an id for notifications (there should be, but...).
-Might not have been properly checking ids for pausing.
+Checks if there's an id for notifications (AddCustomOnScreenNotification doesn't need them, whoops).
 
 v1.7
 Too much pausing.

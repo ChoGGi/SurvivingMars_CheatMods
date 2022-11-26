@@ -409,7 +409,7 @@ end
 
 -- bloody hint popups
 if UserSettings.DisableHints then
-	local mapdata = ActiveMapData
+	local mapdata = ChoGGi.is_gp and mapdata or ActiveMapData
 	if mapdata.DisableHints == false then
 		mapdata.DisableHints = true
 	end

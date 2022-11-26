@@ -15,7 +15,9 @@ mh = GetTerrainCursorObjSel -- returns selected obj under cursor
 mhc = GetTerrainCursorObj -- returns obj under cursor
 mc = GetPreciseCursorObj
 m = SelectionMouseObj
-c = GetCursorWorldPos -- cursor position on map
+c = not ChoGGi.is_gp and GetCursorWorldPos or function() -- cursor position on map (GP compat)
+	return UseGamepadUI() and GetTerrainGamepadCursor() or GetTerrainCursor()
+end
 cs = terminal.GetMousePos -- cursor pos on screen
 s = false -- used to store SelectedObj
 FlushLog = FlushLogFile -- easier to remember
