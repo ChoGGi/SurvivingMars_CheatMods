@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v11.7 (Unreleased)
+## v11.8 (Unreleased)
+
+## v11.7 (4 Dec 2022)
 - Fix log spam when using this mod on pre-Picard versions of the game.
 - Tooltip for Mod Options entry in game menu.
 - RGBtoColour() ignored A from RGBA

@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v18.7 (Unreleased)
+## v18.8 (Unreleased)
+
+## v18.7 (4 Dec 2022)
 ### Added:
 - Mod option to reset ECM settings.
 
