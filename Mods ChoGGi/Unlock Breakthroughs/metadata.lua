@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2324443848",
 	"pops_any_uuid", "36ec1f1c-283a-419c-9fa6-d7c640a81967",
 	"lua_revision", 1007000, -- Picard
-	"version", 6,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 7,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -25,5 +25,6 @@ Related mods: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=242968
 Other Mod Options:
 Breakthroughs Researched: Turn on to research instead of unlock breakthroughs.
 Always Apply Options: Unlock/Research Breakthroughs whenever you load a game/start a new game (otherwise you need to press Apply in mod options).
+Breakthroughs Random Order: Unlock/Research breakthroughs in a random order (default true).
 ]],
 })

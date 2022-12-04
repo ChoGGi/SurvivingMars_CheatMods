@@ -152,7 +152,7 @@ function OnMsg.ClassesPostprocess()
 		end,
 	})
 	-- As for why you can't just add these to the XTemplateAction...
-	local template = template[#template]
+	template = template[#template]
 	template:SetRolloverTemplate("Rollover")
 	template:SetRolloverTitle(T(126095410863, "Info"))
 	template:SetRolloverText(T(302535920011470, [[Clear saved cargo list.

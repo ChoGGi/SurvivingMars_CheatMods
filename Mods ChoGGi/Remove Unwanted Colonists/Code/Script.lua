@@ -706,7 +706,7 @@ function OnMsg.LoadGame()
 				return o:GetParticlesName() == "SpaceRocket_WarmUp"
 			end)
 			for j = 1, #objs do
-				local obj = objs[i]
+				local obj = objs[j]
 				if obj.polyline then
 					DoneObject(obj)
 				end

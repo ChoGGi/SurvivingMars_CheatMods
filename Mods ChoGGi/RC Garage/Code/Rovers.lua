@@ -88,8 +88,8 @@ function OnMsg.LoadGame()
 	local GameMaps = GameMaps
 	for i = 1, #GameMaps do
 		local rovers = GameMaps[i].realm:MapGet("map", "BaseRover")
-		for i = 1, #rovers do
-			local r = rovers[i]
+		for j = 1, #rovers do
+			local r = rovers[j]
 			if r.ChoGGi_InGarage and r:GetPos() ~= invalid_pos then
 				RestoreMissingRover(r)
 			end

@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local next = next
 local pairs = pairs
 local Sleep = Sleep
 local IsValidThread = IsValidThread

@@ -26,7 +26,7 @@ return PlaceObj("ModDef", {
 Centres HUD for ultrawide resolutions.
 
 Use mod option to set screen margin, when you find one that works for your resolution then please send me your res and margin, so I can add it to the lookup table.
-Setting the mod option will override the lookup table.
+Setting the mod option will override the lookup table. If wanted I can add a vertical option as well.
 
 Currently included in lookup:
 5760x1080 (48:9): 2560

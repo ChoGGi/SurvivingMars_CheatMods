@@ -1,3 +1,7 @@
+v1.4
+Fill Selected Depot: Ctrl-F
+Mod option for picking Examine Objects Radius.
+
 v1.3
 Cycle through different levels of opacity for resource icons (Ctrl-I)
 Opacity Step Size: How much to cycle through on each press (default 25%).

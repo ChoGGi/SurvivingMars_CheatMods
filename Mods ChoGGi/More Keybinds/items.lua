@@ -25,4 +25,13 @@ return {
 		"MinValue", 0,
 		"MaxValue", 100,
 	}),
+	PlaceObj("ModItemOptionNumber", {
+		"name", "ExamineObjectsRadius",
+		"DisplayName", T(0000, "Examine Objects Radius"),
+		"Help", T(0000, "How big of a radius to use for objects around cursor (Shift-F4)."),
+		"DefaultValue", 2500,
+		"MinValue", 100,
+		"MaxValue", 25000,
+		"StepSize", 100,
+	}),
 }

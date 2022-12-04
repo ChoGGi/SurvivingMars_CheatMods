@@ -1,3 +1,7 @@
+v0.7
+Mod option for random breakthroughs.
+Fixed issue with Global Support?
+
 v0.6
 Breakthroughs are added to research list randomly.
 

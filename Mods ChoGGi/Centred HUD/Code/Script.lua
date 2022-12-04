@@ -21,13 +21,15 @@ local function ModOptions(id)
 
 	mod_CustomMargin = tonumber(CurrentModOptions:GetProperty("CustomMargin"))
 
-	-- mod option set
-	if mod_CustomMargin and mod_CustomMargin > 0 then
-		mod_CustomMargin = box(mod_CustomMargin, 0, mod_CustomMargin, 0)
+	if mod_CustomMargin then
 	-- no number set, try lookup table
-	elseif mod_CustomMargin == 0 then
-		local ss = UIL.GetScreenSize()
-		mod_CustomMargin = hud_lookup_table[ss:x() .. ss:y()]
+		if mod_CustomMargin == 0 then
+			local ss = UIL.GetScreenSize()
+			mod_CustomMargin = hud_lookup_table[ss:x() .. ss:y()]
+	-- mod option set
+		else
+			mod_CustomMargin = box(mod_CustomMargin, 0, mod_CustomMargin, 0)
+		end
 	end
 
 	-- update hud margins

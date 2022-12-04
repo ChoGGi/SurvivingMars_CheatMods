@@ -15,7 +15,6 @@ end
 OnMsg.TranslationChanged = UpdateTrans
 
 local mod_EnableMod
-local mod_DepotAmounts
 local mod_UniversalDepotAmounts
 local mod_ResourceDepotAmounts
 

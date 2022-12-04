@@ -33,7 +33,7 @@ function ChoGGi_DlgConsoleLogWin:Init(parent, context)
 
 	self.idToggleTrans = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idToggleTrans",
-		Text = TranslationTable[302535920000865--[[Translate]]],
+		Text = TranslationTable[302535920000629--[[UI Transparency]]],
 		RolloverText = TranslationTable[302535920001367--[[Toggles]]] .. " " .. TranslationTable[302535920000629--[[UI Transparency]]],
 		Dock = "left",
 		Margins = box(4, 0, 0, 0),

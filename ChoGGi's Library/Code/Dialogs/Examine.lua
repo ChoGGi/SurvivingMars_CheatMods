@@ -153,8 +153,8 @@ DefineClass.ChoGGi_DlgExamine = {
 	-- that way you can at least close the dlg if it's taking too long (There's also a warning after 25K?)
 	is_chinese = false,
 
-	-- if someone wants the old toggle visible then we can use this.
-	flash_rect = true,
+--~ 	-- if someone wants the old toggle visible then we can use this.
+--~ 	flash_rect = true,
 
 	-- change default leftclick action for tables
 	exec_tables = false,
@@ -327,10 +327,20 @@ function ChoGGi_DlgExamine:Init(parent, context)
 			OnPress = self.idButRefresh_OnPress,
 		}, self.idToolbarButtons)
 		--
+		self.idButMouseExamine = g_Classes.ChoGGi_XToolbarButton:new({
+			Id = "idButMouseExamine",
+			Image = "CommonAssets/UI/Menu/select_objects.tga",
+			RolloverTitle = TranslationTable[302535920001321--[[UI Click To Examine]]],
+			RolloverText = TranslationTable[302535920001322--[[Examine UI controls by clicking them.]]],
+			OnPress = function()
+				self.ChoGGi.ComFuncs.TerminalRolloverMode(true, self)
+			end,
+		}, self.idToolbarButtons)
+		--
 		self.idButSetTransp = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButSetTransp",
 			Image = "CommonAssets/UI/Menu/CutSceneArea.tga",
-			RolloverTitle = TranslationTable[302535920000865--[[Translate]]],
+			RolloverTitle = TranslationTable[302535920000629--[[UI Transparency]]],
 			RolloverText = TranslationTable[302535920001367--[[Toggles]]] .. " " .. TranslationTable[302535920000629--[[UI Transparency]]],
 			OnPress = self.idButSetTransp_OnPress,
 		}, self.idToolbarButtons)
@@ -607,10 +617,8 @@ If it's an associative table then o = value."]]],
 		end
 
 		-- do the magic
-		if self:SetObj(true) then
-			if self.ChoGGi.UserSettings.FlashExamineObject and IsKindOf(self.obj_ref, "XWindow") and not self.obj_ref:IsKindOf("InGameInterface") then
-				self:FlashWindow()
-			end
+		if self:SetObj(true) and not self.obj_ref:IsKindOf("InGameInterface") then
+			self:FlashWindow()
 		end
 
 		if context.auto_refresh then
@@ -1051,7 +1059,7 @@ end
 function ChoGGi_DlgExamine:idButRefresh_OnPress()
 	self = GetRootDialog(self)
 	self:SetObj()
-	if IsKindOf(self.obj_ref, "XWindow") and self.obj_ref.class ~= "InGameInterface" then
+	if self.obj_ref.class ~= "InGameInterface" then
 		self:FlashWindow()
 	end
 end
@@ -1922,44 +1930,49 @@ function ChoGGi_DlgExamine:FindNext(text, previous)
 end
 
 function ChoGGi_DlgExamine:FlashWindow()
-	-- doesn't lead to good stuff
-	if not self.obj_ref.desktop then
+	if not self.ChoGGi.UserSettings.FlashExamineObject
+		-- doesn't lead to good stuff
+		or not self.obj_ref.desktop
+		-- skip any not XWindows
+		or not IsKindOf(self.obj_ref, "XWindow")
+	then
 		return
 	end
+
 
 	-- white rectangle
-	if self.flash_rect then
+--~ 	if self.flash_rect then
 		XFlashWindow(self.obj_ref)
 		return
-	end
+--~ 	end
 
-	-- always kill off old thread first
-	DeleteThread(self.flashing_thread)
+--~ 	-- always kill off old thread first
+--~ 	DeleteThread(self.flashing_thread)
 
-	-- don't want to end up with something invis when it shouldn't be
-	if self.orig_vis_flash then
-		self.obj_ref:SetVisible(self.orig_vis_flash)
-	else
-		self.orig_vis_flash = self.obj_ref:GetVisible()
-	end
+--~ 	-- don't want to end up with something invis when it shouldn't be
+--~ 	if self.orig_vis_flash then
+--~ 		self.obj_ref:SetVisible(self.orig_vis_flash)
+--~ 	else
+--~ 		self.orig_vis_flash = self.obj_ref:GetVisible()
+--~ 	end
 
-	self.flashing_thread = CreateRealTimeThread(function()
+--~ 	self.flashing_thread = CreateRealTimeThread(function()
 
-		local vis
-		for _ = 1, 5 do
-			if not IsValidXWin(self.obj_ref) then
-				break
-			end
-			self.obj_ref:SetVisible(vis)
-			Sleep(125)
-			vis = not vis
-		end
+--~ 		local vis
+--~ 		for _ = 1, 5 do
+--~ 			if not IsValidXWin(self.obj_ref) then
+--~ 				break
+--~ 			end
+--~ 			self.obj_ref:SetVisible(vis)
+--~ 			Sleep(125)
+--~ 			vis = not vis
+--~ 		end
 
-		if IsValidXWin(self.obj_ref) then
-			self.obj_ref:SetVisible(self.orig_vis_flash)
-		end
+--~ 		if IsValidXWin(self.obj_ref) then
+--~ 			self.obj_ref:SetVisible(self.orig_vis_flash)
+--~ 		end
 
-	end)
+--~ 	end)
 end
 
 function ChoGGi_DlgExamine:ShowHexShapeList()

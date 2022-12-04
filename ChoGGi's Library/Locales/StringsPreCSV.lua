@@ -3,6 +3,7 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
+302535920000865, ""
 302535920001674, ""
 302535920001675, ""
 302535920001676, ""
@@ -80,7 +81,6 @@ do !Skipped Line! [[Multiple locations/mods: ]] !Skipped Line!
 302535920001433, "Fiddle with object angle/axis/pos and so forth."
 302535920000093, "Go to Obj"
 302535920000094, "View/select object on map."
-302535920000865, "Trans"
 302535920001110, "Spawned entity object"
 302535920001366, "Delete Small Rocks"
 302535920000864, "Delete Large Rocks"

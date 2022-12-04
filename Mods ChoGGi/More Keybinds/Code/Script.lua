@@ -9,6 +9,7 @@ local terminal = terminal
 local mod_SpeedFour
 local mod_SpeedFive
 local mod_OpacityStepSize
+local mod_ExamineObjectsRadius
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -19,6 +20,7 @@ local function ModOptions(id)
 	mod_SpeedFour = CurrentModOptions:GetProperty("SpeedFour")
 	mod_SpeedFive = CurrentModOptions:GetProperty("SpeedFive")
 	mod_OpacityStepSize = CurrentModOptions:GetProperty("OpacityStepSize")
+	mod_ExamineObjectsRadius = CurrentModOptions:GetProperty("ExamineObjectsRadius")
 end
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -40,9 +42,7 @@ local function RetShortcuts(id)
 end
 --
 
-
 local Actions = ChoGGi.Temp.Actions
-
 
 Actions[#Actions+1] = {ActionName = T(302535920011668, "Set Speed 1"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.SetSpeed1",
@@ -169,7 +169,7 @@ Actions[#Actions+1] = {ActionName = T(302535920011667, "Examine Objects"),
 		local function SortDist(a, b)
 			return a:GetDist2D(pt) < b:GetDist2D(pt)
 		end
-		local radius = ChoGGi.UserSettings.ExamineObjectRadius or 2500
+		local radius = ChoGGi.UserSettings.ExamineObjectRadius or mod_ExamineObjectsRadius
 		local objs = SelObjects(radius)
 		if objs[1] then
 			pt = GetCursorWorldPos()
@@ -453,6 +453,35 @@ OnMsg.ChangeMapDone = UpdateOpacity
 -- map overview will reset opacity
 OnMsg.CameraTransitionEnd = UpdateOpacity
 --
+Actions[#Actions+1] = {ActionName = T(0000, "Fill Selected Depot"),
+	ActionId = "ChoGGi.RebindHardcodedKeys.FillSelectedDepot",
+	OnAction = function()
+		local obj = SelectedObj
+		if not obj then
+			return
+		end
+
+		if obj.CheatFill then
+			obj:CheatFill()
+		end
+		if obj.CheatRefill then
+			obj:CheatRefill()
+		end
+		if obj.CheatFillDepot then
+			obj:CheatFillDepot()
+		end
+	end,
+	ActionShortcut = "Ctrl-F",
+	replace_matching_id = true,
+	ActionBindable = true,
+	ActionMode = "Game",
+}
+--
+--
+--
+--
+
+
 
 --~ -- Camera panning
 --~ local cameraRTS = cameraRTS

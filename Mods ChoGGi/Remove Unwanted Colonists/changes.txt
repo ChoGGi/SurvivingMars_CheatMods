@@ -1,3 +1,6 @@
+v2.2
+Wasn't cleaning up stuck ufos properly.
+
 v2.1
 Log spam from cleaning up invalid objs (thanks MasterJ94).
 
