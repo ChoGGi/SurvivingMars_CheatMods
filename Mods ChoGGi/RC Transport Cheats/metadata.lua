@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 			"version_minor", 7,
 		}),
 	},
-	"title", "RC Transport Cheats",
+	"title", "RC Transport Tweaks",
 	"id", "ChoGGi_RCTransportCheats",
 	"steam_id", "2744688978",
 	"pops_any_uuid", "648aa047-e33b-4074-9574-513fbd4eec3a",

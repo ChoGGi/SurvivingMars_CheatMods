@@ -132,11 +132,6 @@ do -- ModUpload
 			prepare_worked, prepare_results = g_env.Steam_PrepareForUpload(nil, mod, mod_params)
 			-- mod id for clipboard
 			steam_item_id = mod.steam_id
-
-			if orig_title then
-				mod.title = orig_title
-				orig_title = nil
-			end
 		end -- steam upload
 
 		-- para upload
@@ -175,11 +170,6 @@ do -- ModUpload
 			prepare_worked, prepare_results = g_env.PDX_PrepareForUpload(nil, mod, mod_params)
 
 			para_item_id = mod[mod_params.uuid_property]
-
-			if orig_title then
-				mod.title = orig_title
-				orig_title = nil
-			end
 		end -- para upload
 
 		-- Issue with mod platform (workshop/paradox mods)
@@ -304,6 +294,12 @@ do -- ModUpload
 
 			mod_params.os_pack_path = os_dest
 
+
+			if orig_title then
+				mod.title = orig_title
+				orig_title = nil
+			end
+
 			-- If no last_changes then use version num
 			if not mod.last_changes or mod.last_changes == "" then
 				local version = mod.version_major .. "." .. mod.version_minor
@@ -341,19 +337,19 @@ do -- ModUpload
 
 						if mod.id == ChoGGi.id then
 							mod.description = TranslationTable[302535920000990--[["You need to have a mouse to use this mod."]]] .. "\n"
-								.. needs_lib .. TranslationTable[302535920000887--[["If you get a disabled content restrictions error: It's on Paradox to review/restore it (bug them not me).
+								.. needs_lib .. TranslationTable[302535920000887--[["If you get a disabled content restrictions error: Please let me know and I'll tell Paradox (can take a few days).
 
 If you have any issues with this mod then please send me a bug report instead of reporting the mod.
 https://github.com/ChoGGi/SurvivingMars_CheatMods
-Discord: ChoGGi#9210
+Discord: https://discord.gg/ZXXYaExThy
 https://steamcommunity.com/id/ChoGGi/
 SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 						else
-							mod.description = needs_lib .. TranslationTable[302535920000887--[["If you get a disabled content restrictions error: It's on Paradox to review/restore it (bug them not me).
+							mod.description = needs_lib .. TranslationTable[302535920000887--[["If you get a disabled content restrictions error: Please let me know and I'll tell Paradox (can take a few days).
 
 If you have any issues with this mod then please send me a bug report instead of reporting the mod.
 https://github.com/ChoGGi/SurvivingMars_CheatMods
-Discord: ChoGGi#9210
+Discord: https://discord.gg/ZXXYaExThy
 https://steamcommunity.com/id/ChoGGi/
 SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 						end

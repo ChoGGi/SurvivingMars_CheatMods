@@ -313,8 +313,14 @@ local savename_filename
 Actions[#Actions+1] = {ActionName = T(302535920011641, "Quicksave"),
 	ActionId = "ChoGGi.AddQuicksaveHotkey.Quicksave",
 	OnAction = function()
-		if not MainCity then
+		if not UIColony or not CanSaveGame() then
 			return
+		end
+
+		-- Make sure bad things don't happen (ripped from Autosave())
+		local igi = GetInGameInterface()
+		if igi and not igi.mode_dialog:IsKindOf("UnitDirectionModeDialog") then
+			igi:SetMode("selection")
 		end
 
 		CreateRealTimeThread(function()

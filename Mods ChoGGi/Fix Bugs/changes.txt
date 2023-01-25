@@ -1,3 +1,7 @@
+v3.8
+Move any underground dome prefabs (Underground Rare Anomaly "storybit") to underground city (instead of being stuck on surface).
+https://www.reddit.com/r/SurvivingMars/comments/1013afl/no_way_to_moveuse_underground_dome_prefabs/
+
 v3.7
 Personal Space storybit changes capacity, but building menu doesn't show it (thanks Deadmano).
 

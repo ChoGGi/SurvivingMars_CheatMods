@@ -106,29 +106,24 @@ end
 
 ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100
 
-local function RemoveMyBlinky(o)
-	if o.ChoGGi_blinky then
-		DoneObject(o)
-	end
-end
 -- obj cleanup if mod is removed from saved game
 local function RemoveChoGGiObjects()
---~ local function RemoveChoGGiObjects(skip_height)
 	SuspendPassEdits("ChoGGi_Library.OnMsgs.RemoveChoGGiObjects")
 
-	-- MapDelete doesn't seem to work with func filtering?
-	MapForEach(true, "RotatyThing", RemoveMyBlinky)
+	local GameMaps = GameMaps
+	for id, map in pairs(GameMaps) do
+		-- MapDelete doesn't seem to work with func filtering?
+		map.realm:MapForEach(true, "RotatyThing", function(o)
+			if o.ChoGGi_blinky then
+				DoneObject(o)
+			end
+		end)
+	end
 
 	-- any of my Classes_Objects.lua that are still in the save
 	ChoGGi.ComFuncs.RemoveObjs("ChoGGi_ODeleteObjs", true)
 	-- stop any units with pathing being shown (it'll error out either way)
 	ChoGGi.ComFuncs.Pathing_StopAndRemoveAll()
-
-	-- think they fixed this, test it
---~ 	-- remove any origin points above 65535 (or bad things happen)
---~ 	if not skip_height and ChoGGi.UserSettings.RemoveHeightLimitObjs then
---~ 		MapForEach("map", RemoveAttachAboveHeightLimit)
---~ 	end
 
 	ResumePassEdits("ChoGGi_Library.OnMsgs.RemoveChoGGiObjects")
 end
@@ -137,7 +132,7 @@ OnMsg.SaveGame = RemoveChoGGiObjects
 function OnMsg.LoadGame()
 	ChoGGi.ComFuncs.UpdateDataTablesCargo()
 	Startup()
-	RemoveChoGGiObjects(true)
+	RemoveChoGGiObjects()
 
 	-- prevent blank mission profile screen (from removing game rule mods mid-game)
 	local rules = g_CurrentMissionParams.idGameRules

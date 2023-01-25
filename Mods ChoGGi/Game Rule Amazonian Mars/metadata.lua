@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 	"description", [[
 You may only import female colonists (exception: tourists).
 Male tourists "provide" children (Snu-snu, mod options for female/male colonist sizes).
-Non-female children are culled at birth (lower birth rate).
+Non-female children are culled at birth (lower birth rate, biorobots are people too).
 and just in case a daily cull of any non-tourist non-female colonists on Mars (mini-soylent green).
 
 If the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1442280139]Planet Express Colony Logo[/url] mod is installed than any rockets with a male tourist use that logo.

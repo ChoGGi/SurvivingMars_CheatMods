@@ -7,6 +7,9 @@ I could do a /2 with UnnaturalDeaths and gag dlc but then I'd need to update mod
 Lua\Units\Colonist.lua > function Colonist:Die(reason)
 Dlc\gagarin\Code\Achievements.lua > function OnMsg.ColonistDie(colonist, reason)
 Both add +1 to the UnnaturalDeaths var...
+
+
+Seems to be fixed now?
 ]]
 GlobalVar("ChoGGi_Milestone_Jonestown_count", 0)
 function OnMsg.ColonistDie(_, reason)

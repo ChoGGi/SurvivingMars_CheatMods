@@ -123,17 +123,12 @@ local function CullMales(colonist)
 		return
 	end
 
-	-- might help crash from "For No Particular Reason"?
---~ 	CreateRealTimeThread(function()
---~ 		Sleep(1000)
-
 	if IsValid(colonist)
 		and colonist.gender ~= "Female"
 		and not colonist.traits.Tourist
 	then
 		colonist:SetCommand("Erase")
 	end
---~ 	end)
 end
 
 OnMsg.ColonistArrived = CullMales

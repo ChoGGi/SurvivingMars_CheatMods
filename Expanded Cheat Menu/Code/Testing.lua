@@ -14,6 +14,9 @@ function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	g_env, debug = env, env.debug
 end
 
+-- I fucking hate modal windows
+XWindow.SetModal = empty_func
+
 -- override till they fix double click select all of type
 local orig_OnMouseButtonDoubleClick = SelectionModeDialog.OnMouseButtonDoubleClick
 function SelectionModeDialog:OnMouseButtonDoubleClick(pt, button, ...)

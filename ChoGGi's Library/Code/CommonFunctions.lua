@@ -4136,12 +4136,21 @@ do -- PadNumWithZeros
 	end
 end -- do
 
+function ChoGGi.ComFuncs.RemoveObjsAllMaps(class)
+	local GameMaps = GameMaps
+	for id, map in pairs(GameMaps) do
+		map.realm:MapDelete(true, class)
+	end
+end
+
 -- ChoGGi.ComFuncs.RemoveObjs("VegetationAnimator")
-function ChoGGi.ComFuncs.RemoveObjs(class, skip_suspend)
+function ChoGGi.ComFuncs.RemoveObjs(class, skip_suspend, skip_all_maps)
 	if not skip_suspend then
 		-- suspending pass edits makes deleting much faster
 		SuspendPassEdits("ChoGGi.ComFuncs.RemoveObjs")
 	end
+
+	local RemoveObjsAllMaps = ChoGGi.ComFuncs.RemoveObjsAllMaps
 
 	if type(class) == "table" then
 		local g_Classes = g_Classes
@@ -4149,12 +4158,20 @@ function ChoGGi.ComFuncs.RemoveObjs(class, skip_suspend)
 		for _ = 1, #class do
 			-- If it isn't a valid class then Map* will return all objects :(
 			if g_Classes[class] then
-				MapDelete(true, class)
+				if skip_all_maps then
+					MapDelete(true, class)
+				else
+					RemoveObjsAllMaps(class)
+				end
 			end
 		end
 	else
 		if g_Classes[class] then
-			MapDelete(true, class)
+			if skip_all_maps then
+				MapDelete(true, class)
+			else
+				RemoveObjsAllMaps(class)
+			end
 		end
 	end
 

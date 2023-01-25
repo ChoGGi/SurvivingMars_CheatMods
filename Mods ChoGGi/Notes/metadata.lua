@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2692788508",
 	"pops_any_uuid", "a754726f-1e92-450a-b2ae-61815e7d9cd0",
 	"lua_revision", 1007000, -- Picard
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -24,7 +24,7 @@ return PlaceObj("ModDef", {
 	"TagTools", true,
 	"description", [[
 Places big/small "note" buildings you can use to store text.
-Notepad opens on building selection (there's a button to toggle in building menu).
+Notepad opens on building selection (there's a button to toggle in mod options).
 Mod options for width/height of notepad.
 
 Requested by samirahope.

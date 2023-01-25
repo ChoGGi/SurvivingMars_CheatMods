@@ -17,7 +17,7 @@ custom_type = 5 :
 custom_type = 6 : same as 3, but dbl rightclick executes custom_func(selecteditem.func)
 custom_type = 7 : dblclick fires custom_func with {self.sel} (wrapped in a table, so we can use CallBackFunc for either)
 custom_type = 8 : same as 4/7, but dbl rightclick fires custom_func, and dbl click fires ok as normally
-custom_type = 9 : same as 4, but hides filter and doesn't close
+custom_type = 9 : same as 4, but hides filter and doesn't close, dbl rightclick executes custom_func(selecteditem.func)
 
 ChoGGi.ComFuncs.OpenInListChoice{
 	callback = CallBackFunc,

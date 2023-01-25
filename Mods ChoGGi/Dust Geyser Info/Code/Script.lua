@@ -37,11 +37,6 @@ function OnMsg.ClassesPostprocess()
 	})
 end
 
-local sort_obj
-local function SortByDist(a, b)
-	return a:GetDist2D(sort_obj) < b:GetDist2D(sort_obj)
-end
-
 function DontBuildHere:OnSelected()
 	local geysers = {}
 	GetRealm(self):MapGet("map", "GeyserWarmup", function(warmup)
@@ -58,8 +53,10 @@ function DontBuildHere:OnSelected()
 	end
 
 	-- DontBuildHere is off-map, so cursor it is
-	sort_obj = GetCursorWorldPos()
-	table.sort(geysers, SortByDist)
+	local sort_obj = GetCursorWorldPos()
+	table.sort(geysers, function(a, b)
+		return a:GetDist2D(sort_obj) < b:GetDist2D(sort_obj)
+	end)
 
 	local geyser = geysers[1]
 	ChoGGi.ComFuncs.Circle(geyser:GetPos(), geyser.FeatureRadius, white, 10000)

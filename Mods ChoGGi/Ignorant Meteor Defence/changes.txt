@@ -1,3 +1,6 @@
+v0.5
+Checks for rocks first, then buildings, then resources.
+
 v0.4
 Log spam.
 

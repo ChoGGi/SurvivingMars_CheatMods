@@ -99,7 +99,7 @@ ChoGGi.Defaults = {
 	-- Mod Editor shows the help page every single time you open it.
 	SkipModHelpPage = true,
 	-- Mod editor itself (add item to open from help menu)
-	SkipModEditorDialog = false,
+	SkipModEditorCompletely = false,
 	-- No confirm msg before uploading
 	SkipModUploadConfirmDoneMsgs = false,
 	-- stops panel from shrinking
@@ -173,7 +173,7 @@ if testing then
 	-- stops panel from shrinking
 	Defaults.StopSelectionPanelResize = true
 	--  Mod editor itself
-	Defaults.SkipModEditorDialog = true
+	Defaults.SkipModEditorCompletely = true
 end
 
 -- set game values to saved values

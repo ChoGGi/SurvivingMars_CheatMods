@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 37,
+	"version", 38,
 	"version_major", 3,
-	"version_minor", 7,
+	"version_minor", 8,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -24,9 +24,6 @@ Uneven Terrain (see mod options to enable, more info below).
 No Planetary Anomaly Breakthroughs when B&B is installed.
 Problem updating supply grid.
 Storybit notification issue.
-Probably mod related:
-A rocket missing the cargo table.
-g_ActiveOnScreenNotifications isn't a table.
 Support struts malfunctioning and cave-ins.
 Stop ceiling/floating rubble.
 Log spam from IsBuildingInDomeRange().
@@ -37,6 +34,11 @@ Water Reclamation Spire and B&B upgrade tech caused issues (spoiler free, see mo
 Add rocket sound effects to SupplyPods (mod option to disable).
 Force heat grid to update (see more info below).
 Personal Space storybit changes capacity, but building menu doesn't show it.
+Underground Rare Anomaly can give you underground dome prefabs, but locks them to surface.
+
+Probably mod related:
+A rocket missing the cargo table.
+g_ActiveOnScreenNotifications isn't a table.
 
 [b]Incorporated mods:[/b] (so far)
 Fix Blank Mission Profile

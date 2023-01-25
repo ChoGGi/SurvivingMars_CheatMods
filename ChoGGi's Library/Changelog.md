@@ -9,8 +9,8 @@
 - GetPassablePointNearby()/GetRandomPassable()/GetRandomPassablePoint() and picard.
 
 ### Examine:
-	- Added UI Click To Examine to toolbar buttons.
-	- UI flash wasn't working when first opening examine dialog.
+- Added UI Click To Examine to toolbar buttons.
+- UI flash wasn't working when first opening examine dialog.
 
 ## v11.6 (11 Sep 2022)
 - Mod Option: Disable Dialog Escape: Pressing Escape won't close dialog boxes (default enabled).

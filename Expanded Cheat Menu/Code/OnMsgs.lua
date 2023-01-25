@@ -332,7 +332,7 @@ local function ModOptions(id)
 		return
 	end
 
-	-- I check mod options earlier than I should, so this prevents blank mod options (somwhow)
+	-- I check mod options earlier than I should, so this prevents blank mod options (somehow)
 	CurrentModOptions:GetProperties()
 
 	-- Rebuild cheats menu to hide items
@@ -345,6 +345,7 @@ local function ModOptions(id)
 	end
 
 end
+
 function OnMsg.ApplyModOptions(id)
 	ModOptions(id)
 	-- Awkward looking, but we only want to reset settings in mod options

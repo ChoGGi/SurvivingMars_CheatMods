@@ -1,3 +1,6 @@
+v1.5
+Blocked quicksave during construction mode (thanks Daemonjax).
+
 v1.4
 Fill Selected Depot: Ctrl-F
 Mod option for picking Examine Objects Radius.

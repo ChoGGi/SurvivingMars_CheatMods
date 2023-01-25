@@ -63,7 +63,7 @@ do -- non-class obj funcs
 	local ChoOrig_OpenGedApp = OpenGedApp
 	AddToOrigFuncs("OpenGedApp")
 	function OpenGedApp(template, ...)
-		if template == "ModsEditor" and (testing or UserSettings.SkipModEditorDialog) then
+		if template == "ModsEditor" and UserSettings.SkipModEditorCompletely then
 			return
 		end
 		return ChoOrig_OpenGedApp(template, ...)
@@ -73,7 +73,7 @@ do -- non-class obj funcs
 	local ChoOrig_WaitMarsMessage = WaitMarsMessage
 	AddToOrigFuncs("WaitMarsMessage")
 	function WaitMarsMessage(parent, title, msg, ...)
-		if (testing or UserSettings.SkipIncompatibleModsMsg) and IsT(msg) == 10888 then
+		if UserSettings.SkipIncompatibleModsMsg and IsT(msg) == 10888 then
 			return
 		end
 		return ChoOrig_WaitMarsMessage(parent, title, msg, ...)
@@ -327,18 +327,7 @@ do -- func exists before classes
 		CreateRealTimeThread(Msg, "ChoGGi_SpawnedBaseBuilding", self)
 	end
 
-end -- do
---
-function OnMsg.ClassesGenerate()
-
-
-
-	-- check which can go in before classes
-
-
-
-
-	-- needed for SetDesiredAmount in depots
+	-- Needed for SetDesiredAmount in depots
 	local ChoOrig_ResourceStockpileBase_GetMax = ResourceStockpileBase.GetMax
 	AddToOrigFuncs("ResourceStockpileBase.GetMax")
 	function ResourceStockpileBase:GetMax(...)
@@ -380,14 +369,6 @@ function OnMsg.ClassesGenerate()
 			return ChoOrig_DroneBase_RegisterDustDevil(self, devil, ...)
 		end
 	end -- do
-
-	-- all storybit/neg/etc options enabled
-	local ChoOrig_Condition_Evaluate = Condition.Evaluate
-	AddToOrigFuncs("Condition.Evaluate")
-	function Condition.Evaluate(...)
-		return UserSettings.OverrideConditionPrereqs
-			or ChoOrig_Condition_Evaluate(...)
-	end
 
 	-- limit size of crops to window width - selection panel size
 	do -- InfopanelItems:Open()
@@ -441,7 +422,7 @@ function OnMsg.ClassesGenerate()
 		end
 	end -- do
 
-	-- that's what we call a small font
+	-- That's what we call a small font
 	local ChoOrig_XWindow_UpdateMeasure = XWindow.UpdateMeasure
 	AddToOrigFuncs("XWindow.UpdateMeasure")
 	local ChoOrig_XSizeConstrainedWindow_UpdateMeasure = XSizeConstrainedWindow.UpdateMeasure
@@ -453,7 +434,7 @@ function OnMsg.ClassesGenerate()
 		return ChoOrig_XSizeConstrainedWindow_UpdateMeasure(...)
 	end
 
-	-- allows you to build outside buildings inside and vice
+	-- Allows you to build outside buildings inside and vice
 	local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
 	AddToOrigFuncs("CursorBuilding.GameInit")
 	function CursorBuilding:GameInit(...)
@@ -469,7 +450,7 @@ function OnMsg.ClassesGenerate()
 		return ChoOrig_CursorBuilding_GameInit(self, ...)
 	end
 
-	-- stupid supply pods don't want to play nice (override for custom_travel_time_mars/custom_travel_time_earth)
+	-- Stupid supply pods don't want to play nice (override for custom_travel_time_mars/custom_travel_time_earth)
 	local ChoOrig_RocketExpedition_ExpeditionSleep = RocketExpedition.ExpeditionSleep
 	AddToOrigFuncs("RocketExpedition.ExpeditionSleep")
 	function RocketExpedition:ExpeditionSleep(s_t, ...)
@@ -506,6 +487,14 @@ function OnMsg.ClassesGenerate()
 		end
 	end
 
+	-- all storybit/neg/etc options enabled
+	local ChoOrig_Condition_Evaluate = Condition.Evaluate
+	AddToOrigFuncs("Condition.Evaluate")
+	function Condition.Evaluate(...)
+		return UserSettings.OverrideConditionPrereqs
+			or ChoOrig_Condition_Evaluate(...)
+	end
+
 	-- UI transparency cheats menu
 	local ChoOrig_XShortcutsHost_SetVisible = XShortcutsHost.SetVisible
 	AddToOrigFuncs("XShortcutsHost.SetVisible")
@@ -514,7 +503,7 @@ function OnMsg.ClassesGenerate()
 		return ChoOrig_XShortcutsHost_SetVisible(self, ...)
 	end
 
-	-- larger trib/subsurfheater radius
+	-- Larger trib/subsurfheater radius
 	local ChoOrig_UIRangeBuilding_SetUIRange = UIRangeBuilding.SetUIRange
 	AddToOrigFuncs("UIRangeBuilding.SetUIRange")
 	function UIRangeBuilding:SetUIRange(radius, ...)
@@ -525,7 +514,7 @@ function OnMsg.ClassesGenerate()
 		return ChoOrig_UIRangeBuilding_SetUIRange(self, radius, ...)
 	end
 
-	-- override any performance changes if needed
+	-- Override any performance changes if needed
 	local ChoOrig_Workplace_GetWorkshiftPerformance = Workplace.GetWorkshiftPerformance
 	AddToOrigFuncs("Workplace.GetWorkshiftPerformance")
 	function Workplace:GetWorkshiftPerformance(...)
@@ -618,12 +607,6 @@ function OnMsg.ClassesGenerate()
 			-- then we can add some hints to the cheats
 			return ChoGGi.InfoFuncs.SetInfoPanelCheatHints(GetActionsHost(win))
 		end
-	end
-
-	-- I fucking hate modal windows
-	if testing then
-		-- Make this an option for other people?
-		XWindow.SetModal = empty_func
 	end
 
 	do -- InfopanelDlg:RecalculateMargins
@@ -807,8 +790,8 @@ function OnMsg.ClassesGenerate()
 		end
 	end -- do
 
-end -- ClassesGenerate
-
+end -- do
+-- Classes are almost built (slip in as early as we can to replace these funcs)
 function OnMsg.ClassesPostprocess()
 
 	-- align popups to rightside when using vertical cheat menu
@@ -1613,7 +1596,7 @@ function OnMsg.ClassesPostprocess()
 
 end -- ClassesPP
 
--- blacklist stuff
+-- Blacklist stuff
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	-- Who knows, they may update the game someday?
 	local blacklist = false

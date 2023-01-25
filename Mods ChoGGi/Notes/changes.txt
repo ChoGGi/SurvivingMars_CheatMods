@@ -1,1 +1,7 @@
 v0.2
+Removed auto-open toggle.
+Removed refab button.
+Added mod option to global auto-open notes or not.
+Added buttons to:
+	Show note
+	List all notes.

@@ -56,8 +56,8 @@ function MapSwitch.GetEntries(...)
 						end
 
 				end
-				realm.RolloverText = realm.RolloverText .. T("\n\n<green>") .. T(7582--[[Notifications]])
-					.. T(":</green>\n") .. table.concat(notifs_text, "\n")
+				realm.RolloverText = realm.RolloverText .. T("\n\n<yellow>") .. T(7582--[[Notifications]])
+					.. T(":</yellow>\n") .. table.concat(notifs_text, "\n")
 			end
 
 		end

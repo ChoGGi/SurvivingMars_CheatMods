@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v18.8 (Unreleased)
+### Changed:
+- SkipModEditorDialog renamed to SkipModEditorCompletely, so it doesn't come back to bite me anymore.
 
 ## v18.7 (4 Dec 2022)
 ### Added:

@@ -363,6 +363,18 @@ do -- CityStart/LoadGame
 				obj:SetBlockPass(false)
 			end)
 			--
+			-- Move any underground dome prefabs (underground anomaly "storybit") to underground city (instead of being stuck on surface)
+			-- https://www.reddit.com/r/SurvivingMars/comments/1013afl/no_way_to_moveuse_underground_dome_prefabs/
+			if MainCity.available_prefabs.UndergroundDome then
+				local prefabs = Cities[UIColony.underground_map_id].available_prefabs
+				if not prefabs.UndergroundDome then
+					prefabs.UndergroundDome = 0
+				end
+
+				prefabs.UndergroundDome = prefabs.UndergroundDome + MainCity.available_prefabs.UndergroundDome
+				MainCity.available_prefabs.UndergroundDome = nil
+			end
+			--
 		end
 		--
 		-- Fix Stuck Malfunctioning Drones At DroneHub
@@ -791,6 +803,7 @@ function TriggerCaveIn(...)
 end
 --
 -- Devs didn't check for EasyMaintenance when overriding AccumulateMaintenancePoints for picard
+-- last checked lua rev 1011166
 local ChoOrig_SupportStruts_AccumulateMaintenancePoints = SupportStruts.AccumulateMaintenancePoints
 function SupportStruts:AccumulateMaintenancePoints(new_points, ...)
 	if not mod_EnableMod then
