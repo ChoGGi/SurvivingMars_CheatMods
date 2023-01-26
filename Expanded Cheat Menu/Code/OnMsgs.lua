@@ -7,6 +7,7 @@ local type, pairs = type, pairs
 local FlushLogFile = FlushLogFile
 local Msg = Msg
 local OnMsg = OnMsg
+local IsKindOf = IsKindOf
 local CreateRealTimeThread = CreateRealTimeThread
 local T = T
 local TranslationTable = TranslationTable
@@ -37,7 +38,7 @@ do -- custom msgs
 	function OnMsg.ChoGGi_SpawnedDrone(obj)
 		local UserSettings = ChoGGi.UserSettings
 		if UserSettings.SpeedDrone then
-			if obj:IsKindOf("FlyingDrone") then
+			if IsKindOf(obj, "FlyingDrone") then
 				if UserSettings.SpeedWaspDrone then
 					obj:SetBase("move_speed", UserSettings.SpeedWaspDrone)
 				end
@@ -531,9 +532,9 @@ s = SelectedObj, c() = GetCursorWorldPos(), restart() = quit(""restart"")"]])
 				item:SetHAlign("left")
 
 				-- add some ids for easier selection later on
-				if item:IsKindOf("XMenuBar") then
+				if IsKindOf(item, "XMenuBar") then
 					XShortcutsTarget.idMenuBar = item
-				elseif item:IsKindOf("XWindow") then
+				elseif IsKindOf(item, "XWindow") then
 					XShortcutsTarget.idToolbar = item
 					break
 				end
@@ -557,7 +558,7 @@ s = SelectedObj, c() = GetCursorWorldPos(), restart() = quit(""restart"")"]])
 
 			-- that info text about right-clicking expands the menu instead of just hiding or something
 			for i = 1, #XShortcutsTarget.idToolbar do
-				if XShortcutsTarget.idToolbar[i]:IsKindOf("XText") then
+				if IsKindOf(XShortcutsTarget.idToolbar[i], "XText") then
 					XShortcutsTarget.idToolbar[i]:delete()
 				end
 			end
@@ -649,7 +650,7 @@ function OnMsg.PersistPostLoad()
 		-- [LUA ERROR] Mars/Lua/Heat.lua:65: attempt to call a nil value (method 'ApplyForm')
 		local s_Heaters = s_Heaters or {}
 		for obj in pairs(s_Heaters) do
-			if obj:IsKindOf("UnpersistedMissingClass") then
+			if IsKindOf(obj, "UnpersistedMissingClass") then
 				s_Heaters[obj] = nil
 			end
 		end
@@ -666,7 +667,7 @@ function OnMsg.PersistPostLoad()
 				if label_id ~= "Consts" then
 					for j = #label, 1, -1 do
 						local obj = label[j]
-						if obj:IsKindOf("UnpersistedMissingClass") then
+						if IsKindOf(obj, "UnpersistedMissingClass") then
 							if printit then
 								print(TranslationTable[302535920001401--[["Removed missing mod building from %s: %s, entity: %s, handle: %s"]]]:format(label_id, RetName(obj), obj:GetEntity(), obj.handle))
 							end
@@ -684,14 +685,14 @@ end
 
 -- for instant build
 function OnMsg.BuildingPlaced(obj)
-	if obj:IsKindOf("Building") then
+	if IsKindOf(obj, "Building") then
 		ChoGGi.Temp.LastPlacedObject = obj
 	end
 end --OnMsg
 
 do -- ConstructionSitePlaced/ConstructionPrefabPlaced
 	local function SitePlaced(site)
-		if site:IsKindOf("Building") then
+		if IsKindOf(obj, "Building") then
 			ChoGGi.Temp.LastPlacedObject = site
 		end
 
@@ -704,7 +705,7 @@ do -- ConstructionSitePlaced/ConstructionPrefabPlaced
 				site:Complete("quick_build")
 			end
 			-- spire needs a pointy end
-			if site.building_class_proto:IsKindOf("Temple") then
+			if IsKindOf(site.building_class_proto, "Temple") then
 				local frame = site:GetAttaches("SpireFrame")
 				if not frame then
 					frame = ChoGGi.ComFuncs.AttachSpireFrame(site)
@@ -721,13 +722,13 @@ end -- do
 
 -- some upgrades change amounts, so reset them to ours
 function OnMsg.BuildingUpgraded(obj)
-	if obj:IsKindOf("ElectricityProducer") then
+	if IsKindOf(obj, "ElectricityProducer") then
 		Msg("ChoGGi_SpawnedProducer", obj, "electricity_production")
-	elseif obj:IsKindOf("AirProducer") then
+	elseif IsKindOf(obj, "AirProducer") then
 		Msg("ChoGGi_SpawnedProducer", obj, "air_production")
-	elseif obj:IsKindOf("WaterProducer") then
+	elseif IsKindOf(obj, "WaterProducer") then
 		Msg("ChoGGi_SpawnedProducer", obj, "water_production")
-	elseif obj:IsKindOf("SingleResourceProducer") then
+	elseif IsKindOf(obj, "SingleResourceProducer") then
 		Msg("ChoGGi_SpawnedProducer", obj, "production_per_day")
 --~ 	else
 --~ 		Msg("ChoGGi_SpawnedBaseBuilding", obj)
@@ -739,14 +740,14 @@ end
 function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 	local UserSettings = ChoGGi.UserSettings
 
-	if obj:IsKindOf("ConstructionSite")
-			or obj:IsKindOf("ConstructionSiteWithHeightSurfaces") then
+	if IsKindOf(obj, "ConstructionSite")
+			or IsKindOf(obj, "ConstructionSiteWithHeightSurfaces") then
 		return
 	end
 
 	-- not working code from when trying to have passages placed in entrances
 --~ 	-- If it's a fancy dome then we allow building in the removed entrances
---~ 	if obj:IsKindOf("Dome") then
+--~ 	if IsKindOf(obj, "Dome") then
 --~ 		local id_start, id_end = obj:GetAllSpots(obj:GetState())
 --~ 		for i = id_start, id_end do
 --~ 			if obj:GetSpotName(i) == "Entrance" or obj:GetSpotAnnotation(i) == "att, DomeRoad_04, show" then
@@ -755,24 +756,24 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 --~ 		end
 --~ 	end
 
-	if UserSettings.CommandCenterMaxRadius and obj:IsKindOf("DroneHub") then
+	if UserSettings.CommandCenterMaxRadius and IsKindOf(obj, "DroneHub") then
 		-- we set it from the func itself
 		obj:SetWorkRadius()
 
 	elseif UserSettings.ServiceWorkplaceFoodStorage
-			and (obj:IsKindOf("Grocery") or obj:IsKindOf("Diner")) then
+			and (IsKindOf(obj, "Grocery") or IsKindOf(obj, "Diner")) then
 		-- for some reason InitConsumptionRequest always adds 5 to it
 		local storedv = UserSettings.ServiceWorkplaceFoodStorage - (5 * const.ResourceScale)
 		obj.consumption_stored_resources = storedv
 		obj.consumption_max_storage = UserSettings.ServiceWorkplaceFoodStorage
 
-	elseif UserSettings.RocketMaxExportAmount and obj:IsKindOf("RocketBase") then
+	elseif UserSettings.RocketMaxExportAmount and IsKindOf(obj, "RocketBase") then
 		obj.max_export_storage = UserSettings.RocketMaxExportAmount
 
-	elseif obj:IsKindOf("BaseRover") then
-		if UserSettings.RCTransportStorageCapacity and obj:IsKindOf("RCTransport") then
+	elseif IsKindOf(obj, "BaseRover") then
+		if UserSettings.RCTransportStorageCapacity and IsKindOf(obj, "RCTransport") then
 			obj.max_shared_storage = UserSettings.RCTransportStorageCapacity
-		elseif UserSettings.RCRoverMaxRadius and obj:IsKindOf("RCRover") then
+		elseif UserSettings.RCRoverMaxRadius and IsKindOf(obj, "RCRover") then
 			-- I override the func so no need to send a value here
 			obj:SetWorkRadius()
 		end
@@ -781,7 +782,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 			obj:SetBase("move_speed", UserSettings.SpeedRC)
 		end
 
-	elseif obj:IsKindOf("CargoShuttle") then
+	elseif IsKindOf(obj, "CargoShuttle") then
 		if UserSettings.StorageShuttle then
 			obj.max_shared_storage = UserSettings.StorageShuttle
 		end
@@ -789,7 +790,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 			obj:SetBase("move_speed", UserSettings.SpeedShuttle)
 		end
 
-	elseif obj:IsKindOf("UniversalStorageDepot") then
+	elseif IsKindOf(obj, "UniversalStorageDepot") then
 		local uni_depot = IsUniversalStorageDepot(obj)
 		if UserSettings.StorageUniversalDepot and uni_depot then
 			obj.max_storage_per_resource = UserSettings.StorageUniversalDepot
@@ -799,31 +800,31 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 			UpdateDepotCapacity(obj)
 		end
 
-	elseif UserSettings.StorageMechanizedDepot and obj:IsKindOf("MechanizedDepot") then
+	elseif UserSettings.StorageMechanizedDepot and IsKindOf(obj, "MechanizedDepot") then
 		obj.max_storage_per_resource = UserSettings.StorageMechanizedDepot
 		UpdateDepotCapacity(obj)
 
-	elseif UserSettings.StorageWasteDepot and obj:IsKindOf("WasteRockDumpSite") then
+	elseif UserSettings.StorageWasteDepot and IsKindOf(obj, "WasteRockDumpSite") then
 		obj.max_amount_WasteRock = UserSettings.StorageWasteDepot
 		obj:CheatEmpty()
 --~ 		UpdateDepotCapacity(obj)
 
-	elseif UserSettings.ShuttleHubFuelStorage and obj:IsKindOf("ShuttleHub") then
+	elseif UserSettings.ShuttleHubFuelStorage and IsKindOf(obj, "ShuttleHub") then
 		obj.consumption_max_storage = UserSettings.ShuttleHubFuelStorage
 
-	elseif UserSettings.SchoolTrainAll and obj:IsKindOf("School") then
+	elseif UserSettings.SchoolTrainAll and IsKindOf(obj, "School") then
 		local list = ChoGGi.Tables.PositiveTraits
 		for i = 1, #list do
 			obj:SetTrait(i, list[i])
 		end
 
-	elseif UserSettings.SanatoriumCureAll and obj:IsKindOf("Sanatorium") then
+	elseif UserSettings.SanatoriumCureAll and IsKindOf(obj, "Sanatorium") then
 		local list = ChoGGi.Tables.NegativeTraits
 		for i = 1, #list do
 			obj:SetTrait(i, list[i])
 		end
 
-	elseif obj:IsKindOf("Temple") then
+	elseif IsKindOf(obj, "Temple") then
 		CreateRealTimeThread(function()
 			local frame = obj:GetAttaches("SpireFrame")
 			if not frame then
@@ -837,8 +838,8 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 		end)
 
 	elseif UserSettings.StorageMechanizedDepotsTemp
-			and obj:IsKindOf("ResourceStockpileLR")
-			and obj.parent:IsKindOf("MechanizedDepot") then
+			and IsKindOf(obj, "ResourceStockpileLR")
+			and IsKindOf(obj.parent, "MechanizedDepot") then
 		-- attached temporary resource depots
 		ChoGGi.ComFuncs.SetMechanizedDepotTempAmount(obj.parent)
 	end
@@ -856,12 +857,12 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 		end)
 	end
 
-	if UserSettings.InsideBuildingsNoMaintenance and obj:IsKindOf("Constructable") then
+	if UserSettings.InsideBuildingsNoMaintenance and IsKindOf(obj, "Constructable") then
 		obj.ChoGGi_InsideBuildingsNoMaintenance = true
 		obj.maintenance_build_up_per_hr = -10000
 	end
 
-	if UserSettings.RemoveMaintenanceBuildUp and obj:IsKindOf("RequiresMaintenance") then
+	if UserSettings.RemoveMaintenanceBuildUp and IsKindOf(obj, "RequiresMaintenance") then
 		obj.ChoGGi_RemoveMaintenanceBuildUp = true
 		obj.maintenance_build_up_per_hr = -10000
 	end
@@ -997,11 +998,12 @@ do -- ColonistCreated
 	OnMsg.ColonistBorn = ColonistCreated
 end -- do
 
-function OnMsg.SelectionAdded(obj)
+--~ function OnMsg.SelectionAdded(obj)
+function OnMsg.SelectedObjChange(obj)
 	-- update selection shortcut
 	s = obj
 	-- update last placed (or selected)
-	if obj:IsKindOf("Building") then
+	if IsKindOf(obj, "Building") then
 		ChoGGi.Temp.LastPlacedObject = obj
 	end
 end
@@ -1217,7 +1219,7 @@ function OnMsg.ApplicationQuit()
 	local desktop = terminal.desktop
 	for i = #desktop, 1, -1 do
 		local window = desktop[i]
-		if window:IsKindOf("GedApp") then
+		if IsKindOf(window, "GedApp") then
 			window:Close()
 		end
 	end
@@ -1408,7 +1410,7 @@ do -- LoadGame/CityStart
 			local objs = labels.Drone or ""
 			for i = 1, #objs do
 				local obj = objs[i]
-				if obj:IsKindOf("FlyingDrone") then
+				if IsKindOf(obj, "FlyingDrone") then
 					obj:SetBase("move_speed", speed)
 				end
 			end
@@ -1418,7 +1420,7 @@ do -- LoadGame/CityStart
 			local objs = labels.Drone or ""
 			for i = 1, #objs do
 				local obj = objs[i]
-				if not obj:IsKindOf("FlyingDrone") then
+				if not IsKindOf(obj, "FlyingDrone") then
 					obj:SetBase("move_speed", speed)
 				end
 			end
@@ -1595,7 +1597,7 @@ do -- LoadGame/CityStart
 		procall(function()
 			for i = 1, #storages do
 				local obj = storages[i]
-				if obj.GetStoredAmount and not obj:IsKindOf("ConstructionSite") and obj:GetStoredAmount() < 0 then
+				if obj.GetStoredAmount and not IsKindOf(obj, "ConstructionSite") and obj:GetStoredAmount() < 0 then
 					-- we have to empty it first (just filling doesn't fix the issue)
 					obj:CheatEmpty()
 					obj:CheatFill()

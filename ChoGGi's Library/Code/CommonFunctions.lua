@@ -577,7 +577,7 @@ do -- MsgPopup
 
 	function ChoGGi.ComFuncs.MsgPopup(text, title, params)
 		-- notifications only show up in-game (UI stuff is missing)
-		if not UICity then
+		if not UIColony then
 			return
 		end
 
@@ -1147,7 +1147,7 @@ function ChoGGi.ComFuncs.MsgWait(text, title, image, ok_text, context, parent, t
 		return CreateRealTimeThread(ChoGGi.ComFuncs.MsgWait, text, title, image, ok_text, context, parent, template, "skip")
 	end
 
-	if UICity then
+	if UIColony then
 		PauseGame()
 	end
 
@@ -1161,7 +1161,7 @@ function ChoGGi.ComFuncs.MsgWait(text, title, image, ok_text, context, parent, t
 		image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
 		context, template
 	)
-	if UICity then
+	if UIColony then
 		ResumeGame()
 	end
 
@@ -1285,13 +1285,16 @@ function ChoGGi.ComFuncs.CompareTableFuncs(a, b, func, obj)
 	end
 end
 
--- check for and remove broken objects from UICity.labels
+-- check for and remove broken objects from *city.labels
 function ChoGGi.ComFuncs.RemoveMissingLabelObjects(label)
-	local UICity = UICity
-	local list = UICity.labels[label] or ""
-	for i = #list, 1, -1 do
-		if not IsValid(list[i]) then
-			table.remove(UICity.labels[label], i)
+	local Cities = Cities or ""
+	for i = 1, #Cities do
+		local city = Cities[i]
+		local list = city.labels[label] or ""
+		for j = #list, 1, -1 do
+			if not IsValid(list[j]) then
+				table.remove(city.labels[label], j)
+			end
 		end
 	end
 end
@@ -1314,11 +1317,14 @@ function ChoGGi.ComFuncs.RemoveMissingTableObjects(list, obj)
 end
 
 function ChoGGi.ComFuncs.RemoveFromLabel(label, obj)
-	local UICity = UICity
-	local list = UICity.labels[label] or ""
-	for i = 1, #list do
-		if list[i] and list[i].handle and list[i] == obj.handle then
-			table.remove(UICity.labels[label], i)
+	local Cities = Cities or ""
+	for i = 1, #Cities do
+		local city = Cities[i]
+		local list = city.labels[label] or ""
+		for j = #list, 1, -1 do
+			if list[j] and list[j].handle and list[j] == obj.handle then
+				table.remove(city.labels[label], j)
+			end
 		end
 	end
 end
@@ -1473,8 +1479,8 @@ function ChoGGi.ComFuncs.RemoveFromTable(list, cls, text)
 	return tempt
 end
 
--- ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Building, {ParSystem = true, ResourceStockpile = true}, nil, "class")
--- ChoGGi.ComFuncs.FilterFromTable(UICity.labels.Unit, nil, nil, "working")
+-- ChoGGi.ComFuncs.FilterFromTable(MainCity.labels.Building, {ParSystem = true, ResourceStockpile = true}, nil, "class")
+-- ChoGGi.ComFuncs.FilterFromTable(MainCity.labels.Unit, nil, nil, "working")
 function ChoGGi.ComFuncs.FilterFromTable(list, exclude_list, include_list, name)
 	if type(list) ~= "table" then
 		return {}
@@ -1504,8 +1510,8 @@ function ChoGGi.ComFuncs.FilterFromTable(list, exclude_list, include_list, name)
 	end)
 end
 
--- ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Building, "IsKindOf", "Residence")
--- ChoGGi.ComFuncs.FilterFromTableFunc(UICity.labels.Unit, "IsValid", nil, true)
+-- ChoGGi.ComFuncs.FilterFromTableFunc(MainCity.labels.Building, "IsKindOf", "Residence")
+-- ChoGGi.ComFuncs.FilterFromTableFunc(MainCity.labels.Unit, "IsValid", nil, true)
 function ChoGGi.ComFuncs.FilterFromTableFunc(list, func, value, is_bool)
 	if type(list) ~= "table" then
 		return {}
@@ -1823,6 +1829,18 @@ do -- UpdateDataTables
 end -- do
 
 local function Random(m, n)
+	-- Hopefully it fixes whatever this is from :(
+	--[[
+[LUA ERROR] PackedMods/ChoGGi'sLibrary/Code/CommonFunctions.lua:1828: attempt to perform arithmetic on a nil value
+(639):  <>
+[C](-1): global sprocall
+C:\Program Files (x86)\Steam\steamapps\common\Surviving Mars\CommonLua\Classes\CommandObject.lua(118):  <>
+        --- end of stack
+	]]
+	if type(m) ~= "number" then
+		return AsyncRand()
+	end
+
 	return
 		-- m = min, n = max
 		(n and (AsyncRand(n - m + 1) + m))
@@ -1850,7 +1868,7 @@ do -- SelObject/SelObjects
 	-- returns whatever is selected > moused over > nearest object to cursor
 	-- single selection
 	function ChoGGi.ComFuncs.SelObject(radius, pt)
-		if not UICity then
+		if not UIColony then
 			return
 		end
 		-- single selection
@@ -1872,7 +1890,7 @@ do -- SelObject/SelObjects
 
 	-- returns an indexed table of objects, add a radius to get objs close to cursor
 	function ChoGGi.ComFuncs.SelObjects(radius, pt)
-		if not UICity then
+		if not UIColony then
 			return empty_table
 		end
 		local objs = SelectedObj or GetCursorOrGamePadSelectObj()
@@ -2637,16 +2655,17 @@ do -- GetAllAttaches
 	end
 end -- do
 local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
+
 -- I've seen better func names
-local function MapGet_ChoGGi(label, area, ...)
-	local objs = UICity.labels[label] or {}
+local function MapGet_ChoGGi(label, area, city, ...)
+	local objs = (city or UICity).labels[label] or {}
 --~ 	local objs = UIColony.city_labels.labels[label] or {}
 	if #objs == 0 then
 		local g_cls = g_Classes[label]
 		-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything* (think gary oldman in professional)
 		if g_cls and g_cls:IsKindOf("CObject") then
 			-- area can be: true, "map", "detached", "outsiders" (see Surviving Mars/ModTools/Docs/LuaMapEnumeration.md.html)
-			return MapGet(area or true, label, ...)
+			return GetRealmByID(city and city.map_id or UICity.map_id):MapGet(area or true, label, ...)
 			-- use obj:SetPos(pos) to move objs to map (and away with pos = InvalidPos())
 		end
 	end
@@ -2654,11 +2673,11 @@ local function MapGet_ChoGGi(label, area, ...)
 end
 ChoGGi.ComFuncs.MapGet = MapGet_ChoGGi
 -- just the "fix" no labels
-function ChoGGi.ComFuncs.MapGet_fixed(area, class, ...)
+function ChoGGi.ComFuncs.MapGet_fixed(area, class, city, ...)
 	local g_cls = g_Classes[class]
 	-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything* (think gary oldman in professional)
 	if g_cls and g_cls:IsKindOf("CObject") then
-		return MapGet(area, class, ...)
+		return GetRealmByID(city and city.map_id or UICity.map_id):MapGet(area, class, ...)
 	end
 	return {}
 end
@@ -4718,7 +4737,7 @@ function ChoGGi.ComFuncs.DisastersStop()
 		g_ColdWave = false
 	end
 
-	if g_RainDisaster then
+	if g_AccessibleDlc.armstrong and g_RainDisaster then
 		StopRainsDisaster()
 		g_RainDisaster = false
 	end
@@ -4738,27 +4757,31 @@ function ChoGGi.ComFuncs.DisastersStop()
 		o:ExplodeInAir()
 	end
 
-	objs = g_IonStorms or ""
-	for i = #objs, 1, -1 do
-		objs[i]:delete()
-		table.remove(g_IonStorms, i)
+	if g_AccessibleDlc.contentpack1 then
+		objs = g_IonStorms or ""
+		for i = #objs, 1, -1 do
+			objs[i]:delete()
+			table.remove(g_IonStorms, i)
+		end
 	end
 
-  if g_RainDisaster then
-		StopRainsDisaster()
-  end
+	if g_AccessibleDlc.armstrong then
+		if g_RainDisaster then
+			StopRainsDisaster()
+		end
 
-	-- make sure rains stop (remove this after an update or two)
-  local rain_type = "toxic"
-  local disaster_data = RainsDisasterThreads[rain_type]
-  if not disaster_data then
-    return
-  end
-  DeleteThread(disaster_data.soil_thread)
-  DeleteThread(disaster_data.main_thread)
-  DeleteThread(disaster_data.activation_thread)
-  disaster_data.activation_thread = false
-	FinishRainProcedure(rain_type)
+		-- make sure rains stop (remove this after an update or two)
+		local rain_type = "toxic"
+		local disaster_data = RainsDisasterThreads[rain_type]
+		if not disaster_data then
+			return
+		end
+		DeleteThread(disaster_data.soil_thread)
+		DeleteThread(disaster_data.main_thread)
+		DeleteThread(disaster_data.activation_thread)
+		disaster_data.activation_thread = false
+		FinishRainProcedure(rain_type)
+	end
 end
 
 function ChoGGi.ComFuncs.RetTableValue(obj, key)
@@ -6122,7 +6145,7 @@ function ChoGGi.ComFuncs.StrToBox(text)
 end
 
 function ChoGGi.ComFuncs.ResetHumanCentipedes()
-	local objs = UICity.labels.Colonist or ""
+	local objs = UIColony:GetCityLabels("Colonist")
 	for i = 1, #objs do
 		local obj = objs[i]
 		-- only need to do people walking outside (pathing issue), and if they don't have a path (not moving or walking into an invis wall)
@@ -6750,7 +6773,7 @@ do -- GetMaterialProperties
 	ChoGGi.ComFuncs.RetEntityMats = RetEntityMats
 
 	function ChoGGi.ComFuncs.GetMaterialProperties(obj, parent_or_ret)
-		if not UICity then
+		if not UIColony then
 			return
 		end
 
@@ -7529,7 +7552,7 @@ do -- ValueToStr
 end -- do
 
 function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
-	if not UICity then
+	if not UIColony then
 		return
 	end
 

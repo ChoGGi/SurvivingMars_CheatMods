@@ -71,11 +71,7 @@ function RCMechanic:AddBlinky()
 
 	-- add a blinky
 	self.blinky = PlaceObjectIn("RotatyThing", self:GetMapID())
-
-	GetRealm(self):
-
-	self.blinky:SetVisible()
-
+	self.blinky:SetVisible(false)
 	self:Attach(self.blinky)
 
 	-- move blinky above bar thingy

@@ -56,6 +56,8 @@ do -- ModUpload
 		ChoGGi_ATubularGlassHouse = true,
 		-- Distributed Drone Assembly 2
 		ChoGGi_DistributedDroneAssembly2 = true,
+		-- Psychiatric Hospital
+		ChoGGi_PsychiatricHospital = true,
 	}
 --~ 	-- green ecm/lib so I don't accidentally upload them
 --~ 	local coloured_titles = {

@@ -125,7 +125,7 @@ function OnMsg.ClassesPostprocess()
 	ClassDescendants("XMarsMessageBox", AdjustEsc)
 	--
 
-	-- single click to change mod toggle options
+	-- Single click to change toggle options
 	local template = XTemplates.PropBool[1]
 	local idx = table.find(template, "name", "OnMouseButtonDown(self, pos, button)")
 	if idx then
@@ -154,11 +154,11 @@ function OnMsg.ClassesPostprocess()
 		end
 	end
 
-	-- ignore persist errors
-	-- this is in pp so it overrides ECM overriding the func
+	-- Ignore persist errors
+	-- This is in pp so it overrides ECM overriding the func
 	local ChoOrig_ReportPersistErrors = ReportPersistErrors
 	function ReportPersistErrors(...)
-		-- be useful for restarting threads, see if devs will add it
+		-- be useful for restarting threads, see if devs will add it (edit: I don't see devs doing anything anymore)
 		Msg("PostSaveGame")
 
 		if CurrentModOptions:GetProperty("IgnorePersistErrors") then
@@ -182,7 +182,7 @@ function OnMsg.ClassesPostprocess()
 
 		xtemplate = XTemplates.PropNumber[1]
 		UpdateProp(xtemplate)
-		-- add buttons to number
+		-- Add buttons to number
 		AddSliderButtons(xtemplate)
 	end
 

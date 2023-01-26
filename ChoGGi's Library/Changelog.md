@@ -1,6 +1,8 @@
 ## Library Changelog
 
 ## v11.8 (Unreleased)
+- Found some more Picard map stuff to update.
+- Cleaned up some log spam from some of my mods.
 
 ## v11.7 (4 Dec 2022)
 - Fix log spam when using this mod on pre-Picard versions of the game.
