@@ -4,6 +4,10 @@
 ### Changed:
 - SkipModEditorDialog renamed to SkipModEditorCompletely, so it doesn't come back to bite me anymore.
 
+### Fixed:
+- Remove Building Limits works on underground wonders.
+- Menu>Mission>multiple menu items updated for picard.
+
 ## v18.7 (4 Dec 2022)
 ### Added:
 - Mod option to reset ECM settings.

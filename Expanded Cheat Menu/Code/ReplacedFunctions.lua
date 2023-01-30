@@ -281,6 +281,23 @@ end -- do
 --
 do -- func exists before classes
 
+	-- Remove more building limits (underground wonders)
+	local ChoOrig_ConstructionController_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
+	AddToOrigFuncs("ConstructionController.UpdateConstructionStatuses")
+	function ConstructionController:UpdateConstructionStatuses(...)
+		if UserSettings.RemoveBuildingLimits then
+			self.template_obj.dome_required = false
+			self.template_obj.dome_forbidden = false
+			self.template_obj.only_build_on_snapped_locations = false
+		elseif self.template_obj then
+			self.template_obj.dome_required = self.template_obj:GetDefaultPropertyValue("dome_required")
+			self.template_obj.dome_forbidden = self.template_obj:GetDefaultPropertyValue("dome_forbidden")
+			self.template_obj.only_build_on_snapped_locations = self.template_obj:GetDefaultPropertyValue("only_build_on_snapped_locations")
+		end
+
+		return ChoOrig_ConstructionController_UpdateConstructionStatuses(self, ...)
+	end
+
 	-- update production (OnMsgs.lua)
 	local ChoOrig_SingleResourceProducer_Init = SingleResourceProducer.Init
 	AddToOrigFuncs("SingleResourceProducer.Init")

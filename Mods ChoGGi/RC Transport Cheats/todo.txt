@@ -1,1 +1,5 @@
-check underground?
+function RCTransport:GetAutoGatherDeposits()
+	return {"SurfaceDepositMetals", "SurfaceDepositConcrete", "SurfaceDepositPolymers"}
+end
+https://www.reddit.com/r/SurvivingMars/comments/103qw3x/how_do_i_tell_rover_to_only_gather_polymers_on/
+

@@ -1059,7 +1059,8 @@ end
 function ChoGGi_DlgExamine:idButRefresh_OnPress()
 	self = GetRootDialog(self)
 	self:SetObj()
-	if self.obj_ref.class ~= "InGameInterface" then
+	-- This was being called when clicking on a func in an object, so added a type check for whatever happened?
+	if type(self.obj_ref) == "table" and self.obj_ref.class ~= "InGameInterface" then
 		self:FlashWindow()
 	end
 end

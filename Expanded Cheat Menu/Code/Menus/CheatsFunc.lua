@@ -1702,7 +1702,7 @@ function ChoGGi.MenuFuncs.ResearchQueueSize_Set()
 
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
-				TranslationTable[302535920000304--[[%s: Nerdgasm]]]:format(ChoGGi.UserSettings.ResearchQueueSize),
+				ChoGGi.UserSettings.ResearchQueueSize,
 				TranslationTable[302535920000305--[[Research Queue Size]]]
 			)
 		end

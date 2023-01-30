@@ -1,7 +1,5 @@
 -- See LICENSE for terms
 
---~ do return end
-
 local GetRealm = GetRealm
 local FindNearestObject = FindNearestObject
 
@@ -78,16 +76,29 @@ function RCTransport:ChoGGi_GetStockpile(res_type)
 
 	return GetRealm(self):MapFindNearest(
 		self, "map", res_type, function(stockpile)
-			-- can't get there
+
+			-- Can't get there
 			if unreachable_objects[stockpile]
-				-- in range of drone controller
-				or #(stockpile.command_centers or "") > 0
-				-- someone else is going for it
+				-- Someone else is going for it
 				or g_ChoGGi_RCTransportCheats_usedstocks[stockpile]
-				-- attached to a building
+				-- Attached to a building
 				or stockpile:GetParent()
 			then
 				return false
+			end
+			-- In range of drone controller (exclude artifact interface)
+			local cc_count = #(stockpile.command_centers or "")
+			if cc_count > 0 then
+				if self:GetMapID() ~= UIColony.underground_map_id then
+					return false
+				else
+					-- If underground and we find an artifact then let transport collect from wherever
+					for i = 1, cc_count do
+						if stockpile.command_centers[i]:IsKindOf("AncientArtifactInterface") then
+							return stockpile
+						end
+					end
+				end
 			end
 
 			return stockpile
@@ -99,9 +110,15 @@ function RCTransport:ChoGGi_GetNearestStockpile()
 	local stocks = {}
 
 	stocks[1] = self:ChoGGi_GetStockpile("ResourceStockpile")
+
+	-- Check for rc miner stockpiles
+	if table.find(ModsLoaded, "id", "ChoGGi_PortableMiner") then
+		stocks[2] = self:ChoGGi_GetStockpile("PortableStockpile")
+	end
+
 	-- Check for waste rock or only regular res
 	if mod_WasteRock then
-		stocks[2] = self:ChoGGi_GetStockpile("WasteRockStockpileUngrided")
+		stocks[#stocks+1] = self:ChoGGi_GetStockpile("WasteRockStockpileUngrided")
 	end
 
 	if stocks[2] then
@@ -151,7 +168,6 @@ function RCTransport:ProcAutomation(...)
 		return ChoOrig_RCTransport_ProcAutomation(...)
 	end
 
---~ 	if self:GetStoredAmount() <= 0 then
 	if not self:IsStorageFull() then
 		self:Automation_Gather()
 	else

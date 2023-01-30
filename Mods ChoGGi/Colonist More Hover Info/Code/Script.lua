@@ -22,6 +22,7 @@ function XRecreateRolloverWindow(win, ...)
 	if IsKindOf(context, "Colonist") and SelectedObj == context.workplace then
 		local text = {
 			win.RolloverText, "\n",
+			"\n", "Dome: <color -3618666>", context:GetDomeDisplayName(), "</color>", "\n",
 			T{stat, name = T(4291, "Health"), amount = UpdateColour(context:GetHealth() or 0)},
 			T{stat, name = T(4293, "Sanity"), amount = UpdateColour(context:GetSanity() or 0)},
 			T{stat, name = T(4295, "Comfort"), amount = UpdateColour(context:GetComfort() or 0)},

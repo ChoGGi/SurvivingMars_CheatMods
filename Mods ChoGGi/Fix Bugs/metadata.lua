@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 38,
+	"version", 39,
 	"version_major", 3,
-	"version_minor", 8,
+	"version_minor", 9,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -27,8 +27,8 @@ Storybit notification issue.
 Support struts malfunctioning and cave-ins.
 Stop ceiling/floating rubble.
 Log spam from IsBuildingInDomeRange().
-Clean up city labels of wrong map / invalid objs (colonists showing up on wrong map in infobar).
-Unpassable underground rocks stuck in path (not cavein rubble, but small rocks you can't select).
+Colonists showing up on wrong map in infobar.
+Unpassable underground rocks stuck in path (not cave-in rubble, but small rocks you can't select).
 Dredger tech fix (Spoilers see: https://www.reddit.com/r/SurvivingMars/comments/xnprjg/)
 Water Reclamation Spire and B&B upgrade tech caused issues (spoiler free, see more info below).
 Add rocket sound effects to SupplyPods (mod option to disable).
@@ -36,9 +36,7 @@ Force heat grid to update (see more info below).
 Personal Space storybit changes capacity, but building menu doesn't show it.
 Underground Rare Anomaly can give you underground dome prefabs, but locks them to surface.
 
-Probably mod related:
-A rocket missing the cargo table.
-g_ActiveOnScreenNotifications isn't a table.
+(4) Fixes for mods (no idea which mods / they're abandoned).
 
 [b]Incorporated mods:[/b] (so far)
 Fix Blank Mission Profile

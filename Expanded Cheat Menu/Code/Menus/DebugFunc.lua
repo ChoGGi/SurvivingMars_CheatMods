@@ -579,8 +579,8 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 --~ 			while not GameState.gameplay do
 --~ 				Sleep(500)
 --~ 			end
-			local UICity = UICity
-			while not UICity do
+			local MainCity = MainCity
+			while not MainCity do
 				Sleep(500)
 			end
 
@@ -1295,7 +1295,7 @@ do -- FlightGrid_Toggle
 			DeleteThread(grid_thread)
 		end
 		grid_thread = false
-		if UICity then
+		if MainCity then
 			DeleteLines()
 		end
 	end

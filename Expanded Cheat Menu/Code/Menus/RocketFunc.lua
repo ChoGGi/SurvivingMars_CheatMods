@@ -57,12 +57,12 @@ function ChoGGi.MenuFuncs.PassengerArkPod_Toggle()
 	if ChoGGi.UserSettings.PassengerArkPod then
 		ChoGGi.UserSettings.PassengerArkPod = nil
 		-- only blank it out if sponsor isn't new ark
-		if UICity  and sponsor.id ~= "NewArk"then
+		if MainCity and sponsor.id ~= "NewArk"then
 			sponsor.passenger_pod_class = nil
 		end
 	else
 		ChoGGi.UserSettings.PassengerArkPod = true
-		if UICity then
+		if MainCity then
 			sponsor.passenger_pod_class = "ArkPod"
 		end
 	end
@@ -195,7 +195,7 @@ end -- do
 --~ 	function ChoGGi.MenuFuncs.LaunchEmptyRocket()
 --~ 		local function CallBackFunc(answer)
 --~ 			if answer then
---~ 				UICity:OrderLanding()
+--~ 				MainCity:OrderLanding()
 --~ 			end
 --~ 		end
 --~ 		ChoGGi.ComFuncs.QuestionBox(

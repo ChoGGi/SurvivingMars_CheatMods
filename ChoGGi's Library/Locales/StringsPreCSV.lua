@@ -3,6 +3,7 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
+302535920000304, ""
 302535920000865, ""
 302535920001674, ""
 302535920001675, ""
@@ -1042,7 +1043,6 @@ Best hope you picked India as your Mars sponsor..."
 302535920000301, "Doubled the base amount."
 302535920000302, "%s: S M R T"
 302535920000303, "BreakThroughs Allowed"
-302535920000304, "%s: Nerdgasm"
 302535920000307, "All the tech/breakthroughs/mysteries"
 302535920000308, "All Tech"
 302535920000309, "All the regular tech"

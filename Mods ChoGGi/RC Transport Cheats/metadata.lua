@@ -7,14 +7,14 @@ return PlaceObj("ModDef", {
 			"version_minor", 7,
 		}),
 	},
-	"title", "RC Transport Tweaks",
+	"title", "RC Transport Cheats",
 	"id", "ChoGGi_RCTransportCheats",
 	"steam_id", "2744688978",
 	"pops_any_uuid", "648aa047-e33b-4074-9574-513fbd4eec3a",
 	"lua_revision", 1007000, -- Picard
-	"version", 10,
+	"version", 11,
 	"version_major", 1,
-	"version_minor", 0,
+	"version_minor", 1,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {

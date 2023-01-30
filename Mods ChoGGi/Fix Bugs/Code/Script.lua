@@ -146,7 +146,7 @@ do -- CityStart/LoadGame
 			end
 		end
 		--
-		-- Clean up city labels of wrong map / invalid objs
+		-- Colonists showing up on wrong map in infobar.
 		local function CleanObj(obj, label, map_id, city)
 			if IsValid(obj) then
 				if obj.GetMapID and obj:GetMapID() ~= map_id then
@@ -780,9 +780,40 @@ end
 --
 --
 --
+-- Some mod added a borked spec?
+-- [LUA ERROR] attempt to compare nil with number
+-- Mars/Lua/CargoRequest.lua(6): global GetCargoColonistSpecializationItems
+local ChoOrig_GetCargoColonistSpecializationItems = GetCargoColonistSpecializationItems
+function GetCargoColonistSpecializationItems(...)
+	if not mod_EnableMod then
+		return ChoOrig_GetCargoColonistSpecializationItems(...)
+	end
+
+	local specs = const.ColonistSpecialization
+	for _, item in pairs(specs) do
+		if not item.sort_key then
+			-- The usual specs are under 10000, so make whatever it is be at the end (luke's brothel uses 20000 I went bigger)
+			item.sort_key = 50000
+		end
+	end
+
+	return ChoOrig_GetCargoColonistSpecializationItems(...)
+end
 --
---
---
+-- Badly modded cargo (or some combination of mods)
+-- [LUA ERROR] Mars/Lua/CargoRequest.lua:373: bad argument #1 to 'pairs' (table expected, got boolean)
+local ChoOrig_CargoRequest_GetDestinationCargoList = CargoRequest.GetDestinationCargoList
+function CargoRequest:GetDestinationCargoList(...)
+	if not mod_EnableMod then
+		return ChoOrig_CargoRequest_GetDestinationCargoList(self, ...)
+	end
+
+	if not self.cargo_items then
+		self.cargo_items = {}
+	end
+
+	return ChoOrig_CargoRequest_GetDestinationCargoList(self, ...)
+end
 --
 -- Stop ceiling/floating rubble
 local ChoOrig_TriggerCaveIn = TriggerCaveIn

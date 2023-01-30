@@ -186,7 +186,7 @@ function ChoGGi.MenuFuncs.StartChallenge()
 		-- just in case
 		challenges[choice[1].value].TrackProgress = true
 
-		UICity:StartChallenge()
+		UIColony:StartChallenge()
 
 		MsgPopup(
 			choice[1].text,
@@ -195,7 +195,7 @@ function ChoGGi.MenuFuncs.StartChallenge()
 	end
 
 	local hint
-	local thread = UICity.challenge_thread
+	local thread = UIColony.challenge_thread
 	if not blacklist and IsValidThread(thread) then
 		local _, c = debug.getlocal(thread, 1, 1)
 		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. T(c.title) .. ", " .. c.id
@@ -334,7 +334,7 @@ function ChoGGi.MenuFuncs.SetSponsor()
 		end
 		local value = choice[1].value
 		local g_CurrentMissionParams = g_CurrentMissionParams
-		local UICity = UICity
+		local UIColony = UIColony
 		local sponsor = GetMissionSponsor()
 
 		-- check to make sure it isn't a fake name (no sense in saving it)
@@ -343,12 +343,12 @@ function ChoGGi.MenuFuncs.SetSponsor()
 				-- new spons
 				g_CurrentMissionParams.idMissionSponsor = value
 				-- apply tech from new sponsor
-				UICity:GrantTechFromProperties(sponsor)
-				sponsor:game_apply(UICity)
-				sponsor:EffectsApply(UICity)
-				UICity:ApplyModificationsFromProperties()
+				UIColony:GrantTechFromProperties(sponsor)
+				sponsor:game_apply(UIColony)
+				sponsor:EffectsApply(UIColony)
+				UIColony:ApplyModificationsFromProperties()
 				-- and bonuses
-				UICity:InitMissionBonuses()
+				UIColony:InitMissionBonuses()
 
 				MsgPopup(
 					TranslationTable[302535920001161--[[Sponsor for this save is now %s]]]:format(choice[1].text),
@@ -367,108 +367,9 @@ function ChoGGi.MenuFuncs.SetSponsor()
 	}
 end
 
---~ function ChoGGi.MenuFuncs.SetSponsorBonus()
---~ 	local UserSettings = ChoGGi.UserSettings
---~ 	local Presets = Presets
-
---~ 	local item_list = {}
---~ 	local c = 0
---~ 	local objs = Presets.MissionSponsorPreset.Default or ""
---~ 	for i = 1, #objs do
---~ 		local spon = objs[i]
---~ 		if spon.id ~= "random" and spon.id ~= "None" then
---~ 			local descr = GetSponsorDescr(spon, false, "include rockets", true, true)
---~ 			local stats
---~ 			-- the one we want is near the end, but there's also a blank item below it
---~ 			for j = 1, #descr do
---~ 				local des = descr[j]
---~ 				if type(des) == "table" then
---~ 					stats = des
---~ 				end
---~ 			end
-
---~ 			local user_set = UserSettings["Sponsor" .. spon.id]
---~ 			if user_set then
---~ 				user_set = ": " .. tostring(user_set)
---~ 			else
---~ 				user_set = " false"
---~ 			end
---~ 			local save_in = ""
---~ 			if spon.save_in and spon.save_in ~= "" then
---~ 				save_in = "\nsave_in: " .. spon.save_in
---~ 			end
-
---~ 			c = c + 1
---~ 			item_list[c] = {
---~ 				text = Translate(spon.display_name),
---~ 				value = spon.id,
---~ 				hint = Translate(T{spon.effect, stats[2]}) .. "\n\n"
---~ 					.. TranslationTable[302535920001165--[[Enabled Status]]] .. user_set .. save_in,
---~ 			}
---~ 		end
---~ 	end
-
---~ 	local function CallBackFunc(choice)
---~ 		if choice.nothing_selected then
---~ 			return
---~ 		end
---~ 		if choice[1].check2 then
---~ 			for i = 1, #item_list do
---~ 				local value = item_list[i].value
---~ 				if type(value) == "string" then
---~ 					value = "Sponsor" .. value
---~ 					UserSettings[value] = nil
---~ 				end
---~ 			end
---~ 		else
---~ 			for i = 1, #choice do
---~ 				local value = choice[i].value
---~ 				for j = 1, #item_list do
---~ 					-- check to make sure it isn't a fake name (no sense in saving it)
---~ 					if item_list[j].value == value and type(value) == "string" then
---~ 						local name = "Sponsor" .. value
---~ 						if choice[1].check1 then
---~ 							UserSettings[name] = nil
---~ 						else
---~ 							UserSettings[name] = true
---~ 						end
---~ 						if UserSettings[name] then
---~ 							ChoGGi.ComFuncs.SetSponsorBonuses(value)
---~ 						end
---~ 					end
---~ 				end
---~ 			end
---~ 		end
-
---~ 		ChoGGi.SettingFuncs.WriteSettings()
---~ 		MsgPopup(
---~ 			ChoGGi.ComFuncs.SettingState(#choice),
---~ 			TranslationTable[302535920000714--[[Set Bonuses Sponsor]]]
---~ 		)
---~ 	end
-
---~ 	ChoGGi.ComFuncs.OpenInListChoice{
---~ 		callback = CallBackFunc,
---~ 		items = item_list,
---~ 		title = TranslationTable[302535920000714--[[Set Bonuses Sponsor]]],
---~ 		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. T(GetMissionSponsor().display_name) .. "\n\n" .. TranslationTable[302535920001168--[[Modded ones are mostly ignored for now (just cargo space/research points).]]],
---~ 		multisel = true,
---~ 		checkboxes = {
---~ 			{
---~ 				title = TranslationTable[302535920001169--[[Turn Off]]],
---~ 				hint = TranslationTable[302535920001170--[[Turn off selected bonuses (defaults to turning on).]]],
---~ 			},
---~ 			{
---~ 				title = TranslationTable[302535920001171--[[Turn All Off]]],
---~ 				hint = TranslationTable[302535920001172--[[Turns off all bonuses.]]],
---~ 			},
---~ 		},
---~ 	}
---~ end
-
 function ChoGGi.MenuFuncs.SetCommander()
 	local g_CurrentMissionParams = g_CurrentMissionParams
-	local UICity = UICity
+	local UIColony = UIColony
 
 	local item_list = {}
 	local c = 0
@@ -498,14 +399,13 @@ function ChoGGi.MenuFuncs.SetCommander()
 				g_CurrentMissionParams.idCommanderProfile = value
 				-- apply tech from new commmander
 				local comm = GetCommanderProfile()
-				local UICity = UICity
 
-				comm:game_apply(UICity)
-				comm:EffectsApply(self)
-				UICity:ApplyModificationsFromProperties()
+				comm:game_apply(UIColony)
+				comm:EffectsApply(UIColony)
+				UIColony:ApplyModificationsFromProperties()
 
 				-- and bonuses
-				UICity:InitMissionBonuses()
+				UIColony:InitMissionBonuses()
 
 				MsgPopup(
 					TranslationTable[302535920001173--[[Commander for this save is now %s.]]]:format(choice[1].text),
@@ -523,88 +423,6 @@ function ChoGGi.MenuFuncs.SetCommander()
 		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. T(GetCommanderProfile().display_name),
 	}
 end
-
---~ function ChoGGi.MenuFuncs.SetCommanderBonus()
---~ 	local Presets = Presets
---~ 	local UserSettings = ChoGGi.UserSettings
-
---~ 	local item_list = {}
---~ 	local c = 0
---~ 	local objs = Presets.CommanderProfilePreset.Default or ""
---~ 	for i = 1, #objs do
---~ 		local comm = objs[i]
---~ 		if comm.id ~= "random" and comm.id ~= "None" then
---~ 			local user_set = UserSettings["Commander" .. comm.id]
-
---~ 			c = c + 1
---~ 			item_list[c] = {
---~ 				text = Translate(comm.display_name),
---~ 				value = comm.id,
---~ 				hint = Translate(comm.effect) .. "\n\n"
---~ 					.. TranslationTable[302535920001165--[[Enabled Status]]]
---~ 					.. (user_set and ": " .. comm.id or " false"),
---~ 			}
---~ 		end
---~ 	end
-
---~ 	local function CallBackFunc(choice)
---~ 		if choice.nothing_selected then
---~ 			return
---~ 		end
-
---~ 		if choice[1].check2 then
---~ 			for i = 1, #item_list do
---~ 				local value = item_list[i].value
---~ 				if type(value) == "string" then
---~ 					value = "Commander" .. value
---~ 					UserSettings[value] = nil
---~ 				end
---~ 			end
---~ 		else
---~ 			for i = 1, #choice do
---~ 				for j = 1, #item_list do
---~ 					-- check to make sure it isn't a fake name (no sense in saving it)
---~ 					local value = choice[i].value
---~ 					if item_list[j].value == value and type(value) == "string" then
---~ 						local name = "Commander" .. value
---~ 						if choice[1].check1 then
---~ 							UserSettings[name] = nil
---~ 						else
---~ 							UserSettings[name] = true
---~ 						end
---~ 						if UserSettings[name] then
---~ 							ChoGGi.ComFuncs.SetCommanderBonuses(value)
---~ 						end
---~ 					end
---~ 				end
---~ 			end
---~ 		end
-
---~ 		ChoGGi.SettingFuncs.WriteSettings()
---~ 		MsgPopup(
---~ 			ChoGGi.ComFuncs.SettingState(#choice),
---~ 			TranslationTable[302535920000718--[[Set Bonuses Commander]]]
---~ 		)
---~ 	end
-
---~ 	ChoGGi.ComFuncs.OpenInListChoice{
---~ 		callback = CallBackFunc,
---~ 		items = item_list,
---~ 		title = TranslationTable[302535920000718--[[Set Bonuses Commander]]],
---~ 		hint = TranslationTable[302535920000106--[[Current]]] .. ": " .. T(GetCommanderProfile().display_name),
---~ 		multisel = true,
---~ 		checkboxes = {
---~ 			{
---~ 				title = TranslationTable[302535920001169--[[Turn Off]]],
---~ 				hint = TranslationTable[302535920001170--[[Turn off selected bonuses (defaults to turning on).]]],
---~ 			},
---~ 			{
---~ 				title = TranslationTable[302535920001171--[[Turn All Off]]],
---~ 				hint = TranslationTable[302535920001172--[[Turns off all bonuses.]]],
---~ 			},
---~ 		},
---~ 	}
---~ end
 
 function ChoGGi.MenuFuncs.ChangeGameLogo()
 	local MissionLogoPresetMap = MissionLogoPresetMap
@@ -787,11 +605,11 @@ function ChoGGi.MenuFuncs.ChangeRules()
 
 		-- apply new rules, something tells me this doesn't disable old rules...
 		local rules = GetActiveGameRules()
-		local UICity = UICity
+		local UIColony = UIColony
 		for i = 1, #rules do
 			local rule = rules[i]
-			GameRulesMap[rule]:EffectsInit(UICity)
-			GameRulesMap[rule]:EffectsApply(UICity)
+			GameRulesMap[rule]:EffectsInit(UIColony)
+			GameRulesMap[rule]:EffectsApply(UIColony)
 		end
 
 		MsgPopup(

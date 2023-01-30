@@ -22,7 +22,7 @@ Actions[c] = {ActionName = TranslationTable[4604--[[Rare Metals Price (M)]]],
 	ActionId = ".Rare Metals Price (M)",
 	ActionIcon = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
 	RolloverText = function()
-		if UICity then
+		if MainCity then
 			return SettingState(
 				ChoGGi.UserSettings.ExportPricePreciousMetals,
 				TranslationTable[4603--[[Amount of Funding (in millions) received by exporting one unit of Rare Metals]]]
@@ -39,7 +39,7 @@ Actions[c] = {ActionName = TranslationTable[302535920000719--[[Add Orbital Probe
 	ActionId = ".Add Orbital Probes",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleTerrainHeight.tga",
 	RolloverText = function()
-		if UICity then
+		if MainCity then
 			return SettingState(
 				#(MainCity.labels.OrbitalProbe or "") + #(MainCity.labels.AdvancedOrbitalProbe or ""),
 				TranslationTable[302535920000720--[[Add more probes.]]]
@@ -80,7 +80,7 @@ Actions[c] = {ActionName = TranslationTable[3613--[[Funding]]],
 	ActionId = ".Funding",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = function()
-		if UICity then
+		if MainCity then
 			return SettingState(
 				LocaleInt(UIColony.funds.funding),
 				TranslationTable[302535920000726--[[Add more funding (or reset back to 500 M).]]]

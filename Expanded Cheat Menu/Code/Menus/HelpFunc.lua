@@ -1125,7 +1125,7 @@ function ChoGGi.MenuFuncs.ListAllMenuItems()
 end
 
 function ChoGGi.MenuFuncs.RetMapInfo()
-	if not UICity then
+	if not MainCity then
 		return
 	end
 	local data = HashLogToTable()

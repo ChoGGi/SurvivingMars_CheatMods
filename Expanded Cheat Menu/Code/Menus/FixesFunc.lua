@@ -178,7 +178,6 @@ do -- Colonist stuff
 	local FindNearestObject = FindNearestObject
 
 	function ChoGGi.MenuFuncs.ResetAllColonists()
---~ 		local UICity = UICity
 		local function CallBackFunc(answer)
 			if answer then
 				local objs = UIColony:GetCityLabels("Colonist")
@@ -203,7 +202,6 @@ do -- Colonist stuff
 	end
 
 	function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
---~ 		local UICity = UICity
 		local objs = UIColony:GetCityLabels("Colonist")
 		local rockets = UIColony:GetCityLabels("SupplyRocket")
 		for i = 1, #objs do

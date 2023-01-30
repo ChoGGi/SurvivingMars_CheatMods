@@ -311,10 +311,10 @@ function ChoGGi.MenuFuncs.AddApplicantsToPool()
 			)
 		else
 			if type(value) == "number" then
-				local UICity = UICity
+				local MainCity = MainCity
 				local now = GameTime()
 				for _ = 1, value do
-					GenerateApplicant(now, UICity)
+					GenerateApplicant(now, MainCity)
 				end
 				g_LastGeneratedApplicantTime = now
 				MsgPopup(

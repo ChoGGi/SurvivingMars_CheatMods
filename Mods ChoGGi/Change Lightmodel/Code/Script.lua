@@ -2,8 +2,8 @@
 
 local mod_EnableMod
 
+-- We don't want to override these.
 local skip_lightmodels = {
-	Curiosity = true,
 	Dreamers = true,
 	ColdWave = true,
 	DustStorm = true,
@@ -28,7 +28,7 @@ local function SetLight(msg, timeout)
 		local map_id = MainCity.map_id
 		local lm = CurrentLightmodel[map_id][1]
 		local postfix = lm.id
-		-- returns 12,12 which doesn't work for what we want :sub for
+		-- Returns 12,12 which doesn't work for what we want :sub for
 		local underscore_count = postfix:find("_")
 		if not underscore_count then
 			print("Change Lightmodel lightmodel id issue:", postfix, map_id, lm)
@@ -67,6 +67,15 @@ local mod_options = {}
 local lightmodels = {
 	"Terraformed",
 	"TheMartian",
+
+	"Asteroid",
+	"ColdWave",
+	"Curiosity",
+	"Dreamers",
+	"DustStorm",
+	"GreatDustStorm",
+	"ToxicRain",
+	"WaterRain",
 }
 
 for i = 1, #lightmodels do

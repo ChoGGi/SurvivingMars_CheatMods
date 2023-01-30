@@ -9,7 +9,19 @@ local c = 0
 local lightmodels = {
 	"Terraformed",
 	"TheMartian",
+
+	"Asteroid",
+	"ColdWave",
+	"Curiosity",
+	"Dreamers",
+	"DustStorm",
+	"GreatDustStorm",
+	"ToxicRain",
+	"WaterRain",
 }
+--~ LightmodelPresets
+--~ LightmodelLists
+
 for i = 1, #lightmodels do
 	local id = lightmodels[i]
 		c = c + 1

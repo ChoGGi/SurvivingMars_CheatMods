@@ -524,7 +524,7 @@ function ChoGGi.MenuFuncs.WhiterRocks()
 end
 
 function ChoGGi.MenuFuncs.SetObjectOpacity()
-	if not UICity then
+	if not MainCity then
 		return
 	end
 
@@ -718,7 +718,7 @@ do -- ListAllObjects
 	end
 
 	function ChoGGi.MenuFuncs.ListAllObjects()
-		if not UICity then
+		if not MainCity then
 			return
 		end
 

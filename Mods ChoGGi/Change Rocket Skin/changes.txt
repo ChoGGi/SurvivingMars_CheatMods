@@ -1,3 +1,6 @@
+v1.0
+Added mod option to skip the Pods/rover skins.
+
 v0.9
 Compatible with Coloured Depots.
 
