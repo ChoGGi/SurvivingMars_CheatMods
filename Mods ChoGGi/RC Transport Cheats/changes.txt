@@ -1,3 +1,6 @@
+v1.2
+If drone controller has no drones then transport will harvest in their area.
+
 v1.1
 Ignores certain underground wonder.
 Added support for stockpiles from RC Miner.

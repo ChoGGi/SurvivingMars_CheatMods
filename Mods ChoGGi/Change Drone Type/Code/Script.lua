@@ -111,11 +111,16 @@ end
 
 -- set default drone type
 local function StartupCode()
-	local UICity = UICity
-	if mod_AlwaysWasp then
-		UICity.drone_class = "FlyingDrone"
-	else
-		UICity.drone_class = UICity.drone_class or GetMissionSponsor().drone_class or "Drone"
+	local sponsor = GetMissionSponsor().drone_class
+
+	local Cities = Cities
+	for i = 1, #Cities do
+		local city = Cities[i]
+		if mod_AlwaysWasp then
+			city.drone_class = "FlyingDrone"
+		else
+			city.drone_class = city.drone_class or sponsor or "Drone"
+		end
 	end
 end
 

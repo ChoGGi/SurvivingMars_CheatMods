@@ -77,6 +77,8 @@ function RCTransport:ChoGGi_GetStockpile(res_type)
 	return GetRealm(self):MapFindNearest(
 		self, "map", res_type, function(stockpile)
 
+			local drones = false
+
 			-- Can't get there
 			if unreachable_objects[stockpile]
 				-- Someone else is going for it
@@ -89,19 +91,22 @@ function RCTransport:ChoGGi_GetStockpile(res_type)
 			-- In range of drone controller (exclude artifact interface)
 			local cc_count = #(stockpile.command_centers or "")
 			if cc_count > 0 then
-				if self:GetMapID() ~= UIColony.underground_map_id then
-					return false
-				else
-					-- If underground and we find an artifact then let transport collect from wherever
-					for i = 1, cc_count do
-						if stockpile.command_centers[i]:IsKindOf("AncientArtifactInterface") then
-							return stockpile
-						end
+				for i = 1, cc_count do
+					local cc = stockpile.command_centers[i]
+					-- If we find an artifact then let transport collect from wherever (mod that sticks ai on surface?)
+					if cc:IsKindOf("AncientArtifactInterface") then
+						return stockpile
+					end
+					-- Found a drone
+					if #cc.drones > 0 then
+						drones = true
 					end
 				end
 			end
 
-			return stockpile
+			if not drones then
+				return stockpile
+			end
 		end
 	)
 end

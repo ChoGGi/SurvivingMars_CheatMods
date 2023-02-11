@@ -381,13 +381,14 @@ end
 
 function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(gen)
 
-	if ChoGGi.testing then
+	if false then
+--~ 	if ChoGGi.testing then
 		local state = RandState(gen.Seed)
 		local rand = function(min, max)
 			return state:GetStable(min, max)
 		end
 
-		ex(rand)
+--~ 		ex(rand)
 --~ 		Seed = 977816133 < 0nw0
 --~ 		randstate == 2074321580 (CaveOfWonders/AncientArtifact)
 

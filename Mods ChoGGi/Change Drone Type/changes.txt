@@ -1,3 +1,6 @@
+v0.8
+Always Wasp option wasn't set on all maps.
+
 v0.7
 Added override for Supply Pod and Always Wasp.
 

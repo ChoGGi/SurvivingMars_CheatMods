@@ -38,7 +38,6 @@ local function ModOptions(id)
 
 	mod_MrBumble = CurrentModOptions:GetProperty("MrBumble")
 
---~	local ct = ClassTemplates.Building
 	local g_Classes = g_Classes
 
 	local BuildingTemplates = BuildingTemplates

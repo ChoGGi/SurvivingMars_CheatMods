@@ -43,6 +43,9 @@ do -- non-class obj funcs
 		if not UserSettings.DisasterQuakeDisable then
 			return ChoOrig_TriggerMarsquake(...)
 		end
+		if UserSettings.DisasterQuakeDisable then
+			printC("ECM DisasterQuakeDisable")
+		end
 	end
 
 	-- don't trigger toxic rains if setting is enabled
@@ -51,6 +54,9 @@ do -- non-class obj funcs
 	function RainProcedure(settings, ...)
 		if settings.type == "normal" or not UserSettings.DisasterRainsDisable then
 			return ChoOrig_RainProcedure(settings, ...)
+		end
+		if UserSettings.DisasterRainsDisable then
+			printC("ECM DisasterRainsDisable")
 		end
 	end
 

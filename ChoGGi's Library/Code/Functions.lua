@@ -8,6 +8,15 @@ function return_false_func()
 	return false
 end
 
+function toboolean(str)
+	if str == "true" then
+		return true
+	elseif str == "false" then
+		return false
+	end
+--~ 	return 0/0
+end
+
 -- add PostSaveGame to be a companion for SaveGame
 local ChoOrig_ReportPersistErrors = ReportPersistErrors
 ChoGGi.ComFuncs.AddToOrigFuncs("ReportPersistErrors")

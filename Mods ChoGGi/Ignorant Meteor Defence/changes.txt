@@ -1,3 +1,6 @@
+v0.6
+Reverted rocks first code.
+
 v0.5
 Checks for rocks first, then buildings, then resources.
 
