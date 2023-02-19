@@ -19,4 +19,10 @@ return {
 		"Help", T(302535920011503, "Signs are visible during construction."),
 		"DefaultValue", false,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "AlwaysShowDeposits",
+		"DisplayName", T(0000, "Always Show Deposits"),
+		"Help", T(0000, "Deposit textures will be visible before sector scan."),
+		"DefaultValue", false,
+	}),
 }

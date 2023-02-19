@@ -14,7 +14,8 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"has_options", true,
 	"TagOther", true,
-	"description", [[The disable fireworks option doesn't "stick" on xbox.
+	"description", [[
+The disable fireworks option doesn't "stick" on xbox.
 
 
 Requested by MrPellaeon.]],

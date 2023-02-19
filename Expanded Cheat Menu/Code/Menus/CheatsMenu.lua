@@ -14,15 +14,14 @@ Actions[c] = {ActionName = TranslationTable[302535920001355--[[Map]]] .. " " .. 
 	RolloverText = TranslationTable[302535920000328--[[Scanning, deep scanning, core mines, and alien imprints.]]],
 	OnAction = ChoGGi.MenuFuncs.MapExploration,
 }
-
---~ c = c + 1
---~ Actions[c] = {ActionName = TranslationTable[5661--[[Mystery Log]]],
---~ 	ActionMenubar = "ECM.Cheats",
---~ 	ActionId = ".Mystery Log",
---~ 	ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
---~ 	RolloverText = TranslationTable[302535920000330--[[Advance to next part, show what part you're on, or remove mysteries.]]],
---~ 	OnAction = ChoGGi.MenuFuncs.MysteryLog,
---~ }
+c = c + 1
+Actions[c] = {ActionName = TranslationTable[302535920000304--[[Remove Mysteries]]],
+	ActionMenubar = "ECM.Cheats",
+	ActionId = ".Mystery Log",
+	ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
+	RolloverText = TranslationTable[302535920000330--[[Use to remove mysteries.]]],
+	OnAction = ChoGGi.MenuFuncs.MysteryLog,
+}
 c = c + 1
 Actions[c] = {ActionName = TranslationTable[302535920000331--[[Mystery Start]]],
 	ActionMenubar = "ECM.Cheats",

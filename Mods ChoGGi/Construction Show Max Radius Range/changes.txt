@@ -1,3 +1,6 @@
+v2.0
+Doesn't show max range for tribby construction site (causes issues, thanks Denniss).
+
 v1.9
 Removed Set Max Radius, use (QoL) Triboelectric Scrubber defaults to max range instead
 

@@ -1169,9 +1169,7 @@ do -- StartMystery
 			callback = CallBackFunc,
 			items = item_list,
 			title = TranslationTable[302535920000268--[[Start A Mystery]]],
-			hint = TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000269--[["Adding a mystery is cumulative, this will NOT replace existing mysteries.
-
-See Cheats>%s to remove."]]]:format(TranslationTable[5661--[[Mystery Log]]]),
+			hint = TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000269--[["Adding a mystery is cumulative, this will NOT replace existing mysteries."]]],
 			skip_sort = true,
 			checkboxes = {
 				{
@@ -1183,179 +1181,180 @@ See Cheats>%s to remove."]]]:format(TranslationTable[5661--[[Mystery Log]]]),
 	end
 end -- do
 
---~ do -- Mystery Log
---~ 	-- loops through all the sequences and adds the logs we've already seen
---~ 	local function ShowMysteryLog(choice)
---~ 		local myst_id
---~ 		if type(choice) == "string" then
---~ 			myst_id = choice
---~ 		else
---~ 			myst_id = choice[1].value
---~ 		end
+do -- Mystery Log
+	-- loops through all the sequences and adds the logs we've already seen
+	local function ShowMysteryLog(choice)
+		local myst_id
+		if type(choice) == "string" then
+			myst_id = choice
+		else
+			myst_id = choice[1].value
+		end
 
---~ 		local msgs = {myst_id .. "\n\n" .. TranslationTable[302535920000272--[["To play back speech press the ""%s"" checkbox and type in
---~ 	g_Voice:Play(o.speech)"]]]:format(TranslationTable[302535920000040--[[Exec Code]]]) .. "\n"}
---~ 		local c = #msgs
---~ 		local s_SeqListPlayers = s_SeqListPlayers
---~ 		-- 1 is some default map thing
---~ 		if #s_SeqListPlayers < 2 then
---~ 			return
---~ 		end
---~ 		for i = 1, #s_SeqListPlayers do
---~ 			if i > 1 then
---~ 				local seq_list = s_SeqListPlayers[i].seq_list
---~ 				if seq_list.name == myst_id then
---~ 					for j = 1, #seq_list do
---~ 						local scenarios = seq_list[j]
---~ 						local state = s_SeqListPlayers[i].seq_states[scenarios.name]
---~ 						-- have we started this seq yet?
---~ 						if state then
---~ 							for k = 1, #scenarios do
---~ 								local seq = scenarios[k]
---~ 								if seq:IsKindOf("SA_WaitMessage") then
---~ 									-- add to msg list
---~ 									c = c + 1
---~ 									msgs[c] = {
---~ 										[" "] = TranslationTable[302535920000273--[[Speech]]] .. ": "
---~ 											.. Translate(seq.voiced_text) .. "\n\n\n\n"
---~ 											.. TranslationTable[302535920000274--[[Message]]] .. ": "
---~ 											.. Translate(seq.text),
---~ 										speech = seq.voiced_text,
---~ 										class = Translate(seq.title)
---~ 									}
---~ 								end
---~ 							end
---~ 						end
---~ 					end
---~ 				end
---~ 			end
---~ 		end
---~ 		-- display to user
---~ 		ChoGGi.ComFuncs.OpenInExamineDlg(msgs, point(550, 100))
---~ 	end
+		local msgs = {myst_id .. "\n\n" .. TranslationTable[302535920000272--[["To play back speech press the ""%s"" checkbox and type in
+	g_Voice:Play(o.speech)"]]]:format(TranslationTable[302535920000040--[[Exec Code]]]) .. "\n"}
+		local c = #msgs
+		local s_SeqListPlayers = s_SeqListPlayers
+		-- 1 is some default map thing
+		if #s_SeqListPlayers < 2 then
+			return
+		end
+		for i = 1, #s_SeqListPlayers do
+			if i > 1 then
+				local seq_list = s_SeqListPlayers[i].seq_list
+				if seq_list.name == myst_id then
+					for j = 1, #seq_list do
+						local scenarios = seq_list[j]
+						local state = s_SeqListPlayers[i].seq_states[scenarios.name]
+						-- have we started this seq yet?
+						if state then
+							for k = 1, #scenarios do
+								local seq = scenarios[k]
+								if seq:IsKindOf("SA_WaitMessage") then
+									-- add to msg list
+									c = c + 1
+									msgs[c] = {
+										[" "] = TranslationTable[302535920000273--[[Speech]]] .. ": "
+											.. Translate(seq.voiced_text) .. "\n\n\n\n"
+											.. TranslationTable[302535920000274--[[Message]]] .. ": "
+											.. Translate(seq.text),
+										speech = seq.voiced_text,
+										class = Translate(seq.title)
+									}
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+		-- display to user
+		ChoGGi.ComFuncs.OpenInExamineDlg(msgs, point(550, 100))
+	end
 
---~ 	function ChoGGi.MenuFuncs.MysteryLog()
---~ 		local s_SeqListPlayers = s_SeqListPlayers
---~ 		if not s_SeqListPlayers then
---~ 			return
---~ 		end
---~ 		if #s_SeqListPlayers == 1 then
---~ 			MsgPopup(
---~ 				"0",
---~ 				T(5661, "Mystery Log")
---~ 			)
---~ 			return
---~ 		end
+	function ChoGGi.MenuFuncs.MysteryLog()
+		local s_SeqListPlayers = s_SeqListPlayers
+		if not s_SeqListPlayers then
+			return
+		end
+		if #s_SeqListPlayers == 1 then
+			MsgPopup(
+				"0",
+				T(5661, "Mystery Log")
+			)
+			return
+		end
 
---~ 		local item_list = {}
---~ 		local c = 0
---~ 		local mysteries = ChoGGi.Tables.Mystery
---~ 		for i = 1, #s_SeqListPlayers do
---~ 			-- 1 is always there from map loading
---~ 			if i > 1 then
---~ 				local seq_list = s_SeqListPlayers[i].seq_list
---~ 				if not seq_list[1] then
---~ 					MsgPopup(
---~ 						"0",
---~ 						T(5661, "Mystery Log")
---~ 					)
---~ 					return
---~ 				end
---~ 				local totalparts = #seq_list[1]
---~ 				local id = seq_list.name
---~ 				if mysteries[id] then
---~ 					local ip = s_SeqListPlayers[i].seq_states[seq_list[1].name].ip
+		local item_list = {}
+		local c = 0
+		local mysteries = ChoGGi.Tables.Mystery
+		for i = 1, #s_SeqListPlayers do
+			-- 1 is always there from map loading
+			if i > 1 then
+				local seq_list = s_SeqListPlayers[i].seq_list
+				if not seq_list[1] then
+					MsgPopup(
+						"0",
+						T(5661, "Mystery Log")
+					)
+					return
+				end
+				local totalparts = #seq_list[1]
+				local id = seq_list.name
+				if mysteries[id] then
+					local ip = s_SeqListPlayers[i].seq_states[seq_list[1].name].ip
 
---~ 					s_SeqListPlayers[i].mystery_idx = i
---~ 					c = c + 1
---~ 					item_list[c] = {
---~ 						text = id .. ": " .. mysteries[id].name,
---~ 						value = id,
---~ 						func = id,
---~ 						mystery_idx = i,
---~ 						hint = "<image " .. mysteries[id].image .. ">\n\n\n<color 255 75 75>"
---~ 							.. TranslationTable[302535920000275--[[Total parts]]] .. "</color>: " .. totalparts
---~ 							.. " <color 255 75 75>" .. TranslationTable[302535920000289--[[Current part]]]
---~ 							.. "</color>: " .. (ip or TranslationTable[302535920000276--[[done?]]])
---~ 							.. "\n\n" .. mysteries[id].description,
---~ 					}
---~ 				end
---~ 			end
---~ 		end
+					s_SeqListPlayers[i].mystery_idx = i
+					c = c + 1
+					item_list[c] = {
+						text = id .. ": " .. mysteries[id].name,
+						value = id,
+						func = id,
+						mystery_idx = i,
+						hint = "<image " .. mysteries[id].image .. ">\n\n\n<color 255 75 75>"
+							.. TranslationTable[302535920000275--[[Total parts]]] .. "</color>: " .. totalparts
+							.. " <color 255 75 75>" .. TranslationTable[302535920000289--[[Current part]]]
+							.. "</color>: " .. (ip or TranslationTable[302535920000276--[[done?]]])
+							.. "\n\n" .. mysteries[id].description,
+					}
+				end
+			end
+		end
 
---~ 		local function CallBackFunc(choice)
---~ 			if choice.nothing_selected then
---~ 				return
---~ 			end
---~ 			choice = choice[1]
+		local function CallBackFunc(choice)
+			if choice.nothing_selected then
+				return
+			end
+			choice = choice[1]
 
---~ 			local value = choice.value
---~ 			local mystery_idx = choice.mystery_idx
---~ 			local ThreadsMessageToThreads = ThreadsMessageToThreads
+			local value = choice.value
+			local mystery_idx = choice.mystery_idx
+			local ThreadsMessageToThreads = ThreadsMessageToThreads
 
---~ 			if choice.check2 then
---~ 				-- remove all
---~ 				for i = #s_SeqListPlayers, 1, -1 do
---~ 					if i > 1 then
---~ 						s_SeqListPlayers[i]:delete()
---~ 					end
---~ 				end
---~ 				for t in pairs(ThreadsMessageToThreads) do
---~ 					if t.player and t.player.seq_list.file_name then
---~ 						DeleteThread(t.thread)
---~ 						t = nil
---~ 					end
---~ 				end
---~ 				MsgPopup(
---~ 					TranslationTable[302535920000277--[[Removed all!]]],
---~ 					T(5661--[[Mystery Log]])
---~ 				)
---~ 			elseif choice.check1 then
---~ 				-- remove mystery
---~ 				for i = #s_SeqListPlayers, 1, -1 do
---~ 					if s_SeqListPlayers[i].mystery_idx == mystery_idx then
---~ 						s_SeqListPlayers[i]:delete()
---~ 						break
---~ 					end
---~ 				end
---~ 				for t in pairs(ThreadsMessageToThreads) do
---~ 					if t.player and t.player.mystery_idx == mystery_idx then
---~ 						DeleteThread(t.thread)
---~ 						t = nil
---~ 					end
---~ 				end
---~ 				MsgPopup(
---~ 					choice.text .. ": " .. TranslationTable[3486--[[Mystery]]] .. " " .. TranslationTable[302535920000278--[[Removed]]] .. "!",
---~ 					T(5661--[[Mystery Log]])
---~ 				)
+			if choice.check2 then
+				-- remove all
+				for i = #s_SeqListPlayers, 1, -1 do
+					if i > 1 then
+						s_SeqListPlayers[i]:delete()
+					end
+				end
+				for t in pairs(ThreadsMessageToThreads) do
+					if t.player and t.player.seq_list.file_name then
+						DeleteThread(t.thread)
+						t = nil
+					end
+				end
+				MsgPopup(
+					TranslationTable[302535920000277--[[Removed all!]]],
+					T(5661--[[Mystery Log]])
+				)
+			elseif choice.check1 then
+				-- remove mystery
+				for i = #s_SeqListPlayers, 1, -1 do
+					if s_SeqListPlayers[i].mystery_idx == mystery_idx then
+						s_SeqListPlayers[i]:delete()
+						break
+					end
+				end
+				for t in pairs(ThreadsMessageToThreads) do
+					if t.player and t.player.mystery_idx == mystery_idx then
+						DeleteThread(t.thread)
+						t = nil
+					end
+				end
+				MsgPopup(
+					choice.text .. ": " .. TranslationTable[3486--[[Mystery]]] .. " " .. TranslationTable[302535920000278--[[Removed]]] .. "!",
+					T(5661--[[Mystery Log]])
+				)
 --~ 			elseif value then
 --~ 				-- next step
 --~ 				ChoGGi.MenuFuncs.NextMysterySeq(value, mystery_idx)
---~ 			end
+			end
 
---~ 		end
+		end
 
---~ 		ChoGGi.ComFuncs.OpenInListChoice{
---~ 			callback = CallBackFunc,
---~ 			items = item_list,
---~ 			custom_type = 6,
---~ 			custom_func = ShowMysteryLog,
---~ 			title = T(5661--[[Mystery Log]]),
+		ChoGGi.ComFuncs.OpenInListChoice{
+			callback = CallBackFunc,
+			items = item_list,
+			custom_type = 6,
+			custom_func = ShowMysteryLog,
+			title = T(5661--[[Mystery Log]]),
 --~ 			hint = TranslationTable[302535920000280--[[Skip the timer delay, and optionally skip the requirements (applies to all mysteries that are the same type).
 --~ 	Sequence part may have more then one check, you may have to skip twice or more.
 --~ 	Double right-click selected mystery to review past messages.]]],
---~ 			checkboxes = {
---~ 				{
---~ 					title = TranslationTable[302535920000281--[[Remove]]],
---~ 					hint = TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000282--[[This will remove the mystery, if you start it again; it'll be back to the start.]]],
---~ 				},
---~ 				{
---~ 					title = TranslationTable[302535920000283--[[Remove All]]],
---~ 					hint = TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000284--[[This will remove all the mysteries!]]],
---~ 				},
---~ 			},
---~ 		}
---~ 	end
+			checkboxes = {
+				{
+					title = TranslationTable[302535920000281--[[Remove]]],
+					hint = TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000282--[[This will remove the mystery, if you start it again; it'll be back to the start.]]],
+					checked = true,
+				},
+				{
+					title = TranslationTable[302535920000283--[[Remove All]]],
+					hint = TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000284--[[This will remove all the mysteries!]]],
+				},
+			},
+		}
+	end
 
 --~ 	function ChoGGi.MenuFuncs.NextMysterySeq(mystery, mystery_idx)
 --~ 		local g_Classes = g_Classes
@@ -1492,7 +1491,8 @@ end -- do
 --~ 		end --for t
 
 --~ 	end
---~ end -- do
+
+end -- do
 
 function ChoGGi.MenuFuncs.UnlockAllBuildings_Toggle()
 	local item_list = {

@@ -138,12 +138,13 @@ end
 --~ 	obj.UIRange = uirange
 --~ end
 
-function OnMsg.ConstructionSitePlaced(obj)
-	if obj.building_class_proto:IsKindOf("TriboelectricScrubber") then
-		local props = TriboelectricScrubber:GetProperties()
-		local idx = table.find(props, "id", "UIRange")
-		if idx then
-			obj.building_class_proto.UIRange = props[idx].max
-		end
-	end
-end
+-- makes tribby range look maxed until loading save
+--~ function OnMsg.ConstructionSitePlaced(obj)
+--~ 	if obj.building_class_proto:IsKindOf("TriboelectricScrubber") then
+--~ 		local props = TriboelectricScrubber:GetProperties()
+--~ 		local idx = table.find(props, "id", "UIRange")
+--~ 		if idx then
+--~ 			obj.building_class_proto.UIRange = props[idx].max
+--~ 		end
+--~ 	end
+--~ end

@@ -14,7 +14,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagOther", true,
-	"description", [[If you've got any shuttles stuck mid-air, this only checks for them on load.
+	"description", [[
+If you've got any shuttles stuck mid-air, this checks for them on load.
 
 You should disable it afterwards (or at least till the next time it happens) in mod options, or it'll keep resetting your shuttles.
 ]],

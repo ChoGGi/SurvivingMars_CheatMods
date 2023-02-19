@@ -2,6 +2,7 @@
 
 ## v18.8 (Unreleased)
 ### Changed:
+- Re-added Remove Mysteries menu item.
 - SkipModEditorDialog renamed to SkipModEditorCompletely, so it doesn't come back to bite me anymore.
 
 ### Fixed:

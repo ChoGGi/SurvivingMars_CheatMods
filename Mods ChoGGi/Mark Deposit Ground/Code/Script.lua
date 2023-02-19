@@ -1,6 +1,10 @@
 -- See LICENSE for terms
 
 local AsyncRand = AsyncRand
+local GetTerrain = GetTerrain
+local sqrt = sqrt
+local MulDivRound = MulDivRound
+local GridOpFree = GridOpFree
 local table = table
 local TerrainTextures = TerrainTextures
 
@@ -8,6 +12,7 @@ local UpdateOptions
 local mod_AlienAnomaly
 local mod_HideSigns
 local mod_ShowConstruct
+local mod_AlwaysShowDeposits
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -18,6 +23,7 @@ local function ModOptions(id)
 	mod_AlienAnomaly = CurrentModOptions:GetProperty("AlienAnomaly")
 	mod_HideSigns = CurrentModOptions:GetProperty("HideSigns")
 	mod_ShowConstruct = CurrentModOptions:GetProperty("ShowConstruct")
+	mod_AlwaysShowDeposits = CurrentModOptions:GetProperty("AlwaysShowDeposits")
 
 	UpdateOptions()
 end
@@ -27,8 +33,10 @@ OnMsg.ModsReloaded = ModOptions
 OnMsg.ApplyModOptions = ModOptions
 
 local texture_metal = table.find(TerrainTextures, "name", "RockDark") + 1
-local texture_mpres = table.find(TerrainTextures, "name", "GravelDark") + 1
-local texture_water = table.find(TerrainTextures, "name", "Spider") + 1
+--~ local texture_mpres = table.find(TerrainTextures, "name", "GravelDark") + 1
+local texture_mpres = table.find(TerrainTextures, "name", "Regolith_02") + 1
+--~ local texture_water = table.find(TerrainTextures, "name", "Spider") + 1
+local texture_water = table.find(TerrainTextures, "name", "Polar_01") + 1
 
 local function UpdateDeposit(d)
 	if d:IsKindOf("EffectDeposit") then
@@ -39,11 +47,11 @@ local function UpdateDeposit(d)
 	local pattern = NoisePreset.ConcreteForm:GetNoise(128, AsyncRand())
 	pattern:land_i(NoisePreset.ConcreteNoise:GetNoise(128, AsyncRand()))
 
-	if d:IsKindOf("SubsurfaceDepositMetals") then
+	if d.resource == "Metals" or d:IsKindOf("SubsurfaceDepositMetals") then
 		pattern:mul_i(texture_metal, 1)
-	elseif d:IsKindOf("SubsurfaceDepositPreciousMetals") then
+	elseif d.resource == "PreciousMetals" or d:IsKindOf("SubsurfaceDepositPreciousMetals") then
 		pattern:mul_i(texture_mpres, 1)
-	elseif d:IsKindOf("SubsurfaceDepositWater") then
+	elseif d.resource == "Water" or d:IsKindOf("SubsurfaceDepositWater") then
 		pattern:mul_i(texture_water, 1)
 	else
 		return
@@ -81,6 +89,7 @@ end
 
 local function UpdateOpacity(label, value)
 	value = value and 0 or 100
+
 	local deposits = MainCity.labels[label] or ""
 	for i = 1, #deposits do
 		local d = deposits[i]
@@ -152,6 +161,9 @@ local function HideSigns()
 		end
 	end
 
+	-- added 1.2
+	UpdateOptions()
+
 	ResumePassEdits("ChoGGi.MarkDepositGround.HideSigns")
 end
 
@@ -184,8 +196,25 @@ local function ChangeMarks(label, entity, value)
 end
 
 UpdateOptions = function()
-	-- update signs
 	if MainCity then
+
+		if mod_AlwaysShowDeposits then
+			local deposits = MainCity.labels.SubsurfaceDeposit or ""
+			for i = 1, #deposits do
+				local d = deposits[i]
+				if not d.ground_is_marked then
+					UpdateDeposit(d)
+				end
+			end
+			deposits = MainCity.labels.SubsurfaceDepositMarker or ""
+			for i = 1, #deposits do
+				local d = deposits[i]
+				if not d.ground_is_marked then
+					UpdateDeposit(d)
+				end
+			end
+		end
+
 		if mod_AlienAnomaly ~= CurrentModOptions:GetProperty("AlienAnomaly") then
 			mod_AlienAnomaly = CurrentModOptions:GetProperty("AlienAnomaly")
 			ChangeMarks("Anomaly", "GreenMan", mod_AlienAnomaly)
@@ -196,6 +225,7 @@ UpdateOptions = function()
 			UpdateOpacity("EffectDeposit", mod_HideSigns)
 			UpdateOpacity("TerrainDeposit", mod_HideSigns)
 		end
+
 	end
 end
 

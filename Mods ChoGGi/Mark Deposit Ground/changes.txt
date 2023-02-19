@@ -1,3 +1,7 @@
+v1.2
+Changed textures around (I can add old textures as mod option).
+Added mod option Always Show Deposits.
+
 v1.1
 double stopped it.
 

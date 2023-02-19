@@ -3,7 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
-302535920000304, ""
 302535920000865, ""
 302535920001674, ""
 302535920001675, ""
@@ -941,7 +940,8 @@ This will switch to a new map."
 302535920000326, "This menu will stay where you drag it."
 302535920000327, "Map Exploration"
 302535920000328, "Scanning, deep scanning, core mines, and alien imprints."
-302535920000330, "Advance to next part, show what part you're on, or remove mysteries."
+302535920000304, "Remove Mysteries"
+302535920000330, "Use to remove mysteries."
 302535920000331, "Mystery Start"
 302535920000332, "Pick and start a mystery (with instant start option).
 Certain mysteries need certain objects which get placed when the map is generated on a new game (the green rocks one for instance)."
@@ -1000,9 +1000,7 @@ Otherwise you won't see anything."
 302535920000263, "Scan Map"
 302535920000267, "Colonist placing priority: Selected dome, Evenly between domes, or centre of map if no domes."
 302535920000268, "Start A Mystery"
-302535920000269, "Adding a mystery is cumulative, this will NOT replace existing mysteries.
-
-See Cheats><color ChoGGi_green>%s</color> to remove."
+302535920000269, "Adding a mystery is cumulative, this will NOT replace existing mysteries."
 302535920000270, "Instant Start"
 302535920000271, "May take up to one Sol to ""instantly"" activate mystery."
 302535920000272, "To play back speech press the ""<color ChoGGi_green>%s</color>"" checkbox and type in

@@ -14,7 +14,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagOther", true,
-	"description", [[There's no notification, but any newly placed buildings will complain about a dust storm.
+	"description", [[
+There's no notification, but any newly placed buildings will complain about a dust storm.
 You don't need to leave this enabled afterwards.
 
 https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-eternal-dust-storm.1139596/

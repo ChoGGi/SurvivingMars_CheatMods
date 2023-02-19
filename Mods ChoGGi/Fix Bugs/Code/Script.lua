@@ -59,6 +59,8 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
+-- Fix for Silva's Orion Rocket mod (part 1, backing up the func he overrides)
+local ChoOrig_PlacePlanet = PlacePlanet
 --
 function OnMsg.ClassesPostprocess()
 
@@ -100,6 +102,27 @@ do -- CityStart/LoadGame
 		local bt = BuildingTemplates
 		local bmpo = BuildMenuPrerequisiteOverrides
 		local main_realm = GetRealmByID(MainMapID)
+
+		--
+		-- Fix for Silva's Orion Heavy Rocket mod (part 2, restoring the original func)
+		-- He only calls the original func when the rocket mod isn't installed, so I have to remove it completely.
+		PlacePlanet = ChoOrig_PlacePlanet
+
+		--
+		-- Fix FindDroneToRepair Log Spam
+		local broke = g_BrokenDrones
+		for i = #broke, 1, -1 do
+			if not IsValid(broke[i]) then
+				table.remove(broke, i)
+			end
+		end
+
+		--
+		-- Fix Destroyed Tunnels Still Work: update pf tunnels to stop rovers from using them
+		main_realm:MapForEach("map", "Tunnel", function(t)
+			t:RemovePFTunnel()
+			t:AddPFTunnel()
+		end)
 
 		--
 		-- Force heat grid to update (if you paused game on new game load then cold areas don't update till you get a working Subsurface Heater).
@@ -761,7 +784,19 @@ function GetConstructionDescription(template, ...)
 	return list
 end
 --
---
+-- Fix Destroyed Tunnels Still Work
+local ChoOrig_Tunnel_AddPFTunnel = Tunnel.AddPFTunnel
+function Tunnel:AddPFTunnel(...)
+	if not mod_EnableMod then
+		return ChoOrig_Tunnel_AddPFTunnel(self, ...)
+	end
+
+	if not self.working and not self:CanDemolish() and not self:IsDemolishing() then
+		return
+	end
+
+	return ChoOrig_Tunnel_AddPFTunnel(self, ...)
+end
 --
 --
 --
@@ -774,6 +809,9 @@ end
 if not g_AvailableDlc.picard then
 	return
 end
+--
+--
+--
 --
 --
 --

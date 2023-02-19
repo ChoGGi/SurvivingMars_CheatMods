@@ -14,7 +14,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagGameplay", true,
-	"description", [[RC Safaris aren't automagically unlocked in the resupply screen for games saved before Tito/Tourism update.
+	"description", [[
+RC Safaris aren't automagically unlocked in the resupply screen for games saved before Tito/Tourism update.
 
 Not exactly requested by Ataginez.
 ]],

@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 39,
-	"version_major", 3,
-	"version_minor", 9,
+	"version", 41,
+	"version_major", 4,
+	"version_minor", 1,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -36,7 +36,11 @@ Force heat grid to update (see more info below).
 Personal Space storybit changes capacity, but building menu doesn't show it.
 Underground Rare Anomaly can give you underground dome prefabs, but locks them to surface.
 
+[b]Mods[/b]:
+Silva's Orion Heavy Rocket (you must disable his Essential files mod, then enable it AFTER enabling this mod).
 (4) Fixes for mods (no idea which mods / they're abandoned).
+
+
 
 [b]Incorporated mods:[/b] (so far)
 Fix Blank Mission Profile
@@ -45,9 +49,11 @@ Fix Colonist Daily Interest Loop
 Fix Colonists Long Walks (better solution see: No More Outside Suffocation mod)
 Fix Colonists Suffocating Inside Domes
 Fix Defence Towers Not Firing At Rovers
+Fix Destroyed Tunnels Still Work
 Fix Double Click Select All Of Type
 Fix Dust Devils Block Building
 Fix Farm Oxygen
+Fix FindDroneToRepair Log Spam
 Fix Layout Construction Tech Lock
 Fix Locked Wind Turbine
 Fix Meteor Stuck On Map
@@ -63,17 +69,45 @@ Fix Transports Don't Move After Route Set
 If you have B&B I'd recommend SkiRich's [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2619013940]Better Lander Rockets[/url]
 
 
+[b]See also[/b]:
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=2601527081]Fix Cold Wave Stuck[/url]
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=2703206312]Fix Deposits Wrong Map[/url]
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=1646258448]Fix Dredger Mark Left On Ground[/url]
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=1594158818]Fix Eternal Dust Storm[/url]
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=2473394779]Fix Flying Drones MidAir Malfunction[/url]
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=2549884520]Fix Mirror Graphics[/url]
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=1443225581]Fix Missing Mod Buildings[/url]
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=1725437808]Fix Missing Mod Icons[/url]
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=1575894376]Fix Remove Invalid Label Buildings[/url]
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=1575894376]Fix Remove Invalid Label Buildings[/url]
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=1553086208]Fix Remove Blue Yellow Marks And Ghosts[/url]
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=1567028510]Fix Rocket Stuck[/url]
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=1829688193]Fix Rover In Dome[/url]
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=1549680063]Fix Shuttles Stuck Mid-Air[/url]
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=2705335465]Fix Sol 2983[/url] < Don't enable unless needed!
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=2082012035]Fix Stuck Mirror Sphere Devices[/url]
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=2427995890]Fix Unlock RC Safari Resupply[/url]
+
+
 
 Info from Incorporated mods/etc:
 
-[b]Force heat grid to update[/b]
-If you paused game on new game load then cold areas don't update till you get a working Subsurface Heater.
 [b]Uneven Terrain[/b]
 When finishing landscaping it can set some of the surrounding hexes z values (height) to 65535 (also known as UnbuildableZ).
 Calling RefreshBuildableGrid() on the map seems to get rid of them without causing any major issues:
 It can mark some hexes as okay to build when they weren't before, but nothing like a cliff side or anything.
 If you enable the mod option and notice that you can build on some places you really shouldn't be able to then please let me know :)
 If you're bored and want to dig through the funcs in LandscapeFinish() to find out exactly where it's coming from, feel free.
+
+[b]Fix FindDroneToRepair Log Spam[/b]
+This seems to be an issue from flying drones and a drone hub being destroyed.
+Your log will "fill" up with this error:
+Mars/Lua/Units/Drone.lua(256): method FindDroneToRepair
+[b]Fix Destroyed Tunnels Still Work[/b]
+Rovers will still use destroyed tunnels (in certain situations).
+https://forum.paradoxplaza.com/forum/threads/hello-can-you-address-this-little-issue.1463333
+[b]Force heat grid to update[/b]
+If you paused game on new game load then cold areas don't update till you get a working Subsurface Heater.
 [b]Water Reclamation Spire and B&B[/b]
 Some buildings don't properly turn off their upgrades which causes them to keep their modifiers on.
 The "fix" is turning off upgrades when a building is demolished, turned off, malfunctioned (might be annoying, mod option to keep it as is).

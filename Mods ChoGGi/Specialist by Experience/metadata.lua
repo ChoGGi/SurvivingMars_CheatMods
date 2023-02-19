@@ -17,7 +17,7 @@ return PlaceObj("ModDef", {
 Colonists without a spec that work at the same job for 25 Sols will automagically get the specialisation needed for that workplace.
 
 Mod Options:
-Override Existing Spec: If colonist is already a specialist it will be replaced.
+Override Existing Spec: If colonist is already a specialist it will be replaced by the new spec.
 Sols To Train: How many Sols of working does it take to get a spec.
 
 Known Issues:

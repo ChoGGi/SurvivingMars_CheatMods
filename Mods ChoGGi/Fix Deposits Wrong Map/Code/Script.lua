@@ -65,7 +65,7 @@ local function ModOptions(id)
 
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 
-	-- make sure we're in-game UIColony
+	-- Make sure we're in-game UIColony
 	if not MainCity then
 		return
 	end
@@ -77,7 +77,7 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
--- someone didn't check where it spawns (active realm)
+-- Someone didn't check where it spawns (active realm)
 -- https://github.com/surviving-mars/SurvivingMars/blob/master/Lua/Buildings/TerrainDeposit.lua#L224
 local ChoOrig_TerrainDepositMarker_SpawnDeposit = TerrainDepositMarker.SpawnDeposit
 function TerrainDepositMarker:SpawnDeposit(...)
