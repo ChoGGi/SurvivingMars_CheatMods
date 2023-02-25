@@ -2,7 +2,7 @@
 Last tested: Prunariu/Martian Express hotfix 1 (1,011,166)
 -
 Each DLC that adds breakthroughs changes the breakthrough list; you'll need to pick the one that matches your DLC (Green Planet / Below & Beyond).
-
+-
 Do not use Tech Variety or Chaos Theory game rules! (they change the breakthrough order)
 -
 
