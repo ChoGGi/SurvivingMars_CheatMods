@@ -2,7 +2,7 @@
 
 local function StartupCode()
 	if not g_RoverAIResearched then
-		Msg("TechResearched", "RoverCommandAI", UICity)
+		Msg("TechResearched", "RoverCommandAI", UIColony)
 	end
 end
 

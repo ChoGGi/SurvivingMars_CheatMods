@@ -1664,7 +1664,9 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 302535920001111, "Whiter Rocks"
 302535920001113, "Helps the rocks blend in better when using the polar ground texture."
 302535920000674, "Terrain Editor Toggle"
-302535920000675, "Opens up the map editor with the brush tool visible."
+302535920000675, "Opens up the map editor with the brush tool visible.
+
+Unfinished dev tool, don't use in regular saves!"
 302535920001292, "List All Objects"
 302535920001293, "A list of objects; <left_click>*2 on one to select and move the camera to it."
 302535920001294, "Laggy"

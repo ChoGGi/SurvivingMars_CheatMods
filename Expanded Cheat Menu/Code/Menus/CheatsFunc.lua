@@ -1181,7 +1181,7 @@ do -- StartMystery
 	end
 end -- do
 
-do -- Mystery Log
+do -- Remove Mystery
 	-- loops through all the sequences and adds the logs we've already seen
 	local function ShowMysteryLog(choice)
 		local myst_id

@@ -525,7 +525,9 @@ Actions[c] = {ActionName = TranslationTable[302535920000674--[[Terrain Editor To
 	ActionMenubar = "ECM.Game.Terrain",
 	ActionId = ".Terrain Editor Toggle",
 	ActionIcon = "CommonAssets/UI/Menu/smooth_terrain.tga",
-	RolloverText = TranslationTable[302535920000675--[[Opens up the map editor with the brush tool visible.]]],
+	RolloverText = TranslationTable[302535920000675--[[Opens up the map editor with the brush tool visible.
+
+Unfinished dev tool, don't use in regular saves!]]],
 	OnAction = ChoGGi.ComFuncs.TerrainEditor_Toggle,
 	ActionShortcut = "Ctrl-Shift-T",
 	ActionBindable = true,

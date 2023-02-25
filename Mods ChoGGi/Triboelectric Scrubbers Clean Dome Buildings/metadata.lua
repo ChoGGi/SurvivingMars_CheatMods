@@ -12,7 +12,11 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[They removed this in the Spirit Update.
+	"description", [[
+They removed this in the Spirit Update.
 
-Requested by Cinereously.]],
+Not needed if you use my Indoor Tribby mod.
+
+Requested by Cinereously.
+]],
 })

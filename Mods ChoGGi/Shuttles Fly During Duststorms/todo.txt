@@ -1,0 +1,5 @@
+mod option increased fuel usage
+
+add timer to keep teh count down to a few a storm
+randomly blow up shuttle during duststorm while flying (intakes clogged and overheated)
+may crashes and hits whatever?
