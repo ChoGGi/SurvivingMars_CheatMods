@@ -1,1 +1,3 @@
+add mod names to default list
+
 add mod option to ovewrwrite mods list with saved list, so you can update/test from LocalStorage.lua

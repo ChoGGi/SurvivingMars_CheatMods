@@ -1,3 +1,6 @@
+v2.2
+Title didn't show underground map name.
+
 v2.1
 Added underground maps checkbox.
 

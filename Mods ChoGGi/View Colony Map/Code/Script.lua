@@ -51,9 +51,16 @@ local function ShowDialogs(map, gen)
 	if show_image_dlg.idImagePicard then
 		local underground = table.rand(underground_maps, gen.Seed)
 		show_image_dlg.idImagePicard:SetImage(image_str .. underground .. ".jpg")
+		show_image_dlg.idCaption:SetText(underground)
 	end
 
-	show_image_dlg.idCaption:SetText(map)
+	--
+	if show_image_dlg.idImagePicard
+		and show_image_dlg.idTogglePicard.IconRow == 1
+	then
+		show_image_dlg.idCaption:SetText(map)
+	end
+
 	-- update text info
 	if gen and extra_info_dlg then
 		extra_info_dlg:UpdateInfo(gen)
