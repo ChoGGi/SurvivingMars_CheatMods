@@ -23,12 +23,14 @@ OnMsg.ModsReloaded = ModOptions
 OnMsg.ApplyModOptions = ModOptions
 
 -- function called when a drone is created
-function City:CreateDrone()
+local ChoOrig_City_CreateDrone = City.CreateDrone
+function City:CreateDrone(...)
 	if mod_AlwaysWasp then
 		return FlyingDrone:new{city = self}
 	end
-	local classdef = g_Classes[self.drone_class] or Drone
-	return classdef:new{city = self}
+	return ChoOrig_City_CreateDrone(self, ...)
+--~ 	local classdef = g_Classes[self.drone_class] or Drone
+--~ 	return classdef:new{city = self}
 end
 
 -- devs made PickEntity always default to whatever has been spawned already, which we don't want

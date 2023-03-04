@@ -14,8 +14,8 @@ return PlaceObj("ModDef", {
 	"description", [[
 Unlocks all achievements when you toggle it in the mod manager.
 
+[b]DO NOT USE THIS[/b] unless you want all achievements!
 You can't undo this once enabled, so think twice before using.
-
 
 Requested by scorptank.
 ]],

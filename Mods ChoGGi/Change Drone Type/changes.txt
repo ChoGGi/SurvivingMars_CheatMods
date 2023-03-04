@@ -1,3 +1,6 @@
+v0.9
+Making it more compatible.
+
 v0.8
 Always Wasp option wasn't set on all maps.
 

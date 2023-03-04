@@ -3,7 +3,17 @@
 local mod_EnableConsole
 local mod_EnableLog
 
+local function IsECM()
+	if table.find(ModsLoaded, "id", "ChoGGi_CheatMenu") then
+		return true
+	end
+end
+
 local function ModOptions(id)
+	if IsECM() then
+		return
+	end
+
 	-- id is from ApplyModOptions
 	if id and id ~= CurrentModId then
 		return
@@ -21,7 +31,7 @@ OnMsg.ModsReloaded = ModOptions
 OnMsg.ApplyModOptions = ModOptions
 
 local function ShowConsole()
-	if not mod_EnableConsole or table.find(ModsLoaded, "id", "ChoGGi_CheatMenu") then
+	if not mod_EnableConsole or IsECM() then
 		return
 	end
 
@@ -34,7 +44,7 @@ local function ShowConsole()
 end
 
 function OnMsg.ClassesPostprocess()
-	if table.find(ModsLoaded, "id", "ChoGGi_CheatMenu") then
+	if IsECM() then
 		return
 	end
 
@@ -48,19 +58,45 @@ function OnMsg.ClassesPostprocess()
 		"ActionId", "ChoGGi_EnableConsole",
 		"ActionTranslate", false,
 		"ActionShortcut", "Enter",
-		-- for some reason works fine for ECM but not this mod...
---~ 		"ActionShortcut2", "~",
 		"OnAction", ShowConsole,
 		"replace_matching_id", true,
+
+		-- for some reason works fine for ECM but not this mod...
+		"ActionShortcut2", "~",
 	})
 
 	local template = CommonShortcuts[#CommonShortcuts]
 	template:SetRolloverTemplate("Rollover")
 	template:SetRolloverTitle(T(126095410863, "Info"))
-	template:SetRolloverText(T(0000, "Press Enter to show Console."))
+	template:SetRolloverText(T(0000, "Press Enter/Tilde to show Console."))
 
 end
 
 function restart()
 	quit("restart")
+end
+
+function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
+	if IsECM() then
+		return
+	end
+
+
+	-- ReadHistory fires from :Show(), if it isn't loaded before you :Exec() then goodbye history
+	local ChoOrig_Console_Exec = Console.Exec
+	function Console:Exec(text, hide_text, ...)
+		if not self.history_queue or #self.history_queue == 0 then
+			self:ReadHistory()
+		end
+		if hide_text then
+			-- same as Console:Exec(), but skips log text
+			self:AddHistory(text)
+			local err = env.ConsoleExec(text, ConsoleRules)
+			if err then
+				ConsolePrint(err)
+			end
+			return
+		end
+		return ChoOrig_Console_Exec(self, text, hide_text, ...)
+	end
 end

@@ -15,7 +15,7 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagGameplay", true,
 	"description", [[
-After you pick a landing spot then you get a random Location, Sponsor, Commander, Mystery, Logo, Rivals, and Game Rules.
+After picking a landing spot you get a random Location, Sponsor, Commander, Mystery, Logo, Rivals, and Game Rules.
 
 
 By default this mod won't use game rules that disable achievements.

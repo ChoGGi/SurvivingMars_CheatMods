@@ -28,6 +28,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
+local c = const
+local what_game_lookup = {
+	Surviving = c.HaeraldProjectName and c.HaeraldProjectName == "Mars",
+	Stranded = c.ProjectName and c.ProjectName == "Bacon",
+}
+
 -- I should really split this into funcs and settings... one of these days
 ChoGGi = {
 	-- anyone examining ChoGGi will see this first
@@ -128,6 +134,14 @@ ChoGGi = {
 --
 local ChoGGi = ChoGGi
 
+-- What game are we playing?
+if what_game_lookup.Stranded then
+	ChoGGi.what_game = "Stranded"
+else
+	ChoGGi.what_game = "Surviving"
+end
+
+
 do -- translate (todo update code to not need this, maybe use T() for menus)
 	local locale_path = ChoGGi.library_path .. "Locales/"
 	-- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
@@ -168,11 +182,11 @@ local ChoOrig_cmdline = Platform.cmdline
 Platform.cmdline = true
 
 -- Wait for g_ConsoleFENV
-local Sleep = Sleep
 CreateRealTimeThread(function()
 	if not g_ConsoleFENV then
 		WaitMsg("Autorun")
 	end
+	local Sleep = Sleep
 	while not g_ConsoleFENV do
 		Sleep(250)
 	end
