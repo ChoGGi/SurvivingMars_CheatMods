@@ -1,3 +1,6 @@
+v0.7
+ambiguously inherited log spam.
+
 v0.6
 Added cheats pane (for when cheats are enabled).
 

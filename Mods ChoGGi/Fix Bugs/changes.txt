@@ -1,3 +1,9 @@
+v4.5
+The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
+
+v4.4
+Added a fix for Horticulture Workshop not unlocking.
+
 v4.3
 Re-added fix.
 

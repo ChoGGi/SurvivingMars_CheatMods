@@ -1,3 +1,6 @@
+v1.2
+Issues with Elevator (thanks Murilo, El Fixador).
+
 v1.1
 Tito.
 

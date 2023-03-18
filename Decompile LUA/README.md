@@ -1,7 +1,7 @@
 ### No warranty implied or otherwise!
 ```
 (Ugly) AutohotKey script to decompile the LUA files
-Needs a copy of unluac_2022_08_06.jar in same folder as DecompileLUA.ahk (or change the path in the ini)
+Needs a copy of unluac_2023_01_14.jar in same folder as DecompileLUA.ahk (or change the path in the ini)
 Edit DecompileLUA.ini before starting it
 ```
 

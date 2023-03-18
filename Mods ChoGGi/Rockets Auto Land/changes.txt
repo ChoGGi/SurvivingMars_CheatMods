@@ -1,1 +1,3 @@
 v0.2
+Hopefully fixed an issue reported with dead passengers.
+(X colonists dead in space while trying to reach Mars)

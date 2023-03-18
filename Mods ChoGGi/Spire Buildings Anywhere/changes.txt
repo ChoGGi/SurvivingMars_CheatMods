@@ -1,1 +1,2 @@
 v0.2
+Moves spire frame to spire instead of whatever dome spire spot is closer.

@@ -154,8 +154,14 @@ end -- do
 
 -- fake mod used to tell if it's my comp, if you want some extra msgs and .testing funcs have at it (Testing.lua)
 if Mods.ChoGGi_testing or Mods.TESTING then
+	local print = print
+	local FlushLogFile = FlushLogFile
+
 	ChoGGi.testing = {}
-	printC = print
+	printC = function(...)
+		print(...)
+		FlushLogFile()
+	end
 else
 	printC = empty_func
 end

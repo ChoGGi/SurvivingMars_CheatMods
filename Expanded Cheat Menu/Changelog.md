@@ -1,6 +1,9 @@
 ## ECM Changelog
 
 ## v18.8 (Unreleased)
+### Added:
+- Lua Revision to main menu (change ShowLuaRevision in settings to disable it).
+
 ### Changed:
 - Re-added Remove Mysteries menu item.
 - SkipModEditorDialog renamed to SkipModEditorCompletely, so it doesn't come back to bite me anymore.

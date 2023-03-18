@@ -3547,7 +3547,10 @@ Decompiled code won't scroll correctly as the line numbers are different."]]]:fo
 
 	-- do we add a metatable to it?
 	if not (obj == "nil" or self.is_valid_obj or obj_type == "userdata") and obj_metatable
-			or self.is_valid_obj and obj:IsKindOf("BaseSocket") then
+			or self.is_valid_obj and obj:IsKindOf("BaseSocket")
+			or self.is_valid_obj and obj:IsKindOf("XControl")
+		then
+
 		table.insert(list_obj_str, 1, "\t-- metatable: " .. self:ConvertValueToInfo(obj_metatable) .. " --")
 
 		if self.enum_vars and next(self.enum_vars) then

@@ -1649,45 +1649,44 @@ function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 		end
 	end
 
-	do -- Console:Exec
-		-- override orig console rules with mine (thanks devs for making it a global var)
-		ConsoleRules = {
-			-- print info in console log
-			{
-				-- $userdata/string id
-				"^$(.*)",
-				"print(ChoGGi.ComFuncs.Translate(%s))"
-			},
-			{
-				-- @function
-				"^@(.*)",
-				"print(ChoGGi.ComFuncs.DebugGetInfo(%s))",
-			},
-			{
-				-- @@type
-				"^@@(.*)",
-				"print(type(%s))"
-			},
+	-- override orig console rules with mine (thanks devs for making it a global var)
+	ConsoleRules = {
+		-- print info in console log
+		{
+			-- $userdata/string id
+			"^$(.*)",
+			"print(ChoGGi.ComFuncs.Translate(%s))"
+		},
+		{
+			-- @function
+			"^@(.*)",
+			"print(ChoGGi.ComFuncs.DebugGetInfo(%s))",
+		},
+		{
+			-- @@type
+			"^@@(.*)",
+			"print(type(%s))"
+		},
 
-			-- do stuff
-			{
-				-- !obj_on_map
-				"^!(.*)",
-				"ViewAndSelectObject(%s)"
-			},
-			{
-				-- %image string or table
-				"^%%(.*)",
-				"OpenImageViewer(%s)"
-			},
-			{
-				-- ^string
-				"^%^(.*)",
-				"OpenTextViewer(%s)"
-			},
-			{
-				-- ~anything
-				"^~(.*)",
+		-- do stuff
+		{
+			-- !obj_on_map
+			"^!(.*)",
+			"ViewAndSelectObject(%s)"
+		},
+		{
+			-- %image string or table
+			"^%%(.*)",
+			"OpenImageViewer(%s)"
+		},
+		{
+			-- ^string
+			"^%^(.*)",
+			"OpenTextViewer(%s)"
+		},
+		{
+			-- ~anything
+			"^~(.*)",
 				[[local params = {%s}
 local t2 = type(params[2])
 if #params == 1 then
@@ -1709,8 +1708,8 @@ else
 			.. ": " .. ChoGGi.ComFuncs.RetName(params[1]),
 	})
 end]] -- title strings: Examine Console
-			},
-			{
+		},
+		{
 				-- ~!obj_with_attachments
 				"^~!(.*)",
 				[[local obj = %s
@@ -1718,56 +1717,61 @@ local attaches = ChoGGi.ComFuncs.GetAllAttaches(obj)
 if attaches[1] then
 	OpenExamine(attaches, nil, "GetAllAttaches " .. ChoGGi.ComFuncs.RetName(obj))
 end]]
-			},
-			{
-				-- &handle
-				"^&(.*)",
-				[[OpenExamine(HandleToObject[%s], nil, "HandleToObject")]]
-			},
-			-- built-in
-			{
-				-- *r some function/cmd that needs a realtime thread
-				"^*[rR]%s*(.*)",
-				"CreateRealTimeThread(function() %s end)"
-			},
-			{
-				-- *g gametime
-				"^*[gG]%s*(.*)",
-				"CreateGameTimeThread(function() %s end)"
-			},
-			-- prints out cmds entered I assume?
-			{
-				"^(%a[%w.]*)$",
-				"ConsolePrint(print_format(__run(%s)))"
-			},
-			{
-				"(.*)",
-				"ConsolePrint(print_format(%s))"
-			},
-			{
-				"(.*)",
-				"%s"
-			},
-		}
+		},
+		{
+			-- &handle
+			"^&(.*)",
+			[[OpenExamine(HandleToObject[%s], nil, "HandleToObject")]]
+		},
+		-- built-in
+		{
+			-- *r some function/cmd that needs a realtime thread
+			"^*[rR]%s*(.*)",
+			"CreateRealTimeThread(function() %s end)"
+		},
+		{
+			-- *g gametime
+			"^*[gG]%s*(.*)",
+			"CreateGameTimeThread(function() %s end)"
+		},
+		-- prints out cmds entered I assume?
+		{
+			"^(%a[%w.]*)$",
+			"ConsolePrint(print_format(__run(%s)))"
+		},
+		{
+			"(.*)",
+			"ConsolePrint(print_format(%s))"
+		},
+		{
+			"(.*)",
+			"%s"
+		},
+	}
 
-		-- ReadHistory fires from :Show(), if it isn't loaded before you :Exec() then goodbye history
+	--
+	do -- Console:Exec
 		local ChoOrig_Console_Exec = Console.Exec
 		AddToOrigFuncs("Console.Exec")
 		function Console:Exec(text, hide_text, ...)
+
+			-- ReadHistory fires from :Show(), if history isn't loaded before you :Exec() then goodbye history
 			if not self.history_queue or #self.history_queue == 0 then
 				self:ReadHistory()
 			end
+
+			-- same as Console:Exec(), but skips log text
 			if hide_text and not blacklist then
-				-- same as Console:Exec(), but skips log text
 				self:AddHistory(text)
---~ 				AddConsoleLog("> ", true)
---~ 				AddConsoleLog(text, false)
+				-- AddConsoleLog("> ", true)
+				-- AddConsoleLog(text, false)
 				local err = env.ConsoleExec(text, ConsoleRules)
 				if err then
 					ConsolePrint(err)
 				end
 				return
 			end
+
 			return ChoOrig_Console_Exec(self, text, hide_text, ...)
 		end
 

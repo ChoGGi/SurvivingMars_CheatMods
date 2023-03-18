@@ -40,7 +40,7 @@ local function UpdateBuildings()
 			cls_temp.automation = 1
 			cls_temp.auto_performance = mod_AutoPerformance
 			cls_temp.dome_required = false
-		-- don't want to "reset" non-factories
+		-- Don't want to "reset" non-factories
 		elseif bool == false then
 			item.max_workers = nil
 			item.automation = nil

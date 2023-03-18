@@ -32,12 +32,12 @@ local r
 
 local function GetAvailableResources(self, cursor_obj)
 	if not res_list then
-		-- build list of resources
+		-- Build list of resources
 		res_list = AllResourcesList
 		res_list_c = #res_list
 		table.sort(res_list)
 		r = const.ResourceScale
-		-- build default list
+		-- Build default list
 		for i = 1, res_list_c do
 			res_count_orig[res_list[i]] = 0
 		end
@@ -93,7 +93,7 @@ local function GetAvailableResources(self, cursor_obj)
 	res_str_c = 0
 
 	local text
-	-- only compact for construction cursor
+	-- Only compact for construction cursor
 	if mod_CompactText and cursor_obj then
 		text = " <"
 --~ 		res_str_c = 1
@@ -107,7 +107,7 @@ local function GetAvailableResources(self, cursor_obj)
 		local res = res_list[i]
 		local count = res_count[res]
 		if count > 0 then
-			-- round decimal points
+			-- Round decimal points
 			if cursor_obj then
 				count = (floatfloor(count / r)) * r
 			end
@@ -127,6 +127,7 @@ RCRover.ChoGGi_GetAvailableResources = GetAvailableResources
 RocketBase.ChoGGi_GetAvailableResources = GetAvailableResources
 DroneHub.ChoGGi_GetAvailableResources = GetAvailableResources
 Drone.ChoGGi_GetAvailableResources = GetAvailableResources
+Elevator.ChoGGi_GetAvailableResources = GetAvailableResources
 
 local function AddTemplate(xtemplate)
 	if xtemplate.ChoGGi_Added_DroneControllerShowAvailableResources then
@@ -160,12 +161,12 @@ local function ClearOldText()
 	end
 end
 
--- add text info to building placement
+-- Add text info to building placement
 local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit(...)
 	local ret = ChoOrig_CursorBuilding_GameInit(self, ...)
 
-	-- self-suff domes will fire CursorBuilding:GameInit more than once, so we get whatever is last?
+	-- Self-suff domes will fire CursorBuilding:GameInit more than once, so we get whatever is last?
 	ClearOldText()
 
 	if not mod_ShowText then
@@ -175,7 +176,10 @@ function CursorBuilding:GameInit(...)
 	-- DroneHubs or Rockets, not much point in rovers
 	local sel_radius = self.template.GetSelectionRadiusScale
 	if (sel_radius or self.template:IsKindOfClasses(rockets))
+		-- Probably the same reason as below
 		and not self.template:IsKindOf("Dome")
+		-- Really lags/freezes the game when being placed. It's fine once built, so skip!
+		and not self.template:IsKindOf("Elevator")
 	then
 		-- If it has a radius then use it, otherwise fallback to rocket (for landing sites I think)
 		self.ChoGGi_UpdateAvailableResources = sel_radius and sel_radius(self)
@@ -206,8 +210,8 @@ local ChoOrig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
 function CursorBuilding:UpdateShapeHexes(...)
 	local ret = ChoOrig_CursorBuilding_UpdateShapeHexes(self, ...)
 
+	-- Build list of objs within distance to cursor placing thingy
 	if txt_ctrl and self.ChoGGi_UpdateAvailableResources then
-		-- build list of objs within distance to cursor placing thingy
 		local objs = GetRealm(self):MapGet(self, "hex", self.ChoGGi_UpdateAvailableResources,
 			"MechanizedDepot", "StorageDepot", "ResourceStockpile", "SurfaceDeposit"
 		)
@@ -223,6 +227,7 @@ end
 
 local ChoOrig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding.Done(...)
+	printC("ChoOrig_CursorBuilding_Done")
 	ClearOldText()
 	return ChoOrig_CursorBuilding_Done(...)
 end

@@ -638,6 +638,23 @@ s = SelectedObj, c() = GetCursorWorldPos(), restart() = quit(""restart"")"]])
 		XShortcutsTarget:SetVisible(true)
 	end)
 
+	if UserSettings.ShowLuaRevision then
+		local PGVideoBackground = Dialogs.PGVideoBackground
+		if PGVideoBackground then
+			local text_dlg = XText:new({
+				TextStyle = "AchievementTitle",
+				Dock = "box",
+				HAlign = "right",
+				VAlign = "bottom",
+				Clip = false,
+				UseClipBox = false,
+				HandleMouse = false,
+			}, PGVideoBackground[1])
+			text_dlg:SetText(T(12356, "Revision") .. ": " .. LuaRevision)
+			text_dlg:SetVisible(true)
+		end
+	end
+	--
 end -- ModsReloaded
 
 function OnMsg.PersistPostLoad()

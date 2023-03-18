@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 43,
+	"version", 45,
 	"version_major", 4,
-	"version_minor", 3,
+	"version_minor", 5,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -21,7 +21,7 @@ See mod options to toggle certain fixes.
 
 [b]List of bugs fixed:[/b]
 Uneven Terrain (see mod options to enable, more info below).
-No Planetary Anomaly Breakthroughs when B&B is installed.
+No Planetary Anomaly Breakthroughs when B&B is installed (more info below).
 Problem updating supply grid.
 Storybit notification issue.
 Support struts malfunctioning and cave-ins.
@@ -35,9 +35,11 @@ Add rocket sound effects to SupplyPods (mod option to disable).
 Force heat grid to update (see more info below).
 Personal Space storybit changes capacity, but building menu doesn't show it.
 Underground Rare Anomaly can give you underground dome prefabs, but locks them to surface.
+The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
 
 [b]Mods[/b]:
 Silva's Orion Heavy Rocket (you must disable his Essential files mod, then enable it AFTER enabling this mod).
+Horticulture Workshop not unlocking.
 (4) Fixes for mods (no idea which mods / they're abandoned).
 
 
@@ -99,6 +101,9 @@ It can mark some hexes as okay to build when they weren't before, but nothing li
 If you enable the mod option and notice that you can build on some places you really shouldn't be able to then please let me know :)
 If you're bored and want to dig through the funcs in LandscapeFinish() to find out exactly where it's coming from, feel free.
 
+[b]No Planetary Anomaly Breakthroughs when B&B is installed[/b]
+It's probably a bug, but the underground wonders do add Breakthroughs.
+Mod option to disable this "fix" (and receieve less Breakthroughs).
 [b]Fix FindDroneToRepair Log Spam[/b]
 This seems to be an issue from flying drones and a drone hub being destroyed.
 Your log will "fill" up with this error:

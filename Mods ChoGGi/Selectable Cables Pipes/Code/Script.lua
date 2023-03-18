@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
--- we need to return our new infopanel (if it isn"t another panel)
+-- We need to return our new infopanel (if it isn"t another panel)
 local ChoOrig_ElectricityGridElement_GetInfopanelTemplate = ElectricityGridElement.GetInfopanelTemplate
 function ElectricityGridElement.GetInfopanelTemplate(...)
 	local ret = ChoOrig_ElectricityGridElement_GetInfopanelTemplate(...)
@@ -9,10 +9,13 @@ function ElectricityGridElement.GetInfopanelTemplate(...)
 	end
 	return ret
 end
--- needed to show grid info template
+
+-- Needed to show grid info template
 function ElectricityGridElement.ShowUISectionElectricityGrid()
 	return true
 end
+-- Ambiguously inherited
+CableConstructionSite.ShowUISectionElectricityGrid = ElectricityGridElement.ShowUISectionElectricityGrid
 
 local ChoOrig_LifeSupportGridElement_GetInfopanelTemplate = LifeSupportGridElement.GetInfopanelTemplate
 function LifeSupportGridElement:GetInfopanelTemplate(...)
@@ -22,15 +25,15 @@ function LifeSupportGridElement:GetInfopanelTemplate(...)
 	then
 		return ret
 	end
-	-- needed to show grid info
+	-- Needed to show grid info
 	self.pillar = true
 
 	return "ipPillaredPipe"
 end
 
--- so we know something is selected
+-- So we know something is selected
 local function OnSelected(obj)
-	-- not construction site and not a switch (they already have a parsystem added)
+	-- Not construction site and not a switch (they already have a parsystem added)
 	if not obj.building_class_proto and not obj.is_switch then
 		AddSelectionParticlesToObj(obj)
 	end
@@ -39,7 +42,7 @@ ElectricityGridElement.OnSelected = OnSelected
 LifeSupportGridElement.OnSelected = OnSelected
 
 function OnMsg.ClassesPostprocess()
-	-- clear old if existing
+	-- Clear old if existing
 	if XTemplates.ChoGGi_ipCable then
 		XTemplates.ChoGGi_ipCable:delete()
 	end

@@ -94,6 +94,8 @@ ChoGGi.Defaults = {
 	ScrollSelectionPanel = false,
 	-- Maybe you don't want to see the interface in screenshots
 	ShowInterfaceInScreenshots = true,
+	-- Shows in main menu
+	ShowLuaRevision = true,
 	-- This savegame was loaded in the past without required mods or with an incompatible game version.
 	SkipIncompatibleModsMsg = true,
 	-- Mod Editor shows the help page every single time you open it.

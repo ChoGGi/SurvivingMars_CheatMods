@@ -58,9 +58,53 @@ end
 OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
-
+--
 -- Fix for Silva's Orion Rocket mod (part 1, backing up the func he overrides)
 local ChoOrig_PlacePlanet = PlacePlanet
+--
+-- The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
+-- I could add something to check if this is being called multiple times per unpause, but it's not doing much
+function OnMsg.SectorScanned()
+	if not mod_EnableMod then
+		return
+	end
+
+	-- Check if we're on the right mystery
+	local stone_seq
+	local players = s_SeqListPlayers or ""
+	for i = 1, #players do
+		local player = players[i]
+		if player.seq_list and player.seq_list.file_name
+			and player.seq_list.file_name == "Mystery_10"
+		then
+			stone_seq = player
+			break
+		end
+	end
+	--
+	if not stone_seq then
+		return
+	end
+
+	-- Get count of scanned sectors
+	local count = 0
+	local sectors = MainCity.MapSectors
+	for sector in pairs(sectors) do
+		if type(sector) == "table" then
+			if IsValid(sector.revealed_obj) then
+				count = count + 1
+			end
+		end
+	end
+
+	-- Update mystery with proper count
+	if count > 0 then
+		CreateRealTimeThread(function()
+			Sleep(100)
+			stone_seq.registers._sectors_scanned = count
+		end)
+	end
+end
 --
 function OnMsg.ClassesPostprocess()
 
@@ -218,7 +262,8 @@ do -- CityStart/LoadGame
 			end
 		end
 		--
-		-- Fix Defence Towers Not Firing At Rovers (x2)
+		-- Fix Defence Towers Not Firing At Rovers (1/2)
+		-- The "or city" is if this is called on a save from before B&B
 		local hostile = (MainCity or UICity).labels.HostileAttackRovers or ""
 		if #hostile > 0 then
 			UIColony.mystery.can_shoot_rovers = true
@@ -436,6 +481,10 @@ end -- do
 -- Clearing waste rock
 local ChoOrig_ClearWasteRockConstructionSite_InitBlockPass = ClearWasteRockConstructionSite.InitBlockPass
 function ClearWasteRockConstructionSite:InitBlockPass(ls, ...)
+	if not mod_EnableMod then
+		return ChoOrig_ClearWasteRockConstructionSite_InitBlockPass(self, ls, ...)
+	end
+
   if ls and ls.pass_bbox then
     return ChoOrig_ClearWasteRockConstructionSite_InitBlockPass(self, ls, ...)
   end
@@ -567,7 +616,7 @@ do -- AreDomesConnectedWithPassage (Fix Colonists Long Walks)
 	end
 end -- do
 --
--- Fix Defence Towers Not Firing At Rovers
+-- Fix Defence Towers Not Firing At Rovers (2/2)
 local ChoOrig_SA_Exec_Exec = SA_Exec.Exec
 function SA_Exec:Exec(sequence_player, ip, seq, ...)
 	if not mod_EnableMod then
@@ -797,6 +846,15 @@ function Tunnel:AddPFTunnel(...)
 
 	return ChoOrig_Tunnel_AddPFTunnel(self, ...)
 end
+--
+-- These were moved from City to Colony, shouldn't hurt anything
+function City.IsTechResearched(_, ...)
+	return UIColony:IsTechResearched(...)
+end
+function City.IsTechDiscovered(_, ...)
+	return UIColony:IsTechDiscovered(...)
+end
+--
 --
 --
 --

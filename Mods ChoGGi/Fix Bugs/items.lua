@@ -43,8 +43,7 @@ Turn off to enable cheese and disable fix.
 		"name", "PlanetaryAnomalyBreakthroughs",
 		"DisplayName", T(0000, "Planetary Anomaly Breakthroughs"),
 		"Help", T(0000, [[There's no Planetary Anomaly Breakthroughs when B&B is installed.
-It's probably a bug, but the underground wonders do add Breakthroughs (so I'm told).
-This is here as an option for people with B&B, but don't want to do underground.
+It's probably a bug, but the underground wonders do add Breakthroughs.
 
 Turn off to disable this "fix" (and receieve less Breakthroughs).
 ]]),
@@ -77,7 +76,7 @@ If you're bored and want to dig through the funcs in LandscapeFinish() to find o
 --~ 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "SupplyPodSoundEffects",
-		"DisplayName", T(0000, "SupplyPod Sound Effects"),
+		"DisplayName", T(0000, "Supply Pod Sound Effects"),
 		"Help", T(0000, "Use the SupplyRocket sounds for the SupplyPod (since it doesn't have any)."),
 		"DefaultValue", true,
 	}),

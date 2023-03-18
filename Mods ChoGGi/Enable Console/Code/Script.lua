@@ -81,7 +81,6 @@ function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 		return
 	end
 
-
 	-- ReadHistory fires from :Show(), if it isn't loaded before you :Exec() then goodbye history
 	local ChoOrig_Console_Exec = Console.Exec
 	function Console:Exec(text, hide_text, ...)

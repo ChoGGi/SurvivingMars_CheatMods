@@ -64,8 +64,10 @@ function ConstructionController:UpdateCursor(pos, force, ...)
 --~       new_pos = FixConstructPos(terrain, new_pos)
 --~     end
 
-		-- added by me
+		-- Added by me
 		local new_pos = FixConstructPos(terrain, self.snap_to_grid and hex_world_pos or pos)
+		-- Added by me
+
 
     if force or FixConstructPos(terrain, self.cursor_obj:GetPos()) ~= new_pos and hex_world_pos:InBox2D(ConstructableArea) then
       ShowNearbyHexGrid(hex_world_pos)
@@ -76,4 +78,26 @@ function ConstructionController:UpdateCursor(pos, force, ...)
       ObjModified(self)
     end
   end
+end
+
+-- Fix "frame" added to dome
+local ChoOrig_SpireBase_UpdateFrame = SpireBase.UpdateFrame
+function SpireBase:UpdateFrame(...)
+	if not mod_EnableMod then
+		return ChoOrig_SpireBase_UpdateFrame(self, ...)
+	end
+
+	-- There's no return, but a mod might add one (need it to update offset before we change it)
+	local ret = ChoOrig_SpireBase_UpdateFrame(self, ...)
+
+	local attaches = self:GetAttaches("SpireFrame")
+	if not attaches then
+		return
+	end
+
+	-- Remove x/y offset, but keep height
+	local frame = attaches[1]
+	frame:SetAttachOffset(point(0, 0, frame:GetAttachOffset():z()))
+
+	return ret
 end

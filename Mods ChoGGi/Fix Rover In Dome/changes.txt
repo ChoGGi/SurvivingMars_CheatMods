@@ -1,3 +1,6 @@
+v0.7
+Also fixes Drones stuck in Ranches.
+
 v0.6
 Picard update.
 

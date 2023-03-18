@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local IsKindOf = IsKindOf
 local CmpLower = CmpLower
 local RetName = ChoGGi.ComFuncs.RetName
 
@@ -15,7 +16,6 @@ local function ModOptions(id)
 end
 OnMsg.ModsReloaded = ModOptions
 OnMsg.ApplyModOptions = ModOptions
-
 
 local function AddTemplate(template, params)
 	-- check for and remove existing template
@@ -81,10 +81,7 @@ local function AddTemplate(template, params)
 	})
 end
 
---~ function OnMsg.ClassesGenerate()
 function OnMsg.ClassesPostprocess()
-	-- no mod options in classes msgs
-
 	local template = XTemplates.ipBuilding[1]
 	AddTemplate(template, {
 		id = "ChoGGi_Template_RocketsAutoLand_PadToggle",
@@ -105,7 +102,7 @@ end
 
 local ChoOrig_RocketBase_WaitInOrbit = RocketBase.WaitInOrbit
 function RocketBase:WaitInOrbit(...)
-	-- abort if not autoland or duststorm
+	-- Abort if not autoland or dust storm
 	if not mod_EnableMod
 		or not self.ChoGGi_RocketsAutoLand_Allow
 		or not self:IsFlightPermitted()
@@ -113,33 +110,59 @@ function RocketBase:WaitInOrbit(...)
 		return ChoOrig_RocketBase_WaitInOrbit(self, ...)
 	end
 
-	local objs = UIColony.city_labels.labels.LandingPad or ""
-	-- no pads, so wait in orbit?
-	if #objs == 0 then
+	local map_id = self:GetMapID() or MainCity.map_id
+
+	local landing_pads = Cities[map_id].labels.LandingPad or ""
+	-- No pads, so wait in orbit?
+	if #landing_pads == 0 then
 		return ChoOrig_RocketBase_WaitInOrbit(self, ...)
 	end
 
-	-- fire off what it needs to (or it tries to find BuildingTemplates.OrbitalProbe)
+	-- Fire off what it needs to (or it tries to find BuildingTemplates.OrbitalProbe)
 	CreateGameTimeThread(ChoOrig_RocketBase_WaitInOrbit, self, ...)
 
-	-- change order of landing pads to match names of pads, so user has some sort of order to follow.
-	table.sort(objs, function(a, b)
+	-- Change order of landing pads to match names of pads, so user has some sort of order to follow.
+	table.sort(landing_pads, function(a, b)
 		return CmpLower(RetName(a), RetName(b))
 	end)
-	-- filter list for usable landing pads
-	objs = table.ifilter(objs, function(_, obj)
+	-- Filter list for usable landing pads
+	landing_pads = table.ifilter(landing_pads, function(_, obj)
 		return obj.ChoGGi_RocketsAutoLand_Allow and not obj:HasRocket()
 	end)
 	-- no free pads so wait in orbit for user
-	if #objs == 0 then
+	if #landing_pads == 0 then
 		return ChoOrig_RocketBase_WaitInOrbit(self, ...)
 	end
-	-- land rocket on landing site
-	local landing_pad = objs[1]
-	local landing_site = PlaceBuilding("RocketLandingSite")
+	-- Land rocket on landing site
+	local landing_pad = landing_pads[1]
+	local landing_site = PlaceBuildingIn("RocketLandingSite", map_id)
 	landing_site:SetPos(landing_pad:GetPos())
 	landing_site:SetAngle(landing_pad:GetAngle())
 
-	self:SetCommand("LandOnMars", landing_site)
+	-- lua\RocketBase.lua RocketBase:OnPinClicked()
+	local cargo = self.cargo or ""
+	local passengers, drones
+	for i = 1, #cargo do
+		local cls = cargo[i].class
+		if cls == "Passengers" then
+			passengers = true
+		elseif IsKindOf(g_Classes[cls], "Drone") and cargo[i].amount > 0 then
+			drones = true
+		end
+	end
+	landing_site.amount = 0
+	landing_site.passengers = passengers
+	landing_site.drones = drones
+	landing_site.stockpiles_obstruct = true
+	landing_site.override_palette = self:GetRocketPalette()
+	landing_site.rocket = self
 
+	-- Doesn't hurt to check
+	if not IsValid(landing_site) then
+		return ChoOrig_RocketBase_WaitInOrbit(self, ...)
+	end
+
+	self.landing_site = landing_site
+	self:SetCommand("LandOnMars", landing_site)
+	self:UpdateStatus("landing")
 end

@@ -3,9 +3,9 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_DroneControllerShowAvailableResources",
 	"steam_id", "1822481407",
 	"pops_any_uuid", "de76c1e8-9ef1-4e47-a3ff-dfcd4d516e34",
-	"version", 11,
+	"version", 12,
 	"version_major", 1,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"lua_revision", 1007000, -- Picard
@@ -14,7 +14,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagInterface", true,
-	"description", [[Wondering why the little buggers aren't repairing a building?
+	"description", [[
+Wondering why the little buggers aren't repairing a building?
 
 The Service Area tooltip now shows a list of resources available to the selected Drone Hub, Rocket, or Rover.
 Construction placement (for Dronehubs) / rocket landing mode will display (rounded) resource counts at the cursor.

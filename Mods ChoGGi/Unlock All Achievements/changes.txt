@@ -1,0 +1,2 @@
+v0.2
+Added mod option to unlock all achievements ignoring DLC (default enabled).
