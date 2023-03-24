@@ -699,7 +699,7 @@ function OnMsg.LoadGame()
 		RemoveInvalid("Unemployed")
 		-- Stuck UFO animation
 		local GameMaps = GameMaps
-		for id, map in pairs(GameMaps) do
+		for _, map in pairs(GameMaps) do
 			local objs = map.realm:MapGet("map", "ParSystem", function(o)
 				return o:GetParticlesName() == "SpaceRocket_WarmUp"
 			end)

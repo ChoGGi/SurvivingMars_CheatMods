@@ -4157,7 +4157,7 @@ end -- do
 
 function ChoGGi.ComFuncs.RemoveObjsAllMaps(class)
 	local GameMaps = GameMaps
-	for id, map in pairs(GameMaps) do
+	for _, map in pairs(GameMaps) do
 		map.realm:MapDelete(true, class)
 	end
 end

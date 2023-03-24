@@ -283,6 +283,7 @@ Cheats>Map Exploration: Scanning, deep scanning, core mines, and alien imprints.
 Cheats>Mod Editor: Open the mod editor.
 Cheats>Mystery Start: Pick and start a mystery (with instant start option).
 Certain mysteries need certain objects which get placed when the map is generated on a new game (the green rocks one for instance).
+Cheats>Remove Mysteries: Use to remove mysteries.
 Cheats>Spawn Colonists: Spawn X amount of colonists.
 Cheats>Toggle Unlock All Buildings: Unlocks all buildings for construction.
 This doesn't apply to sponsor limited ones; see ECM>Buildings>Toggles>Remove Sponsor Limits.
@@ -611,6 +612,7 @@ Game.Terrain>Delete Bushes Trees: Cleans your Mars of alien shrubbery.
 Game.Terrain>Delete Large Rocks: Removes rocks for that smooth map feel.
 Game.Terrain>Delete Small Rocks: Removes rocks for that smooth map feel.
 Game.Terrain>Terrain Editor Toggle: Opens up the map editor with the brush tool visible.
+Unfinished dev tool, don't use in regular saves!
 Game.Terrain>Terrain Flatten Toggle: Use the shortcut to turn this on as it will use where your cursor is as the height to flatten to.
 Use Shift + Arrow keys to change the height/radius.
 Game.Terrain>Terrain Type Change: Green or Icy mars? Coming right up!

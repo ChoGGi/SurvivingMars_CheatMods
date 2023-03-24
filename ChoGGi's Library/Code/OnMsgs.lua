@@ -111,7 +111,7 @@ local function RemoveChoGGiObjects()
 	SuspendPassEdits("ChoGGi_Library.OnMsgs.RemoveChoGGiObjects")
 
 	local GameMaps = GameMaps
-	for id, map in pairs(GameMaps) do
+	for _, map in pairs(GameMaps) do
 		-- MapDelete doesn't seem to work with func filtering?
 		map.realm:MapForEach(true, "RotatyThing", function(o)
 			if o.ChoGGi_blinky then

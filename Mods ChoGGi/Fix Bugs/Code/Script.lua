@@ -25,13 +25,22 @@ local mod_UnevenTerrain
 --~ local mod_TurnOffUpgrades
 local mod_SupplyPodSoundEffects
 
+local function UpdateMap(game_map)
+	game_map.realm:SuspendPassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
+	SuspendTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
+	game_map:RefreshBuildableGrid()
+	ResumeTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
+	game_map.realm:ResumePassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
+end
+
 local function FixUnevenTerrain(game_map)
 	if game_map then
-		game_map.realm:SuspendPassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
-		SuspendTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
-		game_map:RefreshBuildableGrid()
-		ResumeTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
-		game_map.realm:ResumePassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
+		UpdateMap(game_map)
+	else
+		local GameMaps = GameMaps
+		for _, map in pairs(GameMaps) do
+			UpdateMap(map)
+		end
 	end
 end
 
@@ -51,7 +60,7 @@ local function ModOptions(id)
 
 
 	if UIColony and mod_UnevenTerrain then
-		FixUnevenTerrain(GameMaps[ActiveMapID])
+		FixUnevenTerrain()
 	end
 end
 -- Load default/saved settings
@@ -146,6 +155,12 @@ do -- CityStart/LoadGame
 		local bt = BuildingTemplates
 		local bmpo = BuildMenuPrerequisiteOverrides
 		local main_realm = GetRealmByID(MainMapID)
+
+		--
+		-- Update all maps for uneven terrain (if using mod that allows landscaping maps other than surface)
+		if mod_UnevenTerrain then
+			FixUnevenTerrain()
+		end
 
 		--
 		-- Fix for Silva's Orion Heavy Rocket mod (part 2, restoring the original func)

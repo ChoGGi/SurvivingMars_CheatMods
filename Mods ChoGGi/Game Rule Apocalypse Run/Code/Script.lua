@@ -67,29 +67,35 @@ OnMsg.ModsReloaded = ModOptions
 OnMsg.ApplyModOptions = ModOptions
 
 local function UpdateLocks()
+
 	if not MainCity or not IsGameRuleActive("ChoGGi_ApocalypseRun") then
 		return
 	end
 
-	-- always disable it
+	-- Always disable it
 	g_Consts.OutsourceDisabled = 1
 
 	if g_ChoGGi_ApocalypseRun_DisableResupply then
 		g_Consts.SupplyMissionsEnabled = -1
 	end
 
-	-- storybits
+	-- Storybits
 	local StoryBits = StoryBits
 	for id in pairs(mod_options) do
 		StoryBits[id].Enabled = mod_options[id]
 	end
+
+	-- Needed for asteroids
+	if not MainCity and IsGameRuleActive("ChoGGi_ApocalypseRun") then
+		g_Consts.SupplyMissionsEnabled = 1
+	end
 end
 OnMsg.CityStart = UpdateLocks
 OnMsg.LoadGame = UpdateLocks
--- switch between different maps (can happen before UICity)
+-- Switch between different maps (can happen before UICity)
 OnMsg.ChangeMapDone = UpdateLocks
 
--- resupply lock
+-- Resupply lock
 function OnMsg.PassengerRocketLaunched()
 	if not IsGameRuleActive("ChoGGi_ApocalypseRun") then
 		return

@@ -64,7 +64,7 @@ If you enable the mod option and notice that you can build on some places you re
 
 If you're bored and want to dig through the funcs in LandscapeFinish() to find out exactly where it's coming from, feel free.
 ]]),
-		"DefaultValue", false,
+		"DefaultValue", true,
 	}),
 --~ 	PlaceObj("ModItemOptionToggle", {
 --~ 		"name", "TurnOffUpgrades",

@@ -1287,7 +1287,7 @@ do -- Remove Mystery
 			end
 			choice = choice[1]
 
-			local value = choice.value
+			--~ local value = choice.value
 			local mystery_idx = choice.mystery_idx
 			local ThreadsMessageToThreads = ThreadsMessageToThreads
 
