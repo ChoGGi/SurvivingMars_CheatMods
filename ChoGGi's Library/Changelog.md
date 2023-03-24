@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v11.8 (Unreleased)
+## v11.9 (Unreleased)
+
+## v11.8 (23 Mar 2023)
 - Found some more Picard map stuff to update.
 - Cleaned up some log spam from some of my mods.
 - Issue with Examine and certain tables.

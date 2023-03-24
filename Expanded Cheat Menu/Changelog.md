@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v18.8 (Unreleased)
+## v18.9 (Unreleased)
+
+## v18.8 (23 Mar 2023)
 ### Added:
 - Lua Revision to main menu (change ShowLuaRevision in settings to disable it).
 
