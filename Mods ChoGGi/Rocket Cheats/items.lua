@@ -1,6 +1,12 @@
 -- See LICENSE for terms
 
 return {
+	PlaceObj("ModItemOptionToggle", {
+		"name", "DustStormFlight",
+		"DisplayName", T(0000, "Dust Storm Flight"),
+		"Help", T(0000, "Rockets can land and take off during dust storms."),
+		"DefaultValue", false,
+	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "LaunchFuel",
 		"DisplayName", T(702, "Launch Fuel"),

@@ -9,8 +9,54 @@ local mod_TravelTimeMarsEarth
 local mod_RocketPrice
 local mod_CargoCapacity
 local mod_FoodPerRocketPassenger
+local mod_DustStormFlight
 
--- override for custom_travel_time_mars/custom_travel_time_earth
+-- DustStormFlight
+local ChoOrig_HasDustStorm = HasDustStorm
+local ChoFake_HasDustStorm = function()
+	return false
+end
+local function UpdateRocket(func, self, ...)
+
+	local orig_affected = self.affected_by_dust_storm or self.rocket and self.rocket.affected_by_dust_storm
+	if self.affected_by_dust_storm then
+		self.affected_by_dust_storm = false
+	elseif self.rocket and self.rocket.affected_by_dust_storm then
+		self.rocket.affected_by_dust_storm = false
+	end
+	HasDustStorm = ChoFake_HasDustStorm
+
+	local result, ret = pcall(func, self, ...)
+
+	if self.affected_by_dust_storm then
+		self.affected_by_dust_storm = orig_affected
+	elseif self.rocket and self.rocket.affected_by_dust_storm then
+		self.rocket.affected_by_dust_storm = orig_affected
+	end
+	HasDustStorm = ChoOrig_HasDustStorm
+	return ret
+end
+
+-- Take off during dust storms
+local ChoOrig_RocketBase_GetLaunchIssue = RocketBase.GetLaunchIssue
+function RocketBase:GetLaunchIssue(...)
+	if not mod_DustStormFlight then
+		return ChoOrig_RocketBase_GetLaunchIssue(self, ...)
+	end
+
+	return UpdateRocket(ChoOrig_RocketBase_GetLaunchIssue, self, ...)
+end
+-- Land during dust storms
+local ChoOrig_ConstructionController_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
+function ConstructionController:UpdateConstructionStatuses(...)
+	if not mod_DustStormFlight then
+		return ChoOrig_ConstructionController_UpdateConstructionStatuses(self, ...)
+	end
+
+	return UpdateRocket(ChoOrig_ConstructionController_UpdateConstructionStatuses, self, ...)
+end
+
+-- Override for custom_travel_time_mars/custom_travel_time_earth
 local ChoOrig_RocketBase_FlyToEarth = RocketBase.FlyToEarth
 function RocketBase:FlyToEarth(flight_time, ...)
 	if mod_TravelTimeEarthMars then
@@ -27,7 +73,7 @@ function RocketBase:FlyToMars(cargo, cost, flight_time, ...)
 	return ChoOrig_RocketBase_FlyToMars(self, cargo, cost, flight_time, ...)
 end
 
--- some stuff checks one some other...
+-- Some stuff checks one some other...
 local SetConstsG = ChoGGi.ComFuncs.SetConstsG
 
 local function UpdateRockets()
@@ -67,6 +113,7 @@ local function ModOptions(id)
 	mod_TravelTimeEarthMars = options:GetProperty("TravelTimeEarthMars") * const.Scale.hours
 	mod_TravelTimeMarsEarth = options:GetProperty("TravelTimeMarsEarth") * const.Scale.hours
 	mod_RocketPrice = options:GetProperty("RocketPrice") * const.Scale.mil
+	mod_DustStormFlight = options:GetProperty("DustStormFlight")
 
 	-- make sure we're in-game
 	if not MainCity then

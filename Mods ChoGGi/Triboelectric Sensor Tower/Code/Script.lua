@@ -190,14 +190,14 @@ function OnMsg.ClassesPostprocess()
 		-- add cargo option
 		PlaceObj("Cargo", {
 			description = sens.description .. "\n" .. trib.description,
-			group = "Locked",
-			SaveIn = "",
-			icon = trib.display_icon,
+			icon = trib.encyclopedia_image,
+			name = T(302535920011720, "Triboelectric ") .. sens.display_name,
 			id = "ChoGGi_TriboelectricSensorTower",
 			kg = 3500,
 			locked = false,
-			name = T(302535920011720, "Triboelectric ") .. sens.display_name,
-			price = 200000000
+			price = 200000000,
+			group = "Locked",
+			SaveIn = "",
 		})
 	end
 

@@ -1,3 +1,6 @@
+v0.6
+Mod option to take off and land during dust storms.
+
 v0.5
 Forgot to add my library as dependency.
 

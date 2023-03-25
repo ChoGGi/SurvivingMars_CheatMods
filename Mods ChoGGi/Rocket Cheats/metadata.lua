@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2429782883",
 	"pops_any_uuid", "1e254009-499e-4e01-a948-81e98fc661e3",
 	"lua_revision", 1007000, -- Picard
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -22,7 +22,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagGameplay", true,
-	"description", [[Fiddle with rockets
+	"description", [[
+Fiddle with rockets
 
 Mod Options:
 Launch Fuel: The amount of fuel it takes to launch the rocket.
@@ -34,6 +35,7 @@ Colonists per Rocket: Maximum number of Colonists that can arrive on Mars in a s
 Rocket Travel Time (Earth to Mars): Time it takes for a Rocket to travel from Earth to Mars
 Rocket Travel Time (Mars to Earth): Time it takes for a Rocket to travel from Mars to Earth
 Rocket Price: In Millions.
+Dust Storm Flight: Rockets can land and take off during dust storms.
 
 
 Known Issues:
