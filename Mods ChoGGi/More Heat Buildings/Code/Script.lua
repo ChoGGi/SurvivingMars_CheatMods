@@ -1,5 +1,12 @@
 -- See LICENSE for terms
 
+local AdvancedStirlingGeneratorHeatRadius
+if g_AvailableDlc.gagarin then
+	AdvancedStirlingGeneratorHeatRadius = const.AdvancedStirlingGeneratorHeatRadius
+else
+	AdvancedStirlingGeneratorHeatRadius = 6
+end
+
 local function PassthroughHeatUpdate(func, self, ...)
 	func(self, ...)
   self:UpdateHeat()
@@ -23,7 +30,7 @@ function StirlingGenerator:OnSetWorking(...)
 end
 
 function StirlingGenerator:ChoGGi_34Heating()
-	return (const.AdvancedStirlingGeneratorHeatRadius / 4.0) * 3
+	return (AdvancedStirlingGeneratorHeatRadius / 4.0) * 3
 end
 
 function StirlingGenerator:UpdateHeat()
@@ -48,8 +55,10 @@ end
 AddBaseheater(Mine, 2 * const.MaxHeat)
 AddBaseheater(WaterExtractor, 2 * const.MaxHeat)
 -- terraforming stuff
-AddBaseheater(CarbonateProcessor, 4 * const.MaxHeat)
-AddBaseheater(GHGFactory, 5 * const.MaxHeat)
+if g_AvailableDlc.armstrong then
+	AddBaseheater(CarbonateProcessor, 4 * const.MaxHeat)
+	AddBaseheater(GHGFactory, 5 * const.MaxHeat)
+end
 -- nuclar powar!
 AddBaseheater(FusionReactor, 16 * const.MaxHeat)
 
@@ -70,14 +79,14 @@ local function AddFueledExtractorHeat(_, cls, upgrade, radius)
 		)
 	end
 	function cls:GetHeatRange()
-		return const.AdvancedStirlingGeneratorHeatRadius * (radius or 8) * guim
+		return AdvancedStirlingGeneratorHeatRadius * (radius or 8) * guim
 	end
 	function cls:GetHeatBorder()
 		return const.SubsurfaceHeaterFrameRange
 	end
 	function cls:GetSelectionRadiusScale()
 		if self:IsKindOf(cls.class) then
-			return const.AdvancedStirlingGeneratorHeatRadius
+			return AdvancedStirlingGeneratorHeatRadius
 		end
 	end
 end
@@ -90,10 +99,12 @@ function OnMsg.ClassesPostprocess()
 	AddFueledExtractorHeat(nil, WaterExtractor)
 	ClassDescendantsList("Mine", AddFueledExtractorHeat)
 
-	-- Only works with upgrade enabled
-	AddFueledExtractorHeat(nil, CarbonateProcessor, "_Amplify", 10)
-	-- override updateheat
-	AddFueledExtractorHeat(nil, GHGFactory, nil, 12)
+	if g_AvailableDlc.armstrong then
+		-- Only works with upgrade enabled
+		AddFueledExtractorHeat(nil, CarbonateProcessor, "_Amplify", 10)
+		-- override updateheat
+		AddFueledExtractorHeat(nil, GHGFactory, nil, 12)
+	end
 	AddFueledExtractorHeat(nil, FusionReactor, nil, 14)
 	-- override updateheat 2
 	GHGFactory.UpdateHeat = UpdateHeat_Working

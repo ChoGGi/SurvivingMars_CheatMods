@@ -49,14 +49,16 @@ do -- non-class obj funcs
 	end
 
 	-- don't trigger toxic rains if setting is enabled
-	local ChoOrig_RainProcedure = RainProcedure
-	AddToOrigFuncs("RainProcedure")
-	function RainProcedure(settings, ...)
-		if settings.type == "normal" or not UserSettings.DisasterRainsDisable then
-			return ChoOrig_RainProcedure(settings, ...)
-		end
-		if UserSettings.DisasterRainsDisable then
-			printC("ECM DisasterRainsDisable")
+	if rawget(_G, "RainProcedure") then
+		local ChoOrig_RainProcedure = RainProcedure
+		AddToOrigFuncs("RainProcedure")
+		function RainProcedure(settings, ...)
+			if settings.type == "normal" or not UserSettings.DisasterRainsDisable then
+				return ChoOrig_RainProcedure(settings, ...)
+			end
+			if UserSettings.DisasterRainsDisable then
+				printC("ECM DisasterRainsDisable")
+			end
 		end
 	end
 

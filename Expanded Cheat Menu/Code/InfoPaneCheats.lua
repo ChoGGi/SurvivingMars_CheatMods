@@ -1220,7 +1220,7 @@ end
 
 -- misc
 
-do -- Fireflies
+if rawget(_G, "Firefly") then
 	function Building:CheatRemoveAllFireflies()
 		if not self.fireflies then
 			return
@@ -1303,7 +1303,7 @@ do -- Fireflies
 		table.insert(self.fireflies, firefly)
 		firefly:SetCommand("Start")
 	end
-end -- do
+end
 
 function SecurityStation:CheatReneagadeCapDbl()
 	self.negated_renegades = self.negated_renegades * 2
@@ -1312,7 +1312,7 @@ function SecurityStation:CheatReneagadeCapDef()
 	self.negated_renegades = self.max_negated_renegades
 end
 
-if RocketBase then
+if rawget(_G, "RocketBase") then
 --~ 	function RocketBase:CheatAddFuel()
 --~ 		-- skip if we're full/over full
 --~ 		local actual = self.refuel_request:GetActualAmount()
@@ -1350,7 +1350,7 @@ if RocketBase then
 end
 
 
-if Sinkhole then
+if rawget(_G, "Sinkhole") then
 	Sinkhole.CheatSpawnFirefly = Sinkhole.TestSpawnFireflyAndGo
 end
 
@@ -1401,7 +1401,7 @@ function Dome:CheatCrimeEvent()
 	}
 end
 
-if LandscapeLake then
+if rawget(_G, "LandscapeLake") then
 	local function LandscapeLakeCheatVol(self, num)
 		local five = 0.05 * self.volume_max
 		self:SetVolume(self.volume + (five * num))

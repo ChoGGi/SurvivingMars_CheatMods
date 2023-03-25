@@ -47,9 +47,13 @@ local classes = {
 	"MoholeMine",
 	"MirrorSphere",
 	"ArtificialSun",
-	"CoreHeatConvector",
-	"AdvancedStirlingGenerator",
 }
+if g_AvailableDlc.armstrong then
+	classes[#classes+1] = "CoreHeatConvector"
+end
+if g_AvailableDlc.gagarin then
+	classes[#classes+1] = "AdvancedStirlingGenerator"
+end
 
 local const_HexHeight = const.HexHeight
 local g = _G

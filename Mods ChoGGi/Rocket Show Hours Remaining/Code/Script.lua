@@ -105,11 +105,6 @@ function ForeignTradeRocket:UIStatusFlyToColony(...)
 	return ShowPinTime(ChoOrig_ForeignTradeRocket_UIStatusFlyToColony, self, ...)
 end
 --
-local ChoOrig_LanderRocketBase_UIStatusDeparting = LanderRocketBase.UIStatusDeparting
-function LanderRocketBase:UIStatusDeparting(...)
-	return ShowPinTime(ChoOrig_LanderRocketBase_UIStatusDeparting, self, ...)
-end
---
 local ChoOrig_RocketExpedition_UIStatusTradeExport = RocketExpedition.UIStatusTradeExport
 function RocketExpedition:UIStatusTradeExport(...)
 	return ShowPinTime(ChoOrig_RocketExpedition_UIStatusTradeExport, self, ...)
@@ -133,4 +128,11 @@ end
 local ChoOrig_RocketExpedition_UIStatusTaskReturn = RocketExpedition.UIStatusTaskReturn
 function RocketExpedition:UIStatusTaskReturn(...)
 	return ShowPinTime(ChoOrig_RocketExpedition_UIStatusTaskReturn, self, ...)
+end
+--
+if g_AvailableDlc.picard then
+	local ChoOrig_LanderRocketBase_UIStatusDeparting = LanderRocketBase.UIStatusDeparting
+	function LanderRocketBase:UIStatusDeparting(...)
+		return ShowPinTime(ChoOrig_LanderRocketBase_UIStatusDeparting, self, ...)
+	end
 end

@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
--- tell people how to get my library mod (if needs be)
 function OnMsg.ModsReloaded()
 	-- stop menus from taking up the full width of the screen
 	local XShortcutsTarget = XShortcutsTarget
@@ -14,13 +13,24 @@ function OnMsg.ModsReloaded()
 
 end
 
--- do some stuff
-local Platform = Platform
--- fixes UpdateInterface nil value in editor mode
-local d_before = Platform.developer
-Platform.developer = true
-editor.LoadPlaceObjConfig()
-Platform.developer = d_before
+-- fix log spam
+PlaceObjectConfig = {
+  Decals = {},
+  Gameplay = {
+    "MinimumElevationMarker"
+  },
+  Lights = {"PointLight"},
+  Units = {}
+}
+ObjectPaletteFilters = {
+  {text = "all", item = nil},
+  {
+    text = "decals",
+    item = function(x)
+      return g_Classes[x] and g_Classes[x]:IsKindOf("Decal")
+    end
+  }
+}
 -- editor wants a table
 GlobalVar("g_revision_map",{})
 -- stops some log spam in editor (function doesn't exist in SM)

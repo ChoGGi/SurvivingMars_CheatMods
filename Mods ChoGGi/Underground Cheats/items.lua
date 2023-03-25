@@ -1,5 +1,10 @@
 -- See LICENSE for terms
 
+if not g_AvailableDlc.picard then
+	print(CurrentModDef.title, ": Below & Beyond DLC not installed!")
+	return
+end
+
 local properties = {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "EnableMod",

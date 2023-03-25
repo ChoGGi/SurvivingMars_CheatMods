@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.picard then
-	print(CurrentModDef.title, ": Below and Beyond DLC not installed!")
+	print(CurrentModDef.title, ": Below & Beyond DLC not installed!")
 	return
 end
 

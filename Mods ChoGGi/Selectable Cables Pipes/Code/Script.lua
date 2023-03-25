@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+-- Ambiguously inherited
+CableConstructionSite.ShowUISectionElectricityGrid = ElectricityGridElement.ShowUISectionElectricityGrid
+
 -- We need to return our new infopanel (if it isn"t another panel)
 local ChoOrig_ElectricityGridElement_GetInfopanelTemplate = ElectricityGridElement.GetInfopanelTemplate
 function ElectricityGridElement.GetInfopanelTemplate(...)
@@ -14,8 +17,6 @@ end
 function ElectricityGridElement.ShowUISectionElectricityGrid()
 	return true
 end
--- Ambiguously inherited
-CableConstructionSite.ShowUISectionElectricityGrid = ElectricityGridElement.ShowUISectionElectricityGrid
 
 local ChoOrig_LifeSupportGridElement_GetInfopanelTemplate = LifeSupportGridElement.GetInfopanelTemplate
 function LifeSupportGridElement:GetInfopanelTemplate(...)
