@@ -142,7 +142,7 @@ local function ModOptions(id)
 	mod_ExoticMineralsThreshold = CurrentModOptions:GetProperty("ExoticMineralsThreshold")
 
 	-- make sure we're in-game UIColony
-	if not MainCity then
+	if not UIColony then
 		return
 	end
 

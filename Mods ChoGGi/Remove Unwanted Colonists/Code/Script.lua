@@ -85,7 +85,7 @@ local function ModOptions(id)
 	end
 
 	-- make sure we're in-game
-	if not MainCity then
+	if not UIColony then
 		return
 	end
 
@@ -222,7 +222,8 @@ function OnMsg.ClassesPostprocess()
 		warning,
 		PlaceObj('XTemplateTemplate', {
 			"ChoGGi_Template_ColonistSucker", true,
-			"Id", "ChoGGi_ColonistSucker",
+--~ 			"Id", "ChoGGi_ColonistSucker",
+			"Id", "ChoGGi_Template_ColonistSucker",
 			"__template", "InfopanelActiveSection",
 			"__condition", function()
 				return not mod_HideButton

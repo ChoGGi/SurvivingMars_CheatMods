@@ -14,6 +14,9 @@ function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	g_env, debug = env, env.debug
 end
 
+-- No more blue overlay when paused
+DialogsHidingPauseDlg.HUD = true
+
 -- I fucking hate modal windows
 XWindow.SetModal = empty_func
 

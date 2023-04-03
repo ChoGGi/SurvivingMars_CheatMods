@@ -5,6 +5,8 @@ if not g_AvailableDlc.gagarin then
 	return
 end
 
+local PickUnusedAISponsor = ChoGGi.ComFuncs.PickUnusedAISponsor
+
 local mod_MaxRivals
 
 local function ModOptions(id)
@@ -47,12 +49,12 @@ local function StartupCode()
 	local SpawnRivalAI = SpawnRivalAI
 	local limit = #Presets.DumbAIDef.MissionSponsors
 	for _ = 1, limit do
-		-- stop spawning when we're maxed out
+		-- Stop spawning when we're maxed out
 		if count >= mod_MaxRivals then
 			break
 		end
-		-- defaults to random rival
-		SpawnRivalAI()
+--~ 		-- defaults to random rival
+		SpawnRivalAI(PickUnusedAISponsor())
 		count = count + 1
 	end
 

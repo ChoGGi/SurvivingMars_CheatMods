@@ -75,7 +75,7 @@ end
 
 local function LoadMapSectorsStats()
 	local MainCity = MainCity
-	if not MainCity then
+	if not UIColony then
 		return
 	end
 

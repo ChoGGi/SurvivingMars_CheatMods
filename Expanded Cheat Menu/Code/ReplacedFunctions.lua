@@ -512,14 +512,6 @@ do -- func exists before classes
 		end
 	end
 
-	-- all storybit/neg/etc options enabled
-	local ChoOrig_Condition_Evaluate = Condition.Evaluate
-	AddToOrigFuncs("Condition.Evaluate")
-	function Condition.Evaluate(...)
-		return UserSettings.OverrideConditionPrereqs
-			or ChoOrig_Condition_Evaluate(...)
-	end
-
 	-- UI transparency cheats menu
 	local ChoOrig_XShortcutsHost_SetVisible = XShortcutsHost.SetVisible
 	AddToOrigFuncs("XShortcutsHost.SetVisible")
@@ -819,14 +811,35 @@ end -- do
 -- Classes are almost built (slip in as early as we can to replace these funcs)
 function OnMsg.ClassesPostprocess()
 
-	-- align popups to rightside when using vertical cheat menu
+	do -- All storybit options enabled
+		local function FakeEvaluate(func, ...)
+			if not UserSettings.OverrideConditionPrereqs then
+				return func(...)
+			end
+
+			return true
+		end
+
+		local ChoOrig_IsCommander_Evaluate = IsCommander.Evaluate
+		AddToOrigFuncs("IsCommander.Evaluate")
+		function IsCommander.Evaluate(...)
+			return FakeEvaluate(ChoOrig_IsCommander_Evaluate, ...)
+		end
+		local ChoOrig_IsCommander2_Evaluate = IsCommander2.Evaluate
+		AddToOrigFuncs("IsCommander2.Evaluate")
+		function IsCommander2.Evaluate(...)
+			return FakeEvaluate(ChoOrig_IsCommander2_Evaluate, ...)
+		end
+	end -- do
+
+	-- Align popups to rightside when using vertical cheat menu
 	local ChoOrig_XMenuBar_PopupAction = XMenuBar.PopupAction
 	AddToOrigFuncs("XMenuBar.PopupAction")
 	function XMenuBar:PopupAction(action_id, ...)
 		if not ChoGGi.UserSettings.VerticalCheatMenu then
 			return ChoOrig_XMenuBar_PopupAction(self, action_id, ...)
 		end
-		-- orig func doesn't return anything anyways
+		-- Orig func doesn't return anything anyways
 		ChoOrig_XMenuBar_PopupAction(self, action_id, ...)
 		local idx = table.find(terminal.desktop, "MenuEntries", action_id)
 		if not idx then
@@ -862,7 +875,7 @@ function OnMsg.ClassesPostprocess()
 		end
 	end
 
-	-- unbreakable cables/pipes
+	-- Unbreakable cables/pipes
 	local ChoOrig_SupplyGridFragment_IsBreakable = SupplyGridFragment.IsBreakable
 	AddToOrigFuncs("SupplyGridFragment.IsBreakable")
 	function SupplyGridFragment.IsBreakable(...)
@@ -881,7 +894,7 @@ function OnMsg.ClassesPostprocess()
 		return ChoOrig_BreakableSupplyGridElement_CanBreak(...)
 	end
 
-	-- no more pulsating pin motion
+	-- No more pulsating pin motion
 	local ChoOrig_XBlinkingButtonWithRMB_SetBlinking = XBlinkingButtonWithRMB.SetBlinking
 	AddToOrigFuncs("XBlinkingButtonWithRMB.SetBlinking")
 	function XBlinkingButtonWithRMB:SetBlinking(...)

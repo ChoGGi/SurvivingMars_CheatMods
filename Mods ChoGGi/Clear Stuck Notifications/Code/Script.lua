@@ -7,7 +7,7 @@ local mod_ClearAll
 local mod_ClearMysteryLog
 
 local function StartupCode()
-	if not MainCity then
+	if not UIColony then
 		return
 	end
 
@@ -46,7 +46,7 @@ local function ModOptions(id)
 	mod_ClearMysteryLog = CurrentModOptions:GetProperty("ClearMysteryLog")
 
 	-- make sure we're in-game UIColony
-	if not MainCity then
+	if not UIColony then
 		return
 	end
 

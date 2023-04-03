@@ -33,7 +33,7 @@ local white_list = {
 }
 
 local function ApplyFilter()
-	if not MainCity then
+	if not UIColony then
 		return
 	end
 

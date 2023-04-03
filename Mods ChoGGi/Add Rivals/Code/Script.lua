@@ -5,6 +5,8 @@ if not g_AvailableDlc.gagarin then
 	return
 end
 
+local PickUnusedAISponsor = ChoGGi.ComFuncs.PickUnusedAISponsor
+
 local SpawnRivalAI = SpawnRivalAI
 
 local mod_EnableMod
@@ -41,19 +43,19 @@ local function AddRivals()
 
 	local rival_count = table.count(RivalAIs)
 	local def_count = #Presets.DumbAIDef.MissionSponsors
-	-- already maxed out
+	-- Already maxed out
 	if rival_count == def_count then
 		return
 	end
 
 	for _ = 1, def_count do
-		-- stop spawning when we're maxed out
+		-- Stop spawning when we're maxed out
 		if rival_count >= def_count or rival_count >= mod_AddRivals then
 			break
 		end
 
-		-- defaults to random rival
-		SpawnRivalAI()
+--~ 		-- defaults to random rival
+		SpawnRivalAI(PickUnusedAISponsor())
 		rival_count = rival_count + 1
 	end
 
@@ -70,7 +72,7 @@ local function ModOptions(id)
 	mod_AddRivals = CurrentModOptions:GetProperty("AddRivals")
 
 	-- make sure we're in-game
-	if not MainCity then
+	if not UIColony then
 		return
 	end
 

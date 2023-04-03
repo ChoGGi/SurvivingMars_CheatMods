@@ -25,7 +25,7 @@ local function ModOptions(id)
 	mod_ForcedByUserLockTimeout = CurrentModOptions:GetProperty("ForcedByUserLockTimeout") * const.Scale.sols
 
 	-- Make sure we're in-game
-	if not MainCity then
+	if not UIColony then
 		return
 	end
 

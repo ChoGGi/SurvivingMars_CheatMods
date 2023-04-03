@@ -26,7 +26,7 @@ local function ModOptions(id)
 	mod_UnlockDefenseTowers = CurrentModOptions:GetProperty("UnlockDefenseTowers")
 
 	-- make sure we're in-game
-	if not MainCity then
+	if not UIColony then
 		return
 	end
 

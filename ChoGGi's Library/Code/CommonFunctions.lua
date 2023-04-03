@@ -7810,6 +7810,38 @@ function ChoGGi.ComFuncs.PlainSortTable(tbl, value)
 	return tbl, str
 end
 
+-- This is a copy and paste from Dlc\gagarin\Code\RivalColonies.lua local function PickUnusedAISponsor()
+-- LukeH overrides SpawnRivalAI(preset), but doesn't check if preset exists.
+function ChoGGi.ComFuncs.PickUnusedAISponsor()
+  local filtered = {}
+  ForEachPresetInGroup("DumbAIDef", "MissionSponsors", function(preset, group)
+    local used = false
+    if preset.id == "random" or preset.id == "none" or preset.id == g_CurrentMissionParams.idMissionSponsor then
+      used = true
+    end
+    if not used then
+      for id, _ in pairs(RivalAIs or empty_table) do
+        if id == preset.id then
+          used = true
+          break
+        end
+      end
+    end
+    if not used then
+      local colonies = g_CurrentMissionParams.idRivalColonies or empty_table
+      for _, id in ipairs(colonies) do
+        if id == preset.id then
+          used = true
+        end
+      end
+    end
+    if not used then
+      filtered[#filtered + 1] = preset
+    end
+  end)
+  return table.rand(filtered)
+end
+
 -- loop through all map sectors and fire this func
 --~ function ChoGGi.ComFuncs.LoopMapSectors(map_id, func)
 --~ end

@@ -36,7 +36,7 @@ local function ModOptions(id)
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 
 	-- Make sure we're in-game UIColony
-	if not MainCity then
+	if not UIColony then
 		return
 	end
 

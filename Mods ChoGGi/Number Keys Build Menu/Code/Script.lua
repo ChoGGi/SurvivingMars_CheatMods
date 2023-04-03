@@ -8,7 +8,7 @@ local c = #Actions
 -- use number keys to activate/hide build menus
 local function ShowBuildMenu(which)
 	-- make sure the game has started (and the build menu is around)
-	if not MainCity then
+	if not UIColony then
 		return
 	end
 

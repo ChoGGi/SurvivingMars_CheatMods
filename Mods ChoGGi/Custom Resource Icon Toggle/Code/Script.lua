@@ -71,7 +71,7 @@ local function ModOptions(id)
 	mod_ShowIcons = options:GetProperty("ShowIcons")
 
 	-- Make sure we're in-game
-	if not MainCity then
+	if not UIColony then
 		return
 	end
 	ToggleIcons()

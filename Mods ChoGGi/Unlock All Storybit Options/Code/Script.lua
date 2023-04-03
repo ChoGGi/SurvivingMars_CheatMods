@@ -16,13 +16,21 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
--- all storybit/neg/etc options enabled
-local ChoOrig_Condition_Evaluate = Condition.Evaluate
-function Condition.Evaluate(...)
+local function FakeEvaluate(func, ...)
 	if not mod_EnableMod then
-		return ChoOrig_Condition_Evaluate(...)
+		return func(...)
 	end
 
 	return true
 end
 
+function OnMsg.ClassesPostprocess()
+	local ChoOrig_IsCommander_Evaluate = IsCommander.Evaluate
+	function IsCommander.Evaluate(...)
+		return FakeEvaluate(ChoOrig_IsCommander_Evaluate, ...)
+	end
+	local ChoOrig_IsCommander2_Evaluate = IsCommander2.Evaluate
+	function IsCommander2.Evaluate(...)
+		return FakeEvaluate(ChoOrig_IsCommander2_Evaluate, ...)
+	end
+end

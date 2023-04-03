@@ -54,7 +54,7 @@ local function ModOptions(id)
 	mod_LessDust = CurrentModOptions:GetProperty("LessDust")
 
 	-- make sure we're in-game
-	if not MainCity then
+	if not UIColony then
 		return
 	end
 	DisableParticles()
