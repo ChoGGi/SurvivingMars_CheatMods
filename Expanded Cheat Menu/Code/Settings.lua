@@ -1,14 +1,13 @@
 -- See LICENSE for terms
 
+-- I added saved settings to this mod before the devs added ModOptions, and I'm too lazy to refactor the mod :)
+
 -- stores default values and some tables
 
 local next, pairs, type, os = next, pairs, type, os
 
 local LuaCodeToTuple = LuaCodeToTuple
--- local TableToLuaCode = TableToLuaCode
 local SaveLocalStorage = SaveLocalStorage
--- local ThreadLockKey = ThreadLockKey
--- local ThreadUnlockKey = ThreadUnlockKey
 local TranslationTable = TranslationTable
 
 local blacklist = ChoGGi.blacklist
@@ -19,17 +18,7 @@ function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	g_env, debug = env, env.debug
 end
 
--- used for loading/saving settings
-local function PrintError(err)
-	local err_str = TranslationTable[302535920000000--[[Expanded Cheat Menu]]] .. ": " .. TranslationTable[302535920000243--[[Problem saving settings! Error: %s]]]:format(err)
-	if ChoGGi.Temp.GameLoaded then
-		print(err_str)
-	else
-		ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = err_str
-	end
-end
-
--- stores defaults
+-- User defaults
 ChoGGi.Defaults = {
 	-- updated when saved
 	_SAVED = 0,
@@ -143,7 +132,7 @@ ChoGGi.Defaults = {
 	FixMissingModBuildings = false,
 }
 
--- my defaults
+-- My defaults
 if testing then
 	local Defaults = ChoGGi.Defaults
 	-- add extra debugging defaults for me
@@ -178,7 +167,7 @@ if testing then
 	Defaults.SkipModEditorCompletely = true
 end
 
--- set game values to saved values
+-- Set game values to saved values (called from OnMsg.ChoGGi_Loaded())
 function ChoGGi.SettingFuncs.SetConstsToSaved()
 	local UserSettings = ChoGGi.UserSettings
 	local SetConstsG = ChoGGi.ComFuncs.SetConstsG
@@ -201,88 +190,24 @@ function ChoGGi.SettingFuncs.SetConstsToSaved()
 
 end
 
---~ -- called everytime we set a setting in menu
---~ function ChoGGi.SettingFuncs.WriteSettingsAdmin(settings)
---~ 	local ChoGGi = ChoGGi
---~ 	settings = settings or ChoGGi.UserSettings
---~ 	settings._SAVED = os.time()
-
---~ 	local bak = ChoGGi.settings_file .. ".bak"
---~ 	--locks the file while we write (i mean it says thread, ah well can't hurt)?
---~ 	ThreadLockKey(bak)
---~ 	g_env.AsyncCopyFile(ChoGGi.settings_file, bak)
---~ 	ThreadUnlockKey(bak)
-
---~ 	ThreadLockKey(ChoGGi.settings_file)
---~ 	table.sort(settings)
---~ 	-- and write it to disk
---~ 	local err = g_env.AsyncStringToFile(ChoGGi.settings_file, TableToLuaCode(settings))
---~ 	ThreadUnlockKey(ChoGGi.settings_file)
-
---~ 	if err then
---~ 		print(TranslationTable[302535920000006--[[Failed to save settings to %s : %s]]]:format(
---~ 			ChoGGi.settings_file and ConvertToOSPath(ChoGGi.settings_file) or ChoGGi.settings_file,
---~ 			err
---~ 		))
---~ 		return false, err
---~ 	end
---~ 	return settings
---~ end
-
---~ -- read saved settings from file
---~ function ChoGGi.SettingFuncs.ReadSettingsAdmin(settings)
---~ 	local ChoGGi = ChoGGi
---~ 	local err
-
---~ 	-- try to read settings
---~ 	if not settings then
---~ 		err, settings = g_env.AsyncFileToString(ChoGGi.settings_file)
---~ 		if err then
---~ 			-- no settings file so make a new one and read it
---~ 			ChoGGi.SettingFuncs.WriteSettings(ChoGGi.Defaults)
---~ 			err, settings = g_env.AsyncFileToString(ChoGGi.settings_file)
---~ 			-- something is definitely wrong so just abort, and let user know
---~ 			if err then
---~ 				PrintError(err)
---~ 				return
---~ 			end
---~ 		end
---~ 	end
-
---~ 	-- and convert it to lua / update in-game settings
---~ 	err, settings = LuaCodeToTuple(settings)
---~ 	if err then
---~ 		PrintError(err)
---~ 	end
-
---~ 	local UserSettings = ChoGGi.UserSettings
---~ 	-- update in-game settings, but keep the table the same for any locals I did
---~ 	for key, value in pairs(settings) do
---~ 		UserSettings[key] = value
---~ 	end
-
---~ 	if err or type(UserSettings) ~= "table" then
---~ 		-- so now at least the game will start
---~ 		settings = ChoGGi.Defaults
---~ 		for key, value in pairs(settings) do
---~ 			UserSettings[key] = value
---~ 		end
---~ 	end
-
---~ 	-- all is well (we return it for EditECMSettings)
---~ 	return settings
---~ end
-
-function ChoGGi.SettingFuncs.WriteSettingsLocal(settings)
+function ChoGGi.SettingFuncs.WriteSettings(settings)
 	settings = settings or ChoGGi.UserSettings
 	settings._SAVED = os.time()
 
-	-- we want it stored as a table in LocalStorage, not a string (sometimes i send it as a string so)
+	-- We want it stored as a table in LocalStorage, not a string (sometimes i send it as a string so)
 	if type(settings) == "string" then
 		local err
 		err, settings = LuaCodeToTuple(settings)
 		if err then
-			return PrintError(err)
+			local err_str = TranslationTable[302535920000000--[[Expanded Cheat Menu]]] .. ": " .. TranslationTable[302535920000243--[[Problem saving settings! Error: %s]]]:format(err)
+			if ChoGGi.Temp.GameLoaded then
+				print(err_str)
+			else
+				ChoGGi.Temp.StartupMsgs[#ChoGGi.Temp.StartupMsgs+1] = err_str
+			end
+
+			-- Something went wrong parsing settings, abort so we don't override saved
+			return
 		end
 	end
 
@@ -292,10 +217,10 @@ function ChoGGi.SettingFuncs.WriteSettingsLocal(settings)
 	return settings
 end
 
-function ChoGGi.SettingFuncs.ReadSettingsLocal(settings)
+function ChoGGi.SettingFuncs.ReadSettings(settings)
 	local ChoGGi = ChoGGi
 
-	-- try to read settings
+	-- Try to read settings
 	if not settings then
 		if LocalStorage.ModPersistentData[ChoGGi.id] then
 			settings = LocalStorage.ModPersistentData[ChoGGi.id]
@@ -303,13 +228,13 @@ function ChoGGi.SettingFuncs.ReadSettingsLocal(settings)
 
 		if not settings or not next(settings) then
 			-- no settings so use defaults
-			settings = ChoGGi.SettingFuncs.WriteSettingsLocal(ChoGGi.Defaults)
+			settings = ChoGGi.SettingFuncs.WriteSettings(ChoGGi.Defaults)
 		end
 	end
 
 	local UserSettings = ChoGGi.UserSettings
 
-	-- update in-game settings, but keep the table the same for any locals I did
+	-- Update in-game settings, but keep the table the same for any locals I did
 	for key, value in pairs(settings) do
 		UserSettings[key] = value
 	end
@@ -317,7 +242,7 @@ function ChoGGi.SettingFuncs.ReadSettingsLocal(settings)
 	ChoGGi.UserSettings = settings
 
 	if type(UserSettings) ~= "table" or not next(UserSettings) then
-		-- so now at least the game will start
+		-- So now at least the game will start
 		settings = ChoGGi.Defaults
 
 		for key, value in pairs(settings) do
@@ -325,7 +250,7 @@ function ChoGGi.SettingFuncs.ReadSettingsLocal(settings)
 		end
 	end
 
-	-- all is well (we return it for EditECMSettings)
+	-- All is well (we return it for EditECMSettings)
 	return settings
 end
 
@@ -382,12 +307,6 @@ if blacklist then
 	if type(LocalStorage.ModPersistentData) ~= "table" then
 		LocalStorage.ModPersistentData = {}
 	end
-
-	ChoGGi.SettingFuncs.ReadSettings = ChoGGi.SettingFuncs.ReadSettingsLocal
-	ChoGGi.SettingFuncs.WriteSettings = ChoGGi.SettingFuncs.WriteSettingsLocal
-else
-	ChoGGi.SettingFuncs.ReadSettings = ChoGGi.SettingFuncs.ReadSettingsAdmin
-	ChoGGi.SettingFuncs.WriteSettings = ChoGGi.SettingFuncs.WriteSettingsAdmin
 end
 
 -- and read our settings

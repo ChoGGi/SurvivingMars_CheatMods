@@ -83,11 +83,9 @@ CreateRealTimeThread(function()
 				end
 				-- and a few others (_G, OnMsg)
 				mod.env = LuaModEnv(env)
-				if id == "ChoGGi_CheatMenu" and Mods.ChoGGi_testing
-					or id == "ChoGGi_Library" and Mods.ChoGGi_testing
-				then
---~ 					-- I toggle it a fair bit, so make sure it's at the top
---~ 					mod.title = " " .. mod.title
+
+				if GetUsername() == "ChoGGi" then
+					-- Skip adding warning for me
 				else
 					-- add a warning to any mods without a blacklist, so user knows something is up
 					mod.title = mod.title .. " (Warning)"

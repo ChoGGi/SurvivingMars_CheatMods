@@ -71,10 +71,6 @@ local storybit_id = "politician"
 
 -- swap any politician storybits
 local function UpdateStoryBits()
-	if GetCommanderProfile().id ~= comm_id then
-		return
-	end
-
 	local StoryBits = StoryBits
 	for _, storybit in pairs(StoryBits) do
 		for i = 1, #storybit do
@@ -86,15 +82,22 @@ local function UpdateStoryBits()
 	end
 end
 
-OnMsg.LoadGame = UpdateStoryBits
-
-function OnMsg.CityStart()
-	-- politician story to CSA
-	UpdateStoryBits()
-
+function OnMsg.LoadGame()
 	if GetCommanderProfile().id ~= comm_id then
 		return
 	end
+
+	-- politician story to CSA
+	UpdateStoryBits()
+end
+
+function OnMsg.CityStart()
+	if GetCommanderProfile().id ~= comm_id then
+		return
+	end
+
+	-- politician story to CSA
+	UpdateStoryBits()
 
 	-- change standing to Good
 	local RivalAIs = RivalAIs
