@@ -13,7 +13,7 @@ Enable with in-game mod manager
 ```
 Also available at: [Steam](https://steamcommunity.com/sharedfiles/filedetails/?id=1411157810), [NexusMods](https://www.nexusmods.com/survivingmars/mods/7), [ParadoxMods](https://mods.paradoxplaza.com/mods/645/Any)
 
-<img src="Expanded%20Cheat%20Menu/dialogs.jpg" width="128"/>
+<img src="dialogs.jpg" width="128"/>
 
 ##### Info
 ```
