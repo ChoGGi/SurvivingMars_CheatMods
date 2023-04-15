@@ -15,14 +15,14 @@ return PlaceObj("ModDef", {
 --~ 	"has_options", true,
 	"TagOther", true,
 	"description", [[
+[b]Leave this disabled till your playthrough reaches Sol 2981+. This is replacing a core C func with a lua one.[/b]
+
+
 Stuff gets weird after about Sol 2983 hour 20 min 20.
 https://en.wikipedia.org/wiki/2,147,483,647#In_video_games
 
 
-[b]Leave this disabled till your playthrough reaches Sol 2981+. This is replacing a core C func with a lua one.[/b]
-
-
-If switching between your 2983 and other saves: [b]You should restart the game![/b]
+If switching between your 2983 and other saves: [b]You should disable this mod and restart the game![/b]
 
 
 https://forum.paradoxplaza.com/forum/threads/surviving-mars-lag-and-unplayable-after-a-certain-sol.1490083/

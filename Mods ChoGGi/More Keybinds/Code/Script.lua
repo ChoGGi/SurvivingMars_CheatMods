@@ -483,70 +483,63 @@ Actions[#Actions+1] = {ActionName = T(0000, "Fill Selected Depot"),
 	ActionMode = "Game",
 }
 --
---
---
---
-
-
-
---~ -- Camera panning
---~ local cameraRTS = cameraRTS
---~ local function PanCamera(cmd, dist)
---~ 	local cur_pos, cur_la = cameraRTS.GetPosLookAt()
---~ 	local cur_off = cur_la - cur_pos
-
---~ 	-- +x left -x right +y up -y down
---~ 	local la = cur_la[cmd](cur_la, dist)
-
---~ 	local pos = la - cur_off
-
---~ 	cameraRTS.SetCamera(pos, la, 100)
-
---~ end
-
---[[
--- remove orig actions
-function OnMsg.ShortcutsReloaded()
-	local target = XShortcutsTarget
-	target:RemoveAction(target:ActionById("actionPanUp"))
-	target:RemoveAction(target:ActionById("actionPanDown"))
-	target:RemoveAction(target:ActionById("actionPanLeft"))
-	target:RemoveAction(target:ActionById("actionPanRight"))
+-- I doubt it'll cause any issues, but might as well hide buttons from people without B&B
+if g_AvailableDlc.picard then
+	Actions[#Actions+1] = {ActionName = T(0000, "Change Map Surface"),
+		ActionId = "ChoGGi.RebindHardcodedKeys.ChangeMapSurface",
+		OnAction = function()
+			CreateRealTimeThread(function()
+				UpdateToMap(UIColony.surface_map_id)
+			end)
+		end,
+		ActionShortcut = "Ctrl-1",
+		replace_matching_id = true,
+		ActionBindable = true,
+		ActionMode = "Game",
+	}
+	Actions[#Actions+1] = {ActionName = T(0000, "Change Map Underground"),
+		ActionId = "ChoGGi.RebindHardcodedKeys.ChangeMapUnderground",
+		OnAction = function()
+			if UIColony.underground_map_unlocked then
+				CreateRealTimeThread(function()
+					UpdateToMap(UIColony.underground_map_id)
+				end)
+			end
+		end,
+		ActionShortcut = "Ctrl-2",
+		replace_matching_id = true,
+		ActionBindable = true,
+		ActionMode = "Game",
+	}
+	-- loop for asteroids, I'm adding 8 keys for my mod that allows more than 3
+	local function IsAsteroidEnabled(index)
+		local asteroid = UIColony.asteroids[index]
+		return asteroid and asteroid.available
+	end
+	for i = 3, 10 do
+		local asteroid_idx = i - 2
+		if i == 10 then
+			i = 0
+		end
+		Actions[#Actions+1] = {ActionName = T(0000, "Change Map Asteroid " .. asteroid_idx),
+			ActionId = "ChoGGi.RebindHardcodedKeys.ChangeMapAsteroid" .. asteroid_idx,
+			OnAction = function()
+				if IsAsteroidEnabled(asteroid_idx) then
+					CreateRealTimeThread(function()
+						UpdateToMap(UIColony.asteroids[asteroid_idx].map)
+					end)
+				end
+			end,
+			ActionShortcut = "Ctrl-" .. i,
+			replace_matching_id = true,
+			ActionBindable = true,
+			ActionMode = "Game",
+		}
+	end
 end
-]]
---~ Actions[#Actions+1] = {ActionName = T(0000, "Pan RTS Camera Left"),
---~ 	ActionId = "ChoGGi.RebindHardcodedKeys.PanRTSCameraLeft",
---~ 	ActionShortcut = "A",
---~ 	replace_matching_id = true,
---~ 	OnAction = function()
---~ 		PanCamera("AddX", 5000)
---~ 	end,
---~ 	ActionBindable = true,
---~ }
---~ Actions[#Actions+1] = {ActionName = T(0000, "Pan RTS Camera Right"),
---~ 	ActionId = "ChoGGi.RebindHardcodedKeys.PanRTSCameraRight",
---~ 	ActionShortcut = "D",
---~ 	replace_matching_id = true,
---~ 	OnAction = function()
---~ 		PanCamera("AddX", -5000)
---~ 	end,
---~ 	ActionBindable = true,
---~ }
---~ Actions[#Actions+1] = {ActionName = T(0000, "Pan RTS Camera Up"),
---~ 	ActionId = "ChoGGi.RebindHardcodedKeys.PanRTSCameraUp",
---~ 	ActionShortcut = "W",
---~ 	replace_matching_id = true,
---~ 	OnAction = function()
---~ 		PanCamera("AddY", 5000)
---~ 	end,
---~ 	ActionBindable = true,
---~ }
---~ Actions[#Actions+1] = {ActionName = T(0000, "Pan RTS Camera Down"),
---~ 	ActionId = "ChoGGi.RebindHardcodedKeys.PanRTSCameraDown",
---~ 	ActionShortcut = "S",
---~ 	replace_matching_id = true,
---~ 	OnAction = function()
---~ 		PanCamera("AddY", -5000)
---~ 	end,
---~ 	ActionBindable = true,
---~ }
+--
+--
+--
+--
+--
+--

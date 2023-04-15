@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2163750555",
 	"pops_any_uuid", "0876037c-42bf-4f8a-8939-36638ba10a62",
 	"lua_revision", 1007000, -- Picard
-	"version", 15,
+	"version", 16,
 	"version_major", 1,
-	"version_minor", 5,
+	"version_minor", 6,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -39,6 +39,7 @@ Set Speed: 1 2 3 4 5 (4/5 = *5/*10)
 Dialog options: 1 2 3 4 (on-screen question dialog with list of options)
 Cycle through different levels of opacity for resource icons: Ctrl-I
 Fill Selected Depot: Ctrl-F
+Quickly switch between maps (surface/underground/asteroids): Ctrl-*
 
 
 Mod Options:

@@ -5,7 +5,39 @@ if not g_AvailableDlc.gagarin then
 	return
 end
 
-local PickUnusedAISponsor = ChoGGi.ComFuncs.PickUnusedAISponsor
+-- NEXT LIB UPDATE v11.9
+--~ local PickUnusedAISponsor = ChoGGi.ComFuncs.PickUnusedAISponsor
+local PickUnusedAISponsor = rawget(_G, "ChoGGi") and ChoGGi.ComFuncs.PickUnusedAISponsor or function()
+  local filtered = {}
+  ForEachPresetInGroup("DumbAIDef", "MissionSponsors", function(preset, group)
+    local used = false
+    if preset.id == "random" or preset.id == "none" or preset.id == g_CurrentMissionParams.idMissionSponsor then
+      used = true
+    end
+    if not used then
+      for id, _ in pairs(RivalAIs or empty_table) do
+        if id == preset.id then
+          used = true
+          break
+        end
+      end
+    end
+    if not used then
+      local colonies = g_CurrentMissionParams.idRivalColonies or empty_table
+      for _, id in ipairs(colonies) do
+        if id == preset.id then
+          used = true
+        end
+      end
+    end
+    if not used then
+      filtered[#filtered + 1] = preset
+    end
+  end)
+	local results = table.rand(filtered)
+  return results
+end
+-- NEXT LIB UPDATE v11.9
 
 local mod_MaxRivals
 
@@ -45,7 +77,7 @@ local function StartupCode()
 		end
 	end
 
-	-- spawn all the rest
+	-- Spawn all the rest
 	local SpawnRivalAI = SpawnRivalAI
 	local limit = #Presets.DumbAIDef.MissionSponsors
 	for _ = 1, limit do
@@ -53,8 +85,11 @@ local function StartupCode()
 		if count >= mod_MaxRivals then
 			break
 		end
---~ 		-- defaults to random rival
-		SpawnRivalAI(PickUnusedAISponsor())
+		-- Random rival
+		local sponsor = PickUnusedAISponsor()
+		if sponsor then
+			SpawnRivalAI(sponsor)
+		end
 		count = count + 1
 	end
 

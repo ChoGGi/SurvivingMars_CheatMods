@@ -1,3 +1,9 @@
+v0.5
+Fix for v0.4.
+
+v0.4
+Workaround for LukeH's Meat and Booze.
+
 v0.3
 Removed log spam: Trying to create new value hr.PlanetColony5Longitude
 

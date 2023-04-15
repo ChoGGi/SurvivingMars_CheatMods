@@ -43,9 +43,9 @@ function OnMsg.ClassesPostprocess()
 	SuspendTerrainInvalidations("ChoGGi.ComFuncs.PlantRandomVegetation")
 
 				-- spawn a bunch of trees
-				if rawget(_G,"ChoGGi") and ChoGGi.ComFuncs.PlantRandomVegetation then
+				if rawget(_G, "ChoGGi") and ChoGGi.ComFuncs.PlantRandomVegetation then
 					ChoGGi.ComFuncs.PlantRandomVegetation(2500)
-				elseif rawget(_G,"dbg_PlantRandomVegetation") then
+				elseif rawget(_G, "dbg_PlantRandomVegetation") then
 					dbg_PlantRandomVegetation(1500)
 				end
 				-- eh... close enough for now

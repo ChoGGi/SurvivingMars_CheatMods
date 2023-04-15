@@ -1,1 +1,2 @@
 v0.2
+Workaround for LukeH's Meat and Booze.

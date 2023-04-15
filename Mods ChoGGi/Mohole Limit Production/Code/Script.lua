@@ -21,15 +21,16 @@ end
 
 function MoholeMine:ChoGGi_ToggleProductionResource(res)
 	local prod = self.producers[res]
-
-	if type(prod.ChoGGi_ChoOrig_Produce) == "function" then
-		prod.Produce = prod.ChoGGi_ChoOrig_Produce
-		prod.ChoGGi_ChoOrig_Produce = nil
-		return true
-	else
-		prod.ChoGGi_ChoOrig_Produce = prod.Produce
-		prod.Produce = ChoFake_SingleResourceProducer_Produce
-		return false
+	if prod then
+		if type(prod.ChoGGi_ChoOrig_Produce) == "function" then
+			prod.Produce = prod.ChoGGi_ChoOrig_Produce
+			prod.ChoGGi_ChoOrig_Produce = nil
+			return true
+		else
+			prod.ChoGGi_ChoOrig_Produce = prod.Produce
+			prod.Produce = ChoFake_SingleResourceProducer_Produce
+			return false
+		end
 	end
 
 end
@@ -55,7 +56,9 @@ function OnMsg.ClassesPostprocess()
 		"Icon", "UI/Icons/ColonyControlCenter/metals_on.tga",
 
 		"OnContextUpdate", function(self, context)
-			if context.producers.Metals.ChoGGi_ChoOrig_Produce then
+			if context.producers.Metals
+				and context.producers.Metals.ChoGGi_ChoOrig_Produce
+			then
 				self:SetIcon("UI/Icons/ColonyControlCenter/metals_off.tga")
 			else
 				self:SetIcon("UI/Icons/ColonyControlCenter/metals_on.tga")
@@ -84,7 +87,9 @@ function OnMsg.ClassesPostprocess()
 		"Icon", "UI/Icons/ColonyControlCenter/preciousmetals_on.tga",
 
 		"OnContextUpdate", function(self, context)
-			if context.producers.PreciousMetals.ChoGGi_ChoOrig_Produce then
+			if context.producers.PreciousMetals
+				and context.producers.PreciousMetals.ChoGGi_ChoOrig_Produce
+			then
 				self:SetIcon("UI/Icons/ColonyControlCenter/preciousmetals_off.tga")
 			else
 				self:SetIcon("UI/Icons/ColonyControlCenter/preciousmetals_on.tga")

@@ -31,6 +31,7 @@ return PlaceObj("ModDef", {
 		"*.lnk",
 		"*.txt",
 		".gitignore",
+		"dialogs.png",
 	},
 	"code", {
 		-- start 'er up

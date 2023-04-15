@@ -7839,7 +7839,8 @@ function ChoGGi.ComFuncs.PickUnusedAISponsor()
       filtered[#filtered + 1] = preset
     end
   end)
-  return table.rand(filtered)
+	local results = table.rand(filtered)
+  return results
 end
 
 -- loop through all map sectors and fire this func

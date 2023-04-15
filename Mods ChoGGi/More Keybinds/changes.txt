@@ -1,3 +1,6 @@
+v1.6
+Added Ctrl-* to quickly switch between maps (surface/underground/asteroids).
+
 v1.5
 Blocked quicksave during construction mode (thanks Daemonjax).
 

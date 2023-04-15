@@ -14,6 +14,8 @@ Enable with in-game mod manager
 Also available at: [Steam](https://steamcommunity.com/sharedfiles/filedetails/?id=1411157810), [NexusMods](https://www.nexusmods.com/survivingmars/mods/7), [ParadoxMods](https://mods.paradoxplaza.com/mods/645/Any)
 
 
+<p><div class="link-preview-widget"><a href="https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Expanded%20Cheat%20Menu" rel="noopener" target="_blank"><div class="link-preview-widget-title">dialogs</div><div class="link-preview-widget-description">Preview of dialog boxes in ECM.</div><div class="link-preview-widget-url">GitHub</div></a><a class="link-preview-widget-image" href="https://github.com/ChoGGi/SurvivingMars_CheatMods" rel="noopener" style="background-image: url('https://github.com/ChoGGi/SurvivingMars_CheatMods/raw/master/Expanded%20Cheat%20Menu/dialogs.jpg');" target="_blank"></a></div></p>
+
 
 ##### Info
 ```

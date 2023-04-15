@@ -1,0 +1,4 @@
+building cats
+1>domes>1>basic dome
+
+have to sort building cats first to be nice to peoples muscle memory

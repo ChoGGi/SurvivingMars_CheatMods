@@ -21,7 +21,7 @@ local dlc = {
 	"prunariu",
 	"shepard",
 	"wubbo",
-	"zubrin",
+	"zubrin", -- Robert Zubrin, I don't think this DLC will ever see the light of day
 }
 local dlc_names = {
 	ariane = T(392597027369, "The Future Contemporary Asset Pack"),
