@@ -903,9 +903,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 		c = c + 2
 
 		-- If it's an image then add 'er to the text
-		if self.ChoGGi.ComFuncs.ValidateImage(obj_str) and
-			self.ChoGGi.ComFuncs.ImageExts()[obj_str:sub(-3):lower()]
-		then
+		if self.ChoGGi.ComFuncs.ValidateImage(obj_str) then
 			c = c + 1
 			roll_text[c] = "\n\n<image "
 			c = c + 1
@@ -2705,7 +2703,12 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 		-- acts weird with main menu movie xlayer, so we check for GetVisualPos
 		if IsValid(obj) and obj.GetVisualPos then
 			return self:HyperLink(obj, Examine_ConvertValueToInfo)
-				.. RetName(obj) .. self.hyperlink_end .. "@"
+				.. RetName(obj) .. self.hyperlink_end
+
+				.. self:HyperLink(obj, function()
+					SelectObj(obj)
+				end) .. " @ " .. self.hyperlink_end
+
 				.. self:ConvertValueToInfo(obj:GetVisualPos())
 				.. " <color ChoGGi_palegreen>" .. RetMapType(obj) .. "</color>"
 		else
@@ -3126,8 +3129,13 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 					parent = self,
 				})
 			end)
-			.. obj.class .. self.hyperlink_end .. "@"
-			.. self:ConvertValueToInfo(obj:GetVisualPos()) .. " "
+			.. obj.class .. self.hyperlink_end
+
+			.. self:HyperLink(obj, function()
+				SelectObj(obj)
+			end) .. " @ " .. self.hyperlink_end
+
+			.. self:ConvertValueToInfo(obj:GetVisualPos())
 			.. " <color ChoGGi_palegreen>" .. RetMapType(obj) .. "</color> --"
 		)
 		-- add the particle name

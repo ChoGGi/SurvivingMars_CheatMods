@@ -19,8 +19,15 @@ local mod_UniversalDepotAmounts
 local mod_ResourceDepotAmounts
 
 local function UpdateTemplate(id, amount)
-	BuildingTemplates[id].max_storage_per_resource = amount
-	ClassTemplates.Building[id].max_storage_per_resource = amount
+	-- Not sure, missing dlc?
+	local temp = BuildingTemplates[id]
+	if temp then
+		temp.max_storage_per_resource = amount
+	end
+	temp = ClassTemplates.Building[id]
+	if temp then
+		temp.max_storage_per_resource = amount
+	end
 end
 
 local res_depots = {

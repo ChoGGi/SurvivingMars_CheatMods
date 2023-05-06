@@ -157,6 +157,45 @@ do -- CityStart/LoadGame
 		local main_realm = GetRealmByID(MainMapID)
 
 		--
+		-- Fix Future Contemporary Asset Pack when placing spires.
+		if g_AvailableDlc.ariane then
+			local hex = HexOutlineShapes.PeakNodeCCP2
+			if #hex == 8 then
+				table.remove(hex, 6)
+				-- Removing HexOutlineShapes seems to fix it, but it doesn't hurt to remove this one as well.
+				table.remove(HexCombinedShapes.PeakNodeCCP2, 6)
+
+				-- The other buildings
+				table.remove(HexOutlineShapes.FusionArcologyCCP2, 6)
+				table.remove(HexCombinedShapes.FusionArcologyCCP2, 6)
+				table.remove(HexOutlineShapes.VerticalGardenCCP2, 6)
+				table.remove(HexCombinedShapes.VerticalGardenCCP2, 6)
+			end
+		end
+
+		--
+		-- Fix Landscaping Freeze
+		-- If there's placed landscapes grab the largest number
+		local Landscapes = Landscapes
+		if Landscapes and next(Landscapes) then
+			local largest = 0
+			for idx in pairs(Landscapes) do
+				if idx > largest then
+					largest = idx
+				end
+			end
+			-- If over 2K then reset to 0
+			if largest > 2000 then
+				LandscapeLastMark = 0
+			else
+				LandscapeLastMark = largest + 1
+			end
+		else
+			-- No landscapes so 0 it is
+			LandscapeLastMark = 0
+		end
+
+		--
 		-- Update all maps for uneven terrain (if using mod that allows landscaping maps other than surface)
 		if mod_UnevenTerrain then
 			FixUnevenTerrain()

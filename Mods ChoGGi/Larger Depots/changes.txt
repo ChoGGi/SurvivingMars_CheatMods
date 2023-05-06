@@ -1,4 +1,5 @@
 v0.2
+Log spam
 
 v0.1
 Added Chinese desc (thanks 2311370179).

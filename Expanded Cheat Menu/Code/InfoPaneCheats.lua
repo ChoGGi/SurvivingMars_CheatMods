@@ -761,6 +761,10 @@ function CObject:CheatDeleteAllObjects()
 end
 
 function CObject:CheatMoveRealm(map_id)
+	if not g_AccessibleDlc.picard then
+		return
+	end
+
 	if map_id then
 		ComFuncs.MoveRealm(self, map_id)
 		return

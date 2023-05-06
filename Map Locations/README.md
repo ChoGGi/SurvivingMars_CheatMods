@@ -11,7 +11,7 @@ Do not use Tech Variety or Chaos Theory game rules! (they change the breakthroug
 
 Only shows first 12 breakthroughs: Anything higher than that isn't guaranteed.
 
-The first 4 are planetary anomalies, if you have BB then you need to use my Fix Bugs mod on a new game or ignore them.
+The first 4 are planetary anomalies, if you have BB then you need to use my Fix Bugs mod on new games or ignore them.
 
 Tools that use this data:
 

@@ -1,3 +1,9 @@
+v4.8
+Added fix for Future Contemporary Asset Pack when placing spires.
+
+v4.7
+Added "Fix Landscaping Freeze", I thought that was fixed in an update. I guess not.
+
 v4.6
 Uneven Terrain fix now fixes all maps on load, and mod option is enabled by default.
 

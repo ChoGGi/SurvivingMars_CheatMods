@@ -3,6 +3,7 @@
 ## v18.9 (Unreleased)
 ### Fixed:
 - Early story bits happened when Debug>Override Condition Prereqs was enabled (thanks PsiFive).
+- Log spam from CheatMoveRealm().
 
 ## v18.8 (23 Mar 2023)
 ### Added:

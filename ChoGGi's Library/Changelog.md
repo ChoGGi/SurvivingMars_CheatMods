@@ -2,6 +2,10 @@
 
 ## v11.9 (Unreleased)
 
+### Examine:
+- Clicking the @ for objects will select that obj.
+- Game could crash when viewing preview of some descriptions.
+
 ## v11.8 (23 Mar 2023)
 - Found some more Picard map stuff to update.
 - Cleaned up some log spam from some of my mods.

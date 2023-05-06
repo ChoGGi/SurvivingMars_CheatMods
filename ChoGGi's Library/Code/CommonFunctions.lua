@@ -548,11 +548,32 @@ local function GetParentOfKind(win, cls)
 end
 ChoGGi.ComFuncs.GetParentOfKind = GetParentOfKind
 
+do -- ImageExts
+	-- easier to keep them in one place
+	local ext_list = {
+		dds = true,
+		tga = true,
+		png = true,
+		jpg = true,
+		jpeg = true,
+	}
+	-- ImageExts()[str:sub(-3):lower()]
+	function ChoGGi.ComFuncs.ImageExts()
+		return ext_list
+	end
+end -- do
+local ImageExts = ChoGGi.ComFuncs.ImageExts
+
 do -- ValidateImage
 	local Measure = UIL.MeasureImage
 
 	function ChoGGi.ComFuncs.ValidateImage(image)
 		if not image then
+			return
+		end
+
+		-- UIL.MeasureImage can crash if you send it a line of text with a <> and probably others
+		if not ImageExts()[string.sub(image, -3):lower()] then
 			return
 		end
 
@@ -4530,21 +4551,6 @@ function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
 		TranslationTable[1176--[[Cancel Destroy]]]
 	)
 end
-
-do -- ImageExts
-	-- easier to keep them in one place
-	local ext_list = {
-		dds = true,
-		tga = true,
-		png = true,
-		jpg = true,
-		jpeg = true,
-	}
-	-- ImageExts()[str:sub(-3):lower()]
-	function ChoGGi.ComFuncs.ImageExts()
-		return ext_list
-	end
-end -- do
 
 do -- IsPosInMap
 	local construct

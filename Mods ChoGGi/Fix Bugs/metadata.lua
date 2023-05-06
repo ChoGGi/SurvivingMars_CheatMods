@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 46,
+	"version", 48,
 	"version_major", 4,
-	"version_minor", 6,
+	"version_minor", 8,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -30,12 +30,13 @@ Log spam from IsBuildingInDomeRange().
 Colonists showing up on wrong map in infobar.
 Unpassable underground rocks stuck in path (not cave-in rubble, but small rocks you can't select).
 Dredger tech fix (Spoilers see: https://www.reddit.com/r/SurvivingMars/comments/xnprjg/)
-Water Reclamation Spire and B&B upgrade tech caused issues (spoiler free, see more info below).
+Water Reclamation Spire and B&B upgrade tech caused issues (more info below).
 Add rocket sound effects to SupplyPods (mod option to disable).
-Force heat grid to update (see more info below).
+Force heat grid to update (more info below).
 Personal Space storybit changes capacity, but building menu doesn't show it.
 Underground Rare Anomaly can give you underground dome prefabs, but locks them to surface.
 The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
+Future Contemporary Asset Pack when placing spires (more info below).
 
 [b]Mods[/b]:
 Silva's Orion Heavy Rocket (you must disable his Essential files mod, then enable it AFTER enabling this mod).
@@ -56,6 +57,7 @@ Fix Double Click Select All Of Type
 Fix Dust Devils Block Building
 Fix Farm Oxygen
 Fix FindDroneToRepair Log Spam
+Fix Landscaping Freeze
 Fix Layout Construction Tech Lock
 Fix Locked Wind Turbine
 Fix Meteor Stuck On Map
@@ -67,6 +69,7 @@ Fix Resupply Menu Not Opening
 Fix Stuck Malfunctioning Drones At DroneHub
 Fix Transport Negative Amounts
 Fix Transports Don't Move After Route Set
+
 
 If you have B&B I'd recommend SkiRich's [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2619013940]Better Lander Rockets[/url]
 
@@ -104,6 +107,10 @@ If you're bored and want to dig through the funcs in LandscapeFinish() to find o
 [b]No Planetary Anomaly Breakthroughs when B&B is installed[/b]
 It's probably a bug, but the underground wonders do add Breakthroughs.
 Mod option to disable this "fix" (and receieve less Breakthroughs).
+
+[b]Future Contemporary Asset Pack[/b]
+When placing a building you can change skins, if you use the spire skins from this DLC when placing skins
+then it blocks an extra hex (you can see it when placing). This removes that hex on new buildings.
 [b]Fix FindDroneToRepair Log Spam[/b]
 This seems to be an issue from flying drones and a drone hub being destroyed.
 Your log will "fill" up with this error:
@@ -139,6 +146,11 @@ No more cheesing dust devils with waste rock depots (etc), by placing them on to
 [b]Fix Defence Towers Not Firing At Rovers[/b]
 It's from a mystery (trying to keep spoilers to a minimum).
 If you're starting a new game than this is fixed, but for older saves on this mystery you'll need this mod.
+[b]Fix Landscaping Freeze[/b]
+For some reason LandscapeLastMark gets set to around 4090, when LandscapeMark hits 4095 bad things happen.
+This resets LandscapeLastMark to whatever is the highest number in Landscapes when a save is loaded (assuming it's under 2000, otherwise 0).
+For those wondering LandscapeLastMark is increased each time you open flatten/ramp (doesn't need to be placed).
+Thanks to Quirquie for the bug report (and persistance).
 
 
 See mod options to disable fixes for stuff that you can cheese.
