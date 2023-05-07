@@ -3,8 +3,8 @@ return PlaceObj("ModDef", {
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
-			"version_major", 11,
-			"version_minor", 9,
+			"version_major", 12,
+			"version_minor", 0,
 		}),
 	},
 	"title", "<color 135 212 155>Expanded Cheat Menu</color> Test",
@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1411157810",
 	"pops_any_uuid", "dbb57a5c-b79b-427a-8f1c-d9b4a64d16ec",
 	"lua_revision", 1007000, -- Picard
-	"version", 189,
-	"version_major", 18,
-	"version_minor", 9,
+	"version", 190,
+	"version_major", 19,
+	"version_minor", 0,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog",

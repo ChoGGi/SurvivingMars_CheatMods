@@ -26,7 +26,7 @@ local function UpdateRocket(func, self, ...)
 	end
 	HasDustStorm = ChoFake_HasDustStorm
 
-	local result, ret = pcall(func, self, ...)
+	local _, ret = pcall(func, self, ...)
 
 	if self.affected_by_dust_storm then
 		self.affected_by_dust_storm = orig_affected

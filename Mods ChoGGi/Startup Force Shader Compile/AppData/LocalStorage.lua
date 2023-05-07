@@ -65,7 +65,7 @@ CreateRealTimeThread(function()
 
 		-- remove blacklist for any mods in "Mod Ids"
 		local Mods = Mods
-		for id, mod in pairs(Mods) do
+		for _, mod in pairs(Mods) do
 			if mod_ids[mod.steam_id] then
 				-- mods can see if funcs are blacklisted or not
 				mod.no_blacklist = true

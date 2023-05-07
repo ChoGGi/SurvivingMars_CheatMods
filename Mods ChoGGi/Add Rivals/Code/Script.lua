@@ -9,7 +9,7 @@ end
 --~ local PickUnusedAISponsor = ChoGGi.ComFuncs.PickUnusedAISponsor
 local PickUnusedAISponsor = rawget(_G, "ChoGGi") and ChoGGi.ComFuncs.PickUnusedAISponsor or function()
   local filtered = {}
-  ForEachPresetInGroup("DumbAIDef", "MissionSponsors", function(preset, group)
+  ForEachPresetInGroup("DumbAIDef", "MissionSponsors", function(preset)
     local used = false
     if preset.id == "random" or preset.id == "none" or preset.id == g_CurrentMissionParams.idMissionSponsor then
       used = true

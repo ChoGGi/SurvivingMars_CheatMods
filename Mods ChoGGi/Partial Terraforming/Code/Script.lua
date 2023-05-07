@@ -13,19 +13,20 @@ local function StartupCode()
 	end
 
 	local defs = TerraformingParamDefs
+  local idx
 
 	-- blue skys
-	local idx = table.find(defs.Atmosphere.Threshold, "Id", "AtmosphereCleared")
+	idx = table.find(defs.Atmosphere.Threshold, "Id", "AtmosphereCleared")
 	if idx then
 		defs.Atmosphere.Threshold[idx].Threshold = 999
 	end
 	-- toxic rains
-	local idx = table.find(defs.Atmosphere.Threshold, "Id", "ToxicRainStop")
+	idx = table.find(defs.Atmosphere.Threshold, "Id", "ToxicRainStop")
 	if idx then
 		defs.Atmosphere.Threshold[idx].Threshold = 999
 	end
 	-- cold waves
-	local idx = table.find(defs.Temperature.Threshold, "Id", "ColdWaveStop")
+	idx = table.find(defs.Temperature.Threshold, "Id", "ColdWaveStop")
 	if idx then
 		defs.Temperature.Threshold[idx].Threshold = 999
 	end

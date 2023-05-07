@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v11.9 (Unreleased)
+## v12.0 (Unreleased)
+
+## v11.9 (6 May 2023)
 
 ### Examine:
 - Clicking the @ for objects will select that obj.
@@ -77,7 +79,7 @@
 - Objects in examine show which map their on (see tooltip for map id).
 - Fixed "attempt to index a nil value (field 'def') (42)"
 
-## v10.5 (03 Oct 2021)
+## v10.5 (3 Oct 2021)
 - Re-fangled how specs are set.
 
 ### Examine:
@@ -117,7 +119,7 @@
 - Moved some examine funcs from ECM to Lib.
 - Added my prevent blank mission profile screen fix.
 
-## v9.9 (08 May 2021)
+## v9.9 (8 May 2021)
 - Examining funcs with the blacklist enabled gave an error.
 - Hopefully a fix for that HGE::l_SetPos log spam (it doesn't harm anything, but it's annoying).
 - Added mod option to ignore persist errors.
@@ -166,11 +168,11 @@
 - Added RGBtoColour.
 - Added a new mod option: ModItemOptionInputBox a text input box for the user.
 
-## v9.0 (01 March 2021)
+## v9.0 (1 March 2021)
 - Fiddled with IsAttachAboveHeightLimit.
 - RetAllOfClass is now MapGet.
 
-## v8.9 (02 Jan 2021)
+## v8.9 (2 Jan 2021)
 - Log spam.
 - Error in SendDroneToCC.
 
@@ -178,14 +180,14 @@
 - Added mod option to toggle Mod Options button (added in v8.6).
 - Added SendDroneToCC.
 
-## v8.7 (08 Dec 2020)
+## v8.7 (8 Dec 2020)
 - Added IsDroneIdle/GetIdleDrones/PlacePolyline/FisherYates_Shuffle.
 - Changed DotNameToObject to DotPathToObject.
 - RetName checks for TMeta/TConcatMeta.
 - My cleanup save func may have been removing some blinky lights when saving?
 - Added CycleSelectedObjects()
 
-## v8.6 (06 Nov 2020)
+## v8.6 (6 Nov 2020)
 - Added Open File to MultiLineText when viewing source code from Examine (opens in default text editor).
 - Added a Mod Options button to the in-game menu (no idea why the devs hid it in options).
 - Integrated Mod Options Expanded mod.
@@ -200,7 +202,7 @@
 ## v8.3 (18 July 2020)
 - The selected dialog will be pulled to the foreground of other dialogs.
 
-## v8.2 (02 May 2020)
+## v8.2 (2 May 2020)
 - Added code to Double upload my library mod (PC/Console).
 
 ## v8.1 (22 Apr 2020)
@@ -224,21 +226,21 @@
 - ReportPersistErrors log spam.
 - Minor tweaks.
 
-## v7.5 (09 Aug 2019)
+## v7.5 (9 Aug 2019)
 - MsgPopup tried to translate numbers to string ids.
 - BuildableHexGrid checks directly adjacent hexes for height diffs.
 
-## v7.4 (05 Aug 2019)
+## v7.4 (5 Aug 2019)
 - Blank text for certain items.
 
-## v7.3 (03 Aug 2019)
+## v7.3 (3 Aug 2019)
 - Cleaned up IsValidXWin.
 - Added a class filter to GetAllAttaches.
 
 ## v7.2 (24 July 2019)
 - Broke Filter list items last update.
 
-## v7.1 (08 July 2019)
+## v7.1 (8 July 2019)
 - RetName:
 - > Uses class names instead of "Anomaly".
 - > Added some more tables.
@@ -247,11 +249,11 @@
 ## v7.0 (18 June 2019)
 - Added Update Text func/button to MultiLineText.
 
-## v6.9 (07 June 2019)
+## v6.9 (7 June 2019)
 - Fixed bug in Settings.lua (thanks JajajTec).
 - Sped up CSV mapdata export / removed dupes (thanks ve2dmn/Gem).
 
-## v6.8 (01 June 2019)
+## v6.8 (1 June 2019)
 - Export Map Data NESW strings were missing.
 - Colour Modifier checkmarks were broked.
 
@@ -298,11 +300,11 @@
 - > Cleaned up hint ordering.
 - > Hide custom value checkbox for certain lists (where you edit the list value instead of adding one).
 
-## v5.8 (06 Mar 2019)
+## v5.8 (6 Mar 2019)
 - Broke it for non-English langs.
 - Pretty large code cleanup, but that should be it for awhile.
 
-## v5.7 (05 Mar 2019)
+## v5.7 (5 Mar 2019)
 - Fixed CSV exporting.
 - Code cleanup / Moved some ECM only funcs to ECM.
 - Fixed DeleteObject not deleting everything on funky modded buildings.
@@ -335,13 +337,13 @@
 - > Checkboxes are at the top, and some margins added.
 - > Added a checkbox to the custom value area, and hide the listitem by default.
 
-## v5.4 (08 Feb 2019)
+## v5.4 (8 Feb 2019)
 - Added a bit of colour to the dialogs.
 - I shrunk the Colour Modifier width an update or two ago.
 - Toggling titlebar rollup on a list with hidden ok/cancel buttons stays hidden.
 - Made dialog buttons/checkboxes bold text.
 
-## v5.3 (08 Feb 2019)
+## v5.3 (8 Feb 2019)
 - List dialog will set width by width of list items.
 - Added action names/ids to RetName.
 - RetName didn't work with ParSystem objects.
@@ -354,7 +356,7 @@
 - Support for "Next SM Update".
 - Added .visible to checks for List dialog (defaults to true).
 
-## v5.0 (03 Jan 2019)
+## v5.0 (3 Jan 2019)
 - List dialog was sometimes showing the value instead of the text for the list.
 - Editor mode toggle wasn't showing selection text till the second time it's opened.
 
@@ -372,14 +374,14 @@
 - Updates scale of opened dialogs when user changes scale in Options.
 - Mushed dialogs no longer spew stuff outside of their boxes.
 
-## v4.6 (06 Dec 2018)
+## v4.6 (6 Dec 2018)
 - Midly broke list choice filter (for certain last items).
 
-## v4.5 (06 Dec 2018)
+## v4.5 (6 Dec 2018)
 - Removed length limit of dialog titles.
 - the bottom entry in list dialog was never filtered.
 
-## v4.4 (01 Dec 2018)
+## v4.4 (1 Dec 2018)
 - More strings.
 - Support for more dialogs having icons in the title bar.
 
@@ -428,16 +430,16 @@
 ## v3.3 (15 Nov 2018)
 - Code cleanup/Gagarin.
 
-## v3.2 (06 Nov 2018)
+## v3.2 (6 Nov 2018)
 - Code cleanup.
 - Moved all my buildings/vehicles into their own category.
 
-## v3.1 (05 Nov 2018)
+## v3.1 (5 Nov 2018)
 - Cleaned up my DeleteObject func to remove the (hopefully) last of the log spam.
 - Returns names of (some more) tables.
 - Popup menus close when parent closes.
 
-## v3.0 (01 Nov 2018)
+## v3.0 (1 Nov 2018)
 - Better compatibility with other mods that use custom shortcut keys.
 - Returns names of (some) tables.
 - Shows function file/line number instead of "function: 0000000008D7C100".
@@ -531,7 +533,7 @@
 ### Fixed:
 - Esc will close my dialogs if the title bar is blue.
 
-## v0.9 (09 Sep 2018)
+## v0.9 (9 Sep 2018)
 ### Added:
 - More functions.
 - My actions reload code.
@@ -540,35 +542,35 @@
 ### Fixed:
 - Missed the UIScale Msg
 
-## v0.8 (08 Sep 2018)
+## v0.8 (8 Sep 2018)
 ### Fixed:
 - Broke some of my selection buttons.
 
-## v0.7 (07 Sep 2018)
+## v0.7 (7 Sep 2018)
 ### Changed:
 - Removed some more ECM only functions.
 ### Fixed:
 - My dialogs will try to use a parent object when being opened, added a fallback if they can't.
 
-## v0.6 (06 Sep 2018)
+## v0.6 (6 Sep 2018)
 ### Fixed:
 - Problem with Examine dialogs and ECM.
 
-## v0.5 (05 Sep 2018)
+## v0.5 (5 Sep 2018)
 ### Fixed:
 - Some menus may have shown "nil" for the title.
 
-## v0.4 (05 Sep 2018)
+## v0.4 (5 Sep 2018)
 - *Sigh*
 
-## v0.3 (05 Sep 2018)
+## v0.3 (5 Sep 2018)
 ### Changed:
 - What mods have to look for (needed a way for them to load as soon as this mod is loaded).
 
-## v0.2 (05 Sep 2018)
+## v0.2 (5 Sep 2018)
 ### Added:
 - My `_Functions.lua` file.
 
-## v0.1 (05 Sep 2018)
+## v0.1 (5 Sep 2018)
 ### Added:
 - Moved a bunch of usually used functions/etc from ECM to here.

@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v18.9 (Unreleased)
+## v19.0 (Unreleased)
+
+## v18.9 (6 May 2023)
 ### Fixed:
 - Early story bits happened when Debug>Override Condition Prereqs was enabled (thanks PsiFive).
 - Log spam from CheatMoveRealm().
@@ -144,7 +146,7 @@
 ### Removed:
 - Hide Set Commander/Sponsor Bonuses till I get around to fixing it.
 
-## v17.5 (03 Oct 2021)
+## v17.5 (3 Oct 2021)
 ### Added:
 - Menu>Game>Interface>Toggle Vertical Cheat Menu: Puts the menu down the side of the screen to save horizontal space for the info bar.
 - Menu>ECM>Debug>Toggles>Skip Missing Mods/Skip Missing DLC: Stops confirmation dialog about missing mods/DLC when loading saved games.
@@ -198,7 +200,7 @@
 - Moved some examine funcs from ECM to Lib.
 - Re-added Flush Log Hourly option.
 
-## v16.9 (08 May 2021)
+## v16.9 (8 May 2021)
 ### Added:
 - Cheats pane>RemoveAllFireflies and SpawnAFirefly: kinda jerky but they work.
 
@@ -271,7 +273,7 @@
 ### Fixed:
 - Delete Saved Games may not have worked properly if deleting more than one save (or at least not update save list properly).
 
-## v16.0 (01 March 2021)
+## v16.0 (1 March 2021)
 ### Changed:
 - Made sure RemoveHeightLimitObjs check is enabled when depot capacities are above certain amounts.
 - Selection panel>Cheats>Examine is now an egg.
@@ -279,7 +281,7 @@
 ### Fixed:
 - Cheats pane>ToggleSigns was freezing the game when used on colonists.
 
-## v15.9 (02 Jan 2021)
+## v15.9 (2 Jan 2021)
 ### Changed:
 - Cleaned up text for error msgs.
 
@@ -291,7 +293,7 @@
 - Cheat menu entries can now be individually hidden in mod options.
 - UnpublishParadoxMod() func: You don't need to use mod editor to remove a mod (needs HelperMod).
 
-## v15.7 (08 Dec 2020)
+## v15.7 (8 Dec 2020)
 ### Changed:
 - Debug>Reload LUA (changed how it reloads, so now it works without messing up ECM).
 - Moved Debug>Particles Reload to Debug>Entity.
@@ -302,7 +304,7 @@
 ### Removed:
 - Report Bug (not much point anymore).
 
-## v15.6 (06 Nov 2020)
+## v15.6 (6 Nov 2020)
 ### Added:
 - Console>Settings>Flush Log / Flush Log Constantly: Exposed settings in UI instead of having to edit manually.
 
@@ -339,7 +341,7 @@
 - Added a warning to the Rover/Drone set speed tooltip.
 - Clicking a hex pos in examine now goes to correct hex instead of bottom right of map.
 
-## v15.2 (02 May 2020)
+## v15.2 (2 May 2020)
 ### Changed:
 - Code to Double upload my library mod (PC/Console).
 
@@ -405,19 +407,19 @@
 ### Fixed:
 Issue with BuildableHexGrid.
 
-## v14.5 (09 Aug 2019)
+## v14.5 (9 Aug 2019)
 ### Added:
 - ECM>Drones>Drone Battery Cap: Change the capacity of drone batteries.
 
 ### Fixed:
 - Mod Upload cancel didn't cancel.
 
-## v14.4 (05 Aug 2019)
+## v14.4 (5 Aug 2019)
 ### Changed:
 - Slight rework of Mod Upload.
 - Code cleanup.
 
-## v14.3 (03 Aug 2019)
+## v14.3 (3 Aug 2019)
 ### Added:
 - Debug>Grids>Toggle Building Grid Position: Like Toggle Building Grid, but this shows hex positioning (offset or map, change in settings).
 - Debug>Objects>Examine Object Radius: Set the radius used for Shift-F4 examining.
@@ -440,7 +442,7 @@ Issue with BuildableHexGrid.
 - If Profile folder\hpk.exe exists then Mod Upload func will use it instead of AsyncPack
 - > AsyncPack() == Crash if called more than once per session.
 
-## v14.1 (08 July 2019)
+## v14.1 (8 July 2019)
 ### Changed:
 - No more updating mission commander/sponsor on loadgame.
 - Added Const ids to Cheats>Consts.
@@ -466,7 +468,7 @@ Issue with BuildableHexGrid.
 ### Removed:
 - Gravity options (you can use Bouncy Drones if you want it).
 
-## v13.9 (07 June 2019)
+## v13.9 (7 June 2019)
 ### Changed:
 - Remove Building/LandScaping Limits don't require a restart to disable anymore.
 
@@ -474,7 +476,7 @@ Issue with BuildableHexGrid.
 - Some log spam (thanks RustyDios).
 - Disaster>Meteor cheats weren't consistent (thanks eddy.dyer).
 
-## v13.8 (01 June 2019)
+## v13.8 (1 June 2019)
 ### Added:
 - Debug>Override Condition Prereqs: All storybit/negotiation/etc options are enabled.
 - Drones>Drone Wasp Move Speed: Same as Drone Move Speed.
@@ -711,7 +713,7 @@ Issue with BuildableHexGrid.
 - > Context Menu>print func params was giving an error msg.
 - > Object>Material Properties was returning all entities instead of just the one.
 
-## v12.8 (06 Mar 2019)
+## v12.8 (6 Mar 2019)
 ### Changed:
 - "ChoGGi.CurObj" to "o" (used in Execute Code dialog).
 
@@ -723,7 +725,7 @@ Issue with BuildableHexGrid.
 ### Removed:
 - Fixes>All Pipe Skins To Default: It wasn't the best code, and I'm pretty sure they fixed the bug with chrome pipes?
 
-## v12.7 (05 Mar 2019)
+## v12.7 (5 Mar 2019)
 ### Added:
 - Debug>List Visible Objects: Shows list of objects rendered in the current frame.
 
@@ -812,7 +814,7 @@ Issue with BuildableHexGrid.
 - Error examining EntityData (and probably some other tables), another issue from the code cleanup.
 - Having certain objs selected and opening certain menus would throw an error till unselecting the obj.
 
-## v12.4 (08 Feb 2019)
+## v12.4 (8 Feb 2019)
 ### Changed:
 - Moved Toggle cheats menu items from ECM>Misc to Cheats>Menu.
 
@@ -820,7 +822,7 @@ Issue with BuildableHexGrid.
 - List All Menu Items wasn't working in the main menu.
 - Some issues with the code cleanup in v12.3.
 
-## v12.3 (08 Feb 2019)
+## v12.3 (8 Feb 2019)
 ### Changed:
 - Code cleanup, might cause some issues...
 - Hid AnimState/AttachSpots from cheats panel (they're more of an examine thingy).
@@ -860,7 +862,7 @@ Issue with BuildableHexGrid.
 - Support for "Next SM Update".
 - Mod Editor is back to just opening the mod editor map (had issues with the list way).
 
-## v12.0 (03 Jan 2019)
+## v12.0 (3 Jan 2019)
 ### Added:
 - Cheats>Research>Research Remove: Remove a tech from researched list.
 - Cheats>Unlock Achievements: Show a list of achievements to unlock.
@@ -957,11 +959,11 @@ Issue with BuildableHexGrid.
 - Some console spam from selection panel (thanks Dawnmist).
 - Examine: Some objects didn't list since last update.
 
-## v11.6 (06 Dec 2018)
+## v11.6 (6 Dec 2018)
 ### Changed:
 - Bug report.
 
-## v11.5 (06 Dec 2018)
+## v11.5 (6 Dec 2018)
 ### Added:
 - Debug>Attach Spots List: Shows list of attaches for use with .ent files.
 - Debug>Object Flags: Shows list of flags set for selected object (also added to Examine>Tools).
@@ -981,7 +983,7 @@ Issue with BuildableHexGrid.
 ### Fixed:
 - Trying to examine DroneResourceUnits failed miserably.
 
-## v11.4 (01 Dec 2018)
+## v11.4 (1 Dec 2018)
 ### Changed:
 - Cheats>Mod Editor now shows a list of mods you can open without changing the map.
 - Moved Toggle Object Collision from Fixes to Debug.
@@ -1114,7 +1116,7 @@ Issue with BuildableHexGrid.
 - the print buffer added in v10.3 was creating more than one thread (thanks SkiRich).
 - Examining thread functions wasn't working properly.
 
-## v10.5 (05 Nov 2018)
+## v10.5 (5 Nov 2018)
 ### Added:
 - A "Disable ECM" key binding if you used the Disable ECM option.
 - Re-added Help>Interface>Toggle Signs: If CheatsEnabled() returned false then it didn't work (not sure why devs think it's a cheat).
@@ -1137,7 +1139,7 @@ Issue with BuildableHexGrid.
 - Using Examine ("_G.example","str") made stuff like Find Value not work.
 - Issue with Rocket>Change Resupply Settings (skipped boolean options), also added a reset checkbox.
 
-## v10.4 (01 Nov 2018)
+## v10.4 (1 Nov 2018)
 ### Added:
 - More Presets to the presets list in Console>Examine.
 
@@ -1323,7 +1325,7 @@ Issue with BuildableHexGrid.
 - Building Stats were being overridden by Martian Festivals (thanks hchsiao).
 - Some of the bindable stuff didn't have proper names in Options.
 
-## v8.8 (07 Sep 2018)
+## v8.8 (7 Sep 2018)
 ### Added:
 - Buildings>Always Clean: Some people don't like dust.
 
@@ -1337,7 +1339,7 @@ Issue with BuildableHexGrid.
 - Upgraded buildings may reset some cheat settings (thanks hchsiao).
 - Drones didn't have move speed cheat after being re-assigned (thanks hchsiao).
 
-## v8.7 (04 Sep 2018)
+## v8.7 (4 Sep 2018)
 ### Changed:
 - Build Spires Outside of Spire Point is now Remove Spire Point Limit.
 - > You can now build spires anywhere in domes.
@@ -1358,7 +1360,7 @@ Issue with BuildableHexGrid.
 - Unlock Locked Buildings broke (thanks Antipatiko).
 - Service Building Stats (thanks hchsiao).
 
-## v8.6 (02 Sep 2018)
+## v8.6 (2 Sep 2018)
 ### Added:
 - Examine>Tools>UI Click To Select: Allows you to examine UI controls by clicking them.
 - Help>List All Menu Items: Show all the cheat menu items in a list dialog.
@@ -1530,7 +1532,7 @@ Please and thank you.
 ### Fixed:
 - God knows.
 
-## v7.2 (04 Aug 2018)
+## v7.2 (4 Aug 2018)
 ### Added:
 - ECM>Building Info: Shows text above buildings with info about them (domes, drones, drone controllers, deposits, production).
 - Game>List All Objects: A list of objects; double-click on one to select and move the camera to it.
@@ -1650,7 +1652,7 @@ Please and thank you.
 - Dome Only checkbox didn't work.
 - Slightly bypassed a weird flashing UI bug with clipping the colonist head amount for residence selection panels (thanks SkiRich).
 
-## v6.4 (06 Jul 2018)
+## v6.4 (6 Jul 2018)
 ### Added:
 - Help>ECM>Disable ECM: Disables menu, cheat panel, and hotkeys, but leaves settings intact. You'll need to manually re-enable in CheatMenuModSettings.lua file.
 
@@ -1658,7 +1660,7 @@ Please and thank you.
 - Object Cloner was only adding 50 resource to cloned deposits (thanks McKaby).
 - FlattenGround: Fixed issue with pipes getting marked as uneven terrain (works on borked saves).
 
-## v6.3 (02 Jul 2018)
+## v6.3 (2 Jul 2018)
 ### Added:
 - Fixes>All Pipe Skins To Default: Large Water Tank + Pipes + Chrome skin = borked looking connections (thanks Akashi Konno).
 - Typing &handle in console will open that object in the examiner.
@@ -1758,7 +1760,7 @@ Please and thank you.
 - I broke certain popups in 5.3.
 - Set Production wasn't setting back to default.
 
-## v5.3 (03 Jun 2018)
+## v5.3 (3 Jun 2018)
 ### Added:
 - Debug>Attach Spots Toggle: Toggle showing attachment spots for selected object.
 
@@ -1773,7 +1775,7 @@ Please and thank you.
 - @@Object in console will show type(Object).
 - !!Object will open object's attachments in object examiner.
 
-## v5.2 (03 Jun 2018)
+## v5.2 (3 Jun 2018)
 ### Added:
 - Fixes>Toggle: Rover Infinite Loop In Curiosity Update: This one is enabled by default as it could affect anyone and sucks if it does.
 - Fixes>Colonists Trying To Board Rocket Freezes Game: Doesn't fix the underlying cause, but it works.
@@ -1786,7 +1788,7 @@ Please and thank you.
 - Cheats panel wasn't working for rockets (and maybe more).
 - I broke Close Dialogs in 5.1.
 
-## v5.1 (02 Jun 2018)
+## v5.1 (2 Jun 2018)
 ### Added:
 - Cheats>Keep Cheats Menu Position: The cheats menu will stay where you drag it.
 - Debug>Measure Tool: It measures stuff... (Ctrl-M)
@@ -2036,7 +2038,7 @@ Please and thank you.
 - Toggling Remove Building Limits didn't reset all limits.
 - Cheats Powerless didn't work for some buildings.
 
-## v3.8 (08 May 2018)
+## v3.8 (8 May 2018)
 ### Added:
 - Buildings>Protection Radius: Change threat protection coverage distance (MDSLaser/DefenceTower).
 - Drones/Work Radius RC Rover/DroneHub: Set how far from controller drones will work.
@@ -2057,7 +2059,7 @@ Please and thank you.
 ### Fixed:
 - Powerless Buildings didn't work for certain upgraded buildings.
 
-## v3.7 (06 May 2018)
+## v3.7 (6 May 2018)
 ### Added:
 - Cheats>Research>Reset All Research.
 - Misc>Set UI Transparency (Shift-F3): Change transparency of UI items (build menu, pins, side panel, etc).
@@ -2076,7 +2078,7 @@ Please and thank you.
 ### Fixed:
 - Buildings>Build Spires Outside of Spire Point (thanks TardosMor).
 
-## v3.6 (02 May 2018)
+## v3.6 (2 May 2018)
 ### Added:
 - Buildings>Powerless Building: Toggle electricity usage for selected building type (and info panel cheats).
 - Buildings>Unlimited Connection Length: No more length limit on pipes, cables, and passages.
@@ -2316,7 +2318,7 @@ Please and thank you.
 - Having to press cursor toggle twice before it starts toggling.
 - The border scroll width was too small for some people (it's 3 instead of 2 now).
 
-## v2.2 (08 Apr 2018)
+## v2.2 (8 Apr 2018)
 ### Added:
 - Added AutoWork/ManualWork to cheat pane.
 - Option to change logo (QoL>Logo).
@@ -2340,7 +2342,7 @@ Please and thank you.
 - Using Instant Build would make domes not have the bottom texture till you placed an inside building somewhere.
 - Restricted Delete Object from deleting domes (can freeze game).
 
-## v2.1 (05 Apr 2018)
+## v2.1 (5 Apr 2018)
 ### Changed:
 - Updated for Spirit update
 - Using up/down history in console places cursor at end of text instead of start
@@ -2352,12 +2354,12 @@ Please and thank you.
 - F5 dumps info from Examiner instead of dumpobject
 - Screenshots are quicker.
 
-## v2.0 (03 Apr 2018)
+## v2.0 (3 Apr 2018)
 ### Changed:
 - Completely disabled depot storage cheats till I figure it out.
 - Drone Repair Supply Leak Toggle: Changed time to 1 instead of 0, to stop drones from ignoring leaks.
 
-## v0.9 (03 Apr 2018)
+## v0.9 (3 Apr 2018)
 ### Fixed:
 - Universal/Other depots don't have to be emptied or be newly placed to take advantage of new size.
 - FullyAutomatedBuildings wasn't working if you didn't have a building selected.
@@ -2367,7 +2369,7 @@ Please and thank you.
 - Increasing amount of storage in waste depot is ignored in already placed ones.
 - > Increase before placing or use CheatEmpty.
 
-## v0.8 (02 Apr 2018)
+## v0.8 (2 Apr 2018)
 ### Added:
 - Options for higher render/shadow distance (on by default):
 - You can change HigherRenderDist from true to a number default is 120, I use 600
@@ -2387,7 +2389,7 @@ Please and thank you.
 - Doubling amount of placed waste rock storage adds rocks to it.
 - increase beforehand
 
-## v0.7 (02 Apr 2018)
+## v0.7 (2 Apr 2018)
 ### Added:
 - Added Gameplay>QoL>Follow Camera (Ctrl-Shift-F to toggle, Ctrl-Alt-F to toggle mouse cursor)
 - Added Gameplay/Building/Production Amount + 25 (Ctrl-Shift-P, Works on any building that produces)

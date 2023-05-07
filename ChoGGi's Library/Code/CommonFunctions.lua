@@ -7820,7 +7820,7 @@ end
 -- LukeH overrides SpawnRivalAI(preset), but doesn't check if preset exists.
 function ChoGGi.ComFuncs.PickUnusedAISponsor()
   local filtered = {}
-  ForEachPresetInGroup("DumbAIDef", "MissionSponsors", function(preset, group)
+  ForEachPresetInGroup("DumbAIDef", "MissionSponsors", function(preset)
     local used = false
     if preset.id == "random" or preset.id == "none" or preset.id == g_CurrentMissionParams.idMissionSponsor then
       used = true
