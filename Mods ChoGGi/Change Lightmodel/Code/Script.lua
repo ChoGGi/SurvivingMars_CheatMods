@@ -25,7 +25,11 @@ local function SetLight(msg, timeout)
 		if lightmodel == "" then
 			lightmodel = "TheMartian"
 		end
-		local map_id = MainCity.map_id
+		local map_id = (MainCity or UICity).map_id
+		if not map_id then
+			return
+		end
+
 		local lm = CurrentLightmodel[map_id][1]
 		local postfix = lm.id
 		-- Returns 12,12 which doesn't work for what we want :sub for

@@ -34,7 +34,10 @@ return {
 	PlaceObj("ModItemOptionNumber", {
 		"name", "RandomRivals",
 		"DisplayName", T(0000, "Random Rivals"),
-		"Help", T(0000, "Set to 0 to not pick any rivals."),
+		"Help", T(0000, [[Set to 0 to not pick any rivals.
+
+
+Ignored if you don't have Space Race DLC.]]),
 		"DefaultValue", 3,
 		"MinValue", 0,
 		"MaxValue", 3,
@@ -54,5 +57,13 @@ return {
 
 You can use my "Game Rules Enable Achievements" mod to not have achievements when using them.]]),
 		"DefaultValue", true,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "CustomGameRules",
+		"DisplayName", T(0000, "Custom Game Rules"),
+		"Help", T(0000, [[Turn on to have any selected rules used along with random ones.
+
+Random Game Rules count will ignore custom.]]),
+		"DefaultValue", false,
 	}),
 }

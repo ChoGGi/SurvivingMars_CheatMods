@@ -324,6 +324,11 @@ Leave blank to skip search box.]])
 end
 
 function ChoGGi_VLI_MapInfoDlg:FindText()
+	-- When I open it from main menu for testing
+	if not landsiteobj then
+		return
+	end
+
 	self = GetRootDialog(self)
 
 	-- always start off empty

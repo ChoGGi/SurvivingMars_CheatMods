@@ -70,7 +70,8 @@ ClearObjects = function()
 	table.iclear(beams)
 
 	-- show signs
-	local objs = UIColony.city_labels.labels.Building or ""
+	local col = UIColony and UIColony.city_labels or UICity
+	local objs = col.labels.Building or ""
 	for i = 1, #objs do
 		objs[i]:UpdateSignsVisibility()
 	end

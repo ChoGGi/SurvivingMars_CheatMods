@@ -1,3 +1,6 @@
+v0.6
+Log spam on older saves.
+
 v0.5
 Added other lightmodels to list.
 

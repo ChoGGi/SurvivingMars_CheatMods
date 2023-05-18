@@ -474,8 +474,8 @@ function OnMsg.OnRender()
 end
 
 local ConsoleMenuPopupToggle_list = {
-	{name = TranslationTable[302535920001479--[[Errors In Console]]],
-		hint = TranslationTable[302535920001480--[[Print (some) lua errors in the console (needs %s enabled).]]]:format(TranslationTable[302535920001112--[[Console Log]]]),
+	{name = T(302535920001479--[[Errors In Console]]),
+		hint = TranslationTable[302535920001480--[[Print (some) lua errors in the console (needs %s enabled).]]]:format(Translate(302535920001112--[[Console Log]])),
 		class = "ChoGGi_XCheckButtonMenu",
 		value = "ChoGGi.UserSettings.ConsoleErrors",
 		clicked = function()
@@ -494,9 +494,9 @@ local ConsoleMenuPopupToggle_list = {
 		end,
 	},
 	{name = TranslationTable[302535920000310--[[Skip Undefined Globals]]],
-		hint = TranslationTable[302535920000311--[["Stop the ""Attempt to use an undefined global"" msgs.
+		hint = T(302535920000311--[["Stop the ""Attempt to use an undefined global"" msgs.
 
-The number is a count of stored msgs, right-click to view the list."]]],
+The number is a count of stored msgs, right-click to view the list."]]),
 		hint_bottom = T(302535920001444--[[<left_click> Activate <right_click> Alt Activate]]),
 		class = "ChoGGi_XCheckButtonMenu",
 		value = "ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals",

@@ -1,3 +1,6 @@
+I stopped bothering with this a year or so ago
+
+
 [[Shared locale strings]]
 302535920011751, "On/Off does nothing."
 302535920011303, "<color ChoGGi_yellow>Enable Mod</color>"
@@ -1298,8 +1301,6 @@ Leave blank to skip search box."
 [[Project Phoenix No Renegades]]
 302535920011935, "No Negative"
 302535920011936, "Remove all negative traits (almost like it's an actual breakthrough)."
-[[All Sponsor Buildings]]
-302535920011938, "You need to research tech to unlock certain buildings (reload save to take effect)."
 [[Custom Resource Icon Toggle]]
 302535920011943, "Turn on to have these icons toggled, turn off to always be visible."
 302535920011944, "<color 255 255 0>Show Icons</color>"

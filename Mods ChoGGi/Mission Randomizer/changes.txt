@@ -1,2 +1,5 @@
+v0.3
+Added mod option for Custom Game Rules.
+
 v0.2
 Forgot to actually check for turned off mod options for some of them.

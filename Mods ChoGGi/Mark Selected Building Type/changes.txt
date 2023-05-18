@@ -1,3 +1,6 @@
+v0.8
+Issue clearing icons (possible).
+
 v0.7
 Added mod option to hide building signs on non-selected buildings.
 

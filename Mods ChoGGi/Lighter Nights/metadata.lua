@@ -18,6 +18,7 @@ return PlaceObj("ModDef", {
 Nights aren't as dark.
 
 See mod options to adjust values.
+This mod changes the value, but the value isn't read by the game till the lightmodel changes (from dusk to evening for example).
 
 
 Requested by TimeAndTheRani.

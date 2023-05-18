@@ -8,6 +8,7 @@ local mod_RandomLogo
 local mod_RandomRivals
 local mod_RandomGameRules
 local mod_SkipAchievementRules
+local mod_CustomGameRules
 
 -- Update mod options
 local function ModOptions(id)
@@ -24,6 +25,7 @@ local function ModOptions(id)
 	mod_RandomRivals = CurrentModOptions:GetProperty("RandomRivals")
 	mod_RandomGameRules = CurrentModOptions:GetProperty("RandomGameRules")
 	mod_SkipAchievementRules = CurrentModOptions:GetProperty("SkipAchievementRules")
+	mod_CustomGameRules = CurrentModOptions:GetProperty("CustomGameRules")
 
 	-- Doesn't hurt...
 	local rule_length = #Presets.GameRules.Default
@@ -54,6 +56,7 @@ function OnMsg.ChangeMap(map)
 	end
 
 	local Presets = Presets
+	local g_CurrentMissionParams = g_CurrentMissionParams
 
 	if mod_RandomSponsor then
 		local sponsor = table.rand(Presets.MissionSponsorPreset.Default)
@@ -77,6 +80,13 @@ function OnMsg.ChangeMap(map)
 
 	if mod_RandomGameRules > 0 then
 		local rules = {}
+		-- Add any selected rules to random ones
+		if mod_CustomGameRules then
+			local old_rules = g_CurrentMissionParams.idGameRules or empty_table
+			for id in pairs(old_rules) do
+				rules[id]= true
+			end
+		end
 		local rand_rules_count = 0
 		-- eh, it'll do
 		for _ = 1, 999 do

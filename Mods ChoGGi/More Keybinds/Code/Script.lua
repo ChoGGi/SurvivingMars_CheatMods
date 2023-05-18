@@ -430,7 +430,8 @@ local function UpdateOpacity(value)
 		end
 	end)
 	for i = 1, #objs do
-		objs[i]:SetOpacity(value)
+		pcall(objs[i].SetOpacity, objs[i], value)
+--~ 		objs[i]:SetOpacity(value)
 	end
 end
 Actions[#Actions+1] = {ActionName = T(0000, "Resource Icons Opacity"),
