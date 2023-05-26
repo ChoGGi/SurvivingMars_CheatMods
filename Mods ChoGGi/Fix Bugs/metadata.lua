@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 48,
+	"version", 49,
 	"version_major", 4,
-	"version_minor", 8,
+	"version_minor", 9,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -37,6 +37,7 @@ Personal Space storybit changes capacity, but building menu doesn't show it.
 Underground Rare Anomaly can give you underground dome prefabs, but locks them to surface.
 The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
 Future Contemporary Asset Pack when placing spires (more info below).
+Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC).
 
 [b]Mods[/b]:
 Silva's Orion Heavy Rocket (you must disable his Essential files mod, then enable it AFTER enabling this mod).

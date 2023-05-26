@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.shepard then
-	print(CurrentModDef.title, ": Project Laika DLC not installed!")
+	print(CurrentModDef.title, ": Project Laika DLC not installed! Abort!")
 	return
 end
 

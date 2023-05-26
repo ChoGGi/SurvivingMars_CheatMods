@@ -2,7 +2,7 @@
 
 -- Remove log spam from TradePad when it's installed without space race.
 if not g_AvailableDlc.gagarin then
-	print(CurrentModDef.title, ": Space Race DLC not installed!")
+	print(CurrentModDef.title, ": Space Race DLC not installed! Abort!")
 	return {}
 end
 

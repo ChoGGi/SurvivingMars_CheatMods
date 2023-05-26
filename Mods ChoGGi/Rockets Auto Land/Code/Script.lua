@@ -110,6 +110,7 @@ function RocketBase:WaitInOrbit(...)
 		return ChoOrig_RocketBase_WaitInOrbit(self, ...)
 	end
 
+
 	local map_id = self:GetMapID() or MainCity.map_id
 
 	local landing_pads = Cities[map_id].labels.LandingPad or ""
@@ -119,23 +120,23 @@ function RocketBase:WaitInOrbit(...)
 	end
 
 	-- Fire off what it needs to (or it tries to find BuildingTemplates.OrbitalProbe)
-	CreateGameTimeThread(ChoOrig_RocketBase_WaitInOrbit, self, ...)
+--~ 	CreateGameTimeThread(ChoOrig_RocketBase_WaitInOrbit, self, ...)
 
 	-- Change order of landing pads to match names of pads, so user has some sort of order to follow.
 	table.sort(landing_pads, function(a, b)
 		return CmpLower(RetName(a), RetName(b))
 	end)
 	-- Filter list for usable landing pads
-	landing_pads = table.ifilter(landing_pads, function(_, obj)
-		return obj.ChoGGi_RocketsAutoLand_Allow and not obj:HasRocket()
+	landing_pads = table.ifilter(landing_pads, function(_, pad)
+		return pad.ChoGGi_RocketsAutoLand_Allow and not pad:HasRocket()
 	end)
-	-- no free pads so wait in orbit for user
 	if #landing_pads == 0 then
+		-- No free pads so wait in orbit for user
 		return ChoOrig_RocketBase_WaitInOrbit(self, ...)
 	end
 	-- Land rocket on landing site
 	local landing_pad = landing_pads[1]
-	local landing_site = PlaceBuildingIn("RocketLandingSite", map_id)
+	local landing_site = PlaceBuildingIn(self.landing_site_class, map_id) -- "RocketLandingSite"
 	landing_site:SetPos(landing_pad:GetPos())
 	landing_site:SetAngle(landing_pad:GetAngle())
 
@@ -157,12 +158,16 @@ function RocketBase:WaitInOrbit(...)
 	landing_site.override_palette = self:GetRocketPalette()
 	landing_site.rocket = self
 
-	-- Doesn't hurt to check
-	if not IsValid(landing_site) then
-		return ChoOrig_RocketBase_WaitInOrbit(self, ...)
-	end
-
 	self.landing_site = landing_site
-	self:SetCommand("LandOnMars", landing_site)
-	self:UpdateStatus("landing")
+	--~ 	-- use 	IsLandAutomated from ChoOrig_RocketBase_WaitInOrbit
+--~ 	return self.auto_export and IsValid(self.landing_site)
+	local orig_auto_export = self.auto_export
+	self.auto_export = true
+--~ 	return ChoOrig_RocketBase_WaitInOrbit(self, ...)
+	CreateGameTimeThread(ChoOrig_RocketBase_WaitInOrbit, self, ...)
+	self.auto_export = orig_auto_export
+
+
+--~ 	self:SetCommand("LandOnMars", landing_site)
+--~ 	self:UpdateStatus("landing")
 end

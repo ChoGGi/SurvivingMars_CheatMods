@@ -1,3 +1,6 @@
+v0.3
+Possible fix for freezing issue.
+
 v0.2
 Hopefully fixed an issue reported with dead passengers.
 (X colonists dead in space while trying to reach Mars)

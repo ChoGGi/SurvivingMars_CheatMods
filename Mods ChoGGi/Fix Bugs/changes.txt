@@ -1,3 +1,6 @@
+v4.9
+Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC).
+
 v4.8
 Added fix for Future Contemporary Asset Pack when placing spires.
 

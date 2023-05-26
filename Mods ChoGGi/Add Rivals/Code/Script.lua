@@ -1,17 +1,40 @@
 -- See LICENSE for terms
 
 if not g_AvailableDlc.gagarin then
-	print(CurrentModDef.title, ": Space Race DLC not installed!")
+	print(CurrentModDef.title, ": Space Race DLC not installed! Abort!")
 	return
 end
 
+-- Needed for LukeH's Meat and Booze.
 local PickUnusedAISponsor = ChoGGi.ComFuncs.PickUnusedAISponsor
+
+local WaitMsg = WaitMsg
 
 local mod_EnableMod
 local mod_AddRivals
+local mod_RivalSpawnSol
 
-local function AddRivals()
+local AddRivals
+
+local function WaitForSol()
+	local sol = const.Scale.sols
+	while true do
+		local ok, day = WaitMsg("NewDay")
+		if ok and day and mod_RivalSpawnSol >= day then
+			AddRivals()
+		end
+	end
+end
+
+-- This func is called above, but the above func is called below, so it's defined above
+AddRivals = function()
 	if not mod_EnableMod then
+		return
+	end
+
+	-- Fire a thread to wait for new sol msg if it's too early
+	if UIColony.day < mod_RivalSpawnSol then
+		CreateGameTimeThread(WaitForSol)
 		return
 	end
 
@@ -62,6 +85,9 @@ local function AddRivals()
 	end
 
 end
+-- New games
+OnMsg.CityStart = AddRivals
+-- Saved ones
 OnMsg.LoadGame = AddRivals
 
 local function ModOptions(id)
@@ -72,6 +98,11 @@ local function ModOptions(id)
 
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_AddRivals = CurrentModOptions:GetProperty("AddRivals")
+	mod_RivalSpawnSol = CurrentModOptions:GetProperty("RivalSpawnSol")
+
+	if CurrentModOptions:GetProperty("RivalSpawnSolRandom") then
+		mod_RivalSpawnSol = AsyncRand(mod_RivalSpawnSol) + 1
+	end
 
 	-- make sure we're in-game
 	if not UIColony then

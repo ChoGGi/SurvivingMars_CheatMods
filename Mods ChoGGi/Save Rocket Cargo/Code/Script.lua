@@ -19,7 +19,7 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
--- temp cargo stored here
+-- Temp cargo stored here
 local saved_cargo = {
 	rocket = {},
 	pod = {},
@@ -27,7 +27,7 @@ local saved_cargo = {
 	lander = {},
 }
 
--- set from LaunchCargoRocket to stop ResetCargo from updating cargo
+-- Set from LaunchCargoRocket to stop ResetCargo from updating cargo
 local launch_skip = false
 
 local ChoOrig_ResetCargo = ResetCargo
@@ -40,7 +40,7 @@ function ResetCargo(...)
 		local g_RocketCargo = g_RocketCargo
 		local g_CargoMode = g_CargoMode
 		if g_RocketCargo and g_CargoMode then
-			-- save cargo before it's cleared
+			-- Save cargo before it's cleared
 			local list = saved_cargo[g_CargoMode] or ""
 			for i = 1, #g_RocketCargo do
 				local cargo = g_RocketCargo[i]
@@ -68,7 +68,7 @@ local function ClearCargo()
 	launch_skip = true
 end
 
-local fivers
+--~ local fivers
 local ChoOrig_ClearRocketCargo = ClearRocketCargo
 function ClearRocketCargo(...)
 	if not mod_EnableMod then
@@ -77,34 +77,36 @@ function ClearRocketCargo(...)
 
 	local ret = ChoOrig_ClearRocketCargo(...)
 
-	-- build list of resources to use for / 5
-	if not fivers then
-		fivers = {}
-		local Resources = Resources
-		for key in pairs(Resources) do
-			fivers[key] = true
-		end
-	end
+--~ 	-- Build list of resources to use for / 5
+--~ 	if not fivers then
+--~ 		fivers = {}
+--~ 		local Resources = Resources
+--~ 		for key in pairs(Resources) do
+--~ 			fivers[key] = true
+--~ 		end
+--~ 	end
 
 	local Dialogs = Dialogs
 	CreateRealTimeThread(function()
-		-- wait till the dialog is ready
+		-- Wait till the dialog is ready
 		WaitMsg("OnRender")
 		while not Dialogs.Resupply do
 			WaitMsg("OnRender")
 		end
 
-		-- and add saved cargo
+		-- And add saved cargo
 		local payload = Dialogs.Resupply.context
 		local list = saved_cargo[UICity.launch_mode] or ""
 		for i = 1, #list do
 			local item = list[i]
 
 			local amount = item.amount
-			-- make res use 5 less
-			if fivers[item.class] then
-				amount = amount / 5
-			end
+
+			-- Why did I have this in here...
+--~ 			-- make res use 5 less
+--~ 			if fivers[item.class] then
+--~ 				amount = amount / 5
+--~ 			end
 
 			for _ = 1, amount do
 				payload:AddItem(item.class)
@@ -115,6 +117,7 @@ function ClearRocketCargo(...)
 	return ret
 end
 
+-- ClearOnLaunch
 local ChoOrig_LaunchCargoRocket = LaunchCargoRocket
 function LaunchCargoRocket(...)
 	if not mod_EnableMod then
@@ -129,6 +132,7 @@ function LaunchCargoRocket(...)
 	return ChoOrig_LaunchCargoRocket(...)
 end
 
+-- Clear button
 function OnMsg.ClassesPostprocess()
 	if XTemplates.ResupplyCategories.ChoGGi_SaveRocketCargo_AddedClearButton then
 		return

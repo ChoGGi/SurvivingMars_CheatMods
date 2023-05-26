@@ -1,1 +1,3 @@
+when turning off  make it reset colonist (if stuck in suck up mode)
+
 random delay before colonist goes outside?

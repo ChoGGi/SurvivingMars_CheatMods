@@ -1,2 +1,6 @@
+v0.3
+Adds rivals on new games as well instead of only on saved games.
+Mod options to delay spawning rivals.
+
 v0.2
 Workaround for LukeH's Meat and Booze.

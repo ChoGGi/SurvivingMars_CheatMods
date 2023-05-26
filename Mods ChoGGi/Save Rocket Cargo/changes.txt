@@ -1,3 +1,6 @@
+v0.7
+Fixed the resource issue.
+
 v0.6
 Fixed landers not working.
 Added mod option to enable mod.

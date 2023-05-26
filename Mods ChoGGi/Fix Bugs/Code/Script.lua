@@ -157,6 +157,22 @@ do -- CityStart/LoadGame
 		local main_realm = GetRealmByID(MainMapID)
 
 		--
+		-- Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC)
+		local objs = UIColony:GetCityLabels("Colonist")
+		for i = 1, #objs do
+			local obj = objs[i]
+
+			local ticket = obj.transport_ticket
+			if ticket and ticket.reason and ticket.reason == "Idle" then
+				if not IsValid(ticket.dst_station)
+					or not IsValid(ticket.src_station)
+				then
+					obj.transport_ticket = nil
+				end
+			end
+		end
+
+		--
 		-- Fix Future Contemporary Asset Pack when placing spires.
 		if g_AvailableDlc.ariane then
 			local hex = HexOutlineShapes.PeakNodeCCP2
