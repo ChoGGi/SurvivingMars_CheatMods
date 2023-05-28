@@ -227,29 +227,29 @@ end
 local function CountConcrete(city)
 	city = city or UICity
 
+	-- Get all concrete deposits around miners
 	local remaining_res = 0
-	-- get all concrete deposits around miners
 
-	-- local what we can
-	local MaxTerrainDepositRadius = MaxTerrainDepositRadius
-	local realm = GetRealm(city)
+--~ 	-- local what we can
+--~ 	local MaxTerrainDepositRadius = MaxTerrainDepositRadius
+--~ 	local realm = GetRealm(city)
 
 	local objs = city.labels.ResourceExploiter or ""
 	for i = 1, #objs do
 		-- kinda copy pasta from TerrainDepositExtractor:FindClosestDeposit()
 		local obj = objs[i]
 		if obj:IsKindOf("TerrainDepositExtractor") then
-			local info = obj:GetRessourceInfo()
-			local shape = obj:GetExtractionShape() or ""
-			if not info or #shape == 0 then
-				return
-			end
-			local radius, xc, yc = HexBoundingCircle(shape, obj)
-			local center = point(xc, yc)
-
-			remaining_res = CountDepositRemaining(remaining_res,
-				realm:MapGet(center, center, MaxTerrainDepositRadius + radius, info.deposit_class)
-			)
+--~ 			local info = obj:GetRessourceInfo()
+--~ 			local shape = obj:GetExtractionShape() or ""
+--~ 			if not info or #shape == 0 then
+--~ 				return
+--~ 			end
+--~ 			local radius, xc, yc = HexBoundingCircle(shape, obj)
+--~ 			local center = point(xc, yc)
+			remaining_res = remaining_res + obj:GetAmount()
+--~ 			remaining_res = CountDepositRemaining(remaining_res,
+--~ 				realm:MapGet(center, center, MaxTerrainDepositRadius + radius, info.deposit_class)
+--~ 			)
 		end
 	end
 
@@ -297,28 +297,29 @@ function OnMsg.NewHour()
 		return
 	end
 
-	local UICity = UICity
+	local city = MainCity or UICity
 
 	-- no point if there's no exploiters
-	if not UICity.labels.ResourceExploiter then
+	if not city.labels.ResourceExploiter then
 		return
 	end
 
+
 	local r = const.ResourceScale
 
-	if HasExploiters("RegolithExtractor") and (CountConcrete(UICity) / r) < mod_DepositRemainingWarning then
+	if HasExploiters("RegolithExtractor") and (CountConcrete(city) / const.ResourceScale) < mod_DepositRemainingWarning then
 		ShowResourceWarningMsg(mod_DepositRemainingWarning, T(3513, "Concrete"))
 	end
 
-	if HasExploiters("WaterExtractor") and (CountSubDeposit("SubsurfaceDepositWater", UICity) / r) < mod_DepositRemainingWarning then
+	if HasExploiters("WaterExtractor") and (CountSubDeposit("SubsurfaceDepositWater", city) / r) < mod_DepositRemainingWarning then
 		ShowResourceWarningMsg(mod_DepositRemainingWarning, T(681, "Water"))
 	end
 
-	if HasExploiters("PreciousMetalsExtractor") and (CountSubDeposit("SubsurfaceDepositPreciousMetals", UICity) / r) < mod_DepositRemainingWarning then
+	if HasExploiters("PreciousMetalsExtractor") and (CountSubDeposit("SubsurfaceDepositPreciousMetals", city) / r) < mod_DepositRemainingWarning then
 		ShowResourceWarningMsg(mod_DepositRemainingWarning, T(4139, "Rare Metals"))
 	end
 
-	if HasExploiters("MetalsExtractor") and (CountSubDeposit("SubsurfaceDepositMetals", UICity) / r) < mod_DepositRemainingWarning then
+	if HasExploiters("MetalsExtractor") and (CountSubDeposit("SubsurfaceDepositMetals", city) / r) < mod_DepositRemainingWarning then
 		ShowResourceWarningMsg(mod_DepositRemainingWarning, T(3514, "Metals"))
 	end
 

@@ -245,7 +245,7 @@ function ChoGGi_VLI_MapInfoDlg:ShowInfoDialog()
 	local temp_data = {}
 	local c = 0
 
-	-- add breaks
+	-- Add breakthroughs
 	local breaks = Presets.TechPreset.Breakthroughs
 	for i = 1, #breaks do
 		temp_data[i] = Translate(breaks[i].display_name)
@@ -256,11 +256,11 @@ function ChoGGi_VLI_MapInfoDlg:ShowInfoDialog()
 	temp_data[c] = "\n"
 	table.iappend(text, temp_data)
 
-	-- map names
+	-- Map names
 	temp_data = {}
 	c = 0
-	local MapData = MapDataPresets
-	for id, data in pairs(MapData) do
+	local MapDataPresets = MapDataPresets
+	for id, data in pairs(MapDataPresets) do
 		if data.IsRandomMap then
 			c = c + 1
 			temp_data[c] = id
@@ -271,9 +271,10 @@ function ChoGGi_VLI_MapInfoDlg:ShowInfoDialog()
 	temp_data[c] = "\n"
 	table.iappend(text, temp_data)
 
-	-- named locations
+	-- Named locations
 	temp_data = {}
 	c = 0
+	local MarsLocales = MarsLocales
 	for _, location in pairs(MarsLocales) do
 		c = c + 1
 		temp_data[c] = Translate(location)
@@ -324,11 +325,6 @@ Leave blank to skip search box.]])
 end
 
 function ChoGGi_VLI_MapInfoDlg:FindText()
-	-- When I open it from main menu for testing
-	if not landsiteobj then
-		return
-	end
-
 	self = GetRootDialog(self)
 
 	-- always start off empty
@@ -345,6 +341,10 @@ function ChoGGi_VLI_MapInfoDlg:FindText()
 				return image_str .. obj.map_name .. ".png"
 			end,
 			exec_tables = function(obj)
+				-- When I open it from main menu for testing
+				if not landsiteobj then
+					return
+				end
 				local key_location = self:RetMapLocation(obj, true)
 				local result, lat, long = landsiteobj:ConvertStrLocationToCoords(key_location)
 				if result then
@@ -493,7 +493,6 @@ function ChoGGi_VLI_MapInfoDlg:UpdateFoundObjects()
 	self:SetExamineTitle()
 end
 
-local const = const
 function ChoGGi_VLI_MapInfoDlg:idSearchInput_OnKbdKeyDown(vk, input_type)
 	local old_self = self
 	self = GetRootDialog(self)

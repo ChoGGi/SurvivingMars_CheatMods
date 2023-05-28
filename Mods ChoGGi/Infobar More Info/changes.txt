@@ -1,3 +1,6 @@
+v3.1
+Fixed resource warning msg happening too much.
+
 v3.0
 Fixed colonist count when there's no colonists.
 

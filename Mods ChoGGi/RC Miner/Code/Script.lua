@@ -81,7 +81,7 @@ local lifetime_table = {
 
 local function StartupCode()
 
-	-- add production table if we haven't already
+	-- Add production table if we haven't already
 	local Cities = Cities or ""
 	for i = 1, #Cities do
 		local city = Cities[i]
@@ -96,11 +96,11 @@ local function StartupCode()
 		end
 	end
 
-	-- add tech lock
+	-- Add tech lock
 	if not BuildingTechRequirements.PortableMinerBuilding then
 		BuildingTechRequirements.PortableMinerBuilding = {{ tech = "RoverPrinting", hide = false, }}
 	end
-	-- add an entry to unlock it with the tech
+	-- Add an entry to unlock it with the tech
 	local tech = TechDef.RoverPrinting
 	if not table.find(tech, "Building", "PortableMinerBuilding") then
 		tech[#tech+1] = PlaceObj('Effect_TechUnlockBuilding', {
@@ -113,11 +113,11 @@ end
 OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode
 
--- for painting the ground
+-- For painting the ground
 local concrete_paint = GetTerrainTextureIndex("Dig")
 local metal_paint = GetTerrainTextureIndex("SandFrozen")
 
--- needs to be declared in two places so
+-- Needs to be declared in two places so
 local display_icon = CurrentModPath .. "UI/rover_combat.png"
 --~ local name = T(302535920011207, [[RC Miner]])
 --~ local name_pl = T(302535920011208, [[RC Miners]])
