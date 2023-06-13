@@ -16,7 +16,7 @@ AhkFileIni := A_ScriptDir "\" AhkFileName ".ini"
 IniRead FirstRun, %AhkFileIni%, Settings, FirstRun, 1
 If (FirstRun = 1)
 	{
-	MsgBox 4096 ,, You need to edit %AhkFileName%.ini`n`nInclude a copy of unluac_2022_01_12.jar (or whatever is current) in current folder`n`nSet path to java exe
+	MsgBox 4096 ,, You need to edit %AhkFileName%.ini`n`nInclude a copy of unluac_2023_01_14.jar (or whatever is current) in current folder`n`nSet path to java exe
 	IniWrite 0, %AhkFileIni%, Settings, FirstRun
 	IniWrite 0, %AhkFileIni%, Settings, IgnoreWarning
 	ExitApp
@@ -55,22 +55,18 @@ Loop Files, *.lua, %ConvertDeep%
 	File := FileOpen(A_LoopFileLongPath, "r")
 	; Probably not needed
 	File.Seek(1)
-	; Check if it's a compiled lua (LuaS == newer, LuaQ older)
+	; Check if it's a compiled lua
 	FileReadFour := File.Read(4)
+	; Need to close the file before we open it again below
+	File.Close()
+	; LuaS = newer, LuaQ = older
 	If (FileReadFour = "LuaS" || FileReadFour = "LuaQ")
 		{
-		; Need to close the file before we open it again below
-		File.Close()
 		; Call java/unluac
 		DeCompiledLUA := StdOutToVar("""" JavaPath """" A_Space "-jar" A_Space """" UnluacPath """" A_Space """" A_LoopFileLongPath """")
-		;delete original so we can append new
+		; Delete original so we can append new
 		FileDelete %A_LoopFileLongPath%
 		FileAppend %DeCompiledLUA%, %A_LoopFileLongPath%
-		}
-	; Already decompiled
-	Else
-		{
-		File.Close()
 		}
 	}
 
@@ -80,7 +76,7 @@ MsgBox 4096, Done, Files Decompiled
 ; Not needed just letting you know there's only functions below here
 ExitApp
 
-;https://github.com/cocobelgica/AutoHotkey-Util/blob/master/StdOutToVar.ahk (3541fbe on 25 Aug 2014)
+; https://github.com/cocobelgica/AutoHotkey-Util/blob/master/StdOutToVar.ahk (3541fbe on 25 Aug 2014)
 StdOutToVar(Cmd, BreakOnString := 0, BreakOnStringAdd := 0, BreakDelay := 0)
 	{
 	Static Ptr := (A_PtrSize ? "Ptr" : "UInt")

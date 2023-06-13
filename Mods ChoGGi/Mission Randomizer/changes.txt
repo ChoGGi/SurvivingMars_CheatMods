@@ -1,3 +1,6 @@
+v0.4
+Hopefully fixed blank mission profile window.
+
 v0.3
 Added mod option for Custom Game Rules.
 

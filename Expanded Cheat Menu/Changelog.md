@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v19.0 (Unreleased)
+### Fixed:
+- Log spam when placing a building (thanks Zanstel).
 
 ## v18.9 (6 May 2023)
 ### Fixed:

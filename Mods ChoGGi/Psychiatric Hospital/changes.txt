@@ -1,1 +1,3 @@
 v0.2
+Added mod option for Whiners and Introverts
+Fixed icon not showing up (Thanks Numlock).

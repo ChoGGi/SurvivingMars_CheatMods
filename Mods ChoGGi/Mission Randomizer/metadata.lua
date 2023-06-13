@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2939111511",
 	"pops_any_uuid", "d1c25b58-1845-4bd5-a02e-130e32de323f",
 	"lua_revision", 1007000, -- Picard
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -25,6 +25,6 @@ Known Issues:
 You can cheese the start by picking IMM and loading up a rocket.
 
 
-Requested by BoredWeazul
+Requested by Weazul
 ]],
 })

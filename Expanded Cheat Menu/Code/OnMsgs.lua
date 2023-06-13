@@ -708,24 +708,24 @@ function OnMsg.BuildingPlaced(obj)
 end --OnMsg
 
 do -- ConstructionSitePlaced/ConstructionPrefabPlaced
-	local function SitePlaced(site)
+	local function SitePlaced(obj)
 		if IsKindOf(obj, "Building") then
-			ChoGGi.Temp.LastPlacedObject = site
+			ChoGGi.Temp.LastPlacedObject = obj
 		end
 
 		-- use a delay, so domes don't screw up
 		CreateRealTimeThread(function()
 			WaitMsg("OnRender")
 			-- some issue bypass?
-			if ChoGGi.UserSettings.Building_instant_build and (not site.construction_group
-					or site.construction_group and site.construction_group[1] == site) then
-				site:Complete("quick_build")
+			if ChoGGi.UserSettings.Building_instant_build and (not obj.construction_group
+					or obj.construction_group and obj.construction_group[1] == obj) then
+				obj:Complete("quick_build")
 			end
 			-- spire needs a pointy end
-			if IsKindOf(site.building_class_proto, "Temple") then
-				local frame = site:GetAttaches("SpireFrame")
+			if IsKindOf(obj.building_class_proto, "Temple") then
+				local frame = obj:GetAttaches("SpireFrame")
 				if not frame then
-					frame = ChoGGi.ComFuncs.AttachSpireFrame(site)
+					frame = ChoGGi.ComFuncs.AttachSpireFrame(obj)
 					frame:SetGameFlags(const.gofUnderConstruction)
 				end
 				ChoGGi.ComFuncs.AttachSpireFrameOffset(frame)

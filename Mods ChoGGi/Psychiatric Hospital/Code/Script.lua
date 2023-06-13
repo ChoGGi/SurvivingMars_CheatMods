@@ -7,6 +7,57 @@ DefineClass.ChoGGi_PsychiatricHospital = {
 	max_traits = 1,
 }
 
+
+local mod_AddWhinersandIntroverts
+
+local function AddWhiners()
+	local bt = BuildingTemplates.ChoGGi_PsychiatricHospital
+	local ct = ClassTemplates.Building.ChoGGi_PsychiatricHospital
+
+	if mod_AddWhinersandIntroverts then
+		ChoGGi_PsychiatricHospital.max_traits = 3
+		bt.max_traits = 3
+		bt.trait2 = "Whiner"
+		bt.trait3 = "Introvert"
+		ct.max_traits = 3
+		ct.trait2 = "Whiner"
+		ct.trait3 = "Introvert"
+	else
+		ChoGGi_PsychiatricHospital.max_traits = 1
+		bt.max_traits = 1
+		bt.trait2 = ""
+		bt.trait3 = ""
+		ct.max_traits = 1
+		ct.trait2 = ""
+		ct.trait3 = ""
+	end
+
+end
+-- New games
+OnMsg.CityStart = AddWhiners
+-- Saved ones
+OnMsg.LoadGame = AddWhiners
+
+-- Update mod options
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	mod_AddWhinersandIntroverts = CurrentModOptions:GetProperty("AddWhinersandIntroverts")
+	-- Make sure we're in-game
+	if not UIColony then
+		return
+	end
+
+	AddWhiners()
+end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- Fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
+
 function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.ChoGGi_PsychiatricHospital then
 		local s = BuildingTemplates.Sanatorium
@@ -17,9 +68,9 @@ function OnMsg.ClassesPostprocess()
 
 			-- https://github.com/surviving-mars/SurvivingMars/blob/master/Data/BuildingTemplate.lua
 
-			"display_name", T(0, "Psychiatric Hospital"),
-			"display_name_pl", T(0, "Psychiatric Hospitals"),
-			"description", T(0, "Treats Idiots using slow but effective ways, combining medicine, psychology and some unorthodox practices."),
+			"display_name", T(0000, "Psychiatric Hospital"),
+			"display_name_pl", T(0000, "Psychiatric Hospitals"),
+			"description", T(0000, "Treats Idiots using slow but effective ways, combining medicine, psychology and some unorthodox practices."),
 			"max_visitors", 2,
 			"trait1", "Idiot",
 			"evaluation_points", 600,
@@ -31,7 +82,7 @@ function OnMsg.ClassesPostprocess()
 			"palette_color2", "inside_accent_medical",
 			"palette_color3", "wonder_base",
 
-			"display_icon", CurrentModPath .. "UI/PsychiatricHospital.png",
+			"display_icon", CurrentModPath .. "/UI/PsychiatricHospital.png",
 
 			"Group", s.Group,
 			"build_points", s.build_points,
@@ -64,11 +115,14 @@ end
 
 -- Table of cureable traits
 function ChoGGi_PsychiatricHospital:GetSanatoriumTraits()
-	return {"Idiot"}
+	return mod_AddWhinersandIntroverts and {"Idiot", "Whiner", "Introvert"}
+		or {"Idiot"}
 end
 
 function OnMsg.SelectedObjChange(obj)
-	if not IsKindOf(obj, "ChoGGi_PsychiatricHospital") then
+	if mod_AddWhinersandIntroverts
+		or not IsKindOf(obj, "ChoGGi_PsychiatricHospital")
+	then
 		return
 	end
 

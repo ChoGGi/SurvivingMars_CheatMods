@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2923594393",
 	"pops_any_uuid", "b6646233-f947-4d02-8431-11aabcdbe354",
 	"lua_revision", 1007000, -- Picard
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi &  hlechner",
 	"code", {
@@ -16,6 +16,8 @@ return PlaceObj("ModDef", {
 	"TagBuildings", true,
 	"description", [[
 Specialized building to treat Idiots.
+
+Mod option to cure Whiners and Introverts.
 
 
 https://github.com/ChoGGi/SurvivingMars_CheatMods/issues/56

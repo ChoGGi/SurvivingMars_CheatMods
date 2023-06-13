@@ -333,7 +333,7 @@ do -- CityStart/LoadGame
 		end
 		--
 		-- Fix Defence Towers Not Firing At Rovers (1/2)
-		-- The "or city" is if this is called on a save from before B&B
+		-- The "or UICity" is if this is called on a save from before B&B
 		local hostile = (MainCity or UICity).labels.HostileAttackRovers or ""
 		if #hostile > 0 then
 			UIColony.mystery.can_shoot_rovers = true

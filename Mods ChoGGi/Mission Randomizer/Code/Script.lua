@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local table = table
+
 local mod_RandomLocation
 local mod_RandomSponsor
 local mod_RandomCommander
@@ -48,6 +50,13 @@ local achievement_blockers = {
 	EndlessSupply = true,
 }
 
+local function CleanSponComm(presets)
+	local list = table.copy(presets)
+	list.None = nil
+	list.random = nil
+	return list
+end
+
 -- PreGameMission.lua also changes them here (well not the logo, but eh)
 function OnMsg.ChangeMap(map)
 	-- PreGame is new game menu, "" is loading a save (doesn't seem to matter though)
@@ -59,12 +68,12 @@ function OnMsg.ChangeMap(map)
 	local g_CurrentMissionParams = g_CurrentMissionParams
 
 	if mod_RandomSponsor then
-		local sponsor = table.rand(Presets.MissionSponsorPreset.Default)
+		local sponsor = table.rand(CleanSponComm(Presets.MissionSponsorPreset.Default))
 		g_CurrentMissionParams.idMissionSponsor = sponsor.id
 	end
 
 	if mod_RandomCommander then
-		local commander = table.rand(Presets.CommanderProfilePreset.Default)
+		local commander = table.rand(CleanSponComm(Presets.CommanderProfilePreset.Default))
 		g_CurrentMissionParams.idCommanderProfile = commander.id
 	end
 

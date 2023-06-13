@@ -16,9 +16,6 @@ local function Translate(t, context, ...)
 		return t
 	end
 
---~ 	local str = _InternalTranslate(
---~ 		context and T(t, context, ...) or T{t, context, ...}
---~ 	)
 	local result, str = pcall(
 		_InternalTranslate, context and T(t, context, ...) or T{t, context, ...}
 	)
@@ -32,8 +29,10 @@ local function Translate(t, context, ...)
 		-- and done
 		return str
 	end
+
 	-- false result means _InternalTranslate failed
 	result, str = pcall(_InternalTranslate, t, context, ...)
+
 	return result and str or tostring(str)
 end
 ChoGGi.ComFuncs.Translate = Translate
