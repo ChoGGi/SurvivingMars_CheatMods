@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 49,
-	"version_major", 4,
-	"version_minor", 9,
+	"version", 50,
+	"version_major", 5,
+	"version_minor", 0,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -38,9 +38,12 @@ Underground Rare Anomaly can give you underground dome prefabs, but locks them t
 The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
 Future Contemporary Asset Pack when placing spires (more info below).
 Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC).
+Possible fix for main menu music playing in-game on new games (mod option to disable, since there's no fade out).
+
+
 
 [b]Mods[/b]:
-Silva's Orion Heavy Rocket (you must disable his Essential files mod, then enable it AFTER enabling this mod).
+Silva's Orion Heavy Rocket (you must disable his Essential files mod, then enable it AFTER enabling this mod, or use my Mod List Editor mod).
 Horticulture Workshop not unlocking.
 (4) Fixes for mods (no idea which mods / they're abandoned).
 

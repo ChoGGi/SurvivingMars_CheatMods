@@ -18,6 +18,8 @@ return PlaceObj("ModDef", {
 Clear any mystery notifications stuck on the game.
 
 Clear Mysteries defaults to enabled, the other mod options need to be enabled.
+Turn all options off afterwards.
+
 
 Mod Options:
 Clear Mysteries: This will remove any mystery ones. (excludes Mystery Log)

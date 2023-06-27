@@ -227,6 +227,7 @@ ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
 				-- SE
 				AddLandingSpot(lat, long, breakthroughs, limit_count, skip_csv)
 				-- skip the rest for speed in testing
+--~ 				testing = false
 				if action.ActionId ~= "" or not testing then
 					-- SW
 					AddLandingSpot(lat, -long, breakthroughs, limit_count, skip_csv)

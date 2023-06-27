@@ -39,7 +39,7 @@ AddRivals = function()
 	end
 
 	-- The devs added a check for non-existant keys in the hr table (and _G, but that's another story)
-	-- using rawset bypasses the check and prevents log spam (Trying to create new value hr.PlanetColony6Longitude)
+	-- using rawset bypasses the check and prevents log spam ("Trying to create new value hr.PlanetColony6Longitude")
 	if not hr.PlanetColony5Longitude then
 		local rawset = rawset
 		local hr = hr

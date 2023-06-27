@@ -1,5 +1,10 @@
 -- See LICENSE for terms
 
+if ChoGGi.testing then
+	-- Updated below, here as reminder
+	vli = false
+end
+
 local pairs, tostring, type, table, tonumber = pairs, tostring, type, table, tonumber
 -- every litte bit helps
 local table_concat = table.concat
@@ -114,7 +119,7 @@ DefineClass.ChoGGi_VLI_MapInfoDlg = {
 function ChoGGi_VLI_MapInfoDlg:Init(parent, context)
 	local g_Classes = g_Classes
 
-	self.title = T(7396--[[Location]])
+	self.title = T(0000, "Find Map Locations")
 	self.title_image = "CommonAssets/UI/Menu/EV_OpenFirst.tga"
 	self.title_image_single = true
 

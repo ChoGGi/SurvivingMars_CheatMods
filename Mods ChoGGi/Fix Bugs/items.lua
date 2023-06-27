@@ -80,6 +80,14 @@ If you're bored and want to dig through the funcs in LandscapeFinish() to find o
 		"Help", T(0000, "Use the SupplyRocket sounds for the SupplyPod (since it doesn't have any)."),
 		"DefaultValue", true,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "MainMenuMusic",
+		"DisplayName", T(0000, "Main Menu Music"),
+		"Help", T(0000, [[If the main menu music keeps playing in-game on new games.
+
+I added it as an option since it removes the fade out.]]),
+		"DefaultValue", true,
+	}),
 }
 
 local CmpLower = CmpLower

@@ -1,3 +1,6 @@
+v5.0
+Possible fix for main menu music playing in-game on new games (mod option to disable, since there's no fade out).
+
 v4.9
 Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC).
 

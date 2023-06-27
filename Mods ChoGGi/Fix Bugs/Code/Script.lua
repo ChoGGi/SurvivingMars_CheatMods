@@ -24,6 +24,7 @@ local mod_PlanetaryAnomalyBreakthroughs
 local mod_UnevenTerrain
 --~ local mod_TurnOffUpgrades
 local mod_SupplyPodSoundEffects
+local mod_MainMenuMusic
 
 local function UpdateMap(game_map)
 	game_map.realm:SuspendPassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
@@ -57,6 +58,7 @@ local function ModOptions(id)
 	mod_UnevenTerrain = CurrentModOptions:GetProperty("UnevenTerrain")
 --~ 	mod_TurnOffUpgrades = CurrentModOptions:GetProperty("TurnOffUpgrades")
 	mod_SupplyPodSoundEffects = CurrentModOptions:GetProperty("SupplyPodSoundEffects")
+	mod_MainMenuMusic = CurrentModOptions:GetProperty("MainMenuMusic")
 
 
 	if UIColony and mod_UnevenTerrain then
@@ -140,7 +142,7 @@ end
 do -- CityStart/LoadGame
 
 	-- If you see (MainCity or UICity) that's for older saves (it does update, but after LoadGame)
-	local function StartupCode()
+	local function StartupCode(event)
 		if not mod_EnableMod then
 			return
 		end
@@ -155,6 +157,24 @@ do -- CityStart/LoadGame
 		local bt = BuildingTemplates
 		local bmpo = BuildMenuPrerequisiteOverrides
 		local main_realm = GetRealmByID(MainMapID)
+
+		--
+		-- Possible fix for main menu music not stopping when starting a new game
+		if event == "CityStart" then
+			-- Hopefully delay helps?
+			CreateRealTimeThread(function()
+				Sleep(5000)
+				-- What the game usually does
+				SetMusicPlaylist("")
+				Sleep(1000)
+				-- Make sure menu music is stopped... Hopefully
+				Music = Music or MusicClass:new()
+				Music:StopTrack(false)
+				Sleep(1000)
+				StartRadioStation(GetStoredRadioStation())
+			end)
+
+		end
 
 		--
 		-- Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC)
@@ -543,9 +563,12 @@ do -- CityStart/LoadGame
 		--
 		ResumePassEdits("ChoGGi_FixBBBugs_loading")
 	end
-
-	OnMsg.CityStart = StartupCode
-	OnMsg.LoadGame = StartupCode
+	function OnMsg.CityStart()
+		StartupCode("CityStart")
+	end
+	function OnMsg.LoadGame()
+		StartupCode("LoadGame")
+	end
 end -- do
 --
 -- Clearing waste rock

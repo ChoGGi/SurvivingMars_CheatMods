@@ -16,11 +16,11 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"description", [[
 The game has two tables, g_AvailableDlc and g_AccessibleDlc. ava means it's installed, acc means you can use it during the current save.
-This takes anything in ava and sticks it acc, allowing you to partially use dlc on existing saves (This will NOT work for terraforming).
+This takes anything in ava and sticks it in acc, allowing you to partially use dlc on existing saves (This will NOT work for terraforming).
 
 
 TLDR:
-If you want to build space race (or any dlc) stuff with an older save then use this mod.
+If you want to build space race (or any dlc) buildings with an older save then use this mod.
 
 
 Requested by Kkat.
