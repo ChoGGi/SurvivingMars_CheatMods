@@ -1147,7 +1147,7 @@ do -- Circle
 		end)
 	end
 
-	-- show a circle for time and delete it
+	-- show a sphere for time and delete it
 	function ChoGGi.ComFuncs.Sphere(pos, colour, time)
 		local orb = ShowPoint(pos and pos:SetTerrainZ(10 * guic) or GetCursorWorldPos(), colour)
 

@@ -53,7 +53,7 @@ Horticulture Workshop not unlocking.
 Fix Blank Mission Profile
 Fix Buildings Broken Down And No Repair
 Fix Colonist Daily Interest Loop
-Fix Colonists Long Walks (better solution see: No More Outside Suffocation mod)
+Fix Colonists Long Walks (better solution: Use my "No More Outside Suffocation" mod)
 Fix Colonists Suffocating Inside Domes
 Fix Defence Towers Not Firing At Rovers
 Fix Destroyed Tunnels Still Work

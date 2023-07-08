@@ -148,7 +148,7 @@ DefineClass.PortableMiner = {
 
 	-- how close to the resource icon do we need to be
 	mine_dist = 1500,
-	-- area around it to mine for concrete. this gets called everytime you mine, so we just get the default shape once and use that instead of this func
+	-- area around it to mine for concrete. this gets called every time you mine, so we just get the default shape once and use that instead of this func
 	mine_area = RegolithExtractor.GetExtractionShape(),
 	-- what spot on the entity to use as placement for the stockpile
 	pooper_shooter = "Droneentrance",

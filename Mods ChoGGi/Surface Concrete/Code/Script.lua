@@ -1,15 +1,16 @@
 -- See LICENSE for terms
 
-local GetCity = GetCity
-local AsyncRand = AsyncRand
-local GetRandomPassableAround = GetRandomPassableAround
-
 local mod_EnableMod
 local mod_MaxDeposits
 
+local GetRandomPassableAround = GetRandomPassableAround
+local AsyncRand = AsyncRand
+
 local min, max = 0, 21600
 local function SpawnConcreteChunks(obj)
+	local SurfaceDepositConcrete = SurfaceDepositConcrete
 	local city = GetCity(obj)
+
 	for _ = 1, mod_MaxDeposits do
 		local pos = GetRandomPassableAround(
 			obj,
@@ -45,7 +46,7 @@ local function StartupCode()
 end
 function OnMsg.CityStart()
 	CreateRealTimeThread(function()
-		-- CityStart happens before the game map is generated, DepositsSpawned happens everytime a sector is scanned.
+		-- CityStart happens before the game map is generated, DepositsSpawned happens every time a sector is scanned.
 		WaitMsg("DepositsSpawned")
 		StartupCode()
 	end)

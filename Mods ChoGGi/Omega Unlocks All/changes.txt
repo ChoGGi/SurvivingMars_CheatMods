@@ -1,3 +1,6 @@
+v0.4
+Mod option to unlock all story breakthroughs.
+
 v0.3
 Made sure it only happens when omega is unlocked (incase func used for other stuff).
 

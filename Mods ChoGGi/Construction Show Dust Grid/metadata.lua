@@ -22,7 +22,7 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"description", [[
-Obsolete: Devs added this to base game (you can still use it, and it works better than their implementation).
+Obsolete(?): Devs added this to base game (you can still use it, and it works better than their implementation).
 
 
 Show dust grids for all dust generating buildings during construction of any building.
