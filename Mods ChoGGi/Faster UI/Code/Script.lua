@@ -29,16 +29,16 @@ end
 local ChoOrig_OverviewModeDialog_GetCameraTransitionTime = OverviewModeDialog.GetCameraTransitionTime
 function OverviewModeDialog.GetCameraTransitionTime(...)
 	if UICity and mod_OverviewMode then
---~ 		return 1
-		return 0
+		-- 0 makes it bounce around
+		return 1
 	end
 	return ChoOrig_OverviewModeDialog_GetCameraTransitionTime(...)
 end
 
-
 function OnMsg.ClassesPostprocess()
-	-- Fade to black for map switch buttons
 	-- pp is too soon for mod options, so we default to the enabled values
+
+	-- Fade to black for map switch buttons
 	local template = XTemplates.FadeToBlackDlg[1]
 	template.FadeInTime = 1
 	template.FadeOutTime = 1
@@ -46,7 +46,7 @@ function OnMsg.ClassesPostprocess()
 	-- Faster pins 2/2
 	local ChoOrig_XBlinkingButtonWithRMB_AddInterpolation = XBlinkingButtonWithRMB.AddInterpolation
 	function XBlinkingButtonWithRMB:AddInterpolation(int, ...)
-		if int and mod_Pins2 then
+		if mod_Pins2 and int then
 			int.start = 1
 			int.duration = 1
 			int.easing = 1
@@ -61,12 +61,23 @@ local function UpdateFade()
 	local time = 1
 	if not mod_FadeToBlack then
 		-- Ddefault time (last checked picard rev 1010999)
+		-- Source\Lua\XTemplates\FadeToBlackDlg.lua
 		time = 450
 	end
 	--
 	local template = XTemplates.FadeToBlackDlg[1]
 	template.FadeInTime = time
 	template.FadeOutTime = time
+
+	-- Black bar fade (changes some shadow details? when fully transitioned)
+	if mod_OverviewMode then
+		OverviewMapCurtains.FadeInTime = 0
+		OverviewMapCurtains.FadeOutTime = 0
+	else
+		OverviewMapCurtains.FadeInTime = const.InterfaceAnimDuration
+		OverviewMapCurtains.FadeOutTime = const.InterfaceAnimDuration
+	end
+
 end
 
 -- Update mod options

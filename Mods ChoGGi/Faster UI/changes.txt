@@ -1,3 +1,8 @@
+v0.5
+Changed mod option names.
+Map zoom shouldn't go outside the map area anymore.
+Faster fade for black bars on map zoom.
+
 v0.4
 Added mod options for each speed up.
 
