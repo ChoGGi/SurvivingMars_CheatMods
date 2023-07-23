@@ -1,8 +1,10 @@
 -- See LICENSE for terms
 
 if ChoGGi.testing then
-	-- Updated below, here as reminder
-	vli = false
+	-- Add a slight delay to show up in main menu
+	CreateRealTimeThread(function()
+		print("VLI")
+	end)
 end
 
 local pairs, tostring, type, table, tonumber = pairs, tostring, type, table, tonumber

@@ -639,6 +639,9 @@ If it's an associative table then o = value."]]],
 		end
 	end -- everything else
 
+
+	-- Hide it "till" I fix it
+	self.idChildLock:SetVisible(false)
 end
 
 do -- SafeExamine
@@ -4073,21 +4076,27 @@ function ChoGGi.ComFuncs.OpenInExamineDlg(obj, parent, title, ...)
 
 	-- are we using child lock?
 	local new_child_lock_dlg
-	if not params.skip_child then
+	if params.skip_child then
+		if params.parent and IsKindOf(params.parent, "ChoGGi_DlgExamine") then
+			params.parent.idChildLock:SetVisible()
+		end
+	else
 		parent = params.parent
+
 		if parent and IsKindOf(parent, "ChoGGi_DlgExamine") and parent.child_lock then
-			local child = parent.child_lock_dlg
-			if child then
-				if not IsValidXWin(child) then
-					parent.child_lock_dlg = false
-				else
-					-- It's valid so update with new obj
-					child.obj = params.obj
-					child:SetObj()
-					-- no need for a new window
-					return
-				end
-			end
+--~ 			ex(parent.child_lock_dlg)
+				local child = parent.child_lock_dlg
+--~ 				if child then
+					if not IsValidXWin(child) then
+						parent.child_lock_dlg = false
+					else
+						-- It's valid so update with new obj
+						child.obj = params.obj
+						child:SetObj()
+						-- no need for a new window
+						return
+					end
+--~ 				end
 
 			-- child_lock_dlg is invalid or not opened yet
 			new_child_lock_dlg = true

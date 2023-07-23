@@ -15,7 +15,8 @@ return PlaceObj("ModDef", {
 --~ 	"has_options", true,
 	"TagOther", true,
 	"description", [[
-[b]Leave this disabled till your playthrough reaches Sol 2981+. This is replacing a core C func with a lua one.[/b]
+[b]DO NOT INSTALL THIS MOD UNLESS YOUR SAVE IS ON SOL 2981 OR HIGHER!
+This is replacing a core C func with a lua one.[/b]
 
 
 Stuff gets weird after about Sol 2983 hour 20 min 20.

@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 			"version_minor", 0,
 		}),
 	},
-	"title", "<color 135 212 155>Expanded Cheat Menu</color> Test",
+	"title", "<color 135 212 155>Expanded Cheat Menu</color>",
 	"id", "ChoGGi_CheatMenu",
 	"steam_id", "1411157810",
 	"pops_any_uuid", "dbb57a5c-b79b-427a-8f1c-d9b4a64d16ec",

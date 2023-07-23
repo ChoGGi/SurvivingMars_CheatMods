@@ -13,9 +13,9 @@ local RetMapBreakthroughs = ChoGGi.ComFuncs.RetMapBreakthroughs
 local testing = ChoGGi.testing
 
 local function ExportDoneMsg(path)
-	local msg = TranslationTable[302535920001449--[[Export]]] .. " " .. TranslationTable[302535920001448--[[CSV]]]
+	local msg = T(302535920001449--[[Export]]) .. " " .. T(302535920001448--[[CSV]])
 	ChoGGi.ComFuncs.MsgPopup(path, msg)
-	print(msg, path)
+	print(Translate(msg), path)
 end
 
 do -- MapData
@@ -36,9 +36,11 @@ do -- MapData
 	local export_data = {}
 	local export_data_dupes = {}
 	local export_count = 0
-	-- stores temp landing spot
+	-- Stores temp landing spot
 	local landing
-	local north, east, south, west
+	-- If I translate these, then I get issues in not English when using Find Map Locations.
+	-- I could do an if, but best keep it simple...
+	local north, east, south, west = "N", "E", "S", "W"
 
 --~ 	local loc_table = {"","","",""}
 	local MapData = ChoGGi.is_gp and MapData or MapDataPresets
@@ -188,7 +190,7 @@ ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
 			end
 		end
 
-		north, east, south, west = TranslationTable[1000487--[[N]]], TranslationTable[1000478--[[E]]], TranslationTable[1000492--[[S]]], TranslationTable[1000496--[[W]]]
+--~ 		north, east, south, west = TranslationTable[1000487--[[N]]], TranslationTable[1000478--[[E]]], TranslationTable[1000492--[[S]]], TranslationTable[1000496--[[W]]]
 
 		-- save current g_CurrentMapParams to restore later
 		local params = g_CurrentMapParams
@@ -226,7 +228,7 @@ ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
 			for long = 0, 180 do
 				-- SE
 				AddLandingSpot(lat, long, breakthroughs, limit_count, skip_csv)
-				-- skip the rest for speed in testing
+--~ 				-- skip the rest for speed in testing
 --~ 				testing = false
 				if action.ActionId ~= "" or not testing then
 					-- SW

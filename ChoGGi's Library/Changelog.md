@@ -1,6 +1,10 @@
 ## Library Changelog
 
-## v12.0 (Unreleased)
+## v12.1 (Unreleased)
+
+## v12.0 (22 July 2023)
+- Changed ExportMapDataToCSV() to not translate NESW strings.
+- Hid Examine>Child checkbox.
 
 ## v11.9 (6 May 2023)
 

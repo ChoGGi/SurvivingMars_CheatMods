@@ -17,7 +17,6 @@ local mod_RivalSpawnSol
 local AddRivals
 
 local function WaitForSol()
-	local sol = const.Scale.sols
 	while true do
 		local ok, day = WaitMsg("NewDay")
 		if ok and day and mod_RivalSpawnSol >= day then
