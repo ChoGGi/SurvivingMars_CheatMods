@@ -75,12 +75,13 @@ MaxFillAll = function()
 		return
 	end
 
-	local UIColony = UIColony
 	if UIColony then
-		MaxDeposits(UIColony.city_labels.labels.SubsurfaceDeposit or "")
-		RefillAllDeposits(UIColony.city_labels.labels.SubsurfaceDeposit or "")
-		MaxDeposits(UIColony.city_labels.labels.TerrainDeposit or "")
-		RefillAllDeposits(UIColony.city_labels.labels.TerrainDeposit or "")
+		local labels = UIColony.city_labels.labels
+
+		MaxDeposits(labels.SubsurfaceDeposit or "")
+		RefillAllDeposits(labels.SubsurfaceDeposit or "")
+		MaxDeposits(labels.TerrainDeposit or "")
+		RefillAllDeposits(labels.TerrainDeposit or "")
 	end
 end
 
@@ -92,8 +93,9 @@ function OnMsg.NewDay()
 		return
 	end
 
-	RefillAllDeposits(UIColony.city_labels.labels.SubsurfaceDeposit or "")
-	RefillAllDeposits(UIColony.city_labels.labels.TerrainDeposit or "")
+	local labels = UIColony.city_labels.labels
+	RefillAllDeposits(labels.SubsurfaceDeposit or "")
+	RefillAllDeposits(labels.TerrainDeposit or "")
 end
 
 --

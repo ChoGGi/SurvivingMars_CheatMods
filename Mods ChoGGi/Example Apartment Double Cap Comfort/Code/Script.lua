@@ -38,7 +38,7 @@ function OnMsg.LoadGame()
 	]]
 	if not g_ChoGGi_ApartmentDoubleCapComfort then
 		-- loop through all existing buildings and update them
-		local objs = UIColony.city_labels.labels.Apartments or ""
+		local objs = UIColony:GetCityLabels("Apartments")
 		for i = 1, #objs do
 			local obj = objs[i]
 			obj.capacity = capacity
