@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local table, type, pairs, tostring = table, type, pairs, tostring
+local pcall = pcall
 local IsValidThread = IsValidThread
 local IsValid = IsValid
 local ValidateBuilding = ValidateBuilding
@@ -75,7 +76,7 @@ local ChoOrig_PlacePlanet = PlacePlanet
 --
 -- The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
 -- I could add something to check if this is being called multiple times per unpause, but it's not doing much
-function OnMsg.SectorScanned()
+function OnMsg.SectorScanned(status, col, row)
 	if not mod_EnableMod then
 		return
 	end
@@ -940,7 +941,7 @@ function Tunnel:AddPFTunnel(...)
 	return ChoOrig_Tunnel_AddPFTunnel(self, ...)
 end
 --
--- These were moved from City to Colony, shouldn't hurt anything
+-- These were moved from City to Colony, shouldn't hurt anything...
 function City.IsTechResearched(_, ...)
 	return UIColony:IsTechResearched(...)
 end
@@ -966,8 +967,39 @@ end
 --
 --
 --
+
 --
---
+-- SpawnAnomaly() calls FindUnobstructedDepositPos() which for whatever reason,
+-- takes the pos from in front of the wonder and sticks it in the passage behind it... (BlankUnderground_02 map)
+-- SpawnAnomaly() freaks out and changes it to an underground water instead
+-- It works fine once the sector the pit is in is scanned, so I'm lazy and doing OnMsg.SelectionAdded
+
+-- Needs tostring for compare
+local wonder_pos = tostring(point(296000, 225160))
+-- on selection, if it's the underground wonder than check if water deposit exists, if so delete and respawn as anomaly
+function OnMsg.SelectionAdded(obj)
+	--
+	if not mod_EnableMod then
+		return
+	end
+
+	if obj.entity == "WonderBottomlessPit"
+		and UICity.map_id == "BlankUnderground_02"
+		and tostring(obj:GetPos()) == wonder_pos
+	then
+		-- Bye bye water
+		-- Sure hope it hasn't been drained beforehand, but who goes underground for water?
+		-- (don't be that guy)
+
+		local water_pos = point(293500, 184458)
+		local objs = MapGet(water_pos, water_pos, 1, "SubsurfaceDepositWater")
+		if objs[1] then
+			objs[1]:delete()
+			obj:SpawnAnomaly()
+		end
+	end
+end
+
 --
 -- Some mod added a borked spec?
 -- [LUA ERROR] attempt to compare nil with number

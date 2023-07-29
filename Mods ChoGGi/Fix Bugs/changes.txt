@@ -1,3 +1,6 @@
+v5.1
+The Bottomless Pit and missing Anomaly.
+
 v5.0
 Possible fix for main menu music playing in-game on new games (mod option to disable, since there's no fade out).
 

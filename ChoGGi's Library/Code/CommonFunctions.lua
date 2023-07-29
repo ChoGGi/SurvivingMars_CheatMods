@@ -7849,6 +7849,59 @@ function ChoGGi.ComFuncs.PickUnusedAISponsor()
   return results
 end
 
+do -- RetSourceFile
+	local source_path = "AppData/Source/"
+
+	function ChoGGi.ComFuncs.RetSourceFile(path)
+		if blacklist then
+			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.RetSourceFile")
+			return
+		end
+--[[
+source: '@CommonLua/PropertyObject.lua'
+~PropertyObject.Clone
+source: '@Mars/Lua/LifeSupportGrid.lua'
+~WaterGrid.RemoveElement
+source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
+~RCConstructor.CanInteractWithObject
+
+~ChoGGi.ComFuncs.RetSourceFile
+]]
+		-- remove @
+		local at = path:sub(1, 1)
+		if at == "@" then
+			path = path:sub(2)
+		end
+
+		local err, code
+		-- mods (we need to skip CommonLua else it'll open the luac file)
+		local comlua = path:sub(1, 10)
+		if comlua ~= "CommonLua/" and ChoGGi.ComFuncs.FileExists(path) then
+			err, code = g_env.AsyncFileToString(path)
+			if not err then
+				return code, path
+			end
+		end
+
+		-- might as well return commonlua/dlc files...
+		if path:sub(1, 5) == "Mars/" then
+			path = source_path .. path:sub(6)
+			err, code = g_env.AsyncFileToString(path)
+			if not err then
+				return code, path
+			end
+		elseif comlua == "CommonLua/" then
+			path = source_path .. path
+			err, code = g_env.AsyncFileToString(path)
+			if not err then
+				return code, path
+			end
+		end
+
+		return nil, (err and err .. "\n" or "") .. path
+
+	end
+end -- do
 -- loop through all map sectors and fire this func
 --~ function ChoGGi.ComFuncs.LoopMapSectors(map_id, func)
 --~ end

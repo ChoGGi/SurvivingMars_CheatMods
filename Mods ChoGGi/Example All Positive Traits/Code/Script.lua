@@ -41,7 +41,8 @@ OnMsg.ColonistBorn = UpdateTraits
 
 -- fires when game is loaded
 function OnMsg.LoadGame()
-	local colonists = UIColony.city_labels.labels.Colonist or ""
+	-- Gets all colonists in all cities (use UICity for current city map instead)
+	local colonists = UIColony:GetCityLabels("Colonist")
 	for i = 1, #colonists do
 		UpdateTraits(colonists[i])
 	end

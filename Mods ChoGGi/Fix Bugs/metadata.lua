@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 50,
+	"version", 51,
 	"version_major", 5,
-	"version_minor", 0,
+	"version_minor", 1,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -39,6 +39,7 @@ The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
 Future Contemporary Asset Pack when placing spires (more info below).
 Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC).
 Possible fix for main menu music playing in-game on new games (mod option to disable, since there's no fade out).
+The Bottomless Pit and Anomaly is missing (more info below).
 
 
 
@@ -112,6 +113,12 @@ If you're bored and want to dig through the funcs in LandscapeFinish() to find o
 It's probably a bug, but the underground wonders do add Breakthroughs.
 Mod option to disable this "fix" (and receieve less Breakthroughs).
 
+[b]The Bottomless Pit and Anomaly is missing[/b]
+SpawnAnomaly() calls FindUnobstructedDepositPos() which for whatever reason,
+takes the pos from in front of the wonder and sticks it in the passage behind it... (BlankUnderground_02 map)
+SpawnAnomaly() freaks out and changes it to an underground water instead
+It works fine once the sector the pit is in is scanned, so I check for the water deposit when the pit is selected.
+It's not like anyone goes underground for water...
 [b]Future Contemporary Asset Pack[/b]
 When placing a building you can change skins, if you use the spire skins from this DLC when placing skins
 then it blocks an extra hex (you can see it when placing). This removes that hex on new buildings.
