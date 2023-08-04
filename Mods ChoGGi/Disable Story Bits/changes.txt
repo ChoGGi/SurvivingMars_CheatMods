@@ -1,3 +1,6 @@
+v0.3
+Added Grudge.
+
 v0.2
 Added Rocket Malfunction.
 Renamed mod

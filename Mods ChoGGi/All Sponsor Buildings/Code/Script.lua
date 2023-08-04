@@ -1,5 +1,10 @@
 -- See LICENSE for terms
 
+if not g_AvailableDlc.gagarin then
+	print(CurrentModDef.title, ": Space Race DLC not installed! Abort!")
+	return
+end
+
 local table = table
 
 -- we need to store the list of sponsor locked buildings
@@ -89,7 +94,7 @@ local techs = {
 	Temple = "Arcology",
 }
 
-local function LockTechs()
+local function StartupCode()
 	for bld_id, tech_id in pairs(techs) do
 		if mod_options["ChoGGi_Tech_" .. bld_id] then
 				-- build menu
@@ -107,7 +112,8 @@ local function LockTechs()
 			end
 		end
 	end
+
 end
 
-OnMsg.CityStart = LockTechs
-OnMsg.LoadGame = LockTechs
+OnMsg.CityStart = StartupCode
+OnMsg.LoadGame = StartupCode

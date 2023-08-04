@@ -28,6 +28,7 @@ local mod_SupplyPodSoundEffects
 local mod_MainMenuMusic
 
 local function UpdateMap(game_map)
+	-- Suspend funcs speed up "doing stuff"
 	game_map.realm:SuspendPassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
 	SuspendTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
 	game_map:RefreshBuildableGrid()
@@ -62,6 +63,7 @@ local function ModOptions(id)
 	mod_MainMenuMusic = CurrentModOptions:GetProperty("MainMenuMusic")
 
 
+	-- Update all maps for uneven terrain (if using mod that allows landscaping maps other than surface)
 	if UIColony and mod_UnevenTerrain then
 		FixUnevenTerrain()
 	end
@@ -994,7 +996,7 @@ function OnMsg.SelectionAdded(obj)
 		local water_pos = point(293500, 184458)
 		local objs = MapGet(water_pos, water_pos, 1, "SubsurfaceDepositWater")
 		if objs[1] then
-			objs[1]:delete()
+			DoneObject(objs[1])
 			obj:SpawnAnomaly()
 		end
 	end

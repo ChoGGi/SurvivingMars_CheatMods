@@ -1,5 +1,17 @@
 -- See LICENSE for terms
 
+
+if not g_AvailableDlc.gagarin then
+	print(CurrentModDef.title, ": Space Race DLC not installed! Abort!")
+	return {
+		PlaceObj("ModItemOptionToggle", {
+			"name", "NODLC",
+			"DisplayName", T(0000, "Space Race DLC not installed!"),
+			"DefaultValue", true,
+		}),
+	}
+end
+
 local def = CurrentModDef
 -- we need to store the list of sponsor locked buildings
 local sponsor_buildings = def.sponsor_buildings or {}

@@ -2,6 +2,7 @@
 
 local mod_FickleEconomics
 local mod_RocketMalfunction
+local mod_RivalColoniesGrudge
 
 local function UpdateStorybit()
 	local StoryBits = StoryBits
@@ -20,6 +21,13 @@ local function UpdateStorybit()
 		bit.Enabled = true
 	end
 
+	bit = StoryBits.Grudge
+	if mod_RivalColoniesGrudge then
+		bit.Enabled = false
+	else
+		bit.Enabled = true
+	end
+
 end
 OnMsg.CityStart = UpdateStorybit
 OnMsg.LoadGame = UpdateStorybit
@@ -32,6 +40,7 @@ local function ModOptions(id)
 
 	mod_FickleEconomics = CurrentModOptions:GetProperty("FickleEconomics")
 	mod_RocketMalfunction = CurrentModOptions:GetProperty("RocketMalfunction")
+	mod_RivalColoniesGrudge = CurrentModOptions:GetProperty("RivalColoniesGrudge")
 
 	-- make sure we're in-game
 	if not UIColony then

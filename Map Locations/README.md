@@ -9,7 +9,7 @@ https://survivingmars.paradoxwikis.com/Patches#Version_history
 
 Only shows first 12 breakthroughs: Anything higher than that isn't guaranteed.
 
-The first 4 are planetary anomalies, if you have BB then you need to use my Fix Bugs mod on new games or ignore them.
+The first 4 are planetary anomalies (the rest are on the ground), if you have BB then you need to use my Fix Bugs mod on new games or ignore them.
 
 #### Tools that use this data:
 

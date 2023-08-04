@@ -21,4 +21,13 @@ return {
 		},
 		"DefaultValue", false,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "RivalColoniesGrudge",
+		"DisplayName", StoryBits.Grudge.Title,
+		"Help", T{302535920012093, "Stop this storybit from happening:<newline><newline><storybit><newline><newline><image "
+			.. StoryBits.Grudge.Image .. ">",
+			storybit = StoryBits.Grudge.Text,
+		},
+		"DefaultValue", false,
+	}),
 }

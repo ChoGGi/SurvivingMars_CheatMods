@@ -14,7 +14,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"description", [[
-Removes sponsor limit placed on certain buildings/vehicles.
+Removes sponsor limit placed on certain buildings/vehicles (Space Race DLC).
 Some buildings are locked behind tech: Advanced Stirling Generator, Jumper ShuttleHub, and Low-G Lab.
 
 Mod Options:
