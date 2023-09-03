@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v19.1 (Unreleased)
+### Fixed:
+- Some mod game rule was interfering with Mission>Game Rules (thanks FURRYHUSKY1000).
 
 ## v19.0 (22 July 2023)
 ### Fixed:

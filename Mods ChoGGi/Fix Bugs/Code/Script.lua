@@ -123,7 +123,7 @@ end
 function OnMsg.ClassesPostprocess()
 
 	-- Fix Colonist Daily Interest Loop
-	-- last checked lua rev 1011030 Colonist:EnterBuilding()
+	-- last checked 1011030 Colonist:EnterBuilding()
 	local ChoOrig_Colonist_EnterBuilding = Colonist.EnterBuilding
 	function Colonist:EnterBuilding(building, ...)
 		if not mod_EnableMod then

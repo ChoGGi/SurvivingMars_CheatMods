@@ -1155,7 +1155,8 @@ function ChoGGi_DlgExamine:idButDeleteAll_OnPress()
 				SuspendPassEdits("ChoGGi_DlgExamine:idButDeleteAll_OnPress")
 				for _, obj in pairs(self.obj_ref) do
 					if IsValid(obj) then
-						self.ChoGGi.ComFuncs.DeleteObject(obj)
+						-- true skips dust plume
+						self.ChoGGi.ComFuncs.DeleteObject(obj, true)
 					elseif obj.delete then
 						DoneObject(obj)
 					end

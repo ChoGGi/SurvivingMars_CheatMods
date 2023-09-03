@@ -19,7 +19,7 @@ local IsValid = IsValid
 local FixConstructPos = FixConstructPos
 local UnbuildableZ = buildUnbuildableZ()
 
--- last checked source: Picard 1010999
+-- last checked 1010999
 local ChoOrig_ConstructionController_UpdateCursor = ConstructionController.UpdateCursor
 function ConstructionController:UpdateCursor(pos, force, ...)
 	if not mod_EnableMod then

@@ -7,6 +7,36 @@ end
 
 local mod_EnableMod
 
+-- last checked 1011166
+-- Source\Dlc\contentpack1\Code\Crystals.lua
+local ChoOrig_GetShardClass
+local GetShardClass = function(size, idx, ...)
+	if not mod_EnableMod then
+		return ChoOrig_GetShardClass(size, idx, ...)
+	end
+
+  if idx > max_idx then
+--~     return
+		-- Cycle numbers for models
+		idx = idx % 6
+  end
+  local class = string.format("CrystalShard%s%d", size, idx)
+  local entity = string.format("Crystals%s_%02d", size, idx)
+  return class, entity
+end
+
+-- Replace local func
+function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
+	-- You can use examine from my lib mod to find upvalue to use
+	-- OpenExamine(CrystalsBuildingBase.Init) will show GetShardClass as (2)
+	local parent_func = CrystalsBuildingBase.Init
+	local _, GetShardClass = env.debug.getupvalue(parent_func, 2)
+	-- save orig func
+	ChoOrig_GetShardClass = GetShardClass
+	-- then replace with ours
+	env.debug.setupvalue(parent_func, 2, GetShardClass)
+end
+
 local function ModOptions(id)
 	-- id is from ApplyModOptions
 	if id and id ~= CurrentModId then

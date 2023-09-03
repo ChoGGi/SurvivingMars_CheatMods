@@ -78,7 +78,8 @@ function UniversalStorageDepot:GameInit(...)
 		end
 	end
 
-	-- desired slider setting (needs a slight delay to set the "correct" amount: last checked picard)
+	-- last checked 1011166
+	-- desired slider setting (needs a slight delay to set the "correct" amount: )
 	CreateRealTimeThread(function()
 		self:SetDesiredAmount(mod_StoredAmount * ResourceScale)
 	end)

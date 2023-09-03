@@ -3,6 +3,7 @@
 local SelObjects = ChoGGi.ComFuncs.SelObjects
 local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
 local GetCursorWorldPos = GetCursorWorldPos
+local IsValid = IsValid
 local terminal = terminal
 
 
@@ -428,10 +429,13 @@ local function UpdateOpacity(value)
 		if d.revealed then
 			return true
 		end
-	end)
+	end) or "" -- I thought MapGet always returned a table...
+
 	for i = 1, #objs do
-		pcall(objs[i].SetOpacity, objs[i], value)
---~ 		objs[i]:SetOpacity(value)
+		local obj = objs[i]
+		if IsValid(obj) then
+			pcall(obj.SetOpacity, obj, value)
+		end
 	end
 end
 Actions[#Actions+1] = {ActionName = T(0000, "Resource Icons Opacity"),
@@ -454,11 +458,18 @@ Actions[#Actions+1] = {ActionName = T(0000, "Resource Icons Opacity"),
 	ActionBindable = true,
 	ActionMode = "Game",
 }
-OnMsg.CityStart = UpdateOpacity
-OnMsg.LoadGame = UpdateOpacity
-OnMsg.ChangeMapDone = UpdateOpacity
--- map overview will reset opacity
+-- Map overview transition will reset opacity
 OnMsg.CameraTransitionEnd = UpdateOpacity
+-- Might help some log spam
+local function UpdateOpacityDelay()
+	CreateRealTimeThread(function()
+		Sleep(5000)
+		UpdateOpacity()
+	end)
+end
+OnMsg.CityStart = UpdateOpacityDelay
+OnMsg.LoadGame = UpdateOpacityDelay
+OnMsg.ChangeMapDone = UpdateOpacityDelay
 --
 Actions[#Actions+1] = {ActionName = T(0000, "Fill Selected Depot"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.FillSelectedDepot",

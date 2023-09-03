@@ -54,7 +54,7 @@ local function UpdateStuff()
 			-- Male model size
 			if obj.traits.Tourist then
 				obj:SetScale(mod_MaleSize)
-			-- Daily cull
+			-- Daily cull (soylent green)
 			elseif obj:CanChangeCommand() then
 				PlaceResourcePile(obj:GetVisualPos(), "Food", 1000)
 				obj:SetCommand("Erase")
@@ -62,7 +62,7 @@ local function UpdateStuff()
 		end
 	end
 
-	-- Daily cull
+	-- Daily cull (soylent green)
 	objs = labels.ColonistOther or ""
 	for i = 1, #objs do
 		local obj = objs[i]
@@ -71,6 +71,8 @@ local function UpdateStuff()
 			obj:SetCommand("Erase")
 		end
 	end
+
+	-- "obj:CanChangeCommand()" is to check if they're alive)
 
 	ResumePassEdits("ChoGGi_GameRuleAmazonianMars.UpdateStuff")
 end

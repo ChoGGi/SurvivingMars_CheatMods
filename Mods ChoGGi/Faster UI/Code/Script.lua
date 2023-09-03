@@ -60,7 +60,8 @@ end
 local function UpdateFade()
 	local time = 1
 	if not mod_FadeToBlack then
-		-- Ddefault time (last checked picard rev 1010999)
+		-- Default time
+		-- last checked 1010999
 		-- Source\Lua\XTemplates\FadeToBlackDlg.lua
 		time = 450
 	end

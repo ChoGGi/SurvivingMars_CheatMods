@@ -18,9 +18,9 @@ return PlaceObj("ModDef", {
 Disable as much Earth related stuff as can be.
 
 No Outsourcing or Resupply (resupply disables after 13 Sols or first passenger rocket launches, mod option to increase delay).
-Disabled Expeditions:
+[b]Disabled Expeditions[/b]:
 High-speed Comm Satellite, Launch SETI Satellite, Contact Exploration Access.
-Disabled Story bits (mod options to enable, can be done after start):
+[b]Disabled Story bits[/b] (mod options to enable, can be done after start):
 Applicants Profiling, Renegades: Evil Genius, Battle Royale, Black PR, Blank Slate, The Great Leap, Rapid Expansion, Mandatory Upgrades, Training Program, Research Cooperation, Diminishing Returns, The Martian Trail, Cold Machines, Cure For Cancer, Experimental Rocket, Splinters of Mars, Food Fight, Geological Treasure, Fickle Economics, Investment Opportunity, Jackpot, Live From Earth, Mars's Got Talent, Cydonia da Vinci, Multi-planetary Species, Mutual Interests, Refugee Crisis, Rocket Launch Failed, Survey Offer, The Door to Summer, The Fugitive, Mars or Bust!, Sanity Breakdown - Vagrancies of Fame, Water Chip
 
 

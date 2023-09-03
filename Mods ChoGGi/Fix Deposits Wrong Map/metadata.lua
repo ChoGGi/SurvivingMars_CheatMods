@@ -25,7 +25,7 @@ return PlaceObj("ModDef", {
 	"description", [[
 If you scan a surface sector that has a concrete deposit while underground then the deposit will appear underground.
 This will check on load for borked ones and move them to the surface, as well as overriding the borked function to fix newly scanned.
-This also fixes the underground ones stuck on the surface.
+This also fixes underground ones stuck on the surface (less likely).
 
 If it doesn't remove them, then go to the mod options for it and press apply.
 

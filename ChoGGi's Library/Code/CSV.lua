@@ -123,7 +123,7 @@ do -- MapData
 
 			metals = threat.Metals,
 --~ 			metals_rare = threat.PreciousMetals,
-			-- last checked prunariu lua rev 1011140
+			-- last checked 1011140
 			metals_rare = threat.Metals,
 			concrete = threat.Concrete,
 			water = threat.Water,

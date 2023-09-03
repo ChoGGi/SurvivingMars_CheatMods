@@ -21,7 +21,7 @@ local child_rovers = {
 	RCTransport = true,
 }
 
--- last checked picard
+-- last checked 1011166
 local ChoOrig_CargoTransporter_ListAvailableRovers = CargoTransporter.ListAvailableRovers
 function CargoTransporter:ListAvailableRovers(class, quick_load, ...)
 	if not mod_EnableMod or not child_rovers[class] then

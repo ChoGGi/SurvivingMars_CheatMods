@@ -15,7 +15,7 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
--- last checked picard
+-- last checked 1011166
 local ChoOrig_CanUnlockAchievement = CanUnlockAchievement
 function CanUnlockAchievement(...)
 	if not mod_EnableMod then

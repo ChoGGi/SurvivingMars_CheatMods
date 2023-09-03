@@ -24,7 +24,8 @@ local function ChoFake_StableShuffle(tbl, _, max, ...)
 	return ChoOrig_StableShuffle(tbl, AsyncRand, max, ...)
 end
 
--- anomalies for ground/planetary (last checked class picard 1008224)
+-- last checked 1008224
+-- anomalies for ground/planetary
 local ChoOrig_City_InitBreakThroughAnomalies = City.InitBreakThroughAnomalies
 function City.InitBreakThroughAnomalies(...)
 	if IsGameRuleActive("ChoGGi_RandomBreakthroughs") then

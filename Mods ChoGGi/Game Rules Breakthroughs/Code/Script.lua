@@ -141,7 +141,9 @@ local function Colony_GetUnregisteredBreakthrough(self)
 	local objs = Presets.TechPreset.Breakthroughs
 
 	local filtered_objs = table.ifilter(objs, function(_, tech)
-		-- last checked picard 1008224: function Colony:GetUnregisteredBreakthroughs()
+		-- last checked 1011166
+		-- function Colony:GetUnregisteredBreakthroughs()
+
 		-- we call this from TechAvailableCondition (inf loops are bad)
     if not table.find(BreakthroughOrder, tech.id) and not self:IsTechDiscovered(tech.id) then
 			return true

@@ -1,7 +1,5 @@
 -- See LICENSE for terms
 
--- last checked source: Tito Hotfix2
-
 -- In-game functions replaced with custom ones
 
 local table = table
@@ -627,7 +625,7 @@ do -- func exists before classes
 	end
 
 	do -- InfopanelDlg:RecalculateMargins
-	-- last checked source: Tito Hotfix2
+	-- last checked Tito Hotfix2
 		local GetSafeMargins = GetSafeMargins
 		local box = box
 
@@ -671,7 +669,7 @@ do -- func exists before classes
 	end -- do
 
 	do -- XPopupMenu:RebuildActions
-	-- last checked source: Tito Hotfix2
+	-- last checked Tito Hotfix2
 		local XTemplateSpawn = XTemplateSpawn
 
 		-- yeah who gives a rats ass about mouseover hints on menu items
@@ -1117,7 +1115,7 @@ function OnMsg.ClassesPostprocess()
 
 	-- remove spire spot limit
 	do -- ConstructionController:UpdateCursor
-	-- last checked source: Picard 1007933
+	-- last checked 1007933
 		local IsValid = IsValid
 		local FixConstructPos = FixConstructPos
 		local UnbuildableZ = buildUnbuildableZ()
@@ -1191,7 +1189,7 @@ function OnMsg.ClassesPostprocess()
 
 	-- make the background hide when console not visible (instead of after a second or two)
 	do -- ConsoleLog:ShowBackground
-	-- last checked source: Tito Hotfix2
+	-- last checked Tito Hotfix2
 		local RGBA = RGBA
 
 		function ConsoleLog:ShowBackground(visible, immediate)

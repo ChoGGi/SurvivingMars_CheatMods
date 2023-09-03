@@ -569,11 +569,12 @@ function ChoGGi.MenuFuncs.ChangeRules()
 		item_list[c] = {
 			text = T(def.display_name) .. (enabled and " *" or ""),
 			value = id,
+			-- I should just skip this for modded rules...
 			hint = (enabled and T("<green>") .. TranslationTable[12227--[[Enabled]]] .. T("</green>\n") or "")
-				.. T(def.description) .. "\n"
-				.. TranslationTable[3491--[[Challenge Mod (%)]]] .. ": " .. def.challenge_mod .. "\n\n"
-				.. (def.exclusionlist and TranslationTable[302535920001357--[[Exclusion List]]] .. ": " .. def.exclusionlist or "")
-				.. "\n".. T(def.flavor),
+				.. Translate(def.description) .. "\n"
+				.. TranslationTable[3491--[[Challenge Mod (%)]]] .. ": " .. (def.challenge_mod or 0) .. "\n\n"
+				.. Translate(def.exclusionlist and TranslationTable[302535920001357--[[Exclusion List]]] .. ": " .. def.exclusionlist or "")
+				.. "\n".. Translate(def.flavor),
 		}
 	end
 
@@ -624,16 +625,15 @@ function ChoGGi.MenuFuncs.ChangeRules()
 		hint = {}
 		local c = 0
 
-		-- needs to be a T() for concat
-		hint[c] = TranslationTable[302535920000106--[[Current]]]
+		c = c + 1
+		hint[c] = Translate(302535920000106--[[Current]])
 		c = c + 1
 		hint[c] = ":"
 		for key in pairs(rules) do
 			c = c + 1
 			hint[c] = " "
 			c = c + 1
---~ 			hint[c] = T(GameRulesMap[key].display_name)
-			hint[c] = TranslationTable[TGetID(GameRulesMap[key].display_name)]
+			hint[c] = Translate(GameRulesMap[key].display_name)
 		end
 	end
 	if hint then

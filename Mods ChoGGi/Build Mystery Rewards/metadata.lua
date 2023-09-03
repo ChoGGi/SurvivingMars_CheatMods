@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2473444332",
 	"pops_any_uuid", "44ae546c-2ac0-43d4-8f2b-74f12fc906b8",
 	"lua_revision", 1007000, -- Picard
-	"version", 8,
+	"version", 9,
 	"version_major", 0,
-	"version_minor", 8,
+	"version_minor", 9,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -25,7 +25,7 @@ return PlaceObj("ModDef", {
 	"description", [[
 Build philosopher stones to trade electricity for rare metals.
 Build sinkholes and spawn fireflies.
-Build mirror sphere excavation sites and spawn spheres (build capture buildings first).
+Build mirror sphere excavation sites and spawn spheres (and build capture buildings).
 
 
 Requested by chivalry20.

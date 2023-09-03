@@ -157,7 +157,7 @@ end
 -- copy pasta from Lua\MultiSelection.lua
 -- we add objs of different classes so we need to check for methods
 
--- last checked picard 1010391
+-- last checked 1010391
 function MultiSelectionWrapper:ResolveObjAt(...)
 	if not self:IsClassSupported("Unit") then return end
 	--return the first result found

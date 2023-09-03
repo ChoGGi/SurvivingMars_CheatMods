@@ -149,7 +149,7 @@ local function PickRandomMystery(delay)
 		end
 
 		-- from Mysteries.lua\OnMsg.PostLoadGame()
-		-- last checked lua rev 1011166
+		-- last checked 1011166
 		if UIColony and UIColony.mystery then
 			UIColony.mystery_id = UIColony.mystery.class
 			--reload resource pretty desc/name
