@@ -255,7 +255,7 @@ function ChoGGi_MinimapDlg:CameraPos_Screenshot()
 	table.change(hr, "overview", {
 		FarZ = 1500000,
 		ShadowRangeOverride = 1500000,
-		ShadowFadeOutRangePercent = 0
+		ShadowFadeOutRangePercent = 0,
 	})
 	camera.SetAutoFovX(1, transition_time, const.Camera.OverviewFovX_4_3, 4, 3, const.Camera.OverviewFovX_16_9, 16, 9)
 

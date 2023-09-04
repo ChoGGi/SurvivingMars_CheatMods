@@ -1901,6 +1901,7 @@ function ChoGGi.MenuFuncs.SetCameraZoom()
 		{text = 32000, value = 32000},
 		{text = 64000, value = 64000},
 		{text = 128000, value = 128000},
+		{text = 256000, value = 256000},
 	}
 
 	local hint = default_setting

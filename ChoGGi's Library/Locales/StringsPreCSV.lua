@@ -3,8 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
-302535920001677, ""
-302535920001678, ""
 302535920001679, ""
 302535920001680, ""
 302535920001681, ""
@@ -147,6 +145,11 @@ do !Skipped Line! [[ModOptions.lua]] !Skipped Line!
 302535920001446, "Add Mod Options button to Game Options."
 302535920000044, "Ignore Persist Errors"
 302535920001302, "This prevents persist errors from spamming the log."
+end !Skipped Line!
+do !Skipped Line! [[Classes_Objects.lua]] !Skipped Line!
+302535920001677, "Entity Size"
+302535920001678, "Change size of Entity.
+Starts at 100% and goes up by 5 (max is 2047), <right_click> to reset to 5% (hold ctrl to go up by 25/50)."
 end !Skipped Line!
 do !Skipped Line! [[3DManipulator.lua]] !Skipped Line!
 302535920000908, "Move obj to mouse pos."

@@ -3762,7 +3762,7 @@ do -- Editor toggle
 				EnablePreciseSelection = 1,
 				ObjectCounter = 1,
 				VerticesCounter = 1,
-				FarZ = 1500000
+				FarZ = 1500000,
 			})
 			XShortcutsSetMode("Editor", function()
 				EditorDeactivate()

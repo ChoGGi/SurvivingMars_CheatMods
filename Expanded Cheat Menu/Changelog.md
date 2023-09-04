@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v19.2 (Unreleased)
+### Changed:
+- Entity spawner has a button to change scale.
 
 ## v19.1 (4 Sep 2023)
 ### Fixed:
