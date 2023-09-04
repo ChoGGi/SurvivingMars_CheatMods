@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 local table, type, pairs, tostring = table, type, pairs, tostring
-local pcall = pcall
 local IsValidThread = IsValidThread
 local IsValid = IsValid
 local ValidateBuilding = ValidateBuilding
@@ -78,7 +77,7 @@ local ChoOrig_PlacePlanet = PlacePlanet
 --
 -- The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
 -- I could add something to check if this is being called multiple times per unpause, but it's not doing much
-function OnMsg.SectorScanned(status, col, row)
+function OnMsg.SectorScanned()
 	if not mod_EnableMod then
 		return
 	end

@@ -9,8 +9,9 @@ local mod_EnableMod
 
 -- last checked 1011166
 -- Source\Dlc\contentpack1\Code\Crystals.lua
+local max_idx = 6
 local ChoOrig_GetShardClass
-local GetShardClass = function(size, idx, ...)
+local function ChoCust_GetShardClass(size, idx, ...)
 	if not mod_EnableMod then
 		return ChoOrig_GetShardClass(size, idx, ...)
 	end
@@ -19,6 +20,10 @@ local GetShardClass = function(size, idx, ...)
 --~     return
 		-- Cycle numbers for models
 		idx = idx % 6
+		-- 12, 24, etc
+		if idx == 0 then
+			idx = 1
+		end
   end
   local class = string.format("CrystalShard%s%d", size, idx)
   local entity = string.format("Crystals%s_%02d", size, idx)
@@ -34,7 +39,7 @@ function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	-- save orig func
 	ChoOrig_GetShardClass = GetShardClass
 	-- then replace with ours
-	env.debug.setupvalue(parent_func, 2, GetShardClass)
+	env.debug.setupvalue(parent_func, 2, ChoCust_GetShardClass)
 end
 
 local function ModOptions(id)

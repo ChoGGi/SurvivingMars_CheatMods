@@ -1,6 +1,10 @@
 ## Library Changelog
 
 ## v12.1 (Unreleased)
+### Examine:
+- Examine>Delete All skips dust plumes.
+- Examine>Tool Bar>Copy All Text: Copies dialog text to clipboard.
+- Examine>Tool Bar>Delete All Objects: Removes all objects of the same type (from current map).
 
 ## v12.0 (22 July 2023)
 - Changed ExportMapDataToCSV() to not translate NESW strings.

@@ -337,6 +337,14 @@ function ChoGGi_DlgExamine:Init(parent, context)
 			end,
 		}, self.idToolbarButtons)
 		--
+		self.idButMouseExamine = g_Classes.ChoGGi_XToolbarButton:new({
+			Id = "idButCopyAllText",
+			Image = "CommonAssets/UI/Menu/ExportImageSequence.tga",
+			RolloverTitle = TranslationTable[302535920000865--[[Copy All Text]]],
+			RolloverText = TranslationTable[302535920001674--[[Copies dialog text to clipboard.]]],
+			OnPress = self.idButCopyAllText_OnPress,
+		}, self.idToolbarButtons)
+		--
 		self.idButSetTransp = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButSetTransp",
 			Image = "CommonAssets/UI/Menu/CutSceneArea.tga",
@@ -368,6 +376,14 @@ Press once to clear this examine, again to clear all."]]],
 			RolloverTitle = TranslationTable[502364928914--[[Delete]]],
 			RolloverText = Translate(302535920000414--[[Are you sure you wish to delete <color ChoGGi_red>%s</color>?]]):format(self.name),
 			OnPress = self.idButDeleteObj_OnPress,
+		}, self.idToolbarButtons)
+		--
+		self.idButDeleteObj = g_Classes.ChoGGi_XToolbarButton:new({
+			Id = "idButDeleteAllObj",
+			Image = "CommonAssets/UI/Menu/remove_water.tga",
+			RolloverTitle = TranslationTable[302535920001675--[[Delete All Objects]]],
+			RolloverText = Translate(302535920001676--[[Are you sure you wish to delete all <color ChoGGi_red>%s</color> objects? (from active map)]]):format(self.name),
+			OnPress = self.idButDeleteAllObj_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButSetObjlist = g_Classes.ChoGGi_XToolbarButton:new({
@@ -1049,6 +1065,7 @@ end
 function ChoGGi_DlgExamine:idToggleExecCodeGroup_OnChange(visible)
 	local check = self
 	self = GetRootDialog(self)
+
 	-- block check from true if not indexed table
 	if visible and self.obj_type ~= "table"
 			or self.obj_type == "table" and not next(self.obj_ref)
@@ -1057,8 +1074,15 @@ function ChoGGi_DlgExamine:idToggleExecCodeGroup_OnChange(visible)
 	end
 end
 
+function ChoGGi_DlgExamine:idButCopyAllText_OnPress()
+	self = GetRootDialog(self)
+	local text = self:GetCleanText()
+	CopyToClipboard(text)
+end
+
 function ChoGGi_DlgExamine:idButRefresh_OnPress()
 	self = GetRootDialog(self)
+
 	self:SetObj()
 	-- This was being called when clicking on a func in an object, so added a type check for whatever happened?
 	if type(self.obj_ref) == "table" and self.obj_ref.class ~= "InGameInterface" then
@@ -1139,6 +1163,11 @@ function ChoGGi_DlgExamine:idButMarkObject_OnPress()
 			end
 		end
 	end
+end
+
+function ChoGGi_DlgExamine:idButDeleteAllObj_OnPress()
+	self = GetRootDialog(self)
+	self.ChoGGi.ComFuncs.DeleteAllObjectQuestion(self.obj_ref.class)
 end
 
 function ChoGGi_DlgExamine:idButDeleteObj_OnPress()
@@ -2507,14 +2536,19 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 				self:ShowExecCodeWithCode(obj_name .. obj_value_str)
 			end,
 		},
-		{name = TranslationTable[302535920000664--[[Clipboard]]],
+	}
+	-- ValueToLuaCode doesn't work on threads
+	if type(obj_value) ~= "thread" then
+		list[#list+1] = {
+			name = TranslationTable[302535920000664--[[Clipboard]]],
 			hint = TranslationTable[302535920001566--[[Copy ValueToLuaCode(value) to clipboard.]]],
 			image = "CommonAssets/UI/Menu/Mirror.tga",
 			clicked = function()
 				CopyToClipboard(obj_name .. " = " .. ValueToLuaCode(obj_value))
 			end,
-		},
-	}
+		}
+	end
+
 	local c_orig = #list
 	local c = c_orig
 

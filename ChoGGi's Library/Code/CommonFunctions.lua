@@ -4482,6 +4482,7 @@ end -- do
 
 function ChoGGi.ComFuncs.DeleteObjectQuestion(obj)
 	local name = RetName(obj)
+
 	local function CallBackFunc(answer)
 		if answer then
 			-- remove select from it
@@ -4489,9 +4490,9 @@ function ChoGGi.ComFuncs.DeleteObjectQuestion(obj)
 				SelectObj()
 			end
 
-			-- map objects
 			if IsValidThread(obj) then
 				DeleteThread(obj)
+			-- map objects
 			elseif IsValid(obj) then
 				DeleteObject(obj)
 			-- xwindows
@@ -4504,8 +4505,60 @@ function ChoGGi.ComFuncs.DeleteObjectQuestion(obj)
 
 		end
 	end
+
 	ChoGGi.ComFuncs.QuestionBox(
 		TranslationTable[6779--[[Warning]]] .. "!\n" .. TranslationTable[302535920000414--[[Are you sure you wish to delete %s?]]]:format(name) .. "?",
+		CallBackFunc,
+		TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000855--[[Last chance before deletion!]]],
+		TranslationTable[5451--[[DELETE]]] .. ": " .. name,
+		TranslationTable[6879--[[Cancel]]] .. " " .. TranslationTable[502364928914--[[Delete]]]
+	)
+end
+
+function ChoGGi.ComFuncs.DeleteAllObjectQuestion(obj)
+	local objs
+	if type(obj) == "string" then
+		objs = MapGet_ChoGGi(obj)
+		if #objs == 0 then
+			objs = nil
+		else
+			obj = objs[1]
+		end
+	end
+
+	local name = RetName(obj)
+	local function CallBackFunc(answer)
+		if answer then
+			-- remove select from it
+			SelectObj()
+
+			if IsValidThread(obj) then
+				for i = 1, #objs do
+					DeleteThread(objs[i])
+				end
+			-- map objects
+			elseif IsValid(obj) then
+				-- DeleteObject calls SuspendPassEdits, so only DoneObject below needs it
+				DeleteObject(objs, true)
+			-- xwindows
+			elseif obj.Close then
+				for i = 1, #objs do
+					objs[i]:Close()
+				end
+			-- whatever
+			else
+				SuspendPassEdits("ChoGGi.ComFuncs.DeleteAllObjectQuestion")
+				for i = 1, #objs do
+					DoneObject(objs[i])
+				end
+				ResumePassEdits("ChoGGi.ComFuncs.DeleteAllObjectQuestion")
+			end
+
+		end
+	end
+
+	ChoGGi.ComFuncs.QuestionBox(
+		TranslationTable[6779--[[Warning]]] .. "!\n" .. TranslationTable[302535920001676--[[Are you sure you wish to delete all %s?]]]:format(name) .. "?",
 		CallBackFunc,
 		TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000855--[[Last chance before deletion!]]],
 		TranslationTable[5451--[[DELETE]]] .. ": " .. name,
