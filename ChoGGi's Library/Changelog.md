@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v12.1 (Unreleased)
+## v12.2 (Unreleased)
+
+## v12.1 (4 Sep 2023)
 ### Examine:
 - Examine>Delete All skips dust plumes.
 - Examine>Tool Bar>Copy All Text: Copies dialog text to clipboard.
