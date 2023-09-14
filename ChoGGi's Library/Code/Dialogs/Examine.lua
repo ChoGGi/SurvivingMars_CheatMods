@@ -4149,11 +4149,13 @@ function ChoGGi.ComFuncs.OpenInExamineDlg(obj, parent, title, ...)
 end
 
 local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
--- legacy (and used for console rules, so we can get around it spamming the log)
+-- Mostly used for console rules, so we can get around it spamming the log
 function OpenExamine(...)
 	OpenInExamineDlg(...)
 end
--- so you can call ex from outside an OnMsg
+-- Returns the examine dialog
+OpenExamineReturn = OpenInExamineDlg
+-- Queue up stuff for examine (that happens before examine is ready)
 local stored_objs = {}
 local stored_objs_c = 0
 function OnMsg.ClassesPostprocess()
@@ -4167,10 +4169,7 @@ function OpenExamineDelayed(...)
 	stored_objs_c = stored_objs_c + 1
 	stored_objs[stored_objs_c] = {...}
 end
-function OpenExamineRet(...)
-	return OpenInExamineDlg(...)
-end
 -- short n sweet
 ex = OpenExamine
-exr = OpenExamineRet
-exd = OpenExamineDelayed
+exr = OpenExamineReturn
+-- exd = OpenExamineDelayed

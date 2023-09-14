@@ -5,6 +5,7 @@ local settings = dofile(new_settings_file)
 g_LocalStorageFile = new_settings_file
 LocalStorage = settings
 
+-- Issues if you run it in mod editor mode (editor opens another copy of the exe)
 if Platform.ged then
 	return settings
 end
@@ -67,7 +68,7 @@ CreateRealTimeThread(function()
 		local Mods = Mods
 		for _, mod in pairs(Mods) do
 			if mod_ids[mod.steam_id] then
-				-- mods can see if funcs are blacklisted or not
+				-- mods can see if funcs are blacklisted or not (or just check a func)
 				mod.no_blacklist = true
 				-- restore unlimited env
 				local env = mod.env

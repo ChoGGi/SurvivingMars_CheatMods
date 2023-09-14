@@ -126,6 +126,8 @@ end
 
 OnMsg.WaterDepositRevealed = DepositRevealed
 OnMsg.SubsurfaceDepositRevealed = DepositRevealed
+-- Added below
+OnMsg.TerrainDepositRevealed = DepositRevealed
 
 -- needed till they add a Msg like above
 local ChoOrig_TerrainDepositMarker_SpawnDeposit = TerrainDepositMarker.SpawnDeposit
@@ -135,11 +137,11 @@ function TerrainDepositMarker.SpawnDeposit(...)
 	end
 
 	local deposit = ChoOrig_TerrainDepositMarker_SpawnDeposit(...)
-	DepositRevealed(deposit)
+	Msg("TerrainDepositRevealed", deposit)
 	return deposit
 end
 
--- needed (the other stuff has the func, this doesn't so added for ease of use)
+-- The other stuff has the CheatRefill() func, TerrainDeposit doesn't, so added for ease of use
 if not TerrainDeposit.CheatRefill then
 	function TerrainDeposit:CheatRefill()
 		self.amount = self.max_amount

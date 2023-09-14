@@ -162,9 +162,9 @@ function OnMsg.NewHour()
 		end
 	end
 
-	-- smaller vars don't make shit faster, just more annoying to figure out what's up
-	local df = {}
-	local df_c = 0
+	-- smaller var names don't make shit faster, just more annoying to figure out what's up
+	local dronefactory = {}
+	local dronefactory_count = 0
 	local changed = false
 
 	if #dda.Queue == 0 then
@@ -174,19 +174,20 @@ function OnMsg.NewHour()
 	for i = 1, #objs do
 		local obj = objs[i]
 		if (obj.drones_in_construction + obj.androids_in_construction) < dda.LocalConstrLimit then
-			df_c = df_c + 1
-			df[df_c] = obj
+			dronefactory_count = dronefactory_count + 1
+			dronefactory[dronefactory_count] = obj
 		end
 	end
 
-	local rem = {}
-	local rem_c = 0
-	while #df > 0 and #dda.Queue > 0 do
-		table.iclear(rem)
-		rem_c = 0
+	local removes = {}
+	local removes_c = 0
 
-		for i = #df, 1, -1 do
-			local obj = df[i]
+	while #dronefactory > 0 and #dda.Queue > 0 do
+		table.iclear(removes)
+		removes_c = 0
+
+		for i = #dronefactory, 1, -1 do
+			local obj = dronefactory[i]
 
 			if (obj.drones_in_construction + obj.androids_in_construction) < dda.LocalConstrLimit then
 				if dda.Queue[1] == "Android" then
@@ -198,8 +199,8 @@ function OnMsg.NewHour()
 				changed = true
 			end
 			if (obj.drones_in_construction + obj.androids_in_construction) >= dda.LocalConstrLimit then
-				rem_c = rem_c + 1
-				rem[rem_c] = i
+				removes_c = removes_c + 1
+				removes[removes_c] = i
 			end
 
 			if #dda.Queue == 0 then
@@ -207,8 +208,8 @@ function OnMsg.NewHour()
 			end
 		end
 
-		for i = 1, #rem do
-			df[rem[i]] = nil
+		for i = 1, #removes do
+			dronefactory[removes[i]] = nil
 		end
 	end
 

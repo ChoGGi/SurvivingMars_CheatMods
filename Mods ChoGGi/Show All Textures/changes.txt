@@ -1,3 +1,7 @@
+v0.6
+It wasn't firing on new games.
+Made the flattening less weird looking.
+
 v0.5
 Sorted textures by name.
 

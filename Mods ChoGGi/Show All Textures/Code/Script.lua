@@ -12,15 +12,20 @@ local function StartupCode()
 	ResumePassEdits("ChoGGi.ShowAllTextures.DeleteObjects")
 
 	CreateRealTimeThread(function()
-		-- Wait for igi so we can add text boxes
-		WaitMsg("InGameInterfaceCreated")
+		-- Wait for igi so we can add text boxes (loadgame is a little too early)
+		if not Dialogs.InGameInterface then
+			WaitMsg("InGameInterfaceCreated")
+		end
 
 		local table = table
 		local XText = XText
 		local igi = Dialogs.InGameInterface
 
+		local terrain_height = 5000
+		local sign_height = 10000
+
 		-- Add ifs for diff combinations of dlc someday...
-		local start_pos = point(478000, 490000, 10000)
+		local start_pos = point(478000, 490000, sign_height)
 
 		local offset_x = 0
 		local offset_y = 0
@@ -29,9 +34,9 @@ local function StartupCode()
 		local terrain = ActiveGameMap.terrain
 		local const = const
 
-		-- Large circle
+		-- Large square
 		terrain:SetHeightCircle(
-			point(447000, 467000), 100000, 150000, 5000, const.hsDefault
+			point(447000, 467000), 80000, 40000, terrain_height, const.hsMin
 		)
 
 		local TerrainTextures = TerrainTextures
@@ -50,7 +55,9 @@ local function StartupCode()
 			local pos = start_pos:AddX(offset_x):AddY(offset_y)
 
 			-- Make a raised area
-			terrain:SetHeightCircle(pos, 2500, 1000, 10000, const.hsDefault)
+			terrain:SetHeightCircle(
+				pos, 2500, 1000, sign_height, const.hsDefault
+			)
 
 			-- Since we sorted for humans, we need to map name to texture in TerrainTextures
 			local idx = table.find(TerrainTextures, "name", obj.name)
@@ -84,7 +91,11 @@ local function StartupCode()
 
 end
 
-OnMsg.CityStart = StartupCode
+-- citystart is too early for terrain
+--~ OnMsg.CityStart = StartupCode
+-- Pretty late in new games (just before welcome to mars msg, also on new asteroids)
+OnMsg.MapGenerated = StartupCode
+
 OnMsg.LoadGame = StartupCode
 
 local function ModOptions(id)
