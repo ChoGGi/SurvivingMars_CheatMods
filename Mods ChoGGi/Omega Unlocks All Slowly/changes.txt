@@ -1,3 +1,6 @@
+v0.9
+Countdown msg in research tooltip wasn't working.
+
 v0.8
 Changed it to every 10 Sols instead of each Sol.
 

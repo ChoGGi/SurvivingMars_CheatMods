@@ -70,7 +70,9 @@ function OnMsg.NewDay()
 	end
 
 	-- gambling time
-	if mod_RandomChance > 0 and AsyncRand(100) > mod_RandomChance then
+	if mod_RandomChance ~= 100
+		or mod_RandomChance > 0 and AsyncRand(100) > mod_RandomChance
+	then
 		-- add a failed notifaction?
 		return
 	end
@@ -89,8 +91,8 @@ function OnMsg.AddResearchRolloverTexts(ret)
 		return
 	end
 
-	ret[#ret+1] = "<newline>" .. T{302535920011560,
+	ret[#ret+1] = _InternalTranslate("<newline>" .. T{302535920011560,
 		"Omega Unlock Sols<right><em><sols></em>",
 		sols = mod_SolsBetweenUnlock - ChoGGi_OmegaUnlocksAllSlowly_Sols,
-	}
+	})
 end
