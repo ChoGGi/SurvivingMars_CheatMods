@@ -57,7 +57,7 @@ local function EditDlg(dlg)
 							element:SetHAlign("left")
 							element:SetVAlign("top")
 							element:SetImageFit("none")
-							element:SetImageScale(point(200, 200))
+							element:SetImageScale(point(225, 225))
 						end
 					end
 				end -- If
