@@ -15,15 +15,7 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagOther", true,
 	"description", [[
-Could any Apple users let me know if using -force-d3d11 via steam command line fixes this issue instead?
-https://www.reddit.com/r/SurvivingMars/comments/13u91kw/
-
-
-
-Not so much a fix as changing textures to other ones that don't show the ugly mirrored textures.
-Terraforming will still look ugly, but at least there's no mirror ground.
-If you use my Show All Textures mod; you can see a list of textures to use.
-Suggestions are welcome if you think something would look better (I don't use any DLC textures for replacements).
+Not so much a fix as changing textures to other ones that don't show the ugly mirrored textures. Terraforming will be more red instead of green ground, but at least there's no mirror ground.
 
 
 By default this mod only changes dumping sites, see mod options to enable other textures you need changed.

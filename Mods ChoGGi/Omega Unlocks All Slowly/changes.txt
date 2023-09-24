@@ -1,3 +1,8 @@
+v1.0
+Fixed v0.9...
+Made gambling fairer.
+(Thanks Sylar8376)
+
 v0.9
 Countdown msg in research tooltip wasn't working.
 
