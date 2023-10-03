@@ -68,7 +68,7 @@ function OnMsg.ClassesPostprocess()
 	local template = CommonShortcuts[#CommonShortcuts]
 	template:SetRolloverTemplate("Rollover")
 	template:SetRolloverTitle(T(126095410863, "Info"))
-	template:SetRolloverText(T(0000, "Press Enter/Tilde to show Console."))
+	template:SetRolloverText(T(0000, "Press Enter or Tilde to show console."))
 
 end
 

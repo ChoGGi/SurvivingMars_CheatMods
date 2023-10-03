@@ -14,6 +14,18 @@ local mod_EnableMod
 local mod_AddRivals
 local mod_RivalSpawnSol
 
+-- list of rivals user picked to use
+local custom_rivals = false
+
+local rivals =Presets.DumbAIDef.MissionSponsors
+local rival_mod_options = {}
+for i = 1, #rivals do
+	local rival = rivals[i]
+	if rival.id ~= "none" and rival.id ~= "random" then
+		rival_mod_options[rival.id] = false
+	end
+end
+
 local AddRivals
 
 local function WaitForSol()
@@ -59,28 +71,40 @@ AddRivals = function()
 	if not RivalAIs then
 		RivalAIs = {}
 	end
+
 	local RivalAIs = RivalAIs
-
-	local rival_count = table.count(RivalAIs)
-	local def_count = #Presets.DumbAIDef.MissionSponsors
-	-- Already maxed out
-	if rival_count == def_count then
-		return
-	end
-
 	local SpawnRivalAI = SpawnRivalAI
-	for _ = 1, def_count do
-		-- Stop spawning when we're maxed out
-		if rival_count >= def_count or rival_count >= mod_AddRivals then
-			break
+	local rivals = Presets.DumbAIDef.MissionSponsors
+
+	-- Custom rivals
+	if custom_rivals then
+		for id in pairs(rival_mod_options) do
+			if rival_mod_options[id] and not RivalAIs[id] then
+				SpawnRivalAI(rivals[id])
+			end
+		end
+	else
+	-- Random rivals
+		local rival_count = table.count(RivalAIs)
+		local def_count = #rivals
+		-- Already maxed out
+		if rival_count == def_count then
+			return
 		end
 
-		-- Random rival
-		local sponsor = PickUnusedAISponsor()
-		if sponsor then
-			SpawnRivalAI(sponsor)
+		for _ = 1, def_count do
+			-- Stop spawning when we're maxed out
+			if rival_count >= def_count or rival_count >= mod_AddRivals then
+				break
+			end
+
+			local sponsor = PickUnusedAISponsor()
+			if sponsor then
+				SpawnRivalAI(sponsor)
+			end
+
+			rival_count = rival_count + 1
 		end
-		rival_count = rival_count + 1
 	end
 
 end
@@ -95,11 +119,21 @@ local function ModOptions(id)
 		return
 	end
 
-	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
-	mod_AddRivals = CurrentModOptions:GetProperty("AddRivals")
-	mod_RivalSpawnSol = CurrentModOptions:GetProperty("RivalSpawnSol")
+	local options = CurrentModOptions
 
-	if CurrentModOptions:GetProperty("RivalSpawnSolRandom") then
+	for id in pairs(rival_mod_options) do
+		rival_mod_options[id] = options:GetProperty(id)
+		-- enable if any rival is turned on
+		if rival_mod_options[id] then
+			custom_rivals = true
+		end
+	end
+
+	mod_EnableMod = options:GetProperty("EnableMod")
+	mod_AddRivals = options:GetProperty("AddRivals")
+	mod_RivalSpawnSol = options:GetProperty("RivalSpawnSol")
+
+	if options:GetProperty("RivalSpawnSolRandom") then
 		mod_RivalSpawnSol = AsyncRand(mod_RivalSpawnSol) + 1
 	end
 

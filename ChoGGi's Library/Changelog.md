@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v12.2 (Unreleased)
+- Added ChangeCargoValue().
 
 ## v12.1 (4 Sep 2023)
 ### Examine:

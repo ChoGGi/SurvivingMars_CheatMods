@@ -1,3 +1,6 @@
+v0.4
+See mod options to pick rivals manually.
+
 v0.3
 Adds rivals on new games as well instead of only on saved games.
 Mod options to delay spawning rivals.

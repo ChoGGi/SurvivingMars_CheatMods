@@ -1,3 +1,6 @@
+v0.5
+Added farms (default off).
+
 v0.4
 Added Drone Assembler / Recon Center (default off).
 

@@ -16,6 +16,7 @@ return PlaceObj("ModDef", {
 	"TagInterface", true,
 	"description", [[
 This will enable the console and the console log text (turn off in mod options).
+Press Enter or Tilde to show console.
 
 This is NOT meant to be used with Expanded Cheat Menu, which is what you should be using if you're modding.
 

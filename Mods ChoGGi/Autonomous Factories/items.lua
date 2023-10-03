@@ -22,13 +22,20 @@ local g_Classes = g_Classes
 local BuildingTemplates = BuildingTemplates
 for id, item in pairs(BuildingTemplates) do
 	local cls_obj = g_Classes[item.template_class]
-	if cls_obj and IsKindOf(cls_obj, "Factory") then
+	local is_factory = IsKindOf(cls_obj, "Factory")
+	local is_farm = IsKindOf(cls_obj, "Farm")
+	if is_factory or is_farm then
+		local enable_auto = true
+		if is_farm then
+			enable_auto = false
+		end
+
 		c = c + 1
 		properties[c] = PlaceObj("ModItemOptionToggle", {
 			"name", id,
 			"DisplayName", T(item.display_name),
 			"Help", table.concat(T(item.description) .. "\n\n<image " .. item.display_icon .. ">"),
-			"DefaultValue", true,
+			"DefaultValue", enable_auto,
 		})
 	end
 end

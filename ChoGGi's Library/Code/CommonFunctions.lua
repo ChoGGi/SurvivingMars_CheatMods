@@ -7902,6 +7902,21 @@ function ChoGGi.ComFuncs.PickUnusedAISponsor()
 	local results = table.rand(filtered)
   return results
 end
+-- Change cargo limits
+
+--~ ChoGGi.ComFuncs.ChangeCargoValue("Drone", key, value)
+function ChoGGi.ComFuncs.ChangeCargoValue(id, key, value)
+	if not key or not value then
+		print("missing key or value")
+		return
+	end
+
+	local defs = ResupplyItemDefinitions
+	local idx = table.find(defs, "id", id)
+	if idx then
+		defs[idx][key] = value
+	end
+end
 
 do -- RetSourceFile
 	local source_path = "AppData/Source/"
