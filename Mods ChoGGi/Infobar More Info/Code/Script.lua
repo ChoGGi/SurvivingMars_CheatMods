@@ -279,17 +279,17 @@ local function HasExploiters(class)
 	end
 end
 
-local function ShowResourceWarningMsg(remaining, resource)
-	CreateRealTimeThread(function()
-		PauseGame()
-		WaitMessage(nil, T(302535920011942, "Infobar More Info") .. ": " .. resource, T{302535920011941, [[<color ChoGGi_red>Warning</color>: <resource> remaining in mined deposits below <remaining>!
-
-(see mod options to disable message)]],
+local function ShowResourceWarningNotif(remaining, resource)
+--~ local resource = T(681, "Water")
+--~ local remaining = 500
+	ChoGGi.ComFuncs.MsgPopup(
+		T{302535920011941, [[<color ChoGGi_red>Warning</color>: <color ChoGGi_yellow_ex><resource></color> remaining in mined deposits below <remaining>!]],
 			resource = resource,
 			remaining = remaining,
-		})
-		ResumeGame()
-	end)
+		},
+		T(302535920011942, "Infobar More Info"),
+		{size = true}
+	)
 end
 
 function OnMsg.NewHour()
@@ -304,23 +304,30 @@ function OnMsg.NewHour()
 		return
 	end
 
-
 	local r = const.ResourceScale
 
-	if HasExploiters("RegolithExtractor") and (CountConcrete(city) / const.ResourceScale) < mod_DepositRemainingWarning then
-		ShowResourceWarningMsg(mod_DepositRemainingWarning, T(3513, "Concrete"))
+	if HasExploiters("RegolithExtractor")
+		and (CountConcrete(city) / const.ResourceScale) < mod_DepositRemainingWarning
+	then
+		ShowResourceWarningNotif(mod_DepositRemainingWarning, T(3513, "Concrete"))
 	end
 
-	if HasExploiters("WaterExtractor") and (CountSubDeposit("SubsurfaceDepositWater", city) / r) < mod_DepositRemainingWarning then
-		ShowResourceWarningMsg(mod_DepositRemainingWarning, T(681, "Water"))
+	if HasExploiters("WaterExtractor")
+		and (CountSubDeposit("SubsurfaceDepositWater", city) / r) < mod_DepositRemainingWarning
+	then
+		ShowResourceWarningNotif(mod_DepositRemainingWarning, T(681, "Water"))
 	end
 
-	if HasExploiters("PreciousMetalsExtractor") and (CountSubDeposit("SubsurfaceDepositPreciousMetals", city) / r) < mod_DepositRemainingWarning then
-		ShowResourceWarningMsg(mod_DepositRemainingWarning, T(4139, "Rare Metals"))
+	if HasExploiters("PreciousMetalsExtractor")
+		and (CountSubDeposit("SubsurfaceDepositPreciousMetals", city) / r) < mod_DepositRemainingWarning
+	then
+		ShowResourceWarningNotif(mod_DepositRemainingWarning, T(4139, "Rare Metals"))
 	end
 
-	if HasExploiters("MetalsExtractor") and (CountSubDeposit("SubsurfaceDepositMetals", city) / r) < mod_DepositRemainingWarning then
-		ShowResourceWarningMsg(mod_DepositRemainingWarning, T(3514, "Metals"))
+	if HasExploiters("MetalsExtractor")
+		and (CountSubDeposit("SubsurfaceDepositMetals", city) / r) < mod_DepositRemainingWarning
+	then
+		ShowResourceWarningNotif(mod_DepositRemainingWarning, T(3514, "Metals"))
 	end
 
 end

@@ -72,7 +72,7 @@ function OnMsg.NewDay()
 	-- gambling time
 	if mod_RandomChance > 0 and AsyncRand(100)+1 > mod_RandomChance
 	then
-		-- add a failed notifaction?
+		-- add a failed notification?
 		return
 	end
 

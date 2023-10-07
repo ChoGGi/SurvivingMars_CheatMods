@@ -7,6 +7,7 @@ local mod_DomeBeachSand
 local mod_DomeRubble
 local mod_DustGeysers
 local mod_TerraGrass
+local mod_TerraGrass2
 local mod_TerraLake
 local mod_TerraLichen
 local mod_TerraMoss
@@ -70,6 +71,14 @@ local function UpdateTextures()
 		AddMap("TerraGrassDead_01", "RockRed_1")
 		AddMap("TerraGrassDead_02", "RockRed_2")
 	end
+	if mod_TerraGrass2 then
+		AddMap("TerraGrass_01", "Prefab_Green")
+		AddMap("TerraGrass_02", "Prefab_Green")
+		AddMap("TerraGrass_03", "Prefab_Green")
+		AddMap("TerraGrassDead_01", "Prefab_Green")
+		AddMap("TerraGrassDead_02", "Prefab_Green")
+	end
+
 	if mod_TerraLake then
 		AddMap("TerraLake_01", "SandDune_01")
 		AddMap("TerraLake_02", "RockDark")
@@ -146,6 +155,7 @@ local function ModOptions(id)
 	mod_DomeRubble = options:GetProperty("DomeRubble")
 	mod_DustGeysers = options:GetProperty("DustGeysers")
 	mod_TerraGrass = options:GetProperty("TerraGrass")
+	mod_TerraGrass2 = options:GetProperty("TerraGrass2")
 	mod_TerraLake = options:GetProperty("TerraLake")
 	mod_TerraLichen = options:GetProperty("TerraLichen")
 	mod_TerraMoss = options:GetProperty("TerraMoss")
@@ -183,7 +193,7 @@ end
 
 -- ~TerrainTextures
 
---[[ Sort by alpha and ex as plain table/str
+--[[ Sort by alpha and examine as plain table/str
 local tbl, str = ChoGGi.ComFuncs.PlainSortTable(table.icopy(TerrainTextures))
 ex(tbl)
 ex(str)

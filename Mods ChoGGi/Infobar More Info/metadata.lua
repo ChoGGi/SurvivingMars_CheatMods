@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1775006723",
 	"pops_any_uuid", "34ead2f4-80f9-4200-b73c-12e441babbe9",
 	"lua_revision", 1007000, -- Picard
-	"version", 31,
+	"version", 32,
 	"version_major", 3,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -67,7 +67,7 @@ Mod Options:
 [b]Skip Grid 0[/b]: Grids with production+consumption = 0 (doesn't skip grids that aren't producing due to throttle).
 [b]Skip Grid 1[/b]: Grids that only have a single bld (sensor towers).
 [b]Skip Grid X[/b]: Grids that only have X amount of buildings (for smaller clusters, like a concrete "hub", 0 to disable).
-[b]Deposit Remaining Warning[/b]: Show warning message when resource deposits (all of a single type) are below X amount (0 to disable).
+[b]Deposit Remaining Warning[/b]: Show warning notification when surface resource deposits (all of a single type) are below X amount (0 to disable).
 [b]Rollover Size[/b]: Game default is 45, if you want the tooltips wider use this.
 [b]Disable Transparency[/b]: Disable transparency of Infobar.
 [b]Always Show Remaining[/b]: Keep showing remaining amount of resources instead of N/A when prod over consump (time formatting only shows hours for neg numbers, this game uses 24 per Sol).

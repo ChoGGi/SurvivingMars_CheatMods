@@ -43,6 +43,12 @@ local properties = {
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
+		"name", "TerraGrass2",
+		"DisplayName", T(0000, "Terraformed Grass 2"),
+		"Help", T(0000, "This uses the green texture used as the dome \"grass\" instead of reddish ground."),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
 		"name", "TerraLake",
 		"DisplayName", T(0000, "Terraformed Lake"),
 		"Help", T(0000, "Textures under lakes?"),
