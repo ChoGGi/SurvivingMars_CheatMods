@@ -1,1 +1,2 @@
 v0.2
+Added option to ctrl-click to toggle all.

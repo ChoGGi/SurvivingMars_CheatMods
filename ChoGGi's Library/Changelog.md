@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v12.2 (Unreleased)
+- Fixed ExportMapDataToCSV maxing out at 12 for CSV export (thanks Sicarious).
 - Added ChangeCargoValue().
 
 ## v12.1 (4 Sep 2023)

@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local RebuildInfopanel = RebuildInfopanel
+
 local mod_EnableMod
 
 local ChoOrig_RequiresMaintenance_IsMaintenancePrevented = RequiresMaintenance.IsMaintenancePrevented
@@ -24,6 +26,19 @@ end
 OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
+
+local function ToggleMainCycle(bld)
+	if bld.ChoGGi_MaintenancePrevented then
+		bld.ChoGGi_MaintenancePrevented = nil
+		-- Call a drone
+		if bld:GetMaintenanceProgress() > 99 then
+			bld:RequestMaintenance(true)
+			RebuildInfopanel(bld)
+		end
+	else
+		bld.ChoGGi_MaintenancePrevented = true
+	end
+end
 
 function OnMsg.ClassesPostprocess()
 	local xtemplate = XTemplates.ipBuilding[1]
@@ -56,7 +71,9 @@ function OnMsg.ClassesPostprocess()
 
 		"Title", T(0000, "Toggle Maintenance"),
 		"RolloverTitle", T(0000, "Toggle Allow Maintenance"),
-		"RolloverText", T(0000, "If turned off then drones will not maintain building."),
+		"RolloverText", T(0000, [[If turned off then drones will not maintain building.
+
+Ctrl-<left_click> to toggle all buildings of same type.]]),
 		"Icon", "UI/Icons/IPButtons/traits_approve.tga",
 		}, {
 		PlaceObj("XTemplateFunc", {
@@ -65,19 +82,19 @@ function OnMsg.ClassesPostprocess()
 				return self.parent
 			end,
 			"func", function(_, context)
-				if context.ChoGGi_MaintenancePrevented then
-					context.ChoGGi_MaintenancePrevented = nil
-					-- Call a drone
-					if context:GetMaintenanceProgress() > 99 then
-						context:RequestMaintenance(true)
-						RebuildInfopanel(context)
-						if broadcast then
-							BroadcastAction(context, "RequestMaintenance", true)
-						end
+				--
+				if IsMassUIModifierPressed() then
+					-- ctrl + left click
+					local label = ChoGGi.ComFuncs.RetTemplateOrClass(context)
+					local objs = context.city and context.city.labels[label] or ""
+					for i = 1, #objs do
+						ToggleMainCycle(objs[i])
 					end
 				else
-					context.ChoGGi_MaintenancePrevented = true
+					-- left click
+					ToggleMainCycle(context)
 				end
+				--
 			end,
 		}),
 	})

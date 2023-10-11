@@ -289,7 +289,7 @@ ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
 				local b_str = TranslationTable[11451--[[Breakthrough]]]
 				local c = #csv_columns
 --~ 				for i = 1, (const.BreakThroughTechsPerGame + Consts.PlanetaryBreakthroughCount) do
-				for i = 1, 12 do
+				for i = 1, limit_count do
 					c = c + 1
 					csv_columns[c] = {"break" .. i, b_str .. " " .. i}
 				end
