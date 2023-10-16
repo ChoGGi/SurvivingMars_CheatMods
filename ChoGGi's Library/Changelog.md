@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v12.2 (Unreleased)
+- DeleteObject was leaving particles behind for certain buildings.
 - Fixed ExportMapDataToCSV maxing out at 12 for CSV export (thanks Sicarious).
 - Added ChangeCargoValue().
 

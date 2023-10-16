@@ -1,3 +1,6 @@
+v0.5
+Should override light transitions now.
+
 v0.4
 Fixed depthOfField, focusDepth, defocusStrength.
 

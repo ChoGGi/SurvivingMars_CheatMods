@@ -1,1 +1,2 @@
 v0.2
+Adds "Not Sure" name (can be more than one), removes idiot trait from them.

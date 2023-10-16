@@ -3170,6 +3170,8 @@ do -- DeleteObject
 			end
 		end
 
+		procall(ExecFunc, obj, "ChangeWorkingStateAnim", false)
+--~ 		procall(ExecFunc, obj, "OnDemolish")
 		-- ground n whatnot
 		procall(ExecFunc, obj, "RestoreTerrain")
 		procall(ExecFunc, obj, "Destroy")

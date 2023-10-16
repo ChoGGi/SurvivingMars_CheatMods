@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2762039037",
 	"pops_any_uuid", "94bb331a-1cb0-48f2-a2be-31c63a8b8bf4",
 	"lua_revision", 1007000, -- Picard
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "UI/IdiotLogoUI.png",
 	"author", "Haemimont Games & ChoGGi",
 	"code", {
@@ -23,6 +23,8 @@ I don't see the devs ever updating [url=https://steamcommunity.com/sharedfiles/f
 
 This mod adds a new mission sponsor - "Idiocracy", supplemented with a colony logo (new commander added as well).
 Under "Idiocracy" all colonists have the Idiot trait, there is no Sponsor research and no technologies are unlocked at start.
+Adds "Not Sure" name (can be more than one), removes idiot trait from them.
+
 
 [b]Sponsor[/b]
 - Research per Sol: 0

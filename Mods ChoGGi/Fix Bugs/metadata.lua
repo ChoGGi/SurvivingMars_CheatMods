@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2721921772",
 	"pops_any_uuid", "3aff9cde-7dc1-4ad8-b38d-31a7568185ff",
 	"lua_revision", 1007000, -- Picard
-	"version", 51,
+	"version", 52,
 	"version_major", 5,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -40,7 +40,7 @@ Future Contemporary Asset Pack when placing spires (more info below).
 Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC).
 Possible fix for main menu music playing in-game on new games (mod option to disable, since there's no fade out).
 The Bottomless Pit and Anomaly is missing (more info below).
-
+Refabbing rare extractors left the "working" dust plumes around them.
 
 
 [b]Mods[/b]:

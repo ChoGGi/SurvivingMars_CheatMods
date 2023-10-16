@@ -58,6 +58,8 @@ do -- ModUpload
 		ChoGGi_DistributedDroneAssembly2 = true,
 		-- Psychiatric Hospital
 		ChoGGi_PsychiatricHospital = true,
+		-- Idiocracy 2
+		ChoGGi_Idiocracy2 = true,
 	}
 --~ 	-- green ecm/lib so I don't accidentally upload them
 --~ 	local coloured_titles = {

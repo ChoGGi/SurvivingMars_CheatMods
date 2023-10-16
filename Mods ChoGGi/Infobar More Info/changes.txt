@@ -1,3 +1,6 @@
+v3.3
+Check new Sol instead of new hour for deposit remaining amount.
+
 v3.2
 Resource warning msg is now a notification.
 

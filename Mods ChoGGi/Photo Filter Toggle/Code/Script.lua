@@ -116,3 +116,4 @@ end
 
 OnMsg.CityStart = ApplyFilter
 OnMsg.LoadGame = ApplyFilter
+OnMsg.AfterLightmodelChange = ApplyFilter

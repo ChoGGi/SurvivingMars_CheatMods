@@ -1,3 +1,6 @@
+v5.2
+Refabbing rare extractors left the "working" dust plumes around them (thanks Pleasureasaur).
+
 v5.1
 The Bottomless Pit and missing Anomaly.
 

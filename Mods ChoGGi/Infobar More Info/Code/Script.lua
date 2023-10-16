@@ -230,26 +230,12 @@ local function CountConcrete(city)
 	-- Get all concrete deposits around miners
 	local remaining_res = 0
 
---~ 	-- local what we can
---~ 	local MaxTerrainDepositRadius = MaxTerrainDepositRadius
---~ 	local realm = GetRealm(city)
-
 	local objs = city.labels.ResourceExploiter or ""
 	for i = 1, #objs do
 		-- kinda copy pasta from TerrainDepositExtractor:FindClosestDeposit()
 		local obj = objs[i]
 		if obj:IsKindOf("TerrainDepositExtractor") then
---~ 			local info = obj:GetRessourceInfo()
---~ 			local shape = obj:GetExtractionShape() or ""
---~ 			if not info or #shape == 0 then
---~ 				return
---~ 			end
---~ 			local radius, xc, yc = HexBoundingCircle(shape, obj)
---~ 			local center = point(xc, yc)
 			remaining_res = remaining_res + obj:GetAmount()
---~ 			remaining_res = CountDepositRemaining(remaining_res,
---~ 				realm:MapGet(center, center, MaxTerrainDepositRadius + radius, info.deposit_class)
---~ 			)
 		end
 	end
 
@@ -292,7 +278,7 @@ local function ShowResourceWarningNotif(remaining, resource)
 	)
 end
 
-function OnMsg.NewHour()
+function OnMsg.NewDay()
 	if mod_DepositRemainingWarning == 0 then
 		return
 	end

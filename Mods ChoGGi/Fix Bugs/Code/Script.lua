@@ -179,6 +179,46 @@ do -- CityStart/LoadGame
 		end
 
 		--
+		-- Anything that needs to loops through GameMaps
+		local ElectricityGridObject_GameInit = ElectricityGridObject.GameInit
+		for _, map in pairs(GameMaps) do
+
+			--
+			-- Fix No Power Dome Buildings
+			local objs = map.realm:MapGet("map", "ElectricityGridObject")
+			for i = 1, #objs do
+				local obj = objs[i]
+				-- should be good enough to not get false positives?
+				if obj.working == false and obj.signs and obj.signs.SignNoPower and ValidateBuilding(obj.parent_dome)
+					and obj.electricity and not obj.electricity.parent_dome
+				then
+					obj:DeleteElectricity()
+					ElectricityGridObject_GameInit(obj)
+				end
+			end
+
+			--
+			-- Leftover particles from re-fabbing rare extractors with particles attached (concrete/reg metals seem okay)
+			-- Leftover from before my fix to stop it from happening
+			local objs = map.realm:MapGet("map", "ParSystem", function(par_obj)
+				local par_name = par_obj:GetParticlesName()
+				if par_name == "UniversalExtractor_Steam_02"
+					or par_name == "UniversalExtractor_Smoke"
+				then
+					local q, r = WorldToHex(par_obj:GetPos())
+					return not map.object_hex_grid:GetObject(q, r, "PreciousMetalsExtractor")
+				end
+			end)
+			--
+			SuspendPassEdits("ChoGGi.FixBugs.DeleteExtractorSmoke")
+			for i = 1, #objs do
+				DoneObject(objs[i])
+			end
+			ResumePassEdits("ChoGGi.FixBugs.DeleteExtractorSmoke")
+			--
+		end
+
+		--
 		-- Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC)
 		local objs = UIColony:GetCityLabels("Colonist")
 		for i = 1, #objs do
@@ -334,22 +374,6 @@ do -- CityStart/LoadGame
 							end
 						end
 					end
-				end
-			end
-		end
-		--
-		-- Fix No Power Dome Buildings
-		local ElectricityGridObject_GameInit = ElectricityGridObject.GameInit
-		for _, map in pairs(GameMaps) do
-			local objs = map.realm:MapGet("map", "ElectricityGridObject")
-			for i = 1, #objs do
-				local obj = objs[i]
-				-- should be good enough to not get false positives?
-				if obj.working == false and obj.signs and obj.signs.SignNoPower and ValidateBuilding(obj.parent_dome)
-					and obj.electricity and not obj.electricity.parent_dome
-				then
-					obj:DeleteElectricity()
-					ElectricityGridObject_GameInit(obj)
 				end
 			end
 		end
@@ -951,6 +975,13 @@ function City.IsTechDiscovered(_, ...)
 end
 --
 --
+-- Refabbing certain buildings with particles (so far both rare extractor skins) will leave the particles behind
+-- I clean them out on load, and use this to stop new ones from appearing.
+function OnMsg.Refabricated(obj)
+	-- This msg is called before it deletes the building object
+	obj:ChangeWorkingStateAnim(false)
+end
+
 --
 --
 --
@@ -969,7 +1000,9 @@ end
 --
 --
 
+
 --
+-- On one underground map, the bottomless pit is changed to a water deposit:
 -- SpawnAnomaly() calls FindUnobstructedDepositPos() which for whatever reason,
 -- takes the pos from in front of the wonder and sticks it in the passage behind it... (BlankUnderground_02 map)
 -- SpawnAnomaly() freaks out and changes it to an underground water instead
@@ -977,7 +1010,7 @@ end
 
 -- Needs tostring for compare
 local wonder_pos = tostring(point(296000, 225160))
--- on selection, if it's the underground wonder than check if water deposit exists, if so delete and respawn as anomaly
+-- On selection, if it's the underground wonder than check if water deposit exists, if so delete and respawn as anomaly
 function OnMsg.SelectionAdded(obj)
 	--
 	if not mod_EnableMod then
