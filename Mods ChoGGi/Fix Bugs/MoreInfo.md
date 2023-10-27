@@ -98,7 +98,9 @@ If you have B&B I'd recommend SkiRich's [Better Lander Rockets](https://steamcom
 
 
 
-Info from Incorporated mods/etc:
+**Info from Incorporated mods/etc:**
+
+
 
 **Uneven Terrain**
 ```When finishing landscaping it can set some of the surrounding hexes z values (height) to 65535 (also known as UnbuildableZ).
@@ -127,8 +129,8 @@ then it blocks an extra hex (you can see it when placing). This removes that hex
 Your log will "fill" up with this error:
 Mars/Lua/Units/Drone.lua(256): method FindDroneToRepair
 ```
-```**Fix Destroyed Tunnels Still Work**
-Rovers will still use destroyed tunnels (in certain situations).
+**Fix Destroyed Tunnels Still Work**
+```Rovers will still use destroyed tunnels (in certain situations).
 https://forum.paradoxplaza.com/forum/threads/hello-can-you-address-this-little-issue.1463333
 ```
 **Force heat grid to update**
