@@ -103,76 +103,101 @@ If you have B&B I'd recommend SkiRich's [Better Lander Rockets](https://steamcom
 
 
 **Uneven Terrain**
-```When finishing landscaping it can set some of the surrounding hexes z values (height) to 65535 (also known as UnbuildableZ).
+When finishing landscaping it can set some of the surrounding hexes z values (height) to 65535 (also known as UnbuildableZ).
+
 Calling RefreshBuildableGrid() on the map seems to get rid of them without causing any major issues:
+
 It can mark some hexes as okay to build when they weren't before, but nothing like a cliff side or anything.
+
 If you enable the mod option and notice that you can build on some places you really shouldn't be able to then please let me know :)
+
 If you're bored and want to dig through the funcs in LandscapeFinish() to find out exactly where it's coming from, feel free.
-```
+
 **No Planetary Anomaly Breakthroughs when B&B is installed**
-```It's probably a bug, but the underground wonders do add Breakthroughs.
+It's probably a bug, but the underground wonders do add Breakthroughs.
+
 Mod option to disable this "fix" (and receieve less Breakthroughs).
-```
+
 **The Bottomless Pit and Anomaly is missing**
-```SpawnAnomaly() calls FindUnobstructedDepositPos() which for whatever reason,
+SpawnAnomaly() calls FindUnobstructedDepositPos() which for whatever reason,
+
 takes the pos from in front of the wonder and sticks it in the passage behind it... (BlankUnderground_02 map)
+
 SpawnAnomaly() freaks out and changes it to an underground water instead
+
 It works fine once the sector the pit is in is scanned, so I check for the water deposit when the pit is selected.
+
 It's not like anyone goes underground for water...
-```
+
 **Future Contemporary Asset Pack**
-```When placing a building you can change skins, if you use the spire skins from this DLC when placing skins
+When placing a building you can change skins, if you use the spire skins from this DLC when placing skins
+
 then it blocks an extra hex (you can see it when placing). This removes that hex on new buildings.
-```
+
 **Fix FindDroneToRepair Log Spam**
-```This seems to be an issue from flying drones and a drone hub being destroyed.
+This seems to be an issue from flying drones and a drone hub being destroyed.
+
 Your log will "fill" up with this error:
+
 Mars/Lua/Units/Drone.lua(256): method FindDroneToRepair
-```
+
 **Fix Destroyed Tunnels Still Work**
-```Rovers will still use destroyed tunnels (in certain situations).
+Rovers will still use destroyed tunnels (in certain situations).
+
 https://forum.paradoxplaza.com/forum/threads/hello-can-you-address-this-little-issue.1463333
-```
+
 **Force heat grid to update**
-```If you paused game on new game load then cold areas don't update till you get a working Subsurface Heater.
-```
+If you paused game on new game load then cold areas don't update till you get a working Subsurface Heater.
+
 **Water Reclamation Spire and B&B**
-```Some buildings don't properly turn off their upgrades which causes them to keep their modifiers on.
+Some buildings don't properly turn off their upgrades which causes them to keep their modifiers on.
+
 The "fix" is turning off upgrades when a building is demolished, turned off, malfunctioned (might be annoying, mod option to keep it as is).
-```
+
 **Fix Buildings Broken Down And No Repair**
-```If you have broken down buildings the drones won't repair. This will check for them on load game.
+If you have broken down buildings the drones won't repair. This will check for them on load game.
+
 The affected buildings will say something about exceptional circumstances.
+
 Any buildings affected by this issue will need to be repaired with 000.1 resource after the fix happens.
+
 This also has a fix for buildings hit with lightning during a cold wave.
-```
+
 **Fix Floating Rubble**
-```Move any floating underground rubble to within reach of drones (might have to "push" drones to make them go for it).
-```
+Move any floating underground rubble to within reach of drones (might have to "push" drones to make them go for it).
+
 **Fix Colonist Daily Interest Loop**
-```A colonist will repeatedly use a daily interest building to satisfy a daily interest already satisfied.
+A colonist will repeatedly use a daily interest building to satisfy a daily interest already satisfied.
+
 Repeating a daily interest will gain a comfort boost "if" colonist comfort is below the service comfort threshold, but a resource will always be consumed each visit.
+
 This mod will block the colonist from having a visit, instead: An unemployed scientist will wander around outside till the Sol is over instead of chewing up 0.6 electronics.
+
 https://forum.paradoxplaza.com/forum/threads/surviving-mars-colonists-repeatedly-satisfy-daily-interests.1464969/
+
 Thanks to ThereWillBeBugsToOvercome for noticing it, finding the offending code, doing a detailed write up of it, and testing the fix.
-```
+
 **Fix Stuck Malfunctioning Drones At DroneHub**
-```If you have malfunctioning drones at a dronehub and they never get repaired (off map).
+If you have malfunctioning drones at a dronehub and they never get repaired (off map).
+
 This'll check on load each time for them (once should be enough though), and move them near the hub.
-```
+
 **Fix Farm Oxygen**
-```If you remove a farm that has an oxygen producing crop (workers not needed) the oxygen will still count in the dome.
-```
+If you remove a farm that has an oxygen producing crop (workers not needed) the oxygen will still count in the dome.
+
 **Fix Dust Devils Block Building**
-```No more cheesing dust devils with waste rock depots (etc), by placing them on top of said devils (not by building them to block them).
-```
+No more cheesing dust devils with waste rock depots (etc), by placing them on top of said devils (not by building them to block them).
+
 **Fix Defence Towers Not Firing At Rovers**
-```It's from a mystery (trying to keep spoilers to a minimum).
+It's from a mystery (trying to keep spoilers to a minimum).
+
 If you're starting a new game than this is fixed, but for older saves on this mystery you'll need this mod.
-```
+
 **Fix Landscaping Freeze**
-```For some reason LandscapeLastMark gets set to around 4090, when LandscapeMark hits 4095 bad things happen.
+For some reason LandscapeLastMark gets set to around 4090, when LandscapeMark hits 4095 bad things happen.
+
 This resets LandscapeLastMark to whatever is the highest number in Landscapes when a save is loaded (assuming it's under 2000, otherwise 0).
+
 For those wondering LandscapeLastMark is increased each time you open flatten/ramp (doesn't need to be placed).
+
 Thanks to Quirquie for the bug report (and persistance).
-```
