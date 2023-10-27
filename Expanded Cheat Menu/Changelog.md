@@ -2,6 +2,7 @@
 
 ## v19.2 (Unreleased)
 ### Changed:
+- Stopped using TranslationTable, might cause some string issues.
 - Entity spawner has a button to change scale.
 
 ## v19.1 (4 Sep 2023)
