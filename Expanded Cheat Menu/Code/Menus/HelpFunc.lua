@@ -1,9 +1,13 @@
 -- See LICENSE for terms
 
+if ChoGGi.what_game ~= "Mars" then
+	return
+end
+
 local print = print
 local table = table
 
-local TranslationTable = TranslationTable
+local T = T
 local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local blacklist = ChoGGi.blacklist
@@ -113,8 +117,8 @@ do -- ModUpload
 		local orig_title
 
 		msg_popup_id = MsgPopup(
-			TranslationTable[5452--[[START]]],
-			TranslationTable[302535920000367--[[Mod Upload]]]
+			T(5452--[[START]]),
+			T(302535920000367--[[Mod Upload]])
 		)
 
 		-- always start with fresh table
@@ -178,13 +182,13 @@ do -- ModUpload
 
 		-- Issue with mod platform (workshop/paradox mods)
 		if not prepare_worked then
-			local msg = TranslationTable[1000013--[[Mod <ModLabel> was not uploaded! Error: <err>]]]:gsub("<ModLabel>", mod.title):gsub("<err>", Translate(prepare_results))
+			local msg = T(1000013--[[Mod <ModLabel> was not uploaded! Error: <err>]]):gsub("<ModLabel>", mod.title):gsub("<err>", Translate(prepare_results))
 			if batch then
 				print(msg)
 			else
 				ChoGGi.ComFuncs.MsgWait(
 					msg,
-					TranslationTable[1000592--[[Error]]] .. ": " .. mod.title,
+					T(1000592--[[Error]]) .. ": " .. mod.title,
 					upload_image
 				)
 			end
@@ -333,29 +337,23 @@ do -- ModUpload
 					-- DESC FOR PARA
 					-- tell paradox users if it needs my library
 					local needs_lib = table.find(mod.dependencies, "id", ChoGGi.id_lib)
-						and TranslationTable[302535920001634--[["This mod requires my library mod (ChoGGi's Library) < use space on the end when searching for it."]]] .. "\n\n"
+						and T(302535920001634--[["This mod requires my library mod (ChoGGi's Library) < use space on the end when searching for it."]]) .. "\n\n"
 						or ""
 
 					-- add some text to ECM description to hopefully reduce people reporting the mod.
 					if testing then
 
 						if mod.id == ChoGGi.id then
-							mod.description = TranslationTable[302535920000990--[["You need to have a mouse to use this mod."]]] .. "\n"
-								.. needs_lib .. TranslationTable[302535920000887--[["If you get a disabled content restrictions error: Please let me know and I'll tell Paradox (can take a few days).
+							mod.description = T(302535920000990--[["You need to have a mouse to use this mod."]]) .. "\n"
+								.. needs_lib .. T(302535920000887--[["If you get a disabled content restrictions error: Please let me know and I'll tell Paradox (can take a few days).
 
 If you have any issues with this mod then please send me a bug report instead of reporting the mod.
 https://github.com/ChoGGi/SurvivingMars_CheatMods
 Discord: https://discord.gg/ZXXYaExThy
 https://steamcommunity.com/id/ChoGGi/
-SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
+SurvivingMarsMods@choggi.org"]]) .. "\n\n\n" .. mod.description
 						else
-							mod.description = needs_lib .. TranslationTable[302535920000887--[["If you get a disabled content restrictions error: Please let me know and I'll tell Paradox (can take a few days).
-
-If you have any issues with this mod then please send me a bug report instead of reporting the mod.
-https://github.com/ChoGGi/SurvivingMars_CheatMods
-Discord: https://discord.gg/ZXXYaExThy
-https://steamcommunity.com/id/ChoGGi/
-SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
+							mod.description = needs_lib .. T(302535920000887) .. "\n\n\n" .. mod.description
 						end
 					end
 					-- DESC FOR PARA
@@ -378,7 +376,7 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 			}
 			result_msg[#result_msg+1] = msg
 			if choices_len == 1 then
-				result_title[#result_title+1] = TranslationTable[1000592--[[Error]]]
+				result_title[#result_title+1] = T(1000592--[[Error]])
 			else
 				result_title[#result_title+1] = mod.title
 			end
@@ -391,18 +389,18 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 				print(Translate("<color ChoGGi_red>" .. msg .. "\n" .. tostring(log_error) .. "</color>"))
 			end
 			if log_error then
-				result_title[#result_title+1] = "\n<color ChoGGi_red>" .. TranslationTable[1000592--[[Error]]] .. "</color>"
+				result_title[#result_title+1] = "\n<color ChoGGi_red>" .. T(1000592--[[Error]]) .. "</color>"
 				result_msg[#result_msg+1] = log_error
 			end
 		else
 			if batch then
-				print(Translate("<color ChoGGi_green>" .. TranslationTable[1000015--[[Success]]] .. " " .. mod.title .. "</color>"))
+				print(Translate("<color ChoGGi_green>" .. T(1000015--[[Success]]) .. " " .. mod.title .. "</color>"))
 			end
 			if choices_len == 1 then
 				result_msg[#result_msg+1] = T{1000014--[[Mod <ModLabel> was successfully uploaded!]],
 					ModLabel = mod.title,
 				}
-				result_title[#result_title+1] = Translate("<color ChoGGi_green>" .. TranslationTable[1000015--[[Success]]] .. "</color>")
+				result_title[#result_title+1] = Translate("<color ChoGGi_green>" .. T(1000015--[[Success]]) .. "</color>")
 			else
 				result_title[#result_title+1] = mod.title
 			end
@@ -428,7 +426,7 @@ SurvivingMarsMods@choggi.org"]]] .. "\n\n\n" .. mod.description
 			-- both displayed
 			if steam_upload and para_upload then
 				print(mod.title, ":\n<color ChoGGi_orange>",
-					TranslationTable[1000021--[[Steam ID]]], "</color>:", steam_item_id,
+					T(1000021--[[Steam ID]]), "</color>:", steam_item_id,
 					"\n<color ChoGGi_orange>", Translate(id_str), "</color>:", para_item_id
 				)
 			else
@@ -550,7 +548,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 							m_c = m_c + 1
 							upload_msg[m_c] = "\n\n"
 							m_c = m_c + 1
-							upload_msg[m_c] = TranslationTable[302535920001263--[["%s is different from your name, do you have permission to upload it?"]]]:format(mod.author)
+							upload_msg[m_c] = Translate(302535920001263--[["%s is different from your name, do you have permission to upload it?"]]):format(mod.author)
 						end
 					end
 
@@ -601,10 +599,10 @@ You can also stick the executable in the profile folder to use it instead (<gree
 						-- and show msg
 						if not UserSettings.SkipModUploadConfirmDoneMsgs then
 							if ChoGGi.ComFuncs.QuestionBox(
-								TranslationTable[302535920000221--[[Batch Upload mods?]]] .. "\n\n"
+								T(302535920000221--[[Batch Upload mods?]]) .. "\n\n"
 									.. table.concat(titles, ", "),
 								CallBackFunc_BQ,
-								TranslationTable[302535920000221--[[Batch Upload!]]],
+								T(302535920000221--[[Batch Upload!]]),
 								nil,
 								nil,
 								upload_image,
@@ -635,7 +633,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			local popups = ChoGGi.Temp.MsgPopups
 			local idx = table.find(popups, "notification_id", msg_popup_id)
 			if idx and ChoGGi.ComFuncs.IsValidXWin(popups[idx]) then
-				popups[idx].idText:SetText(TranslationTable[302535920001453--[[Completed]]])
+				popups[idx].idText:SetText(T(302535920001453--[[Completed]]))
 			end
 
 			-- Build list of errors
@@ -648,7 +646,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			error_msgs = table.concat(error_msgs)
 
 
-			local error_text = TranslationTable[302535920000221--[[See log for any batch errors.]]]
+			local error_text = T(302535920000221--[[See log for any batch errors.]])
 			-- Only add error msg if single mod
 			if choices_len == 1 then
 				error_text = error_text .. "\n\n" .. error_msgs
@@ -660,7 +658,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			if not UserSettings.SkipModUploadConfirmDoneMsgs then
 				ChoGGi.ComFuncs.MsgWait(
 					error_text,
-					TranslationTable[302535920001586--[[All Done!]]],
+					T(302535920001586--[[All Done!]]),
 					upload_image
 				)
 			end
@@ -675,12 +673,12 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			return
 		end
 		if not (Platform.steam or Platform.pops) then
-			local msg = TranslationTable[1000760--[[Not Steam]]] .. "/"
-				.. TranslationTable[1000759--[[Not Paradox]]]
-			print(TranslationTable[302535920000367--[[Mod Upload]]], ":", msg)
+			local msg = Translate(1000760--[[Not Steam]]) .. "/"
+				.. Translate(1000759--[[Not Paradox]])
+			print(Translate(302535920000367--[[Mod Upload]]), ":", msg)
 			MsgPopup(
 				msg,
-				TranslationTable[302535920000367--[[Mod Upload]]]
+				T(302535920000367--[[Mod Upload]])
 			)
 			return
 		end
@@ -723,7 +721,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = TranslationTable[302535920000367--[[Mod Upload]]],
+			title = T(302535920000367--[[Mod Upload]]),
 			hint = Translate(302535920001511--[["AsyncPack will CTD the second time you call it, you can use hpk to pack mods ahead of time.
 
 https://github.com/nickelc/hpk
@@ -732,34 +730,34 @@ Move archive to ""Mod folder/Pack/ModContent.hpk"""]]) .. "\n\n" .. Translate(30
 			height = 800.0,
 			multisel = true,
 			checkboxes = {
-				{title = TranslationTable[302535920001260--[[Blank]]],
-					hint = TranslationTable[302535920001261--[["Uploads a blank mod, and prints id in log."]]],
+				{title = T(302535920001260--[[Blank]]),
+					hint = T(302535920001261--[["Uploads a blank mod, and prints id in log."]]),
 				},
-				{title = TranslationTable[302535920000664--[[Clipboard]]],
-					hint = TranslationTable[302535920000665--[[If uploading a mod this copies the mod's steam id clipboard.]]],
+				{title = T(302535920000664--[[Clipboard]]),
+					hint = T(302535920000665--[[If uploading a mod this copies the mod's steam id clipboard.]]),
 					checked = true,
 				},
-				{title = TranslationTable[186760604064--[[Test]]],
-					hint = TranslationTable[302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).]]],
+				{title = T(186760604064--[[Test]]),
+					hint = T(302535920001485--[[Does everything other than uploading mod to workshop (see AppData/ModUpload).]]),
 				},
 				--
-				{title = TranslationTable[302535920001506--[[Steam]]],
+				{title = T(302535920001506--[[Steam]]),
 					level = 2,
-					hint = TranslationTable[302535920001507--[[Upload to Steam Workshop.]]],
+					hint = T(302535920001507--[[Upload to Steam Workshop.]]),
 					checked = true,
 				},
 
-				{title = TranslationTable[5482--[[Paradox]]],
+				{title = T(5482--[[Paradox]]),
 					level = 2,
-					hint = TranslationTable[302535920001662--[[Upload to Paradox Mods.]]],
+					hint = T(302535920001662--[[Upload to Paradox Mods.]]),
 					checked = true,
 				},
 
 
-				{title = TranslationTable[302535920001509--[[Platform]]],
+				{title = T(302535920001509--[[Platform]]),
 					level = 2,
-					hint = TranslationTable[302535920001510--[["Paradox mods platform: Leave checked to upload to Desktop only or uncheck to upload to Desktop and Console.
-If you have a uuid in your metadata.lua this checkbox is ignored and it'll try the any uuid then the desktop uuid."]]],
+					hint = T(302535920001510--[["Paradox mods platform: Leave checked to upload to Desktop only or uncheck to upload to Desktop and Console.
+If you have a uuid in your metadata.lua this checkbox is ignored and it'll try the any uuid then the desktop uuid."]]),
 					checked = upload_to_whichplatform,
 					func = function(_, check)
 						upload_to_whichplatform = check
@@ -820,7 +818,7 @@ GetComputerName(): %s
 
 
 ]],
-		TranslationTable[5568--[[Stats]]],
+		T(5568--[[Stats]]),
 		table.concat(hw),
 		table.concat(mem),
 		table.concat({GetAdapterMode(0)}, " "),
@@ -856,7 +854,7 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 		local data = SavegamesList[i]
 
 		-- build played time
-		local playtime = TranslationTable[77--[[Unknown]]]
+		local playtime = T(77--[[Unknown]])
 		if data.playtime then
 			local h, m, _ = FormatElapsedTime(data.playtime, "hms")
 			playtime = T{7549--[[<hours>:<minutes>]],
@@ -874,9 +872,9 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 			text = data.displayname,
 			value = data.savename,
 
-			hint = TranslationTable[4274--[[Playtime : <playtime>]]]:gsub("<playtime>", Translate(playtime)) .. "\n"
-				.. TranslationTable[4273--[[Saved on : <save_date>]]]:gsub("<save_date>", save_date) .. "\n\n"
-				.. TranslationTable[302535920001274--[[This is permanent!]]],
+			hint = T(4274--[[Playtime : <playtime>]]):gsub("<playtime>", Translate(playtime)) .. "\n"
+				.. T(4273--[[Saved on : <save_date>]]):gsub("<save_date>", save_date) .. "\n\n"
+				.. T(302535920001274--[[This is permanent!]]),
 		}
 	end
 
@@ -888,8 +886,8 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 
 		if not choice[1].check1 then
 			MsgPopup(
-				TranslationTable[302535920000038--[[Pick a checkbox next time...]]],
-				TranslationTable[302535920000146--[[Delete Saved Games]]]
+				T(302535920000038--[[Pick a checkbox next time...]]),
+				T(302535920000146--[[Delete Saved Games]])
 			)
 			return
 		end
@@ -913,8 +911,8 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 		games_amt = games_amt - #SavegamesList
 		if games_amt > 0 then
 			MsgPopup(
-				TranslationTable[302535920001275--[[Deleted %s saved games.]]]:format(games_amt),
-				TranslationTable[302535920000146--[[Delete Saved Games]]]
+				Translate(302535920001275--[[Deleted %s saved games.]]):format(games_amt),
+				T(302535920000146--[[Delete Saved Games]])
 			)
 		end
 	end
@@ -922,14 +920,14 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = TranslationTable[302535920000146--[[Delete Saved Games]]] .. ": " .. #item_list,
-		hint = T(6779--[[Warning]]) .. ": " .. TranslationTable[302535920001274--[[This is permanent!]]],
+		title = T(302535920000146--[[Delete Saved Games]]) .. ": " .. #item_list,
+		hint = T(6779--[[Warning]]) .. ": " .. T(302535920001274--[[This is permanent!]]),
 		multisel = true,
 		skip_sort = true,
 		checkboxes = {
 			{
 				title = T(1000009--[[Confirmation]]),
-				hint = TranslationTable[302535920001276--[[Nothing is deleted unless you check this.]]],
+				hint = T(302535920001276--[[Nothing is deleted unless you check this.]]),
 			},
 		},
 	}
@@ -940,7 +938,7 @@ function ChoGGi.MenuFuncs.StartupTicks_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ShowStartupTicks),
-		TranslationTable[302535920001481--[[Show Startup Ticks]]]
+		T(302535920001481--[[Show Startup Ticks]])
 	)
 end
 
@@ -951,7 +949,7 @@ function ChoGGi.MenuFuncs.ToolTips_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.EnableToolTips),
-		TranslationTable[302535920001014--[[Toggle ToolTips]]]
+		T(302535920001014--[[Toggle ToolTips]])
 	)
 end
 
@@ -961,7 +959,7 @@ function ChoGGi.MenuFuncs.ChangeWindowTitle_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ChangeWindowTitle),
-		TranslationTable[302535920001647--[[Window Title]]]
+		T(302535920001647--[[Window Title]])
 	)
 end
 
@@ -1020,7 +1018,7 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 					text = mod.title,
 					value = hpk,
 					hint = "\n"
-						.. TranslationTable[302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.]]]:format(mod.author)
+						.. Translate(302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.]]):format(mod.author)
 						.. mod.image,
 					id = id,
 				}
@@ -1029,8 +1027,8 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 
 	else
 		MsgPopup(
-			TranslationTable[1000760--[[Not Steam]]] .. "/" .. TranslationTable[1000759--[[Not Paradox]]],
-			TranslationTable[302535920001362--[[Extract HPKs]]]
+			T(1000760--[[Not Steam]]) .. "/" .. T(1000759--[[Not Paradox]]),
+			T(302535920001362--[[Extract HPKs]])
 		)
 		return
 	end
@@ -1038,8 +1036,8 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 	if #item_list == 0 then
 		-- good enough msg, probably...
 		MsgPopup(
-			TranslationTable[302535920000004--[[Dump]]] .. ": " .. #item_list,
-			TranslationTable[302535920001362--[[Extract HPKs]]]
+			T(302535920000004--[[Dump]]) .. ": " .. #item_list,
+			T(302535920001362--[[Extract HPKs]])
 		)
 		return
 	end
@@ -1062,20 +1060,20 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 			-- add a note telling people not to be assholes
 			g_env.AsyncStringToFile(
 				path .. "/This is not your mod.txt",
-				TranslationTable[302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.]]]:format(choice.author)
+				Translate(302535920001364--[[Don't be an asshole to %s... Always ask permission before using other people's hard work.]]):format(choice.author)
 			)
 		end
 		MsgPopup(
-			TranslationTable[302535920000004--[[Dump]]] .. ": " .. #choices,
-			TranslationTable[302535920001362--[[Extract HPKs]]]
+			T(302535920000004--[[Dump]]) .. ": " .. #choices,
+			T(302535920001362--[[Extract HPKs]])
 		)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = TranslationTable[302535920001362--[[Extract HPKs]]],
-		hint = TranslationTable[302535920001365--[[HPK files will be unpacked into AppData/Mods/ModSteamId]]],
+		title = T(302535920001362--[[Extract HPKs]]),
+		hint = T(302535920001365--[[HPK files will be unpacked into AppData/Mods/ModSteamId]]),
 		multisel = true,
 	}
 end
@@ -1120,7 +1118,7 @@ function ChoGGi.MenuFuncs.ListAllMenuItems()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = TranslationTable[302535920000504--[[List All Menu Items]]],
+		title = T(302535920000504--[[List All Menu Items]]),
 		custom_type = 7,
 		height = 800.0,
 	}
@@ -1132,7 +1130,7 @@ function ChoGGi.MenuFuncs.RetMapInfo()
 	end
 	local data = HashLogToTable()
 	data[1] = data[1]:gsub("\n\n", "")
-	ChoGGi.ComFuncs.OpenInExamineDlg(table.concat(data, "\n"), nil, T(283142739680--[[Game]]) .. " & " .. TranslationTable[302535920001355--[[Map]]] .. " " .. T(126095410863--[[Info]]))
+	ChoGGi.ComFuncs.OpenInExamineDlg(table.concat(data, "\n"), nil, T(283142739680--[[Game]]) .. " & " .. T(302535920001355--[[Map]]) .. " " .. T(126095410863--[[Info]]))
 end
 
 function ChoGGi.MenuFuncs.EditECMSettings()
@@ -1140,10 +1138,10 @@ function ChoGGi.MenuFuncs.EditECMSettings()
 	-- load up settings file in the editor
 	ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 		code = true,
-		title = TranslationTable[302535920001242--[[Edit ECM Settings]]],
+		title = T(302535920001242--[[Edit ECM Settings]]),
 		text = TableToLuaCode(UserSettings),
-		hint_ok = TranslationTable[302535920001244--[["Saves settings to file, and applies any changes."]]],
-		hint_cancel = TranslationTable[302535920001245--[[Abort without touching anything.]]],
+		hint_ok = T(302535920001244--[["Saves settings to file, and applies any changes."]]),
+		hint_cancel = T(302535920001245--[[Abort without touching anything.]]),
 		update_func = function()
 			return TableToLuaCode(UserSettings)
 		end,
@@ -1159,10 +1157,10 @@ function ChoGGi.MenuFuncs.EditECMSettings()
 				-- for now just updates console examine list
 				Msg("ChoGGi_SettingsUpdated", settings)
 				local d, m, h = FormatElapsedTime(os.time(), "dhm")
-				local msg = TranslationTable[4273--[[Saved on <save_date>]]]:gsub("<save_date>", ": " .. d .. ":" .. m .. ":" .. h)
+				local msg = T(4273--[[Saved on <save_date>]]):gsub("<save_date>", ": " .. d .. ":" .. m .. ":" .. h)
 				MsgPopup(
 					msg,
-					TranslationTable[302535920001242--[[Edit ECM Settings]]]
+					T(302535920001242--[[Edit ECM Settings]])
 				)
 			end
 		end,
@@ -1170,21 +1168,21 @@ function ChoGGi.MenuFuncs.EditECMSettings()
 end
 
 function ChoGGi.MenuFuncs.DisableECM()
-	local title = T(251103844022--[[Disable]]) .. " " .. TranslationTable[302535920000002--[[ECM]]]
+	local title = T(251103844022--[[Disable]]) .. " " .. T(302535920000002--[[ECM]])
 	local function CallBackFunc(answer)
 		if answer then
 			ChoGGi.UserSettings.DisableECM = not ChoGGi.UserSettings.DisableECM
 			ChoGGi.SettingFuncs.WriteSettings()
 
 			MsgPopup(
-				TranslationTable[302535920001070--[[Restart to take effect.]]],
+				T(302535920001070--[[Restart to take effect.]]),
 				title
 			)
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		TranslationTable[302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
-Change DisableECM to false in settings file to re-enable them."]]] .. "\n\n" .. TranslationTable[302535920001070--[[Restart to take effect.]]],
+		T(302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
+Change DisableECM to false in settings file to re-enable them."]]) .. "\n\n" .. T(302535920001070--[[Restart to take effect.]]),
 		CallBackFunc,
 		title
 	)
@@ -1199,17 +1197,17 @@ function ChoGGi.MenuFuncs.ResetECMSettings()
 			ChoGGi.SettingFuncs.WriteSettings()
 
 			MsgPopup(
-				TranslationTable[302535920001070--[[Restart to take effect.]]],
-				TranslationTable[302535920000676--[[Reset ECM Settings]]]
+				T(302535920001070--[[Restart to take effect.]]),
+				T(302535920000676--[[Reset ECM Settings]])
 			)
 		end
 	end
 
 	ChoGGi.ComFuncs.QuestionBox(
-		TranslationTable[302535920001072--[[Are you sure you want to reset ECM settings?
-Old settings are saved as %s (or not saved if you don't use the HelperMod)]]]:format(old) .. "\n\n" .. TranslationTable[302535920001070--[[Restart to take effect.]]],
+		T(302535920001072--[[Are you sure you want to reset ECM settings?
+Old settings are saved as %s (or not saved if you don't use the HelperMod)]]):format(old) .. "\n\n" .. T(302535920001070--[[Restart to take effect.]]),
 		CallBackFunc,
-		TranslationTable[302535920001084--[[Reset]]] .. "!"
+		T(302535920001084--[[Reset]]) .. "!"
 	)
 end
 
@@ -1226,10 +1224,10 @@ end
 
 function ChoGGi.MenuFuncs.AboutECM()
 	ChoGGi.ComFuncs.MsgWait(
-		TranslationTable[302535920001078--[["Hover mouse over menu item to get description and enabled status
+		T(302535920001078--[["Hover mouse over menu item to get description and enabled status
 If there isn't a status then it's likely a list of options to choose from
 
-For any issues; please report them to my Github/Steam/NexusMods page, or email %s"]]]:format(ChoGGi.email),
+For any issues; please report them to my Github/Steam/NexusMods page, or email %s"]]):format(ChoGGi.email),
 		T(487939677892--[[Help]])
 	)
 end

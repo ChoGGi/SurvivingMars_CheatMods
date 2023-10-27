@@ -1,8 +1,11 @@
 -- See LICENSE for terms
 
+local what_game = ChoGGi.what_game
+
 local DoneObject = DoneObject
 local OnMsg = OnMsg
-local TranslationTable = TranslationTable
+local T = T
+local Translate = ChoGGi.ComFuncs.Translate
 
 	-- think they fixed this, test it
 --~ local RemoveAttachAboveHeightLimit = ChoGGi.ComFuncs.RemoveAttachAboveHeightLimit
@@ -13,38 +16,41 @@ OnMsg.ShortcutsReloaded = ChoGGi.ComFuncs.Rebuildshortcuts
 OnMsg.ReloadLua = ChoGGi.ComFuncs.Rebuildshortcuts
 
 function OnMsg.ClassesPostprocess()
-	-- the first time you open a ModItemOptionInputBox the text will be blank when it's the default text.
-	-- opening a second time fixes it or appending the "default" text like so:
-	local template = XTemplates.PropTextInput[1]
-	local idx = table.find(template, "name", "OnMouseButtonDown(self, pos, button)")
-	if idx then
-		template[idx].func = function(self, pos, button)
-			XPropControl.OnMouseButtonDown(self, pos, button)
-			if self.enabled then
-				local prop_meta = self.prop_meta
-				local obj = ResolvePropObj(self.context)
---~ 				CreateMarsRenameControl(GetDialog(self), prop_meta.name, obj[prop_meta.id],
-				CreateMarsRenameControl(GetDialog(self), prop_meta.name, obj[prop_meta.id] or prop_meta.default,
-					function(name)
-						name = name:trim_spaces()
-						obj:SetProperty(prop_meta.id, name)
-						self:OnPropUpdate(self.context, prop_meta, name)
-					end, nil, self.context, prop_meta)
+	if what_game == "Mars" then
+		-- the first time you open a ModItemOptionInputBox the text will be blank when it's the default text.
+		-- opening a second time fixes it or appending the "default" text like so:
+		local template = XTemplates.PropTextInput[1]
+		local idx = table.find(template, "name", "OnMouseButtonDown(self, pos, button)")
+		if idx then
+			template[idx].func = function(self, pos, button)
+				XPropControl.OnMouseButtonDown(self, pos, button)
+				if self.enabled then
+					local prop_meta = self.prop_meta
+					local obj = ResolvePropObj(self.context)
+					CreateMarsRenameControl(GetDialog(self), prop_meta.name, obj[prop_meta.id] or prop_meta.default,
+						function(name)
+							name = name:trim_spaces()
+							obj:SetProperty(prop_meta.id, name)
+							self:OnPropUpdate(self.context, prop_meta, name)
+						end, nil, self.context, prop_meta)
+				end
 			end
 		end
 	end
 end
 
 function OnMsg.ClassesBuilt()
-	-- Add build cat for my items
-	local bc = BuildCategories
-	if not table.find(bc, "id", "ChoGGi") then
-		bc[#bc+1] = {
-			id = "ChoGGi",
-			name = TranslationTable[302535920000001--[[ChoGGi]]],
-			image = ChoGGi.library_path .. "UI/bmc_incal_resources.png",
-		}
-	end
+	if what_game == "Mars" then
+		-- Add build cat for my items
+		local bc = BuildCategories
+		if not table.find(bc, "id", "ChoGGi") then
+			bc[#bc+1] = {
+				id = "ChoGGi",
+				name = T(302535920000001--[[ChoGGi]]),
+				image = ChoGGi.library_path .. "UI/bmc_incal_resources.png",
+			}
+		end
+	end -- what_game
 end
 
 -- This is when RocketPayload_Init is called (CityStart is too soon)
@@ -55,7 +61,7 @@ local function Startup()
 	if g_ParadoxAccountLoggedIn then
 		printC("Paradox account signed in.")
 	else
-		print(TranslationTable[302535920001471--[[Not signed into Paradox account, mods from Paradox Platform might be out of date!]]])
+		print(Translate(302535920001471--[[Not signed into Paradox account, mods from Paradox Platform might be out of date!]]))
 	end
 
 	CreateRealTimeThread(function()
@@ -90,11 +96,13 @@ OnMsg.CityStart = Startup
 -- Update my cached strings
 function OnMsg.TranslationChanged()
 	ChoGGi.ComFuncs.UpdateStringsList()
-	ChoGGi.ComFuncs.UpdateDataTablesCargo()
-	ChoGGi.ComFuncs.UpdateDataTables()
-	--
-	ChoGGi.ComFuncs.UpdateTablesSponComm()
-	ChoGGi.ComFuncs.UpdateOtherTables()
+	if ChoGGi.what_game == "Mars" then
+		ChoGGi.ComFuncs.UpdateDataTablesCargo()
+		ChoGGi.ComFuncs.UpdateDataTables()
+		--
+		ChoGGi.ComFuncs.UpdateTablesSponComm()
+		ChoGGi.ComFuncs.UpdateOtherTables()
+	end
 	-- true to update translated names
 	ChoGGi.ComFuncs.RetName_Update(true)
 end

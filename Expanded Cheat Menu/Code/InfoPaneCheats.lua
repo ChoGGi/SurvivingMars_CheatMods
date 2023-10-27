@@ -1,5 +1,9 @@
 -- See LICENSE for terms
 
+if ChoGGi.what_game ~= "Mars" then
+	return
+end
+
 -- add items/hint to the cheats pane
 
 local pairs, table = pairs, table
@@ -10,8 +14,8 @@ local CreateRealTimeThread = CreateRealTimeThread
 local ComFuncs = ChoGGi.ComFuncs
 local RetName = ComFuncs.RetName
 local Random = ComFuncs.Random
-local Translate = ComFuncs.Translate
-local TranslationTable = TranslationTable
+local T = T
+local Translate = ChoGGi.ComFuncs.Translate
 local ResourceScale = const.ResourceScale
 
 local CObject = CObject
@@ -19,11 +23,12 @@ CObject.CheatExamine = ComFuncs.OpenInExamineDlg
 CObject.CheatToggleCollision = ComFuncs.CollisionsObject_Toggle
 CObject.CheatDeleteObject = ComFuncs.DeleteObjectQuestion
 CObject.CheatViewConstruct = ComFuncs.ToggleConstructEntityView
+ColorizableObject.CheatColourRandom = ComFuncs.ObjectColourRandom
+ColorizableObject.CheatColourDefault = ComFuncs.ObjectColourDefault
 Drone.CheatFindResource = ComFuncs.FindNearestResource
 Drone.CheatDestroy = ComFuncs.RuinObjectQuestion
 RCTransport.CheatFindResource = ComFuncs.FindNearestResource
-ColorizableObject.CheatColourRandom = ComFuncs.ObjectColourRandom
-ColorizableObject.CheatColourDefault = ComFuncs.ObjectColourDefault
+
 BaseBuilding.CheatViewEditor = ComFuncs.ToggleEditorEntityView
 MechanizedDepot.CheatEmptyDepot = ComFuncs.EmptyMechDepot
 BaseRover.CheatDestroy = ComFuncs.RuinObjectQuestion
@@ -63,61 +68,61 @@ end
 local function SetUpgradeInfo(action, obj, num)
 	-- If there's an upgrade then add hint text, otherwise blank the id to hide it
 	if obj:GetUpgradeID(num) ~= "" then
-		SetHint(action, TranslationTable[302535920001207--[["Add: %s to this building.
+		SetHint(action, T{302535920001207--[["Add: <upgrade> to this building.
 
-%s"]]]:format(
-			Translate(obj["upgrade" .. num .. "_display_name"]),
-			Translate(T{obj["upgrade" .. num .. "_description"], obj})
-		))
+<upgrade_info>"]],
+			upgrade = T(obj["upgrade" .. num .. "_display_name"]),
+			upgrade_info = T{obj["upgrade" .. num .. "_description"], obj},
+		})
 		SetIcon(action, num, obj["upgrade" .. num .. "_icon"])
 	else
 		action.ActionId = ""
 	end
 end
-local doublec = TranslationTable[302535920001199--[[Double the amount of colonist slots for this building.]]]
-local resetc = TranslationTable[302535920001200--[[Reset the capacity of colonist slots for this building.]]]
+local doublec = T(302535920001199--[[Double the amount of colonist slots for this building.]])
+local resetc = T(302535920001200--[[Reset the capacity of colonist slots for this building.]])
 
 local grid_lookup = {
 	OxygenFree = {
 		icon = "UI/Icons/res_oxygen.tga",
-		name = TranslationTable[682--[[Oxygen]]],
-		text1 = TranslationTable[4325--[[Free]]],
-		text2 = TranslationTable[302535920001220--[[Change this %s so it doesn't need a %s source.]]],
+		name = T(682--[[Oxygen]]),
+		text1 = T(4325--[[Free]]),
+		text2 = T(302535920001220--[[Change this %s so it doesn't need a %s source.]]),
 		con = "air_consumption",
 	},
 	OxygenNeed = {
 		icon = "UI/Icons/res_oxygen.tga",
-		name = TranslationTable[682--[[Oxygen]]],
-		text1 = TranslationTable[302535920000162--[[Need]]],
-		text2 = TranslationTable[302535920001221--[[Change this %s so it needs a %s source.]]],
+		name = T(682--[[Oxygen]]),
+		text1 = T(302535920000162--[[Need]]),
+		text2 = T(302535920001221--[[Change this %s so it needs a %s source.]]),
 		con = "air_consumption",
 	},
 	WaterFree = {
 		icon = "UI/Icons/res_water.tga",
-		name = TranslationTable[681--[[Water]]],
-		text1 = TranslationTable[4325--[[Free]]],
-		text2 = TranslationTable[302535920001220--[[Change this %s so it doesn't need a %s source.]]],
+		name = T(681--[[Water]]),
+		text1 = T(4325--[[Free]]),
+		text2 = T(302535920001220--[[Change this %s so it doesn't need a %s source.]]),
 		con = "water_consumption",
 	},
 	WaterNeed = {
 		icon = "UI/Icons/res_water.tga",
-		name = TranslationTable[681--[[Water]]],
-		text1 = TranslationTable[302535920000162--[[Need]]],
-		text2 = TranslationTable[302535920001221--[[Change this %s so it needs a %s source.]]],
+		name = T(681--[[Water]]),
+		text1 = T(302535920000162--[[Need]]),
+		text2 = T(302535920001221--[[Change this %s so it needs a %s source.]]),
 		con = "water_consumption",
 	},
 	PowerFree = {
 		icon = "UI/Icons/res_electricity.tga",
-		name = TranslationTable[11683--[[Electricity]]],
-		text1 = TranslationTable[4325--[[Free]]],
-		text2 = TranslationTable[302535920001220--[[Change this %s so it doesn't need a %s source.]]],
+		name = T(11683--[[Electricity]]),
+		text1 = T(4325--[[Free]]),
+		text2 = T(302535920001220--[[Change this %s so it doesn't need a %s source.]]),
 		con = "electricity_consumption",
 	},
 	PowerNeed = {
 		icon = "UI/Icons/res_electricity.tga",
-		name = TranslationTable[11683--[[Electricity]]],
-		text1 = TranslationTable[302535920000162--[[Need]]],
-		text2 = TranslationTable[302535920001221--[[Change this %s so it needs a %s source.]]],
+		name = T(11683--[[Electricity]]),
+		text1 = T(302535920000162--[[Need]]),
+		text2 = T(302535920001221--[[Change this %s so it needs a %s source.]]),
 		con = "electricity_consumption",
 	},
 }
@@ -125,7 +130,7 @@ local function SetGridInfo(action, obj, name, grid)
 --~ 	local consumption = obj[grid.con]
 --~ 	if consumption and consumption ~= 0 then
 	if obj[grid.con] then
-		SetHint(action, grid.text2:format(name, grid.name))
+		SetHint(action, Translate(grid.text2):format(name, grid.name))
 		SetIcon(action, grid.text1, grid.icon)
 	else
 		action.ActionId = ""
@@ -135,95 +140,115 @@ end
 local cheats_lookup = {
 -- Colonist
 	FillAll = {
-		des = TranslationTable[302535920001202--[[Fill all stat bars.]]],
+		des = T(302535920001202--[[Fill all stat bars.]]),
 	},
 	SpawnColonist = {
-		des = TranslationTable[302535920000005--[[Drops a new colonist in selected dome.]]],
+		des = T(302535920000005--[[Drops a new colonist in selected dome.]]),
 		icon = "UI/Icons/ColonyControlCenter/colonist_on.tga",
 	},
 	PrefDbl = {
-		des = TranslationTable[302535920001203--[[Double %s's performance.]]],
+		des = T(302535920001203--[[Double <str>'s performance.]]),
 		des_name = true,
 	},
 	PrefDef = {
-		des = TranslationTable[302535920001204--[[Reset %s's performance to default.]]],
+		des = T(302535920001204--[[Reset <str>'s performance to default.]]),
 		des_name = true,
 	},
 	ReneagadeCapDbl = {
-		des = TranslationTable[302535920001236--[[Double amount of reneagades this station can negate (currently: %s) < Reselect to update amount.]]],
+		des = T(302535920001236--[[Double amount of reneagades this station can negate (currently: <str>) < Reselect to update amount.]]),
 		des_name = "negated_renegades",
 	},
 	ReneagadeCapDef = {
-		des = TranslationTable[302535920001603--[[Reset the amount of reneagades this station can negate.]]],
+		des = T(302535920001603--[[Reset the amount of reneagades this station can negate.]]),
 	},
 	Die = {
-		des = TranslationTable[302535920001431--[[Kill this colonist!]]],
+		des = T(302535920001431--[[Kill this colonist!]]),
 	},
 	ViewConstruct = {
-		des = TranslationTable[302535920001531--[[Make the building model look like a construction site (toggle).]]],
+		des = T(302535920001531--[[Make the building model look like a construction site (toggle).]]),
 	},
 	ViewEditor = {
-		des = TranslationTable[302535920001531--[[Make the building model look simpler (toggle).]]],
+		des = T(302535920001531--[[Make the building model look simpler (toggle).]]),
 	},
 	CrimeEvent = {
-		des = TranslationTable[302535920001541--[[Start a Crime Event]]],
+		des = T(302535920001541--[[Start a Crime Event]]),
 	},
 	FillComfort = {
-		des = Translate(302535920001606--[[Max the <green>%s</green> value for this colonist.]]):format(TranslationTable[4295--[[Comfort]]])
-			.. "\n\n" .. TranslationTable[4296--[[Residences and visited buildings improve Comfort up to their Service Comfort value, but Colonists will try to visit only buildings that correspond to their interests. Colonists are more inclined to have children at higher Comfort. Earthborn Colonists whose Comfort is depleted will quit their job and leave the Colony at first opportunity.]]],
+		des = T{302535920001606--[[Max the <green><stat></green> value for this colonist.
+
+<info>]],
+			stat = T(4295--[[Comfort]]),
+			info = T(4296--[[Residences and visited buildings improve Comfort up to their Service Comfort value, but Colonists will try to visit only buildings that correspond to their interests. Colonists are more inclined to have children at higher Comfort. Earthborn Colonists whose Comfort is depleted will quit their job and leave the Colony at first opportunity.]]),
+		},
 	},
 	FillHealth = {
-		des = Translate(302535920001606--[[Max the <green>%s</green> value for this colonist.]]):format(TranslationTable[4291--[[Health]]])
-			.. "\n\n" .. TranslationTable[4292--[[Represents physical injury, illness and exhaustion. Lowered by working on a heavy workload, having no functional home, shock when deprived from vital resources or when the Colonist is injured. Colonists can be healed in Medical Buildings in a powered Dome, but only if they are provided with Food, Water and Oxygen. Colonists can't work at low health unless they're Fit.]]],
+		des = T{302535920001606--[[snipped]],
+			stat = T(4291--[[Health]]),
+			info = T(4292--[[Represents physical injury, illness and exhaustion. Lowered by working on a heavy workload, having no functional home, shock when deprived from vital resources or when the Colonist is injured. Colonists can be healed in Medical Buildings in a powered Dome, but only if they are provided with Food, Water and Oxygen. Colonists can't work at low health unless they're Fit.]]),
+		},
 	},
 	FillMorale = {
-		des = Translate(302535920001606--[[Max the <green>%s</green> value for this colonist.]]):format(TranslationTable[4297--[[Morale]]])
-			.. "\n\n" .. TranslationTable[4298--[[Represents overall happiness, optimism and loyalty. All other stats affect Morale. Influences the Colonist’s job performance. Colonists with low Morale may become Renegades.]]],
+		des = T{302535920001606--[[snipped]],
+			stat = T(4297--[[Morale]]),
+			info = T(4298--[[Represents overall happiness, optimism and loyalty. All other stats affect Morale. Influences the Colonist’s job performance. Colonists with low Morale may become Renegades.]]),
+		},
 	},
 	FillSanity = {
-		des = Translate(302535920001606--[[Max the <green>%s</green> value for this colonist.]]):format(TranslationTable[4293--[[Sanity]]])
-			.. "\n\n" .. TranslationTable[4294--[[Represents mental condition. Lowered by working on a heavy workload, in outside buildings and during dark hours, witnessing the death of a Colonist living in the same Residence or various Martian disasters. Recovered when resting at home and by visiting certain Service Buildings.]]],
+		des = T{302535920001606--[[snipped]],
+			stat = T(4293--[[Sanity]]),
+			info = T(4294--[[Represents mental condition. Lowered by working on a heavy workload, in outside buildings and during dark hours, witnessing the death of a Colonist living in the same Residence or various Martian disasters. Recovered when resting at home and by visiting certain Service Buildings.]]),
+		},
 	},
 	RandomAge = {
-		des = Translate(302535920001607--[[Set a random <green>%s</green> for this colonist.]]):format(TranslationTable[11607--[[Age Group]]])
-			.. "\n\n" .. TranslationTable[3930--[[Colonists are divided into five Age Groups. Children and seniors cannot work.]]],
+		des = T{302535920001607--[[Set a random <green><stat></green> for this colonist.
+
+<info>]],
+			stat = T(11607--[[Age Group]]),
+			info = T(3930--[[Colonists are divided into five Age Groups. Children and seniors cannot work.]]),
+		},
 	},
 	RandomGender = {
-		des = Translate(302535920001607--[[Set a random <green>%s</green> for this colonist.]]):format(TranslationTable[3932--[[Sex]]])
-			.. "\n\n" .. TranslationTable[3933--[[The sex of the Colonist. The birth rate in any Dome is determined by the number of Male/Female couples at high Comfort.]]],
+		des = T{302535920001607--[[snipped]],
+			stat = T(3932--[[Sex]]),
+			info = T(3933--[[The sex of the Colonist. The birth rate in any Dome is determined by the number of Male/Female couples at high Comfort.]]),
+		},
 	},
 	RandomRace = {
-		des = Translate(302535920001607--[[Set a random <green>%s</green> for this colonist.]]):format(TranslationTable[302535920000741--[[Race]]])
-			.. "\n\n" .. TranslationTable[302535920001608--[["I said if you're thinkin' of being my baby
+		des = T{302535920001607--[[snipped]],
+			stat = T(302535920000741--[[Race]]),
+			info = T(302535920001608--[["I said if you're thinkin' of being my baby
 It don't matter if you're black or white
 
 I said if you're thinkin' of being my brother
-It don't matter if you're black or white"]]],
+It don't matter if you're black or white"]]),
+		},
 	},
 	RandomSpec = {
-		des = Translate(302535920001607--[[Set a random <green>%s</green> for this colonist.]]):format(TranslationTable[11609--[[Specialization]]])
-			.. "\n\n" .. TranslationTable[3931--[[Specialized Colonists perform better at certain workplaces.]]],
+		des = T{302535920001607--[[snipped]],
+			stat = T(11609--[[Specialization]]),
+			info = T(3931--[[Specialized Colonists perform better at certain workplaces.]]),
+		},
 	},
 	Renegade = {
-		des = TranslationTable[302535920001609--[[Turn this colonist into a renegade.]]],
+		des = T(302535920001609--[[Turn this colonist into a renegade.]]),
 	},
 	RenegadeClear = {
-		des = TranslationTable[302535920001610--[[Remove the renegade trait from this colonist.]]],
+		des = T(302535920001610--[[Remove the renegade trait from this colonist.]]),
 	},
 	MakeEarthsick = {
-		des = TranslationTable[302535920000064--[[Add Earthsick status to Colonist.]]],
+		des = T(302535920000064--[[Add Earthsick status to Colonist.]]),
 	},
 	Kill = {
-		des = TranslationTable[302535920000065--[[Colonist will no longer enjoy life.]]],
+		des = T(302535920000065--[[Colonist will no longer enjoy life.]]),
 	},
 	Age1Year = {
-		des = TranslationTable[302535920000244--[[Age will increase by 1 year.]]],
+		des = T(302535920000244--[[Age will increase by 1 year.]]),
 	},
 	AddTouristTrait = {
-		des = TranslationTable[302535920000663--[[Change colonist into a tourist.]]],
+		des = T(302535920000663--[[Change colonist into a tourist.]]),
 	},
 	AddSolOnMars = {
-		des = TranslationTable[302535920000981--[[Bump the time they've spent on Mars.]]],
+		des = T(302535920000981--[[Bump the time they've spent on Mars.]]),
 	},
 
 
@@ -238,74 +263,74 @@ It don't matter if you're black or white"]]],
 	ColonistCapDbl = {des = doublec},
 	ColonistCapDef = {des = resetc},
 	WorkManual = {
-		des = TranslationTable[302535920001210--[[Make this %s need workers.]]],
+		des = T(302535920001210--[[Make this <str> need workers.]]),
 		des_name = true,
 	},
 	CapDef = {
-		des = TranslationTable[302535920001213--[[Reset the storage capacity of this %s to default.]]],
+		des = T(302535920001213--[[Reset the storage capacity of this <str> to default.]]),
 		des_name = true,
 	},
 	ChargeDbl = {
-		des = TranslationTable[302535920001095--[[Double the charge capacity of this %s.]]],
+		des = T(302535920001095--[[Double the charge capacity of this <str>.]]),
 		des_name = true,
 	},
 	ChargeDef = {
-		des = TranslationTable[302535920001096--[[Reset the charge capacity of this %s to default.]]],
+		des = T(302535920001096--[[Reset the charge capacity of this <str> to default.]]),
 		des_name = true,
 	},
 	EmptyDepot = {
-		des = TranslationTable[302535920001214--[[Sticks small depot in front of mech depot and moves all resources to it (max of 20 000).]]],
+		des = T(302535920001214--[[Sticks small depot in front of mech depot and moves all resources to it (max of 20 000).]]),
 	},
 	["Quick build"] = {
-		des = TranslationTable[302535920000060--[[Instantly complete building without needing resources.]]],
+		des = T(302535920000060--[[Instantly complete building without needing resources.]]),
 	},
 	Fill = {
-		des = TranslationTable[302535920001232--[[Fill the storage of this building.]]],
+		des = T(302535920001232--[[Fill the storage of this building.]]),
 	},
 	AllShiftsOn = {
-		des = TranslationTable[302535920001215--[[Turn on all work shifts.]]],
+		des = T(302535920001215--[[Turn on all work shifts.]]),
 	},
 	CompleteTraining = {
-		des = TranslationTable[302535920001600--[[Instantly finish the training for all visitors.]]],
+		des = T(302535920001600--[[Instantly finish the training for all visitors.]]),
 	},
 	GenerateOffer = {
-		des = TranslationTable[302535920001602--[[Force add a new trade offer.]]],
+		des = T(302535920001602--[[Force add a new trade offer.]]),
 	},
 	ToggleGlass = {
-		des = TranslationTable[302535920001617--[[Toggle opening all dome glass (for screenshots?).]]],
+		des = T(302535920001617--[[Toggle opening all dome glass (for screenshots?).]]),
 	},
 	ToggleFreeze = {
-		des = TranslationTable[302535920000985--[[Toggle frozen state of building.]]],
+		des = T(302535920000985--[[Toggle frozen state of building.]]),
 	},
 	FinishConstruct = {
-		des = TranslationTable[302535920001428--[[Instantly finish current drone/biorobot.]]],
+		des = T(302535920001428--[[Instantly finish current drone/biorobot.]]),
 	},
 	FillAll = {
-		des = TranslationTable[302535920001463--[[Fill all depots of same type.]]],
+		des = T(302535920001463--[[Fill all depots of same type.]]),
 	},
 	SpawnDrone = {
-		des = TranslationTable[302535920001466--[[Spawn a drone.]]],
+		des = T(302535920001466--[[Spawn a drone.]]),
 	},
 	SpawnDrone = {
-		des = TranslationTable[302535920001466--[[Spawn a drone.]]],
+		des = T(302535920001466--[[Spawn a drone.]]),
 	},
 	SpawnAndroid = {
-		des = TranslationTable[302535920001577--[[Spawn an Android.]]],
+		des = T(302535920001577--[[Spawn an Android.]]),
 	},
 	AddProgressPoints = {
-		des = TranslationTable[302535920000983--[[Bump the TV Show progress by 5000.]]],
+		des = T(302535920000983--[[Bump the TV Show progress by 5000.]]),
 	},
 	ResetShowProgress = {
-		des = TranslationTable[302535920001628--[[Reset the TV Show progress.]]],
+		des = T(302535920001628--[[Reset the TV Show progress.]]),
 	},
 	VolMinus5 = {
-		des = TranslationTable[302535920001629--[[Increase lake volume by 5.]]],
+		des = T(302535920001629--[[Increase lake volume by 5.]]),
 	},
 	VolPlus5 = {
-		des = TranslationTable[302535920001630--[[Decrease lake volume by 5.]]],
+		des = T(302535920001630--[[Decrease lake volume by 5.]]),
 	},
 	InstHarvest = {
-		des = TranslationTable[302535920001668--[[Instantly harvest current crop.]]],
+		des = T(302535920001668--[[Instantly harvest current crop.]]),
 	},
 
 
@@ -315,38 +340,38 @@ It don't matter if you're black or white"]]],
 
 -- Rover/Drone
 	BattCapDbl = {
-		des = TranslationTable[302535920001216--[[Double the battery capacity.]]],
+		des = T(302535920001216--[[Double the battery capacity.]]),
 	},
 	Scan = {
-		des = TranslationTable[979029137252--[[Scanned an Anomaly]]],
+		des = T(979029137252--[[Scanned an Anomaly]]),
 		icon = "UI/Icons/pin_scan.tga",
 	},
 	BattCapDef = {
-		des = TranslationTable[302535920001611--[[Reset the battery cap to default.]]],
+		des = T(302535920001611--[[Reset the battery cap to default.]]),
 	},
 	DrainBattery = {
-		des = TranslationTable[302535920001612--[[Drain the battery to zero.]]],
+		des = T(302535920001612--[[Drain the battery to zero.]]),
 	},
 	RechargeBattery = {
-		des = TranslationTable[302535920001613--[[Refill the battery to max.]]],
+		des = T(302535920001613--[[Refill the battery to max.]]),
 	},
 	Despawn = {
-		des = TranslationTable[833734167742--[[Delete Item]]],
+		des = T(833734167742--[[Delete Item]]),
 	},
 	MoveSpeedDbl = {
-		des = TranslationTable[302535920001614--[[Doubles the move speed.]]],
+		des = T(302535920001614--[[Doubles the move speed.]]),
 	},
 	MoveSpeedDef = {
-		des = TranslationTable[302535920001615--[[Reset the move speed to default.]]],
+		des = T(302535920001615--[[Reset the move speed to default.]]),
 	},
 	GoHome = {
-		des = TranslationTable[302535920000929--[[Tell drone to go back to controller.]]],
+		des = T(302535920000929--[[Tell drone to go back to controller.]]),
 	},
 	RemoveDustRC = {
-		des = TranslationTable[302535920001631--[[Remove dust covering Rover.]]],
+		des = T(302535920001631--[[Remove dust covering Rover.]]),
 	},
 	SpawnAllDrones = {
-		des = TranslationTable[302535920001470--[[Try to spawn all prefabs at this dronehub.]]],
+		des = T(302535920001470--[[Try to spawn all prefabs at this dronehub.]]),
 	},
 
 
@@ -357,37 +382,37 @@ It don't matter if you're black or white"]]],
 -- Rocket/Shuttles
 	-- when i added a "working" AddDust to rockets it showed up twice, so i'm lazy
 	AddDust2 = {
-		des = TranslationTable[302535920001225--[[Adds dust and maintenance points.]]],
+		des = T(302535920001225--[[Adds dust and maintenance points.]]),
 		name = "AddDust",
 	},
 	AddDustRC = {
-		des = TranslationTable[302535920001225--[[Adds dust and maintenance points.]]],
+		des = T(302535920001225--[[Adds dust and maintenance points.]]),
 	},
 	CleanAndFix2 = {
-		des = TranslationTable[302535920001226--[[Cleans dust and removes maintenance points.]]],
+		des = T(302535920001226--[[Cleans dust and removes maintenance points.]]),
 		name = "CleanAndFix",
 	},
 	Launch = {
-		des = TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920001233--[[Launches rocket without asking.]]],
+		des = T(6779--[[Warning]]) .. ": " .. T(302535920001233--[[Launches rocket without asking.]]),
 		icon = "UI/Icons/ColonyControlCenter/rocket_r.tga",
 	},
 	ShowFlights = {
-		des = TranslationTable[302535920001599--[[Show flight trajectories.]]],
+		des = T(302535920001599--[[Show flight trajectories.]]),
 	},
 	MaxShuttlesDbl = {
-		des = TranslationTable[302535920001217--[[Double the shuttles this ShuttleHub can control.]]],
+		des = T(302535920001217--[[Double the shuttles this ShuttleHub can control.]]),
 	},
 	MaxShuttlesDef = {
-		des = TranslationTable[302535920001598--[[Reset shuttle control amount to default.]]],
+		des = T(302535920001598--[[Reset shuttle control amount to default.]]),
 	},
 	MaxShuttles = {
-		des = TranslationTable[302535920001416--[[Max out shuttles for this hub.]]],
+		des = T(302535920001416--[[Max out shuttles for this hub.]]),
 	},
 --~ 	Refuel = {
---~ 		des = TranslationTable[302535920001416--[[Max out shuttles for this hub.]]],
+--~ 		des = T(302535920001416--[[Max out shuttles for this hub.]]),
 --~ 	},
 	Refuel = {
-		des = TranslationTable[302535920001053--[[Fill up rocket with fuel.]]],
+		des = T(302535920001053--[[Fill up rocket with fuel.]]),
 		icon = "UI/Icons/res_fuel.tga",
 	},
 
@@ -398,31 +423,31 @@ It don't matter if you're black or white"]]],
 
 -- Units
 	Breadcrumbs = {
-		des = TranslationTable[302535920001464--[[Leave a trail of rudimentary orbs.]]],
+		des = T(302535920001464--[[Leave a trail of rudimentary orbs.]]),
 	},
 	SpawnDog = {
-		des = TranslationTable[302535920001632--[[Spawn an animal.]]],
+		des = T(302535920001632--[[Spawn an animal.]]),
 	},
 	SpawnGoat = {
-		des = TranslationTable[302535920001632--[[Spawn an animal.]]],
+		des = T(302535920001632--[[Spawn an animal.]]),
 	},
 	SpawnCat = {
-		des = TranslationTable[302535920001632--[[Spawn an animal.]]],
+		des = T(302535920001632--[[Spawn an animal.]]),
 	},
 	SpawnPony = {
-		des = TranslationTable[302535920001632--[[Spawn an animal.]]],
+		des = T(302535920001632--[[Spawn an animal.]]),
 	},
 	SpawnPenguin = {
-		des = TranslationTable[302535920001632--[[Spawn an animal.]]],
+		des = T(302535920001632--[[Spawn an animal.]]),
 	},
 	SpawnRabbit = {
-		des = TranslationTable[302535920001632--[[Spawn an animal.]]],
+		des = T(302535920001632--[[Spawn an animal.]]),
 	},
 	SpawnDeer = {
-		des = TranslationTable[302535920001632--[[Spawn an animal.]]],
+		des = T(302535920001632--[[Spawn an animal.]]),
 	},
 	SpawnLlama = {
-		des = TranslationTable[302535920001632--[[Spawn an animal.]]],
+		des = T(302535920001632--[[Spawn an animal.]]),
 	},
 
 
@@ -432,55 +457,55 @@ It don't matter if you're black or white"]]],
 
 -- Misc
 	MoveRealm = {
-		des = TranslationTable[302535920001380--[[Move object to new realm]]],
+		des = T(302535920001380--[[Move object to new realm]]),
 	},
 	FindResource = {
-		des = TranslationTable[302535920001218--[[Selects nearest storage containing specified resource (shows list of resources).]]],
+		des = T(302535920001218--[[Selects nearest storage containing specified resource (shows list of resources).]]),
 		icon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 	},
 	Examine = {
-		des = TranslationTable[302535920001277--[[Open %s in the Object Examiner.]]],
+		des = T(302535920001277--[[Open <str> in the Object Examiner.]]),
 		des_name = true,
 		icon = ChoGGi.library_path .. "UI/incal_egg.png",
 	},
 --~ 	AddFuel = {
---~ 		des = TranslationTable[302535920001053--[[Fill up %s with fuel.]]],
+--~ 		des = T(302535920001053--[[Fill up a rocket with fuel.]]),
 --~ 		des_name = true,
 --~ 		icon = "UI/Icons/res_fuel.tga",
 --~ 	},
 	DeleteObject = {
-		des = TranslationTable[302535920000414--[[Are you sure you wish to delete %s?]]],
+		des = T(302535920000414--[["Are you sure you wish to delete <color ChoGGi_red><str></color>?"]]),
 		des_name = true,
 		icon = "UI/Icons/Sections/warning.tga",
 	},
 	ColourRandom = {
-		des = TranslationTable[302535920001224--[[Changes colour of %s to random colours (doesn't change attachments).]]],
+		des = T(302535920001224--[[Changes colour of <str> to random colours (doesn't change attachments).]]),
 		des_name = true,
 	},
 	ColourDefault = {
-		des = TranslationTable[302535920001246--[[Changes colour of %s back to default.]]],
+		des = T(302535920001246--[[Changes colour of <str> back to default.]]),
 		des_name = true,
 	},
 	Expand = {
-		des = TranslationTable[302535920001601--[[Make the pool expand to the next radius.]]],
+		des = T(302535920001601--[[Make the pool expand to the next radius.]]),
 	},
 	Remove = {
-		des = TranslationTable[302535920001604--[[Remove this pool.]]],
+		des = T(302535920001604--[[Remove this pool.]]),
 	},
 	ToggleWaterGrid = {
-		des = TranslationTable[302535920001605--[[Shows a debug type view of the grid.]]],
+		des = T(302535920001605--[[Shows a debug type view of the grid.]]),
 	},
 	SpawnFirefly = {
-		des = TranslationTable[302535920001616--[[Spawn a firefly.]]],
+		des = T(302535920001616--[[Spawn a firefly.]]),
 	},
 	ChangeGrade = {
-		des = TranslationTable[302535920000977--[[Change grade of a deposit.]]],
+		des = T(302535920000977--[[Change grade of a deposit.]]),
 	},
 	FillWater = {
-		des = TranslationTable[302535920001646--[[Max out the stored water to fire it up immediately.]]],
+		des = T(302535920001646--[[Max out the stored water to fire it up immediately.]]),
 	},
 	DeleteAllObjects = {
-		des = TranslationTable[302535920001664--[[Do you want to delete all objects that are the same as this object from the map?]]],
+		des = T(302535920001664--[[Do you want to delete all objects that are the same as this object from the map?]]),
 	},
 
 
@@ -489,19 +514,19 @@ It don't matter if you're black or white"]]],
 
 -- crystal myst
 	SpawnDustDevil = {
-		des = TranslationTable[302535920001593--[[Spawns a dust devil nearby.]]],
+		des = T(302535920001593--[[Spawns a dust devil nearby.]]),
 	},
 	LowConsumption = {
-		des = TranslationTable[302535920001594--[[Lowers the electricity_consumption by 99%.]]],
+		des = T(302535920001594--[[Lowers the electricity_consumption by 99%.]]),
 	},
 	AllowExploration = {
-		des = TranslationTable[302535920001595--[[Something to do with CrystallineFrequencyJamming tech.]]],
+		des = T(302535920001595--[[Something to do with CrystallineFrequencyJamming tech.]]),
 	},
 	AllowSalvage = {
-		des = TranslationTable[302535920001596--[[Lets you salvage the crystal.]]],
+		des = T(302535920001596--[[Lets you salvage the crystal.]]),
 	},
 	StartLiftoff = {
-		des = TranslationTable[302535920001597--[[Makes all crystals liftoff and head to the centre.]]],
+		des = T(302535920001597--[[Makes all crystals liftoff and head to the centre.]]),
 	},
 }
 -- stuff checked in the SetInfoPanelCheatHints func
@@ -576,9 +601,13 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 			if look.des then
 				if look.des_name then
 					if type(look.des_name) == "string" then
-						SetHint(action, look.des:format(obj[look.des_name]))
+						SetHint(action, T{look.des,
+							str = obj[look.des_name],
+						})
 					else
-						SetHint(action, look.des:format(name))
+						SetHint(action, T{look.des,
+							str = name,
+						})
 					end
 				else
 					SetHint(action, look.des)
@@ -598,35 +627,35 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 		-- cheats_lookup2 is a list of name = true
 		elseif cheats_lookup2[aid] then
 			if aid == "ToggleCollision" then
-				SetHint(action, TranslationTable[302535920001543--[[Set collisions on %s. Collisions disabled: %s]]]:format(name, ComFuncs.SettingState(obj.ChoGGi_CollisionsDisabled)))
+				SetHint(action, Translate(302535920001543--[[Set collisions on %s. Collisions disabled: %s]]):format(name, ComFuncs.SettingState(obj.ChoGGi_CollisionsDisabled)))
 				SetIcon(action, nil, "CommonAssets/UI/Menu/ToggleOcclusion.tga")
 
 			elseif aid == "CleanAndFix" then
 				if obj:IsKindOfClasses(skip_CleanAndFix_AddDust) then
 					action.ActionId = ""
 				else
-					SetHint(action, TranslationTable[302535920001226--[[Cleans dust and removes maintenance points.]]])
+					SetHint(action, T(302535920001226--[[Cleans dust and removes maintenance points.]]))
 				end
 
 			elseif aid == "AddDust" then
 				if obj:IsKindOfClasses(skip_CleanAndFix_AddDust) then
 					action.ActionId = ""
 				else
-					SetHint(action, TranslationTable[302535920001225--[[Adds dust and maintenance points.]]])
+					SetHint(action, T(302535920001225--[[Adds dust and maintenance points.]]))
 				end
 
 			elseif aid == "ToggleSigns" then
 				if obj:IsKindOfClasses(skip_ToggleSigns) then
 					action.ActionId = ""
 				else
-					SetHint(action, TranslationTable[302535920001223--[[Toggle any signs above %s (until state is changed).]]]:format(name))
+					SetHint(action, Translate(302535920001223--[[Toggle any signs above %s (until state is changed).]]):format(name))
 				end
 
 			elseif aid == "Destroy" then
 				if obj:IsKindOf("RocketBase") or obj.destroyed then
 					action.ActionId = ""
 				else
-					SetHint(action, TranslationTable[302535920001227--[[Turns object into ruin.]]])
+					SetHint(action, T(302535920001227--[[Turns object into ruin.]]))
 					SetIcon(action, nil, "UI/Icons/IPButtons/demolition.tga")
 				end
 
@@ -634,14 +663,14 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 				if obj:IsKindOf("SubsurfaceAnomaly") then
 					action.ActionId = ""
 				else
-					SetHint(action, TranslationTable[302535920001231--[[Refill the deposit to full capacity.]]])
+					SetHint(action, T(302535920001231--[[Refill the deposit to full capacity.]]))
 				end
 
 			elseif aid == "DoubleMaxAmount" then
 				if obj:IsKindOf("SubsurfaceAnomaly") then
 					action.ActionId = ""
 				else
-					SetHint(action, TranslationTable[302535920001234--[[Double the amount this %s can hold.]]]:format(name))
+					SetHint(action, Translate(302535920001234--[[Double the amount this %s can hold.]]):format(name))
 				end
 
 			elseif aid == "Upgrade1" then
@@ -652,27 +681,27 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 				SetUpgradeInfo(action, obj, 3)
 			elseif aid == "WorkAuto" then
 				local bs = ChoGGi.UserSettings.BuildingSettings
-				SetHint(action, TranslationTable[302535920001209--[[Make this %s not need workers (performance: %s).]]]:format(name, bs and bs[id] and bs[id].performance or 100))
+				SetHint(action, Translate(302535920001209--[[Make this %s not need workers (performance: %s).]]):format(name, bs and bs[id] and bs[id].performance or 100))
 
 			elseif aid == "CapDbl" then
 				if obj:IsKindOf("RocketBase") then
-					SetHint(action, TranslationTable[302535920001211--[[Double the export storage capacity of this %s.]]]:format(name))
+					SetHint(action, Translate(302535920001211--[[Double the export storage capacity of this %s.]]):format(name))
 				else
-					SetHint(action, TranslationTable[302535920001212--[[Double the storage capacity of this %s.]]]:format(name))
+					SetHint(action, Translate(302535920001212--[[Double the storage capacity of this %s.]]):format(name))
 				end
 
 			elseif aid == "Malfunction" then
 				if obj.destroyed or obj.is_malfunctioned then
 					action.ActionId = ""
 				else
-					SetHint(action, TranslationTable[8039--[[Trait: Idiot (can cause a malfunction)]]] .. "...\n" .. TranslationTable[53--[[Malfunction]]] .. "?")
+					SetHint(action, T(8039--[[Trait: Idiot (can cause a malfunction)]]) .. "...\n" .. T(53--[[Malfunction]]) .. "?")
 				end
 
 			elseif aid == "Unfreeze" then
 				if obj:IsKindOf("DroneHub") or obj.destroyed then
 					action.ActionId = ""
 				else
-					SetHint(action, TranslationTable[302535920000903--[[Unfreeze frozen object.]]])
+					SetHint(action, T(302535920000903--[[Unfreeze frozen object.]]))
 				end
 
 			elseif aid == "Empty" then
@@ -680,25 +709,25 @@ function ChoGGi.InfoFuncs.SetInfoPanelCheatHints(win)
 					action.ActionId = ""
 				else
 					if obj:IsKindOfClasses(skip_Empty) then
-						SetHint(action, TranslationTable[302535920001228--[[Set the stored amount of this %s to 0.]]]:format(name))
+						SetHint(action, Translate(302535920001228--[[Set the stored amount of this %s to 0.]]):format(name))
 					else
-						SetHint(action, TranslationTable[302535920001230--[[Empties the storage of this building.
+						SetHint(action, T(302535920001230--[[Empties the storage of this building.
 
-	If this isn't a dumping site then waste rock will not be emptied.]]])
+	If this isn't a dumping site then waste rock will not be emptied.]]))
 					end
 				end
 
 			elseif aid == "Break" then
 				if obj:IsKindOf("ElectricityGridElement") then
-					SetHint(action, TranslationTable[3890--[[Cable Fault]]])
+					SetHint(action, T(3890--[[Cable Fault]]))
 				else
-					SetHint(action, TranslationTable[3891--[[Pipe Leak]]])
+					SetHint(action, T(3891--[[Pipe Leak]]))
 				end
 			elseif aid == "Repair" then
 				if obj:IsKindOf("ElectricityGridElement") then
-					SetHint(action, TranslationTable[6924--[[Repair]]] .. " " .. TranslationTable[3890--[[Cable Fault]]])
+					SetHint(action, T(6924--[[Repair]]) .. " " .. T(3890--[[Cable Fault]]))
 				else
-					SetHint(action, TranslationTable[6924--[[Repair]]] .. " " .. TranslationTable[3891--[[Pipe Leak]]])
+					SetHint(action, T(6924--[[Repair]]) .. " " .. T(3891--[[Pipe Leak]]))
 				end
 			-- no more elseif
 			end
@@ -752,11 +781,11 @@ function CObject:CheatDeleteAllObjects()
 	end
 
 	ComFuncs.QuestionBox(
-		TranslationTable[6779--[[Warning]]] .. "!\n" .. TranslationTable[697--[[Destroy]]] .. " " .. TranslationTable[4493--[[All]]] .. ": " .. id,
+		T(6779--[[Warning]]) .. "!\n" .. T(697--[[Destroy]]) .. " " .. T(4493--[[All]]) .. ": " .. id,
 		CallBackFunc,
-		TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[697--[[Destroy]]],
-		TranslationTable[697--[[Destroy]]] .. " " .. TranslationTable[4493--[[All]]] .. " " .. id,
-		TranslationTable[1176--[[Cancel Destroy]]]
+		T(6779--[[Warning]]) .. ": " .. T(697--[[Destroy]]),
+		T(697--[[Destroy]]) .. " " .. T(4493--[[All]]) .. " " .. id,
+		T(1176--[[Cancel Destroy]])
 	)
 end
 
@@ -803,8 +832,8 @@ function CObject:CheatMoveRealm(map_id)
 	ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = TranslationTable[302535920001262--[[Move To Realm]]],
-		hint = TranslationTable[302535920001380--[[Move object to new realm]]],
+		title = T(302535920001262--[[Move To Realm]]),
+		hint = T(302535920001380--[[Move object to new realm]]),
 	}
 end
 
@@ -877,13 +906,13 @@ function Colonist:CheatRandomAge()
 end
 function Colonist:CheatDie()
 	ComFuncs.QuestionBox(
-		TranslationTable[6779--[[Warning]]] .. "!\n" .. TranslationTable[302535920001430--[[Kill colonist-]]] .. "?",
+		T(6779--[[Warning]]) .. "!\n" .. T(302535920001430--[[Kill colonist-]]) .. "?",
 		function(answer)
 			if answer then
 				self:SetCommand("Die")
 			end
 		end,
-		TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000855--[[Last chance before deletion!]]]
+		T(6779--[[Warning]]) .. ": " .. T(302535920000855--[[Last chance before deletion!]])
 	)
 end
 
@@ -961,7 +990,7 @@ local function CheatChangeGrade(self)
 	ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = TranslationTable[302535920000977--[[Change grade of a deposit.]]],
+		title = T(302535920000977--[[Change grade of a deposit.]]),
 		skip_sort = true,
 	}
 end
@@ -1400,8 +1429,8 @@ function Dome:CheatCrimeEvent()
 	ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = TranslationTable[302535920001541--[[Start a Crime Event]]],
-		hint = TranslationTable[302535920001542--[[Renegades not required.]]],
+		title = T(302535920001541--[[Start a Crime Event]]),
+		hint = T(302535920001542--[[Renegades not required.]]),
 	}
 end
 

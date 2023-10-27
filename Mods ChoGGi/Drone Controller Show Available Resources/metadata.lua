@@ -3,9 +3,9 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_DroneControllerShowAvailableResources",
 	"steam_id", "1822481407",
 	"pops_any_uuid", "de76c1e8-9ef1-4e47-a3ff-dfcd4d516e34",
-	"version", 12,
+	"version", 13,
 	"version_major", 1,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"lua_revision", 1007000, -- Picard

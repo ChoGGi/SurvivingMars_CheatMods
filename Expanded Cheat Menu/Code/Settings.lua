@@ -8,7 +8,8 @@ local next, pairs, type, os = next, pairs, type, os
 
 local LuaCodeToTuple = LuaCodeToTuple
 local SaveLocalStorage = SaveLocalStorage
-local TranslationTable = TranslationTable
+local T = T
+local Translate = ChoGGi.ComFuncs.Translate
 
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
@@ -199,7 +200,7 @@ function ChoGGi.SettingFuncs.WriteSettings(settings)
 		local err
 		err, settings = LuaCodeToTuple(settings)
 		if err then
-			local err_str = TranslationTable[302535920000000--[[Expanded Cheat Menu]]] .. ": " .. TranslationTable[302535920000243--[[Problem saving settings! Error: %s]]]:format(err)
+			local err_str = Translate(T(302535920000000--[[Expanded Cheat Menu]]) .. ": " .. T(302535920000243--[[Problem saving settings! Error: %s]])):format(err)
 			if ChoGGi.Temp.GameLoaded then
 				print(err_str)
 			else

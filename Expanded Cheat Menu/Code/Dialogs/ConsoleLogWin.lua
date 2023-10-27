@@ -2,7 +2,8 @@
 
 -- displays the console in a dialog
 
-local TranslationTable = TranslationTable
+local T = T
+local Translate = ChoGGi.ComFuncs.Translate
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
 
 local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
@@ -21,7 +22,7 @@ DefineClass.ChoGGi_DlgConsoleLogWin = {
 function ChoGGi_DlgConsoleLogWin:Init(parent, context)
 	local g_Classes = g_Classes
 
-	self.title = TranslationTable[302535920001120--[[Console Window]]]
+	self.title = T(302535920001120--[[Console Window]])
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)
@@ -33,8 +34,8 @@ function ChoGGi_DlgConsoleLogWin:Init(parent, context)
 
 	self.idToggleTrans = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idToggleTrans",
-		Text = TranslationTable[302535920000629--[[UI Transparency]]],
-		RolloverText = TranslationTable[302535920001367--[[Toggles]]] .. " " .. TranslationTable[302535920000629--[[UI Transparency]]],
+		Text = T(302535920000629--[[UI Transparency]]),
+		RolloverText = T(302535920001367--[[Toggles]]) .. " " .. T(302535920000629--[[UI Transparency]]),
 		Dock = "left",
 		Margins = box(4, 0, 0, 0),
 		OnChange = self.idToggleTrans_OnChange,
@@ -49,16 +50,16 @@ function ChoGGi_DlgConsoleLogWin:Init(parent, context)
 	self.idShowFileLog = g_Classes.ChoGGi_XButton:new({
 		Id = "idShowFileLog",
 		Dock = "left",
-		Text = TranslationTable[302535920001026--[[Update Text]]],
-		RolloverText = TranslationTable[302535920001091--[[Flushes log to disk and displays in console log.]]],
+		Text = T(302535920001026--[[Update Text]]),
+		RolloverText = T(302535920001091--[[Flushes log to disk and displays in console log.]]),
 		OnPress = self.idShowFileLog_OnPress,
 	}, self.idButtonContainer)
 
 	self.idShowModsLog = g_Classes.ChoGGi_XButton:new({
 		Id = "idShowModsLog",
 		Dock = "left",
-		Text = TranslationTable[302535920000071--[[Show Mods Log]]],
-		RolloverText = TranslationTable[302535920001123--[[Shows any mod msgs in the log.]]],
+		Text = T(302535920000071--[[Show Mods Log]]),
+		RolloverText = T(302535920001123--[[Shows any mod msgs in the log.]]),
 		OnPress = self.idShowModsLog_OnPress,
 	}, self.idButtonContainer)
 
@@ -70,16 +71,16 @@ function ChoGGi_DlgConsoleLogWin:Init(parent, context)
 	self.idClearLog = g_Classes.ChoGGi_XButton:new({
 		Id = "idClearLog",
 		Dock = "left",
-		Text = TranslationTable[302535920000734--[[Clear Log]]],
-		RolloverText = TranslationTable[302535920000477--[[Clear out the windowed console log.]]],
+		Text = T(302535920000734--[[Clear Log]]),
+		RolloverText = T(302535920000477--[[Clear out the windowed console log.]]),
 		OnPress = self.idClearLog_OnPress,
 	}, self.idButtonContainer)
 
 	self.idClipboardCopy = g_Classes.ChoGGi_XButton:new({
 		Id = "idClipboardCopy",
 		Dock = "left",
-		Text = TranslationTable[302535920000664--[[Clipboard]]],
-		RolloverText = TranslationTable[302535920000406--[[Copy text to the clipboard.]]],
+		Text = T(302535920000664--[[Clipboard]]),
+		RolloverText = T(302535920000406--[[Copy text to the clipboard.]]),
 		OnPress = self.idClipboardCopy_OnPress,
 	}, self.idButtonContainer)
 
@@ -96,7 +97,7 @@ function ChoGGi_DlgConsoleLogWin:Init(parent, context)
 		Id = "idTextInput",
 		OnKbdKeyDown = self.idTextInput_OnKbdKeyDown,
 		RolloverTemplate = "Rollover",
-		RolloverTitle = TranslationTable[302535920001073--[[Console]]] .. " " .. TranslationTable[487939677892--[[Help]]],
+		RolloverTitle = T(302535920001073--[[Console]]) .. " " .. T(487939677892--[[Help]]),
 	}, self.idTextInputArea)
 
 	-- add tooltip
@@ -118,7 +119,7 @@ $123 or $EffectDeposit.display_name prints translated string.
 !UICity.labels.TerrainDeposit[1] move camera and select obj.
 
 s = SelectedObj, c() = GetCursorWorldPos(), restart() = quit(""restart"")"]])
-	self.idTextInput.Hint = TranslationTable[302535920001439--[["~obj, @func, @@type, %image, *r/*g/*m threads. Hover mouse for more info."]]]
+	self.idTextInput.Hint = Translate(302535920001439--[["~obj, @func, @@type, %image, *r/*g/*m threads. Hover mouse for more info."]])
 
 	-- look at them sexy internals
 	self.transp_mode = ChoGGi.Temp.Dlg_transp_mode

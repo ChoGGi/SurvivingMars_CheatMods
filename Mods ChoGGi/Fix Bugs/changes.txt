@@ -1,3 +1,6 @@
+v5.3
+Changed fix for Colonists Wrong Map Infobar to use a mod option as it's causing an issue trying to delete buggy objects.
+
 v5.2
 Refabbing rare extractors left the "working" dust plumes around them (thanks Pleasureasaur).
 

@@ -88,6 +88,14 @@ If you're bored and want to dig through the funcs in LandscapeFinish() to find o
 I added it as an option since it removes the fade out.]]),
 		"DefaultValue", true,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "ColonistsWrongMap",
+		"DisplayName", T(0000, "Colonists Wrong Map Infobar"),
+		"Help", T(0000, [[Having B&B and colonists in the underground will cause some issues (okay having B&B will) with colonists showing up as belonging to the wrong map.
+
+I added it as an option since this is causing issues for a user; it'll lock up on load when it tries to remove some buggy objects.]]),
+		"DefaultValue", true,
+	}),
 }
 
 local CmpLower = CmpLower

@@ -28,12 +28,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
-local c = const
-local what_game_lookup = {
-	Surviving = c.HaeraldProjectName and c.HaeraldProjectName == "Mars",
-	Stranded = c.ProjectName and c.ProjectName == "Bacon",
-}
-
 -- I should really split this into funcs and settings... one of these days
 ChoGGi = {
 	-- anyone examining ChoGGi will see this first
@@ -135,10 +129,17 @@ ChoGGi = {
 local ChoGGi = ChoGGi
 
 -- What game are we playing?
-if what_game_lookup.Stranded then
-	ChoGGi.what_game = "Stranded"
+local c = const
+if c.HaeraldProjectName and c.HaeraldProjectName == "Mars" then
+	ChoGGi.what_game = "Mars"
+elseif c.HaeraldProjectName and c.HaeraldProjectName == "FVH" then
+	ChoGGi.what_game = "VV"
+elseif c.ProjectName and c.ProjectName == "Zulu" then
+	ChoGGi.what_game = "JA3"
+elseif c.ProjectName and c.ProjectName == "Bacon" then
+	ChoGGi.what_game = "SAD"
 else
-	ChoGGi.what_game = "Surviving"
+	ChoGGi.what_game = "Unknown"
 end
 
 
@@ -224,3 +225,15 @@ CreateRealTimeThread(function()
 	end
 
 end)
+
+
+if ChoGGi.what_game == "JA3" then
+
+	-- log spam reduce from shortcuts in main menu
+	local ChoOrig_GetOperationsInSector = GetOperationsInSector
+	function GetOperationsInSector(...)
+		if gv_Sectors then
+			return ChoOrig_GetOperationsInSector(...)
+		end
+	end
+end

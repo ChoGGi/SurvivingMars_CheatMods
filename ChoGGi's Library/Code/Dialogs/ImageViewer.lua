@@ -4,10 +4,11 @@
 
 local MeasureImage = UIL.MeasureImage
 
-local TranslationTable = TranslationTable
+local T = T
 local PopupToggle = ChoGGi.ComFuncs.PopupToggle
 local Random = ChoGGi.ComFuncs.Random
 local RetParamsParents = ChoGGi.ComFuncs.RetParamsParents
+local Translate = ChoGGi.ComFuncs.Translate
 
 local blacklist, g_env = ChoGGi.blacklist
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
@@ -48,7 +49,7 @@ function ChoGGi_DlgImageViewer:Init(parent, context)
 	end
 
 	self.idImageMenu = Random()
-	self.title = TranslationTable[302535920001469--[[Image Viewer]]]
+	self.title = T(302535920001469--[[Image Viewer]])
 	self.prefix = self.title
 
 	-- By the Power of Grayskull!
@@ -64,7 +65,7 @@ function ChoGGi_DlgImageViewer:Init(parent, context)
 	self:BuildImageMenuPopup()
 	self.idImages = g_Classes.ChoGGi_XComboButton:new({
 		Id = "idImages",
-		Text = TranslationTable[3794--[[Image]]],
+		Text = T(3794--[[Image]]),
 		OnMouseButtonDown = self.idImages_OnMouseButtonDown,
 		Dock = "left",
 	}, self.idButtonContainer)
@@ -91,9 +92,9 @@ function ChoGGi_DlgImageViewer:Init(parent, context)
 
 	-- only one image and it's not a valid image so close dlg
 	if wh == 0 and #self.images == 1 then
-		print(TranslationTable[302535920000109--[[Invalid Image]]])
+		print(Translate(302535920000109--[[Invalid Image]]))
 		ChoGGi.ComFuncs.MsgPopup(
-			TranslationTable[302535920000109--[[Invalid Image]]],
+			T(302535920000109--[[Invalid Image]]),
 			self.title
 		)
 		self:Close()
@@ -121,7 +122,7 @@ function ChoGGi_DlgImageViewer:ExportImage()
 		print(msg)
 		ChoGGi.ComFuncs.MsgPopup(
 			msg,
-			TranslationTable[302535920001449--[[Export]]]
+			T(302535920001449--[[Export]])
 		)
 	end
 end
@@ -139,8 +140,8 @@ function ChoGGi_DlgImageViewer:BuildImageMenuPopup()
 	end
 	images[#images+1] = {is_spacer = true}
 	images[#images+1] = {
-		name = TranslationTable[302535920001449--[[Export]]],
-		hint = TranslationTable[302535920000219--[[Export viewed image to %s.]]]:format(ConvertToOSPath("AppData")),
+		name = T(302535920001449--[[Export]]),
+		hint = Translate(302535920000219--[[Export viewed image to %s.]]):format(ConvertToOSPath("AppData")),
 		clicked = function()
 			self:ExportImage()
 		end,

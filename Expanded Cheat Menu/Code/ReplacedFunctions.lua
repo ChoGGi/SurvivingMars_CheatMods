@@ -7,7 +7,8 @@ local type, rawget = type, rawget
 local Sleep = Sleep
 local CreateRealTimeThread = CreateRealTimeThread
 local DeleteThread = DeleteThread
-local TranslationTable = TranslationTable
+local T = T
+local Translate = ChoGGi.ComFuncs.Translate
 
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local SetDlgTrans = ChoGGi.ComFuncs.SetDlgTrans
@@ -18,33 +19,10 @@ local AddToOrigFuncs = ChoGGi.ComFuncs.AddToOrigFuncs
 
 local UserSettings = ChoGGi.UserSettings
 local testing = ChoGGi.testing
+local what_game = ChoGGi.what_game
 
-do -- non-class obj funcs
-
-	-- this will reset override, so we sleep and reset it
-	local ChoOrig_ClosePlanetCamera = ClosePlanetCamera
-	AddToOrigFuncs("ClosePlanetCamera")
-	function ClosePlanetCamera(...)
-		if UserSettings.Lightmodel then
-			CreateRealTimeThread(function()
-				Sleep(100)
-				SetLightmodelOverride(1, UserSettings.Lightmodel)
-			end)
-		end
-		return ChoOrig_ClosePlanetCamera(...)
-	end
-
-	-- don't trigger quakes if setting is enabled
-	local ChoOrig_TriggerMarsquake = TriggerMarsquake
-	AddToOrigFuncs("TriggerMarsquake")
-	function TriggerMarsquake(...)
-		if not UserSettings.DisasterQuakeDisable then
-			return ChoOrig_TriggerMarsquake(...)
-		end
-		if UserSettings.DisasterQuakeDisable then
-			printC("ECM DisasterQuakeDisable")
-		end
-	end
+-- non-class obj funcs
+do
 
 	-- don't trigger toxic rains if setting is enabled
 	if rawget(_G, "RainProcedure") then
@@ -73,16 +51,6 @@ do -- non-class obj funcs
 			return
 		end
 		return ChoOrig_OpenGedApp(template, ...)
-	end
-
-	-- get rid of "This savegame was loaded in the past without required mods or with an incompatible game version."
-	local ChoOrig_WaitMarsMessage = WaitMarsMessage
-	AddToOrigFuncs("WaitMarsMessage")
-	function WaitMarsMessage(parent, title, msg, ...)
-		if UserSettings.SkipIncompatibleModsMsg and IsT(msg) == 10888 then
-			return
-		end
-		return ChoOrig_WaitMarsMessage(parent, title, msg, ...)
 	end
 
 	-- examine persist errors (if any)
@@ -119,49 +87,6 @@ do -- non-class obj funcs
 		return ChoOrig_TDevModeGetEnglishText(t, ...)
 	end
 
-	-- fix for sending nil id to it
-	local ChoOrig_LoadCustomOnScreenNotification = LoadCustomOnScreenNotification
-	AddToOrigFuncs("LoadCustomOnScreenNotification")
-	function LoadCustomOnScreenNotification(notification, ...)
-		-- the first return is id, and some mods (cough Ambassadors cough) send a nil id, which breaks the func
-		if table.unpack(notification) then
-			return ChoOrig_LoadCustomOnScreenNotification(notification, ...)
-		end
-	end
-
-	-- change rocket cargo cap
-	local ChoOrig_GetMaxCargoShuttleCapacity = GetMaxCargoShuttleCapacity
-	AddToOrigFuncs("GetMaxCargoShuttleCapacity")
-	function GetMaxCargoShuttleCapacity(...)
-		return UserSettings.StorageShuttle or ChoOrig_GetMaxCargoShuttleCapacity(...)
-	end
-
-
-	-- report building as not-a-wonder to the func that checks for wonders
-	local ChoOrig_UIGetBuildingPrerequisites = UIGetBuildingPrerequisites
-	AddToOrigFuncs("UIGetBuildingPrerequisites")
-	function UIGetBuildingPrerequisites(cat_id, template, ...)
-		-- missing dlc
-		if BuildingTemplates[template.id] then
-
-			-- save orig boolean
-			local orig_wonder = template.build_once
-
-			if UserSettings.Building_wonder then
-				-- always false so there's no build limit
-				template.build_once = false
-			end
-
-			-- store ret values as a table since there's more than one, and an update may change the amount
-			local ret = {ChoOrig_UIGetBuildingPrerequisites(cat_id, template, ...)}
-
-			-- make sure to restore orig value after func fires
-			template.build_once = orig_wonder
-
-			return table.unpack(ret)
-		end
-	end
-
 	-- stops confirmation dialog about missing mods (still lets you know they're missing)
 	local ChoOrig_GetMissingMods = GetMissingMods
 	AddToOrigFuncs("GetMissingMods")
@@ -171,41 +96,6 @@ do -- non-class obj funcs
 		else
 			return ChoOrig_GetMissingMods(...)
 		end
-	end
-
-	-- lets you load saved games that have dlc
-	do -- IsDlcAvailable/IsDlcRequired
-		local dlc_funcs = {
-			"IsDlcAvailable",
---~ 			"IsDlcAccessible",
-			"IsDlcRequired",
-		}
-		for i = 1, #dlc_funcs do
-			local name = dlc_funcs[i]
-
-			local ChoOrig_func = _G[name]
-			AddToOrigFuncs(name)
-			_G[name] = function(dlc, ...)
-				-- stuff added for future dlc is showing up and erroring out
-				if not dlc or dlc == "" then
-					return ChoOrig_func(dlc, ...)
-				end
-				-- returns true if the setting is true, or return the orig func
-				return UserSettings.SkipMissingDLC or ChoOrig_func(dlc, ...)
-			end
-		end
-	end -- do
-
-	-- lets you load saved games that have dlc
-	local ChoOrig_IsDlcRequired = IsDlcRequired
-	AddToOrigFuncs("IsDlcRequired")
-	function IsDlcRequired(dlc, ...)
-		-- stuff added for future dlc is showing up and erroring out
-		if not dlc or dlc == "" then
-			return ChoOrig_IsDlcRequired(dlc, ...)
-		end
-		-- returns true if the setting is true, or return the orig func
-		return UserSettings.SkipMissingDLC or ChoOrig_IsDlcRequired(dlc, ...)
 	end
 
 	-- always able to show console
@@ -235,6 +125,119 @@ do -- non-class obj funcs
 		SetDlgTrans(dlgConsoleLog)
 	end
 
+	-- UI transparency dialogs (buildmenu, pins, infopanel)
+	local ChoOrig_OpenDialog = OpenDialog
+	AddToOrigFuncs("OpenDialog")
+	function OpenDialog(...)
+		return SetDlgTrans(ChoOrig_OpenDialog(...))
+	end
+
+end -- do
+
+-- non-class obj funcs (mars)
+if what_game == "Mars" then
+
+	-- this will reset override, so we sleep and reset it
+	local ChoOrig_ClosePlanetCamera = ClosePlanetCamera
+	AddToOrigFuncs("ClosePlanetCamera")
+	function ClosePlanetCamera(...)
+		if UserSettings.Lightmodel then
+			CreateRealTimeThread(function()
+				Sleep(100)
+				SetLightmodelOverride(1, UserSettings.Lightmodel)
+			end)
+		end
+		return ChoOrig_ClosePlanetCamera(...)
+	end
+
+	-- don't trigger quakes if setting is enabled
+	local ChoOrig_TriggerMarsquake = TriggerMarsquake
+	AddToOrigFuncs("TriggerMarsquake")
+	function TriggerMarsquake(...)
+		if not UserSettings.DisasterQuakeDisable then
+			return ChoOrig_TriggerMarsquake(...)
+		end
+		if UserSettings.DisasterQuakeDisable then
+			printC("ECM DisasterQuakeDisable")
+		end
+	end
+
+	-- get rid of "This savegame was loaded in the past without required mods or with an incompatible game version."
+	local ChoOrig_WaitMarsMessage = WaitMarsMessage
+	AddToOrigFuncs("WaitMarsMessage")
+	function WaitMarsMessage(parent, title, msg, ...)
+		if UserSettings.SkipIncompatibleModsMsg and IsT(msg) == 10888 then
+			return
+		end
+		return ChoOrig_WaitMarsMessage(parent, title, msg, ...)
+	end
+
+
+	-- fix for sending nil id to it
+	local ChoOrig_LoadCustomOnScreenNotification = LoadCustomOnScreenNotification
+	AddToOrigFuncs("LoadCustomOnScreenNotification")
+	function LoadCustomOnScreenNotification(notification, ...)
+		-- the first return is id, and some mods (cough Ambassadors cough) send a nil id, which breaks the func
+		if table.unpack(notification) then
+			return ChoOrig_LoadCustomOnScreenNotification(notification, ...)
+		end
+	end
+
+	-- change rocket cargo cap
+	local ChoOrig_GetMaxCargoShuttleCapacity = GetMaxCargoShuttleCapacity
+	AddToOrigFuncs("GetMaxCargoShuttleCapacity")
+	function GetMaxCargoShuttleCapacity(...)
+		return UserSettings.StorageShuttle or ChoOrig_GetMaxCargoShuttleCapacity(...)
+	end
+
+	-- report building as not-a-wonder to the func that checks for wonders
+	local ChoOrig_UIGetBuildingPrerequisites = UIGetBuildingPrerequisites
+	AddToOrigFuncs("UIGetBuildingPrerequisites")
+	function UIGetBuildingPrerequisites(cat_id, template, ...)
+		-- missing dlc
+		if BuildingTemplates[template.id] then
+
+			-- save orig boolean
+			local orig_wonder = template.build_once
+
+			if UserSettings.Building_wonder then
+				-- always false so there's no build limit
+				template.build_once = false
+			end
+
+			-- store ret values as a table since there's more than one, and an update may change the amount
+			local ret = {ChoOrig_UIGetBuildingPrerequisites(cat_id, template, ...)}
+
+			-- make sure to restore orig value after func fires
+			template.build_once = orig_wonder
+
+			return table.unpack(ret)
+		end
+	end
+
+	-- lets you load saved games that have dlc
+	do -- IsDlcAvailable/IsDlcRequired
+		local dlc_funcs = {
+			"IsDlcAvailable",
+--~ 			"IsDlcAccessible",
+			"IsDlcRequired",
+		}
+		for i = 1, #dlc_funcs do
+			local name = dlc_funcs[i]
+
+			local ChoOrig_func = _G[name]
+			AddToOrigFuncs(name)
+			_G[name] = function(dlc, ...)
+				-- stuff added for future dlc is showing up and erroring out
+				if not dlc or dlc == "" then
+					return ChoOrig_func(dlc, ...)
+				end
+				-- returns true if the setting is true, or return the orig func
+				return UserSettings.SkipMissingDLC or ChoOrig_func(dlc, ...)
+			end
+		end
+	end -- do
+
 	do -- ShowPopupNotification
 		-- skip the notification hint suggestions
 		local suggestions = {}
@@ -254,13 +257,6 @@ do -- non-class obj funcs
 			return ChoOrig_ShowPopupNotification(preset, ...)
 		end
 	end -- do
-
-	-- UI transparency dialogs (buildmenu, pins, infopanel)
-	local ChoOrig_OpenDialog = OpenDialog
-	AddToOrigFuncs("OpenDialog")
-	function OpenDialog(...)
-		return SetDlgTrans(ChoOrig_OpenDialog(...))
-	end
 
 	-- skips story bit dialogs
 	local ChoOrig_PopupNotificationBegin = PopupNotificationBegin
@@ -283,9 +279,185 @@ do -- non-class obj funcs
 		return ChoOrig_PopupNotificationBegin(dlg, ...)
 	end
 
+end -- what_game
+
+-- func exists before classes msg
+do
+	-- That's what we call a small font
+	local ChoOrig_XWindow_UpdateMeasure = XWindow.UpdateMeasure
+	AddToOrigFuncs("XWindow.UpdateMeasure")
+	local ChoOrig_XSizeConstrainedWindow_UpdateMeasure = XSizeConstrainedWindow.UpdateMeasure
+	AddToOrigFuncs("XSizeConstrainedWindow.UpdateMeasure")
+	function XSizeConstrainedWindow.UpdateMeasure(...)
+		if UserSettings.StopSelectionPanelResize then
+			return ChoOrig_XWindow_UpdateMeasure(...)
+		end
+		return ChoOrig_XSizeConstrainedWindow_UpdateMeasure(...)
+	end
+
+	-- Adding some ... to folders
+	do -- XMenuEntry:SetShortcut
+		local margin = box(10, 0, 0, 0)
+
+		local ChoOrig_XMenuEntry_SetShortcut = XMenuEntry.SetShortcut
+		AddToOrigFuncs("XMenuEntry.SetShortcut")
+		function XMenuEntry:SetShortcut(...)
+
+			if self.Icon == "CommonAssets/UI/Menu/folder.tga" then
+				local label = XLabel:new({
+					Dock = "right",
+					VAlign = "center",
+					Margins = margin,
+				}, self)
+				label:SetFontProps(self)
+				label:SetText("...")
+			else
+				ChoOrig_XMenuEntry_SetShortcut(self, ...)
+			end
+
+		end
+	end -- do
+
+	do -- XPopupMenu:RebuildActions
+	-- last checked Tito Hotfix2
+		local XTemplateSpawn = XTemplateSpawn
+
+		-- yeah who gives a rats ass about mouseover hints on menu items
+		function XPopupMenu:RebuildActions(host, ...)
+			local menu = self.MenuEntries
+			local popup = self.ActionContextEntries
+			local context = host.context
+			local ShowIcons = self.ShowIcons
+			self.idContainer:DeleteChildren()
+			for i = 1, #host.actions do
+				local action = host.actions[i]
+				if #popup == 0 and #menu ~= 0 and action.ActionMenubar == menu and host:FilterAction(action) or #popup ~= 0 and host:FilterAction(action, popup) then
+					local entry = XTemplateSpawn(action.ActionToggle and self.ToggleButtonTemplate or self.ButtonTemplate, self.idContainer, context)
+
+					-- that was hard...
+					if type(action.RolloverText) == "function" then
+						entry.RolloverText = action.RolloverText()
+					else
+						entry.RolloverText = action.RolloverText
+					end
+					entry.RolloverTitle = T(126095410863--[[Info]])
+					-- If this func added the id or something then i wouldn't need to do this copy n paste :(
+
+					function entry.OnPress(this, _)
+						if action.OnActionEffect ~= "popup" then
+							self:ClosePopupMenus()
+						end
+						host:OnAction(action, this)
+						if action.ActionToggle and IsValidXWin(self) then
+							self:RebuildActions(host)
+						end
+					end
+					function entry.OnAltPress(this, _)
+						self:ClosePopupMenus()
+						if action.OnAltAction then
+							action:OnAltAction(host, this)
+						end
+					end
+					entry:SetFontProps(self)
+					entry:SetTranslate(action.ActionTranslate)
+					entry:SetText(action.ActionName)
+					if action.ActionToggle then
+						entry:SetToggled(action:ActionToggled(host))
+					else
+						entry:SetIconReservedSpace(self.IconReservedSpace)
+					end
+					if ShowIcons then
+						entry:SetIcon(action:ActionToggled(host) and action.ActionToggledIcon ~= "" and action.ActionToggledIcon or action.ActionIcon)
+					end
+					entry:SetShortcut(Platform.desktop and action.ActionShortcut or action.ActionGamepad)
+					if action:ActionState(host) == "disabled" then
+						entry:SetEnabled(false)
+					end
+
+					entry:Open()
+				end
+			end
+
+		end
+	end -- do
+
+	-- this one is easier than XPopupMenu, since it keeps a ref to the action (devs were kind enough to add a single line of "button.action = action")
+	local ChoOrig_XToolBar_RebuildActions = XToolBar.RebuildActions
+	AddToOrigFuncs("XToolBar.RebuildActions")
+	function XToolBar:RebuildActions(...)
+		ChoOrig_XToolBar_RebuildActions(self, ...)
+		-- we only care for the cheats menu toolbar tooltips thanks
+		if self.Toolbar ~= "DevToolbar" then
+			return
+		end
+		local buttons_c = #self
+		-- If any of them are a func then change it to the text
+		for i = 1, buttons_c do
+			local button = self[i]
+			if type(button:GetRolloverText()) == "function" then
+				function button.GetRolloverText()
+					return button.action.RolloverText()
+				end
+			end
+		end
+		-- hide it if no buttons
+		if buttons_c == 0 then
+			self.parent:SetVisible()
+		else
+			self.parent:SetVisible(true)
+		end
+
+	end
+
+	do --XMenuBar:RebuildActions
+		local function SetVis(entry, options, mod_option)
+			if options:GetProperty(mod_option) then
+				entry:SetVisible(false)
+				entry.FoldWhenHidden = true
+			else
+				entry:SetVisible(true)
+			end
+		end
+		--
+		local lookup_id = {
+			[27--[[Cheats]]] = "HideCheatsMenu",
+			[302535920000002--[[ECM]]] = "HideECMMenu",
+			[283142739680--[[Game]]] = "HideGameMenu",
+			[1000113--[[Debug]]] = "HideDebugMenu",
+			[487939677892--[[Help]]] = "HideHelpMenu",
+			Cheats = "HideCheatsMenu",
+			ECM = "HideECMMenu",
+			Game = "HideGameMenu",
+			Debug = "HideDebugMenu",
+			Help = "HideHelpMenu",
+		}
+
+		local ChoOrig_XMenuBar_RebuildActions = XMenuBar.RebuildActions
+		AddToOrigFuncs("XMenuBar.RebuildActions")
+		function XMenuBar:RebuildActions(...)
+
+			ChoOrig_XMenuBar_RebuildActions(self, ...)
+			-- we only care for the cheats menu thanks (not that there's any other menu toolbars)
+			if self.MenuEntries ~= "DevMenu" then
+				return
+			end
+
+			local options = CurrentModOptions
+			-- not built yet (calling options:GetProperty(X) would give us blank options)
+			if #options.properties == 0 then
+				return
+			end
+
+			for i = 1, #self do
+				local entry = self[i]
+				SetVis(entry, options, lookup_id[entry.Text])
+			end
+		end
+	end -- do
+
 end -- do
---
-do -- func exists before classes
+
+if what_game == "Mars" then
 
 	-- Remove more building limits (underground wonders)
 	local ChoOrig_ConstructionController_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
@@ -329,25 +501,12 @@ do -- func exists before classes
 		ChoOrig_ElectricityProducer_CreateElectricityElement(self, ...)
 		Msg("ChoGGi_SpawnedProducer", self, "electricity_production")
 	end
-	local ChoOrig_PinnableObject_TogglePin = PinnableObject.TogglePin
-	AddToOrigFuncs("PinnableObject.TogglePin")
-	function PinnableObject:TogglePin(...)
-		ChoOrig_PinnableObject_TogglePin(self, ...)
-		Msg("ChoGGi_TogglePinnableObject", self)
-	end
 	local ChoOrig_Drone_GameInit = Drone.GameInit
 	AddToOrigFuncs("Drone.GameInit")
 	function Drone:GameInit(...)
 		ChoOrig_Drone_GameInit(self, ...)
 		-- slight delay
 		CreateRealTimeThread(Msg, "ChoGGi_SpawnedDrone", self)
-	end
-	local ChoOrig_BaseBuilding_GameInit = BaseBuilding.GameInit
-	AddToOrigFuncs("BaseBuilding.GameInit")
-	function BaseBuilding:GameInit(...)
-		ChoOrig_BaseBuilding_GameInit(self, ...)
-		-- slight delay
-		CreateRealTimeThread(Msg, "ChoGGi_SpawnedBaseBuilding", self)
 	end
 
 	-- Needed for SetDesiredAmount in depots
@@ -393,6 +552,41 @@ do -- func exists before classes
 		end
 	end -- do
 
+	do -- CheatFill (speedup large cheat fills)
+		local function SuspendAndFire(func, ...)
+			SuspendPassEdits("ChoGGi_SuspendAndFire_CheatFill")
+			local ret = func(...)
+			ResumePassEdits("ChoGGi_SuspendAndFire_CheatFill")
+			return ret
+		end
+
+		local ChoOrig_MechanizedDepot_CheatFill = MechanizedDepot.CheatFill
+		AddToOrigFuncs("MechanizedDepot.CheatFill")
+		function MechanizedDepot.CheatFill(...)
+			return SuspendAndFire(ChoOrig_MechanizedDepot_CheatFill, ...)
+		end
+
+		local ChoOrig_UniversalStorageDepot_CheatFill = UniversalStorageDepot.CheatFill
+		AddToOrigFuncs("UniversalStorageDepot.CheatFill")
+		function UniversalStorageDepot.CheatFill(...)
+			return SuspendAndFire(ChoOrig_UniversalStorageDepot_CheatFill, ...)
+		end
+	end -- do
+
+	local ChoOrig_PinnableObject_TogglePin = PinnableObject.TogglePin
+	AddToOrigFuncs("PinnableObject.TogglePin")
+	function PinnableObject:TogglePin(...)
+		ChoOrig_PinnableObject_TogglePin(self, ...)
+		Msg("ChoGGi_TogglePinnableObject", self)
+	end
+	local ChoOrig_BaseBuilding_GameInit = BaseBuilding.GameInit
+	AddToOrigFuncs("BaseBuilding.GameInit")
+	function BaseBuilding:GameInit(...)
+		ChoOrig_BaseBuilding_GameInit(self, ...)
+		-- slight delay
+		CreateRealTimeThread(Msg, "ChoGGi_SpawnedBaseBuilding", self)
+	end
+
 	-- limit size of crops to window width - selection panel size
 	do -- InfopanelItems:Open()
 		local GetScreenSize = UIL.GetScreenSize
@@ -423,39 +617,6 @@ do -- func exists before classes
 			end
 		end
 	end -- do
-
-	do -- CheatFill (speedup large cheat fills)
-		local function SuspendAndFire(func, ...)
-			SuspendPassEdits("ChoGGi_SuspendAndFire_CheatFill")
-			local ret = func(...)
-			ResumePassEdits("ChoGGi_SuspendAndFire_CheatFill")
-			return ret
-		end
-
-		local ChoOrig_MechanizedDepot_CheatFill = MechanizedDepot.CheatFill
-		AddToOrigFuncs("MechanizedDepot.CheatFill")
-		function MechanizedDepot.CheatFill(...)
-			return SuspendAndFire(ChoOrig_MechanizedDepot_CheatFill, ...)
-		end
-
-		local ChoOrig_UniversalStorageDepot_CheatFill = UniversalStorageDepot.CheatFill
-		AddToOrigFuncs("UniversalStorageDepot.CheatFill")
-		function UniversalStorageDepot.CheatFill(...)
-			return SuspendAndFire(ChoOrig_UniversalStorageDepot_CheatFill, ...)
-		end
-	end -- do
-
-	-- That's what we call a small font
-	local ChoOrig_XWindow_UpdateMeasure = XWindow.UpdateMeasure
-	AddToOrigFuncs("XWindow.UpdateMeasure")
-	local ChoOrig_XSizeConstrainedWindow_UpdateMeasure = XSizeConstrainedWindow.UpdateMeasure
-	AddToOrigFuncs("XSizeConstrainedWindow.UpdateMeasure")
-	function XSizeConstrainedWindow.UpdateMeasure(...)
-		if UserSettings.StopSelectionPanelResize then
-			return ChoOrig_XWindow_UpdateMeasure(...)
-		end
-		return ChoOrig_XSizeConstrainedWindow_UpdateMeasure(...)
-	end
 
 	-- Allows you to build outside buildings inside and vice
 	local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
@@ -645,190 +806,10 @@ do -- func exists before classes
 		end
 	end -- do
 
-	-- Adding some ... to folders
-	do -- XMenuEntry:SetShortcut
-		local margin = box(10, 0, 0, 0)
+end -- what_game
 
-		local ChoOrig_XMenuEntry_SetShortcut = XMenuEntry.SetShortcut
-		AddToOrigFuncs("XMenuEntry.SetShortcut")
-		function XMenuEntry:SetShortcut(...)
-
-			if self.Icon == "CommonAssets/UI/Menu/folder.tga" then
-				local label = XLabel:new({
-					Dock = "right",
-					VAlign = "center",
-					Margins = margin,
-				}, self)
-				label:SetFontProps(self)
-				label:SetText("...")
-			else
-				ChoOrig_XMenuEntry_SetShortcut(self, ...)
-			end
-
-		end
-	end -- do
-
-	do -- XPopupMenu:RebuildActions
-	-- last checked Tito Hotfix2
-		local XTemplateSpawn = XTemplateSpawn
-
-		-- yeah who gives a rats ass about mouseover hints on menu items
-		function XPopupMenu:RebuildActions(host, ...)
-			local menu = self.MenuEntries
-			local popup = self.ActionContextEntries
-			local context = host.context
-			local ShowIcons = self.ShowIcons
-			self.idContainer:DeleteChildren()
-			for i = 1, #host.actions do
-				local action = host.actions[i]
-				if #popup == 0 and #menu ~= 0 and action.ActionMenubar == menu and host:FilterAction(action) or #popup ~= 0 and host:FilterAction(action, popup) then
-					local entry = XTemplateSpawn(action.ActionToggle and self.ToggleButtonTemplate or self.ButtonTemplate, self.idContainer, context)
-
-					-- that was hard...
-					if type(action.RolloverText) == "function" then
-						entry.RolloverText = action.RolloverText()
-					else
-						entry.RolloverText = action.RolloverText
-					end
-					entry.RolloverTitle = TranslationTable[126095410863--[[Info]]]
-					-- If this func added the id or something then i wouldn't need to do this copy n paste :(
-
-					function entry.OnPress(this, _)
-						if action.OnActionEffect ~= "popup" then
-							self:ClosePopupMenus()
-						end
-						host:OnAction(action, this)
-						if action.ActionToggle and IsValidXWin(self) then
-							self:RebuildActions(host)
-						end
-					end
-					function entry.OnAltPress(this, _)
-						self:ClosePopupMenus()
-						if action.OnAltAction then
-							action:OnAltAction(host, this)
-						end
-					end
-					entry:SetFontProps(self)
-					entry:SetTranslate(action.ActionTranslate)
-					entry:SetText(action.ActionName)
-					if action.ActionToggle then
-						entry:SetToggled(action:ActionToggled(host))
-					else
-						entry:SetIconReservedSpace(self.IconReservedSpace)
-					end
-					if ShowIcons then
-						entry:SetIcon(action:ActionToggled(host) and action.ActionToggledIcon ~= "" and action.ActionToggledIcon or action.ActionIcon)
-					end
-					entry:SetShortcut(Platform.desktop and action.ActionShortcut or action.ActionGamepad)
-					if action:ActionState(host) == "disabled" then
-						entry:SetEnabled(false)
-					end
-
-					entry:Open()
-				end
-			end
-
-		end
-	end -- do
-
-	-- this one is easier than XPopupMenu, since it keeps a ref to the action (devs were kind enough to add a single line of "button.action = action")
-	local ChoOrig_XToolBar_RebuildActions = XToolBar.RebuildActions
-	AddToOrigFuncs("XToolBar.RebuildActions")
-	function XToolBar:RebuildActions(...)
-		ChoOrig_XToolBar_RebuildActions(self, ...)
-		-- we only care for the cheats menu toolbar tooltips thanks
-		if self.Toolbar ~= "DevToolbar" then
-			return
-		end
-		local buttons_c = #self
-		-- If any of them are a func then change it to the text
-		for i = 1, buttons_c do
-			local button = self[i]
-			if type(button:GetRolloverText()) == "function" then
-				function button.GetRolloverText()
-					return button.action.RolloverText()
-				end
-			end
-		end
-		-- hide it if no buttons
-		if buttons_c == 0 then
-			self.parent:SetVisible()
-		else
-			self.parent:SetVisible(true)
-		end
-
-	end
-
-	do --XMenuBar:RebuildActions
-		local function SetVis(entry, options, mod_option)
-			if options:GetProperty(mod_option) then
-				entry:SetVisible(false)
-				entry.FoldWhenHidden = true
-			else
-				entry:SetVisible(true)
-			end
-		end
-		--
-		local lookup_id = {
-			[27--[[Cheats]]] = "HideCheatsMenu",
-			[302535920000002--[[ECM]]] = "HideECMMenu",
-			[283142739680--[[Game]]] = "HideGameMenu",
-			[1000113--[[Debug]]] = "HideDebugMenu",
-			[487939677892--[[Help]]] = "HideHelpMenu",
-			Cheats = "HideCheatsMenu",
-			ECM = "HideECMMenu",
-			Game = "HideGameMenu",
-			Debug = "HideDebugMenu",
-			Help = "HideHelpMenu",
-		}
-
-		local ChoOrig_XMenuBar_RebuildActions = XMenuBar.RebuildActions
-		AddToOrigFuncs("XMenuBar.RebuildActions")
-		function XMenuBar:RebuildActions(...)
-
-			ChoOrig_XMenuBar_RebuildActions(self, ...)
-			-- we only care for the cheats menu thanks (not that there's any other menu toolbars)
-			if self.MenuEntries ~= "DevMenu" then
-				return
-			end
-
-			local options = CurrentModOptions
-			-- not built yet (calling options:GetProperty(X) would give us blank options)
-			if #options.properties == 0 then
-				return
-			end
-
-			for i = 1, #self do
-				local entry = self[i]
-				SetVis(entry, options, lookup_id[entry.Text])
-			end
-		end
-	end -- do
-
-end -- do
 -- Classes are almost built (slip in as early as we can to replace these funcs)
 function OnMsg.ClassesPostprocess()
-
-	do -- All storybit options enabled
-		local function FakeEvaluate(func, ...)
-			if not UserSettings.OverrideConditionPrereqs then
-				return func(...)
-			end
-
-			return true
-		end
-
-		local ChoOrig_IsCommander_Evaluate = IsCommander.Evaluate
-		AddToOrigFuncs("IsCommander.Evaluate")
-		function IsCommander.Evaluate(...)
-			return FakeEvaluate(ChoOrig_IsCommander_Evaluate, ...)
-		end
-		local ChoOrig_IsCommander2_Evaluate = IsCommander2.Evaluate
-		AddToOrigFuncs("IsCommander2.Evaluate")
-		function IsCommander2.Evaluate(...)
-			return FakeEvaluate(ChoOrig_IsCommander2_Evaluate, ...)
-		end
-	end -- do
 
 	-- Align popups to rightside when using vertical cheat menu
 	local ChoOrig_XMenuBar_PopupAction = XMenuBar.PopupAction
@@ -845,62 +826,6 @@ function OnMsg.ClassesPostprocess()
 			return
 		end
 		terminal.desktop[idx]:SetAnchorType("smart")
-	end
-
-	local ChoOrig_SpaceElevator_DroneUnloadResource = SpaceElevator.DroneUnloadResource
-	AddToOrigFuncs("SpaceElevator.DroneUnloadResource")
-	function SpaceElevator:DroneUnloadResource(...)
-		local export_when = ChoGGi.ComFuncs.DotPathToObject("ChoGGi.UserSettings.BuildingSettings.SpaceElevator.export_when_this_amount")
-		local amount = self.max_export_storage - self.export_request:GetActualAmount()
-		if export_when and amount >= export_when then
-			self.pod_thread = CreateGameTimeThread(function()
-				self:ExportGoods()
-				self.pod_thread = nil
-			end)
-		end
-		return ChoOrig_SpaceElevator_DroneUnloadResource(self, ...)
-	end
-
-	local ChoOrig_SpaceElevator_ToggleAllowExport = SpaceElevator.ToggleAllowExport
-	AddToOrigFuncs("SpaceElevator.ToggleAllowExport")
-	function SpaceElevator:ToggleAllowExport(...)
-		ChoOrig_SpaceElevator_ToggleAllowExport(self, ...)
-		if self.allow_export and UserSettings.SpaceElevatorToggleInstantExport then
-			self.pod_thread = CreateGameTimeThread(function()
-				self:ExportGoods()
-				self.pod_thread = nil
-			end)
-		end
-	end
-
-	-- Unbreakable cables/pipes
-	local ChoOrig_SupplyGridFragment_IsBreakable = SupplyGridFragment.IsBreakable
-	AddToOrigFuncs("SupplyGridFragment.IsBreakable")
-	function SupplyGridFragment.IsBreakable(...)
-		if UserSettings.CablesAndPipesNoBreak then
-			return false
-		end
-		return ChoOrig_SupplyGridFragment_IsBreakable(...)
-	end
-	--
-	local ChoOrig_BreakableSupplyGridElement_CanBreak = BreakableSupplyGridElement.CanBreak
-	AddToOrigFuncs("BreakableSupplyGridElement.CanBreak")
-	function BreakableSupplyGridElement.CanBreak(...)
-		if UserSettings.CablesAndPipesNoBreak then
-			return false
-		end
-		return ChoOrig_BreakableSupplyGridElement_CanBreak(...)
-	end
-
-	-- No more pulsating pin motion
-	local ChoOrig_XBlinkingButtonWithRMB_SetBlinking = XBlinkingButtonWithRMB.SetBlinking
-	AddToOrigFuncs("XBlinkingButtonWithRMB.SetBlinking")
-	function XBlinkingButtonWithRMB:SetBlinking(...)
-		if UserSettings.DisablePulsatingPinsMotion then
-			self.blinking = false
-		else
-			return ChoOrig_XBlinkingButtonWithRMB_SetBlinking(self, ...)
-		end
 	end
 
 	do -- MouseEvent/XEvent
@@ -938,162 +863,6 @@ function OnMsg.ClassesPostprocess()
 		end
 	end -- do
 
-	-- removes earthsick effect
-	local ChoOrig_Colonist_ChangeComfort = Colonist.ChangeComfort
-	AddToOrigFuncs("Colonist.ChangeComfort")
-	function Colonist:ChangeComfort(...)
-		local ret = ChoOrig_Colonist_ChangeComfort(self, ...)
-		if UserSettings.NoMoreEarthsick and self.status_effects.StatusEffect_Earthsick then
-			self:Affect("StatusEffect_Earthsick", false)
-		end
-		-- there isn't a return, but in case a mod/dev adds one
-		return ret
-	end
-
-	-- make sure heater keeps the powerless setting
-	local ChoOrig_SubsurfaceHeater_UpdateElectricityConsumption = SubsurfaceHeater.UpdateElectricityConsumption
-	AddToOrigFuncs("SubsurfaceHeater.UpdateElectricityConsumption")
-	function SubsurfaceHeater:UpdateElectricityConsumption(...)
-		local ret = ChoOrig_SubsurfaceHeater_UpdateElectricityConsumption(self, ...)
-		if self.ChoGGi_mod_electricity_consumption then
-			ChoGGi.ComFuncs.RemoveBuildingElecConsump(self)
-		end
-		-- there isn't a return, but in case a mod/dev adds one
-		return ret
-	end
-
-	-- same for tribby
-	local ChoOrig_TriboelectricScrubber_OnPostChangeRange = TriboelectricScrubber.OnPostChangeRange
-	AddToOrigFuncs("TriboelectricScrubber.OnPostChangeRange")
-	function TriboelectricScrubber:OnPostChangeRange(...)
-		local ret = ChoOrig_TriboelectricScrubber_OnPostChangeRange(self, ...)
-		if self.ChoGGi_mod_electricity_consumption then
-			ChoGGi.ComFuncs.RemoveBuildingElecConsump(self)
-		end
-		-- there isn't a return, but in case a mod/dev adds one
-		return ret
-	end
-
-	-- remove idiot trait from uni grads (hah!)
-	local ChoOrig_MartianUniversity_OnTrainingCompleted = MartianUniversity.OnTrainingCompleted
-	AddToOrigFuncs("MartianUniversity.OnTrainingCompleted")
-	function MartianUniversity:OnTrainingCompleted(unit, ...)
-		if UserSettings.UniversityGradRemoveIdiotTrait then
-			unit:RemoveTrait("Idiot")
-		end
-		return ChoOrig_MartianUniversity_OnTrainingCompleted(self, unit, ...)
-	end
-
-	-- used to skip mystery sequences
-	do -- SkipMystStep
-		local function SkipMystStep(self, func, ...)
-			local StopWait = ChoGGi.Temp.SA_WaitMarsTime_StopWait
-			local p = self.meta.player
-
-			if StopWait and p and StopWait.seed == p.seed then
-				-- Inform user, or if it's a dbl then skip
-				if StopWait.skipmsg then
-					StopWait.skipmsg = nil
-				else
-					MsgPopup(
-						TranslationTable[302535920000735--[[Timer delay skipped]]],
-						TranslationTable[3486--[[Mystery]]]
-					)
-				end
-
-				-- only set on first SA_WaitExpression, as there's always a SA_WaitMarsTime after it and if we're skipping then skip...
-				if StopWait.again == true then
-					StopWait.again = nil
-					StopWait.skipmsg = true
-				else
-					--reset it for next time
-					StopWait.seed = false
-					StopWait.again = false
-				end
-
-				-- skip
-				return 1
-			end
-
-			return func(self, ...)
-		end
-
-		local ChoOrig_SA_WaitTime_StopWait = SA_WaitTime.StopWait
-		AddToOrigFuncs("SA_WaitTime.StopWait")
-		function SA_WaitTime:StopWait(...)
-			return SkipMystStep(self, ChoOrig_SA_WaitTime_StopWait, ...)
-		end
-		--
-		local ChoOrig_SA_WaitMarsTime_StopWait = SA_WaitMarsTime.StopWait
-		AddToOrigFuncs("SA_WaitMarsTime.StopWait")
-		function SA_WaitMarsTime:StopWait(...)
-			return SkipMystStep(self, ChoOrig_SA_WaitMarsTime_StopWait, ...)
-		end
-	end -- do
-
-	-- keep prod at saved values for grid producers (air/water/elec)
-	local ChoOrig_SupplyGridElement_SetProduction = SupplyGridElement.SetProduction
-	AddToOrigFuncs("SupplyGridElement.SetProduction")
-	function SupplyGridElement:SetProduction(new_production, new_throttled_production, update, ...)
-		local amount = UserSettings.BuildingSettings[self.building.template_name]
-		if amount and amount.production then
-			-- set prod
-			new_production = self.building.working and amount.production or 0
-			-- set displayed prod
-			if self:IsKindOf("AirGridFragment") then
-				self.building.air_production = self.building.working and amount.production or 0
-			elseif self:IsKindOf("WaterGrid") then
-				self.building.water_production = self.building.working and amount.production or 0
-			elseif self:IsKindOf("ElectricityGrid") then
-				self.building.electricity_production = self.building.working and amount.production or 0
-			end
-		end
-		ChoOrig_SupplyGridElement_SetProduction(self, new_production, new_throttled_production, update, ...)
-	end
-
-	-- and for regular producers (factories/extractors)
-	local ChoOrig_SingleResourceProducer_Produce = SingleResourceProducer.Produce
-	AddToOrigFuncs("SingleResourceProducer.Produce")
-	function SingleResourceProducer:Produce(amount_to_produce, ...)
-		local amount = UserSettings.BuildingSettings[self.parent.template_name]
-		if amount and amount.production then
-			-- set prod
-			amount_to_produce = amount.production / guim
-			-- set displayed prod
-			self.production_per_day = amount.production
-		end
-
-		-- get them lazy drones working (bugfix for drones ignoring amounts less then their carry amount)
-		if UserSettings.DroneResourceCarryAmountFix and self:GetStoredAmount() > 1000 then
-			ChoGGi.ComFuncs.FuckingDrones(self, "single")
-		end
-
-		return ChoOrig_SingleResourceProducer_Produce(self, amount_to_produce, ...)
-	end
-
-	-- larger drone work radius
-	do -- SetWorkRadius
-		local function SetHexRadius(func, setting, obj, orig_radius, ...)
-			local new_rad = UserSettings[setting]
-			if new_rad then
-				return func(obj, new_rad, ...)
-			end
-			return func(obj, orig_radius, ...)
-		end
-
-		local ChoOrig_RCRover_SetWorkRadius = RCRover.SetWorkRadius
-		AddToOrigFuncs("RCRover.SetWorkRadius")
-		function RCRover:SetWorkRadius(radius, ...)
-			SetHexRadius(ChoOrig_RCRover_SetWorkRadius, "RCRoverMaxRadius", self, radius, ...)
-		end
-		--
-		local ChoOrig_DroneHub_SetWorkRadius = DroneHub.SetWorkRadius
-		AddToOrigFuncs("DroneHub.SetWorkRadius")
-		function DroneHub:SetWorkRadius(radius, ...)
-			SetHexRadius(ChoOrig_DroneHub_SetWorkRadius, "CommandCenterMaxRadius", self, radius, ...)
-		end
-	end -- do
-
 	-- toggle trans on mouseover
 	local ChoOrig_XWindow_OnMouseEnter = XWindow.OnMouseEnter
 	AddToOrigFuncs("XWindow.OnMouseEnter")
@@ -1112,80 +881,6 @@ function OnMsg.ClassesPostprocess()
 		end
 		return ChoOrig_XWindow_OnMouseLeft(self, ...)
 	end
-
-	-- remove spire spot limit
-	do -- ConstructionController:UpdateCursor
-	-- last checked 1007933
-		local IsValid = IsValid
-		local FixConstructPos = FixConstructPos
-		local UnbuildableZ = buildUnbuildableZ()
-
-		local ChoOrig_ConstructionController_UpdateCursor = ConstructionController.UpdateCursor
-		AddToOrigFuncs("ConstructionController.UpdateCursor")
-		function ConstructionController:UpdateCursor(pos, force, ...)
-			if self.is_template and IsValid(self.cursor_obj)
-				and self.template_obj.dome_spot == "Spire"
-				and UserSettings.Building_dome_spot
-			then
-				self.spireless_dome = false
-				local hex_world_pos = HexGetNearestCenter(pos)
-				local game_map = GetGameMap(self)
---~ 				local build_z = g_BuildableZ and GetBuildableZ(WorldToHex(hex_world_pos)) or UnbuildableZ
-				local build_z = game_map.buildable:GetZ(WorldToHex(hex_world_pos)) or UnbuildableZ
-				local terrain = game_map.terrain
-
-				if build_z == UnbuildableZ then
-					build_z = pos:z() or terrain:GetHeight(pos)
-				end
-				hex_world_pos = hex_world_pos:SetZ(build_z)
-
-				-- almost complete copy pasta from ConstructionController:UpdateCursor()
-				-- just comment out this chunk
---~ 				local placed_on_spot = false
---~ 				if self.is_template and not self.template_obj.dome_forbidden and self.template_obj.dome_spot ~= "none" then --dome not prohibited
---~ 					local dome = GetDomeAtPoint(hex_world_pos)
---~ 					if dome and IsValid(dome) and IsKindOf(dome, "Dome") then
---~ 						if dome:HasSpot(self.template_obj.dome_spot) then
---~ 							local idx = dome:GetNearestSpot(self.template_obj.dome_spot, hex_world_pos)
---~ 							hex_world_pos = HexGetNearestCenter(dome:GetSpotPos(idx))
---~ 							placed_on_spot = true
---~ 							if self.template_obj.dome_spot == "Spire" then
---~ 								if self.template_obj:IsKindOf("SpireBase") then
---~ 									local frame = self.cursor_obj:GetAttach("SpireFrame")
---~ 									if frame then
---~ 										local spot = dome:GetNearestSpot("idle", "Spireframe", self.cursor_obj)
---~ 										local pos = dome:GetSpotPos(spot)
---~ 										frame:SetAttachOffset(pos - hex_world_pos)
---~ 									end
---~ 								end
---~ 							end
---~ 						elseif self.template_obj.dome_spot == "Spire" then
---~ 							self.spireless_dome = true
---~ 						end
---~ 					end
---~ 				end
---~ 				local new_pos = self.snap_to_grid and hex_world_pos or pos
---~ 				if not placed_on_spot then
---~ 					new_pos = FixConstructPos(new_pos)
---~ 				end
-
-				local new_pos = FixConstructPos(terrain, self.snap_to_grid and hex_world_pos or pos)
-
-				if force or (FixConstructPos(terrain, self.cursor_obj:GetPos()) ~= new_pos and hex_world_pos:InBox2D(ConstructableArea)) then
-					ShowNearbyHexGrid(hex_world_pos)
-					self.cursor_obj:SetPos(new_pos)
-					self:UpdateConstructionObstructors()
-					self:UpdateConstructionStatuses() --should go after obstructors
-					self:UpdateShortConstructionStatus()
-					ObjModified(self)
-				end
-
-			else
-				return ChoOrig_ConstructionController_UpdateCursor(self, pos, force, ...)
-			end
-
-		end
-	end -- do
 
 	-- make the background hide when console not visible (instead of after a second or two)
 	do -- ConsoleLog:ShowBackground
@@ -1222,6 +917,8 @@ function OnMsg.ClassesPostprocess()
 	function Console:Show(show, ...)
 		ChoOrig_Console_Show(self, show, ...)
 		if show then
+			-- JA3
+			self:SetModal(false)
 			-- adding transparency for console stuff
 			SetDlgTrans(self)
 			-- and rebuild my console buttons
@@ -1302,333 +999,645 @@ function OnMsg.ClassesPostprocess()
 		end
 	end -- do
 
-	do -- RequiresMaintenance:AddDust
-		-- It wasn't checking if it was a number so we got errors in log
-		local tonumber = tonumber
-
-		local ChoOrig_RequiresMaintenance_AddDust = RequiresMaintenance.AddDust
-		AddToOrigFuncs("RequiresMaintenance.AddDust")
-		function RequiresMaintenance:AddDust(amount, ...)
-			-- maybe something was sending a "number" instead of number?
-			amount = tonumber(amount)
-			if amount then
-				return ChoOrig_RequiresMaintenance_AddDust(self, amount, ...)
-			end
-		end
-	end -- do
-
-	do -- TunnelConstructionController:UpdateConstructionStatuses()
-		 -- so we can do long spaced tunnels
-		local TooFarFromTunnelEntrance = ConstructionStatus.TooFarFromTunnelEntrance
-		local UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
-
-		local ChoOrig_TunnelConstructionController_UpdateConstructionStatuses = TunnelConstructionController.UpdateConstructionStatuses
-		AddToOrigFuncs("TunnelConstructionController.UpdateConstructionStatuses")
-		function TunnelConstructionController:UpdateConstructionStatuses(...)
-			local skip
-			if UserSettings.RemoveBuildingLimits then
-				skip = true
-			elseif UserSettings.UnlimitedConnectionLength then
-				local idx = table.find(self.construction_statuses, TooFarFromTunnelEntrance)
-				if idx then
-					table.remove(self.construction_statuses, idx)
-					skip = true
-				end
-			end
-			--
-			if skip then
-				local old_t = UpdateConstructionStatuses(self, "dont_finalize")
-				self:FinalizeStatusGathering(old_t)
-			else
-				return ChoOrig_TunnelConstructionController_UpdateConstructionStatuses(self, ...)
-			end
-		end
-	end -- do
-
-	-- add height limits to certain panels (cheats/traits/colonists) till mouseover, and convert workers to vertical list on mouseover if over 14 (visible limit)
-	do -- InfopanelDlg:Open
-		local function ToggleVis(idx, content, v, h)
-			for i = 6, idx do
-				local con = content[i]
-				if con then
-					con:SetVisible(v)
-					con:SetMaxHeight(h)
-				end
-			end
-		end
-		local cls_training = {"Sanatorium", "School"}
-		local infopanel_list = {
-			ipBuilding = true,
-			ipColonist = true,
-			ipDrone = true,
-			ipRover = true,
-		}
-
-		-- show scroll on hover
-		local ChoOrig_InfopanelDlg_OnMouseEnter = InfopanelDlg.OnMouseEnter
-		AddToOrigFuncs("InfopanelDlg.OnMouseEnter")
-		function InfopanelDlg:OnMouseEnter(...)
-			-- show scrollbar
-			if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate]
-				 and IsValidXWin(self.idChoGGi_Scrollbar_thumb)
-			then
-				self.idChoGGi_Scrollbar_thumb:SetVisible(true)
-			end
-
-			return ChoOrig_InfopanelDlg_OnMouseEnter(self, ...)
-		end
-
-		local ChoOrig_InfopanelDlg_OnMouseLeft = InfopanelDlg.OnMouseLeft
-		AddToOrigFuncs("InfopanelDlg.OnMouseLeft")
-		function InfopanelDlg:OnMouseLeft(...)
-			-- hide scrollbar
-			if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate]
-				 and IsValidXWin(self.idChoGGi_Scrollbar_thumb)
-			then
-				self.idChoGGi_Scrollbar_thumb:SetVisible(false)
-			end
-			return ChoOrig_InfopanelDlg_OnMouseLeft(self, ...)
-		end
-
-		local zerobox = box(0, 0, 0, 0)
-		local function SetToolbar(section, cls, toggle)
-			local toolbar = table.find(section.idContent, "class", cls)
-			if toolbar then
-				toolbar = section.idContent[toolbar]
-				toolbar.FoldWhenHidden = true
-				toolbar:SetVisible(toggle)
-				return toolbar
-			end
-		end
-
-		local function ToggleVisSection(section, toolbar, toggle, setting)
-			local title = section.idHighlight
-
-			if setting == "InfopanelCheatsVis" then
-				section = section.idSectionTitle
-			end
-			--
-			if setting ~= "InfopanelMainButVis" then
-				section.OnMouseEnter = function()
-					title:SetVisible(true)
-				end
-				section.OnMouseLeft = function()
-					title:SetVisible()
-				end
-			end
-			--
-			if toolbar and IsValidXWin(toolbar) then
-				section.OnMouseButtonDown = function()
-					if toggle then
-						toolbar:SetVisible()
-						toggle = false
-					else
-						toolbar:SetVisible(true)
-						toggle = true
-					end
-					if setting then
-						ChoGGi.Temp[setting] = not toggle
+	if what_game == "Mars" then
+		-- add height limits to certain panels (cheats/traits/colonists) till mouseover, and convert workers to vertical list on mouseover if over 14 (visible limit)
+		do -- InfopanelDlg:Open
+			local function ToggleVis(idx, content, v, h)
+				for i = 6, idx do
+					local con = content[i]
+					if con then
+						con:SetVisible(v)
+						con:SetMaxHeight(h)
 					end
 				end
 			end
-			--
-		end
+			local cls_training = {"Sanatorium", "School"}
+			local infopanel_list = {
+				ipBuilding = true,
+				ipColonist = true,
+				ipDrone = true,
+				ipRover = true,
+			}
 
-		local function InfopanelDlgOpen(self)
-			-- make sure infopanel is above hud (and pins)
-			local hud = Dialogs.HUD
-			if hud then
-				self:SetZOrder(hud.ZOrder + 1)
+			-- show scroll on hover
+			local ChoOrig_InfopanelDlg_OnMouseEnter = InfopanelDlg.OnMouseEnter
+			AddToOrigFuncs("InfopanelDlg.OnMouseEnter")
+			function InfopanelDlg:OnMouseEnter(...)
+				-- show scrollbar
+				if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate]
+					 and IsValidXWin(self.idChoGGi_Scrollbar_thumb)
+				then
+					self.idChoGGi_Scrollbar_thumb:SetVisible(true)
+				end
+
+				return ChoOrig_InfopanelDlg_OnMouseEnter(self, ...)
 			end
 
-			-- give me the scroll. goddamn it blinky
-			if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate] then
-				if self.idActionButtons then
-					self.idActionButtons.parent:SetZOrder(2)
+			local ChoOrig_InfopanelDlg_OnMouseLeft = InfopanelDlg.OnMouseLeft
+			AddToOrigFuncs("InfopanelDlg.OnMouseLeft")
+			function InfopanelDlg:OnMouseLeft(...)
+				-- hide scrollbar
+				if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate]
+					 and IsValidXWin(self.idChoGGi_Scrollbar_thumb)
+				then
+					self.idChoGGi_Scrollbar_thumb:SetVisible(false)
 				end
-				local g_Classes = g_Classes
+				return ChoOrig_InfopanelDlg_OnMouseLeft(self, ...)
+			end
 
-				local dlg = self[1]
-
-				-- attach our scroll area to the XSizeConstrainedWindow
-				self.idChoGGi_ScrollArea = g_Classes.XWindow:new({
-					Id = "idChoGGi_ScrollArea",
-				}, dlg)
-
-				self.idChoGGi_ScrollV = g_Classes.XSleekScroll:new({
-					Id = "idChoGGi_ScrollV",
-					Target = "idChoGGi_ScrollBox",
-					Dock = "left",
-					MinThumbSize = 30,
-					Background = 0,
-					AutoHide = true,
-				}, self.idChoGGi_ScrollArea)
-
-				self.idChoGGi_Scrollbar_thumb = self.idChoGGi_ScrollV.idThumb
-
-				-- [LUA ERROR] attempt to index a boolean value (local 'desktop')
-				self.idChoGGi_ScrollV.idThumb.desktop = terminal.desktop
-				self.idChoGGi_ScrollV.idThumb:SetVisible(false)
-
-				self.idChoGGi_ScrollBox = g_Classes.XScrollArea:new({
-					Id = "idChoGGi_ScrollBox",
-					VScroll = "idChoGGi_ScrollV",
-					LayoutMethod = "VList",
-				}, self.idChoGGi_ScrollArea)
-
-				if self.idContent then
-					-- move content list to scrollarea
-					self.idContent:SetParent(self.idChoGGi_ScrollBox)
-					-- add ref back
-					self.idContent = self.idChoGGi_ScrollBox.idContent
-					-- move panel to top of screen (maybe space for infobar?)
-					self:SetMargins(zerobox)
-
-					-- add height limit for infopanel
-					local height = (terminal.desktop.box:sizey()
-						- self.idMainButtons.parent.parent.box:sizey()
-					)
-					local bb = hud.idMapSwitch
-					if not bb then
-						height = height + self.idActionButtons.box:sizey()
-					end
-
-					self.idChoGGi_ScrollArea:SetMaxHeight(height)
+			local zerobox = box(0, 0, 0, 0)
+			local function SetToolbar(section, cls, toggle)
+				local toolbar = table.find(section.idContent, "class", cls)
+				if toolbar then
+					toolbar = section.idContent[toolbar]
+					toolbar.FoldWhenHidden = true
+					toolbar:SetVisible(toggle)
+					return toolbar
 				end
 			end
 
-			-- add toggle to main buttons area
-			local main_buts = GetParentOfKind(self.idMainButtons, "XFrame")
-			if main_buts then
-				local title = self.idTitle.parent
-				title.FXMouseIn = "ActionButtonHover"
-				title.HandleMouse = true
-				title.RolloverTemplate = "Rollover"
-				title.RolloverTitle = TranslationTable[302535920001367--[[Toggles]]]
-				title.RolloverText = TranslationTable[302535920001410--[[Toggle Visibility]]]
-				title.RolloverHint = T(608042494285--[[<left_click> Activate]])
+			local function ToggleVisSection(section, toolbar, toggle, setting)
+				local title = section.idHighlight
 
-				local toggle = not ChoGGi.Temp.InfopanelMainButVis
-				local toolbar = main_buts[2]
-				toolbar.FoldWhenHidden = true
-				toolbar:SetVisible(toggle)
-
-				ToggleVisSection(title, toolbar, toggle, "InfopanelMainButVis")
-			end
-
-			local content = self.idContent
-			if not content then
-				content = self.idChoGGi_ScrollBox and self.idChoGGi_ScrollBox.idContent
-			end
-			if not content then
-				return
-			end
-
-			-- this limits height of traits you can choose to 3 till mouse over
-			if UserSettings.SanatoriumSchoolShowAll and self.context:IsKindOfClasses(cls_training) then
-
-				local idx
-				if self.context:IsKindOf("School") then
-					idx = 20
-				else
-					-- Sanitarium
-					idx = 18
+				if setting == "InfopanelCheatsVis" then
+					section = section.idSectionTitle
 				end
-
-				-- Initially set to hidden
-				ToggleVis(idx, content, false, 0)
-
-				local visthread
-				self.OnMouseEnter = function()
-					DeleteThread(visthread)
-					ToggleVis(idx, content, true)
-				end
-				self.OnMouseLeft = function()
-					visthread = CreateRealTimeThread(function()
-						Sleep(1000)
-						ToggleVis(idx, content, false, 0)
-					end)
-				end
-
-			end
-			--
-			local section = table.find_value(content, "Id", "idsectionCheats_ChoGGi")
-			if section then
-				section.idIcon.FXMouseIn = "ActionButtonHover"
-				section.idSectionTitle.MouseCursor = "UI/Cursors/Rollover.tga"
-				section.RolloverText = TranslationTable[302535920001410--[[Toggle Visibility]]]
-				section.RolloverHint = T(608042494285--[[<left_click> Activate]])
-
-				local toggle = not ChoGGi.Temp.InfopanelCheatsVis
-				local toolbar = SetToolbar(section, "XToolBar", toggle)
-
-				ToggleVisSection(section, toolbar, toggle, "InfopanelCheatsVis")
-				-- sets the scale of the cheats icons
-				for j = 1, #toolbar do
-					local icon = toolbar[j].idIcon
-					icon:SetMaxHeight(27)
-					icon:SetMaxWidth(27)
-					icon:SetImageFit("largest")
-				end
-			end
-
-			section = table.find_value(content, "Id", "idsectionResidence_ChoGGi")
-			if section then
-				local toggle = true
-				if self.context.capacity > 100 then
-					toggle = false
-				end
-				ToggleVisSection(section, SetToolbar(section, "XContextControl", toggle), toggle)
-			end
-
-			-- add limit to shifts sections
-			local worker_count = 0
-			for i = 1, #content do
-
-				-- three shifts max
-				if worker_count > 2 then
-					break
-				end
-
-				local section = content[i]
-				local content = section.idContent and section.idContent[2]
-
-				-- enlarge worker section if over the max amount visible
-				if content and section.idWorkers and #section.idWorkers > 14 then
-					worker_count = worker_count + 1
-					-- set height to default height
-					content:SetMaxHeight(32)
-
-					local expandthread
+				--
+				if setting ~= "InfopanelMainButVis" then
 					section.OnMouseEnter = function()
-						DeleteThread(expandthread)
-						content:SetLayoutMethod("HWrap")
-						content:SetMaxHeight()
+						title:SetVisible(true)
 					end
 					section.OnMouseLeft = function()
-						expandthread = CreateRealTimeThread(function()
-							Sleep(500)
-							content:SetLayoutMethod("HList")
-							content:SetMaxHeight(32)
-						end)
+						title:SetVisible()
 					end
 				end
+				--
+				if toolbar and IsValidXWin(toolbar) then
+					section.OnMouseButtonDown = function()
+						if toggle then
+							toolbar:SetVisible()
+							toggle = false
+						else
+							toolbar:SetVisible(true)
+							toggle = true
+						end
+						if setting then
+							ChoGGi.Temp[setting] = not toggle
+						end
+					end
+				end
+				--
 			end
 
-		end -- InfopanelDlgOpen
+			local function InfopanelDlgOpen(self)
+				-- make sure infopanel is above hud (and pins)
+				local hud = Dialogs.HUD
+				if hud then
+					self:SetZOrder(hud.ZOrder + 1)
+				end
 
-		-- the actual function
-		local ChoOrig_InfopanelDlg_Open = InfopanelDlg.Open
-		AddToOrigFuncs("InfopanelDlg.Open")
-		function InfopanelDlg:Open(...)
-			CreateRealTimeThread(function()
-				WaitMsg("OnRender")
-				InfopanelDlgOpen(self)
-			end)
+				-- give me the scroll. goddamn it blinky
+				if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate] then
+					if self.idActionButtons then
+						self.idActionButtons.parent:SetZOrder(2)
+					end
+					local g_Classes = g_Classes
 
-			return ChoOrig_InfopanelDlg_Open(self, ...)
+					local dlg = self[1]
+
+					-- attach our scroll area to the XSizeConstrainedWindow
+					self.idChoGGi_ScrollArea = g_Classes.XWindow:new({
+						Id = "idChoGGi_ScrollArea",
+					}, dlg)
+
+					self.idChoGGi_ScrollV = g_Classes.XSleekScroll:new({
+						Id = "idChoGGi_ScrollV",
+						Target = "idChoGGi_ScrollBox",
+						Dock = "left",
+						MinThumbSize = 30,
+						Background = 0,
+						AutoHide = true,
+					}, self.idChoGGi_ScrollArea)
+
+					self.idChoGGi_Scrollbar_thumb = self.idChoGGi_ScrollV.idThumb
+
+					-- [LUA ERROR] attempt to index a boolean value (local 'desktop')
+					self.idChoGGi_ScrollV.idThumb.desktop = terminal.desktop
+					self.idChoGGi_ScrollV.idThumb:SetVisible(false)
+
+					self.idChoGGi_ScrollBox = g_Classes.XScrollArea:new({
+						Id = "idChoGGi_ScrollBox",
+						VScroll = "idChoGGi_ScrollV",
+						LayoutMethod = "VList",
+					}, self.idChoGGi_ScrollArea)
+
+					if self.idContent then
+						-- move content list to scrollarea
+						self.idContent:SetParent(self.idChoGGi_ScrollBox)
+						-- add ref back
+						self.idContent = self.idChoGGi_ScrollBox.idContent
+						-- move panel to top of screen (maybe space for infobar?)
+						self:SetMargins(zerobox)
+
+						-- add height limit for infopanel
+						local height = (terminal.desktop.box:sizey()
+							- self.idMainButtons.parent.parent.box:sizey()
+						)
+						local bb = hud.idMapSwitch
+						if not bb then
+							height = height + self.idActionButtons.box:sizey()
+						end
+
+						self.idChoGGi_ScrollArea:SetMaxHeight(height)
+					end
+				end
+
+				-- add toggle to main buttons area
+				local main_buts = GetParentOfKind(self.idMainButtons, "XFrame")
+				if main_buts then
+					local title = self.idTitle.parent
+					title.FXMouseIn = "ActionButtonHover"
+					title.HandleMouse = true
+					title.RolloverTemplate = "Rollover"
+					title.RolloverTitle = T(302535920001367--[[Toggles]])
+					title.RolloverText = T(302535920001410--[[Toggle Visibility]])
+					title.RolloverHint = T(608042494285--[[<left_click> Activate]])
+
+					local toggle = not ChoGGi.Temp.InfopanelMainButVis
+					local toolbar = main_buts[2]
+					toolbar.FoldWhenHidden = true
+					toolbar:SetVisible(toggle)
+
+					ToggleVisSection(title, toolbar, toggle, "InfopanelMainButVis")
+				end
+
+				local content = self.idContent
+				if not content then
+					content = self.idChoGGi_ScrollBox and self.idChoGGi_ScrollBox.idContent
+				end
+				if not content then
+					return
+				end
+
+				-- this limits height of traits you can choose to 3 till mouse over
+				if UserSettings.SanatoriumSchoolShowAll and self.context:IsKindOfClasses(cls_training) then
+
+					local idx
+					if self.context:IsKindOf("School") then
+						idx = 20
+					else
+						-- Sanitarium
+						idx = 18
+					end
+
+					-- Initially set to hidden
+					ToggleVis(idx, content, false, 0)
+
+					local visthread
+					self.OnMouseEnter = function()
+						DeleteThread(visthread)
+						ToggleVis(idx, content, true)
+					end
+					self.OnMouseLeft = function()
+						visthread = CreateRealTimeThread(function()
+							Sleep(1000)
+							ToggleVis(idx, content, false, 0)
+						end)
+					end
+
+				end
+				--
+				local section = table.find_value(content, "Id", "idsectionCheats_ChoGGi")
+				if section then
+					section.idIcon.FXMouseIn = "ActionButtonHover"
+					section.idSectionTitle.MouseCursor = "UI/Cursors/Rollover.tga"
+					section.RolloverText = T(302535920001410--[[Toggle Visibility]])
+					section.RolloverHint = T(608042494285--[[<left_click> Activate]])
+
+					local toggle = not ChoGGi.Temp.InfopanelCheatsVis
+					local toolbar = SetToolbar(section, "XToolBar", toggle)
+
+					ToggleVisSection(section, toolbar, toggle, "InfopanelCheatsVis")
+					-- sets the scale of the cheats icons
+					for j = 1, #toolbar do
+						local icon = toolbar[j].idIcon
+						icon:SetMaxHeight(27)
+						icon:SetMaxWidth(27)
+						icon:SetImageFit("largest")
+					end
+				end
+
+				section = table.find_value(content, "Id", "idsectionResidence_ChoGGi")
+				if section then
+					local toggle = true
+					if self.context.capacity > 100 then
+						toggle = false
+					end
+					ToggleVisSection(section, SetToolbar(section, "XContextControl", toggle), toggle)
+				end
+
+				-- add limit to shifts sections
+				local worker_count = 0
+				for i = 1, #content do
+
+					-- three shifts max
+					if worker_count > 2 then
+						break
+					end
+
+					local section = content[i]
+					local content = section.idContent and section.idContent[2]
+
+					-- enlarge worker section if over the max amount visible
+					if content and section.idWorkers and #section.idWorkers > 14 then
+						worker_count = worker_count + 1
+						-- set height to default height
+						content:SetMaxHeight(32)
+
+						local expandthread
+						section.OnMouseEnter = function()
+							DeleteThread(expandthread)
+							content:SetLayoutMethod("HWrap")
+							content:SetMaxHeight()
+						end
+						section.OnMouseLeft = function()
+							expandthread = CreateRealTimeThread(function()
+								Sleep(500)
+								content:SetLayoutMethod("HList")
+								content:SetMaxHeight(32)
+							end)
+						end
+					end
+				end
+
+			end -- InfopanelDlgOpen
+
+			-- the actual function
+			local ChoOrig_InfopanelDlg_Open = InfopanelDlg.Open
+			AddToOrigFuncs("InfopanelDlg.Open")
+			function InfopanelDlg:Open(...)
+				CreateRealTimeThread(function()
+					WaitMsg("OnRender")
+					InfopanelDlgOpen(self)
+				end)
+
+				return ChoOrig_InfopanelDlg_Open(self, ...)
+			end
+
+
+		end -- do
+
+		do -- RequiresMaintenance:AddDust
+			-- It wasn't checking if it was a number so we got errors in log
+			local tonumber = tonumber
+
+			local ChoOrig_RequiresMaintenance_AddDust = RequiresMaintenance.AddDust
+			AddToOrigFuncs("RequiresMaintenance.AddDust")
+			function RequiresMaintenance:AddDust(amount, ...)
+				-- maybe something was sending a "number" instead of number?
+				amount = tonumber(amount)
+				if amount then
+					return ChoOrig_RequiresMaintenance_AddDust(self, amount, ...)
+				end
+			end
+		end -- do
+
+		do -- TunnelConstructionController:UpdateConstructionStatuses()
+			 -- so we can do long spaced tunnels
+			local TooFarFromTunnelEntrance = ConstructionStatus.TooFarFromTunnelEntrance
+			local UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
+
+			local ChoOrig_TunnelConstructionController_UpdateConstructionStatuses = TunnelConstructionController.UpdateConstructionStatuses
+			AddToOrigFuncs("TunnelConstructionController.UpdateConstructionStatuses")
+			function TunnelConstructionController:UpdateConstructionStatuses(...)
+				local skip
+				if UserSettings.RemoveBuildingLimits then
+					skip = true
+				elseif UserSettings.UnlimitedConnectionLength then
+					local idx = table.find(self.construction_statuses, TooFarFromTunnelEntrance)
+					if idx then
+						table.remove(self.construction_statuses, idx)
+						skip = true
+					end
+				end
+				--
+				if skip then
+					local old_t = UpdateConstructionStatuses(self, "dont_finalize")
+					self:FinalizeStatusGathering(old_t)
+				else
+					return ChoOrig_TunnelConstructionController_UpdateConstructionStatuses(self, ...)
+				end
+			end
+		end -- do
+
+		-- remove spire spot limit
+		do -- ConstructionController:UpdateCursor
+		-- last checked 1007933
+			local IsValid = IsValid
+			local FixConstructPos = FixConstructPos
+			local UnbuildableZ = buildUnbuildableZ()
+
+			local ChoOrig_ConstructionController_UpdateCursor = ConstructionController.UpdateCursor
+			AddToOrigFuncs("ConstructionController.UpdateCursor")
+			function ConstructionController:UpdateCursor(pos, force, ...)
+				if self.is_template and IsValid(self.cursor_obj)
+					and self.template_obj.dome_spot == "Spire"
+					and UserSettings.Building_dome_spot
+				then
+					self.spireless_dome = false
+					local hex_world_pos = HexGetNearestCenter(pos)
+					local game_map = GetGameMap(self)
+--~ 					local build_z = g_BuildableZ and GetBuildableZ(WorldToHex(hex_world_pos)) or UnbuildableZ
+					local build_z = game_map.buildable:GetZ(WorldToHex(hex_world_pos)) or UnbuildableZ
+					local terrain = game_map.terrain
+
+					if build_z == UnbuildableZ then
+						build_z = pos:z() or terrain:GetHeight(pos)
+					end
+					hex_world_pos = hex_world_pos:SetZ(build_z)
+
+					-- almost complete copy pasta from ConstructionController:UpdateCursor()
+					-- just comment out this chunk
+--~ 					local placed_on_spot = false
+--~ 					if self.is_template and not self.template_obj.dome_forbidden and self.template_obj.dome_spot ~= "none" then --dome not prohibited
+--~ 						local dome = GetDomeAtPoint(hex_world_pos)
+--~ 						if dome and IsValid(dome) and IsKindOf(dome, "Dome") then
+--~ 							if dome:HasSpot(self.template_obj.dome_spot) then
+--~ 								local idx = dome:GetNearestSpot(self.template_obj.dome_spot, hex_world_pos)
+--~ 								hex_world_pos = HexGetNearestCenter(dome:GetSpotPos(idx))
+--~ 								placed_on_spot = true
+--~ 								if self.template_obj.dome_spot == "Spire" then
+--~ 									if self.template_obj:IsKindOf("SpireBase") then
+--~ 										local frame = self.cursor_obj:GetAttach("SpireFrame")
+--~ 										if frame then
+--~ 											local spot = dome:GetNearestSpot("idle", "Spireframe", self.cursor_obj)
+--~ 											local pos = dome:GetSpotPos(spot)
+--~ 											frame:SetAttachOffset(pos - hex_world_pos)
+--~ 										end
+--~ 									end
+--~ 								end
+--~ 							elseif self.template_obj.dome_spot == "Spire" then
+--~ 								self.spireless_dome = true
+--~ 							end
+--~ 						end
+--~ 					end
+--~ 					local new_pos = self.snap_to_grid and hex_world_pos or pos
+--~ 					if not placed_on_spot then
+--~ 						new_pos = FixConstructPos(new_pos)
+--~ 					end
+
+					local new_pos = FixConstructPos(terrain, self.snap_to_grid and hex_world_pos or pos)
+
+					if force or (FixConstructPos(terrain, self.cursor_obj:GetPos()) ~= new_pos and hex_world_pos:InBox2D(ConstructableArea)) then
+						ShowNearbyHexGrid(hex_world_pos)
+						self.cursor_obj:SetPos(new_pos)
+						self:UpdateConstructionObstructors()
+						self:UpdateConstructionStatuses() --should go after obstructors
+						self:UpdateShortConstructionStatus()
+						ObjModified(self)
+					end
+
+				else
+					return ChoOrig_ConstructionController_UpdateCursor(self, pos, force, ...)
+				end
+
+			end
+		end -- do
+
+		-- removes earthsick effect
+		local ChoOrig_Colonist_ChangeComfort = Colonist.ChangeComfort
+		AddToOrigFuncs("Colonist.ChangeComfort")
+		function Colonist:ChangeComfort(...)
+			local ret = ChoOrig_Colonist_ChangeComfort(self, ...)
+			if UserSettings.NoMoreEarthsick and self.status_effects.StatusEffect_Earthsick then
+				self:Affect("StatusEffect_Earthsick", false)
+			end
+			-- there isn't a return, but in case a mod/dev adds one
+			return ret
 		end
-	end -- do
+
+		-- make sure heater keeps the powerless setting
+		local ChoOrig_SubsurfaceHeater_UpdateElectricityConsumption = SubsurfaceHeater.UpdateElectricityConsumption
+		AddToOrigFuncs("SubsurfaceHeater.UpdateElectricityConsumption")
+		function SubsurfaceHeater:UpdateElectricityConsumption(...)
+			local ret = ChoOrig_SubsurfaceHeater_UpdateElectricityConsumption(self, ...)
+			if self.ChoGGi_mod_electricity_consumption then
+				ChoGGi.ComFuncs.RemoveBuildingElecConsump(self)
+			end
+			-- there isn't a return, but in case a mod/dev adds one
+			return ret
+		end
+
+		-- same for tribby
+		local ChoOrig_TriboelectricScrubber_OnPostChangeRange = TriboelectricScrubber.OnPostChangeRange
+		AddToOrigFuncs("TriboelectricScrubber.OnPostChangeRange")
+		function TriboelectricScrubber:OnPostChangeRange(...)
+			local ret = ChoOrig_TriboelectricScrubber_OnPostChangeRange(self, ...)
+			if self.ChoGGi_mod_electricity_consumption then
+				ChoGGi.ComFuncs.RemoveBuildingElecConsump(self)
+			end
+			-- there isn't a return, but in case a mod/dev adds one
+			return ret
+		end
+
+		-- remove idiot trait from uni grads (hah!)
+		local ChoOrig_MartianUniversity_OnTrainingCompleted = MartianUniversity.OnTrainingCompleted
+		AddToOrigFuncs("MartianUniversity.OnTrainingCompleted")
+		function MartianUniversity:OnTrainingCompleted(unit, ...)
+			if UserSettings.UniversityGradRemoveIdiotTrait then
+				unit:RemoveTrait("Idiot")
+			end
+			return ChoOrig_MartianUniversity_OnTrainingCompleted(self, unit, ...)
+		end
+
+		-- used to skip mystery sequences
+		do -- SkipMystStep
+			local function SkipMystStep(self, func, ...)
+				local StopWait = ChoGGi.Temp.SA_WaitMarsTime_StopWait
+				local p = self.meta.player
+
+				if StopWait and p and StopWait.seed == p.seed then
+					-- Inform user, or if it's a dbl then skip
+					if StopWait.skipmsg then
+						StopWait.skipmsg = nil
+					else
+						MsgPopup(
+							T(302535920000735--[[Timer delay skipped]]),
+							T(3486--[[Mystery]])
+						)
+					end
+
+					-- only set on first SA_WaitExpression, as there's always a SA_WaitMarsTime after it and if we're skipping then skip...
+					if StopWait.again == true then
+						StopWait.again = nil
+						StopWait.skipmsg = true
+					else
+						--reset it for next time
+						StopWait.seed = false
+						StopWait.again = false
+					end
+
+					-- skip
+					return 1
+				end
+
+				return func(self, ...)
+			end
+
+			local ChoOrig_SA_WaitTime_StopWait = SA_WaitTime.StopWait
+			AddToOrigFuncs("SA_WaitTime.StopWait")
+			function SA_WaitTime:StopWait(...)
+				return SkipMystStep(self, ChoOrig_SA_WaitTime_StopWait, ...)
+			end
+			--
+			local ChoOrig_SA_WaitMarsTime_StopWait = SA_WaitMarsTime.StopWait
+			AddToOrigFuncs("SA_WaitMarsTime.StopWait")
+			function SA_WaitMarsTime:StopWait(...)
+				return SkipMystStep(self, ChoOrig_SA_WaitMarsTime_StopWait, ...)
+			end
+		end -- do
+
+		-- keep prod at saved values for grid producers (air/water/elec)
+		local ChoOrig_SupplyGridElement_SetProduction = SupplyGridElement.SetProduction
+		AddToOrigFuncs("SupplyGridElement.SetProduction")
+		function SupplyGridElement:SetProduction(new_production, new_throttled_production, update, ...)
+			local amount = UserSettings.BuildingSettings[self.building.template_name]
+			if amount and amount.production then
+				-- set prod
+				new_production = self.building.working and amount.production or 0
+				-- set displayed prod
+				if self:IsKindOf("AirGridFragment") then
+					self.building.air_production = self.building.working and amount.production or 0
+				elseif self:IsKindOf("WaterGrid") then
+					self.building.water_production = self.building.working and amount.production or 0
+				elseif self:IsKindOf("ElectricityGrid") then
+					self.building.electricity_production = self.building.working and amount.production or 0
+				end
+			end
+			ChoOrig_SupplyGridElement_SetProduction(self, new_production, new_throttled_production, update, ...)
+		end
+
+		-- and for regular producers (factories/extractors)
+		local ChoOrig_SingleResourceProducer_Produce = SingleResourceProducer.Produce
+		AddToOrigFuncs("SingleResourceProducer.Produce")
+		function SingleResourceProducer:Produce(amount_to_produce, ...)
+			local amount = UserSettings.BuildingSettings[self.parent.template_name]
+			if amount and amount.production then
+				-- set prod
+				amount_to_produce = amount.production / guim
+				-- set displayed prod
+				self.production_per_day = amount.production
+			end
+
+			-- get them lazy drones working (bugfix for drones ignoring amounts less then their carry amount)
+			if UserSettings.DroneResourceCarryAmountFix and self:GetStoredAmount() > 1000 then
+				ChoGGi.ComFuncs.FuckingDrones(self, "single")
+			end
+
+			return ChoOrig_SingleResourceProducer_Produce(self, amount_to_produce, ...)
+		end
+
+		-- larger drone work radius
+		do -- SetWorkRadius
+			local function SetHexRadius(func, setting, obj, orig_radius, ...)
+				local new_rad = UserSettings[setting]
+				if new_rad then
+					return func(obj, new_rad, ...)
+				end
+				return func(obj, orig_radius, ...)
+			end
+
+			local ChoOrig_RCRover_SetWorkRadius = RCRover.SetWorkRadius
+			AddToOrigFuncs("RCRover.SetWorkRadius")
+			function RCRover:SetWorkRadius(radius, ...)
+				SetHexRadius(ChoOrig_RCRover_SetWorkRadius, "RCRoverMaxRadius", self, radius, ...)
+			end
+			--
+			local ChoOrig_DroneHub_SetWorkRadius = DroneHub.SetWorkRadius
+			AddToOrigFuncs("DroneHub.SetWorkRadius")
+			function DroneHub:SetWorkRadius(radius, ...)
+				SetHexRadius(ChoOrig_DroneHub_SetWorkRadius, "CommandCenterMaxRadius", self, radius, ...)
+			end
+		end -- do
+
+		local ChoOrig_SpaceElevator_DroneUnloadResource = SpaceElevator.DroneUnloadResource
+		AddToOrigFuncs("SpaceElevator.DroneUnloadResource")
+		function SpaceElevator:DroneUnloadResource(...)
+			local export_when = ChoGGi.ComFuncs.DotPathToObject("ChoGGi.UserSettings.BuildingSettings.SpaceElevator.export_when_this_amount")
+			local amount = self.max_export_storage - self.export_request:GetActualAmount()
+			if export_when and amount >= export_when then
+				self.pod_thread = CreateGameTimeThread(function()
+					self:ExportGoods()
+					self.pod_thread = nil
+				end)
+			end
+			return ChoOrig_SpaceElevator_DroneUnloadResource(self, ...)
+		end
+
+		local ChoOrig_SpaceElevator_ToggleAllowExport = SpaceElevator.ToggleAllowExport
+		AddToOrigFuncs("SpaceElevator.ToggleAllowExport")
+		function SpaceElevator:ToggleAllowExport(...)
+			ChoOrig_SpaceElevator_ToggleAllowExport(self, ...)
+			if self.allow_export and UserSettings.SpaceElevatorToggleInstantExport then
+				self.pod_thread = CreateGameTimeThread(function()
+					self:ExportGoods()
+					self.pod_thread = nil
+				end)
+			end
+		end
+
+		-- Unbreakable cables/pipes
+		local ChoOrig_SupplyGridFragment_IsBreakable = SupplyGridFragment.IsBreakable
+		AddToOrigFuncs("SupplyGridFragment.IsBreakable")
+		function SupplyGridFragment.IsBreakable(...)
+			if UserSettings.CablesAndPipesNoBreak then
+				return false
+			end
+			return ChoOrig_SupplyGridFragment_IsBreakable(...)
+		end
+		--
+		local ChoOrig_BreakableSupplyGridElement_CanBreak = BreakableSupplyGridElement.CanBreak
+		AddToOrigFuncs("BreakableSupplyGridElement.CanBreak")
+		function BreakableSupplyGridElement.CanBreak(...)
+			if UserSettings.CablesAndPipesNoBreak then
+				return false
+			end
+			return ChoOrig_BreakableSupplyGridElement_CanBreak(...)
+		end
+
+		-- No more pulsating pin motion
+		local ChoOrig_XBlinkingButtonWithRMB_SetBlinking = XBlinkingButtonWithRMB.SetBlinking
+		AddToOrigFuncs("XBlinkingButtonWithRMB.SetBlinking")
+		function XBlinkingButtonWithRMB:SetBlinking(...)
+			if UserSettings.DisablePulsatingPinsMotion then
+				self.blinking = false
+			else
+				return ChoOrig_XBlinkingButtonWithRMB_SetBlinking(self, ...)
+			end
+		end
+
+		do -- All storybit options enabled
+			local function FakeEvaluate(func, ...)
+				if not UserSettings.OverrideConditionPrereqs then
+					return func(...)
+				end
+
+				return true
+			end
+
+			local ChoOrig_IsCommander_Evaluate = IsCommander.Evaluate
+			AddToOrigFuncs("IsCommander.Evaluate")
+			function IsCommander.Evaluate(...)
+				return FakeEvaluate(ChoOrig_IsCommander_Evaluate, ...)
+			end
+			local ChoOrig_IsCommander2_Evaluate = IsCommander2.Evaluate
+			AddToOrigFuncs("IsCommander2.Evaluate")
+			function IsCommander2.Evaluate(...)
+				return FakeEvaluate(ChoOrig_IsCommander2_Evaluate, ...)
+			end
+		end -- do
+
+	end -- what_game
 
 end -- ClassesPP
 
@@ -1717,7 +1726,7 @@ else
 	OpenExamine(params, {
 		has_params = true,
 		override_title = true,
-		title = TranslationTable[302535920000069] .. " " .. TranslationTable[302535920001073]
+		title = T(302535920000069) .. " " .. T(302535920001073)
 			.. ": " .. ChoGGi.ComFuncs.RetName(params[1]),
 	})
 end]] -- title strings: Examine Console

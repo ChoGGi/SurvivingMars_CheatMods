@@ -27,6 +27,7 @@ ex(obj, {
 	override_title = true,
 })
 ]]
+local what_game = ChoGGi.what_game
 
 -- store opened examine dialogs
 if not rawget(_G, "ChoGGi_dlgs_examine") then
@@ -40,13 +41,15 @@ end
 -- maybe make them stored settings...
 local width, height
 
+-- FIgure out what to use for JA3 instead of UICity
+local city_object
+
 -- local some globals
 local pairs, type, tostring, tonumber = pairs, type, tostring, tonumber
 local getmetatable, rawget, next, table = getmetatable, rawget, next, table
 local CmpLower = CmpLower
 local CreateRealTimeThread = CreateRealTimeThread
 local DeleteThread = DeleteThread
-local EnumVars = EnumVars
 local GetStateName = GetStateName
 local IsKindOf = IsKindOf
 local IsT = IsT
@@ -63,7 +66,12 @@ local XDestroyRolloverWindow = XDestroyRolloverWindow
 local XFlashWindow = XFlashWindow
 local TMeta = TMeta
 local TConcatMeta = TConcatMeta
-local TranslationTable = TranslationTable
+
+-- actually local them?
+--JA3
+if what_game == "Mars" then
+	local EnumVars = EnumVars
+end
 
 local Translate = ChoGGi.ComFuncs.Translate
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
@@ -192,6 +200,8 @@ DefineClass.ChoGGi_DlgExamine = {
 }
 
 function ChoGGi_DlgExamine:Init(parent, context)
+	city_object = rawget(_G, "UICity") or {}
+
 	local g_Classes = g_Classes
 	self.ChoGGi = ChoGGi
 	self.obj = context.obj
@@ -243,18 +253,18 @@ function ChoGGi_DlgExamine:Init(parent, context)
 	self.title = context.title
 	self.override_title = context.override_title
 	self.varargs = context.varargs
-	self.prefix = TranslationTable[302535920000069--[[Examine]]]
+	self.prefix = T(302535920000069--[[Examine]])
 	self.exec_tables = context.exec_tables
 	self.tooltip_info = context.tooltip_info
 
 	-- these are used during SetObj, so we trans once to speed up autorefresh
-	self.string_Loadingresources = TranslationTable[67--[[Loading resources]]]
-	self.string_Classname = TranslationTable[3746--[[Class name]]]
-	self.string_BuildingTemplate = TranslationTable[5426--[[Building]]] .. "" .. TranslationTable[1000109--[[Template]]]
-	self.string_Entity = TranslationTable[155--[[Entity]]]
-	self.string_Class = TranslationTable[3696--[[Class]]]
-	self.string_Object = TranslationTable[298035641454--[[Object]]]
-	self.string_State = TranslationTable[3722--[[State]]]
+	self.string_Loadingresources = T(67--[[Loading resources]])
+	self.string_Classname = T(3746--[[Class name]])
+	self.string_BuildingTemplate = T(5426--[[Building]]) .. "" .. T(1000109--[[Template]])
+	self.string_Entity = T(155--[[Entity]])
+	self.string_Class = T(3696--[[Class]])
+	self.string_Object = T(298035641454--[[Object]])
+	self.string_State = T(3722--[[State]])
 
 	-- If we're examining a string we want to convert to an object
 	if type(self.obj) == "string" then
@@ -322,16 +332,16 @@ function ChoGGi_DlgExamine:Init(parent, context)
 		self.idButRefresh = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButRefresh",
 			Image = "CommonAssets/UI/Menu/reload.tga",
-			RolloverTitle = TranslationTable[1000220--[[Refresh]]],
-			RolloverText = TranslationTable[302535920000092--[[Updates list with any changed values.]]],
+			RolloverTitle = T(1000220--[[Refresh]]),
+			RolloverText = T(302535920000092--[[Updates list with any changed values.]]),
 			OnPress = self.idButRefresh_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButMouseExamine = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButMouseExamine",
 			Image = "CommonAssets/UI/Menu/select_objects.tga",
-			RolloverTitle = TranslationTable[302535920001321--[[UI Click To Examine]]],
-			RolloverText = TranslationTable[302535920001322--[[Examine UI controls by clicking them.]]],
+			RolloverTitle = T(302535920001321--[[UI Click To Examine]]),
+			RolloverText = T(302535920001322--[[Examine UI controls by clicking them.]]),
 			OnPress = function()
 				self.ChoGGi.ComFuncs.TerminalRolloverMode(true, self)
 			end,
@@ -340,81 +350,85 @@ function ChoGGi_DlgExamine:Init(parent, context)
 		self.idButMouseExamine = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButCopyAllText",
 			Image = "CommonAssets/UI/Menu/ExportImageSequence.tga",
-			RolloverTitle = TranslationTable[302535920000865--[[Copy All Text]]],
-			RolloverText = TranslationTable[302535920001674--[[Copies dialog text to clipboard.]]],
+			RolloverTitle = T(302535920000865--[[Copy All Text]]),
+			RolloverText = T(302535920001674--[[Copies dialog text to clipboard.]]),
 			OnPress = self.idButCopyAllText_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButSetTransp = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButSetTransp",
 			Image = "CommonAssets/UI/Menu/CutSceneArea.tga",
-			RolloverTitle = TranslationTable[302535920000629--[[UI Transparency]]],
-			RolloverText = TranslationTable[302535920001367--[[Toggles]]] .. " " .. TranslationTable[302535920000629--[[UI Transparency]]],
+			RolloverTitle = T(302535920000629--[[UI Transparency]]),
+			RolloverText = T(302535920001367--[[Toggles]]) .. " " .. T(302535920000629--[[UI Transparency]]),
 			OnPress = self.idButSetTransp_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButClear = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButClear",
 			Image = "CommonAssets/UI/Menu/NoblePreview.tga",
-			RolloverTitle = TranslationTable[594--[[Clear]]],
-			RolloverText = TranslationTable[302535920000016--[["Remove any coloured spheres/reset coloured objects
-Press once to clear this examine, again to clear all."]]],
+			RolloverTitle = T(594--[[Clear]]),
+			RolloverText = T(302535920000016--[["Remove any coloured spheres/reset coloured objects
+Press once to clear this examine, again to clear all."]]),
 			OnPress = self.idButClear_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButMarkObject = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButMarkObject",
 			Image = "CommonAssets/UI/Menu/DisableEyeSpec.tga",
-			RolloverTitle = TranslationTable[302535920000057--[[Mark Object]]],
-			RolloverText = TranslationTable[302535920000021--[[Mark object with coloured sphere and/or paint.]]],
+			RolloverTitle = T(302535920000057--[[Mark Object]]),
+			RolloverText = T(302535920000021--[[Mark object with coloured sphere and/or paint.]]),
 			OnPress = self.idButMarkObject_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButDeleteObj = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButDeleteObj",
 			Image = "CommonAssets/UI/Menu/delete_objects.tga",
-			RolloverTitle = TranslationTable[502364928914--[[Delete]]],
-			RolloverText = Translate(302535920000414--[[Are you sure you wish to delete <color ChoGGi_red>%s</color>?]]):format(self.name),
+			RolloverTitle = T(502364928914--[[Delete]]),
+			RolloverText = T{302535920000414--[["Are you sure you wish to delete <color ChoGGi_red><str></color>?"]],
+				str = self.name,
+			},
 			OnPress = self.idButDeleteObj_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButDeleteObj = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButDeleteAllObj",
 			Image = "CommonAssets/UI/Menu/remove_water.tga",
-			RolloverTitle = TranslationTable[302535920001675--[[Delete All Objects]]],
-			RolloverText = Translate(302535920001676--[[Are you sure you wish to delete all <color ChoGGi_red>%s</color> objects? (from active map)]]):format(self.name),
+			RolloverTitle = T(302535920001675--[[Delete All Objects]]),
+			RolloverText = T{302535920001676--[["Are you sure you wish to delete all <color ChoGGi_red><str></color> objects? (from active map)"]],
+				str = self.name,
+			},
 			OnPress = self.idButDeleteAllObj_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButSetObjlist = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButSetObjlist",
 			Image = "CommonAssets/UI/Menu/toggle_post.tga",
-			RolloverTitle = TranslationTable[302535920001558--[[Toggle Objlist]]],
-			RolloverText = TranslationTable[302535920001559--[[Toggle setting the metatable for this table to an objlist (for using mark/delete all).]]],
+			RolloverTitle = T(302535920001558--[[Toggle Objlist]]),
+			RolloverText = T(302535920001559--[[Toggle setting the metatable for this table to an objlist (for using mark/delete all).]]),
 			OnPress = self.idButToggleObjlist_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButMarkAll = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButMarkAll",
 			Image = "CommonAssets/UI/Menu/ExportImageSequence.tga",
-			RolloverTitle = TranslationTable[302535920000058--[[Mark All Objects]]],
-			RolloverText = TranslationTable[302535920000056--[[Mark all items in objlist with coloured spheres.]]],
+			RolloverTitle = T(302535920000058--[[Mark All Objects]]),
+			RolloverText = T(302535920000056--[[Mark all items in objlist with coloured spheres.]]),
 			OnPress = self.idButMarkAll_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButMarkAllLine = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButMarkAllLine",
 			Image = "CommonAssets/UI/Menu/ShowOcclusion.tga",
-			RolloverTitle = TranslationTable[302535920001512--[[Mark All Objects (Line)]]],
-			RolloverText = TranslationTable[302535920001513--[[Add a line connecting all items in list.]]],
+			RolloverTitle = T(302535920001512--[[Mark All Objects (Line)]]),
+			RolloverText = T(302535920001513--[[Add a line connecting all items in list.]]),
 			OnPress = self.idButMarkAllLine_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButDeleteAll = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButDeleteAll",
 			Image = "CommonAssets/UI/Menu/UnlockCollection.tga",
-			RolloverTitle = TranslationTable[3768--[[Destroy all?]]],
-			RolloverText = TranslationTable[302535920000059--[[Destroy all objects in objlist!]]],
+			RolloverTitle = T(3768--[[Destroy all?]]),
+			RolloverText = T(302535920000059--[[Destroy all objects in objlist!]]),
 			OnPress = self.idButDeleteAll_OnPress,
 		}, self.idToolbarButtons)
 
@@ -426,14 +440,14 @@ Press once to clear this examine, again to clear all."]]],
 			DrawOnTop = true,
 		}, self.idToolbarArea)
 
-		self.idAutoRefresh_update_str = TranslationTable[302535920001257--[[Auto-refresh list every second.]]]
-			.. "\n" .. Translate(302535920001422--[[<right_click> to change refresh delay.]])
-			.. "\n" .. TranslationTable[302535920000106--[[Current]]] .. ": <color 100 255 100>%s</color>"
+		self.idAutoRefresh_update_str = Translate(T(302535920001257--[[Auto-refresh list every second.]])
+			.. "\n" .. T(302535920001422--[[<right_click> to change refresh delay.]])
+			.. "\n" .. T(302535920000106--[[Current]]) .. ": <color 100 255 100>%s</color>")
 
 		self.idAutoRefresh = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idAutoRefresh",
 			Dock = "right",
-			Text = TranslationTable[302535920000084--[[Auto-Refresh]]],
+			Text = T(302535920000084--[[Auto-Refresh]]),
 			RolloverText = self.idAutoRefresh_update_str:format(self.autorefresh_delay),
 			RolloverHint = T(302535920001425--[["<left_click> Toggle, <right_click> Set Delay"]]),
 			OnChange = self.idAutoRefresh_OnChange,
@@ -446,7 +460,7 @@ Press once to clear this examine, again to clear all."]]],
 			MinWidth = 50,
 			Margins = box(0, 0, 6, 0),
 			FoldWhenHidden = true,
-			RolloverText = TranslationTable[302535920000967--[[Delay in ms between updating text.]]],
+			RolloverText = T(302535920000967--[[Delay in ms between updating text.]]),
 			OnTextChanged = self.idAutoRefreshDelay_OnTextChanged,
 		}, self.idToolbarButtonsRightRefresh)
 		-- vis is toggled when rightclicking autorefresh checkbox
@@ -461,35 +475,39 @@ Press once to clear this examine, again to clear all."]]],
 			DrawOnTop = true,
 		}, self.idToolbarArea)
 
-		--
-		self.idViewEnum = g_Classes.ChoGGi_XCheckButton:new({
-			Id = "idViewEnum",
-			MinWidth = 0,
-			Text = TranslationTable[302535920001442--[[Enum]]],
-			RolloverText = TranslationTable[302535920001443--[[Show values from EnumVars(obj).]]],
-			OnChange = self.idViewEnum_OnChange,
-		}, self.idToolbarButtonsRight)
+		if ChoGGi.what_game == "Mars" then
+			--
+			self.idViewEnum = g_Classes.ChoGGi_XCheckButton:new({
+				Id = "idViewEnum",
+				MinWidth = 0,
+				Text = T(302535920001442--[[Enum]]),
+				RolloverText = T(302535920001443--[[Show values from EnumVars(obj).]]),
+				OnChange = self.idViewEnum_OnChange,
+			}, self.idToolbarButtonsRight)
+		end
 		--
 		self.idShowAllValues = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idShowAllValues",
 			MinWidth = 0,
-			Text = TranslationTable[4493--[[All]]],
-			RolloverText = TranslationTable[302535920001391--[[Show all values: getmetatable(obj).]]],
+			Text = T(4493--[[All]]),
+			RolloverText = T(302535920001391--[[Show all values: getmetatable(obj).]]),
 			OnChange = self.idShowAllValues_OnChange,
 		}, self.idToolbarButtonsRight)
 		--
 		self.idSortDir = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idSortDir",
-			Text = TranslationTable[10124--[[Sort]]],
-			RolloverText = TranslationTable[302535920001248--[[Sort normally or backwards.]]],
+			Text = T(10124--[[Sort]]),
+			RolloverText = T(302535920001248--[[Sort normally or backwards.]]),
 			OnChange = self.idSortDir_OnChange,
 		}, self.idToolbarButtonsRight)
 		--
 		self.idChildLock = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idChildLock",
-			Text = TranslationTable[4775--[[Child]]],
-			RolloverTitle = TranslationTable[4775--[[Child]]] .. " " .. TranslationTable[302535920000547--[[Lock]]],
-			RolloverText = Translate(302535920000920--[[Examining objs from this dlg will <color ChoGGi_red>%s</color>examine them all in a single dlg.]]):format(TranslationTable[3695--[[NOT]]] .. " "),
+			Text = T(4775--[[Child]]),
+			RolloverTitle = T(4775--[[Child]]) .. " " .. T(302535920000547--[[Lock]]),
+			RolloverText = T{302535920000920--[[Examining objs from this dlg will <color ChoGGi_red><var></color>examine them all in a single dlg.]],
+				var = T(3695--[[NOT]]),
+			},
 			OnChange = self.idChildLock_OnChange,
 		}, self.idToolbarButtonsRight)
 		--
@@ -504,14 +522,14 @@ Press once to clear this examine, again to clear all."]]],
 		--
 		self.idSearchText = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idSearchText",
-			RolloverText = TranslationTable[302535920000043--[["Press <color 0 200 0>Enter</color> to scroll to next found text, <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text, <color 0 200 0>Arrow Keys</color> to scroll to each end."]]],
-			Hint = TranslationTable[10123--[[Search]]],
+			RolloverText = T(302535920000043--[["Press <color 0 200 0>Enter</color> to scroll to next found text, <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text, <color 0 200 0>Arrow Keys</color> to scroll to each end."]]),
+			Hint = Translate(10123--[[Search]]),
 			OnKbdKeyDown = self.idSearchText_OnKbdKeyDown,
 		}, self.idSearchArea)
 		--
 		self.idSearch = g_Classes.ChoGGi_XButton:new({
 			Id = "idSearch",
-			Text = TranslationTable[10123--[[Search]]],
+			Text = T(10123--[[Search]]),
 			Dock = "right",
 			RolloverAnchor = "right",
 			RolloverHint = T(302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"]]),
@@ -530,8 +548,8 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		self.tools_menu_popup = self:BuildToolsMenuPopup()
 		self.idTools = g_Classes.ChoGGi_XComboButton:new({
 			Id = "idTools",
-			Text = TranslationTable[302535920000239--[[Tools]]],
-			RolloverText = TranslationTable[302535920001426--[[Various tools to use.]]],
+			Text = T(302535920000239--[[Tools]]),
+			RolloverText = T(302535920001426--[[Various tools to use.]]),
 			OnMouseButtonDown = self.idTools_OnMouseButtonDown,
 			Dock = "left",
 		}, self.idMenuArea)
@@ -540,7 +558,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		self.idObjects = g_Classes.ChoGGi_XComboButton:new({
 			Id = "idObjects",
 			Text = self.string_Object,
-			RolloverText = TranslationTable[302535920001530--[[Various object tools to use.]]],
+			RolloverText = T(302535920001530--[[Various object tools to use.]]),
 			OnMouseButtonDown = self.idObjects_OnMouseButtonDown,
 			Dock = "left",
 			FoldWhenHidden = true,
@@ -549,8 +567,8 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		--
 		self.idParents = g_Classes.ChoGGi_XComboButton:new({
 			Id = "idParents",
-			Text = TranslationTable[302535920000520--[[Parents]]],
-			RolloverText = TranslationTable[302535920000553--[[Examine parent and ancestor classes.]]],
+			Text = T(302535920000520--[[Parents]]),
+			RolloverText = T(302535920000553--[[Examine parent and ancestor classes.]]),
 			OnMouseButtonDown = self.idParents_OnMouseButtonDown,
 			Dock = "left",
 			FoldWhenHidden = true,
@@ -559,8 +577,8 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		--
 		self.idAttaches = g_Classes.ChoGGi_XComboButton:new({
 			Id = "idAttaches",
-			Text = TranslationTable[302535920000053--[[Attaches]]],
-			RolloverText = TranslationTable[302535920000054--[[Any objects attached to this object.]]],
+			Text = T(302535920000053--[[Attaches]]),
+			RolloverText = T(302535920000054--[[Any objects attached to this object.]]),
 			OnMouseButtonDown = self.idAttaches_OnMouseButtonDown,
 			Dock = "left",
 			FoldWhenHidden = true,
@@ -570,8 +588,8 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		self.idToggleExecCode = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idToggleExecCode",
 			Dock = "right",
-			Text = TranslationTable[302535920000040--[[Exec Code]]],
-			RolloverText = TranslationTable[302535920001514--[[Toggle visibility of an input box for executing code.]]]
+			Text = T(302535920000040--[[Exec Code]]),
+			RolloverText = T(302535920001514--[[Toggle visibility of an input box for executing code.]])
 				.. "\n" .. T(302535920001517--[[Use <green>o</green> as a reference to the examined object: <yellow>IsValid(</yellow><green>o</green><yellow>)</yellow>.]]),
 			OnChange = self.idToggleExecCode_OnChange,
 		}, self.idMenuArea)
@@ -589,11 +607,11 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 			Id = "idExecCode",
 			RolloverText = Translate(302535920001515--[["Press <green>%s</green> to execute code.
 Use <green>%s</green>/<green>%s</green> to browse console history."]]):format(
-				TranslationTable[1000447--[[Enter]]], TranslationTable[1000458--[[Up]]],
-				TranslationTable[1000460--[[Down]]]
+				T(1000447--[[Enter]]), T(1000458--[[Up]]),
+				T(1000460--[[Down]])
 			) .. "\n"
 				.. T(302535920001517--[[Use <green>o</green> as a reference to the examined object: <yellow>IsValid(</yellow><green>o</green><yellow>)</yellow>.]]),
-			Hint = TranslationTable[302535920001516--[[o = examined object]]],
+			Hint = Translate(302535920001516--[[o = examined object]]),
 			OnKbdKeyDown = self.idExecCode_OnKbdKeyDown,
 		}, self.idExecCodeArea)
 		--
@@ -601,9 +619,9 @@ Use <green>%s</green>/<green>%s</green> to browse console history."]]):format(
 			Id = "idToggleExecCodeGroup",
 			Dock = "right",
 			Margins = box(4, 0, 0, 0),
-			Text = TranslationTable[302535920000590--[[Batch]]],
-			RolloverText = TranslationTable[302535920000841--[["If examining a table then exec this code for each entry.
-If it's an associative table then o = value."]]],
+			Text = T(302535920000590--[[Batch]]),
+			RolloverText = T(302535920000841--[["If examining a table then exec this code for each entry.
+If it's an associative table then o = value."]]),
 			OnChange = self.idToggleExecCodeGroup_OnChange,
 		}, self.idExecCodeArea)
 
@@ -722,10 +740,10 @@ function ChoGGi_DlgExamine:ViewSourceCode()
 	local str, path = self.ChoGGi.ComFuncs.RetSourceFile(info.source)
 	path = ConvertToOSPath(path)
 	if not str then
-		local msg = TranslationTable[302535920001521--[[Lua source file not found.]]] .. ": " .. path
+		local msg = T(302535920001521--[[Lua source file not found.]]) .. ": " .. path
 		self.ChoGGi.ComFuncs.MsgPopup(
 			msg,
-			TranslationTable[302535920001519--[[View Source]]]
+			T(302535920001519--[[View Source]])
 		)
 		print(msg)
 		return
@@ -737,7 +755,7 @@ function ChoGGi_DlgExamine:ViewSourceCode()
 		text = str,
 		code = true,
 		scrollto = info.linedefined,
-		title = TranslationTable[302535920001519--[[View Source]]] .. " " .. info.source,
+		title = T(302535920001519--[[View Source]]) .. " " .. info.source,
 		hint_ok = Translate(302535920000047--[["View Text/Object, and optionally dumps text to <green>%slogs\DumpedExamine.lua</green> (may take awhile for large text)."]]):format(ConvertToOSPath("AppData/")),
 		file_path = path,
 		_G = _G,
@@ -876,7 +894,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 
 			elseif IsValid(obj) then
 				c = c + 1
-				roll_text[c] = TranslationTable[13659--[[Map]]]
+				roll_text[c] = T(13659--[[Map]])
 				c = c + 1
 				roll_text[c] = ": "
 				c = c + 1
@@ -899,18 +917,18 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 		end
 
 		if obj_type then
-			title = TranslationTable[302535920000069--[[Examine]]] .. " (" .. obj_type .. ")"
+			title = T(302535920000069--[[Examine]]) .. " (" .. obj_type .. ")"
 		end
 	else
 		-- for anything that isn't a table
-		title = TranslationTable[302535920000069--[[Examine]]]
+		title = T(302535920000069--[[Examine]])
 	end
 
 	if self.onclick_funcs[link] == self.OpenListMenu then
 		if obj_type then
-			title = obj_name .. " " .. TranslationTable[1000162--[[Menu]]] .. " (" .. obj_type .. ")"
+			title = obj_name .. " " .. T(1000162--[[Menu]]) .. " (" .. obj_type .. ")"
 		else
-			title = obj_name .. " " .. TranslationTable[1000162--[[Menu]]]
+			title = obj_name .. " " .. T(1000162--[[Menu]])
 		end
 
 		-- stick info at the top of list
@@ -1097,10 +1115,12 @@ function ChoGGi_DlgExamine:idChildLock_OnChange(visible)
 	if visible then
 		visible = ""
 	else
-		visible = TranslationTable[3695--[[NOT]]] .. " "
+		visible = T(3695--[[NOT]]) .. " "
 	end
 
-	self.idChildLock:SetRolloverText(Translate(302535920000920--[[Examining objs from this dlg will <color ChoGGi_red>%s</color>examine them all in a single dlg.]]):format(visible))
+	self.idChildLock:SetRolloverText(T{302535920000920--[[Examining objs from this dlg will <color ChoGGi_red><var></color>examine them all in a single dlg.]],
+		var = visible,
+	})
 end
 -- stable name for external use
 function ChoGGi_DlgExamine:RefreshExamine()
@@ -1178,7 +1198,7 @@ end
 function ChoGGi_DlgExamine:idButDeleteAll_OnPress()
 	self = GetRootDialog(self)
 	self.ChoGGi.ComFuncs.QuestionBox(
-		TranslationTable[302535920000059--[[Destroy all objects in objlist!]]],
+		T(302535920000059--[[Destroy all objects in objlist!]]),
 		function(answer)
 			if answer then
 				SuspendPassEdits("ChoGGi_DlgExamine:idButDeleteAll_OnPress")
@@ -1195,7 +1215,7 @@ function ChoGGi_DlgExamine:idButDeleteAll_OnPress()
 				self:SetObj()
 			end
 		end,
-		TranslationTable[697--[[Destroy]]]
+		T(697--[[Destroy]])
 	)
 end
 function ChoGGi_DlgExamine:idViewEnum_OnChange()
@@ -1343,22 +1363,24 @@ end
 
 function ChoGGi_DlgExamine:BuildObjectMenuPopup()
 	return {
-		{name = TranslationTable[7972--[[Select Target]]],
-			hint = TranslationTable[302535920001667--[[Selects examine object]]],
+		{name = T(7972--[[Select Target]]),
+			hint = T(302535920001667--[[Selects examine object]]),
 			image = "CommonAssets/UI/Menu/select_objects.tga",
 			clicked = function()
         SelectObj(self.obj_ref)
 			end,
 		},
-		{name = TranslationTable[302535920000457--[[Anim State Set]]],
-			hint = TranslationTable[302535920000458--[[Make object dance on command.]]],
+		{name = T(302535920000457--[[Anim State Set]]),
+			hint = T(302535920000458--[[Make object dance on command.]]),
 			image = "CommonAssets/UI/Menu/UnlockCamera.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.SetAnimState(self.obj_ref)
 			end,
 		},
-		{name = TranslationTable[302535920000682--[[Change Entity]]],
-			hint = TranslationTable[302535920001151--[[Set Entity For %s]]]:format(self.name),
+		{name = T(302535920000682--[[Change Entity]]),
+			hint = T{302535920001151--[[Set Entity For <entity>]],
+				entity = self.name,
+			},
 			image = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.EntitySpawner(self.obj_ref, {
@@ -1368,15 +1390,15 @@ function ChoGGi_DlgExamine:BuildObjectMenuPopup()
 				})
 			end,
 		},
-		{name = TranslationTable[302535920000129--[[Set]]] .. " " .. TranslationTable[302535920001184--[[Particles]]],
-			hint = TranslationTable[302535920001421--[[Shows a list of particles you can use on the selected obj.]]],
+		{name = T(302535920000129--[[Set]]) .. " " .. T(302535920001184--[[Particles]]),
+			hint = T(302535920001421--[[Shows a list of particles you can use on the selected obj.]]),
 			image = "CommonAssets/UI/Menu/place_particles.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.SetParticles(self.obj_ref)
 			end,
 		},
-		{name = TranslationTable[302535920001476--[[Edit Flags]]],
-			hint = TranslationTable[302535920001447--[[Show and toggle the list of flags for selected object.]]],
+		{name = T(302535920001476--[[Edit Flags]]),
+			hint = T(302535920001447--[[Show and toggle the list of flags for selected object.]]),
 			image = "CommonAssets/UI/Menu/JoinGame.tga",
 			clicked = function()
 				-- task requests have flags too, ones that aren't listed in the Flags table... (just const.rf*)
@@ -1388,64 +1410,64 @@ function ChoGGi_DlgExamine:BuildObjectMenuPopup()
 			end,
 		},
 		{is_spacer = true},
-		{name = TranslationTable[302535920001472--[[BBox Toggle]]],
-			hint = TranslationTable[302535920001473--[[Toggle showing object's bbox (changes depending on movement).]]],
+		{name = T(302535920001472--[[BBox Toggle]]),
+			hint = T(302535920001473--[[Toggle showing object's bbox (changes depending on movement).]]),
 			image = "CommonAssets/UI/Menu/SelectionEditor.tga",
 			clicked = function()
 				self:ShowBBoxList()
 			end,
 		},
-		{name = TranslationTable[302535920001522--[[Hex Shape Toggle]]],
-			hint = TranslationTable[302535920001523--[[Toggle showing shapes for the object.]]],
+		{name = T(302535920001522--[[Hex Shape Toggle]]),
+			hint = T(302535920001523--[[Toggle showing shapes for the object.]]),
 			image = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
 			clicked = function()
 				self:ShowHexShapeList()
 			end,
 		},
-		{name = TranslationTable[302535920000449--[[Entity Spots Toggle]]],
-			hint = TranslationTable[302535920000450--[[Toggle showing attachment spots on selected object.]]],
+		{name = T(302535920000449--[[Entity Spots Toggle]]),
+			hint = T(302535920000450--[[Toggle showing attachment spots on selected object.]]),
 			image = "CommonAssets/UI/Menu/ShowAll.tga",
 			clicked = function()
 				self:ShowEntitySpotsList()
 			end,
 		},
-		{name = TranslationTable[302535920000459--[[Anim Debug Toggle]]],
-			hint = TranslationTable[302535920000460--[[Attaches text to each object showing animation info (or just to selected object).]]],
+		{name = T(302535920000459--[[Anim Debug Toggle]]),
+			hint = T(302535920000460--[[Attaches text to each object showing animation info (or just to selected object).]]),
 			image = "CommonAssets/UI/Menu/CameraEditor.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.ShowAnimDebug_Toggle(self.obj_ref)
 			end,
 		},
-		{name = TranslationTable[302535920001551--[[Surfaces Toggle]]],
-			hint = TranslationTable[302535920001552--[[Show a list of surfaces and draw lines over them (GetRelativeSurfaces).]]],
+		{name = T(302535920001551--[[Surfaces Toggle]]),
+			hint = T(302535920001552--[[Show a list of surfaces and draw lines over them (GetRelativeSurfaces).]]),
 			image = "CommonAssets/UI/Menu/ToggleCollisions.tga",
 			clicked = function()
 				self:ShowSurfacesList()
 			end,
 		},
 		{is_spacer = true},
-		{name = TranslationTable[302535920000235--[[Entity Spots]]],
-			hint = TranslationTable[302535920001445--[[Shows list of attaches for use with .ent files.]]],
+		{name = T(302535920000235--[[Entity Spots]]),
+			hint = T(302535920001445--[[Shows list of attaches for use with .ent files.]]),
 			image = "CommonAssets/UI/Menu/ListCollections.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.ExamineEntSpots(self.obj_ref, self)
 			end,
 		},
-		{name = TranslationTable[302535920001458--[[Material Properties]]],
-			hint = TranslationTable[302535920001459--[[Shows list of material settings/.dds files for use with .mtl files.]]],
+		{name = T(302535920001458--[[Material Properties]]),
+			hint = T(302535920001459--[[Shows list of material settings/.dds files for use with .mtl files.]]),
 			image = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.GetMaterialProperties(self.obj_entity, self)
 			end,
 		},
-		{name = TranslationTable[302535920001524--[[Entity Surfaces]]],
-			hint = TranslationTable[302535920001525--[[Shows list of surfaces for the object entity.]]],
+		{name = T(302535920001524--[[Entity Surfaces]]),
+			hint = T(302535920001525--[[Shows list of surfaces for the object entity.]]),
 			image = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.OpenInExamineDlg(self.ChoGGi.ComFuncs.RetSurfaceMasks(self.obj_ref), {
 					has_params = true,
 					parent = self,
-					title = TranslationTable[302535920001524--[[Entity Surfaces]]] .. ": " .. self.name,
+					title = T(302535920001524--[[Entity Surfaces]]) .. ": " .. self.name,
 				})
 			end,
 		},
@@ -1454,8 +1476,8 @@ end
 
 function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 	local list = {
-		{name = TranslationTable[302535920001467--[[Append Dump]]],
-			hint = TranslationTable[302535920001468--[["Append text to same file, or create a new file each time."]]],
+		{name = T(302535920001467--[[Append Dump]]),
+			hint = T(302535920001468--[["Append text to same file, or create a new file each time."]]),
 			clicked = function()
 				self.ChoGGi.UserSettings.ExamineAppendDump = not self.ChoGGi.UserSettings.ExamineAppendDump
 				self.ChoGGi.SettingFuncs.WriteSettings()
@@ -1464,7 +1486,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 			class = "ChoGGi_XCheckButtonMenu",
 		},
 
-		{name = self.ChoGGi.UserSettings.ExamineTextType and TranslationTable[1000145--[[Text]]] or self.string_Object,
+		{name = self.ChoGGi.UserSettings.ExamineTextType and T(1000145--[[Text]]) or self.string_Object,
 			hint = T(302535920001620--[["Click to toggle between Text or Object (View/Dump).
 <green>Text</green> is what you see, <green>Object</green> is the text created from ValueToLuaCode(obj)."]]),
 			clicked = function(item)
@@ -1473,7 +1495,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 
 				-- change this item name
 				if self.ChoGGi.UserSettings.ExamineTextType then
-					item.name = TranslationTable[1000145--[[Text]]]
+					item.name = T(1000145--[[Text]])
 				else
 					item.name = self.string_Object
 				end
@@ -1482,9 +1504,9 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 			class = "ChoGGi_XCheckButtonMenu",
 		},
 
-		{name = TranslationTable[302535920000004--[[Dump]]],
+		{name = T(302535920000004--[[Dump]]),
 			hint = Translate(302535920000046--[[Dumps Text/Object to <green>%slogs\DumpedExamine.lua</green>.]]):format(ConvertToOSPath("AppData/"))
-				.. "\n\n" .. TranslationTable[302535920001027--[[Object can take time on something like the ""Building"" class object.]]],
+				.. "\n\n" .. T(302535920001027--[[Object can take time on something like the ""Building"" class object.]]),
 			image = "CommonAssets/UI/Menu/change_height_down.tga",
 			clicked = function()
 				local str, name
@@ -1498,9 +1520,9 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 				self:DumpExamineText(str, name)
 			end,
 		},
-		{name = TranslationTable[302535920000048--[[View]]],
+		{name = T(302535920000048--[[View]]),
 			hint = Translate(302535920000047--[["View Text/Object, and optionally dumps text to <green>%slogs\DumpedExamine.lua</green> (may take awhile for large text)."]]):format(ConvertToOSPath("AppData/"))
-				.. "\n\n" .. TranslationTable[302535920001027--[[Object can take time on something like the ""Building"" class object.]]],
+				.. "\n\n" .. T(302535920001027--[[Object can take time on something like the ""Building"" class object.]]),
 			image = "CommonAssets/UI/Menu/change_height_up.tga",
 			clicked = function()
 				-- pure text string
@@ -1508,11 +1530,11 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 				if self.ChoGGi.UserSettings.ExamineTextType then
 					str, scrolled_text = self:GetCleanText(true)
 					name = "DumpedExamineText"
-					title = TranslationTable[302535920000048--[[View]]] .. "/" .. TranslationTable[302535920000004--[[Dump]]] .. " " .. TranslationTable[1000145--[[Text]]]
+					title = T(302535920000048--[[View]]) .. "/" .. T(302535920000004--[[Dump]]) .. " " .. T(1000145--[[Text]])
 				else
 					str = ValueToLuaCode(self.obj_ref)
 					name = "DumpedExamineObject"
-					title = TranslationTable[302535920000048--[[View]]] .. "/" .. TranslationTable[302535920000004--[[Dump]]] .. " " .. self.string_Object
+					title = T(302535920000048--[[View]]) .. "/" .. T(302535920000004--[[Dump]]) .. " " .. self.string_Object
 				end
 
 				self.ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
@@ -1528,7 +1550,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 					end,
 					scrollto = scrolled_text,
 					title = title,
-					hint_ok = TranslationTable[302535920000047]:format(ConvertToOSPath("AppData/")),
+					hint_ok = Translate(302535920000047):format(ConvertToOSPath("AppData/")),
 					custom_func = function(overwrite)
 						self:DumpExamineText(str, name, overwrite and "w")
 					end,
@@ -1536,8 +1558,8 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 			end,
 		},
 		{is_spacer = true},
-		{name = TranslationTable[302535920001239--[[Functions]]],
-			hint = TranslationTable[302535920001240--[[Show all functions of this object and parents/ancestors.]]],
+		{name = T(302535920001239--[[Functions]]),
+			hint = T(302535920001240--[[Show all functions of this object and parents/ancestors.]]),
 			image = "CommonAssets/UI/Menu/gear.tga",
 			clicked = function()
 				if self.parents[1] or self.ancestors[1] then
@@ -1547,10 +1569,10 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 					-- add examiner object with some spaces so it's at the top
 					self:BuildFuncList(self.obj_ref.class, "  ")
 					if self.parents[1] then
-						self:ProcessList(self.parents, " " .. TranslationTable[302535920000520--[[Parents]]] .. ": ")
+						self:ProcessList(self.parents, " " .. T(302535920000520--[[Parents]]) .. ": ")
 					end
 					if self.ancestors[1] then
-						self:ProcessList(self.ancestors, TranslationTable[302535920000525--[[Ancestors]]] .. ": ")
+						self:ProcessList(self.ancestors, T(302535920000525--[[Ancestors]]) .. ": ")
 					end
 					-- If Object hasn't been added, then add CObject (O has a few more funcs than CO)
 					if not self.menu_added.Object and self.menu_added.CObject then
@@ -1560,55 +1582,55 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 					self.ChoGGi.ComFuncs.OpenInExamineDlg(self.menu_list_items, {
 						has_params = true,
 						parent = self,
-						title = TranslationTable[302535920001239--[[Functions]]] .. ": " .. self.name,
+						title = T(302535920001239--[[Functions]]) .. ": " .. self.name,
 					})
 				else
-					local msg = TranslationTable[9763--[[No objects matching current filters.]]]
-					self.ChoGGi.ComFuncs.MsgPopup(msg, TranslationTable[6774--[[Error]]])
+					local msg = T(9763--[[No objects matching current filters.]])
+					self.ChoGGi.ComFuncs.MsgPopup(msg, T(6774--[[Error]]))
 					print(msg)
 				end
 			end,
 		},
-		{name = TranslationTable[327465361219--[[Edit]]] .. " " .. self.string_Object,
-			hint = TranslationTable[302535920000050--[[Opens object in Object Manipulator.]]],
+		{name = T(327465361219--[[Edit]]) .. " " .. self.string_Object,
+			hint = T(302535920000050--[[Opens object in Object Manipulator.]]),
 			image = "CommonAssets/UI/Menu/AreaProperties.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.OpenInObjectEditorDlg(self.obj_ref, self)
 			end,
 		},
-		{name = TranslationTable[174--[[Color Modifier]]],
-			hint = TranslationTable[302535920000693--[[Select/mouse over an object to change the colours
-Use Shift- or Ctrl- for random colours/reset colours.]]],
+		{name = T(174--[[Color Modifier]]),
+			hint = T(302535920000693--[[Select/mouse over an object to change the colours
+Use Shift- or Ctrl- for random colours/reset colours.]]),
 			image = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.ChangeObjectColour(self.obj_ref)
 			end,
 		},
-		{name = TranslationTable[302535920001305--[[Find Within]]],
-			hint = TranslationTable[302535920001303--[[Search for text within %s.]]]:format(self.name),
+		{name = T(302535920001305--[[Find Within]]),
+			hint = Translate(302535920001303--[[Search for text within %s.]]):format(self.name),
 			image = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.OpenInFindValueDlg(self.obj_ref, self)
 			end,
 		},
-		{name = TranslationTable[302535920000040--[[Exec Code]]],
-			hint = TranslationTable[302535920000052--[["Execute code (using console for output). o is whatever object is opened in examiner.
-Which you can then mess around with some more in the console."]]],
+		{name = T(302535920000040--[[Exec Code]]),
+			hint = T(302535920000052--[["Execute code (using console for output). o is whatever object is opened in examiner.
+Which you can then mess around with some more in the console."]]),
 			image = "CommonAssets/UI/Menu/AlignSel.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj_ref, self)
 			end,
 		},
 		{is_spacer = true},
-		{name = TranslationTable[931--[[Modified property]]],
-			hint = TranslationTable[302535920001384--[[Get properties different from base/parent object?]]],
+		{name = T(931--[[Modified property]]),
+			hint = T(302535920001384--[[Get properties different from base/parent object?]]),
 			image = "CommonAssets/UI/Menu/SelectByClass.tga",
 			clicked = function()
 				if self.obj_ref.IsKindOf and self.obj_ref:IsKindOf("PropertyObject") then
 					self.ChoGGi.ComFuncs.OpenInExamineDlg(GetModifiedProperties(self.obj_ref), {
 						has_params = true,
 						parent = self,
-						title = TranslationTable[931--[[Modified property]]] .. ": " .. self.name,
+						title = T(931--[[Modified property]]) .. ": " .. self.name,
 						override_title = true,
 					})
 				else
@@ -1616,19 +1638,19 @@ Which you can then mess around with some more in the console."]]],
 				end
 			end,
 		},
-		{name = TranslationTable[302535920001389--[[All Properties]]],
-			hint = TranslationTable[302535920001390--[[Get all properties.]]],
+		{name = T(302535920001389--[[All Properties]]),
+			hint = T(302535920001390--[[Get all properties.]]),
 			image = "CommonAssets/UI/Menu/CollectionsEditor.tga",
 			clicked = function()
 				-- give em some hints
 				if self.obj_ref.IsKindOf and self.obj_ref:IsKindOf("PropertyObject") then
 					local props = self.obj_ref:GetProperties()
 					local props_list = {
-						___readme = TranslationTable[302535920001397--[["Not the actual properties (see ___properties for those).
+						___readme = T(302535920001397--[["Not the actual properties (see ___properties for those).
 
 Use obj:GetProperty(""NAME"") and obj:SetProperty(""NAME"", value)
 You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
-"]]],
+"]]),
 						___properties = self.obj_ref.properties,
 					}
 					for i = 1, #props do
@@ -1637,15 +1659,15 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 					self.ChoGGi.ComFuncs.OpenInExamineDlg(props_list, {
 						has_params = true,
 						parent = self,
-						title = TranslationTable[302535920001389--[[All Properties]]] .. ": " .. self.name,
+						title = T(302535920001389--[[All Properties]]) .. ": " .. self.name,
 					})
 				else
 					self:InvalidMsgPopup()
 				end
 			end,
 		},
-		{name = TranslationTable[302535920001369--[[Ged Editor]]],
-			hint = TranslationTable[302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."]]],
+		{name = T(302535920001369--[[Ged Editor]]),
+			hint = T(302535920000482--[["Shows some info about the object, and so on. Some buttons may make camera wonky (use Game>Camera>Reset)."]]),
 			image = "CommonAssets/UI/Menu/UIDesigner.tga",
 			clicked = function()
 				if IsValid(self.obj_ref) then
@@ -1656,23 +1678,23 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 				end
 			end,
 		},
-		{name = TranslationTable[302535920000067--[[Ged Inspect]]],
-			hint = TranslationTable[302535920001075--[[Open this object in the Ged inspector.]]],
+		{name = T(302535920000067--[[Ged Inspect]]),
+			hint = T(302535920001075--[[Open this object in the Ged inspector.]]),
 			image = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
 			clicked = function()
 				Inspect(self.obj_ref)
 			end,
 		},
 		{is_spacer = true},
-		{name = TranslationTable[302535920001321--[[UI Click To Examine]]],
-			hint = TranslationTable[302535920001322--[[Examine UI controls by clicking them.]]],
+		{name = T(302535920001321--[[UI Click To Examine]]),
+			hint = T(302535920001322--[[Examine UI controls by clicking them.]]),
 			image = "CommonAssets/UI/Menu/select_objects.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.TerminalRolloverMode(true, self)
 			end,
 		},
-		{name = TranslationTable[302535920000970--[[UI Flash]]],
-			hint = TranslationTable[302535920000972--[[Flash visibility of the UI object being examined.]]],
+		{name = T(302535920000970--[[UI Flash]]),
+			hint = T(302535920000972--[[Flash visibility of the UI object being examined.]]),
 			clicked = function()
 				self.ChoGGi.UserSettings.FlashExamineObject = not self.ChoGGi.UserSettings.FlashExamineObject
 				self.ChoGGi.SettingFuncs.WriteSettings()
@@ -1684,9 +1706,9 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 	if testing then
 
 		-- maybe i'll finish this one day :)
-		table.insert(list, 8, {name = TranslationTable[327465361219--[[Edit]]] .. " "
-				.. self.string_Object .. " " .. TranslationTable[302535920001432--[[3D]]],
-			hint = TranslationTable[302535920001433--[[Fiddle with object angle/axis/pos and so forth.]]],
+		table.insert(list, 8, {name = T(327465361219--[[Edit]]) .. " "
+				.. self.string_Object .. " " .. T(302535920001432--[[3D]]),
+			hint = T(302535920001433--[[Fiddle with object angle/axis/pos and so forth.]]),
 			image = "CommonAssets/UI/Menu/Axis.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(self.obj_ref, self)
@@ -1694,7 +1716,7 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 		})
 
 		-- view raw text with tags visible
-		table.insert(list, 5, {name = TranslationTable[302535920000048--[[View]]] .. " Tags",
+		table.insert(list, 5, {name = T(302535920000048--[[View]]) .. " Tags",
 			image = "CommonAssets/UI/Menu/SelectByClass.tga",
 			clicked = function()
 				-- pure text string
@@ -1707,9 +1729,9 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 					update_func = function()
 						return self.idText:GetText()
 					end,
-					title = TranslationTable[302535920000048--[[View]]] .. "/"
-							.. TranslationTable[302535920000004--[[Dump]]] .. " "
-							.. TranslationTable[1000145--[[Text]]],
+					title = T(302535920000048--[[View]]) .. "/"
+							.. T(302535920000004--[[Dump]]) .. " "
+							.. T(1000145--[[Text]]),
 					custom_func = function(overwrite)
 						self:DumpExamineText(str, "DumpedExamine", overwrite and "w")
 					end,
@@ -1851,8 +1873,8 @@ end
 
 function ChoGGi_DlgExamine:InvalidMsgPopup(msg, title)
 	ChoGGi.ComFuncs.MsgPopup(
-		msg or TranslationTable[302535920001526--[[Not a valid object]]],
-		title or TranslationTable[302535920000069--[[Examine]]]
+		msg or T(302535920001526--[[Not a valid object]]),
+		title or T(302535920000069--[[Examine]])
 	)
 end
 
@@ -2032,19 +2054,19 @@ function ChoGGi_DlgExamine:ShowHexShapeList()
 
 	local item_list = {
 		{
-			text = " " .. TranslationTable[594--[[Clear]]],
+			text = " " .. T(594--[[Clear]]),
 			value = "Clear",
 		},
 		{
-			text = "HexNeighbours (" .. TranslationTable[302535920001570--[[Fallback]]] .. ")",
+			text = "HexNeighbours (" .. T(302535920001570--[[Fallback]]) .. ")",
 			value = HexNeighbours,
 		},
 		{
-			text = "HexSurroundingsCheckShape (" .. TranslationTable[302535920001570--[[Fallback]]] .. ")",
+			text = "HexSurroundingsCheckShape (" .. T(302535920001570--[[Fallback]]) .. ")",
 			value = HexSurroundingsCheckShape,
 		},
 		{
-			text = "FallbackOutline (" .. TranslationTable[302535920001570--[[Fallback]]] .. ")",
+			text = "FallbackOutline (" .. T(302535920001570--[[Fallback]]) .. ")",
 			value = FallbackOutline,
 		},
 	}
@@ -2122,23 +2144,23 @@ function ChoGGi_DlgExamine:ShowHexShapeList()
 	self.ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = TranslationTable[302535920001522--[[Hex Shape Toggle]]] .. ": " .. self.name,
+		title = T(302535920001522--[[Hex Shape Toggle]]) .. ": " .. self.name,
 		skip_sort = true,
 		custom_type = 7,
 		checkboxes = {
 			{
-				title = TranslationTable[302535920001553--[[Depth Test]]],
-				hint = TranslationTable[302535920001554--[[If enabled lines will hide behind occluding walls (not glass).]]],
+				title = T(302535920001553--[[Depth Test]]),
+				hint = T(302535920001554--[[If enabled lines will hide behind occluding walls (not glass).]]),
 				checked = false,
 			},
 			{
-				title = TranslationTable[302535920000461--[[Position]]],
-				hint = TranslationTable[302535920001076--[[Shows the hex position of the spot: (-1, 5).]]],
+				title = T(302535920000461--[[Position]]),
+				hint = T(302535920001076--[[Shows the hex position of the spot: (-1, 5).]]),
 				checked = true,
 			},
 			{
-				title = TranslationTable[302535920001560--[[Skip Clear]]],
-				hint = TranslationTable[302535920001561--[[Info objects will stay instead of being removed when activating a different option.]]],
+				title = T(302535920001560--[[Skip Clear]]),
+				hint = T(302535920001561--[[Info objects will stay instead of being removed when activating a different option.]]),
 				checked = false,
 			},
 		},
@@ -2178,7 +2200,7 @@ function ChoGGi_DlgExamine:ShowBBoxList()
 	self.ChoGGi.ComFuncs.BBoxLines_Clear(obj)
 
 	local item_list = {
-		{text = " " .. TranslationTable[594--[[Clear]]], value = "Clear"},
+		{text = " " .. T(594--[[Clear]]), value = "Clear"},
 		-- relative
 --~ 		{text = "GetEntityBBox", bbox = s:GetEntityBBox()},
 --~ 		{text = "GetEntitySurfacesBBox", bbox = HexStoreToWorld(obj:GetEntitySurfacesBBox())},
@@ -2196,7 +2218,7 @@ function ChoGGi_DlgExamine:ShowBBoxList()
 	local landscape = Landscapes[obj.mark]
 	if landscape and IsBox(landscape.bbox) then
 		item_list[#item_list+1] = {
-			text = TranslationTable[12019--[[Landscape]]] .. " bbox",
+			text = T(12019--[[Landscape]]) .. " bbox",
 			bbox = HexStoreToWorld(landscape.bbox),
 		}
 	end
@@ -2222,14 +2244,14 @@ function ChoGGi_DlgExamine:ShowBBoxList()
 	self.ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = TranslationTable[302535920001472--[[BBox Toggle]]] .. ": " .. self.name,
-		hint = TranslationTable[302535920000264--[[Defaults to obj:GetObjectBBox() if it can't find a func.]]],
+		title = T(302535920001472--[[BBox Toggle]]) .. ": " .. self.name,
+		hint = T(302535920000264--[[Defaults to obj:GetObjectBBox() if it can't find a func.]]),
 		skip_sort = true,
 		custom_type = 7,
 		checkboxes = {
 			{
-				title = TranslationTable[302535920001553--[[Depth Test]]],
-				hint = TranslationTable[302535920001554--[[If enabled lines will hide behind occluding walls (not glass).]]],
+				title = T(302535920001553--[[Depth Test]]),
+				hint = T(302535920001554--[[If enabled lines will hide behind occluding walls (not glass).]]),
 				checked = false,
 			},
 		},
@@ -2246,8 +2268,8 @@ function ChoGGi_DlgExamine:ShowEntitySpotsList()
 	end
 
 	local item_list = {
-		{text = " " .. TranslationTable[4493--[[All]]], value = "All"},
-		{text = " " .. TranslationTable[594--[[Clear]]], value = "Clear"},
+		{text = " " .. T(4493--[[All]]), value = "All"},
+		{text = " " .. T(594--[[Clear]]), value = "Clear"},
 	}
 	local c = #item_list
 
@@ -2270,7 +2292,7 @@ function ChoGGi_DlgExamine:ShowEntitySpotsList()
 			dupes[name] = true
 			c = c + 1
 			item_list[c] = {
-				text = name .. " (" .. TranslationTable[302535920001573--[[Spot Id]]] .. ": " .. i .. ")",
+				text = name .. " (" .. T(302535920001573--[[Spot Id]]) .. ": " .. i .. ")",
 				name = spot_name,
 				value = spot_annot,
 				hint = spot_annot,
@@ -2308,24 +2330,24 @@ function ChoGGi_DlgExamine:ShowEntitySpotsList()
 	self.ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = TranslationTable[302535920000449--[[Entity Spots Toggle]]] .. ": " .. self.name,
-		hint = TranslationTable[302535920000450--[[Toggle showing attachment spots on selected object.]]],
+		title = T(302535920000449--[[Entity Spots Toggle]]) .. ": " .. self.name,
+		hint = T(302535920000450--[[Toggle showing attachment spots on selected object.]]),
 		custom_type = 7,
 		skip_icons = true,
 		checkboxes = {
 			{
-				title = TranslationTable[302535920001553--[[Depth Test]]],
-				hint = TranslationTable[302535920001554--[[If enabled lines will hide behind occluding walls (not glass).]]],
+				title = T(302535920001553--[[Depth Test]]),
+				hint = T(302535920001554--[[If enabled lines will hide behind occluding walls (not glass).]]),
 				checked = false,
 			},
 			{
-				title = TranslationTable[302535920000461--[[Position]]],
-				hint = TranslationTable[302535920000463--[[Add spot offset pos from Origin.]]],
+				title = T(302535920000461--[[Position]]),
+				hint = T(302535920000463--[[Add spot offset pos from Origin.]]),
 				checked = false,
 			},
 			{
-				title = TranslationTable[302535920001560--[[Skip Clear]]],
-				hint = TranslationTable[302535920001561--[[Info objects will stay instead of being removed when activating a different option.]]],
+				title = T(302535920001560--[[Skip Clear]]),
+				hint = T(302535920001561--[[Info objects will stay instead of being removed when activating a different option.]]),
 				checked = false,
 			},
 		},
@@ -2342,9 +2364,9 @@ function ChoGGi_DlgExamine:ShowSurfacesList()
 	end
 
 	local item_list = {
-		{text = " " .. TranslationTable[594--[[Clear]]], value = "Clear"},
+		{text = " " .. T(594--[[Clear]]), value = "Clear"},
 		{
-			text = "0: " .. TranslationTable[302535920000968--[[Collisions]]],
+			text = "0: " .. T(302535920000968--[[Collisions]]),
 			value = 0,
 			hint = "Relative Surface index: 0",
 		},
@@ -2364,9 +2386,9 @@ function ChoGGi_DlgExamine:ShowSurfacesList()
 				hint = "Relative Surface index: " .. i,
 			}
 			if i == 5 then
-				item_list[c].text = item_list[c].text .. ": " .. TranslationTable[302535920000422--[[Hex Shape]]]
+				item_list[c].text = item_list[c].text .. ": " .. T(302535920000422--[[Hex Shape]])
 			elseif i == 7 then
-				item_list[c].text = item_list[c].text .. ": " .. TranslationTable[302535920001562--[[Selection Area]]]
+				item_list[c].text = item_list[c].text .. ": " .. T(302535920001562--[[Selection Area]])
 			end
 		end
 	end
@@ -2393,18 +2415,18 @@ function ChoGGi_DlgExamine:ShowSurfacesList()
 	self.ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = TranslationTable[302535920001551--[[Surfaces Toggle]]] .. ": " .. self.name,
-		hint = TranslationTable[302535920001552--[[Show a list of surfaces and draw lines over them (GetRelativeSurfaces).]]],
+		title = T(302535920001551--[[Surfaces Toggle]]) .. ": " .. self.name,
+		hint = T(302535920001552--[[Show a list of surfaces and draw lines over them (GetRelativeSurfaces).]]),
 		custom_type = 7,
 		checkboxes = {
 			{
-				title = TranslationTable[302535920001553--[[Depth Test]]],
-				hint = TranslationTable[302535920001554--[[If enabled lines will hide behind occluding walls (not glass).]]],
+				title = T(302535920001553--[[Depth Test]]),
+				hint = T(302535920001554--[[If enabled lines will hide behind occluding walls (not glass).]]),
 				checked = false,
 			},
 			{
-				title = TranslationTable[302535920001560--[[Skip Clear]]],
-				hint = TranslationTable[302535920001561--[[Info objects will stay instead of being removed when activating a different option.]]],
+				title = T(302535920001560--[[Skip Clear]]),
+				hint = T(302535920001561--[[Info objects will stay instead of being removed when activating a different option.]]),
 				checked = false,
 			},
 		},
@@ -2430,7 +2452,7 @@ end
 --
 local function Show_ConvertValueToInfo(self, button, obj)
 	-- not ingame = no sense in using ShowObj
-	if button == "L" and UICity and (IsValid(obj) or IsPoint(obj)) then
+	if button == "L" and city_object and (IsValid(obj) or IsPoint(obj)) then
 		self:AddSphere(obj)
 	else
 		self.ChoGGi.ComFuncs.OpenInExamineDlg(obj, {
@@ -2488,7 +2510,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 
 	local list = {
 		{name = obj_name,
-			hint = TranslationTable[302535920001538--[[Close this menu.]]],
+			hint = T(302535920001538--[[Close this menu.]]),
 			image = "CommonAssets/UI/Menu/default.tga",
 			clicked = function()
 				local popup = terminal.desktop[self.opened_list_menu_id]
@@ -2498,8 +2520,8 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 			end,
 		},
 		{is_spacer = true},
-		{name = TranslationTable[833734167742--[[Delete Item]]],
-			hint = TranslationTable[302535920001536--[["Remove the ""%s"" key from %s."]]]:format(obj_name, self.name),
+		{name = T(833734167742--[[Delete Item]]),
+			hint = Translate(302535920001536--[["Remove the ""%s"" key from %s."]]):format(obj_name, self.name),
 			image = "CommonAssets/UI/Menu/DeleteArea.tga",
 			clicked = function()
 				if obj_type == "string" then
@@ -2509,8 +2531,8 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 				end
 			end,
 		},
-		{name = TranslationTable[302535920001535--[[Set Value]]],
-			hint = TranslationTable[302535920001539--[[Change the value of %s.]]]:format(obj_name),
+		{name = T(302535920001535--[[Set Value]]),
+			hint = Translate(302535920001539--[[Change the value of %s.]]):format(obj_name),
 			image = "CommonAssets/UI/Menu/SelectByClassName.tga",
 			clicked = function()
 				-- numbers don't need ""
@@ -2540,8 +2562,8 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 	-- ValueToLuaCode doesn't work on threads
 	if type(obj_value) ~= "thread" then
 		list[#list+1] = {
-			name = TranslationTable[302535920000664--[[Clipboard]]],
-			hint = TranslationTable[302535920001566--[[Copy ValueToLuaCode(value) to clipboard.]]],
+			name = T(302535920000664--[[Clipboard]]),
+			hint = T(302535920001566--[[Copy ValueToLuaCode(value) to clipboard.]]),
 			image = "CommonAssets/UI/Menu/Mirror.tga",
 			clicked = function()
 				CopyToClipboard(obj_name .. " = " .. ValueToLuaCode(obj_value))
@@ -2555,8 +2577,8 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 	-- If it's an image path then we add an image viewer
 	if self.ChoGGi.ComFuncs.ImageExts()[obj_value_str:sub(-3):lower()] then
 		c = c + 1
-		list[c] = {name = TranslationTable[302535920001469--[[Image Viewer]]],
-			hint = TranslationTable[302535920001470--[["Open a dialog with a list of images from object (.dds, .tga, .png)."]]],
+		list[c] = {name = T(302535920001469--[[Image Viewer]]),
+			hint = T(302535920001470--[["Open a dialog with a list of images from object (.dds, .tga, .png)."]]),
 			image = "CommonAssets/UI/Menu/light_model.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.OpenInImageViewerDlg(obj_value_str, self)
@@ -2567,14 +2589,14 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 	-- add a mat props list
 	if obj_value_str:sub(-3):lower() == "mtl" then
 		c = c + 1
-		list[c] = {name = TranslationTable[302535920001458--[[Material Properties]]],
-			hint = TranslationTable[302535920001459--[[Shows list of material settings/.dds files for use with .mtl files.]]],
+		list[c] = {name = T(302535920001458--[[Material Properties]]),
+			hint = T(302535920001459--[[Shows list of material settings/.dds files for use with .mtl files.]]),
 			image = "CommonAssets/UI/Menu/AreaProperties.tga",
 			clicked = function()
 				self.ChoGGi.ComFuncs.OpenInExamineDlg(GetMaterialProperties(obj_value_str), {
 					has_params = true,
 					parent = self,
-					title = TranslationTable[302535920001458--[[Material Properties]]],
+					title = T(302535920001458--[[Material Properties]]),
 				})
 			end,
 		}
@@ -2582,7 +2604,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 
 	if obj_value_type == "number" then
 		c = c + 1
-		list[c] = {name = TranslationTable[302535920001564--[[Double Number]]],
+		list[c] = {name = T(302535920001564--[[Double Number]]),
 			hint = Translate(302535920001563--[[Set amount to <color 100 255 100>%s</color>.]]):format(obj_value * 2),
 			image = "CommonAssets/UI/Menu/change_height_up.tga",
 			clicked = function()
@@ -2590,7 +2612,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 			end,
 		}
 		c = c + 1
-		list[c] = {name = TranslationTable[302535920001565--[[Halve Number]]],
+		list[c] = {name = T(302535920001565--[[Halve Number]]),
 			hint = Translate(302535920001563--[[Set amount to <color 100 255 100>%s</color>.]]):format(obj_value / 2),
 			image = "CommonAssets/UI/Menu/change_height_down.tga",
 			clicked = function()
@@ -2600,16 +2622,16 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 
 	elseif obj_value_type == "boolean" then
 		c = c + 1
-		list[c] = {name = TranslationTable[302535920001069--[[Toggle Boolean]]],
-			hint = TranslationTable[302535920001567--[[false to true and true to false.]]],
+		list[c] = {name = T(302535920001069--[[Toggle Boolean]]),
+			hint = T(302535920001567--[[false to true and true to false.]]),
 			image = "CommonAssets/UI/Menu/ToggleSelectionOcclusion.tga",
 			clicked = function()
 				self:ShowExecCodeWithCode("o." .. obj_name .. " = " .. tostring(not obj_value))
 			end,
 		}
 		c = c + 1
-		list[c] = {name = TranslationTable[302535920001568--[[Boolean To Table]]],
-			hint = TranslationTable[302535920001569--[[Set the value to a new table: {}.]]],
+		list[c] = {name = T(302535920001568--[[Boolean To Table]]),
+			hint = T(302535920001569--[[Set the value to a new table: {}.]]),
 			image = "CommonAssets/UI/Menu/SelectionFilter.tga",
 			clicked = function()
 				self:ShowExecCodeWithCode("o." .. obj_name .. " = {}")
@@ -2621,8 +2643,8 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 		list[c] = {is_spacer = true}
 
 		c = c + 1
-		list[c] = {name = TranslationTable[302535920000625--[[Exec Func]]],
-			hint = TranslationTable[302535920000627--[[Show func name in exec code line.]]],
+		list[c] = {name = T(302535920000625--[[Exec Func]]),
+			hint = T(302535920000627--[[Show func name in exec code line.]]),
 			image = "CommonAssets/UI/Menu/SelectByClassName.tga",
 			clicked = function()
 				-- no "" for numbers
@@ -2650,8 +2672,8 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 			end,
 		}
 		c = c + 1
-		list[c] = {name = TranslationTable[302535920000110--[[Function Results]]],
-			hint = TranslationTable[302535920000168--[[Continually call this function while showing results in an examine dialog.]]],
+		list[c] = {name = T(302535920000110--[[Function Results]]),
+			hint = T(302535920000168--[[Continually call this function while showing results in an examine dialog.]]),
 			image = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
 			clicked = function()
 				-- If it's a class object then add self ref
@@ -2664,8 +2686,8 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 		}
 		if self.obj_type ~= "userdata" and self.obj_type ~= "string" then
 			c = c + 1
-			list[c] = {name = TranslationTable[302535920000524--[[Print Func]]],
-				hint = TranslationTable[302535920000906--[[Print func name when this func is called.]]],
+			list[c] = {name = T(302535920000524--[[Print Func]]),
+				hint = T(302535920000906--[[Print func name when this func is called.]]),
 				image = "CommonAssets/UI/Menu/Action.tga",
 				clicked = function()
 					self.ChoGGi.ComFuncs.PrintToFunc_Add(
@@ -2677,16 +2699,16 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 				end,
 			}
 			c = c + 1
-			list[c] = {name = TranslationTable[302535920000745--[[Print Func Params]]],
-				hint = TranslationTable[302535920000906] .. "\n\n" .. TranslationTable[302535920000984--[[Also prints params (if this func is attached to a class obj then the first arg will only return the name).]]],
+			list[c] = {name = T(302535920000745--[[Print Func Params]]),
+				hint = T(302535920000906) .. "\n\n" .. T(302535920000984--[[Also prints params (if this func is attached to a class obj then the first arg will only return the name).]]),
 				image = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
 				clicked = function()
 					self.ChoGGi.ComFuncs.PrintToFunc_Add(obj_value, obj_key, self.obj_ref, self.name .. "." .. obj_key, true)
 				end,
 			}
 			c = c + 1
-			list[c] = {name = TranslationTable[302535920000900--[[Print Reset]]],
-				hint = TranslationTable[302535920001067--[[Remove print from func.]]],
+			list[c] = {name = T(302535920000900--[[Print Reset]]),
+				hint = T(302535920001067--[[Remove print from func.]]),
 				image = "CommonAssets/UI/Menu/reload.tga",
 				clicked = function()
 					self.ChoGGi.ComFuncs.PrintToFunc_Remove(obj_key, self.obj_ref)
@@ -2799,10 +2821,10 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 				-- not sure how to check if it's an index non-ass table
 				if len > 0 and is_next then
 					-- next works for both
-					table_data = len .. " / " .. TranslationTable[302535920001057--[[Data]]]
+					table_data = len .. " / " .. Translate(302535920001057--[[Data]])
 				elseif is_next then
 					-- ass based
-					table_data = TranslationTable[302535920001057--[[Data]]]
+					table_data = Translate(302535920001057--[[Data]])
 				else
 					-- blank table
 					table_data = len
@@ -2841,7 +2863,7 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 						.. "point" .. tostring(InvalidPos) .. self.hyperlink_end
 				else
 					return self:HyperLink(obj, Show_ConvertValueToInfo)
-						.. TranslationTable[302535920000066--[[<color 203 120 30>Off-Map</color>]]] .. self.hyperlink_end
+						.. Translate(302535920000066--[[<color 203 120 30>Off-Map</color>]]) .. self.hyperlink_end
 				end
 			else
 				return self:HyperLink(obj, Show_ConvertValueToInfo)
@@ -2910,7 +2932,7 @@ function ChoGGi_DlgExamine:RetDebugUpValue(obj, list, c, nups)
 		local name, value = debug.getupvalue(obj, i)
 		if name then
 			c = c + 1
-			name = name ~= "" and name or TranslationTable[302535920000723--[[Lua]]]
+			name = name ~= "" and name or T(302535920000723--[[Lua]])
 
 			list[c] = "getupvalue(" .. i .. "): " .. name .. " = "
 				.. self:ConvertValueToInfo(value)
@@ -3214,7 +3236,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 			end
 			-- pathing
 			if current_pos ~= going_to then
-				path = TranslationTable[302535920001545--[[Going to %s]]]:format(self:ConvertValueToInfo(path)) .. "\n"
+				path = Translate(302535920001545--[[Going to %s]]):format(self:ConvertValueToInfo(path)) .. "\n"
 			else
 				path = ""
 			end
@@ -3263,7 +3285,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 
 	if obj_type == "number" or obj_type == "boolean" or (obj_type == "string" and not show_all_values) then
 		if obj == "nil" then
-			return TranslationTable[302535920000417--[[Null reference]]]
+			return Translate(302535920000417--[[Null reference]])
 		end
 		c = c + 1
 		list_obj_str[c] = self:ConvertValueToInfo(obj)
@@ -3297,17 +3319,17 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 						self.ChoGGi.ComFuncs.OpenInExamineDlg({obj:Unpack()}, {
 							has_params = true,
 							parent = self,
-							title = TranslationTable[302535920000885--[[Unpacked]]],
+							title = Translate(302535920000885--[[Unpacked]]),
 						})
 					end)
-					.. TranslationTable[302535920000048--[[View]]] .. self.hyperlink_end
+					.. Translate(302535920000048--[[View]]) .. self.hyperlink_end
 				)
 				-- we use this with Object>Flags
 				self.obj_flags = obj:GetFlags()
 				table.insert(data_meta, 1, "GetFlags(): " .. self:ConvertValueToInfo(self.obj_flags)
 					.. self:ConvertValueToInfo({
 						ChoGGi_AddHyperLink = true,
-						hint = TranslationTable[302535920001447--[[Shows list of flags set for selected object.-]]],
+						hint = Translate(302535920001447--[[Shows list of flags set for selected object.-]]),
 						func = function(ex_dlg)
 							ChoGGi.ComFuncs.ObjFlagsList_TR(obj, ex_dlg)
 						end,
@@ -3346,7 +3368,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				-- this takes a few seconds to load, so it's in a clickable link
 				table.insert(data_meta, 1, self:ConvertValueToInfo({
 					ChoGGi_AddHyperLink = true,
-					hint = TranslationTable[302535920001124--[[Will take a few seconds to complete.]]],
+					hint = Translate(302535920001124--[[Will take a few seconds to complete.]]),
 					name = "levels(true, 1):",
 					func = function()
 						self.ChoGGi.ComFuncs.OpenInExamineDlg({obj:levels(true, 1)}, {
@@ -3406,7 +3428,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 					table.insert(data_meta, 1, "\nsize() w, h: " .. self:ConvertValueToInfo(size))
 				end
 				if MainCity and center:InBox2D(self.ChoGGi.ComFuncs.ConstructableArea()) then
-					table.insert(data_meta, 1, self:HyperLink(obj, self.ToggleBBox, TranslationTable[302535920001550--[[Toggle viewing BBox.]]]) .. TranslationTable[302535920001549--[[View BBox]]] .. self.hyperlink_end)
+					table.insert(data_meta, 1, self:HyperLink(obj, self.ToggleBBox, Translate(302535920001550--[[Toggle viewing BBox.]])) .. Translate(302535920001549--[[View BBox]]) .. self.hyperlink_end)
 				end
 
 			elseif name == "HGE.Point" then
@@ -3469,8 +3491,8 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 					table.insert(data_meta, 1, "THasArgs(): " .. self:ConvertValueToInfo(THasArgs(obj)))
 					-- IsT returns the string id, but we'll just call it TGetID() to make it more obvious for people
 					table.insert(data_meta, 1, "\nTGetID(): " .. self:ConvertValueToInfo(is_t))
-					if str_not_translated and not UICity then
-						table.insert(data_meta, 1, TranslationTable[302535920001500--[[userdata object probably needs UICity to translate.]]])
+					if str_not_translated and not city_object then
+						table.insert(data_meta, 1, Translate(302535920001500--[[userdata object probably needs city_object to translate.]]))
 					end
 				end
 			end
@@ -3494,12 +3516,12 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 			-- link to source code
 			if info.what == "Lua" then
 				c = c + 1
-				list_obj_str[c] = self:HyperLink(obj, self.ViewSourceCode, TranslationTable[302535920001520--[["Opens source code (if it exists):
+				list_obj_str[c] = self:HyperLink(obj, self.ViewSourceCode, Translate(302535920001520--[["Opens source code (if it exists):
 Mod code works, as well as HG github code. HG code needs to be placed at ""%sSource""
 Example: ""Source/Lua/_const.lua""
 
-Decompiled code won't scroll correctly as the line numbers are different."]]]:format(ConvertToOSPath("AppData/")))
-					.. TranslationTable[302535920001519--[[View Source]]] .. self.hyperlink_end
+Decompiled code won't scroll correctly as the line numbers are different."]]):format(ConvertToOSPath("AppData/")))
+					.. Translate(302535920001519--[[View Source]]) .. self.hyperlink_end
 			end
 			-- list args
 			local args = self:RetFuncArgs(obj)
@@ -3521,7 +3543,7 @@ Decompiled code won't scroll correctly as the line numbers are different."]]]:fo
 
 		c = c + 1
 		list_obj_str[c] = "<color 255 255 255>"
-			.. TranslationTable[302535920001353--[[Thread info]]]
+			.. Translate(302535920001353--[[Thread info]])
 			.. ":\nIsValidThread(): "
 		local is_valid = IsValidThread(obj)
 		if is_valid then
@@ -3586,8 +3608,8 @@ Decompiled code won't scroll correctly as the line numbers are different."]]]:fo
 	if obj_metatable == TMeta or obj_metatable == TConcatMeta then
 		c = c + 1
 		list_obj_str[c] = (obj_metatable == TMeta
-			and "\nTMeta " .. TranslationTable[302535920000986--[[Translated]]] .. ": \n"
-			or "\nTConcatMeta " .. TranslationTable[302535920000986--[[Translated]]] .. ": \n")
+			and "\nTMeta " .. Translate(302535920000986--[[Translated]]) .. ": \n"
+			or "\nTConcatMeta " .. Translate(302535920000986--[[Translated]]) .. ": \n")
 			.. Translate(obj)
 	end
 
@@ -3604,7 +3626,7 @@ Decompiled code won't scroll correctly as the line numbers are different."]]]:fo
 				self.ChoGGi.ComFuncs.OpenInExamineDlg(self.enum_vars, {
 					has_params = true,
 					parent = self,
-					title = TranslationTable[302535920001442--[[Enum]]],
+					title = Translate(302535920001442--[[Enum]]),
 				})
 			end)
 			.. " enum" .. self.hyperlink_end
@@ -3656,21 +3678,21 @@ do -- BuildAttachesPopup
 			-- attached to name
 			if a.ChoGGi_Marked_Attach then
 				c = c + 1
-				self.attaches_menu_popup_hint[c] = TranslationTable[302535920001544--[[Attached to]]] .. ": " .. a.ChoGGi_Marked_Attach
+				self.attaches_menu_popup_hint[c] = T(302535920001544--[[Attached to]]) .. ": " .. a.ChoGGi_Marked_Attach
 				a.ChoGGi_Marked_Attach = nil
 			end
 			if a.handle then
 				c = c + 1
-				self.attaches_menu_popup_hint[c] = TranslationTable[302535920000955--[[Handle]]] .. ": " .. a.handle
+				self.attaches_menu_popup_hint[c] = T(302535920000955--[[Handle]]) .. ": " .. a.handle
 			end
 			c = c + 1
-			self.attaches_menu_popup_hint[c] = TranslationTable[302535920000461--[[Position]]] .. ": " .. tostring(pos)
+			self.attaches_menu_popup_hint[c] = T(302535920000461--[[Position]]) .. ": " .. tostring(pos)
 
 			if a:IsKindOf("ParSystem") then
 				local par_name = a:GetParticlesName()
 				if par_name ~= "" then
 					c = c + 1
-					self.attaches_menu_popup_hint[c] = TranslationTable[302535920001622--[[Particle]]] .. ": " .. par_name
+					self.attaches_menu_popup_hint[c] = T(302535920001622--[[Particle]]) .. ": " .. par_name
 				end
 			elseif a:IsKindOf("CObject") then
 				local entity = self.ChoGGi.ComFuncs.RetObjectEntity(a)
@@ -3693,10 +3715,14 @@ do -- BuildAttachesPopup
 
 		if attach_amount > 0 then
 			table.sort(self.attaches_menu_popup, SortList)
-
 			SetWinObjectVis(self.idAttaches, true)
-			self.idAttaches.RolloverText = TranslationTable[302535920000070--[["Shows list of attachments. This %s has %s.
-Use %s to hide green markers."]]]:format(self.name, attach_amount, "<image CommonAssets/UI/Menu/NoblePreview.tga 2500>")
+			self.idAttaches.RolloverText = T{302535920000070--[["Shows list of attachments. This <color ChoGGi_green><str1></color> has <color ChoGGi_yellow><str2></color>.
+
+Press <color ChoGGi_green><str3></color> to hide green markers."]],
+				str1 = self.name,
+				str2 = attach_amount,
+				str3 = "<image CommonAssets/UI/Menu/NoblePreview.tga 2500>",
+			}
 		else
 			SetWinObjectVis(self.idAttaches)
 		end
@@ -3717,7 +3743,7 @@ function ChoGGi_DlgExamine:SetToolbarVis(obj, obj_metatable)
 	SetWinObjectVis(self.idObjects)
 
 	-- no sense in showing it in mainmenu/new game screens
-	SetWinObjectVis(self.idButClear, UICity)
+	SetWinObjectVis(self.idButClear, city_object)
 
 	SetWinObjectVis(self.idShowAllValues, obj_metatable and self.obj_type ~= "userdata")
 
@@ -3762,9 +3788,11 @@ function ChoGGi_DlgExamine:SetToolbarVis(obj, obj_metatable)
 				SetWinObjectVis(self.idButSetObjlist)
 			end
 
-			-- pretty rare occurrence
-			self.enum_vars = EnumVars(self.name)
-			SetWinObjectVis(self.idViewEnum, self.enum_vars and next(self.enum_vars))
+			if ChoGGi.what_game == "Mars" then
+				-- pretty rare occurrence
+				self.enum_vars = EnumVars(self.name)
+				SetWinObjectVis(self.idViewEnum, self.enum_vars and next(self.enum_vars))
+			end
 		end
 
 	elseif self.obj_type == "thread" then
@@ -3815,7 +3843,7 @@ function ChoGGi_DlgExamine:BuildParentsMenu(list, list_type, title, sort_type)
 				c = c + 1
 				self.parents_menu_popup[c] = {
 					name = item,
-					hint = T("<left_click> ") .. TranslationTable[302535920000069--[[Examine]]] .. " "
+					hint = T("<left_click> ") .. T(302535920000069--[[Examine]]) .. " "
 						.. self.string_Class .. " " .. self.string_Object
 						.. ": <color 100 255 100>" .. item .. "</color>\n"
 						.. Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(self.string_Classname),
@@ -3880,17 +3908,17 @@ function ChoGGi_DlgExamine:SetObj(startup)
 			table.iclear(self.parents_menu_popup)
 			table.clear(self.pmenu_skip_dupes)
 			-- build menu list
-			self:BuildParentsMenu(obj.__parents, "parents", TranslationTable[302535920000520--[[Parents]]])
-			self:BuildParentsMenu(obj.__ancestors, "ancestors", TranslationTable[302535920000525--[[Ancestors]]], true)
+			self:BuildParentsMenu(obj.__parents, "parents", T(302535920000520--[[Parents]]))
+			self:BuildParentsMenu(obj.__ancestors, "ancestors", T(302535920000525--[[Ancestors]]), true)
 
 			table.insert(self.parents_menu_popup, 1, {
-				name = "-- " .. TranslationTable[3696--[[Class]]] .. " --",
+				name = "-- " .. T(3696--[[Class]]) .. " --",
 				disable = true,
 				centred = true,
 			})
 			table.insert(self.parents_menu_popup, 2, {
 				name = obj.class,
-				hint = T("<left_click> ") .. TranslationTable[302535920000069--[[Examine]]] .. " "
+				hint = T("<left_click> ") .. T(302535920000069--[[Examine]]) .. " "
 					.. self.string_Class .. " " .. self.string_Object
 					.. ": <color 100 255 100>" .. obj.class .. "</color>\n"
 					.. Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(obj.class),
@@ -3903,7 +3931,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 			if template_name and template_name ~= "" and template_name ~= obj.class then
 				table.insert(self.parents_menu_popup, 3, {
 					name = template_name,
-					hint = T("<left_click> ") .. TranslationTable[302535920000069--[[Examine]]] .. " "
+					hint = T("<left_click> ") .. T(302535920000069--[[Examine]]) .. " "
 						.. self.string_BuildingTemplate .. " " .. self.string_Object
 						.. ": <color 100 255 100>" .. template_name .. "</color>\n"
 						.. Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(template_name),
@@ -3968,7 +3996,7 @@ function ChoGGi_DlgExamine:SetTextTest(text)
 			ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 				parent = self,
 				text = text,
-				title = TranslationTable[302535920001461--[[XText:ParseText() just ralphed.]]],
+				title = T(302535920001461--[[XText:ParseText() just ralphed.]]),
 			}
 		end
 	end)
@@ -3983,7 +4011,7 @@ end
 
 function ChoGGi_DlgExamine:CleanupCustomObjs(obj, force)
 	-- can't have game objs in main menu (and log spam)
-	if not UICity then
+	if not city_object then
 		return
 	end
 
@@ -4016,9 +4044,9 @@ end
 
 function ChoGGi_DlgExamine:AddCloseXButton()
 	return ChoGGi_XWindow.AddCloseXButton(self, {
-		rollover = TranslationTable[302535920000628--[["Close the examine dialog
+		rollover = T(302535920000628--[["Close the examine dialog
 	Hold Shift to close all ""parent"" examine dialogs.
-	Hold Ctrl to close all ECM dialogs."]]],
+	Hold Ctrl to close all ECM dialogs."]]),
 	})
 end
 

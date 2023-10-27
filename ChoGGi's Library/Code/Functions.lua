@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local what_game = ChoGGi.what_game
+
 -- To go along with empty_func
 function return_true_func()
 	return true
@@ -30,34 +32,36 @@ end
 
 -- This updates my dlgs when the ui scale is changed
 local pairs = pairs
-local GetSafeAreaBox = GetSafeAreaBox
+--~ local GetSafeAreaBox = GetSafeAreaBox
 
-local ChoOrig_SetUserUIScale = SetUserUIScale
-ChoGGi.ComFuncs.AddToOrigFuncs("SetUserUIScale")
-function SetUserUIScale(val, ...)
-	ChoOrig_SetUserUIScale(val, ...)
+if what_game == "Mars" then
+	local ChoOrig_SetUserUIScale = SetUserUIScale
+	ChoGGi.ComFuncs.AddToOrigFuncs("SetUserUIScale")
+	function SetUserUIScale(val, ...)
+		ChoOrig_SetUserUIScale(val, ...)
 
-	local UIScale = (val + 0.0) / 100
-	-- update existing dialogs
-	local ChoGGi_dlgs_opened = ChoGGi_dlgs_opened
-	for dlg in pairs(ChoGGi_dlgs_opened) do
-		dlg.dialog_width_scaled = dlg.dialog_width * UIScale
-		dlg.dialog_height_scaled = dlg.dialog_height * UIScale
-		dlg.header_scaled = dlg.header * UIScale
+		local UIScale = (val + 0.0) / 100
+		-- update existing dialogs
+		local ChoGGi_dlgs_opened = ChoGGi_dlgs_opened
+		for dlg in pairs(ChoGGi_dlgs_opened) do
+			dlg.dialog_width_scaled = dlg.dialog_width * UIScale
+			dlg.dialog_height_scaled = dlg.dialog_height * UIScale
+			dlg.header_scaled = dlg.header * UIScale
 
-		-- make sure the size i use is below the res w/h
-		local _, _, x, y = GetSafeAreaBox():xyxy()
-		if dlg.dialog_width_scaled > x then
-			dlg.dialog_width_scaled = x - 50
+			-- make sure the size i use is below the res w/h
+			local _, _, x, y = GetSafeAreaBox():xyxy()
+			if dlg.dialog_width_scaled > x then
+				dlg.dialog_width_scaled = x - 50
+			end
+			if dlg.dialog_height_scaled > y then
+				dlg.dialog_height_scaled = y - 50
+			end
+
+			dlg:SetSize(dlg.dialog_width_scaled, dlg.dialog_height_scaled)
 		end
-		if dlg.dialog_height_scaled > y then
-			dlg.dialog_height_scaled = y - 50
-		end
-
-		dlg:SetSize(dlg.dialog_width_scaled, dlg.dialog_height_scaled)
+		-- might as well update this now (used to be in an OnMsg)
+		ChoGGi.Temp.UIScale = UIScale
 	end
-	-- might as well update this now (used to be in an OnMsg)
-	ChoGGi.Temp.UIScale = UIScale
 end
 
 -- Copied from GedPropEditors.lua. it's normally only called when GED is loaded, but we need it for the colour picker (among others)

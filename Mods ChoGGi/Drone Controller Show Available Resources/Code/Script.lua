@@ -127,7 +127,9 @@ RCRover.ChoGGi_GetAvailableResources = GetAvailableResources
 RocketBase.ChoGGi_GetAvailableResources = GetAvailableResources
 DroneHub.ChoGGi_GetAvailableResources = GetAvailableResources
 Drone.ChoGGi_GetAvailableResources = GetAvailableResources
-Elevator.ChoGGi_GetAvailableResources = GetAvailableResources
+if g_AvailableDlc.picard then
+	Elevator.ChoGGi_GetAvailableResources = GetAvailableResources
+end
 
 local function AddTemplate(xtemplate)
 	if xtemplate.ChoGGi_Added_DroneControllerShowAvailableResources then

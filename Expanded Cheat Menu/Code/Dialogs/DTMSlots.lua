@@ -2,7 +2,8 @@
 
 -- displays texture info
 
-local TranslationTable = TranslationTable
+local T = T
+local Translate = ChoGGi.ComFuncs.Translate
 
 DefineClass.ChoGGi_DlgDTMSlots = {
 	__parents = {"ChoGGi_XWindow"},
@@ -14,7 +15,7 @@ DefineClass.ChoGGi_DlgDTMSlots = {
 function ChoGGi_DlgDTMSlots:Init(parent, context)
 	local g_Classes = g_Classes
 
-	self.title = TranslationTable[302535920001486--[[DTM Slots]]]
+	self.title = T(302535920001486--[[DTM Slots]])
 
 	local screen = UIL.GetScreenSize()
 	self.dialog_width = screen:x() - 20 + 0.0

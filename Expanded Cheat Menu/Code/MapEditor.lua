@@ -1,5 +1,9 @@
 -- See LICENSE for terms
 
+if ChoGGi.what_game ~= "Mars" then
+	return
+end
+
 local d_before = Platform.developer
 Platform.developer = true
 

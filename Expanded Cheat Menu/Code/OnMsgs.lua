@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local what_game = ChoGGi.what_game
+
 -- OnMsgs (most of them)
 
 local table = table
@@ -10,7 +12,7 @@ local OnMsg = OnMsg
 local IsKindOf = IsKindOf
 local CreateRealTimeThread = CreateRealTimeThread
 local T = T
-local TranslationTable = TranslationTable
+local Translate = ChoGGi.ComFuncs.Translate
 
 -- no sense in localing it, but I keep forgetting the name...
 local ClassDescendantsList = ClassDescendantsList
@@ -71,28 +73,30 @@ end
 
 -- use this message to do some processing to the already final classdefs (still before classes are built)
 function OnMsg.ClassesPreprocess()
-	-- Add default Consts/const values to ChoGGi.Consts
-	if not ChoGGi.Tables.Consts_names then
-		local cConsts = ChoGGi.Consts
-		local names = {}
+	if what_game == "Mars" then
+		-- Add default Consts/const values to ChoGGi.Consts
+		if not ChoGGi.Tables.Consts_names then
+			local cConsts = ChoGGi.Consts
+			local names = {}
 
-		local c = 0
-		local Consts = Consts
-		for key,value in pairs(Consts) do
-			if type(value) == "number" then
-				c = c + 1
-				names[c] = key
-				cConsts[key] = value
+			local c = 0
+			local Consts = Consts
+			for key,value in pairs(Consts) do
+				if type(value) == "number" then
+					c = c + 1
+					names[c] = key
+					cConsts[key] = value
+				end
 			end
-		end
-		ChoGGi.Tables.Consts_names = names
+			ChoGGi.Tables.Consts_names = names
 
-		local const_names = ChoGGi.Tables.const_names
-		for i = 1, #const_names do
-			local name = const_names[i]
-			cConsts[name] = const[name]
+			local const_names = ChoGGi.Tables.const_names
+			for i = 1, #const_names do
+				local name = const_names[i]
+				cConsts[name] = const[name]
+			end
+			cConsts.InvalidPos = InvalidPos()
 		end
-		cConsts.InvalidPos = InvalidPos()
 	end
 
 	if ChoGGi.UserSettings.FlushLog then
@@ -107,43 +111,58 @@ function OnMsg.ClassesPostprocess()
 	local ChoGGi = ChoGGi
 	local UserSettings = ChoGGi.UserSettings
 
-	for key, template in pairs(XTemplates) do
-		local xt = template[1]
-		-- add some ids to make it easier to fiddle with selection panel (making sure to skip the repeatable ones)
-		if key:sub(1, 7) == "section" and key:sub(-3) ~= "Row" then
-			if xt and not xt.Id then
-				xt.Id = "id" .. template.id .. "_ChoGGi"
+	if what_game == "Mars" then
+		for key, template in pairs(XTemplates) do
+			local xt = template[1]
+			-- add some ids to make it easier to fiddle with selection panel (making sure to skip the repeatable ones)
+			if key:sub(1, 7) == "section" and key:sub(-3) ~= "Row" then
+				if xt and not xt.Id then
+					xt.Id = "id" .. template.id .. "_ChoGGi"
+				end
+			-- add cheats section to stuff without it
+			elseif key:sub(1, 2) == "ip" and not table.find(xt, "__template", "sectionCheats") then
+				xt[#xt+1] = PlaceObj("XTemplateTemplate", {
+					"__template", "sectionCheats",
+				})
 			end
-		-- add cheats section to stuff without it
-		elseif key:sub(1, 2) == "ip" and not table.find(xt, "__template", "sectionCheats") then
-			xt[#xt+1] = PlaceObj("XTemplateTemplate", {
-				"__template", "sectionCheats",
-			})
 		end
-	end
 
-	-- no sense in firing the func without cheats pane enabled
-	XTemplates.sectionCheats[1].__condition = function(parent, context)
-		return config.BuildingInfopanelCheats and context:CreateCheatActions(parent)
-	end
+		-- no sense in firing the func without cheats pane enabled
+		XTemplates.sectionCheats[1].__condition = function(parent, context)
+			return config.BuildingInfopanelCheats and context:CreateCheatActions(parent)
+		end
 
-	-- remove all that spacing between buttons
-	XTemplates.sectionCheats[1][1].LayoutHSpacing = 10
+		-- remove all that spacing between buttons
+		XTemplates.sectionCheats[1][1].LayoutHSpacing = 10
 
-	-- add rollovers to cheats toolbar
-	XTemplates.EditorToolbarButton[1].RolloverTemplate = "Rollover"
+		-- add rollovers to cheats toolbar
+		XTemplates.EditorToolbarButton[1].RolloverTemplate = "Rollover"
 
-	-- left? right? who cares? I do... *&^%$#@$ designers
-	if UserSettings.GUIDockSide then
-		XTemplates.NewOverlayDlg[1].Dock = "right"
-		XTemplates.SaveLoadContentWindow[1].Dock = "right"
-		ChoGGi.ComFuncs.SetTableValue(XTemplates.SaveLoadContentWindow[1], "Dock", "left", "Dock", "right")
-		XTemplates.PhotoMode[1].Dock = "right"
-	end
+		-- left? right? who cares? I do... *&^%$#@$ designers
+		if UserSettings.GUIDockSide then
+			XTemplates.NewOverlayDlg[1].Dock = "right"
+			XTemplates.SaveLoadContentWindow[1].Dock = "right"
+			ChoGGi.ComFuncs.SetTableValue(XTemplates.SaveLoadContentWindow[1], "Dock", "left", "Dock", "right")
+			XTemplates.PhotoMode[1].Dock = "right"
+		end
+
+		-- add HiddenX cat for Hidden items
+		local bc = BuildCategories
+		if UserSettings.Building_hide_from_build_menu and not table.find(bc, "id", "HiddenX") then
+			bc[#bc+1] = {
+				id = "HiddenX",
+				name = T(1000155--[[Hidden]]),
+				image = "UI/Icons/bmc_placeholder.tga",
+				highlight = "UI/Icons/bmc_placeholder_shine.tga",
+			}
+		end
+
+	end -- what_game
+
 
 	-- change rollover max width
 	if UserSettings.WiderRollovers then
-		local roll = XTemplates.Rollover[1]
+		local roll = what_game == "Mars" and XTemplates.Rollover[1] or XTemplates.RolloverGeneric[1]
 		local idx = table.find(roll, "Id", "idContent")
 		if idx then
 			roll = roll[idx]
@@ -154,16 +173,6 @@ function OnMsg.ClassesPostprocess()
 		end
 	end
 
-	-- add HiddenX cat for Hidden items
-	local bc = BuildCategories
-	if UserSettings.Building_hide_from_build_menu and not table.find(bc, "id", "HiddenX") then
-		bc[#bc+1] = {
-			id = "HiddenX",
-			name = TranslationTable[1000155--[[Hidden]]],
-			image = "UI/Icons/bmc_placeholder.tga",
-			highlight = "UI/Icons/bmc_placeholder_shine.tga",
-		}
-	end
 
 --~ 	-- fiddle with mod options
 --~ 	if not table.find(ModsLoaded, "id", "ChoGGi_ModOptionsExpanded") then
@@ -250,7 +259,7 @@ function OnMsg.ModsReloaded()
 	local UserSettings = ChoGGi.UserSettings
 
 	if UserSettings.FlushLogConstantly then
-		print("<color 255 75 75>", TranslationTable[302535920001349--[[Flush Log Constantly]]], "</color>", TranslationTable[302535920001414--[[Call FlushLogFile() every render update!]]])
+		print("<color 255 75 75>", Translate(302535920001349--[[Flush Log Constantly]]), "</color>", Translate(302535920001414--[[Call FlushLogFile() every render update!]]))
 	end
 
 	-- added this here, as it's early enough to load during the New Game Menu
@@ -270,7 +279,7 @@ function OnMsg.ModsReloaded()
 		c = c + 1
 		Actions[c] = {
 			ActionMenubar = "ECM.Debug",
-			ActionName = TranslationTable[302535920001074--[[Ged Presets]]],
+			ActionName = T(302535920001074--[[Ged Presets]]),
 			ActionId = ".Ged Presets",
 			ActionIcon = "CommonAssets/UI/Menu/folder.tga",
 			OnActionEffect = "popup",
@@ -286,7 +295,7 @@ function OnMsg.ModsReloaded()
 					ActionName = name,
 					ActionId = "." .. name,
 					ActionIcon = "CommonAssets/UI/Menu/SelectByClassName.tga",
-					RolloverText = TranslationTable[302535920000733--[[Open a preset in the editor.]]],
+					RolloverText = T(302535920000733--[[Open a preset in the editor.]]),
 					OnAction = function()
 						OpenGedApp(class.GedEditor, Presets[name], {
 							PresetClass = name,
@@ -347,7 +356,7 @@ function OnMsg.ModsReloaded()
 			end
 
 			edit.RolloverTemplate = "Rollover"
-			edit.RolloverTitle = TranslationTable[302535920001073--[[Console]]] .. " " .. TranslationTable[487939677892--[[Help]]]
+			edit.RolloverTitle = T(302535920001073--[[Console]]) .. " " .. T(487939677892--[[Help]])
 			-- add tooltip
 			edit.RolloverText = T(302535920001440--[["~obj opens object in examine dlg.
 ~~obj opens object's attachments in examine dlg.
@@ -367,7 +376,7 @@ $123 or $EffectDeposit.display_name prints translated string.
 !UICity.labels.TerrainDeposit[1] move camera and select obj.
 
 s = SelectedObj, c() = GetCursorWorldPos(), restart() = quit(""restart"")"]])
-			edit.Hint = TranslationTable[302535920001439--[["~obj, @func, @@type, %image, *r/*g/*m threads. Hover mouse for more info."]]]
+			edit.Hint = Translate(302535920001439--[["~obj, @func, @@type, %image, *r/*g/*m threads. Hover mouse for more info."]])
 
 			-- and buttons
 			ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
@@ -375,15 +384,17 @@ s = SelectedObj, c() = GetCursorWorldPos(), restart() = quit(""restart"")"]])
 			dlgConsole.ChoGGi_MenuAdded = true
 		end
 
-		-- show cheat pane in selection panel
-		if UserSettings.InfopanelCheats then
-			config.BuildingInfopanelCheats = true
-		end
+		if what_game == "Mars" then
+			-- show cheat pane in selection panel
+			if UserSettings.InfopanelCheats then
+				config.BuildingInfopanelCheats = true
+			end
 
-		-- remove some uselessish Cheats to clear up space
-		if UserSettings.CleanupCheatsInfoPane then
-			ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
-		end
+			-- remove some uselessish Cheats to clear up space
+			if UserSettings.CleanupCheatsInfoPane then
+				ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
+			end
+		end -- what_game
 
 		-- cheats menu fun
 		local XShortcutsTarget = XShortcutsTarget
@@ -407,8 +418,8 @@ s = SelectedObj, c() = GetCursorWorldPos(), restart() = quit(""restart"")"]])
 			if UserSettings.EnableToolTips then
 				local toolbar = XShortcutsTarget.idMenuBar
 				toolbar:SetRolloverTemplate("Rollover")
-				toolbar:SetRolloverTitle(TranslationTable[126095410863--[[Info]]])
-				toolbar:SetRolloverText(TranslationTable[302535920000503--[[Right-click an item/submenu to add/remove it from the quickbar.]]])
+				toolbar:SetRolloverTitle(T(126095410863--[[Info]]))
+				toolbar:SetRolloverText(T(302535920000503--[[Right-click an item/submenu to add/remove it from the quickbar.]]))
 				toolbar:SetRolloverHint(T(302535920001441--[["<left_click> Activate MenuItem <right_click> Add/Remove"]]))
 			end
 
@@ -434,60 +445,62 @@ s = SelectedObj, c() = GetCursorWorldPos(), restart() = quit(""restart"")"]])
 
 	end -- DisableECM
 
-	local SponsorBuildingLimits = UserSettings.SponsorBuildingLimits
-	local Building_hide_from_build_menu = UserSettings.Building_hide_from_build_menu
+	if what_game == "Mars" then
+		local SponsorBuildingLimits = UserSettings.SponsorBuildingLimits
+		local Building_hide_from_build_menu = UserSettings.Building_hide_from_build_menu
 
-	local BuildingTechRequirements = BuildingTechRequirements
-	local BuildingTemplates = BuildingTemplates
-	for id, bld in pairs(BuildingTemplates) do
+		local BuildingTechRequirements = BuildingTechRequirements
+		local BuildingTemplates = BuildingTemplates
+		for id, bld in pairs(BuildingTemplates) do
 
-		-- remove sponsor limits on buildings
-		if SponsorBuildingLimits then
-			-- set each status to false if it isn't
-			for i = 1, 3 do
-				local str = "sponsor_status" .. i
-				local status = bld[str]
-				if status ~= false then
-					bld["sponsor_status" .. i .. "_ChoGGi_orig"] = status
-					bld[str] = false
+			-- remove sponsor limits on buildings
+			if SponsorBuildingLimits then
+				-- set each status to false if it isn't
+				for i = 1, 3 do
+					local str = "sponsor_status" .. i
+					local status = bld[str]
+					if status ~= false then
+						bld["sponsor_status" .. i .. "_ChoGGi_orig"] = status
+						bld[str] = false
+					end
+				end
+
+				-- and this bugger screws me over on GetBuildingTechsStatus (probably need to update if they add sponsor locked buildable rockets)
+				local name = id
+				if name:sub(1, 2) == "RC" and name:sub(-8) == "Building" then
+					name = name:gsub("Building", "")
+				end
+				local reqs = BuildingTechRequirements[id]
+				local idx = table.find(reqs, "check_supply", name)
+				if idx then
+					table.remove(reqs, idx)
 				end
 			end
 
-			-- and this bugger screws me over on GetBuildingTechsStatus (probably need to update if they add sponsor locked buildable rockets)
-			local name = id
-			if name:sub(1, 2) == "RC" and name:sub(-8) == "Building" then
-				name = name:gsub("Building", "")
-			end
-			local reqs = BuildingTechRequirements[id]
-			local idx = table.find(reqs, "check_supply", name)
-			if idx then
-				table.remove(reqs, idx)
+			-- make hidden buildings visible
+			if Building_hide_from_build_menu then
+				if bld.id ~= "LifesupportSwitch" and bld.id ~= "ElectricitySwitch" then
+					bld.hide_from_build_menu_ChoGGi = bld.hide_from_build_menu
+					bld.hide_from_build_menu = false
+				end
+				if bld.group == "Hidden" and bld.id ~= "RocketLandingSite" and bld.id ~= "ForeignTradeRocket" then
+					bld.build_category = "HiddenX"
+				end
 			end
 		end
 
-		-- make hidden buildings visible
-		if Building_hide_from_build_menu then
-			if bld.id ~= "LifesupportSwitch" and bld.id ~= "ElectricitySwitch" then
-				bld.hide_from_build_menu_ChoGGi = bld.hide_from_build_menu
-				bld.hide_from_build_menu = false
-			end
-			if bld.group == "Hidden" and bld.id ~= "RocketLandingSite" and bld.id ~= "ForeignTradeRocket" then
-				bld.build_category = "HiddenX"
-			end
-		end
-	end
-
-	-- unlock buildings that cannot rotate
-	if UserSettings.RotateDuringPlacement then
-		local buildings = ClassTemplates.Building
-		for _, bld in pairs(buildings) do
-			if bld.can_rotate_during_placement == false then
-				bld.can_rotate_during_placement_ChoGGi_orig = true
-				bld.can_rotate_during_placement = true
+		-- unlock buildings that cannot rotate
+		if UserSettings.RotateDuringPlacement then
+			local buildings = ClassTemplates.Building
+			for _, bld in pairs(buildings) do
+				if bld.can_rotate_during_placement == false then
+					bld.can_rotate_during_placement_ChoGGi_orig = true
+					bld.can_rotate_during_placement = true
+				end
 			end
 		end
-	end
 
+	end -- what_game
 	-- limit width of infopanel toolbar buttons
 	ChoGGi.ComFuncs.InfopanelToolbarConstrain_Toggle(UserSettings.InfopanelToolbarConstrain)
 
@@ -549,7 +562,7 @@ function OnMsg.PersistPostLoad()
 						local obj = label[j]
 						if IsKindOf(obj, "UnpersistedMissingClass") then
 							if printit then
-								print(TranslationTable[302535920001401--[["Removed missing mod building from %s: %s, entity: %s, handle: %s"]]]:format(label_id, RetName(obj), obj:GetEntity(), obj.handle))
+								print(Translate(302535920001401--[["Removed missing mod building from %s: %s, entity: %s, handle: %s"]]):format(label_id, RetName(obj), obj:GetEntity(), obj.handle))
 							end
 							obj:delete()
 							table.remove(label, j)
@@ -914,12 +927,15 @@ function OnMsg.ChangeMapDone(map)
 		ChoGGi.SettingFuncs.WriteSettings()
 
 		ChoGGi.ComFuncs.MsgWait(
-			TranslationTable[302535920001400--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
-If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."]]]
-				.. "\n\n" .. TranslationTable[302535920000030--[["To show the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked."]]]:format(TranslationTable[302535920001308--[[Settings]]], TranslationTable[302535920001112--[[Console Log]]]),
-			TranslationTable[10126--[[Installed Mods]]] .. ": " .. TranslationTable[302535920000000--[[Expanded Cheat Menu]]],
+			T(302535920001400--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
+If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."]])
+				.. "\n\n" .. T{302535920000030--[["To toggle the console log text; press Tilde or Enter and click the ""<settings>"" button then make sure ""<log>"" is checked."]],
+					settings = T(302535920001308--[[Settings]]),
+					log = T(302535920001112--[[Console Log]]),
+				},
+				T(10126--[[Installed Mods]]) .. ": " .. T(302535920000000--[[Expanded Cheat Menu]]),
 			ChoGGi.mod_path .. "Preview.png",
-			TranslationTable[302535920001465--[[Stop talking and start cheating!]]]
+			T(302535920001465--[[Stop talking and start cheating!]])
 		)
 	end
 end
@@ -1054,8 +1070,8 @@ function OnMsg.MysteryBegin()
 	if ChoGGi.UserSettings.ShowMysteryMsgs then
 		MsgPopup(
 			ChoGGi.Tables.Mystery[UICity.mystery_id].name .. ": "
-				.. TranslationTable[302535920000729--[[You've started a mystery!]]],
-			TranslationTable[3486--[[Mystery]]]
+				.. T(302535920000729--[[You've started a mystery!]]),
+			T(3486--[[Mystery]])
 		)
 	end
 end
@@ -1063,8 +1079,8 @@ function OnMsg.MysteryChosen()
 	if ChoGGi.UserSettings.ShowMysteryMsgs then
 		MsgPopup(
 			ChoGGi.Tables.Mystery[UICity.mystery_id].name .. ": "
-				.. TranslationTable[302535920000730--[[You've chosen a mystery!]]],
-			TranslationTable[3486--[[Mystery]]]
+				.. T(302535920000730--[[You've chosen a mystery!]]),
+			T(3486--[[Mystery]])
 		)
 	end
 end
@@ -1073,7 +1089,7 @@ function OnMsg.MysteryEnd(outcome)
 		MsgPopup(
 			ChoGGi.Tables.Mystery[UICity.mystery_id].name .. ": "
 				.. tostring(outcome),
-			TranslationTable[3486--[[Mystery]]]
+			T(3486--[[Mystery]])
 		)
 	end
 end
@@ -1146,7 +1162,7 @@ end
 --~ 	local MilestoneCompleted = MilestoneCompleted
 --~ 	PlaceObj("Milestone", {
 --~ 		base_score = 0,
---~ 		display_name = TranslationTable[302535920000731--[[Deutsche Gesellschaft für Rassenhygiene]]],
+--~ 		display_name = T(302535920000731--[[Deutsche Gesellschaft für Rassenhygiene]]),
 --~ 		group = "Default",
 --~ 		id = "DaddysLittleHitler"
 --~ 	})
@@ -1159,7 +1175,7 @@ function OnMsg.ChoGGi_Childkiller()
 	local MilestoneCompleted = MilestoneCompleted
 	PlaceObj("Milestone", {
 		base_score = 0,
-		display_name = TranslationTable[302535920000732--[[Childkiller (You evil, evil person.)]]],
+		display_name = T(302535920000732--[[Childkiller (You evil, evil person.)]]),
 		group = "Default",
 		id = "Childkiller"
 	})
@@ -1380,7 +1396,7 @@ do -- LoadGame/CityStart
 --~ 		if UIColony.ChoGGi.DaddysLittleHitler then
 --~ 			PlaceObj("Milestone", {
 --~ 				base_score = 0,
---~ 				display_name = TranslationTable[302535920000731--[[Deutsche Gesellschaft für Rassenhygiene]]],
+--~ 				display_name = T(302535920000731--[[Deutsche Gesellschaft für Rassenhygiene]]),
 --~ 				group = "Default",
 --~ 				id = "DaddysLittleHitler"
 --~ 			})
@@ -1392,7 +1408,7 @@ do -- LoadGame/CityStart
 		if UIColony and UIColony.ChoGGi and UIColony.ChoGGi.Childkiller then
 			PlaceObj("Milestone", {
 				base_score = 0,
-				display_name = TranslationTable[302535920000732--[[Childkiller (You evil, evil person.)]]],
+				display_name = T(302535920000732--[[Childkiller (You evil, evil person.)]]),
 				group = "Default",
 				id = "Childkiller"
 			})
@@ -1502,7 +1518,7 @@ do -- LoadGame/CityStart
 
 		-- everyone loves a new titlebar, unless they don't
 		if UserSettings.ChangeWindowTitle then
-			terminal.SetOSWindowTitle(TranslationTable[1079--[[Surviving Mars]]] .. ": " .. TranslationTable[302535920000002--[[ECM]]] .. " " .. ChoGGi._VERSION)
+			terminal.SetOSWindowTitle(Translate(1079--[[Surviving Mars]]) .. ": " .. Translate(302535920000002--[[ECM]]) .. " " .. ChoGGi._VERSION)
 		end
 
 		-- first time run info
@@ -1511,12 +1527,15 @@ do -- LoadGame/CityStart
 			DestroyConsoleLog()
 			ChoGGi.Temp.WriteSettings = true
 			ChoGGi.ComFuncs.MsgWait(
-				TranslationTable[302535920001400--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
-If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."]]]
-					.. "\n\n" .. TranslationTable[302535920000030--[["To show the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked."]]]:format(TranslationTable[302535920001308--[[Settings]]], TranslationTable[302535920001112--[[Console Log]]]),
-				TranslationTable[10126--[[Installed Mods]]] .. ": " .. TranslationTable[302535920000000--[[Expanded Cheat Menu]]],
+				T(302535920001400--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
+If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."]])
+					.. "\n\n" .. T{302535920000030--[["To toggle the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked."]],
+						settings = T(302535920001308--[[Settings]]),
+						log = T(302535920001112--[[Console Log]]),
+					},
+				T(10126--[[Installed Mods]]) .. ": " .. T(302535920000000--[[Expanded Cheat Menu]]),
 				ChoGGi.mod_path .. "Preview.png",
-				TranslationTable[302535920001465--[[Stop talking and start cheating!]]]
+				T(302535920001465--[[Stop talking and start cheating!]])
 			)
 		end
 
@@ -1583,7 +1602,7 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 
 		-- how long startup takes
 		if testing or UserSettings.ShowStartupTicks then
-			print("<color 200 200 200>", TranslationTable[302535920000002--[[ECM]]], "</color>:", TranslationTable[302535920000247--[[Startup ticks]]], ":", GetPreciseTicks() - ChoGGi.Temp.StartupTicks)
+			print("<color 200 200 200>", Translate(302535920000002--[[ECM]]), "</color>:", Translate(302535920000247--[[Startup ticks]]), ":", GetPreciseTicks() - ChoGGi.Temp.StartupTicks)
 		end
 	end --OnMsg
 end -- do

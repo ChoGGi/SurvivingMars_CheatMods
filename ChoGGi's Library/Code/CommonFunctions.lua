@@ -1,11 +1,12 @@
 -- See LICENSE for terms
 
 local testing = ChoGGi.testing
+local what_game = ChoGGi.what_game
 
 -- Strings.lua
 local Translate = ChoGGi.ComFuncs.Translate
+local T = T
 
-local TranslationTable = TranslationTable
 local pairs, tonumber, type, tostring = pairs, tonumber, type, tostring
 local table = table
 local AsyncRand = AsyncRand
@@ -15,16 +16,10 @@ local ClassDescendantsList = ClassDescendantsList
 local DoneObject = DoneObject
 local FindNearestObject = FindNearestObject -- (list,obj) or (list,pos,filterfunc)
 local GameTime = GameTime
-local GetMapSectorXY = GetMapSectorXY
 local guic = guic
-local HexGetNearestCenter = HexGetNearestCenter
-local HexGridGetObject = HexGridGetObject
-local HexToWorld = HexToWorld
 local IsBox = IsBox
-local IsInMapPlayableArea = IsInMapPlayableArea
 local IsKindOf = IsKindOf
 local IsPoint = IsPoint
-local IsPointNearBuilding = IsPointNearBuilding
 local IsT = IsT
 local IsValid = IsValid
 local MapGet = MapGet
@@ -39,12 +34,25 @@ local SelectionGamepadObj = SelectionGamepadObj
 local SelectionMouseObj = SelectionMouseObj
 local Sleep = Sleep
 local SuspendPassEdits = SuspendPassEdits
-local UseGamepadUI = UseGamepadUI
 local ViewAndSelectObject = ViewAndSelectObject
-local ViewObjectMars = ViewObjectMars
 local WaitMsg = WaitMsg
-local WorldToHex = WorldToHex
 local XDestroyRolloverWindow = XDestroyRolloverWindow
+-- OBSOLETE
+ChoGGi.ComFuncs.IsObjlist = IsObjlist
+
+-- actually local them?
+--JA3
+if what_game == "Mars" then
+	local GetMapSectorXY = GetMapSectorXY
+	local HexGetNearestCenter = HexGetNearestCenter
+	local HexGridGetObject = HexGridGetObject
+	local HexToWorld = HexToWorld
+	local IsInMapPlayableArea = IsInMapPlayableArea
+	local IsPointNearBuilding = IsPointNearBuilding
+	local UseGamepadUI = UseGamepadUI
+	local ViewObjectMars = ViewObjectMars
+	local WorldToHex = WorldToHex
+end
 
 -- Remove some log spam on older versions
 local is_gp = ChoGGi.is_gp
@@ -151,16 +159,19 @@ do -- RetName
 		-- some userdata funcs
 		local userdata_tables = {
 			range = __range_meta,
-			TaskRequest = Request_GetMeta(),
-			quaternion = getmetatable(quaternion(point20, 0)),
 			set = getmetatable(set()),
-			RandState = getmetatable(RandState()),
 			pstr = getmetatable(pstr()),
 			grid = getmetatable(NewGrid(0, 0, 1)),
-			xmgrid = getmetatable(grid(0, 0)),
 			point = getmetatable(point20),
 			box = getmetatable(empty_box),
 		}
+		if what_game == "Mars" then
+			userdata_tables.TaskRequest = Request_GetMeta()
+			userdata_tables.quaternion = getmetatable(quaternion(point20, 0))
+			userdata_tables.RandState = getmetatable(RandState())
+			userdata_tables.xmgrid = getmetatable(grid(0, 0))
+		end
+
 		for name, meta in pairs(userdata_tables) do
 			AddFuncsUserData(meta, name)
 		end
@@ -183,9 +194,14 @@ do -- RetName
 	end
 	local func_tables = {
 		"g_CObjectFuncs", "camera", "camera3p", "cameraMax", "cameraRTS", "objlist",
-		"coroutine", "DTM", "lpeg", "pf", "srp", "string", "table", "UIL", "editor",
+		"coroutine", "lpeg", "pf", "string", "table", "UIL", "editor",
 		"terrain", "terminal", "TFormat", "XInput",
 	}
+	if what_game == "Mars" then
+		func_tables[#func_tables+1] = "DTM"
+		func_tables[#func_tables+1] = "srp"
+	end
+
 	for i = 1, #func_tables do
 		AddFuncs(func_tables[i])
 	end
@@ -342,17 +358,15 @@ do -- RetName
 				end
 			end)
 
-			-- grab what we can from gimped _G
---~ 			if blacklist then
 				lookup_table[g.g_Classes] = "g_Classes"
-				for i = 1, #g.GlobalVars do
-					local var = g.GlobalVars[i]
-					local obj = g_env[var]
---~ 					local obj = rawget(g, var)
-					if not lookup_table[obj] then
-						lookup_table[obj] = var
-					end
---~ 				end
+				if what_game == "Mars" then
+					for i = 1, #g.GlobalVars do
+						local var = g.GlobalVars[i]
+						local obj = g_env[var]
+						if not lookup_table[obj] then
+							lookup_table[obj] = var
+						end
+				end
 			end
 
 			if not blacklist then
@@ -415,7 +429,7 @@ do -- RetName
 		elseif obj_type == "table" then
 			-- cities
 			if IsKindOf(obj, "City") and obj.map_id ~= "" then
-				return TranslationTable[13659--[[Map]]] .. ": " .. obj.map_id
+				return T(13659--[[Map]]) .. ": " .. obj.map_id
 			end
 
 			-- we check in order of less generic "names"
@@ -508,11 +522,6 @@ local function IsValidXWin(win)
 end
 ChoGGi.ComFuncs.IsValidXWin = IsValidXWin
 
-local function IsObjlist(list)
-	return type(list) == "table" and getmetatable(list) == objlist
-end
-ChoGGi.ComFuncs.IsObjlist = IsObjlist
-
 function ChoGGi.ComFuncs.RetIcon(obj)
 	-- most icons
 	if obj.display_icon and obj.display_icon ~= "" then
@@ -537,7 +546,7 @@ function ChoGGi.ComFuncs.RetHint(obj)
 
 	else
 		-- eh
-		return TranslationTable[3718--[[NONE]]]
+		return T(3718--[[NONE]])
 	end
 end
 
@@ -644,7 +653,7 @@ do -- MsgPopup
 		local preset = {
 			id = "popup" .. AsyncRand() .. ActiveMapID,
 			title = type(title) == "number" and tostring(title) or title or "",
-			text = type(text) == "number" and tostring(text) or text or TranslationTable[3718--[[NONE]]],
+			text = type(text) == "number" and tostring(text) or text or T(3718--[[NONE]]),
 			image = params.image and ValidateImage(params.image) or ChoGGi.library_path .. "UI/TheIncal.png",
 		}
 
@@ -902,7 +911,8 @@ end
 
 function ChoGGi.ComFuncs.PopupBuildMenu(items, popup)
 	local g_Classes = g_Classes
-	local ViewObjectMars = ViewObjectMars
+	--JA3
+--~ 	local ViewObjectMars = ViewObjectMars
 	local IsPoint = IsPoint
 
 	local dark_menu = items.TextStyle == "ChoGGi_CheckButtonMenuOpp"
@@ -918,7 +928,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items, popup)
 		-- "ChoGGi_XCheckButtonMenu"
 		local cls = g_Classes[item.class or "ChoGGi_XButtonMenu"]
 		local button = cls:new({
-			RolloverTitle = item.hint_title and item.hint_title or item.obj and RetName(item.obj) or TranslationTable[126095410863--[[Info]]],
+			RolloverTitle = item.hint_title and item.hint_title or item.obj and RetName(item.obj) or T(126095410863--[[Info]]),
 			RolloverText = item.hint or "",
 			RolloverHint = item.hint_bottom or T(608042494285--[[<left_click> Activate]]),
 			Text = item.name,
@@ -1175,8 +1185,8 @@ function ChoGGi.ComFuncs.MsgWait(text, title, image, ok_text, context, parent, t
 
 --~ 	WaitMessage(
 	CreateMessageBox(
-		type(title) == "number" and tostring(title) or title or TranslationTable[1000016--[[Title]]],
-		type(text) == "number" and tostring(text) or text or TranslationTable[3718--[[NONE]]],
+		type(title) == "number" and tostring(title) or title or T(1000016--[[Title]]),
+		type(text) == "number" and tostring(text) or text or T(3718--[[NONE]]),
 		type(ok_text) == "number" and tostring(ok_text) or ok_text,
 		nil,
 		parent,
@@ -1208,8 +1218,8 @@ function ChoGGi.ComFuncs.QuestionBox(text, func, title, ok_text, cancel_text, im
 
 	if WaitMarsQuestion(
 		parent,
-		type(title) == "number" and tostring(title) or title or TranslationTable[1000016--[[Title]]],
-		type(text) == "number" and tostring(text) or text or TranslationTable[3718--[[NONE]]],
+		type(title) == "number" and tostring(title) or title or T(1000016--[[Title]]),
+		type(text) == "number" and tostring(text) or text or T(3718--[[NONE]]),
 		type(ok_text) == "number" and tostring(ok_text) or ok_text,
 		type(cancel_text) == "number" and tostring(cancel_text) or cancel_text,
 		image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
@@ -1375,33 +1385,56 @@ ChoGGi.ComFuncs.RetProperType = RetProperType
 
 do -- RetType
 	-- used to check for some SM objects (Points/Boxes)
-	local IsQuaternion = IsQuaternion
-	local IsRandState = IsRandState
-	local IsGrid = IsGrid
-	local IsPStr = IsPStr
+	if what_game == "Mars" then
+		local IsQuaternion = IsQuaternion
+		local IsRandState = IsRandState
+		local IsGrid = IsGrid
+		local IsPStr = IsPStr
 
-	function ChoGGi.ComFuncs.RetType(obj)
-		if getmetatable(obj) then
-			if IsPoint(obj) then
-				return "Point"
+		function ChoGGi.ComFuncs.RetType(obj)
+			if getmetatable(obj) then
+				if IsPoint(obj) then
+					return "Point"
+				end
+				if IsBox(obj) then
+					return "Box"
+				end
+				if IsQuaternion(obj) then
+					return "Quaternion"
+				end
+				if IsRandState(obj) then
+					return "RandState"
+				end
+				if IsGrid(obj) then
+					return "Grid"
+				end
+				if IsPStr(obj) then
+					return "PStr"
+				end
 			end
-			if IsBox(obj) then
-				return "Box"
-			end
-			if IsQuaternion(obj) then
-				return "Quaternion"
-			end
-			if IsRandState(obj) then
-				return "RandState"
-			end
-			if IsGrid(obj) then
-				return "Grid"
-			end
-			if IsPStr(obj) then
-				return "PStr"
-			end
+			return type(obj)
 		end
-		return type(obj)
+	else -- JA3
+		local IsQuaternion = IsQuaternion
+		local IsPStr = IsPStr
+
+		function ChoGGi.ComFuncs.RetType(obj)
+			if getmetatable(obj) then
+				if IsPoint(obj) then
+					return "Point"
+				end
+				if IsBox(obj) then
+					return "Box"
+				end
+				if IsQuaternion(obj) then
+					return "Quaternion"
+				end
+				if IsPStr(obj) then
+					return "PStr"
+				end
+			end
+			return type(obj)
+		end
 	end
 end -- do
 
@@ -1601,7 +1634,8 @@ function ChoGGi.ComFuncs.ReturnAllNearby(radius, sort, pt)
 	return list
 end
 
-do -- RetObjectAtPos/RetObjectsAtPos
+ -- RetObjectAtPos/RetObjectsAtPos
+if what_game == "Mars" then
 	local HexGridGetObject = HexGridGetObject
 	local HexGridGetObjects = HexGridGetObjects
 
@@ -1671,6 +1705,10 @@ do -- Ticks
 end -- do
 
 function ChoGGi.ComFuncs.UpdateDataTablesCargo()
+	if what_game ~= "Mars" then
+		return
+	end
+
 	local Tables = ChoGGi.Tables
 
 	-- update cargo resupply
@@ -1733,6 +1771,10 @@ do -- UpdateDataTables
 
 	-- make copies of spon/comm profiles
 	function ChoGGi.ComFuncs.UpdateTablesSponComm()
+		if what_game ~= "Mars" then
+			return
+		end
+
 		local Tables = ChoGGi.Tables
 		local Presets = Presets
 
@@ -1743,6 +1785,10 @@ do -- UpdateDataTables
 	end
 
 	function ChoGGi.ComFuncs.UpdateDataTables()
+		if what_game ~= "Mars" then
+			return
+		end
+
 		local c
 
 		local Tables = ChoGGi.Tables
@@ -1765,9 +1811,9 @@ do -- UpdateDataTables
 		local g_Classes = g_Classes
 		ClassDescendantsList("MysteryBase", function(class)
 			local cls_obj = g_Classes[class]
-			local scenario_name = cls_obj.scenario_name or TranslationTable[302535920000009--[[Missing Scenario Name]]]
-			local display_name = Translate(cls_obj.display_name) or TranslationTable[302535920000010--[[Missing Name]]]
-			local description = Translate(cls_obj.rollover_text) or TranslationTable[302535920000011--[[Missing Description]]]
+			local scenario_name = cls_obj.scenario_name or T(302535920000009--[[Missing Scenario Name]])
+			local display_name = Translate(cls_obj.display_name) or T(302535920000010--[[Missing Name]])
+			local description = Translate(cls_obj.rollover_text) or T(302535920000011--[[Missing Description]])
 
 			local temptable = {
 				class = class,
@@ -1884,53 +1930,55 @@ function ChoGGi.ComFuncs.CreateSetting(str, setting_type)
 	end
 end
 
-do -- SelObject/SelObjects
-	local radius4h = const.HexSize / 4
-
-	-- returns whatever is selected > moused over > nearest object to cursor
-	-- single selection
-	function ChoGGi.ComFuncs.SelObject(radius, pt)
-		if not UIColony then
-			return
-		end
-		-- single selection
-		local obj = SelectedObj or GetCursorOrGamePadSelectObj()
-
-		if obj then
-			-- If it's multi then return the first one
-			if obj:IsKindOf("MultiSelectionWrapper") then
-				return obj.objects[1]
-			end
-		else
-			-- radius selection
-			pt = pt or GetCursorWorldPos()
-			obj = MapFindNearest(pt, pt, radius or radius4h)
-		end
-
-		return obj
-	end
-
-	-- returns an indexed table of objects, add a radius to get objs close to cursor
-	function ChoGGi.ComFuncs.SelObjects(radius, pt)
-		if not UIColony then
-			return empty_table
-		end
-		local objs = SelectedObj or GetCursorOrGamePadSelectObj()
-
-		if not radius and objs then
-			if objs:IsKindOf("MultiSelectionWrapper") then
-				return objs.objects
-			else
-				return {objs}
-			end
-		end
-
-		pt = pt or GetCursorWorldPos()
-		return MapGet(pt, radius or radius4h, "attached", false)
-	end
+-- SelObject/SelObjects
+local radius4h = 250
+if what_game == "Mars" then
+	radius4h = const.HexSize / 4
 end
-local SelObject = ChoGGi.ComFuncs.SelObject
-local SelObjects = ChoGGi.ComFuncs.SelObjects
+
+-- returns whatever is selected > moused over > nearest object to cursor
+-- single selection
+function ChoGGi.ComFuncs.SelObject(radius, pt)
+	if not UIColony then
+		return
+	end
+	-- single selection
+	local obj = SelectedObj or GetCursorOrGamePadSelectObj()
+
+	if obj then
+		-- If it's multi then return the first one
+		if obj:IsKindOf("MultiSelectionWrapper") then
+			return obj.objects[1]
+		end
+	else
+		-- radius selection
+		pt = pt or GetCursorWorldPos()
+		obj = MapFindNearest(pt, pt, radius or radius4h)
+	end
+
+	return obj
+end
+
+-- returns an indexed table of objects, add a radius to get objs close to cursor
+function ChoGGi.ComFuncs.SelObjects(radius, pt)
+	if not UIColony then
+		return empty_table
+	end
+	local objs = SelectedObj or GetCursorOrGamePadSelectObj()
+
+	if not radius and objs then
+		if objs:IsKindOf("MultiSelectionWrapper") then
+			return objs.objects
+		else
+			return {objs}
+		end
+	end
+
+	pt = pt or GetCursorWorldPos()
+	return MapGet(pt, radius or radius4h, "attached", false)
+end
+local SelObject = ChoGGi.ComFuncs.SelObject or empty_func
+local SelObjects = ChoGGi.ComFuncs.SelObjects or empty_func
 
 do -- Rebuildshortcuts
 	local _InternalTranslate = _InternalTranslate
@@ -2139,6 +2187,11 @@ do -- Rebuildshortcuts
 --~ 			ActionShortcut2 = "Enter",
 --~ 		}
 
+		local func_name = "AddAction"
+		if what_game == "JA3" then
+			func_name = "_InternalAddAction"
+		end -- what_game
+
 		local DisableECM = ChoGGi.UserSettings.DisableECM
 		for i = 1, #Actions do
 			local a = Actions[i]
@@ -2150,34 +2203,37 @@ do -- Rebuildshortcuts
 			if a.ChoGGi_ECM then
 				-- Can we enable ECM actions?
 				if not DisableECM then
-					XShortcutsTarget:AddAction(XAction:new(a))
+--~ 					XShortcutsTarget:AddAction(XAction:new(a))
+					XShortcutsTarget[func_name](XShortcutsTarget, XAction:new(a))
 				end
 			else
-				XShortcutsTarget:AddAction(XAction:new(a))
+--~ 				XShortcutsTarget:AddAction(XAction:new(a))
+				XShortcutsTarget[func_name](XShortcutsTarget, XAction:new(a))
 			end
 		end
 
 		-- Add a key binding to options to re-enable ECM
 		if DisableECM then
-			local name = TranslationTable[754117323318--[[Enable]]] .. " " .. TranslationTable[302535920000002--[[ECM]]]
-			XShortcutsTarget:AddAction(XAction:new{
+			local name = T(754117323318--[[Enable]]) .. " " .. T(302535920000002--[[ECM]])
+--~ 			XShortcutsTarget:AddAction(XAction:new{
+			XShortcutsTarget[func_name](XShortcutsTarget, XAction:new{
 				ActionName = name,
 				ActionId = name,
 				OnAction = function()
 					ChoGGi.UserSettings.DisableECM = false
 					ChoGGi.SettingFuncs.WriteSettings()
-					print(name, ":", TranslationTable[302535920001070--[[Restart to take effect.]]])
+					print(name, ":", Translate(302535920001070--[[Restart to take effect.]]))
 					ChoGGi.ComFuncs.MsgWait(
-						TranslationTable[302535920001070--[[Restart to take effect.]]],
+						T(302535920001070--[[Restart to take effect.]]),
 						name
 					)
 				end,
 				ActionShortcut = "Ctrl-Alt-0",
 				ActionBindable = true,
 			})
-			print(TranslationTable[302535920001411--[["ECM has been disabled.
+			print(Translate(302535920001411--[["ECM has been disabled.
 Use %s to enable it, or change DisableECM to false in %s.
-See the bottom of Gameplay>Controls if you've changed the key binding."]]]
+See the bottom of Gameplay>Controls if you've changed the key binding."]])
 				:format("Ctrl-Alt-0", ConvertToOSPath("AppData/LocalStorage.lua"))
 			)
 		end
@@ -2327,7 +2383,7 @@ function ChoGGi.ComFuncs.ColonistUpdateAge(c, age)
 	end
 
 	local ages = ChoGGi.Tables.ColonistAges
-	if age == TranslationTable[3490--[[Random]]] then
+	if age == T(3490--[[Random]]) then
 		age = ages[Random(1, 6)]
 	end
 	-- remove all age traits
@@ -2378,9 +2434,9 @@ function ChoGGi.ComFuncs.ColonistUpdateGender(c, gender)
 	local genders = ChoGGi.Tables.ColonistGenders
 	local male_female = {"Male", "Female"}
 
-	if gender == TranslationTable[3490--[[Random]]] then
+	if gender == T(3490--[[Random]]) then
 		gender = genders[Random(1, 3)]
-	elseif gender == TranslationTable[302535920000800--[[MaleOrFemale]]] then
+	elseif gender == T(302535920000800--[[MaleOrFemale]]) then
 		gender = table.rand(male_female)
 	end
 	-- remove all gender traits
@@ -2409,7 +2465,7 @@ function ChoGGi.ComFuncs.ColonistUpdateSpecialization(c, spec)
 
 	-- children don't have spec models so they get black cubed
 	if c.age_trait ~= "Child" then
-		if spec == TranslationTable[3490--[[Random]]] then
+		if spec == T(3490--[[Random]]) then
 			spec = ChoGGi.Tables.ColonistSpecializations[Random(1, 6)]
 		end
 		if c.specialist ~= "none" then
@@ -2447,7 +2503,7 @@ function ChoGGi.ComFuncs.ColonistUpdateRace(c, race)
 		return
 	end
 
-	if race == TranslationTable[3490--[[Random]]] then
+	if race == T(3490--[[Random]]) then
 		race = Random(1, 5) -- max amount of races
 	end
 	c.race = race
@@ -2922,8 +2978,8 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 	function ChoGGi.ComFuncs.ChangeObjectColour(obj, parent, dialog)
 		if not obj or obj and not obj:IsKindOf("ColorizableObject") then
 			MsgPopup(
-				TranslationTable[302535920000015--[[Can't colour %s.]]]:format(RetName(obj)),
-				TranslationTable[3595--[[Color]]]
+				Translate(302535920000015--[[Can't colour %s.]]):format(RetName(obj)),
+				T(3595--[[Color]])
 			)
 			return
 		end
@@ -2937,21 +2993,21 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 			item_list[c] = {
 				text = text,
 				value = pal[text],
-				hint = TranslationTable[302535920000017--[[Use the colour picker (dbl right-click for instant change).]]],
+				hint = T(302535920000017--[[Use the colour picker (dbl right-click for instant change).]]),
 			}
 			text = "Roughness" .. i
 			c = c + 1
 			item_list[c] = {
 				text = text,
 				value = pal[text],
-				hint = TranslationTable[302535920000018--[[Don't use the colour picker: Numbers range from -128 to 127.]]],
+				hint = T(302535920000018--[[Don't use the colour picker: Numbers range from -128 to 127.]]),
 			}
 			text = "Metallic" .. i
 			c = c + 1
 			item_list[c] = {
 				text = text,
 				value = pal[text],
-				hint = TranslationTable[302535920000018--[[Don't use the colour picker: Numbers range from -128 to 127.]]],
+				hint = T(302535920000018--[[Don't use the colour picker: Numbers range from -128 to 127.]]),
 			}
 		end
 		c = c + 1
@@ -2959,8 +3015,8 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 			text = "X_BaseColor",
 			value = 6579300,
 			obj = obj,
-			hint = TranslationTable[302535920000019--[["Single colour for object (this colour will interact with the other colours).
-	If you want to change the colour of an object you can't with 1-4."]]],
+			hint = T(302535920000019--[["Single colour for object (this colour will interact with the other colours).
+	If you want to change the colour of an object you can't with 1-4."]]),
 		}
 
 		local function CallBackFunc(choice)
@@ -3020,8 +3076,8 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 				end
 
 				MsgPopup(
-					TranslationTable[302535920000020--[[Colour is set on %s]]]:format(RetName(obj)),
-					TranslationTable[3595--[[Color]]],
+					Translate(302535920000020--[[Colour is set on %s]]):format(RetName(obj)),
+					T(3595--[[Color]]),
 					{objects = obj}
 				)
 			end
@@ -3030,20 +3086,20 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = TranslationTable[174--[[Color Modifier]]] .. ": " .. RetName(obj),
-			hint = TranslationTable[302535920000022--[["If number is 8421504 then you probably can't change that colour.
+			title = T(174--[[Color Modifier]]) .. ": " .. RetName(obj),
+			hint = T(302535920000022--[["If number is 8421504 then you probably can't change that colour.
 
-You can copy and paste numbers if you want."]]],
+You can copy and paste numbers if you want."]]),
 			parent = dialog,
 			custom_type = 2,
 			checkboxes = {
 				{
-					title = TranslationTable[302535920000023--[[All of type]]],
-					hint = TranslationTable[302535920000024--[[Change all objects of the same type.]]],
+					title = T(302535920000023--[[All of type]]),
+					hint = T(302535920000024--[[Change all objects of the same type.]]),
 				},
 				{
-					title = TranslationTable[302535920000025--[[Default Colour]]],
-					hint = TranslationTable[302535920000026--[[if they're there; resets to default colours.]]],
+					title = T(302535920000025--[[Default Colour]]),
+					hint = T(302535920000026--[[if they're there; resets to default colours.]]),
 				},
 			},
 		}
@@ -3065,8 +3121,9 @@ end
 
 do -- DeleteObject
 	local DeleteThread = DeleteThread
-	local DestroyBuildingImmediate = DestroyBuildingImmediate
-	local FlattenTerrainInBuildShape = FlattenTerrainInBuildShape
+	--JA3
+--~ 	local DestroyBuildingImmediate = DestroyBuildingImmediate
+--~ 	local FlattenTerrainInBuildShape = FlattenTerrainInBuildShape
 	local HasAnySurfaces = HasAnySurfaces
 	local ApplyAllWaterObjects = ApplyAllWaterObjects
 	local EntitySurfaces_Height = EntitySurfaces.Height
@@ -3119,7 +3176,7 @@ do -- DeleteObject
 			else
 				MsgPopup(
 					Translate(302535920001354--[["<green>%s</green> is a Dome with stuff still in it (crash if deleted)."]]):format(RetName(obj)),
-					TranslationTable[302535920000489--[["Delete Object(s)"]]]
+					T(302535920000489--[["Delete Object(s)"]])
 				)
 				return
 			end
@@ -3332,12 +3389,13 @@ end
 do -- RetNearestResource/FindNearestResource
 	local res_funcs = {}
 	local res_mechdepot = {}
-	local AllResourcesList = AllResourcesList
-	for i = 1, #AllResourcesList do
-		local res = AllResourcesList[i]
-		res_funcs[res] = "GetStored_" .. res
-		res_mechdepot[res] = "MechanizedDepot" .. res
-	end
+	--JA3
+--~ 	local AllResourcesList = AllResourcesList
+--~ 	for i = 1, #AllResourcesList do
+--~ 		local res = AllResourcesList[i]
+--~ 		res_funcs[res] = "GetStored_" .. res
+--~ 		res_mechdepot[res] = "MechanizedDepot" .. res
+--~ 	end
 
 	local stockpiles_table = {}
 	local stockpiles
@@ -3398,8 +3456,8 @@ do -- RetNearestResource/FindNearestResource
 
 		if not IsValid(obj) then
 			MsgPopup(
-				TranslationTable[302535920000027--[[Nothing selected]]],
-				TranslationTable[302535920000028--[[Find Resource]]]
+				T(302535920000027--[[Nothing selected]]),
+				T(302535920000028--[[Find Resource]])
 			)
 			return
 		end
@@ -3432,8 +3490,8 @@ do -- RetNearestResource/FindNearestResource
 					ChoGGi.ComFuncs.AddBlinkyToObj(nearest)
 				else
 					MsgPopup(
-						TranslationTable[302535920000029--[[Error: Cannot find any %s.]]]:format(choice[1].text),
-						TranslationTable[15--[[Resource]]]
+						Translate(302535920000029--[[Error: Cannot find any %s.]]):format(choice[1].text),
+						T(15--[[Resource]])
 					)
 				end
 
@@ -3443,8 +3501,8 @@ do -- RetNearestResource/FindNearestResource
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = TranslationTable[302535920000031--[[Find Nearest Resource]]] .. ": " .. RetName(obj),
-			hint = TranslationTable[302535920000032--[[Select a resource to find]]],
+			title = T(302535920000031--[[Find Nearest Resource]]) .. ": " .. RetName(obj),
+			hint = T(302535920000032--[[Select a resource to find]]),
 			skip_sort = true,
 			custom_type = 7,
 		}
@@ -3541,8 +3599,8 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj, skip_msg)
 	if not IsValid(obj) then
 		if not skip_msg then
 			MsgPopup(
-				TranslationTable[302535920000027--[[Nothing selected]]],
-				TranslationTable[302535920000968--[[Collisions]]]
+				T(302535920000027--[[Nothing selected]]),
+				T(302535920000968--[[Collisions]])
 			)
 		end
 		return
@@ -3563,7 +3621,7 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj, skip_msg)
 			end)
 		end
 		obj.ChoGGi_CollisionsDisabled = nil
-		which = TranslationTable[12227--[[Enabled]]]
+		which = T(12227--[[Enabled]])
 	else
 		obj:ClearEnumFlags(collision)
 		if obj.ForEachAttach then
@@ -3572,14 +3630,14 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj, skip_msg)
 			end)
 		end
 		obj.ChoGGi_CollisionsDisabled = true
-		which = TranslationTable[847439380056--[[Disabled]]]
+		which = T(847439380056--[[Disabled]])
 	end
 	ResumePassEdits("ChoGGi.ComFuncs.CollisionsObject_Toggle")
 
 	if not skip_msg then
 		MsgPopup(
-			TranslationTable[302535920000969--[[Collisions %s on %s]]]:format(which, RetName(obj)),
-			TranslationTable[302535920000968--[[Collisions]]],
+			Translate(302535920000969--[[Collisions %s on %s]]):format(which, RetName(obj)),
+			T(302535920000968--[[Collisions]]),
 			{objects = obj}
 		)
 	end
@@ -3627,7 +3685,7 @@ do -- AddXTemplate/RemoveXTemplateSections
 	local function AddTemplate(xt, name, pos, list)
 		if not xt or not name or not list then
 			local f = ObjPropertyListToLuaCode
-			print(TranslationTable[302535920001383--[[AddXTemplate borked template name: %s template: %s list: %s]]]:format(name and f(name), template and f(template), list and f(list)))
+			print(Translate(302535920001383--[[AddXTemplate borked template name: %s template: %s list: %s]]):format(name and f(name), template and f(template), list and f(list)))
 			return
 		end
 		local stored_name = "ChoGGi_Template_" .. name
@@ -3645,10 +3703,10 @@ do -- AddXTemplate/RemoveXTemplateSections
 			"__condition", list.__condition or RetTrue,
 			"__context_of_kind", list.__context_of_kind or "",
 			"__template", list.__template or "InfopanelActiveSection",
-			"Title", list.Title or TranslationTable[1000016--[[Title]]],
+			"Title", list.Title or T(1000016--[[Title]]),
 			"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
-			"RolloverTitle", list.RolloverTitle or TranslationTable[126095410863--[[Info]]],
-			"RolloverText", list.RolloverText or TranslationTable[126095410863--[[Info]]],
+			"RolloverTitle", list.RolloverTitle or T(126095410863--[[Info]]),
+			"RolloverText", list.RolloverText or T(126095410863--[[Info]]),
 			"RolloverHint", list.RolloverHint or "",
 			"OnContextUpdate", list.OnContextUpdate or empty_func,
 		}, {
@@ -3695,7 +3753,14 @@ do -- UpdateConsoleMargins
 	local IsEditorActive = IsEditorActive
 	local box = box
 
-	local margins = GetSafeMargins()
+	local margins
+	if what_game == "Mars" then
+		margins = GetSafeMargins()
+	else
+		--JA3
+		margins = GetSafeAreaBox()
+	end
+
 	-- normally visible
 	local margin_vis = box(10, 80, 10, 65) + margins
 	-- console hidden
@@ -3735,7 +3800,7 @@ do -- Editor toggle
 
 	function ChoGGi.ComFuncs.Editor_Toggle()
 		if Platform.durango then
-			local str = TranslationTable[302535920001574--[[Crashes on XBOX!]]]
+			local str = T(302535920001574--[[Crashes on XBOX!]])
 			print(str)
 			MsgPopup(str)
 			return
@@ -3780,7 +3845,7 @@ do -- Editor toggle
 
 	function ChoGGi.ComFuncs.TerrainEditor_Toggle()
 		if Platform.durango then
-			local str = TranslationTable[302535920001574--[[Crashes on XBOX!]]]
+			local str = T(302535920001574--[[Crashes on XBOX!]])
 			print(str)
 			MsgPopup(str)
 			return
@@ -3810,7 +3875,7 @@ do -- Editor toggle
 
 	function ChoGGi.ComFuncs.PlaceObjects_Toggle()
 		if Platform.durango then
-			local str = TranslationTable[302535920001574--[[Crashes on XBOX!]]]
+			local str = T(302535920001574--[[Crashes on XBOX!]])
 			print(str)
 			MsgPopup(str)
 			return
@@ -3980,9 +4045,9 @@ function ChoGGi.ComFuncs.DeleteLargeRocks()
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		TranslationTable[6779--[[Warning]]] .. "!\n" .. TranslationTable[302535920001238--[[Removes rocks for that smooth map feel.]]],
+		T(6779--[[Warning]]) .. "!\n" .. T(302535920001238--[[Removes rocks for that smooth map feel.]]),
 		CallBackFunc,
-		TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000855--[[Last chance before deletion!]]]
+		T(6779--[[Warning]]) .. ": " .. T(302535920000855--[[Last chance before deletion!]])
 	)
 end
 
@@ -3995,9 +4060,9 @@ function ChoGGi.ComFuncs.DeleteSmallRocks()
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		TranslationTable[6779--[[Warning]]] .. "!\n" .. TranslationTable[302535920001238--[[Removes rocks for that smooth map feel.]]],
+		T(6779--[[Warning]]) .. "!\n" .. T(302535920001238--[[Removes rocks for that smooth map feel.]]),
 		CallBackFunc,
-		TranslationTable[6779--[[Warning]]] .. ": " ..TranslationTable[302535920000855--[[Last chance before deletion!]]]
+		T(6779--[[Warning]]) .. ": " ..T(302535920000855--[[Last chance before deletion!]])
 	)
 end
 
@@ -4041,8 +4106,8 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 
 	if not obj or obj and not obj:IsKindOf("ColorizableObject") then
 		MsgPopup(
-			TranslationTable[302535920001105--[[Select/mouse over an object (buildings, vehicles, signs, rocky outcrops).]]],
-			TranslationTable[3595--[[Color]]]
+			T(302535920001105--[[Select/mouse over an object (buildings, vehicles, signs, rocky outcrops).]]),
+			T(3595--[[Color]])
 		)
 		return
 	end
@@ -4060,7 +4125,7 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 			text = " " .. obj.class,
 			value = obj.class,
 			obj = obj,
-			hint = TranslationTable[302535920001106--[[Change main object colours.]]],
+			hint = T(302535920001106--[[Change main object colours.]]),
 		}
 
 		local attaches = GetAllAttaches(obj)
@@ -4073,8 +4138,8 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 					value = a.class,
 					parentobj = obj,
 					obj = a,
-					hint = TranslationTable[302535920001107--[[Change colours of an attached object.]]] .. "\n"
-						.. TranslationTable[302535920000955--[[Handle]]] .. ": " .. (a.handle or ""),
+					hint = T(302535920001107--[[Change colours of an attached object.]]) .. "\n"
+						.. T(302535920000955--[[Handle]]) .. ": " .. (a.handle or ""),
 				}
 			end
 		end
@@ -4082,8 +4147,8 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		items = item_list,
-		title = TranslationTable[174--[[Color Modifier]]] .. ": " .. RetName(obj),
-		hint = TranslationTable[302535920001108--[[Double click to open object/attachment to edit (select to flash object).]]],
+		title = T(174--[[Color Modifier]]) .. ": " .. RetName(obj),
+		hint = T(302535920001108--[[Double click to open object/attachment to edit (select to flash object).]]),
 		custom_type = 1,
 		custom_func = function(sel, dialog)
 			ChoGGi.ComFuncs.ChangeObjectColour(sel[1].obj, sel[1].parentobj, dialog)
@@ -4224,7 +4289,8 @@ function ChoGGi.ComFuncs.RemoveObjs(class, skip_suspend, skip_all_maps)
 end
 ChoGGi.ComFuncs.MapDelete = ChoGGi.ComFuncs.RemoveObjs
 
-do -- SpawnColonist
+if what_game == "Mars" then
+ -- SpawnColonist
 	local Msg = Msg
 	local GenerateColonistData = GenerateColonistData
 
@@ -4276,7 +4342,7 @@ do -- SpawnColonist
 
 		return colonist
 	end
-end -- do
+end -- what_game
 
 do -- IsControlPressed/IsShiftPressed/IsAltPressed
 	local IsKeyPressed = terminal.IsKeyPressed
@@ -4350,7 +4416,8 @@ function ChoGGi.ComFuncs.TableIsEqual(t1, t2)
 	return is_equal
 end
 
-do -- LoadEntity
+-- LoadEntity
+if what_game == "Mars" then
 	-- no sense in making a new one for each entity
 	local entity_templates = {
 		decal = {
@@ -4509,11 +4576,13 @@ function ChoGGi.ComFuncs.DeleteObjectQuestion(obj)
 	end
 
 	ChoGGi.ComFuncs.QuestionBox(
-		TranslationTable[6779--[[Warning]]] .. "!\n" .. TranslationTable[302535920000414--[[Are you sure you wish to delete %s?]]]:format(name) .. "?",
+		T(6779--[[Warning]]) .. "!\n" .. T{302535920000414--[["Are you sure you wish to delete <color ChoGGi_red><str></color>?"]],
+			str = name ,
+		} .. "?",
 		CallBackFunc,
-		TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000855--[[Last chance before deletion!]]],
-		TranslationTable[5451--[[DELETE]]] .. ": " .. name,
-		TranslationTable[6879--[[Cancel]]] .. " " .. TranslationTable[502364928914--[[Delete]]]
+		T(6779--[[Warning]]) .. ": " .. T(302535920000855--[[Last chance before deletion!]]),
+		T(5451--[[DELETE]]) .. ": " .. name,
+		T(6879--[[Cancel]]) .. " " .. T(502364928914--[[Delete]])
 	)
 end
 
@@ -4560,11 +4629,13 @@ function ChoGGi.ComFuncs.DeleteAllObjectQuestion(obj)
 	end
 
 	ChoGGi.ComFuncs.QuestionBox(
-		TranslationTable[6779--[[Warning]]] .. "!\n" .. TranslationTable[302535920001676--[[Are you sure you wish to delete all %s?]]]:format(name) .. "?",
+		T(6779--[[Warning]]) .. "!\n" .. T{302535920001676--[["Are you sure you wish to delete all <color ChoGGi_red><str></color> objects? (from active map)"]],
+			str = name,
+		} .. "?",
 		CallBackFunc,
-		TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000855--[[Last chance before deletion!]]],
-		TranslationTable[5451--[[DELETE]]] .. ": " .. name,
-		TranslationTable[6879--[[Cancel]]] .. " " .. TranslationTable[502364928914--[[Delete]]]
+		T(6779--[[Warning]]) .. ": " .. T(302535920000855--[[Last chance before deletion!]]),
+		T(5451--[[DELETE]]) .. ": " .. name,
+		T(6879--[[Cancel]]) .. " " .. T(502364928914--[[Delete]])
 	)
 end
 
@@ -4572,11 +4643,11 @@ function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
 	local name = RetName(obj)
 	local obj_type
 	if obj:IsKindOf("BaseRover") then
-		obj_type = TranslationTable[7825--[[Destroy this Rover.]]]
+		obj_type = T(7825--[[Destroy this Rover.]])
 	elseif obj:IsKindOf("Drone") then
-		obj_type = TranslationTable[7824--[[Destroy this Drone.]]]
+		obj_type = T(7824--[[Destroy this Drone.]])
 	else
-		obj_type = TranslationTable[7822--[[Destroy this building.]]]
+		obj_type = T(7822--[[Destroy this building.]])
 	end
 
 	local function CallBackFunc(answer)
@@ -4584,7 +4655,7 @@ function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
 			if obj:IsKindOf("Dome") and #(obj.connected_domes or "") > 0 and not obj:CanDemolish() then
 				MsgPopup(
 					Translate(302535920001354--[["<green>%s</green> is a dome with passages (crash if deleted)."]]):format(name),
-					TranslationTable[302535920000489--[[Delete Object(s)]]]
+					T(302535920000489--[[Delete Object(s)]])
 				)
 				return
 			end
@@ -4600,11 +4671,11 @@ function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
 		end
 	end
 	ChoGGi.ComFuncs.QuestionBox(
-		TranslationTable[6779--[[Warning]]] .. "!\n" .. obj_type .. "\n" .. name,
+		T(6779--[[Warning]]) .. "!\n" .. obj_type .. "\n" .. name,
 		CallBackFunc,
-		TranslationTable[6779--[[Warning]]] .. ": " .. obj_type,
+		T(6779--[[Warning]]) .. ": " .. obj_type,
 		obj_type .. " " .. name,
-		TranslationTable[1176--[[Cancel Destroy]]]
+		T(1176--[[Cancel Destroy]])
 	)
 end
 
@@ -4667,7 +4738,8 @@ function ChoGGi.ComFuncs.RetHudButton(side)
 	return xt[idx][1]
 end
 
-do -- RetMapSettings
+-- RetMapSettings
+if what_game == "Mars" then
 	local GetRandomMapGenerator = GetRandomMapGenerator
 	local FillRandomMapProps = FillRandomMapProps
 
@@ -4683,7 +4755,8 @@ do -- RetMapSettings
 	end
 end -- do
 
-do -- RetMapBreakthroughs
+-- RetMapBreakthroughs
+if what_game == "Mars" then
 
 --~ 	local function UnlockAnoms()
 --~ 		local objs = UICity.labels.Anomaly or ""
@@ -4759,7 +4832,8 @@ do -- RetMapBreakthroughs
 	end
 end -- do
 
-do -- RetObjectEntity
+-- RetObjectEntity
+if what_game == "Mars" then
 	local GetSpecialistEntity = GetSpecialistEntity
 	local IsValidEntity = IsValidEntity
 
@@ -4862,7 +4936,8 @@ function ChoGGi.ComFuncs.RetTableValue(obj, key)
 	end
 end
 
-do -- BuildableHexGrid
+-- BuildableHexGrid
+if what_game == "Mars" then
 	-- this is somewhat from Lua\hex.lua: debug_build_grid()
 	-- sped up to work with being attached to the mouse pos
 
@@ -5148,6 +5223,10 @@ do -- BuildableHexGrid
 end
 
 function ChoGGi.ComFuncs.SetWinObjectVis(obj,visible)
+	if not obj then
+		return
+	end
+
 	-- XWindow:GetVisible()
 	if obj.target_visible then
 		-- It's visible and we don't want it visible
@@ -5306,7 +5385,7 @@ end -- do
 function ChoGGi.ComFuncs.RetToolbarButton(params)
 	return XTextButton:new({
 		Id = params.id,
-		Text = params.text or TranslationTable[126095410863--[[Info]]],
+		Text = params.text or T(126095410863--[[Info]]),
 		FXMouseIn = "ActionButtonHover",
 		FXPress = "ActionButtonClick",
 		FXPressDisabled = "UIDisabledButtonPressed",
@@ -5397,7 +5476,8 @@ do -- CleanInfoAttachDupes
 	end
 end -- do
 
-do -- ObjHexShape_Toggle
+-- ObjHexShape_Toggle
+if what_game == "Mars" then
 	local HexRotate = HexRotate
 	local HexToWorld = HexToWorld
 	local point = point
@@ -5518,6 +5598,10 @@ do -- ObjHexShape_Toggle
 end -- do
 
 function ChoGGi.ComFuncs.ModEditorActive()
+	if what_game ~= "Mars" then
+		return
+	end
+
 	local m = ActiveMapData
 	-- you can save the mod map and play it, so we also check for other stuff
 	if m.id == "Mod" and m.markers and m.NetHash then
@@ -5702,11 +5786,11 @@ do -- path markers
 				end
 
 			else
-				ChoGGi.ComFuncs.OpenInExamineDlg(obj, nil, TranslationTable[302535920000467--[[Path Markers]]])
+				ChoGGi.ComFuncs.OpenInExamineDlg(obj, nil, T(302535920000467--[[Path Markers]]))
 				print(
-					TranslationTable[6779--[[Warning]]],
+					T(6779--[[Warning]]),
 					":",
-					TranslationTable[302535920000869--[[This %s doesn't have GetPath function, something is probably borked.]]]:format(RetName(obj))
+					Translate(302535920000869--[[This %s doesn't have GetPath function, something is probably borked.]]):format(RetName(obj))
 				)
 			end
 		end
@@ -5854,8 +5938,8 @@ do -- path markers
 
 		if menu_fired then
 			MsgPopup(
-				TranslationTable[302535920000871--[[Doesn't seem to be an object that moves.]]],
-				TranslationTable[302535920000872--[[Pathing]]],
+				T(302535920000871--[[Doesn't seem to be an object that moves.]]),
+				T(302535920000872--[[Pathing]]),
 				{objects = obj}
 			)
 		end
@@ -6071,7 +6155,8 @@ function ChoGGi.ComFuncs.CycleSelectedObjects(list, count)
 	end
 end
 
-do -- IsDroneIdle/GetIdleDrones/DroneHubLoad
+-- IsDroneIdle/GetIdleDrones/DroneHubLoad
+if what_game == "Mars" then
 	local idle_drone_cmds = {
 		Idle = true,
 		-- fresh drone (only lasts a little bit)
@@ -6577,9 +6662,9 @@ do -- ExamineEntSpots (Object>Entity Spots)
 		c = BuildSurf(c, list, obj, "collision", 0)
 
 		-- opener
-		table.insert(list, 1, TranslationTable[302535920001068--[["The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one).
+		table.insert(list, 1, T(302535920001068--[["The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one).
 Attachment bspheres are off (x and y are; z and rotate aren't).
-Some of the file names are guesses. <anim> is a guess, try removing it."]]]
+Some of the file names are guesses. <anim> is a guess, try removing it."]])
 			.. [[
 
 
@@ -6596,7 +6681,7 @@ Some of the file names are guesses. <anim> is a guess, try removing it."]]]
 			ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 				parent = parent_or_ret,
 				text = table.concat(list, "\n"),
-				title = TranslationTable[302535920000235--[[Entity Spots]]] .. ": " .. RetName(obj),
+				title = T(302535920000235--[[Entity Spots]]) .. ": " .. RetName(obj),
 			}
 		end
 
@@ -6604,7 +6689,8 @@ Some of the file names are guesses. <anim> is a guess, try removing it."]]]
 	end
 end -- do
 
-do -- RetHexSurfaces
+-- RetHexSurfaces
+if what_game == "Mars" then
 	local GetStates = GetStates
 	local GetStateIdx = GetStateIdx
 	local GetSurfaceHexShapes = GetSurfaceHexShapes
@@ -6784,7 +6870,7 @@ do -- GetMaterialProperties
 		ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
 			parent = ex_dlg,
 			text = RetEntityMTLFile(mat),
-			title = TranslationTable[302535920001458--[[Material Properties]]] .. ": " .. mat.__mtl,
+			title = T(302535920001458--[[Material Properties]]) .. ": " .. mat.__mtl,
 		}
 	end
 
@@ -6819,8 +6905,8 @@ do -- GetMaterialProperties
 				mat.__lod = li
 				mat[1] = {
 					ChoGGi_AddHyperLink = true,
-					hint = TranslationTable[302535920001174--[[Show an example .mtl file for this material (not complete).]]],
-					name = TranslationTable[302535920001177--[[Generate .mtl]]],
+					hint = T(302535920001174--[[Show an example .mtl file for this material (not complete).]]),
+					name = T(302535920001177--[[Generate .mtl]]),
 					func = function(ex_dlg)
 						ExamineExportMat(ex_dlg, mat)
 					end,
@@ -6868,7 +6954,7 @@ do -- GetMaterialProperties
 		if parent_or_ret == true then
 			return materials
 		else
-			ChoGGi.ComFuncs.OpenInExamineDlg(materials, parent_or_ret, TranslationTable[302535920001458--[[Material Properties]]])
+			ChoGGi.ComFuncs.OpenInExamineDlg(materials, parent_or_ret, T(302535920001458--[[Material Properties]]))
 		end
 
 	end
@@ -7000,7 +7086,8 @@ do -- BBoxLines_Toggle
 	end
 end -- do
 
-do -- SurfaceLines_Toggle
+-- SurfaceLines_Toggle
+if what_game == "Mars" then
 	local GetRelativeSurfaces = GetRelativeSurfaces
 
 	local function BuildLines(obj, params)
@@ -7380,7 +7467,7 @@ do -- ObjFlagsList
 				else
 					flags_table[f .. " (" .. mask .. ")"] = {
 						ChoGGi_AddHyperLink = true,
-						hint = TranslationTable[302535920001069--[[Toggle Boolean]]],
+						hint = T(302535920001069--[[Toggle Boolean]]),
 						name = tostring(flagged),
 						colour = flagged and us.ExamineColourBool or us.ExamineColourBoolFalse,
 						func = function(ex_dlg, _, list_obj)
@@ -7473,7 +7560,7 @@ function ChoGGi.ComFuncs.SetAnimState(obj)
 		local state = states_str[i]
 		local idx = states_num[i]
 		item_list[i] = {
-			text = TranslationTable[1000037--[[Name]]] .. ": " .. state .. ", " .. TranslationTable[302535920000858--[[Index]]] .. ": " .. idx,
+			text = T(1000037--[[Name]]) .. ": " .. state .. ", " .. T(302535920000858--[[Index]]) .. ": " .. idx,
 			value = state,
 		}
 	end
@@ -7492,7 +7579,7 @@ function ChoGGi.ComFuncs.SetAnimState(obj)
 			obj:SetState(value)
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.text),
-				TranslationTable[302535920000859--[[Anim State]]]
+				T(302535920000859--[[Anim State]])
 			)
 		end
 	end
@@ -7500,8 +7587,8 @@ function ChoGGi.ComFuncs.SetAnimState(obj)
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = TranslationTable[302535920000860--[[Set Anim State]]],
-		hint = TranslationTable[302535920000861--[[Current State: %s]]]:format(obj:GetState()),
+		title = T(302535920000860--[[Set Anim State]]),
+		hint = Translate(302535920000861--[[Current State: %s]]):format(obj:GetState()),
 		custom_type = 7,
 	}
 end
@@ -7643,7 +7730,7 @@ function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
 	if ret then
 		return textures
 	end
-	ChoGGi.ComFuncs.OpenInExamineDlg(textures, nil, TranslationTable[302535920001181--[[Used Terrain Textures]]])
+	ChoGGi.ComFuncs.OpenInExamineDlg(textures, nil, T(302535920001181--[[Used Terrain Textures]]))
 end
 
 local function RetObjMapId(obj, text, fallback)

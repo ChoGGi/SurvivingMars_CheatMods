@@ -3,7 +3,8 @@
 --~ box(left/x, top/y, right/w, bottom/h) :minx() :miny() :sizex() :sizey()
 --~ box() or sizebox()
 
-local TranslationTable = TranslationTable
+local T = T
+local Translate = ChoGGi.ComFuncs.Translate
 
 -- store opened dialogs (make sure any refs to this table are only used in this mod)
 if not rawget(_G, "ChoGGi_dlgs_opened") then
@@ -20,7 +21,6 @@ local IsValid = IsValid
 local PropObjGetProperty = PropObjGetProperty
 local MeasureImage = UIL.MeasureImage
 local GetMousePos = terminal.GetMousePos
-local GetSafeAreaBox = GetSafeAreaBox
 
 -- see also TextStyles.lua
 local white = -1
@@ -84,7 +84,7 @@ DefineClass.ChoGGi_XText = {
 	SelectionColor = black,
 
 	RolloverTemplate = "Rollover",
-	RolloverTitle = TranslationTable[126095410863--[[Info]]],
+	RolloverTitle = T(126095410863--[[Info]]),
 }
 DefineClass.ChoGGi_XText_Follow = {
 	__parents = {
@@ -157,7 +157,7 @@ DefineClass.ChoGGi_XMoveControl = {
 	Background = medium_gray,
 	FocusedBackground = dark_blue,
 	FocusedColor = light_gray,
-	RolloverTitle = TranslationTable[126095410863--[[Info]]],
+	RolloverTitle = T(126095410863--[[Info]]),
 	RolloverTemplate = "Rollover",
 }
 function ChoGGi_XMoveControl:OnKbdKeyDown(vk, ...)
@@ -232,7 +232,7 @@ DefineClass.ChoGGi_XButtons = {
 		"XTextButton",
 	},
 	TextStyle = "ChoGGi_Buttons",
-	RolloverTitle = TranslationTable[126095410863--[[Info]]],
+	RolloverTitle = T(126095410863--[[Info]]),
 	RolloverHint = T(608042494285--[[<left_click> Activate]]),
 	RolloverTemplate = "Rollover",
 	RolloverBackground = rollover_blue,
@@ -256,7 +256,7 @@ DefineClass.ChoGGi_XToolbarButton = {
 DefineClass.ChoGGi_XButton = {
 	__parents = {"ChoGGi_XButtons"},
 --~ 	MinWidth = 60,
-	Text = TranslationTable[6878--[[OK]]],
+	Text = T(6878--[[OK]]),
 	Background = light_gray,
 	bg_green = -8192126,
 	bg_red = -41121,
@@ -272,8 +272,8 @@ DefineClass.ChoGGi_XCloseButton = {
 	VAlign = "center",
 	HAlign = "right",
 	Margins = box(0, 0, 2, 0),
-	RolloverTitle = TranslationTable[1011--[[Close]]],
-	RolloverText = TranslationTable[302535920000074--[[Cancel without changing anything.]]],
+	RolloverTitle = T(1011--[[Close]]),
+	RolloverText = T(302535920000074--[[Cancel without changing anything.]]),
 }
 
 DefineClass.ChoGGi_XConsoleButton = {
@@ -300,7 +300,7 @@ DefineClass.ChoGGi_XComboButton = {
 	TextStyle = "ChoGGi_ComboButton",
 	Background = light_gray,
 	RolloverBackground = rollover_blue,
-	RolloverTitle = TranslationTable[126095410863--[[Info]]],
+	RolloverTitle = T(126095410863--[[Info]]),
 	RolloverHint = T(608042494285--[[<left_click> Activate]]),
 	RolloverTemplate = "Rollover",
 	PressedBackground = medium_gray,
@@ -333,11 +333,11 @@ DefineClass.ChoGGi_XCheckButton = {
 		"XCheckButton",
 	},
 	TextStyle = "ChoGGi_CheckButton",
-	RolloverTitle = TranslationTable[126095410863--[[Info]]],
+	RolloverTitle = T(126095410863--[[Info]]),
 	RolloverHint = T(608042494285--[[<left_click> Activate]]),
 	RolloverTemplate = "Rollover",
 	MinWidth = 60,
-	Text = TranslationTable[6878--[[OK]]],
+	Text = T(6878--[[OK]]),
 	RolloverZoom = 1100,
 	FoldWhenHidden = true,
 }
@@ -467,7 +467,7 @@ DefineClass.ChoGGi_XTextList = {
 	},
 	TextStyle = text_style2,
 	RolloverTemplate = "Rollover",
-	RolloverTitle = TranslationTable[126095410863--[[Info]]],
+	RolloverTitle = T(126095410863--[[Info]]),
 	VAlign = "center",
 }
 
@@ -492,7 +492,7 @@ DefineClass.ChoGGi_XDialog = {
 	MinWidth = 150,
 	Dock = "ignore",
 	RolloverTemplate = "Rollover",
-	RolloverTitle = TranslationTable[126095410863--[[Info]]],
+	RolloverTitle = T(126095410863--[[Info]]),
 	Background = dark_gray,
 	BorderWidth = dlg_border_width,
 	BorderColor = light_gray,
@@ -507,7 +507,7 @@ DefineClass.ChoGGi_XDialogSection = {
 	HandleMouse = true,
 	FoldWhenHidden = true,
 	RolloverTemplate = "Rollover",
-	RolloverTitle = TranslationTable[126095410863--[[Info]]],
+	RolloverTitle = T(126095410863--[[Info]]),
 	Clip = "self",
 }
 
@@ -601,8 +601,16 @@ function ChoGGi_XWindow:AddElements(_, context)
 	self.dialog_height_scaled = self.dialog_height * UIScale
 	self.header_scaled = self.header * UIScale
 
+	-- GetSafeAreaBox doesn't always return a box on JA3...
+	local safe = GetSafeAreaBox()
+	local _ ,_ ,x, y = UIL.GetSafeArea()
+	-- JA3 GetSafeAreaBox sometimes is a number?
+	if IsBox(safe) then
+		_, _, x, y = safe:xyxy()
+	end
+
 	-- make sure the size i use is below the game res w/h
-	local _, _, x, y = GetSafeAreaBox():xyxy()
+--~ 	local _, _, x, y = GetSafeAreaBox():xyxy()
 	if self.dialog_width_scaled > x then
 		self.dialog_width_scaled = x - 50
 	end
@@ -672,8 +680,8 @@ function ChoGGi_XWindow:AddImageButton(UIScale)
 		self.idCaptionImage = ChoGGi_XImage:new({
 			Id = "idCaptionImage",
 			Dock = "left",
-			RolloverTitle = TranslationTable[302535920000093--[[Go to Obj]]],
-			RolloverText = TranslationTable[302535920000094--[[View/select object on map.]]],
+			RolloverTitle = T(302535920000093--[[Go to Obj]]),
+			RolloverText = T(302535920000094--[[View/select object on map.]]),
 			RolloverHint = T(608042494285--[[<left_click> Activate]]),
 			OnMouseButtonDown = self.idCaptionImageOnMouseButtonDown,
 			HandleMouse = true,
@@ -865,8 +873,12 @@ function ChoGGi_XWindow:PostInit(parent, pt, title_skip)
 
 	-- res of game window
 	local safe = GetSafeAreaBox()
-	local winw = safe:maxx()
-	local winh = safe:maxy()
+	local _ ,_ ,winw, winh = UIL.GetSafeArea()
+	-- JA3 GetSafeAreaBox sometimes is a number?
+	if IsBox(safe) then
+		winw = safe:maxx()
+		winh = safe:maxy()
+	end
 
 	-- check if dialog is past the edge
 	local new_x
@@ -1121,7 +1133,7 @@ function ChoGGi_XInputContextMenu:RetContextList()
 	end
 
 	return {
-		{name = TranslationTable[1000746--[[Undo]]],
+		{name = T(1000746--[[Undo]]),
 			image = ChoGGi.library_path .. "UI/menu/undo.png",
 			clicked = function()
 				self:Undo()
@@ -1129,7 +1141,7 @@ function ChoGGi_XInputContextMenu:RetContextList()
 			end,
 			disable = not can_undo,
 		},
-		{name = TranslationTable[1000222--[[Redo]]],
+		{name = T(1000222--[[Redo]]),
 			image = ChoGGi.library_path .. "UI/menu/redo.png",
 			clicked = function()
 				self:Redo()
@@ -1138,7 +1150,7 @@ function ChoGGi_XInputContextMenu:RetContextList()
 			disable = not can_redo,
 		},
 		{is_spacer = true},
-		{name = TranslationTable[1000234--[[Cut]]],
+		{name = T(1000234--[[Cut]]),
 			image = ChoGGi.library_path .. "UI/menu/cut.png",
 			clicked = function()
 				CopyToClipboard(self:GetSelectedText())
@@ -1147,7 +1159,7 @@ function ChoGGi_XInputContextMenu:RetContextList()
 			end,
 			disable = not has_selection,
 		},
-		{name = TranslationTable[1000233--[[Copy]]],
+		{name = T(1000233--[[Copy]]),
 			image = ChoGGi.library_path .. "UI/menu/copy.png",
 			clicked = function()
 				CopyToClipboard(self:GetSelectedText())
@@ -1155,7 +1167,7 @@ function ChoGGi_XInputContextMenu:RetContextList()
 			end,
 			disable = not has_selection,
 		},
-		{name = TranslationTable[1000235--[[Paste]]],
+		{name = T(1000235--[[Paste]]),
 			image = ChoGGi.library_path .. "UI/menu/paste.png",
 			clicked = function()
 				self:EditOperation(GetFromClipboard(max_int))
@@ -1163,7 +1175,7 @@ function ChoGGi_XInputContextMenu:RetContextList()
 			end,
 			disable = has_clipboard == "",
 		},
-		{name = TranslationTable[1000463--[[Delete]]],
+		{name = T(1000463--[[Delete]]),
 			image = ChoGGi.library_path .. "UI/menu/delete.png",
 			clicked = function()
 				self:EditOperation()
@@ -1172,7 +1184,7 @@ function ChoGGi_XInputContextMenu:RetContextList()
 			disable = not has_selection,
 		},
 		{is_spacer = true},
-		{name = TranslationTable[131775917427--[[Select]]] .. " " .. TranslationTable[4493--[[All]]],
+		{name = T(131775917427--[[Select]]) .. " " .. T(4493--[[All]]),
 			image = ChoGGi.library_path .. "UI/menu/selectall.png",
 			clicked = function()
 				self:SelectAll()
@@ -1186,7 +1198,7 @@ DefineClass.ChoGGi_XTextInput = {
 		"ChoGGi_XInputContextMenu",
 		"XEdit",
 	},
-	RolloverTitle = TranslationTable[126095410863--[[Info]]],
+	RolloverTitle = T(126095410863--[[Info]]),
 	Background = light_gray,
 	TextStyle = "ChoGGi_TextInput",
 	-- ambiguously inherited log spam

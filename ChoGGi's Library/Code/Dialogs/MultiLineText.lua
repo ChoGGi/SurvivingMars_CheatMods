@@ -7,7 +7,9 @@ local CreateRealTimeThread = CreateRealTimeThread
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local RetParamsParents = ChoGGi.ComFuncs.RetParamsParents
 
-local TranslationTable = TranslationTable
+local T = T
+local Translate = ChoGGi.ComFuncs.Translate
+
 local blacklist, g_env = ChoGGi.blacklist
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	blacklist = false
@@ -41,7 +43,7 @@ function ChoGGi_DlgMultiLineText:Init(parent, context)
 	-- store func for calling from :OnShortcut
 	self.retfunc = context.custom_func
 
-	self.title = context.title or TranslationTable[302535920001301--[[Edit Text]]]
+	self.title = context.title or T(302535920001301--[[Edit Text]])
 
 	self.dialog_width = context.width or self.dialog_width
 	self.dialog_height = context.height or self.dialog_height
@@ -72,13 +74,13 @@ function ChoGGi_DlgMultiLineText:Init(parent, context)
 		self.idSearchText = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idSearchText",
 			RolloverText = T(302535920001529--[["Press <color 0 200 0>Enter</color> to select next found text, and <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text."]]),
-			Hint = TranslationTable[10123--[[Search]]],
+			Hint = Translate(10123--[[Search]]),
 			OnKbdKeyDown = self.idSearchText_OnKbdKeyDown,
 		}, self.idSearchArea)
 		--
 		self.idSearch = g_Classes.ChoGGi_XButton:new({
 			Id = "idSearch",
-			Text = TranslationTable[10123--[[Search]]],
+			Text = T(10123--[[Search]]),
 			Dock = "right",
 			RolloverAnchor = "right",
 			RolloverHint = T(302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"]]),
@@ -96,9 +98,9 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self.idOkay = g_Classes.ChoGGi_XButton:new({
 		Id = "idOkay",
 		Dock = "left",
-		Text = context.button_ok or TranslationTable[6878--[[OK]]],
+		Text = context.button_ok or T(6878--[[OK]]),
 		Background = g_Classes.ChoGGi_XButton.bg_green,
-		RolloverText = context.hint_ok or TranslationTable[302535920000382--[[Closes dialogs and sends positive return value.]]],
+		RolloverText = context.hint_ok or T(302535920000382--[[Closes dialogs and sends positive return value.]]),
 		OnPress = self.idOkay_OnPress,
 	}, self.idButtonContainer)
 
@@ -106,8 +108,8 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		self.idOpenFile = g_Classes.ChoGGi_XButton:new({
 			Id = "idOpenFile",
 			Dock = "left",
-			Text = TranslationTable[302535920001268--[[Open File]]],
-			RolloverText = TranslationTable[302535920001309--[[Open file in default editor.]]],
+			Text = T(302535920001268--[[Open File]]),
+			RolloverText = T(302535920001309--[[Open file in default editor.]]),
 			OnPress = self.idOpenFile_OnPress,
 		}, self.idButtonContainer)
 	end
@@ -117,8 +119,8 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		self.idUpdateText = g_Classes.ChoGGi_XButton:new({
 			Id = "idUpdateText",
 			Dock = "left",
-			Text = TranslationTable[302535920001026--[[Update Text]]],
-			RolloverText = TranslationTable[302535920000381--[[Replaces text using the same func that created it.]]],
+			Text = T(302535920001026--[[Update Text]]),
+			RolloverText = T(302535920000381--[[Replaces text using the same func that created it.]]),
 			OnPress = self.idUpdateText_OnPress,
 		}, self.idButtonContainer)
 	end
@@ -130,8 +132,8 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 			Id = "idOverwrite",
 			Dock = "left",
 			Margins = box(4, 0, 0, 0),
-			Text = TranslationTable[302535920000721--[[Overwrite]]],
-			RolloverText = TranslationTable[302535920000827--[[Check this to overwrite file instead of appending to it.]]],
+			Text = T(302535920000721--[[Overwrite]]),
+			RolloverText = T(302535920000827--[[Check this to overwrite file instead of appending to it.]]),
 			OnChange = self.idOverwrite_OnChange,
 		}, self.idButtonContainer)
 	end
@@ -139,8 +141,8 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self.idWrapLines = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idWrapLines",
 		Dock = "left",
-		Text = TranslationTable[302535920001288--[[Wrap Lines]]],
-		RolloverText = TranslationTable[302535920001289--[[Wrap lines or show horizontal scrollbar (updates after closing window).]]],
+		Text = T(302535920001288--[[Wrap Lines]]),
+		RolloverText = T(302535920001289--[[Wrap lines or show horizontal scrollbar (updates after closing window).]]),
 		Margins = box(10, 0, 0, 0),
 		OnChange = self.idWrapLines_OnChange,
 	}, self.idButtonContainer)
@@ -149,8 +151,8 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self.idToggleCode = g_Classes.ChoGGi_XCheckButton:new({
 		Id = "idToggleCode",
 		Dock = "left",
-		Text = TranslationTable[302535920001474--[[Code Highlight]]],
-		RolloverText = TranslationTable[302535920001475--[[Toggle lua code highlighting.]]],
+		Text = T(302535920001474--[[Code Highlight]]),
+		RolloverText = T(302535920001475--[[Toggle lua code highlighting.]]),
 		Margins = box(10, 0, 0, 0),
 		OnChange = self.idToggleCode_OnChange,
 	}, self.idButtonContainer)
@@ -158,9 +160,9 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self.idCancel = g_Classes.ChoGGi_XButton:new({
 		Id = "idCancel",
 		Dock = "right",
-		Text = context.button_cancel or TranslationTable[6879--[[Cancel]]],
+		Text = context.button_cancel or T(6879--[[Cancel]]),
 		Background = g_Classes.ChoGGi_XButton.bg_red,
-		RolloverText = context.hint_cancel or TranslationTable[302535920001423--[[Close without doing anything.]]],
+		RolloverText = context.hint_cancel or T(302535920001423--[[Close without doing anything.]]),
 		OnPress = self.idCancel_OnPress,
 	}, self.idButtonContainer)
 

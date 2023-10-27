@@ -1,18 +1,22 @@
 -- See LICENSE for terms
 
+if ChoGGi.what_game ~= "Mars" then
+	return
+end
+
 local pairs, type, tostring, table = pairs, type, tostring, table
 local IsValid = IsValid
 local GetCursorWorldPos = GetCursorWorldPos
-local TranslationTable = TranslationTable
+local T = T
+local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
-local Translate = ChoGGi.ComFuncs.Translate
 local RandomColour = ChoGGi.ComFuncs.RandomColour
 
 
 function ChoGGi.MenuFuncs.SkipMissingMods_Toggle()
 	if blacklist then
-		ChoGGi.ComFuncs.BlacklistMsg(TranslationTable[302535920001205--[[Skip Missing Mods]]])
+		ChoGGi.ComFuncs.BlacklistMsg(T(302535920001205--[[Skip Missing Mods]]))
 	end
 
 	ChoGGi.UserSettings.SkipMissingMods = not ChoGGi.UserSettings.SkipMissingMods
@@ -20,13 +24,13 @@ function ChoGGi.MenuFuncs.SkipMissingMods_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SkipMissingMods),
-		TranslationTable[302535920001205--[[Skip Missing Mods]]]
+		T(302535920001205--[[Skip Missing Mods]])
 	)
 end
 
 function ChoGGi.MenuFuncs.SkipMissingDLC_Toggle()
 	if blacklist then
-		ChoGGi.ComFuncs.BlacklistMsg(TranslationTable[302535920001658--[[Skip Missing DLC]]])
+		ChoGGi.ComFuncs.BlacklistMsg(T(302535920001658--[[Skip Missing DLC]]))
 	end
 
 	ChoGGi.UserSettings.SkipMissingDLC = not ChoGGi.UserSettings.SkipMissingDLC
@@ -34,7 +38,7 @@ function ChoGGi.MenuFuncs.SkipMissingDLC_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SkipMissingDLC),
-		TranslationTable[302535920001658--[[Skip Missing DLC]]]
+		T(302535920001658--[[Skip Missing DLC]])
 	)
 end
 
@@ -71,7 +75,7 @@ function ChoGGi.MenuFuncs.ExamineObjectRadius_Set()
 		{text = 1000000, value = 1000000},
 	}
 
-	local title = TranslationTable[302535920000069--[[Examine]]] .. " " .. TranslationTable[302535920000163--[[Radius]]]
+	local title = T(302535920000069--[[Examine]]) .. " " .. T(302535920000163--[[Radius]])
 
 	local function CallBackFunc(choice)
 		if choice.nothing_selected then
@@ -89,7 +93,7 @@ function ChoGGi.MenuFuncs.ExamineObjectRadius_Set()
 		items = item_list,
 		title = title,
 		skip_sort = true,
-		hint = TranslationTable[302535920000923--[[Set the radius used for %s examining.]]]:format(ChoGGi.ComFuncs.GetShortcut(".Keys.Examine Objects Shift")),
+		hint = Translate(302535920000923--[[Set the radius used for %s examining.]]):format(ChoGGi.ComFuncs.GetShortcut(".Keys.Examine Objects Shift")),
 	}
 end
 
@@ -114,24 +118,24 @@ do -- SetEntity
 		local obj = ChoGGi.ComFuncs.SelObject()
 		if not obj then
 			MsgPopup(
-				TranslationTable[302535920001139--[[You need to select an object.]]],
-				TranslationTable[302535920000682--[[Change Entity]]]
+				T(302535920001139--[[You need to select an object.]]),
+				T(302535920000682--[[Change Entity]])
 			)
 			return
 		end
 
-		local hint_noanim = TranslationTable[302535920001140--[[No animation.]]]
+		local hint_noanim = T(302535920001140--[[No animation.]])
 		local item_list = {
-			{text = " " .. TranslationTable[302535920001141--[[Default Entity]]], value = "Default"},
-			{text = " " .. TranslationTable[302535920001142--[[Kosmonavt]]], value = "Kosmonavt"},
-			{text = " " .. TranslationTable[302535920001143--[[Jama]]], value = "Lama"},
-			{text = " " .. TranslationTable[302535920001144--[[Green Man]]], value = "GreenMan"},
-			{text = " " .. TranslationTable[302535920001145--[[Planet Mars]]], value = "PlanetMars", hint = hint_noanim},
-			{text = " " .. TranslationTable[302535920001146--[[Planet Earth]]], value = "PlanetEarth", hint = hint_noanim},
-			{text = " " .. TranslationTable[302535920001147--[[Rocket Small]]], value = "RocketUI", hint = hint_noanim},
-			{text = " " .. TranslationTable[302535920001148--[[Rocket Regular]]], value = "Rocket", hint = hint_noanim},
-			{text = " " .. TranslationTable[302535920001149--[[Combat Rover]]], value = "CombatRover", hint = hint_noanim},
-			{text = " " .. TranslationTable[302535920001150--[[PumpStation Demo]]], value = "PumpStationDemo", hint = hint_noanim},
+			{text = " " .. T(302535920001141--[[Default Entity]]), value = "Default"},
+			{text = " " .. T(302535920001142--[[Kosmonavt]]), value = "Kosmonavt"},
+			{text = " " .. T(302535920001143--[[Jama]]), value = "Lama"},
+			{text = " " .. T(302535920001144--[[Green Man]]), value = "GreenMan"},
+			{text = " " .. T(302535920001145--[[Planet Mars]]), value = "PlanetMars", hint = hint_noanim},
+			{text = " " .. T(302535920001146--[[Planet Earth]]), value = "PlanetEarth", hint = hint_noanim},
+			{text = " " .. T(302535920001147--[[Rocket Small]]), value = "RocketUI", hint = hint_noanim},
+			{text = " " .. T(302535920001148--[[Rocket Regular]]), value = "Rocket", hint = hint_noanim},
+			{text = " " .. T(302535920001149--[[Combat Rover]]), value = "CombatRover", hint = hint_noanim},
+			{text = " " .. T(302535920001150--[[PumpStation Demo]]), value = "PumpStationDemo", hint = hint_noanim},
 		}
 		local c = #item_list
 		local EntityData = EntityData
@@ -173,7 +177,7 @@ do -- SetEntity
 				end
 				MsgPopup(
 					choice[1].text .. ": " .. RetName(obj),
-					TranslationTable[302535920000682--[[Change Entity]]]
+					T(302535920000682--[[Change Entity]])
 				)
 			end
 		end
@@ -181,24 +185,24 @@ do -- SetEntity
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = TranslationTable[302535920000682--[[Change Entity]]] .. ": " .. RetName(obj),
+			title = T(302535920000682--[[Change Entity]]) .. ": " .. RetName(obj),
 			custom_type = 7,
-			hint = TranslationTable[302535920000106--[[Current]]] .. ": "
+			hint = T(302535920000106--[[Current]]) .. ": "
 				.. (obj.ChoGGi_OrigEntity or obj:GetEntity()) .. "\n"
-				.. TranslationTable[302535920001157--[[If you don't pick a checkbox it will change all of selected type.]]]
+				.. T(302535920001157--[[If you don't pick a checkbox it will change all of selected type.]])
 				.. "\n\n"
-				.. TranslationTable[302535920001153--[[Post a request if you want me to add more entities from EntityData (use ex(EntityData) to list).
+				.. T(302535920001153--[[Post a request if you want me to add more entities from EntityData (use ex(EntityData) to list).
 
-Not permanent for colonists after they exit buildings (for now).]]],
+Not permanent for colonists after they exit buildings (for now).]]),
 			checkboxes = {
 				only_one = true,
 				{
-					title = TranslationTable[302535920000750--[[Dome Only]]],
-					hint = TranslationTable[302535920001255--[[Will only apply to objects in the same dome as selected object.]]],
+					title = T(302535920000750--[[Dome Only]]),
+					hint = T(302535920001255--[[Will only apply to objects in the same dome as selected object.]]),
 				},
 				{
-					title = TranslationTable[302535920000752--[[Selected Only]]],
-					hint = TranslationTable[302535920001256--[[Will only apply to selected object.]]],
+					title = T(302535920000752--[[Selected Only]]),
+					hint = T(302535920001256--[[Will only apply to selected object.]]),
 				},
 			},
 		}
@@ -230,14 +234,14 @@ do -- SetEntityScale
 		local obj = ChoGGi.ComFuncs.SelObject()
 		if not obj then
 			MsgPopup(
-				TranslationTable[302535920001139--[[You need to select an object.]]],
-				TranslationTable[302535920000684--[[Change Entity Scale]]]
+				T(302535920001139--[[You need to select an object.]]),
+				T(302535920000684--[[Change Entity Scale]])
 			)
 			return
 		end
 
 		local item_list = {
-			{text = TranslationTable[1000121--[[Default]]], value = 100},
+			{text = T(1000121--[[Default]]), value = 100},
 			{text = 25, value = 25},
 			{text = 50, value = 50},
 			{text = 100, value = 100},
@@ -276,7 +280,7 @@ do -- SetEntityScale
 				end
 				MsgPopup(
 					choice[1].text .. ": " .. RetName(obj),
-					TranslationTable[302535920000684--[[Change Entity Scale]]],
+					T(302535920000684--[[Change Entity Scale]]),
 					{objects = obj}
 				)
 			end
@@ -285,19 +289,19 @@ do -- SetEntityScale
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = TranslationTable[302535920000684--[[Change Entity Scale]]] .. ": " .. RetName(obj),
-			hint = TranslationTable[302535920001156--[[Current object]]] .. ": " .. obj:GetScale()
-				.. "\n" .. TranslationTable[302535920001157--[[If you don't pick a checkbox it will change all of selected type.]]],
+			title = T(302535920000684--[[Change Entity Scale]]) .. ": " .. RetName(obj),
+			hint = T(302535920001156--[[Current object]]) .. ": " .. obj:GetScale()
+				.. "\n" .. T(302535920001157--[[If you don't pick a checkbox it will change all of selected type.]]),
 			skip_sort = true,
 			checkboxes = {
 				only_one = true,
 				{
-					title = TranslationTable[302535920000750--[[Dome Only]]],
-					hint = TranslationTable[302535920000751--[[Will only apply to colonists in the same dome as selected colonist.]]],
+					title = T(302535920000750--[[Dome Only]]),
+					hint = T(302535920000751--[[Will only apply to colonists in the same dome as selected colonist.]]),
 				},
 				{
-					title = TranslationTable[302535920000752--[[Selected Only]]],
-					hint = TranslationTable[302535920000753--[[Will only apply to selected colonist.]]],
+					title = T(302535920000752--[[Selected Only]]),
+					hint = T(302535920000753--[[Will only apply to selected colonist.]]),
 				},
 			},
 		}
@@ -341,7 +345,7 @@ function ChoGGi.MenuFuncs.LoadingScreenLog_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.LoadingScreenLog),
-		TranslationTable[302535920000049--[[Loading Screen Log]]]
+		T(302535920000049--[[Loading Screen Log]])
 	)
 end
 
@@ -360,26 +364,26 @@ do -- TestLocaleFile
 	local saved_file_path
 
 	function ChoGGi.MenuFuncs.TestLocaleFile()
-		local hint = TranslationTable[302535920001155--[["Enter the path to the CSV file you want to test (defaults to mine as an example).
+		local hint = T(302535920001155--[["Enter the path to the CSV file you want to test (defaults to mine as an example).
 You can edit the CSV then run this again without having to restart the game.
-"]]]
+"]])
 
 		local item_list = {
 			{
-				text = TranslationTable[302535920001137--[[CSV Path]]],
+				text = T(302535920001137--[[CSV Path]]),
 				value = ChoGGi.library_path .. "Locales/English.csv",
 				hint = hint,
 			},
 			{
-				text = TranslationTable[302535920001162--[[Test Columns]]],
+				text = T(302535920001162--[[Test Columns]]),
 				value = "false",
-				hint = TranslationTable[302535920001166--[["Reports any columns above the normal amount (5).
+				hint = T(302535920001166--[["Reports any columns above the normal amount (5).
 Columns are added by commas (, ). Surround the entire string with """" to use them.
 
 Try to increase or decrease the number if not enough or too many errors show up.
 For the value enter either ""true"" (to use 5) or a number.
 
-You need my HelperMod installed to be able to use this."]]],
+You need my HelperMod installed to be able to use this."]]),
 			},
 		}
 		if saved_file_path then
@@ -402,7 +406,7 @@ You need my HelperMod installed to be able to use this."]]],
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = TranslationTable[302535920001125--[[Test Locale File]]],
+			title = T(302535920001125--[[Test Locale File]]),
 			hint = hint,
 			custom_type = 9,
 			skip_sort = true,
@@ -414,16 +418,19 @@ You need my HelperMod installed to be able to use this."]]],
 end -- do
 
 function ChoGGi.MenuFuncs.ExamineObject()
+		print("ExamineObject")
 	-- try to get object in-game first
 	local objs = ChoGGi.ComFuncs.SelObjects()
 	local c = #objs
 	if c > 0 then
+		print("1")
 		-- If it's a single obj then examine that, otherwise the whole list
 		ChoGGi.ComFuncs.OpenInExamineDlg(c == 1 and objs[1] or objs)
 		return
 	end
 
 	if UseGamepadUI() then
+		print("2")
 		return
 	end
 
@@ -433,11 +440,13 @@ function ChoGGi.MenuFuncs.ExamineObject()
 	local target = terminal.desktop:GetMouseTarget(terminal.GetMousePos())
 	-- everywhere is covered in xdialogs so skip them
 	if target and not target:IsKindOf("XDialog") then
+		print("3")
 		return ChoGGi.ComFuncs.OpenInExamineDlg(target)
 	end
 
 	-- If in main menu then open examine and console
 	if not Dialogs.HUD then
+		print("4")
 		local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(terminal.desktop)
 		-- off centre of central monitor
 		local width = (terminal.desktop.measure_width or 1920) - (dlg.dialog_width_scaled + 100)
@@ -459,7 +468,7 @@ function ChoGGi.MenuFuncs.ListVisibleObjects()
 	local visible = MapGet("map", "attached", false, function(obj)
 		return obj:GetFrameMark() - frame > 0
 	end)
-	ChoGGi.ComFuncs.OpenInExamineDlg(visible, nil, TranslationTable[302535920001547--[[Visible Objects]]])
+	ChoGGi.ComFuncs.OpenInExamineDlg(visible, nil, T(302535920001547--[[Visible Objects]]))
 end
 
 do -- BuildingPathMarkers_Toggle
@@ -537,7 +546,7 @@ do -- BuildingPathMarkers_Toggle
 
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(ChoGGi.Temp.BuildingPathMarkers_Toggle),
-			TranslationTable[302535920001527--[[Building Path Markers]]]
+			T(302535920001527--[[Building Path Markers]])
 		)
 	end
 end -- do
@@ -548,7 +557,7 @@ function ChoGGi.MenuFuncs.ExaminePersistErrors_Toggle()
 
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DebugPersistSaves),
-		TranslationTable[302535920001498--[[Examine Persist Errors]]]
+		T(302535920001498--[[Examine Persist Errors]])
 	)
 end
 
@@ -714,9 +723,9 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 	end
 
 	ChoGGi.ComFuncs.QuestionBox(
-		T(6779--[[Warning]]) .. ": " .. TranslationTable[302535920001493--[["This will change to a new map, anything unsaved will be lost!"]]],
+		T(6779--[[Warning]]) .. ": " .. T(302535920001493--[["This will change to a new map, anything unsaved will be lost!"]]),
 		CallBackFunc,
-		TranslationTable[302535920001491--[[View All Entities]]]
+		T(302535920001491--[[View All Entities]])
 	)
 
 end
@@ -726,7 +735,7 @@ function ChoGGi.MenuFuncs.OverrideConditionPrereqs_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.OverrideConditionPrereqs),
-		TranslationTable[302535920000421--[[Override Condition Prereqs]]]
+		T(302535920000421--[[Override Condition Prereqs]])
 	)
 end
 
@@ -735,7 +744,7 @@ function ChoGGi.MenuFuncs.SkipStoryBitsDialogs_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SkipStoryBitsDialogs),
-		TranslationTable[302535920000978--[["Skip Story Bits"]]]
+		T(302535920000978--[["Skip Story Bits"]])
 	)
 end
 
@@ -771,7 +780,7 @@ function ChoGGi.MenuFuncs.TestStoryBits()
 		item_list[c] = {
 			text = title,
 			value = id,
-			hint = TranslationTable[302535920001358--[[Group]]] .. ": "
+			hint = T(302535920001358--[[Group]]) .. ": "
 				.. story_def.group .. "\n\n"
 				.. (story_def.Text and Translate(T{story_def.Text, temp_table}) or "")
 				.. (voiced and "\n\n" .. voiced or "")
@@ -808,34 +817,34 @@ function ChoGGi.MenuFuncs.TestStoryBits()
 		callback = CallBackFunc,
 		items = item_list,
 		title = title,
-		hint = TranslationTable[302535920001359--[[Test activate a story bit.]]],
+		hint = T(302535920001359--[[Test activate a story bit.]]),
 		checkboxes = {
 			{
 				title = Translate(5426--[[Building]]),
-				hint = TranslationTable[302535920001555--[[Choose a random %s to be the context for this storybit.]]]:format(Translate(5426--[[Building]])),
+				hint = Translate(302535920001555--[[Choose a random %s to be the context for this storybit.]]):format(Translate(5426--[[Building]])),
 			},
 			{
 				title = Translate(1234--[[Dome]]),
-				hint = TranslationTable[302535920001555--[[Choose a random %s to be the context for this storybit.]]]:format(Translate(1234--[[Dome]])),
+				hint = Translate(302535920001555--[[snipped]]):format(Translate(1234--[[Dome]])),
 			},
 			{
 				title = Translate(4290--[[Colonist]]),
-				hint = TranslationTable[302535920001555--[[Choose a random %s to be the context for this storybit.]]]:format(Translate(4290--[[Colonist]])),
+				hint = Translate(302535920001555--[[snipped]]):format(Translate(4290--[[Colonist]])),
 			},
 
 			{
 				title = Translate(1681--[[Drone]]),
-				hint = TranslationTable[302535920001555--[[Choose a random %s to be the context for this storybit.]]]:format(Translate(1681--[[Drone]])),
+				hint = Translate(302535920001555--[[snipped]]):format(Translate(1681--[[Drone]])),
 				level = 2,
 			},
 			{
 				title = Translate(10147--[[Rover]]),
-				hint = TranslationTable[302535920001555--[[Choose a random %s to be the context for this storybit.]]]:format(Translate(10147--[[Rover]])),
+				hint = Translate(302535920001555--[[snipped]]):format(Translate(10147--[[Rover]])),
 				level = 2,
 			},
 			{
-				title = TranslationTable[302535920000769--[[Selected]]],
-				hint = TranslationTable[302535920001556--[[Use the selected object.]]],
+				title = T(302535920000769--[[Selected]]),
+				hint = T(302535920001556--[[Use the selected object.]]),
 				level = 2,
 			},
 		},
@@ -906,15 +915,15 @@ function ChoGGi.MenuFuncs.Render_Toggle()
 		end
 
 		MsgPopup(
-			TranslationTable[302535920001316--[[Toggled: %s = %s]]]:format(choice.text, new_value),
-			TranslationTable[302535920001314--[[Toggle Render]]]
+			Translate(302535920001316--[[Toggled: %s = %s]]):format(choice.text, new_value),
+			T(302535920001314--[[Toggle Render]])
 		)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = TranslationTable[302535920001314--[[Toggle Render]]],
+		title = T(302535920001314--[[Toggle Render]]),
 		custom_type = 1,
 	}
 end
@@ -936,7 +945,7 @@ function ChoGGi.MenuFuncs.ParticlesReload()
 	ParticlesReload("", true)
 	MsgPopup(
 		"true",
-		TranslationTable[302535920000495--[[Particles Reload]]]
+		T(302535920000495--[[Particles Reload]])
 	)
 end
 
@@ -950,7 +959,7 @@ function ChoGGi.MenuFuncs.MeasureTool_Toggle()
 	end
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(MeasureTool.enabled),
-		TranslationTable[302535920000451--[[Measure Tool]]]
+		T(302535920000451--[[Measure Tool]])
 	)
 end
 
@@ -973,11 +982,11 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects()
 
 	ChoGGi.ComFuncs.QuestionBox(
 		T(6779--[[Warning]]) .. "!\n"
-			.. TranslationTable[302535920000852--[[This will delete all %s of %s]]]:format(MapCount("map", obj.class), obj.class),
+			.. Translate(302535920000852--[[This will delete all %s of %s]]):format(MapCount("map", obj.class), obj.class),
 		CallBackFunc,
-		T(6779--[[Warning]]) .. ": " .. TranslationTable[302535920000855--[[Last chance before deletion!]]],
-		TranslationTable[302535920000856--[[Yes, I want to delete all: %s]]]:format(obj.class),
-		TranslationTable[302535920000857--[["No, I need to backup my save first (like I should've done before clicking something called ""Delete All"")."]]]
+		T(6779--[[Warning]]) .. ": " .. T(302535920000855--[[Last chance before deletion!]]),
+		Translate(302535920000856--[[Yes, I want to delete all: %s]]):format(obj.class),
+		T(302535920000857--[["No, I need to backup my save first (like I should've done before clicking something called ""Delete All"")."]])
 	)
 end
 
@@ -1002,7 +1011,7 @@ function ChoGGi.MenuFuncs.BuildableHexGridSettings(action)
 	local name
 	if setting == "DebugGridSize" then
 		table.insert(item_list, 1, {text = 1, value = 1})
-		local hint = TranslationTable[302535920000419--[[125 = 47251 hex spots.]]]
+		local hint = T(302535920000419--[[125 = 47251 hex spots.]])
 		local c = #item_list+1
 		item_list[c] = {text = 125, value = 125, hint = hint}
 		c = c + 1
@@ -1013,17 +1022,17 @@ function ChoGGi.MenuFuncs.BuildableHexGridSettings(action)
 --~ 		197377
 		item_list[c] = {text = 256, value = 256, hint = hint}
 
-		name = TranslationTable[302535920001417--[[Follow Mouse Grid Size]]]
+		name = T(302535920001417--[[Follow Mouse Grid Size]])
 	elseif setting == "DebugGridOpacity" then
 		table.insert(item_list, 1, {text = 0, value = 0})
 
-		name = TranslationTable[302535920001419--[[Follow Mouse Grid Translate]]]
+		name = T(302535920001419--[[Follow Mouse Grid Translate]])
 	elseif setting == "DebugGridPosition" then
 		item_list = {
-			{text = TranslationTable[302535920001638--[[Relative]]], value = 0},
-			{text = TranslationTable[302535920001637--[[Absolute]]], value = 1},
+			{text = T(302535920001638--[[Relative]]), value = 0},
+			{text = T(302535920001637--[[Absolute]]), value = 1},
 		}
-		name = TranslationTable[302535920000680--[[Follow Mouse Grid Position]]]
+		name = T(302535920000680--[[Follow Mouse Grid Position]])
 	end
 
 	local function CallBackFunc(choice)
@@ -1068,13 +1077,13 @@ function ChoGGi.MenuFuncs.SetPathMarkers()
 	local colourcount = 0
 
 	local item_list = {
-		{text = TranslationTable[302535920000413--[[Delay]]], value = 0, path_type = "Delay", hint = TranslationTable[302535920000415--[[Delay in ms between updating paths (0 to update every other render).]]]},
+		{text = T(302535920000413--[[Delay]]), value = 0, path_type = "Delay", hint = T(302535920000415--[[Delay in ms between updating paths (0 to update every other render).]])},
 		{text = T(4493--[[All]]), value = "All"},
 
 		{text = T(547--[[Colonists]]), value = "Colonist"},
 		{text = T(517--[[Drones]]), value = "Drone"},
 		{text = T(5438--[[Rovers]]), value = "BaseRover", icon = RCTransport and RCTransport.display_icon or "UI/Icons/Buildings/rover_transport.tga"},
-		{text = T(745--[[Shuttles]]), value = "CargoShuttle", hint = TranslationTable[302535920000873--[[Doesn't work that well.]]]},
+		{text = T(745--[[Shuttles]]), value = "CargoShuttle", hint = T(302535920000873--[[Doesn't work that well.]])},
 	}
 	if rawget(_G, "ChoGGi_Alien") then
 		aliens = true
@@ -1109,8 +1118,8 @@ function ChoGGi.MenuFuncs.SetPathMarkers()
 		-- naughty user
 		elseif value == "Delay" then
 			MsgPopup(
-				TranslationTable[302535920000416--[[Delay isn't a valid class.]]],
-				TranslationTable[302535920000872--[[Pathing]]]
+				T(302535920000416--[[Delay isn't a valid class.]]),
+				T(302535920000872--[[Pathing]])
 			)
 			return
 
@@ -1199,17 +1208,17 @@ function ChoGGi.MenuFuncs.SetPathMarkers()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = TranslationTable[302535920000467--[[Path Markers]]],
+		title = T(302535920000467--[[Path Markers]]),
 		skip_sort = true,
 		custom_type = 4,
 		checkboxes = {
 			{
-				title = TranslationTable[302535920000876--[[Remove Waypoints]]],
-				hint = TranslationTable[302535920000877--[[Remove waypoints from the map and reset colours (select any object type to remove them all).]]],
+				title = T(302535920000876--[[Remove Waypoints]]),
+				hint = T(302535920000877--[[Remove waypoints from the map and reset colours (select any object type to remove them all).]]),
 			},
 			{
-				title = TranslationTable[302535920001382--[[Game time]]],
-				hint = TranslationTable[302535920000462--[[Maps paths in real time]]],
+				title = T(302535920001382--[[Game time]]),
+				hint = T(302535920000462--[[Maps paths in real time]]),
 				checked = true,
 			},
 		},

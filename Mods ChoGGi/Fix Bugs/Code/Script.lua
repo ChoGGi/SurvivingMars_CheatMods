@@ -25,6 +25,7 @@ local mod_UnevenTerrain
 --~ local mod_TurnOffUpgrades
 local mod_SupplyPodSoundEffects
 local mod_MainMenuMusic
+local mod_ColonistsWrongMap
 
 local function UpdateMap(game_map)
 	-- Suspend funcs speed up "doing stuff"
@@ -60,6 +61,7 @@ local function ModOptions(id)
 --~ 	mod_TurnOffUpgrades = CurrentModOptions:GetProperty("TurnOffUpgrades")
 	mod_SupplyPodSoundEffects = CurrentModOptions:GetProperty("SupplyPodSoundEffects")
 	mod_MainMenuMusic = CurrentModOptions:GetProperty("MainMenuMusic")
+	mod_ColonistsWrongMap = CurrentModOptions:GetProperty("ColonistsWrongMap")
 
 
 	-- Update all maps for uneven terrain (if using mod that allows landscaping maps other than surface)
@@ -178,8 +180,9 @@ do -- CityStart/LoadGame
 
 		end
 
+
 		--
-		-- Anything that needs to loops through GameMaps
+		-- Anything that needs to loop through GameMaps
 		local ElectricityGridObject_GameInit = ElectricityGridObject.GameInit
 		for _, map in pairs(GameMaps) do
 
@@ -209,6 +212,7 @@ do -- CityStart/LoadGame
 					return not map.object_hex_grid:GetObject(q, r, "PreciousMetalsExtractor")
 				end
 			end)
+
 			--
 			SuspendPassEdits("ChoGGi.FixBugs.DeleteExtractorSmoke")
 			for i = 1, #objs do
@@ -344,39 +348,7 @@ do -- CityStart/LoadGame
 				end
 			end
 		end
-		--
-		-- Colonists showing up on wrong map in infobar.
-		local function CleanObj(obj, label, map_id, city)
-			if IsValid(obj) then
-				if obj.GetMapID and obj:GetMapID() ~= map_id then
-					city:RemoveFromLabel(label, obj)
-				end
-			else
-				city:RemoveFromLabel(label, obj)
-			end
-		end
-		--
-		local Cities = Cities
-		for i = 1, #Cities do
-			local city = Cities[i]
-			local map_id = city.map_id
-			for label, label_value in pairs(city.labels) do
-				if label ~= "Consts" then
-					local labels = city.labels[label]
-					for j = #labels, 1, -1 do
-						local obj = labels[j]
-						CleanObj(obj, label, map_id, city)
-						if label == "Dome" then
-							for label_d in pairs(label_value.labels or empty_table) do
-								for k = #label_d, 1, -1 do
-									CleanObj(label_d[k], label_d, map_id, city)
-								end
-							end
-						end
-					end
-				end
-			end
-		end
+
 		--
 		-- Fix Defence Towers Not Firing At Rovers (1/2)
 		-- The "or UICity" is if this is called on a save from before B&B
@@ -384,11 +356,13 @@ do -- CityStart/LoadGame
 		if #hostile > 0 then
 			UIColony.mystery.can_shoot_rovers = true
 		end
+
 		--
 		-- Probably from a mod?
 		if type(g_ActiveOnScreenNotifications) ~= "table" then
 			g_ActiveOnScreenNotifications = {}
 		end
+
 		--
 		-- If you removed modded rules from your current save then the Mission Profile dialog will be blank.
 		local rules = g_CurrentMissionParams.idGameRules
@@ -401,6 +375,7 @@ do -- CityStart/LoadGame
 				end
 			end
 		end
+
 		--
 		-- Fix Buildings Broken Down And No Repair
 		local blds = UIColony:GetCityLabels("Building")
@@ -477,6 +452,7 @@ do -- CityStart/LoadGame
 		if bmpo.WindTurbine and TGetID(bmpo.WindTurbine) == 401896326435--[[You can't construct this building at this time]] then
 			bmpo.WindTurbine = nil
 		end
+
 		--
 		-- Removes any meteorites stuck on the map when you load a save.
 		local meteors = main_realm:MapGet("map", "BaseMeteor")
@@ -491,11 +467,13 @@ do -- CityStart/LoadGame
 				DoneObject(obj)
 			end
 		end
+
 		--
 		-- For some reason the devs put it in the Decorations instead of the Outside Decorations category.
 		bt.LampProjector.build_category = "Outside Decorations"
 		bt.LampProjector.group = "Outside Decorations"
 		bt.LampProjector.label1 = ""
+
 		--
 		-- https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-game-freezes-when-deploying-drones-from-rc-commander-after-one-was-destroyed.1168779/
 		local rovers = UIColony:GetCityLabels("RCRoverAndChildren")
@@ -507,6 +485,7 @@ do -- CityStart/LoadGame
 				end
 			end
 		end
+
 		--
 		-- Probably caused by a mod badly adding cargo.
 		for i = #ResupplyItemDefinitions, 1, -1 do
@@ -516,6 +495,7 @@ do -- CityStart/LoadGame
 				table.remove(ResupplyItemDefinitions, i)
 			end
 		end
+
 		--
 		-- Check for transport rovers with negative amounts of resources carried.
 		local trans = UIColony:GetCityLabels("RCTransportAndChildren")
@@ -528,8 +508,50 @@ do -- CityStart/LoadGame
 				end
 			end
 		end
+
 		--
 		if UIColony.underground_map_unlocked then
+
+			--
+			-- Colonists showing up on wrong map in infobar.
+			if mod_ColonistsWrongMap then
+				local function CleanObj(obj, label, map_id, city)
+					if IsValid(obj) then
+						if obj.GetMapID and obj:GetMapID() ~= map_id then
+							city:RemoveFromLabel(label, obj)
+						end
+					else
+						city:RemoveFromLabel(label, obj)
+					end
+				end
+				--
+				local Cities = Cities
+				for i = 1, #Cities do
+					local city = Cities[i]
+					local map_id = city.map_id
+					for label, label_value in pairs(city.labels) do
+						if label ~= "Consts" then
+							local labels = city.labels[label]
+							--
+							for j = #labels, 1, -1 do
+								local obj = labels[j]
+								CleanObj(obj, label, map_id, city)
+								if label == "Dome" then
+									--
+									for label_d in pairs(label_value.labels or empty_table) do
+										for k = #label_d, 1, -1 do
+											CleanObj(label_d[k], label_d, map_id, city)
+										end
+									end
+									--
+								end
+							end
+							--
+						end
+					end
+				end
+			end
+
 			--
 			--	Move any floating underground rubble to within reach of drones (might have to "push" drones to make them go for it).
 			local map = GameMaps[UIColony.underground_map_id]

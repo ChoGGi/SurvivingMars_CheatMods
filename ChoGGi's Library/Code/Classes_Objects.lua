@@ -3,11 +3,13 @@
 -- Entity Size button shows gamepad/mouse clicks
 
 local testing = ChoGGi.testing
+local what_game = ChoGGi.what_game
 
-local TranslationTable = TranslationTable
+local T = T
 local AveragePoint2D = AveragePoint2D
 local RetName = ChoGGi.ComFuncs.RetName
 local PolylineSetParabola = ChoGGi.ComFuncs.PolylineSetParabola
+local Translate = ChoGGi.ComFuncs.Translate
 
 -- blank CObject (could use Object, but has more parents) class we add to all the objects below for easier deleting
 DefineClass.ChoGGi_ODeleteObjs = {
@@ -70,10 +72,12 @@ DefineClass.ChoGGi_OBuildingEntityClass_Generic = {
 -- add some info/functionality to spawned entity objects
 ChoGGi_OBuildingEntityClass_Generic.GetDisplayName = CObject.GetEntity
 function ChoGGi_OBuildingEntityClass_Generic.GetIPDescription()
-	return TranslationTable[302535920001110--[[Spawned entity object]]]
+	return T(302535920001110--[[Spawned entity object]])
 end
--- circle or hex thingy?
-ChoGGi_OBuildingEntityClass_Generic.OnSelected = AddSelectionParticlesToObj
+if what_game == "Mars" then
+	-- circle or hex thingy?
+	ChoGGi_OBuildingEntityClass_Generic.OnSelected = AddSelectionParticlesToObj
+end
 -- prevent an error msg in log
 ChoGGi_OBuildingEntityClass_Generic.BuildWaypointChains = empty_func
 -- round and round she goes, and where she stops BOB knows
@@ -127,11 +131,13 @@ function OnMsg.ClassesPostprocess()
 
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
-				"RolloverTitle", TranslationTable[302535920000682--[[Change Entity]]],
+				"RolloverTitle", T(302535920000682--[[Change Entity]]),
 				"RolloverHint", T(608042494285--[[<left_click> Activate]]),
 				"ContextUpdateOnOpen", true,
 				"OnContextUpdate", function(self)
-					self:SetRolloverText(TranslationTable[302535920001151--[[Set Entity For %s]]]:format(RetName(self.context)))
+					self:SetRolloverText(T{302535920001151--[[Set Entity For <entity>]],
+						entity = RetName(self.context),
+					})
 				end,
 				"OnPress", function(self)
 					ChoGGi.ComFuncs.EntitySpawner(self.context, {
@@ -147,15 +153,15 @@ function OnMsg.ClassesPostprocess()
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
 				"Icon", "UI/Icons/IPButtons/automated_mode_on.tga",
-				"RolloverTitle", TranslationTable[1000077--[[Rotate]]],
+				"RolloverTitle", T(1000077--[[Rotate]]),
 				"RolloverText", T("<left_click>") .. " "
-					.. TranslationTable[312752058553--[[Rotate Building Left]]].. "\n"
+					.. T(312752058553--[[Rotate Building Left]]).. "\n"
 					.. T("<right_click>") .. " "
-					.. TranslationTable[694856081085--[[Rotate Building Right]]],
+					.. T(694856081085--[[Rotate Building Right]]),
 				"RolloverHint", "",
-				"RolloverHintGamepad", TranslationTable[7518--[[ButtonA]]] .. " "
-					.. TranslationTable[312752058553--[[Rotate Building Left]]] .. " "
-					.. TranslationTable[7618--[[ButtonX]]] .. " " .. TranslationTable[694856081085--[[Rotate Building Right]]],
+				"RolloverHintGamepad", T(7518--[[ButtonA]]) .. " "
+					.. T(312752058553--[[Rotate Building Left]]) .. " "
+					.. T(7618--[[ButtonX]]) .. " " .. T(694856081085--[[Rotate Building Right]]),
 				"OnPress", function (self, gamepad)
 					self.context:Rotate(not gamepad and IsMassUIModifierPressed())
 					ObjModified(self.context)
@@ -212,9 +218,9 @@ Starts at 100% and goes up by 5 (max is 2047), <right_click> to reset to 5% (hol
 
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
-				"RolloverTitle", TranslationTable[302535920000457--[[Anim State Set]]],
+				"RolloverTitle", T(302535920000457--[[Anim State Set]]),
 				"RolloverHint", T(608042494285--[[<left_click> Activate]]),
-				"RolloverText", TranslationTable[302535920000458--[[Make object dance on command.]]],
+				"RolloverText", T(302535920000458--[[Make object dance on command.]]),
 				"OnPress", function(self)
 					ChoGGi.ComFuncs.SetAnimState(self.context)
 				end,
@@ -223,9 +229,9 @@ Starts at 100% and goes up by 5 (max is 2047), <right_click> to reset to 5% (hol
 
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
-				"RolloverTitle", TranslationTable[302535920000129--[[Set]]] .. " " .. TranslationTable[302535920001184--[[Particles]]],
+				"RolloverTitle", T(302535920000129--[[Set]]) .. " " .. T(302535920001184--[[Particles]]),
 				"RolloverHint", T(608042494285--[[<left_click> Activate]]),
-				"RolloverText", TranslationTable[302535920001421--[[Shows a list of particles you can use on the selected obj.]]],
+				"RolloverText", T(302535920001421--[[Shows a list of particles you can use on the selected obj.]]),
 				"OnPress", function(self)
 					ChoGGi.ComFuncs.SetParticles(self.context)
 				end,
@@ -239,14 +245,14 @@ Starts at 100% and goes up by 5 (max is 2047), <right_click> to reset to 5% (hol
 			'__context_of_kind', "Demolishable",
 			'__condition', function (_, context) return context:ShouldShowDemolishButton() end,
 			'__template', "InfopanelButton",
-			'RolloverTitle', TranslationTable[3973--[[Salvage]]],
+			'RolloverTitle', T(3973--[[Salvage]]),
 			'RolloverHintGamepad', T(7657--[[<ButtonY> Activate]]),
 			'OnContextUpdate', function (self, context, ...)
 				local refund = context:GetRefundResources() or empty_table
-				local rollover = TranslationTable[7822--[[Destroy this building.]]]
+				local rollover = T(7822--[[Destroy this building.]])
 				if IsKindOf(context, "LandscapeConstructionSiteBase") then
-					self:SetRolloverTitle(TranslationTable[12171--[[Cancel Landscaping]]])
-					rollover = TranslationTable[12172--[[Cancel this landscaping project. The terrain will remain in its current state]]]
+					self:SetRolloverTitle(T(12171--[[Cancel Landscaping]]))
+					rollover = T(12172--[[Cancel this landscaping project. The terrain will remain in its current state]])
 				end
 				if refund[1] then
 					rollover = rollover .. "<newline><newline>" .. T(7823--[[<UIRefundRes> will be refunded upon salvage."]])

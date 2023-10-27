@@ -1,5 +1,9 @@
 -- See LICENSE for terms
 
+if ChoGGi.what_game ~= "Mars" then
+	return
+end
+
 --~ HexPainter()
 --~ HexPainter(GetEntityHexShapes(s:GetEntity()))
 --~ HexPainter(GetEntityBuildShape(s:GetEntity()))

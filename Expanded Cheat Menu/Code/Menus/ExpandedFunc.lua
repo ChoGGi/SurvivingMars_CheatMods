@@ -1,17 +1,21 @@
 -- See LICENSE for terms
 
+if ChoGGi.what_game ~= "Mars" then
+	return
+end
+
 local type, tostring = type, tostring
 local table = table
-local TranslationTable = TranslationTable
+local T = T
+local Translate = ChoGGi.ComFuncs.Translate
 
 local RetName = ChoGGi.ComFuncs.RetName
-local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
 do -- BuildGridList
 	local IsValid = IsValid
 	local function BuildGrid(grid, list)
-		local g_str = TranslationTable[11629--[[GRID <i>]]]
+		local g_str = T(11629--[[GRID <i>]])
 		for i = 1, #grid do
 			for j = 1, #grid[i].elements do
 				local bld = grid[i].elements[j].building
@@ -49,7 +53,7 @@ do -- BuildGridList
 		grid_list.electricity.name = Translate(79--[[Power]])
 		grid_list.electricity.__HideCables = {
 			ChoGGi_AddHyperLink = true,
-			name = TranslationTable[302535920000142--[[Hide]]] .. " " .. Translate(881--[[Power Cables]]),
+			name = T(302535920000142--[[Hide]]) .. " " .. Translate(881--[[Power Cables]]),
 			func = function(ex_dlg)
 				FilterExamineList(ex_dlg, "ElectricityGridElement")
 			end,
@@ -57,7 +61,7 @@ do -- BuildGridList
 		grid_list.water.name = Translate(681--[[Water]])
 		grid_list.water.__HidePipes = {
 			ChoGGi_AddHyperLink = true,
-			name = TranslationTable[302535920000142--[[Hide]]] .. " " .. Translate(882--[[Pipes]]),
+			name = T(302535920000142--[[Hide]]) .. " " .. Translate(882--[[Pipes]]),
 			func = function(ex_dlg)
 				FilterExamineList(ex_dlg, "LifeSupportGridElement")
 			end,
@@ -66,7 +70,7 @@ do -- BuildGridList
 		BuildGrid(UICity.air, grid_list.air)
 		BuildGrid(UICity.electricity, grid_list.electricity)
 		BuildGrid(UICity.water, grid_list.water)
-		ChoGGi.ComFuncs.OpenInExamineDlg(grid_list, nil, TranslationTable[302535920001307--[[Grid Info]]])
+		ChoGGi.ComFuncs.OpenInExamineDlg(grid_list, nil, T(302535920001307--[[Grid Info]]))
 	end
 end -- do
 
@@ -112,7 +116,7 @@ do -- ViewObjInfo_Toggle
 --~ 		end,
 --~ 			OutsideBuildings = function(obj)
 --~ 				print("OutsideBuildings")
---~ 				return "- " .. RetName(obj) .. " -\n" .. TranslationTable[302535920000035--[[Grids]]]
+--~ 				return "- " .. RetName(obj) .. " -\n" .. T(302535920000035--[[Grids]])
 --~ 					.. ": " .. Translate(682--[[Oxygen]])
 --~ 					.. "(" .. (table.find(UICity.air, obj.air.grid) or Translate(6774--[[Error]])) .. ") "
 --~ 					.. Translate(681--[[Water]]) .. "("
@@ -135,7 +139,7 @@ do -- ViewObjInfo_Toggle
 				.. ": " .. #(obj.drones or "") .. "/" .. obj:GetMaxDronesCount()
 				.. "\n"
 				.. Translate(295--[[Idle <right>]]):gsub("<right>", ": " .. obj:GetIdleDronesCount())
-				.. ", " .. TranslationTable[302535920000081--[[Workers]]] .. ": " .. obj:GetMiningDronesCount()
+				.. ", " .. T(302535920000081--[[Workers]]) .. ": " .. obj:GetMiningDronesCount()
 				.. ", " .. Translate(293--[[Broken <right>]]):gsub("<right>", ": " .. obj:GetBrokenDronesCount())
 				.. ", " .. Translate(294--[[Discharged <right>]]):gsub("<right>", ": " .. obj:GetDischargedDronesCount())
 		end,
@@ -146,7 +150,7 @@ do -- ViewObjInfo_Toggle
 				.. Translate(584248706535--[[Carrying<right><ResourceAmount>]]):gsub("<right><ResourceAmount>", ": " .. amount) .. (res and " (" .. res .. "), " or ", ")
 				.. Translate(3722--[[State]]) .. ": " .. GetStateName(obj:GetState()) .. ", "
 				.. "\n" .. Translate(4448--[[Dust]]) .. ": " .. (obj.dust / r) .. "/" .. (obj.dust_max / r)
-				.. ", " .. TranslationTable[302535920001532--[[Battery]]] .. ": " .. (obj.battery / r) .. "/" .. (obj.battery_max / r)
+				.. ", " .. T(302535920001532--[[Battery]]) .. ": " .. (obj.battery / r) .. "/" .. (obj.battery_max / r)
 		end,
 		Production = function(obj)
 			local prod = type(obj.GetProducerObj) == "function" and obj:GetProducerObj()
@@ -239,7 +243,7 @@ do -- ViewObjInfo_Toggle
 				.. "\n" .. Translate(3862--[[Medic]]) .. " (" .. #(l.needMedical or "") .. "): "
 				.. go_to:format(": " .. medic_need)
 				.. ", " .. Translate(526--[[Visitors]]) .. ": " .. medic_use .. "/" .. medic_max
-				.. "\n\n" .. TranslationTable[302535920000035--[[Grids]]] .. ": "
+				.. "\n\n" .. T(302535920000035--[[Grids]]) .. ": "
 				.. a .. "(" .. ga_id .. ") "
 				.. w .. "(" .. gw_id .. ") "
 				.. e .. "(" .. ge_id .. ")"
@@ -363,8 +367,8 @@ do -- ViewObjInfo_Toggle
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = TranslationTable[302535920000333--[[Building Info]]],
-			hint = TranslationTable[302535920001280--[[Double-click to toggle text (updates every second).]]],
+			title = T(302535920000333--[[Building Info]]),
+			hint = T(302535920001280--[[Double-click to toggle text (updates every second).]]),
 			custom_type = 7,
 		}
 	end
@@ -373,14 +377,14 @@ end -- do
 
 function ChoGGi.MenuFuncs.MonitorInfo()
 	local item_list = {
-		{text = TranslationTable[302535920000936--[[Something you'd like to see added?]]], value = "New"},
+		{text = T(302535920000936--[[Something you'd like to see added?]]), value = "New"},
 		{text = "", value = "New"},
-		{text = TranslationTable[302535920000035--[[Grids]]] .. ": " .. Translate(891--[[Air]]), value = "Air"},
-		{text = TranslationTable[302535920000035--[[Grids]]] .. ": " .. Translate(79--[[Power]]), value = "Power"},
-		{text = TranslationTable[302535920000035--[[Grids]]] .. ": " .. Translate(681--[[Water]]), value = "Water"},
-		{text = TranslationTable[302535920000035--[[Grids]]] .. ": " .. Translate(891--[[Air]]) .. "/" .. Translate(79--[[Power]]) .. "/" .. Translate(681--[[Water]]), value = "Grids"},
-		{text = TranslationTable[302535920000042--[[City]]], value = "City"},
-		{text = Translate(547--[[Colonists]]), value = "Colonists", hint = TranslationTable[302535920000937--[[Laggy with lots of colonists.]]]},
+		{text = T(302535920000035--[[Grids]]) .. ": " .. Translate(891--[[Air]]), value = "Air"},
+		{text = T(302535920000035--[[Grids]]) .. ": " .. Translate(79--[[Power]]), value = "Power"},
+		{text = T(302535920000035--[[Grids]]) .. ": " .. Translate(681--[[Water]]), value = "Water"},
+		{text = T(302535920000035--[[Grids]]) .. ": " .. Translate(891--[[Air]]) .. "/" .. Translate(79--[[Power]]) .. "/" .. Translate(681--[[Water]]), value = "Grids"},
+		{text = T(302535920000042--[[City]]), value = "City"},
+		{text = Translate(547--[[Colonists]]), value = "Colonists", hint = T(302535920000937--[[Laggy with lots of colonists.]])},
 		{text = Translate(5238--[[Rockets]]), value = "Rockets"},
 	}
 	if ChoGGi.testing then
@@ -394,8 +398,8 @@ function ChoGGi.MenuFuncs.MonitorInfo()
 		local value = choice[1].value
 		if value == "New" then
 			ChoGGi.ComFuncs.MsgWait(
-				TranslationTable[302535920000033--[[Post a request on Nexus or Github or send an email to: %s]]]:format(ChoGGi.email),
-				TranslationTable[302535920000034--[[Request]]]
+				Translate(302535920000033--[[Post a request on Nexus or Github or send an email to: %s]]):format(ChoGGi.email),
+				T(302535920000034--[[Request]])
 			)
 		else
 			ChoGGi.ComFuncs.DisplayMonitorList(value)
@@ -405,8 +409,8 @@ function ChoGGi.MenuFuncs.MonitorInfo()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = TranslationTable[302535920000555--[[Monitor Info]]],
-		hint = TranslationTable[302535920000940--[[Select something to monitor.]]],
+		title = T(302535920000555--[[Monitor Info]]),
+		hint = T(302535920000940--[[Select something to monitor.]]),
 		custom_type = 7,
 		custom_func = function(sel)
 			ChoGGi.ComFuncs.DisplayMonitorList(sel[1].value, sel[1].parentobj)
@@ -424,7 +428,7 @@ function ChoGGi.MenuFuncs.CleanAllObjects()
 	end)
 	MsgPopup(
 		"true",
-		TranslationTable[302535920000688--[[Clean All Objects]]]
+		T(302535920000688--[[Clean All Objects]])
 	)
 end
 
@@ -443,7 +447,7 @@ function ChoGGi.MenuFuncs.FixAllObjects()
 
 	MsgPopup(
 		"true",
-		TranslationTable[302535920000690--[[Fix All Objects]]]
+		T(302535920000690--[[Fix All Objects]])
 	)
 end
 
@@ -454,6 +458,6 @@ function ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ExplorationQueueMaxSize),
-		TranslationTable[302535920000700--[[Scanner Queue Larger]]]
+		T(302535920000700--[[Scanner Queue Larger]])
 	)
 end

@@ -1,9 +1,12 @@
 -- See LICENSE for terms
 
+local what_game = ChoGGi.what_game
+
 local table = table
 local type = type
 local HasModsWithOptions = HasModsWithOptions
-local TranslationTable = TranslationTable
+local T = T
+local Translate = ChoGGi.ComFuncs.Translate
 
 local mod_DisableDialogEscape
 
@@ -119,11 +122,23 @@ function OnMsg.ClassesPostprocess()
 			return ChoOrig_new(self, params, ...)
 		end
 	end
-	-- Main class
-	AdjustEsc(nil, XMarsMessageBox)
-	-- PopupNotification (and anything else that comes along)
-	ClassDescendants("XMarsMessageBox", AdjustEsc)
-	--
+
+	local object, cls_name
+	if what_game == "Mars" then
+		object = XMarsMessageBox
+		cls_name = "XMarsMessageBox"
+	elseif what_game == "JA3" then
+		object = ZuluMessageDialog
+		cls_name = "ZuluMessageDialog"
+	end -- what_game
+	if object then
+		-- Main class
+		AdjustEsc(nil, object)
+		-- PopupNotification (and anything else that comes along)
+		ClassDescendants(cls_name, AdjustEsc)
+		--
+	end
+
 
 	-- Single click to change toggle options
 	local template = XTemplates.PropBool[1]
@@ -178,7 +193,13 @@ function OnMsg.ClassesPostprocess()
 		ChangeBoolColour(xtemplate, "idOff", "red")
 
 		UpdateProp(xtemplate)
-		UpdateProp(XTemplates.PropChoiceOptions[1])
+
+
+		if what_game == "Mars" then
+			UpdateProp(XTemplates.PropChoiceOptions[1])
+		elseif what_game == "JA3" then
+			UpdateProp(XTemplates.PropChoice[1])
+		end -- what_game
 
 		xtemplate = XTemplates.PropNumber[1]
 		UpdateProp(xtemplate)
@@ -186,56 +207,58 @@ function OnMsg.ClassesPostprocess()
 		AddSliderButtons(xtemplate)
 	end
 
-	-- Mod Options Button in Main menu instead of Options menu
-	xtemplate = XTemplates.XIGMenu[1]
-	if not xtemplate.ChoGGi_ModOptionsButton then
-		xtemplate.ChoGGi_ModOptionsButton = true
+	if what_game == "Mars" then
+		-- Mod Options Button in Main menu instead of Options menu
+		xtemplate = XTemplates.XIGMenu[1]
+		if not xtemplate.ChoGGi_ModOptionsButton then
+			xtemplate.ChoGGi_ModOptionsButton = true
 
-		-- XTemplateWindow[3] ("Margins" = (60, 40)-(0, 0) *(HGE.Box)) >
-		xtemplate = xtemplate[3]
-		for i = 1, #xtemplate do
-			if xtemplate[i].Id == "idList" then
-				xtemplate = xtemplate[i]
-				break
+			-- XTemplateWindow[3] ("Margins" = (60, 40)-(0, 0) *(HGE.Box)) >
+			xtemplate = xtemplate[3]
+			for i = 1, #xtemplate do
+				if xtemplate[i].Id == "idList" then
+					xtemplate = xtemplate[i]
+					break
+				end
 			end
-		end
 
-		if xtemplate.Id == "idList" then
-			table.insert(xtemplate, 5, PlaceObj("XTemplateAction", {
-				"ActionId", "idModOptions",
-				"ActionName", TranslationTable[1000867--[[Mod Options]]],
-				"ActionToolbar", "mainmenu",
-				"__condition", function()
-					if CurrentModOptions.GetProperty then
-						return CurrentModOptions:GetProperty("ModOptionsButton") and HasModsWithOptions()
-					end
-					return HasModsWithOptions()
-				end,
-				"OnAction", function(_, host)
-					-- change to options dialog
-					host:SetMode("Options")
-
-					-- then change to mod options
-					-- [2]XContentTemplate.idOverlayDlg.idList
-					local list = host[2].idOverlayDlg.idList
-					for i = 1, #list do
-						local context = list[i].context
-						if type(context) == "table" and context.id == "ModOptions" then
-							SetDialogMode(list[i], "mod_choice", context)
-							break
+			if xtemplate.Id == "idList" then
+				table.insert(xtemplate, 5, PlaceObj("XTemplateAction", {
+					"ActionId", "idModOptions",
+					"ActionName", T(1000867--[[Mod Options]]),
+					"ActionToolbar", "mainmenu",
+					"__condition", function()
+						if CurrentModOptions.GetProperty then
+							return CurrentModOptions:GetProperty("ModOptionsButton") and HasModsWithOptions()
 						end
-					end
-				end,
-			}))
+						return HasModsWithOptions()
+					end,
+					"OnAction", function(_, host)
+						-- change to options dialog
+						host:SetMode("Options")
 
-			local template = xtemplate[5]
-			template:SetRolloverTemplate("Rollover")
-			template:SetRolloverTitle(T(126095410863, "Info"))
-			template:SetRolloverText(T(302535920001673, "Shortcut to Options>Mod Options"))
+						-- then change to mod options
+						-- [2]XContentTemplate.idOverlayDlg.idList
+						local list = host[2].idOverlayDlg.idList
+						for i = 1, #list do
+							local context = list[i].context
+							if type(context) == "table" and context.id == "ModOptions" then
+								SetDialogMode(list[i], "mod_choice", context)
+								break
+							end
+						end
+					end,
+				}))
+
+				local template = xtemplate[5]
+				template:SetRolloverTemplate("Rollover")
+				template:SetRolloverTitle(T(126095410863, "Info"))
+				template:SetRolloverText(T(302535920001673, "Shortcut to Options>Mod Options"))
+
+			end
 
 		end
-
-	end
+	end -- what_game
 
 	-- Add check for mod options with: "Header", true, and remove On/Off text from it
 	-- or add a "header" prop / make use of existing

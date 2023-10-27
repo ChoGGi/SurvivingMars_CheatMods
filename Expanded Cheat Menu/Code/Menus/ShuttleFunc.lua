@@ -1,15 +1,20 @@
 -- See LICENSE for terms
 
+if ChoGGi.what_game ~= "Mars" then
+	return
+end
+
 local tostring, type = tostring, type
 
-local TranslationTable = TranslationTable
+local T = T
+local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 
 function ChoGGi.MenuFuncs.SetShuttleCapacity()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.StorageShuttle / r
 	local item_list = {
-		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
+		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 5, value = 5},
 		{text = 10, value = 10},
 		{text = 25, value = 25},
@@ -18,7 +23,7 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 		{text = 100, value = 100},
 		{text = 250, value = 250},
 		{text = 500, value = 500},
-		{text = 1000, value = 1000, hint = TranslationTable[302535920000928--[[somewhere above 1000 may delete the save (when it's full)]]]},
+		{text = 1000, value = 1000, hint = T(302535920000928--[[somewhere above 1000 may delete the save (when it's full)]])},
 	}
 
 	local hint = default_setting
@@ -50,7 +55,7 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 			end
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.text),
-				TranslationTable[302535920000930--[[Set Cargo Shuttle Capacity]]]
+				T(302535920000930--[[Set Cargo Shuttle Capacity]])
 			)
 		end
 	end
@@ -58,8 +63,8 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = TranslationTable[302535920000930--[[Set Cargo Shuttle Capacity]]],
-		hint = TranslationTable[302535920000914--[[Current capacity]]] .. ": " .. hint,
+		title = T(302535920000930--[[Set Cargo Shuttle Capacity]]),
+		hint = T(302535920000914--[[Current capacity]]) .. ": " .. hint,
 		skip_sort = true,
 	}
 end
@@ -68,7 +73,7 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.SpeedShuttle / r
 	local item_list = {
-		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
+		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 50, value = 50},
 		{text = 75, value = 75},
 		{text = 100, value = 100},
@@ -82,9 +87,9 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
 		{text = 100000, value = 100000},
 	}
 
-	local hint = default_setting
+	local hint_str = default_setting
 	if ChoGGi.UserSettings.SpeedShuttle then
-		hint = ChoGGi.UserSettings.SpeedShuttle / r
+		hint_str = ChoGGi.UserSettings.SpeedShuttle / r
 	end
 
 	local function CallBackFunc(choice)
@@ -106,7 +111,7 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				ChoGGi.ComFuncs.SettingState(choice.text),
-				TranslationTable[302535920000932--[[Set Cargo Shuttle Speed]]]
+				T(302535920000932--[[Set Cargo Shuttle Speed]])
 			)
 		end
 	end
@@ -114,8 +119,10 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = TranslationTable[302535920000932--[[Set Cargo Shuttle Speed]]],
-		hint = TranslationTable[302535920000933--[[Current speed: %s]]]:format(hint),
+		title = T(302535920000932--[[Set Cargo Shuttle Speed]]),
+		hint = T{302535920000933--[["Current speed: <color ChoGGi_green><str></color>"]],
+			str = hint_str,
+		},
 		skip_sort = true,
 	}
 end
@@ -123,7 +130,7 @@ end
 function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
 	local default_setting = ChoGGi.Consts.ShuttleHubShuttleCapacity
 	local item_list = {
-		{text = TranslationTable[1000121--[[Default]]] .. ": " .. default_setting, value = default_setting},
+		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
 		{text = 75, value = 75},
@@ -138,10 +145,10 @@ function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
 		ChoGGi.UserSettings.BuildingSettings.ShuttleHub = {}
 	end
 
-	local hint = default_setting
+	local hint_str = default_setting
 	local setting = ChoGGi.UserSettings.BuildingSettings.ShuttleHub
 	if setting and setting.shuttles then
-		hint = tostring(setting.shuttles)
+		hint_str = tostring(setting.shuttles)
 	end
 
 	local function CallBackFunc(choice)
@@ -167,15 +174,15 @@ function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
 		ChoGGi.SettingFuncs.WriteSettings()
 		MsgPopup(
 			ChoGGi.ComFuncs.SettingState(choice.text),
-			TranslationTable[302535920000535--[[Set ShuttleHub Shuttle Capacity]]]
+			T(302535920000535--[[Set ShuttleHub Shuttle Capacity]])
 		)
 	end
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
-		title = TranslationTable[302535920000535--[[Set ShuttleHub Shuttle Capacity]]],
-		hint = TranslationTable[302535920000914--[[Current capacity]]] .. ": " .. hint,
+		title = T(302535920000535--[[Set ShuttleHub Shuttle Capacity]]),
+		hint = T(302535920000914--[[Current capacity]]) .. ": " .. hint_str,
 		skip_sort = true,
 	}
 end

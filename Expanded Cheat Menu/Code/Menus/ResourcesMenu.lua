@@ -1,6 +1,10 @@
 -- See LICENSE for terms
 
-local TranslationTable = TranslationTable
+if ChoGGi.what_game ~= "Mars" then
+	return
+end
+
+local T = T
 local Translate = ChoGGi.ComFuncs.Translate
 local SettingState = ChoGGi.ComFuncs.SettingState
 local Actions = ChoGGi.Temp.Actions
@@ -9,7 +13,7 @@ local LocaleInt = LocaleInt
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = TranslationTable[692--[[Resources]]],
+Actions[c] = {ActionName = T(692--[[Resources]]),
 	ActionMenubar = "ECM.ECM",
 	ActionId = ".Resources",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -17,7 +21,7 @@ Actions[c] = {ActionName = TranslationTable[692--[[Resources]]],
 }
 
 c = c + 1
-Actions[c] = {ActionName = TranslationTable[4604--[[Rare Metals Price (M)]]],
+Actions[c] = {ActionName = T(4604--[[Rare Metals Price (M)]]),
 	ActionMenubar = "ECM.ECM.Resources",
 	ActionId = ".Rare Metals Price (M)",
 	ActionIcon = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
@@ -25,16 +29,16 @@ Actions[c] = {ActionName = TranslationTable[4604--[[Rare Metals Price (M)]]],
 		if MainCity then
 			return SettingState(
 				ChoGGi.UserSettings.ExportPricePreciousMetals,
-				TranslationTable[4603--[[Amount of Funding (in millions) received by exporting one unit of Rare Metals]]]
+				T(4603--[[Amount of Funding (in millions) received by exporting one unit of Rare Metals]])
 			)
 		end
-		return TranslationTable[4603--[[Amount of Funding (in millions) received by exporting one unit of Rare Metals]]]
+		return T(4603--[[Amount of Funding (in millions) received by exporting one unit of Rare Metals]])
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetFundingPerRareMetalExport,
 }
 
 c = c + 1
-Actions[c] = {ActionName = TranslationTable[302535920000719--[[Add Orbital Probes]]],
+Actions[c] = {ActionName = T(302535920000719--[[Add Orbital Probes]]),
 	ActionMenubar = "ECM.ECM.Resources",
 	ActionId = ".Add Orbital Probes",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleTerrainHeight.tga",
@@ -42,40 +46,40 @@ Actions[c] = {ActionName = TranslationTable[302535920000719--[[Add Orbital Probe
 		if MainCity then
 			return SettingState(
 				#(MainCity.labels.OrbitalProbe or "") + #(MainCity.labels.AdvancedOrbitalProbe or ""),
-				TranslationTable[302535920000720--[[Add more probes.]]]
+				T(302535920000720--[[Add more probes.]])
 			)
 		end
-		return TranslationTable[302535920000720--[[Add more probes.]]]
+		return T(302535920000720--[[Add more probes.]])
 	end,
 	OnAction = ChoGGi.MenuFuncs.AddOrbitalProbes,
 }
 
 c = c + 1
-Actions[c] = {ActionName = TranslationTable[4616--[[Food Per Rocket Passenger]]],
+Actions[c] = {ActionName = T(4616--[[Food Per Rocket Passenger]]),
 	ActionMenubar = "ECM.ECM.Resources",
 	ActionId = ".Food Per Rocket Passenger",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleTerrainHeight.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.FoodPerRocketPassenger,
-			TranslationTable[4615--[[The amount of Food (unscaled) supplied with each Colonist arrival]]]
+			T(4615--[[The amount of Food (unscaled) supplied with each Colonist arrival]])
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetFoodPerRocketPassenger,
 }
 
 c = c + 1
-Actions[c] = {ActionName = TranslationTable[1110--[[Prefab Buildings]]],
+Actions[c] = {ActionName = T(1110--[[Prefab Buildings]]),
 	ActionMenubar = "ECM.ECM.Resources",
 	ActionId = ".Prefab Buildings",
 	ActionIcon = "CommonAssets/UI/Menu/gear.tga",
-	RolloverText = TranslationTable[1111--[[Prefabricated parts needed for the construction of certain buildings on Mars.]]]
-		.. "\n\n" .. TranslationTable[302535920000897--[[Drone prefabs]]],
+	RolloverText = T(1111--[[Prefabricated parts needed for the construction of certain buildings on Mars.]])
+		.. "\n\n" .. T(302535920000897--[[Drone prefabs]]),
 	OnAction = ChoGGi.MenuFuncs.AddPrefabBuildings,
 }
 
 c = c + 1
-Actions[c] = {ActionName = TranslationTable[3613--[[Funding]]],
+Actions[c] = {ActionName = T(3613--[[Funding]]),
 	ActionMenubar = "ECM.ECM.Resources",
 	ActionId = ".Funding",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
@@ -83,20 +87,20 @@ Actions[c] = {ActionName = TranslationTable[3613--[[Funding]]],
 		if MainCity then
 			return SettingState(
 				LocaleInt(UIColony.funds.funding),
-				TranslationTable[302535920000726--[[Add more funding (or reset back to 500 M).]]]
+				T(302535920000726--[[Add more funding (or reset back to 500 M).]])
 			)
 		end
-		return TranslationTable[302535920000726]
+		return T(302535920000726)
 	end,
 	OnAction = ChoGGi.MenuFuncs.SetFunding,
 }
 
 c = c + 1
-Actions[c] = {ActionName = TranslationTable[302535920000727--[[Fill Selected Resource]]],
+Actions[c] = {ActionName = T(302535920000727--[[Fill Selected Resource]]),
 	ActionMenubar = "ECM.ECM.Resources",
 	ActionId = ".Fill Selected Resource",
 	ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
-	RolloverText = TranslationTable[302535920000728--[[Fill the selected/moused over object's resource(s)]]],
+	RolloverText = T(302535920000728--[[Fill the selected/moused over object's resource(s)]]),
 	OnAction = ChoGGi.MenuFuncs.FillResource,
 	ActionShortcut = "Ctrl-F",
 	ActionBindable = true,

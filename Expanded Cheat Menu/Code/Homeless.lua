@@ -2,8 +2,9 @@
 
 -- Not sure where to put this stuff
 
-local TranslationTable = TranslationTable
+local what_game = ChoGGi.what_game
 local T = T
+local Translate = ChoGGi.ComFuncs.Translate
 
 -- Defaults to 20 items
 const.nConsoleHistoryMaxSize = 100
@@ -32,8 +33,6 @@ XRolloverWindow.ZOrder = max_int
 -- Changed from 2000000
 ConsoleLog.ZOrder = 2
 Console.ZOrder = 3
--- Changed from 10000000
-XShortcutsHost.ZOrder = 4
 -- Make cheats menu look like older one (more gray, less white)
 local dark_gray = -9868951
 XMenuBar.Background = dark_gray
@@ -46,6 +45,11 @@ XPopupMenu.DisabledBackground = dark_gray
 XPopupMenu.FocusedBackground = -11711669
 
 TextStyles.DevMenuBar.TextColor = white
+
+if what_game == "Mars" then
+	-- Changed from 10000000
+	XShortcutsHost.ZOrder = 4
+end
 
 -- Cheat menu names
 local Actions = ChoGGi.Temp.Actions
@@ -61,11 +65,11 @@ local function AddMenuitem(id, name, sort)
 		ChoGGi_ECM = true,
 	}
 end
-AddMenuitem("ECM.Cheats", TranslationTable[27--[[Cheats]]], "1")
-AddMenuitem("ECM.ECM", TranslationTable[302535920000002--[[ECM]]], "2")
-AddMenuitem("ECM.Game", TranslationTable[283142739680--[[Game]]], "3")
-AddMenuitem("ECM.Debug", TranslationTable[1000113--[[Debug]]], "4")
-AddMenuitem("ECM.Help", TranslationTable[487939677892--[[Help]]], "5")
+AddMenuitem("ECM.Cheats", T(27--[[Cheats]]), "1")
+AddMenuitem("ECM.ECM", T(302535920000002--[[ECM]]), "2")
+AddMenuitem("ECM.Game", T(283142739680--[[Game]]), "3")
+AddMenuitem("ECM.Debug", T(1000113--[[Debug]]), "4")
+AddMenuitem("ECM.Help", T(487939677892--[[Help]]), "5")
 
 -- Unforbid binding some keys (I left Enter and Menu, not sure what Menu is for? seems best to leave it)
 local f = ForbiddenShortcutKeys

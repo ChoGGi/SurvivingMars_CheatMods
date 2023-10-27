@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local what_game = ChoGGi.what_game
+
 local table = table
 local type, pairs, next, print, string = type, pairs, next, print, string
 local tostring, tonumber, rawget, rawset = tostring, tonumber, rawget, rawset
@@ -19,8 +21,8 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local PlacePolyline = ChoGGi.ComFuncs.PlacePolyline
 local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
 local RetName = ChoGGi.ComFuncs.RetName
+local T = T
 local Translate = ChoGGi.ComFuncs.Translate
-local TranslationTable = TranslationTable
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
 local blacklist = ChoGGi.blacklist
@@ -38,7 +40,10 @@ local function SetCheatsMenuPos(pos)
 	if pos then
 		XShortcutsTarget:SetPos(pos)
 	else
-		XShortcutsTarget:SetPos(GetSafeMargins():min())
+
+		if what_game == "Mars" then
+			XShortcutsTarget:SetPos(GetSafeMargins():min())
+		end
 	end
 end
 ChoGGi.ComFuncs.SetCheatsMenuPos = SetCheatsMenuPos
@@ -186,7 +191,7 @@ function ChoGGi.ComFuncs.Dump(obj, overwrite, file, ext, skip_msg, gen_name)
 
 	-- let user know
 	if not skip_msg then
-		local msg = TranslationTable[302535920000039--[[Dumped]]] .. ": " .. RetName(obj)
+		local msg = T(302535920000039--[[Dumped]]) .. ": " .. RetName(obj)
 		print(filename,"\n",msg:sub(1,msg:find("\n")))
 		MsgPopup(
 			msg,
@@ -295,8 +300,8 @@ do -- DumpTableFunc
 		end
 		if type(obj) ~= "table" then
 			MsgPopup(
-				TranslationTable[302535920000003--[[Can't dump nothing]]],
-				TranslationTable[302535920000004--[[Dump]]]
+				T(302535920000003--[[Can't dump nothing]]),
+				T(302535920000004--[[Dump]])
 			)
 			return
 		end
@@ -313,7 +318,7 @@ do -- DumpTableFunc
 			local filename = "AppData/logs/DumpedTable.txt"
 			g_env.AsyncStringToFile(filename, table.concat(output_list), mode or "-1")
 
-			local msg = TranslationTable[302535920000039--[[Dumped]]] .. ": " .. name
+			local msg = T(302535920000039--[[Dumped]]) .. ": " .. name
 			-- print msg to first newline
 			print(filename,"\n",msg:sub(1,msg:find("\n")))
 			MsgPopup(
@@ -324,11 +329,11 @@ do -- DumpTableFunc
 			return
 		end
 
-		local msg = TranslationTable[302535920000003--[[Can't dump nothing]]] .. ": " .. name .. "\n" .. ValueToLuaCode(obj)
+		local msg = T(302535920000003--[[Can't dump nothing]]) .. ": " .. name .. "\n" .. ValueToLuaCode(obj)
 		print(msg)
 		MsgPopup(
 			msg,
-			TranslationTable[302535920000004--[[Dump]]]
+			T(302535920000004--[[Dump]])
 		)
 
 	end
@@ -440,15 +445,15 @@ function ChoGGi.ComFuncs.EntitySpawner(obj, params)
 
 	local const = const
 
-	local title = params.planning and TranslationTable[302535920000862--[[Object Planner]]] or TranslationTable[302535920000475--[[Entity Spawner]]]
-	local hint = params.planning and TranslationTable[302535920000863--[[Places fake construction site objects at mouse cursor (collision disabled).]]] or TranslationTable[302535920000476--[["Shows list of objects, and spawns at mouse cursor."]]]
+	local title = params.planning and T(302535920000862--[[Object Planner]]) or T(302535920000475--[[Entity Spawner]])
+	local hint = params.planning and T(302535920000863--[[Places fake construction site objects at mouse cursor (collision disabled).]]) or T(302535920000476--[["Shows list of objects, and spawns at mouse cursor."]])
 
 	local default
 	local item_list = {}
 	local c = 0
 
 	if IsValid(obj) and IsValidEntity(obj.ChoGGi_orig_entity) then
-		default = TranslationTable[1000121--[[Default]]]
+		default = T(1000121--[[Default]])
 		item_list[1] = {
 			text = " " .. default,
 			value = default,
@@ -523,7 +528,7 @@ function ChoGGi.ComFuncs.EntitySpawner(obj, params)
 
 		if not params.skip_msg then
 			MsgPopup(
-				choice.text .. ": " .. TranslationTable[302535920000014--[[Spawned]]],
+				choice.text .. ": " .. T(302535920000014--[[Spawned]]),
 				title
 			)
 		end
@@ -533,8 +538,8 @@ function ChoGGi.ComFuncs.EntitySpawner(obj, params)
 	if params.list_type ~= 7 then
 		checkboxes = {
 			{
-				title = TranslationTable[302535920001578--[[Auto-Attach]]],
-				hint = TranslationTable[302535920001579--[[Activate any auto-attach spots this entity has.]]],
+				title = T(302535920001578--[[Auto-Attach]]),
+				hint = T(302535920001579--[[Activate any auto-attach spots this entity has.]]),
 			},
 		}
 	end
@@ -558,7 +563,7 @@ function ChoGGi.ComFuncs.MonitorThreads()
 	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list, {
 		has_params = true,
 		auto_refresh = true,
-		title = TranslationTable[302535920000853--[[Monitor]]] .. ": ThreadsRegister",
+		title = T(302535920000853--[[Monitor]]) .. ": ThreadsRegister",
 	})
 
 	local RetThreadInfo = ChoGGi.ComFuncs.RetThreadInfo
@@ -651,10 +656,10 @@ function ChoGGi.ComFuncs.SetParticles(obj)
 		obj = obj or ChoGGi.ComFuncs.SelObject()
 	end
 
-	local name = TranslationTable[302535920000129--[[Set]]] .. " " .. TranslationTable[302535920001184--[[Particles]]]
+	local name = T(302535920000129--[[Set]]) .. " " .. T(302535920001184--[[Particles]])
 	if not obj or obj and not obj:IsKindOf("FXObject") then
 		MsgPopup(
-			TranslationTable[302535920000027--[[Nothing selected]]] .. ": " .. "FXObject",
+			T(302535920000027--[[Nothing selected]]) .. ": " .. "FXObject",
 			name
 		)
 		return
@@ -668,7 +673,7 @@ function ChoGGi.ComFuncs.SetParticles(obj)
 		spots[obj:GetSpotName(i)] = true
 	end
 
-	local default = TranslationTable[1000121--[[Default]]]
+	local default = T(1000121--[[Default]])
 
 	local item_list = {
 		{text = " " .. default, value = default},
@@ -743,7 +748,7 @@ function ChoGGi.ComFuncs.SetParticles(obj)
 		callback = CallBackFunc,
 		items = item_list,
 		title = name,
-		hint = TranslationTable[302535920001421--[[Shows list of particles to quickly test out on objects.]]],
+		hint = T(302535920001421--[[Shows list of particles to quickly test out on objects.]]),
 		custom_type = 7,
 		skip_icons = true,
 	}
@@ -1046,7 +1051,7 @@ do -- RetThreadInfo/FindThreadFunc
 				break
 			end
 			list[idx] = {
-				name = name ~= "" and name or TranslationTable[302535920000723--[[Lua]]],
+				name = name ~= "" and name or T(302535920000723--[[Lua]]),
 				value = value,
 				level = level,
 			}
@@ -1065,7 +1070,7 @@ do -- RetThreadInfo/FindThreadFunc
 				break
 			end
 			list[idx] = {
-				name = name ~= "" and name or TranslationTable[302535920000723--[[Lua]]],
+				name = name ~= "" and name or T(302535920000723--[[Lua]]),
 				value = value,
 			}
 			idx = idx + 1
@@ -1107,7 +1112,7 @@ do -- RetThreadInfo/FindThreadFunc
 						temp.func = value:sub(2, space)
 						-- change unknown to Lua
 						local n = value:sub(space + 2, -2)
-						temp.name = n ~= "unknown name" and n or TranslationTable[302535920000723--[[Lua]]]
+						temp.name = n ~= "unknown name" and n or T(302535920000723--[[Lua]])
 					end
 				end
 
@@ -1127,7 +1132,7 @@ do -- RetThreadInfo/FindThreadFunc
 					for i = 0, nups do
 						local info_got = debug.getinfo(thread, i)
 						if info_got then
-							local name = info_got.name or info_got.what or TranslationTable[302535920000723--[[Lua]]]
+							local name = info_got.name or info_got.what or T(302535920000723--[[Lua]])
 							funcs[i] = {
 								name = name,
 								func = info_got.func,
@@ -1507,8 +1512,8 @@ do -- ChangeSurfaceSignsToMaterials
 	function ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials()
 
 		local item_list = {
-			{text = TranslationTable[754117323318--[[Enable]]], value = true, hint = TranslationTable[302535920001081--[[Changes signs to materials.]]]},
-			{text = TranslationTable[251103844022--[[Disable]]], value = false, hint = TranslationTable[302535920001082--[[Changes materials to signs.]]]},
+			{text = T(754117323318--[[Enable]]), value = true, hint = T(302535920001081--[[Changes signs to materials.]])},
+			{text = T(251103844022--[[Disable]]), value = false, hint = T(302535920001082--[[Changes materials to signs.]])},
 		}
 
 		local function CallBackFunc(choice)
@@ -1541,7 +1546,7 @@ do -- ChangeSurfaceSignsToMaterials
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = TranslationTable[302535920001083--[[Change Surface Signs]]],
+			title = T(302535920001083--[[Change Surface Signs]]),
 		}
 	end
 end -- do
@@ -1586,8 +1591,8 @@ function ChoGGi.ComFuncs.UpdateServiceComfortBld(obj, service_stats)
 end
 
 function ChoGGi.ComFuncs.BlacklistMsg(msg)
-	msg = TranslationTable[302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.]]]:format(msg)
-	MsgPopup(msg,TranslationTable[302535920000000--[[Expanded Cheat Menu]]])
+	msg = Translate(302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.]]):format(msg)
+	MsgPopup(msg,T(302535920000000--[[Expanded Cheat Menu]]))
 	print(msg)
 end
 
@@ -1614,10 +1619,10 @@ do -- ToggleFuncHook
 			path = path or "@AppData/Mods/"
 			local str_len = #path
 
-			print(TranslationTable[302535920000497--[[Hook Started]]], path, line, mask, count)
+			print(Translate(302535920000497--[[Hook Started]]), path, line, mask, count)
 			MsgPopup(
-				TranslationTable[302535920000497--[[Hook Started]]],
-				TranslationTable[1000113--[[Debug]]]
+				T(302535920000497--[[Hook Started]]),
+				T(1000113--[[Debug]])
 			)
 
 			g_env.collectgarbage()
@@ -1649,8 +1654,8 @@ do -- ToggleFuncHook
 			-- start capture (c = func call, r = func ret, l = enters new line of code)
 			debug.sethook(hook_func, mask or "c", count)
 		else
-			print(TranslationTable[302535920000498--[[Hook Stopped]]], path, line, mask, count)
-			MsgPopup(TranslationTable[302535920000498--[[Hook Stopped]]], TranslationTable[1000113--[[Debug]]])
+			print(Translate(302535920000498--[[Hook Stopped]]), path, line, mask, count)
+			MsgPopup(T(302535920000498--[[Hook Stopped]]), T(1000113--[[Debug]]))
 			ChoGGi.Temp.FunctionsHooked = false
 
 			-- stop capture
@@ -1659,11 +1664,11 @@ do -- ToggleFuncHook
 			-- add stringed funcs call order text
 			func_table.__order = {
 				ChoGGi_AddHyperLink = true,
-				name = TranslationTable[302535920000234--[[Monitor Func Calls]]],
+				name = T(302535920000234--[[Monitor Func Calls]]),
 				hint = "Shows list of func calls in order of called.",
 --~				func = function(self, button, obj, argument, hyperlink_box, pos)
 				func = function()
-					ChoGGi.ComFuncs.OpenInExamineDlg(func_str, nil, TranslationTable[302535920000234--[[Monitor Func Calls]]])
+					ChoGGi.ComFuncs.OpenInExamineDlg(func_str, nil, T(302535920000234--[[Monitor Func Calls]]))
 				end,
 			}
 
@@ -1783,9 +1788,9 @@ do -- TestLocaleFile
 			order = {"translated_new", "translated", "text"}
 		end
 
-		local prev_str = TranslationTable[1000231--[[Previous]]]
-		local next_str = TranslationTable[1000232--[[Next]]]
-		local cur_str = TranslationTable[302535920000106--[[Current]]]
+		local prev_str = T(1000231--[[Previous]])
+		local next_str = T(1000232--[[Next]])
+		local cur_str = T(302535920000106--[[Current]])
 
 		for i = 1, #loaded_csv do
 			local entry = loaded_csv[i]
@@ -1847,7 +1852,7 @@ do -- TestLocaleFile
 		local omit_captions = "omit_captions"
 		local err, str = g_env.AsyncFileToString(filepath)
 		if err then
-			print(TranslationTable[302535920001125--[[Test Locale File]]], "ERROR:", err, "FILEPATH:", filepath)
+			print(Translate(302535920001125--[[Test Locale File]]), "ERROR:", err, "FILEPATH:", filepath)
 			return
 		end
 
@@ -1937,7 +1942,7 @@ do -- TestLocaleFile
 					filepath = my_locale
 				end
 			else
-				print(TranslationTable[302535920001125--[[Test Locale File]]], "FILEPATH ERROR:", filepath)
+				print(Translate(302535920001125--[[Test Locale File]]), "FILEPATH ERROR:", filepath)
 				return
 			end
 		end
@@ -1969,8 +1974,8 @@ do -- TestLocaleFile
 		strings_failed = {}
 
 		if test_csv then
-			strings_failed[-1] = TranslationTable[302535920001571--[["The way I test the CSV file means there might be some ""non-error"" errors added here.
-It's a tradeoff between erroneous errors and the game locking up."]]]
+			strings_failed[-1] = T(302535920001571--[["The way I test the CSV file means there might be some ""non-error"" errors added here.
+It's a tradeoff between erroneous errors and the game locking up."]])
 		end
 
 		strings_count = 0
@@ -1987,9 +1992,9 @@ It's a tradeoff between erroneous errors and the game locking up."]]]
 
 		local title
 		if strings_count > 0 or csv_count > 0 then
-			title = TranslationTable[302535920001125--[[Test Locale File]]] .. ": " .. TranslationTable[951--[[Failed to complete operation.]]]
+			title = T(302535920001125--[[Test Locale File]]) .. ": " .. T(951--[[Failed to complete operation.]])
 		else
-			title = TranslationTable[302535920001125--[[Test Locale File]]] .. ": " .. TranslationTable[1000015--[[Success]]]
+			title = T(302535920001125--[[Test Locale File]]) .. ": " .. T(1000015--[[Success]])
 		end
 		local results = {
 			loaded_csv = loaded_csv,
@@ -2168,7 +2173,7 @@ function ChoGGi.ComFuncs.MonitorFunctionResults(func, ...)
 	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(results_list, {
 		has_params = true,
 		auto_refresh = true,
-		title = TranslationTable[302535920000853--[[Monitor]]] .. " " .. TranslationTable[302535920000110--[[Function Results]]],
+		title = T(302535920000853--[[Monitor]]) .. " " .. T(302535920000110--[[Function Results]]),
 	})
 
 	CreateRealTimeThread(function()
@@ -2208,8 +2213,8 @@ function ChoGGi.ComFuncs.CheckForBorkedTransportPath(obj, list)
 			list[obj] = true
 			obj:InterruptCommand()
 			MsgPopup(
-				TranslationTable[302535920001267--[[%s at position: %s was stopped.]]]:format(RetName(obj), obj:GetVisualPos()),
-				TranslationTable[302535920001266--[[Borked Transport Pathing]]],
+				Translate(302535920001267--[[%s at position: %s was stopped.]]):format(RetName(obj), obj:GetVisualPos()),
+				T(302535920001266--[[Borked Transport Pathing]]),
 				{objects = obj, image = "UI/Icons/IPButtons/transport_route.tga"}
 			)
 		end
@@ -2228,8 +2233,8 @@ do -- DisplayMonitorList
 	function ChoGGi.ComFuncs.DisplayMonitorList(value, parent)
 		if value == "New" then
 			ChoGGi.ComFuncs.MsgWait(
-				TranslationTable[302535920000033--[[Post a request on Nexus or Github or send an email to: %s]]]:format(ChoGGi.email),
-				TranslationTable[302535920000034--[[Request]]]
+				Translate(302535920000033--[[Post a request on Nexus or Github or send an email to: %s]]):format(ChoGGi.email),
+				T(302535920000034--[[Request]])
 			)
 			return
 		end
@@ -2258,25 +2263,25 @@ do -- DisplayMonitorList
 		}
 		if value == "Grids" then
 			info = info_grid
-			info_grid.title = TranslationTable[302535920000035--[[Grids]]]
+			info_grid.title = T(302535920000035--[[Grids]])
 			AddGrid(UICity, "air", info)
 			AddGrid(UICity, "electricity", info)
 			AddGrid(UICity, "water", info)
 		elseif value == "Air" then
 			info = info_grid
-			info_grid.title = TranslationTable[891--[[Air]]]
+			info_grid.title = T(891--[[Air]])
 			AddGrid(UICity, "air", info)
 		elseif value == "Power" then
 			info = info_grid
-			info_grid.title = TranslationTable[79--[[Power]]]
+			info_grid.title = T(79--[[Power]])
 			AddGrid(UICity, "electricity", info)
 		elseif value == "Water" then
 			info = info_grid
-			info_grid.title = TranslationTable[681--[[Water]]]
+			info_grid.title = T(681--[[Water]])
 			AddGrid(UICity, "water", info)
 		elseif value == "Research" then
 			info = {
-				title = TranslationTable[311--[[Research]]],
+				title = T(311--[[Research]]),
 				listtype = "all",
 				tables = {UIColony.tech_status},
 				values = {
@@ -2285,7 +2290,7 @@ do -- DisplayMonitorList
 			}
 		elseif value == "Colonists" then
 			info = {
-				title = TranslationTable[547--[[Colonists]]],
+				title = T(547--[[Colonists]]),
 				tables = UIColony:GetCityLabels("Colonist"),
 				values = {
 					{name="handle", kind=0},
@@ -2311,7 +2316,7 @@ do -- DisplayMonitorList
 			}
 		elseif value == "Rockets" then
 			info = {
-				title = TranslationTable[5238--[[Rockets]]],
+				title = T(5238--[[Rockets]]),
 				tables = UIColony:GetCityLabels("AllRockets"),
 				values = {
 					{name="name", kind=0},
@@ -2330,7 +2335,7 @@ do -- DisplayMonitorList
 			}
 		elseif value == "City" then
 			info = {
-				title = TranslationTable[302535920000042--[[City]]],
+				title = T(302535920000042--[[City]]),
 				tables = {UICity},
 				values = {
 					{name="rand_state", kind=0},
@@ -2563,12 +2568,12 @@ do -- UnpublishParadoxMod
 				if type(result) == "string" then
 					print("UnpublishParadoxMod<color ChoGGi_red> ERROR", result, "</color>", mod_title)
 				else
-					print("UnpublishParadoxMod<color ChoGGi_green>", TranslationTable[1000015--[[Success]]], "</color>", mod_title)
+					print("UnpublishParadoxMod<color ChoGGi_green>", T(1000015--[[Success]]), "</color>", mod_title)
 				end
 			end
 		end
 		ChoGGi.ComFuncs.QuestionBox(
-			TranslationTable[6779--[[Warning]]] .. "!\n" .. TranslationTable[672683736395--[[Unpublish from Paradox]]],
+			T(6779--[[Warning]]) .. "!\n" .. T(672683736395--[[Unpublish from Paradox]]),
 			CallBackFunc,
 			mod_title
 		)
@@ -2576,7 +2581,17 @@ do -- UnpublishParadoxMod
 end -- do
 
 function ChoGGi.ComFuncs.VerticalCheatMenu_Toggle(toggle)
-	local idx = table.find(terminal.desktop, "class", "XShortcutsHost")
+	if ChoGGi.what_game ~= "Mars" then
+		return
+	end
+
+
+	local cheatmenu_id = "XShortcutsHost"
+	if ChoGGi.what_game == "JA3" then
+		cheatmenu_id = "DeveloperInterface"
+	end
+
+	local idx = table.find(terminal.desktop, "class", cheatmenu_id)
 
 	if not idx then
 		if testing then
@@ -2663,6 +2678,10 @@ function ChoGGi.ComFuncs.WaitForParadoxLogin()
 end
 
 function ChoGGi.ComFuncs.InfopanelToolbarConstrain_Toggle(toggle)
+	if what_game ~= "Mars" then
+		return
+	end
+
 	--[1][1][1]>[2]XFrame Image = "UI/CommonNew/ip.tga">[2]XWindow Padding = box(18, 4, 18, 23)
 	local template = XTemplates.Infopanel[1][1][1][2][2]
 	if toggle then

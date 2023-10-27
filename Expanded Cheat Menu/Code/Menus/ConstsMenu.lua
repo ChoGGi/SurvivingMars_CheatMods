@@ -1,14 +1,18 @@
 -- See LICENSE for terms
 
+if ChoGGi.what_game ~= "Mars" then
+	return
+end
+
+local T = T
 local Translate = ChoGGi.ComFuncs.Translate
 local SettingState = ChoGGi.ComFuncs.SettingState
-local TranslationTable = TranslationTable
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = TranslationTable[302535920000158--[[Consts]]],
+Actions[c] = {ActionName = T(302535920000158--[[Consts]]),
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Consts",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",

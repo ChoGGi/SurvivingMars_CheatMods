@@ -2,6 +2,7 @@
 
 -- what _InternalTranslate returns on failure
 local missing_text = ChoGGi.Temp.missing_text
+local what_game = ChoGGi.what_game
 
 -- local some globals
 local type, tostring = type, tostring
@@ -37,7 +38,8 @@ local function Translate(t, context, ...)
 end
 ChoGGi.ComFuncs.Translate = Translate
 
-do -- fix missing tech defs/tourist description in main menu/new game (expectations of UICity)
+-- fix missing tech defs/tourist description in main menu/new game (expectations of UICity)
+if what_game == "Mars" then
 
 	local ChoOrig_TFormat_has_researched = TFormat.has_researched
 	function TFormat.has_researched(...)
@@ -53,7 +55,6 @@ do -- fix missing tech defs/tourist description in main menu/new game (expectati
 	}
 
 	local ChoOrig_BuildingInfoLine = BuildingInfoLine
-
 	function BuildingInfoLine(...)
 		-- add fake city so BuildingInfoLine doesn't fail
 		if not UICity then
@@ -79,7 +80,7 @@ do -- fix missing tech defs/tourist description in main menu/new game (expectati
 	end
 	OnMsg.CityStart = ResetFunc
 	OnMsg.LoadGame = ResetFunc
-end -- do
+end -- what_game
 
 do -- when examine examines TranslationTable
 	local ChoOrig_FormatScale = FormatScale
@@ -108,7 +109,7 @@ function ChoGGi.ComFuncs.UpdateStringsList()
   -- devs didn't bother changing droid font to one that supports unicode, so we do this when it isn't eng
   if lang ~= "English" then
     -- first get the unicode font name
-    local f = TranslationTable[997--[[*fontname*, 15, aa]]]
+    local f = Translate(997--[[*fontname*, 15, aa]])
     -- Index of first , then crop out the rest
     f = f:sub(1, f:find(", ")-1)
     -- might use it for something else?
