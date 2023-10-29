@@ -3,7 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
-302535920001679, ""
 302535920001680, ""
 302535920001681, ""
 302535920001682, ""
@@ -1620,6 +1619,7 @@ Takes less then a second on a map with 3616 buildings and 54 drone hubs."
 302535920000622, "If you have any buildings that aren't aligned to the hex grids use this."
 end end end end end end end !Skipped Line!
 do do !Skipped Line! [[GameMenu.lua" "GameFunc.lua]] !Skipped Line!
+302535920001679, "Tool Tips"
 302535920001665, "Infopanel Toolbar Constrain"
 302535920001666, "Limits size of infopanel toolbar buttons for those that have too many buttons (and they go off panel)."
 302535920001258, "Cleans your Mars of alien shrubbery."

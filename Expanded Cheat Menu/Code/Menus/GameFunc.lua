@@ -1362,6 +1362,11 @@ function ChoGGi.MenuFuncs.TransparencyUI_Toggle()
 end
 
 do -- SetTransparencyUI
+	local function GetTrans(cls)
+		local t = ChoGGi.UserSettings.Transparency[cls]
+		return t or 0
+	end
+
 	local function GetSetTrans(mask, cls, desk, igi, which)
 		local name = ChoGGi.UserSettings.Transparency[cls]
 		if not which and name then
@@ -1403,6 +1408,8 @@ do -- SetTransparencyUI
 			{text = "XBuildMenu", value = GetSetTrans(2, "XBuildMenu", desk, igi), hint = T(302535920000993--[[Build menu]])},
 			{text = "InfopanelDlg", value = GetSetTrans(2, "InfopanelDlg", desk, igi), hint = T(302535920000995--[[Infopanel (selection)]])},
 			{text = "PinsDlg", value = GetSetTrans(2, "PinsDlg", desk, igi), hint = T(302535920000997--[[Pins menu]])},
+
+			{text = "XRolloverWindow", value = GetTrans("XRolloverWindow"), hint = T(302535920001679--[[Tool Tips]])},
 		}
 
 		local function CallBackFunc(choice)
@@ -1415,10 +1422,12 @@ do -- SetTransparencyUI
 
 				if type(value) == "number" then
 
-					if text == "XShortcutsHost" or text == "Console" or text == "ConsoleLog" then
-						GetSetTrans(1, text, desk, igi, value)
-					else
-						GetSetTrans(2, text, desk, igi, value)
+					if text ~= "XRolloverWindow" then
+						if text == "XShortcutsHost" or text == "Console" or text == "ConsoleLog" then
+							GetSetTrans(1, text, desk, igi, value)
+						else
+							GetSetTrans(2, text, desk, igi, value)
+						end
 					end
 
 					if value == 0 then

@@ -283,6 +283,15 @@ end -- what_game
 
 -- func exists before classes msg
 do
+
+	-- Transparent tooltips
+	local ChoOrig_XRolloverWindow_Init = XRolloverWindow.Init
+	AddToOrigFuncs("XRolloverWindow.Init")
+	function XRolloverWindow:Init(...)
+		SetDlgTrans(self)
+		return ChoOrig_XRolloverWindow_Init(self, ...)
+	end
+
 	-- That's what we call a small font
 	local ChoOrig_XWindow_UpdateMeasure = XWindow.UpdateMeasure
 	AddToOrigFuncs("XWindow.UpdateMeasure")

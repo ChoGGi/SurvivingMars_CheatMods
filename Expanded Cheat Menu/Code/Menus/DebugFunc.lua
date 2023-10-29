@@ -418,21 +418,20 @@ You need my HelperMod installed to be able to use this."]]),
 end -- do
 
 function ChoGGi.MenuFuncs.ExamineObject()
-		print("ExamineObject")
+	printC("ChoGGi.MenuFuncs.ExamineObject")
+
 	-- try to get object in-game first
 	local objs = ChoGGi.ComFuncs.SelObjects()
 	local c = #objs
 	if c > 0 then
-		print("1")
 		-- If it's a single obj then examine that, otherwise the whole list
 		ChoGGi.ComFuncs.OpenInExamineDlg(c == 1 and objs[1] or objs)
 		return
 	end
 
-	if UseGamepadUI() then
-		print("2")
-		return
-	end
+--~ 	if UseGamepadUI() then
+--~ 		return
+--~ 	end
 
 	local terminal = terminal
 
@@ -440,13 +439,11 @@ function ChoGGi.MenuFuncs.ExamineObject()
 	local target = terminal.desktop:GetMouseTarget(terminal.GetMousePos())
 	-- everywhere is covered in xdialogs so skip them
 	if target and not target:IsKindOf("XDialog") then
-		print("3")
 		return ChoGGi.ComFuncs.OpenInExamineDlg(target)
 	end
 
 	-- If in main menu then open examine and console
 	if not Dialogs.HUD then
-		print("4")
 		local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(terminal.desktop)
 		-- off centre of central monitor
 		local width = (terminal.desktop.measure_width or 1920) - (dlg.dialog_width_scaled + 100)
