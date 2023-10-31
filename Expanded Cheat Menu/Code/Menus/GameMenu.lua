@@ -424,7 +424,7 @@ Actions[c] = {ActionName = T(302535920001412--[[GUI Dock Side]]),
 	ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
 	RolloverText = function()
 		return SettingState(
-			ChoGGi.UserSettings.GUIDockSide and T(1000459--[[Right]]) or T(1000457--[[Left]]),
+			ChoGGi.UserSettings.GUIDockSide and T(302535920001715--[[Right]]) or T(302535920001716--[[Left]]),
 			T(302535920001413--[[Change which side (most) GUI menus are on.]])
 
 		)
@@ -670,7 +670,7 @@ Actions[c] = {ActionName = T(302535920001665--[[Infopanel Toolbar Constrain]]),
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = T(298035641454--[[Object]]),
+Actions[c] = {ActionName = T(302535920001685--[[Object]]),
 	ActionMenubar = "ECM.Game",
 	ActionId = ".Object",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -722,7 +722,7 @@ Actions[c] = {ActionName = T(302535920000694--[[Set Opacity]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(174--[[Color Modifier]]),
+Actions[c] = {ActionName = T(302535920001708--[[Color Modifier]]),
 	ActionMenubar = "ECM.Game.Object",
 	ActionId = ".Color Modifier",
 	ActionIcon = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",

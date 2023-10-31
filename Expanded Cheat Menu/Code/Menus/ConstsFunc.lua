@@ -74,9 +74,10 @@ function ChoGGi.MenuFuncs.SetConstMenu(action)
 	end
 
 	hint = T(302535920000106--[[Current]]) .. ": " .. hint .. "\n\n" .. setting_desc
-	if setting_scale then
+	local scale = Presets.ConstDef.Scale[setting_scale]
+	if scale then
 		hint = hint .. "\n" .. T(1000081--[[Scale]]) .. ": "
-			.. Presets.ConstDef.Scale[setting_scale].value .. "("
+			.. (scale.value or 1000) .. "("
 			.. T(302535920000182--[[The scale this amount will be multipled by when used.]]) .. ")"
 	end
 

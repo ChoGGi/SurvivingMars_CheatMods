@@ -263,7 +263,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		Id = "idOK",
 		Dock = "left",
 		MinWidth = 50,
-		Text = T(6878--[[OK]]),
+		Text = T(302535920001714--[[OK]]),
 		Background = g_Classes.ChoGGi_XButton.bg_green,
 		RolloverText = Translate(302535920000080--[["Press OK to apply and close dialog (Arrow keys and Enter/Esc can also be used, or <left_click>*2 a list item)."]]),
 		OnPress = self.BuildReturnList
@@ -273,7 +273,7 @@ Warning: Entering the wrong value may crash the game or otherwise cause issues."
 		Id = "idCancel",
 		Dock = "right",
 		MinWidth = 70,
-		Text = T(6879--[[Cancel]]),
+		Text = T(302535920001713--[[Cancel]]),
 		Background = g_Classes.ChoGGi_XButton.bg_red,
 		RolloverText = T(302535920000074--[[Cancel without changing anything.]]),
 		OnPress = self.idCloseX.OnPress,

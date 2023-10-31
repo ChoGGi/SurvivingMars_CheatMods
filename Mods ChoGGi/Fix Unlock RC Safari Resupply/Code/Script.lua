@@ -30,7 +30,7 @@ local function AddNewDef(id, cargo, insert_after)
 		transport_idx = table.find(ResupplyItemDefinitions, "id", insert_after)
 	end
 
-	-- function RocketPayload_Init() (last copied Tito-Hotfix)
+	-- function ResupplyItemsInit() (last copied Tito-Hotfix)
   local sponsor = g_CurrentMissionParams and g_CurrentMissionParams.idMissionSponsor or ""
 	local def = setmetatable({}, {__index = cargo})
 	table.insert(ResupplyItemDefinitions, transport_idx, def)

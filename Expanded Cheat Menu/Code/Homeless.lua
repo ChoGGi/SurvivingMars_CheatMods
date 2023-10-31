@@ -23,9 +23,9 @@ ChoGGi.ComFuncs.SetLibraryToolTips()
 
 -- Be too annoying to add templates to all of these manually
 XMenuEntry.RolloverTemplate = "Rollover"
-XMenuEntry.RolloverHint = T(608042494285--[[<left_click> Activate]])
+XMenuEntry.RolloverHint = T(302535920001718--[[<left_click> Activate]])
 XListItem.RolloverTemplate = "Rollover"
-XListItem.RolloverHint = T(608042494285--[[<left_click> Activate]])
+XListItem.RolloverHint = T(302535920001718--[[<left_click> Activate]])
 
 -- Sure, lets have them appear under certain items (though i think mostly just happens from console, and I've changed that so I could remove this?)
 XRolloverWindow.ZOrder = max_int
@@ -36,9 +36,9 @@ Console.ZOrder = 3
 -- Make cheats menu look like older one (more gray, less white)
 local dark_gray = -9868951
 XMenuBar.Background = dark_gray
-XMenuBar.RolloverHint = T(608042494285--[[<left_click> Activate]])
+XMenuBar.RolloverHint = T(302535920001718--[[<left_click> Activate]])
 XPopupMenu.Background = dark_gray
-XPopupMenu.RolloverHint = T(608042494285--[[<left_click> Activate]])
+XPopupMenu.RolloverHint = T(302535920001718--[[<left_click> Activate]])
 -- It sometimes does a jarring white background
 XPopupMenu.DisabledBackground = dark_gray
 -- Darker gray

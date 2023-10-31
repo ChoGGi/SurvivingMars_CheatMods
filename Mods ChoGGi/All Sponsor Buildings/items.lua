@@ -39,7 +39,10 @@ local TechDef = TechDef
 local BuildingTemplates = BuildingTemplates
 for id, bld in pairs(BuildingTemplates) do
 	for i = 1, 3 do
-		if sponsor_buildings[id] or bld["sponsor_status" .. i] ~= false then
+		if (sponsor_buildings[id] or bld["sponsor_status" .. i] ~= false)
+			-- Shuttle Hub has "disabled" to block it when jumper (paradox spons) is enabled.
+			and bld["sponsor_status" .. i] ~= "disabled"
+		then
 			sponsor_buildings[id] = true
 
 			local image = ""

@@ -179,7 +179,7 @@ Actions[c] = {ActionName = T(302535920000323--[[Modding]]) .. " " .. T(8982--[[T
 }
 
 c = c + 1
-Actions[c] = {ActionName = "*" .. T(126095410863--[[Info]]) .. "*",
+Actions[c] = {ActionName = "*" .. T(302535920001717--[[Info]]) .. "*",
 	ActionMenubar = "ECM.Help.Modding Tutorial",
 	ActionId = ".*Info*",
 	ActionIcon = "CommonAssets/UI/Menu/help.tga",
@@ -189,7 +189,7 @@ Actions[c] = {ActionName = "*" .. T(126095410863--[[Info]]) .. "*",
 }
 
 c = c + 1
-Actions[c] = {ActionName = "*" .. T(283142739680--[[Game]]) .. " & " .. T(302535920001355--[[Map]]) .. " " .. T(126095410863--[[Info]]) .. "*",
+Actions[c] = {ActionName = "*" .. T(283142739680--[[Game]]) .. " & " .. T(302535920001355--[[Map]]) .. " " .. T(302535920001717--[[Info]]) .. "*",
 	ActionMenubar = "ECM.Help.Modding Tutorial",
 	ActionId = ".*Game & Map Info*",
 	ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",

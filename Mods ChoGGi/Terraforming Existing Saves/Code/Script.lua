@@ -113,7 +113,7 @@ function OnMsg.LoadGame()
 		end
 
 		-- rocket cargo
-		RocketPayload_Init()
+		ResupplyItemsInit()
 
 		-- time series (ccc)
 		SavegameFixups.InitTSTerraforming()

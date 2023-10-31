@@ -43,8 +43,8 @@ local function ModOptions(id)
 	for id, bld in pairs(BuildingTemplates) do
 
 		-- set each status to false if it isn't
-		for i = 1, 3 do
-			if sponsor_buildings[id] then
+		if sponsor_buildings[id] then
+			for i = 1, 3 do
 				local str = "sponsor_status" .. i
 				if mod_options["ChoGGi_" .. id] then
 					bld[str] = false
@@ -66,11 +66,40 @@ local function ModOptions(id)
 		end
 	end
 
+--~ 	local CargoPreset = CargoPreset
+--~ 	for id, cargo in pairs(CargoPreset) do
+--~ 		-- Needed for RC
+--~ 		local name = id
+--~ 		if name:sub(1, 2) == "RC" then
+--~ 			name = name .. "Building"
+--~ 		end
+
+--~ 		if mod_options["ChoGGi_" .. name] then
+--~ 			cargo.locked = false
+--~ 		end
+--~ 	end
+
 end
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
 -- fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
+
+local function UpdateCargoDefs()
+	local defs = ResupplyItemDefinitions
+	for i = 1, #defs do
+		local def = defs[i]
+
+		local name = def.id
+		if name:sub(1, 2) == "RC" then
+			name = name .. "Building"
+		end
+
+		if mod_options["ChoGGi_" .. name] then
+			def.locked = false
+		end
+	end
+end
 
 -- gotta list them manually
 local techs = {
@@ -113,7 +142,19 @@ local function StartupCode()
 		end
 	end
 
+	UpdateCargoDefs()
 end
 
 OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode
+
+-- Not sure which Msg I need to use to have this show up for new game, so I'm being lazy.
+local ChoOrig_ResupplyItemsInit = ResupplyItemsInit
+function ResupplyItemsInit(...)
+	-- it doesn't have a return value, but if another mod adds one.
+	local ret = ChoOrig_ResupplyItemsInit(...)
+
+	UpdateCargoDefs()
+
+	return ret
+end

@@ -349,7 +349,7 @@ do
 					else
 						entry.RolloverText = action.RolloverText
 					end
-					entry.RolloverTitle = T(126095410863--[[Info]])
+					entry.RolloverTitle = T(302535920001717--[[Info]])
 					-- If this func added the id or something then i wouldn't need to do this copy n paste :(
 
 					function entry.OnPress(this, _)
@@ -1170,7 +1170,7 @@ function OnMsg.ClassesPostprocess()
 					title.RolloverTemplate = "Rollover"
 					title.RolloverTitle = T(302535920001367--[[Toggles]])
 					title.RolloverText = T(302535920001410--[[Toggle Visibility]])
-					title.RolloverHint = T(608042494285--[[<left_click> Activate]])
+					title.RolloverHint = T(302535920001718--[[<left_click> Activate]])
 
 					local toggle = not ChoGGi.Temp.InfopanelMainButVis
 					local toolbar = main_buts[2]
@@ -1221,7 +1221,7 @@ function OnMsg.ClassesPostprocess()
 					section.idIcon.FXMouseIn = "ActionButtonHover"
 					section.idSectionTitle.MouseCursor = "UI/Cursors/Rollover.tga"
 					section.RolloverText = T(302535920001410--[[Toggle Visibility]])
-					section.RolloverHint = T(608042494285--[[<left_click> Activate]])
+					section.RolloverHint = T(302535920001718--[[<left_click> Activate]])
 
 					local toggle = not ChoGGi.Temp.InfopanelCheatsVis
 					local toolbar = SetToolbar(section, "XToolBar", toggle)

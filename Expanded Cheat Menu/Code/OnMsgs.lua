@@ -418,7 +418,7 @@ s = SelectedObj, c() = GetCursorWorldPos(), restart() = quit(""restart"")"]])
 			if UserSettings.EnableToolTips then
 				local toolbar = XShortcutsTarget.idMenuBar
 				toolbar:SetRolloverTemplate("Rollover")
-				toolbar:SetRolloverTitle(T(126095410863--[[Info]]))
+				toolbar:SetRolloverTitle(T(302535920001717--[[Info]]))
 				toolbar:SetRolloverText(T(302535920000503--[[Right-click an item/submenu to add/remove it from the quickbar.]]))
 				toolbar:SetRolloverHint(T(302535920001441--[["<left_click> Activate MenuItem <right_click> Add/Remove"]]))
 			end

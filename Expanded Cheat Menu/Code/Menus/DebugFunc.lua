@@ -1075,7 +1075,7 @@ function ChoGGi.MenuFuncs.SetPathMarkers()
 
 	local item_list = {
 		{text = T(302535920000413--[[Delay]]), value = 0, path_type = "Delay", hint = T(302535920000415--[[Delay in ms between updating paths (0 to update every other render).]])},
-		{text = T(4493--[[All]]), value = "All"},
+		{text = T(302535920001691--[[All]]), value = "All"},
 
 		{text = T(547--[[Colonists]]), value = "Colonist"},
 		{text = T(517--[[Drones]]), value = "Drone"},

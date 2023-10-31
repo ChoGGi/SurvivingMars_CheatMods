@@ -429,7 +429,7 @@ do -- RetName
 		elseif obj_type == "table" then
 			-- cities
 			if IsKindOf(obj, "City") and obj.map_id ~= "" then
-				return T(13659--[[Map]]) .. ": " .. obj.map_id
+				return Translate(302535920001700--[[Map]]) .. ": " .. obj.map_id
 			end
 
 			-- we check in order of less generic "names"
@@ -546,7 +546,7 @@ function ChoGGi.ComFuncs.RetHint(obj)
 
 	else
 		-- eh
-		return T(3718--[[NONE]])
+		return T(302535920001726--[[NONE]])
 	end
 end
 
@@ -653,7 +653,7 @@ do -- MsgPopup
 		local preset = {
 			id = "popup" .. AsyncRand() .. ActiveMapID,
 			title = type(title) == "number" and tostring(title) or title or "",
-			text = type(text) == "number" and tostring(text) or text or T(3718--[[NONE]]),
+			text = type(text) == "number" and tostring(text) or text or T(302535920001726--[[NONE]]),
 			image = params.image and ValidateImage(params.image) or ChoGGi.library_path .. "UI/TheIncal.png",
 		}
 
@@ -928,9 +928,9 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items, popup)
 		-- "ChoGGi_XCheckButtonMenu"
 		local cls = g_Classes[item.class or "ChoGGi_XButtonMenu"]
 		local button = cls:new({
-			RolloverTitle = item.hint_title and item.hint_title or item.obj and RetName(item.obj) or T(126095410863--[[Info]]),
+			RolloverTitle = item.hint_title and item.hint_title or item.obj and RetName(item.obj) or T(302535920001717--[[Info]]),
 			RolloverText = item.hint or "",
-			RolloverHint = item.hint_bottom or T(608042494285--[[<left_click> Activate]]),
+			RolloverHint = item.hint_bottom or T(302535920001718--[[<left_click> Activate]]),
 			Text = item.name,
 			Background = items.Background,
 			PressedBackground = items.PressedBackground,
@@ -1185,8 +1185,8 @@ function ChoGGi.ComFuncs.MsgWait(text, title, image, ok_text, context, parent, t
 
 --~ 	WaitMessage(
 	CreateMessageBox(
-		type(title) == "number" and tostring(title) or title or T(1000016--[[Title]]),
-		type(text) == "number" and tostring(text) or text or T(3718--[[NONE]]),
+		type(title) == "number" and tostring(title) or title or T(302535920001726--[[Title]]),
+		type(text) == "number" and tostring(text) or text or T(302535920001727--[[NONE]]),
 		type(ok_text) == "number" and tostring(ok_text) or ok_text,
 		nil,
 		parent,
@@ -1218,8 +1218,8 @@ function ChoGGi.ComFuncs.QuestionBox(text, func, title, ok_text, cancel_text, im
 
 	if WaitMarsQuestion(
 		parent,
-		type(title) == "number" and tostring(title) or title or T(1000016--[[Title]]),
-		type(text) == "number" and tostring(text) or text or T(3718--[[NONE]]),
+		type(title) == "number" and tostring(title) or title or T(302535920001726--[[Title]]),
+		type(text) == "number" and tostring(text) or text or T(302535920001727--[[NONE]]),
 		type(ok_text) == "number" and tostring(ok_text) or ok_text,
 		type(cancel_text) == "number" and tostring(cancel_text) or cancel_text,
 		image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
@@ -3086,7 +3086,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 		ChoGGi.ComFuncs.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
-			title = T(174--[[Color Modifier]]) .. ": " .. RetName(obj),
+			title = T(302535920001708--[[Color Modifier]]) .. ": " .. RetName(obj),
 			hint = T(302535920000022--[["If number is 8421504 then you probably can't change that colour.
 
 You can copy and paste numbers if you want."]]),
@@ -3703,10 +3703,10 @@ do -- AddXTemplate/RemoveXTemplateSections
 			"__condition", list.__condition or RetTrue,
 			"__context_of_kind", list.__context_of_kind or "",
 			"__template", list.__template or "InfopanelActiveSection",
-			"Title", list.Title or T(1000016--[[Title]]),
+			"Title", list.Title or T(302535920001726--[[Title]]),
 			"Icon", list.Icon or "UI/Icons/gpmc_system_shine.tga",
-			"RolloverTitle", list.RolloverTitle or T(126095410863--[[Info]]),
-			"RolloverText", list.RolloverText or T(126095410863--[[Info]]),
+			"RolloverTitle", list.RolloverTitle or T(302535920001717--[[Info]]),
+			"RolloverText", list.RolloverText or T(302535920001717--[[Info]]),
 			"RolloverHint", list.RolloverHint or "",
 			"OnContextUpdate", list.OnContextUpdate or empty_func,
 		}, {
@@ -4147,7 +4147,7 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		items = item_list,
-		title = T(174--[[Color Modifier]]) .. ": " .. RetName(obj),
+		title = T(302535920001708--[[Color Modifier]]) .. ": " .. RetName(obj),
 		hint = T(302535920001108--[[Double click to open object/attachment to edit (select to flash object).]]),
 		custom_type = 1,
 		custom_func = function(sel, dialog)
@@ -4582,7 +4582,7 @@ function ChoGGi.ComFuncs.DeleteObjectQuestion(obj)
 		CallBackFunc,
 		T(6779--[[Warning]]) .. ": " .. T(302535920000855--[[Last chance before deletion!]]),
 		T(5451--[[DELETE]]) .. ": " .. name,
-		T(6879--[[Cancel]]) .. " " .. T(502364928914--[[Delete]])
+		T(302535920001713--[[Cancel]]) .. " " .. T(302535920001689--[[Delete]])
 	)
 end
 
@@ -4635,7 +4635,7 @@ function ChoGGi.ComFuncs.DeleteAllObjectQuestion(obj)
 		CallBackFunc,
 		T(6779--[[Warning]]) .. ": " .. T(302535920000855--[[Last chance before deletion!]]),
 		T(5451--[[DELETE]]) .. ": " .. name,
-		T(6879--[[Cancel]]) .. " " .. T(502364928914--[[Delete]])
+		T(302535920001713--[[Cancel]]) .. " " .. T(302535920001689--[[Delete]])
 	)
 end
 
@@ -5222,7 +5222,7 @@ if what_game == "Mars" then
 	end
 end
 
-function ChoGGi.ComFuncs.SetWinObjectVis(obj,visible)
+function ChoGGi.ComFuncs.SetWinObjectVis(obj, visible)
 	if not obj then
 		return
 	end

@@ -132,7 +132,7 @@ function OnMsg.ClassesPostprocess()
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
 				"RolloverTitle", T(302535920000682--[[Change Entity]]),
-				"RolloverHint", T(608042494285--[[<left_click> Activate]]),
+				"RolloverHint", T(302535920001718--[[<left_click> Activate]]),
 				"ContextUpdateOnOpen", true,
 				"OnContextUpdate", function(self)
 					self:SetRolloverText(T{302535920001151--[[Set Entity For <entity>]],
@@ -180,7 +180,7 @@ function OnMsg.ClassesPostprocess()
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
 				"RolloverTitle", T(302535920001677--[[Entity Size]]),
-				"RolloverHint", T(608042494285--[[<left_click> Activate]]),
+				"RolloverHint", T(302535920001718--[[<left_click> Activate]]),
 				"RolloverText", T(302535920001678--[[Change size of Entity.
 Starts at 100% and goes up by 5 (max is 2047), <right_click> to reset to 5% (hold ctrl to go up by 25/50).]]),
 				"OnPress", function (self, gamepad)
@@ -219,7 +219,7 @@ Starts at 100% and goes up by 5 (max is 2047), <right_click> to reset to 5% (hol
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
 				"RolloverTitle", T(302535920000457--[[Anim State Set]]),
-				"RolloverHint", T(608042494285--[[<left_click> Activate]]),
+				"RolloverHint", T(302535920001718--[[<left_click> Activate]]),
 				"RolloverText", T(302535920000458--[[Make object dance on command.]]),
 				"OnPress", function(self)
 					ChoGGi.ComFuncs.SetAnimState(self.context)
@@ -230,7 +230,7 @@ Starts at 100% and goes up by 5 (max is 2047), <right_click> to reset to 5% (hol
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
 				"RolloverTitle", T(302535920000129--[[Set]]) .. " " .. T(302535920001184--[[Particles]]),
-				"RolloverHint", T(608042494285--[[<left_click> Activate]]),
+				"RolloverHint", T(302535920001718--[[<left_click> Activate]]),
 				"RolloverText", T(302535920001421--[[Shows a list of particles you can use on the selected obj.]]),
 				"OnPress", function(self)
 					ChoGGi.ComFuncs.SetParticles(self.context)

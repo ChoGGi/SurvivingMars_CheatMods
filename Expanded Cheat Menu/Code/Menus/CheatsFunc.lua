@@ -813,7 +813,7 @@ function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
 
 	local item_list = {
 		{
-			text = " " .. T(4493--[[All]]),
+			text = " " .. T(302535920001691--[[All]]),
 			value = "All",
 			hint = T(302535920000329--[[Scan all anomalies.]]),
 		},
@@ -907,7 +907,7 @@ function ChoGGi.MenuFuncs.MapExploration()
 		{text = T(302535920000258--[[Reveal Map]]), value = 12, hint = T(302535920000259--[[Reveals the map squares]])},
 		{text = T(302535920000260--[[Reveal Map (Deep)]]), value = 13, hint = T(302535920000261--[[Reveals the map and unlocks "Deep" resources]])},
 
-		{text = T(4493--[[All]]), value = 1, hint = hint_core .. "\n" .. hint_deep},
+		{text = T(302535920001691--[[All]]), value = 1, hint = hint_core .. "\n" .. hint_deep},
 		{text = T(302535920000255--[[Deep]]), value = 2, hint = hint_deep},
 		{text = T(302535920000256--[[Core]]), value = 3, hint = hint_core},
 

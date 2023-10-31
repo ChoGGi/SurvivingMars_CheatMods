@@ -339,7 +339,7 @@ This is temporary, use Options>Video>Framerate Counter to permanently save it."]
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(1000458--[[Up]]) .. " " .. T(1000457--[[Left]]),
+Actions[c] = {ActionName = T(302535920001698--[[Up]]) .. " " .. T(302535920001716--[[Left]]),
 	ActionMenubar = "ECM.Debug.Framerate Counter",
 	ActionId = ".Up Left",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
@@ -347,26 +347,26 @@ Actions[c] = {ActionName = T(1000458--[[Up]]) .. " " .. T(1000457--[[Left]]),
 	setting_mask = 0,
 }
 c = c + 1
-Actions[c] = {ActionName = T(1000458--[[Up]]) .. " " .. T(1000459--[[Right]]),
+Actions[c] = {ActionName = T(302535920001698--[[Up]]) .. " " .. T(302535920001715--[[Right]]),
 	ActionMenubar = "ECM.Debug.Framerate Counter",
-	ActionId = ".Up Left",
+	ActionId = ".Up Right",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
 	OnAction = ChoGGi.MenuFuncs.SetFrameCounterLocation,
 	setting_mask = 1,
 	RolloverText = T(1000121--[[Default]]),
 }
 c = c + 1
-Actions[c] = {ActionName = T(1000460--[[Down]]) .. " " .. T(1000457--[[Left]]),
+Actions[c] = {ActionName = T(302535920001699--[[Down]]) .. " " .. T(302535920001716--[[Left]]),
 	ActionMenubar = "ECM.Debug.Framerate Counter",
-	ActionId = ".Up Left",
+	ActionId = ".Down Left",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_down.tga",
 	OnAction = ChoGGi.MenuFuncs.SetFrameCounterLocation,
 	setting_mask = 2,
 }
 c = c + 1
-Actions[c] = {ActionName = T(1000460--[[Down]]) .. " " .. T(1000459--[[Right]]),
+Actions[c] = {ActionName = T(302535920001699--[[Down]]) .. " " .. T(302535920001715--[[Right]]),
 	ActionMenubar = "ECM.Debug.Framerate Counter",
-	ActionId = ".Up Left",
+	ActionId = ".Down Right",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_down.tga",
 	OnAction = ChoGGi.MenuFuncs.SetFrameCounterLocation,
 	setting_mask = 3,
@@ -374,7 +374,7 @@ Actions[c] = {ActionName = T(1000460--[[Down]]) .. " " .. T(1000459--[[Right]]),
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = T(155--[[Entity]]),
+Actions[c] = {ActionName = T(302535920001683--[[Entity]]),
 	ActionMenubar = "ECM.Debug",
 	ActionId = ".Entity",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -643,7 +643,7 @@ Actions[c] = {ActionName = T(302535920001310--[[DTM Slots Display]]),
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = T(298035641454--[[Object]]),
+Actions[c] = {ActionName = T(302535920001685--[[Object]]),
 	ActionMenubar = "ECM.Debug",
 	ActionId = ".Object",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
@@ -680,7 +680,7 @@ Actions[c] = {ActionName = T(302535920000457--[[Anim State Set]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(327465361219--[[Edit]]) .. " " .. T(298035641454--[[Object]]),
+Actions[c] = {ActionName = T(302535920001707--[[Edit]]) .. " " .. T(302535920001685--[[Object]]),
 	ActionMenubar = "ECM.Debug.Object",
 	ActionId = ".Object Manipulator",
 	ActionIcon = "CommonAssets/UI/Menu/SaveMapEntityList.tga",
@@ -700,7 +700,7 @@ Actions[c] = {ActionName = T(302535920000481--[[Open In Ged Object Editor]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(298035641454--[[Object]]) .. " " .. T(302535920001476--[[Edit Flags]]),
+Actions[c] = {ActionName = T(302535920001685--[[Object]]) .. " " .. T(302535920001476--[[Edit Flags]]),
 	ActionMenubar = "ECM.Debug.Object",
 	ActionId = ".Object Edit Flags",
 	ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",

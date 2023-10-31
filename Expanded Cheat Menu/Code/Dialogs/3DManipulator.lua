@@ -85,7 +85,7 @@ function ChoGGi_Dlg3DManipulator:Init(parent, context)
 --~ 		self.func_axis_set = obj.SetAxis
 	end
 
-	self.title = T(327465361219--[[Edit]]) .. " " .. T(298035641454--[[Object]]) .. " " .. T(302535920001432--[[3D]]) .. ": " .. self.obj_name
+	self.title = T(302535920001707--[[Edit]]) .. " " .. T(302535920001685--[[Object]]) .. " " .. T(302535920001432--[[3D]]) .. ": " .. self.obj_name
 
 	-- By the Power of Grayskull!
 	self:AddElements(parent, context)

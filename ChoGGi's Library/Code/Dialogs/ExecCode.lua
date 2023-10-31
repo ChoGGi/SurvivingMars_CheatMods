@@ -178,7 +178,7 @@ Press again to toggle updating."]]),
 	self.idCancel = g_Classes.ChoGGi_XButton:new({
 		Id = "idCancel",
 		Dock = "right",
-		Text = T(6879--[[Cancel]]),
+		Text = T(302535920001713--[[Cancel]]),
 		Background = g_Classes.ChoGGi_XButton.bg_red,
 		RolloverText = T(302535920000074--[[Cancel without changing anything.]]),
 		Margins = box(0, 0, 10, 0),

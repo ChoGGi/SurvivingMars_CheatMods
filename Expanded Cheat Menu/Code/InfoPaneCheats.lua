@@ -56,7 +56,7 @@ local function SetHint(action, hint)
 	-- name has to be set to make the hint show up
 	action.ActionName = action.ActionId
 	action.RolloverText = hint
-	action.RolloverHint = T(608042494285--[[<left_click> Activate]])
+	action.RolloverHint = T(302535920001718--[[<left_click> Activate]])
 end
 local function SetIcon(action, name, icon)
 	-- we're changing the name so we'll set the hint title to the orig name
@@ -356,7 +356,7 @@ It don't matter if you're black or white"]]),
 		des = T(302535920001613--[[Refill the battery to max.]]),
 	},
 	Despawn = {
-		des = T(833734167742--[[Delete Item]]),
+		des = T(302535920001711--[[Delete Item]]),
 	},
 	MoveSpeedDbl = {
 		des = T(302535920001614--[[Doubles the move speed.]]),
@@ -781,10 +781,10 @@ function CObject:CheatDeleteAllObjects()
 	end
 
 	ComFuncs.QuestionBox(
-		T(6779--[[Warning]]) .. "!\n" .. T(697--[[Destroy]]) .. " " .. T(4493--[[All]]) .. ": " .. id,
+		T(6779--[[Warning]]) .. "!\n" .. T(302535920001702--[[Destroy]]) .. " " .. T(302535920001691--[[All]]) .. ": " .. id,
 		CallBackFunc,
-		T(6779--[[Warning]]) .. ": " .. T(697--[[Destroy]]),
-		T(697--[[Destroy]]) .. " " .. T(4493--[[All]]) .. " " .. id,
+		T(6779--[[Warning]]) .. ": " .. T(302535920001702--[[Destroy]]),
+		T(302535920001702--[[Destroy]]) .. " " .. T(302535920001691--[[All]]) .. " " .. id,
 		T(1176--[[Cancel Destroy]])
 	)
 end

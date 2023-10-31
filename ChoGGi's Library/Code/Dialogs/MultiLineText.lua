@@ -74,13 +74,13 @@ function ChoGGi_DlgMultiLineText:Init(parent, context)
 		self.idSearchText = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idSearchText",
 			RolloverText = T(302535920001529--[["Press <color 0 200 0>Enter</color> to select next found text, and <color 0 200 0>Ctrl-Enter</color> to scroll to previous found text."]]),
-			Hint = Translate(10123--[[Search]]),
+			Hint = Translate(302535920001696--[[Search]]),
 			OnKbdKeyDown = self.idSearchText_OnKbdKeyDown,
 		}, self.idSearchArea)
 		--
 		self.idSearch = g_Classes.ChoGGi_XButton:new({
 			Id = "idSearch",
-			Text = T(10123--[[Search]]),
+			Text = T(302535920001696--[[Search]]),
 			Dock = "right",
 			RolloverAnchor = "right",
 			RolloverHint = T(302535920001424--[["<left_click> Next, <right_click> Previous, <middle_click> Top"]]),
@@ -98,7 +98,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self.idOkay = g_Classes.ChoGGi_XButton:new({
 		Id = "idOkay",
 		Dock = "left",
-		Text = context.button_ok or T(6878--[[OK]]),
+		Text = context.button_ok or T(302535920001714--[[OK]]),
 		Background = g_Classes.ChoGGi_XButton.bg_green,
 		RolloverText = context.hint_ok or T(302535920000382--[[Closes dialogs and sends positive return value.]]),
 		OnPress = self.idOkay_OnPress,
@@ -160,7 +160,7 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 	self.idCancel = g_Classes.ChoGGi_XButton:new({
 		Id = "idCancel",
 		Dock = "right",
-		Text = context.button_cancel or T(6879--[[Cancel]]),
+		Text = context.button_cancel or T(302535920001713--[[Cancel]]),
 		Background = g_Classes.ChoGGi_XButton.bg_red,
 		RolloverText = context.hint_cancel or T(302535920001423--[[Close without doing anything.]]),
 		OnPress = self.idCancel_OnPress,

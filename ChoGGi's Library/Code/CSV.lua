@@ -654,7 +654,7 @@ do -- Graphs
 		export_data = BuildTable(
 			export_data,
 			c,
-			T(5426--[[Building]]) .. " " .. T(302535920000971--[[Sites]]) .. " " .. T(302535920001453--[[Completed]]),
+			T(302535920001712--[[Building]]) .. " " .. T(302535920000971--[[Sites]]) .. " " .. T(302535920001453--[[Completed]]),
 			#(labels.ConstructionSite or "") + #(labels.ConstructionSiteWithHeightSurfaces or ""),
 			UICity.ts_constructions_completed
 		)

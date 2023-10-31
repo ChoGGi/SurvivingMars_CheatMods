@@ -21,10 +21,9 @@ local function ToggleTech()
 		end
 	end
 
-
 	-- add cargo entry for saved games
 	if not table.find(ResupplyItemDefinitions, "id", "ChoGGi_TriboelectricSensorTower") then
-		RocketPayload_Init()
+		ResupplyItemsInit()
 	end
 end
 OnMsg.CityStart = ToggleTech

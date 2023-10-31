@@ -53,7 +53,7 @@ function OnMsg.ClassesBuilt()
 	end -- what_game
 end
 
--- This is when RocketPayload_Init is called (CityStart is too soon)
+-- This is when ResupplyItemsInit is called (CityStart is too soon)
 OnMsg.NewMapLoaded = ChoGGi.ComFuncs.UpdateDataTablesCargo
 
 -- Needed for UICity and some others that aren't created till around then

@@ -29,7 +29,7 @@ function ChoGGi.MenuFuncs.RemoveInvalidLabelObjects()
 		end
 	end
 	MsgPopup(
-		T(4493--[[All]]),
+		T(302535920001691--[[All]]),
 		T(302535920001533--[[Remove Invalid Label Objects]])
 	)
 end
@@ -44,7 +44,7 @@ function ChoGGi.MenuFuncs.RocketCrashesGameOnLanding()
 		end)
 	end
 	MsgPopup(
-		T(4493--[[All]]),
+		T(302535920001691--[[All]]),
 		T(302535920001351--[[Rocket Crashes Game On Landing]])
 	)
 end
@@ -58,7 +58,7 @@ function ChoGGi.MenuFuncs.ToggleWorkingAll()
 	end)
 
 	MsgPopup(
-		T(4493--[[All]]),
+		T(302535920001691--[[All]]),
 		T(302535920001299--[[Toggle Working On All Buildings]])
 	)
 end
@@ -220,7 +220,7 @@ do -- Colonist stuff
 		end
 
 		MsgPopup(
-			T(4493--[[All]]),
+			T(302535920001691--[[All]]),
 			T(302535920000591--[[Colonists Trying To Board Rocket Freezes Game]])
 		)
 	end
@@ -268,7 +268,7 @@ function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
 	ResumePassEdits("ChoGGi.MenuFuncs.ParticlesWithNullPolylines")
 
 	MsgPopup(
-		T(4493--[[All]]),
+		T(302535920001691--[[All]]),
 		T(302535920000593--[[Remove Particles With Null Polylines]])
 	)
 end
@@ -280,7 +280,7 @@ function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
 			MapDelete(true, "UnpersistedMissingClass")
 			ResumePassEdits("ChoGGi.MenuFuncs.RemoveMissingClassObjects")
 			MsgPopup(
-				T(4493--[[All]]),
+				T(302535920001691--[[All]]),
 				T(302535920000587--[[Remove Missing Class Objects]])
 			)
 		end
@@ -317,7 +317,7 @@ function ChoGGi.MenuFuncs.MirrorSphereStuck()
 	ResumePassEdits("ChoGGi.MenuFuncs.MirrorSphereStuck")
 
 	MsgPopup(
-		T(4493--[[All]]),
+		T(302535920001691--[[All]]),
 		T(302535920000595--[[Mirror Sphere Stuck]])
 	)
 end
@@ -335,7 +335,7 @@ function ChoGGi.MenuFuncs.StutterWithHighFPS()
 
 	ChoGGi.ComFuncs.ResetHumanCentipedes()
 	MsgPopup(
-		T(4493--[[All]]),
+		T(302535920001691--[[All]]),
 		T(302535920000597--[[Stutter With High FPS]])
 	)
 end
@@ -359,7 +359,7 @@ do -- DronesKeepTryingBlockedAreas
 		-- toggle working state on all ConstructionSite (wakes up drones else they'll wait at hub)
 		MapForEach("map", "ConstructionSite", ToggleWorking)
 		MsgPopup(
-			T(4493--[[All]]),
+			T(302535920001691--[[All]]),
 			T(302535920000599--[[Drones Keep Trying Blocked Areas]])
 		)
 	end
@@ -371,7 +371,7 @@ function ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid()
 		o:SetPos(HexGetNearestCenter(o:GetVisualPos()))
 	end)
 	MsgPopup(
-		T(4493--[[All]]),
+		T(302535920001691--[[All]]),
 		T(302535920000621--[[Align All Buildings To Hex Grid]])
 	)
 end
@@ -413,7 +413,7 @@ function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
 	MapDelete(true, "GridTileWater")
 	ResumePassEdits("ChoGGi.MenuFuncs.RemoveYellowGridMarks")
 	MsgPopup(
-		T(4493--[[All]]),
+		T(302535920001691--[[All]]),
 		T(302535920000603--[[Remove Yellow Grid Marks]])
 	)
 end
@@ -441,7 +441,7 @@ function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
 	ResumePassEdits("ChoGGi.MenuFuncs.RemoveBlueGridMarks")
 
 	MsgPopup(
-		T(4493--[[All]]),
+		T(302535920001691--[[All]]),
 		T(302535920001193--[[Remove Blue Grid Marks]])
 	)
 end
@@ -453,7 +453,7 @@ function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
 		objs[i]:ChangeWorkingStateAnim(true)
 	end
 	MsgPopup(
-		T(4493--[[All]]),
+		T(302535920001691--[[All]]),
 		T(302535920000605--[[Project Morpheus Radar Fell Down]])
 	)
 end
@@ -464,7 +464,7 @@ function ChoGGi.MenuFuncs.RebuildWalkablePointsInDomes()
 		o:GenerateWalkablePoints()
 	end)
 	MsgPopup(
-		T(4493--[[All]]),
+		T(302535920001691--[[All]]),
 		T(302535920000583--[[Rebuild Walkable Points In Domes]])
 	)
 end
@@ -504,7 +504,7 @@ function ChoGGi.MenuFuncs.ColonistsFixBlackCube()
 		end
 	end
 	MsgPopup(
-		T(4493--[[All]]),
+		T(302535920001691--[[All]]),
 		T(302535920000619--[[Fix Black Cube Colonists]])
 	)
 end
@@ -535,7 +535,7 @@ do -- CablesAndPipesRepair
 		RepairBorkedObjects(g_BrokenSupplyGridElements.water)
 
 		MsgPopup(
-			T(4493--[[All]]),
+			T(302535920001691--[[All]]),
 			T(302535920000157--[[Cables & Pipes]]) .. ": " .. T(302535920000607--[[Instant Repair]])
 		)
 	end

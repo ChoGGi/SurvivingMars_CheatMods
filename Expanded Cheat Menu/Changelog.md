@@ -6,6 +6,9 @@
 - Stopped using TranslationTable, might cause some string issues.
 - Entity spawner has a button to change scale.
 
+### Fixed:
+- Issue opening certain items in Menu>Cheats>Consts (thanks Parrot).
+
 ## v19.1 (4 Sep 2023)
 ### Fixed:
 - Some mod game rule was interfering with Mission>Game Rules (thanks FURRYHUSKY1000).

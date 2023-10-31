@@ -258,7 +258,7 @@ Actions[c] = {ActionName = T(302535920000359--[[Breakthroughs From Omega Telesco
 
 -- menu
 c = c + 1
-Actions[c] = {ActionName = T(1000162--[[Menu]]),
+Actions[c] = {ActionName = T(302535920001701--[[Menu]]),
 	ActionMenubar = "ECM.Cheats",
 	ActionId = ".Menu",
 	ActionIcon = "CommonAssets/UI/Menu/folder.tga",

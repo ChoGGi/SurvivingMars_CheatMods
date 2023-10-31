@@ -404,7 +404,7 @@ function ChoGGi.MenuFuncs.GUIDockSide_Toggle()
 
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
-		ChoGGi.UserSettings.GUIDockSide and T(1000459--[[Right]]) or T(1000457--[[Left]]),
+		ChoGGi.UserSettings.GUIDockSide and T(302535920001715--[[Right]]) or T(302535920001716--[[Left]]),
 		T(302535920001412--[[GUI Dock Side]])
 	)
 end
@@ -695,7 +695,7 @@ do -- ListAllObjects
 			custom_type = 1,
 			checkboxes = {
 				{
-					title = T(1000220--[[Refresh]]),
+					title = T(302535920001687--[[Refresh]]),
 					hint = T(302535920000548--[[List is updated each time you click this.]]),
 					func = function(dlg)
 						item_list = BuildItemList_Class(value)
@@ -752,7 +752,7 @@ do -- ListAllObjects
 			height = 800,
 			checkboxes = {
 				{
-					title = T(1000220--[[Refresh]]),
+					title = T(302535920001687--[[Refresh]]),
 					hint = T(302535920000548--[[List is updated each time you click this.]]),
 					func = function(dlg)
 						item_list = BuildItemList_All()
@@ -995,7 +995,7 @@ function ChoGGi.MenuFuncs.ChangeMap()
 	local dlg_has_params = ChoGGi.ComFuncs.OpenInExamineDlg(info_lists, {
 		has_params = true,
 		override_title = true,
-		title = T(126095410863--[[Info]]) .. ": " .. T(10892--[[MISSION PARAMETERS]]),
+		title = T(302535920001717--[[Info]]) .. ": " .. T(10892--[[MISSION PARAMETERS]]),
 	})
 
 	local function CallBackFunc(choice)
