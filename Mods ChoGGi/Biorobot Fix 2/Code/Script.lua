@@ -2,6 +2,7 @@
 
 local mod_RemovePerks
 local mod_RemoveFlaws
+local mod_RemoveVegan
 local mod_RemoveMartianborn
 
 local function ModOptions(id)
@@ -13,6 +14,7 @@ local function ModOptions(id)
 	local options = CurrentModOptions
 	mod_RemovePerks = options:GetProperty("RemovePerks")
 	mod_RemoveFlaws = options:GetProperty("RemoveFlaws")
+	mod_RemoveVegan = options:GetProperty("RemoveVegan")
 	mod_RemoveMartianborn = options:GetProperty("RemoveMartianborn")
 end
 -- Load default/saved settings
@@ -39,6 +41,9 @@ function OnMsg.ColonistBorn(colonist, event)
 		end
 	end
 
+  if mod_RemoveVegan then
+		colonist:RemoveTrait("Vegan")
+  end
   if mod_RemoveMartianborn then
 		colonist:RemoveTrait("Martianborn")
   end

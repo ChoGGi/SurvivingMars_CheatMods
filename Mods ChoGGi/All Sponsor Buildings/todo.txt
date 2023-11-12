@@ -1,4 +1,4 @@
-unlock cargo as well
+g_CheatUnlockAllSponsorBuildings
 
 mod option for picking pod
 GetMissionSponsor()

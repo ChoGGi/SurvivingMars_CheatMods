@@ -4,15 +4,6 @@ local ValidateBuilding = ValidateBuilding
 local ObjModified = ObjModified
 local RetName = ChoGGi.ComFuncs.RetName
 
-local function LoopWorkplace(context, which)
-	for i = 1, #context.workers do
-		local workers = context.workers[i]
-		for j = 1, #workers do
-			workers[j].ChoGGi_Lockworkplace = which
-		end
-	end
-end
-
 local mod_NeverChange
 local mod_SeniorsOverride
 
@@ -31,20 +22,60 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
--- make the value the below buttons set actually do something
-local ChoOrig_Colonist_SetWorkplace = Colonist.SetWorkplace
-function Colonist:SetWorkplace(...)
+-- Make the value the below buttons set actually do something
+local ChoOrig_Colonist_CheckForcedWorkplace = Colonist.CheckForcedWorkplace
+function Colonist:CheckForcedWorkplace(...)
+	local workplace = self.workplace
 
 	if mod_SeniorsOverride and self.age_trait ~= "Senior" then
-		if ValidateBuilding(self.workplace)
+		if ValidateBuilding(workplace)
 			and (mod_NeverChange or self.ChoGGi_Lockworkplace)
 		then
-			return
+
+			-- if it isn't forced yet then force it.
+			local current_shift, time
+			if not self.user_forced_workplace then
+				-- lua rev 1011166
+				-- function Workplace:ColonistInteract(col)
+				if workplace.active_shift == 0 then
+					current_shift = CurrentWorkshift --should be the shift @ click moment
+					for i = 1, 3 do
+						if workplace:HasFreeWorkSlots(current_shift) then
+							break
+						end
+						current_shift = current_shift + 1
+						current_shift = current_shift > 3 and current_shift % 3 or current_shift
+					end
+				else
+					current_shift = workplace.active_shift
+				end
+				col.user_forced_workplace = {workplace, current_shift, GameTime()}
+			else
+				workplace, current_shift, time = table.unpack(self.user_forced_workplace)
+			end
+
+			-- lua rev 1011166
+			-- function Colonist:CheckForcedWorkplace()
+			local dome = self:CheckForcedDome() or self.dome
+			local service_dome = workplace:CheckServicedDome(dome)
+			if AreDomesConnected(service_dome, dome) then
+				local remaining_time = time or const.Scale.sols -- or whatever
+				return workplace, current_shift, remaining_time
+			end
+
 		end
 	end
 
-	-- we only fire the func if the lock isn't there, yeah i'm sure this won't cause any issues :)
-	return ChoOrig_Colonist_SetWorkplace(self, ...)
+	return ChoOrig_Colonist_CheckForcedWorkplace(self, ...)
+end
+
+local function LoopWorkplace(context, which)
+	for i = 1, #(context and context.workers or "") do
+		local workers = context.workers[i]
+		for j = 1, #workers do
+			workers[j].ChoGGi_Lockworkplace = which
+		end
+	end
 end
 
 function OnMsg.ClassesPostprocess()

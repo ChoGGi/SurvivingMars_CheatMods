@@ -58,6 +58,8 @@ do -- ModUpload
 		faN8Rlm = true,
 		-- A Tubular Glass House 2
 		ChoGGi_ATubularGlassHouse = true,
+		-- Biorobot Fix 2
+		ChoGGi_BiorobotFix = true,
 		-- Distributed Drone Assembly 2
 		ChoGGi_DistributedDroneAssembly2 = true,
 		-- Psychiatric Hospital

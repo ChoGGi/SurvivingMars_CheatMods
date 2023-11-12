@@ -1,2 +1,5 @@
+v0.3
+Didn't remove Vegan trait (thanks Alex).
+
 v0.2
 Issue with update? (thanks Horta).

@@ -304,7 +304,7 @@ if blacklist then
 		end
 	end
 
-	-- Ehere we store data in LocalStorage (I don't want to to have to check each time i save settings)
+	-- Here we store data in LocalStorage (I don't want to to have to check each time i save settings)
 	if type(LocalStorage.ModPersistentData) ~= "table" then
 		LocalStorage.ModPersistentData = {}
 	end

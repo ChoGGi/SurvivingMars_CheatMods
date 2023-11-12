@@ -5,7 +5,7 @@ local GetSafeMargins = GetSafeMargins
 local GetInGameInterface = GetInGameInterface
 local box = box
 
-local mod_Enabled
+local mod_DisablePanelSizing
 local mod_ScrollSelection
 
 local function ModOptions(id)
@@ -14,7 +14,7 @@ local function ModOptions(id)
 		return
 	end
 
-	mod_Enabled = CurrentModOptions:GetProperty("Enabled")
+	mod_DisablePanelSizing = CurrentModOptions:GetProperty("Enabled")
 	mod_ScrollSelection = CurrentModOptions:GetProperty("ScrollSelection")
 end
 -- Load default/saved settings
@@ -26,7 +26,7 @@ local ChoOrig_XSizeConstrained_WindowUpdateMeasure = XSizeConstrainedWindow.Upda
 local ChoOrig_XWindow_UpdateMeasure = XWindow.UpdateMeasure
 
 function XSizeConstrainedWindow:UpdateMeasure(...)
-	if mod_Enabled then
+	if mod_DisablePanelSizing then
 		return ChoOrig_XWindow_UpdateMeasure(self, ...)
 	else
 		return ChoOrig_XSizeConstrained_WindowUpdateMeasure(self, ...)

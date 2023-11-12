@@ -80,7 +80,7 @@ Msg.Resume { 1 }
 Msg.LoadingScreenPreClose { 0 }
 Msg.GameStateChangedNotify { 0 }
 Msg.PlanetCameraSet { 0 }
-screen1
+																		screen1
 Msg.GameStateChanged { 1 }
 Msg.LightmodelNightChange { 4 }
 Msg.LightmodelChange { 4 }
@@ -92,7 +92,7 @@ Msg.LightmodelChange { 4 }
 Msg.AfterLightmodelChange { 4 }
 Msg.GameStateChangedNotify { 0 }
 Msg.PlanetCameraSet { 0 }
-screen2
+																		screen2
 Msg.GameStateChanged { 1 }
 Msg.LightmodelNightChange { 4 }
 Msg.LightmodelChange { 4 }
@@ -104,7 +104,7 @@ Msg.LightmodelChange { 4 }
 Msg.AfterLightmodelChange { 4 }
 Msg.GameStateChangedNotify { 0 }
 Msg.PlanetCameraSet { 0 }
-screen3
+																		screen3
 Msg.GameStateChanged { 1 }
 Msg.Pause { 1 }
 Msg.GameStateChanged { 1 }
@@ -125,7 +125,7 @@ Msg.PlanetCameraSet { 0 }
 [mod] Loading mod items...
 Reloading lua files
 Msg.ReloadLua { 0 }
-*Mod starts loading (Code/Script.lua)*
+																		*Mod starts loading (Code/Script.lua)*
 Msg.BeforeClearEntityData { 0 }
 Msg.ClassesGenerate { 1 }
 Msg.ClassesPreprocess { 1 }
