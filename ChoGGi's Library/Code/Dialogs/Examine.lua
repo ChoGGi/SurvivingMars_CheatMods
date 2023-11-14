@@ -77,7 +77,6 @@ local Translate = ChoGGi.ComFuncs.Translate
 local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
 local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
 local RetName = ChoGGi.ComFuncs.RetName
-local IsObjlist = ChoGGi.ComFuncs.IsObjlist
 local SetWinObjectVis = ChoGGi.ComFuncs.SetWinObjectVis
 local RetMapType = ChoGGi.ComFuncs.RetMapType
 local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
@@ -254,7 +253,7 @@ function ChoGGi_DlgExamine:Init(parent, context)
 	self.info_list_sort_num = {}
 	self.info_list_skip_dupes = {}
 	self.info_list_data_meta = {}
-	self.marked_objects = objlist:new()
+	self.marked_objects = {}
 	self.title = context.title
 	self.override_title = context.override_title
 	self.varargs = context.varargs
@@ -1160,7 +1159,7 @@ function ChoGGi_DlgExamine:idButClear_OnPress()
 			end
 		end
 	end
-	self.marked_objects:Clear()
+	table.iclear(self.marked_objects)
 
 	self:CleanupCustomObjs(self.obj_ref, true)
 end
@@ -2947,9 +2946,9 @@ function ChoGGi_DlgExamine:RetDebugUpValue(obj, list, c, nups)
 end
 
 function ChoGGi_DlgExamine:RetDebugGetInfo(obj)
-	self.RetDebugInfo_table = self.RetDebugInfo_table or objlist:new()
+	self.RetDebugInfo_table = self.RetDebugInfo_table or {}
 	local temp = self.RetDebugInfo_table
-	temp:Destroy()
+	self.ChoGGi.ComFuncs.objlist_Destroy(temp)
 
 	local c = 0
 	local info = debug.getinfo(obj, "Slfunt")
@@ -2967,9 +2966,9 @@ function ChoGGi_DlgExamine:RetFuncArgs(obj)
 	if blacklist then
 		return "params: (?)"
 	end
-	self.RetDebugInfo_table = self.RetDebugInfo_table or objlist:new()
+	self.RetDebugInfo_table = self.RetDebugInfo_table or {}
 	local temp = self.RetDebugInfo_table
-	temp:Destroy()
+	self.ChoGGi.ComFuncs.objlist_Destroy(temp)
 
 	local info = debug.getinfo(obj, "u")
 	if info.nparams > 0 then
@@ -4206,3 +4205,29 @@ end
 ex = OpenExamine
 exr = OpenExamineReturn
 -- exd = OpenExamineDelayed
+
+-- Backwards Compat for now... (needs? to be cleared out of Examine)
+-- Maybe just rename it?
+objlist = rawget(_G, "objlist") or {}
+function IsObjlist(list)
+	return type(list) == "table" and getmetatable(list) == objlist
+end
+function objlist:new(o)
+  if IsObjlist(o) then
+    local o1 = table.icopy(o)
+    setmetatable(o1, self)
+    return o1
+  else
+    o = o or {}
+    setmetatable(o, self)
+    return o
+  end
+end
+function objlist:Destroy()
+	ex(debug.getinfo(2))
+	print("Please tell me if you see this, and a screenshot of the examine dialog would help.")
+end
+function objlist:Clear()
+	ex(debug.getinfo(2))
+	print("Please tell me if you see this, and a screenshot of the examine dialog would help.")
+end

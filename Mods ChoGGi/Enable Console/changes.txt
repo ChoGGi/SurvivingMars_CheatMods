@@ -1,3 +1,7 @@
+v0.8
+Added code I use in ECM to allow pasting in more complicated code (no more "not understood").
+Removes ` when using Tilde to open console.
+
 v0.7
 Added blacklist bypass used in ECM console.
 

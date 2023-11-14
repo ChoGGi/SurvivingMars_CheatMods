@@ -99,3 +99,46 @@ function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 		return ChoOrig_Console_Exec(self, text, hide_text, ...)
 	end
 end
+
+function OnMsg.ModsReloaded()
+	if IsECM() then
+		return
+	end
+
+--~ 	-- Has a delay when closing console :(
+--~ 	config.ConsoleDim = 1
+
+	-- build console buttons
+	local dlgConsole = dlgConsole
+	if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then
+		local edit = dlgConsole.idEdit
+
+		-- removes comments from code, and adds a space to each newline, so pasting multi line works
+		local XEditEditOperation = XEdit.EditOperation
+		local StripComments = ChoGGi.ComFuncs.StripComments
+		function edit:EditOperation(insert_text, is_undo_redo, cursor_to_text_start, ...)
+			if type(insert_text) == "string" then
+				insert_text = StripComments(insert_text)
+				insert_text = insert_text:gsub("\n", " \n")
+			end
+			return XEditEditOperation(self, insert_text, is_undo_redo, cursor_to_text_start, ...)
+		end
+
+		dlgConsole.ChoGGi_MenuAdded = true
+	end
+
+end -- ModsReloaded
+
+-- kind of an ugly way of making sure console doesn't include ` when using tilde to open console
+-- I could do a thread and wait till the key isn't pressed, but it's slower
+-- this does block user from typing in `, but eh
+local ChoOrig_Console_TextChanged = Console.TextChanged
+function Console:TextChanged(...)
+	ChoOrig_Console_TextChanged(self, ...)
+	local text = self.idEdit:GetText()
+
+	if text:sub(-1) == "`" then
+		self.idEdit:SetText(text:sub(1, -2))
+		self.idEdit:SetCursor(1, #text-1)
+	end
+end

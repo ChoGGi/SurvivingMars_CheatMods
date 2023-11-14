@@ -37,8 +37,6 @@ local SuspendPassEdits = SuspendPassEdits
 local ViewAndSelectObject = ViewAndSelectObject
 local WaitMsg = WaitMsg
 local XDestroyRolloverWindow = XDestroyRolloverWindow
--- OBSOLETE
-ChoGGi.ComFuncs.IsObjlist = IsObjlist
 
 -- actually local them?
 --JA3
@@ -62,7 +60,6 @@ local GetCursorWorldPos = not is_gp and GetCursorWorldPos or function()
 	return UseGamepadUI() and GetTerrainGamepadCursor() or GetTerrainCursor()
 end
 
-local objlist = objlist
 local g_CObjectFuncs = g_CObjectFuncs
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
@@ -193,7 +190,7 @@ do -- RetName
 		end
 	end
 	local func_tables = {
-		"g_CObjectFuncs", "camera", "camera3p", "cameraMax", "cameraRTS", "objlist",
+		"g_CObjectFuncs", "camera", "camera3p", "cameraMax", "cameraRTS",
 		"coroutine", "lpeg", "pf", "string", "table", "UIL", "editor",
 		"terrain", "terminal", "TFormat", "XInput",
 	}
@@ -451,16 +448,6 @@ do -- RetName
 				else
 					name = Translate(obj.display_name)
 				end
-
--- I'd like to fire this after values_lookup, but for now comment it
---~ 			-- entity
---~ 			elseif rawget(obj, "entity") and obj.entity ~= "" then
---~ 				name = obj.entity
-
---~ 			-- objlist
---~ 			elseif IsObjlist(obj) then
---~ 				return obj[1] and ChoGGi.ComFuncs.RetName(obj[1]) or "objlist"
-
 			else
 				-- we need to use rawget to check (seems more consistent then rawget), as some stuff like mod.env uses the metatable from _G.__index and causes sm to log an error msg
 				local index = getmetatable(obj)
@@ -2645,7 +2632,6 @@ function ChoGGi.ComFuncs.SetMechanizedDepotTempAmount(obj, amount)
 end
 
 do -- GetAllAttaches
-	local objlist = objlist
 	local attach_dupes = {}
 	local attaches_list, attaches_count
 	local parent_obj
@@ -2694,7 +2680,7 @@ do -- GetAllAttaches
 		end
 
 		-- we use objlist instead of {} for delete all button in examine
-		attaches_list = objlist:new()
+		attaches_list = {}
 		attaches_count = 0
 		parent_obj = obj
 
@@ -4222,7 +4208,7 @@ function ChoGGi.ComFuncs.SetTableValue(tab, id, id_name, item, value)
 end
 
 do -- PadNumWithZeros
-	local pads = objlist:new()
+	local pads = {}
 	-- 100, 00000 = "00100"
 	function ChoGGi.ComFuncs.PadNumWithZeros(num, pad)
 		if pad then
@@ -4233,7 +4219,7 @@ do -- PadNumWithZeros
 		num = num .. ""
 
 		-- build a table of string 0
-		pads:Clear()
+		table.iclear(pads)
 		local diff = #pad - #num
 		for i = 1, diff do
 			pads[i] = "0"
@@ -5534,7 +5520,7 @@ if what_game == "Mars" then
 		end
 		SuspendPassEdits("ChoGGi.ComFuncs.ObjHexShape_Clear")
 		if obj.ChoGGi_shape_obj then
-			obj.ChoGGi_shape_obj:Destroy()
+			ChoGGi.ComFuncs.objlist_Destroy(obj.ChoGGi_shape_obj)
 			obj.ChoGGi_shape_obj = nil
 			if IsValidXWin(obj.ChoGGi_shape_obj_xwin) then
 				obj.ChoGGi_shape_obj_xwin:Close()
@@ -5557,7 +5543,7 @@ if what_game == "Mars" then
 			end
 		end
 
-		obj.ChoGGi_shape_obj = obj.ChoGGi_shape_obj or objlist:new()
+		obj.ChoGGi_shape_obj = obj.ChoGGi_shape_obj or {}
 		params.colour1 = params.colour1 or RandomColourLimited()
 		params.colour2 = params.colour2 or RandomColourLimited()
 		params.offset = params.offset or 1
@@ -5811,8 +5797,8 @@ do -- path markers
 				end
 			end
 
-			if not IsObjlist(obj.ChoGGi_Stored_Waypoints) then
-				obj.ChoGGi_Stored_Waypoints = objlist:new()
+			if type(obj.ChoGGi_Stored_Waypoints) ~= "table" then
+				obj.ChoGGi_Stored_Waypoints = {}
 			end
 
 			if not obj.ChoGGi_WaypointPathAdded then
@@ -5846,8 +5832,8 @@ do -- path markers
 
 	local function SetPathMarkersGameTime_Thread(obj, handles, delay)
 		local colour = RandomColourLimited()
-		if not IsObjlist(obj.ChoGGi_Stored_Waypoints) then
-			obj.ChoGGi_Stored_Waypoints = objlist:new()
+		if type(obj.ChoGGi_Stored_Waypoints) ~= "table" then
+			obj.ChoGGi_Stored_Waypoints = {}
 		end
 
 		while handles[obj.handle] do
@@ -5867,9 +5853,9 @@ do -- path markers
 			if obj.ChoGGi_Stored_Waypoints then
 				SuspendPassEdits("ChoGGi.ComFuncs.SetPathMarkersGameTime_Thread")
 				-- deletes all wp objs
-				obj.ChoGGi_Stored_Waypoints:Destroy()
+				ChoGGi.ComFuncs.objlist_Destroy(obj.ChoGGi_Stored_Waypoints)
 				-- clears table list
-				obj.ChoGGi_Stored_Waypoints:Clear()
+				table.iclear(obj.ChoGGi_Stored_Waypoints)
 				ResumePassEdits("ChoGGi.ComFuncs.SetPathMarkersGameTime_Thread")
 			end
 
@@ -5947,7 +5933,7 @@ do -- path markers
 	ChoGGi.ComFuncs.SetPathMarkersGameTime = SetPathMarkersGameTime
 
 	local function RemoveWPDupePos(cls, obj)
-		if not IsObjlist(obj.ChoGGi_Stored_Waypoints) then
+		if type(obj.ChoGGi_Stored_Waypoints) ~= "table" then
 			return
 		end
 
@@ -5986,11 +5972,11 @@ do -- path markers
 			end
 
 			local stored = obj.ChoGGi_Stored_Waypoints
-			if IsObjlist(stored) then
+			if type(stored) == "table" then
 				-- deletes all objs
-				stored:Destroy()
+				ChoGGi.ComFuncs.objlist_Destroy(stored)
 				-- clears table list
-				stored:Clear()
+				table.iclear(stored)
 			end
 			-- remove ref
 			obj.ChoGGi_Stored_Waypoints = nil
@@ -6538,152 +6524,152 @@ do -- ExamineEntSpots (Object>Entity Spots)
 
 		CreateGameTimeThread(function()
 
-		local list = {}
-		local c = #list
+			local list = {}
+			local c = #list
 
-		-- loop through each state and add sections for them
-		local states_str = obj:GetStates()
-		local states_num = EnumValidStates(obj)
-		for i = 1, #states_str do
-			local state_str = states_str[i]
-			local state_num = states_num[i]
-			obj:SetState(state_str)
-			-- till i find something where the channel isn't 1
-			while obj:GetAnim(1) ~= state_num do
-				WaitMsg("OnRender")
-			end
+			-- loop through each state and add sections for them
+			local states_str = obj:GetStates()
+			local states_num = EnumValidStates(obj)
+			for i = 1, #states_str do
+				local state_str = states_str[i]
+				local state_num = states_num[i]
+				obj:SetState(state_str)
+				-- till i find something where the channel isn't 1
+				while obj:GetAnim(1) ~= state_num do
+					WaitMsg("OnRender")
+				end
 
-			-- this is our bonus eh
-			local bbox = obj:GetEntityBBox()
-			local x1, y1, z1 = bbox:minxyz()
-			local x2, y2, z2 = bbox:maxxyz()
-			local pos_x, pos_y, pos_z, radius = obj:GetBSphere(state_str, true)
-			local anim_dur = obj:GetAnimDuration(state_str)
-			local step_len = obj:GetStepLength(state_str)
---~ 			local step_vec = obj:GetStepVector(state_str, obj:GetAngle(), 0, obj:GetAnimPhase())
-			local step_vec = obj:GetStepVector(state_str, obj:GetAngle(), 0, anim_dur)
-			local sv1, sv2, sv3 = step_vec:xyz()
---~ Basketball_idle.hga
-			c = c + 1
-			list[c] = [[		<state id="]] .. state_str .. [[">
+				-- this is our bonus eh
+				local bbox = obj:GetEntityBBox()
+				local x1, y1, z1 = bbox:minxyz()
+				local x2, y2, z2 = bbox:maxxyz()
+				local pos_x, pos_y, pos_z, radius = obj:GetBSphere(state_str, true)
+				local anim_dur = obj:GetAnimDuration(state_str)
+				local step_len = obj:GetStepLength(state_str)
+	--~ 			local step_vec = obj:GetStepVector(state_str, obj:GetAngle(), 0, obj:GetAnimPhase())
+				local step_vec = obj:GetStepVector(state_str, obj:GetAngle(), 0, anim_dur)
+				local sv1, sv2, sv3 = step_vec:xyz()
+	--~ Basketball_idle.hga
+				c = c + 1
+				list[c] = [[		<state id="]] .. state_str .. [[">
 			<mesh_ref ref="mesh"/>
 			<anim file="]] .. entity .. "_" .. state_str .. [[.hga" duration="]] .. anim_dur .. [["/>
 			<bsphere value="]] .. (pos_x - origin_pos_x) .. ", "
-				.. (pos_y - origin_pos_y) .. ", " .. (pos_z - origin_pos_z) .. ", "
-				.. radius .. [["/>
+					.. (pos_y - origin_pos_y) .. ", " .. (pos_z - origin_pos_z) .. ", "
+					.. radius .. [["/>
 			<box min="]] .. x1 .. ", " .. y1 .. ", " .. z1
-				.. [[" max="]] .. x2 .. ", " .. y2 .. ", " .. z2 .. [["/>
+					.. [[" max="]] .. x2 .. ", " .. y2 .. ", " .. z2 .. [["/>
 			<step length="]] .. step_len .. [[" vector="]] .. sv1 .. ", " .. sv2 .. ", " .. sv3 ..  [["/>]]
-			.. [[</state>]]
-		-- ADD ME
-		-- compensate="CME"
+				.. [[</state>]]
+			-- ADD ME
+			-- compensate="CME"
 
-		end -- for states
+			end -- for states
 
-		local mat = GetStateMaterial(entity, 0, 0)
-		-- add the rest of the entity info
-		c = c + 1
-		list[c] = [[	<mesh_description id="mesh">
+			local mat = GetStateMaterial(entity, 0, 0)
+			-- add the rest of the entity info
+			c = c + 1
+			list[c] = [[	<mesh_description id="mesh">
 		<mesh file="]] .. mat:sub(1, -3) .. [[.hgm"/>
 		<material file="]] .. mat .. [["/>]]
-		-- eh, close enough
+			-- eh, close enough
 
-		-- stick with idle i guess?
-		obj:SetState("idle")
-		while obj:GetAnim(1) ~= 0 do
-			WaitMsg("OnRender")
-		end
-
-		for i = id_start, id_end do
-			local name = obj:GetSpotName(i)
-			-- It isn't needed
-			if name ~= "Origin" then
-				-- make a copy to edit
-				local spots_str_t = spots_str
-
-				-- we don't want to fill the list with stuff we don't use
-				local annot = obj:GetSpotAnnotation(i)
-				if not annot then
-					annot = ""
-					spots_str_t = spots_str_t:gsub([[ spot_note="%%s"]], "%%s")
-				end
-
-				local bone = obj:GetSpotBone(i)
-				if bone == "" then
-					spots_str_t = spots_str_t:gsub([[ bone="%%s"]], "%%s")
-				end
-
-				-- axis, scale
-				local _, _, _, _, axis_x, axis_y, axis_z = obj:GetSpotLocXYZ(i)
-
-				-- 100 is default
-				local scale = obj:GetSpotVisualScale(i)
-				if scale == 100 then
-					spots_str_t = spots_str_t:gsub([[ spot_scale="%%s"]], "%%s")
-					scale = ""
-				end
-
-				local angle = obj:GetSpotVisualRotation(i)
-				-- means nadda for spot_rot
-				if angle == 0 and axis_x == 0 and axis_y == 0 and axis_z == 4096 then
-					spots_str_t = spots_str_t:gsub([[ spot_rot="%%s, %%s, %%s, %%s"]], "%%s%%s%%s%%s")
-					angle, axis_x, axis_y, axis_z = "", "", "", ""
-				else
-					axis_x = (axis_x + 0.0) / 100
-					axis_y = (axis_y + 0.0) / 100
-					axis_z = (axis_z + 0.0) / 100
-					angle = (angle) / 60
---~ 					if angle > 360 then
---~ 						printC("ExamineEntSpots: angle > 360: ", angle)
---~ 						-- just gotta figure out how to turn 18000 or 3600 into 60 (21600)
---~ 						angle = 360 - angle
---~ 					end
-				end
-
-				local pos_x, pos_y, pos_z = obj:GetSpotPosXYZ(i)
-
-				c = c + 1
-				list[c] = spots_str_t:format(
-					name, annot, bone,
-					pos_x - origin_pos_x, pos_y - origin_pos_y, pos_z - origin_pos_z,
-					scale, axis_x, axis_y, axis_z, angle
-				)
+			-- stick with idle i guess?
+			obj:SetState("idle")
+			while obj:GetAnim(1) ~= 0 do
+				WaitMsg("OnRender")
 			end
 
-		end -- for spots
+			for i = id_start, id_end do
+				local name = obj:GetSpotName(i)
+				-- It isn't needed
+				if name ~= "Origin" then
+					-- make a copy to edit
+					local spots_str_t = spots_str
 
-		-- add surfs
-		RetOriginSurfaces = RetOriginSurfaces or ChoGGi.ComFuncs.RetOriginSurfaces
-		-- hex_shape
-		c = BuildSurf(c, list, obj, "hex_shape", 5)
-		-- selection
-		c = BuildSurf(c, list, obj, "selection", 7)
-		-- collision
-		c = BuildSurf(c, list, obj, "collision", 0)
+					-- we don't want to fill the list with stuff we don't use
+					local annot = obj:GetSpotAnnotation(i)
+					if not annot then
+						annot = ""
+						spots_str_t = spots_str_t:gsub([[ spot_note="%%s"]], "%%s")
+					end
 
-		-- opener
-		table.insert(list, 1, T(302535920001068--[["The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one).
+					local bone = obj:GetSpotBone(i)
+					if bone == "" then
+						spots_str_t = spots_str_t:gsub([[ bone="%%s"]], "%%s")
+					end
+
+					-- axis, scale
+					local _, _, _, _, axis_x, axis_y, axis_z = obj:GetSpotLocXYZ(i)
+
+					-- 100 is default
+					local scale = obj:GetSpotVisualScale(i)
+					if scale == 100 then
+						spots_str_t = spots_str_t:gsub([[ spot_scale="%%s"]], "%%s")
+						scale = ""
+					end
+
+					local angle = obj:GetSpotVisualRotation(i)
+					-- means nadda for spot_rot
+					if angle == 0 and axis_x == 0 and axis_y == 0 and axis_z == 4096 then
+						spots_str_t = spots_str_t:gsub([[ spot_rot="%%s, %%s, %%s, %%s"]], "%%s%%s%%s%%s")
+						angle, axis_x, axis_y, axis_z = "", "", "", ""
+					else
+						axis_x = (axis_x + 0.0) / 100
+						axis_y = (axis_y + 0.0) / 100
+						axis_z = (axis_z + 0.0) / 100
+						angle = (angle) / 60
+--~ 						if angle > 360 then
+--~ 							printC("ExamineEntSpots: angle > 360: ", angle)
+--~ 							-- just gotta figure out how to turn 18000 or 3600 into 60 (21600)
+--~ 							angle = 360 - angle
+--~ 						end
+					end
+
+					local pos_x, pos_y, pos_z = obj:GetSpotPosXYZ(i)
+
+					c = c + 1
+					list[c] = spots_str_t:format(
+						name, annot, bone,
+						pos_x - origin_pos_x, pos_y - origin_pos_y, pos_z - origin_pos_z,
+						scale, axis_x, axis_y, axis_z, angle
+					)
+				end
+
+			end -- for spots
+
+			-- add surfs
+			RetOriginSurfaces = RetOriginSurfaces or ChoGGi.ComFuncs.RetOriginSurfaces
+			-- hex_shape
+			c = BuildSurf(c, list, obj, "hex_shape", 5)
+			-- selection
+			c = BuildSurf(c, list, obj, "selection", 7)
+			-- collision
+			c = BuildSurf(c, list, obj, "collision", 0)
+
+			-- opener
+			table.insert(list, 1, Translate(302535920001068--[["The func I use for spot_rot rounds to two decimal points... (let me know if you find a better one).
 Attachment bspheres are off (x and y are; z and rotate aren't).
 Some of the file names are guesses. <anim> is a guess, try removing it."]])
-			.. [[
+				.. [[
 
 
 <?xml version="1.0" encoding="UTF-8"?>
 <entity path="">]])
 
-		-- and the closer
-		list[#list+1] = [[	</mesh_description>
+			-- and the closer
+			list[#list+1] = [[	</mesh_description>
 </entity>]]
 
-		if parent_or_ret == true then
-			return table.concat(list, "\n")
-		else
-			ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
-				parent = parent_or_ret,
-				text = table.concat(list, "\n"),
-				title = T(302535920000235--[[Entity Spots]]) .. ": " .. RetName(obj),
-			}
-		end
+			if parent_or_ret == true then
+				return table.concat(list, "\n")
+			else
+				ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+					parent = parent_or_ret,
+					text = table.concat(list, "\n"),
+					title = T(302535920000235--[[Entity Spots]]) .. ": " .. RetName(obj),
+				}
+			end
 
 		end)
 	end
@@ -6962,10 +6948,9 @@ end -- do
 
 do -- BBoxLines_Toggle
 	local point = point
-	local objlist = objlist
 	local IsBox = IsBox
 
-	-- stores objlist of line objects
+	-- stores line objects
 	local bbox_lines
 
 	local function SpawnBoxLine(bbox, list, depth_test, colour)
@@ -6976,9 +6961,9 @@ do -- BBoxLines_Toggle
 		line:SetPos(bbox:Center())
 		bbox_lines[#bbox_lines+1] = line
 	end
-	local pillar_table = objlist:new()
+	local pillar_table = {}
 	local function SpawnPillarLine(pt, z, obj_height, depth_test, colour)
-		pillar_table:Destroy()
+		ChoGGi.ComFuncs.objlist_Destroy(pillar_table)
 		pillar_table[1] = pt:SetZ(z)
 		pillar_table[2] = pt:SetZ(z + obj_height)
 		local line = PlacePolyline(pillar_table, colour)
@@ -6993,7 +6978,7 @@ do -- BBoxLines_Toggle
 		local obj_height = bbox:sizez() or 1500
 		local z = pos:z()
 		-- stores all line objs for deletion later
-		bbox_lines = objlist:new()
+		bbox_lines = {}
 
 		local edges = {bbox:ToPoints2D()}
 		-- needed to complete the square (else there's a short blank space of a chunk of a line)
@@ -7117,7 +7102,7 @@ if what_game == "Mars" then
 		end
 		SuspendPassEdits("ChoGGi.ComFuncs.SurfaceLines_Clear")
 		if obj.ChoGGi_surfacelinesobj then
-			obj.ChoGGi_surfacelinesobj:Destroy()
+			ChoGGi.ComFuncs.objlist_Destroy(obj.ChoGGi_surfacelinesobj)
 			obj.ChoGGi_surfacelinesobj = nil
 			return true
 		end
@@ -7138,7 +7123,7 @@ if what_game == "Mars" then
 			end
 		end
 
-		obj.ChoGGi_surfacelinesobj = obj.ChoGGi_surfacelinesobj or objlist:new()
+		obj.ChoGGi_surfacelinesobj = obj.ChoGGi_surfacelinesobj or {}
 
 		params.colour = params.colour or RandomColourLimited()
 		params.offset = params.offset or 1
@@ -7221,7 +7206,7 @@ do -- EntitySpots_Toggle Entity Spots Toggle
 		ResumePassEdits("ChoGGi.ComFuncs.EntitySpots_Clear")
 			return true
 		elseif obj.ChoGGi_ShowAttachSpots then
-			obj.ChoGGi_ShowAttachSpots:Destroy()
+			ChoGGi.ComFuncs.objlist_Destroy(obj.ChoGGi_ShowAttachSpots)
 			obj.ChoGGi_ShowAttachSpots = nil
 		ResumePassEdits("ChoGGi.ComFuncs.EntitySpots_Clear")
 			return true
@@ -7373,7 +7358,7 @@ do -- EntitySpots_Toggle Entity Spots Toggle
 			end
 		end
 
-		obj.ChoGGi_ShowAttachSpots = obj.ChoGGi_ShowAttachSpots or objlist:new()
+		obj.ChoGGi_ShowAttachSpots = obj.ChoGGi_ShowAttachSpots or {}
 
 		params.colour = params.colour or RandomColourLimited()
 
@@ -8060,6 +8045,209 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 
 	end
 end -- do
+
+function ChoGGi.ComFuncs.Dump(obj, overwrite, file, ext, skip_msg, gen_name)
+	if blacklist then
+		ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.Dump")
+		return
+	end
+
+	-- If overwrite is nil then we append, if anything else we overwrite
+	if overwrite then
+		overwrite = nil
+	else
+		overwrite = "-1"
+	end
+
+	local filename
+	if gen_name then
+		filename = GenerateScreenshotFilename(file or "DumpedText", "AppData/logs/", ext or "txt")
+	else
+		filename = "AppData/logs/" .. (file or "DumpedText") .. "." .. (ext or "txt")
+	end
+
+	ThreadLockKey(filename)
+	g_env.AsyncStringToFile(filename, obj, overwrite)
+	ThreadUnlockKey(filename)
+
+	-- let user know
+	if not skip_msg then
+		local msg = Translate(302535920000039--[[Dumped]]) .. ": " .. RetName(obj)
+		print(filename, "\n", msg:sub(1, msg:find("\n") ) )
+		MsgPopup(
+			msg,
+			filename
+		)
+	end
+end
+
+function ChoGGi.ComFuncs.DumpLua(obj)
+	ChoGGi.ComFuncs.Dump(ChoGGi.newline .. ValueToLuaCode(obj), nil, "DumpedLua", "lua")
+end
+
+function ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(obj, parent)
+	-- If fired from action menu
+	if IsKindOf(obj, "XAction") then
+		obj = ChoGGi.ComFuncs.SelObject()
+		parent = nil
+	else
+		obj = obj or ChoGGi.ComFuncs.SelObject()
+	end
+
+	if not obj then
+		return
+	end
+
+	if not IsKindOf(parent, "XWindow") then
+		parent = nil
+	end
+
+	return ChoGGi_Dlg3DManipulator:new({}, terminal.desktop, {
+		obj = obj,
+		parent = parent,
+	})
+end
+
+function ChoGGi.ComFuncs.EntitySpawner(obj, params)
+
+	-- If fired from action menu
+	if IsKindOf(obj, "XAction") then
+		params = {}
+		if obj.setting_planning then
+			params.planning = true
+		else
+			params.planning = nil
+		end
+		obj = nil
+	else
+		params = params or {}
+	end
+
+	local const = const
+
+	local title = params.planning and T(302535920000862--[[Object Planner]]) or T(302535920000475--[[Entity Spawner]])
+	local hint = params.planning and T(302535920000863--[[Places fake construction site objects at mouse cursor (collision disabled).]]) or T(302535920000476--[["Shows list of objects, and spawns at mouse cursor."]])
+
+	local default
+	local item_list = {}
+	local c = 0
+
+	if IsValid(obj) and IsValidEntity(obj.ChoGGi_orig_entity) then
+		default = T(1000121--[[Default]])
+		item_list[1] = {
+			text = " " .. default,
+			value = default,
+		}
+		c = #item_list
+	end
+
+	if params.planning then
+		local BuildingTemplates = BuildingTemplates
+		for key, value in pairs(BuildingTemplates) do
+			c = c + 1
+			item_list[c] = {
+				text = key,
+				value = value.entity,
+			}
+		end
+	else
+		local EntityData = EntityData
+		for key in pairs(EntityData) do
+			c = c + 1
+			item_list[c] = {
+				text = key,
+				value = key,
+			}
+		end
+	end
+
+	local function CallBackFunc(choice)
+		if choice.nothing_selected then
+			return
+		end
+		choice = choice[1]
+		local value = choice.value
+
+		if not obj then
+			local cls = ChoGGi_OBuildingEntityClass
+			if choice.check1 then
+				cls = ChoGGi_OBuildingEntityClassAttach
+			end
+
+			obj = cls:new()
+			obj:SetPos(GetCursorWorldPos())
+
+			if params.planning then
+				obj.planning = true
+				obj:SetGameFlags(const.gofUnderConstruction)
+			end
+		end
+
+		-- backup orig entity
+		if not IsValidEntity(obj.ChoGGi_orig_entity) then
+			obj.ChoGGi_orig_entity = obj:GetEntity()
+		end
+
+		-- crash prevention
+		obj:SetState("idle")
+
+		if value == default and IsValidEntity(obj.ChoGGi_orig_entity) then
+			obj:ChangeEntity(obj.ChoGGi_orig_entity)
+			obj.entity = obj.ChoGGi_orig_entity
+		else
+			obj:ChangeEntity(value)
+			obj.entity = value
+		end
+
+		if SelectedObj == obj then
+			ObjModified(obj)
+		end
+
+		-- needs to fire whenever entity changes
+		obj:ClearEnumFlags(const.efCollision + const.efApplyToGrids)
+
+		if not params.skip_msg then
+			MsgPopup(
+				choice.text .. ": " .. T(302535920000014--[[Spawned]]),
+				title
+			)
+		end
+	end
+
+	local checkboxes
+	if params.list_type ~= 7 then
+		checkboxes = {
+			{
+				title = T(302535920001578--[[Auto-Attach]]),
+				hint = T(302535920001579--[[Activate any auto-attach spots this entity has.]]),
+			},
+		}
+	end
+
+	if params.title_postfix then
+		title = title .. ": " .. params.title_postfix
+	end
+
+	ChoGGi.ComFuncs.OpenInListChoice{
+		callback = CallBackFunc,
+		items = item_list,
+		title = title,
+		hint = hint,
+		custom_type = params.list_type or 0,
+		checkboxes = checkboxes,
+	}
+end
+
+function ChoGGi.ComFuncs.objlist_Destroy(objlist)
+  for i = #objlist, 1, -1 do
+    local o = objlist[i]
+    objlist[i] = nil
+    if IsValid(o) then
+      DoneObject(o)
+    end
+  end
+end
+
 -- loop through all map sectors and fire this func
 --~ function ChoGGi.ComFuncs.LoopMapSectors(map_id, func)
 --~ end

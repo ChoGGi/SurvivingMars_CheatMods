@@ -86,9 +86,9 @@ end
 
 -- strip interface
 local table = table
-local line_c = objlist:new()
+local line_c = {}
 function ChoGGi.ComFuncs.StripComments(s)
-	line_c:Destroy()
+	table.iclear(line_c)
 	local c = 0
 
 	local tokens = lexer(s)
@@ -97,9 +97,11 @@ function ChoGGi.ComFuncs.StripComments(s)
 	for i = 1, #tokens do
 		local v = tokens[i]
 		if v[1] == "comment" then
-			if v[2]:match("\n") then
+--~ 			if v[2]:match("\n") then
+			if v[2]:match("[\r\n]") then
 				c = c + 1
-				line_c[c] = v[2]:gsub(".-\n[^\n]*", "\n")
+				-- Okay it's ugly, but good enough for now (and pasted in code isn't that large...)
+				line_c[c] = v[2]:gsub(".-\n[^\n]*", "\n"):gsub(".-\r[^\r]*", "\r")
 				line_head = true
 			end
 			prev_space = true

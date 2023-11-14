@@ -45,9 +45,9 @@ do -- BuildGridList
 	function ChoGGi.MenuFuncs.BuildGridList()
 		local UICity = UICity
 		local grid_list = {
-			air = objlist:new(),
-			water = objlist:new(),
-			electricity = objlist:new(),
+			air = {},
+			water = {},
+			electricity = {},
 		}
 		grid_list.air.name = Translate(891--[[Air]])
 		grid_list.electricity.name = Translate(79--[[Power]])

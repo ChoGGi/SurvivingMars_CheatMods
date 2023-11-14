@@ -28,8 +28,6 @@ return PlaceObj("ModDef", {
 		"Code/Init.lua",
 		-- gets the font (if not eng lang), and builds a table of translated strings
 		"Code/Strings.lua",
-		-- Old code from SM (need to be remove it one day)
-		"Code/objlist.lua",
 		-- functions used in a couple places
 		"Code/CommonFunctions.lua",
 		-- defaults, consts

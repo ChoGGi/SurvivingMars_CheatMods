@@ -13,19 +13,15 @@ end```
 
 ```lua
 -- Import mod options (run this on new machine)
-local size = io.getsize("AppData/mod_options.lua")
+local size = io.getsize("AppData/modsettings.lua")
 local str = select(2,
-AsyncFileToString("AppData/mod_options.lua", size, 0, "string", "raw")
+AsyncFileToString("AppData/modsettings.lua", size, 0, "string", "raw")
 )
-local err, data = AsyncDecompress(str)
-if err then
-	print(err, "Import failed 1")
-end
-local err, settings = LuaCodeToTuple(data)
-if err then
-	print(err, "Import failed 2")
-end
+local data = select(2, AsyncDecompress(str))
+local settings = select(2, LuaCodeToTuple(data))
 
 AccountStorage.ModOptions = settings
 SaveAccountStorage(1000)
+
+-- OpenExamine(settings)
 ```

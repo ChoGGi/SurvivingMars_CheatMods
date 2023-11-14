@@ -303,7 +303,6 @@ function ChoGGi_DlgObjectEditor:UpdateListContent()
 end
 
 function ChoGGi_DlgObjectEditor:CreateProp(obj)
-	local objlist = objlist
 	local obj_type = type(obj)
 
 	if obj_type == "function" then
@@ -334,17 +333,17 @@ function ChoGGi_DlgObjectEditor:CreateProp(obj)
 
 	local meta = getmetatable(obj)
 	if obj_type == "table" then
-		-- objlist ftw?
-		if meta and meta == objlist then
-			local res = {}
-			for i = 1, Min(#obj, 3) do
-				res[i] = self:CreateProp(obj[i])
-			end
-			if obj[4] then
-				res[#res+1] = "..."
-			end
-			return "objlist{" .. table.concat(res, ", ") .. "}"
-		end
+--~ 		-- objlist ftw?
+--~ 		if meta and meta == objlist then
+--~ 			local res = {}
+--~ 			for i = 1, Min(#obj, 3) do
+--~ 				res[i] = self:CreateProp(obj[i])
+--~ 			end
+--~ 			if obj[4] then
+--~ 				res[#res+1] = "..."
+--~ 			end
+--~ 			return "objlist{" .. table.concat(res, ", ") .. "}"
+--~ 		end
 
 		if IsT(obj) then
 			return "T(\"" .. Translate(obj) .. "\")"

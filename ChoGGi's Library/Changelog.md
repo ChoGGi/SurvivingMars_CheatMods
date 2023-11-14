@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v12.2 (Unreleased)
+- Pasting in code in console should properly add spaces.
 - Stopped using TranslationTable, might cause some string issues.
 - DeleteObject was leaving particles behind for certain buildings.
 - Fixed ExportMapDataToCSV maxing out at 12 for CSV export (thanks Sicarious).

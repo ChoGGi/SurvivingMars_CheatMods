@@ -38,9 +38,9 @@ function OnMsg.SaveGame()
 	circle = false
 end
 
-local points = objlist:new()
+local points = {}
 local function UpdateCircle()
-	points:Clear()
+  table.iclear(points)
 
 	radius = orig_pos:Dist2D(GetCursorWorldPos()) or 100
 	local steps = Min(Max(12, 44 * radius / (guim7)), 360)

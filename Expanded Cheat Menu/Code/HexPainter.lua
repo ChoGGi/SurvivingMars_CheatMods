@@ -23,7 +23,7 @@ local function ClearHexes()
 		DeleteThread(painted_hexes_thread)
 	end
 	if painted_hexes then
-		painted_hexes:Destroy()
+		ChoGGi.ComFuncs.objlist_Destroy(painted_hexes)
 		painted_hexes = false
 	end
 end
@@ -36,7 +36,7 @@ function PaintHexArray(arr, mid_hex_pt) --paints zero based hex shapes (such as 
 	if arr then
 		painted_hexes_thread = CreateRealTimeThread(function()
 			local last_q, last_r
-			painted_hexes = objlist:new()
+			painted_hexes = {}
 
 			while true do
 				local q, r

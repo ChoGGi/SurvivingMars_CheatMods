@@ -477,15 +477,14 @@ do -- BuildingPathMarkers_Toggle
 --~ 	local XText, OPolyline
 --~ 	local parent
 
-	local objlist = objlist
-	local points, colours = objlist:new(), objlist:new()
+	local points, colours = {}, {}
 	local function ShowWaypoints(waypoints, open)
-		points:Clear()
-		colours:Clear()
+		table.iclear(points)
+		table.iclear(colours)
 
 		local colour_line = RandomColour()
 		local colour_door = RandomColour()
-		local lines = objlist:new()
+		local lines = {}
 		for i = 1, #waypoints do
 			local waypoint = waypoints[i]
 			local colour = i == open and colour_door or colour_line
@@ -509,8 +508,8 @@ do -- BuildingPathMarkers_Toggle
 				DoneObject(data.line)
 			end
 			data.line = false
-			data:Destroy()
-			data:Clear()
+			ChoGGi.ComFuncs.objlist_Destroy(data)
+			table.iclear(data)
 		end
 	end
 
