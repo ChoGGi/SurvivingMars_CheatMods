@@ -257,18 +257,18 @@ function ChoGGi_DlgExamine:Init(parent, context)
 	self.title = context.title
 	self.override_title = context.override_title
 	self.varargs = context.varargs
-	self.prefix = T(302535920000069--[[Examine]])
+	self.prefix = Translate(302535920000069--[[Examine]])
 	self.exec_tables = context.exec_tables
 	self.tooltip_info = context.tooltip_info
 
 	-- these are used during SetObj, so we trans once to speed up autorefresh
 	self.string_Loadingresources = T(302535920001680--[[Loading resources]])
-	self.string_Classname = T(302535920001681--[[Class name]])
-	self.string_BuildingTemplate = T(302535920001682--[[Building Template]])
-	self.string_Entity = T(302535920001683--[[Entity]])
-	self.string_Class = T(302535920001684--[[Class]])
-	self.string_Object = T(302535920001685--[[Object]])
-	self.string_State = T(302535920001686--[[State]])
+	self.string_Classname = Translate(302535920001681--[[Class name]])
+	self.string_BuildingTemplate = Translate(302535920001682--[[Building Template]])
+	self.string_Entity = Translate(302535920001683--[[Entity]])
+	self.string_Class = Translate(302535920001684--[[Class]])
+	self.string_Object = Translate(302535920001685--[[Object]])
+	self.string_State = Translate(302535920001686--[[State]])
 
 	-- If we're examining a string we want to convert to an object
 	if type(self.obj) == "string" then
@@ -3611,9 +3611,10 @@ Decompiled code won't scroll correctly as the line numbers are different."]]):fo
 		-- try to add translated string if it's one of these
 	if obj_metatable == TMeta or obj_metatable == TConcatMeta then
 		c = c + 1
+		local translated_str = Translate(302535920000986--[[Translated]])
 		list_obj_str[c] = (obj_metatable == TMeta
-			and "\nTMeta " .. Translate(302535920000986--[[Translated]]) .. ": \n"
-			or "\nTConcatMeta " .. Translate(302535920000986--[[Translated]]) .. ": \n")
+			and "\nTMeta " .. translated_str .. ": \n"
+			or "\nTConcatMeta " .. translated_str .. ": \n")
 			.. Translate(obj)
 	end
 
@@ -3638,6 +3639,8 @@ Decompiled code won't scroll correctly as the line numbers are different."]]):fo
 
 	end
 
+--~ 	print(list_obj_str[3])
+--~ 	ex(list_obj_str[3])
 	return table.concat(list_obj_str, "\n")
 end
 ---------------------------------------------------------------------------------------------------------------------
@@ -3682,21 +3685,21 @@ do -- BuildAttachesPopup
 			-- attached to name
 			if a.ChoGGi_Marked_Attach then
 				c = c + 1
-				self.attaches_menu_popup_hint[c] = T(302535920001544--[[Attached to]]) .. ": " .. a.ChoGGi_Marked_Attach
+				self.attaches_menu_popup_hint[c] = Translate(302535920001544--[[Attached to]]) .. ": " .. a.ChoGGi_Marked_Attach
 				a.ChoGGi_Marked_Attach = nil
 			end
 			if a.handle then
 				c = c + 1
-				self.attaches_menu_popup_hint[c] = T(302535920000955--[[Handle]]) .. ": " .. a.handle
+				self.attaches_menu_popup_hint[c] = Translate(302535920000955--[[Handle]]) .. ": " .. a.handle
 			end
 			c = c + 1
-			self.attaches_menu_popup_hint[c] = T(302535920000461--[[Position]]) .. ": " .. tostring(pos)
+			self.attaches_menu_popup_hint[c] = Translate(302535920000461--[[Position]]) .. ": " .. tostring(pos)
 
 			if a:IsKindOf("ParSystem") then
 				local par_name = a:GetParticlesName()
 				if par_name ~= "" then
 					c = c + 1
-					self.attaches_menu_popup_hint[c] = T(302535920001622--[[Particle]]) .. ": " .. par_name
+					self.attaches_menu_popup_hint[c] = Translate(302535920001622--[[Particle]]) .. ": " .. par_name
 				end
 			elseif a:IsKindOf("CObject") then
 				local entity = self.ChoGGi.ComFuncs.RetObjectEntity(a)

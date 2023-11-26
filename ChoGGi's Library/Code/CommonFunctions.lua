@@ -2729,7 +2729,8 @@ local function MapGet_ChoGGi(label, area, city, ...)
 		-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything* (think gary oldman in professional)
 		if g_cls and g_cls:IsKindOf("CObject") then
 			-- area can be: true, "map", "detached", "outsiders" (see Surviving Mars/ModTools/Docs/LuaMapEnumeration.md.html)
-			return GetRealmByID(city and city.map_id or UICity.map_id):MapGet(area or true, label, ...)
+			local realm = GetRealmByID(city and city.map_id or UICity.map_id)
+			return realm and realm:MapGet(area or true, label, ...)
 			-- use obj:SetPos(pos) to move objs to map (and away with pos = InvalidPos())
 		end
 	end

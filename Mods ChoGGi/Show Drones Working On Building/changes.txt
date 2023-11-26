@@ -1,3 +1,6 @@
+v0.8
+Stop hiding colonists (thanks muffin).
+
 v0.7
 Code cleanup.
 

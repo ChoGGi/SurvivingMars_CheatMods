@@ -428,7 +428,7 @@ SurvivingMarsMods@choggi.org"]]) .. "\n\n\n" .. mod.description
 			-- both displayed
 			if steam_upload and para_upload then
 				print(mod.title, ":\n<color ChoGGi_orange>",
-					T(1000021--[[Steam ID]]), "</color>:", steam_item_id,
+					Translate(1000021--[[Steam ID]]), "</color>:", steam_item_id,
 					"\n<color ChoGGi_orange>", Translate(id_str), "</color>:", para_item_id
 				)
 			else

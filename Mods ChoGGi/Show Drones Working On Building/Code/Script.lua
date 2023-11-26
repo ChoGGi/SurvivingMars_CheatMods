@@ -31,8 +31,11 @@ function OnMsg.SelectionAdded(obj)
 		end
 	end
 
-	SuspendPassEdits("ChoGGi.ShowDronesConstructionSite.OnSelected")
-	SelectionArrowClearAll()
-	SelectionArrowAdd(drones)
-	ResumePassEdits("ChoGGi.ShowDronesConstructionSite.OnSelected")
+		SuspendPassEdits("ChoGGi.ShowDronesConstructionSite.OnSelected")
+		-- If no drones then skip this to not hide colonist arrows, if drones then probably not going to be any colonists...
+		if #drones > 0 then
+			SelectionArrowClearAll()
+		end
+		SelectionArrowAdd(drones)
+		ResumePassEdits("ChoGGi.ShowDronesConstructionSite.OnSelected")
 end
