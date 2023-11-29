@@ -29,6 +29,7 @@ local function UpdateAges()
 		local obj = objs[i]
 
 		if mod_ChangeDeathAge then
+			-- Reset to random death age
 			if mod_MinDeathAge == 0 and mod_MaxDeathAge == 0 then
 				-- function Colonist:GameInit()
 				obj:SetBase("death_age", obj.MinAge_Senior + 5 + obj:Random(10) + obj:Random(5) + obj:Random(5))

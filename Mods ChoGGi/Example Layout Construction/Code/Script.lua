@@ -1,8 +1,11 @@
 -- See LICENSE for terms
 
+-- keep it unique folks
+local layout_id = "ChoGGi_LayoutConstruction_Example"
+
 function OnMsg.ClassesPostprocess()
 	-- don't want dupes showing up
-	if BuildingTemplates.ChoGGi_LayoutConstruction_Example then
+	if BuildingTemplates[layout_id] then
 		return
 	end
 
@@ -14,10 +17,9 @@ function OnMsg.ClassesPostprocess()
 		"disabled_in_environment3", "",
 		"disabled_in_environment4", "",
 
-		-- keep it unique folks
-		"Id", "ChoGGi_LayoutConstruction_Example",
+		"Id", layout_id,
 		-- LayoutList corresponds to the LayoutConstruction id below
-		"LayoutList", "ChoGGi_LayoutConstruction_Example",
+		"LayoutList", layout_id,
 		-- what group to add it to
 		"Group", "Infrastructure",
 		"build_category", "Infrastructure",
@@ -38,13 +40,13 @@ function OnMsg.ClassesPostprocess()
 
 	PlaceObj("LayoutConstruction", {
 		group = "Default",
-		id = "ChoGGi_LayoutConstruction_Example",
+		id = layout_id,
 
 		-- you can find template names here:
 		-- https://github.com/HaemimontGames/SurvivingMars/blob/master/Data/BuildingTemplate.lua
 		-- for DLC use my Expanded Cheat Menu mod, and in the console type in ~BuildingTemplates
 
-		-- they usually have the same entity name, but not always (check the building template with ECM Examine cmd).
+		-- they usually have the same entity name, but not always (check the building template with Examine(obj) ).
 
 		PlaceObj("LayoutConstructionEntry", {
 			"template", "DomeBasic",

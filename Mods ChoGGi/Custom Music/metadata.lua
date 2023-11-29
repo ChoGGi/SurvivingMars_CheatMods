@@ -13,12 +13,13 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"description", [[
-Place files in %AppData%\Surviving Mars\Music
-C:\Users\USERNAME\AppData\Roaming\Surviving Mars\Music (AppData is a hidden folder).
+Place files in:
+%AppData%\Surviving Mars\Music
+C:\Users\[b][i]USERNAME[/i][/b]\AppData\Roaming\Surviving Mars\Music (AppData is a hidden folder).
 
-Spaces and what not in names are a-ok.
+Spaces and what not in music names are a-ok.
 
-[b]Supported types[/b] (AFAIK): opus, wav
+[b]Supported types[/b]: opus, wav
 [b]NOT working[/b]: mp3, aac, ogg, flac, aiff
 ]],
 })

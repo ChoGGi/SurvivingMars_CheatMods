@@ -7,7 +7,7 @@ return PlaceObj("ModDef", {
 	"version", 1,
 	"version_major", 0,
 	"version_minor", 1,
-	"image", "Preview.png",
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
@@ -18,7 +18,7 @@ return PlaceObj("ModDef", {
 Newly born/arrived colonists will have traits added/removed according to mod options you choose.
 
 
-Requested then not by [deleted]
+Requested by, then not by [deleted]
 https://www.reddit.com/r/SurvivingMars/comments/182cevq/looking_for_mod_or_modder_to_make_mod/
 ]],
 })

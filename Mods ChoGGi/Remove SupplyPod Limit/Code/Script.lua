@@ -19,9 +19,7 @@ local rovers = {
 	RCTerraformer = true,
 }
 
--- override the drone spawning part of the func
-local ChoOrig_SupplyPod_Unload = SupplyPod.Unload
-function SupplyPod:Unload(...)
+local function OverrideUnload(func, self, ...)
   local map_id = self:GetMapID() or UICity.map_id
 
 	-- get drone cargo item
@@ -30,9 +28,8 @@ function SupplyPod:Unload(...)
 	if cargo and cargo.amount > 10 then
 		local first, last = self:GetSpotRange("Drone")
 		local city = self.city
-		local Random = city.Random
 		for _ = 1, cargo.amount do
-			local pos, angle = self:GetSpotLoc(Random(city, first, last))
+			local pos, angle = self:GetSpotLoc(city.Random(city, first, last))
 			local obj = PlaceObjectIn(cargo.class, map_id, {
 				city = city,
 				is_orphan = true
@@ -67,7 +64,18 @@ function SupplyPod:Unload(...)
 		end
 	end
 
-	return ChoOrig_SupplyPod_Unload(self, ...)
+	return func(self, ...)
+end
+
+
+-- override the drone spawning part of the func
+local ChoOrig_SupplyPod_Unload = SupplyPod.Unload
+function SupplyPod:Unload(...)
+	return OverrideUnload(ChoOrig_SupplyPod_Unload, self, ...)
+end
+local ChoOrig_RocketBase_Unload = RocketBase.Unload
+function RocketBase:Unload(...)
+	return OverrideUnload(ChoOrig_RocketBase_Unload, self, ...)
 end
 
 local function StartupCode()
