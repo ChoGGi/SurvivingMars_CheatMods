@@ -41,8 +41,6 @@ function OnMsg.ModsReloaded()
 		sponsor.lock_value1 = "unlocked"
 		sponsor.lock_name2 = "RCSolar"
 		sponsor.lock_value2 = "unlocked"
---~ 		sponsor.lock_name3 = "Drone"
---~ 		sponsor.lock_value3 = "unlocked"
 	else
 		sponsor.Drone = 5
 	end

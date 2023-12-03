@@ -8,7 +8,7 @@ end
 local table = table
 local CmpLower = CmpLower
 local TranslationTable = TranslationTable
-local T = T
+local Translate = Translate
 
 local Translate = ChoGGi.ComFuncs.Translate
 local RetName = ChoGGi.ComFuncs.RetName
@@ -18,16 +18,16 @@ local RetMapBreakthroughs = ChoGGi.ComFuncs.RetMapBreakthroughs
 local testing = ChoGGi.testing
 
 local function ExportDoneMsg(path)
-	local msg = T(302535920001449--[[Export]]) .. " " .. T(302535920001448--[[CSV]])
+	local msg = Translate(302535920001449--[[Export]]) .. " " .. Translate(302535920001448--[[CSV]])
 	ChoGGi.ComFuncs.MsgPopup(path, msg)
 	print(Translate(msg), path)
 end
 
 do -- MapData
-	local str_RelativelyFlat = T(4154--[[Relatively Flat]])
-	local str_Rough = T(4155--[[Rough]])
-	local str_Steep = T(4156--[[Steep]])
-	local str_Mountainous = T(4157--[[Mountainous]])
+	local str_RelativelyFlat = Translate(4154--[[Relatively Flat]])
+	local str_Rough = Translate(4155--[[Rough]])
+	local str_Steep = Translate(4156--[[Steep]])
+	local str_Mountainous = Translate(4157--[[Mountainous]])
 
 	local MarsLocales = MarsLocales
 	local str_MarsLocales = {}
@@ -172,13 +172,13 @@ do -- MapData
 ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
 	setting_breakthroughs = true,
 	setting_skip_csv = false,
-	setting_limit_count = 12,
+	setting_limit_count = 13,
 })
 
 	]]
 
 	function ChoGGi.ComFuncs.ExportMapDataToCSV(action)
-		local limit_count = 12
+		local limit_count = 13
 		local skip_csv = false
 		local breakthroughs = false
 
@@ -195,7 +195,7 @@ ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
 			end
 		end
 
---~ 		north, east, south, west = T(1000487--[[N]]), T(1000478--[[E]]), T(1000492--[[S]]), T(1000496--[[W]])
+--~ 		north, east, south, west = Translate(1000487--[[N]]), Translate(1000478--[[E]]), Translate(1000492--[[S]]), Translate(1000496--[[W]])
 
 		-- save current g_CurrentMapParams to restore later
 		local params = g_CurrentMapParams
@@ -267,31 +267,31 @@ ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
 			return export_data
 		else
 			local csv_columns = {
-				{"coordinates", T(11457--[[Coordinates]])},
-				{"latitude_degree", T(6890--[[Latitude]]) .. " " .. T(302535920001505--[[°]])},
-				{"latitude", T(6890--[[Latitude]])},
-				{"longitude_degree", T(6892--[[Longitude]]) .. " " .. T(302535920001505--[[°]])},
-				{"longitude", T(6892--[[Longitude]])},
-				{"topography", T(284813068603--[[Topography]])},
+				{"coordinates", Translate(11457--[[Coordinates]])},
+				{"latitude_degree", Translate(6890--[[Latitude]]) .. " " .. Translate(302535920001505--[[°]])},
+				{"latitude", Translate(6890--[[Latitude]])},
+				{"longitude_degree", Translate(6892--[[Longitude]]) .. " " .. Translate(302535920001505--[[°]])},
+				{"longitude", Translate(6892--[[Longitude]])},
+				{"topography", Translate(284813068603--[[Topography]])},
 				{"diff_chall", Translate(774720837511):gsub(" <percent%(DifficultyBonus%)>", ""):gsub(" <percentage>%%", "")},
-				{"altitude", T(4135--[[Altitude]])},
-				{"temperature", T(4141--[[Temperature]])},
+				{"altitude", Translate(4135--[[Altitude]])},
+				{"temperature", Translate(4141--[[Temperature]])},
 
-				{"metals", T(3514--[[Metals]])},
-				{"metals_rare", T(4139--[[Rare Metals]])},
-				{"concrete", T(3513--[[Concrete]])},
-				{"water", T(681--[[Water]])},
+				{"metals", Translate(3514--[[Metals]])},
+				{"metals_rare", Translate(4139--[[Rare Metals]])},
+				{"concrete", Translate(3513--[[Concrete]])},
+				{"water", Translate(681--[[Water]])},
 
-				{"dust_devils", T(4142--[[Dust Devils]])},
-				{"dust_storms", T(4144--[[Dust Storms]])},
-				{"meteors", T(4146--[[Meteors]])},
-				{"cold_waves", T(4148--[[Cold Waves]])},
+				{"dust_devils", Translate(4142--[[Dust Devils]])},
+				{"dust_storms", Translate(4144--[[Dust Storms]])},
+				{"meteors", Translate(4146--[[Meteors]])},
+				{"cold_waves", Translate(4148--[[Cold Waves]])},
 
-				{"map_name", T(302535920001503--[[Map Name]])},
-				{"landing_spot", T(302535920001504--[[Named]]) .. " " .. T(7396--[[Location]])},
+				{"map_name", Translate(302535920001503--[[Map Name]])},
+				{"landing_spot", Translate(302535920001504--[[Named]]) .. " " .. Translate(7396--[[Location]])},
 			}
 			if breakthroughs then
-				local b_str = T(11451--[[Breakthrough]])
+				local b_str = Translate(11451--[[Breakthrough]])
 				local c = #csv_columns
 --~ 				for i = 1, (const.BreakThroughTechsPerGame + Consts.PlanetaryBreakthroughCount) do
 				for i = 1, limit_count do
@@ -319,7 +319,7 @@ do -- ColonistData
 	end
 
 	local function AddTraits(traits, list)
-		local str = T(3720--[[Trait]])
+		local str = Translate(3720--[[Trait]])
 		local c = #list
 		for i = 1, #traits do
 			local trait = traits[i]
@@ -334,31 +334,31 @@ do -- ColonistData
 
 	function ChoGGi.ComFuncs.ExportColonistDataToCSV()
 		local csv_columns = {
-			{"name", T(1000037--[[Name]])},
-			{"age", T(302535920001222--[[Age]])},
-			{"age_trait", T(302535920001222--[[Age]]) .. " " .. T(3720--[[Trait]])},
-			{"death_age", T(4284--[[Age of death]])},
-			{"birthplace", T(4357--[[Birthplace]]):gsub("<right><UIBirthplace>", "")},
-			{"gender", T(4356--[[Sex]]):gsub("<right><Gender>", "")},
-			{"race", T(302535920000741--[[Race]])},
-			{"specialist", T(240--[[Specialization]])},
-			{"performance", T(4283--[[Worker performance]])},
-			{"health", T(4291--[[Health]])},
-			{"comfort", T(4295--[[Comfort]])},
-			{"morale", T(4297--[[Morale]])},
-			{"sanity", T(4293--[[Sanity]])},
-			{"handle", T(302535920000955--[[Handle]])},
-			{"last_meal", T(302535920001229--[[Last Meal]])},
-			{"last_rest", T(302535920001235--[[Last Rest]])},
-			{"dome_name", T(1234--[[Dome]]) .. " " .. T(1000037--[[Name]])},
-			{"dome_pos", T(1234--[[Dome]]) .. " " .. T(302535920000461--[[Position]])},
-			{"dome_handle", T(1234--[[Dome]]) .. " " .. T(302535920000955--[[Handle]])},
-			{"residence_name", T(4809--[[Residence]]) .. " " .. T(1000037--[[Name]])},
-			{"residence_pos", T(4809--[[Residence]]) .. " " .. T(302535920000461--[[Position]])},
-			{"residence_dome", T(4809--[[Residence]]) .. " " .. T(1234--[[Dome]])},
-			{"workplace_name", T(4801--[[Workplace]]) .. " " .. T(1000037--[[Name]])},
-			{"workplace_pos", T(4801--[[Workplace]]) .. " " .. T(302535920000461--[[Position]])},
-			{"workplace_dome", T(4801--[[Workplace]]) .. " " .. T(1234--[[Dome]])},
+			{"name", Translate(1000037--[[Name]])},
+			{"age", Translate(302535920001222--[[Age]])},
+			{"age_trait", Translate(302535920001222--[[Age]]) .. " " .. Translate(3720--[[Trait]])},
+			{"death_age", Translate(4284--[[Age of death]])},
+			{"birthplace", Translate(4357--[[Birthplace]]):gsub("<right><UIBirthplace>", "")},
+			{"gender", Translate(4356--[[Sex]]):gsub("<right><Gender>", "")},
+			{"race", Translate(302535920000741--[[Race]])},
+			{"specialist", Translate(240--[[Specialization]])},
+			{"performance", Translate(4283--[[Worker performance]])},
+			{"health", Translate(4291--[[Health]])},
+			{"comfort", Translate(4295--[[Comfort]])},
+			{"morale", Translate(4297--[[Morale]])},
+			{"sanity", Translate(4293--[[Sanity]])},
+			{"handle", Translate(302535920000955--[[Handle]])},
+			{"last_meal", Translate(302535920001229--[[Last Meal]])},
+			{"last_rest", Translate(302535920001235--[[Last Rest]])},
+			{"dome_name", Translate(1234--[[Dome]]) .. " " .. Translate(1000037--[[Name]])},
+			{"dome_pos", Translate(1234--[[Dome]]) .. " " .. Translate(302535920000461--[[Position]])},
+			{"dome_handle", Translate(1234--[[Dome]]) .. " " .. Translate(302535920000955--[[Handle]])},
+			{"residence_name", Translate(4809--[[Residence]]) .. " " .. Translate(1000037--[[Name]])},
+			{"residence_pos", Translate(4809--[[Residence]]) .. " " .. Translate(302535920000461--[[Position]])},
+			{"residence_dome", Translate(4809--[[Residence]]) .. " " .. Translate(1234--[[Dome]])},
+			{"workplace_name", Translate(4801--[[Workplace]]) .. " " .. Translate(1000037--[[Name]])},
+			{"workplace_pos", Translate(4801--[[Workplace]]) .. " " .. Translate(302535920000461--[[Position]])},
+			{"workplace_dome", Translate(4801--[[Workplace]]) .. " " .. Translate(1234--[[Dome]])},
 		}
 		local t = ChoGGi.Tables
 		csv_columns = AddTraits(t.NegativeTraits, csv_columns)
@@ -464,93 +464,93 @@ do -- Graphs
 		end
 		local loop_table_label = {
 			Colonist = {
-				name = T(547--[[Colonists]]) .. " " .. T(1000100--[[Amount]]),
+				name = Translate(547--[[Colonists]]) .. " " .. Translate(1000100--[[Amount]]),
 				data = "ts_colonists",
 			},
 			Unemployed = {
-				name = T(547--[[Colonists]]) .. " " .. T(6859--[[Unemployed]]),
+				name = Translate(547--[[Colonists]]) .. " " .. Translate(6859--[[Unemployed]]),
 				data = "ts_colonists_unemployed",
 			},
 			Homeless = {
-				name = T(547--[[Colonists]]) .. " " .. T(7553--[[Homeless]]),
+				name = Translate(547--[[Colonists]]) .. " " .. Translate(7553--[[Homeless]]),
 				data = "ts_colonists_homeless",
 			},
 			Drone = {
-				name = T(517--[[Drones]]),
+				name = Translate(517--[[Drones]]),
 				data = "ts_drones",
 			},
 		}
 		local loop_table_count1 = {
 			{
-				name = T(745--[[Shuttles]]),
+				name = Translate(745--[[Shuttles]]),
 				func = "CountShuttles",
 				data = "ts_shuttles",
 			},
 			{
-				name = T(3980--[[Buildings]]),
+				name = Translate(3980--[[Buildings]]),
 				func = "CountBuildings",
 				data = "ts_buildings",
 			},
 		}
 		local loop_table_count2 = {
 			{
-				name = T(302535920000035--[[Grids]]) .. " " .. T(79--[[Power]]) .. " " .. T(302535920001457--[[Stored]]),
+				name = Translate(302535920000035--[[Grids]]) .. " " .. Translate(79--[[Power]]) .. " " .. Translate(302535920001457--[[Stored]]),
 				func = "GetTotalStoredPower",
 				data1 = "ts_resources_grid",
 				data2 = "electricity",
 				data3 = "stored",
 			},
 			{
-				name = T(302535920000035--[[Grids]]) .. " " .. T(32--[[Power Production]]),
+				name = Translate(302535920000035--[[Grids]]) .. " " .. Translate(32--[[Power Production]]),
 				func = "GetTotalProducedPower",
 				data1 = "ts_resources_grid",
 				data2 = "electricity",
 				data3 = "production",
 			},
 			{
-				name = T(302535920000035--[[Grids]]) .. " " .. T(683--[[Power Consumption]]),
+				name = Translate(302535920000035--[[Grids]]) .. " " .. Translate(683--[[Power Consumption]]),
 				func = "GetTotalRequiredPower",
 				data1 = "ts_resources_grid",
 				data2 = "electricity",
 				data3 = "consumption",
 			},
 			{
-				name = T(302535920000035--[[Grids]]) .. " " .. T(682--[[Oxygen]]) .. " " .. T(302535920001457--[[Stored]]),
+				name = Translate(302535920000035--[[Grids]]) .. " " .. Translate(682--[[Oxygen]]) .. " " .. Translate(302535920001457--[[Stored]]),
 				func = "GetTotalStoredAir",
 				data1 = "ts_resources_grid",
 				data2 = "air",
 				data3 = "stored",
 			},
 			{
-				name = T(302535920000035--[[Grids]]) .. " " .. T(923--[[Oxygen Production]]),
+				name = Translate(302535920000035--[[Grids]]) .. " " .. Translate(923--[[Oxygen Production]]),
 				func = "GetTotalProducedAir",
 				data1 = "ts_resources_grid",
 				data2 = "air",
 				data3 = "production",
 			},
 			{
-				name = T(302535920000035--[[Grids]]) .. " " .. T(657--[[Oxygen Consumption]]),
+				name = Translate(302535920000035--[[Grids]]) .. " " .. Translate(657--[[Oxygen Consumption]]),
 				func = "GetTotalRequiredAir",
 				data1 = "ts_resources_grid",
 				data2 = "air",
 				data3 = "consumption",
 			},
 			{
-				name = T(302535920000035--[[Grids]]) .. " " .. T(681--[[Water]]) .. " " .. T(302535920001457--[[Stored]]),
+				name = Translate(302535920000035--[[Grids]]) .. " " .. Translate(681--[[Water]]) .. " " .. Translate(302535920001457--[[Stored]]),
 				func = "GetTotalStoredWater",
 				data1 = "ts_resources_grid",
 				data2 = "water",
 				data3 = "stored",
 			},
 			{
-				name = T(302535920000035--[[Grids]]) .. " " .. T(4806--[[Water Production]]),
+				name = Translate(302535920000035--[[Grids]]) .. " " .. Translate(4806--[[Water Production]]),
 				func = "GetTotalProducedWater",
 				data1 = "ts_resources_grid",
 				data2 = "water",
 				data3 = "production",
 			},
 			{
-				name = T(302535920000035--[[Grids]]) .. " " .. T(750--[[Water Consumption]]),
+				name = Translate(302535920000035--[[Grids]]) .. " " .. Translate(750--[[Water Consumption]]),
 				func = "GetTotalRequiredWater",
 				data1 = "ts_resources_grid",
 				data2 = "water",
@@ -563,13 +563,13 @@ do -- Graphs
 
 		-- the rest are sols
 		local csv_columns = {
-			{"category", T(1000097--[[Category]])},
-			{"current", T(302535920000106--[[Current]]) .. " " .. T(4031--[[Sol <day>]]):gsub(" <day>", "")},
+			{"category", Translate(1000097--[[Category]])},
+			{"current", Translate(302535920000106--[[Current]]) .. " " .. Translate(4031--[[Sol <day>]]):gsub(" <day>", "")},
 		}
 		local c = #csv_columns
 
 		-- add all the sols as columns
-		local sol_str = T(4031--[[Sol <day>]])
+		local sol_str = Translate(4031--[[Sol <day>]])
 		for i = 1, (UIColony.day - 1) do
 			c = c + 1
 			csv_columns[c] = {
@@ -627,7 +627,7 @@ do -- Graphs
 			export_data = BuildTable(
 				export_data,
 				c,
-				T(692--[[Resources]]) .. " " .. name .. " " .. T(302535920001454--[[Stockpiled]]),
+				Translate(692--[[Resources]]) .. " " .. name .. " " .. Translate(302535920001454--[[Stockpiled]]),
 				ResourceOverviewCity["GetAvailable" .. id](ResourceOverviewCity),
 				res.stockpile
 			)
@@ -635,7 +635,7 @@ do -- Graphs
 			export_data = BuildTable(
 				export_data,
 				c,
-				T(692--[[Resources]]) .. " " .. name .. " " .. T(302535920001455--[[Produced]]),
+				Translate(692--[[Resources]]) .. " " .. name .. " " .. Translate(302535920001455--[[Produced]]),
 				ResourceOverviewCity["Get" .. id .. "ProducedYesterday"](ResourceOverviewCity),
 				res.produced
 			)
@@ -643,7 +643,7 @@ do -- Graphs
 			export_data = BuildTable(
 				export_data,
 				c,
-				T(692--[[Resources]]) .. " " .. name .. " " .. T(302535920001456--[[Consumed]]),
+				Translate(692--[[Resources]]) .. " " .. name .. " " .. Translate(302535920001456--[[Consumed]]),
 				ResourceOverviewCity["Get" .. id .. "ConsumedByConsumptionYesterday"](ResourceOverviewCity),
 				res.consumed
 			)
@@ -654,7 +654,7 @@ do -- Graphs
 		export_data = BuildTable(
 			export_data,
 			c,
-			T(302535920001712--[[Building]]) .. " " .. T(302535920000971--[[Sites]]) .. " " .. T(302535920001453--[[Completed]]),
+			Translate(302535920001712--[[Building]]) .. " " .. Translate(302535920000971--[[Sites]]) .. " " .. Translate(302535920001453--[[Completed]]),
 			#(labels.ConstructionSite or "") + #(labels.ConstructionSiteWithHeightSurfaces or ""),
 			UICity.ts_constructions_completed
 		)

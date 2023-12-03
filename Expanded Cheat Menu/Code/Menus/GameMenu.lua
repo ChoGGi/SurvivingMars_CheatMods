@@ -296,7 +296,7 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 	.. "\n\n" .. T(302535920001619--[[This will take <color ChoGGi_red>longer</color> (about 15s).]]),
 	OnAction = ChoGGi.ComFuncs.ExportMapDataToCSV,
 	setting_breakthroughs = true,
-	setting_limit_count = 12,
+	setting_limit_count = 13,
 }
 
 -- menu
