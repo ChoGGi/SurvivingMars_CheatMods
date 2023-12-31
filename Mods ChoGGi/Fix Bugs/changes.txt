@@ -1,3 +1,6 @@
+v5.4
+St. Elmo's Fire: Stop meteoroids from destroying sinkholes.
+
 v5.3
 Changed fix for Colonists Wrong Map Infobar to use a mod option as it's causing an issue trying to delete buggy objects.
 

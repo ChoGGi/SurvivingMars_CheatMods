@@ -63,7 +63,6 @@ local function ModOptions(id)
 	mod_MainMenuMusic = CurrentModOptions:GetProperty("MainMenuMusic")
 	mod_ColonistsWrongMap = CurrentModOptions:GetProperty("ColonistsWrongMap")
 
-
 	-- Update all maps for uneven terrain (if using mod that allows landscaping maps other than surface)
 	if UIColony and mod_UnevenTerrain then
 		FixUnevenTerrain()
@@ -159,7 +158,6 @@ do -- CityStart/LoadGame
 		local GameMaps = GameMaps
 		local ResupplyItemDefinitions = ResupplyItemDefinitions
 		local bt = BuildingTemplates
-		local bmpo = BuildMenuPrerequisiteOverrides
 		local main_realm = GetRealmByID(MainMapID)
 
 		--
@@ -223,6 +221,13 @@ do -- CityStart/LoadGame
 		end
 
 		--
+		-- St. Elmo's Fire: Stop meteoroids from destroying sinkholes (existing saves)
+		local objs = UIColony:GetCityLabels("Sinkhole")
+		for i = 1, #objs do
+			objs[i].indestructible = true
+		end
+
+		--
 		-- Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC)
 		local objs = UIColony:GetCityLabels("Colonist")
 		for i = 1, #objs do
@@ -244,7 +249,7 @@ do -- CityStart/LoadGame
 			local hex = HexOutlineShapes.PeakNodeCCP2
 			if #hex == 8 then
 				table.remove(hex, 6)
-				-- Removing HexOutlineShapes seems to fix it, but it doesn't hurt to remove this one as well.
+				-- Removing HexOutlineShapes seems to fix it, but it doesn't hurt to remove HexCombinedShapes as well.
 				table.remove(HexCombinedShapes.PeakNodeCCP2, 6)
 
 				-- The other buildings
@@ -298,7 +303,7 @@ do -- CityStart/LoadGame
 		end
 
 		--
-		-- Fix Destroyed Tunnels Still Work: update pf tunnels to stop rovers from using them
+		-- Fix Destroyed Tunnels Still Work: update path finding tunnels to stop rovers from using them
 		main_realm:MapForEach("map", "Tunnel", function(t)
 			t:RemovePFTunnel()
 			t:AddPFTunnel()
@@ -407,6 +412,7 @@ do -- CityStart/LoadGame
 				bld:Setexceptional_circumstances(false)
 			end
 		end
+
 		--
 		-- Some colonists are allergic to doors and suffocate inside a dome with their suit still on.
 		local colonists = UIColony:GetCityLabels("Colonist")
@@ -414,9 +420,8 @@ do -- CityStart/LoadGame
 			local colonist = colonists[i]
 			-- Check if lemming is currently in a dome while wearing a suit
 			if colonist.entity:sub(1, 15) == "Unit_Astronaut_" then
-				local dome_at_pt = GetDomeAtPoint(
-					GameMaps[colonist.city.map_id].object_hex_grid, colonist:GetVisualPos()
-				)
+				local grid = GameMaps[colonist.city.map_id].object_hex_grid
+				local dome_at_pt = GetDomeAtPoint(grid, colonist:GetVisualPos())
 				if dome_at_pt then
 					-- Normally called when they go through the airlock
 					colonist:OnEnterDome(dome_at_pt)
@@ -425,6 +430,7 @@ do -- CityStart/LoadGame
 				end
 			end
 		end
+
 		--
 		-- Fix Farm Oxygen 1
 		if mod_FarmOxygen then
@@ -447,8 +453,10 @@ do -- CityStart/LoadGame
 				end
 			end
 		end
+
 		--
 		-- Wind turbine gets locked by a game event.
+		local bmpo = BuildMenuPrerequisiteOverrides
 		if bmpo.WindTurbine and TGetID(bmpo.WindTurbine) == 401896326435--[[You can't construct this building at this time]] then
 			bmpo.WindTurbine = nil
 		end
@@ -1004,6 +1012,19 @@ function OnMsg.Refabricated(obj)
 	obj:ChangeWorkingStateAnim(false)
 end
 
+--
+-- St. Elmo's Fire: Stop meteoroids from destroying sinkholes
+local ChoOrig_Sinkhole_GameInit = Sinkhole.GameInit
+function Sinkhole:GameInit(...)
+	if not mod_EnableMod then
+		return ChoOrig_Sinkhole_GameInit(self, ...)
+	end
+
+	self.indestructible = true
+
+	return ChoOrig_Sinkhole_GameInit(self, ...)
+end
+--
 --
 --
 --

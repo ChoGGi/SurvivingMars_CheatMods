@@ -1,6 +1,7 @@
-  condition = function(self)
-    return not IsGameRuleActive("NoPicard")
-  end,
+condition = function(self)
+  return not IsGameRuleActive("NoPicard")
+end,
+
 check for tech with breakthrough and save_in = "picard"
 MAKE it a mod option
 

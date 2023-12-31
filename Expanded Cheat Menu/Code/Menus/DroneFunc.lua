@@ -75,12 +75,12 @@ function ChoGGi.MenuFuncs.SetDroneType()
 	local icons = Presets.EncyclopediaArticle.Vehicles
 	local item_list = {
 		{
-			text = T(10278--[[Wasp Drone]]),
+			text = Translate(10278--[[Wasp Drone]]),
 			value = "FlyingDrone",
 			hint = "<image " .. icons.FlyingDrone.image .. ">\n\n" .. T(10278--[[Wasp Drone]]),
 		},
 		{
-			text = T(1681--[[Drone]]),
+			text = Translate(1681--[[Drone]]),
 			value = "Drone",
 			hint = "<image " .. icons.Drone.image .. ">\n\n" .. T(1681--[[Drone]]),
 		},
@@ -546,7 +546,7 @@ function ChoGGi.MenuFuncs.SetDroneCarryAmount()
 		str = T(302535920000613--[[Drone Carry Amount]]),
 	}
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 5, value = 5},
 		{text = 10, value = 10},
 		{text = 25, value = 25, hint = hinttoolarge},
@@ -606,7 +606,7 @@ end
 function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
 	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("CommandCenterMaxDrones")
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 5, value = 5},
 		{text = 10, value = 10},
 		{text = 25, value = 25},
@@ -635,7 +635,7 @@ function ChoGGi.MenuFuncs.SetDronesPerDroneHub()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Translate(302535920000916--[[DroneHubs can control %s drones.]]):format(choice[1].text),
-				T(4707, "Command center max Drones")
+				T(4707--[[Command center max Drones]])
 			)
 		end
 	end
@@ -652,7 +652,7 @@ end
 function ChoGGi.MenuFuncs.SetDronesPerRCRover()
 	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("RCRoverMaxDrones")
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 5, value = 5},
 		{text = 10, value = 10},
 		{text = 25, value = 25},
@@ -681,7 +681,7 @@ function ChoGGi.MenuFuncs.SetDronesPerRCRover()
 			ChoGGi.SettingFuncs.WriteSettings()
 			MsgPopup(
 				Translate(302535920000921--[[RC Rovers can control %s drones.]]):format(choice[1].text),
-				T(4633, "RC Commander max Drones")
+				T(4633--[[RC Commander max Drones]])
 			)
 		end
 	end

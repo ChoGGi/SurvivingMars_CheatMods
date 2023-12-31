@@ -110,7 +110,6 @@ function RocketBase:WaitInOrbit(...)
 		return ChoOrig_RocketBase_WaitInOrbit(self, ...)
 	end
 
-
 	local map_id = self:GetMapID() or MainCity.map_id
 
 	local landing_pads = Cities[map_id].labels.LandingPad or ""
@@ -166,7 +165,6 @@ function RocketBase:WaitInOrbit(...)
 --~ 	return ChoOrig_RocketBase_WaitInOrbit(self, ...)
 	CreateGameTimeThread(ChoOrig_RocketBase_WaitInOrbit, self, ...)
 	self.auto_export = orig_auto_export
-
 
 --~ 	self:SetCommand("LandOnMars", landing_site)
 --~ 	self:UpdateStatus("landing")

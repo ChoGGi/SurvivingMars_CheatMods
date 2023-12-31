@@ -2936,7 +2936,7 @@ function ChoGGi_DlgExamine:RetDebugUpValue(obj, list, c, nups)
 		local name, value = debug.getupvalue(obj, i)
 		if name then
 			c = c + 1
-			name = name ~= "" and name or T(302535920000723--[[Lua]])
+			name = name ~= "" and name or Translate(302535920000723--[[Lua]])
 
 			list[c] = "getupvalue(" .. i .. "): " .. name .. " = "
 				.. self:ConvertValueToInfo(value)
@@ -3639,8 +3639,19 @@ Decompiled code won't scroll correctly as the line numbers are different."]]):fo
 
 	end
 
---~ 	print(list_obj_str[3])
---~ 	ex(list_obj_str[3])
+	-- Check for not strings
+	for i = 1, c do
+		if type(list_obj_str[i]) ~= "string" then
+			if testing then
+				ex(list_obj_str[i])
+				print(i, list_obj_str[i])
+			else
+				-- I'll fix what I can find, but for enduser just make it work
+				list_obj_str[i] = tostring(list_obj_str[i])
+			end
+		end
+	end
+
 	return table.concat(list_obj_str, "\n")
 end
 ---------------------------------------------------------------------------------------------------------------------
@@ -3979,12 +3990,26 @@ function ChoGGi_DlgExamine:SetObj(startup)
 			CreateRealTimeThread(function()
 				WaitMsg("OnRender")
 --~ self.ChoGGi.ComFuncs.TickStart("Examine")
-				self:SetTextTest(self:ConvertObjToInfo(obj, obj_type))
+				local status, result = pcall(self.ConvertObjToInfo, self, obj, obj_type)
+				if status then
+					self:SetTextTest(result)
+				elseif testing then
+--~ 					local _,str1 = string.find(result," at index ")
+--~ 					local str2 = string.find(result," in table for ")
+--~ 					local idx = string.sub(result, str1 + 1, str2 - 1)
+--~ 					ex(result)
+					print(result)
+				end
 --~ self.ChoGGi.ComFuncs.TickEnd("Examine", self.name)
 			end)
 		else
 			-- we normally don't want it in a thread with OnRender else it'll mess up my scroll pos (and stuff)
-			self:SetTextTest(self:ConvertObjToInfo(obj, obj_type))
+			local status, result = pcall(self.ConvertObjToInfo, self, obj, obj_type)
+			if status then
+				self:SetTextTest(result)
+			else
+				print(result)
+			end
 		end
 
 	-- comments are good for stuff like this...

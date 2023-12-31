@@ -237,17 +237,29 @@ end
 --~ 	SetTimeFactor(1000) = normal speed
 -- use GetTimeFactor() to check time for changing it so it can be paused?
 function ChoGGi.MenuFuncs.SetGameSpeed()
+	local speeds = {
+		[3] = 	Translate(1000121--[[Default]]),
+		[6] = 	Translate(302535920001126--[[Double]]),
+		[9] = 	Translate(302535920001127--[[Triple]]),
+		[12] = 	Translate(302535920001128--[[Quadruple]]),
+		[24] = 	Translate(302535920001129--[[Octuple]]),
+		[48] = 	Translate(302535920001130--[[Sexdecuple]]),
+		[96] = 	Translate(302535920001131--[[Duotriguple]]),
+		[192] = Translate(302535920001132--[[Quattuorsexaguple]]),
+		[300] = Translate(302535920000483--[[Centuple]]),
+	}
+
 	local hint_str = Translate(302535920000523--[[How many to multiple the default speed by: <color 0 200 0>%s</color>]])
 	local item_list = {
-		{text = Translate(1000121--[[Default]]), value = 1, hint = hint_str:format(1)},
-		{text = T(302535920001126--[[Double]]), value = 2, hint = hint_str:format(2)},
-		{text = T(302535920001127--[[Triple]]), value = 3, hint = hint_str:format(3)},
-		{text = T(302535920001128--[[Quadruple]]), value = 4, hint = hint_str:format(4)},
-		{text = T(302535920001129--[[Octuple]]), value = 8, hint = hint_str:format(8)},
-		{text = T(302535920001130--[[Sexdecuple]]), value = 16, hint = hint_str:format(16)},
-		{text = T(302535920001131--[[Duotriguple]]), value = 32, hint = hint_str:format(32)},
-		{text = T(302535920001132--[[Quattuorsexaguple]]), value = 64, hint = hint_str:format(64)},
-		{text = T(302535920000483--[[Centuple]]), value = 100, hint = hint_str:format(100)},
+		{text = speeds[3], value = 1, hint = hint_str:format(1)},
+		{text = speeds[6], value = 2, hint = hint_str:format(2)},
+		{text = speeds[9], value = 3, hint = hint_str:format(3)},
+		{text = speeds[12], value = 4, hint = hint_str:format(4)},
+		{text = speeds[24], value = 8, hint = hint_str:format(8)},
+		{text = speeds[48], value = 16, hint = hint_str:format(16)},
+		{text = speeds[96], value = 32, hint = hint_str:format(32)},
+		{text = speeds[192], value = 64, hint = hint_str:format(64)},
+		{text = speeds[300], value = 100, hint = hint_str:format(100)},
 	}
 
 	local function CallBackFunc(choice)
@@ -288,17 +300,6 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
 			)
 		end
 	end
-
-	local speeds = {
-		[3] = T(1000121--[[Default]]),
-		[6] = T(302535920001126--[[Double]]),
-		[9] = T(302535920001127--[[Triple]]),
-		[12] = T(302535920001128--[[Quadruple]]),
-		[24] = T(302535920001129--[[Octuple]]),
-		[48] = T(302535920001130--[[Sexdecuple]]),
-		[96] = T(302535920001131--[[Duotriguple]]),
-		[192] = T(302535920001132--[[Quattuorsexaguple]]),
-	}
 
 	ChoGGi.ComFuncs.OpenInListChoice{
 		callback = CallBackFunc,

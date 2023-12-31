@@ -279,7 +279,7 @@ do -- DumpTableFunc
 			local filename = "AppData/logs/DumpedTable.txt"
 			g_env.AsyncStringToFile(filename, table.concat(output_list), mode or "-1")
 
-			local msg = T(302535920000039--[[Dumped]]) .. ": " .. name
+			local msg = Translate(302535920000039--[[Dumped]]) .. ": " .. name
 			-- print msg to first newline
 			print(filename,"\n",msg:sub(1,msg:find("\n")))
 			MsgPopup(
@@ -290,7 +290,7 @@ do -- DumpTableFunc
 			return
 		end
 
-		local msg = T(302535920000003--[[Can't dump nothing]]) .. ": " .. name .. "\n" .. ValueToLuaCode(obj)
+		local msg = Translate(302535920000003--[[Can't dump nothing]]) .. ": " .. name .. "\n" .. ValueToLuaCode(obj)
 		print(msg)
 		MsgPopup(
 			msg,
@@ -859,7 +859,7 @@ do -- RetThreadInfo/FindThreadFunc
 				break
 			end
 			list[idx] = {
-				name = name ~= "" and name or T(302535920000723--[[Lua]]),
+				name = name ~= "" and name or Translate(302535920000723--[[Lua]]),
 				value = value,
 				level = level,
 			}
@@ -878,7 +878,7 @@ do -- RetThreadInfo/FindThreadFunc
 				break
 			end
 			list[idx] = {
-				name = name ~= "" and name or T(302535920000723--[[Lua]]),
+				name = name ~= "" and name or Translate(302535920000723--[[Lua]]),
 				value = value,
 			}
 			idx = idx + 1
@@ -920,7 +920,7 @@ do -- RetThreadInfo/FindThreadFunc
 						temp.func = value:sub(2, space)
 						-- change unknown to Lua
 						local n = value:sub(space + 2, -2)
-						temp.name = n ~= "unknown name" and n or T(302535920000723--[[Lua]])
+						temp.name = n ~= "unknown name" and n or Translate(302535920000723--[[Lua]])
 					end
 				end
 
@@ -940,7 +940,7 @@ do -- RetThreadInfo/FindThreadFunc
 					for i = 0, nups do
 						local info_got = debug.getinfo(thread, i)
 						if info_got then
-							local name = info_got.name or info_got.what or T(302535920000723--[[Lua]])
+							local name = info_got.name or info_got.what or Translate(302535920000723--[[Lua]])
 							funcs[i] = {
 								name = name,
 								func = info_got.func,

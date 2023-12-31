@@ -40,7 +40,7 @@ do -- ModUpload
 		ChoGGi_PodNoBounce = "Pod No Bounce (upload 2)",
 		ChoGGi_RCBulldozer = "RC Bulldozer (upload 2)",
 		ChoGGi_RocketProgradeOrbit = "Rocket Prograde Orbit (upload 2)",
-		ChoGGi_RocketsAutoLand = "Rockets Auto Land (upload 2)",
+--~ 		ChoGGi_RocketsAutoLand = "Rockets Auto Land (upload 2)",
 		ChoGGi_SelectableCables = "Selectable Cables Pipes (upload 2)",
 		ChoGGi_StopColonistDeathFailure = "Stop Death Failure (upload 2)",
 		ChoGGi_UnitThoughts = "Unit Thoughts (upload 2)",

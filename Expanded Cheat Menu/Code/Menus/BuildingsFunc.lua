@@ -1187,7 +1187,7 @@ function ChoGGi.MenuFuncs.SetFullyAutomatedBuildings()
 	local id = RetTemplateOrClass(obj)
 
 	local item_list = {
-		{text = T(251103844022--[[Disable]]), value = "Disable"},
+		{text = Translate(251103844022--[[Disable]]), value = "Disable"},
 		{text = 100, value = 100},
 		{text = 150, value = 150},
 		{text = 250, value = 250},

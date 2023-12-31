@@ -686,20 +686,50 @@ function PortableMiner:OnSelected()
 	table.remove_entry(g_IdleExtractors, self)
 end
 
--- needed for Concrete
+-- Needed for Concrete
 function PortableMiner:GetExtractionShape()
 	return self.mine_area
+end
+
+-- Used to add res filters below
+local function AddFilterTemplate(params)
+	return PlaceObj("XTemplateTemplate", {
+			"__template", "InfopanelActiveSection",
+			"Title", params.Title,
+			"__condition", params.__condition,
+			"OnContextUpdate", function(self, context)
+				if context.miner_filter[params.res] then
+					self:SetIcon("UI/Icons/Sections/resource_accept.tga")
+				else
+					self:SetIcon("UI/Icons/Sections/resource_no_accept.tga")
+				end
+			end,
+		}, {
+			PlaceObj("XTemplateFunc", {
+				"name", "OnActivate(self, context)",
+				"parent", function(self)
+					return self.parent
+				end,
+				"func", function(self, context)
+					---
+					context:BuildFilterList()
+					context.miner_filter[params.res] = not context.miner_filter[params.res]
+					context:SetCommand("Idle")
+					ObjModified(context)
+					---
+				end
+			}),
+		})
 end
 
 function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.PortableMinerBuilding then
 		PlaceObj("BuildingTemplate", {
 
-		-- added, not uploaded
-		"disabled_in_environment1", "",
-		"disabled_in_environment2", "",
-		"disabled_in_environment3", "",
-		"disabled_in_environment4", "",
+			"disabled_in_environment1", "",
+			"disabled_in_environment2", "",
+			"disabled_in_environment3", "",
+			"disabled_in_environment4", "",
 
 			"Id", "PortableMinerBuilding",
 			"template_class", "PortableMinerBuilding",
@@ -722,6 +752,20 @@ function OnMsg.ClassesPostprocess()
 			"prio_button", false,
 			"on_off_button", false,
 			"entity", "CombatRover",
+		})
+
+		local bt_pmb = BuildingTemplates.PortableMinerBuilding
+		-- add cargo option
+		PlaceObj("Cargo", {
+			description = bt_pmb.description,
+			icon = display_icon,
+			name = bt_pmb.display_name,
+			id = "PortableMinerBuilding",
+			kg = 10000,
+			locked = false,
+			price = 200000000,
+			group = "Rovers",
+			SaveIn = "",
 		})
 	end
 
@@ -749,223 +793,58 @@ function OnMsg.ClassesPostprocess()
 	-- check for and remove existing template
 	ChoGGi.ComFuncs.RemoveXTemplateSections(template, "ChoGGi_Template_PortableMinerResFilter", true)
 	template[#template+1] = PlaceObj("XTemplateTemplate", {
-			"ChoGGi_Template_PortableMinerResFilter", true,
-			"Id", "ChoGGi_PortableMinerResFilter",
-			"__context_of_kind", "PortableMiner",
-			"__template", "InfopanelSection",
-			"RolloverText", T(302535920011631, "Filter types of resources when looking with automated mode."),
-			"RolloverTitle", T(302535920011632, "Automated Filter"),
-			"Title", T(302535920011633, "Filter"),
-			"Icon", "UI/Icons/Sections/facility.tga",
-		}, {
+		"ChoGGi_Template_PortableMinerResFilter", true,
+		"Id", "ChoGGi_PortableMinerResFilter",
+		"__context_of_kind", "PortableMiner",
+		"__template", "InfopanelSection",
+		"RolloverText", T(302535920011631, "Filter types of resources when looking with automated mode."),
+		"RolloverTitle", T(302535920011632, "Automated Filter"),
+		"Title", T(302535920011633, "Filter"),
+		"Icon", "UI/Icons/Sections/facility.tga",
+	}, {
 
-
-		-- yeah I need to loop this
-
-
-		PlaceObj("XTemplateTemplate", {
-			"__template", "InfopanelActiveSection",
-			"Title", T(229258768953--[[Exotic Minerals]]),
-			"__condition", function()
+		AddFilterTemplate{
+			Title = T(229258768953--[[Exotic Minerals]]),
+			__condition = function()
 				return g_AccessibleDlc.picard
 			end,
-			"OnContextUpdate", function(self, context)
-				if context.miner_filter.PreciousMinerals then
-					self:SetIcon("UI/Icons/Sections/resource_accept.tga")
-				else
-					self:SetIcon("UI/Icons/Sections/resource_no_accept.tga")
-				end
-			end,
-		}, {
-			PlaceObj("XTemplateFunc", {
-				"name", "OnActivate(self, context)",
-				"parent", function(self)
-					return self.parent
-				end,
-				"func", function(self, context)
-					---
-					context:BuildFilterList()
-					context.miner_filter.PreciousMinerals = not context.miner_filter.PreciousMinerals
-					context:SetCommand("Idle")
-					ObjModified(context)
-					---
-				end
-			}),
-		}),
-
-		PlaceObj("XTemplateTemplate", {
-			"__template", "InfopanelActiveSection",
-			"Title", T(4139--[[Rare Metals]]),
-			"OnContextUpdate", function(self, context)
-				if context.miner_filter.PreciousMetals then
-					self:SetIcon("UI/Icons/Sections/resource_accept.tga")
-				else
-					self:SetIcon("UI/Icons/Sections/resource_no_accept.tga")
-				end
-			end,
-		}, {
-			PlaceObj("XTemplateFunc", {
-				"name", "OnActivate(self, context)",
-				"parent", function(self)
-					return self.parent
-				end,
-				"func", function(self, context)
-					---
-					context:BuildFilterList()
-					context.miner_filter.PreciousMetals = not context.miner_filter.PreciousMetals
-					context:SetCommand("Idle")
-					ObjModified(context)
-					---
-				end
-			}),
-		}),
-
-		PlaceObj("XTemplateTemplate", {
-			"__template", "InfopanelActiveSection",
-			"Title", T(3514--[[Metals]]),
-			"OnContextUpdate", function(self, context)
-				if context.miner_filter.Metals then
-					self:SetIcon("UI/Icons/Sections/resource_accept.tga")
-				else
-					self:SetIcon("UI/Icons/Sections/resource_no_accept.tga")
-				end
-			end,
-		}, {
-			PlaceObj("XTemplateFunc", {
-				"name", "OnActivate(self, context)",
-				"parent", function(self)
-					return self.parent
-				end,
-				"func", function(self, context)
-					---
-					context:BuildFilterList()
-					context.miner_filter.Metals = not context.miner_filter.Metals
-					context:SetCommand("Idle")
-					ObjModified(context)
-					---
-				end
-			}),
-		}),
-
-		PlaceObj("XTemplateTemplate", {
-			"__template", "InfopanelActiveSection",
-			"Title", T(3513--[[Concrete]]),
-			"OnContextUpdate", function(self, context)
-				if context.miner_filter.Concrete then
-					self:SetIcon("UI/Icons/Sections/resource_accept.tga")
-				else
-					self:SetIcon("UI/Icons/Sections/resource_no_accept.tga")
-				end
-			end,
-		}, {
-			PlaceObj("XTemplateFunc", {
-				"name", "OnActivate(self, context)",
-				"parent", function(self)
-					return self.parent
-				end,
-				"func", function(self, context)
-					---
-					context:BuildFilterList()
-					context.miner_filter.Concrete = not context.miner_filter.Concrete
-					context:SetCommand("Idle")
-					ObjModified(context)
-					---
-				end
-			}),
-		}),
-
-		PlaceObj("XTemplateTemplate", {
-			"__template", "InfopanelActiveSection",
-			"Title", T(1107010705--[[Radioactive Materials]]),
-			"__condition", function ()
+			res = "PreciousMinerals",
+		},
+		AddFilterTemplate{
+			Title = T(4139--[[Rare Metals]]),
+			res = "PreciousMetals",
+		},
+		AddFilterTemplate{
+			Title = T(3514--[[Metals]]),
+			res = "Metals",
+		},
+		AddFilterTemplate{
+			Title = T(3513--[[Concrete]]),
+			res = "Concrete",
+		},
+		AddFilterTemplate{
+			Title = T(1107010705--[[Radioactive Materials]]),
+			__condition = function()
 				return lukeh_newres
 			end,
-			"OnContextUpdate", function(self, context)
-				if context.miner_filter.Radioactive then
-					self:SetIcon("UI/Icons/Sections/resource_accept.tga")
-				else
-					self:SetIcon("UI/Icons/Sections/resource_no_accept.tga")
-				end
-			end,
-		}, {
-			PlaceObj("XTemplateFunc", {
-				"name", "OnActivate(self, context)",
-				"parent", function(self)
-					return self.parent
-				end,
-				"func", function(self, context)
-					---
-					context:BuildFilterList()
-					context.miner_filter.Radioactive = not context.miner_filter.Radioactive
-					context:SetCommand("Idle")
-					ObjModified(context)
-					---
-				end
-			}),
-		}),
-
-		PlaceObj("XTemplateTemplate", {
-			"__template", "InfopanelActiveSection",
-			"Title", T(1107012118--[[Hydrocarbon]]),
-			"__condition", function ()
+			res = "Radioactive",
+		},
+		AddFilterTemplate{
+			Title = T(1107012118--[[Hydrocarbon]]),
+			__condition = function()
 				return lukeh_newres
 			end,
-			"OnContextUpdate", function(self, context)
-				if context.miner_filter.Hydrocarbon then
-					self:SetIcon("UI/Icons/Sections/resource_accept.tga")
-				else
-					self:SetIcon("UI/Icons/Sections/resource_no_accept.tga")
-				end
-			end,
-		}, {
-			PlaceObj("XTemplateFunc", {
-				"name", "OnActivate(self, context)",
-				"parent", function(self)
-					return self.parent
-				end,
-				"func", function(self, context)
-					---
-					context:BuildFilterList()
-					context.miner_filter.Hydrocarbon = not context.miner_filter.Hydrocarbon
-					context:SetCommand("Idle")
-					ObjModified(context)
-					---
-				end
-			}),
-		}),
-
-		PlaceObj("XTemplateTemplate", {
-			"__template", "InfopanelActiveSection",
-			"Title", T(1107010505--[[Crystals]]),
-			"__condition", function ()
+			res = "Hydrocarbon",
+		},
+		AddFilterTemplate{
+			Title = T(1107010505--[[Crystals]]),
+			__condition = function()
 				return lukeh_newres
 			end,
-			"OnContextUpdate", function(self, context)
-				if context.miner_filter.Crystals then
-					self:SetIcon("UI/Icons/Sections/resource_accept.tga")
-				else
-					self:SetIcon("UI/Icons/Sections/resource_no_accept.tga")
-				end
-			end,
-		}, {
-			PlaceObj("XTemplateFunc", {
-				"name", "OnActivate(self, context)",
-				"parent", function(self)
-					return self.parent
-				end,
-				"func", function(self, context)
-					---
-					context:BuildFilterList()
-					context.miner_filter.Crystals = not context.miner_filter.Crystals
-					context:SetCommand("Idle")
-					ObjModified(context)
-					---
-				end
-			}),
-		}),
+			res = "Crystals",
+		},
 
 	})
-
 
 	template = XTemplates.ipResourcePile[1]
 	-- check for and remove existing template

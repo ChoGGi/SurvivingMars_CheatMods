@@ -25,6 +25,7 @@ Leftover transport_ticket in colonist objs (assign to residence grayed out, from
 Possible fix for main menu music playing in-game on new games (mod option to disable, since there's no fade out).
 The Bottomless Pit and Anomaly is missing (more info below).
 Refabbing rare extractors left the "working" dust plumes around them.
+St. Elmo's Fire: Stop meteoroids from destroying sinkholes.
 ```
 
 **Mods**:

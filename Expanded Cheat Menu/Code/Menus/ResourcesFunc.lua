@@ -109,7 +109,7 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.FoodPerRocketPassenger / r
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
 		{text = 75, value = 75},

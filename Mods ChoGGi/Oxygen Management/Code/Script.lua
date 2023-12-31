@@ -138,7 +138,8 @@ function Dome:BuildingUpdate(...)
 		self.ChoGGi_OxygenManagement_oxygen_modifier:Change(0, 0)
 	else
 		local count = AirCount(self, "Child") + AirCount(self, "Senior")
-			+ AirCount(self, "Middle Aged") + AirCount(self, "Adult") + AirCount(self, "Youth")
+			+ AirCount(self, "Middle Aged") + AirCount(self, "Adult")
+			+ AirCount(self, "Youth")
 
 		self.ChoGGi_OxygenManagement_oxygen_modifier:Change(count, 0)
 	end

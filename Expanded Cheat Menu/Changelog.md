@@ -2,6 +2,7 @@
 
 ## v19.2 (Unreleased)
 ### Changed:
+- ExportMapDataToCSV uses 13 instead of 12 breakthroughs.
 - Added Tool tips to Menu>Game>UI>UI Transparency.
 - Stopped using TranslationTable, might cause some string issues.
 - Entity spawner has a button to change scale.

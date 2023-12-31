@@ -1504,8 +1504,8 @@ end -- do
 
 function ChoGGi.MenuFuncs.UnlockAllBuildings_Toggle()
 	local item_list = {
-		{text = T(302535920000547--[[Lock]]), value = "Lock"},
-		{text = T(302535920000318--[[Unlock]]), value = "Unlock"},
+		{text = Translate(302535920000547--[[Lock]]), value = "Lock"},
+		{text = Translate(302535920000318--[[Unlock]]), value = "Unlock"},
 	}
 
 	local function CallBackFunc(choice)
@@ -1601,7 +1601,7 @@ function ChoGGi.MenuFuncs.BreakThroughsOmegaTelescope_Set()
 	local default_setting = ChoGGi.Consts.OmegaTelescopeBreakthroughsCount
 	local MaxAmount = #UIColony.tech_field.Breakthroughs
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 6, value = 6},
 		{text = 12, value = 12},
 		{text = 24, value = 24},
@@ -1643,7 +1643,7 @@ function ChoGGi.MenuFuncs.BreakThroughsAllowed_Set()
 	local default_setting = ChoGGi.Consts.BreakThroughTechsPerGame
 	local MaxAmount = #UIColony.tech_field.Breakthroughs
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 26, value = 26, hint = T(302535920000301--[[Doubled the base amount.]])},
 		{text = MaxAmount, value = MaxAmount, hint = T(302535920000298--[[Max amount in UIColony.tech_field list, you could make the amount larger if you want (an update/mod can add more).]])},
 	}

@@ -1,6 +1,8 @@
 ## Library Changelog
 
 ## v12.2 (Unreleased)
+- Examine Dump text file name is changed to use date instead of screenshot name func.
+- ExportMapDataToCSV uses DLC for filename.
 - Pasting in code in console should properly add spaces.
 - Stopped using TranslationTable, might cause some string issues.
 - DeleteObject was leaving particles behind for certain buildings.

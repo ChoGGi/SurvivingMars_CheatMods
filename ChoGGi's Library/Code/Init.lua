@@ -141,7 +141,7 @@ elseif c.ProjectName and c.ProjectName == "Bacon" then
 else
 	ChoGGi.what_game = "Unknown"
 end
-
+-- It's called Sol Engine (used to be called HGEngine till SM came out and someone decided it needed a name)
 
 do -- translate (todo update code to not need this, maybe use T() for menus)
 	local locale_path = ChoGGi.library_path .. "Locales/"

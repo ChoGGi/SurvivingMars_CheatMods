@@ -1,3 +1,10 @@
+v0.5
+Space Elevators weren't queuing cargo (thanks ZaGRAmY).
+
+v0.4
+All Space Elevators will import.
+Shift works on wonders.
+
 v0.3
 Picard update.
 

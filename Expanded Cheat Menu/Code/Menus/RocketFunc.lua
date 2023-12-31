@@ -257,10 +257,10 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("TravelTimeEarthMars") / r
 	local item_list = {
-		{text = T(302535920000947--[[Instant]]), value = 0},
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
-		{text = T(302535920000948--[[Original]]) .. ": " .. 750, value = 750},
-		{text = T(302535920000949--[[Half of Original]]) .. ": " .. 375, value = 375},
+		{text = Translate(302535920000947--[[Instant]]), value = 0},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(302535920000948--[[Original]]) .. ": " .. 750, value = 750},
+		{text = Translate(302535920000949--[[Half of Original]]) .. ": " .. 375, value = 375},
 		{text = 1, value = 1},
 		{text = 5, value = 5},
 		{text = 10, value = 10},
@@ -313,7 +313,7 @@ end
 function ChoGGi.MenuFuncs.SetColonistsPerRocket()
 	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("MaxColonistsPerRocket")
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
 		{text = 75, value = 75},

@@ -7,8 +7,6 @@ end
 -- local some globals
 local table = table
 local CmpLower = CmpLower
-local TranslationTable = TranslationTable
-local Translate = Translate
 
 local Translate = ChoGGi.ComFuncs.Translate
 local RetName = ChoGGi.ComFuncs.RetName
@@ -300,11 +298,26 @@ ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
 				end
 			end
 
+			-- Use DLCs in exported filename
+			local dlc = g_AvailableDlc
+			local name = "MapData "
+			if breakthroughs then
+				name = "MapData Breakthroughs "
+				if dlc.armstrong and dlc.picard then
+					name = "MapData Breakthroughs GP BB "
+				elseif dlc.armstrong then
+					name = "MapData Breakthroughs GP "
+				elseif dlc.picard then
+					name = "MapData Breakthroughs BB "
+				end
+			end
+			name = "AppData/" .. name .. os.time() .. ".csv"
+
 	--~ ex(export_data)
 			-- and now we can save it to disk
-			SaveCSV("AppData/MapData-" .. os.time() .. ".csv", export_data, table.map(csv_columns, 1), table.map(csv_columns, 2))
+			SaveCSV(name, export_data, table.map(csv_columns, 1), table.map(csv_columns, 2))
 			-- let user know where the csv is
-			ExportDoneMsg(ConvertToOSPath("AppData/MapData-" .. os.time() .. ".csv"))
+			ExportDoneMsg(ConvertToOSPath(name))
 		end
 	end
 end --do

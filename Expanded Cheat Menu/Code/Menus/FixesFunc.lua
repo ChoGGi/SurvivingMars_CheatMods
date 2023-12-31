@@ -14,6 +14,8 @@ local Translate = ChoGGi.ComFuncs.Translate
 local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local DeleteObject = ChoGGi.ComFuncs.DeleteObject
 local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
+local SpawnColonist = ChoGGi.ComFuncs.SpawnColonist
+local FindNearestObject = FindNearestObject
 
 local testing = ChoGGi.testing
 
@@ -118,142 +120,134 @@ do -- DronesNotRepairingDome
 	end
 end -- do
 
-do -- ResetCommanders
-	local function ResetRover(rc)
-		local drones
-		if rc.attached_drones then
-			drones = #rc.attached_drones
-			for i = 1, #rc.attached_drones do
-				DoneObject(rc.attached_drones[i])
-			end
-		end
-		local pos = rc:GetVisualPos()
-		local new = rc:Clone()
-		DoneObject(rc)
-		new:SetPos(GetRealm(new):GetPassablePointNearby(pos))
-		-- add any missing drones
-		if drones > #new.attached_drones then
-			repeat
-				new:SpawnDrone()
-			until drones == #new.attached_drones
+local function ResetRover(rc)
+	local drones
+	if rc.attached_drones then
+		drones = #rc.attached_drones
+		for i = 1, #rc.attached_drones do
+			DoneObject(rc.attached_drones[i])
 		end
 	end
+	local pos = rc:GetVisualPos()
+	local new = rc:Clone()
+	DoneObject(rc)
+	new:SetPos(GetRealm(new):GetPassablePointNearby(pos))
+	-- add any missing drones
+	if drones > #new.attached_drones then
+		repeat
+			new:SpawnDrone()
+		until drones == #new.attached_drones
+	end
+end
 
-	function ChoGGi.MenuFuncs.ResetCommanders()
-		CreateRealTimeThread(function()
-			local Sleep = Sleep
-			local GetStateIdx = GetStateIdx
-			local before_table = {}
+function ChoGGi.MenuFuncs.ResetCommanders()
+	CreateRealTimeThread(function()
+		local Sleep = Sleep
+		local GetStateIdx = GetStateIdx
+		local before_table = {}
 
-			-- get all commanders stuck in deploy with at least one drone
-			MapForEach("map", "RCRover", function(rc)
-				local drones = #rc.attached_drones > 0
-				if drones then
-					if rc:GetState() == GetStateIdx("deployIdle") then
-						-- store them in a table for later
-						before_table[rc.handle] = {rc = rc, amount = #rc.attached_drones}
-					-- borked, no sense in waiting for later
-					elseif rc:GetState() == GetStateIdx("idle") and rc.waiting_on_drones then
-						ResetRover(rc)
-					end
-				end
-			end)
-			-- let user know something is happening
-			MsgPopup(
-				T(5438--[[Rovers]]),
-				T(302535920000464--[[Updating Rovers]])
-			)
-			--wait awhile just to be sure
-			Sleep(5000)
-			--go through and reset any rovers still doing the same thing
-			for _, rc_table in pairs(before_table) do
-				local state = rc_table.rc:GetState() == GetStateIdx("deployIdle")
-				local drones = #rc_table.rc.attached_drones == rc_table.amount
-				if state and drones then
-					ResetRover(rc_table.rc)
+		-- get all commanders stuck in deploy with at least one drone
+		MapForEach("map", "RCRover", function(rc)
+			local drones = #rc.attached_drones > 0
+			if drones then
+				if rc:GetState() == GetStateIdx("deployIdle") then
+					-- store them in a table for later
+					before_table[rc.handle] = {rc = rc, amount = #rc.attached_drones}
+				-- borked, no sense in waiting for later
+				elseif rc:GetState() == GetStateIdx("idle") and rc.waiting_on_drones then
+					ResetRover(rc)
 				end
 			end
 		end)
-	end
-end -- do
+		-- let user know something is happening
+		MsgPopup(
+			T(5438--[[Rovers]]),
+			T(302535920000464--[[Updating Rovers]])
+		)
+		--wait awhile just to be sure
+		Sleep(5000)
+		--go through and reset any rovers still doing the same thing
+		for _, rc_table in pairs(before_table) do
+			local state = rc_table.rc:GetState() == GetStateIdx("deployIdle")
+			local drones = #rc_table.rc.attached_drones == rc_table.amount
+			if state and drones then
+				ResetRover(rc_table.rc)
+			end
+		end
+	end)
+end
 
-do -- Colonist stuff
-	local SpawnColonist = ChoGGi.ComFuncs.SpawnColonist
-	local FindNearestObject = FindNearestObject
-
-	function ChoGGi.MenuFuncs.ResetAllColonists()
-		local function CallBackFunc(answer)
-			if answer then
-				local objs = UIColony:GetCityLabels("Colonist")
-				for i = 1, #objs do
-					local c = objs[i]
-					local city = Cities[ChoGGi.ComFuncs.RetObjMapId(c)]
-					local is_valid = IsValid(c)
-					SpawnColonist(c, nil, is_valid and c:GetVisualPos(), city)
-					if is_valid then
-						DoneObject(c)
-					end
+function ChoGGi.MenuFuncs.ResetAllColonists()
+	local function CallBackFunc(answer)
+		if answer then
+			local objs = UIColony:GetCityLabels("Colonist")
+			for i = 1, #objs do
+				local c = objs[i]
+				local city = Cities[ChoGGi.ComFuncs.RetObjMapId(c)]
+				local is_valid = IsValid(c)
+				SpawnColonist(c, nil, is_valid and c:GetVisualPos(), city)
+				if is_valid then
+					DoneObject(c)
 				end
 			end
 		end
-
-		ChoGGi.ComFuncs.QuestionBox(
-			T(6779--[[Warning]]) .. "!\n" .. T(302535920000055--[[Reset All Colonists]])
-				.. "\n" .. T(302535920000939--[["Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20."]]),
-			CallBackFunc,
-			T(6779--[[Warning]]) .. ": " .. T(302535920000055--[[Reset All Colonists]])
-		)
 	end
 
-	function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
-		local objs = UIColony:GetCityLabels("Colonist")
-		local rockets = UIColony:GetCityLabels("SupplyRocket")
-		for i = 1, #objs do
-			local c = objs[i]
-			local is_valid = IsValid(c)
-			if is_valid and c:GetStateText() == "movePlanet" then
-				local city = Cities[ChoGGi.ComFuncs.RetObjMapId(c)]
-				local rocket = FindNearestObject(rockets, c)
-				SpawnColonist(c, rocket, c:GetVisualPos(), city)
-				DeleteObject(c)
-			end
-		end
+	ChoGGi.ComFuncs.QuestionBox(
+		T(6779--[[Warning]]) .. "!\n" .. T(302535920000055--[[Reset All Colonists]])
+			.. "\n" .. T(302535920000939--[["Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20."]]),
+		CallBackFunc,
+		T(6779--[[Warning]]) .. ": " .. T(302535920000055--[[Reset All Colonists]])
+	)
+end
 
-		MsgPopup(
-			T(302535920001691--[[All]]),
-			T(302535920000591--[[Colonists Trying To Board Rocket Freezes Game]])
-		)
-	end
-
-	local function AttachedColonist(c, pos, rocket, city)
-		-- try to remove attached colonist from rocket, and get pos so we can create a new c at the same pos
-		if IsValid(c) then
-			c:Detach()
-			SpawnColonist(c, rocket, pos, city)
-			DoneObject(c)
-		else
-			SpawnColonist(nil, nil, rocket, pos, city)
+function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
+	local rockets = UIColony:GetCityLabels("SupplyRocket")
+	local objs = UIColony:GetCityLabels("Colonist")
+	for i = 1, #objs do
+		local c = objs[i]
+		local is_valid = IsValid(c)
+		if is_valid and c:GetStateText() == "movePlanet" then
+			local city = Cities[ChoGGi.ComFuncs.RetObjMapId(c)]
+			local rocket = FindNearestObject(rockets, c)
+			SpawnColonist(c, rocket, c:GetVisualPos(), city)
+			DeleteObject(c)
 		end
 	end
-	function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
-		local InvalidPos = ChoGGi.Consts.InvalidPos
-		local rockets = UIColony:GetCityLabels("SupplyRocket")
-		for i = 1, #rockets do
-			local rocket = rockets[i]
-			-- SupplyRocket also returns rockets in space
-			if rocket:GetPos() ~= InvalidPos then
-				local city = Cities[ChoGGi.ComFuncs.RetObjMapId(rocket)]
-				local pos = GetRealm(rocket):GetPassablePointNearby(rocket:GetPos())
-				rocket:ForEachAttach("Colonist", AttachedColonist, pos, rocket, city)
-			end
-		end
-		MsgPopup(
-			T(5238--[[Rockets]]),
-			T(302535920000585--[[Colonists Stuck Outside Rocket]])
-		)
-	end
 
-end -- do
+	MsgPopup(
+		T(302535920001691--[[All]]),
+		T(302535920000591--[[Colonists Trying To Board Rocket Freezes Game]])
+	)
+end
+
+local function AttachedColonist(c, pos, rocket, city)
+	-- try to remove attached colonist from rocket, and get pos so we can create a new c at the same pos
+	if IsValid(c) then
+		c:Detach()
+		SpawnColonist(c, rocket, pos, city)
+		DoneObject(c)
+	else
+		SpawnColonist(nil, nil, rocket, pos, city)
+	end
+end
+function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
+	local InvalidPos = ChoGGi.Consts.InvalidPos
+	local rockets = UIColony:GetCityLabels("SupplyRocket")
+	for i = 1, #rockets do
+		local rocket = rockets[i]
+		-- SupplyRocket also returns rockets in space
+		if rocket:GetPos() ~= InvalidPos then
+			local city = Cities[ChoGGi.ComFuncs.RetObjMapId(rocket)]
+			local pos = GetRealm(rocket):GetPassablePointNearby(rocket:GetPos())
+			rocket:ForEachAttach("Colonist", AttachedColonist, pos, rocket, city)
+		end
+	end
+	MsgPopup(
+		T(5238--[[Rockets]]),
+		T(302535920000585--[[Colonists Stuck Outside Rocket]])
+	)
+end
 
 function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
 	SuspendPassEdits("ChoGGi.MenuFuncs.ParticlesWithNullPolylines")

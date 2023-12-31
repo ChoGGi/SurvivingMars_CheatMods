@@ -8060,11 +8060,14 @@ function ChoGGi.ComFuncs.Dump(obj, overwrite, file, ext, skip_msg, gen_name)
 		overwrite = "-1"
 	end
 
+	ext = ext or "txt"
+
 	local filename
 	if gen_name then
-		filename = GenerateScreenshotFilename(file or "DumpedText", "AppData/logs/", ext or "txt")
+		filename = "AppData/logs/DumpedText-" .. os.date("%d%m%Y_%H%M%S")
+			.. "_" .. AsyncRand() .. "." .. ext
 	else
-		filename = "AppData/logs/" .. (file or "DumpedText") .. "." .. (ext or "txt")
+		filename = "AppData/logs/" .. (file or "DumpedText") .. "." .. ext
 	end
 
 	ThreadLockKey(filename)
