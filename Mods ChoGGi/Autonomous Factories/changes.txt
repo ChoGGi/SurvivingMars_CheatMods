@@ -1,3 +1,6 @@
+v0.6
+Added Fungal Farm as well (thanks Anthonator00).
+
 v0.5
 Added farms (default off).
 

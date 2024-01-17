@@ -5,21 +5,23 @@ local mod_MaxDeposits
 
 local GetRandomPassableAround = GetRandomPassableAround
 local AsyncRand = AsyncRand
+local PlaceObjectIn = PlaceObjectIn
 
 local min, max = 0, 21600
 local function SpawnConcreteChunks(obj)
-	local SurfaceDepositConcrete = SurfaceDepositConcrete
 	local city = GetCity(obj)
+	local map_id = obj:GetMapID()
 
 	for _ = 1, mod_MaxDeposits do
 		local pos = GetRandomPassableAround(
 			obj,
 			8000, 500, city
 		)
-
-		local deposit = SurfaceDepositConcrete:new()
+		local deposit = PlaceObjectIn("SurfaceDepositConcrete", map_id)
 		deposit:SetPos(pos)
 		deposit:SetAngle(AsyncRand(max - min + 1) + min)
+		-- add "parent" link
+		deposit.parent_deposit = obj
 	end
 end
 

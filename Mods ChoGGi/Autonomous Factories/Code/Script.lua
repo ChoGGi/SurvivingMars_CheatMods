@@ -10,8 +10,12 @@ function OnMsg.ClassesPostprocess()
 	local BuildingTemplates = BuildingTemplates
 	for id, item in pairs(BuildingTemplates) do
 		local cls_obj = g_Classes[item.template_class]
-		if cls_obj and IsKindOf(cls_obj, "Factory") then
-			mod_options[id] = false
+		if cls_obj then
+			if IsKindOf(cls_obj, "Factory")
+				or IsKindOf(cls_obj, "Farm") or IsKindOf(cls_obj, "FungalFarm")
+			then
+				mod_options[id] = false
+			end
 		end
 	end
 end

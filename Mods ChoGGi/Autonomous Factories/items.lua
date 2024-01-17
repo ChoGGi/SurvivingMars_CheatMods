@@ -23,7 +23,7 @@ local BuildingTemplates = BuildingTemplates
 for id, item in pairs(BuildingTemplates) do
 	local cls_obj = g_Classes[item.template_class]
 	local is_factory = IsKindOf(cls_obj, "Factory")
-	local is_farm = IsKindOf(cls_obj, "Farm")
+	local is_farm = IsKindOf(cls_obj, "Farm") or IsKindOf(cls_obj, "FungalFarm")
 	if is_factory or is_farm then
 		local enable_auto = true
 		if is_farm then

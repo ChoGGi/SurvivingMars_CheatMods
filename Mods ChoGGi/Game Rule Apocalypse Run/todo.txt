@@ -1,3 +1,11 @@
 anthonator00 13 hours ago 
 does this mod affect the B&B micro g landers tech? allowing you to build them on mars rather then needing to order from earth?
 does this stop the regular funding from playing the US or international mars mission?
+so a few ideas: early game: once the world goes dark, there is a serious lack of satellites and telescopes looking out for meteors heading to mars, a few planetary view missions for setting up telescopes, dont use the rocket up, but, cost metals, machine parts, and electronics.
+
+Mid game: due to the lack of ability to outsource science, a large space station dedicated to science would make sense, so a series of 3 planetary view missions that use 1 rocket and some amounts of rare metals each and provide a significant permanent science boost.
+
+Late game: setting up independent outposts on other parts of mars, use up a rocket, a bunch of people, food, a bunch of materials, but return a small amount of rare metals and metals daily using the space elevator (to simulate it being brought by a rocket) 
+
+Suggestion to help improve gameplay if its not already done: unlock the buyable from earth starting prefabs technology so incase of any issuse, the player can still build rovers, electronic factory, machine parts factory, hydroscopic vaporators, fuel refinery, polymer factory, and so on early on till the colony can be more sustainable (had to be 2 messages due to size limit) 
+

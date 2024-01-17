@@ -1,3 +1,6 @@
+v0.5
+Concrete would spawn on current map instead of correct map (thanks animecentral).
+
 v0.4
 Concrete deposits don't spawn till sector is scanned.
 

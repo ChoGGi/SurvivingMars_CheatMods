@@ -61,6 +61,7 @@ for i = 1, #dlc do
 		"name", id,
 		"DisplayName", table.concat{dlc_names[id], ava_str},
 		"DefaultValue", true,
+		"Help", T(0000, "* means you have the dlc."),
 	})
 
 	-- remove when released

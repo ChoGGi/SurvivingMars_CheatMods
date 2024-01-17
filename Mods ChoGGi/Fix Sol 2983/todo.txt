@@ -1,1 +1,3 @@
 add a check for sol 5962? when it gets back to 0
+
+maybe check on newsol for neg number?

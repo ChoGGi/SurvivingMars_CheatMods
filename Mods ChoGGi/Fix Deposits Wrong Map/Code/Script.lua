@@ -26,11 +26,11 @@ local sector_nums = {
 local function FixDeposit(deposit, map_id)
 	-- No point in moving something already there
 	if deposit and RetObjMapId(deposit) ~= map_id then
-		-- Move deposit to surface map (preserves position)
+		-- Move deposit to proper map (preserves position)
 		deposit:TransferToMap(map_id)
 		-- z is still set to z from underground (got me)
 		local pos = deposit:GetPos()
-		-- Used surface.terrain:GetHeight instead of just :SetTerrainZ() since that seems to be the active terrain
+		-- Used propermap.terrain:GetHeight instead of just :SetTerrainZ() since that seems to be the active terrain
 		deposit:SetPos(pos:SetZ(GameMaps[map_id].terrain:GetHeight(pos)))
 	end
 end
@@ -45,6 +45,7 @@ local function UpdateDeposits(map_id)
 			end
 		end
 	end
+
 end
 
 local function UpdateMaps()
@@ -52,6 +53,20 @@ local function UpdateMaps()
 		return
 	end
 
+	local MainMapID = MainMapID
+	-- Scan asteroids as well, since there could be surface concrete there as well
+	for map_id, map in pairs(GameMaps) do
+		UpdateDeposits(map_id)
+
+		if map_id ~= MainMapID then
+			local objs = map.realm:MapGet(true, "SurfaceDepositConcrete")
+			for i = 1, #objs do
+				-- SurfaceDepositConcrete should only spawn on
+				FixDeposit(objs[i], MainMapID)
+			end
+		end
+
+	end
 	UpdateDeposits(MainMapID)
 	UpdateDeposits(UIColony.underground_map_id)
 end

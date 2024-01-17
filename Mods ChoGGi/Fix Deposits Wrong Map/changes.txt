@@ -1,3 +1,6 @@
+v0.6
+Fixed bug with my Surface Concrete mod (whoops, thanks animecentral).
+
 v0.5
 Nevermind.
 
