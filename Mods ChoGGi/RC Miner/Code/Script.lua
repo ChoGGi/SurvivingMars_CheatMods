@@ -725,12 +725,6 @@ end
 function OnMsg.ClassesPostprocess()
 	if not BuildingTemplates.PortableMinerBuilding then
 		PlaceObj("BuildingTemplate", {
-
-			"disabled_in_environment1", "",
-			"disabled_in_environment2", "",
-			"disabled_in_environment3", "",
-			"disabled_in_environment4", "",
-
 			"Id", "PortableMinerBuilding",
 			"template_class", "PortableMinerBuilding",
 			-- pricey?
@@ -752,6 +746,11 @@ function OnMsg.ClassesPostprocess()
 			"prio_button", false,
 			"on_off_button", false,
 			"entity", "CombatRover",
+			"can_refab", true,
+			"disabled_in_environment1", "",
+			"disabled_in_environment2", "",
+			"disabled_in_environment3", "",
+			"disabled_in_environment4", "",
 		})
 
 		local bt_pmb = BuildingTemplates.PortableMinerBuilding

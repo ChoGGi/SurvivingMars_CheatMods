@@ -6,7 +6,7 @@ return PlaceObj("ModDef", {
 	"version_major", 0,
 	"version_minor", 1,
 	"image", "Preview.png",
---~ 	"steam_id", "000000000",
+	"steam_id", "2595736963",
 	"pops_any_uuid", "6b3568d4-ccf8-4de4-a68b-c977ed1073fe",
 	"author", "ChoGGi",
 	"code", {

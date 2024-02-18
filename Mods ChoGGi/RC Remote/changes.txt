@@ -1,3 +1,6 @@
+v0.8
+Added Refab.
+
 v0.7
 Picard BB dlc update.
 

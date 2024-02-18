@@ -523,7 +523,7 @@ Press to toggle.]]))
 	table.insert(
 		rover,
 		#rover+1,
-		PlaceObj('XTemplateTemplate', {
+		PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_RCTanker_ToggleDir", true,
 			"Id", "ChoGGi_RCTanker_ToggleDir",
 			"comment", "fill/drain toggle",
@@ -598,13 +598,6 @@ Press to toggle.]]),
 	end
 
 	PlaceObj("BuildingTemplate", {
-
-		-- added, not uploaded
-		"disabled_in_environment1", "",
-		"disabled_in_environment2", "",
-		"disabled_in_environment3", "",
-		"disabled_in_environment4", "",
-
 		"Id", "RCTankerBuilding",
 		"template_class", "RCTankerBuilding",
 		-- pricey?
@@ -625,6 +618,11 @@ Tank will always refer to the storage on the ground, not the tank on the RC.]]),
 		"encyclopedia_exclude", true,
 		"on_off_button", false,
 		"entity", entity_rc_building,
+		"can_refab", true,
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
 	})
 
 end

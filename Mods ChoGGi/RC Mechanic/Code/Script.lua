@@ -228,13 +228,6 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	PlaceObj("BuildingTemplate", {
-
-		-- added, not uploaded
-		"disabled_in_environment1", "",
-		"disabled_in_environment2", "",
-		"disabled_in_environment3", "",
-		"disabled_in_environment4", "",
-
 		"Id", "RCMechanicBuilding",
 		"template_class", "RCMechanicBuilding",
 		-- pricey?
@@ -256,6 +249,11 @@ The wretched refuse of your teeming shore.]]),
 		"encyclopedia_exclude", true,
 		"on_off_button", false,
 		"entity", "CombatRover",
+		"can_refab", true,
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
 	})
 end
 

@@ -1,11 +1,25 @@
 -- See LICENSE for terms
 
 local mod_EnableMod
+local mod_RefabEverything
 
 local function StartupCode()
 	if not mod_EnableMod then
 		return
 	end
+
+	-- Unlock all
+	if mod_RefabEverything then
+		local bt = BuildingTemplates
+		for _, template in pairs(bt) do
+			template.can_refab = true
+		end
+		local ct = ClassTemplates.Building
+		for _, template in pairs(ct) do
+			template.can_refab = true
+		end
+	end
+
 	-- Find refab button
 	local template = XTemplates.ipBuilding[1][1]
 	local idx = table.find(template, "OnPressParam", "ToggleRefab")
@@ -21,7 +35,6 @@ local function StartupCode()
 
 	-- Remove BB dlc requirement
 	template[idx].__dlc = ""
-
 end
 
 -- New games
@@ -37,6 +50,7 @@ local function ModOptions(id)
 	end
 
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+	mod_RefabEverything = CurrentModOptions:GetProperty("RefabEverything")
 
 	-- Make sure we're in-game
 	if not UIColony then

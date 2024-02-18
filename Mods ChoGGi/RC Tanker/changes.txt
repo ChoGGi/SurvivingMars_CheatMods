@@ -1,3 +1,6 @@
+v1.2
+Added Refab.
+
 v1.1
 More Picard fixes.
 

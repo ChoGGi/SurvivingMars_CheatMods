@@ -427,13 +427,6 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	PlaceObj("BuildingTemplate", {
-
-		-- added, not uploaded
-		"disabled_in_environment1", "",
-		"disabled_in_environment2", "",
-		"disabled_in_environment3", "",
-		"disabled_in_environment4", "",
-
 		"Id", "RCRemoteBuilding",
 		"template_class", "RCRemoteBuilding",
 		"construction_cost_Metals", 1000,
@@ -457,6 +450,11 @@ Shift to toggle high speed.]]),
 		"encyclopedia_exclude", true,
 		"on_off_button", false,
 		"entity", "RCRoverBuilding",
+		"can_refab", true,
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
 	})
 end
 
