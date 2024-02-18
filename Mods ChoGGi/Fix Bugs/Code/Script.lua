@@ -1014,15 +1014,17 @@ end
 
 --
 -- St. Elmo's Fire: Stop meteoroids from destroying sinkholes
-local ChoOrig_Sinkhole_GameInit = Sinkhole.GameInit
-function Sinkhole:GameInit(...)
-	if not mod_EnableMod then
+if g_AvailableDlc.contentpack1 then
+	local ChoOrig_Sinkhole_GameInit = Sinkhole.GameInit
+	function Sinkhole:GameInit(...)
+		if not mod_EnableMod then
+			return ChoOrig_Sinkhole_GameInit(self, ...)
+		end
+
+		self.indestructible = true
+
 		return ChoOrig_Sinkhole_GameInit(self, ...)
 	end
-
-	self.indestructible = true
-
-	return ChoOrig_Sinkhole_GameInit(self, ...)
 end
 --
 --

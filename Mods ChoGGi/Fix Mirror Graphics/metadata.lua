@@ -25,6 +25,6 @@ Known Issues:
 There is a mod option to disable the mod, but once textures are remapped it's part of the save so no backsies.
 You'll probably have to stick with these textures till you start a new game, or disable this mod and rebuild anything changed (as terraforming changes stuff it should go back to proper textures if disabled).
 
-Keywords: Intel Iris Xe, mac, OSX, macOS, m1, m2
+Keywords: Intel Iris Xe, mac, OSX, macOS, m1, m2, textures
 ]],
 })

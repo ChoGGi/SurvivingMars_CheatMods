@@ -295,25 +295,25 @@ function OnMsg.NewDay()
 	if HasExploiters("RegolithExtractor")
 		and (CountConcrete(city) / const.ResourceScale) < mod_DepositRemainingWarning
 	then
-		ShowResourceWarningNotif(mod_DepositRemainingWarning, T(3513, "Concrete"))
+		ShowResourceWarningNotif(mod_DepositRemainingWarning, T(3513--[[Concrete]]))
 	end
 
 	if HasExploiters("WaterExtractor")
 		and (CountSubDeposit("SubsurfaceDepositWater", city) / r) < mod_DepositRemainingWarning
 	then
-		ShowResourceWarningNotif(mod_DepositRemainingWarning, T(681, "Water"))
+		ShowResourceWarningNotif(mod_DepositRemainingWarning, T(681--[[Water]]))
 	end
 
 	if HasExploiters("PreciousMetalsExtractor")
 		and (CountSubDeposit("SubsurfaceDepositPreciousMetals", city) / r) < mod_DepositRemainingWarning
 	then
-		ShowResourceWarningNotif(mod_DepositRemainingWarning, T(4139, "Rare Metals"))
+		ShowResourceWarningNotif(mod_DepositRemainingWarning, T(4139--[[Rare Metals]]))
 	end
 
 	if HasExploiters("MetalsExtractor")
 		and (CountSubDeposit("SubsurfaceDepositMetals", city) / r) < mod_DepositRemainingWarning
 	then
-		ShowResourceWarningNotif(mod_DepositRemainingWarning, T(3514, "Metals"))
+		ShowResourceWarningNotif(mod_DepositRemainingWarning, T(3514--[[Metals]]))
 	end
 
 end
@@ -425,13 +425,13 @@ local function BuildRollover(ret, grid_info, grid)
 
 	-- cache Ts (every bit counts?)
 	local str_header = {T("<color 119 212 255>")}
-	local str_Count = T(3732, "Count")
 	local str_grid1 = T(" <yellow>")
 	local str_grid2 = T("</yellow><newline><left>")
-	local str_Production = T(80, "Production")
-	local str_Consumption = T(347, "Consumption")
-	local str_Capacity = T(109035890389, "Capacity")
-	local str_Storage = T(519, "Storage")
+	local str_Count = T(3732--[[Count]])
+	local str_Production = T(80--[[Production]])
+	local str_Consumption = T(347--[[Consumption]])
+	local str_Capacity = T(109035890389--[[Capacity]])
+	local str_Storage = T(519--[[Storage]])
 
 	-- now we can build the string to return
 	local c = 0
@@ -448,7 +448,7 @@ local function BuildRollover(ret, grid_info, grid)
 					ret = str_header
 				end
 				c = c + 1
-				ret[c] = T{11629, "GRID <i>", i = i}
+				ret[c] = T{11629--[[GRID <i>]], i = i}
 				c = c + 1
 				ret[c] = "</color> "
 				c = c + 1

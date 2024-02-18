@@ -30,7 +30,6 @@ This will hide the now useless pack/unpack drone prefab buttons (use mod option 
 
 
 Mod Options:
-[b]Enable Mod[/b]: Disable mod without having to see missing mod msg.
 [b]Sort Hub List Load[/b]: Sort hub list by drone load order (overrides random list).
 Turning off means randomise order of drone controllers for receiving drones.
 [b]Use Prefabs[/b]: Use drone prefabs to adjust the loads.

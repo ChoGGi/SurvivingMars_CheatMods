@@ -102,7 +102,7 @@ function RandomMapGen_PlaceArtefacts(...)
 		return ChoOrig_RandomMapGen_PlaceArtefacts(...)
 	end
 
-	-- add a random wonder (use the actual count, so we can rand each new game in a session)
+	-- Add a random wonder (use the actual count, so we can rand each new game in a session)
 	if fake_BuriedWonders_c == 1 then
 		fake_BuriedWonders[2] = table.rand(fake_BuriedWonders_safe)
 --~ 	elseif fake_BuriedWonders_c == 0 then

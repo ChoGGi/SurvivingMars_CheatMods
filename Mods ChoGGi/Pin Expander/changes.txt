@@ -1,3 +1,10 @@
+v1.6
+Sphere pin shows other spheres (mystery, thanks TheSilentBang).
+Added mod option to disable mod.
+
+v1.5
+Fixed menu not opening (thanks TheSilentBang).
+
 v1.4
 Mod option to reverse Ctrl.
 

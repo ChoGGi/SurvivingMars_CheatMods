@@ -27,6 +27,6 @@ Select a unit (drone/rover/colonist/shuttle) to see what it's up to.
 Optionally show unit name, target, map grid target area, drone battery life.
 
 Mod Options:
-Enable Lines, Show Names, Drone Battery Info, Only Battery Info, Force Clear Lines, Enable Mod, Enable Text, Text Background, Text Opacity, Text Style
+Enable Lines, Show Names, Drone Battery Info, Only Battery Info, Force Clear Lines, Enable Text, Text Background, Text Opacity, Text Style
 ]],
 })

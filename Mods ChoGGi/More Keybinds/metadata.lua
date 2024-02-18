@@ -24,11 +24,12 @@ return PlaceObj("ModDef", {
 	"TagInterface", true,
 	"TagOther", true,
 	"description", [[
-Adds new keybinds, and lets you rebind hardcoded keys.
+Adds new keybinds, and lets you rebind hardcoded keys. All keys can be changed in options.
+
 
 Cycle visual variant backward/forward: [ / ]
 Place Multiple Buildings: Shift
-Construction cancel: Escape (you'll need to reset your keybinds to restore this as you can't bind esc)
+Construction cancel: Escape (if you change this; you'll need to reset your keybinds to restore default)
 Salvage Cursor: Ctrl-Delete (You may need to reload your save when changing this)
 Toggle Interface: Ctrl-Alt-I
 Quicksave/Quickload: Ctrl-F5 / Ctrl-F9
@@ -43,7 +44,7 @@ Quickly switch between maps (surface/underground/asteroids): Ctrl-* (* = 1-5, 1 
 
 
 Mod Options:
-Speed 4/Speed 5: Multiply speed of fastest speed by this (speed multipliers for Set Speed).
+Set Speed 4/Set Speed 5: Multiply speed of fastest speed by this (speed multipliers for Set Speed).
 Opacity Step Size: How much to cycle through on each press (default 25%).
 Examine Objects Radius: How big of a radius to use for objects around cursor (Shift-F4).
 

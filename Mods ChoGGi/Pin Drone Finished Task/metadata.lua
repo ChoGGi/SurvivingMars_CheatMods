@@ -16,6 +16,8 @@ return PlaceObj("ModDef", {
 	"TagGameplay", true,
 	"description", [[
 When a drone has finished it's current task and is about to head home then it'll get pinned.
+
+
 Mod Options:
 Pin Drone: Pin drone when task is finished.
 Pin Drone Idle: Pin drone when idle.

@@ -1671,9 +1671,15 @@ do -- Ticks
 	local max_int = max_int
 
 	local function TickStart(id)
+		if not id then
+			id = "temp"
+		end
 		times[id] = GetPreciseTicks()
 	end
 	local function TickEnd(id, name)
+		if not id then
+			id = "temp"
+		end
 		print(id, ":", GetPreciseTicks() - (times[id] or max_int), name)
 		times[id] = nil
 	end

@@ -11,6 +11,7 @@ local CmpLower = CmpLower
 local type = type
 local table = table
 
+local mod_EnableMod
 local mod_ReverseCtrl
 
 local function ModOptions(id)
@@ -19,6 +20,7 @@ local function ModOptions(id)
 		return
 	end
 
+	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_ReverseCtrl = CurrentModOptions:GetProperty("ReverseCtrl")
 end
 -- Load default/saved settings
@@ -46,6 +48,13 @@ local pin_state_table = {
 	["UI/Icons/pin_turn_off.tga"] = "pin_turn_off",
 	["UI/Icons/pin_unload.tga"] = "pin_unload",
 	["UI/Icons/pin_water.tga"] = "pin_water",
+}
+
+-- mirror sphere
+local state_table_spheres = {
+	shrink = "UI/Icons/pin_power.tga",
+	idle = "UI/Icons/pin_moving.tga",
+	idle2 = "UI/Icons/pin_unload.tga",
 }
 
 local state_table = {
@@ -260,14 +269,15 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 
 	local objs
 	local obj = button_obj.context
+	local realm = GetRealm(obj)
 
 	local meta = getmetatable(obj)
 	local build_category = meta.build_category
 
-	-- update?
 	local wonder = meta.wonder
-
+	-- UICity should be fine, since menu is opening on current map only
 	local labels = UICity.labels
+
 
 	if build_category == "Domes" then
 		objs = labels.Dome
@@ -281,22 +291,26 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 		else
 			-- get all in dome or all without a dome
 			objs = obj.dome and obj.dome.labels.Colonist
-				or GetRealm(pins_obj):MapGet("map", "Colonist", function(o)
+				or realm:MapGet("map", "Colonist", function(o)
 					if not o.dome then
 						return true
 					end
 				end)
 		end
+	elseif obj:IsKindOf("MirrorSphereBuilding") or obj:IsKindOf("MirrorSphere") then
+		objs = table.icopy(labels.MirrorSphere)
+		table.iappend_unique(objs, labels.MirrorSpheres)
+		table.iappend_unique(objs, labels.MirrorSphereBuilding)
 	else
 		objs = labels[obj.class]
 	end
 
 	if not objs then
-		objs = GetRealm(pins_obj):MapGet("map", obj.class)
+		objs = realm:MapGet("map", obj.class)
 	end
 
 	if #objs == 0 then
-		objs = GetRealm(pins_obj):MapGet("map", meta.class)
+		objs = realm:MapGet("map", meta.class)
 	end
 
 	local str_dome = T(1234, "Dome")
@@ -342,8 +356,12 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 		if obj:IsKindOf("Colonist") or obj:IsKindOf("Drone") then
 			state_text = obj:GetStateText()
 			image = state_table[state_text]
+		elseif obj:IsKindOf("MirrorSphere") then
+			state_text = obj:GetStateText()
+			image = state_table_spheres[state_text]
 		elseif build_category == "Domes" or obj:IsKindOf("BaseBuilding")
-				and not obj:IsKindOf("BaseRover") then
+			and not obj:IsKindOf("BaseRover")
+		then
 			if obj.overpopulated then
 				state_text = str_Overpopulated
 				image = image or "UI/Icons/pin_overpopulated.tga"
@@ -366,6 +384,7 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 					image = image or "UI/Icons/pin_water.tga"
 				end
 			end
+
 		end
 
 		if not image then
@@ -458,6 +477,10 @@ local skip_menu_classes = {
 
 local ChoOrig_PinsDlg_InitPinButton = PinsDlg.InitPinButton
 function PinsDlg:InitPinButton(button, ...)
+	if not mod_EnableMod then
+		return ChoOrig_PinsDlg_InitPinButton(self, button, ...)
+	end
+
 	-- fire off the orig func so we have a button to work with
 	ChoOrig_PinsDlg_InitPinButton(self, button, ...)
 

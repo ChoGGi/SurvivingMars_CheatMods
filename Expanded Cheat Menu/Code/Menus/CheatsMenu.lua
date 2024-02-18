@@ -7,6 +7,7 @@ local Translate = ChoGGi.ComFuncs.Translate
 local SettingState = ChoGGi.ComFuncs.SettingState
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
+local testing = ChoGGi.testing
 
 c = c + 1
 Actions[c] = {ActionName = T(302535920001355--[[Map]]) .. " " .. T(5422--[[Exploration]]),
@@ -33,6 +34,17 @@ Actions[c] = {ActionName = T(302535920000331--[[Mystery Start]]),
 Certain mysteries need certain objects which get placed when the map is generated on a new game (the green rocks one for instance)."]]),
 	OnAction = ChoGGi.MenuFuncs.ShowMysteryList,
 }
+
+if testing then -- Mystery Log
+	c = c + 1
+	Actions[c] = {ActionName = TranslationTable[5661--[[Mystery Log]]],
+		ActionMenubar = "ECM.Cheats",
+		ActionId = ".Mystery Log",
+		ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
+		RolloverText = TranslationTable[302535920000330--[[Advance to next part, show what part you're on, or remove mysteries.]]],
+		OnAction = ChoGGi.MenuFuncs.MysteryLog,
+	}
+end
 
 c = c + 1
 Actions[c] = {ActionName = T(11412--[[Trigger fireworks]]),

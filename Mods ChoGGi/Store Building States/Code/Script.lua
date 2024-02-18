@@ -487,6 +487,10 @@ function OnMsg.ClassesPostprocess()
 		idx = #(xt or "")
 	end
 
+	if idx > #xt then
+		idx = #xt
+	end
+
 	table.insert(
 		xt,
 		idx,

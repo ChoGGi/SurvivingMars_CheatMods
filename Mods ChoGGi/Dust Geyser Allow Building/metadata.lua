@@ -19,7 +19,6 @@ return PlaceObj("ModDef", {
 Any dust geysers on your map will be treated as regular ground (mostly), cables/pipes/passages are still blocked.
 
 Mod Options:
-Enable Mod: Disable mod without having to see missing mod msg.
 Delete Geysers: Remove all geyser activity from the map (permanent per-save).
 Turn this on and apply mod options, if you load a new map you will have to apply again to delete geysers from that map.
 This mod option also needs "Enable Mod" turned on to work.

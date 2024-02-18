@@ -28,7 +28,6 @@ I know it's not really autonomous, but close enough...
 
 Mod Options:
 Auto Performance: Performance value when no colonists.
-Enable Mod: Stop autonomous.
 
 
 Requested by a few people.

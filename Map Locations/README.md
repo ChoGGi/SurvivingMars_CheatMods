@@ -20,6 +20,7 @@ https://github.com/trickster-is-weak/Surviving-Maps
 #### Mods:
 
 Find Map Locations: https://steamcommunity.com/sharedfiles/filedetails/?id=2453011286
+View Colony Map: https://steamcommunity.com/sharedfiles/filedetails/?id=1491973763
 
 
 #### Google Sheets:

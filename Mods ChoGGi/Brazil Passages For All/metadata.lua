@@ -19,7 +19,6 @@ return PlaceObj("ModDef", {
 No passage penalty no matter who you use as sponsor.
 
 Mod Options:
-Enable Mod
 Instant Passages: Passages are built instantly and cost nothing.
 
 

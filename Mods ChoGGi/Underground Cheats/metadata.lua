@@ -17,8 +17,8 @@ return PlaceObj("ModDef", {
 	"description", [[
 Change radius of light tripods, and support struts.
 
-Options to pick underground wonders (new games only):
+Mod options to pick underground wonders (only applies to new games):
 If you only pick one then the other will be random.
-If all off then no wonders.
+If all options turned off then no wonders will spawn!
 ]],
 })

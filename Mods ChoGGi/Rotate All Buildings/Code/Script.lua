@@ -41,9 +41,10 @@ function OnMsg.ClassesPostprocess()
 		"Id" , "ChoGGi_Template_RotateAllBuildings_Rotate",
 		"ChoGGi_Template_RotateAllBuildings_Rotate", true,
 		"__template", "InfopanelButton",
-		"__context_of_kind", "UndergroundPassage",
-		"__condition", function()
+--~ 		"__context_of_kind", "UndergroundPassage",
+		"__condition", function(_, context)
 			return mod_EnableMod
+				and (context:IsKindOf("UndergroundPassage") or context:IsKindOf("SurfacePassage"))
 		end,
 		"Icon", "UI/Icons/IPButtons/automated_mode_on.tga",
 		"RolloverTitle", T(1000077, "Rotate"),
@@ -56,21 +57,25 @@ function OnMsg.ClassesPostprocess()
 			.. T(312752058553, "Rotate Building Left") .. " "
 			.. T(7618, "ButtonX") .. " " .. T(694856081085, "Rotate Building Right"),
 		"OnPress", function (self, gamepad)
-			local objs = MapGet(self.context:GetPos(), 1, 1)
+			local context = self.context
+
+			local objs = GetRealm(context):MapGet(context:GetPos(), 1, 1)
 
 			RotateBuilding(objs, not gamepad and IsMassUIModifierPressed(), true)
-			ObjModified(self.context)
+			ObjModified(context)
 		end,
 		"AltPress", true,
 		"OnAltPress", function(self, gamepad)
-			local objs = MapGet(self.context:GetPos(), 1, 1)
+			local context = self.context
+
+			local objs = GetRealm(context):MapGet(context:GetPos(), 1, 1)
 
 			if gamepad then
 				RotateBuilding(objs, gamepad, true)
 			else
 				RotateBuilding(objs, not IsMassUIModifierPressed(), true)
 			end
-			ObjModified(self.context)
+			ObjModified(context)
 		end,
 	})
 end

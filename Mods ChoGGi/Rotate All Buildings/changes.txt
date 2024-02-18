@@ -1,3 +1,6 @@
+v0.5
+Underground passage didn't have rotate button.
+
 v0.4
 Forgot to add dependency for my lib mod.
 
