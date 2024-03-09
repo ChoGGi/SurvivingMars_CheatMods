@@ -1,3 +1,6 @@
+v0.5
+Reversed capacity (thanks paulcurtisadams).
+
 v0.4
 Left a - I didn't mean to.
 

@@ -35,7 +35,7 @@ local function AddMod(name, prop, obj)
 	obj[name] = ObjectModifier:new({
 		target = obj,
 		prop = prop,
-		percent = mod_PenaltyPercent,
+		percent = -mod_PenaltyPercent,
 	})
 end
 

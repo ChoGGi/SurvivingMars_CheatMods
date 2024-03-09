@@ -2062,8 +2062,8 @@ do -- ResearchTech
 			ChoGGi.ComFuncs.UpdateBuildMenu()
 
 			MsgPopup(
-				Translate(302535920000315--[[%s %s tech(s): Unleash your inner Black Monolith Mystery.]]):format(text, count),
-				title
+				Translate(302535920000315--[[%s %s tech(s): Unleash your inner Black Monolith Mystery.]]):format(Translate(text), count),
+				Translate(title)
 			)
 		end
 
