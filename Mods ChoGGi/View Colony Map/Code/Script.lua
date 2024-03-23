@@ -84,6 +84,11 @@ function GetOverlayValues(lat, long, overlay_grids, params, ...)
 		local map, gen
 		map, params, gen = RetMapSettings(true, params)
 		ShowDialogs(map, gen)
+		if not IsValidXWin(extra_info_dlg) then
+			extra_info_dlg = ChoGGi_VCM_ExtraInfoDlg:new({}, terminal.desktop, {})
+			extra_info_dlg:SetSidePos(true)
+		end
+		extra_info_dlg:UpdateInfo(gen)
 	end
 end
 
@@ -215,7 +220,10 @@ Breakthroughs will be random as well.
 		self:PostInit(nil, self:SetDefaultPos())
 
 		if mod_AlwaysBreakthroughs then
-			extra_info_dlg = ChoGGi_VCM_ExtraInfoDlg:new({}, terminal.desktop, {})
+			if not IsValidXWin(extra_info_dlg) then
+				extra_info_dlg = ChoGGi_VCM_ExtraInfoDlg:new({}, terminal.desktop, {})
+				extra_info_dlg:SetSidePos()
+			end
 			self.idShowExtra:SetCheck(true)
 		end
 
@@ -227,6 +235,7 @@ function ChoGGi_VCM_MapImageDlg:idShowExtra_OnChange(check)
 	if check then
 		if not IsValidXWin(extra_info_dlg) then
 			extra_info_dlg = ChoGGi_VCM_ExtraInfoDlg:new({}, terminal.desktop, {})
+			extra_info_dlg:SetSidePos()
 		end
 	else
 		if extra_info_dlg then
@@ -339,8 +348,15 @@ function ChoGGi_VCM_ExtraInfoDlg:Init(parent, context)
 
 	self.planet_title = "<color 200 200 256>" .. Translate(11234, "Planetary Anomaly") .. ":</color>"
 
+	self:SetSidePos()
+end
+
+function ChoGGi_VCM_ExtraInfoDlg:SetSidePos(init_pause)
 	CreateRealTimeThread(function()
 		-- place right of map
+		if init_pause then
+			Sleep(50)
+		end
 		local pos = show_image_dlg:GetPos() + point(show_image_dlg:GetWidth() + 10, 0)
 		self:PostInit(nil, pos)
 

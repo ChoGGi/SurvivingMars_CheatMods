@@ -620,7 +620,7 @@ function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod, ext)
 		local fake_ged_socket = {
 			ShowMessage = function(msg, title)
 				if TGetID(title) == 12061 then
-					print("ShowMessage", Translate(title), Translate(msg))
+					print("ShowMessage", Translate(title), msg, "\nCan probably ignore, check mod folder for images")
 				end
 			end,
 		}

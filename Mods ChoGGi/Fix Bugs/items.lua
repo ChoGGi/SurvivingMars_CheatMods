@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local properties = {
+local mod_options = {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "EnableMod",
 		"DisplayName", T(302535920011303, "<color ChoGGi_yellow>Enable Mod</color>"),
@@ -98,10 +98,11 @@ I added it as an option since this is causing issues for a user; it'll lock up o
 	}),
 }
 
+-- sort mod options
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
-return properties
+return mod_options

@@ -18,9 +18,9 @@ return PlaceObj("ModDef", {
 	"pops_any_uuid", "b97dbd4e-71cf-4e82-80a0-46dd104133bc",
 	"steam_id", "2453011286",
 	"lua_revision", 1007000, -- Picard
-	"version", 11,
+	"version", 12,
 	"version_major", 1,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -32,7 +32,7 @@ return PlaceObj("ModDef", {
 Find landing spots with/without a combination of breakthroughs (Extractor AI), resources (metals2), threats(dust_devils4), etc.
 Left click an item to move the globe to it.
 
-The first 12 breakthroughs are guaranteed (4 from planetary anomalies, and 8 from ground anomalies). The rest are dependant on story bits/etc.
+The first 13 breakthroughs are guaranteed (4 from planetary anomalies, and 9 from ground anomalies). The rest are dependant on story bits/etc.
 
 
 Known Issues:

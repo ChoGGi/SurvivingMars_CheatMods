@@ -1,4 +1,4 @@
-### Last updated: Prunariu/Martian Express hotfix 1 (1,011,166)
+#### Last updated: Prunariu/Martian Express hotfix 1 (1,011,166)
 
 https://survivingmars.paradoxwikis.com/Patches#Version_history
 
@@ -36,13 +36,13 @@ BB: https://docs.google.com/spreadsheets/d/18HhxcqDsTXNhpF67ZTBtrSiN7jfkRmavXTq7
 GP BB: https://docs.google.com/spreadsheets/d/1cYRqjVxmdYeTSii6jGUiNOOKhLxZ6ffmYPcDn9sOVHs/
 
 ```
-Generate your own csv files (with more than 13 if wanted) paste this into console:
+-- Generate your own csv files (with more than 13 if wanted) paste this into console:
 
 ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
     setting_breakthroughs = true,
     setting_limit_count = 13,
 })
--- You need my Library mod for this func.
+-- You need "ChoGGi's Library" mod for this func.
 ```
 
 For more info see: https://forum.paradoxplaza.com/forum/threads/surviving-mars-maps-find-your-perfect-landinglocation.1107750/page-2#post-25465232

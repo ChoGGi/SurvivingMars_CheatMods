@@ -1,3 +1,7 @@
+v1.9
+Hopefully the dialog 1234 doesn't override the set speed 1234 anymore.
+You can manually bind in options though, dialog will still work.
+
 v1.8
 Log spam from cycle opacity.
 

@@ -4790,9 +4790,9 @@ if what_game == "Mars" then
 			orig_break_list = table.imap(Presets.TechPreset.Breakthroughs, "id")
 		end
 
-		-- breakthroughs per map are 4 planetary, 3 omega, 8-13 on the ground, 5 Storybits?
-		-- 12 is safe (in the sense of def getting them): 8 ground + 4 planetary
-		local breakthrough_count = 12
+		-- breakthroughs per map are 4 planetary, 3 omega, 9-13 on the ground, 5 Storybits?
+		-- 13 is safe (in the sense of def getting them): 9 ground + 4 planetary
+		local breakthrough_count = 13
 --~ 		local breakthrough_count = const.BreakThroughTechsPerGame
 --~ 		-- + const.OmegaTelescopeBreakthroughsCount, it's seed based but it shuffles the list of unregistered breakthroughs
 --~ 		+ (g_Consts and g_Consts.PlanetaryBreakthroughCount or Consts.PlanetaryBreakthroughCount)

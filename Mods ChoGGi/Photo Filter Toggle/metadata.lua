@@ -15,7 +15,8 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagPhotoFilters", true,
 	"TagOther", true,
-	"description", [[Toggle photo filters during gameplay.
+	"description", [[
+Toggle photo filters during gameplay.
 
 If you enable more than one filter, whichever is last will be the one enabled.
 ]],

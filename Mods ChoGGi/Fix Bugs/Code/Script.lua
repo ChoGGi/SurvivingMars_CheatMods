@@ -1063,7 +1063,7 @@ function OnMsg.SelectionAdded(obj)
 	end
 
 	if obj.entity == "WonderBottomlessPit"
-		and UICity.map_id == "BlankUnderground_02"
+		and ActiveMapID == "BlankUnderground_02"
 		and tostring(obj:GetPos()) == wonder_pos
 	then
 		-- Bye bye water
@@ -1071,7 +1071,7 @@ function OnMsg.SelectionAdded(obj)
 		-- (don't be that guy)
 
 		local water_pos = point(293500, 184458)
-		local objs = MapGet(water_pos, water_pos, 1, "SubsurfaceDepositWater")
+		local objs = ActiveGameMap.realm:MapGet(water_pos, water_pos, 1, "SubsurfaceDepositWater")
 		if objs[1] then
 			DoneObject(objs[1])
 			obj:SpawnAnomaly()

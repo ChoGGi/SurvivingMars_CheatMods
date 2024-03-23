@@ -34,6 +34,7 @@ local image_str = Mods.ChoGGi_MapImagesPack.env.CurrentModPath .. "Maps/"
 
 local dlg_locations
 local map_data
+local map_data_prev_results
 local landsiteobj
 
 local function ShowDialogs()
@@ -101,7 +102,7 @@ DefineClass.ChoGGi_VLI_MapInfoDlg = {
 	__parents = {"ChoGGi_XWindow"},
 --~ 	obj = false,
 	obj_name = false,
-	dialog_width = 750.0,
+	dialog_width = 780.0,
 	dialog_height = 140.0,
 
 	-- actual amount of boxes
@@ -163,14 +164,35 @@ Leave blank to skip search box.]]):format(Translate(self.title)),
 	}, self.idTopArea)
 	self.idAndOr:SetCheckBox(true)
 
-	self.idReuseResults = g_Classes.ChoGGi_XCheckButton:new({
-		Id = "idReuseResults",
+	self.idSameDialog = g_Classes.ChoGGi_XCheckButton:new({
+		Id = "idSameDialog",
 		Dock = "left",
 		Margins = box(10, 0, 0, 0),
-		Text = T(302535920011922, "Reuse Results"),
+		Text = T(302535920011922, "Reuse Dialog"),
 		RolloverText = T(302535920011923, "Open all results in the same dialog."),
 	}, self.idTopArea)
+	self.idSameDialog:SetCheckBox(true)
+
+	self.idReuseResults = g_Classes.ChoGGi_XCheckButton:new({
+		Id = "idReuseResults",
+		Dock = "right",
+		Margins = box(10, 0, 0, 0),
+		Text = T(0000, "Reuse Results"),
+		RolloverText = T(0000, "Use previous search results instead of full map data."),
+	}, self.idTopArea)
 	self.idReuseResults:SetCheckBox(true)
+
+	self.idClearSaved = g_Classes.ChoGGi_XButton:new({
+		Id = "idClearSaved",
+		Dock = "right",
+		Text = T(0000, "Clear Saved"),
+		Background = g_Classes.ChoGGi_XButton.bg_red,
+		RolloverText = T(0000, "If you want to start a new search instead of searching previous results."),
+		Margins = box(6, 0, 0, 0),
+		OnPress = function()
+			map_data_prev_results = nil
+		end,
+	}, self.idTopArea)
 
 	-- inputs and ignores
 	self.idSearchArea = g_Classes.ChoGGi_XDialogSection:new({
@@ -337,7 +359,7 @@ function ChoGGi_VLI_MapInfoDlg:FindText()
 	-- always start off empty
 	self.found_objs = {}
 
-	local reuse = self.idReuseResults:GetCheck()
+	local reuse = self.idSameDialog:GetCheck()
 
 	if not reuse or reuse and not IsValidXWin(self.current_examine_dlg) then
 
@@ -392,7 +414,9 @@ function ChoGGi_VLI_MapInfoDlg:FindText()
 	-- should do this nicer, but whatever
 	CreateRealTimeThread(function()
 		Sleep(10)
-		self.current_examine_dlg:SetPos(self:GetPos()+point(0, self.idDialog.box:sizey() + 25))
+		self.current_examine_dlg:SetPos(
+			self:GetPos() + point(0, self.idDialog.box:sizey() + 25)
+		)
 		if reuse and IsValidXWin(self.current_examine_dlg) then
 			self.current_examine_dlg.obj = self.found_objs
 			self.current_examine_dlg:SetObj()
@@ -450,9 +474,18 @@ function ChoGGi_VLI_MapInfoDlg:UpdateFoundObjects()
 	local andor = self.idAndOr:GetCheck()
 	local matches = {}
 
+	local search_data = map_data
+	-- Use saved search data
+	if self.idReuseResults:GetCheck() then
+		search_data = map_data_prev_results or map_data
+	end
+
+	local search_data_temp = {}
+	local c = 0
+
 	-- loopy time
-	for i = 1, #map_data do
-		local map = map_data[i]
+	for i = 1, #search_data do
+		local map = search_data[i]
 
 		local remove_found
 		table.clear(matches)
@@ -472,9 +505,13 @@ function ChoGGi_VLI_MapInfoDlg:UpdateFoundObjects()
 					if match then
 						matches[match] = true
 					end
+				-- "or"
 				else
 					if self:FindObject(key_name, value_name) then
 						self.found_objs[key_location] = map
+						-- prev search data
+						c = c + 1
+						search_data_temp[c] = map
 					end
 				end
 				--
@@ -492,10 +529,17 @@ function ChoGGi_VLI_MapInfoDlg:UpdateFoundObjects()
 			end
 			if found_count >= self.input_box_count_add2 or self.input_box_count_add2 == 1 and found_count > 0 then
 				self.found_objs[key_location] = map
+				-- prev search data
+				c = c + 1
+				search_data_temp[c] = map
 			end
 		end
 
 	end
+
+	-- Use for next search
+	map_data_prev_results = search_data_temp
+
 	-- done looping so set title
 	self:SetExamineTitle()
 end

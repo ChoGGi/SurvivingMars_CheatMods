@@ -364,24 +364,29 @@ Actions[#Actions+1] = {ActionName = T(302535920012094, "Dialog Shortcut 1"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.DialogShortcut1",
 	replace_matching_id = true,
 	ActionBindable = true,
+	-- Just some name to use, so they don't override my speed keys
+	ActionMode = "ChoGGi_DialogShortcuts",
 }
 
 Actions[#Actions+1] = {ActionName = T(302535920012095, "Dialog Shortcut 2"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.DialogShortcut2",
 	replace_matching_id = true,
 	ActionBindable = true,
+	ActionMode = "ChoGGi_DialogShortcuts",
 }
 
 Actions[#Actions+1] = {ActionName = T(302535920012096, "Dialog Shortcut 3"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.DialogShortcut3",
 	replace_matching_id = true,
 	ActionBindable = true,
+	ActionMode = "ChoGGi_DialogShortcuts",
 }
 
 Actions[#Actions+1] = {ActionName = T(302535920012097, "Dialog Shortcut 4"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.DialogShortcut4",
 	replace_matching_id = true,
 	ActionBindable = true,
+	ActionMode = "ChoGGi_DialogShortcuts",
 }
 
 local num_overrides = {

@@ -18,7 +18,7 @@ return {
 	PlaceObj("ModItemOptionNumber", {
 		"name", "RandomChance",
 		"DisplayName", T(302535920011791, "Random Chance"),
-		"Help", T(302535920011792, "If you want to gamble your chance of unlocking breakthoughs each Sol (0 = disabled)."),
+		"Help", T(302535920011792, "If you want to gamble your chance of unlocking breakthoughs (0 = disabled)."),
 		"DefaultValue", 0,
 		"MinValue", 0,
 		"MaxValue", 100,
