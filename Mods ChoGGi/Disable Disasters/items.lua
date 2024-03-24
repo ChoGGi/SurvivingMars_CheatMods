@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local properties = {}
+local mod_options = {}
 local c = 0
 local table = table
 
@@ -15,7 +15,7 @@ local disasters = {
 
 for id, text in pairs(disasters) do
 	c = c + 1
-	properties[c] = PlaceObj("ModItemOptionToggle", {
+	mod_options[c] = PlaceObj("ModItemOptionToggle", {
 		"name", id,
 		"DisplayName", table.concat(T(302535920011494, "Turn off ") .. text),
 		"Help", T(302535920011493, "Enable this option to stop this type of disaster from occurring."),
@@ -25,8 +25,8 @@ end
 
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
-return properties
+return mod_options

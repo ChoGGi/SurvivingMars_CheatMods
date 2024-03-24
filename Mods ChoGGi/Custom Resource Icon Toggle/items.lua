@@ -4,7 +4,7 @@ local table = table
 local PlaceObj = PlaceObj
 local T = T
 
-local properties = {}
+local mod_options = {}
 local c = 0
 
 -- skip instead of add for mod added ones
@@ -29,7 +29,7 @@ local skips = {
 ClassDescendantsList("Deposit", function(name, class)
 	if not skips[name] then
 		c = c + 1
-		properties[c] = PlaceObj("ModItemOptionToggle", {
+		mod_options[c] = PlaceObj("ModItemOptionToggle", {
 			"name", name,
 			"DisplayName", class.display_name,
 			"Help", T(302535920011943, "Turn on to have these icons toggled, turn off to always be visible."),
@@ -40,22 +40,22 @@ end)
 
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
-table.insert(properties, 1, PlaceObj("ModItemOptionToggle", {
+table.insert(mod_options, 1, PlaceObj("ModItemOptionToggle", {
 	"name", "ShowIcons",
 	"DisplayName", T(302535920011944, "<color 255 255 0>Show Icons</color>"),
 	"Help", T(302535920011945, "Turn this on to show all icons, turn off to hide certain icons."),
 	"DefaultValue", true,
 }))
 
-table.insert(properties, 1, PlaceObj("ModItemOptionToggle", {
+table.insert(mod_options, 1, PlaceObj("ModItemOptionToggle", {
 	"name", "EnableMod",
 	"DisplayName", T(302535920011303, "<color ChoGGi_yellow>Enable Mod</color>"),
 	"Help", T(302535920011793, "Disable mod without having to see missing mod msg."),
 	"DefaultValue", true,
 }))
 
-return properties
+return mod_options

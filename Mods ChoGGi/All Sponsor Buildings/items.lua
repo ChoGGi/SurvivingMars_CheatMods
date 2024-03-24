@@ -20,7 +20,7 @@ local T = T
 local PlaceObj = PlaceObj
 local table = table
 
-local properties = {}
+local mod_options = {}
 local c = 0
 
 -- shown ame of tech
@@ -52,7 +52,7 @@ for id, bld in pairs(BuildingTemplates) do
 				image = "\n\n<image " .. bld.display_icon .. ">"
 			end
 			c = c + 1
-			properties[c] = PlaceObj("ModItemOptionToggle", {
+			mod_options[c] = PlaceObj("ModItemOptionToggle", {
 				"name", "ChoGGi_" .. id,
 				"DisplayName", T(bld.display_name),
 				"Help", table.concat(T(bld.description) .. image),
@@ -62,7 +62,7 @@ for id, bld in pairs(BuildingTemplates) do
 			if tech_lock then
 				local def = TechDef[tech_lock]
 				c = c + 1
-				properties[c] = PlaceObj("ModItemOptionToggle", {
+				mod_options[c] = PlaceObj("ModItemOptionToggle", {
 					"name", "ChoGGi_Tech_" .. id,
 					"DisplayName", table.concat(T(bld.display_name) .. " " .. T(3734, "Tech")),
 					"Help", table.concat(T(0000, "Lock behind tech unlock.") ..
@@ -84,8 +84,8 @@ end
 
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
-return properties
+return mod_options

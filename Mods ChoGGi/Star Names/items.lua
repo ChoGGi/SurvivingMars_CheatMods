@@ -52,7 +52,7 @@ table.concat(T(0000, "MarkBuildings") .. " " .. T(0000, "MarkBuildings"))
 local PlaceObj = PlaceObj
 local T = T
 
-local properties = {
+local mod_options = {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "EnableMod",
 		"DisplayName", T(302535920011303, "<color ChoGGi_yellow>Enable Mod</color>"),
@@ -66,7 +66,7 @@ local PhotoFilterPresetMap = PhotoFilterPresetMap
 for id, item in pairs(PhotoFilterPresetMap) do
 	if id ~= "None" then
 		c = c + 1
-		properties[c] = PlaceObj("ModItemOptionToggle", {
+		mod_options[c] = PlaceObj("ModItemOptionToggle", {
 			"name", id,
 			"DisplayName", T(item.displayName),
 			"Help", T(item.desc),
@@ -77,11 +77,11 @@ end
 
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
 --~ -- insert at top
---~ table.insert(properties, 1, {})
+--~ table.insert(mod_options, 1, {})
 
-return properties
+return mod_options

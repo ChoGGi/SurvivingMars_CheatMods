@@ -3,7 +3,7 @@
 local PlaceObj = PlaceObj
 local T = T
 
-local properties = {
+local mod_options = {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "EnableMod",
 		"DisplayName", T(302535920011303, "<color ChoGGi_yellow>Enable Mod</color>"),
@@ -11,7 +11,7 @@ local properties = {
 		"DefaultValue", true,
 	}),
 }
-local c = #properties
+local c = #mod_options
 
 -- Check for map images pack and use previews.
 local image_mod = Mods.ChoGGi_MapImagesPack
@@ -29,7 +29,7 @@ for id, item in pairs(MapDataPresets) do
 				desc = desc .. "\n\n<image " .. image_mod.env.CurrentModPath .. "Maps/" .. id .. ".png>"
 			end
 			c = c + 1
-			properties[c] = PlaceObj("ModItemOptionToggle", {
+			mod_options[c] = PlaceObj("ModItemOptionToggle", {
 				"name", id,
 				"DisplayName", name,
 				"Help", desc,
@@ -41,9 +41,9 @@ end
 
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
 
-return properties
+return mod_options

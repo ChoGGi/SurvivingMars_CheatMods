@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local properties = {
+local mod_options = {
 	PlaceObj("ModItemOptionInputBox", {
 		"name", "HexColourDroneHub",
 		"DisplayName", table.concat(T(302535920011835, "Hex Colour") .. " " .. T(3518, "Drone Hub")),
@@ -48,13 +48,13 @@ local properties = {
 }
 
 if g_AvailableDlc.picard then
-	properties[#properties+1] = PlaceObj("ModItemOptionInputBox", {
+	mod_options[#mod_options+1] = PlaceObj("ModItemOptionInputBox", {
 		"name", "HexColourElevator",
 		"DisplayName", table.concat(T(302535920011835, "Hex Colour") .. " " .. T(330073770544, "Elevator")),
 		"Help", T(302535920011836, "<color ChoGGi_red>R</color> <color ChoGGi_green>G</color> <color ChoGGi_blue>B</color> colour code, yellow example: 255,255,0 (range is 0-255)"),
 		"DefaultValue", "0,255,0",
 	})
-	properties[#properties+1] = PlaceObj("ModItemOptionInputBox", {
+	mod_options[#mod_options+1] = PlaceObj("ModItemOptionInputBox", {
 		"name", "HexColourDroneHubExtender",
 		"DisplayName", table.concat(T(302535920011835, "Hex Colour") .. " " .. T(757139039210, "Drone Hub Extender")),
 		"Help", T(302535920011836, "<color ChoGGi_red>R</color> <color ChoGGi_green>G</color> <color ChoGGi_blue>B</color> colour code, yellow example: 255,255,0 (range is 0-255)"),
@@ -64,8 +64,8 @@ end
 
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
-return properties
+return mod_options

@@ -23,7 +23,7 @@ else
 	end
 end
 
-local properties = {}
+local mod_options = {}
 local c = 0
 local TechDef = TechDef
 for id, def in pairs(TechDef) do
@@ -40,7 +40,7 @@ for id, def in pairs(TechDef) do
 		end
 
 		c = c + 1
-		properties[c] = PlaceObj("ModItemOptionToggle", {
+		mod_options[c] = PlaceObj("ModItemOptionToggle", {
 			"name", id,
 			"DisplayName", SafeTrans(def.display_name) .. (
 				def.icon ~= "UI/Icons/Research/story_bit.tga" and " <right>" .. image or ""
@@ -53,22 +53,22 @@ end
 
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
 -- stick res option first
-table.insert(properties, 1, PlaceObj("ModItemOptionToggle", {
+table.insert(mod_options, 1, PlaceObj("ModItemOptionToggle", {
 	"name", "TechResearched",
 	"DisplayName", "<yellow>" .. SafeTrans(T(302535920011857, "Tech Researched")),
 	"Help", T(302535920011858, "Turn on to research instead of unlock tech."),
 	"DefaultValue", false,
 }))
-table.insert(properties, 1, PlaceObj("ModItemOptionToggle", {
+table.insert(mod_options, 1, PlaceObj("ModItemOptionToggle", {
 	"name", "AlwaysApplyOptions",
 	"DisplayName", "<yellow>" .. SafeTrans(T(302535920011859, "Always Apply Options")),
 	"Help", T(302535920011860, "Unlock/Research techs whenever you load a game/start a new game (otherwise you need to press Apply in mod options)."),
 	"DefaultValue", false,
 }))
 
-return properties
+return mod_options

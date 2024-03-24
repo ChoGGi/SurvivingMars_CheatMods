@@ -11,6 +11,17 @@ Only shows first 13 breakthroughs: Anything higher than that isn't guaranteed.
 
 The first 4 are planetary anomalies (the rest are on the ground), if you have BB then you need to use my Fix Bugs mod on new games or ignore them.
 
+#### Google Sheets:
+
+
+No DLC: https://docs.google.com/spreadsheets/d/1cMMVSz5z7dbKgxC-jgZCmYzMbfIX7friTAtMYuiaFL8/
+
+BB: https://docs.google.com/spreadsheets/d/18HhxcqDsTXNhpF67ZTBtrSiN7jfkRmavXTq7QxynnB8/
+
+GP: https://docs.google.com/spreadsheets/d/1q17ArktnT5zZGO7BfkbeN8aFogml6CbED75-4Yk9KWU/
+
+GP BB: https://docs.google.com/spreadsheets/d/1cYRqjVxmdYeTSii6jGUiNOOKhLxZ6ffmYPcDn9sOVHs/
+
 #### Tools that use this data:
 
 https://github.com/Jeutnarg/survivingmars_map_filter
@@ -23,17 +34,6 @@ Find Map Locations: https://steamcommunity.com/sharedfiles/filedetails/?id=24530
 
 View Colony Map: https://steamcommunity.com/sharedfiles/filedetails/?id=1491973763
 
-
-#### Google Sheets:
-
-
-No DLC: https://docs.google.com/spreadsheets/d/1cMMVSz5z7dbKgxC-jgZCmYzMbfIX7friTAtMYuiaFL8/
-
-GP: https://docs.google.com/spreadsheets/d/1q17ArktnT5zZGO7BfkbeN8aFogml6CbED75-4Yk9KWU/
-
-BB: https://docs.google.com/spreadsheets/d/18HhxcqDsTXNhpF67ZTBtrSiN7jfkRmavXTq7QxynnB8/
-
-GP BB: https://docs.google.com/spreadsheets/d/1cYRqjVxmdYeTSii6jGUiNOOKhLxZ6ffmYPcDn9sOVHs/
 
 ```
 -- Generate your own csv files (with more than 13 if wanted) paste this into console:

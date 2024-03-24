@@ -5,7 +5,7 @@ local PlaceObj = PlaceObj
 local T = T
 local table = table
 
-local properties = {
+local mod_options = {
 	PlaceObj("ModItemOptionNumber", {
 		"name", "AutoPerformance",
 		"DisplayName", T(0000, " Auto Performance"),
@@ -31,7 +31,7 @@ for id, item in pairs(BuildingTemplates) do
 		end
 
 		c = c + 1
-		properties[c] = PlaceObj("ModItemOptionToggle", {
+		mod_options[c] = PlaceObj("ModItemOptionToggle", {
 			"name", id,
 			"DisplayName", T(item.display_name),
 			"Help", table.concat(T(item.description) .. "\n\n<image " .. item.display_icon .. ">"),
@@ -44,7 +44,7 @@ end
 local function AddBuilding(id)
 	local item = BuildingTemplates[id]
 	c = c + 1
-	properties[c] = PlaceObj("ModItemOptionToggle", {
+	mod_options[c] = PlaceObj("ModItemOptionToggle", {
 		"name", id,
 		"DisplayName", T(item.display_name),
 		"Help", table.concat(T(item.description) .. "\n\n<image " .. item.display_icon .. ">"),
@@ -60,8 +60,8 @@ end
 
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
-return properties
+return mod_options

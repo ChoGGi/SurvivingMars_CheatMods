@@ -3,7 +3,7 @@
 local table = table
 local T = T
 
-local properties = {}
+local mod_options = {}
 local c = 0
 
 -- add filters
@@ -11,7 +11,7 @@ local PhotoFilterPresetMap = PhotoFilterPresetMap
 for id, item in pairs(PhotoFilterPresetMap) do
 	if id ~= "None" then
 		c = c + 1
-		properties[c] = PlaceObj("ModItemOptionToggle", {
+		mod_options[c] = PlaceObj("ModItemOptionToggle", {
 			"name", id,
 			"DisplayName", table.concat(T(3454,"Photo Filter") .. ": " .. T(item.displayName)),
 			"Help", table.concat(T(item.desc) .. T(302535920012032, [[
@@ -41,7 +41,7 @@ for i = 1, #filter_settings do
 	local setting = filter_settings[i]
 	if white_list[setting.id] then
 		c = c + 1
-		properties[c] = PlaceObj("ModItemOptionNumber", {
+		mod_options[c] = PlaceObj("ModItemOptionNumber", {
 			"name", setting.id,
 			"DisplayName", table.concat(T(" ") .. T(setting.name)),
 			"Help", T(302535920012033, "Adjust settings for selected photo filter."),
@@ -55,8 +55,8 @@ end
 
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
-return properties
+return mod_options

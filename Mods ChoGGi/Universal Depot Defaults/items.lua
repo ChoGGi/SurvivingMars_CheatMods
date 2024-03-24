@@ -4,7 +4,7 @@ local table = table
 local PlaceObj = PlaceObj
 local T = T
 
-local properties = {
+local mod_options = {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "ShuttleAccess",
 		"DisplayName", table.concat(T("<image UI/Icons/IPButtons/shuttle.tga> ") .. T(11254, "Shuttle Access")),
@@ -25,7 +25,7 @@ local properties = {
 	}),
 }
 -- add any valid res
-local c = #properties
+local c = #mod_options
 
 local storable_resources = {
 	"Concrete",
@@ -56,7 +56,7 @@ for id, item in pairs(Resources) do
 			image = T("<image UI/Icons/Sections/" .. id ..  "_1.tga> ")
 		end
 		c = c + 1
-		properties[c] = PlaceObj("ModItemOptionToggle", {
+		mod_options[c] = PlaceObj("ModItemOptionToggle", {
 			"name", id,
 			"DisplayName", table.concat(image .. T(754117323318--[[Enable]]) .. " " .. T(item.display_name)),
 			"DefaultValue", true,
@@ -66,8 +66,8 @@ end
 
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
-return properties
+return mod_options

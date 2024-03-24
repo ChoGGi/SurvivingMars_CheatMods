@@ -48,7 +48,7 @@ local unreleased = {
 }
 -- remove when released
 
-local properties = {}
+local mod_options = {}
 local c = 0
 
 for i = 1, #dlc do
@@ -57,7 +57,7 @@ for i = 1, #dlc do
 	local available = g_AvailableDlc[id]
 	local ava_str = available and " *" or ""
 
-	properties[c] = PlaceObj("ModItemOptionToggle", {
+	mod_options[c] = PlaceObj("ModItemOptionToggle", {
 		"name", id,
 		"DisplayName", table.concat{dlc_names[id], ava_str},
 		"DefaultValue", true,
@@ -66,7 +66,7 @@ for i = 1, #dlc do
 
 	-- remove when released
 	if available and unreleased[id] then
-		properties[c].Help = T(0000, [[
+		mod_options[c].Help = T(0000, [[
 Warning: This is unreleased probably buggy DLC.
 
 If this DLC is offically released than ignore this text (bug me to update this mod).
@@ -77,8 +77,8 @@ end
 
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
-return properties
+return mod_options

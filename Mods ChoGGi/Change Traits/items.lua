@@ -4,7 +4,7 @@ local table = table
 local PlaceObj = PlaceObj
 local T = T
 
-local properties = {
+local mod_options = {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "EnableMod",
 		"DisplayName", T(302535920011303, "<color ChoGGi_yellow>Enable Mod</color>"),
@@ -12,7 +12,7 @@ local properties = {
 		"DefaultValue", true,
 	}),
 }
-local c = #properties
+local c = #mod_options
 
 local info = T(0000, [[0: Don't change trait
 1: Add Trait
@@ -20,7 +20,7 @@ local info = T(0000, [[0: Don't change trait
 
 local function AddTrait(item)
 	c = c + 1
-	properties[c] = PlaceObj("ModItemOptionNumber", {
+	mod_options[c] = PlaceObj("ModItemOptionNumber", {
 		"name", item.id,
 		"DisplayName", table.concat(T(item.category) .. " " .. T(item.display_name)),
 		"Help", table.concat(T(item.description) .. "\n\n" .. info),
@@ -42,8 +42,8 @@ AddTrait(TraitPresets.Vegan)
 -- Sort by display name
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
-return properties
+return mod_options

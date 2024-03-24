@@ -37,7 +37,7 @@ local bits = {
 	"WaterChip",
 }
 
-local properties = {}
+local mod_options = {}
 local c = 0
 
 local table = table
@@ -49,7 +49,7 @@ for i = 1, #bits do
 	local id = bits[i]
 	local item = StoryBits[id]
 	c = c + 1
-	properties[c] = PlaceObj("ModItemOptionToggle", {
+	mod_options[c] = PlaceObj("ModItemOptionToggle", {
 		"name", id,
 		"DisplayName", table.concat(T(0000, "<color 200 200 150>Storybit</color>: ") .. T(item.Title)),
 		"Help", table.concat(T(id == "ExperimentalRocket" and item.VoicedText or item.Text) .. "\n\n<image " .. item.Image .. ">"),
@@ -59,12 +59,12 @@ end
 
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
 -- insert at top
-table.insert(properties, 1, PlaceObj("ModItemOptionNumber", {
+table.insert(mod_options, 1, PlaceObj("ModItemOptionNumber", {
 	"name", "ResupplyLockDelay",
 	"DisplayName", T(0000, "Resupply Lock Delay"),
 	"Help", T(0000, "How many Sols before resupply is locked down."),
@@ -73,4 +73,4 @@ table.insert(properties, 1, PlaceObj("ModItemOptionNumber", {
 	"MaxValue", 50,
 }))
 
-return properties
+return mod_options

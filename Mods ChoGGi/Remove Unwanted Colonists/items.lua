@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local properties = {
+local mod_options = {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "SkipTourists",
 		"DisplayName", T(302535920011898, "<color ChoGGi_yellow>Skip Tourists</color>"),
@@ -49,7 +49,7 @@ local function AddColonists(list)
 	--~ 				-- add categories
 	--~ 				if not added_cats[trans(cat)] then
 	--~ 					c = c + 1
-	--~ 					properties[c] = PlaceObj("ModItemOptionToggle", {
+	--~ 					mod_options[c] = PlaceObj("ModItemOptionToggle", {
 	--~ 						"name", "cats" .. cat,
 	--~ 						"DisplayName", table.concat(T(cat) .. T("  <yellow>-Category-</color>")),
 	--~ 						"Help", T(302535920011751, "On/Off does nothing."),
@@ -58,7 +58,7 @@ local function AddColonists(list)
 	--~ 				end
 
 			c = c + 1
-			properties[c] = PlaceObj("ModItemOptionToggle", {
+			mod_options[c] = PlaceObj("ModItemOptionToggle", {
 				"name", "Trait_" .. id,
 				"DisplayName", table.concat(category_str .. ": " .. T(trait.display_name)),
 				"Help", table.concat(T(trait.description) .. "\n\n" .. id),
@@ -76,8 +76,8 @@ AddColonists(t.OtherTraits)
 
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
-return properties
+return mod_options

@@ -4,7 +4,7 @@ local PlaceObj = PlaceObj
 local T = T
 local table = table
 
-local properties = {
+local mod_options = {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "EnableMod",
 		"DisplayName", T(302535920011303, "<color ChoGGi_yellow>Enable Mod</color>"),
@@ -49,7 +49,7 @@ local Colonist = Colonist
 local ColonistAgeGroups = const.ColonistAgeGroups
 for id, item in pairs(ColonistAgeGroups) do
 		c = c + 1
-		properties[c] = PlaceObj("ModItemOptionNumber", {
+		mod_options[c] = PlaceObj("ModItemOptionNumber", {
 			"name", id,
 			"DisplayName", table.concat(T(3929, "Age Group") .. " " .. T(item.display_name)),
 			"Help", T(item.description),
@@ -61,8 +61,8 @@ end
 
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
-return properties
+return mod_options

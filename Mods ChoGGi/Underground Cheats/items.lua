@@ -5,7 +5,7 @@ if not g_AvailableDlc.picard then
 	return
 end
 
-local properties = {
+local mod_options = {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "EnableMod",
 		"DisplayName", T(302535920011303, "<color ChoGGi_yellow>Enable Mod</color>"),
@@ -38,7 +38,7 @@ local wonders = const.BuriedWonders
 for i = 1, #wonders do
 	c = c + 1
 	local id = wonders[i]
-	properties[c] = PlaceObj("ModItemOptionToggle", {
+	mod_options[c] = PlaceObj("ModItemOptionToggle", {
 		"name", id,
 		"DisplayName", table.concat(T(142--[[Wonder]]) .. ": " .. T(bt[id].display_name)),
 		"Help", table.concat(wonder_desc .. "\n\n" .. T(bt[id].description)),
@@ -48,8 +48,8 @@ end
 
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
-return properties
+return mod_options

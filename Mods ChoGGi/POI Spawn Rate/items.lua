@@ -3,14 +3,14 @@
 local table = table
 local T = T
 
-local properties = {}
+local mod_options = {}
 local c = 0
 
 local POIPresets = POIPresets
 for id, poi in pairs(POIPresets) do
 	if poi.spawn_period then
 		c = c + 1
-		properties[c] = PlaceObj("ModItemOptionNumber", {
+		mod_options[c] = PlaceObj("ModItemOptionNumber", {
 			"name", id .. "_Min",
 			"DisplayName", table.concat(T(poi.display_name) .. " " .. T(302535920011382, "Min")),
 			"Help", T(302535920011524, "WARNING: Make sure min isn't above max or it won't work correctly."),
@@ -19,7 +19,7 @@ for id, poi in pairs(POIPresets) do
 			"MaxValue", 100,
 		})
 		c = c + 1
-		properties[c] = PlaceObj("ModItemOptionNumber", {
+		mod_options[c] = PlaceObj("ModItemOptionNumber", {
 			"name", id .. "_Max",
 			"DisplayName", table.concat(T(poi.display_name) .. " " .. T(8780, "MAX")),
 			"Help", T(302535920011524, "WARNING: Make sure min isn't above max or it won't work correctly."),
@@ -32,8 +32,8 @@ end
 
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.name), _InternalTranslate(b.name))
 end)
 
-return properties
+return mod_options

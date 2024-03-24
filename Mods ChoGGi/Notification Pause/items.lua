@@ -5,7 +5,7 @@ local PlaceObj = PlaceObj
 local T = T
 
 -- build sorted list of all notifications
-local properties = {}
+local mod_options = {}
 local c = 0
 local OnScreenNotificationPresets = OnScreenNotificationPresets
 for id, item in pairs(OnScreenNotificationPresets) do
@@ -35,7 +35,7 @@ for id, item in pairs(OnScreenNotificationPresets) do
 	end
 
 	c = c + 1
-	properties[c] = PlaceObj("ModItemOptionToggle", {
+	mod_options[c] = PlaceObj("ModItemOptionToggle", {
 		"name", id,
 		"DisplayName", table.concat(T(name)),
 		"Help", table.concat(T(item.title) .. "\n" .. T(item.text) .. voiced
@@ -46,8 +46,8 @@ for id, item in pairs(OnScreenNotificationPresets) do
 end
 
 local CmpLower = CmpLower
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(a.name, b.name)
 end)
 
-return properties
+return mod_options

@@ -3,7 +3,7 @@
 local table = table
 local T = T
 
-local properties = {
+local mod_options = {
 	-- Meteors
 	PlaceObj("ModItemOptionToggle", {
 		"name", "MeteorsOverkill",
@@ -129,8 +129,8 @@ local properties = {
 
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
-return properties
+return mod_options

@@ -22,7 +22,7 @@ else
 	end
 end
 
-local properties = {}
+local mod_options = {}
 local c = 0
 
 local bt = Presets.TechPreset.Breakthroughs
@@ -41,7 +41,7 @@ for i = 1, #bt do
 		end
 
 		c = c + 1
-		properties[c] = PlaceObj("ModItemOptionToggle", {
+		mod_options[c] = PlaceObj("ModItemOptionToggle", {
 			"name", id,
 			"DisplayName", SafeTrans(def.display_name) .. (
 				def.icon ~= "UI/Icons/Research/story_bit.tga" and " <right>" .. image or ""
@@ -53,27 +53,27 @@ for i = 1, #bt do
 end
 
 local CmpLower = CmpLower
-table.sort(properties, function(a, b)
+table.sort(mod_options, function(a, b)
 	return CmpLower(_InternalTranslate(a.DisplayName), _InternalTranslate(b.DisplayName))
 end)
 
-table.insert(properties, 1, PlaceObj("ModItemOptionToggle", {
+table.insert(mod_options, 1, PlaceObj("ModItemOptionToggle", {
 	"name", "AlwaysApplyOptions",
 	"DisplayName", "<yellow>" .. _InternalTranslate(T(302535920011814, "Always Apply Options")),
 	"Help", T(302535920011815, "Unlock/Research Breakthroughs whenever you load a game/start a new game (otherwise you need to press Apply in mod options)."),
 	"DefaultValue", false,
 }))
-table.insert(properties, 2, PlaceObj("ModItemOptionToggle", {
+table.insert(mod_options, 2, PlaceObj("ModItemOptionToggle", {
 	"name", "BreakthroughsResearched",
 	"DisplayName", "<yellow>" .. _InternalTranslate(T(302535920011423, "Breakthroughs Researched")),
 	"Help", T(302535920011813, "Turn on to research instead of unlock breakthroughs."),
 	"DefaultValue", false,
 }))
-table.insert(properties, 3, PlaceObj("ModItemOptionToggle", {
+table.insert(mod_options, 3, PlaceObj("ModItemOptionToggle", {
 	"name", "BreakthroughsRandomOrder",
 	"DisplayName", "<yellow>" .. _InternalTranslate(T(0000, "Breakthroughs Random Order")),
 	"Help", T(0000, "Unlock/Research breakthroughs in a random order."),
 	"DefaultValue", true,
 }))
 
-return properties
+return mod_options
