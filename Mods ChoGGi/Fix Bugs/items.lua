@@ -98,7 +98,6 @@ I added it as an option since this is causing issues for a user; it'll lock up o
 	}),
 }
 
--- sort mod options
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
 table.sort(mod_options, function(a, b)

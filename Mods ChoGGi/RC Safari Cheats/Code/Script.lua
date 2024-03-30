@@ -10,7 +10,7 @@ local mod_ServiceComfort
 local mod_ComfortIncrease
 
 -- some stuff checks one some other...
---~ local SetConsts = ChoGGi.ComFuncs.SetConstsG
+--~ local SetConsts = ChoGGi.ComFuncs.SetConsts
 local function SetConsts(id, value)
 	Consts[id] = value
 	g_Consts[id] = value

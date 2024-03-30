@@ -760,7 +760,7 @@ function ChoGGi.MenuFuncs.UnlockLockedBuildings()
 end
 
 function ChoGGi.MenuFuncs.PipesPillarsSpacing_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("PipesPillarSpacing", ChoGGi.ComFuncs.ValueRetOpp(Consts.PipesPillarSpacing, 1000, ChoGGi.Consts.PipesPillarSpacing))
+	ChoGGi.ComFuncs.SetConsts("PipesPillarSpacing", ChoGGi.ComFuncs.ValueRetOpp(Consts.PipesPillarSpacing, 1000, ChoGGi.Consts.PipesPillarSpacing))
 	ChoGGi.ComFuncs.SetSavedConstSetting("PipesPillarSpacing")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -1467,12 +1467,12 @@ function ChoGGi.MenuFuncs.CheapConstruction_Toggle()
 
 	local Consts = Consts
 	local cConsts = ChoGGi.Consts
-	local SetConstsG = ChoGGi.ComFuncs.SetConstsG
+	local SetConsts = ChoGGi.ComFuncs.SetConsts
 	local ValueRetOpp = ChoGGi.ComFuncs.ValueRetOpp
 	local SetSavedConstSetting = ChoGGi.ComFuncs.SetSavedConstSetting
 	for i = 1, #list do
 		local name = list[i]
-		SetConstsG(name, ValueRetOpp(Consts[name], -100, cConsts[name]))
+		SetConsts(name, ValueRetOpp(Consts[name], -100, cConsts[name]))
 		SetSavedConstSetting(name, Consts[name])
 	end
 
@@ -1485,8 +1485,8 @@ Your home will not be a hut on some swampy outback planet your home will be the 
 end
 
 function ChoGGi.MenuFuncs.BuildingDamageCrime_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("CrimeEventSabotageBuildingsCount", ChoGGi.ComFuncs.ToggleBoolNum(Consts.CrimeEventSabotageBuildingsCount))
-	ChoGGi.ComFuncs.SetConstsG("CrimeEventDestroyedBuildingsCount", ChoGGi.ComFuncs.ToggleBoolNum(Consts.CrimeEventDestroyedBuildingsCount))
+	ChoGGi.ComFuncs.SetConsts("CrimeEventSabotageBuildingsCount", ChoGGi.ComFuncs.ToggleBoolNum(Consts.CrimeEventSabotageBuildingsCount))
+	ChoGGi.ComFuncs.SetConsts("CrimeEventDestroyedBuildingsCount", ChoGGi.ComFuncs.ToggleBoolNum(Consts.CrimeEventDestroyedBuildingsCount))
 	ChoGGi.ComFuncs.SetSavedConstSetting("CrimeEventSabotageBuildingsCount")
 	ChoGGi.ComFuncs.SetSavedConstSetting("CrimeEventDestroyedBuildingsCount")
 
@@ -1511,8 +1511,8 @@ function ChoGGi.MenuFuncs.CablesAndPipesNoBreak_Toggle()
 end
 
 function ChoGGi.MenuFuncs.CablesAndPipesInstant_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("InstantCables", ChoGGi.ComFuncs.ToggleBoolNum(Consts.InstantCables))
-	ChoGGi.ComFuncs.SetConstsG("InstantPipes", ChoGGi.ComFuncs.ToggleBoolNum(Consts.InstantPipes))
+	ChoGGi.ComFuncs.SetConsts("InstantCables", ChoGGi.ComFuncs.ToggleBoolNum(Consts.InstantCables))
+	ChoGGi.ComFuncs.SetConsts("InstantPipes", ChoGGi.ComFuncs.ToggleBoolNum(Consts.InstantPipes))
 	ChoGGi.ComFuncs.SetSavedConstSetting("InstantCables")
 	ChoGGi.ComFuncs.SetSavedConstSetting("InstantPipes")
 

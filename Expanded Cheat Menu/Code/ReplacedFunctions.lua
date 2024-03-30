@@ -165,13 +165,26 @@ if what_game == "Mars" then
 	-- get rid of "This savegame was loaded in the past without required mods or with an incompatible game version."
 	local ChoOrig_WaitMarsMessage = WaitMarsMessage
 	AddToOrigFuncs("WaitMarsMessage")
-	function WaitMarsMessage(parent, title, msg, ...)
-		if UserSettings.SkipIncompatibleModsMsg and IsT(msg) == 10888 then
+	function WaitMarsMessage(parent, caption, text, ...)
+		-- This savegame was loaded in the past without required mods or with an incompatible game version.
+		if UserSettings.SkipIncompatibleModsMsg and TGetID(text) == 10888 then
 			return
 		end
-		return ChoOrig_WaitMarsMessage(parent, title, msg, ...)
+		return ChoOrig_WaitMarsMessage(parent, caption, text, ...)
 	end
 
+	-- Add dialog option to skip missing mods msg
+	local ChoOrig_WaitMarsQuestion = WaitMarsQuestion
+	AddToOrigFuncs("WaitMarsQuestion")
+	function WaitMarsQuestion(parent, caption, text, ...)
+		-- The following mods are missing or incompatible: blah blah blah
+		if TGetID(text) == 12444 then
+			text = text  .. "\n\n\n\n" .. T{302535920001730--[[To disable this msg use Menu>Debug>Toggles><menuitem>.]],
+				menuitem = T(302535920001205--[[Skip Missing Mods]]),
+			}
+		end
+		return ChoOrig_WaitMarsQuestion(parent, caption, text, ...)
+	end
 
 	-- fix for sending nil id to it
 	local ChoOrig_LoadCustomOnScreenNotification = LoadCustomOnScreenNotification
@@ -1361,7 +1374,8 @@ function OnMsg.ClassesPostprocess()
 					local terrain = game_map.terrain
 
 					if build_z == UnbuildableZ then
-						build_z = pos:z() or terrain:GetHeight(pos)
+--~ 						build_z = pos:z() or terrain:GetHeight(pos)
+						build_z = pos:z() or ActiveGameMap.realm:SnapToTerrain(pos)
 					end
 					hex_world_pos = hex_world_pos:SetZ(build_z)
 

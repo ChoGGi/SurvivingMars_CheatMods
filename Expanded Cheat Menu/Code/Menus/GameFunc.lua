@@ -26,7 +26,7 @@ function ChoGGi.MenuFuncs.InfopanelToolbarConstrain_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(setting),
-		T(302535920001665--[[Infopanel Toolbar Constrain]])
+		T(302535920001665--[[Toggle Infopanel Toolbar Constrain]])
 	)
 end
 
@@ -410,7 +410,7 @@ function ChoGGi.MenuFuncs.GUIDockSide_Toggle()
 	)
 end
 
-function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
+function ChoGGi.MenuFuncs.ShowHints_Toggle()
 	local mapdata = ActiveMapData
 
 	if ChoGGi.UserSettings.DisableHints then
@@ -426,7 +426,7 @@ function ChoGGi.MenuFuncs.NeverShowHints_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisableHints),
-		T(302535920000670--[[Never Show Hints]])
+		T(302535920000670--[[Toggle Show Hints]])
 	)
 end
 
@@ -876,7 +876,8 @@ do -- FlattenGround
 			radius = size * guic
 
 			ToggleHotkeys(true)
-			flatten_height = ActiveGameMap.terrain:GetHeight(GetCursorWorldPos())
+--~ 			flatten_height = ActiveGameMap.terrain:GetHeight(GetCursorWorldPos())
+			flatten_height = ActiveGameMap.realm:SnapToTerrain(GetCursorWorldPos())
 			MsgPopup(
 				Translate(302535920001163--[[Flatten height has been choosen %s, press shortcut again to update buildable.]]):format(flatten_height),
 				T(302535920000485--[[Terrain Flatten Toggle]])
@@ -1110,7 +1111,7 @@ function ChoGGi.MenuFuncs.PulsatingPins_Toggle()
 	ChoGGi.SettingFuncs.WriteSettings()
 	MsgPopup(
 		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisablePulsatingPinsMotion),
-		T(302535920000265--[[Pulsating Pins]])
+		T(302535920000265--[[Toggle Pulsating Pins]])
 	)
 end
 

@@ -4,7 +4,7 @@ local GetRealm = GetRealm
 local FindNearestObject = FindNearestObject
 
 local Random = ChoGGi.ComFuncs.Random
-local SetConstsG = ChoGGi.ComFuncs.SetConstsG
+local SetConsts = ChoGGi.ComFuncs.SetConsts
 
 local mod_EnableMod
 local mod_StorageAmount
@@ -31,7 +31,7 @@ local function UpdateTransports()
 
 	ClearUsedStocks()
 
-	SetConstsG("RCTransportGatherResourceWorkTime", mod_WorkTime)
+	SetConsts("RCTransportGatherResourceWorkTime", mod_WorkTime)
 
 	if mod_StorageAmount > 0 then
 		BuildingTemplates.RCTransportBuilding.max_shared_storage = mod_StorageAmount

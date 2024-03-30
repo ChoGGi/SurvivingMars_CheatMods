@@ -23,7 +23,7 @@ The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
 Future Contemporary Asset Pack when placing spires (more info below).
 Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC).
 Possible fix for main menu music playing in-game on new games (mod option to disable, since there's no fade out).
-The Bottomless Pit and Anomaly is missing (more info below).
+The Bottomless Pit Anomaly is missing (more info below).
 Refabbing rare extractors left the "working" dust plumes around them.
 St. Elmo's Fire: Stop meteoroids from destroying sinkholes.
 ```
@@ -122,17 +122,13 @@ It's probably a bug, but the underground wonders do add Breakthroughs.
 
 Mod option to disable this "fix" (and receieve less Breakthroughs).
 
-**The Bottomless Pit and Anomaly is missing**
+**The Bottomless Pit Anomaly is missing**
 
 SpawnAnomaly() calls FindUnobstructedDepositPos() which for whatever reason,
 
 takes the pos from in front of the wonder and sticks it in the passage behind it... (BlankUnderground_02 map)
 
-SpawnAnomaly() freaks out and changes it to an underground water instead
-
-It works fine once the sector the pit is in is scanned, so I check for the water deposit when the pit is selected.
-
-It's not like anyone goes underground for water...
+SpawnAnomaly() freaks out and changes it to an underground water instead (or just doesn't spawn it).
 
 **Future Contemporary Asset Pack**
 

@@ -1241,10 +1241,10 @@ do -- LoadGame/CityStart
 		ChoGGi.SettingFuncs.SetConstsToSaved()
 
 		-- any saved Consts settings (from the Consts menu)
-		local SetConstsG = ChoGGi.ComFuncs.SetConstsG
+		local SetConsts = ChoGGi.ComFuncs.SetConsts
 		local ChoGGi_Consts = UserSettings.Consts
 		for key, value in pairs(ChoGGi_Consts) do
-			SetConstsG(key, value)
+			SetConsts(key, value)
 		end
 		-- think about removing other Consts from other menus
 

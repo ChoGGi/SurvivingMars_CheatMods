@@ -41,7 +41,7 @@ function ChoGGi.MenuFuncs.SetFundingPerRareMetalExport()
 		local value = choice[1].value
 		if type(value) == "number" then
 			local value = value
-			ChoGGi.ComFuncs.SetConstsG("ExportPricePreciousMetals", value)
+			ChoGGi.ComFuncs.SetConsts("ExportPricePreciousMetals", value)
 			ChoGGi.ComFuncs.SetSavedConstSetting("ExportPricePreciousMetals")
 
 			ChoGGi.SettingFuncs.WriteSettings()
@@ -133,7 +133,7 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
 		local value = choice[1].value
 		if type(value) == "number" then
 			local value = value * r
-			ChoGGi.ComFuncs.SetConstsG("FoodPerRocketPassenger", value)
+			ChoGGi.ComFuncs.SetConsts("FoodPerRocketPassenger", value)
 			ChoGGi.ComFuncs.SetSavedConstSetting("FoodPerRocketPassenger")
 
 			ChoGGi.SettingFuncs.WriteSettings()

@@ -3,9 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
-302535920001728, ""
-302535920001729, ""
-302535920001730, ""
 302535920001731, ""
 302535920001732, ""
 302535920001733, ""
@@ -415,6 +412,7 @@ If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""T
 302535920000733, "Open a preset in the editor."
 end end !Skipped Line!
 do !Skipped Line! [[ReplacedFunctions.lua]] !Skipped Line!
+302535920001730, "<color ChoGGi_red>To disable this msg use Menu>Debug>Toggles><color ChoGGi_green><menuitem></color>.</color>"
 302535920001410, "Toggle Visibility"
 302535920000735, "Timer delay skipped"
 end !Skipped Line!
@@ -1289,6 +1287,8 @@ Not permanent."
 302535920000448, "I'm afraid it could be 9/11 times 1,000."
 end !Skipped Line!
 do do !Skipped Line! [[DebugMenu.lua" "DebugFunc.lua]] !Skipped Line!
+302535920001728, "Skip Incompatible Mods"
+302535920001729, "Get rid of ""This savegame was loaded in the past without required mods or with an incompatible game version.""."
 302535920001205, "Skip Missing Mods"
 302535920001657, "Stops confirmation dialog about missing mods when loading saved games."
 302535920001658, "Skip Missing DLC"
@@ -1668,7 +1668,7 @@ Takes less then a second on a map with 3616 buildings and 54 drone hubs."
 end end end end end end end !Skipped Line!
 do do !Skipped Line! [[GameMenu.lua" "GameFunc.lua]] !Skipped Line!
 302535920001679, "Tool Tips"
-302535920001665, "Infopanel Toolbar Constrain"
+302535920001665, "Toggle Infopanel Toolbar Constrain"
 302535920001666, "Limits size of infopanel toolbar buttons for those that have too many buttons (and they go off panel)."
 302535920001258, "Cleans your Mars of alien shrubbery."
 302535920001259, "Delete Bushes Trees"
@@ -1728,7 +1728,7 @@ Unfinished dev tool, don't use in regular saves!"
 302535920000629, "UI Transparency"
 302535920000637, "Video Memory"
 302535920000635, "Terrain Detail"
-302535920000265, "Pulsating Pins Disable"
+302535920000265, "Toggle Pulsating Pins"
 302535920000335, "When true pins will no longer do the pulsating motion (hover over to stop)."
 302535920000982, "Custom"
 302535920000633, "Lights Radius"
@@ -1927,9 +1927,9 @@ For any issues; please report them to my Github/Steam/NexusMods page, or email <
 302535920000666, "Toggle on-screen hints"
 302535920000667, "Don't show hints for this game."
 302535920000668, "Reset on-screen hints"
-302535920000669, "Just in case you wanted to see them again."
-302535920000670, "Never Show Hints"
-302535920000671, "No more hints ever."
+302535920000669, "Just in case you wanted to see them again (Hints that have been dismissed will be shown again)."
+302535920000670, "Toggle Show Hints"
+302535920000671, "No more hints ever (Enable to disable all hints)."
 302535920000672, "About ECM"
 302535920000673, "info dialog."
 302535920000676, "Reset ECM Settings"

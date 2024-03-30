@@ -443,7 +443,7 @@ do -- RetName
 			-- display
 --~ 			elseif rawget(obj, "display_name") and obj.display_name ~= "" then
 			elseif obj.display_name and obj.display_name ~= "" then
-				if IsT(obj.display_name) == 9 --[[Anomaly]] then
+				if TGetID(obj.display_name) == 9 --[[Anomaly]] then
 					name = obj.class
 				else
 					name = Translate(obj.display_name)
@@ -1434,7 +1434,7 @@ function ChoGGi.ComFuncs.StringToTable(str)
 	return temp
 end
 
-function ChoGGi.ComFuncs.SetConstsG(id, value)
+function ChoGGi.ComFuncs.SetConsts(id, value)
 	-- we only want to change it if user set value
 	if value then
 		-- some mods check Consts or g_Consts, so we'll just do both to be sure
@@ -1444,6 +1444,8 @@ function ChoGGi.ComFuncs.SetConstsG(id, value)
 		end
 	end
 end
+-- obsolete
+ChoGGi.ComFuncs.SetConstsG = ChoGGi.ComFuncs.SetConsts
 
 function ChoGGi.ComFuncs.SetPropertyProp(obj, prop_id, value_id, value)
 	if not obj or obj and not obj:IsKindOf("PropertyObject") then
@@ -7857,7 +7859,8 @@ function ChoGGi.ComFuncs.MoveRealm(obj, map_id)
 	--
 	if pos then
 		-- Used surface.terrain:GetHeight instead of just :SetTerrainZ() since that seems to be the active terrain
-		obj:SetPos(pos:SetZ(map.terrain:GetHeight(pos)))
+--~ 		obj:SetPos(pos:SetZ(map.terrain:GetHeight(pos)))
+		obj:SetPos(map.realm:SnapToTerrain(pos))
 	end
 end
 

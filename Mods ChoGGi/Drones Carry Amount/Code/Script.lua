@@ -55,7 +55,7 @@ end
 local default_drone_amount = 1
 
 local function UpdateAmount(amount)
-	ChoGGi.ComFuncs.SetConstsG("DroneResourceCarryAmount", amount)
+	ChoGGi.ComFuncs.SetConsts("DroneResourceCarryAmount", amount)
 	UpdateDroneResourceUnits()
 end
 

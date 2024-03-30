@@ -30,8 +30,9 @@ local function FixDeposit(deposit, map_id)
 		deposit:TransferToMap(map_id)
 		-- z is still set to z from underground (got me)
 		local pos = deposit:GetPos()
-		-- Used propermap.terrain:GetHeight instead of just :SetTerrainZ() since that seems to be the active terrain
-		deposit:SetPos(pos:SetZ(GameMaps[map_id].terrain:GetHeight(pos)))
+		-- Used propermap.terrain:GetHeight instead of just :SetTerrainZ() since that seems to use the active terrain
+--~ 		deposit:SetPos(pos:SetZ(GameMaps[map_id].terrain:GetHeight(pos)))
+		deposit:SetPos(GameMaps[map_id].realm:SnapToTerrain(pos))
 	end
 end
 

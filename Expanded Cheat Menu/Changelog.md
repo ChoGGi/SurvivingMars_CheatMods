@@ -1,7 +1,14 @@
 ## ECM Changelog
 
 ## v19.2 (Unreleased)
+### Added:
+- Menu>Debug>Toggle Missing Mods Message (it's been around as a setting to manually change).
+ - Use to get rid of "This savegame was loaded in the past without required mods or with an incompatible game version."
+
 ### Changed:
+- Moved items in Menu>Game>UI to Menu>Game>Interface.
+ - Also renamed some items in the menu.
+- Added msg to missing mod dialog box showing how to disable it.
 - ExportMapDataToCSV uses 13 instead of 12 breakthroughs.
 - Added Tool tips to Menu>Game>UI>UI Transparency.
 - Stopped using TranslationTable, might cause some string issues.

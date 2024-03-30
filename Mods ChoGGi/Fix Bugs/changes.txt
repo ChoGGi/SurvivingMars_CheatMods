@@ -1,3 +1,6 @@
+v5.5
+Properly fixed Bottomless Pit and missing Anomaly, but now requires new game.
+
 v5.4
 St. Elmo's Fire: Stop meteoroids from destroying sinkholes.
 

@@ -492,6 +492,21 @@ Actions[c] = {ActionName = T(302535920001205--[[Skip Missing Mods]]),
 }
 
 c = c + 1
+Actions[c] = {ActionName = T(302535920001728--[[Skip Incompatible Mods]]),
+	ActionMenubar = "ECM.Debug.Toggles",
+	ActionId = ".Skip Incompatible Mods",
+	ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.SkipIncompatibleModsMsg,
+			T(302535920001729--[[Get rid of "This savegame was loaded in the past without required mods or with an incompatible game version.".]])
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.SkipIncompatibleModsMsg_Toggle,
+}
+
+
+c = c + 1
 Actions[c] = {ActionName = T(302535920001658--[[Skip Missing DLC]]),
 	ActionMenubar = "ECM.Debug.Toggles",
 	ActionId = ".Skip Missing DLC",

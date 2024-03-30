@@ -57,7 +57,7 @@ function ChoGGi.MenuFuncs.SetConstMenu(action)
 		local value = choice.value
 
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetConstsG(setting_id, value)
+			ChoGGi.ComFuncs.SetConsts(setting_id, value)
 			-- If setting is the same as the default then remove it
 			if ConstsC[setting_id] == value then
 				ConstsUS[setting_id] = nil

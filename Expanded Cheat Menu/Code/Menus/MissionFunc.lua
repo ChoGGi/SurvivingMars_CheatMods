@@ -291,7 +291,7 @@ end
 
 function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
 	local Consts = Consts
-	ChoGGi.ComFuncs.SetConstsG("MeteorHealthDamage", ChoGGi.ComFuncs.NumRetBool(Consts.MeteorHealthDamage, 0, ChoGGi.Consts.MeteorHealthDamage))
+	ChoGGi.ComFuncs.SetConsts("MeteorHealthDamage", ChoGGi.ComFuncs.NumRetBool(Consts.MeteorHealthDamage, 0, ChoGGi.Consts.MeteorHealthDamage))
 	ChoGGi.ComFuncs.SetSavedConstSetting("MeteorHealthDamage")
 
 	ChoGGi.SettingFuncs.WriteSettings()

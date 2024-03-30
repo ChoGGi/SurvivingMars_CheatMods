@@ -13,6 +13,15 @@ local MsgPopup = ChoGGi.ComFuncs.MsgPopup
 local RetName = ChoGGi.ComFuncs.RetName
 local RandomColour = ChoGGi.ComFuncs.RandomColour
 
+function ChoGGi.MenuFuncs.SkipIncompatibleModsMsg_Toggle()
+	ChoGGi.UserSettings.SkipIncompatibleModsMsg = not ChoGGi.UserSettings.SkipIncompatibleModsMsg
+
+	ChoGGi.SettingFuncs.WriteSettings()
+	MsgPopup(
+		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SkipIncompatibleModsMsg),
+		T(302535920001728--[[Skip Incompatible Mods]])
+	)
+end
 
 function ChoGGi.MenuFuncs.SkipMissingMods_Toggle()
 	if blacklist then
@@ -1268,7 +1277,8 @@ do -- FlightGrid_Toggle
 			colours[i] = InterpolateRGB(
 				white,
 				green,
-				Clamp(height - zoffset - ActiveGameMap.terrain:GetHeight(pos), 0, max_diff),
+--~ 				Clamp(height - zoffset - ActiveGameMap.terrain:GetHeight(pos), 0, max_diff),
+				Clamp(height - zoffset - ActiveGameMap.realm:SnapToTerrain(pos), 0, max_diff),
 				max_diff
 			)
 		end

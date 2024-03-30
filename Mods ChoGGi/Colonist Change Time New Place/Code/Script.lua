@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local SetConstsG = ChoGGi.ComFuncs.SetConstsG
+local SetConsts = ChoGGi.ComFuncs.SetConsts
 
 local mod_EnableMod
 local mod_ForcedByUserLockTimeout
@@ -10,7 +10,7 @@ local function StartupCode()
 		return
 	end
 
-	SetConstsG("ForcedByUserLockTimeout", mod_ForcedByUserLockTimeout)
+	SetConsts("ForcedByUserLockTimeout", mod_ForcedByUserLockTimeout)
 end
 OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode

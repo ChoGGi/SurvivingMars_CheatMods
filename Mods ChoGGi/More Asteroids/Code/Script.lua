@@ -7,7 +7,7 @@ if not g_AvailableDlc.picard then
 end
 
 -- some stuff checks one some other...
-local SetConstsG = ChoGGi.ComFuncs.SetConstsG
+local SetConsts = ChoGGi.ComFuncs.SetConsts
 
 local mod_EnableMod
 local mod_MaxAsteroids
@@ -93,7 +93,7 @@ local function StartupCode()
 		return
 	end
 
-	SetConstsG("MaxAsteroids", mod_MaxAsteroids)
+	SetConsts("MaxAsteroids", mod_MaxAsteroids)
 end
 OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode

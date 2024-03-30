@@ -122,8 +122,8 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 end
 
 function ChoGGi.MenuFuncs.RCTransportInstantTransfer_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("RCRoverTransferResourceWorkTime", ChoGGi.ComFuncs.NumRetBool(Consts.RCRoverTransferResourceWorkTime, 0, ChoGGi.Consts.RCRoverTransferResourceWorkTime))
-	ChoGGi.ComFuncs.SetConstsG("RCTransportGatherResourceWorkTime", ChoGGi.ComFuncs.NumRetBool(Consts.RCTransportGatherResourceWorkTime, 0, ChoGGi.ComFuncs.GetResearchedTechValue("RCTransportGatherResourceWorkTime")))
+	ChoGGi.ComFuncs.SetConsts("RCRoverTransferResourceWorkTime", ChoGGi.ComFuncs.NumRetBool(Consts.RCRoverTransferResourceWorkTime, 0, ChoGGi.Consts.RCRoverTransferResourceWorkTime))
+	ChoGGi.ComFuncs.SetConsts("RCTransportGatherResourceWorkTime", ChoGGi.ComFuncs.NumRetBool(Consts.RCTransportGatherResourceWorkTime, 0, ChoGGi.ComFuncs.GetResearchedTechValue("RCTransportGatherResourceWorkTime")))
 	ChoGGi.ComFuncs.SetSavedConstSetting("RCRoverTransferResourceWorkTime")
 	ChoGGi.ComFuncs.SetSavedConstSetting("RCTransportGatherResourceWorkTime")
 

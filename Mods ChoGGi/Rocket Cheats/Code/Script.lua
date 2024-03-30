@@ -74,15 +74,15 @@ function RocketBase:FlyToMars(cargo, cost, flight_time, ...)
 end
 
 -- Some stuff checks one some other...
-local SetConstsG = ChoGGi.ComFuncs.SetConstsG
+local SetConsts = ChoGGi.ComFuncs.SetConsts
 
 local function UpdateRockets()
-	SetConstsG("MaxColonistsPerRocket", mod_MaxColonistsPerRocket)
-	SetConstsG("TravelTimeEarthMars", mod_TravelTimeEarthMars)
-	SetConstsG("TravelTimeMarsEarth", mod_TravelTimeMarsEarth)
-	SetConstsG("RocketPrice", mod_RocketPrice)
-	SetConstsG("CargoCapacity", mod_CargoCapacity)
-	SetConstsG("FoodPerRocketPassenger", mod_FoodPerRocketPassenger)
+	SetConsts("MaxColonistsPerRocket", mod_MaxColonistsPerRocket)
+	SetConsts("TravelTimeEarthMars", mod_TravelTimeEarthMars)
+	SetConsts("TravelTimeMarsEarth", mod_TravelTimeMarsEarth)
+	SetConsts("RocketPrice", mod_RocketPrice)
+	SetConsts("CargoCapacity", mod_CargoCapacity)
+	SetConsts("FoodPerRocketPassenger", mod_FoodPerRocketPassenger)
 
 	local objs =  UIColony.city_labels.labels.SupplyRocket or ""
 	for i = 1, #objs do

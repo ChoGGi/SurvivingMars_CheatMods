@@ -262,7 +262,8 @@ function RCBulldozer:StartDozer()
 					end
 
 					-- flatten func
-					map.terrain:SetHeightCircle(pos, self.radius, self.radius, map.terrain:GetHeight(self:GetVisualPos()), const.hsDefault)
+--~ 					map.terrain:SetHeightCircle(pos, self.radius, self.radius, map.terrain:GetHeight(self:GetVisualPos()), const.hsDefault)
+					map.terrain:SetHeightCircle(pos, self.radius, self.radius, map.realm:SnapToTerrain(self:GetVisualPos()), const.hsDefault)
 					-- speed and needed for my ugly hack
 					map.realm:SuspendPassEdits("ChoGGi.RCBulldozer.flattening")
 					SuspendTerrainInvalidations("ChoGGi.RCBulldozer.flattening")

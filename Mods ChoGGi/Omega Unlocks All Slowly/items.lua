@@ -23,4 +23,12 @@ return {
 		"MinValue", 0,
 		"MaxValue", 100,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "ResearchBreakthroughs",
+		"DisplayName", T(0000, "ResearchBreakthroughs"),
+		"Help", T(0000, [[Instead of unlocking breakthroughs, this will research them.
+
+(notification will still show as discovered)]]),
+		"DefaultValue", false,
+	}),
 }

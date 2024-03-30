@@ -34,15 +34,14 @@ Find Map Locations: https://steamcommunity.com/sharedfiles/filedetails/?id=24530
 
 View Colony Map: https://steamcommunity.com/sharedfiles/filedetails/?id=1491973763
 
+#### Generate your own csv files (with more than 13 if wanted) paste this into console:
 
 ```
--- Generate your own csv files (with more than 13 if wanted) paste this into console:
-
 ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
     setting_breakthroughs = true,
-    setting_limit_count = 13,
+    setting_limit_count = 17,
 })
 -- You need "ChoGGi's Library" mod for this func.
 ```
 
-For more info see: https://forum.paradoxplaza.com/forum/threads/surviving-mars-maps-find-your-perfect-landinglocation.1107750/page-2#post-25465232
+See also: https://forum.paradoxplaza.com/forum/threads/surviving-mars-maps-find-your-perfect-landinglocation.1107750/page-2#post-25465232

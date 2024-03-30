@@ -399,37 +399,22 @@ Actions[c] = {ActionName = T(302535920000668--[[Reset on-screen hints]]),
 	ActionMenubar = "ECM.Game.Interface",
 	ActionId = ".Reset on-screen hints",
 	ActionIcon = "CommonAssets/UI/Menu/HideSelected.tga",
-	RolloverText = T(302535920000669--[[Just in case you wanted to see them again.]]),
+	RolloverText = T(302535920000669--[[Just in case you wanted to see them again (Hints that have been dismissed will be shown again).]]),
 	OnAction = ChoGGi.MenuFuncs.OnScreenHints_Reset,
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(302535920000670--[[Never Show Hints]]),
+Actions[c] = {ActionName = T(302535920000670--[[Toggle Show Hints]]),
 	ActionMenubar = "ECM.Game.Interface",
-	ActionId = ".Never Show Hints",
+	ActionId = ".Toggle Show Hints",
 	ActionIcon = "CommonAssets/UI/Menu/set_debug_texture.tga",
 	RolloverText = function()
 		return SettingState(
 			ChoGGi.UserSettings.DisableHints,
-			T(302535920000671--[[No more hints ever.]])
+			T(302535920000671--[[No more hints ever (Enable to disable all hints).]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.NeverShowHints_Toggle,
-}
-
-c = c + 1
-Actions[c] = {ActionName = T(302535920001412--[[GUI Dock Side]]),
-	ActionMenubar = "ECM.Game.Interface",
-	ActionId = ".GUI Dock Side",
-	ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
-	RolloverText = function()
-		return SettingState(
-			ChoGGi.UserSettings.GUIDockSide and T(302535920001715--[[Right]]) or T(302535920001716--[[Left]]),
-			T(302535920001413--[[Change which side (most) GUI menus are on.]])
-
-		)
-	end,
-	OnAction = ChoGGi.MenuFuncs.GUIDockSide_Toggle,
+	OnAction = ChoGGi.MenuFuncs.ShowHints_Toggle,
 }
 
 c = c + 1
@@ -458,6 +443,74 @@ Actions[c] = {ActionName = T(302535920001655--[[Toggle Scroll Selection Panel]])
 		)
 	end,
 	OnAction = ChoGGi.MenuFuncs.ScrollSelectionPanel_Toggle,
+}
+
+c = c + 1
+Actions[c] = {ActionName = T(302535920001412--[[GUI Dock Side]]),
+	ActionMenubar = "ECM.Game.Interface",
+	ActionId = ".GUI Dock Side",
+	ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.GUIDockSide and Translate(302535920001715--[[Right]]) or Translate(302535920001716--[[Left]]),
+			T(302535920001413--[[Change which side (most) GUI menus are on.]])
+
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.GUIDockSide_Toggle,
+}
+
+c = c + 1
+Actions[c] = {ActionName = T(302535920000629--[[UI Transparency]]),
+	ActionMenubar = "ECM.Game.Interface",
+	ActionId = ".UI Transparency",
+	ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
+	RolloverText = T(302535920000630--[[Change the transparency of UI items (info panel, menu, pins).]]),
+	OnAction = ChoGGi.MenuFuncs.SetTransparencyUI,
+	ActionShortcut = "Ctrl-F3",
+	ActionBindable = true,
+}
+
+c = c + 1
+Actions[c] = {ActionName = T(302535920000265--[[Toggle Pulsating Pins]]),
+	ActionMenubar = "ECM.Game.Interface",
+	ActionId = ".Toggle Pulsating Pins",
+	ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.DisablePulsatingPinsMotion,
+			T(302535920000335--[[When true pins will no longer do the pulsating motion (hover over to stop).]])
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.PulsatingPins_Toggle,
+}
+
+c = c + 1
+Actions[c] = {ActionName = T(302535920001665--[[Toggle Infopanel Toolbar Constrain]]),
+	ActionMenubar = "ECM.Game.Interface",
+	ActionId = ".Toggle Infopanel Toolbar Constrain",
+	ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.InfopanelToolbarConstrain,
+			T(302535920001666--[[Limits max width of infopanel toolbar buttons for those that have too many buttons (and they go off panel).]])
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.InfopanelToolbarConstrain_Toggle,
+}
+
+c = c + 1
+Actions[c] = {ActionName = T(302535920000631--[[UI Transparency Mouseover]]),
+	ActionMenubar = "ECM.Game.Interface",
+	ActionId = ".UI Transparency Mouseover",
+	ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.TransparencyToggle,
+			T(302535920000632--[[Toggle removing transparency on mouseover.]])
+		)
+	end,
+	OnAction = ChoGGi.MenuFuncs.TransparencyUI_Toggle,
 }
 
 -- menu
@@ -603,69 +656,6 @@ Actions[c] = {ActionName = T(302535920001111--[[Whiter Rocks]]),
 	ActionIcon = "CommonAssets/UI/Menu/place_particles.tga",
 	RolloverText = T(302535920001113--[[Helps the rocks blend in better when using the polar ground texture.]]),
 	OnAction = ChoGGi.MenuFuncs.WhiterRocks,
-}
-
--- menu
-c = c + 1
-Actions[c] = {ActionName = T(4820--[[UI]]),
-	ActionMenubar = "ECM.Game",
-	ActionId = ".UI",
-	ActionIcon = "CommonAssets/UI/Menu/folder.tga",
-	OnActionEffect = "popup",
-}
-
-c = c + 1
-Actions[c] = {ActionName = T(302535920000629--[[UI Transparency]]),
-	ActionMenubar = "ECM.Game.UI",
-	ActionId = ".UI Transparency",
-	ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
-	RolloverText = T(302535920000630--[[Change the transparency of UI items (info panel, menu, pins).]]),
-	OnAction = ChoGGi.MenuFuncs.SetTransparencyUI,
-	ActionShortcut = "Ctrl-F3",
-	ActionBindable = true,
-}
-
-c = c + 1
-Actions[c] = {ActionName = T(302535920000631--[[UI Transparency Mouseover]]),
-	ActionMenubar = "ECM.Game.UI",
-	ActionId = ".UI Transparency Mouseover",
-	ActionIcon = "CommonAssets/UI/Menu/set_last_texture.tga",
-	RolloverText = function()
-		return SettingState(
-			ChoGGi.UserSettings.TransparencyToggle,
-			T(302535920000632--[[Toggle removing transparency on mouseover.]])
-		)
-	end,
-	OnAction = ChoGGi.MenuFuncs.TransparencyUI_Toggle,
-}
-
-c = c + 1
-Actions[c] = {ActionName = T(302535920000265--[[Pulsating Pins]]),
-	ActionMenubar = "ECM.Game.UI",
-	ActionId = ".Pulsating Pins",
-	ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
-	RolloverText = function()
-		return SettingState(
-			ChoGGi.UserSettings.DisablePulsatingPinsMotion,
-			T(302535920000335--[[When true pins will no longer do the pulsating motion (hover over to stop).]])
-		)
-	end,
-	OnAction = ChoGGi.MenuFuncs.PulsatingPins_Toggle,
-}
-
-
-c = c + 1
-Actions[c] = {ActionName = T(302535920001665--[[Infopanel Toolbar Constrain]]),
-	ActionMenubar = "ECM.Game.UI",
-	ActionId = ".Infopanel Toolbar Constrain",
-	ActionIcon = "CommonAssets/UI/Menu/CutSceneArea.tga",
-	RolloverText = function()
-		return SettingState(
-			ChoGGi.UserSettings.InfopanelToolbarConstrain,
-			T(302535920001666--[[Limits max width of infopanel toolbar buttons for those that have too many buttons (and they go off panel).]])
-		)
-	end,
-	OnAction = ChoGGi.MenuFuncs.InfopanelToolbarConstrain_Toggle,
 }
 
 -- menu

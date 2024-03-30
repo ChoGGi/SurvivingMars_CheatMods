@@ -13,7 +13,7 @@ local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
 
 
 function ChoGGi.MenuFuncs.OutsideWorkplaceSanityDecrease_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("OutsideWorkplaceSanityDecrease", ChoGGi.ComFuncs.NumRetBool(Consts.OutsideWorkplaceSanityDecrease, 0, ChoGGi.Consts.OutsideWorkplaceSanityDecrease))
+	ChoGGi.ComFuncs.SetConsts("OutsideWorkplaceSanityDecrease", ChoGGi.ComFuncs.NumRetBool(Consts.OutsideWorkplaceSanityDecrease, 0, ChoGGi.Consts.OutsideWorkplaceSanityDecrease))
 	ChoGGi.ComFuncs.SetSavedConstSetting("OutsideWorkplaceSanityDecrease")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -24,7 +24,7 @@ function ChoGGi.MenuFuncs.OutsideWorkplaceSanityDecrease_Toggle()
 end
 
 function ChoGGi.MenuFuncs.NonHomeDomePerformancePenalty_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("NonHomeDomePerformancePenalty", ChoGGi.ComFuncs.NumRetBool(Consts.NonHomeDomePerformancePenalty, 0, ChoGGi.Consts.NonHomeDomePerformancePenalty))
+	ChoGGi.ComFuncs.SetConsts("NonHomeDomePerformancePenalty", ChoGGi.ComFuncs.NumRetBool(Consts.NonHomeDomePerformancePenalty, 0, ChoGGi.Consts.NonHomeDomePerformancePenalty))
 	ChoGGi.ComFuncs.SetSavedConstSetting("NonHomeDomePerformancePenalty")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -427,7 +427,7 @@ function ChoGGi.MenuFuncs.SetMinComfortBirth()
 		local value = choice[1].value
 		if type(value) == "number" then
 			value = value * r
-			ChoGGi.ComFuncs.SetConstsG("MinComfortBirth", value)
+			ChoGGi.ComFuncs.SetConsts("MinComfortBirth", value)
 			ChoGGi.ComFuncs.SetSavedConstSetting("MinComfortBirth")
 
 			ChoGGi.SettingFuncs.WriteSettings()
@@ -449,7 +449,7 @@ Look at them, bloody Catholics, filling the bloody world up with bloody people t
 end
 
 function ChoGGi.MenuFuncs.VisitFailPenalty_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("VisitFailPenalty", ChoGGi.ComFuncs.NumRetBool(Consts.VisitFailPenalty, 0, ChoGGi.Consts.VisitFailPenalty))
+	ChoGGi.ComFuncs.SetConsts("VisitFailPenalty", ChoGGi.ComFuncs.NumRetBool(Consts.VisitFailPenalty, 0, ChoGGi.Consts.VisitFailPenalty))
 	ChoGGi.ComFuncs.SetSavedConstSetting("VisitFailPenalty")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -461,7 +461,7 @@ The mill's closed. There's no more work. We're destitute. I'm afraid I have no c
 end
 
 function ChoGGi.MenuFuncs.RenegadeCreation_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("RenegadeCreation", ChoGGi.ComFuncs.ValueRetOpp(Consts.RenegadeCreation, max_int, ChoGGi.Consts.RenegadeCreation))
+	ChoGGi.ComFuncs.SetConsts("RenegadeCreation", ChoGGi.ComFuncs.ValueRetOpp(Consts.RenegadeCreation, max_int, ChoGGi.Consts.RenegadeCreation))
 	ChoGGi.ComFuncs.SetSavedConstSetting("RenegadeCreation")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -530,9 +530,9 @@ So then, you haven't seen everything."]]),
 end
 
 function ChoGGi.MenuFuncs.ColonistsMoraleAlwaysMax_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("HighStatLevel", ChoGGi.ComFuncs.NumRetBool(Consts.HighStatLevel, 0, ChoGGi.Consts.HighStatLevel))
-	ChoGGi.ComFuncs.SetConstsG("LowStatLevel", ChoGGi.ComFuncs.NumRetBool(Consts.LowStatLevel, 0, ChoGGi.Consts.LowStatLevel))
-	ChoGGi.ComFuncs.SetConstsG("HighStatMoraleEffect", ChoGGi.ComFuncs.ValueRetOpp(Consts.HighStatMoraleEffect, max_int, ChoGGi.Consts.HighStatMoraleEffect))
+	ChoGGi.ComFuncs.SetConsts("HighStatLevel", ChoGGi.ComFuncs.NumRetBool(Consts.HighStatLevel, 0, ChoGGi.Consts.HighStatLevel))
+	ChoGGi.ComFuncs.SetConsts("LowStatLevel", ChoGGi.ComFuncs.NumRetBool(Consts.LowStatLevel, 0, ChoGGi.Consts.LowStatLevel))
+	ChoGGi.ComFuncs.SetConsts("HighStatMoraleEffect", ChoGGi.ComFuncs.ValueRetOpp(Consts.HighStatMoraleEffect, max_int, ChoGGi.Consts.HighStatMoraleEffect))
 	ChoGGi.ComFuncs.SetSavedConstSetting("HighStatMoraleEffect")
 	ChoGGi.ComFuncs.SetSavedConstSetting("HighStatLevel")
 	ChoGGi.ComFuncs.SetSavedConstSetting("LowStatLevel")
@@ -545,10 +545,10 @@ function ChoGGi.MenuFuncs.ColonistsMoraleAlwaysMax_Toggle()
 end
 
 function ChoGGi.MenuFuncs.ChanceOfSanityDamage_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("DustStormSanityDamage", ChoGGi.ComFuncs.NumRetBool(Consts.DustStormSanityDamage, 0, ChoGGi.Consts.DustStormSanityDamage))
-	ChoGGi.ComFuncs.SetConstsG("MysteryDreamSanityDamage", ChoGGi.ComFuncs.NumRetBool(Consts.MysteryDreamSanityDamage, 0, ChoGGi.Consts.MysteryDreamSanityDamage))
-	ChoGGi.ComFuncs.SetConstsG("ColdWaveSanityDamage", ChoGGi.ComFuncs.NumRetBool(Consts.ColdWaveSanityDamage, 0, ChoGGi.Consts.ColdWaveSanityDamage))
-	ChoGGi.ComFuncs.SetConstsG("MeteorSanityDamage", ChoGGi.ComFuncs.NumRetBool(Consts.MeteorSanityDamage, 0, ChoGGi.Consts.MeteorSanityDamage))
+	ChoGGi.ComFuncs.SetConsts("DustStormSanityDamage", ChoGGi.ComFuncs.NumRetBool(Consts.DustStormSanityDamage, 0, ChoGGi.Consts.DustStormSanityDamage))
+	ChoGGi.ComFuncs.SetConsts("MysteryDreamSanityDamage", ChoGGi.ComFuncs.NumRetBool(Consts.MysteryDreamSanityDamage, 0, ChoGGi.Consts.MysteryDreamSanityDamage))
+	ChoGGi.ComFuncs.SetConsts("ColdWaveSanityDamage", ChoGGi.ComFuncs.NumRetBool(Consts.ColdWaveSanityDamage, 0, ChoGGi.Consts.ColdWaveSanityDamage))
+	ChoGGi.ComFuncs.SetConsts("MeteorSanityDamage", ChoGGi.ComFuncs.NumRetBool(Consts.MeteorSanityDamage, 0, ChoGGi.Consts.MeteorSanityDamage))
 	ChoGGi.ComFuncs.SetSavedConstSetting("DustStormSanityDamage")
 	ChoGGi.ComFuncs.SetSavedConstSetting("MysteryDreamSanityDamage")
 	ChoGGi.ComFuncs.SetSavedConstSetting("ColdWaveSanityDamage")
@@ -562,7 +562,7 @@ function ChoGGi.MenuFuncs.ChanceOfSanityDamage_Toggle()
 end
 
 function ChoGGi.MenuFuncs.SeeDeadSanityDamage_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("SeeDeadSanity", ChoGGi.ComFuncs.NumRetBool(Consts.SeeDeadSanity, 0, ChoGGi.Consts.SeeDeadSanity))
+	ChoGGi.ComFuncs.SetConsts("SeeDeadSanity", ChoGGi.ComFuncs.NumRetBool(Consts.SeeDeadSanity, 0, ChoGGi.Consts.SeeDeadSanity))
 	ChoGGi.ComFuncs.SetSavedConstSetting("SeeDeadSanity")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -573,7 +573,7 @@ function ChoGGi.MenuFuncs.SeeDeadSanityDamage_Toggle()
 end
 
 function ChoGGi.MenuFuncs.NoHomeComfortDamage_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("NoHomeComfort", ChoGGi.ComFuncs.NumRetBool(Consts.NoHomeComfort, 0, ChoGGi.Consts.NoHomeComfort))
+	ChoGGi.ComFuncs.SetConsts("NoHomeComfort", ChoGGi.ComFuncs.NumRetBool(Consts.NoHomeComfort, 0, ChoGGi.Consts.NoHomeComfort))
 	ChoGGi.ComFuncs.SetSavedConstSetting("NoHomeComfort")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -587,7 +587,7 @@ Where seldom is heard a discouraging word."]]):format(ChoGGi.ComFuncs.SettingSta
 end
 
 function ChoGGi.MenuFuncs.ChanceOfNegativeTrait_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("LowSanityNegativeTraitChance", ChoGGi.ComFuncs.NumRetBool(Consts.LowSanityNegativeTraitChance, 0, ChoGGi.ComFuncs.GetResearchedTechValue("LowSanityNegativeTraitChance")))
+	ChoGGi.ComFuncs.SetConsts("LowSanityNegativeTraitChance", ChoGGi.ComFuncs.NumRetBool(Consts.LowSanityNegativeTraitChance, 0, ChoGGi.ComFuncs.GetResearchedTechValue("LowSanityNegativeTraitChance")))
 	ChoGGi.ComFuncs.SetSavedConstSetting("LowSanityNegativeTraitChance")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -598,7 +598,7 @@ function ChoGGi.MenuFuncs.ChanceOfNegativeTrait_Toggle()
 end
 
 function ChoGGi.MenuFuncs.ColonistsChanceOfSuicide_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("LowSanitySuicideChance", ChoGGi.ComFuncs.ToggleBoolNum(Consts.LowSanitySuicideChance))
+	ChoGGi.ComFuncs.SetConsts("LowSanitySuicideChance", ChoGGi.ComFuncs.ToggleBoolNum(Consts.LowSanitySuicideChance))
 	ChoGGi.ComFuncs.SetSavedConstSetting("LowSanitySuicideChance")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -609,7 +609,7 @@ function ChoGGi.MenuFuncs.ColonistsChanceOfSuicide_Toggle()
 end
 
 function ChoGGi.MenuFuncs.ColonistsSuffocate_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("OxygenMaxOutsideTime", ChoGGi.ComFuncs.ValueRetOpp(Consts.OxygenMaxOutsideTime, max_int, ChoGGi.Consts.OxygenMaxOutsideTime))
+	ChoGGi.ComFuncs.SetConsts("OxygenMaxOutsideTime", ChoGGi.ComFuncs.ValueRetOpp(Consts.OxygenMaxOutsideTime, max_int, ChoGGi.Consts.OxygenMaxOutsideTime))
 	ChoGGi.ComFuncs.SetSavedConstSetting("OxygenMaxOutsideTime")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -620,7 +620,7 @@ function ChoGGi.MenuFuncs.ColonistsSuffocate_Toggle()
 end
 
 function ChoGGi.MenuFuncs.ColonistsStarve_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("TimeBeforeStarving", ChoGGi.ComFuncs.ValueRetOpp(Consts.TimeBeforeStarving, max_int, ChoGGi.Consts.TimeBeforeStarving))
+	ChoGGi.ComFuncs.SetConsts("TimeBeforeStarving", ChoGGi.ComFuncs.ValueRetOpp(Consts.TimeBeforeStarving, max_int, ChoGGi.Consts.TimeBeforeStarving))
 	ChoGGi.ComFuncs.SetSavedConstSetting("TimeBeforeStarving")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -633,7 +633,7 @@ Therefore a stale piece of bread is better than a big juicy steak.]]):format(Cho
 end
 
 function ChoGGi.MenuFuncs.AvoidWorkplace_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("AvoidWorkplaceSols", ChoGGi.ComFuncs.NumRetBool(Consts.AvoidWorkplaceSols, 0, ChoGGi.Consts.AvoidWorkplaceSols))
+	ChoGGi.ComFuncs.SetConsts("AvoidWorkplaceSols", ChoGGi.ComFuncs.NumRetBool(Consts.AvoidWorkplaceSols, 0, ChoGGi.Consts.AvoidWorkplaceSols))
 	ChoGGi.ComFuncs.SetSavedConstSetting("AvoidWorkplaceSols")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -644,7 +644,7 @@ function ChoGGi.MenuFuncs.AvoidWorkplace_Toggle()
 end
 
 function ChoGGi.MenuFuncs.PositivePlayground_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("positive_playground_chance", ChoGGi.ComFuncs.ValueRetOpp(Consts.positive_playground_chance, 101, ChoGGi.Consts.positive_playground_chance))
+	ChoGGi.ComFuncs.SetConsts("positive_playground_chance", ChoGGi.ComFuncs.ValueRetOpp(Consts.positive_playground_chance, 101, ChoGGi.Consts.positive_playground_chance))
 	ChoGGi.ComFuncs.SetSavedConstSetting("positive_playground_chance")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -655,7 +655,7 @@ function ChoGGi.MenuFuncs.PositivePlayground_Toggle()
 end
 
 function ChoGGi.MenuFuncs.ProjectMorpheusPositiveTrait_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("ProjectMorphiousPositiveTraitChance", ChoGGi.ComFuncs.ValueRetOpp(Consts.ProjectMorphiousPositiveTraitChance, 100, ChoGGi.Consts.ProjectMorphiousPositiveTraitChance))
+	ChoGGi.ComFuncs.SetConsts("ProjectMorphiousPositiveTraitChance", ChoGGi.ComFuncs.ValueRetOpp(Consts.ProjectMorphiousPositiveTraitChance, 100, ChoGGi.Consts.ProjectMorphiousPositiveTraitChance))
 	ChoGGi.ComFuncs.SetSavedConstSetting("ProjectMorphiousPositiveTraitChance")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -666,7 +666,7 @@ function ChoGGi.MenuFuncs.ProjectMorpheusPositiveTrait_Toggle()
 end
 
 function ChoGGi.MenuFuncs.PerformancePenaltyNonSpecialist_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("NonSpecialistPerformancePenalty", ChoGGi.ComFuncs.NumRetBool(Consts.NonSpecialistPerformancePenalty, 0, ChoGGi.ComFuncs.GetResearchedTechValue("NonSpecialistPerformancePenalty")))
+	ChoGGi.ComFuncs.SetConsts("NonSpecialistPerformancePenalty", ChoGGi.ComFuncs.NumRetBool(Consts.NonSpecialistPerformancePenalty, 0, ChoGGi.ComFuncs.GetResearchedTechValue("NonSpecialistPerformancePenalty")))
 	ChoGGi.ComFuncs.SetSavedConstSetting("NonSpecialistPerformancePenalty")
 
 	ChoGGi.SettingFuncs.WriteSettings()
@@ -702,7 +702,7 @@ function ChoGGi.MenuFuncs.SetOutsideWorkplaceRadius()
 		end
 		local value = choice[1].value
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetConstsG("DefaultOutsideWorkplacesRadius", value)
+			ChoGGi.ComFuncs.SetConsts("DefaultOutsideWorkplacesRadius", value)
 			ChoGGi.ComFuncs.SetSavedConstSetting("DefaultOutsideWorkplacesRadius")
 
 			ChoGGi.SettingFuncs.WriteSettings()

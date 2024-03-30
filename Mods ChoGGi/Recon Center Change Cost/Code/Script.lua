@@ -3,10 +3,10 @@
 local mod_ResearchCost
 
 -- some stuff checks one some other...
-local SetConstsG = ChoGGi.ComFuncs.SetConstsG
+local SetConsts = ChoGGi.ComFuncs.SetConsts
 
 local function StartupCode()
-	SetConstsG("DiscoveryScanCost", mod_ResearchCost)
+	SetConsts("DiscoveryScanCost", mod_ResearchCost)
 	BuildingTemplates.ReconCenter.consumption_max_storage = mod_ResearchCost
 end
 OnMsg.CityStart = StartupCode

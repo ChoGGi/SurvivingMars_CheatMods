@@ -5,6 +5,7 @@ local IsValidThread = IsValidThread
 local IsValid = IsValid
 local ValidateBuilding = ValidateBuilding
 local DoneObject = DoneObject
+local GetCity = GetCity
 local GetRealmByID = GetRealmByID
 local GetDomeAtPoint = GetDomeAtPoint
 local GetRandomPassableAroundOnMap = GetRandomPassableAroundOnMap
@@ -1047,36 +1048,24 @@ end
 
 
 --
--- On one underground map, the bottomless pit is changed to a water deposit:
+-- On one underground map, the bottomless pit anomaly is removed:
 -- SpawnAnomaly() calls FindUnobstructedDepositPos() which for whatever reason,
 -- takes the pos from in front of the wonder and sticks it in the passage behind it... (BlankUnderground_02 map)
--- SpawnAnomaly() freaks out and changes it to an underground water instead
--- It works fine once the sector the pit is in is scanned, so I'm lazy and doing OnMsg.SelectionAdded
-
--- Needs tostring for compare
-local wonder_pos = tostring(point(296000, 225160))
--- On selection, if it's the underground wonder than check if water deposit exists, if so delete and respawn as anomaly
-function OnMsg.SelectionAdded(obj)
-	--
+local ChoOrig_FindUnobstructedDepositPos = FindUnobstructedDepositPos
+function FindUnobstructedDepositPos(marker, ...)
 	if not mod_EnableMod then
-		return
+		return ChoOrig_FindUnobstructedDepositPos(marker, ...)
 	end
 
-	if obj.entity == "WonderBottomlessPit"
-		and ActiveMapID == "BlankUnderground_02"
-		and tostring(obj:GetPos()) == wonder_pos
+	-- Make sure it's the right obj/map
+	if marker.sequence_list == "BuriedWonder_Bottomless_Pit"
+		and GetCity(marker).map_id == "BlankUnderground_02"
 	then
-		-- Bye bye water
-		-- Sure hope it hasn't been drained beforehand, but who goes underground for water?
-		-- (don't be that guy)
-
-		local water_pos = point(293500, 184458)
-		local objs = ActiveGameMap.realm:MapGet(water_pos, water_pos, 1, "SubsurfaceDepositWater")
-		if objs[1] then
-			DoneObject(objs[1])
-			obj:SpawnAnomaly()
-		end
+		-- Ignore the obstructed bool and DepositMarker:PlaceDeposit() is happy
+		local x, y, unobstructed, obstructed = ChoOrig_FindUnobstructedDepositPos(marker, ...)
+		return x, y, unobstructed, false
 	end
+	return ChoOrig_FindUnobstructedDepositPos(marker, ...)
 end
 
 --

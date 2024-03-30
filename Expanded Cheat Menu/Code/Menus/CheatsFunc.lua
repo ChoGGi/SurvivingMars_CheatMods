@@ -354,7 +354,7 @@ function ChoGGi.MenuFuncs.SetOutsourceMaxOrderCount()
 		end
 		local value = choice[1].value
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetConstsG("OutsourceMaxOrderCount", value)
+			ChoGGi.ComFuncs.SetConsts("OutsourceMaxOrderCount", value)
 			ChoGGi.ComFuncs.SetSavedConstSetting("OutsourceMaxOrderCount")
 
 			ChoGGi.SettingFuncs.WriteSettings()
@@ -927,10 +927,10 @@ function ChoGGi.MenuFuncs.MapExploration()
 			return
 		end
 		local function ExploreDeep()
---~ 			ChoGGi.ComFuncs.SetConstsG("DeepScanAvailable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
---~ 			ChoGGi.ComFuncs.SetConstsG("IsDeepWaterExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
---~ 			ChoGGi.ComFuncs.SetConstsG("IsDeepMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
---~ 			ChoGGi.ComFuncs.SetConstsG("IsDeepPreciousMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
+--~ 			ChoGGi.ComFuncs.SetConsts("DeepScanAvailable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
+--~ 			ChoGGi.ComFuncs.SetConsts("IsDeepWaterExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
+--~ 			ChoGGi.ComFuncs.SetConsts("IsDeepMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
+--~ 			ChoGGi.ComFuncs.SetConsts("IsDeepPreciousMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
 			GrantTech("DeepScanning")
 			GrantTech("DeepWaterExtraction")
 			GrantTech("DeepMetalExtraction")
@@ -952,17 +952,17 @@ function ChoGGi.MenuFuncs.MapExploration()
 			elseif value == 3 then
 				ExploreCore()
 			elseif value == 4 then
---~ 				ChoGGi.ComFuncs.SetConstsG("DeepScanAvailable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
+--~ 				ChoGGi.ComFuncs.SetConsts("DeepScanAvailable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
 				GrantTech("DeepScanning")
 			elseif value == 5 then
---~ 				ChoGGi.ComFuncs.SetConstsG("IsDeepWaterExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
+--~ 				ChoGGi.ComFuncs.SetConsts("IsDeepWaterExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
 				GrantTech("DeepWaterExtraction")
 			elseif value == 6 then
 				GrantTech("DeepMetalExtraction")
---~ 				ChoGGi.ComFuncs.SetConstsG("IsDeepMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
+--~ 				ChoGGi.ComFuncs.SetConsts("IsDeepMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
 			elseif value == 7 then
 				GrantTech("DeepMetalExtraction")
---~ 				ChoGGi.ComFuncs.SetConstsG("IsDeepPreciousMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
+--~ 				ChoGGi.ComFuncs.SetConsts("IsDeepPreciousMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
 			elseif value == 8 then
 				Msg("TechResearched", "CoreWater", UICity)
 			elseif value == 9 then
@@ -1586,7 +1586,7 @@ function ChoGGi.MenuFuncs.AddResearchPoints()
 end
 
 function ChoGGi.MenuFuncs.OutsourcingFree_Toggle()
-	ChoGGi.ComFuncs.SetConstsG("OutsourceResearchCost", ChoGGi.ComFuncs.NumRetBool(Consts.OutsourceResearchCost, 0, ChoGGi.Consts.OutsourceResearchCost))
+	ChoGGi.ComFuncs.SetConsts("OutsourceResearchCost", ChoGGi.ComFuncs.NumRetBool(Consts.OutsourceResearchCost, 0, ChoGGi.Consts.OutsourceResearchCost))
 	ChoGGi.ComFuncs.SetSavedConstSetting("OutsourceResearchCost")
 
 	ChoGGi.SettingFuncs.WriteSettings()

@@ -13,4 +13,10 @@ return {
 		"Help", T(0000, "Unlock all story techs as well as breakthroughs."),
 		"DefaultValue", false,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "ResearchBreakthroughs",
+		"DisplayName", T(0000, "ResearchBreakthroughs"),
+		"Help", T(0000, "Instead of unlocking breakthroughs, this will research them."),
+		"DefaultValue", false,
+	}),
 }

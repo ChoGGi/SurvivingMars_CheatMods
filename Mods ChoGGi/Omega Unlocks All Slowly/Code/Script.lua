@@ -3,6 +3,7 @@
 local mod_SolsBetweenUnlock
 local mod_ShowNotification
 local mod_RandomChance
+local mod_ResearchBreakthroughs
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -13,6 +14,7 @@ local function ModOptions(id)
 	mod_SolsBetweenUnlock = CurrentModOptions:GetProperty("SolsBetweenUnlock")
 	mod_ShowNotification = CurrentModOptions:GetProperty("ShowNotification")
 	mod_RandomChance = CurrentModOptions:GetProperty("RandomChance")
+	mod_ResearchBreakthroughs = CurrentModOptions:GetProperty("ResearchBreakthroughs")
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -76,9 +78,12 @@ function OnMsg.NewDay()
 		return
 	end
 
-	UIColony:SetTechDiscovered(def.id)
+	if mod_ResearchBreakthroughs then
+		UIColony:SetTechResearched(def.id)
+	else
+		UIColony:SetTechDiscovered(def.id)
+	end
 
-	-- make this optional?
 	if mod_ShowNotification then
 		AddOnScreenNotification("BreakthroughDiscovered", OpenResearchDialog, {name = def.display_name, context = def, rollover_title = def.display_name, rollover_text = def.description})
 	end

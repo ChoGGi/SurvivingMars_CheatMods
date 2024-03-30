@@ -3494,7 +3494,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				if is_t then
 					table.insert(data_meta, 1, "THasArgs(): " .. self:ConvertValueToInfo(THasArgs(obj)))
 					-- IsT returns the string id, but we'll just call it TGetID() to make it more obvious for people
-					table.insert(data_meta, 1, "\nTGetID(): " .. self:ConvertValueToInfo(is_t))
+					table.insert(data_meta, 1, "\nTGetID(): " .. TGetID(obj))
 					if str_not_translated and not city_object then
 						table.insert(data_meta, 1, Translate(302535920001500--[[userdata object probably needs city_object to translate.]]))
 					end

@@ -233,7 +233,7 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
 
 		local value = choice.value
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetConstsG("CargoCapacity", value)
+			ChoGGi.ComFuncs.SetConsts("CargoCapacity", value)
 			ChoGGi.ComFuncs.SetSavedConstSetting("CargoCapacity")
 
 			ChoGGi.SettingFuncs.WriteSettings()
@@ -288,8 +288,8 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
 		local value = choice.value
 		if type(value) == "number" then
 			local value = value * r
-			ChoGGi.ComFuncs.SetConstsG("TravelTimeEarthMars", value)
-			ChoGGi.ComFuncs.SetConstsG("TravelTimeMarsEarth", value)
+			ChoGGi.ComFuncs.SetConsts("TravelTimeEarthMars", value)
+			ChoGGi.ComFuncs.SetConsts("TravelTimeMarsEarth", value)
 			ChoGGi.ComFuncs.SetSavedConstSetting("TravelTimeEarthMars")
 			ChoGGi.ComFuncs.SetSavedConstSetting("TravelTimeMarsEarth")
 
@@ -330,7 +330,7 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
 		end
 		local value = choice[1].value
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetConstsG("MaxColonistsPerRocket", value)
+			ChoGGi.ComFuncs.SetConsts("MaxColonistsPerRocket", value)
 			ChoGGi.ComFuncs.SetSavedConstSetting("MaxColonistsPerRocket")
 
 			ChoGGi.SettingFuncs.WriteSettings()

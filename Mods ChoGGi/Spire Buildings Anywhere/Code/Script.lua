@@ -33,7 +33,8 @@ function ConstructionController:UpdateCursor(pos, force, ...)
     local build_z = game_map.buildable:GetZ(WorldToHex(hex_world_pos)) or UnbuildableZ
     local terrain = game_map.terrain
     if build_z == UnbuildableZ then
-      build_z = pos:z() or terrain:GetHeight(pos)
+--~       build_z = pos:z() or terrain:GetHeight(pos)
+      build_z = pos:z() or game_map.realm:SnapToTerrain(pos)
     end
     hex_world_pos = hex_world_pos:SetZ(build_z)
 

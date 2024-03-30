@@ -2,6 +2,7 @@
 
 local mod_EnableMod
 local mod_UnlockStoryTechs
+local mod_ResearchBreakthroughs
 
 -- Update mod options
 local function ModOptions(id)
@@ -12,6 +13,7 @@ local function ModOptions(id)
 
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_UnlockStoryTechs = CurrentModOptions:GetProperty("UnlockStoryTechs")
+	mod_ResearchBreakthroughs = CurrentModOptions:GetProperty("ResearchBreakthroughs")
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -20,8 +22,14 @@ OnMsg.ApplyModOptions = ModOptions
 
 local function ShuffleUnlockTechs(techs, colony)
 	StableShuffle(techs, colony:CreateResearchRand("OmegaTelescope"), 100)
-	for i = 1, #techs do
-		colony:SetTechDiscovered(techs[i])
+	if mod_ResearchBreakthroughs then
+		for i = 1, #techs do
+			colony:SetTechResearched(techs[i])
+		end
+	else
+		for i = 1, #techs do
+			colony:SetTechDiscovered(techs[i])
+		end
 	end
 end
 

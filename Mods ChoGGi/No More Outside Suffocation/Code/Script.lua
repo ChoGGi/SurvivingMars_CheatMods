@@ -1,17 +1,17 @@
 -- See LICENSE for terms
 
 local mod_EnableMod
--- some stuff checks one some other...
-local SetConstsG = ChoGGi.ComFuncs.SetConstsG
+-- some stuff checks one some other... (Consts vs g_Consts)
+local SetConsts = ChoGGi.ComFuncs.SetConsts
 
 local function StartupCode()
 	local lotta_sols = const.Scale.sols * 100
 
 	local time = mod_EnableMod and lotta_sols or 120000
-	SetConstsG("OxygenMaxOutsideTime", time)
+	SetConsts("OxygenMaxOutsideTime", time)
 
 	time = mod_EnableMod and lotta_sols or 180000
-	SetConstsG("WaterMaxOutsideTime", time)
+	SetConsts("WaterMaxOutsideTime", time)
 end
 OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode

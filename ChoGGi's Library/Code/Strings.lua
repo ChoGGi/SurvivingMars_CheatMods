@@ -24,7 +24,7 @@ local function Translate(t, context, ...)
 		-- "Missing text" means the string id wasn't found
 		if str == missing_text or type(str) ~= "string" then
 			-- try to return the string id (if we can)
-			return tostring(IsT(t) or missing_text)
+			return tostring(TGetID(t) or missing_text)
 		end
 
 		-- and done
