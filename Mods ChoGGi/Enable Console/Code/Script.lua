@@ -3,8 +3,10 @@
 local mod_EnableConsole
 local mod_EnableLog
 
+local found_ecm
 local function IsECM()
-	if table.find(ModsLoaded, "id", "ChoGGi_CheatMenu") then
+	if found_ecm or table.find(ModsLoaded, "id", "ChoGGi_CheatMenu") then
+		found_ecm = true
 		return true
 	end
 end

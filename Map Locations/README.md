@@ -9,10 +9,9 @@ https://survivingmars.paradoxwikis.com/Patches#Version_history
 
 Only shows first 13 breakthroughs: Anything higher than that isn't guaranteed.
 
-The first 4 are planetary anomalies (the rest are on the ground), if you have BB then you need to use my Fix Bugs mod on new games or ignore them.
+1-4 are planetary anomalies (the rest are surface anomalies), if you have BB then you need to use my Fix Bugs mod on new games or ignore 1-4.
 
 #### Google Sheets:
-
 
 No DLC: https://docs.google.com/spreadsheets/d/1cMMVSz5z7dbKgxC-jgZCmYzMbfIX7friTAtMYuiaFL8/
 
@@ -21,6 +20,12 @@ BB: https://docs.google.com/spreadsheets/d/18HhxcqDsTXNhpF67ZTBtrSiN7jfkRmavXTq7
 GP: https://docs.google.com/spreadsheets/d/1q17ArktnT5zZGO7BfkbeN8aFogml6CbED75-4Yk9KWU/
 
 GP BB: https://docs.google.com/spreadsheets/d/1cYRqjVxmdYeTSii6jGUiNOOKhLxZ6ffmYPcDn9sOVHs/
+
+##### Google Sheets (No Planetary Anomalies):
+
+BB-No PA: https://docs.google.com/spreadsheets/d/1gZhmONS3L6qH61hOhVB9E_Ue15md7aNI18YXI3lk268/
+
+GP BB-No PA: https://docs.google.com/spreadsheets/d/1JsRFTeraAUtGQ-KTurGfZTRoYZ6H7nYwfH9ECtyqU6w/
 
 #### Tools that use this data:
 
