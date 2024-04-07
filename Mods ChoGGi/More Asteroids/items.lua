@@ -12,7 +12,15 @@ return {
 		"DisplayName", T(714746028252--[[Max Asteroids]]),
 		"DefaultValue", Consts.MaxAsteroids or 3,
 		"MinValue", 1,
-		"MaxValue", 50,
+		"MaxValue", 250,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "HideInactive",
+		"DisplayName", T(0000, "Hide Inactive"),
+		"Help", T(0000, [[Stop showing grayed out asteroids.
+
+Restart game to toggle.]]),
+		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "VerticalList",

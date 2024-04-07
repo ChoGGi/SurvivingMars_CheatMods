@@ -108,6 +108,10 @@ local function StartupCode()
 		})
 	end
 
+	-- add cargo entry for saved games
+	if not table.find(ResupplyItemDefinitions, "id", "PortableMiner") then
+		ResupplyItemsInit()
+	end
 end
 
 OnMsg.CityStart = StartupCode
@@ -757,14 +761,13 @@ function OnMsg.ClassesPostprocess()
 		-- add cargo option
 		PlaceObj("Cargo", {
 			description = bt_pmb.description,
-			icon = display_icon,
+			icon = "UI/Icons/Payload/RCRover.tga",
 			name = bt_pmb.display_name,
-			id = "PortableMinerBuilding",
+			id = "PortableMiner",
 			kg = 10000,
 			locked = false,
 			price = 200000000,
 			group = "Rovers",
-			SaveIn = "",
 		})
 	end
 

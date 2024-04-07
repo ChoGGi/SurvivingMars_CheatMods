@@ -1,5 +1,3 @@
-send to asteroids
-
 add automated mode
 
 direct from water deposits

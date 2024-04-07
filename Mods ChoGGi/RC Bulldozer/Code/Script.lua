@@ -570,4 +570,24 @@ function OnMsg.ClassesPostprocess()
 		"entity", entity2,
 	})
 
+	-- add cargo option
+	PlaceObj("Cargo", {
+		description = description,
+		icon = "UI/Icons/Payload/RCRover.tga",
+		name = name,
+		id = "RCBulldozer",
+		kg = 10000,
+		locked = false,
+		price = 200000000,
+		group = "Rovers",
+	})
 end
+
+-- add cargo entry for saved games
+local function UpdateCargo()
+	if not table.find(ResupplyItemDefinitions, "id", "RCBulldozer") then
+		ResupplyItemsInit()
+	end
+end
+--~ OnMsg.CityStart = UpdateCargo
+OnMsg.LoadGame = UpdateCargo

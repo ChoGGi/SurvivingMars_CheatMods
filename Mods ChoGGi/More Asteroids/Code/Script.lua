@@ -12,8 +12,9 @@ local SetConsts = ChoGGi.ComFuncs.SetConsts
 local mod_EnableMod
 local mod_MaxAsteroids
 local mod_VerticalList
+local mod_HideInactive
 -- the funcs below need a +2 count (surface/underground)
-local mod_MaxAsteroidsPlusTwo
+local MaxAsteroidsPlusTwo
 
 local function UpdateHUD()
 --~ 	if not mod_VerticalList then
@@ -48,15 +49,24 @@ local function OnContextUpdate_ChoFake(self, context, ...)
 	end
 
 	local map_entries = context.idMapSwitch:GetEntries()
-	for i = 1, mod_MaxAsteroidsPlusTwo do
+--~ 	print(MaxAsteroidsPlusTwo,"MaxAsteroidsPlusTwo")
+	for i = 1, MaxAsteroidsPlusTwo do
 		local button = self[i]
 		local entry = map_entries[i]
-		if entry then
-			button:OnContextUpdate(entry)
-			button:SetVisible(true)
-		else
-			button:SetVisible(false)
-		end
+			if entry then
+				button:OnContextUpdate(entry)
+				if not mod_HideInactive
+					or mod_HideInactive and entry.Enabled
+					or entry.Image == "UI/HUD/underground_map_switch.tga"
+				then
+					button:SetVisible(true)
+				else
+					-- hide disabled
+					button:SetVisible(false)
+				end
+			else
+				button:SetVisible(false)
+			end
 	end
 
 --~ 	return OnContextUpdate_ChoOrig(self, context, ...)
@@ -68,7 +78,7 @@ local function array_ChoFake(...)
 		return array_ChoOrig(...)
 	end
 
-	return nil, 1, mod_MaxAsteroidsPlusTwo
+	return nil, 1, MaxAsteroidsPlusTwo
 end
 --
 function OnMsg.ClassesPostprocess()
@@ -107,8 +117,9 @@ local function ModOptions(id)
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_MaxAsteroids = CurrentModOptions:GetProperty("MaxAsteroids")
 	mod_VerticalList = CurrentModOptions:GetProperty("VerticalList")
+	mod_HideInactive = CurrentModOptions:GetProperty("HideInactive")
 
-	mod_MaxAsteroidsPlusTwo = mod_MaxAsteroids + 2
+	MaxAsteroidsPlusTwo = mod_MaxAsteroids + 2
 
 	-- Make sure we're in-game UIColony
 	if not UIColony then

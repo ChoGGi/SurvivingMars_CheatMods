@@ -144,7 +144,7 @@ Tank will always refer to the storage on the ground, not the tank on the RC.]]),
 
 	-- picard dlc
   environment_entity = {
-    base = "entity_rc",
+    base = entity_rc,
   },
 }
 
@@ -625,7 +625,29 @@ Tank will always refer to the storage on the ground, not the tank on the RC.]]),
 		"disabled_in_environment4", "",
 	})
 
+	local bt = BuildingTemplates.RCTankerBuilding
+	-- add cargo option
+	PlaceObj("Cargo", {
+		description = bt.description,
+		icon = "UI/Icons/Payload/RCRover.tga",
+		name = bt.display_name,
+		id = "RCTanker",
+		kg = 10000,
+		locked = false,
+		price = 200000000,
+		group = "Rovers",
+	})
+
 end
+
+-- add cargo entry for saved games
+local function UpdateCargo()
+	if not table.find(ResupplyItemDefinitions, "id", "RCTanker") then
+		ResupplyItemsInit()
+	end
+end
+--~ OnMsg.CityStart = UpdateCargo
+OnMsg.LoadGame = UpdateCargo
 
 -- the below is for removing the persist warnings from the log
 

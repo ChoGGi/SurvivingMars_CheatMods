@@ -1,3 +1,7 @@
+v0.4
+Mod option to hide inactive asteroids.
+Bumped Max Asteroids mod option to 250.
+
 v0.3
 Mod option for vertical buttons.
 

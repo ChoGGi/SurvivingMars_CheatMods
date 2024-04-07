@@ -1,3 +1,7 @@
+v1.3
+Added to cargo.
+Corrected B&B model.
+
 v1.2
 Added Refab.
 

@@ -255,8 +255,29 @@ The wretched refuse of your teeming shore.]]),
 		"disabled_in_environment3", "",
 		"disabled_in_environment4", "",
 	})
+
+	local bt = BuildingTemplates.RCMechanicBuilding
+	-- add cargo option
+	PlaceObj("Cargo", {
+		description = bt.description,
+		icon = "UI/Icons/Payload/RCRover.tga",
+		name = bt.display_name,
+		id = "RCMechanic",
+		kg = 10000,
+		locked = false,
+		price = 200000000,
+		group = "Rovers",
+	})
 end
 
+-- add cargo entry for saved games
+local function UpdateCargo()
+	if not table.find(ResupplyItemDefinitions, "id", "RCMechanic") then
+		ResupplyItemsInit()
+	end
+end
+--~ OnMsg.CityStart = UpdateCargo
+OnMsg.LoadGame = UpdateCargo
 -- RCMech_CleanAndFix
 local DustMaterialExterior = const.DustMaterialExterior
 local function RCMech_ResetDust(self)
