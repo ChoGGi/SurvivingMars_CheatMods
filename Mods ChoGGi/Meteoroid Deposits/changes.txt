@@ -1,3 +1,6 @@
+v1.0
+Log spam.
+
 v0.9
 Mineral extractors didn't show up in build menu (thanks atrizu).
 

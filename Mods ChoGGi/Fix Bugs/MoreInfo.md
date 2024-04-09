@@ -28,7 +28,7 @@ Refabbing rare extractors left the "working" dust plumes around them.
 St. Elmo's Fire: Stop meteoroids from destroying sinkholes.
 ```
 
-**Mods**:
+**Mod bug fixes**:
 ```Silva's Orion Heavy Rocket (you must disable his Essential files mod, then enable it AFTER enabling this mod, or use my Mod List Editor mod).
 Horticulture Workshop not unlocking.
 (4) Fixes for mods (no idea which mods / they're abandoned).
@@ -92,7 +92,9 @@ If you have B&B I'd recommend SkiRich's [Better Lander Rockets](https://steamcom
 
 [Fix Rover In Dome](https://steamcommunity.com/sharedfiles/filedetails/?id=1829688193)
 
-[Fix Shuttles Stuck Mid-Air](https://steamcommunity.com/sharedfiles/filedetails/?id=1549680063)[Fix Sol 2983](https://steamcommunity.com/sharedfiles/filedetails/?id=2705335465) < Don't enable unless needed!
+[Fix Shuttles Stuck Mid-Air](https://steamcommunity.com/sharedfiles/filedetails/?id=1549680063)
+
+[Fix Sol 2983](https://steamcommunity.com/sharedfiles/filedetails/?id=2705335465) < Don't enable unless needed!
 
 [Fix Stuck Mirror Sphere Devices](https://steamcommunity.com/sharedfiles/filedetails/?id=2082012035)
 
