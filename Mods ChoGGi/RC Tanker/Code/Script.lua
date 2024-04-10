@@ -184,11 +184,11 @@ function RCTanker:GameInit()
 
 	-- Colour #, Colour, Roughness, Metallic (r/m go from -128 to 127)
 	-- middle area
-	self:SetColorizationMaterial(1, -14710529, 12, 32)
+	self:SetColorizationMaterial(1, -4450778, 12, 32)
 	-- body
-	self:SetColorizationMaterial(2, -14710529, 12, 32)
+	self:SetColorizationMaterial(2, -4450778, 12, 32)
 	-- color of bands
-	self:SetColorizationMaterial(3, -13028496, 0, 12)
+	self:SetColorizationMaterial(3, -4450778, 0, 12)
 
 	-- air
 	self.tank_obj:SetColorizationMaterial(1, -4450778, -24, 0)
@@ -513,7 +513,8 @@ Press to toggle.]]))
 			self.tank_direction = true
 			button:SetRolloverText(T(302535920011232, [[Drain resource from tank to RC.
 
-Press to toggle.]]))
+Press to toggle.
+]]))
 			button:SetRolloverTitle(T(302535920011133, [[Drain Tank]]))
 			button:SetIcon("UI/Icons/IPButtons/unload.tga")
 		end
@@ -556,17 +557,22 @@ Press to toggle.]]),
 			button:SetRolloverTitle(T(681, "Water") .. "\n\n" .. T(302535920011234, "Press to toggle."))
 			button:SetIcon("UI/Icons/Sections/Water_1.tga")
 			self.tank_obj:SetColorizationMaterial(1, -12211457, -24, 0)
+			self:SetColorizationMaterial(1, -12211457, 12, 32)
+			self:SetColorizationMaterial(2, -12211457, 12, 32)
+			self:SetColorizationMaterial(3, -12211457, 0, 12)
 		else
 			self.tank_type = "AirStorage"
 			button:SetRolloverTitle(T(682, "Oxygen") .. "\n\n" .. T(302535920011234, "Press to toggle."))
 			button:SetIcon("UI/Icons/Sections/Oxygen_1.tga")
 			self.tank_obj:SetColorizationMaterial(1, -4450778, -24, 0)
+			self:SetColorizationMaterial(1, -4450778, 12, 32)
+			self:SetColorizationMaterial(2, -4450778, 12, 32)
+			self:SetColorizationMaterial(3, -4450778, 0, 12)
 		end
 		-- type changed so "dump" stored
 		self.storage_amount = 0
 	end
 
-	local str_image = "<image UI/Common/mission_no.tga 1600>"
 	table.insert(
 		rover,
 		#rover+1,
@@ -580,7 +586,8 @@ Press to toggle.]]),
 			"RolloverTitle", T(682, "Oxygen") .. "\n\n" .. T(302535920011234, "Press to toggle."),
 			"RolloverText", T{302535920011235, [[Type of resource you can transfer with this RC.
 
-<icon> Warning: Changing will empty RC tank!]], icon = str_image},
+
+<color 255 50 50>WARNING</color>: Changing will empty RC tank of current resource!]]},
 			"OnPress", function (self)
 				UpdateToggleRes(self.context, self)
 			end,

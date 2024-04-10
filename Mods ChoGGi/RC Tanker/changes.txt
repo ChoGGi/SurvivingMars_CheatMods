@@ -1,3 +1,6 @@
+v1.4
+RC colour changes with resource type.
+
 v1.3
 Added to cargo.
 Corrected B&B model.

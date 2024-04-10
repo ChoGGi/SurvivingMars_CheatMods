@@ -66,6 +66,7 @@ If you have B&B I'd recommend SkiRich's [Better Lander Rockets](https://steamcom
 
 **See also**:
 
+
 [Fix Cold Wave Stuck](https://steamcommunity.com/sharedfiles/filedetails/?id=2601527081)
 
 [Fix Deposits Wrong Map](https://steamcommunity.com/sharedfiles/filedetails/?id=2703206312)
@@ -82,11 +83,9 @@ If you have B&B I'd recommend SkiRich's [Better Lander Rockets](https://steamcom
 
 [Fix Missing Mod Icons](https://steamcommunity.com/sharedfiles/filedetails/?id=1725437808)
 
-[Fix Remove Invalid Label Buildings](https://steamcommunity.com/sharedfiles/filedetails/?id=1575894376)
-
-[Fix Remove Invalid Label Buildings](https://steamcommunity.com/sharedfiles/filedetails/?id=1575894376)
-
 [Fix Remove Blue Yellow Marks And Ghosts](https://steamcommunity.com/sharedfiles/filedetails/?id=1553086208)
+
+[Fix Remove Invalid Label Buildings](https://steamcommunity.com/sharedfiles/filedetails/?id=1575894376)
 
 [Fix Rocket Stuck](https://steamcommunity.com/sharedfiles/filedetails/?id=1567028510)
 
@@ -99,7 +98,6 @@ If you have B&B I'd recommend SkiRich's [Better Lander Rockets](https://steamcom
 [Fix Stuck Mirror Sphere Devices](https://steamcommunity.com/sharedfiles/filedetails/?id=2082012035)
 
 [Fix Unlock RC Safari Resupply](https://steamcommunity.com/sharedfiles/filedetails/?id=2427995890)
-
 
 
 **Info from Incorporated mods/etc:**
