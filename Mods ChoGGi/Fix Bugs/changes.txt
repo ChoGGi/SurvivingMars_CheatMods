@@ -1,3 +1,6 @@
+v5.6
+Added my No Flying Drones Underground as an enabled mod option.
+
 v5.5
 Properly fixed Bottomless Pit and missing Anomaly, but now requires new game.
 

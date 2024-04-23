@@ -27,6 +27,7 @@ local mod_UnevenTerrain
 local mod_SupplyPodSoundEffects
 local mod_MainMenuMusic
 local mod_ColonistsWrongMap
+local mod_NoFlyingDronesUnderground
 
 local function UpdateMap(game_map)
 	-- Suspend funcs speed up "doing stuff"
@@ -63,6 +64,7 @@ local function ModOptions(id)
 	mod_SupplyPodSoundEffects = CurrentModOptions:GetProperty("SupplyPodSoundEffects")
 	mod_MainMenuMusic = CurrentModOptions:GetProperty("MainMenuMusic")
 	mod_ColonistsWrongMap = CurrentModOptions:GetProperty("ColonistsWrongMap")
+	mod_NoFlyingDronesUnderground = CurrentModOptions:GetProperty("NoFlyingDronesUnderground")
 
 	-- Update all maps for uneven terrain (if using mod that allows landscaping maps other than surface)
 	if UIColony and mod_UnevenTerrain then
@@ -1047,6 +1049,38 @@ end
 --
 
 
+--
+-- No flying drones underground
+if g_AvailableDlc.gagarin then
+	local caller_city_id
+
+	local ChoOrig_GetDroneClass = GetDroneClass
+	function GetDroneClass(...)
+		if not mod_NoFlyingDronesUnderground then
+			return ChoOrig_GetDroneClass(...)
+		end
+		-- Should be set by City:CreateDrone
+		if not caller_city_id then
+			caller_city_id = ActiveMapID
+		end
+		local map = ActiveMaps[caller_city_id]
+		caller_city_id = nil
+
+		local environment = map and map.Environment
+		if environment and environment == "Underground" then
+			return "Drone"
+		end
+
+		return ChoOrig_GetDroneClass(...)
+	end
+
+	-- this func calls GetDroneClass
+	local ChoOrig_City_CreateDrone = City.CreateDrone
+	function City:CreateDrone(...)
+		caller_city_id = self.map_id
+		return ChoOrig_City_CreateDrone(self, ...)
+	end
+end
 --
 -- On one underground map, the bottomless pit anomaly is removed:
 -- SpawnAnomaly() calls FindUnobstructedDepositPos() which for whatever reason,

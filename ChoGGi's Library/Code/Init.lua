@@ -86,23 +86,23 @@ ChoGGi = {
 	},
 	-- stuff that isn't ready for release, more print msgs, and some default settings
 	testing = false,
-	-- for text dumping (yep .pc means windows desktop, i guess .linux/.osx aren't personal computers)
-	newline = Platform.pc and "\r\n" or "\n",
+	-- for text dumping (yep .pc means windows desktop, I guess .linux/.osx aren't personal computers)
+	newline = Platform.pc and "\r\n" or Platform.linux and "\n" or "\r",
 	-- CommonFunctions.lua/ECM_Functions.lua
 	ComFuncs = {
 		DebugGetInfo = format_value,
 	},
-	-- orig funcs that get replaced
+	-- store orig funcs that get replaced
 	OrigFuncs = {},
 	-- /Menus/*
 	MenuFuncs = {},
 	-- InfoPaneCheats.lua
 	InfoFuncs = {},
-	-- Defaults.lua
+	-- Settings.lua
 	SettingFuncs = {},
 	-- ConsoleFuncs.lua
 	ConsoleFuncs = {},
-	-- Pre Abstraction Games
+	-- Pre Abstraction Games (Before Tourism update rev 1,001,514)
 	is_gp = LuaRevision < 1001000,
 	-- temporary... stuff
 	Temp = {
@@ -114,7 +114,7 @@ ChoGGi = {
 		Dlg_transp_mode = false,
 		-- stores a table of my dialogs
 		Dialogs = {},
-		-- they changed it once, they can change it again (trans func returns this for fail, and posb something else)
+		-- they changed it once, they can change it again (tranlation func returns this for fail)
 		missing_text = "Missing text",
 	},
 	-- settings that are saved to settings_file
@@ -131,12 +131,16 @@ local ChoGGi = ChoGGi
 -- What game are we playing?
 local c = const
 if c.HaeraldProjectName and c.HaeraldProjectName == "Mars" then
+	-- Surviving Mars
 	ChoGGi.what_game = "Mars"
 elseif c.HaeraldProjectName and c.HaeraldProjectName == "FVH" then
+	-- Victor Vran
 	ChoGGi.what_game = "VV"
 elseif c.ProjectName and c.ProjectName == "Zulu" then
+	-- Jagged Alliance 3
 	ChoGGi.what_game = "JA3"
 elseif c.ProjectName and c.ProjectName == "Bacon" then
+	-- Stranded: Alien Dawn
 	ChoGGi.what_game = "SAD"
 else
 	ChoGGi.what_game = "Unknown"

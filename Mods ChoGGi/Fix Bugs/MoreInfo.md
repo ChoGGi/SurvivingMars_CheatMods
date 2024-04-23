@@ -4,8 +4,9 @@ See mod options to toggle certain fixes.
 
 
 **List of bugs fixed:**
-```Uneven Terrain (see mod options to enable, more info below).
+```Uneven terrain / Flatten tool (see mod options to enable, more info below).
 No Planetary Anomaly Breakthroughs when B&B is installed (more info below).
+No flying drones underground (more info below).
 Problem updating supply grid.
 Storybit notification issue.
 Support struts malfunctioning and cave-ins.
@@ -104,7 +105,8 @@ If you have B&B I'd recommend SkiRich's [Better Lander Rockets](https://steamcom
 
 
 
-**Uneven Terrain**
+
+**Uneven terrain / Flatten tool**
 
 When finishing landscaping it can set some of the surrounding hexes z values (height) to 65535 (also known as UnbuildableZ).
 
@@ -121,6 +123,12 @@ If you're bored and want to dig through the funcs in LandscapeFinish() to find o
 It's probably a bug, but the underground wonders do add Breakthroughs.
 
 Mod option to disable this "fix" (and receieve less Breakthroughs).
+
+**No flying drones underground**
+
+Flying drones tend to get stuck in walls/etc, this makes them into regular ones underground (mod option).
+
+For existing drones you'll need to recall them to their hubs and redeploy.
 
 **The Bottomless Pit Anomaly is missing**
 

@@ -96,6 +96,14 @@ I added it as an option since it removes the fade out.]]),
 I added it as an option since this is causing issues for a user; it'll lock up on load when it tries to remove some buggy objects.]]),
 		"DefaultValue", true,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "NoFlyingDronesUnderground",
+		"DisplayName", T(0000, "No Flying Drones Underground"),
+		"Help", T(0000, [[Flying drones tend to get stuck in walls/etc, this makes them into regular ones underground.
+
+For existing drones you'll need to recall them to their hubs and redeploy.]]),
+		"DefaultValue", true,
+	}),
 }
 
 local CmpLower = CmpLower

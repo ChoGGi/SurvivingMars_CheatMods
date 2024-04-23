@@ -1,1 +1,2 @@
 v0.2
+Cleaned up code a bit.

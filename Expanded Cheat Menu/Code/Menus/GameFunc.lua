@@ -1787,7 +1787,7 @@ do -- CameraFree_Toggle
 			-- let user know the camera mode
 			MsgPopup(
 				T(302535920001061--[[Follow]]),
-				T(302535920000651--[[Toggle Free Camera]])
+				T(302535920000653--[[Toggle Follow Camera]])
 			)
 
 			-- save pos/zoom

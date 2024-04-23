@@ -34,11 +34,14 @@ function GetDroneClass(...)
 	if not mod_EnableMod then
 		return ChoOrig_GetDroneClass(...)
 	end
+	-- Should be changed by City:CreateDrone
 	if not caller_city_id then
-		caller_city_id = UICity:GetMapID()
+		caller_city_id = ActiveMapID
 	end
 
   local environment = ActiveMaps[caller_city_id].Environment
+	caller_city_id = nil
+
   if environment == "Underground" then
     return "Drone"
   end
@@ -49,6 +52,6 @@ end
 -- this func calls GetDroneClass
 local ChoOrig_City_CreateDrone = City.CreateDrone
 function City:CreateDrone(...)
-	caller_city_id = self:GetMapID()
+	caller_city_id = self.map_id
 	return ChoOrig_City_CreateDrone(self, ...)
 end
