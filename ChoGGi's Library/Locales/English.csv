@@ -1,5 +1,4 @@
 "ID", "Text", "Translation"
-302535920001731, ""
 302535920001732, ""
 302535920001733, ""
 302535920001734, ""
@@ -379,6 +378,7 @@ If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""T
 302535920000732, "Childkiller: You evil, evil person."
 302535920000733, "Open a preset in the editor."
 302535920001730, "<color ChoGGi_red>To disable this msg use Menu>Debug>Toggles><color ChoGGi_green><menuitem></color>.</color>"
+302535920001731, "Toggle Visibility (Ctrl-F2 to hide)"
 302535920001410, "Toggle Visibility"
 302535920000735, "Timer delay skipped"
 302535920001360, "Threads"

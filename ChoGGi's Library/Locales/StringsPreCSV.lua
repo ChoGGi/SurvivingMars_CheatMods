@@ -3,7 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
-302535920001731, ""
 302535920001732, ""
 302535920001733, ""
 302535920001734, ""
@@ -413,6 +412,7 @@ If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""T
 end end !Skipped Line!
 do !Skipped Line! [[ReplacedFunctions.lua]] !Skipped Line!
 302535920001730, "<color ChoGGi_red>To disable this msg use Menu>Debug>Toggles><color ChoGGi_green><menuitem></color>.</color>"
+302535920001731, "Toggle Visibility (Ctrl-F2 to hide)"
 302535920001410, "Toggle Visibility"
 302535920000735, "Timer delay skipped"
 end !Skipped Line!

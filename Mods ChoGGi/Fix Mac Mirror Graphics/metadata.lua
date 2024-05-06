@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Fix Mirror Graphics",
+	"title", "Fix Mac Mirror Graphics",
 	"id", "ChoGGi_FixMirrorGraphics",
 	"steam_id", "2549884520",
 	"pops_any_uuid", "dd12bda4-8092-44c9-8f25-b17a34e4ec6e",

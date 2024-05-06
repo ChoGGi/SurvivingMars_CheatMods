@@ -1233,7 +1233,7 @@ function OnMsg.ClassesPostprocess()
 				if section then
 					section.idIcon.FXMouseIn = "ActionButtonHover"
 					section.idSectionTitle.MouseCursor = "UI/Cursors/Rollover.tga"
-					section.RolloverText = T(302535920001410--[[Toggle Visibility]])
+					section.RolloverText = T(302535920001731--[[Toggle Visibility (Ctrl-F2 to hide)]])
 					section.RolloverHint = T(302535920001718--[[<left_click> Activate]])
 
 					local toggle = not ChoGGi.Temp.InfopanelCheatsVis

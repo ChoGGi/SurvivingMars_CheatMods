@@ -1,3 +1,6 @@
+v2.4
+Fixed breakthroughs always showing (thanks JoeKing).
+
 v2.3
 Changed breakthrough default limit to 13.
 Shows initial location breakthrough info.

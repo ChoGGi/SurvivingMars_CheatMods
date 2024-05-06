@@ -1,3 +1,6 @@
+v0.5
+Bumped rival spawn sol to max of 999.
+
 v0.4
 See mod options to pick rivals manually.
 

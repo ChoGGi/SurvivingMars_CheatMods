@@ -34,7 +34,7 @@ do -- ModUpload
 		[ChoGGi.id] = "Expanded Cheat Menu ",
 		ChoGGi_DeepResourcesNeverRunOut = "Deep Resources Never Run Out (upload 2)",
 		ChoGGi_DronesCarryAmountFix = "Drones Carry Amount (upload 2)",
-		ChoGGi_FixMirrorGraphics = "Fix Mirror Graphics (upload 2)",
+		ChoGGi_FixMirrorGraphics = "Fix Mac Mirror Graphics (upload 2)",
 		ChoGGi_IncreaseRanchStorage = "Increase Ranch Storage (upload 2)",
 		ChoGGi_MartianCarwash = "Martian Carwash (upload 2)",
 		ChoGGi_PodNoBounce = "Pod No Bounce (upload 2)",

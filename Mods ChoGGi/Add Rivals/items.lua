@@ -23,7 +23,7 @@ This is ignored if you've manually selected rivals below!]]),
 		"Help", T(0000, "Pick Sol that rivals will spawn on."),
 		"DefaultValue", 1,
 		"MinValue", 1,
-		"MaxValue", 100,
+		"MaxValue", 999,
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "RivalSpawnSolRandom",

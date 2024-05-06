@@ -84,11 +84,14 @@ function GetOverlayValues(lat, long, overlay_grids, params, ...)
 		local map, gen
 		map, params, gen = RetMapSettings(true, params)
 		ShowDialogs(map, gen)
-		if not IsValidXWin(extra_info_dlg) then
+		if not IsValidXWin(extra_info_dlg) and mod_AlwaysBreakthroughs then
 			extra_info_dlg = ChoGGi_VCM_ExtraInfoDlg:new({}, terminal.desktop, {})
 			extra_info_dlg:SetSidePos(true)
 		end
-		extra_info_dlg:UpdateInfo(gen)
+		if extra_info_dlg then
+			extra_info_dlg:UpdateInfo(gen)
+		end
+
 	end
 end
 

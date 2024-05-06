@@ -221,8 +221,7 @@ end
 
 function ChoGGi.MenuFuncs.UnlockAchievements()
 	local AchievementUnlock = AchievementUnlock
-	local EngineCanUnlockAchievement = EngineCanUnlockAchievement
-
+--~ 	local EngineCanUnlockAchievement = EngineCanUnlockAchievement
 	local XPlayerActive = XPlayerActive
 
 	local item_list = {}
@@ -230,7 +229,7 @@ function ChoGGi.MenuFuncs.UnlockAchievements()
 
 	local AchievementPresets = AchievementPresets
 	for id, item in pairs(AchievementPresets) do
-		if EngineCanUnlockAchievement(XPlayerActive, id) then
+--~ 		if EngineCanUnlockAchievement(XPlayerActive, id) then
 			c = c + 1
 			item_list[c] = {
 				text = Translate(item.display_name),
@@ -238,7 +237,7 @@ function ChoGGi.MenuFuncs.UnlockAchievements()
 				hint = Translate(item.how_to) .. "\n\n" .. Translate(item.description)
 					.. "\n\n<image UI/Achievements/" .. item.image .. ".tga 2500>",
 			}
-		end
+--~ 		end
 	end
 
 	local function CallBackFunc(choice)

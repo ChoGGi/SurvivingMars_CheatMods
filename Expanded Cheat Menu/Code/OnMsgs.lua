@@ -1265,6 +1265,14 @@ do -- LoadGame/CityStart
 
 ---------------------do the above stuff before the below stuff
 
+		if testing then
+
+			-- log spam
+			config.StoryBitLogPrints = true
+			-- happens more often
+--~ 			g_StoryBitTesting = true
+		end
+
 		-- build whatever realmever
 		if ChoGGi.UserSettings.RemoveRealmLimits then
 			ChoGGi.ComFuncs.DisableBuildingsDie()
