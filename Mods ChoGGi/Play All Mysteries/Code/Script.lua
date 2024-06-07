@@ -132,9 +132,9 @@ local function PickRandomMystery(delay)
 	-- clear and restart the list when all finished (there's always one of them)
 	-- sylar8376:
 	--			warning: it should be working now
-	if not new_myst and #g_ChoGGi_PlayAllMysteries_Finished == mysteries_c then
+	if not new_myst then
 		g_ChoGGi_PlayAllMysteries_Finished = {}
-		new_myst = CheckFinished(new_myst, mysteries_c, g_ChoGGi_PlayAllMysteries_Finished)
+		new_myst = CheckFinished(mystery_names, mysteries_c, g_ChoGGi_PlayAllMysteries_Finished)
 	end
 
 	-- doesn't hurt to check
