@@ -55,7 +55,7 @@ local function CheckFinished(mystery_names, mysteries_c, list)
 		end
 	end
 
-	if mysteries_c > 0 then
+	if #filtered > 0 then
 		return filtered[Random(#filtered) + 1]
 	else
 		return false
