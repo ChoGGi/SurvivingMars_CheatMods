@@ -14,29 +14,52 @@ local mod_MinSols
 local mod_MaxSols
 local mod_skips = {}
 
-local function CheckFinished(new_myst, mysteries_c, list)
-	local g_CurrentMissionParams = g_CurrentMissionParams
-	local UIColony = UIColony
-	-- loop till we find one not finished or we've gone through them all
-	local finished_c = 0
-	while true do
-
-		g_CurrentMissionParams.idMystery = "random"
-		UIColony:SelectMystery()
-		local id = UIColony.mystery_id
-		if not list[id] and not mod_skips[id] then
-			-- found one
-			new_myst = id
-			break
-		end
-
-		finished_c = finished_c + 1
-		-- all are finished
-		if finished_c > mysteries_c then
-			break
+local function CheckFinished(mystery_names, mysteries_c, list)
+--~	local g_CurrentMissionParams = g_CurrentMissionParams
+--~	local UIColony = UIColony
+--~	loop till we find one not finished or we've gone through them all
+	
+	
+--~	local finished_c = 0
+--~	local id = ""
+	local filtered = {}
+	
+	-- sylar8376: 
+	--			'UIColony:SelectMystery()' rolls randomly,
+	--		which means there is a decent chance that 'mysteries_c + 1' rolls won't be enough to get to get 'new_myst'.
+	--		Aka no mystery will be selected, essentially stopping the mod.
+	--			Extra: 'UIColony:SelectMystery()' prioritizes unplayed mysteries (AccountStorage), so if 
+	--		a player has that one mystery left unplayed but has it disabled in mod options, mod will just stop working for them
+--~	while true do
+--~
+--~		g_CurrentMissionParams.idMystery = "random"
+--~		UIColony:SelectMystery()
+--~		local id = UIColony.mystery_id
+--~		if not list[id] and not mod_skips[id] then
+--~			-- found one
+--~			new_myst = id
+--~			break
+--~		end
+--~
+--~		finished_c = finished_c + 1
+--~		-- all are finished
+--~		if finished_c > mysteries_c then
+--~			break
+--~		end
+--~	end
+	
+	-- sylar8376: create 'filtered' list from 'mystery_names' without finished mysteries
+	for i = 1, mysteries_c do
+		if not list[mystery_names[i]] then
+			filtered[#filtered + 1] = mystery_names[i]
 		end
 	end
-	return new_myst
+
+	if #filtered > 0 then
+		return filtered[Random(#filtered) + 1]
+	else
+		return false
+	end
 end
 
 local function PickRandomMystery(delay)
@@ -82,19 +105,36 @@ local function PickRandomMystery(delay)
 			finished_mysteries[id] = true
 		end
 	end
+	
+	--	sylar8376: remove DLC locked mysteries
+	--			shamelessly borrowed from Mysteries.lua\Mysteries:SelectMystery()
+	--			Ah, fine, remove mod_skips[] here too
+	local name = ""
+	for i = mysteries_c, 1, -1 do
+		name = mystery_names[i]
+		if not Platform.developer and not IsDlcAvailable(mysteries[i].dlc)
+			or mod_skips[name] then
+			
+			table.remove(mysteries, i)
+			table.remove(mystery_names, i)
+			mysteries_c = mysteries_c - 1
+		end
+	end
 
 	-- now that we've got a list of finished mysteries...
-	new_myst = CheckFinished(new_myst, mysteries_c, finished_mysteries)
+	new_myst = CheckFinished(mystery_names, mysteries_c, finished_mysteries)
 
 	-- next pick a random one and check against per save file finished
 	if not new_myst then
-		new_myst = CheckFinished(new_myst, mysteries_c, g_ChoGGi_PlayAllMysteries_Finished)
+		new_myst = CheckFinished(mystery_names, mysteries_c, g_ChoGGi_PlayAllMysteries_Finished)
 	end
 
 	-- clear and restart the list when all finished (there's always one of them)
-	if not new_myst and #g_ChoGGi_PlayAllMysteries_Finished == mysteries_c then
+	-- sylar8376:
+	--			warning: it should be working now
+	if not new_myst then
 		g_ChoGGi_PlayAllMysteries_Finished = {}
-		new_myst = CheckFinished(new_myst, mysteries_c, g_ChoGGi_PlayAllMysteries_Finished)
+		new_myst = CheckFinished(mystery_names, mysteries_c, g_ChoGGi_PlayAllMysteries_Finished)
 	end
 
 	-- doesn't hurt to check
@@ -133,7 +173,7 @@ local function PickRandomMystery(delay)
 		-- else CheatStartMystery will mark the current one as finished
 		UIColony.mystery = false
 		UIColony.mystery_id = ""
-
+		
 		-- CheatStartMystery checks for cheats enabled...
 		local ChoOrig_CheatsEnabled = CheatsEnabled
 		function CheatsEnabled()
@@ -143,10 +183,14 @@ local function PickRandomMystery(delay)
 		pcall(CheatStartMystery, new_myst)
 		CheatsEnabled = ChoOrig_CheatsEnabled
 
+		--sylar8376:
+		--			I'm pretty sure, Msg() goes through before mystery starts waiting
+		--		I couldn't find related scripts. What am I missing?
+
 		-- force skip waitmsg from St. Elmo's Fire
-		if new_myst == "LightsMystery" and g_ColonyNotViableUntil == -1 then
-			Msg("ColonyApprovalPassed")
-		end
+		--if new_myst == "LightsMystery" and g_ColonyNotViableUntil == -1 then
+			--Msg("ColonyApprovalPassed")
+		--end
 
 		-- from Mysteries.lua\OnMsg.PostLoadGame()
 		-- last checked 1011166
@@ -156,7 +200,17 @@ local function PickRandomMystery(delay)
 			UIColony.mystery:ApplyMysteryResourceProperties()
 		end
 
+		-- sylar8376: why? CheatStartMystery\mysteries:InitMysteries() already sent this msg
 		Msg("MysteryChosen")
+		
+		-- sylar8376: send "ColonyApprovalPassed" here after a pause?
+		if new_myst == "LightsMystery" and g_ColonyNotViableUntil == -1 then
+			-- sylar8376:
+			--			One hour wait should be enough, but let it be 6
+			--		Nobody is going to notice anyway with 15+ sols of mystery's delay
+			Sleep(const.Scale.sols / 4)
+			Msg("ColonyApprovalPassed")
+		end
 
 --~ 		print("Play All Mysteries:", new_myst)
 	end)
