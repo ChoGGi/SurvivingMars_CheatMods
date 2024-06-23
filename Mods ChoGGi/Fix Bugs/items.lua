@@ -53,12 +53,13 @@ Turn off to disable this "fix" (and receieve less Breakthroughs).
 		"name", "UnevenTerrain",
 		"DisplayName", T(0000, "Uneven Terrain"),
 		"Help", T(0000, [[This calls RefreshBuildableGrid() after a landscaping project completes.
-
 More info:
 When finishing landscaping it can set some of the surrounding hexes z values (height) to 65535 (also known as UnbuildableZ).
 
 Calling RefreshBuildableGrid() on the map seems to get rid of them without causing any major issues:
 It can mark some hexes as okay to build when they weren't before, but nothing like a cliff side or anything.
+Geoscape Domes will complain about uneven terrain for spires:
+I don't see why the game should be checking for uneven terrain in a dome, so... skip!
 
 If you enable the mod option and notice that you can build on some places you really shouldn't be able to then please let me know :)
 

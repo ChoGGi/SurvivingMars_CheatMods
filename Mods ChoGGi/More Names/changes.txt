@@ -1,3 +1,6 @@
+v0.3
+Disable Martian Names actually works now (thanks borsk).
+
 v0.2
 More names:
 Beef Testosterone

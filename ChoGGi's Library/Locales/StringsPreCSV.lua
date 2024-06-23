@@ -3,8 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
-302535920001732, ""
-302535920001733, ""
 302535920001734, ""
 302535920001735, ""
 302535920001736, ""
@@ -941,6 +939,7 @@ Use with <color ChoGGi_green><str></color> to fill up a dome with spires."
 See also <str>."
 end end end !Skipped Line!
 do !Skipped Line! [[CheatsMenu.lua" "CheatsFunc.lua]] !Skipped Line!
+302535920001733, "Missing DLC Achievement"
 302535920000484, "Triggers cave-in at location (and disables any nearby struts)."
 302535920001087, "Missile Strike"
 302535920001086, "Meteor Strike"
@@ -1287,6 +1286,7 @@ Not permanent."
 302535920000448, "I'm afraid it could be 9/11 times 1,000."
 end !Skipped Line!
 do do !Skipped Line! [[DebugMenu.lua" "DebugFunc.lua]] !Skipped Line!
+302535920001732, "Toggle Mouse Grid Position"
 302535920001728, "Skip Incompatible Mods"
 302535920001729, "Get rid of ""This savegame was loaded in the past without required mods or with an incompatible game version.""."
 302535920001205, "Skip Missing Mods"

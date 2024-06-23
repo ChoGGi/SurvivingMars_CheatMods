@@ -629,11 +629,11 @@ function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod, ext)
 		local Import = ModItemDecalEntity.Import
 		local ConvertToOSPath = ConvertToOSPath
 
-		local ChoOrig_g_HgimgcvtPath = g_HgimgcvtPath
-		if testing then
-			-- help will return true under windows (if someone cares, I'll make it a saved setting).
-			g_HgimgcvtPath = "help"
-		end
+--~ 		local ChoOrig_g_HgimgcvtPath = g_HgimgcvtPath
+--~ 		if testing then
+--~ 			-- help will return true under windows (if someone cares, I'll make it a saved setting).
+--~ 			g_HgimgcvtPath = "help"
+--~ 		end
 
 		for i = 1, #images do
 			local image = images[i]
@@ -655,7 +655,7 @@ function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod, ext)
 			print(filename)
 		end
 		--
-		g_HgimgcvtPath = ChoOrig_g_HgimgcvtPath
+--~ 		g_HgimgcvtPath = ChoOrig_g_HgimgcvtPath
 	end
 end
 

@@ -8,35 +8,65 @@ DefineClass.ChoGGi_PsychiatricHospital = {
 }
 
 
-local mod_AddWhinersandIntroverts
+local mod_AddIntrovert
+local mod_AddWhiner
+local mod_AddReligious
 
-local function AddWhiners()
+local function AddExtraTraits()
 	local bt = BuildingTemplates.ChoGGi_PsychiatricHospital
 	local ct = ClassTemplates.Building.ChoGGi_PsychiatricHospital
 
-	if mod_AddWhinersandIntroverts then
-		ChoGGi_PsychiatricHospital.max_traits = 3
-		bt.max_traits = 3
-		bt.trait2 = "Whiner"
-		bt.trait3 = "Introvert"
-		ct.max_traits = 3
-		ct.trait2 = "Whiner"
-		ct.trait3 = "Introvert"
+	local count = 1
+	if mod_AddIntrovert then
+		count = count + 1
+	end
+	if mod_AddWhiner then
+		count = count + 1
+	end
+	if mod_AddReligious then
+		count = count + 1
+	end
+
+
+	if mod_AddIntrovert or mod_AddWhiner or mod_AddReligious then
+		ChoGGi_PsychiatricHospital.max_traits = count
+		bt.max_traits = count
+		ct.max_traits = count
+
+		local added_count = 2
+		if mod_AddIntrovert then
+			bt["trait" .. added_count] = "Whiner"
+			ct["trait" .. added_count] = "Whiner"
+			added_count = added_count + 1
+		end
+		if mod_AddIntrovert then
+			bt["trait" .. added_count] = "Introvert"
+			ct["trait" .. added_count] = "Introvert"
+			added_count = added_count + 1
+		end
+		if mod_AddReligious then
+			bt["trait" .. added_count] = "Religious"
+			ct["trait" .. added_count] = "Religious"
+--~ 			added_count = added_count + 1
+		end
+
 	else
 		ChoGGi_PsychiatricHospital.max_traits = 1
 		bt.max_traits = 1
 		bt.trait2 = ""
 		bt.trait3 = ""
+		bt.trait4 = ""
 		ct.max_traits = 1
 		ct.trait2 = ""
 		ct.trait3 = ""
+		ct.trait4 = ""
 	end
 
 end
 -- New games
-OnMsg.CityStart = AddWhiners
+OnMsg.CityStart = AddExtraTraits
 -- Saved ones
-OnMsg.LoadGame = AddWhiners
+OnMsg.LoadGame = AddExtraTraits
 
 -- Update mod options
 local function ModOptions(id)
@@ -45,13 +75,16 @@ local function ModOptions(id)
 		return
 	end
 
-	mod_AddWhinersandIntroverts = CurrentModOptions:GetProperty("AddWhinersandIntroverts")
+	mod_AddIntrovert = CurrentModOptions:GetProperty("AddIntrovert")
+	mod_AddWhiner = CurrentModOptions:GetProperty("AddWhiner")
+	mod_AddReligious = CurrentModOptions:GetProperty("AddReligious")
+
 	-- Make sure we're in-game
 	if not UIColony then
 		return
 	end
 
-	AddWhiners()
+	AddExtraTraits()
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -115,14 +148,27 @@ end
 
 -- Table of cureable traits
 function ChoGGi_PsychiatricHospital:GetSanatoriumTraits()
-	return mod_AddWhinersandIntroverts and {"Idiot", "Whiner", "Introvert"}
-		or {"Idiot"}
+	local traits = {"Idiot"}
+	local c = 1
+
+	if mod_AddIntrovert then
+		c = c + 1
+		traits[c] = "Introvert"
+	end
+	if mod_AddWhiner then
+		c = c + 1
+		traits[c] = "Whiner"
+	end
+	if mod_AddReligious then
+		c = c + 1
+		traits[c] = "Religious"
+	end
+
+	return traits
 end
 
 function OnMsg.SelectedObjChange(obj)
-	if mod_AddWhinersandIntroverts
-		or not IsKindOf(obj, "ChoGGi_PsychiatricHospital")
-	then
+	if not IsKindOf(obj, "ChoGGi_PsychiatricHospital") then
 		return
 	end
 

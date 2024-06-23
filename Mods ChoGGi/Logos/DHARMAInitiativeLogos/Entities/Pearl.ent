@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity path="">
+	<state id="idle">
+		<mesh_ref ref="mesh"/>
+	</state>
+	<mesh_description id="mesh">
+		<src file=""/>
+		<mesh file="DecLogo_mesh.hgm"/>
+		<material file="Pearl_mesh.mtl"/>
+		<bsphere value="0,0,118,1428"/>
+		<box min="-1000,-1000,-82" max="1000,1000,318"/>
+	</mesh_description>
+</entity>

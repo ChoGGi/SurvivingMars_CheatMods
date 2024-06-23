@@ -1,2 +1,5 @@
+v0.3
+Fixed error msg with mod_UnlockAllAchievements.
+
 v0.2
 Added mod option to unlock all achievements ignoring DLC (default enabled).

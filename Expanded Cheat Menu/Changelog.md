@@ -6,6 +6,8 @@
  - Use to get rid of "This savegame was loaded in the past without required mods or with an incompatible game version."
 
 ### Changed:
+- Menu>Cheats>Unlock Achievements will show DLC achievements (missing descriptions).
+- Renamed Toggle Building Grid Position to Toggle Mouse Grid Position.
 - Moved items in Menu>Game>UI to Menu>Game>Interface.
  - Also renamed some items in the menu.
 - Added msg to missing mod dialog box showing how to disable it.

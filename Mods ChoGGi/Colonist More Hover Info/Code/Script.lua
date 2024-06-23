@@ -42,6 +42,7 @@ function XRecreateRolloverWindow(win, ...)
 
 		-- all done
 		local safe_data
+		-- pcall incase concat finds something it doesn't like
 		pcall(function()
 			safe_data = table.concat(text)
 		end)

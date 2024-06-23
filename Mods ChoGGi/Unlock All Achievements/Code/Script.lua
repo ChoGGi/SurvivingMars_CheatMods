@@ -95,6 +95,8 @@ local function UnlockAchievement(id)
 	end
 end
 
+local mod_UnlockAllAchievements
+
 local function StartupCode()
 	CreateRealTimeThread(function()
 
@@ -111,8 +113,6 @@ local function StartupCode()
 
 	end)
 end
-
-local mod_UnlockAllAchievements
 
 -- Update mod options
 local function ModOptions(id)

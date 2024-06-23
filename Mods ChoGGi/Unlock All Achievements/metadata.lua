@@ -3,9 +3,9 @@ return PlaceObj("ModDef", {
 	"id", "ChoGGi_UnlockAllAchievements",
 	"steam_id", "2079858618",
 	"lua_revision", 1007000, -- Picard
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {

@@ -136,11 +136,11 @@ Actions[c] = {ActionName = T(302535920000499--[[Toggle Building Grid]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(302535920000499--[[Toggle Building Grid]]) .. " " .. T(302535920000461--[[Position]]),
+Actions[c] = {ActionName = T(302535920001732--[[Toggle Mouse Grid Position]]),
 	ActionMenubar = "ECM.Debug.Grids",
 	ActionId = ".Toggle Building Grid Position",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleWalk.tga",
-	RolloverText = T{302535920000220--[["Like <str>, but this shows hex positioning (offset or map, change in settings)."]],
+	RolloverText = T{302535920000220--[["Like <str>, but this shows hex positioning (offset or map, change in debug>grids)."]],
 		str = T(302535920000499--[[Toggle Building Grid]]),
 	},
 	OnAction = ChoGGi.ComFuncs.BuildableHexGrid,

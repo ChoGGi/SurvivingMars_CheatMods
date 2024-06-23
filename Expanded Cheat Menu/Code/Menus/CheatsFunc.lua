@@ -219,25 +219,110 @@ function ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle()
 	)
 end
 
+local achievement_ids = {
+	"AsteroidHopping",
+	"BlueSunExportedAlot",
+	"BlueSunProducedFunding",
+	"BrazilConvertedWasteRock",
+	"Built1000Buildings",
+	"BuiltArtificialSun",
+	"BuiltExcavator",
+	"BuiltGeoscapeDome",
+	"BuiltMoholeMine",
+	"BuiltOmegaTelescope",
+	"BuiltProjectMorpheus",
+	"BuiltSeveralWonders",
+	"BuiltSpaceElevator",
+	"ChinaReachedHighPopulation",
+	"ChinaTaiChiGardens",
+	"ColonistWithRareTraits",
+	"CompletedLandscapeProject",
+	"CompletedMeltThePolarCapsSP",
+	"CompletedMystery1",
+	"CompletedMystery2",
+	"CompletedMystery3",
+	"CompletedMystery4",
+	"CompletedMystery5",
+	"CompletedMystery6",
+	"CompletedOpenCity",
+	"CuredColonists",
+	"DeepScannedAllSectors",
+	"EarthsickColonistStays",
+	"EuropeResearchedAlot",
+	"EuropeResearchedBreakthroughs",
+	"FirstAnalyzedAnomaly",
+	"FirstAndroid",
+	"FirstBlueSky",
+	"FirstChildBorn",
+	"FirstDome",
+	"FirstDomeSpire",
+	"FirstHarvest",
+	"FirstLiquidLake",
+	"FirstNormalRain",
+	"FirstRebornColonist",
+	"FirstRefueledRocket",
+	"FirstSeedsHarvest",
+	"FirstShuttleHub",
+	"FirstTreePlanted",
+	"GatheredFunding",
+	"Had100ColonistsInDome",
+	"Had50AndroidsInDome",
+	"HadColonistWith5Perks",
+	"HadVegans",
+	"IndiaBuiltDomes",
+	"IndiaConvertedWasteRock",
+	"IntotheUnknown",
+	"JapanTrainedSpecialists",
+	"JobDone",
+	"Landed50Rockets",
+	"LastFounderPassedColonyApproval",
+	"MaxedAllTPs",
+	"MaximumSatisfaction",
+	"MissionSuccess",
+	"Multitasking",
+	"MysteriesofMars",
+	"NewArcChurchMartianborns",
+	"NewArkChurchHappyColonists",
+	"NoMoreToxicRains",
+	"PassedColonyApproval",
+	"PerfectRun",
+	"Reached1000Colonists",
+	"Reached250Colonists",
+	"ResearchedAllTechs",
+	"RussiaExtractedAlot",
+	"RussiaHadManyColonists",
+	"ScannedAllSectors",
+	"ShotDownAMeteorite",
+	"SpaceDwarves",
+	"SpaceExplorer",
+	"SpaceYBuiltDrones",
+	"SpaceYCompletedGoals",
+	"USAGeoscapeDomeWithMegamall",
+	"USAResearchedEngineering",
+	"Willtheyhold",
+}
 function ChoGGi.MenuFuncs.UnlockAchievements()
-	local AchievementUnlock = AchievementUnlock
---~ 	local EngineCanUnlockAchievement = EngineCanUnlockAchievement
-	local XPlayerActive = XPlayerActive
-
 	local item_list = {}
-	local c = 0
 
 	local AchievementPresets = AchievementPresets
-	for id, item in pairs(AchievementPresets) do
---~ 		if EngineCanUnlockAchievement(XPlayerActive, id) then
-			c = c + 1
-			item_list[c] = {
+	for i = 1, #achievement_ids do
+		local id = achievement_ids[i]
+		local item = AchievementPresets[id]
+
+		if item then
+			item_list[i] = {
 				text = Translate(item.display_name),
 				value = id,
-				hint = Translate(item.how_to) .. "\n\n" .. Translate(item.description)
-					.. "\n\n<image UI/Achievements/" .. item.image .. ".tga 2500>",
+				hint = Translate(item.how_to) .. "\n\n<image UI/Achievements/"
+					.. item.image .. ".tga 2500>",
 			}
---~ 		end
+		else
+			item_list[i] = {
+				text = id,
+				value = id,
+				hint = T(302535920001733--[[Missing DLC Achievement]]),
+			}
+		end
 	end
 
 	local function CallBackFunc(choice)
@@ -245,6 +330,8 @@ function ChoGGi.MenuFuncs.UnlockAchievements()
 			return
 		end
 
+		local AchievementUnlock = AchievementUnlock
+		local XPlayerActive = XPlayerActive
 		CreateRealTimeThread(function()
 			for i = 1, #choice do
 				AchievementUnlock(XPlayerActive, choice[i].value)

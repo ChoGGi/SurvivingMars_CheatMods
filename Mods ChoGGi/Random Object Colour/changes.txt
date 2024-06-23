@@ -1,2 +1,6 @@
+v0.3
+Added mod option to change colours with change skin button (paintbrush)
+Also shows paintbrush on all buildings.
+
 v0.2
 Library update.

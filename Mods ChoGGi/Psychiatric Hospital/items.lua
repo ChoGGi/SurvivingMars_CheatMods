@@ -2,9 +2,21 @@
 
 return {
 	PlaceObj("ModItemOptionToggle", {
-		"name", "AddWhinersandIntroverts",
-		"DisplayName", T(0000, "Add Whiners and Introverts"),
-		"Help", T(0000, "Also add these traits to be cured."),
+		"name", "AddWhiner",
+		"DisplayName", T(0000, "Add Whiner"),
+		"Help", T(0000, "Also add this trait to be cured."),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "AddIntrovert",
+		"DisplayName", T(0000, "Add Introvert"),
+		"Help", T(0000, "Also add this trait to be cured."),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "AddReligious",
+		"DisplayName", T(0000, "Add Religious"),
+		"Help", T(0000, "Also add this trait to be cured."),
 		"DefaultValue", false,
 	}),
 }

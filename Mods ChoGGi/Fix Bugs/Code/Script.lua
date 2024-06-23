@@ -31,6 +31,7 @@ local mod_NoFlyingDronesUnderground
 
 local function UpdateMap(game_map)
 	-- Suspend funcs speed up "doing stuff"
+--~ 	local game_map = ActiveGameMap
 	game_map.realm:SuspendPassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
 	SuspendTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
 	game_map:RefreshBuildableGrid()
@@ -1030,6 +1031,24 @@ if g_AvailableDlc.contentpack1 then
 	end
 end
 --
+-- Uneven Terrain mod options calls RefreshBuildableGrid(), that causes any geoscape domes with spire points to be marked as uneven
+-- I don't see why the game should be checking for uneven terrain in a dome, so... skip!
+local ChoOrig_ConstructionController_IsTerrainFlatForPlacement = ConstructionController.IsTerrainFlatForPlacement
+function ConstructionController:IsTerrainFlatForPlacement(...)
+	if not mod_EnableMod or not mod_UnevenTerrain then
+		return ChoOrig_ConstructionController_IsTerrainFlatForPlacement(self, ...)
+	end
+
+	-- if it's a spire and we're inside a dome then return true
+	if self.template_obj.dome_spot == "Spire" then
+		local pos = self.cursor_obj:GetVisualPos()
+		if GetDomeAtPoint(GetObjectHexGrid(self.city), pos) then
+			return true
+		end
+	end
+
+	return ChoOrig_ConstructionController_IsTerrainFlatForPlacement(self, ...)
+end
 --
 --
 --
@@ -1047,8 +1066,6 @@ end
 --
 --
 --
-
-
 --
 -- No flying drones underground
 if g_AvailableDlc.gagarin then

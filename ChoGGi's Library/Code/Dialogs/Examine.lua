@@ -13,7 +13,10 @@ XXXXX = {
 
 ~obj
 ex(obj, pos/parent, title)
+
 ex(obj, "str") -- examine a string obj ("SunAboveHorizon" / "table.find" / etc) with auto-refresh
+ex("g_LastGeneratedApplicantTime", "str")
+
 ex(obj, {
 	has_params = true,
 	parent = self,

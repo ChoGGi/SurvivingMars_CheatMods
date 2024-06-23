@@ -37,8 +37,8 @@ Removes the sum totals, and shows info for all individual grids (see mod options
 I merged some lines, removed the header, and split air/water to reduce vertical space.
 (I'm using electricity for the text, but the below applies to all three grid resource tooltips)
 [b]Production/Max production[/b]: Amount of power the grid is producing/Maximum power the grid can produce (stuff can throttle based on demand).
-[b]Capacity/Consumption[/b]: Battery storage capacity/Current demand levels.
-[b]Storage/Max output[/b]: Amount of electricity in battery storage/Amount of juice the batteries can output hourly.
+[b]Capacity/Consumption[/b]: Battery storage total capacity/Current demand levels.
+[b]Storage/Max output[/b]: Amount of electricity in battery storage/Hourly battery storage output.
 [b]Storage Remaining Time[/b]: Amount of time you can sustain your current power requirements.
 
 Research tooltip:

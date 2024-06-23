@@ -187,8 +187,9 @@ function OnMsg.ModsReloaded()
 
 	local HumanNames = HumanNames
 
-	-- ModsReloaded can fire multiple times
-	if table.find(HumanNames.American.Unique.Male, "Adolf Thiel") then
+	-- ModsReloaded can fire multiple times, and I don't want a bunch of dupe names
+--~ 	if table.find(HumanNames.American.Unique.Male, "Adolf Thiel") then
+	if HumanNames.ChoGGi_AddedNames then
 		return
 	end
 
@@ -204,5 +205,26 @@ function OnMsg.ModsReloaded()
 		AddNames(name_table.Unique.Male, name_table_Unique.Male, c_male)
 		AddNames(name_table.Unique.Female, name_table_Unique.Female, c_female)
 	end
+
+	HumanNames.ChoGGi_AddedNames = {_faketable_ignore = true}
 	--
+end
+
+-- Okay I guess FullTransitionToMarsNames is kinda useless for births...
+
+local ChoOrig_NameUnit = NameUnit
+function NameUnit(unit, ...)
+	if unit.birthplace and unit.birthplace ~= "Mars" then
+		return ChoOrig_NameUnit(unit, ...)
+	end
+	-- Get sponsor nations and pick random one
+	-- copy pasta from GenerateColonistData()
+	local sponsor_id = g_CurrentMissionParams.idMissionSponsor or "IMM"
+	local sponsor_nations = GetSponsorNations(sponsor_id)
+	if #(sponsor_nations or "") <= 0 then
+		sponsor_nations = GetSponsorNations("IMM")
+	end
+	unit.birthplace = GetWeightedRandNation(sponsor_nations) or "IMM"
+
+	return ChoOrig_NameUnit(unit, ...)
 end
