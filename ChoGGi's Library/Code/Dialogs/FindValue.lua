@@ -120,6 +120,8 @@ end
 --~ 	end
 --~ end
 
+local result_count
+
 function ChoGGi_DlgFindValue:FindText()
 	self = GetRootDialog(self)
 	local str = self.idEdit:GetText()
@@ -139,6 +141,7 @@ function ChoGGi_DlgFindValue:FindText()
 	table.clear(self.dupe_objs)
 
 	-- build our list of objs
+	result_count = 0
 	self:RetObjects(
 		self.obj,
 		self.obj,
@@ -153,7 +156,7 @@ function ChoGGi_DlgFindValue:FindText()
 	-- should do this nicer, but whatever
 	CreateRealTimeThread(function()
 		Sleep(10)
-		dlg:SetPos(self:GetPos()+point(0, self.idDialog.box:sizey()))
+		dlg:SetPos(self:GetPos() + point(0, self.idDialog.box:sizey()))
 	end)
 end
 
@@ -170,19 +173,25 @@ function ChoGGi_DlgFindValue:RetObjects(obj, parent, str, case, threads, limit, 
 
 	if type(obj) == "table" then
 
+		-- somewhat useful in results (usually off by + - 1)
+		result_count = result_count + 1
+
 		local location_str1 = "L" .. level .. " P: " .. RetName(obj) .. "; "
 		local location_str2 = ", " .. RetName(parent)
 
+		local count = 0
 		for key, value in pairs(obj) do
 			local key_name, value_name = RetName(key), RetName(value)
 			local key_str, key_type = case and key_name or key_name:lower(), type(key)
 			local value_str, value_type = case and value_name or value_name:lower(), type(value)
 
-			local key_location = location_str1 .. key_name .. location_str2
+			local key_location = location_str1 .. key_name .. location_str2 .. " " .. result_count
 
 			-- :find(str, 1, true) (1, true means don't use lua patterns, just plain text)
 			if not self.dupe_objs[obj] and not self.found_objs[key_location]
 					and (key_str:find(str, 1, true) or value_str:find(str, 1, true)) then
+									count = count + 1
+
 				self.found_objs[key_location] = obj
 				self.dupe_objs[obj] = obj
 
@@ -203,15 +212,14 @@ function ChoGGi_DlgFindValue:RetObjects(obj, parent, str, case, threads, limit, 
 
 			-- keep on searching
 			if key_type == "table" then
-				self:RetObjects(key, obj, str, case, threads, limit, level+1)
+				self:RetObjects(key, obj, str, case, threads, limit, level + 1)
 			end
 			if value_type == "table" then
-				self:RetObjects(value, obj, str, case, threads, limit, level+1)
+				self:RetObjects(value, obj, str, case, threads, limit, level + 1)
 			end
 
 		end
 	end
-
 end
 
 local const = const

@@ -1,3 +1,6 @@
+v1.8
+Shows lines for placed construction sites (thanks 1647407137).
+
 v1.7
 Log spam.
 

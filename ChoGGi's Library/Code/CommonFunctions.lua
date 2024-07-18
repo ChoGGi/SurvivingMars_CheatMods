@@ -3616,7 +3616,7 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj, skip_msg)
 			end)
 		end
 		obj.ChoGGi_CollisionsDisabled = nil
-		which = T(12227--[[Enabled]])
+		which = Translate(12227--[[Enabled]])
 	else
 		obj:ClearEnumFlags(collision)
 		if obj.ForEachAttach then
@@ -3625,7 +3625,7 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj, skip_msg)
 			end)
 		end
 		obj.ChoGGi_CollisionsDisabled = true
-		which = T(847439380056--[[Disabled]])
+		which = Translate(847439380056--[[Disabled]])
 	end
 	ResumePassEdits("ChoGGi.ComFuncs.CollisionsObject_Toggle")
 

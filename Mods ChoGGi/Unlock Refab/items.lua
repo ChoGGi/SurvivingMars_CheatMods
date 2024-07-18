@@ -10,7 +10,10 @@ return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "RefabEverything",
 		"DisplayName", T(0000, "Refab Everything"),
-		"Help", T(0000, "Unlocks Refab button for everything (to disable restart game)."),
+		"Help", T(0000, [[Unlocks Refab button for everything (to disable restart game).
+
+WARNING: This will allow you to refab stuff you shouldn't refab (like underground entrance), be careful what you refab.
+		]]),
 		"DefaultValue", false,
 	}),
 }

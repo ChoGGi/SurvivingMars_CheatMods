@@ -122,7 +122,13 @@ If you're bored and want to dig through the funcs in LandscapeFinish() to find o
 
 It's probably a bug, but the underground wonders do add Breakthroughs.
 
-Mod option to disable this "fix" (and receieve less Breakthroughs).
+Mod option to disable this "fix" (and receive less Breakthroughs).
+
+City:InitBreakThroughAnomalies is called for each new city (surface/underground/asteroids)
+
+Calling it more than once removes the BreakthroughOrder list
+
+That list is used to spawn planetary anomalies
 
 **No flying drones underground**
 
@@ -222,4 +228,11 @@ This resets LandscapeLastMark to whatever is the highest number in Landscapes wh
 
 For those wondering LandscapeLastMark is increased each time you open flatten/ramp (doesn't need to be placed).
 
-Thanks to Quirquie for the bug report (and persistance).
+Thanks to Quirquie for the bug report (and persistence).
+
+
+
+
+**Known Bugs**
+Mars Nouveau won't count if you remove a Construction site and place the new one in the exact same position (thanks Dark Master).
+

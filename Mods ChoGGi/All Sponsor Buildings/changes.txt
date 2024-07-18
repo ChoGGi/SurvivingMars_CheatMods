@@ -1,3 +1,6 @@
+v1.5
+Sponsor buildings not showing up when tech req is turned off (thanks Bueno).
+
 v1.4
 Unlocked cargo items.
 

@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v12.2 (Unreleased)
+- Find Dialog tries to show correct table index number when searching an indexed table (usually off by one).
 - Examine Dump text file name is changed to use date instead of screenshot name func.
 - ExportMapDataToCSV uses DLC for filename.
 - Pasting in code in console should properly add spaces.

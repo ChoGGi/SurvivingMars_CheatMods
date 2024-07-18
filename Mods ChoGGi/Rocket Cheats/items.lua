@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local consts = g_Consts and g_Consts or Consts
+
 return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "DustStormFlight",
@@ -35,7 +37,7 @@ return {
 		"name", "CargoCapacity",
 		"DisplayName", T(4598, "Payload Capacity"),
 		"Help", T(4597, "Maximum payload (in kg) of a resupply Rocket"),
-		"DefaultValue", (g_Consts and g_Consts.CargoCapacity or Consts.CargoCapacity) / const.ResourceScale,
+		"DefaultValue", consts.CargoCapacity / const.ResourceScale,
 		"MinValue", 0,
 		"MaxValue", 1000,
 	}),
@@ -43,7 +45,7 @@ return {
 		"name", "FoodPerRocketPassenger",
 		"DisplayName", T(4616, "Food per Rocket Passenger"),
 		"Help", T(4615, "The amount of Food (unscaled) supplied with each Colonist arrival"),
-		"DefaultValue", (g_Consts and g_Consts.FoodPerRocketPassenger or Consts.FoodPerRocketPassenger) / const.ResourceScale,
+		"DefaultValue", consts.FoodPerRocketPassenger / const.ResourceScale,
 		"MinValue", 0,
 		"MaxValue", 1000,
 	}),
@@ -52,7 +54,7 @@ return {
 		"name", "MaxColonistsPerRocket",
 		"DisplayName", T(4594, "Colonists per Rocket"),
 		"Help", T(4593, "Maximum number of Colonists that can arrive on Mars in a single Rocket"),
-		"DefaultValue", g_Consts and g_Consts.MaxColonistsPerRocket or Consts.MaxColonistsPerRocket,
+		"DefaultValue", consts.MaxColonistsPerRocket,
 		"MinValue", 0,
 		"MaxValue", 500,
 	}),
@@ -60,7 +62,7 @@ return {
 		"name", "TravelTimeEarthMars",
 		"DisplayName", T(4590, "Rocket Travel Time (Earth to Mars)"),
 		"Help", T(4589, "Time it takes for a Rocket to travel from Earth to Mars"),
-		"DefaultValue", (g_Consts and g_Consts.TravelTimeEarthMars or Consts.TravelTimeEarthMars) / const.Scale.hours,
+		"DefaultValue", consts.TravelTimeEarthMars / const.Scale.hours,
 		"MinValue", 0,
 		"MaxValue", 500,
 	}),
@@ -68,7 +70,7 @@ return {
 		"name", "TravelTimeMarsEarth",
 		"DisplayName", T(4592, "Rocket Travel Time (Mars to Earth)"),
 		"Help", T(4591, "Time it takes for a Rocket to travel from Mars to Earth"),
-		"DefaultValue", (g_Consts and g_Consts.TravelTimeMarsEarth or Consts.TravelTimeMarsEarth) / const.Scale.hours,
+		"DefaultValue", consts.TravelTimeMarsEarth / const.Scale.hours,
 		"MinValue", 0,
 		"MaxValue", 500,
 	}),
@@ -76,7 +78,7 @@ return {
 		"name", "RocketPrice",
 		"DisplayName", T(744485829662, "Rocket Price"),
 		"Help", T(302535920011869, "In Millions."),
-		"DefaultValue", (g_Consts and g_Consts.RocketPrice or Consts.RocketPrice) / const.Scale.mil,
+		"DefaultValue", consts.RocketPrice / const.Scale.mil,
 		"MinValue", 0,
 		"MaxValue", 50000,
 		"StepSize", 100,

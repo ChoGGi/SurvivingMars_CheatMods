@@ -1,9 +1,9 @@
 return PlaceObj("ModDef", {
 	"title", "Disable Disasters",
 	"id", "ChoGGi_DisableDisasters",
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"steam_id", "1973429171",
 	"pops_any_uuid", "c2b7a541-8403-4ec8-912f-d69a34b39c86",
 	"lua_revision", 1007000, -- Picard

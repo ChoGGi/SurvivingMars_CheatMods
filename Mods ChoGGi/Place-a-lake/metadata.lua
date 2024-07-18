@@ -22,7 +22,8 @@ return PlaceObj("ModDef", {
 	},
 	"TagTerraforming", true,
 	"TagLandscaping", true,
-	"description", [[Adds a rock you place to mark a lake spot (with a button to raise/lower the level).
+	"description", [[
+Adds a rock you place to mark a lake spot (with a button to raise/lower the level).
 This will ignore the uneven terrain limitation.
 
 This is a purely visual mod.
@@ -30,5 +31,6 @@ This is a purely visual mod.
 Known Issues:
 Rovers and whatnot will ignore the lake and walk through it.
 
-If you want a mod that fills a lake with rain, makes the lakes improve the "Water" param, and local soil then use [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1872988552]Rain Lakes[/url] by tanyfilina.]],
+If you want a mod that fills a lake with rain, makes the lakes improve the "Water" param, and local soil then use [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1872988552]Rain Lakes[/url] by tanyfilina.
+]],
 })

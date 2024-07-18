@@ -167,27 +167,27 @@ function ChoGGi_PsychiatricHospital:GetSanatoriumTraits()
 	return traits
 end
 
-function OnMsg.SelectedObjChange(obj)
-	if not IsKindOf(obj, "ChoGGi_PsychiatricHospital") then
-		return
-	end
+--~ function OnMsg.SelectedObjChange(obj)
+--~ 	if not IsKindOf(obj, "ChoGGi_PsychiatricHospital") then
+--~ 		return
+--~ 	end
 
-	-- Local is faster than global
-	local TGetID = TGetID
+--~ 	-- Local is faster than global
+--~ 	local TGetID = TGetID
 
-	-- Slight delay needed
-	CreateRealTimeThread(function()
-		WaitMsg("OnRender")
+--~ 	-- Slight delay needed
+--~ 	CreateRealTimeThread(function()
+--~ 		WaitMsg("OnRender")
 
-		local content = Dialogs.Infopanel.idContent
-		for i = 1, #content do
-			local section = content[i]
-			if TGetID(section.RolloverText) == 257506711483--[[Select a trait that is affected by this building.]]
-			then
-				section.FoldWhenHidden = true
-				section:SetVisible(false)
-				break
-			end
-		end
-	end)
-end
+--~ 		local content = Dialogs.Infopanel.idContent
+--~ 		for i = 1, #content do
+--~ 			local section = content[i]
+--~ 			if TGetID(section.RolloverText) == 257506711483--[[Select a trait that is affected by this building.]]
+--~ 			then
+--~ 				section.FoldWhenHidden = true
+--~ 				section:SetVisible(false)
+--~ 				break
+--~ 			end
+--~ 		end
+--~ 	end)
+--~ end

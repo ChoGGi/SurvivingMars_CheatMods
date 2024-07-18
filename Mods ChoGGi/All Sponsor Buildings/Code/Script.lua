@@ -25,66 +25,6 @@ for id, bld in pairs(BuildingTemplates) do
 	end
 end
 
--- fired when settings are changed/init
-local function ModOptions(id)
-	-- id is from ApplyModOptions
-	if id and id ~= CurrentModId then
-		return
-	end
-
-	local options = CurrentModOptions
-	for id in pairs(mod_options) do
-		mod_options[id] = options:GetProperty(id)
-	end
-
-	local BuildingTechRequirements = BuildingTechRequirements
-
-	local BuildingTemplates = BuildingTemplates
-	for id, bld in pairs(BuildingTemplates) do
-
-		-- set each status to false if it isn't
-		if sponsor_buildings[id] then
-			for i = 1, 3 do
-				local str = "sponsor_status" .. i
-				if mod_options["ChoGGi_" .. id] then
-					bld[str] = false
-				elseif bld[str] ~= "" then
-					bld[str] = "required"
-				end
-			end
-		end
-
-		-- and this bugger screws me over on GetBuildingTechsStatus when using RCs
-		local name = id
-		if name:sub(1, 2) == "RC" and name:sub(-8) == "Building" then
-			name = name:gsub("Building", "")
-		end
-		local reqs = BuildingTechRequirements[id]
-		local idx = table.find(reqs, "check_supply", name)
-		if idx then
-			table.remove(reqs, idx)
-		end
-	end
-
---~ 	local CargoPreset = CargoPreset
---~ 	for id, cargo in pairs(CargoPreset) do
---~ 		-- Needed for RC
---~ 		local name = id
---~ 		if name:sub(1, 2) == "RC" then
---~ 			name = name .. "Building"
---~ 		end
-
---~ 		if mod_options["ChoGGi_" .. name] then
---~ 			cargo.locked = false
---~ 		end
---~ 	end
-
-end
--- load default/saved settings
-OnMsg.ModsReloaded = ModOptions
--- fired when Mod Options>Apply button is clicked
-OnMsg.ApplyModOptions = ModOptions
-
 local function UpdateCargoDefs()
 	local defs = ResupplyItemDefinitions
 	for i = 1, #defs do
@@ -147,6 +87,72 @@ end
 
 OnMsg.CityStart = StartupCode
 OnMsg.LoadGame = StartupCode
+
+-- fired when settings are changed/init
+local function ModOptions(id)
+	-- id is from ApplyModOptions
+	if id and id ~= CurrentModId then
+		return
+	end
+
+	local options = CurrentModOptions
+	for id in pairs(mod_options) do
+		mod_options[id] = options:GetProperty(id)
+	end
+
+	local BuildingTechRequirements = BuildingTechRequirements
+
+	local BuildingTemplates = BuildingTemplates
+	for id, bld in pairs(BuildingTemplates) do
+
+		-- set each status to false if it isn't
+		if sponsor_buildings[id] then
+			for i = 1, 3 do
+				local str = "sponsor_status" .. i
+				if mod_options["ChoGGi_" .. id] then
+					bld[str] = false
+				elseif bld[str] ~= "" then
+					bld[str] = "required"
+				end
+			end
+		end
+
+		-- and this bugger screws me over on GetBuildingTechsStatus when using RCs
+		local name = id
+		if name:sub(1, 2) == "RC" and name:sub(-8) == "Building" then
+			name = name:gsub("Building", "")
+		end
+		local reqs = BuildingTechRequirements[id]
+		local idx = table.find(reqs, "check_supply", name)
+		if idx then
+			table.remove(reqs, idx)
+		end
+	end
+
+--~ 	local CargoPreset = CargoPreset
+--~ 	for id, cargo in pairs(CargoPreset) do
+--~ 		-- Needed for RC
+--~ 		local name = id
+--~ 		if name:sub(1, 2) == "RC" then
+--~ 			name = name .. "Building"
+--~ 		end
+
+--~ 		if mod_options["ChoGGi_" .. name] then
+--~ 			cargo.locked = false
+--~ 		end
+--~ 	end
+
+	-- Make sure we're in-game
+	if not UIColony then
+		return
+	end
+
+	StartupCode()
+end
+-- load default/saved settings
+OnMsg.ModsReloaded = ModOptions
+-- fired when Mod Options>Apply button is clicked
+OnMsg.ApplyModOptions = ModOptions
 
 -- Not sure which Msg I need to use to have this show up for new game, so I'm being lazy.
 local ChoOrig_ResupplyItemsInit = ResupplyItemsInit

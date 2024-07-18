@@ -49,52 +49,52 @@ function OnMsg.ClassesPostprocess()
 	end
 end
 
--- fired when settings are changed/init
+-- Fired when settings are changed/init
 local function ModOptions()
 	options = CurrentModOptions
 	mod_Enable = options:GetProperty("Enable")
 	mod_AdjustLineLength = options:GetProperty("AdjustLineLength")
 	mod_LotsOfDomes = options:GetProperty("LotsOfDomes")
 
-	-- how long passages can be
+	-- How long passages can be
 	local max_hex = GridConstructionController.max_hex_distance_to_allow_build - mod_AdjustLineLength
 	-- hex to hex
 	max_line_len = max_hex * 10 * guim
 
-	-- make sure we're in-game
+	-- Make sure we're in-game
 	if not UIColony then
 		return
 	end
 
 	if mod_LotsOfDomes == 0 then
 		dome_over_count = false
-	elseif #(UIColony.city_labels.labels.Dome or "") > mod_LotsOfDomes then
+	elseif #(UIColony.city_labels.labels.Domes or "") > mod_LotsOfDomes then
 		dome_over_count = true
 	else
 		dome_over_count = false
 	end
 end
 
--- load default/saved settings
+-- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
 
--- return if not one of these ids
+-- Return if not one of these ids
 local lookup_ids = {
-	-- mine
+	-- Mine
 	ChoGGi_ConstructionExtendLength = true,
 	-- Longer Passages Tech
 	SydEojd = true,
-	-- this mod
+	-- This mod
 	[CurrentModId] = true,
 }
 
--- fired when option is changed
+-- Fired when option is changed
 function OnMsg.ApplyModOptions(id)
 	if not lookup_ids[id] then
 		return
 	end
 
-	-- remove limit if mod(s) enabled
+	-- Remove limit if mod(s) enabled
 	if table.find(ModsLoaded, "id", "ChoGGi_ConstructionExtendLength")
 		or table.find(ModsLoaded, "id", "SydEojd")
 	then
@@ -110,16 +110,21 @@ function OnMsg.SaveGame()
 	dome_list = {}
 end
 
--- add dome spots to dome_list
+-- Add dome spots to dome_list
 local function BuildDomeSpots(dome)
 	local spots = {}
 	local c = 0
 
+	-- No shapes stored for constructions
+	local entity_name = dome.alternative_entity or dome:GetEntity()
+	entity_name = string.gsub(entity_name, "Construction", "")
+
 	-- Interior shape of dome without roads (con sites need to use alternative_entity or it's the wrong entity)
-	local shape = GetEntityBuildShape(dome.alternative_entity or dome:GetEntity())
-	-- needed if dome isn't placed in default angle
+	local shape = GetEntityBuildShape(entity_name)
+
+	-- Needed if dome isn't placed in default angle
 	local rotation = HexAngleToDirection(dome:GetAngle())
-	-- applies the offset of dome shape to the world hex location
+	-- Applies the offset of dome shape to the world hex location
 	for i = 1, #shape do
 		local q1, r1 = WorldToHex(dome)
 		local q2, r2 = HexRotate(shape[i]:x(), shape[i]:y(), rotation)
@@ -127,7 +132,7 @@ local function BuildDomeSpots(dome)
 		spots[c] = point(HexToWorld(q1 + q2, r1 + r2)):SetTerrainZ()
 	end
 
-	-- we only want to add placed domes to the stored domes list
+	-- We only want to add placed domes to the stored domes list
 	if dome.name then
 		dome_list[dome].spots = spots
 	end
@@ -136,7 +141,7 @@ local function BuildDomeSpots(dome)
 end
 
 local function BuildMarkers(dome)
-	-- no need to re-add domes to the list
+	-- No need to re-add domes to the list
 	if not dome_list[dome] then
 		dome_list[dome] = {
 			line = OPolyline:new(),
@@ -149,19 +154,19 @@ local function BuildMarkers(dome)
 		item.hex2:SetColorModifier(green)
 		item.hex1:SetVisible(false)
 		item.hex2:SetVisible(false)
-		-- not my magic numbers
+		-- Not my magic numbers
 --~ 		item.line:SetCustomDataString(1, 11, white_str)
 
 		BuildDomeSpots(dome)
 	end
 end
 
--- add any existing domes to dome_list
+-- Add any existing domes to dome_list
 local function StartupCode()
 	ModOptions()
 
-	-- add markers for existing domes
-	local domes = UIColony.city_labels.labels.Dome or ""
+	-- Add markers for existing domes
+	local domes = UIColony.city_labels.labels.Domes or ""
 	for i = 1, #domes do
 		BuildMarkers(domes[i])
 	end
@@ -169,7 +174,7 @@ end
 OnMsg.LoadGame = StartupCode
 OnMsg.CityStart = StartupCode
 
--- return the dome hex nearest to the cursor pos
+-- Return the dome hex nearest to the cursor pos
 local function RetNearestSpot(dome, pos)
 	local pos_spots
 
@@ -177,11 +182,11 @@ local function RetNearestSpot(dome, pos)
 	if dome_list[dome] then
 		pos_spots = dome_list[dome].spots
 	else
-		-- else it's the cursor building (need to build spot pos each time since it's on the move)
+		-- Else it's the cursor building (need to build spot pos each time since it's on the move)
 		pos_spots = BuildDomeSpots(dome)
 	end
 
-	-- get nearest
+	-- Get nearest
 	local length = max_int
 	local nearest = pos_spots[1]
 	local new_length, spot
@@ -194,7 +199,7 @@ local function RetNearestSpot(dome, pos)
 		end
 	end
 
-	-- and done
+	-- And done
 	return nearest
 end
 
@@ -223,7 +228,7 @@ local function UpdateVisibleShow(item)
 	end
 end
 
--- remove removed domes from dome_list
+-- Remove removed domes from dome_list
 local function ListCleanup(dome, item)
 	item.line:delete()
 	item.hex1:delete()
@@ -239,7 +244,7 @@ local function UpdateMarkers(self, current_pos)
 		current_pos = GetCursorWorldPos()
 	end
 
-	-- abort if mouse hasn't moved far enough
+	-- Abort if mouse hasn't moved far enough
 	local current_length = current_pos:Dist2D(cursor_pos)
 	if current_length > HexSize then
 		cursor_pos = current_pos
@@ -249,24 +254,24 @@ local function UpdateMarkers(self, current_pos)
 	end
 
 	SuspendPassEdits("ChoGGi.CursorBuilding.UpdateCursor.UpdateMarkers")
-	-- loop through domes and show any lines that are close enough
+	-- Loop through domes and show any lines that are close enough
 	for dome, item in pairs(dome_list) do
 		if IsValid(dome) then
 			local dome_pos = dome:GetPos()
-			-- any domes too far away, just hide markers instead of checking for hex closeness
+			-- Any domes too far away, just hide markers instead of checking for hex closeness
 			if current_pos:Dist2D(dome_pos) > too_far_away then
 				UpdateVisibleHide(item)
 			else
-				-- get nearest hex from placed dome to cursor
+				-- Get nearest hex from placed dome to cursor
 				local placed_dome_spot = (RetNearestSpot(dome, current_pos) or point20) + point31z
-				-- get nearest hex from cursor dome to placed dome
+				-- Get nearest hex from cursor dome to placed dome
 				local cursor_dome_spot = (RetNearestSpot(self.cursor_obj, dome_pos) or point20) + point31z
-				-- show line if it's close enough
+				-- Show line if it's close enough
 				if placed_dome_spot:Dist2D(cursor_dome_spot) > max_line_len then
-					-- hide it, or we'll have a line pointing at where the dome used to be (till it's too far away)
+					-- Hide it, or we'll have a line pointing at where the dome used to be (till it's too far away)
 					UpdateVisibleHide(item)
 				else
-					-- update hex/line pos and show
+					-- Update hex/line pos and show
 					if not dome_over_count then
 						item.line:SetParabola(cursor_dome_spot, placed_dome_spot)
 						item.hex1:SetPos(cursor_dome_spot)
@@ -288,8 +293,8 @@ local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit(...)
 	if mod_Enable then
 		if self.template:IsKindOf("Dome") then
-			-- loop through all domes and attach a line
-			local domes = UIColony.city_labels.labels.Dome or ""
+			-- Loop through all domes and attach a line
+			local domes = UIColony.city_labels.labels.Domes or ""
 			for i = 1, #domes do
 				BuildMarkers(domes[i])
 			end
@@ -301,7 +306,7 @@ end
 
 local ChoOrig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding:Done(...)
-	-- we're done construction hide all the markers
+	-- We're done construction hide all the markers
 	SuspendPassEdits("ChoGGi.CursorBuilding.Done.CleanupOldMarkers")
 	for dome, item in pairs(dome_list) do
 		if IsValid(dome) then
@@ -334,7 +339,7 @@ function ConstructionController:UpdateCursor(pos, ...)
 	return ChoOrig_ConstructionController_UpdateCursor(self, pos, ...)
 end
 
--- they should get removed when the cursor building is removed, but just in case
+-- They should get removed when the cursor building is removed, but just in case
 function OnMsg.Demolished(dome)
 	-- remove demo'ed domes from the list
 	if dome_list[dome] then

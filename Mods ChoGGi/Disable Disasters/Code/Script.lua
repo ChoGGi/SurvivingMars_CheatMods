@@ -77,6 +77,14 @@ local function ModOptions(id, skip_disabled)
 			if id == "Meteor" then
 				DeleteThread(_G.Meteors)
 				DeleteThread(_G.MeteorStorm)
+			elseif id == "DustDevils" then
+				DeleteThread(_G[id])
+				-- dust devil marker threads
+				MapForEach(true, "PrefabFeatureMarker", function(marker)
+					if marker.FeatureType == "Dust Devils" then
+						DeleteThread(marker.thread)
+					end
+				end)
 			else
 				DeleteThread(_G[id])
 			end
@@ -87,6 +95,15 @@ local function ModOptions(id, skip_disabled)
 			if id == "Meteor" then
 				RestartGlobalGameTimeThread("Meteors")
 				RestartGlobalGameTimeThread("MeteorStorm")
+			elseif id == "DustDevils" then
+				RestartGlobalGameTimeThread(id)
+				-- dust devil marker threads
+				local descr = GetDustDevilsDescr()
+				MapForEach(true, "PrefabFeatureMarker", function(marker)
+					if marker.FeatureType == "Dust Devils" and not IsValidThread(marker.thread) then
+						marker.thread = CreateDustDevilMarkerThread(descr, marker)
+					end
+				end)
 			else
 				RestartGlobalGameTimeThread(id)
 			end
@@ -102,5 +119,5 @@ OnMsg.ApplyModOptions = ModOptions
 OnMsg.CityStart = ModOptions
 -- we don't want to reset current disasters if option is disabled
 function OnMsg.LoadGame()
-	ModOptions(nil, true)
+	ModOptions(nil, "skip_disabled")
 end
