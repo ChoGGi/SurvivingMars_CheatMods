@@ -4,8 +4,9 @@ return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "BreakthroughsResearched",
 		"DisplayName", T(302535920011423, "Breakthroughs Researched"),
-		"Help", T(302535920011597, [[Enable to research instead of unlock breakthroughs.
-You need to start a new game for this option to take effect.]]),
+		"Help", T(302535920011597, [[Enable to have breakthroughs researched instead of unlocked.
+You need to start a new game for this option to take effect.
+]]),
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
@@ -19,7 +20,8 @@ You need to start a new game for this option to take effect.]]),
 		"DisplayName", T(302535920011635, "Exclude Breakthroughs"),
 		"Help", T(302535920011636, [[Enabling a rule will stop that breakthrough from appearing.
 Excluded ones replaced with random breakthroughs.
-This is ignored by the All Breakthroughs rule.]]),
+This is ignored by the All Breakthroughs rule.
+]]),
 		"DefaultValue", false,
 	}),
 }

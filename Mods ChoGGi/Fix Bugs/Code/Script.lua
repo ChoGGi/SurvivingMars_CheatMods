@@ -165,6 +165,12 @@ do -- CityStart/LoadGame
 		local main_realm = GetRealmByID(MainMapID)
 
 		--
+		-- See OnMsg.TechResearched below for more info about GeneForging
+		if event == "LoadGame" and UIColony:IsTechResearched("GeneForging") then
+			TechDef.GeneSelection.param1 = 150
+		end
+
+		--
 		-- Possible fix for main menu music not stopping when starting a new game
 		if event == "CityStart" then
 			-- Hopefully delay helps?
@@ -1030,6 +1036,7 @@ if g_AvailableDlc.contentpack1 then
 		return ChoOrig_Sinkhole_GameInit(self, ...)
 	end
 end
+
 --
 -- Uneven Terrain mod options calls RefreshBuildableGrid(), that causes any geoscape domes with spire points to be marked as uneven
 -- I don't see why the game should be checking for uneven terrain in a dome, so... skip!
@@ -1049,6 +1056,17 @@ function ConstructionController:IsTerrainFlatForPlacement(...)
 
 	return ChoOrig_ConstructionController_IsTerrainFlatForPlacement(self, ...)
 end
+
+--
+-- GeneForging doesn't interact with anything unlike GeneSelection
+-- and you can only have GeneForging if you have GeneSelection
+-- This boosts GeneSelection to 150 (seems a safe enough way of doing it).
+function OnMsg.TechResearched(tech_id)
+	if tech_id == "GeneForging" then
+		TechDef.GeneSelection.param1 = 150
+	end
+end
+
 --
 --
 --

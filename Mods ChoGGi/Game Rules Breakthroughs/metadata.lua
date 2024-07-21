@@ -20,7 +20,7 @@ Related mods: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=232444
 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2429688365]Unlock Research Tech[/url]
 
 Mod Options:
-Breakthroughs Researched: Research instead of unlock breakthroughs (New game needed after option is applied or maybe restart game).
+Breakthroughs Researched: Enable to have breakthroughs researched instead of unlocked (new game needed after option is applied or maybe restart game).
 Sort Breakthrough List: Sort the list of breakthroughs alphabetically (order effects in-game cost), disable for random.
 Exclude Breakthroughs: Enabling a rule will stop that breakthrough from appearing (adds a random one instead).
 

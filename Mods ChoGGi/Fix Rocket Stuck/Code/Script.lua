@@ -6,6 +6,45 @@ local Msg = Msg
 local GenerateColonistData = GenerateColonistData
 local InvalidPos = InvalidPos()
 
+-- Copied from my lib mod, so it isn't a req for mod.
+local function SpawnColonist_CopiedFunc(old_c, building, pos, city)
+	if not city then
+		city = MainCity
+	end
+
+	local colonist
+	if old_c then
+		colonist = GenerateColonistData(city, old_c.age_trait, false, {
+			gender = old_c.gender, entity_gender = old_c.entity_gender,
+			no_traits = "no_traits", no_specialization = true,
+		})
+		-- we set all the set gen doesn't (it's more for random gen after all)
+		colonist.birthplace = old_c.birthplace
+		colonist.death_age = old_c.death_age
+		colonist.name = old_c.name
+		colonist.race = old_c.race
+		colonist.specialist = old_c.specialist
+		for trait_id, _ in pairs(old_c.traits) do
+			if trait_id and trait_id ~= "" then
+				colonist.traits[trait_id] = true
+			end
+		end
+	else
+		colonist = GenerateColonistData(city)
+	end
+
+	Colonist:new(colonist)
+	Msg("ColonistBorn", colonist)
+
+	local realm = GetRealm(colonist)
+	colonist:SetPos(pos or building and realm:GetPassablePointNearby(building:GetPos())
+		or realm:GetRandomPassablePoint())
+
+	-- if spec is different then updates to new entity
+	colonist:ChooseEntity()
+	return colonist
+end
+
 local mod_EnableMod
 
 -- we need to wait till mods are loaded to check for my mod
@@ -23,43 +62,7 @@ local function ModOptions(id)
 			SpawnColonist = ChoGGi.ComFuncs.SpawnColonist
 		end
 		SpawnColonist = type(SpawnColonist) == "function"
-			and SpawnColonist or function(old_c, building, pos, city)
-			if not city then
-				city = MainCity
-			end
-
-			local colonist
-			if old_c then
-				colonist = GenerateColonistData(city, old_c.age_trait, false, {
-					gender = old_c.gender, entity_gender = old_c.entity_gender,
-					no_traits = "no_traits", no_specialization = true,
-				})
-				-- we set all the set gen doesn't (it's more for random gen after all)
-				colonist.birthplace = old_c.birthplace
-				colonist.death_age = old_c.death_age
-				colonist.name = old_c.name
-				colonist.race = old_c.race
-				colonist.specialist = old_c.specialist
-				for trait_id, _ in pairs(old_c.traits) do
-					if trait_id and trait_id ~= "" then
-						colonist.traits[trait_id] = true
-					end
-				end
-			else
-				colonist = GenerateColonistData(city)
-			end
-
-			Colonist:new(colonist)
-			Msg("ColonistBorn", colonist)
-
-			local realm = GetRealm(colonist)
-			colonist:SetPos(pos or building and realm:GetPassablePointNearby(building:GetPos())
-				or realm:GetRandomPassablePoint())
-
-			-- if spec is different then updates to new entity
-			colonist:ChooseEntity()
-			return colonist
-		end
+			and SpawnColonist or SpawnColonist_CopiedFunc
 	end
 
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
@@ -316,11 +319,11 @@ function OnMsg.LoadGame()
 		end
 	end
 
-	-- expedition rocket never lands on pad
+	-- Expedition rocket never lands on pad
 	local pads = MainCity.labels.LandingPad or ""
 	for i = 1, #pads do
 		local pad = pads[i]
-		-- stuck tradepad
+		-- Stuck tradepad
 		if pad.rocket_construction and not IsValid(pad.rocket_construction) then
 			pad.rocket_construction = nil
 		else
@@ -333,16 +336,27 @@ function OnMsg.LoadGame()
 		end
 	end
 
-	-- could be me? but he said dust storms...
 	pads = MainCity.labels.TradePad or ""
 	for i = 1, #pads do
 		local pad = pads[i]
-		if IsValid(pad.trade_rocket) and pad.trade_rocket.command == "OnEarth"
-			and pad.trade_rocket.ChoGGi_RepositionRocket == -10000
-		then
-			pad.trade_rocket:SetCommand("LandOnMars", pad)
-			pad.trade_rocket.ChoGGi_RepositionRocket = nil
+		local rocket = pad.trade_rocket
+		if IsValid(rocket) then
+			-- could be me? but he said dust storms...
+			-- ^ I gotta work on my comments for future me
+			if rocket.command == "OnEarth"
+				and rocket.ChoGGi_RepositionRocket == -10000
+			then
+				rocket:SetCommand("LandOnMars", pad)
+				rocket.ChoGGi_RepositionRocket = nil
+			-- Trade rocket stuck unloading resources
+			-- Somehow the command centres were disconnected (I assume were connected as they loaded resources)
+			elseif rocket.command == "ExchangeResources"
+				and #rocket.command_centers == 0
+			then
+				rocket:ConnectToCommandCenters()
+			end
 		end
+
 	end
 
 end

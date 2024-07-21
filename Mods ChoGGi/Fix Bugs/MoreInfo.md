@@ -4,29 +4,32 @@ See mod options to toggle certain fixes.
 
 
 **List of bugs fixed:**
-```Uneven terrain / Flatten tool (see mod options to enable, more info below).
-No Planetary Anomaly Breakthroughs when B&B is installed (more info below).
-No flying drones underground (more info below).
-Problem updating supply grid.
-Storybit notification issue.
-Support struts malfunctioning and cave-ins.
-Stop ceiling/floating rubble.
-Log spam from IsBuildingInDomeRange().
-Colonists showing up on wrong map in infobar.
-Unpassable underground rocks stuck in path (not cave-in rubble, but small rocks you can't select).
-Dredger tech fix ([Spoilers](https://www.reddit.com/r/SurvivingMars/comments/xnprjg/)).
-Water Reclamation Spire and B&B upgrade tech caused issues (more info below).
+See below for more info about these specific fixes:
+```Uneven terrain / Flatten tool (see mod options to enable).
+No Planetary Anomaly Breakthroughs when B&B is installed.
+No flying drones underground.
+Water Reclamation Spire and B&B upgrade tech caused issues.
+Force heat grid to update.
+Future Contemporary Asset Pack when placing spires.
+The Bottomless Pit Anomaly is missing.
+
 Add rocket sound effects to SupplyPods (mod option to disable).
-Force heat grid to update (more info below).
-Personal Space storybit changes capacity, but building menu doesn't show it.
-Underground Rare Anomaly can give you underground dome prefabs, but locks them to surface.
-The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
-Future Contemporary Asset Pack when placing spires (more info below).
+Colonists showing up on wrong map in infobar.
+Dredger tech fix ([Spoilers](https://www.reddit.com/r/SurvivingMars/comments/xnprjg/)).
 Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC).
+Log spam from IsBuildingInDomeRange().
+Personal Space storybit changes capacity, but building menu doesn't show it.
 Possible fix for main menu music playing in-game on new games (mod option to disable, since there's no fade out).
-The Bottomless Pit Anomaly is missing (more info below).
+Problem updating supply grid.
 Refabbing rare extractors left the "working" dust plumes around them.
 St. Elmo's Fire: Stop meteoroids from destroying sinkholes.
+Stop ceiling/floating rubble.
+Storybit notification issue.
+Support struts malfunctioning and cave-ins.
+The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
+Underground Rare Anomaly can give you underground dome prefabs, but locks them to surface.
+Unpassable underground rocks stuck in path (not cave-in rubble, but small rocks you can't select).
+The Gene Forging storybit tech doesn't increase rare traits chance.
 ```
 
 **Mod bug fixes**:

@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1567028510",
 	"pops_any_uuid", "cca05f79-5542-40f1-a008-e8fb4e6ecc9a",
 	"lua_revision", 1007000, -- Picard
-	"version", 24,
+	"version", 25,
 	"version_major", 2,
-	"version_minor", 4,
+	"version_minor", 5,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -17,20 +17,22 @@ return PlaceObj("ModDef", {
 	"description", [[
 This will check on load game for certain rockets stuck on the ground unable to do jack.
 So far:
-Unloading colonists.
-Unloading colonist crew from expedition.
-Maintenance */5.
-Drones stuck inside.
-Planetary anomaly drones stuck inside.
-Drones the rocket thinks are stuck inside (*2).
-Trade rocket with 0 res.
-Returned expedition rocket giving msg that it's still in orbit.
 Canceled expedition rocket stuck in limbo canceled mode.
-Trade rockets stuck in orbit?
+Drones stuck inside.
+Drones the rocket thinks are stuck inside (*2).
+Maintenance */5.
+Planetary anomaly drones stuck inside.
 Previous expedition rocket shows msg it isn't landed when trying to launch.
-Trade rocket ready for takeoff stuck on pad only showing priority button.
+Returned expedition rocket giving msg that it's still in orbit.
 Stuck landing pad from bugged rocket construction.
 Trade rocket from Beyond Earth mystery.
+Trade rocket ready for takeoff stuck on pad only showing priority button.
+Trade rocket unloading resources.
+Trade rocket with 0 res.
+Trade rockets stuck in orbit?
+Unloading colonist crew from expedition.
+Unloading colonists.
+
 
 [b]If this doesn't fix it for you, then I'll need a copy of your saved game.[/b]
 

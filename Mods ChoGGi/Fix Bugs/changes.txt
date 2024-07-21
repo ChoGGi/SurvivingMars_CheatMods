@@ -1,3 +1,6 @@
+v5.8
+The Gene Forging storybit tech doesn't increase rare traits chance (Thanks Dark Master).
+
 v5.7
 Added a fix for my uneven terrain fix.
 
