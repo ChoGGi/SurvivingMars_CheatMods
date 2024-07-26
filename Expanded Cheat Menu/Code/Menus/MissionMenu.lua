@@ -4,9 +4,10 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local SettingState = ChoGGi.ComFuncs.SettingState
+local Translate = ChoGGi_Funcs.Common.Translate
+local SettingState = ChoGGi_Funcs.Common.SettingState
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
@@ -25,7 +26,7 @@ Actions[c] = {ActionName = T(11034--[[Rival Colonies]]),
 	ActionId = ".Rival Colonies",
 	ActionIcon = "CommonAssets/UI/Menu/add_water.tga",
 	RolloverText = T(302535920001460--[[Add/remove rival colonies.]]),
-	OnAction = ChoGGi.MenuFuncs.ChangeRivalColonies,
+	OnAction = ChoGGi_Funcs.Menus.ChangeRivalColonies,
 }
 
 c = c + 1
@@ -34,7 +35,7 @@ Actions[c] = {ActionName = T(302535920000704--[[Instant Mission Goals]]),
 	ActionId = ".Instant Mission Goals",
 	ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 	RolloverText = T(302535920000705--[[Shows list of mission goals and allows you to pass any of them.]]),
-	OnAction = ChoGGi.MenuFuncs.InstantMissionGoals,
+	OnAction = ChoGGi_Funcs.Menus.InstantMissionGoals,
 }
 
 c = c + 1
@@ -43,7 +44,7 @@ Actions[c] = {ActionName = T(302535920000706--[[Instant Colony Approval]]),
 	ActionId = ".Instant Colony Approval",
 	ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 	RolloverText = T(302535920000707--[[Make your colony instantly approved (can be called before you summon your first victims).]]),
-	OnAction = ChoGGi.MenuFuncs.InstantColonyApproval,
+	OnAction = ChoGGi_Funcs.Menus.InstantColonyApproval,
 }
 
 c = c + 1
@@ -57,7 +58,7 @@ Actions[c] = {ActionName = T(302535920000710--[[Change Logo]]),
 			T(302535920000711--[[Change the logo for anything that uses the logo.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.ChangeGameLogo,
+	OnAction = ChoGGi_Funcs.Menus.ChangeGameLogo,
 }
 
 c = c + 1
@@ -71,7 +72,7 @@ Actions[c] = {ActionName = T(302535920000712--[[Set Sponsor]]),
 			T(302535920000713--[[Switch to a different sponsor.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetSponsor,
+	OnAction = ChoGGi_Funcs.Menus.SetSponsor,
 	ActionSortKey = "21",
 }
 
@@ -84,7 +85,7 @@ Actions[c] = {ActionName = T(302535920000712--[[Set Sponsor]]),
 
 --~ (if value already exists; set to larger amount).
 --~ restart to set disabled.]]),
---~ 	OnAction = ChoGGi.MenuFuncs.SetSponsorBonus,
+--~ 	OnAction = ChoGGi_Funcs.Menus.SetSponsorBonus,
 --~ 	ActionSortKey = "22",
 --~ }
 
@@ -99,7 +100,7 @@ Actions[c] = {ActionName = T(302535920000716--[[Set Commander]]),
 			T(302535920000717--[[Switch to a different commander.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetCommander,
+	OnAction = ChoGGi_Funcs.Menus.SetCommander,
 	ActionSortKey = "23",
 }
 
@@ -112,7 +113,7 @@ Actions[c] = {ActionName = T(302535920000716--[[Set Commander]]),
 
 --~ (if value already exists; set to larger amount).
 --~ restart to set disabled.]]),
---~ 	OnAction = ChoGGi.MenuFuncs.SetCommanderBonus,
+--~ 	OnAction = ChoGGi_Funcs.Menus.SetCommanderBonus,
 --~ 	ActionSortKey = "24",
 --~ }
 
@@ -122,7 +123,7 @@ Actions[c] = {ActionName = T(8800--[[Game Rules]]),
 	ActionId = ".Game Rules",
 	ActionIcon = "CommonAssets/UI/Menu/ListCollections.tga",
 	RolloverText = T(302535920000965--[["Change the ""Game Rules""."]]),
-	OnAction = ChoGGi.MenuFuncs.ChangeRules,
+	OnAction = ChoGGi_Funcs.Menus.ChangeRules,
 }
 
 c = c + 1
@@ -131,7 +132,7 @@ Actions[c] = {ActionName = T(302535920001247--[[Start Challenge]]),
 	ActionId = ".Start Challenge",
 	ActionIcon = "CommonAssets/UI/Menu/ramp.tga",
 	RolloverText = T(302535920001249--[[Shows a list of challenges you can start (replaces current).]]),
-	OnAction = ChoGGi.MenuFuncs.StartChallenge,
+	OnAction = ChoGGi_Funcs.Menus.StartChallenge,
 }
 
 -- menu
@@ -155,7 +156,7 @@ Actions[c] = {ActionName = T(302535920000708--[[Meteor Damage]]),
 			T(7563--[[Health damage from small meteor (one-time on impact)]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.MeteorHealthDamage_Toggle,
 }
 
 c = c + 1
@@ -171,7 +172,7 @@ Actions[c] = {ActionName = T(4142--[[Dust Devils]]),
 			)
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence,
+	OnAction = ChoGGi_Funcs.Menus.SetDisasterOccurrence,
 	setting_id = "DustDevils",
 }
 
@@ -188,7 +189,7 @@ Actions[c] = {ActionName = T(4148--[[Cold Waves]]),
 			)
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence,
+	OnAction = ChoGGi_Funcs.Menus.SetDisasterOccurrence,
 	setting_id = "ColdWave",
 }
 
@@ -205,7 +206,7 @@ Actions[c] = {ActionName = T(4144--[[Dust Storms]]),
 			)
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence,
+	OnAction = ChoGGi_Funcs.Menus.SetDisasterOccurrence,
 	setting_id = "DustStorm",
 }
 
@@ -222,7 +223,7 @@ Actions[c] = {ActionName = T(4146--[[Meteors]]),
 			)
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence,
+	OnAction = ChoGGi_Funcs.Menus.SetDisasterOccurrence,
 	setting_id = "Meteor",
 }
 
@@ -244,7 +245,7 @@ Actions[c] = {ActionName = T(558613651480--[[Toxic Rains]]),
 			)
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.SetDisasterOccurrence_Toggle,
 	setting_name = T(369748345658--[[Toxic Rain]]),
 }
 
@@ -265,6 +266,6 @@ Actions[c] = {ActionName = T(382404446864--[[Marsquake]]),
 			)
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetDisasterOccurrence_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.SetDisasterOccurrence_Toggle,
 	setting_name = T(382404446864--[[Marsquake]]),
 }

@@ -7,7 +7,7 @@ if not g_AvailableDlc.picard then
 end
 
 -- some stuff checks one some other...
-local SetConsts = ChoGGi.ComFuncs.SetConsts
+local SetConsts = ChoGGi_Funcs.Common.SetConsts
 
 local mod_EnableMod
 local mod_MaxAsteroids

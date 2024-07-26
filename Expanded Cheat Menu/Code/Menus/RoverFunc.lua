@@ -4,14 +4,15 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local type = type
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local Translate = ChoGGi_Funcs.Common.Translate
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 
---~	local RetName = ChoGGi.ComFuncs.RetName
+--~	local RetName = ChoGGi_Funcs.Common.RetName
 
-function ChoGGi.MenuFuncs.SetRoverChargeRadius()
+function ChoGGi_Funcs.Menus.SetRoverChargeRadius()
 	local default_setting = 0
 	local item_list = {
 		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
@@ -48,15 +49,15 @@ function ChoGGi.MenuFuncs.SetRoverChargeRadius()
 				ChoGGi.UserSettings.RCChargeDist = value
 			end
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.text),
+				ChoGGi_Funcs.Common.SettingState(choice.text),
 				T(302535920000541--[[RC Set Charging Distance]])
 			)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000880--[[Set Rover Charge Radius]]),
@@ -65,10 +66,10 @@ function ChoGGi.MenuFuncs.SetRoverChargeRadius()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetRCMoveSpeed()
+function ChoGGi_Funcs.Menus.SetRCMoveSpeed()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.SpeedRC
-	local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("SpeedRC")
+	local UpgradedSetting = ChoGGi_Funcs.Common.GetResearchedTechValue("SpeedRC")
 	local item_list = {
 		{text = T(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting, hint = T(302535920000889--[[base speed]])},
 		{text = 5, value = 5 * r},
@@ -97,21 +98,21 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 
 		local value = choice.value
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetSavedConstSetting("SpeedRC", value)
+			ChoGGi_Funcs.Common.SetSavedConstSetting("SpeedRC", value)
 			local objs = UIColony.city_labels.labels.Rover or ""
 			for i = 1, #objs do
 				objs[i]:SetBase("move_speed", value)
 			end
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.text),
+				ChoGGi_Funcs.Common.SettingState(choice.text),
 				T(302535920000543--[[RC Move Speed]])
 			)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000543--[[RC Move Speed]]),
@@ -121,22 +122,22 @@ function ChoGGi.MenuFuncs.SetRCMoveSpeed()
 	}
 end
 
-function ChoGGi.MenuFuncs.RCTransportInstantTransfer_Toggle()
-	ChoGGi.ComFuncs.SetConsts("RCRoverTransferResourceWorkTime", ChoGGi.ComFuncs.NumRetBool(Consts.RCRoverTransferResourceWorkTime, 0, ChoGGi.Consts.RCRoverTransferResourceWorkTime))
-	ChoGGi.ComFuncs.SetConsts("RCTransportGatherResourceWorkTime", ChoGGi.ComFuncs.NumRetBool(Consts.RCTransportGatherResourceWorkTime, 0, ChoGGi.ComFuncs.GetResearchedTechValue("RCTransportGatherResourceWorkTime")))
-	ChoGGi.ComFuncs.SetSavedConstSetting("RCRoverTransferResourceWorkTime")
-	ChoGGi.ComFuncs.SetSavedConstSetting("RCTransportGatherResourceWorkTime")
+function ChoGGi_Funcs.Menus.RCTransportInstantTransfer_Toggle()
+	ChoGGi_Funcs.Common.SetConsts("RCRoverTransferResourceWorkTime", ChoGGi_Funcs.Common.NumRetBool(Consts.RCRoverTransferResourceWorkTime, 0, ChoGGi.Consts.RCRoverTransferResourceWorkTime))
+	ChoGGi_Funcs.Common.SetConsts("RCTransportGatherResourceWorkTime", ChoGGi_Funcs.Common.NumRetBool(Consts.RCTransportGatherResourceWorkTime, 0, ChoGGi_Funcs.Common.GetResearchedTechValue("RCTransportGatherResourceWorkTime")))
+	ChoGGi_Funcs.Common.SetSavedConstSetting("RCRoverTransferResourceWorkTime")
+	ChoGGi_Funcs.Common.SetSavedConstSetting("RCTransportGatherResourceWorkTime")
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RCRoverTransferResourceWorkTime),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.RCRoverTransferResourceWorkTime),
 		T(302535920000549--[[RC Instant Resource Transfer]])
 	)
 end
 
-function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
+function ChoGGi_Funcs.Menus.SetRCTransportStorageCapacity()
 	local r = const.ResourceScale
-	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("RCTransportStorageCapacity") / r
+	local default_setting = ChoGGi_Funcs.Common.GetResearchedTechValue("RCTransportStorageCapacity") / r
 	local item_list = {
 		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 50, value = 50},
@@ -169,7 +170,7 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
 				value = 2000000
 			end
 			-- for any rc constructors
-			local rc_con_value = ChoGGi.ComFuncs.GetResearchedTechValue("RCTransportStorageCapacity", "RCConstructor")
+			local rc_con_value = ChoGGi_Funcs.Common.GetResearchedTechValue("RCTransportStorageCapacity", "RCConstructor")
 
 			-- loop through and set all
 			if UIColony then
@@ -187,18 +188,18 @@ function ChoGGi.MenuFuncs.SetRCTransportStorageCapacity()
 			if default then
 				ChoGGi.UserSettings.RCTransportStorageCapacity = nil
 			else
-				ChoGGi.ComFuncs.SetSavedConstSetting("RCTransportStorageCapacity", value)
+				ChoGGi_Funcs.Common.SetSavedConstSetting("RCTransportStorageCapacity", value)
 			end
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.text),
+				ChoGGi_Funcs.Common.SettingState(choice.text),
 				T(302535920000551--[[RC Storage Capacity]])
 			)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000927--[[Set RC Transport Capacity]]),

@@ -1,15 +1,19 @@
 -- See LICENSE for terms
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local what_game = ChoGGi.what_game
 
 -- add some shortened func names
-dump = ChoGGi.ComFuncs.Dump
-dumplua = ChoGGi.ComFuncs.DumpLua
-dumptable = ChoGGi.ComFuncs.DumpTable
-MonitorFunc = ChoGGi.ComFuncs.MonitorFunctionResults
+dump = ChoGGi_Funcs.Common.Dump
+dumplua = ChoGGi_Funcs.Common.DumpLua
+dumptable = ChoGGi_Funcs.Common.DumpTable
+MonitorFunc = ChoGGi_Funcs.Common.MonitorFunctionResults
 --
 function restart()
 	quit("restart")
+end
+function delcls(cls)
+	ChoGGi_Funcs.Common.DeleteObject(cls)
 end
 reboot = restart
 exit = quit

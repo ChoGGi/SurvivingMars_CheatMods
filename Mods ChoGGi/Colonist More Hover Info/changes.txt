@@ -1,3 +1,7 @@
+v0.4
+Added support for my Specialist by Experience mod.
+Added extra info to traits.
+
 v0.3
 Added dome name (thanks hlechner).
 

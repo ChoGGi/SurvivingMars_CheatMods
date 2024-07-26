@@ -4,22 +4,23 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local table = table
 local pairs, type = pairs, type
 local Sleep = Sleep
 local IsValid = IsValid
 local DoneObject = DoneObject
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local DeleteObject = ChoGGi.ComFuncs.DeleteObject
-local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
-local SpawnColonist = ChoGGi.ComFuncs.SpawnColonist
+local Translate = ChoGGi_Funcs.Common.Translate
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
+local DeleteObject = ChoGGi_Funcs.Common.DeleteObject
+local ToggleWorking = ChoGGi_Funcs.Common.ToggleWorking
+local SpawnColonist = ChoGGi_Funcs.Common.SpawnColonist
 local FindNearestObject = FindNearestObject
 
 local testing = ChoGGi.testing
 
-function ChoGGi.MenuFuncs.RemoveInvalidLabelObjects()
+function ChoGGi_Funcs.Menus.RemoveInvalidLabelObjects()
 	local labels = UIColony.city_labels.labels
 	for id, label in pairs(labels) do
 		if id ~= "Consts" then
@@ -36,7 +37,7 @@ function ChoGGi.MenuFuncs.RemoveInvalidLabelObjects()
 	)
 end
 
-function ChoGGi.MenuFuncs.RocketCrashesGameOnLanding()
+function ChoGGi_Funcs.Menus.RocketCrashesGameOnLanding()
 	local rockets = UIColony.city_labels.labels.SupplyRocket or ""
 	for i = 1, #rockets do
 		rockets[i]:ForEachAttach("ParSystem", function(a)
@@ -51,7 +52,7 @@ function ChoGGi.MenuFuncs.RocketCrashesGameOnLanding()
 	)
 end
 
-function ChoGGi.MenuFuncs.ToggleWorkingAll()
+function ChoGGi_Funcs.Menus.ToggleWorkingAll()
 	local skips = {"OrbitalProbe", "ResourceStockpile", "WasteRockStockpile", "BaseRover"}
 	MapForEach("map", "BaseBuilding", function(o)
 		if type(o.ToggleWorking) == "function" and not o:IsKindOfClasses(skips) then
@@ -68,7 +69,7 @@ end
 do -- DronesNotRepairingDome
 	local looping_thread
 
-	function ChoGGi.MenuFuncs.DronesNotRepairingDomes()
+	function ChoGGi_Funcs.Menus.DronesNotRepairingDomes()
 		local Sleep = Sleep
 		MsgPopup(
 			T(83--[[Domes]]),
@@ -93,7 +94,7 @@ do -- DronesNotRepairingDome
 					local dome = domes[i]
 					-- get a list of all res in the center of dome
 					local pos = dome:GetSpotPos(-1)
-					local realm = GameMaps[ChoGGi.ComFuncs.RetObjMapId(dome)].realm
+					local realm = GameMaps[ChoGGi_Funcs.Common.RetObjMapId(dome)].realm
 
 					local objs = realm:MapGet(pos, 1000, "ResourcePile")
 					-- loop through the spots till we find a Workdrone outside the dome (any spot outside will do)
@@ -140,7 +141,7 @@ local function ResetRover(rc)
 	end
 end
 
-function ChoGGi.MenuFuncs.ResetCommanders()
+function ChoGGi_Funcs.Menus.ResetCommanders()
 	CreateRealTimeThread(function()
 		local Sleep = Sleep
 		local GetStateIdx = GetStateIdx
@@ -177,13 +178,13 @@ function ChoGGi.MenuFuncs.ResetCommanders()
 	end)
 end
 
-function ChoGGi.MenuFuncs.ResetAllColonists()
+function ChoGGi_Funcs.Menus.ResetAllColonists()
 	local function CallBackFunc(answer)
 		if answer then
 			local objs = UIColony:GetCityLabels("Colonist")
 			for i = 1, #objs do
 				local c = objs[i]
-				local city = Cities[ChoGGi.ComFuncs.RetObjMapId(c)]
+				local city = Cities[ChoGGi_Funcs.Common.RetObjMapId(c)]
 				local is_valid = IsValid(c)
 				SpawnColonist(c, nil, is_valid and c:GetVisualPos(), city)
 				if is_valid then
@@ -193,7 +194,7 @@ function ChoGGi.MenuFuncs.ResetAllColonists()
 		end
 	end
 
-	ChoGGi.ComFuncs.QuestionBox(
+	ChoGGi_Funcs.Common.QuestionBox(
 		T(6779--[[Warning]]) .. "!\n" .. T(302535920000055--[[Reset All Colonists]])
 			.. "\n" .. T(302535920000939--[["Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20."]]),
 		CallBackFunc,
@@ -201,14 +202,14 @@ function ChoGGi.MenuFuncs.ResetAllColonists()
 	)
 end
 
-function ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame()
+function ChoGGi_Funcs.Menus.ColonistsTryingToBoardRocketFreezesGame()
 	local rockets = UIColony:GetCityLabels("SupplyRocket")
 	local objs = UIColony:GetCityLabels("Colonist")
 	for i = 1, #objs do
 		local c = objs[i]
 		local is_valid = IsValid(c)
 		if is_valid and c:GetStateText() == "movePlanet" then
-			local city = Cities[ChoGGi.ComFuncs.RetObjMapId(c)]
+			local city = Cities[ChoGGi_Funcs.Common.RetObjMapId(c)]
 			local rocket = FindNearestObject(rockets, c)
 			SpawnColonist(c, rocket, c:GetVisualPos(), city)
 			DeleteObject(c)
@@ -231,14 +232,14 @@ local function AttachedColonist(c, pos, rocket, city)
 		SpawnColonist(nil, nil, rocket, pos, city)
 	end
 end
-function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
+function ChoGGi_Funcs.Menus.ColonistsStuckOutsideRocket()
 	local InvalidPos = ChoGGi.Consts.InvalidPos
 	local rockets = UIColony:GetCityLabels("SupplyRocket")
 	for i = 1, #rockets do
 		local rocket = rockets[i]
 		-- SupplyRocket also returns rockets in space
 		if rocket:GetPos() ~= InvalidPos then
-			local city = Cities[ChoGGi.ComFuncs.RetObjMapId(rocket)]
+			local city = Cities[ChoGGi_Funcs.Common.RetObjMapId(rocket)]
 			local pos = GetRealm(rocket):GetPassablePointNearby(rocket:GetPos())
 			rocket:ForEachAttach("Colonist", AttachedColonist, pos, rocket, city)
 		end
@@ -249,8 +250,8 @@ function ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket()
 	)
 end
 
-function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
-	SuspendPassEdits("ChoGGi.MenuFuncs.ParticlesWithNullPolylines")
+function ChoGGi_Funcs.Menus.ParticlesWithNullPolylines()
+	SuspendPassEdits("ChoGGi_Funcs.Menus.ParticlesWithNullPolylines")
 	local objs = MapGet(true, "ParSystem", function(o)
 		if type(o.polyline) == "string" and o.polyline:find("\0") then
 			return true
@@ -259,7 +260,7 @@ function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
 	for i = #objs, 1, -1 do
 		DoneObject(objs[i])
 	end
-	ResumePassEdits("ChoGGi.MenuFuncs.ParticlesWithNullPolylines")
+	ResumePassEdits("ChoGGi_Funcs.Menus.ParticlesWithNullPolylines")
 
 	MsgPopup(
 		T(302535920001691--[[All]]),
@@ -267,12 +268,12 @@ function ChoGGi.MenuFuncs.ParticlesWithNullPolylines()
 	)
 end
 
-function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
+function ChoGGi_Funcs.Menus.RemoveMissingClassObjects()
 	local function CallBackFunc(answer)
 		if answer then
-			SuspendPassEdits("ChoGGi.MenuFuncs.RemoveMissingClassObjects")
+			SuspendPassEdits("ChoGGi_Funcs.Menus.RemoveMissingClassObjects")
 			MapDelete(true, "UnpersistedMissingClass")
-			ResumePassEdits("ChoGGi.MenuFuncs.RemoveMissingClassObjects")
+			ResumePassEdits("ChoGGi_Funcs.Menus.RemoveMissingClassObjects")
 			MsgPopup(
 				T(302535920001691--[[All]]),
 				T(302535920000587--[[Remove Missing Class Objects]])
@@ -280,7 +281,7 @@ function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
 		end
 	end
 
-	ChoGGi.ComFuncs.QuestionBox(
+	ChoGGi_Funcs.Common.QuestionBox(
  		T(6779--[[Warning]]) .. "!\n"
 			.. T(302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).]]),
 		CallBackFunc,
@@ -288,7 +289,7 @@ function ChoGGi.MenuFuncs.RemoveMissingClassObjects()
 	)
 end
 
-function ChoGGi.MenuFuncs.MirrorSphereStuck()
+function ChoGGi_Funcs.Menus.MirrorSphereStuck()
 	local objs = MainCity.labels.MirrorSpheres or ""
 	for i = 1, #objs do
 		local obj = objs[i]
@@ -297,7 +298,7 @@ function ChoGGi.MenuFuncs.MirrorSphereStuck()
 		end
 	end
 
-	SuspendPassEdits("ChoGGi.MenuFuncs.MirrorSphereStuck")
+	SuspendPassEdits("ChoGGi_Funcs.Menus.MirrorSphereStuck")
 	objs = GetRealmByID(MainMapID):MapGet(true, "ParSystem", function(o)
 		if o:GetParticlesName() == "PowerDecoy_Captured" and
 				type(o.polyline) == "string" and o.polyline:find("\0") then
@@ -308,7 +309,7 @@ function ChoGGi.MenuFuncs.MirrorSphereStuck()
 		DoneObject(objs[i])
 	end
 
-	ResumePassEdits("ChoGGi.MenuFuncs.MirrorSphereStuck")
+	ResumePassEdits("ChoGGi_Funcs.Menus.MirrorSphereStuck")
 
 	MsgPopup(
 		T(302535920001691--[[All]]),
@@ -316,8 +317,8 @@ function ChoGGi.MenuFuncs.MirrorSphereStuck()
 	)
 end
 
-function ChoGGi.MenuFuncs.StutterWithHighFPS()
-	local CheckForBorkedTransportPath = ChoGGi.ComFuncs.CheckForBorkedTransportPath
+function ChoGGi_Funcs.Menus.StutterWithHighFPS()
+	local CheckForBorkedTransportPath = ChoGGi_Funcs.Common.CheckForBorkedTransportPath
 	local bad_objs = {}
 	local objs = UIColony:GetCityLabels("Unit")
 	for i = 1, #objs do
@@ -327,7 +328,7 @@ function ChoGGi.MenuFuncs.StutterWithHighFPS()
 		ex(bad_objs)
 	end
 
-	ChoGGi.ComFuncs.ResetHumanCentipedes()
+	ChoGGi_Funcs.Common.ResetHumanCentipedes()
 	MsgPopup(
 		T(302535920001691--[[All]]),
 		T(302535920000597--[[Stutter With High FPS]])
@@ -346,7 +347,7 @@ do -- DronesKeepTryingBlockedAreas
 		end)
 	end
 
-	function ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas()
+	function ChoGGi_Funcs.Menus.DronesKeepTryingBlockedAreas()
 		ResetPriorityQueue("SupplyRocket")
 		ResetPriorityQueue("RCRover")
 		ResetPriorityQueue("DroneHub")
@@ -359,7 +360,7 @@ do -- DronesKeepTryingBlockedAreas
 	end
 end -- do
 
-function ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid()
+function ChoGGi_Funcs.Menus.AlignAllBuildingsToHexGrid()
 	local HexGetNearestCenter = HexGetNearestCenter
 	MapForEach("map", "Building", function(o)
 		o:SetPos(HexGetNearestCenter(o:GetVisualPos()))
@@ -384,7 +385,7 @@ do -- RemoveUnreachableConstructionSites
 		end)
 	end
 
-	function ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites()
+	function ChoGGi_Funcs.Menus.RemoveUnreachableConstructionSites()
 		local objs = MainCity.labels.Drone or ""
 		for i = 1, #objs do
 			objs[i]:CleanUnreachables()
@@ -401,19 +402,19 @@ do -- RemoveUnreachableConstructionSites
 	end
 end -- do
 
-function ChoGGi.MenuFuncs.RemoveYellowGridMarks()
-	SuspendPassEdits("ChoGGi.MenuFuncs.RemoveYellowGridMarks")
+function ChoGGi_Funcs.Menus.RemoveYellowGridMarks()
+	SuspendPassEdits("ChoGGi_Funcs.Menus.RemoveYellowGridMarks")
 	MapDelete(true, "GridTile")
 	MapDelete(true, "GridTileWater")
-	ResumePassEdits("ChoGGi.MenuFuncs.RemoveYellowGridMarks")
+	ResumePassEdits("ChoGGi_Funcs.Menus.RemoveYellowGridMarks")
 	MsgPopup(
 		T(302535920001691--[[All]]),
 		T(302535920000603--[[Remove Yellow Grid Marks]])
 	)
 end
 
-function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
-	SuspendPassEdits("ChoGGi.MenuFuncs.RemoveBlueGridMarks")
+function ChoGGi_Funcs.Menus.RemoveBlueGridMarks()
+	SuspendPassEdits("ChoGGi_Funcs.Menus.RemoveBlueGridMarks")
 	local objs = MapGet(true, "RangeHexRadius", function(o)
 		if not o.ToggleWorkZone then
 			return true
@@ -432,7 +433,7 @@ function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
 		DoneObject(objs[i])
 	end
 
-	ResumePassEdits("ChoGGi.MenuFuncs.RemoveBlueGridMarks")
+	ResumePassEdits("ChoGGi_Funcs.Menus.RemoveBlueGridMarks")
 
 	MsgPopup(
 		T(302535920001691--[[All]]),
@@ -440,7 +441,7 @@ function ChoGGi.MenuFuncs.RemoveBlueGridMarks()
 	)
 end
 
-function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
+function ChoGGi_Funcs.Menus.ProjectMorpheusRadarFellDown()
 	local objs = UIColony.city_labels.labels.ProjectMorpheus or ""
 	for i = 1, #objs do
 		objs[i]:ChangeWorkingStateAnim(false)
@@ -452,7 +453,7 @@ function ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown()
 	)
 end
 
-function ChoGGi.MenuFuncs.RebuildWalkablePointsInDomes()
+function ChoGGi_Funcs.Menus.RebuildWalkablePointsInDomes()
 	MapForEach("map", "Dome", function(o)
 		o.walkable_points = false
 		o:GenerateWalkablePoints()
@@ -463,8 +464,8 @@ function ChoGGi.MenuFuncs.RebuildWalkablePointsInDomes()
 	)
 end
 
-function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
-	local AttachToNearestDome = ChoGGi.ComFuncs.AttachToNearestDome
+function ChoGGi_Funcs.Menus.AttachBuildingsToNearestWorkingDome()
+	local AttachToNearestDome = ChoGGi_Funcs.Common.AttachToNearestDome
 	local objs = UIColony.city_labels.labels.InsideBuildings or ""
 	for i = 1, #objs do
 		AttachToNearestDome(objs[i])
@@ -476,7 +477,7 @@ function ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome()
 	)
 end
 
-function ChoGGi.MenuFuncs.ColonistsFixBlackCube()
+function ChoGGi_Funcs.Menus.ColonistsFixBlackCube()
 	local objs = UIColony.city_labels.labels.Colonist or ""
 	for i = 1, #objs do
 		local c = objs[i]
@@ -523,7 +524,7 @@ do -- CablesAndPipesRepair
 		end
 	end
 
-	function ChoGGi.MenuFuncs.CablesAndPipesRepair()
+	function ChoGGi_Funcs.Menus.CablesAndPipesRepair()
 		local g_BrokenSupplyGridElements = g_BrokenSupplyGridElements
 		RepairBorkedObjects(g_BrokenSupplyGridElements.electricity)
 		RepairBorkedObjects(g_BrokenSupplyGridElements.water)
@@ -535,22 +536,22 @@ do -- CablesAndPipesRepair
 	end
 end -- do
 
---~ function ChoGGi.MenuFuncs.FireMostFixes()
+--~ function ChoGGi_Funcs.Menus.FireMostFixes()
 --~ 	CreateRealTimeThread(function()
---~ 		local MenuFuncs = ChoGGi.MenuFuncs
+--~ 		local Menus = ChoGGi_Funcs.Menus
 
---~ 		pcall(MenuFuncs.RemoveUnreachableConstructionSites)
---~ 		pcall(MenuFuncs.ParticlesWithNullPolylines)
---~ 		pcall(MenuFuncs.StutterWithHighFPS)
---~ 		pcall(MenuFuncs.ColonistsTryingToBoardRocketFreezesGame)
---~ 		pcall(MenuFuncs.AttachBuildingsToNearestWorkingDome)
---~ 		pcall(MenuFuncs.DronesKeepTryingBlockedAreas)
---~ 		pcall(MenuFuncs.RemoveYellowGridMarks)
---~ 		pcall(MenuFuncs.RemoveBlueGridMarks)
---~ 		pcall(MenuFuncs.CablesAndPipesRepair)
---~ 		pcall(MenuFuncs.MirrorSphereStuck)
---~ 		pcall(MenuFuncs.ProjectMorpheusRadarFellDown)
---~ 		pcall(MenuFuncs.RemoveInvalidLabelObjects)
+--~ 		pcall(Menus.RemoveUnreachableConstructionSites)
+--~ 		pcall(Menus.ParticlesWithNullPolylines)
+--~ 		pcall(Menus.StutterWithHighFPS)
+--~ 		pcall(Menus.ColonistsTryingToBoardRocketFreezesGame)
+--~ 		pcall(Menus.AttachBuildingsToNearestWorkingDome)
+--~ 		pcall(Menus.DronesKeepTryingBlockedAreas)
+--~ 		pcall(Menus.RemoveYellowGridMarks)
+--~ 		pcall(Menus.RemoveBlueGridMarks)
+--~ 		pcall(Menus.CablesAndPipesRepair)
+--~ 		pcall(Menus.MirrorSphereStuck)
+--~ 		pcall(Menus.ProjectMorpheusRadarFellDown)
+--~ 		pcall(Menus.RemoveInvalidLabelObjects)
 
 --~ 		-- loop through and remove all my msgs from the onscreen popups
 --~ 		CreateRealTimeThread(function()
@@ -570,47 +571,47 @@ end -- do
 
 ------------------------- toggles
 
-function ChoGGi.MenuFuncs.FixMissingModBuildings_Toggle()
+function ChoGGi_Funcs.Menus.FixMissingModBuildings_Toggle()
 	ChoGGi.UserSettings.FixMissingModBuildings = not ChoGGi.UserSettings.FixMissingModBuildings
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.FixMissingModBuildings),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.FixMissingModBuildings),
 		T(302535920001483--[[Missing Mod Buildings]])
 	)
 end
 
 -- broked ai mods... (fix your crap or take it down kthxbai)
-function ChoGGi.MenuFuncs.ColonistsStuckOutsideServiceBuildings_Toggle()
+function ChoGGi_Funcs.Menus.ColonistsStuckOutsideServiceBuildings_Toggle()
 	if ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings then
 		ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings = nil
 	else
 		ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings = true
-		ChoGGi.ComFuncs.ResetHumanCentipedes()
+		ChoGGi_Funcs.Common.ResetHumanCentipedes()
 	end
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.ColonistsStuckOutsideServiceBuildings),
 		T(302535920000248--[[Colonists Stuck Outside Service Buildings]])
 	)
 end
 
-function ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle()
-	ChoGGi.UserSettings.DroneResourceCarryAmountFix = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.DroneResourceCarryAmountFix)
+function ChoGGi_Funcs.Menus.DroneResourceCarryAmountFix_Toggle()
+	ChoGGi.UserSettings.DroneResourceCarryAmountFix = ChoGGi_Funcs.Common.ToggleValue(ChoGGi.UserSettings.DroneResourceCarryAmountFix)
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DroneResourceCarryAmountFix),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.DroneResourceCarryAmountFix),
 		T(302535920000613--[[Drone Carry Amount]])
 	)
 end
 
-function ChoGGi.MenuFuncs.SortCommandCenterDist_Toggle()
-	ChoGGi.UserSettings.SortCommandCenterDist = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.SortCommandCenterDist)
+function ChoGGi_Funcs.Menus.SortCommandCenterDist_Toggle()
+	ChoGGi.UserSettings.SortCommandCenterDist = ChoGGi_Funcs.Common.ToggleValue(ChoGGi.UserSettings.SortCommandCenterDist)
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SortCommandCenterDist),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.SortCommandCenterDist),
 		T(302535920000615--[[Sort Command Center Dist]])
 	)
 end
@@ -618,7 +619,7 @@ end
 ---------------------------------------------------Testers
 
 --~ GetDupePositions(UIColony.city_labels.labels.Colonist or "")
---~ function ChoGGi.MenuFuncs.GetDupePositions(list)
+--~ function ChoGGi_Funcs.Menus.GetDupePositions(list)
 --~	 local dupes = {}
 --~	 local positions = {}
 --~	 local pos
@@ -633,21 +634,21 @@ end
 --~	 end
 --~	 if dupes[1] then
 --~		 table.sort(dupes)
---~		 ChoGGi.ComFuncs.OpenInExamineDlg(dupes)
+--~		 ChoGGi_Funcs.Common.OpenInExamineDlg(dupes)
 --~	 end
 --~ end
 
---~ function ChoGGi.MenuFuncs.DeathToObjects(cls)
+--~ function ChoGGi_Funcs.Menus.DeathToObjects(cls)
 --~ use MapDelete above
 --~ 	end
 
---~ ChoGGi.MenuFuncs.DeathToObjects("BaseRover")
---~ ChoGGi.MenuFuncs.DeathToObjects("Colonist")
---~ ChoGGi.MenuFuncs.DeathToObjects("CargoShuttle")
---~ ChoGGi.MenuFuncs.DeathToObjects("Building")
---~ ChoGGi.MenuFuncs.DeathToObjects("Drone")
---~ ChoGGi.MenuFuncs.DeathToObjects("SupplyRocket")
---~ ChoGGi.MenuFuncs.DeathToObjects("Unit") --rovers/drones/colonists
+--~ ChoGGi_Funcs.Menus.DeathToObjects("BaseRover")
+--~ ChoGGi_Funcs.Menus.DeathToObjects("Colonist")
+--~ ChoGGi_Funcs.Menus.DeathToObjects("CargoShuttle")
+--~ ChoGGi_Funcs.Menus.DeathToObjects("Building")
+--~ ChoGGi_Funcs.Menus.DeathToObjects("Drone")
+--~ ChoGGi_Funcs.Menus.DeathToObjects("SupplyRocket")
+--~ ChoGGi_Funcs.Menus.DeathToObjects("Unit") --rovers/drones/colonists
 
 --~ --show all elec consumption
 --~ local amount = 0

@@ -3,8 +3,8 @@
 local GetRealm = GetRealm
 local FindNearestObject = FindNearestObject
 
-local Random = ChoGGi.ComFuncs.Random
-local SetConsts = ChoGGi.ComFuncs.SetConsts
+local Random = ChoGGi_Funcs.Common.Random
+local SetConsts = ChoGGi_Funcs.Common.SetConsts
 
 local mod_EnableMod
 local mod_StorageAmount

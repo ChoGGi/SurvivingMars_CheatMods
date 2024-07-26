@@ -2,13 +2,14 @@
 
 -- Shows a dialog with to execute code in
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local T = T
-local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
-local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
-local RetParamsParents = ChoGGi.ComFuncs.RetParamsParents
-local Translate = ChoGGi.ComFuncs.Translate
+local IsControlPressed = ChoGGi_Funcs.Common.IsControlPressed
+local IsShiftPressed = ChoGGi_Funcs.Common.IsShiftPressed
+local RetParamsParents = ChoGGi_Funcs.Common.RetParamsParents
+local Translate = ChoGGi_Funcs.Common.Translate
 
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+local GetParentOfKind = ChoGGi_Funcs.Common.GetParentOfKind
 local function GetRootDialog(dlg)
 	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_DlgExecCode")
 end
@@ -38,7 +39,7 @@ function ChoGGi_DlgExecCode:Init(parent, context)
 	end
 
 	self.obj = context.obj
-	self.obj_name = self.obj and ChoGGi.ComFuncs.RetName(self.obj) or T(302535920001073--[[Console]])
+	self.obj_name = self.obj and ChoGGi_Funcs.Common.RetName(self.obj) or T(302535920001073--[[Console]])
 
 	self.title = T(302535920000040--[[Exec Code]]) .. ": " .. self.obj_name
 
@@ -283,7 +284,7 @@ function ChoGGi_DlgExecCode:Done()
 end
 
 -- Use to open a dialog
-function ChoGGi.ComFuncs.OpenInExecCodeDlg(obj, parent, ...)
+function ChoGGi_Funcs.Common.OpenInExecCodeDlg(obj, parent, ...)
 	local params, parent_type
 	params, parent, parent_type = RetParamsParents(parent, params, ...)
 

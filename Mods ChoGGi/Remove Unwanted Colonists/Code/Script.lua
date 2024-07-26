@@ -6,10 +6,10 @@ local GetRandomPassableAround = GetRandomPassableAround
 local PlaySound = PlaySound
 local IsSoundPlaying = IsSoundPlaying
 local guim = guim
-local Random = ChoGGi.ComFuncs.Random
-local RetName = ChoGGi.ComFuncs.RetName
-local LaunchHumanMeteor = ChoGGi.ComFuncs.LaunchHumanMeteor
-local RetObjMapId = ChoGGi.ComFuncs.RetObjMapId
+local Random = ChoGGi_Funcs.Common.Random
+local RetName = ChoGGi_Funcs.Common.RetName
+local LaunchHumanMeteor = ChoGGi_Funcs.Common.LaunchHumanMeteor
+local RetObjMapId = ChoGGi_Funcs.Common.RetObjMapId
 local InvalidPos = ChoGGi.Consts.InvalidPos
 
 -- build list of traits/mod options
@@ -206,7 +206,7 @@ function OnMsg.ClassesPostprocess()
 	local template = xt.ipColonist[1]
 
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(template, "ChoGGi_Template_ColonistSucker", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(template, "ChoGGi_Template_ColonistSucker", true)
 
 	-- we want to insert above warning
 	local warning = table.find(template, "__template", "sectionWarning")
@@ -270,7 +270,7 @@ function OnMsg.ClassesPostprocess()
 
 	template = xt.ipShuttle[1]
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(template, "ChoGGi_Template_ColonistSucker", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(template, "ChoGGi_Template_ColonistSucker", true)
 
 	-- we want to insert above warning
 	warning = table.find(template, "__template", "sectionCheats")

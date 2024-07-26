@@ -3,10 +3,10 @@
 local table = table
 local GetSpecialistEntity = GetSpecialistEntity
 local CreateGameTimeThread = CreateGameTimeThread
-local Random = ChoGGi.ComFuncs.Random
---~ local LaunchHumanMeteor = ChoGGi.ComFuncs.LaunchHumanMeteor
+local Random = ChoGGi_Funcs.Common.Random
+--~ local LaunchHumanMeteor = ChoGGi_Funcs.Common.LaunchHumanMeteor
 
-local LaunchHumanMeteor = ChoGGi.ComFuncs.LaunchHumanMeteor or function(entity, min, max, city)
+local LaunchHumanMeteor = ChoGGi_Funcs.Common.LaunchHumanMeteor or function(entity, min, max, city)
 	--	1 to 4 sols
 	Sleep(Random(
 		min or const.DayDuration,

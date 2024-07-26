@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local what_game = ChoGGi.what_game
 
 local table = table
@@ -16,13 +17,13 @@ local Max = Max
 local Sleep = Sleep
 local WaitMsg = WaitMsg
 
-local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local PlacePolyline = ChoGGi.ComFuncs.PlacePolyline
-local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
-local RetName = ChoGGi.ComFuncs.RetName
+local IsValidXWin = ChoGGi_Funcs.Common.IsValidXWin
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
+local PlacePolyline = ChoGGi_Funcs.Common.PlacePolyline
+local RandomColourLimited = ChoGGi_Funcs.Common.RandomColourLimited
+local RetName = ChoGGi_Funcs.Common.RetName
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
 local blacklist = ChoGGi.blacklist
@@ -46,9 +47,9 @@ local function SetCheatsMenuPos(pos)
 		end
 	end
 end
-ChoGGi.ComFuncs.SetCheatsMenuPos = SetCheatsMenuPos
+ChoGGi_Funcs.Common.SetCheatsMenuPos = SetCheatsMenuPos
 
-function ChoGGi.ComFuncs.DraggableCheatsMenu(enable)
+function ChoGGi_Funcs.Common.DraggableCheatsMenu(enable)
 	local XShortcutsTarget = XShortcutsTarget
 
 	-- always add the move control so we can re-pos for xbox
@@ -81,7 +82,7 @@ function ChoGGi.ComFuncs.DraggableCheatsMenu(enable)
 
 end
 
-function ChoGGi.ComFuncs.SetCommanderBonuses(name)
+function ChoGGi_Funcs.Common.SetCommanderBonuses(name)
 	local comm = GetCommanderProfile(g_CurrentMissionParams.idCommanderProfile)
 	if not comm then
 		return
@@ -95,8 +96,8 @@ function ChoGGi.ComFuncs.SetCommanderBonuses(name)
 	end
 end
 
-function ChoGGi.ComFuncs.SetSponsorBonuses(name)
-	local CompareAmounts = ChoGGi.ComFuncs.CompareAmounts
+function ChoGGi_Funcs.Common.SetSponsorBonuses(name)
+	local CompareAmounts = ChoGGi_Funcs.Common.CompareAmounts
 
 	local sponsor = GetMissionSponsor(g_CurrentMissionParams.idMissionSponsor)
 	if not sponsor then
@@ -143,7 +144,7 @@ function ChoGGi.ComFuncs.SetSponsorBonuses(name)
 	end
 end
 
-function ChoGGi.ComFuncs.GenerateScreenshotFilename(prefix, folder, ext, just_name, ...)
+function ChoGGi_Funcs.Common.GenerateScreenshotFilename(prefix, folder, ext, just_name, ...)
 	if blacklist then
 		return GenerateScreenshotFilename(prefix, folder, ext, just_name, ...)
 	end
@@ -163,7 +164,7 @@ function ChoGGi.ComFuncs.GenerateScreenshotFilename(prefix, folder, ext, just_na
 	end
 	return string.format("%s%s%04d.%s", folder, prefix, index + 1, ext)
 end
-local GenerateScreenshotFilename = ChoGGi.ComFuncs.GenerateScreenshotFilename
+local GenerateScreenshotFilename = ChoGGi_Funcs.Common.GenerateScreenshotFilename
 
 do -- DumpTableFunc
 	local CmpLower = CmpLower
@@ -254,9 +255,9 @@ do -- DumpTableFunc
 	mode = -1 to append or nil to overwrite (default: append)
 	limit = how far down the rabbit hole (default 3)
 	]]
-	function ChoGGi.ComFuncs.DumpTable(obj, mode, limit)
+	function ChoGGi_Funcs.Common.DumpTable(obj, mode, limit)
 		if blacklist then
-			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.DumpTable")
+			ChoGGi_Funcs.Common.BlacklistMsg("ChoGGi_Funcs.Common.DumpTable")
 			return
 		end
 		if type(obj) ~= "table" then
@@ -301,7 +302,7 @@ do -- DumpTableFunc
 end --do
 
 -- returns table with list of files without path or ext and path, or exclude ext to return all files
-function ChoGGi.ComFuncs.RetFilesInFolder(folder, ext)
+function ChoGGi_Funcs.Common.RetFilesInFolder(folder, ext)
 	local err, files = g_env.AsyncListFiles(folder, ext and "*" .. ext or "*")
 	if not err and #files > 0 then
 		local table_path = {}
@@ -323,7 +324,7 @@ function ChoGGi.ComFuncs.RetFilesInFolder(folder, ext)
 	end
 end
 
-function ChoGGi.ComFuncs.RetFoldersInFolder(folder)
+function ChoGGi_Funcs.Common.RetFoldersInFolder(folder)
 	local err, folders = g_env.AsyncListFiles(folder, "*", "folders")
 	if not err and #folders > 0 then
 		local table_path = {}
@@ -338,7 +339,7 @@ function ChoGGi.ComFuncs.RetFoldersInFolder(folder)
 	end
 end
 
-function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list, parent)
+function ChoGGi_Funcs.Common.OpenInMonitorInfoDlg(list, parent)
 	if type(list) ~= "table" then
 		return
 	end
@@ -355,7 +356,7 @@ function ChoGGi.ComFuncs.OpenInMonitorInfoDlg(list, parent)
 	})
 end
 
-function ChoGGi.ComFuncs.OpenInDTMSlotsDlg(parent)
+function ChoGGi_Funcs.Common.OpenInDTMSlotsDlg(parent)
 	-- If fired from action menu
 	if parent and (IsKindOf(parent, "XAction") or not IsKindOf(parent, "XWindow")) then
 		parent = nil
@@ -366,15 +367,15 @@ function ChoGGi.ComFuncs.OpenInDTMSlotsDlg(parent)
 	})
 end
 
-function ChoGGi.ComFuncs.MonitorThreads()
+function ChoGGi_Funcs.Common.MonitorThreads()
 	local table_list = {}
-	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list, {
+	local dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(table_list, {
 		has_params = true,
 		auto_refresh = true,
 		title = T(302535920000853--[[Monitor]]) .. ": ThreadsRegister",
 	})
 
-	local RetThreadInfo = ChoGGi.ComFuncs.RetThreadInfo
+	local RetThreadInfo = ChoGGi_Funcs.Common.RetThreadInfo
 
 	CreateRealTimeThread(function()
 		-- stop when dialog is closed
@@ -410,19 +411,19 @@ end
 
 -- sortby: nil = table length, 1 = table names
 -- skip_under: don't show any tables under this length (default 25)
---~ 	ChoGGi.ComFuncs.MonitorTableLength(_G)
-function ChoGGi.ComFuncs.MonitorTableLength(obj, skip_under, sortby, title)
+--~ 	ChoGGi_Funcs.Common.MonitorTableLength(_G)
+function ChoGGi_Funcs.Common.MonitorTableLength(obj, skip_under, sortby, title)
 	obj = obj or g_env
 	title = title or RetName(obj)
 	skip_under = skip_under or 25
 	local table_list = {}
-	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(table_list, {
+	local dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(table_list, {
 		has_params = true,
 		auto_refresh = true,
 		title = title,
 	})
 
-	local PadNumWithZeros = ChoGGi.ComFuncs.PadNumWithZeros
+	local PadNumWithZeros = ChoGGi_Funcs.Common.PadNumWithZeros
 
 	CreateRealTimeThread(function()
 		-- stop when dialog is closed
@@ -456,12 +457,12 @@ function ChoGGi.ComFuncs.MonitorTableLength(obj, skip_under, sortby, title)
 	end)
 end
 
-function ChoGGi.ComFuncs.SetParticles(obj)
+function ChoGGi_Funcs.Common.SetParticles(obj)
 	-- If fired from action menu
 	if IsKindOf(obj, "XAction") then
-		obj = ChoGGi.ComFuncs.SelObject()
+		obj = ChoGGi_Funcs.Common.SelObject()
 	else
-		obj = obj or ChoGGi.ComFuncs.SelObject()
+		obj = obj or ChoGGi_Funcs.Common.SelObject()
 	end
 
 	local name = T(302535920000129--[[Set]]) .. " " .. T(302535920001184--[[Particles]])
@@ -552,7 +553,7 @@ function ChoGGi.ComFuncs.SetParticles(obj)
 		MsgPopup(action,name)
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = name,
@@ -563,7 +564,7 @@ function ChoGGi.ComFuncs.SetParticles(obj)
 end
 
 -- toggles console when it has focus (otherwise focuses on the console)
-function ChoGGi.ComFuncs.ToggleConsole(show)
+function ChoGGi_Funcs.Common.ToggleConsole(show)
 	local dlg = dlgConsole
 	local visible = dlg and dlg:GetVisible()
 
@@ -581,7 +582,7 @@ function ChoGGi.ComFuncs.ToggleConsole(show)
 end
 
 -- toggle visiblity of console log
-function ChoGGi.ComFuncs.ToggleConsoleLog()
+function ChoGGi_Funcs.Common.ToggleConsoleLog()
 	local log = dlgConsoleLog
 	if log then
 		if log:GetVisible() then
@@ -597,12 +598,12 @@ end
 -- Any png files in AppData/Logos folder will be added to mod as converted logo files.
 -- They have to be min of 8bit, and be resized to power of 2 (add transparent space).
 -- This doesn't add anything to metadata/items lua, it only converts files.
---~ 	ChoGGi.ComFuncs.ConvertImagesToLogoFiles("MOD_ID")
---~ 	ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.MOD_ID, ".tga")
---~ ChoGGi.ComFuncs.ConvertImagesToLogoFiles(Mods.ChoGGi_)
-function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod, ext)
+--~ 	ChoGGi_Funcs.Common.ConvertImagesToLogoFiles("MOD_ID")
+--~ 	ChoGGi_Funcs.Common.ConvertImagesToLogoFiles(Mods.MOD_ID, ".tga")
+--~ ChoGGi_Funcs.Common.ConvertImagesToLogoFiles(Mods.ChoGGi_)
+function ChoGGi_Funcs.Common.ConvertImagesToLogoFiles(mod, ext)
 	if blacklist then
-		ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.ConvertImagesToLogoFiles")
+		ChoGGi_Funcs.Common.BlacklistMsg("ChoGGi_Funcs.Common.ConvertImagesToLogoFiles")
 		return
 	end
 	--
@@ -613,7 +614,7 @@ function ChoGGi.ComFuncs.ConvertImagesToLogoFiles(mod, ext)
 		mod = Mods[mod]
 	end
 	--
-	local images = ChoGGi.ComFuncs.RetFilesInFolder("AppData/Logos", ext or ".png")
+	local images = ChoGGi_Funcs.Common.RetFilesInFolder("AppData/Logos", ext or ".png")
 	if images then
 		-- returns error msgs and prints in console
 		local TGetID = TGetID
@@ -662,7 +663,7 @@ end
 do -- ConvertImagesToResEntities
 	-- converts png images (512x512) to an entity you can use to replace deposit signs.
 	local ConvertToOSPath = ConvertToOSPath
-	local RetFilesInFolder = ChoGGi.ComFuncs.RetFilesInFolder
+	local RetFilesInFolder = ChoGGi_Funcs.Common.RetFilesInFolder
 --~ 	ModItemDecalEntity:Import
 	local function ModItemDecalEntityImport(name, filename, mod)
 		local output_dir = ConvertToOSPath(mod.content_path)
@@ -748,12 +749,12 @@ do -- ConvertImagesToResEntities
 		end
 	end
 
---~ 	ChoGGi.ComFuncs.ConvertImagesToResEntities("ChoGGi_ExampleNewResIcon")
---~ 	ChoGGi.ComFuncs.ConvertImagesToResEntities("MOD_ID")
---~ 	ChoGGi.ComFuncs.ConvertImagesToResEntities(Mods.MOD_ID, ".tga")
-	function ChoGGi.ComFuncs.ConvertImagesToResEntities(mod, ext)
+--~ 	ChoGGi_Funcs.Common.ConvertImagesToResEntities("ChoGGi_ExampleNewResIcon")
+--~ 	ChoGGi_Funcs.Common.ConvertImagesToResEntities("MOD_ID")
+--~ 	ChoGGi_Funcs.Common.ConvertImagesToResEntities(Mods.MOD_ID, ".tga")
+	function ChoGGi_Funcs.Common.ConvertImagesToResEntities(mod, ext)
 		if blacklist then
-			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.ConvertImagesToResEntities")
+			ChoGGi_Funcs.Common.BlacklistMsg("ChoGGi_Funcs.Common.ConvertImagesToResEntities")
 			return
 		end
 		mod = mod or Mods.ChoGGi_
@@ -782,7 +783,7 @@ do -- DisplayObjectImages
 	local CmpLower = CmpLower
 	local getmetatable = getmetatable
 	local images_table
-	local ImageExts = ChoGGi.ComFuncs.ImageExts
+	local ImageExts = ChoGGi_Funcs.Common.ImageExts
 
 	-- grab any strings with the correct ext
 	local function AddToList(c, key, value)
@@ -801,7 +802,7 @@ do -- DisplayObjectImages
 		return c
 	end
 
-	function ChoGGi.ComFuncs.DisplayObjectImages(obj, parent, images)
+	function ChoGGi_Funcs.Common.DisplayObjectImages(obj, parent, images)
 		images_table = images or {
 			dupes = {},
 		}
@@ -825,11 +826,11 @@ do -- DisplayObjectImages
 
 		-- and sort
 		if images_table[1] then
-			ChoGGi.ComFuncs.TableCleanDupes(images_table)
+			ChoGGi_Funcs.Common.TableCleanDupes(images_table)
 			table.sort(images_table, function(a, b)
 				return CmpLower(a.name, b.name)
 			end)
-			ChoGGi.ComFuncs.OpenInImageViewerDlg(images_table, parent)
+			ChoGGi_Funcs.Common.OpenInImageViewerDlg(images_table, parent)
 			return true
 		end
 		return false
@@ -837,11 +838,11 @@ do -- DisplayObjectImages
 	end
 end -- do
 
-function ChoGGi.ComFuncs.MoveObjToGround(obj)
+function ChoGGi_Funcs.Common.MoveObjToGround(obj)
 	obj:SetZ(obj:GetPos():SetTerrainZ())
 end
 
-function ChoGGi.ComFuncs.GetDesktopWindow(class)
+function ChoGGi_Funcs.Common.GetDesktopWindow(class)
 	local desktop = terminal.desktop
 	return desktop[table.find(desktop, "class", class)]
 end
@@ -889,7 +890,7 @@ do -- RetThreadInfo/FindThreadFunc
 	end
 
 	-- returns some info if blacklist enabled
-	function ChoGGi.ComFuncs.RetThreadInfo(thread)
+	function ChoGGi_Funcs.Common.RetThreadInfo(thread)
 		if type(thread) ~= "thread" then
 			return empty_table
 		end
@@ -958,7 +959,7 @@ do -- RetThreadInfo/FindThreadFunc
 	end
 
 	-- find/return func if str in func name
-	function ChoGGi.ComFuncs.FindThreadFunc(thread, str)
+	function ChoGGi_Funcs.Common.FindThreadFunc(thread, str)
 		-- needs an empty table to work it's magic
 		GedInspectedObjects[thread] = {}
 		-- returns a table of the funcs in the thread
@@ -978,7 +979,7 @@ do -- DebugGetInfo
 	local format_value = format_value
 
 	-- this replaces the func added in my library mod (which is just a straight format_value)
-	function ChoGGi.ComFuncs.DebugGetInfo(obj)
+	function ChoGGi_Funcs.Common.DebugGetInfo(obj)
 		if not obj then
 			return
 		end
@@ -1036,9 +1037,9 @@ do -- ReturnTechAmount/GetResearchedTechValue
 			return number
 		end
 	end
-	ChoGGi.ComFuncs.ReturnTechAmount = ReturnTechAmount
+	ChoGGi_Funcs.Common.ReturnTechAmount = ReturnTechAmount
 
-	function ChoGGi.ComFuncs.GetResearchedTechValue(name, cls)
+	function ChoGGi_Funcs.Common.GetResearchedTechValue(name, cls)
 		local ChoGGi_Consts = ChoGGi.Consts
 		local IsTechResearched = IsTechResearched
 
@@ -1185,7 +1186,7 @@ do -- ReturnTechAmount/GetResearchedTechValue
 	end
 end -- do
 
-function ChoGGi.ComFuncs.RetBuildingPermissions(traits, settings)
+function ChoGGi_Funcs.Common.RetBuildingPermissions(traits, settings)
 	settings.restricttraits = settings.restricttraits or {}
 	settings.blocktraits = settings.blocktraits or {}
 	traits = traits or {}
@@ -1245,25 +1246,25 @@ do -- ShowAnimDebug_Toggle
 	end
 
 	local function AnimDebug_ShowAll(cls, colour)
-		local objs = ChoGGi.ComFuncs.MapGet(cls)
+		local objs = ChoGGi_Funcs.Common.MapGet(cls)
 		for i = 1, #objs do
 			AnimDebug_Show(objs[i], colour)
 		end
 	end
 
 	local function AnimDebug_HideAll(cls)
-		local objs = ChoGGi.ComFuncs.MapGet(cls)
+		local objs = ChoGGi_Funcs.Common.MapGet(cls)
 		for i = 1, #objs do
 			AnimDebug_Hide(objs[i])
 		end
 	end
 
-	function ChoGGi.ComFuncs.ShowAnimDebug_Toggle(obj, params)
+	function ChoGGi_Funcs.Common.ShowAnimDebug_Toggle(obj, params)
 		-- If fired from action menu
 		if IsKindOf(obj, "XAction") then
-			obj = ChoGGi.ComFuncs.SelObject()
+			obj = ChoGGi_Funcs.Common.SelObject()
 		else
-			obj = obj or ChoGGi.ComFuncs.SelObject()
+			obj = obj or ChoGGi_Funcs.Common.SelObject()
 		end
 		if not OText then
 			OText = ChoGGi_OText
@@ -1271,7 +1272,7 @@ do -- ShowAnimDebug_Toggle
 		params = params or {}
 		params.colour = params.colour or RandomColourLimited()
 
-		SuspendPassEdits("ChoGGi.ComFuncs.ShowAnimDebug_Toggle")
+		SuspendPassEdits("ChoGGi_Funcs.Common.ShowAnimDebug_Toggle")
 		if IsValid(obj) then
 			if not obj:GetAnimDebug() then
 				return
@@ -1296,7 +1297,7 @@ do -- ShowAnimDebug_Toggle
 				AnimDebug_HideAll("CargoShuttle")
 			end
 		end
-		ResumePassEdits("ChoGGi.ComFuncs.ShowAnimDebug_Toggle")
+		ResumePassEdits("ChoGGi_Funcs.Common.ShowAnimDebug_Toggle")
 	end
 end -- do
 
@@ -1317,7 +1318,7 @@ do -- ChangeSurfaceSignsToMaterials
 		end)
 	end
 
-	function ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials()
+	function ChoGGi_Funcs.Common.ChangeSurfaceSignsToMaterials()
 
 		local item_list = {
 			{text = T(754117323318--[[Enable]]), value = true, hint = T(302535920001081--[[Changes signs to materials.]])},
@@ -1328,7 +1329,7 @@ do -- ChangeSurfaceSignsToMaterials
 			if choice.nothing_selected then
 				return
 			end
-			SuspendPassEdits("ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials")
+			SuspendPassEdits("ChoGGi_Funcs.Common.ChangeSurfaceSignsToMaterials")
 			if choice[1].value then
 				ChangeEntity("SubsurfaceDepositWater", "DecSpider_01")
 				ChangeEntity("SubsurfaceDepositMetals", "DecDebris_01")
@@ -1348,10 +1349,10 @@ do -- ChangeSurfaceSignsToMaterials
 				ResetEntity("SubsurfaceAnomaly_aliens")
 				ResetEntity("SubsurfaceAnomaly_complete")
 			end
-			ResumePassEdits("ChoGGi.ComFuncs.ChangeSurfaceSignsToMaterials")
+			ResumePassEdits("ChoGGi_Funcs.Common.ChangeSurfaceSignsToMaterials")
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = T(302535920001083--[[Change Surface Signs]]),
@@ -1359,7 +1360,7 @@ do -- ChangeSurfaceSignsToMaterials
 	end
 end -- do
 
-function ChoGGi.ComFuncs.UpdateServiceComfortBld(obj, service_stats)
+function ChoGGi_Funcs.Common.UpdateServiceComfortBld(obj, service_stats)
 	if not obj or not service_stats then
 		return
 	end
@@ -1398,7 +1399,7 @@ function ChoGGi.ComFuncs.UpdateServiceComfortBld(obj, service_stats)
 
 end
 
-function ChoGGi.ComFuncs.BlacklistMsg(msg)
+function ChoGGi_Funcs.Common.BlacklistMsg(msg)
 	msg = Translate(302535920000242--[[%s is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access.]]):format(msg)
 	MsgPopup(msg,T(302535920000000--[[Expanded Cheat Menu]]))
 	print(msg)
@@ -1406,13 +1407,19 @@ end
 
 do -- ToggleFuncHook
 	-- counts funcs calls, and keeps a table of func|line num
+	-- call as is ToggleFuncHook()
+	-- or with a path to lua files you want to monitor
+	-- ChoGGi_Funcs.Common.ToggleFuncHook("@Mars/")
+	-- ChoGGi_Funcs.Common.ToggleFuncHook("@CommonLua/")
+	-- default path:
+	-- ChoGGi_Funcs.Common.ToggleFuncHook("@AppData/Mods/")
 	local func_table = {}
 	local func_str_c = 0
 	local func_str = {}
 
-	function ChoGGi.ComFuncs.ToggleFuncHook(path, line, mask, count)
+	function ChoGGi_Funcs.Common.ToggleFuncHook(path, line, mask, count)
 		if blacklist then
-			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.ToggleFuncHook")
+			ChoGGi_Funcs.Common.BlacklistMsg("ChoGGi_Funcs.Common.ToggleFuncHook")
 			return
 		end
 
@@ -1463,25 +1470,28 @@ do -- ToggleFuncHook
 			debug.sethook(hook_func, mask or "c", count)
 		else
 			print(Translate(302535920000498--[[Hook Stopped]]), path, line, mask, count)
-			MsgPopup(T(302535920000498--[[Hook Stopped]]), T(1000113--[[Debug]]))
+			MsgPopup(
+				T(302535920000498--[[Hook Stopped]]),
+				T(1000113--[[Debug]])
+			)
 			ChoGGi.Temp.FunctionsHooked = false
 
 			-- stop capture
 			debug.sethook()
 
 			-- add stringed funcs call order text
-			func_table.__order = {
+			func_table["@@    list_func_call_order"] = {
 				ChoGGi_AddHyperLink = true,
-				name = T(302535920000234--[[Monitor Func Calls]]),
+				name = Translate(302535920000234--[[Monitor Func Calls]]),
 				hint = "Shows list of func calls in order of called.",
 --~				func = function(self, button, obj, argument, hyperlink_box, pos)
 				func = function()
-					ChoGGi.ComFuncs.OpenInExamineDlg(func_str, nil, T(302535920000234--[[Monitor Func Calls]]))
+					ChoGGi_Funcs.Common.OpenInExamineDlg(func_str, nil, Translate(302535920000234--[[Monitor Func Calls]]))
 				end,
 			}
 
 			-- view the results
-			ChoGGi.ComFuncs.OpenInExamineDlg(func_table, nil, "Func call count (" .. #func_table .. ")")
+			ChoGGi_Funcs.Common.OpenInExamineDlg(func_table, nil, "Func call count (" .. func_str_c .. ")")
 
 		end
 	end
@@ -1490,7 +1500,7 @@ end -- do
 do -- PrintToFunc_Add/PrintToFunc_Remove
 	local ValueToLuaCode = ValueToLuaCode
 
-	function ChoGGi.ComFuncs.PrintToFunc_Remove(name, parent)
+	function ChoGGi_Funcs.Common.PrintToFunc_Remove(name, parent)
 		name = tostring(name)
 		local saved_name = name .. "_ChoGGi_savedfunc"
 
@@ -1502,7 +1512,7 @@ do -- PrintToFunc_Add/PrintToFunc_Remove
 
 	end
 
-	function ChoGGi.ComFuncs.PrintToFunc_Add(func, name, parent, func_name, params)
+	function ChoGGi_Funcs.Common.PrintToFunc_Add(func, name, parent, func_name, params)
 		name = tostring(name)
 		local saved_name = name .. "_ChoGGi_savedfunc"
 
@@ -1575,7 +1585,7 @@ do -- PrintToFunc_Add/PrintToFunc_Remove
 end -- do
 
 do -- TestLocaleFile
---~ ChoGGi.ComFuncs.TestLocaleFile(Mods["bMPAkJP"].env.CurrentModPath .. "Locale/TraduzioneItaliano.csv", true)
+--~ ChoGGi_Funcs.Common.TestLocaleFile(Mods["bMPAkJP"].env.CurrentModPath .. "Locale/TraduzioneItaliano.csv", true)
 	local my_locale = ChoGGi.library_path .. "Locales/English.csv"
 	local csv_load_fields = {
 		"id",
@@ -1740,11 +1750,11 @@ do -- TestLocaleFile
 		return csv_failed, rows
 	end
 
-	function ChoGGi.ComFuncs.TestLocaleFile(filepath, test_csv, language)
+	function ChoGGi_Funcs.Common.TestLocaleFile(filepath, test_csv, language)
 		if not filepath then
 			if testing then
 				local locale_path = ChoGGi.library_path .. "Locales/" .. ChoGGi.lang .. ".csv"
-				if ChoGGi.ComFuncs.FileExists(locale_path) then
+				if ChoGGi_Funcs.Common.FileExists(locale_path) then
 					filepath = locale_path
 				else
 					filepath = my_locale
@@ -1761,7 +1771,7 @@ do -- TestLocaleFile
 		local loaded_csv
 		if test_csv then
 			if blacklist then
-				ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.TestLocaleFile(test_csv)")
+				ChoGGi_Funcs.Common.BlacklistMsg("ChoGGi_Funcs.Common.TestLocaleFile(test_csv)")
 			else
 				test_csv, loaded_csv = TestCSV(filepath, test_csv)
 			end
@@ -1814,7 +1824,7 @@ It's a tradeoff between erroneous errors and the game locking up."]])
 			results.csv_failed = test_csv
 		end
 
-		ChoGGi.ComFuncs.OpenInExamineDlg(results, nil, title)
+		ChoGGi_Funcs.Common.OpenInExamineDlg(results, nil, title)
 	end
 end -- do
 
@@ -1828,7 +1838,7 @@ do -- ToggleObjLines
 		end
 		rawset(obj, "ChoGGi_ObjListLine", nil)
 	end
-	ChoGGi.ComFuncs.ObjListLines_Clear = ObjListLines_Clear
+	ChoGGi_Funcs.Common.ObjListLines_Clear = ObjListLines_Clear
 
 	local function ObjListLines_Add(list, obj, colour)
 		local vertices = {}
@@ -1866,7 +1876,7 @@ do -- ToggleObjLines
 		obj.ChoGGi_ObjListLine = line
 	end
 
-	function ChoGGi.ComFuncs.ObjListLines_Toggle(objs_list, params)
+	function ChoGGi_Funcs.Common.ObjListLines_Toggle(objs_list, params)
 		params = params or {}
 		params.obj = params.obj or objs_list
 
@@ -1874,12 +1884,12 @@ do -- ToggleObjLines
 			return
 		end
 
-		SuspendPassEdits("ChoGGi.ComFuncs.ObjListLines_Toggle")
+		SuspendPassEdits("ChoGGi_Funcs.Common.ObjListLines_Toggle")
 		ObjListLines_Add(objs_list,
 			params.obj,
 			params.colour or RandomColourLimited()
 		)
-		ResumePassEdits("ChoGGi.ComFuncs.ObjListLines_Toggle")
+		ResumePassEdits("ChoGGi_Funcs.Common.ObjListLines_Toggle")
 	end
 end
 
@@ -1888,7 +1898,7 @@ do -- RetObjectCapAndGrid
 	local visitors = {"Service", "TrainingBuilding"}
 
 	-- mask is a combination of numbers. IsFlagSet(15, num) will match 1 2 4 8
-	function ChoGGi.ComFuncs.RetObjectCapAndGrid(obj, mask)
+	function ChoGGi_Funcs.Common.RetObjectCapAndGrid(obj, mask)
 		if not IsValid(obj) then
 			return
 		end
@@ -1932,7 +1942,7 @@ do -- SetLibraryToolTips
 		"ChoGGi_XDialogSection",
 		"ChoGGi_XWindow",
 	}
-	function ChoGGi.ComFuncs.SetLibraryToolTips()
+	function ChoGGi_Funcs.Common.SetLibraryToolTips()
 		local g = g_env
 
 		local tip = ChoGGi.UserSettings.EnableToolTips and "Rollover" or ""
@@ -1945,7 +1955,7 @@ end -- do
 do -- SetLoadingScreenLog
 	local ChoOrig_WaitLoadingScreenClose = WaitLoadingScreenClose
 
-	function ChoGGi.ComFuncs.SetLoadingScreenLog()
+	function ChoGGi_Funcs.Common.SetLoadingScreenLog()
 
 		-- screws up speed buttons (and maybe other stuff)
 		-- LoadingScreenOpen = empty_func
@@ -1974,11 +1984,11 @@ do -- SetLoadingScreenLog
 end -- do
 
 -- MonitorFunc (shortcut name in AddedFunctions)
-function ChoGGi.ComFuncs.MonitorFunctionResults(func, ...)
+function ChoGGi_Funcs.Common.MonitorFunctionResults(func, ...)
 	local varargs = ...
 
 	local results_list = {}
-	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(results_list, {
+	local dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(results_list, {
 		has_params = true,
 		auto_refresh = true,
 		title = T(302535920000853--[[Monitor]]) .. " " .. T(302535920000110--[[Function Results]]),
@@ -1988,7 +1998,7 @@ function ChoGGi.ComFuncs.MonitorFunctionResults(func, ...)
 		-- stop when dialog is closed
 		while IsValidXWin(dlg) do
 			-- only update when it's our dlg sending the msg
-			local _,msg_dlg = WaitMsg("ChoGGi_dlgs_examine_autorefresh")
+			local _, msg_dlg = WaitMsg("ChoGGi_dlgs_examine_autorefresh")
 			if msg_dlg == dlg then
 				table.iclear(results_list)
 				local results = {func(varargs)}
@@ -2001,7 +2011,7 @@ function ChoGGi.ComFuncs.MonitorFunctionResults(func, ...)
 end
 
 -- set UI transparency
-function ChoGGi.ComFuncs.SetDlgTrans(dlg, ...)
+function ChoGGi_Funcs.Common.SetDlgTrans(dlg, ...)
 	if not dlg or dlg and not dlg.class then
 		return dlg, ...
 	end
@@ -2012,7 +2022,7 @@ function ChoGGi.ComFuncs.SetDlgTrans(dlg, ...)
 	return dlg, ...
 end
 
-function ChoGGi.ComFuncs.CheckForBorkedTransportPath(obj, list)
+function ChoGGi_Funcs.Common.CheckForBorkedTransportPath(obj, list)
 	CreateRealTimeThread(function()
 		-- let it sleep for awhile
 		Sleep(100)
@@ -2038,9 +2048,9 @@ do -- DisplayMonitorList
 		end
 	end
 
-	function ChoGGi.ComFuncs.DisplayMonitorList(value, parent)
+	function ChoGGi_Funcs.Common.DisplayMonitorList(value, parent)
 		if value == "New" then
-			ChoGGi.ComFuncs.MsgWait(
+			ChoGGi_Funcs.Common.MsgWait(
 				Translate(302535920000033--[[Post a request on Nexus or Github or send an email to: %s]]):format(ChoGGi.email),
 				T(302535920000034--[[Request]])
 			)
@@ -2168,12 +2178,12 @@ do -- DisplayMonitorList
 			if not IsKindOf(parent, "XWindow") then
 				parent = nil
 			end
-			ChoGGi.ComFuncs.OpenInMonitorInfoDlg(info, parent)
+			ChoGGi_Funcs.Common.OpenInMonitorInfoDlg(info, parent)
 		end
 	end
 end -- do
 
-function ChoGGi.ComFuncs.RetLastLineFromStr(str, text)
+function ChoGGi_Funcs.Common.RetLastLineFromStr(str, text)
 	if not str then
 		return
 	end
@@ -2203,7 +2213,7 @@ do -- RetLangTable
 		[7] = "gender"
 	}
 
-	function ChoGGi.ComFuncs.RetLangTable(filepath)
+	function ChoGGi_Funcs.Common.RetLangTable(filepath)
 		table.iclear(loaded)
 		table.iclear(translate_gen)
 		LoadCSV(filepath, loaded, csv_load_fields, "omit_captions")
@@ -2213,7 +2223,7 @@ do -- RetLangTable
 	end
 end -- do
 
-function ChoGGi.ComFuncs.AttachSpireFrame(obj)
+function ChoGGi_Funcs.Common.AttachSpireFrame(obj)
 	local frame = SpireFrame:new()
 	obj:Attach(frame)
 	frame:ChangeEntity("TempleSpireFrame")
@@ -2222,7 +2232,7 @@ function ChoGGi.ComFuncs.AttachSpireFrame(obj)
 	return frame
 end
 
-function ChoGGi.ComFuncs.AttachSpireFrameOffset(obj)
+function ChoGGi_Funcs.Common.AttachSpireFrameOffset(obj)
 	if obj[1] then
 		obj = obj[1]
 	end
@@ -2296,7 +2306,7 @@ end
 --~ 		end
 --~ 	end
 
---~ 	function ChoGGi.ComFuncs.ExpandModOptions(XTemplates_param)
+--~ 	function ChoGGi_Funcs.Common.ExpandModOptions(XTemplates_param)
 --~ 		XTemplates_param = XTemplates_param or XTemplates
 
 --~ 		local xtemplate = XTemplates_param.PropBool[1]
@@ -2345,10 +2355,10 @@ do -- UnpublishParadoxMod
 
 	-- platform = "any" for pc/xbox, "windows" for only pc
 	-- mod_title = name of mod on paradox platform
---~ ChoGGi.ComFuncs.UnpublishParadoxMod("Fix Food Depot Centipede")
-	function ChoGGi.ComFuncs.UnpublishParadoxMod(mod_title, platform)
+--~ ChoGGi_Funcs.Common.UnpublishParadoxMod("Fix Food Depot Centipede")
+	function ChoGGi_Funcs.Common.UnpublishParadoxMod(mod_title, platform)
 		if blacklist then
-			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.UnpublishParadoxMod")
+			ChoGGi_Funcs.Common.BlacklistMsg("ChoGGi_Funcs.Common.UnpublishParadoxMod")
 			return
 		end
 
@@ -2362,7 +2372,7 @@ do -- UnpublishParadoxMod
 
 		local function CallBackFunc(answer)
 			if answer then
-				ChoGGi.ComFuncs.WaitForParadoxLogin()
+				ChoGGi_Funcs.Common.WaitForParadoxLogin()
 
 				if not platform then
 					platform = "any"
@@ -2380,7 +2390,7 @@ do -- UnpublishParadoxMod
 				end
 			end
 		end
-		ChoGGi.ComFuncs.QuestionBox(
+		ChoGGi_Funcs.Common.QuestionBox(
 			T(6779--[[Warning]]) .. "!\n" .. T(672683736395--[[Unpublish from Paradox]]),
 			CallBackFunc,
 			mod_title
@@ -2388,7 +2398,7 @@ do -- UnpublishParadoxMod
 	end
 end -- do
 
-function ChoGGi.ComFuncs.VerticalCheatMenu_Toggle(toggle)
+function ChoGGi_Funcs.Common.VerticalCheatMenu_Toggle(toggle)
 	if ChoGGi.what_game ~= "Mars" then
 		return
 	end
@@ -2442,7 +2452,7 @@ function ChoGGi.ComFuncs.VerticalCheatMenu_Toggle(toggle)
 	menubuttons:SetUniformColumnWidth(false)
 end
 
-function ChoGGi.ComFuncs.DisableBuildingsDie()
+function ChoGGi_Funcs.Common.DisableBuildingsDie()
 	local die = DisabledInEnvironment
 	local blank_die = {"","","",""}
 	local ct = ClassTemplates.Building
@@ -2462,10 +2472,10 @@ function ChoGGi.ComFuncs.DisableBuildingsDie()
 		item.disabled_in_environment4 = ""
 	end
 
-	ChoGGi.ComFuncs.UpdateBuildMenu()
+	ChoGGi_Funcs.Common.UpdateBuildMenu()
 end
 
-function ChoGGi.ComFuncs.WaitForParadoxLogin()
+function ChoGGi_Funcs.Common.WaitForParadoxLogin()
 	-- wait for paradox to login
 	if not g_env.g_ParadoxAccountDetails then
 		local wait_count = 0
@@ -2485,7 +2495,7 @@ function ChoGGi.ComFuncs.WaitForParadoxLogin()
 	end
 end
 
-function ChoGGi.ComFuncs.InfopanelToolbarConstrain_Toggle(toggle)
+function ChoGGi_Funcs.Common.InfopanelToolbarConstrain_Toggle(toggle)
 	if what_game ~= "Mars" then
 		return
 	end

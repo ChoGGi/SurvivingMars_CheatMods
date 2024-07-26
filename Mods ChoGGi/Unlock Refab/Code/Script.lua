@@ -21,8 +21,11 @@ local function StartupCode()
 	end
 
 	-- Find refab button
-	local template = XTemplates.ipBuilding[1][1]
-	local idx = table.find(template, "OnPressParam", "ToggleRefab")
+--~ 	local template = XTemplates.ipBuilding[1][1]
+	local template = XTemplates.ipBuilding[1]
+	-- needed if mod inserts above first entry (for those without B&B)
+	local idx = table.find(template, "class", "XTemplateGroup")
+	idx = table.find(template[idx], "OnPressParam", "ToggleRefab")
 --~ 	ex(template[idx])
 
 	if not g_AvailableDlc.picard then

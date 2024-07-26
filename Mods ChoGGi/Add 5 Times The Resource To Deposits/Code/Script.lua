@@ -36,11 +36,11 @@ function OnMsg.ClassesPostprocess()
 
 	local XTemplates = XTemplates
 	local d = XTemplates.ipSubsurfaceDeposit[1]
-	ChoGGi.ComFuncs.RemoveXTemplateSections(d, "ChoGGi_MultipleAmount")
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(d, "ChoGGi_MultipleAmount")
 	-- check if the buttons were already added (you can have one for each, but meh)
 	d[#d+1] = template
 
 	d = XTemplates.ipTerrainDeposit[1]
-	ChoGGi.ComFuncs.RemoveXTemplateSections(d, "ChoGGi_MultipleAmount")
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(d, "ChoGGi_MultipleAmount")
 	d[#d+1] = template
 end

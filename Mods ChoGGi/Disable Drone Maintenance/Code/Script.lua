@@ -28,11 +28,11 @@ local function SetMain(obj, maintenance)
 end
 
 function OnMsg.ClassesPostprocess()
-	local MapGet = ChoGGi.ComFuncs.MapGet
-	local PopupToggle = ChoGGi.ComFuncs.PopupToggle
-	local RetName = ChoGGi.ComFuncs.RetName
+	local MapGet = ChoGGi_Funcs.Common.MapGet
+	local PopupToggle = ChoGGi_Funcs.Common.PopupToggle
+	local RetName = ChoGGi_Funcs.Common.RetName
 
-	ChoGGi.ComFuncs.AddXTemplate("DisableMaintenance", "ipBuilding", {
+	ChoGGi_Funcs.Common.AddXTemplate("DisableMaintenance", "ipBuilding", {
 		__context_of_kind = "Building",
 		-- only show up for buildings that need maintenance
 		__condition = function (_, context)

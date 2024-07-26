@@ -2,7 +2,7 @@
 
 local max_int = max_int
 local guim = guim
-local SetLandScapingLimits = ChoGGi.ComFuncs.SetLandScapingLimits
+local SetLandScapingLimits = ChoGGi_Funcs.Common.SetLandScapingLimits
 
 local mod_RemoveLandScapingLimits
 local mod_StepSize

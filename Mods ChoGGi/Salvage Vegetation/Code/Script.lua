@@ -2,7 +2,7 @@
 
 local IsValid = IsValid
 local DoneObject = DoneObject
-local GetCursorOrGamePadSelectObj = ChoGGi.ComFuncs.GetCursorOrGamePadSelectObj
+local GetCursorOrGamePadSelectObj = ChoGGi_Funcs.Common.GetCursorOrGamePadSelectObj
 
 local ChoOrig_CanDemolish = DemolishModeDialog.CanDemolish
 function DemolishModeDialog:CanDemolish(pt, obj, ...)

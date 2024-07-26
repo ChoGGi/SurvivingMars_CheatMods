@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
-local SelObjects = ChoGGi.ComFuncs.SelObjects
-local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
+local SelObjects = ChoGGi_Funcs.Common.SelObjects
+local OpenInExamineDlg = ChoGGi_Funcs.Common.OpenInExamineDlg
 local GetCursorWorldPos = GetCursorWorldPos
 local IsValid = IsValid
 local terminal = terminal
@@ -154,7 +154,7 @@ Actions[#Actions+1] = {ActionName = T(302535920000491, "Examine Object"),
 --~ 			-- off centre of central monitor
 --~ 			local width = (terminal.desktop.measure_width or 1920) - (dlg.dialog_width_scaled + 100)
 --~ 			dlg:SetPos(point(width, 100))
---~ 			ChoGGi.ComFuncs.ToggleConsole(true)
+--~ 			ChoGGi_Funcs.Common.ToggleConsole(true)
 		end
 	end,
 	ActionBindable = true,
@@ -330,9 +330,9 @@ Actions[#Actions+1] = {ActionName = T(302535920011641, "Quicksave"),
 			err, savename_filename = SaveAutosaveGame("Quicksave")
 
 			if err then
-				ChoGGi.ComFuncs.MsgPopup(err, T(302535920011641, "Quicksave"))
+				ChoGGi_Funcs.Common.MsgPopup(err, T(302535920011641, "Quicksave"))
 			else
-				ChoGGi.ComFuncs.MsgPopup(savename_filename, T(302535920011641, "Quicksave"), {expiration = 3})
+				ChoGGi_Funcs.Common.MsgPopup(savename_filename, T(302535920011641, "Quicksave"), {expiration = 3})
 			end
 		end)
 	end,
@@ -350,7 +350,7 @@ Actions[#Actions+1] = {ActionName = T(302535920011642, "Quickload"),
 				CloseMenuDialogs()
 			end
       if err then
-				ChoGGi.ComFuncs.MsgWait(err, T(302535920011642, "Quickload"))
+				ChoGGi_Funcs.Common.MsgWait(err, T(302535920011642, "Quickload"))
       end
     end)
 	end,

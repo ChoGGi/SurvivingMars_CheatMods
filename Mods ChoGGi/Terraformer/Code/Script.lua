@@ -46,7 +46,7 @@ Actions[c] = {ActionName = T(302535920000674, "Terrain Editor Toggle"),
 	ActionId = "Terraformer.Terrain Editor Toggle",
 	RolloverText = T(302535920000675, "Opens up the map editor with the brush tool visible."),
 	OnAction = function()
-		ChoGGi.ComFuncs.TerrainEditor_Toggle()
+		ChoGGi_Funcs.Common.TerrainEditor_Toggle()
 		if dlgConsoleLog then
 			dlgConsoleLog:SetVisible(false)
 		end
@@ -60,7 +60,7 @@ Actions[c] = {ActionName = T(302535920000864, "Delete Large Rocks"),
 	replace_matching_id = true,
 	ActionId = "Terraformer.Delete Large Rocks",
 	RolloverText = T(302535920001238, "Removes rocks for that smooth map feel."),
-	OnAction = ChoGGi.ComFuncs.DeleteLargeRocks,
+	OnAction = ChoGGi_Funcs.Common.DeleteLargeRocks,
 	ActionShortcut = "Ctrl-Shift-1",
 	ActionBindable = true,
 }
@@ -70,7 +70,7 @@ Actions[c] = {ActionName = T(302535920001366, "Delete Small Rocks"),
 	replace_matching_id = true,
 	ActionId = "Terraformer.Delete Small Rocks",
 	RolloverText = T(302535920001238, "Removes rocks for that smooth map feel."),
-	OnAction = ChoGGi.ComFuncs.DeleteSmallRocks,
+	OnAction = ChoGGi_Funcs.Common.DeleteSmallRocks,
 	ActionShortcut = "Ctrl-Shift-2",
 	ActionBindable = true,
 }
@@ -80,7 +80,7 @@ Actions[c] = {ActionName = T(302535920000489, "Delete Object(s)"),
 	replace_matching_id = true,
 	ActionId = "Terraformer.Delete Object(s)",
 	RolloverText = T(302535920001238, "Removes most rocks for that smooth map feel (will take about 30 seconds)."),
-	OnAction = ChoGGi.ComFuncs.DeleteObject,
+	OnAction = ChoGGi_Funcs.Common.DeleteObject,
 	ActionShortcut = "Ctrl-Shift-Alt-D",
 	ActionBindable = true,
 }

@@ -2,8 +2,8 @@
 
 local WaitMsg = WaitMsg
 local IsPointNearBuilding = IsPointNearBuilding
-local Random = ChoGGi.ComFuncs.Random
-local CopyTable = ChoGGi.ComFuncs.CopyTable
+local Random = ChoGGi_Funcs.Common.Random
+local CopyTable = ChoGGi_Funcs.Common.CopyTable
 
 -- from SubsurfaceDeposit.lua, but never used anywhere (we'll use it as limits for new deposits)
 local r = const.ResourceScale

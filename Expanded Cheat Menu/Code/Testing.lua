@@ -1,21 +1,28 @@
 -- See LICENSE for terms
 
--- go away... (mostly just benchmarking funcs, though there is the func i use for "Map Images Pack" to make them, probably should put it in ComFuncs)
+-- go away... (mostly just benchmarking funcs, though there is the func i use for "Map Images Pack" to make them, probably should put it in Common)
 
---~ ChoGGi.ComFuncs.ChoGGi.ComFuncs.TickStart("Tick.1")
---~ ChoGGi.ComFuncs.ChoGGi.ComFuncs.TickEnd("Tick.1")
+--~ ChoGGi_Funcs.Common.TickStart("Tick.1")
+--~ ChoGGi_Funcs.Common.TickEnd("Tick.1")
 
 if not ChoGGi.testing then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local what_game = ChoGGi.what_game
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
 local g_env, debug
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	g_env, debug = env, env.debug
+
+--~ 	-- Load up my bug fixes mod
+--~ 	CurrentModDef.options.EnableMod = true
+--~ 	CurrentModDef.options.PlanetaryAnomalyBreakthroughs = true
+--~ 	g_env.loadfile("AppData/Mods/Mods ChoGGi/Fix Bugs/Code/Script.lua", "run_test_script" , CurrentModDef.env)
+--~ 	print("Fix Bugs code enabled!")
 end
 
 -- I fucking hate modal windows
@@ -158,7 +165,7 @@ do -- ExportTranslatedStrings (CSV FILES)
 
 
 	local langs
-	local Translate = ChoGGi.ComFuncs.Translate
+	local Translate = ChoGGi_Funcs.Common.Translate
 
 	local function GetStr(locale_id, str_id)
 		-- I could make this less ugly, but
@@ -178,23 +185,23 @@ do -- ExportTranslatedStrings (CSV FILES)
 		-- lists of str_id > string
 		langs = {
 			en = TranslationTable,
-			br = ChoGGi.ComFuncs.RetLangTable("AppData/Brazilian.csv"),
-			fr = ChoGGi.ComFuncs.RetLangTable("AppData/French.csv"),
-			ge = ChoGGi.ComFuncs.RetLangTable("AppData/German.csv"),
-			po = ChoGGi.ComFuncs.RetLangTable("AppData/Polish.csv"),
-			ru = ChoGGi.ComFuncs.RetLangTable("AppData/Russian.csv"),
-			sc = ChoGGi.ComFuncs.RetLangTable("AppData/Schinese.csv"),
-			sp = ChoGGi.ComFuncs.RetLangTable("AppData/Spanish.csv"),
-			tr = ChoGGi.ComFuncs.RetLangTable("AppData/Turkish.csv"),
+			br = ChoGGi_Funcs.Common.RetLangTable("AppData/Brazilian.csv"),
+			fr = ChoGGi_Funcs.Common.RetLangTable("AppData/French.csv"),
+			ge = ChoGGi_Funcs.Common.RetLangTable("AppData/German.csv"),
+			po = ChoGGi_Funcs.Common.RetLangTable("AppData/Polish.csv"),
+			ru = ChoGGi_Funcs.Common.RetLangTable("AppData/Russian.csv"),
+			sc = ChoGGi_Funcs.Common.RetLangTable("AppData/Schinese.csv"),
+			sp = ChoGGi_Funcs.Common.RetLangTable("AppData/Spanish.csv"),
+			tr = ChoGGi_Funcs.Common.RetLangTable("AppData/Turkish.csv"),
 			-- picard (B&B)
-			br_p = ChoGGi.ComFuncs.RetLangTable("AppData/Brazilian_p.csv"),
-			fr_p = ChoGGi.ComFuncs.RetLangTable("AppData/French_p.csv"),
-			ge_p = ChoGGi.ComFuncs.RetLangTable("AppData/German_p.csv"),
-			po_p = ChoGGi.ComFuncs.RetLangTable("AppData/Polish_p.csv"),
-			ru_p = ChoGGi.ComFuncs.RetLangTable("AppData/Russian_p.csv"),
-			sc_p = ChoGGi.ComFuncs.RetLangTable("AppData/Schinese_p.csv"),
-			sp_p = ChoGGi.ComFuncs.RetLangTable("AppData/Spanish_p.csv"),
-			tr_p = ChoGGi.ComFuncs.RetLangTable("AppData/Turkish_p.csv"),
+			br_p = ChoGGi_Funcs.Common.RetLangTable("AppData/Brazilian_p.csv"),
+			fr_p = ChoGGi_Funcs.Common.RetLangTable("AppData/French_p.csv"),
+			ge_p = ChoGGi_Funcs.Common.RetLangTable("AppData/German_p.csv"),
+			po_p = ChoGGi_Funcs.Common.RetLangTable("AppData/Polish_p.csv"),
+			ru_p = ChoGGi_Funcs.Common.RetLangTable("AppData/Russian_p.csv"),
+			sc_p = ChoGGi_Funcs.Common.RetLangTable("AppData/Schinese_p.csv"),
+			sp_p = ChoGGi_Funcs.Common.RetLangTable("AppData/Spanish_p.csv"),
+			tr_p = ChoGGi_Funcs.Common.RetLangTable("AppData/Turkish_p.csv"),
 		}
 
 		local time = os.time()
@@ -323,7 +330,7 @@ function ChoGGi.testing.ExportBuildingFootprints()
 	-- show position grid
 --~ 	local action = XAction:new()
 --~ 	action.setting_mask = "position"
---~ 	ChoGGi.ComFuncs.BuildableHexGrid(action)
+--~ 	ChoGGi_Funcs.Common.BuildableHexGrid(action)
 
 --~ 	LightmodelPresets.TheMartian1_Night.exterior_envmap = nil
 --~ 	SetLightmodelOverride(1, "TheMartian1_Night")
@@ -373,7 +380,7 @@ function ChoGGi.testing.ExportBuildingFootprints()
 	local WaitMsg = WaitMsg
 	local Sleep = Sleep
 	local SetCamera = SetCamera
-	local ObjHexShape_Toggle = ChoGGi.ComFuncs.ObjHexShape_Toggle
+	local ObjHexShape_Toggle = ChoGGi_Funcs.Common.ObjHexShape_Toggle
 
 	local HexOutlineShapes = HexOutlineShapes
 
@@ -438,8 +445,8 @@ function ChoGGi.testing.ExportBuildingFootprints()
 		end
 
 			Sleep(50)
-			ChoGGi.ComFuncs.ObjHexShape_Clear(obj)
-			ChoGGi.ComFuncs.DeleteObject(obj)
+			ChoGGi_Funcs.Common.ObjHexShape_Clear(obj)
+			ChoGGi_Funcs.Common.DeleteObject(obj)
 	end)
 
 end
@@ -525,7 +532,7 @@ local function Screenie(map)
 		SetCamera(table.unpack(cam_params))
 --~ 	end
 
-	ChoGGi.ComFuncs.CloseDialogsECM()
+	ChoGGi_Funcs.Common.CloseDialogsECM()
 	-- and a bit more delay
 	Sleep(1000)
 	WaitMsg("OnRender")
@@ -598,21 +605,21 @@ end)
 --~ 	)
 --~ 	print(AsyncDecompress(str))
 --~
---~ 	ChoGGi.ComFuncs.Dump(str, nil, "DumpedLua", "lua")
+--~ 	ChoGGi_Funcs.Common.Dump(str, nil, "DumpedLua", "lua")
 
 
 
 -- benchmarking stuff
 function ChoGGi.testing.ConcatingTables()
-	ChoGGi.ComFuncs.TickStart("ConcatingTables.1.Tick")
+	ChoGGi_Funcs.Common.TickStart("ConcatingTables.1.Tick")
 	for i = 1, 100000 do
 		local str = "AAAA" .. "BBBB" .. "CCCCC" .. "DDDDD" .. i .. "FFFFFFF" .. "GGGGGGGG" .. "EEEEEEEEE" .. "JJJJJJJJJJ"
     if str then
     end
 	end
-	ChoGGi.ComFuncs.TickEnd("ConcatingTables.1.Tick")
+	ChoGGi_Funcs.Common.TickEnd("ConcatingTables.1.Tick")
 
-	ChoGGi.ComFuncs.TickStart("ConcatingTables.2.Tick")
+	ChoGGi_Funcs.Common.TickStart("ConcatingTables.2.Tick")
 	local text_table = {"AAAA","BBBB","CCCCC","","DDDDD","FFFFFFF","GGGGGGGG","EEEEEEEEE","JJJJJJJJJJ",}
 	for i = 1, 100000 do
 		text_table[5] = i
@@ -620,7 +627,7 @@ function ChoGGi.testing.ConcatingTables()
     if str then
     end
   end
-	ChoGGi.ComFuncs.TickEnd("ConcatingTables.2.Tick")
+	ChoGGi_Funcs.Common.TickEnd("ConcatingTables.2.Tick")
 end
 
 function ChoGGi.testing.NearestObjFromList()
@@ -633,7 +640,7 @@ function ChoGGi.testing.NearestObjFromList()
 	local base_obj = table.rand(UIColony.city_labels.labels.Building)
 	local obj_pos = base_obj:GetPos()
 
-	ChoGGi.ComFuncs.TickStart("NearestObjFromList.1.Tick")
+	ChoGGi_Funcs.Common.TickStart("NearestObjFromList.1.Tick")
 	local FindNearestObject = FindNearestObject
 	local function NotSelf(obj)
 		return obj ~= base_obj
@@ -642,9 +649,9 @@ function ChoGGi.testing.NearestObjFromList()
 	for _ = 1, 1000 do
 		FindNearestObject(objs, base_obj, NotSelf)
 	end
-	ChoGGi.ComFuncs.TickEnd("NearestObjFromList.1.Tick")
+	ChoGGi_Funcs.Common.TickEnd("NearestObjFromList.1.Tick")
 
-	ChoGGi.ComFuncs.TickStart("NearestObjFromList.2.Tick")
+	ChoGGi_Funcs.Common.TickStart("NearestObjFromList.2.Tick")
 	local max_int = max_int
 
 	for _ = 1, 1000 do
@@ -660,7 +667,7 @@ function ChoGGi.testing.NearestObjFromList()
 			end
 		end
 	end
-	ChoGGi.ComFuncs.TickEnd("NearestObjFromList.2.Tick")
+	ChoGGi_Funcs.Common.TickEnd("NearestObjFromList.2.Tick")
 
 end
 
@@ -669,7 +676,7 @@ function ChoGGi.testing.TableSortVsLoop()
 	local objs = UIColony.city_labels.labels.SurfaceDepositMarker or ""
 
 	-- faster
-	ChoGGi.ComFuncs.TickStart("TableSortVsLoop.1.Tick")
+	ChoGGi_Funcs.Common.TickStart("TableSortVsLoop.1.Tick")
 	for _ = 1, 1000 do
 		local temp_table = table.icopy(objs)
 		local length = max_int
@@ -684,36 +691,36 @@ function ChoGGi.testing.TableSortVsLoop()
 			end
 		end
 	end
-	ChoGGi.ComFuncs.TickEnd("TableSortVsLoop.1.Tick")
+	ChoGGi_Funcs.Common.TickEnd("TableSortVsLoop.1.Tick")
 
-	ChoGGi.ComFuncs.TickStart("TableSortVsLoop.2.Tick")
+	ChoGGi_Funcs.Common.TickStart("TableSortVsLoop.2.Tick")
 		local function SortNearest(a, b)
 			return a:GetDist2D(obj_pos) < b:GetDist2D(obj_pos)
 		end
 		for _ = 1, 1000 do
 			table.sort(table.icopy(objs), SortNearest)
 		end
-	ChoGGi.ComFuncs.TickEnd("TableSortVsLoop.2.Tick")
+	ChoGGi_Funcs.Common.TickEnd("TableSortVsLoop.2.Tick")
 
 end
 
 function ChoGGi.testing.TableCountVsFirst()
 	local list = MapGet(true)
 
-	ChoGGi.ComFuncs.TickStart("TableCountVsFirst.1.Tick")
+	ChoGGi_Funcs.Common.TickStart("TableCountVsFirst.1.Tick")
 	for _ = 1, 1000000 do
 		if #list > 0 then
 		end
 	end
-	ChoGGi.ComFuncs.TickEnd("TableCountVsFirst.1.Tick")
+	ChoGGi_Funcs.Common.TickEnd("TableCountVsFirst.1.Tick")
 
 	-- faster
-	ChoGGi.ComFuncs.TickStart("TableCountVsFirst.2.Tick")
+	ChoGGi_Funcs.Common.TickStart("TableCountVsFirst.2.Tick")
 	for _ = 1, 1000000 do
 		if list[1] then
 		end
 	end
-	ChoGGi.ComFuncs.TickEnd("TableCountVsFirst.2.Tick")
+	ChoGGi_Funcs.Common.TickEnd("TableCountVsFirst.2.Tick")
 
 end
 
@@ -721,25 +728,25 @@ function ChoGGi.testing.NegNumber()
 	local num = 6565421
   local temp
 
-	ChoGGi.ComFuncs.TickStart("NegNumber.Tick.1")
+	ChoGGi_Funcs.Common.TickStart("NegNumber.Tick.1")
 	for _ = 1, 100000000 do
 		temp = 0 - num
 	end
-	ChoGGi.ComFuncs.TickEnd("NegNumber.Tick.1")
+	ChoGGi_Funcs.Common.TickEnd("NegNumber.Tick.1")
 
 	-- maybe faster?
-	ChoGGi.ComFuncs.TickStart("NegNumber.Tick.2")
+	ChoGGi_Funcs.Common.TickStart("NegNumber.Tick.2")
 	for _ = 1, 100000000 do
 		temp = -num
 	end
-	ChoGGi.ComFuncs.TickEnd("NegNumber.Tick.2")
+	ChoGGi_Funcs.Common.TickEnd("NegNumber.Tick.2")
 
 end
 
 function ChoGGi.testing.LengthLocal()
 	local objs = UIColony.city_labels.labels.SurfaceDepositMarker or ""
 
-	ChoGGi.ComFuncs.TickStart("LengthLocal.Tick.1")
+	ChoGGi_Funcs.Common.TickStart("LengthLocal.Tick.1")
 	for _ = 1, 1000000 do
 		local count = #objs
 		if count > 0 then
@@ -749,23 +756,23 @@ function ChoGGi.testing.LengthLocal()
 			end
 		end
 	end
-	ChoGGi.ComFuncs.TickEnd("LengthLocal.Tick.1")
+	ChoGGi_Funcs.Common.TickEnd("LengthLocal.Tick.1")
 
 	-- maybe faster?
-	ChoGGi.ComFuncs.TickStart("LengthLocal.Tick.2")
+	ChoGGi_Funcs.Common.TickStart("LengthLocal.Tick.2")
 	for _ = 1, 1000000 do
 		for i = 1, #objs do
 			if objs[i] then
 			end
 		end
 	end
-	ChoGGi.ComFuncs.TickEnd("LengthLocal.Tick.2")
+	ChoGGi_Funcs.Common.TickEnd("LengthLocal.Tick.2")
 
 end
 
 function ChoGGi.testing.IsKindOfSub()
 
-	ChoGGi.ComFuncs.TickStart("IsKindOfSub.Tick.1")
+	ChoGGi_Funcs.Common.TickStart("IsKindOfSub.Tick.1")
 	local objs = UIColony.city_labels.labels.SurfaceDepositMarker or ""
 	for _ = 1, 100000 do
 		for i = #objs, 1, -1 do
@@ -774,10 +781,10 @@ function ChoGGi.testing.IsKindOfSub()
 			end
 		end
 	end
-	ChoGGi.ComFuncs.TickEnd("IsKindOfSub.Tick.1")
+	ChoGGi_Funcs.Common.TickEnd("IsKindOfSub.Tick.1")
 
 	-- faster
-	ChoGGi.ComFuncs.TickStart("IsKindOfSub.Tick.2")
+	ChoGGi_Funcs.Common.TickStart("IsKindOfSub.Tick.2")
 	objs = UIColony.city_labels.labels.SurfaceDepositMarker or ""
 	for _ = 1, 100000 do
 		for i = #objs, 1, -1 do
@@ -786,7 +793,7 @@ function ChoGGi.testing.IsKindOfSub()
 			end
 		end
 	end
-	ChoGGi.ComFuncs.TickEnd("IsKindOfSub.Tick.2")
+	ChoGGi_Funcs.Common.TickEnd("IsKindOfSub.Tick.2")
 
 end
 
@@ -795,22 +802,22 @@ function ChoGGi.testing.LocalLoops()
 	local AsyncRand = AsyncRand
 
 	-- faster
-	ChoGGi.ComFuncs.TickStart("LocalLoops.Tick.1")
+	ChoGGi_Funcs.Common.TickStart("LocalLoops.Tick.1")
 	for _ = 1, 100000000 do
 		local x = AsyncRand()
 		if x then
 		end
 	end
-	ChoGGi.ComFuncs.TickEnd("LocalLoops.Tick.1")
+	ChoGGi_Funcs.Common.TickEnd("LocalLoops.Tick.1")
 
-	ChoGGi.ComFuncs.TickStart("LocalLoops.Tick.2")
+	ChoGGi_Funcs.Common.TickStart("LocalLoops.Tick.2")
 	local x
 	for _ = 1, 100000000 do
 		x = AsyncRand()
 		if x then
 		end
 	end
-	ChoGGi.ComFuncs.TickEnd("LocalLoops.Tick.2")
+	ChoGGi_Funcs.Common.TickEnd("LocalLoops.Tick.2")
 
 end
 
@@ -819,19 +826,19 @@ function ChoGGi.testing.StringVsDot()
 
 	local lookup_table = {a = true,b = true,c = true,d = true,e = true,f = true}
 
-	ChoGGi.ComFuncs.TickStart("StringVsDot.Tick.1")
+	ChoGGi_Funcs.Common.TickStart("StringVsDot.Tick.1")
 	for _ = 1, 100000000 do
 		if lookup_table["d"] then
 		end
 	end
-	ChoGGi.ComFuncs.TickEnd("StringVsDot.Tick.1")
+	ChoGGi_Funcs.Common.TickEnd("StringVsDot.Tick.1")
 
-	ChoGGi.ComFuncs.TickStart("StringVsDot.Tick.2")
+	ChoGGi_Funcs.Common.TickStart("StringVsDot.Tick.2")
 	for _ = 1, 100000000 do
 		if lookup_table.d then
 		end
 	end
-	ChoGGi.ComFuncs.TickEnd("StringVsDot.Tick.2")
+	ChoGGi_Funcs.Common.TickEnd("StringVsDot.Tick.2")
 
 end
 
@@ -843,43 +850,43 @@ function ChoGGi.testing.LocalVsTableLookup()
 	end
 
 	local nothing
-	ChoGGi.ComFuncs.TickStart("LocalVsTableLookup.Tick.1")
+	ChoGGi_Funcs.Common.TickStart("LocalVsTableLookup.Tick.1")
 	for _ = 1, 100000000 do
 		local lookuped = lookup_table[12345]
 		if lookuped then
 			nothing = lookuped
 		end
 	end
-	ChoGGi.ComFuncs.TickEnd("LocalVsTableLookup.Tick.1")
+	ChoGGi_Funcs.Common.TickEnd("LocalVsTableLookup.Tick.1")
 
 	-- faster
-	ChoGGi.ComFuncs.TickStart("LocalVsTableLookup.Tick.2")
+	ChoGGi_Funcs.Common.TickStart("LocalVsTableLookup.Tick.2")
 	for _ = 1, 100000000 do
 		if lookup_table[12345] then
 			nothing = lookup_table[12345]
 		end
 	end
-	ChoGGi.ComFuncs.TickEnd("LocalVsTableLookup.Tick.2")
+	ChoGGi_Funcs.Common.TickEnd("LocalVsTableLookup.Tick.2")
 
 end
 
 function ChoGGi.testing.ToStr()
 
 	-- faster
-	ChoGGi.ComFuncs.TickStart("ToStr.Tick.1")
+	ChoGGi_Funcs.Common.TickStart("ToStr.Tick.1")
 	for _ = 1, 2000000 do
 		local num = 12345
 		num = num .. ""
 	end
-	ChoGGi.ComFuncs.TickEnd("ToStr.Tick.1")
+	ChoGGi_Funcs.Common.TickEnd("ToStr.Tick.1")
 
-	ChoGGi.ComFuncs.TickStart("ToStr.Tick.2")
+	ChoGGi_Funcs.Common.TickStart("ToStr.Tick.2")
 	local tostring = tostring
 	for _ = 1, 2000000 do
 		local num = 12345
 		num = tostring(num)
 	end
-	ChoGGi.ComFuncs.TickEnd("ToStr.Tick.2")
+	ChoGGi_Funcs.Common.TickEnd("ToStr.Tick.2")
 
 end
 
@@ -888,14 +895,14 @@ function ChoGGi.testing.Attaches(obj)
 	-- local ForEachAttach(function(a), ForEachAttach, GetAttaches
 	-- > 100 = GetAttaches
 
-	obj = obj or ChoGGi.ComFuncs.SelObject()
+	obj = obj or ChoGGi_Funcs.Common.SelObject()
 	if not IsValid(obj) then
 		print("Test.Attaches invalid obj")
 		return
 	end
 
 	-- faster
-	ChoGGi.ComFuncs.TickStart("Attaches.Tick.1")
+	ChoGGi_Funcs.Common.TickStart("Attaches.Tick.1")
 	local function foreach(a)
 		if a.handle then
 		end
@@ -903,19 +910,19 @@ function ChoGGi.testing.Attaches(obj)
 	for _ = 1, 500000 do
 		obj:ForEachAttach(foreach)
 	end
-	ChoGGi.ComFuncs.TickEnd("Attaches.Tick.1")
+	ChoGGi_Funcs.Common.TickEnd("Attaches.Tick.1")
 
 	-- faster
-	ChoGGi.ComFuncs.TickStart("Attaches.Tick.2")
+	ChoGGi_Funcs.Common.TickStart("Attaches.Tick.2")
 	for _ = 1, 500000 do
 		obj:ForEachAttach(function(a)
 			if a.handle then
 			end
 		end)
 	end
-	ChoGGi.ComFuncs.TickEnd("Attaches.Tick.2")
+	ChoGGi_Funcs.Common.TickEnd("Attaches.Tick.2")
 
-	ChoGGi.ComFuncs.TickStart("Attaches.Tick.3")
+	ChoGGi_Funcs.Common.TickStart("Attaches.Tick.3")
 	for _ = 1, 500000 do
 		local attaches = obj:GetAttaches() or ""
 		for i = 1, #attaches do
@@ -924,24 +931,24 @@ function ChoGGi.testing.Attaches(obj)
 			end
 		end
 	end
-	ChoGGi.ComFuncs.TickEnd("Attaches.Tick.3")
+	ChoGGi_Funcs.Common.TickEnd("Attaches.Tick.3")
 end
 
 function ChoGGi.testing.TextExamine()
-	local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
+	local OpenInExamineDlg = ChoGGi_Funcs.Common.OpenInExamineDlg
 	local WaitMsg = WaitMsg
 	local list = MapGet(true)
 
 	CreateRealTimeThread(function()
-		ChoGGi.ComFuncs.TickStart("TextExamine.Tick")
+		ChoGGi_Funcs.Common.TickStart("TextExamine.Tick")
 		for _ = 1, 10 do
-			ChoGGi.ComFuncs.TickStart("TextExamine.1.Tick")
+			ChoGGi_Funcs.Common.TickStart("TextExamine.1.Tick")
 			local dlg = OpenInExamineDlg(list)
 			WaitMsg("OnRender")
 			dlg:delete()
-			ChoGGi.ComFuncs.TickEnd("TextExamine.1.Tick")
+			ChoGGi_Funcs.Common.TickEnd("TextExamine.1.Tick")
 		end
-		ChoGGi.ComFuncs.TickEnd("TextExamine.Tick")
+		ChoGGi_Funcs.Common.TickEnd("TextExamine.Tick")
 	end)
 
 end
@@ -952,36 +959,36 @@ function ChoGGi.testing.TableIterate()
 	local list = MapGet(true)
 
 	--faster
-	ChoGGi.ComFuncs.TickStart("TableIterate.1.Tick")
+	ChoGGi_Funcs.Common.TickStart("TableIterate.1.Tick")
 	for _ = 1, 1000 do
 		for _ = 1, #list do
 		end
 	end
-	ChoGGi.ComFuncs.TickEnd("TableIterate.1.Tick")
+	ChoGGi_Funcs.Common.TickEnd("TableIterate.1.Tick")
 
 	local ipairs = ipairs
-	ChoGGi.ComFuncs.TickStart("TableIterate.2.Tick")
+	ChoGGi_Funcs.Common.TickStart("TableIterate.2.Tick")
 	for _ = 1, 1000 do
 		for _ in ipairs(list) do
 		end
 	end
-	ChoGGi.ComFuncs.TickEnd("TableIterate.2.Tick")
+	ChoGGi_Funcs.Common.TickEnd("TableIterate.2.Tick")
 
 end
 
 function ChoGGi.testing.TableInsert()
 
 	-- faster
-	ChoGGi.ComFuncs.TickStart("TableInsert.1.Tick")
+	ChoGGi_Funcs.Common.TickStart("TableInsert.1.Tick")
 	local t1 = {}
 	local c = 0
 	for i = 0, 10000000 do
 		c = c + 1
 		t1[c] = i
 	end
-	ChoGGi.ComFuncs.TickEnd("TableInsert.1.Tick")
+	ChoGGi_Funcs.Common.TickEnd("TableInsert.1.Tick")
 
-	ChoGGi.ComFuncs.TickStart("TableInsert.2.Tick")
+	ChoGGi_Funcs.Common.TickStart("TableInsert.2.Tick")
 	local rawset = rawset
 	local t2 = {}
 	local c2 = 0
@@ -989,7 +996,7 @@ function ChoGGi.testing.TableInsert()
 		c2 = c2 + 1
 		rawset(t2, c2, i)
 	end
-	ChoGGi.ComFuncs.TickEnd("TableInsert.2.Tick")
+	ChoGGi_Funcs.Common.TickEnd("TableInsert.2.Tick")
 
 end
 
@@ -1019,28 +1026,28 @@ function ChoGGi.testing.Compress(amount)
 	local AsyncCompress = AsyncCompress
 	local AsyncDecompress = AsyncDecompress
 
-	ChoGGi.ComFuncs.TickStart("Compress_lz4.Tick")
+	ChoGGi_Funcs.Common.TickStart("Compress_lz4.Tick")
 	for _ = 1, amount or 50 do
 		local _, lz4_data = AsyncCompress(TableToLuaCode(TranslationTable), false, "lz4")
 		AsyncDecompress(lz4_data)
 	end
-	ChoGGi.ComFuncs.TickEnd("Compress_lz4.Tick")
+	ChoGGi_Funcs.Common.TickEnd("Compress_lz4.Tick")
 
-	ChoGGi.ComFuncs.TickStart("Compress_zstd.Tick")
+	ChoGGi_Funcs.Common.TickStart("Compress_zstd.Tick")
 	for _ = 1, amount or 50 do
 		local _, zstd_data = AsyncCompress(TableToLuaCode(TranslationTable), false, "zstd")
 		AsyncDecompress(zstd_data)
 	end
-	ChoGGi.ComFuncs.TickEnd("Compress_zstd.Tick")
+	ChoGGi_Funcs.Common.TickEnd("Compress_zstd.Tick")
 
 end
 
 function ChoGGi.testing.RandomColour(amount)
-	local RandomColour = ChoGGi.ComFuncs.RandomColour
-	local RandomColour2 = ChoGGi.ComFuncs.RandomColour2
+	local RandomColour = ChoGGi_Funcs.Common.RandomColour
+	local RandomColour2 = ChoGGi_Funcs.Common.RandomColour2
 
-	local TickStart = ChoGGi.ComFuncs.TickStart
-	local TickEnd = ChoGGi.ComFuncs.TickEnd
+	local TickStart = ChoGGi_Funcs.Common.TickStart
+	local TickEnd = ChoGGi_Funcs.Common.TickEnd
 	TickStart("RandomColour.1.Total")
 	for _ = 1, amount or 5 do
 		TickStart("RandomColour.1.Tick")
@@ -1160,17 +1167,17 @@ end
 --~ 			if not procall(function()
 --~ 				ret = orig(self, varargs)
 --~ 			end) then
---~ 				ChoGGi.ComFuncs.Dump(self.text, "w", "ParseText", "lua", nil, true)
+--~ 				ChoGGi_Funcs.Common.Dump(self.text, "w", "ParseText", "lua", nil, true)
 --~ 			end
 --~ 			return ret
 --~ 		end
 
 --~ 		local ChoOrig_XImage_DrawContent = XImage.DrawContent
---~ 		local RetName = ChoGGi.ComFuncs.RetName
+--~ 		local RetName = ChoGGi_Funcs.Common.RetName
 --~ 		function XImage:DrawContent(...)
 --~ 			local image = self:GetImage()
 --~ 			-- unless it is bitching about memorysavegame :)
---~ 			if image ~= "" and not image:find("memorysavegame") and not ChoGGi.ComFuncs.FileExists(image) then
+--~ 			if image ~= "" and not image:find("memorysavegame") and not ChoGGi_Funcs.Common.FileExists(image) then
 --~ 				print(RetName(self.parent), image, "DC")
 --~ 			end
 --~ 			return ChoOrig_XImage_DrawContent(self, ...)
@@ -1247,7 +1254,7 @@ end -- ClassesPreprocess
 --~ 		-- add an overlay for dead rover
 --~ 		OrigFunc("PinsDlg", "GetPinConditionImage")
 --~ 		function PinsDlg:GetPinConditionImage(obj)
---~ 			local ret = ChoGGi.OrigFuncs.PinsDlg_GetPinConditionImage(self, obj)
+--~ 			local ret = ChoGGi_Funcs.Original.PinsDlg_GetPinConditionImage(self, obj)
 --~ 			if obj.command == "Dead" and not obj.working then
 --~ 				print(obj.class)
 --~ 				return "UI/Icons/pin_not_working.tga"
@@ -1261,7 +1268,7 @@ end -- ClassesPreprocess
 --~ local dlg
 --~ local function hookTick(...)
 --~ 	if not dlg then
---~ 		dlg = ChoGGi.ComFuncs.OpenInExamineDlg(list, {
+--~ 		dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(list, {
 --~ 			has_params = true,
 --~ 			auto_refresh = true,
 --~ 	})

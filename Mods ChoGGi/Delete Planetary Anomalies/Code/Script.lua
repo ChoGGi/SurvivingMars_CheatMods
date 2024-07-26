@@ -26,7 +26,7 @@ local function DeleteAnom(self)
 		end
 	end
 
-	ChoGGi.ComFuncs.QuestionBox(
+	ChoGGi_Funcs.Common.QuestionBox(
 		T{302535920011405, "Are you sure you want to delete <name>?",
 			name = self.selected_spot.display_name,
 		},
@@ -44,7 +44,7 @@ local function AddButton(self, func, ...)
 	end
 
 	CreateRealTimeThread(function()
-		ChoGGi.ComFuncs.RetToolbarButton{
+		ChoGGi_Funcs.Common.RetToolbarButton{
 			parent = toolbar,
 			id = "idChoGGi_DeleteAnomaly",
 			text = T(5451, "DELETE"),

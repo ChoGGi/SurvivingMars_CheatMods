@@ -74,7 +74,7 @@ function RocketBase:FlyToMars(cargo, cost, flight_time, ...)
 end
 
 -- Some stuff checks one some other...
-local SetConsts = ChoGGi.ComFuncs.SetConsts
+local SetConsts = ChoGGi_Funcs.Common.SetConsts
 
 local function UpdateRockets()
 	SetConsts("MaxColonistsPerRocket", mod_MaxColonistsPerRocket)

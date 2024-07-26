@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 function OnMsg.ClassesPostprocess()
-	ChoGGi.ComFuncs.AddXTemplate("ToggleOpenedState", "sectionDome", {
+	ChoGGi_Funcs.Common.AddXTemplate("ToggleOpenedState", "sectionDome", {
 		-- skip any ruined domes
 		__condition = function(_, context)
 			return context.working and not context:IsKindOf("OpenCity")

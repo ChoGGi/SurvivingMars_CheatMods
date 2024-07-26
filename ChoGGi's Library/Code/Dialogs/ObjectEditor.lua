@@ -2,6 +2,7 @@
 
 -- Used to do minimal editing of objects (or all of same type)
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local tostring, type, table = tostring, type, table
 
 local IsPoint = IsPoint
@@ -9,13 +10,13 @@ local Min = Min
 local CmpLower = CmpLower
 
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local RetName = ChoGGi.ComFuncs.RetName
-local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
-local RetProperType = ChoGGi.ComFuncs.RetProperType
-local RetParamsParents = ChoGGi.ComFuncs.RetParamsParents
+local Translate = ChoGGi_Funcs.Common.Translate
+local RetName = ChoGGi_Funcs.Common.RetName
+local DebugGetInfo = ChoGGi_Funcs.Common.DebugGetInfo
+local RetProperType = ChoGGi_Funcs.Common.RetProperType
+local RetParamsParents = ChoGGi_Funcs.Common.RetParamsParents
 
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+local GetParentOfKind = ChoGGi_Funcs.Common.GetParentOfKind
 local function GetRootDialog(dlg)
 	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_DlgObjectEditor")
 end
@@ -126,7 +127,7 @@ end
 function ChoGGi_DlgObjectEditor:idList_OnMouseButtonDoubleClick()
 	self = GetRootDialog(self)
 	if self.idList.focused_item and type(self.sel.object) == "table" then
-		ChoGGi.ComFuncs.OpenInObjectEditorDlg(self.sel.object, self)
+		ChoGGi_Funcs.Common.OpenInObjectEditorDlg(self.sel.object, self)
 	end
 end
 
@@ -185,7 +186,7 @@ function ChoGGi_DlgObjectEditor:idAddNew_OnPress()
 		self:UpdateListContent()
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000095--[[New Entry]]),
@@ -429,14 +430,14 @@ function ChoGGi_DlgObjectEditor:Done()
 end
 
 -- Use to open a dialog
-function ChoGGi.ComFuncs.OpenInObjectEditorDlg(obj, parent, title, ...)
+function ChoGGi_Funcs.Common.OpenInObjectEditorDlg(obj, parent, title, ...)
 	-- If fired from action menu
 	if IsKindOf(obj, "XAction") then
-		obj = ChoGGi.ComFuncs.SelObject()
+		obj = ChoGGi_Funcs.Common.SelObject()
 		parent = nil
 		title = nil
 	else
-		obj = obj or ChoGGi.ComFuncs.SelObject()
+		obj = obj or ChoGGi_Funcs.Common.SelObject()
 	end
 
 	if not obj then

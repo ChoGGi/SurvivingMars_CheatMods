@@ -17,7 +17,7 @@ OnMsg.ApplyModOptions = ModOptions
 
 local display_icon = CurrentModPath .. "UI/rover_tanker.png"
 
-local Random = ChoGGi.ComFuncs.Random
+local Random = ChoGGi_Funcs.Common.Random
 
 -- local some globals
 local IsValid = IsValid
@@ -493,8 +493,8 @@ function OnMsg.ClassesPostprocess()
 	local rover = XTemplates.ipRover[1]
 
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(rover, "ChoGGi_Template_RCTanker_ToggleDir", true)
-	ChoGGi.ComFuncs.RemoveXTemplateSections(rover, "ChoGGi_Template_RCTanker_ToggleRes", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(rover, "ChoGGi_Template_RCTanker_ToggleDir", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(rover, "ChoGGi_Template_RCTanker_ToggleRes", true)
 
 	local function UpdateToggleDir(self, button)
 		if self.tank_interact_obj then

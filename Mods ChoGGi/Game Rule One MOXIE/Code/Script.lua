@@ -2,7 +2,7 @@
 
 local IsKindOf = IsKindOf
 local IsGameRuleActive = IsGameRuleActive
-local OneBuildingExists = ChoGGi.ComFuncs.OneBuildingExists
+local OneBuildingExists = ChoGGi_Funcs.Common.OneBuildingExists
 
 function OnMsg.GetAdditionalBuildingLocks(template, locks)
 	if IsGameRuleActive("ChoGGi_OneMOXIE") and OneBuildingExists("MOXIE") then

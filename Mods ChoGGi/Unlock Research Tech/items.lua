@@ -7,7 +7,7 @@ local T = T
 local SafeTrans, library_around
 -- use rawget so game doesn't complain about _G
 if rawget(_G, "ChoGGi") then
-	SafeTrans = ChoGGi.ComFuncs.Translate
+	SafeTrans = ChoGGi_Funcs.Common.Translate
 	library_around = true
 else
 	local _InternalTranslate = _InternalTranslate

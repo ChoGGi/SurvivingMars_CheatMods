@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local Random = ChoGGi.ComFuncs.Random
+local Random = ChoGGi_Funcs.Common.Random
 
 -- local is faster than global
 local point = point

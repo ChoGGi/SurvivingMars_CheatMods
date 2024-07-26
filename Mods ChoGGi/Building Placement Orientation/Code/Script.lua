@@ -25,7 +25,7 @@ local c = #Actions
 c = c + 1
 Actions[c] = {ActionName = T(302535920001350, "Place Last Selected/Constructed Building"),
 	ActionId = "BuildingPlacementOrientation.LastSelectedObject",
-	OnAction = ChoGGi.ComFuncs.PlaceLastSelectedConstructedBld,
+	OnAction = ChoGGi_Funcs.Common.PlaceLastSelectedConstructedBld,
 	ActionShortcut = "Ctrl-Space",
 	replace_matching_id = true,
 }

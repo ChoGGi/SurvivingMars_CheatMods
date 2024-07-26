@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
-local RetMapType = ChoGGi.ComFuncs.RetMapType
-local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
+local RetMapType = ChoGGi_Funcs.Common.RetMapType
+local IsValidXWin = ChoGGi_Funcs.Common.IsValidXWin
 
 local mod_EnableMod
 

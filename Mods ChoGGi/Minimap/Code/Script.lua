@@ -24,7 +24,7 @@ ChoGGi_Minimap_Options = {
 	image_str = image_mod and image_mod.env.CurrentModPath .. "Maps/",
 	UpdateTopoImage = function(value)
 		-- find our map dlg
-		local map_dlg = ChoGGi.ComFuncs.GetDialogECM("ChoGGi_MinimapDlg")
+		local map_dlg = ChoGGi_Funcs.Common.GetDialogECM("ChoGGi_MinimapDlg")
 
 		if not map_dlg then
 			return
@@ -50,12 +50,12 @@ ChoGGi_Minimap_Options = {
 }
 
 function OnMsg.ModsReloaded()
-	local xt = ChoGGi.ComFuncs.RetHudButton("idRight")
+	local xt = ChoGGi_Funcs.Common.RetHudButton("idRight")
 	if not xt then
 		return
 	end
 
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xt, "ChoGGi_Template_Minimap")
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xt, "ChoGGi_Template_Minimap")
 
 	table.insert(xt, #xt,
 		PlaceObj("XTemplateTemplate", {

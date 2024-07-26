@@ -2,7 +2,7 @@
 
 local ValidateBuilding = ValidateBuilding
 local ObjModified = ObjModified
-local RetName = ChoGGi.ComFuncs.RetName
+local RetName = ChoGGi_Funcs.Common.RetName
 
 local mod_NeverChange
 local mod_SeniorsOverride
@@ -81,7 +81,7 @@ end
 function OnMsg.ClassesPostprocess()
 
 	-- add button to colonists
-	ChoGGi.ComFuncs.AddXTemplate(XTemplates.ipColonist[1], "LockworkplaceColonist", nil, {
+	ChoGGi_Funcs.Common.AddXTemplate(XTemplates.ipColonist[1], "LockworkplaceColonist", nil, {
 		__context_of_kind = "Colonist",
 		OnContextUpdate = function(self, context)
 			---
@@ -118,7 +118,7 @@ function OnMsg.ClassesPostprocess()
 		end,
 	})
 
-	ChoGGi.ComFuncs.AddXTemplate(XTemplates.sectionWorkplace, "LockworkplaceWorkplace", nil, {
+	ChoGGi_Funcs.Common.AddXTemplate(XTemplates.sectionWorkplace, "LockworkplaceWorkplace", nil, {
 		__context_of_kind = "Workplace",
 		OnContextUpdate = function(self, context)
 			---

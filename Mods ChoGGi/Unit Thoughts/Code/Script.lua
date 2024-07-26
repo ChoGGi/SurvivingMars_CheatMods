@@ -7,9 +7,9 @@ local WaitMsg = WaitMsg
 local CreateGameTimeThread = CreateGameTimeThread
 local DeleteThread = DeleteThread
 local GetMapSector = GetMapSector
-local SetPathMarkersGameTime = ChoGGi.ComFuncs.SetPathMarkersGameTime
-local Pathing_StopAndRemoveAll = ChoGGi.ComFuncs.Pathing_StopAndRemoveAll
-local GetTarget = ChoGGi.ComFuncs.GetTarget
+local SetPathMarkersGameTime = ChoGGi_Funcs.Common.SetPathMarkersGameTime
+local Pathing_StopAndRemoveAll = ChoGGi_Funcs.Common.Pathing_StopAndRemoveAll
+local GetTarget = ChoGGi_Funcs.Common.GetTarget
 
 local threads = {}
 local threads_c = 0

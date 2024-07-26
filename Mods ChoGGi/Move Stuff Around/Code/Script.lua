@@ -39,7 +39,7 @@ local ChoOrig_SelectionModeDialog_OnMouseButtonDown = SelectionModeDialog.OnMous
 
 local function AddButton(xtemplate, button_id)
 	-- Check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, button_id, true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, button_id, true)
 
 	table.insert(xtemplate, 1, PlaceObj("XTemplateTemplate", {
 		"Id" , button_id,

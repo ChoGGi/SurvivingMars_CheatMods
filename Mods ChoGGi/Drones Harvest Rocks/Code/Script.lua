@@ -7,7 +7,7 @@ local PlayFX = PlayFX
 local GetRandomPassableAround = GetRandomPassableAround
 local TransformToStockpile = WasteRockObstructor.TransformToStockpile
 local efSelectable = const.efSelectable
-local GetCursorOrGamePadSelectObj = ChoGGi.ComFuncs.GetCursorOrGamePadSelectObj
+local GetCursorOrGamePadSelectObj = ChoGGi_Funcs.Common.GetCursorOrGamePadSelectObj
 
 function Drone:ChoGGi_RockRemove(rock)
 	self:Face(rock, 100)

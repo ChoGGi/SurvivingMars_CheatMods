@@ -35,7 +35,7 @@ local function WriteModSettings(settings)
 		end
 
 		if data[const.MaxModDataSize+1] then
-			ChoGGi.ComFuncs.MsgWait(T(302535920011252, "SaveMissionProfiles: too much data, delete some saved settings"))
+			ChoGGi_Funcs.Common.MsgWait(T(302535920011252, "SaveMissionProfiles: too much data, delete some saved settings"))
 			return
 		end
 	end
@@ -116,7 +116,7 @@ local function LoadProfile(name, settings, pgmission)
 		end
 	end
 
-	ChoGGi.ComFuncs.QuestionBox(
+	ChoGGi_Funcs.Common.QuestionBox(
 		T{302535920011255, [[Load profile: <name>
 You'll have to change the "page" to visually update settings.]],
 			name = name,
@@ -133,7 +133,7 @@ local function DeleteProfile(name, settings_list)
 		end
 	end
 
-	ChoGGi.ComFuncs.QuestionBox(
+	ChoGGi_Funcs.Common.QuestionBox(
 		T{302535920011256, "Delete profile: <name>",
 			name = name,
 		},
@@ -191,7 +191,7 @@ local function ProfileButtonPressed(pgmission, toolbar)
 	end
 
 	-- and finally show menu
-	ChoGGi.ComFuncs.PopupToggle(toolbar.idChoGGi_ProfileButton, "ChoGGi_MissionProfilesPopup", menu)
+	ChoGGi_Funcs.Common.PopupToggle(toolbar.idChoGGi_ProfileButton, "ChoGGi_MissionProfilesPopup", menu)
 end
 
 -- fired when we go to first new game section
@@ -200,7 +200,7 @@ local function AddProfilesButton(pgmission, toolbar)
 		return
 	end
 
-	toolbar.idChoGGi_ProfileButton = ChoGGi.ComFuncs.RetToolbarButton{
+	toolbar.idChoGGi_ProfileButton = ChoGGi_Funcs.Common.RetToolbarButton{
 		parent = toolbar,
 		id = "idChoGGi_ProfileButton",
 		text = T(302535920011263, "PROFILES"),

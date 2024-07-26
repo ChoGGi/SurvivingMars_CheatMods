@@ -2,7 +2,7 @@
 
 -- fired when settings are changed/init
 local function ModOptions()
-	ChoGGi.ComFuncs.SetBuildingLimits(CurrentModOptions:GetProperty("RemoveBuildingLimits"))
+	ChoGGi_Funcs.Common.SetBuildingLimits(CurrentModOptions:GetProperty("RemoveBuildingLimits"))
 end
 
 -- load default/saved settings
@@ -20,7 +20,7 @@ end
 -- the below is needed for inside buildings to work outside
 
 local IsValid = IsValid
-local AttachToNearestDome = ChoGGi.ComFuncs.AttachToNearestDome
+local AttachToNearestDome = ChoGGi_Funcs.Common.AttachToNearestDome
 
 function OnMsg.BuildingInit(obj)
 	-- If an inside building is placed outside of dome, attach it to nearest dome (if there is one)

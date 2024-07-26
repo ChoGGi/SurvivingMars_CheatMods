@@ -4,12 +4,13 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local print = print
 local table = table
 
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local Translate = ChoGGi_Funcs.Common.Translate
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
@@ -177,7 +178,7 @@ do -- ModUpload
 				para_platform = true
 			end
 
-			ChoGGi.ComFuncs.WaitForParadoxLogin()
+			ChoGGi_Funcs.Common.WaitForParadoxLogin()
 
 			prepare_worked, prepare_results = g_env.PDX_PrepareForUpload(nil, mod, mod_params)
 
@@ -190,7 +191,7 @@ do -- ModUpload
 			if batch then
 				print(msg)
 			else
-				ChoGGi.ComFuncs.MsgWait(
+				ChoGGi_Funcs.Common.MsgWait(
 					msg,
 					T(1000592--[[Error]]) .. ": " .. mod.title,
 					upload_image
@@ -233,7 +234,7 @@ do -- ModUpload
 			mod_params.screenshots = {}
 			for i = 1, 5 do
 				local screenshot = mod["screenshot" .. i]
-				if ChoGGi.ComFuncs.FileExists(screenshot) then
+				if ChoGGi_Funcs.Common.FileExists(screenshot) then
 					local _, name, ext = SplitPath(screenshot)
 					local new_name = ModsScreenshotPrefix .. name .. ext
 					local new_path = shots_path .. new_name
@@ -298,7 +299,7 @@ do -- ModUpload
 
 			-- check if .hpk exists, and use it if so
 			local os_dest = dest_path .. "Pack/ModContent.hpk"
-			if ChoGGi.ComFuncs.FileExists(os_dest) then
+			if ChoGGi_Funcs.Common.FileExists(os_dest) then
 				os_dest = ConvertToOSPath(os_dest)
 			else
 				os_dest = ConvertToOSPath(dest_path)
@@ -385,7 +386,7 @@ SurvivingMarsMods@choggi.org"]]) .. "\n\n\n" .. mod.description
 				result_title[#result_title+1] = mod.title
 			end
 			-- grab tail from log and show the actual error msg
-			local log_error = ChoGGi.ComFuncs.RetLastLineFromStr(LoadLogfile(), "Received errorMessage")
+			local log_error = ChoGGi_Funcs.Common.RetLastLineFromStr(LoadLogfile(), "Received errorMessage")
 				-- remove any ' and :
 				:gsub("'",""):gsub(":","")
 			-- print away
@@ -461,7 +462,7 @@ SurvivingMarsMods@choggi.org"]]) .. "\n\n\n" .. mod.description
 		end
 
 		-- we update this now, so the tooltip doesn't show nil
-		if ChoGGi.ComFuncs.FileExists(hpk_path) then
+		if ChoGGi_Funcs.Common.FileExists(hpk_path) then
 			hpk_path_working = ConvertToOSPath(hpk_path)
 		else
 			hpk_path_working = nil
@@ -562,7 +563,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 
 					if choices_len == 1 then
 						if not UserSettings.SkipModUploadConfirmDoneMsgs then
-							if ChoGGi.ComFuncs.QuestionBox(
+							if ChoGGi_Funcs.Common.QuestionBox(
 								table.concat(upload_msg),
 								UploadMod,
 								mod.title,
@@ -602,7 +603,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 						end
 						-- and show msg
 						if not UserSettings.SkipModUploadConfirmDoneMsgs then
-							if ChoGGi.ComFuncs.QuestionBox(
+							if ChoGGi_Funcs.Common.QuestionBox(
 								T(302535920000221--[[Batch Upload mods?]]) .. "\n\n"
 									.. table.concat(titles, ", "),
 								CallBackFunc_BQ,
@@ -636,7 +637,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			-- Update popup msg if it's still opened
 			local popups = ChoGGi.Temp.MsgPopups
 			local idx = table.find(popups, "notification_id", msg_popup_id)
-			if idx and ChoGGi.ComFuncs.IsValidXWin(popups[idx]) then
+			if idx and ChoGGi_Funcs.Common.IsValidXWin(popups[idx]) then
 				popups[idx].idText:SetText(T(302535920001453--[[Completed]]))
 			end
 
@@ -660,7 +661,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 			print(Translate(error_msgs))
 			--
 			if not UserSettings.SkipModUploadConfirmDoneMsgs then
-				ChoGGi.ComFuncs.MsgWait(
+				ChoGGi_Funcs.Common.MsgWait(
 					error_text,
 					T(302535920001586--[[All Done!]]),
 					upload_image
@@ -671,9 +672,9 @@ You can also stick the executable in the profile folder to use it instead (<gree
 		--
 	end
 
-	function ChoGGi.MenuFuncs.ModUpload()
+	function ChoGGi_Funcs.Menus.ModUpload()
 		if blacklist then
-			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.MenuFuncs.ModUpload")
+			ChoGGi_Funcs.Common.BlacklistMsg("ChoGGi_Funcs.Menus.ModUpload")
 			return
 		end
 		if not (Platform.steam or Platform.pops) then
@@ -694,7 +695,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 		local item_list = {}
 		local c = 0
 		local Mods = Mods
-		local ValidateImage = ChoGGi.ComFuncs.ValidateImage
+		local ValidateImage = ChoGGi_Funcs.Common.ValidateImage
 		for id, mod in pairs(Mods) do
 			-- skip some mods and all packed mods
 			if not skip_mods[id] and mod.content_path:sub(1,11) ~= "PackedMods/" then
@@ -722,7 +723,7 @@ You can also stick the executable in the profile folder to use it instead (<gree
 --~ 		local _, image_steam_y = MeasureImage(image_steam)
 --~ 		local _, image_paradox_y = MeasureImage(image_paradox)
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = T(302535920000367--[[Mod Upload]]),
@@ -772,7 +773,7 @@ If you have a uuid in your metadata.lua this checkbox is ignored and it'll try t
 	end
 end -- do
 
-function ChoGGi.MenuFuncs.RetHardwareInfo()
+function ChoGGi_Funcs.Menus.RetHardwareInfo()
 	local mem = {}
 	local cm = 0
 
@@ -843,13 +844,13 @@ GetComputerName(): %s
 	)
 end
 
-function ChoGGi.MenuFuncs.OpenUrl(action)
+function ChoGGi_Funcs.Menus.OpenUrl(action)
 	OpenUrl(action.setting_url)
 end
 
-function ChoGGi.MenuFuncs.DeleteSavedGames()
+function ChoGGi_Funcs.Menus.DeleteSavedGames()
 	if blacklist then
-		ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.MenuFuncs.DeleteSavedGames")
+		ChoGGi_Funcs.Common.BlacklistMsg("ChoGGi_Funcs.Menus.DeleteSavedGames")
 		return
 	end
 	local SavegamesList = SavegamesList
@@ -907,7 +908,7 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 		-- remove any saves we deleted
 		local games_amt = #SavegamesList
 		for i = #SavegamesList, 1, -1 do
-			if not ChoGGi.ComFuncs.FileExists(save_folder .. SavegamesList[i].savename) then
+			if not ChoGGi_Funcs.Common.FileExists(save_folder .. SavegamesList[i].savename) then
 				table.remove(SavegamesList, i)
 			end
 		end
@@ -921,7 +922,7 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000146--[[Delete Saved Games]]) .. ": " .. #item_list,
@@ -937,39 +938,39 @@ function ChoGGi.MenuFuncs.DeleteSavedGames()
 	}
 end
 
-function ChoGGi.MenuFuncs.StartupTicks_Toggle()
+function ChoGGi_Funcs.Menus.StartupTicks_Toggle()
 	ChoGGi.UserSettings.ShowStartupTicks = not ChoGGi.UserSettings.ShowStartupTicks
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ShowStartupTicks),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.ShowStartupTicks),
 		T(302535920001481--[[Show Startup Ticks]])
 	)
 end
 
-function ChoGGi.MenuFuncs.ToolTips_Toggle()
+function ChoGGi_Funcs.Menus.ToolTips_Toggle()
 	ChoGGi.UserSettings.EnableToolTips = not ChoGGi.UserSettings.EnableToolTips
-	ChoGGi.ComFuncs.SetLibraryToolTips()
+	ChoGGi_Funcs.Common.SetLibraryToolTips()
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.EnableToolTips),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.EnableToolTips),
 		T(302535920001014--[[Toggle ToolTips]])
 	)
 end
 
-function ChoGGi.MenuFuncs.ChangeWindowTitle_Toggle()
+function ChoGGi_Funcs.Menus.ChangeWindowTitle_Toggle()
 	ChoGGi.UserSettings.ChangeWindowTitle = not ChoGGi.UserSettings.ChangeWindowTitle
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ChangeWindowTitle),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.ChangeWindowTitle),
 		T(302535920001647--[[Window Title]])
 	)
 end
 
-function ChoGGi.MenuFuncs.ExtractHPKs()
+function ChoGGi_Funcs.Menus.ExtractHPKs()
 	if blacklist then
-		ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.MenuFuncs.ExtractHPKs")
+		ChoGGi_Funcs.Common.BlacklistMsg("ChoGGi_Funcs.Menus.ExtractHPKs")
 		return
 	end
 	local item_list = {}
@@ -1009,7 +1010,7 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 			local hpk = folder:gsub("\\", "/") .. "/ModContent.hpk"
 			-- skip any mods that aren't packed (uploaded by ECM, or just old)
 			local mod = mod_table[id]
-			if mod and ChoGGi.ComFuncs.FileExists(hpk) then
+			if mod and ChoGGi_Funcs.Common.FileExists(hpk) then
 				-- yeah lets make our image parsing use spaces... I'm sure nobody uses those in file paths.
 				if mod.image:find(" ") or mod.path:find(" ") then
 					mod.image = ""
@@ -1073,7 +1074,7 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 		)
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920001362--[[Extract HPKs]]),
@@ -1082,7 +1083,7 @@ function ChoGGi.MenuFuncs.ExtractHPKs()
 	}
 end
 
-function ChoGGi.MenuFuncs.ListAllMenuItems()
+function ChoGGi_Funcs.Menus.ListAllMenuItems()
 	local item_list = {}
 	local c = 0
 
@@ -1119,7 +1120,7 @@ function ChoGGi.MenuFuncs.ListAllMenuItems()
 		choice[1].func()
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000504--[[List All Menu Items]]),
@@ -1128,19 +1129,19 @@ function ChoGGi.MenuFuncs.ListAllMenuItems()
 	}
 end
 
-function ChoGGi.MenuFuncs.RetMapInfo()
+function ChoGGi_Funcs.Menus.RetMapInfo()
 	if not MainCity then
 		return
 	end
 	local data = HashLogToTable()
 	data[1] = data[1]:gsub("\n\n", "")
-	ChoGGi.ComFuncs.OpenInExamineDlg(table.concat(data, "\n"), nil, T(283142739680--[[Game]]) .. " & " .. T(302535920001355--[[Map]]) .. " " .. T(302535920001717--[[Info]]))
+	ChoGGi_Funcs.Common.OpenInExamineDlg(table.concat(data, "\n"), nil, T(283142739680--[[Game]]) .. " & " .. T(302535920001355--[[Map]]) .. " " .. T(302535920001717--[[Info]]))
 end
 
-function ChoGGi.MenuFuncs.EditECMSettings()
+function ChoGGi_Funcs.Menus.EditECMSettings()
 	local UserSettings = ChoGGi.UserSettings
 	-- load up settings file in the editor
-	ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+	ChoGGi_Funcs.Common.OpenInMultiLineTextDlg{
 		code = true,
 		title = T(302535920001242--[[Edit ECM Settings]]),
 		text = TableToLuaCode(UserSettings),
@@ -1153,7 +1154,7 @@ function ChoGGi.MenuFuncs.EditECMSettings()
 			-- get text and update settings file
 			local err, settings = LuaCodeToTuple(obj.idEdit:GetText())
 			if not err then
-				settings = ChoGGi.SettingFuncs.WriteSettings(settings)
+				settings = ChoGGi_Funcs.Settings.WriteSettings(settings)
 				for key, value in pairs(settings) do
 					UserSettings[key] = value
 				end
@@ -1171,12 +1172,12 @@ function ChoGGi.MenuFuncs.EditECMSettings()
 	}
 end
 
-function ChoGGi.MenuFuncs.DisableECM()
+function ChoGGi_Funcs.Menus.DisableECM()
 	local title = T(251103844022--[[Disable]]) .. " " .. T(302535920000002--[[ECM]])
 	local function CallBackFunc(answer)
 		if answer then
 			ChoGGi.UserSettings.DisableECM = not ChoGGi.UserSettings.DisableECM
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 
 			MsgPopup(
 				T(302535920001070--[[Restart to take effect.]]),
@@ -1184,7 +1185,7 @@ function ChoGGi.MenuFuncs.DisableECM()
 			)
 		end
 	end
-	ChoGGi.ComFuncs.QuestionBox(
+	ChoGGi_Funcs.Common.QuestionBox(
 		T(302535920000466--[["This will disable the cheats menu, cheats panel, and all hotkeys.
 Change DisableECM to false in settings file to re-enable them."]]) .. "\n\n" .. T(302535920001070--[[Restart to take effect.]]),
 		CallBackFunc,
@@ -1192,13 +1193,13 @@ Change DisableECM to false in settings file to re-enable them."]]) .. "\n\n" .. 
 	)
 end
 
-function ChoGGi.MenuFuncs.ResetECMSettings()
+function ChoGGi_Funcs.Menus.ResetECMSettings()
 
 	local function CallBackFunc(answer)
 		if answer then
 			ChoGGi.UserSettings = ChoGGi.Defaults
 			ChoGGi.Temp.ResetECMSettings = true
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 
 			MsgPopup(
 				T(302535920001070--[[Restart to take effect.]]),
@@ -1207,7 +1208,7 @@ function ChoGGi.MenuFuncs.ResetECMSettings()
 		end
 	end
 
-	ChoGGi.ComFuncs.QuestionBox(
+	ChoGGi_Funcs.Common.QuestionBox(
 		T(302535920001072--[[Are you sure you want to reset ECM settings?
 Old settings are saved as %s (or not saved if you don't use the HelperMod)]]):format(old) .. "\n\n" .. T(302535920001070--[[Restart to take effect.]]),
 		CallBackFunc,
@@ -1215,9 +1216,9 @@ Old settings are saved as %s (or not saved if you don't use the HelperMod)]]):fo
 	)
 end
 
-function ChoGGi.MenuFuncs.ReportBugDlg()
+function ChoGGi_Funcs.Menus.ReportBugDlg()
 	-- was in orig func, i guess there's never any bugs when modding ;)
-	if Platform.ged or ChoGGi.ComFuncs.ModEditorActive() then
+	if Platform.ged or ChoGGi_Funcs.Common.ModEditorActive() then
 		return
 	end
 	CreateRealTimeThread(function()
@@ -1226,8 +1227,8 @@ function ChoGGi.MenuFuncs.ReportBugDlg()
 	end)
 end
 
-function ChoGGi.MenuFuncs.AboutECM()
-	ChoGGi.ComFuncs.MsgWait(
+function ChoGGi_Funcs.Menus.AboutECM()
+	ChoGGi_Funcs.Common.MsgWait(
 		T(302535920001078--[["Hover mouse over menu item to get description and enabled status
 If there isn't a status then it's likely a list of options to choose from
 

@@ -5,7 +5,7 @@ local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local IsValid = IsValid
 local InvalidPos = ChoGGi.Consts.InvalidPos
-local RetName = ChoGGi.ComFuncs.RetName
+local RetName = ChoGGi_Funcs.Common.RetName
 
 local mod_EnableMod
 local mod_CleanUpInvalid
@@ -130,7 +130,7 @@ function OnMsg.ClassesPostprocess()
 
 	local building = XTemplates.ipBuilding[1]
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(building, "ChoGGi_Template_ShowDomeConnectedObjects", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(building, "ChoGGi_Template_ShowDomeConnectedObjects", true)
 
 	building[#building+1] = PlaceObj('XTemplateTemplate', {
 		"ChoGGi_Template_ShowDomeConnectedObjects", true,

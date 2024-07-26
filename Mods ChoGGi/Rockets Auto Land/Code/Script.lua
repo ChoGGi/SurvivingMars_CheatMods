@@ -2,7 +2,7 @@
 
 local IsKindOf = IsKindOf
 local CmpLower = CmpLower
-local RetName = ChoGGi.ComFuncs.RetName
+local RetName = ChoGGi_Funcs.Common.RetName
 
 local mod_EnableMod
 
@@ -19,7 +19,7 @@ OnMsg.ApplyModOptions = ModOptions
 
 local function AddTemplate(template, params)
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(template, params.id, true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(template, params.id, true)
 
 	template[#template+1] = PlaceObj('XTemplateTemplate', {
 		params.id, true,
@@ -106,6 +106,7 @@ function RocketBase:WaitInOrbit(...)
 	if not mod_EnableMod
 		or not self.ChoGGi_RocketsAutoLand_Allow
 		or not self:IsFlightPermitted()
+		or self.expedition
 	then
 		return ChoOrig_RocketBase_WaitInOrbit(self, ...)
 	end

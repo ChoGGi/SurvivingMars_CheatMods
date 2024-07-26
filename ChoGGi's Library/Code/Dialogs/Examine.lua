@@ -2,6 +2,9 @@
 
 -- Used to examine objects
 
+local ChoGGi_Funcs = ChoGGi_Funcs
+local what_game = ChoGGi.what_game
+
 --[[
 -- to add a clickable link use:
 XXXXX = {
@@ -30,8 +33,6 @@ ex(obj, {
 	override_title = true,
 })
 ]]
-local what_game = ChoGGi.what_game
-
 -- store opened examine dialogs
 if not rawget(_G, "ChoGGi_dlgs_examine") then
 	ChoGGi_dlgs_examine = {}
@@ -76,15 +77,15 @@ if what_game == "Mars" then
 	local EnumVars = EnumVars
 end
 
-local Translate = ChoGGi.ComFuncs.Translate
-local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
-local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
-local RetName = ChoGGi.ComFuncs.RetName
-local SetWinObjectVis = ChoGGi.ComFuncs.SetWinObjectVis
-local RetMapType = ChoGGi.ComFuncs.RetMapType
-local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
-local RetParamsParents = ChoGGi.ComFuncs.RetParamsParents
-local RetObjMapId = ChoGGi.ComFuncs.RetObjMapId
+local Translate = ChoGGi_Funcs.Common.Translate
+local IsControlPressed = ChoGGi_Funcs.Common.IsControlPressed
+local IsShiftPressed = ChoGGi_Funcs.Common.IsShiftPressed
+local RetName = ChoGGi_Funcs.Common.RetName
+local SetWinObjectVis = ChoGGi_Funcs.Common.SetWinObjectVis
+local RetMapType = ChoGGi_Funcs.Common.RetMapType
+local IsValidXWin = ChoGGi_Funcs.Common.IsValidXWin
+local RetParamsParents = ChoGGi_Funcs.Common.RetParamsParents
+local RetObjMapId = ChoGGi_Funcs.Common.RetObjMapId
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
 local missing_text = ChoGGi.Temp.missing_text
@@ -97,7 +98,7 @@ function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	g_env, debug = env, env.debug
 end
 
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+local GetParentOfKind = ChoGGi_Funcs.Common.GetParentOfKind
 local function GetRootDialog(dlg)
 	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_DlgExamine")
 end
@@ -232,12 +233,12 @@ function ChoGGi_DlgExamine:Init(parent, context)
 	end
 
 	-- my popup func checks for ids and "refreshs" a popup with the same id, so random it is
-	self.idAttachesMenu = self.ChoGGi.ComFuncs.Random()
-	self.idParentsMenu = self.ChoGGi.ComFuncs.Random()
-	self.idToolsMenu = self.ChoGGi.ComFuncs.Random()
-	self.idObjectsMenu = self.ChoGGi.ComFuncs.Random()
+	self.idAttachesMenu = ChoGGi_Funcs.Common.Random()
+	self.idParentsMenu = ChoGGi_Funcs.Common.Random()
+	self.idToolsMenu = ChoGGi_Funcs.Common.Random()
+	self.idObjectsMenu = ChoGGi_Funcs.Common.Random()
 	-- add a parent id if there isn't one
-	self.parent_id = context.parent_id or self.ChoGGi.ComFuncs.Random()
+	self.parent_id = context.parent_id or ChoGGi_Funcs.Common.Random()
 
 	self.attaches_menu_popup = {}
 	self.attaches_menu_popup_hint = {}
@@ -350,7 +351,7 @@ function ChoGGi_DlgExamine:Init(parent, context)
 			RolloverTitle = T(302535920001321--[[UI Click To Examine]]),
 			RolloverText = T(302535920001322--[[Examine UI controls by clicking them.]]),
 			OnPress = function()
-				self.ChoGGi.ComFuncs.TerminalRolloverMode(true, self)
+				ChoGGi_Funcs.Common.TerminalRolloverMode(true, self)
 			end,
 		}, self.idToolbarButtons)
 		--
@@ -744,11 +745,11 @@ function ChoGGi_DlgExamine:ViewSourceCode()
 	-- add link to view lua source
 	local info = debug.getinfo(self.obj_ref, "S")
 	-- =[C] is 4 chars (huh?)
-	local str, path = self.ChoGGi.ComFuncs.RetSourceFile(info.source)
+	local str, path = ChoGGi_Funcs.Common.RetSourceFile(info.source)
 	path = ConvertToOSPath(path)
 	if not str then
 		local msg = T(302535920001521--[[Lua source file not found.]]) .. ": " .. path
-		self.ChoGGi.ComFuncs.MsgPopup(
+		ChoGGi_Funcs.Common.MsgPopup(
 			msg,
 			T(302535920001519--[[View Source]])
 		)
@@ -756,7 +757,7 @@ function ChoGGi_DlgExamine:ViewSourceCode()
 		return
 	end
 
-	self.ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+	ChoGGi_Funcs.Common.OpenInMultiLineTextDlg{
 		parent = self,
 		checkbox = true,
 		text = str,
@@ -767,7 +768,7 @@ function ChoGGi_DlgExamine:ViewSourceCode()
 		file_path = path,
 		_G = _G,
 		custom_func = function(overwrite)
-			self.ChoGGi.ComFuncs.Dump("\n" .. str, overwrite, "DumpedSource", "lua")
+			ChoGGi_Funcs.Common.Dump("\n" .. str, overwrite, "DumpedSource", "lua")
 		end,
 	}
 end
@@ -821,14 +822,14 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 		or self.obj_type == "string" or self.obj_type == "number"
 	then
 		local obj_value = self.obj_type == "table"
-			and self.ChoGGi.ComFuncs.RetTableValue(self.obj_ref, obj)
+			and ChoGGi_Funcs.Common.RetTableValue(self.obj_ref, obj)
 		local obj_value_type = type(obj_value)
 		local hovered_obj_type = type(obj)
 
 		if obj_value_type ~= "nil" then
-			obj_str, obj_type = self.ChoGGi.ComFuncs.ValueToStr(obj_value)
+			obj_str, obj_type = ChoGGi_Funcs.Common.ValueToStr(obj_value)
 			if obj_value_type == "function" then
-				obj_str = obj_str .. "\n" .. self.ChoGGi.ComFuncs.DebugGetInfo(obj_value)
+				obj_str = obj_str .. "\n" .. ChoGGi_Funcs.Common.DebugGetInfo(obj_value)
 			-- check for and add dist from idx-1 and +1 (show hex count instead?)
 			elseif IsPoint(obj_value) and hovered_obj_type == "number" then
 				c = self:AddDistToRollover(c, roll_text, self.obj_ref[obj-1], obj-1, obj, obj_value)
@@ -920,7 +921,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 			c = c + 1
 			roll_text[c] = "\n\n"
 		else
-			obj_str, obj_type = self.ChoGGi.ComFuncs.ValueToStr(obj)
+			obj_str, obj_type = ChoGGi_Funcs.Common.ValueToStr(obj)
 		end
 
 		if obj_type then
@@ -947,7 +948,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 		c = c + 2
 
 		-- If it's an image then add 'er to the text
-		if self.ChoGGi.ComFuncs.ValidateImage(obj_str) then
+		if ChoGGi_Funcs.Common.ValidateImage(obj_str) then
 			c = c + 1
 			roll_text[c] = "\n\n<image "
 			c = c + 1
@@ -976,7 +977,7 @@ function ChoGGi_DlgExamine:idText_OnHyperLink(link, argument, hyperlink_box, pos
 
 	-- we always examine on right-click
 	if button == "R" then
-		self.ChoGGi.ComFuncs.OpenInExamineDlg(obj, {
+		ChoGGi_Funcs.Common.OpenInExamineDlg(obj, {
 			has_params = true,
 			parent = self,
 		})
@@ -1146,13 +1147,13 @@ function ChoGGi_DlgExamine:idButClear_OnPress()
 	local count = #self.marked_objects
 	if count > 0 then
 		for i = 1, count do
-			self.ChoGGi.ComFuncs.ClearShowObj(self.marked_objects[i])
+			ChoGGi_Funcs.Common.ClearShowObj(self.marked_objects[i])
 		end
 	else
 		-- clear all spheres
-		self.ChoGGi.ComFuncs.ClearShowObj(true)
+		ChoGGi_Funcs.Common.ClearShowObj(true)
 		-- If this has a custom colour
-		self.ChoGGi.ComFuncs.ClearShowObj(self.obj_ref)
+		ChoGGi_Funcs.Common.ClearShowObj(self.obj_ref)
 		-- clear all bboxes
 		local boxes = self.ChoGGi.Temp.Examine_BBoxes
 		if boxes then
@@ -1172,12 +1173,12 @@ function ChoGGi_DlgExamine:idButMarkObject_OnPress()
 	if IsValid(self.obj_ref) then
 		-- I don't use AddSphere since that won't add the ColourObj
 		local c = #self.marked_objects
-		local sphere = self.ChoGGi.ComFuncs.ShowPoint(self.obj_ref)
+		local sphere = ChoGGi_Funcs.Common.ShowPoint(self.obj_ref)
 		if IsValid(sphere) then
 			c = c + 1
 			self.marked_objects[c] = sphere
 		end
-		local obj = self.ChoGGi.ComFuncs.ColourObj(self.obj_ref)
+		local obj = ChoGGi_Funcs.Common.ColourObj(self.obj_ref)
 		if IsValid(obj) then
 			c = c + 1
 			self.marked_objects[c] = obj
@@ -1194,17 +1195,17 @@ end
 
 function ChoGGi_DlgExamine:idButDeleteAllObj_OnPress()
 	self = GetRootDialog(self)
-	self.ChoGGi.ComFuncs.DeleteAllObjectQuestion(self.obj_ref.class)
+	ChoGGi_Funcs.Common.DeleteAllObjectQuestion(self.obj_ref.class)
 end
 
 function ChoGGi_DlgExamine:idButDeleteObj_OnPress()
 	self = GetRootDialog(self)
-	self.ChoGGi.ComFuncs.DeleteObjectQuestion(self.obj_ref)
+	ChoGGi_Funcs.Common.DeleteObjectQuestion(self.obj_ref)
 end
 
 function ChoGGi_DlgExamine:idButDeleteAll_OnPress()
 	self = GetRootDialog(self)
-	self.ChoGGi.ComFuncs.QuestionBox(
+	ChoGGi_Funcs.Common.QuestionBox(
 		T(302535920000059--[[Destroy all objects in objlist!]]),
 		function(answer)
 			if answer then
@@ -1212,7 +1213,7 @@ function ChoGGi_DlgExamine:idButDeleteAll_OnPress()
 				for _, obj in pairs(self.obj_ref) do
 					if IsValid(obj) then
 						-- true skips dust plume
-						self.ChoGGi.ComFuncs.DeleteObject(obj, true)
+						ChoGGi_Funcs.Common.DeleteObject(obj, true)
 					elseif obj.delete then
 						DoneObject(obj)
 					end
@@ -1233,7 +1234,7 @@ end
 
 function ChoGGi_DlgExamine:idButMarkAllLine_OnPress()
 	self = GetRootDialog(self)
-	self.ChoGGi.ComFuncs.ObjListLines_Toggle(self.obj_ref)
+	ChoGGi_Funcs.Common.ObjListLines_Toggle(self.obj_ref)
 end
 
 function ChoGGi_DlgExamine:idButMarkAll_OnPress()
@@ -1247,7 +1248,7 @@ function ChoGGi_DlgExamine:idButMarkAll_OnPress()
 		end
 	end
 	ResumePassEdits("ChoGGi_DlgExamine:idButMarkAll_OnPress")
-	self.ChoGGi.ComFuncs.TableCleanDupes(self.marked_objects)
+	ChoGGi_Funcs.Common.TableCleanDupes(self.marked_objects)
 end
 
 function ChoGGi_DlgExamine:idButToggleObjlist_OnPress()
@@ -1269,7 +1270,7 @@ function ChoGGi_DlgExamine:AddSphere(obj, c, colour, skip_view, skip_colour)
 		local q, r = obj:xy()
 		obj = point(HexToWorld(q, r))
 	end
-	local sphere = self.ChoGGi.ComFuncs.ShowObj(obj, colour, skip_view, skip_colour)
+	local sphere = ChoGGi_Funcs.Common.ShowObj(obj, colour, skip_view, skip_colour)
 	if IsValid(sphere) then
 		c = (c or #self.marked_objects) + 1
 		self.marked_objects[c] = sphere
@@ -1322,7 +1323,7 @@ function ChoGGi_DlgExamine:idAutoRefresh_OnMouseButtonDown(pt, button, ...)
 		local num = tonumber(self.idAutoRefreshDelay:GetText())
 		if num then
 			self.ChoGGi.UserSettings.ExamineRefreshTime = num
-			self.ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 		end
 
 	end
@@ -1362,9 +1363,9 @@ function ChoGGi_DlgExamine:DumpExamineText(text, name, ext, overwrite)
 	local ChoGGi = self.ChoGGi or ChoGGi
 
 	if ChoGGi.UserSettings.ExamineAppendDump then
-		ChoGGi.ComFuncs.Dump("\n" .. text, overwrite, name, ext)
+		ChoGGi_Funcs.Common.Dump("\n" .. text, overwrite, name, ext)
 	else
-		ChoGGi.ComFuncs.Dump(text, overwrite, name, ext, nil, true)
+		ChoGGi_Funcs.Common.Dump(text, overwrite, name, ext, nil, true)
 	end
 end
 
@@ -1381,7 +1382,7 @@ function ChoGGi_DlgExamine:BuildObjectMenuPopup()
 			hint = T(302535920000458--[[Make object dance on command.]]),
 			image = "CommonAssets/UI/Menu/UnlockCamera.tga",
 			clicked = function()
-				self.ChoGGi.ComFuncs.SetAnimState(self.obj_ref)
+				ChoGGi_Funcs.Common.SetAnimState(self.obj_ref)
 			end,
 		},
 		{name = T(302535920000682--[[Change Entity]]),
@@ -1390,7 +1391,7 @@ function ChoGGi_DlgExamine:BuildObjectMenuPopup()
 			},
 			image = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
 			clicked = function()
-				self.ChoGGi.ComFuncs.EntitySpawner(self.obj_ref, {
+				ChoGGi_Funcs.Common.EntitySpawner(self.obj_ref, {
 					skip_msg = true,
 					list_type = 7,
 					title_postfix = RetName(self.name),
@@ -1401,7 +1402,7 @@ function ChoGGi_DlgExamine:BuildObjectMenuPopup()
 			hint = T(302535920001421--[[Shows a list of particles you can use on the selected obj.]]),
 			image = "CommonAssets/UI/Menu/place_particles.tga",
 			clicked = function()
-				self.ChoGGi.ComFuncs.SetParticles(self.obj_ref)
+				ChoGGi_Funcs.Common.SetParticles(self.obj_ref)
 			end,
 		},
 		{name = T(302535920001476--[[Edit Flags]]),
@@ -1410,9 +1411,9 @@ function ChoGGi_DlgExamine:BuildObjectMenuPopup()
 			clicked = function()
 				-- task requests have flags too, ones that aren't listed in the Flags table... (just const.rf*)
 				if self.obj_flags then
-					self.ChoGGi.ComFuncs.ObjFlagsList_TR(self.obj_ref, self)
+					ChoGGi_Funcs.Common.ObjFlagsList_TR(self.obj_ref, self)
 				else
-					self.ChoGGi.ComFuncs.ObjFlagsList(self.obj_ref, self)
+					ChoGGi_Funcs.Common.ObjFlagsList(self.obj_ref, self)
 				end
 			end,
 		},
@@ -1442,7 +1443,7 @@ function ChoGGi_DlgExamine:BuildObjectMenuPopup()
 			hint = T(302535920000460--[[Attaches text to each object showing animation info (or just to selected object).]]),
 			image = "CommonAssets/UI/Menu/CameraEditor.tga",
 			clicked = function()
-				self.ChoGGi.ComFuncs.ShowAnimDebug_Toggle(self.obj_ref)
+				ChoGGi_Funcs.Common.ShowAnimDebug_Toggle(self.obj_ref)
 			end,
 		},
 		{name = T(302535920001551--[[Surfaces Toggle]]),
@@ -1457,21 +1458,21 @@ function ChoGGi_DlgExamine:BuildObjectMenuPopup()
 			hint = T(302535920001445--[[Shows list of attaches for use with .ent files.]]),
 			image = "CommonAssets/UI/Menu/ListCollections.tga",
 			clicked = function()
-				self.ChoGGi.ComFuncs.ExamineEntSpots(self.obj_ref, self)
+				ChoGGi_Funcs.Common.ExamineEntSpots(self.obj_ref, self)
 			end,
 		},
 		{name = T(302535920001458--[[Material Properties]]),
 			hint = T(302535920001459--[[Shows list of material settings/.dds files for use with .mtl files.]]),
 			image = "CommonAssets/UI/Menu/ConvertEnvironment.tga",
 			clicked = function()
-				self.ChoGGi.ComFuncs.GetMaterialProperties(self.obj_entity, self)
+				ChoGGi_Funcs.Common.GetMaterialProperties(self.obj_entity, self)
 			end,
 		},
 		{name = T(302535920001524--[[Entity Surfaces]]),
 			hint = T(302535920001525--[[Shows list of surfaces for the object entity.]]),
 			image = "CommonAssets/UI/Menu/ToggleOcclusion.tga",
 			clicked = function()
-				self.ChoGGi.ComFuncs.OpenInExamineDlg(self.ChoGGi.ComFuncs.RetSurfaceMasks(self.obj_ref), {
+				ChoGGi_Funcs.Common.OpenInExamineDlg(ChoGGi_Funcs.Common.RetSurfaceMasks(self.obj_ref), {
 					has_params = true,
 					parent = self,
 					title = T(302535920001524--[[Entity Surfaces]]) .. ": " .. self.name,
@@ -1487,7 +1488,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 			hint = T(302535920001468--[["Append text to same file, or create a new file each time."]]),
 			clicked = function()
 				self.ChoGGi.UserSettings.ExamineAppendDump = not self.ChoGGi.UserSettings.ExamineAppendDump
-				self.ChoGGi.SettingFuncs.WriteSettings()
+				ChoGGi_Funcs.Settings.WriteSettings()
 			end,
 			value = "ChoGGi.UserSettings.ExamineAppendDump",
 			class = "ChoGGi_XCheckButtonMenu",
@@ -1498,7 +1499,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 <green>Text</green> is what you see, <green>Object</green> is the text created from ValueToLuaCode(obj)."]]),
 			clicked = function(item)
 				self.ChoGGi.UserSettings.ExamineTextType = not self.ChoGGi.UserSettings.ExamineTextType
-				self.ChoGGi.SettingFuncs.WriteSettings()
+				ChoGGi_Funcs.Settings.WriteSettings()
 
 				-- change this item name
 				if self.ChoGGi.UserSettings.ExamineTextType then
@@ -1544,7 +1545,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 					title = T(302535920000048--[[View]]) .. "/" .. T(302535920000004--[[Dump]]) .. " " .. self.string_Object
 				end
 
-				self.ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+				ChoGGi_Funcs.Common.OpenInMultiLineTextDlg{
 					parent = self,
 					overwrite_check = not not self.ChoGGi.UserSettings.ExamineAppendDump,
 					text = str,
@@ -1586,14 +1587,14 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 						self:BuildFuncList("CObject", self.menu_added.CObject)
 					end
 
-					self.ChoGGi.ComFuncs.OpenInExamineDlg(self.menu_list_items, {
+					ChoGGi_Funcs.Common.OpenInExamineDlg(self.menu_list_items, {
 						has_params = true,
 						parent = self,
 						title = T(302535920001239--[[Functions]]) .. ": " .. self.name,
 					})
 				else
 					local msg = T(302535920001705--[[No objects matching current filters.]])
-					self.ChoGGi.ComFuncs.MsgPopup(msg, T(302535920001706--[[Error]]))
+					ChoGGi_Funcs.Common.MsgPopup(msg, T(302535920001706--[[Error]]))
 					print(msg)
 				end
 			end,
@@ -1602,7 +1603,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 			hint = T(302535920000050--[[Opens object in Object Manipulator.]]),
 			image = "CommonAssets/UI/Menu/AreaProperties.tga",
 			clicked = function()
-				self.ChoGGi.ComFuncs.OpenInObjectEditorDlg(self.obj_ref, self)
+				ChoGGi_Funcs.Common.OpenInObjectEditorDlg(self.obj_ref, self)
 			end,
 		},
 		{name = T(302535920001708--[[Color Modifier]]),
@@ -1610,14 +1611,14 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 Use Shift- or Ctrl- for random colours/reset colours.]]),
 			image = "CommonAssets/UI/Menu/toggle_dtm_slots.tga",
 			clicked = function()
-				self.ChoGGi.ComFuncs.ChangeObjectColour(self.obj_ref)
+				ChoGGi_Funcs.Common.ChangeObjectColour(self.obj_ref)
 			end,
 		},
 		{name = T(302535920001305--[[Find Within]]),
 			hint = Translate(302535920001303--[[Search for text within %s.]]):format(self.name),
 			image = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 			clicked = function()
-				self.ChoGGi.ComFuncs.OpenInFindValueDlg(self.obj_ref, self)
+				ChoGGi_Funcs.Common.OpenInFindValueDlg(self.obj_ref, self)
 			end,
 		},
 		{name = T(302535920000040--[[Exec Code]]),
@@ -1625,7 +1626,7 @@ Use Shift- or Ctrl- for random colours/reset colours.]]),
 Which you can then mess around with some more in the console."]]),
 			image = "CommonAssets/UI/Menu/AlignSel.tga",
 			clicked = function()
-				self.ChoGGi.ComFuncs.OpenInExecCodeDlg(self.obj_ref, self)
+				ChoGGi_Funcs.Common.OpenInExecCodeDlg(self.obj_ref, self)
 			end,
 		},
 		{is_spacer = true},
@@ -1634,7 +1635,7 @@ Which you can then mess around with some more in the console."]]),
 			image = "CommonAssets/UI/Menu/SelectByClass.tga",
 			clicked = function()
 				if self.obj_ref.IsKindOf and self.obj_ref:IsKindOf("PropertyObject") then
-					self.ChoGGi.ComFuncs.OpenInExamineDlg(GetModifiedProperties(self.obj_ref), {
+					ChoGGi_Funcs.Common.OpenInExamineDlg(GetModifiedProperties(self.obj_ref), {
 						has_params = true,
 						parent = self,
 						title = T(302535920001709--[[Modified property]]) .. ": " .. self.name,
@@ -1663,7 +1664,7 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 					for i = 1, #props do
 						props_list[props[i].id] = self.obj_ref:GetProperty(props[i].id)
 					end
-					self.ChoGGi.ComFuncs.OpenInExamineDlg(props_list, {
+					ChoGGi_Funcs.Common.OpenInExamineDlg(props_list, {
 						has_params = true,
 						parent = self,
 						title = T(302535920001389--[[All Properties]]) .. ": " .. self.name,
@@ -1697,14 +1698,14 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 			hint = T(302535920001322--[[Examine UI controls by clicking them.]]),
 			image = "CommonAssets/UI/Menu/select_objects.tga",
 			clicked = function()
-				self.ChoGGi.ComFuncs.TerminalRolloverMode(true, self)
+				ChoGGi_Funcs.Common.TerminalRolloverMode(true, self)
 			end,
 		},
 		{name = T(302535920000970--[[UI Flash]]),
 			hint = T(302535920000972--[[Flash visibility of the UI object being examined.]]),
 			clicked = function()
 				self.ChoGGi.UserSettings.FlashExamineObject = not self.ChoGGi.UserSettings.FlashExamineObject
-				self.ChoGGi.SettingFuncs.WriteSettings()
+				ChoGGi_Funcs.Settings.WriteSettings()
 			end,
 			value = "ChoGGi.UserSettings.FlashExamineObject",
 			class = "ChoGGi_XCheckButtonMenu",
@@ -1718,7 +1719,7 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 			hint = T(302535920001433--[[Fiddle with object angle/axis/pos and so forth.]]),
 			image = "CommonAssets/UI/Menu/Axis.tga",
 			clicked = function()
-				self.ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(self.obj_ref, self)
+				ChoGGi_Funcs.Common.OpenIn3DManipulatorDlg(self.obj_ref, self)
 			end,
 		})
 
@@ -1729,7 +1730,7 @@ You can access a default value with obj:GetDefaultPropertyValue(""NAME"")
 				-- pure text string
 				local str = self.idText:GetText()
 
-				self.ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+				ChoGGi_Funcs.Common.OpenInMultiLineTextDlg{
 					parent = self,
 					overwrite_check = not self.ChoGGi.UserSettings.ExamineAppendDump,
 					text = str,
@@ -1763,7 +1764,7 @@ local function CallMenu(self, popup_id, items, pt, button, ...)
 		self[items].FocusedBackground = -9868951
 		self[items].PressedBackground = -12500671
 		self[items].TextStyle = "ChoGGi_CheckButtonMenuOpp"
-		self.ChoGGi.ComFuncs.PopupToggle(dlg, self[popup_id], self[items], "bottom")
+		ChoGGi_Funcs.Common.PopupToggle(dlg, self[popup_id], self[items], "bottom")
 	end
 end
 
@@ -1879,7 +1880,7 @@ function ChoGGi_DlgExamine:ProcessList(list, prefix)
 end
 
 function ChoGGi_DlgExamine:InvalidMsgPopup(msg, title)
-	ChoGGi.ComFuncs.MsgPopup(
+	ChoGGi_Funcs.Common.MsgPopup(
 		msg or T(302535920001526--[[Not a valid object]]),
 		title or T(302535920000069--[[Examine]])
 	)
@@ -2042,7 +2043,7 @@ function ChoGGi_DlgExamine:ShowHexShapeList()
 		return self:InvalidMsgPopup(nil, self.string_Entity)
 	end
 
-	self.ChoGGi.ComFuncs.ObjHexShape_Clear(obj)
+	ChoGGi_Funcs.Common.ObjHexShape_Clear(obj)
 
 	self.hex_shape_tables = self.hex_shape_tables or {
 		"HexBuildShapes",
@@ -2119,7 +2120,7 @@ function ChoGGi_DlgExamine:ShowHexShapeList()
 		end
 	end
 
-	local surfs = self.ChoGGi.ComFuncs.RetHexSurfaces(self.obj_entity, true, true)
+	local surfs = ChoGGi_Funcs.Common.RetHexSurfaces(self.obj_entity, true, true)
 	for i = 1, #surfs do
 		local s = surfs[i]
 		c = c + 1
@@ -2136,9 +2137,9 @@ function ChoGGi_DlgExamine:ShowHexShapeList()
 		end
 		choice = choice[1]
 		if choice.value == "Clear" then
-			self.ChoGGi.ComFuncs.ObjHexShape_Clear(obj)
+			ChoGGi_Funcs.Common.ObjHexShape_Clear(obj)
 		elseif type(choice.value) == "table" then
-			self.ChoGGi.ComFuncs.ObjHexShape_Toggle(obj, {
+			ChoGGi_Funcs.Common.ObjHexShape_Toggle(obj, {
 				shape = choice.value,
 				skip_return = true,
 				depth_test = choice.check1,
@@ -2148,7 +2149,7 @@ function ChoGGi_DlgExamine:ShowHexShapeList()
 		end
 	end
 
-	self.ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920001522--[[Hex Shape Toggle]]) .. ": " .. self.name,
@@ -2186,7 +2187,7 @@ function ChoGGi_DlgExamine:BuildBBoxListItem(item_list, obj, text)
 	end
 
 	-- make sure it's on the map, and isn't 0 sized
-	if bbox and self.ChoGGi.ComFuncs.IsPosInMap(bbox:Center())
+	if bbox and ChoGGi_Funcs.Common.IsPosInMap(bbox:Center())
 			and tostring(bbox:max()) ~= tostring(bbox:min()) then
 		item_list[#item_list+1] = {
 			text = text,
@@ -2204,7 +2205,7 @@ function ChoGGi_DlgExamine:ShowBBoxList()
 -- might be useful?
 --~ ToBBox(pos, prefab.size, angle)
 
-	self.ChoGGi.ComFuncs.BBoxLines_Clear(obj)
+	ChoGGi_Funcs.Common.BBoxLines_Clear(obj)
 
 	local item_list = {
 		{text = " " .. T(302535920001688--[[Clear]]), value = "Clear"},
@@ -2237,9 +2238,9 @@ function ChoGGi_DlgExamine:ShowBBoxList()
 		choice = choice[1]
 
 		if choice.value == "Clear" then
-			self.ChoGGi.ComFuncs.BBoxLines_Clear(obj)
+			ChoGGi_Funcs.Common.BBoxLines_Clear(obj)
 		else
-			self.ChoGGi.ComFuncs.BBoxLines_Toggle(obj, {
+			ChoGGi_Funcs.Common.BBoxLines_Toggle(obj, {
 				bbox = choice.bbox,
 				args = choice.args,
 				skip_return = true,
@@ -2248,7 +2249,7 @@ function ChoGGi_DlgExamine:ShowBBoxList()
 		end
 	end
 
-	self.ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920001472--[[BBox Toggle]]) .. ": " .. self.name,
@@ -2268,7 +2269,7 @@ end
 function ChoGGi_DlgExamine:ShowEntitySpotsList()
 	local obj = self.obj_ref
 
-	self.ChoGGi.ComFuncs.EntitySpots_Clear(obj)
+	ChoGGi_Funcs.Common.EntitySpots_Clear(obj)
 
 	if not IsValidEntity(self.obj_entity) then
 		return self:InvalidMsgPopup(nil, self.string_Entity)
@@ -2314,16 +2315,16 @@ function ChoGGi_DlgExamine:ShowEntitySpotsList()
 		choice = choice[1]
 
 		if choice.value == "All" then
-			self.ChoGGi.ComFuncs.EntitySpots_Toggle(obj, {
+			ChoGGi_Funcs.Common.EntitySpots_Toggle(obj, {
 				skip_return = true,
 				depth_test = choice.check1,
 				show_pos = choice.check2,
 				skip_clear = choice.check3,
 			})
 		elseif choice.value == "Clear" then
-			self.ChoGGi.ComFuncs.EntitySpots_Clear(obj)
+			ChoGGi_Funcs.Common.EntitySpots_Clear(obj)
 		else
-			self.ChoGGi.ComFuncs.EntitySpots_Toggle(obj, {
+			ChoGGi_Funcs.Common.EntitySpots_Toggle(obj, {
 				spot_type = choice.name,
 				annotation = choice.value,
 				skip_return = true,
@@ -2334,7 +2335,7 @@ function ChoGGi_DlgExamine:ShowEntitySpotsList()
 		end
 	end
 
-	self.ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000449--[[Entity Spots Toggle]]) .. ": " .. self.name,
@@ -2364,7 +2365,7 @@ end
 function ChoGGi_DlgExamine:ShowSurfacesList()
 	local obj = self.obj_ref
 
-	self.ChoGGi.ComFuncs.SurfaceLines_Clear(obj)
+	ChoGGi_Funcs.Common.SurfaceLines_Clear(obj)
 
 	if not IsValidEntity(self.obj_entity) then
 		return self:InvalidMsgPopup(nil, self.string_Entity)
@@ -2407,9 +2408,9 @@ function ChoGGi_DlgExamine:ShowSurfacesList()
 		choice = choice[1]
 
 		if choice.value == "Clear" then
-			self.ChoGGi.ComFuncs.SurfaceLines_Clear(obj)
+			ChoGGi_Funcs.Common.SurfaceLines_Clear(obj)
 		else
-			self.ChoGGi.ComFuncs.SurfaceLines_Toggle(obj, {
+			ChoGGi_Funcs.Common.SurfaceLines_Toggle(obj, {
 				surface_mask = choice.value,
 				skip_return = true,
 				surfs = choice.surfs,
@@ -2419,7 +2420,7 @@ function ChoGGi_DlgExamine:ShowSurfacesList()
 		end
 	end
 
-	self.ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920001551--[[Surfaces Toggle]]) .. ": " .. self.name,
@@ -2462,7 +2463,7 @@ local function Show_ConvertValueToInfo(self, button, obj)
 	if button == "L" and city_object and (IsValid(obj) or IsPoint(obj)) then
 		self:AddSphere(obj)
 	else
-		self.ChoGGi.ComFuncs.OpenInExamineDlg(obj, {
+		ChoGGi_Funcs.Common.OpenInExamineDlg(obj, {
 			has_params = true,
 			parent = self,
 		})
@@ -2484,7 +2485,7 @@ local function Examine_ConvertValueToInfo(self, button, obj, _, _, _, link)
 			title = tostring(self.onclick_objs[link-1])
 		end
 
-		self.ChoGGi.ComFuncs.OpenInExamineDlg(obj, {
+		ChoGGi_Funcs.Common.OpenInExamineDlg(obj, {
 			has_params = true,
 			parent = self,
 			title = title,
@@ -2505,11 +2506,11 @@ end
 
 function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 	-- Id for PopupToggle
-	self.opened_list_menu_id = self.opened_list_menu_id or self.ChoGGi.ComFuncs.Random()
+	self.opened_list_menu_id = self.opened_list_menu_id or ChoGGi_Funcs.Common.Random()
 
 	local obj_name = RetName(obj)
 	-- I need to know if it's a number or string and so on
-	local obj_key, obj_type = self.ChoGGi.ComFuncs.RetProperType(obj)
+	local obj_key, obj_type = ChoGGi_Funcs.Common.RetProperType(obj)
 
 	local obj_value = self.obj_ref[obj_key]
 	local obj_value_str = tostring(obj_value)
@@ -2582,13 +2583,13 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 	local c = c_orig
 
 	-- If it's an image path then we add an image viewer
-	if self.ChoGGi.ComFuncs.ImageExts()[obj_value_str:sub(-3):lower()] then
+	if ChoGGi_Funcs.Common.ImageExts()[obj_value_str:sub(-3):lower()] then
 		c = c + 1
 		list[c] = {name = T(302535920001469--[[Image Viewer]]),
 			hint = T(302535920001470--[["Open a dialog with a list of images from object (.dds, .tga, .png)."]]),
 			image = "CommonAssets/UI/Menu/light_model.tga",
 			clicked = function()
-				self.ChoGGi.ComFuncs.OpenInImageViewerDlg(obj_value_str, self)
+				ChoGGi_Funcs.Common.OpenInImageViewerDlg(obj_value_str, self)
 			end,
 		}
 	end
@@ -2600,7 +2601,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 			hint = T(302535920001459--[[Shows list of material settings/.dds files for use with .mtl files.]]),
 			image = "CommonAssets/UI/Menu/AreaProperties.tga",
 			clicked = function()
-				self.ChoGGi.ComFuncs.OpenInExamineDlg(GetMaterialProperties(obj_value_str), {
+				ChoGGi_Funcs.Common.OpenInExamineDlg(GetMaterialProperties(obj_value_str), {
 					has_params = true,
 					parent = self,
 					title = T(302535920001458--[[Material Properties]]),
@@ -2697,7 +2698,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 				hint = T(302535920000906--[[Print func name when this func is called.]]),
 				image = "CommonAssets/UI/Menu/Action.tga",
 				clicked = function()
-					self.ChoGGi.ComFuncs.PrintToFunc_Add(
+					ChoGGi_Funcs.Common.PrintToFunc_Add(
 						obj_value, -- func to print
 						obj_key, -- func name
 						self.obj_ref, -- parent
@@ -2710,7 +2711,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 				hint = T(302535920000906) .. "\n\n" .. T(302535920000984--[[Also prints params (if this func is attached to a class obj then the first arg will only return the name).]]),
 				image = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
 				clicked = function()
-					self.ChoGGi.ComFuncs.PrintToFunc_Add(obj_value, obj_key, self.obj_ref, self.name .. "." .. obj_key, true)
+					ChoGGi_Funcs.Common.PrintToFunc_Add(obj_value, obj_key, self.obj_ref, self.name .. "." .. obj_key, true)
 				end,
 			}
 			c = c + 1
@@ -2718,7 +2719,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 				hint = T(302535920001067--[[Remove print from func.]]),
 				image = "CommonAssets/UI/Menu/reload.tga",
 				clicked = function()
-					self.ChoGGi.ComFuncs.PrintToFunc_Remove(obj_key, self.obj_ref)
+					ChoGGi_Funcs.Common.PrintToFunc_Remove(obj_key, self.obj_ref)
 				end,
 			}
 		end
@@ -2737,7 +2738,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 	self.list_menu_table = self.list_menu_table or {}
 	self.list_menu_table.ChoGGi_self = self
 	self.list_menu_table.box = hyperlink_box
-	self.ChoGGi.ComFuncs.PopupToggle(
+	ChoGGi_Funcs.Common.PopupToggle(
 		self.list_menu_table, self.opened_list_menu_id, list, "left"
 	)
 end
@@ -2951,7 +2952,7 @@ end
 function ChoGGi_DlgExamine:RetDebugGetInfo(obj)
 	self.RetDebugInfo_table = self.RetDebugInfo_table or {}
 	local temp = self.RetDebugInfo_table
-	self.ChoGGi.ComFuncs.objlist_Destroy(temp)
+	ChoGGi_Funcs.Common.objlist_Destroy(temp)
 
 	local c = 0
 	local info = debug.getinfo(obj, "Slfunt")
@@ -2971,7 +2972,7 @@ function ChoGGi_DlgExamine:RetFuncArgs(obj)
 	end
 	self.RetDebugInfo_table = self.RetDebugInfo_table or {}
 	local temp = self.RetDebugInfo_table
-	self.ChoGGi.ComFuncs.objlist_Destroy(temp)
+	ChoGGi_Funcs.Common.objlist_Destroy(temp)
 
 	local info = debug.getinfo(obj, "u")
 	if info.nparams > 0 then
@@ -2995,10 +2996,10 @@ function ChoGGi_DlgExamine:ToggleBBox(_, bbox)
 	if self.spawned_bbox then
 		-- the clear func expects it this way
 		self.spawned_bbox.ChoGGi_bboxobj = self.spawned_bbox
-		self.ChoGGi.ComFuncs.BBoxLines_Clear(self.spawned_bbox)
+		ChoGGi_Funcs.Common.BBoxLines_Clear(self.spawned_bbox)
 		self.spawned_bbox = false
 	else
-		self.spawned_bbox = self.ChoGGi.ComFuncs.BBoxLines_Toggle(bbox)
+		self.spawned_bbox = ChoGGi_Funcs.Common.BBoxLines_Toggle(bbox)
 		if not self.ChoGGi.Temp.Examine_BBoxes then
 			self.ChoGGi.Temp.Examine_BBoxes = {}
 		end
@@ -3176,7 +3177,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 
 		c = c + 1
 		list_obj_str[c] = self:HyperLink(obj, function()
-			self.ChoGGi.ComFuncs.OpenInExamineDlg(obj, {
+			ChoGGi_Funcs.Common.OpenInExamineDlg(obj, {
 				has_params = true,
 				parent = self,
 			})
@@ -3187,11 +3188,11 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 
 	-- cobjects, not property objs
 	if self.is_valid_obj and obj:IsKindOf("CObject") then
-		local entity = self.ChoGGi.ComFuncs.RetObjectEntity(obj)
+		local entity = ChoGGi_Funcs.Common.RetObjectEntity(obj)
 
 		table.insert(list_obj_str, 1, "\t--"
 			.. self:HyperLink(obj, function()
-				self.ChoGGi.ComFuncs.OpenInExamineDlg(getmetatable(obj), {
+				ChoGGi_Funcs.Common.OpenInExamineDlg(getmetatable(obj), {
 					has_params = true,
 					parent = self,
 				})
@@ -3323,7 +3324,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				table.insert(data_meta, 1, "\ngetmetatable():")
 				table.insert(data_meta, 1, "Unpack(): "
 					.. self:HyperLink(obj, function()
-						self.ChoGGi.ComFuncs.OpenInExamineDlg({obj:Unpack()}, {
+						ChoGGi_Funcs.Common.OpenInExamineDlg({obj:Unpack()}, {
 							has_params = true,
 							parent = self,
 							title = Translate(302535920000885--[[Unpacked]]),
@@ -3338,7 +3339,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 						ChoGGi_AddHyperLink = true,
 						hint = Translate(302535920001447--[[Shows list of flags set for selected object.-]]),
 						func = function(ex_dlg)
-							ChoGGi.ComFuncs.ObjFlagsList_TR(obj, ex_dlg)
+							ChoGGi_Funcs.Common.ObjFlagsList_TR(obj, ex_dlg)
 						end,
 					})
 				)
@@ -3378,7 +3379,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 					hint = Translate(302535920001124--[[Will take a few seconds to complete.]]),
 					name = "levels(true, 1):",
 					func = function()
-						self.ChoGGi.ComFuncs.OpenInExamineDlg({obj:levels(true, 1)}, {
+						ChoGGi_Funcs.Common.OpenInExamineDlg({obj:levels(true, 1)}, {
 							has_params = true,
 							parent = self,
 						})
@@ -3434,7 +3435,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				else
 					table.insert(data_meta, 1, "\nsize() w, h: " .. self:ConvertValueToInfo(size))
 				end
-				if MainCity and center:InBox2D(self.ChoGGi.ComFuncs.ConstructableArea()) then
+				if MainCity and center:InBox2D(ChoGGi_Funcs.Common.ConstructableArea()) then
 					table.insert(data_meta, 1, self:HyperLink(obj, self.ToggleBBox, Translate(302535920001550--[[Toggle viewing BBox.]])) .. Translate(302535920001549--[[View BBox]]) .. self.hyperlink_end)
 				end
 
@@ -3513,7 +3514,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 	elseif obj_type == "function" then
 		if blacklist then
 			c = c + 1
-			list_obj_str[c] = "\ngetinfo(): " .. self.ChoGGi.ComFuncs.DebugGetInfo(obj)
+			list_obj_str[c] = "\ngetinfo(): " .. ChoGGi_Funcs.Common.DebugGetInfo(obj)
 		else
 			c = c + 1
 			list_obj_str[c] = "\n"
@@ -3573,7 +3574,7 @@ Decompiled code won't scroll correctly as the line numbers are different."]]):fo
 				.. "\n"
 		end
 
-		local info_list = self.ChoGGi.ComFuncs.RetThreadInfo(obj)
+		local info_list = ChoGGi_Funcs.Common.RetThreadInfo(obj)
 		-- needed for the table that's returned if blacklist is enabled (it starts at 1, getinfo starts at 0)
 		local starter = info_list[0] and 0 or 1
 
@@ -3631,7 +3632,7 @@ Decompiled code won't scroll correctly as the line numbers are different."]]):fo
 
 		if self.enum_vars and next(self.enum_vars) then
 			list_obj_str[1] = list_obj_str[1] .. self:HyperLink(obj, function()
-				self.ChoGGi.ComFuncs.OpenInExamineDlg(self.enum_vars, {
+				ChoGGi_Funcs.Common.OpenInExamineDlg(self.enum_vars, {
 					has_params = true,
 					parent = self,
 					title = Translate(302535920001442--[[Enum]]),
@@ -3664,8 +3665,8 @@ do -- BuildAttachesPopup
 		if button == "R" then
 			CopyToClipboard(item.showobj.class)
 		else
-			item.dlg.ChoGGi.ComFuncs.ClearShowObj(item.showobj)
-			item.dlg.ChoGGi.ComFuncs.OpenInExamineDlg(item.showobj, {
+			item.dlg.ChoGGi_Funcs.Common.ClearShowObj(item.showobj)
+			item.dlg.ChoGGi_Funcs.Common.OpenInExamineDlg(item.showobj, {
 				has_params = true,
 				parent = item.dlg,
 			})
@@ -3677,7 +3678,7 @@ do -- BuildAttachesPopup
 
 	function ChoGGi_DlgExamine:BuildAttachesPopup(obj)
 		table.iclear(self.attaches_menu_popup)
-		local attaches = self.ChoGGi.ComFuncs.GetAllAttaches(obj, true)
+		local attaches = ChoGGi_Funcs.Common.GetAllAttaches(obj, true)
 		local attach_amount = #attaches
 
 		for i = 1, attach_amount do
@@ -3716,7 +3717,7 @@ do -- BuildAttachesPopup
 					self.attaches_menu_popup_hint[c] = Translate(302535920001622--[[Particle]]) .. ": " .. par_name
 				end
 			elseif a:IsKindOf("CObject") then
-				local entity = self.ChoGGi.ComFuncs.RetObjectEntity(a)
+				local entity = ChoGGi_Funcs.Common.RetObjectEntity(a)
 				if entity then
 					c = c + 1
 					self.attaches_menu_popup_hint[c] = self.string_Entity .. ": " .. entity
@@ -3826,7 +3827,7 @@ function ChoGGi_DlgExamine.ParentClicked(item, _, _, button)
 	if button == "R" then
 		CopyToClipboard(item.name)
 	else
-		item.dlg.ChoGGi.ComFuncs.OpenInExamineDlg(g_Classes[item.name], {
+		item.dlg.ChoGGi_Funcs.Common.OpenInExamineDlg(g_Classes[item.name], {
 			has_params = true,
 			parent = item.dlg,
 		})
@@ -3836,7 +3837,7 @@ function ChoGGi_DlgExamine.ParentClickedTemplate(item, _, _, button)
 	if button == "R" then
 		CopyToClipboard("BuildingTemplates." ..item.name)
 	else
-		item.dlg.ChoGGi.ComFuncs.OpenInExamineDlg(BuildingTemplates[item.name], {
+		item.dlg.ChoGGi_Funcs.Common.OpenInExamineDlg(BuildingTemplates[item.name], {
 			has_params = true,
 			parent = item.dlg,
 		})
@@ -3845,7 +3846,7 @@ end
 
 function ChoGGi_DlgExamine:BuildParentsMenu(list, list_type, title, sort_type)
 	if list and next(list) then
-		list = self.ChoGGi.ComFuncs.RetSortTextAssTable(list, sort_type)
+		list = ChoGGi_Funcs.Common.RetSortTextAssTable(list, sort_type)
 		self[list_type] = list
 		local c = #self.parents_menu_popup
 
@@ -3888,7 +3889,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 
 	if self.str_object then
 		-- Get whatever the obj leads to (if anything)
-		local obj_ref = self.ChoGGi.ComFuncs.DotPathToObject(obj)
+		local obj_ref = ChoGGi_Funcs.Common.DotPathToObject(obj)
 		-- set title
 		self.override_title = true
 		self.title = "str: " .. obj
@@ -3992,7 +3993,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 			-- the chinese text render is slow as molasses, so we have a Sleep in ConvertObjToInfo to keep ui stuff accessible
 			CreateRealTimeThread(function()
 				WaitMsg("OnRender")
---~ self.ChoGGi.ComFuncs.TickStart("Examine")
+--~ ChoGGi_Funcs.Common.TickStart("Examine")
 				local status, result = pcall(self.ConvertObjToInfo, self, obj, obj_type)
 				if status then
 					self:SetTextTest(result)
@@ -4003,7 +4004,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 --~ 					ex(result)
 					print(result)
 				end
---~ self.ChoGGi.ComFuncs.TickEnd("Examine", self.name)
+--~ ChoGGi_Funcs.Common.TickEnd("Examine", self.name)
 			end)
 		else
 			-- we normally don't want it in a thread with OnRender else it'll mess up my scroll pos (and stuff)
@@ -4028,7 +4029,7 @@ function ChoGGi_DlgExamine:SetTextTest(text)
 	CreateRealTimeThread(function()
 		WaitMsg("OnRender")
 		if self.idText:GetText() == self.string_Loadingresources then
-			ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+			ChoGGi_Funcs.Common.OpenInMultiLineTextDlg{
 				parent = self,
 				text = text,
 				title = T(302535920001461--[[XText:ParseText() just ralphed.]]),
@@ -4052,26 +4053,26 @@ function ChoGGi_DlgExamine:CleanupCustomObjs(obj, force)
 
 	obj = obj or self.obj_ref
 	if self.obj_entity or IsValid(obj) then
-		self.ChoGGi.ComFuncs.BBoxLines_Clear(obj)
-		self.ChoGGi.ComFuncs.ObjHexShape_Clear(obj)
-		self.ChoGGi.ComFuncs.EntitySpots_Clear(obj)
-		self.ChoGGi.ComFuncs.SurfaceLines_Clear(obj)
+		ChoGGi_Funcs.Common.BBoxLines_Clear(obj)
+		ChoGGi_Funcs.Common.ObjHexShape_Clear(obj)
+		ChoGGi_Funcs.Common.EntitySpots_Clear(obj)
+		ChoGGi_Funcs.Common.SurfaceLines_Clear(obj)
 	elseif IsObjlist(obj) or force then
-		self.ChoGGi.ComFuncs.ObjListLines_Clear(obj)
+		ChoGGi_Funcs.Common.ObjListLines_Clear(obj)
 	end
 
 	if self.spawned_bbox then
-		self.ChoGGi.ComFuncs.BBoxLines_Clear(self.spawned_bbox)
+		ChoGGi_Funcs.Common.BBoxLines_Clear(self.spawned_bbox)
 	end
 end
 
 function ChoGGi_DlgExamine:CloseXButtonFunc()
 	-- close all ecm dialogs
 	if IsControlPressed() then
-		ChoGGi.ComFuncs.CloseDialogsECM(self)
+		ChoGGi_Funcs.Common.CloseDialogsECM(self)
 	-- close all parent examine dialogs
 	elseif IsShiftPressed() then
-		ChoGGi.ComFuncs.CloseChildExamineDlgs(self)
+		ChoGGi_Funcs.Common.CloseChildExamineDlgs(self)
 		-- abort closing window
 		return true
 	end
@@ -4122,7 +4123,7 @@ local function FlashTitlebar(title)
 	title:SetBackground(g_Classes.ChoGGi_XMoveControl.Background)
 end
 
-function ChoGGi.ComFuncs.OpenInExamineDlg(obj, parent, title, ...)
+function ChoGGi_Funcs.Common.OpenInExamineDlg(obj, parent, title, ...)
 	local params, parent_type
 	params, parent, parent_type = RetParamsParents(parent, params, ...)
 
@@ -4211,7 +4212,7 @@ function ChoGGi.ComFuncs.OpenInExamineDlg(obj, parent, title, ...)
 	return dlg
 end
 
-local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
+local OpenInExamineDlg = ChoGGi_Funcs.Common.OpenInExamineDlg
 -- Mostly used for console rules, so we can get around it spamming the log
 function OpenExamine(...)
 	OpenInExamineDlg(...)

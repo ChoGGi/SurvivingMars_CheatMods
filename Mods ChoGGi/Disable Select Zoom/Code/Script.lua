@@ -1,12 +1,12 @@
 -- See LICENSE for terms
 
 -- version 9.6
---~ local IsGamepadButtonPressed = ChoGGi.ComFuncs.IsGamepadButtonPressed
+--~ local IsGamepadButtonPressed = ChoGGi_Funcs.Common.IsGamepadButtonPressed
 local XInput_IsControllerConnected = XInput.IsControllerConnected
 local XInput_IsCtrlButtonPressed = XInput.IsCtrlButtonPressed
 -- version 9.6
 
-local IsCtrlPressed = ChoGGi.ComFuncs.IsCtrlPressed
+local IsCtrlPressed = ChoGGi_Funcs.Common.IsCtrlPressed
 
 local mod_EnableMod
 

@@ -268,7 +268,7 @@ end
 local function ShowResourceWarningNotif(remaining, resource)
 --~ local resource = T(681, "Water")
 --~ local remaining = 500
-	ChoGGi.ComFuncs.MsgPopup(
+	ChoGGi_Funcs.Common.MsgPopup(
 		T{302535920011941, [[<color ChoGGi_red>Warning</color>: <color ChoGGi_yellow_ex><resource></color> remaining in mined deposits below <remaining>!]],
 			resource = resource,
 			remaining = remaining,

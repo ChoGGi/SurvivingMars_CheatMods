@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local RetSpotPos = ChoGGi.ComFuncs.RetSpotPos
+local RetSpotPos = ChoGGi_Funcs.Common.RetSpotPos
 local IsValid = IsValid
 local FindNearestObject = FindNearestObject
 local GetRealm = GetRealm

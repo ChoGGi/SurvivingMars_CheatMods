@@ -7,7 +7,7 @@ local IsKindOf = IsKindOf
 local pairs = pairs
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
-local RGBtoColour = ChoGGi.ComFuncs.RGBtoColour
+local RGBtoColour = ChoGGi_Funcs.Common.RGBtoColour
 
 local mod_EnableGrid
 local mod_DistFromCursor

@@ -298,7 +298,7 @@ function OnMsg.ClassesPostprocess()
 	local building = XTemplates.ipBuilding[1]
 
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(building, "ChoGGi_Template_FireworksLauncher_DoStuff", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(building, "ChoGGi_Template_FireworksLauncher_DoStuff", true)
 
 	table.insert(building, 1,
 		PlaceObj('XTemplateTemplate', {

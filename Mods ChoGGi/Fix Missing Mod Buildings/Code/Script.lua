@@ -15,7 +15,7 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
-local AddParentToClass = ChoGGi.ComFuncs.AddParentToClass
+local AddParentToClass = ChoGGi_Funcs.Common.AddParentToClass
 	or function(class_obj, parent_name)
 		local p = class_obj.__parents
 		if not table.find(p, parent_name) then

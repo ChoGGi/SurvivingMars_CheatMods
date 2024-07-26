@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local RotateBuilding = ChoGGi.ComFuncs.RotateBuilding
+local RotateBuilding = ChoGGi_Funcs.Common.RotateBuilding
 
 local mod_EnableMod
 
@@ -35,7 +35,7 @@ function OnMsg.ClassesPostprocess()
 	local xtemplate = XTemplates.ipBuilding[1]
 
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_RotateAllBuildings_Rotate", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_RotateAllBuildings_Rotate", true)
 
 	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
 		"Id" , "ChoGGi_Template_RotateAllBuildings_Rotate",

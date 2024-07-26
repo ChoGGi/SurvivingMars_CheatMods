@@ -1,2 +1,5 @@
+v0.3
+Fixed missing button if no B&B dlc + mod that inserts above list of other buttons.
+
 v0.2
 Added mod option to refab everything.

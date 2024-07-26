@@ -4,7 +4,7 @@ local box = box
 local tonumber = tonumber
 
 -- input as text "0,0,0,0"
---~ local StrToBox = ChoGGi.ComFuncs.StrToBox
+--~ local StrToBox = ChoGGi_Funcs.Common.StrToBox
 local function StrToBox(text)
 	if not text then
 		return box(0,0,0,0)

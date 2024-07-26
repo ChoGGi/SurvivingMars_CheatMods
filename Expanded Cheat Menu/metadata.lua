@@ -44,7 +44,7 @@ return PlaceObj("ModDef", {
 		-- new global funcs
 		"Code/AddedFunctions.lua",
 		-- console stuff
-		"Code/ConsoleFuncs.lua",
+		"Code/Console.lua",
 		-- selection panel cheats pane
 		"Code/InfoPaneCheats.lua",
 		-- paint with hexes: HexPainter()
@@ -65,6 +65,7 @@ return PlaceObj("ModDef", {
 		"Code/Dialogs/3DManipulator.lua",
 		"Code/Dialogs/DTMSlots.lua",
 		"Code/Dialogs/TerminalRolloverMode.lua",
+		"Code/Dialogs/ViewTextStyles.lua",
 
 		-- menus/menu items/shortcuts
 		"Code/Menus/BuildingsFunc.lua",
@@ -101,7 +102,7 @@ return PlaceObj("ModDef", {
 		"Code/Menus/ShuttleMenu.lua",
 		"Code/Menus/TerraformingFunc.lua",
 		"Code/Menus/TerraformingMenu.lua",
-		-- make sure KeysFunc is above Keys
+		-- Make sure KeysFunc is above Keys
 		"Code/Menus/KeysFunc.lua",
 		"Code/Menus/Keys.lua",
 

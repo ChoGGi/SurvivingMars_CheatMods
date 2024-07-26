@@ -17,7 +17,7 @@ end
 
 local mod_EnableMod
 
---~ function ChoGGi.ComFuncs.SetBuildingTemplates(template, key, value)
+--~ function ChoGGi_Funcs.Common.SetBuildingTemplates(template, key, value)
 local function SetBuildingTemplates(template, bt, ct)
 	bt = bt[template]
 	if bt then

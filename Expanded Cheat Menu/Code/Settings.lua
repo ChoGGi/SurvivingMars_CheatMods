@@ -4,12 +4,13 @@
 
 -- stores default values and some tables
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local next, pairs, type, os = next, pairs, type, os
 
 local LuaCodeToTuple = LuaCodeToTuple
 local SaveLocalStorage = SaveLocalStorage
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
@@ -169,9 +170,9 @@ if testing then
 end
 
 -- Set game values to saved values (called from OnMsg.ChoGGi_Loaded())
-function ChoGGi.SettingFuncs.SetConstsToSaved()
+function ChoGGi_Funcs.Settings.SetConstsToSaved()
 	local UserSettings = ChoGGi.UserSettings
-	local SetConsts = ChoGGi.ComFuncs.SetConsts
+	local SetConsts = ChoGGi_Funcs.Common.SetConsts
 	local const = const
 
 	local list = ChoGGi.Tables.Consts_names
@@ -191,7 +192,7 @@ function ChoGGi.SettingFuncs.SetConstsToSaved()
 
 end
 
-function ChoGGi.SettingFuncs.WriteSettings(settings)
+function ChoGGi_Funcs.Settings.WriteSettings(settings)
 	settings = settings or ChoGGi.UserSettings
 	settings._SAVED = os.time()
 
@@ -218,7 +219,7 @@ function ChoGGi.SettingFuncs.WriteSettings(settings)
 	return settings
 end
 
-function ChoGGi.SettingFuncs.ReadSettings(settings)
+function ChoGGi_Funcs.Settings.ReadSettings(settings)
 	local ChoGGi = ChoGGi
 
 	-- Try to read settings
@@ -229,7 +230,7 @@ function ChoGGi.SettingFuncs.ReadSettings(settings)
 
 		if not settings or not next(settings) then
 			-- no settings so use defaults
-			settings = ChoGGi.SettingFuncs.WriteSettings(ChoGGi.Defaults)
+			settings = ChoGGi_Funcs.Settings.WriteSettings(ChoGGi.Defaults)
 		end
 	end
 
@@ -311,7 +312,7 @@ if blacklist then
 end
 
 -- and read our settings
-ChoGGi.SettingFuncs.ReadSettings()
+ChoGGi_Funcs.Settings.ReadSettings()
 
 local UserSettings = ChoGGi.UserSettings
 

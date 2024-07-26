@@ -5,7 +5,7 @@ if not g_AvailableDlc.picard then
 	return
 end
 
-local RetObjMapId = ChoGGi.ComFuncs.RetObjMapId
+local RetObjMapId = ChoGGi_Funcs.Common.RetObjMapId
 
 local mod_EnableMod
 

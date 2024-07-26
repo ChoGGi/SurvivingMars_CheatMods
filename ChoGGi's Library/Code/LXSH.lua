@@ -87,7 +87,7 @@ end
 -- strip interface
 local table = table
 local line_c = {}
-function ChoGGi.ComFuncs.StripComments(s)
+function ChoGGi_Funcs.Common.StripComments(s)
 	table.iclear(line_c)
 	local c = 0
 

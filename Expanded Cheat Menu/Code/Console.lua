@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local ChoGGi_Funcs = ChoGGi_Funcs
+local ChoGGi_Funcs = ChoGGi_Funcs
 local what_game = ChoGGi.what_game
 
 -- menus/buttons added to the Console
@@ -9,16 +11,16 @@ local print, type, rawget = print, type, rawget
 local FlushLogFile = FlushLogFile
 
 -- rebuild list of objects to examine when user changes settings
-OnMsg.ChoGGi_SettingsUpdated = ChoGGi.ConsoleFuncs.BuildExamineMenu
+OnMsg.ChoGGi_SettingsUpdated = ChoGGi_Funcs.Console.BuildExamineMenu
 -- update UICity list
-OnMsg.ChangeMapDone = ChoGGi.ConsoleFuncs.BuildExamineMenu
+OnMsg.ChangeMapDone = ChoGGi_Funcs.Console.BuildExamineMenu
 
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local PopupToggle = ChoGGi.ComFuncs.PopupToggle
-local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
-local DotPathToObject = ChoGGi.ComFuncs.DotPathToObject
-local RetFilesInFolder = ChoGGi.ComFuncs.RetFilesInFolder
+local Translate = ChoGGi_Funcs.Common.Translate
+local PopupToggle = ChoGGi_Funcs.Common.PopupToggle
+local OpenInExamineDlg = ChoGGi_Funcs.Common.OpenInExamineDlg
+local DotPathToObject = ChoGGi_Funcs.Common.DotPathToObject
+local RetFilesInFolder = ChoGGi_Funcs.Common.RetFilesInFolder
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 
@@ -35,14 +37,14 @@ local ToolsMenuPopupToggle_list = {
 	{name = T(302535920000040--[[Exec Code]]),
 		hint = T(302535920001287--[[Instead of a single line, you can enter/execute code in a textbox.]]),
 		clicked = function()
-			ChoGGi.ComFuncs.OpenInExecCodeDlg()
+			ChoGGi_Funcs.Common.OpenInExecCodeDlg()
 		end,
 	},
 	{name = T(302535920001497--[[Show Blacklist]]),
 		hint = "Show blacklisted objects",
 		clicked = function()
 			if blacklist then
-				ChoGGi.ComFuncs.BlacklistMsg(T(302535920001497))
+				ChoGGi_Funcs.Common.BlacklistMsg(T(302535920001497))
 				return
 			end
 			-- lib should always have the blacklist enabled
@@ -59,7 +61,7 @@ local ToolsMenuPopupToggle_list = {
 	{name = T(302535920000563--[[View Log Text]]),
 		hint = T(302535920001154--[[Displays the log text in a window you can copy sections from.]]),
 		clicked = function()
-			ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+			ChoGGi_Funcs.Common.OpenInMultiLineTextDlg{
 				width = 1600,
 				height = 1000,
 				text = LoadLogfile(),
@@ -75,7 +77,7 @@ local ToolsMenuPopupToggle_list = {
 	{name = T(302535920000071--[[Show Mods Log]]),
 		hint = T(302535920001123--[[Shows any mod msgs in the log.]]),
 		clicked = function()
-			ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+			ChoGGi_Funcs.Common.OpenInMultiLineTextDlg{
 				text = table.concat(ModMessageLog, "\n"),
 				title = T(302535920000071--[[Show Mods Log]]),
 				update_func = ModMessageLog,
@@ -84,13 +86,13 @@ local ToolsMenuPopupToggle_list = {
 	},
 	{is_spacer = true},
 	{name = T(302535920000853--[[Monitor]]) .. ": _G",
-		hint = "ChoGGi.ComFuncs.MonitorTableLength(_G)",
-		clicked = ChoGGi.ComFuncs.MonitorTableLength,
+		hint = "ChoGGi_Funcs.Common.MonitorTableLength(_G)",
+		clicked = ChoGGi_Funcs.Common.MonitorTableLength,
 	},
 	{name = T(302535920000853--[[Monitor]]) .. ": ThreadsRegister",
-		hint = "ChoGGi.ComFuncs.MonitorThreads()",
+		hint = "ChoGGi_Funcs.Common.MonitorThreads()",
 		clicked = function()
-			ChoGGi.ComFuncs.MonitorThreads()
+			ChoGGi_Funcs.Common.MonitorThreads()
 		end,
 	},
 	{name = T(302535920000234--[[Monitor Func Calls]]),
@@ -98,12 +100,12 @@ local ToolsMenuPopupToggle_list = {
 Usage: Call it once to start and again to stop, it'll then show a list of func calls.
 
 Call it manually with:
-ChoGGi.ComFuncs.ToggleFuncHook(path, line, mask, count)
+ChoGGi_Funcs.Common.ToggleFuncHook(path, line, mask, count)
 https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"]]),
 		class = "ChoGGi_XCheckButtonMenu",
 		value = "ChoGGi.Temp.FunctionsHooked",
 		clicked = function()
-			ChoGGi.ComFuncs.ToggleFuncHook()
+			ChoGGi_Funcs.Common.ToggleFuncHook()
 		end,
 	},
 	{is_spacer = true},
@@ -111,13 +113,13 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"]]),
 		hint = T(302535920001322--[[Examine UI controls by clicking them.]]),
 --~ 		image = "CommonAssets/UI/Menu/select_objects.tga",
 		clicked = function()
-			ChoGGi.ComFuncs.TerminalRolloverMode(true)
+			ChoGGi_Funcs.Common.TerminalRolloverMode(true)
 		end,
 	},
 	{name = T(302535920001378--[[XWindow Inspector]]),
 		hint = T(302535920001379--[[Opens up the window inspector with terminal.desktop.]]),
 		clicked = function()
-			ChoGGi.ComFuncs.OpenGedApp("XWindowInspector")
+			ChoGGi_Funcs.Common.OpenGedApp("XWindowInspector")
 		end,
 	},
 }
@@ -154,7 +156,7 @@ local function BuildExamineItem(name, title)
 		end,
 	}
 end
-ChoGGi.ConsoleFuncs.BuildExamineItem = BuildExamineItem
+ChoGGi_Funcs.Console.BuildExamineItem = BuildExamineItem
 --
 local function AddSubmenu(name, title, ...)
 	local submenu = table.find(ExamineMenuToggle_list, "name", name)
@@ -176,24 +178,24 @@ local function AddSubmenu(name, title, ...)
 
 	end
 end
-ChoGGi.ConsoleFuncs.AddSubmenu = AddSubmenu
+ChoGGi_Funcs.Console.AddSubmenu = AddSubmenu
 
---~ 	function ChoGGi.ConsoleFuncs.AddMonitor(name, submenu, idx)
+--~ 	function ChoGGi_Funcs.Console.AddMonitor(name, submenu, idx)
 --~ 		table.insert(submenu, idx or 2, {
 --~ 			name = T(302535920000853--[[Monitor]]) .. ": " .. name,
---~ 			hint = "ChoGGi.ComFuncs.MonitorTableLength(" .. name .. ")",
+--~ 			hint = "ChoGGi_Funcs.Common.MonitorTableLength(" .. name .. ")",
 --~ 			clicked = function()
 --~ 				if name == "_G" then
---~ 					ChoGGi.ComFuncs.MonitorTableLength(DotPathToObject(name), nil, nil, nil, name)
+--~ 					ChoGGi_Funcs.Common.MonitorTableLength(DotPathToObject(name), nil, nil, nil, name)
 --~ 				else
---~ 					ChoGGi.ComFuncs.MonitorTableLength(DotPathToObject(name), 0, nil, nil, name)
+--~ 					ChoGGi_Funcs.Common.MonitorTableLength(DotPathToObject(name), 0, nil, nil, name)
 --~ 				end
 --~ 			end,
 --~ 		})
 --~ 	end
 
 -- build list of objects to examine
-function ChoGGi.ConsoleFuncs.BuildExamineMenu()
+function ChoGGi_Funcs.Console.BuildExamineMenu()
 	table.iclear(ExamineMenuToggle_list)
 
 	local list = ChoGGi.UserSettings.ConsoleExamineList or ""
@@ -332,7 +334,7 @@ function ChoGGi.ConsoleFuncs.BuildExamineMenu()
 --~ 		value = "ChoGGi.UserSettings.ConsoleExamineListUpdate",
 --~ 		clicked = function()
 --~ 			ChoGGi.UserSettings.ConsoleExamineListUpdate = not ChoGGi.UserSettings.ConsoleExamineListUpdate
---~ 			ChoGGi.SettingFuncs.WriteSettings()
+--~ 			ChoGGi_Funcs.Settings.WriteSettings()
 --~ 		end,
 --~ 	})
 end
@@ -340,7 +342,7 @@ end
 do -- ToggleLogErrors
 	local GetStack = GetStack
 	local UserSettings = ChoGGi.UserSettings
-	local Temp_OrigFuncs = {}
+	local Temp_Original = {}
 
 	local UndefinedGlobals = ChoGGi.Temp.UndefinedGlobals
 	local UndefinedGlobals_c = #UndefinedGlobals
@@ -398,19 +400,19 @@ do -- ToggleLogErrors
 			end
 
 			-- send back the orig func
-			return Temp_OrigFuncs[name](msg, ...)
+			return Temp_Original[name](msg, ...)
 		end
 
 	end
 
 	-- save orig funcs (if toggling happens)
-	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
+	local DebugGetInfo = ChoGGi_Funcs.Common.DebugGetInfo
 	local lookup_table = ChoGGi_lookup_names
 	for i = 1, #funcs do
 		local name = funcs[i]
 		if rawget(_G, name) then
 			local func = _G[name]
-			Temp_OrigFuncs[name] = func
+			Temp_Original[name] = func
 			if not lookup_table[func] then
 				if DebugGetInfo(func) == "[C](-1)" then
 					lookup_table[func] = name .. " *C"
@@ -421,7 +423,7 @@ do -- ToggleLogErrors
 		end
 	end
 
-	function ChoGGi.ConsoleFuncs.ToggleLogErrors(enable)
+	function ChoGGi_Funcs.Console.ToggleLogErrors(enable)
 		-- stop "Attempt to create a new global " errors, though I'm not sure why they happen since they're not "new"
 		local ChoOrig_Loading = Loading
 		Loading = true
@@ -451,10 +453,10 @@ do -- ToggleLogErrors
 								end
 							end
 							--
-							return Temp_OrigFuncs[name](msg, ...)
+							return Temp_Original[name](msg, ...)
 						end
 					else
-						_G[name] = Temp_OrigFuncs[name]
+						_G[name] = Temp_Original[name]
 					end
 				end
 			end
@@ -464,7 +466,7 @@ do -- ToggleLogErrors
 	end
 
 	-- print logged errors to console/skip annoying "error"
-	ChoGGi.ConsoleFuncs.ToggleLogErrors(UserSettings.ConsoleErrors)
+	ChoGGi_Funcs.Console.ToggleLogErrors(UserSettings.ConsoleErrors)
 end -- do
 
 -- The one OnMsg outside my Msgs file for speed
@@ -482,8 +484,8 @@ local ConsoleMenuPopupToggle_list = {
 		value = "ChoGGi.UserSettings.ConsoleErrors",
 		clicked = function()
 			ChoGGi.UserSettings.ConsoleErrors = not ChoGGi.UserSettings.ConsoleErrors
-			ChoGGi.SettingFuncs.WriteSettings()
-			ChoGGi.ConsoleFuncs.ToggleLogErrors(ChoGGi.UserSettings.ConsoleErrors)
+			ChoGGi_Funcs.Settings.WriteSettings()
+			ChoGGi_Funcs.Console.ToggleLogErrors(ChoGGi.UserSettings.ConsoleErrors)
 		end,
 	},
 	{name = T(302535920001102--[[Examine Errors]]),
@@ -492,7 +494,7 @@ local ConsoleMenuPopupToggle_list = {
 		value = "ChoGGi.UserSettings.ExamineErrors",
 		clicked = function()
 			ChoGGi.UserSettings.ExamineErrors = not ChoGGi.UserSettings.ExamineErrors
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 		end,
 	},
 	{name = T(302535920000310--[[Skip Undefined Globals]]),
@@ -511,7 +513,7 @@ The number is a count of stored msgs, right-click to view the list."]]),
 				if ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals then
 					table.iclear(ChoGGi.Temp.UndefinedGlobals)
 				end
-				ChoGGi.SettingFuncs.WriteSettings()
+				ChoGGi_Funcs.Settings.WriteSettings()
 			end
 		end,
 	},
@@ -521,10 +523,10 @@ The number is a count of stored msgs, right-click to view the list."]]),
 		value = "ChoGGi.UserSettings.ConsoleToggleHistory",
 		clicked = function()
 			ChoGGi.UserSettings.ConsoleToggleHistory = not ChoGGi.UserSettings.ConsoleToggleHistory
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			if ChoGGi.UserSettings.ConsoleToggleHistory then
 				ShowConsoleLog(true)
-				ChoGGi.ComFuncs.UpdateConsoleMargins(true)
+				ChoGGi_Funcs.Common.UpdateConsoleMargins(true)
 				print("ShowConsoleLog: true")
 			else
 				DestroyConsoleLog()
@@ -538,7 +540,7 @@ The number is a count of stored msgs, right-click to view the list."]]),
 		value = "ChoGGi.UserSettings.FlushLog",
 		clicked = function()
 			ChoGGi.UserSettings.FlushLog = not ChoGGi.UserSettings.FlushLog
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 		end,
 	},
 	{name = T(302535920001349--[[Flush Log Constantly]]),
@@ -547,7 +549,7 @@ The number is a count of stored msgs, right-click to view the list."]]),
 		value = "ChoGGi.UserSettings.FlushLogConstantly",
 		clicked = function()
 			ChoGGi.UserSettings.FlushLogConstantly = not ChoGGi.UserSettings.FlushLogConstantly
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			-- update local var
 			FlushLogConstantly = ChoGGi.UserSettings.FlushLogConstantly
 		end,
@@ -558,7 +560,7 @@ The number is a count of stored msgs, right-click to view the list."]]),
 		value = "ChoGGi.UserSettings.FlushLogHourly",
 		clicked = function()
 			ChoGGi.UserSettings.FlushLogHourly = not ChoGGi.UserSettings.FlushLogHourly
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 		end,
 	},
 	{name = T(302535920001576--[[Show Log When Console Active]]),
@@ -569,7 +571,7 @@ The number is a count of stored msgs, right-click to view the list."]]),
 		value = "ChoGGi.UserSettings.ConsoleShowLogWhenActive",
 		clicked = function()
 			ChoGGi.UserSettings.ConsoleShowLogWhenActive = not ChoGGi.UserSettings.ConsoleShowLogWhenActive
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 		end,
 	},
 	{name = T(302535920001120--[[Console Window]]),
@@ -578,13 +580,13 @@ The number is a count of stored msgs, right-click to view the list."]]),
 		value = "dlgChoGGi_DlgConsoleLogWin",
 		clicked = function()
 			ChoGGi.UserSettings.ConsoleHistoryWin = not ChoGGi.UserSettings.ConsoleHistoryWin
-			ChoGGi.SettingFuncs.WriteSettings()
-			ChoGGi.ComFuncs.ShowConsoleLogWin(ChoGGi.UserSettings.ConsoleHistoryWin)
+			ChoGGi_Funcs.Settings.WriteSettings()
+			ChoGGi_Funcs.Common.ShowConsoleLogWin(ChoGGi.UserSettings.ConsoleHistoryWin)
 		end,
 	},
 }
 
-function ChoGGi.ConsoleFuncs.HistoryPopup(self)
+function ChoGGi_Funcs.Console.HistoryPopup(self)
 	local dlgConsole = dlgConsole
 	local ConsoleHistoryMenuLength = ChoGGi.UserSettings.ConsoleHistoryMenuLength or 50
 	local items = {}
@@ -612,12 +614,12 @@ function ChoGGi.ConsoleFuncs.HistoryPopup(self)
 	PopupToggle(self, "idHistoryMenuPopup", items, "top")
 end
 
-function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
+function ChoGGi_Funcs.Console.ConsoleControls(dlgConsole)
 	local g_Classes = g_Classes
 
 	-- make some space for the close button
 	dlgConsole.idEdit:SetMargins(box(10, 0, 30, 5))
-	ChoGGi.ComFuncs.UpdateConsoleMargins(dlgConsole:GetVisible())
+	ChoGGi_Funcs.Common.UpdateConsoleMargins(dlgConsole:GetVisible())
 
 	-- IdBottomContainer isn't added when i normally setup the console stuff (ModsReloaded)
 	local bottom = XShortcutsTarget.idBottomContainer
@@ -686,7 +688,7 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 		Id = "idHistoryMenu",
 		RolloverText = T(302535920001080--[[Console history items (mouse-over to see code).]]),
 		Text = T(302535920000793--[[History]]),
-		OnPress = ChoGGi.ConsoleFuncs.HistoryPopup,
+		OnPress = ChoGGi_Funcs.Console.HistoryPopup,
 	}, dlgConsole.idContainer)
 
 	if not blacklist then
@@ -697,7 +699,7 @@ function ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
 	end
 
 	-- changed examine list to a saved one instead of one made of .lua files
-	ChoGGi.ConsoleFuncs.BuildExamineMenu()
+	ChoGGi_Funcs.Console.BuildExamineMenu()
 end
 
 local function BuildSciptButton(console, folder)
@@ -743,7 +745,7 @@ end
 -- only check for ECM Scripts once per load
 local script_files_added
 -- rebuild menu toolbar buttons
-function ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(dlg)
+function ChoGGi_Funcs.Console.RebuildConsoleToolbar(dlg)
 	if blacklist then
 		return
 	end
@@ -759,7 +761,7 @@ function ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(dlg)
 
 	-- add example script files if folder is missing
 	if not script_files_added then
-		ChoGGi.ConsoleFuncs.BuildScriptFiles()
+		ChoGGi_Funcs.Console.BuildScriptFiles()
 		script_files_added = true
 	end
 
@@ -806,7 +808,7 @@ function ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(dlg)
 	end
 
 	-- check for any folders with lua files in ECM Scripts
-	local folders = ChoGGi.ComFuncs.RetFoldersInFolder(ChoGGi.scripts)
+	local folders = ChoGGi_Funcs.Common.RetFoldersInFolder(ChoGGi.scripts)
 	if folders then
 		local hint_str = Translate(302535920001159--[[Any .lua files in %s.]])
 		for i = 1, #folders do
@@ -823,16 +825,16 @@ function ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(dlg)
 	end
 end
 
-function ChoGGi.ConsoleFuncs.BuildScriptFiles()
+function ChoGGi_Funcs.Console.BuildScriptFiles()
 	local script_path = ChoGGi.scripts
 	-- create folder and some example scripts if folder doesn't exist
-	if not ChoGGi.ComFuncs.FileExists(script_path .. "/readme.txt") then
+	if not ChoGGi_Funcs.Common.FileExists(script_path .. "/readme.txt") then
 		g_env.AsyncCreatePath(script_path .. "/Functions")
 		-- print some info
 		print(Translate(302535920000881--[["Place .lua files in %s to have them show up in the ""Scripts"" list, you can then use the list to execute them (you can also create sub-folders for sorting)."]]):format(ConvertToOSPath(script_path)))
 		-- add some example files and a readme
 		g_env.AsyncStringToFile(script_path .. "/readme.txt", T(302535920000888--[[Any .lua files in here will be part of a list that you can execute in-game from the console menu.]]))
-		g_env.AsyncStringToFile(script_path .. "/Read Me.lua", [[ChoGGi.ComFuncs.MsgWait(ChoGGi.ComFuncs.Translate(302535920000881):format(ChoGGi.scripts))]])
+		g_env.AsyncStringToFile(script_path .. "/Read Me.lua", [[ChoGGi_Funcs.Common.MsgWait(ChoGGi_Funcs.Common.Translate(302535920000881):format(ChoGGi.scripts))]])
 		g_env.AsyncStringToFile(script_path .. "/Functions/Amount of colonists.lua", [[#(UICity.labels.Colonist or "")]])
 		g_env.AsyncStringToFile(script_path .. "/Functions/Toggle Working SelectedObj.lua", [[SelectedObj:ToggleWorking()]])
 	end

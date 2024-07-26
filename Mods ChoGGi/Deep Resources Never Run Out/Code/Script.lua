@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local RetMapType = ChoGGi.ComFuncs.RetMapType
+local RetMapType = ChoGGi_Funcs.Common.RetMapType
 local max_resource = 500000 * const.ResourceScale
 
 

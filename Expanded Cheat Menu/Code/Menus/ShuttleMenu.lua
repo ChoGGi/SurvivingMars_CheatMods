@@ -4,9 +4,10 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local SettingState = ChoGGi.ComFuncs.SettingState
+local Translate = ChoGGi_Funcs.Common.Translate
+local SettingState = ChoGGi_Funcs.Common.SettingState
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
@@ -29,7 +30,7 @@ Actions[c] = {ActionName = T(302535920000535--[[Set ShuttleHub Shuttle Capacity]
 			T(302535920000536--[[Change amount of shuttles per shuttlehub.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity,
+	OnAction = ChoGGi_Funcs.Menus.SetShuttleHubShuttleCapacity,
 }
 
 c = c + 1
@@ -43,7 +44,7 @@ Actions[c] = {ActionName = T(302535920000930--[[Set Cargo Shuttle Capacity]]),
 			T(302535920000538--[[Change capacity of shuttles.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetShuttleCapacity,
+	OnAction = ChoGGi_Funcs.Menus.SetShuttleCapacity,
 }
 
 c = c + 1
@@ -57,5 +58,5 @@ Actions[c] = {ActionName = T(302535920000932--[[Set Cargo Shuttle Speed]]),
 			T(302535920000540--[[Change speed of shuttles.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetShuttleSpeed,
+	OnAction = ChoGGi_Funcs.Menus.SetShuttleSpeed,
 }

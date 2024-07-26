@@ -2,9 +2,10 @@
 
 -- Not sure where to put this stuff
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local what_game = ChoGGi.what_game
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
 -- Defaults to 20 items
 const.nConsoleHistoryMaxSize = 100
@@ -16,10 +17,10 @@ if not rawget(_G, "DroneDebug") then
 end
 
 -- Makes the log visible during loading/saving
-ChoGGi.ComFuncs.SetLoadingScreenLog()
+ChoGGi_Funcs.Common.SetLoadingScreenLog()
 
 -- Show/hide tooltips for my stuff
-ChoGGi.ComFuncs.SetLibraryToolTips()
+ChoGGi_Funcs.Common.SetLibraryToolTips()
 
 -- Be too annoying to add templates to all of these manually
 XMenuEntry.RolloverTemplate = "Rollover"
@@ -81,8 +82,8 @@ f.MouseM = nil
 
 local us = ChoGGi.UserSettings
 if us.RemoveLandScapingLimits then
-	ChoGGi.ComFuncs.SetLandScapingLimits(true)
+	ChoGGi_Funcs.Common.SetLandScapingLimits(true)
 end
 if us.RemoveBuildingLimits then
-	ChoGGi.ComFuncs.SetBuildingLimits(true)
+	ChoGGi_Funcs.Common.SetBuildingLimits(true)
 end

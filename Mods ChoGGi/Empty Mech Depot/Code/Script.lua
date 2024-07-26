@@ -23,7 +23,7 @@ OnMsg.ApplyModOptions = ModOptions
 function OnMsg.ClassesPostprocess()
 
 	-- list controlled buildings
-	ChoGGi.ComFuncs.AddXTemplate("EmptyMechDepot", "sectionStorage", {
+	ChoGGi_Funcs.Common.AddXTemplate("EmptyMechDepot", "sectionStorage", {
 		__context_of_kind = "MechanizedDepot",
 		Icon = "UI/Icons/Sections/storage.tga",
 		Title = T(302535920000176, "Empty Mech Depot"),
@@ -39,7 +39,7 @@ function OnMsg.ClassesPostprocess()
 			end
 		end,
 		func = function(_, context)
-			ChoGGi.ComFuncs.EmptyMechDepot(context, mod_SkipDelete)
+			ChoGGi_Funcs.Common.EmptyMechDepot(context, mod_SkipDelete)
 		end,
 	}, true)
 

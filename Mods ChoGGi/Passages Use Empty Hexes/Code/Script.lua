@@ -11,10 +11,10 @@ local HexAngleToDirection = HexAngleToDirection
 local HexRotate = HexRotate
 local WorldToHex = WorldToHex
 local GetObjectHexGrid = GetObjectHexGrid
-local ObjHexShape_Clear = ChoGGi.ComFuncs.ObjHexShape_Clear
-local ObjHexShape_Toggle = ChoGGi.ComFuncs.ObjHexShape_Toggle
-local DeleteObject = ChoGGi.ComFuncs.DeleteObject
-local CollisionsObject_Toggle = ChoGGi.ComFuncs.CollisionsObject_Toggle
+local ObjHexShape_Clear = ChoGGi_Funcs.Common.ObjHexShape_Clear
+local ObjHexShape_Toggle = ChoGGi_Funcs.Common.ObjHexShape_Toggle
+local DeleteObject = ChoGGi_Funcs.Common.DeleteObject
+local CollisionsObject_Toggle = ChoGGi_Funcs.Common.CollisionsObject_Toggle
 
 local mod_ShowUseableGrids
 

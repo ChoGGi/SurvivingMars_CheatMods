@@ -1,19 +1,19 @@
 -- See LICENSE for terms
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local what_game = ChoGGi.what_game
-
 local DoneObject = DoneObject
 local OnMsg = OnMsg
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
 	-- think they fixed this, test it
---~ local RemoveAttachAboveHeightLimit = ChoGGi.ComFuncs.RemoveAttachAboveHeightLimit
+--~ local RemoveAttachAboveHeightLimit = ChoGGi_Funcs.Common.RemoveAttachAboveHeightLimit
 
 -- We don't add shortcuts and ain't supposed to drink no booze
-OnMsg.ShortcutsReloaded = ChoGGi.ComFuncs.Rebuildshortcuts
+OnMsg.ShortcutsReloaded = ChoGGi_Funcs.Common.Rebuildshortcuts
 -- So we have shortcuts when LUA reloads
-OnMsg.ReloadLua = ChoGGi.ComFuncs.Rebuildshortcuts
+OnMsg.ReloadLua = ChoGGi_Funcs.Common.Rebuildshortcuts
 
 function OnMsg.ClassesPostprocess()
 	if what_game == "Mars" then
@@ -54,7 +54,7 @@ function OnMsg.ClassesBuilt()
 end
 
 -- This is when ResupplyItemsInit is called (CityStart is too soon)
-OnMsg.NewMapLoaded = ChoGGi.ComFuncs.UpdateDataTablesCargo
+OnMsg.NewMapLoaded = ChoGGi_Funcs.Common.UpdateDataTablesCargo
 
 -- Needed for UICity and some others that aren't created till around then
 local function Startup()
@@ -67,7 +67,7 @@ local function Startup()
 	CreateRealTimeThread(function()
 		-- Needs a delay to get GlobalVar names
 		Sleep(1000)
-		ChoGGi.ComFuncs.RetName_Update()
+		ChoGGi_Funcs.Common.RetName_Update()
 
 		local ChoGGi = ChoGGi
 		local UIColony = ChoGGi.is_gp and UICity or UIColony
@@ -95,21 +95,21 @@ OnMsg.CityStart = Startup
 
 -- Update my cached strings
 function OnMsg.TranslationChanged()
-	ChoGGi.ComFuncs.UpdateStringsList()
+	ChoGGi_Funcs.Common.UpdateStringsList()
 	if ChoGGi.what_game == "Mars" then
-		ChoGGi.ComFuncs.UpdateDataTablesCargo()
-		ChoGGi.ComFuncs.UpdateDataTables()
+		ChoGGi_Funcs.Common.UpdateDataTablesCargo()
+		ChoGGi_Funcs.Common.UpdateDataTables()
 		--
-		ChoGGi.ComFuncs.UpdateTablesSponComm()
-		ChoGGi.ComFuncs.UpdateOtherTables()
+		ChoGGi_Funcs.Common.UpdateTablesSponComm()
+		ChoGGi_Funcs.Common.UpdateOtherTables()
 	end
 	-- true to update translated names
-	ChoGGi.ComFuncs.RetName_Update(true)
+	ChoGGi_Funcs.Common.RetName_Update(true)
 end
 
 function OnMsg.ModsReloaded()
-	ChoGGi.ComFuncs.UpdateDataTables()
-	ChoGGi.ComFuncs.UpdateTablesSponComm()
+	ChoGGi_Funcs.Common.UpdateDataTables()
+	ChoGGi_Funcs.Common.UpdateTablesSponComm()
 end
 
 ChoGGi.Temp.UIScale = (LocalStorage.Options.UIScale + 0.0) / 100
@@ -129,16 +129,16 @@ local function RemoveChoGGiObjects()
 	end
 
 	-- any of my Classes_Objects.lua that are still in the save
-	ChoGGi.ComFuncs.RemoveObjs("ChoGGi_ODeleteObjs", true)
+	ChoGGi_Funcs.Common.RemoveObjs("ChoGGi_ODeleteObjs", true)
 	-- stop any units with pathing being shown (it'll error out either way)
-	ChoGGi.ComFuncs.Pathing_StopAndRemoveAll()
+	ChoGGi_Funcs.Common.Pathing_StopAndRemoveAll()
 
 	ResumePassEdits("ChoGGi_Library.OnMsgs.RemoveChoGGiObjects")
 end
 OnMsg.SaveGame = RemoveChoGGiObjects
 
 function OnMsg.LoadGame()
-	ChoGGi.ComFuncs.UpdateDataTablesCargo()
+	ChoGGi_Funcs.Common.UpdateDataTablesCargo()
 	Startup()
 	RemoveChoGGiObjects()
 

@@ -5,19 +5,20 @@ if ChoGGi.what_game ~= "Mars" then
 end
 
 -- local some globals
+local ChoGGi_Funcs = ChoGGi_Funcs
 local table = table
 local CmpLower = CmpLower
 
-local Translate = ChoGGi.ComFuncs.Translate
-local RetName = ChoGGi.ComFuncs.RetName
-local RetMapSettings = ChoGGi.ComFuncs.RetMapSettings
-local RetMapBreakthroughs = ChoGGi.ComFuncs.RetMapBreakthroughs
+local Translate = ChoGGi_Funcs.Common.Translate
+local RetName = ChoGGi_Funcs.Common.RetName
+local RetMapSettings = ChoGGi_Funcs.Common.RetMapSettings
+local RetMapBreakthroughs = ChoGGi_Funcs.Common.RetMapBreakthroughs
 
 local testing = ChoGGi.testing
 
 local function ExportDoneMsg(path)
 	local msg = Translate(302535920001449--[[Export]]) .. " " .. Translate(302535920001448--[[CSV]])
-	ChoGGi.ComFuncs.MsgPopup(path, msg)
+	ChoGGi_Funcs.Common.MsgPopup(path, msg)
 	print(Translate(msg), path)
 end
 
@@ -167,7 +168,7 @@ do -- MapData
 
 	--[[
 
-ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
+ChoGGi_Funcs.Common.ExportMapDataToCSV(XAction:new{
 	setting_breakthroughs = true,
 	setting_skip_csv = false,
 	setting_limit_count = 13,
@@ -175,7 +176,7 @@ ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
 
 	]]
 
-	function ChoGGi.ComFuncs.ExportMapDataToCSV(action)
+	function ChoGGi_Funcs.Common.ExportMapDataToCSV(action)
 		local limit_count = 13
 		local skip_csv = false
 		local breakthroughs = false
@@ -225,7 +226,7 @@ ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
 		table.clear(temp_g_SelectedSpotChallengeMods)
 		g_SelectedSpotChallengeMods = temp_g_SelectedSpotChallengeMods
 
---~ ChoGGi.ComFuncs.TickStart("ExportMapDataToCSV")
+--~ ChoGGi_Funcs.Common.TickStart("ExportMapDataToCSV")
 		-- loop through all the spots, update landing spot and stick in export list
 		for lat = 0, 70 do
 			for long = 0, 180 do
@@ -243,7 +244,7 @@ ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
 				end
 			end
 		end
---~ ChoGGi.ComFuncs.TickEnd("ExportMapDataToCSV")
+--~ ChoGGi_Funcs.Common.TickEnd("ExportMapDataToCSV")
 
 		-- not needed anymore so restore back to orig
 		GameState.gameplay = ChoOrig_GameState
@@ -345,7 +346,7 @@ do -- ColonistData
 		return list
 	end
 
-	function ChoGGi.ComFuncs.ExportColonistDataToCSV()
+	function ChoGGi_Funcs.Common.ExportColonistDataToCSV()
 		local csv_columns = {
 			{"name", Translate(1000037--[[Name]])},
 			{"age", Translate(302535920001222--[[Age]])},
@@ -466,7 +467,7 @@ do -- Graphs
 		return export_data
 	end
 
-	function ChoGGi.ComFuncs.ExportGraphsToCSV()
+	function ChoGGi_Funcs.Common.ExportGraphsToCSV()
 		local res_list = {}
 		for i = 1, #StockpileResourceList do
 			local id = StockpileResourceList[i]

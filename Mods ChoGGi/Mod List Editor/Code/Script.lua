@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local GetNextTable = ChoGGi.ComFuncs.GetNextTable
+local GetNextTable = ChoGGi_Funcs.Common.GetNextTable
 
 local as, g_env
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
@@ -50,7 +50,7 @@ end
 
 local OnAction = function()
 	-- Open list of mods in text editor
-	ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+	ChoGGi_Funcs.Common.OpenInMultiLineTextDlg{
 		text = TableToLuaCode(LoadModData()),
 		title = T(0000, "Mod List Editor"),
 		button_ok = TranslationTable[161964752558--[[Save]]],

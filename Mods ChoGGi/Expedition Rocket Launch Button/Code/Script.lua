@@ -4,7 +4,7 @@ function OnMsg.ClassesPostprocess()
 	local building = XTemplates.customRocketExpedition[1]
 
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(building, "ChoGGi_Template_ChoGGi_ForceLaunch", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(building, "ChoGGi_Template_ChoGGi_ForceLaunch", true)
 
 	table.insert(building, 1, PlaceObj("XTemplateTemplate", {
 		"ChoGGi_Template_ChoGGi_ForceLaunch", true,

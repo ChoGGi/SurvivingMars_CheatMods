@@ -4,11 +4,12 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local SettingState = ChoGGi.ComFuncs.SettingState
-local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
-local RetName = ChoGGi.ComFuncs.RetName
+local Translate = ChoGGi_Funcs.Common.Translate
+local SettingState = ChoGGi_Funcs.Common.SettingState
+local RetTemplateOrClass = ChoGGi_Funcs.Common.RetTemplateOrClass
+local RetName = ChoGGi_Funcs.Common.RetName
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 local icon = "CommonAssets/UI/Menu/Cube.tga"
@@ -33,7 +34,7 @@ Actions[c] = {ActionName = T(302535920000164--[[Storage Amount Of Diner & Grocer
 			T(302535920000167--[[Change how much food is stored in them (less chance of starving colonists when busy).]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetStorageAmountOfDinerGrocery,
+	OnAction = ChoGGi_Funcs.Menus.SetStorageAmountOfDinerGrocery,
 }
 
 c = c + 1
@@ -42,7 +43,7 @@ Actions[c] = {ActionName = T(302535920000176--[[Empty Mech Depot]]),
 	ActionId = ".Empty Mech Depot",
 	ActionIcon = icon,
 	RolloverText = T(302535920000177--[[Empties out selected/moused over mech depot into a small depot in front of it.]]),
-	OnAction = ChoGGi.ComFuncs.EmptyMechDepot,
+	OnAction = ChoGGi_Funcs.Common.EmptyMechDepot,
 }
 
 c = c + 1
@@ -56,7 +57,7 @@ Actions[c] = {ActionName = T(302535920000210--[[Moisture Vaporator Penalty]]),
 			T(302535920000211--[[Disable penalty when Moisture Vaporators are close to each other.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.MoistureVaporatorPenalty_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.MoistureVaporatorPenalty_Toggle,
 }
 
 c = c + 1
@@ -68,7 +69,7 @@ Actions[c] = {ActionName = T(302535920000180--[[Unlock Locked Buildings]]),
 This doesn't apply to sponsor limited ones; see Toggles\<str>."]],
 		str = T(302535920001398--[[Remove Sponsor Limits]]),
 	},
-	OnAction = ChoGGi.MenuFuncs.UnlockLockedBuildings,
+	OnAction = ChoGGi_Funcs.Menus.UnlockLockedBuildings,
 }
 
 -- menu
@@ -92,7 +93,7 @@ Actions[c] = {ActionName = T(5245--[[Sanatoriums]]) .. " " .. T(302535920000198-
 			T(302535920000199--[[Toggle curing all traits (use "Show All Traits" & "Show Full List" to manually set).]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SanatoriumCureAll_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.SanatoriumCureAll_Toggle,
 }
 
 c = c + 1
@@ -106,7 +107,7 @@ Actions[c] = {ActionName = T(5248--[[Schools]]) .. " " .. T(302535920000200--[[T
 			T(302535920000199--[[Toggle curing all traits (use "Show All Traits" & "Show Full List" to manually set).]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SchoolTrainAll_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.SchoolTrainAll_Toggle,
 }
 
 local SandS = T(5245--[[Sanatoriums]]) .. " & " .. T(5248--[[Schools]])
@@ -122,7 +123,7 @@ Actions[c] = {ActionName = SandS .. ": " .. T(302535920000202--[[Show All Traits
 			T(302535920000203--[[Shows all appropriate traits in Sanatoriums/Schools side panel popup menu.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.ShowAllTraits_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.ShowAllTraits_Toggle,
 }
 
 c = c + 1
@@ -136,7 +137,7 @@ Actions[c] = {ActionName = SandS .. ": " .. T(302535920000204--[[Show Full List]
 			T(302535920000205--[[Toggle showing full list of trait selectors in side pane.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SanatoriumSchoolShowAll,
+	OnAction = ChoGGi_Funcs.Menus.SanatoriumSchoolShowAll,
 }
 
 c = c + 1
@@ -151,7 +152,7 @@ Actions[c] = {ActionName = T(302535920001344--[[Points To Train]]),
 			T(302535920001345--[[How many points are needed to finish training.]])
 		) or T(302535920001345--[[How many points are needed to finish training.]])
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetTrainingPoints,
+	OnAction = ChoGGi_Funcs.Menus.SetTrainingPoints,
 }
 
 -- menu
@@ -170,7 +171,7 @@ Actions[c] = {ActionName = T(302535920000192--[[Farm Shifts All On]]),
 	ActionId = ".Farm Shifts All On",
 	ActionIcon = icon,
 	RolloverText = T(302535920000193--[[Turns on all the farm shifts.]]),
-	OnAction = ChoGGi.MenuFuncs.FarmShiftsAllOn,
+	OnAction = ChoGGi_Funcs.Menus.FarmShiftsAllOn,
 }
 
 c = c + 1
@@ -184,7 +185,7 @@ Actions[c] = {ActionName = T(4711--[[Crop Fail Threshold]]),
 			T(4710--[[Average performance of Farms required for Crops to succeed]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.CropFailThreshold_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.CropFailThreshold_Toggle,
 }
 
 c = c + 1
@@ -193,7 +194,7 @@ Actions[c] = {ActionName = T(302535920000423--[[Unlock Crops]]),
 	ActionId = ".Unlock Crops",
 	ActionIcon = icon,
 	RolloverText = T(302535920000444--[[Shows list of locked crops.]]),
-	OnAction = ChoGGi.MenuFuncs.UnlockCrops,
+	OnAction = ChoGGi_Funcs.Menus.UnlockCrops,
 }
 
 -- menu
@@ -217,7 +218,7 @@ Actions[c] = {ActionName = T(302535920000218--[[No Break]]),
 			T(302535920000157--[[Cables & Pipes]]) .. " " .. T(302535920000218--[[No Break]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.CablesAndPipesNoBreak_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.CablesAndPipesNoBreak_Toggle,
 }
 
 c = c + 1
@@ -231,7 +232,7 @@ Actions[c] = {ActionName = T(134--[[Instant Build]]),
 			T(302535920000157--[[Cables & Pipes]]) .. " " .. T(134--[[Instant Build]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.CablesAndPipesInstant_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.CablesAndPipesInstant_Toggle,
 }
 
 -- menu
@@ -258,7 +259,7 @@ Actions[c] = {ActionName = T(302535920000194--[[Production Amount Set]]),
 Works on any building that produces."]])
 		) or T(302535920000195)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetProductionAmount,
+	OnAction = ChoGGi_Funcs.Menus.SetProductionAmount,
 	ActionShortcut = "Ctrl-Shift-P",
 	ActionBindable = true,
 }
@@ -275,7 +276,7 @@ Actions[c] = {ActionName = T(302535920000186--[[Power-free Building]]),
 			T(302535920000187--[[Toggle electricity use for selected building type.]])
 		) or T(302535920000187)
 	end,
-	OnAction = ChoGGi.MenuFuncs.BuildingPower_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.BuildingPower_Toggle,
 	ActionSortKey = "2Power-free Building",
 }
 
@@ -291,7 +292,7 @@ Actions[c] = {ActionName = T(302535920001251--[[Water-free Building]]),
 			T(302535920001252--[[Toggle water use for selected building type.]])
 		) or T(302535920001252)
 	end,
-	OnAction = ChoGGi.MenuFuncs.BuildingWater_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.BuildingWater_Toggle,
 	ActionSortKey = "2Water-free Building",
 }
 
@@ -307,7 +308,7 @@ Actions[c] = {ActionName = T(302535920001253--[[Oxygen-free Building]]),
 			T(302535920001254--[[Toggle oxygen use for selected building type.]])
 		) or T(302535920001254)
 	end,
-	OnAction = ChoGGi.MenuFuncs.BuildingAir_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.BuildingAir_Toggle,
 	ActionSortKey = "2Oxygen-free Building",
 }
 
@@ -317,7 +318,7 @@ Actions[c] = {ActionName = T(302535920000188--[[Set Charge & Discharge Rates]]),
 	ActionId = ".Set Charge & Discharge Rates",
 	ActionIcon = icon,
 	RolloverText = T(302535920000189--[[Change how fast Air/Water/Battery storage capacity changes.]]),
-	OnAction = ChoGGi.MenuFuncs.SetMaxChangeOrDischarge,
+	OnAction = ChoGGi_Funcs.Menus.SetMaxChangeOrDischarge,
 	ActionShortcut = "Ctrl-Shift-R",
 	ActionBindable = true,
 }
@@ -334,7 +335,7 @@ Actions[c] = {ActionName = T(302535920000196--[[Fully Automated Building]]),
 			T(302535920000197--[[Work without workers (select a building and this will apply to all of type or selected).]])
 		) or T(302535920000197)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetFullyAutomatedBuildings,
+	OnAction = ChoGGi_Funcs.Menus.SetFullyAutomatedBuildings,
 }
 
 c = c + 1
@@ -350,7 +351,7 @@ Actions[c] = {ActionName = T(302535920001114--[[Service Building Stats]]),
 Health change, Sanity change, Service Comfort, Comfort increase."]])
 		) or T(302535920001115)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetServiceBuildingStats,
+	OnAction = ChoGGi_Funcs.Menus.SetServiceBuildingStats,
 }
 
 -- menu
@@ -374,7 +375,7 @@ Actions[c] = {ActionName = T(302535920000159--[[Remove Wonder Limit]]),
 			T(302535920000223--[["Unlimited wonder build limit (blocks the ""build a wonder"" achievement)."]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.Building_wonder_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.Building_wonder_Toggle,
 }
 
 c = c + 1
@@ -388,7 +389,7 @@ Actions[c] = {ActionName = T(302535920000224--[[Show Hidden Buildings]]),
 			T(302535920000225--[[Show hidden buildings in build menu.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.Building_hide_from_build_menu_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.Building_hide_from_build_menu_Toggle,
 }
 
 c = c + 1
@@ -402,7 +403,7 @@ Actions[c] = {ActionName = T(302535920001241--[[Instant Build]]),
 			T(302535920000229--[[Buildings are built instantly.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.Building_instant_build_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.Building_instant_build_Toggle,
 }
 
 c = c + 1
@@ -419,7 +420,7 @@ Use with <color ChoGGi_green><str></color> to fill up a dome with spires."]],
 			}
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.Building_dome_spot_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.Building_dome_spot_Toggle,
 }
 
 c = c + 1
@@ -436,7 +437,7 @@ Actions[c] = {ActionName = T(302535920000230--[[Remove Building Limits]]),
 			}
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.RemoveBuildingLimits_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.RemoveBuildingLimits_Toggle,
 }
 
 c = c + 1
@@ -450,7 +451,7 @@ Actions[c] = {ActionName = T(302535920000214--[[Cheap Construction]]),
 			T(302535920000215--[[Build with minimal resources.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.CheapConstruction_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.CheapConstruction_Toggle,
 }
 
 c = c + 1
@@ -464,7 +465,7 @@ Actions[c] = {ActionName = T(302535920000216--[[Building Damage Crime]]),
 			T(302535920000217--[[Disable damage from renegedes to buildings.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.BuildingDamageCrime_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.BuildingDamageCrime_Toggle,
 }
 
 c = c + 1
@@ -478,7 +479,7 @@ Actions[c] = {ActionName = T(302535920000206--[[Maintenance Free Inside]]),
 			T(302535920000207--[[Buildings inside domes don't build maintenance points (takes away instead of adding).]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.MaintenanceFreeBuildingsInside_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.MaintenanceFreeBuildingsInside_Toggle,
 }
 
 c = c + 1
@@ -492,7 +493,7 @@ Actions[c] = {ActionName = T(302535920000208--[[Maintenance Free]]),
 			T(302535920000209--[[Building maintenance points reverse (takes away instead of adding).]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.MaintenanceFreeBuildings_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.MaintenanceFreeBuildings_Toggle,
 }
 
 c = c + 1
@@ -509,7 +510,7 @@ Will be overridden by <str>."]],
 			}
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.AlwaysDustyBuildings_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.AlwaysDustyBuildings_Toggle,
 }
 
 c = c + 1
@@ -523,7 +524,7 @@ Actions[c] = {ActionName = T(302535920000037--[[Always Clean]]),
 			T(302535920000316--[[Buildings will never get dusty.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.AlwaysCleanBuildings_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.AlwaysCleanBuildings_Toggle,
 }
 
 c = c + 1
@@ -537,7 +538,7 @@ Actions[c] = {ActionName = T(4713--[[Pipes pillar spacing]]),
 			T(302535920000183--[[Only place Pillars at start and end.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.PipesPillarsSpacing_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.PipesPillarsSpacing_Toggle,
 }
 
 c = c + 1
@@ -551,7 +552,7 @@ Actions[c] = {ActionName = T(302535920000184--[[Unlimited Connection Length]]),
 			T(302535920000185--[[No more length limits to pipes, cables, and passages.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.UnlimitedConnectionLength_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.UnlimitedConnectionLength_Toggle,
 }
 
 if g_AvailableDlc.picard then
@@ -568,7 +569,7 @@ if g_AvailableDlc.picard then
 Restart is needed when disabling this option!"]])
 			)
 		end,
-		OnAction = ChoGGi.MenuFuncs.RemoveRealmLimits_Toggle,
+		OnAction = ChoGGi_Funcs.Menus.RemoveRealmLimits_Toggle,
 	}
 end
 
@@ -584,7 +585,7 @@ if g_AvailableDlc.gagarin then
 				T(302535920001399--[[Allow you to build all buildings no matter your sponsor.]])
 			)
 		end,
-		OnAction = ChoGGi.MenuFuncs.SponsorBuildingLimits_Toggle,
+		OnAction = ChoGGi_Funcs.Menus.SponsorBuildingLimits_Toggle,
 	}
 end
 
@@ -599,7 +600,7 @@ Actions[c] = {ActionName = T(302535920001407--[[Rotate During Placement]]),
 			T(302535920001408--[[Allow you to rotate all buildings.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.RotateDuringPlacement_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.RotateDuringPlacement_Toggle,
 }
 
 -- menu
@@ -623,7 +624,7 @@ Actions[c] = {ActionName = T(302535920001330--[[Instant Export On Toggle]]),
 			T(302535920001331--[[Toggle Forbid Exports to have it instantly export current stock.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SpaceElevatorExport_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.SpaceElevatorExport_Toggle,
 }
 
 c = c + 1
@@ -637,7 +638,7 @@ Actions[c] = {ActionName = T(302535920001336--[[Export When This Amount]]),
 			T(302535920001337--[[When you have this many rares in storage launch right away.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetExportWhenThisAmount,
+	OnAction = ChoGGi_Funcs.Menus.SetExportWhenThisAmount,
 }
 
 c = c + 1
@@ -651,7 +652,7 @@ Actions[c] = {ActionName = T(302535920001332--[[Export Amount Per Trip]]),
 			T(302535920001333--[[How many rare metals you can export per trip.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount,
+	OnAction = ChoGGi_Funcs.Menus.SetSpaceElevatorTransferAmount,
 	setting_name = "max_export_storage",
 	setting_msg = T(302535920001332--[[Export Amount Per Trip]]),
 }
@@ -667,7 +668,7 @@ Actions[c] = {ActionName = T(302535920001334--[[Import Amount Per Trip]]),
 			T(302535920001335--[[How much storage for import you can use.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetSpaceElevatorTransferAmount,
+	OnAction = ChoGGi_Funcs.Menus.SetSpaceElevatorTransferAmount,
 	setting_name = "cargo_capacity",
 	setting_msg = T(302535920001334--[[Import Amount Per Trip]]),
 }
@@ -694,7 +695,7 @@ Actions[c] = {ActionName = T(4818--[[Triboelectric Scrubber]]),
 			T{302535920000170--[["Change the range of the <str>."]], str = RetName(obj),}
 		) or T{302535920000170--[[snipped]], str = T(4818--[[Triboelectric Scrubber]]),}
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
+	OnAction = ChoGGi_Funcs.Menus.SetUIRangeBuildingRadius,
 	bld_id = "TriboelectricScrubber",
 	bld_msg = T(302535920000169--[["Ladies and gentlemen, this is your captain speaking. We have a small problem.
 All four engines have stopped. We are doing our damnedest to get them going again.
@@ -713,7 +714,7 @@ Actions[c] = {ActionName = T(5293--[[Subsurface Heater]]),
 			T{302535920000170--[["Change the range of the <str>."]], str = RetName(obj),}
 		) or T{302535920000170--[[snipped]], str = T(5293--[[Subsurface Heater]]),}
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
+	OnAction = ChoGGi_Funcs.Menus.SetUIRangeBuildingRadius,
 	bld_id = "SubsurfaceHeater",
 	bld_msg = T(302535920000172--[[Some smart quip about heating?]]),
 }
@@ -724,13 +725,13 @@ Actions[c] = {ActionName = T(357216170041--[[Forestation Plant]]),
 	ActionId = ".Forestation Plant",
 	ActionIcon = icon,
 	RolloverText = function()
-		local obj = ChoGGi.ComFuncs.SelObject()
-		return obj and ChoGGi.ComFuncs.SettingState(
+		local obj = ChoGGi_Funcs.Common.SelObject()
+		return obj and ChoGGi_Funcs.Common.SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".uirange",
 			T{302535920000170--[["Change the range of the <str>."]], str = RetName(obj),}
 		) or T{302535920000170--[[snipped]], str = T(357216170041--[[Forestation Plant]]),}
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
+	OnAction = ChoGGi_Funcs.Menus.SetUIRangeBuildingRadius,
 	bld_id = "ForestationPlant",
 	bld_msg = T(302535920000788--[[New building radius.]]),
 }
@@ -741,13 +742,13 @@ Actions[c] = {ActionName = T(11933--[[Core Heat Convector]]),
 	ActionId = ".Core Heat Convector",
 	ActionIcon = icon,
 	RolloverText = function()
-		local obj = ChoGGi.ComFuncs.SelObject()
-		return obj and ChoGGi.ComFuncs.SettingState(
+		local obj = ChoGGi_Funcs.Common.SelObject()
+		return obj and ChoGGi_Funcs.Common.SettingState(
 			"ChoGGi.UserSettings.BuildingSettings." .. RetTemplateOrClass(obj) .. ".uirange",
 			T{302535920000170--[["Change the range of the <str>."]], str = RetName(obj),}
 		) or T{302535920000170--[[snipped]], str = T(11933--[[Core Heat Convector]]),}
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetUIRangeBuildingRadius,
+	OnAction = ChoGGi_Funcs.Menus.SetUIRangeBuildingRadius,
 	bld_id = "CoreHeatConvector",
 	bld_msg = T(302535920000788--[[New building radius.]]),
 }
@@ -764,5 +765,5 @@ Actions[c] = {ActionName = T(302535920000178--[[Protection Radius]]),
 			T(302535920000179--[[Change threat protection coverage distance (MDSLaser/DefenceTower).]])
 		) or T(302535920000179--[[Change threat protection coverage distance (MDSLaser/DefenceTower).]])
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetProtectionRadius,
+	OnAction = ChoGGi_Funcs.Menus.SetProtectionRadius,
 }

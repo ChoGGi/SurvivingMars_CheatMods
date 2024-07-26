@@ -1,3 +1,6 @@
+v5.9
+Fix for blank transportation panel in CCC after a certain point in Marsgate mystery (thanks plisken451).
+
 v5.8
 The Gene Forging storybit tech doesn't increase rare traits chance (Thanks Dark Master).
 

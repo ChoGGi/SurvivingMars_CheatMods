@@ -6,6 +6,8 @@ https://survivingmars.paradoxwikis.com/Patches#Version_history
 
 ## Do not use Tech Variety or Chaos Theory game rules! (they change the breakthrough order)
 
+## The same goes for using the No Below and Beyond/No Terraforming game rules!
+
 
 Only shows first 13 breakthroughs: Anything higher than that isn't guaranteed.
 

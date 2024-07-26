@@ -5,7 +5,7 @@ local ShowHexRanges = ShowHexRanges
 local HideHexRanges = HideHexRanges
 local IsKindOf = IsKindOf
 local pairs = pairs
-local RGBtoColour = ChoGGi.ComFuncs.RGBtoColour
+local RGBtoColour = ChoGGi_Funcs.Common.RGBtoColour
 
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits

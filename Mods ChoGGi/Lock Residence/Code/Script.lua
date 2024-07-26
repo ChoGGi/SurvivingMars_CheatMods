@@ -2,7 +2,7 @@
 
 local ValidateBuilding = ValidateBuilding
 local ObjModified = ObjModified
-local RetName = ChoGGi.ComFuncs.RetName
+local RetName = ChoGGi_Funcs.Common.RetName
 
 local function LoopResidence(context, which)
 	for i = 1, #context.colonists do
@@ -40,7 +40,7 @@ end
 function OnMsg.ClassesPostprocess()
 
 	-- add button to colonists
-	ChoGGi.ComFuncs.AddXTemplate(XTemplates.ipColonist[1], "LockResidenceColonist", nil, {
+	ChoGGi_Funcs.Common.AddXTemplate(XTemplates.ipColonist[1], "LockResidenceColonist", nil, {
 		__context_of_kind = "Colonist",
 		OnContextUpdate = function(self, context)
 			---
@@ -77,7 +77,7 @@ function OnMsg.ClassesPostprocess()
 		end,
 	})
 
-	ChoGGi.ComFuncs.AddXTemplate(XTemplates.sectionResidence, "LockResidenceResidence", nil, {
+	ChoGGi_Funcs.Common.AddXTemplate(XTemplates.sectionResidence, "LockResidenceResidence", nil, {
 		__context_of_kind = "Residence",
 		OnContextUpdate = function(self, context)
 			---

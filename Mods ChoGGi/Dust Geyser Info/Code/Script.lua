@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
-ChoGGi.ComFuncs.AddParentToClass(DontBuildHere, "SelectableWithParticles")
-ChoGGi.ComFuncs.AddParentToClass(DontBuildHere, "InfopanelObj")
+ChoGGi_Funcs.Common.AddParentToClass(DontBuildHere, "SelectableWithParticles")
+ChoGGi_Funcs.Common.AddParentToClass(DontBuildHere, "InfopanelObj")
 DontBuildHere.ip_template = "ipChoGGi_DustGeyserInfo"
 DontBuildHere.DisplayName = T(302535920011957, "Dust Geyser")
 
@@ -59,5 +59,5 @@ function DontBuildHere:OnSelected()
 	end)
 
 	local geyser = geysers[1]
-	ChoGGi.ComFuncs.Circle(geyser:GetPos(), geyser.FeatureRadius, white, 10000)
+	ChoGGi_Funcs.Common.Circle(geyser:GetPos(), geyser.FeatureRadius, white, 10000)
 end

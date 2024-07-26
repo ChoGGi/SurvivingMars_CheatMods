@@ -39,7 +39,7 @@ OnMsg.LoadGame = ShowPins
 -- something may reset it?
 OnMsg.NewDay = ShowPins
 
--- They all use the same func, I'll leave the code incase something does a mod with it
+-- They all use the same func, I'll leave the code in case something does a mod with it
 local ChoOrig_RocketBase_SetPinned = RocketBase.SetPinned
 local ChoOrig_SetPinned
 local function fake_SetPinned(rocket)

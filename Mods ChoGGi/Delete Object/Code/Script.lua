@@ -19,7 +19,7 @@ function OnMsg.ClassesPostprocess()
 	local xtemplate = XTemplates.ipBuilding[1]
 
 	-- Check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_ModDeleteObject_button", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_ModDeleteObject_button", true)
 
 	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
 		"Id" , "ChoGGi_Template_ModDeleteObject_button",
@@ -45,7 +45,7 @@ function OnMsg.ClassesPostprocess()
 				return self.parent
 			end,
 			"func", function(_, context)
-				ChoGGi.ComFuncs.DeleteObjectQuestion(context)
+				ChoGGi_Funcs.Common.DeleteObjectQuestion(context)
 			end,
 		}),
 	})

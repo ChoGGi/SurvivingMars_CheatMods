@@ -12,10 +12,10 @@ local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local PlaceObjectIn = PlaceObjectIn
 
-local ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
-local MovePointAwayXY = ChoGGi.ComFuncs.MovePointAwayXY
-local Translate = ChoGGi.ComFuncs.Translate
-local PopupToggle = ChoGGi.ComFuncs.PopupToggle
+local ToggleCollisions = ChoGGi_Funcs.Common.ToggleCollisions
+local MovePointAwayXY = ChoGGi_Funcs.Common.MovePointAwayXY
+local Translate = ChoGGi_Funcs.Common.Translate
+local PopupToggle = ChoGGi_Funcs.Common.PopupToggle
 
 
 local name = T(302535920011162, "RC Bulldozer")
@@ -377,10 +377,10 @@ function OnMsg.ClassesPostprocess()
 	-- add some prod info to selection panel
 	local rover = XTemplates.ipRover[1]
 	-- check for and remove existing templates
-	ChoGGi.ComFuncs.RemoveXTemplateSections(rover, "ChoGGi_Template_RCBulldozer_Status")
-	ChoGGi.ComFuncs.RemoveXTemplateSections(rover, "ChoGGi_Template_RCBulldozer_Dozer")
-	ChoGGi.ComFuncs.RemoveXTemplateSections(rover, "ChoGGi_Template_RCBulldozer_Texture")
-	ChoGGi.ComFuncs.RemoveXTemplateSections(rover, "ChoGGi_Template_RCBulldozer_Circle")
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(rover, "ChoGGi_Template_RCBulldozer_Status")
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(rover, "ChoGGi_Template_RCBulldozer_Dozer")
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(rover, "ChoGGi_Template_RCBulldozer_Texture")
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(rover, "ChoGGi_Template_RCBulldozer_Circle")
 
 	-- status updates/radius slider
 	table.insert(

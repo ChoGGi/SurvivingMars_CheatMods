@@ -15,7 +15,7 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
-local PopupToggle = ChoGGi.ComFuncs.PopupToggle
+local PopupToggle = ChoGGi_Funcs.Common.PopupToggle
 local IsValid = IsValid
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate
@@ -132,11 +132,11 @@ function OnMsg.ClassesPostprocess()
 
 	-- old version cleanup
 	if XTemplates.sectionDome.ChoGGi_ForceNewDome then
-		ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.sectionDome[1], "ChoGGi_ForceNewDome")
+		ChoGGi_Funcs.Common.RemoveXTemplateSections(XTemplates.sectionDome[1], "ChoGGi_ForceNewDome")
 		XTemplates.sectionDome.ChoGGi_ForceNewDome = nil
 	end
 
-	ChoGGi.ComFuncs.AddXTemplate("ForceNewDome", "sectionDome", {
+	ChoGGi_Funcs.Common.AddXTemplate("ForceNewDome", "sectionDome", {
 		Icon = "UI/Icons/bmc_domes_shine.tga",
 		Title = T(302535920011062, "Force New Dome"),
 		RolloverText = T(302535920011063, "Force colonists to migrate to new dome."),
@@ -146,7 +146,7 @@ function OnMsg.ClassesPostprocess()
 		end,
 	})
 
-	ChoGGi.ComFuncs.AddXTemplate("ManualColonistRelocation", "ipColonist", {
+	ChoGGi_Funcs.Common.AddXTemplate("ManualColonistRelocation", "ipColonist", {
 		Icon = "UI/Icons/bmc_domes_shine.tga",
 		Title = T(302535920011062, "Force New Dome"),
 		RolloverText = T(302535920011061, "Force colonist to migrate to new dome."),

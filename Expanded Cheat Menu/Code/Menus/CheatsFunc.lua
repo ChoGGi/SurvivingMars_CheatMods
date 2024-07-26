@@ -4,15 +4,16 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local pairs, type = pairs, type
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local Random = ChoGGi.ComFuncs.Random
-local SelObject = ChoGGi.ComFuncs.SelObject
+local Translate = ChoGGi_Funcs.Common.Translate
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
+local Random = ChoGGi_Funcs.Common.Random
+local SelObject = ChoGGi_Funcs.Common.SelObject
 local GetCursorWorldPos = GetCursorWorldPos
 
-function ChoGGi.MenuFuncs.TriggerFireworks()
+function ChoGGi_Funcs.Menus.TriggerFireworks()
 	local city = Cities[UICity.map_id]
 	local domes = city.labels.Domes
 	if #domes < 11 then
@@ -28,7 +29,7 @@ function ChoGGi.MenuFuncs.TriggerFireworks()
 	end
 end
 
-function ChoGGi.MenuFuncs.CaveIn()
+function ChoGGi_Funcs.Menus.CaveIn()
 	local TriggerCaveIn = TriggerCaveIn
 	local IsValid = IsValid
 	local ActiveMapID = ActiveMapID
@@ -45,7 +46,7 @@ function ChoGGi.MenuFuncs.CaveIn()
 
 end
 
-function ChoGGi.MenuFuncs.SpawnPOIs()
+function ChoGGi_Funcs.Menus.SpawnPOIs()
 	local item_list = {}
 	local c = 0
 
@@ -72,7 +73,7 @@ function ChoGGi.MenuFuncs.SpawnPOIs()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000931--[[Spawn POIs]]),
@@ -80,7 +81,7 @@ function ChoGGi.MenuFuncs.SpawnPOIs()
 	}
 end
 
-function ChoGGi.MenuFuncs.UnlockBreakthroughs()
+function ChoGGi_Funcs.Menus.UnlockBreakthroughs()
 	local function reveal(anomaly)
 		if not IsValid(anomaly) or anomaly.tech_action ~= "breakthrough" then
 			return
@@ -98,7 +99,7 @@ function ChoGGi.MenuFuncs.UnlockBreakthroughs()
 	MapForEach("map", "SubsurfaceAnomaly", reveal)
 end
 
-function ChoGGi.MenuFuncs.MeteorStrike(_, _, input)
+function ChoGGi_Funcs.Menus.MeteorStrike(_, _, input)
 	local strike_pos
 	if input == "keyboard" then
 		strike_pos = GetCursorWorldPos()
@@ -106,10 +107,10 @@ function ChoGGi.MenuFuncs.MeteorStrike(_, _, input)
 		strike_pos = GetRandomPassable(UICity)
 	end
 
-	ChoGGi.MenuFuncs.DisasterTriggerMeteor("Meteor_High", "single", strike_pos)
+	ChoGGi_Funcs.Menus.DisasterTriggerMeteor("Meteor_High", "single", strike_pos)
 end
 
-function ChoGGi.MenuFuncs.MissileStrike(_, _, input)
+function ChoGGi_Funcs.Menus.MissileStrike(_, _, input)
 	local strike_pos
 	if input == "keyboard" then
 		strike_pos = GetCursorWorldPos()
@@ -117,10 +118,10 @@ function ChoGGi.MenuFuncs.MissileStrike(_, _, input)
 		strike_pos = GetRandomPassable(UICity)
 	end
 
-	ChoGGi.MenuFuncs.DisasterTriggerMissle()
+	ChoGGi_Funcs.Menus.DisasterTriggerMissle()
 end
 
-function ChoGGi.MenuFuncs.LightningStrike(_, _, input)
+function ChoGGi_Funcs.Menus.LightningStrike(_, _, input)
 	local strike_pos
 	if input == "keyboard" then
 		strike_pos = GetCursorWorldPos()
@@ -181,40 +182,40 @@ function ChoGGi.MenuFuncs.LightningStrike(_, _, input)
 	end
 end
 
-function ChoGGi.MenuFuncs.CompleteConstructions()
+function ChoGGi_Funcs.Menus.CompleteConstructions()
 	-- speed up buildings/ground
-	SuspendPassEdits("ChoGGi.MenuFuncs.CompleteConstructions")
-  SuspendTerrainInvalidations("ChoGGi.MenuFuncs.CompleteConstructions")
+	SuspendPassEdits("ChoGGi_Funcs.Menus.CompleteConstructions")
+  SuspendTerrainInvalidations("ChoGGi_Funcs.Menus.CompleteConstructions")
 	CheatCompleteAllConstructions()
-	ResumePassEdits("ChoGGi.MenuFuncs.CompleteConstructions")
-  ResumeTerrainInvalidations("ChoGGi.MenuFuncs.CompleteConstructions")
+	ResumePassEdits("ChoGGi_Funcs.Menus.CompleteConstructions")
+  ResumeTerrainInvalidations("ChoGGi_Funcs.Menus.CompleteConstructions")
 end
 
-function ChoGGi.MenuFuncs.InfopanelCheats_Toggle()
+function ChoGGi_Funcs.Menus.InfopanelCheats_Toggle()
 	local config = config
 	config.BuildingInfopanelCheats = not config.BuildingInfopanelCheats
 	ReopenSelectionXInfopanel()
 	ChoGGi.UserSettings.InfopanelCheats = config.BuildingInfopanelCheats
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
 		Translate(302535920001122--[[%s: HAXOR]]):format(ChoGGi.UserSettings.InfopanelCheats),
 		T(302535920000696--[[Infopanel Cheats]])
 	)
 end
 
-function ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle()
+function ChoGGi_Funcs.Menus.InfopanelCheatsCleanup_Toggle()
 	if ChoGGi.UserSettings.CleanupCheatsInfoPane then
 		-- needs default?
 		ChoGGi.UserSettings.CleanupCheatsInfoPane = false
 	else
 		ChoGGi.UserSettings.CleanupCheatsInfoPane = true
-		ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
+		ChoGGi_Funcs.InfoPane.InfopanelCheatsCleanup()
 	end
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.CleanupCheatsInfoPane),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.CleanupCheatsInfoPane),
 		T(302535920000698--[[Infopanel Cheats Cleanup]])
 	)
 end
@@ -301,7 +302,7 @@ local achievement_ids = {
 	"USAResearchedEngineering",
 	"Willtheyhold",
 }
-function ChoGGi.MenuFuncs.UnlockAchievements()
+function ChoGGi_Funcs.Menus.UnlockAchievements()
 	local item_list = {}
 
 	local AchievementPresets = AchievementPresets
@@ -345,7 +346,7 @@ function ChoGGi.MenuFuncs.UnlockAchievements()
 		end)
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000318--[[Unlock]]) .. " " .. T(697482021580--[[Achievements]]),
@@ -354,7 +355,7 @@ function ChoGGi.MenuFuncs.UnlockAchievements()
 	}
 end
 
-function ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies()
+function ChoGGi_Funcs.Menus.SpawnPlanetaryAnomalies()
 	-- for "current" hint
 	local spots = MarsScreenLandingSpots
 	local count = 0
@@ -403,7 +404,7 @@ function ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920001394--[[Spawn Planetary Anomalies]]),
@@ -412,7 +413,7 @@ function ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetOutsourceMaxOrderCount()
+function ChoGGi_Funcs.Menus.SetOutsourceMaxOrderCount()
 	local default_setting = ChoGGi.Consts.OutsourceMaxOrderCount
 	local item_list = {
 		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
@@ -440,18 +441,18 @@ function ChoGGi.MenuFuncs.SetOutsourceMaxOrderCount()
 		end
 		local value = choice[1].value
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetConsts("OutsourceMaxOrderCount", value)
-			ChoGGi.ComFuncs.SetSavedConstSetting("OutsourceMaxOrderCount")
+			ChoGGi_Funcs.Common.SetConsts("OutsourceMaxOrderCount", value)
+			ChoGGi_Funcs.Common.SetSavedConstSetting("OutsourceMaxOrderCount")
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.OutsourceMaxOrderCount),
+				ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.OutsourceMaxOrderCount),
 				T(970197122036, "Maximum Outsource Orders")
 			)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(970197122036--[[Maximum Outsource Orders]]),
@@ -460,53 +461,53 @@ function ChoGGi.MenuFuncs.SetOutsourceMaxOrderCount()
 	}
 end
 
-function ChoGGi.MenuFuncs.InstantResearch_toggle()
-	ChoGGi.UserSettings.InstantResearch = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.InstantResearch)
+function ChoGGi_Funcs.Menus.InstantResearch_toggle()
+	ChoGGi.UserSettings.InstantResearch = ChoGGi_Funcs.Common.ToggleValue(ChoGGi.UserSettings.InstantResearch)
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.InstantResearch),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.InstantResearch),
 		T(302535920001278--[[Instant Research]])
 	)
 end
 
-function ChoGGi.MenuFuncs.DraggableCheatsMenu_Toggle()
-	ChoGGi.UserSettings.DraggableCheatsMenu = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.DraggableCheatsMenu)
+function ChoGGi_Funcs.Menus.DraggableCheatsMenu_Toggle()
+	ChoGGi.UserSettings.DraggableCheatsMenu = ChoGGi_Funcs.Common.ToggleValue(ChoGGi.UserSettings.DraggableCheatsMenu)
 
-	ChoGGi.ComFuncs.DraggableCheatsMenu(ChoGGi.UserSettings.DraggableCheatsMenu)
+	ChoGGi_Funcs.Common.DraggableCheatsMenu(ChoGGi.UserSettings.DraggableCheatsMenu)
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DraggableCheatsMenu),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.DraggableCheatsMenu),
 		T(302535920000232--[[Draggable Cheats Menu]])
 	)
 end
 
-function ChoGGi.MenuFuncs.KeepCheatsMenuPosition_Toggle()
+function ChoGGi_Funcs.Menus.KeepCheatsMenuPosition_Toggle()
 	if ChoGGi.UserSettings.KeepCheatsMenuPosition then
 		ChoGGi.UserSettings.KeepCheatsMenuPosition = nil
-		ChoGGi.ComFuncs.SetCheatsMenuPos()
+		ChoGGi_Funcs.Common.SetCheatsMenuPos()
 	else
 		local pos = XShortcutsTarget:GetPos()
 		ChoGGi.UserSettings.KeepCheatsMenuPosition = pos
-		ChoGGi.ComFuncs.SetCheatsMenuPos(pos)
+		ChoGGi_Funcs.Common.SetCheatsMenuPos(pos)
 	end
 
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.KeepCheatsMenuPosition),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.KeepCheatsMenuPosition),
 		T(302535920000325--[[Keep Cheats Menu Position]])
 	)
 end
 
-function ChoGGi.MenuFuncs.ResetAllResearch()
+function ChoGGi_Funcs.Menus.ResetAllResearch()
 	local function CallBackFunc(answer)
 		if answer then
 			UIColony:InitResearch()
 		end
 	end
-	ChoGGi.ComFuncs.QuestionBox(
+	ChoGGi_Funcs.Common.QuestionBox(
 		T(6779--[[Warning]]) .. "!\n" .. T(302535920000238--[[Are you sure you want to reset all research (includes breakthrough tech)?
 
 Buildings are still unlocked.]]),
@@ -515,15 +516,15 @@ Buildings are still unlocked.]]),
 	)
 end
 
-function ChoGGi.MenuFuncs.DisasterTriggerUndergroundMarsquake()
+function ChoGGi_Funcs.Menus.DisasterTriggerUndergroundMarsquake()
 	if not IsDlcAccessible("picard") then
 		return
 	end
-	if ChoGGi.ComFuncs.RetMapType() == "underground" then
+	if ChoGGi_Funcs.Common.RetMapType() == "underground" then
 		CheatTriggerUndergroundMarsquake()
 	end
 end
-function ChoGGi.MenuFuncs.DisasterTriggerMissle(amount)
+function ChoGGi_Funcs.Menus.DisasterTriggerMissle(amount)
 	amount = amount or 1
 	if amount == 1 then
 		-- (pt, radius, count, delay_min, delay_max)
@@ -556,14 +557,14 @@ function ChoGGi.MenuFuncs.DisasterTriggerMissle(amount)
 	end
 end
 
-function ChoGGi.MenuFuncs.DisasterTriggerColdWave(severity)
+function ChoGGi_Funcs.Menus.DisasterTriggerColdWave(severity)
 	CreateGameTimeThread(function()
 		local data = DataInstances.MapSettings_ColdWave
 		local descr = data[severity] or data[ActiveMapData.MapSettings_ColdWave] or data.ColdWave_VeryLow
 		StartColdWave(descr)
 	end)
 end
-function ChoGGi.MenuFuncs.DisasterTriggerDustStorm(severity, storm_type)
+function ChoGGi_Funcs.Menus.DisasterTriggerDustStorm(severity, storm_type)
 	CreateGameTimeThread(function()
 		local data = DataInstances.MapSettings_DustStorm
 		local descr = data[severity] or data[ActiveMapData.MapSettings_DustStorm] or data.DustStorm_VeryLow
@@ -571,7 +572,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerDustStorm(severity, storm_type)
 	end)
 end
 
-function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(severity, major)
+function ChoGGi_Funcs.Menus.DisasterTriggerDustDevils(severity, major)
 	local pos = SelObject() or GetCursorWorldPos()
 	if type(pos) == "table" then
 		pos = pos:GetPos()
@@ -581,7 +582,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerDustDevils(severity, major)
 	local descr = data[severity] or data[ActiveMapData.MapSettings_DustDevils] or data.DustDevils_VeryLow
 	GenerateDustDevil(pos, descr, nil, major):Start()
 end
-function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity, meteors_type, pos)
+function ChoGGi_Funcs.Menus.DisasterTriggerMeteor(severity, meteors_type, pos)
 	meteors_type = meteors_type or "single"
 	pos = pos or SelObject() or GetCursorWorldPos()
   -- target object
@@ -590,7 +591,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity, meteors_type, pos)
 	end
 
 	local data = DataInstances.MapSettings_Meteor
-	local descr = ChoGGi.ComFuncs.CopyTable(
+	local descr = ChoGGi_Funcs.Common.CopyTable(
 		data[severity] or data[ActiveMapData.MapSettings_Meteor] or data.Meteor_VeryLow
 	)
 	if meteors_type == "single" then
@@ -602,7 +603,7 @@ function ChoGGi.MenuFuncs.DisasterTriggerMeteor(severity, meteors_type, pos)
 		MeteorsDisaster(descr, meteors_type, pos)
 	end)
 end
-function ChoGGi.MenuFuncs.DisasterTriggerMetatronIonStorm()
+function ChoGGi_Funcs.Menus.DisasterTriggerMetatronIonStorm()
 	local pos = SelObject() or GetCursorWorldPos()
 	if type(pos) == "table" then
 		pos = pos:GetPos()
@@ -664,7 +665,7 @@ do -- DisasterTriggerLightningStrike
 	end
 
 	-- somewhat a copy/paste from StartDustStorm
-	function ChoGGi.MenuFuncs.DisasterTriggerLightningStrike(amount)
+	function ChoGGi_Funcs.Menus.DisasterTriggerLightningStrike(amount)
 		-- set/reset some vars
 		dust_storm = DataInstances.MapSettings_DustStorm.DustStorm_VeryHigh_1
 		strike_radius = dust_storm.strike_radius
@@ -694,28 +695,28 @@ end -- do
 
 do -- DisastersTrigger
 	local trigger_table = {
-		Stop = ChoGGi.ComFuncs.DisastersStop,
-		ColdWave = ChoGGi.MenuFuncs.DisasterTriggerColdWave,
-		DustStorm = ChoGGi.MenuFuncs.DisasterTriggerDustStorm,
-		Meteor = ChoGGi.MenuFuncs.DisasterTriggerMeteor,
-		MetatronIonStorm = ChoGGi.MenuFuncs.DisasterTriggerMetatronIonStorm,
-		DustDevils = ChoGGi.MenuFuncs.DisasterTriggerDustDevils,
-		UndergroundMarsquake = ChoGGi.MenuFuncs.DisasterTriggerUndergroundMarsquake,
+		Stop = ChoGGi_Funcs.Common.DisastersStop,
+		ColdWave = ChoGGi_Funcs.Menus.DisasterTriggerColdWave,
+		DustStorm = ChoGGi_Funcs.Menus.DisasterTriggerDustStorm,
+		Meteor = ChoGGi_Funcs.Menus.DisasterTriggerMeteor,
+		MetatronIonStorm = ChoGGi_Funcs.Menus.DisasterTriggerMetatronIonStorm,
+		DustDevils = ChoGGi_Funcs.Menus.DisasterTriggerDustDevils,
+		UndergroundMarsquake = ChoGGi_Funcs.Menus.DisasterTriggerUndergroundMarsquake,
 
 		DustDevilsMajor = function()
-			ChoGGi.MenuFuncs.DisasterTriggerDustDevils(nil, "major")
+			ChoGGi_Funcs.Menus.DisasterTriggerDustDevils(nil, "major")
 		end,
 		DustStormElectrostatic = function()
-			ChoGGi.MenuFuncs.DisasterTriggerDustStorm(nil, "electrostatic")
+			ChoGGi_Funcs.Menus.DisasterTriggerDustStorm(nil, "electrostatic")
 		end,
 		DustStormGreat = function()
-			ChoGGi.MenuFuncs.DisasterTriggerDustStorm(nil, "great")
+			ChoGGi_Funcs.Menus.DisasterTriggerDustStorm(nil, "great")
 		end,
 		MeteorStorm = function()
-			ChoGGi.MenuFuncs.DisasterTriggerMeteor(nil, "storm")
+			ChoGGi_Funcs.Menus.DisasterTriggerMeteor(nil, "storm")
 		end,
 		MeteorMultiSpawn = function()
-			ChoGGi.MenuFuncs.DisasterTriggerMeteor(nil, "multispawn")
+			ChoGGi_Funcs.Menus.DisasterTriggerMeteor(nil, "multispawn")
 		end,
 	}
 
@@ -747,7 +748,7 @@ do -- DisastersTrigger
 
 				-- add entry to the lookup table
 				trigger_table[name] = function()
-					local func = ChoGGi.MenuFuncs[func_name]
+					local func = ChoGGi_Funcs.Menus[func_name]
 					if type(func) == "function" then
 						func(name, d_type)
 					else
@@ -776,7 +777,7 @@ do -- DisastersTrigger
 		return c
 	end
 
-	function ChoGGi.MenuFuncs.DisastersTrigger()
+	function ChoGGi_Funcs.Menus.DisastersTrigger()
 		local missile_hint = T{302535920001372--[["Change the number on the end to fire that amount (ex: <color ChoGGi_green><str>25</color>)."]],
 			str = T(302535920000246--[[Missle]]),
 		}	.. "\n\n" .. T(302535920001546--[[Random delay added (to keep game from lagging on large amounts).]])
@@ -867,12 +868,12 @@ do -- DisastersTrigger
 				elseif value:find("Missle") then
 					local amount = tonumber(value:sub(7))
 					if amount then
-						ChoGGi.MenuFuncs.DisasterTriggerMissle(amount)
+						ChoGGi_Funcs.Menus.DisasterTriggerMissle(amount)
 					end
 				elseif value:find("LightningStrike") then
 					local amount = tonumber(value:sub(16))
 					if amount then
-						ChoGGi.MenuFuncs.DisasterTriggerLightningStrike(amount)
+						ChoGGi_Funcs.Menus.DisasterTriggerLightningStrike(amount)
 					end
 				end
 
@@ -883,7 +884,7 @@ do -- DisastersTrigger
 			end
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = T(1694--[[Start]]) .. " " .. T(3983--[[Disasters]]),
@@ -893,7 +894,7 @@ do -- DisastersTrigger
 	end
 end -- do
 
-function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
+function ChoGGi_Funcs.Menus.ShowScanAnomaliesOptions()
 	-- what did this do?
 --~ 	BuildNames()
 
@@ -976,7 +977,7 @@ function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(25--[[Anomaly Scanning]]),
@@ -984,7 +985,7 @@ function ChoGGi.MenuFuncs.ShowScanAnomaliesOptions()
 	}
 end
 
-function ChoGGi.MenuFuncs.MapExploration()
+function ChoGGi_Funcs.Menus.MapExploration()
 	local UICity = UICity
 	local title = T(302535920001355--[[Map]]) .. " " .. T(5422--[[Exploration]])
 	local hint_core = T(302535920000253--[[Core: Repeatable, exploit core resources.]])
@@ -1013,10 +1014,10 @@ function ChoGGi.MenuFuncs.MapExploration()
 			return
 		end
 		local function ExploreDeep()
---~ 			ChoGGi.ComFuncs.SetConsts("DeepScanAvailable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
---~ 			ChoGGi.ComFuncs.SetConsts("IsDeepWaterExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
---~ 			ChoGGi.ComFuncs.SetConsts("IsDeepMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
---~ 			ChoGGi.ComFuncs.SetConsts("IsDeepPreciousMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
+--~ 			ChoGGi_Funcs.Common.SetConsts("DeepScanAvailable", ChoGGi_Funcs.Common.ToggleBoolNum(Consts.DeepScanAvailable))
+--~ 			ChoGGi_Funcs.Common.SetConsts("IsDeepWaterExploitable", ChoGGi_Funcs.Common.ToggleBoolNum(Consts.IsDeepWaterExploitable))
+--~ 			ChoGGi_Funcs.Common.SetConsts("IsDeepMetalsExploitable", ChoGGi_Funcs.Common.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
+--~ 			ChoGGi_Funcs.Common.SetConsts("IsDeepPreciousMetalsExploitable", ChoGGi_Funcs.Common.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
 			GrantTech("DeepScanning")
 			GrantTech("DeepWaterExtraction")
 			GrantTech("DeepMetalExtraction")
@@ -1038,17 +1039,17 @@ function ChoGGi.MenuFuncs.MapExploration()
 			elseif value == 3 then
 				ExploreCore()
 			elseif value == 4 then
---~ 				ChoGGi.ComFuncs.SetConsts("DeepScanAvailable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.DeepScanAvailable))
+--~ 				ChoGGi_Funcs.Common.SetConsts("DeepScanAvailable", ChoGGi_Funcs.Common.ToggleBoolNum(Consts.DeepScanAvailable))
 				GrantTech("DeepScanning")
 			elseif value == 5 then
---~ 				ChoGGi.ComFuncs.SetConsts("IsDeepWaterExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepWaterExploitable))
+--~ 				ChoGGi_Funcs.Common.SetConsts("IsDeepWaterExploitable", ChoGGi_Funcs.Common.ToggleBoolNum(Consts.IsDeepWaterExploitable))
 				GrantTech("DeepWaterExtraction")
 			elseif value == 6 then
 				GrantTech("DeepMetalExtraction")
---~ 				ChoGGi.ComFuncs.SetConsts("IsDeepMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
+--~ 				ChoGGi_Funcs.Common.SetConsts("IsDeepMetalsExploitable", ChoGGi_Funcs.Common.ToggleBoolNum(Consts.IsDeepMetalsExploitable))
 			elseif value == 7 then
 				GrantTech("DeepMetalExtraction")
---~ 				ChoGGi.ComFuncs.SetConsts("IsDeepPreciousMetalsExploitable", ChoGGi.ComFuncs.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
+--~ 				ChoGGi_Funcs.Common.SetConsts("IsDeepPreciousMetalsExploitable", ChoGGi_Funcs.Common.ToggleBoolNum(Consts.IsDeepPreciousMetalsExploitable))
 			elseif value == 8 then
 				Msg("TechResearched", "CoreWater", UICity)
 			elseif value == 9 then
@@ -1074,7 +1075,7 @@ Otherwise you won't see anything."]]),
 		)
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = title,
@@ -1085,7 +1086,7 @@ Deep items will unlock the ability to exploit those resources."]]),
 	}
 end
 
-function ChoGGi.MenuFuncs.SpawnColonists()
+function ChoGGi_Funcs.Menus.SpawnColonists()
 	local ChoOrig_GenerateColonistData = GenerateColonistData
 
 	local title = T(302535920000266--[[Spawn]]) .. " " .. T(547--[[Colonists]])
@@ -1141,14 +1142,14 @@ function ChoGGi.MenuFuncs.SpawnColonists()
 			GenerateColonistData = ChoOrig_GenerateColonistData
 
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.text, T(302535920000014--[[Spawned]])),
+				ChoGGi_Funcs.Common.SettingState(choice.text, T(302535920000014--[[Spawned]])),
 				title
 			)
 
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = title,
@@ -1234,7 +1235,7 @@ do -- StartMystery
 --~ 		UIColony.mystery.seq_player:AutostartSequences()
 	end
 
-	function ChoGGi.MenuFuncs.ShowMysteryList()
+	function ChoGGi_Funcs.Menus.ShowMysteryList()
 		local item_list = {}
 		local mysteries = ChoGGi.Tables.Mystery
 		for i = 1, #mysteries do
@@ -1258,7 +1259,7 @@ do -- StartMystery
 			end
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = T(302535920000268--[[Start A Mystery]]),
@@ -1323,10 +1324,10 @@ g_Voice:Play(o.speech)"]],
 			end
 		end
 		-- display to user
-		ChoGGi.ComFuncs.OpenInExamineDlg(msgs, point(550, 100))
+		ChoGGi_Funcs.Common.OpenInExamineDlg(msgs, point(550, 100))
 	end
 
-	function ChoGGi.MenuFuncs.MysteryLog()
+	function ChoGGi_Funcs.Menus.MysteryLog()
 		local s_SeqListPlayers = s_SeqListPlayers
 		if not s_SeqListPlayers then
 			return
@@ -1422,12 +1423,12 @@ g_Voice:Play(o.speech)"]],
 				)
 --~ 			elseif value then
 --~ 				-- next step
---~ 				ChoGGi.MenuFuncs.NextMysterySeq(value, mystery_idx)
+--~ 				ChoGGi_Funcs.Menus.NextMysterySeq(value, mystery_idx)
 			end
 
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			custom_type = 6,
@@ -1450,7 +1451,7 @@ g_Voice:Play(o.speech)"]],
 		}
 	end
 
---~ 	function ChoGGi.MenuFuncs.NextMysterySeq(mystery, mystery_idx)
+--~ 	function ChoGGi_Funcs.Menus.NextMysterySeq(mystery, mystery_idx)
 --~ 		local g_Classes = g_Classes
 
 --~ 		local wait_classes = {"SA_WaitMarsTime", "SA_WaitTime"}
@@ -1521,7 +1522,7 @@ g_Voice:Play(o.speech)"]],
 --~ 									Player:UpdateCurrentIP(seq_list)
 --~ 								end
 --~ 							end
---~ 							ChoGGi.ComFuncs.QuestionBox(
+--~ 							ChoGGi_Funcs.Common.QuestionBox(
 --~ 								T(302535920000288--[[Advancement requires]]) .. ": "
 --~ 									.. seq.expression .. "\n\n"
 --~ 									.. T(302535920000290--[[Time duration has been set to 0 (you still need to complete the requirements).
@@ -1540,7 +1541,7 @@ g_Voice:Play(o.speech)"]],
 --~ 									Player:UpdateCurrentIP(seq_list)
 --~ 								end
 --~ 							end
---~ 							ChoGGi.ComFuncs.QuestionBox(
+--~ 							ChoGGi_Funcs.Common.QuestionBox(
 --~ 								T(302535920000288--[[Advancement requires]]) .. ": " .. seq.msg .. warning,
 --~ 								CallBackFunc,
 --~ 								title
@@ -1555,7 +1556,7 @@ g_Voice:Play(o.speech)"]],
 --~ 									Player:UpdateCurrentIP(seq_list)
 --~ 								end
 --~ 							end
---~ 							ChoGGi.ComFuncs.QuestionBox(
+--~ 							ChoGGi_Funcs.Common.QuestionBox(
 --~ 								T(302535920000288--[[Advancement requires]]) .. ": " .. seq.Research .. warning,
 --~ 								CallBackFunc,
 --~ 								title
@@ -1569,7 +1570,7 @@ g_Voice:Play(o.speech)"]],
 --~ 									Player:UpdateCurrentIP(seq_list)
 --~ 								end
 --~ 							end
---~ 							ChoGGi.ComFuncs.QuestionBox(
+--~ 							ChoGGi_Funcs.Common.QuestionBox(
 --~ 								T(302535920000291--[[Waiting for %s to finish.
 --~ 	Skip it?]]):format(seq.sequence),
 --~ 								CallBackFunc,
@@ -1588,7 +1589,7 @@ g_Voice:Play(o.speech)"]],
 
 end -- do
 
-function ChoGGi.MenuFuncs.UnlockAllBuildings_Toggle()
+function ChoGGi_Funcs.Menus.UnlockAllBuildings_Toggle()
 	local item_list = {
 		{text = Translate(302535920000547--[[Lock]]), value = "Lock"},
 		{text = Translate(302535920000318--[[Unlock]]), value = "Unlock"},
@@ -1611,14 +1612,14 @@ function ChoGGi.MenuFuncs.UnlockAllBuildings_Toggle()
 			CheatUnlockAllBuildings()
 		end
 
-		ChoGGi.ComFuncs.UpdateBuildMenu()
+		ChoGGi_Funcs.Common.UpdateBuildMenu()
 		MsgPopup(
 			Translate(302535920000293--[[%s: all buildings for construction.]]):format(choice[1].text),
 			T(302535920000337--[[Toggle Unlock All Buildings]])
 		)
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000337--[[Toggle Unlock All Buildings]]),
@@ -1626,7 +1627,7 @@ function ChoGGi.MenuFuncs.UnlockAllBuildings_Toggle()
 	}
 end
 
-function ChoGGi.MenuFuncs.AddResearchPoints()
+function ChoGGi_Funcs.Menus.AddResearchPoints()
 	local item_list = {
 		{text = T(302535920001084--[[Reset]]), value = "Reset", hint = T(302535920000292--[[Resets sponsor points to default for that sponsor]])},
 		{text = 100, value = 100},
@@ -1657,12 +1658,12 @@ function ChoGGi.MenuFuncs.AddResearchPoints()
 --~ 			Consts.SponsorResearch = reset
 		end
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice.text),
+			ChoGGi_Funcs.Common.SettingState(choice.text),
 			T(302535920000295--[[Add Research Points]])
 		)
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000295--[[Add Research Points]]),
@@ -1671,11 +1672,11 @@ function ChoGGi.MenuFuncs.AddResearchPoints()
 	}
 end
 
-function ChoGGi.MenuFuncs.OutsourcingFree_Toggle()
-	ChoGGi.ComFuncs.SetConsts("OutsourceResearchCost", ChoGGi.ComFuncs.NumRetBool(Consts.OutsourceResearchCost, 0, ChoGGi.Consts.OutsourceResearchCost))
-	ChoGGi.ComFuncs.SetSavedConstSetting("OutsourceResearchCost")
+function ChoGGi_Funcs.Menus.OutsourcingFree_Toggle()
+	ChoGGi_Funcs.Common.SetConsts("OutsourceResearchCost", ChoGGi_Funcs.Common.NumRetBool(Consts.OutsourceResearchCost, 0, ChoGGi.Consts.OutsourceResearchCost))
+	ChoGGi_Funcs.Common.SetSavedConstSetting("OutsourceResearchCost")
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
 		T(302535920000297--[["%s
 Best hope you picked India as your Mars sponsor..."]]):format(ChoGGi.UserSettings.OutsourceResearchCost),
@@ -1683,7 +1684,7 @@ Best hope you picked India as your Mars sponsor..."]]):format(ChoGGi.UserSetting
 	)
 end
 
-function ChoGGi.MenuFuncs.BreakThroughsOmegaTelescope_Set()
+function ChoGGi_Funcs.Menus.BreakThroughsOmegaTelescope_Set()
 	local default_setting = ChoGGi.Consts.OmegaTelescopeBreakthroughsCount
 	local MaxAmount = #UIColony.tech_field.Breakthroughs
 	local item_list = {
@@ -1706,9 +1707,9 @@ function ChoGGi.MenuFuncs.BreakThroughsOmegaTelescope_Set()
 		local value = choice[1].value
 		if type(value) == "number" then
 			const.OmegaTelescopeBreakthroughsCount = value
-			ChoGGi.ComFuncs.SetSavedConstSetting("OmegaTelescopeBreakthroughsCount")
+			ChoGGi_Funcs.Common.SetSavedConstSetting("OmegaTelescopeBreakthroughsCount")
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
 				Translate(302535920000299--[[%s: Research is what I'm doing when I don't know what I'm doing.]]):format(choice[1].text),
 				T(302535920000359--[[Breakthroughs From OmegaTelescope]])
@@ -1716,7 +1717,7 @@ function ChoGGi.MenuFuncs.BreakThroughsOmegaTelescope_Set()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000359--[[Breakthroughs From OmegaTelescope]]),
@@ -1725,7 +1726,7 @@ function ChoGGi.MenuFuncs.BreakThroughsOmegaTelescope_Set()
 	}
 end
 
-function ChoGGi.MenuFuncs.BreakThroughsAllowed_Set()
+function ChoGGi_Funcs.Menus.BreakThroughsAllowed_Set()
 	local default_setting = ChoGGi.Consts.BreakThroughTechsPerGame
 	local MaxAmount = #UIColony.tech_field.Breakthroughs
 	local item_list = {
@@ -1746,9 +1747,9 @@ function ChoGGi.MenuFuncs.BreakThroughsAllowed_Set()
 		local value = choice[1].value
 		if type(value) == "number" then
 			const.BreakThroughTechsPerGame = value
-			ChoGGi.ComFuncs.SetSavedConstSetting("BreakThroughTechsPerGame")
+			ChoGGi_Funcs.Common.SetSavedConstSetting("BreakThroughTechsPerGame")
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
 				Translate(302535920000302--[[%s: Strings M R T]]):format(choice[1].text),
 				T(302535920000357--[[Set Amount Of Breakthroughs Allowed]])
@@ -1756,7 +1757,7 @@ function ChoGGi.MenuFuncs.BreakThroughsAllowed_Set()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000303--[[BreakThroughs Allowed]]),
@@ -1765,7 +1766,7 @@ function ChoGGi.MenuFuncs.BreakThroughsAllowed_Set()
 	}
 end
 
-function ChoGGi.MenuFuncs.ResearchQueueSize_Set()
+function ChoGGi_Funcs.Menus.ResearchQueueSize_Set()
 	local default_setting = ChoGGi.Consts.ResearchQueueSize
 	local item_list = {
 		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
@@ -1792,9 +1793,9 @@ function ChoGGi.MenuFuncs.ResearchQueueSize_Set()
 		if type(value) == "number" then
 
 			const.ResearchQueueSize = value
-			ChoGGi.ComFuncs.SetSavedConstSetting("ResearchQueueSize")
+			ChoGGi_Funcs.Common.SetSavedConstSetting("ResearchQueueSize")
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
 				ChoGGi.UserSettings.ResearchQueueSize,
 				T(302535920000305--[[Research Queue Size]])
@@ -1802,7 +1803,7 @@ function ChoGGi.MenuFuncs.ResearchQueueSize_Set()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000305--[[Research Queue Size]]),
@@ -1880,7 +1881,7 @@ do -- ResearchRemove
 		SystematicTraining = UpdateColonistPref,
 	}
 
-	function ChoGGi.MenuFuncs.ResearchRemove()
+	function ChoGGi_Funcs.Menus.ResearchRemove()
 		local title = T(311--[[Research]]) .. " " .. T(302535920000281--[[Remove]])
 		local item_list = {}
 		local c = 0
@@ -1935,7 +1936,7 @@ do -- ResearchRemove
 			end
 
 			-- If we locked any buildings and the buildmenu is open
-			ChoGGi.ComFuncs.UpdateBuildMenu()
+			ChoGGi_Funcs.Common.UpdateBuildMenu()
 
 			MsgPopup(
 				Translate(302535920000315--[[%s %s tech(s): Unleash your inner Black Monolith Mystery.]]):format("", #choice),
@@ -1950,7 +1951,7 @@ do -- ResearchRemove
 			return
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = title,
@@ -1963,7 +1964,7 @@ end -- do
 
 do -- ResearchTech
 	local research_checked
-	local ValidateImage = ChoGGi.ComFuncs.ValidateImage
+	local ValidateImage = ChoGGi_Funcs.Common.ValidateImage
 	local IsTechResearched = IsTechResearched
 
 	local mystery_costs = {
@@ -2026,9 +2027,9 @@ do -- ResearchTech
 			end
 		end
 	end
-	ChoGGi.MenuFuncs.AllRegularTechs = AllRegularTechs
+	ChoGGi_Funcs.Menus.AllRegularTechs = AllRegularTechs
 
-	function ChoGGi.MenuFuncs.ResearchTech()
+	function ChoGGi_Funcs.Menus.ResearchTech()
 		local title = T(311--[[Research]]) .. " / " .. T(302535920000318--[[Unlock]]) .. " " .. T(3734--[[Tech]])
 		local item_list = {
 			{
@@ -2145,7 +2146,7 @@ do -- ResearchTech
 			end
 
 			-- If we unlocked any buildings and the buildmenu is open
-			ChoGGi.ComFuncs.UpdateBuildMenu()
+			ChoGGi_Funcs.Common.UpdateBuildMenu()
 
 			MsgPopup(
 				Translate(302535920000315--[[%s %s tech(s): Unleash your inner Black Monolith Mystery.]]):format(Translate(text), count),
@@ -2153,7 +2154,7 @@ do -- ResearchTech
 			)
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = title,
@@ -2181,13 +2182,13 @@ do -- ResearchTech
 
 end -- do
 
-function ChoGGi.MenuFuncs.OpenModEditor()
+function ChoGGi_Funcs.Menus.OpenModEditor()
 	local function CallBackFunc(answer)
 		if answer then
 			ModEditorOpen()
 		end
 	end
-	ChoGGi.ComFuncs.QuestionBox(
+	ChoGGi_Funcs.Common.QuestionBox(
 		T(6779--[[Warning]]) .. "!\n" .. T(302535920001508--[[Save your game.
 This will switch to a new map.]]),
 		CallBackFunc,
@@ -2243,10 +2244,10 @@ do -- Mystery Log
 			end
 		end
 		-- display to user
-		ChoGGi.ComFuncs.OpenInExamineDlg(msgs, point(550, 100))
+		ChoGGi_Funcs.Common.OpenInExamineDlg(msgs, point(550, 100))
 	end
 
-	function ChoGGi.MenuFuncs.MysteryLog()
+	function ChoGGi_Funcs.Menus.MysteryLog()
 		local s_SeqListPlayers = s_SeqListPlayers
 		if not s_SeqListPlayers then
 			return
@@ -2342,12 +2343,12 @@ do -- Mystery Log
 				)
 			elseif value then
 				-- next step
-				ChoGGi.MenuFuncs.NextMysterySeq(value, mystery_idx)
+				ChoGGi_Funcs.Menus.NextMysterySeq(value, mystery_idx)
 			end
 
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			custom_type = 6,
@@ -2369,7 +2370,7 @@ do -- Mystery Log
 		}
 	end
 
-	function ChoGGi.MenuFuncs.NextMysterySeq(mystery, mystery_idx)
+	function ChoGGi_Funcs.Menus.NextMysterySeq(mystery, mystery_idx)
 		local g_Classes = g_Classes
 
 		local wait_classes = {"SA_WaitMarsTime", "SA_WaitTime"}
@@ -2440,7 +2441,7 @@ do -- Mystery Log
 									Player:UpdateCurrentIP(seq_list)
 								end
 							end
-							ChoGGi.ComFuncs.QuestionBox(
+							ChoGGi_Funcs.Common.QuestionBox(
 								TranslationTable[302535920000288--[[Advancement requires]]] .. ": "
 									.. seq.expression .. "\n\n"
 									.. TranslationTable[302535920000290--[[Time duration has been set to 0 (you still need to complete the requirements).
@@ -2459,7 +2460,7 @@ do -- Mystery Log
 									Player:UpdateCurrentIP(seq_list)
 								end
 							end
-							ChoGGi.ComFuncs.QuestionBox(
+							ChoGGi_Funcs.Common.QuestionBox(
 								TranslationTable[302535920000288--[[Advancement requires]]] .. ": " .. seq.msg .. warning,
 								CallBackFunc,
 								title
@@ -2474,7 +2475,7 @@ do -- Mystery Log
 									Player:UpdateCurrentIP(seq_list)
 								end
 							end
-							ChoGGi.ComFuncs.QuestionBox(
+							ChoGGi_Funcs.Common.QuestionBox(
 								TranslationTable[302535920000288--[[Advancement requires]]] .. ": " .. seq.Research .. warning,
 								CallBackFunc,
 								title
@@ -2488,7 +2489,7 @@ do -- Mystery Log
 									Player:UpdateCurrentIP(seq_list)
 								end
 							end
-							ChoGGi.ComFuncs.QuestionBox(
+							ChoGGi_Funcs.Common.QuestionBox(
 								TranslationTable[302535920000291--[[Waiting for %s to finish.
 	Skip it?]]]:format(seq.sequence),
 								CallBackFunc,
@@ -2506,7 +2507,7 @@ do -- Mystery Log
 	end
 end -- do
 
---~ 	function ChoGGi.MenuFuncs.OpenModEditor()
+--~ 	function ChoGGi_Funcs.Menus.OpenModEditor()
 --~ 		local ModsList = ModsList
 
 --~ 		local item_list = {
@@ -2556,7 +2557,7 @@ end -- do
 --~ 			end
 --~ 		end
 
---~ 		ChoGGi.ComFuncs.OpenInListChoice{
+--~ 		ChoGGi_Funcs.Common.OpenInListChoice{
 --~ 			callback = CallBackFunc,
 --~ 			items = item_list,
 --~ 			title = T(302535920000236--[[Mod Editor]]),

@@ -21,6 +21,12 @@ local properties = {
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
+		"name", "DomeGrassAlt",
+		"DisplayName", T(0000, "Dome Grass Alt"),
+		"Help", T(0000, "Alt texture replacement for dome grass from Jozef."),
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
 		"name", "DomeBeachSand",
 		"DisplayName", T(0000, "Dome Beach Sand"),
 		"Help", T(0000, "Sandy beaches in geoscape domes."),

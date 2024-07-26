@@ -1,9 +1,9 @@
 -- See LICENSE for terms
 
-local RetName = ChoGGi.ComFuncs.RetName
-local PopupToggle = ChoGGi.ComFuncs.PopupToggle
-local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
-local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
+local RetName = ChoGGi_Funcs.Common.RetName
+local PopupToggle = ChoGGi_Funcs.Common.PopupToggle
+local IsControlPressed = ChoGGi_Funcs.Common.IsControlPressed
+local IsShiftPressed = ChoGGi_Funcs.Common.IsShiftPressed
 
 local T = T
 local IsT = IsT
@@ -437,7 +437,7 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 							SelectObj(obj)
 						end
 					end
-					ChoGGi.ComFuncs.ClearShowObj(true)
+					ChoGGi_Funcs.Common.ClearShowObj(true)
 					-- only reopen if shift is held down
 					if IsShiftPressed() then
 						PopupToggle(button_obj.idCondition, "idPinPopup", items, "top", true)
@@ -460,7 +460,7 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 			hint = count .. "\n\n" .. T(4239, "Close / Cancel"),
 			hint_title = T(126095410863, "Info"),
 			clicked = function()
-				ChoGGi.ComFuncs.ClearShowObj(true)
+				ChoGGi_Funcs.Common.ClearShowObj(true)
 			end,
 		})
 	end
@@ -501,9 +501,9 @@ end
 
 -- clear green obj(s)
 function OnMsg.SaveGame()
-	ChoGGi.ComFuncs.ClearShowObj(true)
+	ChoGGi_Funcs.Common.ClearShowObj(true)
 end
 -- probably doesn't help...
 function OnMsg.LoadGame()
-	ChoGGi.ComFuncs.ClearShowObj(true)
+	ChoGGi_Funcs.Common.ClearShowObj(true)
 end

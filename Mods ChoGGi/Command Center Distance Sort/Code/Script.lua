@@ -19,9 +19,9 @@ local function SortCC()
 		end
 	end
 end
---~ ChoGGi.ComFuncs.TickStart("TickStart")
+--~ ChoGGi_Funcs.Common.TickStart("TickStart")
 --~ SortCC()
---~ ChoGGi.ComFuncs.TickEnd("TickStart")
+--~ ChoGGi_Funcs.Common.TickEnd("TickStart")
 
 OnMsg.NewDay = SortCC
 OnMsg.LoadGame = SortCC

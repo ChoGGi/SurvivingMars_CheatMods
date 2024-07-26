@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local what_game = ChoGGi.what_game
 
 -- To go along with empty_func
@@ -21,7 +22,7 @@ end
 
 -- add PostSaveGame to be a companion for SaveGame
 local ChoOrig_ReportPersistErrors = ReportPersistErrors
-ChoGGi.ComFuncs.AddToOrigFuncs("ReportPersistErrors")
+ChoGGi_Funcs.Common.AddToOriginal("ReportPersistErrors")
 function ReportPersistErrors(...)
 	local _, errors, warnings = pcall(ChoOrig_ReportPersistErrors, ...)
 	-- be useful for restarting threads, see if devs will add it (yeah I think that isn't happening after two dev teams are gone)
@@ -36,7 +37,7 @@ local pairs = pairs
 
 if what_game == "Mars" then
 	local ChoOrig_SetUserUIScale = SetUserUIScale
-	ChoGGi.ComFuncs.AddToOrigFuncs("SetUserUIScale")
+	ChoGGi_Funcs.Common.AddToOriginal("SetUserUIScale")
 	function SetUserUIScale(val, ...)
 		ChoOrig_SetUserUIScale(val, ...)
 
@@ -120,6 +121,6 @@ if not rawget(_G, "CreateNumberEditor") then
 end
 
 -- Add some shortened func names
-MapGetC = ChoGGi.ComFuncs.MapGet
-so = ChoGGi.ComFuncs.SelObject
-trans = ChoGGi.ComFuncs.Translate
+MapGetC = ChoGGi_Funcs.Common.MapGet
+so = ChoGGi_Funcs.Common.SelObject
+trans = ChoGGi_Funcs.Common.Translate

@@ -16,7 +16,7 @@ local IsValid = IsValid
 local PlaySound = PlaySound
 local GetSoundDuration = GetSoundDuration
 
-local Random = ChoGGi.ComFuncs.Random
+local Random = ChoGGi_Funcs.Common.Random
 local GetCursorWorldPos = GetCursorWorldPos
 
 function SpiceHarvester.SpawnShuttle(hub)

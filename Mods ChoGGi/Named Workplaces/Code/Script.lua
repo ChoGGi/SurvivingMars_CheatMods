@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local RetName = ChoGGi.ComFuncs.RetName
+local RetName = ChoGGi_Funcs.Common.RetName
 
 local ChoOrig_Workplace_AddWorker = Workplace.AddWorker
 function Workplace:AddWorker(worker, ...)

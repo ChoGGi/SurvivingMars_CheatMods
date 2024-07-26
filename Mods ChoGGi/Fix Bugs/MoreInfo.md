@@ -5,37 +5,42 @@ See mod options to toggle certain fixes.
 
 **List of bugs fixed:**
 See below for more info about these specific fixes:
-```Uneven terrain / Flatten tool (see mod options to enable).
-No Planetary Anomaly Breakthroughs when B&B is installed.
-No flying drones underground.
-Water Reclamation Spire and B&B upgrade tech caused issues.
-Force heat grid to update.
-Future Contemporary Asset Pack when placing spires.
-The Bottomless Pit Anomaly is missing.
-
+```Uneven terrain / Flatten tool (see mod options to disable).
 Add rocket sound effects to SupplyPods (mod option to disable).
-Colonists showing up on wrong map in infobar.
-Dredger tech fix ([Spoilers](https://www.reddit.com/r/SurvivingMars/comments/xnprjg/)).
+Force heat grid to update when starting certain new games.
+Future Contemporary Asset Pack when placing spires.
 Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC).
 Log spam from IsBuildingInDomeRange().
-Personal Space storybit changes capacity, but building menu doesn't show it.
 Possible fix for main menu music playing in-game on new games (mod option to disable, since there's no fade out).
 Problem updating supply grid.
-Refabbing rare extractors left the "working" dust plumes around them.
-St. Elmo's Fire: Stop meteoroids from destroying sinkholes.
-Stop ceiling/floating rubble.
+
+Storybits:
+Gene Forging storybit tech doesn't increase rare traits chance.
+Personal Space storybit changes capacity, but building menu doesn't show it.
 Storybit notification issue.
-Support struts malfunctioning and cave-ins.
+
+Mysteries:
+Dredger tech fix ([Spoilers](https://www.reddit.com/r/SurvivingMars/comments/xnprjg/)).
+Marsgate blank transportation panel in CCC after a certain point in mystery.
+St. Elmo's Fire: Stop meteoroids from destroying sinkholes.
 The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
+
+B&B:
+Colonists showing up on wrong map in infobar.
+No flying drones underground (they tend to get stuck in walls/etc).
+No Planetary Anomaly Breakthroughs when B&B is installed.
+Refabbing rare extractors left the "working" dust plumes around them.
+Stop ceiling/floating rubble.
+Support struts malfunctioning and cave-ins.
+The Bottomless Pit Anomaly is missing.
 Underground Rare Anomaly can give you underground dome prefabs, but locks them to surface.
 Unpassable underground rocks stuck in path (not cave-in rubble, but small rocks you can't select).
-The Gene Forging storybit tech doesn't increase rare traits chance.
-```
+Water Reclamation Spire and B&B upgrade tech caused issues.```
 
 **Mod bug fixes**:
 ```Silva's Orion Heavy Rocket (you must disable his Essential files mod, then enable it AFTER enabling this mod, or use my Mod List Editor mod).
 Horticulture Workshop not unlocking.
-(4) Fixes for mods (no idea which mods / they're abandoned).
+x4 Fixes for mods (no idea which mods / they're abandoned).
 ```
 
 
@@ -81,7 +86,7 @@ If you have B&B I'd recommend SkiRich's [Better Lander Rockets](https://steamcom
 
 [Fix Flying Drones MidAir Malfunction](https://steamcommunity.com/sharedfiles/filedetails/?id=2473394779)
 
-[Fix Mirror Graphics](https://steamcommunity.com/sharedfiles/filedetails/?id=2549884520)
+[Fix Mac Mirror Graphics](https://steamcommunity.com/sharedfiles/filedetails/?id=2549884520)
 
 [Fix Missing Mod Buildings](https://steamcommunity.com/sharedfiles/filedetails/?id=1443225581)
 

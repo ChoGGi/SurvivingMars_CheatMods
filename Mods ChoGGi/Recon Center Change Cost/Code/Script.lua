@@ -3,7 +3,7 @@
 local mod_ResearchCost
 
 -- some stuff checks one some other...
-local SetConsts = ChoGGi.ComFuncs.SetConsts
+local SetConsts = ChoGGi_Funcs.Common.SetConsts
 
 local function StartupCode()
 	SetConsts("DiscoveryScanCost", mod_ResearchCost)

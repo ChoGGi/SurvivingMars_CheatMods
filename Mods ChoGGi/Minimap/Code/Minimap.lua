@@ -32,7 +32,7 @@ local transition_time = 0
 
 local GetCursorWorldPos = GetCursorWorldPos
 
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+local GetParentOfKind = ChoGGi_Funcs.Common.GetParentOfKind
 local function GetRootDialog(dlg)
 	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_MinimapDlg")
 end

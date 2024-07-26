@@ -117,7 +117,7 @@ function OnMsg.ModsReloaded()
 
 		-- removes comments from code, and adds a space to each newline, so pasting multi line works
 		local XEditEditOperation = XEdit.EditOperation
-		local StripComments = ChoGGi.ComFuncs.StripComments
+		local StripComments = ChoGGi_Funcs.Common.StripComments
 		function edit:EditOperation(insert_text, is_undo_redo, cursor_to_text_start, ...)
 			if type(insert_text) == "string" then
 				insert_text = StripComments(insert_text)

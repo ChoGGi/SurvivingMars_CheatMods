@@ -55,7 +55,7 @@ local function SpawnShuttle(hub, attacker)
 		local s_i = hub.shuttle_infos[i]
 		if s_i:CanLaunch() and s_i.hub.has_free_landing_slots then
 			if #(UIColony.city_labels.labels.PersonalShuttle or "") >= (PersonalShuttles.max_shuttles or 50) then
-				ChoGGi.ComFuncs.MsgPopup(
+				ChoGGi_Funcs.Common.MsgPopup(
 					T(302535920011133, [[Max of 50 (somewhere above 50 and below 100 it crashes).]]),
 					T(745, "Shuttles")
 				)
@@ -109,8 +109,8 @@ local carried_str = T(302535920011134, "Carried")
 -- add all our buttons to the selection panel
 function OnMsg.ClassesPostprocess()
 
-	local AddXTemplate = ChoGGi.ComFuncs.AddXTemplate
-	local RetName = ChoGGi.ComFuncs.RetName
+	local AddXTemplate = ChoGGi_Funcs.Common.AddXTemplate
+	local RetName = ChoGGi_Funcs.Common.RetName
 
 	-- pick/drop button for shuttle
 	AddXTemplate("PersonalShuttles_PickDrop", "ipShuttle", {

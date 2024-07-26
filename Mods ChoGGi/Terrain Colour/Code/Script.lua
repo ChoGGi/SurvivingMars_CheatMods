@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local UsedTerrainTextures = ChoGGi.ComFuncs.UsedTerrainTextures
+local UsedTerrainTextures = ChoGGi_Funcs.Common.UsedTerrainTextures
 
 local mod_EnableMod
 local mod_ChangeColour1

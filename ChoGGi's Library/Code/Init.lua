@@ -42,7 +42,7 @@ ChoGGi = {
 	-- default ECM settings
 	Defaults = false,
 	-- means of communication
-	email = "SM_Mods@choggi.org",
+	email = "SurvivingMarsMods@choggi.org",
 	-- font used for various UI stuff
 	font = "droid",
 	-- Wha'choo talkin' 'bout, Willis?
@@ -88,20 +88,6 @@ ChoGGi = {
 	testing = false,
 	-- for text dumping (yep .pc means windows desktop, I guess .linux/.osx aren't personal computers)
 	newline = Platform.pc and "\r\n" or Platform.linux and "\n" or "\r",
-	-- CommonFunctions.lua/ECM_Functions.lua
-	ComFuncs = {
-		DebugGetInfo = format_value,
-	},
-	-- store orig funcs that get replaced
-	OrigFuncs = {},
-	-- /Menus/*
-	MenuFuncs = {},
-	-- InfoPaneCheats.lua
-	InfoFuncs = {},
-	-- Settings.lua
-	SettingFuncs = {},
-	-- ConsoleFuncs.lua
-	ConsoleFuncs = {},
 	-- Pre Abstraction Games (Before Tourism update rev 1,001,514)
 	is_gp = LuaRevision < 1001000,
 	-- temporary... stuff
@@ -127,6 +113,31 @@ ChoGGi = {
 }
 --
 local ChoGGi = ChoGGi
+
+ChoGGi_Funcs = {
+	-- CommonFunctions.lua/ECM_Functions.lua
+	Common = {
+		DebugGetInfo = format_value,
+	},
+	-- store orig funcs that get replaced
+	Original = {},
+	-- /Menus/*
+	Menus = {},
+	-- InfoPaneCheats.lua
+	InfoPane = {},
+	-- Settings.lua
+	Settings = {},
+	-- ConsoleFuncs.lua
+	Console = {},
+}
+-- Backwards compat for my mods till I update them all
+local ChoGGi_Funcs = ChoGGi_Funcs
+ChoGGi.ComFuncs = ChoGGi_Funcs.Common
+ChoGGi.OrigFuncs = ChoGGi_Funcs.Original
+ChoGGi.MenuFuncs = ChoGGi_Funcs.Menus
+ChoGGi.InfoFuncs = ChoGGi_Funcs.InfoPane
+ChoGGi.SettingFuncs = ChoGGi_Funcs.Settings
+ChoGGi.ConsoleFuncs = ChoGGi_Funcs.Console
 
 -- What game are we playing?
 local c = const
@@ -230,9 +241,7 @@ CreateRealTimeThread(function()
 
 end)
 
-
 if ChoGGi.what_game == "JA3" then
-
 	-- log spam reduce from shortcuts in main menu
 	local ChoOrig_GetOperationsInSector = GetOperationsInSector
 	function GetOperationsInSector(...)

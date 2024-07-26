@@ -2,20 +2,21 @@
 
 -- In-game functions replaced with custom ones
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local table = table
 local type, rawget = type, rawget
 local Sleep = Sleep
 local CreateRealTimeThread = CreateRealTimeThread
 local DeleteThread = DeleteThread
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local SetDlgTrans = ChoGGi.ComFuncs.SetDlgTrans
-local RetName = ChoGGi.ComFuncs.RetName
-local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
-local AddToOrigFuncs = ChoGGi.ComFuncs.AddToOrigFuncs
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
+local SetDlgTrans = ChoGGi_Funcs.Common.SetDlgTrans
+local RetName = ChoGGi_Funcs.Common.RetName
+local IsValidXWin = ChoGGi_Funcs.Common.IsValidXWin
+local GetParentOfKind = ChoGGi_Funcs.Common.GetParentOfKind
+local AddToOriginal = ChoGGi_Funcs.Common.AddToOriginal
 
 local UserSettings = ChoGGi.UserSettings
 local testing = ChoGGi.testing
@@ -27,7 +28,7 @@ do
 	-- don't trigger toxic rains if setting is enabled
 	if rawget(_G, "RainProcedure") then
 		local ChoOrig_RainProcedure = RainProcedure
-		AddToOrigFuncs("RainProcedure")
+		AddToOriginal("RainProcedure")
 		function RainProcedure(settings, ...)
 			if settings.type == "normal" or not UserSettings.DisasterRainsDisable then
 				return ChoOrig_RainProcedure(settings, ...)
@@ -45,7 +46,7 @@ do
 
 	-- stops mod editor itself
 	local ChoOrig_OpenGedApp = OpenGedApp
-	AddToOrigFuncs("OpenGedApp")
+	AddToOriginal("OpenGedApp")
 	function OpenGedApp(template, ...)
 		if template == "ModsEditor" and UserSettings.SkipModEditorCompletely then
 			return
@@ -55,11 +56,11 @@ do
 
 	-- examine persist errors (if any)
 	local ChoOrig_ReportPersistErrors = ReportPersistErrors
-	AddToOrigFuncs("ReportPersistErrors")
+	AddToOriginal("ReportPersistErrors")
 	function ReportPersistErrors(...)
 		local errors, warnings = 0, 0
 		if UserSettings.DebugPersistSaves and __error_table__ and #__error_table__ > 0 then
-			ChoGGi.ComFuncs.OpenInExamineDlg(__error_table__, nil, "__error_table__ (persists)")
+			ChoGGi_Funcs.Common.OpenInExamineDlg(__error_table__, nil, "__error_table__ (persists)")
 		else
 			errors, warnings = ChoOrig_ReportPersistErrors(...)
 		end
@@ -68,7 +69,7 @@ do
 	end
 
 	local ChoOrig_TGetID = TGetID
-	AddToOrigFuncs("TGetID")
+	AddToOriginal("TGetID")
 	function TGetID(t, ...)
 		local t_type = type(t)
 		if t_type ~= "table" and t_type ~= "userdata" then
@@ -79,7 +80,7 @@ do
 
 	-- I guess, don't pass a string to it?
 	local ChoOrig_TDevModeGetEnglishText = TDevModeGetEnglishText
-	AddToOrigFuncs("TDevModeGetEnglishText")
+	AddToOriginal("TDevModeGetEnglishText")
 	function TDevModeGetEnglishText(t, ...)
 		if type(t) == "string" then
 			return t
@@ -89,7 +90,7 @@ do
 
 	-- stops confirmation dialog about missing mods (still lets you know they're missing)
 	local ChoOrig_GetMissingMods = GetMissingMods
-	AddToOrigFuncs("GetMissingMods")
+	AddToOriginal("GetMissingMods")
 	function GetMissingMods(...)
 		if UserSettings.SkipMissingMods then
 			return "", false
@@ -100,7 +101,7 @@ do
 
 	-- always able to show console
 	local ChoOrig_ShowConsole = ShowConsole
-	AddToOrigFuncs("ShowConsole")
+	AddToOriginal("ShowConsole")
 	function ShowConsole(visible, ...)
 		if visible then
 			-- ShowConsole checks for this
@@ -111,10 +112,10 @@ do
 
 	-- console stuff
 	local ChoOrig_ShowConsoleLog = ShowConsoleLog
-	AddToOrigFuncs("ShowConsoleLog")
+	AddToOriginal("ShowConsoleLog")
 	function ShowConsoleLog(visible, ...)
 		-- we only want to show it if it's enabled or we're in mod editor mode
-		visible = UserSettings.ConsoleToggleHistory or ChoGGi.ComFuncs.ModEditorActive()
+		visible = UserSettings.ConsoleToggleHistory or ChoGGi_Funcs.Common.ModEditorActive()
 
 		-- ShowConsoleLog doesn't check for existing dialog like ShowConsole does
 		if rawget(_G, "dlgConsoleLog") then
@@ -127,7 +128,7 @@ do
 
 	-- UI transparency dialogs (buildmenu, pins, infopanel)
 	local ChoOrig_OpenDialog = OpenDialog
-	AddToOrigFuncs("OpenDialog")
+	AddToOriginal("OpenDialog")
 	function OpenDialog(...)
 		return SetDlgTrans(ChoOrig_OpenDialog(...))
 	end
@@ -139,7 +140,7 @@ if what_game == "Mars" then
 
 	-- this will reset override, so we sleep and reset it
 	local ChoOrig_ClosePlanetCamera = ClosePlanetCamera
-	AddToOrigFuncs("ClosePlanetCamera")
+	AddToOriginal("ClosePlanetCamera")
 	function ClosePlanetCamera(...)
 		if UserSettings.Lightmodel then
 			CreateRealTimeThread(function()
@@ -152,7 +153,7 @@ if what_game == "Mars" then
 
 	-- don't trigger quakes if setting is enabled
 	local ChoOrig_TriggerMarsquake = TriggerMarsquake
-	AddToOrigFuncs("TriggerMarsquake")
+	AddToOriginal("TriggerMarsquake")
 	function TriggerMarsquake(...)
 		if not UserSettings.DisasterQuakeDisable then
 			return ChoOrig_TriggerMarsquake(...)
@@ -164,7 +165,7 @@ if what_game == "Mars" then
 
 	-- get rid of "This savegame was loaded in the past without required mods or with an incompatible game version."
 	local ChoOrig_WaitMarsMessage = WaitMarsMessage
-	AddToOrigFuncs("WaitMarsMessage")
+	AddToOriginal("WaitMarsMessage")
 	function WaitMarsMessage(parent, caption, text, ...)
 		-- This savegame was loaded in the past without required mods or with an incompatible game version.
 		if UserSettings.SkipIncompatibleModsMsg and TGetID(text) == 10888 then
@@ -175,7 +176,7 @@ if what_game == "Mars" then
 
 	-- Add dialog option to skip missing mods msg
 	local ChoOrig_WaitMarsQuestion = WaitMarsQuestion
-	AddToOrigFuncs("WaitMarsQuestion")
+	AddToOriginal("WaitMarsQuestion")
 	function WaitMarsQuestion(parent, caption, text, ...)
 		-- The following mods are missing or incompatible: blah blah blah
 		if TGetID(text) == 12444 then
@@ -188,7 +189,7 @@ if what_game == "Mars" then
 
 	-- fix for sending nil id to it
 	local ChoOrig_LoadCustomOnScreenNotification = LoadCustomOnScreenNotification
-	AddToOrigFuncs("LoadCustomOnScreenNotification")
+	AddToOriginal("LoadCustomOnScreenNotification")
 	function LoadCustomOnScreenNotification(notification, ...)
 		-- the first return is id, and some mods (cough Ambassadors cough) send a nil id, which breaks the func
 		if table.unpack(notification) then
@@ -198,14 +199,14 @@ if what_game == "Mars" then
 
 	-- change rocket cargo cap
 	local ChoOrig_GetMaxCargoShuttleCapacity = GetMaxCargoShuttleCapacity
-	AddToOrigFuncs("GetMaxCargoShuttleCapacity")
+	AddToOriginal("GetMaxCargoShuttleCapacity")
 	function GetMaxCargoShuttleCapacity(...)
 		return UserSettings.StorageShuttle or ChoOrig_GetMaxCargoShuttleCapacity(...)
 	end
 
 	-- report building as not-a-wonder to the func that checks for wonders
 	local ChoOrig_UIGetBuildingPrerequisites = UIGetBuildingPrerequisites
-	AddToOrigFuncs("UIGetBuildingPrerequisites")
+	AddToOriginal("UIGetBuildingPrerequisites")
 	function UIGetBuildingPrerequisites(cat_id, template, ...)
 		-- missing dlc
 		if BuildingTemplates[template.id] then
@@ -239,7 +240,7 @@ if what_game == "Mars" then
 			local name = dlc_funcs[i]
 
 			local ChoOrig_func = _G[name]
-			AddToOrigFuncs(name)
+			AddToOriginal(name)
 			_G[name] = function(dlc, ...)
 				-- stuff added for future dlc is showing up and erroring out
 				if not dlc or dlc == "" then
@@ -262,7 +263,7 @@ if what_game == "Mars" then
 		end
 
 		local ChoOrig_ShowPopupNotification = ShowPopupNotification
-		AddToOrigFuncs("ShowPopupNotification")
+		AddToOriginal("ShowPopupNotification")
 		function ShowPopupNotification(preset, ...)
 			if UserSettings.DisableHints and suggestions[preset] then
 				return
@@ -273,7 +274,7 @@ if what_game == "Mars" then
 
 	-- skips story bit dialogs
 	local ChoOrig_PopupNotificationBegin = PopupNotificationBegin
-	AddToOrigFuncs("PopupNotificationBegin")
+	AddToOriginal("PopupNotificationBegin")
 	function PopupNotificationBegin(dlg, ...)
 		if UserSettings.SkipStoryBitsDialogs and dlg.context and dlg.context.is_storybit
 		then
@@ -299,7 +300,7 @@ do
 
 	-- Transparent tooltips
 	local ChoOrig_XRolloverWindow_Init = XRolloverWindow.Init
-	AddToOrigFuncs("XRolloverWindow.Init")
+	AddToOriginal("XRolloverWindow.Init")
 	function XRolloverWindow:Init(...)
 		SetDlgTrans(self)
 		return ChoOrig_XRolloverWindow_Init(self, ...)
@@ -307,9 +308,9 @@ do
 
 	-- That's what we call a small font
 	local ChoOrig_XWindow_UpdateMeasure = XWindow.UpdateMeasure
-	AddToOrigFuncs("XWindow.UpdateMeasure")
+	AddToOriginal("XWindow.UpdateMeasure")
 	local ChoOrig_XSizeConstrainedWindow_UpdateMeasure = XSizeConstrainedWindow.UpdateMeasure
-	AddToOrigFuncs("XSizeConstrainedWindow.UpdateMeasure")
+	AddToOriginal("XSizeConstrainedWindow.UpdateMeasure")
 	function XSizeConstrainedWindow.UpdateMeasure(...)
 		if UserSettings.StopSelectionPanelResize then
 			return ChoOrig_XWindow_UpdateMeasure(...)
@@ -322,7 +323,7 @@ do
 		local margin = box(10, 0, 0, 0)
 
 		local ChoOrig_XMenuEntry_SetShortcut = XMenuEntry.SetShortcut
-		AddToOrigFuncs("XMenuEntry.SetShortcut")
+		AddToOriginal("XMenuEntry.SetShortcut")
 		function XMenuEntry:SetShortcut(...)
 
 			if self.Icon == "CommonAssets/UI/Menu/folder.tga" then
@@ -405,7 +406,7 @@ do
 
 	-- this one is easier than XPopupMenu, since it keeps a ref to the action (devs were kind enough to add a single line of "button.action = action")
 	local ChoOrig_XToolBar_RebuildActions = XToolBar.RebuildActions
-	AddToOrigFuncs("XToolBar.RebuildActions")
+	AddToOriginal("XToolBar.RebuildActions")
 	function XToolBar:RebuildActions(...)
 		ChoOrig_XToolBar_RebuildActions(self, ...)
 		-- we only care for the cheats menu toolbar tooltips thanks
@@ -455,7 +456,7 @@ do
 		}
 
 		local ChoOrig_XMenuBar_RebuildActions = XMenuBar.RebuildActions
-		AddToOrigFuncs("XMenuBar.RebuildActions")
+		AddToOriginal("XMenuBar.RebuildActions")
 		function XMenuBar:RebuildActions(...)
 
 			ChoOrig_XMenuBar_RebuildActions(self, ...)
@@ -483,7 +484,7 @@ if what_game == "Mars" then
 
 	-- Remove more building limits (underground wonders)
 	local ChoOrig_ConstructionController_UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
-	AddToOrigFuncs("ConstructionController.UpdateConstructionStatuses")
+	AddToOriginal("ConstructionController.UpdateConstructionStatuses")
 	function ConstructionController:UpdateConstructionStatuses(...)
 		if UserSettings.RemoveBuildingLimits then
 			self.template_obj.dome_required = false
@@ -500,31 +501,31 @@ if what_game == "Mars" then
 
 	-- update production (OnMsgs.lua)
 	local ChoOrig_SingleResourceProducer_Init = SingleResourceProducer.Init
-	AddToOrigFuncs("SingleResourceProducer.Init")
+	AddToOriginal("SingleResourceProducer.Init")
 	function SingleResourceProducer:Init(...)
 		ChoOrig_SingleResourceProducer_Init(self, ...)
 		Msg("ChoGGi_SpawnedProducer", self, "production_per_day")
 	end
 	local ChoOrig_AirProducer_CreateLifeSupportElements = AirProducer.CreateLifeSupportElements
-	AddToOrigFuncs("AirProducer.CreateLifeSupportElements")
+	AddToOriginal("AirProducer.CreateLifeSupportElements")
 	function AirProducer:CreateLifeSupportElements(...)
 		ChoOrig_AirProducer_CreateLifeSupportElements(self, ...)
 		Msg("ChoGGi_SpawnedProducer", self, "air_production")
 	end
 	local ChoOrig_WaterProducer_CreateLifeSupportElements = WaterProducer.CreateLifeSupportElements
-	AddToOrigFuncs("WaterProducer.CreateLifeSupportElements")
+	AddToOriginal("WaterProducer.CreateLifeSupportElements")
 	function WaterProducer:CreateLifeSupportElements(...)
 		ChoOrig_WaterProducer_CreateLifeSupportElements(self, ...)
 		Msg("ChoGGi_SpawnedProducer", self, "water_production")
 	end
 	local ChoOrig_ElectricityProducer_CreateElectricityElement = ElectricityProducer.CreateElectricityElement
-	AddToOrigFuncs("ElectricityProducer.CreateElectricityElement")
+	AddToOriginal("ElectricityProducer.CreateElectricityElement")
 	function ElectricityProducer:CreateElectricityElement(...)
 		ChoOrig_ElectricityProducer_CreateElectricityElement(self, ...)
 		Msg("ChoGGi_SpawnedProducer", self, "electricity_production")
 	end
 	local ChoOrig_Drone_GameInit = Drone.GameInit
-	AddToOrigFuncs("Drone.GameInit")
+	AddToOriginal("Drone.GameInit")
 	function Drone:GameInit(...)
 		ChoOrig_Drone_GameInit(self, ...)
 		-- slight delay
@@ -533,7 +534,7 @@ if what_game == "Mars" then
 
 	-- Needed for SetDesiredAmount in depots
 	local ChoOrig_ResourceStockpileBase_GetMax = ResourceStockpileBase.GetMax
-	AddToOrigFuncs("ResourceStockpileBase.GetMax")
+	AddToOriginal("ResourceStockpileBase.GetMax")
 	function ResourceStockpileBase:GetMax(...)
 		if UserSettings.StorageUniversalDepot and self.template_name == "UniversalStorageDepot" then
 			return UserSettings.StorageUniversalDepot / const.ResourceScale
@@ -546,7 +547,7 @@ if what_game == "Mars" then
 
 		-- no more limit to R+T
 		local ChoOrig_LandscapeConstructionController_Activate = LandscapeConstructionController.Activate
-		AddToOrigFuncs("LandscapeConstructionController.Activate")
+		AddToOriginal("LandscapeConstructionController.Activate")
 		function LandscapeConstructionController:Activate(...)
 			if UserSettings.RemoveLandScapingLimits then
 				self.brush_radius_step = 100
@@ -562,7 +563,7 @@ if what_game == "Mars" then
 
 		-- stop drones/rovers from slowing down in dustdevils
 		local ChoOrig_DroneBase_RegisterDustDevil = DroneBase.RegisterDustDevil
-		AddToOrigFuncs("DroneBase.RegisterDustDevil")
+		AddToOriginal("DroneBase.RegisterDustDevil")
 		function DroneBase:RegisterDustDevil(devil, ...)
 			if (UserSettings.SpeedWaspDrone and self:IsKindOf("FlyingDrone"))
 				or (UserSettings.SpeedDrone and self:IsKindOf("Drone") and not self:IsKindOf("FlyingDrone"))
@@ -583,26 +584,26 @@ if what_game == "Mars" then
 		end
 
 		local ChoOrig_MechanizedDepot_CheatFill = MechanizedDepot.CheatFill
-		AddToOrigFuncs("MechanizedDepot.CheatFill")
+		AddToOriginal("MechanizedDepot.CheatFill")
 		function MechanizedDepot.CheatFill(...)
 			return SuspendAndFire(ChoOrig_MechanizedDepot_CheatFill, ...)
 		end
 
 		local ChoOrig_UniversalStorageDepot_CheatFill = UniversalStorageDepot.CheatFill
-		AddToOrigFuncs("UniversalStorageDepot.CheatFill")
+		AddToOriginal("UniversalStorageDepot.CheatFill")
 		function UniversalStorageDepot.CheatFill(...)
 			return SuspendAndFire(ChoOrig_UniversalStorageDepot_CheatFill, ...)
 		end
 	end -- do
 
 	local ChoOrig_PinnableObject_TogglePin = PinnableObject.TogglePin
-	AddToOrigFuncs("PinnableObject.TogglePin")
+	AddToOriginal("PinnableObject.TogglePin")
 	function PinnableObject:TogglePin(...)
 		ChoOrig_PinnableObject_TogglePin(self, ...)
 		Msg("ChoGGi_TogglePinnableObject", self)
 	end
 	local ChoOrig_BaseBuilding_GameInit = BaseBuilding.GameInit
-	AddToOrigFuncs("BaseBuilding.GameInit")
+	AddToOriginal("BaseBuilding.GameInit")
 	function BaseBuilding:GameInit(...)
 		ChoOrig_BaseBuilding_GameInit(self, ...)
 		-- slight delay
@@ -618,7 +619,7 @@ if what_game == "Mars" then
 		end
 
 		local ChoOrig_InfopanelItems_Open = InfopanelItems.Open
-		AddToOrigFuncs("InfopanelItems.Open")
+		AddToOriginal("InfopanelItems.Open")
 		function InfopanelItems:Open(...)
 			if UserSettings.LimitCropsUIWidth then
 				self:SetMaxWidth(width - Dialogs.Infopanel.box:sizex())
@@ -642,7 +643,7 @@ if what_game == "Mars" then
 
 	-- Allows you to build outside buildings inside and vice
 	local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
-	AddToOrigFuncs("CursorBuilding.GameInit")
+	AddToOriginal("CursorBuilding.GameInit")
 	function CursorBuilding:GameInit(...)
 		if self.template_obj then
 			if UserSettings.RemoveBuildingLimits then
@@ -658,7 +659,7 @@ if what_game == "Mars" then
 
 	-- Stupid supply pods don't want to play nice (override for custom_travel_time_mars/custom_travel_time_earth)
 	local ChoOrig_RocketExpedition_ExpeditionSleep = RocketExpedition.ExpeditionSleep
-	AddToOrigFuncs("RocketExpedition.ExpeditionSleep")
+	AddToOriginal("RocketExpedition.ExpeditionSleep")
 	function RocketExpedition:ExpeditionSleep(s_t, ...)
 		if UserSettings.TravelTimeEarthMars then
 			s_t = g_Consts.TravelTimeEarthMars
@@ -668,7 +669,7 @@ if what_game == "Mars" then
 
 	if RocketBase then
 		local ChoOrig_RocketBase_FlyToEarth = RocketBase.FlyToEarth
-		AddToOrigFuncs("RocketBase.FlyToEarth")
+		AddToOriginal("RocketBase.FlyToEarth")
 		function RocketBase:FlyToEarth(flight_time, ...)
 			if UserSettings.TravelTimeMarsEarth then
 				flight_time = g_Consts.TravelTimeMarsEarth
@@ -677,7 +678,7 @@ if what_game == "Mars" then
 		end
 
 		local ChoOrig_RocketBase_FlyToMars = RocketBase.FlyToMars
-		AddToOrigFuncs("RocketBase.FlyToMars")
+		AddToOriginal("RocketBase.FlyToMars")
 		function RocketBase:FlyToMars(cargo, cost, flight_time, ...)
 			if UserSettings.TravelTimeEarthMars then
 				flight_time = g_Consts.TravelTimeEarthMars
@@ -687,7 +688,7 @@ if what_game == "Mars" then
 
 		-- no need for fuel to launch rocket
 		local ChoOrig_RocketBase_HasEnoughFuelToLaunch = RocketBase.HasEnoughFuelToLaunch
-		AddToOrigFuncs("RocketBase.HasEnoughFuelToLaunch")
+		AddToOriginal("RocketBase.HasEnoughFuelToLaunch")
 		function RocketBase.HasEnoughFuelToLaunch(...)
 			return UserSettings.RocketsIgnoreFuel or ChoOrig_RocketBase_HasEnoughFuelToLaunch(...)
 		end
@@ -695,7 +696,7 @@ if what_game == "Mars" then
 
 	-- UI transparency cheats menu
 	local ChoOrig_XShortcutsHost_SetVisible = XShortcutsHost.SetVisible
-	AddToOrigFuncs("XShortcutsHost.SetVisible")
+	AddToOriginal("XShortcutsHost.SetVisible")
 	function XShortcutsHost:SetVisible(...)
 		SetDlgTrans(self)
 		return ChoOrig_XShortcutsHost_SetVisible(self, ...)
@@ -703,7 +704,7 @@ if what_game == "Mars" then
 
 	-- Larger trib/subsurfheater radius
 	local ChoOrig_UIRangeBuilding_SetUIRange = UIRangeBuilding.SetUIRange
-	AddToOrigFuncs("UIRangeBuilding.SetUIRange")
+	AddToOriginal("UIRangeBuilding.SetUIRange")
 	function UIRangeBuilding:SetUIRange(radius, ...)
 		local bs = UserSettings.BuildingSettings[self.template_name]
 		if bs and bs.uirange and not self:IsKindOf("TriboelectricScrubber") then
@@ -714,7 +715,7 @@ if what_game == "Mars" then
 
 	-- Override any performance changes if needed
 	local ChoOrig_Workplace_GetWorkshiftPerformance = Workplace.GetWorkshiftPerformance
-	AddToOrigFuncs("Workplace.GetWorkshiftPerformance")
+	AddToOriginal("Workplace.GetWorkshiftPerformance")
 	function Workplace:GetWorkshiftPerformance(...)
 		local set = UserSettings.BuildingSettings[self.template_name]
 		return set and set.performance_notauto or ChoOrig_Workplace_GetWorkshiftPerformance(self, ...)
@@ -722,7 +723,7 @@ if what_game == "Mars" then
 
 	-- block certain traits from workplaces
 	local ChoOrig_Workplace_AddWorker = Workplace.AddWorker
-	AddToOrigFuncs("Workplace.AddWorker")
+	AddToOriginal("Workplace.AddWorker")
 	function Workplace:AddWorker(worker, shift, ...)
 		local bs = UserSettings.BuildingSettings[self.template_name]
 		-- check that the tables contain at least one trait
@@ -734,7 +735,7 @@ if what_game == "Mars" then
 		end
 
 		if bt or rt then
-			local block, restrict = ChoGGi.ComFuncs.RetBuildingPermissions(worker.traits, bs)
+			local block, restrict = ChoGGi_Funcs.Common.RetBuildingPermissions(worker.traits, bs)
 
 			if block then
 				return
@@ -767,19 +768,19 @@ if what_game == "Mars" then
 
 		-- set amount of dust applied
 		local ChoOrig_BuildingVisualDustComponent_SetDustVisuals = BuildingVisualDustComponent.SetDustVisuals
-		AddToOrigFuncs("BuildingVisualDustComponent.SetDustVisuals")
+		AddToOriginal("BuildingVisualDustComponent.SetDustVisuals")
 		function BuildingVisualDustComponent:SetDustVisuals(dust, ...)
 			return ChangeDust(false, self, dust, ChoOrig_BuildingVisualDustComponent_SetDustVisuals, ...)
 		end
 		--
 		local ChoOrig_Building_SetDustVisuals = Building.SetDustVisuals
-		AddToOrigFuncs("Building.SetDustVisuals")
+		AddToOriginal("Building.SetDustVisuals")
 		function Building:SetDustVisuals(dust, ...)
 			return ChangeDust(false, self, dust, ChoOrig_Building_SetDustVisuals, ...)
 		end
 		--
 		local ChoOrig_DustGridElement_AddDust = DustGridElement.AddDust
-		AddToOrigFuncs("DustGridElement.AddDust")
+		AddToOriginal("DustGridElement.AddDust")
 		function DustGridElement:AddDust(dust, ...)
 			return ChangeDust(true, self, dust, ChoOrig_DustGridElement_AddDust, ...)
 		end
@@ -787,7 +788,7 @@ if what_game == "Mars" then
 
 	-- change dist we can charge from cables
 	local ChoOrig_BaseRover_GetCableNearby = BaseRover.GetCableNearby
-	AddToOrigFuncs("BaseRover.GetCableNearby")
+	AddToOriginal("BaseRover.GetCableNearby")
 	function BaseRover:GetCableNearby(rad, ...)
 		local new_rad = UserSettings.RCChargeDist
 		if new_rad then
@@ -798,12 +799,12 @@ if what_game == "Mars" then
 
 	-- add my cheats to the cheats pane
 	local ChoOrig_InfopanelObj_CreateCheatActions = InfopanelObj.CreateCheatActions
-	AddToOrigFuncs("InfopanelObj.CreateCheatActions")
+	AddToOriginal("InfopanelObj.CreateCheatActions")
 	function InfopanelObj:CreateCheatActions(win, ...)
 		-- fire orig func to build cheats
 		if ChoOrig_InfopanelObj_CreateCheatActions(self, win, ...) then
 			-- then we can add some hints to the cheats
-			return ChoGGi.InfoFuncs.SetInfoPanelCheatHints(GetActionsHost(win))
+			return ChoGGi_Funcs.InfoPane.SetInfoPanelCheatHints(GetActionsHost(win))
 		end
 	end
 
@@ -835,7 +836,7 @@ function OnMsg.ClassesPostprocess()
 
 	-- Align popups to rightside when using vertical cheat menu
 	local ChoOrig_XMenuBar_PopupAction = XMenuBar.PopupAction
-	AddToOrigFuncs("XMenuBar.PopupAction")
+	AddToOriginal("XMenuBar.PopupAction")
 	function XMenuBar:PopupAction(action_id, ...)
 		if not ChoGGi.UserSettings.VerticalCheatMenu then
 			return ChoOrig_XMenuBar_PopupAction(self, action_id, ...)
@@ -851,7 +852,7 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	do -- MouseEvent/XEvent
-		local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+		local GetParentOfKind = ChoGGi_Funcs.Common.GetParentOfKind
 		local function ResetFocus(func, self, event, ...)
 			-- If the focus is currently on an ecm dialog then focus on previous xdialog
 			if (event == "OnMouseButtonDown" or event == "OnXButtonDown")
@@ -872,14 +873,14 @@ function OnMsg.ClassesPostprocess()
 
 		-- no more stuck focus on ECM textboxes/lists
 		local ChoOrig_XDesktop_MouseEvent = XDesktop.MouseEvent
-		AddToOrigFuncs("XDesktop.MouseEvent")
+		AddToOriginal("XDesktop.MouseEvent")
 		function XDesktop:MouseEvent(event, ...)
 			return ResetFocus(ChoOrig_XDesktop_MouseEvent, self, event, ...)
 		end
 
 		-- make sure focus isn't on my dialogs if gamepad is in play
 		local ChoOrig_XDesktop_XEvent = XDesktop.XEvent
-		AddToOrigFuncs("XDesktop.XEvent")
+		AddToOriginal("XDesktop.XEvent")
 		function XDesktop:XEvent(event, ...)
 			return ResetFocus(ChoOrig_XDesktop_XEvent, self, event, ...)
 		end
@@ -887,7 +888,7 @@ function OnMsg.ClassesPostprocess()
 
 	-- toggle trans on mouseover
 	local ChoOrig_XWindow_OnMouseEnter = XWindow.OnMouseEnter
-	AddToOrigFuncs("XWindow.OnMouseEnter")
+	AddToOriginal("XWindow.OnMouseEnter")
 	function XWindow:OnMouseEnter(...)
 		if UserSettings.TransparencyToggle then
 			self:SetTransparency(0)
@@ -896,7 +897,7 @@ function OnMsg.ClassesPostprocess()
 	end
 	--
 	local ChoOrig_XWindow_OnMouseLeft = XWindow.OnMouseLeft
-	AddToOrigFuncs("XWindow.OnMouseLeft")
+	AddToOriginal("XWindow.OnMouseLeft")
 	function XWindow:OnMouseLeft(...)
 		if UserSettings.TransparencyToggle then
 			SetDlgTrans(self)
@@ -931,11 +932,11 @@ function OnMsg.ClassesPostprocess()
 		end
 	end -- do
 
-	-- ChoGGi.ComFuncs.ToggleConsole(show)
+	-- ChoGGi_Funcs.Common.ToggleConsole(show)
 
 	-- tweak console when it's "opened"
 	local ChoOrig_Console_Show = Console.Show
-	AddToOrigFuncs("Console.Show")
+	AddToOriginal("Console.Show")
 	function Console:Show(show, ...)
 		ChoOrig_Console_Show(self, show, ...)
 		if show then
@@ -944,7 +945,7 @@ function OnMsg.ClassesPostprocess()
 			-- adding transparency for console stuff
 			SetDlgTrans(self)
 			-- and rebuild my console buttons
-			ChoGGi.ConsoleFuncs.RebuildConsoleToolbar(self)
+			ChoGGi_Funcs.Console.RebuildConsoleToolbar(self)
 			-- show log if console log is enabled
 			if UserSettings.ConsoleToggleHistory then
 				if dlgConsoleLog then
@@ -959,7 +960,7 @@ function OnMsg.ClassesPostprocess()
 			end
 		end
 		-- move log up n down
-		ChoGGi.ComFuncs.UpdateConsoleMargins(show)
+		ChoGGi_Funcs.Common.UpdateConsoleMargins(show)
 	end
 
 	do -- Console:AddHistory
@@ -977,7 +978,7 @@ function OnMsg.ClassesPostprocess()
 		}
 		-- skip quit from being added to console history to prevent annoyances
 		local ChoOrig_Console_AddHistory = Console.AddHistory
-		AddToOrigFuncs("Console.AddHistory")
+		AddToOriginal("Console.AddHistory")
 		function Console:AddHistory(text, ...)
 			if skip_cmds[text] or text:sub(1, 5) == "quit(" then
 				return
@@ -990,7 +991,7 @@ function OnMsg.ClassesPostprocess()
 	-- I could do a thread and wait till the key isn't pressed, but it's slower
 	-- this does block user from typing in `, but eh
 	local ChoOrig_Console_TextChanged = Console.TextChanged
-	AddToOrigFuncs("Console.TextChanged")
+	AddToOriginal("Console.TextChanged")
 	function Console:TextChanged(...)
 		ChoOrig_Console_TextChanged(self, ...)
 		local text = self.idEdit:GetText()
@@ -1009,13 +1010,13 @@ function OnMsg.ClassesPostprocess()
 		end
 
 		local ChoOrig_Console_HistoryDown = Console.HistoryDown
-		AddToOrigFuncs("Console.HistoryDown")
+		AddToOriginal("Console.HistoryDown")
 		function Console:HistoryDown(...)
 			HistoryEnd(ChoOrig_Console_HistoryDown, self, ...)
 		end
 		--
 		local ChoOrig_Console_HistoryUp = Console.HistoryUp
-		AddToOrigFuncs("Console.HistoryUp")
+		AddToOriginal("Console.HistoryUp")
 		function Console:HistoryUp(...)
 			HistoryEnd(ChoOrig_Console_HistoryUp, self, ...)
 		end
@@ -1043,7 +1044,7 @@ function OnMsg.ClassesPostprocess()
 
 			-- show scroll on hover
 			local ChoOrig_InfopanelDlg_OnMouseEnter = InfopanelDlg.OnMouseEnter
-			AddToOrigFuncs("InfopanelDlg.OnMouseEnter")
+			AddToOriginal("InfopanelDlg.OnMouseEnter")
 			function InfopanelDlg:OnMouseEnter(...)
 				-- show scrollbar
 				if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate]
@@ -1056,7 +1057,7 @@ function OnMsg.ClassesPostprocess()
 			end
 
 			local ChoOrig_InfopanelDlg_OnMouseLeft = InfopanelDlg.OnMouseLeft
-			AddToOrigFuncs("InfopanelDlg.OnMouseLeft")
+			AddToOriginal("InfopanelDlg.OnMouseLeft")
 			function InfopanelDlg:OnMouseLeft(...)
 				-- hide scrollbar
 				if UserSettings.ScrollSelectionPanel and infopanel_list[self.XTemplate]
@@ -1296,7 +1297,7 @@ function OnMsg.ClassesPostprocess()
 
 			-- the actual function
 			local ChoOrig_InfopanelDlg_Open = InfopanelDlg.Open
-			AddToOrigFuncs("InfopanelDlg.Open")
+			AddToOriginal("InfopanelDlg.Open")
 			function InfopanelDlg:Open(...)
 				CreateRealTimeThread(function()
 					WaitMsg("OnRender")
@@ -1314,7 +1315,7 @@ function OnMsg.ClassesPostprocess()
 			local tonumber = tonumber
 
 			local ChoOrig_RequiresMaintenance_AddDust = RequiresMaintenance.AddDust
-			AddToOrigFuncs("RequiresMaintenance.AddDust")
+			AddToOriginal("RequiresMaintenance.AddDust")
 			function RequiresMaintenance:AddDust(amount, ...)
 				-- maybe something was sending a "number" instead of number?
 				amount = tonumber(amount)
@@ -1330,7 +1331,7 @@ function OnMsg.ClassesPostprocess()
 			local UpdateConstructionStatuses = ConstructionController.UpdateConstructionStatuses
 
 			local ChoOrig_TunnelConstructionController_UpdateConstructionStatuses = TunnelConstructionController.UpdateConstructionStatuses
-			AddToOrigFuncs("TunnelConstructionController.UpdateConstructionStatuses")
+			AddToOriginal("TunnelConstructionController.UpdateConstructionStatuses")
 			function TunnelConstructionController:UpdateConstructionStatuses(...)
 				local skip
 				if UserSettings.RemoveBuildingLimits then
@@ -1360,7 +1361,7 @@ function OnMsg.ClassesPostprocess()
 			local UnbuildableZ = buildUnbuildableZ()
 
 			local ChoOrig_ConstructionController_UpdateCursor = ConstructionController.UpdateCursor
-			AddToOrigFuncs("ConstructionController.UpdateCursor")
+			AddToOriginal("ConstructionController.UpdateCursor")
 			function ConstructionController:UpdateCursor(pos, force, ...)
 				if self.is_template and IsValid(self.cursor_obj)
 					and self.template_obj.dome_spot == "Spire"
@@ -1429,7 +1430,7 @@ function OnMsg.ClassesPostprocess()
 
 		-- removes earthsick effect
 		local ChoOrig_Colonist_ChangeComfort = Colonist.ChangeComfort
-		AddToOrigFuncs("Colonist.ChangeComfort")
+		AddToOriginal("Colonist.ChangeComfort")
 		function Colonist:ChangeComfort(...)
 			local ret = ChoOrig_Colonist_ChangeComfort(self, ...)
 			if UserSettings.NoMoreEarthsick and self.status_effects.StatusEffect_Earthsick then
@@ -1441,11 +1442,11 @@ function OnMsg.ClassesPostprocess()
 
 		-- make sure heater keeps the powerless setting
 		local ChoOrig_SubsurfaceHeater_UpdateElectricityConsumption = SubsurfaceHeater.UpdateElectricityConsumption
-		AddToOrigFuncs("SubsurfaceHeater.UpdateElectricityConsumption")
+		AddToOriginal("SubsurfaceHeater.UpdateElectricityConsumption")
 		function SubsurfaceHeater:UpdateElectricityConsumption(...)
 			local ret = ChoOrig_SubsurfaceHeater_UpdateElectricityConsumption(self, ...)
 			if self.ChoGGi_mod_electricity_consumption then
-				ChoGGi.ComFuncs.RemoveBuildingElecConsump(self)
+				ChoGGi_Funcs.Common.RemoveBuildingElecConsump(self)
 			end
 			-- there isn't a return, but in case a mod/dev adds one
 			return ret
@@ -1453,11 +1454,11 @@ function OnMsg.ClassesPostprocess()
 
 		-- same for tribby
 		local ChoOrig_TriboelectricScrubber_OnPostChangeRange = TriboelectricScrubber.OnPostChangeRange
-		AddToOrigFuncs("TriboelectricScrubber.OnPostChangeRange")
+		AddToOriginal("TriboelectricScrubber.OnPostChangeRange")
 		function TriboelectricScrubber:OnPostChangeRange(...)
 			local ret = ChoOrig_TriboelectricScrubber_OnPostChangeRange(self, ...)
 			if self.ChoGGi_mod_electricity_consumption then
-				ChoGGi.ComFuncs.RemoveBuildingElecConsump(self)
+				ChoGGi_Funcs.Common.RemoveBuildingElecConsump(self)
 			end
 			-- there isn't a return, but in case a mod/dev adds one
 			return ret
@@ -1465,7 +1466,7 @@ function OnMsg.ClassesPostprocess()
 
 		-- remove idiot trait from uni grads (hah!)
 		local ChoOrig_MartianUniversity_OnTrainingCompleted = MartianUniversity.OnTrainingCompleted
-		AddToOrigFuncs("MartianUniversity.OnTrainingCompleted")
+		AddToOriginal("MartianUniversity.OnTrainingCompleted")
 		function MartianUniversity:OnTrainingCompleted(unit, ...)
 			if UserSettings.UniversityGradRemoveIdiotTrait then
 				unit:RemoveTrait("Idiot")
@@ -1508,13 +1509,13 @@ function OnMsg.ClassesPostprocess()
 			end
 
 			local ChoOrig_SA_WaitTime_StopWait = SA_WaitTime.StopWait
-			AddToOrigFuncs("SA_WaitTime.StopWait")
+			AddToOriginal("SA_WaitTime.StopWait")
 			function SA_WaitTime:StopWait(...)
 				return SkipMystStep(self, ChoOrig_SA_WaitTime_StopWait, ...)
 			end
 			--
 			local ChoOrig_SA_WaitMarsTime_StopWait = SA_WaitMarsTime.StopWait
-			AddToOrigFuncs("SA_WaitMarsTime.StopWait")
+			AddToOriginal("SA_WaitMarsTime.StopWait")
 			function SA_WaitMarsTime:StopWait(...)
 				return SkipMystStep(self, ChoOrig_SA_WaitMarsTime_StopWait, ...)
 			end
@@ -1522,7 +1523,7 @@ function OnMsg.ClassesPostprocess()
 
 		-- keep prod at saved values for grid producers (air/water/elec)
 		local ChoOrig_SupplyGridElement_SetProduction = SupplyGridElement.SetProduction
-		AddToOrigFuncs("SupplyGridElement.SetProduction")
+		AddToOriginal("SupplyGridElement.SetProduction")
 		function SupplyGridElement:SetProduction(new_production, new_throttled_production, update, ...)
 			local amount = UserSettings.BuildingSettings[self.building.template_name]
 			if amount and amount.production then
@@ -1542,7 +1543,7 @@ function OnMsg.ClassesPostprocess()
 
 		-- and for regular producers (factories/extractors)
 		local ChoOrig_SingleResourceProducer_Produce = SingleResourceProducer.Produce
-		AddToOrigFuncs("SingleResourceProducer.Produce")
+		AddToOriginal("SingleResourceProducer.Produce")
 		function SingleResourceProducer:Produce(amount_to_produce, ...)
 			local amount = UserSettings.BuildingSettings[self.parent.template_name]
 			if amount and amount.production then
@@ -1554,7 +1555,7 @@ function OnMsg.ClassesPostprocess()
 
 			-- get them lazy drones working (bugfix for drones ignoring amounts less then their carry amount)
 			if UserSettings.DroneResourceCarryAmountFix and self:GetStoredAmount() > 1000 then
-				ChoGGi.ComFuncs.FuckingDrones(self, "single")
+				ChoGGi_Funcs.Common.FuckingDrones(self, "single")
 			end
 
 			return ChoOrig_SingleResourceProducer_Produce(self, amount_to_produce, ...)
@@ -1571,22 +1572,22 @@ function OnMsg.ClassesPostprocess()
 			end
 
 			local ChoOrig_RCRover_SetWorkRadius = RCRover.SetWorkRadius
-			AddToOrigFuncs("RCRover.SetWorkRadius")
+			AddToOriginal("RCRover.SetWorkRadius")
 			function RCRover:SetWorkRadius(radius, ...)
 				SetHexRadius(ChoOrig_RCRover_SetWorkRadius, "RCRoverMaxRadius", self, radius, ...)
 			end
 			--
 			local ChoOrig_DroneHub_SetWorkRadius = DroneHub.SetWorkRadius
-			AddToOrigFuncs("DroneHub.SetWorkRadius")
+			AddToOriginal("DroneHub.SetWorkRadius")
 			function DroneHub:SetWorkRadius(radius, ...)
 				SetHexRadius(ChoOrig_DroneHub_SetWorkRadius, "CommandCenterMaxRadius", self, radius, ...)
 			end
 		end -- do
 
 		local ChoOrig_SpaceElevator_DroneUnloadResource = SpaceElevator.DroneUnloadResource
-		AddToOrigFuncs("SpaceElevator.DroneUnloadResource")
+		AddToOriginal("SpaceElevator.DroneUnloadResource")
 		function SpaceElevator:DroneUnloadResource(...)
-			local export_when = ChoGGi.ComFuncs.DotPathToObject("ChoGGi.UserSettings.BuildingSettings.SpaceElevator.export_when_this_amount")
+			local export_when = ChoGGi_Funcs.Common.DotPathToObject("ChoGGi.UserSettings.BuildingSettings.SpaceElevator.export_when_this_amount")
 			local amount = self.max_export_storage - self.export_request:GetActualAmount()
 			if export_when and amount >= export_when then
 				self.pod_thread = CreateGameTimeThread(function()
@@ -1598,7 +1599,7 @@ function OnMsg.ClassesPostprocess()
 		end
 
 		local ChoOrig_SpaceElevator_ToggleAllowExport = SpaceElevator.ToggleAllowExport
-		AddToOrigFuncs("SpaceElevator.ToggleAllowExport")
+		AddToOriginal("SpaceElevator.ToggleAllowExport")
 		function SpaceElevator:ToggleAllowExport(...)
 			ChoOrig_SpaceElevator_ToggleAllowExport(self, ...)
 			if self.allow_export and UserSettings.SpaceElevatorToggleInstantExport then
@@ -1611,7 +1612,7 @@ function OnMsg.ClassesPostprocess()
 
 		-- Unbreakable cables/pipes
 		local ChoOrig_SupplyGridFragment_IsBreakable = SupplyGridFragment.IsBreakable
-		AddToOrigFuncs("SupplyGridFragment.IsBreakable")
+		AddToOriginal("SupplyGridFragment.IsBreakable")
 		function SupplyGridFragment.IsBreakable(...)
 			if UserSettings.CablesAndPipesNoBreak then
 				return false
@@ -1620,7 +1621,7 @@ function OnMsg.ClassesPostprocess()
 		end
 		--
 		local ChoOrig_BreakableSupplyGridElement_CanBreak = BreakableSupplyGridElement.CanBreak
-		AddToOrigFuncs("BreakableSupplyGridElement.CanBreak")
+		AddToOriginal("BreakableSupplyGridElement.CanBreak")
 		function BreakableSupplyGridElement.CanBreak(...)
 			if UserSettings.CablesAndPipesNoBreak then
 				return false
@@ -1630,7 +1631,7 @@ function OnMsg.ClassesPostprocess()
 
 		-- No more pulsating pin motion
 		local ChoOrig_XBlinkingButtonWithRMB_SetBlinking = XBlinkingButtonWithRMB.SetBlinking
-		AddToOrigFuncs("XBlinkingButtonWithRMB.SetBlinking")
+		AddToOriginal("XBlinkingButtonWithRMB.SetBlinking")
 		function XBlinkingButtonWithRMB:SetBlinking(...)
 			if UserSettings.DisablePulsatingPinsMotion then
 				self.blinking = false
@@ -1649,12 +1650,12 @@ function OnMsg.ClassesPostprocess()
 			end
 
 			local ChoOrig_IsCommander_Evaluate = IsCommander.Evaluate
-			AddToOrigFuncs("IsCommander.Evaluate")
+			AddToOriginal("IsCommander.Evaluate")
 			function IsCommander.Evaluate(...)
 				return FakeEvaluate(ChoOrig_IsCommander_Evaluate, ...)
 			end
 			local ChoOrig_IsCommander2_Evaluate = IsCommander2.Evaluate
-			AddToOrigFuncs("IsCommander2.Evaluate")
+			AddToOriginal("IsCommander2.Evaluate")
 			function IsCommander2.Evaluate(...)
 				return FakeEvaluate(ChoOrig_IsCommander2_Evaluate, ...)
 			end
@@ -1700,12 +1701,12 @@ function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 		{
 			-- $userdata/string id
 			"^$(.*)",
-			"print(ChoGGi.ComFuncs.Translate(%s))"
+			"print(ChoGGi_Funcs.Common.Translate(%s))"
 		},
 		{
 			-- @function
 			"^@(.*)",
-			"print(ChoGGi.ComFuncs.DebugGetInfo(%s))",
+			"print(ChoGGi_Funcs.Common.DebugGetInfo(%s))",
 		},
 		{
 			-- @@type
@@ -1750,7 +1751,7 @@ else
 		has_params = true,
 		override_title = true,
 		title = T(302535920000069) .. " " .. T(302535920001073)
-			.. ": " .. ChoGGi.ComFuncs.RetName(params[1]),
+			.. ": " .. ChoGGi_Funcs.Common.RetName(params[1]),
 	})
 end]] -- title strings: Examine Console
 		},
@@ -1758,9 +1759,9 @@ end]] -- title strings: Examine Console
 				-- ~!obj_with_attachments
 				"^~!(.*)",
 				[[local obj = %s
-local attaches = ChoGGi.ComFuncs.GetAllAttaches(obj)
+local attaches = ChoGGi_Funcs.Common.GetAllAttaches(obj)
 if attaches[1] then
-	OpenExamine(attaches, nil, "GetAllAttaches " .. ChoGGi.ComFuncs.RetName(obj))
+	OpenExamine(attaches, nil, "GetAllAttaches " .. ChoGGi_Funcs.Common.RetName(obj))
 end]]
 		},
 		{
@@ -1797,7 +1798,7 @@ end]]
 	--
 	do -- Console:Exec
 		local ChoOrig_Console_Exec = Console.Exec
-		AddToOrigFuncs("Console.Exec")
+		AddToOriginal("Console.Exec")
 		function Console:Exec(text, hide_text, ...)
 
 			-- ReadHistory fires from :Show(), if history isn't loaded before you :Exec() then goodbye history

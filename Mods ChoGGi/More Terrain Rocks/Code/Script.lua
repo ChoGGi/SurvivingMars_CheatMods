@@ -433,7 +433,7 @@ You can build this if you want it won't hurt anything.]]),
 					end
 				end,
 				"OnPress", function(self)
-					ChoGGi.ComFuncs.CollisionsObject_Toggle(self.context)
+					ChoGGi_Funcs.Common.CollisionsObject_Toggle(self.context)
 					ObjModified(self.context)
 				end,
 				"Icon", "UI/Icons/IPButtons/close.tga",

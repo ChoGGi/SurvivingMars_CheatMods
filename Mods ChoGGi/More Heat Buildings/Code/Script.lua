@@ -13,7 +13,7 @@ local function PassthroughHeatUpdate(func, self, ...)
 end
 
 local function AddBaseheater(class, heat)
-	ChoGGi.ComFuncs.AddParentToClass(class, "BaseHeater")
+	ChoGGi_Funcs.Common.AddParentToClass(class, "BaseHeater")
 	class.heat = heat
 end
 

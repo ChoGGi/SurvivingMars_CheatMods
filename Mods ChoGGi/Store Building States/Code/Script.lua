@@ -5,8 +5,8 @@ local table = table
 local pairs, tonumber = pairs, tonumber
 local IsValid = IsValid
 
-local Translate = ChoGGi.ComFuncs.Translate
-local RetName = ChoGGi.ComFuncs.RetName
+local Translate = ChoGGi_Funcs.Common.Translate
+local RetName = ChoGGi_Funcs.Common.RetName
 
 -- store list of profiles in saved game
 GlobalVar("g_ChoGGi_BuildingStates",{})
@@ -98,13 +98,13 @@ function HUD.idBuildingStatesOnPress(dlg)
 				mouseup = function(_, _, _, button)
 					if button == "R" then
 						table.remove(BuildingStates, i)
-						ChoGGi.ComFuncs.MsgPopup(
+						ChoGGi_Funcs.Common.MsgPopup(
 							T{302535920011306, "Deleted Profile: <name>", name = profile.name},
 							T(302535920011307, "Building States")
 						)
 					else
 						ActivateProfile(profile)
-						ChoGGi.ComFuncs.MsgPopup(
+						ChoGGi_Funcs.Common.MsgPopup(
 							T{302535920011308, "Activated Profile: <name>", name = profile.name},
 							T(302535920011307, "Building States")
 						)
@@ -116,7 +116,7 @@ function HUD.idBuildingStatesOnPress(dlg)
 
 	-- don't show menu if empty
 	if c > 0 then
-		ChoGGi.ComFuncs.PopupToggle(dlg,"idBuildingStatesMenuPopup_HUD",popup,"top")
+		ChoGGi_Funcs.Common.PopupToggle(dlg,"idBuildingStatesMenuPopup_HUD",popup,"top")
 	end
 end
 
@@ -171,7 +171,7 @@ local function BuildRemoveFromList(dlg, obj)
 
 	-- don't show menu if empty
 	if c > 0 then
-		ChoGGi.ComFuncs.PopupToggle(dlg, "idBuildingStatesMenuPopup_Remove", popup, "left")
+		ChoGGi_Funcs.Common.PopupToggle(dlg, "idBuildingStatesMenuPopup_Remove", popup, "left")
 	end
 end
 
@@ -280,7 +280,7 @@ local function ShowList_AddTo(obj, profile_name)
 		end
 		-- don't even think about it
 		if choices[1].value == "" then
-			ChoGGi.ComFuncs.MsgPopup(
+			ChoGGi_Funcs.Common.MsgPopup(
 				T(302535920011316, "Error: Blank profile name!"),
 				T(302535920011307, "Building States")
 			)
@@ -310,7 +310,7 @@ local function ShowList_AddTo(obj, profile_name)
 		else
 			local msg = Translate(302535920011317, "Error: list choice 1 should be the profile name!")
 			print(msg, obj_name, obj.handle)
-			ChoGGi.ComFuncs.MsgPopup(msg, T(302535920011307, "Building States"))
+			ChoGGi_Funcs.Common.MsgPopup(msg, T(302535920011307, "Building States"))
 			return
 		end
 
@@ -362,7 +362,7 @@ local function ShowList_AddTo(obj, profile_name)
 
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T{302535920011318, "Add <name> to building profile", name = obj_name},
@@ -449,15 +449,15 @@ local function BuildAddToList(dlg, obj)
 		end
 	end
 
-	ChoGGi.ComFuncs.PopupToggle(dlg, "idBuildingStatesMenuPopup_Add", popup, "left")
+	ChoGGi_Funcs.Common.PopupToggle(dlg, "idBuildingStatesMenuPopup_Add", popup, "left")
 end
 
 local cls_skip = {"RocketBase", "ExplorableObject", "UniversalStorageDepot"}
 function OnMsg.ClassesPostprocess()
 	-- hud button
-	local xt = ChoGGi.ComFuncs.RetHudButton("idRight")
+	local xt = ChoGGi_Funcs.Common.RetHudButton("idRight")
 	if xt then
-		ChoGGi.ComFuncs.RemoveXTemplateSections(xt,"ChoGGi_Template_BuildingStates")
+		ChoGGi_Funcs.Common.RemoveXTemplateSections(xt,"ChoGGi_Template_BuildingStates")
 		table.insert(xt,#xt,PlaceObj("XTemplateTemplate", {
 			"ChoGGi_Template_BuildingStates", true,
 			"Id", "idMinimap",

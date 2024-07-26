@@ -60,7 +60,7 @@ function OnMsg.ClassesPostprocess()
 	local SafeTrans
 	-- use rawget so game doesn't complain about _G
 	if rawget(_G, "ChoGGi") then
-		SafeTrans = ChoGGi.ComFuncs.Translate
+		SafeTrans = ChoGGi_Funcs.Common.Translate
 	else
 		local _InternalTranslate = _InternalTranslate
 		local procall = procall

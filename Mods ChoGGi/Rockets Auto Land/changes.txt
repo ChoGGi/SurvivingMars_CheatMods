@@ -1,3 +1,6 @@
+v0.4
+Made it ignore expedition rockets.
+
 v0.3
 Possible fix for freezing issue.
 

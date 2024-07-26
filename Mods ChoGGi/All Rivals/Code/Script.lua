@@ -6,7 +6,7 @@ if not g_AvailableDlc.gagarin then
 end
 
 -- Needed for LukeH's Meat and Booze.
-local PickUnusedAISponsor = ChoGGi.ComFuncs.PickUnusedAISponsor
+local PickUnusedAISponsor = ChoGGi_Funcs.Common.PickUnusedAISponsor
 
 local mod_MaxRivals
 

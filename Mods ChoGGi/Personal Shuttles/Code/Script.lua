@@ -10,7 +10,7 @@ local PlayFX = PlayFX
 local IsValid = IsValid
 local GetCursorWorldPos = GetCursorWorldPos
 
-local Random = ChoGGi.ComFuncs.Random
+local Random = ChoGGi_Funcs.Common.Random
 
 PersonalShuttles = {
 	time_limit = const.DayDuration * 4,

@@ -1,5 +1,7 @@
 -- copy n paste from CommonLua\Ged\GedSocket.lua
 
+local ChoGGi_Funcs = ChoGGi_Funcs
+
 -- needed to be able to open the inspector
 XTemplates.GedInspector.save_in = "Ged"
 
@@ -92,7 +94,7 @@ function GedSocket:rpcClose()
 end
 function GedSocket:rpcApp(func, ...)
 	local app = self.app
-	if not ChoGGi.ComFuncs.IsValidXWin(app) then
+	if not ChoGGi_Funcs.Common.IsValidXWin(app) then
 		return "app"
 	end
 	if not app:HasMember(func) then

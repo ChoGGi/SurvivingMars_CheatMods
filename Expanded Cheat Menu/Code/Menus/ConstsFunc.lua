@@ -4,11 +4,12 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local ChoGGi_Funcs = ChoGGi_Funcs
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
-function ChoGGi.MenuFuncs.SetConstMenu(action)
+function ChoGGi_Funcs.Menus.SetConstMenu(action)
 	local ConstsUS = ChoGGi.UserSettings.Consts
 	local ConstsC = ChoGGi.Consts
 
@@ -57,7 +58,7 @@ function ChoGGi.MenuFuncs.SetConstMenu(action)
 		local value = choice.value
 
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetConsts(setting_id, value)
+			ChoGGi_Funcs.Common.SetConsts(setting_id, value)
 			-- If setting is the same as the default then remove it
 			if ConstsC[setting_id] == value then
 				ConstsUS[setting_id] = nil
@@ -65,9 +66,9 @@ function ChoGGi.MenuFuncs.SetConstMenu(action)
 				ConstsUS[setting_id] = value
 			end
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.text),
+				ChoGGi_Funcs.Common.SettingState(choice.text),
 				setting_name
 			)
 		end
@@ -81,7 +82,7 @@ function ChoGGi.MenuFuncs.SetConstMenu(action)
 			.. T(302535920000182--[[The scale this amount will be multipled by when used.]]) .. ")"
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = setting_name,

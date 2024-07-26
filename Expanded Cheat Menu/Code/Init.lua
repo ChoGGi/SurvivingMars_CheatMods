@@ -43,7 +43,7 @@ ChoGGi.mod_path = def.env.CurrentModPath or def.content_path or def.path
 ChoGGi.scripts = "AppData/ECM Scripts"
 
 --~ if ChoGGi.blacklist then
---~ 	ChoGGi.ComFuncs.FileExists = empty_func
+--~ 	ChoGGi_Funcs.Common.FileExists = empty_func
 --~ else
---~ 	ChoGGi.ComFuncs.FileExists = io.exists
+--~ 	ChoGGi_Funcs.Common.FileExists = io.exists
 --~ end

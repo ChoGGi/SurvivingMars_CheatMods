@@ -1,3 +1,6 @@
+v1.0
+Added dome grass alt mod option (thanks Jozef).
+
 v0.9
 Added Terraformed Grass 2: This uses the green texture used as the dome \"grass\" instead of reddish ground.
 

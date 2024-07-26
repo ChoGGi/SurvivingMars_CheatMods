@@ -2,11 +2,12 @@
 
 -- displays the console in a dialog
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
+local Translate = ChoGGi_Funcs.Common.Translate
+local IsValidXWin = ChoGGi_Funcs.Common.IsValidXWin
 
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+local GetParentOfKind = ChoGGi_Funcs.Common.GetParentOfKind
 local function GetRootDialog(dlg)
 	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_DlgConsoleLogWin")
 end
@@ -233,7 +234,7 @@ function ChoGGi_DlgConsoleLogWin:Done()
 
 	Msg("ChoGGi_DlgConsoleLogWin_SizePos", self)
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 end
 
 dlgChoGGi_DlgConsoleLogWin = rawget(_G, "dlgChoGGi_DlgConsoleLogWin") or false
@@ -262,10 +263,10 @@ function OnMsg.ChoGGi_DlgConsoleLogWin_SizePos(dlg)
 		ChoGGi.UserSettings.ConsoleLogWin_Size = dlg:GetSize()
 	end
 	ChoGGi.UserSettings.ConsoleLogWin_Pos = dlg:GetPos()
-	-- ChoGGi.SettingFuncs.WriteSettings() is called after each time this msg is called
+	-- ChoGGi_Funcs.Settings.WriteSettings() is called after each time this msg is called
 end
 
-function ChoGGi.ComFuncs.ShowConsoleLogWin(visible)
+function ChoGGi_Funcs.Common.ShowConsoleLogWin(visible)
 	if visible and not dlgChoGGi_DlgConsoleLogWin then
 		dlgChoGGi_DlgConsoleLogWin = ChoGGi_DlgConsoleLogWin:new({}, terminal.desktop, {})
 		dlgChoGGi_DlgConsoleLogWin:UpdateText(LoadLogfile())

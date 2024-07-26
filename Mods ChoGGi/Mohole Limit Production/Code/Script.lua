@@ -40,7 +40,7 @@ function OnMsg.ClassesPostprocess()
 	local xtemplate = XTemplates.ipBuilding[1]
 
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_WonderCheats_LimitMetals", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_WonderCheats_LimitMetals", true)
 
 	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
 		"Id" , "ChoGGi_Template_WonderCheats_LimitMetals",
@@ -72,7 +72,7 @@ function OnMsg.ClassesPostprocess()
 		end,
 	})
 
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_WonderCheats_LimitRareMetals", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_WonderCheats_LimitRareMetals", true)
 	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
 		"Id" , "ChoGGi_Template_WonderCheats_LimitRareMetals",
 		"ChoGGi_Template_WonderCheats_LimitRareMetals", true,

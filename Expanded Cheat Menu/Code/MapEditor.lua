@@ -4,6 +4,7 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local d_before = Platform.developer
 Platform.developer = true
 

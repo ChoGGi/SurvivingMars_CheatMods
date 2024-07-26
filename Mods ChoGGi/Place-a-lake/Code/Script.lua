@@ -63,7 +63,7 @@ function OnMsg.ClassesPostprocess()
 	local building = XTemplates.ipBuilding[1]
 
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(building, "ChoGGi_Template_InstantLake_Adjust", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(building, "ChoGGi_Template_InstantLake_Adjust", true)
 
 	table.insert(
 		building,

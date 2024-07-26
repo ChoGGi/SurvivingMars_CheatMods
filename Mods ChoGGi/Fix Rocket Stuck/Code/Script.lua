@@ -59,7 +59,7 @@ local function ModOptions(id)
 	-- If my lib mod is installed use my copy of this function
 	if not SpawnColonist then
 		if table.find(ModsLoaded, "id", "ChoGGi_Library") then
-			SpawnColonist = ChoGGi.ComFuncs.SpawnColonist
+			SpawnColonist = ChoGGi_Funcs.Common.SpawnColonist
 		end
 		SpawnColonist = type(SpawnColonist) == "function"
 			and SpawnColonist or SpawnColonist_CopiedFunc

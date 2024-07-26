@@ -4,13 +4,13 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local tostring, type = tostring, type
-
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local Translate = ChoGGi_Funcs.Common.Translate
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 
-function ChoGGi.MenuFuncs.SetShuttleCapacity()
+function ChoGGi_Funcs.Menus.SetShuttleCapacity()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.StorageShuttle / r
 	local item_list = {
@@ -45,8 +45,8 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 				value = 1000000
 			end
 
-			ChoGGi.ComFuncs.SetSavedConstSetting("StorageShuttle", value)
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Common.SetSavedConstSetting("StorageShuttle", value)
+			ChoGGi_Funcs.Settings.WriteSettings()
 
 			-- loop through and set all shuttles
 			local objs = UIColony.city_labels.labels.CargoShuttle or ""
@@ -54,13 +54,13 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 				objs[i].max_shared_storage = value
 			end
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.text),
+				ChoGGi_Funcs.Common.SettingState(choice.text),
 				T(302535920000930--[[Set Cargo Shuttle Capacity]])
 			)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000930--[[Set Cargo Shuttle Capacity]]),
@@ -69,7 +69,7 @@ function ChoGGi.MenuFuncs.SetShuttleCapacity()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetShuttleSpeed()
+function ChoGGi_Funcs.Menus.SetShuttleSpeed()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.SpeedShuttle / r
 	local item_list = {
@@ -106,17 +106,17 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
 			for i = 1, #objs do
 				objs[i]:SetBase("move_speed", value)
 			end
-			ChoGGi.ComFuncs.SetSavedConstSetting("SpeedShuttle", value)
+			ChoGGi_Funcs.Common.SetSavedConstSetting("SpeedShuttle", value)
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.text),
+				ChoGGi_Funcs.Common.SettingState(choice.text),
 				T(302535920000932--[[Set Cargo Shuttle Speed]])
 			)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000932--[[Set Cargo Shuttle Speed]]),
@@ -127,7 +127,7 @@ function ChoGGi.MenuFuncs.SetShuttleSpeed()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
+function ChoGGi_Funcs.Menus.SetShuttleHubShuttleCapacity()
 	local default_setting = ChoGGi.Consts.ShuttleHubShuttleCapacity
 	local item_list = {
 		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
@@ -171,14 +171,14 @@ function ChoGGi.MenuFuncs.SetShuttleHubShuttleCapacity()
 			end
 		end
 
-		ChoGGi.SettingFuncs.WriteSettings()
+		ChoGGi_Funcs.Settings.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice.text),
+			ChoGGi_Funcs.Common.SettingState(choice.text),
 			T(302535920000535--[[Set ShuttleHub Shuttle Capacity]])
 		)
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000535--[[Set ShuttleHub Shuttle Capacity]]),

@@ -3,7 +3,7 @@
 local table = table
 local Sleep = Sleep
 local IsTechResearched = IsTechResearched
-local GetModEnabled = ChoGGi.ComFuncs.GetModEnabled
+local GetModEnabled = ChoGGi_Funcs.Common.GetModEnabled
 
 -- miner amounts table
 local r = const.ResourceScale
@@ -237,7 +237,7 @@ end
 function PortableMiner:GameInit()
 
 	if not self.city then
-		self.city = Cities[ChoGGi.ComFuncs.RetObjMapId(self)] or MainCity
+		self.city = Cities[ChoGGi_Funcs.Common.RetObjMapId(self)] or MainCity
 	end
 	self.nearby_deposits = {}
 
@@ -773,7 +773,7 @@ function OnMsg.ClassesPostprocess()
 
 	local template = XTemplates.ipRover[1]
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(template, "ChoGGi_Template_PortableMinerProdInfo", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(template, "ChoGGi_Template_PortableMinerProdInfo", true)
 	template[#template+1] = PlaceObj("XTemplateTemplate", {
 		"ChoGGi_Template_PortableMinerProdInfo", true,
 		"Id", "ChoGGi_PortableMinerProdInfo",
@@ -793,7 +793,7 @@ function OnMsg.ClassesPostprocess()
 	local lukeh_newres = GetModEnabled("LH_Resources") and true
 
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(template, "ChoGGi_Template_PortableMinerResFilter", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(template, "ChoGGi_Template_PortableMinerResFilter", true)
 	template[#template+1] = PlaceObj("XTemplateTemplate", {
 		"ChoGGi_Template_PortableMinerResFilter", true,
 		"Id", "ChoGGi_PortableMinerResFilter",
@@ -850,7 +850,7 @@ function OnMsg.ClassesPostprocess()
 
 	template = XTemplates.ipResourcePile[1]
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(template, "ChoGGi_Template_PortableMinerStockpileSalvage", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(template, "ChoGGi_Template_PortableMinerStockpileSalvage", true)
 
 	template[#template+1] = PlaceObj("XTemplateTemplate", {
 		"ChoGGi_Template_PortableMinerStockpileSalvage", true,

@@ -2,14 +2,15 @@
 
 -- Entity Size button shows gamepad/mouse clicks
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local testing = ChoGGi.testing
 local what_game = ChoGGi.what_game
 
 local T = T
 local AveragePoint2D = AveragePoint2D
-local RetName = ChoGGi.ComFuncs.RetName
-local PolylineSetParabola = ChoGGi.ComFuncs.PolylineSetParabola
-local Translate = ChoGGi.ComFuncs.Translate
+local RetName = ChoGGi_Funcs.Common.RetName
+local PolylineSetParabola = ChoGGi_Funcs.Common.PolylineSetParabola
+local Translate = ChoGGi_Funcs.Common.Translate
 
 -- blank CObject (could use Object, but has more parents) class we add to all the objects below for easier deleting
 DefineClass.ChoGGi_ODeleteObjs = {
@@ -81,7 +82,7 @@ end
 -- prevent an error msg in log
 ChoGGi_OBuildingEntityClass_Generic.BuildWaypointChains = empty_func
 -- round and round she goes, and where she stops BOB knows
-ChoGGi_OBuildingEntityClass_Generic.Rotate = ChoGGi.ComFuncs.RotateBuilding
+ChoGGi_OBuildingEntityClass_Generic.Rotate = ChoGGi_Funcs.Common.RotateBuilding
 
 local attach_parents = {
 	"ChoGGi_OBuildingEntityClass_Generic",
@@ -140,7 +141,7 @@ function OnMsg.ClassesPostprocess()
 					})
 				end,
 				"OnPress", function(self)
-					ChoGGi.ComFuncs.EntitySpawner(self.context, {
+					ChoGGi_Funcs.Common.EntitySpawner(self.context, {
 						skip_msg = true,
 						list_type = 7,
 						planning = self.context.planning and true,
@@ -222,7 +223,7 @@ Starts at 100% and goes up by 5 (max is 2047), <right_click> to reset to 5% (hol
 				"RolloverHint", T(302535920001718--[[<left_click> Activate]]),
 				"RolloverText", T(302535920000458--[[Make object dance on command.]]),
 				"OnPress", function(self)
-					ChoGGi.ComFuncs.SetAnimState(self.context)
+					ChoGGi_Funcs.Common.SetAnimState(self.context)
 				end,
 				"Icon", "UI/Icons/IPButtons/expedition.tga",
 			}),
@@ -233,7 +234,7 @@ Starts at 100% and goes up by 5 (max is 2047), <right_click> to reset to 5% (hol
 				"RolloverHint", T(302535920001718--[[<left_click> Activate]]),
 				"RolloverText", T(302535920001421--[[Shows a list of particles you can use on the selected obj.]]),
 				"OnPress", function(self)
-					ChoGGi.ComFuncs.SetParticles(self.context)
+					ChoGGi_Funcs.Common.SetParticles(self.context)
 				end,
 				"Icon", "UI/Icons/IPButtons/status_effects.tga",
 			}),

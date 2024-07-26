@@ -6,7 +6,7 @@
 	try that breakthrough where they carry two, and get a depot (at a factory/mine/etc) with one resource left in it
 	yes it took awhile to figure it out, hence the name...
 ]]
-local FuckingDrones = ChoGGi.ComFuncs.FuckingDrones
+local FuckingDrones = ChoGGi_Funcs.Common.FuckingDrones
 
 function OnMsg.ClassesPostprocess()
 
@@ -55,7 +55,7 @@ end
 local default_drone_amount = 1
 
 local function UpdateAmount(amount)
-	ChoGGi.ComFuncs.SetConsts("DroneResourceCarryAmount", amount)
+	ChoGGi_Funcs.Common.SetConsts("DroneResourceCarryAmount", amount)
 	UpdateDroneResourceUnits()
 end
 

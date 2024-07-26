@@ -4,58 +4,59 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local pairs, type, tostring, table = pairs, type, tostring, table
 local IsValid = IsValid
 local GetCursorWorldPos = GetCursorWorldPos
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local RetName = ChoGGi.ComFuncs.RetName
-local RandomColour = ChoGGi.ComFuncs.RandomColour
+local Translate = ChoGGi_Funcs.Common.Translate
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
+local RetName = ChoGGi_Funcs.Common.RetName
+local RandomColour = ChoGGi_Funcs.Common.RandomColour
 
-function ChoGGi.MenuFuncs.SkipIncompatibleModsMsg_Toggle()
+function ChoGGi_Funcs.Menus.SkipIncompatibleModsMsg_Toggle()
 	ChoGGi.UserSettings.SkipIncompatibleModsMsg = not ChoGGi.UserSettings.SkipIncompatibleModsMsg
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SkipIncompatibleModsMsg),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.SkipIncompatibleModsMsg),
 		T(302535920001728--[[Skip Incompatible Mods]])
 	)
 end
 
-function ChoGGi.MenuFuncs.SkipMissingMods_Toggle()
+function ChoGGi_Funcs.Menus.SkipMissingMods_Toggle()
 	if blacklist then
-		ChoGGi.ComFuncs.BlacklistMsg(T(302535920001205--[[Skip Missing Mods]]))
+		ChoGGi_Funcs.Common.BlacklistMsg(T(302535920001205--[[Skip Missing Mods]]))
 	end
 
 	ChoGGi.UserSettings.SkipMissingMods = not ChoGGi.UserSettings.SkipMissingMods
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SkipMissingMods),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.SkipMissingMods),
 		T(302535920001205--[[Skip Missing Mods]])
 	)
 end
 
-function ChoGGi.MenuFuncs.SkipMissingDLC_Toggle()
+function ChoGGi_Funcs.Menus.SkipMissingDLC_Toggle()
 	if blacklist then
-		ChoGGi.ComFuncs.BlacklistMsg(T(302535920001658--[[Skip Missing DLC]]))
+		ChoGGi_Funcs.Common.BlacklistMsg(T(302535920001658--[[Skip Missing DLC]]))
 	end
 
 	ChoGGi.UserSettings.SkipMissingDLC = not ChoGGi.UserSettings.SkipMissingDLC
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SkipMissingDLC),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.SkipMissingDLC),
 		T(302535920001658--[[Skip Missing DLC]])
 	)
 end
 
-function ChoGGi.MenuFuncs.Interface_Toggle()
+function ChoGGi_Funcs.Menus.Interface_Toggle()
 	hr.RenderUIL = hr.RenderUIL == 0 and 1 or 0
 end
 
-function ChoGGi.MenuFuncs.InfoPanelDlg_Toggle()
+function ChoGGi_Funcs.Menus.InfoPanelDlg_Toggle()
 	local info = Dialogs.Infopanel
 	if not info then
 		return
@@ -70,7 +71,7 @@ function ChoGGi.MenuFuncs.InfoPanelDlg_Toggle()
 	end
 end
 
-function ChoGGi.MenuFuncs.ExamineObjectRadius_Set()
+function ChoGGi_Funcs.Menus.ExamineObjectRadius_Set()
 	local item_list = {
 		{text = 100, value = 100},
 		{text = 500, value = 500},
@@ -97,12 +98,12 @@ function ChoGGi.MenuFuncs.ExamineObjectRadius_Set()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = title,
 		skip_sort = true,
-		hint = Translate(302535920000923--[[Set the radius used for %s examining.]]):format(ChoGGi.ComFuncs.GetShortcut(".Keys.Examine Objects Shift")),
+		hint = Translate(302535920000923--[[Set the radius used for %s examining.]]):format(ChoGGi_Funcs.Common.GetShortcut(".Keys.Examine Objects Shift")),
 	}
 end
 
@@ -123,8 +124,8 @@ do -- SetEntity
 		end
 	end
 
-	function ChoGGi.MenuFuncs.ChangeEntity()
-		local obj = ChoGGi.ComFuncs.SelObject()
+	function ChoGGi_Funcs.Menus.ChangeEntity()
+		local obj = ChoGGi_Funcs.Common.SelObject()
 		if not obj then
 			MsgPopup(
 				T(302535920001139--[[You need to select an object.]]),
@@ -191,7 +192,7 @@ do -- SetEntity
 			end
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = T(302535920000682--[[Change Entity]]) .. ": " .. RetName(obj),
@@ -228,19 +229,19 @@ do -- SetEntityScale
 		CreateRealTimeThread(function()
 			Sleep(500)
 			if obj:IsKindOf("Drone") then
-				obj:SetBase("move_speed", UserSettings.SpeedDrone or ChoGGi.ComFuncs.GetResearchedTechValue("SpeedDrone"))
+				obj:SetBase("move_speed", UserSettings.SpeedDrone or ChoGGi_Funcs.Common.GetResearchedTechValue("SpeedDrone"))
 			elseif obj:IsKindOf("CargoShuttle") then
 				obj:SetBase("move_speed", UserSettings.SpeedShuttle or ChoGGi.Consts.SpeedShuttle)
 			elseif obj:IsKindOf("Colonist") then
 				obj:SetBase("move_speed", UserSettings.SpeedColonist or ChoGGi.Consts.SpeedColonist)
 			elseif obj:IsKindOf("BaseRover") then
-				obj:SetBase("move_speed", UserSettings.SpeedRC or ChoGGi.ComFuncs.GetResearchedTechValue("SpeedRC"))
+				obj:SetBase("move_speed", UserSettings.SpeedRC or ChoGGi_Funcs.Common.GetResearchedTechValue("SpeedRC"))
 			end
 		end)
 	end
 
-	function ChoGGi.MenuFuncs.SetEntityScale()
-		local obj = ChoGGi.ComFuncs.SelObject()
+	function ChoGGi_Funcs.Menus.SetEntityScale()
+		local obj = ChoGGi_Funcs.Common.SelObject()
 		if not obj then
 			MsgPopup(
 				T(302535920001139--[[You need to select an object.]]),
@@ -295,7 +296,7 @@ do -- SetEntityScale
 			end
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = T(302535920000684--[[Change Entity Scale]]) .. ": " .. RetName(obj),
@@ -317,16 +318,16 @@ do -- SetEntityScale
 	end
 end -- do
 
-function ChoGGi.MenuFuncs.DTMSlotsDlg_Toggle()
-	local dlg = ChoGGi.ComFuncs.GetDialogECM("ChoGGi_DlgDTMSlots")
+function ChoGGi_Funcs.Menus.DTMSlotsDlg_Toggle()
+	local dlg = ChoGGi_Funcs.Common.GetDialogECM("ChoGGi_DlgDTMSlots")
 	if dlg then
 		dlg:Close()
 	else
-		ChoGGi.ComFuncs.OpenInDTMSlotsDlg()
+		ChoGGi_Funcs.Common.OpenInDTMSlotsDlg()
 	end
 end
 
-function ChoGGi.MenuFuncs.SetFrameCounter()
+function ChoGGi_Funcs.Menus.SetFrameCounter()
 	local fps = hr.FpsCounter
 	fps = fps + 1
 	if fps > 2 then
@@ -335,7 +336,7 @@ function ChoGGi.MenuFuncs.SetFrameCounter()
 	hr.FpsCounter = fps
 end
 
-function ChoGGi.MenuFuncs.SetFrameCounterLocation(action)
+function ChoGGi_Funcs.Menus.SetFrameCounterLocation(action)
 	local setting = action.setting_mask
 	hr.FpsCounterPos = setting
 
@@ -344,27 +345,27 @@ function ChoGGi.MenuFuncs.SetFrameCounterLocation(action)
 	else
 		ChoGGi.UserSettings.FrameCounterLocation = setting
 	end
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 end
 
-function ChoGGi.MenuFuncs.LoadingScreenLog_Toggle()
+function ChoGGi_Funcs.Menus.LoadingScreenLog_Toggle()
 	ChoGGi.UserSettings.LoadingScreenLog = not ChoGGi.UserSettings.LoadingScreenLog
-	ChoGGi.ComFuncs.SetLoadingScreenLog()
+	ChoGGi_Funcs.Common.SetLoadingScreenLog()
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.LoadingScreenLog),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.LoadingScreenLog),
 		T(302535920000049--[[Loading Screen Log]])
 	)
 end
 
-function ChoGGi.MenuFuncs.DeleteObject(_, _, input)
+function ChoGGi_Funcs.Menus.DeleteObject(_, _, input)
 	if input == "keyboard" then
-		ChoGGi.ComFuncs.DeleteObject()
+		ChoGGi_Funcs.Common.DeleteObject()
 	else
-		local obj = ChoGGi.ComFuncs.SelObject()
+		local obj = ChoGGi_Funcs.Common.SelObject()
 		if IsValid(obj) then
-			ChoGGi.ComFuncs.DeleteObjectQuestion(obj)
+			ChoGGi_Funcs.Common.DeleteObjectQuestion(obj)
 		end
 	end
 end
@@ -372,7 +373,7 @@ end
 do -- TestLocaleFile
 	local saved_file_path
 
-	function ChoGGi.MenuFuncs.TestLocaleFile()
+	function ChoGGi_Funcs.Menus.TestLocaleFile()
 		local hint = T(302535920001155--[["Enter the path to the CSV file you want to test (defaults to mine as an example).
 You can edit the CSV then run this again without having to restart the game.
 "]])
@@ -406,13 +407,13 @@ You need my HelperMod installed to be able to use this."]]),
 			-- keep path if dialog is closed
 			saved_file_path = path
 
-			ChoGGi.ComFuncs.TestLocaleFile(
+			ChoGGi_Funcs.Common.TestLocaleFile(
 				path,
-				ChoGGi.ComFuncs.RetProperType(choice.value)
+				ChoGGi_Funcs.Common.RetProperType(choice.value)
 			)
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = T(302535920001125--[[Test Locale File]]),
@@ -426,15 +427,15 @@ You need my HelperMod installed to be able to use this."]]),
 	end
 end -- do
 
-function ChoGGi.MenuFuncs.ExamineObject()
-	printC("ChoGGi.MenuFuncs.ExamineObject")
+function ChoGGi_Funcs.Menus.ExamineObject()
+	printC("ChoGGi_Funcs.Menus.ExamineObject")
 
 	-- try to get object in-game first
-	local objs = ChoGGi.ComFuncs.SelObjects()
+	local objs = ChoGGi_Funcs.Common.SelObjects()
 	local c = #objs
 	if c > 0 then
 		-- If it's a single obj then examine that, otherwise the whole list
-		ChoGGi.ComFuncs.OpenInExamineDlg(c == 1 and objs[1] or objs)
+		ChoGGi_Funcs.Common.OpenInExamineDlg(c == 1 and objs[1] or objs)
 		return
 	end
 
@@ -448,33 +449,33 @@ function ChoGGi.MenuFuncs.ExamineObject()
 	local target = terminal.desktop:GetMouseTarget(terminal.GetMousePos())
 	-- everywhere is covered in xdialogs so skip them
 	if target and not target:IsKindOf("XDialog") then
-		return ChoGGi.ComFuncs.OpenInExamineDlg(target)
+		return ChoGGi_Funcs.Common.OpenInExamineDlg(target)
 	end
 
 	-- If in main menu then open examine and console
 	if not Dialogs.HUD then
-		local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(terminal.desktop)
+		local dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(terminal.desktop)
 		-- off centre of central monitor
 		local width = (terminal.desktop.measure_width or 1920) - (dlg.dialog_width_scaled + 100)
 		dlg:SetPos(point(width, 100))
-		ChoGGi.ComFuncs.ToggleConsole(true)
+		ChoGGi_Funcs.Common.ToggleConsole(true)
 	end
 end
 
-function ChoGGi.MenuFuncs.OpenInGedObjectEditor()
-	local obj = ChoGGi.ComFuncs.SelObject()
+function ChoGGi_Funcs.Menus.OpenInGedObjectEditor()
+	local obj = ChoGGi_Funcs.Common.SelObject()
 	if IsValid(obj) then
 		GedObjectEditor = false
 		OpenGedGameObjectEditor{obj}
 	end
 end
 
-function ChoGGi.MenuFuncs.ListVisibleObjects()
+function ChoGGi_Funcs.Menus.ListVisibleObjects()
 	local frame = (GetFrameMark() / 1024 - 1) * 1024
 	local visible = MapGet("map", "attached", false, function(obj)
 		return obj:GetFrameMark() - frame > 0
 	end)
-	ChoGGi.ComFuncs.OpenInExamineDlg(visible, nil, T(302535920001547--[[Visible Objects]]))
+	ChoGGi_Funcs.Common.OpenInExamineDlg(visible, nil, T(302535920001547--[[Visible Objects]]))
 end
 
 do -- BuildingPathMarkers_Toggle
@@ -517,13 +518,13 @@ do -- BuildingPathMarkers_Toggle
 				DoneObject(data.line)
 			end
 			data.line = false
-			ChoGGi.ComFuncs.objlist_Destroy(data)
+			ChoGGi_Funcs.Common.objlist_Destroy(data)
 			table.iclear(data)
 		end
 	end
 
 	local ChoOrig_FollowWaypointPath = FollowWaypointPath
-	function ChoGGi.MenuFuncs.BuildingPathMarkers_Toggle()
+	function ChoGGi_Funcs.Menus.BuildingPathMarkers_Toggle()
 		if not OPolyline then
 			OPolyline = ChoGGi_OPolyline
 		end
@@ -550,23 +551,23 @@ do -- BuildingPathMarkers_Toggle
 		end
 
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.Temp.BuildingPathMarkers_Toggle),
+			ChoGGi_Funcs.Common.SettingState(ChoGGi.Temp.BuildingPathMarkers_Toggle),
 			T(302535920001527--[[Building Path Markers]])
 		)
 	end
 end -- do
 
-function ChoGGi.MenuFuncs.ExaminePersistErrors_Toggle()
+function ChoGGi_Funcs.Menus.ExaminePersistErrors_Toggle()
 	ChoGGi.UserSettings.DebugPersistSaves = not ChoGGi.UserSettings.DebugPersistSaves
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DebugPersistSaves),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.DebugPersistSaves),
 		T(302535920001498--[[Examine Persist Errors]])
 	)
 end
 
-function ChoGGi.MenuFuncs.ViewAllEntities()
+function ChoGGi_Funcs.Menus.ViewAllEntities()
 	local function CallBackFunc(answer)
 		if not answer then
 			return
@@ -634,7 +635,7 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 			width = width / 1000
 			height = height / 1000
 
-			SuspendPassEdits("ChoGGi.MenuFuncs.ViewAllEntities")
+			SuspendPassEdits("ChoGGi_Funcs.Menus.ViewAllEntities")
 
 			MapDelete(true, "UndergroundPassage")
 			-- reset for a new count
@@ -702,11 +703,11 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 				end -- for
 			end -- for
 			CheatMapExplore("deep scanned")
-			ResumePassEdits("ChoGGi.MenuFuncs.ViewAllEntities")
+			ResumePassEdits("ChoGGi_Funcs.Menus.ViewAllEntities")
 
 			if ChoGGi.testing then
 				WaitMsg("OnRender")
-				ChoGGi.ComFuncs.CloseDialogsECM()
+				ChoGGi_Funcs.Common.CloseDialogsECM()
 				cls()
 			end
 
@@ -727,7 +728,7 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 		return CallBackFunc(true)
 	end
 
-	ChoGGi.ComFuncs.QuestionBox(
+	ChoGGi_Funcs.Common.QuestionBox(
 		T(6779--[[Warning]]) .. ": " .. T(302535920001493--[["This will change to a new map, anything unsaved will be lost!"]]),
 		CallBackFunc,
 		T(302535920001491--[[View All Entities]])
@@ -735,25 +736,25 @@ function ChoGGi.MenuFuncs.ViewAllEntities()
 
 end
 
-function ChoGGi.MenuFuncs.OverrideConditionPrereqs_Toggle()
-	ChoGGi.UserSettings.OverrideConditionPrereqs = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.OverrideConditionPrereqs)
-	ChoGGi.SettingFuncs.WriteSettings()
+function ChoGGi_Funcs.Menus.OverrideConditionPrereqs_Toggle()
+	ChoGGi.UserSettings.OverrideConditionPrereqs = ChoGGi_Funcs.Common.ToggleValue(ChoGGi.UserSettings.OverrideConditionPrereqs)
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.OverrideConditionPrereqs),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.OverrideConditionPrereqs),
 		T(302535920000421--[[Override Condition Prereqs]])
 	)
 end
 
-function ChoGGi.MenuFuncs.SkipStoryBitsDialogs_Toggle()
-	ChoGGi.UserSettings.SkipStoryBitsDialogs = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.SkipStoryBitsDialogs)
-	ChoGGi.SettingFuncs.WriteSettings()
+function ChoGGi_Funcs.Menus.SkipStoryBitsDialogs_Toggle()
+	ChoGGi.UserSettings.SkipStoryBitsDialogs = ChoGGi_Funcs.Common.ToggleValue(ChoGGi.UserSettings.SkipStoryBitsDialogs)
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.SkipStoryBitsDialogs),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.SkipStoryBitsDialogs),
 		T(302535920000978--[["Skip Story Bits"]])
 	)
 end
 
-function ChoGGi.MenuFuncs.TestStoryBits()
+function ChoGGi_Funcs.Menus.TestStoryBits()
 --~ ~g_StoryBitStates
 --~ that'll show all the active story state thingss
 
@@ -818,7 +819,7 @@ function ChoGGi.MenuFuncs.TestStoryBits()
 		ForceActivateStoryBit(choice.value, ActiveMapID, obj, true)
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = title,
@@ -867,7 +868,7 @@ do -- PostProcGrids
 		"smallgrid",
 	}
 
-	function ChoGGi.MenuFuncs.PostProcGrids(action)
+	function ChoGGi_Funcs.Menus.PostProcGrids(action)
 		local grid_type = action.grid_mask
 		-- always disable other ones
 		for i = 1, #grids do
@@ -882,7 +883,7 @@ do -- PostProcGrids
 	end
 end -- do
 
-function ChoGGi.MenuFuncs.Render_Toggle()
+function ChoGGi_Funcs.Menus.Render_Toggle()
 	local item_list = {
 		{text = "Shadowmap", value = "Shadowmap"},
 		{text = "TerrainAABB", value = "TerrainAABB"},
@@ -907,7 +908,7 @@ function ChoGGi.MenuFuncs.Render_Toggle()
 
 		local value = choice.value
 		local new_value
-		local obj = ChoGGi.ComFuncs.DotPathToObject(value)
+		local obj = ChoGGi_Funcs.Common.DotPathToObject(value)
 		if type(obj) == "function" then
 			new_value = obj()
 		else
@@ -925,7 +926,7 @@ function ChoGGi.MenuFuncs.Render_Toggle()
 		)
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920001314--[[Toggle Render]]),
@@ -933,19 +934,19 @@ function ChoGGi.MenuFuncs.Render_Toggle()
 	}
 end
 
-function ChoGGi.MenuFuncs.DebugFX_Toggle(action)
+function ChoGGi_Funcs.Menus.DebugFX_Toggle(action)
 	local name = action.setting_name
 	local trans_str = action.setting_msg
 
 	_G[name] = not _G[name]
 
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(_G[name]),
+		ChoGGi_Funcs.Common.SettingState(_G[name]),
 		trans_str
 	)
 end
 
-function ChoGGi.MenuFuncs.ParticlesReload()
+function ChoGGi_Funcs.Menus.ParticlesReload()
 	LoadStreamParticlesFromDir("Data/Particles")
 	ParticlesReload("", true)
 	MsgPopup(
@@ -954,7 +955,7 @@ function ChoGGi.MenuFuncs.ParticlesReload()
 	)
 end
 
-function ChoGGi.MenuFuncs.MeasureTool_Toggle()
+function ChoGGi_Funcs.Menus.MeasureTool_Toggle()
 	local MeasureTool = MeasureTool
 	MeasureTool.Toggle()
 	if MeasureTool.enabled then
@@ -963,13 +964,13 @@ function ChoGGi.MenuFuncs.MeasureTool_Toggle()
 		MeasureTool.OnMouseButtonDown(nil, "R")
 	end
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(MeasureTool.enabled),
+		ChoGGi_Funcs.Common.SettingState(MeasureTool.enabled),
 		T(302535920000451--[[Measure Tool]])
 	)
 end
 
-function ChoGGi.MenuFuncs.DeleteAllSelectedObjects()
-	local obj = ChoGGi.ComFuncs.SelObject()
+function ChoGGi_Funcs.Menus.DeleteAllSelectedObjects()
+	local obj = ChoGGi_Funcs.Common.SelObject()
 	local is_valid = IsValid(obj)
 	-- domes with objs in them = crashy
 	if not is_valid or is_valid and obj:IsKindOf("Dome") then
@@ -980,12 +981,12 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects()
 		if not answer then
 			return
 		end
-		SuspendPassEdits("ChoGGi.MenuFuncs.DeleteAllSelectedObjects")
+		SuspendPassEdits("ChoGGi_Funcs.Menus.DeleteAllSelectedObjects")
 		MapDelete(true, obj.class)
-		ResumePassEdits("ChoGGi.MenuFuncs.DeleteAllSelectedObjects")
+		ResumePassEdits("ChoGGi_Funcs.Menus.DeleteAllSelectedObjects")
 	end
 
-	ChoGGi.ComFuncs.QuestionBox(
+	ChoGGi_Funcs.Common.QuestionBox(
 		T(6779--[[Warning]]) .. "!\n"
 			.. Translate(302535920000852--[[This will delete all %s of %s]]):format(MapCount("map", obj.class), obj.class),
 		CallBackFunc,
@@ -995,7 +996,7 @@ function ChoGGi.MenuFuncs.DeleteAllSelectedObjects()
 	)
 end
 
-function ChoGGi.MenuFuncs.BuildableHexGridSettings(action)
+function ChoGGi_Funcs.Menus.BuildableHexGridSettings(action)
 	local setting = action.setting_mask
 
 	local item_list = {
@@ -1053,10 +1054,10 @@ function ChoGGi.MenuFuncs.BuildableHexGridSettings(action)
 			-- update grid
 			if IsValidThread(ChoGGi.Temp.grid_thread) and setting ~= "DebugGridPosition" then
 				-- twice to toggle
-				ChoGGi.ComFuncs.BuildableHexGrid(false)
-				ChoGGi.ComFuncs.BuildableHexGrid(true)
+				ChoGGi_Funcs.Common.BuildableHexGrid(false)
+				ChoGGi_Funcs.Common.BuildableHexGrid(true)
 			end
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
 				tostring(value),
 				name
@@ -1064,7 +1065,7 @@ function ChoGGi.MenuFuncs.BuildableHexGridSettings(action)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = name,
@@ -1073,10 +1074,10 @@ function ChoGGi.MenuFuncs.BuildableHexGridSettings(action)
 end
 
 ChoGGi.Temp.PathMarkers_new_objs_loop = true
-function ChoGGi.MenuFuncs.SetPathMarkers()
-	local Pathing_SetMarkers = ChoGGi.ComFuncs.Pathing_SetMarkers
-	local Pathing_CleanDupes = ChoGGi.ComFuncs.Pathing_CleanDupes
-	local Pathing_StopAndRemoveAll = ChoGGi.ComFuncs.Pathing_StopAndRemoveAll
+function ChoGGi_Funcs.Menus.SetPathMarkers()
+	local Pathing_SetMarkers = ChoGGi_Funcs.Common.Pathing_SetMarkers
+	local Pathing_CleanDupes = ChoGGi_Funcs.Common.Pathing_CleanDupes
+	local Pathing_StopAndRemoveAll = ChoGGi_Funcs.Common.Pathing_StopAndRemoveAll
 	ChoGGi.Temp.UnitPathingHandles = ChoGGi.Temp.UnitPathingHandles or {}
 	local randcolours = {}
 	local colourcount = 0
@@ -1210,7 +1211,7 @@ function ChoGGi.MenuFuncs.SetPathMarkers()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000467--[[Path Markers]]),
@@ -1293,7 +1294,7 @@ do -- FlightGrid_Toggle
 	end
 
 	local function DeleteLines()
-		SuspendPassEdits("ChoGGi.MenuFuncs.FlightGrid_Toggle.DeleteLines")
+		SuspendPassEdits("ChoGGi_Funcs.Menus.FlightGrid_Toggle.DeleteLines")
 		for i = 0, #flight_lines+1 do
 			local o = flight_lines[i]
 			if IsValid(o) then
@@ -1302,7 +1303,7 @@ do -- FlightGrid_Toggle
 		end
 		table.iclear(flight_lines)
 		flight_lines[0] = nil
-		ResumePassEdits("ChoGGi.MenuFuncs.FlightGrid_Toggle.DeleteLines")
+		ResumePassEdits("ChoGGi_Funcs.Menus.FlightGrid_Toggle.DeleteLines")
 	end
 	-- If grid is left on when map changes it gets real laggy
 	function OnMsg.ChangeMap()
@@ -1323,11 +1324,11 @@ do -- FlightGrid_Toggle
 		local size_pt = point(size, size) / 2
 
 		-- we spawn lines once then re-use them
-		SuspendPassEdits("ChoGGi.MenuFuncs.FlightGrid_Toggle.GridFunc")
+		SuspendPassEdits("ChoGGi_Funcs.Menus.FlightGrid_Toggle.GridFunc")
 		for i = 0, (steps + steps) do
 			flight_lines[i] = OPolyline:new()
 		end
-		ResumePassEdits("ChoGGi.MenuFuncs.FlightGrid_Toggle.GridFunc")
+		ResumePassEdits("ChoGGi_Funcs.Menus.FlightGrid_Toggle.GridFunc")
 
 		local plus1 = steps+1
 		local pos_old, pos_new, pos
@@ -1350,7 +1351,7 @@ do -- FlightGrid_Toggle
 		end
 	end
 
-	function ChoGGi.MenuFuncs.FlightGrid_Toggle(size, zoffset)
+	function ChoGGi_Funcs.Menus.FlightGrid_Toggle(size, zoffset)
 		if not Flight_Height then
 			return
 		end

@@ -1,10 +1,11 @@
 -- See LICENSE for terms
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local testing = ChoGGi.testing
 local what_game = ChoGGi.what_game
 
 -- Strings.lua
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 local T = T
 
 local pairs, tonumber, type, tostring = pairs, tonumber, type, tostring
@@ -117,11 +118,11 @@ local function DotPathToObject(dot_path, root, create)
 
 	end
 end
-ChoGGi.ComFuncs.DotPathToObject = DotPathToObject
+ChoGGi_Funcs.Common.DotPathToObject = DotPathToObject
 
--- ChoGGi.ComFuncs.RetName_lookup_table()
+-- ChoGGi_Funcs.Common.RetName_lookup_table()
 do -- RetName
-	local DebugGetInfo = ChoGGi.ComFuncs.DebugGetInfo
+	local DebugGetInfo = ChoGGi_Funcs.Common.DebugGetInfo
 	local IsT = IsT
 	local missing_text = ChoGGi.Temp.missing_text
 	local TMeta = TMeta
@@ -226,13 +227,13 @@ do -- RetName
 
 	do -- stuff we need to be in-game for
 		local function AddFuncsChoGGi(name, skip)
-			local list = g.ChoGGi[name]
+			local list = g.ChoGGi_Funcs[name]
 			for key, value in pairs(list) do
 				if not lookup_table[value] then
 					if skip then
 						lookup_table[value] = key
 					else
-						lookup_table[value] = "ChoGGi." .. name .. "." .. key
+						lookup_table[value] = "ChoGGi_Funcs." .. name .. "." .. key
 					end
 				end
 			end
@@ -254,12 +255,12 @@ do -- RetName
 			AddFuncs("package")
 			AddFuncs("package.searchers")
 			-- ECM func names (some are added by ecm, so we want to update list when it's called again)
-			AddFuncsChoGGi("ComFuncs")
-			AddFuncsChoGGi("ConsoleFuncs")
-			AddFuncsChoGGi("InfoFuncs")
-			AddFuncsChoGGi("MenuFuncs")
-			AddFuncsChoGGi("SettingFuncs")
-			AddFuncsChoGGi("OrigFuncs", true)
+			AddFuncsChoGGi("Common")
+			AddFuncsChoGGi("Console")
+			AddFuncsChoGGi("InfoPane")
+			AddFuncsChoGGi("Menus")
+			AddFuncsChoGGi("Settings")
+			AddFuncsChoGGi("Original", true)
 
 			for key, value in pairs(g.ChoGGi) do
 				if not lookup_table[value] then
@@ -390,17 +391,17 @@ do -- RetName
 		BuildNameList()
 
 		-- called from onmsgs for citystart/loadgame
-		ChoGGi.ComFuncs.RetName_Update = BuildNameList
+		ChoGGi_Funcs.Common.RetName_Update = BuildNameList
 
 		if ChoGGi.testing then
-			function ChoGGi.ComFuncs.RetName_lookup_table()
+			function ChoGGi_Funcs.Common.RetName_lookup_table()
 				return lookup_table
 			end
 		end
 	end -- do
 
 	-- try to return a decent name for the obj, failing that return a string
-	function ChoGGi.ComFuncs.RetName(obj)
+	function ChoGGi_Funcs.Common.RetName(obj)
 
 		-- booleans and nil are easy enough
 		if not obj then
@@ -498,7 +499,7 @@ do -- RetName
 		return type(name) == "string" and name or tostring(name or obj)
 	end
 end -- do
-local RetName = ChoGGi.ComFuncs.RetName
+local RetName = ChoGGi_Funcs.Common.RetName
 
 local function IsValidXWin(win)
 	-- function XFlashWindow()
@@ -507,9 +508,9 @@ local function IsValidXWin(win)
 		return true
 	end
 end
-ChoGGi.ComFuncs.IsValidXWin = IsValidXWin
+ChoGGi_Funcs.Common.IsValidXWin = IsValidXWin
 
-function ChoGGi.ComFuncs.RetIcon(obj)
+function ChoGGi_Funcs.Common.RetIcon(obj)
 	-- most icons
 	if obj.display_icon and obj.display_icon ~= "" then
 		return obj.display_icon
@@ -524,7 +525,7 @@ function ChoGGi.ComFuncs.RetIcon(obj)
 	end
 end
 
-function ChoGGi.ComFuncs.RetHint(obj)
+function ChoGGi_Funcs.Common.RetHint(obj)
 	if type(obj.description) == "userdata" then
 		return obj.description
 
@@ -543,7 +544,7 @@ local function GetParentOfKind(win, cls)
 	end
 	return win
 end
-ChoGGi.ComFuncs.GetParentOfKind = GetParentOfKind
+ChoGGi_Funcs.Common.GetParentOfKind = GetParentOfKind
 
 do -- ImageExts
 	-- easier to keep them in one place
@@ -555,16 +556,16 @@ do -- ImageExts
 		jpeg = true,
 	}
 	-- ImageExts()[str:sub(-3):lower()]
-	function ChoGGi.ComFuncs.ImageExts()
+	function ChoGGi_Funcs.Common.ImageExts()
 		return ext_list
 	end
 end -- do
-local ImageExts = ChoGGi.ComFuncs.ImageExts
+local ImageExts = ChoGGi_Funcs.Common.ImageExts
 
 do -- ValidateImage
 	local Measure = UIL.MeasureImage
 
-	function ChoGGi.ComFuncs.ValidateImage(image)
+	function ChoGGi_Funcs.Common.ValidateImage(image)
 		if not image then
 			return
 		end
@@ -580,7 +581,7 @@ do -- ValidateImage
 		end
 	end
 end
-local ValidateImage = ChoGGi.ComFuncs.ValidateImage
+local ValidateImage = ChoGGi_Funcs.Common.ValidateImage
 
 do -- MsgPopup
 	local temp_params = {}
@@ -593,7 +594,7 @@ do -- MsgPopup
 	-- cycle_objs indexed table of in-game objs
 	-- callback func to call when left clicked (fires with args: c_obj,cycle_obj,dlg)
 
-	function ChoGGi.ComFuncs.MsgPopup(text, title, params)
+	function ChoGGi_Funcs.Common.MsgPopup(text, title, params)
 		-- notifications only show up in-game (UI stuff is missing)
 		if not UIColony then
 			return
@@ -684,7 +685,7 @@ do -- MsgPopup
 		return preset.id
 	end
 end -- do
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 
 do -- ShowObj
 	local OVector, OSphere
@@ -701,10 +702,10 @@ do -- ShowObj
 		local colour = table.rand(rand_colours)
 		return colour
 	end
-	ChoGGi.ComFuncs.RandomColourLimited = rand_c
+	ChoGGi_Funcs.Common.RandomColourLimited = rand_c
 
 	local markers = {}
-	function ChoGGi.ComFuncs.RetObjMarkers()
+	function ChoGGi_Funcs.Common.RetObjMarkers()
 		return markers
 	end
 
@@ -726,8 +727,8 @@ do -- ShowObj
 		markers[k] = nil
 	end
 
-	function ChoGGi.ComFuncs.ClearShowObj(obj_or_bool)
-		SuspendPassEdits("ChoGGi.ComFuncs.ClearShowObj")
+	function ChoGGi_Funcs.Common.ClearShowObj(obj_or_bool)
+		SuspendPassEdits("ChoGGi_Funcs.Common.ClearShowObj")
 
 		-- any markers in the list
 		if obj_or_bool == true then
@@ -735,7 +736,7 @@ do -- ShowObj
 				ClearMarker(k, v)
 			end
 			table.clear(markers)
-			ResumePassEdits("ChoGGi.ComFuncs.ClearShowObj")
+			ResumePassEdits("ChoGGi_Funcs.Common.ClearShowObj")
 			return
 		end
 
@@ -763,10 +764,10 @@ do -- ShowObj
 --~ 		printC("overkill")
 --~ 		-- overkill: could be from a saved game so remove any objects on the map (they shouldn't be left in a normal game)
 --~ 		MapDelete(true, {"ChoGGi_OVector", "ChoGGi_OSphere"})
-		ResumePassEdits("ChoGGi.ComFuncs.ClearShowObj")
+		ResumePassEdits("ChoGGi_Funcs.Common.ClearShowObj")
 	end
 
-	function ChoGGi.ComFuncs.ColourObj(obj, colour)
+	function ChoGGi_Funcs.Common.ColourObj(obj, colour)
 		local is_valid = IsValid(obj)
 		if not is_valid or is_valid and not obj:IsKindOf("ColorizableObject") then
 			return
@@ -797,7 +798,7 @@ do -- ShowObj
 		return markers[pos]
 	end
 
-	function ChoGGi.ComFuncs.ShowPoint(obj, colour, size)
+	function ChoGGi_Funcs.Common.ShowPoint(obj, colour, size)
 		OSphere = OSphere or ChoGGi_OSphere
 		colour = colour or rand_c()
 		-- single pt
@@ -858,9 +859,9 @@ do -- ShowObj
 
 		return sphere_obj
 	end
-	ChoGGi.ComFuncs.ShowObj = ShowObj
+	ChoGGi_Funcs.Common.ShowObj = ShowObj
 	-- I could add it to ShowObj, but too much fiddling
-	function ChoGGi.ComFuncs.ShowQR(q, r, ...)
+	function ChoGGi_Funcs.Common.ShowQR(q, r, ...)
 		if not (q or r) then
 			return
 		end
@@ -868,13 +869,13 @@ do -- ShowObj
 	end
 
 end -- do
-local ShowPoint = ChoGGi.ComFuncs.ShowPoint
-local ShowObj = ChoGGi.ComFuncs.ShowObj
-local ColourObj = ChoGGi.ComFuncs.ColourObj
-local ClearShowObj = ChoGGi.ComFuncs.ClearShowObj
-local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
+local ShowPoint = ChoGGi_Funcs.Common.ShowPoint
+local ShowObj = ChoGGi_Funcs.Common.ShowObj
+local ColourObj = ChoGGi_Funcs.Common.ColourObj
+local ClearShowObj = ChoGGi_Funcs.Common.ClearShowObj
+local RandomColourLimited = ChoGGi_Funcs.Common.RandomColourLimited
 
-function ChoGGi.ComFuncs.PopupSubMenu(menu, name, item)
+function ChoGGi_Funcs.Common.PopupSubMenu(menu, name, item)
 	local popup = menu.popup
 
 	-- build the new one/open it
@@ -887,16 +888,16 @@ function ChoGGi.ComFuncs.PopupSubMenu(menu, name, item)
 	}, terminal.desktop)
 	-- Item == opened from PopupBuildMenu
 	if item then
-		ChoGGi.ComFuncs.PopupBuildMenu(item.submenu, submenu)
+		ChoGGi_Funcs.Common.PopupBuildMenu(item.submenu, submenu)
 	else
-		ChoGGi.ComFuncs.PopupBuildMenu(submenu, popup)
+		ChoGGi_Funcs.Common.PopupBuildMenu(submenu, popup)
 	end
 	submenu:Open()
 	-- add it to the popup
 	popup[name] = submenu
 end
 
-function ChoGGi.ComFuncs.PopupBuildMenu(items, popup)
+function ChoGGi_Funcs.Common.PopupBuildMenu(items, popup)
 	local g_Classes = g_Classes
 	--JA3
 --~ 	local ViewObjectMars = ViewObjectMars
@@ -1034,7 +1035,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items, popup)
 
 			local name = "ChoGGi_submenu_" .. item.name
 			submenu_func = function(self)
-				ChoGGi.ComFuncs.PopupSubMenu(self, name, item)
+				ChoGGi_Funcs.Common.PopupSubMenu(self, name, item)
 			end
 		end
 
@@ -1063,7 +1064,7 @@ function ChoGGi.ComFuncs.PopupBuildMenu(items, popup)
 	end
 end
 
-function ChoGGi.ComFuncs.PopupToggle(parent, popup_id, items, anchor, reopen, submenu)
+function ChoGGi_Funcs.Common.PopupToggle(parent, popup_id, items, anchor, reopen, submenu)
 	local popup = terminal.desktop[popup_id]
 	if popup then
 		popup:Close()
@@ -1097,7 +1098,7 @@ function ChoGGi.ComFuncs.PopupToggle(parent, popup_id, items, anchor, reopen, su
 
 		popup.items = items
 
-		ChoGGi.ComFuncs.PopupBuildMenu(items, popup)
+		ChoGGi_Funcs.Common.PopupBuildMenu(items, popup)
 
 		-- when i send parent as a table with self and box coords
 		parent = parent.ChoGGi_self or parent
@@ -1121,13 +1122,13 @@ end
 local function GetCursorOrGamePadSelectObj()
 	return UseGamepadUI() and SelectionGamepadObj() or SelectionMouseObj()
 end
-ChoGGi.ComFuncs.GetCursorOrGamePadSelectObj = GetCursorOrGamePadSelectObj
+ChoGGi_Funcs.Common.GetCursorOrGamePadSelectObj = GetCursorOrGamePadSelectObj
 
 do -- Circle
 	local OCircle
 
 	-- show a circle for time and delete it
-	function ChoGGi.ComFuncs.Circle(pos, radius, colour, time)
+	function ChoGGi_Funcs.Common.Circle(pos, radius, colour, time)
 		if not OCircle then
 			OCircle = ChoGGi_OCircle
 		end
@@ -1146,7 +1147,7 @@ do -- Circle
 	end
 
 	-- show a sphere for time and delete it
-	function ChoGGi.ComFuncs.Sphere(pos, colour, time)
+	function ChoGGi_Funcs.Common.Sphere(pos, colour, time)
 		local orb = ShowPoint(pos and pos:SetTerrainZ(10 * guic) or GetCursorWorldPos(), colour)
 
 		CreateRealTimeThread(function()
@@ -1157,13 +1158,13 @@ do -- Circle
 		end)
 	end
 end -- do
-local Sphere = ChoGGi.ComFuncs.Sphere
+local Sphere = ChoGGi_Funcs.Common.Sphere
 
 -- this is a question box without a question (WaitPopupNotification only works in-game, not main menu)
-function ChoGGi.ComFuncs.MsgWait(text, title, image, ok_text, context, parent, template, thread)
+function ChoGGi_Funcs.Common.MsgWait(text, title, image, ok_text, context, parent, template, thread)
 	-- thread needed for WaitMarsMsg
 	if not CurrentThread() and thread ~= "skip" then
-		return CreateRealTimeThread(ChoGGi.ComFuncs.MsgWait, text, title, image, ok_text, context, parent, template, "skip")
+		return CreateRealTimeThread(ChoGGi_Funcs.Common.MsgWait, text, title, image, ok_text, context, parent, template, "skip")
 	end
 
 	if UIColony then
@@ -1193,10 +1194,10 @@ end
 
 
 -- well that's the question isn't it?
-function ChoGGi.ComFuncs.QuestionBox(text, func, title, ok_text, cancel_text, image, context, parent, template, thread)
+function ChoGGi_Funcs.Common.QuestionBox(text, func, title, ok_text, cancel_text, image, context, parent, template, thread)
 	-- thread needed for WaitMarsQuestion
 	if not CurrentThread() and thread ~= "skip" then
-		return CreateRealTimeThread(ChoGGi.ComFuncs.QuestionBox, text, func, title, ok_text, cancel_text, image, context, parent, template, "skip")
+		return CreateRealTimeThread(ChoGGi_Funcs.Common.QuestionBox, text, func, title, ok_text, cancel_text, image, context, parent, template, "skip")
 	end
 
 	if not image then
@@ -1227,8 +1228,8 @@ function ChoGGi.ComFuncs.QuestionBox(text, func, title, ok_text, cancel_text, im
 end
 
 -- positive or 1 return TrueVar || negative or 0 return FalseVar
--- ChoGGi.Consts.X = ChoGGi.ComFuncs.NumRetBool(ChoGGi.Consts.X, 0, ChoGGi.Consts.X)
-function ChoGGi.ComFuncs.NumRetBool(num, true_var, false_var)
+-- ChoGGi.Consts.X = ChoGGi_Funcs.Common.NumRetBool(ChoGGi.Consts.X, 0, ChoGGi.Consts.X)
+function ChoGGi_Funcs.Common.NumRetBool(num, true_var, false_var)
 	if type(num) ~= "number" then
 		return
 	end
@@ -1240,7 +1241,7 @@ function ChoGGi.ComFuncs.NumRetBool(num, true_var, false_var)
 end
 
 -- return opposite value or first value if neither
-function ChoGGi.ComFuncs.ValueRetOpp(setting, value1, value2)
+function ChoGGi_Funcs.Common.ValueRetOpp(setting, value1, value2)
 	if setting == value1 then
 		return value2
 --~ 	elseif setting == value2 then
@@ -1250,7 +1251,7 @@ function ChoGGi.ComFuncs.ValueRetOpp(setting, value1, value2)
 end
 
 -- return as num
-function ChoGGi.ComFuncs.BoolRetNum(bool)
+function ChoGGi_Funcs.Common.BoolRetNum(bool)
 	if bool == true then
 		return 1
 	end
@@ -1258,7 +1259,7 @@ function ChoGGi.ComFuncs.BoolRetNum(bool)
 end
 
 -- toggle 0/1
-function ChoGGi.ComFuncs.ToggleBoolNum(n)
+function ChoGGi_Funcs.Common.ToggleBoolNum(n)
 	if n == 0 then
 		return 1
 	end
@@ -1266,7 +1267,7 @@ function ChoGGi.ComFuncs.ToggleBoolNum(n)
 end
 
 -- toggle true/nil (so it doesn't add setting to file as = false
-function ChoGGi.ComFuncs.ToggleValue(value)
+function ChoGGi_Funcs.Common.ToggleValue(value)
 	if value then
 		return
 	end
@@ -1274,7 +1275,7 @@ function ChoGGi.ComFuncs.ToggleValue(value)
 end
 
 -- return equal or higher amount
-function ChoGGi.ComFuncs.CompareAmounts(a, b)
+function ChoGGi_Funcs.Common.CompareAmounts(a, b)
 	--if ones missing then just return the other
 	if not a then
 		return b
@@ -1290,10 +1291,10 @@ end
 
 --[[
 table.sort(s.command_centers, function(a, b)
-	return ChoGGi.ComFuncs.CompareTableFuncs(a, b, "GetDist2D", s)
+	return ChoGGi_Funcs.Common.CompareTableFuncs(a, b, "GetDist2D", s)
 end)
 ]]
-function ChoGGi.ComFuncs.CompareTableFuncs(a, b, func, obj)
+function ChoGGi_Funcs.Common.CompareTableFuncs(a, b, func, obj)
 	if not a and not b then
 		return
 	end
@@ -1305,7 +1306,7 @@ function ChoGGi.ComFuncs.CompareTableFuncs(a, b, func, obj)
 end
 
 -- check for and remove broken objects from *city.labels
-function ChoGGi.ComFuncs.RemoveMissingLabelObjects(label)
+function ChoGGi_Funcs.Common.RemoveMissingLabelObjects(label)
 	local Cities = Cities or ""
 	for i = 1, #Cities do
 		local city = Cities[i]
@@ -1318,7 +1319,7 @@ function ChoGGi.ComFuncs.RemoveMissingLabelObjects(label)
 	end
 end
 
-function ChoGGi.ComFuncs.RemoveMissingTableObjects(list, obj)
+function ChoGGi_Funcs.Common.RemoveMissingTableObjects(list, obj)
 	if obj then
 		for i = #list, 1, -1 do
 			if #list[i][list] == 0 then
@@ -1335,7 +1336,7 @@ function ChoGGi.ComFuncs.RemoveMissingTableObjects(list, obj)
 	return list
 end
 
-function ChoGGi.ComFuncs.RemoveFromLabel(label, obj)
+function ChoGGi_Funcs.Common.RemoveFromLabel(label, obj)
 	local Cities = Cities or ""
 	for i = 1, #Cities do
 		local city = Cities[i]
@@ -1368,7 +1369,7 @@ local function RetProperType(value)
 	-- then it's a string (probably)
 	return value, "string"
 end
-ChoGGi.ComFuncs.RetProperType = RetProperType
+ChoGGi_Funcs.Common.RetProperType = RetProperType
 
 do -- RetType
 	-- used to check for some SM objects (Points/Boxes)
@@ -1378,7 +1379,7 @@ do -- RetType
 		local IsGrid = IsGrid
 		local IsPStr = IsPStr
 
-		function ChoGGi.ComFuncs.RetType(obj)
+		function ChoGGi_Funcs.Common.RetType(obj)
 			if getmetatable(obj) then
 				if IsPoint(obj) then
 					return "Point"
@@ -1405,7 +1406,7 @@ do -- RetType
 		local IsQuaternion = IsQuaternion
 		local IsPStr = IsPStr
 
-		function ChoGGi.ComFuncs.RetType(obj)
+		function ChoGGi_Funcs.Common.RetType(obj)
 			if getmetatable(obj) then
 				if IsPoint(obj) then
 					return "Point"
@@ -1426,7 +1427,7 @@ do -- RetType
 end -- do
 
 -- takes "example1 example2" and returns {[1] = "example1", [2] = "example2"}
-function ChoGGi.ComFuncs.StringToTable(str)
+function ChoGGi_Funcs.Common.StringToTable(str)
 	local temp = {}
 	for i in str:gmatch("%S+") do
 		temp[i] = i
@@ -1434,7 +1435,7 @@ function ChoGGi.ComFuncs.StringToTable(str)
 	return temp
 end
 
-function ChoGGi.ComFuncs.SetConsts(id, value)
+function ChoGGi_Funcs.Common.SetConsts(id, value)
 	-- we only want to change it if user set value
 	if value then
 		-- some mods check Consts or g_Consts, so we'll just do both to be sure
@@ -1445,9 +1446,9 @@ function ChoGGi.ComFuncs.SetConsts(id, value)
 	end
 end
 -- obsolete
-ChoGGi.ComFuncs.SetConstsG = ChoGGi.ComFuncs.SetConsts
+ChoGGi_Funcs.Common.SetConstsG = ChoGGi_Funcs.Common.SetConsts
 
-function ChoGGi.ComFuncs.SetPropertyProp(obj, prop_id, value_id, value)
+function ChoGGi_Funcs.Common.SetPropertyProp(obj, prop_id, value_id, value)
 	if not obj or obj and not obj:IsKindOf("PropertyObject") then
 		return
 	end
@@ -1462,7 +1463,7 @@ function ChoGGi.ComFuncs.SetPropertyProp(obj, prop_id, value_id, value)
 end
 
 -- If value is the same as stored then make it false instead of default value, so it doesn't apply next time
-function ChoGGi.ComFuncs.SetSavedConstSetting(setting, value)
+function ChoGGi_Funcs.Common.SetSavedConstSetting(setting, value)
 	value = value or const[setting] or Consts[setting]
 	local ChoGGi = ChoGGi
 	-- If setting is the same as the default then remove it
@@ -1476,7 +1477,7 @@ end
 do -- TableCleanDupes
 	local dupe_t = {}
 	local temp_t = {}
-	function ChoGGi.ComFuncs.TableCleanDupes(list)
+	function ChoGGi_Funcs.Common.TableCleanDupes(list)
 		local c = 0
 
 		-- quicker to make a new list on large tables
@@ -1505,8 +1506,8 @@ do -- TableCleanDupes
 	end
 end -- do
 
--- ChoGGi.ComFuncs.RemoveFromTable(sometable, "class", "SelectionArrow")
-function ChoGGi.ComFuncs.RemoveFromTable(list, cls, text)
+-- ChoGGi_Funcs.Common.RemoveFromTable(sometable, "class", "SelectionArrow")
+function ChoGGi_Funcs.Common.RemoveFromTable(list, cls, text)
 	if type(list) ~= "table" then
 		return empty_table
 	end
@@ -1523,9 +1524,9 @@ function ChoGGi.ComFuncs.RemoveFromTable(list, cls, text)
 	return tempt
 end
 
--- ChoGGi.ComFuncs.FilterFromTable(MainCity.labels.Building, {ParSystem = true, ResourceStockpile = true}, nil, "class")
--- ChoGGi.ComFuncs.FilterFromTable(MainCity.labels.Unit, nil, nil, "working")
-function ChoGGi.ComFuncs.FilterFromTable(list, exclude_list, include_list, name)
+-- ChoGGi_Funcs.Common.FilterFromTable(MainCity.labels.Building, {ParSystem = true, ResourceStockpile = true}, nil, "class")
+-- ChoGGi_Funcs.Common.FilterFromTable(MainCity.labels.Unit, nil, nil, "working")
+function ChoGGi_Funcs.Common.FilterFromTable(list, exclude_list, include_list, name)
 	if type(list) ~= "table" then
 		return {}
 	end
@@ -1554,9 +1555,9 @@ function ChoGGi.ComFuncs.FilterFromTable(list, exclude_list, include_list, name)
 	end)
 end
 
--- ChoGGi.ComFuncs.FilterFromTableFunc(MainCity.labels.Building, "IsKindOf", "Residence")
--- ChoGGi.ComFuncs.FilterFromTableFunc(MainCity.labels.Unit, "IsValid", nil, true)
-function ChoGGi.ComFuncs.FilterFromTableFunc(list, func, value, is_bool)
+-- ChoGGi_Funcs.Common.FilterFromTableFunc(MainCity.labels.Building, "IsKindOf", "Residence")
+-- ChoGGi_Funcs.Common.FilterFromTableFunc(MainCity.labels.Unit, "IsValid", nil, true)
+function ChoGGi_Funcs.Common.FilterFromTableFunc(list, func, value, is_bool)
 	if type(list) ~= "table" then
 		return {}
 	end
@@ -1572,7 +1573,7 @@ function ChoGGi.ComFuncs.FilterFromTableFunc(list, func, value, is_bool)
 end
 
 -- return a string setting/text for menus
-function ChoGGi.ComFuncs.SettingState(setting, text)
+function ChoGGi_Funcs.Common.SettingState(setting, text)
 	if type(setting) == "string" and setting:find("%.") then
 		-- some of the menu items passed are "table.table.exists?.setting"
 		local obj = DotPathToObject(setting)
@@ -1600,8 +1601,8 @@ function ChoGGi.ComFuncs.SettingState(setting, text)
 end
 
 -- get all objects, then filter for ones within *radius*, returned sorted by dist, or *sort* for name
--- ChoGGi.ComFuncs.OpenInExamineDlg(ReturnAllNearby(1000, "class"))
-function ChoGGi.ComFuncs.ReturnAllNearby(radius, sort, pt)
+-- ChoGGi_Funcs.Common.OpenInExamineDlg(ReturnAllNearby(1000, "class"))
+function ChoGGi_Funcs.Common.ReturnAllNearby(radius, sort, pt)
 	radius = radius or 5000
 	pt = pt or GetCursorWorldPos()
 
@@ -1629,14 +1630,14 @@ if what_game == "Mars" then
 	local HexGridGetObjects = HexGridGetObjects
 
 	-- q can be pt or q
-	function ChoGGi.ComFuncs.RetObjectAtPos(q, r)
+	function ChoGGi_Funcs.Common.RetObjectAtPos(q, r)
 		if not r then
 			q, r = WorldToHex(q)
 		end
 		return HexGridGetObject(ActiveGameMap.object_hex_grid.grid, q, r)
 	end
 
-	function ChoGGi.ComFuncs.RetObjectsAtPos(q, r)
+	function ChoGGi_Funcs.Common.RetObjectsAtPos(q, r)
 		if not r then
 			q, r = WorldToHex(q)
 		end
@@ -1644,7 +1645,7 @@ if what_game == "Mars" then
 	end
 end -- do
 
-function ChoGGi.ComFuncs.RetSortTextAssTable(list, for_type)
+function ChoGGi_Funcs.Common.RetSortTextAssTable(list, for_type)
 	local temp_table = {}
 	local c = 0
 	list = list or empty_table
@@ -1685,10 +1686,10 @@ do -- Ticks
 		print(id, ":", GetPreciseTicks() - (times[id] or max_int), name)
 		times[id] = nil
 	end
-	ChoGGi.ComFuncs.TickStart = TickStart
-	ChoGGi.ComFuncs.TickEnd = TickEnd
+	ChoGGi_Funcs.Common.TickStart = TickStart
+	ChoGGi_Funcs.Common.TickEnd = TickEnd
 
-	function ChoGGi.ComFuncs.PrintFuncTime(func, ...)
+	function ChoGGi_Funcs.Common.PrintFuncTime(func, ...)
 		local id = "PrintFuncTime " .. AsyncRand()
 		local varargs = ...
 		pcall(function()
@@ -1699,7 +1700,7 @@ do -- Ticks
 	end
 end -- do
 
-function ChoGGi.ComFuncs.UpdateDataTablesCargo()
+function ChoGGi_Funcs.Common.UpdateDataTablesCargo()
 	if what_game ~= "Mars" then
 		return
 	end
@@ -1765,7 +1766,7 @@ do -- UpdateDataTables
 	end
 
 	-- make copies of spon/comm profiles
-	function ChoGGi.ComFuncs.UpdateTablesSponComm()
+	function ChoGGi_Funcs.Common.UpdateTablesSponComm()
 		if what_game ~= "Mars" then
 			return
 		end
@@ -1779,7 +1780,7 @@ do -- UpdateDataTables
 		UpdateProfile(Presets.CommanderProfilePreset.Default,Tables.Commanders)
 	end
 
-	function ChoGGi.ComFuncs.UpdateDataTables()
+	function ChoGGi_Funcs.Common.UpdateDataTables()
 		if what_game ~= "Mars" then
 			return
 		end
@@ -1912,13 +1913,13 @@ C:\Program Files (x86)\Steam\steamapps\common\Surviving Mars\CommonLua\Classes\C
 		-- OR number between 0 and max_int
 		or AsyncRand()
 end
-ChoGGi.ComFuncs.Random = Random
+ChoGGi_Funcs.Common.Random = Random
 
---~ function ChoGGi.ComFuncs.OpenKeyPresserDlg()
+--~ function ChoGGi_Funcs.Common.OpenKeyPresserDlg()
 --~ 	ChoGGi_KeyPresserDlg:new({}, terminal.desktop, {})
 --~ end
 
-function ChoGGi.ComFuncs.CreateSetting(str, setting_type)
+function ChoGGi_Funcs.Common.CreateSetting(str, setting_type)
 	local setting = DotPathToObject(str, nil, true)
 	if type(setting) == setting_type then
 		return true
@@ -1933,7 +1934,7 @@ end
 
 -- returns whatever is selected > moused over > nearest object to cursor
 -- single selection
-function ChoGGi.ComFuncs.SelObject(radius, pt)
+function ChoGGi_Funcs.Common.SelObject(radius, pt)
 	if not UIColony then
 		return
 	end
@@ -1955,7 +1956,7 @@ function ChoGGi.ComFuncs.SelObject(radius, pt)
 end
 
 -- returns an indexed table of objects, add a radius to get objs close to cursor
-function ChoGGi.ComFuncs.SelObjects(radius, pt)
+function ChoGGi_Funcs.Common.SelObjects(radius, pt)
 	if not UIColony then
 		return empty_table
 	end
@@ -1972,8 +1973,8 @@ function ChoGGi.ComFuncs.SelObjects(radius, pt)
 	pt = pt or GetCursorWorldPos()
 	return MapGet(pt, radius or radius4h, "attached", false)
 end
-local SelObject = ChoGGi.ComFuncs.SelObject or empty_func
-local SelObjects = ChoGGi.ComFuncs.SelObjects or empty_func
+local SelObject = ChoGGi_Funcs.Common.SelObject or empty_func
+local SelObjects = ChoGGi_Funcs.Common.SelObjects or empty_func
 
 do -- Rebuildshortcuts
 	local _InternalTranslate = _InternalTranslate
@@ -2116,7 +2117,7 @@ do -- Rebuildshortcuts
 --~ XTemplateSpawn("GameShortcuts", XShortcutsTarget)
 
 	local is_list_sorted
-	function ChoGGi.ComFuncs.Rebuildshortcuts()
+	function ChoGGi_Funcs.Common.Rebuildshortcuts()
 		local XShortcutsTarget = XShortcutsTarget
 
 		-- too soon?
@@ -2216,9 +2217,9 @@ do -- Rebuildshortcuts
 				ActionId = name,
 				OnAction = function()
 					ChoGGi.UserSettings.DisableECM = false
-					ChoGGi.SettingFuncs.WriteSettings()
+					ChoGGi_Funcs.Settings.WriteSettings()
 					print(name, ":", Translate(302535920001070--[[Restart to take effect.]]))
-					ChoGGi.ComFuncs.MsgWait(
+					ChoGGi_Funcs.Common.MsgWait(
 						T(302535920001070--[[Restart to take effect.]]),
 						name
 					)
@@ -2256,7 +2257,7 @@ do -- AttachToNearestDome
 	end
 
 	-- If building requires a dome and that dome is borked then assign it to nearest dome
-	function ChoGGi.ComFuncs.AttachToNearestDome(obj, force)
+	function ChoGGi_Funcs.Common.AttachToNearestDome(obj, force)
 		if force ~= "force" and not obj:GetDefaultPropertyValue("dome_required") then
 			return
 		end
@@ -2308,7 +2309,7 @@ do -- AttachToNearestDome
 end -- do
 
 -- toggle working status
-function ChoGGi.ComFuncs.ToggleWorking(obj)
+function ChoGGi_Funcs.Common.ToggleWorking(obj)
 	if IsValid(obj) then
 		CreateRealTimeThread(function()
 			obj:ToggleWorking()
@@ -2320,7 +2321,7 @@ end
 
 do -- SetCameraSettings
 	local cameraRTS = cameraRTS
-	function ChoGGi.ComFuncs.SetCameraSettings()
+	function ChoGGi_Funcs.Common.SetCameraSettings()
 		local ChoGGi = ChoGGi
 		-- cameraRTS.GetProperties(1)
 
@@ -2372,7 +2373,7 @@ do -- SetCameraSettings
 	end
 end -- do
 
-function ChoGGi.ComFuncs.ColonistUpdateAge(c, age)
+function ChoGGi_Funcs.Common.ColonistUpdateAge(c, age)
 	if not IsValid(c) or type(age) ~= "string" then
 		return
 	end
@@ -2421,7 +2422,7 @@ function ChoGGi.ComFuncs.ColonistUpdateAge(c, age)
 	c:UpdateResidence()
 end
 
-function ChoGGi.ComFuncs.ColonistUpdateGender(c, gender)
+function ChoGGi_Funcs.Common.ColonistUpdateGender(c, gender)
 	if not IsValid(c) or type(gender) ~= "string" then
 		return
 	end
@@ -2453,7 +2454,7 @@ function ChoGGi.ComFuncs.ColonistUpdateGender(c, gender)
 	c:ChooseEntity()
 end
 
-function ChoGGi.ComFuncs.ColonistUpdateSpecialization(c, spec)
+function ChoGGi_Funcs.Common.ColonistUpdateSpecialization(c, spec)
 	if not IsValid(c) or type(spec) ~= "string" then
 		return
 	end
@@ -2476,7 +2477,7 @@ function ChoGGi.ComFuncs.ColonistUpdateSpecialization(c, spec)
 	end
 end
 
-function ChoGGi.ComFuncs.ColonistUpdateTraits(c, bool, traits)
+function ChoGGi_Funcs.Common.ColonistUpdateTraits(c, bool, traits)
 	if not IsValid(c) or type(traits) ~= "table" then
 		return
 	end
@@ -2492,7 +2493,7 @@ function ChoGGi.ComFuncs.ColonistUpdateTraits(c, bool, traits)
 	end
 end
 
-function ChoGGi.ComFuncs.ColonistUpdateRace(c, race)
+function ChoGGi_Funcs.Common.ColonistUpdateRace(c, race)
 	local race_type = type(race)
 	if (race_type ~= "number" and race_type ~= "string") or not IsValid(c) then
 		return
@@ -2566,9 +2567,9 @@ do -- FuckingDrones
 			return cc[idle_idx]
 		end
 	end
-	ChoGGi.ComFuncs.GetNearestIdleDrone = GetNearestIdleDrone
+	ChoGGi_Funcs.Common.GetNearestIdleDrone = GetNearestIdleDrone
 
-	function ChoGGi.ComFuncs.FuckingDrones(obj,single)
+	function ChoGGi_Funcs.Common.FuckingDrones(obj,single)
 		if not IsValid(obj) then
 			return
 		end
@@ -2626,7 +2627,7 @@ do -- FuckingDrones
 	end
 end -- do
 
-function ChoGGi.ComFuncs.SetMechanizedDepotTempAmount(obj, amount)
+function ChoGGi_Funcs.Common.SetMechanizedDepotTempAmount(obj, amount)
 	amount = amount or 10
 	local resource = obj.resource
 	local io_stockpile = obj.stockpiles[obj:GetNextStockpileIndex()]
@@ -2678,7 +2679,7 @@ do -- GetAllAttaches
 		end
 	end
 
-	function ChoGGi.ComFuncs.GetAllAttaches(obj, mark_attaches, only_include, safe)
+	function ChoGGi_Funcs.Common.GetAllAttaches(obj, mark_attaches, only_include, safe)
 		mark = mark_attaches
 
 		table.clear(attach_dupes)
@@ -2726,7 +2727,7 @@ do -- GetAllAttaches
 		return attaches_list
 	end
 end -- do
-local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
+local GetAllAttaches = ChoGGi_Funcs.Common.GetAllAttaches
 
 -- I've seen better func names
 local function MapGet_ChoGGi(label, area, city, ...)
@@ -2744,9 +2745,9 @@ local function MapGet_ChoGGi(label, area, city, ...)
 	end
 	return objs
 end
-ChoGGi.ComFuncs.MapGet = MapGet_ChoGGi
+ChoGGi_Funcs.Common.MapGet = MapGet_ChoGGi
 -- just the "fix" no labels
-function ChoGGi.ComFuncs.MapGet_fixed(area, class, city, ...)
+function ChoGGi_Funcs.Common.MapGet_fixed(area, class, city, ...)
 	local g_cls = g_Classes[class]
 	-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything* (think gary oldman in professional)
 	if g_cls and g_cls:IsKindOf("CObject") then
@@ -2773,7 +2774,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 			obj.ChoGGi_origcolors[-1] = obj:GetColorModifier()
 		end
 	end
-	ChoGGi.ComFuncs.SaveOldPalette = SaveOldPalette
+	ChoGGi_Funcs.Common.SaveOldPalette = SaveOldPalette
 	colour_funcs.SetColours = function(obj, choice)
 		SaveOldPalette(obj)
 		for i = 1, 4 do
@@ -2794,7 +2795,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 		obj:SetColorizationMaterial(3, c[3][1], c[3][2], c[3][3])
 		obj:SetColorizationMaterial(4, c[4][1], c[4][2], c[4][3])
 	end
-	ChoGGi.ComFuncs.SetChoGGiPalette = SetChoGGiPalette
+	ChoGGi_Funcs.Common.SetChoGGiPalette = SetChoGGiPalette
 
 	local function RestoreOldPalette(obj)
 		if not IsValid(obj) then
@@ -2805,7 +2806,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 			obj.ChoGGi_origcolors = nil
 		end
 	end
-	ChoGGi.ComFuncs.RestoreOldPalette = RestoreOldPalette
+	ChoGGi_Funcs.Common.RestoreOldPalette = RestoreOldPalette
 	colour_funcs.RestoreOldPalette = RestoreOldPalette
 
 	local function GetPalette(obj)
@@ -2819,7 +2820,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 		pal.Color4, pal.Roughness4, pal.Metallic4 = obj:GetColorizationMaterial(4)
 		return pal
 	end
-	ChoGGi.ComFuncs.GetPalette = GetPalette
+	ChoGGi_Funcs.Common.GetPalette = GetPalette
 
 	local function RandomColour(amount)
 		if amount and type(amount) == "number" and amount > 1 then
@@ -2860,9 +2861,9 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 		-- return a single colour
 		return AsyncRand(16777217) + -16777216
 	end
-	ChoGGi.ComFuncs.RandomColour = RandomColour
+	ChoGGi_Funcs.Common.RandomColour = RandomColour
 
-	function ChoGGi.ComFuncs.ObjectColourRandom(obj)
+	function ChoGGi_Funcs.Common.ObjectColourRandom(obj)
 		-- If fired from action menu
 		if IsKindOf(obj, "XAction") then
 			obj = SelObject()
@@ -2929,7 +2930,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 
 	end
 
-	function ChoGGi.ComFuncs.ObjectColourDefault(obj)
+	function ChoGGi_Funcs.Common.ObjectColourDefault(obj)
 		-- If fired from action menu
 		if IsKindOf(obj, "XAction") then
 			obj = SelObject()
@@ -2970,7 +2971,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 		end
 	end
 
-	function ChoGGi.ComFuncs.ChangeObjectColour(obj, parent, dialog)
+	function ChoGGi_Funcs.Common.ChangeObjectColour(obj, parent, dialog)
 		if not obj or obj and not obj:IsKindOf("ColorizableObject") then
 			MsgPopup(
 				Translate(302535920000015--[[Can't colour %s.]]):format(RetName(obj)),
@@ -3078,7 +3079,7 @@ do -- SaveOldPalette/RestoreOldPalette/GetPalette/RandomColour/ObjectColourRando
 			end
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = T(302535920001708--[[Color Modifier]]) .. ": " .. RetName(obj),
@@ -3101,7 +3102,7 @@ You can copy and paste numbers if you want."]]),
 	end
 end -- do
 
-function ChoGGi.ComFuncs.BuildMenu_Toggle()
+function ChoGGi_Funcs.Common.BuildMenu_Toggle()
 	local dlg = Dialogs.XBuildMenu
 	if not dlg then
 		return
@@ -3127,7 +3128,7 @@ do -- DeleteObject
 	local DeleteObject
 
 	local function DeleteLabelObjs(obj, label)
-		SuspendPassEdits("ChoGGi.ComFuncs.DeleteLabelObjs")
+		SuspendPassEdits("ChoGGi_Funcs.Common.DeleteLabelObjs")
 		local objs = obj.labels[label] or ""
 		for i = #objs, 1, -1 do
 			local obj = objs[i]
@@ -3135,7 +3136,7 @@ do -- DeleteObject
 				DeleteObject(obj, true)
 			end
 		end
-		ResumePassEdits("ChoGGi.ComFuncs.DeleteLabelObjs")
+		ResumePassEdits("ChoGGi_Funcs.Common.DeleteLabelObjs")
 	end
 
 	local function ExecFunc(obj, funcname, ...)
@@ -3259,9 +3260,9 @@ do -- DeleteObject
 	end
 
 	-- skip_demo == dust plume resource drop
-	function ChoGGi.ComFuncs.DeleteObject(objs, skip_demo)
+	function ChoGGi_Funcs.Common.DeleteObject(objs, skip_demo)
 		if not DeleteObject then
-			DeleteObject = ChoGGi.ComFuncs.DeleteObject
+			DeleteObject = ChoGGi_Funcs.Common.DeleteObject
 		end
 
 		if IsKindOf(objs, "XAction") then
@@ -3272,14 +3273,22 @@ do -- DeleteObject
 
 		if IsValid(objs) then
 			CreateRealTimeThread(DeleteFunc, objs, skip_demo)
-		elseif type(objs) == "table" then
-			SuspendPassEdits("ChoGGi.ComFuncs.DeleteObject")
+		else
 			CreateRealTimeThread(function()
-				for i = #objs, 1, -1 do
-					DeleteFunc(objs[i], skip_demo)
+				-- If it's a string, then it's probably a class name
+				if type(objs) == "string" then
+					-- Returns a table
+					objs = MapGet_ChoGGi(objs)
+				end
+				-- Clear tables
+				if type(objs) == "table" then
+					SuspendPassEdits("ChoGGi_Funcs.Common.DeleteObject")
+					for i = #objs, 1, -1 do
+						DeleteFunc(objs[i], skip_demo)
+					end
+					ResumePassEdits("ChoGGi_Funcs.Common.DeleteObject")
 				end
 			end)
-			ResumePassEdits("ChoGGi.ComFuncs.DeleteObject")
 		end
 
 --~ 		-- hopefully i can remove all log spam one of these days
@@ -3290,7 +3299,7 @@ do -- DeleteObject
 
 	end
 end -- do
-local DeleteObject = ChoGGi.ComFuncs.DeleteObject
+local DeleteObject = ChoGGi_Funcs.Common.DeleteObject
 
 do -- EmptyMechDepot
 	local angle_x = {
@@ -3310,7 +3319,7 @@ do -- EmptyMechDepot
 		[18000] = -500,
 	}
 	-- sticks small depot in front of mech depot and moves all resources to it (max of 20 000)
-	function ChoGGi.ComFuncs.EmptyMechDepot(obj, skip_delete)
+	function ChoGGi_Funcs.Common.EmptyMechDepot(obj, skip_delete)
 		-- If fired from action menu
 		if IsKindOf(obj, "XAction") then
 			obj = SelObject()
@@ -3375,7 +3384,7 @@ do -- EmptyMechDepot
 	end
 end -- do
 
-function ChoGGi.ComFuncs.DeleteAllAttaches(obj)
+function ChoGGi_Funcs.Common.DeleteAllAttaches(obj)
 	if obj.DestroyAttaches then
 		obj:DestroyAttaches()
 	end
@@ -3441,9 +3450,9 @@ do -- RetNearestResource/FindNearestResource
 			end
 		end)
 	end
-	ChoGGi.ComFuncs.RetNearestResourceDepot = RetNearestResourceDepot
+	ChoGGi_Funcs.Common.RetNearestResourceDepot = RetNearestResourceDepot
 
-	function ChoGGi.ComFuncs.FindNearestResource(obj)
+	function ChoGGi_Funcs.Common.FindNearestResource(obj)
 		-- If fired from action menu
 		if IsKindOf(obj, "XAction") or not obj then
 			obj = SelObject()
@@ -3482,7 +3491,7 @@ do -- RetNearestResource/FindNearestResource
 				if nearest then
 					-- the power of god
 					ViewObjectMars(nearest)
-					ChoGGi.ComFuncs.AddBlinkyToObj(nearest)
+					ChoGGi_Funcs.Common.AddBlinkyToObj(nearest)
 				else
 					MsgPopup(
 						Translate(302535920000029--[[Error: Cannot find any %s.]]):format(choice[1].text),
@@ -3493,7 +3502,7 @@ do -- RetNearestResource/FindNearestResource
 			end
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = T(302535920000031--[[Find Nearest Resource]]) .. ": " .. RetName(obj),
@@ -3554,35 +3563,35 @@ do -- BuildingConsumption
 		obj:SetBase(name, 0)
 	end
 
-	function ChoGGi.ComFuncs.RemoveBuildingWaterConsump(obj)
+	function ChoGGi_Funcs.Common.RemoveBuildingWaterConsump(obj)
 		RemoveConsumption(obj, "water_consumption", "LifeSupportConsumer")
 		if obj:IsKindOf("LandscapeLake") then
 			obj.irrigation = -obj:GetDefaultPropertyValue("irrigation")
-			ChoGGi.ComFuncs.ToggleWorking(obj)
+			ChoGGi_Funcs.Common.ToggleWorking(obj)
 		end
 	end
-	function ChoGGi.ComFuncs.AddBuildingWaterConsump(obj)
+	function ChoGGi_Funcs.Common.AddBuildingWaterConsump(obj)
 		AddConsumption(obj, "water_consumption", "LifeSupportConsumer")
 		if obj:IsKindOf("LandscapeLake") then
 			obj.irrigation = obj:GetDefaultPropertyValue("irrigation")
-			ChoGGi.ComFuncs.ToggleWorking(obj)
+			ChoGGi_Funcs.Common.ToggleWorking(obj)
 		end
 	end
-	function ChoGGi.ComFuncs.RemoveBuildingElecConsump(obj)
+	function ChoGGi_Funcs.Common.RemoveBuildingElecConsump(obj)
 		RemoveConsumption(obj, "electricity_consumption", "ElectricityConsumer")
 	end
-	function ChoGGi.ComFuncs.AddBuildingElecConsump(obj)
+	function ChoGGi_Funcs.Common.AddBuildingElecConsump(obj)
 		AddConsumption(obj, "electricity_consumption", "ElectricityConsumer")
 	end
-	function ChoGGi.ComFuncs.RemoveBuildingAirConsump(obj)
+	function ChoGGi_Funcs.Common.RemoveBuildingAirConsump(obj)
 		RemoveConsumption(obj, "air_consumption", "LifeSupportConsumer")
 	end
-	function ChoGGi.ComFuncs.AddBuildingAirConsump(obj)
+	function ChoGGi_Funcs.Common.AddBuildingAirConsump(obj)
 		AddConsumption(obj, "air_consumption", "LifeSupportConsumer")
 	end
 end -- do
 
-function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj, skip_msg)
+function ChoGGi_Funcs.Common.CollisionsObject_Toggle(obj, skip_msg)
 	-- If fired from action menu
 	if IsKindOf(obj, "XAction") then
 		obj = SelObject()
@@ -3604,7 +3613,7 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj, skip_msg)
 
 	local which
 	-- hopefully give it a bit more speed
-	SuspendPassEdits("ChoGGi.ComFuncs.CollisionsObject_Toggle")
+	SuspendPassEdits("ChoGGi_Funcs.Common.CollisionsObject_Toggle")
 	-- re-enable col on obj and any attaches
 	if obj.ChoGGi_CollisionsDisabled then
 		-- collision on object
@@ -3627,7 +3636,7 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj, skip_msg)
 		obj.ChoGGi_CollisionsDisabled = true
 		which = Translate(847439380056--[[Disabled]])
 	end
-	ResumePassEdits("ChoGGi.ComFuncs.CollisionsObject_Toggle")
+	ResumePassEdits("ChoGGi_Funcs.Common.CollisionsObject_Toggle")
 
 	if not skip_msg then
 		MsgPopup(
@@ -3638,18 +3647,18 @@ function ChoGGi.ComFuncs.CollisionsObject_Toggle(obj, skip_msg)
 	end
 end
 
-function ChoGGi.ComFuncs.ToggleCollisions(cls)
+function ChoGGi_Funcs.Common.ToggleCollisions(cls)
 	-- pretty much the only thing I use it for, but just in case
 	if not cls then
 		cls = "LifeSupportGridElement"
 	end
-	local CollisionsObject_Toggle = ChoGGi.ComFuncs.CollisionsObject_Toggle
+	local CollisionsObject_Toggle = ChoGGi_Funcs.Common.CollisionsObject_Toggle
 	-- hopefully give it a bit more speed
-	SuspendPassEdits("ChoGGi.ComFuncs.ToggleCollisions")
+	SuspendPassEdits("ChoGGi_Funcs.Common.ToggleCollisions")
 	MapForEach("map", cls, function(o)
 		CollisionsObject_Toggle(o, true)
 	end)
-	ResumePassEdits("ChoGGi.ComFuncs.ToggleCollisions")
+	ResumePassEdits("ChoGGi_Funcs.Common.ToggleCollisions")
 end
 
 do -- AddXTemplate/RemoveXTemplateSections
@@ -3662,13 +3671,13 @@ do -- AddXTemplate/RemoveXTemplateSections
 			table.remove(list, idx)
 		end
 	end
-	ChoGGi.ComFuncs.RemoveTableItem = RemoveTableItem
+	ChoGGi_Funcs.Common.RemoveTableItem = RemoveTableItem
 
 	-- check for and remove old object (XTemplates are created on new game/new dlc ?)
 	local function RemoveXTemplateSections(list, name, value)
 		RemoveTableItem(list, name, value or true)
 	end
-	ChoGGi.ComFuncs.RemoveXTemplateSections = RemoveXTemplateSections
+	ChoGGi_Funcs.Common.RemoveXTemplateSections = RemoveXTemplateSections
 
 	local empty_func = empty_func
 	local function RetTrue()
@@ -3717,7 +3726,7 @@ do -- AddXTemplate/RemoveXTemplateSections
 		--~ AddXTemplate(XTemplates.ipColonist[1], "LockworkplaceColonist", nil, {
 	-- old: name, template, list, toplevel
 		--~ AddXTemplate("SolariaTelepresence_sectionWorkplace1", "sectionWorkplace", {
-	function ChoGGi.ComFuncs.AddXTemplate(xt, name, pos, list)
+	function ChoGGi_Funcs.Common.AddXTemplate(xt, name, pos, list)
 		if type(xt) == "string" then
 			if list then
 				AddTemplate(XTemplates[name], xt, nil, pos)
@@ -3740,9 +3749,9 @@ local function CheatsMenu_Toggle()
 	else
 		menu:SetVisible(true)
 	end
-	ChoGGi.ComFuncs.SetCheatsMenuPos()
+	ChoGGi_Funcs.Common.SetCheatsMenuPos()
 end
-ChoGGi.ComFuncs.CheatsMenu_Toggle = CheatsMenu_Toggle
+ChoGGi_Funcs.Common.CheatsMenu_Toggle = CheatsMenu_Toggle
 
 do -- UpdateConsoleMargins
 	local IsEditorActive = IsEditorActive
@@ -3773,7 +3782,7 @@ do -- UpdateConsoleMargins
 		con_margin_norm = box(50, -50, 0, 0) + margins
 	end
 
-	function ChoGGi.ComFuncs.UpdateConsoleMargins(console_vis)
+	function ChoGGi_Funcs.Common.UpdateConsoleMargins(console_vis)
 		local e = IsEditorActive()
 		-- editor mode adds a toolbar to the bottom, so we go above it
 		if dlgConsole then
@@ -3793,7 +3802,7 @@ end -- do
 do -- Editor toggle
 	local editor_active
 
-	function ChoGGi.ComFuncs.Editor_Toggle()
+	function ChoGGi_Funcs.Common.Editor_Toggle()
 		if Platform.durango then
 			local str = T(302535920001574--[[Crashes on XBOX!]])
 			print(str)
@@ -3832,21 +3841,21 @@ do -- Editor toggle
 			EditorState(1, 1)
 		end
 
-		ChoGGi.ComFuncs.UpdateConsoleMargins()
+		ChoGGi_Funcs.Common.UpdateConsoleMargins()
 
 		camera.Unlock(1)
-		ChoGGi.ComFuncs.SetCameraSettings()
+		ChoGGi_Funcs.Common.SetCameraSettings()
 	end
 
-	function ChoGGi.ComFuncs.TerrainEditor_Toggle()
+	function ChoGGi_Funcs.Common.TerrainEditor_Toggle()
 		if Platform.durango then
 			local str = T(302535920001574--[[Crashes on XBOX!]])
 			print(str)
 			MsgPopup(str)
 			return
 		end
-		ChoGGi.ComFuncs.Editor_Toggle()
-		local ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
+		ChoGGi_Funcs.Common.Editor_Toggle()
+		local ToggleCollisions = ChoGGi_Funcs.Common.ToggleCollisions
 		if editor_active then
 			editor.ClearSel()
 			-- need to set it to something
@@ -3868,14 +3877,14 @@ do -- Editor toggle
 		end
 	end
 
-	function ChoGGi.ComFuncs.PlaceObjects_Toggle()
+	function ChoGGi_Funcs.Common.PlaceObjects_Toggle()
 		if Platform.durango then
 			local str = T(302535920001574--[[Crashes on XBOX!]])
 			print(str)
 			MsgPopup(str)
 			return
 		end
-		ChoGGi.ComFuncs.Editor_Toggle()
+		ChoGGi_Funcs.Common.Editor_Toggle()
 		if editor_active then
 			editor.ClearSel()
 			-- place rocks/etc
@@ -3891,8 +3900,8 @@ end -- do
 
 -- set task request to new amount (for some reason changing the "limit" will also boost the stored amount)
 -- this will reset it back to whatever it was after changing it.
-function ChoGGi.ComFuncs.SetTaskReqAmount(obj, value, task, setting, task_num)
---~ ChoGGi.ComFuncs.SetTaskReqAmount(rocket, value, "export_requests", "max_export_storage")
+function ChoGGi_Funcs.Common.SetTaskReqAmount(obj, value, task, setting, task_num)
+--~ ChoGGi_Funcs.Common.SetTaskReqAmount(rocket, value, "export_requests", "max_export_storage")
 	-- If it's in a table, it's almost always [1], i'm sure i'll have lots of crap to fix on any update anyways, so screw it
 	if type(obj[task]) == "userdata" then
 		task = obj[task]
@@ -3914,7 +3923,7 @@ function ChoGGi.ComFuncs.SetTaskReqAmount(obj, value, task, setting, task_num)
 	end
 end
 
-function ChoGGi.ComFuncs.ReturnEditorType(list, key, value)
+function ChoGGi_Funcs.Common.ReturnEditorType(list, key, value)
 	local idx = table.find(list, key, value)
 	value = list[idx].editor
 	-- I use it to compare to type() so
@@ -3934,7 +3943,7 @@ do -- AddBlinkyToObj
 	local blinky_obj
 	local blinky_thread
 
-	function ChoGGi.ComFuncs.AddBlinkyToObj(obj, timeout)
+	function ChoGGi_Funcs.Common.AddBlinkyToObj(obj, timeout)
 		if not IsValid(obj) then
 			return
 		end
@@ -3945,7 +3954,7 @@ do -- AddBlinkyToObj
 		blinky_obj.ChoGGi_blinky = true
 		-- stop any previous countdown
 		DeleteThread(blinky_thread)
-		-- make it visible incase it isn't
+		-- make it visible in case it isn't
 		blinky_obj:SetVisible(true)
 		-- pick a spot to show it
 		local spot
@@ -3971,8 +3980,8 @@ do -- AddBlinkyToObj
 	end
 end -- do
 
-function ChoGGi.ComFuncs.PlaceLastSelectedConstructedBld()
-	local obj = ChoGGi.ComFuncs.SelObject()
+function ChoGGi_Funcs.Common.PlaceLastSelectedConstructedBld()
+	local obj = ChoGGi_Funcs.Common.SelObject()
 	local Temp = ChoGGi.Temp
 
 	if obj then
@@ -3984,16 +3993,16 @@ function ChoGGi.ComFuncs.PlaceLastSelectedConstructedBld()
 	end
 
 	if obj and obj.class then
-		local obj_class = ChoGGi.ComFuncs.RetTemplateOrClass(obj)
+		local obj_class = ChoGGi_Funcs.Common.RetTemplateOrClass(obj)
 		if obj_class == "ConstructionSite" then
 			obj_class = obj.building_class
 		end
-		ChoGGi.ComFuncs.ConstructionModeSet(obj_class)
+		ChoGGi_Funcs.Common.ConstructionModeSet(obj_class)
 	end
 end
 
 -- place item under the mouse for construction
-function ChoGGi.ComFuncs.ConstructionModeSet(itemname)
+function ChoGGi_Funcs.Common.ConstructionModeSet(itemname)
 	-- make sure it's closed so we don't mess up selection
 	if GetDialog("XBuildMenu") then
 		CloseDialog("XBuildMenu")
@@ -4031,30 +4040,30 @@ function ChoGGi.ComFuncs.ConstructionModeSet(itemname)
 	CloseDialog("XBuildMenu")
 end
 
-function ChoGGi.ComFuncs.DeleteLargeRocks()
+function ChoGGi_Funcs.Common.DeleteLargeRocks()
 	local function CallBackFunc(answer)
 		if answer then
-			SuspendPassEdits("ChoGGi.ComFuncs.DeleteLargeRocks")
+			SuspendPassEdits("ChoGGi_Funcs.Common.DeleteLargeRocks")
 			MapDelete(true, {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor"})
-			ResumePassEdits("ChoGGi.ComFuncs.DeleteLargeRocks")
+			ResumePassEdits("ChoGGi_Funcs.Common.DeleteLargeRocks")
 		end
 	end
-	ChoGGi.ComFuncs.QuestionBox(
+	ChoGGi_Funcs.Common.QuestionBox(
 		T(6779--[[Warning]]) .. "!\n" .. T(302535920001238--[[Removes rocks for that smooth map feel.]]),
 		CallBackFunc,
 		T(6779--[[Warning]]) .. ": " .. T(302535920000855--[[Last chance before deletion!]])
 	)
 end
 
-function ChoGGi.ComFuncs.DeleteSmallRocks()
+function ChoGGi_Funcs.Common.DeleteSmallRocks()
 	local function CallBackFunc(answer)
 		if answer then
-			SuspendPassEdits("ChoGGi.ComFuncs.DeleteSmallRocks")
+			SuspendPassEdits("ChoGGi_Funcs.Common.DeleteSmallRocks")
 			MapDelete(true, "StoneSmall")
-			ResumePassEdits("ChoGGi.ComFuncs.DeleteSmallRocks")
+			ResumePassEdits("ChoGGi_Funcs.Common.DeleteSmallRocks")
 		end
 	end
-	ChoGGi.ComFuncs.QuestionBox(
+	ChoGGi_Funcs.Common.QuestionBox(
 		T(6779--[[Warning]]) .. "!\n" .. T(302535920001238--[[Removes rocks for that smooth map feel.]]),
 		CallBackFunc,
 		T(6779--[[Warning]]) .. ": " ..T(302535920000855--[[Last chance before deletion!]])
@@ -4067,7 +4076,7 @@ do -- UpdateGrowthThreads
 		"managed_beautification_objects",
 		"managed_objects",
 	}
-	function ChoGGi.ComFuncs.UpdateGrowthThreads()
+	function ChoGGi_Funcs.Common.UpdateGrowthThreads()
 		local objs = MapGet(true, "VegetationAnimator")
 
 		for i = 1, #objs do
@@ -4091,7 +4100,7 @@ do -- UpdateGrowthThreads
 end
 
 -- build and show a list of attachments for changing their colours
-function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
+function ChoGGi_Funcs.Common.CreateObjectListAndAttaches(obj)
 	-- If fired from action menu
 	if IsKindOf(obj, "XAction") then
 		obj = SelObject()
@@ -4112,7 +4121,7 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 
 	-- has no Attaches so just open as is
 	if obj.CountAttaches and obj:CountAttaches() == 0 then
-		ChoGGi.ComFuncs.ChangeObjectColour(obj)
+		ChoGGi_Funcs.Common.ChangeObjectColour(obj)
 		return
 	else
 		c = c + 1
@@ -4140,30 +4149,30 @@ function ChoGGi.ComFuncs.CreateObjectListAndAttaches(obj)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		items = item_list,
 		title = T(302535920001708--[[Color Modifier]]) .. ": " .. RetName(obj),
 		hint = T(302535920001108--[[Double click to open object/attachment to edit (select to flash object).]]),
 		custom_type = 1,
 		custom_func = function(sel, dialog)
-			ChoGGi.ComFuncs.ChangeObjectColour(sel[1].obj, sel[1].parentobj, dialog)
+			ChoGGi_Funcs.Common.ChangeObjectColour(sel[1].obj, sel[1].parentobj, dialog)
 		end,
 		select_flash = true,
 	}
 end
 
-function ChoGGi.ComFuncs.OpenGedApp(template, root, context, id)
+function ChoGGi_Funcs.Common.OpenGedApp(template, root, context, id)
 	if type(template) ~= "string" then
 		template = "XWindowInspector"
 	end
-	(ChoGGi.OrigFuncs.OpenGedApp or OpenGedApp)(template, root or terminal.desktop, context, id)
+	(ChoGGi_Funcs.Original.OpenGedApp or OpenGedApp)(template, root or terminal.desktop, context, id)
 end
 
 do -- MovePointAwayXY
 	local CalcZForInterpolation = CalcZForInterpolation
 	local SetLen = SetLen
 	-- this is the same as MovePointAway, but uses Z from src
-	function ChoGGi.ComFuncs.MovePointAwayXY(src, dest, dist)
+	function ChoGGi_Funcs.Common.MovePointAwayXY(src, dest, dist)
 		dest, src = CalcZForInterpolation(dest, src)
 
 		local v = dest - src
@@ -4172,7 +4181,7 @@ do -- MovePointAwayXY
 		return v:SetZ(src:z())
 	end
 	-- this is the same as MovePoint, but uses Z from src
-	function ChoGGi.ComFuncs.MovePointXY(src, dest, dist)
+	function ChoGGi_Funcs.Common.MovePointXY(src, dest, dist)
 		dest, src = CalcZForInterpolation(dest, src)
 		local v = dest - src
 		if dist < v:Len() then
@@ -4185,7 +4194,7 @@ end -- do
 
 -- updates buildmenu with un/locked buildings if it's opened
 -- RefreshXBuildMenu() doesn't add newly unlocked buildings
-function ChoGGi.ComFuncs.UpdateBuildMenu()
+function ChoGGi_Funcs.Common.UpdateBuildMenu()
 	local dlg = GetDialog("XBuildMenu")
 	-- can't update what isn't there
 	if dlg then
@@ -4208,7 +4217,7 @@ function ChoGGi.ComFuncs.UpdateBuildMenu()
 	end
 end
 
-function ChoGGi.ComFuncs.SetTableValue(tab, id, id_name, item, value)
+function ChoGGi_Funcs.Common.SetTableValue(tab, id, id_name, item, value)
 	local idx = table.find(tab, id, id_name)
 	if idx then
 		tab[idx][item] = value
@@ -4219,7 +4228,7 @@ end
 do -- PadNumWithZeros
 	local pads = {}
 	-- 100, 00000 = "00100"
-	function ChoGGi.ComFuncs.PadNumWithZeros(num, pad)
+	function ChoGGi_Funcs.Common.PadNumWithZeros(num, pad)
 		if pad then
 			pad = pad .. ""
 		else
@@ -4239,21 +4248,21 @@ do -- PadNumWithZeros
 	end
 end -- do
 
-function ChoGGi.ComFuncs.RemoveObjsAllMaps(class)
+function ChoGGi_Funcs.Common.RemoveObjsAllMaps(class)
 	local GameMaps = GameMaps
 	for _, map in pairs(GameMaps) do
 		map.realm:MapDelete(true, class)
 	end
 end
 
--- ChoGGi.ComFuncs.RemoveObjs("VegetationAnimator")
-function ChoGGi.ComFuncs.RemoveObjs(class, skip_suspend, skip_all_maps)
+-- ChoGGi_Funcs.Common.RemoveObjs("VegetationAnimator")
+function ChoGGi_Funcs.Common.RemoveObjs(class, skip_suspend, skip_all_maps)
 	if not skip_suspend then
 		-- suspending pass edits makes deleting much faster
-		SuspendPassEdits("ChoGGi.ComFuncs.RemoveObjs")
+		SuspendPassEdits("ChoGGi_Funcs.Common.RemoveObjs")
 	end
 
-	local RemoveObjsAllMaps = ChoGGi.ComFuncs.RemoveObjsAllMaps
+	local RemoveObjsAllMaps = ChoGGi_Funcs.Common.RemoveObjsAllMaps
 
 	if type(class) == "table" then
 		local g_Classes = g_Classes
@@ -4279,17 +4288,17 @@ function ChoGGi.ComFuncs.RemoveObjs(class, skip_suspend, skip_all_maps)
 	end
 
 	if not skip_suspend then
-		ResumePassEdits("ChoGGi.ComFuncs.RemoveObjs")
+		ResumePassEdits("ChoGGi_Funcs.Common.RemoveObjs")
 	end
 end
-ChoGGi.ComFuncs.MapDelete = ChoGGi.ComFuncs.RemoveObjs
+ChoGGi_Funcs.Common.MapDelete = ChoGGi_Funcs.Common.RemoveObjs
 
 if what_game == "Mars" then
  -- SpawnColonist
 	local Msg = Msg
 	local GenerateColonistData = GenerateColonistData
 
-	function ChoGGi.ComFuncs.SpawnColonist(old_c, building, pos, city)
+	function ChoGGi_Funcs.Common.SpawnColonist(old_c, building, pos, city)
 		city = city or UICity
 
 		local colonist
@@ -4352,21 +4361,21 @@ do -- IsControlPressed/IsShiftPressed/IsAltPressed
 	local function IsControlPressed()
 		return IsKeyPressed(vkControl) or osx and IsKeyPressed(vkLwin)
 	end
-	ChoGGi.ComFuncs.IsControlPressed = IsControlPressed
-	ChoGGi.ComFuncs.IsCtrlPressed = IsControlPressed
-	function ChoGGi.ComFuncs.IsShiftPressed()
+	ChoGGi_Funcs.Common.IsControlPressed = IsControlPressed
+	ChoGGi_Funcs.Common.IsCtrlPressed = IsControlPressed
+	function ChoGGi_Funcs.Common.IsShiftPressed()
 		return IsKeyPressed(vkShift)
 	end
-	function ChoGGi.ComFuncs.IsAltPressed()
+	function ChoGGi_Funcs.Common.IsAltPressed()
 		return IsKeyPressed(vkAlt)
 	end
-	function ChoGGi.ComFuncs.IsGamepadButtonPressed(button)
+	function ChoGGi_Funcs.Common.IsGamepadButtonPressed(button)
 		return XInput_IsCtrlButtonPressed(XInput_IsControllerConnected(s_XInputControllersConnected-1), button)
 	end
 end -- do
 
 -- if it's an object than we can Clone() it, otherwise copy it
-function ChoGGi.ComFuncs.CopyTable(list)
+function ChoGGi_Funcs.Common.CopyTable(list)
 	local new
 	if list.class and g_Classes[list.class] then
 		new = list:Clone()
@@ -4381,7 +4390,7 @@ function ChoGGi.ComFuncs.CopyTable(list)
 end
 
 -- associative tables only, otherwise table.is_iequal(t1, t1)
-function ChoGGi.ComFuncs.TableIsEqual(t1, t2)
+function ChoGGi_Funcs.Common.TableIsEqual(t1, t2)
 	-- see which one is longer, we use that as the looper
 	local c1, c2 = 0, 0
 	for _ in pairs(t1) do
@@ -4443,7 +4452,7 @@ if what_game == "Mars" then
 	local EntityLoadEntities = EntityLoadEntities
 	local SetEntityFadeDistances = SetEntityFadeDistances
 
-	function ChoGGi.ComFuncs.LoadEntity(name, path, mod, template)
+	function ChoGGi_Funcs.Common.LoadEntity(name, path, mod, template)
 		EntityData[name] = entity_templates[template or "decal"]
 
 		EntityLoadEntities[#EntityLoadEntities + 1] = {
@@ -4457,16 +4466,16 @@ end -- do
 
 
 -- this only adds a parent, no ___BuildingUpdate/__Init or anything
--- ChoGGi.ComFuncs.AddParentToClass(DontBuildHere, "InfopanelObj")
---~ ChoGGi.ComFuncs.AddParentToClass(Electrolyzer, "LifeSupportConsumer")
-function ChoGGi.ComFuncs.AddParentToClass(class_obj, parent_name)
+-- ChoGGi_Funcs.Common.AddParentToClass(DontBuildHere, "InfopanelObj")
+--~ ChoGGi_Funcs.Common.AddParentToClass(Electrolyzer, "LifeSupportConsumer")
+function ChoGGi_Funcs.Common.AddParentToClass(class_obj, parent_name)
 	local p = class_obj.__parents
 	if p and not table.find(p, parent_name) then
 		p[#p+1] = parent_name
 	end
 end
 
-function ChoGGi.ComFuncs.Add___Func(class_obj, ___key, func)
+function ChoGGi_Funcs.Common.Add___Func(class_obj, ___key, func)
 	local funcs = class_obj[___key]
 	if funcs and not table.find(funcs, func) then
 		funcs[#funcs+1] = func
@@ -4475,12 +4484,12 @@ function ChoGGi.ComFuncs.Add___Func(class_obj, ___key, func)
 	end
 end
 
-function ChoGGi.ComFuncs.RetSpotPos(obj, building, spot)
+function ChoGGi_Funcs.Common.RetSpotPos(obj, building, spot)
 	local nearest = building:GetNearestSpot("idle", spot or "Origin", obj)
 	return building:GetSpotPos(nearest)
 end
 
-function ChoGGi.ComFuncs.RetSpotNames(obj)
+function ChoGGi_Funcs.Common.RetSpotNames(obj)
 	if not obj:HasEntity() then
 		return
 	end
@@ -4499,7 +4508,7 @@ end
 
 do -- ConstructableArea
 	local ConstructableArea
-	function ChoGGi.ComFuncs.ConstructableArea()
+	function ChoGGi_Funcs.Common.ConstructableArea()
 		if not ConstructableArea then
 			local sizex, sizey = ActiveGameMap.terrain:GetMapSize()
 			local border = 1000 or const.ConstructBorder
@@ -4509,7 +4518,7 @@ do -- ConstructableArea
 	end
 end -- do
 
-function ChoGGi.ComFuncs.RetTemplateOrClass(obj)
+function ChoGGi_Funcs.Common.RetTemplateOrClass(obj)
 	if obj then
 		return obj.template_name ~= "" and obj.template_name or obj.class
 	end
@@ -4534,17 +4543,17 @@ do -- ToggleBldFlags
 			end
 		end
 	end
-	ChoGGi.ComFuncs.ToggleBldFlags = ToggleBldFlags
+	ChoGGi_Funcs.Common.ToggleBldFlags = ToggleBldFlags
 
-	function ChoGGi.ComFuncs.ToggleConstructEntityView(obj)
+	function ChoGGi_Funcs.Common.ToggleConstructEntityView(obj)
 		ToggleBldFlags(obj, 65536)
 	end
-	function ChoGGi.ComFuncs.ToggleEditorEntityView(obj)
+	function ChoGGi_Funcs.Common.ToggleEditorEntityView(obj)
 		ToggleBldFlags(obj, 2)
 	end
 end -- do
 
-function ChoGGi.ComFuncs.DeleteObjectQuestion(obj)
+function ChoGGi_Funcs.Common.DeleteObjectQuestion(obj)
 	local name = RetName(obj)
 
 	local function CallBackFunc(answer)
@@ -4570,7 +4579,7 @@ function ChoGGi.ComFuncs.DeleteObjectQuestion(obj)
 		end
 	end
 
-	ChoGGi.ComFuncs.QuestionBox(
+	ChoGGi_Funcs.Common.QuestionBox(
 		T(6779--[[Warning]]) .. "!\n" .. T{302535920000414--[["Are you sure you wish to delete <color ChoGGi_red><str></color>?"]],
 			str = name ,
 		} .. "?",
@@ -4581,7 +4590,7 @@ function ChoGGi.ComFuncs.DeleteObjectQuestion(obj)
 	)
 end
 
-function ChoGGi.ComFuncs.DeleteAllObjectQuestion(obj)
+function ChoGGi_Funcs.Common.DeleteAllObjectQuestion(obj)
 	local objs
 	if type(obj) == "string" then
 		objs = MapGet_ChoGGi(obj)
@@ -4613,17 +4622,17 @@ function ChoGGi.ComFuncs.DeleteAllObjectQuestion(obj)
 				end
 			-- whatever
 			else
-				SuspendPassEdits("ChoGGi.ComFuncs.DeleteAllObjectQuestion")
+				SuspendPassEdits("ChoGGi_Funcs.Common.DeleteAllObjectQuestion")
 				for i = 1, #objs do
 					DoneObject(objs[i])
 				end
-				ResumePassEdits("ChoGGi.ComFuncs.DeleteAllObjectQuestion")
+				ResumePassEdits("ChoGGi_Funcs.Common.DeleteAllObjectQuestion")
 			end
 
 		end
 	end
 
-	ChoGGi.ComFuncs.QuestionBox(
+	ChoGGi_Funcs.Common.QuestionBox(
 		T(6779--[[Warning]]) .. "!\n" .. T{302535920001676--[["Are you sure you wish to delete all <color ChoGGi_red><str></color> objects? (from active map)"]],
 			str = name,
 		} .. "?",
@@ -4634,7 +4643,7 @@ function ChoGGi.ComFuncs.DeleteAllObjectQuestion(obj)
 	)
 end
 
-function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
+function ChoGGi_Funcs.Common.RuinObjectQuestion(obj)
 	local name = RetName(obj)
 	local obj_type
 	if obj:IsKindOf("BaseRover") then
@@ -4665,7 +4674,7 @@ function ChoGGi.ComFuncs.RuinObjectQuestion(obj)
 
 		end
 	end
-	ChoGGi.ComFuncs.QuestionBox(
+	ChoGGi_Funcs.Common.QuestionBox(
 		T(6779--[[Warning]]) .. "!\n" .. obj_type .. "\n" .. name,
 		CallBackFunc,
 		T(6779--[[Warning]]) .. ": " .. obj_type,
@@ -4677,8 +4686,8 @@ end
 do -- IsPosInMap
 	local construct
 
-	function ChoGGi.ComFuncs.IsPosInMap(pt)
-		construct = construct or ChoGGi.ComFuncs.ConstructableArea()
+	function ChoGGi_Funcs.Common.IsPosInMap(pt)
+		construct = construct or ChoGGi_Funcs.Common.ConstructableArea()
 		return pt:InBox2D(construct)
 	end
 end -- do
@@ -4694,7 +4703,7 @@ do -- PolylineSetParabola
 	local white = white
 	local vertices = {}
 
-	function ChoGGi.ComFuncs.PolylineSetParabola(line, from, to, colour)
+	function ChoGGi_Funcs.Common.PolylineSetParabola(line, from, to, colour)
 		if not line then
 			return
 		end
@@ -4715,7 +4724,7 @@ do -- PolylineSetParabola
 end -- do
 
 -- "idLeft", "idMiddle", "idRight"
-function ChoGGi.ComFuncs.RetHudButton(side)
+function ChoGGi_Funcs.Common.RetHudButton(side)
 	side = side or "idLeft"
 
 	local xt = XTemplates
@@ -4738,7 +4747,7 @@ if what_game == "Mars" then
 	local GetRandomMapGenerator = GetRandomMapGenerator
 	local FillRandomMapProps = FillRandomMapProps
 
-	function ChoGGi.ComFuncs.RetMapSettings(gen, params, ...)
+	function ChoGGi_Funcs.Common.RetMapSettings(gen, params, ...)
 		if not params then
 			params = g_CurrentMapParams
 		end
@@ -4779,7 +4788,7 @@ if what_game == "Mars" then
 	local remove_added = {}
 	local translated_tech
 
-	function ChoGGi.ComFuncs.RetMapBreakthroughs(gen, limit_count)
+	function ChoGGi_Funcs.Common.RetMapBreakthroughs(gen, limit_count)
 		-- build list of names once
 		if not translated_tech then
 			translated_tech = {}
@@ -4832,7 +4841,7 @@ if what_game == "Mars" then
 	local GetSpecialistEntity = GetSpecialistEntity
 	local IsValidEntity = IsValidEntity
 
-	function ChoGGi.ComFuncs.RetObjectEntity(obj)
+	function ChoGGi_Funcs.Common.RetObjectEntity(obj)
 		if not (obj and obj:IsKindOf("CObject")) then
 			return
 		end
@@ -4850,7 +4859,7 @@ if what_game == "Mars" then
 	end
 end -- do
 
-function ChoGGi.ComFuncs.DisastersStop()
+function ChoGGi_Funcs.Common.DisastersStop()
 	CheatStopDisaster()
 
 	local missles = g_IncomingMissiles or empty_table
@@ -4915,7 +4924,7 @@ function ChoGGi.ComFuncs.DisastersStop()
 	end
 end
 
-function ChoGGi.ComFuncs.RetTableValue(obj, key)
+function ChoGGi_Funcs.Common.RetTableValue(obj, key)
 	local meta = getmetatable(obj)
 	if meta and meta.__index then
 		-- some stuff like mod.env uses the metatable from _G.__index and causes sm to log an error (still works fine though)
@@ -4980,14 +4989,14 @@ if what_game == "Mars" then
 
 		-- SuspendPassEdits errors out if there's no map
 		if UICity then
-			SuspendPassEdits("ChoGGi.ComFuncs.BuildableHexGrid_CleanUp")
+			SuspendPassEdits("ChoGGi_Funcs.Common.BuildableHexGrid_CleanUp")
 			for i = 1, grid_objs_c do
 				local o = grid_objs[i]
 				if IsValid(o) then
 					o:delete()
 				end
 			end
-			ResumePassEdits("ChoGGi.ComFuncs.BuildableHexGrid_CleanUp")
+			ResumePassEdits("ChoGGi_Funcs.Common.BuildableHexGrid_CleanUp")
 			-- clear out xwin text
 			local parent = terminal.desktop.ChoGGi_BuildableHexGrid
 			if IsValidXWin(parent) then
@@ -5002,7 +5011,7 @@ if what_game == "Mars" then
 	-- make sure grid isn't saved in persist
 	OnMsg.SaveGame = CleanUp
 
-	function ChoGGi.ComFuncs.BuildableHexGrid(action)
+	function ChoGGi_Funcs.Common.BuildableHexGrid(action)
 		local is_valid_thread = IsValidThread(Temp.grid_thread)
 
 		local u = ChoGGi.UserSettings
@@ -5058,7 +5067,7 @@ if what_game == "Mars" then
 
 			local q, r = 1, 1
 			local z = -q - r
-			SuspendPassEdits("ChoGGi.ComFuncs.BuildHexGrid")
+			SuspendPassEdits("ChoGGi_Funcs.Common.BuildHexGrid")
 			local colour = RandomColourLimited()
 			-- margins don't work great with the grids (or at least the ones I used)
 			for q_i = q - grid_size, q + grid_size do
@@ -5082,7 +5091,7 @@ if what_game == "Mars" then
 					end
 				end
 			end
-			ResumePassEdits("ChoGGi.ComFuncs.BuildHexGrid")
+			ResumePassEdits("ChoGGi_Funcs.Common.BuildHexGrid")
 
 			if testing then
 				print("BuildHexGrid count", grid_objs_c)
@@ -5217,7 +5226,7 @@ if what_game == "Mars" then
 	end
 end
 
-function ChoGGi.ComFuncs.SetWinObjectVis(obj, visible)
+function ChoGGi_Funcs.Common.SetWinObjectVis(obj, visible)
 	if not obj then
 		return
 	end
@@ -5237,10 +5246,10 @@ function ChoGGi.ComFuncs.SetWinObjectVis(obj, visible)
 end
 
 -- dbg_PlantRandomVegetation(choice.value) copy pasta
-function ChoGGi.ComFuncs.PlantRandomVegetation(amount)
-	SuspendPassEdits("ChoGGi.ComFuncs.PlantRandomVegetation")
+function ChoGGi_Funcs.Common.PlantRandomVegetation(amount)
+	SuspendPassEdits("ChoGGi_Funcs.Common.PlantRandomVegetation")
 	-- might help speed it up?
-	SuspendTerrainInvalidations("ChoGGi.ComFuncs.PlantRandomVegetation")
+	SuspendTerrainInvalidations("ChoGGi_Funcs.Common.PlantRandomVegetation")
 
   local presets = {}
   local presets_c = 0
@@ -5298,11 +5307,11 @@ function ChoGGi.ComFuncs.PlantRandomVegetation(amount)
 		end
   end
 
-	ResumePassEdits("ChoGGi.ComFuncs.PlantRandomVegetation")
-	ResumeTerrainInvalidations("ChoGGi.ComFuncs.PlantRandomVegetation")
+	ResumePassEdits("ChoGGi_Funcs.Common.PlantRandomVegetation")
+	ResumeTerrainInvalidations("ChoGGi_Funcs.Common.PlantRandomVegetation")
 end
 
-function ChoGGi.ComFuncs.GetDialogECM(class)
+function ChoGGi_Funcs.Common.GetDialogECM(class)
 	local ChoGGi_dlgs_opened = ChoGGi_dlgs_opened
 	for dlg in pairs(ChoGGi_dlgs_opened) do
 		if dlg:IsKindOf(class) then
@@ -5311,7 +5320,7 @@ function ChoGGi.ComFuncs.GetDialogECM(class)
 	end
 end
 
-function ChoGGi.ComFuncs.CloseDialogsECM(skip)
+function ChoGGi_Funcs.Common.CloseDialogsECM(skip)
 	local desktop = terminal.desktop
 	for i = #desktop, 1, -1 do
 		local dlg = desktop[i]
@@ -5321,7 +5330,7 @@ function ChoGGi.ComFuncs.CloseDialogsECM(skip)
 	end
 end
 
-function ChoGGi.ComFuncs.SetLandScapingLimits(force, skip_objs, out_of_bounds)
+function ChoGGi_Funcs.Common.SetLandScapingLimits(force, skip_objs, out_of_bounds)
 	local cs = ConstructionStatus
 	if force or ChoGGi.UserSettings.RemoveLandScapingLimits then
 		cs.LandscapeTooLarge.type = "warning"
@@ -5355,7 +5364,7 @@ do -- SetBuildingLimits
 		PassageAngleToSteep = true,
 	}
 
-	function ChoGGi.ComFuncs.SetBuildingLimits(force)
+	function ChoGGi_Funcs.Common.SetBuildingLimits(force)
 		local cs = ConstructionStatus
 		-- force is from my mods (or yours), usersettings is from ECM
 		if force or ChoGGi.UserSettings.RemoveBuildingLimits then
@@ -5377,7 +5386,7 @@ do -- SetBuildingLimits
 end -- do
 
 -- bottom toolbar button in menus (new game, planetary, etc)
-function ChoGGi.ComFuncs.RetToolbarButton(params)
+function ChoGGi_Funcs.Common.RetToolbarButton(params)
 	return XTextButton:new({
 		Id = params.id,
 		Text = params.text or T(126095410863--[[Info]]),
@@ -5400,14 +5409,14 @@ function ChoGGi.ComFuncs.RetToolbarButton(params)
 end
 
 -- save a game with attachments (res cubes in storage depots) that have an origin point above 65535 and goodbye save game.
-function ChoGGi.ComFuncs.RemoveAttachAboveHeightLimit(obj)
+function ChoGGi_Funcs.Common.RemoveAttachAboveHeightLimit(obj)
 	-- we only want to check attachments
 	if obj:GetParent() and (obj:GetZ() + obj:GetAttachOffset():z()) > 65535 then
 		DoneObject(obj)
 	end
 end
 
-function ChoGGi.ComFuncs.GetShortcut(id)
+function ChoGGi_Funcs.Common.GetShortcut(id)
 	if not id then
 		return ""
 	end
@@ -5424,9 +5433,9 @@ end
 do -- CleanInfoAttachDupes
 	local dupe_list = {}
 
-	function ChoGGi.ComFuncs.CleanInfoAttachDupes(list, cls)
+	function ChoGGi_Funcs.Common.CleanInfoAttachDupes(list, cls)
 		table.clear(dupe_list)
-		SuspendPassEdits("ChoGGi.ComFuncs.CleanInfoAttachDupes")
+		SuspendPassEdits("ChoGGi_Funcs.Common.CleanInfoAttachDupes")
 
 		-- clean up dupes in order of older
 		for i = 1, #list do
@@ -5446,9 +5455,9 @@ do -- CleanInfoAttachDupes
 
 		-- remove removed items
 		list:Validate()
-		ResumePassEdits("ChoGGi.ComFuncs.CleanInfoAttachDupes")
+		ResumePassEdits("ChoGGi_Funcs.Common.CleanInfoAttachDupes")
 	end
-	function ChoGGi.ComFuncs.CleanInfoXwinDupes(list, cls)
+	function ChoGGi_Funcs.Common.CleanInfoXwinDupes(list, cls)
 		table.clear(dupe_list)
 
 		-- clean up dupes in order of older
@@ -5527,9 +5536,9 @@ if what_game == "Mars" then
 		if type(obj) ~= "table" then
 			return
 		end
-		SuspendPassEdits("ChoGGi.ComFuncs.ObjHexShape_Clear")
+		SuspendPassEdits("ChoGGi_Funcs.Common.ObjHexShape_Clear")
 		if obj.ChoGGi_shape_obj then
-			ChoGGi.ComFuncs.objlist_Destroy(obj.ChoGGi_shape_obj)
+			ChoGGi_Funcs.Common.objlist_Destroy(obj.ChoGGi_shape_obj)
 			obj.ChoGGi_shape_obj = nil
 			if IsValidXWin(obj.ChoGGi_shape_obj_xwin) then
 				obj.ChoGGi_shape_obj_xwin:Close()
@@ -5537,11 +5546,11 @@ if what_game == "Mars" then
 			end
 			return true
 		end
-		ResumePassEdits("ChoGGi.ComFuncs.ObjHexShape_Clear")
+		ResumePassEdits("ChoGGi_Funcs.Common.ObjHexShape_Clear")
 	end
-	ChoGGi.ComFuncs.ObjHexShape_Clear = ObjHexShape_Clear
+	ChoGGi_Funcs.Common.ObjHexShape_Clear = ObjHexShape_Clear
 
-	function ChoGGi.ComFuncs.ObjHexShape_Toggle(obj, params)
+	function ChoGGi_Funcs.Common.ObjHexShape_Toggle(obj, params)
 		params = params or {shape = FallbackOutline}
 		if not IsValid(obj) or not params.skip_return then
 			return
@@ -5572,7 +5581,7 @@ if what_game == "Mars" then
 		end
 		parent = obj.ChoGGi_shape_obj_xwin
 
-		SuspendPassEdits("ChoGGi.ComFuncs.ObjHexShape_Toggle")
+		SuspendPassEdits("ChoGGi_Funcs.Common.ObjHexShape_Toggle")
 		BuildShape(
 			obj,
 			params.shape,
@@ -5582,17 +5591,17 @@ if what_game == "Mars" then
 			params.colour2,
 			params.offset
 		)
-		ResumePassEdits("ChoGGi.ComFuncs.ObjHexShape_Toggle")
+		ResumePassEdits("ChoGGi_Funcs.Common.ObjHexShape_Toggle")
 		if not params.skip_clear then
-			ChoGGi.ComFuncs.CleanInfoXwinDupes(obj.ChoGGi_shape_obj_xwin)
-			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_shape_obj, "ChoGGi_OHexSpot")
+			ChoGGi_Funcs.Common.CleanInfoXwinDupes(obj.ChoGGi_shape_obj_xwin)
+			ChoGGi_Funcs.Common.CleanInfoAttachDupes(obj.ChoGGi_shape_obj, "ChoGGi_OHexSpot")
 		end
 
 		return obj.ChoGGi_shape_obj
 	end
 end -- do
 
-function ChoGGi.ComFuncs.ModEditorActive()
+function ChoGGi_Funcs.Common.ModEditorActive()
 	if what_game ~= "Mars" then
 		return
 	end
@@ -5604,7 +5613,7 @@ function ChoGGi.ComFuncs.ModEditorActive()
 	end
 end
 
-function ChoGGi.ComFuncs.UpdateDepotCapacity(obj, max_store, storable)
+function ChoGGi_Funcs.Common.UpdateDepotCapacity(obj, max_store, storable)
 	max_store = max_store or obj.max_storage_per_resource
 	obj.max_storage_per_resource = max_store
 
@@ -5621,17 +5630,17 @@ function ChoGGi.ComFuncs.UpdateDepotCapacity(obj, max_store, storable)
 	end
 end
 
-function ChoGGi.ComFuncs.IsUniversalStorageDepot(obj)
+function ChoGGi_Funcs.Common.IsUniversalStorageDepot(obj)
 	return obj and obj.template_name == "UniversalStorageDepot"
 end
 
-function ChoGGi.ComFuncs.GetModEnabled(mod_id)
+function ChoGGi_Funcs.Common.GetModEnabled(mod_id)
 	return table.find(ModsLoaded, "id", mod_id)
 end
 
 do -- SetBuildingTemplates
 	local bt, ct
-	function ChoGGi.ComFuncs.SetBuildingTemplates(template, key, value)
+	function ChoGGi_Funcs.Common.SetBuildingTemplates(template, key, value)
 		if not bt then
 			bt = BuildingTemplates
 			ct = ClassTemplates.Building
@@ -5646,7 +5655,7 @@ do -- SetBuildingTemplates
 	end
 end -- do
 
-function ChoGGi.ComFuncs.ReplaceClassFunc(class, func_name, func_to_call)
+function ChoGGi_Funcs.Common.ReplaceClassFunc(class, func_name, func_to_call)
 	-- ClassDescendantsList("BaseRover")
 	class = ClassDescendantsList(class)
 	-- shouldn't be any dupes?
@@ -5781,7 +5790,7 @@ do -- path markers
 				end
 
 			else
-				ChoGGi.ComFuncs.OpenInExamineDlg(obj, nil, T(302535920000467--[[Path Markers]]))
+				ChoGGi_Funcs.Common.OpenInExamineDlg(obj, nil, T(302535920000467--[[Path Markers]]))
 				print(
 					T(6779--[[Warning]]),
 					":",
@@ -5837,7 +5846,7 @@ do -- path markers
 			)
 		end
 	end
-	ChoGGi.ComFuncs.SetWaypoint = SetWaypoint
+	ChoGGi_Funcs.Common.SetWaypoint = SetWaypoint
 
 	local function SetPathMarkersGameTime_Thread(obj, handles, delay)
 		local colour = RandomColourLimited()
@@ -5846,9 +5855,9 @@ do -- path markers
 		end
 
 		while handles[obj.handle] do
-			SuspendPassEdits("ChoGGi.ComFuncs.SetPathMarkersGameTime_Thread")
+			SuspendPassEdits("ChoGGi_Funcs.Common.SetPathMarkersGameTime_Thread")
 			SetWaypoint(obj, colour, true)
-			ResumePassEdits("ChoGGi.ComFuncs.SetPathMarkersGameTime_Thread")
+			ResumePassEdits("ChoGGi_Funcs.Common.SetPathMarkersGameTime_Thread")
 			if delay == 0 or delay == -1 then
 				-- If we only do one then it'll be invis unless paused
 				-- 2+ is too much ficker
@@ -5860,12 +5869,12 @@ do -- path markers
 			end
 
 			if obj.ChoGGi_Stored_Waypoints then
-				SuspendPassEdits("ChoGGi.ComFuncs.SetPathMarkersGameTime_Thread")
+				SuspendPassEdits("ChoGGi_Funcs.Common.SetPathMarkersGameTime_Thread")
 				-- deletes all wp objs
-				ChoGGi.ComFuncs.objlist_Destroy(obj.ChoGGi_Stored_Waypoints)
+				ChoGGi_Funcs.Common.objlist_Destroy(obj.ChoGGi_Stored_Waypoints)
 				-- clears table list
 				table.iclear(obj.ChoGGi_Stored_Waypoints)
-				ResumePassEdits("ChoGGi.ComFuncs.SetPathMarkersGameTime_Thread")
+				ResumePassEdits("ChoGGi_Funcs.Common.SetPathMarkersGameTime_Thread")
 			end
 
 			-- break thread when obj isn't valid
@@ -5939,7 +5948,7 @@ do -- path markers
 			)
 		end
 	end
-	ChoGGi.ComFuncs.SetPathMarkersGameTime = SetPathMarkersGameTime
+	ChoGGi_Funcs.Common.SetPathMarkersGameTime = SetPathMarkersGameTime
 
 	local function RemoveWPDupePos(cls, obj)
 		if type(obj.ChoGGi_Stored_Waypoints) ~= "table" then
@@ -5983,7 +5992,7 @@ do -- path markers
 			local stored = obj.ChoGGi_Stored_Waypoints
 			if type(stored) == "table" then
 				-- deletes all objs
-				ChoGGi.ComFuncs.objlist_Destroy(stored)
+				ChoGGi_Funcs.Common.objlist_Destroy(stored)
 				-- clears table list
 				table.iclear(stored)
 			end
@@ -6005,19 +6014,19 @@ do -- path markers
 		end
 	end
 	local function CleanDupes()
-		SuspendPassEdits("ChoGGi.ComFuncs.Pathing_CleanDupes")
+		SuspendPassEdits("ChoGGi_Funcs.Common.Pathing_CleanDupes")
 		ClearAllDupeWP("CargoShuttle")
 		ClearAllDupeWP("Unit")
 		ClearAllDupeWP("Colonist")
-		ResumePassEdits("ChoGGi.ComFuncs.Pathing_CleanDupes")
+		ResumePassEdits("ChoGGi_Funcs.Common.Pathing_CleanDupes")
 	end
-	ChoGGi.ComFuncs.Pathing_CleanDupes = CleanDupes
+	ChoGGi_Funcs.Common.Pathing_CleanDupes = CleanDupes
 
 	local function StopAndRemoveAll(skip)
 		if not skip then
 			ChoGGi.Temp.PathMarkers_new_objs_loop = false
 		end
-		SuspendPassEdits("ChoGGi.ComFuncs.Pathing_StopAndRemoveAll")
+		SuspendPassEdits("ChoGGi_Funcs.Common.Pathing_StopAndRemoveAll")
 
 		-- reset all the base colours/waypoints
 		ClearColourAndWP("CargoShuttle", skip)
@@ -6030,9 +6039,9 @@ do -- path markers
 		end
 
 		-- remove any extra lines
-		ChoGGi.ComFuncs.RemoveObjs("ChoGGi_OPolyline", true)
+		ChoGGi_Funcs.Common.RemoveObjs("ChoGGi_OPolyline", true)
 
-		ResumePassEdits("ChoGGi.ComFuncs.Pathing_StopAndRemoveAll")
+		ResumePassEdits("ChoGGi_Funcs.Common.Pathing_StopAndRemoveAll")
 
 		-- reset stuff
 		line_height = 50
@@ -6040,7 +6049,7 @@ do -- path markers
 		colourcount = 0
 		dupewppos = {}
 	end
-	ChoGGi.ComFuncs.Pathing_StopAndRemoveAll = StopAndRemoveAll
+	ChoGGi_Funcs.Common.Pathing_StopAndRemoveAll = StopAndRemoveAll
 
 	local function SetMarkers(list, check, delay)
 		if check then
@@ -6053,12 +6062,12 @@ do -- path markers
 			end
 		end
 	end
-	ChoGGi.ComFuncs.Pathing_SetMarkers = SetMarkers
+	ChoGGi_Funcs.Common.Pathing_SetMarkers = SetMarkers
 
 end -- do
 
 -- Drone:GetTarget()
-function ChoGGi.ComFuncs.GetTarget(obj)
+function ChoGGi_Funcs.Common.GetTarget(obj)
 	local target = obj.target or obj.goto_target
 	local text
 
@@ -6087,7 +6096,7 @@ function ChoGGi.ComFuncs.GetTarget(obj)
 	end
 end
 
-function ChoGGi.ComFuncs.GetNearestObj(obj, list)
+function ChoGGi_Funcs.Common.GetNearestObj(obj, list)
 	local obj_pos = obj:GetVisualPos()
 
 	-- get nearest
@@ -6107,7 +6116,7 @@ function ChoGGi.ComFuncs.GetNearestObj(obj, list)
 	return nearest
 end
 
-function ChoGGi.ComFuncs.ReloadLua()
+function ChoGGi_Funcs.Common.ReloadLua()
 	if not ModsLoaded then
 		return
 	end
@@ -6134,7 +6143,7 @@ function ChoGGi.ComFuncs.ReloadLua()
 end
 
 -- needs an indexed list or a label
-function ChoGGi.ComFuncs.CycleSelectedObjects(list, count)
+function ChoGGi_Funcs.Common.CycleSelectedObjects(list, count)
 	if not count then
 		list = UICity.labels[list] or empty_table
 		count = #list
@@ -6165,7 +6174,7 @@ if what_game == "Mars" then
 	local DroneLoadMediumThreshold = const.DroneLoadMediumThreshold
 	local DroneLoadExtra = DroneLoadMediumThreshold * 100
 
-	function ChoGGi.ComFuncs.IsDroneIdle(drone)
+	function ChoGGi_Funcs.Common.IsDroneIdle(drone)
 		return idle_drone_cmds[drone.command]
 	end
 	local function IsDroneIdle(_, drone)
@@ -6174,13 +6183,13 @@ if what_game == "Mars" then
 	local function IsDroneWorking(_, drone)
 		return not drone:IsDisabled()
 	end
-	function ChoGGi.ComFuncs.GetIdleDrones()
+	function ChoGGi_Funcs.Common.GetIdleDrones()
 		return table.ifilter(table.icopy(UICity.labels.Drone or empty_table), IsDroneIdle)
 	end
 
 	-- -1 = borked, 0 = low, 1 = medium, 2 = high, empty = 3
 	-- higher the laptime the more load (use order = true to return lap_time first)
-	function ChoGGi.ComFuncs.DroneHubLoad(hub, order)
+	function ChoGGi_Funcs.Common.DroneHubLoad(hub, order)
 		local drone_load = -1
 		local lap_time = -1
 		if hub.working then
@@ -6208,7 +6217,7 @@ if what_game == "Mars" then
 	end
 end
 
-function ChoGGi.ComFuncs.PlacePolyline(points, colours, set_default_pos)
+function ChoGGi_Funcs.Common.PlacePolyline(points, colours, set_default_pos)
 	local line = ChoGGi_OPolyline:new{
 		max_vertices = #points
 	}
@@ -6221,7 +6230,7 @@ function ChoGGi.ComFuncs.PlacePolyline(points, colours, set_default_pos)
 end
 
 -- https://gist.github.com/Uradamus/10323382
-function ChoGGi.ComFuncs.FisherYates_Shuffle(list, min)
+function ChoGGi_Funcs.Common.FisherYates_Shuffle(list, min)
 	-- I don't think there's any 0 based tables in SM, but just in case
 	if not min then
 		min = 1
@@ -6233,7 +6242,7 @@ function ChoGGi.ComFuncs.FisherYates_Shuffle(list, min)
 end
 
 -- input as text "0,0,0"
-function ChoGGi.ComFuncs.RGBtoColour(text)
+function ChoGGi_Funcs.Common.RGBtoColour(text)
 	if not text then
 		return 0
 	end
@@ -6266,7 +6275,7 @@ function ChoGGi.ComFuncs.RGBtoColour(text)
 end
 
 -- input as text "0,0,0,0"
-function ChoGGi.ComFuncs.StrToBox(text)
+function ChoGGi_Funcs.Common.StrToBox(text)
 	if not text then
 		return box(0,0,0,0)
 	end
@@ -6286,7 +6295,7 @@ function ChoGGi.ComFuncs.StrToBox(text)
 	return box(values[1], values[2], values[3], values[4])
 end
 
-function ChoGGi.ComFuncs.ResetHumanCentipedes()
+function ChoGGi_Funcs.Common.ResetHumanCentipedes()
 	local objs = UIColony:GetCityLabels("Colonist")
 	for i = 1, #objs do
 		local obj = objs[i]
@@ -6300,7 +6309,7 @@ function ChoGGi.ComFuncs.ResetHumanCentipedes()
 	end
 end
 
-function ChoGGi.ComFuncs.ToggleBreadcrumbs(obj)
+function ChoGGi_Funcs.Common.ToggleBreadcrumbs(obj)
 	if not IsValid(obj) then
 		print("ToggleBreadcrumbs Not valid:", obj)
 		return
@@ -6327,7 +6336,7 @@ function ChoGGi.ComFuncs.ToggleBreadcrumbs(obj)
 end
 
 -- https://stackoverflow.com/questions/6077006/how-can-i-check-if-a-lua-table-contains-only-sequential-numeric-indices#answer-6080274
-function ChoGGi.ComFuncs.IsArray(list)
+function ChoGGi_Funcs.Common.IsArray(list)
 	local i = 0
 	for _ in pairs(list) do
 		i = i + 1
@@ -6364,11 +6373,11 @@ local function RetParamsParents(parent, params, ...)
 
 	return params, parent, parent_type
 end
-ChoGGi.ComFuncs.RetParamsParents = RetParamsParents
+ChoGGi_Funcs.Common.RetParamsParents = RetParamsParents
 
 do -- GetLowestPointEachSector
 	local lowest_points
-	function ChoGGi.ComFuncs.GetLowestPointEachSector()
+	function ChoGGi_Funcs.Common.GetLowestPointEachSector()
 		local UICity = UICity
 
 		-- max the z of the default points
@@ -6419,7 +6428,7 @@ do -- GetLowestPointEachSector
 
 end -- do
 
-function ChoGGi.ComFuncs.SetBldMaintenance(obj, value)
+function ChoGGi_Funcs.Common.SetBldMaintenance(obj, value)
 	if not IsValid(obj) then
 		return
 	end
@@ -6446,7 +6455,7 @@ do -- OneBuildingExists
 		end
 	end
 
-	function ChoGGi.ComFuncs.OneBuildingExists(template_name)
+	function ChoGGi_Funcs.Common.OneBuildingExists(template_name)
 		if #(UICity.labels[template_name] or "") > 0 then
 			return true
 		end
@@ -6457,7 +6466,7 @@ do -- OneBuildingExists
 end -- do
 
 -- close any examine dlgs opened from "parent" examine dlg
-function ChoGGi.ComFuncs.CloseChildExamineDlgs(self)
+function ChoGGi_Funcs.Common.CloseChildExamineDlgs(self)
 	local ChoGGi_dlgs_examine = ChoGGi_dlgs_examine or empty_table
 	for _, dlg in pairs(ChoGGi_dlgs_examine) do
 		if dlg ~= self and dlg.parent_id == self.parent_id then
@@ -6506,17 +6515,17 @@ do -- ExamineEntSpots (Object>Entity Spots)
 		return c
 	end
 
---~ local list = ChoGGi.ComFuncs.ExamineEntSpots(s, true)
+--~ local list = ChoGGi_Funcs.Common.ExamineEntSpots(s, true)
 --~ list = table.concat(list, "\n")
---~ ChoGGi.ComFuncs.Dump(list, nil, nil, "ent")
-	function ChoGGi.ComFuncs.ExamineEntSpots(obj, parent_or_ret)
+--~ ChoGGi_Funcs.Common.Dump(list, nil, nil, "ent")
+	function ChoGGi_Funcs.Common.ExamineEntSpots(obj, parent_or_ret)
 		-- If fired from action menu
 
 		if IsKindOf(obj, "XAction") then
-			obj = ChoGGi.ComFuncs.SelObject()
+			obj = ChoGGi_Funcs.Common.SelObject()
 			parent_or_ret = nil
 		else
-			obj = obj or ChoGGi.ComFuncs.SelObject()
+			obj = obj or ChoGGi_Funcs.Common.SelObject()
 		end
 
 		local entity = obj and obj.GetEntity and obj:GetEntity()
@@ -6648,7 +6657,7 @@ do -- ExamineEntSpots (Object>Entity Spots)
 			end -- for spots
 
 			-- add surfs
-			RetOriginSurfaces = RetOriginSurfaces or ChoGGi.ComFuncs.RetOriginSurfaces
+			RetOriginSurfaces = RetOriginSurfaces or ChoGGi_Funcs.Common.RetOriginSurfaces
 			-- hex_shape
 			c = BuildSurf(c, list, obj, "hex_shape", 5)
 			-- selection
@@ -6673,7 +6682,7 @@ Some of the file names are guesses. <anim> is a guess, try removing it."]])
 			if parent_or_ret == true then
 				return table.concat(list, "\n")
 			else
-				ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+				ChoGGi_Funcs.Common.OpenInMultiLineTextDlg{
 					parent = parent_or_ret,
 					text = table.concat(list, "\n"),
 					title = T(302535920000235--[[Entity Spots]]) .. ": " .. RetName(obj),
@@ -6706,7 +6715,7 @@ if what_game == "Mars" then
 		return c
 	end
 
-	function ChoGGi.ComFuncs.RetHexSurfaces(entity, filter, parent_or_ret)
+	function ChoGGi_Funcs.Common.RetHexSurfaces(entity, filter, parent_or_ret)
 		local list = {}
 		local c = 0
 
@@ -6723,7 +6732,7 @@ if what_game == "Mars" then
 		if parent_or_ret == true then
 			return list
 		else
-			ChoGGi.ComFuncs.OpenInExamineDlg(list, nil, "RetHexSurfaces")
+			ChoGGi_Funcs.Common.OpenInExamineDlg(list, nil, "RetHexSurfaces")
 		end
 	end
 end -- do
@@ -6859,10 +6868,10 @@ do -- GetMaterialProperties
 
 		return table.concat(list, "\n")
 	end
-	ChoGGi.ComFuncs.RetEntityMTLFile = RetEntityMTLFile
+	ChoGGi_Funcs.Common.RetEntityMTLFile = RetEntityMTLFile
 
 	local function ExamineExportMat(ex_dlg, mat)
-		ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+		ChoGGi_Funcs.Common.OpenInMultiLineTextDlg{
 			parent = ex_dlg,
 			text = RetEntityMTLFile(mat),
 			title = T(302535920001458--[[Material Properties]]) .. ": " .. mat.__mtl,
@@ -6913,19 +6922,19 @@ do -- GetMaterialProperties
 
 		return mats
 	end
-	ChoGGi.ComFuncs.RetEntityMats = RetEntityMats
+	ChoGGi_Funcs.Common.RetEntityMats = RetEntityMats
 
-	function ChoGGi.ComFuncs.GetMaterialProperties(obj, parent_or_ret)
+	function ChoGGi_Funcs.Common.GetMaterialProperties(obj, parent_or_ret)
 		if not UIColony then
 			return
 		end
 
 		-- If fired from action menu
 		if IsKindOf(obj, "XAction") then
-			obj = ChoGGi.ComFuncs.SelObject()
+			obj = ChoGGi_Funcs.Common.SelObject()
 			parent_or_ret = nil
 		else
-			obj = obj or ChoGGi.ComFuncs.SelObject()
+			obj = obj or ChoGGi_Funcs.Common.SelObject()
 		end
 
 		local materials
@@ -6949,7 +6958,7 @@ do -- GetMaterialProperties
 		if parent_or_ret == true then
 			return materials
 		else
-			ChoGGi.ComFuncs.OpenInExamineDlg(materials, parent_or_ret, T(302535920001458--[[Material Properties]]))
+			ChoGGi_Funcs.Common.OpenInExamineDlg(materials, parent_or_ret, T(302535920001458--[[Material Properties]]))
 		end
 
 	end
@@ -6972,7 +6981,7 @@ do -- BBoxLines_Toggle
 	end
 	local pillar_table = {}
 	local function SpawnPillarLine(pt, z, obj_height, depth_test, colour)
-		ChoGGi.ComFuncs.objlist_Destroy(pillar_table)
+		ChoGGi_Funcs.Common.objlist_Destroy(pillar_table)
 		pillar_table[1] = pt:SetZ(z)
 		pillar_table[2] = pt:SetZ(z + obj_height)
 		local line = PlacePolyline(pillar_table, colour)
@@ -7037,19 +7046,19 @@ do -- BBoxLines_Toggle
 		return bbox_lines
 	end
 	local function BBoxLines_Clear(obj, is_box)
-		SuspendPassEdits("ChoGGi.ComFuncs.BBoxLines_Clear")
+		SuspendPassEdits("ChoGGi_Funcs.Common.BBoxLines_Clear")
 		if not is_box and obj.ChoGGi_bboxobj then
 			obj.ChoGGi_bboxobj:Destroy()
 			obj.ChoGGi_bboxobj = nil
 			return true
 		end
-		ResumePassEdits("ChoGGi.ComFuncs.BBoxLines_Clear")
+		ResumePassEdits("ChoGGi_Funcs.Common.BBoxLines_Clear")
 	end
-	ChoGGi.ComFuncs.BBoxLines_Clear = BBoxLines_Clear
+	ChoGGi_Funcs.Common.BBoxLines_Clear = BBoxLines_Clear
 
-	function ChoGGi.ComFuncs.BBoxLines_Toggle(obj, params)
+	function ChoGGi_Funcs.Common.BBoxLines_Toggle(obj, params)
 		params = params or {}
-		obj = obj or ChoGGi.ComFuncs.SelObject()
+		obj = obj or ChoGGi_Funcs.Common.SelObject()
 		local is_box = IsBox(obj)
 
 		if not (IsValid(obj) or is_box) or (BBoxLines_Clear(obj, is_box) and not params.skip_return) then
@@ -7064,14 +7073,14 @@ do -- BBoxLines_Toggle
 		end
 
 		if IsBox(bbox) then
-			SuspendPassEdits("ChoGGi.ComFuncs.BBoxLines_Toggle")
+			SuspendPassEdits("ChoGGi_Funcs.Common.BBoxLines_Toggle")
 			local box = PlaceTerrainBox(
 				bbox,
 				bbox:Center():SetTerrainZ(),
 				params.depth_test,
 				params.colour or RandomColourLimited()
 			)
-			ResumePassEdits("ChoGGi.ComFuncs.BBoxLines_Toggle")
+			ResumePassEdits("ChoGGi_Funcs.Common.BBoxLines_Toggle")
 			if not is_box then
 				obj.ChoGGi_bboxobj = box
 			end
@@ -7109,17 +7118,17 @@ if what_game == "Mars" then
 		if type(obj) ~= "table" then
 			return
 		end
-		SuspendPassEdits("ChoGGi.ComFuncs.SurfaceLines_Clear")
+		SuspendPassEdits("ChoGGi_Funcs.Common.SurfaceLines_Clear")
 		if obj.ChoGGi_surfacelinesobj then
-			ChoGGi.ComFuncs.objlist_Destroy(obj.ChoGGi_surfacelinesobj)
+			ChoGGi_Funcs.Common.objlist_Destroy(obj.ChoGGi_surfacelinesobj)
 			obj.ChoGGi_surfacelinesobj = nil
 			return true
 		end
-		ResumePassEdits("ChoGGi.ComFuncs.SurfaceLines_Clear")
+		ResumePassEdits("ChoGGi_Funcs.Common.SurfaceLines_Clear")
 	end
-	ChoGGi.ComFuncs.SurfaceLines_Clear = SurfaceLines_Clear
+	ChoGGi_Funcs.Common.SurfaceLines_Clear = SurfaceLines_Clear
 
-	function ChoGGi.ComFuncs.SurfaceLines_Toggle(obj, params)
+	function ChoGGi_Funcs.Common.SurfaceLines_Toggle(obj, params)
 
 		params = params or {}
 		local is_valid = IsValid(obj)
@@ -7137,18 +7146,18 @@ if what_game == "Mars" then
 		params.colour = params.colour or RandomColourLimited()
 		params.offset = params.offset or 1
 
-		SuspendPassEdits("ChoGGi.ComFuncs.SurfaceLines_Toggle")
+		SuspendPassEdits("ChoGGi_Funcs.Common.SurfaceLines_Toggle")
 		BuildLines(obj, params)
-		ResumePassEdits("ChoGGi.ComFuncs.SurfaceLines_Toggle")
+		ResumePassEdits("ChoGGi_Funcs.Common.SurfaceLines_Toggle")
 
 		if not params.skip_clear then
-			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_surfacelinesobj)
+			ChoGGi_Funcs.Common.CleanInfoAttachDupes(obj.ChoGGi_surfacelinesobj)
 		end
 		return obj.ChoGGi_surfacelinesobj
 	end
 end -- do
 
-function ChoGGi.ComFuncs.RetOriginSurfaces(obj, surf)
+function ChoGGi_Funcs.Common.RetOriginSurfaces(obj, surf)
 	-- collision (see also 5, 7)
 	surf = surf or 0
 
@@ -7163,7 +7172,7 @@ function ChoGGi.ComFuncs.RetOriginSurfaces(obj, surf)
 	return surfs
 end
 
-function ChoGGi.ComFuncs.RetSurfaceMasks(obj)
+function ChoGGi_Funcs.Common.RetSurfaceMasks(obj)
 
 	if not IsValid(obj) then
 		return
@@ -7203,7 +7212,7 @@ do -- EntitySpots_Toggle Entity Spots Toggle
 		if type(obj) ~= "table" then
 			return
 		end
-		SuspendPassEdits("ChoGGi.ComFuncs.EntitySpots_Clear")
+		SuspendPassEdits("ChoGGi_Funcs.Common.EntitySpots_Clear")
 		-- just in case (old way of doing it)
 		if obj.ChoGGi_ShowAttachSpots == true then
 			obj:DestroyAttaches(old_remove_table, function(a)
@@ -7212,19 +7221,19 @@ do -- EntitySpots_Toggle Entity Spots Toggle
 				end
 			end)
 			obj.ChoGGi_ShowAttachSpots = nil
-		ResumePassEdits("ChoGGi.ComFuncs.EntitySpots_Clear")
+		ResumePassEdits("ChoGGi_Funcs.Common.EntitySpots_Clear")
 			return true
 		elseif obj.ChoGGi_ShowAttachSpots then
-			ChoGGi.ComFuncs.objlist_Destroy(obj.ChoGGi_ShowAttachSpots)
+			ChoGGi_Funcs.Common.objlist_Destroy(obj.ChoGGi_ShowAttachSpots)
 			obj.ChoGGi_ShowAttachSpots = nil
-		ResumePassEdits("ChoGGi.ComFuncs.EntitySpots_Clear")
+		ResumePassEdits("ChoGGi_Funcs.Common.EntitySpots_Clear")
 			return true
 		end
 
-		ResumePassEdits("ChoGGi.ComFuncs.EntitySpots_Clear")
+		ResumePassEdits("ChoGGi_Funcs.Common.EntitySpots_Clear")
 
 	end
-	ChoGGi.ComFuncs.EntitySpots_Clear = EntitySpots_Clear
+	ChoGGi_Funcs.Common.EntitySpots_Clear = EntitySpots_Clear
 
 	local function EntitySpots_Add(obj, spot_type, annot, depth_test, show_pos, colour)
 		local c = #obj.ChoGGi_ShowAttachSpots
@@ -7346,13 +7355,13 @@ do -- EntitySpots_Toggle Entity Spots Toggle
 
 	end
 
-	function ChoGGi.ComFuncs.EntitySpots_Toggle(obj, params)
+	function ChoGGi_Funcs.Common.EntitySpots_Toggle(obj, params)
 		-- If fired from action menu
 		if IsKindOf(obj, "XAction") then
-			obj = ChoGGi.ComFuncs.SelObject()
+			obj = ChoGGi_Funcs.Common.SelObject()
 			params = {}
 		else
-			obj = obj or ChoGGi.ComFuncs.SelObject()
+			obj = obj or ChoGGi_Funcs.Common.SelObject()
 		end
 
 		params = params or {}
@@ -7377,7 +7386,7 @@ do -- EntitySpots_Toggle Entity Spots Toggle
 		if not OText then
 			OText = ChoGGi_OText
 		end
-		SuspendPassEdits("ChoGGi.ComFuncs.EntitySpots_Add")
+		SuspendPassEdits("ChoGGi_Funcs.Common.EntitySpots_Add")
 		EntitySpots_Add(obj,
 			params.spot_type,
 			params.annotation,
@@ -7405,21 +7414,21 @@ do -- EntitySpots_Toggle Entity Spots Toggle
 		c = c + 1
 		obj.ChoGGi_ShowAttachSpots[c] = text_obj
 
-		ResumePassEdits("ChoGGi.ComFuncs.EntitySpots_Add")
+		ResumePassEdits("ChoGGi_Funcs.Common.EntitySpots_Add")
 
 		if not params.skip_clear then
-			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_ShowAttachSpots, "ChoGGi_OText")
+			ChoGGi_Funcs.Common.CleanInfoAttachDupes(obj.ChoGGi_ShowAttachSpots, "ChoGGi_OText")
 		end
 
 		-- play connect the dots if there's chains
 		if obj.ChoGGi_ShowAttachSpots[2] and params.annotation and params.annotation:find("chain") then
-			SuspendPassEdits("ChoGGi.ComFuncs.EntitySpots_Add_Annot")
+			SuspendPassEdits("ChoGGi_Funcs.Common.EntitySpots_Add_Annot")
 			EntitySpots_Add_Annot(obj, params.depth_test, RandomColourLimited())
-			ResumePassEdits("ChoGGi.ComFuncs.EntitySpots_Add_Annot")
+			ResumePassEdits("ChoGGi_Funcs.Common.EntitySpots_Add_Annot")
 		end
 
 		if not params.skip_clear then
-			ChoGGi.ComFuncs.CleanInfoAttachDupes(obj.ChoGGi_ShowAttachSpots, "ChoGGi_OPolyline")
+			ChoGGi_Funcs.Common.CleanInfoAttachDupes(obj.ChoGGi_ShowAttachSpots, "ChoGGi_OPolyline")
 		end
 
 		return obj.ChoGGi_ShowAttachSpots
@@ -7483,7 +7492,7 @@ do -- ObjFlagsList
 		end
 	end
 
-	function ChoGGi.ComFuncs.ObjFlagsList_TR(obj, parent_or_ret)
+	function ChoGGi_Funcs.Common.ObjFlagsList_TR(obj, parent_or_ret)
 		if not obj or obj.__name ~= "HGE.TaskRequest" then
 			return
 		end
@@ -7496,17 +7505,17 @@ do -- ObjFlagsList
 		if parent_or_ret == true then
 			return flags_table
 		else
-			ChoGGi.ComFuncs.OpenInExamineDlg(flags_table, parent_or_ret, RetName(obj))
+			ChoGGi_Funcs.Common.OpenInExamineDlg(flags_table, parent_or_ret, RetName(obj))
 		end
 	end
 
-	function ChoGGi.ComFuncs.ObjFlagsList(obj, parent_or_ret)
+	function ChoGGi_Funcs.Common.ObjFlagsList(obj, parent_or_ret)
 		-- If fired from action menu
 		if IsKindOf(obj, "XAction") then
-			obj = ChoGGi.ComFuncs.SelObject()
+			obj = ChoGGi_Funcs.Common.SelObject()
 			parent_or_ret = nil
 		else
-			obj = obj or ChoGGi.ComFuncs.SelObject()
+			obj = obj or ChoGGi_Funcs.Common.SelObject()
 		end
 
 		if not IsValid(obj) then
@@ -7524,18 +7533,18 @@ do -- ObjFlagsList
 		if parent_or_ret == true then
 			return flags_table
 		else
-			ChoGGi.ComFuncs.OpenInExamineDlg(flags_table, parent_or_ret, RetName(obj))
+			ChoGGi_Funcs.Common.OpenInExamineDlg(flags_table, parent_or_ret, RetName(obj))
 		end
 
 	end
 end -- do
 
-function ChoGGi.ComFuncs.SetAnimState(obj)
+function ChoGGi_Funcs.Common.SetAnimState(obj)
 	-- If fired from action menu
 	if IsKindOf(obj, "XAction") then
-		obj = ChoGGi.ComFuncs.SelObject()
+		obj = ChoGGi_Funcs.Common.SelObject()
 	else
-		obj = obj or ChoGGi.ComFuncs.SelObject()
+		obj = obj or ChoGGi_Funcs.Common.SelObject()
 	end
 
 	if not IsValid(obj) then
@@ -7572,13 +7581,13 @@ function ChoGGi.ComFuncs.SetAnimState(obj)
 		if value ~= "idle" then
 			obj:SetState(value)
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.text),
+				ChoGGi_Funcs.Common.SettingState(choice.text),
 				T(302535920000859--[[Anim State]])
 			)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000860--[[Set Anim State]]),
@@ -7587,7 +7596,7 @@ function ChoGGi.ComFuncs.SetAnimState(obj)
 	}
 end
 
-function ChoGGi.ComFuncs.LaunchHumanMeteor(entity, min, max, city)
+function ChoGGi_Funcs.Common.LaunchHumanMeteor(entity, min, max, city)
 	if not IsValidEntity(entity) then
 		entity = "Unit_Astronaut_All_Child_01"
 		min = 0
@@ -7595,7 +7604,7 @@ function ChoGGi.ComFuncs.LaunchHumanMeteor(entity, min, max, city)
 	end
 
 	if not CurrentThread() then
-		return CreateGameTimeThread(ChoGGi.ComFuncs.LaunchHumanMeteor, entity, min, max, city)
+		return CreateGameTimeThread(ChoGGi_Funcs.Common.LaunchHumanMeteor, entity, min, max, city)
 	end
 
 	--	1 to 4 sols
@@ -7629,7 +7638,7 @@ end
 do -- ValueToStr
 	local missing_text = ChoGGi.Temp.missing_text
 
-	function ChoGGi.ComFuncs.ValueToStr(obj, obj_type)
+	function ChoGGi_Funcs.Common.ValueToStr(obj, obj_type)
 		obj_type = obj_type or type(obj)
 
 		if obj_type == "string" then
@@ -7694,7 +7703,7 @@ do -- ValueToStr
 	end
 end -- do
 
-function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
+function ChoGGi_Funcs.Common.UsedTerrainTextures(ret)
 	if not UIColony then
 		return
 	end
@@ -7724,7 +7733,7 @@ function ChoGGi.ComFuncs.UsedTerrainTextures(ret)
 	if ret then
 		return textures
 	end
-	ChoGGi.ComFuncs.OpenInExamineDlg(textures, nil, T(302535920001181--[[Used Terrain Textures]]))
+	ChoGGi_Funcs.Common.OpenInExamineDlg(textures, nil, T(302535920001181--[[Used Terrain Textures]]))
 end
 
 local function RetObjMapId(obj, text, fallback)
@@ -7737,10 +7746,10 @@ local function RetObjMapId(obj, text, fallback)
 	end
 	return fallback and UICity.map_id or text and "unknown" or ""
 end
-ChoGGi.ComFuncs.RetObjMapId = RetObjMapId
+ChoGGi_Funcs.Common.RetObjMapId = RetObjMapId
 
---~ ChoGGi.ComFuncs.RetMapType(nil, ActiveMapID)
-function ChoGGi.ComFuncs.RetMapType(obj, map_id, city)
+--~ ChoGGi_Funcs.Common.RetMapType(nil, ActiveMapID)
+function ChoGGi_Funcs.Common.RetMapType(obj, map_id, city)
 	if not UIColony then
 		return
 	end
@@ -7766,7 +7775,7 @@ function ChoGGi.ComFuncs.RetMapType(obj, map_id, city)
 	end
 end
 
-function ChoGGi.ComFuncs.RotateBuilding(objs, toggle, multiple)
+function ChoGGi_Funcs.Common.RotateBuilding(objs, toggle, multiple)
 	if multiple then
 		for i = 1, #objs do
 			local obj = objs[i]
@@ -7778,7 +7787,7 @@ function ChoGGi.ComFuncs.RotateBuilding(objs, toggle, multiple)
 	objs:SetAngle((objs:GetAngle() or 0) + (toggle and 1 or -1)*60*60)
 end
 
-function ChoGGi.ComFuncs.SetPosRandomBuildablePos(obj, city)
+function ChoGGi_Funcs.Common.SetPosRandomBuildablePos(obj, city)
   local pfClass = 0
   city = city or UICity
   local object_hex_grid = GetObjectHexGrid(city)
@@ -7789,7 +7798,7 @@ function ChoGGi.ComFuncs.SetPosRandomBuildablePos(obj, city)
 	end))
 end
 
-function ChoGGi.ComFuncs.CycleObjs(list)
+function ChoGGi_Funcs.Common.CycleObjs(list)
 	local count = #list
 	if count > 0 then
 		-- dunno why they localed it, instead of making it InfobarObj:CycleObjects()...
@@ -7803,7 +7812,7 @@ function ChoGGi.ComFuncs.CycleObjs(list)
 	return count
 end
 
-function ChoGGi.ComFuncs.GetUnitsSamePlace(city)
+function ChoGGi_Funcs.Common.GetUnitsSamePlace(city)
 	city = city or UICity
 	local places = {}
 	local objs = GetRealmByID(city.map_id):MapGet("map", "Unit")
@@ -7821,9 +7830,9 @@ function ChoGGi.ComFuncs.GetUnitsSamePlace(city)
 			return true
 		end
 	end)
-	ChoGGi.ComFuncs.OpenInExamineDlg(filtered)
+	ChoGGi_Funcs.Common.OpenInExamineDlg(filtered)
 end
-function ChoGGi.ComFuncs.CountAllObjs()
+function ChoGGi_Funcs.Common.CountAllObjs()
 	local count = 0
 	local GameMaps = GameMaps
 	for _, map in pairs(GameMaps) do
@@ -7831,14 +7840,14 @@ function ChoGGi.ComFuncs.CountAllObjs()
 	end
 	return count
 end
-function ChoGGi.ComFuncs.MoveRealm(obj, map_id)
+function ChoGGi_Funcs.Common.MoveRealm(obj, map_id)
 	local map = GameMaps[map_id]
 	-- Skip removed asteroids
 	if not map then
 		return
 	end
 
-	local is_asteroid = ChoGGi.ComFuncs.RetMapType(nil, map_id) == "asteroid"
+	local is_asteroid = ChoGGi_Funcs.Common.RetMapType(nil, map_id) == "asteroid"
 	local pos
 	if not is_asteroid then
 		pos = obj:GetPos()
@@ -7864,16 +7873,16 @@ function ChoGGi.ComFuncs.MoveRealm(obj, map_id)
 	end
 end
 
-function ChoGGi.ComFuncs.GetNextTable(list, key, value)
+function ChoGGi_Funcs.Common.GetNextTable(list, key, value)
 	local idx = table.find(list, key, value)
 	if idx then
 		return list[idx]
 	end
 end
 
-function ChoGGi.ComFuncs.ObjectCloner(flat, obj, centre)
+function ChoGGi_Funcs.Common.ObjectCloner(flat, obj, centre)
 	if not IsValid(obj) then
-		obj = ChoGGi.ComFuncs.SelObject()
+		obj = ChoGGi_Funcs.Common.SelObject()
 	end
 
 	if not IsValid(obj) then
@@ -7883,7 +7892,7 @@ function ChoGGi.ComFuncs.ObjectCloner(flat, obj, centre)
 	local pos = GetCursorWorldPos()
 
 	if obj:IsKindOf("Colonist") then
-		ChoGGi.ComFuncs.SpawnColonist(obj, nil, pos)
+		ChoGGi_Funcs.Common.SpawnColonist(obj, nil, pos)
 		return
 	end
 
@@ -7938,7 +7947,7 @@ function ChoGGi.ComFuncs.ObjectCloner(flat, obj, centre)
 	return clone
 end
 
-function ChoGGi.ComFuncs.PlainSortTable(tbl, value)
+function ChoGGi_Funcs.Common.PlainSortTable(tbl, value)
 	if not value then
 	 value = "name"
 	end
@@ -7956,7 +7965,7 @@ end
 
 -- This is a copy and paste from Dlc\gagarin\Code\RivalColonies.lua local function PickUnusedAISponsor()
 -- LukeH overrides SpawnRivalAI(preset), but doesn't check if preset exists.
-function ChoGGi.ComFuncs.PickUnusedAISponsor()
+function ChoGGi_Funcs.Common.PickUnusedAISponsor()
   local filtered = {}
   ForEachPresetInGroup("DumbAIDef", "MissionSponsors", function(preset)
     local used = false
@@ -7988,8 +7997,8 @@ function ChoGGi.ComFuncs.PickUnusedAISponsor()
 end
 -- Change cargo limits
 
---~ ChoGGi.ComFuncs.ChangeCargoValue("Drone", key, value)
-function ChoGGi.ComFuncs.ChangeCargoValue(id, key, value)
+--~ ChoGGi_Funcs.Common.ChangeCargoValue("Drone", key, value)
+function ChoGGi_Funcs.Common.ChangeCargoValue(id, key, value)
 	if not key or not value then
 		print("missing key or value")
 		return
@@ -8005,9 +8014,9 @@ end
 do -- RetSourceFile
 	local source_path = "AppData/Source/"
 
-	function ChoGGi.ComFuncs.RetSourceFile(path)
+	function ChoGGi_Funcs.Common.RetSourceFile(path)
 		if blacklist then
-			ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.RetSourceFile")
+			ChoGGi_Funcs.Common.BlacklistMsg("ChoGGi_Funcs.Common.RetSourceFile")
 			return
 		end
 --[[
@@ -8018,7 +8027,7 @@ source: '@Mars/Lua/LifeSupportGrid.lua'
 source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 ~RCConstructor.CanInteractWithObject
 
-~ChoGGi.ComFuncs.RetSourceFile
+~ChoGGi_Funcs.Common.RetSourceFile
 ]]
 		-- remove @
 		local at = path:sub(1, 1)
@@ -8029,7 +8038,7 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 		local err, code
 		-- mods (we need to skip CommonLua else it'll open the luac file)
 		local comlua = path:sub(1, 10)
-		if comlua ~= "CommonLua/" and ChoGGi.ComFuncs.FileExists(path) then
+		if comlua ~= "CommonLua/" and ChoGGi_Funcs.Common.FileExists(path) then
 			err, code = g_env.AsyncFileToString(path)
 			if not err then
 				return code, path
@@ -8056,9 +8065,9 @@ source: '@Mars/Dlc/gagarin/Code/RCConstructor.lua'
 	end
 end -- do
 
-function ChoGGi.ComFuncs.Dump(obj, overwrite, file, ext, skip_msg, gen_name)
+function ChoGGi_Funcs.Common.Dump(obj, overwrite, file, ext, skip_msg, gen_name)
 	if blacklist then
-		ChoGGi.ComFuncs.BlacklistMsg("ChoGGi.ComFuncs.Dump")
+		ChoGGi_Funcs.Common.BlacklistMsg("ChoGGi_Funcs.Common.Dump")
 		return
 	end
 
@@ -8094,17 +8103,17 @@ function ChoGGi.ComFuncs.Dump(obj, overwrite, file, ext, skip_msg, gen_name)
 	end
 end
 
-function ChoGGi.ComFuncs.DumpLua(obj)
-	ChoGGi.ComFuncs.Dump(ChoGGi.newline .. ValueToLuaCode(obj), nil, "DumpedLua", "lua")
+function ChoGGi_Funcs.Common.DumpLua(obj)
+	ChoGGi_Funcs.Common.Dump(ChoGGi.newline .. ValueToLuaCode(obj), nil, "DumpedLua", "lua")
 end
 
-function ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(obj, parent)
+function ChoGGi_Funcs.Common.OpenIn3DManipulatorDlg(obj, parent)
 	-- If fired from action menu
 	if IsKindOf(obj, "XAction") then
-		obj = ChoGGi.ComFuncs.SelObject()
+		obj = ChoGGi_Funcs.Common.SelObject()
 		parent = nil
 	else
-		obj = obj or ChoGGi.ComFuncs.SelObject()
+		obj = obj or ChoGGi_Funcs.Common.SelObject()
 	end
 
 	if not obj then
@@ -8121,7 +8130,7 @@ function ChoGGi.ComFuncs.OpenIn3DManipulatorDlg(obj, parent)
 	})
 end
 
-function ChoGGi.ComFuncs.EntitySpawner(obj, params)
+function ChoGGi_Funcs.Common.EntitySpawner(obj, params)
 
 	-- If fired from action menu
 	if IsKindOf(obj, "XAction") then
@@ -8241,7 +8250,7 @@ function ChoGGi.ComFuncs.EntitySpawner(obj, params)
 		title = title .. ": " .. params.title_postfix
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = title,
@@ -8251,7 +8260,7 @@ function ChoGGi.ComFuncs.EntitySpawner(obj, params)
 	}
 end
 
-function ChoGGi.ComFuncs.objlist_Destroy(objlist)
+function ChoGGi_Funcs.Common.objlist_Destroy(objlist)
   for i = #objlist, 1, -1 do
     local o = objlist[i]
     objlist[i] = nil
@@ -8262,7 +8271,7 @@ function ChoGGi.ComFuncs.objlist_Destroy(objlist)
 end
 
 -- loop through all map sectors and fire this func
---~ function ChoGGi.ComFuncs.LoopMapSectors(map_id, func)
+--~ function ChoGGi_Funcs.Common.LoopMapSectors(map_id, func)
 --~ end
 --~ local sector_nums = {
 --~  [1] = true,
@@ -8284,7 +8293,7 @@ end
 
 --
 -- bugged
---~ function ChoGGi.ComFuncs.SendDroneToCC(drone, new_hub)
+--~ function ChoGGi_Funcs.Common.SendDroneToCC(drone, new_hub)
 --~ 	local old_hub = drone.command_center
 --~ 	if old_hub == new_hub then
 --~ 		return
@@ -8322,47 +8331,47 @@ end
 -- DEPRECATE (someday)
 
 
-do -- AddToOrigFuncs
-	local OrigFuncs = ChoGGi.OrigFuncs
+do -- AddToOriginal
+	local Original = ChoGGi_Funcs.Original
 
-	function ChoGGi.ComFuncs.AddToOrigFuncs(name)
-		if not OrigFuncs[name] then
-			OrigFuncs[name] = DotPathToObject(name)
+	function ChoGGi_Funcs.Common.AddToOriginal(name)
+		if not Original[name] then
+			Original[name] = DotPathToObject(name)
 		end
 	end
 end -- do
 -- remove after next mass mod upload
 -- backup orginal function for later use (checks if we already have a backup, or else inf problems)
 local function SaveOrigFunc(class_or_func, func_name)
-	local OrigFuncs = ChoGGi.OrigFuncs
+	local Original = ChoGGi_Funcs.Original
 	-- If it's a class func
 	if func_name then
 		local newname = class_or_func .. "_" .. func_name
-		if not OrigFuncs[newname] then
+		if not Original[newname] then
 			local class_obj = g_env[class_or_func]
 			if class_obj then
-				OrigFuncs[newname] = class_obj[func_name]
+				Original[newname] = class_obj[func_name]
 			end
 		end
 	-- regular func
 	else
-		if not OrigFuncs[class_or_func] then
-			OrigFuncs[class_or_func] = g_env[class_or_func]
+		if not Original[class_or_func] then
+			Original[class_or_func] = g_env[class_or_func]
 		end
 	end
 end
-ChoGGi.ComFuncs.SaveOrigFunc = SaveOrigFunc
+ChoGGi_Funcs.Common.SaveOrigFunc = SaveOrigFunc
 
 do -- AddMsgToFunc
 	local Msg = Msg
 	-- changes a function to also post a Msg for use with OnMsg
-	function ChoGGi.ComFuncs.AddMsgToFunc(class_name, func_name, msg_str, thread, ...)
+	function ChoGGi_Funcs.Common.AddMsgToFunc(class_name, func_name, msg_str, thread, ...)
 		-- anything i want to pass onto the msg
 		local varargs = ...
 		-- save orig
 		SaveOrigFunc(class_name, func_name)
 		-- we want to local this after SaveOrigFunc just in case
-		local ChoGGi_OrigFuncs = ChoGGi.OrigFuncs
+--~ 		local ChoGGi_Funcs.Original = ChoGGi_Funcs.Original
 		-- redefine it
 		local newname = class_name .. "_" .. func_name
 		_G[class_name][func_name] = function(obj, ...)
@@ -8378,13 +8387,13 @@ do -- AddMsgToFunc
 --~ 			local params = {...}
 --~ 			-- pass on args to orig func
 --~ 			if not pcall(function()
---~ 				return ChoGGi_OrigFuncs[class_name .. "_" .. func_name](table.unpack(params))
+--~ 				return ChoGGi_Funcs.Original[class_name .. "_" .. func_name](table.unpack(params))
 --~ 			end) then
 --~ 				print("Function Error: ", class_name .. "_" .. func_name)
---~ 				ChoGGi.ComFuncs.OpenInExamineDlg({params}, nil, "AddMsgToFunc")
+--~ 				ChoGGi_Funcs.Common.OpenInExamineDlg({params}, nil, "AddMsgToFunc")
 --~ 			end
 --~ 			--
-			return ChoGGi_OrigFuncs[newname](obj, ...)
+			return ChoGGi_Funcs.Original[newname](obj, ...)
 		end
 	end
 end -- do

@@ -1,8 +1,8 @@
 -- See LICENSE for terms
 
-local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
-local ObjectColourRandom = ChoGGi.ComFuncs.ObjectColourRandom
-local SetChoGGiPalette = ChoGGi.ComFuncs.SetChoGGiPalette
+local RetTemplateOrClass = ChoGGi_Funcs.Common.RetTemplateOrClass
+local ObjectColourRandom = ChoGGi_Funcs.Common.ObjectColourRandom
+local SetChoGGiPalette = ChoGGi_Funcs.Common.SetChoGGiPalette
 
 local IsKindOf = IsKindOf
 local IsMassUIModifierPressed = IsMassUIModifierPressed

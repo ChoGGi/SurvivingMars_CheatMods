@@ -66,8 +66,8 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
-ChoGGi.ComFuncs.AddParentToClass(ElectronicsFactory, "LifeSupportConsumer")
-ChoGGi.ComFuncs.AddParentToClass(MachinePartsFactory, "LifeSupportConsumer")
+ChoGGi_Funcs.Common.AddParentToClass(ElectronicsFactory, "LifeSupportConsumer")
+ChoGGi_Funcs.Common.AddParentToClass(MachinePartsFactory, "LifeSupportConsumer")
 
 function OnMsg.ClassesPostprocess()
 	local bt = BuildingTemplates

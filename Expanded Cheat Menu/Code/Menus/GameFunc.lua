@@ -4,94 +4,95 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local next, type, tostring, table = next, type, tostring, table
 local GetCursorWorldPos = GetCursorWorldPos
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local RetName = ChoGGi.ComFuncs.RetName
-local RetIcon = ChoGGi.ComFuncs.RetIcon
-local RetHint = ChoGGi.ComFuncs.RetHint
-local Random = ChoGGi.ComFuncs.Random
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
+local RetName = ChoGGi_Funcs.Common.RetName
+local RetIcon = ChoGGi_Funcs.Common.RetIcon
+local RetHint = ChoGGi_Funcs.Common.RetHint
+local Random = ChoGGi_Funcs.Common.Random
 
-function ChoGGi.MenuFuncs.InfopanelToolbarConstrain_Toggle()
+function ChoGGi_Funcs.Menus.InfopanelToolbarConstrain_Toggle()
 	local setting = not ChoGGi.UserSettings.InfopanelToolbarConstrain
 	ChoGGi.UserSettings.InfopanelToolbarConstrain = setting
 
-	ChoGGi.ComFuncs.InfopanelToolbarConstrain_Toggle(setting)
+	ChoGGi_Funcs.Common.InfopanelToolbarConstrain_Toggle(setting)
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(setting),
+		ChoGGi_Funcs.Common.SettingState(setting),
 		T(302535920001665--[[Toggle Infopanel Toolbar Constrain]])
 	)
 end
 
-function ChoGGi.MenuFuncs.DeleteBushesTrees()
+function ChoGGi_Funcs.Menus.DeleteBushesTrees()
 	local function CallBackFunc(answer)
 		if answer then
-			SuspendPassEdits("ChoGGi.MenuFuncs.DeleteBushesTrees")
+			SuspendPassEdits("ChoGGi_Funcs.Menus.DeleteBushesTrees")
 			MapDelete("map", "VegetationBillboardObject")
-			ChoGGi.ComFuncs.UpdateGrowthThreads()
-			ResumePassEdits("ChoGGi.MenuFuncs.DeleteBushesTrees")
+			ChoGGi_Funcs.Common.UpdateGrowthThreads()
+			ResumePassEdits("ChoGGi_Funcs.Menus.DeleteBushesTrees")
 		end
 	end
-	ChoGGi.ComFuncs.QuestionBox(
+	ChoGGi_Funcs.Common.QuestionBox(
 		T(6779--[[Warning]]) .. "!\n" .. T(302535920001258--[[Cleans your Mars of alien shrubbery.]]),
 		CallBackFunc,
 		T(6779--[[Warning]]) .. ": " .. T(302535920000855--[[Last chance before deletion!]])
 	)
 end
 
-function ChoGGi.MenuFuncs.VerticalCheatMenu_Toggle()
+function ChoGGi_Funcs.Menus.VerticalCheatMenu_Toggle()
 	local setting = not ChoGGi.UserSettings.VerticalCheatMenu
 	ChoGGi.UserSettings.VerticalCheatMenu = setting
 
-	ChoGGi.ComFuncs.VerticalCheatMenu_Toggle(setting)
+	ChoGGi_Funcs.Common.VerticalCheatMenu_Toggle(setting)
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(setting),
+		ChoGGi_Funcs.Common.SettingState(setting),
 		T(302535920001660--[[Toggle Vertical Cheat Menu]])
 	)
 end
 
-function ChoGGi.MenuFuncs.SelectionPanelResize_Toggle()
+function ChoGGi_Funcs.Menus.SelectionPanelResize_Toggle()
 	ChoGGi.UserSettings.StopSelectionPanelResize = not ChoGGi.UserSettings.StopSelectionPanelResize
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.StopSelectionPanelResize),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.StopSelectionPanelResize),
 		T(302535920001653--[[Toggle Selection Panel Resize]])
 	)
 end
 
-function ChoGGi.MenuFuncs.ScrollSelectionPanel_Toggle()
+function ChoGGi_Funcs.Menus.ScrollSelectionPanel_Toggle()
 	ChoGGi.UserSettings.ScrollSelectionPanel = not ChoGGi.UserSettings.ScrollSelectionPanel
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ScrollSelectionPanel),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.ScrollSelectionPanel),
 		T(302535920001655--[[Toggle Scroll Selection Panel]])
 	)
 end
 
-function ChoGGi.MenuFuncs.UnlockOverview_Toggle()
+function ChoGGi_Funcs.Menus.UnlockOverview_Toggle()
 	ChoGGi.UserSettings.UnlockOverview = not ChoGGi.UserSettings.UnlockOverview
 
 	ActiveMapData.IsAllowedToEnterOverview = ChoGGi.UserSettings.UnlockOverview
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.UnlockOverview),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.UnlockOverview),
 		T(302535920001651--[[Unlock Overview]])
 	)
 end
 
-function ChoGGi.MenuFuncs.SetTimeFactor()
+function ChoGGi_Funcs.Menus.SetTimeFactor()
 	local item_list = {
 		{text = T(1000121--[[Default]]) .. ": " .. 1000, value = 1000},
 		{text = 0, value = 0, hint = T(6869--[[Pause]])},
@@ -127,7 +128,7 @@ function ChoGGi.MenuFuncs.SetTimeFactor()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000356--[[Time Factor]]),
@@ -136,7 +137,7 @@ function ChoGGi.MenuFuncs.SetTimeFactor()
 	}
 end
 
-function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
+function ChoGGi_Funcs.Menus.ShowAutoUnpinObjectList()
 
 	local item_list = {
 		{text = T(547--[[Colonists]]), value = "Colonist"},
@@ -204,14 +205,14 @@ function ChoGGi.MenuFuncs.ShowAutoUnpinObjectList()
 		if not next(UserSettings.UnpinObjects) then
 			UserSettings.UnpinObjects = nil
 		end
-		ChoGGi.SettingFuncs.WriteSettings()
+		ChoGGi_Funcs.Settings.WriteSettings()
 		MsgPopup(
 			Translate(302535920001093--[[Toggled: %s pinnable objects.]]):format(#choices),
 			T(302535920000686--[[Auto Unpin Objects]])
 		)
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000686--[[Auto Unpin Objects]]),
@@ -236,7 +237,7 @@ end
 
 --~ 	SetTimeFactor(1000) = normal speed
 -- use GetTimeFactor() to check time for changing it so it can be paused?
-function ChoGGi.MenuFuncs.SetGameSpeed()
+function ChoGGi_Funcs.Menus.SetGameSpeed()
 	local speeds = {
 		[3] = 	Translate(1000121--[[Default]]),
 		[6] = 	Translate(302535920001126--[[Double]]),
@@ -269,8 +270,8 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
 		local value = choice[1].value
 		if type(value) == "number" then
 			local const = const
-			ChoGGi.ComFuncs.SetSavedConstSetting("mediumGameSpeed", value)
-			ChoGGi.ComFuncs.SetSavedConstSetting("fastGameSpeed", value)
+			ChoGGi_Funcs.Common.SetSavedConstSetting("mediumGameSpeed", value)
+			ChoGGi_Funcs.Common.SetSavedConstSetting("fastGameSpeed", value)
 
 			-- update values that are checked when speed is changed
 			const.mediumGameSpeed = ChoGGi.Consts.mediumGameSpeed * value
@@ -293,7 +294,7 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
 				ChoGGi.UserSettings.fastGameSpeed = const.fastGameSpeed
 			end
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
 				Translate(302535920001135--[[%s: Excusa! Esta too mucho rapido for the eyes to follow? I'll show you in el slow motiono.]]):format(choice[1].text),
 				T(5505--[[Game Speed]])
@@ -301,7 +302,7 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(5505--[[Game Speed]]),
@@ -315,7 +316,7 @@ function ChoGGi.MenuFuncs.SetGameSpeed()
 	}
 end
 
-function ChoGGi.MenuFuncs.ChangeLightmodelList(action)
+function ChoGGi_Funcs.Menus.ChangeLightmodelList(action)
 	local setting_func = action.setting_func
 	local setting_title = action.setting_title
 
@@ -348,13 +349,13 @@ function ChoGGi.MenuFuncs.ChangeLightmodelList(action)
 			setting_func(choice.value)
 
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.text),
+				ChoGGi_Funcs.Common.SettingState(choice.text),
 				setting_title
 			)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = setting_title,
@@ -369,21 +370,21 @@ function ChoGGi.MenuFuncs.ChangeLightmodelList(action)
 	}
 end
 
-function ChoGGi.MenuFuncs.ReloadMap()
+function ChoGGi_Funcs.Menus.ReloadMap()
 	local function CallBackFunc(answer)
 		if answer then
 			ReloadMap()
 		end
 	end
 
-	ChoGGi.ComFuncs.QuestionBox(
+	ChoGGi_Funcs.Common.QuestionBox(
 		T(6779--[[Warning]]) .. ": " .. T(302535920001488--[[Reloads map as new game.]]),
 		CallBackFunc,
 		T(302535920001487--[[Reload Map]])
 	)
 end
 
-function ChoGGi.MenuFuncs.GUIDockSide_Toggle()
+function ChoGGi_Funcs.Menus.GUIDockSide_Toggle()
 	local XTemplates = XTemplates
 
 	if ChoGGi.UserSettings.GUIDockSide then
@@ -392,25 +393,25 @@ function ChoGGi.MenuFuncs.GUIDockSide_Toggle()
 		XTemplates.NewOverlayDlg[1].Dock = "left"
 		-- save/load screens
 		XTemplates.SaveLoadContentWindow[1].Dock = "left"
-		ChoGGi.ComFuncs.SetTableValue(XTemplates.SaveLoadContentWindow[1], "Dock", "right", "Dock", "left")
+		ChoGGi_Funcs.Common.SetTableValue(XTemplates.SaveLoadContentWindow[1], "Dock", "right", "Dock", "left")
 		-- photomode
 		XTemplates.PhotoMode[1].Dock = "left"
 	else
 		ChoGGi.UserSettings.GUIDockSide = true
 		XTemplates.NewOverlayDlg[1].Dock = "right"
 		XTemplates.SaveLoadContentWindow[1].Dock = "right"
-		ChoGGi.ComFuncs.SetTableValue(XTemplates.SaveLoadContentWindow[1], "Dock", "left", "Dock", "right")
+		ChoGGi_Funcs.Common.SetTableValue(XTemplates.SaveLoadContentWindow[1], "Dock", "left", "Dock", "right")
 		XTemplates.PhotoMode[1].Dock = "right"
 	end
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
 		ChoGGi.UserSettings.GUIDockSide and T(302535920001715--[[Right]]) or T(302535920001716--[[Left]]),
 		T(302535920001412--[[GUI Dock Side]])
 	)
 end
 
-function ChoGGi.MenuFuncs.ShowHints_Toggle()
+function ChoGGi_Funcs.Menus.ShowHints_Toggle()
 	local mapdata = ActiveMapData
 
 	if ChoGGi.UserSettings.DisableHints then
@@ -423,14 +424,14 @@ function ChoGGi.MenuFuncs.ShowHints_Toggle()
 		HintsEnabled = false
 	end
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisableHints),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.DisableHints),
 		T(302535920000670--[[Toggle Show Hints]])
 	)
 end
 
-function ChoGGi.MenuFuncs.OnScreenHints_Reset()
+function ChoGGi_Funcs.Menus.OnScreenHints_Reset()
 	g_ShownOnScreenHints = {}
 	UpdateOnScreenHintDlg()
 	MsgPopup(
@@ -439,30 +440,30 @@ function ChoGGi.MenuFuncs.OnScreenHints_Reset()
 	)
 end
 
-function ChoGGi.MenuFuncs.OnScreenHints_Toggle()
+function ChoGGi_Funcs.Menus.OnScreenHints_Toggle()
 	HintsEnabled = not HintsEnabled
 	SetHintNotificationsEnabled(HintsEnabled)
 	ActiveMapData.DisableHints = not HintsEnabled
 	UpdateOnScreenHintDlg()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(HintsEnabled),
+		ChoGGi_Funcs.Common.SettingState(HintsEnabled),
 		T(302535920000666--[[Toggle on-screen hints]])
 	)
 end
 
-function ChoGGi.MenuFuncs.ShowInterfaceInScreenshots_Toggle()
+function ChoGGi_Funcs.Menus.ShowInterfaceInScreenshots_Toggle()
 	hr.InterfaceInScreenshot = hr.InterfaceInScreenshot ~= 0 and 0 or 1
 	-- needs default
 	ChoGGi.UserSettings.ShowInterfaceInScreenshots = not ChoGGi.UserSettings.ShowInterfaceInScreenshots
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ShowInterfaceInScreenshots),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.ShowInterfaceInScreenshots),
 		T(302535920000661--[[Show Interface in Screenshots]])
 	)
 end
 
-function ChoGGi.MenuFuncs.TakeScreenshot(action)
+function ChoGGi_Funcs.Menus.TakeScreenshot(action)
 	local which = action.setting_mask
 
 	CreateRealTimeThread(function()
@@ -470,11 +471,11 @@ function ChoGGi.MenuFuncs.TakeScreenshot(action)
 		if which == 1 then
 				WaitNextFrame(3)
 				LockCamera("Screenshot")
-				filename = ChoGGi.ComFuncs.GenerateScreenshotFilename("SSAA", "AppData/", "tga")
+				filename = ChoGGi_Funcs.Common.GenerateScreenshotFilename("SSAA", "AppData/", "tga")
 				MovieWriteScreenshot(filename, 0, 64, false)
 				UnlockCamera("Screenshot")
 		else
-			filename = ChoGGi.ComFuncs.GenerateScreenshotFilename("SS", "AppData/", "tga")
+			filename = ChoGGi_Funcs.Common.GenerateScreenshotFilename("SS", "AppData/", "tga")
 			created = WriteScreenshot(filename)
 		end
 
@@ -492,7 +493,7 @@ function ChoGGi.MenuFuncs.TakeScreenshot(action)
 	end)
 end
 
-function ChoGGi.MenuFuncs.MapEdgeLimit_Toggle()
+function ChoGGi_Funcs.Menus.MapEdgeLimit_Toggle()
 	if ChoGGi.UserSettings.MapEdgeLimit then
 		ChoGGi.UserSettings.MapEdgeLimit = false
 		hr.CameraRTSBorderAtMinZoom = -1000
@@ -503,23 +504,23 @@ function ChoGGi.MenuFuncs.MapEdgeLimit_Toggle()
 		hr.CameraRTSBorderAtMaxZoom = 1000
 	end
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.MapEdgeLimit),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.MapEdgeLimit),
 		T(302535920001489--[[Toggle Map Edge Limit]])
 	)
 end
 
-function ChoGGi.MenuFuncs.ResetCamera()
+function ChoGGi_Funcs.Menus.ResetCamera()
 	SetMouseDeltaMode(false)
 	cameraRTS.Activate(1)
 	engineShowMouseCursor()
-	ChoGGi.ComFuncs.SetCameraSettings()
+	ChoGGi_Funcs.Common.SetCameraSettings()
 end
 
-function ChoGGi.MenuFuncs.WhiterRocks()
+function ChoGGi_Funcs.Menus.WhiterRocks()
 	-- less brown rocks
-	SuspendPassEdits("ChoGGi.MenuFuncs.WhiterRocks")
+	SuspendPassEdits("ChoGGi_Funcs.Menus.WhiterRocks")
 	local white = white
 	MapForEach("map", {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor", "StoneSmall"}, function(o)
 		if o.class:find("Dark") then
@@ -529,15 +530,15 @@ function ChoGGi.MenuFuncs.WhiterRocks()
 --~ 				o:delete()
 		end
 	end)
-	ResumePassEdits("ChoGGi.MenuFuncs.WhiterRocks")
+	ResumePassEdits("ChoGGi_Funcs.Menus.WhiterRocks")
 end
 
-function ChoGGi.MenuFuncs.SetObjectOpacity()
+function ChoGGi_Funcs.Menus.SetObjectOpacity()
 	if not MainCity then
 		return
 	end
 
-	local obj = ChoGGi.ComFuncs.SelObject()
+	local obj = ChoGGi_Funcs.Common.SelObject()
 
 	local item_list = {
 		{text = T(302535920001084--[[Reset]]) .. ": " .. T(3984--[[Anomalies]]), value = "Anomaly", hint = T{302535920001109--[["Loops though and makes all <color ChoGGi_green><str></color> visible."]],
@@ -583,7 +584,7 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
 			obj:SetOpacity(value)
 		elseif type(value) == "string" then
 			local function SettingOpacity(label)
-				local objs = ChoGGi.ComFuncs.MapGet(label)
+				local objs = ChoGGi_Funcs.Common.MapGet(label)
 				for i = 1, #objs do
 					objs[i]:SetOpacity(100)
 				end
@@ -600,7 +601,7 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
 			end
 		end
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice.text),
+			ChoGGi_Funcs.Common.SettingState(choice.text),
 			T(302535920000694--[[Set Opacity]])
 		)
 	end
@@ -610,7 +611,7 @@ function ChoGGi.MenuFuncs.SetObjectOpacity()
 	end
 
 	local name = RetName(obj)
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000694--[[Set Opacity]]) .. (name ~= "nil" and ": " .. name or ""),
@@ -689,7 +690,7 @@ do -- ListAllObjects
 		local item_list = BuildItemList_Class(value)
 
 		-- and display them
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = ViewAndSelectObject,
 			items = item_list,
 			title = T(302535920001292--[[List All Objects]]) .. ": " .. value,
@@ -738,14 +739,14 @@ do -- ListAllObjects
 		return item_list
 	end
 
-	function ChoGGi.MenuFuncs.ListAllObjects()
+	function ChoGGi_Funcs.Menus.ListAllObjects()
 		if not MainCity then
 			return
 		end
 
 		local item_list = BuildItemList_All()
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc_List,
 			items = item_list,
 			title = T(302535920001292--[[List All Objects]]),
@@ -770,19 +771,19 @@ do -- ListAllObjects
 	end
 end -- do
 
-function ChoGGi.MenuFuncs.DisableTextureCompression_Toggle()
-	ChoGGi.UserSettings.DisableTextureCompression = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.DisableTextureCompression)
+function ChoGGi_Funcs.Menus.DisableTextureCompression_Toggle()
+	ChoGGi.UserSettings.DisableTextureCompression = ChoGGi_Funcs.Common.ToggleValue(ChoGGi.UserSettings.DisableTextureCompression)
 	hr.TR_ToggleTextureCompression = 1
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisableTextureCompression),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.DisableTextureCompression),
 		T(302535920000641--[[Disable Texture Compression]])
 	)
 end
 
 do -- FlattenGround
-	local ToggleCollisions = ChoGGi.ComFuncs.ToggleCollisions
+	local ToggleCollisions = ChoGGi_Funcs.Common.ToggleCollisions
 	local Sleep = Sleep
 	local guic = guic
 	local white = white
@@ -849,7 +850,7 @@ do -- FlattenGround
 		end
 	end
 
-	function ChoGGi.MenuFuncs.FlattenTerrain_Toggle(square)
+	function ChoGGi_Funcs.Menus.FlattenTerrain_Toggle(square)
 		if are_we_flattening then
 			-- disable shift-arrow keys
 			ToggleHotkeys()
@@ -857,7 +858,7 @@ do -- FlattenGround
 			are_we_flattening = false
 			visual_circle:delete()
 			-- update saved settings (from hotkeys)
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 
 			MsgPopup(
 				T(302535920001164--[[Flattening has been stopped, now updating buildable.]]),
@@ -913,7 +914,7 @@ end
 --~ -- we'll get more concrete one of these days
 --~ local terrain_type_idx = GetTerrainTextureIndex("Regolith")
 --~ ActiveGameMap.terrain:SetTypeCircle(GetCursorWorldPos(), 5000, terrain_type_idx)
-function ChoGGi.MenuFuncs.ChangeMap()
+function ChoGGi_Funcs.Menus.ChangeMap()
 	local lookup_table = {
 		[T(3474--[[Mission Sponsor]])] = "idMissionSponsor",
 		[T(3478--[[Commander Profile]])] = "idCommanderProfile",
@@ -994,7 +995,7 @@ function ChoGGi.MenuFuncs.ChangeMap()
 	info_lists[6].name = T(692--[[Resources]])
 	info_lists[6].name = T(3996--[[Map Overview]])
 
-	local dlg_has_params = ChoGGi.ComFuncs.OpenInExamineDlg(info_lists, {
+	local dlg_has_params = ChoGGi_Funcs.Common.OpenInExamineDlg(info_lists, {
 		has_params = true,
 		override_title = true,
 		title = T(302535920001717--[[Info]]) .. ": " .. T(10892--[[MISSION PARAMETERS]]),
@@ -1027,7 +1028,7 @@ function ChoGGi.MenuFuncs.ChangeMap()
 		-- close dialogs we opened
 		dlg_has_params:Close()
 		-- close any ex opened from has_params
-		ChoGGi.ComFuncs.CloseChildExamineDlgs(dlg_has_params)
+		ChoGGi_Funcs.Common.CloseChildExamineDlgs(dlg_has_params)
 
 		-- cleans out missions params
 		InitNewGameMissionParams()
@@ -1094,7 +1095,7 @@ function ChoGGi.MenuFuncs.ChangeMap()
 
 	end
 
-	local dlg_list_MissionParams = ChoGGi.ComFuncs.OpenInListChoice{
+	local dlg_list_MissionParams = ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = itemlist,
 		title = T(302535920000868--[[Choose Map]]),
@@ -1105,17 +1106,17 @@ function ChoGGi.MenuFuncs.ChangeMap()
 	dlg_has_params:SetPos(point(10, 75))
 end
 
-function ChoGGi.MenuFuncs.PulsatingPins_Toggle()
+function ChoGGi_Funcs.Menus.PulsatingPins_Toggle()
 	ChoGGi.UserSettings.DisablePulsatingPinsMotion = not ChoGGi.UserSettings.DisablePulsatingPinsMotion
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.DisablePulsatingPinsMotion),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.DisablePulsatingPinsMotion),
 		T(302535920000265--[[Toggle Pulsating Pins]])
 	)
 end
 
-function ChoGGi.MenuFuncs.TerrainTextureRemap()
+function ChoGGi_Funcs.Menus.TerrainTextureRemap()
 	local TerrainTextures = TerrainTextures
 	local GetTerrainTextureIndex = GetTerrainTextureIndex
 	local hint_str = T{302535920000973--[["Change the value (-1) to an index number from Terrain Textures.
@@ -1125,7 +1126,7 @@ Open <color ChoGGi_green><str></color> to see all the textures, the tooltips sho
 	local item_list = {}
 	local c = 0
 
-	local used = ChoGGi.ComFuncs.UsedTerrainTextures(true)
+	local used = ChoGGi_Funcs.Common.UsedTerrainTextures(true)
 	for name, count in pairs(used) do
 		local index = GetTerrainTextureIndex(name)
 		local terrain = TerrainTextures[index]
@@ -1153,12 +1154,12 @@ Open <color ChoGGi_green><str></color> to see all the textures, the tooltips sho
 			end
 		end
 --~ 		ex(map)
-		SuspendPassEdits("ChoGGi.MenuFuncs.TerrainTextureRemap")
+		SuspendPassEdits("ChoGGi_Funcs.Menus.TerrainTextureRemap")
 		ActiveGameMap.terrain:RemapType(map)
-		ResumePassEdits("ChoGGi.MenuFuncs.TerrainTextureRemap")
+		ResumePassEdits("ChoGGi_Funcs.Menus.TerrainTextureRemap")
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920001237--[[Terrain Texture Remap]]),
@@ -1170,11 +1171,11 @@ Open <color ChoGGi_green><str></color> to see all the textures, the tooltips sho
 		custom_type = 4,
 	}
 
---~ 		SuspendPassEdits("ChoGGi.MenuFuncs.ChangeTerrainType")
+--~ 		SuspendPassEdits("ChoGGi_Funcs.Menus.ChangeTerrainType")
 
 end
 
-function ChoGGi.MenuFuncs.TerrainTextureChange()
+function ChoGGi_Funcs.Menus.TerrainTextureChange()
 	local function RestoreSkins(label, temp_skin, idx)
 		for i = 1, #(label or "") do
 			local o = label[i]
@@ -1220,7 +1221,7 @@ function ChoGGi.MenuFuncs.TerrainTextureChange()
 		choice = choice[1]
 
 		if TerrainTextures[choice.value] then
-			SuspendPassEdits("ChoGGi.MenuFuncs.TerrainTextureChange")
+			SuspendPassEdits("ChoGGi_Funcs.Menus.TerrainTextureChange")
 			local terrain = GameMaps[MainMapID].terrain
 			terrain:SetTerrainType{type = choice.value}
 
@@ -1261,13 +1262,13 @@ function ChoGGi.MenuFuncs.TerrainTextureChange()
 				end
 			end -- for
 
-			ResumePassEdits("ChoGGi.MenuFuncs.TerrainTextureChange")
+			ResumePassEdits("ChoGGi_Funcs.Menus.TerrainTextureChange")
 		end -- If TerrainTextures
 
 	end -- CallBackFunc
 
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000623--[[Terrain Texture Change]]),
@@ -1276,7 +1277,7 @@ function ChoGGi.MenuFuncs.TerrainTextureChange()
 	}
 end
 
-function ChoGGi.MenuFuncs.ChangeLightmodel()
+function ChoGGi_Funcs.Menus.ChangeLightmodel()
 	local item_list = {}
 	local c = 0
 
@@ -1310,9 +1311,9 @@ function ChoGGi.MenuFuncs.ChangeLightmodel()
 				SetLightmodel(1, value)
 			end
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.text),
+				ChoGGi_Funcs.Common.SettingState(choice.text),
 				T(911432559058, "Light model")
 			)
 		end
@@ -1332,7 +1333,7 @@ function ChoGGi.MenuFuncs.ChangeLightmodel()
 	c = c + 1
 	hint[c] = T(302535920000991--[[Double right-click to preview lightmodel without closing dialog.]])
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(911432559058--[[Light model]]),
@@ -1353,12 +1354,12 @@ function ChoGGi.MenuFuncs.ChangeLightmodel()
 	}
 end
 
-function ChoGGi.MenuFuncs.TransparencyUI_Toggle()
+function ChoGGi_Funcs.Menus.TransparencyUI_Toggle()
 	ChoGGi.UserSettings.TransparencyToggle = not ChoGGi.UserSettings.TransparencyToggle
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.TransparencyToggle),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.TransparencyToggle),
 		T(302535920000631--[[UI Transparency Mouseover]])
 	)
 end
@@ -1397,7 +1398,7 @@ do -- SetTransparencyUI
 		end
 	end
 
-	function ChoGGi.MenuFuncs.SetTransparencyUI()
+	function ChoGGi_Funcs.Menus.SetTransparencyUI()
 		local desk = terminal.desktop
 		local igi = Dialogs.InGameInterface
 
@@ -1441,14 +1442,14 @@ do -- SetTransparencyUI
 				end
 			end
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
 				T(302535920000999--[[Transparency has been updated.]]),
 				T(302535920000629--[[UI Transparency]])
 			)
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = T(302535920000629--[[Set UI Transparency]]),
@@ -1459,7 +1460,7 @@ Set value to 0 to remove setting."]]),
 	end
 end -- do
 
-function ChoGGi.MenuFuncs.SetLightsRadius()
+function ChoGGi_Funcs.Menus.SetLightsRadius()
 	local hr = hr
 	local item_list = {
 		{text = T(1000121--[[Default]]), value = T(1000121--[[Default]]), hint = T(302535920001003--[[restart to enable]])},
@@ -1487,19 +1488,19 @@ function ChoGGi.MenuFuncs.SetLightsRadius()
 				value = 100000
 			end
 			hr.LightsRadiusModifier = value
-			ChoGGi.ComFuncs.SetSavedConstSetting("LightsRadius", value)
+			ChoGGi_Funcs.Common.SetSavedConstSetting("LightsRadius", value)
 		else
 			ChoGGi.UserSettings.LightsRadius = nil
 		end
 
-		ChoGGi.SettingFuncs.WriteSettings()
+		ChoGGi_Funcs.Settings.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice.text),
+			ChoGGi_Funcs.Common.SettingState(choice.text),
 			T(302535920000633--[[Lights Radius]])
 		)
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920001016--[[Set Lights Radius]]),
@@ -1509,7 +1510,7 @@ function ChoGGi.MenuFuncs.SetLightsRadius()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetTerrainDetail()
+function ChoGGi_Funcs.Menus.SetTerrainDetail()
 	local item_list = {
 		{text = T(1000121--[[Default]]), value = T(1000121--[[Default]]), hint = T(302535920001003--[[restart to enable]])},
 		{text = T(302535920001004--[[01 Lowest (25)]]), value = 25},
@@ -1535,19 +1536,19 @@ function ChoGGi.MenuFuncs.SetTerrainDetail()
 				value = 1000
 			end
 			hr.TR_MaxChunks = value
-			ChoGGi.ComFuncs.SetSavedConstSetting("TerrainDetail", value)
+			ChoGGi_Funcs.Common.SetSavedConstSetting("TerrainDetail", value)
 		else
 			ChoGGi.UserSettings.TerrainDetail = nil
 		end
 
-		ChoGGi.SettingFuncs.WriteSettings()
+		ChoGGi_Funcs.Settings.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice.text),
+			ChoGGi_Funcs.Common.SettingState(choice.text),
 			T(302535920000635--[[Terrain Detail]])
 		)
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000129--[[Set]]) .. " " .. T(302535920000635--[[Terrain Detail]]),
@@ -1558,7 +1559,7 @@ And yes Medium is using a higher setting than High..."]]),
 	}
 end
 
-function ChoGGi.MenuFuncs.SetVideoMemory()
+function ChoGGi_Funcs.Menus.SetVideoMemory()
 	local item_list = {
 		{text = T(1000121--[[Default]]), value = T(1000121--[[Default]]), hint = T(302535920001003--[[restart to enable]])},
 		{text = T(302535920001031--[[1 Crap (32)]]), value = 32},
@@ -1581,19 +1582,19 @@ function ChoGGi.MenuFuncs.SetVideoMemory()
 		end
 		if type(value) == "number" then
 			hr.DTM_VideoMemory = value
-			ChoGGi.ComFuncs.SetSavedConstSetting("VideoMemory", value)
+			ChoGGi_Funcs.Common.SetSavedConstSetting("VideoMemory", value)
 		else
 			ChoGGi.UserSettings.VideoMemory = nil
 		end
 
-		ChoGGi.SettingFuncs.WriteSettings()
+		ChoGGi_Funcs.Settings.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice.text),
+			ChoGGi_Funcs.Common.SettingState(choice.text),
 			T(302535920000637--[[Video Memory]])
 		)
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920001041--[[Set Video Memory Use]]),
@@ -1602,7 +1603,7 @@ function ChoGGi.MenuFuncs.SetVideoMemory()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetShadowmapSize()
+function ChoGGi_Funcs.Menus.SetShadowmapSize()
 	local hint_highest = T(6779--[[Warning]]) .. ": " .. T(302535920001042--[[Highest uses vram (one gig for starter base, a couple for large base).]])
 	local item_list = {
 		{text = T(1000121--[[Default]]), value = T(1000121--[[Default]]), hint = T(302535920001003--[[restart to enable]])},
@@ -1628,19 +1629,19 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
 				value = 16384
 			end
 			hr.ShadowmapSize = value
-			ChoGGi.ComFuncs.SetSavedConstSetting("ShadowmapSize", value)
+			ChoGGi_Funcs.Common.SetSavedConstSetting("ShadowmapSize", value)
 		else
 			ChoGGi.UserSettings.ShadowmapSize = nil
 		end
 
-		ChoGGi.SettingFuncs.WriteSettings()
+		ChoGGi_Funcs.Settings.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(choice.text),
+			ChoGGi_Funcs.Common.SettingState(choice.text),
 			T(302535920000639--[[Shadow Map]])
 		)
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920001051--[[Set Shadowmap Size]]),
@@ -1649,20 +1650,20 @@ function ChoGGi.MenuFuncs.SetShadowmapSize()
 	}
 end
 
-function ChoGGi.MenuFuncs.HigherShadowDist_Toggle()
+function ChoGGi_Funcs.Menus.HigherShadowDist_Toggle()
 	ChoGGi.UserSettings.HigherShadowDist = not ChoGGi.UserSettings.HigherShadowDist
 
-	hr.ShadowRangeOverride = ChoGGi.ComFuncs.ValueRetOpp(hr.ShadowRangeOverride, 0, 1000000)
-	hr.ShadowFadeOutRangePercent = ChoGGi.ComFuncs.ValueRetOpp(hr.ShadowFadeOutRangePercent, 30, 0)
+	hr.ShadowRangeOverride = ChoGGi_Funcs.Common.ValueRetOpp(hr.ShadowRangeOverride, 0, 1000000)
+	hr.ShadowFadeOutRangePercent = ChoGGi_Funcs.Common.ValueRetOpp(hr.ShadowFadeOutRangePercent, 30, 0)
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.HigherShadowDist),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.HigherShadowDist),
 		T(302535920000645--[[Higher Shadow Distance]])
 	)
 end
 
-function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
+function ChoGGi_Funcs.Menus.HigherRenderDist_Toggle()
 	local default_setting = ChoGGi.Consts.HigherRenderDist or ChoGGi.UserSettings.HigherRenderDist or 120
 	local hint_min = T(302535920001054--[[Minimal FPS hit on large base]])
 	local hint_small = T(302535920001055--[[Small FPS hit on large base]])
@@ -1693,17 +1694,17 @@ function ChoGGi.MenuFuncs.HigherRenderDist_Toggle()
 		end
 		if type(value) == "number" then
 			hr.LODDistanceModifier = value
-			ChoGGi.ComFuncs.SetSavedConstSetting("HigherRenderDist", value)
+			ChoGGi_Funcs.Common.SetSavedConstSetting("HigherRenderDist", value)
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.HigherRenderDist),
+				ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.HigherRenderDist),
 				T(302535920000643--[[Higher Render Distance]])
 			)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000643--[[Higher Render Distance]]),
@@ -1717,7 +1718,7 @@ end
 do -- CameraFree_Toggle
 	-- used to keep pos/lookat/zoom
 	local cur_pos, cur_la, zoom
-	function ChoGGi.MenuFuncs.CameraFree_Toggle()
+	function ChoGGi_Funcs.Menus.CameraFree_Toggle()
 		if cameraFly.IsActive() then
 			SetMouseDeltaMode(false)
 			cameraRTS.Activate(1)
@@ -1729,7 +1730,7 @@ do -- CameraFree_Toggle
 				cameraRTS.SetZoom(zoom)
 			end
 			-- make sure camera uses our settings after fly is done
-			ChoGGi.ComFuncs.SetCameraSettings()
+			ChoGGi_Funcs.Common.SetCameraSettings()
 			MsgPopup(
 				T(302535920001059--[[RTS]]),
 				T(302535920000651--[[Toggle Free Camera]])
@@ -1747,10 +1748,10 @@ do -- CameraFree_Toggle
 			)
 		end
 		-- resets zoom so...
-		ChoGGi.ComFuncs.SetCameraSettings()
+		ChoGGi_Funcs.Common.SetCameraSettings()
 	end
 
-	function ChoGGi.MenuFuncs.CameraFollow_Toggle()
+	function ChoGGi_Funcs.Menus.CameraFollow_Toggle()
 		-- It was on the free camera so
 		if not ActiveMapData.GameLogic then
 			return
@@ -1768,7 +1769,7 @@ do -- CameraFree_Toggle
 			-- show log again if it was hidden
 			if ChoGGi.UserSettings.ConsoleToggleHistory then
 				cls() --if it's going to spam the log, might as well clear it
-				ChoGGi.ComFuncs.ToggleConsoleLog()
+				ChoGGi_Funcs.Common.ToggleConsoleLog()
 			end
 			-- restore pos/zoom
 			if cur_pos and cur_la and zoom then
@@ -1776,10 +1777,10 @@ do -- CameraFree_Toggle
 				cameraRTS.SetZoom(zoom)
 			end
 			-- reset camera zoom settings
-			ChoGGi.ComFuncs.SetCameraSettings()
+			ChoGGi_Funcs.Common.SetCameraSettings()
 		else
 			-- crashes game if we attach to "false"
-			local obj = ChoGGi.ComFuncs.SelObject()
+			local obj = ChoGGi_Funcs.Common.SelObject()
 			if not obj then
 				return
 			end
@@ -1820,7 +1821,7 @@ do -- CameraFree_Toggle
 
 			-- toggle showing console history as console spams transparent something (and it'd be annoying to replace that function)
 			if ChoGGi.UserSettings.ConsoleToggleHistory then
-				ChoGGi.ComFuncs.ToggleConsoleLog()
+				ChoGGi_Funcs.Common.ToggleConsoleLog()
 			end
 
 			-- If it's a rover then stop the ctrl control mode from being active (from pressing ctrl-shift-f)
@@ -1833,7 +1834,7 @@ do -- CameraFree_Toggle
 end -- do
 
 -- LogCameraPos(print)
-function ChoGGi.MenuFuncs.CursorVisible_Toggle()
+function ChoGGi_Funcs.Menus.CursorVisible_Toggle()
 	if IsMouseCursorHidden() then
 		SetMouseDeltaMode(false)
 		engineShowMouseCursor()
@@ -1844,7 +1845,7 @@ function ChoGGi.MenuFuncs.CursorVisible_Toggle()
 	end
 end
 
-function ChoGGi.MenuFuncs.SetBorderScrolling()
+function ChoGGi_Funcs.Menus.SetBorderScrolling()
 	local default_setting = 5
 	local hint_down = T(302535920001062--[[Down scrolling may not work (dependant on aspect ratio?).]])
 	local item_list = {
@@ -1871,18 +1872,18 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
 			return
 		end
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetSavedConstSetting("BorderScrollingArea", value)
-			ChoGGi.ComFuncs.SetCameraSettings()
+			ChoGGi_Funcs.Common.SetSavedConstSetting("BorderScrollingArea", value)
+			ChoGGi_Funcs.Common.SetCameraSettings()
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.value),
+				ChoGGi_Funcs.Common.SettingState(choice.value),
 				T(302535920000647--[[Border Scrolling]])
 			)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000129--[[Set]]) .. " " .. T(302535920000647--[[Border Scrolling]]),
@@ -1891,7 +1892,7 @@ function ChoGGi.MenuFuncs.SetBorderScrolling()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetCameraLookatDist()
+function ChoGGi_Funcs.Menus.SetCameraLookatDist()
 	local default_setting = ChoGGi.Consts.CameraLookatDist or ChoGGi.UserSettings.CameraLookatDist or 0
 	local item_list = {
 		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
@@ -1918,18 +1919,18 @@ function ChoGGi.MenuFuncs.SetCameraLookatDist()
 			return
 		end
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetSavedConstSetting("CameraLookatDist", value)
-			ChoGGi.ComFuncs.SetCameraSettings()
+			ChoGGi_Funcs.Common.SetSavedConstSetting("CameraLookatDist", value)
+			ChoGGi_Funcs.Common.SetCameraSettings()
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.text),
+				ChoGGi_Funcs.Common.SettingState(choice.text),
 				T(302535920001375--[[Bird's Eye]])
 			)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920001375--[[Bird's Eye]]),
@@ -1938,7 +1939,7 @@ function ChoGGi.MenuFuncs.SetCameraLookatDist()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetCameraZoom()
+function ChoGGi_Funcs.Menus.SetCameraZoom()
 	local default_setting = ChoGGi.Consts.CameraZoomToggle or ChoGGi.UserSettings.CameraZoomToggle or 24000
 	local item_list = {
 		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
@@ -1962,10 +1963,10 @@ function ChoGGi.MenuFuncs.SetCameraZoom()
 			return
 		end
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetSavedConstSetting("CameraZoomToggle", value)
-			ChoGGi.ComFuncs.SetCameraSettings()
+			ChoGGi_Funcs.Common.SetSavedConstSetting("CameraZoomToggle", value)
+			ChoGGi_Funcs.Common.SetCameraSettings()
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
 				choice[1].text,
 				T(302535920000649--[[Zoom Distance]])
@@ -1973,7 +1974,7 @@ function ChoGGi.MenuFuncs.SetCameraZoom()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000649--[[Zoom Distance]]),

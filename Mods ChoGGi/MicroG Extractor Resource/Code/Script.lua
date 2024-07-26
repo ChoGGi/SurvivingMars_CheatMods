@@ -73,7 +73,7 @@ function OnMsg.ClassesPostprocess()
 
 	local xtemplate = XTemplates.ipBuilding[1]
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_MicroGExtractorResource_ResourceToggle", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_MicroGExtractorResource_ResourceToggle", true)
 
 	table.insert(xtemplate, 1,
 		PlaceObj("XTemplateTemplate", {

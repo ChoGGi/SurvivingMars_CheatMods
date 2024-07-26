@@ -12,7 +12,7 @@ local loadlogos = {
 local CurrentModPath = CurrentModPath
 local PlaceObj = PlaceObj
 
--- copy n paste from ChoGGi.ComFuncs.LoadEntity
+-- copy n paste from ChoGGi_Funcs.Common.LoadEntity
 do -- LoadEntity
 	-- no sense in making a new one for each entity
 	local entity_templates = {

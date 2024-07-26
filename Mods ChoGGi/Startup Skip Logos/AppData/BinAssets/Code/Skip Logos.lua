@@ -34,8 +34,8 @@ function OnMsg.DesktopCreated()
 		XShortcutsTarget:SetVisible(true)
 
 		-- update my list of table names
-		if rawget(_G, "ChoGGi") and ChoGGi.ComFuncs.RetName_Update then
-			ChoGGi.ComFuncs.RetName_Update()
+		if rawget(_G, "ChoGGi") and ChoGGi_Funcs.Common.RetName_Update then
+			ChoGGi_Funcs.Common.RetName_Update()
 		end
 
 		-- remove the update news

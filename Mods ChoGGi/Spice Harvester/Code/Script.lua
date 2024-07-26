@@ -6,7 +6,7 @@ local StopSound = StopSound
 local GetSoundDuration = GetSoundDuration
 local Sleep = Sleep
 
-local Random = ChoGGi.ComFuncs.Random
+local Random = ChoGGi_Funcs.Common.Random
 
 DefineClass.Melanger = {
 	__parents = {
@@ -196,10 +196,10 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	local XTemplates = XTemplates
-	ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipAttackRover[1], "Melanger_Destroy")
-	ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipAttackRover[1], "SolariaTelepresence_Melanger_Section")
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(XTemplates.ipAttackRover[1], "Melanger_Destroy")
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(XTemplates.ipAttackRover[1], "SolariaTelepresence_Melanger_Section")
 
-	ChoGGi.ComFuncs.AddXTemplate(XTemplates.ipAttackRover[1], "Melanger_Destroy", nil, {
+	ChoGGi_Funcs.Common.AddXTemplate(XTemplates.ipAttackRover[1], "Melanger_Destroy", nil, {
 
 		__context_of_kind = "Melanger",
 		Icon = "UI/Icons/Sections/resource_no_accept.tga",
@@ -228,7 +228,7 @@ function OnMsg.ClassesPostprocess()
 					end)
 				end
 			end
-			ChoGGi.ComFuncs.QuestionBox(
+			ChoGGi_Funcs.Common.QuestionBox(
 				T(302535920011299, "There is no escape-we pay for the violence of our ancestors."),
 				CallBackFunc,
 				T(302535920011300, "Little-death"),

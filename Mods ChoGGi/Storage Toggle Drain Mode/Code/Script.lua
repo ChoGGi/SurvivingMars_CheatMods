@@ -80,7 +80,7 @@ end
 
 function OnMsg.ClassesPostprocess()
 	local xtemplate = XTemplates.ipBuilding[1]
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_TankToggleDrainMode", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_TankToggleDrainMode", true)
 
 	table.insert(xtemplate, 2, PlaceObj("XTemplateTemplate", {
 			"Id" , "ChoGGi_Template_TankToggleDrainMode",

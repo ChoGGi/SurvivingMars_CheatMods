@@ -27,7 +27,7 @@ local IsValidEntity = IsValidEntity
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local GetConstructionController = GetConstructionController
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
 local icon_path = CurrentModPath .. "UI/"
 local description = T(302535920011004, "It's a wall (use button to rotate after placing).") .. "\n\n"
@@ -1040,11 +1040,11 @@ function CursorBuilding:GameInit(...)
 		XShortcutsSetMode("AdjustAdjustWallsLength")
 	end
 
---~ 	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(self)
+--~ 	local dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(self)
 --~ 	dlg:EnableAutoRefresh()
 --~ 	CreateRealTimeThread(function()
 --~ 		Sleep(1000)
---~ 	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(self.template)
+--~ 	local dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(self.template)
 --~ 	dlg:EnableAutoRefresh()
 --~ 	end)
 

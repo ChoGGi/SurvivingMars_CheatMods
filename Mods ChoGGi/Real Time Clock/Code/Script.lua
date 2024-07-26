@@ -6,7 +6,7 @@ local GetDate = GetDate
 local T = T
 local clock = {302535920011360, "<hour>:<min>"}
 
-local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
+local IsValidXWin = ChoGGi_Funcs.Common.IsValidXWin
 local Infobar
 
 local mod_ShowClock

@@ -4,9 +4,10 @@
 --~ 	return
 --~ end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local SettingState = ChoGGi.ComFuncs.SettingState
+local Translate = ChoGGi_Funcs.Common.Translate
+local SettingState = ChoGGi_Funcs.Common.SettingState
 
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
@@ -18,7 +19,7 @@ Actions[c] = {ActionName = T(302535920000146--[[Delete Saved Games]]),
 	ActionId = ".Delete Saved Games",
 	ActionIcon = "CommonAssets/UI/Menu/DeleteArea.tga",
 	RolloverText = T(302535920001273--[["Shows a list of saved games, and allows you to delete more than one at a time."]]) .. "\n\n" .. T(302535920001274--[[This is permanent!]]),
-	OnAction = ChoGGi.MenuFuncs.DeleteSavedGames,
+	OnAction = ChoGGi_Funcs.Menus.DeleteSavedGames,
 	ActionSortKey = "94.Delete Saved Games",
 }
 
@@ -28,7 +29,7 @@ Actions[c] = {ActionName = T(302535920000504--[[List All Menu Items]]),
 	ActionId = ".List All Menu Items",
 	ActionIcon = "CommonAssets/UI/Menu/EV_OpenFromInputBox.tga",
 	RolloverText = T(302535920001323--[[Show all the cheat menu items in a list dialog.]]),
-	OnAction = ChoGGi.MenuFuncs.ListAllMenuItems,
+	OnAction = ChoGGi_Funcs.Menus.ListAllMenuItems,
 	ActionSortKey = "98.List All Menu Items",
 }
 
@@ -39,7 +40,7 @@ Actions[c] = {ActionName = T(302535920001362--[[Extract HPKs]]),
 	ActionIcon = "CommonAssets/UI/Menu/editmapdata.tga",
 	RolloverText = T(302535920001363--[[Shows list of Steam/Paradox downloaded mod hpk files for extraction (or use hpk.exe).
 Files are placed in your profile folder\Mods.]]),
-	OnAction = ChoGGi.MenuFuncs.ExtractHPKs,
+	OnAction = ChoGGi_Funcs.Menus.ExtractHPKs,
 	ActionSortKey = "95.Extract HPKs",
 }
 
@@ -50,7 +51,7 @@ Actions[c] = {ActionName = T(302535920000367--[[Mod Upload]]),
 --~ 	ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
 	ActionIcon = ChoGGi.library_path .. "UI/Steam.png",
 	RolloverText = T(302535920001264--[[Show list of mods to upload to Steam Workshop.]]),
-	OnAction = ChoGGi.MenuFuncs.ModUpload,
+	OnAction = ChoGGi_Funcs.Menus.ModUpload,
 	ActionSortKey = "95.Mod Upload",
 }
 
@@ -70,7 +71,7 @@ Actions[c] = {ActionName = T(302535920000672--[[About ECM]]),
 	ActionId = ".About ECM",
 	ActionIcon = "CommonAssets/UI/Menu/help.tga",
 	RolloverText = T(302535920000000--[[Expanded Cheat Menu]]) .. " " .. T(302535920000673--[[info dialog.]]),
-	OnAction = ChoGGi.MenuFuncs.AboutECM,
+	OnAction = ChoGGi_Funcs.Menus.AboutECM,
 	ActionSortKey = "001",
 }
 
@@ -80,7 +81,7 @@ Actions[c] = {ActionName = T(302535920000002--[[ECM]]) .. " " .. T(3025359200010
 	ActionId = ".ECM Read me",
 	ActionIcon = "CommonAssets/UI/Menu/help.tga",
 	RolloverText = T(302535920001025--[[Help! I'm with stupid!]]),
-	OnAction = ChoGGi.MenuFuncs.OpenUrl,
+	OnAction = ChoGGi_Funcs.Menus.OpenUrl,
 	setting_url = str_url .. "Expanded Cheat Menu/README.md#no-warranty-implied-or-otherwise",
 	ActionSortKey = "002",
 }
@@ -91,7 +92,7 @@ Actions[c] = {ActionName = T(302535920001029--[[Changelog]]),
 	ActionId = ".Changelog",
 	ActionIcon = "CommonAssets/UI/Menu/DisablePostprocess.tga",
 	RolloverText = T(4915--[[Good News, Everyone!"]]),
-	OnAction = ChoGGi.MenuFuncs.OpenUrl,
+	OnAction = ChoGGi_Funcs.Menus.OpenUrl,
 	setting_url = str_url .. "Expanded Cheat Menu/Changelog.md#ecm-changelog",
 	ActionSortKey = "003",
 }
@@ -107,7 +108,7 @@ Actions[c] = {ActionName = T(302535920000321--[[Enable Tooltips]]),
 			T(302535920000322--[[Disabling this will remove most of the tooltips (leaves the cheat menu and cheats pane ones).]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.ToolTips_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.ToolTips_Toggle,
 }
 
 c = c + 1
@@ -121,7 +122,7 @@ Actions[c] = {ActionName = T(302535920001481--[[Show Startup Ticks]]),
 			T(302535920001482--[[Prints to console how many ticks it takes the map to load.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.StartupTicks_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.StartupTicks_Toggle,
 }
 
 c = c + 1
@@ -132,7 +133,7 @@ Actions[c] = {ActionName = T(251103844022--[[Disable]]) .. " " .. T(302535920000
 	RolloverText = T(302535920000465--[["Disables menu, cheat panel, and hotkeys, but leaves settings intact. You'll need to manually re-enable in settings file, or check key bindings for Disable ECM.
 
 Ctrl-Alt-0 to re-enable, or see Game options>Key bindings for the re-enable key."]]),
-	OnAction = ChoGGi.MenuFuncs.DisableECM,
+	OnAction = ChoGGi_Funcs.Menus.DisableECM,
 }
 
 c = c + 1
@@ -141,7 +142,7 @@ Actions[c] = {ActionName = T(302535920000676--[[Reset ECM Settings]]),
 	ActionId = ".Reset ECM Settings",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
 	RolloverText = T(302535920000677--[[Reset all ECM settings to default (restart to enable).]]),
-	OnAction = ChoGGi.MenuFuncs.ResetECMSettings,
+	OnAction = ChoGGi_Funcs.Menus.ResetECMSettings,
 	ActionSortKey = "98",
 }
 
@@ -151,7 +152,7 @@ Actions[c] = {ActionName = T(302535920001242--[[Edit ECM Settings]]),
 	ActionId = ".Edit ECM Settings",
 	ActionIcon = "CommonAssets/UI/Menu/UIDesigner.tga",
 	RolloverText = T(302535920001243--[[Manually edit ECM settings.]]),
-	OnAction = ChoGGi.MenuFuncs.EditECMSettings,
+	OnAction = ChoGGi_Funcs.Menus.EditECMSettings,
 	ActionSortKey = "99",
 }
 c = c + 1
@@ -165,7 +166,7 @@ Actions[c] = {ActionName = T(302535920001647--[[Window Title]]),
 			T(302535920001648--[[If you don't want ECM to change the window title than disable this (restart to take effect).]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.ChangeWindowTitle_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.ChangeWindowTitle_Toggle,
 }
 
 -- menu
@@ -194,7 +195,7 @@ Actions[c] = {ActionName = "*" .. T(283142739680--[[Game]]) .. " & " .. T(302535
 	ActionId = ".*Game & Map Info*",
 	ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
 	RolloverText = T(302535920001282--[[Information about this saved game (mostly objects).]]),
-	OnAction = ChoGGi.MenuFuncs.RetMapInfo,
+	OnAction = ChoGGi_Funcs.Menus.RetMapInfo,
 	ActionSortKey = "-1*Game & Map Info*",
 }
 
@@ -205,7 +206,7 @@ Actions[c] = {ActionName = "*" .. T(5568--[[Stats]]) .. "*",
 	ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
 	RolloverText = T(302535920001281--[[Information about your computer (as seen by SM).]]),
 	OnAction = function()
-		ChoGGi.ComFuncs.OpenInExamineDlg(ChoGGi.MenuFuncs.RetHardwareInfo(), nil, T(5568--[[Stats]]))
+		ChoGGi_Funcs.Common.OpenInExamineDlg(ChoGGi_Funcs.Menus.RetHardwareInfo(), nil, T(5568--[[Stats]]))
 	end,
 	ActionSortKey = "-2*Stats*",
 }
@@ -216,7 +217,7 @@ Actions[c] = {ActionName = "*" .. T(302535920000875--[[Game Functions]]) .. "*",
 	ActionId = ".*Game Functions*",
 	ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
 	RolloverText = T(302535920001285--[[Opens in webbrowser]]),
-	OnAction = ChoGGi.MenuFuncs.OpenUrl,
+	OnAction = ChoGGi_Funcs.Menus.OpenUrl,
 	setting_url = str_url .. "Tutorials/GameFunctions.lua",
 	ActionSortKey = "-2*Game Functions*",
 }
@@ -251,7 +252,7 @@ for i = 1, #tutorial_table do
 		ActionId = "." .. name,
 		ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
 		RolloverText = T(302535920001285--[[Opens in webbrowser]]),
-		OnAction = ChoGGi.MenuFuncs.OpenUrl,
+		OnAction = ChoGGi_Funcs.Menus.OpenUrl,
 		setting_url = str_url .. "Tutorials/" .. name .. ".md#readme",
 		ActionSortKey = name == "Misc" and "-3 Misc" or "-3" .. name,
 	}

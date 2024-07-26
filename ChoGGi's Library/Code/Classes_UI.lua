@@ -3,17 +3,18 @@
 --~ box(left/x, top/y, right/w, bottom/h) :minx() :miny() :sizex() :sizey()
 --~ box() or sizebox()
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
 -- store opened dialogs (make sure any refs to this table are only used in this mod)
 if not rawget(_G, "ChoGGi_dlgs_opened") then
 	ChoGGi_dlgs_opened = {}
 end
 
-local Random = ChoGGi.ComFuncs.Random
---~ local RetName = ChoGGi.ComFuncs.RetName
-local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
+local Random = ChoGGi_Funcs.Common.Random
+--~ local RetName = ChoGGi_Funcs.Common.RetName
+local IsShiftPressed = ChoGGi_Funcs.Common.IsShiftPressed
 
 
 local box, point = box, point
@@ -22,7 +23,7 @@ local PropObjGetProperty = PropObjGetProperty
 local MeasureImage = UIL.MeasureImage
 local GetMousePos = terminal.GetMousePos
 
--- see also TextStyles.lua
+-- see also TextStyle.lua
 local white = -1
 local black = -16777216
 local dark_blue = -12235133
@@ -370,7 +371,7 @@ DefineClass.ChoGGi_XPopupList = {
 }
 function ChoGGi_XPopupList:Close(...)
 	if self.items and self.items.clear_objs then
-		ChoGGi.ComFuncs.ClearShowObj(true)
+		ChoGGi_Funcs.Common.ClearShowObj(true)
 	end
 	XPopupList.Close(self, ...)
 end
@@ -1110,7 +1111,7 @@ function ChoGGi_XInputContextMenu:OnMouseButtonDown(pt, button, ...)
 		local x, y = pt:xy()
 		self.list_menu_table.box = sizebox(x, y, 0, 0)
 
-		ChoGGi.ComFuncs.PopupToggle(
+		ChoGGi_Funcs.Common.PopupToggle(
 			self.list_menu_table, self.opened_list_menu_id, list, "drop"
 		)
 

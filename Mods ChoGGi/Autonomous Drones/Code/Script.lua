@@ -67,9 +67,9 @@ local idle_drone_cmds = {
 	Start = true,
 }
 
-local GetIdleDrones = ChoGGi.ComFuncs.GetIdleDrones
-local FisherYates_Shuffle = ChoGGi.ComFuncs.FisherYates_Shuffle
-local DroneHubLoad = ChoGGi.ComFuncs.DroneHubLoad
+local GetIdleDrones = ChoGGi_Funcs.Common.GetIdleDrones
+local FisherYates_Shuffle = ChoGGi_Funcs.Common.FisherYates_Shuffle
+local DroneHubLoad = ChoGGi_Funcs.Common.DroneHubLoad
 
 -- height is actually 188: point(0, 0, SelectedObj:GetObjectBBox():sizez())
 -- just adding some buffer if carrying something whatnot

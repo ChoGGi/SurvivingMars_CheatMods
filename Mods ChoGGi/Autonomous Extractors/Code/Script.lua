@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
+local ToggleWorking = ChoGGi_Funcs.Common.ToggleWorking
 
 local mod_AutoPerformance
 local mod_EnableMod

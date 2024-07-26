@@ -23,8 +23,8 @@ function OnMsg.ClassesPostprocess()
 	local xtemplate2 = XTemplates.sectionTrainees[1]
 
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate1, "ChoGGi_Template_ServiceShowComfortIncrease", true)
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate2, "ChoGGi_Template_ServiceShowComfortIncrease", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate1, "ChoGGi_Template_ServiceShowComfortIncrease", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate2, "ChoGGi_Template_ServiceShowComfortIncrease", true)
 
 	xtemplate1[#xtemplate1+1] = template
 	xtemplate2[#xtemplate2+1] = template

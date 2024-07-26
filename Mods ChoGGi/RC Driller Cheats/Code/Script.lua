@@ -13,7 +13,7 @@ local GetRealm = GetRealm
 local GetRandomPassableAround = GetRandomPassableAround
 local pcall = pcall
 
-ChoGGi.ComFuncs.AddParentToClass(RCDriller, "AutoMode")
+ChoGGi_Funcs.Common.AddParentToClass(RCDriller, "AutoMode")
 
 local mod_EnableMod
 local mod_AllowDeep
@@ -159,7 +159,7 @@ end
 RCDriller.ToggleAutoMode_Update = RCTransport.ToggleAutoMode_Update
 
 function OnMsg.ClassesPostprocess()
-	ChoGGi.ComFuncs.RemoveXTemplateSections(XTemplates.ipRover[1], "ChoGGi_Template_RCDrillerCheats_ToggleAuto", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(XTemplates.ipRover[1], "ChoGGi_Template_RCDrillerCheats_ToggleAuto", true)
 end
 
 -- update driller when rubble cleared underground (I could check if it already happens, but it won't hurt much to fire twice)

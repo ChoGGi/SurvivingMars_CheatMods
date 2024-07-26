@@ -4,12 +4,13 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local pairs, type = pairs, type
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local Translate = ChoGGi_Funcs.Common.Translate
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 
-function ChoGGi.MenuFuncs.SetToxicPoolsMax()
+function ChoGGi_Funcs.Menus.SetToxicPoolsMax()
 	local title = T(12026--[[Toxic Pools]]) .. " " .. T(302535920000834--[[Max]])
 	local default_setting = ChoGGi.Consts.MaxToxicRainPools
 
@@ -37,17 +38,17 @@ function ChoGGi.MenuFuncs.SetToxicPoolsMax()
 		if type(value) == "number" then
 
 			const.MaxToxicRainPools = value
-			ChoGGi.ComFuncs.SetSavedConstSetting("MaxToxicRainPools")
+			ChoGGi_Funcs.Common.SetSavedConstSetting("MaxToxicRainPools")
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.MaxToxicRainPools),
+				ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.MaxToxicRainPools),
 				title
 			)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = title,
@@ -55,7 +56,7 @@ function ChoGGi.MenuFuncs.SetToxicPoolsMax()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetAllTerraformingParams(action)
+function ChoGGi_Funcs.Menus.SetAllTerraformingParams(action)
 	if g_NoTerraforming then
 		MsgPopup(
 			T(302535920000562--[[Terraforming not enabled!]]),
@@ -69,26 +70,26 @@ function ChoGGi.MenuFuncs.SetAllTerraformingParams(action)
 	end
 end
 
-function ChoGGi.MenuFuncs.OpenAirDomes_Toggle()
+function ChoGGi_Funcs.Menus.OpenAirDomes_Toggle()
 	SetOpenAirBuildings(not GetOpenAirBuildings(ActiveMapID))
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(GetOpenAirBuildings(ActiveMapID)),
+		ChoGGi_Funcs.Common.SettingState(GetOpenAirBuildings(ActiveMapID)),
 		T(302535920000559--[[Open Air Domes Toggle]])
 	)
 end
 
-function ChoGGi.MenuFuncs.RemoveLandScapingLimits_Toggle()
-	ChoGGi.UserSettings.RemoveLandScapingLimits = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.RemoveLandScapingLimits)
-	ChoGGi.ComFuncs.SetLandScapingLimits(ChoGGi.UserSettings.RemoveLandScapingLimits)
+function ChoGGi_Funcs.Menus.RemoveLandScapingLimits_Toggle()
+	ChoGGi.UserSettings.RemoveLandScapingLimits = ChoGGi_Funcs.Common.ToggleValue(ChoGGi.UserSettings.RemoveLandScapingLimits)
+	ChoGGi_Funcs.Common.SetLandScapingLimits(ChoGGi.UserSettings.RemoveLandScapingLimits)
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RemoveLandScapingLimits),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.RemoveLandScapingLimits),
 		T(302535920000560--[[Remove LandScaping Limits]])
 	)
 end
 
-function ChoGGi.MenuFuncs.PlantRandomLichen()
+function ChoGGi_Funcs.Menus.PlantRandomLichen()
 	if g_NoTerraforming then
 		MsgPopup(
 			T(302535920000562--[[Terraforming not enabled!]]),
@@ -115,7 +116,7 @@ function ChoGGi.MenuFuncs.PlantRandomLichen()
 
 		if type(choice.value) == "number" then
 
-			SuspendPassEdits("ChoGGi.MenuFuncs.PlantRandomLichen")
+			SuspendPassEdits("ChoGGi_Funcs.Menus.PlantRandomLichen")
 			PlaceObjectIn("VegFocusTask", MainMapID, {
 				min_foci = 10,
 				max_foci = 20,
@@ -130,16 +131,16 @@ function ChoGGi.MenuFuncs.PlantRandomLichen()
 					"Lichen"
 				},
 			})
-			ResumePassEdits("ChoGGi.MenuFuncs.PlantRandomLichen")
+			ResumePassEdits("ChoGGi_Funcs.Menus.PlantRandomLichen")
 
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.value),
+				ChoGGi_Funcs.Common.SettingState(choice.value),
 				T(302535920000534--[[Plant Random Lichen]])
 			)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000534--[[Plant Random Lichen]]),
@@ -147,7 +148,7 @@ function ChoGGi.MenuFuncs.PlantRandomLichen()
 	}
 end
 
-function ChoGGi.MenuFuncs.PlantRandomVegetation()
+function ChoGGi_Funcs.Menus.PlantRandomVegetation()
 	if g_NoTerraforming then
 		MsgPopup(
 			T(302535920000562--[[Terraforming not enabled!]]),
@@ -178,16 +179,16 @@ function ChoGGi.MenuFuncs.PlantRandomVegetation()
 
 		if type(choice.value) == "number" then
 
-			ChoGGi.ComFuncs.PlantRandomVegetation(choice.value)
+			ChoGGi_Funcs.Common.PlantRandomVegetation(choice.value)
 
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.value),
+				ChoGGi_Funcs.Common.SettingState(choice.value),
 				T(302535920000529--[[Plant Random Vegetation]])
 			)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000529--[[Plant Random Vegetation]]),
@@ -196,7 +197,7 @@ function ChoGGi.MenuFuncs.PlantRandomVegetation()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetSoilQuality()
+function ChoGGi_Funcs.Menus.SetSoilQuality()
 	if g_NoTerraforming then
 		MsgPopup(
 			T(302535920000562--[[Terraforming not enabled!]]),
@@ -232,13 +233,13 @@ function ChoGGi.MenuFuncs.SetSoilQuality()
 			OnSoilGridChanged()
 
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.value),
+				ChoGGi_Funcs.Common.SettingState(choice.value),
 				T(776100024488--[[Soil Quality]])
 			)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(776100024488--[[Soil Quality]]),
@@ -246,7 +247,7 @@ function ChoGGi.MenuFuncs.SetSoilQuality()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetTerraformingParams(action)
+function ChoGGi_Funcs.Menus.SetTerraformingParams(action)
 	if g_NoTerraforming then
 		MsgPopup(
 			T(302535920000562--[[Terraforming not enabled!]]),
@@ -276,13 +277,13 @@ function ChoGGi.MenuFuncs.SetTerraformingParams(action)
 			SetTerraformParamPct(setting_id, choice.value)
 
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.value),
+				ChoGGi_Funcs.Common.SettingState(choice.value),
 				T(12476--[[Terraforming]])
 			)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = action.ActionName,

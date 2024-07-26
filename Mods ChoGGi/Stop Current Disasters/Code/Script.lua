@@ -2,6 +2,6 @@
 
 function OnMsg.LoadGame()
 	if CurrentModOptions:GetProperty("EnableMod") then
-		ChoGGi.ComFuncs.DisastersStop()
+		ChoGGi_Funcs.Common.DisastersStop()
 	end
 end

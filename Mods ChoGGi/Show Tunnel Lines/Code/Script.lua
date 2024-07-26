@@ -3,7 +3,7 @@
 local IsValid = IsValid
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
-local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
+local RandomColourLimited = ChoGGi_Funcs.Common.RandomColourLimited
 
 local mod_RemoveOnSelect
 local mod_RandomColours

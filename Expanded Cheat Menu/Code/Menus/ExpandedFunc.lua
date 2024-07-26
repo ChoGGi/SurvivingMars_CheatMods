@@ -4,13 +4,14 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local type, tostring = type, tostring
 local table = table
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
-local RetName = ChoGGi.ComFuncs.RetName
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local RetName = ChoGGi_Funcs.Common.RetName
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 
 do -- BuildGridList
 	local IsValid = IsValid
@@ -42,7 +43,7 @@ do -- BuildGridList
 		ex_dlg:RefreshExamine()
 	end
 
-	function ChoGGi.MenuFuncs.BuildGridList()
+	function ChoGGi_Funcs.Menus.BuildGridList()
 		local UICity = UICity
 		local grid_list = {
 			air = {},
@@ -70,7 +71,7 @@ do -- BuildGridList
 		BuildGrid(UICity.air, grid_list.air)
 		BuildGrid(UICity.electricity, grid_list.electricity)
 		BuildGrid(UICity.water, grid_list.water)
-		ChoGGi.ComFuncs.OpenInExamineDlg(grid_list, nil, T(302535920001307--[[Grid Info]]))
+		ChoGGi_Funcs.Common.OpenInExamineDlg(grid_list, nil, T(302535920001307--[[Grid Info]]))
 	end
 end -- do
 
@@ -78,8 +79,8 @@ do -- ViewObjInfo_Toggle
 	local GetStateName = GetStateName
 	local IsValid = IsValid
 	local r = const.ResearchPointsScale
-	local MapGet = ChoGGi.ComFuncs.MapGet
-	local RandomColourLimited = ChoGGi.ComFuncs.RandomColourLimited
+	local MapGet = ChoGGi_Funcs.Common.MapGet
+	local RandomColourLimited = ChoGGi_Funcs.Common.RandomColourLimited
 	local update_info_thread = {}
 	local viewing_obj_info = {}
 	local OText
@@ -254,7 +255,7 @@ do -- ViewObjInfo_Toggle
 	local ptz2000 = point(0, 0, 2000)
 	local function AddViewObjInfo(label)
 		local objs = MapGet(label)
-		SuspendPassEdits("ChoGGi.MenuFuncs.BuildingInfo_Toggle.AddViewObjInfo")
+		SuspendPassEdits("ChoGGi_Funcs.Menus.BuildingInfo_Toggle.AddViewObjInfo")
 		for i = 1, #objs do
 			local obj = objs[i]
 			-- only check for valid pos if it isn't a colonist (inside building = invalid pos)
@@ -277,7 +278,7 @@ do -- ViewObjInfo_Toggle
 				end
 			end
 		end
-		ResumePassEdits("ChoGGi.MenuFuncs.BuildingInfo_Toggle.AddViewObjInfo")
+		ResumePassEdits("ChoGGi_Funcs.Menus.BuildingInfo_Toggle.AddViewObjInfo")
 	end
 
 	local function RemoveViewObjInfo(cls)
@@ -325,7 +326,7 @@ do -- ViewObjInfo_Toggle
 		end)
 	end
 
-	function ChoGGi.MenuFuncs.BuildingInfo_Toggle()
+	function ChoGGi_Funcs.Menus.BuildingInfo_Toggle()
 		local item_list = {
 			{text = Translate(83--[[Domes]]), value = "Dome"},
 			{text = Translate(3982--[[Deposits]]), value = "Deposit"},
@@ -364,7 +365,7 @@ do -- ViewObjInfo_Toggle
 			end
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = T(302535920000333--[[Building Info]]),
@@ -375,7 +376,7 @@ do -- ViewObjInfo_Toggle
 
 end -- do
 
-function ChoGGi.MenuFuncs.MonitorInfo()
+function ChoGGi_Funcs.Menus.MonitorInfo()
 	local item_list = {
 		{text = T(302535920000936--[[Something you'd like to see added?]]), value = "New"},
 		{text = "", value = "New"},
@@ -397,29 +398,29 @@ function ChoGGi.MenuFuncs.MonitorInfo()
 		end
 		local value = choice[1].value
 		if value == "New" then
-			ChoGGi.ComFuncs.MsgWait(
+			ChoGGi_Funcs.Common.MsgWait(
 				Translate(302535920000033--[[Post a request on Nexus or Github or send an email to: %s]]):format(ChoGGi.email),
 				T(302535920000034--[[Request]])
 			)
 		else
-			ChoGGi.ComFuncs.DisplayMonitorList(value)
+			ChoGGi_Funcs.Common.DisplayMonitorList(value)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000555--[[Monitor Info]]),
 		hint = T(302535920000940--[[Select something to monitor.]]),
 		custom_type = 7,
 		custom_func = function(sel)
-			ChoGGi.ComFuncs.DisplayMonitorList(sel[1].value, sel[1].parentobj)
+			ChoGGi_Funcs.Common.DisplayMonitorList(sel[1].value, sel[1].parentobj)
 		end,
 		skip_sort = true,
 	}
 end
 
-function ChoGGi.MenuFuncs.CleanAllObjects()
+function ChoGGi_Funcs.Menus.CleanAllObjects()
 	local dust = const.DustMaterialExterior
 	MapForEach("map", "BaseBuilding", function(o)
 		if o.SetDust then
@@ -432,7 +433,7 @@ function ChoGGi.MenuFuncs.CleanAllObjects()
 	)
 end
 
-function ChoGGi.MenuFuncs.FixAllObjects()
+function ChoGGi_Funcs.Menus.FixAllObjects()
 	MapForEach("map", "BaseBuilding", function(o)
 		if o.Repair then
 			o:Repair()
@@ -451,13 +452,13 @@ function ChoGGi.MenuFuncs.FixAllObjects()
 	)
 end
 
-function ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle()
-	const.ExplorationQueueMaxSize = ChoGGi.ComFuncs.ValueRetOpp(const.ExplorationQueueMaxSize, 100, ChoGGi.Consts.ExplorationQueueMaxSize)
-	ChoGGi.ComFuncs.SetSavedConstSetting("ExplorationQueueMaxSize")
+function ChoGGi_Funcs.Menus.ScannerQueueLarger_Toggle()
+	const.ExplorationQueueMaxSize = ChoGGi_Funcs.Common.ValueRetOpp(const.ExplorationQueueMaxSize, 100, ChoGGi.Consts.ExplorationQueueMaxSize)
+	ChoGGi_Funcs.Common.SetSavedConstSetting("ExplorationQueueMaxSize")
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.ExplorationQueueMaxSize),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.ExplorationQueueMaxSize),
 		T(302535920000700--[[Scanner Queue Larger]])
 	)
 end

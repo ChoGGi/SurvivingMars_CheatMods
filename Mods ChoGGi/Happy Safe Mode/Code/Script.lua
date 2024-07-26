@@ -8,7 +8,7 @@ local mod_MeteorSanityDamage
 local mod_MysteryDreamSanityDamage
 
 -- Some stuff checks one some other...
-local SetConsts = ChoGGi.ComFuncs.SetConsts
+local SetConsts = ChoGGi_Funcs.Common.SetConsts
 
 local function UpdateConsts()
 	if not mod_EnableMod then

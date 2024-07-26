@@ -2,15 +2,15 @@
 
 -- Search through tables for values and display them in an examine dialog
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local pairs, type = pairs, type
-
 local T = T
-local RetName = ChoGGi.ComFuncs.RetName
-local FindThreadFunc = ChoGGi.ComFuncs.FindThreadFunc
-local RetParamsParents = ChoGGi.ComFuncs.RetParamsParents
-local Translate = ChoGGi.ComFuncs.Translate
+local RetName = ChoGGi_Funcs.Common.RetName
+local FindThreadFunc = ChoGGi_Funcs.Common.FindThreadFunc
+local RetParamsParents = ChoGGi_Funcs.Common.RetParamsParents
+local Translate = ChoGGi_Funcs.Common.Translate
 
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+local GetParentOfKind = ChoGGi_Funcs.Common.GetParentOfKind
 local function GetRootDialog(dlg)
 	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_DlgFindValue")
 end
@@ -152,7 +152,7 @@ function ChoGGi_DlgFindValue:FindText()
 	)
 
 	-- and fire off a new dialog
-	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(self.found_objs, nil, T(302535920000854--[[Results Found]]))
+	local dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(self.found_objs, nil, T(302535920000854--[[Results Found]]))
 	-- should do this nicer, but whatever
 	CreateRealTimeThread(function()
 		Sleep(10)
@@ -237,7 +237,7 @@ function ChoGGi_DlgFindValue:Input_OnKbdKeyDown(vk)
 end
 
 -- Use to open a dialog
-function ChoGGi.ComFuncs.OpenInFindValueDlg(obj, parent, ...)
+function ChoGGi_Funcs.Common.OpenInFindValueDlg(obj, parent, ...)
 	if not obj then
 		return
 	end

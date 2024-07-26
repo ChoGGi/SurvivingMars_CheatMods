@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 -- what _InternalTranslate returns on failure
+local ChoGGi_Funcs = ChoGGi_Funcs
 local missing_text = ChoGGi.Temp.missing_text
 local what_game = ChoGGi.what_game
 
@@ -36,7 +37,7 @@ local function Translate(t, context, ...)
 
 	return result and str or tostring(str)
 end
-ChoGGi.ComFuncs.Translate = Translate
+ChoGGi_Funcs.Common.Translate = Translate
 
 -- fix missing tech defs/tourist description in main menu/new game (expectations of UICity)
 if what_game == "Mars" then
@@ -102,7 +103,7 @@ do -- when examine examines TranslationTable
 
 end -- do
 
-function ChoGGi.ComFuncs.UpdateStringsList()
+function ChoGGi_Funcs.Common.UpdateStringsList()
   local lang = GetLanguage()
   ChoGGi.lang = lang
 
@@ -128,4 +129,4 @@ function ChoGGi.ComFuncs.UpdateStringsList()
 end
 
 -- always fire on startup
-ChoGGi.ComFuncs.UpdateStringsList()
+ChoGGi_Funcs.Common.UpdateStringsList()

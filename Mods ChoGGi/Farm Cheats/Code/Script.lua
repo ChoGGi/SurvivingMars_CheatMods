@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
+local ToggleWorking = ChoGGi_Funcs.Common.ToggleWorking
 
 local mod_CropsNeverFail
 local mod_ConstantSoilQuality
@@ -98,7 +98,7 @@ function OnMsg.ClassesPostprocess()
 	local xtemplate = XTemplates.ipBuilding[1]
 
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_Farm_InstantHarvest", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_Farm_InstantHarvest", true)
 
 	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
 		"Id" , "ChoGGi_Template_Farm_InstantHarvest",

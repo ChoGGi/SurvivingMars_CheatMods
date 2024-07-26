@@ -422,7 +422,7 @@ function OnMsg.ClassesPostprocess()
 
 	local building = XTemplates.ipBuilding[1]
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(building, "ChoGGi_Template_SetMainGarage", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(building, "ChoGGi_Template_SetMainGarage", true)
 	building[#building+1] = PlaceObj('XTemplateTemplate', {
 		"ChoGGi_Template_SetMainGarage", true,
 		"Id", "ChoGGi_Template_SetMainGarage",
@@ -448,7 +448,7 @@ function OnMsg.ClassesPostprocess()
 		end,
 	})
 
-	ChoGGi.ComFuncs.RemoveXTemplateSections(building, "ChoGGi_Template_IdleRovers", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(building, "ChoGGi_Template_IdleRovers", true)
 	building[#building+1] = PlaceObj('XTemplateTemplate', {
 		"ChoGGi_Template_IdleRovers", true,
 		"Id", "ChoGGi_Template_IdleRovers",
@@ -560,7 +560,7 @@ function OnMsg.ClassesPostprocess()
 				end,
 				"func", function(self, context)
 					---
-					ChoGGi.ComFuncs.QuestionBox(
+					ChoGGi_Funcs.Common.QuestionBox(
 						T(302535920011190, "Are you sure you want to eject all rovers?"),
 						function(answer)
 							if answer then
@@ -615,7 +615,7 @@ Click in list to eject a rover.]]),
 						return
 					end
 
-					local RetName = ChoGGi.ComFuncs.RetName
+					local RetName = ChoGGi_Funcs.Common.RetName
 					-- build a list of all rovers inside
 					local item_list = {}
 					local c = 0
@@ -635,7 +635,7 @@ Click in list to eject a rover.]]),
 					end
 
 					-- and show it
-					ChoGGi.ComFuncs.PopupToggle(self, "idRCGarageMenu", item_list, "left")
+					ChoGGi_Funcs.Common.PopupToggle(self, "idRCGarageMenu", item_list, "left")
 
 					ObjModified(context)
 					---

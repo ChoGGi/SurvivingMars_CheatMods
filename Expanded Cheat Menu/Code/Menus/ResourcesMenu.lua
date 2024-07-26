@@ -4,9 +4,10 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local SettingState = ChoGGi.ComFuncs.SettingState
+local Translate = ChoGGi_Funcs.Common.Translate
+local SettingState = ChoGGi_Funcs.Common.SettingState
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 local LocaleInt = LocaleInt
@@ -34,7 +35,7 @@ Actions[c] = {ActionName = T(4604--[[Rare Metals Price (M)]]),
 		end
 		return T(4603--[[Amount of Funding (in millions) received by exporting one unit of Rare Metals]])
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetFundingPerRareMetalExport,
+	OnAction = ChoGGi_Funcs.Menus.SetFundingPerRareMetalExport,
 }
 
 c = c + 1
@@ -51,7 +52,7 @@ Actions[c] = {ActionName = T(302535920000719--[[Add Orbital Probes]]),
 		end
 		return T(302535920000720--[[Add more probes.]])
 	end,
-	OnAction = ChoGGi.MenuFuncs.AddOrbitalProbes,
+	OnAction = ChoGGi_Funcs.Menus.AddOrbitalProbes,
 }
 
 c = c + 1
@@ -65,7 +66,7 @@ Actions[c] = {ActionName = T(4616--[[Food Per Rocket Passenger]]),
 			T(4615--[[The amount of Food (unscaled) supplied with each Colonist arrival]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetFoodPerRocketPassenger,
+	OnAction = ChoGGi_Funcs.Menus.SetFoodPerRocketPassenger,
 }
 
 c = c + 1
@@ -75,7 +76,7 @@ Actions[c] = {ActionName = T(1110--[[Prefab Buildings]]),
 	ActionIcon = "CommonAssets/UI/Menu/gear.tga",
 	RolloverText = T(1111--[[Prefabricated parts needed for the construction of certain buildings on Mars.]])
 		.. "\n\n" .. T(302535920000897--[[Drone prefabs]]),
-	OnAction = ChoGGi.MenuFuncs.AddPrefabBuildings,
+	OnAction = ChoGGi_Funcs.Menus.AddPrefabBuildings,
 }
 
 c = c + 1
@@ -92,7 +93,7 @@ Actions[c] = {ActionName = T(3613--[[Funding]]),
 		end
 		return T(302535920000726)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetFunding,
+	OnAction = ChoGGi_Funcs.Menus.SetFunding,
 }
 
 c = c + 1
@@ -101,7 +102,7 @@ Actions[c] = {ActionName = T(302535920000727--[[Fill Selected Resource]]),
 	ActionId = ".Fill Selected Resource",
 	ActionIcon = "CommonAssets/UI/Menu/Cube.tga",
 	RolloverText = T(302535920000728--[[Fill the selected/moused over object's resource(s)]]),
-	OnAction = ChoGGi.MenuFuncs.FillResource,
+	OnAction = ChoGGi_Funcs.Menus.FillResource,
 	ActionShortcut = "Ctrl-F",
 	ActionBindable = true,
 }

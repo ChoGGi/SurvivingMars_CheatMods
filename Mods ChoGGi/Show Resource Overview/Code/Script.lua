@@ -1,8 +1,8 @@
 -- See LICENSE for terms
 
-local RetObjMapId = ChoGGi.ComFuncs.RetObjMapId
+local RetObjMapId = ChoGGi_Funcs.Common.RetObjMapId
 
-ChoGGi.ComFuncs.AddParentToClass(ResourceOverview, "InfobarObj")
+ChoGGi_Funcs.Common.AddParentToClass(ResourceOverview, "InfobarObj")
 
 local T = T
 
@@ -48,12 +48,12 @@ function OnMsg.ClassesPostprocess()
 end
 
 function OnMsg.ModsReloaded()
-	local xt = ChoGGi.ComFuncs.RetHudButton("idRight")
+	local xt = ChoGGi_Funcs.Common.RetHudButton("idRight")
 	if not xt then
 		return
 	end
 
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xt, "ChoGGi_Template_ColonyOverview")
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xt, "ChoGGi_Template_ColonyOverview")
 
 	table.insert(xt, #xt,
 		PlaceObj("XTemplateTemplate", {

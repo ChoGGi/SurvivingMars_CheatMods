@@ -4,9 +4,10 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local SettingState = ChoGGi.ComFuncs.SettingState
+local Translate = ChoGGi_Funcs.Common.Translate
+local SettingState = ChoGGi_Funcs.Common.SettingState
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
@@ -80,7 +81,7 @@ for i = 1, #ConstDef do
 			RolloverText = function()
 				return SettingState(ChoGGi.UserSettings.Consts[const.id], desc)
 			end,
-			OnAction = ChoGGi.MenuFuncs.SetConstMenu,
+			OnAction = ChoGGi_Funcs.Menus.SetConstMenu,
 			setting_name = name,
 			setting_desc = desc,
 			setting_id = const.id,

@@ -34,7 +34,7 @@ end
 
 function OnMsg.ClassesPostprocess()
 
-	ChoGGi.ComFuncs.AddXTemplate(XTemplates.ipBuilding[1], "RocketNextButton", nil, {
+	ChoGGi_Funcs.Common.AddXTemplate(XTemplates.ipBuilding[1], "RocketNextButton", nil, {
 		__context_of_kind = "RocketBase",
 		Title = T(302535920012025, "Next Rocket"),
 		RolloverTitle = T(302535920012025, "Next Rocket"),
@@ -44,7 +44,7 @@ function OnMsg.ClassesPostprocess()
 			CycleObjects(context, "SupplyRocket")
 		end,
 	})
-	ChoGGi.ComFuncs.AddXTemplate(XTemplates.ipRover[1], "RoverNextButton", nil, {
+	ChoGGi_Funcs.Common.AddXTemplate(XTemplates.ipRover[1], "RoverNextButton", nil, {
 		__context_of_kind = "BaseRover",
 		Title = T(0000, "Next Rover"),
 		RolloverTitle = T(0000, "Next Rover"),
@@ -56,7 +56,7 @@ function OnMsg.ClassesPostprocess()
 		end,
 	})
 
-	ChoGGi.ComFuncs.AddXTemplate(XTemplates.ipBuilding[1], "BuildingNextButton", nil, {
+	ChoGGi_Funcs.Common.AddXTemplate(XTemplates.ipBuilding[1], "BuildingNextButton", nil, {
 		__context_of_kind = "Building",
 		Title = T(0000, "Next Building"),
 		RolloverTitle = T(0000, "Next Building"),

@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local SetConsts = ChoGGi.ComFuncs.SetConsts
+local SetConsts = ChoGGi_Funcs.Common.SetConsts
 
 local mod_EnableMod
 local mod_ForcedByUserLockTimeout

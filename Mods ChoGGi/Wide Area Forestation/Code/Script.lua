@@ -1,8 +1,8 @@
 -- See LICENSE for terms
 
-local SetBuildingTemplates = ChoGGi.ComFuncs.SetBuildingTemplates
-local RemoveBuildingElecConsump = ChoGGi.ComFuncs.RemoveBuildingElecConsump
-local AddBuildingElecConsump = ChoGGi.ComFuncs.AddBuildingElecConsump
+local SetBuildingTemplates = ChoGGi_Funcs.Common.SetBuildingTemplates
+local RemoveBuildingElecConsump = ChoGGi_Funcs.Common.RemoveBuildingElecConsump
+local AddBuildingElecConsump = ChoGGi_Funcs.Common.AddBuildingElecConsump
 
 local HourDuration = const.HourDuration
 local MulDivRound = MulDivRound
@@ -73,7 +73,7 @@ end
 function OnMsg.ClassesPostprocess()
 	local building = XTemplates.ipBuilding[1]
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(building, "ChoGGi_Template_WideAreaForestation", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(building, "ChoGGi_Template_WideAreaForestation", true)
 
 	building[#building+1] = PlaceObj('XTemplateTemplate', {
 		"ChoGGi_Template_WideAreaForestation", true,

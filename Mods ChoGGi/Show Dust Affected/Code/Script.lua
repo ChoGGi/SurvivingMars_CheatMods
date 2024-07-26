@@ -91,7 +91,7 @@ function OnMsg.ClassesPostprocess()
 
 	local building = XTemplates.ipBuilding[1]
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(building, "ChoGGi_Template_ShowDustAffectedToggle", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(building, "ChoGGi_Template_ShowDustAffectedToggle", true)
 
 	building[#building+1] = PlaceObj('XTemplateTemplate', {
 		"ChoGGi_Template_ShowDustAffectedToggle", true,

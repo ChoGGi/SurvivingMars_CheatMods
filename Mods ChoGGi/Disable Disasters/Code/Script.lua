@@ -42,7 +42,7 @@ local kill_current = {
 --~ 		OrigFunc("TriggerMarsquake")
 --~ 		function TriggerMarsquake(...)
 --~ 			if not UserSettings.DisasterQuakeDisable then
---~ 				return ChoGGi_OrigFuncs.TriggerMarsquake(...)
+--~ 				return ChoGGi_Funcs.Original.TriggerMarsquake(...)
 --~ 			end
 --~ 		end
 --~ 	end,
@@ -51,7 +51,7 @@ local kill_current = {
 --~ 		OrigFunc("RainProcedure")
 --~ 		function RainProcedure(settings, ...)
 --~ 			if settings.type == "normal" or not UserSettings.DisasterRainsDisable then
---~ 				return ChoGGi_OrigFuncs.RainProcedure(settings, ...)
+--~ 				return ChoGGi_Funcs.Original.RainProcedure(settings, ...)
 --~ 			end
 --~ 		end
 --~ 	end,

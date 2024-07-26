@@ -1,16 +1,17 @@
 -- See LICENSE for terms
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local table = table
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
-function ChoGGi.MenuFuncs.ConsoleRestart()
+function ChoGGi_Funcs.Menus.ConsoleRestart()
 	if ChoGGi.testing then
 		quit("restart")
 	end
 
 	local dlgConsole = dlgConsole
-	if ChoGGi.ComFuncs.IsValidXWin(dlgConsole) then
+	if ChoGGi_Funcs.Common.IsValidXWin(dlgConsole) then
 		if not dlgConsole:GetVisible() then
 			ShowConsole(true)
 		end
@@ -20,15 +21,15 @@ function ChoGGi.MenuFuncs.ConsoleRestart()
 end
 
 do -- ExamineObjectRadius
-	local SelObjects = ChoGGi.ComFuncs.SelObjects
+	local SelObjects = ChoGGi_Funcs.Common.SelObjects
 --~ 	local GetCursorWorldPos = GetCursorWorldPos
-	local OpenInExamineDlg = ChoGGi.ComFuncs.OpenInExamineDlg
+	local OpenInExamineDlg = ChoGGi_Funcs.Common.OpenInExamineDlg
 
 	local pt
 	local function SortDist(a, b)
 		return a:GetDist2D(pt) < b:GetDist2D(pt)
 	end
-	function ChoGGi.MenuFuncs.ExamineObjectRadius()
+	function ChoGGi_Funcs.Menus.ExamineObjectRadius()
 		local radius = ChoGGi.UserSettings.ExamineObjectRadius or 2500
 		local objs = SelObjects(radius)
 		if objs[1] then

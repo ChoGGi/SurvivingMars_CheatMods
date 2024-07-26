@@ -2,7 +2,7 @@
 
 local that_time_of_the_year = GetDate():find("Dec")
 
--- copy n paste from ChoGGi.ComFuncs.LoadEntity
+-- copy n paste from ChoGGi_Funcs.Common.LoadEntity
 do -- LoadEntity
 	-- no sense in making a new one for each entity
 	local entity_templates = {
@@ -161,23 +161,23 @@ local DelayedCall = DelayedCall
 local Msg = Msg
 
 -- backup orginal function for later use (checks if we already have a backup, or else problems)
-local OrigFuncs = {}
+local Original = {}
 
 local function SendMsg(msg_name, obj, cls_name)
 	Msg(msg_name, obj, cls_name)
 end
 local function AddMsgToFunc(cls_name, msg_name)
 	local name = cls_name .. "_GameInit"
-	if not OrigFuncs[name] then
+	if not Original[name] then
 		-- save orig
-		OrigFuncs[name] = _G[cls_name].GameInit
+		Original[name] = _G[cls_name].GameInit
 		-- redefine it
 		_G[cls_name].GameInit = function(obj, ...)
 			-- only change colour if it's a game started in Dec
 			if UICity.ChristmasMars then
 				DelayedCall(1, SendMsg, msg_name, obj, cls_name)
 			end
-			return OrigFuncs[name](obj, ...)
+			return Original[name](obj, ...)
 		end
 	end
 end

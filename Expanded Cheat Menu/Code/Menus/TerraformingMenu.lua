@@ -4,8 +4,9 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
@@ -24,7 +25,7 @@ Actions[c] = {ActionName = T(302535920000529--[[Plant Random Vegetation]]),
 	ActionId = ".Plant Random Vegetation",
 	ActionIcon = "CommonAssets/UI/Menu/place_objects.tga",
 	RolloverText = T(302535920000531--[[Plants a bunch of Tree/Bush/Grass.]]),
-	OnAction = ChoGGi.MenuFuncs.PlantRandomVegetation,
+	OnAction = ChoGGi_Funcs.Menus.PlantRandomVegetation,
 }
 
 c = c + 1
@@ -33,7 +34,7 @@ Actions[c] = {ActionName = T(302535920000534--[[Plant Random Lichen]]),
 	ActionId = ".Plant Random Lichen",
 	ActionIcon = "CommonAssets/UI/Menu/RandomMapPresetEditor.tga",
 	RolloverText = T(302535920000537--[[Plants a bunch of Lichen/Grass.]]),
-	OnAction = ChoGGi.MenuFuncs.PlantRandomLichen,
+	OnAction = ChoGGi_Funcs.Menus.PlantRandomLichen,
 }
 
 c = c + 1
@@ -44,7 +45,7 @@ Actions[c] = {ActionName = T(3949--[[Parameter]]) .. " " .. T(12480--[[Atmospher
 	RolloverText = T{302535920000839--[["Set <str> Params"]],
 		str = T(12480--[[Atmosphere]]),
 	},
-	OnAction = ChoGGi.MenuFuncs.SetTerraformingParams,
+	OnAction = ChoGGi_Funcs.Menus.SetTerraformingParams,
 	setting_id = "Atmosphere",
 }
 
@@ -56,7 +57,7 @@ Actions[c] = {ActionName = T(3949--[[Parameter]]) .. " " .. T(4141--[[Temperatur
 	RolloverText = T{302535920000839--[["Set <str> Params"]],
 		str = T(4141--[[Temperature]]),
 	},
-	OnAction = ChoGGi.MenuFuncs.SetTerraformingParams,
+	OnAction = ChoGGi_Funcs.Menus.SetTerraformingParams,
 	setting_id = "Temperature",
 }
 
@@ -68,7 +69,7 @@ Actions[c] = {ActionName = T(3949--[[Parameter]]) .. " " .. T(449433367242--[[Ve
 	RolloverText = T{302535920000839--[["Set <str> Params"]],
 		str = T(449433367242--[[Vegetation]]),
 	},
-	OnAction = ChoGGi.MenuFuncs.SetTerraformingParams,
+	OnAction = ChoGGi_Funcs.Menus.SetTerraformingParams,
 	setting_id = "Vegetation",
 }
 
@@ -80,7 +81,7 @@ Actions[c] = {ActionName = T(3949--[[Parameter]]) .. " " .. T(681--[[Water]]),
 	RolloverText = T{302535920000839--[["Set <str> Params"]],
 		str = T(681--[[Water]]),
 	},
-	OnAction = ChoGGi.MenuFuncs.SetTerraformingParams,
+	OnAction = ChoGGi_Funcs.Menus.SetTerraformingParams,
 	setting_id = "Water",
 }
 
@@ -90,7 +91,7 @@ Actions[c] = {ActionName = T(3949--[[Parameter]]) .. " " .. T(302535920000532--[
 	ActionId = ".Parameter All Max",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_up.tga",
 	RolloverText = Translate(302535920000539--[[Set all params to %s.]]):format(100),
-	OnAction = ChoGGi.MenuFuncs.SetAllTerraformingParams,
+	OnAction = ChoGGi_Funcs.Menus.SetAllTerraformingParams,
 	setting_value = 100,
 }
 
@@ -100,7 +101,7 @@ Actions[c] = {ActionName = T(3949--[[Parameter]]) .. " " .. T(302535920000533--[
 	ActionId = ".Parameter All Min",
 	ActionIcon = "CommonAssets/UI/Menu/change_height_down.tga",
 	RolloverText = Translate(302535920000539--[[Set all params to %s.]]):format(0),
-	OnAction = ChoGGi.MenuFuncs.SetAllTerraformingParams,
+	OnAction = ChoGGi_Funcs.Menus.SetAllTerraformingParams,
 	setting_value = 0,
 }
 
@@ -110,7 +111,7 @@ Actions[c] = {ActionName = T(776100024488--[[Soil Quality]]),
 	ActionId = ".Soil Quality",
 	ActionIcon = "CommonAssets/UI/Menu/selslope.tga",
 	RolloverText = T(302535920000564--[[Set Soil Quality]]),
-	OnAction = ChoGGi.MenuFuncs.SetSoilQuality,
+	OnAction = ChoGGi_Funcs.Menus.SetSoilQuality,
 }
 
 c = c + 1
@@ -119,12 +120,12 @@ Actions[c] = {ActionName = T(302535920000560--[[Remove LandScaping Limits]]),
 	ActionId = ".Remove LandScaping Limits",
 	ActionIcon = "CommonAssets/UI/Menu/vertex_push.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return ChoGGi_Funcs.Common.SettingState(
 			ChoGGi.UserSettings.RemoveLandScapingLimits,
 			T(302535920000709--[["Allows you to start building on uneven ground, and removes the size limits."]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.RemoveLandScapingLimits_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.RemoveLandScapingLimits_Toggle,
 }
 
 c = c + 1
@@ -133,12 +134,12 @@ Actions[c] = {ActionName = T(302535920000559--[[Open Air Domes Toggle]]),
 	ActionId = ".Open Air Domes Toggle",
 	ActionIcon = "CommonAssets/UI/Menu/toggle_post.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return ChoGGi_Funcs.Common.SettingState(
 			GetOpenAirBuildings(ActiveMapID),
 			T(302535920000722--[[Open the domes to the fresh air (or lack of).]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.OpenAirDomes_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.OpenAirDomes_Toggle,
 }
 
 c = c + 1
@@ -147,10 +148,10 @@ Actions[c] = {ActionName = T(12026--[[Toxic Pools]]) .. " " .. T(302535920000834
 	ActionId = ".Toxic Pools Max",
 	ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
 	RolloverText = function()
-		return ChoGGi.ComFuncs.SettingState(
+		return ChoGGi_Funcs.Common.SettingState(
 			const.MaxToxicRainPools,
 			T(302535920000870--[[Max amount of pools that can form.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetToxicPoolsMax,
+	OnAction = ChoGGi_Funcs.Menus.SetToxicPoolsMax,
 }

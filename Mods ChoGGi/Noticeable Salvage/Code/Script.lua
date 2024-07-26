@@ -3,7 +3,7 @@
 local demo_colour = black
 local default_colour = 6579300
 
-local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
+local GetAllAttaches = ChoGGi_Funcs.Common.GetAllAttaches
 
 local skips = {"GridTileWater", "GridTile", "BuildingSign"}
 

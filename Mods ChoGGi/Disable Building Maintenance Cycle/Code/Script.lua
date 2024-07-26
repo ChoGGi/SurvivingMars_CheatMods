@@ -44,7 +44,7 @@ function OnMsg.ClassesPostprocess()
 	local xtemplate = XTemplates.ipBuilding[1]
 
 	-- Check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_IsMaintenancePreventedToggle_button", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_IsMaintenancePreventedToggle_button", true)
 
 	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
 		"Id" , "ChoGGi_Template_IsMaintenancePreventedToggle_button",
@@ -85,7 +85,7 @@ Ctrl-<left_click> to toggle all buildings of same type.]]),
 				--
 				if IsMassUIModifierPressed() then
 					-- ctrl + left click
-					local label = ChoGGi.ComFuncs.RetTemplateOrClass(context)
+					local label = ChoGGi_Funcs.Common.RetTemplateOrClass(context)
 					local objs = context.city and context.city.labels[label] or ""
 					for i = 1, #objs do
 						ToggleMainCycle(objs[i])

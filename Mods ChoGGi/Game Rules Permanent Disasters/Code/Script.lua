@@ -3,7 +3,7 @@
 -- local some globals
 local table = table
 
-local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
+local IsValidXWin = ChoGGi_Funcs.Common.IsValidXWin
 
 local SolDuration = const.Scale.sols
 local SolDuration9 = SolDuration * 999

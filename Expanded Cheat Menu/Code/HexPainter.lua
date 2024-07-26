@@ -10,6 +10,7 @@ end
 --~ HexPainter(GetEntityInverseBuildShape(s:GetEntity()))
 --~ HexPainter(GetEntityCombinedShape(s:GetEntity()))
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local WorldToHex = WorldToHex
 local WaitMsg = WaitMsg
 local GetCursorWorldPos = GetCursorWorldPos
@@ -23,7 +24,7 @@ local function ClearHexes()
 		DeleteThread(painted_hexes_thread)
 	end
 	if painted_hexes then
-		ChoGGi.ComFuncs.objlist_Destroy(painted_hexes)
+		ChoGGi_Funcs.Common.objlist_Destroy(painted_hexes)
 		painted_hexes = false
 	end
 end

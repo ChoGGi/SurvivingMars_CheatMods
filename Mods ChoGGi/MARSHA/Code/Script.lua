@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local AttachToNearestDome = ChoGGi.ComFuncs.AttachToNearestDome
+local AttachToNearestDome = ChoGGi_Funcs.Common.AttachToNearestDome
 
 DefineClass.ChoGGi_OutsideResidence = {
 	__parents = {

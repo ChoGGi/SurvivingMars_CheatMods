@@ -4,13 +4,14 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local type = type
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 
-function ChoGGi.MenuFuncs.SetPodPrice()
+function ChoGGi_Funcs.Menus.SetPodPrice()
 	local default_setting = MissionSponsorPreset.pod_price
 
 	local item_list = {
@@ -39,7 +40,7 @@ function ChoGGi.MenuFuncs.SetPodPrice()
 				ChoGGi.UserSettings.PodPrice = value
 			end
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
 				choice[1].text,
 				T(302535920000975--[[Pod Price]])
@@ -47,7 +48,7 @@ function ChoGGi.MenuFuncs.SetPodPrice()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000975--[[Pod Price]]),
@@ -56,7 +57,7 @@ function ChoGGi.MenuFuncs.SetPodPrice()
 	}
 end
 
-function ChoGGi.MenuFuncs.PassengerArkPod_Toggle()
+function ChoGGi_Funcs.Menus.PassengerArkPod_Toggle()
 	local sponsor = GetMissionSponsor()
 
 	if ChoGGi.UserSettings.PassengerArkPod then
@@ -72,9 +73,9 @@ function ChoGGi.MenuFuncs.PassengerArkPod_Toggle()
 		end
 	end
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.PassengerArkPod),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.PassengerArkPod),
 		T(302535920000941--[[Passenger Ark Pod]])
 	)
 end
@@ -107,7 +108,7 @@ do -- ChangeResupplySettings
 			end
 
 			for i = 1, #choice do
-				local value, value_type = ChoGGi.ComFuncs.RetProperType(choice[i].value)
+				local value, value_type = ChoGGi_Funcs.Common.RetProperType(choice[i].value)
 				local text = choice[i].text
 				if text == "pack" and value_type == "number" then
 					CheckResupplySetting("pack", name, value, meta)
@@ -120,14 +121,14 @@ do -- ChangeResupplySettings
 				end
 			end
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
 				T(302535920001272--[[Updated]]),
 				T(302535920000850--[[Change Resupply Settings]])
 			)
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = T(302535920000850--[[Change Resupply Settings]]) .. ": " .. name,
@@ -136,7 +137,7 @@ do -- ChangeResupplySettings
 		}
 	end
 
-	function ChoGGi.MenuFuncs.ChangeResupplySettings()
+	function ChoGGi_Funcs.Menus.ChangeResupplySettings()
 		local CargoPresets = ChoGGi.Tables.CargoPresets or ""
 		local BuildingTemplates = BuildingTemplates
 
@@ -181,7 +182,7 @@ do -- ChangeResupplySettings
 			ShowResupplyList(choice[1].value, choice[1].meta)
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = T(302535920000850--[[Change Resupply Settings]]),
@@ -197,13 +198,13 @@ do -- ChangeResupplySettings
 	end
 end -- do
 
---~ 	function ChoGGi.MenuFuncs.LaunchEmptyRocket()
+--~ 	function ChoGGi_Funcs.Menus.LaunchEmptyRocket()
 --~ 		local function CallBackFunc(answer)
 --~ 			if answer then
 --~ 				MainCity:OrderLanding()
 --~ 			end
 --~ 		end
---~ 		ChoGGi.ComFuncs.QuestionBox(
+--~ 		ChoGGi_Funcs.Common.QuestionBox(
 --~ 			T(302535920000942--[[Are you sure you want to launch an empty rocket?]]),
 --~ 			CallBackFunc,
 --~ 			T(302535920000943--[[Launch rocket to Mars.]]),
@@ -211,8 +212,8 @@ end -- do
 --~ 		)
 --~ 	end
 
-function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
-	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("CargoCapacity")
+function ChoGGi_Funcs.Menus.SetRocketCargoCapacity()
+	local default_setting = ChoGGi_Funcs.Common.GetResearchedTechValue("CargoCapacity")
 	local item_list = {
 		{text = T(1000121--[[Default]]) .. ": " .. default_setting .. " kg", value = default_setting},
 		{text = "50 000 kg", value = 50000},
@@ -233,18 +234,18 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
 
 		local value = choice.value
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetConsts("CargoCapacity", value)
-			ChoGGi.ComFuncs.SetSavedConstSetting("CargoCapacity")
+			ChoGGi_Funcs.Common.SetConsts("CargoCapacity", value)
+			ChoGGi_Funcs.Common.SetSavedConstSetting("CargoCapacity")
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.text),
+				ChoGGi_Funcs.Common.SettingState(choice.text),
 				T(4598, "Payload Capacity")
 			)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000946--[[Set Rocket Cargo Capacity]]),
@@ -253,9 +254,9 @@ function ChoGGi.MenuFuncs.SetRocketCargoCapacity()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetRocketTravelTime()
+function ChoGGi_Funcs.Menus.SetRocketTravelTime()
 	local r = const.ResourceScale
-	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("TravelTimeEarthMars") / r
+	local default_setting = ChoGGi_Funcs.Common.GetResearchedTechValue("TravelTimeEarthMars") / r
 	local item_list = {
 		{text = Translate(302535920000947--[[Instant]]), value = 0},
 		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
@@ -288,12 +289,12 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
 		local value = choice.value
 		if type(value) == "number" then
 			local value = value * r
-			ChoGGi.ComFuncs.SetConsts("TravelTimeEarthMars", value)
-			ChoGGi.ComFuncs.SetConsts("TravelTimeMarsEarth", value)
-			ChoGGi.ComFuncs.SetSavedConstSetting("TravelTimeEarthMars")
-			ChoGGi.ComFuncs.SetSavedConstSetting("TravelTimeMarsEarth")
+			ChoGGi_Funcs.Common.SetConsts("TravelTimeEarthMars", value)
+			ChoGGi_Funcs.Common.SetConsts("TravelTimeMarsEarth", value)
+			ChoGGi_Funcs.Common.SetSavedConstSetting("TravelTimeEarthMars")
+			ChoGGi_Funcs.Common.SetSavedConstSetting("TravelTimeMarsEarth")
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
 				Translate(302535920000950--[[%s: 88 MPH]]):format(choice.text),
 				T(302535920000561--[[Travel Time]])
@@ -301,7 +302,7 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000951--[[Rocket Travel Time]]),
@@ -310,8 +311,8 @@ function ChoGGi.MenuFuncs.SetRocketTravelTime()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetColonistsPerRocket()
-	local default_setting = ChoGGi.ComFuncs.GetResearchedTechValue("MaxColonistsPerRocket")
+function ChoGGi_Funcs.Menus.SetColonistsPerRocket()
+	local default_setting = ChoGGi_Funcs.Common.GetResearchedTechValue("MaxColonistsPerRocket")
 	local item_list = {
 		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 25, value = 25},
@@ -330,10 +331,10 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
 		end
 		local value = choice[1].value
 		if type(value) == "number" then
-			ChoGGi.ComFuncs.SetConsts("MaxColonistsPerRocket", value)
-			ChoGGi.ComFuncs.SetSavedConstSetting("MaxColonistsPerRocket")
+			ChoGGi_Funcs.Common.SetConsts("MaxColonistsPerRocket", value)
+			ChoGGi_Funcs.Common.SetSavedConstSetting("MaxColonistsPerRocket")
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
 				Translate(302535920000952--[[%s: Long pig sardines]]):format(choice[1].text),
 				T(4594, "Colonists Per Rocket")
@@ -341,7 +342,7 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000953--[[Set Colonist Capacity]]),
@@ -350,7 +351,7 @@ function ChoGGi.MenuFuncs.SetColonistsPerRocket()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetRocketMaxExportAmount()
+function ChoGGi_Funcs.Menus.SetRocketMaxExportAmount()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.RocketMaxExportAmount
 	local item_list = {
@@ -387,21 +388,21 @@ function ChoGGi.MenuFuncs.SetRocketMaxExportAmount()
 			for i = 1, #rockets do
 				local rocket = rockets[i]
 				if rocket.export_requests then
-					ChoGGi.ComFuncs.SetTaskReqAmount(rocket, value, "export_requests", "max_export_storage")
+					ChoGGi_Funcs.Common.SetTaskReqAmount(rocket, value, "export_requests", "max_export_storage")
 				else
 					rocket.max_export_storage = value
 				end
 			end
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
-				ChoGGi.ComFuncs.SettingState(choice.text),
+				ChoGGi_Funcs.Common.SettingState(choice.text),
 				T(302535920001291--[[Max Export Amount]])
 			)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920001291--[[Max Export Amount]]),
@@ -416,14 +417,14 @@ do -- RocketsIgnoreFuel_Toggle/LaunchFuelPerRocket
 		for i = 1, #rockets do
 			local rocket = rockets[i]
 			if rocket.refuel_request then
-				ChoGGi.ComFuncs.SetTaskReqAmount(rocket, amount, "refuel_request", "launch_fuel")
+				ChoGGi_Funcs.Common.SetTaskReqAmount(rocket, amount, "refuel_request", "launch_fuel")
 			else
 				rocket.launch_fuel = amount
 			end
 		end
 	end
 
-	function ChoGGi.MenuFuncs.RocketsIgnoreFuel_Toggle()
+	function ChoGGi_Funcs.Menus.RocketsIgnoreFuel_Toggle()
 		if ChoGGi.UserSettings.RocketsIgnoreFuel then
 			ChoGGi.UserSettings.RocketsIgnoreFuel = nil
 			SetRocketFuelAmount(ChoGGi.Consts.LaunchFuelPerRocket)
@@ -432,17 +433,17 @@ do -- RocketsIgnoreFuel_Toggle/LaunchFuelPerRocket
 			SetRocketFuelAmount(0)
 		end
 
-		ChoGGi.SettingFuncs.WriteSettings()
+		ChoGGi_Funcs.Settings.WriteSettings()
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.RocketsIgnoreFuel),
+			ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.RocketsIgnoreFuel),
 			T(302535920001319--[[Rockets Ignore Fuel]])
 		)
 	end
 
-	function ChoGGi.MenuFuncs.SetLaunchFuelPerRocket()
+	function ChoGGi_Funcs.Menus.SetLaunchFuelPerRocket()
 		local r = const.ResourceScale
 		local default_setting = ChoGGi.Consts.LaunchFuelPerRocket
-		local UpgradedSetting = ChoGGi.ComFuncs.GetResearchedTechValue("FuelRocket")
+		local UpgradedSetting = ChoGGi_Funcs.Common.GetResearchedTechValue("FuelRocket")
 		local item_list = {
 			{text = T(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting},
 			{text = 5, value = 5 * r},
@@ -477,15 +478,15 @@ do -- RocketsIgnoreFuel_Toggle/LaunchFuelPerRocket
 				end
 				SetRocketFuelAmount(value)
 
-				ChoGGi.SettingFuncs.WriteSettings()
+				ChoGGi_Funcs.Settings.WriteSettings()
 				MsgPopup(
-					ChoGGi.ComFuncs.SettingState(choice.text),
+					ChoGGi_Funcs.Common.SettingState(choice.text),
 					T(302535920001317--[[Launch Fuel Per Rocket]])
 				)
 			end
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = T(302535920001317--[[Launch Fuel Per Rocket]]),

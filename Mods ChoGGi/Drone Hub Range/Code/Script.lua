@@ -7,13 +7,13 @@ local mod_UpdateExistingHubs
 
 local ChoOrig_CommandCenterMaxRadius = const.CommandCenterMaxRadius
 
-local SetPropertyProp = ChoGGi.ComFuncs.SetPropertyProp
+local SetPropertyProp = ChoGGi_Funcs.Common.SetPropertyProp
 
 local function SetHubRange()
 	-- defaults
 	if not mod_EnableMod then
 		const.CommandCenterMaxRadius = ChoOrig_CommandCenterMaxRadius
-		ChoGGi.ComFuncs.SetConsts("CommandCenterMaxRadius", ChoOrig_CommandCenterMaxRadius)
+		ChoGGi_Funcs.Common.SetConsts("CommandCenterMaxRadius", ChoOrig_CommandCenterMaxRadius)
 		DroneHub.UIWorkRadius = ChoOrig_CommandCenterMaxRadius
 		DroneHub.work_radius = ChoOrig_CommandCenterMaxRadius
 		SetPropertyProp(DroneHub, "UIWorkRadius", "max", ChoOrig_CommandCenterMaxRadius)
@@ -22,7 +22,7 @@ local function SetHubRange()
 
 	-- probably useless
 	const.CommandCenterMaxRadius = mod_DroneHubRange
-	ChoGGi.ComFuncs.SetConsts("CommandCenterMaxRadius", mod_DroneHubRange)
+	ChoGGi_Funcs.Common.SetConsts("CommandCenterMaxRadius", mod_DroneHubRange)
 
 	-- default range of new hubs
 	DroneHub.UIWorkRadius = mod_DroneHubRangeDefault

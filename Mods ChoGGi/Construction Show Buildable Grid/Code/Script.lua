@@ -13,8 +13,8 @@ local function ModOptions(id)
 	local u = ChoGGi.UserSettings
 	u.DebugGridOpacity = CurrentModOptions:GetProperty("DebugGridOpacity")
 	u.DebugGridSize = CurrentModOptions:GetProperty("DebugGridSize")
-	if ChoGGi.SettingFuncs.WriteSettings then
-		ChoGGi.SettingFuncs.WriteSettings()
+	if ChoGGi_Funcs.Settings.WriteSettings then
+		ChoGGi_Funcs.Settings.WriteSettings()
 	end
 end
 -- Load default/saved settings
@@ -25,11 +25,11 @@ OnMsg.ApplyModOptions = ModOptions
 local grids_visible
 
 local function ShowGrids()
-	ChoGGi.ComFuncs.BuildableHexGrid(true)
+	ChoGGi_Funcs.Common.BuildableHexGrid(true)
 	grids_visible = true
 end
 local function HideGrids()
-	ChoGGi.ComFuncs.BuildableHexGrid(false)
+	ChoGGi_Funcs.Common.BuildableHexGrid(false)
 	grids_visible = false
 end
 

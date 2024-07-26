@@ -25,7 +25,7 @@ end
 function OnMsg.ClassesPostprocess()
 	local dome = XTemplates.sectionDome[1]
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(dome, "ChoGGi_Template_DomeLimitBirths")
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(dome, "ChoGGi_Template_DomeLimitBirths")
 	-- try to stick it just below the colonist section
 	local idx = table.find(dome,"Icon","UI/Icons/Sections/colonist.tga")
 

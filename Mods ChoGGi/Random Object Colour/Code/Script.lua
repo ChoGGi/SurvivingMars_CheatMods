@@ -19,7 +19,7 @@ OnMsg.ModsReloaded = ModOptions
 OnMsg.ApplyModOptions = ModOptions
 
 
-local ObjectColourRandom = ChoGGi.ComFuncs.ObjectColourRandom
+local ObjectColourRandom = ChoGGi_Funcs.Common.ObjectColourRandom
 
 local function ChangeColour(self)
 	-- we need to wait a sec before we can edit attaches

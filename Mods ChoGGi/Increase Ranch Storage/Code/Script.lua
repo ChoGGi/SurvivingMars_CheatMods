@@ -42,8 +42,8 @@ local function ModOptions(id)
 
 	mod_StockMax = CurrentModOptions:GetProperty("StockMax") * const.ResourceScale
 
-	ChoGGi.ComFuncs.SetBuildingTemplates("OpenPasture", "max_storage1", mod_StockMax)
-	ChoGGi.ComFuncs.SetBuildingTemplates("InsidePasture", "max_storage1", mod_StockMax)
+	ChoGGi_Funcs.Common.SetBuildingTemplates("OpenPasture", "max_storage1", mod_StockMax)
+	ChoGGi_Funcs.Common.SetBuildingTemplates("InsidePasture", "max_storage1", mod_StockMax)
 
 	-- make sure we're in-game
 	if not UIColony then

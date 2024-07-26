@@ -2,7 +2,7 @@
 
 local table = table
 local ipairs = ipairs
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 
 
 local mod_SelectView
@@ -106,7 +106,7 @@ local function ActivateSelection(action)
 			ViewAndSelectObject(Selection[1])
 			WaitMsg("OnRender")
 			if mod_ShowCentre then
-				ChoGGi.ComFuncs.Circle(Selection[1]:GetVisualPos(), 250, nil, 1000)
+				ChoGGi_Funcs.Common.Circle(Selection[1]:GetVisualPos(), 250, nil, 1000)
 			end
 		end)
 	end

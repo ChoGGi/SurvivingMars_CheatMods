@@ -7,8 +7,8 @@ local function AddTemplate(rocket, template1, template2)
 	end
 	rocket = rocket[idx]
 
-	ChoGGi.ComFuncs.RemoveXTemplateSections(rocket, "ChoGGi_DroneButton1")
-	ChoGGi.ComFuncs.RemoveXTemplateSections(rocket, "ChoGGi_DroneButton2")
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(rocket, "ChoGGi_DroneButton1")
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(rocket, "ChoGGi_DroneButton2")
 
 	rocket[#rocket+1] = template1
 	rocket[#rocket+1] = template2

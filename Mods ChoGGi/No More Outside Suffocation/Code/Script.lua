@@ -2,7 +2,7 @@
 
 local mod_EnableMod
 -- some stuff checks one some other... (Consts vs g_Consts)
-local SetConsts = ChoGGi.ComFuncs.SetConsts
+local SetConsts = ChoGGi_Funcs.Common.SetConsts
 
 local function StartupCode()
 	local lotta_sols = const.Scale.sols * 100

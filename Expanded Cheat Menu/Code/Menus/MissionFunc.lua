@@ -4,14 +4,15 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local type = type
 local table = table
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
+local Translate = ChoGGi_Funcs.Common.Translate
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 local blacklist = ChoGGi.blacklist
 
-function ChoGGi.MenuFuncs.SetDisasterOccurrence_Toggle(action)
+function ChoGGi_Funcs.Menus.SetDisasterOccurrence_Toggle(action)
 	local setting_name = action.setting_name
 	local us = ChoGGi.UserSettings
 
@@ -32,14 +33,14 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence_Toggle(action)
 		setting = us.DisasterQuakeDisable
 	end
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(setting),
+		ChoGGi_Funcs.Common.SettingState(setting),
 		setting_name
 	)
 end
 
-function ChoGGi.MenuFuncs.ChangeRivalColonies()
+function ChoGGi_Funcs.Menus.ChangeRivalColonies()
 --~ 		MarsScreenLandingSpots
 	local g_CurrentMissionParams = g_CurrentMissionParams
 	local rival_colonies = MissionParams.idRivalColonies.items
@@ -129,13 +130,13 @@ function ChoGGi.MenuFuncs.ChangeRivalColonies()
 		end
 
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(#choices),
+			ChoGGi_Funcs.Common.SettingState(#choices),
 			T(11034--[[Rival Colonies]])
 		)
 
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(11034--[[Rival Colonies]]),
@@ -163,7 +164,7 @@ function ChoGGi.MenuFuncs.ChangeRivalColonies()
 	}
 end
 
-function ChoGGi.MenuFuncs.StartChallenge()
+function ChoGGi_Funcs.Menus.StartChallenge()
 	local item_list = {}
 	local challenges = Presets.Challenge.Default
 	local DayDuration = const.DayDuration
@@ -208,7 +209,7 @@ function ChoGGi.MenuFuncs.StartChallenge()
 		hint = T(302535920000106--[[Current]]) .. ": " .. T(c.title) .. ", " .. c.id
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920001247--[[Start Challenge]]),
@@ -216,7 +217,7 @@ function ChoGGi.MenuFuncs.StartChallenge()
 	}
 end
 
-function ChoGGi.MenuFuncs.InstantMissionGoals()
+function ChoGGi_Funcs.Menus.InstantMissionGoals()
 	local T = T
 	local GetGoalDescription = GetGoalDescription
 	local SponsorGoalsMap = SponsorGoalsMap
@@ -267,7 +268,7 @@ function ChoGGi.MenuFuncs.InstantMissionGoals()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000704--[[Instant Mission Goals]]),
@@ -275,7 +276,7 @@ function ChoGGi.MenuFuncs.InstantMissionGoals()
 	}
 end
 
-function ChoGGi.MenuFuncs.InstantColonyApproval()
+function ChoGGi_Funcs.Menus.InstantColonyApproval()
 	-- remove founder stage msg
 	RemoveOnScreenNotification("FounderStageDuration")
 	-- add the passed msg
@@ -289,22 +290,22 @@ function ChoGGi.MenuFuncs.InstantColonyApproval()
 	g_ColonyNotViableUntil = -1
 end
 
-function ChoGGi.MenuFuncs.MeteorHealthDamage_Toggle()
+function ChoGGi_Funcs.Menus.MeteorHealthDamage_Toggle()
 	local Consts = Consts
-	ChoGGi.ComFuncs.SetConsts("MeteorHealthDamage", ChoGGi.ComFuncs.NumRetBool(Consts.MeteorHealthDamage, 0, ChoGGi.Consts.MeteorHealthDamage))
-	ChoGGi.ComFuncs.SetSavedConstSetting("MeteorHealthDamage")
+	ChoGGi_Funcs.Common.SetConsts("MeteorHealthDamage", ChoGGi_Funcs.Common.NumRetBool(Consts.MeteorHealthDamage, 0, ChoGGi.Consts.MeteorHealthDamage))
+	ChoGGi_Funcs.Common.SetSavedConstSetting("MeteorHealthDamage")
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
 		T(302535920001160--[["%s
 Damage? Total, sir.
 It's what we call a global killer.
-The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria."]]):format(ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.MeteorHealthDamage)),
+The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria."]]):format(ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.MeteorHealthDamage)),
 		T(302535920000708--[[Meteor Damage]])
 	)
 end
 
-function ChoGGi.MenuFuncs.SetSponsor()
+function ChoGGi_Funcs.Menus.SetSponsor()
 	local GetSponsorDescr = GetSponsorDescr
 	local GetMissionSponsor = GetMissionSponsor
 
@@ -366,7 +367,7 @@ function ChoGGi.MenuFuncs.SetSponsor()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000712--[[Set Sponsor]]),
@@ -374,7 +375,7 @@ function ChoGGi.MenuFuncs.SetSponsor()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetCommander()
+function ChoGGi_Funcs.Menus.SetCommander()
 	local g_CurrentMissionParams = g_CurrentMissionParams
 	local UIColony = UIColony
 
@@ -423,7 +424,7 @@ function ChoGGi.MenuFuncs.SetCommander()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000716--[[Set Commander]]),
@@ -431,10 +432,10 @@ function ChoGGi.MenuFuncs.SetCommander()
 	}
 end
 
-function ChoGGi.MenuFuncs.ChangeGameLogo()
+function ChoGGi_Funcs.Menus.ChangeGameLogo()
 	local MissionLogoPresetMap = MissionLogoPresetMap
-	local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
-	local MapGet = ChoGGi.ComFuncs.MapGet
+	local GetAllAttaches = ChoGGi_Funcs.Common.GetAllAttaches
+	local MapGet = ChoGGi_Funcs.Common.MapGet
 
 	local function ChangeLogo(label, entity_name)
 		label = MapGet(label)
@@ -474,14 +475,14 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
 			g_CurrentMissionParams.idMissionLogo = value
 
 			-- might help for large amounts of buildings
-			SuspendPassEdits("ChoGGi.MenuFuncs.ChangeGameLogo")
+			SuspendPassEdits("ChoGGi_Funcs.Menus.ChangeGameLogo")
 
 			-- loop through rockets and change logo
 			ChangeLogo("SupplyRocket", entity_name)
 			-- same for any buildings that use the logo
 			ChangeLogo("Building", entity_name)
 
-			ResumePassEdits("ChoGGi.MenuFuncs.ChangeGameLogo")
+			ResumePassEdits("ChoGGi_Funcs.Menus.ChangeGameLogo")
 
 			MsgPopup(
 				choice[1].text,
@@ -490,7 +491,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920001178--[[Set New Logo]]),
@@ -500,7 +501,7 @@ function ChoGGi.MenuFuncs.ChangeGameLogo()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetDisasterOccurrence(action)
+function ChoGGi_Funcs.Menus.SetDisasterOccurrence(action)
 	local setting_id = action.setting_id
 
 	local mapdata = ActiveMapData
@@ -555,7 +556,7 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(action)
 		)
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000129--[[Set]]) .. " " .. setting_id .. " " .. T(302535920001180--[[Disaster Occurrences]]),
@@ -563,7 +564,7 @@ function ChoGGi.MenuFuncs.SetDisasterOccurrence(action)
 	}
 end
 
-function ChoGGi.MenuFuncs.ChangeRules()
+function ChoGGi_Funcs.Menus.ChangeRules()
 	local GameRulesMap = GameRulesMap
 	local g_CurrentMissionParams = g_CurrentMissionParams
 	local IsGameRuleActive = IsGameRuleActive
@@ -621,7 +622,7 @@ function ChoGGi.MenuFuncs.ChangeRules()
 		end
 
 		MsgPopup(
-			ChoGGi.ComFuncs.SettingState(#choice, T(302535920000129--[[Set]])),
+			ChoGGi_Funcs.Common.SettingState(#choice, T(302535920000129--[[Set]])),
 			T(8800--[[Game Rules]])
 		)
 	end
@@ -647,7 +648,7 @@ function ChoGGi.MenuFuncs.ChangeRules()
 		hint = table.concat(hint)
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920001182--[[Set Game Rules]]),

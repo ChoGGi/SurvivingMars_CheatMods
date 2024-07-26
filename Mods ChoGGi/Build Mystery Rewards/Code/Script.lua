@@ -136,7 +136,7 @@ function OnMsg.ClassesPostprocess()
 	-- Okay got a little lazy with my template names...
 
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStones_Liftoff", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStones_Liftoff", true)
 
 	-- Crystals
 
@@ -169,7 +169,7 @@ function OnMsg.ClassesPostprocess()
 
 	xtemplate = XTemplates.ipMirrorSphereBuilding[1]
 
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStones_SphereEscavate", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStones_SphereEscavate", true)
 	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
 		"Id" , "ChoGGi_Template_BuildPhilosopherStones_SphereEscavate",
 		"ChoGGi_Template_BuildPhilosopherStones_SphereEscavate", true,
@@ -189,7 +189,7 @@ function OnMsg.ClassesPostprocess()
 		end,
 	})
 
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStones_DeleteSite", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStones_DeleteSite", true)
 	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
 		"Id" , "ChoGGi_Template_BuildPhilosopherStones_DeleteSite",
 		"ChoGGi_Template_BuildPhilosopherStones_DeleteSite", true,
@@ -206,9 +206,9 @@ function OnMsg.ClassesPostprocess()
 		"OnPress", function(self)
 			local context = self.context
 			if IsValid(context.sphere) then
-				ChoGGi.ComFuncs.DeleteObject(context.sphere)
+				ChoGGi_Funcs.Common.DeleteObject(context.sphere)
 			end
-			ChoGGi.ComFuncs.DeleteObject(context)
+			ChoGGi_Funcs.Common.DeleteObject(context)
 			ObjModified(context)
 		end,
 	})
@@ -219,7 +219,7 @@ function OnMsg.ClassesPostprocess()
 
 	-- Sinkholes
 
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Spawn", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Spawn", true)
 	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
 		"Id" , "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Spawn",
 		"ChoGGi_Template_BuildPhilosopherStonesSinkhole_Spawn", true,
@@ -238,7 +238,7 @@ function OnMsg.ClassesPostprocess()
 		end,
 	})
 
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Remove", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Remove", true)
 	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
 		"Id" , "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Remove",
 		"ChoGGi_Template_BuildPhilosopherStonesSinkhole_Remove", true,
@@ -261,7 +261,7 @@ function OnMsg.ClassesPostprocess()
 		end,
 	})
 
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Demolish", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Demolish", true)
 	xtemplate[#xtemplate+1] = PlaceObj("XTemplateTemplate", {
 		"Id" , "ChoGGi_Template_BuildPhilosopherStonesSinkhole_Demolish",
 		"ChoGGi_Template_BuildPhilosopherStonesSinkhole_Demolish", true,

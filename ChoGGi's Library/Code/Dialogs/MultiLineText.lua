@@ -2,13 +2,14 @@
 
 -- displays text in an editable text box
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local table = table
 local CreateRealTimeThread = CreateRealTimeThread
-local IsControlPressed = ChoGGi.ComFuncs.IsControlPressed
-local RetParamsParents = ChoGGi.ComFuncs.RetParamsParents
+local IsControlPressed = ChoGGi_Funcs.Common.IsControlPressed
+local RetParamsParents = ChoGGi_Funcs.Common.RetParamsParents
 
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
 local blacklist, g_env = ChoGGi.blacklist
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
@@ -16,7 +17,7 @@ function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	g_env = env
 end
 
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+local GetParentOfKind = ChoGGi_Funcs.Common.GetParentOfKind
 local function GetRootDialog(dlg)
 	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_DlgMultiLineText")
 end
@@ -354,7 +355,7 @@ function ChoGGi_DlgMultiLineText:Done(result)
 end
 
 -- use this func to open it
-function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(obj, parent, ...)
+function ChoGGi_Funcs.Common.OpenInMultiLineTextDlg(obj, parent, ...)
 	if not obj then
 		return
 	end
@@ -375,7 +376,7 @@ function ChoGGi.ComFuncs.OpenInMultiLineTextDlg(obj, parent, ...)
 
 	return ChoGGi_DlgMultiLineText:new({}, terminal.desktop, params)
 end
-local OpenInMultiLineTextDlg = ChoGGi.ComFuncs.OpenInMultiLineTextDlg
+local OpenInMultiLineTextDlg = ChoGGi_Funcs.Common.OpenInMultiLineTextDlg
 function OpenTextViewer(...)
 	OpenInMultiLineTextDlg(...)
 end

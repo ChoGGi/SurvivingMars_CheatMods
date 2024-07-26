@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local RetObjMapId = ChoGGi.ComFuncs.RetObjMapId
+local RetObjMapId = ChoGGi_Funcs.Common.RetObjMapId
 
 local ResourceScale = const.ResourceScale
 local resources
@@ -130,7 +130,7 @@ function OnMsg.ClassesPostprocess()
 
 	local xtemplate = XTemplates.sectionStorage[2]
 	-- check for and remove existing template
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_WasteRockToggle", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_WasteRockToggle", true)
 
 	-- add wasterock toggle to depot resource list
 	table.insert(xtemplate, 2, PlaceObj('XTemplateTemplate', {

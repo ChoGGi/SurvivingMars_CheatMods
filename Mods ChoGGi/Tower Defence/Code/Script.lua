@@ -20,7 +20,7 @@ local IsValid = IsValid
 local PlaceObject = PlaceObject
 local table = table
 
-local Random = ChoGGi.ComFuncs.Random
+local Random = ChoGGi_Funcs.Common.Random
 
 -- redefined AttackRover to blow up after it's out of ammo or too old
 DefineClass.TowerDefense_Rover = {

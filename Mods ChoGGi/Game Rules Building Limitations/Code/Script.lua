@@ -101,6 +101,22 @@ local lookup_rules = {
 		"DroneHubExtender",
 		"RechargeStation",
 	},
+	ChoGGi_NoDomes = {
+		"DomeBasic",
+		"DomeDiamond",
+		"DomeHexa",
+		"DomeMedium",
+		"DomeMega",
+		"DomeMegaTrigon",
+		"DomeMicro",
+		"DomeOval",
+		"DomeTrigon",
+		"GeoscapeDome",
+		"SelfSufficientDome",
+		"UndergroundDome",
+		"UndergroundDomeMedium",
+		"UndergroundDomeMicro",
+	},
 }
 
 -- Cache rule ids in local table instead of checking game rules each time
@@ -277,6 +293,18 @@ local rules = {
 		id = "ChoGGi_NoDroneHubs",
 		challenge_mod = 100,
 	},
+	{
+		description = T(0000, "Domes of any type can't be built."),
+		display_name = T(0000, "No Domes"),
+		id = "ChoGGi_NoDomes",
+		challenge_mod = 250,
+	},
+	{
+		description = T(0000, "You can't request passenger rockets."),
+		display_name = T(0000, "No Passenger Rockets"),
+		id = "ChoGGi_NoPassengerRockets",
+		challenge_mod = 150,
+	},
 }
 function OnMsg.ClassesPostprocess()
 	if GameRulesMap.ChoGGi_NoPassages then
@@ -299,4 +327,36 @@ function OnMsg.ClassesPostprocess()
 			group = "Default",
 		})
 	end
+end
+
+-- NoPassengerRockets rule below
+
+local ChoOrig_AreNewColonistsAccepted = AreNewColonistsAccepted
+function AreNewColonistsAccepted(...)
+	if IsGameRuleActive("ChoGGi_NoPassengerRockets") then
+		return false
+	end
+
+	return ChoOrig_AreNewColonistsAccepted(...)
+end
+
+local ChoOrig_RocketPayloadObject_PassengerRocketDisabledRolloverTitle = RocketPayloadObject.PassengerRocketDisabledRolloverTitle
+function RocketPayloadObject.PassengerRocketDisabledRolloverTitle(...)
+	if IsGameRuleActive("ChoGGi_NoPassengerRockets") then
+		return T(0000, "No Passenger Rockets")
+	end
+
+	return ChoOrig_RocketPayloadObject_PassengerRocketDisabledRolloverTitle(...)
+end
+
+local ChoOrig_RocketPayloadObject_PassengerRocketDisabledRolloverText = RocketPayloadObject.PassengerRocketDisabledRolloverText
+function RocketPayloadObject.PassengerRocketDisabledRolloverText(...)
+	if IsGameRuleActive("ChoGGi_NoPassengerRockets") then
+		return T(0000, [[You can't request passenger rockets.
+
+
+(No Passenger Rockets Game Rule)]])
+	end
+
+	return ChoOrig_RocketPayloadObject_PassengerRocketDisabledRolloverText(...)
 end

@@ -4,36 +4,36 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local type, tostring = type, tostring
-
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local RetName = ChoGGi.ComFuncs.RetName
-local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
-local RetObjectCapAndGrid = ChoGGi.ComFuncs.RetObjectCapAndGrid
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
+local RetName = ChoGGi_Funcs.Common.RetName
+local RetTemplateOrClass = ChoGGi_Funcs.Common.RetTemplateOrClass
+local RetObjectCapAndGrid = ChoGGi_Funcs.Common.RetObjectCapAndGrid
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
-function ChoGGi.MenuFuncs.StorageMechanizedDepotsTemp_Toggle()
-	ChoGGi.UserSettings.StorageMechanizedDepotsTemp = ChoGGi.ComFuncs.ToggleValue(ChoGGi.UserSettings.StorageMechanizedDepotsTemp)
+function ChoGGi_Funcs.Menus.StorageMechanizedDepotsTemp_Toggle()
+	ChoGGi.UserSettings.StorageMechanizedDepotsTemp = ChoGGi_Funcs.Common.ToggleValue(ChoGGi.UserSettings.StorageMechanizedDepotsTemp)
 
 	local amount
 	if not ChoGGi.UserSettings.StorageMechanizedDepotsTemp then
 		amount = 5
 	end
-	local SetMechanizedDepotTempAmount = ChoGGi.ComFuncs.SetMechanizedDepotTempAmount
+	local SetMechanizedDepotTempAmount = ChoGGi_Funcs.Common.SetMechanizedDepotTempAmount
 	local objs = UIColony.city_labels.labels.MechanizedDepots or ""
 	for i = 1, #objs do
 		SetMechanizedDepotTempAmount(objs[i], amount)
 	end
 
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		ChoGGi.ComFuncs.SettingState(ChoGGi.UserSettings.StorageMechanizedDepotsTemp),
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.StorageMechanizedDepotsTemp),
 		T(302535920000565--[[Storage Mechanized Depots Temp]])
 	)
 end
 
-function ChoGGi.MenuFuncs.SetWorkerCapacity()
+function ChoGGi_Funcs.Menus.SetWorkerCapacity()
 	local obj = SelectedObj
 	local _, capacity = RetObjectCapAndGrid(obj, 16)
 
@@ -99,7 +99,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 				ChoGGi.UserSettings.BuildingSettings[id].workers = value
 			end
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
 				Translate(302535920000957--[[%s capacity is now %s.]]):format(RetName(obj), choice[1].text),
 				T(302535920000567--[[Worker Capacity]])
@@ -107,7 +107,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000129--[[Set]]) .. " " .. RetName(obj) .. " " .. T(302535920000567--[[Worker Capacity]]),
@@ -116,7 +116,7 @@ function ChoGGi.MenuFuncs.SetWorkerCapacity()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetBuildingCapacity()
+function ChoGGi_Funcs.Menus.SetBuildingCapacity()
 	local obj = SelectedObj
 	local cap_type, capacity = RetObjectCapAndGrid(obj, 15)
 
@@ -203,7 +203,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 
 			-- updating time
 			if cap_type == "electricity" then
-				local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
+				local ToggleWorking = ChoGGi_Funcs.Common.ToggleWorking
 				local objs = UIColony.city_labels.labels.Power or ""
 				for i = 1, #objs do
 					local o = objs[i]
@@ -226,7 +226,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 				end
 
 			else -- water and air
-				local ToggleWorking = ChoGGi.ComFuncs.ToggleWorking
+				local ToggleWorking = ChoGGi_Funcs.Common.ToggleWorking
 				local cap_name = cap_type .. "_capacity"
 				local objs = UIColony.city_labels.labels["Life-Support"] or ""
 				for i = 1, #objs do
@@ -247,7 +247,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 				setting.capacity = amount
 			end
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
 				Translate(302535920000957--[[%s capacity is now %s.]]):format(RetName(obj), choice[1].text),
 				T(302535920000569--[[Building Capacity]])
@@ -256,7 +256,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000129--[[Set]]) .. " " .. RetName(obj) .. " " .. T(109035890389--[[Capacity]]),
@@ -265,7 +265,7 @@ function ChoGGi.MenuFuncs.SetBuildingCapacity()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetVisitorCapacity()
+function ChoGGi_Funcs.Menus.SetVisitorCapacity()
 	local obj = SelectedObj
 	local _, capacity = RetObjectCapAndGrid(obj, 32)
 
@@ -321,7 +321,7 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 				ChoGGi.UserSettings.BuildingSettings[id].visitors = value
 			end
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
 				Translate(302535920000960--[[%s visitor capacity is now %s.]]):format(RetName(obj), choice[1].text),
 				T(302535920000571--[[Building Visitor Capacity]])
@@ -329,7 +329,7 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000129--[[Set]]) .. " " .. RetName(obj) .. " " .. T(302535920000961--[[Visitor Capacity]]),
@@ -338,7 +338,7 @@ function ChoGGi.MenuFuncs.SetVisitorCapacity()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
+function ChoGGi_Funcs.Menus.SetStorageDepotSize(action)
 	local bld_type = action.bld_type
 
 	local r = const.ResourceScale
@@ -425,9 +425,9 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 			end
 
 			-- for new buildings
-			ChoGGi.ComFuncs.SetSavedConstSetting(bld_type, value)
+			ChoGGi_Funcs.Common.SetSavedConstSetting(bld_type, value)
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
 				choice[1].text .. ": " .. bld_type,
 				T(302535920000573--[[Storage Universal Depot]])
@@ -435,7 +435,7 @@ function ChoGGi.MenuFuncs.SetStorageDepotSize(action)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920000129--[[Set]]) .. ": " .. bld_type .. " " .. T(302535920000963--[[Size]]),

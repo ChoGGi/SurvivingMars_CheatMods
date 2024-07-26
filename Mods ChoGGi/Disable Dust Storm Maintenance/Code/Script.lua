@@ -1,11 +1,11 @@
 -- See LICENSE for terms
 
-local RetTemplateOrClass = ChoGGi.ComFuncs.RetTemplateOrClass
+local RetTemplateOrClass = ChoGGi_Funcs.Common.RetTemplateOrClass
 
 local mod_EnableMod
 
 local IsValid = IsValid
-local SetBldMaintenance = ChoGGi.ComFuncs.UpdateBuildings or function(obj, value)
+local SetBldMaintenance = ChoGGi_Funcs.Common.UpdateBuildings or function(obj, value)
 	if not IsValid(obj) then
 		return
 	end

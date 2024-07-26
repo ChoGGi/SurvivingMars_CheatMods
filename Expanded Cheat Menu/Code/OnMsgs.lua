@@ -4,6 +4,7 @@ local what_game = ChoGGi.what_game
 
 -- OnMsgs (most of them)
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local table = table
 local type, pairs = type, pairs
 local FlushLogFile = FlushLogFile
@@ -12,17 +13,17 @@ local OnMsg = OnMsg
 local IsKindOf = IsKindOf
 local CreateRealTimeThread = CreateRealTimeThread
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
 -- no sense in localing it, but I keep forgetting the name...
 local ClassDescendantsList = ClassDescendantsList
 
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local RetName = ChoGGi.ComFuncs.RetName
-local AttachToNearestDome = ChoGGi.ComFuncs.AttachToNearestDome
-local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
-local UpdateDepotCapacity = ChoGGi.ComFuncs.UpdateDepotCapacity
-local IsUniversalStorageDepot = ChoGGi.ComFuncs.IsUniversalStorageDepot
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
+local RetName = ChoGGi_Funcs.Common.RetName
+local AttachToNearestDome = ChoGGi_Funcs.Common.AttachToNearestDome
+local IsValidXWin = ChoGGi_Funcs.Common.IsValidXWin
+local UpdateDepotCapacity = ChoGGi_Funcs.Common.UpdateDepotCapacity
+local IsUniversalStorageDepot = ChoGGi_Funcs.Common.IsUniversalStorageDepot
 
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
@@ -59,8 +60,8 @@ end -- do
 -- stops crashing with certain missing pinned objects
 if ChoGGi.UserSettings.FixMissingModBuildings then
 	local umc = UnpersistedMissingClass
-	ChoGGi.ComFuncs.AddParentToClass(umc, "AutoAttachObject")
-	ChoGGi.ComFuncs.AddParentToClass(umc, "PinnableObject")
+	ChoGGi_Funcs.Common.AddParentToClass(umc, "AutoAttachObject")
+	ChoGGi_Funcs.Common.AddParentToClass(umc, "PinnableObject")
 	umc.entity = "ErrorAnimatedMesh"
 end
 
@@ -142,7 +143,7 @@ function OnMsg.ClassesPostprocess()
 		if UserSettings.GUIDockSide then
 			XTemplates.NewOverlayDlg[1].Dock = "right"
 			XTemplates.SaveLoadContentWindow[1].Dock = "right"
-			ChoGGi.ComFuncs.SetTableValue(XTemplates.SaveLoadContentWindow[1], "Dock", "left", "Dock", "right")
+			ChoGGi_Funcs.Common.SetTableValue(XTemplates.SaveLoadContentWindow[1], "Dock", "left", "Dock", "right")
 			XTemplates.PhotoMode[1].Dock = "right"
 		end
 
@@ -176,7 +177,7 @@ function OnMsg.ClassesPostprocess()
 
 --~ 	-- fiddle with mod options
 --~ 	if not table.find(ModsLoaded, "id", "ChoGGi_ModOptionsExpanded") then
---~ 		ChoGGi.ComFuncs.ExpandModOptions(XTemplates)
+--~ 		ChoGGi_Funcs.Common.ExpandModOptions(XTemplates)
 --~ 	end
 
 	-- Sometime in between picard content update 1 and rev 1009657 they hid the toobar buttons from cheat menu
@@ -227,7 +228,7 @@ function OnMsg.ApplyModOptions(id)
 	end
 	if CurrentModOptions:GetProperty("ResetSettings") then
 		CreateRealTimeThread(function()
-			ChoGGi.MenuFuncs.ResetECMSettings()
+			ChoGGi_Funcs.Menus.ResetECMSettings()
 		end)
 		CurrentModOptions:SetProperty("ResetSettings", false)
 	end
@@ -318,15 +319,15 @@ function OnMsg.ModsReloaded()
 			end
 		end
 		-- add ged presets to menu right away (this only affects those that use ECM from startup mods)
-		ChoGGi.ComFuncs.Rebuildshortcuts()
+		ChoGGi_Funcs.Common.Rebuildshortcuts()
 
 		-- show console log history
-		if UserSettings.ConsoleToggleHistory or ChoGGi.ComFuncs.ModEditorActive() then
+		if UserSettings.ConsoleToggleHistory or ChoGGi_Funcs.Common.ModEditorActive() then
 			ShowConsoleLog(true)
 		end
 
 		if UserSettings.ConsoleHistoryWin then
-			ChoGGi.ComFuncs.ShowConsoleLogWin(true)
+			ChoGGi_Funcs.Common.ShowConsoleLogWin(true)
 		end
 
 		-- dim that console bg
@@ -346,7 +347,7 @@ function OnMsg.ModsReloaded()
 
 			-- removes comments from code, and adds a space to each newline, so pasting multi line works
 			local XEditEditOperation = XEdit.EditOperation
-			local StripComments = ChoGGi.ComFuncs.StripComments
+			local StripComments = ChoGGi_Funcs.Common.StripComments
 			function edit:EditOperation(insert_text, is_undo_redo, cursor_to_text_start, ...)
 				if type(insert_text) == "string" then
 					insert_text = StripComments(insert_text)
@@ -375,11 +376,13 @@ $123 or $EffectDeposit.display_name prints translated string.
 
 !UICity.labels.TerrainDeposit[1] move camera and select obj.
 
+delcls(class_name) remove all objects of a certain class.
+
 s = SelectedObj, c() = GetCursorWorldPos(), restart() = quit(""restart"")"]])
 			edit.Hint = Translate(302535920001439--[["~obj, @func, @@type, %image, *r/*g/*m threads. Hover mouse for more info."]])
 
 			-- and buttons
-			ChoGGi.ConsoleFuncs.ConsoleControls(dlgConsole)
+			ChoGGi_Funcs.Console.ConsoleControls(dlgConsole)
 
 			dlgConsole.ChoGGi_MenuAdded = true
 		end
@@ -392,7 +395,7 @@ s = SelectedObj, c() = GetCursorWorldPos(), restart() = quit(""restart"")"]])
 
 			-- remove some uselessish Cheats to clear up space
 			if UserSettings.CleanupCheatsInfoPane then
-				ChoGGi.InfoFuncs.InfopanelCheatsCleanup()
+				ChoGGi_Funcs.InfoPane.InfopanelCheatsCleanup()
 			end
 		end -- what_game
 
@@ -438,7 +441,7 @@ s = SelectedObj, c() = GetCursorWorldPos(), restart() = quit(""restart"")"]])
 			end
 
 			-- add a little spacer to the top of cheats menu you can drag around
-			ChoGGi.ComFuncs.DraggableCheatsMenu(
+			ChoGGi_Funcs.Common.DraggableCheatsMenu(
 				UserSettings.DraggableCheatsMenu
 			)
 		end
@@ -502,12 +505,12 @@ s = SelectedObj, c() = GetCursorWorldPos(), restart() = quit(""restart"")"]])
 
 	end -- what_game
 	-- limit width of infopanel toolbar buttons
-	ChoGGi.ComFuncs.InfopanelToolbarConstrain_Toggle(UserSettings.InfopanelToolbarConstrain)
+	ChoGGi_Funcs.Common.InfopanelToolbarConstrain_Toggle(UserSettings.InfopanelToolbarConstrain)
 
 	-- slight delay for vertical menu
 	CreateRealTimeThread(function()
 		WaitMsg("OnRender")
-		ChoGGi.ComFuncs.VerticalCheatMenu_Toggle(UserSettings.VerticalCheatMenu)
+		ChoGGi_Funcs.Common.VerticalCheatMenu_Toggle(UserSettings.VerticalCheatMenu)
 
 		-- no dlc and the menu flickers on then turns off (for some reason)
 		Sleep(1000)
@@ -601,10 +604,10 @@ do -- ConstructionSitePlaced/ConstructionPrefabPlaced
 			if IsKindOf(obj.building_class_proto, "Temple") then
 				local frame = obj:GetAttaches("SpireFrame")
 				if not frame then
-					frame = ChoGGi.ComFuncs.AttachSpireFrame(obj)
+					frame = ChoGGi_Funcs.Common.AttachSpireFrame(obj)
 					frame:SetGameFlags(const.gofUnderConstruction)
 				end
-				ChoGGi.ComFuncs.AttachSpireFrameOffset(frame)
+				ChoGGi_Funcs.Common.AttachSpireFrameOffset(frame)
 			end
 		end)
 	end --OnMsg
@@ -722,19 +725,19 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 			local frame = obj:GetAttaches("SpireFrame")
 			if not frame then
 				-- spire needs a pointy end
-				frame = ChoGGi.ComFuncs.AttachSpireFrame(obj)
+				frame = ChoGGi_Funcs.Common.AttachSpireFrame(obj)
 				for i = 1, 4 do
 					frame:SetColorizationMaterial(i, obj:GetColorizationMaterial(i))
 				end
 			end
-			ChoGGi.ComFuncs.AttachSpireFrameOffset(frame)
+			ChoGGi_Funcs.Common.AttachSpireFrameOffset(frame)
 		end)
 
 	elseif UserSettings.StorageMechanizedDepotsTemp
 			and IsKindOf(obj, "ResourceStockpileLR")
 			and IsKindOf(obj.parent, "MechanizedDepot") then
 		-- attached temporary resource depots
-		ChoGGi.ComFuncs.SetMechanizedDepotTempAmount(obj.parent)
+		ChoGGi_Funcs.Common.SetMechanizedDepotTempAmount(obj.parent)
 	end
 
 	-- If an inside building is placed outside of dome, attach it to nearest dome (if there is one)
@@ -786,13 +789,13 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 			end
 			-- no power needed
 			if bs.nopower then
-				ChoGGi.ComFuncs.RemoveBuildingElecConsump(obj)
+				ChoGGi_Funcs.Common.RemoveBuildingElecConsump(obj)
 			end
 			if bs.noair then
-				ChoGGi.ComFuncs.RemoveBuildingAirConsump(obj)
+				ChoGGi_Funcs.Common.RemoveBuildingAirConsump(obj)
 			end
 			if bs.nowater then
-				ChoGGi.ComFuncs.RemoveBuildingWaterConsump(obj)
+				ChoGGi_Funcs.Common.RemoveBuildingWaterConsump(obj)
 			end
 			-- large protect_range for defence buildings
 			if bs.protect_range then
@@ -826,7 +829,7 @@ function OnMsg.ChoGGi_SpawnedBaseBuilding(obj)
 			end
 			-- service comforts
 			if bs.service_stats and next(bs.service_stats) then
-				ChoGGi.ComFuncs.UpdateServiceComfortBld(obj, bs.service_stats)
+				ChoGGi_Funcs.Common.UpdateServiceComfortBld(obj, bs.service_stats)
 			end
 			-- training points
 			if bs.evaluation_points then
@@ -863,20 +866,20 @@ do -- ColonistCreated
 		local UserSettings = ChoGGi.UserSettings
 
 		if UserSettings.NewColonistGender then
-			ChoGGi.ComFuncs.ColonistUpdateGender(obj, UserSettings.NewColonistGender)
+			ChoGGi_Funcs.Common.ColonistUpdateGender(obj, UserSettings.NewColonistGender)
 		end
 		if UserSettings.NewColonistAge then
-			ChoGGi.ComFuncs.ColonistUpdateAge(obj, UserSettings.NewColonistAge)
+			ChoGGi_Funcs.Common.ColonistUpdateAge(obj, UserSettings.NewColonistAge)
 		end
 		-- children don't have spec models so they get black cube
 		if UserSettings.NewColonistSpecialization and not skip then
-			ChoGGi.ComFuncs.ColonistUpdateSpecialization(obj, UserSettings.NewColonistSpecialization)
+			ChoGGi_Funcs.Common.ColonistUpdateSpecialization(obj, UserSettings.NewColonistSpecialization)
 		end
 		if UserSettings.NewColonistRace then
-			ChoGGi.ComFuncs.ColonistUpdateRace(obj, UserSettings.NewColonistRace)
+			ChoGGi_Funcs.Common.ColonistUpdateRace(obj, UserSettings.NewColonistRace)
 		end
 		if UserSettings.NewColonistTraits then
-			ChoGGi.ComFuncs.ColonistUpdateTraits(obj, true, UserSettings.NewColonistTraits)
+			ChoGGi_Funcs.Common.ColonistUpdateTraits(obj, true, UserSettings.NewColonistTraits)
 		end
 		if UserSettings.SpeedColonist then
 			obj:SetBase("move_speed", UserSettings.SpeedColonist)
@@ -924,9 +927,9 @@ function OnMsg.ChangeMapDone(map)
 	if map == "PreGame" and ChoGGi.UserSettings.FirstRun ~= false then
 		ChoGGi.UserSettings.FirstRun = false
 		DestroyConsoleLog()
-		ChoGGi.SettingFuncs.WriteSettings()
+		ChoGGi_Funcs.Settings.WriteSettings()
 
-		ChoGGi.ComFuncs.MsgWait(
+		ChoGGi_Funcs.Common.MsgWait(
 			T(302535920001400--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
 If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."]])
 				.. "\n\n" .. T{302535920000030--[["To toggle the console log text; press Tilde or Enter and click the ""<settings>"" button then make sure ""<log>"" is checked."]],
@@ -973,7 +976,7 @@ function OnMsg.NewDay() -- NewSol...
 	end
 
 	-- loop through and remove any old popups
-	local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
+	local IsValidXWin = ChoGGi_Funcs.Common.IsValidXWin
 	local popups = ChoGGi.Temp.MsgPopups or ""
 	for i = #popups, 1, -1 do
 		if not IsValidXWin(popups[i]) then
@@ -1006,7 +1009,7 @@ function OnMsg.NewHour()
 	-- make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
 	if UserSettings.DroneResourceCarryAmountFix then
 		local labels = UIColony.city_labels.labels
-		local FuckingDrones = ChoGGi.ComFuncs.FuckingDrones
+		local FuckingDrones = ChoGGi_Funcs.Common.FuckingDrones
 
 		-- Hey. Do I preach at you when you're lying stoned in the gutter? No!
 		local prods = labels.ResourceProducer or ""
@@ -1037,7 +1040,7 @@ function OnMsg.NewHour()
 	-- pathing? pathing in domes works great... watch out for that invisible wall!
 	-- update: seems like this is an issue from one of those smarter work ai mods
 	if UserSettings.ColonistsStuckOutsideServiceBuildings then
-		ChoGGi.ComFuncs.ResetHumanCentipedes()
+		ChoGGi_Funcs.Common.ResetHumanCentipedes()
 	end
 end
 
@@ -1099,7 +1102,7 @@ function OnMsg.DevMenuVisible(visible)
 	if visible then
 		CreateRealTimeThread(function()
 			WaitMsg("OnRender")
-			ChoGGi.ComFuncs.SetCheatsMenuPos()
+			ChoGGi_Funcs.Common.SetCheatsMenuPos()
 		end)
 	end
 end
@@ -1139,7 +1142,7 @@ function OnMsg.ApplicationQuit()
 	end
 
 	-- save any unsaved settings on exit
-	ChoGGi.SettingFuncs.WriteSettings()
+	ChoGGi_Funcs.Settings.WriteSettings()
 end
 
 function OnMsg.ChoGGi_TogglePinnableObject(obj)
@@ -1238,10 +1241,10 @@ do -- LoadGame/CityStart
 		local sponsor = GetMissionSponsor()
 
 		-- late enough that I can set g_Consts.
-		ChoGGi.SettingFuncs.SetConstsToSaved()
+		ChoGGi_Funcs.Settings.SetConstsToSaved()
 
 		-- any saved Consts settings (from the Consts menu)
-		local SetConsts = ChoGGi.ComFuncs.SetConsts
+		local SetConsts = ChoGGi_Funcs.Common.SetConsts
 		local ChoGGi_Consts = UserSettings.Consts
 		for key, value in pairs(ChoGGi_Consts) do
 			SetConsts(key, value)
@@ -1257,8 +1260,8 @@ do -- LoadGame/CityStart
 		-- re-binding is now an in-game thing, so keys are just defaults
 		UserSettings.KeyBindings = nil
 
---~ 		SetMissionBonuses(UserSettings, Presets, "MissionSponsorPreset", "Sponsor", ChoGGi.ComFuncs.SetSponsorBonuses)
---~ 		SetMissionBonuses(UserSettings, Presets, "CommanderProfilePreset", "Commander", ChoGGi.ComFuncs.SetCommanderBonuses)
+--~ 		SetMissionBonuses(UserSettings, Presets, "MissionSponsorPreset", "Sponsor", ChoGGi_Funcs.Common.SetSponsorBonuses)
+--~ 		SetMissionBonuses(UserSettings, Presets, "CommanderProfilePreset", "Commander", ChoGGi_Funcs.Common.SetCommanderBonuses)
 
 
 
@@ -1275,11 +1278,11 @@ do -- LoadGame/CityStart
 
 		-- build whatever realmever
 		if ChoGGi.UserSettings.RemoveRealmLimits then
-			ChoGGi.ComFuncs.DisableBuildingsDie()
+			ChoGGi_Funcs.Common.DisableBuildingsDie()
 		end
 		-- vertical menu
 		if UserSettings.VerticalCheatMenu then
-			ChoGGi.ComFuncs.VerticalCheatMenu_Toggle(UserSettings.VerticalCheatMenu)
+			ChoGGi_Funcs.Common.VerticalCheatMenu_Toggle(UserSettings.VerticalCheatMenu)
 		end
 		-- update pod price
 		if type(UserSettings.PodPrice) == "number" then
@@ -1380,7 +1383,7 @@ do -- LoadGame/CityStart
 		-- all yours XxUnkn0wnxX
 		if not blacklist then
 			local autoexec = ChoGGi.scripts .. "/autoexec.lua"
-			if ChoGGi.ComFuncs.FileExists(autoexec) then
+			if ChoGGi_Funcs.Common.FileExists(autoexec) then
 				print("ECM auto-executing: ", ConvertToOSPath(autoexec))
 				dofile(autoexec)
 			end
@@ -1534,7 +1537,7 @@ do -- LoadGame/CityStart
 			UserSettings.FirstRun = false
 			DestroyConsoleLog()
 			ChoGGi.Temp.WriteSettings = true
-			ChoGGi.ComFuncs.MsgWait(
+			ChoGGi_Funcs.Common.MsgWait(
 				T(302535920001400--[["F2 to toggle Cheats Menu (Ctrl-F2 for Cheats Pane), and F9 to clear console log text.
 If this isn't a new install, then see Menu>Help>Changelog and search for ""To import your old settings""."]])
 					.. "\n\n" .. T{302535920000030--[["To toggle the console log text; press Tilde or Enter and click the ""%s"" button then make sure ""%s"" is checked."]],
@@ -1560,7 +1563,7 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 			engineShowMouseCursor()
 		end
 		pcall(function()
-			ChoGGi.ComFuncs.SetCameraSettings()
+			ChoGGi_Funcs.Common.SetCameraSettings()
 		end)
 
 
@@ -1571,7 +1574,7 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 
 		-- make sure to save anything we changed above
 		if ChoGGi.Temp.WriteSettings then
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			ChoGGi.Temp.WriteSettings = nil
 		end
 
@@ -1603,7 +1606,7 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 
 			-- remove any dialogs we opened
 			if UserSettings.CloseDialogsECM then
-				ChoGGi.ComFuncs.CloseDialogsECM()
+				ChoGGi_Funcs.Common.CloseDialogsECM()
 			end
 
 		end)

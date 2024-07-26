@@ -2,8 +2,8 @@
 
 local table = table
 
-local GetAllAttaches = ChoGGi.ComFuncs.GetAllAttaches
-local MapGet = ChoGGi.ComFuncs.MapGet
+local GetAllAttaches = ChoGGi_Funcs.Common.GetAllAttaches
+local MapGet = ChoGGi_Funcs.Common.MapGet
 
 local options
 local mod_logos = {}

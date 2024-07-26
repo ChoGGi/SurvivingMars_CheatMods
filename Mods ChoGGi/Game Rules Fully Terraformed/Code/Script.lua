@@ -40,11 +40,11 @@ function OnMsg.ClassesPostprocess()
 				--
 				SuspendPassEdits("ChoGGi.FullyTerraformed.spawning some trees")
 	-- might help speed it up?
-	SuspendTerrainInvalidations("ChoGGi.ComFuncs.PlantRandomVegetation")
+	SuspendTerrainInvalidations("ChoGGi_Funcs.Common.PlantRandomVegetation")
 
 				-- spawn a bunch of trees
-				if rawget(_G, "ChoGGi") and ChoGGi.ComFuncs.PlantRandomVegetation then
-					ChoGGi.ComFuncs.PlantRandomVegetation(2500)
+				if rawget(_G, "ChoGGi") and ChoGGi_Funcs.Common.PlantRandomVegetation then
+					ChoGGi_Funcs.Common.PlantRandomVegetation(2500)
 				elseif rawget(_G, "dbg_PlantRandomVegetation") then
 					dbg_PlantRandomVegetation(1500)
 				end
@@ -67,7 +67,7 @@ function OnMsg.ClassesPostprocess()
 				end
 
 				--
-	ResumeTerrainInvalidations("ChoGGi.ComFuncs.PlantRandomVegetation")
+	ResumeTerrainInvalidations("ChoGGi_Funcs.Common.PlantRandomVegetation")
 				ResumePassEdits("ChoGGi.FullyTerraformed.spawning some trees")
 			end,
 		}),

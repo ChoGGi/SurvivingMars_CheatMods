@@ -2,13 +2,13 @@
 
 -- Displays images
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local MeasureImage = UIL.MeasureImage
-
 local T = T
-local PopupToggle = ChoGGi.ComFuncs.PopupToggle
-local Random = ChoGGi.ComFuncs.Random
-local RetParamsParents = ChoGGi.ComFuncs.RetParamsParents
-local Translate = ChoGGi.ComFuncs.Translate
+local PopupToggle = ChoGGi_Funcs.Common.PopupToggle
+local Random = ChoGGi_Funcs.Common.Random
+local RetParamsParents = ChoGGi_Funcs.Common.RetParamsParents
+local Translate = ChoGGi_Funcs.Common.Translate
 
 local blacklist, g_env = ChoGGi.blacklist
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
@@ -16,7 +16,7 @@ function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	g_env = env
 end
 
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+local GetParentOfKind = ChoGGi_Funcs.Common.GetParentOfKind
 local function GetRootDialog(dlg)
 	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_DlgImageViewer")
 end
@@ -93,7 +93,7 @@ function ChoGGi_DlgImageViewer:Init(parent, context)
 	-- only one image and it's not a valid image so close dlg
 	if wh == 0 and #self.images == 1 then
 		print(Translate(302535920000109--[[Invalid Image]]))
-		ChoGGi.ComFuncs.MsgPopup(
+		ChoGGi_Funcs.Common.MsgPopup(
 			T(302535920000109--[[Invalid Image]]),
 			self.title
 		)
@@ -105,7 +105,7 @@ end
 
 function ChoGGi_DlgImageViewer:ExportImage()
 	if ChoGGi.blacklist then
-		ChoGGi.ComFuncs.BlacklistMsg("ChoGGi_DlgImageViewer:ExportImage()")
+		ChoGGi_Funcs.Common.BlacklistMsg("ChoGGi_DlgImageViewer:ExportImage()")
 		return
 	end
 
@@ -120,7 +120,7 @@ function ChoGGi_DlgImageViewer:ExportImage()
 		end
 		local msg = ConvertToOSPath(dest_path)
 		print(msg)
-		ChoGGi.ComFuncs.MsgPopup(
+		ChoGGi_Funcs.Common.MsgPopup(
 			msg,
 			T(302535920001449--[[Export]])
 		)
@@ -171,7 +171,7 @@ function ChoGGi_DlgImageViewer:idImages_OnMouseButtonDown()
 end
 
 -- Use to open a dialog
-function ChoGGi.ComFuncs.OpenInImageViewerDlg(obj, parent, ...)
+function ChoGGi_Funcs.Common.OpenInImageViewerDlg(obj, parent, ...)
 	if not obj then
 		return
 	end
@@ -189,7 +189,7 @@ function ChoGGi.ComFuncs.OpenInImageViewerDlg(obj, parent, ...)
 	return ChoGGi_DlgImageViewer:new({}, terminal.desktop, params)
 end
 -- used for console rules, so they don't spam the log
-local OpenInImageViewerDlg = ChoGGi.ComFuncs.OpenInImageViewerDlg
+local OpenInImageViewerDlg = ChoGGi_Funcs.Common.OpenInImageViewerDlg
 function OpenImageViewer(...)
 	OpenInImageViewerDlg(...)
 end

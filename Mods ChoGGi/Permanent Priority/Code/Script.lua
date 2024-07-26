@@ -15,6 +15,6 @@ function ConstructionSite:Complete(...)
 		-- and apply it to the new bld
 		ret_obj:SetPriority(priority)
 	end
-	-- I wrapped it in a table, just incase devs add something
+	-- I wrapped it in a table, just in case devs add something
 	return ret_obj
 end

@@ -143,7 +143,7 @@ local function UpdateStanding()
 		return CmpLower(_InternalTranslate(a.name), _InternalTranslate(b.name))
 	end)
 
-	ChoGGi.ComFuncs.MsgPopup(
+	ChoGGi_Funcs.Common.MsgPopup(
 		table.concat(standing_msg),
 		T(302535920011561, "Colony Standing")
 	)

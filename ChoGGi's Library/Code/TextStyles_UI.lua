@@ -1,6 +1,8 @@
 -- See LICENSE for terms
 
 -- see also Classes_UI.lua
+
+local ChoGGi_Funcs = ChoGGi_Funcs
 local white = -1
 local black = -16777216
 local light_gray = -2368549

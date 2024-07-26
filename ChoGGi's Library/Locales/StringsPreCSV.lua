@@ -377,24 +377,26 @@ If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""T
 302535920000030, "To toggle the console log text; press Tilde or Enter and click the ""<settings>"" button then make sure ""<log>"" is checked."
 302535920001441, "<left_click> Activate MenuItem <right_click> Add/Remove Quickbar"
 302535920001439, "~obj, @func, @@type, %img, ^str, *r/*g/*m threads. Hover mouse for more info."
-302535920001440, "<color ChoGGi_green>~</color><color ChoGGi_yellow>obj</color> opens object in examine dlg, use <color ChoGGi_red>ex(obj)</color> in lua code.
+302535920001440, "<color ChoGGi_green>~</color><color ChoGGi_yellow>obj</color> opens object in examine dlg, use <color ChoGGi_red>ex(<color ChoGGi_yellow>obj</color>)</color> in lua code.
 <color ChoGGi_green>~!</color><color ChoGGi_yellow>obj</color> opens object's attachments in examine dlg.
 
 <color ChoGGi_green>&</color><color ChoGGi_yellow>handle</color> examine object using handle id.
 
-<color ChoGGi_green>@</color><color ChoGGi_yellow>GetMissionSponsor</color> prints file name and line number of function, use <color ChoGGi_red>format_value(obj)</color> in lua code.
+<color ChoGGi_green>@</color><color ChoGGi_yellow>GetMissionSponsor</color> prints file name and line number of function, use <color ChoGGi_red>format_value(<color ChoGGi_yellow>obj</color>)</color> in lua code.
 
-<color ChoGGi_green>@@</color><color ChoGGi_yellow>EntityData</color> prints type of obj, use <color ChoGGi_red>type(obj)</color> in lua code.
+<color ChoGGi_green>@@</color><color ChoGGi_yellow>EntityData</color> prints type of obj, use <color ChoGGi_red>type(<color ChoGGi_yellow>obj</color>)</color> in lua code.
 
-<color ChoGGi_green>%</color><color ChoGGi_yellow>""UI/Vignette.tga""</color> opens image in image viewer, use <color ChoGGi_red>OpenImageViewer(image)</color> in lua code.
+<color ChoGGi_green>%</color><color ChoGGi_yellow>""UI/Vignette.tga""</color> opens image in image viewer, use <color ChoGGi_red>OpenImageViewer(<color ChoGGi_yellow>image</color>)</color> in lua code.
 
-<color ChoGGi_green>^</color><color ChoGGi_yellow>""text string""</color> opens text in text editor, use <color ChoGGi_red>OpenTextViewer(string)</color> in lua code.
+<color ChoGGi_green>^</color><color ChoGGi_yellow>""text string""</color> opens text in text editor, use <color ChoGGi_red>OpenTextViewer(<color ChoGGi_yellow>string</color>)</color> in lua code.
 
-<color ChoGGi_green>$</color><color ChoGGi_yellow>123</color> or <color ChoGGi_green>$</color><color ChoGGi_yellow>EffectDeposit.display_name</color> prints translated string, use <color ChoGGi_red>trans(obj)</color> in lua code.
+<color ChoGGi_green>$</color><color ChoGGi_yellow>123</color> or <color ChoGGi_green>$</color><color ChoGGi_yellow>EffectDeposit.display_name</color> prints translated string, use <color ChoGGi_red>trans(<color ChoGGi_yellow>obj</color>)</color> in lua code.
 
-<color ChoGGi_green>*r</color> <color ChoGGi_yellow>Sleep(1000) print(""sleeping"")</color> to wrap in a real time thread (or <color ChoGGi_green>*g</color>), use <color ChoGGi_red>CreateRealTimeThread(func)</color> in lua code..
+<color ChoGGi_green>*r</color> <color ChoGGi_yellow>Sleep(1000) print(""sleeping"")</color> to wrap in a real time thread (or <color ChoGGi_green>*g</color>), use <color ChoGGi_red>CreateRealTimeThread(<color ChoGGi_yellow>func</color>)</color> in lua code..
 
-<color ChoGGi_green>!</color><color ChoGGi_yellow>UICity.labels.TerrainDeposit[1]</color> move camera and select obj, use <color ChoGGi_red>ViewAndSelectObject(obj)</color> in lua code.
+<color ChoGGi_green>!</color><color ChoGGi_yellow>UICity.labels.TerrainDeposit[1]</color> move camera and select obj, use <color ChoGGi_red>ViewAndSelectObject(<color ChoGGi_yellow>obj</color>)</color> in lua code.
+
+<color ChoGGi_red>delcls(<color ChoGGi_yellow>""class_name""</color>)</color> remove all objects of a certain class.
 
 <color ChoGGi_green>s</color> = <color ChoGGi_yellow>SelectedObj</color>, <color ChoGGi_green>c()</color> = <color ChoGGi_yellow>GetCursorWorldPos()</color>, <color ChoGGi_green>restart()</color> = <color ChoGGi_yellow>quit(""restart"")</color>"
 302535920001401, "Removed missing mod building from %s: %s, entity: %s, handle: %s"
@@ -454,7 +456,7 @@ do !Skipped Line! [[MultiLineText.lua]] !Skipped Line!
 302535920000721, "Overwrite"
 302535920000827, "Check this to overwrite file instead of appending to it."
 end !Skipped Line!
-do !Skipped Line! [[ConsoleFuncs.lua" "ConsoleLogWin.lua]] !Skipped Line!
+do !Skipped Line! [[Console.lua" "ConsoleLogWin.lua]] !Skipped Line!
 302535920001635, "Flush Log Hourly"
 302535920001636, "Call FlushLogFile() every in-game hour."
 302535920001349, "Flush Log Constantly"
@@ -479,7 +481,7 @@ The number is a count of stored msgs, <right_click> to view the list."
 Usage: Call it once to start and again to stop, it'll then show a list of func calls.
 
 Call it manually with:
-ChoGGi.ComFuncs.ToggleFuncHook(path, line, mask, count)
+ChoGGi_Funcs.Common.ToggleFuncHook(path, line, mask, count)
 https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"
 302535920000127, "Various tools to use."
 302535920001497, "Show Blacklist"

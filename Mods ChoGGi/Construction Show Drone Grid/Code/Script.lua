@@ -13,7 +13,7 @@ local ResumePassEdits = ResumePassEdits
 local DoneObject = DoneObject
 local InvalidPos = InvalidPos()
 
-local RGBtoColour = ChoGGi.ComFuncs.RGBtoColour
+local RGBtoColour = ChoGGi_Funcs.Common.RGBtoColour
 
 local mod_EnableGrid
 local mod_DistFromCursor

@@ -1,10 +1,10 @@
 -- See LICENSE for terms
 
-local PopupToggle = ChoGGi.ComFuncs.PopupToggle
-local RetName = ChoGGi.ComFuncs.RetName
-local FilterFromTable = ChoGGi.ComFuncs.FilterFromTable
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local AddXTemplate = ChoGGi.ComFuncs.AddXTemplate
+local PopupToggle = ChoGGi_Funcs.Common.PopupToggle
+local RetName = ChoGGi_Funcs.Common.RetName
+local FilterFromTable = ChoGGi_Funcs.Common.FilterFromTable
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
+local AddXTemplate = ChoGGi_Funcs.Common.AddXTemplate
 
 local OnMsg = OnMsg
 local IsValid = IsValid
@@ -333,7 +333,7 @@ Right click in list to view (closes menu).]]))
 						context:RemoveBuilding(building)
 					end
 				end
-				ChoGGi.ComFuncs.QuestionBox(
+				ChoGGi_Funcs.Common.QuestionBox(
 					T{302535920011287, "Are you sure you want to remove telepresence viewing from <name> located at <pos>?",
 						name = RetName(building),
 						pos = tostring(building:GetPos()),

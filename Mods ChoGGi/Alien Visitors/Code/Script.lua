@@ -10,7 +10,7 @@ local AsyncRand = AsyncRand
 
 local InvalidPos = ChoGGi.Consts.InvalidPos
 
-local SetPosRandomBuildablePos = ChoGGi.ComFuncs.SetPosRandomBuildablePos
+local SetPosRandomBuildablePos = ChoGGi_Funcs.Common.SetPosRandomBuildablePos
 
 local mod_MaxSpawn
 

@@ -25,7 +25,7 @@ local IsPoint = IsPoint
 local FixConstructPos = FixConstructPos
 local T = T
 
-local PolylineSetParabola = ChoGGi.ComFuncs.PolylineSetParabola
+local PolylineSetParabola = ChoGGi_Funcs.Common.PolylineSetParabola
 
 -- store ref to line, res icon
 local line, text

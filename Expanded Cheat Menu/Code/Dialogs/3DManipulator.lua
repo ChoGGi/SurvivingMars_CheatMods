@@ -2,6 +2,7 @@
 
 -- mess with entities
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 -- SetScale
 
 --~ local tostring, type = tostring, type
@@ -10,12 +11,12 @@ local point = point
 local IsPoint = IsPoint
 local IsValid = IsValid
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
-local RetName = ChoGGi.ComFuncs.RetName
-local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
+local RetName = ChoGGi_Funcs.Common.RetName
+local IsShiftPressed = ChoGGi_Funcs.Common.IsShiftPressed
 
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+local GetParentOfKind = ChoGGi_Funcs.Common.GetParentOfKind
 local function GetRootDialog(dlg)
 	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_Dlg3DManipulator")
 end

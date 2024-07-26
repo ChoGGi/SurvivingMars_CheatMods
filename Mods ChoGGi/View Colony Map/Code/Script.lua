@@ -20,10 +20,10 @@ OnMsg.ModsReloaded = ModOptions
 OnMsg.ApplyModOptions = ModOptions
 
 local table = table
-local Translate = ChoGGi.ComFuncs.Translate
-local ValidateImage = ChoGGi.ComFuncs.ValidateImage
-local RetMapSettings = ChoGGi.ComFuncs.RetMapSettings
-local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
+local Translate = ChoGGi_Funcs.Common.Translate
+local ValidateImage = ChoGGi_Funcs.Common.ValidateImage
+local RetMapSettings = ChoGGi_Funcs.Common.RetMapSettings
+local IsValidXWin = ChoGGi_Funcs.Common.IsValidXWin
 
 local image_str = Mods.ChoGGi_MapImagesPack.env.CurrentModPath .. "Maps/"
 
@@ -134,7 +134,7 @@ local function GamepadFocus()
 end
 
 -- a dialog that shows an image
---~ local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+--~ local GetParentOfKind = ChoGGi_Funcs.Common.GetParentOfKind
 --~ local function GetRootDialog(dlg)
 --~ 	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_VCM_MapImageDlg")
 --~ end
@@ -434,7 +434,7 @@ function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(gen)
 		return
 	end
 
-	local display_list = ChoGGi.ComFuncs.RetMapBreakthroughs(gen, mod_BreakthroughCount)
+	local display_list = ChoGGi_Funcs.Common.RetMapBreakthroughs(gen, mod_BreakthroughCount)
 --~ 	ex{display_list, gen}
 
 	-- tech descriptions

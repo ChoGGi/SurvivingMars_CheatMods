@@ -330,7 +330,7 @@ do -- CityStart/LoadGame
 		--
 		-- Add Xeno-Extraction tech to Automatic Metals Extractor, Micro-G Extractors, RC Harvester, and RC Driller
 		local tech = TechDef.XenoExtraction
-		-- Figure it's safer to check for both dlcs then just checking the table length (incase some other mod)
+		-- Figure it's safer to check for both dlcs then just checking the table length (in case some other mod)
 		if not table.find(tech, "Label", "AutomaticMetalsExtractor")
 			and not table.find(tech, "Label", "MicroGAutoExtractor")
 		then
@@ -1068,6 +1068,28 @@ function OnMsg.TechResearched(tech_id)
 end
 
 --
+-- EsoCorp rovers .name uses a T() userdata name instead of a string name like every other rover,
+-- so the sort func used in this func errors out.
+-- This will change any with userdata to use a string instead.
+local ChoOrig_GetCommandCenterTransportsList = GetCommandCenterTransportsList
+function GetCommandCenterTransportsList(...)
+	if not mod_EnableMod then
+		return ChoOrig_GetCommandCenterTransportsList(...)
+	end
+
+	local objs = UIColony.city_labels.labels.AttackRover or ""
+	for i = 1, #objs do
+		local obj = objs[i]
+		if not obj.ChoGGi_FixedRoverNameForCCC or type(obj.name) == "userdata" then
+			obj.name = _InternalTranslate(obj.name)
+			obj.ChoGGi_FixedRoverNameForCCC = true
+		end
+	end
+
+	return ChoOrig_GetCommandCenterTransportsList(...)
+end
+
+--
 --
 --
 --
@@ -1225,22 +1247,24 @@ function Building:SetDome(dome, ...)
 end
 --
 -- No Planetary Anomaly Breakthroughs when B&B is installed.
+-- This func is called for each new city (surface/underground/asteroids)
+-- Calling it more than once clears the BreakthroughOrder list
+-- That list is used to spawn planetary anomalies
 local ChoOrig_City_InitBreakThroughAnomalies = City.InitBreakThroughAnomalies
 function City:InitBreakThroughAnomalies(...)
 	if not mod_EnableMod or not mod_PlanetaryAnomalyBreakthroughs then
 		return ChoOrig_City_InitBreakThroughAnomalies(self, ...)
 	end
 
-	-- This func is called for each new city (surface/underground/asteroids)
-	-- Calling it more than once removes the BreakthroughOrder list
-	-- That list is used to spawn planetary anomalies
+	-- It can be called normally for the surface map
 	if self.map_id == MainMapID then
 		return ChoOrig_City_InitBreakThroughAnomalies(self, ...)
 	end
 
 	-- underground or asteroid city
 	local ChoOrig_BreakthroughOrder = BreakthroughOrder
-	ChoOrig_City_InitBreakThroughAnomalies(self, ...)
+	-- pcall just in case
+	pcall(ChoOrig_City_InitBreakThroughAnomalies, self, ...)
 	BreakthroughOrder = ChoOrig_BreakthroughOrder
 end
 --

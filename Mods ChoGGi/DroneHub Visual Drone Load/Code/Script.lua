@@ -115,7 +115,7 @@ end
 function OnMsg.ClassesPostprocess()
 	-- UpdateHeavyLoadNotification is the same func for all, but just in case someone changes one of them
 
---~ 	ChoGGi.ComFuncs.ReplaceClassFunc("BaseRover", "UpdateHeavyLoadNotification", RoverUpdate, "DroneBase")
+--~ 	ChoGGi_Funcs.Common.ReplaceClassFunc("BaseRover", "UpdateHeavyLoadNotification", RoverUpdate, "DroneBase")
 	local classes = ClassDescendantsList("BaseRover")
 	local g = _G
 	local ChoOrig_funcs = {}

@@ -1,8 +1,8 @@
 -- See LICENSE for terms
 
 local ClassDescendantsList = ClassDescendantsList
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local Random = ChoGGi.ComFuncs.Random
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
+local Random = ChoGGi_Funcs.Common.Random
 
 GlobalVar("g_ChoGGi_PlayAllMysteries_Finished", {})
 

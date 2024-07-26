@@ -11,9 +11,9 @@ local pairs, tostring, type, table, tonumber = pairs, tostring, type, table, ton
 -- every litte bit helps
 local table_concat = table.concat
 
-local Translate = ChoGGi.ComFuncs.Translate
-local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
-local IsShiftPressed = ChoGGi.ComFuncs.IsShiftPressed
+local Translate = ChoGGi_Funcs.Common.Translate
+local IsValidXWin = ChoGGi_Funcs.Common.IsValidXWin
+local IsShiftPressed = ChoGGi_Funcs.Common.IsShiftPressed
 
 local mod_BreakthroughCount
 
@@ -40,7 +40,7 @@ local landsiteobj
 local function ShowDialogs()
 	-- we only need to build once, not as if it'll change anytime soon (save as csv?, see if it's shorter to load)
 	if not map_data then
-		map_data = ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
+		map_data = ChoGGi_Funcs.Common.ExportMapDataToCSV(XAction:new{
 			setting_breakthroughs = true,
 			setting_limit_count = mod_BreakthroughCount,
 			setting_skip_csv = true,
@@ -94,7 +94,7 @@ function OnMsg.ChangeMapDone()
 	end
 end
 
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+local GetParentOfKind = ChoGGi_Funcs.Common.GetParentOfKind
 local function GetRootDialog(dlg)
 	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_VLI_MapInfoDlg")
 end
@@ -311,7 +311,7 @@ function ChoGGi_VLI_MapInfoDlg:ShowInfoDialog()
 	table.sort(temp_data)
 	table.iappend(text, temp_data)
 
-	ChoGGi.ComFuncs.OpenInMultiLineTextDlg(table_concat(text, "\n"), {
+	ChoGGi_Funcs.Common.OpenInMultiLineTextDlg(table_concat(text, "\n"), {
 		has_params = true,
 		title = T(302535920011926, "Show Info"),
 	})
@@ -363,7 +363,7 @@ function ChoGGi_VLI_MapInfoDlg:FindText()
 
 	if not reuse or reuse and not IsValidXWin(self.current_examine_dlg) then
 
-		self.current_examine_dlg = ChoGGi.ComFuncs.OpenInExamineDlg(self.found_objs, {
+		self.current_examine_dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(self.found_objs, {
 			has_params = true,
 			dialog_marker = "ChoGGi_VLI_MapInfoDlg_Examine",
 			tooltip_info = function(obj)
@@ -596,7 +596,7 @@ local function AddProfilesButton(toolbar)
 		return
 	end
 
-	toolbar.idChoGGi_FindMaps = ChoGGi.ComFuncs.RetToolbarButton{
+	toolbar.idChoGGi_FindMaps = ChoGGi_Funcs.Common.RetToolbarButton{
 		parent = toolbar,
 		id = "idChoGGi_FindMaps",
 		roll_title = T(126095410863--[[Info]]),

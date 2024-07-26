@@ -6,8 +6,8 @@ MachineNames.ChoGGi_NotePadBuilding.default = T(0000, "Notepad")
 MachineNames.ChoGGi_NotePadBuildingBig = {}
 MachineNames.ChoGGi_NotePadBuildingBig.default = T(0000, "NotepadBig")
 
-local RetName = ChoGGi.ComFuncs.RetName
-local IsValidXWin = ChoGGi.ComFuncs.IsValidXWin
+local RetName = ChoGGi_Funcs.Common.RetName
+local IsValidXWin = ChoGGi_Funcs.Common.IsValidXWin
 
 local mod_NotepadWidth
 local mod_NotepadHeight
@@ -56,7 +56,7 @@ local function OpenNote(obj)
 		return
 	end
 
-	obj.notepad_dlg = ChoGGi.ComFuncs.OpenInMultiLineTextDlg{
+	obj.notepad_dlg = ChoGGi_Funcs.Common.OpenInMultiLineTextDlg{
 		width = mod_NotepadWidth,
 		height = mod_NotepadHeight,
 		title = T(0000, "Text: ") .. RetName(obj),
@@ -94,7 +94,7 @@ local function OpenNotesList()
 		}
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = empty_func,
 		items = item_list,
 		title = T(0000, "Show All Notes"),
@@ -157,9 +157,9 @@ function OnMsg.ClassesPostprocess()
 	local xtemplate = XTemplates.ipBuilding[1]
 
 	-- Made it a mod option
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_NotePadBuilding_ToggleShow", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_NotePadBuilding_ToggleShow", true)
 
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_NotePadBuilding_ShowAllNotes", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_NotePadBuilding_ShowAllNotes", true)
 	table.insert(xtemplate, 1,
 		PlaceObj("XTemplateTemplate", {
 			"Id" , "ChoGGi_Template_NotePadBuilding_ShowAllNotes",
@@ -178,7 +178,7 @@ function OnMsg.ClassesPostprocess()
 		})
 	)
 
-	ChoGGi.ComFuncs.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_NotePadBuilding_OpenNote", true)
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_NotePadBuilding_OpenNote", true)
 	table.insert(xtemplate, 1,
 		PlaceObj("XTemplateTemplate", {
 			"Id" , "ChoGGi_Template_NotePadBuilding_OpenNote",

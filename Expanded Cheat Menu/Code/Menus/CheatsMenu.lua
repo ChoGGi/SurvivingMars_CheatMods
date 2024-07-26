@@ -1,10 +1,11 @@
 -- See LICENSE for terms
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local what_game = ChoGGi.what_game
 
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local SettingState = ChoGGi.ComFuncs.SettingState
+local Translate = ChoGGi_Funcs.Common.Translate
+local SettingState = ChoGGi_Funcs.Common.SettingState
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 local testing = ChoGGi.testing
@@ -15,7 +16,7 @@ Actions[c] = {ActionName = T(302535920001355--[[Map]]) .. " " .. T(5422--[[Explo
 	ActionId = ".Map Exploration",
 	ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 	RolloverText = T(302535920000328--[[Scanning, deep scanning, core mines, and alien imprints.]]),
-	OnAction = ChoGGi.MenuFuncs.MapExploration,
+	OnAction = ChoGGi_Funcs.Menus.MapExploration,
 }
 c = c + 1
 Actions[c] = {ActionName = T(302535920000304--[[Remove Mysteries]]),
@@ -23,7 +24,7 @@ Actions[c] = {ActionName = T(302535920000304--[[Remove Mysteries]]),
 	ActionId = ".Mystery Log",
 	ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
 	RolloverText = T(302535920000330--[[Use to remove mysteries.]]),
-	OnAction = ChoGGi.MenuFuncs.MysteryLog,
+	OnAction = ChoGGi_Funcs.Menus.MysteryLog,
 }
 c = c + 1
 Actions[c] = {ActionName = T(302535920000331--[[Mystery Start]]),
@@ -32,7 +33,7 @@ Actions[c] = {ActionName = T(302535920000331--[[Mystery Start]]),
 	ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
 	RolloverText = T(302535920000332--[["Pick and start a mystery (with instant start option).
 Certain mysteries need certain objects which get placed when the map is generated on a new game (the green rocks one for instance)."]]),
-	OnAction = ChoGGi.MenuFuncs.ShowMysteryList,
+	OnAction = ChoGGi_Funcs.Menus.ShowMysteryList,
 }
 
 if testing then -- Mystery Log
@@ -42,7 +43,7 @@ if testing then -- Mystery Log
 		ActionId = ".Mystery Log",
 		ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
 		RolloverText = TranslationTable[302535920000330--[[Advance to next part, show what part you're on, or remove mysteries.]]],
-		OnAction = ChoGGi.MenuFuncs.MysteryLog,
+		OnAction = ChoGGi_Funcs.Menus.MysteryLog,
 	}
 end
 
@@ -52,7 +53,7 @@ Actions[c] = {ActionName = T(11412--[[Trigger fireworks]]),
 	ActionId = ".Trigger fireworks",
 	ActionIcon = "CommonAssets/UI/Menu/DisableRMMaps.tga",
 	RolloverText = T(302535920001402--[[Add some party to your domes for 3 hours (10 domes max).]]),
-	OnAction = ChoGGi.MenuFuncs.TriggerFireworks,
+	OnAction = ChoGGi_Funcs.Menus.TriggerFireworks,
 }
 
 c = c + 1
@@ -61,7 +62,7 @@ Actions[c] = {ActionName = T(302535920000318--[[Unlock]]) .. " " .. T(6974820215
 	ActionId = ".Unlock Achievements",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = T(302535920001496--[[Show a list of achievements to unlock (permanent!).]]),
-	OnAction = ChoGGi.MenuFuncs.UnlockAchievements,
+	OnAction = ChoGGi_Funcs.Menus.UnlockAchievements,
 }
 
 c = c + 1
@@ -70,7 +71,7 @@ Actions[c] = {ActionName = T(302535920000266--[[Spawn]]) .. " " .. T(547--[[Colo
 	ActionId = ".Spawn Colonists",
 	ActionIcon = "CommonAssets/UI/Menu/UncollectObjects.tga",
 	RolloverText = T(302535920000336--[[Spawn X amount of colonists.]]),
-	OnAction = ChoGGi.MenuFuncs.SpawnColonists,
+	OnAction = ChoGGi_Funcs.Menus.SpawnColonists,
 }
 
 c = c + 1
@@ -84,7 +85,7 @@ To unlock a single building: See ECM>Buildings><str2>."]],
 		str1 = T(302535920001398--[[Remove Sponsor Limits]]),
 		str2 = T(302535920000180--[[Unlock Locked Buildings]]),
 	},
-	OnAction = ChoGGi.MenuFuncs.UnlockAllBuildings_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.UnlockAllBuildings_Toggle,
 }
 
 c = c + 1
@@ -111,7 +112,7 @@ Actions[c] = {ActionName = T(302535920000365--[[Complete Constructions]]),
 	ActionId = ".Complete Constructions",
 	ActionIcon = "CommonAssets/UI/Menu/place_custom_object.tga",
 	RolloverText = T(302535920000366--[[Complete all constructions instantly.]]),
-	OnAction = ChoGGi.MenuFuncs.CompleteConstructions,
+	OnAction = ChoGGi_Funcs.Menus.CompleteConstructions,
 	ActionShortcut = "Alt-B",
 	ActionBindable = true,
 }
@@ -122,7 +123,7 @@ Actions[c] = {ActionName = T(302535920000236--[[Mod Editor]]),
 	ActionId = ".Mod Editor",
 	ActionIcon = "CommonAssets/UI/Menu/Action.tga",
 	RolloverText = T(302535920000368--[[Open the mod editor.]]),
-	OnAction = ChoGGi.MenuFuncs.OpenModEditor,
+	OnAction = ChoGGi_Funcs.Menus.OpenModEditor,
 }
 
 -- menu
@@ -141,7 +142,7 @@ Actions[c] = {ActionName = T(311--[[Research]]) .. " / " .. T(302535920000318--[
 	ActionId = ".Research / Unlock Tech",
 	ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
 	RolloverText = T(302535920000346--[[Pick what you want to unlock/research (defaults to unlock).]]),
-	OnAction = ChoGGi.MenuFuncs.ResearchTech,
+	OnAction = ChoGGi_Funcs.Menus.ResearchTech,
 	ActionSortKey = "-1",
 }
 
@@ -151,7 +152,7 @@ Actions[c] = {ActionName = T(311--[[Research]]) .. " " .. T(302535920000281--[[R
 	ActionId = ".Research Remove",
 	ActionIcon = "CommonAssets/UI/Menu/ViewArea.tga",
 	RolloverText = T(302535920001494--[[Remove a tech from researched list and reset any values it adds (not stuff from mods).]]),
-	OnAction = ChoGGi.MenuFuncs.ResearchRemove,
+	OnAction = ChoGGi_Funcs.Menus.ResearchRemove,
 	ActionSortKey = "-2",
 }
 
@@ -166,7 +167,7 @@ Actions[c] = {ActionName = T(302535920001278--[[Instant Research]]),
 			T(302535920001279--[[Instantly research anything you click.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.InstantResearch_toggle,
+	OnAction = ChoGGi_Funcs.Menus.InstantResearch_toggle,
 }
 
 c = c + 1
@@ -180,7 +181,7 @@ Actions[c] = {ActionName = T(302535920000305--[[Research Queue Size]]),
 			T(302535920000348--[[Allow more items in queue.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.ResearchQueueSize_Set,
+	OnAction = ChoGGi_Funcs.Menus.ResearchQueueSize_Set,
 }
 
 c = c + 1
@@ -189,7 +190,7 @@ Actions[c] = {ActionName = T(302535920000349--[[Reset All Research]]),
 	ActionId = ".Reset All Research",
 	ActionIcon = "CommonAssets/UI/Menu/UnlockCollection.tga",
 	RolloverText = T(302535920000350--[[Resets all research (includes breakthrough tech).]]),
-	OnAction = ChoGGi.MenuFuncs.ResetAllResearch,
+	OnAction = ChoGGi_Funcs.Menus.ResetAllResearch,
 }
 
 c = c + 1
@@ -207,7 +208,7 @@ Actions[c] = {ActionName = T(302535920000295--[[Add Research Points]]),
 	ActionId = ".Add Research Points",
 	ActionIcon = "CommonAssets/UI/Menu/pirate.tga",
 	RolloverText = T(302535920000354--[[Add a specified amount of research points.]]),
-	OnAction = ChoGGi.MenuFuncs.AddResearchPoints,
+	OnAction = ChoGGi_Funcs.Menus.AddResearchPoints,
 }
 
 c = c + 1
@@ -221,7 +222,7 @@ Actions[c] = {ActionName = T(302535920000355--[[Outsourcing For Free]]),
 			T(839458405314--[[Outsource Research Cost (in millions)]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.OutsourcingFree_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.OutsourcingFree_Toggle,
 }
 
 c = c + 1
@@ -235,7 +236,7 @@ Actions[c] = {ActionName = T(970197122036--[[Maximum Outsource Orders]]),
 			T(302535920001343--[[How many times you can outsource in a row.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SetOutsourceMaxOrderCount,
+	OnAction = ChoGGi_Funcs.Menus.SetOutsourceMaxOrderCount,
 }
 
 c = c + 1
@@ -249,7 +250,7 @@ Actions[c] = {ActionName = T(302535920000357--[[Set Amount Of Breakthroughs Allo
 			T(302535920000358--[[How many breakthroughs are allowed to be unlocked?]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.BreakThroughsAllowed_Set,
+	OnAction = ChoGGi_Funcs.Menus.BreakThroughsAllowed_Set,
 	ActionSortKey = "2Set Amount Of Breakthroughs Allowed",
 }
 
@@ -264,7 +265,7 @@ Actions[c] = {ActionName = T(302535920000359--[[Breakthroughs From Omega Telesco
 			T(302535920000360--[[How many breakthroughs the Omega Telescope will unlock.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.BreakThroughsOmegaTelescope_Set,
+	OnAction = ChoGGi_Funcs.Menus.BreakThroughsOmegaTelescope_Set,
 	ActionSortKey = "2Breakthroughs From OmegaTelescope",
 }
 
@@ -288,7 +289,7 @@ Actions[c] = {ActionName = T(302535920000232--[[Draggable Cheats Menu]]),
 			T(302535920000324--[[Cheats menu can be moved.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.DraggableCheatsMenu_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.DraggableCheatsMenu_Toggle,
 }
 
 c = c + 1
@@ -302,7 +303,7 @@ Actions[c] = {ActionName = T(302535920000325--[[Keep Cheats Menu Position]]),
 			T(302535920000326--[[This menu will stay where you drag it.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.KeepCheatsMenuPosition_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.KeepCheatsMenuPosition_Toggle,
 }
 
 c = c + 1
@@ -311,7 +312,7 @@ Actions[c] = {ActionName = T(302535920001014--[[Hide Cheats Menu]]),
 	ActionId = ".Hide Cheats Menu",
 	ActionIcon = "CommonAssets/UI/Menu/ToggleEnvMap.tga",
 	RolloverText = T(302535920001019--[[This will hide the Cheats menu; Use F2 to see it again.]]),
-	OnAction = ChoGGi.ComFuncs.CheatsMenu_Toggle,
+	OnAction = ChoGGi_Funcs.Common.CheatsMenu_Toggle,
 	ActionShortcut = "F2",
 	ActionBindable = true,
 	ActionSortKey = "-1Hide Cheats Menu",
@@ -329,7 +330,7 @@ if what_game == "Mars" then
 				T(302535920000697--[[Shows the cheat pane in the info panel (selection panel).]])
 			)
 		end,
-		OnAction = ChoGGi.MenuFuncs.InfopanelCheats_Toggle,
+		OnAction = ChoGGi_Funcs.Menus.InfopanelCheats_Toggle,
 		ActionShortcut = "Ctrl-F2",
 		ActionBindable = true,
 		ActionSortKey = "-1Infopanel Cheats",
@@ -348,7 +349,7 @@ if what_game == "Mars" then
 	AddMaintenancePnts, MakeSphereTarget, SpawnWorker, SpawnVisitor]])
 			)
 		end,
-		OnAction = ChoGGi.MenuFuncs.InfopanelCheatsCleanup_Toggle,
+		OnAction = ChoGGi_Funcs.Menus.InfopanelCheatsCleanup_Toggle,
 		ActionSortKey = "-1Infopanel Cheats Cleanup",
 	}
 end
@@ -415,7 +416,7 @@ Actions[c] = {ActionName = T(25--[[Anomaly Scanning]]),
 	ActionId = ".Anomaly Scanning",
 	ActionIcon = "CommonAssets/UI/Menu/LightArea.tga",
 	RolloverText = T(302535920001286--[[Scan all or certain types of anomalies.]]),
-	OnAction = ChoGGi.MenuFuncs.ShowScanAnomaliesOptions,
+	OnAction = ChoGGi_Funcs.Menus.ShowScanAnomaliesOptions,
 }
 
 c = c + 1
@@ -424,7 +425,7 @@ Actions[c] = {ActionName = T(302535920000171--[[Unlock Anomaly BreakThroughs]]),
 	ActionId = ".Unlock Anomaly BreakThroughs",
 	ActionIcon = "CommonAssets/UI/Menu/AlignSel.tga",
 	RolloverText = T(302535920000173--[[Unlock any breakthroughs in anomalies (not planetary ones).]]),
-	OnAction = ChoGGi.MenuFuncs.UnlockBreakthroughs,
+	OnAction = ChoGGi_Funcs.Menus.UnlockBreakthroughs,
 }
 
 c = c + 1
@@ -435,7 +436,7 @@ Actions[c] = {ActionName = T(302535920001394--[[Spawn Planetary Anomalies]]),
 	RolloverText = T{302535920001395--[["Adds <str> locations to Planetary View."]],
 		str = T(9--[[Anomaly]]),
 	},
-	OnAction = ChoGGi.MenuFuncs.SpawnPlanetaryAnomalies,
+	OnAction = ChoGGi_Funcs.Menus.SpawnPlanetaryAnomalies,
 }
 
 c = c + 1
@@ -446,7 +447,7 @@ Actions[c] = {ActionName = T(302535920000931--[[Spawn POIs]]),
 	RolloverText = T{302535920001395--[["Adds <str> locations to Planetary View."]],
 		str = T(302535920000934--[[POI]]),
 	},
-	OnAction = ChoGGi.MenuFuncs.SpawnPOIs,
+	OnAction = ChoGGi_Funcs.Menus.SpawnPOIs,
 }
 
 -- menu
@@ -465,7 +466,7 @@ Actions[c] = {ActionName = T(3983--[[Disasters]]),
 	ActionId = ".Disasters",
 	ActionIcon = "CommonAssets/UI/Menu/ApplyWaterMarkers.tga",
 	RolloverText = T(302535920000334--[[Show the disasters list and optionally start one.]]),
-	OnAction = ChoGGi.MenuFuncs.DisastersTrigger,
+	OnAction = ChoGGi_Funcs.Menus.DisastersTrigger,
 	ActionSortKey = "0",
 }
 
@@ -475,7 +476,7 @@ Actions[c] = {ActionName = T(302535920001587--[[Lightning Strike]]),
 	ActionId = ".Lightning Strike",
 	ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
 	RolloverText = T(302535920001588--[[Strike a random pos or at mouse cursor if using shortcut.]]),
-	OnAction = ChoGGi.MenuFuncs.LightningStrike,
+	OnAction = ChoGGi_Funcs.Menus.LightningStrike,
 	ActionShortcut = "Ctrl-Shift-Z",
 	ActionBindable = true,
 }
@@ -486,7 +487,7 @@ Actions[c] = {ActionName = T(302535920001086--[[Meteor Strike]]),
 	ActionId = ".Meteor Strike",
 	ActionIcon = "CommonAssets/UI/Menu/FixUnderwaterEdges.tga",
 	RolloverText = T(302535920001588--[[Strike a random pos or at mouse cursor if using shortcut.]]),
-	OnAction = ChoGGi.MenuFuncs.MeteorStrike,
+	OnAction = ChoGGi_Funcs.Menus.MeteorStrike,
 	ActionShortcut = "Ctrl-Shift-X",
 	ActionBindable = true,
 }
@@ -497,7 +498,7 @@ Actions[c] = {ActionName = T(302535920001087--[[Missile Strike]]),
 	ActionId = ".Missile Strike",
 	ActionIcon = "CommonAssets/UI/Menu/SetCamPos&Loockat.tga",
 	RolloverText = T(302535920001588--[[Strike a random pos or at mouse cursor if using shortcut.]]),
-	OnAction = ChoGGi.MenuFuncs.MissileStrike,
+	OnAction = ChoGGi_Funcs.Menus.MissileStrike,
 	ActionShortcut = "Ctrl-Shift-M",
 	ActionBindable = true,
 }
@@ -507,7 +508,7 @@ Actions[c] = {ActionName = T(13066--[[Cave-in]]),
 	ActionId = ".Cave-in",
 	ActionIcon = "CommonAssets/UI/Menu/smooth_terrain.tga",
 	RolloverText = T(302535920000484--[[Triggers cave-in at location (and disables any nearby struts).]]),
-	OnAction = ChoGGi.MenuFuncs.CaveIn,
+	OnAction = ChoGGi_Funcs.Menus.CaveIn,
 	ActionShortcut = "Ctrl-Shift-G",
 	ActionBindable = true,
 }

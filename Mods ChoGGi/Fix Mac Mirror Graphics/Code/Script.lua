@@ -3,6 +3,7 @@
 local mod_EnableMod
 local mod_DumpingSites
 local mod_DomeGrass
+local mod_DomeGrassAlt
 local mod_DomeBeachSand
 local mod_DomeRubble
 local mod_DustGeysers
@@ -55,6 +56,9 @@ local function UpdateTextures()
 	if mod_DomeGrass then
 		AddMap("Grass_01", "Prefab_Green")
 		AddMap("Grass_02", "Prefab_Green")
+	end
+	if mod_DomeGrassAlt then
+		AddMap("Grass_01", "Grass_02")
 	end
 	if mod_DomeBeachSand then
 		AddMap("BeachSand", "SandRed_stones_2")
@@ -151,6 +155,7 @@ local function ModOptions(id)
 	mod_EnableMod = options:GetProperty("EnableMod")
 	mod_DumpingSites = options:GetProperty("DumpingSites")
 	mod_DomeGrass = options:GetProperty("DomeGrass")
+	mod_DomeGrassAlt = options:GetProperty("DomeGrassAlt")
 	mod_DomeBeachSand = options:GetProperty("DomeBeachSand")
 	mod_DomeRubble = options:GetProperty("DomeRubble")
 	mod_DustGeysers = options:GetProperty("DustGeysers")
@@ -194,7 +199,7 @@ end
 -- ~TerrainTextures
 
 --[[ Sort by alpha and examine as plain table/str
-local tbl, str = ChoGGi.ComFuncs.PlainSortTable(table.icopy(TerrainTextures))
+local tbl, str = ChoGGi_Funcs.Common.PlainSortTable(table.icopy(TerrainTextures))
 ex(tbl)
 ex(str)
 ]]

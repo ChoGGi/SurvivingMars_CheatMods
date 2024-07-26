@@ -19,7 +19,7 @@ local HexGridGetObjects = HexGridGetObjects
 local WorldToHex = WorldToHex
 local InvalidPos = InvalidPos()
 
-local RGBtoColour = ChoGGi.ComFuncs.RGBtoColour
+local RGBtoColour = ChoGGi_Funcs.Common.RGBtoColour
 
 -- mod options
 local options

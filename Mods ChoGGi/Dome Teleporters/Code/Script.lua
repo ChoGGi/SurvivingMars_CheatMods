@@ -585,9 +585,9 @@ function OnMsg.LoadGame()
 	CityDomeTeleporterConstruction[city].city = CityDomeTeleporterConstruction[city].city or city
 
 --~ 	-- dbg
---~ 	local dlg = ChoGGi.ComFuncs.OpenInExamineDlg(CityDomeTeleporterConstruction[UICity])
+--~ 	local dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(CityDomeTeleporterConstruction[UICity])
 --~ 	dlg:EnableAutoRefresh()
---~ 	dlg = ChoGGi.ComFuncs.OpenInExamineDlg(CityTunnelConstruction[UICity])
+--~ 	dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(CityTunnelConstruction[UICity])
 --~ 	dlg:EnableAutoRefresh()
 --~ 	-- dbg
 

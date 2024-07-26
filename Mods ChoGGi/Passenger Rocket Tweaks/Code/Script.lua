@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
 local table = table
 local T = T
@@ -110,7 +110,7 @@ ToggleSpecInfo = function()
 	local pass = XTemplates.ResupplyPassengers[1]
 	local template = pass[table.find(pass, "Id", "idContent")]
 	template = template[table.find(template, "Id", "idTop")]
-	ChoGGi.ComFuncs.RemoveXTemplateSections(template, "Id", "idPassInfo_ChoGGi")
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(template, "Id", "idPassInfo_ChoGGi")
 	if not mod_MoreSpecInfo then
 		return
 	end
@@ -339,7 +339,7 @@ local function AddUIStuff(content)
 				ChoOrig_back(varargs)
 			end
 		end
-		ChoGGi.ComFuncs.QuestionBox(
+		ChoGGi_Funcs.Common.QuestionBox(
 			T(5761, "Are you sure you want to cancel the Rocket's launch order?"),
 			CallBackFunc,
 			T(3687, "Cancel") .. " " .. T(1116, "Passenger Rocket")

@@ -3,7 +3,7 @@
 -- All purpose items list
 
 --[[
--- build an update items list func for use with ChoGGi.MenuFuncs.TerrainTextureRemap()
+-- build an update items list func for use with ChoGGi_Funcs.Menus.TerrainTextureRemap()
 
 
 get around to merging some of these types into funcs?
@@ -19,7 +19,7 @@ custom_type = 7 : dblclick fires custom_func with {self.sel} (wrapped in a table
 custom_type = 8 : same as 4/7, but dbl rightclick fires custom_func, and dbl click fires ok as normally
 custom_type = 9 : same as 4, but hides filter and doesn't close, dbl rightclick executes custom_func(selecteditem.func)
 
-ChoGGi.ComFuncs.OpenInListChoice{
+ChoGGi_Funcs.Common.OpenInListChoice{
 	callback = CallBackFunc,
 	items = item_list,
 	title = "Title",
@@ -53,10 +53,11 @@ ChoGGi.ComFuncs.OpenInListChoice{
 }
 ]]
 
-local RetProperType = ChoGGi.ComFuncs.RetProperType
-local Translate = ChoGGi.ComFuncs.Translate
-local DotPathToObject = ChoGGi.ComFuncs.DotPathToObject
-local ValidateImage = ChoGGi.ComFuncs.ValidateImage
+local ChoGGi_Funcs = ChoGGi_Funcs
+local RetProperType = ChoGGi_Funcs.Common.RetProperType
+local Translate = ChoGGi_Funcs.Common.Translate
+local DotPathToObject = ChoGGi_Funcs.Common.DotPathToObject
+local ValidateImage = ChoGGi_Funcs.Common.ValidateImage
 
 local T = T
 local type, tostring = type, tostring
@@ -64,7 +65,7 @@ local table = table
 local point = point
 local MeasureImage = UIL.MeasureImage
 
-local GetParentOfKind = ChoGGi.ComFuncs.GetParentOfKind
+local GetParentOfKind = ChoGGi_Funcs.Common.GetParentOfKind
 local function GetRootDialog(dlg)
 	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_DlgListChoice")
 end
@@ -771,7 +772,7 @@ function ChoGGi_DlgListChoice:UpdateColour()
 		self.obj = self.idList[#self.idList].item.obj
 	end
 	-- checks/backs up old colours
-	ChoGGi.ComFuncs.SaveOldPalette(self.obj)
+	ChoGGi_Funcs.Common.SaveOldPalette(self.obj)
 
 	-- can only change basecolour
 	if self.obj:GetMaxColorizationMaterials() > 0 then
@@ -840,7 +841,7 @@ function ChoGGi_DlgListChoice:idList_OnSelect(button)
 
 	-- blick world obj
 	if self.select_flash and self.sel.obj then
-		ChoGGi.ComFuncs.AddBlinkyToObj(self.sel.obj, 8000)
+		ChoGGi_Funcs.Common.AddBlinkyToObj(self.sel.obj, 8000)
 	end
 
 	if button ~= "L" then
@@ -910,7 +911,7 @@ function ChoGGi_DlgListChoice:BuildReturnList(_, button)
 			end
 		elseif self.custom_type == 8 then
 			self:CallbackSelectedList()
-		elseif self.idEditValue then
+		elseif self.idEditValue and type(self.sel.text) == "string" then
 			self.idEditValue:SetText(self.sel.text)
 		end
 	end
@@ -1004,7 +1005,7 @@ function ChoGGi_DlgListChoice:GetListItems(which)
 end
 
 -- Use to open a dialog
-function ChoGGi.ComFuncs.OpenInListChoice(list)
+function ChoGGi_Funcs.Common.OpenInListChoice(list)
 	-- If list isn't a table or it has zero items or it doesn't have items/callback func
 	local list_table = type(list) == "table"
 	local items_table = type(list_table and list.items) == "table"

@@ -7,7 +7,7 @@ local InfobarObj_FmtRes = InfobarObj.FmtRes
 local ResourceScale = const.ResourceScale
 
 function OnMsg.ClassesPostprocess()
-	ChoGGi.ComFuncs.AddXTemplate("ShowAmountPerRareOnRockets", "customSupplyRocket", {
+	ChoGGi_Funcs.Common.AddXTemplate("ShowAmountPerRareOnRockets", "customSupplyRocket", {
 		Icon = "UI/Icons/res_precious_metals.tga",
 		RolloverText = T(302535920011265, "Amount received per rare/precious exported."),
 		OnContextUpdate = function(self, context)

@@ -4,9 +4,10 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local SettingState = ChoGGi.ComFuncs.SettingState
+local Translate = ChoGGi_Funcs.Common.Translate
+local SettingState = ChoGGi_Funcs.Common.SettingState
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 
@@ -16,7 +17,7 @@ Actions[c] = {ActionName = T(302535920000031--[[Find Nearest Resource]]),
 	ActionId = ".Find Nearest Resource",
 	ActionIcon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 	RolloverText = T(302535920000554--[[Select an object and click this to display a list of resources (Shows nearest resource to object).]]),
-	OnAction = ChoGGi.ComFuncs.FindNearestResource,
+	OnAction = ChoGGi_Funcs.Common.FindNearestResource,
 }
 
 c = c + 1
@@ -25,7 +26,7 @@ Actions[c] = {ActionName = T(302535920000333--[[Building Info]]),
 	ActionId = ".Building Info",
 	ActionIcon = "CommonAssets/UI/Menu/ExportImageSequence.tga",
 	RolloverText = T(302535920000345--[[Shows info about building in text above it.]]),
-	OnAction = ChoGGi.MenuFuncs.BuildingInfo_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.BuildingInfo_Toggle,
 }
 
 c = c + 1
@@ -34,7 +35,7 @@ Actions[c] = {ActionName = T(302535920001307--[[Grid Info]]),
 	ActionId = ".Grid Info",
 	ActionIcon = "CommonAssets/UI/Menu/ExportImageSequence.tga",
 	RolloverText = T(302535920001477--[["List objects in grids (air, electricity, and water)."]]),
-	OnAction = ChoGGi.MenuFuncs.BuildGridList,
+	OnAction = ChoGGi_Funcs.Menus.BuildGridList,
 }
 
 --~ c = c + 1
@@ -43,7 +44,7 @@ Actions[c] = {ActionName = T(302535920001307--[[Grid Info]]),
 --~ 	ActionId = ".Monitor Info",
 --~ 	ActionIcon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 --~ 	RolloverText = T(302535920000556--[[Shows a list of updated information about your city.]]),
---~ 	OnAction = ChoGGi.MenuFuncs.MonitorInfo,
+--~ 	OnAction = ChoGGi_Funcs.Menus.MonitorInfo,
 --~ }
 
 c = c + 1
@@ -52,7 +53,7 @@ Actions[c] = {ActionName = T(302535920000688--[[Clean All Objects]]),
 	ActionId = ".Clean All Objects",
 	ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
 	RolloverText = T(302535920000689--[[Removes all dust from all objects.]]),
-	OnAction = ChoGGi.MenuFuncs.CleanAllObjects,
+	OnAction = ChoGGi_Funcs.Menus.CleanAllObjects,
 }
 
 c = c + 1
@@ -61,7 +62,7 @@ Actions[c] = {ActionName = T(302535920000690--[[Fix All Objects]]),
 	ActionId = ".Fix All Objects",
 	ActionIcon = "CommonAssets/UI/Menu/DisableAOMaps.tga",
 	RolloverText = T(302535920000691--[[Fixes all malfunctioned objects.]]),
-	OnAction = ChoGGi.MenuFuncs.FixAllObjects,
+	OnAction = ChoGGi_Funcs.Menus.FixAllObjects,
 }
 
 c = c + 1
@@ -75,7 +76,7 @@ Actions[c] = {ActionName = T(302535920000700--[[Scanner Queue Larger]]),
 			T(302535920000701--[[Queue up to 100 squares.]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.ScannerQueueLarger_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.ScannerQueueLarger_Toggle,
 }
 
 c = c + 1
@@ -84,6 +85,6 @@ Actions[c] = {ActionName = T(302535920000469--[[Close Dialogs]]),
 	ActionId = ".Close Dialogs",
 	ActionIcon = "CommonAssets/UI/Menu/remove_water.tga",
 	RolloverText = T(302535920000470--[[Close any dialogs opened by ECM (Examine, Object Editor, Change Colours, etc...)]]),
-	OnAction = ChoGGi.ComFuncs.CloseDialogsECM,
+	OnAction = ChoGGi_Funcs.Common.CloseDialogsECM,
 	ActionSortKey = "99",
 }

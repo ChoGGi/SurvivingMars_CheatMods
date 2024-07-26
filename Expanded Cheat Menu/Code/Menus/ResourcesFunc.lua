@@ -4,15 +4,15 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local type = type
-
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local MsgPopup = ChoGGi.ComFuncs.MsgPopup
-local RetName = ChoGGi.ComFuncs.RetName
+local Translate = ChoGGi_Funcs.Common.Translate
+local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
+local RetName = ChoGGi_Funcs.Common.RetName
 
 
-function ChoGGi.MenuFuncs.SetFundingPerRareMetalExport()
+function ChoGGi_Funcs.Menus.SetFundingPerRareMetalExport()
 	local default_setting = ChoGGi.Consts.ExportPricePreciousMetals
 	local item_list = {
 		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
@@ -41,10 +41,10 @@ function ChoGGi.MenuFuncs.SetFundingPerRareMetalExport()
 		local value = choice[1].value
 		if type(value) == "number" then
 			local value = value
-			ChoGGi.ComFuncs.SetConsts("ExportPricePreciousMetals", value)
-			ChoGGi.ComFuncs.SetSavedConstSetting("ExportPricePreciousMetals")
+			ChoGGi_Funcs.Common.SetConsts("ExportPricePreciousMetals", value)
+			ChoGGi_Funcs.Common.SetSavedConstSetting("ExportPricePreciousMetals")
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
 				choice[1].text,
 				T(4604, "Rare Metals Price (M)")
@@ -52,7 +52,7 @@ function ChoGGi.MenuFuncs.SetFundingPerRareMetalExport()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(4604, "Rare Metals Price (M)"),
@@ -61,7 +61,7 @@ function ChoGGi.MenuFuncs.SetFundingPerRareMetalExport()
 	}
 end
 
-function ChoGGi.MenuFuncs.AddOrbitalProbes()
+function ChoGGi_Funcs.Menus.AddOrbitalProbes()
 	local item_list = {
 		{text = 5, value = 5},
 		{text = 10, value = 10},
@@ -90,7 +90,7 @@ function ChoGGi.MenuFuncs.AddOrbitalProbes()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920001187--[[Add Probes]]),
@@ -105,7 +105,7 @@ function ChoGGi.MenuFuncs.AddOrbitalProbes()
 	}
 end
 
-function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
+function ChoGGi_Funcs.Menus.SetFoodPerRocketPassenger()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.FoodPerRocketPassenger / r
 	local item_list = {
@@ -133,10 +133,10 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
 		local value = choice[1].value
 		if type(value) == "number" then
 			local value = value * r
-			ChoGGi.ComFuncs.SetConsts("FoodPerRocketPassenger", value)
-			ChoGGi.ComFuncs.SetSavedConstSetting("FoodPerRocketPassenger")
+			ChoGGi_Funcs.Common.SetConsts("FoodPerRocketPassenger", value)
+			ChoGGi_Funcs.Common.SetSavedConstSetting("FoodPerRocketPassenger")
 
-			ChoGGi.SettingFuncs.WriteSettings()
+			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
 				Translate(302535920001188--[[%s: om nom nom nom nom]]):format(choice[1].text),
 				T(4616, "Food Per Rocket Passenger")
@@ -144,7 +144,7 @@ function ChoGGi.MenuFuncs.SetFoodPerRocketPassenger()
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(302535920001190--[[Set Food Per Rocket Passenger]]),
@@ -171,7 +171,7 @@ do -- AddPrefabs
 		PassageRamp = true,
 	}
 
-	function ChoGGi.MenuFuncs.AddPrefabBuildings()
+	function ChoGGi_Funcs.Menus.AddPrefabBuildings()
 		local UICity = UICity
 
 		local drone_str = Translate(Drone.display_name)
@@ -222,10 +222,10 @@ do -- AddPrefabs
 				T(1110, "Prefab Buildings")
 			)
 			-- If the build menu is opened and they add some prefabs it won't use them till it's toggled, so we do this instead
-			ChoGGi.ComFuncs.UpdateBuildMenu()
+			ChoGGi_Funcs.Common.UpdateBuildMenu()
 		end
 
-		ChoGGi.ComFuncs.OpenInListChoice{
+		ChoGGi_Funcs.Common.OpenInListChoice{
 			callback = CallBackFunc,
 			items = item_list,
 			title = T(1110--[[Prefab Buildings]]),
@@ -236,7 +236,7 @@ do -- AddPrefabs
 	end
 end -- do
 
-function ChoGGi.MenuFuncs.SetFunding()
+function ChoGGi_Funcs.Menus.SetFunding()
 	local default_setting = T(302535920001195--[[Reset to 500 M]])
 	local hint = T(302535920001196--[[If your funds are a negative value, then you added too much.
 
@@ -271,7 +271,7 @@ Fix with: %s]]):format(default_setting)
 		end
 	end
 
-	ChoGGi.ComFuncs.OpenInListChoice{
+	ChoGGi_Funcs.Common.OpenInListChoice{
 		callback = CallBackFunc,
 		items = item_list,
 		title = T(3613--[[Funding]]),
@@ -280,8 +280,8 @@ Fix with: %s]]):format(default_setting)
 	}
 end
 
-function ChoGGi.MenuFuncs.FillResource()
-	local obj = ChoGGi.ComFuncs.SelObject()
+function ChoGGi_Funcs.Menus.FillResource()
+	local obj = ChoGGi_Funcs.Common.SelObject()
 	local is_valid = IsValid(obj)
 	if not is_valid or is_valid and not obj.CheatFill and not obj.CheatRefill and not obj.CheatFillDepot then
 		MsgPopup(

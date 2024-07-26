@@ -1,13 +1,14 @@
 -- See LICENSE for terms
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local what_game = ChoGGi.what_game
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
 -- stored tables stuff
 if what_game == "Mars" then
 	-- called below and when translation changes
-	function ChoGGi.ComFuncs.UpdateOtherTables()
+	function ChoGGi_Funcs.Common.UpdateOtherTables()
 		-- easy access to colonist data, cargo, mystery
 		local Tables = ChoGGi.Tables
 		-- display names only!
@@ -90,12 +91,12 @@ if what_game == "Mars" then
 		Tables.ConstructionStatus[id] = table.copy(status)
 	end
 
-	ChoGGi.ComFuncs.UpdateOtherTables()
+	ChoGGi_Funcs.Common.UpdateOtherTables()
 
 	-- also called after mods are loaded, we call it now for any functions that use it before then
-	ChoGGi.ComFuncs.UpdateDataTables()
+	ChoGGi_Funcs.Common.UpdateDataTables()
 	-- only updated when mods reloaded
-	ChoGGi.ComFuncs.UpdateTablesSponComm()
+	ChoGGi_Funcs.Common.UpdateTablesSponComm()
 end -- do
 
 local function GetValueCls(obj, value, fallback)

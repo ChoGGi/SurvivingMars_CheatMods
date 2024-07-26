@@ -4,9 +4,10 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local T = T
-local Translate = ChoGGi.ComFuncs.Translate
-local SettingState = ChoGGi.ComFuncs.SettingState
+local Translate = ChoGGi_Funcs.Common.Translate
+local SettingState = ChoGGi_Funcs.Common.SettingState
 local Actions = ChoGGi.Temp.Actions
 local c = #Actions
 local icon = "CommonAssets/UI/Menu/ReportBug.tga"
@@ -28,7 +29,7 @@ Actions[c] = {ActionName = T(302535920001351--[[Rocket Crashes Game On Landing]]
 	ActionId = ".Rocket Crashes Game On Landing",
 	ActionIcon = icon,
 	RolloverText = T(302535920001352--[[When you select a landing site with certain rockets; your game will crash to desktop.]]),
-	OnAction = ChoGGi.MenuFuncs.RocketCrashesGameOnLanding,
+	OnAction = ChoGGi_Funcs.Menus.RocketCrashesGameOnLanding,
 }
 
 c = c + 1
@@ -37,7 +38,7 @@ Actions[c] = {ActionName = T(302535920001299--[[Toggle Working On All Buildings]
 	ActionId = ".Toggle Working On All Buildings",
 	ActionIcon = icon,
 	RolloverText = T(302535920001300--[[Does what it says; all buildings will have their working status toggled (fixes a couple issues).]]),
-	OnAction = ChoGGi.MenuFuncs.ToggleWorkingAll,
+	OnAction = ChoGGi_Funcs.Menus.ToggleWorkingAll,
 }
 
 c = c + 1
@@ -46,7 +47,7 @@ Actions[c] = {ActionName = T(302535920001295--[[Drones Not Repairing Domes]]),
 	ActionId = ".Drones Not Repairing Domes",
 	ActionIcon = icon,
 	RolloverText = T(302535920001296--[[If your drones are just dumping polymers into the centre of your dome.]]),
-	OnAction = ChoGGi.MenuFuncs.DronesNotRepairingDomes,
+	OnAction = ChoGGi_Funcs.Menus.DronesNotRepairingDomes,
 }
 
 c = c + 1
@@ -57,7 +58,7 @@ Actions[c] = {ActionName = T(302535920001084--[[Reset]]) .. " " .. T(5221--[[RC 
 	RolloverText = T(302535920000882--[[If you have borked commanders, this will probably fix them (may take a few seconds to apply).
 
 You may need to toggle the recall drones button (for certain issues).]]),
-	OnAction = ChoGGi.MenuFuncs.ResetCommanders,
+	OnAction = ChoGGi_Funcs.Menus.ResetCommanders,
 }
 
 c = c + 1
@@ -66,7 +67,7 @@ Actions[c] = {ActionName = T(302535920000055--[[Reset All Colonists]]),
 	ActionId = ".Reset All Colonists",
 	ActionIcon = icon,
 	RolloverText = T(302535920000939--[[Fix certain freezing issues (mouse still moves screen, keyboard doesn't), will lower comfort by about 20.]]),
-	OnAction = ChoGGi.MenuFuncs.ResetAllColonists,
+	OnAction = ChoGGi_Funcs.Menus.ResetAllColonists,
 }
 
 c = c + 1
@@ -75,7 +76,7 @@ Actions[c] = {ActionName = T(302535920000583--[[Rebuild Walkable Points In Domes
 	ActionId = ".Rebuild Walkable Points In Domes",
 	ActionIcon = icon,
 	RolloverText = T(302535920000584--[[Useful? who knows, won't hurt.]]),
-	OnAction = ChoGGi.MenuFuncs.RebuildWalkablePointsInDomes,
+	OnAction = ChoGGi_Funcs.Menus.RebuildWalkablePointsInDomes,
 }
 
 c = c + 1
@@ -86,7 +87,7 @@ Actions[c] = {ActionName = T(302535920000585--[[Colonists Stuck Outside Rocket]]
 	RolloverText = T(302535920000586--[[If any colonists are stuck AND you don't have any other rockets unloading colonists.
 
 This will do a little copy n paste fix (they'll keep the same traits/whatnot).]]),
-	OnAction = ChoGGi.MenuFuncs.ColonistsStuckOutsideRocket,
+	OnAction = ChoGGi_Funcs.Menus.ColonistsStuckOutsideRocket,
 }
 
 c = c + 1
@@ -95,7 +96,7 @@ Actions[c] = {ActionName = T(302535920000587--[[Remove Missing Class Objects]]),
 	ActionId = ".Remove Missing Class Objects",
 	ActionIcon = icon,
 	RolloverText = T(6779--[[Warning]]) .. ": " .. T(302535920000588--[[May crash game, SAVE FIRST. These are probably from mods that were removed (if you're getting a PinDlg error then this should fix it).]]),
-	OnAction = ChoGGi.MenuFuncs.RemoveMissingClassObjects,
+	OnAction = ChoGGi_Funcs.Menus.RemoveMissingClassObjects,
 }
 
 c = c + 1
@@ -104,7 +105,7 @@ Actions[c] = {ActionName = T(302535920000591--[[Colonists Trying To Board Rocket
 	ActionId = ".Colonists Trying To Board Rocket Freezes Game",
 	ActionIcon = icon,
 	RolloverText = T(302535920000592--[[Doesn't fix the underlying cause, but it works.]]),
-	OnAction = ChoGGi.MenuFuncs.ColonistsTryingToBoardRocketFreezesGame,
+	OnAction = ChoGGi_Funcs.Menus.ColonistsTryingToBoardRocketFreezesGame,
 }
 
 c = c + 1
@@ -114,7 +115,7 @@ Actions[c] = {ActionName = T(302535920000593--[[Remove Particles With Null Polyl
 	ActionIcon = icon,
 	RolloverText = T(302535920000594--[["It won't hurt anything to run this, as for when/if: I suppose if you have a broken looking object? or a meteor crashes into your mirror sphere power decoy thingy.
 This may remove some smoke stacks like the concrete extractors (just toggle working on any that don't have smoke)."]]),
-	OnAction = ChoGGi.MenuFuncs.ParticlesWithNullPolylines,
+	OnAction = ChoGGi_Funcs.Menus.ParticlesWithNullPolylines,
 }
 
 c = c + 1
@@ -123,7 +124,7 @@ Actions[c] = {ActionName = T(302535920000595--[[Mirror Sphere Stuck]]),
 	ActionId = ".Mirror Sphere Stuck",
 	ActionIcon = icon,
 	RolloverText = T(302535920000596--[[If you have a mirror sphere stuck at the edge of the map, and it just won't die/move... (also removes any borked cone of a captured sphere)]]),
-	OnAction = ChoGGi.MenuFuncs.MirrorSphereStuck,
+	OnAction = ChoGGi_Funcs.Menus.MirrorSphereStuck,
 }
 
 c = c + 1
@@ -135,7 +136,7 @@ Actions[c] = {ActionName = T(302535920000597--[[Stutter With High FPS]]),
 <color red>This can cause your save to be corrupted and not load (likely with a bunch of mods), be very careful about using it.</color>
 
 This also works for colonists practicing the human centipede.]]),
-	OnAction = ChoGGi.MenuFuncs.StutterWithHighFPS,
+	OnAction = ChoGGi_Funcs.Menus.StutterWithHighFPS,
 }
 
 c = c + 1
@@ -144,7 +145,7 @@ Actions[c] = {ActionName = T(302535920000599--[[Drones Keep Trying Blocked Areas
 	ActionId = ".Drones Keep Trying Blocked Areas",
 	ActionIcon = icon,
 	RolloverText = T(302535920000600--[[If you have a certain dronehub who's drones keep trying to get somewhere they can't reach, try this.]]),
-	OnAction = ChoGGi.MenuFuncs.DronesKeepTryingBlockedAreas,
+	OnAction = ChoGGi_Funcs.Menus.DronesKeepTryingBlockedAreas,
 }
 
 c = c + 1
@@ -155,7 +156,7 @@ Actions[c] = {ActionName = T(302535920000601--[[Idle Drones Won't Build When Res
 	RolloverText = T(302535920000602--[[If you have drones that are idle while contruction sites need to be built and resources are available then you likely have some unreachable building sites.
 
 This removes any of those (resources won't be touched).]]),
-	OnAction = ChoGGi.MenuFuncs.RemoveUnreachableConstructionSites,
+	OnAction = ChoGGi_Funcs.Menus.RemoveUnreachableConstructionSites,
 }
 
 c = c + 1
@@ -164,7 +165,7 @@ Actions[c] = {ActionName = T(302535920000603--[[Remove Yellow Grid Marks]]),
 	ActionId = ".Remove Yellow Grid Marks",
 	ActionIcon = icon,
 	RolloverText = T(302535920000604--[[If you have any buildings with those yellow grid marks around them (or anywhere else), then this will remove them.]]),
-	OnAction = ChoGGi.MenuFuncs.RemoveYellowGridMarks,
+	OnAction = ChoGGi_Funcs.Menus.RemoveYellowGridMarks,
 }
 
 c = c + 1
@@ -173,7 +174,7 @@ Actions[c] = {ActionName = T(302535920001193--[[Remove Blue Grid Marks]]),
 	ActionId = ".Remove Blue Grid Marks",
 	ActionIcon = icon,
 	RolloverText = T(302535920001197--[[If you have any buildings with the selection grid around it, and you don't have it selected (also fixes stuck RC Transport Ghosts).]]),
-	OnAction = ChoGGi.MenuFuncs.RemoveBlueGridMarks,
+	OnAction = ChoGGi_Funcs.Menus.RemoveBlueGridMarks,
 }
 
 c = c + 1
@@ -182,7 +183,7 @@ Actions[c] = {ActionName = T(302535920000605--[[Project Morpheus Radar Fell Down
 	ActionId = ".Project Morpheus Radar Fell Down",
 	ActionIcon = icon,
 	RolloverText = T(302535920000606--[[Sometimes the blue radar thingy falls off.]]),
-	OnAction = ChoGGi.MenuFuncs.ProjectMorpheusRadarFellDown,
+	OnAction = ChoGGi_Funcs.Menus.ProjectMorpheusRadarFellDown,
 }
 
 c = c + 1
@@ -191,7 +192,7 @@ Actions[c] = {ActionName = T(302535920000157--[[Cables & Pipes]]) .. ": " .. T(3
 	ActionId = ".Cables & Pipes: Instant Repair",
 	ActionIcon = "CommonAssets/UI/Menu/ViewCamPath.tga",
 	RolloverText = T(302535920000608--[[Instantly repair all broken pipes and cables.]]),
-	OnAction = ChoGGi.MenuFuncs.CablesAndPipesRepair,
+	OnAction = ChoGGi_Funcs.Menus.CablesAndPipesRepair,
 }
 
 c = c + 1
@@ -200,7 +201,7 @@ Actions[c] = {ActionName = T(302535920000609--[[Attach Buildings To Nearest Work
 	ActionId = ".Attach Buildings To Nearest Working Dome",
 	ActionIcon = icon,
 	RolloverText = T(302535920000610--[[If you placed inside buildings outside and removed the dome they're attached to; use this.]]),
-	OnAction = ChoGGi.MenuFuncs.AttachBuildingsToNearestWorkingDome,
+	OnAction = ChoGGi_Funcs.Menus.AttachBuildingsToNearestWorkingDome,
 }
 
 c = c + 1
@@ -209,7 +210,7 @@ Actions[c] = {ActionName = T(302535920001533--[[Remove Invalid Label Objects]]),
 	ActionId = ".Remove Invalid Label Objects",
 	ActionIcon = icon,
 	RolloverText = T(302535920001534--[[Checks the city.labels for invalid objects and removes them from the label.]]),
-	OnAction = ChoGGi.MenuFuncs.RemoveInvalidLabelObjects,
+	OnAction = ChoGGi_Funcs.Menus.RemoveInvalidLabelObjects,
 }
 
 -- menu
@@ -235,7 +236,7 @@ Actions[c] = {ActionName = T(302535920000248--[[Colonists Stuck Outside Service 
 Seems to fix it after a Sol or two, so you shouldn't need to leave this running."]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.ColonistsStuckOutsideServiceBuildings_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.ColonistsStuckOutsideServiceBuildings_Toggle,
 }
 
 c = c + 1
@@ -252,7 +253,7 @@ This forces them to pick up whenever there's more then one resource).
 If you have an insane production amount set then it'll take an (in-game) hour between calling drones."]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.DroneResourceCarryAmountFix_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.DroneResourceCarryAmountFix_Toggle,
 }
 
 c = c + 1
@@ -268,7 +269,7 @@ Actions[c] = {ActionName = T(302535920000615--[[Sort Command Center Dist]]),
 Takes less then a second on a map with 3600+ buildings and 50+ drone hubs."]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.SortCommandCenterDist_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.SortCommandCenterDist_Toggle,
 }
 
 c = c + 1
@@ -283,7 +284,7 @@ Actions[c] = {ActionName = T(302535920001483--[[Missing Mod Buildings]]),
 This may break the save in other ways, best to just use it for testing."]])
 		)
 	end,
-	OnAction = ChoGGi.MenuFuncs.FixMissingModBuildings_Toggle,
+	OnAction = ChoGGi_Funcs.Menus.FixMissingModBuildings_Toggle,
 }
 
 -- menu
@@ -312,7 +313,7 @@ Actions[c] = {ActionName = T(302535920000619--[[Fix Black Cube Colonists]]),
 	ActionId = ".Fix Black Cube Colonists",
 	ActionIcon = icon,
 	RolloverText = T(302535920000620--[[If any colonists are black cubes click this.]]),
-	OnAction = ChoGGi.MenuFuncs.ColonistsFixBlackCube,
+	OnAction = ChoGGi_Funcs.Menus.ColonistsFixBlackCube,
 }
 
 c = c + 1
@@ -321,5 +322,5 @@ Actions[c] = {ActionName = T(302535920000621--[[Align All Buildings To Hex Grid]
 	ActionId = ".Align All Buildings To Hex Grid",
 	ActionIcon = icon,
 	RolloverText = T(302535920000622--[[If you have any buildings that aren't aligned to the hex grids use this.]]),
-	OnAction = ChoGGi.MenuFuncs.AlignAllBuildingsToHexGrid,
+	OnAction = ChoGGi_Funcs.Menus.AlignAllBuildingsToHexGrid,
 }
