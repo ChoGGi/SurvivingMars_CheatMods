@@ -39,16 +39,16 @@ Turn off to enable cheese and disable fix.
 ]]),
 		"DefaultValue", true,
 	}),
-	PlaceObj("ModItemOptionToggle", {
-		"name", "PlanetaryAnomalyBreakthroughs",
-		"DisplayName", T(0000, "Planetary Anomaly Breakthroughs"),
-		"Help", T(0000, [[There's no Planetary Anomaly Breakthroughs when B&B is installed.
-It's probably a bug, but the underground wonders do add Breakthroughs.
+--~ 	PlaceObj("ModItemOptionToggle", {
+--~ 		"name", "PlanetaryAnomalyBreakthroughs",
+--~ 		"DisplayName", T(0000, "Planetary Anomaly Breakthroughs"),
+--~ 		"Help", T(0000, [[There's no Planetary Anomaly Breakthroughs when B&B is installed.
+--~ It's probably a bug, but the underground wonders do add Breakthroughs.
 
-Turn off to disable this "fix" (and receieve less Breakthroughs).
-]]),
-		"DefaultValue", true,
-	}),
+--~ Turn off to disable this "fix" (and receieve less Breakthroughs).
+--~ ]]),
+--~ 		"DefaultValue", true,
+--~ 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "UnevenTerrain",
 		"DisplayName", T(0000, "Uneven Terrain"),

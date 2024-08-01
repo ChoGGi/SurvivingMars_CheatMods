@@ -21,7 +21,7 @@ local empty_table = empty_table
 local mod_EnableMod
 local mod_FarmOxygen
 local mod_DustDevilsBlockBuilding
-local mod_PlanetaryAnomalyBreakthroughs
+--~ local mod_PlanetaryAnomalyBreakthroughs
 local mod_UnevenTerrain
 --~ local mod_TurnOffUpgrades
 local mod_SupplyPodSoundEffects
@@ -59,7 +59,7 @@ local function ModOptions(id)
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_FarmOxygen = CurrentModOptions:GetProperty("FarmOxygen")
 	mod_DustDevilsBlockBuilding = CurrentModOptions:GetProperty("DustDevilsBlockBuilding")
-	mod_PlanetaryAnomalyBreakthroughs = CurrentModOptions:GetProperty("PlanetaryAnomalyBreakthroughs")
+--~ 	mod_PlanetaryAnomalyBreakthroughs = CurrentModOptions:GetProperty("PlanetaryAnomalyBreakthroughs")
 	mod_UnevenTerrain = CurrentModOptions:GetProperty("UnevenTerrain")
 --~ 	mod_TurnOffUpgrades = CurrentModOptions:GetProperty("TurnOffUpgrades")
 	mod_SupplyPodSoundEffects = CurrentModOptions:GetProperty("SupplyPodSoundEffects")
@@ -1252,7 +1252,8 @@ end
 -- That list is used to spawn planetary anomalies
 local ChoOrig_City_InitBreakThroughAnomalies = City.InitBreakThroughAnomalies
 function City:InitBreakThroughAnomalies(...)
-	if not mod_EnableMod or not mod_PlanetaryAnomalyBreakthroughs then
+--~ 	if not mod_EnableMod or not mod_PlanetaryAnomalyBreakthroughs then
+	if not mod_EnableMod then
 		return ChoOrig_City_InitBreakThroughAnomalies(self, ...)
 	end
 

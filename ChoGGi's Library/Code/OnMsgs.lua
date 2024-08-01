@@ -17,6 +17,17 @@ OnMsg.ReloadLua = ChoGGi_Funcs.Common.Rebuildshortcuts
 
 function OnMsg.ClassesPostprocess()
 	if what_game == "Mars" then
+
+		-- Add build cat for my items
+		local bc = BuildCategories
+		if not table.find(bc, "id", "ChoGGi") then
+			bc[#bc+1] = {
+				id = "ChoGGi",
+				name = T(302535920000001--[[ChoGGi]]),
+				image = ChoGGi.library_path .. "UI/bmc_incal_resources.png",
+			}
+		end
+
 		-- the first time you open a ModItemOptionInputBox the text will be blank when it's the default text.
 		-- opening a second time fixes it or appending the "default" text like so:
 		local template = XTemplates.PropTextInput[1]
@@ -36,20 +47,7 @@ function OnMsg.ClassesPostprocess()
 				end
 			end
 		end
-	end
-end
 
-function OnMsg.ClassesBuilt()
-	if what_game == "Mars" then
-		-- Add build cat for my items
-		local bc = BuildCategories
-		if not table.find(bc, "id", "ChoGGi") then
-			bc[#bc+1] = {
-				id = "ChoGGi",
-				name = T(302535920000001--[[ChoGGi]]),
-				image = ChoGGi.library_path .. "UI/bmc_incal_resources.png",
-			}
-		end
 	end -- what_game
 end
 

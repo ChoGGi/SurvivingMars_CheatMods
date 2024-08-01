@@ -25,19 +25,21 @@ local function StartupCode()
 	local template = XTemplates.ipBuilding[1]
 	-- needed if mod inserts above first entry (for those without B&B)
 	local idx = table.find(template, "class", "XTemplateGroup")
-	idx = table.find(template[idx], "OnPressParam", "ToggleRefab")
+	template = template[idx]
+	idx = table.find(template, "OnPressParam", "ToggleRefab")
+	template = template[idx]
 --~ 	ex(template[idx])
 
 	if not g_AvailableDlc.picard then
-		template[idx].__condition = function (_, context)
+		template.__condition = function (_, context)
 			return mod_EnableMod and context:CanRefab()
 		end
 
-		template[idx].Icon = "UI/Icons/IPButtons/rebuild.tga"
+		template.Icon = "UI/Icons/IPButtons/rebuild.tga"
 	end
 
 	-- Remove BB dlc requirement
-	template[idx].__dlc = ""
+	template.__dlc = ""
 end
 
 -- New games

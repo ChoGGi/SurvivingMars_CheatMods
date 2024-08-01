@@ -72,7 +72,10 @@ local ToolsMenuPopupToggle_list = {
 	},
 	{name = T(302535920000473--[[Flush Log]]),
 		hint = T(302535920000474--[[Flushes log to file.]]),
-		clicked = FlushLogFile,
+		clicked = function()
+			FlushLogFile()
+			print(Translate(T(302535920001734--[[Log file flushed]])))
+		end,
 	},
 	{name = T(302535920000071--[[Show Mods Log]]),
 		hint = T(302535920001123--[[Shows any mod msgs in the log.]]),

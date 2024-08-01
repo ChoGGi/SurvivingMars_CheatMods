@@ -3,7 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
-302535920001734, ""
 302535920001735, ""
 302535920001736, ""
 302535920001737, ""
@@ -457,6 +456,7 @@ do !Skipped Line! [[MultiLineText.lua]] !Skipped Line!
 302535920000827, "Check this to overwrite file instead of appending to it."
 end !Skipped Line!
 do !Skipped Line! [[Console.lua" "ConsoleLogWin.lua]] !Skipped Line!
+302535920001734, "Log file flushed"
 302535920001635, "Flush Log Hourly"
 302535920001636, "Call FlushLogFile() every in-game hour."
 302535920001349, "Flush Log Constantly"

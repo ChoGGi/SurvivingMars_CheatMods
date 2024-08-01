@@ -1,5 +1,4 @@
 "ID", "Text", "Translation"
-302535920001734, ""
 302535920001735, ""
 302535920001736, ""
 302535920001737, ""
@@ -415,6 +414,7 @@ If this isn't a new install, then see Menu>Help>ECM>Changelog and search for ""T
 302535920001301, "Edit Text"
 302535920000721, "Overwrite"
 302535920000827, "Check this to overwrite file instead of appending to it."
+302535920001734, "Log file flushed"
 302535920001635, "Flush Log Hourly"
 302535920001636, "Call FlushLogFile() every in-game hour."
 302535920001349, "Flush Log Constantly"
@@ -439,7 +439,7 @@ The number is a count of stored msgs, <right_click> to view the list."
 Usage: Call it once to start and again to stop, it'll then show a list of func calls.
 
 Call it manually with:
-ChoGGi.ComFuncs.ToggleFuncHook(path, line, mask, count)
+ChoGGi_Funcs.Common.ToggleFuncHook(path, line, mask, count)
 https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"
 302535920000127, "Various tools to use."
 302535920001497, "Show Blacklist"
