@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v12.2 (Unreleased)
+## v12.3 (Unreleased)
+
+## v12.2 (4 Aug 2024)
 - Split ChoGGi funcs into their own table for localing.
 - Find Dialog tries to show correct table index number when searching an indexed table (usually off by one).
 - Examine Dump text file name is changed to use date instead of screenshot name func.

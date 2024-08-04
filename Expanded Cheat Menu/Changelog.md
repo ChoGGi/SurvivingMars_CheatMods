@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v19.2 (Unreleased)
+
+## v19.2 (4 Aug 2024)
 ### Added:
 - Menu>Debug>Toggle Missing Mods Message (it's been around as a setting to manually change).
  - Use to get rid of "This savegame was loaded in the past without required mods or with an incompatible game version."
