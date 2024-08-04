@@ -1,3 +1,6 @@
+v0.5
+Added mod options to skip game rules.
+
 v0.4
 Hopefully fixed blank mission profile window.
 

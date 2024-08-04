@@ -1,3 +1,6 @@
+v2.0
+Fixed varags passing.
+
 v1.9
 Exclude Breakthroughs should properly return a random tech.
 

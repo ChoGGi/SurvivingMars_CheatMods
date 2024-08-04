@@ -333,10 +333,10 @@ local function AddUIStuff(content)
 	-- back button
 	local ChoOrig_back = content.idToolBar.idback.OnPress
 	content.idToolBar.idback.OnPress = function(...)
-		local varargs = ...
+		local varargs = {...}
 		local function CallBackFunc(answer)
 			if answer then
-				ChoOrig_back(varargs)
+				ChoOrig_back(table.unpack(varargs))
 			end
 		end
 		ChoGGi_Funcs.Common.QuestionBox(

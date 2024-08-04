@@ -2,7 +2,7 @@
 
 -- See all text styles
 
-local ChoGGi_Funcs = ChoGGi_Funcs
+--local ChoGGi_Funcs = ChoGGi_Funcs
 
 DefineClass.ChoGGi_DlgViewTextStyles = {
 	__parents = {"ChoGGi_XWindow"},

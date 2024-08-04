@@ -28,6 +28,11 @@ DefineClass.ChoGGi_SubsurfaceDepositMarker = {
 
 	grade = "Very High",
 	instant_build = true,
+
+	disabled_in_environment1 = "",
+	disabled_in_environment2 = "",
+	disabled_in_environment3 = "",
+	disabled_in_environment4 = "",
 }
 
 DefineClass.ChoGGi_TerrainDepositMarker = {
@@ -40,6 +45,11 @@ DefineClass.ChoGGi_TerrainDepositMarker = {
 
 	grade = "Very High",
 	instant_build = true,
+
+	disabled_in_environment1 = "",
+	disabled_in_environment2 = "",
+	disabled_in_environment3 = "",
+	disabled_in_environment4 = "",
 }
 
 local resource_lookup = {

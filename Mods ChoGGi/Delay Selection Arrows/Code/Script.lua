@@ -29,10 +29,10 @@ function SelectionArrowAdd(obj, ...)
 			end
 		end
 	else
-		local varargs = ...
+		local varargs = {...}
 		CreateRealTimeThread(function()
 			WaitMsg("OnRender")
-			ChoOrig_SelectionArrowAdd(obj, varargs)
+			ChoOrig_SelectionArrowAdd(obj, table.unpack(varargs))
 		end)
 	end
 end

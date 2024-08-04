@@ -281,6 +281,7 @@ Cheats>Complete Constructions: Complete all constructions instantly.
 Cheats>Complete Wires & Pipes: Complete all wires and pipes instantly.
 Cheats>Map Exploration: Scanning, deep scanning, core mines, and alien imprints.
 Cheats>Mod Editor: Open the mod editor.
+Cheats>Mystery Log: Use to remove mysteries.
 Cheats>Mystery Start: Pick and start a mystery (with instant start option).
 Certain mysteries need certain objects which get placed when the map is generated on a new game (the green rocks one for instance).
 Cheats>Remove Mysteries: Use to remove mysteries.
@@ -316,11 +317,11 @@ Debug.Grids>Show Grid Disable: Hide the white ground grids.
 Debug.Grids>Show Grid Hex: Hex (use Disable to hide).
 Debug.Grids>Show Grid Small: Small (use Disable to hide).
 Debug.Grids>Show Grid Square: Square (use Disable to hide.
-Debug.Grids>Toggle Building Grid Position: Like Toggle Building Grid, but this shows hex positioning (offset or map, change in settings).
 Debug.Grids>Toggle Building Grid: Show a hex grid around mouse:
 Green = pass/build, Yellow = no pass/build,
 Blue = pass/no build, Red = no pass/no build.
 Debug.Grids>Toggle Flight Grid: Shows a square grid with terrain/objects shape.
+Debug.Grids>Toggle Mouse Grid Position: Like Toggle Building Grid, but this shows hex positioning (offset or map, change in settings).
 Debug.Object>Anim State Set: Make selected object dance on command.
 Debug.Object>Delete All Of Selected Object: Will ask for confirmation beforehand (will not delete domes).
 Debug.Object>Delete Object(s): Deletes selected object or object under mouse cursor (most objs, not all).
@@ -344,6 +345,7 @@ Debug.Toggles>Loading Screen Log: Be able to see the console log (and other dial
 Warning: Leave "Welcome to Mars" msg onscreen till map is loaded.
 Debug.Toggles>Measure Tool: Measures stuff (press again to remove the lines).
 Debug.Toggles>Place Objects: Opens editor mode with the place objects dialog.
+Debug.Toggles>Skip Incompatible Mods: Get rid of "This savegame was loaded in the past without required mods or with an incompatible game version.".
 Debug.Toggles>Skip Missing DLC: Stops confirmation dialog about missing DLC when loading saved games.
 Debug.Toggles>Skip Missing Mods: Stops confirmation dialog about missing mods when loading saved games.
 Debug.Toggles>Toggle Editor: Some sort of editor the devs left buried in code.
@@ -498,10 +500,10 @@ ECM.Drones>Work Radius RC Rover: Change RC Rover drone radius (this ignores slid
 ECM.Mission.Disasters>Cold Waves: Set the occurrence level of Cold Wave disasters.
 ECM.Mission.Disasters>Dust Devils: Set the occurrence level of Dust Devils disasters.
 ECM.Mission.Disasters>Dust Storms: Set the occurrence level of Dust Storm disasters.
-ECM.Mission.Disasters>Marsquake: Toggle occurrence of Marsquake disasters.
+ECM.Mission.Disasters>Marsquake: Automated: Toggle occurrence of Marsquake disasters.
 ECM.Mission.Disasters>Meteor Damage: Health damage from small meteor (one-time on impact)
 ECM.Mission.Disasters>Meteors: Set the occurrence level of Meteors disasters.
-ECM.Mission.Disasters>Toxic Rains: Toggle occurrence of Toxic Rain disasters.
+ECM.Mission.Disasters>Toxic Rains: Automated: Toggle occurrence of Toxic Rain disasters.
 ECM.Mission>Change Logo: MarsExpress: Change the logo for anything that uses the logo.
 ECM.Mission>Game Rules: Change the "Game Rules".
 ECM.Mission>Instant Colony Approval: Make your colony instantly approved (can be called before you summon your first victims).
@@ -572,13 +574,17 @@ Difficulty Challenge/Named Location may not work on some saves (best to start a 
 Game.Game Speed>Game Speed: Change the game speed (only for medium/fast, normal is normal).
 Game.Game Speed>Time Factor: Change the time factor (not permanently); for ease of screenshots or something.
 Game.Interface>GUI Dock Side: Left: Change which side (most) GUI menus are on.
-Game.Interface>Never Show Hints: No more hints ever.
-Game.Interface>Reset on-screen hints: Just in case you wanted to see them again.
+Game.Interface>Reset on-screen hints: Just in case you wanted to see them again (Hints that have been dismissed will be shown again).
+Game.Interface>Toggle Infopanel Toolbar Constrain: Limits size of infopanel toolbar buttons for those that have too many buttons (and they go off panel).
+Game.Interface>Toggle Pulsating Pins: When true pins will no longer do the pulsating motion (hover over to stop).
 Game.Interface>Toggle Scroll Selection Panel: Add a scrollbar to larger selection panels (buildings, domes, etc).
 Game.Interface>Toggle Selection Panel Resize: Stops selection panel from shrinking (eg: dome).
+Game.Interface>Toggle Show Hints: No more hints ever (Enable to disable all hints).
 Game.Interface>Toggle Signs: Concrete, metal deposits, not working, etc...
 Game.Interface>Toggle Vertical Cheat Menu: Puts the menu down the side of the screen to save horizontal space for the info bar.
 Game.Interface>Toggle on-screen hints: Don't show hints for this game.
+Game.Interface>UI Transparency Mouseover: Toggle removing transparency on mouseover.
+Game.Interface>UI Transparency: Change the transparency of UI items (info panel, menu, pins).
 Game.Lightmodel>Light model: Changes the lighting mode (temporary or permanent).
 Game.Lightmodel>List Disaster: Overrides List Normal.
 Game.Lightmodel>List Normal: Changes the list of lightmodels to use (night/day/etc).
@@ -619,10 +625,6 @@ Game.Terrain>Terrain Type Change: Green or Icy mars? Coming right up!
 (don't forget a light model)
 Game.Terrain>Terrain Type Remap: Instead of replacing all textures with one then re-adding stuff, this will remap existing textures.
 Game.Terrain>Whiter Rocks: Helps the rocks blend in better when using the polar ground texture.
-Game.UI>Infopanel Toolbar Constrain: Limits size of infopanel toolbar buttons for those that have too many buttons (and they go off panel).
-Game.UI>Pulsating Pins Disable: When true pins will no longer do the pulsating motion (hover over to stop).
-Game.UI>UI Transparency Mouseover: Toggle removing transparency on mouseover.
-Game.UI>UI Transparency: Change the transparency of UI items (info panel, menu, pins).
 Shortcut Keys>Clear Log
 Shortcut Keys>Color Modifier Default Colour
 Shortcut Keys>Color Modifier Random Colour

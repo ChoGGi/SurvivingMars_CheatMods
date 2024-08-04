@@ -168,7 +168,7 @@ Actions[c] = {ActionName = T(4142--[[Dust Devils]]),
 		return SettingState(
 			ActiveMapData.MapSettings_DustDevils,
 			Translate(302535920000966--[[Set the occurrence level of %s disasters.]]):format(
-				T(4142--[[Dust Devils]])
+				Translate(4142--[[Dust Devils]])
 			)
 		)
 	end,
@@ -185,7 +185,7 @@ Actions[c] = {ActionName = T(4148--[[Cold Waves]]),
 		return SettingState(
 			ActiveMapData.MapSettings_ColdWave,
 			Translate(302535920000966--[[Set the occurrence level of %s disasters.]]):format(
-				T(4149--[[Cold Wave]])
+				Translate(4149--[[Cold Wave]])
 			)
 		)
 	end,
@@ -202,7 +202,7 @@ Actions[c] = {ActionName = T(4144--[[Dust Storms]]),
 		return SettingState(
 			ActiveMapData.MapSettings_DustStorm,
 			Translate(302535920000966--[[Set the occurrence level of %s disasters.]]):format(
-				T(4250--[[Dust Storm]])
+				Translate(4250--[[Dust Storm]])
 			)
 		)
 	end,
@@ -219,7 +219,7 @@ Actions[c] = {ActionName = T(4146--[[Meteors]]),
 		return SettingState(
 			ActiveMapData.MapSettings_Meteor,
 			Translate(302535920000966--[[Set the occurrence level of %s disasters.]]):format(
-				T(4146--[[Meteors]])
+				Translate(4146--[[Meteors]])
 			)
 		)
 	end,
@@ -236,17 +236,17 @@ Actions[c] = {ActionName = T(558613651480--[[Toxic Rains]]),
 	RolloverText = function()
 		local set = false
 		if not ChoGGi.UserSettings.DisasterRainsDisable then
-			set = T(12259--[[Automated]])
+			set = Translate(12259--[[Automated]])
 		end
 		return SettingState(
 			set,
 			Translate(302535920000867--[[Toggle occurrence of %s disasters.]]):format(
-				T(369748345658--[[Toxic Rain]])
+				Translate(369748345658--[[Toxic Rain]])
 			)
 		)
 	end,
 	OnAction = ChoGGi_Funcs.Menus.SetDisasterOccurrence_Toggle,
-	setting_name = T(369748345658--[[Toxic Rain]]),
+	setting_name = Translate(369748345658--[[Toxic Rain]]),
 }
 
 c = c + 1
@@ -257,15 +257,15 @@ Actions[c] = {ActionName = T(382404446864--[[Marsquake]]),
 	RolloverText = function()
 		local set = false
 		if not ChoGGi.UserSettings.DisasterQuakeDisable then
-			set = T(12259--[[Automated]])
+			set = Translate(12259--[[Automated]])
 		end
 		return SettingState(
 			set,
 			Translate(302535920000867--[[Toggle occurrence of %s disasters.]]):format(
-				T(382404446864--[[Marsquake]])
+				Translate(382404446864--[[Marsquake]])
 			)
 		)
 	end,
 	OnAction = ChoGGi_Funcs.Menus.SetDisasterOccurrence_Toggle,
-	setting_name = T(382404446864--[[Marsquake]]),
+	setting_name = Translate(382404446864--[[Marsquake]]),
 }

@@ -1,3 +1,6 @@
+v0.9
+Added mod option to delay infobar popup.
+
 v0.8
 Workaround for my Centred HUD mod.
 

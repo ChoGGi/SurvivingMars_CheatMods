@@ -42,7 +42,7 @@ Actions[c] = {ActionName = T(302535920000069--[[Examine]]),
 	ActionId = ".Examine",
 	ActionIcon = "CommonAssets/UI/Menu/PlayerInfo.tga",
 	RolloverText = Translate(302535920000492--[[Opens the object examiner for the selected or moused-over obj.
-Use %s to show a list of all objects in a radius around cursor.]]):format(ChoGGi_Funcs.Common.GetShortcut(".Keys.Examine Objects Shift")),
+Use %s to show a list of all objects in a radius around cursor.]]):format(ChoGGi_Funcs.Common.GetShortcut(".Keys.Examine Objects Radius")),
 	OnAction = ChoGGi_Funcs.Menus.ExamineObject,
 	ActionShortcut = what_game == "Mars" and "F4" or "Shift-F4",
 	ActionBindable = true,
@@ -55,7 +55,7 @@ Actions[c] = {ActionName = T(302535920000069--[[Examine]]) .. " " .. T(302535920
 	RolloverText = function()
 		return SettingState(
 			"ChoGGi.UserSettings.ExamineObjectRadius",
-			Translate(302535920000923--[[Set the radius used for %s examining.]]):format(ChoGGi_Funcs.Common.GetShortcut(".Keys.Examine Objects Shift"))
+			Translate(302535920000923--[[Set the radius used for %s examining.]]):format(ChoGGi_Funcs.Common.GetShortcut(".Keys.Examine Objects Radius"))
 		)
 	end,
 	OnAction = ChoGGi_Funcs.Menus.ExamineObjectRadius_Set,
@@ -328,9 +328,9 @@ Actions[c] = {ActionName = T(302535920000926--[[Toggle]]),
 	RolloverText = function()
 		local c = hr.FpsCounter
 		return SettingState(
-			c == 0 and T(847439380056--[[Disabled]])
-				or c == 1 and T(3558--[[FPS]])
-				or c == 2 and T(3559--[[ms]]),
+			c == 0 and Translate(847439380056--[[Disabled]])
+				or c == 1 and Translate(3558--[[FPS]])
+				or c == 2 and Translate(3559--[[ms]]),
 			T(302535920000905--[["Switch between FPS, ms, and off.
 This is temporary, use Options>Video>Framerate Counter to permanently save it."]])
 		)

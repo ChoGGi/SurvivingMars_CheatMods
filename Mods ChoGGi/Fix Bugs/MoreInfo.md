@@ -13,6 +13,7 @@ Leftover transport_ticket in colonist objs (assign to residence grayed out, from
 Log spam from IsBuildingInDomeRange().
 Possible fix for main menu music playing in-game on new games (mod option to disable, since there's no fade out).
 Problem updating supply grid.
+Colonists on an expedition now show proper status when selected from command centre (instead of just unknown).
 
 Storybits:
 Gene Forging storybit tech doesn't increase rare traits chance.

@@ -1691,10 +1691,10 @@ do -- Ticks
 
 	function ChoGGi_Funcs.Common.PrintFuncTime(func, ...)
 		local id = "PrintFuncTime " .. AsyncRand()
-		local varargs = ...
+		local varargs = {...}
 		pcall(function()
 			TickStart(id)
-			func(varargs)
+			func(table.unpack(varargs))
 			TickEnd(id)
 		end)
 	end
@@ -8367,7 +8367,7 @@ do -- AddMsgToFunc
 	-- changes a function to also post a Msg for use with OnMsg
 	function ChoGGi_Funcs.Common.AddMsgToFunc(class_name, func_name, msg_str, thread, ...)
 		-- anything i want to pass onto the msg
-		local varargs = ...
+		local varargs = {...}
 		-- save orig
 		SaveOrigFunc(class_name, func_name)
 		-- we want to local this after SaveOrigFunc just in case
@@ -8378,9 +8378,9 @@ do -- AddMsgToFunc
 			-- send obj along with any extra args i added
 			if thread then
 				-- calling it from a thread creates a slight delay
-				CreateRealTimeThread(Msg, msg_str, obj, varargs)
+				CreateRealTimeThread(Msg, msg_str, obj, table.unpack(varargs))
 			else
-				Msg(msg_str, obj, varargs)
+				Msg(msg_str, obj, table.unpack(varargs))
 			end
 
 --~ 			-- use to debug if getting an error

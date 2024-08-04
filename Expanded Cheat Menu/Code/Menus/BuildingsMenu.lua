@@ -416,7 +416,7 @@ Actions[c] = {ActionName = T(302535920000226--[[Remove Spire Point Limit]]),
 			ChoGGi.UserSettings.Building_dome_spot,
 			T{302535920000227--[["Build spires anywhere in domes.
 Use with <color ChoGGi_green><str></color> to fill up a dome with spires."]],
-				str = T(302535920001398--[[Remove Sponsor Limits]]),
+				str = T(302535920000230--[[Remove Building Limits]]),
 			}
 		)
 	end,

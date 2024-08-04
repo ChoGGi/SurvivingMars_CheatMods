@@ -385,7 +385,7 @@ local AsteroidNames = {
 	T(0000, "Zubeneschamali"),
 }
 
-local ChoOrig_AsteroidReusableNames
+--local ChoOrig_AsteroidReusableNames
 
 local AsteroidNames_updated
 -- Replace local func

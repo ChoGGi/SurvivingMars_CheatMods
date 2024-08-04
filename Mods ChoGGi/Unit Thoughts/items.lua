@@ -66,7 +66,7 @@ return {
 <style InfopanelResourceNoAccept>Example Text 7</style>
 <style ListItem1>Example Text 8</style>
 <style ModsUIItemStatusWarningBrawseConsole>Example Text 9</style>
-<style LandingPosNameAlt>Example Text 10</style>]]),
+<style LandingPosNameAlt>Example Text 10</style>]]), -- see my Example View TextStyles mod for more textstyles
 		"DefaultValue", 1,
 		"MinValue", 1,
 		"MaxValue", 10,

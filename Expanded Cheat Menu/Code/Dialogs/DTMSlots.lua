@@ -2,9 +2,9 @@
 
 -- displays texture info
 
-local ChoGGi_Funcs = ChoGGi_Funcs
+--local ChoGGi_Funcs = ChoGGi_Funcs
 local T = T
-local Translate = ChoGGi_Funcs.Common.Translate
+--local Translate = ChoGGi_Funcs.Common.Translate
 
 DefineClass.ChoGGi_DlgDTMSlots = {
 	__parents = {"ChoGGi_XWindow"},

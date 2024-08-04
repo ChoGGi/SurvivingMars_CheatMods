@@ -12,7 +12,6 @@ local IsBox = IsBox
 local IsKindOf = IsKindOf
 local IsPoint = IsPoint
 local IsValid = IsValid
-local IsValidEntity = IsValidEntity
 local Max = Max
 local Sleep = Sleep
 local WaitMsg = WaitMsg
@@ -164,7 +163,6 @@ function ChoGGi_Funcs.Common.GenerateScreenshotFilename(prefix, folder, ext, jus
 	end
 	return string.format("%s%s%04d.%s", folder, prefix, index + 1, ext)
 end
-local GenerateScreenshotFilename = ChoGGi_Funcs.Common.GenerateScreenshotFilename
 
 do -- DumpTableFunc
 	local CmpLower = CmpLower
@@ -1985,7 +1983,7 @@ end -- do
 
 -- MonitorFunc (shortcut name in AddedFunctions)
 function ChoGGi_Funcs.Common.MonitorFunctionResults(func, ...)
-	local varargs = ...
+	local varargs = {...}
 
 	local results_list = {}
 	local dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(results_list, {
@@ -2001,7 +1999,7 @@ function ChoGGi_Funcs.Common.MonitorFunctionResults(func, ...)
 			local _, msg_dlg = WaitMsg("ChoGGi_dlgs_examine_autorefresh")
 			if msg_dlg == dlg then
 				table.iclear(results_list)
-				local results = {func(varargs)}
+				local results = {func(table.unpack(varargs))}
 				for i = 1, #results do
 					results_list[i] = results[i]
 				end

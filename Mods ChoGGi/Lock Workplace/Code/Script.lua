@@ -39,7 +39,7 @@ function Colonist:CheckForcedWorkplace(...)
 				-- function Workplace:ColonistInteract(col)
 				if workplace.active_shift == 0 then
 					current_shift = CurrentWorkshift --should be the shift @ click moment
-					for i = 1, 3 do
+					for _ = 1, 3 do
 						if workplace:HasFreeWorkSlots(current_shift) then
 							break
 						end

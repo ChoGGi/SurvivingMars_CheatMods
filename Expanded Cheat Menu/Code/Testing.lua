@@ -11,8 +11,7 @@ end
 
 local ChoGGi_Funcs = ChoGGi_Funcs
 local what_game = ChoGGi.what_game
-local T = T
-local Translate = ChoGGi_Funcs.Common.Translate
+--local Translate = ChoGGi_Funcs.Common.Translate
 
 local g_env, debug
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
@@ -1162,10 +1161,10 @@ end
 --~ 		-- ParseText is picky about the text it'll parse
 --~ 		local orig = XText.ParseText
 --~ 		function XText:ParseText(...)
---~ 			local varargs = ...
+--~ 			local varargs = {...}
 --~ 			local ret
 --~ 			if not procall(function()
---~ 				ret = orig(self, varargs)
+--~ 				ret = orig(self, table.unpack(varargs))
 --~ 			end) then
 --~ 				ChoGGi_Funcs.Common.Dump(self.text, "w", "ParseText", "lua", nil, true)
 --~ 			end
@@ -1274,7 +1273,7 @@ end -- ClassesPreprocess
 --~ 	})
 --~ 	end
 --~ 	c = c + 1
---~ 	list[c] = ...
+--~ 	list[c] = {...}
 --~ 	if c > 100 then
 --~ 		table.iclear(list)
 --~ 		c = 0

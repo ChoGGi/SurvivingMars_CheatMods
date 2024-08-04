@@ -1,3 +1,6 @@
+v0.8
+Fixed varags passing.
+
 v0.7
 Mod option for random breakthroughs.
 Fixed issue with Global Support?

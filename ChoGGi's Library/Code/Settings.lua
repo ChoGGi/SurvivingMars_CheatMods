@@ -2,7 +2,7 @@
 
 local ChoGGi_Funcs = ChoGGi_Funcs
 local what_game = ChoGGi.what_game
-local T = T
+--local T = T
 local Translate = ChoGGi_Funcs.Common.Translate
 
 -- stored tables stuff

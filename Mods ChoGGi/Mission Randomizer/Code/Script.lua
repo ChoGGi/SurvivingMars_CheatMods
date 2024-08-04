@@ -12,22 +12,34 @@ local mod_RandomGameRules
 local mod_SkipAchievementRules
 local mod_CustomGameRules
 
--- Update mod options
+local rule_mod_options = {}
+local GameRulesMap = GameRulesMap
+for id in pairs(GameRulesMap) do
+	rule_mod_options[id] = true
+end
+
+-- Fired when settings are changed/init
 local function ModOptions(id)
 	-- id is from ApplyModOptions
 	if id and id ~= CurrentModId then
 		return
 	end
 
-	mod_RandomLocation = CurrentModOptions:GetProperty("RandomLocation")
-	mod_RandomSponsor = CurrentModOptions:GetProperty("RandomSponsor")
-	mod_RandomCommander = CurrentModOptions:GetProperty("RandomCommander")
-	mod_RandomMystery = CurrentModOptions:GetProperty("RandomMystery")
-	mod_RandomLogo = CurrentModOptions:GetProperty("RandomLogo")
-	mod_RandomRivals = CurrentModOptions:GetProperty("RandomRivals")
-	mod_RandomGameRules = CurrentModOptions:GetProperty("RandomGameRules")
-	mod_SkipAchievementRules = CurrentModOptions:GetProperty("SkipAchievementRules")
-	mod_CustomGameRules = CurrentModOptions:GetProperty("CustomGameRules")
+	local options = CurrentModOptions
+
+	for id in pairs(rule_mod_options) do
+		rule_mod_options[id] = options:GetProperty(id)
+	end
+
+	mod_RandomLocation = options:GetProperty("RandomLocation")
+	mod_RandomSponsor = options:GetProperty("RandomSponsor")
+	mod_RandomCommander = options:GetProperty("RandomCommander")
+	mod_RandomMystery = options:GetProperty("RandomMystery")
+	mod_RandomLogo = options:GetProperty("RandomLogo")
+	mod_RandomRivals = options:GetProperty("RandomRivals")
+	mod_RandomGameRules = options:GetProperty("RandomGameRules")
+	mod_SkipAchievementRules = options:GetProperty("SkipAchievementRules")
+	mod_CustomGameRules = options:GetProperty("CustomGameRules")
 
 	-- Doesn't hurt...
 	local rule_length = #Presets.GameRules.Default
@@ -93,17 +105,30 @@ function OnMsg.ChangeMap(map)
 		if mod_CustomGameRules then
 			local old_rules = g_CurrentMissionParams.idGameRules or empty_table
 			for id in pairs(old_rules) do
-				rules[id]= true
+				rules[id] = true
 			end
 		end
 		local rand_rules_count = 0
+
+		local orig_rules = Presets.GameRules.Default
+		local custom_rules = {}
+		local c = 0
+		for i = 1, #orig_rules do
+			local rule = orig_rules[i]
+			if mod_SkipAchievementRules and not achievement_blockers[rule.id]
+				or not mod_SkipAchievementRules
+			then
+				if rule_mod_options[rule.id] then
+					c = c + 1
+					custom_rules[c] = rule
+				end
+			end
+		end
+
 		-- eh, it'll do
 		for _ = 1, 999 do
-			local rule = table.rand(Presets.GameRules.Default)
-			local is_achievement_blocker = not mod_SkipAchievementRules and false
-				or mod_SkipAchievementRules and achievement_blockers[rule.id]
-
-			if not rules[rule.id] and not is_achievement_blocker then
+			local rule = table.rand(custom_rules)
+			if not rules[rule.id] then
 				rand_rules_count = rand_rules_count + 1
 				rules[rule.id] = true
 				--

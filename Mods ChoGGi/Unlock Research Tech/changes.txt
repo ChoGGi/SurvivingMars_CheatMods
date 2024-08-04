@@ -1,3 +1,6 @@
+v0.5
+Fixed varags passing.
+
 v0.4
 Forgot to remove an "end".
 

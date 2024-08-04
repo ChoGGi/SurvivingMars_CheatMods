@@ -37,6 +37,14 @@ return {
 		"MaxValue", 255,
 	}),
 	PlaceObj("ModItemOptionNumber", {
+		"name", "InfoBoxDelay",
+		"DisplayName", T(0000, "InfoBox Delay"),
+		"Help", T(0000, "Delay popup in seconds, 0 to disable."),
+		"DefaultValue", 0,
+		"MinValue", 0,
+		"MaxValue", 1000,
+	}),
+	PlaceObj("ModItemOptionNumber", {
 		"name", "TextStyle",
 		"DisplayName", T(302535920011378, "Text Style"),
 		"Help", T(302535920011496, [[<style EncyclopediaArticleTitle>Example Text 1</style>
@@ -48,7 +56,7 @@ return {
 <style InfopanelResourceNoAccept>Example Text 7</style>
 <style ListItem1>Example Text 8</style>
 <style ModsUIItemStatusWarningBrawseConsole>Example Text 9</style>
-<style LandingPosNameAlt>Example Text 10</style>]]),
+<style LandingPosNameAlt>Example Text 10</style>]]), -- see my Example View TextStyles mod for more textstyles
 		"DefaultValue", 1,
 		"MinValue", 1,
 		"MaxValue", 10,

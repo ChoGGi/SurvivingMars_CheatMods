@@ -1,1 +1,3 @@
 add mod options count for water/concrete/metal/rares
+
+Make it update without having to zoom?

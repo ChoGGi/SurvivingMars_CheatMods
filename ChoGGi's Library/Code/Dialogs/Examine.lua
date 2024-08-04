@@ -71,12 +71,6 @@ local XFlashWindow = XFlashWindow
 local TMeta = TMeta
 local TConcatMeta = TConcatMeta
 
--- actually local them?
--- JA3
-if what_game == "Mars" then
-	local EnumVars = EnumVars
-end
-
 local Translate = ChoGGi_Funcs.Common.Translate
 local IsControlPressed = ChoGGi_Funcs.Common.IsControlPressed
 local IsShiftPressed = ChoGGi_Funcs.Common.IsShiftPressed
@@ -4133,7 +4127,7 @@ function ChoGGi_Funcs.Common.OpenInExamineDlg(obj, parent, title, ...)
 		params.parent = parent
 	end
 	if title then
-		params.title = title
+		params.title = Translate(title)
 		params.override_title = true
 	end
 

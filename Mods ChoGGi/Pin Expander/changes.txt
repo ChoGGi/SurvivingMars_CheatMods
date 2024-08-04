@@ -1,3 +1,6 @@
+v1.7
+Fixed varags passing.
+
 v1.6
 Sphere pin shows other spheres (mystery, thanks TheSilentBang).
 Added mod option to disable mod.

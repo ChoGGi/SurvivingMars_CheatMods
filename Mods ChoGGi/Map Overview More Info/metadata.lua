@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1768449416",
 	"pops_any_uuid", "77783c38-6f89-4371-9628-a6fdb2fec8bb",
 	"lua_revision", 1007000, -- Picard
-	"version", 8,
+	"version", 9,
 	"version_major", 0,
-	"version_minor", 8,
+	"version_minor", 9,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -23,6 +23,7 @@ Show Metals/Show Polymers/Show Scan Progress: What you'd expect.
 Show Dropped Resources: Show indicator for any dropped resource piles (this will ignore any within range of a drone controller).
 Text Opacity: 0-255 (0 == completely visible).
 Text Background: Add black background around info.
+InfoBox Delay: Delay popup in seconds, 0 to disable.
 Text Style: Defaults to a larger text style, change with this (see tooltip for text styles).
 
 

@@ -7,7 +7,7 @@ local what_game = ChoGGi.what_game
 
 -- local some globals
 local type, tostring = type, tostring
-local _InternalTranslate, T, IsT = _InternalTranslate, T, IsT
+local _InternalTranslate, T = _InternalTranslate, T
 local pcall = pcall
 
 -- translate func that always returns a string (string id, {id,value}, nil)

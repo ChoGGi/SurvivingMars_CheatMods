@@ -14,10 +14,10 @@ else
 	local procall = procall
 
 	SafeTrans = function(...)
-		local varargs = ...
+		local varargs = {...}
 		local str
 		procall(function()
-			str = _InternalTranslate(T(varargs))
+			str = _InternalTranslate(T(table.unpack(varargs)))
 		end)
 		return str or T(302535920011424, "You need to be in-game to see this text (or use my Library mod).")
 	end

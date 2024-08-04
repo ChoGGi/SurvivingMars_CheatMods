@@ -5,7 +5,7 @@
 
 local ChoGGi_Funcs = ChoGGi_Funcs
 local T = T
-local Translate = ChoGGi_Funcs.Common.Translate
+--local Translate = ChoGGi_Funcs.Common.Translate
 
 -- store opened dialogs (make sure any refs to this table are only used in this mod)
 if not rawget(_G, "ChoGGi_dlgs_opened") then

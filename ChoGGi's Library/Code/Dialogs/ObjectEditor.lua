@@ -6,7 +6,6 @@ local ChoGGi_Funcs = ChoGGi_Funcs
 local tostring, type, table = tostring, type, table
 
 local IsPoint = IsPoint
-local Min = Min
 local CmpLower = CmpLower
 
 local T = T
@@ -332,7 +331,7 @@ function ChoGGi_DlgObjectEditor:CreateProp(obj)
 		return obj
 	end
 
-	local meta = getmetatable(obj)
+	--local meta = getmetatable(obj)
 	if obj_type == "table" then
 --~ 		-- objlist ftw?
 --~ 		if meta and meta == objlist then

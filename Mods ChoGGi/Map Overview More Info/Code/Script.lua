@@ -7,6 +7,7 @@ local mod_TextOpacity
 local mod_TextBackground
 local mod_TextStyle
 local mod_ShowDropped
+local mod_InfoBoxDelay
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -22,6 +23,7 @@ local function ModOptions(id)
 	mod_TextBackground = options:GetProperty("TextBackground")
 	mod_TextStyle = options:GetProperty("TextStyle")
 	mod_ShowDropped = options:GetProperty("ShowDropped")
+	mod_InfoBoxDelay = options:GetProperty("InfoBoxDelay") * 1000
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -243,4 +245,14 @@ function OverviewModeDialog:GenerateSectorRolloverContext(sector, ...)
 	end
 
 	return ret1, ret2
+end
+
+local ChoOrig_OverviewModeDialog_CreateSectorRollover = OverviewModeDialog.CreateSectorRollover
+function OverviewModeDialog.CreateSectorRollover(...)
+	local varargs = {...}
+
+	CreateRealTimeThread(function()
+		Sleep(mod_InfoBoxDelay)
+		ChoOrig_OverviewModeDialog_CreateSectorRollover(table.unpack(varargs))
+	end)
 end

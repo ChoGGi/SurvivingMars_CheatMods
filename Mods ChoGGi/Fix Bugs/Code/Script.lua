@@ -163,7 +163,8 @@ do -- CityStart/LoadGame
 		local ResupplyItemDefinitions = ResupplyItemDefinitions
 		local bt = BuildingTemplates
 		local main_realm = GetRealmByID(MainMapID)
-
+    local objs
+  
 		--
 		-- See OnMsg.TechResearched below for more info about GeneForging
 		if event == "LoadGame" and UIColony:IsTechResearched("GeneForging") then
@@ -196,7 +197,7 @@ do -- CityStart/LoadGame
 
 			--
 			-- Fix No Power Dome Buildings
-			local objs = map.realm:MapGet("map", "ElectricityGridObject")
+			objs = map.realm:MapGet("map", "ElectricityGridObject")
 			for i = 1, #objs do
 				local obj = objs[i]
 				-- should be good enough to not get false positives?
@@ -211,7 +212,7 @@ do -- CityStart/LoadGame
 			--
 			-- Leftover particles from re-fabbing rare extractors with particles attached (concrete/reg metals seem okay)
 			-- Leftover from before my fix to stop it from happening
-			local objs = map.realm:MapGet("map", "ParSystem", function(par_obj)
+			objs = map.realm:MapGet("map", "ParSystem", function(par_obj)
 				local par_name = par_obj:GetParticlesName()
 				if par_name == "UniversalExtractor_Steam_02"
 					or par_name == "UniversalExtractor_Smoke"
@@ -232,14 +233,14 @@ do -- CityStart/LoadGame
 
 		--
 		-- St. Elmo's Fire: Stop meteoroids from destroying sinkholes (existing saves)
-		local objs = UIColony:GetCityLabels("Sinkhole")
+		objs = UIColony:GetCityLabels("Sinkhole")
 		for i = 1, #objs do
 			objs[i].indestructible = true
 		end
 
 		--
 		-- Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC)
-		local objs = UIColony:GetCityLabels("Colonist")
+		objs = UIColony:GetCityLabels("Colonist")
 		for i = 1, #objs do
 			local obj = objs[i]
 
@@ -1088,6 +1089,25 @@ function GetCommandCenterTransportsList(...)
 
 	return ChoOrig_GetCommandCenterTransportsList(...)
 end
+
+--
+-- Colonists on an expedition show unknown as their status, since their command is WaitToAppear instead of Embark
+
+-- WaitToAppear isn't listed in ColonistCommands, though Embark = T(4321, "On an expedition") is listed...
+-- Maybe they planned to use WaitToAppear elsewhere?
+local ChoOrig_Colonist_Getui_command = Colonist.Getui_command
+function Colonist:Getui_command(...)
+	if not mod_EnableMod then
+		return ChoOrig_Colonist_Getui_command(self, ...)
+	end
+
+	if self.disappeared and IsKindOf(self.holder, "RocketBase") then
+		return T(4321--[[On an expedition]])
+	end
+
+	return ChoOrig_Colonist_Getui_command(self, ...)
+end
+
 
 --
 --

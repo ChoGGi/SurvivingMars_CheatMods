@@ -1,5 +1,6 @@
 v6.0
-Removed mod option for PlanetaryAnomalyBreakthroughs
+Changed status of expedition colonists to reflect where they aren't.
+Removed mod option for PlanetaryAnomalyBreakthroughs.
 
 v5.9
 Fix for blank transportation panel in CCC after a certain point in Marsgate mystery (thanks plisken451).

@@ -265,7 +265,7 @@ local state_table = {
 local items = {}
 local c = 0
 local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
-	local varargs = ...
+	local varargs = {...}
 
 	local objs
 	local obj = button_obj.context
@@ -427,7 +427,7 @@ local function OnPress(pins_obj, button_func, button_obj, gamepad, ...)
 				hint_bottom = T(302535920011154, "<left_click> Select <right_click> View"),
 				mouseup = function(item, _, _, button)
 					if is_rocket then
-						button_func(button_obj, gamepad, varargs)
+						button_func(button_obj, gamepad, table.unpack(varargs))
 					else
 						-- not sure why obj in this func always the last obj in items list?
 						obj = item.showobj

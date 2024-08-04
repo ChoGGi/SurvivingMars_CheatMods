@@ -17,14 +17,14 @@ function ChoGGi_Funcs.Menus.SetDisasterOccurrence_Toggle(action)
 	local us = ChoGGi.UserSettings
 
 	local setting
-	if setting_name == T(369748345658--[[Toxic Rain]]) then
+	if setting_name == Translate(369748345658--[[Toxic Rain]]) then
 		if us.DisasterRainsDisable then
 			us.DisasterRainsDisable = nil
 		else
 			us.DisasterRainsDisable = true
 		end
 		setting = us.DisasterRainsDisable
-	elseif setting_name == T(382404446864--[[Marsquake]]) then
+	elseif setting_name == Translate(382404446864--[[Marsquake]]) then
 		if us.DisasterQuakeDisable then
 			us.DisasterQuakeDisable = nil
 		else
