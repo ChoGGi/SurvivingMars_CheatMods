@@ -2,7 +2,7 @@ return PlaceObj("ModDef", {
 	"title", "A Tubular Glass House 2",
 	"version", 1,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"id", "ChoGGi_ATubularGlassHouse",
 	"author", "Stealth4Health & ChoGGi",

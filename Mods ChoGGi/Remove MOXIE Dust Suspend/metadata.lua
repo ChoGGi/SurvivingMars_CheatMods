@@ -2,7 +2,7 @@ return PlaceObj("ModDef", {
 	"title", "Remove MOXIE Dust Suspend",
 	"version", 1,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"id", "ChoGGi_RemoveMOXIEDustSuspend",
 	"author", "ChoGGi",
 	"code", {

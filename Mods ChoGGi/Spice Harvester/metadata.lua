@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 12,
-			"version_minor", 1,
+			"version_minor", 2,
 		}),
 	},
 	"title", "Spice Harvester",
@@ -13,7 +13,7 @@ return PlaceObj("ModDef", {
 	"pops_any_uuid", "a2272002-7722-4290-bf84-63afec2c1100",
 	"version", 11,
 	"version_major", 1,
-	"version_minor", 1,
+	"version_minor", 2,
 	"lua_revision", 1007000, -- Picard
 	"image", "Preview.jpg",
 	"author", "ChoGGi",

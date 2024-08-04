@@ -2,7 +2,7 @@ return PlaceObj("ModDef", {
 	"title", "Disable Welcome To Mars Voice",
 	"version", 1,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 
 	"image", "Preview.png",
 	"id", "ChoGGi_DisableWelcomeToMarsVoice",
