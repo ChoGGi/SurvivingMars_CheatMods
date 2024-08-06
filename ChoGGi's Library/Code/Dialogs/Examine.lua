@@ -111,9 +111,9 @@ DefineClass.ChoGGi_DlgExamine = {
 	str_object = false,
 	-- we store the str_object > obj here
 	obj_ref = false,
-	-- used to store visibility of obj
-	orig_vis_flash = false,
-	flashing_thread = false,
+--~ 	-- used to store visibility of obj
+--~ 	orig_vis_flash = false,
+--~ 	flashing_thread = false,
 	-- If it's transparent or not
 	transp_mode = false,
 	-- get list of all values from metatables
@@ -1552,7 +1552,7 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 					end,
 					scrollto = scrolled_text,
 					title = title,
-					hint_ok = Translate(302535920000047):format(ConvertToOSPath("AppData/")),
+					hint_ok = Translate(302535920000047--[["View Text/Object, and optionally dumps text to <green>%slogs\DumpedExamine.lua</green> (may take awhile for large text)."]]):format(ConvertToOSPath("AppData/")),
 					custom_func = function(overwrite)
 						self:DumpExamineText(str, name, overwrite and "w")
 					end,

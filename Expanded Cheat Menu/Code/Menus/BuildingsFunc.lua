@@ -249,7 +249,7 @@ function ChoGGi_Funcs.Menus.SetServiceBuildingStats()
 	local is_service = obj:IsKindOf("Service")
 
 	local ReturnEditorType = ChoGGi_Funcs.Common.ReturnEditorType
-	local hint_type = T(302535920000138--[[Value needs to be a %s.]])
+	local hint_type = Translate(302535920000138--[[Value needs to be a %s.]])
 	local item_list = {
 		{text = T(728--[[Health change on visit]]), value = obj:GetClassValue("health_change") / r, setting = "health_change", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "health_change"))},
 		{text = T(729--[[Sanity change on visit]]), value = obj:GetClassValue("sanity_change") / r, setting = "sanity_change", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "sanity_change"))},
@@ -374,7 +374,7 @@ function ChoGGi_Funcs.Menus.SetServiceBuildingStats()
 		items = item_list,
 		title = T(302535920000129--[[Set]]) .. " " .. name .. " " .. T(302535920001114--[[Service Building Stats]]),
 		hint = Translate(302535920001339--[[Are settings custom: %s]]):format(custom_settings),
-		hint = Translate(T(302535920001340--[[Invalid settings will be skipped.]]) .. "\n\n" .. T(302535920001339--[[Are settings custom: %s]])):format(custom_settings),
+		hint = Translate(T(302535920001340--[[Invalid settings will be skipped.]]) .. "\n\n" .. Translate(302535920001339--[[Are settings custom: %s]])):format(custom_settings),
 		custom_type = 4,
 		skip_sort = true,
 		checkboxes = {
@@ -445,6 +445,10 @@ function ChoGGi_Funcs.Menus.SetExportWhenThisAmount()
 end
 
 function ChoGGi_Funcs.Menus.SetSpaceElevatorTransferAmount(action)
+	if not action then
+		return
+	end
+
 	local setting_name = action.setting_name
 	local title = action.setting_msg
 
@@ -605,7 +609,7 @@ function ChoGGi_Funcs.Menus.AlwaysDustyBuildings_Toggle()
 
 	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		T(302535920000107--[[%s: I must not fear. Fear is the mind-killer. Fear is the little-death that brings total obliteration.
+		Translate(302535920000107--[[%s: I must not fear. Fear is the mind-killer. Fear is the little-death that brings total obliteration.
 I will face my fear. I will permit it to pass over me and through me,
 and when it has gone past I will turn the inner eye to see its path.
 Where the fear has gone there will be nothing. Only I will remain.]]):format(ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.AlwaysDustyBuildings)),
@@ -1250,7 +1254,7 @@ function ChoGGi_Funcs.Menus.SetFullyAutomatedBuildings()
 		ChoGGi.UserSettings.BuildingSettings[id].auto_performance = value
 		ChoGGi_Funcs.Settings.WriteSettings()
 		MsgPopup(
-			T(302535920000143--[["%s
+			Translate(302535920000143--[["%s
 I presume the PM's in favour of the scheme because it'll reduce unemployment."]]):format(choice[1].text),
 			T(302535920000196--[[Fully Automated Building]])
 		)
@@ -1310,7 +1314,7 @@ do -- SchoolTrainAll_Toggle/SanatoriumCureAll_Toggle
 
 		ChoGGi_Funcs.Settings.WriteSettings()
 		MsgPopup(
-			T(302535920000148--[["%s:
+			Translate(302535920000148--[["%s:
 You keep your work station so clean, Jerome.
 It's next to godliness. Isn't that what they say?"]]):format(ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.SchoolTrainAll)),
 			T(302535920000200--[[Train All]])
@@ -1328,7 +1332,7 @@ It's next to godliness. Isn't that what they say?"]]):format(ChoGGi_Funcs.Common
 
 		ChoGGi_Funcs.Settings.WriteSettings()
 		MsgPopup(
-			T(302535920000149--[[%s:
+			Translate(302535920000149--[[%s:
 There's more vodka in this piss than there is piss.]]):format(ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.SanatoriumCureAll)),
 			T(302535920000198--[[Cure All]])
 		)
@@ -1440,7 +1444,7 @@ function ChoGGi_Funcs.Menus.CropFailThreshold_Toggle()
 
 	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		T(302535920000153--[["%s:
+		Translate(302535920000153--[["%s:
 So, er, we the crew of the Eagle 5, if we do encounter, make first contact with alien beings,
 it is a friendship greeting from the children of our small but great planet of Potatoho."]]):format(ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.CropFailThreshold)),
 		T(4711--[[Crop Fail Threshold]])
@@ -1477,7 +1481,7 @@ function ChoGGi_Funcs.Menus.CheapConstruction_Toggle()
 
 	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		T(302535920000154--[[%s:
+		Translate(302535920000154--[[%s:
 Your home will not be a hut on some swampy outback planet your home will be the entire universe.]]):format(ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.Metals_cost_modifier)),
 		T(302535920000214--[[Cheap Construction]])
 	)
@@ -1491,7 +1495,7 @@ function ChoGGi_Funcs.Menus.BuildingDamageCrime_Toggle()
 
 	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		T(302535920000155--[[%s:
+		Translate(302535920000155--[[%s:
 We were all feeling a bit shagged and fagged and fashed,
 it having been an evening of some small energy expenditure, O my brothers.
 So we got rid of the auto and stopped off at the Korova for a nightcap.]]):format(ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.CrimeEventSabotageBuildingsCount)),
@@ -1623,6 +1627,10 @@ end
 
 
 function ChoGGi_Funcs.Menus.SetUIRangeBuildingRadius(action)
+	if not action then
+		return
+	end
+
 	local id = action.bld_id
 	local msgpopup = action.bld_msg
 

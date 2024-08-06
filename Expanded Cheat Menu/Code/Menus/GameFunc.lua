@@ -317,6 +317,10 @@ function ChoGGi_Funcs.Menus.SetGameSpeed()
 end
 
 function ChoGGi_Funcs.Menus.ChangeLightmodelList(action)
+	if not action then
+		return
+	end
+
 	local setting_func = action.setting_func
 	local setting_title = action.setting_title
 
@@ -464,6 +468,10 @@ function ChoGGi_Funcs.Menus.ShowInterfaceInScreenshots_Toggle()
 end
 
 function ChoGGi_Funcs.Menus.TakeScreenshot(action)
+	if not action then
+		return
+	end
+
 	local which = action.setting_mask
 
 	CreateRealTimeThread(function()

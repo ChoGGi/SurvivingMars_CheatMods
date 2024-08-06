@@ -339,7 +339,7 @@ function ChoGGi_Funcs.Menus.AddApplicantsToPool()
 		checkboxes = {
 			{
 				title = T(302535920000759--[[Clear Applicant Pool]]),
-				hint = T(302535920000760--[["Remove all the applicants currently in the pool (checking this will ignore your list selection).
+				hint = Translate(302535920000760--[["Remove all the applicants currently in the pool (checking this will ignore your list selection).
 
 Current Pool Size: %s"]]):format(tostring(#g_ApplicantPool)),
 			},
@@ -455,7 +455,7 @@ function ChoGGi_Funcs.Menus.VisitFailPenalty_Toggle()
 
 	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		T(302535920000772--[["%s:
+		Translate(302535920000772--[["%s:
 The mill's closed. There's no more work. We're destitute. I'm afraid I have no choice but to sell you all for scientific experiments."]]):format(ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.VisitFailPenalty)),
 		T(302535920000397--[[Visit Fail Penalty]])
 	)
@@ -579,7 +579,7 @@ function ChoGGi_Funcs.Menus.NoHomeComfortDamage_Toggle()
 
 	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		T(302535920000780--[["%s:
+		Translate(302535920000780--[["%s:
 Oh, give me a home where the Buffalo roam.
 Where the Deer and the Antelope play;
 Where seldom is heard a discouraging word."]]):format(ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.NoHomeComfort)),
@@ -626,7 +626,7 @@ function ChoGGi_Funcs.Menus.ColonistsStarve_Toggle()
 
 	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		T(302535920000784--[[%s: A stale piece of bread is better than nothing.
+		Translate(302535920000784--[[%s: A stale piece of bread is better than nothing.
 And nothing is better than a big juicey steak.
 Therefore a stale piece of bread is better than a big juicy steak.]]):format(ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.TimeBeforeStarving)),
 		T(302535920000418--[[Colonists Starve]])
@@ -708,7 +708,7 @@ function ChoGGi_Funcs.Menus.SetOutsideWorkplaceRadius()
 
 			ChoGGi_Funcs.Settings.WriteSettings()
 			MsgPopup(
-				T(302535920000789--[[%s: There's a voice that keeps on calling me
+				Translate(302535920000789--[[%s: There's a voice that keeps on calling me
 Down the road is where I'll always be
 Maybe tomorrow, I'll find what I call home
 Until tomorrow, you know I'm free to roam]]):format(choice[1].text),
@@ -829,6 +829,10 @@ function ChoGGi_Funcs.Menus.ColonistsAddSpecializationToAll()
 end
 
 function ChoGGi_Funcs.Menus.SetColonistsAge(action)
+	if not action then
+		return
+	end
+
 	local setting_mask = action.setting_mask
 
 	local default_str = T(1000121--[[Default]])
@@ -949,6 +953,10 @@ function ChoGGi_Funcs.Menus.SetColonistsAge(action)
 end
 
 function ChoGGi_Funcs.Menus.SetColonistsGender(action)
+	if not action then
+		return
+	end
+
 	local setting_mask = action.setting_mask
 	local TraitPresets = TraitPresets
 
@@ -1066,6 +1074,10 @@ function ChoGGi_Funcs.Menus.SetColonistsGender(action)
 end
 
 function ChoGGi_Funcs.Menus.SetColonistsSpecialization(action)
+	if not action then
+		return
+	end
+
 	local setting_mask = action.setting_mask
 	local TraitPresets = TraitPresets
 
@@ -1194,6 +1206,10 @@ function ChoGGi_Funcs.Menus.SetColonistsSpecialization(action)
 end
 
 function ChoGGi_Funcs.Menus.SetColonistsRace(action)
+	if not action then
+		return
+	end
+
 	local setting_mask = action.setting_mask
 
 	local default_setting, setting_type, setting_name
@@ -1318,6 +1334,10 @@ function ChoGGi_Funcs.Menus.SetColonistsRace(action)
 end
 
 function ChoGGi_Funcs.Menus.SetColonistsTraits(action)
+	if not action then
+		return
+	end
+
 	local setting_mask = action.setting_mask
 	local TraitPresets = TraitPresets
 
@@ -1729,6 +1749,10 @@ function ChoGGi_Funcs.Menus.SetColonistMoveSpeed()
 end
 
 function ChoGGi_Funcs.Menus.SetBuildingTraits(action)
+	if not action then
+		return
+	end
+
 	local toggle_type = action.toggle_type
 
 	local TraitPresets = TraitPresets

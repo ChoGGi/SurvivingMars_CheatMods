@@ -7,7 +7,7 @@ local table = table
 local type = type
 local HasModsWithOptions = HasModsWithOptions
 local T = T
---local Translate = ChoGGi_Funcs.Common.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
 local mod_DisableDialogEscape
 

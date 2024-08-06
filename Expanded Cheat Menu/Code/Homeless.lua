@@ -5,7 +5,7 @@
 local ChoGGi_Funcs = ChoGGi_Funcs
 local what_game = ChoGGi.what_game
 local T = T
---local Translate = ChoGGi_Funcs.Common.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
 -- Defaults to 20 items
 const.nConsoleHistoryMaxSize = 100

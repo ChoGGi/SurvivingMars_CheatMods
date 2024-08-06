@@ -823,12 +823,11 @@ GetComputerName(): %s
 
 
 ]],
-		T(5568--[[Stats]]),
+		Translate(5568--[[Stats]]),
 		table.concat(hw),
 		table.concat(mem),
 		table.concat({GetAdapterMode(0)}, " "),
 		GetMachineID(),
-		table.concat(GetSupportedMSAAModes(), " "):gsub("HR::", ""),
 		GetSupportedShaderModel(),
 		GetMaxStrIDMemoryStats(),
 		GameObjectStats(),
@@ -845,6 +844,10 @@ GetComputerName(): %s
 end
 
 function ChoGGi_Funcs.Menus.OpenUrl(action)
+	if not action then
+		return
+	end
+
 	OpenUrl(action.setting_url)
 end
 
@@ -877,8 +880,8 @@ function ChoGGi_Funcs.Menus.DeleteSavedGames()
 			text = data.displayname,
 			value = data.savename,
 
-			hint = T(4274--[[Playtime : <playtime>]]):gsub("<playtime>", Translate(playtime)) .. "\n"
-				.. T(4273--[[Saved on : <save_date>]]):gsub("<save_date>", save_date) .. "\n\n"
+			hint = Translate(4274--[[Playtime : <playtime>]]):gsub("<playtime>", Translate(playtime)) .. "\n"
+				.. Translate(4273--[[Saved on : <save_date>]]):gsub("<save_date>", save_date) .. "\n\n"
 				.. T(302535920001274--[[This is permanent!]]),
 		}
 	end
@@ -1209,8 +1212,8 @@ function ChoGGi_Funcs.Menus.ResetECMSettings()
 	end
 
 	ChoGGi_Funcs.Common.QuestionBox(
-		T(302535920001072--[[Are you sure you want to reset ECM settings?
-Old settings are saved as %s (or not saved if you don't use the HelperMod)]]):format(old) .. "\n\n" .. T(302535920001070--[[Restart to take effect.]]),
+		Translate(302535920001072--[[Are you sure you want to reset ECM settings?
+Old settings are saved as %s (or not saved if you don't use the HelperMod)]]):format(old) .. "\n\n" .. Translate(302535920001070--[[Restart to take effect.]]),
 		CallBackFunc,
 		T(302535920001084--[[Reset]]) .. "!"
 	)
@@ -1229,7 +1232,7 @@ end
 
 function ChoGGi_Funcs.Menus.AboutECM()
 	ChoGGi_Funcs.Common.MsgWait(
-		T(302535920001078--[["Hover mouse over menu item to get description and enabled status
+		Translate(302535920001078--[["Hover mouse over menu item to get description and enabled status
 If there isn't a status then it's likely a list of options to choose from
 
 For any issues; please report them to my Github/Steam/NexusMods page, or email %s"]]):format(ChoGGi.email),

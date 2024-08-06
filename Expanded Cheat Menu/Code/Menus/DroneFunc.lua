@@ -268,6 +268,10 @@ function ChoGGi_Funcs.Menus.SetDroneRockToConcreteSpeed()
 end
 
 function ChoGGi_Funcs.Menus.SetDroneMoveSpeed(action)
+	if not action then
+		return
+	end
+
 	local speed = action.setting_speed
 	local title = action.setting_title
 

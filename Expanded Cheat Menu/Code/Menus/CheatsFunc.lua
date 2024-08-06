@@ -15,7 +15,7 @@ local GetCursorWorldPos = GetCursorWorldPos
 
 function ChoGGi_Funcs.Menus.TriggerFireworks()
 	local city = Cities[UICity.map_id]
-	local domes = city.labels.Domes
+	local domes = city.labels.Domes or ""
 	if #domes < 11 then
 		for i = 1, #domes do
 			Dome.TriggerFireworks(domes[i], const.HourDuration, 15)
@@ -1571,7 +1571,7 @@ g_Voice:Play(o.speech)"]],
 --~ 								end
 --~ 							end
 --~ 							ChoGGi_Funcs.Common.QuestionBox(
---~ 								T(302535920000291--[[Waiting for %s to finish.
+--~ 								Translate(302535920000291--[[Waiting for %s to finish.
 --~ 	Skip it?]]):format(seq.sequence),
 --~ 								CallBackFunc,
 --~ 								title
@@ -1678,7 +1678,7 @@ function ChoGGi_Funcs.Menus.OutsourcingFree_Toggle()
 
 	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		T(302535920000297--[["%s
+		Translate(302535920000297--[["%s
 Best hope you picked India as your Mars sponsor..."]]):format(ChoGGi.UserSettings.OutsourceResearchCost),
 		T(302535920000355--[[Outsourcing For Free]])
 	)
@@ -2004,6 +2004,10 @@ do -- ResearchTech
 		local UIColony = UIColony
 		tech_func = _G[tech_func]
 
+		if not tech_func then
+			tech_func = DiscoverTech_Old
+		end
+
 		for tech_id, tech in pairs(TechDef) do
 			if tech.group == group then
 				if tech.group == "Mysteries" then
@@ -2206,8 +2210,8 @@ do -- Mystery Log
 			myst_id = choice[1].value
 		end
 
-		local msgs = {myst_id .. "\n\n" .. TranslationTable[302535920000272--[["To play back speech press the ""%s"" checkbox and type in
-	g_Voice:Play(o.speech)"]]]:format(TranslationTable[302535920000040--[[Exec Code]]]) .. "\n"}
+		local msgs = {myst_id .. "\n\n" .. Translate(302535920000272--[["To play back speech press the ""%s"" checkbox and type in
+	g_Voice:Play(o.speech)"]]):format(Translate(302535920000040--[[Exec Code]])) .. "\n"}
 		local c = #msgs
 		local s_SeqListPlayers = s_SeqListPlayers
 		-- 1 is some default map thing
@@ -2229,9 +2233,9 @@ do -- Mystery Log
 									-- add to msg list
 									c = c + 1
 									msgs[c] = {
-										[" "] = TranslationTable[302535920000273--[[Speech]]] .. ": "
+										[" "] = Translate(302535920000273--[[Speech]]) .. ": "
 											.. Translate(seq.voiced_text) .. "\n\n\n\n"
-											.. TranslationTable[302535920000274--[[Message]]] .. ": "
+											.. Translate(302535920000274--[[Message]]) .. ": "
 											.. Translate(seq.text),
 										speech = seq.voiced_text,
 										class = Translate(seq.title)
@@ -2287,9 +2291,9 @@ do -- Mystery Log
 						func = id,
 						mystery_idx = i,
 						hint = "<image " .. mysteries[id].image .. ">\n\n\n<color 255 75 75>"
-							.. TranslationTable[302535920000275--[[Total parts]]] .. "</color>: " .. totalparts
-							.. " <color 255 75 75>" .. TranslationTable[302535920000289--[[Current part]]]
-							.. "</color>: " .. (ip or TranslationTable[302535920000276--[[done?]]])
+							.. Translate(302535920000275--[[Total parts]]) .. "</color>: " .. totalparts
+							.. " <color 255 75 75>" .. Translate(302535920000289--[[Current part]])
+							.. "</color>: " .. (ip or Translate(302535920000276--[[done?]]))
 							.. "\n\n" .. mysteries[id].description,
 					}
 				end
@@ -2320,7 +2324,7 @@ do -- Mystery Log
 					end
 				end
 				MsgPopup(
-					TranslationTable[302535920000277--[[Removed all!]]],
+					Translate(302535920000277--[[Removed all!]]),
 					T(5661--[[Mystery Log]])
 				)
 			elseif choice.check1 then
@@ -2338,7 +2342,7 @@ do -- Mystery Log
 					end
 				end
 				MsgPopup(
-					choice.text .. ": " .. TranslationTable[3486--[[Mystery]]] .. " " .. TranslationTable[302535920000278--[[Removed]]] .. "!",
+					choice.text .. ": " .. Translate(3486--[[Mystery]]) .. " " .. Translate(302535920000278--[[Removed]]) .. "!",
 					T(5661--[[Mystery Log]])
 				)
 			elseif value then
@@ -2354,17 +2358,17 @@ do -- Mystery Log
 			custom_type = 6,
 			custom_func = ShowMysteryLog,
 			title = T(5661--[[Mystery Log]]),
-			hint = TranslationTable[302535920000280--[[Skip the timer delay, and optionally skip the requirements (applies to all mysteries that are the same type).
+			hint = Translate(302535920000280--[[Skip the timer delay, and optionally skip the requirements (applies to all mysteries that are the same type).
 	Sequence part may have more then one check, you may have to skip twice or more.
-	Double right-click selected mystery to review past messages.]]],
+	Double right-click selected mystery to review past messages.]]),
 			checkboxes = {
 				{
-					title = TranslationTable[302535920000281--[[Remove]]],
-					hint = TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000282--[[This will remove the mystery, if you start it again; it'll be back to the start.]]],
+					title = Translate(302535920000281--[[Remove]]),
+					hint = Translate(6779--[[Warning]]) .. ": " .. Translate(302535920000282--[[This will remove the mystery, if you start it again; it'll be back to the start.]]),
 				},
 				{
-					title = TranslationTable[302535920000283--[[Remove All]]],
-					hint = TranslationTable[6779--[[Warning]]] .. ": " .. TranslationTable[302535920000284--[[This will remove all the mysteries!]]],
+					title = Translate(302535920000283--[[Remove All]]),
+					hint = Translate(6779--[[Warning]]) .. ": " .. Translate(302535920000284--[[This will remove all the mysteries!]]),
 				},
 			},
 		}
@@ -2375,8 +2379,8 @@ do -- Mystery Log
 
 		local wait_classes = {"SA_WaitMarsTime", "SA_WaitTime"}
 		local thread_classes = {"SA_WaitMarsTime", "SA_WaitTime", "SA_RunSequence"}
-		local warning = "\n\n" .. TranslationTable[302535920000285--[["Click ""Ok"" to skip requirements (Warning: may cause issues later on, untested)."]]]
-		local name = TranslationTable[3486--[[Mystery]]] .. ": " .. ChoGGi.Tables.Mystery[mystery].name
+		local warning = "\n\n" .. Translate(302535920000285--[["Click ""Ok"" to skip requirements (Warning: may cause issues later on, untested)."]])
+		local name = Translate(3486--[[Mystery]]) .. ": " .. ChoGGi.Tables.Mystery[mystery].name
 
 		local ThreadsMessageToThreads = ThreadsMessageToThreads
 		for t in pairs(ThreadsMessageToThreads) do
@@ -2397,7 +2401,7 @@ do -- Mystery Log
 					-- skip older seqs
 					if i >= ip then
 						local seq = seq_list[i]
-						local title = name .. " " .. TranslationTable[302535920000286--[[Part]]] .. ": " .. ip
+						local title = name .. " " .. Translate(302535920000286--[[Part]]) .. ": " .. ip
 
 						-- seqs that add delays/tasks
 						if seq:IsKindOfClasses(wait_classes) then
@@ -2420,7 +2424,7 @@ do -- Mystery Log
 							Player:UpdateCurrentIP(seq_list)
 							-- let them know
 							MsgPopup(
-								TranslationTable[302535920000287--[[Timer delay removed (may take upto a Sol).]]],
+								Translate(302535920000287--[[Timer delay removed (may take upto a Sol).]]),
 								title
 							)
 							break
@@ -2442,10 +2446,10 @@ do -- Mystery Log
 								end
 							end
 							ChoGGi_Funcs.Common.QuestionBox(
-								TranslationTable[302535920000288--[[Advancement requires]]] .. ": "
+								Translate(302535920000288--[[Advancement requires]]) .. ": "
 									.. seq.expression .. "\n\n"
-									.. TranslationTable[302535920000290--[[Time duration has been set to 0 (you still need to complete the requirements).
-	Wait for a Sol or two for it to update (should give a popup msg).]]] .. warning,
+									.. Translate(302535920000290--[[Time duration has been set to 0 (you still need to complete the requirements).
+	Wait for a Sol or two for it to update (should give a popup msg).]]) .. warning,
 								CallBackFunc,
 								title
 							)
@@ -2461,7 +2465,7 @@ do -- Mystery Log
 								end
 							end
 							ChoGGi_Funcs.Common.QuestionBox(
-								TranslationTable[302535920000288--[[Advancement requires]]] .. ": " .. seq.msg .. warning,
+								Translate(302535920000288--[[Advancement requires]]) .. ": " .. seq.msg .. warning,
 								CallBackFunc,
 								title
 							)
@@ -2476,7 +2480,7 @@ do -- Mystery Log
 								end
 							end
 							ChoGGi_Funcs.Common.QuestionBox(
-								TranslationTable[302535920000288--[[Advancement requires]]] .. ": " .. seq.Research .. warning,
+								Translate(302535920000288--[[Advancement requires]]) .. ": " .. seq.Research .. warning,
 								CallBackFunc,
 								title
 							)
@@ -2490,8 +2494,8 @@ do -- Mystery Log
 								end
 							end
 							ChoGGi_Funcs.Common.QuestionBox(
-								TranslationTable[302535920000291--[[Waiting for %s to finish.
-	Skip it?]]]:format(seq.sequence),
+								Translate(302535920000291--[[Waiting for %s to finish.
+	Skip it?]]):format(seq.sequence),
 								CallBackFunc,
 								title
 							)

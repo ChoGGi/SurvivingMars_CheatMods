@@ -16,7 +16,7 @@ local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 do -- BuildGridList
 	local IsValid = IsValid
 	local function BuildGrid(grid, list)
-		local g_str = T(11629--[[GRID <i>]])
+		local g_str = Translate(11629--[[GRID <i>]])
 		for i = 1, #grid do
 			for j = 1, #grid[i].elements do
 				local bld = grid[i].elements[j].building

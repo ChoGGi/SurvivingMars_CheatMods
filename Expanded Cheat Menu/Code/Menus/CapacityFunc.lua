@@ -339,6 +339,10 @@ function ChoGGi_Funcs.Menus.SetVisitorCapacity()
 end
 
 function ChoGGi_Funcs.Menus.SetStorageDepotSize(action)
+	if not action then
+		return
+	end
+
 	local bld_type = action.bld_type
 
 	local r = const.ResourceScale

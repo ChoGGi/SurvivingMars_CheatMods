@@ -238,7 +238,7 @@ end -- do
 
 function ChoGGi_Funcs.Menus.SetFunding()
 	local default_setting = T(302535920001195--[[Reset to 500 M]])
-	local hint = T(302535920001196--[[If your funds are a negative value, then you added too much.
+	local hint = Translate(302535920001196--[[If your funds are a negative value, then you added too much.
 
 Fix with: %s]]):format(default_setting)
 	local item_list = {

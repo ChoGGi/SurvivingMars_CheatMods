@@ -424,6 +424,11 @@ function ChoGGi_VLI_MapInfoDlg:FindText()
 		end
 
 	end)
+
+	-- if reuse is checked then flash it
+	if self.idReuseResults.IconRow == 2 then
+		XFlashWindow(self.idReuseResults)
+	end
 end
 
 function ChoGGi_VLI_MapInfoDlg:FindObject(key_name, value_name, rem)

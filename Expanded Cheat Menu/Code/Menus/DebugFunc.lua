@@ -337,6 +337,10 @@ function ChoGGi_Funcs.Menus.SetFrameCounter()
 end
 
 function ChoGGi_Funcs.Menus.SetFrameCounterLocation(action)
+	if not action then
+		return
+	end
+
 	local setting = action.setting_mask
 	hr.FpsCounterPos = setting
 
@@ -869,6 +873,10 @@ do -- PostProcGrids
 	}
 
 	function ChoGGi_Funcs.Menus.PostProcGrids(action)
+		if not action then
+			return
+		end
+
 		local grid_type = action.grid_mask
 		-- always disable other ones
 		for i = 1, #grids do
@@ -935,6 +943,10 @@ function ChoGGi_Funcs.Menus.Render_Toggle()
 end
 
 function ChoGGi_Funcs.Menus.DebugFX_Toggle(action)
+	if not action then
+		return
+	end
+
 	local name = action.setting_name
 	local trans_str = action.setting_msg
 
@@ -997,6 +1009,10 @@ function ChoGGi_Funcs.Menus.DeleteAllSelectedObjects()
 end
 
 function ChoGGi_Funcs.Menus.BuildableHexGridSettings(action)
+	if not action then
+		return
+	end
+
 	local setting = action.setting_mask
 
 	local item_list = {

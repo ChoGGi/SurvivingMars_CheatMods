@@ -1,3 +1,6 @@
+v1.3
+Reuse Results will flash when it's checked.
+
 v1.2
 Search previous results instead of all map data.
 

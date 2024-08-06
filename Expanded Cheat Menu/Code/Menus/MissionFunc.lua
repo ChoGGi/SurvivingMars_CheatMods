@@ -13,6 +13,10 @@ local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 local blacklist = ChoGGi.blacklist
 
 function ChoGGi_Funcs.Menus.SetDisasterOccurrence_Toggle(action)
+	if not action then
+		return
+	end
+
 	local setting_name = action.setting_name
 	local us = ChoGGi.UserSettings
 
@@ -181,7 +185,7 @@ function ChoGGi_Funcs.Menus.StartChallenge()
 			hint = T(c.description) .. "\n\n"
 				.. Translate(302535920001415--[[Sols to Complete: %s]]):format(c.time_completed / DayDuration)
 				.. "\n"
-				.. T(10489--[[<newline>Perfect time: <countdown2>]]):gsub("<countdown2>", c.time_perfected / DayDuration)
+				.. Translate(10489--[[<newline>Perfect time: <countdown2>]]):gsub("<countdown2>", c.time_perfected / DayDuration)
 				.. (current and "\n\n" .. T(302535920000106--[[Current]]) or ""),
 		}
 	end
@@ -297,7 +301,7 @@ function ChoGGi_Funcs.Menus.MeteorHealthDamage_Toggle()
 
 	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
-		T(302535920001160--[["%s
+		Translate(302535920001160--[["%s
 Damage? Total, sir.
 It's what we call a global killer.
 The end of mankind. Doesn't matter where it hits. Nothing would survive, not even bacteria."]]):format(ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.MeteorHealthDamage)),
@@ -502,6 +506,10 @@ function ChoGGi_Funcs.Menus.ChangeGameLogo()
 end
 
 function ChoGGi_Funcs.Menus.SetDisasterOccurrence(action)
+	if not action then
+		return
+	end
+
 	local setting_id = action.setting_id
 
 	local mapdata = ActiveMapData

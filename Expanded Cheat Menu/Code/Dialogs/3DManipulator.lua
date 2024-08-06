@@ -181,7 +181,7 @@ function ChoGGi_Dlg3DManipulator:Init(parent, context)
 				Text = name,
 				text_lookup = self.pos_xyz_list[i],
 				Dock = "left",
-				ChoGGi_RolloverText = T(302535920000528--[[Move %s by %s.]]),
+				ChoGGi_RolloverText = Translate(302535920000528--[[Move %s by %s.]]),
 				GetRolloverText = self.GetCtrlRolloverText,
 				OnPress = self.idPosButtons_OnPress,
 			}, self.idPosAreaBotPlus)

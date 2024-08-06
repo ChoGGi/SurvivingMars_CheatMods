@@ -11,7 +11,7 @@ end
 
 local ChoGGi_Funcs = ChoGGi_Funcs
 local what_game = ChoGGi.what_game
---local Translate = ChoGGi_Funcs.Common.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
 local g_env, debug
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)

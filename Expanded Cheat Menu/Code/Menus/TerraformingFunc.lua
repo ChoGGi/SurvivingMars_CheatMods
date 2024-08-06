@@ -7,7 +7,7 @@ end
 local ChoGGi_Funcs = ChoGGi_Funcs
 local pairs, type = pairs, type
 local T = T
---local Translate = ChoGGi_Funcs.Common.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 
 function ChoGGi_Funcs.Menus.SetToxicPoolsMax()
@@ -57,6 +57,10 @@ function ChoGGi_Funcs.Menus.SetToxicPoolsMax()
 end
 
 function ChoGGi_Funcs.Menus.SetAllTerraformingParams(action)
+	if not action then
+		return
+	end
+
 	if g_NoTerraforming then
 		MsgPopup(
 			T(302535920000562--[[Terraforming not enabled!]]),
@@ -157,7 +161,7 @@ function ChoGGi_Funcs.Menus.PlantRandomVegetation()
 		return
 	end
 
-	local hint = T(302535920000758--[[Will take some time for 25K and up.]])
+	local hint = Translate(302535920000758--[[Will take some time for 25K and up.]])
 	local item_list = {
 		{text = 25, value = 25},
 		{text = 50, value = 50},
@@ -248,6 +252,10 @@ function ChoGGi_Funcs.Menus.SetSoilQuality()
 end
 
 function ChoGGi_Funcs.Menus.SetTerraformingParams(action)
+	if not action then
+		return
+	end
+
 	if g_NoTerraforming then
 		MsgPopup(
 			T(302535920000562--[[Terraforming not enabled!]]),
