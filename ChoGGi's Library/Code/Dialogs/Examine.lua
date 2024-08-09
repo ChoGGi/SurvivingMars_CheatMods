@@ -3659,8 +3659,8 @@ do -- BuildAttachesPopup
 		if button == "R" then
 			CopyToClipboard(item.showobj.class)
 		else
-			item.dlg.ChoGGi_Funcs.Common.ClearShowObj(item.showobj)
-			item.dlg.ChoGGi_Funcs.Common.OpenInExamineDlg(item.showobj, {
+			ChoGGi_Funcs.Common.ClearShowObj(item.showobj)
+			ChoGGi_Funcs.Common.OpenInExamineDlg(item.showobj, {
 				has_params = true,
 				parent = item.dlg,
 			})
@@ -3821,7 +3821,7 @@ function ChoGGi_DlgExamine.ParentClicked(item, _, _, button)
 	if button == "R" then
 		CopyToClipboard(item.name)
 	else
-		item.dlg.ChoGGi_Funcs.Common.OpenInExamineDlg(g_Classes[item.name], {
+		ChoGGi_Funcs.Common.OpenInExamineDlg(g_Classes[item.name], {
 			has_params = true,
 			parent = item.dlg,
 		})
@@ -3831,7 +3831,7 @@ function ChoGGi_DlgExamine.ParentClickedTemplate(item, _, _, button)
 	if button == "R" then
 		CopyToClipboard("BuildingTemplates." ..item.name)
 	else
-		item.dlg.ChoGGi_Funcs.Common.OpenInExamineDlg(BuildingTemplates[item.name], {
+		ChoGGi_Funcs.Common.OpenInExamineDlg(BuildingTemplates[item.name], {
 			has_params = true,
 			parent = item.dlg,
 		})
@@ -4250,10 +4250,12 @@ function objlist:new(o)
   end
 end
 function objlist:Destroy()
+	ChoGGi_Funcs.Common.objlist_Destroy(self)
 	ex(debug.getinfo(2))
 	print("Please tell me if you see this, and a screenshot of the examine dialog would help.")
 end
 function objlist:Clear()
+  table.iclear(self)
 	ex(debug.getinfo(2))
 	print("Please tell me if you see this, and a screenshot of the examine dialog would help.")
 end

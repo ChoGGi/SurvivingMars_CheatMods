@@ -646,7 +646,8 @@ function ChoGGi_DlgListChoice:BuildList(save_pos)
 			self.idScrollV:GetScroll(),
 		}
 	end
-	self.idList:Clear()
+--~ 	self.idList:Clear()
+	table.iclear(self.idList)
 	local list_count = #self.items
 	for i = 1, list_count do
 		local item = self.items[i]

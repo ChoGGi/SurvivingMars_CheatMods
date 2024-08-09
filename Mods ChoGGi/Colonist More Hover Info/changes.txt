@@ -1,3 +1,6 @@
+v0.6
+Took care of selection lag.
+
 v0.5
 Added a cache for colonist info (resets when you select a different building, thanks Belmag).
 

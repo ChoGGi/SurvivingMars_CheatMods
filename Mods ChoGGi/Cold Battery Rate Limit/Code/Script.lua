@@ -20,7 +20,11 @@ OnMsg.ApplyModOptions = ModOptions
 local function RemoveMod(name, obj)
 	local cbrl = obj[name]
 	if cbrl then
-		cbrl:Remove()
+		if cbrl.Remove then
+			cbrl:Remove()
+		else if cbrl.remove then
+			cbrl:remove()
+		end
 		DoneObject(cbrl)
 		obj[name] = nil
 	end

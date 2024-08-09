@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+--~ ChoGGi_Funcs.Common.TickStart()
+--~ ChoGGi_Funcs.Common.TickEnd()
+
 local ChoGGi_Funcs = ChoGGi_Funcs
 local testing = ChoGGi.testing
 local what_game = ChoGGi.what_game
@@ -5454,7 +5457,7 @@ do -- CleanInfoAttachDupes
 		end
 
 		-- remove removed items
-		list:Validate()
+		ChoGGi_Funcs.Common.objlist_Validate(list)
 		ResumePassEdits("ChoGGi_Funcs.Common.CleanInfoAttachDupes")
 	end
 	function ChoGGi_Funcs.Common.CleanInfoXwinDupes(list, cls)
@@ -5970,7 +5973,7 @@ do -- path markers
 			end
 		end
 		-- remove removed
-		obj.ChoGGi_Stored_Waypoints:Validate()
+		ChoGGi_Funcs.Common.objlist_Validate(obj.ChoGGi_Stored_Waypoints)
 	end
 
 	local function ClearColourAndWP(cls, skip)
@@ -7048,7 +7051,7 @@ do -- BBoxLines_Toggle
 	local function BBoxLines_Clear(obj, is_box)
 		SuspendPassEdits("ChoGGi_Funcs.Common.BBoxLines_Clear")
 		if not is_box and obj.ChoGGi_bboxobj then
-			obj.ChoGGi_bboxobj:Destroy()
+			ChoGGi_Funcs.Common.objlist_Destroy(obj.ChoGGi_bboxobj)
 			obj.ChoGGi_bboxobj = nil
 			return true
 		end
@@ -8269,7 +8272,16 @@ function ChoGGi_Funcs.Common.objlist_Destroy(objlist)
     end
   end
 end
-
+function ChoGGi_Funcs.Common.objlist_Validate(objlist)
+  local remove = table.remove
+  local IsValid = IsValid
+  for i = #objlist, 1, -1 do
+    if not IsValid(objlist[i]) then
+      remove(objlist, i)
+    end
+  end
+  return objlist
+end
 -- loop through all map sectors and fire this func
 --~ function ChoGGi_Funcs.Common.LoopMapSectors(map_id, func)
 --~ end

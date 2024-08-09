@@ -267,7 +267,8 @@ function ChoGGi_DlgObjectEditor:OnKbdKeyDown(_, vk)
 end
 
 function ChoGGi_DlgObjectEditor:BuildList()
-	self.idList:Clear()
+--~ 		self.idList:Clear()
+	table.iclear(self.idList)
 	for i = 1, #self.items do
 		local item = self.items[i]
 		if item then
