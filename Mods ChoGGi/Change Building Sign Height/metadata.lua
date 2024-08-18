@@ -6,7 +6,7 @@ return PlaceObj("ModDef", {
 	"pops_any_uuid", "2da04523-2d1e-4749-a051-c8c3b635ed68",
 	"version", 1,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 1,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {

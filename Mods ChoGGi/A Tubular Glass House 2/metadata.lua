@@ -2,7 +2,7 @@ return PlaceObj("ModDef", {
 	"title", "A Tubular Glass House 2",
 	"version", 1,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 1,
 	"image", "Preview.jpg",
 	"id", "ChoGGi_ATubularGlassHouse",
 	"author", "Stealth4Health & ChoGGi",
@@ -14,7 +14,8 @@ return PlaceObj("ModDef", {
 --~ 	"code", {
 --~ 		"Code/Script.lua",
 --~ 	},
-	"description", [[This cylindrical shaped house has got a lot of glass. There is a dead tree inside you can look at while safely managing the spiral staircases.
+	"description", [[
+This cylindrical shaped house has got a lot of glass. There is a dead tree inside you can look at while safely managing the spiral staircases.
 
 If you clump too many together; drones won't be able to repair when they need maintenance.
 https://steamcommunity.com/app/464920/discussions/0/2263565217514774947/

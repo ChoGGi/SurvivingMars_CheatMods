@@ -14,6 +14,8 @@ Log spam from IsBuildingInDomeRange().
 Possible fix for main menu music playing in-game on new games (mod option to disable, since there's no fade out).
 Problem updating supply grid.
 Colonists on an expedition now show proper status when selected from command centre (instead of just unknown).
+Added missing images for certain Cargo listings.
+Gale crater name doesn't show up for 4S138E, 5S138E.
 
 Storybits:
 Gene Forging storybit tech doesn't increase rare traits chance.
@@ -27,7 +29,7 @@ St. Elmo's Fire: Stop meteoroids from destroying sinkholes.
 The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
 
 B&B:
-Colonists showing up on wrong map in infobar.
+Colonists showing up on wrong map in infobar (also negative counts in infobar).
 No flying drones underground (they tend to get stuck in walls/etc).
 No Planetary Anomaly Breakthroughs when B&B is installed.
 Refabbing rare extractors left the "working" dust plumes around them.

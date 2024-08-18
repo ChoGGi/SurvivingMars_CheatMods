@@ -126,6 +126,37 @@ end
 --
 function OnMsg.ClassesPostprocess()
 
+	-- Cargo presets are missing images for some buildings/all resources
+	local articles = Presets.EncyclopediaArticle.Resources
+	local lookup_res = {
+		PreciousMinerals = articles.ExoticMinerals.image,
+		Concrete = articles.Concrete.image,
+		Electronics = articles.Electronics.image,
+		Food = articles.Food.image,
+		Fuel = articles.Fuel.image,
+		MachineParts = articles["Mechanical Parts"].image,
+		Metals = articles.Metals.image,
+		Polymers = articles.Polymers.image,
+		PreciousMetals = articles["Rare Metals"].image,
+		Seeds = articles.Seeds.image,
+		-- Close enough
+		WasteRock = "UI/Messages/Tutorials/Tutorial1/Tutorial1_WasteRockConcreteDepot.tga",
+	}
+
+	local BuildingTemplates = BuildingTemplates
+	local CargoPreset = CargoPreset
+	for id, cargo in pairs(CargoPreset) do
+		if not cargo.icon then
+
+			if lookup_res[id] then
+				cargo.icon = lookup_res[id]
+			elseif BuildingTemplates[id] then
+				cargo.icon = BuildingTemplates[id].encyclopedia_image
+			end
+
+		end
+	end
+
 	-- Fix Colonist Daily Interest Loop
 	-- last checked 1011030 Colonist:EnterBuilding()
 	local ChoOrig_Colonist_EnterBuilding = Colonist.EnterBuilding
@@ -164,7 +195,7 @@ do -- CityStart/LoadGame
 		local bt = BuildingTemplates
 		local main_realm = GetRealmByID(MainMapID)
     local objs
-  
+
 		--
 		-- See OnMsg.TechResearched below for more info about GeneForging
 		if event == "LoadGame" and UIColony:IsTechResearched("GeneForging") then
@@ -1108,6 +1139,21 @@ function Colonist:Getui_command(...)
 	return ChoOrig_Colonist_Getui_command(self, ...)
 end
 
+--
+-- Gale crater name doesn't show up for 4S138E, 5S138E
+local ChoOrig_LandingSiteObject_ResolveSpotName = LandingSiteObject.ResolveSpotName
+function LandingSiteObject:ResolveSpotName(...)
+	if not mod_EnableMod or self.challenge_mode then
+		return ChoOrig_LandingSiteObject_ResolveSpotName(self, ...)
+	end
+
+	local p = self.map_params
+	if (p.latitude == 5 or p.latitude == 4) and p.longitude == 138 then
+		return MarsLocales[17]
+	end
+
+	return ChoOrig_LandingSiteObject_ResolveSpotName(self, ...)
+end
 
 --
 --

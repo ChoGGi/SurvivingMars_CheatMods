@@ -110,18 +110,18 @@ OpenExamine(obj, point(x,y))
 OpenExamine(obj, nil, "Custom Title")
 -- Loop the results of a function in an examine dialog
 -- Set auto-refresh to how often you want the func fired
-ChoGGi.ComFuncs.MonitorFunctionResults(func, arg1, arg2, etc args)
+ChoGGi_Funcs.Common.MonitorFunctionResults(func, arg1, arg2, etc args)
 -- Get some info about a thread
-ChoGGi.ComFuncs.RetThreadInfo(thread)
+ChoGGi_Funcs.Common.RetThreadInfo(thread)
 -- Checks a thread for a func name
-ChoGGi.ComFuncs.FindThreadFunc(thread, str)
+ChoGGi_Funcs.Common.FindThreadFunc(thread, str)
 -- monitor a table (defaults to _G)
 -- skip_under: don't show any tables under this length (default: 25)
 -- sortby: nil = table length, 1 = table names
--- ChoGGi.ComFuncs.MonitorTableLength(HandleToObject)
-ChoGGi.ComFuncs.MonitorTableLength(obj, skip_under, sortby)
+-- ChoGGi_Funcs.Common.MonitorTableLength(HandleToObject)
+ChoGGi_Funcs.Common.MonitorTableLength(obj, skip_under, sortby)
 -- lists the func location for all threads in ThreadsRegister
-ChoGGi.ComFuncs.MonitorThreads()
+ChoGGi_Funcs.Common.MonitorThreads()
 ```
 
 

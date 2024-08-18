@@ -30,26 +30,26 @@ SOFTWARE.
 
 -- I should really split this into funcs and settings... one of these days
 ChoGGi = {
-	-- anyone examining ChoGGi will see this first
+	-- Anyone examining ChoGGi will see this first
 	_LICENSE = LICENSE,
-	-- easy access to them
+	-- Easy access to them
 	id_lib = CurrentModId,
 	def_lib = CurrentModDef,
 	-- Is ECM shanghaied by the blacklist?
 	blacklist = true,
-	-- constants
+	-- Constants
 	Consts = {InvalidPos = InvalidPos()},
-	-- default ECM settings
+	-- Default ECM settings
 	Defaults = false,
-	-- means of communication
+	-- Means of communication
 	email = "SurvivingMarsMods@choggi.org",
-	-- font used for various UI stuff
+	-- Font used for various UI stuff
 	font = "droid",
 	-- Wha'choo talkin' 'bout, Willis?
 	lang = GetLanguage(),
-	-- path to this mods' folder
+	-- Path to this mods' folder
 	library_path = CurrentModPath,
-	-- easier access to some data
+	-- Easier access to some data
 	Tables = {
 		Cargo = {},
 		CargoPresets = {},
@@ -84,30 +84,30 @@ ChoGGi = {
 			"ResearchQueueSize",
 		},
 	},
-	-- stuff that isn't ready for release, more print msgs, and some default settings
+	-- Stuff that isn't ready for release, more print msgs, and some default settings
 	testing = false,
-	-- for text dumping (yep .pc means windows desktop, I guess .linux/.osx aren't personal computers)
+	-- For text dumping (yep .pc means windows desktop, I guess .linux/.osx aren't personal computers)
 	newline = Platform.pc and "\r\n" or Platform.linux and "\n" or "\r",
 	-- Pre Abstraction Games (Before Tourism update rev 1,001,514)
 	is_gp = LuaRevision < 1001000,
 	-- temporary... stuff
 	Temp = {
-		-- collect error msgs to be displayed in console after game is loaded
+		-- Collect error msgs to be displayed in console after game is loaded
 		StartupMsgs = {},
-		-- a list of menuitems and shortcut keys for Msg("ShortcutsReloaded")
+		-- A list of menuitems and shortcut keys for Msg("ShortcutsReloaded")
 		Actions = {},
-		-- rememeber transparency for some of my dialogs (ex and console log)
+		-- Rememeber transparency for some of my dialogs (ex and console log)
 		Dlg_transp_mode = false,
-		-- stores a table of my dialogs
+		-- Stores a table of my dialogs
 		Dialogs = {},
-		-- they changed it once, they can change it again (tranlation func returns this for fail)
+		-- They changed it once, they can change it again (tranlation func returns this for fail)
 		missing_text = "Missing text",
 	},
-	-- settings that are saved to settings_file
+	-- Settings that are saved to settings_file
 	UserSettings = {
 		BuildingSettings = {},
 		Transparency = {},
-		-- saved Consts settings
+		-- Saved Consts settings
 		Consts = {},
 	},
 }
@@ -158,9 +158,9 @@ else
 end
 -- It's called Sol Engine (used to be called HGEngine till SM came out and someone decided it needed a name)
 
-do -- translate (todo update code to not need this, maybe use T() for menus)
+do -- Translate (todo update code to not need this, maybe use T() for menus)
 	local locale_path = ChoGGi.library_path .. "Locales/"
-	-- load locale translation (if any, not likely with the amount of text, but maybe a partial one)
+	-- Load locale translation (if any, not likely with the amount of text, but maybe a partial one)
 	if not LoadTranslationTableFile(locale_path .. ChoGGi.lang .. ".csv") then
 		LoadTranslationTableFile(locale_path .. "English.csv")
 	end
@@ -168,7 +168,7 @@ do -- translate (todo update code to not need this, maybe use T() for menus)
 	Msg("TranslationChanged")
 end -- do
 
--- fake mod used to tell if it's my comp, if you want some extra msgs and .testing funcs have at it (Testing.lua)
+-- Fake mod used to tell if it's my comp, if you want some extra msgs and .testing funcs have at it (Testing.lua)
 if Mods.ChoGGi_testing or Mods.TESTING then
 	local print = print
 	local FlushLogFile = FlushLogFile
@@ -234,7 +234,7 @@ CreateRealTimeThread(function()
 		lib_env.os = env.os
 	end
 
-	ChoGGi.ComFuncs.FileExists = env.io.exists
+	ChoGGi_Funcs.Common.FileExists = env.io.exists
 	if ChoGGi.testing then
 		ChoGGi.env = env
 	end
@@ -242,7 +242,7 @@ CreateRealTimeThread(function()
 end)
 
 if ChoGGi.what_game == "JA3" then
-	-- log spam reduce from shortcuts in main menu
+	-- Log spam reduce from shortcuts in main menu
 	local ChoOrig_GetOperationsInSector = GetOperationsInSector
 	function GetOperationsInSector(...)
 		if gv_Sectors then

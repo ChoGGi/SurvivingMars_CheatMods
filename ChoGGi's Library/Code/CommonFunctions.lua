@@ -4745,8 +4745,9 @@ function ChoGGi_Funcs.Common.RetHudButton(side)
 	return xt[idx][1]
 end
 
--- RetMapSettings
+-- RetMapSettings/RetMapBreakthroughs/RetObjectEntity
 if what_game == "Mars" then
+	-- RetMapSettings
 	local GetRandomMapGenerator = GetRandomMapGenerator
 	local FillRandomMapProps = FillRandomMapProps
 
@@ -4760,11 +4761,8 @@ if what_game == "Mars" then
 
 		return FillRandomMapProps(gen, params, ...), params, gen
 	end
-end -- do
 
 -- RetMapBreakthroughs
-if what_game == "Mars" then
-
 --~ 	local function UnlockAnoms()
 --~ 		local objs = UICity.labels.Anomaly or ""
 --~ 		local c = 0
@@ -4837,10 +4835,8 @@ if what_game == "Mars" then
 
 		return tech_list
 	end
-end -- do
 
 -- RetObjectEntity
-if what_game == "Mars" then
 	local GetSpecialistEntity = GetSpecialistEntity
 	local IsValidEntity = IsValidEntity
 

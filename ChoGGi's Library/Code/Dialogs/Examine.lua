@@ -2772,7 +2772,7 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 				end) .. " @ " .. self.hyperlink_end
 
 				.. self:ConvertValueToInfo(obj:GetVisualPos())
-				.. " <color ChoGGi_palegreen>" .. RetMapType(obj) .. "</color>"
+				.. " <color ChoGGi_palegreen>" .. (RetMapType(obj) or "nil") .. "</color>"
 		else
 			local len = #obj
 			local obj_metatable = getmetatable(obj)

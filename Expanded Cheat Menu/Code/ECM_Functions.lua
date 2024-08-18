@@ -2382,9 +2382,9 @@ do -- UnpublishParadoxMod
 				end
 
 				if type(result) == "string" then
-					print("UnpublishParadoxMod<color ChoGGi_red> ERROR", result, "</color>", mod_title)
+					print("UnpublishParadoxMod<color ChoGGi_red>", Translate(6774--[[Error]]), result, "</color>", mod_title)
 				else
-					print("UnpublishParadoxMod<color ChoGGi_green>", T(1000015--[[Success]]), "</color>", mod_title)
+					print("UnpublishParadoxMod<color ChoGGi_green>", Translate(1000015--[[Success]]), "</color>", mod_title)
 				end
 			end
 		end

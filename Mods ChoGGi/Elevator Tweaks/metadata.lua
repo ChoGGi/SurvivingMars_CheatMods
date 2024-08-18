@@ -1,8 +1,8 @@
 return PlaceObj("ModDef", {
-	"title", "Worker Clones",
-	"id", "ChoGGi_WorkerClones",
-	"steam_id", "3299247472",
-	"pops_any_uuid", "d5fe8d96-4774-4fce-b19e-1ef2904753c4",
+	"title", "Elevator Tweaks",
+	"id", "ChoGGi_ElevatorTweaks",
+	"steam_id", "3307151665",
+	"pops_any_uuid", "0611880b-a253-4294-b7de-2562f1293b3b",
 	"lua_revision", 1007000, -- Picard
 	"version", 1,
 	"version_major", 0,
@@ -14,10 +14,8 @@ return PlaceObj("ModDef", {
 	},
 	"has_options", true,
 	"TagGameplay", true,
+	"TagInterface", true,
 	"description", [[
-Cloning Vat picks a random worker at the vat to use for the cloning process.
-
-
-Requested by Telferion.
+Add any missing prefab buildings to transport list, and restore any missing images in popup.
 ]],
 })

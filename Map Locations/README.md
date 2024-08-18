@@ -44,7 +44,7 @@ View Colony Map: https://steamcommunity.com/sharedfiles/filedetails/?id=14919737
 #### Generate your own csv files (with more than 13 if wanted) paste this into console:
 
 ```
-ChoGGi.ComFuncs.ExportMapDataToCSV(XAction:new{
+ChoGGi_Funcs.Common.ExportMapDataToCSV(XAction:new{
     setting_breakthroughs = true,
     setting_limit_count = 17,
 })

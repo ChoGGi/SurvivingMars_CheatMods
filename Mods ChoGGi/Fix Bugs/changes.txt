@@ -1,3 +1,7 @@
+v6.1
+Added missing images for Cargo listings.
+Gale crater name doesn't show up for 4S138E, 5S138E (thanks a_pompous_fool).
+
 v6.0
 Changed status of expedition colonists to reflect where they aren't.
 Removed mod option for PlanetaryAnomalyBreakthroughs.
