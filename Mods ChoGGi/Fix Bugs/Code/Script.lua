@@ -1156,6 +1156,28 @@ function LandingSiteObject:ResolveSpotName(...)
 end
 
 --
+-- Pins Missing Some Status Icons
+local ChoOrig_PinsDlg_GetPinConditionImage = PinsDlg.GetPinConditionImage
+function PinsDlg:GetPinConditionImage(obj, ...)
+	if not mod_EnableMod then
+		return ChoOrig_PinsDlg_GetPinConditionImage(self, obj, ...)
+	end
+
+	local img = ChoOrig_PinsDlg_GetPinConditionImage(self, obj, ...)
+
+	if not img and obj:IsKindOf("BaseRover")
+		and obj.command == "TransferResources"
+	then
+		if obj.fx == "Unload" then
+			img = "UI/Icons/pin_unload.tga"
+		elseif obj.fx == "Load" then
+			img = "UI/Icons/pin_load.tga"
+		end
+	end
+
+	return img
+end
+--
 --
 --
 --

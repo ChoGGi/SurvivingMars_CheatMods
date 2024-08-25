@@ -6,7 +6,7 @@ return PlaceObj("ModDef", {
 	"pops_any_uuid", "2888b4bb-ad89-467b-af74-652cff8b18b9",
 	"version", 1,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 1,
 	"image", "Preview.png",
 	"author", "ChoGGi",
 	"code", {
@@ -14,9 +14,17 @@ return PlaceObj("ModDef", {
 	},
 --~ 	"has_options", true,
 	"TagInterface", true,
-	"description", [[The pinned rover transport buttons are missing un/load icons.
+	"description", [[
+OBSOLETE: Use my Fix Bugs Mod instead
+
+
+
+
+
+The pinned rover transport buttons are missing un/load icons.
 If you know of other stuff missing icons you want added, let me know which and when.
 
 
-Requested by Lesandrina.]],
+Requested by Lesandrina.
+]],
 })

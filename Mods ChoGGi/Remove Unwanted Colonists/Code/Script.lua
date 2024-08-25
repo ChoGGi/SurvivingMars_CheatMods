@@ -316,6 +316,20 @@ function OnMsg.ClassesPostprocess()
 
 end
 
+-- remove any invalid colonists from passages
+function OnMsg.NewHour()
+	local remove = table.remove
+	local objs = UIColony.city_labels.labels.Passage or ""
+	for i = 1, #objs do
+		local traversing = objs[i].traversing_colonists or ""
+		for j = #traversing, 1, -1 do
+			if not IsValid(traversing[j]) then
+				remove(traversing, j)
+			end
+		end
+	end
+end
+
 --~ GlobalVar("g_ChoGGi_RemoveUnwantedColonists_StuckPassageFix", false)
 --~ GlobalVar("g_ChoGGi_RemoveUnwantedColonists_StuckAirColonist", false)
 
@@ -525,6 +539,7 @@ function MurderPod:Abduct()
 
 	-- stalk if in dome/building/passage
 	local inside = not victim.outside_start
+--~ 	local inside = IsValid(victim.lead_in_out)
 	if inside and not GetOpenAirBuildings(RetObjMapId(self)) and not mod_IgnoreDomes then
 		self:SetCommand("StalkerTime")
 	end

@@ -6,7 +6,7 @@
 --~ 	"lua_revision", 1007000, -- Picard
 --~ 	"version", 1,
 --~ 	"version_major", 0,
---~ 	"version_minor", 2,
+-- ~ 	"version_minor", 1,
 --~ 	"image", "Preview.jpg",
 --~ 	"author", "ChoGGi",
 --~ 	"code", {

@@ -71,6 +71,7 @@ Fix Resupply Menu Not Opening
 Fix Stuck Malfunctioning Drones At DroneHub
 Fix Transport Negative Amounts
 Fix Transports Don't Move After Route Set
+Pins Missing Some Status Icons
 ```
 
 If you have B&B I'd recommend SkiRich's [Better Lander Rockets](https://steamcommunity.com/sharedfiles/filedetails/?id=2619013940)
@@ -241,6 +242,10 @@ For those wondering LandscapeLastMark is increased each time you open flatten/ra
 
 Thanks to Quirquie for the bug report (and persistence).
 
+
+**Pins Missing Some Status Icons**
+
+The pinned rover transport buttons are missing un/load icons.
 
 
 

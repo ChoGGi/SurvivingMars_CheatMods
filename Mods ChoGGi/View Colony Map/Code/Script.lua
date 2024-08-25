@@ -40,6 +40,10 @@ local underground_maps = {
 	"BlankUnderground_04",
 }
 
+-- We need to fire twice the first time user selects a location or breakthroughs are blank (sometimes)
+-- Not that it hurts to be called twice each click, but it looks half-assed
+local firstime = true
+
 local function ShowDialogs(map, gen)
 	-- check if we already created image viewer, and make one if not
 	if not IsValidXWin(show_image_dlg) then
@@ -63,7 +67,10 @@ local function ShowDialogs(map, gen)
 
 	-- update text info
 	if gen and extra_info_dlg then
-		extra_info_dlg:UpdateInfo(gen)
+		if firstime then
+			firstime = false
+			extra_info_dlg:UpdateInfo(gen)
+		end
 	end
 end
 
@@ -134,6 +141,7 @@ local function GamepadFocus()
 end
 
 -- a dialog that shows an image
+
 --~ local GetParentOfKind = ChoGGi_Funcs.Common.GetParentOfKind
 --~ local function GetRootDialog(dlg)
 --~ 	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_VCM_MapImageDlg")
@@ -404,28 +412,64 @@ function ChoGGi_VCM_ExtraInfoDlg:HyperLink(desc, name)
 	return "<color 255 255 255><h " .. c .. " 230 195 50>", c
 end
 
+--~ local origfunc = RandomMapGen_PlaceArtefacts
+--~ function RandomMapGen_PlaceArtefacts(env)
+--~ 	print("RandomMapGen_PlaceArtefacts")
+--~   local rand, rrand, trand, crand, grand = table.unpack(env.rhelpers)
+--~ ex(RandomMapGenObject)
+--~ ex(env)
+--~ 	local shuffled_wonders = table.copy(const.BuriedWonders)
+--~ 	local num_wonders = #shuffled_wonders
+--~ 	print("rand()1",rand())
+--~ 	table.shuffle(shuffled_wonders, rand)
+--~ 	print("rand()2",rand())
+--~ 	local spawned_wonders = {}
+--~ 	for index, marker in ipairs({1,1}) do
+--~ 		local wrapped_index = 1 + (index - 1) % num_wonders
+--~ 		local wonder_class = shuffled_wonders[wrapped_index]
+--~ 		spawned_wonders[#spawned_wonders + 1] = wonder_class
+--~ 	end
+--~ 	print(spawned_wonders)
+--~ 	return origfunc(env)
+--~ end
 
 function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(gen)
-
-	if false then
---~ 	if ChoGGi.testing then
+print("UpdateInfo")
+--~ 	if false then
+	if ChoGGi.testing then
 		local state = RandState(gen.Seed)
 		local rand = function(min, max)
 			return state:GetStable(min, max)
 		end
+--~ 		local rand = CreateRand(true, gen.Seed)
+--~ 		ex(gen)
 
---~ 		ex(rand)
---~ 		Seed = 977816133 < 0nw0
---~ 		randstate == 2074321580 (CaveOfWonders/AncientArtifact)
+--[[
+0N0W
+
+usual seed:
+rand()1 1130997080
+rand()2 1725460000
+{ CaveOfWonders, JumboCave }
+
+loaded map:
+rand()1 1153860631
+rand()2 1729522667
+{ AncientArtifact, CaveOfWonders }
+]]
 
 		local shuffled_wonders = table.copy(const.BuriedWonders)
 		local num_wonders = #shuffled_wonders
+		print("rand()1",rand())
 		table.shuffle(shuffled_wonders, rand)
+		print("rand()2",rand())
 		local spawned_wonders = {}
 		for index, marker in ipairs({1,1}) do
 			local wrapped_index = 1 + (index - 1) % num_wonders
-			print(wonder_class)
+			local wonder_class = shuffled_wonders[wrapped_index]
+			spawned_wonders[#spawned_wonders + 1] = wonder_class
 		end
+		print(spawned_wonders)
 	end
 	-- end testing if
 

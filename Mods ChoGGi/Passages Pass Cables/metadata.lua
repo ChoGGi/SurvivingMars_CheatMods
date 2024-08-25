@@ -2,7 +2,7 @@ return PlaceObj("ModDef", {
 	"title", "Passages Pass Cables",
 	"version", 1,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 1,
 
 	"image", "Preview.png",
 	"id", "ChoGGi_PassagesPassCables",
@@ -15,8 +15,10 @@ return PlaceObj("ModDef", {
 	},
 	"TagGameplay", true,
 	"TagBuildings", true,
-	"description", [[You can connect cables to passages.
+	"description", [[
+You can connect cables to passages.
 It seems to work okay, but the grid colours are off...
 
-Requested by ProDude.]],
+Requested by ProDude.
+]],
 })

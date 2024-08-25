@@ -2,7 +2,7 @@ return PlaceObj("ModDef", {
 	"title", "Reduce Breakthrough Cost",
 	"version", 1,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 1,
 
 	"image", "Preview.png",
 	"id", "ChoGGi_ReduceBreakthroughCost",
@@ -13,7 +13,9 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Lowers the RP cost of breakthroughs.
+	"description", [[
+Lowers the RP cost of breakthroughs.
 
-Requested by MrPellaeon.]],
+Requested by MrPellaeon.
+]],
 })

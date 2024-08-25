@@ -2,7 +2,7 @@ return PlaceObj("ModDef", {
 	"title", "Soylent Green Chunks",
 	"version", 1,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 1,
 
 	"image", "Preview.png",
 	"id", "ChoGGi_SoylentGreenChunks",
@@ -13,6 +13,8 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[Dead bodies turn into food cubes.
-Without needing the breakthrough.]],
+	"description", [[
+Dead bodies turn into food cubes.
+Without needing the breakthrough.
+]],
 })

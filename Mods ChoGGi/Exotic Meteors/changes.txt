@@ -1,1 +1,3 @@
 v0.2
+Automated mode works on meteorites.
+Added selection circle to rare metals meteorites.

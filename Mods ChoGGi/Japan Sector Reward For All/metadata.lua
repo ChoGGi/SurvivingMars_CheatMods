@@ -2,7 +2,7 @@ return PlaceObj("ModDef", {
 	"title", "Japan Sector Reward For All",
 	"version", 1,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 1,
 
 	"image", "Preview.png",
 	"id", "ChoGGi_JapanSectorRewardForAll",
@@ -12,7 +12,9 @@ return PlaceObj("ModDef", {
 	"code", {
 		"Code/Script.lua",
 	},
-	"description", [[All sponsors get the Japan sector research reward.
+	"description", [[
+All sponsors get the Japan sector research reward.
 
-Requested by Mrpellaeon.]],
+Requested by Mrpellaeon.
+]],
 })

@@ -5,27 +5,7 @@ if not g_AvailableDlc.picard then
 	return
 end
 
-local mod_EnableMod
-
--- Update mod options
-local function ModOptions(id)
-	-- id is from ApplyModOptions
-	if id and id ~= CurrentModId then
-		return
-	end
-
-	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
-end
--- Load default/saved settings
-OnMsg.ModsReloaded = ModOptions
--- Fired when Mod Options>Apply button is clicked
-OnMsg.ApplyModOptions = ModOptions
-
 local function StartupCode()
-	if not mod_EnableMod then
-		return
-	end
-
 	-- add cargo entry for saved games
 	if not table.find(ResupplyItemDefinitions, "id", "TriboelectricScrubber") then
 		ResupplyItemsInit()

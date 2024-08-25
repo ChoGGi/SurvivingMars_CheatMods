@@ -1,1 +1,2 @@
 v0.2
+Removed the mod option as it doesn't do much.

@@ -89,6 +89,7 @@ local missing_entity_lookup_nodlc = {
 	SurfaceDepositMetals_05 = "RocksSlate_07",
 }
 
+-- Add proper entity and set amount of res
 local meteor_type
 local ChoOrig_PlacePrefab = PlacePrefab
 local ChoFake_PlacePrefab = function(...)
@@ -141,7 +142,7 @@ function BaseMeteor:SpawnPrefab(...)
 		return ChoOrig_BaseMeteor_SpawnPrefab(self, ...)
 	end
 
-	-- override func that gens prefab and replace resource type, then return as usual
+	-- Override func that gens prefab and replace resource type, then return as usual
 	PlacePrefab = ChoFake_PlacePrefab
 	meteor_type = self.deposit_type
 	local _, ret_value = pcall(ChoOrig_BaseMeteor_SpawnPrefab, self, ...)
@@ -149,4 +150,43 @@ function BaseMeteor:SpawnPrefab(...)
 	meteor_type = nil
 
 	return ret_value
+end
+
+-- Transports auto gather new res
+local ChoOrig_RCTransport_GetAutoGatherDeposits = RCTransport.GetAutoGatherDeposits
+function RCTransport:GetAutoGatherDeposits(...)
+	if not mod_EnableMod then
+		return ChoOrig_RCTransport_GetAutoGatherDeposits(self, ...)
+	end
+	local list = ChoOrig_RCTransport_GetAutoGatherDeposits(self, ...)
+
+	-- insert mine instead of replacing with new list, incase other mods change it
+	table.insert(list, 1, "SurfaceDepositPreciousMetals")
+	table.insert(list, 1, "SurfaceDepositPreciousMinerals")
+
+	return list
+end
+
+-- Add selection circle to new res
+function OnMsg.ClassesPostprocess()
+
+	if not table.find(Presets.FXPreset.Default, "Actor", "SurfaceDepositPreciousMetals") then
+		PlaceObj('ActionFXParticles', {
+			Action = "Select",
+			Actor = "SurfaceDepositPreciousMetals",
+			Attach = true,
+			EndRules = {
+				PlaceObj('ActionFXEndRule', {
+					'EndMoment', "end",
+				}),
+			},
+			Flags = "LockedOrientation",
+			Moment = "start",
+			Particles = "Selection_Rover",
+			Scale = 250,
+			-- random number needed?
+			handle = 20088408711,
+		})
+	end
+
 end
