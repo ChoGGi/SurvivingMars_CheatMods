@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v12.3 (Unreleased)
+- Examining certain objs wouldn't open child examine below parent examine.
 
 ## v12.2 (4 Aug 2024)
 - Split ChoGGi funcs into their own table for localing.

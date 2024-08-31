@@ -103,7 +103,7 @@ DefineClass.ChoGGi_DlgExamine = {
 	obj = false,
 	-- sent by examine func
 	varargs = false,
-	-- all examine dlgs open by another dlg will have the same id (batch close)
+	-- all examine dlgs opened by another dlg will have the same id (batch close)
 	parent_id = false,
 	-- whatever RetName is
 	name = false,
@@ -653,7 +653,7 @@ If it's an associative table then o = value."]]),
 		end
 
 		-- do the magic
-		if self:SetObj(true) and not self.obj_ref:IsKindOf("InGameInterface") then
+		if self:SetObj(true) and not IsKindOf(self.obj_ref, "InGameInterface") then
 			self:FlashWindow()
 		end
 
@@ -1580,7 +1580,6 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 					if not self.menu_added.Object and self.menu_added.CObject then
 						self:BuildFuncList("CObject", self.menu_added.CObject)
 					end
-
 					ChoGGi_Funcs.Common.OpenInExamineDlg(self.menu_list_items, {
 						has_params = true,
 						parent = self,
@@ -2478,7 +2477,6 @@ local function Examine_ConvertValueToInfo(self, button, obj, _, _, _, link)
 			-- needed for index tables
 			title = tostring(self.onclick_objs[link-1])
 		end
-
 		ChoGGi_Funcs.Common.OpenInExamineDlg(obj, {
 			has_params = true,
 			parent = self,
@@ -4119,8 +4117,8 @@ end
 
 function ChoGGi_Funcs.Common.OpenInExamineDlg(obj, parent, title, ...)
 	local params, parent_type
-	params, parent, parent_type = RetParamsParents(parent, params, ...)
 
+	params, parent, parent_type = RetParamsParents(parent, params, ...)
 	-- preserve the orig params
 	params.obj = obj
 	if parent then
