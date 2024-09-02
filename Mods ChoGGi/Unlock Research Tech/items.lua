@@ -24,7 +24,8 @@ else
 end
 
 local mod_options = {}
-local c = 0
+local c = #mod_options
+
 local TechDef = TechDef
 for id, def in pairs(TechDef) do
 	if def.group ~= "Breakthroughs" and id ~= "None" then

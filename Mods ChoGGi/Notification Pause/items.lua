@@ -6,7 +6,8 @@ local T = T
 
 -- build sorted list of all notifications
 local mod_options = {}
-local c = 0
+local c = #mod_options
+
 local OnScreenNotificationPresets = OnScreenNotificationPresets
 for id, item in pairs(OnScreenNotificationPresets) do
 	local priority

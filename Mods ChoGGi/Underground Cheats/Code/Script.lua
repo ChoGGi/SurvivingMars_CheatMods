@@ -10,6 +10,7 @@ local table = table
 local mod_EnableMod
 local mod_LightTripodRadius
 local mod_SupportStrutRadius
+local mod_PinRockets
 
 local orig_const_BuriedWonders = table.icopy(const.BuriedWonders)
 local fake_BuriedWonders_safe
@@ -33,7 +34,7 @@ local function UpdateObjs()
 		return
 	end
 
-	-- newly built struts
+	-- Newly built struts
 	SupportStruts.work_radius = mod_SupportStrutRadius
 	-- UICity since we checked the active map is underground one
 	local struts = labels.SupportStruts or ""
@@ -41,7 +42,7 @@ local function UpdateObjs()
 		struts[i].work_radius = mod_SupportStrutRadius
 	end
 
-	-- lights
+	-- Lights
 	BuildingTemplates.LightTripod.reveal_range = mod_LightTripodRadius
 	ClassTemplates.Building.LightTripod.reveal_range = mod_LightTripodRadius
 
@@ -51,6 +52,22 @@ local function UpdateObjs()
 		local obj = tripods[i]
 		obj.reveal_range = mod_LightTripodRadius
 		UpdateRevealObject(obj)
+	end
+
+	-- Pin any rockets
+	if mod_PinRockets then
+			local under_pins = GameMaps[UIColony.underground_map_id].pinnables.pins
+			local objs = GameMaps[MainMapID].pinnables.pins
+			for i = 1, #objs do
+				local obj = objs[i]
+				if obj:IsKindOf("SupplyRocket") then
+					if not table.find(under_pins, "handle", obj.handle) then
+						under_pins[#under_pins+1] = obj
+					end
+				end
+			end
+
+
 	end
 end
 
@@ -82,6 +99,7 @@ local function ModOptions(id)
 	mod_EnableMod = options:GetProperty("EnableMod")
 	mod_LightTripodRadius = options:GetProperty("LightTripodRadius")
 	mod_SupportStrutRadius = options:GetProperty("SupportStrutRadius")
+	mod_PinRockets = options:GetProperty("PinRockets")
 
 	UpdateObjs()
 end

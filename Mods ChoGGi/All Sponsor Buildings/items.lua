@@ -21,7 +21,7 @@ local PlaceObj = PlaceObj
 local table = table
 
 local mod_options = {}
-local c = 0
+local c = #mod_options
 
 -- shown ame of tech
 local techs = {

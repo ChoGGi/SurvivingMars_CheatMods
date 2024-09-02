@@ -4,7 +4,7 @@ local table = table
 local T = T
 
 local mod_options = {}
-local c = 0
+local c = #mod_options
 
 -- add filters
 local PhotoFilterPresetMap = PhotoFilterPresetMap

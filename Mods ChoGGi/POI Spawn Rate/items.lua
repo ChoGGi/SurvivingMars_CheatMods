@@ -4,7 +4,7 @@ local table = table
 local T = T
 
 local mod_options = {}
-local c = 0
+local c = #mod_options
 
 local POIPresets = POIPresets
 for id, poi in pairs(POIPresets) do

@@ -5,7 +5,7 @@ local T = T
 local table = table
 
 local mod_options = {}
-local c = 0
+local c = #mod_options
 
 local resources = table.icopy(UniversalStorageDepot.storable_resources)
 

@@ -27,7 +27,7 @@ local mod_options = {
 	}),
 }
 
-local c = 4
+local c = #mod_options
 
 local table = table
 local T = T

@@ -5,7 +5,7 @@ local PlaceObj = PlaceObj
 local T = T
 
 local mod_options = {}
-local c = 0
+local c = #mod_options
 
 -- skip instead of add for mod added ones
 local skips = {

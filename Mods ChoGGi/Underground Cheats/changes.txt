@@ -1,3 +1,6 @@
+v0.4
+Added mod option to pin rockets.
+
 v0.3
 Removed need of my lib mod.
 

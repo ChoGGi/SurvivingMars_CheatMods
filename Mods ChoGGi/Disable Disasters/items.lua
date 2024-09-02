@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 local mod_options = {}
-local c = 0
+local c = #mod_options
 local table = table
 
 local disasters = {

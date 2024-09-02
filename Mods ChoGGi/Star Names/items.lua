@@ -60,7 +60,7 @@ local mod_options = {
 		"DefaultValue", true,
 	}),
 }
-local c = 1
+local c = #mod_options
 
 local PhotoFilterPresetMap = PhotoFilterPresetMap
 for id, item in pairs(PhotoFilterPresetMap) do

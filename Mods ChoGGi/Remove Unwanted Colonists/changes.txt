@@ -1,3 +1,6 @@
+v2.4
+Fixed stuck pods.
+
 v2.3
 Fix so you can remove colonists from open-air passages and still be able to demo them.
 

@@ -49,7 +49,7 @@ local unreleased = {
 -- remove when released
 
 local mod_options = {}
-local c = 0
+local c = #mod_options
 
 for i = 1, #dlc do
 	c = c + 1

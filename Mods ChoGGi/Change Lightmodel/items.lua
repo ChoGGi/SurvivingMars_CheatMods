@@ -4,7 +4,7 @@ local PlaceObj = PlaceObj
 local T = T
 
 local mod_options = {}
-local c = 0
+local c = #mod_options
 
 local lightmodels = {
 	"Terraformed",

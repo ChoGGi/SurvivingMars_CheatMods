@@ -125,38 +125,6 @@ function OnMsg.SectorScanned()
 end
 --
 function OnMsg.ClassesPostprocess()
-
-	-- Cargo presets are missing images for some buildings/all resources
-	local articles = Presets.EncyclopediaArticle.Resources
-	local lookup_res = {
-		PreciousMinerals = articles.ExoticMinerals.image,
-		Concrete = articles.Concrete.image,
-		Electronics = articles.Electronics.image,
-		Food = articles.Food.image,
-		Fuel = articles.Fuel.image,
-		MachineParts = articles["Mechanical Parts"].image,
-		Metals = articles.Metals.image,
-		Polymers = articles.Polymers.image,
-		PreciousMetals = articles["Rare Metals"].image,
-		Seeds = articles.Seeds.image,
-		-- Close enough
-		WasteRock = "UI/Messages/Tutorials/Tutorial1/Tutorial1_WasteRockConcreteDepot.tga",
-	}
-
-	local BuildingTemplates = BuildingTemplates
-	local CargoPreset = CargoPreset
-	for id, cargo in pairs(CargoPreset) do
-		if not cargo.icon then
-
-			if lookup_res[id] then
-				cargo.icon = lookup_res[id]
-			elseif BuildingTemplates[id] then
-				cargo.icon = BuildingTemplates[id].encyclopedia_image
-			end
-
-		end
-	end
-
 	-- Fix Colonist Daily Interest Loop
 	-- last checked 1011030 Colonist:EnterBuilding()
 	local ChoOrig_Colonist_EnterBuilding = Colonist.EnterBuilding
@@ -195,6 +163,43 @@ do -- CityStart/LoadGame
 		local bt = BuildingTemplates
 		local main_realm = GetRealmByID(MainMapID)
     local objs
+
+		--
+		-- I'm going out on a limb and saying tourist gurus are a bug.
+		TraitPresets.Guru.incompatible.Tourist = true
+		TraitPresets.Tourist.incompatible.Guru = true
+
+		--
+		-- Cargo presets are missing images for some buildings/all resources
+		local articles = Presets.EncyclopediaArticle.Resources
+		local lookup_res = {
+			PreciousMinerals = articles.ExoticMinerals.image,
+			Concrete = articles.Concrete.image,
+			Electronics = articles.Electronics.image,
+			Food = articles.Food.image,
+			Fuel = articles.Fuel.image,
+			MachineParts = articles["Mechanical Parts"].image,
+			Metals = articles.Metals.image,
+			Polymers = articles.Polymers.image,
+			PreciousMetals = articles["Rare Metals"].image,
+			Seeds = articles.Seeds.image,
+			-- Close enough
+			WasteRock = "UI/Messages/Tutorials/Tutorial1/Tutorial1_WasteRockConcreteDepot.tga",
+		}
+
+		local BuildingTemplates = BuildingTemplates
+		local CargoPreset = CargoPreset
+		for id, cargo in pairs(CargoPreset) do
+			if not cargo.icon then
+
+				if lookup_res[id] then
+					cargo.icon = lookup_res[id]
+				elseif BuildingTemplates[id] then
+					cargo.icon = BuildingTemplates[id].encyclopedia_image
+				end
+
+			end
+		end
 
 		--
 		-- See OnMsg.TechResearched below for more info about GeneForging
@@ -1194,6 +1199,34 @@ end
 --
 --
 --
+--
+
+--
+-- Why it doesn't check if the cargo resource exists is anyones guess.
+-- Seen an error in a log file, no idea what it's from though.
+local ChoOrig_Elevator_DeliverResource = Elevator.DeliverResource
+function Elevator:DeliverResource(resource, ...)
+	if not mod_EnableMod then
+		return ChoOrig_Elevator_DeliverResource(self, resource, ...)
+	end
+
+	-- This is from the func, it can't hurt to have it happen, and it might hurt not to.
+	-- last checked lua rev 1011166
+  if not self.other.cargo[resource] then
+    self.other.cargo[resource] = {
+      class = resource,
+      requested = 0,
+      amount = 0
+    }
+  end
+
+	if not self.cargo[resource] then
+		return
+	end
+
+	return ChoOrig_Elevator_DeliverResource(self, resource, ...)
+end
+
 --
 -- No flying drones underground
 if g_AvailableDlc.gagarin then

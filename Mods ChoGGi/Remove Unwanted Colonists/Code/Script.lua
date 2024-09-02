@@ -388,6 +388,7 @@ DefineClass.MurderPod = {
 	leave_height = 1000 * guim,
 	hover_height = 30 * guim,
 	hover_height_orig = 30 * guim,
+--~ 	min_hover_height = 10 * guim,
 	arrival_time = 10000,
 	min_pos_radius = 250 * guim,
 	max_pos_radius = 750 * guim,
@@ -468,9 +469,11 @@ function MurderPod:Leave(leave_height)
 		self.min_pos_radius,
 		self.city
 	)
-	local map = GetGameMap(self)
---~ 	leave_height = (map.terrain:GetHeight(current_pos) + leave_height) * 2
-	leave_height = (map.realm:SnapToTerrain(current_pos) + leave_height) * 2
+
+	leave_height = (
+		GetGameMap(self).realm:SnapToTerrain(current_pos):z() + leave_height
+	) * 2
+
 	self.hover_height = leave_height / 4
 
 	self.fx_actor_class = "SupplyRocket"

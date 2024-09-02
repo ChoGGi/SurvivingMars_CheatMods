@@ -27,9 +27,15 @@ local mod_options = {
 		"MinValue", 1,
 		"MaxValue", 500,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "PinRockets",
+		"DisplayName", T(0000, "Pin Rockets"),
+		"Help", T(0000, "When changing to underground, pin any rockets from surface."),
+		"DefaultValue", true,
+	}),
 }
 
-local c = 3
+local c = #mod_options
 
 local wonder_desc = T(0000, "Turn on to let this wonder spawn underground.")
 

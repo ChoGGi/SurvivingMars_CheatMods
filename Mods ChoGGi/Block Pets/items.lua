@@ -30,7 +30,7 @@ local mod_options = {
 		"MaxValue", 200,
 	}),
 }
-local c = 2
+local c = #mod_options
 
 local Animals = Animals
 for id, def in pairs(Animals) do

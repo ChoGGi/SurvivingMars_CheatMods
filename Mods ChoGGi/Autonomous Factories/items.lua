@@ -16,7 +16,7 @@ local mod_options = {
 		"StepSize", 10,
 	}),
 }
-local c = 1
+local c = #mod_options
 
 local g_Classes = g_Classes
 local BuildingTemplates = BuildingTemplates

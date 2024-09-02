@@ -48,7 +48,7 @@ You will lose all progress in current mystery and it may cause unexpected issues
 		"MaxValue", 100,
 	}),
 }
-local c = 6
+local c = #mod_options
 
 local mysteries = ClassDescendantsList("MysteryBase")
 local g_Classes = g_Classes

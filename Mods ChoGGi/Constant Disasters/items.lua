@@ -1,7 +1,7 @@
 -- See LICENSE for terms
 
 local properties = {}
-local c = 0
+local c = #mod_options
 local disasters = {
 	ColdWaves = T(4148, "Cold Waves"),
 	DustStorms = T(4144, "Dust Storms"),

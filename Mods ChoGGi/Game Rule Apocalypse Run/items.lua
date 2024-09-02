@@ -44,7 +44,7 @@ local bits = {
 }
 
 local mod_options = {}
-local c = 0
+local c = #mod_options
 
 local table = table
 local PlaceObj = PlaceObj

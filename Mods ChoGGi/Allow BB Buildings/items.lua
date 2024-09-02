@@ -11,7 +11,7 @@ local mod_options = {
 		"DefaultValue", true,
 	}),
 }
-local c = 1
+local c = #mod_options
 
 local BuildingTemplates = BuildingTemplates
 for id, item in pairs(BuildingTemplates) do

@@ -43,7 +43,7 @@ Set this and min to 0 to revert all colonist death ages to game default random v
 	}),
 }
 
-local c = 4
+local c = #mod_options
 
 local Colonist = Colonist
 local ColonistAgeGroups = const.ColonistAgeGroups

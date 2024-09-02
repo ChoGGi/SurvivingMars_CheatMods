@@ -23,7 +23,7 @@ else
 end
 
 local mod_options = {}
-local c = 0
+local c = #mod_options
 
 local bt = Presets.TechPreset.Breakthroughs
 for i = 1, #bt do

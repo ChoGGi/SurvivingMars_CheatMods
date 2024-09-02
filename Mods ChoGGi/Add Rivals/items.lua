@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local properties = {
+local mod_options = {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "EnableMod",
 		"DisplayName", T(302535920011303, "<color ChoGGi_yellow>Enable Mod</color>"),
@@ -35,14 +35,14 @@ You might need to re-apply mod options after starting a couple new games.]]),
 	}),
 }
 
-local c = #properties
+local c = #mod_options
 
 local rivals = Presets.DumbAIDef.MissionSponsors
 for i = 1, #rivals do
 	local rival = rivals[i]
 	if rival.id ~= "none" and rival.id ~= "random" then
 		c = c + 1
-		properties[c] = PlaceObj("ModItemOptionToggle", {
+		mod_options[c] = PlaceObj("ModItemOptionToggle", {
 			"name", rival.id,
 			"DisplayName", T(rival.display_name),
 			"Help", T(rival.description .. "<newline> If turned on this will be used as a rival instead of random (this will override Rival Amount)."),
@@ -51,4 +51,4 @@ for i = 1, #rivals do
 	end
 end
 
-return properties
+return mod_options

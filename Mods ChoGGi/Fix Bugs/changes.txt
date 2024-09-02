@@ -1,6 +1,9 @@
+v6.3
+Elevator func not checking for invalid resources (seen an error in an unrelated log file).
+Stopped Tourist Gurus from happening (https://www.reddit.com/r/SurvivingMars/comments/1f178q0/how/)
+
 v6.2
 Added my Pins Missing Some Status Icons mod.
-
 
 v6.1
 Added missing images for Cargo listings.
