@@ -76,9 +76,11 @@ end
 OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
+
 --
 -- Fix for Silva's Orion Rocket mod (part 1, backing up the func he overrides)
 local ChoOrig_PlacePlanet = PlacePlanet
+
 --
 -- The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
 -- I could add something to check if this is being called multiple times per unpause, but it's not doing much
@@ -147,7 +149,6 @@ end
 --
 do -- CityStart/LoadGame
 
-	-- If you see (MainCity or UICity) that's for older saves (it does update, but after LoadGame)
 	local function StartupCode(event)
 		if not mod_EnableMod then
 			return
@@ -156,13 +157,57 @@ do -- CityStart/LoadGame
 		-- speed up deleting/etc objs
 		SuspendPassEdits("ChoGGi_FixBBBugs_loading")
 
+		-- if this is called on a save from before B&B (it does update, but after LoadGame)
+		local main_city = MainCity or UICity
+
+		local main_realm = GetRealmByID(MainMapID)
 		local UIColony = UIColony
+		local Cities = Cities
 		local const = const
 		local GameMaps = GameMaps
 		local ResupplyItemDefinitions = ResupplyItemDefinitions
 		local bt = BuildingTemplates
-		local main_realm = GetRealmByID(MainMapID)
-    local objs
+ 		local CargoPreset = CargoPreset
+		local objs
+
+		--
+		-- Anything that needs to loop through GameMaps
+		local ElectricityGridObject_GameInit = ElectricityGridObject.GameInit
+		for _, map in pairs(GameMaps) do
+
+			--
+			-- Remove stuck cursor buildings (reddish coloured).
+			map.realm:MapDelete("map", "CursorBuilding")
+
+			--
+			-- Fix No Power Dome Buildings
+			map.realm:MapGet("map", "ElectricityGridObject", function(obj)
+				-- should be good enough to not get false positives?
+				if obj.working == false and obj.signs and obj.signs.SignNoPower and ValidateBuilding(obj.parent_dome)
+					and obj.electricity and not obj.electricity.parent_dome
+				then
+					obj:DeleteElectricity()
+					ElectricityGridObject_GameInit(obj)
+				end
+			end)
+
+			--
+			-- Leftover particles from re-fabbing rare extractors with particles attached (concrete/reg metals seem okay)
+			-- Leftover from before my fix to stop it from happening
+			map.realm:MapGet("map", "ParSystem", function(par_obj)
+				local par_name = par_obj:GetParticlesName()
+				if par_name == "UniversalExtractor_Steam_02"
+					or par_name == "UniversalExtractor_Smoke"
+				then
+					local q, r = WorldToHex(par_obj:GetPos())
+					if not map.object_hex_grid:GetObject(q, r, "PreciousMetalsExtractor") then
+						DoneObject(par_obj)
+					end
+				end
+			end)
+
+			-- for GameMaps end
+		end
 
 		--
 		-- I'm going out on a limb and saying tourist gurus are a bug.
@@ -186,16 +231,13 @@ do -- CityStart/LoadGame
 			-- Close enough
 			WasteRock = "UI/Messages/Tutorials/Tutorial1/Tutorial1_WasteRockConcreteDepot.tga",
 		}
-
-		local BuildingTemplates = BuildingTemplates
-		local CargoPreset = CargoPreset
 		for id, cargo in pairs(CargoPreset) do
 			if not cargo.icon then
 
 				if lookup_res[id] then
 					cargo.icon = lookup_res[id]
-				elseif BuildingTemplates[id] then
-					cargo.icon = BuildingTemplates[id].encyclopedia_image
+				elseif bt[id] then
+					cargo.icon = bt[id].encyclopedia_image
 				end
 
 			end
@@ -223,48 +265,6 @@ do -- CityStart/LoadGame
 				StartRadioStation(GetStoredRadioStation())
 			end)
 
-		end
-
-
-		--
-		-- Anything that needs to loop through GameMaps
-		local ElectricityGridObject_GameInit = ElectricityGridObject.GameInit
-		for _, map in pairs(GameMaps) do
-
-			--
-			-- Fix No Power Dome Buildings
-			objs = map.realm:MapGet("map", "ElectricityGridObject")
-			for i = 1, #objs do
-				local obj = objs[i]
-				-- should be good enough to not get false positives?
-				if obj.working == false and obj.signs and obj.signs.SignNoPower and ValidateBuilding(obj.parent_dome)
-					and obj.electricity and not obj.electricity.parent_dome
-				then
-					obj:DeleteElectricity()
-					ElectricityGridObject_GameInit(obj)
-				end
-			end
-
-			--
-			-- Leftover particles from re-fabbing rare extractors with particles attached (concrete/reg metals seem okay)
-			-- Leftover from before my fix to stop it from happening
-			objs = map.realm:MapGet("map", "ParSystem", function(par_obj)
-				local par_name = par_obj:GetParticlesName()
-				if par_name == "UniversalExtractor_Steam_02"
-					or par_name == "UniversalExtractor_Smoke"
-				then
-					local q, r = WorldToHex(par_obj:GetPos())
-					return not map.object_hex_grid:GetObject(q, r, "PreciousMetalsExtractor")
-				end
-			end)
-
-			--
-			SuspendPassEdits("ChoGGi.FixBugs.DeleteExtractorSmoke")
-			for i = 1, #objs do
-				DoneObject(objs[i])
-			end
-			ResumePassEdits("ChoGGi.FixBugs.DeleteExtractorSmoke")
-			--
 		end
 
 		--
@@ -403,9 +403,7 @@ do -- CityStart/LoadGame
 
 		--
 		-- Fix Defence Towers Not Firing At Rovers (1/2)
-		-- The "or UICity" is if this is called on a save from before B&B
-		local hostile = (MainCity or UICity).labels.HostileAttackRovers or ""
-		if #hostile > 0 then
+		if #(main_city.labels.HostileAttackRovers or "") > 0 then
 			UIColony.mystery.can_shoot_rovers = true
 		end
 
@@ -430,12 +428,12 @@ do -- CityStart/LoadGame
 
 		--
 		-- Fix Buildings Broken Down And No Repair
-		local blds = UIColony:GetCityLabels("Building")
-		for i = 1, #blds do
-			local bld = blds[i]
+		objs = UIColony:GetCityLabels("Building")
+		for i = 1, #objs do
+			local obj = objs[i]
 
 			-- clear out non-task requests in task_requests
-			local task_requests = bld.task_requests or ""
+			local task_requests = obj.task_requests or ""
 			for j = #task_requests, 1, -1 do
 				local req = task_requests[j]
 				if type(req) ~= "userdata" then
@@ -444,27 +442,28 @@ do -- CityStart/LoadGame
 			end
 
 			-- Buildings hit with lightning during a cold wave
-			if bld.is_malfunctioned and bld.accumulated_maintenance_points == 0 then
-				bld:AccumulateMaintenancePoints(bld.maintenance_threshold_base * 2)
+			if obj.is_malfunctioned and obj.accumulated_maintenance_points == 0 then
+				obj:AccumulateMaintenancePoints(obj.maintenance_threshold_base * 2)
 
 			-- Exceptional circumstance buildings
-			elseif not bld.maintenance_resource_request and bld:DoesMaintenanceRequireResources() then
+			elseif not obj.maintenance_resource_request and obj:DoesMaintenanceRequireResources() then
 				-- restore main res request
-				local resource_unit_count = 1 + (bld.maintenance_resource_amount / (const.ResourceScale * 10)) --1 per 10
-				local r_req = bld:AddDemandRequest(bld.maintenance_resource_type, 0, 0, resource_unit_count)
-				bld.maintenance_resource_request = r_req
-				bld.maintenance_request_lookup[r_req] = true
+				local resource_unit_count = 1 + (obj.maintenance_resource_amount / (const.ResourceScale * 10)) --1 per 10
+				local r_req = obj:AddDemandRequest(obj.maintenance_resource_type, 0, 0, resource_unit_count)
+				obj.maintenance_resource_request = r_req
+				obj.maintenance_request_lookup[r_req] = true
 				-- needs to be fired off to complete the reset?
-				bld:SetExceptionalCircumstancesMaintenance(bld.maintenance_resource_type, 1)
-				bld:Setexceptional_circumstances(false)
+				obj:SetExceptionalCircumstancesMaintenance(obj.maintenance_resource_type, 1)
+				obj:Setexceptional_circumstances(false)
 			end
 		end
 
 		--
 		-- Some colonists are allergic to doors and suffocate inside a dome with their suit still on.
-		local colonists = UIColony:GetCityLabels("Colonist")
-		for i = 1, #colonists do
-			local colonist = colonists[i]
+		local GetDomeAtPoint = GetDomeAtPoint
+		objs = UIColony:GetCityLabels("Colonist")
+		for i = 1, #objs do
+			local colonist = objs[i]
 			-- Check if lemming is currently in a dome while wearing a suit
 			if colonist.entity:sub(1, 15) == "Unit_Astronaut_" then
 				local grid = GameMaps[colonist.city.map_id].object_hex_grid
@@ -481,9 +480,9 @@ do -- CityStart/LoadGame
 		--
 		-- Fix Farm Oxygen 1
 		if mod_FarmOxygen then
-			local domes = UIColony:GetCityLabels("Dome")
-			for i = 1, #domes do
-				local dome = domes[i]
+			objs = UIColony:GetCityLabels("Dome")
+			for i = 1, #objs do
+				local dome = objs[i]
 				local mods = dome:GetPropertyModifiers("air_consumption")
 				if mods then
 					local farms = dome.labels.Farm or empty_table
@@ -531,9 +530,9 @@ do -- CityStart/LoadGame
 
 		--
 		-- https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-game-freezes-when-deploying-drones-from-rc-commander-after-one-was-destroyed.1168779/
-		local rovers = UIColony:GetCityLabels("RCRoverAndChildren")
-		for i = 1, #rovers do
-			local attached_drones = rovers[i].attached_drones
+		objs = UIColony:GetCityLabels("RCRoverAndChildren")
+		for i = 1, #objs do
+			local attached_drones = objs[i].attached_drones
 			for j = #attached_drones, 1, -1 do
 				if not IsValid(attached_drones[j]) then
 					table.remove(attached_drones, j)
@@ -553,9 +552,9 @@ do -- CityStart/LoadGame
 
 		--
 		-- Check for transport rovers with negative amounts of resources carried.
-		local trans = UIColony:GetCityLabels("RCTransportAndChildren")
-		for i = 1, #trans do
-			local obj = trans[i]
+		objs = UIColony:GetCityLabels("RCTransportAndChildren")
+		for i = 1, #objs do
+			local obj = objs[i]
 			for j = 1, #(obj.storable_resources or "") do
 				local res = obj.storable_resources[j]
 				if obj.resource_storage[res] and obj.resource_storage[res] < 0 then
@@ -566,6 +565,9 @@ do -- CityStart/LoadGame
 
 		--
 		if UIColony.underground_map_unlocked then
+
+			local underground_map = GameMaps[UIColony.underground_map_id]
+			local underground_city = Cities[UIColony.underground_map_id]
 
 			--
 			-- Colonists showing up on wrong map in infobar.
@@ -580,7 +582,6 @@ do -- CityStart/LoadGame
 					end
 				end
 				--
-				local Cities = Cities
 				for i = 1, #Cities do
 					local city = Cities[i]
 					local map_id = city.map_id
@@ -609,8 +610,7 @@ do -- CityStart/LoadGame
 
 			--
 			--	Move any floating underground rubble to within reach of drones (might have to "push" drones to make them go for it).
-			local map = GameMaps[UIColony.underground_map_id]
-			map.realm:MapForEach("map", "CaveInRubble", function(obj)
+			underground_map.realm:MapForEach("map", "CaveInRubble", function(obj)
 				local pos = obj:GetVisualPos()
 				if pos:z() > 0 then
 					-- The ground floor is 0 (or close enough to not matter), so I can just move it instead of having to check height.
@@ -626,14 +626,14 @@ do -- CityStart/LoadGame
 			--
 			-- Move any underground dome prefabs (underground anomaly "storybit") to underground city (instead of being stuck on surface)
 			-- https://www.reddit.com/r/SurvivingMars/comments/1013afl/no_way_to_moveuse_underground_dome_prefabs/
-			if MainCity.available_prefabs.UndergroundDome then
-				local prefabs = Cities[UIColony.underground_map_id].available_prefabs
+			if main_city.available_prefabs.UndergroundDome then
+				local prefabs = underground_city.available_prefabs
 				if not prefabs.UndergroundDome then
 					prefabs.UndergroundDome = 0
 				end
 
-				prefabs.UndergroundDome = prefabs.UndergroundDome + MainCity.available_prefabs.UndergroundDome
-				MainCity.available_prefabs.UndergroundDome = nil
+				prefabs.UndergroundDome = prefabs.UndergroundDome + main_city.available_prefabs.UndergroundDome
+				main_city.available_prefabs.UndergroundDome = nil
 			end
 			--
 		end
@@ -643,19 +643,19 @@ do -- CityStart/LoadGame
 		local radius = 100 * guim
 		local InvalidPos = InvalidPos()
 
-		local hubs = UIColony:GetCityLabels("DroneHub")
-		for i = 1, #hubs do
+		objs = UIColony:GetCityLabels("DroneHub")
+		for i = 1, #objs do
 			table.clear(positions)
 
-			local hub = hubs[i]
+			local hub = objs[i]
 			for j = 1, #(hub.drones or "") do
 				local drone = hub.drones[j]
 				local pos = drone:GetVisualPos()
 				if pos == InvalidPos and drone.command == "Malfunction" then
-					-- don't move more than one malf drone to same pos
+					-- Make sure they're not all bunched up
 					if not positions[tostring(pos)] then
 						local new_pos = GetRandomPassableAroundOnMap(hub.city.map_id, hub:GetPos(), radius)
-						drone:SetPos(new_pos:SetTerrainZ())
+						drone:SetPos(new_pos)
 						positions[tostring(new_pos)] = true
 					end
 				end
@@ -1114,7 +1114,7 @@ function GetCommandCenterTransportsList(...)
 		return ChoOrig_GetCommandCenterTransportsList(...)
 	end
 
-	local objs = UIColony.city_labels.labels.AttackRover or ""
+	local objs = UIColony:GetCityLabels("AttackRover")
 	for i = 1, #objs do
 		local obj = objs[i]
 		if not obj.ChoGGi_FixedRoverNameForCCC or type(obj.name) == "userdata" then

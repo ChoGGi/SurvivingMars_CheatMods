@@ -1,3 +1,6 @@
+v6.4
+Removes stuck cursor buildings (reddish coloured).
+
 v6.3
 Elevator func not checking for invalid resources (seen an error in an unrelated log file).
 Stopped Tourist Gurus from happening (https://www.reddit.com/r/SurvivingMars/comments/1f178q0/how/)

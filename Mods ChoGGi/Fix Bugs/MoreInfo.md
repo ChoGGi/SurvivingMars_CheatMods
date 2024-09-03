@@ -17,6 +17,7 @@ Colonists on an expedition now show proper status when selected from command cen
 Added missing images for certain Cargo listings.
 Gale crater name doesn't show up for 4S138E, 5S138E.
 Stopped Tourist Gurus from happening.
+Removes stuck cursor buildings (reddish coloured).
 
 Storybits:
 Gene Forging storybit tech doesn't increase rare traits chance.
