@@ -68,7 +68,7 @@ local function UpdateMOXIE(obj)
 end
 
 local function UpdateMOXIES()
-	local objs = UIColony.city_labels.labels.MOXIE or ""
+	local objs = UIColony:GetCityLabels("MOXIE")
 	for i = 1, #objs do
 		UpdateMOXIE(objs[i])
 	end

@@ -19,7 +19,7 @@ OnMsg.ApplyModOptions = ModOptions
 local function GetRandomWorker(building)
 	-- Okay a bit overkill
 	if not building then
-		local vats = UIColony.city_labels.labels.CloningVats or empty_table
+		local vats = UIColony:GetCityLabels("CloningVats")
 		building = table.rand(vats)
 	end
 

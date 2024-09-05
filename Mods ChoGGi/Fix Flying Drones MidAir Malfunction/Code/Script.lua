@@ -20,7 +20,7 @@ local function ResetFlyingDrones()
 		return
 	end
 
-	local objs = UIColony.city_labels.labels.Drone or ""
+	local objs = UIColony:GetCityLabels("Drone")
 	for i = 1, #objs do
 		local obj = objs[i]
 		if obj:IsKindOf("FlyingDrone") and commands[obj.command] and not obj:IsLanded() then

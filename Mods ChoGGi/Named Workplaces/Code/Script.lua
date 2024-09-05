@@ -11,7 +11,7 @@ function Workplace:AddWorker(worker, ...)
 
 	local name = worker.name
 
-	self.display_name = T{302535920011335,"<name>'s <workplace>, est. <sol>",
+	self.display_name = T{302535920011335, "<name>'s <workplace>, est. <sol>",
 		name = type(name) == "table"
 			-- first name for eng, or "last" name for rtl (assuming that's how the devs did them)
 			and name[config.TextWrapAnywhere and #name or 1]

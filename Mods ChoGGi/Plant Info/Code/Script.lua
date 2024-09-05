@@ -39,7 +39,7 @@ function VegetationSelectionObject:GetChoGGi_NearestSeeder()
 		label = "OpenFarm"
 	end
 
-	local objs = UIColony.city_labels.labels[label] or ""
+	local objs = UIColony:GetCityLabels(label)
 	if #objs > 0 then
 		local obj_pos = self:GetPos()
 

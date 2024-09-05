@@ -21,23 +21,19 @@ function ChoGGi_Funcs.Menus.ConsoleRestart()
 end
 
 do -- ExamineObjectRadius
-	local SelObjects = ChoGGi_Funcs.Common.SelObjects
---~ 	local GetCursorWorldPos = GetCursorWorldPos
-	local OpenInExamineDlg = ChoGGi_Funcs.Common.OpenInExamineDlg
-
 	local pt
 	local function SortDist(a, b)
 		return a:GetDist2D(pt) < b:GetDist2D(pt)
 	end
 	function ChoGGi_Funcs.Menus.ExamineObjectRadius()
 		local radius = ChoGGi.UserSettings.ExamineObjectRadius or 2500
-		local objs = SelObjects(radius)
+		local objs = ChoGGi_Funcs.Common.SelObjects(radius)
 		if objs[1] then
 			pt = GetCursorWorldPos()
 			-- sort by nearest
 			table.sort(objs, SortDist)
 
-			OpenInExamineDlg(objs, {
+			OpenExamine(objs, {
 				has_params = true,
 				override_title = true,
 				title = T(302535920000069--[[Examine]]) .. " "

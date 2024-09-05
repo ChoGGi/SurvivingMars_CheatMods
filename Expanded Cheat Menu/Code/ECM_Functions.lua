@@ -367,7 +367,7 @@ end
 
 function ChoGGi_Funcs.Common.MonitorThreads()
 	local table_list = {}
-	local dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(table_list, {
+	local dlg = OpenExamineReturn(table_list, {
 		has_params = true,
 		auto_refresh = true,
 		title = T(302535920000853--[[Monitor]]) .. ": ThreadsRegister",
@@ -415,7 +415,7 @@ function ChoGGi_Funcs.Common.MonitorTableLength(obj, skip_under, sortby, title)
 	title = title or RetName(obj)
 	skip_under = skip_under or 25
 	local table_list = {}
-	local dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(table_list, {
+	local dlg = OpenExamineReturn(table_list, {
 		has_params = true,
 		auto_refresh = true,
 		title = title,
@@ -1484,12 +1484,12 @@ do -- ToggleFuncHook
 				hint = "Shows list of func calls in order of called.",
 --~				func = function(self, button, obj, argument, hyperlink_box, pos)
 				func = function()
-					ChoGGi_Funcs.Common.OpenInExamineDlg(func_str, nil, Translate(302535920000234--[[Monitor Func Calls]]))
+					OpenExamine(func_str, nil, Translate(302535920000234--[[Monitor Func Calls]]))
 				end,
 			}
 
 			-- view the results
-			ChoGGi_Funcs.Common.OpenInExamineDlg(func_table, nil, "Func call count (" .. func_str_c .. ")")
+			OpenExamine(func_table, nil, "Func call count (" .. func_str_c .. ")")
 
 		end
 	end
@@ -1822,7 +1822,7 @@ It's a tradeoff between erroneous errors and the game locking up."]])
 			results.csv_failed = test_csv
 		end
 
-		ChoGGi_Funcs.Common.OpenInExamineDlg(results, nil, title)
+		OpenExamine(results, nil, title)
 	end
 end -- do
 
@@ -1986,7 +1986,7 @@ function ChoGGi_Funcs.Common.MonitorFunctionResults(func, ...)
 	local varargs = {...}
 
 	local results_list = {}
-	local dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(results_list, {
+	local dlg = OpenExamineReturn(results_list, {
 		has_params = true,
 		auto_refresh = true,
 		title = T(302535920000853--[[Monitor]]) .. " " .. T(302535920000110--[[Function Results]]),

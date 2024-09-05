@@ -1,3 +1,6 @@
+v0.3
+Default for resource-specific depots had an extra 0.
+
 v0.2
 Log spam
 

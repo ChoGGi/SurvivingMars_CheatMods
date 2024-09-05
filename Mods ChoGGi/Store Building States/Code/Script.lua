@@ -347,7 +347,7 @@ local function ShowList_AddTo(obj, profile_name)
 
 		-- all of type checkbox
 		if choices[1].check4 then
-			local objs = UIColony.city_labels.labels[obj.class] or ""
+			local objs = UIColony:GetCityLabels(obj.class)
 			for i = 1, #objs do
 				building_state = AddNewState(profile, objs[i])
 				-- add settings from above

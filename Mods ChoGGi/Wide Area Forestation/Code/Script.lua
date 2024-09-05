@@ -46,7 +46,7 @@ local function ModOptions(id)
 
 	-- existing plants
 	local meta = ForestationPlant:GetPropertyMetadata("vegetation_interval")
-	local objs = UIColony.city_labels.labels.ForestationPlant or ""
+	local objs = UIColony:GetCityLabels("ForestationPlant")
 	for i = 1, #objs do
 		local obj = objs[i]
 		obj.building_update_time = MulDivRound(mod_PlantInterval, HourDuration, meta.scale)
@@ -89,7 +89,7 @@ function OnMsg.ClassesPostprocess()
 			local context = self.context
 
 			local range = context.UIRange
-			local objs = UIColony.city_labels.labels.ForestationPlant or ""
+			local objs = UIColony:GetCityLabels("ForestationPlant")
 			for i = 1, #objs do
 				objs[i].UIRange = range
 			end

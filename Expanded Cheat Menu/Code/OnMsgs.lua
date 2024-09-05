@@ -958,7 +958,7 @@ function OnMsg.NewDay() -- NewSol...
 
 	-- sorts cc list by dist to building
 	if ChoGGi.UserSettings.SortCommandCenterDist then
-		local objs = UIColony.city_labels.labels.Building or ""
+		local objs = UIColony:GetCityLabels("Building")
 		for i = 1, #objs do
 			local obj = objs[i]
 			-- no sense in doing it with only one center
@@ -984,7 +984,7 @@ function OnMsg.NewDay() -- NewSol...
 		end
 	end
 
-	local objs = UIColony.city_labels.labels.ChoGGi_InsideForcedOutDome or ""
+	local objs = UIColony:GetCityLabels("ChoGGi_InsideForcedOutDome")
 	for i = #objs, 1, -1 do
 		local obj = objs[i]
 		-- got removed or something
@@ -1006,16 +1006,15 @@ function OnMsg.NewHour()
 		FlushLogFile()
 	end
 
-	-- make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
+	-- Make them lazy drones stop abusing electricity (we need to have an hourly update if people are using large prod amounts/low amount of drones)
 	if UserSettings.DroneResourceCarryAmountFix then
-		local labels = UIColony.city_labels.labels
 		local FuckingDrones = ChoGGi_Funcs.Common.FuckingDrones
 
 		-- Hey. Do I preach at you when you're lying stoned in the gutter? No!
-		local prods = labels.ResourceProducer or ""
+		local prods = UIColony:GetCityLabels("ResourceProducer")
 		for i = 1, #prods do
 			local prod = prods[i]
-			-- most are fine with GetProducerObj, but some like water extractor don't have one
+			-- Most are fine with GetProducerObj, but some like water extractor don't have one
 			local obj = prod:GetProducerObj() or prod
 			local func = obj.GetStoredAmount and "GetStoredAmount" or obj.GetAmountStored and "GetAmountStored"
 			if obj[func](obj) > 1000 then
@@ -1027,7 +1026,7 @@ function OnMsg.NewHour()
 			end
 		end
 
-		prods = labels.BlackCubeStockpiles or ""
+		prods = UIColony:GetCityLabels("BlackCubeStockpiles")
 		for i = 1, #prods do
 			local obj = prods[i]
 			if obj:GetStoredAmount() > 1000 then

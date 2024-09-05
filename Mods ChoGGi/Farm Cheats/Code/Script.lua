@@ -8,7 +8,7 @@ local mod_MechFarming
 local mod_MechPerformance
 
 local function UpdateFarms()
-	local objs = UIColony.city_labels.labels.Farm or ""
+	local objs = UIColony:GetCityLabels("Farm")
 	for i = 1, #objs do
 		local obj = objs[i]
 

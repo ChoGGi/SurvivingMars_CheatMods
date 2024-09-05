@@ -609,6 +609,32 @@ end)
 
 
 -- benchmarking stuff
+function ChoGGi.testing.ConcatvsT()
+	ChoGGi_Funcs.Common.TickStart("ConcatvsT.1.Tick")
+	for i = 1, 100000 do
+		local str = "1" .. "2" .. "a" .. "b" .. "g" .. "7" .. "k" .. "0"
+		Translate(str)
+	end
+	ChoGGi_Funcs.Common.TickEnd("ConcatvsT.1.Tick")
+
+	ChoGGi_Funcs.Common.TickStart("ConcatvsT.2.Tick")
+	for i = 1, 100000 do
+		local str = T{"<str1><str2><str3><str4><str5><str6><str7><str8>",
+			str1 = "1",
+			str2 = "2",
+			str3 = "a",
+			str4 = "b",
+			str5 = "g",
+			str6 = "7",
+			str7 = "k",
+			str8 = "0",
+		}
+		Translate(str)
+	end
+
+	ChoGGi_Funcs.Common.TickEnd("ConcatvsT.2.Tick")
+end
+
 function ChoGGi.testing.ConcatingTables()
 	ChoGGi_Funcs.Common.TickStart("ConcatingTables.1.Tick")
 	for i = 1, 100000 do
@@ -630,13 +656,13 @@ function ChoGGi.testing.ConcatingTables()
 end
 
 function ChoGGi.testing.NearestObjFromList()
-	if #(UIColony.city_labels.labels.Building or "") == 0 then
+	if #UIColony:GetCityLabels("Building") == 0 then
 		print("NearestObjFromList: NO BUILDINGS ABORT")
 		return
 	end
 
-	local objs = UIColony.city_labels.labels.Building
-	local base_obj = table.rand(UIColony.city_labels.labels.Building)
+	local objs = UIColony:GetCityLabels("Building")
+	local base_obj = table.rand(objs)
 	local obj_pos = base_obj:GetPos()
 
 	ChoGGi_Funcs.Common.TickStart("NearestObjFromList.1.Tick")
@@ -672,7 +698,7 @@ end
 
 function ChoGGi.testing.TableSortVsLoop()
 	local obj_pos = GetRandomPassablePoint(AsyncRand())
-	local objs = UIColony.city_labels.labels.SurfaceDepositMarker or ""
+	local objs = UIColony:GetCityLabels("SurfaceDepositMarker")
 
 	-- faster
 	ChoGGi_Funcs.Common.TickStart("TableSortVsLoop.1.Tick")
@@ -743,7 +769,7 @@ function ChoGGi.testing.NegNumber()
 end
 
 function ChoGGi.testing.LengthLocal()
-	local objs = UIColony.city_labels.labels.SurfaceDepositMarker or ""
+	local objs = UIColony:GetCityLabels("SurfaceDepositMarker")
 
 	ChoGGi_Funcs.Common.TickStart("LengthLocal.Tick.1")
 	for _ = 1, 1000000 do
@@ -772,7 +798,7 @@ end
 function ChoGGi.testing.IsKindOfSub()
 
 	ChoGGi_Funcs.Common.TickStart("IsKindOfSub.Tick.1")
-	local objs = UIColony.city_labels.labels.SurfaceDepositMarker or ""
+	local objs = UIColony:GetCityLabels("SurfaceDepositMarker")
 	for _ = 1, 100000 do
 		for i = #objs, 1, -1 do
 			local obj = objs[i]
@@ -784,7 +810,7 @@ function ChoGGi.testing.IsKindOfSub()
 
 	-- faster
 	ChoGGi_Funcs.Common.TickStart("IsKindOfSub.Tick.2")
-	objs = UIColony.city_labels.labels.SurfaceDepositMarker or ""
+	objs = UIColony:GetCityLabels("SurfaceDepositMarker")
 	for _ = 1, 100000 do
 		for i = #objs, 1, -1 do
 			local obj = objs[i]
@@ -934,7 +960,7 @@ function ChoGGi.testing.Attaches(obj)
 end
 
 function ChoGGi.testing.TextExamine()
-	local OpenInExamineDlg = ChoGGi_Funcs.Common.OpenInExamineDlg
+	local OpenExamineReturn = OpenExamineReturn
 	local WaitMsg = WaitMsg
 	local list = MapGet(true)
 
@@ -942,7 +968,7 @@ function ChoGGi.testing.TextExamine()
 		ChoGGi_Funcs.Common.TickStart("TextExamine.Tick")
 		for _ = 1, 10 do
 			ChoGGi_Funcs.Common.TickStart("TextExamine.1.Tick")
-			local dlg = OpenInExamineDlg(list)
+			local dlg = OpenExamineReturn(list)
 			WaitMsg("OnRender")
 			dlg:delete()
 			ChoGGi_Funcs.Common.TickEnd("TextExamine.1.Tick")
@@ -1267,7 +1293,7 @@ end -- ClassesPreprocess
 --~ local dlg
 --~ local function hookTick(...)
 --~ 	if not dlg then
---~ 		dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(list, {
+--~ 		dlg = OpenExamineReturn(list, {
 --~ 			has_params = true,
 --~ 			auto_refresh = true,
 --~ 	})

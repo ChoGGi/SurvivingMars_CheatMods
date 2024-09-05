@@ -67,7 +67,7 @@ function OnMsg.SelectionAdded(obj)
 			OPolyline = ChoGGi_OPolyline
 		end
 
-		local objs = UIColony.city_labels.labels.Tunnel or ""
+		local objs = UIColony:GetCityLabels("Tunnel")
 		for i = 1, #objs do
 			-- get tunnel n linked one so we only have one of each in table
 			local t1 = objs[i]

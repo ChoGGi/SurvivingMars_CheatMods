@@ -1040,11 +1040,11 @@ function CursorBuilding:GameInit(...)
 		XShortcutsSetMode("AdjustAdjustWallsLength")
 	end
 
---~ 	local dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(self)
+--~ 	local dlg = OpenExamineReturn(self)
 --~ 	dlg:EnableAutoRefresh()
 --~ 	CreateRealTimeThread(function()
 --~ 		Sleep(1000)
---~ 	local dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(self.template)
+--~ 	local dlg = OpenExamineReturn(self.template)
 --~ 	dlg:EnableAutoRefresh()
 --~ 	end)
 

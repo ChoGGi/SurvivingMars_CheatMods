@@ -60,7 +60,7 @@ do
 	function ReportPersistErrors(...)
 		local errors, warnings = 0, 0
 		if UserSettings.DebugPersistSaves and __error_table__ and #__error_table__ > 0 then
-			ChoGGi_Funcs.Common.OpenInExamineDlg(__error_table__, nil, "__error_table__ (persists)")
+			OpenExamine(__error_table__, nil, "__error_table__ (persists)")
 		else
 			errors, warnings = ChoOrig_ReportPersistErrors(...)
 		end

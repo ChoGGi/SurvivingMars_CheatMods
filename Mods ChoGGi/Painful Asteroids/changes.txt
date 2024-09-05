@@ -1,3 +1,6 @@
+v0.4
+Bumped Extra Fractures max limit to 100 (only four can be visible).
+
 v0.3
 Added mod options Destruction Percent/Extra Fractures.
 

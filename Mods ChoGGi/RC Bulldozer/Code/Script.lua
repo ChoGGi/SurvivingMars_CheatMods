@@ -310,7 +310,7 @@ end
 
 function OnMsg.SaveGame()
 	-- kill off the threads (spews c func persist errors in log)
-	local dozers = UIColony.city_labels.labels.RCBulldozer or ""
+	local dozers = UIColony:GetCityLabels("RCBulldozer")
 	for i = 1, #dozers do
 		local dozer = dozers[i]
 		if dozer.bulldozing then

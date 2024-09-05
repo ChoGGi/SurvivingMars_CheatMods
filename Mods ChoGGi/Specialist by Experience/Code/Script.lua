@@ -81,7 +81,7 @@ local pairs, IsValid = pairs, IsValid
 --~ 	local sol = UIColony.day
 
 function OnMsg.NewDay(sol) -- NewSol...
-	local workplaces = UIColony.city_labels.labels.Workplace or ""
+	local workplaces = UIColony:GetCityLabels("Workplace")
 	for i = 1, #workplaces do
 		local work = workplaces[i]
 		-- only workplaces with my table
@@ -126,7 +126,7 @@ function OnMsg.LoadGame()
 
 	local UIColony = UIColony
 	-- update any buildings with existing workers
-	local workplaces = UIColony.city_labels.labels.Workplace or ""
+	local workplaces = UIColony:GetCityLabels("Workplace")
 	for i = 1, #workplaces do
 		local workplace = workplaces[i]
 		if workplace.specialist ~= "none" and not workplace.ChoGGi_SpecByExp then

@@ -363,7 +363,7 @@ function ChoGGi_VLI_MapInfoDlg:FindText()
 
 	if not reuse or reuse and not IsValidXWin(self.current_examine_dlg) then
 
-		self.current_examine_dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(self.found_objs, {
+		self.current_examine_dlg = OpenExamineReturn(self.found_objs, {
 			has_params = true,
 			dialog_marker = "ChoGGi_VLI_MapInfoDlg_Examine",
 			tooltip_info = function(obj)

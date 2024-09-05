@@ -1003,7 +1003,7 @@ function ChoGGi_Funcs.Menus.ChangeMap()
 	info_lists[6].name = T(692--[[Resources]])
 	info_lists[6].name = T(3996--[[Map Overview]])
 
-	local dlg_has_params = ChoGGi_Funcs.Common.OpenInExamineDlg(info_lists, {
+	local dlg_has_params = OpenExamineReturn(info_lists, {
 		has_params = true,
 		override_title = true,
 		title = T(302535920001717--[[Info]]) .. ": " .. T(10892--[[MISSION PARAMETERS]]),

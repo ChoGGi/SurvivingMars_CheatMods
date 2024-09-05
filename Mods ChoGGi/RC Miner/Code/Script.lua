@@ -592,7 +592,7 @@ end
 
 function OnMsg.NewDay() -- NewSol...
 	-- reset the prod count (for overview or something)
-	local miners = UIColony.city_labels.labels.PortableMiner or ""
+	local miners = UIColony:GetCityLabels("PortableMiner")
 	for i = 1, #miners do
 		miners[i].production_per_day = 0
 	end

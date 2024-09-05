@@ -1,1 +1,5 @@
+v0.3
+Added Anomalies and Effects.
+
 v0.2
+Added other deposits.

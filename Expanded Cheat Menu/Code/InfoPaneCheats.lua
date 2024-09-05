@@ -20,7 +20,7 @@ local Translate = ChoGGi_Funcs.Common.Translate
 local ResourceScale = const.ResourceScale
 
 local CObject = CObject
-CObject.CheatExamine = Common.OpenInExamineDlg
+CObject.CheatExamine = OpenExamineReturn
 CObject.CheatToggleCollision = Common.CollisionsObject_Toggle
 CObject.CheatDeleteObject = Common.DeleteObjectQuestion
 CObject.CheatViewConstruct = Common.ToggleConstructEntityView
@@ -465,7 +465,7 @@ It don't matter if you're black or white"]]),
 		icon = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 	},
 	Examine = {
-		des = T(302535920001277--[[Open <str> in the Object Examiner.]]),
+		des = T(302535920001277--[[Examine <color ChoGGi_green><str></color>.]]),
 		des_name = true,
 		icon = ChoGGi.library_path .. "UI/incal_egg.png",
 	},
@@ -581,7 +581,7 @@ function ChoGGi_Funcs.InfoPane.CheckForMissingCheatDes()
 		end
 	end
 	if next(missing) then
-		Common.OpenInExamineDlg(missing)
+		OpenExamine(missing)
 	else
 		print("No missing cheat descriptions.")
 	end

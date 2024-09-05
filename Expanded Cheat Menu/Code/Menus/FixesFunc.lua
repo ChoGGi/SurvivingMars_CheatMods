@@ -38,7 +38,7 @@ function ChoGGi_Funcs.Menus.RemoveInvalidLabelObjects()
 end
 
 function ChoGGi_Funcs.Menus.RocketCrashesGameOnLanding()
-	local rockets = UIColony.city_labels.labels.SupplyRocket or ""
+	local rockets = UIColony:GetCityLabels("SupplyRocket")
 	for i = 1, #rockets do
 		rockets[i]:ForEachAttach("ParSystem", function(a)
 			if type(a.polyline) == "string" and a.polyline:find("\0") then
@@ -442,7 +442,7 @@ function ChoGGi_Funcs.Menus.RemoveBlueGridMarks()
 end
 
 function ChoGGi_Funcs.Menus.ProjectMorpheusRadarFellDown()
-	local objs = UIColony.city_labels.labels.ProjectMorpheus or ""
+	local objs = UIColony:GetCityLabels("ProjectMorpheus")
 	for i = 1, #objs do
 		objs[i]:ChangeWorkingStateAnim(false)
 		objs[i]:ChangeWorkingStateAnim(true)
@@ -465,10 +465,9 @@ function ChoGGi_Funcs.Menus.RebuildWalkablePointsInDomes()
 end
 
 function ChoGGi_Funcs.Menus.AttachBuildingsToNearestWorkingDome()
-	local AttachToNearestDome = ChoGGi_Funcs.Common.AttachToNearestDome
-	local objs = UIColony.city_labels.labels.InsideBuildings or ""
+	local objs = UIColony:GetCityLabels("InsideBuildings")
 	for i = 1, #objs do
-		AttachToNearestDome(objs[i])
+		ChoGGi_Funcs.Common.AttachToNearestDome(objs[i])
 	end
 
 	MsgPopup(
@@ -478,7 +477,7 @@ function ChoGGi_Funcs.Menus.AttachBuildingsToNearestWorkingDome()
 end
 
 function ChoGGi_Funcs.Menus.ColonistsFixBlackCube()
-	local objs = UIColony.city_labels.labels.Colonist or ""
+	local objs = UIColony:GetCityLabels("Colonist")
 	for i = 1, #objs do
 		local c = objs[i]
 		if c:GetEntity():find("Child") and c.specialist ~= "none" then
@@ -618,7 +617,7 @@ end
 
 ---------------------------------------------------Testers
 
---~ GetDupePositions(UIColony.city_labels.labels.Colonist or "")
+--~ GetDupePositions(UIColony:GetCityLabels("Colonist"))
 --~ function ChoGGi_Funcs.Menus.GetDupePositions(list)
 --~	 local dupes = {}
 --~	 local positions = {}
@@ -634,7 +633,7 @@ end
 --~	 end
 --~	 if dupes[1] then
 --~		 table.sort(dupes)
---~		 ChoGGi_Funcs.Common.OpenInExamineDlg(dupes)
+--~		 OpenExamine(dupes)
 --~	 end
 --~ end
 

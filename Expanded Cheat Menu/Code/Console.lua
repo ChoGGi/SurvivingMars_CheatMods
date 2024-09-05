@@ -16,9 +16,9 @@ OnMsg.ChoGGi_SettingsUpdated = ChoGGi_Funcs.Console.BuildExamineMenu
 OnMsg.ChangeMapDone = ChoGGi_Funcs.Console.BuildExamineMenu
 
 local T = T
+local OpenExamine = OpenExamine
 local Translate = ChoGGi_Funcs.Common.Translate
 local PopupToggle = ChoGGi_Funcs.Common.PopupToggle
-local OpenInExamineDlg = ChoGGi_Funcs.Common.OpenInExamineDlg
 local DotPathToObject = ChoGGi_Funcs.Common.DotPathToObject
 local RetFilesInFolder = ChoGGi_Funcs.Common.RetFilesInFolder
 local blacklist = ChoGGi.blacklist
@@ -50,7 +50,7 @@ local ToolsMenuPopupToggle_list = {
 			-- lib should always have the blacklist enabled
 			local _, bl = debug.getupvalue(getmetatable(ChoGGi.def_lib.env).__index, 1)
 			bl[" " .. T(302535920000313--[[OnMsg/Msg blacklist]])] = ModMsgBlacklist
-			OpenInExamineDlg(bl, nil, T(302535920001497))
+			OpenExamine(bl, nil, T(302535920001497))
 		end,
 	},
 	{is_spacer = true},
@@ -148,12 +148,12 @@ local function BuildExamineItem(name, title)
 			else
 				if func then
 					if name == "GetLuaSaveGameData" then
-						OpenInExamineDlg({obj()}, nil, name)
+						OpenExamine({obj()}, nil, name)
 					else
-						OpenInExamineDlg(obj(), nil, name)
+						OpenExamine(obj(), nil, name)
 					end
 				else
-					OpenInExamineDlg(name, "str", name)
+					OpenExamine(name, "str", name)
 				end
 			end
 		end,
@@ -284,7 +284,7 @@ function ChoGGi_Funcs.Console.BuildExamineMenu()
 			hint = labels_name,
 			submenu = {},
 			clicked = function()
-				OpenInExamineDlg(labels_name, "str", labels_name)
+				OpenExamine(labels_name, "str", labels_name)
 			end,
 			-- mouseover fires before building submenu, so we can update submenu list
 			mouseover = function()
@@ -389,13 +389,13 @@ do -- ToggleLogErrors
 					local err_type = type(msg)
 					-- not sure if it can ever be a func...?
 					if err_type == "thread" or err_type == "function" then
-						OpenInExamineDlg({
+						OpenExamine({
 							(err_type == "function" and err_type .. " " or "") .. func_name,
 							..., stack_trace, stack_trace2,
 						}, nil, T(302535920001479--[[Examine Errors]]))
 					end
 				else
-					OpenInExamineDlg(
+					OpenExamine(
 						{func_name, msg, ..., stack_trace, stack_trace2, },
 						nil, T(302535920001479--[[Examine Errors]])
 					)
@@ -509,7 +509,7 @@ The number is a count of stored msgs, right-click to view the list."]]),
 		value = "ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals",
 		mouseup = function(_, _, _, button)
 			if button == "R" then
-				OpenInExamineDlg(ChoGGi.Temp.UndefinedGlobals, nil, T(302535920000310--[[Skip Undefined Globals]]))
+				OpenExamine(ChoGGi.Temp.UndefinedGlobals, nil, T(302535920000310--[[Skip Undefined Globals]]))
 			else
 				ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals = not ChoGGi.UserSettings.ConsoleSkipUndefinedGlobals
 				-- clear when re-enabled, not if disabled accidentally

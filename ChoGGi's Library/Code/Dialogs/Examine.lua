@@ -86,6 +86,36 @@ local missing_text = ChoGGi.Temp.missing_text
 local testing = ChoGGi.testing
 local blacklist = ChoGGi.blacklist
 
+-- Backwards Compat for now... (needs? to be cleared out of Examine)
+-- Maybe just rename it?
+objlist = rawget(_G, "objlist") or {}
+function IsObjlist(list)
+	return type(list) == "table" and getmetatable(list) == objlist
+end
+local IsObjlist = IsObjlist
+function objlist:new(o)
+  if IsObjlist(o) then
+    local o1 = table.icopy(o)
+    setmetatable(o1, self)
+    return o1
+  else
+    o = o or {}
+    setmetatable(o, self)
+    return o
+  end
+end
+function objlist:Destroy()
+	ChoGGi_Funcs.Common.objlist_Destroy(self)
+	ex(debug.getinfo(2))
+	print("Please tell me if you see this, and a screenshot of the examine dialog would help.")
+end
+function objlist:Clear()
+  table.iclear(self)
+	ex(debug.getinfo(2))
+	print("Please tell me if you see this, and a screenshot of the examine dialog would help.")
+end
+-- objlist end
+
 local g_env, debug
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	blacklist = false
@@ -152,6 +182,14 @@ DefineClass.ChoGGi_DlgExamine = {
 	string_Class = false,
 	string_Object = false,
 	string_State = false,
+	-- local some str concats since we call ConvertValueToInfo a fair amount
+	string_cvti_ex_colour_str = false,
+	string_cvti_ex_colour_num = false,
+	string_cvti_ex_colour_bool = false,
+	string_cvti_ex_colour_boolfalse = false,
+	string_cvti_ex_colour_nil = false,
+	string_cvti_data = false,
+	string_cvti_slash_data = false,
 
 	-- only chinese goes slow as molasses for some reason (whatever text rendering they do?)
 	-- I added this to stop the game from freezing till obj is examined
@@ -166,7 +204,11 @@ DefineClass.ChoGGi_DlgExamine = {
 	-- show image in some tooltips
 	tooltip_info = false,
 
-	idAutoRefresh_update_str = false,
+	idAutoRefresh_update_str = T{"<refresh>\n<click_info>\n<current>: <color 100 255 100><auto_refresh></color>",
+		refresh = T(302535920001257--[[Auto-refresh list every second.]]),
+		click_info = T(302535920001422--[[<right_click> to change refresh delay.]]),
+		current = T(302535920000106--[[Current]]),
+	},
 
 	dialog_width = 666.0,
 	dialog_height = 850.0,
@@ -260,13 +302,21 @@ function ChoGGi_DlgExamine:Init(parent, context)
 	self.tooltip_info = context.tooltip_info
 
 	-- these are used during SetObj, so we trans once to speed up autorefresh
-	self.string_Loadingresources = T(302535920001680--[[Loading resources]])
+	self.string_Loadingresources = Translate(302535920001680--[[Loading resources]])
 	self.string_Classname = Translate(302535920001681--[[Class name]])
 	self.string_BuildingTemplate = Translate(302535920001682--[[Building Template]])
 	self.string_Entity = Translate(302535920001683--[[Entity]])
 	self.string_Class = Translate(302535920001684--[[Class]])
 	self.string_Object = Translate(302535920001685--[[Object]])
 	self.string_State = Translate(302535920001686--[[State]])
+
+	self.string_cvti_ex_colour_str = "'<color " .. self.ChoGGi.UserSettings.ExamineColourStr .. "><tags off>"
+	self.string_cvti_ex_colour_num = "<color " .. self.ChoGGi.UserSettings.ExamineColourNum .. ">"
+	self.string_cvti_ex_colour_bool = "<color " .. self.ChoGGi.UserSettings.ExamineColourBool .. ">"
+	self.string_cvti_ex_colour_boolfalse = "<color " .. self.ChoGGi.UserSettings.ExamineColourBoolFalse .. ">"
+	self.string_cvti_ex_colour_nil = "<color " .. self.ChoGGi.UserSettings.ExamineColourNil .. ">nil</color>"
+	self.string_cvti_data = Translate(302535920001057--[[Data]])
+	self.string_cvti_slash_data = " / " .. self.string_cvti_data
 
 	-- If we're examining a string we want to convert to an object
 	if type(self.obj) == "string" then
@@ -442,15 +492,11 @@ Press once to clear this examine, again to clear all."]]),
 			DrawOnTop = true,
 		}, self.idToolbarArea)
 
-		self.idAutoRefresh_update_str = Translate(T(302535920001257--[[Auto-refresh list every second.]])
-			.. "\n" .. T(302535920001422--[[<right_click> to change refresh delay.]])
-			.. "\n" .. T(302535920000106--[[Current]]) .. ": <color 100 255 100>%s</color>")
-
 		self.idAutoRefresh = g_Classes.ChoGGi_XCheckButton:new({
 			Id = "idAutoRefresh",
 			Dock = "right",
 			Text = T(302535920000084--[[Auto-Refresh]]),
-			RolloverText = self.idAutoRefresh_update_str:format(self.autorefresh_delay),
+			RolloverText = T{self.idAutoRefresh_update_str, auto_refresh = self.autorefresh_delay},
 			RolloverHint = T(302535920001425--[["<left_click> Toggle, <right_click> Set Delay"]]),
 			OnChange = self.idAutoRefresh_OnChange,
 			OnMouseButtonDown = self.idAutoRefresh_OnMouseButtonDown,
@@ -607,12 +653,14 @@ Right-click <right_click> to go up, middle-click <middle_click> to scroll to the
 		--
 		self.idExecCode = g_Classes.ChoGGi_XTextInput:new({
 			Id = "idExecCode",
-			RolloverText = Translate(302535920001515--[["Press <green>%s</green> to execute code.
-Use <green>%s</green>/<green>%s</green> to browse console history."]]):format(
-				T(302535920001697--[[Enter]]), T(302535920001698--[[Up]]),
-				T(302535920001699--[[Down]])
-			) .. "\n"
-				.. T(302535920001517--[[Use <green>o</green> as a reference to the examined object: <yellow>IsValid(</yellow><green>o</green><yellow>)</yellow>.]]),
+			RolloverText = T{302535920001515, [[Press <color ChoGGi_green><enter></color> to execute code.
+Use <color ChoGGi_green><up></color>/<color ChoGGi_green><down></color> to select console history.
+<extra_info>]],
+				enter = T(302535920001697--[[Enter]]),
+				up = T(302535920001698--[[Up]]),
+				down = T(302535920001699--[[Down]]),
+				extra_info = T(302535920001517--[[Use <green>o</green> as a reference to the examined object: <yellow>IsValid(</yellow><green>o</green><yellow>)</yellow>.]]),
+			},
 			Hint = Translate(302535920001516--[[o = examined object]]),
 			OnKbdKeyDown = self.idExecCode_OnKbdKeyDown,
 		}, self.idExecCodeArea)
@@ -786,7 +834,6 @@ function ChoGGi_DlgExamine:AddDistToRollover(c, roll_text, idx, idx_value, obj, 
 end
 
 -- hover (link, hyperlink_box, pos)
-
 function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 	self = GetRootDialog(self)
 
@@ -1333,7 +1380,7 @@ function ChoGGi_DlgExamine:idAutoRefreshDelay_OnTextChanged()
 		end
 		self = GetRootDialog(self)
 		self.autorefresh_delay = num
-		self.idAutoRefresh:SetRolloverText(self.idAutoRefresh_update_str:format(num))
+		self.idAutoRefresh:SetRolloverText(T{self.idAutoRefresh_update_str, auto_refresh = num})
 	end
 end
 
@@ -2279,6 +2326,10 @@ function ChoGGi_DlgExamine:ShowEntitySpotsList()
 	if not id_end then
 		return self:InvalidMsgPopup(nil, self.string_Entity)
 	end
+
+	local GetSpotNameByType = GetSpotNameByType
+	local str_spotid = T(302535920001573--[[Spot Id]])
+
 	for i = id_start, id_end do
 		local spot_name = GetSpotNameByType(obj:GetSpotsType(i))
 		local spot_annot = obj:GetSpotAnnotation(i) or ""
@@ -2293,7 +2344,7 @@ function ChoGGi_DlgExamine:ShowEntitySpotsList()
 			dupes[name] = true
 			c = c + 1
 			item_list[c] = {
-				text = name .. " (" .. T(302535920001573--[[Spot Id]]) .. ": " .. i .. ")",
+				text = name .. " (" .. str_spotid .. ": " .. i .. ")",
 				name = spot_name,
 				value = spot_annot,
 				hint = spot_annot,
@@ -2375,6 +2426,9 @@ function ChoGGi_DlgExamine:ShowSurfacesList()
 	local c = #item_list
 
 	local GetRelativeSurfaces = GetRelativeSurfaces
+	local str_hexshape = ": " .. T(302535920000422--[[Hex Shape]])
+	local str_selectionarea = ": " .. T(302535920001562--[[Selection Area]])
+
 	-- yep, no idea what GetRelativeSurfaces uses, so 1024 it'll be (from what i've seen nothing above 10, but...)
 	for i = 1, 1024 do
 		local surfs = GetRelativeSurfaces(obj, i)
@@ -2387,9 +2441,9 @@ function ChoGGi_DlgExamine:ShowSurfacesList()
 				hint = "Relative Surface index: " .. i,
 			}
 			if i == 5 then
-				item_list[c].text = item_list[c].text .. ": " .. T(302535920000422--[[Hex Shape]])
+				item_list[c].text = item_list[c].text .. str_hexshape
 			elseif i == 7 then
-				item_list[c].text = item_list[c].text .. ": " .. T(302535920001562--[[Selection Area]])
+				item_list[c].text = item_list[c].text .. str_selectionarea
 			end
 		end
 	end
@@ -2735,6 +2789,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 	)
 end
 
+-- the secondary main "one"
 function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 	local obj_type = type(obj)
 
@@ -2743,19 +2798,19 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 			-- tags off doesn't like ""
 			return "''"
 		else
-			return "'<color " .. self.ChoGGi.UserSettings.ExamineColourStr .. "><tags off>" .. obj .. "<tags on></color>'"
+			return self.string_cvti_ex_colour_str .. obj .. "<tags on></color>'"
 		end
 	end
 	--
 	if obj_type == "number" then
-		return "<color " .. self.ChoGGi.UserSettings.ExamineColourNum .. ">" .. obj .. "</color>"
+		return self.string_cvti_ex_colour_num .. obj .. "</color>"
 	end
 	--
 	if obj_type == "boolean" then
 		if obj then
-			return "<color " .. self.ChoGGi.UserSettings.ExamineColourBool .. ">" .. tostring(obj) .. "</color>"
+			return self.string_cvti_ex_colour_bool .. tostring(obj) .. "</color>"
 		else
-			return "<color " .. self.ChoGGi.UserSettings.ExamineColourBoolFalse .. ">" .. tostring(obj) .. "</color>"
+			return self.string_cvti_ex_colour_boolfalse .. tostring(obj) .. "</color>"
 		end
 	end
 	--
@@ -2764,11 +2819,9 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 		if IsValid(obj) and obj.GetVisualPos then
 			return self:HyperLink(obj, Examine_ConvertValueToInfo)
 				.. RetName(obj) .. self.hyperlink_end
-
 				.. self:HyperLink(obj, function()
 					SelectObj(obj)
 				end) .. " @ " .. self.hyperlink_end
-
 				.. self:ConvertValueToInfo(obj:GetVisualPos())
 				.. " <color ChoGGi_palegreen>" .. (RetMapType(obj) or "nil") .. "</color>"
 		else
@@ -2821,10 +2874,10 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 				-- not sure how to check if it's an index non-ass table
 				if len > 0 and is_next then
 					-- next works for both
-					table_data = len .. " / " .. Translate(302535920001057--[[Data]])
+					table_data = len .. self.string_cvti_slash_data
 				elseif is_next then
 					-- ass based
-					table_data = Translate(302535920001057--[[Data]])
+					table_data = self.string_cvti_data
 				else
 					-- blank table
 					table_data = len
@@ -2863,7 +2916,8 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 						.. "point" .. tostring(InvalidPos) .. self.hyperlink_end
 				else
 					return self:HyperLink(obj, Show_ConvertValueToInfo)
-						.. Translate(302535920000066--[[<color 203 120 30>Off-Map</color>]]) .. self.hyperlink_end
+						.. Translate(302535920000066--[[<color 203 120 30>Off-Map</color>]])
+						.. self.hyperlink_end
 				end
 			else
 				return self:HyperLink(obj, Show_ConvertValueToInfo)
@@ -2887,9 +2941,11 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 
 			-- tags off doesn't like ""
 			if trans_str == "" then
-				trans_str = trans_str .. self:HyperLink(obj, Examine_ConvertValueToInfo) .. " *"
+				trans_str = trans_str
+					.. self:HyperLink(obj, Examine_ConvertValueToInfo) .. " *"
 			else
-				trans_str = "<tags off>" .. trans_str .. "<tags on>" .. self:HyperLink(obj, Examine_ConvertValueToInfo) .. " *"
+				trans_str = "<tags off>" .. trans_str .. "<tags on>"
+					.. self:HyperLink(obj, Examine_ConvertValueToInfo) .. " *"
 			end
 
 			-- If meta name then add it
@@ -2919,7 +2975,7 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 	end
 	--
 	if obj_type == "nil" then
-		return "<color " .. self.ChoGGi.UserSettings.ExamineColourNil .. ">nil</color>"
+		return self.string_cvti_ex_colour_nil
 	end
 
 	-- just in case
@@ -3673,6 +3729,14 @@ do -- BuildAttachesPopup
 		local attaches = ChoGGi_Funcs.Common.GetAllAttaches(obj, true)
 		local attach_amount = #attaches
 
+
+		local str_rclick = Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(self.string_Classname)
+		local str_attached = Translate(302535920001544--[[Attached to]])
+		local str_handle = Translate(302535920000955--[[Handle]])
+		local str_position = Translate(302535920000461--[[Position]])
+		local str_particle = Translate(302535920001622--[[Particle]])
+		local str_hint_bottom = T(302535920000589--[[<left_click> Examine <right_click> Clipboard]])
+
 		for i = 1, attach_amount do
 			local a = attaches[i]
 			local pos = a.GetVisualPos and a:GetVisualPos()
@@ -3687,26 +3751,26 @@ do -- BuildAttachesPopup
 			local c = 1
 			self.attaches_menu_popup_hint[c] = self.string_Classname .. ": " .. a.class
 			c = c + 1
-			self.attaches_menu_popup_hint[c] = Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(self.string_Classname)
+			self.attaches_menu_popup_hint[c] = str_rclick
 
 			-- attached to name
 			if a.ChoGGi_Marked_Attach then
 				c = c + 1
-				self.attaches_menu_popup_hint[c] = Translate(302535920001544--[[Attached to]]) .. ": " .. a.ChoGGi_Marked_Attach
+				self.attaches_menu_popup_hint[c] = str_attached .. ": " .. a.ChoGGi_Marked_Attach
 				a.ChoGGi_Marked_Attach = nil
 			end
 			if a.handle then
 				c = c + 1
-				self.attaches_menu_popup_hint[c] = Translate(302535920000955--[[Handle]]) .. ": " .. a.handle
+				self.attaches_menu_popup_hint[c] = str_handle .. ": " .. a.handle
 			end
 			c = c + 1
-			self.attaches_menu_popup_hint[c] = Translate(302535920000461--[[Position]]) .. ": " .. tostring(pos)
+			self.attaches_menu_popup_hint[c] = str_position .. ": " .. tostring(pos)
 
 			if a:IsKindOf("ParSystem") then
 				local par_name = a:GetParticlesName()
 				if par_name ~= "" then
 					c = c + 1
-					self.attaches_menu_popup_hint[c] = Translate(302535920001622--[[Particle]]) .. ": " .. par_name
+					self.attaches_menu_popup_hint[c] = str_particle .. ": " .. par_name
 				end
 			elseif a:IsKindOf("CObject") then
 				local entity = ChoGGi_Funcs.Common.RetObjectEntity(a)
@@ -3721,7 +3785,7 @@ do -- BuildAttachesPopup
 				hint = table.concat(self.attaches_menu_popup_hint, "\n"),
 				-- used for ref above as well
 				showobj = a,
-				hint_bottom = T(302535920000589--[[<left_click> Examine <right_click> Clipboard]]),
+				hint_bottom = str_hint_bottom,
 				mouseup = ParentClicked,
 				dlg = self,
 			}
@@ -3849,6 +3913,15 @@ function ChoGGi_DlgExamine:BuildParentsMenu(list, list_type, title, sort_type)
 			centred = true,
 		}
 
+		local parent_hint = T{"<left_click> <examineN> <classN> <objectN> : <color 100 255 100><itemN></color>\n <info>",
+			examineN = T(302535920000069--[[Examine]]),
+			classN = self.string_Class,
+			objectN = self.string_Object,
+			itemN = item,
+			info = Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(self.string_Classname),
+		}
+		local hint_bottom = T(302535920000589--[[<left_click> Examine <right_click> Clipboard]])
+
 		for i = 1, #list do
 			local item = list[i]
 			-- no sense in having an item in parents and ancestors
@@ -3857,11 +3930,8 @@ function ChoGGi_DlgExamine:BuildParentsMenu(list, list_type, title, sort_type)
 				c = c + 1
 				self.parents_menu_popup[c] = {
 					name = item,
-					hint = T("<left_click> ") .. T(302535920000069--[[Examine]]) .. " "
-						.. self.string_Class .. " " .. self.string_Object
-						.. ": <color 100 255 100>" .. item .. "</color>\n"
-						.. Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(self.string_Classname),
-					hint_bottom = T(302535920000589--[[<left_click> Examine <right_click> Clipboard]]),
+					hint = parent_hint,
+					hint_bottom = hint_bottom,
 					mouseup = self.ParentClicked,
 					dlg = self,
 				}
@@ -3914,7 +3984,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 
 		-- add table length to title
 		if obj ~= _G and obj[1] then
-			name = name .. " " .. " (" .. #obj .. ")"
+			name = name .. " (" .. #obj .. ")"
 		end
 
 		-- build parents/ancestors menu
@@ -3926,29 +3996,42 @@ function ChoGGi_DlgExamine:SetObj(startup)
 			self:BuildParentsMenu(obj.__ancestors, "ancestors", T(302535920000525--[[Ancestors]]), true)
 
 			table.insert(self.parents_menu_popup, 1, {
-				name = "-- " .. T(302535920001684--[[Class]]) .. " --",
+				name = "-- " .. self.string_Class .. " --",
 				disable = true,
 				centred = true,
 			})
+
+			local parent_hint = T{"<left_click> <examineN> <classN> <objectN> : <color 100 255 100><class></color>\n <info>",
+				examineN = T(302535920000069--[[Examine]]),
+				classN = self.string_Class,
+				objectN = self.string_Object,
+				class = obj.class,
+				info = Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(self.string_Classname),
+			}
+
 			table.insert(self.parents_menu_popup, 2, {
 				name = obj.class,
-				hint = T("<left_click> ") .. T(302535920000069--[[Examine]]) .. " "
-					.. self.string_Class .. " " .. self.string_Object
-					.. ": <color 100 255 100>" .. obj.class .. "</color>\n"
-					.. Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(obj.class),
+				hint = parent_hint,
 				hint_bottom = T(302535920000589--[[<left_click> Examine <right_click> Clipboard]]),
 				mouseup = self.ParentClicked,
 				dlg = self,
 			})
-			-- add template name so I don't need to go looking for it (mostly just depots)
+
+			-- Add template name so I don't need to go looking for it (mostly just depots)
 			local template_name = obj.template_name
 			if template_name and template_name ~= "" and template_name ~= obj.class then
+
+				local template_hint = T{"<left_click> <examineN> <classN> <objectN> : <color 100 255 100><template></color>\n <info>",
+					examineN = T(302535920000069--[[Examine]]),
+					classN = self.string_Class,
+					objectN = self.string_Object,
+					template = template_name,
+					info = Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(template_name),
+				}
+
 				table.insert(self.parents_menu_popup, 3, {
 					name = template_name,
-					hint = T("<left_click> ") .. T(302535920000069--[[Examine]]) .. " "
-						.. self.string_BuildingTemplate .. " " .. self.string_Object
-						.. ": <color 100 255 100>" .. template_name .. "</color>\n"
-						.. Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(template_name),
+					hint = template_hint,
 					hint_bottom = T(302535920000589--[[<left_click> Examine <right_click> Clipboard]]),
 					mouseup = self.ParentClickedTemplate,
 					dlg = self,
@@ -3967,8 +4050,8 @@ function ChoGGi_DlgExamine:SetObj(startup)
 	end -- Istable
 
 	local title = ""
-	if obj == "nil" then
-		title = obj
+	if obj == "nil" or obj == nil then
+		title = "nil"
 	else
 		if self.override_title then
 			title = self.title
@@ -4229,31 +4312,3 @@ end
 ex = OpenExamine
 exr = OpenExamineReturn
 -- exd = OpenExamineDelayed
-
--- Backwards Compat for now... (needs? to be cleared out of Examine)
--- Maybe just rename it?
-objlist = rawget(_G, "objlist") or {}
-function IsObjlist(list)
-	return type(list) == "table" and getmetatable(list) == objlist
-end
-function objlist:new(o)
-  if IsObjlist(o) then
-    local o1 = table.icopy(o)
-    setmetatable(o1, self)
-    return o1
-  else
-    o = o or {}
-    setmetatable(o, self)
-    return o
-  end
-end
-function objlist:Destroy()
-	ChoGGi_Funcs.Common.objlist_Destroy(self)
-	ex(debug.getinfo(2))
-	print("Please tell me if you see this, and a screenshot of the examine dialog would help.")
-end
-function objlist:Clear()
-  table.iclear(self)
-	ex(debug.getinfo(2))
-	print("Please tell me if you see this, and a screenshot of the examine dialog would help.")
-end

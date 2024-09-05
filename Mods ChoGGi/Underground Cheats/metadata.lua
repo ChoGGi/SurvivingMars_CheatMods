@@ -15,7 +15,8 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagGameplay", true,
 	"description", [[
-Change radius of light tripods, and support struts.
+Change radius of light tripods,  support struts.
+Pin rockets when changing to underground map (might have to toggle maps twice).
 
 Mod options to pick underground wonders (only applies to new games):
 If you only pick one then the other will be random.

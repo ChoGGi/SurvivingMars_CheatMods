@@ -71,7 +71,7 @@ function ChoGGi_UndergroundTunnel:ChooseAttachedTunnel()
 	local item_list = {}
 	local c = 0
 
-	local objs = UIColony.city_labels.labels.ChoGGi_UndergroundTunnel or ""
+	local objs = UIColony:GetCityLabels("ChoGGi_UndergroundTunnel")
 	for i = 1, #objs do
 		local obj = objs[i]
 		c = c + 1

@@ -1138,7 +1138,7 @@ function ChoGGi_Funcs.Menus.RetMapInfo()
 	end
 	local data = HashLogToTable()
 	data[1] = data[1]:gsub("\n\n", "")
-	ChoGGi_Funcs.Common.OpenInExamineDlg(table.concat(data, "\n"), nil, T(283142739680--[[Game]]) .. " & " .. T(302535920001355--[[Map]]) .. " " .. T(302535920001717--[[Info]]))
+	OpenExamine(table.concat(data, "\n"), nil, T(283142739680--[[Game]]) .. " & " .. T(302535920001355--[[Map]]) .. " " .. T(302535920001717--[[Info]]))
 end
 
 function ChoGGi_Funcs.Menus.EditECMSettings()

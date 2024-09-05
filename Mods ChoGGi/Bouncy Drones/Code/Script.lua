@@ -20,17 +20,15 @@ OnMsg.ModsReloaded = ModOptions
 OnMsg.ApplyModOptions = ModOptions
 
 local function UpdateGravity(objs, value)
-	for i = 1, #(objs or "") do
+	for i = 1, #objs do
 		objs[i]:SetGravity(value)
 	end
 end
 
 local function StartupCode()
-	local labels = UIColony.city_labels.labels
-
-	UpdateGravity(labels.Drone, mod_Gravity)
-	UpdateGravity(labels.Rover, mod_GravityRC)
-	UpdateGravity(labels.Colonist, mod_GravityColonist)
+	UpdateGravity(UIColony:GetCityLabels("Drone"), mod_Gravity)
+	UpdateGravity(UIColony:GetCityLabels("Rover"), mod_GravityRC)
+	UpdateGravity(UIColony:GetCityLabels("Colonist"), mod_GravityColonist)
 end
 
 OnMsg.CityStart = StartupCode

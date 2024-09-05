@@ -39,23 +39,18 @@ local needed_specialist = {}
 local all_specialist = {}
 
 local function BuildSpecialistLists()
-	local labels = UIColony.city_labels.labels
-
---~ 	table.clear(needed_specialist)
---~ 	table.clear(all_specialist)
-
 	needed_specialist.none = 0
-	all_specialist.none = #(labels.none or "")
+	all_specialist.none = #UIColony:GetCityLabels("none")
 
 	local ColonistClasses = ColonistClasses
 	for id in pairs(ColonistClasses) do
-		all_specialist[id] = #(labels[id] or "")
+		all_specialist[id] = #UIColony:GetCityLabels(id)
 		needed_specialist[id] = 0
 	end
 --~ 	ex(needed_specialist)
 
 	-- needed count
-	local workplaces = labels.Workplace or ""
+	local workplaces = UIColony:GetCityLabels("Workplace")
 	for i = 1, #workplaces do
 		local bld = workplaces[i]
 		local spec = bld.specialist

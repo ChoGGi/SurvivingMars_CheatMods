@@ -121,7 +121,7 @@ OnMsg.LoadGame = LoadMapSectorsStats
 
 local function RemoveOldRovers(label, sol)
 	-- go backwards and remove any invalid/old rovers
-	for i = #(label or ""), 1, -1 do
+	for i = #label, 1, -1 do
 		local r = label[i]
 		if not IsValid(r) then
 			table.remove(label, i)
@@ -152,8 +152,8 @@ function OnMsg.NewDay(sol)
 		local UIColony = UIColony
 
 		-- remove any old rovers stuck in the mountains
-		RemoveOldRovers(UIColony.city_labels.labels.HostileAttackRovers, sol)
-		RemoveOldRovers(UIColony.city_labels.labels.Rover, sol)
+		RemoveOldRovers(UIColony:GetCityLabels("HostileAttackRovers"), sol)
+		RemoveOldRovers(UIColony:GetCityLabels("Rover"), sol)
 
 		-- just in case
 		if not ChoGGi_TowerDefense_mapsectors then

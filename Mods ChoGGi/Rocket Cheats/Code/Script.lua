@@ -84,7 +84,7 @@ local function UpdateRockets()
 	SetConsts("CargoCapacity", mod_CargoCapacity)
 	SetConsts("FoodPerRocketPassenger", mod_FoodPerRocketPassenger)
 
-	local objs =  UIColony.city_labels.labels.SupplyRocket or ""
+	local objs = UIColony:GetCityLabels("SupplyRocket")
 	for i = 1, #objs do
 		local obj = objs[i]
 		obj.launch_fuel = mod_LaunchFuel

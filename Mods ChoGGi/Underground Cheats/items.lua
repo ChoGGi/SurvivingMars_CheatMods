@@ -30,7 +30,7 @@ local mod_options = {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "PinRockets",
 		"DisplayName", T(0000, "Pin Rockets"),
-		"Help", T(0000, "When changing to underground, pin any rockets from surface."),
+		"Help", T(0000, "When changing to underground, pin any rockets from surface (might have to toggle maps twice)."),
 		"DefaultValue", true,
 	}),
 }

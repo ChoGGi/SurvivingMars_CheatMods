@@ -32,13 +32,11 @@ local function UpdateStuff()
 		UpdateApplicant(g_ApplicantPool[i][1])
 	end
 
-	local labels = UIColony.city_labels.labels
-
 	-- Speeds up entity related stuff
 	SuspendPassEdits("ChoGGi_GameRuleAmazonianMars.UpdateStuff")
 
 	-- Update female model size
-	local objs = labels.ColonistFemale or ""
+	local objs = UIColony:GetCityLabels("ColonistFemale")
 	for i = 1, #objs do
 		local obj = objs[i]
 		-- wouldn't be the first time there's an invalid colonist in labels
@@ -47,7 +45,7 @@ local function UpdateStuff()
 		end
 	end
 	--
-	objs = labels.ColonistMale or ""
+	objs = UIColony:GetCityLabels("ColonistMale")
 	for i = 1, #objs do
 		local obj = objs[i]
 		if IsValid(obj) then
@@ -63,7 +61,7 @@ local function UpdateStuff()
 	end
 
 	-- Daily cull (soylent green)
-	objs = labels.ColonistOther or ""
+	objs = UIColony:GetCityLabels("ColonistOther")
 	for i = 1, #objs do
 		local obj = objs[i]
 		if not obj.traits.Tourist and obj:CanChangeCommand() then

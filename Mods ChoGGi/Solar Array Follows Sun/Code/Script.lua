@@ -32,7 +32,7 @@ end
 
 function OnMsg.LoadGame()
 	-- do any existing
-	local arrays = UIColony.city_labels.labels.SolarArray or ""
+	local arrays = UIColony:GetCityLabels("SolarArray")
 	for i = 1, #arrays do
 		local bld = arrays[i]
 		if not bld.ChoGGi_panels then
@@ -57,7 +57,7 @@ GlobalGameTimeThread("SolarArrayOrientation", function()
 		-- I assume they rotate on a diff angle or something?
 		local panel_offset = 18250
 		local azi = SunToSolarPanelAngle(GetSunPos()) + panel_offset
-		local arrays = UIColony.city_labels.labels.SolarArray or ""
+		local arrays = UIColony:GetCityLabels("SolarArray")
 		for i = 1, #arrays do
 			local array = arrays[i]
 			local art_sun = array.artificial_sun and array.artificial_sun:GetPos()

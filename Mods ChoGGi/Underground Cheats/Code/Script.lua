@@ -56,18 +56,19 @@ local function UpdateObjs()
 
 	-- Pin any rockets
 	if mod_PinRockets then
-			local under_pins = GameMaps[UIColony.underground_map_id].pinnables.pins
-			local objs = GameMaps[MainMapID].pinnables.pins
-			for i = 1, #objs do
-				local obj = objs[i]
-				if obj:IsKindOf("SupplyRocket") then
-					if not table.find(under_pins, "handle", obj.handle) then
-						under_pins[#under_pins+1] = obj
-					end
-				end
+		local under_id = UIColony.underground_map_id
+		local surface_pins = GameMaps[MainMapID].pinnables.pins
+		for i = 1, #surface_pins do
+			local obj = surface_pins[i]
+			if obj:IsKindOf("SupplyRocket") then
+				table.insert_unique(GameMaps[under_id].pinnables.pins, obj)
+				SortPins(under_id)
+--~ 				local pins_dlg = GetDialog("PinsDlg")
+--~ 				if pins_dlg.map_id == under_id and not obj:IsPinned() then
+--~ 					pins_dlg:Pin(obj)
+--~ 				end
 			end
-
-
+		end
 	end
 end
 
@@ -132,3 +133,31 @@ function RandomMapGen_PlaceArtefacts(...)
 	pcall(ChoOrig_RandomMapGen_PlaceArtefacts, ...)
 	const.BuriedWonders = table.icopy(orig_const_BuriedWonders)
 end
+
+--~ -- Call the pin rocket func a second time for underground when being pinned to surface map
+--~ local ChoOrig_PinnableObject_TogglePin = PinnableObject.TogglePin
+--~ function PinnableObject:TogglePin(force, map_id, ...)
+--~ 	if not mod_EnableMod or not mod_PinRockets then
+--~ 		return ChoOrig_PinnableObject_TogglePin(self, force, map_id, ...)
+--~ 	end
+
+--~ 	-- if we're on surface map then this is skipped and onmsg.ChangeMapDone will update the pins
+--~ 	-- (we want TogglePin to fire for whatever map we're on)
+--~ 	if force and not map_id or map_id and map_id == MainMapID
+--~ 		and self:IsKindOf("SupplyRocket")
+--~ 	then
+--~ 		-- GameMaps[UIColony.underground_map_id].pinnables.pins
+--~ 		local under_id = UIColony.underground_map_id
+--~ 		local under_pins = GameMaps[under_id].pinnables.pins
+
+--~ 		table.insert_unique(under_pins, self)
+--~ 		SortPins(under_id)
+--~ 		local pins_dlg = GetDialog("PinsDlg")
+--~ 		if pins_dlg.map_id == under_id and not obj:IsPinned() then
+--~ 			pins_dlg:Pin(self)
+--~ 		end
+
+--~ 	end
+
+--~ 	return ChoOrig_PinnableObject_TogglePin(self, force, map_id, ...)
+--~ end

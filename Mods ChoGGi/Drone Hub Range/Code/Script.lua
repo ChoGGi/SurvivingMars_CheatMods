@@ -31,7 +31,7 @@ local function SetHubRange()
 	DroneHub.service_area_max = mod_DroneHubRange
 
 	-- update existing hubs
-	local objs = UIColony.city_labels.labels.DroneHub or ""
+	local objs = UIColony:GetCityLabels("DroneHub")
 	for i = 1, #objs do
 		local obj = objs[i]
 		SetPropertyProp(obj, "UIWorkRadius", "max", mod_DroneHubRange)

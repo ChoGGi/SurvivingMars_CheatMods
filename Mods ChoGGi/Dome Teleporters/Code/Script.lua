@@ -484,7 +484,7 @@ function OnMsg.SelectedObjChange(obj)
 	end
 
 	-- If type tunnel then build/update list and show lines
-	local tunnels = UIColony.city_labels.labels.DomeTeleporter or ""
+	local tunnels = UIColony:GetCityLabels("DomeTeleporter")
 	for i = 1, #tunnels do
 		-- get tunnel n linked one so we only have one of each in table
 		local t1, t2 = tunnels[i], tunnels[i].linked_obj
@@ -585,9 +585,9 @@ function OnMsg.LoadGame()
 	CityDomeTeleporterConstruction[city].city = CityDomeTeleporterConstruction[city].city or city
 
 --~ 	-- dbg
---~ 	local dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(CityDomeTeleporterConstruction[UICity])
+--~ 	local dlg = OpenExamineReturn(CityDomeTeleporterConstruction[UICity])
 --~ 	dlg:EnableAutoRefresh()
---~ 	dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(CityTunnelConstruction[UICity])
+--~ 	dlg = OpenExamineReturn(CityTunnelConstruction[UICity])
 --~ 	dlg:EnableAutoRefresh()
 --~ 	-- dbg
 

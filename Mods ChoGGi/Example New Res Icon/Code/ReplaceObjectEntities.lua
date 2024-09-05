@@ -13,7 +13,7 @@ TerrainDepositConcrete.entity = "SignExampleConcreteDeposit"
 
 -- replace existing ones (that haven't been replaced yet)
 local function ChangeEntityLabel(label, cls, new)
-	for i = 1, #(label or "") do
+	for i = 1, #label do
 		if label[i].entity ~= new and label[i]:IsKindOf(cls) then
 			label[i]:ChangeEntity(new)
 		end
@@ -23,9 +23,14 @@ end
 local function StartupCode()
 	-- this way it'll only fire once per save instead of every load (or use GlobalVar() )
 	if not UIColony.ChangedEntitiesExample then
-		local l = UIColony.city_labels.labels
-		ChangeEntityLabel(l.SubsurfaceDeposit, "SubsurfaceDepositMetals", "SignExampleMetalDeposit")
-		ChangeEntityLabel(l.TerrainDeposit, "TerrainDepositConcrete", "SignExampleConcreteDeposit")
+		ChangeEntityLabel(UIColony:GetCityLabels("SubsurfaceDeposit"),
+			"SubsurfaceDepositMetals",
+			"SignExampleMetalDeposit"
+		)
+		ChangeEntityLabel(UIColony:GetCityLabels("TerrainDeposit"),
+			"TerrainDepositConcrete",
+			"SignExampleConcreteDeposit"
+		)
 		UIColony.ChangedEntitiesExample = true
 	end
 end

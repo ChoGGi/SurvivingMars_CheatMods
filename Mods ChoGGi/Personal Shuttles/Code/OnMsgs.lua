@@ -54,7 +54,9 @@ local function SpawnShuttle(hub, attacker)
 	for i = 1, #hub.shuttle_infos do
 		local s_i = hub.shuttle_infos[i]
 		if s_i:CanLaunch() and s_i.hub.has_free_landing_slots then
-			if #(UIColony.city_labels.labels.PersonalShuttle or "") >= (PersonalShuttles.max_shuttles or 50) then
+			local shuttles = UIColony:GetCityLabels("PersonalShuttle")
+			local max = PersonalShuttles.max_shuttles or 50
+			if #shuttles >= max then
 				ChoGGi_Funcs.Common.MsgPopup(
 					T(302535920011133, [[Max of 50 (somewhere above 50 and below 100 it crashes).]]),
 					T(745, "Shuttles")
@@ -158,8 +160,9 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 		RolloverText = T(302535920011142, [[Send shuttle back to hub.]]),
 		Icon = icon_str .. 3 .. ".png",
 		func = function(_, context)
-			if type(MainCity.PersonalShuttles.shuttle_threads[context.handle]) == "boolean" then
-				MainCity.PersonalShuttles.shuttle_threads[context.handle] = nil
+			local threads = MainCity.PersonalShuttles.shuttle_threads
+			if type(threads[context.handle]) == "boolean" then
+				threads[context.handle] = nil
 			end
 			-- make sure to drop off any items before
 			if context.carried_obj then
@@ -215,8 +218,9 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 			for i = 1, #context.shuttle_infos do
 				local shuttle = context.shuttle_infos[i].shuttle_obj
 				if shuttle and shuttle.class == "PersonalShuttle" then
-					if type(MainCity.PersonalShuttles.shuttle_threads[shuttle.handle]) == "boolean" then
-						MainCity.PersonalShuttles.shuttle_threads[shuttle.handle] = nil
+					local threads = MainCity.PersonalShuttles.shuttle_threads
+					if type(threads[shuttle.handle]) == "boolean" then
+						threads[shuttle.handle] = nil
 					end
 					-- make sure to drop off any items before
 					if shuttle.carried_obj then
@@ -235,7 +239,7 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 	-- add mark for pickup buttons to certain resource piles
 	local res_table = {
 		__condition = function()
-			if #(UIColony.city_labels.labels.PersonalShuttle or "") > 0 then
+			if #UIColony:GetCityLabels("PersonalShuttle") > 0 then
 				return true
 			end
 		end,
@@ -272,9 +276,11 @@ Drop: select something on the ground, and carried item will be dropped nearby.]]
 
 	res_table.__context_of_kind = "UniversalStorageDepot"
 	res_table.__condition = function(_, context)
-		if #(UIColony.city_labels.labels.PersonalShuttle or "") > 0 then
+		if #UIColony:GetCityLabels("PersonalShuttle") > 0 then
 			-- make sure we can only pickup actual depots, not rockets or elevators...
-			return IsKindOf(context, "UniversalStorageDepot") and not context:IsKindOf("RocketBase") and not IsKindOf(context, "SpaceElevator")
+			return IsKindOf(context, "UniversalStorageDepot")
+				and not context:IsKindOf("RocketBase")
+				and not IsKindOf(context, "SpaceElevator")
 		end
 	end
 	AddXTemplate("PersonalShuttles_UniversalStorageDepot", "ipBuilding", res_table)

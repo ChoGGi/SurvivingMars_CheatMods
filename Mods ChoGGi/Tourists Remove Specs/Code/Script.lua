@@ -44,7 +44,7 @@ local function StartupCode()
 		return
 	end
 
-	local objs = UIColony.city_labels.labels.Colonist or ""
+	local objs = UIColony:GetCityLabels("Colonist")
 	for i = 1,# objs do
 		UpdateColonist(objs[i])
 	end

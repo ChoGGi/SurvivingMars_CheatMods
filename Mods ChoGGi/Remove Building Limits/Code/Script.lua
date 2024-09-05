@@ -39,7 +39,7 @@ function OnMsg.BuildingInit(obj)
 end
 
 function OnMsg.NewDay() -- NewSol...
-	local objs = UIColony.city_labels.labels.ChoGGi_InsideForcedOutDome or ""
+	local objs = UIColony:GetCityLabels("ChoGGi_InsideForcedOutDome")
 	for i = #objs, 1, -1 do
 		local obj = objs[i]
 		if not IsValid(obj) then

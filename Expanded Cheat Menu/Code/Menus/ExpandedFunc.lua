@@ -71,7 +71,7 @@ do -- BuildGridList
 		BuildGrid(UICity.air, grid_list.air)
 		BuildGrid(UICity.electricity, grid_list.electricity)
 		BuildGrid(UICity.water, grid_list.water)
-		ChoGGi_Funcs.Common.OpenInExamineDlg(grid_list, nil, T(302535920001307--[[Grid Info]]))
+		OpenExamine(grid_list, nil, T(302535920001307--[[Grid Info]]))
 	end
 end -- do
 

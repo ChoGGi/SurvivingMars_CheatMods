@@ -8,7 +8,7 @@ local mod_RotateSpeed
 local mod_BeamTime
 
 local function UpdateLasers()
-	local objs =  UIColony.city_labels.labels.MDSLaser or ""
+	local objs = UIColony:GetCityLabels("MDSLaser")
 	for i = 1, #objs do
 		local obj = objs[i]
 		obj.hit_chance = mod_HitChance

@@ -57,7 +57,7 @@ local function ToggleTanks(obj, all_objs)
 
 	if all_objs then
 		-- loop through all of type and set to same
-		local objs = UIColony.city_labels.labels[obj.template_name] or ""
+		local objs = UIColony:GetCityLabels(obj.template_name)
 		for i = 1, #objs do
 			-- send toggle so we don't have to check each one
 			ToggleObj(objs[i], tank_type, max_charge, toggle)

@@ -20,7 +20,7 @@ end
 local function StartupCode()
 	ClearList()
 
-	ChoGGi_Funcs.Common.OpenInExamineDlg(obj_list, {
+	OpenExamine(obj_list, {
 		has_params = true,
 		auto_refresh = true,
 		toggle_sort = true,

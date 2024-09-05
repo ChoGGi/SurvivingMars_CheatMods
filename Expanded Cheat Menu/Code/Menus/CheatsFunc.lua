@@ -958,7 +958,7 @@ function ChoGGi_Funcs.Menus.ShowScanAnomaliesOptions()
 
 			-- If 4 are selected that's all
 			if value == "All" or #choice > 3 then
-				local a = UIColony.city_labels.labels.Anomaly or ""
+				local a = UIColony:GetCityLabels("Anomaly")
 				-- go backwards it'll be removed once scanned
 				for j = #a, 1, -1 do
 					a[j]:CheatScan()
@@ -966,7 +966,7 @@ function ChoGGi_Funcs.Menus.ShowScanAnomaliesOptions()
 				-- no sense in doing other choices as we just did all
 				break
 			else
-				local a = UIColony.city_labels.labels.Anomaly or ""
+				local a = UIColony:GetCityLabels("Anomaly")
 				for j = #a, 1, -1 do
 					local anomnom = a[j]
 					if anomnom.class == value then
@@ -1324,7 +1324,7 @@ g_Voice:Play(o.speech)"]],
 			end
 		end
 		-- display to user
-		ChoGGi_Funcs.Common.OpenInExamineDlg(msgs, point(550, 100))
+		OpenExamine(msgs, point(550, 100))
 	end
 
 	function ChoGGi_Funcs.Menus.MysteryLog()
@@ -2248,7 +2248,7 @@ do -- Mystery Log
 			end
 		end
 		-- display to user
-		ChoGGi_Funcs.Common.OpenInExamineDlg(msgs, point(550, 100))
+		OpenExamine(msgs, point(550, 100))
 	end
 
 	function ChoGGi_Funcs.Menus.MysteryLog()

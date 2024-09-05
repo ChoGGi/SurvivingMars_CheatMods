@@ -439,7 +439,7 @@ function ChoGGi_Funcs.Menus.ExamineObject()
 	local c = #objs
 	if c > 0 then
 		-- If it's a single obj then examine that, otherwise the whole list
-		ChoGGi_Funcs.Common.OpenInExamineDlg(c == 1 and objs[1] or objs)
+		OpenExamine(c == 1 and objs[1] or objs)
 		return
 	end
 
@@ -453,12 +453,12 @@ function ChoGGi_Funcs.Menus.ExamineObject()
 	local target = terminal.desktop:GetMouseTarget(terminal.GetMousePos())
 	-- everywhere is covered in xdialogs so skip them
 	if target and not target:IsKindOf("XDialog") then
-		return ChoGGi_Funcs.Common.OpenInExamineDlg(target)
+		return OpenExamineReturn(target)
 	end
 
 	-- If in main menu then open examine and console
 	if not Dialogs.HUD then
-		local dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(terminal.desktop)
+		local dlg = OpenExamineReturn(terminal.desktop)
 		-- off centre of central monitor
 		local width = (terminal.desktop.measure_width or 1920) - (dlg.dialog_width_scaled + 100)
 		dlg:SetPos(point(width, 100))
@@ -479,7 +479,7 @@ function ChoGGi_Funcs.Menus.ListVisibleObjects()
 	local visible = MapGet("map", "attached", false, function(obj)
 		return obj:GetFrameMark() - frame > 0
 	end)
-	ChoGGi_Funcs.Common.OpenInExamineDlg(visible, nil, T(302535920001547--[[Visible Objects]]))
+	OpenExamine(visible, nil, T(302535920001547--[[Visible Objects]]))
 end
 
 do -- BuildingPathMarkers_Toggle
@@ -807,15 +807,15 @@ function ChoGGi_Funcs.Menus.TestStoryBits()
 
 		local obj
 		if choice.check1 then
-			obj = table.rand(UIColony.city_labels.labels.Building or empty_table)
+			obj = table.rand(UIColony:GetCityLabels("Building"))
 		elseif choice.check2 then
-			obj = table.rand(UIColony.city_labels.labels.Dome or empty_table)
+			obj = table.rand(UIColony:GetCityLabels("Dome"))
 		elseif choice.check3 then
-			obj = table.rand(UIColony.city_labels.labels.Colonist or empty_table)
+			obj = table.rand(UIColony:GetCityLabels("Colonist"))
 		elseif choice.check4 then
-			obj = table.rand(UIColony.city_labels.labels.Drone or empty_table)
+			obj = table.rand(UIColony:GetCityLabels("Drone"))
 		elseif choice.check5 then
-			obj = table.rand(UIColony.city_labels.labels.Rover or empty_table)
+			obj = table.rand(UIColony:GetCityLabels("Rover"))
 		elseif choice.check6 then
 			obj = SelectedObj
 		end

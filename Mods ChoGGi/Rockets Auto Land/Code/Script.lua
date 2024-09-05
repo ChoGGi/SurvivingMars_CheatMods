@@ -61,7 +61,7 @@ local function AddTemplate(template, params)
 						enable = true
 					end
 
-					local objs = UIColony.city_labels.labels.LandingPad or ""
+					local objs = UIColony:GetCityLabels("LandingPad")
 					for i = 1, #objs do
 						objs[i].ChoGGi_RocketsAutoLand_Allow = enable
 					end

@@ -17,7 +17,6 @@ Colonists on an expedition now show proper status when selected from command cen
 Added missing images for certain Cargo listings.
 Gale crater name doesn't show up for 4S138E, 5S138E.
 Stopped Tourist Gurus from happening.
-Removes stuck cursor buildings (reddish coloured).
 
 Storybits:
 Gene Forging storybit tech doesn't increase rare traits chance.
@@ -46,7 +45,9 @@ Water Reclamation Spire and B&B upgrade tech caused issues.```
 **Mod bug fixes**:
 ```Silva's Orion Heavy Rocket (you must disable his Essential files mod, then enable it AFTER enabling this mod, or use my Mod List Editor mod).
 Horticulture Workshop not unlocking.
-x4 Fixes for mods (no idea which mods / they're abandoned).
+Removes stuck cursor buildings (reddish coloured).
+
+(4) Fixes for mods (no idea which mods / they're abandoned).
 ```
 
 

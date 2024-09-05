@@ -11,7 +11,7 @@ return {
 		"name", "ResourceDepotAmounts",
 		"DisplayName", T(0000, "Resource Depot Amounts"),
 		"Help", T(0000, "Amount resource-specific depots can store."),
-		"DefaultValue", 1080,
+		"DefaultValue", 180,
 		"MinValue", 0,
 		"MaxValue", 10000,
 		"StepSize", 10,

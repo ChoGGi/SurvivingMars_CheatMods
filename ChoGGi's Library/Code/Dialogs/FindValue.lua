@@ -152,7 +152,7 @@ function ChoGGi_DlgFindValue:FindText()
 	)
 
 	-- and fire off a new dialog
-	local dlg = ChoGGi_Funcs.Common.OpenInExamineDlg(self.found_objs, nil, T(302535920000854--[[Results Found]]))
+	local dlg = OpenExamineReturn(self.found_objs, nil, T(302535920000854--[[Results Found]]))
 	-- should do this nicer, but whatever
 	CreateRealTimeThread(function()
 		Sleep(10)

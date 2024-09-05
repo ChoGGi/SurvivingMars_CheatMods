@@ -26,7 +26,10 @@ function OnMsg.LoadGame()
 	-- req has an invalid building
 	CreateRealTimeThread(function()
 		Sleep(1000)
-		local objs = UIColony.city_labels.labels.CargoShuttle or ""
+		local objs = UIColony:GetCityLabels("CargoShuttle")
+		local reset_shuttles = {}
+		local c = 0
+
 		for i = 1, #objs do
 			local obj = objs[i]
 			if obj.command == "Idle" then
@@ -43,14 +46,15 @@ function OnMsg.LoadGame()
 					obj.assigned_to_s_req = false
 				end
 
+				c = c + 1
+				reset_shuttles[c] = obj
 			end
 		end
 
-
-		-- fuck it just reset them all
+		-- Reset stuck shuttles
 		Sleep(1000)
-		for i = 1, #objs do
-			local obj = objs[i]
+		for i = 1, #reset_shuttles do
+			local obj = reset_shuttles[i]
 			if IsValid(obj) then
 				obj:Idle()
 				obj:SetCommand("GoHome")

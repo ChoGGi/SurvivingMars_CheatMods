@@ -50,7 +50,7 @@ function OnMsg.NewDay()
 
 	local can_unlock
 	-- check for a working telescope
-	local objs = UIColony.city_labels.labels.OmegaTelescope or ""
+	local objs = UIColony:GetCityLabels("OmegaTelescope")
 	for i = 1, #objs do
 		if objs[i]:CanWork() then
 			can_unlock = true

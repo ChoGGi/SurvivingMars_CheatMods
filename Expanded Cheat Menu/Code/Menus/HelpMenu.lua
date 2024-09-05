@@ -206,7 +206,7 @@ Actions[c] = {ActionName = "*" .. T(5568--[[Stats]]) .. "*",
 	ActionIcon = "CommonAssets/UI/Menu/AreaProperties.tga",
 	RolloverText = T(302535920001281--[[Information about your computer (as seen by SM).]]),
 	OnAction = function()
-		ChoGGi_Funcs.Common.OpenInExamineDlg(ChoGGi_Funcs.Menus.RetHardwareInfo(), nil, T(5568--[[Stats]]))
+		OpenExamine(ChoGGi_Funcs.Menus.RetHardwareInfo(), nil, T(5568--[[Stats]]))
 	end,
 	ActionSortKey = "-2*Stats*",
 }

@@ -1604,7 +1604,7 @@ function ChoGGi_Funcs.Common.SettingState(setting, text)
 end
 
 -- get all objects, then filter for ones within *radius*, returned sorted by dist, or *sort* for name
--- ChoGGi_Funcs.Common.OpenInExamineDlg(ReturnAllNearby(1000, "class"))
+-- OpenExamine(ReturnAllNearby(1000, "class"))
 function ChoGGi_Funcs.Common.ReturnAllNearby(radius, sort, pt)
 	radius = radius or 5000
 	pt = pt or GetCursorWorldPos()
@@ -2735,7 +2735,7 @@ local GetAllAttaches = ChoGGi_Funcs.Common.GetAllAttaches
 -- I've seen better func names
 local function MapGet_ChoGGi(label, area, city, ...)
 	local objs = (city or UICity).labels[label] or {}
---~ 	local objs = UIColony.city_labels.labels[label] or {}
+--~ 	local objs = UIColony:GetCityLabels(label)
 	if #objs == 0 then
 		local g_cls = g_Classes[label]
 		-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything* (think gary oldman in professional)
@@ -5789,7 +5789,7 @@ do -- path markers
 				end
 
 			else
-				ChoGGi_Funcs.Common.OpenInExamineDlg(obj, nil, T(302535920000467--[[Path Markers]]))
+				OpenExamine(obj, nil, T(302535920000467--[[Path Markers]]))
 				print(
 					T(6779--[[Warning]]),
 					":",
@@ -6731,7 +6731,7 @@ if what_game == "Mars" then
 		if parent_or_ret == true then
 			return list
 		else
-			ChoGGi_Funcs.Common.OpenInExamineDlg(list, nil, "RetHexSurfaces")
+			OpenExamine(list, nil, "RetHexSurfaces")
 		end
 	end
 end -- do
@@ -6957,7 +6957,7 @@ do -- GetMaterialProperties
 		if parent_or_ret == true then
 			return materials
 		else
-			ChoGGi_Funcs.Common.OpenInExamineDlg(materials, parent_or_ret, T(302535920001458--[[Material Properties]]))
+			OpenExamine(materials, parent_or_ret, T(302535920001458--[[Material Properties]]))
 		end
 
 	end
@@ -7504,7 +7504,7 @@ do -- ObjFlagsList
 		if parent_or_ret == true then
 			return flags_table
 		else
-			ChoGGi_Funcs.Common.OpenInExamineDlg(flags_table, parent_or_ret, RetName(obj))
+			OpenExamine(flags_table, parent_or_ret, RetName(obj))
 		end
 	end
 
@@ -7532,7 +7532,7 @@ do -- ObjFlagsList
 		if parent_or_ret == true then
 			return flags_table
 		else
-			ChoGGi_Funcs.Common.OpenInExamineDlg(flags_table, parent_or_ret, RetName(obj))
+			OpenExamine(flags_table, parent_or_ret, RetName(obj))
 		end
 
 	end
@@ -7732,7 +7732,7 @@ function ChoGGi_Funcs.Common.UsedTerrainTextures(ret)
 	if ret then
 		return textures
 	end
-	ChoGGi_Funcs.Common.OpenInExamineDlg(textures, nil, T(302535920001181--[[Used Terrain Textures]]))
+	OpenExamine(textures, nil, T(302535920001181--[[Used Terrain Textures]]))
 end
 
 local function RetObjMapId(obj, text, fallback)
@@ -7829,7 +7829,7 @@ function ChoGGi_Funcs.Common.GetUnitsSamePlace(city)
 			return true
 		end
 	end)
-	ChoGGi_Funcs.Common.OpenInExamineDlg(filtered)
+	OpenExamine(filtered)
 end
 function ChoGGi_Funcs.Common.CountAllObjs()
 	local count = 0
@@ -8398,7 +8398,7 @@ do -- AddMsgToFunc
 --~ 				return ChoGGi_Funcs.Original[class_name .. "_" .. func_name](table.unpack(params))
 --~ 			end) then
 --~ 				print("Function Error: ", class_name .. "_" .. func_name)
---~ 				ChoGGi_Funcs.Common.OpenInExamineDlg({params}, nil, "AddMsgToFunc")
+--~ 				OpenExamine({params}, nil, "AddMsgToFunc")
 --~ 			end
 --~ 			--
 			return ChoGGi_Funcs.Original[newname](obj, ...)

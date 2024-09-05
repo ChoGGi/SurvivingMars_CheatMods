@@ -240,7 +240,7 @@ It don't matter if you're black or white"
 302535920000162, "Need"
 302535920000083, "<left_click> Activate"
 302535920000060, "Instantly complete building without needing resources."
-302535920001277, "Open <color ChoGGi_green><str></color> in the Object Examiner."
+302535920001277, "Examine <color ChoGGi_green><str></color>."
 302535920001053, "Fill up rocket with fuel."
 302535920000005, "Drops a new colonist in selected dome."
 302535920001246, "Changes colour of <color ChoGGi_green><str></color> back to default."
@@ -582,8 +582,9 @@ Mod code works as is, HG github game code needs to be placed at:
 Example: <color ChoGGi_yellow>Source/Lua/_const.lua</color>"
 302535920000264, "Defaults to obj:GetObjectBBox() if it can't find a func."
 302535920001514, "Toggle visibility of an input box for executing code."
-302535920001515, "Press <color ChoGGi_green>%s</color> to execute code.
-Use <color ChoGGi_green>%s</color>/<color ChoGGi_green>%s</color> to browse console history."
+302535920001515, "Press <color ChoGGi_green><enter></color> to execute code.
+Use <color ChoGGi_green><up></color>/<color ChoGGi_green><down></color> to select console history.
+<extra_info>"
 302535920001516, "o = examined object"
 302535920001517, "Use <color ChoGGi_green>o</color> as a reference to the examined object: <color ChoGGi_yellow>IsValid(</color><color ChoGGi_green>o</color><color ChoGGi_yellow>)</color>."
 302535920001500, "userdata object probably needs UICity to translate."

@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1549680063",
 	"pops_any_uuid", "fa1f8a78-767f-4322-a4ff-13f83a354bf9",
 	"lua_revision", 1007000, -- Picard
-	"version", 4,
+	"version", 5,
 	"version_major", 0,
-	"version_minor", 4,
+	"version_minor", 5,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -15,8 +15,9 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagOther", true,
 	"description", [[
-If you've got any shuttles stuck mid-air, this checks for them on load.
+OBSOLETE: Use my Fix Bugs mod.
 
-You should disable it afterwards (or at least till the next time it happens) in mod options, or it'll keep resetting your shuttles.
+
+If you've got any shuttles stuck mid-air, this checks for them on load.
 ]],
 })

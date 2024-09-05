@@ -210,6 +210,44 @@ do -- CityStart/LoadGame
 		end
 
 		--
+		-- Fix Shuttles Stuck Mid-Air (req has an invalid building)
+		CreateRealTimeThread(function()
+			Sleep(1000)
+			objs = UIColony:GetCityLabels("CargoShuttle")
+			local reset_shuttles = {}
+			local c = 0
+			for i = 1, #objs do
+				local obj = objs[i]
+				if obj.command == "Idle" then
+					-- Remove borked requests
+					local req = obj.assigned_to_d_req and obj.assigned_to_d_req[1]
+					if type(req) == "userdata" and req.GetBuilding and not IsValid(req:GetBuilding()) then
+						obj.assigned_to_d_req[1]:UnassignUnit(obj.assigned_to_d_req[2], false)
+						obj.assigned_to_d_req = false
+					end
+
+					req = obj.assigned_to_s_req and obj.assigned_to_s_req[1]
+					if type(req) == "userdata" and req.GetBuilding and not IsValid(req:GetBuilding()) then
+						obj.assigned_to_s_req[1]:UnassignUnit(obj.assigned_to_s_req[2], false)
+						obj.assigned_to_s_req = false
+					end
+					c = c + 1
+					reset_shuttles[c] = obj
+				end
+			end
+			-- Reset stuck shuttles
+			Sleep(1000)
+			for i = 1, #reset_shuttles do
+				local obj = reset_shuttles[i]
+				if IsValid(obj) then
+					obj:Idle()
+					obj:SetCommand("GoHome")
+				end
+			end
+
+		end)
+
+		--
 		-- I'm going out on a limb and saying tourist gurus are a bug.
 		TraitPresets.Guru.incompatible.Tourist = true
 		TraitPresets.Tourist.incompatible.Guru = true

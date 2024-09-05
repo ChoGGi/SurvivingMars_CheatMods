@@ -62,12 +62,11 @@ local function ModOptions(id)
 	end
 
 	if UIColony then
-		local labels = UIColony.city_labels.labels
-		UpdateBuildings(labels.TrainingBuilding or "")
-		UpdateBuildings(labels.Residence or "")
+		UpdateBuildings(UIColony:GetCityLabels("TrainingBuilding"))
+		UpdateBuildings(UIColony:GetCityLabels("Residence"))
 
 		-- give 'em the boot from playgrounds
-		local objs = labels.Service or ""
+		local objs = UIColony:GetCityLabels("Service")
 		for i = 1, #objs do
 			local obj = objs[i]
 			if obj:IsKindOf("Playground") then
@@ -81,7 +80,7 @@ local function ModOptions(id)
 		end
 
 		-- update res/workplaces
-		objs = labels.Colonist or ""
+		objs = UIColony:GetCityLabels("Colonist")
 		for i = 1, #objs do
 			local obj = objs[i]
 			if obj.age_trait == "Child" then

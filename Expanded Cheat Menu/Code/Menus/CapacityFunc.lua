@@ -21,7 +21,7 @@ function ChoGGi_Funcs.Menus.StorageMechanizedDepotsTemp_Toggle()
 		amount = 5
 	end
 	local SetMechanizedDepotTempAmount = ChoGGi_Funcs.Common.SetMechanizedDepotTempAmount
-	local objs = UIColony.city_labels.labels.MechanizedDepots or ""
+	local objs = UIColony:GetCityLabels("MechanizedDepots")
 	for i = 1, #objs do
 		SetMechanizedDepotTempAmount(objs[i], amount)
 	end
@@ -85,7 +85,7 @@ function ChoGGi_Funcs.Menus.SetWorkerCapacity()
 		local value = choice[1].value
 		if type(value) == "number" then
 
-			local objs = UIColony.city_labels.labels.Workplace or ""
+			local objs = UIColony:GetCityLabels("Workplace")
 			for i = 1, #objs do
 				local o = objs[i]
 				if RetTemplateOrClass(o) == id then
@@ -204,7 +204,7 @@ function ChoGGi_Funcs.Menus.SetBuildingCapacity()
 			-- updating time
 			if cap_type == "electricity" then
 				local ToggleWorking = ChoGGi_Funcs.Common.ToggleWorking
-				local objs = UIColony.city_labels.labels.Power or ""
+				local objs = UIColony:GetCityLabels("Power")
 				for i = 1, #objs do
 					local o = objs[i]
 					if RetTemplateOrClass(o) == id then
@@ -217,7 +217,7 @@ function ChoGGi_Funcs.Menus.SetBuildingCapacity()
 				end
 
 			elseif cap_type == "colonist" then
-				local objs = UIColony.city_labels.labels.Residence or ""
+				local objs = UIColony:GetCityLabels("Residence")
 				for i = 1, #objs do
 					local o = objs[i]
 					if RetTemplateOrClass(o) == id then
@@ -228,7 +228,7 @@ function ChoGGi_Funcs.Menus.SetBuildingCapacity()
 			else -- water and air
 				local ToggleWorking = ChoGGi_Funcs.Common.ToggleWorking
 				local cap_name = cap_type .. "_capacity"
-				local objs = UIColony.city_labels.labels["Life-Support"] or ""
+				local objs = UIColony:GetCityLabels("Life-Support")
 				for i = 1, #objs do
 					local o = objs[i]
 					if RetTemplateOrClass(o) == id then
@@ -307,7 +307,7 @@ function ChoGGi_Funcs.Menus.SetVisitorCapacity()
 		end
 		local value = choice[1].value
 		if type(value) == "number" then
-			local objs = UIColony.city_labels.labels.BuildingNoDomes or ""
+			local objs = UIColony:GetCityLabels("BuildingNoDomes")
 			for i = 1, #objs do
 				local o = objs[i]
 				if RetTemplateOrClass(o) == id then
@@ -378,7 +378,7 @@ function ChoGGi_Funcs.Menus.SetStorageDepotSize(action)
 			if bld_type == "StorageWasteDepot" then
 				-- loop through and change all existing
 
-				local objs = UIColony.city_labels.labels.WasteRockDumpSite or ""
+				local objs = UIColony:GetCityLabels("WasteRockDumpSite")
 				for i = 1, #objs do
 					local o = objs[i]
 					o.max_amount_WasteRock = value
@@ -389,7 +389,7 @@ function ChoGGi_Funcs.Menus.SetStorageDepotSize(action)
 				end
 
 			elseif bld_type == "StorageOtherDepot" then
-				local objs = UIColony.city_labels.labels.UniversalStorageDepot or ""
+				local objs = UIColony:GetCityLabels("UniversalStorageDepot")
 				for i = 1, #objs do
 					local o = objs[i]
 					if o.template_name ~= "UniversalStorageDepot" then
@@ -397,11 +397,11 @@ function ChoGGi_Funcs.Menus.SetStorageDepotSize(action)
 					end
 				end
 
-				objs = UIColony.city_labels.labels.MysteryDepot or ""
+				objs = UIColony:GetCityLabels("MysteryDepot")
 				for i = 1, #objs do
 					objs[i].max_storage_per_resource = value
 				end
-				objs = UIColony.city_labels.labels.BlackCubeDumpSite or ""
+				objs = UIColony:GetCityLabels("BlackCubeDumpSite")
 				for i = 1, #objs do
 					objs[i].max_amount_BlackCube = value
 				end
@@ -410,7 +410,7 @@ function ChoGGi_Funcs.Menus.SetStorageDepotSize(action)
 				end
 
 			elseif bld_type == "StorageUniversalDepot" then
-				local objs = UIColony.city_labels.labels.UniversalStorageDepot or ""
+				local objs = UIColony:GetCityLabels("UniversalStorageDepot")
 				for i = 1, #objs do
 					local o = objs[i]
 					if o.template_name == "UniversalStorageDepot" then
@@ -422,7 +422,7 @@ function ChoGGi_Funcs.Menus.SetStorageDepotSize(action)
 				end
 
 			elseif bld_type == "StorageMechanizedDepot" then
-				local objs = UIColony.city_labels.labels.MechanizedDepots or ""
+				local objs = UIColony:GetCityLabels("MechanizedDepots")
 				for i = 1, #objs do
 					objs[i].max_storage_per_resource = value
 				end

@@ -9,7 +9,7 @@ end
 
 local function SortCC()
 	-- sorts cc list by dist to building
-	local objs = UIColony.city_labels.labels.Building or ""
+	local objs = UIColony:GetCityLabels("Building")
 	for i = 1, #objs do
 		local obj = objs[i]
 		-- no sense in doing it with only one center

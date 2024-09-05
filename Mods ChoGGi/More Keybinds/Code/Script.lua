@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 local SelObjects = ChoGGi_Funcs.Common.SelObjects
-local OpenInExamineDlg = ChoGGi_Funcs.Common.OpenInExamineDlg
 local GetCursorWorldPos = GetCursorWorldPos
 local IsValid = IsValid
 local terminal = terminal
@@ -132,7 +131,7 @@ Actions[#Actions+1] = {ActionName = T(302535920000491, "Examine Object"),
 		local c = #objs
 		if c > 0 then
 			-- If it's a single obj then examine that, otherwise the whole list
-			OpenInExamineDlg(c == 1 and objs[1] or objs)
+			OpenExamine(c == 1 and objs[1] or objs)
 			return
 		end
 
@@ -144,13 +143,13 @@ Actions[#Actions+1] = {ActionName = T(302535920000491, "Examine Object"),
 		local target = terminal.desktop:GetMouseTarget(terminal.GetMousePos())
 		-- everywhere is covered in xdialogs so skip them
 		if target and not target:IsKindOf("XDialog") then
-			return OpenInExamineDlg(target)
+			return OpenExamineReturn(target)
 		end
 
 		-- If in main menu then open examine and console
 		if not Dialogs.HUD then
-      OpenInExamineDlg(terminal.desktop)
---~ 			local dlg = OpenInExamineDlg(terminal.desktop)
+      OpenExamine(terminal.desktop)
+--~ 			local dlg = OpenExamineReturn(terminal.desktop)
 --~ 			-- off centre of central monitor
 --~ 			local width = (terminal.desktop.measure_width or 1920) - (dlg.dialog_width_scaled + 100)
 --~ 			dlg:SetPos(point(width, 100))
@@ -177,7 +176,7 @@ Actions[#Actions+1] = {ActionName = T(302535920011667, "Examine Objects"),
 			-- sort by nearest
 			table.sort(objs, SortDist)
 
-			OpenInExamineDlg(objs, {
+			OpenExamine(objs, {
 				has_params = true,
 				override_title = true,
 				title = T(302535920000069--[[Examine]]) .. " "

@@ -14,7 +14,7 @@ function OnMsg.ClassesPostprocess()
 	function SingleResourceProducer:Produce(...)
 		-- get them lazy drones working
 		if self:GetStoredAmount() > 1000 then
-			FuckingDrones(self,"single")
+			FuckingDrones(self, "single")
 		end
 		-- be on your way
 		return ChoOrig_SingleResourceProducer_Produce(self, ...)
@@ -23,10 +23,8 @@ function OnMsg.ClassesPostprocess()
 end
 
 function OnMsg.NewHour()
-	local labels = UIColony.city_labels.labels
-
 	-- Hey. Do I preach at you when you're lying stoned in the gutter? No!
-	local prods = labels.ResourceProducer or ""
+	local prods = UIColony:GetCityLabels("ResourceProducer")
 	for i = 1, #prods do
 		local prod = prods[i]
 		-- most are fine with GetProducerObj, but some like water extractor don't have one
@@ -41,7 +39,7 @@ function OnMsg.NewHour()
 		end
 	end
 
-	prods = labels.BlackCubeStockpiles or ""
+	prods = UIColony:GetCityLabels("BlackCubeStockpiles")
 	for i = 1, #prods do
 		local obj = prods[i]
 		if obj:GetStoredAmount() > 1000 then

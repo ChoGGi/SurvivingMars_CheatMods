@@ -35,6 +35,6 @@ return {
 		"Help", T(302535920011892, "More dome cracks."),
 		"DefaultValue", 3,
 		"MinValue", 0,
-		"MaxValue", 4, -- local max_visible_fractures = 4
+		"MaxValue", 100,
 	}),
 }

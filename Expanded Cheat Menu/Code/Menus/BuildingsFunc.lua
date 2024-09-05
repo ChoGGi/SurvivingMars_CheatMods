@@ -496,7 +496,7 @@ function ChoGGi_Funcs.Menus.SetSpaceElevatorTransferAmount(action)
 				setting[setting_name] = value
 			end
 
-			local objs = UIColony.city_labels.labels.SpaceElevator or ""
+			local objs = UIColony:GetCityLabels("SpaceElevator")
 			for i = 1, #objs do
 				ChoGGi_Funcs.Common.SetTaskReqAmount(objs[i], value, "export_request", setting_name)
 			end
@@ -599,7 +599,7 @@ function ChoGGi_Funcs.Menus.AlwaysDustyBuildings_Toggle()
 	if ChoGGi.UserSettings.AlwaysDustyBuildings then
 		ChoGGi.UserSettings.AlwaysDustyBuildings = nil
 		-- dust clean up
-		local objs = UIColony.city_labels.labels.Building or ""
+		local objs = UIColony:GetCityLabels("Building")
 		for i = 1, #objs do
 			objs[i].ChoGGi_AlwaysDust = nil
 		end
@@ -627,9 +627,8 @@ function ChoGGi_Funcs.Menus.AlwaysCleanBuildings_Toggle()
 		ChoGGi.UserSettings.AlwaysCleanBuildings = nil
 	else
 		ChoGGi.UserSettings.AlwaysCleanBuildings = true
-		local labels = UIColony.city_labels.labels
-		DustCleanUp(labels.Building or "")
-		DustCleanUp(labels.GridElements or "")
+		DustCleanUp(UIColony:GetCityLabels("Building"))
+		DustCleanUp(UIColony:GetCityLabels("GridElements"))
 	end
 
 	ChoGGi_Funcs.Settings.WriteSettings()
@@ -959,7 +958,7 @@ function ChoGGi_Funcs.Menus.SetMaxChangeOrDischarge()
 
 			-- updating time
 			if cap_type == "electricity" then
-				local objs = UIColony.city_labels.labels.Power or ""
+				local objs = UIColony:GetCityLabels("Power")
 				for i = 1, #objs do
 					local o = objs[i]
 					if RetTemplateOrClass(o) == id then
@@ -975,7 +974,7 @@ function ChoGGi_Funcs.Menus.SetMaxChangeOrDischarge()
 					end
 				end
 			else -- water and air
-				local objs = UIColony.city_labels.labels["Life-Support"] or ""
+				local objs = UIColony:GetCityLabels("Life-Support")
 				for i = 1, #objs do
 					local o = objs[i]
 					if RetTemplateOrClass(o) == id then
@@ -1022,8 +1021,7 @@ function ChoGGi_Funcs.Menus.SetMaxChangeOrDischarge()
 end
 
 function ChoGGi_Funcs.Menus.FarmShiftsAllOn()
-	local labels = UIColony.city_labels.labels
-	local objs = labels.BaseFarm or ""
+	local objs = UIColony:GetCityLabels("BaseFarm")
 	for i = 1, #objs do
 		local obj = objs[i]
 		obj.closed_shifts[1] = false
@@ -1031,7 +1029,7 @@ function ChoGGi_Funcs.Menus.FarmShiftsAllOn()
 		obj.closed_shifts[3] = false
 	end
 	--BaseFarm doesn't include FungalFarm...
-	objs = labels.FungalFarm or ""
+	objs = UIColony:GetCityLabels("FungalFarm")
 	for i = 1, #objs do
 		local obj = objs[i]
 		obj.closed_shifts[1] = false
@@ -1375,7 +1373,7 @@ function ChoGGi_Funcs.Menus.MaintenanceFreeBuildingsInside_Toggle()
 
 	local inside_main = ChoGGi.UserSettings.InsideBuildingsNoMaintenance
 
-	local objs = UIColony.city_labels.labels.InsideBuildings or ""
+	local objs = UIColony:GetCityLabels("InsideBuildings")
 	for i = 1, #objs do
 		local obj = objs[i]
 		if obj:IsKindOf("RequiresMaintenance") then
@@ -1403,7 +1401,7 @@ function ChoGGi_Funcs.Menus.MaintenanceFreeBuildings_Toggle()
 	ChoGGi.UserSettings.RemoveMaintenanceBuildUp = ChoGGi_Funcs.Common.ToggleValue(ChoGGi.UserSettings.RemoveMaintenanceBuildUp)
 
 	local remove_build = ChoGGi.UserSettings.RemoveMaintenanceBuildUp
-	local objs = UIColony.city_labels.labels.Building or ""
+	local objs = UIColony:GetCityLabels("Building")
 	for i = 1, #objs do
 		local obj = objs[i]
 		if obj:IsKindOf("RequiresMaintenance") then
