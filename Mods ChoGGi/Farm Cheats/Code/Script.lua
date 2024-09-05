@@ -8,7 +8,7 @@ local mod_MechFarming
 local mod_MechPerformance
 
 local function UpdateFarms()
-	local objs = UIColony:GetCityLabels("Farm")
+	local objs = ChoGGi_Funcs.Common.GetCityLabels("Farm")
 	for i = 1, #objs do
 		local obj = objs[i]
 

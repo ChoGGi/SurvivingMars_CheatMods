@@ -8129,6 +8129,17 @@ function ChoGGi_Funcs.Common.OpenIn3DManipulatorDlg(obj, parent)
 	})
 end
 
+-- If loading pre-picard saves in picard (update not dlc)
+-- Only needed during OnMsg.LoadGame
+
+-- Copied in Fix Bugs
+function ChoGGi_Funcs.Common.GetCityLabels(label)
+	local UIColony = UIColony
+	local labels = UIColony and UIColony.city_labels.labels or UICity.labels
+	return labels[label] or empty_table
+end
+
+-- Be removed sometime (see Examine.lua)
 function ChoGGi_Funcs.Common.EntitySpawner(obj, params)
 
 	-- If fired from action menu

@@ -68,7 +68,7 @@ local function UpdateMOXIE(obj)
 end
 
 local function UpdateMOXIES()
-	local objs = UIColony:GetCityLabels("MOXIE")
+	local objs = ChoGGi_Funcs.Common.GetCityLabels("MOXIE")
 	for i = 1, #objs do
 		UpdateMOXIE(objs[i])
 	end

@@ -22,7 +22,7 @@ local SetBldMaintenance = ChoGGi_Funcs.Common.UpdateBuildings or function(obj, v
 end
 
 local function DisableMain(label, toggle)
-	local objs = UIColony:GetCityLabels(label)
+	local objs = ChoGGi_Funcs.Common.GetCityLabels(label)
 	for i = 1, #objs do
 		SetBldMaintenance(objs[i], toggle)
 	end

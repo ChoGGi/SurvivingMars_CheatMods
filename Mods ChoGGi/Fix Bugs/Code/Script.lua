@@ -147,6 +147,13 @@ function OnMsg.ClassesPostprocess()
 	--
 end
 --
+-- Copied from ChoGGi_Funcs.Common.GetCityLabels()
+function GetCityLabels(label)
+	local UIColony = UIColony
+	local labels = UIColony and UIColony.city_labels.labels or UICity.labels
+	return labels[label] or empty_table
+end
+--
 do -- CityStart/LoadGame
 
 	local function StartupCode(event)
@@ -213,7 +220,7 @@ do -- CityStart/LoadGame
 		-- Fix Shuttles Stuck Mid-Air (req has an invalid building)
 		CreateRealTimeThread(function()
 			Sleep(1000)
-			objs = UIColony:GetCityLabels("CargoShuttle")
+			objs = GetCityLabels("CargoShuttle")
 			local reset_shuttles = {}
 			local c = 0
 			for i = 1, #objs do
@@ -307,14 +314,14 @@ do -- CityStart/LoadGame
 
 		--
 		-- St. Elmo's Fire: Stop meteoroids from destroying sinkholes (existing saves)
-		objs = UIColony:GetCityLabels("Sinkhole")
+		objs = GetCityLabels("Sinkhole")
 		for i = 1, #objs do
 			objs[i].indestructible = true
 		end
 
 		--
 		-- Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC)
-		objs = UIColony:GetCityLabels("Colonist")
+		objs = GetCityLabels("Colonist")
 		for i = 1, #objs do
 			local obj = objs[i]
 
@@ -466,7 +473,7 @@ do -- CityStart/LoadGame
 
 		--
 		-- Fix Buildings Broken Down And No Repair
-		objs = UIColony:GetCityLabels("Building")
+		objs = GetCityLabels("Building")
 		for i = 1, #objs do
 			local obj = objs[i]
 
@@ -499,7 +506,7 @@ do -- CityStart/LoadGame
 		--
 		-- Some colonists are allergic to doors and suffocate inside a dome with their suit still on.
 		local GetDomeAtPoint = GetDomeAtPoint
-		objs = UIColony:GetCityLabels("Colonist")
+		objs = GetCityLabels("Colonist")
 		for i = 1, #objs do
 			local colonist = objs[i]
 			-- Check if lemming is currently in a dome while wearing a suit
@@ -518,7 +525,7 @@ do -- CityStart/LoadGame
 		--
 		-- Fix Farm Oxygen 1
 		if mod_FarmOxygen then
-			objs = UIColony:GetCityLabels("Dome")
+			objs = GetCityLabels("Dome")
 			for i = 1, #objs do
 				local dome = objs[i]
 				local mods = dome:GetPropertyModifiers("air_consumption")
@@ -568,7 +575,7 @@ do -- CityStart/LoadGame
 
 		--
 		-- https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-game-freezes-when-deploying-drones-from-rc-commander-after-one-was-destroyed.1168779/
-		objs = UIColony:GetCityLabels("RCRoverAndChildren")
+		objs = GetCityLabels("RCRoverAndChildren")
 		for i = 1, #objs do
 			local attached_drones = objs[i].attached_drones
 			for j = #attached_drones, 1, -1 do
@@ -590,7 +597,7 @@ do -- CityStart/LoadGame
 
 		--
 		-- Check for transport rovers with negative amounts of resources carried.
-		objs = UIColony:GetCityLabels("RCTransportAndChildren")
+		objs = GetCityLabels("RCTransportAndChildren")
 		for i = 1, #objs do
 			local obj = objs[i]
 			for j = 1, #(obj.storable_resources or "") do
@@ -681,7 +688,7 @@ do -- CityStart/LoadGame
 		local radius = 100 * guim
 		local InvalidPos = InvalidPos()
 
-		objs = UIColony:GetCityLabels("DroneHub")
+		objs = GetCityLabels("DroneHub")
 		for i = 1, #objs do
 			table.clear(positions)
 
@@ -1152,7 +1159,7 @@ function GetCommandCenterTransportsList(...)
 		return ChoOrig_GetCommandCenterTransportsList(...)
 	end
 
-	local objs = UIColony:GetCityLabels("AttackRover")
+	local objs = GetCityLabels("AttackRover")
 	for i = 1, #objs do
 		local obj = objs[i]
 		if not obj.ChoGGi_FixedRoverNameForCCC or type(obj.name) == "userdata" then

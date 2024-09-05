@@ -1,6 +1,9 @@
 ## Library Changelog
 
 ## v12.3 (Unreleased)
+- Added GetCityLabels()
+- > If loading pre-picard saves in picard (update not dlc)
+- > Only needed during OnMsg.LoadGame
 - Examining certain objs wouldn't open child examine below parent examine.
 
 ## v12.2 (4 Aug 2024)

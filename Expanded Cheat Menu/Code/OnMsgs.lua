@@ -1196,8 +1196,8 @@ do -- LoadGame/CityStart
 --~ 			end
 --~ 		end
 --~ 	end
-	local function UpdateLabelSpeed(labels, speed, cls)
-		local objs = labels[cls] or ""
+	local function UpdateLabelSpeed(speed, label)
+		local objs = ChoGGi_Funcs.Common.GetCityLabels(label)
 		for i = 1, #objs do
 			objs[i]:SetBase("move_speed", speed)
 		end
@@ -1298,36 +1298,38 @@ do -- LoadGame/CityStart
 		end
 		-- update existing speeds
 		if UserSettings.SpeedColonist then
-			UpdateLabelSpeed(labels, UserSettings.SpeedColonist, "Colonist")
+			UpdateLabelSpeed(UserSettings.SpeedColonist, "Colonist")
 		end
 		if UserSettings.SpeedRC then
-			UpdateLabelSpeed(labels, UserSettings.SpeedRC, "Rover")
+			UpdateLabelSpeed(UserSettings.SpeedRC, "Rover")
 		end
 		if UserSettings.SpeedShuttle then
 			local speed = UserSettings.SpeedShuttle
-			local objs = labels.CargoShuttle or ""
+			local objs = ChoGGi_Funcs.Common.GetCityLabels("CargoShuttle")
 			for i = 1, #objs do
 				objs[i]:SetBase("move_speed", speed)
 			end
 		end
 		-- I figure looping through it twice is better then some complicated if else
-		if UserSettings.SpeedWaspDrone then
-			local speed = UserSettings.SpeedWaspDrone
-			local objs = labels.Drone or ""
-			for i = 1, #objs do
-				local obj = objs[i]
-				if IsKindOf(obj, "FlyingDrone") then
-					obj:SetBase("move_speed", speed)
+		if UserSettings.SpeedWaspDrone or UserSettings.SpeedDrone then
+			local objs = ChoGGi_Funcs.Common.GetCityLabels("Drone")
+			if UserSettings.SpeedWaspDrone then
+				local speed = UserSettings.SpeedWaspDrone
+				for i = 1, #objs do
+					local obj = objs[i]
+					if IsKindOf(obj, "FlyingDrone") then
+						obj:SetBase("move_speed", speed)
+					end
 				end
 			end
-		end
-		if UserSettings.SpeedDrone then
-			local speed = UserSettings.SpeedDrone
-			local objs = labels.Drone or ""
-			for i = 1, #objs do
-				local obj = objs[i]
-				if not IsKindOf(obj, "FlyingDrone") then
-					obj:SetBase("move_speed", speed)
+
+			if UserSettings.SpeedDrone then
+				local speed = UserSettings.SpeedDrone
+				for i = 1, #objs do
+					local obj = objs[i]
+					if not IsKindOf(obj, "FlyingDrone") then
+						obj:SetBase("move_speed", speed)
+					end
 				end
 			end
 		end
@@ -1490,7 +1492,7 @@ do -- LoadGame/CityStart
 		end
 
 		-- not sure why this would be false on a dome
-		local domes = labels.Dome or ""
+		local domes = ChoGGi_Funcs.Common.GetCityLabels("Dome")
 		for i = 1, #domes do
 			local dome = domes[i]
 			if dome.achievement == "FirstDome" and type(dome.connected_domes) ~= "table" then
@@ -1499,7 +1501,7 @@ do -- LoadGame/CityStart
 		end
 
 		-- something messed up if storage is negative (usually setting an amount then lowering it)
-		local storages = labels.Storages or ""
+		local storages = ChoGGi_Funcs.Common.GetCityLabels("Storages")
 		procall(function()
 			for i = 1, #storages do
 				local obj = storages[i]

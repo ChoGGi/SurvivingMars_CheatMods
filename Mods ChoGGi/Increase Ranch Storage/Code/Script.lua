@@ -20,7 +20,7 @@ local function ProdUpdate(obj)
 end
 
 local function UpdateRanchesLoop(label)
-	local objs = UIColony:GetCityLabels(label)
+	local objs = ChoGGi_Funcs.Common.GetCityLabels(label)
 	for i = 1, #objs do
 		local obj = objs[i]
 --~ 		obj.max_storage1 = mod_StockMax

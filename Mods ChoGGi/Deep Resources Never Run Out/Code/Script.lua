@@ -1,5 +1,6 @@
 -- See LICENSE for terms
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local RetMapType = ChoGGi_Funcs.Common.RetMapType
 local max_resource = 500000 * const.ResourceScale
 
@@ -76,11 +77,11 @@ MaxFillAll = function()
 	end
 
 	if UIColony then
-		local objs = UIColony:GetCityLabels("SubsurfaceDeposit")
+		local objs = ChoGGi_Funcs.Common.GetCityLabels("SubsurfaceDeposit")
 		MaxDeposits(objs)
 		RefillAllDeposits(objs)
 
-		objs = UIColony:GetCityLabels("TerrainDeposit")
+		objs = ChoGGi_Funcs.Common.GetCityLabels("TerrainDeposit")
 		MaxDeposits(objs)
 		RefillAllDeposits(objs)
 	end
@@ -94,8 +95,8 @@ function OnMsg.NewDay()
 		return
 	end
 
-	RefillAllDeposits(UIColony:GetCityLabels("SubsurfaceDeposit"))
-	RefillAllDeposits(UIColony:GetCityLabels("TerrainDeposit"))
+	RefillAllDeposits(ChoGGi_Funcs.Common.GetCityLabels("SubsurfaceDeposit"))
+	RefillAllDeposits(ChoGGi_Funcs.Common.GetCityLabels("TerrainDeposit"))
 end
 
 --

@@ -39,8 +39,9 @@ local function UpdateBuildings()
 	end
 
 	-- update existing buildings
-	local objs = UIColony:GetCityLabels("MetalsExtractor")
-	table.iappend(objs, UIColony:GetCityLabels("PreciousMetalsExtractor"))
+	local objs = ChoGGi_Funcs.Common.GetCityLabels("MetalsExtractor")
+	table.iappend(objs, ChoGGi_Funcs.Common.GetCityLabels("PreciousMetalsExtractor"))
+
 	for i = 1, #objs do
 		local obj = objs[i]
 

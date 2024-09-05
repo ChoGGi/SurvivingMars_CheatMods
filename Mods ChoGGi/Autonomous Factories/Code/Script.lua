@@ -60,7 +60,7 @@ local function UpdateBuildings()
 	-- update existing buildings
 	local objs = {}
 	for id in pairs(mod_options) do
-		table.iappend(objs, UIColony:GetCityLabels(id))
+		table.iappend(objs, ChoGGi_Funcs.Common.GetCityLabels(id))
 	end
 
 	for i = 1, #objs do

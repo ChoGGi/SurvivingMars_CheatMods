@@ -83,7 +83,7 @@ local function StartupCode()
 	UIColony:SetTechResearched("Purpose of the Spheres")
 	UIColony:SetTechResearched("Xeno-Terraforming")
 
-	local objs = UIColony:GetCityLabels("Crystals")
+	local objs = ChoGGi_Funcs.Common.GetCityLabels("Crystals")
 	if #objs > 0 then
     local mystery = UIColony.mystery
     if mystery then

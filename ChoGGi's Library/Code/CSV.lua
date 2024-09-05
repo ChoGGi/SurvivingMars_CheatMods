@@ -103,11 +103,11 @@ do -- MapData
 		local topography
 		local rating = mapdata and mapdata.challenge_rating or 0
 		if rating <= 59 then
-			topography =  str_RelativelyFlat
+			topography = str_RelativelyFlat
 		elseif rating <= 99 then
-			topography =  str_Rough
+			topography = str_Rough
 		elseif rating <= 139 then
-			topography =  str_Steep
+			topography = str_Steep
 		end
 
 		-- create item in export list
