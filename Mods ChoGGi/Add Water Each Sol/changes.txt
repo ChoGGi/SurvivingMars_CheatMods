@@ -1,3 +1,7 @@
+v0.7
+Added mod option to add water based on terraforming parameter.
+Fixed it from adding water to active map instead of surface map.
+
 v0.6
 Evans update.
 
