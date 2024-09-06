@@ -7,4 +7,12 @@ return {
 		"Help", T(302535920011793, "Disable mod without having to see missing mod msg."),
 		"DefaultValue", true,
 	}),
+	PlaceObj("ModItemOptionNumber", {
+		"name", "MarkerScale",
+		"DisplayName", T(0000, "Marker Scale"),
+		"Help", T(0000, "How large to make the marker icon."),
+		"DefaultValue", 25,
+		"MinValue", 0,
+		"MaxValue", 200,
+	}),
 }

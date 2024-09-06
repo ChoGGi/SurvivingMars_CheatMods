@@ -3977,7 +3977,7 @@ do -- AddBlinkyToObj
 		blinky_obj:SetAttachOffset(point(0, 0, offset))
 		-- hide blinky after we select something else or timeout, we don't delete since we move it from obj to obj
 		blinky_thread = CreateRealTimeThread(function()
-			WaitMsg("SelectedObjChange", timeout or 10000)
+			WaitMsg("SelectedObjChange", timeout or 5000)
 			blinky_obj:SetVisible()
 		end)
 	end
@@ -7580,7 +7580,7 @@ function ChoGGi_Funcs.Common.SetAnimState(obj)
 		if value ~= "idle" then
 			obj:SetState(value)
 			MsgPopup(
-				ChoGGi_Funcs.Common.SettingState(choice.text),
+				choice.text,
 				T(302535920000859--[[Anim State]])
 			)
 		end

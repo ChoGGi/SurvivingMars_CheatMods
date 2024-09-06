@@ -217,44 +217,6 @@ do -- CityStart/LoadGame
 		end
 
 		--
-		-- Fix Shuttles Stuck Mid-Air (req has an invalid building)
-		CreateRealTimeThread(function()
-			Sleep(1000)
-			objs = GetCityLabels("CargoShuttle")
-			local reset_shuttles = {}
-			local c = 0
-			for i = 1, #objs do
-				local obj = objs[i]
-				if obj.command == "Idle" then
-					-- Remove borked requests
-					local req = obj.assigned_to_d_req and obj.assigned_to_d_req[1]
-					if type(req) == "userdata" and req.GetBuilding and not IsValid(req:GetBuilding()) then
-						obj.assigned_to_d_req[1]:UnassignUnit(obj.assigned_to_d_req[2], false)
-						obj.assigned_to_d_req = false
-					end
-
-					req = obj.assigned_to_s_req and obj.assigned_to_s_req[1]
-					if type(req) == "userdata" and req.GetBuilding and not IsValid(req:GetBuilding()) then
-						obj.assigned_to_s_req[1]:UnassignUnit(obj.assigned_to_s_req[2], false)
-						obj.assigned_to_s_req = false
-					end
-					c = c + 1
-					reset_shuttles[c] = obj
-				end
-			end
-			-- Reset stuck shuttles
-			Sleep(1000)
-			for i = 1, #reset_shuttles do
-				local obj = reset_shuttles[i]
-				if IsValid(obj) then
-					obj:Idle()
-					obj:SetCommand("GoHome")
-				end
-			end
-
-		end)
-
-		--
 		-- I'm going out on a limb and saying tourist gurus are a bug.
 		TraitPresets.Guru.incompatible.Tourist = true
 		TraitPresets.Tourist.incompatible.Guru = true
@@ -310,29 +272,6 @@ do -- CityStart/LoadGame
 				StartRadioStation(GetStoredRadioStation())
 			end)
 
-		end
-
-		--
-		-- St. Elmo's Fire: Stop meteoroids from destroying sinkholes (existing saves)
-		objs = GetCityLabels("Sinkhole")
-		for i = 1, #objs do
-			objs[i].indestructible = true
-		end
-
-		--
-		-- Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC)
-		objs = GetCityLabels("Colonist")
-		for i = 1, #objs do
-			local obj = objs[i]
-
-			local ticket = obj.transport_ticket
-			if ticket and ticket.reason and ticket.reason == "Idle" then
-				if not IsValid(ticket.dst_station)
-					or not IsValid(ticket.src_station)
-				then
-					obj.transport_ticket = nil
-				end
-			end
 		end
 
 		--
@@ -472,6 +411,92 @@ do -- CityStart/LoadGame
 		end
 
 		--
+		-- Wind turbine gets locked by a game event.
+		local bmpo = BuildMenuPrerequisiteOverrides
+		if bmpo.WindTurbine and TGetID(bmpo.WindTurbine) == 401896326435--[[You can't construct this building at this time]] then
+			bmpo.WindTurbine = nil
+		end
+
+		--
+		-- Removes any meteorites stuck on the map when you load a save.
+		local meteors = main_realm:MapGet("map", "BaseMeteor")
+		for i = #meteors, 1, -1 do
+			local obj = meteors[i]
+
+			-- Same pt as the dest means stuck on ground
+			if obj:GetPos() == obj.dest
+			-- Stuck on roof of dome
+				or not IsValidThread(obj.fall_thread)
+			then
+				DoneObject(obj)
+			end
+		end
+
+		--
+		-- For some reason the devs put it in the Decorations instead of the Outside Decorations category.
+		bt.LampProjector.build_category = "Outside Decorations"
+		bt.LampProjector.group = "Outside Decorations"
+		bt.LampProjector.label1 = ""
+
+		--
+		-- Probably caused by a mod badly adding cargo.
+		for i = #ResupplyItemDefinitions, 1, -1 do
+			local def = ResupplyItemDefinitions[i]
+			if not def.pack then
+				print("Fix Bugs: Resupply Dialog Not Opening Borked cargo", def.id)
+				table.remove(ResupplyItemDefinitions, i)
+			end
+		end
+
+
+		-------- GetCityLabels below --------
+
+		--
+		-- Fix Shuttles Stuck Mid-Air (req has an invalid building)
+		CreateRealTimeThread(function()
+			Sleep(1000)
+			objs = GetCityLabels("CargoShuttle")
+			local reset_shuttles = {}
+			local c = 0
+			for i = 1, #objs do
+				local obj = objs[i]
+				if obj.command == "Idle" then
+					-- Remove borked requests
+					local req = obj.assigned_to_d_req and obj.assigned_to_d_req[1]
+					if type(req) == "userdata" and req.GetBuilding and not IsValid(req:GetBuilding()) then
+						obj.assigned_to_d_req[1]:UnassignUnit(obj.assigned_to_d_req[2], false)
+						obj.assigned_to_d_req = false
+					end
+
+					req = obj.assigned_to_s_req and obj.assigned_to_s_req[1]
+					if type(req) == "userdata" and req.GetBuilding and not IsValid(req:GetBuilding()) then
+						obj.assigned_to_s_req[1]:UnassignUnit(obj.assigned_to_s_req[2], false)
+						obj.assigned_to_s_req = false
+					end
+					c = c + 1
+					reset_shuttles[c] = obj
+				end
+			end
+			-- Reset stuck shuttles
+			Sleep(1000)
+			for i = 1, #reset_shuttles do
+				local obj = reset_shuttles[i]
+				if IsValid(obj) then
+					obj:Idle()
+					obj:SetCommand("GoHome")
+				end
+			end
+
+		end)
+
+		--
+		-- St. Elmo's Fire: Stop meteoroids from destroying sinkholes (existing saves)
+		objs = GetCityLabels("Sinkhole")
+		for i = 1, #objs do
+			objs[i].indestructible = true
+		end
+
+		--
 		-- Fix Buildings Broken Down And No Repair
 		objs = GetCityLabels("Building")
 		for i = 1, #objs do
@@ -504,11 +529,12 @@ do -- CityStart/LoadGame
 		end
 
 		--
-		-- Some colonists are allergic to doors and suffocate inside a dome with their suit still on.
 		local GetDomeAtPoint = GetDomeAtPoint
 		objs = GetCityLabels("Colonist")
 		for i = 1, #objs do
 			local colonist = objs[i]
+
+			-- Some colonists are allergic to doors and suffocate inside a dome with their suit still on.
 			-- Check if lemming is currently in a dome while wearing a suit
 			if colonist.entity:sub(1, 15) == "Unit_Astronaut_" then
 				local grid = GameMaps[colonist.city.map_id].object_hex_grid
@@ -520,7 +546,18 @@ do -- CityStart/LoadGame
 					colonist:SetCommand("Idle")
 				end
 			end
-		end
+
+			-- Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC)
+			local ticket = colonist.transport_ticket
+			if ticket and ticket.reason and ticket.reason == "Idle" then
+				if not IsValid(ticket.dst_station)
+					or not IsValid(ticket.src_station)
+				then
+					colonist.transport_ticket = nil
+				end
+			end
+
+		end -- GetCityLabels("Colonist")
 
 		--
 		-- Fix Farm Oxygen 1
@@ -546,34 +583,6 @@ do -- CityStart/LoadGame
 		end
 
 		--
-		-- Wind turbine gets locked by a game event.
-		local bmpo = BuildMenuPrerequisiteOverrides
-		if bmpo.WindTurbine and TGetID(bmpo.WindTurbine) == 401896326435--[[You can't construct this building at this time]] then
-			bmpo.WindTurbine = nil
-		end
-
-		--
-		-- Removes any meteorites stuck on the map when you load a save.
-		local meteors = main_realm:MapGet("map", "BaseMeteor")
-		for i = #meteors, 1, -1 do
-			local obj = meteors[i]
-
-			-- Same pt as the dest means stuck on ground
-			if obj:GetPos() == obj.dest
-			-- Stuck on roof of dome
-				or not IsValidThread(obj.fall_thread)
-			then
-				DoneObject(obj)
-			end
-		end
-
-		--
-		-- For some reason the devs put it in the Decorations instead of the Outside Decorations category.
-		bt.LampProjector.build_category = "Outside Decorations"
-		bt.LampProjector.group = "Outside Decorations"
-		bt.LampProjector.label1 = ""
-
-		--
 		-- https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-game-freezes-when-deploying-drones-from-rc-commander-after-one-was-destroyed.1168779/
 		objs = GetCityLabels("RCRoverAndChildren")
 		for i = 1, #objs do
@@ -582,16 +591,6 @@ do -- CityStart/LoadGame
 				if not IsValid(attached_drones[j]) then
 					table.remove(attached_drones, j)
 				end
-			end
-		end
-
-		--
-		-- Probably caused by a mod badly adding cargo.
-		for i = #ResupplyItemDefinitions, 1, -1 do
-			local def = ResupplyItemDefinitions[i]
-			if not def.pack then
-				print("Fix Bugs: Resupply Dialog Not Opening Borked cargo", def.id)
-				table.remove(ResupplyItemDefinitions, i)
 			end
 		end
 
@@ -607,6 +606,33 @@ do -- CityStart/LoadGame
 				end
 			end
 		end
+
+		--
+		-- Fix Stuck Malfunctioning Drones At DroneHub
+		local positions = {}
+		local radius = 100 * guim
+		local InvalidPos = InvalidPos()
+
+		objs = GetCityLabels("DroneHub")
+		for i = 1, #objs do
+			table.clear(positions)
+
+			local hub = objs[i]
+			for j = 1, #(hub.drones or "") do
+				local drone = hub.drones[j]
+				local pos = drone:GetVisualPos()
+				if pos == InvalidPos and drone.command == "Malfunction" then
+					-- Make sure they're not all bunched up
+					if not positions[tostring(pos)] then
+						local new_pos = GetRandomPassableAroundOnMap(hub.city.map_id, hub:GetPos(), radius)
+						drone:SetPos(new_pos)
+						positions[tostring(new_pos)] = true
+					end
+				end
+			end
+		end
+
+		-------- GetCityLabels above --------
 
 		--
 		if UIColony.underground_map_unlocked then
@@ -662,12 +688,14 @@ do -- CityStart/LoadGame
 					obj:SetPos(pos:SetZ(0))
 				end
 			end)
+
 			--
 			-- Unpassable underground rocks stuck in path (not cavein rubble, but small rocks you can't select).
 			-- https://forum.paradoxplaza.com/forum/threads/surviving-mars-completely-blocked-tunnel-not-the-collapsed-tunnel.1541240/
-			map.realm:MapForEach("map", "WasteRockObstructorSmall", function(obj)
+			underground_map.realm:MapForEach("map", "WasteRockObstructorSmall", function(obj)
 				obj:SetBlockPass(false)
 			end)
+
 			--
 			-- Move any underground dome prefabs (underground anomaly "storybit") to underground city (instead of being stuck on surface)
 			-- https://www.reddit.com/r/SurvivingMars/comments/1013afl/no_way_to_moveuse_underground_dome_prefabs/
@@ -682,35 +710,11 @@ do -- CityStart/LoadGame
 			end
 			--
 		end
-		--
-		-- Fix Stuck Malfunctioning Drones At DroneHub
-		local positions = {}
-		local radius = 100 * guim
-		local InvalidPos = InvalidPos()
-
-		objs = GetCityLabels("DroneHub")
-		for i = 1, #objs do
-			table.clear(positions)
-
-			local hub = objs[i]
-			for j = 1, #(hub.drones or "") do
-				local drone = hub.drones[j]
-				local pos = drone:GetVisualPos()
-				if pos == InvalidPos and drone.command == "Malfunction" then
-					-- Make sure they're not all bunched up
-					if not positions[tostring(pos)] then
-						local new_pos = GetRandomPassableAroundOnMap(hub.city.map_id, hub:GetPos(), radius)
-						drone:SetPos(new_pos)
-						positions[tostring(new_pos)] = true
-					end
-				end
-			end
-		end
-		--
 
 		--
 		ResumePassEdits("ChoGGi_FixBBBugs_loading")
 	end
+
 	function OnMsg.CityStart()
 		StartupCode("CityStart")
 	end
