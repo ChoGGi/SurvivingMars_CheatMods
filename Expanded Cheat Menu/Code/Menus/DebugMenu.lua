@@ -764,11 +764,11 @@ Actions[c] = {ActionName = T(948928900281--[[Story Bits]]),
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(186760604064--[[Test]]) .. " " .. T(948928900281--[[Story Bits]]),
+Actions[c] = {ActionName = T(5452--[[START]]) .. " " .. T(948928900281--[[Story Bits]]),
 	ActionMenubar = "ECM.Debug.Story Bits",
-	ActionId = ".Test Story Bits",
+	ActionId = ".Start Story Bits",
 	ActionIcon = "CommonAssets/UI/Menu/Voice.tga",
-	RolloverText = T(302535920001359--[[Test activate a story bit.]]),
+	RolloverText = T(302535920001359--[[Activate a story bit.]]),
 	OnAction = ChoGGi_Funcs.Menus.TestStoryBits,
 }
 

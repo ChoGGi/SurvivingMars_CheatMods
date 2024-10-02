@@ -11,7 +11,7 @@ https://survivingmars.paradoxwikis.com/Patches#Version_history
 
 Only shows first 13 breakthroughs: Anything higher than that isn't guaranteed.
 
-1-4 are planetary anomalies (the rest are surface anomalies), if you have BB then you need to use my Fix Bugs mod on new games or ignore 1-4.
+1-4 are planetary anomalies (the rest are surface anomalies), if you have B&B then you need to use my Fix Bugs mod on new games or ignore them.
 
 #### Google Sheets:
 

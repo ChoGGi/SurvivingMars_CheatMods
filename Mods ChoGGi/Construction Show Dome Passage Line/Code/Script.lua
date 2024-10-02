@@ -292,7 +292,7 @@ end
 local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding:GameInit(...)
 	if mod_Enable then
-		if self.template:IsKindOf("Dome") then
+		if self.template and self.template:IsKindOf("Dome") then
 			-- Loop through all domes and attach a line
 			local domes = UIColony:GetCityLabels("Domes")
 			for i = 1, #domes do

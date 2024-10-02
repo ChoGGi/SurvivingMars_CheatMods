@@ -18,6 +18,10 @@ return PlaceObj("ModDef", {
 Cloning Vat picks a random worker at the vat to use for the cloning process.
 
 
+Known Issues:
+If you use the Incubator mod, then you need to enable this mod first.
+
+
 Requested by Telferion.
 ]],
 })

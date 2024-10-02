@@ -219,7 +219,7 @@ do -- AddPrefabs
 			end
 			MsgPopup(
 				Translate(302535920001191--[[Added prefabs to %s buildings.]]):format(#choice),
-				T(1110, "Prefab Buildings")
+				T(1110--[[Prefab Buildings]])
 			)
 			-- If the build menu is opened and they add some prefabs it won't use them till it's toggled, so we do this instead
 			ChoGGi_Funcs.Common.UpdateBuildMenu()
@@ -248,7 +248,8 @@ Fix with: %s]]):format(default_setting)
 		{text = "10 000 M", value = 10000, hint = hint},
 		{text = "100 000 M", value = 100000, hint = hint},
 		{text = "1 000 000 000 M", value = 1000000000, hint = hint},
-		{text = "1 000 000 000 000 M", value = 1000000000000, hint = hint},
+		{text = "10 000 000 000 M", value = 10000000000, hint = hint},
+		{text = "Maxed Out", value = 92233720368, hint = hint},
 	}
 
 	local function CallBackFunc(choice)
@@ -257,7 +258,7 @@ Fix with: %s]]):format(default_setting)
 		end
 		local value = choice[1].value
 		if type(value) == "number" then
-			if value == 500 then
+			if value == 500 or value == 92233720368 then
 				-- reset money back to 0
 				UIColony.funds.funding = 0
 			end
@@ -266,7 +267,7 @@ Fix with: %s]]):format(default_setting)
 
 			MsgPopup(
 				choice[1].text,
-				T(3613, "Funding")
+				T(3613--[[Funding]])
 			)
 		end
 	end

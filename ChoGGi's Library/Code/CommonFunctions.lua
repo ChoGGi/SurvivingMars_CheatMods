@@ -3144,7 +3144,11 @@ do -- DeleteObject
 
 	local function ExecFunc(obj, funcname, ...)
 		if type(obj[funcname]) == "function" then
-			obj[funcname](obj, ...)
+			local status, result = pcall(obj[funcname], obj, ...)
+			if not status then
+				print("DeleteObject", funcname, obj[funcname], result)
+			end
+--~ 			obj[funcname](obj, ...)
 		end
 	end
 

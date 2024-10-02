@@ -64,6 +64,9 @@ if ChoGGi.what_game == "Mars" then
 		return "break"
 	end
 
+
+	-- Log spam from trains dlc
+	TrainsLogging.error = empty_func
 end
 
 local table = table

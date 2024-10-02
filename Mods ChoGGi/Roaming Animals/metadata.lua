@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "3325314585",
 	"pops_any_uuid", "1aacc028-422d-46bc-a01f-9f54abcfa498",
 	"lua_revision", 1007000, -- Picard
-	"version", 1,
+	"version", 2,
 	"version_major", 0,
-	"version_minor", 1,
+	"version_minor", 2,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -24,7 +24,7 @@ return PlaceObj("ModDef", {
 	"TagTerraforming", true,
 	"TagVegetation", true,
 	"description", [[
-Spawns animals after 100 "promoted" trees.
+Spawns animals after 100 "promoted" trees (fully grown trees).
 
 Only spawns animals that kinda fit in a forest setting.
 Chicken
@@ -36,10 +36,12 @@ Pig
 Pony
 Rabbit
 Turkey
+See mod options to select animals.
+
 
 Mod Options:
 Enable Mod: This will only stop new ones from spawning.
-Max Spawn: Max amount to spawn.
+Max Spawn: Max amount to spawn (default 50).
 Random Graze Time: How long to Graze for (seconds).
 Random Idle Time: How long to Idle for (seconds).
 ]],

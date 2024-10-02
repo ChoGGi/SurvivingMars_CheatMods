@@ -46,6 +46,7 @@ Water Reclamation Spire and B&B upgrade tech caused issues.```
 ```Silva's Orion Heavy Rocket (you must disable his Essential files mod, then enable it AFTER enabling this mod, or use my Mod List Editor mod).
 Horticulture Workshop not unlocking.
 Removes stuck cursor buildings (reddish coloured).
+GetCheapestTech log spam.
 
 (4) Fixes for mods (no idea which mods / they're abandoned).
 ```

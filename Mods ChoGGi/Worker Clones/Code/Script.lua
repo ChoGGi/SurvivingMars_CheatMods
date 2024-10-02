@@ -71,7 +71,6 @@ local function ChoFake_GenerateColonistData(city, age_trait, martianborn, params
 	return new_data
 end
 
-
 local ChoOrig_CloningVats_BuildingUpdate = CloningVats.BuildingUpdate
 function CloningVats:BuildingUpdate(...)
 	if not mod_EnableMod then

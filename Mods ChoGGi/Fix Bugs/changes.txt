@@ -1,3 +1,6 @@
+v6.6
+GetCheapestTech log spam from a mod.
+
 v6.5
 Mispelling meant a couple fixes weren't being applied to underground map (thanks Mikaaar).
 

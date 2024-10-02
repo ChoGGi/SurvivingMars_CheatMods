@@ -22,14 +22,7 @@ local function UpdateObjs()
 		return
 	end
 
-	local labels
-	for i = 1, #Cities do
-		local city = Cities[i]
-		if city.map_id == UIColony.underground_map_id then
-			labels = city.labels
-			break
-		end
-	end
+	local labels = Cities[UIColony.underground_map_id].labels
 	if not labels then
 		return
 	end

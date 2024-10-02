@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 local ChoGGi_Funcs = ChoGGi_Funcs
-local ChoGGi_Funcs = ChoGGi_Funcs
 local what_game = ChoGGi.what_game
 
 -- menus/buttons added to the Console
@@ -144,8 +143,9 @@ local function BuildExamineItem(name, title)
 			if button == "R" then
 				dlgConsole.idEdit:SetFocus()
 				dlgConsole.idEdit:SetText("~" .. name)
-				dlgConsole.idEdit:SetCursor(1, #name+1)
+				dlgConsole.idEdit:SetCursor(1, #name + 1)
 			else
+				-- funcs
 				if func then
 					if name == "GetLuaSaveGameData" then
 						OpenExamine({obj()}, nil, name)
@@ -153,7 +153,19 @@ local function BuildExamineItem(name, title)
 						OpenExamine(obj(), nil, name)
 					end
 				else
-					OpenExamine(name, "str", name)
+				-- funcs
+
+				-- values
+					if name == "OnMsg" then
+						-- Gotta do a little metatable/upvalue digging
+						local meta_table = getmetatable(g_env.OnMsg).__newindex
+						local _, value = debug.getupvalue(meta_table, 1)
+						OpenExamine(value, nil, name)
+					else
+						OpenExamine(name, "str", name)
+					end
+				-- values
+
 				end
 			end
 		end,
@@ -318,7 +330,7 @@ function ChoGGi_Funcs.Console.BuildExamineMenu()
 	end
 	--
 	AddSubmenu("_G", nil, "AccountStorage", "__cobjectToCObject", "FlagsByBits", "HandleToObject", "TranslationTable", "DeletedCObjects", "Flight_MarkedObjs", "debug.getregistry")
-	AddSubmenu("ThreadsRegister", nil, "ThreadsMessageToThreads", "ThreadsThreadToMessage", "s_SeqListPlayers", "GameInitThreads")
+	AddSubmenu("ThreadsRegister", nil, "ThreadsMessageToThreads", "ThreadsThreadToMessage", "s_SeqListPlayers", "GameInitThreads", "OnMsg")
 	AddSubmenu("Consts", nil, "g_Consts", "const", "ModifiablePropScale", "const.TagLookupTable", "const.Scale")
 	AddSubmenu("Dialogs", nil, "terminal.desktop", "GetInGameInterface", "XShortcutsTarget")
 	AddSubmenu("GlobalVars", nil, "GlobalVarValues", "PersistableGlobals", "GetLuaSaveGameData", "GetLuaLoadGamePermanents", "GlobalObjs", "GlobalObjClasses", "GlobalGameTimeThreads", "GlobalGameTimeThreadFuncs", "GlobalRealTimeThreads", "GlobalRealTimeThreadFuncs")

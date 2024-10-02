@@ -827,7 +827,7 @@ function ChoGGi_Funcs.Menus.TestStoryBits()
 		callback = CallBackFunc,
 		items = item_list,
 		title = title,
-		hint = T(302535920001359--[[Test activate a story bit.]]),
+		hint = T(302535920001359--[[Activate a story bit.]]),
 		checkboxes = {
 			{
 				title = Translate(5426--[[Building]]),

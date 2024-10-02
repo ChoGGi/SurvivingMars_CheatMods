@@ -7,19 +7,21 @@ local mod_ShootRange
 local mod_RotateSpeed
 local mod_BeamTime
 
+local function UpdateLaser(obj)
+	obj.hit_chance = mod_HitChance
+	obj.cooldown = mod_FireRate
+	obj.protect_range = mod_ProtectRange
+	obj.shoot_range = mod_ShootRange
+	obj.rot_speed = mod_RotateSpeed
+	obj.beam_time = mod_BeamTime
+end
+
 local function UpdateLasers()
 	local objs = UIColony:GetCityLabels("MDSLaser")
 	for i = 1, #objs do
-		local obj = objs[i]
-		obj.hit_chance = mod_HitChance
-		obj.cooldown = mod_FireRate
-		obj.protect_range = mod_ProtectRange
-		obj.shoot_range = mod_ShootRange
-		obj.rot_speed = mod_RotateSpeed
-		obj.beam_time = mod_BeamTime
+		UpdateLaser(objs[i])
 	end
 end
-OnMsg.CityStart = UpdateLasers
 OnMsg.LoadGame = UpdateLasers
 
 local function ModOptions(id)
@@ -46,3 +48,9 @@ end
 OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
+
+function OnMsg.BuildingInit(obj)
+	if obj:IsKindOf("MDSLaser") then
+		UpdateLaser(obj)
+	end
+end

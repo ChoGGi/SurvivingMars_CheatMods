@@ -7,31 +7,32 @@ local mod_ConstantSoilQuality
 local mod_MechFarming
 local mod_MechPerformance
 
+local function UpdateFarm(obj)
+	if mod_ConstantSoilQuality > 0 and not obj.hydroponic then
+		-- 0 because it doesn't matter (see func below)
+		obj:SetSoilQuality(0)
+	end
+
+	if mod_MechFarming then
+		obj.max_workers = 0
+		obj.automation = 1
+		obj.auto_performance = mod_MechPerformance or 100
+		ToggleWorking(obj)
+	else
+		obj.max_workers = nil
+		obj.automation = nil
+		obj.auto_performance = nil
+	end
+
+	ToggleWorking(obj)end
+
 local function UpdateFarms()
 	local objs = ChoGGi_Funcs.Common.GetCityLabels("Farm")
 	for i = 1, #objs do
-		local obj = objs[i]
-
-		if mod_ConstantSoilQuality > 0 and not obj.hydroponic then
-			-- 0 because it doesn't matter (see func below)
-			obj:SetSoilQuality(0)
-		end
-
-		if mod_MechFarming then
-			obj.max_workers = 0
-			obj.automation = 1
-			obj.auto_performance = mod_MechPerformance or 100
-			ToggleWorking(obj)
-		else
-			obj.max_workers = nil
-			obj.automation = nil
-			obj.auto_performance = nil
-		end
-
-		ToggleWorking(obj)
+		UpdateFarm(objs[i])
 	end
 end
-OnMsg.CityStart = UpdateFarms
+--~ OnMsg.CityStart = UpdateFarms
 OnMsg.LoadGame = UpdateFarms
 
 -- fired when settings are changed/init
@@ -124,4 +125,10 @@ function OnMsg.ClassesPostprocess()
 		end,
 	})
 
+end
+
+function OnMsg.BuildingInit(obj)
+	if obj:IsKindOf("Farm") then
+		UpdateFarm(obj)
+	end
 end

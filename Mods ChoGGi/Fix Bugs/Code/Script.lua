@@ -21,7 +21,6 @@ local empty_table = empty_table
 local mod_EnableMod
 local mod_FarmOxygen
 local mod_DustDevilsBlockBuilding
---~ local mod_PlanetaryAnomalyBreakthroughs
 local mod_UnevenTerrain
 --~ local mod_TurnOffUpgrades
 local mod_SupplyPodSoundEffects
@@ -59,7 +58,6 @@ local function ModOptions(id)
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_FarmOxygen = CurrentModOptions:GetProperty("FarmOxygen")
 	mod_DustDevilsBlockBuilding = CurrentModOptions:GetProperty("DustDevilsBlockBuilding")
---~ 	mod_PlanetaryAnomalyBreakthroughs = CurrentModOptions:GetProperty("PlanetaryAnomalyBreakthroughs")
 	mod_UnevenTerrain = CurrentModOptions:GetProperty("UnevenTerrain")
 --~ 	mod_TurnOffUpgrades = CurrentModOptions:GetProperty("TurnOffUpgrades")
 	mod_SupplyPodSoundEffects = CurrentModOptions:GetProperty("SupplyPodSoundEffects")
@@ -125,6 +123,7 @@ function OnMsg.SectorScanned()
 		end)
 	end
 end
+
 --
 function OnMsg.ClassesPostprocess()
 	-- Fix Colonist Daily Interest Loop
@@ -146,6 +145,7 @@ function OnMsg.ClassesPostprocess()
 	end
 	--
 end
+
 --
 -- Copied from ChoGGi_Funcs.Common.GetCityLabels()
 function GetCityLabels(label)
@@ -153,8 +153,10 @@ function GetCityLabels(label)
 	local labels = UIColony and UIColony.city_labels.labels or UICity.labels
 	return labels[label] or empty_table
 end
+
 --
-do -- CityStart/LoadGame
+-- CityStart/LoadGame
+do
 
 	local function StartupCode(event)
 		if not mod_EnableMod then
@@ -173,7 +175,7 @@ do -- CityStart/LoadGame
 		local const = const
 		local GameMaps = GameMaps
 		local ResupplyItemDefinitions = ResupplyItemDefinitions
-		local bt = BuildingTemplates
+		local BuildingTemplates = BuildingTemplates
  		local CargoPreset = CargoPreset
 		local objs
 
@@ -217,7 +219,17 @@ do -- CityStart/LoadGame
 		end
 
 		--
+		-- tech_field log spam from a mod
+		local TechFields = TechFields
+		for _, item in pairs(TechFields) do
+			if not item.SortKey then
+				item.SortKey = 9999
+			end
+		end
+
+		--
 		-- I'm going out on a limb and saying tourist gurus are a bug.
+		-- Odd that GuruTraitBlacklist.Tourist doesn't seem to work...
 		TraitPresets.Guru.incompatible.Tourist = true
 		TraitPresets.Tourist.incompatible.Guru = true
 
@@ -243,8 +255,8 @@ do -- CityStart/LoadGame
 
 				if lookup_res[id] then
 					cargo.icon = lookup_res[id]
-				elseif bt[id] then
-					cargo.icon = bt[id].encyclopedia_image
+				elseif BuildingTemplates[id] then
+					cargo.icon = BuildingTemplates[id].encyclopedia_image
 				end
 
 			end
@@ -434,9 +446,9 @@ do -- CityStart/LoadGame
 
 		--
 		-- For some reason the devs put it in the Decorations instead of the Outside Decorations category.
-		bt.LampProjector.build_category = "Outside Decorations"
-		bt.LampProjector.group = "Outside Decorations"
-		bt.LampProjector.label1 = ""
+		BuildingTemplates.LampProjector.build_category = "Outside Decorations"
+		BuildingTemplates.LampProjector.group = "Outside Decorations"
+		BuildingTemplates.LampProjector.label1 = ""
 
 		--
 		-- Probably caused by a mod badly adding cargo.
@@ -721,7 +733,8 @@ do -- CityStart/LoadGame
 	function OnMsg.LoadGame()
 		StartupCode("LoadGame")
 	end
-end -- do
+end -- StartupCode do
+
 --
 -- Clearing waste rock
 local ChoOrig_ClearWasteRockConstructionSite_InitBlockPass = ClearWasteRockConstructionSite.InitBlockPass
@@ -734,6 +747,7 @@ function ClearWasteRockConstructionSite:InitBlockPass(ls, ...)
     return ChoOrig_ClearWasteRockConstructionSite_InitBlockPass(self, ls, ...)
   end
 end
+
 --
 -- If you set a transport route between two resources/stockpiles/etc and the transport just sits there like an idiot...
 local ChoOrig_RCTransport_TransferResources = RCTransport.TransferResources
@@ -748,6 +762,7 @@ function RCTransport:TransferResources(...)
 
 	return ChoOrig_RCTransport_TransferResources(self, ...)
 end
+
 --
 -- Some mods will try to add a notification without specifying an id for it; that makes baby Jesus cry.
 local ChoOrig_LoadCustomOnScreenNotification = LoadCustomOnScreenNotification
@@ -761,6 +776,7 @@ function LoadCustomOnScreenNotification(notification, ...)
 		return ChoOrig_LoadCustomOnScreenNotification(notification, ...)
 	end
 end
+
 --
 -- Layout construction allows building buildings that should be locked by tech (Triboelectric Scrubber).
 local ChoOrig_LayoutConstructionController_Activate = LayoutConstructionController.Activate
@@ -807,6 +823,7 @@ function Farm:Done(...)
 
 	return ChoOrig_Farm_Done(self, ...)
 end
+
 --
 -- The devs broke this in Tito update and haven't fixed it yet (double click selects all of type on screen).
 local ChoOrig_SelectionModeDialog_OnMouseButtonDoubleClick = SelectionModeDialog.OnMouseButtonDoubleClick
@@ -841,8 +858,10 @@ function SelectionModeDialog:OnMouseButtonDoubleClick(pt, button, ...)
 
 	return "break"
 end
+
 --
-do -- AreDomesConnectedWithPassage (Fix Colonists Long Walks)
+-- AreDomesConnectedWithPassage (Fix Colonists Long Walks)
+do
 	--[[
 	Changes the AreDomesConnectedWithPassage func to also check the walking distance instead of assuming passages == walkable.
 	This [i]should[/i] stop the random colonist has died from dehydration events we know and love.
@@ -860,6 +879,7 @@ do -- AreDomesConnectedWithPassage (Fix Colonists Long Walks)
 			and (d1 == d2 or d1:GetDist2D(d2) <= dome_walk_dist)
 	end
 end -- do
+
 --
 -- Fix Defence Towers Not Firing At Rovers (2/2)
 local ChoOrig_SA_Exec_Exec = SA_Exec.Exec
@@ -880,6 +900,7 @@ function SA_Exec:Exec(sequence_player, ip, seq, ...)
 
 	return ChoOrig_SA_Exec_Exec(self, sequence_player, ip, seq, ...)
 end
+
 --
 -- log spam April13 found
 -- [LUA ERROR] Mars/Lua/Buildings/CargoTransporter.lua:1062: attempt to index a nil value (field '?')
@@ -893,6 +914,7 @@ function CargoTransporter:DroneLoadResource(drone, request, resource, ...)
 		return ChoOrig_CargoTransporter_DroneLoadResource(self, drone, request, resource, ...)
 	end
 end
+
 --
 -- Mars/Lua/Buildings/RocketBase.lua:319: attempt to get length of a boolean value (local 'cargo')
 -- Guessing a mod?
@@ -909,8 +931,10 @@ function RocketBase:RemovePassengers(...)
 
 	return ChoOrig_RocketBase_RemovePassengers(self, ...)
 end
+
 --
-do -- Stop buildings placed on top of dust devils
+-- Stop buildings placed on top of dust devils
+do
 	local ChoGGi_OnTopOfDustDevil = {
 		type = "error",
 		priority = 100,
@@ -939,6 +963,7 @@ do -- Stop buildings placed on top of dust devils
 		return ChoOrig_ConstructionController_FinalizeStatusGathering(self, ...)
 	end
 end -- do
+
 --
 -- Log spam if you call this with an invalid dome
 local ChoOrig_IsBuildingInDomeRange = IsBuildingInDomeRange
@@ -953,6 +978,7 @@ function IsBuildingInDomeRange(bld, dome, ...)
 	end
 	return false
 end
+
 --
 -- Uneven Terrain
 local ChoOrig_LandscapeFinish = LandscapeFinish
@@ -979,6 +1005,7 @@ function LandscapeFinish(mark, ...)
 
 	FixUnevenTerrain(GameMaps[landscape.map_id])
 end
+
 --
 -- Disable upgrades when demoing a building (prevents modifiers from staying modified)
 local ChoOrig_Building_Done = Building.Done
@@ -998,6 +1025,7 @@ function Building:Done(...)
 
 	return ChoOrig_Building_Done(self, ...)
 end
+
 --~ -- Also do the same when turning off a building
 --~ local ChoOrig_BaseBuilding_OnSetWorking = BaseBuilding.OnSetWorking
 --~ function BaseBuilding:OnSetWorking(working, ...)
@@ -1028,6 +1056,7 @@ end
 
 --~ 	return ChoOrig_BaseBuilding_OnSetWorking(self, working, ...)
 --~ end
+
 --
 -- Add sound effects to SupplyPods
 local ChoOrig_SupplyPod_GameInit = SupplyPod.GameInit
@@ -1041,6 +1070,7 @@ function SupplyPod:GameInit(...)
 	ChoOrig_SupplyPod_GameInit(self, ...)
 	self.fx_actor_class = RocketBase.fx_actor_class
 end
+
 --
 -- Personal Space storybit (and anything else that changes the resident capacity amount)
 local ChoOrig_GetConstructionDescription = GetConstructionDescription
@@ -1077,6 +1107,7 @@ function GetConstructionDescription(template, ...)
 
 	return list
 end
+
 --
 -- Fix Destroyed Tunnels Still Work
 local ChoOrig_Tunnel_AddPFTunnel = Tunnel.AddPFTunnel
@@ -1091,6 +1122,7 @@ function Tunnel:AddPFTunnel(...)
 
 	return ChoOrig_Tunnel_AddPFTunnel(self, ...)
 end
+
 --
 -- These were moved from City to Colony, shouldn't hurt anything...
 function City.IsTechResearched(_, ...)
@@ -1099,7 +1131,7 @@ end
 function City.IsTechDiscovered(_, ...)
 	return UIColony:IsTechDiscovered(...)
 end
---
+
 --
 -- Refabbing certain buildings with particles (so far both rare extractor skins) will leave the particles behind
 -- I clean them out on load, and use this to stop new ones from appearing.
@@ -1308,6 +1340,7 @@ if g_AvailableDlc.gagarin then
 		return ChoOrig_City_CreateDrone(self, ...)
 	end
 end
+
 --
 -- On one underground map, the bottomless pit anomaly is removed:
 -- SpawnAnomaly() calls FindUnobstructedDepositPos() which for whatever reason,
@@ -1349,6 +1382,7 @@ function GetCargoColonistSpecializationItems(...)
 
 	return ChoOrig_GetCargoColonistSpecializationItems(...)
 end
+
 --
 -- Badly modded cargo (or some combination of mods)
 -- [LUA ERROR] Mars/Lua/CargoRequest.lua:373: bad argument #1 to 'pairs' (table expected, got boolean)
@@ -1364,6 +1398,7 @@ function CargoRequest:GetDestinationCargoList(...)
 
 	return ChoOrig_CargoRequest_GetDestinationCargoList(self, ...)
 end
+
 --
 -- Stop ceiling/floating rubble
 local ChoOrig_TriggerCaveIn = TriggerCaveIn
@@ -1382,6 +1417,7 @@ function TriggerCaveIn(...)
 
 	return rubble
 end
+
 --
 -- Devs didn't check for EasyMaintenance when overriding AccumulateMaintenancePoints for picard
 -- last checked lua rev 1011166
@@ -1401,6 +1437,7 @@ function SupportStruts:AccumulateMaintenancePoints(new_points, ...)
 		end
   end
 end
+
 --
 -- Added some varargs (5 bucks says if they change the base func then they forget to change the overridden func)
 -- last checked lua rev 1011166
@@ -1415,6 +1452,7 @@ function Building:SetDome(dome, ...)
     dome:ToggleRefab()
   end
 end
+
 --
 -- No Planetary Anomaly Breakthroughs when B&B is installed.
 -- This func is called for each new city (surface/underground/asteroids)
@@ -1422,7 +1460,6 @@ end
 -- That list is used to spawn planetary anomalies
 local ChoOrig_City_InitBreakThroughAnomalies = City.InitBreakThroughAnomalies
 function City:InitBreakThroughAnomalies(...)
---~ 	if not mod_EnableMod or not mod_PlanetaryAnomalyBreakthroughs then
 	if not mod_EnableMod then
 		return ChoOrig_City_InitBreakThroughAnomalies(self, ...)
 	end
@@ -1432,10 +1469,13 @@ function City:InitBreakThroughAnomalies(...)
 		return ChoOrig_City_InitBreakThroughAnomalies(self, ...)
 	end
 
-	-- underground or asteroid city
+	-- Save the list when called for other cities (underground or asteroid)
 	local ChoOrig_BreakthroughOrder = BreakthroughOrder
+
 	-- pcall just in case
 	pcall(ChoOrig_City_InitBreakThroughAnomalies, self, ...)
+
+	-- and restore it afterwards
 	BreakthroughOrder = ChoOrig_BreakthroughOrder
 end
 --

@@ -8,7 +8,7 @@ end
 local table = table
 
 -- we need to store the list of sponsor locked buildings
-local sponsor_buildings = CurrentModDef.sponsor_buildings or {}
+local sponsor_buildings = {}
 
 local mod_options = {}
 
@@ -128,19 +128,6 @@ local function ModOptions(id)
 			table.remove(reqs, idx)
 		end
 	end
-
---~ 	local CargoPreset = CargoPreset
---~ 	for id, cargo in pairs(CargoPreset) do
---~ 		-- Needed for RC
---~ 		local name = id
---~ 		if name:sub(1, 2) == "RC" then
---~ 			name = name .. "Building"
---~ 		end
-
---~ 		if mod_options["ChoGGi_" .. name] then
---~ 			cargo.locked = false
---~ 		end
---~ 	end
 
 	-- Make sure we're in-game
 	if not UIColony then

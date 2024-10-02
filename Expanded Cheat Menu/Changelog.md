@@ -1,6 +1,11 @@
 ## ECM Changelog
 
 ## v19.2 (Unreleased)
+### Changed:
+- Renamed Test Story Bits -> Start Story Bits.
+
+### Fixed:
+- Set Funding max amount was too much.
 
 ## v19.2 (4 Aug 2024)
 ### Added:

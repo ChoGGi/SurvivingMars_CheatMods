@@ -1,3 +1,6 @@
+v0.3
+Forgot to have it apply when new ones built (instead of loadgame only).
+
 v0.2
 Added mod options:
 Mech Farming: Workers not needed.

@@ -12,6 +12,34 @@ end
 -- Almost a complete copy pasta of my RoamingAnimal Visitors mod...
 -- The roaming part at least, this adds the other models/limits to when to spawn
 
+local animals = {
+	{"Chicken", T(299174615385--[[Chicken]])},
+	Chicken = {"Chicken", T(299174615385--[[Chicken]])},
+	{"Deer", T(409677371105--[[Deer]])},
+	Deer = {"Deer", T(409677371105--[[Deer]])},
+	{"Goose", T(319767019420--[[Goose]])},
+	Goose = {"Goose", T(319767019420--[[Goose]])},
+	{"Lama_Ambient", T(808881013020--[[Llama]])},
+	Lama_Ambient = {"Lama_Ambient", T(808881013020--[[Llama]])},
+	{"Ostrich", T(929526939780--[[Ostrich]])},
+	Ostrich = {"Ostrich", T(929526939780--[[Ostrich]])},
+	{"Pig", T(221418710774--[[Pig]])},
+	Pig = {"Pig", T(221418710774--[[Pig]])},
+	{"Pony_01", T(176071455701--[[Pony]])},
+	Pony_01 = {"Pony_01", T(176071455701--[[Pony]])},
+	{"Pony_02", T(176071455701--[[Pony]])},
+	Pony_02 = {"Pony_02", T(176071455701--[[Pony]])},
+	{"Pony_03", T(176071455701--[[Pony]])},
+	Pony_03 = {"Pony_03", T(176071455701--[[Pony]])},
+	{"Rabbit_01", T(520473377733--[[Rabbit]])},
+	Rabbit_01 = {"Rabbit_01", T(520473377733--[[Rabbit]])},
+	{"Rabbit_02", T(520473377733--[[Rabbit]])},
+	Rabbit_02 = {"Rabbit_02", T(520473377733--[[Rabbit]])},
+	{"Turkey", T(977344055059--[[Turkey]])},
+	Turkey = {"Turkey", T(977344055059--[[Turkey]])},
+}
+local temp_animals = {}
+
 local table = table
 local point = point
 local GetObjectHexGrid = GetObjectHexGrid
@@ -27,6 +55,11 @@ local InvalidPos = ChoGGi.Consts.InvalidPos
 
 local SetPosRandomBuildablePos = ChoGGi_Funcs.Common.SetPosRandomBuildablePos
 
+--~ local mod_options = {}
+--~ for i = 1, #animals do
+--~ 	mod_options[animals[i][1]] = false
+--~ end
+
 local mod_EnableMod
 local mod_MaxSpawn
 local mod_RandomGrazeTime
@@ -38,10 +71,24 @@ local function ModOptions(id)
 		return
 	end
 
-	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
-	mod_MaxSpawn = CurrentModOptions:GetProperty("MaxSpawn")
-	mod_RandomGrazeTime = CurrentModOptions:GetProperty("RandomGrazeTime") * 1000
-	mod_RandomIdleTime = CurrentModOptions:GetProperty("RandomIdleTime") * 1000
+	local options = CurrentModOptions
+
+	-- build list of enabled animals for table.rand below
+	temp_animals = {}
+	local c = 0
+	for i = 1, #animals do
+		local animal = animals[i]
+		local id = animal[1]
+		if options:GetProperty(id) then
+			c = c + 1
+			temp_animals[c] = animal
+		end
+	end
+
+	mod_EnableMod = options:GetProperty("EnableMod")
+	mod_MaxSpawn = options:GetProperty("MaxSpawn")
+	mod_RandomGrazeTime = options:GetProperty("RandomGrazeTime") * 1000
+	mod_RandomIdleTime = options:GetProperty("RandomIdleTime") * 1000
 end
 -- load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -92,28 +139,13 @@ local function IsPlayablePoint(pt)
 	return pt:InBox2D(MainCity.MapArea) and GetBuildableZ(WorldToHex(pt:xy())) ~= UnbuildableZ and terrain:IsPassable(pt)
 end
 
-local animals = {
-	{"Chicken", T(299174615385--[[Chicken]])},
-	{"Deer", T(409677371105--[[Deer]])},
-	{"Goose", T(319767019420--[[Goose]])},
-	{"Lama_Ambient", T(808881013020--[[Llama]])},
-	{"Ostrich", T(929526939780--[[Ostrich]])},
-	{"Pig", T(221418710774--[[Pig]])},
-	{"Pony_01", T(176071455701--[[Pony]])},
-	{"Pony_02", T(176071455701--[[Pony]])},
-	{"Pony_03", T(176071455701--[[Pony]])},
-	{"Rabbit_01", T(520473377733--[[Rabbit]])},
-	{"Rabbit_02", T(520473377733--[[Rabbit]])},
-	{"Turkey", T(977344055059--[[Turkey]])},
-}
-
 function ChoGGi_RoamingAnimal:Init()
 	local city = self.city or MainCity
 	self.city = city
 
 	city:AddToLabel("ChoGGi_RoamingAnimal", self)
 
-	local animal = table.rand(animals)
+	local animal = table.rand(temp_animals)
 	self:ChangeEntity(animal[1])
 	self.display_name = animal[2]
 
@@ -319,6 +351,11 @@ function OnMsg.NewDay()
 	if count > 25 then
 		count = 25
 	end
+	local current = #(MainCity.labels.ChoGGi_RoamingAnimal or "")
+	if count > mod_MaxSpawn then
+		count = mod_MaxSpawn - current
+	end
+--~ 	printC(count)
 
 	for _ = 1, count do
 		local obj = ChoGGi_RoamingAnimal:new()
@@ -326,13 +363,13 @@ function OnMsg.NewDay()
 		SetPosRandomBuildablePos(obj)
 	end
 
-	-- testing
-	if ChoGGi.testing then
-		for _ = 1, 600 do
-			local obj = ChoGGi_RoamingAnimal:new()
-			ChoGGi_Funcs.Common.SetPosRandomBuildablePos(obj)
-		end
-	end
+--~ 	-- testing
+--~ 	if ChoGGi.testing then
+--~ 		for _ = 1, 600 do
+--~ 			local obj = ChoGGi_RoamingAnimal:new()
+--~ 			ChoGGi_Funcs.Common.SetPosRandomBuildablePos(obj)
+--~ 		end
+--~ 	end
 end
 
 -- kill off the threads (spews c func persist errors in log)

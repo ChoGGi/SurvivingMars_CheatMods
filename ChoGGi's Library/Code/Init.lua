@@ -208,7 +208,6 @@ CreateRealTimeThread(function()
 	if not g_ConsoleFENV then
 		WaitMsg("Autorun")
 	end
-	local Sleep = Sleep
 	while not g_ConsoleFENV do
 		Sleep(250)
 	end
@@ -216,6 +215,7 @@ CreateRealTimeThread(function()
 	Platform.cmdline = ChoOrig_cmdline
 	--
 	local env = g_ConsoleFENV._G
+--~ 	env.ModEnvBlacklist = {--[[Harumph!]]}
 	ChoGGi.blacklist = false
 	Msg("ChoGGi_UpdateBlacklistFuncs", env)
 

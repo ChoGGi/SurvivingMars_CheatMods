@@ -1,1 +1,3 @@
 v0.2
+Added mod options to pick animals.
+Made sure it can't go over the max amount.

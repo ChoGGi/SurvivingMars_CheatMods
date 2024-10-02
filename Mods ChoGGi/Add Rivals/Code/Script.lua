@@ -17,7 +17,7 @@ local mod_RivalSpawnSol
 -- list of rivals user picked to use
 local custom_rivals = false
 
-local rivals =Presets.DumbAIDef.MissionSponsors
+local rivals = Presets.DumbAIDef.MissionSponsors
 local rival_mod_options = {}
 for i = 1, #rivals do
 	local rival = rivals[i]
