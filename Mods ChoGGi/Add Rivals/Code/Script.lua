@@ -5,6 +5,12 @@ if not g_AvailableDlc.gagarin then
 	return
 end
 
+-- Replace local func
+local debug
+function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
+	debug = env.debug
+end
+
 -- Needed for LukeH's Meat and Booze.
 local PickUnusedAISponsor = ChoGGi_Funcs.Common.PickUnusedAISponsor
 
@@ -26,26 +32,32 @@ for i = 1, #rivals do
 	end
 end
 
-local AddRivals
-
-local function WaitForSol()
-	while true do
-		local ok, day = WaitMsg("NewDay")
-		if ok and day and mod_RivalSpawnSol >= day then
-			AddRivals()
+local function AddRivals()
+	-- Fix haywire threads
+	if not ChoGGi_AddRivals_FixedThreads then
+		print("Add Rivals: Starting thread cleanup")
+		local DeleteThread = DeleteThread
+		local GetThreadStatus = GetThreadStatus
+		local ThreadsRegister = ThreadsRegister
+		for thread in pairs(ThreadsRegister) do
+			if GetThreadStatus(thread) == "WaitMsg" then
+				local info = debug.getinfo(thread, 1)
+				local upvalue2 = debug.getupvalue(info.func, 2)
+				if upvalue2 == "mod_RivalSpawnSol" then
+					DeleteThread(thread)
+				end
+			end
 		end
+		ChoGGi_AddRivals_FixedThreads = true
+		print("Add Rivals: Finished thread cleanup")
 	end
-end
 
--- This func is called above, but the above func is called below, so it's defined above
-AddRivals = function()
 	if not mod_EnableMod then
 		return
 	end
 
-	-- Fire a thread to wait for new sol msg if it's too early
+	-- wait for new sol msg if it's too early
 	if UIColony.day < mod_RivalSpawnSol then
-		CreateGameTimeThread(WaitForSol)
 		return
 	end
 
@@ -108,6 +120,13 @@ AddRivals = function()
 	end
 
 end
+
+function OnMsg.NewDay(sol)
+	if mod_RivalSpawnSol >= sol then
+		AddRivals()
+	end
+end
+
 -- New games
 OnMsg.CityStart = AddRivals
 -- Saved ones

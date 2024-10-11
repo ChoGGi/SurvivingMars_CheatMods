@@ -41,7 +41,6 @@ function OnMsg.ClassesPostprocess()
 
 	local articles = Presets.EncyclopediaArticle.Resources
 	local lookup_res = {
-		PreciousMinerals = articles.ExoticMinerals.image,
 		Concrete = articles.Concrete.image,
 		Electronics = articles.Electronics.image,
 		Food = articles.Food.image,
@@ -50,10 +49,12 @@ function OnMsg.ClassesPostprocess()
 		Metals = articles.Metals.image,
 		Polymers = articles.Polymers.image,
 		PreciousMetals = articles["Rare Metals"].image,
-		Seeds = articles.Seeds.image,
 		-- Close enough
 		WasteRock = "UI/Messages/Tutorials/Tutorial1/Tutorial1_WasteRockConcreteDepot.tga",
 	}
+	if g_AvailableDlc.armstrong then
+		lookup_res.Seeds = articles.Seeds.image
+	end
 
 	for id, cargo in pairs(CargoPreset) do
 		if not cargo.icon then

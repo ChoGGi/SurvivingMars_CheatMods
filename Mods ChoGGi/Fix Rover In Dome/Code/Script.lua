@@ -8,13 +8,12 @@ local box = box
 local WorldToHex = WorldToHex
 local GetObjectHexGrid = GetObjectHexGrid
 
-function GetPastureAtHex(obj)
+local function GetPastureAtHex(obj)
 	local q, r = WorldToHex(obj)
 	local object_hex_grid = GetObjectHexGrid(obj)
 
 	return object_hex_grid:GetObject(q, r, "Pasture")
 end
-
 
 -- end to end for the diamond dome (plus some extra)
 local dome_size = 32000
@@ -25,9 +24,11 @@ local function MoveUnits()
 		return
 	end
 
+	local main_realm = GetRealmByID(MainMapID)
+
 	-- no point in checking if domes have been opened
 	if not GetOpenAirBuildings(MainCity.map_id) then
-		local rovers = MapGet("map", "BaseRover")
+		local rovers = main_realm:MapGet("map", "BaseRover")
 		for i = 1, #rovers do
 			local rover = rovers[i]
 			local dome = IsUnitInDome(rover)
@@ -41,7 +42,8 @@ local function MoveUnits()
 		end
 	end
 
-	local drones = MapGet("map", "Drone")
+	-- drones stuck in pastures
+	local drones = main_realm:MapGet("map", "Drone")
 	for i = 1, #drones do
 		local drone = drones[i]
 		local ranch = GetPastureAtHex(drone)

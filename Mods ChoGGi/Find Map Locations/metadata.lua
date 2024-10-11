@@ -37,7 +37,9 @@ The first 13 breakthroughs are guaranteed (4 from planetary anomalies, and 9 fro
 
 Known Issues:
 If you have B&B DLC then the planetary anomalies don't work at all. Either ignore the first four breakthroughs, or use my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2721921772]Fix Bugs[/url] mod.
-Rare Metals and Metals are always the same count, so don't search for raremetals2 or preciousmetals2 use metals2.
+If you use the game rules to disable dlc then this won't work, you need to manually remove hpk files from the DLC folder.
+Do not use Tech Variety or Chaos Theory game rules! (they change the breakthrough order).
 This mod requires a mouse and keyboard on xbox.
+Rare Metals and Metals are always the same count, so don't search for raremetals2 or preciousmetals2 use metals2.
 ]],
 })

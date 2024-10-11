@@ -1,3 +1,6 @@
+v6.7
+Fixed bug with missing dlc (thanks Boothy).
+
 v6.6
 GetCheapestTech log spam from a mod.
 
