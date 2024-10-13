@@ -5,7 +5,8 @@ See mod options to toggle certain fixes.
 
 **List of bugs fixed:**
 See below for more info about these specific fixes:
-```Uneven terrain / Flatten tool (see mod options to disable).
+```
+Uneven terrain / Flatten tool (see mod options to disable).
 Add rocket sound effects to SupplyPods (mod option to disable).
 Force heat grid to update when starting certain new games.
 Future Contemporary Asset Pack when placing spires.
@@ -43,7 +44,9 @@ Unpassable underground rocks stuck in path (not cave-in rubble, but small rocks 
 Water Reclamation Spire and B&B upgrade tech caused issues.```
 
 **Mod bug fixes**:
-```Silva's Orion Heavy Rocket (you must disable his Essential files mod, then enable it AFTER enabling this mod, or use my Mod List Editor mod).
+```
+Rivals Trade Minerals mod hides Exotic Minerals from lander UI.
+Silva's Orion Heavy Rocket (you must disable his Essential files mod, then enable it AFTER enabling this mod, or use my Mod List Editor mod).
 Horticulture Workshop not unlocking.
 Removes stuck cursor buildings (reddish coloured).
 GetCheapestTech log spam.
@@ -53,7 +56,8 @@ GetCheapestTech log spam.
 
 
 **Incorporated mods:** (so far)
-```Fix Blank Mission Profile
+```
+Fix Blank Mission Profile
 Fix Buildings Broken Down And No Repair
 Fix Colonist Daily Interest Loop
 Fix Colonists Long Walks (better solution: Use my "No More Outside Suffocation" mod)

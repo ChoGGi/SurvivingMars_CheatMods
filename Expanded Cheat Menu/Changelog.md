@@ -5,6 +5,8 @@
 - Renamed Test Story Bits -> Start Story Bits.
 
 ### Fixed:
+- Keep Cheats Menu Position didn't work (thanks RoughGiGaMo).
+- Also the add/remove toolbar actions dialog was pushed down by dragging cheat menu (thanks RoughGiGaMo).
 - Set Funding max amount was too much.
 
 ## v19.2 (4 Aug 2024)

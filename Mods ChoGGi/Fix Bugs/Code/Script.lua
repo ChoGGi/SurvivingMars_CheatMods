@@ -180,6 +180,17 @@ do
 		local objs
 
 		--
+		-- Rivals Trade Minerals mod hides Exotic Minerals from lander UI
+		if table.find(ModsLoaded, "id", "LH_RivalsMinerals") then
+			local cargo = Presets.Cargo["Basic Resources"].PreciousMinerals
+			if cargo then
+				cargo.group = "Other Resources"
+				Presets.Cargo["Other Resources"].PreciousMinerals = cargo
+			end
+			ResupplyItemsInit()
+		end
+
+		--
 		-- Anything that needs to loop through GameMaps
 		local ElectricityGridObject_GameInit = ElectricityGridObject.GameInit
 		for _, map in pairs(GameMaps) do

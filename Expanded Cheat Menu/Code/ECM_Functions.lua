@@ -40,7 +40,6 @@ local function SetCheatsMenuPos(pos)
 	if pos then
 		XShortcutsTarget:SetPos(pos)
 	else
-
 		if what_game == "Mars" then
 			XShortcutsTarget:SetPos(GetSafeMargins():min())
 		end

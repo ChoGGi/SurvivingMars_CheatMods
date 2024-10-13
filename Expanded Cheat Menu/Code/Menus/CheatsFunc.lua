@@ -493,7 +493,6 @@ function ChoGGi_Funcs.Menus.KeepCheatsMenuPosition_Toggle()
 		ChoGGi_Funcs.Common.SetCheatsMenuPos(pos)
 	end
 
-
 	ChoGGi_Funcs.Settings.WriteSettings()
 	MsgPopup(
 		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.KeepCheatsMenuPosition),

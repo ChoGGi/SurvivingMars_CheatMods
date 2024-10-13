@@ -25,6 +25,16 @@ local what_game = ChoGGi.what_game
 -- non-class obj funcs
 do
 
+	-- Moving the cheats window will move "system" msgs down as well, since it's used as a parent
+	local ChoOrig_WaitQuestion = WaitQuestion
+	AddToOriginal("WaitQuestion")
+	function WaitQuestion(parent, ...)
+		if parent == XShortcutsTarget then
+			parent = terminal.desktop
+		end
+		return ChoOrig_WaitQuestion(parent, ...)
+	end
+
 	-- don't trigger toxic rains if setting is enabled
 	if rawget(_G, "RainProcedure") then
 		local ChoOrig_RainProcedure = RainProcedure

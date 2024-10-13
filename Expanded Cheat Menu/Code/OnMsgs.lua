@@ -429,10 +429,6 @@ s = SelectedObj, c() = GetCursorWorldPos(), restart() = quit(""restart"")"]])
 			-- always show menu
 			XShortcutsTarget:SetVisible(true)
 
-			if UserSettings.KeepCheatsMenuPosition then
-				XShortcutsTarget:SetPos(UserSettings.KeepCheatsMenuPosition)
-			end
-
 			-- that info text about right-clicking expands the menu instead of just hiding or something
 			for i = 1, #XShortcutsTarget.idToolbar do
 				if IsKindOf(XShortcutsTarget.idToolbar[i], "XText") then
@@ -444,6 +440,16 @@ s = SelectedObj, c() = GetCursorWorldPos(), restart() = quit(""restart"")"]])
 			ChoGGi_Funcs.Common.DraggableCheatsMenu(
 				UserSettings.DraggableCheatsMenu
 			)
+
+			-- If no delay then you can't drag it around after setdock
+			CreateRealTimeThread(function()
+				Sleep(100)
+				if UserSettings.KeepCheatsMenuPosition then
+					XShortcutsTarget:SetDock("ignore")
+					XShortcutsTarget:SetPos(UserSettings.KeepCheatsMenuPosition)
+				end
+			end)
+
 		end
 
 	end -- DisableECM
@@ -1122,22 +1128,23 @@ function OnMsg.ApplicationQuit()
 		end
 	end
 
-	local ChoGGi = ChoGGi
-
 	-- resetting settings?
-	if testing or ChoGGi.Temp.ResetECMSettings then
+	if ChoGGi.Temp.ResetECMSettings then
 		return
+	end
+	if testing then
+		return
+	end
+
+	-- save menu pos
+	if ChoGGi.UserSettings.KeepCheatsMenuPosition then
+		ChoGGi.UserSettings.KeepCheatsMenuPosition = XShortcutsTarget:GetPos()
 	end
 
 	-- console window settings
 	local dlg = dlgChoGGi_DlgConsoleLogWin
 	if dlg then
 		Msg("ChoGGi_DlgConsoleLogWin_SizePos", dlg)
-	end
-
-	-- save menu pos
-	if ChoGGi.UserSettings.KeepCheatsMenuPosition then
-		ChoGGi.UserSettings.KeepCheatsMenuPosition = XShortcutsTarget:GetPos()
 	end
 
 	-- save any unsaved settings on exit
