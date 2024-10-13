@@ -41,7 +41,8 @@ Support struts malfunctioning and cave-ins.
 The Bottomless Pit Anomaly is missing.
 Underground Rare Anomaly can give you underground dome prefabs, but locks them to surface.
 Unpassable underground rocks stuck in path (not cave-in rubble, but small rocks you can't select).
-Water Reclamation Spire and B&B upgrade tech caused issues.```
+Water Reclamation Spire and B&B upgrade tech caused issues.
+```
 
 **Mod bug fixes**:
 ```
