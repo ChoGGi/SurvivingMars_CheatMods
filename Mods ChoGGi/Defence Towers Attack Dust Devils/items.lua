@@ -13,4 +13,10 @@ return {
 		"Help", T(302535920011994, "Start with towers unlocked (needed unless playing mystery that unlocks them)."),
 		"DefaultValue", true,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "IgnoreMeteors",
+		"DisplayName", T(0000, "Ignore Meteors"),
+		"Help", T(0000, "Turn on to have towers ignore meteors."),
+		"DefaultValue", false,
+	}),
 }

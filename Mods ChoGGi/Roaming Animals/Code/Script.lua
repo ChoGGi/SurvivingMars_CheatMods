@@ -9,34 +9,55 @@ if not g_AvailableDlc.shepard then
 	return
 end
 
--- Almost a complete copy pasta of my RoamingAnimal Visitors mod...
+-- Almost a complete copy pasta of my Alien Visitors mod...
 -- The roaming part at least, this adds the other models/limits to when to spawn
 
 local animals = {
 	{"Chicken", T(299174615385--[[Chicken]])},
 	Chicken = {"Chicken", T(299174615385--[[Chicken]])},
+	--
 	{"Deer", T(409677371105--[[Deer]])},
 	Deer = {"Deer", T(409677371105--[[Deer]])},
+	--
 	{"Goose", T(319767019420--[[Goose]])},
 	Goose = {"Goose", T(319767019420--[[Goose]])},
+	--
 	{"Lama_Ambient", T(808881013020--[[Llama]])},
 	Lama_Ambient = {"Lama_Ambient", T(808881013020--[[Llama]])},
+	--
 	{"Ostrich", T(929526939780--[[Ostrich]])},
 	Ostrich = {"Ostrich", T(929526939780--[[Ostrich]])},
+	--
 	{"Pig", T(221418710774--[[Pig]])},
 	Pig = {"Pig", T(221418710774--[[Pig]])},
+	--
 	{"Pony_01", T(176071455701--[[Pony]])},
 	Pony_01 = {"Pony_01", T(176071455701--[[Pony]])},
 	{"Pony_02", T(176071455701--[[Pony]])},
 	Pony_02 = {"Pony_02", T(176071455701--[[Pony]])},
 	{"Pony_03", T(176071455701--[[Pony]])},
 	Pony_03 = {"Pony_03", T(176071455701--[[Pony]])},
+	--
 	{"Rabbit_01", T(520473377733--[[Rabbit]])},
 	Rabbit_01 = {"Rabbit_01", T(520473377733--[[Rabbit]])},
 	{"Rabbit_02", T(520473377733--[[Rabbit]])},
 	Rabbit_02 = {"Rabbit_02", T(520473377733--[[Rabbit]])},
+	--
 	{"Turkey", T(977344055059--[[Turkey]])},
 	Turkey = {"Turkey", T(977344055059--[[Turkey]])},
+	--
+	{"Tortoise", T(768070368933--[[Tortoise]])},
+	Tortoise = {"Tortoise", T(768070368933--[[Tortoise]])},
+	--
+	{"Platypus", T(210528297343--[[Platypus]])},
+	Platypus = {"Platypus", T(210528297343--[[Platypus]])},
+	--
+	{"Penguin_01", T(397432391921--[[Penguin]])},
+	Penguin_01 = {"Penguin_01", T(397432391921--[[Penguin]])},
+	{"Penguin_02", T(397432391921--[[Penguin]])},
+	Penguin_02 = {"Penguin_02", T(397432391921--[[Penguin]])},
+	{"Penguin_03", T(397432391921--[[Penguin]])},
+	Penguin_03 = {"Penguin_03", T(397432391921--[[Penguin]])},
 }
 local temp_animals = {}
 
@@ -139,6 +160,16 @@ local function IsPlayablePoint(pt)
 	return pt:InBox2D(MainCity.MapArea) and GetBuildableZ(WorldToHex(pt:xy())) ~= UnbuildableZ and terrain:IsPassable(pt)
 end
 
+-- Build list of all names in HumanNames
+local names = {}
+local iappend = table.iappend
+local HumanNames = HumanNames
+for _, nation in pairs(HumanNames) do
+	for _, name_list in pairs(nation) do
+		iappend(names, name_list)
+	end
+end
+
 function ChoGGi_RoamingAnimal:Init()
 	local city = self.city or MainCity
 	self.city = city
@@ -147,7 +178,10 @@ function ChoGGi_RoamingAnimal:Init()
 
 	local animal = table.rand(temp_animals)
 	self:ChangeEntity(animal[1])
-	self.display_name = animal[2]
+
+	-- Pick a name for animal
+--~ 	self.display_name = animal[2]
+	self.display_name = table.rand(names)
 
 	self:Spawn()
 	self:SetPos(self.spawn_pos)

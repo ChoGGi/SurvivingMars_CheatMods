@@ -239,12 +239,6 @@ do
 		end
 
 		--
-		-- I'm going out on a limb and saying tourist gurus are a bug.
-		-- Odd that GuruTraitBlacklist.Tourist doesn't seem to work...
-		TraitPresets.Guru.incompatible.Tourist = true
-		TraitPresets.Tourist.incompatible.Guru = true
-
-		--
 		-- Cargo presets are missing images for some buildings/all resources
 		local articles = Presets.EncyclopediaArticle.Resources
 		local lookup_res = {

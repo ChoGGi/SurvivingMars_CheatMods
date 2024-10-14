@@ -31,6 +31,12 @@ This will allow you to build regular buildings on top of others, turn off the bl
 
 This overrides max and min sizes.
 
+
+Known Issues:
+This sets the max tool size to a large number, there's no way for a disabled mod to do cleanup (and you're not supposed to remove mods mid-game).
+If you don't like seeing a large number when doing landscaping then don't install the mod.
+
+
 Mod Options:
 Step Size: How much to adjust the size of the landscaping area by.
 Skip Blocking Objects: Turn on to be able to paint terrain near buildings. This will also allow you to place buildings in odd places.

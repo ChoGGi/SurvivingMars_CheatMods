@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "3325314585",
 	"pops_any_uuid", "1aacc028-422d-46bc-a01f-9f54abcfa498",
 	"lua_revision", 1007000, -- Picard
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -25,18 +25,7 @@ return PlaceObj("ModDef", {
 	"TagVegetation", true,
 	"description", [[
 Spawns animals after 100 "promoted" trees (fully grown trees).
-
-Only spawns animals that kinda fit in a forest setting.
-Chicken
-Deer
-Goose
-Llama
-Ostrich
-Pig
-Pony
-Rabbit
-Turkey
-See mod options to select animals.
+By default spawns all animals, see mod options to pick which to spawn.
 
 
 Mod Options:

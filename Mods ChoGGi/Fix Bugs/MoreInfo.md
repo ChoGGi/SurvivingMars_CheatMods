@@ -17,7 +17,6 @@ Problem updating supply grid.
 Colonists on an expedition now show proper status when selected from command centre (instead of just unknown).
 Added missing images for certain Cargo listings.
 Gale crater name doesn't show up for 4S138E, 5S138E.
-Stopped Tourist Gurus from happening.
 
 Storybits:
 Gene Forging storybit tech doesn't increase rare traits chance.

@@ -1,3 +1,7 @@
+v0.3
+Added all animals (all enabled by default).
+Animals get a random human name.
+
 v0.2
 Added mod options to pick animals.
 Made sure it can't go over the max amount.

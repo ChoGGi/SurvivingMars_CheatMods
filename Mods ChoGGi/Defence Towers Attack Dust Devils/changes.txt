@@ -1,3 +1,6 @@
+v0.8
+Mod option to ignore meteors.
+
 v0.7
 Added mod options to disable mod/unlock turrets.
 

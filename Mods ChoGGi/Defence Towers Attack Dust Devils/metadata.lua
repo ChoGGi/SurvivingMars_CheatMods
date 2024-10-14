@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1504597628",
 	"pops_any_uuid", "957bd9ec-fb96-4c00-9065-984aae313e1f",
 	"lua_revision", 1007000, -- Picard
-	"version", 7,
+	"version", 8,
 	"version_major", 0,
-	"version_minor", 7,
+	"version_minor", 8,
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
@@ -24,6 +24,12 @@ return PlaceObj("ModDef", {
 	"TagGameplay", true,
 	"description", [[
 Defence Turrets will attack Dust Devils.
+
+
+Mod Options:
+Unlock Tech Defence Turret: Start with towers unlocked (needed unless playing mystery that unlocks them).
+Ignore Meteors: Turn on to have towers ignore meteors.
+
 
 Requested by: rdr99 and Emmote
 https://steamcommunity.com/app/464920/discussions/0/2828702373008348129/

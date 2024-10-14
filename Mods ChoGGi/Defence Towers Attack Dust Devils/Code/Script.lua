@@ -3,11 +3,13 @@
 local pairs = pairs
 local Sleep = Sleep
 local IsValidThread = IsValidThread
+local IsValid = IsValid
 
 local mod_EnableMod
 local mod_UnlockDefenseTowers
+local mod_IgnoreMeteors
 
--- unlock the tech at start
+-- Unlock the tech at start
 local function UnlockTowers()
 	if mod_EnableMod and mod_UnlockDefenseTowers then
 		UnlockBuilding("DefenceTower")
@@ -24,6 +26,7 @@ local function ModOptions(id)
 
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_UnlockDefenseTowers = CurrentModOptions:GetProperty("UnlockDefenseTowers")
+	mod_IgnoreMeteors = CurrentModOptions:GetProperty("IgnoreMeteors")
 
 	-- make sure we're in-game
 	if not UIColony then
@@ -37,76 +40,80 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
--- list of devil handles we're attacking
-local devils = {}
+-- List of devil handles we're attacking
+local attacked_devils = {}
 
--- replace orig func with mine
+-- 	Replace orig func with mine
 local ChoOrig_DefenceTower_DefenceTick = DefenceTower.DefenceTick
 function DefenceTower:DefenceTick(...)
 
-	-- place at end of function to have it protect dustdevils before meteors
-	ChoOrig_DefenceTower_DefenceTick(self, ...)
+	-- Place at end of function to have it protect dustdevils before meteors
+	if not mod_IgnoreMeteors then
+		ChoOrig_DefenceTower_DefenceTick(self, ...)
+	end
 
 	if not mod_EnableMod then
 		return
 	end
 
-	-- copied from orig func
+	-- If a track thread is running wait for it to finish (copied from orig func)
 	if IsValidThread(self.track_thread) then
 		return
 	end
 
-	-- list of dustdevils on map
+	-- List of dustdevils on map
 	local dustdevils = g_DustDevils or ""
 	for i = 1, #dustdevils do
 		local devil = dustdevils[i]
 
-		-- get dist (added * 10 as tower didn't see to target at the range of its hex grid)
+		-- Get dist (added * 10 as tower didn't see to target at the range of its hex grid)
 		-- It could be from me increasing protection radius, or just how it targets meteors
 		if IsValid(devil) and self:GetVisualDist(devil) <= self.shoot_range * 10 then
-			-- make sure tower is working
+			-- Make sure tower is working
 			if not IsValid(self) or not self.working or self.destroyed then
 				return
 			end
 
-			-- .follow = small ones attached to majors (they go away if major is gone)
-			if not devil.follow and not devils[devil.handle] then
-				-- aim the tower at the dustdevil
+			-- .follow = small ones attached to major ones (they go away if major is gone)
+			if not devil.follow and not attacked_devils[devil.handle] then
+				-- Aim the tower at the dustdevil
+				-- 7200 = 120*60
 				self:OrientPlatform(devil:GetVisualPos(), 7200)
-				-- fire in the hole
+				-- Fire in the hole
 				local rocket = self:FireRocket(nil, devil)
-				-- store handle so we only launch one per devil
-				devils[devil.handle] = devil
-				-- seems like safe bets to set
+				-- Store handle so we only launch one per devil
+				attacked_devils[devil.handle] = devil
+				-- Seems like safe bets to set
 				self.meteor = devil
 				self.is_firing = true
-				-- sleep till rocket explodes
+				-- Sleep till rocket explodes
 				CreateRealTimeThread(function()
 					while rocket.move_thread do
-						Sleep(500)
+						Sleep(250)
 					end
-					-- make it pretty
+					-- Make it pretty
 					if IsValid(devil) then
 						local snd = PlaySound("Mystery Bombardment ExplodeAir", "ObjectOneshot", nil, 0, false, devil)
 						PlayFX("AirExplosion", "start", devil, devil:GetAttaches()[1], devil:GetPos())
 						Sleep(GetSoundDuration(snd))
-						-- kill the devil object
+						-- Kill the devil object
 						devil:delete()
 					end
 					self.meteor = false
 					self.is_firing = false
 				end)
-				-- back to the usual stuff
+				-- Back to the usual stuff
 				Sleep(self.reload_time)
+				-- DefenceTick needs it for defence_thread
 				return true
 			end
 		end
 	end
 
-	-- only remove devil handles if they're actually gone
-	for handle, devil in pairs(devils) do
+	-- Only remove devil handles if they're actually gone
+	for handle, devil in pairs(attacked_devils) do
 		if not IsValid(devil) then
-			devils[handle] = nil
+			attacked_devils[handle] = nil
 		end
 	end
 

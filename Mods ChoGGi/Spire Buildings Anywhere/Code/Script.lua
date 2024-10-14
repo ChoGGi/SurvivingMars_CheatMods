@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local mod_EnableMod
+--~ local mod_CleanLeftovers
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -9,6 +10,11 @@ local function ModOptions(id)
 	end
 
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
+--~ 	mod_CleanLeftovers = CurrentModOptions:GetProperty("CleanLeftovers")
+
+--~ 	-- Remove leftovers
+--~ 	if UIColony and mod_CleanLeftovers then
+--~ 	end
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -22,7 +28,11 @@ local UnbuildableZ = buildUnbuildableZ()
 -- last checked 1010999
 local ChoOrig_ConstructionController_UpdateCursor = ConstructionController.UpdateCursor
 function ConstructionController:UpdateCursor(pos, force, ...)
-	if not mod_EnableMod then
+	if not mod_EnableMod or not self.is_template then
+		return ChoOrig_ConstructionController_UpdateCursor(self, pos, force, ...)
+	end
+
+	if self.template_obj.dome_spot ~= "Spire" then
 		return ChoOrig_ConstructionController_UpdateCursor(self, pos, force, ...)
 	end
 
@@ -96,9 +106,15 @@ function SpireBase:UpdateFrame(...)
 		return
 	end
 
-	-- Remove x/y offset, but keep height
 	local frame = attaches[1]
-	frame:SetAttachOffset(point(0, 0, frame:GetAttachOffset():z()))
+	if frame.entity == "TempleSpireFrame" and IsValid(self.parent_dome) then
+		local dome_height = ObjectHierarchyBBox(self.parent_dome, const.efCollision):size():z()
+		frame:SetAttachOffset(point(0, 0, dome_height))
+	else
+		-- Remove x/y offset, but keep height
+		-- Arcology band?
+		frame:SetAttachOffset(point(0, 0, frame:GetAttachOffset():z()))
+	end
 
 	return ret
 end

@@ -47,6 +47,11 @@ local animals = {
 	{"Rabbit_01", T(520473377733--[[Rabbit]])},
 	{"Rabbit_02", T(520473377733--[[Rabbit]])},
 	{"Turkey", T(977344055059--[[Turkey]])},
+	{"Tortoise", T(768070368933--[[Tortoise]])},
+	{"Platypus", T(210528297343--[[Platypus]])},
+	{"Penguin_01", T(397432391921--[[Penguin]])},
+	{"Penguin_02", T(397432391921--[[Penguin]])},
+	{"Penguin_03", T(397432391921--[[Penguin]])},
 }
 
 for i = 1, #animals do
