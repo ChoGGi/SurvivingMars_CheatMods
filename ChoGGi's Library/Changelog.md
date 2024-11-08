@@ -5,6 +5,8 @@
 - > If loading pre-picard saves in picard (update not dlc)
 - > Only needed during OnMsg.LoadGame
 - Examining certain objs wouldn't open child examine below parent examine.
+### Examine:
+	- Fixed Tools>Functions
 
 ## v12.2 (4 Aug 2024)
 - Split ChoGGi funcs into their own table for localing.

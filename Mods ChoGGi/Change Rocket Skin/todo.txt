@@ -1,0 +1,2 @@
+change rocket skin in resuppply
+use .name as a hint if it's been launched yet

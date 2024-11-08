@@ -5649,9 +5649,11 @@ do -- SetBuildingTemplates
 			ct = ClassTemplates.Building
 		end
 
+		-- set value
 		if bt[template] then
 			bt[template][key] = value
 		end
+		-- and set value again, cause... (some stuff uses BuildingTemplates, other uses ClassTemplates)
 		if ct[template] then
 			ct[template][key] = value
 		end

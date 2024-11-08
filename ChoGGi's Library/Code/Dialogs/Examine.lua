@@ -1618,10 +1618,10 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 					-- add examiner object with some spaces so it's at the top
 					self:BuildFuncList(self.obj_ref.class, "  ")
 					if self.parents[1] then
-						self:ProcessList(self.parents, " " .. T(302535920000520--[[Parents]]) .. ": ")
+						self:ProcessList(self.parents, " " .. Translate(302535920000520--[[Parents]]) .. ": ")
 					end
 					if self.ancestors[1] then
-						self:ProcessList(self.ancestors, T(302535920000525--[[Ancestors]]) .. ": ")
+						self:ProcessList(self.ancestors, Translate(302535920000525--[[Ancestors]]) .. ": ")
 					end
 					-- If Object hasn't been added, then add CObject (O has a few more funcs than CO)
 					if not self.menu_added.Object and self.menu_added.CObject then
@@ -1889,17 +1889,22 @@ end
 
 -- adds class name then list of functions below
 function ChoGGi_DlgExamine:BuildFuncList(obj_name, prefix)
-	prefix = prefix or ""
-	local class = _G[obj_name] or {}
-	local skip = true
-	for key, value in pairs(class) do
-		if type(value) == "function" and type(key) == "string" then
-			self.menu_list_items[prefix .. obj_name .. "." .. key .. ": "] = value
-			skip = false
-		end
+	if not prefix then
+		prefix = ""
 	end
-	if not skip then
-		self.menu_list_items[prefix .. obj_name] = "\n\n\n"
+	local class = _G[obj_name]
+
+	if class then
+		local skip = true
+		for key, value in pairs(class) do
+			if type(value) == "function" and type(key) == "string" then
+				self.menu_list_items[prefix .. obj_name .. "." .. key .. ": "] = value
+				skip = false
+			end
+		end
+		if not skip then
+			self.menu_list_items[prefix .. obj_name] = "\n\n\n"
+		end
 	end
 end
 

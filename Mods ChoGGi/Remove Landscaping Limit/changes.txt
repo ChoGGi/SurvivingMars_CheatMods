@@ -1,3 +1,6 @@
+v0.7
+Updated to match rest of code.
+
 v0.6
 Mod option to landscape out of bounds.
 
