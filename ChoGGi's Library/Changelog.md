@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v12.3 (Unreleased)
+## v12.4 (Unreleased)
+
+## v12.3 (17 Nov 2024)
 - Added GetCityLabels()
 - > If loading pre-picard saves in picard (update not dlc)
 - > Only needed during OnMsg.LoadGame

@@ -6,9 +6,9 @@ return PlaceObj("ModDef", {
 	"pops_desktop_uuid", "36c014ce-1fcd-4cef-9621-a4bd631d3ee0",
 	"lua_revision", 1007000, -- Picard
 --~ 	"lua_revision", 233360, -- JA3
-	"version", 123,
+	"version", 124,
 	"version_major", 12,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"last_changes", "https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/ChoGGi's%20Library/Changelog.md#library-changelog",
