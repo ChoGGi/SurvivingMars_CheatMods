@@ -47,6 +47,7 @@ function ChoGGi_OPolyline:SetLine(a, b)
 	self:SetPos(AveragePoint2D(line_points))
 end
 
+
 --~ SetZOffsetInterpolation, SetOpacityInterpolation
 DefineClass.ChoGGi_OText = {
 	__parents = {"ChoGGi_ODeleteObjs","Text"},

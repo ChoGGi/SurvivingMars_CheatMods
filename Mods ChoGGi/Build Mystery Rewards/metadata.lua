@@ -28,6 +28,9 @@ Build sinkholes and spawn fireflies.
 Build mirror sphere excavation sites and spawn spheres (and build capture buildings).
 
 
+[b]WARNING[/b]: Don't build during Mysteries or you may not be able to finish Mystery.
+
+
 Requested by chivalry20.
 ]],
 })

@@ -56,7 +56,6 @@ local function UpdateBuildings()
 		end
 	end
 
-	local UIColony = UIColony
 	-- update existing buildings
 	local objs = {}
 	for id in pairs(mod_options) do

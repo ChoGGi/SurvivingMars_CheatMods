@@ -7873,8 +7873,7 @@ function ChoGGi_Funcs.Common.MoveRealm(obj, map_id)
 	--
 	if pos then
 		-- Used surface.terrain:GetHeight instead of just :SetTerrainZ() since that seems to be the active terrain
---~ 		obj:SetPos(pos:SetZ(map.terrain:GetHeight(pos)))
-		obj:SetPos(map.realm:SnapToTerrain(pos))
+		obj:SetPos(pos:SetZ(map.terrain:GetHeight(pos)))
 	end
 end
 

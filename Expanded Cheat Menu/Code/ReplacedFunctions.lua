@@ -1385,8 +1385,7 @@ function OnMsg.ClassesPostprocess()
 					local terrain = game_map.terrain
 
 					if build_z == UnbuildableZ then
---~ 						build_z = pos:z() or terrain:GetHeight(pos)
-						build_z = pos:z() or ActiveGameMap.realm:SnapToTerrain(pos)
+						build_z = pos:z() or terrain:GetHeight(pos)
 					end
 					hex_world_pos = hex_world_pos:SetZ(build_z)
 

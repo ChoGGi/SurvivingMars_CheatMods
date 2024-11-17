@@ -1,10 +1,11 @@
 ## ECM Changelog
 
-## v19.2 (Unreleased)
+## v19.3 (Unreleased)
 ### Changed:
 - Renamed Test Story Bits -> Start Story Bits.
 
 ### Fixed:
+- Laggy Flightgrid toggle (Shift-F2).
 - Keep Cheats Menu Position didn't work (thanks RoughGiGaMo).
 - Also the add/remove toolbar actions dialog was pushed down by dragging cheat menu (thanks RoughGiGaMo).
 - Set Funding max amount was too much.

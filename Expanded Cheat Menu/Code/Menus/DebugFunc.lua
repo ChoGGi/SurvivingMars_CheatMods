@@ -1258,7 +1258,7 @@ end
 --~	 end
 --~ end)
 do -- FlightGrid_Toggle
-	-- this is also somewhat from Lua\Flight.lua: Flight_DbgRasterArea()
+	-- this is also somewhat from Lua\Flight.lua: Flight_DbgRasterArea() (see older releases, removed in newer)
 	-- also sped up to work with being attached to the mouse pos
 	local MulDivRound = MulDivRound
 	local InterpolateRGB = InterpolateRGB
@@ -1269,7 +1269,8 @@ do -- FlightGrid_Toggle
 	local DoneObject = DoneObject
 
 	local grid_thread = false
-	local Flight_Height_temp = false
+	local Flight_Height_local = false
+	-- terrain.TypeTileSize() is from older rev (pre AG?)
 	local type_tile = const.TerrainTypeTileSize or terrain.TypeTileSize()
 	local work_step = 16 * type_tile
 	local dbg_step = work_step / 4 -- 400
@@ -1280,22 +1281,27 @@ do -- FlightGrid_Toggle
 	local flight_lines = {}
 	local points, colours = {}, {}
 	local OPolyline
+	local terrain_local
 
 	local function RasterLine(pos1, pos0, zoffset, line_num)
-		pos1 = pos1 or GetCursorWorldPos()
-		pos0 = pos0 or FindPassable(GetCursorWorldPos())
+		if not pos1 then
+			pos1 = GetCursorWorldPos()
+		end
+		if not pos0 then
+			pos0 = FindPassable(GetCursorWorldPos())
+		end
+
 		local steps = 1 + ((pos1 - pos0):Len2D() + dbg_stepm1) / dbg_step
 
 		for i = 1, steps do
 			local pos = pos0 + MulDivRound(pos1 - pos0, i - 1, steps - 1)
-			local height = Flight_Height_temp:GetBilinear(pos, work_step, 0, 1) + zoffset
+			local height = Flight_Height_local:GetBilinear(pos, work_step, 0, 1) + zoffset
 
 			points[i] = pos:SetZ(height)
 			colours[i] = InterpolateRGB(
 				white,
 				green,
---~ 				Clamp(height - zoffset - ActiveGameMap.terrain:GetHeight(pos), 0, max_diff),
-				Clamp(height - zoffset - ActiveGameMap.realm:SnapToTerrain(pos), 0, max_diff),
+				Clamp(height - zoffset - terrain_local:GetHeight(pos), 0, max_diff),
 				max_diff
 			)
 		end
@@ -1346,7 +1352,7 @@ do -- FlightGrid_Toggle
 		end
 		ResumePassEdits("ChoGGi_Funcs.Menus.FlightGrid_Toggle.GridFunc")
 
-		local plus1 = steps+1
+		local plus1 = steps + 1
 		local pos_old, pos_new, pos
 		while grid_thread do
 			-- we only update when cursor moves
@@ -1397,9 +1403,12 @@ do -- FlightGrid_Toggle
 			zoffset = zoffset or 0
 		end
 
-		Flight_Height_temp = Flight_Height
+		Flight_Height_local = Flight_Height
+		terrain_local = ActiveGameMap.terrain
 
-		OPolyline = OPolyline or ChoGGi_OPolyline
+		if not OPolyline then
+			OPolyline = ChoGGi_OPolyline
+		end
 		table.iclear(points)
 		table.iclear(colours)
 		grid_thread = CreateRealTimeThread(GridFunc, size, zoffset)

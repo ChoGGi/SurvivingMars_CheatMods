@@ -744,6 +744,7 @@ do
 		StartupCode("LoadGame")
 	end
 end -- StartupCode do
+-- do
 
 --
 -- Clearing waste rock
@@ -1273,6 +1274,7 @@ function PinsDlg:GetPinConditionImage(obj, ...)
 
 	return img
 end
+
 --
 --
 --

@@ -1,3 +1,6 @@
+v0.5
+The msg was showing for the wrong templates (thanks AlphanumericBox).
+
 v0.4
 Added mod title to msg.
 

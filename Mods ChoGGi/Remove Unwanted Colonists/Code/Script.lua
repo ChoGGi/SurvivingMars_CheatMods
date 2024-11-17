@@ -460,8 +460,10 @@ function MurderPod:Leave(leave_height)
 	self:PlayFX("RocketEngine", "start")
 
 	Sleep(5000)
+	local map = GetGameMap(self)
+
 --~ 	local current_pos = self:GetPos() or GetRandomPassable()
-	local current_pos = self:GetPos() or GameMaps[RetObjMapId(self)].realm:GetRandomPassablePoint()
+	local current_pos = self:GetPos() or map.realm:GetRandomPassablePoint()
 
 	local goto_pos = GetRandomPassableAround(
 		current_pos,
@@ -471,7 +473,7 @@ function MurderPod:Leave(leave_height)
 	)
 
 	leave_height = (
-		GetGameMap(self).realm:SnapToTerrain(current_pos):z() + leave_height
+		map.terrain:GetHeight(current_pos) + leave_height
 	) * 2
 
 	self.hover_height = leave_height / 4

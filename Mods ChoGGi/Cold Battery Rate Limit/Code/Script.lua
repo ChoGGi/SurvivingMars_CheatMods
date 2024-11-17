@@ -22,13 +22,14 @@ local function RemoveMod(name, obj)
 	if cbrl then
 		if cbrl.Remove then
 			cbrl:Remove()
-		else if cbrl.remove then
+		elseif cbrl.remove then
 			cbrl:remove()
 		end
 		DoneObject(cbrl)
 		obj[name] = nil
 	end
 end
+
 local function RemoveMods(obj)
 	RemoveMod("ChoGGi_ColdBatteryRateLimitCharge", obj)
 	RemoveMod("ChoGGi_ColdBatteryRateLimitDischarge", obj)

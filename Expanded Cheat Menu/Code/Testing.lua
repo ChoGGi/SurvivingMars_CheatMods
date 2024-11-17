@@ -10,7 +10,7 @@ if not ChoGGi.testing then
 end
 
 local ChoGGi_Funcs = ChoGGi_Funcs
-local what_game = ChoGGi.what_game
+--~ local what_game = ChoGGi.what_game
 local Translate = ChoGGi_Funcs.Common.Translate
 
 local g_env, debug
@@ -614,14 +614,14 @@ end)
 -- benchmarking stuff
 function ChoGGi.testing.ConcatvsT()
 	ChoGGi_Funcs.Common.TickStart("ConcatvsT.1.Tick")
-	for i = 1, 100000 do
+	for _ = 1, 100000 do
 		local str = "1" .. "2" .. "a" .. "b" .. "g" .. "7" .. "k" .. "0"
 		Translate(str)
 	end
 	ChoGGi_Funcs.Common.TickEnd("ConcatvsT.1.Tick")
 
 	ChoGGi_Funcs.Common.TickStart("ConcatvsT.2.Tick")
-	for i = 1, 100000 do
+	for _ = 1, 100000 do
 		local str = T{"<str1><str2><str3><str4><str5><str6><str7><str8>",
 			str1 = "1",
 			str2 = "2",

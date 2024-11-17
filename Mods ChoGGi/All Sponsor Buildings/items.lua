@@ -12,8 +12,6 @@ if not g_AvailableDlc.gagarin then
 	}
 end
 
-local def = CurrentModDef
-
 local T = T
 local PlaceObj = PlaceObj
 local table = table

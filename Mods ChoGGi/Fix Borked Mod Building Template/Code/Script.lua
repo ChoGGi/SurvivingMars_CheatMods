@@ -16,31 +16,22 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
--- they don't have a template_class
-local skips = {
-	OutsideMonumentLarge = true,
-	OutsideMonumentSmall = true,
-	OutsideStatueLarge = true,
-	OutsideStatueSmall = true,
-	OutsideStatue = true,
-	OutsideObelisk = true,
-	OutsideObelisk = true,
-	LightTripod = true,
-}
 function OnMsg.GatherUIBuildingPrerequisites(template)
-	if not mod_EnableMod or skips[template.id] then
+	if not mod_EnableMod then
 		return
 	end
 
-	local class = g_Classes[template.template_class]
 	-- they added a bunch of stuff in picard that uses "false"...
-	if not class and template.template_class ~= "false" then
-		print("Borked Mod Building Template:", ValueToLuaCode(template))
+	if template.template_class and template.template_class ~= "false" then
+		local class = g_Classes[template.template_class]
+		if not class then
+			print("Borked Mod Building Template:", ValueToLuaCode(template))
 
-		local title = template.mod and template.mod.title or ""
-		CreateMessageBox(
-			"Borked Mod Building Template:",
-			"See log for more info:" .. template.id .. "\n" .. title)
+			local title = template.mod and template.mod.title or ""
+			CreateMessageBox(
+				"Borked Mod Building Template:",
+				"See log for more info:" .. template.id .. "\n" .. title)
+		end
 	end
 
 end

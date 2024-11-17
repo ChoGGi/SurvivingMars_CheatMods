@@ -178,7 +178,7 @@ if g_AvailableDlc.picard then
 	storable_resources[c] = "PreciousMinerals"
 end
 
-local function GameInit_Effect(self)
+local function GameInit_Subsurface(self)
 	-- Change to correct "resource"
 	self.tech_action = deposit_lookup[self.fx_actor_class]
 
@@ -197,7 +197,7 @@ local function GameInit_Effect(self)
 	-- No need for the marker anymore
 	self:delete()
 end
-ChoGGi_SubsurfaceAnomalyMarker.GameInit = GameInit_Effect
+ChoGGi_SubsurfaceAnomalyMarker.GameInit = GameInit_Subsurface
 
 local effect_icons = {
 	_Morale = "UI/Icons/Buildings/dome.tga",

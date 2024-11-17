@@ -885,8 +885,7 @@ do -- FlattenGround
 			radius = size * guic
 
 			ToggleHotkeys(true)
---~ 			flatten_height = ActiveGameMap.terrain:GetHeight(GetCursorWorldPos())
-			flatten_height = ActiveGameMap.realm:SnapToTerrain(GetCursorWorldPos())
+			flatten_height = ActiveGameMap.terrain:GetHeight(GetCursorWorldPos())
 			MsgPopup(
 				Translate(302535920001163--[[Flatten height has been choosen %s, press shortcut again to update buildable.]]):format(flatten_height),
 				T(302535920000485--[[Terrain Flatten Toggle]])

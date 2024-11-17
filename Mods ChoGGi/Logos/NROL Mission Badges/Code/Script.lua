@@ -192,8 +192,52 @@ local logos = {
 		name = "NROL 67",
 	},
 	{
+		file = "NROL_68",
+		name = "NROL 68",
+	},
+	{
+		file = "NROL_79",
+		name = "NROL 79",
+	},
+	{
+		file = "NROL_82",
+		name = "NROL 82",
+	},
+	{
+		file = "NROL_85",
+		name = "NROL 85",
+	},
+	{
+		file = "NROL_91",
+		name = "NROL 91",
+	},
+	{
+		file = "NROL_108",
+		name = "NROL 108",
+	},
+	{
+		file = "NROL_111",
+		name = "NROL 111",
+	},
+	{
+		file = "NROL_113",
+		name = "NROL 113",
+	},
+	{
+		file = "NROL_123",
+		name = "NROL 123",
+	},
+	{
 		file = "NROL_151",
 		name = "NROL 151",
+	},
+	{
+		file = "NROL_162",
+		name = "NROL 162",
+	},
+	{
+		file = "NROL_199",
+		name = "NROL 199",
 	},
 	{
 		file = "Si_Ego_Certiorem_Faciam",

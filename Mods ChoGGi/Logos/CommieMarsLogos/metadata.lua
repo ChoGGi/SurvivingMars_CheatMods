@@ -23,7 +23,7 @@ From Marx with love.
 I probably should've kept a list of credits... I didn't make any of these images.
 
 
-You can use my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1815122803]Change Logo[/url] mod to change the logo of an existing game.
+You can use my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1815122803]Change Logo[/url] mod to change the logo of an existing game, or my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2206869172]Random Rocket Logo[/url] mod.
 
 
 

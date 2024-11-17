@@ -104,21 +104,18 @@ function SpiceHarvester_CargoShuttle:SpiceHarvester_FollowHarvester()
 	-- dust thread
 	self.dust_thread = CreateGameTimeThread(function()
 		-- we're done if the host harvester is gone
---~ 		local terrain = GetGameMap(self).terrain
-		local realm = GetGameMap(self).realm
+		local terrain = GetGameMap(self).terrain
 
 		while self.dust_thread do
 			-- check if our height is low enough for some dust kickup
 			local pos = self:GetVisualPos()
---~ 			if pos and (pos:z() - terrain:GetHeight(pos)) < 1500 then
-			if pos and (pos:z() - realm:SnapToTerrain(pos)) < 1500 then
+			if pos and (pos:z() - terrain:GetHeight(pos)) < 1500 then
 				-- cough cough
 				self:PlayFX("Dust", "start")
 				-- break loop if game is paused or height is changed to above 1500, otherwise dust
 				while IsValid(self) do
 					pos = self:GetVisualPos()
---~ 					if UISpeedState == "pause" or (pos:z() - terrain:GetHeight(pos)) > 1500 then
-					if UISpeedState == "pause" or (pos:z() - realm:SnapToTerrain(pos)) > 1500 then
+					if UISpeedState == "pause" or (pos:z() - terrain:GetHeight(pos)) > 1500 then
 						break
 					end
 					Sleep(1000)

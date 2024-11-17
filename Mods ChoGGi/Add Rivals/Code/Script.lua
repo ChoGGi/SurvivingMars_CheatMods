@@ -14,8 +14,6 @@ end
 -- Needed for LukeH's Meat and Booze.
 local PickUnusedAISponsor = ChoGGi_Funcs.Common.PickUnusedAISponsor
 
-local WaitMsg = WaitMsg
-
 local mod_EnableMod
 local mod_AddRivals
 local mod_RivalSpawnSol

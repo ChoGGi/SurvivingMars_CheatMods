@@ -1,3 +1,6 @@
+v0.6
+Checks for other remove func.
+
 v0.5
 Reversed capacity (thanks paulcurtisadams).
 

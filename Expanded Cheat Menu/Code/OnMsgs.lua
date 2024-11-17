@@ -1242,7 +1242,7 @@ do -- LoadGame/CityStart
 		local const = const
 		local hr = hr
 		-- needed for pre-picard saves
-		local labels = UIColony and UIColony.city_labels.labels or UICity.labels
+--~ 		local labels = UIColony and UIColony.city_labels.labels or UICity.labels
 
 		local sponsor = GetMissionSponsor()
 
