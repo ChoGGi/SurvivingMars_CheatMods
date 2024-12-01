@@ -33,20 +33,21 @@ DefineClass.ChoGGi_OSphere = {
 DefineClass.ChoGGi_OPolyline = {
 	__parents = {"ChoGGi_ODeleteObjs","Polyline"},
 }
+-- line with a nice curve
 function ChoGGi_OPolyline:SetParabola(a, b)
 	PolylineSetParabola(self, a, b)
 	self:SetPos(AveragePoint2D(self.vertices))
 end
+-- boring line
 local line_points = {}
 function ChoGGi_OPolyline:SetLine(a, b)
 	line_points[1] = a
 	line_points[2] = b
---~ 	self.vertices = line_points
+	self.vertices = line_points
 	self.max_vertices = #line_points
 	self:SetMesh(line_points)
 	self:SetPos(AveragePoint2D(line_points))
 end
-
 
 --~ SetZOffsetInterpolation, SetOpacityInterpolation
 DefineClass.ChoGGi_OText = {

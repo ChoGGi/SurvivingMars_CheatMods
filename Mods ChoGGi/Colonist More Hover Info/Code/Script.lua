@@ -127,7 +127,12 @@ function XRecreateRolloverWindow(win, ...)
 			local c = #text
 
 			-- add info from my spec by exp mod
-			if workplace.ChoGGi_SpecByExp then
+			if workplace.ChoGGi_SpecByExp
+				-- something is bugging out, so check it all
+				and colonist.handle
+				and workplace.ChoGGi_SpecByExp[colonist.handle]
+				and workplace.ChoGGi_SpecByExp[colonist.handle].started_on
+			then
 				c = c + 1
 				text[c] = T{0000, "<newline><color -6881386>Spec by Exp</color> Sols trained: <em><time></em><newline>",
 					time = UIColony.day - workplace.ChoGGi_SpecByExp[colonist.handle].started_on,

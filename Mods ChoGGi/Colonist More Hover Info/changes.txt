@@ -1,3 +1,6 @@
+v0.7
+Log spam.
+
 v0.6
 Took care of selection lag.
 

@@ -33,7 +33,8 @@ Automatic Metals Extractor, Micro-G Extractors, RC Harvester, and RC Driller.
 	PlaceObj("ModItemOptionToggle", {
 		"name", "DustDevilsBlockBuilding",
 		"DisplayName", T(0000, "Dust Devils Block Building"),
-		"Help", T(0000, [[No more cheesing dust devils with waste rock depots (etc).
+		"Help", T(0000, [[This will block you from placing a building on a dust devil to kill it.
+(No more cheesing dust devils with waste rock depots)
 
 Turn off to enable cheese and disable fix.
 ]]),
@@ -49,7 +50,7 @@ When finishing landscaping it can set some of the surrounding hexes z values (he
 Calling RefreshBuildableGrid() on the map seems to get rid of them without causing any major issues:
 It can mark some hexes as okay to build when they weren't before, but nothing like a cliff side or anything.
 Geoscape Domes will complain about uneven terrain for spires:
-I don't see why the game should be checking for uneven terrain in a dome, so... skip!
+I don't see why the game should be checking for uneven terrain in a dome, so... skip! (at least it should skip them, let me know if you can't build)
 
 If you enable the mod option and notice that you can build on some places you really shouldn't be able to then please let me know :)
 
@@ -68,7 +69,7 @@ If you're bored and want to dig through the funcs in LandscapeFinish() to find o
 	PlaceObj("ModItemOptionToggle", {
 		"name", "SupplyPodSoundEffects",
 		"DisplayName", T(0000, "Supply Pod Sound Effects"),
-		"Help", T(0000, "Use the SupplyRocket sounds for the SupplyPod (since it doesn't have any)."),
+		"Help", T(0000, [[Use the Supply Rocket sounds for the Supply Pod (since it doesn't have any).]]),
 		"DefaultValue", true,
 	}),
 	PlaceObj("ModItemOptionToggle", {
@@ -84,7 +85,7 @@ I added it as an option since it removes the fade out.]]),
 		"DisplayName", T(0000, "Colonists Wrong Map Infobar"),
 		"Help", T(0000, [[Having B&B and colonists in the underground will cause some issues (okay having B&B will) with colonists showing up as belonging to the wrong map.
 
-I added it as an option since this is causing issues for a user; it'll lock up on load when it tries to remove some buggy objects.]]),
+I added it as an option since this is causing issues for a user; it'll lock up on save game loading when it tries to remove some buggy objects.]]),
 		"DefaultValue", true,
 	}),
 	PlaceObj("ModItemOptionToggle", {

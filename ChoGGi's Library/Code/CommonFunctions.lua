@@ -134,7 +134,7 @@ do -- RetName
 	local g = _G
 	-- we use this table to display names of objects for RetName
 	if not rawget(g, "ChoGGi_lookup_names") then
-		g.ChoGGi_lookup_names = {[g.empty_func] = "empty_func"}
+		g.ChoGGi_lookup_names = {}
 	end
 	local lookup_table = g.ChoGGi_lookup_names
 
@@ -151,7 +151,7 @@ do -- RetName
 	end
 
 	do -- add stuff we can add now
-		lookup_table = ChoGGi_lookup_names or {}
+		lookup_table = g.ChoGGi_lookup_names or {}
 		local function AddFuncsUserData(meta, name)
 			for key, value in pairs(meta) do
 				AddFuncToList(key, value, name)
@@ -230,7 +230,7 @@ do -- RetName
 
 	do -- stuff we need to be in-game for
 		local function AddFuncsChoGGi(name, skip)
-			local list = g.ChoGGi_Funcs[name]
+			local list = ChoGGi_Funcs[name]
 			for key, value in pairs(list) do
 				if not lookup_table[value] then
 					if skip then
@@ -249,6 +249,14 @@ do -- RetName
 			-- Emergency Lua GC fix (thanks Tremualin)
 			table.clear(lookup_table)
 
+			-- Manually add a few
+			for i = 1, 999 do
+				lookup_table[i] = i
+			end
+			lookup_table[0] = "0"
+			lookup_table[-3] = "-3"
+			lookup_table[_G] = "_G"
+			lookup_table[g.empty_func] = "empty_func"
 			lookup_table[g.terminal.desktop] = "terminal.desktop"
 
 			AddFuncs("lfs")
@@ -1174,7 +1182,6 @@ function ChoGGi_Funcs.Common.MsgWait(text, title, image, ok_text, context, paren
 		PauseGame()
 	end
 
---~ 	WaitMessage(
 	CreateMessageBox(
 		type(title) == "number" and tostring(title) or title or T(302535920001726--[[Title]]),
 		type(text) == "number" and tostring(text) or text or T(302535920001727--[[NONE]]),
@@ -1187,12 +1194,6 @@ function ChoGGi_Funcs.Common.MsgWait(text, title, image, ok_text, context, paren
 	if UIColony then
 		ResumeGame()
 	end
-
---~ 	CreateRealTimeThread(function()
---~ 		PauseGame()
---~ 		WaitMessage(nil, "title", "text")
---~ 		ResumeGame()
---~ 	end)
 end
 
 
@@ -4719,6 +4720,7 @@ do -- PolylineSetParabola
 		local steps = 10
 		local c = 0
 		table.iclear(vertices)
+
 		for i = 0, steps do
 			local x = i * (100 / steps)
 			local pos = pos_lerp(x)

@@ -106,12 +106,12 @@ function objlist:new(o)
 end
 function objlist:Destroy()
 	ChoGGi_Funcs.Common.objlist_Destroy(self)
-	ex(debug.getinfo(2))
+	OpenExamine(debug.getinfo(2)) -- OpenExamine
 	print("Please tell me if you see this, and a screenshot of the examine dialog would help.")
 end
 function objlist:Clear()
   table.iclear(self)
-	ex(debug.getinfo(2))
+	OpenExamine(debug.getinfo(2)) -- OpenExamine
 	print("Please tell me if you see this, and a screenshot of the examine dialog would help.")
 end
 -- objlist end
@@ -3698,9 +3698,11 @@ Decompiled code won't scroll correctly as the line numbers are different."]]):fo
 
 	-- Check for not strings
 	for i = 1, c do
-		if type(list_obj_str[i]) ~= "string" then
+		if type(list_obj_str[i]) ~= "string" and not obj.__mtl then
+			--  obj.__mtl == one of mine
 			if testing then
-				ex(list_obj_str[i])
+				OpenExamine(list_obj_str[i]) -- OpenExamine
+				print("Check for not strings")
 				print(i, list_obj_str[i])
 			else
 				-- I'll fix what I can find, but for enduser just make it work
@@ -4062,7 +4064,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 			title = self.title
 		else
 			local name_type = obj_type .. ": "
-			title = name_type .. (self.title or name or obj):gsub(name_type, "")
+			title = name_type .. tostring(self.title or name or obj):gsub(name_type, "")
 		end
 	end
 	self.idCaption:SetTitle(self, title)
@@ -4081,7 +4083,7 @@ function ChoGGi_DlgExamine:SetObj(startup)
 --~ 					local _,str1 = string.find(result," at index ")
 --~ 					local str2 = string.find(result," in table for ")
 --~ 					local idx = string.sub(result, str1 + 1, str2 - 1)
---~ 					ex(result)
+--~ 					OpenExamine(result) -- OpenExamine
 					print(result)
 				end
 --~ ChoGGi_Funcs.Common.TickEnd("Examine", self.name)

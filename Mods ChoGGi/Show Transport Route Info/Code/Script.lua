@@ -71,9 +71,7 @@ function OnMsg.SelectionAdded(obj)
 
 	line = OPolyline:new()
 	-- FixConstructPos sets z to ground height
-	PolylineSetParabola(line, FixConstructPos(terrain, route.from), FixConstructPos(terrain, route.to))
-	local avg = AveragePoint2D(line.vertices)
-	line:SetPos(avg)
+	line:SetParabola(FixConstructPos(terrain, route.from), FixConstructPos(terrain, route.to))
 
 	-- add floating text
 	local res = obj.transport_resource or obj.can_pickup_from_resources
@@ -88,7 +86,7 @@ function OnMsg.SelectionAdded(obj)
 		name = T(res_item.display_name)
 		icon = res
 	else
-		name = T(4493, "All")
+		name = T(4493--[[All]])
 		icon = "Work"
 	end
 

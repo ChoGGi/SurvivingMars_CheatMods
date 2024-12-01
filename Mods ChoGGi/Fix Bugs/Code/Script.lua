@@ -1276,6 +1276,18 @@ function PinsDlg:GetPinConditionImage(obj, ...)
 end
 
 --
+-- Remove log spam (SetScale doesn't like anything below 0 and above 2047)
+local ChoOrig_SetScale = g_CObjectFuncs.SetScale
+function g_CObjectFuncs:SetScale(scale, ...)
+	if scale < 0 then
+		scale = 0
+	elseif scale > 2047 then
+		scale = 2047
+	end
+
+	return ChoOrig_SetScale(self, scale, ...)
+end
+
 --
 --
 --

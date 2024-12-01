@@ -1,14 +1,15 @@
 ## Library Changelog
 
 ## v12.4 (Unreleased)
+- Name func was showing weird crap for numbers.
 
 ## v12.3 (17 Nov 2024)
 - Added GetCityLabels()
-- > If loading pre-picard saves in picard (update not dlc)
+- > If loading pre-picard saves in picard (picard game update not dlc)
 - > Only needed during OnMsg.LoadGame
 - Examining certain objs wouldn't open child examine below parent examine.
 ### Examine:
-	- Fixed Tools>Functions
+- Fixed Tools>Functions
 
 ## v12.2 (4 Aug 2024)
 - Split ChoGGi funcs into their own table for localing.

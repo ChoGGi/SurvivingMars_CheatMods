@@ -18,5 +18,6 @@ return PlaceObj("ModDef", {
 This adds a mod option (global not per building) that will change the default behavior of university training.
 
 If it's enabled then universities will train based on vacancies instead of work slots (if two specs have same needs then use lower spec amount to decide).
+This won't change how the game fills university slots.
 ]],
 })

@@ -1,5 +1,6 @@
-v6.9X
+v6.9
 Removed uneeded Guru Tourist fix.
+Log spam from SetScale.
 
 v6.8
 Fixed Rivals Trade Minerals mod hiding Exotic Minerals from lander UI (thanks DouViction).
