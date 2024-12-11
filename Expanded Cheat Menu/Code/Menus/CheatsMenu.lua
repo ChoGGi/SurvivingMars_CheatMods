@@ -32,20 +32,13 @@ Actions[c] = {ActionName = T(302535920000331--[[Mystery Start]]),
 	ActionId = ".Mystery Start",
 	ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
 	RolloverText = T(302535920000332--[["Pick and start a mystery (with instant start option).
-Certain mysteries need certain objects which get placed when the map is generated on a new game (the green rocks one for instance)."]]),
+Certain mysteries need certain objects which get placed when the map is generated on a new game (the green rocks one for instance)."
+
+
+Do not use this for regular playthroughs!
+]]),
 	OnAction = ChoGGi_Funcs.Menus.ShowMysteryList,
 }
-
-if testing then -- Mystery Log
-	c = c + 1
-	Actions[c] = {ActionName = TranslationTable[5661--[[Mystery Log]]],
-		ActionMenubar = "ECM.Cheats",
-		ActionId = ".Mystery Log",
-		ActionIcon = "CommonAssets/UI/Menu/SelectionToObjects.tga",
-		RolloverText = TranslationTable[302535920000330--[[Advance to next part, show what part you're on, or remove mysteries.]]],
-		OnAction = ChoGGi_Funcs.Menus.MysteryLog,
-	}
-end
 
 c = c + 1
 Actions[c] = {ActionName = T(11412--[[Trigger fireworks]]),

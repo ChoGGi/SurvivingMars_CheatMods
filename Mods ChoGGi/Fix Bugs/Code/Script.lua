@@ -1277,17 +1277,41 @@ end
 
 --
 -- Remove log spam (SetScale doesn't like anything below 0 and above 2047)
-local ChoOrig_SetScale = g_CObjectFuncs.SetScale
+local ChoOrig_g_CObjectFuncs_SetScale = g_CObjectFuncs.SetScale
 function g_CObjectFuncs:SetScale(scale, ...)
+	if not mod_EnableMod then
+		return ChoOrig_g_CObjectFuncs_SetScale(self, scale, ...)
+	end
+
 	if scale < 0 then
 		scale = 0
 	elseif scale > 2047 then
 		scale = 2047
 	end
 
-	return ChoOrig_SetScale(self, scale, ...)
+	return ChoOrig_g_CObjectFuncs_SetScale(self, scale, ...)
 end
 
+--
+-- Modded sponsor using DLC user doesn't have results in black screen in new game second screen
+local ChoOrig_GetRocketClass = GetRocketClass
+function GetRocketClass(...)
+	if not mod_EnableMod then
+		return ChoOrig_GetRocketClass(...)
+	end
+
+	local rocket = GetMissionSponsor().rocket_class or "SupplyRocket"
+	-- Check with what PlacePlanetRocket(rocket_class) uses
+	if rocket ~= "SupplyRocket" and not BuildingTemplates[rocket_class] then
+		return "SupplyRocket"
+	end
+
+	return rocket
+end
+
+--
+--
+--
 --
 --
 --
@@ -1298,6 +1322,8 @@ end
 if not g_AvailableDlc.picard then
 	return
 end
+--
+--
 --
 --
 --

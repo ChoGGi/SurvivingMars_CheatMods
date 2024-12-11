@@ -82,8 +82,9 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
+-- Auto extractor skin
 local space_race = g_AvailableDlc.gagarin
-local skin  = "AutomaticMetalsExtractor"
+local skin = "AutomaticMetalsExtractor"
 local palette
 
 local function GetSkins(self, func, ...)

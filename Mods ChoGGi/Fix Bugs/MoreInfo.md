@@ -45,6 +45,7 @@ Water Reclamation Spire and B&B upgrade tech caused issues.
 
 **Mod bug fixes**:
 ```
+Black screen in second new game window when using a Modded sponsor and missing DLC.
 Rivals Trade Minerals mod hides Exotic Minerals from lander UI.
 Silva's Orion Heavy Rocket (you must disable his Essential files mod, then enable it AFTER enabling this mod, or use my Mod List Editor mod).
 Horticulture Workshop not unlocking.

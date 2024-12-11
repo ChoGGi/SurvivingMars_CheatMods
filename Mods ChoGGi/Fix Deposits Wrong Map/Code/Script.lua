@@ -28,10 +28,12 @@ local function FixDeposit(deposit, map_id)
 	if deposit and RetObjMapId(deposit) ~= map_id then
 		-- Move deposit to proper map (preserves position)
 		deposit:TransferToMap(map_id)
-		-- z is still set to z from underground (got me)
+		-- z is still set to z from underground
 		local pos = deposit:GetPos()
 		-- Used propermap.terrain:GetHeight instead of just :SetTerrainZ() since that seems to use the active terrain
-		deposit:SetPos(pos:SetZ(GameMaps[map_id].terrain:GetHeight(pos)))
+		deposit:SetPos(pos:SetZ(
+			GameMaps[map_id].terrain:GetHeight(pos)
+		))
 	end
 end
 
@@ -67,8 +69,8 @@ local function UpdateMaps()
 		end
 
 	end
-	UpdateDeposits(MainMapID)
-	UpdateDeposits(UIColony.underground_map_id)
+--~ 	UpdateDeposits(MainMapID)
+--~ 	UpdateDeposits(UIColony.underground_map_id)
 end
 SavegameFixups.ChoGGi_FixDepositsStuckUnderground = UpdateMaps
 

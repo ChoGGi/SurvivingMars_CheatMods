@@ -1,3 +1,6 @@
+v7.0
+Black screen in second new game window when using a Modded sponsor and missing DLC.
+
 v6.9
 Removed uneeded Guru Tourist fix.
 Log spam from SetScale.

@@ -936,7 +936,9 @@ This will switch to a new map."
 302535920000330, "Use to remove mysteries."
 302535920000331, "Mystery Start"
 302535920000332, "Pick and start a mystery (with instant start option).
-Certain mysteries need certain objects which get placed when the map is generated on a new game (the green rocks one for instance)."
+Certain mysteries need certain objects which get placed when the map is generated on a new game (the green rocks one for instance).
+
+<color ChoGGi_red>Do not use this for regular playthroughs!</color>"
 302535920000334, "Show the disasters list and optionally start one."
 302535920000336, "Spawn X amount of colonists."
 302535920000337, "Toggle Unlock All Buildings"

@@ -1,3 +1,6 @@
+v0.7
+It was scanning underground/surface maps twice.
+
 v0.6
 Fixed bug with my Surface Concrete mod (whoops, thanks animecentral).
 
