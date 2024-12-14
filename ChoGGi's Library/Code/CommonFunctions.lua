@@ -3810,6 +3810,95 @@ end -- do
 do -- Editor toggle
 	local editor_active
 
+	-- These are from Commonlua\core\const.lua
+	local const = const
+	const.ebtTerrainType = 0
+	const.ebtRoadType = 1
+	const.ebtTerrainSetHeight = 2
+	const.ebtTerrainChangeHeight = 3
+	const.ebtTerrainSmoothHeight = 4
+	const.ebtObjects = 7
+	const.ebtDeleteObjects = 8
+	const.ebtPlaceObjects = 9
+	const.ebtPlaceSingleObject = 10
+	const.ebtGizmoMove = 11
+	const.ebtGizmoScale = 12
+	const.ebtGizmoRotate = 13
+	const.ebtZBrush = 14
+	const.ebtEnrichTerrain = 15
+	const.ebtVertexPushHeight = 16
+	const.ebtTerrainMakePath = 17
+	const.ebtTerrainRamp = 18
+	const.ebtPassability = 19
+	const.ebtNull = 20
+	const.ebtCombine = 21
+	const.ebtTerrainErodeHeight = 22
+	const.ErodeIterations = 3
+	const.ErodeAmount = 50
+	const.ErodePersist = 5
+	const.ErodeThreshold = 50
+	const.ErodeCoefDiag = 500
+	const.ErodeCoefRect = 1000
+	const.RenderGizmoScreenDist = "20.0"
+	const.AxisCylinderRadius = "0.10"
+	const.AxisCylinderHeight = "2.0"
+	const.AxisCylinderSlices = 10
+	const.AxisConusRadius = "0.35"
+	const.AxisConusHeight = "1.0"
+	const.AxisConusSlices = 10
+	const.PlaneLineRadius = "0.05"
+	const.PlaneLineHeight = "1.5"
+	const.PlaneLineSlices = 10
+	const.XAxisColor = RGB(192, 0, 0)
+	const.YAxisColor = RGB(0, 192, 0)
+	const.ZAxisColor = RGB(0, 0, 192)
+	const.XAxisColorSelected = RGB(255, 255, 0)
+	const.YAxisColorSelected = RGB(255, 255, 0)
+	const.ZAxisColorSelected = RGB(255, 255, 0)
+	const.PlaneColor = RGBA(255, 255, 0, 200)
+	const.MaxSingleScale = "3.0"
+	const.PyramidSize = "0.5"
+	const.PyramidSideRadius = "0.07"
+	const.PyramidSideSlices = 10
+	const.PyramidColor = RGB(0, 192, 192)
+	const.SelectedSideColor = RGBA(255, 255, 0, 200)
+	const.MapDirections = 8
+	const.AxisRadius = "0.05"
+	const.AxisLength = "1.5"
+	const.AxisSlices = 5
+	const.TorusRadius1 = "1.30"
+	const.TorusRadius2 = "0.1"
+	const.TorusRings = 15
+	const.TorusSlices = 10
+	const.TangentRadius = "0.1"
+	const.TangentLength = "2.5"
+	const.TangentSlices = 5
+	const.TangentColor = RGB(255, 0, 255)
+	const.TangentConusHeight = "0.50"
+	const.TangentConusRadius = "0.30"
+	const.BigTorusColor = RGB(0, 192, 192)
+	const.BigTorusColorSelected = RGB(255, 255, 0)
+	const.SphereColor = RGBA(128, 128, 128, 100)
+	const.SphereRings = 15
+	const.SphereSlices = 15
+	const.BigTorusRadius = "2.0"
+	const.BigTorusRadius2 = "0.10"
+	const.BigTorusRings = 15
+	const.BigTorusSlices = 10
+	const.SnapRadius = 20
+	const.SnapBoxSize = "0.1"
+	const.SnapDistXYTolerance = 10
+	const.SnapDistZTolerance = 2
+	const.SnapScaleTolerance = 200
+	const.SnapAngleTolerance = 720
+	const.SnapDistXYCoef = 1
+	const.SnapDistZCoef = 3
+	const.SnapAngleCoef = 3
+	const.SnapScaleCoef = 2
+	const.SnapDrawWarningFitnessTreshold = 4000
+	const.MinBrushDensity = 30
+	const.MaxBrushDensity = 97
+
 	function ChoGGi_Funcs.Common.Editor_Toggle()
 		if Platform.durango then
 			local str = T(302535920001574--[[Crashes on XBOX!]])
@@ -6381,6 +6470,134 @@ local function RetParamsParents(parent, params, ...)
 	return params, parent, parent_type
 end
 ChoGGi_Funcs.Common.RetParamsParents = RetParamsParents
+
+do -- RetThreadInfo/FindThreadFunc
+	local GedInspectorFormatObject = GedInspectorFormatObject
+	local GedInspectedObjects_l
+
+	local function DbgGetlocal(thread, level)
+		local list = {}
+		local idx = 1
+		while true do
+			local name, value = g_env.debug.getlocal(thread, level, idx)
+			if name == nil then
+				break
+			end
+			list[idx] = {
+				name = name ~= "" and name or Translate(302535920000723--[[Lua]]),
+				value = value,
+				level = level,
+			}
+			idx = idx + 1
+		end
+		if next(list) then
+			return list
+		end
+	end
+	local function DbgGetupvalue(info)
+		local list = {}
+		local idx = 1
+		while true do
+			local name, value = g_env.debug.getupvalue(info.func, idx)
+			if name == nil then
+				break
+			end
+			list[idx] = {
+				name = name ~= "" and name or Translate(302535920000723--[[Lua]]),
+				value = value,
+			}
+			idx = idx + 1
+		end
+		if next(list) then
+			return list
+		end
+	end
+
+	-- returns some info if blacklist enabled
+	function ChoGGi_Funcs.Common.RetThreadInfo(thread)
+		if type(thread) ~= "thread" then
+			return empty_table
+		end
+		local funcs = {}
+
+		if blacklist then
+			GedInspectedObjects_l = GedInspectedObjects_l or GedInspectedObjects
+			-- func expects a table
+			if GedInspectedObjects_l[thread] then
+				table.clear(GedInspectedObjects_l[thread])
+			else
+				GedInspectedObjects_l[thread] = {}
+			end
+			-- returns a table of the funcs in the thread
+			local threads = GedInspectorFormatObject(thread).members
+			-- build a list of func name / level
+			for i = 1, #threads do
+				-- why'd i add the "= false"?
+				local temp = {level = false, func = false, name = false}
+
+				local t = threads[i]
+				for key, value in pairs(t) do
+					if key == "key" then
+						temp.level = value
+					elseif key == "value" then
+						-- split "func(line num) name" into two
+						local space = value:find(") ", 1, true)
+						temp.func = value:sub(2, space)
+						-- change unknown to Lua
+						local n = value:sub(space + 2, -2)
+						temp.name = n ~= "unknown name" and n or Translate(302535920000723--[[Lua]])
+					end
+				end
+
+				funcs[i] = temp
+			end
+
+		else
+			funcs.gethook = g_env.debug.gethook(thread)
+
+			local info = g_env.debug.getinfo(thread, 0, "Slfunt")
+			if info then
+				local nups = info.nups
+				if nups > 0 then
+					-- we start info at 0, nups starts at 1
+					nups = nups + 1
+
+					for i = 0, nups do
+						local info_got = g_env.debug.getinfo(thread, i)
+						if info_got then
+							local name = info_got.name or info_got.what or Translate(302535920000723--[[Lua]])
+							funcs[i] = {
+								name = name,
+								func = info_got.func,
+								level = i,
+								getlocal = DbgGetlocal(thread, i),
+								getupvalue = DbgGetupvalue(info_got),
+							}
+						end
+					end
+				end
+			end
+		end
+
+		return funcs
+	end
+
+	-- find/return func if str in func name
+	function ChoGGi_Funcs.Common.FindThreadFunc(thread, str)
+		-- needs an empty table to work it's magic
+		GedInspectedObjects[thread] = {}
+		-- returns a table of the funcs in the thread
+		local threads = GedInspectorFormatObject(thread).members
+		for i = 1, #threads do
+			for key, value in pairs(threads[i]) do
+				if key == "value" and value:find_lower(str, 1, true) then
+					return value
+				end
+			end
+		end
+	end
+
+end -- do
 
 do -- GetLowestPointEachSector
 	local lowest_points

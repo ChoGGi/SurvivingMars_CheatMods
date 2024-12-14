@@ -3184,8 +3184,24 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 			end
 		end
 		--
-		for k, v in pairs(obj) do
-			BuildObjTable(k, v)
+		-- change value to be more helpful then just another true
+		if obj == ThreadsRegister then
+			for k, v in pairs(obj) do
+				if v == true then
+					local name = RetName(k)
+					if name:sub(1, 7) == "thread:" then
+						BuildObjTable(k, v)
+					else
+						BuildObjTable(k, name)
+					end
+				else
+					BuildObjTable(k, v)
+				end
+			end
+		else
+			for k, v in pairs(obj) do
+				BuildObjTable(k, v)
+			end
 		end
 		-- show _something_ for Cargo objs
 		if IsKindOf(obj, "Cargo") then
@@ -4214,8 +4230,12 @@ function ChoGGi_Funcs.Common.OpenInExamineDlg(obj, parent, title, ...)
 	if parent then
 		params.parent = parent
 	end
-	if title then
-		params.title = Translate(title)
+	if params.title or title then
+		if title then
+			params.title = Translate(title)
+		else
+			params.title = Translate(params.title)
+		end
 		params.override_title = true
 	end
 
@@ -4265,19 +4285,16 @@ function ChoGGi_Funcs.Common.OpenInExamineDlg(obj, parent, title, ...)
 		parent = params.parent
 
 		if parent and IsKindOf(parent, "ChoGGi_DlgExamine") and parent.child_lock then
---~ 			ex(parent.child_lock_dlg)
-				local child = parent.child_lock_dlg
---~ 				if child then
-					if not IsValidXWin(child) then
-						parent.child_lock_dlg = false
-					else
-						-- It's valid so update with new obj
-						child.obj = params.obj
-						child:SetObj()
-						-- no need for a new window
-						return
-					end
---~ 				end
+			local child = parent.child_lock_dlg
+			if not IsValidXWin(child) then
+				parent.child_lock_dlg = false
+			else
+				-- It's valid so update with new obj
+				child.obj = params.obj
+				child:SetObj()
+				-- no need for a new window
+				return
+			end
 
 			-- child_lock_dlg is invalid or not opened yet
 			new_child_lock_dlg = true
@@ -4301,6 +4318,10 @@ function OpenExamine(...)
 end
 -- Returns the examine dialog
 OpenExamineReturn = OpenInExamineDlg
+-- short n sweet (only use in console/testing code, don't use in mods)
+ex = OpenExamine
+exr = OpenExamineReturn
+
 -- Queue up stuff for examine (that happens before examine is ready)
 local stored_objs = {}
 local stored_objs_c = 0
@@ -4315,7 +4336,3 @@ function OpenExamineDelayed(...)
 	stored_objs_c = stored_objs_c + 1
 	stored_objs[stored_objs_c] = {...}
 end
--- short n sweet
-ex = OpenExamine
-exr = OpenExamineReturn
--- exd = OpenExamineDelayed

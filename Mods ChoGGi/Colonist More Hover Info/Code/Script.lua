@@ -47,7 +47,7 @@ local function BuildCachedTraitInfo()
 
 	-- Consts.HighStatLevel = 70
 	info.Celebrity = T(4295--[[Comfort]]) .. " > 70: " .. T(3613--[[Funding]])
-		.. " +" .. RomanNumeral(t.Celebrity.param) .. " Daily"
+		.. T(" <funding(" .. t.Celebrity.param .. ")> Daily")
 	info.Empath = T(4297--[[Morale]]) .. " +" .. t.Empath.modify_amount
 	-- Consts.HighStatLevel = 70000
 	info.Enthusiast = T(4297--[[Morale]]) .. " > 70: "
@@ -83,7 +83,6 @@ local function BuildCachedTraitInfo()
 
 	cached_trait_info = info
 end
-
 
 local function StartupCode()
 	-- Build list of trait info

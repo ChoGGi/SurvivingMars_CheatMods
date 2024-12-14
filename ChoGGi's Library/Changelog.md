@@ -2,6 +2,9 @@
 
 ## v12.4 (Unreleased)
 - Name func was showing weird crap for numbers.
+- Moved RetThreadInfo/FindThreadFunc from ECM to Lib.
+### Examine:
+- Cleaned up ThreadsRegister results.
 
 ## v12.3 (17 Nov 2024)
 - Added GetCityLabels()

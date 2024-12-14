@@ -189,25 +189,32 @@ function ChoGGi_DlgFindValue:RetObjects(obj, parent, str, case, threads, limit, 
 
 			-- :find(str, 1, true) (1, true means don't use lua patterns, just plain text)
 			if not self.dupe_objs[obj] and not self.found_objs[key_location]
-					and (key_str:find(str, 1, true) or value_str:find(str, 1, true)) then
-									count = count + 1
-
-				self.found_objs[key_location] = obj
-				self.dupe_objs[obj] = obj
+				and (key_str:find(str, 1, true) or value_str:find(str, 1, true))
+			then
+				count = count + 1
+				if threads then
+					self.found_objs[key_location] = key
+					self.dupe_objs[key] = key
+				else
+					self.found_objs[key_location] = obj
+					self.dupe_objs[obj] = obj
+				end
 
 			elseif threads then
 				local value_location = location_str1 .. value_name .. location_str2
 				if key_type == "thread" and not self.dupe_objs[key]
-						and not self.found_objs[key_location] and FindThreadFunc(key, str) then
+					and not self.found_objs[key_location] and FindThreadFunc(key, str)
+				then
 					self.found_objs[key_location] = key
 					self.dupe_objs[key] = key
 
 				elseif value_type == "thread" and not self.dupe_objs[value]
-						and not self.found_objs[value_location] and FindThreadFunc(value, str) then
+					and not self.found_objs[value_location] and FindThreadFunc(value, str)
+				then
 					self.found_objs[value_location] = value
 					self.dupe_objs[value] = value
 
-				end
+				end -- threads
 			end
 
 			-- keep on searching
