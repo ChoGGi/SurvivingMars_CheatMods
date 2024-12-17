@@ -27,26 +27,26 @@ local c = #mod_options
 
 local bt = Presets.TechPreset.Breakthroughs
 for i = 1, #bt do
-	local def = bt[i]
-	local id = def.id
+	local tech = bt[i]
+	local id = tech.id
 	if id ~= "None" then
 		-- spaces don't work in image tags...
 		local image, newline
-		if def.icon:find(" ", 1, true) then
+		if tech.icon:find(" ", 1, true) then
 			image = ""
 			newline = ""
 		else
-			image = "<image " .. def.icon .. ">"
+			image = "<image " .. tech.icon .. ">"
 			newline = "\n\n"
 		end
 
 		c = c + 1
 		mod_options[c] = PlaceObj("ModItemOptionToggle", {
 			"name", id,
-			"DisplayName", SafeTrans(def.display_name) .. (
-				def.icon ~= "UI/Icons/Research/story_bit.tga" and " <right>" .. image or ""
+			"DisplayName", SafeTrans(tech.display_name) .. (
+				tech.icon ~= "UI/Icons/Research/story_bit.tga" and " <right>" .. image or ""
 			),
-			"Help", SafeTrans(def.description, def) .. newline .. image,
+			"Help", SafeTrans(tech.description, tech) .. newline .. image,
 			"DefaultValue", false,
 		})
 	end

@@ -132,6 +132,10 @@ end
 
 local ChoOrig_Dome_BuildingUpdate = Dome.BuildingUpdate
 function Dome:BuildingUpdate(...)
+	if not self.ChoGGi_OxygenManagement_oxygen_modifier then
+		return ChoOrig_Dome_BuildingUpdate(self, ...)
+	end
+
 	-- I have a mod to toggle opened domes (someone could make one for individual domes)
 	if self:IsOpen() then
 		-- no consumption for opened dome
