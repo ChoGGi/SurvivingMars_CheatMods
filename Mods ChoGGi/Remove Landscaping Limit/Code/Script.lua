@@ -28,7 +28,7 @@ OnMsg.ApplyModOptions = ModOptions
 -- no more limit to R+T keys (enlarge/shrink)
 local ChoOrig_Activate = LandscapeConstructionController.Activate
 function LandscapeConstructionController:Activate(...)
-	if EnableMod then
+	if mod_EnableMod then
 		self.brush_radius_step = mod_StepSize or 10 * guim
 		self.brush_radius_max = max_int
 		self.brush_radius_min = 100

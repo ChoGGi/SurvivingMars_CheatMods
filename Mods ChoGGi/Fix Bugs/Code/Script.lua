@@ -1300,13 +1300,13 @@ function GetRocketClass(...)
 		return ChoOrig_GetRocketClass(...)
 	end
 
-	local rocket = GetMissionSponsor().rocket_class or "SupplyRocket"
+	local rocket_class = GetMissionSponsor().rocket_class or "SupplyRocket"
 	-- Check with what PlacePlanetRocket(rocket_class) uses
-	if rocket ~= "SupplyRocket" and not BuildingTemplates[rocket_class] then
+	if rocket_class ~= "SupplyRocket" and not BuildingTemplates[rocket_class] then
 		return "SupplyRocket"
 	end
 
-	return rocket
+	return rocket_class
 end
 
 --

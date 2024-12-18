@@ -1,3 +1,6 @@
+v0.8
+enlarge/shrink override wasn't working (error in log).
+
 v0.7
 Updated to match rest of code.
 
