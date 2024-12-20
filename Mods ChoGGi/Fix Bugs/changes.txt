@@ -1,3 +1,6 @@
+v7.1
+Too much Cave-in rubble will cause lag when new rubble tries to spawn.
+
 v7.0
 Black screen in second new game window when using a Modded sponsor and missing DLC.
 

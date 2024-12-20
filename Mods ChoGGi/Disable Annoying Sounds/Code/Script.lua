@@ -199,7 +199,7 @@ end
 OnMsg.CityStart = DisableSounds
 OnMsg.LoadGame = DisableSounds
 
--- disable voiced text
+-- Disable voiced text
 local complete = T(7058, "Research complete")
 local ChoOrig_Voice_Play = Voice.Play
 function Voice:Play(text, ...)

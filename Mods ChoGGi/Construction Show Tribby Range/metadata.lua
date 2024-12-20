@@ -21,7 +21,8 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Shows (purple) grid radius around Triboelectric Scrubbers when you're in construction mode.
+	"description", [[
+Shows (purple) grid radius around Triboelectric Scrubbers when you're in construction mode.
 Press Numpad 1 to toggle grid anytime (rebind in game options).
 
 Mod Options:

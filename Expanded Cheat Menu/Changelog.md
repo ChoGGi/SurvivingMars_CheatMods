@@ -1,6 +1,7 @@
 ## ECM Changelog
 
 ## v19.4 (Unreleased)
+- ToggleFuncHook defaults to everything instead of just mod paths.
 
 ## v19.3 (17 Nov 2024)
 ### Changed:

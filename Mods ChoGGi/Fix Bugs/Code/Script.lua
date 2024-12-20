@@ -1310,6 +1310,22 @@ function GetRocketClass(...)
 end
 
 --
+-- Some deposit mod causing log spam from a deleted? concrete deposit
+local ChoOrig_TerrainDepositExtractor_OnDepositDepleted = TerrainDepositExtractor.OnDepositDepleted
+function TerrainDepositExtractor:OnDepositDepleted(...)
+	if not mod_EnableMod then
+		return ChoOrig_TerrainDepositExtractor_OnDepositDepleted(self, ...)
+	end
+
+	if IsValid(self:GetDeposit()) then
+		return ChoOrig_TerrainDepositExtractor_OnDepositDepleted(self, ...)
+	end
+
+	-- Might as well set this (from OnDepositDepleted())
+	self.depleted = true
+end
+
+--
 --
 --
 --
@@ -1332,6 +1348,21 @@ end
 --
 --
 
+--
+-- If there's too many cave=in rubble then it'll get laggy when trying to place another one
+local ChoOrig_FindCaveInLocation = FindCaveInLocation
+function FindCaveInLocation(map_id, ...)
+	if not mod_EnableMod then
+		return ChoOrig_FindCaveInLocation(map_id, ...)
+	end
+
+	-- Max seems to be 483, but that might depend on map and I can't be bothered to check all four (it's like I'm a game dev)
+	if GameMaps[map_id].realm:MapCount("map", "CaveInRubble") > 400 then
+		return
+	end
+
+	return ChoOrig_FindCaveInLocation(map_id, ...)
+end
 --
 -- Why it doesn't check if the cargo resource exists is anyones guess.
 -- Seen an error in a log file, no idea what it's from though.

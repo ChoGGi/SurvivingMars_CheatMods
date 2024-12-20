@@ -1,3 +1,6 @@
+v0.4
+Added toggle button to Tribbys (with mod option to hide them).
+
 v0.3
 Added toggle button to DustGenerator construction sites.
 

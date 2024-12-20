@@ -1280,8 +1280,9 @@ do -- ToggleFuncHook
 	-- or with a path to lua files you want to monitor
 	-- ChoGGi_Funcs.Common.ToggleFuncHook("@Mars/")
 	-- ChoGGi_Funcs.Common.ToggleFuncHook("@CommonLua/")
-	-- default path:
 	-- ChoGGi_Funcs.Common.ToggleFuncHook("@AppData/Mods/")
+	-- default path:
+	-- ChoGGi_Funcs.Common.ToggleFuncHook("")
 	local func_table = {}
 	local func_str_c = 0
 	local func_str = {}
@@ -1300,7 +1301,7 @@ do -- ToggleFuncHook
 			func_str_c = 0
 
 			-- setup path
-			path = path or "@AppData/Mods/"
+			path = path or ""
 			local str_len = #path
 
 			print(Translate(302535920000497--[[Hook Started]]), path, line, mask, count)

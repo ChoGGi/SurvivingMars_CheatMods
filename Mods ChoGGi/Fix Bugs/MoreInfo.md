@@ -30,6 +30,7 @@ St. Elmo's Fire: Stop meteoroids from destroying sinkholes.
 The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
 
 B&B
+Too much Cave-in rubble will cause lag when new rubble tries to spawn.
 Elevator func not checking for invalid resources.
 Colonists showing up on wrong map in infobar (also negative counts in infobar).
 No flying drones underground (they tend to get stuck in walls/etc).

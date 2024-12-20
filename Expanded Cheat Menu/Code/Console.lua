@@ -107,7 +107,7 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"]]),
 		class = "ChoGGi_XCheckButtonMenu",
 		value = "ChoGGi.Temp.FunctionsHooked",
 		clicked = function()
-			ChoGGi_Funcs.Common.ToggleFuncHook()
+			ChoGGi_Funcs.Common.ToggleFuncHook("@AppData/Mods/")
 		end,
 	},
 	{is_spacer = true},
