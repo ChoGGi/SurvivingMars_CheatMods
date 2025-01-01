@@ -18,7 +18,7 @@ return PlaceObj("ModDef", {
 Not so much a fix as changing textures to other ones that don't show the ugly mirrored textures. Terraforming will be more red instead of green ground, but at least there's no mirror ground.
 
 
-By default this mod only changes dumping sites, see mod options to enable other textures you need changed.
+By default this mod only changes dumping sites/outside grass, see mod options to enable other textures you need changed.
 
 
 Known Issues:

@@ -16,7 +16,8 @@ local mod_options = {}
 local BuildingTemplates = BuildingTemplates
 for id, bld in pairs(BuildingTemplates) do
 	for i = 1, 3 do
-		if sponsor_buildings[id] or bld["sponsor_status" .. i] ~= false then
+--~ 		if sponsor_buildings[id] or bld["sponsor_status" .. i] ~= false then
+		if sponsor_buildings[id] or bld["sponsor_name" .. i] ~= "" then
 			mod_options["ChoGGi_" .. id] = false
 			mod_options["ChoGGi_Tech_" .. id] = false
 			sponsor_buildings[id] = true
@@ -25,6 +26,7 @@ for id, bld in pairs(BuildingTemplates) do
 	end
 end
 
+-- Set what shows up in resupply dialog (rockets)
 local function UpdateCargoDefs()
 	local defs = ResupplyItemDefinitions
 	for i = 1, #defs do
@@ -101,7 +103,7 @@ local function ModOptions(id)
 	end
 
 	local BuildingTechRequirements = BuildingTechRequirements
-
+--~ ex{"sponsor_buildings",sponsor_buildings}
 	local BuildingTemplates = BuildingTemplates
 	for id, bld in pairs(BuildingTemplates) do
 

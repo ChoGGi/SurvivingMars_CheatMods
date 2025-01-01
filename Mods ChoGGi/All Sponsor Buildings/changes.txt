@@ -1,3 +1,6 @@
+v1.7
+Lock behind tech was borked (thanks pakha3023).
+
 v1.6
 Changed lock behind tech mod options to default off.
 

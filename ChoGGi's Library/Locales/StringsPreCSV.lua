@@ -3,8 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
-302535920001735, ""
-302535920001736, ""
 302535920001737, ""
 302535920001738, ""
 302535920001739, ""
@@ -1291,6 +1289,8 @@ Not permanent."
 302535920000448, "I'm afraid it could be 9/11 times 1,000."
 end !Skipped Line!
 do do !Skipped Line! [[DebugMenu.lua" "DebugFunc.lua]] !Skipped Line!
+302535920001735, "Show Console Errors"
+302535920001736, "Show extra debug errors in console."
 302535920001732, "Toggle Mouse Grid Position"
 302535920001728, "Skip Incompatible Mods"
 302535920001729, "Get rid of ""This savegame was loaded in the past without required mods or with an incompatible game version.""."

@@ -180,6 +180,16 @@ do
 		local objs
 
 		--
+		-- Fix Storybits
+ 		local StoryBits = StoryBits
+		-- Just in case something changes (hah)
+		pcall(function()
+			-- No breakthrough tech for Let No Noble Deed second option (it only gives regular tech)
+			StoryBits.TheDoorToSummer_LetNoNobleDeed[5].Effects[1].Field = "Breakthroughs"
+
+		end)
+
+		--
 		-- Rivals Trade Minerals mod hides Exotic Minerals from lander UI
 		if table.find(ModsLoaded, "id", "LH_RivalsMinerals") then
 			local cargo = Presets.Cargo["Basic Resources"].PreciousMinerals
@@ -721,12 +731,14 @@ do
 			--
 			-- Move any underground dome prefabs (underground anomaly "storybit") to underground city (instead of being stuck on surface)
 			-- https://www.reddit.com/r/SurvivingMars/comments/1013afl/no_way_to_moveuse_underground_dome_prefabs/
+			-- Rare Anomaly Analyzed: Mona Lisa
 			if main_city.available_prefabs.UndergroundDome then
 				local prefabs = underground_city.available_prefabs
+				-- They default to nil
 				if not prefabs.UndergroundDome then
 					prefabs.UndergroundDome = 0
 				end
-
+				-- and we can't do math on nil
 				prefabs.UndergroundDome = prefabs.UndergroundDome + main_city.available_prefabs.UndergroundDome
 				main_city.available_prefabs.UndergroundDome = nil
 			end
@@ -1326,6 +1338,47 @@ function TerrainDepositExtractor:OnDepositDepleted(...)
 end
 
 --
+-- Some storybits will show a notification, but the dialog box won't popup (the notif will just disappear)
+-- The rockets already left (and aren't valid) by the time this is called.
+local not_valid_rockets = {
+	-- TheDoorToSummer
+	TheEternalSummerFree = true,
+	-- ExportWasteRock_SplintersOfMars
+	WasteRockRocketFree = true,
+	WasteRockRocketNormal = true,
+	WasteRockRocketExpensive = true,
+}
+local ChoOrig_IsStoryBitObjectValid = IsStoryBitObjectValid
+function IsStoryBitObjectValid(obj, ...)
+	if not mod_EnableMod then
+		return ChoOrig_IsStoryBitObjectValid(obj, ...)
+	end
+
+	-- instead of checking valid, just check if removed obj has correct id (can't do this for every bit though in case obj is used during rewards?)
+	if not_valid_rockets[obj.custom_id] then
+		return true
+	end
+
+	return ChoOrig_IsStoryBitObjectValid(obj, ...)
+end
+
+--
+-- A modded trait without an id?
+local ChoOrig_IsTraitAvailable = IsTraitAvailable
+function IsTraitAvailable(trait, ...)
+	if not mod_EnableMod then
+		return ChoOrig_IsTraitAvailable(trait, ...)
+	end
+
+	if trait then
+		local trait_type = type(trait)
+		if trait_type == "string" or trait_type == "table" then
+			return ChoOrig_IsTraitAvailable(trait, ...)
+		end
+	end
+end
+
+--
 --
 --
 --
@@ -1347,6 +1400,31 @@ end
 --
 --
 --
+
+--
+-- Second fix for Rare Anomaly Analyzed: Mona Lisa
+-- SA_ResuppyInventory:Exec() doesn't check the map, it only uses MainCity to spawn prefabs, so I override the prefab spawner.
+-- I only cleaned up wrong map prefabs in LoadGame, this'll send them to the correct map when the storybit happens
+-- Added any underground buildings, not sure if any other get added as a prefab
+local underground_blds = {
+	UndergroundDome = true,
+	UndergroundDomeMedium = true,
+	UndergroundDomeMicro = true,
+	LightTripod = true,
+	SupportStrut = true,
+}
+local ChoOrig_City_AddPrefabs = City.AddPrefabs
+function City:AddPrefabs(class, ...)
+	if not mod_EnableMod then
+		return ChoOrig_City_AddPrefabs(self, class, ...)
+	end
+
+	if underground_blds[class] then
+		return ChoOrig_City_AddPrefabs(Cities[UIColony.underground_map_id], class, ...)
+	end
+
+	return ChoOrig_City_AddPrefabs(self, class, ...)
+end
 
 --
 -- If there's too many cave=in rubble then it'll get laggy when trying to place another one

@@ -248,6 +248,11 @@ function ChoGGi_Funcs.Menus.SetGameSpeed()
 		[96] = 	Translate(302535920001131--[[Duotriguple]]),
 		[192] = Translate(302535920001132--[[Quattuorsexaguple]]),
 		[300] = Translate(302535920000483--[[Centuple]]),
+
+		[750] = Translate(0000, "*250"),
+		[1500] = Translate(0000, "*500"),
+		[3000] = Translate(0000, "*1000"),
+		[15000] = Translate(0000, "*5000"),
 	}
 
 	local hint_str = Translate(302535920000523--[[How many to multiple the default speed by: <color 0 200 0>%s</color>]])
@@ -261,6 +266,11 @@ function ChoGGi_Funcs.Menus.SetGameSpeed()
 		{text = speeds[96], value = 32, hint = hint_str:format(32)},
 		{text = speeds[192], value = 64, hint = hint_str:format(64)},
 		{text = speeds[300], value = 100, hint = hint_str:format(100)},
+
+		{text = speeds[750], value = 250, hint = hint_str:format(250)},
+		{text = speeds[1500], value = 500, hint = hint_str:format(500)},
+		{text = speeds[3000], value = 1000, hint = hint_str:format(1000)},
+		{text = speeds[15000], value = 5000, hint = hint_str:format(5000)},
 	}
 
 	local function CallBackFunc(choice)

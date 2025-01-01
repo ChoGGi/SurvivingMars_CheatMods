@@ -1,0 +1,6 @@
+spawn near an object than use object as a pathing tether
+
+
+Haggart 3 hours ago 
+Maybe have different animals focused on different vegetation areas? If that is possible?
+Deer = forest, Horses = grasslands, turkey/chicken = bushes, ducks = near water?

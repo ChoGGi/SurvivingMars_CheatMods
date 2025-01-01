@@ -31,7 +31,7 @@ ChoGGi.Defaults = {
 	-- dark background for the console log
 	ConsoleDim = true,
 	-- shows LUA ERRORs in console along with stack
-	ConsoleErrors = true,
+	ConsoleErrors = false,
 	-- update the list when ECM updates it
 	ConsoleExamineListUpdate = true,
 	-- how wide the text for the history menu in the Console is

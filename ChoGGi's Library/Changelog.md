@@ -5,6 +5,7 @@
 - Moved RetThreadInfo/FindThreadFunc from ECM to Lib.
 ### Examine:
 - Cleaned up ThreadsRegister results.
+- Shows more info for some tables.
 
 ## v12.3 (17 Nov 2024)
 - Added GetCityLabels()

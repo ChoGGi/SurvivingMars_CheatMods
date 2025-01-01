@@ -46,7 +46,7 @@ local properties = {
 		"name", "TerraGrass",
 		"DisplayName", T(0000, "Terraformed Grass"),
 		"Help", T(0000, "Most green areas after terraforming."),
-		"DefaultValue", false,
+		"DefaultValue", true,
 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "TerraGrass2",

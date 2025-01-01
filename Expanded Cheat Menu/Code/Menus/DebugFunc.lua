@@ -24,6 +24,16 @@ function ChoGGi_Funcs.Menus.SkipIncompatibleModsMsg_Toggle()
 	)
 end
 
+function ChoGGi_Funcs.Menus.ConsoleErrors_Toggle()
+	ChoGGi.UserSettings.ConsoleErrors = not ChoGGi.UserSettings.ConsoleErrors
+
+	ChoGGi_Funcs.Settings.WriteSettings()
+	MsgPopup(
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.ConsoleErrors),
+		T(302535920001735--[[Show Console Errors]])
+	)
+end
+
 function ChoGGi_Funcs.Menus.SkipMissingMods_Toggle()
 	if blacklist then
 		ChoGGi_Funcs.Common.BlacklistMsg(T(302535920001205--[[Skip Missing Mods]]))

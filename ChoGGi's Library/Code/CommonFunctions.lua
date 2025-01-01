@@ -251,7 +251,8 @@ do -- RetName
 
 			-- Manually add a few
 			for i = 1, 999 do
-				lookup_table[i] = i
+				-- .. "" make sure they're strings (.. "" is faster than tostring)
+				lookup_table[i] = i .. ""
 			end
 			lookup_table[0] = "0"
 			lookup_table[-3] = "-3"
@@ -594,6 +595,7 @@ do -- ValidateImage
 end
 local ValidateImage = ChoGGi_Funcs.Common.ValidateImage
 
+-- notification thing
 do -- MsgPopup
 	local temp_params = {}
 

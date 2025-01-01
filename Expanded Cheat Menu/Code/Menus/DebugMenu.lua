@@ -479,6 +479,20 @@ Actions[c] = {ActionName = T(302535920001367--[[Toggles]]),
 }
 
 c = c + 1
+Actions[c] = {ActionName = T(302535920001735--[[Show Console Errors]]),
+	ActionMenubar = "ECM.Debug.Toggles",
+	ActionId = ".Show Console Errors",
+	ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.ConsoleErrors,
+			T(302535920001736--[[Show extra debug errors in console.]])
+		)
+	end,
+	OnAction = ChoGGi_Funcs.Menus.ConsoleErrors_Toggle,
+}
+
+c = c + 1
 Actions[c] = {ActionName = T(302535920001205--[[Skip Missing Mods]]),
 	ActionMenubar = "ECM.Debug.Toggles",
 	ActionId = ".Skip Missing Mods",

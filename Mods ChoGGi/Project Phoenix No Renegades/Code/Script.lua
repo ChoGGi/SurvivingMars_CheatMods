@@ -23,20 +23,24 @@ function Colonist:ProjectPhoenixEffect(...)
 		return ChoOrig_Colonist_ProjectPhoenixEffect(self, ...)
 	end
 
+	-- The func is called after they die so no reason we can't fiddle with their traits.
+	-- You'd normally need to use :RemoveTrait() but the func creates a new colonist so it only needs the trait list.
 	local traits = self.traits
 
-	-- always remove Renegade
+	-- Always remove Renegade
   traits.Renegade = nil
-	-- and any other negatives
+
+	-- Any other negative traits
 	if mod_NoNegative then
-		local TraitPresets = TraitPresets
+
+		local neg_traits = Presets.TraitPreset.Negative
     for trait_id in pairs(traits) do
-      local trait = TraitPresets[trait_id]
-      local category = trait and trait.group or false
-      if category and category == "Negative" then
+      local trait = neg_traits[trait_id]
+			if trait then
         traits[trait_id] = nil
-      end
+			end
     end
+
 	end
 
 	return ChoOrig_Colonist_ProjectPhoenixEffect(self, ...)

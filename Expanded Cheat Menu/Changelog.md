@@ -1,6 +1,13 @@
 ## ECM Changelog
 
 ## v19.4 (Unreleased)
+### Added:
+- ECM.Debug.Toggles>Show Console Errors: Show extra debug errors in console.
+ - This was already part of ECM and enabled by default, it's turned off by default now.
+
+### Changed:
+- SetGameSpeed has a couple faster options to really speed up waiting.
+- A couple of the console menu items can be right-clicked to paste func into console.
 - ToggleFuncHook defaults to everything instead of just mod paths.
 
 ## v19.3 (17 Nov 2024)

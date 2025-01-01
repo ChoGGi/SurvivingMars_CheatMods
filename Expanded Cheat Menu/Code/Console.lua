@@ -32,6 +32,13 @@ end
 -- store list of undefined globals
 ChoGGi.Temp.UndefinedGlobals = {}
 
+local function UpdateConsoleText(text)
+	local edit = dlgConsole.idEdit
+	edit:SetFocus()
+	edit:SetText(text)
+	edit:SetCursor(1, #text + 1)
+end
+
 local ToolsMenuPopupToggle_list = {
 	{name = T(302535920000040--[[Exec Code]]),
 		hint = T(302535920001287--[[Instead of a single line, you can enter/execute code in a textbox.]]),
@@ -89,12 +96,22 @@ local ToolsMenuPopupToggle_list = {
 	{is_spacer = true},
 	{name = T(302535920000853--[[Monitor]]) .. ": _G",
 		hint = "ChoGGi_Funcs.Common.MonitorTableLength(_G)",
-		clicked = ChoGGi_Funcs.Common.MonitorTableLength,
+		mouseup = function(_, _, _, button)
+			if button == "R" then
+				UpdateConsoleText("ChoGGi_Funcs.Common.MonitorTableLength()")
+			else
+				ChoGGi_Funcs.Common.MonitorTableLength()
+			end
+		end,
 	},
 	{name = T(302535920000853--[[Monitor]]) .. ": ThreadsRegister",
 		hint = "ChoGGi_Funcs.Common.MonitorThreads()",
-		clicked = function()
-			ChoGGi_Funcs.Common.MonitorThreads()
+		mouseup = function(_, _, _, button)
+			if button == "R" then
+				UpdateConsoleText("ChoGGi_Funcs.Common.MonitorThreads()")
+			else
+				ChoGGi_Funcs.Common.MonitorThreads()
+			end
 		end,
 	},
 	{name = T(302535920000234--[[Monitor Func Calls]]),
@@ -106,8 +123,12 @@ ChoGGi_Funcs.Common.ToggleFuncHook(path, line, mask, count)
 https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"]]),
 		class = "ChoGGi_XCheckButtonMenu",
 		value = "ChoGGi.Temp.FunctionsHooked",
-		clicked = function()
-			ChoGGi_Funcs.Common.ToggleFuncHook("@AppData/Mods/")
+		mouseup = function(_, _, _, button)
+			if button == "R" then
+				UpdateConsoleText("ChoGGi_Funcs.Common.ToggleFuncHook(\"@AppData/Mods/\")")
+			else
+				ChoGGi_Funcs.Common.ToggleFuncHook("@AppData/Mods/")
+			end
 		end,
 	},
 	{is_spacer = true},

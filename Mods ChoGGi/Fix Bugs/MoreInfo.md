@@ -19,6 +19,7 @@ Added missing images for certain Cargo listings.
 Gale crater name doesn't show up for 4S138E, 5S138E.
 
 Storybits:
+Fix for Storybits disappearing from the notifications list instead of popping up a dialog.
 Gene Forging storybit tech doesn't increase rare traits chance.
 Personal Space storybit changes capacity, but building menu doesn't show it.
 Storybit notification issue.
@@ -46,6 +47,7 @@ Water Reclamation Spire and B&B upgrade tech caused issues.
 
 **Mod bug fixes**:
 ```
+Log spam from a modded trait without an id.
 Black screen in second new game window when using a Modded sponsor and missing DLC.
 Rivals Trade Minerals mod hides Exotic Minerals from lander UI.
 Silva's Orion Heavy Rocket (you must disable his Essential files mod, then enable it AFTER enabling this mod, or use my Mod List Editor mod).

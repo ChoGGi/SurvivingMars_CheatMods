@@ -2795,7 +2795,7 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 end
 
 -- the secondary main "one"
-function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
+function ChoGGi_DlgExamine:ConvertValueToInfo(obj, is_indexed)
 	local obj_type = type(obj)
 
 	if obj_type == "string" then
@@ -2894,13 +2894,11 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj)
 				name = "<tags off>" .. name .. "<tags on>"
 
 				if obj.class and name_orig ~= obj.class then
-					-- I can't seem to translate an obj.displayname if it's a T(0, "str")... (RetName)?
---~ 					if name:find("table: ") then
---~ 						name = obj.class .. " (len: " .. table_data .. ")"
---~ 					else
---~ 						name = obj.class .. " (len: " .. table_data .. ", " .. name .. ")"
+					if is_indexed then
+						name = obj.class .. " (len: " .. table_data .. ") " .. name
+					else
 						name = obj.class .. " (len: " .. table_data .. ")"
---~ 					end
+					end
 				else
 					name = name .. " (len: " .. table_data .. ")"
 				end
@@ -3154,7 +3152,9 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 	local show_all_values = self.show_all_values
 
 	if obj_type == "table" then
-
+		-- close enough
+		local is_indexed = #obj > 0
+		-- chinese is super slow
 		local is_chinese = self.is_chinese
 
 		local function BuildObjTable(k, v)
@@ -3174,7 +3174,7 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 				skip_dupes[sort] = true
 			end
 			c = c + 1
-			local str_tmp = name .. " <color ChoGGi_orange>=</color> " .. self:ConvertValueToInfo(v)
+			local str_tmp = name .. " <color ChoGGi_orange>=</color> " .. self:ConvertValueToInfo(v, is_indexed)
 			list_obj_str[c] = str_tmp
 
 			if type(k) == "number" then
@@ -4122,6 +4122,7 @@ function ChoGGi_DlgExamine:SetTextTest(text)
 	text = Translate(text)
 	-- \0 = non-text chars (ParseText ralphs)
 	self.idText:SetText(text:gsub("\0", ""))
+	-- Also SelectionShapes which is full of EncodePointsToString(shape), but that's the only table in the game so...
 
 	-- [LUA ERROR] CommonLua/X/XText.lua:191: pattern too complex
 	CreateRealTimeThread(function()

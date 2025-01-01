@@ -9,6 +9,12 @@ if not ChoGGi.testing then
 	return
 end
 
+
+-- spam me please
+function PopsTelemetrySend(...)
+	print("<color ChoGGi_green>PopsTel</color>", ...)
+end
+
 local ChoGGi_Funcs = ChoGGi_Funcs
 --~ local what_game = ChoGGi.what_game
 local Translate = ChoGGi_Funcs.Common.Translate

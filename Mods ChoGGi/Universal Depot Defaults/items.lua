@@ -45,9 +45,17 @@ if g_AvailableDlc.picard then
 	storable_resources[#storable_resources+1] = "PreciousMinerals"
 end
 
+-- if ECM is installed than use amount from it
+local max_res_amount = BuildingTemplates.StorageConcrete.max_storage_per_resource / const.ResourceScale
+if Mods and Mods.ChoGGi_CheatMenu and ChoGGi.UserSettings.StorageOtherDepot then
+	max_res_amount = ChoGGi.UserSettings.StorageOtherDepot / const.ResourceScale
+end
+
 -- get display_name and add to list
 local Resources = Resources
 for id, item in pairs(Resources) do
+
+	-- default enable storing this resource in uni depots
 	if table.find(storable_resources, id) then
 		local image = ""
 		if id == "Seeds" then
@@ -61,6 +69,19 @@ for id, item in pairs(Resources) do
 			"DisplayName", table.concat(image .. T(754117323318--[[Enable]]) .. " " .. T(item.display_name)),
 			"DefaultValue", true,
 		})
+
+		-- individual
+--~ 		-- Add desire amounts for each resource depot
+--~ 		c = c + 1
+--~ 		mod_options[c] = PlaceObj("ModItemOptionNumber", {
+--~ 			"name", "StoredAmount_" .. id,
+--~ 			"DisplayName", table.concat(T(10370, "Desire Amount") .. image .. T(item.display_name)),
+--~ 			"Help", T(0000, "Set desire amount for individual depots."),
+--~ 			"DefaultValue", 3,
+--~ 			"MinValue", 0,
+--~ 			"MaxValue", max_res_amount,
+--~ 		})
+
 	end
 end
 
