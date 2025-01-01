@@ -1,3 +1,6 @@
+v1.1
+Fixed Orange rocket.
+
 v1.0
 Added mod option to skip the Pods/rover skins.
 

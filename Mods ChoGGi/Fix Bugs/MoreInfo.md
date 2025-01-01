@@ -19,7 +19,7 @@ Added missing images for certain Cargo listings.
 Gale crater name doesn't show up for 4S138E, 5S138E.
 
 Storybits:
-Fix for Storybits disappearing from the notifications list instead of popping up a dialog.
+Fix for some Storybits disappearing from the notifications list instead of popping up a dialog.
 Gene Forging storybit tech doesn't increase rare traits chance.
 Personal Space storybit changes capacity, but building menu doesn't show it.
 Storybit notification issue.

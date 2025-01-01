@@ -35,6 +35,7 @@ local function BuildCachedTraitInfo()
 	info.Infected = T(4291--[[Health]]) .. " -" .. t.Infected.param .. " Daily"
 	-- lua rev 1011166
 	-- 4 comes from function Residence:Service(unit, duration)
+	-- Introvert == Loner
 	info.Introvert = T(4295--[[Comfort]]) .. " -4 Daily"
 	-- Consts.LowStatLevel = 30000
 	info.Melancholic = T(4297--[[Morale]]) .. " < 30: "
@@ -52,9 +53,10 @@ local function BuildCachedTraitInfo()
 	-- Consts.HighStatLevel = 70000
 	info.Enthusiast = T(4297--[[Morale]]) .. " > 70: "
 		.. T(4283--[[Worker performance]]) .. " +" .. t.Enthusiast.param
-	-- Consts.ExtrovertIncreaseComfortThreshold = 20000
+	-- StatsChangeBase.comfort_increase = 10000
+	-- Extrovert == Party Animal
 	info.Extrovert = T(692952504653--[[Dome]]) .. " " .. T(547--[[Colonists]])
-		.. " > 30: " .. T(4295--[[Comfort]]) .. " + 20"
+		.. " > 30: " .. T(4295--[[Comfort]]) .. " + 10"
 	info.Fit = T(4291--[[Health]]) .. " +" .. t.Fit.modify_amount .. " Daily"
 	info.Gamer = T(4293--[[Sanity]]) .. " +" .. t.Gamer.param
 	-- Consts.HighStatLevel = 70000

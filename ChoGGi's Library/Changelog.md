@@ -1,7 +1,8 @@
 ## Library Changelog
 
 ## v12.4 (Unreleased)
-- Name func was showing weird crap for numbers.
+- Cleaned up how GetNearestIdleDrone looks for drones.
+- RetName was showing weird crap for numbers.
 - Moved RetThreadInfo/FindThreadFunc from ECM to Lib.
 ### Examine:
 - Cleaned up ThreadsRegister results.

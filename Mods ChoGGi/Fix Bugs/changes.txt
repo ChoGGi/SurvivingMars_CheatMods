@@ -1,10 +1,10 @@
 v7.3
-Fix for Storybits disappearing from the notifications list instead of popping up a dialog.
+Fix for some Storybits disappearing from the notifications list instead of popping up a dialog.
 Log spam from a modded trait without an id.
 
 v7.2
 Underground prefabs will now properly spawn underground instead of needing a load game to fix them.
-Partial fix for a storybit not giving a breakthrough (it doesn't actually active so you won't get anything anyways).
+Partial fix for a storybit not giving a breakthrough (it doesn't actually activate so you won't get anything anyways).
 
 v7.1
 Too much Cave-in rubble will cause lag when new rubble tries to spawn.

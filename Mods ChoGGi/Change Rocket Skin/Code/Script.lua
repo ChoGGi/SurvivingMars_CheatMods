@@ -13,26 +13,25 @@ local function ReturnSkins(func, self, ...)
 	return skins, palettes
 end
 
-local ChoOrig_RocketBase_GetSkins = RocketBase.GetSkins
-function RocketBase:GetSkins(...)
-	return ReturnSkins(ChoOrig_RocketBase_GetSkins, self, ...)
-end
+-- Replace GetSkins to add my skins
+local rockets = {
+	"RocketBase",
+}
 if g_AvailableDlc.gagarin then
-	local ChoOrig_DragonRocket_GetSkins = DragonRocket.GetSkins
-	function DragonRocket:GetSkins(...)
-		return ReturnSkins(ChoOrig_DragonRocket_GetSkins, self, ...)
-	end
-	local ChoOrig_ZeusRocket_GetSkins = ZeusRocket.GetSkins
-	function ZeusRocket:GetSkins(...)
-		return ReturnSkins(ChoOrig_ZeusRocket_GetSkins, self, ...)
-	end
+	rockets[#rockets+1] = "DragonRocket"
+	rockets[#rockets+1] = "ZeusRocket"
 end
 if g_AvailableDlc.picard then
-	local ChoOrig_LanderRocketBase_GetSkins = LanderRocketBase.GetSkins
-	function LanderRocketBase:GetSkins(...)
-		return ReturnSkins(ChoOrig_LanderRocketBase_GetSkins, self, ...)
+	rockets[#rockets+1] = "LanderRocketBase"
+end
+for i = 1, #rockets do
+	local rocket = rockets[i]
+	local ChoOrig_GetSkins = _G[rocket].GetSkins
+	_G[rocket].GetSkins = function(...)
+		return ReturnSkins(ChoOrig_GetSkins, ...)
 	end
 end
+
 local ChoOrig_RDM_OrionRocket_GetSkins
 
 -- Check if door is opened for rockets and reset it after changing from a pod/rover skin
@@ -41,6 +40,7 @@ local function ChangeSkin(self, skin, palette, ...)
 	if not mod_EnableMod then
 		return ChoOrig_Building_ChangeSkin(self, skin, palette, ...)
 	end
+
 	if self:GetStateText() == "disembarkIdle" then
 		self.ChoGGi_ChangeRocketSkin_state = true
 	end
@@ -73,7 +73,9 @@ local function GenerateSkins()
 	}
 
 	palettes = {
-		RocketBase.rocket_palette,
+		-- No idea what this palette is for, but it makes the rocket orange
+--~ 		RocketBase.rocket_palette,
+		{},
 		{},
 	}
 

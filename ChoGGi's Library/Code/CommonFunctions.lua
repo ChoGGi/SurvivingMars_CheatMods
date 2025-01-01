@@ -2521,61 +2521,48 @@ do -- FuckingDrones
 		yes it took awhile to figure it out, hence the name...
 	]]
 
-	-- force drones to pickup from pile even if they have a carry cap larger then the amount stored
-	local ResourceScale = const.ResourceScale
-
-	local building
-	local function SortNearest(a, b)
-		if IsValid(a) and IsValid(b) then
-			return building:GetVisualDist2D(a) < building:GetVisualDist2D(b)
-		end
-	end
-
 	local function GetNearestIdleDrone(bld)
+		-- Make sure building has a list of cc (if it doesn't then there's no drones near enough)
 		if not bld or (bld and not bld.command_centers) then
 			if bld.parent.command_centers then
 				bld = bld.parent
 			end
 		end
+		-- (add example of a building with a .parent)
 		if not bld or (bld and not bld.command_centers) then
-			return
+			return false
 		end
 
-		local cc = FindNearestObject(bld.command_centers, bld)
-		-- check if nearest cc has idle drones
-		if cc and cc:GetIdleDronesCount() > 0 then
+		local cc = FindNearestObject(
+			bld.command_centers,
+			bld:GetPos(),
+			function(center)
+				return center:GetIdleDronesCount() > 0
+			end
+		)
+		if cc then
 			cc = cc.drones
 		else
-			-- sort command_centers by nearest, then loop through each of them till we find an idle drone
-			building = bld
-			table.sort(bld.command_centers, SortNearest)
-			-- get command_center with idle drones
-			for i = 1, #bld.command_centers do
-				if bld.command_centers[i]:GetIdleDronesCount() > 0 then
-					cc = bld.command_centers[i].drones
-					break
-				end
-			end
+			-- No free drones
+			return false
 		end
 
-		-- It happens
-		if not cc then
-			return
-		end
-
-		-- get an idle drone
+		-- Get an idle drone
 		local idle_idx = table.find(cc, "command", "Idle")
 		if idle_idx then
 			return cc[idle_idx]
 		end
+		-- There's probably a way to search for both in one go, but I'm lazy
 		idle_idx = table.find(cc, "command", "WaitCommand")
 		if idle_idx then
 			return cc[idle_idx]
 		end
+
+		-- All done
 	end
 	ChoGGi_Funcs.Common.GetNearestIdleDrone = GetNearestIdleDrone
 
-	function ChoGGi_Funcs.Common.FuckingDrones(obj,single)
+	function ChoGGi_Funcs.Common.FuckingDrones(obj, single)
 		if not IsValid(obj) then
 			return
 		end
@@ -2585,15 +2572,11 @@ do -- FuckingDrones
 
 		local is_single = single == "single" or obj:IsKindOf("SingleResourceProducer")
 		local stored = obj:GetStoredAmount()
---~ 		-- mines/farms/factories
---~ 		if is_single then
---~ 			stored = obj:GetAmountStored()
---~ 		else
---~ 			stored = obj:GetStoredAmount()
---~ 		end
+		-- 1000
+		local rs = const.ResourceScale
 
-		-- only fire if more then one resource
-		if stored > 1000 then
+		-- Only fire if more then one resource
+		if stored > rs then
 			local parent
 			local request
 			local resource
@@ -2612,22 +2595,19 @@ do -- FuckingDrones
 				return
 			end
 
-			local carry = g_Consts.DroneResourceCarryAmount * ResourceScale
-			-- round to nearest 1000 (don't want uneven stacks)
-			stored = (stored - stored % 1000) / 1000 * 1000
+			-- Force drones to pickup from pile even if they have a carry cap larger then the amount stored
+			local carry = g_Consts.DroneResourceCarryAmount * rs
+			-- Round to nearest 1000 (don't want uneven stacks)
+			stored = (stored - stored % rs) / rs * rs
 			-- If carry is smaller then stored then they may not pickup (depends on storage)
 			if carry < stored or
-				-- no picking up more then they can carry
+				-- No picking up more then they can carry
 				stored > carry then
 					stored = carry
 			end
-			-- pretend it's the user doing it (for more priority?)
+			-- Pretend it's the user doing it (for more priority?)
 			drone:SetCommandUserInteraction(
-				"PickUp",
-				request,
-				false,
-				resource,
-				stored
+				"PickUp", request, false, resource, stored
 			)
 		end
 	end
