@@ -18,6 +18,18 @@ local RetIcon = ChoGGi_Funcs.Common.RetIcon
 local RetHint = ChoGGi_Funcs.Common.RetHint
 local Random = ChoGGi_Funcs.Common.Random
 
+function ChoGGi_Funcs.Menus.UseAllLoadingScreens_Toggle()
+	local setting = not ChoGGi.UserSettings.AllLoadingScreens
+	ChoGGi.UserSettings.AllLoadingScreens = setting
+
+	ChoGGi_Funcs.Settings.WriteSettings()
+	MsgPopup(
+		ChoGGi_Funcs.Common.SettingState(setting),
+		T(302535920001737--[[Toggle Use All Loading Screens]])
+	)
+
+end
+
 function ChoGGi_Funcs.Menus.InfopanelToolbarConstrain_Toggle()
 	local setting = not ChoGGi.UserSettings.InfopanelToolbarConstrain
 	ChoGGi.UserSettings.InfopanelToolbarConstrain = setting

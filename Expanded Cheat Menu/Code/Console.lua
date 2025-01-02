@@ -579,6 +579,15 @@ The number is a count of stored msgs, right-click to view the list."]]),
 			ChoGGi_Funcs.Settings.WriteSettings()
 		end,
 	},
+	{name = T(302535920001635--[[Flush Log Hourly]]),
+		hint = T(302535920001636--[[Call FlushLogFile() every in-game hour.]]),
+		class = "ChoGGi_XCheckButtonMenu",
+		value = "ChoGGi.UserSettings.FlushLogHourly",
+		clicked = function()
+			ChoGGi.UserSettings.FlushLogHourly = not ChoGGi.UserSettings.FlushLogHourly
+			ChoGGi_Funcs.Settings.WriteSettings()
+		end,
+	},
 	{name = T(302535920001349--[[Flush Log Constantly]]),
 		hint = T(302535920001414--[[Call FlushLogFile() every render update!]]),
 		class = "ChoGGi_XCheckButtonMenu",
@@ -588,15 +597,6 @@ The number is a count of stored msgs, right-click to view the list."]]),
 			ChoGGi_Funcs.Settings.WriteSettings()
 			-- update local var
 			FlushLogConstantly = ChoGGi.UserSettings.FlushLogConstantly
-		end,
-	},
-	{name = T(302535920001635--[[Flush Log Hourly]]),
-		hint = T(302535920001636--[[Call FlushLogFile() every in-game hour.]]),
-		class = "ChoGGi_XCheckButtonMenu",
-		value = "ChoGGi.UserSettings.FlushLogHourly",
-		clicked = function()
-			ChoGGi.UserSettings.FlushLogHourly = not ChoGGi.UserSettings.FlushLogHourly
-			ChoGGi_Funcs.Settings.WriteSettings()
 		end,
 	},
 	{name = T(302535920001576--[[Show Log When Console Active]]),

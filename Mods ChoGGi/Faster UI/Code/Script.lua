@@ -1,15 +1,16 @@
 -- See LICENSE for terms
 
-local mod_Pins1
-local mod_Pins2
+local mod_PinsShow
+local mod_PinsHide
 local mod_BuildMenu
 local mod_OverviewMode
 local mod_FadeToBlack
+local mod_LongerDelay
 
 -- Faster pins 1/2
 local ChoOrig_PinsDlg_SetVisible = PinsDlg.SetVisible
 function PinsDlg:SetVisible(visible, instant, ...)
-	if mod_Pins1 then
+	if mod_PinsShow then
 		-- closing menu
 		instant = true
 	end
@@ -20,7 +21,7 @@ end
 local ChoOrig_XBuildMenu_EaseInButton = XBuildMenu.EaseInButton
 function XBuildMenu:EaseInButton(button, start_time, ...)
 	if mod_BuildMenu then
-		start_time = 1
+		start_time = mod_LongerDelay
 	end
 	return ChoOrig_XBuildMenu_EaseInButton(self, button, start_time, ...)
 end
@@ -36,8 +37,6 @@ function OverviewModeDialog.GetCameraTransitionTime(...)
 end
 
 function OnMsg.ClassesPostprocess()
-	-- pp is too soon for mod options, so we default to the enabled values
-
 	-- Fade to black for map switch buttons
 	local template = XTemplates.FadeToBlackDlg[1]
 	template.FadeInTime = 1
@@ -46,10 +45,11 @@ function OnMsg.ClassesPostprocess()
 	-- Faster pins 2/2
 	local ChoOrig_XBlinkingButtonWithRMB_AddInterpolation = XBlinkingButtonWithRMB.AddInterpolation
 	function XBlinkingButtonWithRMB:AddInterpolation(int, ...)
-		if mod_Pins2 and int then
-			int.start = 1
-			int.duration = 1
-			int.easing = 1
+		if mod_PinsHide and int then
+			-- see if + helps?
+			int.start = mod_LongerDelay+1
+			int.duration = mod_LongerDelay
+			int.easing = mod_LongerDelay+2
 		end
 
 		return ChoOrig_XBlinkingButtonWithRMB_AddInterpolation(self, int, ...)
@@ -88,11 +88,12 @@ local function ModOptions(id)
 		return
 	end
 
-	mod_Pins1 = CurrentModOptions:GetProperty("Pins1")
-	mod_Pins2 = CurrentModOptions:GetProperty("Pins2")
+	mod_PinsShow = CurrentModOptions:GetProperty("Pins1")
+	mod_PinsHide = CurrentModOptions:GetProperty("Pins2")
 	mod_BuildMenu = CurrentModOptions:GetProperty("BuildMenu")
 	mod_OverviewMode = CurrentModOptions:GetProperty("OverviewMode")
 	mod_FadeToBlack = CurrentModOptions:GetProperty("FadeToBlack")
+	mod_LongerDelay = CurrentModOptions:GetProperty("LongerDelay")
 
 	UpdateFade()
 end

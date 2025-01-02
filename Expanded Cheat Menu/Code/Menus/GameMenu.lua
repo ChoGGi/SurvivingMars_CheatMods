@@ -357,6 +357,20 @@ Actions[c] = {ActionName = T(302535920000893--[[Interface]]),
 }
 
 c = c + 1
+Actions[c] = {ActionName = T(302535920001737--[[Toggle Use All Loading Screens]]),
+	ActionMenubar = "ECM.Game.Interface",
+	ActionId = ".Toggle Use All Loading Screens",
+	ActionIcon = "CommonAssets/UI/Menu/EnrichTerrainEditor.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.AllLoadingScreens,
+			T(302535920001738--[[Some DLC replaces loading screens with their own, enable to use all of them.]])
+		)
+	end,
+	OnAction = ChoGGi_Funcs.Menus.UseAllLoadingScreens_Toggle,
+}
+
+c = c + 1
 Actions[c] = {ActionName = T(302535920001660--[[Toggle Vertical Cheat Menu]]),
 	ActionMenubar = "ECM.Game.Interface",
 	ActionId = ".Toggle Vertical Cheat Menu",

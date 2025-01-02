@@ -31,4 +31,12 @@ return {
 		"Help", T(0000, "FadeToBlackDlg"),
 		"DefaultValue", true,
 	}),
+	PlaceObj("ModItemOptionNumber", {
+		"name", "LongerDelay",
+		"DisplayName", T(0000, "Set Delay"),
+		"Help", T(0000, "Longer delay might help for invisible build menu/pins."),
+		"DefaultValue", 5,
+		"MinValue", 1,
+		"MaxValue", 1000,
+	}),
 }

@@ -1,1 +1,2 @@
 v0.2
+Changed it to use a fixed list of skins instead of searching each time the mod is loaded.

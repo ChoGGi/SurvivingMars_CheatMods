@@ -1,5 +1,12 @@
+v7.4
+Thanks Dark Master for digging around and testing storybits (and documenting them on wiki).
+Storybit Blank Slate doesn't remove any applicants.
+Storybit Fhtagn! Fhtagn! Option 2 makes all colonists cowards instead of only religious ones.
+Storybit Dust Sickness: Deaths doesn't apply morale penalty.
+Log spam from GetCurrentLightModel.
+
 v7.3
-Fix for some Storybits disappearing from the notifications list instead of popping up a dialog.
+Some Storybits disappearing from the notifications list instead of popping up a dialog.
 Log spam from a modded trait without an id.
 
 v7.2

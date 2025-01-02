@@ -24,6 +24,8 @@ end
 ChoGGi.Defaults = {
 	-- updated when saved
 	_SAVED = 0,
+	-- Some DLC replaces loading screens with their own (GP, BB).
+	AllLoadingScreens = true,
 	-- okay, maybe some people don't want a mod to change the title of their game
 	ChangeWindowTitle = false,
 	-- removes some useless crap from the Cheats section (unless you're doing the tutorial then not as useless it seems)

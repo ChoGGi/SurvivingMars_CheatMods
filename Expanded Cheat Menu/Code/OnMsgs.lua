@@ -67,6 +67,50 @@ end
 
 -- use this message to mess with the classdefs (before classes are built)
 function OnMsg.ClassesGenerate()
+	if ChoGGi.UserSettings.AllLoadingScreens then
+		g_FirstLoadingScreen = false
+
+		g_LoadingScreens = {
+			"UI/SplashScreen.dds",
+			"UI/LoadingScreens/002.tga",
+			"UI/LoadingScreens/003.tga",
+			"UI/LoadingScreens/004.tga",
+			"UI/LoadingScreens/005.tga",
+			"UI/LoadingScreens/006.tga",
+			"UI/LoadingScreens/007.tga",
+			"UI/LoadingScreens/008.tga",
+			"UI/LoadingScreens/009.tga",
+			"UI/LoadingScreens/010.tga",
+			"UI/LoadingScreens/011.tga",
+			-- These were included in main game
+			"UI/LoadingScreens/GP_Green_Mars_Loading_Screen_01_Worlds.tga",
+			"UI/LoadingScreens/GP_Green_Mars_Loading_Screen_02_Pillars.tga",
+			"UI/LoadingScreens/GP_Green_Mars_Loading_Screen_03_Picnic.tga",
+			"UI/LoadingScreens/GP_Green_Mars_Loading_Screen_04_StarLake.tga",
+			"UI/LoadingScreens/GP_Green_Mars_Loading_Screen_05_Fireworks.tga",
+			"UI/LoadingScreens/GP_Green_Mars_Loading_Screen_06_Rain.tga",
+			"UI/LoadingScreens/GP_Green_Mars_Loading_Screen_07_Pines.tga",
+			"UI/LoadingScreens/GP_Green_Mars_Loading_Screen_08_Sand.tga",
+		}
+		-- These were not
+		if g_AvailableDlc.picard then
+			local screens = g_LoadingScreens
+			local c = #g_LoadingScreens
+			c = c + 1
+			screens[c] = "UI/LoadingScreens/asteroid_01.tga"
+			c = c + 1
+			screens[c] = "UI/LoadingScreens/asteroid_02.tga"
+			c = c + 1
+			screens[c] = "UI/LoadingScreens/asteroid_03.tga"
+			c = c + 1
+			screens[c] = "UI/LoadingScreens/underground_01.tga"
+			c = c + 1
+			screens[c] = "UI/LoadingScreens/underground_02.tga"
+			c = c + 1
+			screens[c] = "UI/LoadingScreens/underground_03.tga"
+		end
+	end
+
 	if ChoGGi.UserSettings.FlushLog then
 		FlushLogFile()
 	end

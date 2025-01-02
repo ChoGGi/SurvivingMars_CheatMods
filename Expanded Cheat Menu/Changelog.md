@@ -2,6 +2,7 @@
 
 ## v19.4 (Unreleased)
 ### Added:
+- ECM.Game.Interface.Toggle Use All Loading Screens: Some DLC replaces loading screens with their own, enable to use all of them.
 - ECM.Debug.Toggles>Show Console Errors: Show extra debug errors in console.
  - This was already part of ECM and enabled by default, it's turned off by default now.
 

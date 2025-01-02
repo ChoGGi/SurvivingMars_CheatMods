@@ -1,3 +1,6 @@
+v0.6
+Added a delay mod option and increased it to hopefully help with pin/build going invisible after awhile.
+
 v0.5
 Changed mod option names.
 Map zoom shouldn't go outside the map area anymore.

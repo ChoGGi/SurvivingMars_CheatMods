@@ -28,6 +28,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
+-- before GP means black screen after mods loaded
+-- Use older version of mod
+if LuaRevision < 249143 then
+	return
+end
+
 -- I should really split this into funcs and settings... one of these days
 ChoGGi = {
 	-- Anyone examining ChoGGi will see this first

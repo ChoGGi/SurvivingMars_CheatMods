@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local table, type, pairs, tostring = table, type, pairs, tostring
+local AsyncRand = AsyncRand
 local IsValidThread = IsValidThread
 local IsValid = IsValid
 local ValidateBuilding = ValidateBuilding
@@ -144,6 +145,7 @@ function OnMsg.ClassesPostprocess()
 		return ChoOrig_Colonist_EnterBuilding(self, building, ...)
 	end
 	--
+
 end
 
 --
@@ -184,8 +186,58 @@ do
  		local StoryBits = StoryBits
 		-- Just in case something changes (hah)
 		pcall(function()
-			-- No breakthrough tech for Let No Noble Deed second option (it only gives regular tech)
+			-- No breakthrough tech reward for The Door To Summer: Let No Noble Deed first/second options (they only give regular tech)
+			-- The Satoshi Nisei option doesn't mention a breakthrough, but the second option does;
+			-- One gives a colonist and the other gives money so guessing it's supposed to give a break
+			StoryBits.TheDoorToSummer_LetNoNobleDeed[3].Effects[1].Field = "Breakthroughs"
 			StoryBits.TheDoorToSummer_LetNoNobleDeed[5].Effects[1].Field = "Breakthroughs"
+
+
+			-- Blank Slate doesn't remove any applicants for options 23 (fix 1/2)
+			local slate = StoryBits.BlankSlate[9].Effects
+			slate[#slate+1] = PlaceObj("ChoGGi_RemoveApplicants", {"Amount", 20})
+			slate = StoryBits.BlankSlate[12].Effects
+			slate[#slate+1] = PlaceObj("ChoGGi_RemoveApplicants", {"Amount", 20})
+
+			-- Fhtagn! Fhtagn! "Let's wait it out" makes all colonists cowards instead of only religious ones
+			local fhtagn = StoryBits.FhtagnFhtagn[4].Effects[1].Filters
+			fhtagn[#fhtagn+1] = PlaceObj("HasTrait", {"Trait", "Religious"})
+
+			-- Dust Sickness: Deaths doesn't apply morale penalty
+			local outcome = PlaceObj("StoryBitOutcome", {
+				"Prerequisites", {},
+				"Effects", {
+					PlaceObj("ForEachExecuteEffects", {
+						"Label", "Colonist",
+						"Filters", {},
+						"Effects", {
+							PlaceObj("ModifyObject", {
+								"Prop", "base_morale",
+								"Amount", "<morale_penalty>",
+								"Sols", "<morale_penalty_duration>",
+							}),
+						},
+					}),
+				},
+			})
+			table.insert(StoryBits.DustSickness_Deaths, 5, outcome)
+			table.insert(StoryBits.DustSickness_Deaths, 7, outcome)
+			table.insert(StoryBits.DustSickness_Deaths, 9, PlaceObj("StoryBitOutcome", {
+				"Prerequisites", {},
+				"Effects", {
+					PlaceObj("ForEachExecuteEffects", {
+						"Label", "Colonist",
+						"Filters", {},
+						"Effects", {
+							PlaceObj("ModifyObject", {
+								"Prop", "base_morale",
+								"Amount", "<lower_morale_penalty>",
+								"Sols", "<morale_penalty_duration>",
+							}),
+						},
+					}),
+				},
+			}))
 
 		end)
 
@@ -1340,26 +1392,25 @@ end
 --
 -- Some storybits will show a notification, but the dialog box won't popup (the notif will just disappear)
 -- The rockets already left (and aren't valid) by the time this is called.
-local not_valid_rockets = {
-	-- TheDoorToSummer
-	TheEternalSummerFree = true,
-	-- ExportWasteRock_SplintersOfMars
-	WasteRockRocketFree = true,
-	WasteRockRocketNormal = true,
-	WasteRockRocketExpensive = true,
-}
-local ChoOrig_IsStoryBitObjectValid = IsStoryBitObjectValid
-function IsStoryBitObjectValid(obj, ...)
+-- The Door To Summer: Let No Noble Deed/Sleepers Have Awaken
+local ChoOrig_StoryBitState_OnStartRunning = StoryBitState.OnStartRunning
+function StoryBitState:OnStartRunning(...)
 	if not mod_EnableMod then
-		return ChoOrig_IsStoryBitObjectValid(obj, ...)
+		return ChoOrig_StoryBitState_OnStartRunning(self, ...)
 	end
 
-	-- instead of checking valid, just check if removed obj has correct id (can't do this for every bit though in case obj is used during rewards?)
-	if not_valid_rockets[obj.custom_id] then
-		return true
+	if self.id == "TheDoorToSummer_SleepersHaveAwaken"
+		or self.id == "TheDoorToSummer_LetNoNobleDeed"
+	then
+		self.object = false
+		-- just in case (has the same issue)
+		local sleepers = g_StoryBitStates.TheDoorToSummer_SleepersHaveAwaken
+		if sleepers then
+			sleepers.object = false
+		end
 	end
 
-	return ChoOrig_IsStoryBitObjectValid(obj, ...)
+	return ChoOrig_StoryBitState_OnStartRunning(self, ...)
 end
 
 --
@@ -1375,6 +1426,44 @@ function IsTraitAvailable(trait, ...)
 		if trait_type == "string" or trait_type == "table" then
 			return ChoOrig_IsTraitAvailable(trait, ...)
 		end
+	end
+end
+
+--
+-- When testing an unrelated mod with no dlc enabled, I noticed an error in the log
+local ChoOrig_GetCurrentLightModel = GetCurrentLightModel
+function GetCurrentLightModel(...)
+	if not mod_EnableMod then
+		return ChoOrig_GetCurrentLightModel(...)
+	end
+
+	if type(CurrentLightmodel[ActiveMapID]) == "table" then
+		return ChoOrig_GetCurrentLightModel(...)
+	end
+end
+
+--
+-- Storybit Blank Slate doesn't remove any applicants for options 23 (fix 2/2)
+DefineClass.ChoGGi_RemoveApplicants = {
+	__parents = { "Effect", },
+	properties = {
+		{ id = "Amount", help = "Set the number of applicants to remove.",
+			editor = "number", default = false,
+			buttons = { { "Param", "StoryBit_PickParam" } },
+		},
+	},
+	Description = T(0000, "Remove Applicants <Amount>"),
+	Documentation = "Remove a specific amount of applicants.",
+}
+function ChoGGi_RemoveApplicants:Execute(map_id, obj, context)
+	-- I doubt it's needed but...
+	if type(self.Amount) ~= "number" then
+		return
+	end
+
+	local pool = g_ApplicantPool
+	for _ = 1, self.Amount do
+		table.remove(pool, AsyncRand(#pool)+1)
 	end
 end
 
