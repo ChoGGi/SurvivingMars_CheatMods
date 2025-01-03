@@ -714,6 +714,7 @@ function ChoGGi_XWindow:AddCloseXButton(params)
 
 			-- stuff from my other dialogs
 			if self.CloseXButtonFunc then
+				-- Close other dialogs (from Examine)
 				abort = self:CloseXButtonFunc(...)
 			end
 

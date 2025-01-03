@@ -1,3 +1,6 @@
+v0.9
+Added button to landscape construction sites to reset the size of the landscaping area (new ones not existing).
+
 v0.8
 enlarge/shrink override wasn't working (error in log).
 

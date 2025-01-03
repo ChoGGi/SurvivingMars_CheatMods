@@ -1,3 +1,6 @@
+v0.4
+Made them pinnable.
+
 v0.3
 Added all animals (all enabled by default).
 Animals get a random human name.

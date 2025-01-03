@@ -7,9 +7,13 @@
  - This was already part of ECM and enabled by default, it's turned off by default now.
 
 ### Changed:
+- Object Cloner no longer centres in a hex.
 - SetGameSpeed has a couple faster options to really speed up waiting.
 - A couple of the console menu items can be right-clicked to paste func into console.
 - ToggleFuncHook defaults to everything instead of just mod paths.
+
+### Fixed:
+- When cloning barrel dome at non-default angle grass texture gets stuck on ground.
 
 ## v19.3 (17 Nov 2024)
 ### Changed:

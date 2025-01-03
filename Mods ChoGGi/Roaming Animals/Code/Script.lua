@@ -12,6 +12,20 @@ end
 -- Almost a complete copy pasta of my Alien Visitors mod...
 -- The roaming part at least, this adds the other models/limits to when to spawn
 
+local can_graze = {
+	Deer = true,
+	Goose = true,
+	Lama_Ambient = true,
+	Ostrich = true,
+	Pig = true,
+	Pony_01 = true,
+	Pony_02 = true,
+	Pony_03 = true,
+	Rabbit_01 = true,
+	Rabbit_02 = true,
+	Turkey = true,
+}
+
 local animals = {
 	{"Chicken", T(299174615385--[[Chicken]])},
 	Chicken = {"Chicken", T(299174615385--[[Chicken]])},
@@ -117,8 +131,8 @@ OnMsg.ModsReloaded = ModOptions
 OnMsg.ApplyModOptions = ModOptions
 
 DefineClass.ChoGGi_RoamingAnimal = {
-	__parents = { "Unit", "Shapeshifter", "InfopanelObj"},
-	-- slightly slower than colonists (wonder why Child doesn't move slower an Adult)
+	__parents = { "Unit", "Shapeshifter", "InfopanelObj", "PinnableObject"},
+	-- slightly slower than colonists (wonder why Child doesn't move slower an Adult or vice vs)
 	move_speed = 800,
 	radius = 30*guic,
 	collision_radius = 30*guic,
@@ -133,7 +147,19 @@ DefineClass.ChoGGi_RoamingAnimal = {
 
 	-- don't hang out with same animal type too often
 	nearby_hangout_count = 0,
+
+	pin_rollover = T(51, "<ui_command>"),
+	-- "generic" icon to use in pins dialog
+	display_icon = "UI/Icons/Buildings/boomerang_garden.tga",
 }
+
+-- pin info
+function ChoGGi_RoamingAnimal:Getui_command()
+	return self.command .. "<newline><left>"
+end
+
+-- Remove directional arrow
+ChoGGi_RoamingAnimal.CreateSelectionArrow = empty_func
 
 function ChoGGi_RoamingAnimal:GetDisplayName()
 	return self.display_name or self:GetEntity()
@@ -283,7 +309,12 @@ function ChoGGi_RoamingAnimal:RoamTick()
 	if rand < 3 and self.nearby_hangout_count < 10 then
 		self.nearby_hangout_count = self.nearby_hangout_count + 1
 
-		self:SetState("graze")
+		-- basically just tort and peng can't
+		if can_graze[self.entity] then
+			self:SetState("graze")
+		else
+			self:SetState("idle")
+		end
 		Sleep(mod_RandomGrazeTime + self:Random(25000))
 	elseif rand < 7 and self.nearby_hangout_count < 10 then
 		self.nearby_hangout_count = self.nearby_hangout_count + 1
@@ -397,13 +428,13 @@ function OnMsg.NewDay()
 		SetPosRandomBuildablePos(obj)
 	end
 
---~ 	-- testing
---~ 	if ChoGGi.testing then
---~ 		for _ = 1, 600 do
---~ 			local obj = ChoGGi_RoamingAnimal:new()
---~ 			ChoGGi_Funcs.Common.SetPosRandomBuildablePos(obj)
---~ 		end
---~ 	end
+	-- testing
+	if ChoGGi.testing then
+		for _ = 1, 600 do
+			local obj = ChoGGi_RoamingAnimal:new()
+			ChoGGi_Funcs.Common.SetPosRandomBuildablePos(obj)
+		end
+	end
 end
 
 -- kill off the threads (spews c func persist errors in log)

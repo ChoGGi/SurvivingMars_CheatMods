@@ -5398,9 +5398,15 @@ end
 
 function ChoGGi_Funcs.Common.CloseDialogsECM(skip)
 	local desktop = terminal.desktop
+	-- Always go backwards when removing stuff from an indexed table
 	for i = #desktop, 1, -1 do
 		local dlg = desktop[i]
-		if dlg ~= skip and dlg:IsKindOf("ChoGGi_XWindow") then
+		-- skip is usually self which is already being closed (and probably has some other stuff to do)
+		if dlg ~= skip
+			and dlg:IsKindOf("ChoGGi_XWindow")
+			-- Don't close console log (it's more "perm" than others)
+			and not dlg:IsKindOf("ChoGGi_DlgConsoleLogWin")
+		then
 			dlg:Close()
 		end
 	end
@@ -8089,7 +8095,6 @@ function ChoGGi_Funcs.Common.ObjectCloner(flat, obj, centre)
 	if not IsValid(obj) then
 		obj = ChoGGi_Funcs.Common.SelObject()
 	end
-
 	if not IsValid(obj) then
 		return
 	end
@@ -8101,17 +8106,19 @@ function ChoGGi_Funcs.Common.ObjectCloner(flat, obj, centre)
 		return
 	end
 
+	local map_id = obj:GetMapID()
 	local concrete = obj:IsKindOf("TerrainDepositConcrete")
 
 	local clone
 	-- make regolith work with Harvester
 	if concrete then
-		clone = TerrainDepositMarker:new()
+		clone = PlaceObjectIn("TerrainDepositMarker", map_id)
 		clone:CopyProperties(obj)
 	-- clone dome = crashy
 	elseif obj:IsKindOf("Dome") then
-		clone = g_Classes[obj.class]:new()
-		clone:CopyProperties(obj)
+		clone = PlaceObjectIn(obj.class, map_id)
+		-- if not default pos than grass is bugged for DomeHexa (and maybe others)
+		ChoGGi_Funcs.Common.CopyProperties(clone, obj, nil, {Pos=true})
 	else
 		clone = obj:Clone()
 	end
@@ -8136,18 +8143,20 @@ function ChoGGi_Funcs.Common.ObjectCloner(flat, obj, centre)
 		pos = HexGetNearestCenter(pos)
 	end
 
-	if flat == true or flat.flatten_to_ground == true then
+	clone:SetPos(pos)
+
+	if flat == true or flat and flat.flatten_to_ground == true then
 		pos = pos:SetTerrainZ()
 	end
 
-	clone:SetPos(pos)
 
 	if concrete then
 		clone:SpawnDeposit()
 	end
 
 	-- update flight grid for shuttles
-	FlightCaches[RetObjMapId(clone, nil, true)]:OnHeightChanged()
+--~ 	FlightCaches[RetObjMapId(clone, nil, true)]:OnHeightChanged()
+	FlightCaches[map_id]:OnHeightChanged()
 
 	return clone
 end
@@ -8343,6 +8352,31 @@ function ChoGGi_Funcs.Common.GetCityLabels(label)
 	local UIColony = UIColony
 	local labels = UIColony and UIColony.city_labels.labels or UICity.labels
 	return labels[label] or empty_table
+end
+
+-- lua rev 1011166
+-- copy pasta of function PropertyObject:CopyProperties(source, properties)
+function ChoGGi_Funcs.Common.CopyProperties(to, from, properties, skip)
+	if not skip then
+		skip = empty_table
+	end
+
+  properties = properties or to:GetProperties()
+  for i = 1, #properties do
+    local prop = properties[i]
+    if not prop.dont_save then
+      local prop_id = prop.id
+			if not skip[prop_id] then
+				local value = from:GetProperty(prop_id)
+				local is_default = false
+				local default = to:GetDefaultPropertyValue(prop_id, prop)
+				is_default = value == nil or value == default
+				if not is_default then
+					to:SetProperty(prop_id, value)
+				end
+			end
+    end
+  end
 end
 
 -- Be removed sometime (see Examine.lua)

@@ -1,10 +1,12 @@
 ## Library Changelog
 
 ## v12.4 (Unreleased)
+- Added CopyProperties(): Lets you skip certain properties when copying.
 - Cleaned up how GetNearestIdleDrone looks for drones.
 - RetName was showing weird crap for numbers.
 - Moved RetThreadInfo/FindThreadFunc from ECM to Lib.
 ### Examine:
+- Holding Ctrl and closing an examine dialog by pressing X will no longer close the console log dialog.
 - Cleaned up ThreadsRegister results.
 - Shows more info for some tables.
 

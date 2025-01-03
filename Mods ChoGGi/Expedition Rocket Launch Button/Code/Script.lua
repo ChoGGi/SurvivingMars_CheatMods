@@ -8,7 +8,8 @@ function OnMsg.ClassesPostprocess()
 
 	table.insert(building, 1, PlaceObj("XTemplateTemplate", {
 		"ChoGGi_Template_ChoGGi_ForceLaunch", true,
-		"Id", "idLaunch",
+		"Id", "ChoGGi_Template_ChoGGi_ForceLaunch",
+--~ 		"Id", "idLaunch",
 		"comment", "force launch",
 		"__template", "InfopanelButton",
 		"RolloverText", T(625375195830, "Initiates launch sequence for the return trip to Earth. Note that the rocket has to be refueled and any remaining resources on board will be lost.<newline><newline>Status: <em><UILaunchStatus></em>"),
