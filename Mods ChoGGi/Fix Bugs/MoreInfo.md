@@ -250,9 +250,9 @@ If you're starting a new game than this is fixed, but for older saves on this my
 
 **Fix Landscaping Freeze**
 
-For some reason LandscapeLastMark gets set to around 4090, when LandscapeMark hits 4095 bad things happen.
+When LandscapeMark hits 4095 bad things happen.
 
-This resets LandscapeLastMark to whatever is the highest number in Landscapes when a save is loaded (assuming it's under 2000, otherwise 0).
+This checks each new day and resets LandscapeLastMark to whatever is the highest number in Landscapes (assuming it's under 3000, otherwise 0).
 
 For those wondering LandscapeLastMark is increased each time you open flatten/ramp (doesn't need to be placed).
 

@@ -16,6 +16,8 @@ local IsKindOf = IsKindOf
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local GetBuildingTechsStatus = GetBuildingTechsStatus
+-- Fix for Silva's Orion Rocket mod (part 1, backing up the func he overrides)
+local ChoOrig_PlacePlanet = PlacePlanet
 
 local empty_table = empty_table
 
@@ -31,7 +33,6 @@ local mod_NoFlyingDronesUnderground
 
 local function UpdateMap(game_map)
 	-- Suspend funcs speed up "doing stuff"
---~ 	local game_map = ActiveGameMap
 	game_map.realm:SuspendPassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
 	SuspendTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
 	game_map:RefreshBuildableGrid()
@@ -43,7 +44,6 @@ local function FixUnevenTerrain(game_map)
 	if game_map then
 		UpdateMap(game_map)
 	else
-		local GameMaps = GameMaps
 		for _, map in pairs(GameMaps) do
 			UpdateMap(map)
 		end
@@ -76,18 +76,14 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
---
--- Fix for Silva's Orion Rocket mod (part 1, backing up the func he overrides)
-local ChoOrig_PlacePlanet = PlacePlanet
-
---
--- The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
--- I could add something to check if this is being called multiple times per unpause, but it's not doing much
 function OnMsg.SectorScanned()
 	if not mod_EnableMod then
 		return
 	end
 
+	--
+	-- The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
+	-- I could add something to check if this is being called multiple times per unpause, but it's not doing much
 	-- Check if we're on the right mystery
 	local stone_seq
 	local players = s_SeqListPlayers or ""
@@ -123,6 +119,36 @@ function OnMsg.SectorScanned()
 			stone_seq.registers._sectors_scanned = count
 		end)
 	end
+
+end
+
+function OnMsg.NewDay()
+	if not mod_EnableMod then
+		return
+	end
+
+	--
+	-- Fix Landscaping Freeze
+	local Landscapes = Landscapes
+	if Landscapes and next(Landscapes) then
+		-- If there's placed landscapes grab the largest number
+		local largest = 0
+		for idx in pairs(Landscapes) do
+			if idx > largest then
+				largest = idx
+			end
+		end
+		-- If over 3K then reset to 0
+		if largest > 3000 then
+			LandscapeLastMark = 0
+		else
+			LandscapeLastMark = largest + 1
+		end
+	else
+		-- No landscapes so 0 it is
+		LandscapeLastMark = 0
+	end
+
 end
 
 --
@@ -165,10 +191,10 @@ do
 			return
 		end
 
-		-- speed up deleting/etc objs
-		SuspendPassEdits("ChoGGi_FixBBBugs_loading")
+		-- Speed up adding/deleting/etc objs
+		SuspendPassEdits("ChoGGi_FixBBBugs_Startup")
 
-		-- if this is called on a save from before B&B (it does update, but after LoadGame)
+		-- If this is called on a save from before B&B (it does update, but after LoadGame)
 		local main_city = MainCity or UICity
 
 		local main_realm = GetRealmByID(MainMapID)
@@ -180,6 +206,139 @@ do
 		local BuildingTemplates = BuildingTemplates
  		local CargoPreset = CargoPreset
 		local objs
+
+		-- Anything that only needs a specific event
+		if event == "LoadGame" then
+
+			--
+			-- Gene Forging tech doesn't increase rare traits chance.
+			-- See OnMsg.TechResearched below for more info about GeneForging
+			if UIColony:IsTechResearched("GeneForging") then
+				TechDef.GeneSelection.param1 = 150
+			end
+
+			--
+			-- Fix Defence Towers Not Firing At Rovers (1/2)
+			if #(main_city.labels.HostileAttackRovers or "") > 0 then
+				UIColony.mystery.can_shoot_rovers = true
+			end
+
+			--
+			-- Update all maps for uneven terrain (if using mod that allows landscaping maps other than surface)
+			if mod_UnevenTerrain then
+				FixUnevenTerrain()
+			end
+
+			--
+			-- Fix FindDroneToRepair Log Spam
+			local broke = g_BrokenDrones
+			for i = #broke, 1, -1 do
+				if not IsValid(broke[i]) then
+					table.remove(broke, i)
+				end
+			end
+
+			--
+			-- Fix Destroyed Tunnels Still Work
+			-- Update path finding tunnels to stop rovers from using them
+			main_realm:MapForEach("map", "Tunnel", function(t)
+				t:RemovePFTunnel()
+				t:AddPFTunnel()
+			end)
+
+			--
+			-- If you removed modded rules from your current save then the Mission Profile dialog will be blank.
+			local rules = g_CurrentMissionParams.idGameRules
+			if rules then
+				local GameRulesMap = GameRulesMap
+				for rule_id in pairs(rules) do
+					-- If it isn't in the map then it isn't a valid rule
+					if not GameRulesMap[rule_id] then
+						rules[rule_id] = nil
+					end
+				end
+			end
+
+			--
+			-- Wind turbine gets locked by a game event.
+			local bmpo = BuildMenuPrerequisiteOverrides
+			if bmpo.WindTurbine
+				and TGetID(bmpo.WindTurbine) == 401896326435--[[You can't construct this building at this time]]
+			then
+				bmpo.WindTurbine = nil
+			end
+
+			--
+			-- Removes any meteorites stuck on the map.
+			local meteors = main_realm:MapGet("map", "BaseMeteor")
+			for i = #meteors, 1, -1 do
+				local obj = meteors[i]
+
+				-- Same pt as the dest means stuck on ground
+				if obj:GetPos() == obj.dest
+				-- Stuck on roof of dome
+					or not IsValidThread(obj.fall_thread)
+				then
+					DoneObject(obj)
+				end
+			end
+
+		elseif event == "CityStart" then
+
+			--
+			-- Possible fix for main menu music not stopping when starting a new game
+			-- Hopefully delay helps?
+			CreateRealTimeThread(function()
+				Sleep(5000)
+				-- What the game usually does
+				SetMusicPlaylist("")
+				Sleep(1000)
+				-- Make sure menu music is stopped... Hopefully
+				Music = Music or MusicClass:new()
+				Music:StopTrack(false)
+				Sleep(1000)
+				StartRadioStation(GetStoredRadioStation())
+			end)
+
+		end
+
+		--
+		-- Anything that needs to loop through GameMaps
+		local ElectricityGridObject_GameInit = ElectricityGridObject.GameInit
+		for _, map in pairs(GameMaps) do
+
+			--
+			-- Remove stuck cursor buildings (reddish coloured).
+			map.realm:MapDelete("map", "CursorBuilding")
+
+			--
+			-- Fix No Power Dome Buildings
+			map.realm:MapGet("map", "ElectricityGridObject", function(obj)
+				-- should be good enough to not get false positives?
+				if obj.working == false and obj.signs and obj.signs.SignNoPower and ValidateBuilding(obj.parent_dome)
+					and obj.electricity and not obj.electricity.parent_dome
+				then
+					obj:DeleteElectricity()
+					ElectricityGridObject_GameInit(obj)
+				end
+			end)
+
+			--
+			-- Leftover particles from re-fabbing rare extractors with particles attached (concrete/reg metals seem okay)
+			-- Leftover from before my fix to stop it from happening
+			map.realm:MapGet("map", "ParSystem", function(par_obj)
+				local par_name = par_obj:GetParticlesName()
+				if par_name == "UniversalExtractor_Steam_02"
+					or par_name == "UniversalExtractor_Smoke"
+				then
+					local q, r = WorldToHex(par_obj:GetPos())
+					if not map.object_hex_grid:GetObject(q, r, "PreciousMetalsExtractor") then
+						DoneObject(par_obj)
+					end
+				end
+			end)
+
+		end
 
 		--
 		-- Fix Storybits
@@ -241,6 +400,15 @@ do
 
 		end)
 
+		-- New fixes go here
+		--
+		--
+		--
+		--
+		--
+		--
+		--
+
 		--
 		-- Rivals Trade Minerals mod hides Exotic Minerals from lander UI
 		if table.find(ModsLoaded, "id", "LH_RivalsMinerals") then
@@ -251,45 +419,6 @@ do
 			end
 			ResupplyItemsInit()
 		end
-
-		--
-		-- Anything that needs to loop through GameMaps
-		local ElectricityGridObject_GameInit = ElectricityGridObject.GameInit
-		for _, map in pairs(GameMaps) do
-
-			--
-			-- Remove stuck cursor buildings (reddish coloured).
-			map.realm:MapDelete("map", "CursorBuilding")
-
-			--
-			-- Fix No Power Dome Buildings
-			map.realm:MapGet("map", "ElectricityGridObject", function(obj)
-				-- should be good enough to not get false positives?
-				if obj.working == false and obj.signs and obj.signs.SignNoPower and ValidateBuilding(obj.parent_dome)
-					and obj.electricity and not obj.electricity.parent_dome
-				then
-					obj:DeleteElectricity()
-					ElectricityGridObject_GameInit(obj)
-				end
-			end)
-
-			--
-			-- Leftover particles from re-fabbing rare extractors with particles attached (concrete/reg metals seem okay)
-			-- Leftover from before my fix to stop it from happening
-			map.realm:MapGet("map", "ParSystem", function(par_obj)
-				local par_name = par_obj:GetParticlesName()
-				if par_name == "UniversalExtractor_Steam_02"
-					or par_name == "UniversalExtractor_Smoke"
-				then
-					local q, r = WorldToHex(par_obj:GetPos())
-					if not map.object_hex_grid:GetObject(q, r, "PreciousMetalsExtractor") then
-						DoneObject(par_obj)
-					end
-				end
-			end)
-
-		end
-		-- for GameMaps end
 
 		--
 		-- tech_field log spam from a mod
@@ -335,30 +464,6 @@ do
 		end
 
 		--
-		-- See OnMsg.TechResearched below for more info about GeneForging
-		if event == "LoadGame" and UIColony:IsTechResearched("GeneForging") then
-			TechDef.GeneSelection.param1 = 150
-		end
-
-		--
-		-- Possible fix for main menu music not stopping when starting a new game
-		if event == "CityStart" then
-			-- Hopefully delay helps?
-			CreateRealTimeThread(function()
-				Sleep(5000)
-				-- What the game usually does
-				SetMusicPlaylist("")
-				Sleep(1000)
-				-- Make sure menu music is stopped... Hopefully
-				Music = Music or MusicClass:new()
-				Music:StopTrack(false)
-				Sleep(1000)
-				StartRadioStation(GetStoredRadioStation())
-			end)
-
-		end
-
-		--
 		-- Fix Future Contemporary Asset Pack when placing spires.
 		if g_AvailableDlc.ariane then
 			local hex = HexOutlineShapes.PeakNodeCCP2
@@ -367,7 +472,7 @@ do
 				-- Removing HexOutlineShapes seems to fix it, but it doesn't hurt to remove HexCombinedShapes as well.
 				table.remove(HexCombinedShapes.PeakNodeCCP2, 6)
 
-				-- The other buildings
+				-- The other borked buildings
 				table.remove(HexOutlineShapes.FusionArcologyCCP2, 6)
 				table.remove(HexCombinedShapes.FusionArcologyCCP2, 6)
 				table.remove(HexOutlineShapes.VerticalGardenCCP2, 6)
@@ -376,61 +481,9 @@ do
 		end
 
 		--
-		-- Fix Landscaping Freeze
-		-- If there's placed landscapes grab the largest number
-		local Landscapes = Landscapes
-		if Landscapes and next(Landscapes) then
-			local largest = 0
-			for idx in pairs(Landscapes) do
-				if idx > largest then
-					largest = idx
-				end
-			end
-			-- If over 2K then reset to 0
-			if largest > 2000 then
-				LandscapeLastMark = 0
-			else
-				LandscapeLastMark = largest + 1
-			end
-		else
-			-- No landscapes so 0 it is
-			LandscapeLastMark = 0
-		end
-
-		--
-		-- Update all maps for uneven terrain (if using mod that allows landscaping maps other than surface)
-		if mod_UnevenTerrain then
-			FixUnevenTerrain()
-		end
-
-		--
 		-- Fix for Silva's Orion Heavy Rocket mod (part 2, restoring the original func)
 		-- He only calls the original func when the rocket mod isn't installed, so I have to remove it completely.
 		PlacePlanet = ChoOrig_PlacePlanet
-
-		--
-		-- Fix FindDroneToRepair Log Spam
-		local broke = g_BrokenDrones
-		for i = #broke, 1, -1 do
-			if not IsValid(broke[i]) then
-				table.remove(broke, i)
-			end
-		end
-
-		--
-		-- Fix Destroyed Tunnels Still Work: update path finding tunnels to stop rovers from using them
-		main_realm:MapForEach("map", "Tunnel", function(t)
-			t:RemovePFTunnel()
-			t:AddPFTunnel()
-		end)
-
-		--
-		-- Force heat grid to update (if you paused game on new game load then cold areas don't update till you get a working Subsurface Heater).
-		CreateGameTimeThread(function()
-			-- When game isn't paused wait 5 secs and call it for main city (no cold areas underground?, eh can always do it later).
-			Sleep(5000)
-			GetGameMapByID(MainMapID).heat_grid:WaitLerpFinish()
-		end)
 
 		--
 		-- Add Xeno-Extraction tech to Automatic Metals Extractor, Micro-G Extractors, RC Harvester, and RC Driller
@@ -470,50 +523,9 @@ do
 		end
 
 		--
-		-- Fix Defence Towers Not Firing At Rovers (1/2)
-		if #(main_city.labels.HostileAttackRovers or "") > 0 then
-			UIColony.mystery.can_shoot_rovers = true
-		end
-
-		--
 		-- Probably from a mod?
 		if type(g_ActiveOnScreenNotifications) ~= "table" then
 			g_ActiveOnScreenNotifications = {}
-		end
-
-		--
-		-- If you removed modded rules from your current save then the Mission Profile dialog will be blank.
-		local rules = g_CurrentMissionParams.idGameRules
-		if rules then
-			local GameRulesMap = GameRulesMap
-			for rule_id in pairs(rules) do
-				-- If it isn't in the map then it isn't a valid rule
-				if not GameRulesMap[rule_id] then
-					rules[rule_id] = nil
-				end
-			end
-		end
-
-		--
-		-- Wind turbine gets locked by a game event.
-		local bmpo = BuildMenuPrerequisiteOverrides
-		if bmpo.WindTurbine and TGetID(bmpo.WindTurbine) == 401896326435--[[You can't construct this building at this time]] then
-			bmpo.WindTurbine = nil
-		end
-
-		--
-		-- Removes any meteorites stuck on the map when you load a save.
-		local meteors = main_realm:MapGet("map", "BaseMeteor")
-		for i = #meteors, 1, -1 do
-			local obj = meteors[i]
-
-			-- Same pt as the dest means stuck on ground
-			if obj:GetPos() == obj.dest
-			-- Stuck on roof of dome
-				or not IsValidThread(obj.fall_thread)
-			then
-				DoneObject(obj)
-			end
 		end
 
 		--
@@ -536,186 +548,200 @@ do
 		-------- GetCityLabels below --------
 
 		--
-		-- Fix Shuttles Stuck Mid-Air (req has an invalid building)
-		CreateRealTimeThread(function()
-			Sleep(1000)
-			objs = GetCityLabels("CargoShuttle")
-			local reset_shuttles = {}
-			local c = 0
+		-- Force heat grid to update (if you paused game on new game load then cold areas don't update till you get a working Subsurface Heater).
+		objs = GetCityLabels("SubsurfaceHeater")
+		if #objs == 0 then
+			CreateGameTimeThread(function()
+				-- When game isn't paused wait 5 secs and call it for main city (no cold areas underground?, eh can always do it later).
+				Sleep(5000)
+				GetGameMapByID(MainMapID).heat_grid:WaitLerpFinish()
+			end)
+		end
+
+		if event == "LoadGame" then
+
+			--
+			-- Fix Shuttles Stuck Mid-Air (req has an invalid building)
+			CreateRealTimeThread(function()
+				Sleep(1000)
+				objs = GetCityLabels("CargoShuttle")
+				local reset_shuttles = {}
+				local c = 0
+				for i = 1, #objs do
+					local obj = objs[i]
+					if obj.command == "Idle" then
+						-- Remove borked requests
+						local req = obj.assigned_to_d_req and obj.assigned_to_d_req[1]
+						if type(req) == "userdata" and req.GetBuilding and not IsValid(req:GetBuilding()) then
+							obj.assigned_to_d_req[1]:UnassignUnit(obj.assigned_to_d_req[2], false)
+							obj.assigned_to_d_req = false
+						end
+
+						req = obj.assigned_to_s_req and obj.assigned_to_s_req[1]
+						if type(req) == "userdata" and req.GetBuilding and not IsValid(req:GetBuilding()) then
+							obj.assigned_to_s_req[1]:UnassignUnit(obj.assigned_to_s_req[2], false)
+							obj.assigned_to_s_req = false
+						end
+						c = c + 1
+						reset_shuttles[c] = obj
+					end
+				end
+				-- Reset stuck shuttles
+				Sleep(1000)
+				for i = 1, #reset_shuttles do
+					local obj = reset_shuttles[i]
+					if IsValid(obj) then
+						obj:Idle()
+						obj:SetCommand("GoHome")
+					end
+				end
+
+			end)
+
+			--
+			-- St. Elmo's Fire: Stop meteoroids from destroying sinkholes (existing saves)
+			objs = GetCityLabels("Sinkhole")
+			for i = 1, #objs do
+				objs[i].indestructible = true
+			end
+
+			--
+			-- Fix Buildings Broken Down And No Repair
+			objs = GetCityLabels("Building")
 			for i = 1, #objs do
 				local obj = objs[i]
-				if obj.command == "Idle" then
-					-- Remove borked requests
-					local req = obj.assigned_to_d_req and obj.assigned_to_d_req[1]
-					if type(req) == "userdata" and req.GetBuilding and not IsValid(req:GetBuilding()) then
-						obj.assigned_to_d_req[1]:UnassignUnit(obj.assigned_to_d_req[2], false)
-						obj.assigned_to_d_req = false
+
+				-- clear out non-task requests in task_requests
+				local task_requests = obj.task_requests or ""
+				for j = #task_requests, 1, -1 do
+					local req = task_requests[j]
+					if type(req) ~= "userdata" then
+						table.remove(task_requests, j)
 					end
-
-					req = obj.assigned_to_s_req and obj.assigned_to_s_req[1]
-					if type(req) == "userdata" and req.GetBuilding and not IsValid(req:GetBuilding()) then
-						obj.assigned_to_s_req[1]:UnassignUnit(obj.assigned_to_s_req[2], false)
-						obj.assigned_to_s_req = false
-					end
-					c = c + 1
-					reset_shuttles[c] = obj
 				end
-			end
-			-- Reset stuck shuttles
-			Sleep(1000)
-			for i = 1, #reset_shuttles do
-				local obj = reset_shuttles[i]
-				if IsValid(obj) then
-					obj:Idle()
-					obj:SetCommand("GoHome")
-				end
-			end
 
-		end)
+				-- Buildings hit with lightning during a cold wave
+				if obj.is_malfunctioned and obj.accumulated_maintenance_points == 0 then
+					obj:AccumulateMaintenancePoints(obj.maintenance_threshold_base * 2)
 
-		--
-		-- St. Elmo's Fire: Stop meteoroids from destroying sinkholes (existing saves)
-		objs = GetCityLabels("Sinkhole")
-		for i = 1, #objs do
-			objs[i].indestructible = true
-		end
-
-		--
-		-- Fix Buildings Broken Down And No Repair
-		objs = GetCityLabels("Building")
-		for i = 1, #objs do
-			local obj = objs[i]
-
-			-- clear out non-task requests in task_requests
-			local task_requests = obj.task_requests or ""
-			for j = #task_requests, 1, -1 do
-				local req = task_requests[j]
-				if type(req) ~= "userdata" then
-					table.remove(task_requests, j)
+				-- Exceptional circumstance buildings
+				elseif not obj.maintenance_resource_request and obj:DoesMaintenanceRequireResources() then
+					-- restore main res request
+					local resource_unit_count = 1 + (obj.maintenance_resource_amount / (const.ResourceScale * 10)) --1 per 10
+					local r_req = obj:AddDemandRequest(obj.maintenance_resource_type, 0, 0, resource_unit_count)
+					obj.maintenance_resource_request = r_req
+					obj.maintenance_request_lookup[r_req] = true
+					-- needs to be fired off to complete the reset?
+					obj:SetExceptionalCircumstancesMaintenance(obj.maintenance_resource_type, 1)
+					obj:Setexceptional_circumstances(false)
 				end
 			end
 
-			-- Buildings hit with lightning during a cold wave
-			if obj.is_malfunctioned and obj.accumulated_maintenance_points == 0 then
-				obj:AccumulateMaintenancePoints(obj.maintenance_threshold_base * 2)
-
-			-- Exceptional circumstance buildings
-			elseif not obj.maintenance_resource_request and obj:DoesMaintenanceRequireResources() then
-				-- restore main res request
-				local resource_unit_count = 1 + (obj.maintenance_resource_amount / (const.ResourceScale * 10)) --1 per 10
-				local r_req = obj:AddDemandRequest(obj.maintenance_resource_type, 0, 0, resource_unit_count)
-				obj.maintenance_resource_request = r_req
-				obj.maintenance_request_lookup[r_req] = true
-				-- needs to be fired off to complete the reset?
-				obj:SetExceptionalCircumstancesMaintenance(obj.maintenance_resource_type, 1)
-				obj:Setexceptional_circumstances(false)
-			end
-		end
-
-		--
-		local GetDomeAtPoint = GetDomeAtPoint
-		objs = GetCityLabels("Colonist")
-		for i = 1, #objs do
-			local colonist = objs[i]
-
-			-- Some colonists are allergic to doors and suffocate inside a dome with their suit still on.
-			-- Check if lemming is currently in a dome while wearing a suit
-			if colonist.entity:sub(1, 15) == "Unit_Astronaut_" then
-				local grid = GameMaps[colonist.city.map_id].object_hex_grid
-				local dome_at_pt = GetDomeAtPoint(grid, colonist:GetVisualPos())
-				if dome_at_pt then
-					-- Normally called when they go through the airlock
-					colonist:OnEnterDome(dome_at_pt)
-					-- The colonist will wait around for a bit till they start moving, this forces them to do something
-					colonist:SetCommand("Idle")
-				end
-			end
-
-			-- Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC)
-			local ticket = colonist.transport_ticket
-			if ticket and ticket.reason and ticket.reason == "Idle" then
-				if not IsValid(ticket.dst_station)
-					or not IsValid(ticket.src_station)
-				then
-					colonist.transport_ticket = nil
-				end
-			end
-
-		end -- GetCityLabels("Colonist")
-
-		--
-		-- Fix Farm Oxygen 1
-		if mod_FarmOxygen then
-			objs = GetCityLabels("Dome")
+			--
+			local GetDomeAtPoint = GetDomeAtPoint
+			objs = GetCityLabels("Colonist")
 			for i = 1, #objs do
-				local dome = objs[i]
-				local mods = dome:GetPropertyModifiers("air_consumption")
-				if mods then
-					local farms = dome.labels.Farm or empty_table
-					-- Backwards?
-					for j = #mods, 1, -1 do
-						local mod_item = mods[j]
-						local idx = table.find(farms, "farm_id", mod_item.id)
-						-- Can't find farm id, so it's a removed farm
-						if not idx then
-							dome:SetModifier("air_consumption", mod_item.id, 0, 0)
+				local colonist = objs[i]
+
+				-- Some colonists are allergic to doors and suffocate inside a dome with their suit still on.
+				-- Check if lemming is currently in a dome while wearing a suit
+				if colonist.entity:sub(1, 15) == "Unit_Astronaut_" then
+					local grid = GameMaps[colonist.city.map_id].object_hex_grid
+					local dome_at_pt = GetDomeAtPoint(grid, colonist:GetVisualPos())
+					if dome_at_pt then
+						-- Normally called when they go through the airlock
+						colonist:OnEnterDome(dome_at_pt)
+						-- The colonist will wait around for a bit till they start moving, this forces them to do something
+						colonist:SetCommand("Idle")
+					end
+				end
+
+				-- Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC)
+				local ticket = colonist.transport_ticket
+				if ticket and ticket.reason and ticket.reason == "Idle" then
+					if not IsValid(ticket.dst_station)
+						or not IsValid(ticket.src_station)
+					then
+						colonist.transport_ticket = nil
+					end
+				end
+
+			end -- GetCityLabels("Colonist")
+
+			--
+			-- Fix Farm Oxygen 1
+			if mod_FarmOxygen then
+				objs = GetCityLabels("Dome")
+				for i = 1, #objs do
+					local dome = objs[i]
+					local mods = dome:GetPropertyModifiers("air_consumption")
+					if mods then
+						local farms = dome.labels.Farm or empty_table
+						-- Backwards?
+						for j = #mods, 1, -1 do
+							local mod_item = mods[j]
+							local idx = table.find(farms, "farm_id", mod_item.id)
+							-- Can't find farm id, so it's a removed farm
+							if not idx then
+								dome:SetModifier("air_consumption", mod_item.id, 0, 0)
+							end
+						end
+						dome:UpdateWorking()
+					end
+				end
+			end
+
+			--
+			-- https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-game-freezes-when-deploying-drones-from-rc-commander-after-one-was-destroyed.1168779/
+			objs = GetCityLabels("RCRoverAndChildren")
+			for i = 1, #objs do
+				local attached_drones = objs[i].attached_drones
+				for j = #attached_drones, 1, -1 do
+					if not IsValid(attached_drones[j]) then
+						table.remove(attached_drones, j)
+					end
+				end
+			end
+
+			--
+			-- Check for transport rovers with negative amounts of resources carried.
+			objs = GetCityLabels("RCTransportAndChildren")
+			for i = 1, #objs do
+				local obj = objs[i]
+				for j = 1, #(obj.storable_resources or "") do
+					local res = obj.storable_resources[j]
+					if obj.resource_storage[res] and obj.resource_storage[res] < 0 then
+						obj.resource_storage[res] = 0
+					end
+				end
+			end
+
+			--
+			-- Fix Stuck Malfunctioning Drones At DroneHub
+			local positions = {}
+			local radius = 100 * guim
+			local InvalidPos = InvalidPos()
+
+			objs = GetCityLabels("DroneHub")
+			for i = 1, #objs do
+				table.clear(positions)
+
+				local hub = objs[i]
+				for j = 1, #(hub.drones or "") do
+					local drone = hub.drones[j]
+					local pos = drone:GetVisualPos()
+					if pos == InvalidPos and drone.command == "Malfunction" then
+						-- Make sure they're not all bunched up
+						if not positions[tostring(pos)] then
+							local new_pos = GetRandomPassableAroundOnMap(hub.city.map_id, hub:GetPos(), radius)
+							drone:SetPos(new_pos)
+							positions[tostring(new_pos)] = true
 						end
 					end
-					dome:UpdateWorking()
 				end
 			end
+
 		end
-
-		--
-		-- https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-game-freezes-when-deploying-drones-from-rc-commander-after-one-was-destroyed.1168779/
-		objs = GetCityLabels("RCRoverAndChildren")
-		for i = 1, #objs do
-			local attached_drones = objs[i].attached_drones
-			for j = #attached_drones, 1, -1 do
-				if not IsValid(attached_drones[j]) then
-					table.remove(attached_drones, j)
-				end
-			end
-		end
-
-		--
-		-- Check for transport rovers with negative amounts of resources carried.
-		objs = GetCityLabels("RCTransportAndChildren")
-		for i = 1, #objs do
-			local obj = objs[i]
-			for j = 1, #(obj.storable_resources or "") do
-				local res = obj.storable_resources[j]
-				if obj.resource_storage[res] and obj.resource_storage[res] < 0 then
-					obj.resource_storage[res] = 0
-				end
-			end
-		end
-
-		--
-		-- Fix Stuck Malfunctioning Drones At DroneHub
-		local positions = {}
-		local radius = 100 * guim
-		local InvalidPos = InvalidPos()
-
-		objs = GetCityLabels("DroneHub")
-		for i = 1, #objs do
-			table.clear(positions)
-
-			local hub = objs[i]
-			for j = 1, #(hub.drones or "") do
-				local drone = hub.drones[j]
-				local pos = drone:GetVisualPos()
-				if pos == InvalidPos and drone.command == "Malfunction" then
-					-- Make sure they're not all bunched up
-					if not positions[tostring(pos)] then
-						local new_pos = GetRandomPassableAroundOnMap(hub.city.map_id, hub:GetPos(), radius)
-						drone:SetPos(new_pos)
-						positions[tostring(new_pos)] = true
-					end
-				end
-			end
-		end
-
 		-------- GetCityLabels above --------
 
 		--
@@ -798,7 +824,7 @@ do
 		end
 
 		--
-		ResumePassEdits("ChoGGi_FixBBBugs_loading")
+		ResumePassEdits("ChoGGi_FixBBBugs_Startup")
 	end
 
 	function OnMsg.CityStart()

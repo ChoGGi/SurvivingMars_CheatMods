@@ -1,3 +1,7 @@
+v7.*
+Moved around the code to tidy it up a bit.
+Moved Fix Landscaping Freeze into NewDay instead of LoadGame (for those oddballs with long sessions).
+
 v7.4
 Thanks Dark Master for digging around and testing storybits (and documenting them on wiki).
 Storybit Blank Slate doesn't remove any applicants.
