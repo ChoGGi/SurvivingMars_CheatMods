@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+-- OpenExamine() is from my "ChoGGi's Library" mod
+
 -- remove (maybe) existing xtemplate entry (xtemplates are only built on New Game, and when new dlc is added?)
 local function RemoveXTemplateSections(list, name)
 	local idx = table.find(list, name, true)

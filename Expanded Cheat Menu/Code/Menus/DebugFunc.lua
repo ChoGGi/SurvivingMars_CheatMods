@@ -796,6 +796,12 @@ function ChoGGi_Funcs.Menus.TestStoryBits()
 			voiced = "<yellow>" .. Translate(6855--[[Voiced Text]]) .. "</yellow>: " .. Translate(story_def.VoicedText)
 		end
 
+		-- Default storybit image
+		local image = "\n\n<image UI/Messages/message_picture_01.tga>"
+		if story_def.Image ~= "" then
+			image = "\n\n<image " .. story_def.Image .. ">"
+		end
+
 		c = c + 1
 		item_list[c] = {
 			text = title,
@@ -804,7 +810,8 @@ function ChoGGi_Funcs.Menus.TestStoryBits()
 				.. story_def.group .. "\n\n"
 				.. (story_def.Text and Translate(T{story_def.Text, temp_table}) or "")
 				.. (voiced and "\n\n" .. voiced or "")
-				.. (story_def.Image ~= "" and "\n\n<image " .. story_def.Image .. ">" or "")
+				.. image
+--~ 				.. (story_def.Image ~= "" and "\n\n<image " .. story_def.Image .. ">" or "")
 		}
 	end
 
