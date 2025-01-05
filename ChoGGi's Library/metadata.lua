@@ -36,7 +36,7 @@ return PlaceObj("ModDef", {
 		"Code/OnMsgs.lua",
 		-- added/replaced functions
 		"Code/Functions.lua",
-		-- LXSH: https://github.com/xolox/lua-lxsh
+		-- https://github.com/xolox/lua-lxsh
 		"Code/LXSH.lua",
 		-- CSV export funcs
 		"Code/CSV.lua",

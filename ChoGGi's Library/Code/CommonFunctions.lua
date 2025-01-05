@@ -140,6 +140,7 @@ do -- RetName
 
 	local function AddFuncToList(key, value, name)
 		if not lookup_table[value] then
+
 			if type(value) == "function" then
 				if DebugGetInfo(value) == "[C](-1)" then
 					lookup_table[value] = name .. "." .. key .. " *C"
@@ -193,19 +194,19 @@ do -- RetName
 			AddFuncToList(key, value, name)
 		end
 	end
-	local func_tables = {
-		"g_CObjectFuncs", "camera", "camera3p", "cameraMax", "cameraRTS",
-		"coroutine", "lpeg", "pf", "string", "table", "UIL", "editor",
-		"terrain", "terminal", "TFormat", "XInput",
-	}
-	if what_game == "Mars" then
-		func_tables[#func_tables+1] = "DTM"
-		func_tables[#func_tables+1] = "srp"
-	end
+--~ 	local func_tables = {
+--~ 		"g_CObjectFuncs", "camera", "camera3p", "cameraMax", "cameraRTS",
+--~ 		"pf", "string", "table", "UIL", "editor",
+--~ 		"terrain", "terminal", "TFormat", "XInput",
+--~ 	}
+--~ 	if what_game == "Mars" then
+--~ 		func_tables[#func_tables+1] = "DTM"
+--~ 		func_tables[#func_tables+1] = "srp"
+--~ 	end
 
-	for i = 1, #func_tables do
-		AddFuncs(func_tables[i])
-	end
+--~ 	for i = 1, #func_tables do
+--~ 		AddFuncs(func_tables[i])
+--~ 	end
 
 	local values_lookup = {
 		"title",
@@ -260,18 +261,29 @@ do -- RetName
 			lookup_table[g.empty_func] = "empty_func"
 			lookup_table[g.terminal.desktop] = "terminal.desktop"
 
-			AddFuncs("lfs")
-			AddFuncs("debug")
-			AddFuncs("io")
-			AddFuncs("os")
-			AddFuncs("package")
-			AddFuncs("package.searchers")
+			-- I was calling these too early, so they mostly showed up as [C](-1)
+			local func_tables = {
+				"lfs", "debug", "coroutine", "lpeg", "io", "os", "package",
+				"package.searchers", "camera", "camera3p", "cameraMax",
+				"cameraRTS", "pf", "string", "table", "UIL", "editor", "terminal",
+				"XInput",
+			}
+			if what_game == "Mars" then
+				func_tables[#func_tables+1] = "DTM"
+				func_tables[#func_tables+1] = "srp"
+			end
+
+			for i = 1, #func_tables do
+				AddFuncs(func_tables[i])
+			end
+
 			-- ECM func names (some are added by ecm, so we want to update list when it's called again)
-			AddFuncsChoGGi("Common")
-			AddFuncsChoGGi("Console")
-			AddFuncsChoGGi("InfoPane")
-			AddFuncsChoGGi("Menus")
-			AddFuncsChoGGi("Settings")
+			func_tables = {
+				"Common", "Console", "InfoPane", "Menus", "Settings",
+			}
+			for i = 1, #func_tables do
+				AddFuncsChoGGi(func_tables[i])
+			end
 			AddFuncsChoGGi("Original", true)
 
 			for key, value in pairs(g.ChoGGi) do
