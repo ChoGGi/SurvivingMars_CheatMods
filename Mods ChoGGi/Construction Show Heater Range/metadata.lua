@@ -3,8 +3,8 @@ return PlaceObj("ModDef", {
 		PlaceObj("ModDependency", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
-			"version_major", 9,
-			"version_minor", 3,
+			"version_major", 12,
+			"version_minor", 4,
 		}),
 	},
 	"title", "Construction Show Heater Range",
