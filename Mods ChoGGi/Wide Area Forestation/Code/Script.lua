@@ -1,11 +1,11 @@
 -- See LICENSE for terms
 
-local SetBuildingTemplates = ChoGGi_Funcs.Common.SetBuildingTemplates
+--~ local SetBuildingTemplates = ChoGGi_Funcs.Common.SetBuildingTemplates
 local RemoveBuildingElecConsump = ChoGGi_Funcs.Common.RemoveBuildingElecConsump
 local AddBuildingElecConsump = ChoGGi_Funcs.Common.AddBuildingElecConsump
 
-local HourDuration = const.HourDuration
-local MulDivRound = MulDivRound
+--~ local HourDuration = const.HourDuration
+--~ local MulDivRound = MulDivRound
 
 local mod_MaxSize
 local mod_PlantInterval
@@ -68,7 +68,7 @@ function ForestationPlant:Init(...)
 	if mod_RemovePower then
 		RemoveBuildingElecConsump(self)
 	end
-	local meta = self:GetPropertyMetadata("vegetation_interval")
+--~ 	local meta = self:GetPropertyMetadata("vegetation_interval")
 --~ 	self.building_update_time = MulDivRound(mod_PlantInterval, HourDuration, meta.scale)
 end
 

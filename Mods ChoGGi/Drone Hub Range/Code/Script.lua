@@ -7,6 +7,7 @@ local mod_UpdateExistingHubs
 
 local ChoOrig_CommandCenterMaxRadius = const.CommandCenterMaxRadius
 
+local ChoGGi_Funcs = ChoGGi_Funcs
 local SetPropertyProp = ChoGGi_Funcs.Common.SetPropertyProp
 
 local function SetHubRange()

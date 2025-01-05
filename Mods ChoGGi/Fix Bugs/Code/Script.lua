@@ -1481,7 +1481,7 @@ DefineClass.ChoGGi_RemoveApplicants = {
 	Description = T(0000, "Remove Applicants <Amount>"),
 	Documentation = "Remove a specific amount of applicants.",
 }
-function ChoGGi_RemoveApplicants:Execute(map_id, obj, context)
+function ChoGGi_RemoveApplicants:Execute()
 	-- I doubt it's needed but...
 	if type(self.Amount) ~= "number" then
 		return

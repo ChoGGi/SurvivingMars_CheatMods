@@ -19,13 +19,10 @@ OnMsg.ApplyModOptions = ModOptions
 
 -- local some globals
 local type = type
-local AveragePoint2D = AveragePoint2D
 local IsValid = IsValid
 local IsPoint = IsPoint
 local FixConstructPos = FixConstructPos
 local T = T
-
-local PolylineSetParabola = ChoGGi_Funcs.Common.PolylineSetParabola
 
 -- store ref to line, res icon
 local line, text

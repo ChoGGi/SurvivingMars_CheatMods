@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v19.4 (Unreleased)
+## v19.5 (Unreleased)
+
+## v19.4 (4 Jan 2025)
 ### Added:
 - ECM.Debug.Storybits>Toggle Story Bit Log: Show Storybit info in console log, and extra info in g_StoryBitsLog.
 - ECM.Game.Interface.Toggle Use All Loading Screens: Some DLC replaces loading screens with their own, enable to use all of them.

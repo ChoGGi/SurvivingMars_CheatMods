@@ -34,7 +34,7 @@ function SetupMissionGoals(...)
 		-- I might have to include modded ones... or add a check of some sort
 	}
 	-- Add random goals
-	local temp_presets = table.filter(Presets.MissionSponsorPreset.Default, function(id, item)
+	local temp_presets = table.filter(Presets.MissionSponsorPreset.Default, function(id)
 		-- skip all indexed sponsors (they include space race and normal sponsors, which might be bad for people without dlc)
 		if type(id) == "number" then
 			return false
@@ -45,7 +45,7 @@ function SetupMissionGoals(...)
 	-- table.rand needs an indexed table
 	local c = 0
 	local presets = {}
-	for id, item in pairs(temp_presets) do
+	for _, item in pairs(temp_presets) do
 		c = c + 1
 		presets[c] = item
 	end

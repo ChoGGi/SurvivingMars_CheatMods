@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v12.4 (Unreleased)
+## v12.5 (Unreleased)
+
+## v12.4 (4 Jan 2025)
 - Added checkbox to toggle UI transparency to my dialogs.
 - Added DoSomethingQuestion(): Generic warning msg.
 - Added CopyProperties(): Lets you skip certain properties when copying.

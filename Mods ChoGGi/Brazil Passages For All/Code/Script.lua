@@ -10,11 +10,7 @@ function OnMsg.ClassesPostprocess()
 	default_NonHomeDomeServiceThresholdDecrement = Consts.NonHomeDomeServiceThresholdDecrement
 end
 
---~ local SetConsts = ChoGGi_Funcs.Common.SetConsts
-local function SetConsts(id, value)
-	Consts[id] = value
-	g_Consts[id] = value
-end
+local SetConsts = ChoGGi_Funcs.Common.SetConsts
 
 local mod_EnableMod
 local mod_InstantPassages

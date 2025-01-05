@@ -281,9 +281,9 @@ Cheats>Complete Constructions: Complete all constructions instantly.
 Cheats>Complete Wires & Pipes: Complete all wires and pipes instantly.
 Cheats>Map Exploration: Scanning, deep scanning, core mines, and alien imprints.
 Cheats>Mod Editor: Open the mod editor.
-Cheats>Mystery Log: Use to remove mysteries.
 Cheats>Mystery Start: Pick and start a mystery (with instant start option).
 Certain mysteries need certain objects which get placed when the map is generated on a new game (the green rocks one for instance).
+Do not use this for regular playthroughs!
 Cheats>Remove Mysteries: Use to remove mysteries.
 Cheats>Spawn Colonists: Spawn X amount of colonists.
 Cheats>Toggle Unlock All Buildings: Unlocks all buildings for construction.
@@ -335,8 +335,9 @@ Debug.Path Markers>Building Path Markers: Show inside waypoints colonists take t
 Debug.Path Markers>Path Markers Game Time: Maps paths in real time (see Path Markers to mark more than one at a time).
 Debug.Path Markers>Path Markers: Shows the selected unit path or show a list to add/remove paths for rovers, drones, colonists, or shuttles.
 Debug.Story Bits>Override Condition Prereqs: All storybit/negotiation/etc options are enabled.
+Debug.Story Bits>START Story Bits: Activate a story bit.
 Debug.Story Bits>Skip Story Bits: When a story bit appears; always select first option after slight delay.
-Debug.Story Bits>Test Story Bits: Test activate a story bit.
+Debug.Story Bits>Toggle Story Bit Log: Show Storybit info in console log, and extra info in g_StoryBitsLog.
 Debug.Toggles>Anim Debug Toggle: Attaches text to each object showing animation info (or just to selected object).
 Debug.Toggles>DTM Slots Display: Show DTM slots display
 Debug.Toggles>Examine Persist Errors: Shows an examine dialog with any persist errors when saving.
@@ -345,6 +346,7 @@ Debug.Toggles>Loading Screen Log: Be able to see the console log (and other dial
 Warning: Leave "Welcome to Mars" msg onscreen till map is loaded.
 Debug.Toggles>Measure Tool: Measures stuff (press again to remove the lines).
 Debug.Toggles>Place Objects: Opens editor mode with the place objects dialog.
+Debug.Toggles>Show Console Errors: Show extra debug errors in console.
 Debug.Toggles>Skip Incompatible Mods: Get rid of "This savegame was loaded in the past without required mods or with an incompatible game version.".
 Debug.Toggles>Skip Missing DLC: Stops confirmation dialog about missing DLC when loading saved games.
 Debug.Toggles>Skip Missing Mods: Stops confirmation dialog about missing mods when loading saved games.
@@ -581,6 +583,7 @@ Game.Interface>Toggle Scroll Selection Panel: Add a scrollbar to larger selectio
 Game.Interface>Toggle Selection Panel Resize: Stops selection panel from shrinking (eg: dome).
 Game.Interface>Toggle Show Hints: No more hints ever (Enable to disable all hints).
 Game.Interface>Toggle Signs: Concrete, metal deposits, not working, etc...
+Game.Interface>Toggle Use All Loading Screens: Some DLC replaces loading screens with their own, enable to use all of them.
 Game.Interface>Toggle Vertical Cheat Menu: Puts the menu down the side of the screen to save horizontal space for the info bar.
 Game.Interface>Toggle on-screen hints: Don't show hints for this game.
 Game.Interface>UI Transparency Mouseover: Toggle removing transparency on mouseover.
