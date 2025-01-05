@@ -1,11 +1,16 @@
 ## Library Changelog
 
 ## v12.4 (Unreleased)
+- Added checkbox to toggle UI transparency to my dialogs.
+- Added DoSomethingQuestion(): Generic warning msg.
 - Added CopyProperties(): Lets you skip certain properties when copying.
 - Cleaned up how GetNearestIdleDrone looks for drones.
 - RetName was showing weird crap for numbers.
 - Moved RetThreadInfo/FindThreadFunc from ECM to Lib.
+
 ### Examine:
+- Added Tool Bar>Clear Table: Remove all entries from this table.
+- Removed toggle UI transparency button.
 - Holding Ctrl and closing an examine dialog by pressing X will no longer close the console log dialog.
 - Cleaned up ThreadsRegister results.
 - Shows more info for some tables.
@@ -15,6 +20,7 @@
 - > If loading pre-picard saves in picard (picard game update not dlc)
 - > Only needed during OnMsg.LoadGame
 - Examining certain objs wouldn't open child examine below parent examine.
+
 ### Examine:
 - Fixed Tools>Functions
 
@@ -120,7 +126,7 @@
 - Re-fangled how specs are set.
 
 ### Examine:
-- Examine shows map_id for cities.
+- Shows map_id for cities.
 - Tooltips show map_id object is in.
 
 ## v10.4 (20 Sep 2021)

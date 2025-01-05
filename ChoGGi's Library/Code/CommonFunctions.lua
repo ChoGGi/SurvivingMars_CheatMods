@@ -4632,6 +4632,34 @@ do -- ToggleBldFlags
 	end
 end -- do
 
+function ChoGGi_Funcs.Common.DoSomethingQuestion(obj, func, vars, warning)
+	if not obj or not func then
+		return
+	end
+
+	local name = RetName(obj)
+
+	local function CallBackFunc(answer)
+		if answer then
+			func(obj, vars)
+		end
+	end
+
+	if not warning then
+		warning = T{302535920001740--[["Are you sure you want to proceed with <str>?"]],
+			str = name,
+		}
+	end
+
+	ChoGGi_Funcs.Common.QuestionBox(
+		T(6779--[[Warning]]) .. "!\n" .. warning,
+		CallBackFunc,
+		T(6779--[[Warning]]) .. ": " .. T(302535920001739--[[Last chance!]]),
+		T(6779--[[Warning]]) .. ": " .. name,
+		T(302535920001713--[[Cancel]])
+	)
+end
+
 function ChoGGi_Funcs.Common.DeleteObjectQuestion(obj)
 	local name = RetName(obj)
 
@@ -4660,7 +4688,7 @@ function ChoGGi_Funcs.Common.DeleteObjectQuestion(obj)
 
 	ChoGGi_Funcs.Common.QuestionBox(
 		T(6779--[[Warning]]) .. "!\n" .. T{302535920000414--[["Are you sure you wish to delete <color ChoGGi_red><str></color>?"]],
-			str = name ,
+			str = name,
 		} .. "?",
 		CallBackFunc,
 		T(6779--[[Warning]]) .. ": " .. T(302535920000855--[[Last chance before deletion!]]),
@@ -4670,6 +4698,10 @@ function ChoGGi_Funcs.Common.DeleteObjectQuestion(obj)
 end
 
 function ChoGGi_Funcs.Common.DeleteAllObjectQuestion(obj)
+	if not UIColony then
+		return
+	end
+
 	local objs
 	if type(obj) == "string" then
 		objs = MapGet_ChoGGi(obj)

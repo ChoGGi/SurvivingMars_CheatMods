@@ -16,7 +16,6 @@ local Random = ChoGGi_Funcs.Common.Random
 --~ local RetName = ChoGGi_Funcs.Common.RetName
 local IsShiftPressed = ChoGGi_Funcs.Common.IsShiftPressed
 
-
 local box, point = box, point
 local IsValid = IsValid
 local PropObjGetProperty = PropObjGetProperty
@@ -41,6 +40,11 @@ local invis = 0
 local g_env = _G
 function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	g_env = env
+end
+
+local GetParentOfKind = ChoGGi_Funcs.Common.GetParentOfKind
+local function GetRootDialog(dlg)
+	return dlg.parent_dialog or GetParentOfKind(dlg, "ChoGGi_XWindow")
 end
 
 -- add a parent_dialog to each of my X elements for direct access to the dialog
@@ -317,22 +321,6 @@ DefineClass.ChoGGi_XComboButton = {
 	BorderColor = black,
 	RolloverBorderColor = black,
 }
---~ function ChoGGi_XComboButton:Init()
---~ 	self:SetIcon("CommonAssets/UI/arrowright-40.tga")
---~ end
---~ function ChoGGi_XComboButton:OnMouseButtonDown()
---~ 	self:SetIcon("CommonAssets/UI/arrowdown-40.tga")
---~ 	DeleteThread(self.popup_opened)
---~ 	self.popup_opened = CreateRealTimeThread(function()
---~ 		while self.popup_opened do
---~ 			Sleep
---~ 		end
---~ 	end)
---~ end
---~ function ChoGGi_XComboButton:OnMouseButtonUp()
---~ 	self:SetIcon("CommonAssets/UI/arrowright-40.tga")
---~ end
-
 DefineClass.ChoGGi_XCheckButton = {
 	__parents = {
 		"ChoGGi_XDefaults",
@@ -357,7 +345,6 @@ function ChoGGi_XCheckButton:SetCheckBox(toggle)
 		self:SetIconRow(1)
 	end
 end
-
 DefineClass.ChoGGi_XPopupList = {
 	__parents = {
 		"ChoGGi_XDefaults",
@@ -585,6 +572,8 @@ DefineClass.ChoGGi_XWindow = {
 	action_close = false,
 	action_host = false,
 
+	-- If it's transparent or not
+	transp_mode = false,
 	-- add an id thingy to check for whatever
 	dialog_marker = false,
 }
@@ -666,8 +655,31 @@ function ChoGGi_XWindow:AddElements(_, context)
 
 	-- needed for :Wait()
 	self.idDialog:Open()
+
 	-- It's so blue
 	self.idMoveControl:SetFocus()
+
+	-- UI trans stuff
+	self.idToggleTrans = g_Classes.ChoGGi_XCheckButton:new({
+		Id = "idToggleTrans",
+		Text = "",
+		RolloverText = T(302535920001367--[[Toggles]]) .. " " .. T(302535920000629--[[UI Transparency]]),
+		Dock = "left",
+		MinWidth = 35,
+		Margins = box(4, 0, 0, 0),
+		OnChange = self.idToggleTrans_OnChange,
+	}, self.idTitleRightSection)
+
+	self.idToggleTrans:AddInterpolation{
+		type = const.intAlpha,
+		startValue = 255,
+		flags = const.intfIgnoreParent
+	}
+
+	-- look at them sexy internals
+	self.transp_mode = ChoGGi.Temp.Dlg_transp_mode
+	self:SetTranspMode(self.transp_mode)
+	self.idToggleTrans:SetCheck(self.transp_mode)
 
 end
 
@@ -731,7 +743,30 @@ function ChoGGi_XWindow:AddCloseXButton(params)
 		end,
 	}, self.idTitleRightSection)
 end
+function ChoGGi_XWindow:idToggleTrans_OnChange()
+	self = GetRootDialog(self)
 
+	self.transp_mode = not self.transp_mode
+	self:SetTranspMode(self.transp_mode)
+end
+function ChoGGi_XWindow:SetTranspMode(toggle)
+	self = GetRootDialog(self)
+
+	self:ClearModifiers()
+	if toggle then
+		self:AddInterpolation{
+			type = const.intAlpha,
+			startValue = 32
+		}
+		self.idToggleTrans:AddInterpolation{
+			type = const.intAlpha,
+			startValue = 200,
+			flags = const.intfIgnoreParent
+		}
+	end
+	-- update global value (for new windows)
+	ChoGGi.Temp.Dlg_transp_mode = toggle
+end
 function ChoGGi_XWindow:Done()
 	-- remove from my dialog list
 	ChoGGi_dlgs_opened[self] = nil
@@ -740,8 +775,8 @@ end
 function ChoGGi_XWindow:idCaptionImageOnMouseButtonDown(pt, button, ...)
 	g_Classes.ChoGGi_XImage.OnMouseButtonDown(pt, button, ...)
 	local dlg = self.parent_dialog
-	if IsValid(dlg.obj) then
-		ViewAndSelectObject(dlg.obj)
+	if IsValid(dlg.obj_ref) then
+		ViewAndSelectObject(dlg.obj_ref)
 	end
 end
 

@@ -3,12 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
-302535920001739, ""
-302535920001740, ""
-302535920001741, ""
-302535920001742, ""
-302535920001743, ""
-302535920001744, ""
 302535920001745, ""
 302535920001746, ""
 302535920001747, ""
@@ -317,6 +311,8 @@ do !Skipped Line! [[Settings.lua]] !Skipped Line!
 302535920000011, "Missing Description"
 end !Skipped Line!
 do !Skipped Line! [[CommonFunctions.lua" "ECM_Functions.lua]] !Skipped Line!
+302535920001739, "Last chance!"
+302535920001740, "Are you sure you want to proceed with <str>?"
 302535920001574, "Crashes on XBOX!"
 302535920001571, "The way I test the CSV file means there might be some ""non-error"" errors added here.
 It's a tradeoff between erroneous errors and the game locking up."
@@ -509,6 +505,8 @@ https://www.lua.org/manual/5.3/manual.html#pdf-debug.sethook"
 302535920000477, "Clear out the windowed console log."
 end !Skipped Line!
 do do !Skipped Line! [[Examine.lua]] !Skipped Line!
+302535920001741, "Clear Table"
+302535920001742, "Remove all entries from this table."
 302535920001680, "Loading resources"
 302535920001681, "Class name"
 302535920001682, "Building Template"
@@ -1287,6 +1285,8 @@ Not permanent."
 302535920000448, "I'm afraid it could be 9/11 times 1,000."
 end !Skipped Line!
 do do !Skipped Line! [[DebugMenu.lua" "DebugFunc.lua]] !Skipped Line!
+302535920001743, "Toggle Story Bit Log"
+302535920001744, "Show Storybit info in console log, and extra info in g_StoryBitsLog."
 302535920001735, "Show Console Errors"
 302535920001736, "Show extra debug errors in console."
 302535920001732, "Toggle Mouse Grid Position"

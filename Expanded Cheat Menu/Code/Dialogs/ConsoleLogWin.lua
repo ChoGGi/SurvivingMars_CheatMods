@@ -13,7 +13,6 @@ local function GetRootDialog(dlg)
 end
 DefineClass.ChoGGi_DlgConsoleLogWin = {
 	__parents = {"ChoGGi_XWindow"},
-	transp_mode = false,
 	update_thread = false,
 
 	dialog_width = 700.0,
@@ -32,21 +31,6 @@ function ChoGGi_DlgConsoleLogWin:Init(parent, context)
 		Id = "idButtonContainer",
 		Dock = "top",
 	}, self.idDialog)
-
-	self.idToggleTrans = g_Classes.ChoGGi_XCheckButton:new({
-		Id = "idToggleTrans",
-		Text = T(302535920000629--[[UI Transparency]]),
-		RolloverText = T(302535920001367--[[Toggles]]) .. " " .. T(302535920000629--[[UI Transparency]]),
-		Dock = "left",
-		Margins = box(4, 0, 0, 0),
-		OnChange = self.idToggleTrans_OnChange,
-	}, self.idButtonContainer)
-
-	self.idToggleTrans:AddInterpolation{
-		type = const.intAlpha,
-		startValue = 255,
-		flags = const.intfIgnoreParent
-	}
 
 	self.idShowFileLog = g_Classes.ChoGGi_XButton:new({
 		Id = "idShowFileLog",
@@ -122,10 +106,6 @@ $123 or $EffectDeposit.display_name prints translated string.
 s = SelectedObj, c() = GetCursorWorldPos(), restart() = quit(""restart"")"]])
 	self.idTextInput.Hint = Translate(302535920001439--[["~obj, @func, @@type, %image, *r/*g/*m threads. Hover mouse for more info."]])
 
-	-- look at them sexy internals
-	self.transp_mode = ChoGGi.Temp.Dlg_transp_mode
-	self:SetTranspMode(self.transp_mode)
-
 	self:PostInit()
 end
 
@@ -169,11 +149,6 @@ function ChoGGi_DlgConsoleLogWin:idTextInput_OnKbdKeyDown(vk, ...)
 	return g_Classes.ChoGGi_XTextInput.OnKbdKeyDown(self, vk, ...)
 end
 
-function ChoGGi_DlgConsoleLogWin:idToggleTrans_OnChange()
-	self = GetRootDialog(self)
-	self.transp_mode = not self.transp_mode
-	self:SetTranspMode(self.transp_mode)
-end
 function ChoGGi_DlgConsoleLogWin:idShowFileLog_OnPress()
 	GetRootDialog(self):UpdateText(LoadLogfile())
 end
@@ -190,23 +165,6 @@ function ChoGGi_DlgConsoleLogWin:idClearLog_OnPress()
 end
 function ChoGGi_DlgConsoleLogWin:idClipboardCopy_OnPress()
 	CopyToClipboard(GetRootDialog(self).idEdit:GetText())
-end
-
-function ChoGGi_DlgConsoleLogWin:SetTranspMode(toggle)
-	self:ClearModifiers()
-	if toggle then
-		self:AddInterpolation{
-			type = const.intAlpha,
-			startValue = 32
-		}
-		self.idToggleTrans:AddInterpolation{
-			type = const.intAlpha,
-			startValue = 200,
-			flags = const.intfIgnoreParent
-		}
-	end
-	-- update global value (for new windows)
-	ChoGGi.Temp.Dlg_transp_mode = toggle
 end
 
 function ChoGGi_DlgConsoleLogWin:UpdateText(text)

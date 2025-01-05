@@ -308,6 +308,23 @@ end -- what_game
 -- func exists before classes msg
 do
 
+	-- Add class to storybit log info
+	local ChoOrig_StoryBitState_PrepareT = StoryBitState.PrepareT
+	AddToOriginal("StoryBitState.PrepareT")
+	function StoryBitState:PrepareT(loc_text, subcontext, ignore_localization, ...)
+		if not ignore_localization then
+			return ChoOrig_StoryBitState_PrepareT(self, loc_text, subcontext, ignore_localization, ...)
+		end
+
+		-- add extra info
+		StoryBitLog("StoryBit", self.id)
+		StoryBitLog("StoryBit", self.id, "rejected condition class:", subcontext.class)
+		StoryBitLog("StoryBit", self.id, "rejected condition info:", subcontext.Documentation)
+		StoryBitLog("StoryBit", self.id, "rejected condition reqs:", TableToLuaCode(subcontext))
+
+		return ChoOrig_StoryBitState_PrepareT(self, loc_text, subcontext, ignore_localization, ...)
+	end
+
 	-- Transparent tooltips
 	local ChoOrig_XRolloverWindow_Init = XRolloverWindow.Init
 	AddToOriginal("XRolloverWindow.Init")

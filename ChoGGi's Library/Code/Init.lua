@@ -121,6 +121,8 @@ ChoGGi = {
 local ChoGGi = ChoGGi
 
 ChoGGi_Funcs = {
+	_LICENSE = LICENSE,
+
 	-- CommonFunctions.lua/ECM_Functions.lua
 	Common = {
 		DebugGetInfo = format_value,

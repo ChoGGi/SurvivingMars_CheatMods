@@ -1319,13 +1319,14 @@ do -- LoadGame/CityStart
 ---------------------do the above stuff before the below stuff
 
 		if testing then
-
-			-- log spam
-			config.StoryBitLogPrints = true
-			-- happens more often
+			-- make them happen more often
 --~ 			g_StoryBitTesting = true
 		end
 
+		-- storybit info in log (see also g_StoryBitsLog g_StoryBitsScopeStack)
+		if ChoGGi.UserSettings.StoryBitLogPrints then
+			config.StoryBitLogPrints = true
+		end
 		-- build whatever realmever
 		if ChoGGi.UserSettings.RemoveRealmLimits then
 			ChoGGi_Funcs.Common.DisableBuildingsDie()

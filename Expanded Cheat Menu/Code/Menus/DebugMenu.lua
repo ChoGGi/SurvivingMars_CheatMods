@@ -781,6 +781,20 @@ Actions[c] = {ActionName = T(948928900281--[[Story Bits]]),
 }
 
 c = c + 1
+Actions[c] = {ActionName = T(302535920001743--[[Toggle Story Bit Log]]),
+	ActionMenubar = "ECM.Debug.Story Bits",
+	ActionId = ".Story Bit Log",
+	ActionIcon = "CommonAssets/UI/Menu/JoinGame.tga",
+	RolloverText = function()
+		return SettingState(
+			ChoGGi.UserSettings.StoryBitLogPrints,
+			T(302535920001744--[[Show Storybit info in console log, and extra info in g_StoryBitsLog.]])
+		)
+	end,
+	OnAction = ChoGGi_Funcs.Menus.StoryBitLog_Toggle,
+}
+
+c = c + 1
 Actions[c] = {ActionName = T(5452--[[START]]) .. " " .. T(948928900281--[[Story Bits]]),
 	ActionMenubar = "ECM.Debug.Story Bits",
 	ActionId = ".Start Story Bits",

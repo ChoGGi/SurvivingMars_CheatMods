@@ -1,3 +1,7 @@
+v0.6
+Disabled Plant Interval for now.
+Added mod option to workaround extra large Max Sizes.
+
 v0.5
 Lowered the default range to 150.
 

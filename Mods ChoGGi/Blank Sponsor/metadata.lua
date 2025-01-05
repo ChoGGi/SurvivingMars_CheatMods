@@ -19,7 +19,7 @@ return PlaceObj("ModDef", {
 Sponsor/Commander profile with no extras added (buildings/etc).
 
 Because it's no fun just doing that, this also does random mission goals for a bit of variety.
-There's also a mod option to have random goals for any sponsor.
+Includes a mod option to have random goals for any sponsor.
 
 
 Requested by Longjumping_Fold_815.

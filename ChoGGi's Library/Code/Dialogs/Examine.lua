@@ -144,8 +144,6 @@ DefineClass.ChoGGi_DlgExamine = {
 --~ 	-- used to store visibility of obj
 --~ 	orig_vis_flash = false,
 --~ 	flashing_thread = false,
-	-- If it's transparent or not
-	transp_mode = false,
 	-- get list of all values from metatables
 	show_all_values = false,
 	-- list values from EnumVars()
@@ -367,18 +365,13 @@ function ChoGGi_DlgExamine:Init(parent, context)
 			DrawOnTop = true,
 		}, self.idDialog)
 
+		--
 		self.idToolbarButtons = g_Classes.ChoGGi_XDialogSection:new({
 			Id = "idToolbarButtons",
 			Dock = "left",
 			LayoutMethod = "HList",
 			DrawOnTop = true,
 		}, self.idToolbarArea)
-
-		self.idToolbarButtons:AddInterpolation{
-			type = const.intAlpha,
-			startValue = 255,
-			flags = const.intfIgnoreParent
-		}
 
 		-- add all the toolbar buttons than toggle vis when we set the menu
 		self.idButRefresh = g_Classes.ChoGGi_XToolbarButton:new({
@@ -405,14 +398,6 @@ function ChoGGi_DlgExamine:Init(parent, context)
 			RolloverTitle = T(302535920000865--[[Copy All Text]]),
 			RolloverText = T(302535920001674--[[Copies dialog text to clipboard.]]),
 			OnPress = self.idButCopyAllText_OnPress,
-		}, self.idToolbarButtons)
-		--
-		self.idButSetTransp = g_Classes.ChoGGi_XToolbarButton:new({
-			Id = "idButSetTransp",
-			Image = "CommonAssets/UI/Menu/CutSceneArea.tga",
-			RolloverTitle = T(302535920000629--[[UI Transparency]]),
-			RolloverText = T(302535920001367--[[Toggles]]) .. " " .. T(302535920000629--[[UI Transparency]]),
-			OnPress = self.idButSetTransp_OnPress,
 		}, self.idToolbarButtons)
 		--
 		self.idButClear = g_Classes.ChoGGi_XToolbarButton:new({
@@ -442,7 +427,16 @@ Press once to clear this examine, again to clear all."]]),
 			OnPress = self.idButDeleteObj_OnPress,
 		}, self.idToolbarButtons)
 		--
-		self.idButDeleteObj = g_Classes.ChoGGi_XToolbarButton:new({
+		self.idButClearTable = g_Classes.ChoGGi_XToolbarButton:new({
+			Id = "idButClearTable",
+			Image = "CommonAssets/UI/Menu/clear_debug_texture.tga",
+			RolloverTitle = T(302535920001741--[[Clear Table]]),
+			RolloverText = T(302535920001742--[["Remove all entries from this table."]]),
+			OnPress = self.idButClearTable_OnPress,
+		}, self.idToolbarButtons)
+		self.idButClearTable:SetVisible(false)
+		--
+		self.idButDeleteAllObj = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButDeleteAllObj",
 			Image = "CommonAssets/UI/Menu/remove_water.tga",
 			RolloverTitle = T(302535920001675--[[Delete All Objects]]),
@@ -451,7 +445,10 @@ Press once to clear this examine, again to clear all."]]),
 			},
 			OnPress = self.idButDeleteAllObj_OnPress,
 		}, self.idToolbarButtons)
+		self.idButDeleteAllObj:SetVisible(false)
 		--
+
+		-- objlist stuff
 		self.idButSetObjlist = g_Classes.ChoGGi_XToolbarButton:new({
 			Id = "idButSetObjlist",
 			Image = "CommonAssets/UI/Menu/toggle_post.tga",
@@ -483,6 +480,7 @@ Press once to clear this examine, again to clear all."]]),
 			RolloverText = T(302535920000059--[[Destroy all objects in objlist!]]),
 			OnPress = self.idButDeleteAll_OnPress,
 		}, self.idToolbarButtons)
+		-- objlist stuff
 
 		-- far right side
 		self.idToolbarButtonsRightRefresh = g_Classes.ChoGGi_XDialogSection:new({
@@ -684,10 +682,6 @@ If it's an associative table then o = value."]]),
 		self.idText.OnHyperLink = self.idText_OnHyperLink
 		self.idText.OnHyperLinkRollover = self.idText_OnHyperLinkRollover
 
-		-- look at them sexy internals
-		self.transp_mode = self.ChoGGi.Temp.Dlg_transp_mode
-		self:SetTranspMode(self.transp_mode)
-
 		-- no need to have it fire one than once per dialog
 		self.is_chinese = GetLanguage():find("chinese")
 
@@ -703,6 +697,10 @@ If it's an associative table then o = value."]]),
 		-- do the magic
 		if self:SetObj(true) and not IsKindOf(self.obj_ref, "InGameInterface") then
 			self:FlashWindow()
+		end
+
+		if IsValid(self.obj_ref) then
+			self.idButDeleteAllObj:SetVisible(true)
 		end
 
 		if context.auto_refresh then
@@ -1176,12 +1174,6 @@ function ChoGGi_DlgExamine:RefreshExamine()
 	self:idButRefresh_OnPress()
 end
 
-function ChoGGi_DlgExamine:idButSetTransp_OnPress()
-	self = GetRootDialog(self)
-	self.transp_mode = not self.transp_mode
-	self:SetTranspMode(self.transp_mode)
-end
-
 function ChoGGi_DlgExamine:idButClear_OnPress()
 	self = GetRootDialog(self)
 	-- clear marked objs for this examine
@@ -1239,6 +1231,10 @@ function ChoGGi_DlgExamine:idButDeleteAllObj_OnPress()
 	ChoGGi_Funcs.Common.DeleteAllObjectQuestion(self.obj_ref.class)
 end
 
+function ChoGGi_DlgExamine:idButClearTable_OnPress()
+	self = GetRootDialog(self)
+	ChoGGi_Funcs.Common.DoSomethingQuestion(self.obj_ref, table.clear)
+end
 function ChoGGi_DlgExamine:idButDeleteObj_OnPress()
 	self = GetRootDialog(self)
 	ChoGGi_Funcs.Common.DeleteObjectQuestion(self.obj_ref)
@@ -2491,23 +2487,6 @@ function ChoGGi_DlgExamine:ShowSurfacesList()
 			},
 		},
 	}
-end
-
-function ChoGGi_DlgExamine:SetTranspMode(toggle)
-	self:ClearModifiers()
-	if toggle then
-		self:AddInterpolation{
-			type = const.intAlpha,
-			startValue = 32
-		}
-		self.idToolbarButtons:AddInterpolation{
-			type = const.intAlpha,
-			startValue = 200,
-			flags = const.intfIgnoreParent
-		}
-	end
-	-- update global value (for new windows)
-	self.ChoGGi.Temp.Dlg_transp_mode = toggle
 end
 --
 local function Show_ConvertValueToInfo(self, button, obj)
@@ -3963,7 +3942,7 @@ function ChoGGi_DlgExamine:BuildParentsMenu(list, list_type, title, sort_type)
 		end
 	end
 end
-
+-- startup
 function ChoGGi_DlgExamine:SetObj(startup)
 	local obj = self.obj
 
@@ -4003,6 +3982,8 @@ function ChoGGi_DlgExamine:SetObj(startup)
 	self.idText:SetText(self.string_Loadingresources)
 
 	if obj_type == "table" then
+		self.idButClearTable:SetVisible(true)
+
 		obj_class = g_Classes[obj.class]
 
 		-- add table length to title

@@ -5,6 +5,7 @@
 local ChoGGi_Funcs = ChoGGi_Funcs
 local what_game = ChoGGi.what_game
 local T = T
+local select = select
 local Translate = ChoGGi_Funcs.Common.Translate
 
 -- Defaults to 20 items
@@ -87,3 +88,35 @@ end
 if us.RemoveBuildingLimits then
 	ChoGGi_Funcs.Common.SetBuildingLimits(true)
 end
+
+-- Should be more than enough?
+local log_limit = 100
+GlobalVar("g_StoryBitsLog", {})
+g_StoryBitsLogOld = false
+function OnMsg.ChangeMap()
+	g_StoryBitsLogOld = g_StoryBitsLog
+end
+
+local function StoryBitLogging(...)
+	if not config.StoryBitLogPrints then
+		return
+	end
+	local log = g_StoryBitsLog
+
+	local story_id = select(2, ...)
+
+	local stack = log[story_id]
+	if not stack then
+		log[story_id] = {}
+		stack = log[story_id]
+	end
+
+	stack[#stack + 1] = print_format(...)
+
+	if #stack > log_limit then
+		table.remove(stack, 1)
+	end
+end
+-- Replace empty funcs with mine
+StoryBitLogScope = StoryBitLogging
+StoryBitLog = StoryBitLogging

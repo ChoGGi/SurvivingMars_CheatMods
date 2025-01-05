@@ -167,6 +167,8 @@ if testing then
 	Defaults.ScrollSelectionPanel = true
 	-- stops panel from shrinking
 	Defaults.StopSelectionPanelResize = true
+	-- print storybit info in log
+	Defaults.StoryBitLogPrints = true
 	--  Mod editor itself
 	Defaults.SkipModEditorCompletely = true
 end

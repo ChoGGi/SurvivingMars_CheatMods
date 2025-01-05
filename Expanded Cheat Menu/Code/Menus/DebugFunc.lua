@@ -14,6 +14,17 @@ local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 local RetName = ChoGGi_Funcs.Common.RetName
 local RandomColour = ChoGGi_Funcs.Common.RandomColour
 
+function ChoGGi_Funcs.Menus.StoryBitLog_Toggle()
+	ChoGGi.UserSettings.StoryBitLogPrints = not ChoGGi.UserSettings.StoryBitLogPrints
+	config.StoryBitLogPrints = not config.StoryBitLogPrints
+
+	ChoGGi_Funcs.Settings.WriteSettings()
+	MsgPopup(
+		ChoGGi_Funcs.Common.SettingState(ChoGGi.UserSettings.StoryBitLogPrints),
+		T(302535920001743--[[Toggle Story Bit Log]])
+	)
+end
+
 function ChoGGi_Funcs.Menus.SkipIncompatibleModsMsg_Toggle()
 	ChoGGi.UserSettings.SkipIncompatibleModsMsg = not ChoGGi.UserSettings.SkipIncompatibleModsMsg
 

@@ -10,6 +10,7 @@ local MulDivRound = MulDivRound
 local mod_MaxSize
 local mod_PlantInterval
 local mod_RemovePower
+local mod_MaxSizeWorkaround
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -19,8 +20,9 @@ local function ModOptions(id)
 
 	local options = CurrentModOptions
 	mod_MaxSize = options:GetProperty("MaxSize")
-	mod_PlantInterval = options:GetProperty("PlantInterval")
+--~ 	mod_PlantInterval = options:GetProperty("PlantInterval")
 	mod_RemovePower = options:GetProperty("RemovePower")
+	mod_MaxSizeWorkaround = options:GetProperty("MaxSizeWorkaround")
 
 	-- bump max range for plants
 	local props = ForestationPlant.properties
@@ -29,8 +31,8 @@ local function ModOptions(id)
 		props[idx].max = mod_MaxSize
 	end
 
-	-- for new plants
-	SetBuildingTemplates("ForestationPlant", "vegetation_interval", mod_PlantInterval)
+--~ 	-- for new plants
+--~ 	SetBuildingTemplates("ForestationPlant", "vegetation_interval", mod_PlantInterval)
 
 	-- make sure we're in-game
 	if not UIColony then
@@ -45,11 +47,11 @@ local function ModOptions(id)
 	end
 
 	-- existing plants
-	local meta = ForestationPlant:GetPropertyMetadata("vegetation_interval")
+--~ 	local meta = ForestationPlant:GetPropertyMetadata("vegetation_interval")
 	local objs = UIColony:GetCityLabels("ForestationPlant")
 	for i = 1, #objs do
 		local obj = objs[i]
-		obj.building_update_time = MulDivRound(mod_PlantInterval, HourDuration, meta.scale)
+--~ 		obj.building_update_time = MulDivRound(mod_PlantInterval, HourDuration, meta.scale)
 		power_func(obj)
 	end
 end
@@ -67,7 +69,7 @@ function ForestationPlant:Init(...)
 		RemoveBuildingElecConsump(self)
 	end
 	local meta = self:GetPropertyMetadata("vegetation_interval")
-	self.building_update_time = MulDivRound(mod_PlantInterval, HourDuration, meta.scale)
+--~ 	self.building_update_time = MulDivRound(mod_PlantInterval, HourDuration, meta.scale)
 end
 
 function OnMsg.ClassesPostprocess()
@@ -101,4 +103,23 @@ function OnMsg.ClassesPostprocess()
 		end,
 	})
 
+end
+
+-- Hide hex ranges
+local ChoOrig_ShowHexRanges = ShowHexRanges
+function ShowHexRanges(city, class, ...)
+	if mod_MaxSizeWorkaround == 0 then
+		return ChoOrig_ShowHexRanges(city, class, ...)
+	end
+	if class == "ForestationPlant" then
+		-- it'll probably still crash
+		if mod_MaxSizeWorkaround == 1 then
+			return ChoOrig_ShowHexRanges(city, nil, nil, nil, SelectedObj)
+		-- Show nothing
+		elseif mod_MaxSizeWorkaround == 2 then
+			return
+		end
+	end
+
+	return ChoOrig_ShowHexRanges(city, class, ...)
 end
