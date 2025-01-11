@@ -227,7 +227,7 @@ function OnMsg.ClassesPostprocess()
 			"RolloverText", T(0000, "Choose other tunnel to connect to this tunnel (will disconnect any connected tunnel)."),
 			"Icon", "UI/Icons/IPButtons/transport_route.tga",
 			--
-			"OnPress", function(self, gamepad)
+			"OnPress", function(self)
 				-- left click action (second arg is if ctrl is being held down)
 				self.context:ChooseAttachedTunnel()
 			end,

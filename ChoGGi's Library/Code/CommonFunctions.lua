@@ -42,19 +42,17 @@ local ViewAndSelectObject = ViewAndSelectObject
 local WaitMsg = WaitMsg
 local XDestroyRolloverWindow = XDestroyRolloverWindow
 
--- actually local them?
---JA3
-if what_game == "Mars" then
-	local GetMapSectorXY = GetMapSectorXY
-	local HexGetNearestCenter = HexGetNearestCenter
-	local HexGridGetObject = HexGridGetObject
-	local HexToWorld = HexToWorld
-	local IsInMapPlayableArea = IsInMapPlayableArea
-	local IsPointNearBuilding = IsPointNearBuilding
-	local UseGamepadUI = UseGamepadUI
-	local ViewObjectMars = ViewObjectMars
-	local WorldToHex = WorldToHex
-end
+-- JA3 no likey
+local GetMapSectorXY = GetMapSectorXY
+local HexGetNearestCenter = HexGetNearestCenter
+local HexGridGetObject = HexGridGetObject
+local HexToWorld = HexToWorld
+local IsInMapPlayableArea = IsInMapPlayableArea
+local IsPointNearBuilding = IsPointNearBuilding
+local UseGamepadUI = UseGamepadUI
+local ViewObjectMars = ViewObjectMars
+local WorldToHex = WorldToHex
+
 
 -- Remove some log spam on older versions
 local is_gp = ChoGGi.is_gp

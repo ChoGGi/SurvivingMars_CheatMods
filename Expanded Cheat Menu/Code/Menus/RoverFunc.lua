@@ -7,9 +7,8 @@ end
 local ChoGGi_Funcs = ChoGGi_Funcs
 local type = type
 local T = T
-local Translate = ChoGGi_Funcs.Common.Translate
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
-
+--~ local Translate = ChoGGi_Funcs.Common.Translate
 --~	local RetName = ChoGGi_Funcs.Common.RetName
 
 function ChoGGi_Funcs.Menus.SetRoverChargeRadius()

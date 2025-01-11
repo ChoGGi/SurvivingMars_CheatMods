@@ -9,7 +9,7 @@ https://survivingmars.paradoxwikis.com/Patches#Version_history
 ## The same goes for using the No Below and Beyond/No Terraforming game rules!
 
 
-Only shows first 13 breakthroughs: Anything higher than that isn't guaranteed.
+Only shows first 13 breakthroughs: Anything higher than that isn't guaranteed (unless using paradox sponsor which gives an extra 2-4).
 
 1-4 are planetary anomalies (the rest are surface anomalies), if you have B&B then you need to use my Fix Bugs mod on new games or ignore them.
 

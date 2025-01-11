@@ -16,13 +16,14 @@ local mod_options = {
 }
 local c = #mod_options
 
-local ColonistSpecializationList = ColonistSpecializationList
-for i = 1, #ColonistSpecializationList do
-	local spec = ColonistSpecializationList[i]
+local const = const.ColonistSpecialization
+local specs = ColonistSpecializationList
+for i = 1, #specs do
+	local spec = specs[i]
 	c = c + 1
 	mod_options[c] = PlaceObj("ModItemOptionToggle", {
 		"name", spec,
-		"DisplayName", table.concat(T(0000, "Exclude") .. " " .. const.ColonistSpecialization[spec].display_name),
+		"DisplayName", table.concat(T(0000, "Exclude") .. " " .. const[spec].display_name),
 		"Help", T(0000, "Exclude this spec from training when Use Vacancies is turned on."),
 		"DefaultValue", false,
 	})

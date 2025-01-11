@@ -16,7 +16,13 @@ The current bug means once you have empathy sooner or later all your colonists w
 because the stacking empathy bonus never goes away from each dome they visit, even if the empath dies.
 (Thanks person whos name I forgot to keep around)
 
+add note about function DroneHub:OnRefabricate()
+local num_drones = self.starting_drones
+to ipBuilding
 
+
+max rival resources
+9223372036854 (64 bit unsigned int)
 
 storybits no follow up
 Free Will

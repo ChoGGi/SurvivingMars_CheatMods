@@ -4,10 +4,11 @@ local GetFreeWorkplaces = GetFreeWorkplaces
 
 local mod_UseVacancies
 
+-- build list for mod options below
 local exclude_specs = {}
-local ColonistSpecializationList = ColonistSpecializationList
-for i = 1, #ColonistSpecializationList do
-	exclude_specs[ColonistSpecializationList[i]] = false
+local specs = ColonistSpecializationList
+for i = 1, #specs do
+	exclude_specs[specs[i]] = false
 end
 
 local ChoOrig_GetMostNeededSpecialistAround = GetMostNeededSpecialistAround
@@ -15,8 +16,6 @@ function GetMostNeededSpecialistAround(dome, ...)
 	if not mod_UseVacancies then
 		return ChoOrig_GetMostNeededSpecialistAround(dome, ...)
 	end
-
-	local specs = ColonistSpecializationList
 
 	local current_vacancies = 0
 	local existing_specs = 0
@@ -54,7 +53,9 @@ function GetMostNeededSpecialistAround(dome, ...)
 
 	-- no idea why someone would exclude all specs, but I wouldn't put it past someone.
 	if not highest_need_spec then
-		return ChoOrig_GetMostNeededSpecialistAround(dome, ...)
+--~ 		return ChoOrig_GetMostNeededSpecialistAround(dome, ...)
+		local rand_spec = table.rand(specs)
+		return rand_spec
 	end
 
 --~ 	print(highest_need_spec, "highest_need_spec")

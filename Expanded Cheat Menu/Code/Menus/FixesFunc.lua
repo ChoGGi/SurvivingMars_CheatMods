@@ -11,12 +11,12 @@ local Sleep = Sleep
 local IsValid = IsValid
 local DoneObject = DoneObject
 local T = T
-local Translate = ChoGGi_Funcs.Common.Translate
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 local DeleteObject = ChoGGi_Funcs.Common.DeleteObject
 local ToggleWorking = ChoGGi_Funcs.Common.ToggleWorking
 local SpawnColonist = ChoGGi_Funcs.Common.SpawnColonist
 local FindNearestObject = FindNearestObject
+--~ local Translate = ChoGGi_Funcs.Common.Translate
 
 local testing = ChoGGi.testing
 

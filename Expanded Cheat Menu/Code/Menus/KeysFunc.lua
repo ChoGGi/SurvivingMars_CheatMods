@@ -3,7 +3,7 @@
 local ChoGGi_Funcs = ChoGGi_Funcs
 local table = table
 local T = T
-local Translate = ChoGGi_Funcs.Common.Translate
+--~ local Translate = ChoGGi_Funcs.Common.Translate
 
 function ChoGGi_Funcs.Menus.ConsoleRestart()
 	if ChoGGi.testing then

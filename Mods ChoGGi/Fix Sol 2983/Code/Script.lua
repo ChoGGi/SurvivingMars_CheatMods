@@ -5,7 +5,7 @@
 
 -- Used below to check for overflow (we want it below 2981 since that's when I start testing)
 local min_time = 2980 * const.Scale.sols
--- 2147483647 * 2
+-- 2147483647 * 2 (32 bit signed int)
 local max_int2 = max_int * 2
 -- When true add max_int2 time
 local add_time = false

@@ -465,7 +465,8 @@ rand()2 1729522667
 		print("rand()2",rand())
 		local spawned_wonders = {}
 		for index, marker in ipairs({1,1}) do
-      local blah = marker
+      if marker then
+      end
 			local wrapped_index = 1 + (index - 1) % num_wonders
 			local wonder_class = shuffled_wonders[wrapped_index]
 			spawned_wonders[#spawned_wonders + 1] = wonder_class

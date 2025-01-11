@@ -193,7 +193,7 @@ function MultiSelectionWrapper:Broadcast(method, ...)
 	if type(method) == "string" then
 --~ 		assert(g_Classes[self.selection_class]:HasMember(method),
 --~ 			string.format("Base class %s doesn't have the member %s", self.selection_class, method))
-		for i,subobj in ipairs(self.objects) do
+		for _,subobj in ipairs(self.objects) do
 			-- the "fix"
 			if subobj[method] then
 			--
@@ -202,7 +202,7 @@ function MultiSelectionWrapper:Broadcast(method, ...)
 			end
 		end
 	else
-		for i,subobj in ipairs(self.objects) do
+		for _,subobj in ipairs(self.objects) do
 			-- the "fix"
 			if subobj[method] then
 			--
@@ -217,13 +217,13 @@ function MultiSelectionWrapper:Union(method, comparison_key, ...)
 --~ 	assert(g_Classes[self.selection_class]:HasMember(method),
 --~ 		string.format("Base class %s doesn't have the member %s", self.selection_class, method))
 	local values = { }
-	for i,subobj in ipairs(self.objects) do
+	for _,subobj in ipairs(self.objects) do
 		-- the "fix"
 		if subobj[method] then
 		--
 			local result = subobj[method](subobj, ...)
 			if result then
-				for i,v in ipairs(result) do
+				for _,v in ipairs(result) do
 					if comparison_key then
 						if not table.find(values, comparison_key, v[comparison_key]) then
 							table.insert(values, v)

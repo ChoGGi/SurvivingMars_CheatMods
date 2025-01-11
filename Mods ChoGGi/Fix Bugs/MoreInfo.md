@@ -34,6 +34,7 @@ St. Elmo's Fire: Stop meteoroids from destroying sinkholes.
 The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
 
 B&B
+Unlock Artificial Sun for refabbing.
 Too much Cave-in rubble will cause lag when new rubble tries to spawn.
 Elevator func not checking for invalid resources.
 Colonists showing up on wrong map in infobar (also negative counts in infobar).
@@ -50,6 +51,7 @@ Water Reclamation Spire and B&B upgrade tech caused issues.
 
 **Mod bug fixes**:
 ```
+Fix for whatever odd thing Mars Underground mod is doing with presets.
 Log spam from a modded trait without an id.
 Black screen in second new game window when using a Modded sponsor and missing DLC.
 Rivals Trade Minerals mod hides Exotic Minerals from lander UI.

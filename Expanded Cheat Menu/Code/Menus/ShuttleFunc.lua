@@ -7,8 +7,8 @@ end
 local ChoGGi_Funcs = ChoGGi_Funcs
 local tostring, type = tostring, type
 local T = T
-local Translate = ChoGGi_Funcs.Common.Translate
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
+--~ local Translate = ChoGGi_Funcs.Common.Translate
 
 function ChoGGi_Funcs.Menus.SetShuttleCapacity()
 	local r = const.ResourceScale

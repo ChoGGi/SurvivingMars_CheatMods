@@ -20,6 +20,7 @@ local GetBuildingTechsStatus = GetBuildingTechsStatus
 local ChoOrig_PlacePlanet = PlacePlanet
 
 local empty_table = empty_table
+local g_AvailableDlc = g_AvailableDlc
 
 local mod_EnableMod
 local mod_FarmOxygen
@@ -172,6 +173,21 @@ function OnMsg.ClassesPostprocess()
 	end
 	--
 
+end
+
+--
+-- Fix for whatever odd thing Mars Underground mod is doing with presets.
+local ChoOrig_Preset_Register = Preset.Register
+function Preset:Register(...)
+	-- fires too early for mod options
+--~ 	if not mod_EnableMod then
+--~ 		return ChoOrig_Preset_Register(self, ...)
+--~ 	end
+
+  local groups = Presets[self.PresetClass or self.class]
+	if groups then
+		return ChoOrig_Preset_Register(self, ...)
+	end
 end
 
 --
@@ -408,6 +424,12 @@ do
 		--
 		--
 		--
+
+		--
+		--	Unlock ArtificialSun for re-fabbing
+		if g_AvailableDlc.picard then
+			ClassTemplates.Building.ArtificialSun.can_refab = true
+		end
 
 		--
 		-- Rivals Trade Minerals mod hides Exotic Minerals from lander UI
@@ -1630,7 +1652,8 @@ function FindUnobstructedDepositPos(marker, ...)
 		and GetCity(marker).map_id == "BlankUnderground_02"
 	then
 		-- Ignore the obstructed bool and DepositMarker:PlaceDeposit() is happy
-		local x, y, unobstructed, obstructed = ChoOrig_FindUnobstructedDepositPos(marker, ...)
+--~ 		local x, y, unobstructed, obstructed
+		local x, y, unobstructed = ChoOrig_FindUnobstructedDepositPos(marker, ...)
 		return x, y, unobstructed, false
 	end
 	return ChoOrig_FindUnobstructedDepositPos(marker, ...)

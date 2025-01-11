@@ -1,6 +1,8 @@
-v7.*
-Moved around the code to tidy it up a bit.
+v7.5
+Fix for whatever odd thing Mars Underground mod is doing with presets.
+Unlock Artificial Sun for refabbing.
 Moved Fix Landscaping Freeze into NewDay instead of LoadGame (for those oddballs with long sessions).
+Moved around the code to tidy it up a bit.
 
 v7.4
 Thanks Dark Master for digging around and testing storybits (and documenting them on wiki).

@@ -8,7 +8,7 @@ local AddBuildingElecConsump = ChoGGi_Funcs.Common.AddBuildingElecConsump
 --~ local MulDivRound = MulDivRound
 
 local mod_MaxSize
-local mod_PlantInterval
+--~ local mod_PlantInterval
 local mod_RemovePower
 local mod_MaxSizeWorkaround
 

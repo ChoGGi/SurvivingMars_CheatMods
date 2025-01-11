@@ -1,6 +1,7 @@
 ## Library Changelog
 
 ## v12.5 (Unreleased)
+- Seem to have gotten rid of anymore [C](-1) showing up for RetName.
 
 ## v12.4 (4 Jan 2025)
 - Added checkbox to toggle UI transparency to my dialogs.

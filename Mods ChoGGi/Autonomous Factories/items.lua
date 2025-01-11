@@ -20,6 +20,7 @@ local c = #mod_options
 
 local g_Classes = g_Classes
 local BuildingTemplates = BuildingTemplates
+
 for id, item in pairs(BuildingTemplates) do
 	local cls_obj = g_Classes[item.template_class]
 	local is_factory = IsKindOf(cls_obj, "Factory")
@@ -43,20 +44,20 @@ end
 -- Custom buildings
 local function AddBuilding(id)
 	local item = BuildingTemplates[id]
-	c = c + 1
-	mod_options[c] = PlaceObj("ModItemOptionToggle", {
-		"name", id,
-		"DisplayName", T(item.display_name),
-		"Help", table.concat(T(item.description) .. "\n\n<image " .. item.display_icon .. ">"),
-		"DefaultValue", false,
-	})
+	if item then
+		c = c + 1
+		mod_options[c] = PlaceObj("ModItemOptionToggle", {
+			"name", id,
+			"DisplayName", T(item.display_name),
+			"Help", table.concat(T(item.description) .. "\n\n<image " .. item.display_icon .. ">"),
+			"DefaultValue", false,
+		})
+	end
 end
 --
 AddBuilding("DroneFactory")
---
-if g_AvailableDlc.picard then
-	AddBuilding("ReconCenter")
-end
+-- No need to check for dlc, just check for nil in the func above
+AddBuilding("ReconCenter")
 
 local CmpLower = CmpLower
 local _InternalTranslate = _InternalTranslate

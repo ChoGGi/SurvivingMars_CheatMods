@@ -12,6 +12,8 @@ g_ProfileStats = rawget(_G, "g_ProfileStats") or {}
 g_Sections = rawget(_G, "g_Sections") or 1
 local statsInterval = 3000
 function __SectionStart(s)
+  if s then
+  end
 	PerformanceMarker(g_Sections)
 	g_Sections = g_Sections + 1
 end

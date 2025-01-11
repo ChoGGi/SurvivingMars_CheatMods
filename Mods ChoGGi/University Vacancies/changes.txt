@@ -1,1 +1,2 @@
 v0.2
+If all specs are excluded in mod options then it'll pick a random one.
