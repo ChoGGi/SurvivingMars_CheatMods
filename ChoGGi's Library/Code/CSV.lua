@@ -7,6 +7,7 @@ end
 -- local some globals
 local ChoGGi_Funcs = ChoGGi_Funcs
 local table = table
+local table_remove = table.remove
 local CmpLower = CmpLower
 
 local Translate = ChoGGi_Funcs.Common.Translate
@@ -43,30 +44,35 @@ do -- MapData
 	-- Stores temp landing spot
 	local landing
 	-- If I translate these, then I get issues in not English when using Find Map Locations.
-	-- I could do an if, but best keep it simple...
+	-- I could do an if, but best keep it simple for whatever speed I can get
 	local north, east, south, west = "N", "E", "S", "W"
 
---~ 	local loc_table = {"","","",""}
 	local MapData = ChoGGi.is_gp and MapData or MapDataPresets
 	local temp_g_SelectedSpotChallengeMods = {}
 
-	local function AddLandingSpot(lat, long, breakthroughs, limit_count, skip_csv)
+	local limit_count = 13
+	local skip_csv = false
+	local breakthroughs = false
+	local bb_dlc = false
+
+	local function AddLandingSpot(lat, long)
 		-- coord names in csv
 		local lat_0, long_0 = lat < 0, long < 0
 		local lat_name, long_name = lat_0 and north or south, long_0 and west or east
 
-		-- no dupes
---~ 		loc_table[1] = lat_name
---~ 		loc_table[2] = lat
---~ 		loc_table[3] = long_name
---~ 		loc_table[4] = long
---~ 		local location = table.concat(loc_table)
-		local location = lat_name .. lat .. long_name .. long
+--~ 		local location = lat_name .. lat .. long_name .. long
+--~ 		if export_data_dupes[location] then
+--~ 			return
+--~ 		end
+--~ 		export_data_dupes[location] = true
 
-		if export_data_dupes[location] then
+		-- no dupes
+		local location_user = lat .. lat_name .. long .. long_name
+
+		if export_data_dupes[location_user] then
 			return
 		end
-		export_data_dupes[location] = true
+		export_data_dupes[location_user] = true
 
 		-- updates map_params to location
 		GetOverlayValues(
@@ -84,7 +90,6 @@ do -- MapData
 			long = long - long * 2
 		end
 
-		local location_user = lat .. lat_name .. long .. long_name
 
 		-- updates threat/res map info
 		landing:RecalcThreatAndResourceLevels()
@@ -142,6 +147,14 @@ do -- MapData
 
 		if breakthroughs then
 			local tech_list = RetMapBreakthroughs(gen, limit_count)
+
+			-- remove first four
+			if bb_dlc then
+				for _ = 1, 4 do
+					table_remove(tech_list, 1)
+				end
+			end
+
 			if skip_csv then
 				for i = 1, #tech_list do
 					data[i] = tech_list[i]
@@ -177,10 +190,6 @@ ChoGGi_Funcs.Common.ExportMapDataToCSV(XAction:new{
 	]]
 
 	function ChoGGi_Funcs.Common.ExportMapDataToCSV(action)
-		local limit_count = 13
-		local skip_csv = false
-		local breakthroughs = false
-
 		-- fired from action menu
 		if action and IsKindOf(action, "XAction") then
 			if action.setting_breakthroughs then
@@ -192,7 +201,13 @@ ChoGGi_Funcs.Common.ExportMapDataToCSV(XAction:new{
 			if action.setting_skip_csv then
 				skip_csv = action.setting_skip_csv
 			end
+
 		end
+
+		-- Remove first four if bb dlc and my fix bugs mod not enabled
+		local fix_bugs = table.find(ModsLoaded, "id", "ChoGGi_FixBBBugs")
+		local ava_bb_dlc = g_AvailableDlc.picard
+		bb_dlc = ava_bb_dlc and not fix_bugs
 
 --~ 		north, east, south, west = Translate(1000487--[[N]]), Translate(1000478--[[E]]), Translate(1000492--[[S]]), Translate(1000496--[[W]])
 
@@ -231,16 +246,16 @@ ChoGGi_Funcs.Common.ExportMapDataToCSV(XAction:new{
 		for lat = 0, 70 do
 			for long = 0, 180 do
 				-- SE
-				AddLandingSpot(lat, long, breakthroughs, limit_count, skip_csv)
+				AddLandingSpot(lat, long)
 --~ 				-- skip the rest for speed in testing
 --~ 				testing = false
 				if action.ActionId ~= "" or not testing then
 					-- SW
-					AddLandingSpot(lat, -long, breakthroughs, limit_count, skip_csv)
+					AddLandingSpot(lat, -long)
 					-- NE
-					AddLandingSpot(-lat, long, breakthroughs, limit_count, skip_csv)
+					AddLandingSpot(-lat, long)
 					-- NW
-					AddLandingSpot(-lat, -long, breakthroughs, limit_count, skip_csv)
+					AddLandingSpot(-lat, -long)
 				end
 			end
 		end

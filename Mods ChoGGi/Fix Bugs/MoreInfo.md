@@ -37,7 +37,7 @@ B&B
 Unlock Artificial Sun for refabbing.
 Too much Cave-in rubble will cause lag when new rubble tries to spawn.
 Elevator func not checking for invalid resources.
-Colonists showing up on wrong map in infobar (also negative counts in infobar).
+Colonists showing up on wrong map in infobar (also negative counts in infobar, mod option disabled by default).
 No flying drones underground (they tend to get stuck in walls/etc).
 No Planetary Anomaly Breakthroughs when B&B is installed.
 Refabbing rare extractors left the "working" dust plumes around them.
@@ -159,6 +159,10 @@ City:InitBreakThroughAnomalies is called for each new city (surface/underground/
 Calling it more than once removes the BreakthroughOrder list
 
 That list is used to spawn planetary anomalies
+
+**Colonists showing up on wrong map in infobar**
+
+Disabled by default, can cause freezing when loading saves.
 
 **No flying drones underground**
 

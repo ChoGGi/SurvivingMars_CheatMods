@@ -434,7 +434,7 @@ end
 --~ end
 
 function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(gen)
-print("UpdateInfo")
+printC("UpdateInfo")
 --~ 	if false then
 	if ChoGGi.testing then
 		local state = RandState(gen.Seed)
@@ -480,7 +480,13 @@ rand()2 1729522667
 		return
 	end
 
-	local display_list = ChoGGi_Funcs.Common.RetMapBreakthroughs(gen, mod_BreakthroughCount)
+	-- Bump by 4
+	local count = mod_BreakthroughCount
+	if g_CurrentMissionParams.idMissionSponsor == "paradox" then
+		count = count + 4
+	end
+
+	local display_list = ChoGGi_Funcs.Common.RetMapBreakthroughs(gen, count)
 --~ 	ex{display_list, gen}
 
 	-- tech descriptions

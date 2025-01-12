@@ -1,3 +1,6 @@
+v2.6
+Bumps the breakthrough count when you use Paradox sponsor.
+
 v2.5
 Code cleanup
 

@@ -18,9 +18,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1491973763",
 	"pops_any_uuid", "28b23a4f-7e8f-49b0-965a-3c14a8e4b919",
 	"lua_revision", 1007000, -- Picard
-	"version", 25,
+	"version", 26,
 	"version_major", 2,
-	"version_minor", 5,
+	"version_minor", 6,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -34,6 +34,7 @@ Includes a checkbox to show anomaly breakthroughs for each location, as well as 
 
 If you use a rule that changes the breakthrough list, then ignore the breakthrough list shown as it isn't accurate anymore.
 The first 13 breakthroughs are guaranteed (4 from planetary anomalies, and 9 from ground anomalies). The rest are dependant on story bits/etc.
+Paradox sponsor does add an extra 2-4 (random), so if you play with it then it'll bump the count by 4. Keep in mind the last two aren't guaranteed.
 
 Also shows map for challenges (mod option to turn it off).
 

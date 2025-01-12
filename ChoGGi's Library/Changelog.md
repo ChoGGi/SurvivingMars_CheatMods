@@ -1,6 +1,8 @@
 ## Library Changelog
 
 ## v12.5 (Unreleased)
+- ExportMapDataToCSV is slightly faster
+- ExportMapDataToCSV won't show planetary anomalies if you have BB DLC without my Fix Bugs mod.
 - Seem to have gotten rid of anymore [C](-1) showing up for RetName.
 
 ## v12.4 (4 Jan 2025)

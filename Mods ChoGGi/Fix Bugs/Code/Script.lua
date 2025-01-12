@@ -26,7 +26,6 @@ local mod_EnableMod
 local mod_FarmOxygen
 local mod_DustDevilsBlockBuilding
 local mod_UnevenTerrain
---~ local mod_TurnOffUpgrades
 local mod_SupplyPodSoundEffects
 local mod_MainMenuMusic
 local mod_ColonistsWrongMap
@@ -61,7 +60,6 @@ local function ModOptions(id)
 	mod_FarmOxygen = CurrentModOptions:GetProperty("FarmOxygen")
 	mod_DustDevilsBlockBuilding = CurrentModOptions:GetProperty("DustDevilsBlockBuilding")
 	mod_UnevenTerrain = CurrentModOptions:GetProperty("UnevenTerrain")
---~ 	mod_TurnOffUpgrades = CurrentModOptions:GetProperty("TurnOffUpgrades")
 	mod_SupplyPodSoundEffects = CurrentModOptions:GetProperty("SupplyPodSoundEffects")
 	mod_MainMenuMusic = CurrentModOptions:GetProperty("MainMenuMusic")
 	mod_ColonistsWrongMap = CurrentModOptions:GetProperty("ColonistsWrongMap")
@@ -1148,37 +1146,6 @@ function Building:Done(...)
 
 	return ChoOrig_Building_Done(self, ...)
 end
-
---~ -- Also do the same when turning off a building
---~ local ChoOrig_BaseBuilding_OnSetWorking = BaseBuilding.OnSetWorking
---~ function BaseBuilding:OnSetWorking(working, ...)
---~ 	-- Skip if the building is being turned on or it's not an upgradeable building
---~ 	if not mod_EnableMod or not mod_TurnOffUpgrades then
---~ 		return ChoOrig_BaseBuilding_OnSetWorking(self, working, ...)
---~ 	end
-
---~ 	if working then
---~ 		-- Enable any upgrades I disabled
---~ 		for id, enabled in pairs(self.upgrades_built or empty_table) do
---~ 			if self["ChoGGi_" .. id] then
---~ 				self:ToggleUpgradeOnOff(id)
---~ 				self["ChoGGi_" .. id] = nil
---~ 			end
---~ 		end
---~ 	else
---~ 		-- Goes through list of enabled upgrades and turns them off.
---~ 		-- You'd figure the game would do this?
---~ 		for id, enabled in pairs(self.upgrade_on_off_state or empty_table) do
---~ 			if enabled then
---~ 				self:ToggleUpgradeOnOff(id)
---~ 				-- Used above to re-enable
---~ 				self["ChoGGi_" .. id] = true
---~ 			end
---~ 		end
---~ 	end
-
---~ 	return ChoOrig_BaseBuilding_OnSetWorking(self, working, ...)
---~ end
 
 --
 -- Add sound effects to SupplyPods

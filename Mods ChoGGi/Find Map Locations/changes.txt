@@ -1,3 +1,7 @@
+v1.4
+Bumps the breakthrough count when you use Paradox sponsor.
+Removes the first four breakthroughs if you have BB DLC and you don't have my Fix Bugs mod.
+
 v1.3
 Reuse Results will flash when it's checked.
 

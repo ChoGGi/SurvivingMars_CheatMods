@@ -10,6 +10,7 @@ end
 local pairs, tostring, type, table, tonumber = pairs, tostring, type, table, tonumber
 -- every litte bit helps
 local table_concat = table.concat
+local table_remove = table.remove
 
 local Translate = ChoGGi_Funcs.Common.Translate
 local IsValidXWin = ChoGGi_Funcs.Common.IsValidXWin
@@ -38,11 +39,30 @@ local map_data_prev_results
 local landsiteobj
 
 local function ShowDialogs()
+ChoGGi_Funcs.Common.TickStart("Tick.1")
 	-- we only need to build once, not as if it'll change anytime soon (save as csv?, see if it's shorter to load)
 	if not map_data then
+
+		-- Bump count for paradox
+		local count = mod_BreakthroughCount
+		if g_CurrentMissionParams.idMissionSponsor == "paradox" then
+			count = count + 2
+		end
+
+		-- Remove when I upload new lib version
+		local skip_four
+		if Mods.ChoGGi_Library and Mods.ChoGGi_Library.version > 124 then
+			skip_four = false
+		else
+			local fix_bugs = table.find(ModsLoaded, "id", "ChoGGi_FixBBBugs")
+			local bb_dlc = g_AvailableDlc.picard
+			skip_four = bb_dlc and not fix_bugs
+		end
+		-- Remove when I upload new lib version
+
 		map_data = ChoGGi_Funcs.Common.ExportMapDataToCSV(XAction:new{
 			setting_breakthroughs = true,
-			setting_limit_count = mod_BreakthroughCount,
+			setting_limit_count = count,
 			setting_skip_csv = true,
 		})
 
@@ -52,10 +72,19 @@ local function ShowDialogs()
 
 			-- change all strings to lowercase here instead of while searching
 			data.coordinates = map_info(nil, data, true):lower()
-			-- breakthroughs
+
+			-- Remove when I upload new lib version
+			if skip_four then
+				for _ = 1, 4 do
+					table_remove(data, 1)
+				end
+			end
+			-- Remove when I upload new lib version
+
 			for j = 1, #data do
 				data[j] = data[j]:lower()
 			end
+
 			-- only these three have case
 			if data.landing_spot then
 				data.landing_spot = data.landing_spot:lower()
@@ -65,8 +94,12 @@ local function ShowDialogs()
 		end
 
 	end
+ChoGGi_Funcs.Common.TickEnd("Tick.1")
 --~ 	map_data = {}
---~ 	ex(map_data)
+	if ChoGGi.testing then
+		vli = ShowDialogs
+		ex(map_data)
+	end
 
 	-- check if we already created finder, and make one if not
 	if not IsValidXWin(dlg_locations) then

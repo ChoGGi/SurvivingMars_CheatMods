@@ -4897,6 +4897,7 @@ if what_game == "Mars" then
 --~ 		-- 8 on ground
 --~ 		-- 3 omega
 --~ 		-- 4 planetary
+--~		-- Paradox sponsor 2-4
 --~ 		-- other 5 from meteors?
 --~ 	end
 --~ 	UnlockAnoms()
@@ -4905,8 +4906,8 @@ if what_game == "Mars" then
 	local CreateRand = CreateRand
 
 	local orig_break_list
-	local remove_added = {}
 	local translated_tech
+	local table_copy = table.copy
 
 	function ChoGGi_Funcs.Common.RetMapBreakthroughs(gen, limit_count)
 		-- build list of names once
@@ -4928,21 +4929,22 @@ if what_game == "Mars" then
 --~ 		-- + const.OmegaTelescopeBreakthroughsCount, it's seed based but it shuffles the list of unregistered breakthroughs
 --~ 		+ (g_Consts and g_Consts.PlanetaryBreakthroughCount or Consts.PlanetaryBreakthroughCount)
 		-- g_ is the in-game object
+--~ 		if limit_count and type(limit_count) == "number" then
 		if limit_count and type(limit_count) == "number" then
 			breakthrough_count = limit_count
 		end
 
 		-- start with a clean copy of breaks
-		local break_order = table.copy(orig_break_list)
+		local break_order = table_copy(orig_break_list)
+		-- Shuffle as the game does for proper order
 		StableShuffle(break_order, CreateRand(true, gen.Seed, "ShuffleBreakThroughTech"), 100)
 		--
 		while #break_order > breakthrough_count do
 			break_order[#break_order] = nil
 		end
 
-		local tech_list = {}
-
-		table.clear(remove_added)
+		tech_list = {}
+		remove_added = {}
 
 		local c = #break_order
 		for i = 1, c do
