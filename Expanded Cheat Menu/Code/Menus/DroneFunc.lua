@@ -17,7 +17,7 @@ function ChoGGi_Funcs.Menus.SetDroneBatteryCap()
 	local r = const.ResourceScale
 
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting},
 		{text = 10, value = 10 * r},
 		{text = 25, value = 25 * r},
 		{text = 50, value = 50 * r},
@@ -117,7 +117,7 @@ end
 function ChoGGi_Funcs.Menus.SetRoverWorkRadius()
 	local default_setting = ChoGGi.Consts.RCRoverMaxRadius
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 40, value = 40},
 		{text = 80, value = 80},
 		{text = 160, value = 160},
@@ -171,7 +171,7 @@ end
 function ChoGGi_Funcs.Menus.SetDroneHubWorkRadius()
 	local default_setting = ChoGGi.Consts.CommandCenterMaxRadius
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 40, value = 40},
 		{text = 80, value = 80},
 		{text = 160, value = 160},
@@ -225,7 +225,7 @@ end
 function ChoGGi_Funcs.Menus.SetDroneRockToConcreteSpeed()
 	local default_setting = ChoGGi.Consts.DroneTransformWasteRockObstructorToStockpileAmount
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 0, value = 0},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
@@ -282,20 +282,20 @@ function ChoGGi_Funcs.Menus.SetDroneMoveSpeed(action)
 		UpgradedSetting = ChoGGi_Funcs.Common.GetResearchedTechValue("SpeedDrone")
 	end
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting, hint = T(302535920000889--[[base speed]])},
-		{text = 5, value = 5 * r},
-		{text = 10, value = 10 * r},
-		{text = 15, value = 15 * r},
-		{text = 25, value = 25 * r},
-		{text = 50, value = 50 * r},
-		{text = 100, value = 100 * r},
-		{text = 1000, value = 1000 * r},
-		{text = 10000, value = 10000 * r},
+		{text = Translate(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting, hint = T(302535920000889--[[base speed]])},
+		{text = 5, value = 5 * r, hint = "5000"},
+		{text = 10, value = 10 * r, hint = "10000"},
+		{text = 15, value = 15 * r, hint = "15000"},
+		{text = 25, value = 25 * r, hint = "25000"},
+		{text = 50, value = 50 * r, hint = "50000"},
+		{text = 100, value = 100 * r, hint = "100000"},
+		{text = 1000, value = 1000 * r, hint = "100000"},
+		{text = 10000, value = 10000 * r, hint = "10000000"},
 	}
 
 	-- only reg drones have upgraded speed tech (i think)
 	if UpgradedSetting and default_setting ~= UpgradedSetting then
-		table.insert(item_list, 2, {text = T(302535920000890--[[Upgraded]]) .. ": " .. (UpgradedSetting / r), value = UpgradedSetting, hint = T(302535920000891--[[apply tech unlocks]])})
+		table.insert(item_list, 2, {text = Translate(302535920000890--[[Upgraded]]) .. ": " .. (UpgradedSetting / r), value = UpgradedSetting, hint = T(302535920000891--[[apply tech unlocks]])})
 	end
 
 	local hint = UpgradedSetting or default_setting
@@ -363,7 +363,7 @@ function ChoGGi_Funcs.Menus.SetDroneAmountDroneHub()
 
 	local CurrentAmount = obj:GetDronesCount()
 	local item_list = {
-		{text = T(302535920000894--[[Current amount]]) .. ": " .. CurrentAmount, value = CurrentAmount},
+		{text = Translate(302535920000894--[[Current amount]]) .. ": " .. CurrentAmount, value = CurrentAmount},
 		{text = 1, value = 1},
 		{text = 5, value = 5},
 		{text = 10, value = 10},
@@ -418,7 +418,7 @@ end
 function ChoGGi_Funcs.Menus.SetDroneFactoryBuildSpeed()
 	local default_setting = ChoGGi.Consts.DroneFactoryBuildSpeed
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
 		{text = 75, value = 75},

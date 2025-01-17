@@ -106,7 +106,7 @@ end
 
 function ChoGGi_Funcs.Menus.SetTimeFactor()
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. 1000, value = 1000},
+		{text = Translate(1000121--[[Default]]) .. ": " .. 1000, value = 1000},
 		{text = 0, value = 0, hint = T(6869--[[Pause]])},
 		{text = 100, value = 100},
 		{text = 150, value = 150},
@@ -152,22 +152,22 @@ end
 function ChoGGi_Funcs.Menus.ShowAutoUnpinObjectList()
 
 	local item_list = {
-		{text = T(547--[[Colonists]]), value = "Colonist"},
-		{text = T(1120--[[Space Elevator]]), value = "SpaceElevator"},
-		{text = T(3518--[[Drone Hub]]), value = "DroneHub"},
-		{text = T(1685--[[Rocket]]), value = "SupplyRocket"},
+		{text = Translate(547--[[Colonists]]), value = "Colonist"},
+		{text = Translate(1120--[[Space Elevator]]), value = "SpaceElevator"},
+		{text = Translate(3518--[[Drone Hub]]), value = "DroneHub"},
+		{text = Translate(1685--[[Rocket]]), value = "SupplyRocket"},
 
-		{text = T(5017--[[Basic Dome]]), value = "DomeBasic"},
-		{text = T(5146--[[Medium Dome]]), value = "DomeMedium"},
-		{text = T(5152--[[Mega Dome]]), value = "DomeMega"},
-		{text = T(5188--[[Oval Dome]]), value = "DomeOval"},
-		{text = T(5093--[[Geoscape Dome]]), value = "GeoscapeDome"},
-		{text = T(9000--[[Micro Dome]]), value = "DomeMicro"},
-		{text = T(9003--[[Trigon Dome]]), value = "DomeTrigon"},
-		{text = T(9009--[[Mega Trigon Dome]]), value = "DomeMegaTrigon"},
-		{text = T(9012--[[Diamond Dome]]), value = "DomeDiamond"},
-		{text = T(302535920000347--[[Star Dome]]), value = "DomeStar"},
-		{text = T(302535920000351--[[Hexa Dome]]), value = "DomeHexa"},
+		{text = Translate(5017--[[Basic Dome]]), value = "DomeBasic"},
+		{text = Translate(5146--[[Medium Dome]]), value = "DomeMedium"},
+		{text = Translate(5152--[[Mega Dome]]), value = "DomeMega"},
+		{text = Translate(5188--[[Oval Dome]]), value = "DomeOval"},
+		{text = Translate(5093--[[Geoscape Dome]]), value = "GeoscapeDome"},
+		{text = Translate(9000--[[Micro Dome]]), value = "DomeMicro"},
+		{text = Translate(9003--[[Trigon Dome]]), value = "DomeTrigon"},
+		{text = Translate(9009--[[Mega Trigon Dome]]), value = "DomeMegaTrigon"},
+		{text = Translate(9012--[[Diamond Dome]]), value = "DomeDiamond"},
+		{text = Translate(302535920000347--[[Star Dome]]), value = "DomeStar"},
+		{text = Translate(302535920000351--[[Hexa Dome]]), value = "DomeHexa"},
 	}
 	local c = #item_list
 
@@ -571,22 +571,22 @@ function ChoGGi_Funcs.Menus.SetObjectOpacity()
 	local obj = ChoGGi_Funcs.Common.SelObject()
 
 	local item_list = {
-		{text = T(302535920001084--[[Reset]]) .. ": " .. T(3984--[[Anomalies]]), value = "Anomaly", hint = T{302535920001109--[["Loops though and makes all <color ChoGGi_green><str></color> visible."]],
+		{text = Translate(302535920001084--[[Reset]]) .. ": " .. Translate(3984--[[Anomalies]]), value = "Anomaly", hint = T{302535920001109--[["Loops though and makes all <color ChoGGi_green><str></color> visible."]],
 				str = T(3984--[[Anomalies]]),
 		}},
-		{text = T(302535920001084--[[Reset]]) .. ": " .. T(3980--[[Buildings]]), value = "Building", hint = T{302535920001109--[[snipped]],
+		{text = Translate(302535920001084--[[Reset]]) .. ": " .. Translate(3980--[[Buildings]]), value = "Building", hint = T{302535920001109--[[snipped]],
 				str = T(3980--[[Buildings]]),
 		}},
-		{text = T(302535920001084--[[Reset]]) .. ": " .. T(302535920000157--[[Cables & Pipes]]), value = "GridElements", hint = T{302535920001109--[[snipped]],
+		{text = Translate(302535920001084--[[Reset]]) .. ": " .. Translate(302535920000157--[[Cables & Pipes]]), value = "GridElements", hint = T{302535920001109--[[snipped]],
 				str = T(302535920000157--[[Cables & Pipes]]),
 		}},
-		{text = T(302535920001084--[[Reset]]) .. ": " .. T(547--[[Colonists]]), value = "Colonists", hint = T{302535920001109--[[snipped]],
+		{text = Translate(302535920001084--[[Reset]]) .. ": " .. Translate(547--[[Colonists]]), value = "Colonists", hint = T{302535920001109--[[snipped]],
 				str = T(547--[[Colonists]]),
 		}},
-		{text = T(302535920001084--[[Reset]]) .. ": " .. T(5438--[[Rovers]]) .. " & " .. Translate(517--[[Drones]]), value = "Unit", hint = T{302535920001109--[[snipped]],
+		{text = Translate(302535920001084--[[Reset]]) .. ": " .. Translate(5438--[[Rovers]]) .. " & " .. Translate(517--[[Drones]]), value = "Unit", hint = T{302535920001109--[[snipped]],
 				str = T(5438--[[Rovers]]) .. " & " .. T(517--[[Drones]]),
 		}},
-		{text = T(302535920001084--[[Reset]]) .. ": " .. T(3982--[[Deposits]]), value = "SurfaceDeposit", hint = T{302535920001109--[[snipped]],
+		{text = Translate(302535920001084--[[Reset]]) .. ": " .. Translate(3982--[[Deposits]]), value = "SurfaceDeposit", hint = T{302535920001109--[[snipped]],
 				str = T(3982--[[Deposits]]),
 		}},
 	}
@@ -945,10 +945,10 @@ end
 --~ ActiveGameMap.terrain:SetTypeCircle(GetCursorWorldPos(), 5000, terrain_type_idx)
 function ChoGGi_Funcs.Menus.ChangeMap()
 	local lookup_table = {
-		[T(3474--[[Mission Sponsor]])] = "idMissionSponsor",
-		[T(3478--[[Commander Profile]])] = "idCommanderProfile",
-		[T(3486--[[Mystery]])] = "idMystery",
-		[T(3482--[[Colony Logo]])] = "idMissionLogo",
+		[Translate(3474--[[Mission Sponsor]])] = "idMissionSponsor",
+		[Translate(3478--[[Commander Profile]])] = "idCommanderProfile",
+		[Translate(3486--[[Mystery]])] = "idMystery",
+		[Translate(3482--[[Colony Logo]])] = "idMissionLogo",
 		ResPreset_Concrete = "ResPreset_Concrete",
 		ResPreset_Metals = "ResPreset_Metals",
 		ResPreset_Polymers = "ResPreset_Polymers",
@@ -968,27 +968,27 @@ function ChoGGi_Funcs.Menus.ChangeMap()
 	-- open a list dialog to set g_CurrentMissionParams
 	local itemlist = {
 		{text = "Map", value = "BlankBig_01"},
-		{text = T(3474--[[Mission Sponsor]]), value = "IMM", hint = T{302535920001386--[["Can be changed after in <str1>><str2>><str3>."]],
+		{text = Translate(3474--[[Mission Sponsor]]), value = "IMM", hint = T{302535920001386--[["Can be changed after in <str1>><str2>><str3>."]],
 			str1 = T(302535920000002--[[ECM]]),
 			str2 = T(1635--[[Mission]]),
 			str3 = T(302535920000712--[[Set Sponsor]]),
 		}},
-		{text = T(3478--[[Commander Profile]]), value = "rocketscientist", hint = T{302535920001386--[[snipped]],
+		{text = Translate(3478--[[Commander Profile]]), value = "rocketscientist", hint = T{302535920001386--[[snipped]],
 			str1 = T(302535920000002--[[ECM]]),
 			str2 = T(1635--[[Mission]]),
 			str3 = T(302535920000716--[[Set Commander]]),
 		}},
-		{text = T(3486--[[Mystery]]), value = "random", hint = T{302535920001386--[[snipped]],
+		{text = Translate(3486--[[Mystery]]), value = "random", hint = T{302535920001386--[[snipped]],
 			str1 = T(27--[[Cheats]]),
 			str2 = T(302535920000331--[[Mystery Start]]),
 			str3 = "",
 		}},
-		{text = T(3482--[[Colony Logo]]), value = "MarsExpress", hint = T{302535920001386--[[snipped]],
+		{text = Translate(3482--[[Colony Logo]]), value = "MarsExpress", hint = T{302535920001386--[[snipped]],
 			str1 = T(302535920000002--[[ECM]]),
 			str2 = T(1635--[[Mission]]),
 			str3 = T(302535920000710--[[Change Logo]]),
 		}},
-		{text = T(8800--[[Game Rules]]), value = "", hint = T(302535920000803--[[For rules separate with spaces: Hunger ColonyPrefab (or leave blank for none).]])},
+		{text = Translate(8800--[[Game Rules]]), value = "", hint = T(302535920000803--[[For rules separate with spaces: Hunger ColonyPrefab (or leave blank for none).]])},
 		{text = "ResPreset_Concrete", value = ""},
 		{text = "ResPreset_Metals", value = ""},
 		{text = "ResPreset_Polymers", value = ""},
@@ -1492,17 +1492,17 @@ end -- do
 function ChoGGi_Funcs.Menus.SetLightsRadius()
 	local hr = hr
 	local item_list = {
-		{text = T(1000121--[[Default]]), value = T(1000121--[[Default]]), hint = T(302535920001003--[[restart to enable]])},
-		{text = T(302535920001004--[[01 Lowest (25)]]), value = 25},
-		{text = T(302535920001005--[[02 Lower (50)]]), value = 50},
-		{text = T(302535920001006--[[03 Low (90)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 90},
-		{text = T(302535920001007--[[04 Medium (95)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 95},
-		{text = T(302535920001008--[[05 High (100)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 100},
-		{text = T(302535920001009--[[06 Ultra (200)]]), value = 200},
-		{text = T(302535920001010--[[07 Ultra-er (400)]]), value = 400},
-		{text = T(302535920001011--[[08 Ultra-er (600)]]), value = 600},
-		{text = T(302535920001012--[[09 Ultra-er (1000)]]), value = 1000},
-		{text = T(302535920001013--[[10 Laggy (10000)]]), value = 10000},
+		{text = Translate(1000121--[[Default]]), value = T(1000121--[[Default]]), hint = T(302535920001003--[[restart to enable]])},
+		{text = Translate(302535920001004--[[01 Lowest (25)]]), value = 25},
+		{text = Translate(302535920001005--[[02 Lower (50)]]), value = 50},
+		{text = Translate(302535920001006--[[03 Low (90)]]) .. " < " .. Translate(302535920001065--[[Menu Option]]), value = 90},
+		{text = Translate(302535920001007--[[04 Medium (95)]]) .. " < " .. Translate(302535920001065--[[Menu Option]]), value = 95},
+		{text = Translate(302535920001008--[[05 High (100)]]) .. " < " .. Translate(302535920001065--[[Menu Option]]), value = 100},
+		{text = Translate(302535920001009--[[06 Ultra (200)]]), value = 200},
+		{text = Translate(302535920001010--[[07 Ultra-er (400)]]), value = 400},
+		{text = Translate(302535920001011--[[08 Ultra-er (600)]]), value = 600},
+		{text = Translate(302535920001012--[[09 Ultra-er (1000)]]), value = 1000},
+		{text = Translate(302535920001013--[[10 Laggy (10000)]]), value = 10000},
 	}
 
 	local function CallBackFunc(choice)
@@ -1541,16 +1541,16 @@ end
 
 function ChoGGi_Funcs.Menus.SetTerrainDetail()
 	local item_list = {
-		{text = T(1000121--[[Default]]), value = T(1000121--[[Default]]), hint = T(302535920001003--[[restart to enable]])},
-		{text = T(302535920001004--[[01 Lowest (25)]]), value = 25},
-		{text = T(302535920001005--[[02 Lower (50)]]), value = 50},
-		{text = T(302535920001021--[[03 Low (100)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 100},
-		{text = T(302535920001022--[[04 Medium (150)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 150},
-		{text = T(302535920001008--[[05 High (100)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 100},
-		{text = T(302535920001024--[[06 Ultra (200)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 200},
-		{text = T(302535920001010--[[07 Ultra-er (400)]]), value = 400},
-		{text = T(302535920001011--[[08 Ultra-er (600)]]), value = 600},
-		{text = T(302535920001012--[[09 Ultraist (1000)]]), value = 1000, hint = "\n" .. T(302535920001018--[[Above 1000 will add a long delay to loading (and might crash).]])},
+		{text = Translate(1000121--[[Default]]), value = T(1000121--[[Default]]), hint = T(302535920001003--[[restart to enable]])},
+		{text = Translate(302535920001004--[[01 Lowest (25)]]), value = 25},
+		{text = Translate(302535920001005--[[02 Lower (50)]]), value = 50},
+		{text = Translate(302535920001021--[[03 Low (100)]]) .. " < " .. Translate(302535920001065--[[Menu Option]]), value = 100},
+		{text = Translate(302535920001022--[[04 Medium (150)]]) .. " < " .. Translate(302535920001065--[[Menu Option]]), value = 150},
+		{text = Translate(302535920001008--[[05 High (100)]]) .. " < " .. Translate(302535920001065--[[Menu Option]]), value = 100},
+		{text = Translate(302535920001024--[[06 Ultra (200)]]) .. " < " .. Translate(302535920001065--[[Menu Option]]), value = 200},
+		{text = Translate(302535920001010--[[07 Ultra-er (400)]]), value = 400},
+		{text = Translate(302535920001011--[[08 Ultra-er (600)]]), value = 600},
+		{text = Translate(302535920001012--[[09 Ultraist (1000)]]), value = 1000, hint = "\n" .. T(302535920001018--[[Above 1000 will add a long delay to loading (and might crash).]])},
 	}
 
 	local function CallBackFunc(choice)
@@ -1590,16 +1590,16 @@ end
 
 function ChoGGi_Funcs.Menus.SetVideoMemory()
 	local item_list = {
-		{text = T(1000121--[[Default]]), value = T(1000121--[[Default]]), hint = T(302535920001003--[[restart to enable]])},
-		{text = T(302535920001031--[[1 Crap (32)]]), value = 32},
-		{text = T(302535920001032--[[2 Crap (64)]]), value = 64},
-		{text = T(302535920001033--[[3 Crap (128)]]), value = 128},
-		{text = T(302535920001034--[[4 Low (256)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 256},
-		{text = T(302535920001035--[[5 Medium (512)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 512},
-		{text = T(302535920001036--[[6 High (1024)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 1024},
-		{text = T(302535920001037--[[7 Ultra (2048)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 2048},
-		{text = T(302535920001038--[[8 Ultra-er (4096)]]), value = 4096},
-		{text = T(302535920001039--[[9 Ultra-er-er (8192)]]), value = 8192},
+		{text = Translate(1000121--[[Default]]), value = T(1000121--[[Default]]), hint = T(302535920001003--[[restart to enable]])},
+		{text = Translate(302535920001031--[[1 Crap (32)]]), value = 32},
+		{text = Translate(302535920001032--[[2 Crap (64)]]), value = 64},
+		{text = Translate(302535920001033--[[3 Crap (128)]]), value = 128},
+		{text = Translate(302535920001034--[[4 Low (256)]]) .. " < " .. Translate(302535920001065--[[Menu Option]]), value = 256},
+		{text = Translate(302535920001035--[[5 Medium (512)]]) .. " < " .. Translate(302535920001065--[[Menu Option]]), value = 512},
+		{text = Translate(302535920001036--[[6 High (1024)]]) .. " < " .. Translate(302535920001065--[[Menu Option]]), value = 1024},
+		{text = Translate(302535920001037--[[7 Ultra (2048)]]) .. " < " .. Translate(302535920001065--[[Menu Option]]), value = 2048},
+		{text = Translate(302535920001038--[[8 Ultra-er (4096)]]), value = 4096},
+		{text = Translate(302535920001039--[[9 Ultra-er-er (8192)]]), value = 8192},
 	}
 
 	local function CallBackFunc(choice)
@@ -1635,14 +1635,14 @@ end
 function ChoGGi_Funcs.Menus.SetShadowmapSize()
 	local hint_highest = T(6779--[[Warning]]) .. ": " .. T(302535920001042--[[Highest uses vram (one gig for starter base, a couple for large base).]])
 	local item_list = {
-		{text = T(1000121--[[Default]]), value = T(1000121--[[Default]]), hint = T(302535920001003--[[restart to enable]])},
-		{text = T(302535920001043--[[1 Crap (256)]]), value = 256},
-		{text = T(302535920001044--[[2 Lower (512)]]), value = 512},
-		{text = T(302535920001045--[[3 Low (1536)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 1536},
-		{text = T(302535920001046--[[4 Medium (2048)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 2048},
-		{text = T(302535920001047--[[5 High (4096)]]) .. " < " .. T(302535920001065--[[Menu Option]]), value = 4096},
-		{text = T(302535920001048--[[6 Higher (8192)]]), value = 8192, hint = T(302535920001645, "May cause crashing!")},
-		{text = T(302535920001049--[[7 Highest (16384)]]), value = 16384, hint = hint_highest .. "\n\n" .. T(302535920001645, "May cause crashing!")},
+		{text = Translate(1000121--[[Default]]), value = T(1000121--[[Default]]), hint = T(302535920001003--[[restart to enable]])},
+		{text = Translate(302535920001043--[[1 Crap (256)]]), value = 256},
+		{text = Translate(302535920001044--[[2 Lower (512)]]), value = 512},
+		{text = Translate(302535920001045--[[3 Low (1536)]]) .. " < " .. Translate(302535920001065--[[Menu Option]]), value = 1536},
+		{text = Translate(302535920001046--[[4 Medium (2048)]]) .. " < " .. Translate(302535920001065--[[Menu Option]]), value = 2048},
+		{text = Translate(302535920001047--[[5 High (4096)]]) .. " < " .. Translate(302535920001065--[[Menu Option]]), value = 4096},
+		{text = Translate(302535920001048--[[6 Higher (8192)]]), value = 8192, hint = T(302535920001645, "May cause crashing!")},
+		{text = Translate(302535920001049--[[7 Highest (16384)]]), value = 16384, hint = hint_highest .. "\n\n" .. T(302535920001645, "May cause crashing!")},
 	}
 
 	local function CallBackFunc(choice)
@@ -1698,7 +1698,7 @@ function ChoGGi_Funcs.Menus.HigherRenderDist_Toggle()
 	local hint_small = T(302535920001055--[[Small FPS hit on large base]])
 	local hint_fps = T(302535920001056--[[FPS hit]])
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 240, value = 240, hint = hint_min},
 		{text = 360, value = 360, hint = hint_min},
 		{text = 480, value = 480, hint = hint_min},
@@ -1878,7 +1878,7 @@ function ChoGGi_Funcs.Menus.SetBorderScrolling()
 	local default_setting = 5
 	local hint_down = T(302535920001062--[[Down scrolling may not work (dependant on aspect ratio?).]])
 	local item_list = {
-		{text = T(1000121--[[Default]]), value = default_setting, hint = T(1000121--[[Default]]) .. ": " .. default_setting},
+		{text = Translate(1000121--[[Default]]), value = default_setting, hint = T(1000121--[[Default]]) .. ": " .. default_setting},
 		{text = -1, value = -1, hint = T(302535920001063--[[disable mouse border scrolling, WASD still works fine.]])},
 		{text = 0, value = 0, hint = hint_down},
 		{text = 1, value = 1, hint = hint_down},
@@ -1924,7 +1924,7 @@ end
 function ChoGGi_Funcs.Menus.SetCameraLookatDist()
 	local default_setting = ChoGGi.Consts.CameraLookatDist or ChoGGi.UserSettings.CameraLookatDist or 0
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 10, value = 10},
 		{text = 20, value = 20},
 		{text = 30, value = 30},
@@ -1971,7 +1971,7 @@ end
 function ChoGGi_Funcs.Menus.SetCameraZoom()
 	local default_setting = ChoGGi.Consts.CameraZoomToggle or ChoGGi.UserSettings.CameraZoomToggle or 24000
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 16000, value = 16000},
 		{text = 20000, value = 20000},
 		{text = 24000, value = 24000, hint = T(1000121--[[Default]])},

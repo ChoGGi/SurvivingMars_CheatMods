@@ -87,11 +87,13 @@ local AchievementUnlock = AchievementUnlock
 local EngineCanUnlockAchievement = EngineCanUnlockAchievement
 local WaitMsg = WaitMsg
 local XPlayerActive = XPlayerActive
+local Sleep = Sleep
+local AsyncRand = AsyncRand
 
-local function UnlockAchievement(id)
-	if EngineCanUnlockAchievement(XPlayerActive, id) then
+local function UnlockAchievement(id, skip)
+	if skip or EngineCanUnlockAchievement(XPlayerActive, id) then
 		AchievementUnlock(XPlayerActive, id)
-		WaitMsg("OnRender")
+		Sleep(AsyncRand(250)+1)
 	end
 end
 
@@ -102,11 +104,14 @@ local function StartupCode()
 
 		if mod_UnlockAllAchievements then
 			for i = 1, #dlc_ids do
-				UnlockAchievement(dlc_ids[i])
+				-- Add a bit of random delay
+				Sleep(AsyncRand(250)+1)
+				UnlockAchievement(dlc_ids[i], true)
 			end
 		else
 			local AchievementPresets = AchievementPresets
 			for id in pairs(AchievementPresets) do
+				Sleep(AsyncRand(250)+1)
 				UnlockAchievement(id)
 			end
 		end

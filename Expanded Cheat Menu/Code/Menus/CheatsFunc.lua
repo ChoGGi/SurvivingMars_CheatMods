@@ -416,7 +416,7 @@ end
 function ChoGGi_Funcs.Menus.SetOutsourceMaxOrderCount()
 	local default_setting = ChoGGi.Consts.OutsourceMaxOrderCount
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 100, value = 100},
 		{text = 150, value = 150},
 		{text = 250, value = 250},
@@ -787,33 +787,33 @@ do -- DisastersTrigger
 		local default_mapdata_type = T(302535920000250--[[Default mapdata type]])
 
 		local item_list = {
-			{text = " " .. T(302535920000240--[[Stop]]) .. " " .. T(3983--[[Disasters]]), value = "Stop", hint = T(302535920000123--[[Stops most disasters]])},
+			{text = " " .. Translate(302535920000240--[[Stop]]) .. " " .. Translate(3983--[[Disasters]]), value = "Stop", hint = T(302535920000123--[[Stops most disasters]])},
 
-			{text = T(4149--[[Cold Wave]]), value = "ColdWave", hint = default_mapdata_type},
-			{text = T(13683--[[Underground Marsquakes]]), value = "UndergroundMarsquake"},
+			{text = Translate(4149--[[Cold Wave]]), value = "ColdWave", hint = default_mapdata_type},
+			{text = Translate(13683--[[Underground Marsquakes]]), value = "UndergroundMarsquake"},
 
-			{text = T(4142--[[Dust Devils]]), value = "DustDevils", hint = default_mapdata_type},
-			{text = T(4142--[[Dust Devils]]) .. " " .. T(302535920000241--[[Major]]), value = "DustDevilsMajor", hint = default_mapdata_type},
+			{text = Translate(4142--[[Dust Devils]]), value = "DustDevils", hint = default_mapdata_type},
+			{text = Translate(4142--[[Dust Devils]]) .. " " .. Translate(302535920000241--[[Major]]), value = "DustDevilsMajor", hint = default_mapdata_type},
 
-			{text = T(4250--[[Dust Storm]]), value = "DustStorm", hint = default_mapdata_type},
-			{text = T(5627--[[Great Dust Storm]]), value = "DustStormGreat", hint = default_mapdata_type},
-			{text = T(5628--[[Electrostatic Dust Storm]]), value = "DustStormElectrostatic", hint = default_mapdata_type},
+			{text = Translate(4250--[[Dust Storm]]), value = "DustStorm", hint = default_mapdata_type},
+			{text = Translate(5627--[[Great Dust Storm]]), value = "DustStormGreat", hint = default_mapdata_type},
+			{text = Translate(5628--[[Electrostatic Dust Storm]]), value = "DustStormElectrostatic", hint = default_mapdata_type},
 
-			{text = T(4146--[[Meteors]]), value = "Meteor", hint = default_mapdata_type},
-			{text = T(4146--[[Meteors]]) .. " " .. T(302535920000245--[[Multi-Spawn]]), value = "MeteorMultiSpawn", hint = default_mapdata_type},
-			{text = T(5620--[[Meteor Storm]]), value = "MeteorStorm", hint = default_mapdata_type},
+			{text = Translate(4146--[[Meteors]]), value = "Meteor", hint = default_mapdata_type},
+			{text = Translate(4146--[[Meteors]]) .. " " .. Translate(302535920000245--[[Multi-Spawn]]), value = "MeteorMultiSpawn", hint = default_mapdata_type},
+			{text = Translate(5620--[[Meteor Storm]]), value = "MeteorStorm", hint = default_mapdata_type},
 
-			{text = T(302535920000251--[[Metatron Ion Storm]]), value = "MetatronIonStorm"},
+			{text = Translate(302535920000251--[[Metatron Ion Storm]]), value = "MetatronIonStorm"},
 
-			{text = T(302535920000246--[[Missle]]) .. " " .. 1, value = "Missle1", hint = missile_hint},
-			{text = T(302535920000246--[[Missle]]) .. " " .. 50, value = "Missle50", hint = missile_hint},
-			{text = T(302535920000246--[[Missle]]) .. " " .. 100, value = "Missle100", hint = missile_hint},
-			{text = T(302535920000246--[[Missle]]) .. " " .. 500, value = "Missle500", hint = missile_hint},
+			{text = Translate(302535920000246--[[Missle]]) .. " " .. 1, value = "Missle1", hint = missile_hint},
+			{text = Translate(302535920000246--[[Missle]]) .. " " .. 50, value = "Missle50", hint = missile_hint},
+			{text = Translate(302535920000246--[[Missle]]) .. " " .. 100, value = "Missle100", hint = missile_hint},
+			{text = Translate(302535920000246--[[Missle]]) .. " " .. 500, value = "Missle500", hint = missile_hint},
 
-			{text = T(302535920001373--[[Lightning Strike]]) .. " " .. 1, value = "LightningStrike1", hint = strike_hint},
-			{text = T(302535920001373--[[Lightning Strike]]) .. " " .. 50, value = "LightningStrike50", hint = strike_hint},
-			{text = T(302535920001373--[[Lightning Strike]]) .. " " .. 100, value = "LightningStrike100", hint = strike_hint},
-			{text = T(302535920001373--[[Lightning Strike]]) .. " " .. 500, value = "LightningStrike500", hint = strike_hint},
+			{text = Translate(302535920001373--[[Lightning Strike]]) .. " " .. 1, value = "LightningStrike1", hint = strike_hint},
+			{text = Translate(302535920001373--[[Lightning Strike]]) .. " " .. 50, value = "LightningStrike50", hint = strike_hint},
+			{text = Translate(302535920001373--[[Lightning Strike]]) .. " " .. 100, value = "LightningStrike100", hint = strike_hint},
+			{text = Translate(302535920001373--[[Lightning Strike]]) .. " " .. 500, value = "LightningStrike500", hint = strike_hint},
 		}
 		-- add map settings for disasters
 		local DataInstances = DataInstances
@@ -904,7 +904,7 @@ function ChoGGi_Funcs.Menus.ShowScanAnomaliesOptions()
 			hint = T(302535920000329--[[Scan all anomalies.]]),
 		},
 		{
-			text = T(9--[[Anomaly]]),
+			text = Translate(9--[[Anomaly]]),
 			value = "SubsurfaceAnomaly",
 			hint = T(22--[[Our scans have found some interesting readings in this Sector. Further analysis is needed.<newline><newline>Send an RC Explorer to analyze the Anomaly.]]),
 			icon = "<image UI/Icons/Anomaly_Custom.tga 750>",
@@ -990,22 +990,22 @@ function ChoGGi_Funcs.Menus.MapExploration()
 	local hint_core = T(302535920000253--[[Core: Repeatable, exploit core resources.]])
 	local hint_deep = T(302535920000254--[[Deep: unlock tech to exploit deep resources.]])
 	local item_list = {
-		{text = T(302535920000258--[[Reveal Map]]), value = 12, hint = T(302535920000259--[[Reveals the map squares]])},
-		{text = T(302535920000260--[[Reveal Map (Deep)]]), value = 13, hint = T(302535920000261--[[Reveals the map and unlocks "Deep" resources]])},
+		{text = Translate(302535920000258--[[Reveal Map]]), value = 12, hint = T(302535920000259--[[Reveals the map squares]])},
+		{text = Translate(302535920000260--[[Reveal Map (Deep)]]), value = 13, hint = T(302535920000261--[[Reveals the map and unlocks "Deep" resources]])},
 
-		{text = T(302535920001691--[[All]]), value = 1, hint = hint_core .. "\n" .. hint_deep},
-		{text = T(302535920000255--[[Deep]]), value = 2, hint = hint_deep},
-		{text = T(302535920000256--[[Core]]), value = 3, hint = hint_core},
+		{text = Translate(302535920001691--[[All]]), value = 1, hint = hint_core .. "\n" .. hint_deep},
+		{text = Translate(302535920000255--[[Deep]]), value = 2, hint = hint_deep},
+		{text = Translate(302535920000256--[[Core]]), value = 3, hint = hint_core},
 
-		{text = T(302535920000257--[[Deep Scan]]), value = 4, hint = hint_deep .. "\n" .. T(12227--[[Enabled]]) .. ": " .. g_Consts.DeepScanAvailable},
-		{text = T(797--[[Deep Water]]), value = 5, hint = hint_deep .. "\n" .. T(12227--[[Enabled]]) .. ": " .. g_Consts.IsDeepWaterExploitable},
-		{text = T(793--[[Deep Metals]]), value = 6, hint = hint_deep .. "\n" .. T(12227--[[Enabled]]) .. ": " .. g_Consts.IsDeepMetalsExploitable},
-		{text = T(801--[[Deep Rare Metals]]), value = 7, hint = hint_deep .. "\n" .. T(12227--[[Enabled]]) .. ": " .. g_Consts.IsDeepPreciousMetalsExploitable},
+		{text = Translate(302535920000257--[[Deep Scan]]), value = 4, hint = hint_deep .. "\n" .. T(12227--[[Enabled]]) .. ": " .. g_Consts.DeepScanAvailable},
+		{text = Translate(797--[[Deep Water]]), value = 5, hint = hint_deep .. "\n" .. T(12227--[[Enabled]]) .. ": " .. g_Consts.IsDeepWaterExploitable},
+		{text = Translate(793--[[Deep Metals]]), value = 6, hint = hint_deep .. "\n" .. T(12227--[[Enabled]]) .. ": " .. g_Consts.IsDeepMetalsExploitable},
+		{text = Translate(801--[[Deep Rare Metals]]), value = 7, hint = hint_deep .. "\n" .. T(12227--[[Enabled]]) .. ": " .. g_Consts.IsDeepPreciousMetalsExploitable},
 
-		{text = T(6548--[[Core Water]]), value = 8, hint = hint_core},
-		{text = T(6546--[[Core Metals]]), value = 9, hint = hint_core},
-		{text = T(6550--[[Core Rare Metals]]), value = 10, hint = hint_core},
-		{text = T(6556--[[Alien Imprints]]), value = 11, hint = hint_core},
+		{text = Translate(6548--[[Core Water]]), value = 8, hint = hint_core},
+		{text = Translate(6546--[[Core Metals]]), value = 9, hint = hint_core},
+		{text = Translate(6550--[[Core Rare Metals]]), value = 10, hint = hint_core},
+		{text = Translate(6556--[[Alien Imprints]]), value = 11, hint = hint_core},
 	}
 
 	local function CallBackFunc(choice)
@@ -1628,7 +1628,7 @@ end
 
 function ChoGGi_Funcs.Menus.AddResearchPoints()
 	local item_list = {
-		{text = T(302535920001084--[[Reset]]), value = "Reset", hint = T(302535920000292--[[Resets sponsor points to default for that sponsor]])},
+		{text = Translate(302535920001084--[[Reset]]), value = "Reset", hint = T(302535920000292--[[Resets sponsor points to default for that sponsor]])},
 		{text = 100, value = 100},
 		{text = 250, value = 250},
 		{text = 500, value = 500},
@@ -1768,7 +1768,7 @@ end
 function ChoGGi_Funcs.Menus.ResearchQueueSize_Set()
 	local default_setting = ChoGGi.Consts.ResearchQueueSize
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 5, value = 5},
 		{text = 10, value = 10},
 		{text = 25, value = 25},
@@ -1860,7 +1860,7 @@ do -- ResearchRemove
 				amount = 0
 			end
 
-			local display_text = T(7587--[[<green>Martianborn Ingenuity <amount></color>]])
+			local display_text = Translate(7587--[[<green>Martianborn Ingenuity <amount></color>]])
 			local domes = city.labels.Dome or ""
 			for i = 1, #domes do
 				local colonists = domes[i].labels.Martianborn or ""
@@ -2102,12 +2102,12 @@ do -- ResearchTech
 			local text
 			if check1 then
 				func = "DiscoverTech_Old"
-				text = T(2--[[Unlock Tech]])
+				text = Translate(2--[[Unlock Tech]])
 			end
 			-- override if both checked
 			if check2 then
 				func = "GrantTech"
-				text = T(3--[[Grant Research]])
+				text = Translate(3--[[Grant Research]])
 			end
 			local count = 0
 

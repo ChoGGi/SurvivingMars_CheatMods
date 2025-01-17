@@ -272,7 +272,7 @@ do -- SetEntityScale
 		end
 
 		local item_list = {
-			{text = T(1000121--[[Default]]), value = 100},
+			{text = Translate(1000121--[[Default]]), value = 100},
 			{text = 25, value = 25},
 			{text = 50, value = 50},
 			{text = 100, value = 100},
@@ -405,12 +405,12 @@ You can edit the CSV then run this again without having to restart the game.
 
 		local item_list = {
 			{
-				text = T(302535920001137--[[CSV Path]]),
+				text = Translate(302535920001137--[[CSV Path]]),
 				value = ChoGGi.library_path .. "Locales/English.csv",
 				hint = hint,
 			},
 			{
-				text = T(302535920001162--[[Test Columns]]),
+				text = Translate(302535920001162--[[Test Columns]]),
 				value = "false",
 				hint = T(302535920001166--[["Reports any columns above the normal amount (5).
 Columns are added by commas (, ). Surround the entire string with """" to use them.
@@ -1079,8 +1079,8 @@ function ChoGGi_Funcs.Menus.BuildableHexGridSettings(action)
 		name = T(302535920001419--[[Follow Mouse Grid Translate]])
 	elseif setting == "DebugGridPosition" then
 		item_list = {
-			{text = T(302535920001638--[[Relative]]), value = 0},
-			{text = T(302535920001637--[[Absolute]]), value = 1},
+			{text = Translate(302535920001638--[[Relative]]), value = 0},
+			{text = Translate(302535920001637--[[Absolute]]), value = 1},
 		}
 		name = T(302535920000680--[[Follow Mouse Grid Position]])
 	end
@@ -1127,13 +1127,13 @@ function ChoGGi_Funcs.Menus.SetPathMarkers()
 	local colourcount = 0
 
 	local item_list = {
-		{text = T(302535920000413--[[Delay]]), value = 0, path_type = "Delay", hint = T(302535920000415--[[Delay in ms between updating paths (0 to update every other render).]])},
-		{text = T(302535920001691--[[All]]), value = "All"},
+		{text = Translate(302535920000413--[[Delay]]), value = 0, path_type = "Delay", hint = T(302535920000415--[[Delay in ms between updating paths (0 to update every other render).]])},
+		{text = Translate(302535920001691--[[All]]), value = "All"},
 
-		{text = T(547--[[Colonists]]), value = "Colonist"},
-		{text = T(517--[[Drones]]), value = "Drone"},
-		{text = T(5438--[[Rovers]]), value = "BaseRover", icon = RCTransport and RCTransport.display_icon or "UI/Icons/Buildings/rover_transport.tga"},
-		{text = T(745--[[Shuttles]]), value = "CargoShuttle", hint = T(302535920000873--[[Doesn't work that well.]])},
+		{text = Translate(547--[[Colonists]]), value = "Colonist"},
+		{text = Translate(517--[[Drones]]), value = "Drone"},
+		{text = Translate(5438--[[Rovers]]), value = "BaseRover", icon = RCTransport and RCTransport.display_icon or "UI/Icons/Buildings/rover_transport.tga"},
+		{text = Translate(745--[[Shuttles]]), value = "CargoShuttle", hint = T(302535920000873--[[Doesn't work that well.]])},
 	}
 	if rawget(_G, "ChoGGi_Alien") then
 		aliens = true

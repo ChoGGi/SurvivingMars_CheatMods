@@ -15,7 +15,7 @@ function ChoGGi_Funcs.Menus.SetPodPrice()
 	local default_setting = MissionSponsorPreset.pod_price
 
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. (default_setting / 1000000) .. " M", value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. (default_setting / 1000000) .. " M", value = default_setting},
 		{text = ".100 M", value = 100000, hint = T(302535920000977--[[Anything below 1 M will show as 0 M.]])},
 		{text = ".500 M", value = 500000, hint = T(302535920000977)},
 		{text = "1 M", value = 1000000},
@@ -151,7 +151,7 @@ do -- ChangeResupplySettings
 				template = BuildingTemplates[item.id .. "Building"]
 			end
 			item_list[i] = {
-				text = T(item.name),
+				text = Translate(item.name),
 				value = item.id,
 				meta = item,
 				hint = template and (template.description
@@ -215,7 +215,7 @@ end -- do
 function ChoGGi_Funcs.Menus.SetRocketCargoCapacity()
 	local default_setting = ChoGGi_Funcs.Common.GetResearchedTechValue("CargoCapacity")
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting .. " kg", value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting .. " kg", value = default_setting},
 		{text = "50 000 kg", value = 50000},
 		{text = "100 000 kg", value = 100000},
 		{text = "250 000 kg", value = 250000},
@@ -355,7 +355,7 @@ function ChoGGi_Funcs.Menus.SetRocketMaxExportAmount()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.RocketMaxExportAmount
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting},
 		{text = 5, value = 5 * r},
 		{text = 10, value = 10 * r},
 		{text = 15, value = 15 * r},
@@ -445,7 +445,7 @@ do -- RocketsIgnoreFuel_Toggle/LaunchFuelPerRocket
 		local default_setting = ChoGGi.Consts.LaunchFuelPerRocket
 		local UpgradedSetting = ChoGGi_Funcs.Common.GetResearchedTechValue("FuelRocket")
 		local item_list = {
-			{text = T(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting},
+			{text = Translate(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting},
 			{text = 5, value = 5 * r},
 			{text = 10, value = 10 * r},
 			{text = 15, value = 15 * r},
@@ -456,7 +456,7 @@ do -- RocketsIgnoreFuel_Toggle/LaunchFuelPerRocket
 			{text = 10000, value = 10000 * r},
 		}
 		if default_setting ~= UpgradedSetting then
-			table.insert(item_list, 2, {text = T(302535920000890--[[Upgraded]]) .. ": " .. (UpgradedSetting / r), value = UpgradedSetting})
+			table.insert(item_list, 2, {text = Translate(302535920000890--[[Upgraded]]) .. ": " .. (UpgradedSetting / r), value = UpgradedSetting})
 		end
 
 		if not ChoGGi.UserSettings.LaunchFuelPerRocket then

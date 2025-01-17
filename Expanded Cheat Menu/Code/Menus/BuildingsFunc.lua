@@ -169,7 +169,7 @@ function ChoGGi_Funcs.Menus.SetTrainingPoints()
 	local UserSettings = ChoGGi.UserSettings
 
 	local item_list = {
-		{text = T(1000121--[[Default]]), value = default_setting},
+		{text = Translate(1000121--[[Default]]), value = default_setting},
 		{text = 10, value = 10},
 		{text = 15, value = 15},
 		{text = 20, value = 20},
@@ -251,26 +251,26 @@ function ChoGGi_Funcs.Menus.SetServiceBuildingStats()
 	local ReturnEditorType = ChoGGi_Funcs.Common.ReturnEditorType
 	local hint_type = Translate(302535920000138--[[Value needs to be a %s.]])
 	local item_list = {
-		{text = T(728--[[Health change on visit]]), value = obj:GetClassValue("health_change") / r, setting = "health_change", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "health_change"))},
-		{text = T(729--[[Sanity change on visit]]), value = obj:GetClassValue("sanity_change") / r, setting = "sanity_change", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "sanity_change"))},
-		{text = T(730--[[Service Comfort]]), value = obj:GetClassValue("service_comfort") / r, setting = "service_comfort", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "service_comfort"))},
-		{text = T(731--[[Comfort increase on visit]]), value = obj:GetClassValue("comfort_increase") / r, setting = "comfort_increase", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "comfort_increase"))},
+		{text = Translate(728--[[Health change on visit]]), value = obj:GetClassValue("health_change") / r, setting = "health_change", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "health_change"))},
+		{text = Translate(729--[[Sanity change on visit]]), value = obj:GetClassValue("sanity_change") / r, setting = "sanity_change", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "sanity_change"))},
+		{text = Translate(730--[[Service Comfort]]), value = obj:GetClassValue("service_comfort") / r, setting = "service_comfort", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "service_comfort"))},
+		{text = Translate(731--[[Comfort increase on visit]]), value = obj:GetClassValue("comfort_increase") / r, setting = "comfort_increase", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "comfort_increase"))},
 	}
 	local c = #item_list
 	if is_service then
 		c = c + 1
-		item_list[c] = {text = T(734--[[Visit duration]]), value = obj:GetClassValue("visit_duration"), setting = "visit_duration", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "visit_duration"))}
+		item_list[c] = {text = Translate(734--[[Visit duration]]), value = obj:GetClassValue("visit_duration"), setting = "visit_duration", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "visit_duration"))}
 		-- bool
 		c = c + 1
-		item_list[c] = {text = T(735--[[Usable by children]]), value = obj:GetClassValue("usable_by_children"), setting = "usable_by_children", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "usable_by_children"))}
+		item_list[c] = {text = Translate(735--[[Usable by children]]), value = obj:GetClassValue("usable_by_children"), setting = "usable_by_children", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "usable_by_children"))}
 		c = c + 1
-		item_list[c] = {text = T(736--[[Children Only]]), value = obj:GetClassValue("children_only"), setting = "children_only", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "children_only"))}
+		item_list[c] = {text = Translate(736--[[Children Only]]), value = obj:GetClassValue("children_only"), setting = "children_only", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "children_only"))}
 
 		for i = 1, 11 do
 			local name = "interest" .. i
 			c = c + 1
 			item_list[c] = {
-				text = T(732--[[Service interest]]) .. " " .. i,
+				text = Translate(732--[[Service interest]]) .. " " .. i,
 				value = obj[name],
 				setting = name,
 				hint = hint_type:format(ReturnEditorType(obj.properties, "id", name)) .. "\n\n" .. ServiceInterestsList,
@@ -457,7 +457,7 @@ function ChoGGi_Funcs.Menus.SetSpaceElevatorTransferAmount(action)
 	local UserSettings = ChoGGi.UserSettings
 	local id = "SpaceElevator"
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 10, value = 10},
 		{text = 15, value = 15},
 		{text = 20, value = 20},
@@ -533,7 +533,7 @@ function ChoGGi_Funcs.Menus.SetStorageAmountOfDinerGrocery()
 	local UserSettings = ChoGGi.UserSettings
 	local r = const.ResourceScale
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 10, value = 10},
 		{text = 15, value = 15},
 		{text = 20, value = 20},
@@ -655,7 +655,7 @@ function ChoGGi_Funcs.Menus.SetProtectionRadius()
 
 	local default_setting = cls_obj.protect_range or cls_obj:GetClassValue("protect_range")
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 40, value = 40},
 		{text = 80, value = 80},
 		{text = 160, value = 160},
@@ -894,7 +894,7 @@ function ChoGGi_Funcs.Menus.SetMaxChangeOrDischarge()
 	local default_settingD = template[discharge] / r
 
 	local item_list = {
-		{text = T(1000121--[[Default]]), value = T(1000121--[[Default]]), hint = T(302535920000124--[[Charge]])
+		{text = Translate(1000121--[[Default]]), value = T(1000121--[[Default]]), hint = T(302535920000124--[[Charge]])
 			.. ": " .. default_settingC .. " / " .. T(302535920000125--[[Discharge]])
 			.. ": " .. default_settingD},
 		{text = 25, value = 25},
@@ -1072,7 +1072,7 @@ function ChoGGi_Funcs.Menus.SetProductionAmount()
 	end
 
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
 		{text = 75, value = 75},
@@ -1634,7 +1634,7 @@ function ChoGGi_Funcs.Menus.SetUIRangeBuildingRadius(action)
 
 	local default_setting = g_Classes[id]:GetDefaultPropertyValue("UIRange")
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 10, value = 10},
 		{text = 15, value = 15},
 		{text = 25, value = 25},

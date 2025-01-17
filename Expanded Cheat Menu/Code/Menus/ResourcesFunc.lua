@@ -11,11 +11,10 @@ local Translate = ChoGGi_Funcs.Common.Translate
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 local RetName = ChoGGi_Funcs.Common.RetName
 
-
 function ChoGGi_Funcs.Menus.SetFundingPerRareMetalExport()
 	local default_setting = ChoGGi.Consts.ExportPricePreciousMetals
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 5, value = 5},
 		{text = 10, value = 10},
 		{text = 15, value = 15},
@@ -192,7 +191,7 @@ do -- AddPrefabs
 			if not skip_prefabs[id] and not cargo.instant_build and (cargo.group ~= "Hidden" or cargo.group == "Hidden" and show_hidden) then
 				c = c + 1
 				item_list[c] = {
-					text = T(cargo.display_name),
+					text = Translate(cargo.display_name),
 					value = 10,
 					hint = T(302535920000106--[[Current]]) .. ": " .. UICity:GetPrefabs(id),
 					icon = cargo.display_icon,

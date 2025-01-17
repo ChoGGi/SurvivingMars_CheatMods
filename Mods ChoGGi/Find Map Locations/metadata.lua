@@ -42,5 +42,8 @@ If you use the game rules to disable dlc then this won't work, you need to manua
 Do not use Tech Variety or Chaos Theory game rules! (they change the breakthrough order).
 This mod requires a mouse and keyboard on xbox.
 Rare Metals and Metals are always the same count, so don't search for raremetals2 or preciousmetals2 use metals2.
+
+
+See also: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1491973763]View Colony Map[/url]
 ]],
 })

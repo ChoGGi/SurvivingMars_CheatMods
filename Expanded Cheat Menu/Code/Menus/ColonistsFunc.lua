@@ -12,7 +12,6 @@ local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 local Random = ChoGGi_Funcs.Common.Random
 local RetTemplateOrClass = ChoGGi_Funcs.Common.RetTemplateOrClass
 
-
 function ChoGGi_Funcs.Menus.OutsideWorkplaceSanityDecrease_Toggle()
 	ChoGGi_Funcs.Common.SetConsts("OutsideWorkplaceSanityDecrease", ChoGGi_Funcs.Common.NumRetBool(Consts.OutsideWorkplaceSanityDecrease, 0, ChoGGi.Consts.OutsideWorkplaceSanityDecrease))
 	ChoGGi_Funcs.Common.SetSavedConstSetting("OutsideWorkplaceSanityDecrease")
@@ -365,8 +364,8 @@ end
 
 function ChoGGi_Funcs.Menus.SetAllWorkShifts()
 	local item_list = {
-		{text = T(302535920000763--[[Turn On All Shifts]]), value = 0},
-		{text = T(302535920000764--[[Turn Off All Shifts]]), value = 3.1415926535},
+		{text = Translate(302535920000763--[[Turn On All Shifts]]), value = 0},
+		{text = Translate(302535920000764--[[Turn Off All Shifts]]), value = 3.1415926535},
 	}
 
 	local function CallBackFunc(choice)
@@ -409,7 +408,7 @@ function ChoGGi_Funcs.Menus.SetMinComfortBirth()
 	local hint_low = T(302535920000767--[[Lower = more babies]])
 	local hint_high = T(302535920000768--[[Higher = less babies]])
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 0, value = 0, hint = hint_low},
 		{text = 35, value = 35, hint = hint_low},
 		{text = 140, value = 140, hint = hint_high},
@@ -474,8 +473,8 @@ end
 
 function ChoGGi_Funcs.Menus.SetRenegadeStatus()
 	local item_list = {
-		{text = T(302535920000774--[[Make All Renegades]]), value = "Make"},
-		{text = T(302535920000775--[[Remove All Renegades]]), value = "Remove"},
+		{text = Translate(302535920000774--[[Make All Renegades]]), value = "Make"},
+		{text = Translate(302535920000775--[[Remove All Renegades]]), value = "Remove"},
 	}
 
 	local function CallBackFunc(choice)
@@ -743,7 +742,7 @@ do -- SetDeathAge
 	}
 
 	function ChoGGi_Funcs.Menus.SetDeathAge()
-		local default_str = T(1000121--[[Default]])
+		local default_str = Translate(1000121--[[Default]])
 		local hint_str = T(9559--[[Well, we needed to know that for sure I guess.]])
 		local item_list = {
 			{text = default_str, value = default_str, hint = T(302535920000794--[[Uses same code as game to pick death ages.]])},
@@ -754,11 +753,11 @@ do -- SetDeathAge
 			{text = 500, value = 500},
 			{text = 1000, value = 1000},
 			{text = 10000, value = 10000},
-			{text = T(302535920000795--[[Logan's Run (Novel)]]), value = "LoganNovel", hint = hint_str},
-			{text = T(302535920000796--[[Logan's Run (Movie)]]), value = "LoganMovie", hint = hint_str},
-			{text = T(302535920000797--[[TNG: Half a Life]]), value = "TNG", hint = hint_str},
-			{text = T(302535920000798--[[The Happy Place]]), value = "TheHappyPlace", hint = hint_str},
-			{text = T(302535920000799--[[In Time]]), value = "InTime", hint = hint_str},
+			{text = Translate(302535920000795--[[Logan's Run (Novel)]]), value = "LoganNovel", hint = hint_str},
+			{text = Translate(302535920000796--[[Logan's Run (Movie)]]), value = "LoganMovie", hint = hint_str},
+			{text = Translate(302535920000797--[[TNG: Half a Life]]), value = "TNG", hint = hint_str},
+			{text = Translate(302535920000798--[[The Happy Place]]), value = "TheHappyPlace", hint = hint_str},
+			{text = Translate(302535920000799--[[In Time]]), value = "InTime", hint = hint_str},
 		}
 
 		local function CallBackFunc(choice)
@@ -835,7 +834,7 @@ function ChoGGi_Funcs.Menus.SetColonistsAge(action)
 
 	local setting_mask = action.setting_mask
 
-	local default_str = T(1000121--[[Default]])
+	local default_str = Translate(1000121--[[Default]])
 	local default_setting = default_str
 	local TraitPresets = TraitPresets
 
@@ -867,7 +866,7 @@ function ChoGGi_Funcs.Menus.SetColonistsAge(action)
 		end
 		c = c + 1
 		item_list[c] = {
-			text = T(TraitPresets[age].display_name),
+			text = Translate(TraitPresets[age].display_name),
 			value = age,
 			hint = hint,
 			icon = ChoGGi.Tables.ColonistAgeImages[age],
@@ -988,7 +987,7 @@ function ChoGGi_Funcs.Menus.SetColonistsGender(action)
 		local gender = ChoGGi.Tables.ColonistGenders[i]
 		c = c + 1
 		item_list[c] = {
-			text = T(TraitPresets[gender].display_name),
+			text = Translate(TraitPresets[gender].display_name),
 			hint = T(TraitPresets[gender].description),
 			icon = ChoGGi.Tables.ColonistGenderImages[gender],
 			icon_scale = 500,
@@ -1120,7 +1119,7 @@ function ChoGGi_Funcs.Menus.SetColonistsSpecialization(action)
 		local spec = ChoGGi.Tables.ColonistSpecializations[i]
 		c = c + 1
 		item_list[c] = {
-			text = T(TraitPresets[spec].display_name),
+			text = Translate(TraitPresets[spec].display_name),
 			value = spec,
 			hint = T(TraitPresets[spec].description),
 			icon = ChoGGi.Tables.ColonistSpecImages[spec],
@@ -1565,15 +1564,15 @@ end
 function ChoGGi_Funcs.Menus.SetColonistsStats()
 	local r = const.ResourceScale
 	local item_list = {
-		{text = T(302535920000833--[[All Stats]]) .. " " .. T(302535920000834--[[Max]]), value = 1},
-		{text = T(302535920000833--[[All Stats]]) .. " " .. T(302535920000835--[[Fill]]), value = 2},
-		{text = T(4291--[[Health]]) .. " " .. T(302535920000834--[[Max]]), value = 3},
-		{text = T(4291--[[Health]]) .. " " .. T(302535920000835--[[Fill]]), value = 4},
-		{text = T(4297--[[Morale]]) .. " " .. T(302535920000835--[[Fill]]), value = 5},
-		{text = T(4293--[[Sanity]]) .. " " .. T(302535920000834--[[Max]]), value = 6},
-		{text = T(4293--[[Sanity]]) .. " " .. T(302535920000835--[[Fill]]), value = 7},
-		{text = T(4295--[[Comfort]]) .. " " .. T(302535920000834--[[Max]]), value = 8},
-		{text = T(4295--[[Comfort]]) .. " " .. T(302535920000835--[[Fill]]), value = 9},
+		{text = Translate(302535920000833--[[All Stats]]) .. " " .. Translate(302535920000834--[[Max]]), value = 1},
+		{text = Translate(302535920000833--[[All Stats]]) .. " " .. Translate(302535920000835--[[Fill]]), value = 2},
+		{text = Translate(4291--[[Health]]) .. " " .. Translate(302535920000834--[[Max]]), value = 3},
+		{text = Translate(4291--[[Health]]) .. " " .. Translate(302535920000835--[[Fill]]), value = 4},
+		{text = Translate(4297--[[Morale]]) .. " " .. Translate(302535920000835--[[Fill]]), value = 5},
+		{text = Translate(4293--[[Sanity]]) .. " " .. Translate(302535920000834--[[Max]]), value = 6},
+		{text = Translate(4293--[[Sanity]]) .. " " .. Translate(302535920000835--[[Fill]]), value = 7},
+		{text = Translate(4295--[[Comfort]]) .. " " .. Translate(302535920000834--[[Max]]), value = 8},
+		{text = Translate(4295--[[Comfort]]) .. " " .. Translate(302535920000835--[[Fill]]), value = 9},
 	}
 
 	local function CallBackFunc(choice)
@@ -1672,7 +1671,7 @@ function ChoGGi_Funcs.Menus.SetColonistMoveSpeed()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.SpeedColonist
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting},
 		{text = 5, value = 5 * r},
 		{text = 10, value = 10 * r},
 		{text = 15, value = 15 * r},

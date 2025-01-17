@@ -180,7 +180,7 @@ function ChoGGi_Funcs.Menus.StartChallenge()
 			current = true
 		end
 		item_list[i] = {
-			text = T(c.title),
+			text = Translate(c.title),
 			value = c.id,
 			hint = T(c.description) .. "\n\n"
 				.. Translate(302535920001415--[[Sols to Complete: %s]]):format(c.time_completed / DayDuration)
@@ -392,7 +392,7 @@ function ChoGGi_Funcs.Menus.SetCommander()
 		if comm.id ~= "random" and comm.id ~= "None" then
 			c = c + 1
 			item_list[c] = {
-				text = T(comm.display_name),
+				text = Translate(comm.display_name),
 				value = comm.id,
 				hint = T(comm.effect)
 			}
@@ -583,7 +583,7 @@ function ChoGGi_Funcs.Menus.ChangeRules()
 		local enabled = IsGameRuleActive(id)
 		c = c + 1
 		item_list[c] = {
-			text = T(def.display_name) .. (enabled and " *" or ""),
+			text = Translate(def.display_name) .. (enabled and " *" or ""),
 			value = id,
 			-- I should just skip this for modded rules...
 			hint = (enabled and T("<green>") .. T(12227--[[Enabled]]) .. T("</green>\n") or "")

@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 local mod_EnableMod
---~ local mod_ResetTimers
 local mod_UnlockAsteroids
 local mod_SpawnAsteroids
 local mod_AddAsteroidTime
@@ -39,7 +38,6 @@ local function ModOptions(id)
 	end
 
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
---~ 	mod_ResetTimers = CurrentModOptions:GetProperty("ResetTimers")
 	mod_UnlockAsteroids = CurrentModOptions:GetProperty("UnlockAsteroids")
 	mod_SpawnAsteroids = CurrentModOptions:GetProperty("SpawnAsteroids")
 	mod_AddAsteroidTime = CurrentModOptions:GetProperty("AddAsteroidTime")
@@ -55,8 +53,3 @@ end
 OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
-
---~ OnMsg.CityStart = StartupCode
---~ OnMsg.LoadGame = StartupCode
---~ -- switch between different maps
---~ OnMsg.ChangeMapDone = StartupCode

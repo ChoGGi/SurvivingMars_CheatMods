@@ -1,3 +1,7 @@
+v0.7
+Updated for picard.
+Added mod options to pick amount, set grades, only change one deposit.
+
 v0.6
 Armstrong (thanks misukhanov).
 

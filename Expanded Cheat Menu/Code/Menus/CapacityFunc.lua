@@ -49,7 +49,7 @@ function ChoGGi_Funcs.Menus.SetWorkerCapacity()
 	local hint_toolarge = T(6779--[[Warning]]) .. " " .. T(302535920000956--[[for colonist capacity: Above a thousand is laggy (above 60K may crash).]])
 
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 10, value = 10},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
@@ -138,7 +138,7 @@ function ChoGGi_Funcs.Menus.SetBuildingCapacity()
 	end
 
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 10, value = 10},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
@@ -278,7 +278,7 @@ function ChoGGi_Funcs.Menus.SetVisitorCapacity()
 	end
 	local default_setting = capacity
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 10, value = 10},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
@@ -348,7 +348,7 @@ function ChoGGi_Funcs.Menus.SetStorageDepotSize(action)
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts[bld_type] / r
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 50, value = 50},
 		{text = 100, value = 100},
 		{text = 250, value = 250},

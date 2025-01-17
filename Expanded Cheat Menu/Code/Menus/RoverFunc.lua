@@ -8,13 +8,13 @@ local ChoGGi_Funcs = ChoGGi_Funcs
 local type = type
 local T = T
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
---~ local Translate = ChoGGi_Funcs.Common.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 --~	local RetName = ChoGGi_Funcs.Common.RetName
 
 function ChoGGi_Funcs.Menus.SetRoverChargeRadius()
 	local default_setting = 0
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 1, value = 1},
 		{text = 2, value = 2},
 		{text = 3, value = 3},
@@ -70,18 +70,18 @@ function ChoGGi_Funcs.Menus.SetRCMoveSpeed()
 	local default_setting = ChoGGi.Consts.SpeedRC
 	local UpgradedSetting = ChoGGi_Funcs.Common.GetResearchedTechValue("SpeedRC")
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting, hint = T(302535920000889--[[base speed]])},
-		{text = 5, value = 5 * r},
-		{text = 10, value = 10 * r},
-		{text = 15, value = 15 * r},
-		{text = 25, value = 25 * r},
-		{text = 50, value = 50 * r},
-		{text = 100, value = 100 * r},
-		{text = 1000, value = 1000 * r},
-		{text = 10000, value = 10000 * r},
+		{text = Translate(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting, hint = T(302535920000889--[[base speed]])},
+		{text = 5, value = 5 * r, hint = "5000"},
+		{text = 10, value = 10 * r, hint = "10000"},
+		{text = 15, value = 15 * r, hint = "15000"},
+		{text = 25, value = 25 * r, hint = "25000"},
+		{text = 50, value = 50 * r, hint = "50000"},
+		{text = 100, value = 100 * r, hint = "100000"},
+		{text = 1000, value = 1000 * r, hint = "100000"},
+		{text = 10000, value = 10000 * r, hint = "10000000"},
 	}
 	if default_setting ~= UpgradedSetting then
-		table.insert(item_list, 2, {text = T(302535920000890--[[Upgraded]]) .. ": " .. (UpgradedSetting / r), value = UpgradedSetting, hint = T(302535920000891--[[apply tech unlocks]])})
+		table.insert(item_list, 2, {text = Translate(302535920000890--[[Upgraded]]) .. ": " .. (UpgradedSetting / r), value = UpgradedSetting, hint = T(302535920000891--[[apply tech unlocks]])})
 	end
 
 	local hint = UpgradedSetting
@@ -138,7 +138,7 @@ function ChoGGi_Funcs.Menus.SetRCTransportStorageCapacity()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi_Funcs.Common.GetResearchedTechValue("RCTransportStorageCapacity") / r
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 50, value = 50},
 		{text = 75, value = 75},
 		{text = 100, value = 100},

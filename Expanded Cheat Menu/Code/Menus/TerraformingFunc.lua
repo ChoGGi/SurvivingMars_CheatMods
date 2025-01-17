@@ -15,7 +15,7 @@ function ChoGGi_Funcs.Menus.SetToxicPoolsMax()
 	local default_setting = ChoGGi.Consts.MaxToxicRainPools
 
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 0, value = 0},
 		{text = 10, value = 10},
 		{text = 20, value = 20},
@@ -213,7 +213,7 @@ function ChoGGi_Funcs.Menus.SetSoilQuality()
 	local soil_quality = GetSoilQuality(WorldToHex(GetCursorWorldPos()))
 
 	local item_list = {
-		{text = T(302535920000106--[[Current]]), value = soil_quality},
+		{text = Translate(302535920000106--[[Current]]), value = soil_quality},
 		{text = -100, value = -100},
 		{text = -75, value = -75},
 		{text = -50, value = -50},
@@ -267,7 +267,7 @@ function ChoGGi_Funcs.Menus.SetTerraformingParams(action)
 	local setting_id = action.setting_id
 
 	local item_list = {
-		{text = T(302535920000106--[[Current]]), value = GetTerraformParamPct(setting_id)},
+		{text = Translate(302535920000106--[[Current]]), value = GetTerraformParamPct(setting_id)},
 		{text = 0, value = 0},
 		{text = 25, value = 25},
 		{text = 50, value = 50},

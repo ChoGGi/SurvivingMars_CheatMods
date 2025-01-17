@@ -7,7 +7,7 @@ end
 local ChoGGi_Funcs = ChoGGi_Funcs
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 local T = T
---~ local Translate = ChoGGi_Funcs.Common.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
 function ChoGGi_Funcs.Menus.SetConstMenu(action)
 	if not action then
@@ -27,7 +27,7 @@ function ChoGGi_Funcs.Menus.SetConstMenu(action)
 	local default_setting = action.setting_value
 
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 15, value = 15},
 		{text = 20, value = 20},
 		{text = 25, value = 25},
@@ -43,7 +43,7 @@ function ChoGGi_Funcs.Menus.SetConstMenu(action)
 	local previous = ChoGGi.UserSettings[setting_id]
 	if previous then
 		table.insert(item_list, 2, {
-			text = T(1000231--[[Previous]]) .. ": " .. previous,
+			text = Translate(1000231--[[Previous]]) .. ": " .. previous,
 			value = previous,
 			hint = T(302535920000213--[[Previously set in an ECM menu (meaning it's active and the setting here will override this value).]])
 		})

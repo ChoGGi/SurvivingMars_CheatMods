@@ -1,3 +1,7 @@
+v0.4
+Made sure ignore dlc works.
+Added some random delays.
+
 v0.3
 Fixed error msg with mod_UnlockAllAchievements.
 

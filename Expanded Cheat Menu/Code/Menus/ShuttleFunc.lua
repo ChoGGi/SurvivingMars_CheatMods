@@ -8,13 +8,13 @@ local ChoGGi_Funcs = ChoGGi_Funcs
 local tostring, type = tostring, type
 local T = T
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
---~ local Translate = ChoGGi_Funcs.Common.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
 function ChoGGi_Funcs.Menus.SetShuttleCapacity()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.StorageShuttle / r
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 5, value = 5},
 		{text = 10, value = 10},
 		{text = 25, value = 25},
@@ -73,7 +73,7 @@ function ChoGGi_Funcs.Menus.SetShuttleSpeed()
 	local r = const.ResourceScale
 	local default_setting = ChoGGi.Consts.SpeedShuttle / r
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 50, value = 50},
 		{text = 75, value = 75},
 		{text = 100, value = 100},
@@ -130,7 +130,7 @@ end
 function ChoGGi_Funcs.Menus.SetShuttleHubShuttleCapacity()
 	local default_setting = ChoGGi.Consts.ShuttleHubShuttleCapacity
 	local item_list = {
-		{text = T(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
+		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 25, value = 25},
 		{text = 50, value = 50},
 		{text = 75, value = 75},

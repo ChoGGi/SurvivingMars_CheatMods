@@ -7819,7 +7819,7 @@ function ChoGGi_Funcs.Common.SetAnimState(obj)
 		local state = states_str[i]
 		local idx = states_num[i]
 		item_list[i] = {
-			text = T(1000037--[[Name]]) .. ": " .. state .. ", " .. T(302535920000858--[[Index]]) .. ": " .. idx,
+			text = Translate(1000037--[[Name]]) .. ": " .. state .. ", " .. T(302535920000858--[[Index]]) .. ": " .. idx,
 			value = state,
 		}
 	end
@@ -7837,7 +7837,7 @@ function ChoGGi_Funcs.Common.SetAnimState(obj)
 		if value ~= "idle" then
 			obj:SetState(value)
 			MsgPopup(
-				choice.text,
+				ChoGGi_Funcs.Common.SettingState(choice.text),
 				T(302535920000859--[[Anim State]])
 			)
 		end

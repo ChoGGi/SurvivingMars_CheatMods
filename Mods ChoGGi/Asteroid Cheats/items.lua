@@ -7,12 +7,6 @@ return {
 		"Help", T(302535920011793, "Disable mod without having to see missing mod msg."),
 		"DefaultValue", true,
 	}),
---~ 	PlaceObj("ModItemOptionToggle", {
---~ 		"name", "ResetTimers",
---~ 		"DisplayName", T(0000, "Reset Timers"),
---~ 		"Help", T(0000, "Reset timers on all asteroids (adds."),
---~ 		"DefaultValue", false,
---~ 	}),
 	PlaceObj("ModItemOptionToggle", {
 		"name", "UnlockAsteroids",
 		"DisplayName", T(0000, "Unlock Asteroids"),

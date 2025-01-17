@@ -37,15 +37,17 @@ The first 13 breakthroughs are guaranteed (4 from planetary anomalies, and 9 fro
 Paradox sponsor does add an extra 2-4 (random), so if you play with it then it'll bump the count by 4. Keep in mind the last two aren't guaranteed.
 
 Also shows map for challenges (mod option to turn it off).
-
 Colour levels: Purple = mountainous, other colours = buildable.
-
-[url=https://steamcommunity.com/sharedfiles/filedetails/?id=1748327771]View all maps[/url]
 
 
 Known Issues:
 Not XBox compatible (it doesn't open the dialog, no idea why).
 If you have B&B DLC then the planetary anomalies don't work at all. Either ignore the first four breakthroughs, or use my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2721921772]Fix Bugs[/url] mod.
-Doesn't show underground wonders: They're randomly picked during new game load (unlike everything else which uses a location seed). To pick wonders use my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2599642948]Underground Cheats[/url] mod.
+If you use the game rules to disable dlc then this won't work, you need to manually remove hpk files from the DLC folder.
+Doesn't show underground wonders: To pick wonders use my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2599642948]Underground Cheats[/url] mod.
+
+
+See also: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2453011286]Find Map Locations[/url]
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=1748327771]View all maps[/url]
 ]],
 })

@@ -16,7 +16,7 @@ local DeleteObject = ChoGGi_Funcs.Common.DeleteObject
 local ToggleWorking = ChoGGi_Funcs.Common.ToggleWorking
 local SpawnColonist = ChoGGi_Funcs.Common.SpawnColonist
 local FindNearestObject = FindNearestObject
---~ local Translate = ChoGGi_Funcs.Common.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
 local testing = ChoGGi.testing
 

@@ -85,7 +85,7 @@ function OnMsg.ClassesPostprocess()
 		"__template", "InfopanelSection",
 
 		-- only show up for buildings that need maintenance
-		"__condition", function (_, context)
+		"__condition", function(_, context)
 			return context:IsKindOf("RequiresMaintenance") and context:DoesRequireMaintenance()
 		end,
 
@@ -129,7 +129,7 @@ function OnMsg.ClassesPostprocess()
 		"__template", "InfopanelActiveSection",
 
 		-- only show up for buildings that require main
-		"__condition", function (_, context)
+		"__condition", function(_, context)
 			return context:IsKindOf("RequiresMaintenance") and context:DoesRequireMaintenance()
 		end,
 
@@ -215,7 +215,7 @@ function OnMsg.ClassesPostprocess()
 		end,
 		-- add a right-click or button y action
 		"AltPress", true,
-		"OnAltPress", function (self, gamepad)
+		"OnAltPress", function(self, gamepad)
 			if gamepad then
 				self.context:Rotate(gamepad)
 			else

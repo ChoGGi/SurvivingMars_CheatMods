@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v19.5 (Unreleased)
+### Fixed:
+- A few more notifications showing table: ****.
 
 ## v19.4 (4 Jan 2025)
 ### Added:

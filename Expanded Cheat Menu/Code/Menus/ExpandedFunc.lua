@@ -378,13 +378,13 @@ end -- do
 
 function ChoGGi_Funcs.Menus.MonitorInfo()
 	local item_list = {
-		{text = T(302535920000936--[[Something you'd like to see added?]]), value = "New"},
+		{text = Translate(302535920000936--[[Something you'd like to see added?]]), value = "New"},
 		{text = "", value = "New"},
-		{text = T(302535920000035--[[Grids]]) .. ": " .. Translate(891--[[Air]]), value = "Air"},
-		{text = T(302535920000035--[[Grids]]) .. ": " .. Translate(79--[[Power]]), value = "Power"},
-		{text = T(302535920000035--[[Grids]]) .. ": " .. Translate(681--[[Water]]), value = "Water"},
-		{text = T(302535920000035--[[Grids]]) .. ": " .. Translate(891--[[Air]]) .. "/" .. Translate(79--[[Power]]) .. "/" .. Translate(681--[[Water]]), value = "Grids"},
-		{text = T(302535920000042--[[City]]), value = "City"},
+		{text = Translate(302535920000035--[[Grids]]) .. ": " .. Translate(891--[[Air]]), value = "Air"},
+		{text = Translate(302535920000035--[[Grids]]) .. ": " .. Translate(79--[[Power]]), value = "Power"},
+		{text = Translate(302535920000035--[[Grids]]) .. ": " .. Translate(681--[[Water]]), value = "Water"},
+		{text = Translate(302535920000035--[[Grids]]) .. ": " .. Translate(891--[[Air]]) .. "/" .. Translate(79--[[Power]]) .. "/" .. Translate(681--[[Water]]), value = "Grids"},
+		{text = Translate(302535920000042--[[City]]), value = "City"},
 		{text = Translate(547--[[Colonists]]), value = "Colonists", hint = T(302535920000937--[[Laggy with lots of colonists.]])},
 		{text = Translate(5238--[[Rockets]]), value = "Rockets"},
 	}
