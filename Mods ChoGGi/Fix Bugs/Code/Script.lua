@@ -210,9 +210,9 @@ do
 
 		-- If this is called on a save from before B&B (it does update, but after LoadGame)
 		local main_city = MainCity or UICity
+		local colony = UIColony or main_city
 
 		local main_realm = GetRealmByID(MainMapID)
-		local UIColony = UIColony
 		local Cities = Cities
 		local const = const
 		local GameMaps = GameMaps
@@ -227,14 +227,14 @@ do
 			--
 			-- Gene Forging tech doesn't increase rare traits chance.
 			-- See OnMsg.TechResearched below for more info about GeneForging
-			if UIColony:IsTechResearched("GeneForging") then
+			if colony:IsTechResearched("GeneForging") then
 				TechDef.GeneSelection.param1 = 150
 			end
 
 			--
 			-- Fix Defence Towers Not Firing At Rovers (1/2)
 			if #(main_city.labels.HostileAttackRovers or "") > 0 then
-				UIColony.mystery.can_shoot_rovers = true
+				colony.mystery.can_shoot_rovers = true
 			end
 
 			--
@@ -765,10 +765,10 @@ do
 		-------- GetCityLabels above --------
 
 		--
-		if UIColony.underground_map_unlocked then
+		if colony and colony.underground_map_unlocked then
 
-			local underground_map = GameMaps[UIColony.underground_map_id]
-			local underground_city = Cities[UIColony.underground_map_id]
+			local underground_map = GameMaps[colony.underground_map_id]
+			local underground_city = Cities[colony.underground_map_id]
 
 			--
 			-- Colonists showing up on wrong map in infobar.
@@ -1215,11 +1215,12 @@ end
 
 --
 -- These were moved from City to Colony, shouldn't hurt anything...
-function City.IsTechResearched(_, ...)
-	return UIColony:IsTechResearched(...)
+function City.IsTechResearched(self, ...)
+	-- Checking for UIColony needed for old saves
+	return Research.IsTechResearched(UIColony or self, ...)
 end
-function City.IsTechDiscovered(_, ...)
-	return UIColony:IsTechDiscovered(...)
+function City.IsTechDiscovered(self, ...)
+	return Research.IsTechDiscovered(UIColony or self, ...)
 end
 
 --
@@ -1491,10 +1492,12 @@ end
 --
 --
 --
+--
 -- B&B fixes
 if not g_AvailableDlc.picard then
 	return
 end
+--
 --
 --
 --

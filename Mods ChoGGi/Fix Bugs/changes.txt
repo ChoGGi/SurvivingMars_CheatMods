@@ -1,4 +1,5 @@
-v7.*
+v7.6
+Log spam from loading older saves.
 Changed Colonists Wrong Map Infobar mod option to disabled by default.
 
 v7.5

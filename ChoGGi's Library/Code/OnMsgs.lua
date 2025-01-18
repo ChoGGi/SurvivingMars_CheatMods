@@ -7,6 +7,20 @@ local OnMsg = OnMsg
 local T = T
 local Translate = ChoGGi_Funcs.Common.Translate
 
+-- I think the gc needs some help?
+local g_env = _G
+function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
+	g_env = env
+
+	local ChoOrig_ReloadLua = env.ReloadLua
+	ChoGGi_Funcs.Common.AddToOriginal("ReloadLua")
+	function env.ReloadLua(...)
+		table.clear(env.ChoGGi_lookup_names)
+
+		return ChoOrig_ReloadLua(...)
+	end
+
+end
 	-- think they fixed this, test it
 --~ local RemoveAttachAboveHeightLimit = ChoGGi_Funcs.Common.RemoveAttachAboveHeightLimit
 
@@ -151,4 +165,7 @@ function OnMsg.LoadGame()
 			end
 		end
 	end
+
+	g_env.collectgarbage("collect")
+	g_env.collectgarbage("collect")
 end

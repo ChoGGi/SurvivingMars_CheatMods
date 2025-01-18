@@ -1,3 +1,6 @@
+v0.9
+Added button to cycle through drones.
+
 v0.8
 Stop hiding colonists (thanks muffin).
 

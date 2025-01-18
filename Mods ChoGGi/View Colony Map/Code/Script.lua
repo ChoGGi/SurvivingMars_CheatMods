@@ -436,7 +436,7 @@ end
 function ChoGGi_VCM_ExtraInfoDlg:UpdateInfo(gen)
 printC("UpdateInfo")
 --~ 	if false then
-	if ChoGGi.testing then
+	if ChoGGi.testing and g_AvailableDlc.picard then
 		local state = RandState(gen.Seed)
 		local rand = function(min, max)
 			return state:GetStable(min, max)

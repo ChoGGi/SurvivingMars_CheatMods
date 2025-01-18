@@ -6,13 +6,14 @@ See mod options to toggle certain fixes.
 **List of bugs fixed:**
 See below for more info about these specific fixes:
 ```
-Uneven terrain / Flatten tool (see mod options to disable).
+Uneven terrain / Flatten tool (mod option to disable).
 Add rocket sound effects to SupplyPods (mod option to disable).
+Possible fix for main menu music playing in-game on new games (mod option to disable, since there's no fade out).
+Log spam from loading older saves.
 Force heat grid to update when starting certain new games.
 Future Contemporary Asset Pack when placing spires.
 Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC).
 Log spam from IsBuildingInDomeRange().
-Possible fix for main menu music playing in-game on new games (mod option to disable, since there's no fade out).
 Problem updating supply grid.
 Colonists on an expedition now show proper status when selected from command centre (instead of just unknown).
 Added missing images for certain Cargo listings.
@@ -55,7 +56,7 @@ Fix for whatever odd thing Mars Underground mod is doing with presets.
 Log spam from a modded trait without an id.
 Black screen in second new game window when using a Modded sponsor and missing DLC.
 Rivals Trade Minerals mod hides Exotic Minerals from lander UI.
-Silva's Orion Heavy Rocket (you must disable his Essential files mod, then enable it AFTER enabling this mod, or use my Mod List Editor mod).
+Silva's Orion Heavy Rocket (you must disable his Essential files mod, then enable it AFTER enabling this mod, or use my Mod List Editor mod to place this before it).
 Horticulture Workshop not unlocking.
 Removes stuck cursor buildings (reddish coloured).
 GetCheapestTech log spam.
