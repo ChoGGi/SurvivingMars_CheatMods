@@ -1,3 +1,6 @@
+v1.8
+Fixed Shuttle hubs (I guess I did have to remove some stuff from it...).
+
 v1.7
 Lock behind tech was borked (thanks pakha3023).
 

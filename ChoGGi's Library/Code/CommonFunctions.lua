@@ -5504,7 +5504,10 @@ do -- SetBuildingLimits
 			local orig_cs = ChoGGi.Tables.ConstructionStatus
 			for id, status in pairs(cs) do
 				if id:sub(1, 9) ~= "Landscape" and status.type == "warning" then
-					cs[id].type = orig_cs[id].type
+					-- Mod added status
+					if orig_cs[id] then
+						cs[id].type = orig_cs[id].type
+					end
 				end
 			end
 		end

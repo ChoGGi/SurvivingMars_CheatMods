@@ -39,8 +39,8 @@ do -- MapData
 	local FillRandomMapProps = FillRandomMapProps
 	-- exported data temp stored here
 	local export_data = {}
-	local export_data_dupes = {}
 	local export_count = 0
+	local export_data_dupes = {}
 	-- Stores temp landing spot
 	local landing
 	-- If I translate these, then I get issues in not English when using Find Map Locations.
@@ -53,18 +53,12 @@ do -- MapData
 	local limit_count = 13
 	local skip_csv = false
 	local breakthroughs = false
-	local bb_dlc = false
+	local bb_dlc_skip = false
 
 	local function AddLandingSpot(lat, long)
 		-- coord names in csv
-		local lat_0, long_0 = lat < 0, long < 0
-		local lat_name, long_name = lat_0 and north or south, long_0 and west or east
-
---~ 		local location = lat_name .. lat .. long_name .. long
---~ 		if export_data_dupes[location] then
---~ 			return
---~ 		end
---~ 		export_data_dupes[location] = true
+		local lat_neg, long_neg = lat < 0, long < 0
+		local lat_name, long_name = lat_neg and north or south, long_neg and west or east
 
 		-- no dupes
 		local location_user = lat .. lat_name .. long .. long_name
@@ -82,14 +76,13 @@ do -- MapData
 			landing.map_params
 		)
 
-		-- we store all lat/long numbers as pos in csv
-		if lat_0 then
-			lat = lat - lat * 2
+		-- we store all lat/long numbers as positive in csv
+		if lat_neg then
+			lat = -lat
 		end
-		if long_0 then
-			long = long - long * 2
+		if long_neg then
+			long = -long
 		end
-
 
 		-- updates threat/res map info
 		landing:RecalcThreatAndResourceLevels()
@@ -118,7 +111,7 @@ do -- MapData
 		-- create item in export list
 		export_count = export_count + 1
 		export_data[export_count] = {
-			coordinates = location_user,
+			coordinates = lat .. lat_name .. long .. long_name,
 			seed = params.seed,
 			latitude = lat_name,
 			latitude_degree = lat,
@@ -149,7 +142,7 @@ do -- MapData
 			local tech_list = RetMapBreakthroughs(gen, limit_count)
 
 			-- remove first four
-			if bb_dlc then
+			if bb_dlc_skip then
 				for _ = 1, 4 do
 					table_remove(tech_list, 1)
 				end
@@ -166,13 +159,6 @@ do -- MapData
 			end
 		end
 
-		-- none of them have a params.landing_spot, so skip it...
---~ 		-- named location spots
---~ 		if params.landing_spot then
---~ 			data.landing_spot = Translate(params.landing_spot)
---~ 		elseif params.Locales then
---~ 			data.landing_spot = str_MarsLocales[params.Locales]
---~ 		end
 		-- named location spots
 		if params.Locales then
 			data.landing_spot = str_MarsLocales[params.Locales]
@@ -184,7 +170,7 @@ do -- MapData
 ChoGGi_Funcs.Common.ExportMapDataToCSV(XAction:new{
 	setting_breakthroughs = true,
 	setting_skip_csv = false,
-	setting_limit_count = 13,
+	setting_limit_count = 6,
 })
 
 	]]
@@ -205,11 +191,14 @@ ChoGGi_Funcs.Common.ExportMapDataToCSV(XAction:new{
 		end
 
 		-- Remove first four if bb dlc and my fix bugs mod not enabled
-		local fix_bugs = table.find(ModsLoaded, "id", "ChoGGi_FixBBBugs")
-		local ava_bb_dlc = g_AvailableDlc.picard
-		bb_dlc = ava_bb_dlc and not fix_bugs
-
---~ 		north, east, south, west = Translate(1000487--[[N]]), Translate(1000478--[[E]]), Translate(1000492--[[S]]), Translate(1000496--[[W]])
+		if skip_csv then
+			local fix_bugs = table.find(ModsLoaded, "id", "ChoGGi_FixBBBugs")
+			local ava_bb_dlc = g_AvailableDlc.picard
+			bb_dlc_skip = ava_bb_dlc and not fix_bugs
+			if bb_dlc_skip then
+				print("ExportMapDataToCSV: B&B DLC detected and Fix Bugs mod not loaded: Skipping first four breakthroughs!")
+			end
+		end
 
 		-- save current g_CurrentMapParams to restore later
 		local params = g_CurrentMapParams
@@ -233,7 +222,6 @@ ChoGGi_Funcs.Common.ExportMapDataToCSV(XAction:new{
 		export_count = 0
 		table.clear(export_data_dupes)
 
-
 		-- needed for RecalcThreatResourceLevels func
 		local ChoOrig_GameState = GameState.gameplay
 		GameState.gameplay = false
@@ -247,16 +235,12 @@ ChoGGi_Funcs.Common.ExportMapDataToCSV(XAction:new{
 			for long = 0, 180 do
 				-- SE
 				AddLandingSpot(lat, long)
---~ 				-- skip the rest for speed in testing
---~ 				testing = false
-				if action.ActionId ~= "" or not testing then
-					-- SW
-					AddLandingSpot(lat, -long)
-					-- NE
-					AddLandingSpot(-lat, long)
-					-- NW
-					AddLandingSpot(-lat, -long)
-				end
+				-- SW
+				AddLandingSpot(lat, -long)
+				-- NE
+				AddLandingSpot(-lat, long)
+				-- NW
+				AddLandingSpot(-lat, -long)
 			end
 		end
 --~ ChoGGi_Funcs.Common.TickEnd("ExportMapDataToCSV")
@@ -307,7 +291,6 @@ ChoGGi_Funcs.Common.ExportMapDataToCSV(XAction:new{
 			if breakthroughs then
 				local b_str = Translate(11451--[[Breakthrough]])
 				local c = #csv_columns
---~ 				for i = 1, (const.BreakThroughTechsPerGame + Consts.PlanetaryBreakthroughCount) do
 				for i = 1, limit_count do
 					c = c + 1
 					csv_columns[c] = {"break" .. i, b_str .. " " .. i}

@@ -66,6 +66,9 @@ local techs = {
 }
 
 local function StartupCode()
+	BuildingTemplates.ShuttleHub.sponsor_name1 = ""
+	BuildingTemplates.ShuttleHub.sponsor_status1 = false
+
 	for bld_id, tech_id in pairs(techs) do
 		if mod_options["ChoGGi_Tech_" .. bld_id] then
 				-- build menu

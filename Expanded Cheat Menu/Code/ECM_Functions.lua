@@ -1824,6 +1824,7 @@ end -- do
 
 do -- SetLoadingScreenLog
 	local ChoOrig_WaitLoadingScreenClose = WaitLoadingScreenClose
+	ChoGGi_Funcs.Common.AddToOriginal("WaitLoadingScreenClose")
 
 	function ChoGGi_Funcs.Common.SetLoadingScreenLog()
 
