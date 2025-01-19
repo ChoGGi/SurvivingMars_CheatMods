@@ -571,7 +571,7 @@ do -- Graphs
 		}
 		local UICity = UICity
 		local labels = UICity.labels
-		local ResourceOverviewCity = g_ResourceOverviewCity[UICity.map_id]
+		local ResourceOverviewCity = g_ResourceOverviewCity[ActiveMapID]
 
 		-- the rest are sols
 		local csv_columns = {

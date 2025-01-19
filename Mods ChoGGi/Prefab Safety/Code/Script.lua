@@ -63,7 +63,7 @@ function BaseRoverBuilding:GameInit(...)
 
 			rover.ChoGGi_PrefabSafety = true
 
-			DoneObject(self)
+			self:delete()
 		end
 	end)
 end

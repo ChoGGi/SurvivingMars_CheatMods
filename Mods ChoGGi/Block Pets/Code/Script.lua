@@ -5,8 +5,6 @@ if not g_AvailableDlc.shepard then
 	return
 end
 
-local DoneObject = DoneObject
-
 local classes = {
   RoamingPet = true,
   Pet = true,
@@ -56,7 +54,7 @@ for i = 1, #spawn_classes do
 	local ChoOrig_func = class.Spawn
 	class.Spawn = function(self, ...)
 		if mod_EnableMod and mod_options[self.animal_type] then
-			DoneObject(self)
+			self:delete()
 			return
 		end
 		return ChoOrig_func(self, ...)

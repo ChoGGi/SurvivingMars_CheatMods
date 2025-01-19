@@ -9,7 +9,6 @@ local table = table
 local pairs, type = pairs, type
 local Sleep = Sleep
 local IsValid = IsValid
-local DoneObject = DoneObject
 local T = T
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 local DeleteObject = ChoGGi_Funcs.Common.DeleteObject
@@ -42,7 +41,7 @@ function ChoGGi_Funcs.Menus.RocketCrashesGameOnLanding()
 	for i = 1, #rockets do
 		rockets[i]:ForEachAttach("ParSystem", function(a)
 			if type(a.polyline) == "string" and a.polyline:find("\0") then
-				DoneObject(a)
+				a:delete()
 			end
 		end)
 	end
@@ -122,16 +121,20 @@ do -- DronesNotRepairingDome
 end -- do
 
 local function ResetRover(rc)
+	if not rc then
+		return
+	end
+
 	local drones
 	if rc.attached_drones then
 		drones = #rc.attached_drones
 		for i = 1, #rc.attached_drones do
-			DoneObject(rc.attached_drones[i])
+			rc.attached_drones[i]:delete()
 		end
 	end
 	local pos = rc:GetVisualPos()
 	local new = rc:Clone()
-	DoneObject(rc)
+	rc:delete()
 	new:SetPos(GetRealm(new):GetPassablePointNearby(pos))
 	-- add any missing drones
 	if drones > #new.attached_drones then
@@ -188,7 +191,7 @@ function ChoGGi_Funcs.Menus.ResetAllColonists()
 				local is_valid = IsValid(c)
 				SpawnColonist(c, nil, is_valid and c:GetVisualPos(), city)
 				if is_valid then
-					DoneObject(c)
+					c:delete()
 				end
 			end
 		end
@@ -227,7 +230,7 @@ local function AttachedColonist(c, pos, rocket, city)
 	if IsValid(c) then
 		c:Detach()
 		SpawnColonist(c, rocket, pos, city)
-		DoneObject(c)
+		c:delete()
 	else
 		SpawnColonist(nil, nil, rocket, pos, city)
 	end
@@ -258,7 +261,7 @@ function ChoGGi_Funcs.Menus.ParticlesWithNullPolylines()
 		end
 	end)
 	for i = #objs, 1, -1 do
-		DoneObject(objs[i])
+		objs[i]:delete()
 	end
 	ResumePassEdits("ChoGGi_Funcs.Menus.ParticlesWithNullPolylines")
 
@@ -306,7 +309,7 @@ function ChoGGi_Funcs.Menus.MirrorSphereStuck()
 		end
 	end)
 	for i = #objs, 1, -1 do
-		DoneObject(objs[i])
+		objs[i]:delete()
 	end
 
 	ResumePassEdits("ChoGGi_Funcs.Menus.MirrorSphereStuck")
@@ -421,7 +424,7 @@ function ChoGGi_Funcs.Menus.RemoveBlueGridMarks()
 		end
 	end)
 	for i = #objs, 1, -1 do
-		DoneObject(objs[i])
+		objs[i]:delete()
 	end
 	-- remove the rover outlines added from https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-persistent-transport-route-blueprint-on-map.1121333/
 	objs = MapGet(true, "WireFramedPrettification", function(o)
@@ -430,7 +433,7 @@ function ChoGGi_Funcs.Menus.RemoveBlueGridMarks()
 		end
 	end)
 	for i = #objs, 1, -1 do
-		DoneObject(objs[i])
+		objs[i]:delete()
 	end
 
 	ResumePassEdits("ChoGGi_Funcs.Menus.RemoveBlueGridMarks")

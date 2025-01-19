@@ -145,7 +145,7 @@ PrgAmbientLife["WorkSolaria"] = function(unit, bld)
 	unit:PushDestructor(function(unit)
 		PrgChangeSpotFlags(bld, bld, spot, 0, 4, slotname, slot)
 		if IsValid(__placed) then
-			DoneObject(__placed)
+			__placed:delete()
 		end
 		if _unit_move then
 			unit:SetMoveAnim(_unit_move)

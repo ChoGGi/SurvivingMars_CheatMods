@@ -34,6 +34,10 @@ end
 local Sleep = Sleep
 
 local function DecalRemoval(land_decal)
+	if not land_decal then
+		return
+	end
+
 	local delta = const.DayDuration / 20
 	for opacity = 100, 0, -5 do
 		Sleep(delta)
@@ -42,7 +46,7 @@ local function DecalRemoval(land_decal)
 		end
 		land_decal:SetOpacity(opacity, delta)
 	end
-	DoneObject(land_decal)
+	land_decal:delete()
 end
 
 local ChoOrig_ConstructionSite_GameInit = ConstructionSite.GameInit
@@ -149,7 +153,7 @@ local function YamatoHasshin(site)
 		CreateGameTimeThread(DecalRemoval, land_decal)
 
 		-- byebye blinky
-		DoneObject(blinky)
+		blinky:delete()
 
 		PlayFX("RocketLand", "end", pod)
 
@@ -187,7 +191,7 @@ local function YamatoHasshin(site)
 
 		PlayFX("RocketLaunch", "end", pod)
 		-- bye bye pod
-		DoneObject(pod)
+		pod:delete()
 
 	end)
 end

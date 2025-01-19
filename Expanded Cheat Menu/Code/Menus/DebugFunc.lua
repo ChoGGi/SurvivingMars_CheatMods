@@ -506,7 +506,6 @@ end
 do -- BuildingPathMarkers_Toggle
 --~ 		GetEntityWaypointChains(entity)
 	-- mostly a copy n paste from Lua\Buildings\BuildingWayPoints.lua: ShowWaypoints()
-	local DoneObject = DoneObject
 	local AveragePoint2D = AveragePoint2D
 	local OText, OPolyline
 --~ 	local XText, OPolyline
@@ -540,7 +539,7 @@ do -- BuildingPathMarkers_Toggle
 	local function HideWaypoints(data)
 		if data then
 			if IsValid(data.line) then
-				DoneObject(data.line)
+				data.line:delete()
 			end
 			data.line = false
 			ChoGGi_Funcs.Common.objlist_Destroy(data)
@@ -1294,7 +1293,6 @@ do -- FlightGrid_Toggle
 	local point = point
 	local AveragePoint2D = AveragePoint2D
 	local FindPassable = FindPassable
-	local DoneObject = DoneObject
 
 	local grid_thread = false
 	local Flight_Height_local = false
@@ -1348,7 +1346,7 @@ do -- FlightGrid_Toggle
 		for i = 0, #flight_lines+1 do
 			local o = flight_lines[i]
 			if IsValid(o) then
-				DoneObject(o)
+				o:delete()
 			end
 		end
 		table.iclear(flight_lines)

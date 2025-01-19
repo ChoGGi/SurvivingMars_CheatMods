@@ -19,7 +19,6 @@ local type, pairs = type, pairs
 local table = table
 local MulDivRound = MulDivRound
 local IsValid = IsValid
-local DoneObject = DoneObject
 
 local size = 100 * guim
 local green = green
@@ -53,9 +52,13 @@ end
 
 local sector_objs = {}
 local function RemoveStuckSectors(obj)
+	if not obj then
+		return
+	end
+
 	-- remove any that shouldn't be there
 	if not sector_objs[obj] then
-		DoneObject(obj)
+		obj:delete()
 	end
 end
 
@@ -67,7 +70,7 @@ local function RemoveSectors()
 		if type(sector) == "table" then
 			-- I'm lazy and deleting them now instead of checking for scanned sectors and removing them then
 			if IsValid(sector.ChoGGi_decal) then
-				DoneObject(sector.ChoGGi_decal)
+				sector.ChoGGi_decal:delete()
 				sector.ChoGGi_decal = nil
 			end
 			-- hide any white sectors

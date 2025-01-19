@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1747675475",
 	"pops_any_uuid", "92acde1d-8642-4ae5-a748-03b9759178ab",
 	"lua_revision", 1007000, -- Picard
-	"version", 8,
+	"version", 9,
 	"version_major", 0,
-	"version_minor", 8,
+	"version_minor", 9,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -54,5 +54,18 @@ UIColony.tech_status.MartianPatents.researched = 1
 CheatUnlockBreakthroughs()
 -- Unlock all breakthrough techs
 CheatUnlockAllBreakthroughs()
+
+-- Delete all trees (suspend/resume will greatly speed it up)
+SuspendPassEdits("DeleteStuff")
+MapDelete("map", "VegetationTree")
+ResumePassEdits("DeleteStuff")
+-- Trees and Bushes
+MapDelete("map", "VegetationBillboardObject")
+-- If you have my lib mod installed then you should also call this to clean up
+ChoGGi_Funcs.Common.UpdateGrowthThreads()
+-- Large rocks
+MapDelete("map", {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor"})
+-- Small rocks
+MapDelete("map", "StoneSmall")
 ]],
 })

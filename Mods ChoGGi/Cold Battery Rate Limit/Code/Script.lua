@@ -25,7 +25,7 @@ local function RemoveMod(name, obj)
 		elseif cbrl.remove then
 			cbrl:remove()
 		end
-		DoneObject(cbrl)
+		cbrl:delete()
 		obj[name] = nil
 	end
 end

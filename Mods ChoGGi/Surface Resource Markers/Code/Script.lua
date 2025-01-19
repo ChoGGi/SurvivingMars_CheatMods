@@ -58,7 +58,7 @@ local function UpdateIcons()
 			end
 		else
 			if valid_marker then
-				DoneObject(obj.ChoGGi_SurfaceMarker)
+				obj.ChoGGi_SurfaceMarker:delete()
 				obj.ChoGGi_SurfaceMarker = nil
 			end
 		end

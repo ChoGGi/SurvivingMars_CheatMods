@@ -14,7 +14,7 @@ local SelObject = ChoGGi_Funcs.Common.SelObject
 local GetCursorWorldPos = GetCursorWorldPos
 
 function ChoGGi_Funcs.Menus.TriggerFireworks()
-	local city = Cities[UICity.map_id]
+	local city = Cities[ActiveMapID]
 	local domes = city.labels.Domes or ""
 	if #domes < 11 then
 		for i = 1, #domes do
@@ -88,12 +88,12 @@ function ChoGGi_Funcs.Menus.UnlockBreakthroughs()
 		end
 		anomaly:SetRevealed(true)
 		anomaly:ScanCompleted(false)
-		DoneObject(anomaly)
+		anomaly:delete()
 	end
 	MapForEach("map", "SubsurfaceAnomalyMarker", function(marker)
 		if marker.tech_action == "breakthrough" then
 			reveal(marker:PlaceDeposit())
-			DoneObject(marker)
+			marker:delete()
 		end
 	end)
 	MapForEach("map", "SubsurfaceAnomaly", reveal)

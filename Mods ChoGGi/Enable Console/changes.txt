@@ -1,3 +1,6 @@
+v0.9
+Won't log spam when my lib mod isn't installed.
+
 v0.8
 Added code I use in ECM to allow pasting in more complicated code (no more "not understood").
 Removes ` when using Tilde to open console.

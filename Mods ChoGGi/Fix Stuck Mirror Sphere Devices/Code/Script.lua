@@ -22,14 +22,13 @@ local function StartupCode()
 	-- Speeds up obj manipulation
 	SuspendPassEdits("ChoGGi.FixStuckMirrorSphereDevices.Startup")
 
-	local DoneObject = DoneObject
 	local objs = MapGet("map", "ParSystem", function(o)
 		if o.polyline and o:GetParticlesName() == "PowerDecoy_Capture" then
 			return true
 		end
 	end)
 	for i = #objs, 1, -1 do
-		DoneObject(objs[i])
+		objs[i]:delete()
 	end
 
 	ResumePassEdits("ChoGGi.FixStuckMirrorSphereDevices.Startup")

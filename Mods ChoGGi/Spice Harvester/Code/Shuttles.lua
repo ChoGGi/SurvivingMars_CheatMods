@@ -204,7 +204,7 @@ function SpiceHarvester_CargoShuttle:GoodByeCruelWorld()
 		self:SetVisible(false)
 		Sleep(GetSoundDuration(snd))
 		self:PlayFX("GroundExplosion", "end")
-		DoneObject(self)
+		self:delete()
 	end
 end
 

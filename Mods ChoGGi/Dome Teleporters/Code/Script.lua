@@ -261,7 +261,7 @@ function DomeTeleporter:Done()
 	if IsValid(self.linked_obj) then
 		self:RegPoints(self.registered_point, self.linked_obj.registered_point, true)
 		self.linked_obj.linked_obj = false
-		DoneObject(self.linked_obj)
+		self.linked_obj:delete()
 		self.linked_obj = false
 	end
 end
@@ -434,7 +434,7 @@ function DomeTeleporter:TraverseTunnel(unit)
 						camera3p.DetachObject(dummy_obj)
 						camera3p.AttachObject(unit)
 					end
-					DoneObject(dummy_obj)
+					dummy_obj:delete()
 				end
 
 				if IsValid(unit) and IsValid(linked_obj) then

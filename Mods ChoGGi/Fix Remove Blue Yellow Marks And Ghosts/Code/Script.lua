@@ -1,7 +1,5 @@
 -- See LICENSE for terms
 
-local DoneObject = DoneObject
-
 local mod_EnableMod
 
 local function ModOptions(id)
@@ -40,7 +38,7 @@ function OnMsg.LoadGame()
 	end)
 
 	for i = #objs, 1, -1 do
-		DoneObject(objs[i])
+		objs[i]:delete()
 	end
 
 	-- remove the rover outlines added from https://forum.paradoxplaza.com/forum/index.php?threads/surviving-mars-persistent-transport-route-blueprint-on-map.1121333/
@@ -48,7 +46,7 @@ function OnMsg.LoadGame()
 		return rover_ents[rover.entity or ""]
 	end)
 	for i = #objs, 1, -1 do
-		DoneObject(objs[i])
+		objs[i]:delete()
 	end
 
 	ResumePassEdits("ChoGGi.RemoveBlueYellowGridMarks.LoadGame")

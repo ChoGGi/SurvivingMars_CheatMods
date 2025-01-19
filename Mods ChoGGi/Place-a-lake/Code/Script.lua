@@ -29,7 +29,7 @@ end
 
 function InstantLake:Done()
 	if IsValid(self.water_obj) then
-		DoneObject(self.water_obj)
+		self.water_obj:delete()
 		ApplyAllWaterObjects()
 	end
 end

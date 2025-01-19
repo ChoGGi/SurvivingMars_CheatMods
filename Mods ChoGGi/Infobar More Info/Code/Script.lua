@@ -103,7 +103,7 @@ function OnMsg.AddResearchRolloverTexts(text)
 		return
 	end
 
-	local res_points = g_ResourceOverviewCity[UICity.map_id]:GetEstimatedRP() + 0.0
+	local res_points = g_ResourceOverviewCity[ActiveMapID]:GetEstimatedRP() + 0.0
 
 --~ 	-- research per sol
 --~ 	text[#text+1] = "<newline>" .. T{445070088246,
@@ -645,7 +645,7 @@ for func, res_name in pairs(resources) do
 	local func_name = "Get" .. func .. "Rollover"
 	local ChoOrig_func = InfobarObj[func_name]
 	InfobarObj[func_name] = function(self, ...)
-		local res_info = g_ResourceOverviewCity[UICity.map_id]
+		local res_info = g_ResourceOverviewCity[ActiveMapID]
 		local ret = ResRemaining(self, res_name, ChoOrig_func(self, ...), res_info)
 		-- deposit remaining info
 		if deposit_info[res_name] then
@@ -682,7 +682,7 @@ function InfobarObj.GetColonistsRollover(...)
 		return ret
 	end
 
-	local res_info = g_ResourceOverviewCity[UICity.map_id]
+	local res_info = g_ResourceOverviewCity[ActiveMapID]
 	-- add percent count to colonists
 	-- 0.0 needed for maths (try 10/100 in console)
 	local total = res_info:GetColonistCount() + 0.0

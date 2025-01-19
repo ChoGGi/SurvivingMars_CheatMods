@@ -26,6 +26,40 @@ local function ModOptions(id)
 
 	ConsoleEnabled = mod_EnableConsole
 	ShowConsoleLog(mod_EnableLog)
+
+	-- build console buttons
+	if IsECM() then
+		return
+	end
+
+	local dlgConsole = dlgConsole
+	if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then
+		local edit = dlgConsole.idEdit
+
+		-- removes comments from code, and adds a space to each newline, so pasting multi line works
+		local XEditEditOperation = XEdit.EditOperation
+
+		-- I don't want to make the mod require my lib mod
+		local StripComments
+		if rawget(_G, "ChoGGi_Funcs") then
+			StripComments = ChoGGi_Funcs.Common.StripComments
+		else
+			StripComments = function(...)
+				return ...
+			end
+		end
+
+		function edit:EditOperation(insert_text, is_undo_redo, cursor_to_text_start, ...)
+			if type(insert_text) == "string" then
+				insert_text = StripComments(insert_text)
+				insert_text = insert_text:gsub("\n", " \n")
+			end
+			return XEditEditOperation(self, insert_text, is_undo_redo, cursor_to_text_start, ...)
+		end
+
+		dlgConsole.ChoGGi_MenuAdded = true
+	end
+
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -101,35 +135,6 @@ function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 		return ChoOrig_Console_Exec(self, text, hide_text, ...)
 	end
 end
-
-function OnMsg.ModsReloaded()
-	if IsECM() then
-		return
-	end
-
---~ 	-- Has a delay when closing console :(
---~ 	config.ConsoleDim = 1
-
-	-- build console buttons
-	local dlgConsole = dlgConsole
-	if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then
-		local edit = dlgConsole.idEdit
-
-		-- removes comments from code, and adds a space to each newline, so pasting multi line works
-		local XEditEditOperation = XEdit.EditOperation
-		local StripComments = ChoGGi_Funcs.Common.StripComments
-		function edit:EditOperation(insert_text, is_undo_redo, cursor_to_text_start, ...)
-			if type(insert_text) == "string" then
-				insert_text = StripComments(insert_text)
-				insert_text = insert_text:gsub("\n", " \n")
-			end
-			return XEditEditOperation(self, insert_text, is_undo_redo, cursor_to_text_start, ...)
-		end
-
-		dlgConsole.ChoGGi_MenuAdded = true
-	end
-
-end -- ModsReloaded
 
 -- kind of an ugly way of making sure console doesn't include ` when using tilde to open console
 -- I could do a thread and wait till the key isn't pressed, but it's slower

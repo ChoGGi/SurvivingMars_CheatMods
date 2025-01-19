@@ -18,7 +18,7 @@ local LaunchHumanMeteor = ChoGGi_Funcs.Common.LaunchHumanMeteor or function(enti
 	if descr.meteor:IsKindOf("BombardMissile") then
 		g_IncomingMissiles[descr.meteor] = nil
 		if IsValid(descr.meteor) then
-			DoneObject(descr.meteor)
+			descr.meteor:delete()
 		end
 	else
 		descr.meteor:Fall(descr.start)

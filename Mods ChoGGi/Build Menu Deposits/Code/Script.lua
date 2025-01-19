@@ -95,8 +95,8 @@ local deposit_lookup = {
 	ChoGGi_SubsurfaceDepositMarker_Metals = "Metals",
 	ChoGGi_SubsurfaceDepositMarker_PreciousMetals = "PreciousMetals",
 	ChoGGi_SubsurfaceDepositMarker_Water = "Water",
-	ChoGGi_TerrainDepositMarker_Concrete = "Concrete",
 	ChoGGi_SubsurfaceDepositMarker_PreciousMinerals = "PreciousMinerals",
+	ChoGGi_TerrainDepositMarker_Concrete = "Concrete",
 
 	ChoGGi_EffectDepositMarker_Comfort = "BeautyEffectDeposit",
 	ChoGGi_EffectDepositMarker_Morale = "MoraleEffectDeposit",
@@ -215,24 +215,26 @@ local lookup_names = {
 	_ResearchE = T(11461--[[Research Site]]),
 }
 
-local function AddTemplate(obj, class, deposit_type, info)
+--~ local function AddTemplate(obj, class, deposit_type, info, build_pos)
+local function AddTemplate(obj, params)
+
 	-- I mean... it's kinda ugly but
 	local description = obj.description
 	local display_icon = obj.display_icon
 	local display_name = obj.display_name
 
-	if info == "effect_info" then
+	if params.info == "effect_info" then
 		description = obj.IPDescription
-		display_icon = effect_icons[deposit_type]
-		display_name = lookup_names[deposit_type]
-	elseif info == "anomaly_info" then
+		display_icon = effect_icons[params.deposit_type]
+		display_name = lookup_names[params.deposit_type]
+	elseif params.info == "anomaly_info" then
 		description = obj.description or T(8693--[[Grant Resources]])
-		display_name = lookup_names[deposit_type]
+		display_name = lookup_names[params.deposit_type]
 	end
 
 	PlaceObj("BuildingTemplate", {
-		"Id", class .. deposit_type,
-		"template_class", class,
+		"Id", params.class .. params.deposit_type,
+		"template_class", params.class,
 
 		"display_name", display_name,
 		"display_name_pl", display_name,
@@ -240,6 +242,7 @@ local function AddTemplate(obj, class, deposit_type, info)
 		"display_icon", display_icon,
 		"disabled_entity", obj.disabled_entity,
 		"entity", obj.entity,
+		"build_pos", params.build_pos,
 	})
 end
 
@@ -263,48 +266,79 @@ function OnMsg.ClassesPostprocess()
 		return
 	end
 
+	-- Resource
+	AddTemplate(TerrainDepositConcrete, {
+		class = "ChoGGi_TerrainDepositMarker",
+		deposit_type = "_Concrete",
+		build_pos = 1,
+	})
+	AddTemplate(SubsurfaceDepositWater, {
+		class = "ChoGGi_SubsurfaceDepositMarker",
+		deposit_type = "_Water",
+		build_pos = 2,
+	})
+	AddTemplate(SubsurfaceDepositMetals, {
+		class = "ChoGGi_SubsurfaceDepositMarker",
+		deposit_type = "_Metals",
+		build_pos = 3,
+	})
+	AddTemplate(SubsurfaceDepositPreciousMetals, {
+		class = "ChoGGi_SubsurfaceDepositMarker",
+		deposit_type = "_PreciousMetals",
+		build_pos = 4,
+	})
+	if g_AvailableDlc.picard then
+		AddTemplate(SubsurfaceDepositPreciousMinerals, {
+			class = "ChoGGi_SubsurfaceDepositMarker",
+			deposit_type = "_PreciousMinerals",
+			build_pos = 5,
+		})
+	end
+
 	-- Anomaly
-	AddTemplate(SubsurfaceAnomaly_breakthrough,
-		"ChoGGi_SubsurfaceAnomalyMarker", "_Breakthrough", "anomaly_info"
-	)
-	AddTemplate(SubsurfaceAnomaly_unlock,
-		"ChoGGi_SubsurfaceAnomalyMarker", "_Tech", "anomaly_info"
-	)
-	AddTemplate(SubsurfaceAnomaly_complete,
-		"ChoGGi_SubsurfaceAnomalyMarker", "_ResearchA", "anomaly_info"
-	)
-	AddTemplate(SubsurfaceAnomaly,
-		"ChoGGi_SubsurfaceAnomalyMarker", "_Resources", "anomaly_info"
-	)
+	AddTemplate(SubsurfaceAnomaly_complete, {
+		class = "ChoGGi_SubsurfaceAnomalyMarker",
+		deposit_type = "_ResearchA",
+		info = "anomaly_info",
+		build_pos = 6,
+	})
+	AddTemplate(SubsurfaceAnomaly, {
+		class = "ChoGGi_SubsurfaceAnomalyMarker",
+		deposit_type = "_Resources",
+		info = "anomaly_info",
+		build_pos = 7,
+	})
+	AddTemplate(SubsurfaceAnomaly_unlock, {
+		class = "ChoGGi_SubsurfaceAnomalyMarker",
+		deposit_type = "_Tech",
+		info = "anomaly_info",
+		build_pos = 8,
+	})
+	AddTemplate(SubsurfaceAnomaly_breakthrough, {
+		class = "ChoGGi_SubsurfaceAnomalyMarker",
+		deposit_type = "_Breakthrough",
+		info = "anomaly_info",
+		build_pos = 9,
+	})
 
 	-- Effect
-	AddTemplate(BeautyEffectDeposit,
-		"ChoGGi_EffectDepositMarker", "_Comfort", "effect_info"
-	)
-	AddTemplate(ResearchEffectDeposit,
-		"ChoGGi_EffectDepositMarker", "_ResearchE", "effect_info"
-	)
-	AddTemplate(MoraleEffectDeposit,
-		"ChoGGi_EffectDepositMarker", "_Morale", "effect_info"
-	)
-
-	-- Resource
-	AddTemplate(SubsurfaceDepositMetals,
-		"ChoGGi_SubsurfaceDepositMarker", "_Metals"
-	)
-	AddTemplate(SubsurfaceDepositPreciousMetals,
-		"ChoGGi_SubsurfaceDepositMarker", "_PreciousMetals"
-	)
-	AddTemplate(SubsurfaceDepositWater,
-		"ChoGGi_SubsurfaceDepositMarker", "_Water"
-	)
-	AddTemplate(TerrainDepositConcrete,
-		"ChoGGi_TerrainDepositMarker", "_Concrete"
-	)
-	if g_AvailableDlc.picard then
-		AddTemplate(SubsurfaceDepositPreciousMinerals,
-			"ChoGGi_SubsurfaceDepositMarker", "_PreciousMinerals"
-		)
-	end
+	AddTemplate(BeautyEffectDeposit, {
+		class = "ChoGGi_EffectDepositMarker",
+		deposit_type = "_Comfort",
+		info = "effect_info",
+		build_pos = 10,
+	})
+	AddTemplate(MoraleEffectDeposit, {
+		class = "ChoGGi_EffectDepositMarker",
+		deposit_type = "_Morale",
+		info = "effect_info",
+		build_pos = 11,
+	})
+	AddTemplate(ResearchEffectDeposit, {
+		class = "ChoGGi_EffectDepositMarker",
+		deposit_type = "_ResearchE",
+		info = "effect_info",
+		build_pos = 12,
+	})
 
 end

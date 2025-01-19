@@ -173,7 +173,7 @@ function IdiotMonument:OnDemolish()
 			self:SetOpacity(i)
 			Sleep(25)
 		end
-		DoneObject(self)
+		self:delete()
 	end)
 end
 
@@ -503,7 +503,7 @@ function MurderPod:Leave(leave_height)
 		self.hover_height = leave_height / amount
 	end
 
-	DoneObject(self)
+	self:delete()
 end
 
 function MurderPod:GetVictimPos()
@@ -714,7 +714,7 @@ function OnMsg.LoadGame()
 			local obj = objs[i]
 			-- actually 33325, but it'll do
 			if IsValid(obj) and obj:GetPos():z() > 30000 then
-				DoneObject(obj)
+				obj:delete()
 			end
 		end
 		-- Clear out invalid homeless
@@ -729,7 +729,7 @@ function OnMsg.LoadGame()
 			for j = 1, #objs do
 				local obj = objs[j]
 				if obj.polyline then
-					DoneObject(obj)
+					obj:delete()
 				end
 			end
 		end

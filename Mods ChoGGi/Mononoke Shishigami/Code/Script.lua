@@ -1,5 +1,19 @@
 -- See LICENSE for terms
 
+local point = point
+local Sleep = Sleep
+local DeleteThread = DeleteThread
+local IsValidThread = IsValidThread
+local CreateGameTimeThread = CreateGameTimeThread
+local GetTimeFactor = GetTimeFactor
+local GetCursorWorldPos = GetCursorWorldPos
+local GetDomeAtHex = GetDomeAtHex
+local AsyncRand = AsyncRand
+
+local function Random(m, n)
+	return AsyncRand(n - m + 1) + m
+end
+
 local mod_ToggleShrubs
 
 local function ModOptions(id)
@@ -15,19 +29,13 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
-local DoneObject = DoneObject
-local point = point
-local Sleep = Sleep
-local GetTimeFactor = GetTimeFactor
-local GetCursorWorldPos = GetCursorWorldPos
-
 -- entities to use
 local entities = {}
 local count = 0
 local EntityData = EntityData
 for key in pairs(EntityData) do
-	local five = key:sub(1,5)
-	local eight = key:sub(1,8)
+	local five = key:sub(1, 5)
+	local eight = key:sub(1, 8)
 	if five == "Tree_" or five == "Bush_" or eight == "TreeArm_" or eight == "BushArm_" then
 		count = count + 1
 		entities[count] = key
@@ -82,14 +90,13 @@ local colours = {
 }
 local count_colours = #colours
 
-local AsyncRand = AsyncRand
-local function Random(m, n)
-	return AsyncRand(n - m + 1) + m
-end
-
 DefineClass.ChoGGi_TransitoryEntity = {
-	__parents = {"EntityClass","Object"},
-	flags = {efShadow = false},
+	__parents = {"EntityClass", "Object"},
+	flags = {
+		efShadow = false,
+		efSunShadow = false,
+		gofNoDepthTest = true,
+	},
 
 	shrub_thread = false,
 }
@@ -99,14 +106,16 @@ function ChoGGi_TransitoryEntity:GameInit()
 	self.shrub_thread = CreateGameTimeThread(function()
 		-- scale/steps to loop
 		local steps = 30
-		if self.entity:sub(1,4) == "Tree" then
-			self:SetPos(self.shrub_pos:SetTerrainZ(-35+Random(-10,10)))
+		if self.entity:sub(1, 4) == "Tree" then
+			self:SetPos(
+				self.shrub_pos:SetTerrainZ(-35 + Random(-10, 10))
+			)
 		end
 
 		-- first we grow
 		for i = 1, steps do
 			self:SetScale(i)
-			Sleep(50+Random(1,10))
+			Sleep(50 + Random(1, 10))
 		end
 		Sleep(75)
 		-- than we shrink to brown
@@ -114,11 +123,11 @@ function ChoGGi_TransitoryEntity:GameInit()
 			steps = steps - 1
 			self:SetScale(i)
 			self:SetColorModifier(colours[count_colours - i])
-			Sleep(50+Random(1,10))
+			Sleep(50 + Random(1, 10))
 		end
 
 		-- byebye
-		DoneObject(self)
+		self:delete()
 	end)
 end
 
@@ -131,20 +140,79 @@ function OnMsg.SystemInactivate()
 	skip = true
 end
 
+local cursor_pos
+local entity_cls
+local surface_map_id
+local active_map_id
+local function SpawnGreen()
+	-- weird lag underground, almost like domes, but seemingly random spots
+	if active_map_id ~= surface_map_id then
+		return
+	end
+
+	local obj = entity_cls:new()
+	local ent = entities[Random(1, count)]
+	obj:ChangeEntity(ent)
+	obj:SetScale(1)
+	obj:SetAngle(Random(0, 21600))
+	local pos = cursor_pos + point(Random(-250, 250), Random(-250, 250))
+	obj:SetPos(pos)
+	obj.shrub_pos = pos
+end
+
+local growth_thread
+
+local function CleanUp()
+	-- good as any place
+	active_map_id = ActiveMapID
+	surface_map_id = UIColony.surface_map_id
+	entity_cls = ChoGGi_TransitoryEntity
+
+	-- actual cleanup
+	DeleteThread(growth_thread)
+	local GameMaps = GameMaps
+	for _, map in pairs(GameMaps) do
+		local objs = map.realm:MapGet("map", "ChoGGi_TransitoryEntity")
+		for i = 1, #objs do
+			DeleteThread(self.shrub_thread)
+			objs[i]:delete()
+		end
+	end
+end
+OnMsg.ChangeMapDone = CleanUp
+
 function OnMsg.InGameInterfaceCreated(igi)
-	local entity_cls = ChoGGi_TransitoryEntity
+	CleanUp()
+
+	local object_hex_grid = GameMaps[ActiveMapID].object_hex_grid
+	local Dialogs = Dialogs
 
 	local function OnMousePos()
 		if mod_ToggleShrubs and not skip and GetTimeFactor() > 0 then
-			local cursor = GetCursorWorldPos()
-			local obj = entity_cls:new()
-			local ent = entities[Random(1,count)]
-			obj:ChangeEntity(ent)
-			obj:SetScale(1)
-			obj:SetAngle(Random(0, 21600))
-			local pos = cursor+point(Random(-250, 250),Random(-250, 250))
-			obj:SetPos(pos)
-			obj.shrub_pos = pos
+			cursor_pos = GetCursorWorldPos()
+			local dome = GetDomeAtHex(object_hex_grid, WorldToHex(cursor_pos))
+			-- Domes are laggy
+			if not dome then
+				SpawnGreen()
+
+				if not IsValidThread(growth_thread) then
+					growth_thread = CreateGameTimeThread(function()
+						while true do
+							cursor_pos = GetCursorWorldPos()
+							local dome = GetDomeAtHex(object_hex_grid, WorldToHex(cursor_pos))
+							if not dome then
+								SpawnGreen()
+							end
+							Sleep(100)
+							-- Stop it in construction mode
+							if Dialogs.ConstructionModeDialog then
+								DeleteThread(growth_thread)
+							end
+						end
+					end)
+				end
+
+			end
 		end
 	end
 
@@ -167,11 +235,13 @@ function OnMsg.InGameInterfaceCreated(igi)
 					ChoOrig_OnMousePos_igi = nil
 				end
 				WaitMsg("OnRender")
+
 				local ChoOrig_OnMousePos = dlg.OnMousePos
 				function dlg.OnMousePos(...)
 					OnMousePos()
 					return ChoOrig_OnMousePos(...)
 				end
+
 			end)
 		end
 		return dlg

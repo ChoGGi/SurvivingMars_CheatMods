@@ -20,7 +20,7 @@ local rovers = {
 }
 
 local function OverrideUnload(func, self, ...)
-  local map_id = self:GetMapID() or UICity.map_id
+  local map_id = self:GetMapID() or ActiveMapID
 
 	-- get drone cargo item
 	local cargo = self.cargo[table.find(self.cargo, "class", "Drone")]

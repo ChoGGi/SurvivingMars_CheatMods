@@ -1,3 +1,9 @@
+v0.4
+Growth when cursor stopped.
+Stopped growth in domes and underground as it's laggy.
+Actually it's laggy even when near domes.
+I thought lights, but even with no shadows on them it still happens?
+
 v0.3
 Now uses either mouse or gamepad for positions.
 

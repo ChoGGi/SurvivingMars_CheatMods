@@ -5,7 +5,6 @@ local AsyncRand = AsyncRand
 local IsValidThread = IsValidThread
 local IsValid = IsValid
 local ValidateBuilding = ValidateBuilding
-local DoneObject = DoneObject
 local GetCity = GetCity
 local GetRealmByID = GetRealmByID
 local GetDomeAtPoint = GetDomeAtPoint
@@ -293,7 +292,7 @@ do
 				-- Stuck on roof of dome
 					or not IsValidThread(obj.fall_thread)
 				then
-					DoneObject(obj)
+					obj:delete()
 				end
 			end
 
@@ -347,7 +346,7 @@ do
 				then
 					local q, r = WorldToHex(par_obj:GetPos())
 					if not map.object_hex_grid:GetObject(q, r, "PreciousMetalsExtractor") then
-						DoneObject(par_obj)
+						par_obj:delete()
 					end
 				end
 			end)

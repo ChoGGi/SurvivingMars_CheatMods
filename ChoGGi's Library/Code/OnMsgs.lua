@@ -2,7 +2,6 @@
 
 local ChoGGi_Funcs = ChoGGi_Funcs
 local what_game = ChoGGi.what_game
-local DoneObject = DoneObject
 local OnMsg = OnMsg
 local T = T
 local Translate = ChoGGi_Funcs.Common.Translate
@@ -135,7 +134,7 @@ local function RemoveChoGGiObjects()
 		-- MapDelete doesn't seem to work with func filtering?
 		map.realm:MapForEach(true, "RotatyThing", function(o)
 			if o.ChoGGi_blinky then
-				DoneObject(o)
+				o:delete()
 			end
 		end)
 	end

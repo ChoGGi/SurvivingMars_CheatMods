@@ -181,7 +181,7 @@ function ChoGGi_Alien:Roam()
 	while true do
 		self:RoamTick()
 		if not self:IsValid() then
-			DoneObject(self)
+			self:delete()
 			break
 		end
 	end

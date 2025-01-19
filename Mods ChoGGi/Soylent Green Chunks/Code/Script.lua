@@ -1,7 +1,6 @@
 -- See LICENSE for terms
 
 local PlaceResourcePile = PlaceResourcePile
-local DoneObject = DoneObject
 local Sleep = Sleep
 local CreateRealTimeThread = CreateRealTimeThread
 
@@ -12,7 +11,7 @@ function OnMsg.ColonistDied(colonist)
 	CreateRealTimeThread(function()
 		Sleep(100)
 		colonist:Done()
-		DoneObject(colonist)
+		colonist:delete()
 	end)
 
 end

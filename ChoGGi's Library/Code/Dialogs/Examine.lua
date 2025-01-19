@@ -1252,7 +1252,7 @@ function ChoGGi_DlgExamine:idButDeleteAll_OnPress()
 						-- true skips dust plume
 						ChoGGi_Funcs.Common.DeleteObject(obj, true)
 					elseif obj.delete then
-						DoneObject(obj)
+						obj:delete()
 					end
 				end
 				ResumePassEdits("ChoGGi_DlgExamine:idButDeleteAll_OnPress")

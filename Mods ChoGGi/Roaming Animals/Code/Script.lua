@@ -371,7 +371,7 @@ function ChoGGi_RoamingAnimal:Roam()
 		self:RoamTick()
 
 		if not IsValid(self) then
-			DoneObject(self)
+			self:delete()
 			break
 		end
 	end

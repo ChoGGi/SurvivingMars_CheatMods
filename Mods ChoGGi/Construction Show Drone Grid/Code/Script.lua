@@ -10,7 +10,6 @@ local pairs = pairs
 local CleanupHexRanges = CleanupHexRanges
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
-local DoneObject = DoneObject
 local InvalidPos = InvalidPos()
 
 local RGBtoColour = ChoGGi_Funcs.Common.RGBtoColour
@@ -243,7 +242,7 @@ end
 
 local function CleanList(list)
 	for i = #(list or ""), 1, -1 do
-		DoneObject(list[i])
+		list[i]:delete()
 		table.remove(list, i)
 	end
 end

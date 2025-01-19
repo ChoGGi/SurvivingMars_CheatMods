@@ -1,7 +1,5 @@
 -- See LICENSE for terms
 
-local DoneObject = DoneObject
-
 local mod_EnableMod
 local mod_DeleteGeysers
 
@@ -17,7 +15,7 @@ local function RemoveGeysers()
 			end
 		end)
 		for i = #objs, 1, -1 do
-			DoneObject(objs[i])
+			objs[i]:delete()
 		end
 		-- And any "objects"
 		map.realm:MapDelete("map", "GeyserObject")

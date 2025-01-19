@@ -91,11 +91,10 @@ local function StartupCode()
     end
 
 		-- check for any that user tried to salvage and demo them
-		local DoneObject = DoneObject
 		for i = #objs, 1, -1 do
 			local obj = objs[i]
 			if obj.demolishing_countdown and obj.demolishing_countdown < 0 then
-				DoneObject(obj)
+				obj:delete()
 			end
 		end
 

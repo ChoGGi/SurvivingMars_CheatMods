@@ -15,15 +15,15 @@ local function StartupCode()
 	for id in pairs(OnScreenNotificationPresets) do
 		if id == "MysteryLog" then
 			if mod_ClearMysteryLog then
-				RemoveOnScreenNotification("MysteryLog", UICity.map_id)
+				RemoveOnScreenNotification("MysteryLog", ActiveMapID)
 				RemoveOnScreenNotification("MysteryLog")
 			end
 		else
 			if mod_ClearAll then
-				RemoveOnScreenNotification(id, UICity.map_id)
+				RemoveOnScreenNotification(id, ActiveMapID)
 				RemoveOnScreenNotification(id)
 			elseif mod_ClearMysteries and id:sub(1, 7) == "Mystery" then
-				RemoveOnScreenNotification(id, UICity.map_id)
+				RemoveOnScreenNotification(id, ActiveMapID)
 				RemoveOnScreenNotification(id)
 			end
 		end

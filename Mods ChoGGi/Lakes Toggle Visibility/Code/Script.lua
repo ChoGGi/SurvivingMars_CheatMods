@@ -6,7 +6,6 @@ if not g_AvailableDlc.armstrong then
 end
 
 local IsValid = IsValid
-local DoneObject = DoneObject
 local ApplyAllWaterObjects = ApplyAllWaterObjects
 local sqrt = sqrt
 local MulDivRound = MulDivRound
@@ -108,7 +107,7 @@ local function ModOptions(id)
 			local pos
 			if IsValid(lake.water_obj_fake) then
 				pos = lake.water_obj_fake:GetPos()
-				DoneObject(lake.water_obj_fake)
+				lake.water_obj_fake:delete()
 			end
 
 			local water = lake.water_obj
@@ -124,7 +123,7 @@ local function ModOptions(id)
 			local water = lake.water_obj
 			if not IsValid(water) or not water:IsKindOf("BuildingEntityClass") then
 				local pos = water:GetPos()
-				DoneObject(water)
+				water:delete()
 				water = BuildingEntityClass:new()
 				water:SetPos(pos)
 				UpdateLakeObj(water, lake)
@@ -150,7 +149,7 @@ function LandscapeLake:PlacePrefab(...)
 	if not mod_EnableLakes then
 		local water = self.water_obj
 		local pos = water:GetPos()
-		DoneObject(water)
+		water:delete()
 		water = BuildingEntityClass:new()
 		water:SetPos(pos)
 		UpdateLakeObj(water, self)

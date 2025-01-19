@@ -330,7 +330,7 @@ PortableMiner.ToggleAutoMode_Update = RCTransport.ToggleAutoMode_Update
 
 function PortableMiner:Done()
 	if IsValid(self.thumper) then
-		DoneObject(self.thumper)
+		self.thumper:delete()
 	end
 end
 

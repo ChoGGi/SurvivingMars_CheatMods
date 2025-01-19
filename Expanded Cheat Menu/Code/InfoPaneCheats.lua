@@ -8,7 +8,6 @@ end
 
 local ChoGGi_Funcs = ChoGGi_Funcs
 local pairs, table = pairs, table
-local DoneObject = DoneObject
 local IsValid = IsValid
 local CreateRealTimeThread = CreateRealTimeThread
 
@@ -1261,7 +1260,7 @@ if rawget(_G, "Firefly") then
 		end
 
 		for i = #self.fireflies, 1, -1 do
-			DoneObject(self.fireflies[i])
+			self.fireflies[i]:delete()
 		end
 
 		self.fireflies = nil
@@ -1285,7 +1284,7 @@ if rawget(_G, "Firefly") then
 		while true do
 			-- remove firefly if building removed
 			if not IsValid(self.sinkhole) then
-				DoneObject(self)
+				self:delete()
 				return
 			end
 

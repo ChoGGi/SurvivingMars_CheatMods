@@ -1,7 +1,5 @@
 -- See LICENSE for terms
 
-local DoneObject = DoneObject
-
 local function StartupCode()
 	if not CurrentModOptions:GetProperty("EnableMod") then
 		return
@@ -22,8 +20,8 @@ local function StartupCode()
 			end)
 
 			if rocket_mark[1] then
-				DoneObject(rocket_mark[1])
-				DoneObject(marker)
+				rocket_mark[1]:delete()
+				marker:delete()
 			end
 		end
 

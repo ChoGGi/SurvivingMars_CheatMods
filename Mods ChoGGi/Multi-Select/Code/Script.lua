@@ -33,7 +33,7 @@ circle = false
 
 function OnMsg.SaveGame()
 	if circle and IsValid(circle) then
-		DoneObject(circle)
+		circle:delete()
 	end
 	circle = false
 end
@@ -60,7 +60,7 @@ local function UpdateCircle()
 			max_vertices = #points,
 		})
 		new_line:SetPos(circle:GetPos())
-		DoneObject(circle)
+		circle:delete()
 		circle = new_line
 		-- add radius text to circle for when people set radius in hud button
 		local text_obj = PlaceObjectIn("Text", circle:GetMapID())
@@ -113,7 +113,7 @@ function OnMsg.ClassesBuilt()
 				selection_changed = true
 			else
 				if circle and IsValid(circle) then
-					DoneObject(circle)
+					circle:delete()
 				end
 				ChoOrig_pos = GetCursorWorldPos()
 
@@ -163,7 +163,7 @@ function OnMsg.ClassesBuilt()
 		if not (dbl_clicked and selection_changed) and button == "L" and circle_enabled and MouseShortcut(button) == "Shift-MouseL" then
 
 			if circle and IsValid(circle) then
-				DoneObject(circle)
+				circle:delete()
 			end
 
 			SelectionRemove(Selection)

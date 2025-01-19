@@ -217,7 +217,7 @@ function OnMsg.ClassesPostprocess()
 						context:SetVisible(false)
 						Sleep(5000)
 						PlayFX("GroundExplosion", "end", context.fake_obj)
-						DoneObject(context)
+						context:delete()
 
 						for i = 1, #context.shuttles do
 							context.shuttles[i]:GoodByeCruelWorld()

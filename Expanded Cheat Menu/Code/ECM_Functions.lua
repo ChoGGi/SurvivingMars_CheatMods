@@ -7,7 +7,6 @@ local table = table
 local type, pairs, next, print, string = type, pairs, next, print, string
 local tostring, tonumber, rawget, rawset = tostring, tonumber, rawget, rawset
 local AveragePoint2D = AveragePoint2D
-local DoneObject = DoneObject
 local IsBox = IsBox
 local IsKindOf = IsKindOf
 local IsPoint = IsPoint
@@ -1109,7 +1108,7 @@ do -- ShowAnimDebug_Toggle
 	local function AnimDebug_Hide(obj)
 		obj:ForEachAttach("ChoGGi_OText", function(a)
 			if a.ChoGGi_AnimDebug then
-				DoneObject(a)
+				a:delete()
 			end
 		end)
 	end
@@ -1704,7 +1703,7 @@ do -- ToggleObjLines
 			return
 		end
 		if IsValid(obj.ChoGGi_ObjListLine) then
-			DoneObject(obj.ChoGGi_ObjListLine)
+			obj.ChoGGi_ObjListLine:delete()
 		end
 		rawset(obj, "ChoGGi_ObjListLine", nil)
 	end

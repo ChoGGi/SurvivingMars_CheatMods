@@ -2,7 +2,6 @@
 
 local DroneLoadMediumThreshold = const.DroneLoadMediumThreshold
 local IsValid = IsValid
-local DoneObject = DoneObject
 
 function DroneHub:ChoGGi_ToggleStrobe(enable)
 	if enable then
@@ -19,7 +18,7 @@ function DroneHub:ChoGGi_ToggleStrobe(enable)
 	else
 		-- byebye strobe
 		if IsValid(self.ChoGGi_HeavyStrobeLight) then
-			DoneObject(self.ChoGGi_HeavyStrobeLight)
+			self.ChoGGi_HeavyStrobeLight:delete()
 			self.ChoGGi_HeavyStrobeLight = false
 		end
 	end

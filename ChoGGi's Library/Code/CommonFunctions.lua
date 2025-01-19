@@ -17,7 +17,6 @@ local AsyncRand = AsyncRand
 local AveragePoint2D = AveragePoint2D
 local box = box
 local ClassDescendantsList = ClassDescendantsList
-local DoneObject = DoneObject
 local FindNearestObject = FindNearestObject -- (list,obj) or (list,pos,filterfunc)
 local GameTime = GameTime
 local guic = guic
@@ -1323,14 +1322,10 @@ end
 
 -- check for and remove broken objects from *city.labels
 function ChoGGi_Funcs.Common.RemoveMissingLabelObjects(label)
-	local Cities = Cities or ""
-	for i = 1, #Cities do
-		local city = Cities[i]
-		local list = city.labels[label] or ""
-		for j = #list, 1, -1 do
-			if not IsValid(list[j]) then
-				table.remove(city.labels[label], j)
-			end
+	local list = UIColony:GetCityLabels(label)
+	for i = #list, 1, -1 do
+		if not IsValid(list[i]) then
+			table.remove(city.labels[label], i)
 		end
 	end
 end
@@ -1353,14 +1348,10 @@ function ChoGGi_Funcs.Common.RemoveMissingTableObjects(list, obj)
 end
 
 function ChoGGi_Funcs.Common.RemoveFromLabel(label, obj)
-	local Cities = Cities or ""
-	for i = 1, #Cities do
-		local city = Cities[i]
-		local list = city.labels[label] or ""
-		for j = #list, 1, -1 do
-			if list[j] and list[j].handle and list[j] == obj.handle then
-				table.remove(city.labels[label], j)
-			end
+	local list = UIColony:GetCityLabels(label)
+	for i = #list, 1, -1 do
+		if list[i] and list[i].handle and list[i] == obj.handle then
+			table.remove(city.labels[label], i)
 		end
 	end
 end
@@ -2734,7 +2725,7 @@ local function MapGet_ChoGGi(label, area, city, ...)
 		-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything* (think gary oldman in professional)
 		if g_cls and g_cls:IsKindOf("CObject") then
 			-- area can be: true, "map", "detached", "outsiders" (see Surviving Mars/ModTools/Docs/LuaMapEnumeration.md.html)
-			local realm = GetRealmByID(city and city.map_id or UICity.map_id)
+			local realm = GetRealmByID(city and city.map_id or ActiveMapID)
 			return realm and realm:MapGet(area or true, label, ...)
 			-- use obj:SetPos(pos) to move objs to map (and away with pos = InvalidPos())
 		end
@@ -2747,7 +2738,7 @@ function ChoGGi_Funcs.Common.MapGet_fixed(area, class, city, ...)
 	local g_cls = g_Classes[class]
 	-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything* (think gary oldman in professional)
 	if g_cls and g_cls:IsKindOf("CObject") then
-		return GetRealmByID(city and city.map_id or UICity.map_id):MapGet(area, class, ...)
+		return GetRealmByID(city and city.map_id or ActiveMapID):MapGet(area, class, ...)
 	end
 	return {}
 end
@@ -3219,7 +3210,7 @@ do -- DeleteObject
 		-- surface metal
 		if is_deposit and obj.group then
 			for i = #obj.group, 1, -1 do
-				DoneObject(obj.group[i])
+				obj.group[i]:delete()
 			end
 		end
 
@@ -3255,7 +3246,7 @@ do -- DeleteObject
 
 		-- I did ask nicely
 		if IsValid(obj) then
-			DoneObject(obj)
+			obj:delete()
 		end
 	end
 
@@ -3961,7 +3952,7 @@ do -- Editor toggle
 				Dialogs.TerrainBrushesDlg:delete()
 			end
 			-- update flight grid so shuttles don't fly into newly added mountains
-			FlightCaches[UICity.map_id]:OnHeightChanged()
+			FlightCaches[ActiveMapID]:OnHeightChanged()
 
 		end
 	end
@@ -4133,7 +4124,7 @@ function ChoGGi_Funcs.Common.DeleteLargeRocks()
 	local function CallBackFunc(answer)
 		if answer then
 			SuspendPassEdits("ChoGGi_Funcs.Common.DeleteLargeRocks")
-			MapDelete(true, {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor"})
+			MapDelete("map", {"Deposition", "WasteRockObstructorSmall", "WasteRockObstructor"})
 			ResumePassEdits("ChoGGi_Funcs.Common.DeleteLargeRocks")
 		end
 	end
@@ -4148,7 +4139,7 @@ function ChoGGi_Funcs.Common.DeleteSmallRocks()
 	local function CallBackFunc(answer)
 		if answer then
 			SuspendPassEdits("ChoGGi_Funcs.Common.DeleteSmallRocks")
-			MapDelete(true, "StoneSmall")
+			MapDelete("map", "StoneSmall")
 			ResumePassEdits("ChoGGi_Funcs.Common.DeleteSmallRocks")
 		end
 	end
@@ -4166,25 +4157,32 @@ do -- UpdateGrowthThreads
 		"managed_objects",
 	}
 	function ChoGGi_Funcs.Common.UpdateGrowthThreads()
-		local objs = MapGet(true, "VegetationAnimator")
 
-		for i = 1, #objs do
-			local obj = objs[i]
+		-- I mean someone could make a mod to grow trees underground
+		local GameMaps = GameMaps
+		for _, map in pairs(GameMaps) do
 
-			for j = 1, #lists do
-				local threads = obj[lists[j]]
-				for k = #threads, 1, -1 do
-					if not IsValid(threads[k]) then
-						table.remove(threads, k)
+			local objs = map.realm:MapGet("map", "VegetationAnimator")
+
+			for i = 1, #objs do
+				local obj = objs[i]
+
+				for j = 1, #lists do
+					local threads = obj[lists[j]]
+					for k = #threads, 1, -1 do
+						if not IsValid(threads[k]) then
+							table.remove(threads, k)
+						end
 					end
 				end
-			end
 
-			if #obj.managed_beautification_objects + #obj.managed_objects == 0 then
-				DoneObject(obj)
-			end
+				if #obj.managed_beautification_objects + #obj.managed_objects == 0 then
+					obj:delete()
+				end
 
+			end
 		end
+
 	end
 end
 
@@ -4382,8 +4380,8 @@ function ChoGGi_Funcs.Common.RemoveObjs(class, skip_suspend, skip_all_maps)
 end
 ChoGGi_Funcs.Common.MapDelete = ChoGGi_Funcs.Common.RemoveObjs
 
+-- SpawnColonist
 if what_game == "Mars" then
- -- SpawnColonist
 	local Msg = Msg
 	local GenerateColonistData = GenerateColonistData
 
@@ -4690,7 +4688,7 @@ function ChoGGi_Funcs.Common.DeleteObjectQuestion(obj)
 				obj:Close()
 			-- whatever
 			else
-				DoneObject(obj)
+				obj:delete()
 			end
 
 		end
@@ -4734,7 +4732,7 @@ function ChoGGi_Funcs.Common.DeleteAllObjectQuestion(obj)
 				end
 			-- map objects
 			elseif IsValid(obj) then
-				-- DeleteObject calls SuspendPassEdits, so only DoneObject below needs it
+				-- DeleteObject calls SuspendPassEdits, so only :delete() below needs it
 				DeleteObject(objs, true)
 			-- xwindows
 			elseif obj.Close then
@@ -4745,7 +4743,7 @@ function ChoGGi_Funcs.Common.DeleteAllObjectQuestion(obj)
 			else
 				SuspendPassEdits("ChoGGi_Funcs.Common.DeleteAllObjectQuestion")
 				for i = 1, #objs do
-					DoneObject(objs[i])
+					objs[i]:delete()
 				end
 				ResumePassEdits("ChoGGi_Funcs.Common.DeleteAllObjectQuestion")
 			end
@@ -4988,7 +4986,9 @@ function ChoGGi_Funcs.Common.DisastersStop()
 	end
 
 	if g_DustStorm then
+		g_DustStormDuration = 0
 		StopDustStorm()
+		-- (is it from a bug?)
 		g_DustStormType = false
 	end
 
@@ -5002,7 +5002,6 @@ function ChoGGi_Funcs.Common.DisastersStop()
 		g_RainDisaster = false
 	end
 
-	-- might help me prevent log spam if I copy n paste elsewhere?
 	local objs
 
 	objs = g_DustDevils or ""
@@ -5020,7 +5019,9 @@ function ChoGGi_Funcs.Common.DisastersStop()
 	if g_AccessibleDlc.contentpack1 then
 		objs = g_IonStorms or ""
 		for i = #objs, 1, -1 do
-			objs[i]:delete()
+			local obj = objs[i]
+			DeleteThread(obj.storm_thread)
+			obj:delete()
 			table.remove(g_IonStorms, i)
 		end
 	end
@@ -5389,7 +5390,7 @@ function ChoGGi_Funcs.Common.PlantRandomVegetation(amount)
 	local CanVegetationGrowAt = CanVegetationGrowAt
 	local PlaceVegetation = PlaceVegetation
 
-  local map_id = UICity.map_id
+  local map_id = ActiveMapID
   local ActiveGameMap = ActiveGameMap
 	local object_hex_grid = ActiveGameMap.object_hex_grid.grid
   local landscape_grid = ActiveGameMap.landscape_grid
@@ -5541,7 +5542,7 @@ end
 function ChoGGi_Funcs.Common.RemoveAttachAboveHeightLimit(obj)
 	-- we only want to check attachments
 	if obj:GetParent() and (obj:GetZ() + obj:GetAttachOffset():z()) > 65535 then
-		DoneObject(obj)
+		obj:delete()
 	end
 end
 
@@ -5574,7 +5575,7 @@ do -- CleanInfoAttachDupes
 				local pos = tostring(mark:GetPos())
 				local dupe = dupe_list[pos]
 				if dupe then
-					DoneObject(dupe)
+					dupe:delete()
 				else
 					dupe_list[pos] = mark
 				end
@@ -7476,7 +7477,7 @@ do -- EntitySpots_Toggle Entity Spots Toggle
 		if obj.ChoGGi_ShowAttachSpots == true then
 			obj:DestroyAttaches(old_remove_table, function(a)
 				if a.ChoGGi_ShowAttachSpots then
-					DoneObject(a)
+					a:delete()
 				end
 			end)
 			obj.ChoGGi_ShowAttachSpots = nil
@@ -7879,7 +7880,7 @@ function ChoGGi_Funcs.Common.LaunchHumanMeteor(entity, min, max, city)
 	if descr.meteor:IsKindOf("BombardMissile") then
 		g_IncomingMissiles[descr.meteor] = nil
 		if IsValid(descr.meteor) then
-			DoneObject(descr.meteor)
+			descr.meteor:delete()
 		end
 		return
 	end
@@ -8000,10 +8001,10 @@ local function RetObjMapId(obj, text, fallback)
 		return obj.city and obj.city.map_id
 			or obj.GetMapID and obj:GetMapID()
 			or g_CObjectFuncs.GetMapID(obj)
-			or fallback and UICity.map_id
+			or fallback and ActiveMapID
 			or text and "unknown" or ""
 	end
-	return fallback and UICity.map_id or text and "unknown" or ""
+	return fallback and ActiveMapID or text and "unknown" or ""
 end
 ChoGGi_Funcs.Common.RetObjMapId = RetObjMapId
 
@@ -8562,7 +8563,7 @@ function ChoGGi_Funcs.Common.objlist_Destroy(objlist)
     local o = objlist[i]
     objlist[i] = nil
     if IsValid(o) then
-      DoneObject(o)
+      o:delete()
     end
   end
 end

@@ -1,6 +1,5 @@
 -- See LICENSE for terms
 
-local DoneObject = DoneObject
 local type = type
 
 local mod_SpaceCount
@@ -31,7 +30,7 @@ local function DisableMarker(obj)
 	if obj.ChoGGi_ColdLines then
 		local lines = obj.ChoGGi_ColdLines
 		for i = 1, #lines do
-			DoneObject(lines[i])
+			lines[i]:delete()
 		end
 		obj.ChoGGi_ColdLines = nil
 		return
@@ -104,6 +103,6 @@ function OnMsg.SaveGame()
 	end
 	local markers = MapGet("map", "WayPointBig")
 	for i = 1, #markers do
-		DoneObject(markers[i])
+		markers[i]:delete()
 	end
 end

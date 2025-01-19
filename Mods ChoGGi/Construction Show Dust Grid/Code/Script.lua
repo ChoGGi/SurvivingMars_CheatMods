@@ -9,7 +9,6 @@ local pairs = pairs
 local CleanupHexRanges = CleanupHexRanges
 local HideHexRanges = HideHexRanges
 local ShowBuildingHexes = ShowBuildingHexes
-local DoneObject = DoneObject
 local IsKindOfClasses = IsKindOfClasses
 local IsKindOf = IsKindOf
 local IsValid = IsValid
@@ -32,7 +31,7 @@ local mod_HexColour
 
 local function CleanList(list)
 	for i = #(list or ""), 1, -1 do
-		DoneObject(list[i])
+		list[i]:delete()
 		table.remove(list, i)
 	end
 end
