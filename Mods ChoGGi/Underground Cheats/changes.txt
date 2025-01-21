@@ -1,3 +1,7 @@
+v0.5
+Use Ctrl to clean up cave-ins.
+Colonists don't lose sanity when there's no light (mod option).
+
 v0.4
 Added mod option to pin rockets.
 

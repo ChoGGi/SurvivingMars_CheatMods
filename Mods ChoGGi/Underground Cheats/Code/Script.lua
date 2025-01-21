@@ -11,6 +11,7 @@ local mod_EnableMod
 local mod_LightTripodRadius
 local mod_SupportStrutRadius
 local mod_PinRockets
+local mod_NoSanityLoss
 
 local orig_const_BuriedWonders = table.icopy(const.BuriedWonders)
 local fake_BuriedWonders_safe
@@ -94,6 +95,7 @@ local function ModOptions(id)
 	mod_LightTripodRadius = options:GetProperty("LightTripodRadius")
 	mod_SupportStrutRadius = options:GetProperty("SupportStrutRadius")
 	mod_PinRockets = options:GetProperty("PinRockets")
+	mod_NoSanityLoss = options:GetProperty("NoSanityLoss")
 
 	UpdateObjs()
 end
@@ -154,3 +156,98 @@ end
 
 --~ 	return ChoOrig_PinnableObject_TogglePin(self, force, map_id, ...)
 --~ end
+
+local ChoOrig_Colonist_CheckLackOfLight = Colonist.CheckLackOfLight
+function Colonist:CheckLackOfLight(...)
+	if not mod_EnableMod or not mod_NoSanityLoss then
+		return ChoOrig_Colonist_CheckLackOfLight(...)
+	end
+
+--~   if ObjectIsInEnvironment(self, "Underground") and not self.traits.Android then
+--~     local reason = g_Consts.LackOfLight > 0 and "lack of light" or "at home underground"
+--~     self:ChangeSanity(-g_Consts.LackOfLight, reason)
+--~   end
+end
+
+
+function OnMsg.ClassesPostprocess()
+	local templates = {
+		-- It seems like I only need to do this one, but they did add three of them for some reason?
+		"customCaveInRubble",
+
+		"CaveInRubble",
+		"RubbleBase",
+	}
+	local XTemplates = XTemplates
+
+	for i = 1, #templates do
+		local xtemplate = XTemplates[templates[i]][1][1]
+		if not xtemplate.ChoGGi_AddedToggleAllButton then
+			xtemplate.OnPressParam = nil
+			xtemplate.ChoGGi_AddedToggleAllButton = true
+
+			xtemplate.RolloverHint = T(0000, [[<left_click> Activate
+Ctrl + <left_click> Activate all]])
+
+			-- OnPress
+			xtemplate.OnPress = function(self, gamepad)
+				local context = self.context
+				context:ToggleRequestClear()
+				ObjModified(context)
+				-- left click action (second arg is if ctrl is being held down)
+				if not gamepad and IsMassUIModifierPressed() then
+					CreateRealTimeThread(function()
+						local clear_func = "CancelClear"
+						if context.clear_request then
+							clear_func = "RequestClear"
+						end
+
+						local cls = context.class
+						local handle = context.handle
+						local objs = UICity.labels.CaveInRubble or ""
+						for i = 1, #objs do
+							local obj = objs[i]
+							if obj.handle ~= handle
+								and obj.class == cls
+								and obj:CanBeCleared()
+							then
+								obj[clear_func](obj)
+							end
+						end
+					end)
+				end
+			end -- OnPress
+		end -- if
+
+		local xtemplate = XTemplates[templates[i]][2]
+		-- status
+		ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_UndergroundRubble_ShowStatus", true)
+		-- Add other tunnel info
+		table.insert(xtemplate, 2,
+			PlaceObj("XTemplateTemplate", {
+				"Id" , "ChoGGi_Template_UndergroundRubble_ShowStatus",
+				-- No need to add this (I use it for my RemoveXTemplateSections func)
+				"ChoGGi_Template_UndergroundRubble_ShowStatus", true,
+				-- Section style
+				"__template", "InfopanelSection",
+				-- It'll default to dome icon
+				"Icon", "UI/Icons/Sections/drone.tga",
+				-- Only show button when it meets the req
+				"__condition", function(_, context)
+					return mod_EnableMod
+				end,
+			}, {
+				PlaceObj("XTemplateTemplate", {
+					"__template", "InfopanelText",
+					-- function ChoGGi_UndergroundTunnel:GetUIStatus() returns text
+					"Text", T(0000, "<UIStatus>"),
+				})
+			})
+		)
+		-- status
+	end
+end
+
+function RubbleBase:GetUIStatus()
+	return self.clear_request and T(13948--[[Clearing Rubble]]) or T(13066--[[Cave-in]])
+end

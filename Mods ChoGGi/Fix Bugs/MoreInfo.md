@@ -23,6 +23,7 @@ Storybits:
 Blank Slate doesn't remove any applicants.
 Fhtagn! Fhtagn! Option 2 makes all colonists cowards instead of only religious ones.
 Dust Sickness: Deaths doesn't apply morale penalty.
+The Door To Summer #4 stops working after you fill the rocket.
 Some Storybits disappearing from the notifications list instead of popping up a dialog.
 Gene Forging tech doesn't increase rare traits chance.
 Personal Space changes capacity, but building menu doesn't show it.

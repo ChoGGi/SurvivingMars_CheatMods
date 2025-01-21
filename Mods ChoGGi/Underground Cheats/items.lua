@@ -31,7 +31,13 @@ local mod_options = {
 		"name", "PinRockets",
 		"DisplayName", T(0000, "Pin Rockets"),
 		"Help", T(0000, "When changing to underground, pin any rockets from surface (might have to toggle maps twice)."),
-		"DefaultValue", true,
+		"DefaultValue", false,
+	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "NoSanityLoss",
+		"DisplayName", T(0000, "No Sanity Loss"),
+		"Help", T(0000, "Colonists don't lose sanity when there's no light."),
+		"DefaultValue", false,
 	}),
 }
 
