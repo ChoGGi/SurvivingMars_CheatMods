@@ -1,3 +1,9 @@
+v7.8
+Log spam from borked colonist.
+
+v7.7
+Storybit Asylum will never start.
+
 v7.6
 Log spam from loading older saves.
 Changed Colonists Wrong Map Infobar mod option to disabled by default.

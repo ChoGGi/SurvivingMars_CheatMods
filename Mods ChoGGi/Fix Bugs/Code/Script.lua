@@ -364,7 +364,6 @@ do
 			StoryBits.TheDoorToSummer_LetNoNobleDeed[3].Effects[1].Field = "Breakthroughs"
 			StoryBits.TheDoorToSummer_LetNoNobleDeed[5].Effects[1].Field = "Breakthroughs"
 
-
 			-- Blank Slate doesn't remove any applicants for options 23 (fix 1/2)
 			local slate = StoryBits.BlankSlate[9].Effects
 			slate[#slate+1] = PlaceObj("ChoGGi_RemoveApplicants", {"Amount", 20})
@@ -410,6 +409,17 @@ do
 					}),
 				},
 			}))
+
+			-- Asylum will never start
+			local asylum = StoryBits.Asylum.Prerequisites
+			table.remove(asylum, 2)
+			table.remove(asylum, 2)
+			asylum = asylum[1].Conditions
+			asylum[#asylum+1] = PlaceObj("RivalHasTechYouDont", nil)
+			asylum[#asylum+1] = PlaceObj("CountRivalResource", {
+				"Resource", "funding",
+				"Amount", 500000000
+			})
 
 		end)
 
@@ -1506,6 +1516,20 @@ end
 --
 --
 --
+
+--
+-- Log spam from borked colonist (possibly from a mod, could just be BB again)
+-- This func is in base game, but it's only used with dlc
+local ChoOrig_GetEnvironment = GetEnvironment
+function GetEnvironment(object, ...)
+	if not mod_EnableMod then
+		return ChoOrig_GetEnvironment(object, ...)
+	end
+
+	if type(object) == "table" and object.GetMapID then
+		return ChoOrig_GetEnvironment(object, ...)
+	end
+end
 
 --
 -- Second fix for Rare Anomaly Analyzed: Mona Lisa

@@ -1,15 +1,14 @@
 return PlaceObj("ModDef", {
 	"title", "Passages Pass Cables",
-	"version", 1,
-	"version_major", 0,
-	"version_minor", 1,
-
-	"image", "Preview.png",
 	"id", "ChoGGi_PassagesPassCables",
 	"steam_id", "1782364729",
 	"pops_any_uuid", "f2c7fa48-99ec-46cd-ad0f-a64715e3d208",
-	"author", "ChoGGi",
 	"lua_revision", 1007000, -- Picard
+	"version", 1,
+	"version_major", 0,
+	"version_minor", 1,
+	"image", "Preview.png",
+	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},

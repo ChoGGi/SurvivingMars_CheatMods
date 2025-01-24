@@ -804,7 +804,9 @@ function ChoGGi_DlgExamine:ViewSourceCode()
 		code = true,
 		scrollto = info.linedefined,
 		title = T(302535920001519--[[View Source]]) .. " " .. info.source,
-		hint_ok = Translate(302535920000047--[["View Text/Object, and optionally dumps text to <green>%slogs\DumpedExamine.lua</green> (may take awhile for large text)."]]):format(ConvertToOSPath("AppData/")),
+		hint_ok = T{302535920000047--[["View Text/Object, and optionally dumps text to <color ChoGGi_yellow><path>logs\DumpedExamine.lua</color>."]],
+			path = ConvertToOSPath("AppData/"),
+		},
 		file_path = path,
 		_G = _G,
 		custom_func = function(overwrite)
@@ -979,8 +981,10 @@ function ChoGGi_DlgExamine:idText_OnHyperLinkRollover(link)
 		end
 
 		-- stick info at the top of list
-		table.insert(roll_text, 1, Translate(302535920001540--[[Show context menu for <green>%s</green>.]]):format(obj_name)
-			.. "\n"
+		table.insert(roll_text, 1, T{
+				302535920001540--[[Show context menu for <green><menu></green>.]],
+				menu = obj_name,
+			} .. "\n"
 		)
 		-- add the value to the key tooltip
 		table.insert(roll_text, 2, obj_str .. "\n\n")
@@ -1550,8 +1554,9 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 		},
 
 		{name = T(302535920000004--[[Dump]]),
-			hint = Translate(302535920000046--[[Dumps Text/Object to <green>%slogs\DumpedExamine.lua</green>.]]):format(ConvertToOSPath("AppData/"))
-				.. "\n\n" .. T(302535920001027--[[Object can take time on something like the ""Building"" class object.]]),
+			hint = T{302535920000046--[["Dumps Text/Object to <color ChoGGi_yellow><path>logs\DumpedExamine.lua</color>."]],
+				path = ConvertToOSPath("AppData/"),
+			}	.. "\n\n" .. T(302535920001027--[[Object can take time on something like the ""Building"" class object.]]),
 			image = "CommonAssets/UI/Menu/change_height_down.tga",
 			clicked = function()
 				local str, name
@@ -1566,8 +1571,9 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 			end,
 		},
 		{name = T(302535920000048--[[View]]),
-			hint = Translate(302535920000047--[["View Text/Object, and optionally dumps text to <green>%slogs\DumpedExamine.lua</green> (may take awhile for large text)."]]):format(ConvertToOSPath("AppData/"))
-				.. "\n\n" .. T(302535920001027--[[Object can take time on something like the ""Building"" class object.]]),
+			hint = T{302535920000047--[["View Text/Object, and optionally dumps text to <color ChoGGi_yellow><path>logs\DumpedExamine.lua</color>."]],
+				path = ConvertToOSPath("AppData/"),
+			}	.. "\n\n" .. T(302535920001027--[[Object can take time on something like the ""Building"" class object.]]),
 			image = "CommonAssets/UI/Menu/change_height_up.tga",
 			clicked = function()
 				-- pure text string
@@ -1595,7 +1601,9 @@ function ChoGGi_DlgExamine:BuildToolsMenuPopup()
 					end,
 					scrollto = scrolled_text,
 					title = title,
-					hint_ok = Translate(302535920000047--[["View Text/Object, and optionally dumps text to <green>%slogs\DumpedExamine.lua</green> (may take awhile for large text)."]]):format(ConvertToOSPath("AppData/")),
+					hint_ok = T{302535920000047--[["View Text/Object, and optionally dumps text to <color ChoGGi_yellow><path>logs\DumpedExamine.lua</color>."]],
+						path = ConvertToOSPath("AppData/"),
+					},
 					custom_func = function(overwrite)
 						self:DumpExamineText(str, name, overwrite and "w")
 					end,
@@ -1651,7 +1659,9 @@ Use Shift- or Ctrl- for random colours/reset colours.]]),
 			end,
 		},
 		{name = T(302535920001305--[[Find Within]]),
-			hint = Translate(302535920001303--[[Search for text within %s.]]):format(self.name),
+			hint = T{302535920001303--[["Search for text within <color ChoGGi_green><str></color>."]],
+				str = self.name,
+			},
 			image = "CommonAssets/UI/Menu/EV_OpenFirst.tga",
 			clicked = function()
 				ChoGGi_Funcs.Common.OpenInFindValueDlg(self.obj_ref, self)
@@ -2559,18 +2569,23 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 		},
 		{is_spacer = true},
 		{name = T(302535920001711--[[Delete Item]]),
-			hint = Translate(302535920001536--[["Remove the ""%s"" key from %s."]]):format(obj_name, self.name),
+			hint = T{302535920001536--[["Remove the ""<key_name>"" key from <table_name>."]],
+				key_name = obj_name,
+				table_name = self.name,
+			},
 			image = "CommonAssets/UI/Menu/DeleteArea.tga",
 			clicked = function()
-				if obj_type == "string" then
-					self:ShowExecCodeWithCode("o[\"" .. obj_name .. "\"] = nil")
-				else
-					self:ShowExecCodeWithCode("table.remove(o" .. ", " .. obj_name .. ")")
+				local str1, str2 = "o[\"", "\"] = nil"
+				if obj_type == "number" then
+					str1, str2 = "table.remove(o, ", ")"
 				end
+				self:ShowExecCodeWithCode(str1 .. obj_name .. str2)
 			end,
 		},
 		{name = T(302535920001535--[[Set Value]]),
-			hint = Translate(302535920001539--[[Change the value of %s.]]):format(obj_name),
+			hint = T{302535920001539--[["Change the value of <color ChoGGi_green><obj_name></color>."]],
+				obj_name = obj_name,
+			},
 			image = "CommonAssets/UI/Menu/SelectByClassName.tga",
 			clicked = function()
 				-- numbers don't need ""
@@ -2597,8 +2612,21 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 			end,
 		},
 	}
+	if type(obj_value) == "table" then
+		list[#list+1] = {
+			name = T(302535920001741--[[Clear Table]]),
+			hint = T(302535920001742--[[Remove all entries from this table.]]),
+			image = "CommonAssets/UI/Menu/new_city.tga",
+			clicked = function()
+				local str1, str2 = "table.clear(o[\"", "\"])"
+				if tonumber(obj_name) then
+					str1, str2 = "table.clear(o[", "])"
+				end
+				self:ShowExecCodeWithCode(str1 .. obj_name .. str2)
+			end,
+		}
 	-- ValueToLuaCode doesn't work on threads
-	if type(obj_value) ~= "thread" then
+	elseif type(obj_value) ~= "thread" then
 		list[#list+1] = {
 			name = T(302535920000664--[[Clipboard]]),
 			hint = T(302535920001566--[[Copy ValueToLuaCode(value) to clipboard.]]),
@@ -2643,7 +2671,9 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 	if obj_value_type == "number" then
 		c = c + 1
 		list[c] = {name = T(302535920001564--[[Double Number]]),
-			hint = Translate(302535920001563--[[Set amount to <color 100 255 100>%s</color>.]]):format(obj_value * 2),
+			hint = T{302535920001563--[["Set amount to <color ChoGGi_green><new_amt></color>."]],
+				new_amt = obj_value * 2,
+			},
 			image = "CommonAssets/UI/Menu/change_height_up.tga",
 			clicked = function()
 				self:ShowExecCodeWithCode("o." .. obj_name .. " = " .. (obj_value * 2))
@@ -2651,7 +2681,9 @@ function ChoGGi_DlgExamine:OpenListMenu(_, obj, _, hyperlink_box)
 		}
 		c = c + 1
 		list[c] = {name = T(302535920001565--[[Halve Number]]),
-			hint = Translate(302535920001563--[[Set amount to <color 100 255 100>%s</color>.]]):format(obj_value / 2),
+			hint = T{302535920001563--[["Set amount to <color ChoGGi_green><new_amt></color>."]],
+				new_amt = obj_value / 2,
+			},
 			image = "CommonAssets/UI/Menu/change_height_down.tga",
 			clicked = function()
 				self:ShowExecCodeWithCode("o." .. obj_name .. " = " .. (obj_value / 2))
@@ -3292,7 +3324,9 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 			end
 			-- pathing
 			if current_pos ~= going_to then
-				path = Translate(302535920001545--[[Going to %s]]):format(self:ConvertValueToInfo(path)) .. "\n"
+				path = T{302535920001545--[["Going to <color ChoGGi_green><loc></color>"]],
+					loc = self:ConvertValueToInfo(path),
+				} .. "\n"
 			else
 				path = ""
 			end
@@ -3572,12 +3606,14 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 			-- link to source code
 			if info.what == "Lua" then
 				c = c + 1
-				list_obj_str[c] = self:HyperLink(obj, self.ViewSourceCode, Translate(302535920001520--[["Opens source code (if it exists):
-Mod code works, as well as HG github code. HG code needs to be placed at ""%sSource""
-Example: ""Source/Lua/_const.lua""
+				list_obj_str[c] = self:HyperLink(obj, self.ViewSourceCode, T{302535920001520--[["Opens source code in text viewer (if it exists):
+Mod code works as is, HG github game code needs to be placed at:
+<color ChoGGi_green><path>Source</color>
+Example: <color ChoGGi_yellow>Source/Lua/_const.lua</color>
 
-Decompiled code won't scroll correctly as the line numbers are different."]]):format(ConvertToOSPath("AppData/")))
-					.. Translate(302535920001519--[[View Source]]) .. self.hyperlink_end
+Decompiled code won't scroll correctly as the line numbers are different."]],
+					path = ConvertToOSPath("AppData/"),
+				}) .. Translate(302535920001519--[[View Source]]) .. self.hyperlink_end
 			end
 			-- list args
 			local args = self:RetFuncArgs(obj)
@@ -3732,7 +3768,9 @@ do -- BuildAttachesPopup
 		local attach_amount = #attaches
 
 
-		local str_rclick = Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(self.string_Classname)
+		local str_rclick = Translate{302535920000904--[["<right_click> to copy <color ChoGGi_yellow><str></color> to clipboard."]],
+			str = self.string_Classname,
+		}
 		local str_attached = Translate(302535920001544--[[Attached to]])
 		local str_handle = Translate(302535920000955--[[Handle]])
 		local str_position = Translate(302535920000461--[[Position]])
@@ -3920,7 +3958,9 @@ function ChoGGi_DlgExamine:BuildParentsMenu(list, list_type, title, sort_type)
 			classN = self.string_Class,
 			objectN = self.string_Object,
 			itemN = item,
-			info = Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(self.string_Classname),
+			info = T{302535920000904--[["<right_click> to copy <color ChoGGi_yellow><str></color> to clipboard."]],
+				str = self.string_Classname,
+			},
 		}
 		local hint_bottom = T(302535920000589--[[<left_click> Examine <right_click> Clipboard]])
 
@@ -4010,7 +4050,9 @@ function ChoGGi_DlgExamine:SetObj(startup)
 				classN = self.string_Class,
 				objectN = self.string_Object,
 				class = obj.class,
-				info = Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(self.string_Classname),
+				info = T{302535920000904--[["<right_click> to copy <color ChoGGi_yellow><str></color> to clipboard."]],
+					str = self.string_Classname,
+				},
 			}
 
 			table.insert(self.parents_menu_popup, 2, {
@@ -4030,7 +4072,9 @@ function ChoGGi_DlgExamine:SetObj(startup)
 					classN = self.string_Class,
 					objectN = self.string_Object,
 					template = template_name,
-					info = Translate(302535920000904--[[<right_click> to copy <yellow>%s</yellow> to clipboard.]]):format(template_name),
+					info = T{302535920000904--[["<right_click> to copy <color ChoGGi_yellow><str></color> to clipboard."]],
+						str = template_name,
+					}
 				}
 
 				table.insert(self.parents_menu_popup, 3, {

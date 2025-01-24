@@ -173,8 +173,9 @@ function ChoGGi_VLI_MapInfoDlg:Init(parent, context)
 		Dock = "left",
 		Text = T(10123--[[Search]]),
 		Background = g_Classes.ChoGGi_XButton.bg_green,
-		RolloverText = Translate(302535920001303--[[Search for text within %s.
-Leave blank to skip search box.]]):format(Translate(self.title)),
+		RolloverText = T{302535920001303--[["Search for text within <color ChoGGi_green><str></color>."]],
+			str = Translate(self.title),
+		} .. T(0000, "\nLeave blank to skip search box."),
 		Margins = box(6, 0, 0, 0),
 		OnPress = self.FindText,
 	}, self.idTopArea)

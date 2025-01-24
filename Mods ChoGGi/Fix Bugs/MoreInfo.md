@@ -20,6 +20,7 @@ Added missing images for certain Cargo listings.
 Gale crater name doesn't show up for 4S138E, 5S138E.
 
 Storybits:
+Asylum will never start.
 Blank Slate doesn't remove any applicants.
 Fhtagn! Fhtagn! Option 2 makes all colonists cowards instead of only religious ones.
 Dust Sickness: Deaths doesn't apply morale penalty.
@@ -53,6 +54,7 @@ Water Reclamation Spire and B&B upgrade tech caused issues.
 
 **Mod bug fixes**:
 ```
+Log spam from borked colonist (possibly from a mod, could just be B&B again).
 Fix for whatever odd thing Mars Underground mod is doing with presets.
 Log spam from a modded trait without an id.
 Black screen in second new game window when using a Modded sponsor and missing DLC.

@@ -5,6 +5,9 @@
 - ExportMapDataToCSV won't show planetary anomalies if you have BB DLC without my Fix Bugs mod.
 - Seem to have gotten rid of anymore [C](-1) showing up for RetName.
 
+### Examine:
+- Added Table>context menu>Tool Bar>Clear Table: Remove all entries from this table.
+
 ## v12.4 (4 Jan 2025)
 - Added checkbox to toggle UI transparency to my dialogs.
 - Added DoSomethingQuestion(): Generic warning msg.

@@ -83,7 +83,9 @@ function ChoGGi_DlgObjectEditor:Init(parent, context)
 		Id = "idAddNew",
 		Text = T(302535920001356--[[New]]),
 		Dock = "left",
-		RolloverText = Translate(302535920000041--[[Add new entry to %s (Defaults to name/value of selected item).]]):format(self.obj_name),
+		RolloverText = T{302535920000041--[["Add new entry to <color ChoGGi_green><str></color> (Defaults to name/value of selected item)."]],
+			str = self.obj_name,
+		},
 		OnPress = self.idAddNew_OnPress,
 	}, self.idButtonArea)
 
@@ -297,7 +299,9 @@ function ChoGGi_DlgObjectEditor:UpdateListContent()
 	else
 		-- let user know
 		self.idList:Clear()
-		local err = Translate(302535920000090--[[Error opening: %s]]):format(self.obj_name)
+		local err = T{302535920000090--[["Error opening: <color ChoGGi_red><obj_name></color>"]],
+			obj_name = self.obj_name,
+		}
 		local listitem = self.idList:CreateTextItem(err)
 		listitem.RolloverText = err
 	end

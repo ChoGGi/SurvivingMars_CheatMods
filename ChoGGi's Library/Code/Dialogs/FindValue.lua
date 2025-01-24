@@ -46,7 +46,9 @@ function ChoGGi_DlgFindValue:Init(parent, context)
 		Id = "idEdit",
 		Dock = "left",
 		MinWidth = 550,
-		RolloverText = Translate(302535920001303--[[Search for text within %s.]]):format(self.obj_name),
+		RolloverText = T{302535920001303--[["Search for text within <color ChoGGi_green><str></color>."]],
+			str = self.obj_name,
+		},
 		Hint = Translate(302535920001306--[[Enter text to find]]),
 		OnKbdKeyDown = self.Input_OnKbdKeyDown,
 	}, self.idTextArea)
@@ -71,7 +73,9 @@ function ChoGGi_DlgFindValue:Init(parent, context)
 		Dock = "left",
 		Text = T(302535920001696--[[Search]]),
 		Background = g_Classes.ChoGGi_XButton.bg_green,
-		RolloverText = Translate(302535920001303--[[Search for text within %s.]]):format(self.obj_name),
+		RolloverText = T{302535920001303--[["Search for text within <color ChoGGi_green><str></color>."]],
+			str = self.obj_name,
+		},
 		Margins = box(10, 0, 0, 0),
 		OnPress = self.FindText,
 	}, self.idButtonContainer)

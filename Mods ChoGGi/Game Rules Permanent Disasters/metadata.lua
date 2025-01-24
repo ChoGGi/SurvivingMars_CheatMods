@@ -44,7 +44,7 @@ Unbreakable Cables/Pipes: Cables/Pipes won't break (same as breakthrough tech, b
 Allow MOXIEs: You can build/use MOXIEs.
 MOXIE Performance: Set the negative performance of MOXIEs during dust storms (higher = worse for you).
 Electrostatic Storm: Chance of an electrostatic storm (lightning strikes).
-Great Storm: Chance of a great storm (turbines spin faster?).
+Great Storm: Chance of a great storm (turbines spin faster).
 Electrostatic gets chosen before Great, so if it's high enough than Great won't happen.
 
 [b]'74 Super Outbreak[/b]: Have at least one dust devil on the map at all times.

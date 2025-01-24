@@ -88,7 +88,7 @@ do !Skipped Line! [[Multiple locations/mods: ]] !Skipped Line!
 302535920000491, "Examine Object"
 302535920001073, "Console"
 302535920000242, "<color ChoGGi_red>%s</color> is blocked by SM function blacklist; use ECM HelperMod to bypass or tell the devs that ECM is awesome and it should have Über access ;)"
-302535920001303, "Search for text within <color ChoGGi_green>%s</color>."
+302535920001303, "Search for text within <color ChoGGi_green><str></color>."
 302535920000306, "Everything"
 302535920000855, "Last chance before deletion!"
 302535920000800, "MaleOrFemale"
@@ -105,7 +105,7 @@ do !Skipped Line! [[Multiple locations/mods: ]] !Skipped Line!
 302535920000042, "City"
 302535920000074, "Cancel without changing anything."
 302535920000084, "Auto-Refresh"
-302535920000090, "Error opening: <color ChoGGi_red>%s</color>"
+302535920000090, "Error opening: <color ChoGGi_red><obj_name></color>"
 302535920000106, "Current"
 302535920000111, "Cover the entire map from the centre."
 302535920000112, "Cover the entire map from a corner."
@@ -178,7 +178,7 @@ do !Skipped Line! [[FindValue.lua]] !Skipped Line!
 302535920000854, "Results Found"
 end !Skipped Line!
 do !Skipped Line! [[ImageViewer.lua]] !Skipped Line!
-302535920000219, "Export viewed image to <color ChoGGi_green>%s</color>."
+302535920000219, "Export viewed image to <color ChoGGi_green><path></color>."
 302535920000109, "Invalid Image"
 end !Skipped Line!
 do !Skipped Line! [[InfoPaneCheats.lua]] !Skipped Line!
@@ -330,7 +330,7 @@ See the bottom of Gameplay>Controls if you've changed the key binding."
 302535920000013, "This shouldn't happen... Well dang something's bork bork bork."
 302535920000039, "Dumped"
 302535920000003, "Can't dump nothing"
-302535920000041, "Add new entry to <color ChoGGi_green>%s</color> (Defaults to name/value of selected item)."
+302535920000041, "Add new entry to <color ChoGGi_green><str></color> (Defaults to name/value of selected item)."
 302535920000165, "or"
 302535920000166, "BROKEN FUNCTION"
 302535920000353, "Scripts"
@@ -548,7 +548,7 @@ do do !Skipped Line! [[Examine.lua]] !Skipped Line!
 302535920000841, "If examining a table then exec this code for each entry.
 If it's an associative table then <color ChoGGi_yellow>o = value</color>."
 302535920000589, "<left_click> Examine <right_click> Clipboard"
-302535920000904, "<right_click> to copy <color ChoGGi_yellow>%s</color> to clipboard."
+302535920000904, "<right_click> to copy <color ChoGGi_yellow><str></color> to clipboard."
 302535920000422, "Hex Shape"
 302535920000417, "Null reference"
 302535920000628, "Close the examine dialog
@@ -560,13 +560,13 @@ Hold <color ChoGGi_green>Ctrl</color> to close <color ChoGGi_red>all</color> ECM
 302535920001622, "Particle"
 302535920001620, "Click to toggle between Text or Object (View/Dump).
 <color ChoGGi_yellow>Text</color> is what you see, <color ChoGGi_yellow>Object</color> is the text created from ValueToLuaCode(obj)."
-302535920000046, "Dumps Text/Object to <color ChoGGi_yellow>%slogs\DumpedExamine.lua</color>."
-302535920000047, "View Text/Object, and optionally dumps text to <color ChoGGi_yellow>%slogs\DumpedExamine.lua</color>."
+302535920000046, "Dumps Text/Object to <color ChoGGi_yellow><path>logs\DumpedExamine.lua</color>."
+302535920000047, "View Text/Object, and optionally dumps text to <color ChoGGi_yellow><path>logs\DumpedExamine.lua</color>."
 302535920000048, "View"
 302535920001027, "Object can take time on something like the ""Building"" class object."
 302535920001573, "Spot Id"
 302535920001570, "Fallback"
-302535920001563, "Set amount to <color ChoGGi_green>%s</color>."
+302535920001563, "Set amount to <color ChoGGi_green><new_amt></color>."
 302535920001564, "Double Number"
 302535920001565, "Halve Number"
 302535920001566, "Copy <color ChoGGi_green>ValueToLuaCode(value)</color> to clipboard."
@@ -598,12 +598,12 @@ Hold <color ChoGGi_green>Ctrl</color> to close <color ChoGGi_red>all</color> ECM
 302535920001554, "If enabled lines will hide behind occluding walls (not glass)."
 302535920001549, "View BBox"
 302535920001550, "Toggle viewing BBox."
-302535920001545, "Going to <color ChoGGi_green>%s</color>"
+302535920001545, "Going to <color ChoGGi_green><loc></color>"
 302535920001544, "Attached to"
 302535920001535, "Set Value"
-302535920001539, "Change the value of <color ChoGGi_green>%s</color>."
-302535920001540, "Show context menu for <color ChoGGi_green>%s</color>."
-302535920001536, "Remove the ""<color ChoGGi_green>%s</color>"" key from <color ChoGGi_yellow>%s</color>."
+302535920001539, "Change the value of <color ChoGGi_green><obj_name></color>."
+302535920001540, "Show context menu for <color ChoGGi_green><menu></color>."
+302535920001536, "Remove the ""<color ChoGGi_green><key_name></color>"" key from <color ChoGGi_yellow><table_name></color>."
 302535920001537, "Close Menu"
 302535920001538, "Close this menu."
 302535920001530, "Various object tools to use."
@@ -616,8 +616,10 @@ Hold <color ChoGGi_green>Ctrl</color> to close <color ChoGGi_red>all</color> ECM
 302535920001519, "View Source"
 302535920001520, "Opens source code in text viewer (if it exists):
 Mod code works as is, HG github game code needs to be placed at:
-<color ChoGGi_green>%sSource</color>
-Example: <color ChoGGi_yellow>Source/Lua/_const.lua</color>"
+<color ChoGGi_green><path>Source</color>
+Example: <color ChoGGi_yellow>Source/Lua/_const.lua</color>
+
+Decompiled code won't scroll correctly as the line numbers are different."
 302535920000264, "Defaults to obj:GetObjectBBox() if it can't find a func."
 302535920001514, "Toggle visibility of an input box for executing code."
 302535920001515, "Press <color ChoGGi_green><enter></color> to execute code.
@@ -693,7 +695,7 @@ do !Skipped Line! [[ExecCode.lua]] !Skipped Line!
 Updates external file when you type in editor (only updates text when you press Read File).
 Press again to toggle updating."
 302535920001435, "Read File"
-302535920001436, "Update editor text with text from <color ChoGGi_green>%stempedit.lua</color>."
+302535920001436, "Update editor text with text from <color ChoGGi_green><path>tempedit.lua</color>."
 302535920000040, "Exec Code"
 302535920000072, "Paste or type code to be executed here, <color ChoGGi_green>o</color> is the examined object (ignored when opened from Console).
 Press Ctrl-Enter or Shift-Enter to execute code."

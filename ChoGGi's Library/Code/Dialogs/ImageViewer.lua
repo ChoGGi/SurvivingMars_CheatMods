@@ -141,7 +141,9 @@ function ChoGGi_DlgImageViewer:BuildImageMenuPopup()
 	images[#images+1] = {is_spacer = true}
 	images[#images+1] = {
 		name = T(302535920001449--[[Export]]),
-		hint = Translate(302535920000219--[[Export viewed image to %s.]]):format(ConvertToOSPath("AppData")),
+		hint = T{302535920000219--[["Export viewed image to <color ChoGGi_green><path></color>."]],
+			path = ConvertToOSPath("AppData"),
+		},
 		clicked = function()
 			self:ExportImage()
 		end,

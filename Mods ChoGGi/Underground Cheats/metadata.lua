@@ -16,8 +16,14 @@ return PlaceObj("ModDef", {
 	"TagGameplay", true,
 	"description", [[
 Change radius of light tripods, support struts, skip sanity loss.
-Pin rockets when changing to underground map (might have to toggle maps twice).
-Press Ctrl when using drones to clear cave-in rubble to toggle clearing all (added status text to rubble for drones).
+Clear rubble button on cave-ins/collapsed tunnels has an option to toggle all (also shows toggle status).
+
+Mod Options:
+Light Tripod Radius: How far the light reveals darkness.
+Support Strut Radius: How far the strut blocks cave-ins.
+Pin Rockets: When changing to underground, pin any rockets from surface (might have to toggle maps twice).
+No Sanity Loss: Colonists don't lose sanity when there's no light.
+
 
 Mod options to pick underground wonders (only applies to new games):
 If you only pick one then the other will be random.

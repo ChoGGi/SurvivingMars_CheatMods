@@ -1,3 +1,7 @@
+v0.5
+Added icons for anomalies.
+Added regular Anomaly.
+
 v0.4
 Always be the same order.
 

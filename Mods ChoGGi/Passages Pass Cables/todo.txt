@@ -1,1 +1,1 @@
-add option for life support to pbuildings
+add option for life support to buildings

@@ -1,7 +1,5 @@
 -- See LICENSE for terms
 
--- See LICENSE for terms
-
 return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "iddqd",

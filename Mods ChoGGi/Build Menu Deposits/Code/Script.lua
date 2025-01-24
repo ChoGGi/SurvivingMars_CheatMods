@@ -100,11 +100,11 @@ local deposit_lookup = {
 
 	ChoGGi_EffectDepositMarker_Comfort = "BeautyEffectDeposit",
 	ChoGGi_EffectDepositMarker_Morale = "MoraleEffectDeposit",
-	ChoGGi_EffectDepositMarker_ResearchE = "ResearchEffectDeposit",
+	ChoGGi_EffectDepositMarker_ResearchEff = "ResearchEffectDeposit",
 
 	ChoGGi_SubsurfaceAnomalyMarker_Breakthrough = "breakthrough",
 	ChoGGi_SubsurfaceAnomalyMarker_Tech = "unlock",
-	ChoGGi_SubsurfaceAnomalyMarker_ResearchA = "complete",
+	ChoGGi_SubsurfaceAnomalyMarker_ResearchAnom = "complete",
 	ChoGGi_SubsurfaceAnomalyMarker_Resources = "resources",
 }
 
@@ -202,17 +202,17 @@ ChoGGi_SubsurfaceAnomalyMarker.GameInit = GameInit_Subsurface
 local effect_icons = {
 	_Morale = "UI/Icons/Buildings/dome.tga",
 	_Comfort = "UI/Icons/Buildings/dome.tga",
-	_ResearchE = "UI/Icons/Buildings/research.tga",
+	_ResearchEff = "UI/Icons/Buildings/research.tga",
 }
 local lookup_names = {
 	_Breakthrough = T(1--[[Unlock Breakthrough]]),
 	_Tech = T(2--[[Unlock Tech]]),
-	_ResearchA = T(3--[[Grant Research]]),
+	_ResearchAnom = T(3--[[Grant Research]]),
 	_Resources = T(8693--[[Grant Resources]]),
 	_Comfort = T(4295--[[Comfort]]),
 	_Morale = T(4297--[[Morale]]),
 	-- Easier to add this one then figure out some way to just change the other two
-	_ResearchE = T(11461--[[Research Site]]),
+	_ResearchEff = T(11461--[[Research Site]]),
 }
 
 --~ local function AddTemplate(obj, class, deposit_type, info, build_pos)
@@ -220,7 +220,7 @@ local function AddTemplate(obj, params)
 
 	-- I mean... it's kinda ugly but
 	local description = obj.description
-	local display_icon = obj.display_icon
+	local display_icon = params.display_icon or obj.display_icon
 	local display_name = obj.display_name
 
 	if params.info == "effect_info" then
@@ -238,7 +238,7 @@ local function AddTemplate(obj, params)
 
 		"display_name", display_name,
 		"display_name_pl", display_name,
-		"description", description,
+		"description", description or SubsurfaceAnomaly:GetDescription(),
 		"display_icon", display_icon,
 		"disabled_entity", obj.disabled_entity,
 		"entity", obj.entity,
@@ -296,29 +296,39 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	-- Anomaly
+	AddTemplate(SubsurfaceAnomaly, {
+		class = "ChoGGi_SubsurfaceAnomalyMarker",
+		deposit_type = "",
+		build_pos = 6,
+		display_icon = "UI/Icons/Anomaly_Custom.tga",
+	})
 	AddTemplate(SubsurfaceAnomaly_complete, {
 		class = "ChoGGi_SubsurfaceAnomalyMarker",
-		deposit_type = "_ResearchA",
+		deposit_type = "_ResearchAnom",
 		info = "anomaly_info",
-		build_pos = 6,
+		build_pos = 7,
+		display_icon = "UI/Icons/Anomaly_Research.tga",
 	})
 	AddTemplate(SubsurfaceAnomaly, {
 		class = "ChoGGi_SubsurfaceAnomalyMarker",
 		deposit_type = "_Resources",
 		info = "anomaly_info",
-		build_pos = 7,
+		build_pos = 8,
+		display_icon = "UI/Icons/Anomaly_Event.tga",
 	})
 	AddTemplate(SubsurfaceAnomaly_unlock, {
 		class = "ChoGGi_SubsurfaceAnomalyMarker",
 		deposit_type = "_Tech",
 		info = "anomaly_info",
-		build_pos = 8,
+		build_pos = 9,
+		display_icon = "UI/Icons/Anomaly_Tech.tga",
 	})
 	AddTemplate(SubsurfaceAnomaly_breakthrough, {
 		class = "ChoGGi_SubsurfaceAnomalyMarker",
 		deposit_type = "_Breakthrough",
 		info = "anomaly_info",
-		build_pos = 9,
+		build_pos = 10,
+		display_icon = "UI/Icons/Anomaly_Breakthrough.tga",
 	})
 
 	-- Effect
@@ -326,19 +336,53 @@ function OnMsg.ClassesPostprocess()
 		class = "ChoGGi_EffectDepositMarker",
 		deposit_type = "_Comfort",
 		info = "effect_info",
-		build_pos = 10,
+		build_pos = 11,
 	})
 	AddTemplate(MoraleEffectDeposit, {
 		class = "ChoGGi_EffectDepositMarker",
 		deposit_type = "_Morale",
 		info = "effect_info",
-		build_pos = 11,
+		build_pos = 12,
 	})
 	AddTemplate(ResearchEffectDeposit, {
 		class = "ChoGGi_EffectDepositMarker",
-		deposit_type = "_ResearchE",
+		deposit_type = "_ResearchEff",
 		info = "effect_info",
-		build_pos = 12,
+		build_pos = 13,
 	})
 
+end
+
+-- Fix single image icons
+local lookup_icons = {
+	["UI/Icons/Anomaly_Custom.tga"] = true,
+	["UI/Icons/Anomaly_Research.tga"] = true,
+	["UI/Icons/Anomaly_Event.tga"] = true,
+	["UI/Icons/Anomaly_Tech.tga"] = true,
+	["UI/Icons/Anomaly_Breakthrough.tga"] = true,
+}
+
+local ChoOrig_XBuildMenu_GetItems = XBuildMenu.GetItems
+function XBuildMenu.GetItems(...)
+	if not mod_EnableMod then
+		return ChoOrig_XBuildMenu_GetItems(...)
+	end
+
+	local buttons = ChoOrig_XBuildMenu_GetItems(...)
+
+	for i = 1, #buttons do
+		local button = buttons[i]
+		if lookup_icons[button.icon] then
+			button.idButton:SetColumns(1)
+			button.idButton.RolloverZoom = 1100
+			button.idButton.SetRollover = function(this, ...)
+--~ 				button:SetRollover(...)
+				XWindow.OnSetRollover(button, true)
+				button.idButton.idShine:SetRollover(...)
+--~ 				XTextButton.SetRollover(this, ...)
+			end
+		end
+	end
+--~ 	ex(buttons)
+	return buttons
 end
