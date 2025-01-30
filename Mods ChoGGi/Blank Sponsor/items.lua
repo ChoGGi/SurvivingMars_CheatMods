@@ -53,6 +53,7 @@ This uses goals from existing sponsors, so if you have modded ones with weird go
 				Kuni]]),
 		initial_rockets = 1,
 		initial_techs_unlocked = 1,
+		pod_class = "SupplyPod",
 	}),
 
 	PlaceObj("ModItemCommanderProfilePreset", {

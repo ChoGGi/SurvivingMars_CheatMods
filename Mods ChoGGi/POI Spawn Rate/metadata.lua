@@ -17,5 +17,8 @@ return PlaceObj("ModDef", {
 	"TagOther", true,
 	"description", [[
 Change the time planetary anomalies spawn (in Sols).
+
+
+Point of Interest, Planetary Missions (search keywords)
 ]],
 })

@@ -1,3 +1,6 @@
+v1.0
+It probably didn't work correctly if dropped underground/asteroid.
+
 v0.9
 Picard update.
 

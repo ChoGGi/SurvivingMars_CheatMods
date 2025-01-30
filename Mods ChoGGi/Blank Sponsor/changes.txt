@@ -1,2 +1,5 @@
+v0.3
+Forgot about pods...
+
 v0.2
 Turn on random mission goals for any sponsor.

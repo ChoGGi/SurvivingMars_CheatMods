@@ -1,6 +1,9 @@
 ## ECM Changelog
 
 ## v19.5 (Unreleased)
+### Changed:
+- Debug>Show Console is a menu item instead of just a shortcut.
+
 ### Fixed:
 - A few more notifications showing table: ****.
 

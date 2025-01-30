@@ -559,17 +559,19 @@ function ChoGGi_Funcs.Common.SetParticles(obj)
 	}
 end
 
--- toggles console when it has focus (otherwise focuses on the console)
-function ChoGGi_Funcs.Common.ToggleConsole(show)
+-- Shows console when it's not visible (otherwise focuses on the console)
+function ChoGGi_Funcs.Common.ShowConsole(show)
 	local dlg = dlgConsole
 	local visible = dlg and dlg:GetVisible()
 
 	if IsKindOf(show, "XAction") then
 		show = not visible
 		if dlg and visible then
-			return dlg.idEdit:SetFocus()
+			dlg.idEdit:SetFocus()
+			return
 		end
 	end
+
 	ShowConsole(show or not visible)
 	-- ShowConsole can reset the dlgConsole ref
 	dlgConsole.idEdit:SetFocus()

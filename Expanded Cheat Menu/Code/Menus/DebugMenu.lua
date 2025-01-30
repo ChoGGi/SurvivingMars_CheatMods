@@ -62,6 +62,22 @@ Actions[c] = {ActionName = T(302535920000069--[[Examine]]) .. " " .. T(302535920
 	ActionBindable = true,
 }
 
+c = c + 1
+Actions[c] = {ActionName = T(302535920001347--[[Show Console]]),
+	ActionMenubar = "ECM.Debug",
+	ActionId = ".Show Console",
+	ActionIcon = "CommonAssets/UI/Menu/DarkSideOfTheMoon.tga",
+	RolloverText = function()
+		return T{302535920001745--[[Show the console (you can also press <sec_key>).]],
+			sec_key = ChoGGi_Funcs.Common.GetShortcut(".Debug.Show Console", 2),
+		}
+	end,
+	OnAction = ChoGGi_Funcs.Common.ShowConsole,
+	ActionShortcut = "~",
+	ActionShortcut2 = "Enter",
+	ActionBindable = true,
+}
+
 -- menu
 c = c + 1
 Actions[c] = {ActionName = T(302535920000035--[[Grids]]),

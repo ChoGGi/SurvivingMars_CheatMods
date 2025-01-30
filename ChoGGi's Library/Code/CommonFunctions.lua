@@ -5546,7 +5546,8 @@ function ChoGGi_Funcs.Common.RemoveAttachAboveHeightLimit(obj)
 	end
 end
 
-function ChoGGi_Funcs.Common.GetShortcut(id)
+-- idx can be 1, 2, or 3 (shortcut, shortcut2, gamepad)
+function ChoGGi_Funcs.Common.GetShortcut(id, idx)
 	if not id then
 		return ""
 	end
@@ -5555,7 +5556,7 @@ function ChoGGi_Funcs.Common.GetShortcut(id)
 
 	local keys = GetShortcuts(id)
 	if keys then
-		return keys[1]
+		return keys[idx or 1]
 	end
 	return ""
 end

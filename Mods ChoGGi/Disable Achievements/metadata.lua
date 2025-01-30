@@ -13,7 +13,7 @@ return PlaceObj("ModDef", {
 	},
 	"image", "Preview.png",
 	"description", [[
-Stops you from being able to unlock any Steam achievements.
+Stops you from being able to unlock any achievements.
 This isn't permanent, you can disable this anytime to have them working again.
 
 

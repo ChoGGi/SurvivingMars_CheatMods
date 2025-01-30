@@ -1,5 +1,26 @@
 -- See LICENSE for terms
 
+-- the landing func can be spammed a bit if you want to (passages), so it won't hurt to local all the funcs called for a slight bit of speed up
+local AsyncRand = AsyncRand
+local atan = atan
+local cos = cos
+local CreateGameTimeThread = CreateGameTimeThread
+local GetDomeAtHex = GetDomeAtHex
+local GetGameMap = GetGameMap
+local IsValid = IsValid
+local Max = Max
+local MulDivRound = MulDivRound
+local PlaceObjectIn = PlaceObjectIn
+local PlaceParticles = PlaceParticles
+local PlayFX = PlayFX
+local point = point
+local SetLen = SetLen
+local SetRollPitchYaw = SetRollPitchYaw
+local sin = sin
+local Sleep = Sleep
+local WorldToHex = WorldToHex
+
+local mod_EnableMod
 local mod_PrefabOnly
 local mod_Outside
 local mod_Inside
@@ -13,6 +34,7 @@ local function ModOptions(id)
 	end
 
 	local options = CurrentModOptions
+	mod_EnableMod = options:GetProperty("EnableMod")
 	mod_PrefabOnly = options:GetProperty("PrefabOnly")
 	mod_Outside = options:GetProperty("Outside")
 	mod_Inside = options:GetProperty("Inside")
@@ -24,21 +46,26 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
-local models
+local models = {
+	"SupplyPod",
+	"Hex1_Placeholder",
+	"SupplyPod",
+	"SupplyPod",
+}
 if g_AvailableDlc.gagarin then
-	models = {"SupplyPod", "Hex1_Placeholder", "ArcPod", "DropPod", }
-else
-	models = {"SupplyPod", "Hex1_Placeholder", "SupplyPod", "SupplyPod", }
+	models[3] = "ArcPod"
+	models[4] = "DropPod"
 end
 
-local Sleep = Sleep
+-- Also called from YamatoHasshin()
+local ChoOrig_ConstructionSite_GameInit = ConstructionSite.GameInit
 
+local delta = const.DayDuration / 20
 local function DecalRemoval(land_decal)
 	if not land_decal then
 		return
 	end
 
-	local delta = const.DayDuration / 20
 	for opacity = 100, 0, -5 do
 		Sleep(delta)
 		if not IsValid(land_decal) then
@@ -49,10 +76,9 @@ local function DecalRemoval(land_decal)
 	land_decal:delete()
 end
 
-local ChoOrig_ConstructionSite_GameInit = ConstructionSite.GameInit
-
 -- the rocket drop func (everything in one basket)
-local function YamatoHasshin(site)
+local guim = guim
+local function YamatoHasshin(site, ...)
 
 	-- stick the site underground by it's height then make it rise from the dead
 	local site_height = point(0, 0, site:GetObjectBBox():sizez())
@@ -74,7 +100,8 @@ local function YamatoHasshin(site)
 	local sr = SupplyRocket
 
 	-- pretty much a copy n paste of AttackRover:Spawn()... okay not anymore, but I swear it was
-	CreateGameTimeThread(function()
+	CreateGameTimeThread(function(...)
+		local gamemap = GetGameMap(site)
 
 		-- get dir and angle of container
 		local dir = point(city:Random(-4096, 4096), city:Random(-4096, 4096))
@@ -88,7 +115,7 @@ local function YamatoHasshin(site)
 		end
 
 		local starting_pos = spawn_pos + dir
-		spawn_pos = GetGameMap(site).terrain:GetIntersection(starting_pos, spawn_pos)
+		spawn_pos = gamemap.terrain:GetIntersection(starting_pos, spawn_pos)
 		local hover_pos = spawn_pos + site_height
 
 		local pod = InvisibleObject:new()
@@ -136,8 +163,7 @@ local function YamatoHasshin(site)
 		Sleep(quarter*3)
 		PlayFX("RocketLand", "hit-ground", pod, false, spawn_pos)
 		if mod_DomeCrack then
-			local object_hex_grid = GetObjectHexGrid(city)
-			local dome = GetDomeAtHex(object_hex_grid, WorldToHex(spawn_pos))
+			local dome = GetDomeAtHex(gamemap.object_hex_grid, WorldToHex(spawn_pos))
 			if dome then
 				local bm = BaseMeteor
 				local _, dome_pt, dome_normal = bm.HitsDome(dome, spawn_pos)
@@ -146,7 +172,7 @@ local function YamatoHasshin(site)
 		end
 		Sleep(quarter)
 
-		local land_decal = PlaceObjectIn(ar.land_decal_name, MainMapID)
+		local land_decal = PlaceObjectIn(ar.land_decal_name, city.map_id)
 		land_decal:SetPos(spawn_pos)
 		land_decal:SetAngle(AsyncRand((360*60)+1))
 		land_decal:SetScale(40 + AsyncRand(50))
@@ -172,7 +198,7 @@ local function YamatoHasshin(site)
 			site:SetPos(spawn_pos, 3000)
 
 			-- fire off the usual stuff so the drones make with the building
-			ChoOrig_ConstructionSite_GameInit(site)
+			ChoOrig_ConstructionSite_GameInit(site, ...)
 		end
 		PlayFX("ShuttleUnload", "end", pod, false, spawn_pos)
 
@@ -193,10 +219,14 @@ local function YamatoHasshin(site)
 		-- bye bye pod
 		pod:delete()
 
-	end)
+	end, ...)
 end
 
-function ConstructionSite:GameInit()
+function ConstructionSite:GameInit(...)
+	if not mod_EnableMod then
+		return ChoOrig_ConstructionSite_GameInit(self, ...)
+	end
+
 	-- Is inner or outer building
 	local outside, inside
 	for i = 1, 3 do
@@ -221,11 +251,11 @@ function ConstructionSite:GameInit()
 
 	-- we always allow prefabs (that's the mod...), but check if inside/outside are allowed
 	if self.prefab and (outside and mod_Outside or inside and mod_Inside) then
-		YamatoHasshin(self)
+		YamatoHasshin(self, ...)
 	-- same but if prefab only is disabled
 	elseif not grid and not mod_PrefabOnly and (outside and mod_Outside or inside and mod_Inside) then
-		YamatoHasshin(self)
+		YamatoHasshin(self, ...)
 	else
-		ChoOrig_ConstructionSite_GameInit(self)
+		ChoOrig_ConstructionSite_GameInit(self, ...)
 	end
 end

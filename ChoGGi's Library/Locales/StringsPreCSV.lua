@@ -3,7 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
-302535920001745, ""
 302535920001746, ""
 302535920001747, ""
 302535920001748, ""
@@ -1287,6 +1286,8 @@ Not permanent."
 302535920000448, "I'm afraid it could be 9/11 times 1,000."
 end !Skipped Line!
 do do !Skipped Line! [[DebugMenu.lua" "DebugFunc.lua]] !Skipped Line!
+302535920001347, "Show Console"
+302535920001745, "Show the console (you can also press <sec_key>)."
 302535920001743, "Toggle Story Bit Log"
 302535920001744, "Show Storybit info in console log, and extra info in g_StoryBitsLog."
 302535920001735, "Show Console Errors"
@@ -2080,7 +2081,6 @@ Restart to set disabled."
 end end !Skipped Line!
 do !Skipped Line! [[Keys.lua]] !Skipped Line!
 302535920001346, "Random Colour"
-302535920001347, "Show Console"
 302535920001348, "Restart"
 302535920001350, "Place Last Selected/Constructed Building"
 end !Skipped Line!

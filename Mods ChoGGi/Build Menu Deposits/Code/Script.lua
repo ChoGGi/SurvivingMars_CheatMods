@@ -178,7 +178,7 @@ if g_AvailableDlc.picard then
 	storable_resources[c] = "PreciousMinerals"
 end
 
-local function GameInit_Subsurface(self)
+local function GameInit_Anomaly(self)
 	-- Change to correct "resource"
 	self.tech_action = deposit_lookup[self.fx_actor_class]
 
@@ -197,7 +197,7 @@ local function GameInit_Subsurface(self)
 	-- No need for the marker anymore
 	self:delete()
 end
-ChoGGi_SubsurfaceAnomalyMarker.GameInit = GameInit_Subsurface
+ChoGGi_SubsurfaceAnomalyMarker.GameInit = GameInit_Anomaly
 
 local effect_icons = {
 	_Morale = "UI/Icons/Buildings/dome.tga",
@@ -248,15 +248,14 @@ end
 
 function OnMsg.ClassesPostprocess()
 	-- Add build cat
-	local bms = BuildMenuSubcategories
-	if not bms.ChoGGi_Deposits then
+	if not BuildMenuSubcategories.ChoGGi_Deposits then
 		PlaceObj('BuildMenuSubcategory', {
 			build_pos = 9,
 			category = "Storages",
 			description = T(0000, "Free Resources"),
 			display_name = T(0000, "Deposits"),
 			group = "Default",
-			icon = "UI/Icons/Buildings/depots.tga",
+			icon = "UI/Icons/Buildings/res_all.tga",
 			category_name = "ChoGGi_Deposits",
 			id = "ChoGGi_Deposits",
 		})

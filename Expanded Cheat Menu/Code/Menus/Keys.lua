@@ -34,14 +34,6 @@ Actions[c] = {ActionName = Translate(174--[[Color Modifier]]) .. " " .. T(302535
 }
 
 c = c + 1
-Actions[c] = {ActionName = T(302535920001347--[[Show Console]]),
-	ActionId = ".Keys.ShowConsole",
-	OnAction = ChoGGi_Funcs.Common.ToggleConsole,
-	ActionShortcut = "Enter",
-	ActionShortcut2 = "~",
-	ActionBindable = true,
-}
-c = c + 1
 Actions[c] = {ActionName = T(302535920001348--[[Restart]]),
 	ActionId = ".Keys.ConsoleRestart",
 	OnAction = ChoGGi_Funcs.Menus.ConsoleRestart,

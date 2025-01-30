@@ -15,5 +15,7 @@ return PlaceObj("ModDef", {
 	"TagInterface", true,
 	"description", [[
 When viewing the list of planetary anomalies; adds a tooltip showing the details you get when you click one.
+
+Point of Interest, Planetary Missions (search keywords)
 ]],
 })

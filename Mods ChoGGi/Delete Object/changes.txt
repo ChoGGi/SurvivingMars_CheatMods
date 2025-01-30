@@ -1,1 +1,2 @@
 v0.2
+Works on all selectable objects.

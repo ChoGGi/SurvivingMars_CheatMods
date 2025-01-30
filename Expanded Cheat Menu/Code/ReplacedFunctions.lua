@@ -959,7 +959,7 @@ function OnMsg.ClassesPostprocess()
 		end
 	end -- do
 
-	-- ChoGGi_Funcs.Common.ToggleConsole(show)
+	-- ChoGGi_Funcs.Common.ShowConsole(show)
 
 	-- tweak console when it's "opened"
 	local ChoOrig_Console_Show = Console.Show

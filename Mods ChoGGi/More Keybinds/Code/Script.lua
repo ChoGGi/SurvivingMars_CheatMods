@@ -153,7 +153,7 @@ Actions[#Actions+1] = {ActionName = T(302535920000491, "Examine Object"),
 --~ 			-- off centre of central monitor
 --~ 			local width = (terminal.desktop.measure_width or 1920) - (dlg.dialog_width_scaled + 100)
 --~ 			dlg:SetPos(point(width, 100))
---~ 			ChoGGi_Funcs.Common.ToggleConsole(true)
+--~ 			ChoGGi_Funcs.Common.ShowConsole(true)
 		end
 	end,
 	ActionBindable = true,
