@@ -1,2 +1,5 @@
+v0.3
+Bumped name limit to 999.
+
 v0.2
 Added fix for no buildings in command centre list (thanks Titule).

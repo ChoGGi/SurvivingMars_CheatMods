@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+-- Remove limit of 23
+Renamable.max_name_len = 999
+
 local RetName = ChoGGi_Funcs.Common.RetName
 
 local ChoOrig_Workplace_AddWorker = Workplace.AddWorker

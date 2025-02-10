@@ -358,13 +358,17 @@ do
  		local StoryBits = StoryBits
 		-- Just in case something changes (hah)
 		pcall(function()
-			-- No breakthrough tech reward for The Door To Summer: Let No Noble Deed first/second options (they only give regular tech)
-			-- The Satoshi Nisei option doesn't mention a breakthrough, but the second option does;
-			-- One gives a colonist and the other gives money so guessing it's supposed to give a break
+			--[[
+			No breakthrough tech reward for The Door To Summer: Let No Noble Deed
+			The Satoshi Nisei option doesn't mention a breakthrough, but the second option does;
+			One gives a genius and the other gives $750m
+			I'm guessing it's supposed to give a break for both; as you figure a genius joining your colony would do.
+			There's also obvious grammar errors in it, so I think the storybit got forgotten about...?
+			]]
 			StoryBits.TheDoorToSummer_LetNoNobleDeed[3].Effects[1].Field = "Breakthroughs"
 			StoryBits.TheDoorToSummer_LetNoNobleDeed[5].Effects[1].Field = "Breakthroughs"
 
-			-- Blank Slate doesn't remove any applicants for options 23 (fix 1/2)
+			-- Blank Slate doesn't remove any applicants for options 2 or 3 (fix 1/2)
 			local slate = StoryBits.BlankSlate[9].Effects
 			slate[#slate+1] = PlaceObj("ChoGGi_RemoveApplicants", {"Amount", 20})
 			slate = StoryBits.BlankSlate[12].Effects
@@ -830,6 +834,7 @@ do
 
 			--
 			-- Unpassable underground rocks stuck in path (not cavein rubble, but small rocks you can't select).
+			-- Since they're small rocks, might as well just make them passable
 			-- https://forum.paradoxplaza.com/forum/threads/surviving-mars-completely-blocked-tunnel-not-the-collapsed-tunnel.1541240/
 			underground_map.realm:MapForEach("map", "WasteRockObstructorSmall", function(obj)
 				obj:SetBlockPass(false)
@@ -838,10 +843,10 @@ do
 			--
 			-- Move any underground dome prefabs (underground anomaly "storybit") to underground city (instead of being stuck on surface)
 			-- https://www.reddit.com/r/SurvivingMars/comments/1013afl/no_way_to_moveuse_underground_dome_prefabs/
-			-- Rare Anomaly Analyzed: Mona Lisa
+			-- Rare Anomaly Analyzed: Mona Lisa (fix 1/2)
 			if main_city.available_prefabs.UndergroundDome then
 				local prefabs = underground_city.available_prefabs
-				-- They default to nil
+				-- available_prefabs defaults to nil (well it's an empty table otherwise, devs don't really use metatables)
 				if not prefabs.UndergroundDome then
 					prefabs.UndergroundDome = 0
 				end
@@ -1468,7 +1473,7 @@ function GetCurrentLightModel(...)
 end
 
 --
--- Storybit Blank Slate doesn't remove any applicants for options 23 (fix 2/2)
+-- Storybit Blank Slate doesn't remove any applicants for options 2 or 3 (fix 2/2)
 DefineClass.ChoGGi_RemoveApplicants = {
 	__parents = { "Effect", },
 	properties = {
@@ -1490,6 +1495,27 @@ function ChoGGi_RemoveApplicants:Execute()
 	for _ = 1, self.Amount do
 		table.remove(pool, AsyncRand(#pool)+1)
 	end
+end
+
+--
+-- Key binding certain buildings that use hide_from_build_menu won't work when pressing the key (Power Switch/Pipe Valve)
+local hidden_items = {
+	ElectricitySwitch = true,
+	LifesupportSwitch = true,
+	-- Passage/PassageRamp have a special override so they don't need to be added
+}
+local ChoOrig_UIGetBuildingPrerequisites = UIGetBuildingPrerequisites
+function UIGetBuildingPrerequisites(cat_id, template, bCreateItems, ignore_checks, ...)
+	if not mod_EnableMod then
+		return ChoOrig_UIGetBuildingPrerequisites(cat_id, template, bCreateItems, ignore_checks, ...)
+	end
+
+	if hidden_items[template.id] then
+		-- ignore_checks only checks for hide_from_build_menu and if cat_id == build_category (which it always does for how the keybinds are done)
+		return ChoOrig_UIGetBuildingPrerequisites(cat_id, template, bCreateItems, true, ...)
+	end
+
+	return ChoOrig_UIGetBuildingPrerequisites(cat_id, template, bCreateItems, ignore_checks, ...)
 end
 
 --
@@ -1532,7 +1558,7 @@ function GetEnvironment(object, ...)
 end
 
 --
--- Second fix for Rare Anomaly Analyzed: Mona Lisa
+-- Second fix for Rare Anomaly Analyzed: Mona Lisa (fix 2/2)
 -- SA_ResuppyInventory:Exec() doesn't check the map, it only uses MainCity to spawn prefabs, so I override the prefab spawner.
 -- I only cleaned up wrong map prefabs in LoadGame, this'll send them to the correct map when the storybit happens
 -- Added any underground buildings, not sure if any other get added as a prefab

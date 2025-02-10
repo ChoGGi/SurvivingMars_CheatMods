@@ -2,9 +2,10 @@
 
 ## v19.5 (Unreleased)
 ### Changed:
-- Debug>Show Console is a menu item instead of just a shortcut.
+- Debug>Show Console is a menu item instead of just a keyboard shortcut.
 
 ### Fixed:
+- I was filling Menu>Cheats>Disasters>Meteors with extra entries when using Ctrl-Shift-X.
 - A few more notifications showing table: ****.
 
 ## v19.4 (4 Jan 2025)

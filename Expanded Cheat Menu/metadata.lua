@@ -122,9 +122,10 @@ How to enable mod(s): Subscribe to the mod, then in-game open the mod manager to
 [url=https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/README.md]README[/url]
 [url=https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/Changelog.md#ecm-changelog]Changelog[/url]
 [url=https://github.com/ChoGGi/SurvivingMars_CheatMods/blob/master/Expanded%20Cheat%20Menu/CheatsList.md]Menu Cheats List[/url]
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=2835850170]Mod disabled by content restrictions[/url]
 
 Known Issues:
-The game can crash if you disable this mod or my lib mod after the game has loaded mods: You have to disable from the main menu BEFORE new game/load game.
+The game can crash if you disable this mod after the game has loaded mods: You have to disable from the main menu BEFORE new game/load game.
 
 Available From:
 https://steamcommunity.com/sharedfiles/filedetails/?id=1411157810

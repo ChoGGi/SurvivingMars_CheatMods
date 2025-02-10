@@ -1,3 +1,6 @@
+v7.9
+Key binding certain buildings won't work when pressing the key (Power Switch/Pipe Valve).
+
 v7.8
 Log spam from borked colonist.
 

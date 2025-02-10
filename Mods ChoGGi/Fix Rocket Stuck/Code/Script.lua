@@ -6,7 +6,9 @@ local Msg = Msg
 local GenerateColonistData = GenerateColonistData
 local InvalidPos = InvalidPos()
 
--- Copied from my lib mod, so it isn't a req for mod.
+local mod_EnableMod
+
+-- Copied from my lib mod, so it isn't a req for this mod (I prefer not to have my lib as a req for any fix mods).
 local function SpawnColonist_CopiedFunc(old_c, building, pos, city)
 	if not city then
 		city = MainCity
@@ -44,9 +46,6 @@ local function SpawnColonist_CopiedFunc(old_c, building, pos, city)
 	colonist:ChooseEntity()
 	return colonist
 end
-
-local mod_EnableMod
-
 -- we need to wait till mods are loaded to check for my mod
 local SpawnColonist
 
@@ -56,13 +55,15 @@ local function ModOptions(id)
 		return
 	end
 
-	-- If my lib mod is installed use my copy of this function
 	if not SpawnColonist then
+		-- If my lib mod is installed use func from it
 		if table.find(ModsLoaded, "id", "ChoGGi_Library") then
 			SpawnColonist = ChoGGi_Funcs.Common.SpawnColonist
 		end
-		SpawnColonist = type(SpawnColonist) == "function"
-			and SpawnColonist or SpawnColonist_CopiedFunc
+		-- No lib mod so use local copy
+		if not SpawnColonist then
+			SpawnColonist = SpawnColonist_CopiedFunc
+		end
 	end
 
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")

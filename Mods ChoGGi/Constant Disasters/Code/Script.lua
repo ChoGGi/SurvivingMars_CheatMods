@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
 local table = table
+local tostring = tostring
 
 local disasters = {
 	"ColdWaves",
@@ -140,5 +141,33 @@ function OnMsg.NewHour()
 			hours_passed[disaster] = c
 		end
 	end
+
+end
+
+-- The indicator markers sometimes get stuck on the ground.
+function OnMsg.NewDay()
+	local meteors = g_MeteorsPredicted or ""
+	local meteors_c = #meteors
+
+	MapGet("map", "ParSystem", function(par)
+		-- only check the particles we care about
+		if par:GetParticlesName() == "SensorTower_RevealDevil_Pos" then
+			local pos = tostring(par:GetVisualPos())
+
+			-- At least there's not many of them
+			local found = false
+			for i = 1, meteors_c do
+				if tostring(meteors[i].dest) == pos then
+					found = true
+					break
+				end
+			end
+
+			-- No meteor aiming for this marker
+			if not found then
+				par:delete()
+			end
+		end
+	end)
 
 end

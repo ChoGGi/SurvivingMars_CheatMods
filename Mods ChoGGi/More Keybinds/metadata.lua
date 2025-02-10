@@ -24,12 +24,12 @@ return PlaceObj("ModDef", {
 	"TagInterface", true,
 	"TagOther", true,
 	"description", [[
-Adds new keybinds, and lets you rebind hardcoded keys. All keys can be changed in options.
+Adds new keybinds, and lets you rebind hardcoded keys. All keys can be changed in options>keybinds.
 
 
 Cycle visual variant backward/forward: [ / ]
 Place Multiple Buildings: Shift
-Construction cancel: Escape (if you change this; you'll need to reset your keybinds to restore default)
+Construction Cancel: Escape (if you change this; you'll need to reset your keybinds to restore default)
 Salvage Cursor: Ctrl-Delete (You may need to reload your save when changing this)
 Toggle Interface: Ctrl-Alt-I
 Quicksave/Quickload: Ctrl-F5 / Ctrl-F9

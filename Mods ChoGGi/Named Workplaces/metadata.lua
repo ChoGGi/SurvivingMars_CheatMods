@@ -8,13 +8,13 @@ return PlaceObj("ModDef", {
 		}),
 	},
 	"title", "Named Workplaces",
-	"version", 2,
-	"version_major", 0,
-	"version_minor", 2,
-	"image", "Preview.png",
 	"id", "ChoGGi_NamedWorkplaces",
 	"steam_id", "1822631100",
 	"pops_any_uuid", "dd48a2c8-9647-494c-ac21-0d11eb0534fc",
+	"version", 3,
+	"version_major", 0,
+	"version_minor", 3,
+	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"lua_revision", 1007000, -- Picard
 	"code", {

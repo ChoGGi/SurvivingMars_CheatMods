@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local SelObjects = ChoGGi_Funcs.Common.SelObjects
+local ChoGGi_Funcs = ChoGGi_Funcs
 local GetCursorWorldPos = GetCursorWorldPos
 local IsValid = IsValid
 local terminal = terminal
@@ -104,16 +104,23 @@ Actions[#Actions+1] = {ActionName = T(302535920012051, "Set Speed 5"),
 	ActionMode = "Game",
 }
 
+local function RefabObj(obj)
+	if obj and obj:IsKindOf("Refabable") and obj:CanRefab() then
+		obj:ToggleRefab()
+	end
+end
 Actions[#Actions+1] = {ActionName = T(302535920011666, "Refab Building"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.RefabBuilding",
 	ActionShortcut = "Ctrl-R",
 	replace_matching_id = true,
 	OnAction = function()
-		local objs = SelObjects()
-		if #objs == 1 then
-			local sel = objs[1]
-			if sel and sel:IsKindOf("Refabable") and sel:CanRefab() then
-				sel:ToggleRefab()
+		local objs = ChoGGi_Funcs.Common.SelObjects()
+		local count = #objs
+		if count == 1 then
+			RefabObj(objs[1])
+		elseif count > 1 then
+			for i = 1, count do
+				RefabObj(objs[i])
 			end
 		end
 	end,
@@ -127,7 +134,7 @@ Actions[#Actions+1] = {ActionName = T(302535920000491, "Examine Object"),
 	replace_matching_id = true,
 	OnAction = function()
 		-- try to get object in-game first
-		local objs = SelObjects()
+		local objs = ChoGGi_Funcs.Common.SelObjects()
 		local c = #objs
 		if c > 0 then
 			-- If it's a single obj then examine that, otherwise the whole list
@@ -170,7 +177,7 @@ Actions[#Actions+1] = {ActionName = T(302535920011667, "Examine Objects"),
 			return a:GetDist2D(pt) < b:GetDist2D(pt)
 		end
 		local radius = ChoGGi.UserSettings.ExamineObjectRadius or mod_ExamineObjectsRadius
-		local objs = SelObjects(radius)
+		local objs = ChoGGi_Funcs.Common.SelObjects(radius)
 		if objs[1] then
 			pt = GetCursorWorldPos()
 			-- sort by nearest

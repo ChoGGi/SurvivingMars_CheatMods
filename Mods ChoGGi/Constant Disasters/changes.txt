@@ -1,2 +1,5 @@
+v0.3
+Removes leftover meteor indicators each new day.
+
 v0.2
 Evans update.

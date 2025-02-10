@@ -7,6 +7,7 @@ See mod options to toggle certain fixes.
 See below for more info about these specific fixes:
 ```
 Uneven terrain / Flatten tool (mod option to disable).
+Key binding certain buildings won't work when pressing the key (Power Switch/Pipe Valve).
 Add rocket sound effects to SupplyPods (mod option to disable).
 Possible fix for main menu music playing in-game on new games (mod option to disable, since there's no fade out).
 Log spam from loading older saves.

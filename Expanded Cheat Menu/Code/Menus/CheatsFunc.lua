@@ -590,9 +590,9 @@ function ChoGGi_Funcs.Menus.DisasterTriggerMeteor(severity, meteors_type, pos)
 	end
 
 	local data = DataInstances.MapSettings_Meteor
-	local descr = ChoGGi_Funcs.Common.CopyTable(
-		data[severity] or data[ActiveMapData.MapSettings_Meteor] or data.Meteor_VeryLow
-	)
+	local descr = data[severity] or data[ActiveMapData.MapSettings_Meteor] or data.Meteor_VeryLow
+
+	local orig_storm_radius = descr.storm_radius
 	if meteors_type == "single" then
 		-- defaults to 50000 (no good for aiming).
 		descr.storm_radius = 2500
@@ -600,6 +600,7 @@ function ChoGGi_Funcs.Menus.DisasterTriggerMeteor(severity, meteors_type, pos)
 
 	CreateGameTimeThread(function()
 		MeteorsDisaster(descr, meteors_type, pos)
+		descr.storm_radius = orig_storm_radius
 	end)
 end
 function ChoGGi_Funcs.Menus.DisasterTriggerMetatronIonStorm()

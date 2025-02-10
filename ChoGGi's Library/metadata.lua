@@ -61,6 +61,8 @@ return PlaceObj("ModDef", {
 	"description", [[
 Contains stuff needed by some of my mods: Mod options, UI elements, and other stuff (functions lots of functions).
 
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=2835850170]Mod disabled by content restrictions[/url]
+
 Translation(s):
 Chinese (Simplified) by aiawar.
 
