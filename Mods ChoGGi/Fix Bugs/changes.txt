@@ -1,3 +1,6 @@
+v8.0
+Power Switch/Pipe Valve were showing up in every menu.
+
 v7.9
 Key binding certain buildings won't work when pressing the key (Power Switch/Pipe Valve).
 

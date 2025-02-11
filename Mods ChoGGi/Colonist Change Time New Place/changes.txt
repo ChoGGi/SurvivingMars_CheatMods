@@ -1,1 +1,2 @@
 v0.2
+Made enable mod option work as people would expect.

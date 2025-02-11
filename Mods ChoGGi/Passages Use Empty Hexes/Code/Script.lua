@@ -232,16 +232,16 @@ function OnMsg.LoadGame()
 	for i = #objs, 1, -1 do
 		local obj = objs[i]
 
-		-- stuck in demolish countdown with no colonists inside
+		-- Stuck in demolish countdown with no colonists inside
 		if obj.demolishing and (obj.demolishing_countdown or 1) <= 0
 			and #obj.traversing_colonists == 0
 		then
-			-- get a valid dome
+			-- Get a valid dome
 			local start_el = obj.start_el
 			local end_el = obj.end_el
 			local start_dome = IsValid(start_el.dome) and start_el.dome
 			local end_dome = IsValid(end_el.dome) and end_el.dome
-			-- reset passage to have valid domes, so we can delete without errors
+			-- Reset passage to have valid domes, so we can delete without errors
 			if not start_dome and not end_dome then
 				start_el.dome = fallback_dome
 				end_el.dome = fallback_dome

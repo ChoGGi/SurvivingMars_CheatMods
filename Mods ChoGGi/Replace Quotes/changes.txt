@@ -1,1 +1,3 @@
 v0.2
+Cleaned up code.
+Added mod option to remove all quotes.

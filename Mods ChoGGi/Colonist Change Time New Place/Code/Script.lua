@@ -1,19 +1,25 @@
 -- See LICENSE for terms
 
-local SetConsts = ChoGGi_Funcs.Common.SetConsts
+local ChoGGi_Funcs = ChoGGi_Funcs
 
 local mod_EnableMod
 local mod_ForcedByUserLockTimeout
 
+local five_sols = 5 * const.Scale.sols
 local function StartupCode()
-	if not mod_EnableMod then
-		return
+	if mod_EnableMod then
+		ChoGGi_Funcs.Common.SetConsts("ForcedByUserLockTimeout", mod_ForcedByUserLockTimeout)
+	elseif Consts.ForcedByUserLockTimeout ~= five_sols then
+		-- If user turns off during gameplay.
+		ChoGGi_Funcs.Common.SetConsts("ForcedByUserLockTimeout", five_sols)
 	end
-
-	SetConsts("ForcedByUserLockTimeout", mod_ForcedByUserLockTimeout)
 end
+-- New games
 OnMsg.CityStart = StartupCode
+-- Saved ones
 OnMsg.LoadGame = StartupCode
+-- Switch between different maps (happens before UICity)
+OnMsg.ChangeMapDone = StartupCode
 
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -35,6 +41,3 @@ end
 OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
-
--- Switch between different maps (happens before UICity)
-OnMsg.ChangeMapDone = StartupCode

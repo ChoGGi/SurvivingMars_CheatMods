@@ -28,14 +28,14 @@ local CreateRealTimeThread = CreateRealTimeThread
 local T, _InternalTranslate = T, _InternalTranslate
 
 local function FilterTech(str)
-	-- loop through the stored tech cats
+	-- Loop through the stored tech cats
 	for i = count, 1, -1 do
 		local item = tech_list[i]
 		if item then
 			if str == "" or item.str:find_lower(str) then
-				-- only toggle vis if we need to
+				-- Only toggle vis if we need to
 				if not item.vis then
-					-- make sure option is off
+					-- Check if option is off
 					if not (mod_HideCompleted and IsTechResearched(item.tech.context[1].id)) then
 						item.tech:SetVisible(true)
 						item.vis = true
@@ -82,6 +82,7 @@ local function EditDlg(dlg)
 		RolloverTitle = T(126095410863, "Info"),
 		RolloverText = T(302535920011466, [[Filter checks name, description, and id.
 <color 150 255 150>Shift-Enter</color> to clear.]]),
+		-- Needed, Hint doesn't translate
 		Hint = _InternalTranslate(T(302535920011566, "Tech Filter")),
 		TextStyle = "LogInTitle",
 		OnKbdKeyUp = OnKbdKeyUp,
@@ -90,7 +91,7 @@ local function EditDlg(dlg)
 
 	input:SetFocus()
 
-	-- attach to dialog
+	-- Attach to dialog
 	area:SetParent(left_side)
 
 	count = 0
@@ -103,12 +104,12 @@ local function EditDlg(dlg)
 		current_count = new_count
 	end
 
-	-- build a list of tech ui hexes which will be used for filtering (we just build it once per session, since new tech objs aren't added mid-game)
+	-- Build a list of tech ui hexes which will be used for filtering (we just build it once per session, since new tech objs aren't added mid-game)
 	for i = 1, #dlg.idArea do
 		local techfield = dlg.idArea[i].idFieldTech
-		-- there's some other ui elements without a idFieldTech we want to skip
+		-- There's some other ui elements without a idFieldTech we want to skip
 		if techfield then
-			-- loop through tech list
+			-- Loop through tech list
 			for j = 1, #techfield do
 				local tech = techfield[j]
 				local c = tech.context[1]
@@ -127,16 +128,16 @@ local function EditDlg(dlg)
 				if needs_update then
 					tech_list[count] = {
 						id = c.id,
-						-- stick all the strings into one for quicker searching (i use a \0 (null char) so the strings are separate)
+						-- Stick all the strings into one for quicker searching (i use a \0 (null char) so the strings are separate)
 						str = c.id .. "\t" .. _InternalTranslate(T{c.description, c})
 							.. "\t" .. _InternalTranslate(T(c.display_name)),
-						-- ui ref
+						-- UI reference
 						tech = tech,
-						-- fast check if vis
+						-- Fast check if vis
 						vis = true,
 					}
 				else
-					-- could just use tech_list[count], but just in case? (it's still quicker than translating each time I suppose)
+					-- Could just use tech_list[count], but just in case? (it's still quicker than translating each time I suppose)
 					local item = tech_list[table.find(tech_list, "id", c.id)]
 					if item then
 						item.tech = tech

@@ -1510,12 +1510,38 @@ function UIGetBuildingPrerequisites(cat_id, template, bCreateItems, ignore_check
 		return ChoOrig_UIGetBuildingPrerequisites(cat_id, template, bCreateItems, ignore_checks, ...)
 	end
 
-	if hidden_items[template.id] then
-		-- ignore_checks only checks for hide_from_build_menu and if cat_id == build_category (which it always does for how the keybinds are done)
+	if hidden_items[template.id] and template.build_category == cat_id then
+		-- ignore_checks only checks for hide_from_build_menu and if cat_id == build_category
 		return ChoOrig_UIGetBuildingPrerequisites(cat_id, template, bCreateItems, true, ...)
 	end
 
 	return ChoOrig_UIGetBuildingPrerequisites(cat_id, template, bCreateItems, ignore_checks, ...)
+end
+
+-- Remove the dupes added to build menu
+local ChoOrig_UIItemMenu = UIItemMenu
+function UIItemMenu(category_id, bCreateItems, ...)
+	if not mod_EnableMod or not bCreateItems
+		or (category_id ~= "Power" and category_id ~= "Life-Support")
+	then
+		return ChoOrig_UIItemMenu(category_id, bCreateItems, ...)
+	end
+
+	local items, count = ChoOrig_UIItemMenu(category_id, bCreateItems, ...)
+
+	-- Leave the custom added entries from devs and remove the "fake" ones added
+	-- The custom ones will only let you place them on existing pipes
+	for i = count, 1, -1 do
+		local item = items[i]
+		if hidden_items[item.Id]
+			and item.construction_mode == "construction"
+		then
+			table.remove(items, i)
+			break
+		end
+	end
+
+	return items, count
 end
 
 --
