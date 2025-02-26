@@ -1,3 +1,7 @@
+v8.1
+Added another fix for Mona Lisa Underground Rare Anomaly:
+If using Paradox and you pick Shuttle Hubs, it doesn't give jumper hubs (Thanks Dark Master).
+
 v8.0
 Power Switch/Pipe Valve were showing up in every menu.
 

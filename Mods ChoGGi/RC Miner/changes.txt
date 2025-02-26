@@ -1,3 +1,6 @@
+v3.7
+Log spam.
+
 v3.6
 Added to cargo.
 

@@ -6,12 +6,15 @@ if not g_AvailableDlc.picard then
 end
 
 local table = table
+local CmpLower = CmpLower
+local _InternalTranslate = _InternalTranslate
 
 local mod_EnableMod
 local mod_LightTripodRadius
 local mod_SupportStrutRadius
 local mod_PinRockets
 local mod_NoSanityLoss
+local mod_SortElevatorPrefabs
 
 local orig_const_BuriedWonders = table.icopy(const.BuriedWonders)
 local fake_BuriedWonders_safe
@@ -30,40 +33,41 @@ local function UpdateObjs()
 
 	-- Newly built struts
 	SupportStruts.work_radius = mod_SupportStrutRadius
-	-- UICity since we checked the active map is underground one
+	-- Existing struts
 	local struts = labels.SupportStruts or ""
 	for i = 1, #struts do
 		struts[i].work_radius = mod_SupportStrutRadius
 	end
 
-	-- Lights
+	-- New lights
 	BuildingTemplates.LightTripod.reveal_range = mod_LightTripodRadius
 	ClassTemplates.Building.LightTripod.reveal_range = mod_LightTripodRadius
-
+	-- Existing
 	local UpdateRevealObject = UnitRevealDarkness.UpdateRevealObject
 	local tripods = labels.LightTripod or ""
 	for i = 1, #tripods do
 		local obj = tripods[i]
 		obj.reveal_range = mod_LightTripodRadius
+		-- Update visible range
 		UpdateRevealObject(obj)
 	end
 
 	-- Pin any rockets
 	if mod_PinRockets then
-		local under_id = UIColony.underground_map_id
+		local GameMaps = GameMaps
+		local SortPins = SortPins
+		local under_map_id = UIColony.underground_map_id
+
 		local surface_pins = GameMaps[MainMapID].pinnables.pins
 		for i = 1, #surface_pins do
 			local obj = surface_pins[i]
 			if obj:IsKindOf("SupplyRocket") then
-				table.insert_unique(GameMaps[under_id].pinnables.pins, obj)
-				SortPins(under_id)
---~ 				local pins_dlg = GetDialog("PinsDlg")
---~ 				if pins_dlg.map_id == under_id and not obj:IsPinned() then
---~ 					pins_dlg:Pin(obj)
---~ 				end
+				table.insert_unique(GameMaps[under_map_id].pinnables.pins, obj)
+				SortPins(under_map_id)
 			end
 		end
 	end
+
 end
 
 local function ModOptions(id)
@@ -96,6 +100,7 @@ local function ModOptions(id)
 	mod_SupportStrutRadius = options:GetProperty("SupportStrutRadius")
 	mod_PinRockets = options:GetProperty("PinRockets")
 	mod_NoSanityLoss = options:GetProperty("NoSanityLoss")
+	mod_SortElevatorPrefabs = options:GetProperty("SortElevatorPrefabs")
 
 	UpdateObjs()
 end
@@ -160,7 +165,7 @@ end
 local ChoOrig_Colonist_CheckLackOfLight = Colonist.CheckLackOfLight
 function Colonist:CheckLackOfLight(...)
 	if not mod_EnableMod or not mod_NoSanityLoss then
-		return ChoOrig_Colonist_CheckLackOfLight(...)
+		return ChoOrig_Colonist_CheckLackOfLight(self, ...)
 	end
 
 --~   if ObjectIsInEnvironment(self, "Underground") and not self.traits.Android then
@@ -250,4 +255,25 @@ end
 
 function RubbleBase:GetUIStatus()
 	return self.clear_request and T(13948--[[Clearing Rubble]]) or T(13066--[[Cave-in]])
+end
+
+-- Sort cargo list so cargo/prefab show up as sorted in resupply menus (been a pet peeve for awhile now)
+local bt, aid, bid
+local ChoOrig_PresetSortLessCb = PresetSortLessCb
+function PresetSortLessCb(a, b, ...)
+	if not mod_EnableMod or not mod_SortElevatorPrefabs then
+		return ChoOrig_PresetSortLessCb(a, b, ...)
+	end
+
+	if not bt then
+		bt = BuildingTemplates
+	end
+	aid, bid = bt[a.id], bt[b.id]
+
+	if aid and bid then
+		return CmpLower(_InternalTranslate(aid.display_name), _InternalTranslate(bid.display_name))
+	else
+		-- RC Buildings
+		return a.id < b.id
+	end
 end

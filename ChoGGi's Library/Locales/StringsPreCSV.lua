@@ -3,8 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
-302535920001746, ""
-302535920001747, ""
 302535920001748, ""
 302535920001749, ""
 302535920001750, ""
@@ -292,7 +290,7 @@ If this isn't a dumping site then waste rock will not be emptied."
 302535920001234, "Double the amount this <color ChoGGi_green>%s</color> can hold."
 302535920001236, "Double amount of reneagades this station can negate (currently: <color ChoGGi_green><str></color>) < Reselect to update amount."
 end !Skipped Line!
-do !Skipped Line! [[Classes_UI.lua" "Classes_Objects.lua" "TextStyles_UI.lua]] !Skipped Line!
+do !Skipped Line! [[Classes_UI.lua Classes_Objects.lua TextStyles_UI.lua]] !Skipped Line!
 302535920001518, "<left_click>*2 title to rollup into the title bar."
 end end !Skipped Line!
 do !Skipped Line! [[Settings.lua]] !Skipped Line!
@@ -309,7 +307,7 @@ do !Skipped Line! [[Settings.lua]] !Skipped Line!
 302535920000010, "Missing Name"
 302535920000011, "Missing Description"
 end !Skipped Line!
-do !Skipped Line! [[CommonFunctions.lua" "ECM_Functions.lua]] !Skipped Line!
+do !Skipped Line! [[CommonFunctions.lua ECM_Functions.lua]] !Skipped Line!
 302535920001739, "Last chance!"
 302535920001740, "Are you sure you want to proceed with <str>?"
 302535920001574, "Crashes on XBOX!"
@@ -415,7 +413,7 @@ do !Skipped Line! [[FindValue.lua]] !Skipped Line!
 302535920001306, "Enter text to find"
 302535920001304, "Set how many levels within this table we search. <color ChoGGi_red>Warning</color>: O(n)."
 end !Skipped Line!
-do !Skipped Line! [[TerraformingFunc.lua" "TerraformingMenu.lua]] !Skipped Line!
+do !Skipped Line! [[TerraformingFunc.lua TerraformingMenu.lua]] !Skipped Line!
 302535920000870, "Max amount of pools that can form."
 302535920000532, "All Max"
 302535920000533, "All Min"
@@ -446,7 +444,7 @@ do !Skipped Line! [[MultiLineText.lua]] !Skipped Line!
 302535920000721, "Overwrite"
 302535920000827, "Check this to overwrite file instead of appending to it."
 end !Skipped Line!
-do !Skipped Line! [[Console.lua" "ConsoleLogWin.lua]] !Skipped Line!
+do !Skipped Line! [[Console.lua ConsoleLogWin.lua]] !Skipped Line!
 302535920001734, "Log file flushed"
 302535920001635, "Flush Log Hourly"
 302535920001636, "Call FlushLogFile() every in-game hour."
@@ -753,7 +751,7 @@ do !Skipped Line! [[RocketMenu.lua RocketFunc.lua]] !Skipped Line!
 302535920000975, "Pod Price"
 302535920000976, "Change the price per pod (applies to both supply/passenger)."
 end !Skipped Line!
-do !Skipped Line! [[ConstsMenu.lua" "ConstsFunc.lua]] !Skipped Line!
+do !Skipped Line! [[ConstsMenu.lua ConstsFunc.lua]] !Skipped Line!
 302535920000526, "Any cheats changed here will override ones from a non-Consts menu.
 
 <color ChoGGi_red>Warning</color>: Changing these settings may cause crashing!"
@@ -761,7 +759,9 @@ do !Skipped Line! [[ConstsMenu.lua" "ConstsFunc.lua]] !Skipped Line!
 302535920000158, "Consts"
 302535920000182, "The scale this amount will be multipled by when used."
 end !Skipped Line!
-do !Skipped Line! [[ResourcesMenu.lua" "ResourcesFunc.lua]] !Skipped Line!
+do !Skipped Line! [[ResourcesMenu.lua ResourcesFunc.lua]] !Skipped Line!
+302535920001746, " One Of Each"
+302535920001747, "Add one prefab of each building."
 302535920000850, "Change Resupply Settings"
 302535920000719, "Add Orbital Probes"
 302535920000720, "Add more probes."
@@ -777,7 +777,7 @@ do !Skipped Line! [[ResourcesMenu.lua" "ResourcesFunc.lua]] !Skipped Line!
 302535920001196, "If your funds are a negative value, then you added too much.
 Fix with: %s"
 end	!Skipped Line!
-do !Skipped Line! [[BuildingsMenu.lua" "BuildingsFunc.lua]] !Skipped Line!
+do !Skipped Line! [[BuildingsMenu.lua BuildingsFunc.lua]] !Skipped Line!
 302535920001633, "Remove Realm Limits"
 302535920001663, "Buildings from Asteroid/Underground/Surface can be built in any of the others.
 
@@ -936,7 +936,7 @@ Use with <color ChoGGi_green><str></color> to fill up a dome with spires."
 302535920000231, "Buildings can be placed almost anywhere.
 See also <str>."
 end end end !Skipped Line!
-do !Skipped Line! [[CheatsMenu.lua" "CheatsFunc.lua]] !Skipped Line!
+do !Skipped Line! [[CheatsMenu.lua CheatsFunc.lua]] !Skipped Line!
 302535920001733, "Missing DLC Achievement"
 302535920000484, "Triggers cave-in at location (and disables any nearby struts)."
 302535920001087, "Missile Strike"
@@ -1101,7 +1101,7 @@ Best hope you picked India as your Mars sponsor..."
 302535920000319, "Just unlocks in the research tree."
 302535920000320, "Unlocks and researchs."
 end !Skipped Line!
-do !Skipped Line! [[ColonistsMenu.lua" "ColonistsFunc.lua]] !Skipped Line!
+do !Skipped Line! [[ColonistsMenu.lua ColonistsFunc.lua]] !Skipped Line!
 302535920000883, "If you make this too large then you may get dehydration with open domes."
 302535920001589, "Disable creation of renegades."
 302535920001590, "Remove the ""Worked outside the Dome"" penalty."
@@ -1285,7 +1285,7 @@ Not permanent."
 302535920000447, "Change the age at which colonists die (applies to newly arrived and born colonists as well)."
 302535920000448, "I'm afraid it could be 9/11 times 1,000."
 end !Skipped Line!
-do do !Skipped Line! [[DebugMenu.lua" "DebugFunc.lua]] !Skipped Line!
+do do !Skipped Line! [[DebugMenu.lua DebugFunc.lua]] !Skipped Line!
 302535920001347, "Show Console"
 302535920001745, "Show the console (you can also press <sec_key>)."
 302535920001743, "Toggle Story Bit Log"
@@ -1458,7 +1458,7 @@ Attention: If you get yellow ground areas; just load it again or try <str>."
 Green = pass/build, Yellow = no pass/build,
 Blue = pass/no build, Red = no pass/no build."
 end end end !Skipped Line!
-do !Skipped Line! [[DroneMenu.lua" "DroneFunc.lua "RocketFunc.lua "RocketMenu.lua "RoverFunc.lua "RoverMenu.lua]] !Skipped Line!
+do !Skipped Line! [[DroneMenu.lua DroneFunc.lua RoverFunc.lua RoverMenu.lua]] !Skipped Line!
 302535920000702, "Drone Wasp Move Speed"
 302535920000051, "Drone Battery Cap"
 302535920000945, "Change the capacity of drone batteries."
@@ -1529,7 +1529,7 @@ do !Skipped Line! [[DroneMenu.lua" "DroneFunc.lua "RocketFunc.lua "RocketMenu.lu
 302535920000551, "RC Storage Capacity"
 302535920000552, "Change amount of resources RC Transports/Constructors can carry."
 end !Skipped Line!
-do !Skipped Line! [[ExpandedMenu.lua" "ExpandedFunc.lua]] !Skipped Line!
+do !Skipped Line! [[ExpandedMenu.lua ExpandedFunc.lua]] !Skipped Line!
 302535920001532, "Battery"
 302535920001307, "Grid Info"
 302535920001477, "List objects in grids (air, electricity, and water)."
@@ -1590,7 +1590,7 @@ do !Skipped Line! [[ExpandedMenu.lua" "ExpandedFunc.lua]] !Skipped Line!
 302535920000579, "Storage Mechanized Depots"
 302535920000580, "Change mechanized depot storage capacity."
 end !Skipped Line!
-do do !Skipped Line! [[FixesMenu.lua" "FixesFunc.lua]] !Skipped Line!
+do do !Skipped Line! [[FixesMenu.lua FixesFunc.lua]] !Skipped Line!
 302535920000036, "<color ChoGGi_red>Click lightly!</color>
 Be sure to read the tooltip and if unsure than ask me."
 302535920001533, "Remove Invalid Label Objects"
@@ -1672,7 +1672,7 @@ Takes less then a second on a map with 3616 buildings and 54 drone hubs."
 302535920000621, "Align All Buildings To Hex Grid"
 302535920000622, "If you have any buildings that aren't aligned to the hex grids use this."
 end end end end end end end !Skipped Line!
-do do !Skipped Line! [[GameMenu.lua" "GameFunc.lua]] !Skipped Line!
+do do !Skipped Line! [[GameMenu.lua GameFunc.lua]] !Skipped Line!
 302535920001737, "Toggle Use All Loading Screens"
 302535920001738, "Some DLC replaces loading screens with their own, enable to use all of them."
 302535920001679, "Tool Tips"
@@ -1843,7 +1843,7 @@ Not noticeable unless using higher zoom."
 302535920000655, "Toggle Cursor"
 302535920000656, "Toggle between moving camera and selecting objects."
 end end end !Skipped Line!
-do do do do !Skipped Line! [[HelpMenu.lua" "HelpFunc.lua]] !Skipped Line!
+do do do do !Skipped Line! [[HelpMenu.lua HelpFunc.lua]] !Skipped Line!
 302535920001647, "Window Title"
 302535920001648, "If you don't want ECM to change the window title than disable this (restart to take effect)."
 302535920001634, "This mod requires my library mod (ChoGGi's Library) < use space on the end when searching for it."
@@ -1943,7 +1943,7 @@ For any issues; please report them to my Github/Steam/NexusMods page, or email <
 302535920000676, "Reset ECM Settings"
 302535920000677, "Reset all ECM settings to default (restart to enable)."
 end end end end end end !Skipped Line!
-do !Skipped Line! [[MiscMenu.lua" "MiscFunc.lua]] !Skipped Line!
+do !Skipped Line! [[MiscMenu.lua MiscFunc.lua]] !Skipped Line!
 302535920000356, "Time Factor"
 302535920000387, "Change the time factor (not permanently); for ease of screenshots or something."
 302535920000523, "How many to multiple the default speed by: <color ChoGGi_green>%s</color>."
@@ -2025,7 +2025,7 @@ AddMaintenancePnts, MakeSphereTarget, SpawnWorker, SpawnVisitor"
 302535920000701, "Queue up to 100 squares."
 302535920000703, "Change the game speed (only for medium/fast, normal is normal)."
 end !Skipped Line!
-do do !Skipped Line! [[MissionMenu.lua" "MissionFunc.lua]] !Skipped Line!
+do do !Skipped Line! [[MissionMenu.lua MissionFunc.lua]] !Skipped Line!
 302535920000201, "Active"
 302535920000867, "Toggle occurrence of <color ChoGGi_yellow>%s</color> disasters."
 302535920001460, "Add/remove rival colonies."

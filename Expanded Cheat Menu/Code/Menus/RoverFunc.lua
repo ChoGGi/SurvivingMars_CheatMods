@@ -71,6 +71,9 @@ function ChoGGi_Funcs.Menus.SetRCMoveSpeed()
 	local UpgradedSetting = ChoGGi_Funcs.Common.GetResearchedTechValue("SpeedRC")
 	local item_list = {
 		{text = Translate(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting, hint = T(302535920000889--[[base speed]])},
+		{text = 2, value = 2 * r, hint = "2000"},
+		{text = 3, value = 3 * r, hint = "3000"},
+		{text = 4, value = 4 * r, hint = "4000"},
 		{text = 5, value = 5 * r, hint = "5000"},
 		{text = 10, value = 10 * r, hint = "10000"},
 		{text = 15, value = 15 * r, hint = "15000"},

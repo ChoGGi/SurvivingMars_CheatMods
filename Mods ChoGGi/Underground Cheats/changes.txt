@@ -1,3 +1,9 @@
+v0.7
+Colonists weren't aging (thanks crilloan).
+
+v0.6
+Added on by default option to sort elevator prefabs list by name.
+
 v0.5
 Use Ctrl to clean up cave-ins.
 Colonists don't lose sanity when there's no light (mod option).

@@ -31,10 +31,6 @@ function ReportPersistErrors(...)
 	return errors, warnings
 end
 
--- This updates my dlgs when the ui scale is changed
-local pairs = pairs
---~ local GetSafeAreaBox = GetSafeAreaBox
-
 if what_game == "Mars" then
 	local ChoOrig_SetUserUIScale = SetUserUIScale
 	ChoGGi_Funcs.Common.AddToOriginal("SetUserUIScale")

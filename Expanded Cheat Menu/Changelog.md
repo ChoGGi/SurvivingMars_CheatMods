@@ -2,6 +2,8 @@
 
 ## v19.5 (Unreleased)
 ### Changed:
+- Menu>ECM>Resources>Prefabs: Added item to add one of each prefab.
+- Menu>ECM>Set Speed Drones/Rovers: Added a few more speed options.
 - Debug>Show Console is a menu item instead of just a keyboard shortcut.
 
 ### Fixed:

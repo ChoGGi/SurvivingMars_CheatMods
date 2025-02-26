@@ -3324,9 +3324,9 @@ function ChoGGi_DlgExamine:ConvertObjToInfo(obj, obj_type)
 			end
 			-- pathing
 			if current_pos ~= going_to then
-				path = T{302535920001545--[["Going to <color ChoGGi_green><loc></color>"]],
+				path = Translate(T{302535920001545--[["Going to <color ChoGGi_green><loc></color>"]],
 					loc = self:ConvertValueToInfo(path),
-				} .. "\n"
+				}) .. "\n"
 			else
 				path = ""
 			end
@@ -3732,7 +3732,7 @@ Decompiled code won't scroll correctly as the line numbers are different."]],
 		if type(list_obj_str[i]) ~= "string" and not obj.__mtl then
 			--  obj.__mtl == one of mine
 			if testing then
-				OpenExamine(list_obj_str[i]) -- OpenExamine
+				OpenExamine{list_obj_str, list_obj_str[i]} -- OpenExamine
 				print("Check for not strings")
 				print(i, list_obj_str[i])
 			else

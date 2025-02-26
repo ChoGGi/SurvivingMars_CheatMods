@@ -48,7 +48,8 @@ Refabbing rare extractors left the "working" dust plumes around them.
 Stop ceiling/floating rubble.
 Support struts malfunctioning and cave-ins.
 The Bottomless Pit Anomaly is missing.
-Underground Rare Anomaly can give you underground dome prefabs, but locks them to surface.
+Mona Lisa Underground Rare Anomaly gives you underground dome prefabs, but locks them to surface.
+Mona Lisa Underground Rare Anomaly if using Paradox and you pick Shuttle Hubs, it doesn't give Jumper Hubs.
 Unpassable underground rocks stuck in path (not cave-in rubble, but small rocks you can't select).
 Water Reclamation Spire and B&B upgrade tech caused issues.
 ```

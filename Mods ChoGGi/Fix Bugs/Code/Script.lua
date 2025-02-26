@@ -843,12 +843,13 @@ do
 			--
 			-- Move any underground dome prefabs (underground anomaly "storybit") to underground city (instead of being stuck on surface)
 			-- https://www.reddit.com/r/SurvivingMars/comments/1013afl/no_way_to_moveuse_underground_dome_prefabs/
-			-- Rare Anomaly Analyzed: Mona Lisa (fix 1/2)
+			-- Rare Anomaly Analyzed: Mona Lisa (fix 1/3)
 			if main_city.available_prefabs.UndergroundDome then
 				local prefabs = underground_city.available_prefabs
 				-- available_prefabs defaults to nil (well it's an empty table otherwise, devs don't really use metatables)
 				if not prefabs.UndergroundDome then
 					prefabs.UndergroundDome = 0
+					-- maybe check for the other underground only buildings?
 				end
 				-- and we can't do math on nil
 				prefabs.UndergroundDome = prefabs.UndergroundDome + main_city.available_prefabs.UndergroundDome
@@ -1584,7 +1585,7 @@ function GetEnvironment(object, ...)
 end
 
 --
--- Second fix for Rare Anomaly Analyzed: Mona Lisa (fix 2/2)
+-- Second fix for Rare Anomaly Analyzed: Mona Lisa (fix 2/3)
 -- SA_ResuppyInventory:Exec() doesn't check the map, it only uses MainCity to spawn prefabs, so I override the prefab spawner.
 -- I only cleaned up wrong map prefabs in LoadGame, this'll send them to the correct map when the storybit happens
 -- Added any underground buildings, not sure if any other get added as a prefab
@@ -1606,6 +1607,32 @@ function City:AddPrefabs(class, ...)
 	end
 
 	return ChoOrig_City_AddPrefabs(self, class, ...)
+end
+
+--
+-- Last? fix for Rare Anomaly Analyzed: Mona Lisa (fix 3/3)
+-- If playing as paradox and you get shuttlehub prefabs then you can't use them.
+-- I don't think any other sponsors replace buildings so it should be good just overriding hubs
+local ChoOrig_SA_ResuppyInventory_Exec = SA_ResuppyInventory.Exec
+function SA_ResuppyInventory:Exec(...)
+	if not mod_EnableMod then
+		return ChoOrig_SA_ResuppyInventory_Exec(self, ...)
+	end
+
+	if GetMissionSponsor().id == "paradox" then
+		for i = 1, self.max_classes do
+			local item = "item" .. i
+			if self[item] and self[item] ~= "" then
+				local class = self[item]
+				if class == "ShuttleHub" then
+					self[item] = "JumperShuttleHub"
+					break
+				end
+			end
+		end
+	end
+
+	return ChoOrig_SA_ResuppyInventory_Exec(self, ...)
 end
 
 --
@@ -1820,4 +1847,5 @@ function City:InitBreakThroughAnomalies(...)
 	-- and restore it afterwards
 	BreakthroughOrder = ChoOrig_BreakthroughOrder
 end
---
+
+-- Farewell

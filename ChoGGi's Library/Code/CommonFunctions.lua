@@ -431,6 +431,11 @@ do -- RetName
 			return "true"
 		end
 
+		-- Got me...
+		if obj == g_LastBuildItem then
+			return g_LastBuildItem
+		end
+
 		-- any of the _G tables
 		local lookuped = lookup_table[obj]
 		if lookuped then

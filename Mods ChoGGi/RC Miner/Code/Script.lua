@@ -905,3 +905,13 @@ function OnMsg.ClassesPostprocess()
 	})
 
 end
+
+-- Log spam from me doing weird shit in DigErUp()
+local ChoOrig_TerrainDepositExtractor_OnDepositDepleted = TerrainDepositExtractor.OnDepositDepleted
+function TerrainDepositExtractor:OnDepositDepleted(...)
+	if self:IsKindOf("PortableMiner") then
+--~ 		TerrainDepositConcreteSetTerrainDig(self:GetPos(), deposit.radius_max)
+		return
+	end
+	return ChoOrig_TerrainDepositExtractor_OnDepositDepleted(self, ...)
+end

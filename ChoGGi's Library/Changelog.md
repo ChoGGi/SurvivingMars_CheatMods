@@ -1,11 +1,13 @@
 ## Library Changelog
 
 ## v12.5 (Unreleased)
+- GetName was having issues with g_LastBuildItem.
 - ExportMapDataToCSV is slightly faster
 - ExportMapDataToCSV won't show planetary anomalies if you have BB DLC without my Fix Bugs mod.
 - Seem to have gotten rid of anymore [C](-1) showing up for RetName.
 
 ### Examine:
+- Fixed issue displaying certain "going to" positions.
 - Added Table>context menu>Tool Bar>Clear Table: Remove all entries from this table.
 
 ## v12.4 (4 Jan 2025)

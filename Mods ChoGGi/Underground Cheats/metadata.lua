@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2599642948",
 	"pops_any_uuid", "4a2eb0eb-0667-4462-9db1-5bd833a233bf",
 	"lua_revision", 1007000, -- Picard
-	"version", 5,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 7,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -23,6 +23,7 @@ Light Tripod Radius: How far the light reveals darkness.
 Support Strut Radius: How far the strut blocks cave-ins.
 Pin Rockets: When changing to underground, pin any rockets from surface (might have to toggle maps twice).
 No Sanity Loss: Colonists don't lose sanity when there's no light.
+Sort Elevator Prefabs: Sort prefabs list by display name instead of whatever they used.
 
 
 Mod options to pick underground wonders (only applies to new games):

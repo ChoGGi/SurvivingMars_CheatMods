@@ -172,29 +172,36 @@ do -- AddPrefabs
 
 	function ChoGGi_Funcs.Menus.AddPrefabBuildings()
 		local UICity = UICity
+		local BuildingTemplates = BuildingTemplates
+		local show_hidden = ChoGGi.UserSettings.Building_hide_from_build_menu
 
-		local drone_str = Translate(Drone.display_name)
 		local item_list = {
 			{
-				text = drone_str,
+				text = Translate(302535920001746--[[ One Of Each]]),
+				id = "allobjs",
+				value = 1,
+				hint = T(302535920001747--[[Add one prefab of each building.]]),
+				icon = Drone.display_icon,
+			},
+			{
+				text = Translate(Drone.display_name),
 				value = 10,
+				id = "drone_prefabs",
 				hint = T(302535920000106--[[Current]]) .. ": " .. UICity.drone_prefabs,
 				icon = Drone.display_icon,
 			},
 		}
 		local c = #item_list
 
-		local show_hidden = ChoGGi.UserSettings.Building_hide_from_build_menu
-		local BuildingTemplates = BuildingTemplates
-		for id, cargo in pairs(BuildingTemplates) do
+		for id, item in pairs(BuildingTemplates) do
 			-- baclcube is instant, instant doesn't need prefabs, and hidden normally don't show up
-			if not skip_prefabs[id] and not cargo.instant_build and (cargo.group ~= "Hidden" or cargo.group == "Hidden" and show_hidden) then
+			if not skip_prefabs[id] and not item.instant_build and (item.group ~= "Hidden" or item.group == "Hidden" and show_hidden) then
 				c = c + 1
 				item_list[c] = {
-					text = Translate(cargo.display_name),
+					text = Translate(item.display_name),
 					value = 10,
-					hint = T(302535920000106--[[Current]]) .. ": " .. UICity:GetPrefabs(id),
-					icon = cargo.display_icon,
+					hint = T(302535920000106--[[Current]]) .. ": " .. UICity:GetPrefabs(id) .. "\n\n" .. id,
+					icon = item.display_icon,
 					id = id,
 				}
 			end
@@ -206,13 +213,20 @@ do -- AddPrefabs
 			end
 			for i = 1, #choice do
 				local value = choice[i].value
-				local text = choice[i].text
+				local id = choice[i].id
 
 				if type(value) == "number" then
-					if text == drone_str then
+					if id == "drone_prefabs" then
 						UICity.drone_prefabs = UICity.drone_prefabs + value
+					elseif id == "allobjs" then
+						for b_id, item in pairs(BuildingTemplates) do
+							-- baclcube is instant, instant doesn't need prefabs, and hidden normally don't show up
+							if not skip_prefabs[b_id] and not item.instant_build and (item.group ~= "Hidden" or item.group == "Hidden" and show_hidden) then
+								UICity:AddPrefabs(b_id, value, false)
+							end
+						end
 					else
-						UICity:AddPrefabs(choice[i].id, value, false)
+						UICity:AddPrefabs(id, value, false)
 					end
 				end
 			end

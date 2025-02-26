@@ -41,6 +41,12 @@ local mod_options = {
 		"Help", T(0000, "Colonists don't lose sanity when there's no light."),
 		"DefaultValue", false,
 	}),
+	PlaceObj("ModItemOptionToggle", {
+		"name", "SortElevatorPrefabs",
+		"DisplayName", T(0000, "Sort Elevator Prefabs"),
+		"Help", T(0000, "Sort prefabs list by display name instead of whatever they used."),
+		"DefaultValue", true,
+	}),
 }
 
 local c = #mod_options
