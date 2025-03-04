@@ -16,7 +16,7 @@ return {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "VladimirPutin",
 		"DisplayName", T(0000, "Vladimir Putin"),
-		"Help", T(0000, "Replaces Vladimir Putin with Nikita Khrushchev."),
+		"Help", T(0000, "Replaces Vladimir Putin with Sergei Korolev."),
 		"DefaultValue", false,
 	}),
 }

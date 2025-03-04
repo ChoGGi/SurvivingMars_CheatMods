@@ -4,7 +4,7 @@ See mod options to toggle certain fixes.
 
 
 **List of bugs fixed:**
-See below for more info about these specific fixes:
+See below for more info about specific fixes:
 ```
 Uneven terrain / Flatten tool (mod option to disable).
 Key binding certain buildings won't work when pressing the key (Power Switch/Pipe Valve).
@@ -21,6 +21,7 @@ Added missing images for certain Cargo listings.
 Gale crater name doesn't show up for 4S138E, 5S138E.
 
 Storybits:
+The Extract: Selecting Shuttle Hub and having Paradox as sponsor doesn't add a Jumper Hub.
 Asylum will never start.
 Blank Slate doesn't remove any applicants.
 Fhtagn! Fhtagn! Option 2 makes all colonists cowards instead of only religious ones.

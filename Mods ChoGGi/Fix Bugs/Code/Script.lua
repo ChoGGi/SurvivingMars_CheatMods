@@ -1585,10 +1585,11 @@ function GetEnvironment(object, ...)
 end
 
 --
--- Second fix for Rare Anomaly Analyzed: Mona Lisa (fix 2/3)
+-- Fix for The Extract adding regular shuttle hub for paradox.
+-- and second fix for Rare Anomaly Analyzed: Mona Lisa (fix 2/3)
 -- SA_ResuppyInventory:Exec() doesn't check the map, it only uses MainCity to spawn prefabs, so I override the prefab spawner.
 -- I only cleaned up wrong map prefabs in LoadGame, this'll send them to the correct map when the storybit happens
--- Added any underground buildings, not sure if any other get added as a prefab
+-- Added any underground buildings, not sure if any other get added as a prefab.
 local underground_blds = {
 	UndergroundDome = true,
 	UndergroundDomeMedium = true,
@@ -1602,7 +1603,11 @@ function City:AddPrefabs(class, ...)
 		return ChoOrig_City_AddPrefabs(self, class, ...)
 	end
 
-	if underground_blds[class] then
+	if class == "ShuttleHub" then
+		if GetMissionSponsor().id == "paradox" then
+			class = "JumperShuttleHub"
+		end
+	elseif underground_blds[class] then
 		return ChoOrig_City_AddPrefabs(Cities[UIColony.underground_map_id], class, ...)
 	end
 

@@ -16,8 +16,8 @@ local quotes_list = {
 	[825589330974] = [[<grey>"Resources exist to be consumed. And consumed they will be, if not by this generation then by some future. By what right does this forgotten future seek to deny us our birthright? None I say! Let us take what is ours, chew and eat our fill."
 <right>Nwabudike Morgan</grey><left>]],
 	[11782] = [[Nwabudike]],
-	[10515] = [[<grey>"Once is quite enough. What good does it do to annihilate a country twice? We're not a bloodthirsty people."
-<right>Nikita Khrushchev</grey><left>]],
+	[10515] = [[<grey>"Today the dreams of the best sons of mankind have come true. The assault on space has begun."
+<right>Sergei Korolev</grey><left>]],
 }
 
 local function ReplaceQuote(tt, string_idx, replace_text, search_text)

@@ -317,7 +317,7 @@ do
 		end
 
 		-- add extra info
-		StoryBitLog("StoryBit", self.id, "----------------")
+		StoryBitLog("StoryBit", self.id, "--------------------------------")
 		StoryBitLog("StoryBit", self.id, "rejected condition class:", subcontext.class)
 		StoryBitLog("StoryBit", self.id, "rejected condition info:", subcontext.Documentation)
 		StoryBitLog("StoryBit", self.id, "rejected condition reqs:", TableToLuaCode(subcontext))

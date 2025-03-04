@@ -1,3 +1,6 @@
+v8.2
+Same sort of fix for The Extract and shuttle hubs (Thanks Dark Master).
+
 v8.1
 Added another fix for Mona Lisa Underground Rare Anomaly:
 If using Paradox and you pick Shuttle Hubs, it doesn't give jumper hubs (Thanks Dark Master).

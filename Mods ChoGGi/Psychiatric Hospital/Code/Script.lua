@@ -4,69 +4,74 @@ DefineClass.ChoGGi_PsychiatricHospital = {
 	__parents = {
 		"Sanatorium",
 	},
-	max_traits = 1,
+	-- How many sections show up in selection panel
+	max_traits = 3,
 }
 
+local mod_options = {}
+local function BuildList(traits)
+	for i = 1, #traits do
+		mod_options[traits[i].id] = false
+	end
+end
+local traits = Presets.TraitPreset
+BuildList(traits.Positive)
+BuildList(traits.Negative)
+BuildList(traits.other)
 
-local mod_AddIntrovert
-local mod_AddWhiner
-local mod_AddReligious
-
-local function AddExtraTraits()
+local function UpdateTraits()
 	local bt = BuildingTemplates.ChoGGi_PsychiatricHospital
 	local ct = ClassTemplates.Building.ChoGGi_PsychiatricHospital
 
-	local count = 1
-	if mod_AddIntrovert then
-		count = count + 1
-	end
-	if mod_AddWhiner then
-		count = count + 1
-	end
-	if mod_AddReligious then
-		count = count + 1
-	end
+	local count = 0
 
-
-	if mod_AddIntrovert or mod_AddWhiner or mod_AddReligious then
-		ChoGGi_PsychiatricHospital.max_traits = count
-		bt.max_traits = count
-		ct.max_traits = count
-
-		local added_count = 2
-		if mod_AddIntrovert then
-			bt["trait" .. added_count] = "Whiner"
-			ct["trait" .. added_count] = "Whiner"
-			added_count = added_count + 1
+	for id, value in pairs(mod_options) do
+		if value then
+			count = count + 1
 		end
-		if mod_AddIntrovert then
-			bt["trait" .. added_count] = "Introvert"
-			ct["trait" .. added_count] = "Introvert"
-			added_count = added_count + 1
-		end
-		if mod_AddReligious then
-			bt["trait" .. added_count] = "Religious"
-			ct["trait" .. added_count] = "Religious"
---~ 			added_count = added_count + 1
+	end
+
+
+	if count > 0 then
+		ChoGGi_PsychiatricHospital.max_traits = 3
+		bt.max_traits = 3
+		ct.max_traits = 3
+
+		local added_count = 0
+
+		for id, value in pairs(mod_options) do
+			if value then
+				added_count = added_count + 1
+				bt["trait" .. added_count] = id
+				ct["trait" .. added_count] = id
+			end
 		end
 
 	else
-		ChoGGi_PsychiatricHospital.max_traits = 1
-		bt.max_traits = 1
-		bt.trait2 = ""
-		bt.trait3 = ""
-		bt.trait4 = ""
-		ct.max_traits = 1
-		ct.trait2 = ""
-		ct.trait3 = ""
-		ct.trait4 = ""
+		ChoGGi_PsychiatricHospital.max_traits = 0
+		bt.max_traits = 0
+		ct.max_traits = 0
+
+		for i = 1, 40 do
+			bt["trait" .. i] = nil
+			ct["trait" .. i] = nil
+		end
+
+--~ 		bt.trait1 = false
+--~ 		bt.trait2 = false
+--~ 		bt.trait3 = false
+--~ 		bt.trait4 = false
+--~ 		ct.trait1 = false
+--~ 		ct.trait2 = false
+--~ 		ct.trait3 = false
+--~ 		ct.trait4 = false
 	end
 
 end
 -- New games
-OnMsg.CityStart = AddExtraTraits
+OnMsg.CityStart = UpdateTraits
 -- Saved ones
-OnMsg.LoadGame = AddExtraTraits
+OnMsg.LoadGame = UpdateTraits
 
 -- Update mod options
 local function ModOptions(id)
@@ -75,16 +80,19 @@ local function ModOptions(id)
 		return
 	end
 
-	mod_AddIntrovert = CurrentModOptions:GetProperty("AddIntrovert")
-	mod_AddWhiner = CurrentModOptions:GetProperty("AddWhiner")
-	mod_AddReligious = CurrentModOptions:GetProperty("AddReligious")
+	local options = CurrentModOptions
+
+	for id in pairs(mod_options) do
+		mod_options[id] = options:GetProperty("Trait_" .. id)
+	end
+--~ 	ex(mod_options)
 
 	-- Make sure we're in-game
 	if not UIColony then
 		return
 	end
 
-	AddExtraTraits()
+	UpdateTraits()
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions
@@ -103,9 +111,8 @@ function OnMsg.ClassesPostprocess()
 
 			"display_name", T(0000, "Psychiatric Hospital"),
 			"display_name_pl", T(0000, "Psychiatric Hospitals"),
-			"description", T(0000, "Treats Idiots using slow but effective ways, combining medicine, psychology and some unorthodox practices."),
 			"max_visitors", 2,
-			"trait1", "Idiot",
+--~ 			"trait1", "Idiot",
 			"evaluation_points", 600,
 			"construction_cost_Concrete", 90000,
 			"construction_cost_Metals", 50000,
@@ -117,6 +124,8 @@ function OnMsg.ClassesPostprocess()
 
 			"display_icon", CurrentModPath .. "/UI/PsychiatricHospital.png",
 
+--~ 			"description", T(0000, "Treats Idiots using slow but effective ways, combining medicine, psychology and some unorthodox practices."),
+			"description", s.description,
 			"Group", s.Group,
 			"build_points", s.build_points,
 			"require_prefab", s.require_prefab,
@@ -148,46 +157,15 @@ end
 
 -- Table of cureable traits
 function ChoGGi_PsychiatricHospital:GetSanatoriumTraits()
-	local traits = {"Idiot"}
-	local c = 1
+	local traits = {}
+	local c = 0
 
-	if mod_AddIntrovert then
-		c = c + 1
-		traits[c] = "Introvert"
-	end
-	if mod_AddWhiner then
-		c = c + 1
-		traits[c] = "Whiner"
-	end
-	if mod_AddReligious then
-		c = c + 1
-		traits[c] = "Religious"
+	for id, value in pairs(mod_options) do
+		if value then
+			c = c + 1
+			traits[c] = id
+		end
 	end
 
 	return traits
 end
-
---~ function OnMsg.SelectedObjChange(obj)
---~ 	if not IsKindOf(obj, "ChoGGi_PsychiatricHospital") then
---~ 		return
---~ 	end
-
---~ 	-- Local is faster than global
---~ 	local TGetID = TGetID
-
---~ 	-- Slight delay needed
---~ 	CreateRealTimeThread(function()
---~ 		WaitMsg("OnRender")
-
---~ 		local content = Dialogs.Infopanel.idContent
---~ 		for i = 1, #content do
---~ 			local section = content[i]
---~ 			if TGetID(section.RolloverText) == 257506711483--[[Select a trait that is affected by this building.]]
---~ 			then
---~ 				section.FoldWhenHidden = true
---~ 				section:SetVisible(false)
---~ 				break
---~ 			end
---~ 		end
---~ 	end)
---~ end
