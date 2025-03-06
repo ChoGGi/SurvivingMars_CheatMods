@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2163750555",
 	"pops_any_uuid", "0876037c-42bf-4f8a-8939-36638ba10a62",
 	"lua_revision", 1007000, -- Picard
-	"version", 19,
-	"version_major", 1,
-	"version_minor", 9,
+	"version", 20,
+	"version_major", 2,
+	"version_minor", 0,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -37,6 +37,7 @@ Photo Mode Toggle: Shift-F12
 Examine Object/Examine Object Radius: F4 / Shift-F4
 Refab Building (selected or hovered): Ctrl-R
 Set Speed: 1 2 3 4 5 (4/5 = *5/*10)
+Toggle Speeds: Shift-S
 Dialog options: 1 2 3 4 (on-screen question dialog with list of options)
 Cycle through different levels of opacity for resource icons: Ctrl-I
 Fill Selected Depot: Ctrl-F

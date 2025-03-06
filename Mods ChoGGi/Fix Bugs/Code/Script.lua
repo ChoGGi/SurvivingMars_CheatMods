@@ -68,6 +68,17 @@ local function ModOptions(id)
 	if UIColony and mod_UnevenTerrain then
 		FixUnevenTerrain()
 	end
+
+	if not mod_EnableMod then
+		return
+	end
+	-- Fix some strings (only Eng so far, I'll take other ones if you got 'em).
+	local tt = TranslationTable
+
+	if GetLanguage() == "English" then
+		tt[8390] = "This rocket is tasked with bringing construction materials for the Hydrogen 3 mining base being built on the Moon - Aldrin Base."
+	end
+
 end
 -- Load default/saved settings
 OnMsg.ModsReloaded = ModOptions

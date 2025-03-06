@@ -44,6 +44,47 @@ end
 
 local Actions = ChoGGi.Temp.Actions
 
+local game_speeds = {
+	pause = "play",
+	play = "medium",
+	medium = "fast",
+	fast = "faster",
+	faster = "fastest",
+	fastest = "pause",
+}
+Actions[#Actions+1] = {ActionName = T(0000, "ToggleSpeeds"),
+	ActionId = "ChoGGi.RebindHardcodedKeys.ToggleSpeeds",
+	OnAction = function()
+		-- Get current speed/next speed
+		local current = game_speeds[UISpeedState]
+		if current then
+			UISpeedState = current
+		else
+			UISpeedState = "play"
+		end
+		print(UISpeedState)
+		-- Get new speed from vars
+		local new_speed = 0
+		if UISpeedState == "play" then
+			new_speed = 1
+		elseif UISpeedState == "medium" then
+			new_speed = const.mediumGameSpeed
+		elseif UISpeedState == "fast" then
+			new_speed = const.fastGameSpeed
+		elseif UISpeedState == "faster" then
+			new_speed = const.fastGameSpeed * mod_SpeedFour
+		elseif UISpeedState == "fastest" then
+			new_speed = const.fastGameSpeed * mod_SpeedFive
+		end
+		-- Update speed
+		UIColony:SetGameSpeed(new_speed)
+	end,
+	ActionShortcut = "Shift-S",
+	replace_matching_id = true,
+	ActionBindable = true,
+	ActionMode = "Game",
+}
+
 Actions[#Actions+1] = {ActionName = T(302535920011668, "Set Speed 1"),
 	ActionId = "ChoGGi.RebindHardcodedKeys.SetSpeed1",
 	OnAction = function()

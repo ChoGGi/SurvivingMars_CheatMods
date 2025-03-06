@@ -1,3 +1,6 @@
+v8.4
+Fixed string 8390.
+
 v8.3
 The Man From Mars: Outcome 3: Let him be, whoever he is.
 None of the options reward anything, Morale is based on CustomOutcomeText and Morale stats from Outcome 2 (Thanks Dark Master).

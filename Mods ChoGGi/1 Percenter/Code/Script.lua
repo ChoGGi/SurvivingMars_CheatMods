@@ -5,7 +5,7 @@ function OnMsg.ClassesPostprocess()
 		return
 	end
 
-	PlaceObj('OnScreenNotificationPreset', {
+	PlaceObj("OnScreenNotificationPreset", {
 		ImagePreview = "UI/Icons/Notifications/placeholder.tga",
 		expiration = 150000,
 		fx_action = "UINotificationFunding",
@@ -27,10 +27,12 @@ function OnMsg.NewDay()
 	ChangeFunding(amount)
 
 	-- limit so we don't go neg
-	if funding > 1000000000000 or funding < 0 then
-		UIColony.funds.funding = 1000000000000
+	if funding > 82233720368 or funding < 0 then
+		UIColony.funds.funding = 82233720368
 	end
+	-- It's actually 92233720368, so I took off a bit for funding during current playthrough
 
+	-- Probably added this to clean up odd looking numbers
 	UIColony.funds.funding = floatfloor(UIColony.funds.funding)
 	UIColony.funds:ChangeFunding(1)
 
@@ -42,8 +44,8 @@ end
 
 local function StartupCode()
 	local funding = UIColony.funds.funding
-	if funding > 1000000000000 or funding < 0 then
-		UIColony.funds.funding = 1000000000000
+	if funding > 82233720368 or funding < 0 then
+		UIColony.funds.funding = 82233720368
 	end
 	UIColony.funds:ChangeFunding(1)
 end

@@ -59,6 +59,16 @@ if what_game == "Mars" then
 		-- might as well update this now (used to be in an OnMsg)
 		ChoGGi.Temp.UIScale = UIScale
 	end
+
+elseif what_game == "JA3" then
+	-- Log spam reduce from shortcuts in main menu
+	local ChoOrig_GetOperationsInSector = GetOperationsInSector
+	function GetOperationsInSector(...)
+		if gv_Sectors then
+			return ChoOrig_GetOperationsInSector(...)
+		end
+	end
+
 end
 
 -- Copied from GedPropEditors.lua. it's normally only called when GED is loaded, but we need it for the colour picker (among others)

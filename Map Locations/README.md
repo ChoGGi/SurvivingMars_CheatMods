@@ -31,7 +31,15 @@ GP BB-No PA: https://docs.google.com/spreadsheets/d/1JsRFTeraAUtGQ-KTurGfZTRoYZ6
 
 #### Tools that use this data:
 
+https://www.survivingmaps.space/
+
+https://surviving-maps.cc/
+
+https://github.com/Ocelloid/surviving-maps-3d
+
 https://github.com/Jeutnarg/survivingmars_map_filter
+
+https://github.com/CasuallyCorporate/Surviving-Maps-CC
 
 https://github.com/trickster-is-weak/Surviving-Maps
 

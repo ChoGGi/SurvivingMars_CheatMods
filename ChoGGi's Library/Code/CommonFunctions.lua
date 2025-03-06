@@ -399,7 +399,9 @@ do -- RetName
 						-- we get _G later
 						if value ~= g then
 							for key2, value2 in pairs(value) do
-								AddFuncToList(key, value2, "dbg_reg()."..key2)
+								if type(key) ~= "number" then
+									AddFuncToList(key2, value2, key)
+								end
 							end
 						end
 					end

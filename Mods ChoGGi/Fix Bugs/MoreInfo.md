@@ -6,6 +6,7 @@ See mod options to toggle certain fixes.
 **List of bugs fixed:**
 See below for more info about specific fixes:
 ```
+General bugs:
 Uneven terrain / Flatten tool (mod option to disable).
 Key binding certain buildings won't work when pressing the key (Power Switch/Pipe Valve).
 Add rocket sound effects to SupplyPods (mod option to disable).
@@ -40,7 +41,7 @@ Marsgate blank transportation panel in CCC after a certain point in mystery.
 St. Elmo's Fire: Stop meteoroids from destroying sinkholes.
 The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
 
-B&B
+B&B:
 Unlock Artificial Sun for refabbing.
 Too much Cave-in rubble will cause lag when new rubble tries to spawn.
 Elevator func not checking for invalid resources.
@@ -55,6 +56,12 @@ Mona Lisa Underground Rare Anomaly gives you underground dome prefabs, but locks
 Mona Lisa Underground Rare Anomaly if using Paradox and you pick Shuttle Hubs, it doesn't give Jumper Hubs.
 Unpassable underground rocks stuck in path (not cave-in rubble, but small rocks you can't select).
 Water Reclamation Spire and B&B upgrade tech caused issues.
+
+Strings (mispeelings or not good grammer):
+8390
+
+Actual strings not included as there could be spoilers, so only ids (mostly useful for me).
+Additions are welcome in any language.
 ```
 
 **Mod bug fixes**:

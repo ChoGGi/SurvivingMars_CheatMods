@@ -248,13 +248,3 @@ CreateRealTimeThread(function()
 	end
 
 end)
-
-if ChoGGi.what_game == "JA3" then
-	-- Log spam reduce from shortcuts in main menu
-	local ChoOrig_GetOperationsInSector = GetOperationsInSector
-	function GetOperationsInSector(...)
-		if gv_Sectors then
-			return ChoOrig_GetOperationsInSector(...)
-		end
-	end
-end

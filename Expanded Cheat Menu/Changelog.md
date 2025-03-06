@@ -17,7 +17,7 @@
 - ECM.Debug.Storybits>Toggle Story Bit Log: Show Storybit info in console log, and extra info in g_StoryBitsLog.
 - ECM.Game.Interface.Toggle Use All Loading Screens: Some DLC replaces loading screens with their own, enable to use all of them.
 - ECM.Debug.Toggles>Show Console Errors: Show extra debug errors in console.
- - This was already part of ECM and enabled by default, it's turned off by default now.
+	- This was already part of ECM and enabled by default, it's turned off by default now.
 
 ### Changed:
 - Object Cloner no longer centres in a hex.
@@ -44,13 +44,13 @@
 ## v19.2 (4 Aug 2024)
 ### Added:
 - Menu>Debug>Toggle Missing Mods Message (it's been around as a setting to manually change).
- - Use to get rid of "This savegame was loaded in the past without required mods or with an incompatible game version."
+	- Use to get rid of "This savegame was loaded in the past without required mods or with an incompatible game version."
 
 ### Changed:
 - Menu>Cheats>Unlock Achievements will show DLC achievements (missing descriptions).
 - Renamed Toggle Building Grid Position to Toggle Mouse Grid Position.
 - Moved items in Menu>Game>UI to Menu>Game>Interface.
- - Also renamed some items in the menu.
+	- Also renamed some items in the menu.
 - Added msg to missing mod dialog box showing how to disable it.
 - ExportMapDataToCSV uses 13 instead of 12 breakthroughs.
 - Added Tool tips to Menu>Game>UI>UI Transparency.
@@ -467,8 +467,8 @@
 ### Changed:
 - Mod Upload temporarily swaps \n with \<br\> for paradox upload (thanks LukeH).
 - Examine:
-- > table/func/userdata/thread objs in tables will now use the key name for the title if there's no proper name.
-- > Index tables try to show the name of valid objs (instead of class name).
+	- table/func/userdata/thread objs in tables will now use the key name for the title if there's no proper name.
+	- Index tables try to show the name of valid objs (instead of class name).
 
 ### Fixed:
 Issue with BuildableHexGrid.
@@ -499,14 +499,14 @@ Issue with BuildableHexGrid.
 - Removed cheat capacity limit on storage depots.
 - WorkAuto cheats don't remove the workers anymore.
 - Examining a "str" obj that turns out to be a func will show the results instead of the func.
-- > You can also pass args along with the ex(obj, "str", title, varargs)
+	- You can also pass args along with the ex(obj, "str", title, varargs)
 
 ### Fixed:
 - Hopefully fixed Xbox not saving options at firstrun.
 - Image Viewer export works better (tries for .dds if no .tga).
 - Deletes any objs above the map limit (the game will crash and delete your save).
 - If Profile folder\hpk.exe exists then Mod Upload func will use it instead of AsyncPack
-- > AsyncPack() == Crash if called more than once per session.
+	- AsyncPack() == Crash if called more than once per session.
 
 ## v14.1 (8 July 2019)
 ### Changed:
@@ -516,9 +516,9 @@ Issue with BuildableHexGrid.
 - Moved Capacity to Buildings.
 - Moved School/Uni/San to Training Buildings.
 - Examine:
-- > Added Child checkbox: Examine all objs in a single child dlg.
-- > Clear Button works with lines and other stuff added.
-- > Some toolbar buttons showed up at the wrong time.
+	- Added Child checkbox: Examine all objs in a single child dlg.
+	- Clear Button works with lines and other stuff added.
+	- Some toolbar buttons showed up at the wrong time.
 
 ## v14.0 (18 June 2019)
 ### Changed:
@@ -594,8 +594,8 @@ Issue with BuildableHexGrid.
 ## v13.4 (15 May 2019)
 ### Added:
 - Menu>Cheats>Consts:
-- > Lists all the Consts settings (for any I haven't added to a menu).
-- > Any Consts changed will override ones that have been added to a (non-Consts) menu.
+	- Lists all the Consts settings (for any I haven't added to a menu).
+	- Any Consts changed will override ones that have been added to a (non-Consts) menu.
 - Console>Settings>Skip Undefined Globals: Stop the "Attempt to use an undefined global" msgs (it'll store a list of them you can check).
 - Cheats>Lightning Strike: Same as a strike from a dust storm.
 - Cheats>Research>Unlock Anomaly BreakThroughs: Unlock any breakthroughs in anomalies (not planetary ones).
@@ -627,10 +627,10 @@ Issue with BuildableHexGrid.
 - Lakes>Cheats pane>Volume Plus/Minus 5%.
 - Re-Added Framerate Counter Location: Reposition the FPS counter (enable from in-game options).
 - Examine>Context menu (functions)>Function Results: Continually call a function while showing results in an examine dialog.
-- > Call it manually with MonitorFunc(func_obj,params).
-- > Examples:
-- > MonitorFunc(RealTime)
-- > MonitorFunc(XShortcutsTarget.GetActionsMode,XShortcutsTarget)
+	- Call it manually with MonitorFunc(func_obj,params).
+	- Examples:
+	- MonitorFunc(RealTime)
+	- MonitorFunc(XShortcutsTarget.GetActionsMode,XShortcutsTarget)
 
 ### Changed:
 - Cleaned up class names, so ~_G.ChoGGi_* looks cleaner.
@@ -645,22 +645,22 @@ Issue with BuildableHexGrid.
 - Renamed Force Story Bits to Test Story Bits.
 - Added DroneTimeToWorkOnLandscapeMultiplier to ECM>Drones>Drone Build Speed.
 - Menu items to use the default ECM icon instead of something maybe vaguely related:
-- > Easier to distinguish between notifications from ECM and from SM.
+	- Easier to distinguish between notifications from ECM and from SM.
 - Console:
-- > ~obj will show all results instead of only the first one (in a table).
-- > Right-clicking history or scripts will paste the code into the console.
+	- ~obj will show all results instead of only the first one (in a table).
+	- Right-clicking history or scripts will paste the code into the console.
 - Console Window:
-- > Added a Clipboard button (copies log to clipboard).
-- > Text is now selectable (also removed Copy Log Text).
+	- Added a Clipboard button (copies log to clipboard).
+	- Text is now selectable (also removed Copy Log Text).
 - Examine:
-- > It'll try to list files in mount points (ie: ~"Textures" or ~"Prefabs"), needs the HelperMod installed.
-- > The X close button now checks if Ctrl or Shift is being held down (see tooltip for more info).
-- > Merged View/Dump menu items in Tools.
-- > Added Dist2D len to index tables of points (context menu tooltip).
-- > "All" checkbox wasn't parsing ._index for metatables.
-- > Entity Spots now adds the surf/surf_hash values.
-- > Added a SafeExamine func to Examine dlgs:
-- > > If you find something examine fails to examine please let me know what it is.
+	- It'll try to list files in mount points (ie: ~"Textures" or ~"Prefabs"), needs the HelperMod installed.
+	- The X close button now checks if Ctrl or Shift is being held down (see tooltip for more info).
+	- Merged View/Dump menu items in Tools.
+	- Added Dist2D len to index tables of points (context menu tooltip).
+	- "All" checkbox wasn't parsing ._index for metatables.
+	- Entity Spots now adds the surf/surf_hash values.
+	- Added a SafeExamine func to Examine dlgs:
+	- > If you find something examine fails to examine please let me know what it is.
 
 ### Fixed:
 - Auto Unpin Object could freeze the game (thanks ronrn).
@@ -673,15 +673,15 @@ Issue with BuildableHexGrid.
 - Force Story Bits: Rover/Drone/Selected checkboxes didn't work properly.
 - Fixed the [UI WARNING] Assigning window id error (thanks McKaby).
 - Examine:
-- > It wasn't showing entity info it should be.
-- > Missing the metatable for BaseSocket (as well as showing a blank list).
-- > Object>Entity Spots Toggle wasn't keeping spots properly.
+	- It wasn't showing entity info it should be.
+	- Missing the metatable for BaseSocket (as well as showing a blank list).
+	- Object>Entity Spots Toggle wasn't keeping spots properly.
 
 ### Removed:
 - Game>Light Model Custom: Use the Mod Editor's editor.
 - Ctrl-Shift-Space: Merged into Ctrl-Space (selection overrides last built).
 - HelperMod: You can get it from [Github](https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods%20ChoGGi/Startup%20HelperMod)
-- > I'm also going to be uploading ECM/Lib as packed mods for steam.
+	- I'm also going to be uploading ECM/Lib as packed mods for steam.
 
 ## v13.3 (30 Mar 2019)
 ### Added:
@@ -696,26 +696,26 @@ Issue with BuildableHexGrid.
 - Examine: Added value type to tooltip title.
 - Updated the Monitor Threads/Tables funcs to use the auto-refresh delay of the examine dialog.
 - rawget doesn't work like it should for users without HelperMod, so I disabled the "Attempt to use an undefined global" "error".
-- > Otherwise ECM will spam the console log (it'll still print the msg, just not as an error).
+	- Otherwise ECM will spam the console log (it'll still print the msg, just not as an error).
 
 ### Fixed:
 - ECM was breaking saving functions in the mod editor.
 - Find Value didn't work with strings containing %.
 - Examine:
-- > Context menu: Switched from using periods to brackets for stuff with . and such in the key.
-- > Crash when examining objects using the "InvisibleObject" entity.
+	- Context menu: Switched from using periods to brackets for stuff with . and such in the key.
+	- Crash when examining objects using the "InvisibleObject" entity.
 
 ## v13.2 (17 Mar 2019)
 ### Added:
 - Preliminary Xbox Support (thanks to Gnith for testing).
-- > Certain stuff had to be disabled (the editor crashes the game, so no terrain editing).
-- > Examine and console buttons don't work, and reading the file log probably is a no-go.
+	- Certain stuff had to be disabled (the editor crashes the game, so no terrain editing).
+	- Examine and console buttons don't work, and reading the file log probably is a no-go.
 
 ## v13.1 (15 Mar 2019)
 ### Changed:
 - I cleaned up the console output too much last update.
 - Examine:
-- > Cleaned up the Entity Spots Toggle to separate the autoattach items better (no more massive dome text).
+	- Cleaned up the Entity Spots Toggle to separate the autoattach items better (no more massive dome text).
 
 ### Fixed:
 - Examine>Objects>Hex Spots Toggle broke.
@@ -727,12 +727,12 @@ Issue with BuildableHexGrid.
 - Entity Spots now returns a proper looking .ent file (as well as showing states).
 - Hides Cheats menu quickbar when there's no items (for the OCD annoyed by that small white square).
 - Examine:
-- > Added Toolbar>Toggle Objlist: Toggle setting the metatable for this table to an objlist (for using mark/delete all).
-- > Added a Skip Clear to the Object>Toggle funcs: Instead of removing info objs each time this will leave them.
-- > Added to Context menu: Clipboard, Number Double/Halve, Boolean Toggle/To Table.
-- > Objects menu will show up as long as it's a valid entity (IsValid doesn't work for some attachments).
-- > Added more entries to Get Mat Props, also added sub materials.
-- > Any string item with an image string in it will be displayed in the context menu tooltip.
+	- Added Toolbar>Toggle Objlist: Toggle setting the metatable for this table to an objlist (for using mark/delete all).
+	- Added a Skip Clear to the Object>Toggle funcs: Instead of removing info objs each time this will leave them.
+	- Added to Context menu: Clipboard, Number Double/Halve, Boolean Toggle/To Table.
+	- Objects menu will show up as long as it's a valid entity (IsValid doesn't work for some attachments).
+	- Added more entries to Get Mat Props, also added sub materials.
+	- Any string item with an image string in it will be displayed in the context menu tooltip.
 
 ### Fixed:
 - Test Locale File would freeze on certain malformed strings (same as SM does).
@@ -740,15 +740,15 @@ Issue with BuildableHexGrid.
 - Debug>Force Story Bits works properly now.
 - Cleaned up the console prints happening since last update.
 - Examine:
-- > Tools>Functions failed on some objects.
-- > Colonists use a different func to get the entity, so it now shows that (instead of "Male" for everyone).
-- > It didn't check extra args for properness (sending it a func call that returned a bunch of args caused issues).
+	- Tools>Functions failed on some objects.
+	- Colonists use a different func to get the entity, so it now shows that (instead of "Male" for everyone).
+	- It didn't check extra args for properness (sending it a func call that returned a bunch of args caused issues).
 
 ## v12.9 (10 Mar 2019)
 ### Added:
 - Game>Terrain Texture Remap: Instead of replacing all textures with one then re-adding stuff, this will remap existing textures.
 - Console>Tools>Examine Errors: Open (some) errors in an examine dialog (shows stack trace and sometimes a thread).
-- > Useful if you want to use "Errors In Console" without the log showing.
+	- Useful if you want to use "Errors In Console" without the log showing.
 - Debug>Test Locale File: Test a CSV for malformed strings (which may cause freezing when loaded normally).
 - Debug>Used Terrain Textures: Show a list of terrain textures used in current map.
 
@@ -759,25 +759,25 @@ Issue with BuildableHexGrid.
 - Re-added Pack option to mod upload with a warning that it'll sometimes crash SM for no reason.
 - Shift-F4/Ctrl-F4 doesn't return attachments to objects in list.
 - Examine:
-- > The list now shows "rawer" text, the fancy images/colours text is now shown in the tooltip.
-- > Added entity name to objects with one.
-- > Cleaned up Set Particles: No more dupes, and should hpoefully be better at turning them off
-- > Attach Spots Toggle now shows the pos offset from origin, instead of world pos.
-- > Added ExamineColourBoolFalse setting for false boolean to distinguish from true (green).
-- > Added a "Generate .mtl" link to Object>Materials Properties (it doesn't have all the prop names yet).
-- > Added Mark All Objects (Line) button: When examining an objlist of objs/points will show a line connecting them all.
-- > Added a Material Properties option to the context menu.
-- > If examine fails to parse the text, it'll show it in a text box.
+	- The list now shows "rawer" text, the fancy images/colours text is now shown in the tooltip.
+	- Added entity name to objects with one.
+	- Cleaned up Set Particles: No more dupes, and should hpoefully be better at turning them off
+	- Attach Spots Toggle now shows the pos offset from origin, instead of world pos.
+	- Added ExamineColourBoolFalse setting for false boolean to distinguish from true (green).
+	- Added a "Generate .mtl" link to Object>Materials Properties (it doesn't have all the prop names yet).
+	- Added Mark All Objects (Line) button: When examining an objlist of objs/points will show a line connecting them all.
+	- Added a Material Properties option to the context menu.
+	- If examine fails to parse the text, it'll show it in a text box.
 
 ### Fixed:
 - Terrain Texture Change was hiding waste sites.
 - Colonists names were only displaying the first name.
 - Examine:
-- > The search box will now search the entire line instead of chunks of it.
-- > Toggle Attach Spots didn't always add the polyline to chains.
-- > View Text: Broke scrolling when I removed the * from the text.
-- > Context Menu>print func params was giving an error msg.
-- > Object>Material Properties was returning all entities instead of just the one.
+	- The search box will now search the entire line instead of chunks of it.
+	- Toggle Attach Spots didn't always add the polyline to chains.
+	- View Text: Broke scrolling when I removed the * from the text.
+	- Context Menu>print func params was giving an error msg.
+	- Object>Material Properties was returning all entities instead of just the one.
 
 ## v12.8 (6 Mar 2019)
 ### Changed:
@@ -785,8 +785,8 @@ Issue with BuildableHexGrid.
 
 ### Fixed:
 - Examine:
-- > The search box will now search the entire line instead of chunks of it.
-- > Toggle Attach Spots didn't always add the polyline to chains.
+	- The search box will now search the entire line instead of chunks of it.
+	- Toggle Attach Spots didn't always add the polyline to chains.
 
 ### Removed:
 - Fixes>All Pipe Skins To Default: It wasn't the best code, and I'm pretty sure they fixed the bug with chrome pipes?
@@ -802,26 +802,26 @@ Issue with BuildableHexGrid.
 - Sped up Toggle Flight Grid so it's nice n smooth (it now also uses the follow grid size).
 - Sped up Building Info text.
 - Examine:
-- > Added Surfaces Toggle: Show a list of surfaces and draw lines over them (GetRelativeSurfaces).
-- > Attaches menu shows what object the attachment is attached to.
-- > Valid objects now show a bit more info and a link to the (cleaned up) paths.
-- > Made View Source button a clickable link
-- > Rearranged function info.
-- > Shows "params: ()" instead of zilch for funcs with no params.
-- > Now also hides any spheres/surface lines/spots added when closing (like with bbox/shapes).
-- > Objects menu is hidden for non-valid objects (some menuitems moved to Tools).
-- > Object>"Toggle" items now have a depth test checkbox.
-- > Object>Toggle Attach Spots is now a list that can be filtered with spot names (also a line for chains).
-- > Box objects with a valid position (1000 pt from border) now have a View BBox toggle.
-- > Spheres now have a limited number of colours to pick from (the pale/dark blended too much)
-- > The sphere colour changes each "update" (when you click the point or use mark object).
-- > Context menu can add/remove a print to funcs (only for the single func, it's not a class thing).
-- > Added a checkbox to Hex Shape Toggle to show the hex point pos: (-1,2).
-- > Added some more info to attaches.
+	- Added Surfaces Toggle: Show a list of surfaces and draw lines over them (GetRelativeSurfaces).
+	- Attaches menu shows what object the attachment is attached to.
+	- Valid objects now show a bit more info and a link to the (cleaned up) paths.
+	- Made View Source button a clickable link
+	- Rearranged function info.
+	- Shows "params: ()" instead of zilch for funcs with no params.
+	- Now also hides any spheres/surface lines/spots added when closing (like with bbox/shapes).
+	- Objects menu is hidden for non-valid objects (some menuitems moved to Tools).
+	- Object>"Toggle" items now have a depth test checkbox.
+	- Object>Toggle Attach Spots is now a list that can be filtered with spot names (also a line for chains).
+	- Box objects with a valid position (1000 pt from border) now have a View BBox toggle.
+	- Spheres now have a limited number of colours to pick from (the pale/dark blended too much)
+	- The sphere colour changes each "update" (when you click the point or use mark object).
+	- Context menu can add/remove a print to funcs (only for the single func, it's not a class thing).
+	- Added a checkbox to Hex Shape Toggle to show the hex point pos: (-1,2).
+	- Added some more info to attaches.
 - Console:
-- > Added a new menu "Tools".
-- > Moved some stuff from Settings and Examine to Tools.
-- > Added Tools>Monitor Func Calls: Collects a list of func calls from "@AppData/Mods/".
+	- Added a new menu "Tools".
+	- Moved some stuff from Settings and Examine to Tools.
+	- Added Tools>Monitor Func Calls: Collects a list of func calls from "@AppData/Mods/".
 
 ### Fixed:
 - Examining "_G" and closing the examine dlg would spam the log.
@@ -842,8 +842,8 @@ Issue with BuildableHexGrid.
 ### Changed:
 - Image Viewer uses a checkered background instead of the invisible one.
 - Examine:
-- > Clear button now first clears spheres from examined object, then clears all on the map.
-- > Added context menu to table items.
+	- Clear button now first clears spheres from examined object, then clears all on the map.
+	- Added context menu to table items.
 
 ### Fixed:
 - Examine titlebar sometimes got stuck as red.
@@ -862,18 +862,18 @@ Issue with BuildableHexGrid.
 - Added a console input box to Console Log Window (and renamed it to Console Window).
 - Image Viewer shows "names" now, and removes dupes.
 - Renamed Menu>Expanded CM to ECM:
-- > if you're missing some quickbar buttons, open up AppData\LocalStorage.lua and look for ToolbarItems.
+	- if you're missing some quickbar buttons, open up AppData\LocalStorage.lua and look for ToolbarItems.
 - Examine:
-- > Added a View Source toolbar button for Lua functions (only works decently on source from mods/HG github code).
-- > Added Object>Hex Shape Toggle: Like bbox, but it shows hex spot markers (use with Attach Spots Toggle).
-- > Added Object>Entity Surfaces: Shows list of surfaces for the object entity.
-- > Added some more options to BBox Toggle.
-- > Added tooltips to "hyperlinks".
-- > Stick the HG code in AppData/Source (see button tooltip for more info).
-- > Skips showing some thread info if it isn't a valid thread.
-- > Instead of changing focus to an already opened examine dialog, it'll now flash the titlebar red.
-- > Removes any placed bbox, hex shapes, and spot names when the dialog is closed.
-- > Changed some of the "Flags" list to be toggleable.
+	- Added a View Source toolbar button for Lua functions (only works decently on source from mods/HG github code).
+	- Added Object>Hex Shape Toggle: Like bbox, but it shows hex spot markers (use with Attach Spots Toggle).
+	- Added Object>Entity Surfaces: Shows list of surfaces for the object entity.
+	- Added some more options to BBox Toggle.
+	- Added tooltips to "hyperlinks".
+	- Stick the HG code in AppData/Source (see button tooltip for more info).
+	- Skips showing some thread info if it isn't a valid thread.
+	- Instead of changing focus to an already opened examine dialog, it'll now flash the titlebar red.
+	- Removes any placed bbox, hex shapes, and spot names when the dialog is closed.
+	- Changed some of the "Flags" list to be toggleable.
 
 ### Fixed:
 - Delete Object didn't work with filled Mech Depots (thanks FirstGeekDanny).
@@ -895,14 +895,14 @@ Issue with BuildableHexGrid.
 - Find Within uses one dialog for results (instead of a new one each time).
 - Errors In Console shows stacktrace along with error.
 - Examine:
-- > Slightly increased the delay when using flash ui.
-- > Added an exec code one liner text input, and a checkbox to toggle visibility of it.
-- > Coloured values (you can change them in the settings file, or change them back to white if that's your thing).
-- > Added particle name to ParSystem objects.
-- > Changed around how threads are displayed (upvalue/local in same examine).
-- > Shows obj type in titlebar.
-- > Refresh wasn't clearing out the hyperlink table (not good on something like `_G`).
-- > EnumVars now acts like the "All" checkbox (added a link to the older way next to metatable).
+	- Slightly increased the delay when using flash ui.
+	- Added an exec code one liner text input, and a checkbox to toggle visibility of it.
+	- Coloured values (you can change them in the settings file, or change them back to white if that's your thing).
+	- Added particle name to ParSystem objects.
+	- Changed around how threads are displayed (upvalue/local in same examine).
+	- Shows obj type in titlebar.
+	- Refresh wasn't clearing out the hyperlink table (not good on something like `_G`).
+	- EnumVars now acts like the "All" checkbox (added a link to the older way next to metatable).
 
 ### Fixed:
 - Cheats panel was using water instead of oxygen icons for oxygen need/free.
@@ -916,8 +916,8 @@ Issue with BuildableHexGrid.
 
 ### Fixed:
 - Examine:
-- > Delete object button didn't always show up when it should.
-- > Clicking some (valid) objects would move the camera instead of examining them.
+	- Delete object button didn't always show up when it should.
+	- Clicking some (valid) objects would move the camera instead of examining them.
 
 ## v12.1 (25 Jan 2019)
 ### Added:
@@ -936,14 +936,14 @@ Issue with BuildableHexGrid.
 
 ### Changed:
 - Examine:
-- > Auto-refresh delay isn't stored as a global setting anymore.
-- > Hyperlinks sometimes barfed on weird text, it now checks if there's an actual link.
+	- Auto-refresh delay isn't stored as a global setting anymore.
+	- Hyperlinks sometimes barfed on weird text, it now checks if there's an actual link.
 - Console Log Window starts scrolled to the bottom when opened.
 - Console/Console Log moved above the editor status/button area.
 - Toggle interface asks if you're sure and displays the shortcut to toggle it.
 - Cheat menu:
-- > Quickbar no longer takes up the length of the menu.
-- > Question box is now centred instead of stuck on the left side.
+	- Quickbar no longer takes up the length of the menu.
+	- Question box is now centred instead of stuck on the left side.
 
 ### Fixed:
 - Having Console Log Window showing with the helpermod caused issues on startup (thanks SkiRich).
@@ -966,9 +966,9 @@ Issue with BuildableHexGrid.
 - RC Transport Storage Capacity renamed to RC Storage Capacity (RC Constructors).
 - Unlock all buildings is now Toggle Unlock All Buildings.
 - Examine:
-- > Moved Next to the go to text area, and renamed it to Search.
-- > Moved Color Modifier from Object to Tools.
-- > Object>Image Viewer now lists all textures/images used by object.
+	- Moved Next to the go to text area, and renamed it to Search.
+	- Moved Color Modifier from Object to Tools.
+	- Object>Image Viewer now lists all textures/images used by object.
 
 ### Fixed:
 - Messed up a string in Material Properties, and borked it.
@@ -977,8 +977,8 @@ Issue with BuildableHexGrid.
 - Typing a space in console was being ignored.
 - I borked Object Editor last update.
 - Examine:
-- > View Text will scroll to the proper line now (and highlight for a bonus).
-- > View Text/Dump Text will now show <text>.
+	- View Text will scroll to the proper line now (and highlight for a bonus).
+	- View Text/Dump Text will now show <text>.
 
 ### Removed:
 - RC Rover Drone Recharge Free: They don't use batteries anymore...
@@ -991,14 +991,14 @@ Issue with BuildableHexGrid.
 - Reworked Material Properties again.
 - Cheats>Mod Editor mod list sorted by title instead of id.
 - Examine:
-- > Tools>Image Viewer tells you if it didn't find any images.
-- > Added Object>BBox Toggle: Toggle showing object's bbox (changes depending on movement).
-- > Renamed UI Click To Select to Examine (that's what it does after all).
-- > UI Click To Examine no longer "freezes" UI so it should make selection easier.
-- > Clicking a point in the main menu will examine it instead of trying to move the camera to it.
-- > Changed what shows up for some of the userdata objects.
-- > Object>Object Flags renamed to Flags, and now supports TaskRequest flags.
-- > Stopped showing some toolbar buttons when we don't need to.
+	- Tools>Image Viewer tells you if it didn't find any images.
+	- Added Object>BBox Toggle: Toggle showing object's bbox (changes depending on movement).
+	- Renamed UI Click To Select to Examine (that's what it does after all).
+	- UI Click To Examine no longer "freezes" UI so it should make selection easier.
+	- Clicking a point in the main menu will examine it instead of trying to move the camera to it.
+	- Changed what shows up for some of the userdata objects.
+	- Object>Object Flags renamed to Flags, and now supports TaskRequest flags.
+	- Stopped showing some toolbar buttons when we don't need to.
 
 ### Fixed:
 - Looks like I missed a reference and Examine>Delete Object didn't work on XWindows.
@@ -1009,13 +1009,13 @@ Issue with BuildableHexGrid.
 ## v11.7 (10 Dec 2018)
 ### Changed:
 - Examine:
-- > Tools>Append Dump: Append text to same file, or create a new file each time.
-- > Made Dump Object dump more info for xwindow objects.
-- > No longer shows ,0 for point objects without a z.
-- > Cleaned up info for function objects.
-- > Added an Image Viewer to the Tools menu, useful in conjunction with Material Properties.
-- >> For now it just checks for dds, tga, png, jpg.
-- >> From console you can use imageview(image).
+	- Tools>Append Dump: Append text to same file, or create a new file each time.
+	- Made Dump Object dump more info for xwindow objects.
+	- No longer shows ,0 for point objects without a z.
+	- Cleaned up info for function objects.
+	- Added an Image Viewer to the Tools menu, useful in conjunction with Material Properties.
+	-> For now it just checks for dds, tga, png, jpg.
+	-> From console you can use imageview(image).
 - Improved Material Properties (no more dupes, and if only one table displays directly).
 - Added an "Are you sure" to bug report.
 - Defaults to not showing the console log, welcome msg now asks if you want to show log.
@@ -1043,8 +1043,8 @@ Issue with BuildableHexGrid.
 - Renamed Object Spawner to Entity Spawner.
 - Moved Export CSV from Debug to Game, and added a new export option for graph data.
 - Examine:
-- > Moved a bunch of the object funcs from the Tools to the Object menu.
-- > Move the props toolbar buttons to the Object Menu.
+	- Moved a bunch of the object funcs from the Tools to the Object menu.
+	- Move the props toolbar buttons to the Object Menu.
 
 ### Fixed:
 - Trying to examine DroneResourceUnits failed miserably.
@@ -1088,10 +1088,10 @@ Issue with BuildableHexGrid.
 - The Incal is the new background image for the onscreen msgs.
 - Clicking the toolbar icon in examine will move the camera to the object.
 - Exec Code:
-- > Added code highlighter plugin.
-- > Added External Editor button (press to toggle updating).
-- > By default it uses notepad, you'll need to manually change UserSettings.ExternalEditorCmd for your editor.
-- > It should support any OS, since it calls os.execute(cmd).
+	- Added code highlighter plugin.
+	- Added External Editor button (press to toggle updating).
+	- By default it uses notepad, you'll need to manually change UserSettings.ExternalEditorCmd for your editor.
+	- It should support any OS, since it calls os.execute(cmd).
 
 ### Fixed:
 - Colour Modifier: All of type didn't work on new markers.
@@ -1108,9 +1108,9 @@ Issue with BuildableHexGrid.
 - Moved Drone Type from Mission to Drones (not sure why I put it there).
 - Made Add Prefabs skip stuff that doesn't "prefab".
 - Examine:
-- > Attaches menu was clearing out colours from Colour Modifier.
-- > Reworked the go to text/next button: it's no longer find as you type, see tooltips for more info.
-- > Right-click Auto-Refresh to change update delay.
+	- Attaches menu was clearing out colours from Colour Modifier.
+	- Reworked the go to text/next button: it's no longer find as you type, see tooltips for more info.
+	- Right-click Auto-Refresh to change update delay.
 - Added a pack mod option to mod upload.
 
 ## v10.9 (20 Nov 2018)
@@ -1134,11 +1134,11 @@ Issue with BuildableHexGrid.
 
 ## v10.8 (18 Nov 2018)
 - Settings have been migrated from AccountStorage to LocalStorage.
-- > If for some reason your settings are not migrated over, send me a msg.
-- > You can manually edit with: notepad "%AppData%\Surviving Mars\LocalStorage.lua"
-- > You can still edit the usual way (Help>ECM>Edit Settings).
-- > This does mean settings will not be accessible across different computers.
-- > Anyone using the HelperMod with ECM will not notice any difference.
+	- If for some reason your settings are not migrated over, send me a msg.
+	- You can manually edit with: notepad "%AppData%\Surviving Mars\LocalStorage.lua"
+	- You can still edit the usual way (Help>ECM>Edit Settings).
+	- This does mean settings will not be accessible across different computers.
+	- Anyone using the HelperMod with ECM will not notice any difference.
 
 ### Added:
 - Mission>Drone Type: Change what type of drones will spawn (doesn't affect existing).
@@ -1149,8 +1149,8 @@ Issue with BuildableHexGrid.
 - Change Amount of Drones in Hub: Now works with any drone controller (also changed Dismantle to Pack Drones).
 - Prefab Buildings now lists almost all buildings.
 - Cheats panel:
-- > Added some icons to it (suggestions?).
-- > Changed it to show on mouseclick (instead of mouseover).
+	- Added some icons to it (suggestions?).
+	- Changed it to show on mouseclick (instead of mouseover).
 - More controls visible when in Editor Mode.
 
 ### Fixed:
@@ -1187,16 +1187,16 @@ Issue with BuildableHexGrid.
 - A "Disable ECM" key binding if you used the Disable ECM option.
 - Re-added Help>Interface>Toggle Signs: If CheatsEnabled() returned false then it didn't work (not sure why devs think it's a cheat).
 - Examine:
-- > Toolbar button: Get all properties: Queries obj:GetProperties() and lists the values.
-- > Checkbox: Show all values: Gets all the metatable names and shows the values of those for the object.
+	- Toolbar button: Get all properties: Queries obj:GetProperties() and lists the values.
+	- Checkbox: Show all values: Gets all the metatable names and shows the values of those for the object.
 
 ### Changed:
 - Camera goes back to same position when toggling Free Camera/Follow Camera.
 - Unlock All Buildings now updates categories as well as items (assuming build menu is visible).
 - Write Logs option now prefixes name of func.
 - Examine>Find Value:
-- > Added more names to returned list (parent/key name).
-- > Searches translated userdata.
+	- Added more names to returned list (parent/key name).
+	- Searches translated userdata.
 
 ### Fixed:
 - More Gagarin compatibility.
@@ -1285,8 +1285,8 @@ Issue with BuildableHexGrid.
 - Removed battery cheats from rover Cheats pane (game freezes when used).
 - Close Dialogs wasn't working.
 - Cheats pane:
-- > Quick build didn't have a tooltip.
-- > RandomAge would sometimes freeze the game (thanks Encei).
+	- Quick build didn't have a tooltip.
+	- RandomAge would sometimes freeze the game (thanks Encei).
 
 ## v9.8 (12 Oct 2018)
 ### Changed:
@@ -1318,8 +1318,8 @@ Issue with BuildableHexGrid.
 - Added mapdata setting options to Disasters.
 - Slight random delay added to missiles/strikes (you can do as many as you want without it getting crazy laggy, just in case you want to watch a missile storm or something).
 - Mod Upload will now also check for AppData/Mod Images/ModId_*.EXT (.png or .jpg), and upload those if found (ex: d16iXjT_5.png).
-- > Since the upload function will delete images on workshop without screenshots in moddef and without asking, I might as well...
-- > It also works with the "official" method of defining screenshots in your moddef.
+	- Since the upload function will delete images on workshop without screenshots in moddef and without asking, I might as well...
+	- It also works with the "official" method of defining screenshots in your moddef.
 
 ### Fixed:
 - Mystery Log skip was borked by Sagan (thanks Encei).
@@ -1384,8 +1384,8 @@ Issue with BuildableHexGrid.
 
 ### Changed:
 - Building Stats:
-- > The list doesn't show the number multiplied by a thousand anymore.
-- > You can now change buildings with stats that aren't services (residences, etc).
+	- The list doesn't show the number multiplied by a thousand anymore.
+	- You can now change buildings with stats that aren't services (residences, etc).
 
 ### Fixed:
 - Building Stats were being overridden by Martian Festivals (thanks hchsiao).
@@ -1397,7 +1397,7 @@ Issue with BuildableHexGrid.
 
 ### Changed:
 - Requires ChoGGi's Library:
-- > https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374
+	- https://steamcommunity.com/sharedfiles/filedetails/?id=1504386374
 - Dialog touch ups (colours, icons added).
 
 ### Fixed:
@@ -1408,14 +1408,14 @@ Issue with BuildableHexGrid.
 ## v8.7 (4 Sep 2018)
 ### Changed:
 - Build Spires Outside of Spire Point is now Remove Spire Point Limit.
-- > You can now build spires anywhere in domes.
+	- You can now build spires anywhere in domes.
 - Keys are now bindable in the options (if there's any menu items you want a shortcut for?).
 - Change Logo/Upload Mod shows image in hint.
 - Random Object Colour is more random.
 - Change Colour:
-- > Renamed to Color Modifier.
-- > Attachment list item will now show a blinky when you click something in the list.
-- > Object colour updates when you type in custom values (useful for Metallic/Roughness).
+	- Renamed to Color Modifier.
+	- Attachment list item will now show a blinky when you click something in the list.
+	- Object colour updates when you type in custom values (useful for Metallic/Roughness).
 - Research Tech only shows tech not researched.
 
 ### Fixed:
@@ -1434,13 +1434,13 @@ Issue with BuildableHexGrid.
 - Fix for freezing issue from mods sending a nil id to the onscreen notifications (Ambassadors mod).
 - Buildings>Service Building Stats: Change amount of comfort, time it takes, etc (gardens and so on).
 - Rockets
-- > Max Export Amount: Change how many rares per rocket you can export.
-- > Launch Fuel Per Rocket: Change how much fuel rockets need to launch.
-- > Rockets Ignore Fuel: Rockets don't need fuel to launch.
+	- Max Export Amount: Change how many rares per rocket you can export.
+	- Launch Fuel Per Rocket: Change how much fuel rockets need to launch.
+	- Rockets Ignore Fuel: Rockets don't need fuel to launch.
 - Buildings>Space Elevator
-- > Instant Export On Toggle: Toggle Forbid Exports to have it instantly export current stock.
-- > Export When This Amount: When you have this many rares in storage launch right away.
-- > Import/Export Amount Per Trip: How much cargo space/ How many rares per.
+	- Instant Export On Toggle: Toggle Forbid Exports to have it instantly export current stock.
+	- Export When This Amount: When you have this many rares in storage launch right away.
+	- Import/Export Amount Per Trip: How much cargo space/ How many rares per.
 
 ### Changed:
 - Cheats>Research>Add Points: Added option to reset sponsor points to default.
@@ -1455,8 +1455,8 @@ Issue with BuildableHexGrid.
 - Added icons to some lists (example: research tech).
 - Some lists just displayed <param1> in the tooltip since I was too lazy to get the actual value.
 - Examine:
-- > Examine UI Flash toggles visibility now (not everything works with borders).
-- > OpenExamine("object_name"): Will examine "_G.object_name" (table example: "table.table.object")
+	- Examine UI Flash toggles visibility now (not everything works with borders).
+	- OpenExamine("object_name"): Will examine "_G.object_name" (table example: "table.table.object")
 
 ### Fixed:
 - Rocket>Change Resupply Settings (thanks XxUnkn0wnxX).
@@ -1474,13 +1474,13 @@ Issue with BuildableHexGrid.
 ## v8.5 (26 Aug 2018)
 ### Added:
 - Added a bunch of new debug stuff in DA
-- > FPS Counter Location: Reposition the FPS counter.
-- > DTM Slots Display: Got me, loaded textures I suppose.
-- > Toggle Render: Shadows, objects, and such.
+	- FPS Counter Location: Reposition the FPS counter.
+	- DTM Slots Display: Got me, loaded textures I suppose.
+	- Toggle Render: Shadows, objects, and such.
 
 ### Changed:
 - Mod Upload now has support for packed mods (you need to manually pack them: ModFolder/Pack/ModContent.hpk).
-- > If they force only .hpk mods then I'll make it automagical.
+	- If they force only .hpk mods then I'll make it automagical.
 - Reset Rovers renamed to Reset Commanders (and it now takes the amount of drones into account).
 - Re-added Object Manipulator (Examine>Tools>Edit Obj or F5).
 - Building Info: Added "Outside Buildings" (just shows which grid they're connected to).
@@ -1497,7 +1497,7 @@ Issue with BuildableHexGrid.
 - Cheats>Anomaly Scanning (requested by Antipatiko).
 - Console>Examine: I used to create a folder with some commonly examined objects/funcs, now it's a list saved in settings (thanks blacklist...).
 - Console>Settings>Exec Code: The devs decided to add some brittleness when pasting text (-- for one).
-- > You can use this for pasting chunks of code without worry (might also be easier to work on stuff).
+	- You can use this for pasting chunks of code without worry (might also be easier to work on stuff).
 - Wrap Lines checkbox to my text edit dialogs (read globally).
 
 ### Changed:
@@ -1516,11 +1516,11 @@ Issue with BuildableHexGrid.
 ### Changed:
 - HelperMod not needed for normal usage of ECM (modders may still prefer using it).
 - To import your old settings:
-- > Go to %AppData%\Surviving Mars\Mods.
-- > Open CheatMenuModSettings.lua in a text editor.
-- > Go to Menu>ECM>Help>Edit ECM Settings
-- > Replace the settings with your settings, and press OK.
-- > Restart ECM to make sure settings are applied.
+	- Go to %AppData%\Surviving Mars\Mods.
+	- Open CheatMenuModSettings.lua in a text editor.
+	- Go to Menu>ECM>Help>Edit ECM Settings
+	- Replace the settings with your settings, and press OK.
+	- Restart ECM to make sure settings are applied.
 - Random Colour now also changes the Roughness/Metallic settings.
 - ECM dialogs will size based on UI scale.
 - Unlocked camera in Terrain Editor mode.
@@ -1586,14 +1586,14 @@ Please and thank you.
 - Changed some of the grid toggle shortcuts (changed F2 to squares and removed F3).
 - Delete Rocks now also removes all those little buggers (if it's too slow for you: let me know and I'll make it optional).
 #### Examine:
-- > Up/Down in Go to text scrolls to top/bottom (used to be just top).
-- > Attaches menu highlights objects.
-- > UI objects will now flash (like the ged window inspector, see Tools to disable).
+	- Up/Down in Go to text scrolls to top/bottom (used to be just top).
+	- Attaches menu highlights objects.
+	- UI objects will now flash (like the ged window inspector, see Tools to disable).
 #### Exec Code:
-- > Multi line text support.
-- > Now checks clipboard content before adding o.
+	- Multi line text support.
+	- Now checks clipboard content before adding o.
 #### List Dialog:
-- > Change Colour is now applied when you select a colour (default checkbox to reset).
+	- Change Colour is now applied when you select a colour (default checkbox to reset).
 
 ### Fixed:
 - God knows.
@@ -1614,8 +1614,8 @@ Please and thank you.
 - Added Metatron Ion Storm to Start Disasters.
 - Examine shows length of index based tables/objlists in caption.
 #### Path Markers:
-- > Destinations for every shuttle (hopefully).
-- > Game Time is default (ignored for Remove).
+	- Destinations for every shuttle (hopefully).
+	- Game Time is default (ignored for Remove).
 
 ### Fixed:
 - Problem with ECM and not having Mysteries DLC installed.
@@ -1672,8 +1672,8 @@ Please and thank you.
 - List dialogs now have a "Filter Text" box: Type text to have it only show those items, Enter to clear text.
 - Moved Delete All Rocks to Game from Debug.
 #### Examine:
-- > table (len:0) now shows "Data" if it's an associative table.
-- > Translated userdata now shows < "userdata" to let you know it isn't a string.
+	- table (len:0) now shows "Data" if it's an associative table.
+	- Translated userdata now shows < "userdata" to let you know it isn't a string.
 
 ### Fixed:
 - ECM would wig out if CheatMenuModSettings.lua was a blank file (thanks Royal Rudolf).
@@ -1813,14 +1813,14 @@ Please and thank you.
 - Changed the way I create dialogs, might be lingering issues.
 - Added more stuff to Monitor Info.
 #### Examine:
-- > Dialog is now above console log text.
-- > Moved most buttons into Tools menu.
-- > Added Parents button menu: examine parents/ancestors.
-- > Attaches is now a button menu as well.
-- > Dump Text/Obj now opens a text box.
-- > Right-click Next to scroll to top (useful on small items without a scrollbar).
-- > Filter Scroll now ignores case (no more need to Capitalise queries).
-- > Works with threads/functions again.
+	- Dialog is now above console log text.
+	- Moved most buttons into Tools menu.
+	- Added Parents button menu: examine parents/ancestors.
+	- Attaches is now a button menu as well.
+	- Dump Text/Obj now opens a text box.
+	- Right-click Next to scroll to top (useful on small items without a scrollbar).
+	- Filter Scroll now ignores case (no more need to Capitalise queries).
+	- Works with threads/functions again.
 
 ### Fixed:
 - I broke certain popups in 5.3.
@@ -1927,10 +1927,10 @@ Please and thank you.
 - If you have drones or resources in un-reachable spaces you can use this to move them :)
 
 #### Shuttles:
-- > Show Shuttle Controls: I've added controls to Shuttles/ShuttleHubs/Drones/RCs/Res depots, so you can pick and move them around, use this to hide the controls.
-- > Spawn Shuttle Attacker: Spawns an attacker at the nearest tower to you.
-- > Spawn Shuttle Friend: Spawns an friend at the nearest tower to you.
-- > Spawned Shuttles Recall: Recalls all spawned shuttles back to their towers.
+	- Show Shuttle Controls: I've added controls to Shuttles/ShuttleHubs/Drones/RCs/Res depots, so you can pick and move them around, use this to hide the controls.
+	- Spawn Shuttle Attacker: Spawns an attacker at the nearest tower to you.
+	- Spawn Shuttle Friend: Spawns an friend at the nearest tower to you.
+	- Spawned Shuttles Recall: Recalls all spawned shuttles back to their towers.
 
 ### Fixed:
 - Spawned shuttles work much better now.
@@ -2326,8 +2326,8 @@ Please and thank you.
 - Help>Interface>Never Show Hints (no need to see hints on a new game).
 
 #### Colonists will now use inside buildings that are outside (you need to have at least one dome placed), colonists will still use the dome.
-- > To get workplaces working; increase Outside Workplace Radius, and some of the buildings don't really work correctly (diner).
-- > Expect bugs: this isn't how the game is supposed to work...
+	- To get workplaces working; increase Outside Workplace Radius, and some of the buildings don't really work correctly (diner).
+	- Expect bugs: this isn't how the game is supposed to work...
 
 ## v2.5 (14 Apr 2018)
 ### Added:
@@ -2433,7 +2433,7 @@ Please and thank you.
 ### Known issues:
 - Doubling amount of placed waste rock storage adds rocks to it.
 - Increasing amount of storage in waste depot is ignored in already placed ones.
-- > Increase before placing or use CheatEmpty.
+	- Increase before placing or use CheatEmpty.
 
 ## v0.8 (2 Apr 2018)
 ### Added:

@@ -3,10 +3,12 @@
 ## v12.6 (Unreleased)
 
 ## v12.5 (6 Mar 2025)
-- GetName was having issues with g_LastBuildItem.
 - ExportMapDataToCSV is slightly faster
 - ExportMapDataToCSV won't show planetary anomalies if you have BB DLC without my Fix Bugs mod.
-- Seem to have gotten rid of anymore [C](-1) showing up for RetName.
+- GetName:
+	- Fixed HGE names.
+	- Having issues with g_LastBuildItem.
+	- Seem to have gotten rid of anymore `[C](-1)` showing up.
 
 ### Examine:
 - Fixed issue displaying certain "going to" positions.
@@ -29,8 +31,8 @@
 
 ## v12.3 (17 Nov 2024)
 - Added GetCityLabels()
-- > If loading pre-picard saves in picard (picard game update not dlc)
-- > Only needed during OnMsg.LoadGame
+	- If loading pre-picard saves in picard (picard game update not dlc)
+	- Only needed during OnMsg.LoadGame
 - Examining certain objs wouldn't open child examine below parent examine.
 
 ### Examine:
@@ -297,9 +299,9 @@
 
 ## v7.1 (8 July 2019)
 - RetName:
-- > Uses class names instead of "Anomaly".
-- > Added some more tables.
-- > Just noticed that the gimped "_G" doesn't work well with pairs(), so I manually added some stuff.
+	- Uses class names instead of "Anomaly".
+	- Added some more tables.
+	- Just noticed that the gimped "_G" doesn't work well with pairs(), so I manually added some stuff.
 
 ## v7.0 (18 June 2019)
 - Added Update Text func/button to MultiLineText.
@@ -330,8 +332,8 @@
 - Class funcs now looks like: Unit.lua(75):MoveSleep.
 - Add a Msg("PostSaveGame") to the end of PersistGame().
 - Removed some log spam from:
-- > DeleteObject
-- > List Choice dialog.
+	- DeleteObject
+	- List Choice dialog.
 
 ## v6.3 (30 Mar 2019)
 - Added some more func names to RetName.
@@ -350,7 +352,7 @@
 
 ## v5.9 (10 Mar 2019)
 - Added a context menu to text inputs:
-- > As an extra bonus found out where selection was cleared on focus loss.
+	- As an extra bonus found out where selection was cleared on focus loss.
 - List Dialog:
 - > Cleaned up hint ordering.
 - > Hide custom value checkbox for certain lists (where you edit the list value instead of adding one).
@@ -367,14 +369,14 @@
 - ShowObj/ShowPoint use a list of random colours instead of just green.
 - Added ... to popup menus with submenus.
 - RetNam:
-- > It was returning some userdata: "id" instead of translated strings.
-- > It was returning "*C func" for non-C funcs.
+	- It was returning some userdata: "id" instead of translated strings.
+	- It was returning "*C func" for non-C funcs.
 - List Dialog:
-- > Some List items were having a fake icon added (appearing as a space in front of the name).
-- > Show Custom Value is now hidden by default behind the checkbox (it also scrolls to the "item").
-- > custom_type 7/8 now return the checkbox states.
-- > Added a skip_icons setting.
-- > Change Object Colour>BaseColor works on Text, Polyline, etc objects now.
+	- Some List items were having a fake icon added (appearing as a space in front of the name).
+	- Show Custom Value is now hidden by default behind the checkbox (it also scrolls to the "item").
+	- custom_type 7/8 now return the checkbox states.
+	- Added a skip_icons setting.
+	- Change Object Colour>BaseColor works on Text, Polyline, etc objects now.
 
 ## v5.6 (25 Feb 2019)
 - Changed my AttachSpots toggle func to only clear text objs from itself.
@@ -389,8 +391,8 @@
 - Added a text search area to the MultiLineText dialog.
 - Removed some log spam from MsgPop added last update.
 - Fiddled around with the List dialog a bit:
-- > Checkboxes are at the top, and some margins added.
-- > Added a checkbox to the custom value area, and hide the listitem by default.
+	- Checkboxes are at the top, and some margins added.
+	- Added a checkbox to the custom value area, and hide the listitem by default.
 
 ## v5.4 (8 Feb 2019)
 - Added a bit of colour to the dialogs.
@@ -417,8 +419,8 @@
 
 ## v4.9 (23 Dec 2018)
 - List dialog:
-- > Items had shrunk to the size of the text.
-- > Filter Items didn't work too well on number lists.
+	- Items had shrunk to the size of the text.
+	- Filter Items didn't work too well on number lists.
 
 ## v4.8 (15 Dec 2018)
 - Pasting RGB(0,0,0) into the colour modifier now works with the blacklist.
