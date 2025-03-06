@@ -78,7 +78,7 @@ function OnMsg.ClassesPostprocess()
 		"RolloverText", T(302535920011002, "Clicking this once will multiply the amount of stored resources (and set grade/all deposits depending on mod options)."),
 		"RolloverTitle", T(126095410863,"Info"),
 		"RolloverHint", T(608042494285, "<left_click> Activate"),
-		"__condition", function (_, context)
+		"__condition", function ()
 			return mod_EnableMod
 		end,
 		"OnPress", BumpAmount,

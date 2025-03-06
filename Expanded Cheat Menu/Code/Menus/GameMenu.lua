@@ -842,8 +842,13 @@ Actions[c] = {ActionName = T(302535920000356--[[Time Factor]]),
 	ActionId = ".Time Factor",
 	ActionIcon = "CommonAssets/UI/Menu/light_model.tga",
 	RolloverText = function()
+		local time = GetTimeFactor()
+		if time == 1000 then
+			time = false
+		end
+
 		return SettingState(
-			GetTimeFactor(),
+			time,
 			T(302535920000387--[[Change the time factor (not permanently); for ease of screenshots or something.]])
 		)
 	end,

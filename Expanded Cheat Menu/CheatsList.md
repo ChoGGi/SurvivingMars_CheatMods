@@ -362,6 +362,7 @@ Debug>Examine Radius: Set the radius used for Shift-F4 examining.
 Debug>Examine: Opens the object examiner for the selected or moused-over obj.
 Use Shift-F4 to show a list of all objects in a radius around cursor.
 Debug>Reload LUA: Reloads code from any enabled mods (excluding ECM/Lib).
+Debug>Show Console: Show the console (you can also press Enter).
 Debug>Test Locale File: Test a CSV for malformed strings (can cause freezing when loaded normally).
 Debug>Used Terrain Textures: Show a list of terrain textures used in current map.
 ECM.Buildings.Buildings>Fully Automated Building: Work without workers (select a building and this will apply to all of type or selected).
@@ -634,5 +635,4 @@ Shortcut Keys>Color Modifier Random Colour
 Shortcut Keys>Examine Objects Radius
 Shortcut Keys>Place Last Selected/Constructed Building
 Shortcut Keys>Restart
-Shortcut Keys>Show Console
 ```

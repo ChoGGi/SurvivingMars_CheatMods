@@ -8,7 +8,6 @@ DefineClass.ChoGGi_OSurfaceMarker = {
 }
 
 local IsValid = IsValid
-local DoneObject = DoneObject
 local point = point
 
 local mod_EnableMod

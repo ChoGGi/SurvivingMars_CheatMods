@@ -9,7 +9,7 @@ local Sleep = Sleep
 local CreateRealTimeThread = CreateRealTimeThread
 local DeleteThread = DeleteThread
 local T = T
---~ local Translate = ChoGGi_Funcs.Common.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 local SetDlgTrans = ChoGGi_Funcs.Common.SetDlgTrans

@@ -200,7 +200,7 @@ end
 local ChoOrig_Colonist_IsTemporaryIll = Colonist.IsTemporaryIll
 function Colonist:IsTemporaryIll(...)
 	if not mod_EnableMod or self.age_trait ~= "Child" then
-		return ChoOrig_Colonist_CanWork(self, ...)
+		return ChoOrig_Colonist_IsTemporaryIll(self, ...)
 	end
 
 	local traits = self.traits

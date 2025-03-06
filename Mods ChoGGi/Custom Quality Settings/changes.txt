@@ -1,3 +1,6 @@
+v0.4
+Added UCP factories to turn off smoke.
+
 v0.3
 Turn off smoke from certain buildings.
 

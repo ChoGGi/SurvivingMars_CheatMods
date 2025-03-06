@@ -38,3 +38,7 @@ local function SaveModData(data)
 	LocalStorage.ModPersistentData[CurrentModId] = data
 	SaveLocalStorage()
 end
+
+
+LoadModData()
+print(SaveModData(data))

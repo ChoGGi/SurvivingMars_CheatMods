@@ -16,6 +16,8 @@ local RetMapSettings = ChoGGi_Funcs.Common.RetMapSettings
 local RetMapBreakthroughs = ChoGGi_Funcs.Common.RetMapBreakthroughs
 
 local testing = ChoGGi.testing
+if testing then
+end
 
 local function ExportDoneMsg(path)
 	local msg = Translate(302535920001449--[[Export]]) .. " " .. Translate(302535920001448--[[CSV]])

@@ -210,8 +210,8 @@ Ctrl + <left_click> Activate all]])
 						local cls = context.class
 						local handle = context.handle
 						local objs = UICity.labels.CaveInRubble or ""
-						for i = 1, #objs do
-							local obj = objs[i]
+						for j = 1, #objs do
+							local obj = objs[j]
 							if obj.handle ~= handle
 								and obj.class == cls
 								and obj:CanBeCleared()
@@ -224,7 +224,7 @@ Ctrl + <left_click> Activate all]])
 			end -- OnPress
 		end -- if
 
-		local xtemplate = XTemplates[templates[i]][2]
+		xtemplate = XTemplates[templates[i]][2]
 		-- status
 		ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_UndergroundRubble_ShowStatus", true)
 		-- Add other tunnel info
@@ -238,7 +238,7 @@ Ctrl + <left_click> Activate all]])
 				-- It'll default to dome icon
 				"Icon", "UI/Icons/Sections/drone.tga",
 				-- Only show button when it meets the req
-				"__condition", function(_, context)
+				"__condition", function()
 					return mod_EnableMod
 				end,
 			}, {

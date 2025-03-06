@@ -43,10 +43,10 @@ local function ChangeStrings()
 	local tt = TranslationTable
 
 	if mod_RemoveQuotes then
-		-- local some vars for a hair of speed
+		-- local var for a hair of speed
 		local TechDef = TechDef
-		for key, value in pairs(TechDef) do
-			ReplaceQuote(tt, TGetID(value.description))
+		for _, def in pairs(TechDef) do
+			ReplaceQuote(tt, TGetID(def.description))
 		end
 	else
 		-- No point in replacing quotes if we're removing them anyways

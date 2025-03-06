@@ -87,50 +87,51 @@ local grid_lookup = {
 		icon = "UI/Icons/res_oxygen.tga",
 		name = T(682--[[Oxygen]]),
 		text1 = T(4325--[[Free]]),
-		text2 = T(302535920001220--[[Change this %s so it doesn't need a %s source.]]),
+		text2 = T(302535920001220--[[Make this <obj_name> ignore <grid_type> grids.]]),
 		con = "air_consumption",
 	},
 	OxygenNeed = {
 		icon = "UI/Icons/res_oxygen.tga",
 		name = T(682--[[Oxygen]]),
 		text1 = T(302535920000162--[[Need]]),
-		text2 = T(302535920001221--[[Change this %s so it needs a %s source.]]),
+		text2 = T(302535920001221--[[Make this <obj_name> use <grid_type> grids.]]),
 		con = "air_consumption",
 	},
 	WaterFree = {
 		icon = "UI/Icons/res_water.tga",
 		name = T(681--[[Water]]),
 		text1 = T(4325--[[Free]]),
-		text2 = T(302535920001220--[[Change this %s so it doesn't need a %s source.]]),
+		text2 = T(302535920001220--[[Make this <obj_name> ignore <grid_type> grids.]]),
 		con = "water_consumption",
 	},
 	WaterNeed = {
 		icon = "UI/Icons/res_water.tga",
 		name = T(681--[[Water]]),
 		text1 = T(302535920000162--[[Need]]),
-		text2 = T(302535920001221--[[Change this %s so it needs a %s source.]]),
+		text2 = T(302535920001221--[[Make this <obj_name> use <grid_type> grids.]]),
 		con = "water_consumption",
 	},
 	PowerFree = {
 		icon = "UI/Icons/res_electricity.tga",
 		name = T(11683--[[Electricity]]),
 		text1 = T(4325--[[Free]]),
-		text2 = T(302535920001220--[[Change this %s so it doesn't need a %s source.]]),
+		text2 = T(302535920001220--[[Make this <obj_name> ignore <grid_type> grids.]]),
 		con = "electricity_consumption",
 	},
 	PowerNeed = {
 		icon = "UI/Icons/res_electricity.tga",
 		name = T(11683--[[Electricity]]),
 		text1 = T(302535920000162--[[Need]]),
-		text2 = T(302535920001221--[[Change this %s so it needs a %s source.]]),
+		text2 = T(302535920001221--[[Make this <obj_name> use <grid_type> grids.]]),
 		con = "electricity_consumption",
 	},
 }
 local function SetGridInfo(action, obj, name, grid)
---~ 	local consumption = obj[grid.con]
---~ 	if consumption and consumption ~= 0 then
 	if obj[grid.con] then
-		SetHint(action, Translate(grid.text2):format(name, grid.name))
+		SetHint(action, T{grid.text2,
+			obj_name = name,
+			grid_type = grid.name,
+		})
 		SetIcon(action, grid.text1, grid.icon)
 	else
 		action.ActionId = ""

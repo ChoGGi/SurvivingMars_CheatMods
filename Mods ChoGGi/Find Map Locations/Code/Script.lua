@@ -39,7 +39,7 @@ local map_data_prev_results
 local landsiteobj
 
 local function ShowDialogs()
-ChoGGi_Funcs.Common.TickStart("Tick.1")
+--~ ChoGGi_Funcs.Common.TickStart("Tick.1")
 	-- we only need to build once, not as if it'll change anytime soon (save as csv?, see if it's shorter to load)
 	if not map_data then
 
@@ -94,7 +94,7 @@ ChoGGi_Funcs.Common.TickStart("Tick.1")
 		end
 
 	end
-ChoGGi_Funcs.Common.TickEnd("Tick.1")
+--~ ChoGGi_Funcs.Common.TickEnd("Tick.1")
 --~ 	map_data = {}
 	if ChoGGi.testing then
 		vli = ShowDialogs

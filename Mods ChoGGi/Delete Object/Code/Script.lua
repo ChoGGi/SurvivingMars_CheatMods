@@ -30,7 +30,7 @@ local function AddTemplate(xtemplate)
 		-- Section button (see Source\Lua\XTemplates\Infopanel*.lua for more examples)
 		"__template", "InfopanelActiveSection",
 		-- Only show button when it meets the req
-		"__condition", function(_, context)
+		"__condition", function()
 			return mod_EnableMod
 		end,
 		--

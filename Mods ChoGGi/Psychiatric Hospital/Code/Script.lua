@@ -25,7 +25,7 @@ local function UpdateTraits()
 
 	local count = 0
 
-	for id, value in pairs(mod_options) do
+	for _, value in pairs(mod_options) do
 		if value then
 			count = count + 1
 		end

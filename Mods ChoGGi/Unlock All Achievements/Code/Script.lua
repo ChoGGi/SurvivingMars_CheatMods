@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local dlc_ids = {
+local all_ids = {
 	"AsteroidHopping",
 	"BlueSunExportedAlot",
 	"BlueSunProducedFunding",
@@ -85,7 +85,6 @@ local dlc_ids = {
 
 local AchievementUnlock = AchievementUnlock
 local EngineCanUnlockAchievement = EngineCanUnlockAchievement
-local WaitMsg = WaitMsg
 local XPlayerActive = XPlayerActive
 local Sleep = Sleep
 local AsyncRand = AsyncRand
@@ -93,7 +92,7 @@ local AsyncRand = AsyncRand
 local function UnlockAchievement(id, skip)
 	if skip or EngineCanUnlockAchievement(XPlayerActive, id) then
 		AchievementUnlock(XPlayerActive, id)
-		Sleep(AsyncRand(250)+1)
+		Sleep(AsyncRand(1000)+1)
 	end
 end
 
@@ -103,15 +102,15 @@ local function StartupCode()
 	CreateRealTimeThread(function()
 
 		if mod_UnlockAllAchievements then
-			for i = 1, #dlc_ids do
+			for i = 1, #all_ids do
 				-- Add a bit of random delay
-				Sleep(AsyncRand(250)+1)
-				UnlockAchievement(dlc_ids[i], true)
+				Sleep(AsyncRand(1000)+1)
+				UnlockAchievement(all_ids[i], true)
 			end
 		else
 			local AchievementPresets = AchievementPresets
 			for id in pairs(AchievementPresets) do
-				Sleep(AsyncRand(250)+1)
+				Sleep(AsyncRand(1000)+1)
 				UnlockAchievement(id)
 			end
 		end

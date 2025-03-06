@@ -10,7 +10,6 @@ SpiceHarvester = {
 	Max_Shuttles = 50,
 }
 
-local DoneObject = DoneObject
 local Sleep = Sleep
 local IsValid = IsValid
 local PlaySound = PlaySound

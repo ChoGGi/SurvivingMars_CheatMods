@@ -10,7 +10,7 @@ local T = T
 local AveragePoint2D = AveragePoint2D
 local RetName = ChoGGi_Funcs.Common.RetName
 local PolylineSetParabola = ChoGGi_Funcs.Common.PolylineSetParabola
---~ local Translate = ChoGGi_Funcs.Common.Translate
+local Translate = ChoGGi_Funcs.Common.Translate
 
 -- blank CObject (could use Object, but has more parents) class we add to all the objects below for easier deleting
 DefineClass.ChoGGi_ODeleteObjs = {

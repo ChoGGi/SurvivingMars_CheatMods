@@ -72,7 +72,7 @@ return {
 	PlaceObj("ModItemOptionNumber", {
 		"name", "ShadowmapSize",
 		"DisplayName", T(302535920011681, "Shadow Resolution"),
-		"Help", T(302535920011682, [[Higher number means crisper shadows (8192+ may cause crashing!).
+		"Help", T(302535920011682, [[Higher number means crisper shadows (8192+ may cause crashing on low vram cards!).
 0 = Use in-game setting (needs restart),
 1 = 8,
 2 = 16,

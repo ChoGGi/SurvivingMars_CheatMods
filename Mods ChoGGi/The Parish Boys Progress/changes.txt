@@ -1,3 +1,6 @@
+v0.5
+Forgot to fix that issue where I was lazy with func names.
+
 v0.4
 Hopefully fixed all the issues with it.
 Mod options to disable mod, and let them stay in Nurseries.

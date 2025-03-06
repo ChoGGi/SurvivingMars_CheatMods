@@ -103,22 +103,6 @@ local mod_LODDistanceModifier
 local mod_ShadowRangeOverride
 local mod_SmokeParticles
 
-local function TurnOffBuildings(cls)
-	local objs = UIColony:GetCityLabels(cls)
-	for i = 1, #objs do
-		objs[i]:SetUIWorking(false)
-	end
-end
-local function TurnOnBuildings(cls)
-	local objs = UIColony:GetCityLabels(cls)
-	for i = 1, #objs do
-		local obj = objs[i]
-		if not obj.suspended then
-			obj:SetUIWorking(true)
-		end
-	end
-end
-
 local function UpdateSettings()
 	local hr = hr
 
@@ -141,69 +125,49 @@ local function UpdateSettings()
 		hr.ShadowRangeOverride = lookup_settings.ShadowRangeOverride[mod_ShadowRangeOverride]
 	end
 
-	-- Need to be in-map to toggle working
-	if not UIColony then
-		return
-	end
-
-	if not mod_SmokeParticles then
-
-		CreateRealTimeThread(function()
-			TurnOffBuildings("PreciousMetalsExtractor")
-			TurnOffBuildings("MetalsExtractor")
-			TurnOffBuildings("AutomaticMetalsExtractor")
-			TurnOffBuildings("MetalsRefinery")
-			TurnOffBuildings("RareMetalsRefinery")
-			TurnOffBuildings("CarbonateProcessor")
-			TurnOffBuildings("GHGFactory")
-			TurnOffBuildings("WasteRockProcessor")
-
-			-- Delay after turning off buildings to make particles stop fully
-			Sleep(500)
-
-			local rules = FXRules.Working
-			rules["hit-moment1"].PreciousMetalsExtractor.UniversalExtractorHammer[1]:RemoveFromRules()
-			rules["hit-moment2"].PreciousMetalsExtractor.UniversalExtractorHammer[1]:RemoveFromRules()
-			rules["hit-moment3"].PreciousMetalsExtractor.UniversalExtractorHammer[1]:RemoveFromRules()
-			rules = rules.start
-			rules.PreciousMetalsExtractor.UniversalExtractorHammer[1]:RemoveFromRules()
-			--
-			rules.MetalsExtractor.any[2]:RemoveFromRules()
-			rules.MetalsExtractor.any[1]:RemoveFromRules()
-			--
-			if rules.AutomaticMetalsExtractor then
-				rules.AutomaticMetalsExtractor.any[1]:RemoveFromRules()
-			end
-			--
-			if rules.MetalsRefinery then
-				rules.MetalsRefinery.any[1]:RemoveFromRules()
-			end
-			--
-			if rules.RareMetalsRefinery then
-				rules.RareMetalsRefinery.any[2]:RemoveFromRules()
-				rules.RareMetalsRefinery.any[1]:RemoveFromRules()
-			end
-			--
-			if rules.CarbonateProcessor then
-				rules.CarbonateProcessor.any[1]:RemoveFromRules()
-				rules.GHGFactory.any[1]:RemoveFromRules()
-			end
-			--
-			if rules.WasteRockProcessor then
-				rules.WasteRockProcessor.any[2]:RemoveFromRules()
-				rules.WasteRockProcessor.any[1]:RemoveFromRules()
-			end
-
-			TurnOnBuildings("PreciousMetalsExtractor")
-			TurnOnBuildings("MetalsExtractor")
-			TurnOnBuildings("AutomaticMetalsExtractor")
-			TurnOnBuildings("MetalsRefinery")
-			TurnOnBuildings("RareMetalsRefinery")
-			TurnOnBuildings("CarbonateProcessor")
-			TurnOnBuildings("GHGFactory")
-			TurnOnBuildings("WasteRockProcessor")
-		end)
-
+	-- Applying this in-game will never turn off particles on working buildings
+	if not UIColony and not mod_SmokeParticles then
+		local rules = FXRules.Working
+		rules["hit-moment1"].PreciousMetalsExtractor.UniversalExtractorHammer[1]:RemoveFromRules()
+		rules["hit-moment2"].PreciousMetalsExtractor.UniversalExtractorHammer[1]:RemoveFromRules()
+		rules["hit-moment3"].PreciousMetalsExtractor.UniversalExtractorHammer[1]:RemoveFromRules()
+		rules = rules.start
+		rules.PreciousMetalsExtractor.UniversalExtractorHammer[1]:RemoveFromRules()
+		--
+		rules.MetalsExtractor.any[2]:RemoveFromRules()
+		rules.MetalsExtractor.any[1]:RemoveFromRules()
+		--
+		if rules.AutomaticMetalsExtractor then
+			rules.AutomaticMetalsExtractor.any[1]:RemoveFromRules()
+		end
+		--
+		if rules.MetalsRefinery then
+			rules.MetalsRefinery.any[1]:RemoveFromRules()
+		end
+		--
+		if rules.RareMetalsRefinery then
+			rules.RareMetalsRefinery.any[2]:RemoveFromRules()
+			rules.RareMetalsRefinery.any[1]:RemoveFromRules()
+		end
+		--
+		if rules.CarbonateProcessor then
+			rules.CarbonateProcessor.any[1]:RemoveFromRules()
+			rules.GHGFactory.any[1]:RemoveFromRules()
+		end
+		--
+		if rules.WasteRockProcessor then
+			rules.WasteRockProcessor.any[2]:RemoveFromRules()
+			rules.WasteRockProcessor.any[1]:RemoveFromRules()
+		end
+		--
+		if rules.UCP_AutomatedElectronicsFactory then
+			rules.UCP_AutomatedElectronicsFactory.any[2]:RemoveFromRules()
+			rules.UCP_AutomatedElectronicsFactory.any[1]:RemoveFromRules()
+			rules.UCP_AutomatedMachinePartsFactory.any[2]:RemoveFromRules()
+			rules.UCP_AutomatedMachinePartsFactory.any[1]:RemoveFromRules()
+			rules.UCP_AutomatedPolymerPlant.any[2]:RemoveFromRules()
+			rules.UCP_AutomatedPolymerPlant.any[1]:RemoveFromRules()
+		end
 	end
 
 end
