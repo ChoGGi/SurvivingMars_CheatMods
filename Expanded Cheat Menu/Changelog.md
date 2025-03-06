@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v19.5 (Unreleased)
+## v19.6 (Unreleased)
+
+## v19.5 (6 Mar 2025)
 ### Changed:
 - Menu>ECM>Resources>Prefabs: Added item to add one of each prefab.
 - Menu>ECM>Set Speed Drones/Rovers: Added a few more speed options.

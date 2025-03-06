@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v12.5 (Unreleased)
+## v12.6 (Unreleased)
+
+## v12.5 (6 Mar 2025)
 - GetName was having issues with g_LastBuildItem.
 - ExportMapDataToCSV is slightly faster
 - ExportMapDataToCSV won't show planetary anomalies if you have BB DLC without my Fix Bugs mod.

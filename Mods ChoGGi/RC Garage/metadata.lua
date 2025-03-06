@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 12,
-			"version_minor", 4,
+			"version_minor", 5,
 		}),
 	},
 	"title", "RC Garage",

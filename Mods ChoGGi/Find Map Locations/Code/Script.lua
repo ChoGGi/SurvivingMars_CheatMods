@@ -40,7 +40,8 @@ local landsiteobj
 
 local function ShowDialogs()
 --~ ChoGGi_Funcs.Common.TickStart("Tick.1")
-	-- we only need to build once, not as if it'll change anytime soon (save as csv?, see if it's shorter to load)
+
+	-- we only need to build once, not as if it'll change anytime soon (save as csv?, see if it's shorter to load.... nope)
 	if not map_data then
 
 		-- Bump count for paradox
@@ -48,17 +49,6 @@ local function ShowDialogs()
 		if g_CurrentMissionParams.idMissionSponsor == "paradox" then
 			count = count + 2
 		end
-
-		-- Remove when I upload new lib version
-		local skip_four
-		if Mods.ChoGGi_Library and Mods.ChoGGi_Library.version > 124 then
-			skip_four = false
-		else
-			local fix_bugs = table.find(ModsLoaded, "id", "ChoGGi_FixBBBugs")
-			local bb_dlc = g_AvailableDlc.picard
-			skip_four = bb_dlc and not fix_bugs
-		end
-		-- Remove when I upload new lib version
 
 		map_data = ChoGGi_Funcs.Common.ExportMapDataToCSV(XAction:new{
 			setting_breakthroughs = true,
@@ -72,14 +62,6 @@ local function ShowDialogs()
 
 			-- change all strings to lowercase here instead of while searching
 			data.coordinates = map_info(nil, data, true):lower()
-
-			-- Remove when I upload new lib version
-			if skip_four then
-				for _ = 1, 4 do
-					table_remove(data, 1)
-				end
-			end
-			-- Remove when I upload new lib version
 
 			for j = 1, #data do
 				data[j] = data[j]:lower()
