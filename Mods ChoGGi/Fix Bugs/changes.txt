@@ -1,3 +1,7 @@
+v8.3
+The Man From Mars: Outcome 3: Let him be, whoever he is.
+None of the options reward anything, Morale is based on CustomOutcomeText and Morale stats from Outcome 2 (Thanks Dark Master).
+
 v8.2
 Same sort of fix for The Extract and shuttle hubs (Thanks Dark Master).
 

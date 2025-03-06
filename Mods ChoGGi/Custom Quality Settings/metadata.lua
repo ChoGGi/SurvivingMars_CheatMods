@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2106942055",
 	"pops_any_uuid", "4d26f48b-bb04-4859-8947-0bd36e239f8e",
 	"lua_revision", 1007000, -- Picard
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -17,6 +17,9 @@ return PlaceObj("ModDef", {
 	"description", [[
 Allows you to adjust values for settings higher/lower then allowed from in-game options.
 Warning! Setting some of these too high can cause crashing; see tooltips.
+
+Also includes mod option to turn off smoke from certain buildings (mostly extractors, as well as terraforming ones).
+This will turn off than on all buildings affected to remove particles (restart to re-enable particles).
 
 Settings default to in-game, see mod options to adjust.
 You'll likely need to re-apply the mod options if you change the in-game settings.

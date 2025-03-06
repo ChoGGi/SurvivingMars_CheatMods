@@ -1,3 +1,6 @@
+v0.5
+Added idiots as default enabled.
+
 v0.4
 Changed mod to treat any trait (defaults to Sanatorium traits).
 Trait mod ids have been changed, so you'll need to reset the ones you've chosen.

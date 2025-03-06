@@ -1,0 +1,5 @@
+ Void castle 
+ 
+ not sure if you're still modding for this game, but in case you are, I have a suggestion if its possible. say you have an engineer, but you make that engineer work in a botanist position, they spend the 25 sols learning this new Spec, but then let's say that you move that same colonist back to an engineering work position at some point in the future, I think in that case, that engineer turned botanist should be able to "remember" and or "relearn" their past knowledge a lot easier and faster this second time, something like taking between 5 to 10 sols ish, for them to relearn a previously known spec.
+
+though also might consider how many times/layers of knowledge an individual colonist can do this, like how many details of their previous professions/specs do they still remember before they no longer get the faster learning benefit. 

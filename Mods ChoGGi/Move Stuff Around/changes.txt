@@ -1,3 +1,6 @@
+v0.4
+Blocked passages/domes.
+
 v0.3
 Forgot to check if object is a grid object...
 

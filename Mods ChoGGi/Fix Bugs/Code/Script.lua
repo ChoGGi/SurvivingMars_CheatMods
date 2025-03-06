@@ -358,6 +358,8 @@ do
  		local StoryBits = StoryBits
 		-- Just in case something changes (hah)
 		pcall(function()
+
+			--
 			--[[
 			No breakthrough tech reward for The Door To Summer: Let No Noble Deed
 			The Satoshi Nisei option doesn't mention a breakthrough, but the second option does;
@@ -365,19 +367,23 @@ do
 			I'm guessing it's supposed to give a break for both; as you figure a genius joining your colony would do.
 			There's also obvious grammar errors in it, so I think the storybit got forgotten about...?
 			]]
-			StoryBits.TheDoorToSummer_LetNoNobleDeed[3].Effects[1].Field = "Breakthroughs"
-			StoryBits.TheDoorToSummer_LetNoNobleDeed[5].Effects[1].Field = "Breakthroughs"
+			local TheDoorToSummer = StoryBits.TheDoorToSummer_LetNoNobleDeed
+			TheDoorToSummer[3].Effects[1].Field = "Breakthroughs"
+			TheDoorToSummer[5].Effects[1].Field = "Breakthroughs"
 
+			--
 			-- Blank Slate doesn't remove any applicants for options 2 or 3 (fix 1/2)
-			local slate = StoryBits.BlankSlate[9].Effects
-			slate[#slate+1] = PlaceObj("ChoGGi_RemoveApplicants", {"Amount", 20})
-			slate = StoryBits.BlankSlate[12].Effects
-			slate[#slate+1] = PlaceObj("ChoGGi_RemoveApplicants", {"Amount", 20})
+			local BlankSlate = StoryBits.BlankSlate[9].Effects
+			BlankSlate[#BlankSlate+1] = PlaceObj("ChoGGi_RemoveApplicants", {"Amount", 20})
+			BlankSlate = StoryBits.BlankSlate[12].Effects
+			BlankSlate[#BlankSlate+1] = PlaceObj("ChoGGi_RemoveApplicants", {"Amount", 20})
 
+			--
 			-- Fhtagn! Fhtagn! "Let's wait it out" makes all colonists cowards instead of only religious ones
-			local fhtagn = StoryBits.FhtagnFhtagn[4].Effects[1].Filters
-			fhtagn[#fhtagn+1] = PlaceObj("HasTrait", {"Trait", "Religious"})
+			local FhtagnFhtagn = StoryBits.FhtagnFhtagn[4].Effects[1].Filters
+			FhtagnFhtagn[#FhtagnFhtagn+1] = PlaceObj("HasTrait", {"Trait", "Religious"})
 
+			--
 			-- Dust Sickness: Deaths doesn't apply morale penalty
 			local outcome = PlaceObj("StoryBitOutcome", {
 				"Prerequisites", {},
@@ -414,17 +420,72 @@ do
 				},
 			}))
 
+			--
 			-- Asylum will never start
-			local asylum = StoryBits.Asylum.Prerequisites
-			table.remove(asylum, 2)
-			table.remove(asylum, 2)
-			asylum = asylum[1].Conditions
-			asylum[#asylum+1] = PlaceObj("RivalHasTechYouDont", nil)
-			asylum[#asylum+1] = PlaceObj("CountRivalResource", {
+			local Asylum = StoryBits.Asylum.Prerequisites
+			table.remove(Asylum, 2)
+			table.remove(Asylum, 2)
+			Asylum = Asylum[1].Conditions
+			Asylum[#Asylum+1] = PlaceObj("RivalHasTechYouDont", nil)
+			Asylum[#Asylum+1] = PlaceObj("CountRivalResource", {
 				"Resource", "funding",
 				"Amount", 500000000
 			})
 
+			--
+			-- The Man From Mars: Outcome 3: Let him be, whoever he is.
+			-- None of the options reward anything, Morale is based on CustomOutcomeText and Morale stats from outcome 2.
+			local TheManFromMars = StoryBits.TheManFromMars_FollowUp4
+			table.insert(TheManFromMars, 2, PlaceObj("StoryBitParamNumber", {
+				"Name", "morale_gain",
+				"Value", 20,
+			}))
+			table.insert(TheManFromMars, 2, PlaceObj("StoryBitParamSols", {
+				"Name", "morale_sols",
+				"Value", 7200000,
+			}))
+			table.insert(TheManFromMars, 5, PlaceObj("StoryBitOutcome", {
+				"Prerequisites", {},
+				"Effects", {
+					PlaceObj("ForEachExecuteEffects", {
+						"Label", "Colonist",
+						"Filters", {
+							PlaceObj("HasTrait", {
+								"Trait", "Nerd",
+							}),
+						},
+						"Effects", {
+							PlaceObj("ModifyObject", {
+								"Prop", "base_morale",
+								"Amount", "<morale_gain>",
+								"Sols", "<morale_sols>",
+							}),
+						},
+					}),
+				},
+			}))
+			table.insert(TheManFromMars, 7, PlaceObj("StoryBitOutcome", {
+				"Prerequisites", {},
+				"Effects", {
+					PlaceObj("ForEachExecuteEffects", {
+						"Label", "Colonist",
+						"Filters", {
+							PlaceObj("HasTrait", {
+								"Trait", "Hippie",
+							}),
+						},
+						"Effects", {
+							PlaceObj("ModifyObject", {
+								"Prop", "base_morale",
+								"Amount", "<morale_gain>",
+								"Sols", "<morale_sols>",
+							}),
+						},
+					}),
+				},
+			}))
+
+		-- Fix Storybits end
 		end)
 
 		-- New fixes go here
@@ -1518,7 +1579,6 @@ function UIGetBuildingPrerequisites(cat_id, template, bCreateItems, ignore_check
 
 	return ChoOrig_UIGetBuildingPrerequisites(cat_id, template, bCreateItems, ignore_checks, ...)
 end
-
 -- Remove the dupes added to build menu
 local ChoOrig_UIItemMenu = UIItemMenu
 function UIItemMenu(category_id, bCreateItems, ...)
@@ -1571,7 +1631,7 @@ end
 --
 
 --
--- Log spam from borked colonist (possibly from a mod, could just be BB again)
+-- Log spam from borked colonist (possibly from a mod, could just be B&B again)
 -- This func is in base game, but it's only used with dlc
 local ChoOrig_GetEnvironment = GetEnvironment
 function GetEnvironment(object, ...)

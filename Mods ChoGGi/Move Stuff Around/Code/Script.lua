@@ -51,7 +51,7 @@ local function AddButton(xtemplate, button_id)
 		"__template", "InfopanelActiveSection",
 		-- Only show button when it meets the req
 		"__condition", function(_, context)
-			return mod_EnableMod and IsValid(context)
+			return mod_EnableMod and IsValid(context) and not context:IsKindOfClasses("Dome", "Passage")
 		end,
 		--
 		"Icon", "UI/Icons/Sections/BlackCube_4.tga",

@@ -12,7 +12,7 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"image", "Preview.png",
+	"image", "Preview.jpg",
 	"description", [[
 Colonists without a spec that work at the same job for 25 Sols will automagically get the specialisation needed for that workplace.
 

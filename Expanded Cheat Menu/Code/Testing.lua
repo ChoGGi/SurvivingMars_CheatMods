@@ -34,6 +34,14 @@ end
 XWindow.SetModal = empty_func
 
 if ChoGGi.what_game == "Mars" then
+
+--~ 	-- Close enough
+--~ 	local ChoOrig_AchievementUnlock = AchievementUnlock
+--~ 	function AchievementUnlock(xplayer, achievement,  ...)
+--~ 		print("AchievementUnlock", achievement)
+--~ 		return ChoOrig_AchievementUnlock(xplayer, achievement, ...)
+--~ 	end
+
 	-- No more blue overlay when paused
 	DialogsHidingPauseDlg.HUD = true
 

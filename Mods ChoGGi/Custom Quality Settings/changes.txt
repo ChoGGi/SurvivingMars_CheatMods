@@ -1,2 +1,5 @@
+v0.3
+Turn off smoke from certain buildings.
+
 v0.2
 Shadow Range wasn't added properly.

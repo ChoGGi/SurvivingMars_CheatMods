@@ -12,9 +12,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "2812694974",
 	"pops_any_uuid", "bab23bf6-9bc1-4db0-ae72-ee64ab652617",
 	"lua_revision", 1007000, -- Picard
-	"version", 3,
+	"version", 4,
 	"version_major", 0,
-	"version_minor", 3,
+	"version_minor", 4,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -30,6 +30,7 @@ Press the button to activate placement mode, then click somewhere on the map to 
 This places at the centre of the hex (like buildings), if you want freeform then I'll make it a mod option.
 
 Known issues:
+Domes/Passages aren't allowed to be moved with this mod, too many issues.
 Keyboard + Mouse required! (may change at some period)
 May not work great with some stuff (air/water/elec/passages/domes).
 ]],

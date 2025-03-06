@@ -13,6 +13,8 @@ local enabled_traits = {
 	ChronicCondition = true,
 	Melancholic = true,
 	Coward = true,
+	-- cause
+	Idiot = true,
 }
 local function AddTraitsToOptions(traits, cat)
 	for i = 1, #traits do

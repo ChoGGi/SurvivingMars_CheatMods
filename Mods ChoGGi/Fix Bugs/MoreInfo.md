@@ -21,6 +21,8 @@ Added missing images for certain Cargo listings.
 Gale crater name doesn't show up for 4S138E, 5S138E.
 
 Storybits:
+The Man From Mars: Outcome 3: Let him be, whoever he is: None of the options reward anything.
+Morale is added based on CustomOutcomeText and Morale stats from Outcome 2.
 The Extract: Selecting Shuttle Hub and having Paradox as sponsor doesn't add a Jumper Hub.
 Asylum will never start.
 Blank Slate doesn't remove any applicants.

@@ -1,6 +1,12 @@
 -- See LICENSE for terms
 
 return {
+	PlaceObj("ModItemOptionToggle", {
+		"name", "SmokeParticles",
+		"DisplayName", T(0000, "Smoke Particles"),
+		"Help", T(0000, "Use this to turn off Smoke Particles from GHG/etc."),
+		"DefaultValue", true,
+	}),
 	PlaceObj("ModItemOptionNumber", {
 		"name", "LightsRadiusModifier",
 		"DisplayName", T(302535920011675, "Lights Radius"),
