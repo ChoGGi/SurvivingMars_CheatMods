@@ -665,8 +665,8 @@ function ChoGGi_XWindow:AddElements(_, context)
 		Text = "",
 		RolloverText = T(302535920001367--[[Toggles]]) .. " " .. T(302535920000629--[[UI Transparency]]),
 		Dock = "left",
-		MinWidth = 35,
-		Margins = box(4, 0, 0, 0),
+		MinWidth = 0,
+		Margins = box(4, 0, 20, 0),
 		OnChange = self.idToggleTrans_OnChange,
 	}, self.idTitleRightSection)
 
@@ -676,10 +676,10 @@ function ChoGGi_XWindow:AddElements(_, context)
 		flags = const.intfIgnoreParent
 	}
 
-	-- look at them sexy internals
-	self.transp_mode = ChoGGi.Temp.Dlg_transp_mode
-	self:SetTranspMode(self.transp_mode)
-	self.idToggleTrans:SetCheck(self.transp_mode)
+--~ 	-- look at them sexy internals
+--~ 	self.transp_mode = ChoGGi.Temp.Dlg_transp_mode
+--~ 	self:SetTranspMode(self.transp_mode)
+--~ 	self.idToggleTrans:SetCheck(self.transp_mode)
 
 end
 
@@ -765,7 +765,7 @@ function ChoGGi_XWindow:SetTranspMode(toggle)
 		}
 	end
 	-- update global value (for new windows)
-	ChoGGi.Temp.Dlg_transp_mode = toggle
+--~ 	ChoGGi.Temp.Dlg_transp_mode = toggle
 end
 function ChoGGi_XWindow:Done()
 	-- remove from my dialog list
@@ -965,7 +965,11 @@ function ChoGGi_XWindow:PostInit(parent, pt, title_skip)
 		if move.RolloverText == "" then
 			move.RolloverText = ok .. str
 		else
-			move.RolloverText = self.idMoveControl:GetRolloverText() .. "\n\n" ..ok ..	str
+			local gettext = self.idMoveControl:GetRolloverText()
+			-- I don't know why, but view map colony breakthrough dialog shows rollover info twice
+			if gettext[2] and gettext[2][1] ~= 302535920001518 then
+				move.RolloverText = self.idMoveControl:GetRolloverText() .. "\n\n" .. ok .. str
+			end
 		end
 	end
 

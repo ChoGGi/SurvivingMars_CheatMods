@@ -191,7 +191,7 @@ do -- ExportTranslatedStrings (CSV FILES)
 			return langs[locale_id .. "_p"][str_id]
 		else
 			-- in other csv file, needs to be manually copied into "main" one for each lang :(
-			print("MISSING STR ID", lang, str_id)
+			print("MISSING STR ID", locale_id, str_id)
 		end
 	end
 
@@ -201,23 +201,23 @@ do -- ExportTranslatedStrings (CSV FILES)
 		-- lists of str_id > string
 		langs = {
 			en = TranslationTable,
-			br = ChoGGi_Funcs.Common.RetLangTable("AppData/Brazilian.csv"),
-			fr = ChoGGi_Funcs.Common.RetLangTable("AppData/French.csv"),
-			ge = ChoGGi_Funcs.Common.RetLangTable("AppData/German.csv"),
-			po = ChoGGi_Funcs.Common.RetLangTable("AppData/Polish.csv"),
-			ru = ChoGGi_Funcs.Common.RetLangTable("AppData/Russian.csv"),
-			sc = ChoGGi_Funcs.Common.RetLangTable("AppData/Schinese.csv"),
-			sp = ChoGGi_Funcs.Common.RetLangTable("AppData/Spanish.csv"),
-			tr = ChoGGi_Funcs.Common.RetLangTable("AppData/Turkish.csv"),
+			br = ChoGGi_Funcs.Common.RetLangTable("AppData/csv/Brazilian.csv"),
+			fr = ChoGGi_Funcs.Common.RetLangTable("AppData/csv/French.csv"),
+			ge = ChoGGi_Funcs.Common.RetLangTable("AppData/csv/German.csv"),
+			po = ChoGGi_Funcs.Common.RetLangTable("AppData/csv/Polish.csv"),
+			ru = ChoGGi_Funcs.Common.RetLangTable("AppData/csv/Russian.csv"),
+			sc = ChoGGi_Funcs.Common.RetLangTable("AppData/csv/Schinese.csv"),
+			sp = ChoGGi_Funcs.Common.RetLangTable("AppData/csv/Spanish.csv"),
+			tr = ChoGGi_Funcs.Common.RetLangTable("AppData/csv/Turkish.csv"),
 			-- picard (B&B)
-			br_p = ChoGGi_Funcs.Common.RetLangTable("AppData/Brazilian_p.csv"),
-			fr_p = ChoGGi_Funcs.Common.RetLangTable("AppData/French_p.csv"),
-			ge_p = ChoGGi_Funcs.Common.RetLangTable("AppData/German_p.csv"),
-			po_p = ChoGGi_Funcs.Common.RetLangTable("AppData/Polish_p.csv"),
-			ru_p = ChoGGi_Funcs.Common.RetLangTable("AppData/Russian_p.csv"),
-			sc_p = ChoGGi_Funcs.Common.RetLangTable("AppData/Schinese_p.csv"),
-			sp_p = ChoGGi_Funcs.Common.RetLangTable("AppData/Spanish_p.csv"),
-			tr_p = ChoGGi_Funcs.Common.RetLangTable("AppData/Turkish_p.csv"),
+			br_p = ChoGGi_Funcs.Common.RetLangTable("AppData/csv/Brazilian_p.csv"),
+			fr_p = ChoGGi_Funcs.Common.RetLangTable("AppData/csv/French_p.csv"),
+			ge_p = ChoGGi_Funcs.Common.RetLangTable("AppData/csv/German_p.csv"),
+			po_p = ChoGGi_Funcs.Common.RetLangTable("AppData/csv/Polish_p.csv"),
+			ru_p = ChoGGi_Funcs.Common.RetLangTable("AppData/csv/Russian_p.csv"),
+			sc_p = ChoGGi_Funcs.Common.RetLangTable("AppData/csv/Schinese_p.csv"),
+			sp_p = ChoGGi_Funcs.Common.RetLangTable("AppData/csv/Spanish_p.csv"),
+			tr_p = ChoGGi_Funcs.Common.RetLangTable("AppData/csv/Turkish_p.csv"),
 		}
 
 		local time = os.time()
@@ -260,8 +260,8 @@ do -- ExportTranslatedStrings (CSV FILES)
 		end
 --~ ex(export_bt_names)
 --~ ex(export_bt_desc)
-		SaveCSV("AppData/export_bt_names-" .. time .. ".csv", export_bt_names, csv_columns_br, csv_columns_br)
-		SaveCSV("AppData/export_bt_desc-" .. time .. ".csv", export_bt_desc, csv_columns_br, csv_columns_br)
+		SaveCSV("AppData/csv/export_bt_names-" .. time .. ".csv", export_bt_names, csv_columns_br, csv_columns_br)
+		SaveCSV("AppData/csv/export_bt_desc-" .. time .. ".csv", export_bt_desc, csv_columns_br, csv_columns_br)
 
 		-- location names
 		local export_data_locations = {}
@@ -284,7 +284,7 @@ do -- ExportTranslatedStrings (CSV FILES)
 			}
 		end
 		SortList(export_data_locations)
-		SaveCSV("AppData/export_locations-" .. time .. ".csv", export_data_locations, csv_columns, csv_columns)
+		SaveCSV("AppData/csv/export_locations-" .. time .. ".csv", export_data_locations, csv_columns, csv_columns)
 --~ ex(export_data_locations)
 
 		-- location info
@@ -332,7 +332,7 @@ do -- ExportTranslatedStrings (CSV FILES)
 				name_tr = GetStr("tr", str_id),
 			}
 		end
-		SaveCSV("AppData/export_misc-" .. time .. ".csv", export_data_misc, csv_columns, csv_columns)
+		SaveCSV("AppData/csv/export_misc-" .. time .. ".csv", export_data_misc, csv_columns, csv_columns)
 --~ ex(export_data_misc)
 
 	end

@@ -1200,11 +1200,11 @@ function ChoGGi_Funcs.Common.MsgWait(text, title, image, ok_text, context, paren
 		PauseGame()
 	end
 
-	CreateMessageBox(
+--~ function CreateMarsMessageBox(caption, text, ok_text, parent, image, context, template)
+	CreateMarsMessageBox(
 		type(title) == "number" and tostring(title) or title or T(302535920001726--[[Title]]),
 		type(text) == "number" and tostring(text) or text or T(302535920001727--[[NONE]]),
 		type(ok_text) == "number" and tostring(ok_text) or ok_text,
-		nil,
 		parent,
 		image and ValidateImage(image) or ChoGGi.library_path .. "UI/message_picture_01.png",
 		context, template

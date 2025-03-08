@@ -1302,6 +1302,7 @@ end
 
 --
 -- These were moved from City to Colony, shouldn't hurt anything...
+-- Mostly for clearing up log spam from Horticulture Workshop
 function City.IsTechResearched(self, ...)
 	-- Checking for UIColony needed for old saves
 	return Research.IsTechResearched(UIColony or self, ...)

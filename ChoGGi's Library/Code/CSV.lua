@@ -237,12 +237,14 @@ ChoGGi_Funcs.Common.ExportMapDataToCSV(XAction:new{
 			for long = 0, 180 do
 				-- SE
 				AddLandingSpot(lat, long)
-				-- SW
-				AddLandingSpot(lat, -long)
-				-- NE
-				AddLandingSpot(-lat, long)
-				-- NW
-				AddLandingSpot(-lat, -long)
+				if not testing then
+					-- SW
+					AddLandingSpot(lat, -long)
+					-- NE
+					AddLandingSpot(-lat, long)
+					-- NW
+					AddLandingSpot(-lat, -long)
+				end
 			end
 		end
 --~ ChoGGi_Funcs.Common.TickEnd("ExportMapDataToCSV")
@@ -304,12 +306,20 @@ ChoGGi_Funcs.Common.ExportMapDataToCSV(XAction:new{
 			local name = "MapData "
 			if breakthroughs then
 				name = "MapData Breakthroughs "
-				if dlc.armstrong and dlc.picard then
+				--
+				if dlc.armstrong and dlc.picard and bb_dlc_skip then
+					name = "MapData Breakthroughs GP BB-No PA "
+				elseif dlc.armstrong and dlc.picard then
 					name = "MapData Breakthroughs GP BB "
-				elseif dlc.armstrong then
-					name = "MapData Breakthroughs GP "
+				--
+				elseif dlc.picard and bb_dlc_skip then
+					name = "MapData Breakthroughs BB-No PA "
 				elseif dlc.picard then
 					name = "MapData Breakthroughs BB "
+				--
+				elseif dlc.armstrong then
+					name = "MapData Breakthroughs GP "
+				--
 				end
 			end
 			name = "AppData/" .. name .. os.time() .. ".csv"

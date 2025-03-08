@@ -15,7 +15,8 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagResearch", true,
 	"TagInterface", true,
-	"description", [[Adds a progress bar to the HUD, showing the progress of the active research.
+	"description", [[
+Adds a progress bar to the HUD, showing the progress of the active research.
 As Waywocket mentioned he's abandoned this mod, so I figured I'd update it.
 
 Mod Options:
@@ -26,5 +27,6 @@ Differences from original:
 Displays whatever is being researched if queue is empty, so no more red bar.
 Added list of queued tech to the tooltip.
 The progress bar is displayed above the speed buttons (for less extra HUD background padding).
-If you want it below the time of day bar then I can add an option.]],
+If you want it below the time of day bar then I can add an option.
+]],
 })

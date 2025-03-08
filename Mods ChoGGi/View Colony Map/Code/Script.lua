@@ -74,6 +74,11 @@ local function ShowDialogs(map, gen)
 	end
 end
 
+if ChoGGi.testing then
+	vcm = ShowDialogs
+end
+
+
 -- create/update image when landing spot changes
 local ChoOrig_GetOverlayValues = GetOverlayValues
 function GetOverlayValues(lat, long, overlay_grids, params, ...)
@@ -196,10 +201,10 @@ function ChoGGi_VCM_MapImageDlg:Init(parent, context)
 
 	-- add hint if random rule active
 	local tech_variety = IsGameRuleActive("TechVariety")
-		and " <yellow>" .. T(607602869305--[[Tech Variety]]) .. "</yellow>"
+		and " <color ChoGGi_yellow>" .. T(607602869305--[[Tech Variety]]) .. "</color>"
 		or ""
 	local chaos_theory = IsGameRuleActive("ChaosTheory")
-		and " <yellow>" .. T(621834127153--[[Chaos Theory]]) .. "</yellow>"
+		and " <color ChoGGi_yellow>" .. T(621834127153--[[Chaos Theory]]) .. "</color>"
 		or ""
 
 	if tech_variety ~= "" or chaos_theory ~= "" then

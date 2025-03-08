@@ -1,3 +1,6 @@
+v1.5
+Added warning for Tech Variety and Chaos Theory.
+
 v1.4
 Bumps the breakthrough count when you use Paradox sponsor.
 Removes the first four breakthroughs if you have BB DLC and you don't have my Fix Bugs mod.

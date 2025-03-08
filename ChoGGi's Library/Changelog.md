@@ -1,6 +1,10 @@
 ## Library Changelog
 
 ## v12.6 (Unreleased)
+- MsgWait hasn't been displaying my default image for quite some time.
+- Toggle UI Transparency will always default to off on new dialogs.
+- Empty space next to Transparency checkbox is now not clickable as checkbox.
+- Some dialogs showed Double-click rollup info twice.
 
 ## v12.5 (6 Mar 2025)
 - ExportMapDataToCSV is slightly faster

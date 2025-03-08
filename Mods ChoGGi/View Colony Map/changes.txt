@@ -1,3 +1,6 @@
+v2.7
+Warning for game rules didn't show tech info in proper colour.
+
 v2.6
 Bumps the breakthrough count when you use Paradox sponsor.
 

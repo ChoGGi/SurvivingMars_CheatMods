@@ -24,7 +24,7 @@ Mod Options:
 If you want Martians to have martian names: Randomise Birthplace = false
 If you want existing nations to use random names: Default Nation Names = false
 
-Unique names are available in my More Names mod.
+Unique names are available in my [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1968507022]More Names[/url] mod.
 
 If you have a list of names you'd like to add; please format them like these: https://github.com/HaemimontGames/SurvivingMars/blob/master/Lua/Names.lua#L1009
 

@@ -77,10 +77,19 @@ local function ShowDialogs()
 
 	end
 --~ ChoGGi_Funcs.Common.TickEnd("Tick.1")
---~ 	map_data = {}
 	if ChoGGi.testing then
 		vli = ShowDialogs
-		ex(map_data)
+		local testing_ex = OpenExamineReturn(map_data, {
+			has_params = true,
+			title = "tester list",
+		})
+		CreateRealTimeThread(function()
+			Sleep(10)
+			testing_ex:SetPos(
+				testing_ex:GetPos() + point(-50, 150)
+			)
+		end)
+
 	end
 
 	-- check if we already created finder, and make one if not
@@ -350,7 +359,15 @@ Leave blank to skip search box.]])
 		id = "idSearchRem"
 		str_roll = T(302535920011930, [[Search for text to remove from the results (overrides search text).
 Leave blank to skip search box.]])
-		str_hint = Translate(T(302535920011931, "Enter text to ignore"))
+		str_hint = Translate(302535920011931, [[Enter text to ignore]])
+	end
+
+	-- add hint if random rule active
+	local tech, chaos = IsGameRuleActive("TechVariety"), IsGameRuleActive("ChaosTheory")
+	if tech or chaos then
+		str_hint = str_hint .. "    " .. Translate(T{[[<rule> detected! Invalid breakthrough list!]],
+			rule = tech and T(607602869305--[[Tech Variety]]) or T(621834127153--[[Chaos Theory]]),
+		})
 	end
 
 	self[count] = self[count] + 1
@@ -431,14 +448,13 @@ function ChoGGi_VLI_MapInfoDlg:FindText()
 	CreateRealTimeThread(function()
 		Sleep(10)
 		self.current_examine_dlg:SetPos(
-			self:GetPos() + point(0, self.idDialog.box:sizey() + 25)
+			self:GetPos() + point(0, self.idDialog.box:sizey())
 		)
 		if reuse and IsValidXWin(self.current_examine_dlg) then
 			self.current_examine_dlg.obj = self.found_objs
 			self.current_examine_dlg:SetObj()
 			self:SetExamineTitle()
 		end
-
 	end)
 
 	-- if reuse is checked then flash it
