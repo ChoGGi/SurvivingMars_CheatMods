@@ -1,9 +1,7 @@
 -- See LICENSE for terms
 
-local r = const.ResourceScale
-
 local function GetModValue()
-	return CurrentModOptions:GetProperty("AmountOfRares") * r
+	return CurrentModOptions:GetProperty("AmountOfRares") * const.ResourceScale
 end
 
 local function UpdateExistingRockets()

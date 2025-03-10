@@ -31,7 +31,7 @@ return {
 		"name", "WorkTime",
 		"DisplayName", T(0000, "Work Time"),
 		"Help", T(4640--[[The time it takes the RC Transport to gather 1 resource from a deposit]]),
-		"DefaultValue", Consts.RCTransportGatherResourceWorkTime / const.ResourceScale,
+		"DefaultValue", Consts.RCTransportGatherResourceWorkTime / const.Scale.Stat,
 		"MinValue", 1,
 		"MaxValue", 100,
 	}),

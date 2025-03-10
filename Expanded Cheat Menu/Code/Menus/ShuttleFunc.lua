@@ -70,8 +70,8 @@ function ChoGGi_Funcs.Menus.SetShuttleCapacity()
 end
 
 function ChoGGi_Funcs.Menus.SetShuttleSpeed()
-	local r = const.ResourceScale
-	local default_setting = ChoGGi.Consts.SpeedShuttle / r
+	local ScaleStat = const.Scale.Stat
+	local default_setting = ChoGGi.Consts.SpeedShuttle / ScaleStat
 	local item_list = {
 		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
 		{text = 50, value = 50},
@@ -89,7 +89,7 @@ function ChoGGi_Funcs.Menus.SetShuttleSpeed()
 
 	local hint_str = default_setting
 	if ChoGGi.UserSettings.SpeedShuttle then
-		hint_str = ChoGGi.UserSettings.SpeedShuttle / r
+		hint_str = ChoGGi.UserSettings.SpeedShuttle / ScaleStat
 	end
 
 	local function CallBackFunc(choice)
@@ -100,7 +100,7 @@ function ChoGGi_Funcs.Menus.SetShuttleSpeed()
 
 		local value = choice.value
 		if type(value) == "number" then
-			local value = value * r
+			local value = value * ScaleStat
 			-- loop through and set all shuttles
 			local objs = UIColony:GetCityLabels("CargoShuttle")
 			for i = 1, #objs do

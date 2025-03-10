@@ -395,8 +395,7 @@ local function StartupCode()
 		RemoveSuspend(g_SuspendLabels, "MOXIE")
 		RemoveSuspend(const.DustStormSuspendBuildings, "MOXIE")
 
-		BuildingTemplates.MOXIE.suspend_on_dust_storm = false
-		ClassTemplates.Building.MOXIE.suspend_on_dust_storm = false
+		ChoGGi_Funcs.Common.SetBuildingTemplates("MOXIE", "suspend_on_dust_storm", false)
 		UpdateMOXIES()
 	end
 

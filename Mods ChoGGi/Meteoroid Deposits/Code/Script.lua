@@ -6,13 +6,13 @@ local Random = ChoGGi_Funcs.Common.Random
 local CopyTable = ChoGGi_Funcs.Common.CopyTable
 
 -- from SubsurfaceDeposit.lua, but never used anywhere (we'll use it as limits for new deposits)
-local r = const.ResourceScale
+local ResourceScale = const.ResourceScale
 local ranges = {
-  ["Very Low"] = range(100 * r, 1000 * r),
-  ["Low"] = range(1001 * r, 2000 * r),
-  ["Average"] = range(2001 * r, 3000 * r),
-  ["High"] = range(3001 * r, 4000 * r),
-  ["Very High"] = range(4001 * r, 8000 * r),
+  ["Very Low"] = range(100 * ResourceScale, 1000 * ResourceScale),
+  ["Low"] = range(1001 * ResourceScale, 2000 * ResourceScale),
+  ["Average"] = range(2001 * ResourceScale, 3000 * ResourceScale),
+  ["High"] = range(3001 * ResourceScale, 4000 * ResourceScale),
+  ["Very High"] = range(4001 * ResourceScale, 8000 * ResourceScale),
 }
 
 local function DisasterTriggerMeteor(pos, spawn_type)

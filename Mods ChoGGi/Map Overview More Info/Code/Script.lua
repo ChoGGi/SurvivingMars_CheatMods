@@ -80,7 +80,7 @@ local function AddIcons()
 	local str_Metals = _InternalTranslate(T("<icon_Metals>")):gsub("1300", "2200")
 	local str_Polymers = _InternalTranslate(T("<icon_Polymers>")):gsub("1300", "2200")
 
-	local r = const.ResourceScale
+	local ResourceScale = const.ResourceScale
 	local SectorDeepScanPoints = const.SectorDeepScanPoints
 	local SectorScanPoints = const.SectorScanPoints
 
@@ -158,11 +158,11 @@ local function AddIcons()
 			-- add metal and/or poly info
 			if metals_c > 0 then
 				c = c + 1
-				text_table[c] = str_Metals .. (metals_c/r)
+				text_table[c] = str_Metals .. (metals_c/ResourceScale)
 			end
 			if polymers_c > 0 then
 				c = c + 1
-				text_table[c] = str_Polymers .. (polymers_c/r)
+				text_table[c] = str_Polymers .. (polymers_c/ResourceScale)
 			end
 
 			-- add dropped res
@@ -233,12 +233,12 @@ function OverviewModeDialog:GenerateSectorRolloverContext(sector, ...)
 	-- append counts to sector tooltip
 	local pile = sector_piles[sector.id]
 	if pile then
-		local r = const.ResourceScale
+		local ResourceScale = const.ResourceScale
 		local roll = ret1.RolloverText
 
 		roll = roll .. "<left>\n\n"
 		for res, amount in pairs(pile) do
-			roll = roll .. " " .. T("<icon_" .. res .. ">") .. ": " .. (amount / r)
+			roll = roll .. " " .. T("<icon_" .. res .. ">") .. ": " .. (amount / ResourceScale)
 		end
 
 		ret1.RolloverText = roll

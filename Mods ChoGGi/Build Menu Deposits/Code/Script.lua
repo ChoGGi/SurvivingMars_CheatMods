@@ -29,16 +29,7 @@ DefineClass.ChoGGi_SubsurfaceDepositMarker = {
 		"SubsurfaceDepositMarker",
 		"Building",
 	},
-	build_category = "ChoGGi_Deposits",
-	Group = "ChoGGi_Deposits",
-
 	grade = "Very High",
-	instant_build = true,
-
-	disabled_in_environment1 = "",
-	disabled_in_environment2 = "",
-	disabled_in_environment3 = "",
-	disabled_in_environment4 = "",
 }
 
 DefineClass.ChoGGi_TerrainDepositMarker = {
@@ -46,16 +37,7 @@ DefineClass.ChoGGi_TerrainDepositMarker = {
 		"TerrainDepositMarker",
 		"Building",
 	},
-	build_category = "ChoGGi_Deposits",
-	Group = "ChoGGi_Deposits",
-
 	grade = "Very High",
-	instant_build = true,
-
-	disabled_in_environment1 = "",
-	disabled_in_environment2 = "",
-	disabled_in_environment3 = "",
-	disabled_in_environment4 = "",
 }
 
 DefineClass.ChoGGi_EffectDepositMarker = {
@@ -63,15 +45,7 @@ DefineClass.ChoGGi_EffectDepositMarker = {
 		"EffectDepositMarker",
 		"Building",
 	},
-	build_category = "ChoGGi_Deposits",
-	Group = "ChoGGi_Deposits",
-
 	instant_build = true,
-
-	disabled_in_environment1 = "",
-	disabled_in_environment2 = "",
-	disabled_in_environment3 = "",
-	disabled_in_environment4 = "",
 }
 
 DefineClass.ChoGGi_SubsurfaceAnomalyMarker = {
@@ -79,15 +53,7 @@ DefineClass.ChoGGi_SubsurfaceAnomalyMarker = {
 		"SubsurfaceAnomalyMarker",
 		"Building",
 	},
-	build_category = "ChoGGi_Deposits",
-	Group = "ChoGGi_Deposits",
-
 	instant_build = true,
-
-	disabled_in_environment1 = "",
-	disabled_in_environment2 = "",
-	disabled_in_environment3 = "",
-	disabled_in_environment4 = "",
 }
 
 local deposit_lookup = {
@@ -215,7 +181,6 @@ local lookup_names = {
 	_ResearchEff = T(11461--[[Research Site]]),
 }
 
---~ local function AddTemplate(obj, class, deposit_type, info, build_pos)
 local function AddTemplate(obj, params)
 
 	-- I mean... it's kinda ugly but
@@ -243,6 +208,18 @@ local function AddTemplate(obj, params)
 		"disabled_entity", obj.disabled_entity,
 		"entity", obj.entity,
 		"build_pos", params.build_pos,
+
+		"build_category", "ChoGGi_Deposits",
+		"Group", "ChoGGi_Deposits",
+		"instant_build", true,
+
+		-- "Asteroid","Underground","Surface",
+		-- defaults to surface only!
+		-- use the below to remove realm limitation
+		"disabled_in_environment1", "",
+		"disabled_in_environment2", "",
+		"disabled_in_environment3", "",
+		"disabled_in_environment4", "",
 	})
 end
 

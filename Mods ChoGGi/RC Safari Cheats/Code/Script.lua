@@ -39,14 +39,16 @@ local function ModOptions(id)
 	local options = CurrentModOptions
 	MaxRouteLength = options:GetProperty("MaxSafariLength")
 
+	local ScaleStat = const.Scale.Stat
+
 	mod_RCSafariMaxWaypoints = options:GetProperty("RCSafariMaxWaypoints")
 	mod_SightRange = options:GetProperty("SightRange")
 	mod_MaxPassengers = options:GetProperty("MaxPassengers")
-	mod_SatisfactionChange = options:GetProperty("SatisfactionChange") * const.ResourceScale
-	mod_HealthChange = options:GetProperty("HealthChange") * const.ResourceScale
-	mod_SanityChange = options:GetProperty("SanityChange") * const.ResourceScale
-	mod_ServiceComfort = options:GetProperty("ServiceComfort") * const.ResourceScale
-	mod_ComfortIncrease = options:GetProperty("ComfortIncrease") * const.ResourceScale
+	mod_SatisfactionChange = options:GetProperty("SatisfactionChange") * ScaleStat
+	mod_HealthChange = options:GetProperty("HealthChange") * ScaleStat
+	mod_SanityChange = options:GetProperty("SanityChange") * ScaleStat
+	mod_ServiceComfort = options:GetProperty("ServiceComfort") * ScaleStat
+	mod_ComfortIncrease = options:GetProperty("ComfortIncrease") * ScaleStat
 
 	-- make sure we're in-game
 	if not UIColony then

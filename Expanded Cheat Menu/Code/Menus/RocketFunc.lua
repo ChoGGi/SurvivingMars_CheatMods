@@ -255,8 +255,8 @@ function ChoGGi_Funcs.Menus.SetRocketCargoCapacity()
 end
 
 function ChoGGi_Funcs.Menus.SetRocketTravelTime()
-	local r = const.ResourceScale
-	local default_setting = ChoGGi_Funcs.Common.GetResearchedTechValue("TravelTimeEarthMars") / r
+	local ScaleStat = const.Scale.Stat
+	local default_setting = ChoGGi_Funcs.Common.GetResearchedTechValue("TravelTimeEarthMars") / ScaleStat
 	local item_list = {
 		{text = Translate(302535920000947--[[Instant]]), value = 0},
 		{text = Translate(1000121--[[Default]]) .. ": " .. default_setting, value = default_setting},
@@ -277,7 +277,7 @@ function ChoGGi_Funcs.Menus.SetRocketTravelTime()
 
 	local hint = default_setting
 	if ChoGGi.UserSettings.TravelTimeEarthMars then
-		hint = ChoGGi.UserSettings.TravelTimeEarthMars / r
+		hint = ChoGGi.UserSettings.TravelTimeEarthMars / ScaleStat
 	end
 
 	local function CallBackFunc(choice)
@@ -288,7 +288,7 @@ function ChoGGi_Funcs.Menus.SetRocketTravelTime()
 
 		local value = choice.value
 		if type(value) == "number" then
-			local value = value * r
+			local value = value * ScaleStat
 			ChoGGi_Funcs.Common.SetConsts("TravelTimeEarthMars", value)
 			ChoGGi_Funcs.Common.SetConsts("TravelTimeMarsEarth", value)
 			ChoGGi_Funcs.Common.SetSavedConstSetting("TravelTimeEarthMars")

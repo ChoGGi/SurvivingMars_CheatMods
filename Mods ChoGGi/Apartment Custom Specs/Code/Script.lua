@@ -1,10 +1,10 @@
 -- See LICENSE for terms
 
-local r = const.ResourceScale
-local construction_cost_Concrete = 50 * r
-local construction_cost_Polymers = 25 * r
-local maintenance_resource_amount = 5 * r
-local electricity_consumption = 10 * r
+local ResourceScale = const.ResourceScale
+local construction_cost_Concrete = 50 * ResourceScale
+local construction_cost_Polymers = 25 * ResourceScale
+local maintenance_resource_amount = 5 * ResourceScale
+local electricity_consumption = 10 * ResourceScale
 local capacity = 125
 
 local function UpdateTemplate(a)

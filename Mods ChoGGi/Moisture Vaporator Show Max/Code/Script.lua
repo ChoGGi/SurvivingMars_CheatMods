@@ -1,6 +1,6 @@
 -- See LICENSE for terms
 
-local r = const.ResourceScale
+local ResourceScale = const.ResourceScale
 local function UpdateMax(self)
 	local prod = self.modifications and self.modifications.water_production
 	if prod then
@@ -15,7 +15,7 @@ local function UpdateMax(self)
 				amount = amount + mod.amount
 			end
 		end
-		self.ChoGGi_max_vap_prod = ((percent / 100) * r) + amount
+		self.ChoGGi_max_vap_prod = ((percent / 100) * ResourceScale) + amount
 	else
 		self.ChoGGi_max_vap_prod = self.base_water_production
 	end

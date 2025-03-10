@@ -275,30 +275,30 @@ function ChoGGi_Funcs.Menus.SetDroneMoveSpeed(action)
 	local speed = action.setting_speed
 	local title = action.setting_title
 
-	local r = const.ResourceScale
+	local ScaleStat = const.Scale.Stat
 	local default_setting = ChoGGi.Consts[speed]
 	local UpgradedSetting
 	if speed == "SpeedDrone" then
 		UpgradedSetting = ChoGGi_Funcs.Common.GetResearchedTechValue("SpeedDrone")
 	end
 	local item_list = {
-		{text = Translate(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting, hint = T(302535920000889--[[base speed]])},
-		{text = 2, value = 2 * r, hint = "2000"},
-		{text = 3, value = 3 * r, hint = "3000"},
-		{text = 4, value = 4 * r, hint = "4000"},
-		{text = 5, value = 5 * r, hint = "5000"},
-		{text = 10, value = 10 * r, hint = "10000"},
-		{text = 15, value = 15 * r, hint = "15000"},
-		{text = 25, value = 25 * r, hint = "25000"},
-		{text = 50, value = 50 * r, hint = "50000"},
-		{text = 100, value = 100 * r, hint = "100000"},
-		{text = 1000, value = 1000 * r, hint = "100000"},
-		{text = 10000, value = 10000 * r, hint = "10000000"},
+		{text = Translate(1000121--[[Default]]) .. ": " .. (default_setting / ScaleStat), value = default_setting, hint = T(302535920000889--[[base speed]])},
+		{text = 2, value = 2 * ScaleStat, hint = "2000"},
+		{text = 3, value = 3 * ScaleStat, hint = "3000"},
+		{text = 4, value = 4 * ScaleStat, hint = "4000"},
+		{text = 5, value = 5 * ScaleStat, hint = "5000"},
+		{text = 10, value = 10 * ScaleStat, hint = "10000"},
+		{text = 15, value = 15 * ScaleStat, hint = "15000"},
+		{text = 25, value = 25 * ScaleStat, hint = "25000"},
+		{text = 50, value = 50 * ScaleStat, hint = "50000"},
+		{text = 100, value = 100 * ScaleStat, hint = "100000"},
+		{text = 1000, value = 1000 * ScaleStat, hint = "100000"},
+		{text = 10000, value = 10000 * ScaleStat, hint = "10000000"},
 	}
 
 	-- only reg drones have upgraded speed tech (i think)
 	if UpgradedSetting and default_setting ~= UpgradedSetting then
-		table.insert(item_list, 2, {text = Translate(302535920000890--[[Upgraded]]) .. ": " .. (UpgradedSetting / r), value = UpgradedSetting, hint = T(302535920000891--[[apply tech unlocks]])})
+		table.insert(item_list, 2, {text = Translate(302535920000890--[[Upgraded]]) .. ": " .. (UpgradedSetting / ScaleStat), value = UpgradedSetting, hint = T(302535920000891--[[apply tech unlocks]])})
 	end
 
 	local hint = UpgradedSetting or default_setting

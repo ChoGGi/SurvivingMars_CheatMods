@@ -68,7 +68,7 @@ DefineClass.SpiceHarvester_ShuttleHub = {
 DefineClass.SpiceHarvester_CargoShuttle = {
 	__parents = {"CargoShuttle"},
 	dust_thread = false,
-	attack_radius = 50 * const.ResourceScale,
+	attack_radius = 50 * const.Scale.Stat,
 	-- It'll change after
 	min_wait_rock_attack = 100,
 }

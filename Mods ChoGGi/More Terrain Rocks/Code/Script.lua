@@ -46,8 +46,6 @@ if g_AvailableDlc.picard then
 	cats[#cats+1] = "LandscapeRockBuildingsCaveInBlocker"
 end
 
-local r = const.ResourceScale
-
 local mod_LargeRocksCost
 
 local function ModOptions(id)
@@ -56,7 +54,7 @@ local function ModOptions(id)
 		return
 	end
 
-	mod_LargeRocksCost = CurrentModOptions:GetProperty("LargeRocksCost") * r
+	mod_LargeRocksCost = CurrentModOptions:GetProperty("LargeRocksCost") * const.ResourceScale
 
 	-- update rocks
 	local bt = BuildingTemplates
@@ -109,11 +107,10 @@ local function AddToMenu(bt, cat, entity, desc, index)
 		if mat and mat.BaseColor and mat.BaseColor ~= "" then
 			PlaceObj("BuildingTemplate", {
 
-		-- added, not uploaded
-		"disabled_in_environment1", "",
-		"disabled_in_environment2", "",
-		"disabled_in_environment3", "",
-		"disabled_in_environment4", "",
+				"disabled_in_environment1", "",
+				"disabled_in_environment2", "",
+				"disabled_in_environment3", "",
+				"disabled_in_environment4", "",
 
 				"Group", cat,
 				"build_category", cat,

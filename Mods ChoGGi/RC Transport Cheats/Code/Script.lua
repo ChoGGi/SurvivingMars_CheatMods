@@ -34,8 +34,7 @@ local function UpdateTransports()
 	SetConsts("RCTransportGatherResourceWorkTime", mod_WorkTime)
 
 	if mod_StorageAmount > 0 then
-		BuildingTemplates.RCTransportBuilding.max_shared_storage = mod_StorageAmount
-		ClassTemplates.Building.RCTransportBuilding.max_shared_storage = mod_StorageAmount
+		ChoGGi_Funcs.Common.SetBuildingTemplates("RCTransportBuilding", "max_shared_storage", mod_StorageAmount)
 
 		local objs = UIColony:GetCityLabels("RCTransportAndChildren")
 		for i = 1, #objs do
@@ -54,7 +53,7 @@ local function ModOptions(id)
 
 	mod_EnableMod = CurrentModOptions:GetProperty("EnableMod")
 	mod_StorageAmount = CurrentModOptions:GetProperty("StorageAmount") * const.ResourceScale
-	mod_WorkTime = CurrentModOptions:GetProperty("WorkTime") * const.ResourceScale
+	mod_WorkTime = CurrentModOptions:GetProperty("WorkTime") * const.Scale.Stat
 	mod_WasteRock = CurrentModOptions:GetProperty("WasteRock")
 	mod_FillStorage = CurrentModOptions:GetProperty("FillStorage")
 

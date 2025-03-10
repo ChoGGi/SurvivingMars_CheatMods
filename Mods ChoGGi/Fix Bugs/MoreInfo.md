@@ -80,72 +80,6 @@ GetCheapestTech log spam.
 ```
 
 
-**Incorporated mods:** (so far)
-```
-Fix Blank Mission Profile
-Fix Buildings Broken Down And No Repair
-Fix Colonist Daily Interest Loop
-Fix Colonists Long Walks (better solution: Use my "No More Outside Suffocation" mod)
-Fix Colonists Suffocating Inside Domes
-Fix Defence Towers Not Firing At Rovers
-Fix Destroyed Tunnels Still Work
-Fix Double Click Select All Of Type
-Fix Dust Devils Block Building
-Fix Farm Oxygen
-Fix FindDroneToRepair Log Spam
-Fix Landscaping Freeze
-Fix Layout Construction Tech Lock
-Fix Locked Wind Turbine
-Fix Meteor Stuck On Map
-Fix Mods With Nil Notifications
-Fix No Power Dome Buildings
-Fix Projector Lamp
-Fix RC Commander Drone Freeze
-Fix Resupply Menu Not Opening
-Fix Stuck Malfunctioning Drones At DroneHub
-Fix Transport Negative Amounts
-Fix Transports Don't Move After Route Set
-Pins Missing Some Status Icons
-```
-
-If you have B&B I'd recommend SkiRich's [Better Lander Rockets](https://steamcommunity.com/sharedfiles/filedetails/?id=2619013940)
-
-
-**See also**:
-
-
-[Fix Cold Wave Stuck](https://steamcommunity.com/sharedfiles/filedetails/?id=2601527081)
-
-[Fix Deposits Wrong Map](https://steamcommunity.com/sharedfiles/filedetails/?id=2703206312)
-
-[Fix Dredger Mark Left On Ground](https://steamcommunity.com/sharedfiles/filedetails/?id=1646258448)
-
-[Fix Eternal Dust Storm](https://steamcommunity.com/sharedfiles/filedetails/?id=1594158818)
-
-[Fix Flying Drones MidAir Malfunction](https://steamcommunity.com/sharedfiles/filedetails/?id=2473394779)
-
-[Fix Mac Mirror Graphics](https://steamcommunity.com/sharedfiles/filedetails/?id=2549884520)
-
-[Fix Missing Mod Buildings](https://steamcommunity.com/sharedfiles/filedetails/?id=1443225581)
-
-[Fix Missing Mod Icons](https://steamcommunity.com/sharedfiles/filedetails/?id=1725437808)
-
-[Fix Remove Blue Yellow Marks And Ghosts](https://steamcommunity.com/sharedfiles/filedetails/?id=1553086208)
-
-[Fix Remove Invalid Label Buildings](https://steamcommunity.com/sharedfiles/filedetails/?id=1575894376)
-
-[Fix Rocket Stuck](https://steamcommunity.com/sharedfiles/filedetails/?id=1567028510)
-
-[Fix Rover In Dome](https://steamcommunity.com/sharedfiles/filedetails/?id=1829688193)
-
-[Fix Shuttles Stuck Mid-Air](https://steamcommunity.com/sharedfiles/filedetails/?id=1549680063)
-
-[Fix Sol 2983](https://steamcommunity.com/sharedfiles/filedetails/?id=2705335465) < Don't enable unless needed!
-
-[Fix Stuck Mirror Sphere Devices](https://steamcommunity.com/sharedfiles/filedetails/?id=2082012035)
-
-[Fix Unlock RC Safari Resupply](https://steamcommunity.com/sharedfiles/filedetails/?id=2427995890)
-
 
 **Info from Incorporated mods/etc:**
 
@@ -289,4 +223,74 @@ The pinned rover transport buttons are missing un/load icons.
 
 **Known Bugs**
 Mars Nouveau won't count if you remove a Construction site and place the new one in the exact same position (thanks Dark Master).
+
+
+
+
+
+**Incorporated mods:** (so far)
+```
+Fix Blank Mission Profile
+Fix Buildings Broken Down And No Repair
+Fix Colonist Daily Interest Loop
+Fix Colonists Long Walks (better solution: Use my "No More Outside Suffocation" mod)
+Fix Colonists Suffocating Inside Domes
+Fix Defence Towers Not Firing At Rovers
+Fix Destroyed Tunnels Still Work
+Fix Double Click Select All Of Type
+Fix Dust Devils Block Building
+Fix Farm Oxygen
+Fix FindDroneToRepair Log Spam
+Fix Landscaping Freeze
+Fix Layout Construction Tech Lock
+Fix Locked Wind Turbine
+Fix Meteor Stuck On Map
+Fix Mods With Nil Notifications
+Fix No Power Dome Buildings
+Fix Projector Lamp
+Fix RC Commander Drone Freeze
+Fix Resupply Menu Not Opening
+Fix Stuck Malfunctioning Drones At DroneHub
+Fix Transport Negative Amounts
+Fix Transports Don't Move After Route Set
+Pins Missing Some Status Icons
+```
+
+If you have B&B I'd recommend SkiRich's [Better Lander Rockets](https://steamcommunity.com/sharedfiles/filedetails/?id=2619013940)
+
+
+**See also**:
+
+
+[Fix Cold Wave Stuck](https://steamcommunity.com/sharedfiles/filedetails/?id=2601527081)
+
+[Fix Deposits Wrong Map](https://steamcommunity.com/sharedfiles/filedetails/?id=2703206312)
+
+[Fix Dredger Mark Left On Ground](https://steamcommunity.com/sharedfiles/filedetails/?id=1646258448)
+
+[Fix Eternal Dust Storm](https://steamcommunity.com/sharedfiles/filedetails/?id=1594158818)
+
+[Fix Flying Drones MidAir Malfunction](https://steamcommunity.com/sharedfiles/filedetails/?id=2473394779)
+
+[Fix Mac Mirror Graphics](https://steamcommunity.com/sharedfiles/filedetails/?id=2549884520)
+
+[Fix Missing Mod Buildings](https://steamcommunity.com/sharedfiles/filedetails/?id=1443225581)
+
+[Fix Missing Mod Icons](https://steamcommunity.com/sharedfiles/filedetails/?id=1725437808)
+
+[Fix Remove Blue Yellow Marks And Ghosts](https://steamcommunity.com/sharedfiles/filedetails/?id=1553086208)
+
+[Fix Remove Invalid Label Buildings](https://steamcommunity.com/sharedfiles/filedetails/?id=1575894376)
+
+[Fix Rocket Stuck](https://steamcommunity.com/sharedfiles/filedetails/?id=1567028510)
+
+[Fix Rover In Dome](https://steamcommunity.com/sharedfiles/filedetails/?id=1829688193)
+
+[Fix Shuttles Stuck Mid-Air](https://steamcommunity.com/sharedfiles/filedetails/?id=1549680063)
+
+[Fix Sol 2983](https://steamcommunity.com/sharedfiles/filedetails/?id=2705335465) < Don't enable unless needed!
+
+[Fix Stuck Mirror Sphere Devices](https://steamcommunity.com/sharedfiles/filedetails/?id=2082012035)
+
+[Fix Unlock RC Safari Resupply](https://steamcommunity.com/sharedfiles/filedetails/?id=2427995890)
 

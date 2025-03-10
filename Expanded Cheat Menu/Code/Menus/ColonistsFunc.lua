@@ -403,8 +403,8 @@ function ChoGGi_Funcs.Menus.SetAllWorkShifts()
 end
 
 function ChoGGi_Funcs.Menus.SetMinComfortBirth()
-	local r = const.ResourceScale
-	local default_setting = ChoGGi.Consts.MinComfortBirth / r
+	local ScaleStat = const.Scale.Stat
+	local default_setting = ChoGGi.Consts.MinComfortBirth / ScaleStat
 	local hint_low = T(302535920000767--[[Lower = more babies]])
 	local hint_high = T(302535920000768--[[Higher = less babies]])
 	local item_list = {
@@ -417,7 +417,7 @@ function ChoGGi_Funcs.Menus.SetMinComfortBirth()
 
 	local hint = default_setting
 	if ChoGGi.UserSettings.MinComfortBirth then
-		hint = ChoGGi.UserSettings.MinComfortBirth / r
+		hint = ChoGGi.UserSettings.MinComfortBirth / ScaleStat
 	end
 
 	local function CallBackFunc(choice)
@@ -426,7 +426,7 @@ function ChoGGi_Funcs.Menus.SetMinComfortBirth()
 		end
 		local value = choice[1].value
 		if type(value) == "number" then
-			value = value * r
+			value = value * ScaleStat
 			ChoGGi_Funcs.Common.SetConsts("MinComfortBirth", value)
 			ChoGGi_Funcs.Common.SetSavedConstSetting("MinComfortBirth")
 
@@ -1562,7 +1562,6 @@ function ChoGGi_Funcs.Menus.SetColonistsTraits(action)
 end
 
 function ChoGGi_Funcs.Menus.SetColonistsStats()
-	local r = const.ResourceScale
 	local item_list = {
 		{text = Translate(302535920000833--[[All Stats]]) .. " " .. Translate(302535920000834--[[Max]]), value = 1},
 		{text = Translate(302535920000833--[[All Stats]]) .. " " .. Translate(302535920000835--[[Fill]]), value = 2},
@@ -1588,8 +1587,8 @@ function ChoGGi_Funcs.Menus.SetColonistsStats()
 			dome = obj.dome
 		end
 
-		local max = 100000 * r
-		local fill = 100 * r
+		local max = 100000 * const.Scale.Stat
+		local fill = 100 * const.Scale.Stat
 		local function SetStat(stat, v)
 			if v == 1 or v == 3 or v == 6 or v == 8 then
 				v = max
@@ -1668,18 +1667,18 @@ Warning: Disable births or else...]]),
 end
 
 function ChoGGi_Funcs.Menus.SetColonistMoveSpeed()
-	local r = const.ResourceScale
+	local ScaleStat = const.Scale.Stat
 	local default_setting = ChoGGi.Consts.SpeedColonist
 	local item_list = {
-		{text = Translate(1000121--[[Default]]) .. ": " .. (default_setting / r), value = default_setting},
-		{text = 5, value = 5 * r},
-		{text = 10, value = 10 * r},
-		{text = 15, value = 15 * r},
-		{text = 25, value = 25 * r},
-		{text = 50, value = 50 * r},
-		{text = 100, value = 100 * r},
-		{text = 1000, value = 1000 * r},
-		{text = 10000, value = 10000 * r},
+		{text = Translate(1000121--[[Default]]) .. ": " .. (default_setting / ScaleStat), value = default_setting},
+		{text = 5, value = 5 * ScaleStat},
+		{text = 10, value = 10 * ScaleStat},
+		{text = 15, value = 15 * ScaleStat},
+		{text = 25, value = 25 * ScaleStat},
+		{text = 50, value = 50 * ScaleStat},
+		{text = 100, value = 100 * ScaleStat},
+		{text = 1000, value = 1000 * ScaleStat},
+		{text = 10000, value = 10000 * ScaleStat},
 	}
 
 	local hint = default_setting

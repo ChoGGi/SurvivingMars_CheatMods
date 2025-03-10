@@ -5,11 +5,10 @@ local function AddToMenu(bt, t, desc, index)
 	if not bt[id] then
 		PlaceObj("BuildingTemplate", {
 
-		-- added, not uploaded
-		"disabled_in_environment1", "",
-		"disabled_in_environment2", "",
-		"disabled_in_environment3", "",
-		"disabled_in_environment4", "",
+			"disabled_in_environment1", "",
+			"disabled_in_environment2", "",
+			"disabled_in_environment3", "",
+			"disabled_in_environment4", "",
 
 			"Group", t.cat,
 			"build_category", t.cat,
@@ -198,17 +197,16 @@ function OnMsg.ClassesPostprocess()
 		-- fake item to make build menu show up
 		PlaceObj("BuildingTemplate", {
 
-		-- added, not uploaded
-		"disabled_in_environment1", "",
-		"disabled_in_environment2", "",
-		"disabled_in_environment3", "",
-		"disabled_in_environment4", "",
+			"disabled_in_environment1", "",
+			"disabled_in_environment2", "",
+			"disabled_in_environment3", "",
+			"disabled_in_environment4", "",
 
 			"Group", "LandscapeTextures_ChoGGi",
 			"build_category", "LandscapeTextures_ChoGGi",
 			"Id", "LandscapeTextures_ChoGGi_Ignore",
-			"display_name", T(302535920011444,"Ignore me"),
-			"display_name_pl", T(302535920011444,"Ignore me"),
+			"display_name", T(302535920011444, "Ignore me"),
+			"display_name_pl", T(302535920011444, "Ignore me"),
 			"description", T(302535920011445,[[Build menus need at least one actual item or they won't show up.
 You can build this if you want it won't hurt anything.]]),
 			"template_class", "Building",

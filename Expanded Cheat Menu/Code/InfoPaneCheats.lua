@@ -16,7 +16,7 @@ local RetName = Common.RetName
 local Random = Common.Random
 local T = T
 local Translate = ChoGGi_Funcs.Common.Translate
-local ResourceScale = const.ResourceScale
+local ScaleStat = const.Scale.Stat
 
 local CObject = CObject
 CObject.CheatExamine = OpenExamineReturn
@@ -848,16 +848,16 @@ end
 
 -- colonists
 function Colonist:CheatFillMorale()
-	self.stat_morale = 100 * ResourceScale
+	self.stat_morale = 100 * ScaleStat
 end
 function Colonist:CheatFillSanity()
-	self.stat_sanity = 100 * ResourceScale
+	self.stat_sanity = 100 * ScaleStat
 end
 function Colonist:CheatFillComfort()
-	self.stat_comfort = 100 * ResourceScale
+	self.stat_comfort = 100 * ScaleStat
 end
 function Colonist:CheatFillHealth()
-	self.stat_health = 100 * ResourceScale
+	self.stat_health = 100 * ScaleStat
 end
 function Colonist:CheatFillAll()
 	self:CheatFillSanity()

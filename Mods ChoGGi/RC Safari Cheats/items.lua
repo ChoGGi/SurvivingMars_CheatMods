@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local ScaleStat = const.Scale.Stat
+
 return {
 	PlaceObj("ModItemOptionNumber", {
 		"name", "MaxSafariLength",
@@ -38,7 +40,7 @@ return {
 		"name", "SatisfactionChange",
 		"DisplayName", T(12712, "Satisfaction change on visit"),
 		"Help", T(302535920011882, "Add satisfaction for visit."),
-		"DefaultValue", RCSafari.satisfaction_change / const.ResourceScale,
+		"DefaultValue", RCSafari.satisfaction_change / ScaleStat,
 		"MinValue", 0,
 		"MaxValue", 100,
 	}),
@@ -46,7 +48,7 @@ return {
 		"name", "HealthChange",
 		"DisplayName", T(728, "Health change on visit"),
 		"Help", T(302535920011883, "Add health for visit."),
-		"DefaultValue", RCSafari.health_change / const.ResourceScale,
+		"DefaultValue", RCSafari.health_change / ScaleStat,
 		"MinValue", 0,
 		"MaxValue", 100,
 	}),
@@ -54,7 +56,7 @@ return {
 		"name", "SanityChange",
 		"DisplayName", T(729, "Sanity change on visit"),
 		"Help", T(302535920011884, "Add sanity for visit."),
-		"DefaultValue", RCSafari.sanity_change / const.ResourceScale,
+		"DefaultValue", RCSafari.sanity_change / ScaleStat,
 		"MinValue", 0,
 		"MaxValue", 100,
 	}),
@@ -63,7 +65,7 @@ return {
 		"name", "ServiceComfort",
 		"DisplayName", T(730, "Service Comfort"),
 		"Help", T(302535920011885, "Comfort threshold for increase."),
-		"DefaultValue", RCSafari.service_comfort / const.ResourceScale,
+		"DefaultValue", RCSafari.service_comfort / ScaleStat,
 		"MinValue", 0,
 		"MaxValue", 100,
 	}),
@@ -71,7 +73,7 @@ return {
 		"name", "ComfortIncrease",
 		"DisplayName", T(731, "Comfort increase on visit"),
 		"Help", T(302535920011886, "How much comfort is added per visit."),
-		"DefaultValue", RCSafari.comfort_increase / const.ResourceScale,
+		"DefaultValue", RCSafari.comfort_increase / ScaleStat,
 		"MinValue", 0,
 		"MaxValue", 100,
 	}),

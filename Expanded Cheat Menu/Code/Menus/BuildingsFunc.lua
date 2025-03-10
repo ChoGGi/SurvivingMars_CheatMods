@@ -242,7 +242,7 @@ function ChoGGi_Funcs.Menus.SetServiceBuildingStats()
 		)
 		return
 	end
-	local r = const.ResourceScale
+	local ScaleStat = const.Scale.Stat
 	local id = RetTemplateOrClass(obj)
 	local ServiceInterestsList = table.concat(ServiceInterestsList, ", ")
 	local name = RetName(obj)
@@ -251,10 +251,10 @@ function ChoGGi_Funcs.Menus.SetServiceBuildingStats()
 	local ReturnEditorType = ChoGGi_Funcs.Common.ReturnEditorType
 	local hint_type = Translate(302535920000138--[[Value needs to be a %s.]])
 	local item_list = {
-		{text = Translate(728--[[Health change on visit]]), value = obj:GetClassValue("health_change") / r, setting = "health_change", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "health_change"))},
-		{text = Translate(729--[[Sanity change on visit]]), value = obj:GetClassValue("sanity_change") / r, setting = "sanity_change", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "sanity_change"))},
-		{text = Translate(730--[[Service Comfort]]), value = obj:GetClassValue("service_comfort") / r, setting = "service_comfort", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "service_comfort"))},
-		{text = Translate(731--[[Comfort increase on visit]]), value = obj:GetClassValue("comfort_increase") / r, setting = "comfort_increase", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "comfort_increase"))},
+		{text = Translate(728--[[Health change on visit]]), value = obj:GetClassValue("health_change") / ScaleStat, setting = "health_change", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "health_change"))},
+		{text = Translate(729--[[Sanity change on visit]]), value = obj:GetClassValue("sanity_change") / ScaleStat, setting = "sanity_change", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "sanity_change"))},
+		{text = Translate(730--[[Service Comfort]]), value = obj:GetClassValue("service_comfort") / ScaleStat, setting = "service_comfort", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "service_comfort"))},
+		{text = Translate(731--[[Comfort increase on visit]]), value = obj:GetClassValue("comfort_increase") / ScaleStat, setting = "comfort_increase", hint = hint_type:format(ReturnEditorType(obj.properties, "id", "comfort_increase"))},
 	}
 	local c = #item_list
 	if is_service then
@@ -342,7 +342,7 @@ function ChoGGi_Funcs.Menus.SetServiceBuildingStats()
 				local editor_type = ReturnEditorType(obj.properties, "id", setting)
 				if value_type == editor_type then
 					if editor_type == "number" then
-						bs_setting.service_stats[setting] = value * r
+						bs_setting.service_stats[setting] = value * ScaleStat
 					elseif value == "" then
 						bs_setting.service_stats[setting] = nil
 					else
