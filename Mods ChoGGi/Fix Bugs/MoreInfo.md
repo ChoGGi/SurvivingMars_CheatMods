@@ -80,10 +80,40 @@ GetCheapestTech log spam.
 ```
 
 
+**Incorporated mods:** (so far)
+```
+Fix Blank Mission Profile
+Fix Buildings Broken Down And No Repair
+Fix Colonist Daily Interest Loop
+Fix Colonists Long Walks (better solution: Use my "No More Outside Suffocation" mod)
+Fix Colonists Suffocating Inside Domes
+Fix Defence Towers Not Firing At Rovers
+Fix Destroyed Tunnels Still Work
+Fix Double Click Select All Of Type
+Fix Dust Devils Block Building
+Fix Farm Oxygen
+Fix FindDroneToRepair Log Spam
+Fix Landscaping Freeze
+Fix Layout Construction Tech Lock
+Fix Locked Wind Turbine
+Fix Meteor Stuck On Map
+Fix Mods With Nil Notifications
+Fix No Power Dome Buildings
+Fix Projector Lamp
+Fix RC Commander Drone Freeze
+Fix Resupply Menu Not Opening
+Fix Stuck Malfunctioning Drones At DroneHub
+Fix Transport Negative Amounts
+Fix Transports Don't Move After Route Set
+Fix Unlock RC Safari Resupply
+Fix Unrepairable Attack Rovers
+Pins Missing Some Status Icons
+```
 
-**Info from Incorporated mods/etc:**
+If you have B&B I'd recommend SkiRich's [Better Lander Rockets](https://steamcommunity.com/sharedfiles/filedetails/?id=2619013940)
 
 
+**Extra info for incorporated mods/specific fixes:**
 
 
 **Uneven terrain / Flatten tool**
@@ -100,15 +130,13 @@ If you're bored and want to dig through the funcs in LandscapeFinish() to find o
 
 **No Planetary Anomaly Breakthroughs when B&B is installed**
 
-It's probably a bug, but the underground wonders do add Breakthroughs.
-
 Mod option to disable this "fix" (and receive less Breakthroughs).
 
-City:InitBreakThroughAnomalies is called for each new city (surface/underground/asteroids)
+City:InitBreakThroughAnomalies() is called for each new city (surface/underground/asteroids).
 
-Calling it more than once removes the BreakthroughOrder list
+Calling it more than once clears the BreakthroughOrder list.
 
-That list is used to spawn planetary anomalies
+BreakthroughOrder is used to spawn planetary anomalies.
 
 **Colonists showing up on wrong map in infobar**
 
@@ -214,6 +242,17 @@ For those wondering LandscapeLastMark is increased each time you open flatten/ra
 
 Thanks to Quirquie for the bug report (and persistence).
 
+**Fix Unrepairable Attack Rovers**
+
+Allows Attack Rovers to be repaired when you can't repair them.
+
+I don't want to say too much as they're from one of the mysteries.
+
+https://www.reddit.com/r/SurvivingMars/comments/12vkbrb/
+
+**Fix Unlock RC Safari Resupply**
+
+RC Safaris aren't automagically unlocked in the resupply screen for games saved before Tito/Tourism update.
 
 **Pins Missing Some Status Icons**
 
@@ -224,39 +263,6 @@ The pinned rover transport buttons are missing un/load icons.
 **Known Bugs**
 Mars Nouveau won't count if you remove a Construction site and place the new one in the exact same position (thanks Dark Master).
 
-
-
-
-
-**Incorporated mods:** (so far)
-```
-Fix Blank Mission Profile
-Fix Buildings Broken Down And No Repair
-Fix Colonist Daily Interest Loop
-Fix Colonists Long Walks (better solution: Use my "No More Outside Suffocation" mod)
-Fix Colonists Suffocating Inside Domes
-Fix Defence Towers Not Firing At Rovers
-Fix Destroyed Tunnels Still Work
-Fix Double Click Select All Of Type
-Fix Dust Devils Block Building
-Fix Farm Oxygen
-Fix FindDroneToRepair Log Spam
-Fix Landscaping Freeze
-Fix Layout Construction Tech Lock
-Fix Locked Wind Turbine
-Fix Meteor Stuck On Map
-Fix Mods With Nil Notifications
-Fix No Power Dome Buildings
-Fix Projector Lamp
-Fix RC Commander Drone Freeze
-Fix Resupply Menu Not Opening
-Fix Stuck Malfunctioning Drones At DroneHub
-Fix Transport Negative Amounts
-Fix Transports Don't Move After Route Set
-Pins Missing Some Status Icons
-```
-
-If you have B&B I'd recommend SkiRich's [Better Lander Rockets](https://steamcommunity.com/sharedfiles/filedetails/?id=2619013940)
 
 
 **See also**:
@@ -291,6 +297,4 @@ If you have B&B I'd recommend SkiRich's [Better Lander Rockets](https://steamcom
 [Fix Sol 2983](https://steamcommunity.com/sharedfiles/filedetails/?id=2705335465) < Don't enable unless needed!
 
 [Fix Stuck Mirror Sphere Devices](https://steamcommunity.com/sharedfiles/filedetails/?id=2082012035)
-
-[Fix Unlock RC Safari Resupply](https://steamcommunity.com/sharedfiles/filedetails/?id=2427995890)
 

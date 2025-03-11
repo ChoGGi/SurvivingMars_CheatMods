@@ -1,3 +1,8 @@
+v8.5
+Added my mods:
+Fix Unlock RC Safari Resupply
+Fix Unrepairable Attack Rovers
+
 v8.4
 Fixed string 8390.
 

@@ -235,6 +235,47 @@ do
 		if event == "LoadGame" then
 
 			--
+			-- Fix Unlock RC Safari Resupply
+			-- RC Safaris aren't automagically unlocked in the resupply screen for games saved before Tito/Tourism update.
+			local id = "RCSafari"
+			local idx = table.find(ResupplyItemDefinitions, "id", id)
+			if not idx then
+				-- insert after rc transport
+				local transport_idx = table.find(ResupplyItemDefinitions, "id", "RCTransport")
+				-- function ResupplyItemsInit() (last copied Tito-Hotfix)
+				local sponsor = g_CurrentMissionParams and g_CurrentMissionParams.idMissionSponsor or ""
+				local mods = GetSponsorModifiers(sponsor)
+				local locks = GetSponsorLocks(sponsor)
+				local def = setmetatable({}, {__index = CargoPreset.RCSafari})
+				table.insert(ResupplyItemDefinitions, transport_idx, def)
+				local mod = mods[def.id] or 0
+				if mod ~= 0 then
+					ModifyResupplyDef(def, "price", mod)
+				end
+				local lock = locks[def.id]
+				if lock ~= nil then
+					def.locked = lock
+				end
+				if type(def.verifier) == "function" then
+					def.locked = def.locked or not def.verifier(def, sponsor)
+				end
+			end
+
+			--
+			-- Fix Unrepairable Attack Rovers
+			-- Allows Attack Rovers to be repaired when you can't repair them.
+			-- https://www.reddit.com/r/SurvivingMars/comments/12vkbrb/
+			if colony.mystery_id == "MarsgateMystery" then
+				local registers = colony.mystery.seq_player.registers
+				-- What the game checks for
+				if registers._malfunctions
+					and registers._malfunctions > 1
+				then
+					colony.mystery.enable_rover_repair = true
+				end
+			end
+
+			--
 			-- Gene Forging tech doesn't increase rare traits chance.
 			-- See OnMsg.TechResearched below for more info about GeneForging
 			if colony:IsTechResearched("GeneForging") then

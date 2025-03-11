@@ -69,8 +69,6 @@ local function UpdateMaps()
 		end
 
 	end
---~ 	UpdateDeposits(MainMapID)
---~ 	UpdateDeposits(UIColony.underground_map_id)
 end
 SavegameFixups.ChoGGi_FixDepositsStuckUnderground = UpdateMaps
 
@@ -94,7 +92,7 @@ OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
 
--- Someone didn't check where it spawns (active realm)
+-- Someone didn't check where it spawns (active realm instead of proper realm)
 -- https://github.com/surviving-mars/SurvivingMars/blob/master/Lua/Buildings/TerrainDeposit.lua#L224
 local ChoOrig_TerrainDepositMarker_SpawnDeposit = TerrainDepositMarker.SpawnDeposit
 function TerrainDepositMarker:SpawnDeposit(...)

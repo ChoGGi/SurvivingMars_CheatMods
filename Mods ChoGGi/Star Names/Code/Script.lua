@@ -6,7 +6,7 @@ if not g_AvailableDlc.picard then
 end
 
 local T = T
-local AsteroidNames = {
+ChoGGi_AsteroidNames = {
 	T(0000, "Absolutno"),
 	T(0000, "Acamar"),
 	T(0000, "Achernar"),
@@ -385,7 +385,9 @@ local AsteroidNames = {
 	T(0000, "Zubeneschamali"),
 }
 
---local ChoOrig_AsteroidReusableNames
+-- Some tool decided to make AsteroidReusableNames a local var instead of global unlike the other names...
+-- Thanks buddy (next time look at those that came before you).
+-- I made ChoGGi_AsteroidNames global for other people to be able to add more names.
 
 local AsteroidNames_updated
 -- Replace local func
@@ -396,9 +398,9 @@ function OnMsg.ChoGGi_UpdateBlacklistFuncs(env)
 	local _, ChoOrig_AsteroidReusableNames = env.debug.getupvalue(parent_func, 4)
 	-- update with orig names
 	if not AsteroidNames_updated then
-		table.iappend(AsteroidNames, ChoOrig_AsteroidReusableNames)
+		table.iappend(ChoGGi_AsteroidNames, ChoOrig_AsteroidReusableNames)
 		AsteroidNames_updated = true
 	end
 	-- then replace with ours
-	env.debug.setupvalue(parent_func, 4, AsteroidNames)
+	env.debug.setupvalue(parent_func, 4, ChoGGi_AsteroidNames)
 end

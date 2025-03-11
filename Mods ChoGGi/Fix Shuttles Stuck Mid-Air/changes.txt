@@ -1,8 +1,0 @@
-v0.4
-Doesn't check anymore and just resets all shuttles.
-
-v0.3
-Added mod option to disable mod.
-
-v0.2
-Shuttles with a task request that has an invalid building (thanks BrowncoatTrekky).
