@@ -1,12 +1,13 @@
-Last Updated: [1011166](https://survivingmars.paradoxwikis.com/Patches)
+### Tested on: [1011166](https://survivingmars.paradoxwikis.com/Patches)
 
 See mod options to toggle certain fixes.
 
+# List of bugs fixed:
 
-**List of bugs fixed:**
-See below for more info about specific fixes:
+## See below for more info about specific fixes:
+
+### General bugs:
 ```
-General bugs:
 Uneven terrain / Flatten tool (mod option to disable).
 Key binding certain buildings won't work when pressing the key (Power Switch/Pipe Valve).
 Add rocket sound effects to SupplyPods (mod option to disable).
@@ -20,8 +21,10 @@ Problem updating supply grid.
 Colonists on an expedition now show proper status when selected from command centre (instead of just unknown).
 Added missing images for certain Cargo listings.
 Gale crater name doesn't show up for 4S138E, 5S138E.
+```
 
-Storybits:
+### Storybits:
+```
 The Man From Mars: Outcome 3: Let him be, whoever he is: None of the options reward anything.
 Morale is added based on CustomOutcomeText and Morale stats from Outcome 2.
 The Extract: Selecting Shuttle Hub and having Paradox as sponsor doesn't add a Jumper Hub.
@@ -34,14 +37,18 @@ Some Storybits disappearing from the notifications list instead of popping up a 
 Gene Forging tech doesn't increase rare traits chance.
 Personal Space changes capacity, but building menu doesn't show it.
 Storybit notification issue.
+```
 
-Mysteries:
+### Mysteries:
+```
 Dredger tech fix ([Spoilers](https://www.reddit.com/r/SurvivingMars/comments/xnprjg/)).
 Marsgate blank transportation panel in CCC after a certain point in mystery.
 St. Elmo's Fire: Stop meteoroids from destroying sinkholes.
 The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
+```
 
-B&B:
+### B&B:
+```
 Unlock Artificial Sun for refabbing.
 Too much Cave-in rubble will cause lag when new rubble tries to spawn.
 Elevator func not checking for invalid resources.
@@ -56,15 +63,17 @@ Mona Lisa Underground Rare Anomaly gives you underground dome prefabs, but locks
 Mona Lisa Underground Rare Anomaly if using Paradox and you pick Shuttle Hubs, it doesn't give Jumper Hubs.
 Unpassable underground rocks stuck in path (not cave-in rubble, but small rocks you can't select).
 Water Reclamation Spire and B&B upgrade tech caused issues.
+```
 
-Strings (mispeelings or not good grammer):
+### Strings (mispeelings or not good grammer):
+```
 8390
 
 Actual strings not included as there could be spoilers, so only ids (mostly useful for me).
 Additions are welcome in any language.
 ```
 
-**Mod bug fixes**:
+### Mod bug fixes:
 ```
 Log spam from borked colonist (possibly from a mod, could just be B&B again).
 Fix for whatever odd thing Mars Underground mod is doing with presets.
@@ -80,7 +89,7 @@ GetCheapestTech log spam.
 ```
 
 
-**Incorporated mods:** (so far)
+# Incorporated mods: (so far)
 ```
 Fix Blank Mission Profile
 Fix Buildings Broken Down And No Repair
@@ -113,10 +122,10 @@ Pins Missing Some Status Icons
 If you have B&B I'd recommend SkiRich's [Better Lander Rockets](https://steamcommunity.com/sharedfiles/filedetails/?id=2619013940)
 
 
-**Extra info for incorporated mods/specific fixes:**
+# Extra info for incorporated mods/specific fixes:
 
 
-**Uneven terrain / Flatten tool**
+### Uneven terrain / Flatten tool
 
 When finishing landscaping it can set some of the surrounding hexes z values (height) to 65535 (also known as UnbuildableZ).
 
@@ -128,7 +137,7 @@ If you enable the mod option and notice that you can build on some places you re
 
 If you're bored and want to dig through the funcs in LandscapeFinish() to find out exactly where it's coming from, feel free.
 
-**No Planetary Anomaly Breakthroughs when B&B is installed**
+### No Planetary Anomaly Breakthroughs when B&B is installed
 
 Mod option to disable this "fix" (and receive less Breakthroughs).
 
@@ -138,17 +147,17 @@ Calling it more than once clears the BreakthroughOrder list.
 
 BreakthroughOrder is used to spawn planetary anomalies.
 
-**Colonists showing up on wrong map in infobar**
+### Colonists showing up on wrong map in infobar
 
 Disabled by default, can cause freezing when loading saves.
 
-**No flying drones underground**
+### No flying drones underground
 
 Flying drones tend to get stuck in walls/etc, this makes them into regular ones underground (mod option).
 
 For existing drones you'll need to recall them to their hubs and redeploy.
 
-**The Bottomless Pit Anomaly is missing**
+### The Bottomless Pit Anomaly is missing
 
 SpawnAnomaly() calls FindUnobstructedDepositPos() which for whatever reason,
 
@@ -156,13 +165,13 @@ takes the pos from in front of the wonder and sticks it in the passage behind it
 
 SpawnAnomaly() freaks out and changes it to an underground water instead (or just doesn't spawn it).
 
-**Future Contemporary Asset Pack**
+### Future Contemporary Asset Pack
 
 When placing a building you can change skins, if you use the spire skins from this DLC when placing skins
 
 then it blocks an extra hex (you can see it when placing). This removes that hex on new buildings.
 
-**Fix FindDroneToRepair Log Spam**
+### Fix FindDroneToRepair Log Spam
 
 This seems to be an issue from flying drones and a drone hub being destroyed.
 
@@ -170,23 +179,23 @@ Your log will "fill" up with this error:
 
 Mars/Lua/Units/Drone.lua(256): method FindDroneToRepair
 
-**Fix Destroyed Tunnels Still Work**
+### Fix Destroyed Tunnels Still Work
 
 Rovers will still use destroyed tunnels (in certain situations).
 
 https://forum.paradoxplaza.com/forum/threads/hello-can-you-address-this-little-issue.1463333
 
-**Force heat grid to update**
+### Force heat grid to update
 
 If you paused game on new game load then cold areas don't update till you get a working Subsurface Heater.
 
-**Water Reclamation Spire and B&B**
+### Water Reclamation Spire and B&B
 
 Some buildings don't properly turn off their upgrades which causes them to keep their modifiers on.
 
 The "fix" is turning off upgrades when a building is demolished, turned off, malfunctioned (might be annoying, mod option to keep it as is).
 
-**Fix Buildings Broken Down And No Repair**
+### Fix Buildings Broken Down And No Repair
 
 If you have broken down buildings the drones won't repair. This will check for them on load game.
 
@@ -196,11 +205,11 @@ Any buildings affected by this issue will need to be repaired with 000.1 resourc
 
 This also has a fix for buildings hit with lightning during a cold wave.
 
-**Fix Floating Rubble**
+### Fix Floating Rubble
 
 Move any floating underground rubble to within reach of drones (might have to "push" drones to make them go for it).
 
-**Fix Colonist Daily Interest Loop**
+### Fix Colonist Daily Interest Loop
 
 A colonist will repeatedly use a daily interest building to satisfy a daily interest already satisfied.
 
@@ -212,27 +221,27 @@ https://forum.paradoxplaza.com/forum/threads/surviving-mars-colonists-repeatedly
 
 Thanks to ThereWillBeBugsToOvercome for noticing it, finding the offending code, doing a detailed write up of it, and testing the fix.
 
-**Fix Stuck Malfunctioning Drones At DroneHub**
+### Fix Stuck Malfunctioning Drones At DroneHub
 
 If you have malfunctioning drones at a dronehub and they never get repaired (off map).
 
 This'll check on load each time for them (once should be enough though), and move them near the hub.
 
-**Fix Farm Oxygen**
+### Fix Farm Oxygen
 
 If you remove a farm that has an oxygen producing crop (workers not needed) the oxygen will still count in the dome.
 
-**Fix Dust Devils Block Building**
+### Fix Dust Devils Block Building
 
 No more cheesing dust devils with waste rock depots (etc), by placing them on top of said devils (not by building them to block them).
 
-**Fix Defence Towers Not Firing At Rovers**
+### Fix Defence Towers Not Firing At Rovers
 
 It's from a mystery (trying to keep spoilers to a minimum).
 
 If you're starting a new game than this is fixed, but for older saves on this mystery you'll need this mod.
 
-**Fix Landscaping Freeze**
+### Fix Landscaping Freeze
 
 When LandscapeMark hits 4095 bad things happen.
 
@@ -242,7 +251,7 @@ For those wondering LandscapeLastMark is increased each time you open flatten/ra
 
 Thanks to Quirquie for the bug report (and persistence).
 
-**Fix Unrepairable Attack Rovers**
+### Fix Unrepairable Attack Rovers
 
 Allows Attack Rovers to be repaired when you can't repair them.
 
@@ -250,22 +259,22 @@ I don't want to say too much as they're from one of the mysteries.
 
 https://www.reddit.com/r/SurvivingMars/comments/12vkbrb/
 
-**Fix Unlock RC Safari Resupply**
+### Fix Unlock RC Safari Resupply
 
 RC Safaris aren't automagically unlocked in the resupply screen for games saved before Tito/Tourism update.
 
-**Pins Missing Some Status Icons**
+### Pins Missing Some Status Icons
 
 The pinned rover transport buttons are missing un/load icons.
 
 
 
-**Known Bugs**
+# Known Bugs:
 Mars Nouveau won't count if you remove a Construction site and place the new one in the exact same position (thanks Dark Master).
 
 
 
-**See also**:
+# See also:
 
 
 [Fix Cold Wave Stuck](https://steamcommunity.com/sharedfiles/filedetails/?id=2601527081)
@@ -297,4 +306,3 @@ Mars Nouveau won't count if you remove a Construction site and place the new one
 [Fix Sol 2983](https://steamcommunity.com/sharedfiles/filedetails/?id=2705335465) < Don't enable unless needed!
 
 [Fix Stuck Mirror Sphere Devices](https://steamcommunity.com/sharedfiles/filedetails/?id=2082012035)
-

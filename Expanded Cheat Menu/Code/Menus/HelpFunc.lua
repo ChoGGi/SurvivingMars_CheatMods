@@ -350,7 +350,7 @@ do -- ModUpload
 
 						if mod.id == ChoGGi.id then
 							mod.description = Translate(302535920000990--[["You need to have a mouse to use this mod."]]) .. "\n"
-								.. needs_lib .. Translate(302535920000887--[["If you get a disabled content restrictions error: Please let me know and I'll tell Paradox (can take a few days).
+								.. needs_lib .. Translate(302535920000887--[["If you get a disabled content restrictions error: Please let me know and I'll tell Paradox (can take a few days or weeks).
 
 If you have any issues with this mod then please send me a bug report instead of reporting the mod.
 https://github.com/ChoGGi/SurvivingMars_CheatMods
