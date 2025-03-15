@@ -1,2 +1,6 @@
+v0.3
+Removed rockets/etc from prefab list (Thanks Calvin).
+Forgot to add image to Exotic Minerals.
+
 v0.2
 Removed the mod option as it doesn't do much.

@@ -9,7 +9,7 @@ local nation_name = T(0000, "Example Nation")
 if not table.find(Nations, "value", nation_id) then
 	Nations[#Nations+1] = {
 		value = nation_id,
-		-- The game code uses .tga for dds files, so I just make everything .tga even if it isn't
+		-- The game code uses .tga for dds files, so I just make every path .tga even if it isn't
 		flag = CurrentModPath .. "UI/flag.tga",
 		text = nation_name
 	}
@@ -19,25 +19,33 @@ end
 HumanNames[nation_id] = {
 	Male = {
 		-- These are existing names from English, you can change the number to 0000 and use whatever
-		T(1724, "Albion"),
-		T(1725, "Alun"),
-		T(1726, "Arin"),
+		T(0000, "Bob"),
+		T(0000, "Doug"),
+		T(0000, "Ricky"),
+		T(0000, "Julian"),
+		T(0000, "Bubbles"),
+		T(0000, "J-Roc"),
+		T(0000, "Ray"),
+		T(0000, "Cory"),
+		T(0000, "Trevor"),
+		T(0000, "Cyrus"),
 	},
 	Female = {
-		T(1773, "Alannah"),
-		T(1774, "Aphra"),
-		T(1775, "Ashlyn"),
+		T(0000, "Sarah"),
+		T(0000, "Lucy"),
+		T(0000, "Desiree"),
 	},
 	Family = {
-		T(1839, "Jones"),
-		T(1840, "Williams"),
-		T(1841, "Brown"),
+		T(0000, "McKenzie"),
+		T(0000, "LaFleur"),
+		T(0000, "Lahey"),
+		T(0000, "Collins"),
 	},
 	-- Only used once a playthrough
-	Unique ={
-		T(2870, "Gabriel Dobrev") ,
-		T(2871, "Ivan-Assen Ivanov"),
-		T(2872, "Ivko Stanilov"),
+	Unique = {
+		T(0000, "Jim Lahey") ,
+		T(0000, "Michael Jackson"),
+		T(0000, [[Philadelphia "Phil" Collins ]]),
 	},
 
 }

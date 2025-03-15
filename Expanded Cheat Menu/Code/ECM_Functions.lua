@@ -606,7 +606,7 @@ function ChoGGi_Funcs.Common.ConvertImagesToLogoFiles(mod, ext)
 	end
 	--
 	if not mod then
-		mod = Mods.ChoGGi_
+		mod = Mods.TESTING
 	end
 	if type(mod) == "string" then
 		mod = Mods[mod]

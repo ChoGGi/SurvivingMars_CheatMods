@@ -26,5 +26,9 @@ You'll likely need to re-apply the mod options if you change the in-game setting
 
 If you changed enough that it crashes on load, then you can reset settings:
 Enable/disable any mod in the mod manager, then you can access mod options in the main menu options.
+
+
+Known Issues:
+Some settings may cause crashing on new game/load game if you have a long uptime (or it's just a Nvidia thing). Restarting Windows will fix it.
 ]],
 })

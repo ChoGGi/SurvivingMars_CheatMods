@@ -587,6 +587,7 @@ do
 			Metals = articles.Metals.image,
 			Polymers = articles.Polymers.image,
 			PreciousMetals = articles["Rare Metals"].image,
+			PreciousMinerals = articles.ExoticMinerals.image,
 			-- Close enough
 			WasteRock = "UI/Messages/Tutorials/Tutorial1/Tutorial1_WasteRockConcreteDepot.tga",
 		}

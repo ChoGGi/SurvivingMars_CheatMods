@@ -26,7 +26,7 @@ Stores some colonists outside.
 The building feeds off the nearest dome and has low comfort (2.5), but it only needs concrete for maintenance.
 30 Concrete, 5 Polymers to build. Entity may look different depending on what DLC you have.
 
-@Xboxers Until the Paradox fixes it; I can't change the titles of mods... [url=https://mods.paradoxplaza.com/mods/955/Any]MARSHA[/url]
+https://spacefactory.ai/marsha
 
 
 Requested by Destrada.

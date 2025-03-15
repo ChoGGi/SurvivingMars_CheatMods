@@ -4,7 +4,7 @@ See mod options to toggle certain fixes.
 
 # List of bugs fixed:
 
-## See below for more info about specific fixes:
+### (See below for more info about specific fixes)
 
 ### General bugs:
 ```
@@ -213,9 +213,9 @@ Move any floating underground rubble to within reach of drones (might have to "p
 
 A colonist will repeatedly use a daily interest building to satisfy a daily interest already satisfied.
 
-Repeating a daily interest will gain a comfort boost "if" colonist comfort is below the service comfort threshold, but a resource will always be consumed each visit.
+Repeating a daily interest can gain a comfort boost "if" colonist comfort is below the service comfort threshold, but a resource will always be consumed each visit.
 
-This mod will block the colonist from having a visit, instead: An unemployed scientist will wander around outside till the Sol is over instead of chewing up 0.6 electronics.
+This mod will block the colonist from having a visit (i.e., an unemployed scientist will wander around outside till the Sol is over instead of chewing up 0.6 electronics).
 
 https://forum.paradoxplaza.com/forum/threads/surviving-mars-colonists-repeatedly-satisfy-daily-interests.1464969/
 

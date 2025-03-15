@@ -5,9 +5,73 @@ if not g_AvailableDlc.picard then
 	return
 end
 
+local skip_buildings = {
+	BlackCubeMonolith = true,
+	BottomlessPit = true,
+	BottomlessPitResearchCenter = true,
+	CaveOfWonders = true,
+	CrystalsBig = true,
+	CrystalsSmall = true,
+	DragonRocket = true,
+	DropPod = true,
+	ForeignAidRocket = true,
+	ForeignTradeRocket = true,
+	JumboCave = true,
+	JumboCaveReinforcementStructure = true,
+	LanderRocket = true,
+	LanderRocketBuilding = true,
+	LandscapeClearWasteRock = true,
+	LandscapeLakeBig = true,
+	LandscapeLakeHuge = true,
+	LandscapeLakeMid = true,
+	LandscapeLakeSmall = true,
+	LandscapeRamp = true,
+	LandscapeTerrace = true,
+	LandscapeTextureMountains = true,
+	LandscapeTextureRockDarkChaos = true,
+	LandscapeTextureSandChaos = true,
+	LandscapeTextureSandDark = true,
+	LandscapeTextureSandRed = true,
+	LightTrap = true,
+	MirrorSphere = true,
+	OrbitalProbe = true,
+	Passage = true,
+	PassageRamp = true,
+	PodLandingSite = true,
+	PowerDecoy = true,
+	RefugeeRocket = true,
+	RivalsHelpRocket = true,
+	RocketExpedition = true,
+	SelfSufficientDome = true,
+	Sinkhole = true,
+	SupplyPod = true,
+	SupplyRocket = true,
+	SupplyRocketBuilding = true,
+	SurfacePassage = true,
+	Track = true,
+	TradeRocket = true,
+	UndergroundPassage = true,
+	ZeusRocket = true,
+}
+
 local function StartupCode()
+
+	local do_resupply = false
+
+	-- Remove odd items from existing saves
+	if table.find(ResupplyItemDefinitions, "id", "BlackCubeMonolith") then
+		local CargoPreset = CargoPreset
+		for id in pairs(skip_buildings) do
+			CargoPreset[id]:delete()
+		end
+		do_resupply = true
+
 	-- add cargo entry for saved games
-	if not table.find(ResupplyItemDefinitions, "id", "TriboelectricScrubber") then
+	elseif not table.find(ResupplyItemDefinitions, "id", "TriboelectricScrubber") then
+		do_resupply = true
+	end
+
+	if do_resupply then
 		ResupplyItemsInit()
 	end
 end
@@ -22,7 +86,7 @@ function OnMsg.ClassesPostprocess()
 	local CargoPreset = CargoPreset
 	local BuildingTemplates = BuildingTemplates
 	for id, template in pairs(BuildingTemplates) do
-		if not CargoPreset[id] then
+		if not CargoPreset[id] and not skip_buildings[id] then
 			PlaceObj("Cargo", {
 				description = template.description,
 				icon = template.encyclopedia_image,
@@ -49,6 +113,7 @@ function OnMsg.ClassesPostprocess()
 		Metals = articles.Metals.image,
 		Polymers = articles.Polymers.image,
 		PreciousMetals = articles["Rare Metals"].image,
+		PreciousMinerals = articles.ExoticMinerals.image,
 		-- Close enough
 		WasteRock = "UI/Messages/Tutorials/Tutorial1/Tutorial1_WasteRockConcreteDepot.tga",
 	}
