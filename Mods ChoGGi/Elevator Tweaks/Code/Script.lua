@@ -6,20 +6,76 @@ if not g_AvailableDlc.picard then
 end
 
 local skip_buildings = {
-	BlackCubeMonolith = true,
+	-- underground wonders
+	AncientArtifact = true,
 	BottomlessPit = true,
-	BottomlessPitResearchCenter = true,
+	JumboCave = true,
 	CaveOfWonders = true,
-	CrystalsBig = true,
-	CrystalsSmall = true,
+	-- wonders
+	AncientArtifactInterface = true,
+	ArtificialSun = true,
+	BottomlessPitResearchCenter = true,
+	GeoscapeDome = true,
+	JumboCaveReinforcementStructure = true,
+	MoholeMine = true,
+	OmegaTelescope = true,
+	ProjectMorpheus = true,
+	SpaceElevator = true,
+	TheExcavator = true,
+	-- rockets
+	ArkPod = true,
 	DragonRocket = true,
 	DropPod = true,
 	ForeignAidRocket = true,
 	ForeignTradeRocket = true,
-	JumboCave = true,
-	JumboCaveReinforcementStructure = true,
 	LanderRocket = true,
 	LanderRocketBuilding = true,
+	PodLandingSite = true,
+	RefugeeRocket = true,
+	RivalsHelpRocket = true,
+	RocketExpedition = true,
+	RocketLandingSite = true,
+	SupplyPod = true,
+	SupplyRocket = true,
+	SupplyRocketBuilding = true,
+	TradeRocket = true,
+	ZeusRocket = true,
+	-- mystery
+	BlackCubeMonolith = true,
+	CrystalsBig = true,
+	CrystalsSmall = true,
+	LightTrap = true,
+	MirrorSphere = true,
+	PowerDecoy = true,
+	Sinkhole = true,
+	-- depots/storage
+	BlackCubeDump = true,
+	StorageConcrete = true,
+	StorageElectronics = true,
+	StorageFood = true,
+	StorageFuel = true,
+	StorageMachineParts = true,
+	StorageMetals = true,
+	StorageMysteryResource = true,
+	StoragePolymers = true,
+	StorageRareMetals = true,
+	StorageRareMinerals = true,
+	StorageSeeds = true,
+	UniversalStorageDepot = true,
+	WasteRockDumpBig = true,
+	WasteRockDumpHuge = true,
+	-- rovers
+	RCConstructorBuilding = true,
+	RCDrillerBuilding = true,
+	RCExplorerBuilding = true,
+	RCHarvesterBuilding = true,
+	RCRoverBuilding = true,
+	RCSafariBuilding = true,
+	RCSensorBuilding = true,
+	RCSolarBuilding = true,
+	RCTerraformerBuilding = true,
+	RCTransportBuilding = true,
+	-- misc
 	LandscapeClearWasteRock = true,
 	LandscapeLakeBig = true,
 	LandscapeLakeHuge = true,
@@ -32,48 +88,34 @@ local skip_buildings = {
 	LandscapeTextureSandChaos = true,
 	LandscapeTextureSandDark = true,
 	LandscapeTextureSandRed = true,
-	LightTrap = true,
-	MirrorSphere = true,
 	OrbitalProbe = true,
 	Passage = true,
 	PassageRamp = true,
-	PodLandingSite = true,
-	PowerDecoy = true,
-	RefugeeRocket = true,
-	RivalsHelpRocket = true,
-	RocketExpedition = true,
 	SelfSufficientDome = true,
-	Sinkhole = true,
-	SupplyPod = true,
-	SupplyRocket = true,
-	SupplyRocketBuilding = true,
 	SurfacePassage = true,
 	Track = true,
-	TradeRocket = true,
 	UndergroundPassage = true,
-	ZeusRocket = true,
 }
 
 local function StartupCode()
 
-	local do_resupply = false
-
-	-- Remove odd items from existing saves
-	if table.find(ResupplyItemDefinitions, "id", "BlackCubeMonolith") then
+	if table.find(ResupplyItemDefinitions, "id", "MissingPreset") then
+		-- Remove odd items from existing saves
 		local CargoPreset = CargoPreset
-		for id in pairs(skip_buildings) do
-			CargoPreset[id]:delete()
+		for id in pairs(CargoPreset) do
+			if skip_buildings[id] then
+				CargoPreset[id]:delete()
+			end
 		end
-		do_resupply = true
+		-- Fully rebuild ResupplyItemDefinitions
+		ResupplyItemsInit(true)
 
 	-- add cargo entry for saved games
 	elseif not table.find(ResupplyItemDefinitions, "id", "TriboelectricScrubber") then
-		do_resupply = true
-	end
-
-	if do_resupply then
+		-- Rebuild ResupplyItemDefinitions with new items
 		ResupplyItemsInit()
 	end
+
 end
 
 -- New games
@@ -87,13 +129,14 @@ function OnMsg.ClassesPostprocess()
 	local BuildingTemplates = BuildingTemplates
 	for id, template in pairs(BuildingTemplates) do
 		if not CargoPreset[id] and not skip_buildings[id] then
+			local icon = template.encyclopedia_image == "" and template.display_icon or template.encyclopedia_image
 			PlaceObj("Cargo", {
 				description = template.description,
-				icon = template.encyclopedia_image,
+				icon = icon,
 				name = template.display_name,
 				id = id,
 				kg = 5000,
-				locked = false,
+				locked = true,
 				price = 200000000,
 				group = "Locked",
 				SaveIn = "",

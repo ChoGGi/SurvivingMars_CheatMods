@@ -43,7 +43,7 @@ function OnMsg.ClassesPostprocess()
 	ChoGGi_Funcs.Common.AddXTemplate(XTemplates.ipColonist[1], "LockResidenceColonist", nil, {
 		__context_of_kind = "Colonist",
 		OnContextUpdate = function(self, context)
-			---
+			--
 			-- hide button if not working, and make sure to remove the lock (just in case)
 			if ValidateBuilding(context.residence) then
 				self:SetVisible(true)
@@ -63,24 +63,24 @@ function OnMsg.ClassesPostprocess()
 				self:SetTitle(T(30253592001191, [[Lock Residence]]))
 				self:SetIcon("UI/Icons/traits_disapprove.tga")
 			end
-			---
+			--
 		end,
 		func = function(self, context)
-			---
+			--
 			if context.ChoGGi_LockResidence then
 				context.ChoGGi_LockResidence = nil
 			else
 				context.ChoGGi_LockResidence = true
 			end
 			ObjModified(context)
-			---
+			--
 		end,
 	})
 
 	ChoGGi_Funcs.Common.AddXTemplate(XTemplates.sectionResidence, "LockResidenceResidence", nil, {
 		__context_of_kind = "Residence",
 		OnContextUpdate = function(self, context)
-			---
+			--
 			if context.ChoGGi_LockResidence then
 				self:SetRolloverText(T(302535920011092, [[Remove the lock on this residence.]]))
 				self:SetTitle(T(302535920011093, [[Unlock Residents]]))
@@ -90,10 +90,10 @@ function OnMsg.ClassesPostprocess()
 				self:SetTitle(T(302535920011095, [[Lock Residents]]))
 				self:SetIcon("UI/Icons/traits_disapprove.tga")
 			end
-			---
+			--
 		end,
 		func = function(self, context)
-			---
+			--
 			if context.ChoGGi_LockResidence then
 				context.ChoGGi_LockResidence = nil
 				LoopResidence(context)
@@ -102,7 +102,7 @@ function OnMsg.ClassesPostprocess()
 				LoopResidence(context, true)
 			end
 			ObjModified(context)
-			---
+			--
 		end,
 	})
 end

@@ -52,7 +52,7 @@ function OnMsg.ClassesPostprocess()
 			end
 		end,
 		func = function(self, context)
-			---
+			--
 			local popup = terminal.desktop.idDisableDroneMaintenanceMenu
 			if popup then
 				popup:Close()
@@ -96,8 +96,8 @@ function OnMsg.ClassesPostprocess()
 					},
 				}, "left")
 			end
-			---
+			--
 		end,
 	})
 
-end --OnMsg
+end -- OnMsg

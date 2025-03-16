@@ -726,7 +726,7 @@ function OnMsg.ClassesPostprocess()
 			"__template", "Infopanel",
 		}, {
 
-------------------- Rotate
+-- ---------------- Rotate
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
 				"Icon", "UI/Icons/IPButtons/automated_mode_on.tga",
@@ -753,9 +753,9 @@ function OnMsg.ClassesPostprocess()
 					ObjModified(self.context)
 				end,
 			}),
-------------------- Rotate
+-- ---------------- Rotate
 
-------------------- Holdee Swap
+-- ---------------- Holdee Swap
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
 				"__condition", function(_, context)
@@ -769,9 +769,9 @@ function OnMsg.ClassesPostprocess()
 					ObjModified(self.context)
 				end,
 			}),
-------------------- Holdee Swap
+-- ---------------- Holdee Swap
 
-------------------- Adjust length
+-- ---------------- Adjust length
 			PlaceObj("XTemplateTemplate", {
 				"__template", "InfopanelButton",
 				"__condition", function(_, context)
@@ -803,9 +803,9 @@ function OnMsg.ClassesPostprocess()
 				end,
 
 			}),
-------------------- Adjust length
+-- ---------------- Adjust length
 
-------------------- Salvage
+-- ---------------- Salvage
 			PlaceObj('XTemplateTemplate', {
 				'comment', "salvage",
 				'__context_of_kind', "Demolishable",
@@ -853,7 +853,7 @@ function OnMsg.ClassesPostprocess()
 					end,
 				}),
 				}),
-------------------- Salvage
+-- ---------------- Salvage
 
 
 			PlaceObj("XTemplateTemplate", {

@@ -7,10 +7,4 @@ return {
 		"Help", T(302535920011793, "Disable mod without having to see missing mod msg."),
 		"DefaultValue", true,
 	}),
-	PlaceObj("ModItemOptionToggle", {
-		"name", "DisplayMsg",
-		"DisplayName", T(0000, "Display Msg"),
-		"Help", T(0000, "Show a msg box when loading a save."),
-		"DefaultValue", true,
-	}),
 }

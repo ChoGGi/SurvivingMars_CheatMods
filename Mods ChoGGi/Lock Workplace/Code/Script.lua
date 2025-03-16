@@ -84,7 +84,7 @@ function OnMsg.ClassesPostprocess()
 	ChoGGi_Funcs.Common.AddXTemplate(XTemplates.ipColonist[1], "LockworkplaceColonist", nil, {
 		__context_of_kind = "Colonist",
 		OnContextUpdate = function(self, context)
-			---
+			--
 			-- hide button if not working, and make sure to remove the lock (just in case)
 			if ValidateBuilding(context.workplace) and not context.workplace:IsKindOf("TrainingBuilding") then
 				self:SetVisible(true)
@@ -104,24 +104,24 @@ function OnMsg.ClassesPostprocess()
 				self:SetTitle(T(302535920011100, "Lock Workplace"))
 				self:SetIcon("UI/Icons/traits_disapprove.tga")
 			end
-			---
+			--
 		end,
 		func = function(self, context)
-			---
+			--
 			if context.ChoGGi_Lockworkplace then
 				context.ChoGGi_Lockworkplace = nil
 			else
 				context.ChoGGi_Lockworkplace = true
 			end
 			ObjModified(context)
-			---
+			--
 		end,
 	})
 
 	ChoGGi_Funcs.Common.AddXTemplate(XTemplates.sectionWorkplace, "LockworkplaceWorkplace", nil, {
 		__context_of_kind = "Workplace",
 		OnContextUpdate = function(self, context)
-			---
+			--
 			if context.ChoGGi_Lockworkplace then
 				self:SetRolloverText(T(302535920011101, "Remove the lock on this workplace."))
 				self:SetTitle(T(302535920011102, "Unlock Workers"))
@@ -131,10 +131,10 @@ function OnMsg.ClassesPostprocess()
 				self:SetTitle(T(302535920011104, "Lock Workers"))
 				self:SetIcon("UI/Icons/traits_disapprove.tga")
 			end
-			---
+			--
 		end,
 		func = function(self, context)
-			---
+			--
 			if context.ChoGGi_Lockworkplace then
 				context.ChoGGi_Lockworkplace = nil
 				LoopWorkplace(context)
@@ -143,7 +143,7 @@ function OnMsg.ClassesPostprocess()
 				LoopWorkplace(context, true)
 			end
 			ObjModified(context)
-			---
+			--
 		end,
 	})
 end

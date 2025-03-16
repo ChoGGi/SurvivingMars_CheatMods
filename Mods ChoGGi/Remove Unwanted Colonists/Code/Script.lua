@@ -234,7 +234,7 @@ function OnMsg.ClassesPostprocess()
 			"RolloverText", T(302535920011245, "Thumbs down means colonist will get sucked up and deported to Earth."),
 			"RolloverHint", T(302535920011246, "<left_click> Toggle"),
 			"OnContextUpdate", function(self, context)
-				---
+				--
 				if context.ChoGGi_MurderPod then
 					self:SetIcon("UI/Icons/traits_disapprove.tga")
 					self:SetTitle(T(302535920011596, "Removing Colonist!"))
@@ -244,7 +244,7 @@ function OnMsg.ClassesPostprocess()
 					self:SetTitle(T(302535920011244, "Remove Colonist"))
 					self:SetRolloverTitle(T(302535920011244, "Remove Colonist"))
 				end
-				---
+				--
 			end,
 		}, {
 			PlaceObj("XTemplateFunc", {
@@ -253,7 +253,7 @@ function OnMsg.ClassesPostprocess()
 					return self.parent
 				end,
 				"func", function(self, context)
-					---
+					--
 					if context.ChoGGi_MurderPod then
 						-- tell pod to piss off
 						context:ChoGGi_MP_RemovePod()
@@ -262,7 +262,7 @@ function OnMsg.ClassesPostprocess()
 						context:ChoGGi_MP_LaunchPod()
 					end
 					ObjModified(context)
-					---
+					--
 				end,
 			}),
 		})
@@ -306,9 +306,9 @@ function OnMsg.ClassesPostprocess()
 					return self.parent
 				end,
 				"func", function(_, context)
-					---
+					--
 					ViewAndSelectObject(context.target)
-					---
+					--
 				end,
 			}),
 		})

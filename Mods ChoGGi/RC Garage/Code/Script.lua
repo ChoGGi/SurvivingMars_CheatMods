@@ -504,7 +504,7 @@ function OnMsg.ClassesPostprocess()
 			"RolloverText", T(302535920011187, [[View Main Garage
 (The one that needs power).]]),
 			"OnContextUpdate", function(self, context)
-				---
+				--
 				context:CheckMainGarage()
 				-- hide if this is main garage
 				if context.garages.main == context then
@@ -516,7 +516,7 @@ function OnMsg.ClassesPostprocess()
 					self:SetMaxHeight()
 					self:SetTitle(context.pin_rollover)
 				end
-				---
+				--
 			end,
 		}, {
 			PlaceObj("XTemplateFunc", {
@@ -525,11 +525,11 @@ function OnMsg.ClassesPostprocess()
 					return self.parent
 				end,
 				"func", function(self, context)
-					---
+					--
 					if context:CheckMainGarage() then
 						ViewObjectMars(context.garages.main)
 					end
-					---
+					--
 				end,
 			}),
 		}),
@@ -559,7 +559,7 @@ function OnMsg.ClassesPostprocess()
 					return self.parent
 				end,
 				"func", function(self, context)
-					---
+					--
 					ChoGGi_Funcs.Common.QuestionBox(
 						T(302535920011190, "Are you sure you want to eject all rovers?"),
 						function(answer)
@@ -583,7 +583,7 @@ function OnMsg.ClassesPostprocess()
 						end,
 						T(302535920011188, "Eject All")
 					)
-					---
+					--
 				end,
 			}),
 		}),
@@ -595,11 +595,11 @@ function OnMsg.ClassesPostprocess()
 			"RolloverText", T(302535920011191, [[Click to show a list of stored rovers.
 Click in list to eject a rover.]]),
 			"OnContextUpdate", function(self, context)
-				---
+				--
 				if context:CheckMainGarage() then
 					self:SetTitle(T(5438, "Rovers") .. ": " .. #context.stored_rovers)
 				end
-				---
+				--
 			end,
 		}, {
 			PlaceObj("XTemplateFunc", {
@@ -608,7 +608,7 @@ Click in list to eject a rover.]]),
 					return self.parent
 				end,
 				"func", function(self, context)
-					---
+					--
 
 					-- don't show list unless main and this garage are working
 					if not (context:CheckMainGarage() and context.garages.main.working and context.working and #context.stored_rovers > 0) then
@@ -638,7 +638,7 @@ Click in list to eject a rover.]]),
 					ChoGGi_Funcs.Common.PopupToggle(self, "idRCGarageMenu", item_list, "left")
 
 					ObjModified(context)
-					---
+					--
 				end,
 			}),
 		}),

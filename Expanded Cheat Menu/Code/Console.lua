@@ -685,7 +685,7 @@ function ChoGGi_Funcs.Console.ConsoleControls(dlgConsole)
 		Image = "CommonAssets/UI/round-frame-20.tga",
 	}, dlgConsole)
 
---------------------------------Console popup
+-- -----------------------------Console popup
 	dlgConsole.idConsoleMenu = g_Classes.ChoGGi_XConsoleButton:new({
 		Id = "idConsoleMenu",
 		RolloverText = T(302535920001089--[[Settings & Commands for the console.]]),

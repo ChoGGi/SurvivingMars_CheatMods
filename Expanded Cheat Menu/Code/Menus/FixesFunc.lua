@@ -571,7 +571,7 @@ end -- do
 --~ 	end)
 --~ end
 
-------------------------- toggles
+-- ---------------------- toggles
 
 function ChoGGi_Funcs.Menus.FixMissingModBuildings_Toggle()
 	ChoGGi.UserSettings.FixMissingModBuildings = not ChoGGi.UserSettings.FixMissingModBuildings
@@ -618,7 +618,7 @@ function ChoGGi_Funcs.Menus.SortCommandCenterDist_Toggle()
 	)
 end
 
----------------------------------------------------Testers
+-- ------------------------------------------------Testers
 
 --~ GetDupePositions(UIColony:GetCityLabels("Colonist"))
 --~ function ChoGGi_Funcs.Menus.GetDupePositions(list)

@@ -441,7 +441,7 @@ function OnMsg.ClassesPostprocess()
 					self:SetTitle(T(302535920011172, [[Texture Skip]]))
 					self:SetIcon("UI/Icons/Upgrades/hygroscopic_coating_01.tga")
 				end
-				---
+				--
 			end,
 		}, {
 			PlaceObj("XTemplateFunc", {
@@ -450,10 +450,10 @@ function OnMsg.ClassesPostprocess()
 					return self.parent
 				end,
 				"func", function(self)
-					---
+					--
 --~ 					ex(texture_list)
 					PopupToggle(self, "idBullDozerMenuPopup", texture_list, "left")
-					---
+					--
 				end
 			})
 		})
@@ -480,7 +480,7 @@ function OnMsg.ClassesPostprocess()
 					self:SetTitle(T(302535920011177, [[Circle Skip]]))
 					self:SetIcon("UI/Icons/Upgrades/holographic_scanner_01.tga")
 				end
-				---
+				--
 			end,
 		}, {
 			PlaceObj("XTemplateFunc", {
@@ -489,11 +489,11 @@ function OnMsg.ClassesPostprocess()
 					return self.parent
 				end,
 				"func", function(_, context)
-					---
+					--
 					context.visual_circle_toggle = not context.visual_circle_toggle
 					context:UpdateCircle()
 					ObjModified(context)
-					---
+					--
 				end
 			})
 		})
@@ -510,19 +510,19 @@ function OnMsg.ClassesPostprocess()
 			"__context_of_kind", "RCBulldozer",
 			"__template", "InfopanelButton",
 			"OnPress", function(self)
-				---
+				--
 				self = self.context
 				if self.bulldozing then
 					self:StopDozer()
 				else
 					self:StartDozer()
 				end
-				---
+				--
 			end,
 
 			"RolloverTitle", T(302535920011178, [[Dozer Toggle]]),
 			"OnContextUpdate", function(self, context)
-				---
+				--
 				if context.bulldozing then
 					self:SetRolloverText(T(302535920011179, [[Flatten ground in front of bulldozer.]]))
 					self:SetIcon("UI/Icons/Sections/Concrete_4.tga")
@@ -530,7 +530,7 @@ function OnMsg.ClassesPostprocess()
 					self:SetRolloverText(T(302535920011180, [[Move without flattening ground.]]))
 					self:SetIcon("UI/Icons/Sections/accept_colonists_on.tga")
 				end
-				---
+				--
 			end,
 		})
 	)

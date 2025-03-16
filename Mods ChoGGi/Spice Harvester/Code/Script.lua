@@ -207,7 +207,7 @@ function OnMsg.ClassesPostprocess()
 		RolloverTitle = T(302535920011297, "Destroy"),
 		RolloverText = T(302535920011298, "Remove this harvester from the map."),
 		func = function(self, context)
-			---
+			--
 			local function CallBackFunc(answer)
 				if answer then
 					CreateGameTimeThread(function()
@@ -236,7 +236,7 @@ function OnMsg.ClassesPostprocess()
 				T(302535920011302, "Spareth ye sprynge"),
 				CurrentModPath .. "UI/Wormy.png"
 			)
-			---
+			--
 		end,
 	})
 

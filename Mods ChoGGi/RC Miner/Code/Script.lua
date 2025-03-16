@@ -715,12 +715,12 @@ local function AddFilterTemplate(params)
 					return self.parent
 				end,
 				"func", function(self, context)
-					---
+					--
 					context:BuildFilterList()
 					context.miner_filter[params.res] = not context.miner_filter[params.res]
 					context:SetCommand("Idle")
 					ObjModified(context)
-					---
+					--
 				end
 			}),
 		})

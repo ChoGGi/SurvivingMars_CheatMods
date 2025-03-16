@@ -1316,7 +1316,7 @@ do -- LoadGame/CityStart
 
 
 
----------------------do the above stuff before the below stuff
+-- ------------------do the above stuff before the below stuff
 
 		if testing then
 			-- make them happen more often
@@ -1621,7 +1621,7 @@ If this isn't a new install, then see Menu>Help>Changelog and search for ""To im
 
 
 
-		------------------------------- always fired last
+		-- ---------------------------- always fired last
 
 
 

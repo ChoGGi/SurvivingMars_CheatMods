@@ -683,16 +683,16 @@ do
 
 		--
 		-- Probably caused by a mod badly adding cargo.
-		for i = #ResupplyItemDefinitions, 1, -1 do
-			local def = ResupplyItemDefinitions[i]
-			if not def.pack then
-				print("Fix Bugs: Resupply Dialog Not Opening Borked cargo", def.id)
-				table.remove(ResupplyItemDefinitions, i)
-			end
+		-- Also from cargo being removed mid-gameplay.
+		if table.find(ResupplyItemDefinitions, "id", "MissingPreset") then
+			ResupplyItemsInit(true)
 		end
 
 
-		-------- GetCityLabels below --------
+
+		-- -------------------- -- GetCityLabels below -- -------------------- --
+
+
 
 		--
 		-- Force heat grid to update (if you paused game on new game load then cold areas don't update till you get a working Subsurface Heater).
@@ -889,7 +889,7 @@ do
 			end
 
 		end
-		-------- GetCityLabels above --------
+		-- -------------------- -- GetCityLabels above -- -------------------- --
 
 		--
 		if colony and colony.underground_map_unlocked then

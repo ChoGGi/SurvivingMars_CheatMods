@@ -11,7 +11,7 @@ function OnMsg.ClassesPostprocess()
 		Icon = "UI/Icons/res_precious_metals.tga",
 		RolloverText = T(302535920011265, "Amount received per rare/precious exported."),
 		OnContextUpdate = function(self, context)
-			---
+			--
 			local loaded = context:GetStoredExportResourceAmount()
 			if loaded > 0 then
 				local funding = context.city.colony.funds:CalcBaseExportFunding(1000)
@@ -29,7 +29,7 @@ function OnMsg.ClassesPostprocess()
 					amount = InfobarObj_FmtRes(nil, context.city.colony.funds:CalcBaseExportFunding(1000)),
 				})
 			end
-			---
+			--
 		end,
 	})
 end

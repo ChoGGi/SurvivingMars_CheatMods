@@ -440,7 +440,7 @@ You can build this if you want it won't hurt anything.]]),
 				"__template", "sectionCheats",
 			}),
 
-------------------- Salvage
+-- ---------------- Salvage
 			PlaceObj('XTemplateTemplate', {
 				'comment', "salvage",
 				'__context_of_kind', "Demolishable",
@@ -488,10 +488,9 @@ You can build this if you want it won't hurt anything.]]),
 					end,
 				}),
 				}),
-------------------- Salvage
+-- ---------------- Salvage
 	}),
--------------
-	})
+})
 
 
 	local bc = BuildCategories

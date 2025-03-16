@@ -1,2 +1,5 @@
+v0.3
+Forgot to turn off mod options (there aren't any).
+
 v0.2
 Made ChoGGi_AsteroidNames global instead of local...

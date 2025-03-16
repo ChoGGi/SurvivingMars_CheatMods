@@ -12,18 +12,18 @@ return PlaceObj("ModDef", {
 	"steam_id", "1411115645",
 	"pops_any_uuid", "a5c6f132-f1f9-4e98-b637-a180732cb923",
 	"lua_revision", 1007000, -- Picard
-	"version", 8,
+	"version", 9,
 	"version_major", 0,
-	"version_minor", 8,
+	"version_minor", 9,
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua"
 	},
-	"image", "Preview.png",
+	"image", "Preview.jpg",
 	"has_options", true,
 	"description", [[
 Stops any running disasters when you load a save.
 
-Includes mod option to disable mod (to leave it installed without that missing mod msg each load).
+Includes mod option to disable mod (to leave it installed without that missing mod msg each load), and to stop msg.
 ]],
 })

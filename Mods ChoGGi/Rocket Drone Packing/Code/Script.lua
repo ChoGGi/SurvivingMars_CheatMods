@@ -36,13 +36,13 @@ function OnMsg.ClassesPostprocess()
 					return self.parent
 				end,
 				"func", function(self, context)
-					---
+					--
 					if IsMassUIModifierPressed() then
 						context:ConvertDroneToPrefab(true)
 					else
 						context:ConvertDroneToPrefab()
 					end
-					---
+					--
 				end
 			}),
 	})
@@ -65,13 +65,13 @@ function OnMsg.ClassesPostprocess()
 					return self.parent
 				end,
 				"func", function(self, context)
-					---
+					--
 					if IsMassUIModifierPressed() then
 						context:UseDronePrefab(true)
 					else
 						context:UseDronePrefab()
 					end
-					---
+					--
 				end
 			}),
 	})

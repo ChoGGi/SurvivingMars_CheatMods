@@ -60,13 +60,13 @@ function OnMsg.ClassesPostprocess()
 		end,
 		--
 		"OnContextUpdate", function(self, context)
-			---
+			--
 			if context.ChoGGi_MaintenancePrevented then
 				self:SetIcon("UI/Icons/traits_disapprove.tga")
 			else
 				self:SetIcon("UI/Icons/traits_approve.tga")
 			end
-			---
+			--
 		end,
 
 		"Title", T(0000, "Toggle Maintenance"),

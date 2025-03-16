@@ -12,15 +12,15 @@ return PlaceObj("ModDef", {
 	"steam_id", "3040736321",
 	"pops_any_uuid", "6d63edc0-7bbf-454f-92d2-69f8a46c5e30",
 	"lua_revision", 1007000, -- Picard
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
 		"Code/Script.lua",
 	},
-	"has_options", true,
+--~ 	"has_options", true,
 	"TagCosmetics", true,
 	"description", [[
 More names for B&B asteroids (names aren't translated).

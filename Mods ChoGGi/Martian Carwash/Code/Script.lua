@@ -251,14 +251,14 @@ local GetPipeConnections = {
 	{point(1, -2), 3, 4, "SignWater"},
 	{point(1, -2), 4, 4, "SignWater"},
 	{point(1, -2), 5, 4, "SignWater"},
-	----------------------------------
+	--
 	{point(-2, 1), 0, 5, "SignWater"},
 	{point(-2, 1), 1, 5, "SignWater"},
 	{point(-2, 1), 2, 5, "SignWater"},
 	{point(-2, 1), 3, 5, "SignWater"},
 	{point(-2, 1), 4, 5, "SignWater"},
 	{point(-2, 1), 5, 5, "SignWater"},
-	----------------------------------
+	--
 	{point(1, 1), 0, 6, "SignWater"},
 	{point(1, 1), 1, 6, "SignWater"},
 	{point(1, 1), 2, 6, "SignWater"},

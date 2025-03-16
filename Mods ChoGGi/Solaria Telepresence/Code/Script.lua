@@ -308,7 +308,7 @@ function OnMsg.ClassesPostprocess()
 		RolloverHint = T(302535920011282, [[Change to Pickup and select resource pile you've previously marked for pickup.
 Toggle it back to "Drop Item" and select an object: it'll drop it (somewhat) next to it.]]),
 		OnContextUpdate = function(self, context)
-			---
+			--
 			if context.SolariaTelepresence_Remote_Controller then
 				self:SetRolloverText(T(302535920011283, [[Remove the control of outside building from this building.]]))
 				self:SetTitle(T(302535920011284, [[Remove Remote Control]]))
@@ -320,10 +320,10 @@ Right click in list to view (closes menu).]]))
 				self:SetTitle(T(302535920011286, [[Remote Control Building]]))
 				self:SetIcon("UI/Icons/Upgrades/factory_ai_01.tga")
 			end
-			---
+			--
 		end,
 		func = function(self, context)
-			---
+			--
 			if not context.SolariaTelepresence_Remote_Controller then
 				context:ListBuildings("activate", self)
 			else
@@ -342,7 +342,7 @@ Right click in list to view (closes menu).]]))
 					T(302535920011276, [[Solaria Telepresence]])
 				)
 			end
-			---
+			--
 			ObjModified(context)
 		end,
 	})

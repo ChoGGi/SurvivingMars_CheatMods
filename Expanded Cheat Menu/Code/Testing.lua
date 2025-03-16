@@ -85,7 +85,7 @@ end
 
 local table = table
 
-----------------------
+-- -------------------
 
 --~ if LuaRevision <= 1001514 then
 --~ local Colonist = Colonist
@@ -102,7 +102,7 @@ local table = table
 --~ 	end
 --~ end
 
-----------------------
+-- -------------------
 --~ function IsDevelopmentSandbox()
 --~ 	return true
 --~ end
@@ -1243,11 +1243,11 @@ end
 --~ LoadMapForScreenShot_cam_params = false
 
 
-------------------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
 --~ 	function OnMsg.ClassesGenerate()
 
 --~ 	 end -- ClassesGenerate
-------------------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
 function OnMsg.ClassesPreprocess()
 	-- removes some spam from logs (might cause weirdness so just for me)
 	local umc = UnpersistedMissingClass
@@ -1283,14 +1283,14 @@ function OnMsg.ClassesPreprocess()
 --~ 				self:Attach(frame, self:GetSpotBeginIndex("Origin"))
 --~ 			end
 --~ 		end
-------------------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
 end -- ClassesPreprocess
 
 --~ 		-- where we add new BuildingTemplates
 --~ function OnMsg.ClassesPostprocess()
 
 --~ end -- ClassesPostprocess
-------------------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
 --~ function OnMsg.ClassesBuilt()
 
 --~ 		-- add an overlay for dead rover
@@ -1631,7 +1631,7 @@ print(2, "stop")
 	end
 ]]
 --~ end -- ClassesBuilt
-------------------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
 
 function OnMsg.ModsReloaded()
 	-- print any mod error msgs in console

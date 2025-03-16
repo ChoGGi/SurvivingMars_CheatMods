@@ -1815,7 +1815,7 @@ do -- UpdateDataTables
 		Tables.SchoolTraits = const.SchoolTraits
 		Tables.SanatoriumTraits = const.SanatoriumTraits
 
-------------- mysteries
+-- ----------- mysteries
 		c = 0
 		-- build mysteries list (sometimes we need to reference Mystery_1, sometimes BlackCubeMystery
 		local g_Classes = g_Classes
@@ -1839,7 +1839,7 @@ do -- UpdateDataTables
 			Tables.Mystery[c] = temptable
 		end)
 
------------ colonists
+-- -------- colonists
 		--add as index and associative tables for ease of filtering
 		local c1, c2, c3, c4, c5, c6 = 0, 0, 0, 0, 0, 0
 		local TraitPresets = TraitPresets
@@ -1886,7 +1886,7 @@ do -- UpdateDataTables
 			Tables.ColonistBirthplaces[Nations[i].value] = temptable
 		end
 
-------------- cargo
+-- ---------- cargo
 
 		-- used to check defaults for cargo
 		c = 0
@@ -1897,7 +1897,7 @@ do -- UpdateDataTables
 			Tables.CargoPresets[cargo_id] = cargo
 		end
 
--------------- resources
+-- ----------- resources
 		local AllResourcesList = AllResourcesList
 		for i = 1, #AllResourcesList do
 			Tables.Resources[i] = AllResourcesList[i]
@@ -1913,7 +1913,7 @@ local function Random(m, n)
 (639):  <>
 [C](-1): global sprocall
 C:\Program Files (x86)\Steam\steamapps\common\Surviving Mars\CommonLua\Classes\CommandObject.lua(118):  <>
-        --- end of stack
+        -- end of stack
 	]]
 	if type(m) ~= "number" then
 		return AsyncRand()

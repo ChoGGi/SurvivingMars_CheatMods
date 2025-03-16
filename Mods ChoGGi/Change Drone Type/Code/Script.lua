@@ -91,7 +91,7 @@ function OnMsg.ClassesPostprocess()
 		end,
 
 		func = function(self, context)
-			---
+			--
 			local city = context.city or UICity
 			if city.drone_class == "Drone" then
 				city.drone_class = "FlyingDrone"
@@ -99,7 +99,7 @@ function OnMsg.ClassesPostprocess()
 				city.drone_class = "Drone"
 			end
 			self:SetTitle(T(302535920000266, "Spawn") .. ": " .. T(name_lookup[city.drone_class]))
-			---
+			--
 		end,
 	}
 

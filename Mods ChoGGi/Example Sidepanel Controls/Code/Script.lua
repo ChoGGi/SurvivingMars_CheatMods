@@ -52,7 +52,7 @@ function OnMsg.ClassesPostprocess()
 				self:SetTitle("Not Working")
 				self:SetIcon("UI/Icons/Upgrades/factory_ai_03.tga")
 			end
-			---
+			--
 		end,
 	}, {
 		PlaceObj("XTemplateFunc", {
@@ -61,7 +61,7 @@ function OnMsg.ClassesPostprocess()
 				return self.parent
 			end,
 			"func", function(self, context)
-				---
+				--
 				if context.working then
 					-- do something on a working building
 				else
@@ -71,7 +71,7 @@ function OnMsg.ClassesPostprocess()
 				-- If you modified a value then use this, if not remove
 				ObjModified(context)
 				RebuildInfopanel(context)
-				---
+				--
 			end
 		}),
 	})
@@ -205,13 +205,13 @@ function OnMsg.ClassesPostprocess()
 		"RolloverHint",	"",
 --~ 		(self, context)
 		"OnPress", function()
-			---
+			--
 			local objs = UIColony:GetCityLabels("SubsurfaceDeposit")
 			for i = 1, #objs do
 				objs[i].max_amount = objs[i].max_amount * 5
 				objs[i]:CheatRefill()
 			end
-			---
+			--
 		end,
 		-- add a right-click or button y action
 		"AltPress", true,

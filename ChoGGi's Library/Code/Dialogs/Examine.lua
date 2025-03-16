@@ -2996,7 +2996,7 @@ function ChoGGi_DlgExamine:ConvertValueToInfo(obj, is_indexed)
 	return tostring(obj)
 end
 
----------------------------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------------------------
 function ChoGGi_DlgExamine:RetDebugUpValue(obj, list, c, nups)
 	for i = 1, nups do
 		local name, value = debug.getupvalue(obj, i)
@@ -3744,7 +3744,7 @@ Decompiled code won't scroll correctly as the line numbers are different."]],
 
 	return table.concat(list_obj_str, "\n")
 end
----------------------------------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------------------------------
 
 do -- BuildAttachesPopup
 	local function ParentClicked(item, _, _, button)

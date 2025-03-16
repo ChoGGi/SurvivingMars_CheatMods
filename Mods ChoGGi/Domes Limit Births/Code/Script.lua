@@ -55,7 +55,7 @@ function OnMsg.ClassesPostprocess()
 				"Scroll", 0,
 				"ContextUpdateOnOpen", true,
 				"OnContextUpdate", function(self, context)
-					---
+					--
 					-- slider won't do anything if this isn't a number
 					context.ChoGGi_DomeLimitBirths = context.ChoGGi_DomeLimitBirths or 0
 
@@ -89,7 +89,7 @@ function OnMsg.ClassesPostprocess()
 						pp:SetRolloverText(T(302535920011415, "Apply value to this dome only."))
 						pp:SetRolloverHint(T(302535920011689, "<left_click> Apply to all domes!"))
 					end
-					---
+					--
 				end,
 			}),
 			PlaceObj("XTemplateFunc", {
@@ -98,10 +98,10 @@ function OnMsg.ClassesPostprocess()
 					return self.parent
 				end,
 				"func", function(self, context)
-					---
+					--
 					apply_to_all = not apply_to_all
 					ObjModified(context)
-					---
+					--
 				end
 			}),
 		})

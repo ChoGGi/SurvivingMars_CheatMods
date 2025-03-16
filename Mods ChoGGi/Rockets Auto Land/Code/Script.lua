@@ -35,7 +35,7 @@ local function AddTemplate(template, params)
 		"RolloverText", params.RolloverText,
 		"RolloverHint", T(302535920012015, "<left_click> Toggle, <em>Ctrl+<left_click></em> Toggle All"),
 		"OnContextUpdate", function(self, context)
-			---
+			--
 			if context.ChoGGi_RocketsAutoLand_Allow then
 				self:SetIcon(params.AllowIcon)
 				self:SetTitle(T(302535920012016, "Allow Auto-Landing"))
@@ -45,7 +45,7 @@ local function AddTemplate(template, params)
 				self:SetTitle(T(302535920012014, "No Auto-Landing"))
 				self:SetRolloverTitle(T(302535920012014, "No Auto-Landing"))
 			end
-			---
+			--
 		end,
 	}, {
 		PlaceObj("XTemplateFunc", {
@@ -54,7 +54,7 @@ local function AddTemplate(template, params)
 				return self.parent
 			end,
 			"func", function(self, context)
-				---
+				--
 				if IsMassUIModifierPressed() then
 					local enable
 					if not context.ChoGGi_RocketsAutoLand_Allow then
@@ -75,7 +75,7 @@ local function AddTemplate(template, params)
 				end
 
 				ObjModified(context)
-				---
+				--
 			end,
 		}),
 	})

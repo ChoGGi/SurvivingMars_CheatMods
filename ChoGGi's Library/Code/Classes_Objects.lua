@@ -241,7 +241,7 @@ Starts at 100% and goes up by 5 (max is 2047), <right_click> to reset to 5% (hol
 				"Icon", "UI/Icons/IPButtons/status_effects.tga",
 			}),
 
-------------------- Salvage
+-- ----------------- Salvage
 -- last checked 1011166
 		PlaceObj('XTemplateTemplate', {
 			'comment', "salvage",
@@ -289,7 +289,7 @@ Starts at 100% and goes up by 5 (max is 2047), <right_click> to reset to 5% (hol
 				end,
 			}),
 			}),
-------------------- Salvage
+--- ---------------- Salvage
 
 			PlaceObj("XTemplateTemplate", {
 				"__template", "sectionCheats",
