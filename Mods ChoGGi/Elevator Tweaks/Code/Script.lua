@@ -156,10 +156,12 @@ function OnMsg.ClassesPostprocess()
 		Metals = articles.Metals.image,
 		Polymers = articles.Polymers.image,
 		PreciousMetals = articles["Rare Metals"].image,
-		PreciousMinerals = articles.ExoticMinerals.image,
 		-- Close enough
 		WasteRock = "UI/Messages/Tutorials/Tutorial1/Tutorial1_WasteRockConcreteDepot.tga",
 	}
+	if g_AvailableDlc.picard then
+		lookup_res.PreciousMinerals = articles.ExoticMinerals.image
+	end
 	if g_AvailableDlc.armstrong then
 		lookup_res.Seeds = articles.Seeds.image
 	end

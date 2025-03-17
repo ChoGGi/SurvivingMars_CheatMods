@@ -88,6 +88,11 @@ GetCheapestTech log spam.
 (4) Fixes for mods (no idea which mods / they're abandoned).
 ```
 
+### QoL:
+```
+Even if you have more than one Artificial Sun then panels will only check the "first" one.
+```
+
 
 # Incorporated mods: (so far)
 ```

@@ -1,3 +1,6 @@
+v1.0
+Check if my Fix Bugs mod is installed and don't update panels if so (as it'll do the same).
+
 v0.9
 Hopefully it's all good now, I did test this time... (thanks Neocray).
 

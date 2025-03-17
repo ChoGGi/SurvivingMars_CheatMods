@@ -4,34 +4,39 @@ local mod_Range = ArtificialSun.effect_range or 8
 
 local TestSunPanelRange = TestSunPanelRange
 local IsValid = IsValid
-local table = table
 local next = next
 
 local function UpdateSolarPanel(panel, suns)
-	local in_range, _ = table.ifilter(suns, function(_, sun)
-		return TestSunPanelRange(sun, panel)
-	end)
-	-- filter will return indexed keys with their orig index
-	_, in_range = next(in_range)
+	local found_suns = {}
+	local c = 0
+	for i = 1, #suns do
+		local sun = suns[i]
+		if TestSunPanelRange(sun, panel) then
+			c = c + 1
+			found_suns[c] = sun
+		end
+	end
 
-	-- if anything is close enough to count
+	-- Whatever one is in range (probably just one, but it doesn't really matter)
+	local _, in_range = next(found_suns)
+	--
 	if in_range then
-		-- update panel prod values
+		-- Give it a sun to use
 		panel:SetArtificialSun(in_range)
 	else
 		panel.artificial_sun = false
 	end
 
+	-- Update panel prod values
 	panel:UpdateProduction()
 end
 
--- loop through all suns and update any panels in range
+-- Loop through all suns and update any panels in range
 local function UpdateArtificialSunRange(obj)
 	local is_valid = IsValid(obj)
---~ 	local suns = UICity.labels.ArtificialSun or ""
 	local suns = UIColony:GetCityLabels("ArtificialSun")
 
-	-- first update range for all art suns
+	-- First update range for all art suns
 	if is_valid and obj:IsKindOf("ArtificialSun") then
 			obj.effect_range = mod_Range
 	else
@@ -44,11 +49,12 @@ local function UpdateArtificialSunRange(obj)
 		return
 	end
 
-	-- now update all solar panels
+	-- Now update all solar panels
 	if is_valid and obj:IsKindOf("SolarPanelBase") then
 		UpdateSolarPanel(obj, suns)
-	else
---~ 		local panels = UICity.labels.SolarPanelBase or ""
+	-- No need to update all if my Fix Bugs mod is installed
+	elseif not table.find(ModsLoaded, "id", "ChoGGi_FixBBBugs") then
+
 		local panels = UIColony:GetCityLabels("SolarPanelBase")
 		for i = 1, #panels do
 			local panel = panels[i]
@@ -58,7 +64,7 @@ local function UpdateArtificialSunRange(obj)
 		end
 	end
 end
-OnMsg.CityStart = UpdateArtificialSunRange
+--~ OnMsg.CityStart = UpdateArtificialSunRange
 OnMsg.LoadGame = UpdateArtificialSunRange
 
 local function ModOptions(id)
@@ -73,6 +79,7 @@ local function ModOptions(id)
 	if not UIColony then
 		return
 	end
+
 	UpdateArtificialSunRange()
 end
 -- Load default/saved settings
@@ -81,7 +88,7 @@ OnMsg.ModsReloaded = ModOptions
 OnMsg.ApplyModOptions = ModOptions
 
 
--- I;m lazy so copy and paste
+-- I'm lazy so copy and paste
 
 local ChoOrig_SolarPanelBuilding_OnSetWorking = SolarPanelBuilding.OnSetWorking
 function SolarPanelBuilding:OnSetWorking(...)

@@ -28,9 +28,6 @@ local function ModOptions(id)
 	ShowConsoleLog(mod_EnableLog)
 
 	-- build console buttons
-	if IsECM() then
-		return
-	end
 
 	local dlgConsole = dlgConsole
 	if dlgConsole and not dlgConsole.ChoGGi_MenuAdded then

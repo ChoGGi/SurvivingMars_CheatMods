@@ -204,21 +204,6 @@ function OnMsg.ClassesPostprocess()
 
 	end -- what_game
 
-
-	-- change rollover max width
-	if UserSettings.WiderRollovers then
-		local roll = what_game == "Mars" and XTemplates.Rollover[1] or XTemplates.RolloverGeneric[1]
-		local idx = table.find(roll, "Id", "idContent")
-		if idx then
-			roll = roll[idx]
-			idx = table.find(roll, "Id", "idText")
-			if idx then
-				roll[idx].MaxWidth = UserSettings.WiderRollovers
-			end
-		end
-	end
-
-
 --~ 	-- fiddle with mod options
 --~ 	if not table.find(ModsLoaded, "id", "ChoGGi_ModOptionsExpanded") then
 --~ 		ChoGGi_Funcs.Common.ExpandModOptions(XTemplates)

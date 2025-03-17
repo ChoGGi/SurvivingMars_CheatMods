@@ -1,6 +1,7 @@
 -- See LICENSE for terms
 
-local table, type, pairs, tostring = table, type, pairs, tostring
+-- Yeah, I probably don't need to local them all, but 'tain't gonna hurt nothing.
+local table, type, pairs, tostring, next = table, type, pairs, tostring, next
 local AsyncRand = AsyncRand
 local IsValidThread = IsValidThread
 local IsValid = IsValid
@@ -15,7 +16,9 @@ local IsKindOf = IsKindOf
 local SuspendPassEdits = SuspendPassEdits
 local ResumePassEdits = ResumePassEdits
 local GetBuildingTechsStatus = GetBuildingTechsStatus
--- Fix for Silva's Orion Rocket mod (part 1, backing up the func he overrides)
+local TestSunPanelRange = TestSunPanelRange
+
+-- Fix for Silva's Orion Rocket mod (part 1/2, backing up the func he overrides)
 local ChoOrig_PlacePlanet = PlacePlanet
 
 local empty_table = empty_table
@@ -30,15 +33,17 @@ local mod_MainMenuMusic
 local mod_ColonistsWrongMap
 local mod_NoFlyingDronesUnderground
 
+--
+-- Uneven terrain fix funcs
 local function UpdateMap(game_map)
 	-- Suspend funcs speed up "doing stuff"
-	game_map.realm:SuspendPassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
-	SuspendTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
+	game_map.realm:SuspendPassEdits("ChoGGi_FixBugs_UnevenTerrain")
+	SuspendTerrainInvalidations("ChoGGi_FixBugs_UnevenTerrain")
 	game_map:RefreshBuildableGrid()
-	ResumeTerrainInvalidations("ChoGGi_FixBBBugs_UnevenTerrain")
-	game_map.realm:ResumePassEdits("ChoGGi_FixBBBugs_UnevenTerrain")
+	ResumeTerrainInvalidations("ChoGGi_FixBugs_UnevenTerrain")
+	game_map.realm:ResumePassEdits("ChoGGi_FixBugs_UnevenTerrain")
 end
-
+-- Called below from a couple places
 local function FixUnevenTerrain(game_map)
 	if game_map then
 		UpdateMap(game_map)
@@ -49,6 +54,43 @@ local function FixUnevenTerrain(game_map)
 	end
 end
 
+--
+-- Copied from ChoGGi_Funcs.Common.GetCityLabels()
+local GetCityLabels = rawget(_G, "ChoGGi_Funcs") and ChoGGi_Funcs.Common.GetCityLabels
+	or function(label)
+		local UIColony = UIColony
+		local labels = UIColony and UIColony.city_labels.labels or UICity.labels
+		return labels[label] or empty_table
+	end
+
+--
+-- Used for fix for more than one art sun
+local function UpdateSolarPanel(panel, suns)
+	local found_suns = {}
+	local c = 0
+	for i = 1, #suns do
+		local sun = suns[i]
+		if TestSunPanelRange(sun, panel) then
+			c = c + 1
+			found_suns[c] = sun
+		end
+	end
+
+	-- Whatever one is in range (probably just one, but it doesn't really matter)
+	local _, in_range = next(found_suns)
+	--
+	if in_range then
+		-- Give it a sun to use
+		panel:SetArtificialSun(in_range)
+	else
+		panel.artificial_sun = false
+	end
+
+	-- Update panel prod values
+	panel:UpdateProduction()
+end
+
+-- Update/set mod options
 local function ModOptions(id)
 	-- id is from ApplyModOptions
 	if id and id ~= CurrentModId then
@@ -84,6 +126,8 @@ end
 OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
+
+-- OnMsgs
 
 function OnMsg.SectorScanned()
 	if not mod_EnableMod then
@@ -184,29 +228,6 @@ function OnMsg.ClassesPostprocess()
 end
 
 --
--- Fix for whatever odd thing Mars Underground mod is doing with presets.
-local ChoOrig_Preset_Register = Preset.Register
-function Preset:Register(...)
-	-- fires too early for mod options
---~ 	if not mod_EnableMod then
---~ 		return ChoOrig_Preset_Register(self, ...)
---~ 	end
-
-  local groups = Presets[self.PresetClass or self.class]
-	if groups then
-		return ChoOrig_Preset_Register(self, ...)
-	end
-end
-
---
--- Copied from ChoGGi_Funcs.Common.GetCityLabels()
-function GetCityLabels(label)
-	local UIColony = UIColony
-	local labels = UIColony and UIColony.city_labels.labels or UICity.labels
-	return labels[label] or empty_table
-end
-
---
 -- CityStart/LoadGame
 do
 
@@ -216,7 +237,7 @@ do
 		end
 
 		-- Speed up adding/deleting/etc objs
-		SuspendPassEdits("ChoGGi_FixBBBugs_Startup")
+		SuspendPassEdits("ChoGGi_FixBugs_Startup")
 
 		-- If this is called on a save from before B&B (it does update, but after LoadGame)
 		local main_city = MainCity or UICity
@@ -233,6 +254,21 @@ do
 
 		-- Anything that only needs a specific event
 		if event == "LoadGame" then
+
+			--
+			-- If you have more than one ArtificialSun then solar panels ignore sun + 1.
+			-- Fix for more than one art sun (1/2)
+			local objs = GetCityLabels("ArtificialSun")
+			if #objs > 0 then
+				-- Update all solar panels
+				local panels = GetCityLabels("SolarPanelBase")
+				for i = 1, #panels do
+					local panel = panels[i]
+					if IsValid(panel) then
+						UpdateSolarPanel(panel, objs)
+					end
+				end
+			end
 
 			--
 			-- Fix Unlock RC Safari Resupply
@@ -347,7 +383,9 @@ do
 					obj:delete()
 				end
 			end
+-- LoadGame end
 
+-- CityStart
 		elseif event == "CityStart" then
 
 			--
@@ -366,6 +404,7 @@ do
 			end)
 
 		end
+-- CityStart end
 
 		--
 		-- Anything that needs to loop through GameMaps
@@ -587,7 +626,6 @@ do
 			Metals = articles.Metals.image,
 			Polymers = articles.Polymers.image,
 			PreciousMetals = articles["Rare Metals"].image,
-			PreciousMinerals = articles.ExoticMinerals.image,
 			-- Close enough
 			WasteRock = "UI/Messages/Tutorials/Tutorial1/Tutorial1_WasteRockConcreteDepot.tga",
 		}
@@ -628,7 +666,7 @@ do
 		end
 
 		--
-		-- Fix for Silva's Orion Heavy Rocket mod (part 2, restoring the original func)
+		-- Fix for Silva's Orion Heavy Rocket mod (part 2/2, restoring the original func)
 		-- He only calls the original func when the rocket mod isn't installed, so I have to remove it completely.
 		PlacePlanet = ChoOrig_PlacePlanet
 
@@ -973,7 +1011,7 @@ do
 		end
 
 		--
-		ResumePassEdits("ChoGGi_FixBBBugs_Startup")
+		ResumePassEdits("ChoGGi_FixBugs_Startup")
 	end
 
 	function OnMsg.CityStart()
@@ -984,6 +1022,23 @@ do
 	end
 end -- StartupCode do
 -- do
+
+--
+-- Fixes that can't be disabled by mod options (called too soon)
+
+--
+-- Fix for whatever odd thing Mars Underground mod is doing with presets.
+local ChoOrig_Preset_Register = Preset.Register
+function Preset:Register(...)
+  local groups = Presets[self.PresetClass or self.class]
+	if groups then
+		return ChoOrig_Preset_Register(self, ...)
+	end
+end
+
+--
+-- End of fixes that can't be disabled
+
 
 --
 -- Clearing waste rock
@@ -1660,7 +1715,24 @@ function UIItemMenu(category_id, bCreateItems, ...)
 end
 
 --
---
+-- Fix for more than one art sun (2/2)
+-- Update any newly placed panels
+local ChoOrig_SolarPanelBase_GameInit = SolarPanelBase.GameInit
+function SolarPanelBase:GameInit(...)
+	if not mod_EnableMod then
+		return ChoOrig_SolarPanelBase_GameInit(self, ...)
+	end
+
+	local objs = GetCityLabels("ArtificialSun")
+	if #objs > 0 then
+		UpdateSolarPanel(self, objs)
+		-- The only thing SolarPanelBase.GameInit does is pick the art sun (and since it only picks the first one in the list)
+		return
+	end
+
+	return ChoOrig_SolarPanelBase_GameInit(self, ...)
+end
+
 --
 --
 --
@@ -1967,4 +2039,6 @@ function City:InitBreakThroughAnomalies(...)
 	BreakthroughOrder = ChoOrig_BreakthroughOrder
 end
 
+--
 -- Farewell
+--
