@@ -8,7 +8,7 @@ See mod options to toggle certain fixes.
 
 ### General bugs:
 ```
-Uneven terrain / Flatten tool (mod option to disable).
+Uneven terrain from Flatten tool (mod option to disable).
 Key binding certain buildings won't work when pressing the key (Power Switch/Pipe Valve).
 Add rocket sound effects to SupplyPods (mod option to disable).
 Possible fix for main menu music playing in-game on new games (mod option to disable, since there's no fade out).
@@ -41,10 +41,10 @@ Storybit notification issue.
 
 ### Mysteries:
 ```
-Dredger tech fix ([Spoilers](https://www.reddit.com/r/SurvivingMars/comments/xnprjg/)).
+Dredger tech fix (Spoilers: https://www.reddit.com/r/SurvivingMars/comments/xnprjg/).
 Marsgate blank transportation panel in CCC after a certain point in mystery.
 St. Elmo's Fire: Stop meteoroids from destroying sinkholes.
-The Philosopher's Stone Mystery doesn't update sector scanned count when paused.
+The Philosopher's Stone doesn't update sector scanned count when paused.
 ```
 
 ### B&B:
@@ -58,7 +58,7 @@ No Planetary Anomaly Breakthroughs when B&B is installed.
 Refabbing rare extractors left the "working" dust plumes around them.
 Stop ceiling/floating rubble.
 Support struts malfunctioning and cave-ins.
-The Bottomless Pit Anomaly is missing.
+The Bottomless Pit Anomaly is missing on one map.
 Mona Lisa Underground Rare Anomaly gives you underground dome prefabs, but locks them to surface.
 Mona Lisa Underground Rare Anomaly if using Paradox and you pick Shuttle Hubs, it doesn't give Jumper Hubs.
 Unpassable underground rocks stuck in path (not cave-in rubble, but small rocks you can't select).
@@ -84,8 +84,6 @@ Silva's Orion Heavy Rocket (you must disable his Essential files mod, then enabl
 Horticulture Workshop not unlocking.
 Removes stuck cursor buildings (reddish coloured).
 GetCheapestTech log spam.
-
-(4) Fixes for mods (no idea which mods / they're abandoned).
 ```
 
 ### QoL:

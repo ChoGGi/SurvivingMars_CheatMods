@@ -46,9 +46,10 @@ function Dome:GetUISectionCitizensRollover(...)
 	end
 	--
 
-	if comfort_amount == 0 and morale_amount == 0 and research_percent == 0 then
-		return rollover
-	end
+	-- Skip showing when no bonus
+--~ 	if comfort_amount == 0 and morale_amount == 0 and research_percent == 0 then
+--~ 		return rollover
+--~ 	end
 
 	rollover[1].j = rollover[1].j + 4
 	local tbl = rollover[1].table

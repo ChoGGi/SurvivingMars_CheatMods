@@ -208,7 +208,6 @@ function OnMsg.ClassesPostprocess()
 	end
 
 	local EntityData = EntityData
-	local ChoGGi_VegetationObject = ChoGGi_VegetationObject
 	local HexOutlineShapes = HexOutlineShapes
 	local empty_table = empty_table
 
@@ -249,7 +248,10 @@ end
 -- Stop snapping to grid
 local ChoOrig_ConstructionController_Activate = ConstructionController.Activate
 function ConstructionController:Activate(template, params, ...)
-	if not mod_EnableMod or not mod_FreeFormPlacement then
+	if not mod_EnableMod or not mod_FreeFormPlacement
+		or not template
+		or template and string.sub(template, 1, 14) ~= "ChoGGi_VegObj_"
+	then
 		return ChoOrig_ConstructionController_Activate(self, template, params, ...)
 	end
 
