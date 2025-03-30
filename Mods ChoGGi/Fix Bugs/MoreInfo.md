@@ -9,6 +9,7 @@ See mod options to toggle certain fixes.
 ### General bugs:
 ```
 Uneven terrain from Flatten tool (mod option to disable).
+Toggling power to domes with passages in certain instances will create some log spam.
 Key binding certain buildings won't work when pressing the key (Power Switch/Pipe Valve).
 Add rocket sound effects to SupplyPods (mod option to disable).
 Possible fix for main menu music playing in-game on new games (mod option to disable, since there's no fade out).

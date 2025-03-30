@@ -1,3 +1,5 @@
+check models for each dlc
+
 add automated mode
 
 direct from water deposits

@@ -39,7 +39,7 @@ Known Issues:
 If you turn it off, then the colonists will group up in front of it (I figured that was better then them quitting and so on).
 Suicidal colonists: Pathing wise it's best to only use teleporters with domes close by each other, or with some inaccessible land in the way, else they'll sometimes just go for The Long Walk.
 This is a bug with base game, if you build domes in a half-circular pattern then colonists from the two ends will try walking outside and die.
-Use this to fix it: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1811507300]Fix Colonist Long Walks[/url]
+Use this to fix it: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2794807829]No More Outside Suffocation[/url]
 
 
 

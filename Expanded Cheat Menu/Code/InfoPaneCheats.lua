@@ -920,6 +920,9 @@ end
 function Unit:CheatBreadcrumbs()
 	return Common.ToggleBreadcrumbs(self)
 end
+function Shuttle:CheatBreadcrumbs()
+	return Common.ToggleBreadcrumbs(self)
+end
 
 -- CheatAllShifts
 local function CheatAllShiftsOn(self)

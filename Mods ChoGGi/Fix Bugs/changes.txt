@@ -1,3 +1,6 @@
+v8.8
+Toggling power to domes with passages in certain instances will create some log spam.
+
 v8.7
 Added my fix for multiple art suns from my Artificial Sun Range mod.
 

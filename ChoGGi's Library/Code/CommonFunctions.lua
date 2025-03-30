@@ -1157,13 +1157,18 @@ do -- Circle
 	local OCircle
 
 	-- show a circle for time and delete it
-	function ChoGGi_Funcs.Common.Circle(pos, radius, colour, time)
+	function ChoGGi_Funcs.Common.Circle(pos, radius, colour, time, override_height)
 		if not OCircle then
 			OCircle = ChoGGi_OCircle
 		end
 
 		local circle = OCircle:new()
-		circle:SetPos(pos and pos:SetTerrainZ(10 * guic) or GetCursorWorldPos())
+		if override_height then
+			circle:SetPos(pos or GetCursorWorldPos())
+		else
+			circle:SetPos(pos and pos:SetTerrainZ(10 * guic) or GetCursorWorldPos())
+		end
+
 		circle:SetRadius(radius or 1000)
 		circle:SetColor(colour or RandomColourLimited())
 
@@ -1176,8 +1181,13 @@ do -- Circle
 	end
 
 	-- show a sphere for time and delete it
-	function ChoGGi_Funcs.Common.Sphere(pos, colour, time)
-		local orb = ShowPoint(pos and pos:SetTerrainZ(10 * guic) or GetCursorWorldPos(), colour)
+	function ChoGGi_Funcs.Common.Sphere(pos, colour, time, override_height)
+		local orb
+		if override_height then
+			orb = ShowPoint(pos or GetCursorWorldPos(), colour)
+		else
+			orb = ShowPoint(pos and pos:SetTerrainZ(10 * guic) or GetCursorWorldPos(), colour)
+		end
 
 		CreateRealTimeThread(function()
 			Sleep(time or 50000)
@@ -4662,7 +4672,7 @@ function ChoGGi_Funcs.Common.DoSomethingQuestion(obj, func, vars, warning)
 
 	if not warning then
 		warning = T{302535920001740--[["Are you sure you want to proceed with <str>?"]],
-			str = name,
+			str = Translate(name),
 		}
 	end
 
@@ -6467,7 +6477,7 @@ function ChoGGi_Funcs.Common.ToggleBreadcrumbs(obj)
 		while true do
 			local pos = obj:GetVisualPos()
 			if tostring(last_pos) ~= tostring(pos) then
-				Sphere(pos, colour, 15000)
+				Sphere(pos, colour, 15000, true)
 				last_pos = pos
 			end
 			Sleep(1500)

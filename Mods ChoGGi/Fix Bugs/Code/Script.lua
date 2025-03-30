@@ -2,22 +2,25 @@
 
 -- Yeah, I probably don't need to local them all, but 'tain't gonna hurt nothing.
 local table, type, pairs, tostring, next = table, type, pairs, tostring, next
+local pcall = pcall
 local AsyncRand = AsyncRand
-local IsValidThread = IsValidThread
-local IsValid = IsValid
-local ValidateBuilding = ValidateBuilding
-local GetCity = GetCity
-local GetRealmByID = GetRealmByID
-local GetDomeAtPoint = GetDomeAtPoint
-local GetRandomPassableAroundOnMap = GetRandomPassableAroundOnMap
-local HexGetUnits = HexGetUnits
-local GetRealm = GetRealm
-local IsKindOf = IsKindOf
-local SuspendPassEdits = SuspendPassEdits
-local ResumePassEdits = ResumePassEdits
 local GetBuildingTechsStatus = GetBuildingTechsStatus
+local GetCity = GetCity
+local GetDomeAtPoint = GetDomeAtPoint
+local GetObjectHexGrid = GetObjectHexGrid
+local GetRandomPassableAroundOnMap = GetRandomPassableAroundOnMap
+local GetRealm = GetRealm
+local GetRealmByID = GetRealmByID
+local HexGetUnits = HexGetUnits
+local IsKindOf = IsKindOf
+local IsValid = IsValid
+local IsValidThread = IsValidThread
+local ResumePassEdits = ResumePassEdits
+local SuspendPassEdits = SuspendPassEdits
 local TestSunPanelRange = TestSunPanelRange
+local ValidateBuilding = ValidateBuilding
 
+--
 -- Fix for Silva's Orion Rocket mod (part 1/2, backing up the func he overrides)
 local ChoOrig_PlacePlanet = PlacePlanet
 
@@ -35,7 +38,7 @@ local mod_NoFlyingDronesUnderground
 
 --
 -- Uneven terrain fix funcs
-local function UpdateMap(game_map)
+local function UpdateTerrainMap(game_map)
 	-- Suspend funcs speed up "doing stuff"
 	game_map.realm:SuspendPassEdits("ChoGGi_FixBugs_UnevenTerrain")
 	SuspendTerrainInvalidations("ChoGGi_FixBugs_UnevenTerrain")
@@ -44,13 +47,9 @@ local function UpdateMap(game_map)
 	game_map.realm:ResumePassEdits("ChoGGi_FixBugs_UnevenTerrain")
 end
 -- Called below from a couple places
-local function FixUnevenTerrain(game_map)
-	if game_map then
-		UpdateMap(game_map)
-	else
-		for _, map in pairs(GameMaps) do
-			UpdateMap(map)
-		end
+local function FixUnevenTerrainMaps()
+	for _, map in pairs(GameMaps) do
+		UpdateTerrainMap(map)
 	end
 end
 
@@ -108,7 +107,7 @@ local function ModOptions(id)
 
 	-- Update all maps for uneven terrain (if using mod that allows landscaping maps other than surface)
 	if UIColony and mod_UnevenTerrain then
-		FixUnevenTerrain()
+		FixUnevenTerrainMaps()
 	end
 
 	if not mod_EnableMod then
@@ -327,7 +326,7 @@ do
 			--
 			-- Update all maps for uneven terrain (if using mod that allows landscaping maps other than surface)
 			if mod_UnevenTerrain then
-				FixUnevenTerrain()
+				FixUnevenTerrainMaps()
 			end
 
 			--
@@ -1308,7 +1307,7 @@ function LandscapeFinish(mark, ...)
 	-- last checked lua rev 1011166
 	ChoOrig_LandscapeFinish(mark, ...)
 
-	FixUnevenTerrain(GameMaps[landscape.map_id])
+	UpdateTerrainMap(GameMaps[landscape.map_id])
 end
 
 --
@@ -1731,6 +1730,41 @@ function SolarPanelBase:GameInit(...)
 	end
 
 	return ChoOrig_SolarPanelBase_GameInit(self, ...)
+end
+
+--
+-- Toggling power to domes with passages in certain instances will create some log spam.
+-- I don't think it'll cause any big issue as toggling it again doesn't cause the same log spam.
+-- There's a chance it may not restore power to domes connected with passages?
+-- Looking at other funcs nearby, the devs did check for existence in those, just not this func
+do -- Dome:PropagateSetSupplyToPassages(...)
+	local fake_pge = {
+		passage_obj = {
+			UpdateElectricityAvailability = empty_func
+		}
+	}
+	-- Setup override
+	local ChoOrig_HexGetPassageGridElement = HexGetPassageGridElement
+	local ChoFake_HexGetPassageGridElement = function(...)
+		local pge = ChoOrig_HexGetPassageGridElement(...)
+		if pge then
+			return pge
+		end
+		return fake_pge
+	end
+
+	local ChoOrig_Dome_PropagateSetSupplyToPassages = Dome.PropagateSetSupplyToPassages
+	function Dome:PropagateSetSupplyToPassages(...)
+		if not mod_EnableMod then
+			return ChoOrig_Dome_PropagateSetSupplyToPassages(self, ...)
+		end
+
+		HexGetPassageGridElement = ChoFake_HexGetPassageGridElement
+		pcall(ChoOrig_Dome_PropagateSetSupplyToPassages, self, ...)
+		HexGetPassageGridElement = ChoOrig_HexGetPassageGridElement
+
+		-- func has no return value
+	end
 end
 
 --

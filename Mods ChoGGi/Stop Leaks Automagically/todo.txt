@@ -1,0 +1,47 @@
+-- Add grid info to pipes
+local function UpdateTemplate(template)
+	local ChoOrig_context = template.__context
+	template.__context = function(parent, context)
+		return ChoOrig_context(parent, context)
+			or context:IsKindOf("LifeSupportGridElement") and not context:IsKindOf("ConstructionSite") and context.water
+	end
+
+	-- Fix log spam from grid not having air/water
+	local ChoOrig_OnContextUpdate = template.OnContextUpdate
+	template.OnContextUpdate = function(self, context, ...)
+		local building = context.building
+		local grid = building:IsKindOfClasses("AirProducer", "AirStorage") and building.air and building.air.grid
+			or building:IsKindOf("LifeSupportGridElement") and building.water and building.water.grid and building.water.grid.air_grid
+
+		if grid then
+		ex(grid)
+			return ChoOrig_OnContextUpdate(self, context, ...)
+		end
+	end
+end
+
+function OnMsg.ClassesPostprocess()
+	UpdateTemplate(XTemplates.sectionWaterGrid[1])
+	UpdateTemplate(XTemplates.sectionAirGrid[1])
+end
+
+local ChoOrig_LifeSupportGridObject_ShowUISectionLifeSupportGrid = LifeSupportGridObject.ShowUISectionLifeSupportGrid
+function LifeSupportGridObject:ShowUISectionLifeSupportGrid(...)
+	if not mod_EnableMod then
+		return ChoOrig_LifeSupportGridObject_ShowUISectionLifeSupportGrid(self, ...)
+	end
+
+	return ChoOrig_LifeSupportGridObject_ShowUISectionLifeSupportGrid(self, ...)
+		or self:IsKindOf("LifeSupportGridElement") and not self:IsKindOf("ConstructionSite") and self.water
+end
+
+local ChoOrig_LifeSupportGridElement_GetInfopanelTemplate = LifeSupportGridElement.GetInfopanelTemplate
+function LifeSupportGridElement:GetInfopanelTemplate(...)
+	if not mod_EnableMod then
+		return ChoOrig_LifeSupportGridElement_GetInfopanelTemplate(self, ...)
+	end
+
+	return ChoOrig_LifeSupportGridElement_GetInfopanelTemplate(self, ...)
+		or "ipPillaredPipe"
+end
+
