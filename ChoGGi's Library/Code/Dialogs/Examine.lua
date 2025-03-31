@@ -1195,7 +1195,7 @@ function ChoGGi_DlgExamine:idButClear_OnPress()
 		local boxes = self.ChoGGi.Temp.Examine_BBoxes
 		if boxes then
 			for i = #boxes, 1, -1 do
-				boxes[i]:Destroy()
+				boxes[i]:delete()
 				table.remove(boxes, i)
 			end
 		end

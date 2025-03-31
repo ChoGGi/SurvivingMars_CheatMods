@@ -32,6 +32,7 @@ local function LeakyGrid(grid)
 	end
 end
 
+local last_opened_switches = {}
 local function OpenSwitches(grid, sw_type)
 	-- PlaceholderSupplyGrid is used for a singular turned off switch grid
 	-- PlaceholderSupplyGrid only has .elements but if there's any pipes then we can use .connectors
@@ -41,6 +42,9 @@ local function OpenSwitches(grid, sw_type)
 		connection = "connectors"
 	end
 
+	table.iclear(last_opened_switches)
+	local c = 0
+
 	-- Open all switches
 	for i = 1, #grid[connection] do
 		local el = grid[connection][i]
@@ -48,6 +52,8 @@ local function OpenSwitches(grid, sw_type)
 			-- .switched_state is true if switch is turned off, so skip any already turned on as devs didn't make on/off funcs
 			and el.building.switched_state
 		then
+			c = c + 1
+			last_opened_switches[c] = el.building
 			el.building:Switch()
 		end
 	end
@@ -79,6 +85,14 @@ local function ReconnectGrids(obj)
 					if grid_el.grid ~= grid and not LeakyGrid(grid_el.grid) then
 						-- No leaks in connected grid so we can turn on any switches in it
 						OpenSwitches(grid_el.grid, sw_type)
+						-- If it opens a leaky grid then close them
+						if LeakyGrid(grid_el.grid) then
+							for i = 1, #last_opened_switches do
+								last_opened_switches[i]:Switch()
+							end
+						end
+						-- But don't abort and keep trying other grids
+
 					end
 					--
 				end
@@ -88,6 +102,7 @@ local function ReconnectGrids(obj)
 
 end
 
+local temp_close_switches = {}
 local function CloseSwitches(obj)
 	local result, sw_type = IsToggleAllowed(obj)
 	if not result then
@@ -97,7 +112,7 @@ local function CloseSwitches(obj)
 	local grid = obj[obj.supply_resource].grid
 
 	-- We store a list of switches then turn them all off as the grid will change when calling :Switch()
-	local switches = {}
+	table.iclear(temp_close_switches)
 	local c = 0
 
 	-- look in grid.connectors for valves/switches
@@ -108,12 +123,12 @@ local function CloseSwitches(obj)
 			and not el.building.switched_state
 		then
 			c = c + 1
-			switches[c] = el.building
+			temp_close_switches[c] = el.building
 		end
 	end
 
 	for i = 1, c do
-		switches[i]:Switch()
+		temp_close_switches[i]:Switch()
 	end
 
 end
@@ -174,6 +189,7 @@ function OnMsg.Repaired(obj)
 		new_grid_count = #grid.elements
 
 		if orig_grid_count == new_grid_count then
+			-- Nothing new added so we can stop checking
 			break
 		else
 			-- Count has changed from new grid being merged, so update count to use against loop count
@@ -188,3 +204,58 @@ function OnMsg.Repaired(obj)
 	end
 
 end
+
+
+
+do return end
+
+
+
+-- Add grid info to pipes
+local function UpdateTemplate(template)
+	local ChoOrig_context = template.__context
+	template.__context = function(parent, context)
+		return ChoOrig_context(parent, context)
+			or context:IsKindOf("LifeSupportGridElement") and not context:IsKindOf("ConstructionSite") and context.water
+	end
+
+--~ 	-- Fix log spam from grid not having air
+--~ 	local ChoOrig_OnContextUpdate = template.OnContextUpdate
+--~ 	template.OnContextUpdate = function(self, context, ...)
+--~ 		local building = context.building
+--~ 		local grid = building:IsKindOfClasses("AirProducer", "AirStorage") and building.air and building.air.grid
+--~ 			or building:IsKindOf("LifeSupportGridElement") and building.water and building.water.grid and building.water.grid.air_grid
+
+--~ 		if grid then
+--~ 		ex(grid)
+--~ 			return ChoOrig_OnContextUpdate(self, context, ...)
+--~ 		end
+--~ 	end
+end
+
+function OnMsg.ClassesPostprocess()
+	UpdateTemplate(XTemplates.sectionWaterGrid[1])
+	-- OnContextUpdate has issues when there's no air grid, so water for now
+--~ 	UpdateTemplate(XTemplates.sectionAirGrid[1])
+end
+
+local ChoOrig_LifeSupportGridObject_ShowUISectionLifeSupportGrid = LifeSupportGridObject.ShowUISectionLifeSupportGrid
+function LifeSupportGridObject:ShowUISectionLifeSupportGrid(...)
+	if not mod_EnableMod then
+		return ChoOrig_LifeSupportGridObject_ShowUISectionLifeSupportGrid(self, ...)
+	end
+
+	return ChoOrig_LifeSupportGridObject_ShowUISectionLifeSupportGrid(self, ...)
+		or self:IsKindOf("LifeSupportGridElement") and not self:IsKindOf("ConstructionSite") and self.water
+end
+
+local ChoOrig_LifeSupportGridElement_GetInfopanelTemplate = LifeSupportGridElement.GetInfopanelTemplate
+function LifeSupportGridElement:GetInfopanelTemplate(...)
+	if not mod_EnableMod then
+		return ChoOrig_LifeSupportGridElement_GetInfopanelTemplate(self, ...)
+	end
+
+	return ChoOrig_LifeSupportGridElement_GetInfopanelTemplate(self, ...)
+		or "ipPillaredPipe"
+end
+

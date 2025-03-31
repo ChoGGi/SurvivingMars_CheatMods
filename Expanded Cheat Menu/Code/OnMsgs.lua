@@ -1,5 +1,8 @@
 -- See LICENSE for terms
 
+-- Sort building menu mod by display name so it's consistently ordered
+
+
 local what_game = ChoGGi.what_game
 
 -- OnMsgs (most of them)

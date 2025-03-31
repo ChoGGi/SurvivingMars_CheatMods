@@ -1,1 +1,2 @@
 v0.2
+Made it try to partially reconnect grids.
