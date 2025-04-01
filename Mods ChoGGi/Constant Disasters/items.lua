@@ -1,7 +1,8 @@
 -- See LICENSE for terms
 
-local properties = {}
+local mod_options = {}
 local c = #mod_options
+
 local disasters = {
 	ColdWaves = T(4148, "Cold Waves"),
 	DustStorms = T(4144, "Dust Storms"),
@@ -13,14 +14,14 @@ local disasters = {
 
 for id, name in pairs(disasters) do
 	c = c + 1
-	properties[c] = PlaceObj("ModItemOptionToggle", {
+	mod_options[c] = PlaceObj("ModItemOptionToggle", {
 		"name", "Constant_" .. id,
 		"DisplayName", name,
 		"DefaultValue", false,
 	})
 
 	c = c + 1
-	properties[c] = PlaceObj("ModItemOptionNumber", {
+	mod_options[c] = PlaceObj("ModItemOptionNumber", {
 		"name", "Delay_" .. id,
 		"DisplayName", table.concat(T(3778, "Hours") .. " " .. name),
 		"DefaultValue", 1,
@@ -30,4 +31,4 @@ for id, name in pairs(disasters) do
 	})
 end
 
-return properties
+return mod_options

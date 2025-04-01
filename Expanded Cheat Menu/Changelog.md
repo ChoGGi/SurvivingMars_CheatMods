@@ -1,6 +1,9 @@
 ## ECM Changelog
 
 ## v19.6 (Unreleased)
+### Fixed:
+- Screenshots no longer recursively use images for generated names.
+- Free electricity cheat didn't work on Elevator.
 
 ## v19.5 (6 Mar 2025)
 ### Changed:

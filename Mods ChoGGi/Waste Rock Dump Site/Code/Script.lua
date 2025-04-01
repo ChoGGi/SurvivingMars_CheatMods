@@ -33,6 +33,7 @@ end
 function OnMsg.ClassesPostprocess()
 	local bt = BuildingTemplates
 
+	-- Not sure why I called it a tower?
 	if not bt.ChoGGi_WasteRockDumpTower then
 		CreateTemplate("ChoGGi_WasteRockDumpTower", bt.WasteRockDumpBig)
 		CreateTemplate("ChoGGi_WasteRockDumpTowerHuge", bt.WasteRockDumpHuge)

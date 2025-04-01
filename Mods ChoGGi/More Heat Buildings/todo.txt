@@ -1,0 +1,14 @@
+[LUA ERROR] HGE::Heat_AddCircle: nResult >= 0 && nResult <= TARGET_MAX
+Mars/Lua/Heater.lua(72):  <>
+Mars/Lua/Heater.lua(63): method ApplyHeat
+Mars/Lua/Heater.lua(28): field ?
+E:\SteamLibrary\steamapps\common\Surviving Mars\CommonLua\Core\classes.lua(121): local func
+(11):  <>
+Mars/Lua/Buildings/BaseBuilding.lua(148): method SetWorking
+Mars/Lua/Buildings/BaseBuilding.lua(124): method UpdateWorking
+Mars/Lua/RequiresMaintenance.lua(301): method Repair
+Mars/Lua/RequiresMaintenance.lua(510):  <>
+[C](-1): global sprocall
+E:\SteamLibrary\steamapps\common\Surviving Mars\CommonLua\Classes\CommandObject.lua(100):  <>
+
+maybe this mod?

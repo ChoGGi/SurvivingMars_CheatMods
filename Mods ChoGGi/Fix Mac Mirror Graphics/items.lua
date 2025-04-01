@@ -3,7 +3,7 @@
 local T = T
 local PlaceObj = PlaceObj
 
-local properties = {
+local mod_options = {
 	PlaceObj("ModItemOptionToggle", {
 		"name", "EnableMod",
 		"DisplayName", T(302535920011303, "<color ChoGGi_yellow>Enable Mod</color>"),
@@ -79,18 +79,21 @@ local properties = {
 		"DefaultValue", false,
 	}),
 }
+local c = #mod_options
 
 if g_AvailableDlc.picard then
-	properties[#properties+1] = PlaceObj("ModItemOptionToggle", {
+	c = c + 1
+	mod_options[c] = PlaceObj("ModItemOptionToggle", {
 		"name", "Asteroid",
 		"DisplayName", T(13859, "Asteroid"),
 		"DefaultValue", false,
 	})
-	properties[#properties+1] = PlaceObj("ModItemOptionToggle", {
+	c = c + 1
+	mod_options[c] = PlaceObj("ModItemOptionToggle", {
 		"name", "Underground",
 		"DisplayName", T(13605, "Underground"),
 		"DefaultValue", false,
 	})
 end
 
-return properties
+return mod_options

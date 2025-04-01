@@ -1,8 +1,5 @@
 -- See LICENSE for terms
 
--- Sort building menu mod by display name so it's consistently ordered
-
-
 local what_game = ChoGGi.what_game
 
 -- OnMsgs (most of them)
@@ -1245,7 +1242,7 @@ do -- LoadGame/CityStart
 	-- Saved game is loaded
 	-- If you see (MainCity or UICity) that's for older saves (it updates them, but later then I check in LoadGame)
 	function OnMsg.LoadGame()
-		Msg("ChoGGi_Loaded")
+		Msg("ChoGGi_Loaded", "LoadGame")
 	end
 	-- New game is loaded
 	--[[
@@ -1257,10 +1254,10 @@ do -- LoadGame/CityStart
 	function OnMsg.CityStart()
 		-- Reset my mystery msgs to hidden
 		ChoGGi.UserSettings.ShowMysteryMsgs = nil
-		Msg("ChoGGi_Loaded")
+		Msg("ChoGGi_Loaded", "CityStart")
 	end
 
-	function OnMsg.ChoGGi_Loaded()
+	function OnMsg.ChoGGi_Loaded(event)
 		local ChoGGi = ChoGGi
 		local UserSettings = ChoGGi.UserSettings
 
@@ -1307,6 +1304,9 @@ do -- LoadGame/CityStart
 -- ------------------do the above stuff before the below stuff
 
 		if testing then
+			-- Consistently sort build menu
+			ChoGGi_Funcs.Common.SortBuildMenuItems()
+
 			-- make them happen more often
 --~ 			g_StoryBitTesting = true
 		end
@@ -1336,43 +1336,72 @@ do -- LoadGame/CityStart
 			hr.CameraRTSBorderAtMinZoom = 1000
 			hr.CameraRTSBorderAtMaxZoom = 1000
 		end
-		-- update existing speeds
-		if UserSettings.SpeedColonist then
-			UpdateLabelSpeed(UserSettings.SpeedColonist, "Colonist")
-		end
-		if UserSettings.SpeedRC then
-			UpdateLabelSpeed(UserSettings.SpeedRC, "Rover")
-		end
-		if UserSettings.SpeedShuttle then
-			local speed = UserSettings.SpeedShuttle
-			local objs = ChoGGi_Funcs.Common.GetCityLabels("CargoShuttle")
-			for i = 1, #objs do
-				objs[i]:SetBase("move_speed", speed)
+
+		-- Existing objs
+		if event == "LoadGame" then
+
+			-- update existing speeds
+			if UserSettings.SpeedColonist then
+				UpdateLabelSpeed(UserSettings.SpeedColonist, "Colonist")
 			end
-		end
-		-- I figure looping through it twice is better then some complicated if else
-		if UserSettings.SpeedWaspDrone or UserSettings.SpeedDrone then
-			local objs = ChoGGi_Funcs.Common.GetCityLabels("Drone")
-			if UserSettings.SpeedWaspDrone then
-				local speed = UserSettings.SpeedWaspDrone
+			if UserSettings.SpeedRC then
+				UpdateLabelSpeed(UserSettings.SpeedRC, "Rover")
+			end
+
+			if UserSettings.SpeedShuttle then
+				local speed = UserSettings.SpeedShuttle
+				local objs = ChoGGi_Funcs.Common.GetCityLabels("CargoShuttle")
 				for i = 1, #objs do
-					local obj = objs[i]
-					if IsKindOf(obj, "FlyingDrone") then
-						obj:SetBase("move_speed", speed)
+					objs[i]:SetBase("move_speed", speed)
+				end
+			end
+			-- I figure looping through it twice is better then some complicated if else
+			if UserSettings.SpeedWaspDrone or UserSettings.SpeedDrone then
+				local objs = ChoGGi_Funcs.Common.GetCityLabels("Drone")
+				if UserSettings.SpeedWaspDrone then
+					local speed = UserSettings.SpeedWaspDrone
+					for i = 1, #objs do
+						local obj = objs[i]
+						if IsKindOf(obj, "FlyingDrone") then
+							obj:SetBase("move_speed", speed)
+						end
+					end
+				end
+
+				if UserSettings.SpeedDrone then
+					local speed = UserSettings.SpeedDrone
+					for i = 1, #objs do
+						local obj = objs[i]
+						if not IsKindOf(obj, "FlyingDrone") then
+							obj:SetBase("move_speed", speed)
+						end
 					end
 				end
 			end
 
-			if UserSettings.SpeedDrone then
-				local speed = UserSettings.SpeedDrone
-				for i = 1, #objs do
-					local obj = objs[i]
-					if not IsKindOf(obj, "FlyingDrone") then
-						obj:SetBase("move_speed", speed)
-					end
+			-- not sure why this would be false on a dome
+			local domes = ChoGGi_Funcs.Common.GetCityLabels("Dome")
+			for i = 1, #domes do
+				local dome = domes[i]
+				if dome.achievement == "FirstDome" and type(dome.connected_domes) ~= "table" then
+					dome.connected_domes = {}
 				end
 			end
-		end
+
+			-- something messed up if storage is negative (usually setting an amount then lowering it)
+			local storages = ChoGGi_Funcs.Common.GetCityLabels("Storages")
+			procall(function()
+				for i = 1, #storages do
+					local obj = storages[i]
+					if obj.GetStoredAmount and not IsKindOf(obj, "ConstructionSite") and obj:GetStoredAmount() < 0 then
+						-- we have to empty it first (just filling doesn't fix the issue)
+						obj:CheatEmpty()
+						obj:CheatFill()
+					end
+				end
+			end)
+
+		end -- event
 
 		if UserSettings.DroneResourceCarryAmount then
 			if UserSettings.DroneResourceCarryAmount == 1 then
@@ -1530,28 +1559,6 @@ do -- LoadGame/CityStart
 		if UserSettings.ShowInterfaceInScreenshots then
 			hr.InterfaceInScreenshot = 1
 		end
-
-		-- not sure why this would be false on a dome
-		local domes = ChoGGi_Funcs.Common.GetCityLabels("Dome")
-		for i = 1, #domes do
-			local dome = domes[i]
-			if dome.achievement == "FirstDome" and type(dome.connected_domes) ~= "table" then
-				dome.connected_domes = {}
-			end
-		end
-
-		-- something messed up if storage is negative (usually setting an amount then lowering it)
-		local storages = ChoGGi_Funcs.Common.GetCityLabels("Storages")
-		procall(function()
-			for i = 1, #storages do
-				local obj = storages[i]
-				if obj.GetStoredAmount and not IsKindOf(obj, "ConstructionSite") and obj:GetStoredAmount() < 0 then
-					-- we have to empty it first (just filling doesn't fix the issue)
-					obj:CheatEmpty()
-					obj:CheatFill()
-				end
-			end
-		end)
 
 		-- so we can change the max_amount for concrete
 		local terr_props = g_Classes.TerrainDepositConcrete.properties or ""

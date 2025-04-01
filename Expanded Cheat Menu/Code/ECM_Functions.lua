@@ -151,7 +151,7 @@ function ChoGGi_Funcs.Common.GenerateScreenshotFilename(prefix, folder, ext, jus
 	if not string.match(folder, "/$") and #folder > 0 then
 		folder = folder .. "/"
 	end
-	local existing_files = io.listfiles(folder, prefix .. "*." .. ext)
+	local existing_files = io.listfiles(folder, prefix .. "*." .. ext, "non recursive")
 	local index = 0
 	for i = 1, #existing_files do
 		index = Max(index, tonumber(string.match(existing_files[i], prefix .. "(%d+)" or 0)))

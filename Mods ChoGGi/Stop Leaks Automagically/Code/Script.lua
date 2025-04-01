@@ -1,5 +1,7 @@
 -- See LICENSE for terms
 
+local table = table
+
 local mod_EnableMod
 local mod_ReconnectGrids
 local mod_PipeValves

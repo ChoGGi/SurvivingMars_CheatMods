@@ -40,6 +40,8 @@ local SuspendPassEdits = SuspendPassEdits
 local ViewAndSelectObject = ViewAndSelectObject
 local WaitMsg = WaitMsg
 local XDestroyRolloverWindow = XDestroyRolloverWindow
+local CmpLower = CmpLower
+
 
 -- JA3 no likey
 local GetMapSectorXY = GetMapSectorXY
@@ -2187,7 +2189,6 @@ do -- Rebuildshortcuts
 
 		-- make my entries sorted in the keybindings menu
 		if not is_list_sorted then
-			local CmpLower = CmpLower
 			table.sort(Actions, function(a, b)
 				return CmpLower(a.ActionId, b.ActionId)
 			end)
@@ -3522,7 +3523,7 @@ do -- RetNearestResource/FindNearestResource
 end
 
 do -- BuildingConsumption
-	local function AddConsumption(obj, name, class)
+	local function AddConsumption(obj, name, class, override_name)
 		if not obj:IsKindOf(class) then
 			return
 		end
@@ -3544,7 +3545,7 @@ do -- BuildingConsumption
 			end
 			obj[tempname] = nil
 		end
-		local amount = BuildingTemplates[obj.template_name][name]
+		local amount = BuildingTemplates[obj.template_name][override_name or name]
 		obj:SetBase(name, amount)
 	end
 	local function RemoveConsumption(obj, name, class)
@@ -3587,9 +3588,15 @@ do -- BuildingConsumption
 	end
 	function ChoGGi_Funcs.Common.RemoveBuildingElecConsump(obj)
 		RemoveConsumption(obj, "electricity_consumption", "ElectricityConsumer")
+		if obj:IsKindOf("Elevator") then
+			RemoveConsumption(obj, "electricity_base_consumption", "ElectricityConsumer")
+		end
 	end
 	function ChoGGi_Funcs.Common.AddBuildingElecConsump(obj)
 		AddConsumption(obj, "electricity_consumption", "ElectricityConsumer")
+		if obj:IsKindOf("Elevator") then
+			AddConsumption(obj, "electricity_base_consumption", "ElectricityConsumer", "electricity_consumption")
+		end
 	end
 	function ChoGGi_Funcs.Common.RemoveBuildingAirConsump(obj)
 		RemoveConsumption(obj, "air_consumption", "LifeSupportConsumer")
@@ -8231,7 +8238,6 @@ function ChoGGi_Funcs.Common.PlainSortTable(tbl, value)
 	if not value then
 	 value = "name"
 	end
-	local CmpLower = CmpLower
 	table.sort(tbl, function(a, b)
 		return CmpLower(a[value], b[value])
 	end)
@@ -8409,9 +8415,6 @@ function ChoGGi_Funcs.Common.OpenIn3DManipulatorDlg(obj, parent)
 		parent = parent,
 	})
 end
-
--- If loading pre-picard saves in picard (update not dlc)
--- Only needed during OnMsg.LoadGame
 
 -- Copied in Fix Bugs
 function ChoGGi_Funcs.Common.GetCityLabels(label)
@@ -8658,6 +8661,22 @@ do -- ToggleObjLines
 			params.colour or RandomColourLimited()
 		)
 		ResumePassEdits("ChoGGi_Funcs.Common.ObjListLines_Toggle")
+	end
+end
+
+-- Make build menu items consistently placed
+function ChoGGi_Funcs.Common.SortBuildMenuItems()
+	local templates = Presets.BuildingTemplate
+	for i = 1, #templates do
+		local items = templates[i]
+
+		table.sort(items, function(a, b)
+			return CmpLower(Translate(a.display_name), Translate(b.display_name))
+		end)
+
+		for j = 1, #items do
+			items[j].build_pos = j
+		end
 	end
 end
 
