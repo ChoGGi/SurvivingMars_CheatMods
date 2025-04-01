@@ -1,1 +1,14 @@
+v0.3
+More logos:
+Diner:Restaurant
+MedicalPostCCP1
+HospitalCCP1
+OpenAirGym
+CasinoComplex:Casino
+SecurityPostCCP1
+SecurityStation
+Amphitheater
+ShopsElectronics
+
 v0.2
+It was remooving existing logos to buildings when I added another.
