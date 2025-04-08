@@ -1,2 +1,5 @@
+v0.3
+If you have my Library mod then you can use the Ignore Switch button in the selection panel to stop certain switches from being automagically toggled.
+
 v0.2
 Made it try to partially reconnect grids.

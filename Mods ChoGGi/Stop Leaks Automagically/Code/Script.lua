@@ -2,6 +2,14 @@
 
 local table = table
 
+-- Add ignore button if library installed
+local RemoveXTemplateSections
+local RetName
+if rawget(_G, "ChoGGi_Funcs") then
+	RemoveXTemplateSections = ChoGGi_Funcs.Common.RemoveXTemplateSections
+	RetName = ChoGGi_Funcs.Common.RetName
+end
+
 local mod_EnableMod
 local mod_ReconnectGrids
 local mod_PipeValves
@@ -53,6 +61,8 @@ local function OpenSwitches(grid, sw_type)
 		if el and el.building and el.building.fx_actor_class == sw_type
 			-- .switched_state is true if switch is turned off, so skip any already turned on as devs didn't make on/off funcs
 			and el.building.switched_state
+			-- Are we ignoring this switch?
+			and not el.building.ChoGGi_StopLeaksAutomagically_ToggleIgnore
 		then
 			c = c + 1
 			last_opened_switches[c] = el.building
@@ -117,12 +127,14 @@ local function CloseSwitches(obj)
 	table.iclear(temp_close_switches)
 	local c = 0
 
-	-- look in grid.connectors for valves/switches
+	-- Look in grid.connectors for valves/switches
 	for i = 1, #grid.connectors do
 		local el = grid.connectors[i]
 		if el and el.building and el.building.fx_actor_class == sw_type
-			-- switched_state is true if switch is turned off, so skip any already turned off as devs didn't make on/off funcs
+			-- .switched_state is true if switch is turned off, so skip any already turned off as devs didn't make on/off funcs
 			and not el.building.switched_state
+			-- Are we ignoring this switch?
+			and not el.building.ChoGGi_StopLeaksAutomagically_ToggleIgnore
 		then
 			c = c + 1
 			temp_close_switches[c] = el.building
@@ -208,12 +220,64 @@ function OnMsg.Repaired(obj)
 end
 
 
+-- Add toggle ignore button to switches
+function OnMsg.ClassesPostprocess()
+
+	if not RemoveXTemplateSections then
+		return
+	end
+
+	local xtemplate = XTemplates.ipSwitch[1]
+
+	-- Check for and remove existing template
+	ChoGGi_Funcs.Common.RemoveXTemplateSections(xtemplate, "ChoGGi_Template_StopLeaksAutomagically_ToggleIgnore", true)
+
+	table.insert(xtemplate, 2,
+		PlaceObj("XTemplateTemplate", {
+			"Id" , "ChoGGi_Template_StopLeaksAutomagically_ToggleIgnore",
+			-- No need to add this (I use it for my RemoveXTemplateSections func)
+			"ChoGGi_Template_StopLeaksAutomagically_ToggleIgnore", true,
+			-- The button only shows when the class object is selected
+			"__context_of_kind", "SupplyGridSwitch",
+			-- Main button
+			"__template", "InfopanelButton",
+			-- Only show button when it meets the req
+			"__condition", function(self, context)
+				return mod_EnableMod and context.is_switch
+			end,
+			-- Updates every sec (or so) when object selection panel is shown
+			"OnContextUpdate", function(self, context)
+				local name = RetName(context)
+				if context.ChoGGi_StopLeaksAutomagically_ToggleIgnore then
+					self:SetRolloverText(T{0000, "This <name> will be ignored when automagically toggling for leaks.", name = name})
+					self:SetRolloverTitle(T(0000, "Ignore Switch"))
+					self:SetIcon("UI/Icons/ColonyControlCenter/oxygen_off.tga")
+				else
+					self:SetRolloverText(T{0000, "This <name> will be included when automagically toggling for leaks.", name = name})
+					self:SetRolloverTitle(T(0000, "Include Switch"))
+					self:SetIcon("UI/Icons/ColonyControlCenter/oxygen_on.tga")
+				end
+			end,
+			--
+--~ 			"Title", T(0000, "Include Switch"),
+			"RolloverTitle", T(0000, "Include Switch"),
+			"RolloverText", T(0000, "This switch will be included when automagically toggling for leaks."),
+			"Icon", "UI/Icons/ColonyControlCenter/oxygen_on.tga",
+			--
+			"OnPress", function(self, gamepad)
+				self.context.ChoGGi_StopLeaksAutomagically_ToggleIgnore = not self.context.ChoGGi_StopLeaksAutomagically_ToggleIgnore
+				ObjModified(self.context)
+			end,
+		})
+	)
+
+
+end
 
 do return end
 
 
 
--- Add grid info to pipes
 local function UpdateTemplate(template)
 	local ChoOrig_context = template.__context
 	template.__context = function(parent, context)
@@ -241,6 +305,7 @@ function OnMsg.ClassesPostprocess()
 --~ 	UpdateTemplate(XTemplates.sectionAirGrid[1])
 end
 
+-- Add grid info to pipes
 local ChoOrig_LifeSupportGridObject_ShowUISectionLifeSupportGrid = LifeSupportGridObject.ShowUISectionLifeSupportGrid
 function LifeSupportGridObject:ShowUISectionLifeSupportGrid(...)
 	if not mod_EnableMod then

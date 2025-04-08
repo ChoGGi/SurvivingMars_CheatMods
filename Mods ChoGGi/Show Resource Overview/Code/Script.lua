@@ -6,7 +6,7 @@ ChoGGi_Funcs.Common.AddParentToClass(ResourceOverview, "InfobarObj")
 
 local T = T
 
--- yeah, nice one AG (what self?)
+-- Yeah, nice one AG (what self.city?)
 function OpenResourceOverviewInfopanel(parent)
 	if not IsColonyOverviewOpened() then
 		local city = UICity

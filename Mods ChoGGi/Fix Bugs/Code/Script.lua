@@ -255,6 +255,11 @@ do
 		if event == "LoadGame" then
 
 			--
+			-- If you install Space Race DLC then Shuttle Hubs will disappear from build menu in existing saves.
+			-- For some reason it changes save_in to gagarin when normally it's blank.
+			BuildingTemplates.ShuttleHub.save_in = ""
+
+			--
 			-- If you have more than one ArtificialSun then solar panels ignore sun + 1.
 			-- Fix for more than one art sun (1/2)
 			local objs = GetCityLabels("ArtificialSun")

@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "3454748667",
 	"pops_any_uuid", "c2c1e3b6-df3e-44d0-9172-69712910d1c6",
 	"lua_revision", 1007000, -- Picard
-	"version", 2,
+	"version", 3,
 	"version_major", 0,
-	"version_minor", 2,
+	"version_minor", 3,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -17,6 +17,8 @@ return PlaceObj("ModDef", {
 	"description", [[
 When a pipe or cable grid has a leak turn off all switches on the same grid.
 After a borked pipe/cable is repaired it'll try and turn switches back on if the grid has no more leaks.
+
+If you have my Library mod then you can use the Ignore Switch button in the selection panel to stop certain switches from being automagically toggled.
 
 Mod Options:
 Reconnect Grids: Try to reconnect grids by turning on switches if no leaks detected.
