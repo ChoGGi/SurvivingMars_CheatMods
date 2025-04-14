@@ -45,7 +45,7 @@ Storybit notification issue.
 ```
 Dredger tech fix (Spoilers: https://www.reddit.com/r/SurvivingMars/comments/xnprjg/).
 Marsgate blank transportation panel in CCC after a certain point in mystery.
-St. Elmo's Fire: Stop meteoroids from destroying sinkholes.
+St. Elmo's Fire: Stop meteoroids from destroying sinkholes and soft locking the mystery.
 The Philosopher's Stone doesn't update sector scanned count when paused.
 ```
 

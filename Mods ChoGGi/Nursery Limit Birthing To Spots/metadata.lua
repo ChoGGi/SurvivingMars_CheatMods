@@ -17,8 +17,9 @@ return PlaceObj("ModDef", {
 No babby if there's no nursery spot available.
 This uses a per-dome count; if there's no nursery in a dome it'll never have babbies (erm, the colonists will never have 'em).
 
-If you want something more random, see my Domes: Limit Births mod.
+One Nursery will keep around a 135 pop (with Stem Reconstruction). Around 475 for 3 Nurseries.
 
+If you want something more random, see my Domes: Limit Births mod.
 Compatible mods: Ultimate Nursery, Incubator (this mod will do nothing on Incubator enabled domes).
 
 

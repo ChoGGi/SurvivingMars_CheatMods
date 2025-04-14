@@ -227,8 +227,7 @@ function OnMsg.ClassesPostprocess()
 end
 
 --
--- CityStart/LoadGame
-do
+do -- CityStart/LoadGame
 
 	local function StartupCode(event)
 		if not mod_EnableMod then
@@ -256,7 +255,8 @@ do
 
 			--
 			-- If you install Space Race DLC then Shuttle Hubs will disappear from build menu in existing saves.
-			-- For some reason it changes save_in to gagarin when normally it's blank.
+			-- For some reason it changes .save_in to "gagarin" when normally it's "".
+			-- Which makes UIGetBuildingPrerequisites() fail as it has IsDlcAccessible(template.save_in)
 			BuildingTemplates.ShuttleHub.save_in = ""
 
 			--
@@ -1674,50 +1674,52 @@ end
 
 --
 -- Key binding certain buildings that use hide_from_build_menu won't work when pressing the key (Power Switch/Pipe Valve)
-local hidden_items = {
-	ElectricitySwitch = true,
-	LifesupportSwitch = true,
-	-- Passage/PassageRamp have a special override so they don't need to be added
-}
-local ChoOrig_UIGetBuildingPrerequisites = UIGetBuildingPrerequisites
-function UIGetBuildingPrerequisites(cat_id, template, bCreateItems, ignore_checks, ...)
-	if not mod_EnableMod then
+do
+	local hidden_items = {
+		ElectricitySwitch = true,
+		LifesupportSwitch = true,
+		-- Passage/PassageRamp have a special override so they don't need to be added
+	}
+	local ChoOrig_UIGetBuildingPrerequisites = UIGetBuildingPrerequisites
+	function UIGetBuildingPrerequisites(cat_id, template, bCreateItems, ignore_checks, ...)
+		if not mod_EnableMod then
+			return ChoOrig_UIGetBuildingPrerequisites(cat_id, template, bCreateItems, ignore_checks, ...)
+		end
+
+		if hidden_items[template.id] and template.build_category == cat_id then
+			-- ignore_checks only checks for hide_from_build_menu and if cat_id == build_category
+			return ChoOrig_UIGetBuildingPrerequisites(cat_id, template, bCreateItems, true, ...)
+		end
+
 		return ChoOrig_UIGetBuildingPrerequisites(cat_id, template, bCreateItems, ignore_checks, ...)
 	end
-
-	if hidden_items[template.id] and template.build_category == cat_id then
-		-- ignore_checks only checks for hide_from_build_menu and if cat_id == build_category
-		return ChoOrig_UIGetBuildingPrerequisites(cat_id, template, bCreateItems, true, ...)
-	end
-
-	return ChoOrig_UIGetBuildingPrerequisites(cat_id, template, bCreateItems, ignore_checks, ...)
-end
--- Remove the dupes added to build menu
-local ChoOrig_UIItemMenu = UIItemMenu
-function UIItemMenu(category_id, bCreateItems, ...)
-	if not mod_EnableMod or not bCreateItems
-		or (category_id ~= "Power" and category_id ~= "Life-Support")
-	then
-		return ChoOrig_UIItemMenu(category_id, bCreateItems, ...)
-	end
-
-	local items, count = ChoOrig_UIItemMenu(category_id, bCreateItems, ...)
-
-	-- Leave the custom added entries from devs and remove the "fake" ones added
-	-- The custom ones will only let you place them on existing pipes
-	for i = count, 1, -1 do
-		local item = items[i]
-		if hidden_items[item.Id]
-			and item.construction_mode == "construction"
+	-- Remove the dupes added to build menu
+	local ChoOrig_UIItemMenu = UIItemMenu
+	function UIItemMenu(category_id, bCreateItems, ...)
+		if not mod_EnableMod or not bCreateItems
+			or (category_id ~= "Power" and category_id ~= "Life-Support")
 		then
-			table.remove(items, i)
-			break
+			return ChoOrig_UIItemMenu(category_id, bCreateItems, ...)
 		end
+
+		local items, count = ChoOrig_UIItemMenu(category_id, bCreateItems, ...)
+
+		-- Leave the custom added entries from devs and remove the "fake" ones added
+		-- The custom ones will only let you place them on existing pipes
+		for i = count, 1, -1 do
+			local item = items[i]
+			if hidden_items[item.Id]
+				and item.construction_mode == "construction"
+			then
+				table.remove(items, i)
+				break
+			end
+		end
+
+		return items, count
 	end
 
-	return items, count
-end
-
+end -- do
 --
 -- Fix for more than one art sun (2/2)
 -- Update any newly placed panels

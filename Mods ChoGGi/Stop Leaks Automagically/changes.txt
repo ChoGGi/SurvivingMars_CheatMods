@@ -1,3 +1,6 @@
+v0.4
+Instead of completely shutting down grid, mod now tries to only shutdown switches on each side of the leak.
+
 v0.3
 If you have my Library mod then you can use the Ignore Switch button in the selection panel to stop certain switches from being automagically toggled.
 

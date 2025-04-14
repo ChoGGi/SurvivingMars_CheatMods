@@ -1,2 +1,0 @@
-add ignore button to switches
-after shutting grid, try all switches and turn on whatever can be turned on

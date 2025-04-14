@@ -114,8 +114,8 @@ local function ReconnectGrids(obj)
 
 end
 
-local temp_close_switches = {}
-local function CloseSwitches(obj)
+local opened_switches_list = {}
+local function RetOpenGridSwitches(obj)
 	local result, sw_type = IsToggleAllowed(obj)
 	if not result then
 		return
@@ -124,11 +124,11 @@ local function CloseSwitches(obj)
 	local grid = obj[obj.supply_resource].grid
 
 	-- We store a list of switches then turn them all off as the grid will change when calling :Switch()
-	table.iclear(temp_close_switches)
+	table.iclear(opened_switches_list)
 	local c = 0
 
 	-- Look in grid.connectors for valves/switches
-	for i = 1, #grid.connectors do
+	for i = 1, #(grid.connectors or "") do
 		local el = grid.connectors[i]
 		if el and el.building and el.building.fx_actor_class == sw_type
 			-- .switched_state is true if switch is turned off, so skip any already turned off as devs didn't make on/off funcs
@@ -137,13 +137,54 @@ local function CloseSwitches(obj)
 			and not el.building.ChoGGi_StopLeaksAutomagically_ToggleIgnore
 		then
 			c = c + 1
-			temp_close_switches[c] = el.building
+			opened_switches_list[c] = el.building
 		end
 	end
 
-	for i = 1, c do
-		temp_close_switches[i]:Switch()
+	return opened_switches_list
+end
+
+local function CloseSwitches(obj, switches)
+	if not switches and obj then
+		switches = RetOpenGridSwitches(obj)
 	end
+
+	for i = 1, #(switches or "") do
+		switches[i]:Switch()
+	end
+
+end
+
+local function CloseLeakyGrid(obj)
+	if LeakyGrid(obj[obj.supply_resource].grid) then
+		CloseSwitches(obj)
+	end
+end
+
+local function TryOpeningSwitches(obj)
+--~ 	local connection = "elements"
+--~ 	if grid.connectors then
+--~ 		-- .connectors doesn't include regular buildings (tanks/batteries/domes/etc) so it'll be slightly faster to idx
+--~ 		connection = "connectors"
+--~ 	end
+
+--~ 	table.iclear(last_opened_switches)
+--~ 	local c = 0
+
+--~ 	-- Open all switches
+--~ 	for i = 1, #grid[connection] do
+--~ 		local el = grid[connection][i]
+--~ 		if el and el.building and el.building.fx_actor_class == sw_type
+--~ 			-- .switched_state is true if switch is turned off, so skip any already turned on as devs didn't make on/off funcs
+--~ 			and el.building.switched_state
+--~ 			-- Are we ignoring this switch?
+--~ 			and not el.building.ChoGGi_StopLeaksAutomagically_ToggleIgnore
+--~ 		then
+--~ 			c = c + 1
+--~ 			last_opened_switches[c] = el.building
+--~ 			el.building:Switch()
+--~ 		end
+--~ 	end
 
 end
 
@@ -159,7 +200,26 @@ function BreakableSupplyGridElement:Break(...)
 	ChoOrig_BreakableSupplyGridElement_Break(self, ...)
 
 	if breakable then
-		CloseSwitches(self)
+		-- First get list of all switches in grid
+		local switches = RetOpenGridSwitches(self)
+		-- If there's no switches then no point
+		if #switches > 0 then
+			CloseSwitches(nil, switches)
+
+			-- After closing switches try each switch and see if leaks happen
+			for i = 1, #(switches or "") do
+				local switch = switches[i]
+				-- Turn on switch for now
+				switch:Switch()
+				-- If leaks then close that switch and try the next one
+				if LeakyGrid(switch[switch.supply_resource].grid) then
+					switch:Switch()
+				end
+			end
+			-- Finally do a final check for leaks and give up and close grid if needed
+			CloseLeakyGrid(self)
+		end
+		--
 	end
 end
 
@@ -213,9 +273,7 @@ function OnMsg.Repaired(obj)
 
 	-- Check if reconnected grid has a leak and turn switches back off
 	-- Bit ugly but it seems to work better than I expected
-	if LeakyGrid(obj[obj.supply_resource].grid) then
-		CloseSwitches(obj)
-	end
+	CloseLeakyGrid(obj)
 
 end
 
@@ -274,6 +332,8 @@ function OnMsg.ClassesPostprocess()
 
 end
 
+
+-- Add grid info to each section of pipe/cable
 do return end
 
 
