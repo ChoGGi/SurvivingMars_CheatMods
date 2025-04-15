@@ -17,7 +17,7 @@ local mod_CableSwitches
 
 -- Do mod options allow us to turn on/off switches
 local function IsToggleAllowed(obj)
-	-- I'm using fx_actor_class since the entity changes for chrome pipe skins (otherwise I'd usually use that)
+	-- I'm using .fx_actor_class since the entity changes for chrome pipe skins (otherwise I'd usually use that)
 	local sw_type = obj.supply_resource == "electricity" and "CableSwitch"
 		or "PipeValve"
 
@@ -58,6 +58,7 @@ local function OpenSwitches(grid, sw_type)
 	-- Open all switches
 	for i = 1, #grid[connection] do
 		local el = grid[connection][i]
+		-- Is the grid element a switch?
 		if el and el.building and el.building.fx_actor_class == sw_type
 			-- .switched_state is true if switch is turned off, so skip any already turned on as devs didn't make on/off funcs
 			and el.building.switched_state
@@ -115,7 +116,7 @@ local function ReconnectGrids(obj)
 end
 
 local opened_switches_list = {}
-local function RetOpenGridSwitches(obj)
+local function GetOpenGridSwitches(obj)
 	local result, sw_type = IsToggleAllowed(obj)
 	if not result then
 		return
@@ -146,7 +147,7 @@ end
 
 local function CloseSwitches(obj, switches)
 	if not switches and obj then
-		switches = RetOpenGridSwitches(obj)
+		switches = GetOpenGridSwitches(obj)
 	end
 
 	for i = 1, #(switches or "") do
@@ -161,30 +162,17 @@ local function CloseLeakyGrid(obj)
 	end
 end
 
-local function TryOpeningSwitches(obj)
---~ 	local connection = "elements"
---~ 	if grid.connectors then
---~ 		-- .connectors doesn't include regular buildings (tanks/batteries/domes/etc) so it'll be slightly faster to idx
---~ 		connection = "connectors"
---~ 	end
-
---~ 	table.iclear(last_opened_switches)
---~ 	local c = 0
-
---~ 	-- Open all switches
---~ 	for i = 1, #grid[connection] do
---~ 		local el = grid[connection][i]
---~ 		if el and el.building and el.building.fx_actor_class == sw_type
---~ 			-- .switched_state is true if switch is turned off, so skip any already turned on as devs didn't make on/off funcs
---~ 			and el.building.switched_state
---~ 			-- Are we ignoring this switch?
---~ 			and not el.building.ChoGGi_StopLeaksAutomagically_ToggleIgnore
---~ 		then
---~ 			c = c + 1
---~ 			last_opened_switches[c] = el.building
---~ 			el.building:Switch()
---~ 		end
---~ 	end
+local function TryOpeningSwitches(switches)
+	-- After closing switches try each switch and see if leaks happen
+	for i = 1, #(switches or "") do
+		local switch = switches[i]
+		-- Turn on switch for now
+		switch:Switch()
+		-- If leaks then close that switch and try the next one
+		if LeakyGrid(switch[switch.supply_resource].grid) then
+			switch:Switch()
+		end
+	end
 
 end
 
@@ -201,26 +189,19 @@ function BreakableSupplyGridElement:Break(...)
 
 	if breakable then
 		-- First get list of all switches in grid
-		local switches = RetOpenGridSwitches(self)
+		local switches = GetOpenGridSwitches(self)
 		-- If there's no switches then no point
 		if #switches > 0 then
 			CloseSwitches(nil, switches)
 
-			-- After closing switches try each switch and see if leaks happen
-			for i = 1, #(switches or "") do
-				local switch = switches[i]
-				-- Turn on switch for now
-				switch:Switch()
-				-- If leaks then close that switch and try the next one
-				if LeakyGrid(switch[switch.supply_resource].grid) then
-					switch:Switch()
-				end
-			end
-			-- Finally do a final check for leaks and give up and close grid if needed
-			CloseLeakyGrid(self)
+			if mod_ReconnectGrids then
+				TryOpeningSwitches(switches)
+				-- Finally do a final check for leaks and give up and close grid if needed
+				CloseLeakyGrid(self)
+			end -- mod_ReconnectGrids
 		end
-		--
 	end
+
 end
 
 -- Update mod options
