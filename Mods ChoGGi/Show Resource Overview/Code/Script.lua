@@ -91,12 +91,24 @@ function ReopenSelectionXInfopanel(obj, slide_in)
 	local mode, template
 	if obj == nil then
 		obj = SelectedObj
-		if (not obj and ShowResourceOverview) then
-			obj = g_ResourceOverviewCity[RetObjMapId(obj)]
-			mode = g_ResourceOverviewCity[RetObjMapId(obj)]:GetIPMode()
+
+		if not obj and ShowResourceOverview then
+			local res_overview = g_ResourceOverviewCity[RetObjMapId(obj)]
+			if not res_overview then
+				-- fallback to maincity
+				res_overview = g_ResourceOverviewCity[MainCity.map_id]
+			end
+			obj = res_overview
+
+			if res_overview then
+				mode = res_overview:GetIPMode()
+			else
+				mode = "ResourceOverview"
+			end
 			template = "ipResourceOverview"
 		end
 	end
+
 	if IsValid(obj) then
 		if not slide_in then InfopanelSlideIn = false end
 		local infopanel = OpenXInfopanel(nil, obj, template)

@@ -1,3 +1,6 @@
+v9.0
+UCP: Never get funding/res points from Observatory.
+
 v8.9
 If you install Space Race DLC then Shuttle Hubs will disappear from build menu in existing saves.
 

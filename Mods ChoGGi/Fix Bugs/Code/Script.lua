@@ -224,6 +224,26 @@ function OnMsg.ClassesPostprocess()
 	end
 	--
 
+	--
+	-- Never get funding/res points from UCP_Observatory
+	local ChoOrig_UCP_Observatory_Reward = UCP_Observatory.Reward
+	function UCP_Observatory:Reward(typeof, rate, ...)
+		if not mod_EnableMod then
+			return ChoOrig_UCP_Observatory_Reward(self, typeof, rate, ...)
+		end
+
+		if typeof == 'funds' then
+			local funding = MulDivRound(self.amount_funds, rate, 100) * 1000
+--~ 			self.city:ChangeFunding(funding, "Building")
+			UIColony.funds:ChangeFunding(funding, "Building")
+		end
+
+		if typeof == 'rp' then
+--~ 			self.city:AddResearchPoints(MulDivRound(self.amount_rp, rate, 100))
+			UIColony:AddResearchPoints(MulDivRound(self.amount_rp, rate, 100))
+		end
+	end
+
 end
 
 --

@@ -332,8 +332,9 @@ do -- ModUpload
 			-- skip it for testing
 			if not test then
 				if steam_upload then
+					print("<color ChoGGi_yellow>Steam started upload</color>", mod.title)
 					result, err = g_env.Steam_Upload(nil, mod, mod_params)
-					print("<color ChoGGi_yellow>Steam uploaded</color>", mod.title)
+					print("<color ChoGGi_yellow>Steam</color> <color ChoGGi_green>uploaded</color>", mod.title)
 				end
 
 				local org_mod_description = mod.description
@@ -367,8 +368,9 @@ SurvivingMarsMods@choggi.org"]]) .. "\n\n\n" .. mod.description
 					-- not bold (what's bold on paradox?)
 					mod.description = mod.description:gsub("\n", "<br>"):gsub("%[b%]", ""):gsub("%[%/b%]", "")
 
+					print("<color ChoGGi_yellow>Paradox started upload</color>", mod.title)
 					result, err = g_env.PDX_Upload(nil, mod, mod_params)
-					print("<color ChoGGi_yellow>Paradox uploaded</color>", mod.title)
+					print("<color ChoGGi_yellow>Paradox</color> <color ChoGGi_green>uploaded</color>", mod.title)
 				end -- para upload
 				mod.description = org_mod_description
 			end -- not test

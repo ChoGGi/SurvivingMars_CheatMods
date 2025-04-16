@@ -1,3 +1,6 @@
+v0.8
+Log spam.
+
 v0.7
 Fixed a crash from too many threads from me being dumb.
 

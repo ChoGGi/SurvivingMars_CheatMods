@@ -1,6 +1,9 @@
 ## ECM Changelog
 
 ## v19.6 (Unreleased)
+### Changed:
+Menu>Help>Mod Upload: More progress info when uploading.
+
 ### Fixed:
 - Screenshots no longer recursively use images for generated names.
 - Free electricity cheat didn't work on Elevator.

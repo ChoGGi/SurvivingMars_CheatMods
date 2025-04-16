@@ -30,6 +30,8 @@ for i = 1, #rivals do
 	end
 end
 
+ChoGGi_AddRivals_FixedThreads = false
+
 local function AddRivals()
 	-- Fix haywire threads
 	if not ChoGGi_AddRivals_FixedThreads then

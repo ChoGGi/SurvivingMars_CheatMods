@@ -77,6 +77,7 @@ Additions are welcome in any language.
 
 ### Mod bug fixes:
 ```
+UCP: Never get funding/res points from Observatory.
 Log spam from borked colonist (possibly from a mod, could just be B&B again).
 Fix for whatever odd thing Mars Underground mod is doing with presets.
 Log spam from a modded trait without an id.
