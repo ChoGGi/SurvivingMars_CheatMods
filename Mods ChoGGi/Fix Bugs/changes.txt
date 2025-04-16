@@ -1,3 +1,6 @@
+v9.1
+Can't unlock Global Support breakthrough.
+
 v9.0
 UCP: Never get funding/res points from Observatory.
 

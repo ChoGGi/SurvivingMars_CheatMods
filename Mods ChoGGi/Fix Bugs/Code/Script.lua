@@ -226,21 +226,23 @@ function OnMsg.ClassesPostprocess()
 
 	--
 	-- Never get funding/res points from UCP_Observatory
-	local ChoOrig_UCP_Observatory_Reward = UCP_Observatory.Reward
-	function UCP_Observatory:Reward(typeof, rate, ...)
-		if not mod_EnableMod then
-			return ChoOrig_UCP_Observatory_Reward(self, typeof, rate, ...)
-		end
+	if table.find(ModsLoaded, "id", "UCP_Core") then
+		local ChoOrig_UCP_Observatory_Reward = UCP_Observatory.Reward
+		function UCP_Observatory:Reward(typeof, rate, ...)
+			if not mod_EnableMod then
+				return ChoOrig_UCP_Observatory_Reward(self, typeof, rate, ...)
+			end
 
-		if typeof == 'funds' then
-			local funding = MulDivRound(self.amount_funds, rate, 100) * 1000
---~ 			self.city:ChangeFunding(funding, "Building")
-			UIColony.funds:ChangeFunding(funding, "Building")
-		end
+			if typeof == 'funds' then
+				local funding = MulDivRound(self.amount_funds, rate, 100) * 1000
+--~ 				self.city:ChangeFunding(funding, "Building")
+				UIColony.funds:ChangeFunding(funding, "Building")
+			end
 
-		if typeof == 'rp' then
---~ 			self.city:AddResearchPoints(MulDivRound(self.amount_rp, rate, 100))
-			UIColony:AddResearchPoints(MulDivRound(self.amount_rp, rate, 100))
+			if typeof == 'rp' then
+--~ 				self.city:AddResearchPoints(MulDivRound(self.amount_rp, rate, 100))
+				UIColony:AddResearchPoints(MulDivRound(self.amount_rp, rate, 100))
+			end
 		end
 	end
 
@@ -611,6 +613,25 @@ do -- CityStart/LoadGame
 		--
 		--
 		--
+
+		--
+		-- Can't unlock Global Support breakthrough (and maybe others?)
+		local tech_status = colony.tech_status
+		local tech_field = colony.tech_field.Breakthroughs
+		local tech_field_c = #tech_field
+
+		local defs = Presets.TechPreset.Breakthroughs
+		for i = 1, #defs do
+			local def_id = defs[i].id
+			if not tech_status[def_id] then
+				tech_status[def_id] = {
+					field = "Breakthroughs",
+					points = 0,
+				}
+				tech_field_c = tech_field_c + 1
+				tech_field[tech_field_c] = def_id
+			end
+		end
 
 		--
 		--	Unlock ArtificialSun for re-fabbing
