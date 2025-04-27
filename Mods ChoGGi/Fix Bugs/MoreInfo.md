@@ -51,7 +51,7 @@ The Philosopher's Stone doesn't update sector scanned count when paused.
 
 ### B&B:
 ```
-Can't unlock Global Support breakthrough.
+Colonists underground crash (mod option enabled by default, more info below).
 Unlock Artificial Sun for refabbing.
 Too much Cave-in rubble will cause lag when new rubble tries to spawn.
 Elevator func not checking for invalid resources.
@@ -153,6 +153,14 @@ City:InitBreakThroughAnomalies() is called for each new city (surface/undergroun
 Calling it more than once clears the BreakthroughOrder list.
 
 BreakthroughOrder is used to spawn planetary anomalies.
+
+### Colonists underground crash
+
+This will check for colonists underground that are trying to path to a place on the surface.
+
+The game will crash when they run out of usable pathing.
+
+https://www.reddit.com/r/SurvivingMars/comments/1k70uxf/game_crashing_on_the_same_sol_every_time/
 
 ### Colonists showing up on wrong map in infobar
 

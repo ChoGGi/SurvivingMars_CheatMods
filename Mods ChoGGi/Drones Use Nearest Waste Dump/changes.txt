@@ -1,3 +1,6 @@
+v0.7
+Did some work on code, hopefully that fixes whatever issue it had before.
+
 v0.6
 Code cleanup (should be faster).
 

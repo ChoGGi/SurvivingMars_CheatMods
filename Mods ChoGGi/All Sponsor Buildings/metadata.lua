@@ -22,5 +22,9 @@ You need to research tech to unlock certain buildings (reload game to take effec
 See mod options to disable any buildings you find cheaty (or if you just want one or two unlocked).
 
 You need to research Robotics>Rover Printing to build rovers.
+
+
+Known Issues:
+Surviving the Sponsors mod adds a bugged template for the Metals Refinery (Not my issue but enough people have brought it up in the comments).
 ]],
 })

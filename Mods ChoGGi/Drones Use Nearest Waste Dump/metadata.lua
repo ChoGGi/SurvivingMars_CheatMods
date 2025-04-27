@@ -1,12 +1,12 @@
 return PlaceObj("ModDef", {
-	"title", "BROKEN Drones Use Nearest Waste Dump",
+	"title", "Drones Use Nearest Waste Dump",
 	"id", "ChoGGi_DronesUseNearestWasteDump",
-	"steam_id", "2065605741",
+	"steam_id", "3469365085",
 	"pops_any_uuid", "82ce2e51-b1b4-43fd-ba74-de6a2674763b",
 	"lua_revision", 1007000, -- Picard
-	"version", 6,
+	"version", 7,
 	"version_major", 0,
-	"version_minor", 6,
+	"version_minor", 7,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -17,7 +17,8 @@ return PlaceObj("ModDef", {
 	"description", [[
 Drones will always use nearest wasterock dump site to drop off.
 
+
 Known Issues:
-Don't use it for now...
+Might freeze your game...
 ]],
 })

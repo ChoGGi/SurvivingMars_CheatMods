@@ -6,7 +6,7 @@ local FindNearestObject = FindNearestObject
 local ChoOrig_TaskRequestHub_FindDemandRequest = TaskRequestHub.FindDemandRequest
 function TaskRequestHub:FindDemandRequest(obj, resource, amount, ...)
 	-- we only care about WasteRock
-	if resource ~= "WasteRock" then
+	if not obj or resource ~= "WasteRock" then
 		return ChoOrig_TaskRequestHub_FindDemandRequest(self, obj, resource, amount, ...)
 	end
 
@@ -22,11 +22,13 @@ function TaskRequestHub:FindDemandRequest(obj, resource, amount, ...)
 		pickup_obj_bld = nil
 	end
 
-	-- filter hub list of connected buildings for dumpsite with free slots and storage space remaining
+	-- Filter hub list of connected buildings for dumpsite with free slots and storage space remaining
 	local sites = GetRealm(self):MapFilter(self.connected_task_requesters, function(obj)
-		return obj ~= pickup_obj_bld and obj:IsKindOf("WasteRockDumpSite") and obj.has_free_landing_slots
+		return obj ~= pickup_obj_bld and obj.has_free_landing_slots
+			and IsValid(obj) and obj:IsKindOf("WasteRockDumpSite")
 			and (obj.max_amount_WasteRock - obj:GetStored_WasteRock()) >= amount
 	end)
+
 	-- not sure what happens when two drones go to the same site and one of them takes the last spot/fills it up?
 	-- hopefully whatever happens happens lower then this :)
 
@@ -35,5 +37,8 @@ function TaskRequestHub:FindDemandRequest(obj, resource, amount, ...)
 		return ChoOrig_TaskRequestHub_FindDemandRequest(self, obj, resource, amount, ...)
 	end
 
-	return FindNearestObject(sites, obj).demand.WasteRock
+	local nearest_obj = FindNearestObject(sites, obj)
+	-- Doesn't hurt to check
+	return IsValid(nearest_obj) and nearest_obj.demand.WasteRock
+		or ChoOrig_TaskRequestHub_FindDemandRequest(self, obj, resource, amount, ...)
 end

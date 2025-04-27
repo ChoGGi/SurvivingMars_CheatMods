@@ -17,6 +17,15 @@ I added it as an option since this is causing issues for a user; it'll lock up o
 		"DefaultValue", false,
 	}),
 	PlaceObj("ModItemOptionToggle", {
+		"name", "ColonistsWrongRealmPath",
+		"DisplayName", T(0000, "Colonists Underground Crash"),
+		"Help", T(0000, [[This will check for colonists underground that are trying to path to a place on the surface.
+The game will crash when they run out of usable pathing.
+
+Mod option incase this moves people it shouldn't move.]]),
+		"DefaultValue", true,
+	}),
+	PlaceObj("ModItemOptionToggle", {
 		"name", "UnevenTerrain",
 		"DisplayName", T(0000, "Uneven Terrain"),
 		"Help", T(0000, [[This calls RefreshBuildableGrid() after a landscaping project completes.

@@ -35,6 +35,7 @@ local mod_SupplyPodSoundEffects
 local mod_MainMenuMusic
 local mod_ColonistsWrongMap
 local mod_NoFlyingDronesUnderground
+local mod_ColonistsWrongRealmPath
 
 --
 -- Uneven terrain fix funcs
@@ -104,6 +105,7 @@ local function ModOptions(id)
 	mod_MainMenuMusic = CurrentModOptions:GetProperty("MainMenuMusic")
 	mod_ColonistsWrongMap = CurrentModOptions:GetProperty("ColonistsWrongMap")
 	mod_NoFlyingDronesUnderground = CurrentModOptions:GetProperty("NoFlyingDronesUnderground")
+	mod_ColonistsWrongRealmPath = CurrentModOptions:GetProperty("ColonistsWrongRealmPath")
 
 	-- Update all maps for uneven terrain (if using mod that allows landscaping maps other than surface)
 	if UIColony and mod_UnevenTerrain then
@@ -430,7 +432,7 @@ do -- CityStart/LoadGame
 			end)
 
 		end
--- CityStart end
+		-- CityStart end
 
 		--
 		-- Anything that needs to loop through GameMaps
@@ -613,25 +615,6 @@ do -- CityStart/LoadGame
 		--
 		--
 		--
-
-		--
-		-- Can't unlock Global Support breakthrough (and maybe others?)
-		local tech_status = colony.tech_status
-		local tech_field = colony.tech_field.Breakthroughs
-		local tech_field_c = #tech_field
-
-		local defs = Presets.TechPreset.Breakthroughs
-		for i = 1, #defs do
-			local def_id = defs[i].id
-			if not tech_status[def_id] then
-				tech_status[def_id] = {
-					field = "Breakthroughs",
-					points = 0,
-				}
-				tech_field_c = tech_field_c + 1
-				tech_field[tech_field_c] = def_id
-			end
-		end
 
 		--
 		--	Unlock ArtificialSun for re-fabbing
@@ -979,6 +962,40 @@ do -- CityStart/LoadGame
 
 			local underground_map = GameMaps[colony.underground_map_id]
 			local underground_city = Cities[colony.underground_map_id]
+
+			--
+			-- This will check for colonists underground that are trying to path to a place on the surface.
+			-- The game will crash when they run out of usable pathing.
+			-- https://www.reddit.com/r/SurvivingMars/comments/1k70uxf/game_crashing_on_the_same_sol_every_time/
+			if mod_ColonistsWrongRealmPath and g_AccessibleDlc.picard then
+				local surface_map = GameMaps[colony.surface_map_id]
+				objs = underground_city.labels.Colonist or ""
+				-- Go backwards as it'll remove them from the table
+				for i = #objs, 1, -1 do
+					local obj = objs[i]
+					if not obj.goto_target then
+						goto zcontinue
+					end
+					-- See if we can get a target
+					local goto_type = type(obj.goto_target)
+					local target
+					if goto_type == "table" then
+						target = obj.goto_target[1]
+					elseif goto_type == "userdata" then
+						target = obj.goto_target
+					end
+					-- Found one so check if there's a z and it's above 2000
+					-- You can't target hills and the underground starts at 1 (or 0 maybe)
+					-- Surface usually starts at 8-10k
+					local z = target and target:z()
+					if z and z > 2000 then
+						obj:TransferToMap(colony.surface_map_id)
+						obj:SetPos(target:SetZ(surface_map.terrain:GetHeight(target)))
+					end
+					--
+					::zcontinue::
+				end
+			end
 
 			--
 			-- Colonists showing up on wrong map in infobar.
@@ -1813,6 +1830,25 @@ do -- Dome:PropagateSetSupplyToPassages(...)
 
 		-- func has no return value
 	end
+end
+
+--
+-- If you remove a mod that adds a new tech table mid-gameplay (okay only UCP has one so far...)
+local ChoOrig_Research_GetCheapestTech = Research.GetCheapestTech
+function Research:GetCheapestTech(...)
+	if not mod_EnableMod then
+		return ChoOrig_Research_GetCheapestTech(self, ...)
+	end
+
+	local TechFields = TechFields
+	local tech_field = UIColony.tech_field
+	for id in pairs(UIColony.tech_field) do
+		if not TechFields[id] then
+			tech_field[id] = nil
+		end
+	end
+
+	return ChoOrig_Research_GetCheapestTech(self, ...)
 end
 
 --

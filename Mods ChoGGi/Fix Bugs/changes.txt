@@ -1,3 +1,8 @@
+v9.2
+Added mod option to move any colonists underground that probably should be on the surface (or crashy).
+Removing a mod mid-gameplay that adds a tech field.
+Removed fix from 9.1 (user didn't have Space Race DLC).
+
 v9.1
 Can't unlock Global Support breakthrough.
 
