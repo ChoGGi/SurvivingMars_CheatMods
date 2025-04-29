@@ -76,7 +76,7 @@ for id, bld in pairs(BuildingTemplates) do
 			mod_options[c] = PlaceObj("ModItemOptionToggle", {
 				"name", "ChoGGi_" .. id,
 				"DisplayName", T(bld.display_name),
-				"Help", table.concat(T(bld.description) .. image),
+				"Help", table.concat(T(bld.description or "") .. image),
 				"DefaultValue", true,
 			})
 
@@ -87,7 +87,7 @@ for id, bld in pairs(BuildingTemplates) do
 				c = c + 1
 				mod_options[c] = PlaceObj("ModItemOptionToggle", {
 					"name", "ChoGGi_Tech_" .. id,
-					"DisplayName", table.concat(T(bld.display_name) .. " " .. T(3734--[[Tech]])),
+					"DisplayName", table.concat(T(bld.display_name or "") .. " " .. T(3734--[[Tech]])),
 					"Help", table.concat(
 						T(0000, "Lock behind tech unlock.")
 						.. "\n\n" .. def.display_name

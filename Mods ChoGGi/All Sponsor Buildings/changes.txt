@@ -1,3 +1,6 @@
+v1.9
+Changing tech reqs for RCs that I shouldn't be.
+
 v1.8
 Fixed Shuttle hubs (I guess I did have to remove some stuff from it...).
 

@@ -1,5 +1,5 @@
 return PlaceObj("ModDef", {
-	"title", "Stop Leaks Automagically",
+	"title", "Automatic Valves",
 	"id", "ChoGGi_StopLeaksAutomagically",
 	"steam_id", "3454748667",
 	"pops_any_uuid", "c2c1e3b6-df3e-44d0-9172-69712910d1c6",
@@ -26,6 +26,7 @@ Pipe Valves: Toggle pipe valves automagically.
 Cable Switches: Toggle cable switches automagically.
 
 
+This mod used to be called Stop Leaks Automagically (left here for search engines).
 Requested by Funky Bigodon.
 ]],
 })
