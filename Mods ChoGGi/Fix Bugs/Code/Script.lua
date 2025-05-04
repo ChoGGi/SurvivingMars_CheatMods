@@ -960,20 +960,55 @@ do -- CityStart/LoadGame
 		--
 		if colony and colony.underground_map_unlocked then
 
+			local surface_map = GameMaps[colony.surface_map_id]
 			local underground_map = GameMaps[colony.underground_map_id]
+
+			local surface_city = Cities[colony.surface_map_id]
 			local underground_city = Cities[colony.underground_map_id]
 
 			--
-			-- This will check for colonists underground that are trying to path to a place on the surface.
-			-- The game will crash when they run out of usable pathing.
+			-- Two different fixes for colonists on the wrong map and crashing the game
 			-- https://www.reddit.com/r/SurvivingMars/comments/1k70uxf/game_crashing_on_the_same_sol_every_time/
-			if mod_ColonistsWrongRealmPath and g_AccessibleDlc.picard then
-				local surface_map = GameMaps[colony.surface_map_id]
+			if mod_ColonistsWrongRealmPath then
+				--
 				objs = underground_city.labels.Colonist or ""
 				-- Go backwards as it'll remove them from the table
 				for i = #objs, 1, -1 do
 					local obj = objs[i]
-					if not obj.goto_target then
+
+					-- Colonists are in the underground labels, but live on surface.
+					-- Try holder first (a holder is a diner/bar/etc)
+					-- Not that it really matters, I was going to force them to reset as they look odd since I reset their pos to the ground
+					-- but since they're already on the surface than pos should be fine
+					local is_surface
+					if obj.holder and IsValid(obj.holder)
+						and obj.holder:GetMapID() == colony.surface_map_id
+					then
+						is_surface = "holder"
+					elseif obj.dome and IsValid(obj.dome)
+						and obj.dome:GetMapID() == colony.surface_map_id
+					then
+						is_surface = "dome"
+					elseif obj.workplace and IsValid(obj.workplace)
+						and obj.workplace:GetMapID() == colony.surface_map_id
+					then
+						is_surface = "workplace"
+					elseif obj.residence and IsValid(obj.residence)
+						and obj.residence:GetMapID() == colony.surface_map_id
+					then
+						is_surface = "residence"
+					end
+					--
+					if is_surface then
+						obj:TransferToMap(colony.surface_map_id)
+						goto zcontinue
+					end
+
+					--
+					-- This will check for colonists underground that are trying to path to a place on the surface.
+					-- The game will crash when they run out of usable pathing.
+					-- https://www.reddit.com/r/SurvivingMars/comments/1k70uxf/game_crashing_on_the_same_sol_every_time/
+					if obj.holder or not obj.goto_target then
 						goto zcontinue
 					end
 					-- See if we can get a target
@@ -985,6 +1020,7 @@ do -- CityStart/LoadGame
 						target = obj.goto_target
 					end
 					-- Found one so check if there's a z and it's above 2000
+					-- Being in a holder can put them above 2000, so we filtered that out above
 					-- You can't target hills and the underground starts at 1 (or 0 maybe)
 					-- Surface usually starts at 8-10k
 					local z = target and target:z()
@@ -995,6 +1031,8 @@ do -- CityStart/LoadGame
 					--
 					::zcontinue::
 				end
+				--
+
 			end
 
 			--

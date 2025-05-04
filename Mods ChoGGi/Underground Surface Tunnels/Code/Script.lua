@@ -41,6 +41,11 @@ function ChoGGi_UndergroundTunnel:Init()
 	-- Stop an error in logfile
 	self.linked_obj = self
 
+	-- If you place an underground tunnel then try to build a regular tunnel
+	if g_LastPlacedTunnel == self then
+		g_LastPlacedTunnel = false
+	end
+
 	-- Good enough
 	self.name = name_lookup[RetMapType(nil, self:GetMapID())]
 		.. " " .. T(889--[[Tunnel]]) .. " " .. os.time()

@@ -1,3 +1,7 @@
+Add logging for each fix when an obj/etc is changed.
+
+
+?
 condition = function(self)
   return not IsGameRuleActive("NoPicard")
 end,

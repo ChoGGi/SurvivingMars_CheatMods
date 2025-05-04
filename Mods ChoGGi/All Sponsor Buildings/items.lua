@@ -31,25 +31,25 @@ local techs = {
 }
 local TechDef = TechDef
 
---~ 'AdvancedStirlingGenerator' = true
---~ 'AutomaticMetalsExtractor' = true
---~ 'ConcretePlant' = true
---~ 'CorporateOffice' = true
---~ 'GameDeveloper' = true
---~ 'JumperShuttleHub' = true
---~ 'LowGLab' = true
---~ 'MegaMall' = true
---~ 'MetalsRefinery' = true
---~ 'RareMetalsRefinery' = true
---~ 'RCConstructorBuilding' = true
---~ 'RCDrillerBuilding' = true
---~ 'RCHarvesterBuilding' = true
---~ 'RCSensorBuilding' = true
---~ 'RCSolarBuilding' = true
---~ 'ShuttleHub' = true
---~ 'SolarArray' = true
---~ 'TaiChiGarden' = true
---~ 'Temple' = true
+--~ AdvancedStirlingGenerator
+--~ AutomaticMetalsExtractor
+--~ ConcretePlant
+--~ CorporateOffice
+--~ GameDeveloper
+--~ JumperShuttleHub
+--~ LowGLab
+--~ MegaMall
+--~ MetalsRefinery
+--~ RareMetalsRefinery
+--~ RCConstructorBuilding
+--~ RCDrillerBuilding
+--~ RCHarvesterBuilding
+--~ RCSensorBuilding
+--~ RCSolarBuilding
+--~ ShuttleHub
+--~ SolarArray
+--~ TaiChiGarden
+--~ Temple
 
 local BuildingTemplates = BuildingTemplates
 for id, bld in pairs(BuildingTemplates) do

@@ -5,7 +5,40 @@ if not g_AvailableDlc.gagarin then
 	return
 end
 
+-- gotta list them manually
+local building_to_tech = {
+	AdvancedStirlingGenerator = "StirlingGenerator",
+--~ 	AutomaticMetalsExtractor = "",
+--~ 	ConcretePlant = "",
+	CorporateOffice = "BehavioralShaping",
+	GameDeveloper = "CreativeRealities",
+	JumperShuttleHub = "CO2JetPropulsion",
+	LowGLab = "MartianInstituteOfScience",
+	MegaMall = "GravityEngineering",
+--~ 	MetalsRefinery = "",
+--~ 	RareMetalsRefinery = "",
+--~ 	RCConstructorBuilding = "DronePrinting",
+--~ 	RCDrillerBuilding = "DronePrinting",
+--~ 	RCHarvesterBuilding = "DronePrinting",
+--~ 	RCSensorBuilding = "DronePrinting",
+--~ 	RCSolarBuilding = "DronePrinting",
+	SolarArray = "DustRepulsion",
+--~ 	TaiChiGarden = "",
+	Temple = "Arcology",
+}
+local tech_to_building = {
+	StirlingGenerator = "AdvancedStirlingGenerator",
+	BehavioralShaping = "CorporateOffice",
+	CreativeRealities = "GameDeveloper",
+	CO2JetPropulsion = "JumperShuttleHub",
+	MartianInstituteOfScience = "LowGLab",
+	GravityEngineering = "MegaMall",
+	DustRepulsion = "SolarArray",
+	Arcology = "Temple",
+}
+
 local table = table
+local IsTechResearched = IsTechResearched
 
 -- we need to store the list of sponsor locked buildings
 local sponsor_buildings = {}
@@ -37,40 +70,45 @@ local function UpdateCargoDefs()
 			name = name .. "Building"
 		end
 
-		if mod_options["ChoGGi_" .. name] then
+		local mod_option = mod_options["ChoGGi_" .. name]
+
+		if mod_option and mod_options["ChoGGi_Tech_" .. name] then
+			-- If tech researched than unlock
+			local tech_id = building_to_tech[name]
+			if IsTechResearched(tech_id) then
+				def.locked = false
+			else
+				-- update for in-session games
+				def.locked = true
+			end
+		elseif mod_option then
 			def.locked = false
 		end
+		--
 	end
+	--
 end
 
--- gotta list them manually
-local techs = {
-	AdvancedStirlingGenerator = "StirlingGenerator",
---~ 	AutomaticMetalsExtractor = "",
---~ 	ConcretePlant = "",
-	CorporateOffice = "BehavioralShaping",
-	GameDeveloper = "CreativeRealities",
-	JumperShuttleHub = "CO2JetPropulsion",
-	LowGLab = "MartianInstituteOfScience",
-	MegaMall = "GravityEngineering",
---~ 	MetalsRefinery = "",
---~ 	RareMetalsRefinery = "",
---~ 	RCConstructorBuilding = "DronePrinting",
---~ 	RCDrillerBuilding = "DronePrinting",
---~ 	RCHarvesterBuilding = "DronePrinting",
---~ 	RCSensorBuilding = "DronePrinting",
---~ 	RCSolarBuilding = "DronePrinting",
-	SolarArray = "DustRepulsion",
---~ 	TaiChiGarden = "",
-	Temple = "Arcology",
-}
+function OnMsg.TechResearched(tech_id)
+	local building_id = tech_to_building[tech_id]
+	if not building_id then
+		print("return", tech_id)
+		return
+	end
+
+	local idx = table.find(ResupplyItemDefinitions, "id", building_id)
+	if idx then
+		local def = ResupplyItemDefinitions[idx]
+		def.locked = false
+	end
+end
 
 local function StartupCode()
 	-- v1.8?
 	BuildingTemplates.ShuttleHub.sponsor_name1 = ""
 	BuildingTemplates.ShuttleHub.sponsor_status1 = false
 
-	for bld_id, tech_id in pairs(techs) do
+	for bld_id, tech_id in pairs(building_to_tech) do
 		if mod_options["ChoGGi_Tech_" .. bld_id] then
 				-- build menu
 			BuildingTechRequirements[bld_id] = {{ tech = tech_id, hide = false, }}

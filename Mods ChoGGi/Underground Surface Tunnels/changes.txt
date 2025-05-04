@@ -1,2 +1,5 @@
+v0.3
+Fixed: Placing regular tunnels may connect one of them to one of my tunnels.
+
 v0.2
 Added info text showing name of connected tunnel.

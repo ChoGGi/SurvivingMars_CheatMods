@@ -21,8 +21,10 @@ return PlaceObj("ModDef", {
 		"Code/Script.lua",
 	},
 	"has_options", true,
-	"description", [[Default to 90 rares per rocket.
+	"description", [[
+Default to 90 rares per rocket.
 Has Mod Option to change amount.
 
-Requested by Mrpellaeon.]],
+Requested by Mrpellaeon.
+]],
 })

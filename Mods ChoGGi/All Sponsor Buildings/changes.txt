@@ -1,3 +1,6 @@
+v2.0
+Resupply can't be used to cheese tech unlock mod option anymore.
+
 v1.9
 Changing tech reqs for RCs that I shouldn't be.
 
