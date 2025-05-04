@@ -55,7 +55,7 @@ function LaunchCargoRocket(obj, func_on_launch, ...)
 
 	Msg("ResupplyRocketLaunched", label, g_CargoCost)
 
-	CreateRealTimeThread(function(cargo, cost, obj, mode, label)
+	CreateRealTimeThread(function(cargo, cost, mode, label)
 		if mode == "elevator" then
 --~ 			assert(city.labels.SpaceElevator and #city.labels.SpaceElevator > 0)
 --~ 			city.labels.SpaceElevator[1]:OrderResupply(cargo, cost)
@@ -82,7 +82,7 @@ function LaunchCargoRocket(obj, func_on_launch, ...)
 		if func_on_launch then
 			func_on_launch()
 		end
-	end, g_RocketCargo, g_CargoCost, obj, mode, label)
+	end, g_RocketCargo, g_CargoCost, mode, label)
 
 	if HintsEnabled then
 		HintDisable("HintResupplyUI")

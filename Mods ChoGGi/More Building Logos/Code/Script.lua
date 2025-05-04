@@ -354,7 +354,7 @@ end
 -- I really should make something to drag the logo around...
 do return end
 
-local obj = o;
+local obj = o
 
 local obj = s
 obj:DestroyAttaches(function(attach)

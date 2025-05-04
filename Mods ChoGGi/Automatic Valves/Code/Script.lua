@@ -100,8 +100,8 @@ local function ReconnectGrids(obj)
 						OpenSwitches(grid_el.grid, sw_type)
 						-- If it opens a leaky grid then close them
 						if LeakyGrid(grid_el.grid) then
-							for i = 1, #last_opened_switches do
-								last_opened_switches[i]:Switch()
+							for l = 1, #last_opened_switches do
+								last_opened_switches[l]:Switch()
 							end
 						end
 						-- But don't abort and keep trying other grids
@@ -303,7 +303,7 @@ function OnMsg.ClassesPostprocess()
 			"RolloverText", T(0000, "This switch will be included when automagically toggling for leaks."),
 			"Icon", "UI/Icons/ColonyControlCenter/oxygen_on.tga",
 			--
-			"OnPress", function(self, gamepad)
+			"OnPress", function(self)
 				self.context.ChoGGi_StopLeaksAutomagically_ToggleIgnore = not self.context.ChoGGi_StopLeaksAutomagically_ToggleIgnore
 				ObjModified(self.context)
 			end,

@@ -1,6 +1,8 @@
 ## Library Changelog
 
-## v12.6 (Unreleased)
+## v12.7 (Unreleased)
+
+## v12.6 (4 May 2025)
 - MsgWait hasn't been displaying my default image for quite some time.
 - Toggle UI Transparency will always default to off on new dialogs.
 - Empty space next to Transparency checkbox is now not clickable as checkbox.

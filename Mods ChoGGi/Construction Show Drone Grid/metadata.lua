@@ -4,7 +4,7 @@ return PlaceObj("ModDef", {
 			"id", "ChoGGi_Library",
 			"title", "ChoGGi's Library",
 			"version_major", 12,
-			"version_minor", 5,
+			"version_minor", 6,
 		}),
 	},
 	"title", "Construction Show Drone Grid",

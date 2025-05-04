@@ -62,7 +62,7 @@ function OnMsg.ClassesPostprocess()
 
 	-- I wish there was a better way of accessing dialogs...
 	local template = XTemplates.Infopanel[1][1][3][1][2]
-	template.__condition = function(parent, context)
+	template.__condition = function(_, context)
 --~ 		return not IsKindOf(context, "ConstructionSite") and #(context:GetSkins() or "") > 1
 
 		if IsKindOf(context, "ConstructionSite") then

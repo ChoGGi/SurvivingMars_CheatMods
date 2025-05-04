@@ -10,7 +10,6 @@ end
 local pairs, tostring, type, table, tonumber = pairs, tostring, type, table, tonumber
 -- every litte bit helps
 local table_concat = table.concat
-local table_remove = table.remove
 
 local Translate = ChoGGi_Funcs.Common.Translate
 local IsValidXWin = ChoGGi_Funcs.Common.IsValidXWin

@@ -6,10 +6,7 @@ local what_game = ChoGGi.what_game
 local table = table
 local type, pairs, next, print, string = type, pairs, next, print, string
 local tostring, tonumber, rawget, rawset = tostring, tonumber, rawget, rawset
-local AveragePoint2D = AveragePoint2D
-local IsBox = IsBox
 local IsKindOf = IsKindOf
-local IsPoint = IsPoint
 local IsValid = IsValid
 local Max = Max
 local Sleep = Sleep
@@ -17,13 +14,11 @@ local WaitMsg = WaitMsg
 
 local IsValidXWin = ChoGGi_Funcs.Common.IsValidXWin
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
-local PlacePolyline = ChoGGi_Funcs.Common.PlacePolyline
 local RandomColourLimited = ChoGGi_Funcs.Common.RandomColourLimited
 local RetName = ChoGGi_Funcs.Common.RetName
 local T = T
 local Translate = ChoGGi_Funcs.Common.Translate
 
-local InvalidPos = ChoGGi.Consts.InvalidPos
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
 

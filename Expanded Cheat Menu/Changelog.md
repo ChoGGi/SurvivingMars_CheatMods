@@ -1,6 +1,8 @@
 ## ECM Changelog
 
-## v19.6 (Unreleased)
+## v19.7 (Unreleased)
+
+## v19.6 (4 May 2025)
 ### Changed:
 Menu>Help>Mod Upload: More progress info when uploading.
 

@@ -963,7 +963,7 @@ do -- CityStart/LoadGame
 			local surface_map = GameMaps[colony.surface_map_id]
 			local underground_map = GameMaps[colony.underground_map_id]
 
-			local surface_city = Cities[colony.surface_map_id]
+			--~ local surface_city = Cities[colony.surface_map_id]
 			local underground_city = Cities[colony.underground_map_id]
 
 			--
