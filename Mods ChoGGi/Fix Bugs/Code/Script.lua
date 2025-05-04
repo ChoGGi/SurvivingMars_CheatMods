@@ -39,13 +39,15 @@ local mod_ColonistsWrongRealmPath
 
 --
 -- Uneven terrain fix funcs
-local function UpdateTerrainMap(game_map)
+local function UpdateTerrainMap(map)
 	-- Suspend funcs speed up "doing stuff"
-	game_map.realm:SuspendPassEdits("ChoGGi_FixBugs_UnevenTerrain")
+	map.realm:SuspendPassEdits("ChoGGi_FixBugs_UnevenTerrain")
 	SuspendTerrainInvalidations("ChoGGi_FixBugs_UnevenTerrain")
-	game_map:RefreshBuildableGrid()
+	--
+	map:RefreshBuildableGrid()
+	--
 	ResumeTerrainInvalidations("ChoGGi_FixBugs_UnevenTerrain")
-	game_map.realm:ResumePassEdits("ChoGGi_FixBugs_UnevenTerrain")
+	map.realm:ResumePassEdits("ChoGGi_FixBugs_UnevenTerrain")
 end
 -- Called below from a couple places
 local function FixUnevenTerrainMaps()
@@ -129,7 +131,6 @@ OnMsg.ModsReloaded = ModOptions
 OnMsg.ApplyModOptions = ModOptions
 
 -- OnMsgs
-
 function OnMsg.SectorScanned()
 	if not mod_EnableMod then
 		return
@@ -205,8 +206,9 @@ function OnMsg.NewDay()
 
 end
 
---
 function OnMsg.ClassesPostprocess()
+	-- ClassesPostprocess is too early for mod options (funcs within are another story)
+
 	-- Fix Colonist Daily Interest Loop
 	-- last checked 1011030 Colonist:EnterBuilding()
 	local ChoOrig_Colonist_EnterBuilding = Colonist.EnterBuilding
@@ -248,6 +250,24 @@ function OnMsg.ClassesPostprocess()
 		end
 	end
 
+end
+
+function OnMsg.Refabricated(obj)
+	--
+	-- Refabbing certain buildings with particles (so far both rare extractor skins) will leave the particles behind
+	-- I clean them out on load, and use this to stop new ones from appearing.
+	-- This msg is called before it deletes the building object
+	obj:ChangeWorkingStateAnim(false)
+end
+
+function OnMsg.TechResearched(tech_id)
+	--
+	-- GeneForging doesn't interact with anything unlike GeneSelection
+	-- and you can only have GeneForging if you have GeneSelection
+	-- This boosts GeneSelection to 150 (seems a safe enough way of doing it).
+	if tech_id == "GeneForging" then
+		TechDef.GeneSelection.param1 = 150
+	end
 end
 
 --
@@ -617,6 +637,21 @@ do -- CityStart/LoadGame
 		--
 
 		--
+		-- UndergroundAnomalies_Rare: Rare Anomaly Analyzed: Fossils
+		-- Options always shows Global Support even if you don't have Space Race
+		-- Update before underground is unlocked so user doesn't get the wrong dialog
+		-- I would put this in ClassesPostprocess, but no mod options
+		if g_AvailableDlc.picard and not g_AccessibleDlc.gagarin then
+			local anom = DataInstances.Scenario.UndergroundAnomalies_Rare
+			local idx = table.find(anom, "name", "BR_New_Options")
+			anom = anom[idx]
+
+			-- Making it "" will choose a random breakthrough
+			anom[34].tech = ""
+			anom[35].text_param1 = T(3733--[[Random Breakthrough]])
+		end
+
+		--
 		--	Unlock ArtificialSun for re-fabbing
 		if g_AvailableDlc.picard then
 			ClassTemplates.Building.ArtificialSun.can_refab = true
@@ -748,6 +783,7 @@ do -- CityStart/LoadGame
 		BuildingTemplates.LampProjector.label1 = ""
 
 		--
+		-- Fix Resupply Menu Not Opening
 		-- Probably caused by a mod badly adding cargo.
 		-- Also from cargo being removed mid-gameplay.
 		if table.find(ResupplyItemDefinitions, "id", "MissingPreset") then
@@ -1124,7 +1160,7 @@ end -- StartupCode do
 -- do
 
 --
--- Fixes that can't be disabled by mod options (called too soon)
+-- Fixes that can't be disabled by mod options (called before mod options)
 
 --
 -- Fix for whatever odd thing Mars Underground mod is doing with presets.
@@ -1265,7 +1301,7 @@ function SelectionModeDialog:OnMouseButtonDoubleClick(pt, button, ...)
 end
 
 --
--- AreDomesConnectedWithPassage (Fix Colonists Long Walks)
+-- AreDomesConnectedWithPassage (Fix Colonists Long Walks, not that it actually does or at least not every way they try for a long walk)
 do
 	--[[
 	Changes the AreDomesConnectedWithPassage func to also check the walking distance instead of assuming passages == walkable.
@@ -1509,14 +1545,6 @@ function City.IsTechDiscovered(self, ...)
 end
 
 --
--- Refabbing certain buildings with particles (so far both rare extractor skins) will leave the particles behind
--- I clean them out on load, and use this to stop new ones from appearing.
-function OnMsg.Refabricated(obj)
-	-- This msg is called before it deletes the building object
-	obj:ChangeWorkingStateAnim(false)
-end
-
---
 -- St. Elmo's Fire: Stop meteoroids from destroying sinkholes
 if g_AvailableDlc.contentpack1 then
 	local ChoOrig_Sinkhole_GameInit = Sinkhole.GameInit
@@ -1549,16 +1577,6 @@ function ConstructionController:IsTerrainFlatForPlacement(...)
 	end
 
 	return ChoOrig_ConstructionController_IsTerrainFlatForPlacement(self, ...)
-end
-
---
--- GeneForging doesn't interact with anything unlike GeneSelection
--- and you can only have GeneForging if you have GeneSelection
--- This boosts GeneSelection to 150 (seems a safe enough way of doing it).
-function OnMsg.TechResearched(tech_id)
-	if tech_id == "GeneForging" then
-		TechDef.GeneSelection.param1 = 150
-	end
 end
 
 --

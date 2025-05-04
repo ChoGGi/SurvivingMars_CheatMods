@@ -51,6 +51,7 @@ The Philosopher's Stone doesn't update sector scanned count when paused.
 
 ### B&B:
 ```
+Rare Anomaly Analyzed: Fossils: Global Support option doesn't check for Space Race DLC (now gives random breakthrough).
 Colonists underground crash (mod option enabled by default, more info below).
 Unlock Artificial Sun for refabbing.
 Too much Cave-in rubble will cause lag when new rubble tries to spawn.

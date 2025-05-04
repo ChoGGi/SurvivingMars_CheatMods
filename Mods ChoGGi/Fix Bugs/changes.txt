@@ -1,3 +1,6 @@
+v9.4
+Rare Anomaly Analyzed: Fossils: Global Support option doesn't check for Space Race DLC (now gives random breakthrough).
+
 v9.3
 Colonists underground crash v2:
 A different save and colonists on the surface stuck in underground labels (same mod option as previous fix).

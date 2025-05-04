@@ -1,3 +1,8 @@
+v0.4
+Make sure it gets newly landed rockets (hopefully).
+Applying mod options didn't update rare amounts for landed rockets.
+Added mod option to disable mod.
+
 v0.3
 Tito.
 
