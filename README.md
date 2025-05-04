@@ -1,4 +1,4 @@
-## See [Mods ChoGGi](Mods ChoGGi/) for all my other mods.
+## See [Mods ChoGGi](Mods%20ChoGGi/) for all my other mods.
 
 ### No warranty implied or otherwise!
 
