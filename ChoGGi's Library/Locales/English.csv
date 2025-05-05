@@ -1,5 +1,4 @@
 "ID", "Text", "Translation"
-302535920001748, ""
 302535920001749, ""
 302535920001750, ""
 302535920000000, "Expanded Cheat Menu"
@@ -155,6 +154,7 @@ Starts at 100% and goes up by 5 (max is 2047), <right_click> to reset to 5% (hol
 302535920000854, "Results Found"
 302535920000219, "Export viewed image to <color ChoGGi_green><path></color>."
 302535920000109, "Invalid Image"
+302535920001748, "Show path unit is trying to take."
 302535920001668, "Instantly harvest current crop."
 302535920001664, "Do you want to delete all objects that are the same as this object from the map?"
 302535920001470, "Try to spawn all prefabs at this dronehub."

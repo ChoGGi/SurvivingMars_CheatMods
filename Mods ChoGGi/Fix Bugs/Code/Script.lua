@@ -92,6 +92,30 @@ local function UpdateSolarPanel(panel, suns)
 	panel:UpdateProduction()
 end
 
+--
+-- Colonists are in the underground labels, but live on surface (or newly arrived and something Elevator doesn't fully move them?).
+-- .arriving is I think from colonists fresh off the boat.
+-- a .holder is a diner/bar/etc, so try that next (odd but true)
+-- Not that it really matters, I was going to force them to reset as they look odd since I reset their pos to the ground
+-- but since they're already on the surface than pos should be fine
+local ref_list = {
+	"arriving",
+	"holder",
+	"dome",
+	"workplace",
+	"residence",
+}
+local ref_list_c = #ref_list
+local function CheckColonistMap(obj, colony)
+	for i = 1, ref_list_c do
+		local holder = obj[ref_list[i]]
+		if holder and IsValid(holder) and holder:GetMapID() == colony.surface_map_id then
+			return true
+		end
+	end
+end
+--
+
 -- Update/set mod options
 local function ModOptions(id)
 	-- id is from ApplyModOptions
@@ -226,7 +250,6 @@ function OnMsg.ClassesPostprocess()
 
 		return ChoOrig_Colonist_EnterBuilding(self, building, ...)
 	end
-	--
 
 	--
 	-- Never get funding/res points from UCP_Observatory
@@ -248,6 +271,45 @@ function OnMsg.ClassesPostprocess()
 				UIColony:AddResearchPoints(MulDivRound(self.amount_rp, rate, 100))
 			end
 		end
+	end
+
+	-- B&B fixes
+	if not g_AvailableDlc.picard then
+		return
+	end
+
+	--
+	-- Elevator is dropping off colonists that still have surface "markers" (.arriving .dome .residence etc)
+	local ChoOrig_Elevator_Disembark = Elevator.Disembark
+	function Elevator:Disembark(units, ...)
+		if not mod_EnableMod then
+			return ChoOrig_Elevator_Disembark(self, units, ...)
+		end
+
+		local disembark_times = ChoOrig_Elevator_Disembark(self, units, ...)
+
+		if #units > 1 then
+			CreateGameTimeThread(function()
+				Sleep(disembark_times + 100)
+
+				local colony = UIColony
+				-- They only seem to bug out and crash underground (go figure)
+				if colony.underground_map_id == self:GetMapID() then
+					for i = #units, 1, -1 do
+						local unit = units[i]
+						if CheckColonistMap(unit, colony) then
+--~ 							print("name", ChoGGi_Funcs.Common.Translate(unit.name))
+							-- Best remove it from whatever Disembark will do
+							table.remove(units, i)
+							-- Lets hope this solves the crashing
+							unit:TransferToMap(colony.surface_map_id)
+						end
+					end
+				end
+			end)
+		end
+
+		return disembark_times
 	end
 
 end
@@ -306,7 +368,7 @@ do -- CityStart/LoadGame
 			--
 			-- If you have more than one ArtificialSun then solar panels ignore sun + 1.
 			-- Fix for more than one art sun (1/2)
-			local objs = GetCityLabels("ArtificialSun")
+			objs = GetCityLabels("ArtificialSun")
 			if #objs > 0 then
 				-- Update all solar panels
 				local panels = GetCityLabels("SolarPanelBase")
@@ -637,8 +699,7 @@ do -- CityStart/LoadGame
 		--
 
 		--
-		-- UndergroundAnomalies_Rare: Rare Anomaly Analyzed: Fossils
-		-- Options always shows Global Support even if you don't have Space Race
+		-- Rare Anomaly Analyzed: Fossils choices list always shows Global Support even if you don't have Space Race
 		-- Update before underground is unlocked so user doesn't get the wrong dialog
 		-- I would put this in ClassesPostprocess, but no mod options
 		if g_AvailableDlc.picard and not g_AccessibleDlc.gagarin then
@@ -700,15 +761,17 @@ do -- CityStart/LoadGame
 		end
 
 		for id, cargo in pairs(CargoPreset) do
-			if not cargo.icon then
-
-				if lookup_res[id] then
-					cargo.icon = lookup_res[id]
-				elseif BuildingTemplates[id] then
-					cargo.icon = BuildingTemplates[id].encyclopedia_image
-				end
-
+			if cargo.icon then
+				goto continue
 			end
+			--
+			if lookup_res[id] then
+				cargo.icon = lookup_res[id]
+			elseif BuildingTemplates[id] then
+				cargo.icon = BuildingTemplates[id].encyclopedia_image
+			end
+			--
+			::continue::
 		end
 
 		--
@@ -749,7 +812,7 @@ do -- CityStart/LoadGame
 			end
 
 			if g_AvailableDlc.gagarin then
-				local objs = {
+				objs = {
 					"AutomaticMetalsExtractor",
 					"RCHarvester",
 					"RCDriller",
@@ -759,7 +822,7 @@ do -- CityStart/LoadGame
 				end
 			end
 			if g_AvailableDlc.picard then
-				local objs = {
+				objs = {
 					"MicroGAutoExtractor",
 					"MicroGExtractor",
 					"MicroGAutoWaterExtractor",
@@ -818,22 +881,26 @@ do -- CityStart/LoadGame
 				local c = 0
 				for i = 1, #objs do
 					local obj = objs[i]
-					if obj.command == "Idle" then
-						-- Remove borked requests
-						local req = obj.assigned_to_d_req and obj.assigned_to_d_req[1]
-						if type(req) == "userdata" and req.GetBuilding and not IsValid(req:GetBuilding()) then
-							obj.assigned_to_d_req[1]:UnassignUnit(obj.assigned_to_d_req[2], false)
-							obj.assigned_to_d_req = false
-						end
-
-						req = obj.assigned_to_s_req and obj.assigned_to_s_req[1]
-						if type(req) == "userdata" and req.GetBuilding and not IsValid(req:GetBuilding()) then
-							obj.assigned_to_s_req[1]:UnassignUnit(obj.assigned_to_s_req[2], false)
-							obj.assigned_to_s_req = false
-						end
-						c = c + 1
-						reset_shuttles[c] = obj
+					if obj.command ~= "Idle" then
+						goto continue
 					end
+					--
+					-- Remove borked requests
+					local req = obj.assigned_to_d_req and obj.assigned_to_d_req[1]
+					if type(req) == "userdata" and req.GetBuilding and not IsValid(req:GetBuilding()) then
+						obj.assigned_to_d_req[1]:UnassignUnit(obj.assigned_to_d_req[2], false)
+						obj.assigned_to_d_req = false
+					end
+
+					req = obj.assigned_to_s_req and obj.assigned_to_s_req[1]
+					if type(req) == "userdata" and req.GetBuilding and not IsValid(req:GetBuilding()) then
+						obj.assigned_to_s_req[1]:UnassignUnit(obj.assigned_to_s_req[2], false)
+						obj.assigned_to_s_req = false
+					end
+					c = c + 1
+					reset_shuttles[c] = obj
+					--
+					::continue::
 				end
 				-- Reset stuck shuttles
 				Sleep(1000)
@@ -924,19 +991,23 @@ do -- CityStart/LoadGame
 				for i = 1, #objs do
 					local dome = objs[i]
 					local mods = dome:GetPropertyModifiers("air_consumption")
-					if mods then
-						local farms = dome.labels.Farm or empty_table
-						-- Backwards?
-						for j = #mods, 1, -1 do
-							local mod_item = mods[j]
-							local idx = table.find(farms, "farm_id", mod_item.id)
-							-- Can't find farm id, so it's a removed farm
-							if not idx then
-								dome:SetModifier("air_consumption", mod_item.id, 0, 0)
-							end
-						end
-						dome:UpdateWorking()
+					if not mods then
+						goto continue
 					end
+					--
+					local farms = dome.labels.Farm or empty_table
+					-- Backwards?
+					for j = #mods, 1, -1 do
+						local mod_item = mods[j]
+						local idx = table.find(farms, "farm_id", mod_item.id)
+						-- Can't find farm id, so it's a removed farm
+						if not idx then
+							dome:SetModifier("air_consumption", mod_item.id, 0, 0)
+						end
+					end
+					dome:UpdateWorking()
+					--
+					::continue::
 				end
 			end
 
@@ -1006,38 +1077,15 @@ do -- CityStart/LoadGame
 			-- Two different fixes for colonists on the wrong map and crashing the game
 			-- https://www.reddit.com/r/SurvivingMars/comments/1k70uxf/game_crashing_on_the_same_sol_every_time/
 			if mod_ColonistsWrongRealmPath then
-				--
 				objs = underground_city.labels.Colonist or ""
 				-- Go backwards as it'll remove them from the table
 				for i = #objs, 1, -1 do
 					local obj = objs[i]
 
-					-- Colonists are in the underground labels, but live on surface.
-					-- Try holder first (a holder is a diner/bar/etc)
-					-- Not that it really matters, I was going to force them to reset as they look odd since I reset their pos to the ground
-					-- but since they're already on the surface than pos should be fine
-					local is_surface
-					if obj.holder and IsValid(obj.holder)
-						and obj.holder:GetMapID() == colony.surface_map_id
-					then
-						is_surface = "holder"
-					elseif obj.dome and IsValid(obj.dome)
-						and obj.dome:GetMapID() == colony.surface_map_id
-					then
-						is_surface = "dome"
-					elseif obj.workplace and IsValid(obj.workplace)
-						and obj.workplace:GetMapID() == colony.surface_map_id
-					then
-						is_surface = "workplace"
-					elseif obj.residence and IsValid(obj.residence)
-						and obj.residence:GetMapID() == colony.surface_map_id
-					then
-						is_surface = "residence"
-					end
-					--
-					if is_surface then
+					if CheckColonistMap(obj, colony) then
+--~ 						print("name", ChoGGi_Funcs.Common.Translate(obj.name))
 						obj:TransferToMap(colony.surface_map_id)
-						goto zcontinue
+						goto continue
 					end
 
 					--
@@ -1045,7 +1093,7 @@ do -- CityStart/LoadGame
 					-- The game will crash when they run out of usable pathing.
 					-- https://www.reddit.com/r/SurvivingMars/comments/1k70uxf/game_crashing_on_the_same_sol_every_time/
 					if obj.holder or not obj.goto_target then
-						goto zcontinue
+						goto continue
 					end
 					-- See if we can get a target
 					local goto_type = type(obj.goto_target)
@@ -1065,9 +1113,10 @@ do -- CityStart/LoadGame
 						obj:SetPos(target:SetZ(surface_map.terrain:GetHeight(target)))
 					end
 					--
-					::zcontinue::
+					::continue::
 				end
 				--
+
 
 			end
 
@@ -1088,24 +1137,26 @@ do -- CityStart/LoadGame
 					local city = Cities[i]
 					local map_id = city.map_id
 					for label, label_value in pairs(city.labels) do
-						if label ~= "Consts" then
-							local labels = city.labels[label]
-							--
-							for j = #labels, 1, -1 do
-								local obj = labels[j]
-								CleanObj(obj, label, map_id, city)
-								if label == "Dome" then
-									--
-									for label_d in pairs(label_value.labels or empty_table) do
-										for k = #label_d, 1, -1 do
-											CleanObj(label_d[k], label_d, map_id, city)
-										end
-									end
-									--
-								end
-							end
-							--
+						if label == "Consts" then
+							goto continue
 						end
+						--
+						local labels = city.labels[label]
+						for j = #labels, 1, -1 do
+							local obj = labels[j]
+							CleanObj(obj, label, map_id, city)
+							if label == "Dome" then
+								--
+								for label_d in pairs(label_value.labels or empty_table) do
+									for k = #label_d, 1, -1 do
+										CleanObj(label_d[k], label_d, map_id, city)
+									end
+								end
+								--
+							end
+						end
+						--
+						::continue::
 					end
 				end
 			end
@@ -1236,17 +1287,20 @@ function LayoutConstructionController:Activate(...)
 	local controllers = self.controllers or empty_table
 	for entry in pairs(controllers) do
 		local template = BuildingTemplates[entry.template]
-		if template then
-			local _, tech_enabled = GetBuildingTechsStatus(template.id, template.build_category)
-
-			-- If it isn't unlocked and there's no prefabs then remove it
-			if not tech_enabled and city:GetPrefabs(template.id) == 0 then
-				self.skip_items[entry] = true
-				controllers[entry]:Deactivate()
-				controllers[entry] = nil
-			end
-
+		if not template then
+			goto continue
 		end
+		--
+		local _, tech_enabled = GetBuildingTechsStatus(template.id, template.build_category)
+
+		-- If it isn't unlocked and there's no prefabs then remove it
+		if not tech_enabled and city:GetPrefabs(template.id) == 0 then
+			self.skip_items[entry] = true
+			controllers[entry]:Deactivate()
+			controllers[entry] = nil
+		end
+		--
+		::continue::
 	end
 
 	return ret
@@ -1915,10 +1969,12 @@ end
 --
 --
 --
+
 -- B&B fixes
 if not g_AvailableDlc.picard then
 	return
 end
+
 --
 --
 --
@@ -1929,6 +1985,7 @@ end
 --
 --
 --
+
 
 --
 -- Log spam from borked colonist (possibly from a mod, could just be B&B again)

@@ -51,7 +51,7 @@ The Philosopher's Stone doesn't update sector scanned count when paused.
 
 ### B&B:
 ```
-Rare Anomaly Analyzed: Fossils: Global Support option doesn't check for Space Race DLC (now gives random breakthrough).
+Rare Anomaly Analyzed: Fossils: Global Support didn't check for Space Race DLC (it now gives random breakthrough).
 Colonists underground crash (mod option enabled by default, more info below).
 Unlock Artificial Sun for refabbing.
 Too much Cave-in rubble will cause lag when new rubble tries to spawn.
@@ -162,6 +162,10 @@ This will check for colonists underground that are trying to path to a place on 
 The game will crash when they run out of usable pathing.
 
 https://www.reddit.com/r/SurvivingMars/comments/1k70uxf/game_crashing_on_the_same_sol_every_time/
+
+v2: A different save and colonists on the surface stuck in underground labels (same mod option as previous fix).
+
+v3: Third time is the charm, this crash was apprently newly arrived colonists going down the elevator instead of the arrival dome.
 
 ### Colonists showing up on wrong map in infobar
 

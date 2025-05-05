@@ -1,6 +1,8 @@
 ## ECM Changelog
 
 ## v19.7 (Unreleased)
+### Added:
+- Infopanel Cheats>UnitPathing: Show path unit is trying to take.
 
 ## v19.6 (4 May 2025)
 ### Changed:

@@ -3,7 +3,6 @@ do !Skipped Line! [[BLANKS]]
 !Skipped Line! <color ChoGGi_green>%s</color>
 !Skipped Line! <color ChoGGi_yellow>%s</color>
 "ID", "Text", "Translation"
-302535920001748, ""
 302535920001749, ""
 302535920001750, ""
 end !Skipped Line!
@@ -179,6 +178,7 @@ do !Skipped Line! [[ImageViewer.lua]] !Skipped Line!
 302535920000109, "Invalid Image"
 end !Skipped Line!
 do !Skipped Line! [[InfoPaneCheats.lua]] !Skipped Line!
+302535920001748, "Show path unit is trying to take."
 302535920001668, "Instantly harvest current crop."
 302535920001664, "Do you want to delete all objects that are the same as this object from the map?"
 302535920001470, "Try to spawn all prefabs at this dronehub."

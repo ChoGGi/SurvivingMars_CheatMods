@@ -12,7 +12,7 @@ local Translate = ChoGGi_Funcs.Common.Translate
 local T = T
 
 local pairs, tonumber, type, tostring = pairs, tonumber, type, tostring
-local table = table
+local table, setmetatable = table, setmetatable
 local AsyncRand = AsyncRand
 local AveragePoint2D = AveragePoint2D
 local box = box
@@ -1200,6 +1200,19 @@ do -- Circle
 	end
 end -- do
 local Sphere = ChoGGi_Funcs.Common.Sphere
+
+function ChoGGi_Funcs.Common.PlacePolyline(points, colours, set_default_pos)
+	local line = ChoGGi_OPolyline:new{
+		max_vertices = #points
+	}
+	line:SetMesh(points, colours)
+	-- objects spawn off-map
+	if set_default_pos then
+		line:SetPos(AveragePoint2D(line.vertices))
+	end
+	return line
+end
+local PlacePolyline = ChoGGi_Funcs.Common.PlacePolyline
 
 -- this is a question box without a question (WaitPopupNotification only works in-game, not main menu)
 function ChoGGi_Funcs.Common.MsgWait(text, title, image, ok_text, context, parent, template, thread)
@@ -6374,18 +6387,6 @@ if what_game == "Mars" then
 	end
 end
 
-function ChoGGi_Funcs.Common.PlacePolyline(points, colours, set_default_pos)
-	local line = ChoGGi_OPolyline:new{
-		max_vertices = #points
-	}
-	line:SetMesh(points, colours)
-	-- objects spawn off-map
-	if set_default_pos then
-		line:SetPos(AveragePoint2D(line.vertices))
-	end
-	return line
-end
-
 -- https://gist.github.com/Uradamus/10323382
 function ChoGGi_Funcs.Common.FisherYates_Shuffle(list, min)
 	-- I don't think there's any 0 based tables in SM, but just in case
@@ -6466,7 +6467,7 @@ function ChoGGi_Funcs.Common.ResetHumanCentipedes()
 	end
 end
 
-function ChoGGi_Funcs.Common.ToggleBreadcrumbs(obj)
+function ChoGGi_Funcs.Common.ToggleBreadcrumbs(obj, delay)
 	if not IsValid(obj) then
 		print("ToggleBreadcrumbs Not valid:", obj)
 		return
@@ -6487,7 +6488,66 @@ function ChoGGi_Funcs.Common.ToggleBreadcrumbs(obj)
 				Sphere(pos, colour, 15000, true)
 				last_pos = pos
 			end
-			Sleep(1500)
+			Sleep(delay or 1500)
+		end
+	end)
+end
+
+function ChoGGi_Funcs.Common.ToggleUnitPathing(obj, delay)
+	if not IsValid(obj) then
+		print("ToggleUnitPathing Not valid:", obj)
+		return
+	end
+
+	-- Abort loop without leaving lines on map (they'll also be culled on loading a save so no biggie)
+	if obj.ChoGGi_UnitPathingThread then
+		obj.ChoGGi_UnitPathing_clearlines = true
+		return
+	end
+
+	obj.ChoGGi_UnitPathingThread = CreateGameTimeThread(function()
+		local line_params = {
+			colour = RandomColourLimited(),
+			obj = "",
+		}
+
+		local going_to_temp = {"", ""}
+		while true do
+			-- Always try to clear lines
+			ChoGGi_Funcs.Common.ObjListLines_Clear(obj)
+			-- Then check if we can abort
+			if obj.ChoGGi_UnitPathing_clearlines then
+				obj.ChoGGi_UnitPathingThread = nil
+				obj.ChoGGi_UnitPathing_clearlines = nil
+				DeleteThread(obj.ChoGGi_UnitPathingThread)
+				-- Do I need a return if it's deleted?
+				return
+			end
+
+			-- add pathing table
+			local current_pos = obj:GetVisualPos()
+			local going_to = current_pos + obj:GetStepVector() * obj:TimeToAnimEnd() / obj:GetAnimDuration()
+			local path = obj.GetPath and obj:GetPath()
+			if path then
+				local path_c = #path
+				for i = 1, path_c do
+					path[i] = path[i]:SetTerrainZ()
+				end
+				path[path_c+1] = going_to
+				-- make it an objlist, so mark all works
+				setmetatable(path, objlist)
+			else
+				going_to_temp[1] = current_pos
+				going_to_temp[2] = going_to
+				path = going_to_temp
+			end
+
+			if path then
+				line_params.obj = obj
+				ChoGGi_Funcs.Common.ObjListLines_Toggle(path, line_params)
+			end
+
+			Sleep(delay or 1000)
 		end
 	end)
 end

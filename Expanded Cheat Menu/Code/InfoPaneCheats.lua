@@ -426,6 +426,9 @@ It don't matter if you're black or white"]]),
 	Breadcrumbs = {
 		des = T(302535920001464--[[Leave a trail of rudimentary orbs.]]),
 	},
+	UnitPathing = {
+		des = T(302535920001748--[[Show path unit is trying to take.]]),
+	},
 	SpawnDog = {
 		des = T(302535920001632--[[Spawn an animal.]]),
 	},
@@ -922,6 +925,13 @@ function Unit:CheatBreadcrumbs()
 end
 function Shuttle:CheatBreadcrumbs()
 	return Common.ToggleBreadcrumbs(self)
+end
+
+function Unit:CheatUnitPathing()
+	return Common.ToggleUnitPathing(self)
+end
+function Shuttle:CheatUnitPathing()
+	return Common.ToggleUnitPathing(self)
 end
 
 -- CheatAllShifts

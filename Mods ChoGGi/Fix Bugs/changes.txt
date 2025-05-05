@@ -1,5 +1,10 @@
+v9.5
+Colonists underground crash v3:
+Third time is the charm, this crash was apprently newly arrived colonists going down the elevator instead of the arrival dome.
+
 v9.4
-Rare Anomaly Analyzed: Fossils: Global Support option doesn't check for Space Race DLC (now gives random breakthrough).
+Rare Anomaly Analyzed: Fossils: Global Support option doesn't check for Space Race DLC.
+Which makes it useless if you don't have the DLC, so it gives a random breakthrough now.
 
 v9.3
 Colonists underground crash v2:
