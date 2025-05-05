@@ -91,16 +91,18 @@ end
 -- (the only place that grid connections work with)
 local function TestEndPoint(passage, end_point)
 	local dome = passage[end_point].parent_dome
-
-	local cq, cr = WorldToHex(dome)
-	local eq, er = WorldToHex(passage[end_point])
-	local dir = HexAngleToDirection(dome:GetAngle())
-	local shape = dome:GetInteriorShape()
-	for i = 1, #shape do
-		local sq, sr = shape[i]:xy()
-		local q, r = HexRotate(sq, sr, dir)
-		if eq == (cq + q) and er == (cr + r) then
-			return true
+	-- I found a log where dome was a bool, so checking it now
+	if dome then
+		local cq, cr = WorldToHex(dome)
+		local eq, er = WorldToHex(passage[end_point])
+		local dir = HexAngleToDirection(dome:GetAngle())
+		local shape = dome:GetInteriorShape()
+		for i = 1, #shape do
+			local sq, sr = shape[i]:xy()
+			local q, r = HexRotate(sq, sr, dir)
+			if eq == (cq + q) and er == (cr + r) then
+				return true
+			end
 		end
 	end
 end

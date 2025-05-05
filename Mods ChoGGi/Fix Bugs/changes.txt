@@ -1,3 +1,7 @@
+v9.6
+Added my mod:
+Fix Rover In Dome
+
 v9.5
 Colonists underground crash v3:
 Third time is the charm, this crash was apprently newly arrived colonists going down the elevator instead of the arrival dome.

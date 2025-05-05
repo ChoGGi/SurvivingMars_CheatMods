@@ -119,6 +119,7 @@ Fix No Power Dome Buildings
 Fix Projector Lamp
 Fix RC Commander Drone Freeze
 Fix Resupply Menu Not Opening
+Fix Rover In Dome
 Fix Stuck Malfunctioning Drones At DroneHub
 Fix Transport Negative Amounts
 Fix Transports Don't Move After Route Set
@@ -190,6 +191,14 @@ SpawnAnomaly() freaks out and changes it to an underground water instead (or jus
 When placing a building you can change skins, if you use the spire skins from this DLC when placing skins
 
 then it blocks an extra hex (you can see it when placing). This removes that hex on new buildings.
+
+### Fix Rover In Dome
+
+Checks on load for rovers stuck in domes (not open air ones).
+
+Also fixes drones stuck in pastures.
+
+You can also use an expedition that needs a transport rover, make sure your other rovers aren't idle (moving around is enough).
 
 ### Fix FindDroneToRepair Log Spam
 

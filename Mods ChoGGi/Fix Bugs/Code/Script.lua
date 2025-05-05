@@ -8,17 +8,20 @@ local GetBuildingTechsStatus = GetBuildingTechsStatus
 local GetCity = GetCity
 local GetDomeAtPoint = GetDomeAtPoint
 local GetObjectHexGrid = GetObjectHexGrid
+local GetRandomPassableAround = GetRandomPassableAround
 local GetRandomPassableAroundOnMap = GetRandomPassableAroundOnMap
 local GetRealm = GetRealm
 local GetRealmByID = GetRealmByID
 local HexGetUnits = HexGetUnits
 local IsKindOf = IsKindOf
+local IsUnitInDome = IsUnitInDome
 local IsValid = IsValid
 local IsValidThread = IsValidThread
 local ResumePassEdits = ResumePassEdits
 local SuspendPassEdits = SuspendPassEdits
 local TestSunPanelRange = TestSunPanelRange
 local ValidateBuilding = ValidateBuilding
+local WorldToHex = WorldToHex
 
 --
 -- Fix for Silva's Orion Rocket mod (part 1/2, backing up the func he overrides)
@@ -346,11 +349,16 @@ do -- CityStart/LoadGame
 		-- If this is called on a save from before B&B (it does update, but after LoadGame)
 		local main_city = MainCity or UICity
 		local colony = UIColony or main_city
-
 		local main_realm = GetRealmByID(MainMapID)
-		local Cities = Cities
-		local const = const
 		local GameMaps = GameMaps
+		local Cities = Cities
+
+		local surface_map = GameMaps[colony.surface_map_id]
+		local surface_city = Cities[colony.surface_map_id]
+		local underground_map = GameMaps[UIColony.underground_map_id]
+		local underground_city = Cities[colony.underground_map_id]
+
+		local const = const
 		local ResupplyItemDefinitions = ResupplyItemDefinitions
 		local BuildingTemplates = BuildingTemplates
  		local CargoPreset = CargoPreset
@@ -358,6 +366,44 @@ do -- CityStart/LoadGame
 
 		-- Anything that only needs a specific event
 		if event == "LoadGame" then
+
+			--
+			-- Fix Rover In Dome
+			-- Checks on load for rovers stuck in domes (not open air ones).
+			-- Also fixes drones stuck in pastures.
+			-- No point in checking if domes have been opened
+			if not GetOpenAirBuildings(main_city.map_id) then
+				local dome_size = box(0, 0, 32000, 32000)
+				objs = GetCityLabels("BaseRover")
+				for i = 1, #objs do
+					local obj = objs[i]
+					local dome = IsUnitInDome(obj)
+					-- I've got a mod that lets you open domes individually
+					if dome and not dome.open_air then
+						local x, y = (dome:GetObjectBBox() or dome_size):sizexyz()
+						-- whichever is larger (the radius starts from the centre, so we only need half-size)
+						local radius = (x >= y and x or y) / 2
+						obj:SetPos(GetRandomPassableAround(dome, radius + 650, radius + 150))
+					end
+				end
+			end
+			-- Drones stuck in pastures
+			local ranch_size = box(0, 0, 4000, 4000)
+			objs = GetCityLabels("Drone")
+			for i = 1, #objs do
+				local obj = objs[i]
+				local q, r = WorldToHex(obj)
+				local map_id = obj:GetMapID()
+				local object_hex_grid = GameMaps[map_id].object_hex_grid
+				local ranch = object_hex_grid:GetObject(q, r, "Pasture")
+
+				if ranch then
+					local x, y = (ranch:GetObjectBBox() or ranch_size):sizexyz()
+					-- whichever is larger (the radius starts from the centre, so we only need half-size)
+					local radius = (x >= y and x or y) / 2
+					obj:SetPos(GetRandomPassableAround(ranch, radius + 650, radius + 150))
+				end
+			end
 
 			--
 			-- If you install Space Race DLC then Shuttle Hubs will disappear from build menu in existing saves.
@@ -452,10 +498,12 @@ do -- CityStart/LoadGame
 			--
 			-- Fix Destroyed Tunnels Still Work
 			-- Update path finding tunnels to stop rovers from using them
-			main_realm:MapForEach("map", "Tunnel", function(t)
-				t:RemovePFTunnel()
-				t:AddPFTunnel()
-			end)
+			objs = GetCityLabels("Tunnel")
+			for i = 1, #objs do
+				local obj = objs[i]
+				obj:RemovePFTunnel()
+				obj:AddPFTunnel()
+			end
 
 			--
 			-- If you removed modded rules from your current save then the Mission Profile dialog will be blank.
@@ -864,9 +912,9 @@ do -- CityStart/LoadGame
 		objs = GetCityLabels("SubsurfaceHeater")
 		if #objs == 0 then
 			CreateGameTimeThread(function()
-				-- When game isn't paused wait 5 secs and call it for main city (no cold areas underground?, eh can always do it later).
 				Sleep(5000)
-				GetGameMapByID(MainMapID).heat_grid:WaitLerpFinish()
+				-- When game isn't paused wait 5 secs and call it for main city (no cold areas underground?, eh can always do it later).
+				surface_map.heat_grid:WaitLerpFinish()
 			end)
 		end
 
@@ -1066,12 +1114,6 @@ do -- CityStart/LoadGame
 
 		--
 		if colony and colony.underground_map_unlocked then
-
-			local surface_map = GameMaps[colony.surface_map_id]
-			local underground_map = GameMaps[colony.underground_map_id]
-
-			--~ local surface_city = Cities[colony.surface_map_id]
-			local underground_city = Cities[colony.underground_map_id]
 
 			--
 			-- Two different fixes for colonists on the wrong map and crashing the game
