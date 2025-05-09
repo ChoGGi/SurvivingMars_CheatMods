@@ -1,3 +1,12 @@
+v2.3
+Show items in new game cargo menu.
+
+v2.2
+Restored RCs to cargo prefabs list (thanks Destroyer).
+
+v2.1
+New game screen was bugging out (thanks Sunvaulter82).
+
 v2.0
 Resupply can't be used to cheese tech unlock mod option anymore.
 

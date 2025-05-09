@@ -1,4 +1,2 @@
-g_CheatUnlockAllSponsorBuildings
-
 mod option for picking pod
 GetMissionSponsor()

@@ -1,14 +1,11 @@
 -- See LICENSE for terms
 
-local classes = {}
-local classes_c = 0
-
 -- local some globals
-local table = table
-local pairs = pairs
+local table, pairs = table, pairs
 local CleanupHexRanges = CleanupHexRanges
 local HideHexRanges = HideHexRanges
 local ShowBuildingHexes = ShowBuildingHexes
+local DoneObject = DoneObject
 local IsKindOfClasses = IsKindOfClasses
 local IsKindOf = IsKindOf
 local IsValid = IsValid
@@ -18,10 +15,9 @@ local HexGridGetObjects = HexGridGetObjects
 local WorldToHex = WorldToHex
 local InvalidPos = InvalidPos()
 
-local RGBtoColour = ChoGGi_Funcs.Common.RGBtoColour
+local RGBtoColour = ChoGGi.ComFuncs.RGBtoColour
+local RangeHexMultiSelectRadius_cls
 
--- mod options
-local options
 local mod_EnableGrid
 local mod_DistFromCursor
 local mod_ShowConSites
@@ -29,20 +25,17 @@ local mod_GridOpacity
 local mod_GridScale
 local mod_HexColour
 
-local function CleanList(list)
-	for i = #(list or ""), 1, -1 do
-		list[i]:delete()
-		table.remove(list, i)
-	end
-end
+local classes = {}
+local classes_c = 0
 
+-- Update mod options
 local function ModOptions(id)
 	-- id is from ApplyModOptions
 	if id and id ~= CurrentModId then
 		return
 	end
 
-	options = CurrentModOptions
+	local options = CurrentModOptions
 	mod_EnableGrid = options:GetProperty("Option1")
 	mod_DistFromCursor = options:GetProperty("DistFromCursor") * 1000
 	mod_ShowConSites = options:GetProperty("ShowConSites")
@@ -56,16 +49,9 @@ local function ModOptions(id)
 		classes_c = classes_c + 1
 		classes[classes_c] = "ConstructionSite"
 	elseif not mod_ShowConSites and idx then
-		classes_c = classes_c - 1
 		table.remove(classes, idx)
+		classes_c = #classes
 	end
-end
-
-local RangeHexMultiSelectRadius_cls
-
--- Load default/saved settings
-function OnMsg.ModsReloaded()
-	ModOptions()
 
 	-- build dust list in ModsReloaded for modded buildings
 	-- modoptions fires first and may add ConstructionSite
@@ -74,31 +60,30 @@ function OnMsg.ModsReloaded()
 
 		local g_Classes = g_Classes
 
+		local skip_pods = {
+			ArkPod = true,
+			DropPod = true,
+			SupplyPod = true,
+		}
 		-- dust gens and rockets, but not supply pods
 		local BuildingTemplates = BuildingTemplates
 		for id in pairs(BuildingTemplates) do
 			local o = g_Classes[id]
-			if o and o.GetDustRadius and not o:IsKindOf("RocketBase") then
+			if o and o.GetDustRadius and not skip_pods[o.class] then
 				classes_c = classes_c + 1
 				classes[classes_c] = id
 			end
 		end
-		-- no need to add all the diff rockets, just the base class'll do (or not since Tito update...)
+		-- custom
 		classes_c = classes_c + 1
-		classes[classes_c] = "SupplyRocket"
-		classes_c = classes_c + 1
-		classes[classes_c] = "RocketExpedition"
-		classes_c = classes_c + 1
-		classes[classes_c] = "TradeRocket"
-		classes_c = classes_c + 1
-		classes[classes_c] = "RocketBase"
-		classes_c = classes_c + 1
-		classes[classes_c] = "SupplyRocketBuilding"
+		classes[classes_c] = "LanderRocketBase"
 	end
+
 end
+-- Load default/saved settings
+OnMsg.ModsReloaded = ModOptions
 -- Fired when Mod Options>Apply button is clicked
 OnMsg.ApplyModOptions = ModOptions
-
 
 local function ShowBuildingHexesSite(bld, is_rocket)
 	if not bld.destroyed then
@@ -142,7 +127,7 @@ local grids_visible
 local function ShowGrids()
 	SuspendPassEdits("ChoGGi.CursorBuilding.GameInit.Construction Show Dust Grid")
 
-	local object_hex_grid = ActiveGameMap.object_hex_grid.grid
+	local ObjectGrid = ActiveGameMap.object_hex_grid.grid
 	local labels = UICity.labels
 	for i = 1, classes_c do
 		local objs = labels[classes[i]] or ""
@@ -161,7 +146,7 @@ local function ShowGrids()
 					local landing_site
 					if is_rocket then
 						local q, r = WorldToHex(obj:GetPos())
-						local objs = HexGridGetObjects(object_hex_grid, q, r)
+						local objs = HexGridGetObjects(ObjectGrid, q, r)
 						-- only actual rockets have a .landing_site so we need to check the obj grid for a pad
 						for k = 1, #objs do
 							if objs[k]:IsKindOf("LandingPad") then
@@ -213,6 +198,7 @@ local function ShowGrids()
 	ResumePassEdits("ChoGGi.CursorBuilding.GameInit.Construction Show Dust Grid")
 	grids_visible = true
 end
+
 local function HideGrids()
 	SuspendPassEdits("ChoGGi.CursorBuilding.Done.Construction Show Dust Grid")
 
@@ -225,7 +211,10 @@ local function HideGrids()
 	local g_HexRanges = g_HexRanges
 	for obj1, obj2 in pairs(g_HexRanges) do
 		if not IsValid(obj1) then
-			CleanList(obj2)
+			for i = #(obj2 or ""), 1, -1 do
+				DoneObject(obj2[i])
+				table.remove(obj2, i)
+			end
 			g_HexRanges[obj1] = nil
 		end
 	end
@@ -235,19 +224,19 @@ local function HideGrids()
 end
 
 -- add grid hexes
-local ChoOrig_CursorBuilding_GameInit = CursorBuilding.GameInit
+local orig_CursorBuilding_GameInit = CursorBuilding.GameInit
 function CursorBuilding.GameInit(...)
-	ChoOrig_CursorBuilding_GameInit(...)
+	orig_CursorBuilding_GameInit(...)
 	if mod_EnableGrid then
 		ShowGrids()
 	end
 end
 
 -- update visibility
-local ChoOrig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
+local orig_CursorBuilding_UpdateShapeHexes = CursorBuilding.UpdateShapeHexes
 function CursorBuilding:UpdateShapeHexes(...)
 	if not (mod_EnableGrid or self.template:IsKindOf("RequiresMaintenance")) then
-		return ChoOrig_CursorBuilding_UpdateShapeHexes(self, ...)
+		return orig_CursorBuilding_UpdateShapeHexes(self, ...)
 	end
 
 	local range_limit = mod_DistFromCursor > 0 and mod_DistFromCursor
@@ -282,13 +271,13 @@ function CursorBuilding:UpdateShapeHexes(...)
 	end
 	ResumePassEdits("ChoGGi.CursorBuilding.UpdateShapeHexes.Construction Show Dust Grid")
 
-	return ChoOrig_CursorBuilding_UpdateShapeHexes(self, ...)
+	return orig_CursorBuilding_UpdateShapeHexes(self, ...)
 end
 
-local ChoOrig_CursorBuilding_Done = CursorBuilding.Done
+local orig_CursorBuilding_Done = CursorBuilding.Done
 function CursorBuilding.Done(...)
 	HideGrids()
-	return ChoOrig_CursorBuilding_Done(...)
+	return orig_CursorBuilding_Done(...)
 end
 
 -- add keybind for toggle

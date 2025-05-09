@@ -36,6 +36,20 @@ local tech_to_building = {
 	DustRepulsion = "SolarArray",
 	Arcology = "Temple",
 }
+-- Not locked behind tech
+local always_unlock = {
+	AutomaticMetalsExtractor = true,
+	ConcretePlant = true,
+	MetalsRefinery = true,
+	RareMetalsRefinery = true,
+	TaiChiGarden = true,
+	-- ResupplyItemDefinitions doesn't use "Building"
+	RCConstructor = true,
+	RCDriller = true,
+	RCHarvester = true,
+	RCSensor = true,
+	RCSolar = true,
+}
 
 local table = table
 local IsTechResearched = IsTechResearched
@@ -61,6 +75,8 @@ end
 
 -- Set what shows up in resupply dialog (rockets)
 local function UpdateCargoDefs()
+	local ingame = UIColony
+
 	local defs = ResupplyItemDefinitions
 	for i = 1, #defs do
 		local def = defs[i]
@@ -70,18 +86,20 @@ local function UpdateCargoDefs()
 			name = name .. "Building"
 		end
 
-		local mod_option = mod_options["ChoGGi_" .. name]
+		local unlocked_building = mod_options["ChoGGi_" .. name]
 
-		if mod_option and mod_options["ChoGGi_Tech_" .. name] then
+		if unlocked_building
+			and (always_unlock[name] or mod_options["ChoGGi_Tech_" .. name])
+		then
 			-- If tech researched than unlock
 			local tech_id = building_to_tech[name]
-			if IsTechResearched(tech_id) then
+			if always_unlock[name] or ingame and IsTechResearched(tech_id) then
 				def.locked = false
 			else
 				-- update for in-session games
 				def.locked = true
 			end
-		elseif mod_option then
+		elseif unlocked_building then
 			def.locked = false
 		end
 		--
@@ -89,10 +107,19 @@ local function UpdateCargoDefs()
 	--
 end
 
+local ChoOrig_GetMissionInitialLoadout = GetMissionInitialLoadout
+function GetMissionInitialLoadout(pregame, ...)
+	local items = ChoOrig_GetMissionInitialLoadout(pregame, ...)
+	if pregame then
+		UpdateCargoDefs()
+	end
+	return items
+end
+
 function OnMsg.TechResearched(tech_id)
 	local building_id = tech_to_building[tech_id]
 	if not building_id then
-		print("return", tech_id)
+--~ 		print("return", tech_id)
 		return
 	end
 
