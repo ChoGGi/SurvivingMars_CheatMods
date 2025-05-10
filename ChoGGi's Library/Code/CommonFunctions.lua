@@ -540,6 +540,14 @@ local function IsValidXWin(win)
 end
 ChoGGi_Funcs.Common.IsValidXWin = IsValidXWin
 
+-- Copied in Fix Bugs
+function ChoGGi_Funcs.Common.GetCityLabels(label)
+	local UIColony = UIColony
+	local labels = UIColony and UIColony.city_labels.labels or UICity.labels
+	return labels[label] or empty_table
+end
+local GetCityLabels = ChoGGi_Funcs.Common.GetCityLabels
+
 function ChoGGi_Funcs.Common.RetIcon(obj)
 	-- most icons
 	if obj.display_icon and obj.display_icon ~= "" then
@@ -1354,7 +1362,7 @@ end
 
 -- check for and remove broken objects from *city.labels
 function ChoGGi_Funcs.Common.RemoveMissingLabelObjects(label)
-	local list = UIColony:GetCityLabels(label)
+	local list = GetCityLabels(label)
 	for i = #list, 1, -1 do
 		if not IsValid(list[i]) then
 			table.remove(city.labels[label], i)
@@ -1380,7 +1388,7 @@ function ChoGGi_Funcs.Common.RemoveMissingTableObjects(list, obj)
 end
 
 function ChoGGi_Funcs.Common.RemoveFromLabel(label, obj)
-	local list = UIColony:GetCityLabels(label)
+	local list = GetCityLabels(label)
 	for i = #list, 1, -1 do
 		if list[i] and list[i].handle and list[i] == obj.handle then
 			table.remove(city.labels[label], i)
@@ -2750,7 +2758,7 @@ local GetAllAttaches = ChoGGi_Funcs.Common.GetAllAttaches
 -- I've seen better func names
 local function MapGet_ChoGGi(label, area, city, ...)
 	local objs = (city or UICity).labels[label] or {}
---~ 	local objs = UIColony:GetCityLabels(label)
+--~ 	local objs = GetCityLabels(label)
 	if #objs == 0 then
 		local g_cls = g_Classes[label]
 		-- If it isn't in g_Classes and isn't a CObject then MapGet will return *everything* (think gary oldman in professional)
@@ -6454,7 +6462,7 @@ function ChoGGi_Funcs.Common.StrToBox(text)
 end
 
 function ChoGGi_Funcs.Common.ResetHumanCentipedes()
-	local objs = UIColony:GetCityLabels("Colonist")
+	local objs = GetCityLabels("Colonist")
 	for i = 1, #objs do
 		local obj = objs[i]
 		-- only need to do people walking outside (pathing issue), and if they don't have a path (not moving or walking into an invis wall)
@@ -8474,13 +8482,6 @@ function ChoGGi_Funcs.Common.OpenIn3DManipulatorDlg(obj, parent)
 		obj = obj,
 		parent = parent,
 	})
-end
-
--- Copied in Fix Bugs
-function ChoGGi_Funcs.Common.GetCityLabels(label)
-	local UIColony = UIColony
-	local labels = UIColony and UIColony.city_labels.labels or UICity.labels
-	return labels[label] or empty_table
 end
 
 -- lua rev 1011166

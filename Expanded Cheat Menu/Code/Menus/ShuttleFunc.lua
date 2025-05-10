@@ -4,11 +4,13 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
-local ChoGGi_Funcs = ChoGGi_Funcs
 local tostring, type = tostring, type
 local T = T
+
+local ChoGGi_Funcs = ChoGGi_Funcs
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 local Translate = ChoGGi_Funcs.Common.Translate
+local GetCityLabels = ChoGGi_Funcs.Common.GetCityLabels
 
 function ChoGGi_Funcs.Menus.SetShuttleCapacity()
 	local r = const.ResourceScale
@@ -49,7 +51,7 @@ function ChoGGi_Funcs.Menus.SetShuttleCapacity()
 			ChoGGi_Funcs.Settings.WriteSettings()
 
 			-- loop through and set all shuttles
-			local objs = UIColony:GetCityLabels("CargoShuttle")
+			local objs = GetCityLabels("CargoShuttle")
 			for i = 1, #objs do
 				objs[i].max_shared_storage = value
 			end
@@ -102,7 +104,7 @@ function ChoGGi_Funcs.Menus.SetShuttleSpeed()
 		if type(value) == "number" then
 			local value = value * ScaleStat
 			-- loop through and set all shuttles
-			local objs = UIColony:GetCityLabels("CargoShuttle")
+			local objs = GetCityLabels("CargoShuttle")
 			for i = 1, #objs do
 				objs[i]:SetBase("move_speed", value)
 			end
@@ -160,7 +162,7 @@ function ChoGGi_Funcs.Menus.SetShuttleHubShuttleCapacity()
 		local value = choice.value
 		if type(value) == "number" then
 			-- loop through and set all shuttles
-			local objs = UIColony:GetCityLabels("ShuttleHub")
+			local objs = GetCityLabels("ShuttleHub")
 			for i = 1, #objs do
 				objs[i].max_shuttles = value
 			end

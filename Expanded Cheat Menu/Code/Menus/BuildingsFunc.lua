@@ -4,13 +4,15 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
-local ChoGGi_Funcs = ChoGGi_Funcs
 local table = table
+local T = T
+
+local ChoGGi_Funcs = ChoGGi_Funcs
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 local RetName = ChoGGi_Funcs.Common.RetName
-local T = T
 local Translate = ChoGGi_Funcs.Common.Translate
 local RetTemplateOrClass = ChoGGi_Funcs.Common.RetTemplateOrClass
+local GetCityLabels = ChoGGi_Funcs.Common.GetCityLabels
 
 function ChoGGi_Funcs.Menus.RemoveRealmLimits_Toggle()
 	ChoGGi.UserSettings.RemoveRealmLimits = ChoGGi_Funcs.Common.ToggleValue(ChoGGi.UserSettings.RemoveRealmLimits)
@@ -496,7 +498,7 @@ function ChoGGi_Funcs.Menus.SetSpaceElevatorTransferAmount(action)
 				setting[setting_name] = value
 			end
 
-			local objs = UIColony:GetCityLabels("SpaceElevator")
+			local objs = GetCityLabels("SpaceElevator")
 			for i = 1, #objs do
 				ChoGGi_Funcs.Common.SetTaskReqAmount(objs[i], value, "export_request", setting_name)
 			end
@@ -599,7 +601,7 @@ function ChoGGi_Funcs.Menus.AlwaysDustyBuildings_Toggle()
 	if ChoGGi.UserSettings.AlwaysDustyBuildings then
 		ChoGGi.UserSettings.AlwaysDustyBuildings = nil
 		-- dust clean up
-		local objs = UIColony:GetCityLabels("Building")
+		local objs = GetCityLabels("Building")
 		for i = 1, #objs do
 			objs[i].ChoGGi_AlwaysDust = nil
 		end
@@ -627,8 +629,8 @@ function ChoGGi_Funcs.Menus.AlwaysCleanBuildings_Toggle()
 		ChoGGi.UserSettings.AlwaysCleanBuildings = nil
 	else
 		ChoGGi.UserSettings.AlwaysCleanBuildings = true
-		DustCleanUp(UIColony:GetCityLabels("Building"))
-		DustCleanUp(UIColony:GetCityLabels("GridElements"))
+		DustCleanUp(GetCityLabels("Building"))
+		DustCleanUp(GetCityLabels("GridElements"))
 	end
 
 	ChoGGi_Funcs.Settings.WriteSettings()
@@ -958,7 +960,7 @@ function ChoGGi_Funcs.Menus.SetMaxChangeOrDischarge()
 
 			-- updating time
 			if cap_type == "electricity" then
-				local objs = UIColony:GetCityLabels("Power")
+				local objs = GetCityLabels("Power")
 				for i = 1, #objs do
 					local o = objs[i]
 					if RetTemplateOrClass(o) == id then
@@ -974,7 +976,7 @@ function ChoGGi_Funcs.Menus.SetMaxChangeOrDischarge()
 					end
 				end
 			else -- water and air
-				local objs = UIColony:GetCityLabels("Life-Support")
+				local objs = GetCityLabels("Life-Support")
 				for i = 1, #objs do
 					local o = objs[i]
 					if RetTemplateOrClass(o) == id then
@@ -1021,7 +1023,7 @@ function ChoGGi_Funcs.Menus.SetMaxChangeOrDischarge()
 end
 
 function ChoGGi_Funcs.Menus.FarmShiftsAllOn()
-	local objs = UIColony:GetCityLabels("BaseFarm")
+	local objs = GetCityLabels("BaseFarm")
 	for i = 1, #objs do
 		local obj = objs[i]
 		obj.closed_shifts[1] = false
@@ -1029,7 +1031,7 @@ function ChoGGi_Funcs.Menus.FarmShiftsAllOn()
 		obj.closed_shifts[3] = false
 	end
 	--BaseFarm doesn't include FungalFarm...
-	objs = UIColony:GetCityLabels("FungalFarm")
+	objs = GetCityLabels("FungalFarm")
 	for i = 1, #objs do
 		local obj = objs[i]
 		obj.closed_shifts[1] = false
@@ -1373,7 +1375,7 @@ function ChoGGi_Funcs.Menus.MaintenanceFreeBuildingsInside_Toggle()
 
 	local inside_main = ChoGGi.UserSettings.InsideBuildingsNoMaintenance
 
-	local objs = UIColony:GetCityLabels("InsideBuildings")
+	local objs = GetCityLabels("InsideBuildings")
 	for i = 1, #objs do
 		local obj = objs[i]
 		if obj:IsKindOf("RequiresMaintenance") then
@@ -1401,7 +1403,7 @@ function ChoGGi_Funcs.Menus.MaintenanceFreeBuildings_Toggle()
 	ChoGGi.UserSettings.RemoveMaintenanceBuildUp = ChoGGi_Funcs.Common.ToggleValue(ChoGGi.UserSettings.RemoveMaintenanceBuildUp)
 
 	local remove_build = ChoGGi.UserSettings.RemoveMaintenanceBuildUp
-	local objs = UIColony:GetCityLabels("Building")
+	local objs = GetCityLabels("Building")
 	for i = 1, #objs do
 		local obj = objs[i]
 		if obj:IsKindOf("RequiresMaintenance") then

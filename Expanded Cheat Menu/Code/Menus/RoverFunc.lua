@@ -4,11 +4,13 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
-local ChoGGi_Funcs = ChoGGi_Funcs
 local type = type
 local T = T
+
+local ChoGGi_Funcs = ChoGGi_Funcs
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 local Translate = ChoGGi_Funcs.Common.Translate
+local GetCityLabels = ChoGGi_Funcs.Common.GetCityLabels
 --~	local RetName = ChoGGi_Funcs.Common.RetName
 
 function ChoGGi_Funcs.Menus.SetRoverChargeRadius()
@@ -101,7 +103,7 @@ function ChoGGi_Funcs.Menus.SetRCMoveSpeed()
 		local value = choice.value
 		if type(value) == "number" then
 			ChoGGi_Funcs.Common.SetSavedConstSetting("SpeedRC", value)
-			local objs = UIColony:GetCityLabels("Rover")
+			local objs = GetCityLabels("Rover")
 			for i = 1, #objs do
 				objs[i]:SetBase("move_speed", value)
 			end
@@ -176,7 +178,7 @@ function ChoGGi_Funcs.Menus.SetRCTransportStorageCapacity()
 
 			-- loop through and set all
 			if UIColony then
-				local label = UIColony:GetCityLabels("RCTransportAndChildren")
+				local label = GetCityLabels("RCTransportAndChildren")
 				for i = 1, #label do
 					local rc = label[i]
 					if default and rc:IsKindOf("RCConstructor") then

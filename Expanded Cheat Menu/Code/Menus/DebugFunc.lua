@@ -4,15 +4,17 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
-local ChoGGi_Funcs = ChoGGi_Funcs
 local pairs, type, tostring, table = pairs, type, tostring, table
 local IsValid = IsValid
 local GetCursorWorldPos = GetCursorWorldPos
 local T = T
+
+local ChoGGi_Funcs = ChoGGi_Funcs
 local Translate = ChoGGi_Funcs.Common.Translate
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 local RetName = ChoGGi_Funcs.Common.RetName
 local RandomColour = ChoGGi_Funcs.Common.RandomColour
+local GetCityLabels = ChoGGi_Funcs.Common.GetCityLabels
 
 function ChoGGi_Funcs.Menus.StoryBitLog_Toggle()
 	ChoGGi.UserSettings.StoryBitLogPrints = not ChoGGi.UserSettings.StoryBitLogPrints
@@ -834,15 +836,15 @@ function ChoGGi_Funcs.Menus.TestStoryBits()
 
 		local obj
 		if choice.check1 then
-			obj = table.rand(UIColony:GetCityLabels("Building"))
+			obj = table.rand(GetCityLabels("Building"))
 		elseif choice.check2 then
-			obj = table.rand(UIColony:GetCityLabels("Dome"))
+			obj = table.rand(GetCityLabels("Dome"))
 		elseif choice.check3 then
-			obj = table.rand(UIColony:GetCityLabels("Colonist"))
+			obj = table.rand(GetCityLabels("Colonist"))
 		elseif choice.check4 then
-			obj = table.rand(UIColony:GetCityLabels("Drone"))
+			obj = table.rand(GetCityLabels("Drone"))
 		elseif choice.check5 then
-			obj = table.rand(UIColony:GetCityLabels("Rover"))
+			obj = table.rand(GetCityLabels("Rover"))
 		elseif choice.check6 then
 			obj = SelectedObj
 		end

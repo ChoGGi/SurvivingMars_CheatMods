@@ -4,14 +4,16 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
-local ChoGGi_Funcs = ChoGGi_Funcs
 local type, tostring = type, tostring
+local T = T
+
+local ChoGGi_Funcs = ChoGGi_Funcs
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 local RetName = ChoGGi_Funcs.Common.RetName
 local RetTemplateOrClass = ChoGGi_Funcs.Common.RetTemplateOrClass
 local RetObjectCapAndGrid = ChoGGi_Funcs.Common.RetObjectCapAndGrid
-local T = T
 local Translate = ChoGGi_Funcs.Common.Translate
+local GetCityLabels = ChoGGi_Funcs.Common.GetCityLabels
 
 function ChoGGi_Funcs.Menus.StorageMechanizedDepotsTemp_Toggle()
 	ChoGGi.UserSettings.StorageMechanizedDepotsTemp = ChoGGi_Funcs.Common.ToggleValue(ChoGGi.UserSettings.StorageMechanizedDepotsTemp)
@@ -21,7 +23,7 @@ function ChoGGi_Funcs.Menus.StorageMechanizedDepotsTemp_Toggle()
 		amount = 5
 	end
 	local SetMechanizedDepotTempAmount = ChoGGi_Funcs.Common.SetMechanizedDepotTempAmount
-	local objs = UIColony:GetCityLabels("MechanizedDepots")
+	local objs = GetCityLabels("MechanizedDepots")
 	for i = 1, #objs do
 		SetMechanizedDepotTempAmount(objs[i], amount)
 	end
@@ -85,7 +87,7 @@ function ChoGGi_Funcs.Menus.SetWorkerCapacity()
 		local value = choice[1].value
 		if type(value) == "number" then
 
-			local objs = UIColony:GetCityLabels("Workplace")
+			local objs = GetCityLabels("Workplace")
 			for i = 1, #objs do
 				local o = objs[i]
 				if RetTemplateOrClass(o) == id then
@@ -204,7 +206,7 @@ function ChoGGi_Funcs.Menus.SetBuildingCapacity()
 			-- updating time
 			if cap_type == "electricity" then
 				local ToggleWorking = ChoGGi_Funcs.Common.ToggleWorking
-				local objs = UIColony:GetCityLabels("Power")
+				local objs = GetCityLabels("Power")
 				for i = 1, #objs do
 					local o = objs[i]
 					if RetTemplateOrClass(o) == id then
@@ -217,7 +219,7 @@ function ChoGGi_Funcs.Menus.SetBuildingCapacity()
 				end
 
 			elseif cap_type == "colonist" then
-				local objs = UIColony:GetCityLabels("Residence")
+				local objs = GetCityLabels("Residence")
 				for i = 1, #objs do
 					local o = objs[i]
 					if RetTemplateOrClass(o) == id then
@@ -228,7 +230,7 @@ function ChoGGi_Funcs.Menus.SetBuildingCapacity()
 			else -- water and air
 				local ToggleWorking = ChoGGi_Funcs.Common.ToggleWorking
 				local cap_name = cap_type .. "_capacity"
-				local objs = UIColony:GetCityLabels("Life-Support")
+				local objs = GetCityLabels("Life-Support")
 				for i = 1, #objs do
 					local o = objs[i]
 					if RetTemplateOrClass(o) == id then
@@ -307,7 +309,7 @@ function ChoGGi_Funcs.Menus.SetVisitorCapacity()
 		end
 		local value = choice[1].value
 		if type(value) == "number" then
-			local objs = UIColony:GetCityLabels("BuildingNoDomes")
+			local objs = GetCityLabels("BuildingNoDomes")
 			for i = 1, #objs do
 				local o = objs[i]
 				if RetTemplateOrClass(o) == id then
@@ -378,7 +380,7 @@ function ChoGGi_Funcs.Menus.SetStorageDepotSize(action)
 			if bld_type == "StorageWasteDepot" then
 				-- loop through and change all existing
 
-				local objs = UIColony:GetCityLabels("WasteRockDumpSite")
+				local objs = GetCityLabels("WasteRockDumpSite")
 				for i = 1, #objs do
 					local o = objs[i]
 					o.max_amount_WasteRock = value
@@ -389,7 +391,7 @@ function ChoGGi_Funcs.Menus.SetStorageDepotSize(action)
 				end
 
 			elseif bld_type == "StorageOtherDepot" then
-				local objs = UIColony:GetCityLabels("UniversalStorageDepot")
+				local objs = GetCityLabels("UniversalStorageDepot")
 				for i = 1, #objs do
 					local o = objs[i]
 					if o.template_name ~= "UniversalStorageDepot" then
@@ -397,11 +399,11 @@ function ChoGGi_Funcs.Menus.SetStorageDepotSize(action)
 					end
 				end
 
-				objs = UIColony:GetCityLabels("MysteryDepot")
+				objs = GetCityLabels("MysteryDepot")
 				for i = 1, #objs do
 					objs[i].max_storage_per_resource = value
 				end
-				objs = UIColony:GetCityLabels("BlackCubeDumpSite")
+				objs = GetCityLabels("BlackCubeDumpSite")
 				for i = 1, #objs do
 					objs[i].max_amount_BlackCube = value
 				end
@@ -410,7 +412,7 @@ function ChoGGi_Funcs.Menus.SetStorageDepotSize(action)
 				end
 
 			elseif bld_type == "StorageUniversalDepot" then
-				local objs = UIColony:GetCityLabels("UniversalStorageDepot")
+				local objs = GetCityLabels("UniversalStorageDepot")
 				for i = 1, #objs do
 					local o = objs[i]
 					if o.template_name == "UniversalStorageDepot" then
@@ -422,7 +424,7 @@ function ChoGGi_Funcs.Menus.SetStorageDepotSize(action)
 				end
 
 			elseif bld_type == "StorageMechanizedDepot" then
-				local objs = UIColony:GetCityLabels("MechanizedDepots")
+				local objs = GetCityLabels("MechanizedDepots")
 				for i = 1, #objs do
 					objs[i].max_storage_per_resource = value
 				end

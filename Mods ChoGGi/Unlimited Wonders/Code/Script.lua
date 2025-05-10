@@ -59,14 +59,20 @@ function LaunchCargoRocket(obj, func_on_launch, ...)
 		if mode == "elevator" then
 --~ 			assert(city.labels.SpaceElevator and #city.labels.SpaceElevator > 0)
 --~ 			city.labels.SpaceElevator[1]:OrderResupply(cargo, cost)
-			local objs = city.labels.SpaceElevator or empty_table
-			-- We know [1] works thanks to XTemplate
-			local viable = objs[1]
-			-- No point in comparing [1]
-			for i = 1, #objs do
-				local obj = objs[i]
-				if obj.working and #obj.import_queue < #viable.import_queue then
-					viable = obj
+--~ 			local objs = city.labels.SpaceElevator or empty_table
+			local objs = UIColony:GetCityLabels("SpaceElevator")
+--~ 			-- We know [1] works thanks to XTemplate
+--~ 			local viable = objs[1]
+			local viable_idx = table.find(objs, "working", true)
+			local viable
+			if viable_idx then
+				viable = objs[viable_idx]
+				-- Pick whatever has a smaller queue, not great if you have one in underground, but eh...
+				for i = 1, #objs do
+					local obj = objs[i]
+					if obj.working and #obj.import_queue < #viable.import_queue then
+						viable = obj
+					end
 				end
 			end
 			if viable then
@@ -111,4 +117,21 @@ function ConstructionModeDialog.TryCloseAfterPlace(...)
 	end
 
 	return TryCloseAfterPlace(...)
+end
+
+
+
+-- Show elevator in resupply if first built one isn't working
+function OnMsg.ClassesPostprocess()
+	-- [1], [3]Id = "idContent", [4]XTemplateWindow, [2]Id = "idList", [3]Id = "idElevator"
+	local template = XTemplates.ResupplyCategories[1][3][4][2][3]
+
+	template.__condition = function(parent, context)
+		-- I assume this is an in-game check
+		if not MainCity then
+			return
+		end
+		return table.find(UIColony:GetCityLabels("SpaceElevator"), "working", true)
+	end
+
 end

@@ -13,7 +13,6 @@ local OnMsg = OnMsg
 local IsKindOf = IsKindOf
 local CreateRealTimeThread = CreateRealTimeThread
 local T = T
-local Translate = ChoGGi_Funcs.Common.Translate
 
 -- no sense in localing it, but I keep forgetting the name...
 local ClassDescendantsList = ClassDescendantsList
@@ -24,6 +23,8 @@ local AttachToNearestDome = ChoGGi_Funcs.Common.AttachToNearestDome
 local IsValidXWin = ChoGGi_Funcs.Common.IsValidXWin
 local UpdateDepotCapacity = ChoGGi_Funcs.Common.UpdateDepotCapacity
 local IsUniversalStorageDepot = ChoGGi_Funcs.Common.IsUniversalStorageDepot
+local Translate = ChoGGi_Funcs.Common.Translate
+local GetCityLabels = ChoGGi_Funcs.Common.GetCityLabels
 
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
@@ -993,7 +994,7 @@ function OnMsg.NewDay() -- NewSol...
 
 	-- sorts cc list by dist to building
 	if ChoGGi.UserSettings.SortCommandCenterDist then
-		local objs = UIColony:GetCityLabels("Building")
+		local objs = GetCityLabels("Building")
 		for i = 1, #objs do
 			local obj = objs[i]
 			-- no sense in doing it with only one center
@@ -1019,7 +1020,7 @@ function OnMsg.NewDay() -- NewSol...
 		end
 	end
 
-	local objs = UIColony:GetCityLabels("ChoGGi_InsideForcedOutDome")
+	local objs = GetCityLabels("ChoGGi_InsideForcedOutDome")
 	for i = #objs, 1, -1 do
 		local obj = objs[i]
 		-- got removed or something
@@ -1046,7 +1047,7 @@ function OnMsg.NewHour()
 		local FuckingDrones = ChoGGi_Funcs.Common.FuckingDrones
 
 		-- Hey. Do I preach at you when you're lying stoned in the gutter? No!
-		local prods = UIColony:GetCityLabels("ResourceProducer")
+		local prods = GetCityLabels("ResourceProducer")
 		for i = 1, #prods do
 			local prod = prods[i]
 			-- Most are fine with GetProducerObj, but some like water extractor don't have one
@@ -1061,7 +1062,7 @@ function OnMsg.NewHour()
 			end
 		end
 
-		prods = UIColony:GetCityLabels("BlackCubeStockpiles")
+		prods = GetCityLabels("BlackCubeStockpiles")
 		for i = 1, #prods do
 			local obj = prods[i]
 			if obj:GetStoredAmount() > 1000 then

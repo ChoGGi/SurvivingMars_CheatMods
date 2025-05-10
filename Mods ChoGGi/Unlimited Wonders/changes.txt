@@ -1,3 +1,6 @@
+v0.6
+Resupply screen will display if any Space Elevators are working instead of first built.
+
 v0.5
 Space Elevators weren't queuing cargo (thanks ZaGRAmY).
 

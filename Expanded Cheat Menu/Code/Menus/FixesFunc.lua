@@ -4,18 +4,20 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
-local ChoGGi_Funcs = ChoGGi_Funcs
 local table = table
 local pairs, type = pairs, type
 local Sleep = Sleep
 local IsValid = IsValid
 local T = T
+
+local ChoGGi_Funcs = ChoGGi_Funcs
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 local DeleteObject = ChoGGi_Funcs.Common.DeleteObject
 local ToggleWorking = ChoGGi_Funcs.Common.ToggleWorking
 local SpawnColonist = ChoGGi_Funcs.Common.SpawnColonist
 local FindNearestObject = FindNearestObject
 local Translate = ChoGGi_Funcs.Common.Translate
+local GetCityLabels = ChoGGi_Funcs.Common.GetCityLabels
 
 local testing = ChoGGi.testing
 
@@ -37,7 +39,7 @@ function ChoGGi_Funcs.Menus.RemoveInvalidLabelObjects()
 end
 
 function ChoGGi_Funcs.Menus.RocketCrashesGameOnLanding()
-	local rockets = UIColony:GetCityLabels("SupplyRocket")
+	local rockets = GetCityLabels("SupplyRocket")
 	for i = 1, #rockets do
 		rockets[i]:ForEachAttach("ParSystem", function(a)
 			if type(a.polyline) == "string" and a.polyline:find("\0") then
@@ -88,7 +90,7 @@ do -- DronesNotRepairingDome
 				end
 				count = count + 1
 
-				local domes = UIColony:GetCityLabels("Domes")
+				local domes = GetCityLabels("Domes")
 				for i = 1, #domes do
 					local dome = domes[i]
 					-- get a list of all res in the center of dome
@@ -184,7 +186,7 @@ end
 function ChoGGi_Funcs.Menus.ResetAllColonists()
 	local function CallBackFunc(answer)
 		if answer then
-			local objs = UIColony:GetCityLabels("Colonist")
+			local objs = GetCityLabels("Colonist")
 			for i = 1, #objs do
 				local c = objs[i]
 				local city = Cities[ChoGGi_Funcs.Common.RetObjMapId(c)]
@@ -206,8 +208,8 @@ function ChoGGi_Funcs.Menus.ResetAllColonists()
 end
 
 function ChoGGi_Funcs.Menus.ColonistsTryingToBoardRocketFreezesGame()
-	local rockets = UIColony:GetCityLabels("SupplyRocket")
-	local objs = UIColony:GetCityLabels("Colonist")
+	local rockets = GetCityLabels("SupplyRocket")
+	local objs = GetCityLabels("Colonist")
 	for i = 1, #objs do
 		local c = objs[i]
 		local is_valid = IsValid(c)
@@ -237,7 +239,7 @@ local function AttachedColonist(c, pos, rocket, city)
 end
 function ChoGGi_Funcs.Menus.ColonistsStuckOutsideRocket()
 	local InvalidPos = ChoGGi.Consts.InvalidPos
-	local rockets = UIColony:GetCityLabels("SupplyRocket")
+	local rockets = GetCityLabels("SupplyRocket")
 	for i = 1, #rockets do
 		local rocket = rockets[i]
 		-- SupplyRocket also returns rockets in space
@@ -323,7 +325,7 @@ end
 function ChoGGi_Funcs.Menus.StutterWithHighFPS()
 	local CheckForBorkedTransportPath = ChoGGi_Funcs.Common.CheckForBorkedTransportPath
 	local bad_objs = {}
-	local objs = UIColony:GetCityLabels("Unit")
+	local objs = GetCityLabels("Unit")
 	for i = 1, #objs do
 		CheckForBorkedTransportPath(objs[i], bad_objs)
 	end
@@ -445,7 +447,7 @@ function ChoGGi_Funcs.Menus.RemoveBlueGridMarks()
 end
 
 function ChoGGi_Funcs.Menus.ProjectMorpheusRadarFellDown()
-	local objs = UIColony:GetCityLabels("ProjectMorpheus")
+	local objs = GetCityLabels("ProjectMorpheus")
 	for i = 1, #objs do
 		objs[i]:ChangeWorkingStateAnim(false)
 		objs[i]:ChangeWorkingStateAnim(true)
@@ -468,7 +470,7 @@ function ChoGGi_Funcs.Menus.RebuildWalkablePointsInDomes()
 end
 
 function ChoGGi_Funcs.Menus.AttachBuildingsToNearestWorkingDome()
-	local objs = UIColony:GetCityLabels("InsideBuildings")
+	local objs = GetCityLabels("InsideBuildings")
 	for i = 1, #objs do
 		ChoGGi_Funcs.Common.AttachToNearestDome(objs[i])
 	end
@@ -480,7 +482,7 @@ function ChoGGi_Funcs.Menus.AttachBuildingsToNearestWorkingDome()
 end
 
 function ChoGGi_Funcs.Menus.ColonistsFixBlackCube()
-	local objs = UIColony:GetCityLabels("Colonist")
+	local objs = GetCityLabels("Colonist")
 	for i = 1, #objs do
 		local c = objs[i]
 		if c:GetEntity():find("Child") and c.specialist ~= "none" then
@@ -620,7 +622,7 @@ end
 
 -- ------------------------------------------------Testers
 
---~ GetDupePositions(UIColony:GetCityLabels("Colonist"))
+--~ GetDupePositions(GetCityLabels("Colonist"))
 --~ function ChoGGi_Funcs.Menus.GetDupePositions(list)
 --~	 local dupes = {}
 --~	 local positions = {}

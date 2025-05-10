@@ -105,6 +105,7 @@ Fix Colonist Daily Interest Loop
 Fix Colonists Long Walks (better solution: Use my "No More Outside Suffocation" mod)
 Fix Colonists Suffocating Inside Domes
 Fix Defence Towers Not Firing At Rovers
+Fix Deposits Wrong Map
 Fix Destroyed Tunnels Still Work
 Fix Double Click Select All Of Type
 Fix Dust Devils Block Building
@@ -155,6 +156,16 @@ City:InitBreakThroughAnomalies() is called for each new city (surface/undergroun
 Calling it more than once clears the BreakthroughOrder list.
 
 BreakthroughOrder is used to spawn planetary anomalies.
+
+### Fix Deposits Wrong Map
+
+If you scan a surface sector that has a concrete deposit while underground then the deposit will appear underground.
+This will check on load for borked ones and move them to the surface, as well as overriding the borked function to fix newly scanned.
+This also fixes underground ones stuck on the surface (less likely).
+
+If it doesn't remove them, then go to the mod options and press apply.
+
+https://forum.paradoxplaza.com/forum/threads/surviving-mars-surface-concrete-deposit-has-no-icon-and-is-not-minable.1496572/
 
 ### Colonists underground crash
 
@@ -307,8 +318,6 @@ Mars Nouveau won't count if you remove a Construction site and place the new one
 
 
 [Fix Cold Wave Stuck](https://steamcommunity.com/sharedfiles/filedetails/?id=2601527081)
-
-[Fix Deposits Wrong Map](https://steamcommunity.com/sharedfiles/filedetails/?id=2703206312)
 
 [Fix Dredger Mark Left On Ground](https://steamcommunity.com/sharedfiles/filedetails/?id=1646258448)
 

@@ -396,7 +396,7 @@ do -- ColonistData
 
 		local export_data = {}
 --~ 		local colonists = UICity.labels.Colonist or ""
-		local colonists = UIColony:GetCityLabels("Colonist")
+		local colonists = ChoGGi_Funcs.Common.GetCityLabels("Colonist")
 
 		for i = 1, #colonists do
 			local c = colonists[i]

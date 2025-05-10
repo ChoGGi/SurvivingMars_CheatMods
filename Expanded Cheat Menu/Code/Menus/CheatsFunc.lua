@@ -4,14 +4,16 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
-local ChoGGi_Funcs = ChoGGi_Funcs
 local pairs, type = pairs, type
 local T = T
+
+local ChoGGi_Funcs = ChoGGi_Funcs
 local Translate = ChoGGi_Funcs.Common.Translate
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 local Random = ChoGGi_Funcs.Common.Random
 local SelObject = ChoGGi_Funcs.Common.SelObject
 local GetCursorWorldPos = GetCursorWorldPos
+local GetCityLabels = ChoGGi_Funcs.Common.GetCityLabels
 
 function ChoGGi_Funcs.Menus.TriggerFireworks()
 	local city = Cities[ActiveMapID]
@@ -958,7 +960,7 @@ function ChoGGi_Funcs.Menus.ShowScanAnomaliesOptions()
 
 			-- If 4 are selected that's all
 			if value == "All" or #choice > 3 then
-				local a = UIColony:GetCityLabels("Anomaly")
+				local a = GetCityLabels("Anomaly")
 				-- go backwards it'll be removed once scanned
 				for j = #a, 1, -1 do
 					a[j]:CheatScan()
@@ -966,7 +968,7 @@ function ChoGGi_Funcs.Menus.ShowScanAnomaliesOptions()
 				-- no sense in doing other choices as we just did all
 				break
 			else
-				local a = UIColony:GetCityLabels("Anomaly")
+				local a = GetCityLabels("Anomaly")
 				for j = #a, 1, -1 do
 					local anomnom = a[j]
 					if anomnom.class == value then

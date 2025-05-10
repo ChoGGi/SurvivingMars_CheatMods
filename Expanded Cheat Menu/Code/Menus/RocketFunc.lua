@@ -4,11 +4,12 @@ if ChoGGi.what_game ~= "Mars" then
 	return
 end
 
-local ChoGGi_Funcs = ChoGGi_Funcs
 local type = type
 local T = T
-local Translate = ChoGGi_Funcs.Common.Translate
 
+local ChoGGi_Funcs = ChoGGi_Funcs
+local Translate = ChoGGi_Funcs.Common.Translate
+local GetCityLabels = ChoGGi_Funcs.Common.GetCityLabels
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 
 function ChoGGi_Funcs.Menus.SetPodPrice()
@@ -384,7 +385,7 @@ function ChoGGi_Funcs.Menus.SetRocketMaxExportAmount()
 				ChoGGi.UserSettings.RocketMaxExportAmount = value
 			end
 
-			local rockets = UIColony:GetCityLabels("AllRockets")
+			local rockets = GetCityLabels("AllRockets")
 			for i = 1, #rockets do
 				local rocket = rockets[i]
 				if rocket.export_requests then
@@ -413,7 +414,7 @@ end
 
 do -- RocketsIgnoreFuel_Toggle/LaunchFuelPerRocket
 	local function SetRocketFuelAmount(amount)
-		local rockets = UIColony:GetCityLabels("AllRockets")
+		local rockets = GetCityLabels("AllRockets")
 		for i = 1, #rockets do
 			local rocket = rockets[i]
 			if rocket.refuel_request then

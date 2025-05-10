@@ -11,13 +11,14 @@ local IsValid = IsValid
 local Max = Max
 local Sleep = Sleep
 local WaitMsg = WaitMsg
+local T = T
 
 local IsValidXWin = ChoGGi_Funcs.Common.IsValidXWin
 local MsgPopup = ChoGGi_Funcs.Common.MsgPopup
 local RandomColourLimited = ChoGGi_Funcs.Common.RandomColourLimited
 local RetName = ChoGGi_Funcs.Common.RetName
-local T = T
 local Translate = ChoGGi_Funcs.Common.Translate
+local GetCityLabels = ChoGGi_Funcs.Common.GetCityLabels
 
 local blacklist = ChoGGi.blacklist
 local testing = ChoGGi.testing
@@ -1911,7 +1912,7 @@ do -- DisplayMonitorList
 		elseif value == "Colonists" then
 			info = {
 				title = T(547--[[Colonists]]),
-				tables = UIColony:GetCityLabels("Colonist"),
+				tables = GetCityLabels("Colonist"),
 				values = {
 					{name="handle", kind=0},
 					{name="command", kind=0},
@@ -1937,7 +1938,7 @@ do -- DisplayMonitorList
 		elseif value == "Rockets" then
 			info = {
 				title = T(5238--[[Rockets]]),
-				tables = UIColony:GetCityLabels("AllRockets"),
+				tables = GetCityLabels("AllRockets"),
 				values = {
 					{name="name", kind=0},
 					{name="handle", kind=0},

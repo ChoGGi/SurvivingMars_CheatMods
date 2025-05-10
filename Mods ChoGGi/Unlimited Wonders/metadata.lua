@@ -4,9 +4,9 @@ return PlaceObj("ModDef", {
 	"steam_id", "1754331978",
 	"pops_any_uuid", "ab3fc120-a161-4d9b-b7a9-c3fb685e51e7",
 	"lua_revision", 1007000, -- Picard
-	"version", 5,
+	"version", 6,
 	"version_major", 0,
-	"version_minor", 5,
+	"version_minor", 6,
 	"image", "Preview.jpg",
 	"author", "ChoGGi",
 	"code", {
@@ -18,7 +18,7 @@ Build as many as you want.
 
 
 Known Issues:
-All Space Elevators will import, but if the first one built isn't working then you can't import.
+Only the first Morpheus works.
 To fix the issue with Solar panels ignoring more than one sun: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1981650262]Artificial Sun Range[/url]
 
 
