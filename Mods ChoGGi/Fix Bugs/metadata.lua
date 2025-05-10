@@ -15,6 +15,9 @@ return PlaceObj("ModDef", {
 	"has_options", true,
 	"TagOther", true,
 	"description", [[
+This mod fixes a few dozen bugs. Mostly from Below & Beyond, and bugged Storybits.
+
+
 [url=https://github.com/ChoGGi/SurvivingMars_CheatMods/tree/master/Mods ChoGGi/Fix Bugs/MoreInfo.md]Mod Info[/url] (description is too big for steam)
 
 

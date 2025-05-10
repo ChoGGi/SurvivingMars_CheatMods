@@ -10,19 +10,21 @@ See mod options to toggle certain fixes.
 ```
 Uneven terrain from Flatten tool (mod option to disable).
 If you install Space Race DLC then Shuttle Hubs will disappear from build menu in existing saves.
-Toggling power to domes with passages in certain instances will create some log spam.
 Key binding certain buildings won't work when pressing the key (Power Switch/Pipe Valve).
 Add rocket sound effects to SupplyPods (mod option to disable).
 Possible fix for main menu music playing in-game on new games (mod option to disable, since there's no fade out).
-Log spam from loading older saves.
 Force heat grid to update when starting certain new games.
-Future Contemporary Asset Pack when placing spires.
+Future Contemporary Asset Pack has issues when placing spires.
 Leftover transport_ticket in colonist objs (assign to residence grayed out, from Trains DLC).
-Log spam from IsBuildingInDomeRange().
-Problem updating supply grid.
+Problem updating supply grid (I've had better descriptions).
 Colonists on an expedition now show proper status when selected from command centre (instead of just unknown).
 Added missing images for certain Cargo listings.
 Gale crater name doesn't show up for 4S138E, 5S138E.
+
+Log spam:
+Loading older saves.
+IsBuildingInDomeRange().
+Toggling power to domes with passages in certain instances.
 ```
 
 ### Storybits:
